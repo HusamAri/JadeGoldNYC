@@ -104,7 +104,7 @@ begin
 end;
 $$;
 
-grant execute on function public.log_audit(uuid, text, text, uuid, jsonb, text, text)
+grant execute on function public.log_audit(uuid, text, text, uuid, text, jsonb, text, text)
   to authenticated, service_role;
 grant execute on function public.etsy_connection_status(uuid) to authenticated;
 grant execute on function public.current_org_id() to authenticated, anon;
