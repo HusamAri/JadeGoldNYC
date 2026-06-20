@@ -70,6 +70,7 @@ export const ENTITY_TYPE_LABELS: Record<string, string> = {
   reviews: "Yorum",
   etsy_connection: "Etsy bağlantısı",
   csv_import: "CSV içe aktarma",
+  shop_metrics: "Performans",
   auth: "Oturum",
   report: "Rapor",
 };

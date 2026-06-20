@@ -21,7 +21,7 @@ export const NAV_ITEMS: NavItem[] = [
   { href: "/panel", label: "Panel", icon: LayoutDashboard },
   { href: "/satislar", label: "Satışlar", icon: ShoppingBag },
   { href: "/maliyetler", label: "Maliyetler", icon: Wallet },
-  { href: "/analizler", label: "Analizler", icon: BarChart3 },
+  { href: "/analizler", label: "Performans", icon: BarChart3 },
   { href: "/tasarimlar", label: "Tasarımlar", icon: Palette },
   { href: "/yorumlar", label: "Yorumlar", icon: MessageSquareText },
   { href: "/kayitlar", label: "Kayıtlar", icon: ScrollText },
