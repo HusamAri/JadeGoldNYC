@@ -197,3 +197,24 @@ export interface EtsyConnectionStatus {
   last_sync_at: string | null;
   expires_at: string | null;
 }
+
+export interface ShopMetric {
+  id: string;
+  org_id: string;
+  period_label: string;
+  period_start: string | null;
+  period_end: string | null;
+  visits: number | null;
+  orders: number | null;
+  revenue_cents: number | null;
+  cart_abandon_amount_cents: number | null;
+  cart_abandon_count: number | null;
+  rating: number | null;
+  ads_spend_cents: number | null;
+  ads_revenue_cents: number | null;
+  traffic_sources: Record<string, number> | null;
+  notes: string | null;
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+}
