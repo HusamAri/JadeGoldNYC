@@ -1,6 +1,7 @@
 import {
   LayoutDashboard,
   ShoppingBag,
+  ShoppingCart,
   Wallet,
   BarChart3,
   Palette,
@@ -22,6 +23,7 @@ export const NAV_ITEMS: NavItem[] = [
   { href: "/satislar", label: "Satışlar", icon: ShoppingBag },
   { href: "/maliyetler", label: "Maliyetler", icon: Wallet },
   { href: "/analizler", label: "Performans", icon: BarChart3 },
+  { href: "/sepet-kurtarma", label: "Sepet Kurtarma", icon: ShoppingCart },
   { href: "/tasarimlar", label: "Tasarımlar", icon: Palette },
   { href: "/yorumlar", label: "Yorumlar", icon: MessageSquareText },
   { href: "/kayitlar", label: "Kayıtlar", icon: ScrollText },

@@ -6,6 +6,7 @@ import { Building2, Gem, ShieldCheck, type LucideIcon } from "lucide-react";
 import { signIn, type SignInState } from "@/lib/actions/session";
 import { Logo } from "@/components/layout/logo";
 import { BrandTile } from "@/components/brand/brand-tile";
+import { BRAND_LOGIN_HERO } from "@/lib/brand-assets";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -35,7 +36,7 @@ export default function LoginPage() {
     <div className="grid min-h-svh lg:grid-cols-2">
       {/* Marka paneli (geniş ekran) */}
       <BrandTile
-        src="/brand/login-hero.jpg"
+        src={BRAND_LOGIN_HERO}
         rounded={false}
         scrim
         className="hidden lg:block"
