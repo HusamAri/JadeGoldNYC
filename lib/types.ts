@@ -218,3 +218,42 @@ export interface ShopMetric {
   created_at: string;
   updated_at: string;
 }
+
+export interface ProductMetric {
+  id: string;
+  org_id: string;
+  product_id: string | null;
+  period_label: string;
+  product_title: string;
+  sku: string | null;
+  views: number | null;
+  orders: number | null;
+  revenue_cents: number | null;
+  ads_clicks: number | null;
+  ads_spend_cents: number | null;
+  ads_revenue_cents: number | null;
+  notes: string | null;
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export type CartRecoveryStatus = "yeni" | "iletildi" | "kazanildi" | "kayip";
+
+export interface CartRecovery {
+  id: string;
+  org_id: string;
+  buyer_name: string | null;
+  buyer_email: string | null;
+  cart_value_cents: number | null;
+  item_summary: string | null;
+  abandoned_at: string | null;
+  status: CartRecoveryStatus;
+  action_taken: string | null;
+  incentive: string | null;
+  recovered_value_cents: number | null;
+  notes: string | null;
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+}

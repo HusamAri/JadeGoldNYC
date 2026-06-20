@@ -7,6 +7,7 @@ import {
   ShieldAlert,
   Info,
   CheckCircle2,
+  PackageSearch,
 } from "lucide-react";
 
 import { listMetrics } from "@/lib/db/queries/metrics";
@@ -190,12 +191,20 @@ export default async function PerformansPage() {
         title="Etsy Performansı"
         description={`Güncel dönem · ${current.period_label}${previous ? ` (önceki: ${previous.period_label})` : ""}`}
         action={
-          <Button asChild>
-            <Link href="/analizler/yeni">
-              <Plus />
-              Yeni Snapshot
-            </Link>
-          </Button>
+          <>
+            <Button asChild variant="outline">
+              <Link href="/analizler/urunler">
+                <PackageSearch />
+                Ürün Performansı
+              </Link>
+            </Button>
+            <Button asChild>
+              <Link href="/analizler/yeni">
+                <Plus />
+                Yeni Snapshot
+              </Link>
+            </Button>
+          </>
         }
       />
 

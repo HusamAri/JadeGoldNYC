@@ -1,4 +1,4 @@
-import type { SaleStatus } from "@/lib/types";
+import type { SaleStatus, CartRecoveryStatus } from "@/lib/types";
 
 /** Sistem maliyet kategorileri (0006 seed ile eşleşir). */
 export const COST_CATEGORIES = [
@@ -71,8 +71,22 @@ export const ENTITY_TYPE_LABELS: Record<string, string> = {
   etsy_connection: "Etsy bağlantısı",
   csv_import: "CSV içe aktarma",
   shop_metrics: "Performans",
+  product_metrics: "Ürün performansı",
+  cart_recoveries: "Sepet kurtarma",
   auth: "Oturum",
   report: "Rapor",
 };
+
+/** Sepet kurtarma durumları. */
+export const CART_STATUSES: { value: CartRecoveryStatus; label: string }[] = [
+  { value: "yeni", label: "Yeni" },
+  { value: "iletildi", label: "İletildi" },
+  { value: "kazanildi", label: "Kazanıldı" },
+  { value: "kayip", label: "Kayıp" },
+];
+
+export const CART_STATUS_LABELS: Record<string, string> = Object.fromEntries(
+  CART_STATUSES.map((s) => [s.value, s.label]),
+);
 
 export const DEFAULT_CURRENCY = "USD";
