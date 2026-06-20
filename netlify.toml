@@ -1,0 +1,16 @@
+# Netlify yapılandırması — Jade Gold NYC Yönetim Paneli
+# Next.js 16 (App Router, server actions, proxy.ts, API route'lar) tam SSR olarak
+# Netlify Next.js Runtime (@netlify/plugin-nextjs) ile çalışır.
+# Ortam değişkenleri burada DEĞİL, Netlify panelinden tanımlanır:
+#   Site settings → Environment variables  (bkz. docs/deploy-netlify.md)
+
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  # .nvmrc ile aynı (Next 16 Node 20.9+ ister)
+  NODE_VERSION = "22"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
