@@ -48,7 +48,10 @@ npm run build       # üretim derlemesi
 2. Storage bucket'ları: `designs` ve `imports` (private).
 3. `.env.local` / Vercel ortam değişkenleri: Supabase URL + anon + service-role anahtarları.
 4. (Opsiyonel) Tip üretimi: `supabase gen types typescript` → `types/database.types.ts`.
-5. **Vercel'e** deploy edin; `NEXT_PUBLIC_APP_URL`'i prod URL yapın.
+5. **Deploy:** **Vercel** veya **Netlify** (ikisi de Next.js 16'yı tam SSR çalıştırır;
+   statik host/GitHub Pages **olmaz**). Netlify için adım adım kılavuz:
+   [`docs/deploy-netlify.md`](docs/deploy-netlify.md). Deploy sonrası `NEXT_PUBLIC_APP_URL`'i
+   prod URL yapın **ve** Supabase Auth → URL Configuration'a prod domain'i ekleyin.
 6. **Etsy:** developers.etsy.com'da uygulama kaydı açın, `ETSY_API_KEY/SECRET` girin,
    redirect URI'yi (`/api/etsy/callback`) hem yerel hem prod için kaydedin. Panelde
    **Ayarlar → Etsy → Bağlan** ile OAuth akışını başlatın.
