@@ -12,7 +12,7 @@ export interface DashboardData {
   aovCents: number;
   margin: number; // 0..1
   currency: string;
-  trend: { date: string; label: string; revenue: number; cost: number }[];
+  trend: { date: string; label: string; revenue: number; cost: number; orders: number }[];
   costByCategory: { name: string; value: number }[];
   topProducts: { title: string; quantity: number; revenue: number }[];
   recent: AuditLog[];
@@ -83,16 +83,17 @@ export async function getDashboard(
   const margin = revenueCents ? profitCents / revenueCents : 0;
 
   // --- Gün bazlı trend ---
-  const dayMap = new Map<string, { revenue: number; cost: number }>();
+  const dayMap = new Map<string, { revenue: number; cost: number; orders: number }>();
   for (const s of sales) {
     const d = s.order_date.slice(0, 10);
-    const e = dayMap.get(d) ?? { revenue: 0, cost: 0 };
+    const e = dayMap.get(d) ?? { revenue: 0, cost: 0, orders: 0 };
     e.revenue += (s.grand_total_cents || s.item_total_cents || 0) / 100;
+    e.orders += 1;
     dayMap.set(d, e);
   }
   for (const c of costs) {
     const d = c.cost_date.slice(0, 10);
-    const e = dayMap.get(d) ?? { revenue: 0, cost: 0 };
+    const e = dayMap.get(d) ?? { revenue: 0, cost: 0, orders: 0 };
     e.cost += (c.amount_cents || 0) / 100;
     dayMap.set(d, e);
   }
@@ -103,6 +104,7 @@ export async function getDashboard(
       label: formatDate(date, "d MMM"),
       revenue: round2(v.revenue),
       cost: round2(v.cost),
+      orders: v.orders,
     }));
 
   // --- Kategori kırılımı ---

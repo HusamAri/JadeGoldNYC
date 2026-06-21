@@ -1,9 +1,11 @@
 import type { SaleStatus, CartRecoveryStatus, ReviewStatus } from "@/lib/types";
 
-/** Sistem maliyet kategorileri (0006 seed ile eşleşir). */
+/** Sistem maliyet kategorileri (0006 + 0018 seed ile eşleşir). */
 export const COST_CATEGORIES = [
   { key: "malzeme", label_tr: "Malzeme" },
   { key: "kargo", label_tr: "Kargo" },
+  { key: "paketleme", label_tr: "Paketleme" },
+  { key: "yol_ulasim", label_tr: "Yol / Ulaşım" },
   { key: "etsy_ucretleri", label_tr: "Etsy Ücretleri" },
   { key: "reklam", label_tr: "Reklam" },
   { key: "iscilik", label_tr: "İşçilik" },
