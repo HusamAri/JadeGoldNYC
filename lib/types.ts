@@ -155,6 +155,8 @@ export interface Design {
   updated_at: string;
 }
 
+export type ReviewStatus = "yeni" | "yanitlandi" | "isaretli";
+
 export interface Review {
   id: string;
   org_id: string;
@@ -167,7 +169,7 @@ export interface Review {
   buyer_name: string | null;
   review_date: string | null;
   source: SourceKind;
-  status: string;
+  status: ReviewStatus;
   internal_note: string | null;
   created_at: string;
   updated_at: string;

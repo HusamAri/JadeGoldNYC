@@ -1,4 +1,4 @@
-import type { SaleStatus, CartRecoveryStatus } from "@/lib/types";
+import type { SaleStatus, CartRecoveryStatus, ReviewStatus } from "@/lib/types";
 
 /** Sistem maliyet kategorileri (0006 seed ile eşleşir). */
 export const COST_CATEGORIES = [
@@ -31,12 +31,16 @@ export const DESIGN_STATUSES = [
   { value: "arsiv", label: "Arşiv" },
 ] as const;
 
-/** Yorum durumları (placeholder modül). */
-export const REVIEW_STATUSES = [
+/** Yorum durumları ve Türkçe etiketleri. */
+export const REVIEW_STATUSES: { value: ReviewStatus; label: string }[] = [
   { value: "yeni", label: "Yeni" },
   { value: "yanitlandi", label: "Yanıtlandı" },
   { value: "isaretli", label: "İşaretli" },
-] as const;
+];
+
+export const REVIEW_STATUS_LABELS: Record<string, string> = Object.fromEntries(
+  REVIEW_STATUSES.map((s) => [s.value, s.label]),
+);
 
 /** Denetim logu kaynakları için Türkçe etiketler. */
 export const AUDIT_SOURCE_LABELS: Record<string, string> = {
