@@ -3,6 +3,8 @@
 import {
   Area,
   AreaChart,
+  Bar,
+  BarChart,
   CartesianGrid,
   Cell,
   Legend,
@@ -78,6 +80,61 @@ export function TrendChart({
           strokeWidth={2}
         />
       </AreaChart>
+    </ResponsiveContainer>
+  );
+}
+
+/** Günlük sipariş sayısı — ShipStation "New Orders each Day" tarzı bar grafiği. */
+export function OrdersBarChart({
+  data,
+}: {
+  data: { label: string; orders: number }[];
+}) {
+  const total = data.reduce((a, d) => a + (d.orders ?? 0), 0);
+  if (total === 0) {
+    return (
+      <div className="text-muted-foreground flex h-[220px] items-center justify-center text-sm">
+        Bu dönemde sipariş yok.
+      </div>
+    );
+  }
+  return (
+    <ResponsiveContainer width="100%" height={220}>
+      <BarChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
+        <CartesianGrid
+          strokeDasharray="3 3"
+          stroke="var(--border)"
+          vertical={false}
+        />
+        <XAxis
+          dataKey="label"
+          tick={{ fontSize: 12, fill: "var(--muted-foreground)" }}
+          tickLine={false}
+          axisLine={false}
+        />
+        <YAxis
+          allowDecimals={false}
+          tick={{ fontSize: 12, fill: "var(--muted-foreground)" }}
+          tickLine={false}
+          axisLine={false}
+          width={32}
+        />
+        <Tooltip
+          cursor={{ fill: "var(--muted)", opacity: 0.4 }}
+          contentStyle={{
+            background: "var(--popover)",
+            border: "1px solid var(--border)",
+            borderRadius: 8,
+            fontSize: 12,
+          }}
+        />
+        <Bar
+          dataKey="orders"
+          name="Sipariş"
+          fill="var(--chart-1)"
+          radius={[3, 3, 0, 0]}
+        />
+      </BarChart>
     </ResponsiveContainer>
   );
 }

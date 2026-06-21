@@ -38,13 +38,14 @@ export function CostForm({
     register,
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm<CostFormValues>({
     resolver: zodResolver(costFormSchema),
     defaultValues,
   });
 
-  function onSubmit(values: CostFormValues) {
+  function onSubmit(values: CostFormValues, andNew: boolean) {
     startTransition(async () => {
       const res =
         mode === "create"
@@ -57,13 +58,27 @@ export function CostForm({
       toast.success(
         mode === "create" ? "Maliyet eklendi" : "Maliyet güncellendi",
       );
+      if (mode === "create" && andNew) {
+        // Hızlı toplu giriş: kategori/tarih/para birimini koru, gerisini temizle
+        reset({
+          ...defaultValues,
+          category_id: values.category_id,
+          cost_date: values.cost_date,
+          currency: values.currency,
+        });
+        router.refresh();
+        return;
+      }
       router.push("/maliyetler");
       router.refresh();
     });
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="max-w-2xl space-y-6">
+    <form
+      onSubmit={handleSubmit((v) => onSubmit(v, false))}
+      className="max-w-2xl space-y-6"
+    >
       <Card>
         <CardContent className="grid gap-5 sm:grid-cols-2">
           <div className="space-y-2">
@@ -146,6 +161,16 @@ export function CostForm({
         <Button type="button" variant="outline" onClick={() => router.back()}>
           Vazgeç
         </Button>
+        {mode === "create" && (
+          <Button
+            type="button"
+            variant="secondary"
+            disabled={pending}
+            onClick={handleSubmit((v) => onSubmit(v, true))}
+          >
+            Kaydet ve yeni ekle
+          </Button>
+        )}
         <Button type="submit" disabled={pending}>
           {pending ? "Kaydediliyor…" : "Kaydet"}
         </Button>

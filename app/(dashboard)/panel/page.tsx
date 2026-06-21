@@ -17,7 +17,11 @@ import { auditSummary } from "@/lib/audit-format";
 import { PageHeader } from "@/components/page-header";
 import { KpiCard } from "@/components/kpi-card";
 import { PeriodSelector } from "@/components/period-selector";
-import { TrendChart, CategoryPie } from "@/components/charts/dashboard-charts";
+import {
+  TrendChart,
+  CategoryPie,
+  OrdersBarChart,
+} from "@/components/charts/dashboard-charts";
 import {
   Card,
   CardContent,
@@ -87,6 +91,15 @@ export default async function PanelPage({
           accent={d.margin >= 0 ? "positive" : "negative"}
         />
       </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Günlük Sipariş Sayısı</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <OrdersBarChart data={d.trend} />
+        </CardContent>
+      </Card>
 
       <div className="grid gap-6 lg:grid-cols-3">
         <Card className="lg:col-span-2">
