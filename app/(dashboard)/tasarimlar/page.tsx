@@ -10,6 +10,8 @@ export default function TasarimlarPage() {
   return (
     <div className="space-y-8">
       <PageHeader
+        image="/brand/gallery/nyc-rosary.webp"
+        eyebrow="Jade Gold · Görsel Kimlik"
         title="Marka Görsel Kimliği"
         description="Jade Gold NYC marka çekimleri ve görsel öğeleri"
       />
