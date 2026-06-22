@@ -23,6 +23,7 @@ export async function logAudit(
       | "etsy.connect"
       | "etsy.sync"
       | "report.export"
+      | "profile.update"
     >;
     entityType: string;
     summary: string;
