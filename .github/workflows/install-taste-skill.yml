@@ -1,0 +1,48 @@
+name: Install taste design skill
+
+# Vendors selected variants of the MIT-licensed Taste skill
+# (github.com/Leonxlnx/taste-skill) into .claude/skills/ so the project ships an
+# industry-grade web UI/UX design skill that Claude Code auto-discovers. Runs on
+# a GitHub runner (open internet) because the dev sandbox can't reach arbitrary
+# hosts. Commits back to the branch; the path filter excludes .claude/** so the
+# commit-back never re-triggers.
+on:
+  workflow_dispatch:
+  push:
+    branches: [claude/serene-knuth-js7wvl]
+    paths:
+      - ".github/workflows/install-taste-skill.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Vendor taste skill variants
+        run: |
+          set -euo pipefail
+          git clone --depth 1 https://github.com/Leonxlnx/taste-skill.git /tmp/taste
+          echo "Available variants:" && ls -1 /tmp/taste/skills
+          mkdir -p .claude/skills
+          for v in soft-skill taste-skill; do
+            rm -rf ".claude/skills/$v"
+            cp -r "/tmp/taste/skills/$v" ".claude/skills/$v"
+            find ".claude/skills/$v" -name ".git" -prune -exec rm -rf {} +
+          done
+          cp /tmp/taste/LICENSE .claude/skills/TASTE-SKILL-LICENSE.txt
+          echo "Vendored:" && find .claude/skills -name SKILL.md
+      - name: Commit vendored skill
+        run: |
+          if [[ -n "$(git status --porcelain .claude/skills)" ]]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add .claude/skills
+            git commit -m "feat(skills): vendor MIT taste design skill (soft-skill + taste-skill) [skip ci]"
+            git push origin HEAD:claude/serene-knuth-js7wvl
+            echo "Pushed vendored skill."
+          else
+            echo "Nothing to commit."; exit 1
+          fi
