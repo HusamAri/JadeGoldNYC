@@ -65,15 +65,15 @@ export default function MarkaKilavuzuPage() {
         <CardHeader>
           <CardTitle>Logo Sistemi</CardTitle>
           <CardDescription>
-            Şeffaf vektör (SVG), antik altın. Koyu zeminde kullanım önerilir.
+            Higgsfield orijinal vektörleri (SVG), antik altın · sıcak fildişi zemin.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
             {LOGOS.map((l) => (
               <li key={l.src} className="space-y-2">
-                <div className="flex h-28 items-center justify-center rounded-xl bg-[#131313] p-4 ring-1 ring-[#B89347]/25">
-                  <img src={l.src} alt={l.alt} className="max-h-[72%] max-w-[86%] object-contain" />
+                <div className="flex h-28 items-center justify-center rounded-xl bg-[#F0EEE8] p-3 ring-1 ring-black/5">
+                  <img src={l.src} alt={l.alt} className="h-full w-full object-contain" />
                 </div>
                 <p className="text-muted-foreground text-center text-xs font-medium">{l.label}</p>
               </li>
@@ -146,8 +146,8 @@ export default function MarkaKilavuzuPage() {
           <ul className="grid grid-cols-4 gap-3 sm:grid-cols-8">
             {ICONS.map(([file, label]) => (
               <li key={file} className="space-y-2">
-                <div className="flex aspect-square items-center justify-center rounded-xl bg-[#F2EFE6] ring-1 ring-black/5">
-                  <img src={`/brand/icons/icon-${file}.svg`} alt={`${label} ikonu`} className="size-8" />
+                <div className="flex aspect-square items-center justify-center rounded-xl bg-[#F0EEE8] p-1.5 ring-1 ring-black/5">
+                  <img src={`/brand/icons/icon-${file}.svg`} alt={`${label} ikonu`} className="h-full w-full object-contain" />
                 </div>
                 <p className="text-muted-foreground text-center text-[11px]">{label}</p>
               </li>

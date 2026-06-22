@@ -36,19 +36,22 @@ const ICONS = {
   "icon-column": "hf_20260622_101855_dd6c53b2-56ee-488e-948d-dfba28daf79e.svg",
 };
 
-// Conservative transparency pass: drop a full-canvas ivory background rect and
-// any ivory background fill on the <svg> root. Keeps everything else intact.
-const IVORY = /#f[25]f0e6|#f2efe6|#f5f0e6/i;
+// Transparency + normalization pass for recraft vector SVGs. The ivory ground
+// is a full-canvas <path> (d = the viewBox rectangle), not a <rect>; remove it.
+// Also drop the root width/height/preserveAspectRatio="none" so the viewBox
+// governs aspect and CSS/<img> sizing can't distort the mark. Inner ivory shapes
+// (letter counters, the ring's hole) are kept — they blend on an ivory ground.
 function makeTransparent(svg) {
-  let out = svg;
-  // remove standalone background <rect ... fill="#F2EFE6" .../>
-  out = out.replace(/<rect\b[^>]*\/>/gi, (m) => (IVORY.test(m) ? "" : m));
-  out = out.replace(/<rect\b[^>]*>\s*<\/rect>/gi, (m) => (IVORY.test(m) ? "" : m));
-  // strip background fill on the root <svg ... style="background:#F2EFE6">
-  out = out.replace(/(<svg\b[^>]*?style=")([^"]*)(")/i, (_, a, css, c) =>
-    a + css.replace(/background(-color)?\s*:\s*#[0-9a-f]{3,8}\s*;?/gi, "") + c,
-  );
-  return out;
+  return svg
+    .replace(
+      /<path\b[^>]*\bd="M 0 0 L \d+(?:\.\d+)? 0 L \d+(?:\.\d+)? \d+(?:\.\d+)? L 0 \d+(?:\.\d+)? L 0 0 z"[^>]*><\/path>\s*/g,
+      "",
+    )
+    .replace(/<svg\b[^>]*>/, (tag) =>
+      tag
+        .replace(/\s(?:width|height)="[^"]*"/g, "")
+        .replace(/\spreserveAspectRatio="[^"]*"/g, ""),
+    );
 }
 
 const apply = process.argv.includes("--apply");
