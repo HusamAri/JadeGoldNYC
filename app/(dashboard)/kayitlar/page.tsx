@@ -1,4 +1,4 @@
-import { ScrollText } from "lucide-react";
+import { ScrollText, Download } from "lucide-react";
 
 import { listAudit } from "@/lib/db/queries/audit";
 import { strParam, numParam, type RawSearchParams } from "@/lib/searchparams";
@@ -12,6 +12,7 @@ import { formatDateTime } from "@/lib/format";
 import { PageHeader } from "@/components/page-header";
 import { EmptyState } from "@/components/empty-state";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Table,
@@ -63,11 +64,27 @@ export default async function KayitlarPage({
     offset,
   });
 
+  const exportQs = new URLSearchParams();
+  if (entityType) exportQs.set("entity", entityType);
+  if (action) exportQs.set("action", action);
+  if (search) exportQs.set("search", search);
+  const exportHref = `/kayitlar/export${
+    exportQs.toString() ? `?${exportQs.toString()}` : ""
+  }`;
+
   return (
     <div>
       <PageHeader
         title="Kayıtlar"
         description="Şirket hafızası — her işlemin değişmez denetim logu"
+        action={
+          <Button asChild variant="outline">
+            <a href={exportHref}>
+              <Download className="size-4" />
+              CSV indir
+            </a>
+          </Button>
+        }
       />
 
       <Card>

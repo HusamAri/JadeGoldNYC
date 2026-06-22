@@ -10,9 +10,9 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground shadow-[var(--shadow-raised-sm)] hover:shadow-[var(--shadow-hover)] active:scale-[0.97]",
+          "bg-primary text-primary-foreground shadow-[var(--shadow-raised-sm)] hover:-translate-y-px hover:shadow-[var(--shadow-hover)] active:translate-y-0 active:scale-[0.97]",
         destructive:
-          "bg-destructive text-destructive-foreground shadow-[var(--shadow-raised-sm)] hover:shadow-[var(--shadow-hover)] active:scale-[0.97]",
+          "bg-destructive text-destructive-foreground shadow-[var(--shadow-raised-sm)] hover:-translate-y-px hover:shadow-[var(--shadow-hover)] active:translate-y-0 active:scale-[0.97]",
         outline: "bg-background text-foreground nm-interactive",
         secondary: "bg-background text-foreground nm-interactive",
         ghost: "text-foreground hover:bg-foreground/5",

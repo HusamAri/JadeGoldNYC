@@ -15,7 +15,7 @@ import { formatMoney, formatPercent } from "@/lib/money";
 import { formatNumber, formatDateTime } from "@/lib/format";
 import { auditSummary } from "@/lib/audit-format";
 import { PageHeader } from "@/components/page-header";
-import { BrandHero } from "@/components/brand/brand-hero";
+import { EditorialCard } from "@/components/brand/editorial-card";
 import { KpiCard } from "@/components/kpi-card";
 import { PeriodSelector } from "@/components/period-selector";
 import {
@@ -52,12 +52,22 @@ export default async function PanelPage({
 
   return (
     <div className="space-y-6">
-      <BrandHero
-        image="/brand/gallery/koyu-franco.webp"
-        eyebrow="Jade Gold · New York"
-        title="Yönetim Paneli"
-        subtitle={`Genel bakış · ${period.label}`}
-      />
+      <div className="grid gap-4 md:gap-6 lg:grid-cols-5">
+        <EditorialCard
+          className="min-h-[210px] md:min-h-[250px] lg:col-span-3"
+          image="/brand/gallery/koyu-franco.webp"
+          eyebrow="Jade Gold · New York"
+          title="Sessiz lüks, kalıcı değer"
+          subtitle="Som altın, el işçiliği — her parça bir miras."
+        />
+        <EditorialCard
+          className="min-h-[210px] md:min-h-[250px] lg:col-span-2"
+          image="/brand/gallery/aydinlik-nugget.webp"
+          eyebrow="Atölye"
+          title="Zarafetin sadeliği"
+          align="start"
+        />
+      </div>
 
       <PageHeader
         title="Panel"
