@@ -24,7 +24,7 @@ export function Topbar({ email }: { email: string }) {
   );
 
   return (
-    <header className="bg-background/95 sticky top-0 z-30 flex h-16 items-center justify-between gap-3 border-b px-4 backdrop-blur md:px-6">
+    <header className="bg-background/80 sticky top-0 z-30 flex h-16 items-center justify-between gap-3 px-4 shadow-[0_10px_24px_-20px_rgb(var(--nm-dark)/0.7)] backdrop-blur-md md:px-6">
       <div className="flex items-center gap-3">
         {/* Mobil menü */}
         <DropdownMenu>

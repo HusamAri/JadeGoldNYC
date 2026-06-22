@@ -33,7 +33,7 @@ export function KpiCard({
           {hint && <p className="text-muted-foreground text-xs">{hint}</p>}
         </div>
         {Icon && (
-          <div className="bg-accent text-accent-foreground flex size-9 items-center justify-center rounded-lg">
+          <div className="bg-accent text-accent-foreground flex size-11 items-center justify-center rounded-2xl shadow-[var(--shadow-raised-sm)]">
             <Icon className="size-5" />
           </div>
         )}
