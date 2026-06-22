@@ -15,6 +15,7 @@ import { formatMoney, formatPercent } from "@/lib/money";
 import { formatNumber, formatDateTime } from "@/lib/format";
 import { auditSummary } from "@/lib/audit-format";
 import { PageHeader } from "@/components/page-header";
+import { BrandHero } from "@/components/brand/brand-hero";
 import { KpiCard } from "@/components/kpi-card";
 import { PeriodSelector } from "@/components/period-selector";
 import {
@@ -51,13 +52,20 @@ export default async function PanelPage({
 
   return (
     <div className="space-y-6">
+      <BrandHero
+        image="/brand/gallery/koyu-franco.webp"
+        eyebrow="Jade Gold · New York"
+        title="Yönetim Paneli"
+        subtitle={`Genel bakış · ${period.label}`}
+      />
+
       <PageHeader
         title="Panel"
         description={`Genel bakış · ${period.label}`}
         action={<PeriodSelector />}
       />
 
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-6">
+      <div className="stagger grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-6">
         <KpiCard
           label="Toplam Gelir"
           value={formatMoney(d.revenueCents, cur)}

@@ -1,6 +1,7 @@
 import { requireMembership, getUser } from "@/lib/auth";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Topbar } from "@/components/layout/topbar";
+import { PageTransition } from "@/components/layout/page-transition";
 
 export default async function DashboardLayout({
   children,
@@ -16,7 +17,9 @@ export default async function DashboardLayout({
       <Sidebar />
       <div className="flex min-w-0 flex-1 flex-col">
         <Topbar email={user?.email ?? ""} />
-        <main className="bg-background flex-1 p-4 md:p-6 lg:p-8">{children}</main>
+        <main className="bg-background flex-1 p-4 md:p-6 lg:p-8">
+          <PageTransition>{children}</PageTransition>
+        </main>
       </div>
     </div>
   );
