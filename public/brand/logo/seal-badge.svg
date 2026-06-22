@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260" role="img" aria-label="Jade Gold New York City seal">
+  <defs>
+    <path id="jgTop" d="M36 130 A94 94 0 0 1 224 130"/>
+    <path id="jgBot" d="M36 130 A94 94 0 0 0 224 130"/>
+  </defs>
+  <g fill="none" stroke="#B89347">
+    <circle cx="130" cy="130" r="118" stroke-width="2"/>
+    <circle cx="130" cy="130" r="108" stroke-width="1" opacity="0.55"/>
+  </g>
+  <g fill="#B89347"
+     font-family="'itc-avant-garde-gothic-pro', Futura, 'Century Gothic', 'Avenir Next', sans-serif"
+     font-weight="500">
+    <text font-size="19" letter-spacing="7">
+      <textPath href="#jgTop" startOffset="50%" text-anchor="middle">JADE GOLD</textPath>
+    </text>
+    <text font-size="13" letter-spacing="6">
+      <textPath href="#jgBot" startOffset="50%" text-anchor="middle">NEW YORK CITY</textPath>
+    </text>
+    <circle cx="31" cy="130" r="3"/>
+    <circle cx="229" cy="130" r="3"/>
+  </g>
+  <!-- center interlocking JG monogram -->
+  <g fill="none" stroke="#B89347" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" transform="translate(130 132) scale(0.42) translate(-110 -110)">
+    <path d="M168 74 A70 70 0 1 0 168 150"/>
+    <path d="M168 112 H122"/>
+    <path d="M97 50 V150 A31 31 0 0 1 35 142"/>
+  </g>
+</svg>

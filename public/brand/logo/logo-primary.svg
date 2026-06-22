@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 240" role="img" aria-label="JADE GOLD NYC">
+  <text x="323" y="108" text-anchor="middle"
+        font-family="'itc-avant-garde-gothic-pro', Futura, 'Century Gothic', 'Avenir Next', sans-serif"
+        font-weight="500" font-size="62" letter-spacing="16" fill="#B89347">JADE GOLD</text>
+  <line x1="285" y1="150" x2="355" y2="150" stroke="#B89347" stroke-width="1.4"/>
+  <text x="328" y="186" text-anchor="middle"
+        font-family="'itc-avant-garde-gothic-pro', Futura, 'Century Gothic', 'Avenir Next', sans-serif"
+        font-weight="500" font-size="26" letter-spacing="20" fill="#B89347">NYC</text>
+</svg>

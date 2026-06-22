@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" fill="none" stroke="#B89347" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="JG monogram">
+  <!-- G : open-right counter with inward bar -->
+  <path d="M168 74 A70 70 0 1 0 168 150"/>
+  <path d="M168 112 H122"/>
+  <!-- J : stem with bottom-left hook, interlocked through the G -->
+  <path d="M97 50 V150 A31 31 0 0 1 35 142"/>
+</svg>
