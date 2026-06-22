@@ -4,7 +4,9 @@ import { Store, Plug, UserRound, ChevronRight } from "lucide-react";
 import { requireMembership, getUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { getEtsyStatus } from "@/lib/db/queries/etsy";
+import { getProfile } from "@/lib/db/queries/profile";
 import { PageHeader } from "@/components/page-header";
+import { UserAvatar } from "@/components/user-avatar";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -26,6 +28,7 @@ export default async function AyarlarPage() {
     .eq("id", m.org_id)
     .maybeSingle();
   const status = await getEtsyStatus(m.org_id);
+  const profile = user ? await getProfile(supabase, user.id) : null;
 
   return (
     <div className="max-w-2xl">
@@ -84,18 +87,36 @@ export default async function AyarlarPage() {
           </Card>
         </Link>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-base">
-              <UserRound className="size-4" />
-              Hesap
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="text-sm">
-            <p className="text-muted-foreground">E-posta</p>
-            <p className="font-medium">{user?.email ?? "—"}</p>
-          </CardContent>
-        </Card>
+        <Link href="/ayarlar/profil" className="block">
+          <Card className="transition-shadow hover:shadow-[var(--shadow-hover)]">
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between text-base">
+                <span className="flex items-center gap-2">
+                  <UserRound className="size-4" />
+                  Profil
+                </span>
+                <ChevronRight className="text-muted-foreground size-4" />
+              </CardTitle>
+              <CardDescription>
+                Ad ve profil fotoğrafını düzenle
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex items-center gap-3">
+              <UserAvatar
+                src={profile?.avatar_url}
+                name={profile?.full_name}
+                email={user?.email}
+                className="size-12"
+              />
+              <div className="text-sm">
+                <p className="font-medium">
+                  {profile?.full_name || "İsim eklenmedi"}
+                </p>
+                <p className="text-muted-foreground">{user?.email ?? "—"}</p>
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
       </div>
     </div>
   );

@@ -72,57 +72,56 @@
 }
 
 .dark {
-  /* Nöromorfik espresso gece modu — kart = zemin */
-  --background: oklch(0.255 0.014 54);
-  --foreground: oklch(0.95 0.012 80);
+  /* Nöromorfik JADE gece modu — yeşilimsi marka zemini, altın kontrast metinle */
+  --background: oklch(0.215 0.024 162);
+  --foreground: oklch(0.92 0.022 92);
 
-  --card: oklch(0.255 0.014 54);
-  --card-foreground: oklch(0.95 0.012 80);
+  --card: oklch(0.215 0.024 162);
+  --card-foreground: oklch(0.92 0.022 92);
 
-  --popover: oklch(0.23 0.014 52);
-  --popover-foreground: oklch(0.95 0.012 80);
+  --popover: oklch(0.246 0.024 162);
+  --popover-foreground: oklch(0.92 0.022 92);
 
-  /* Altın (gece birincil) */
-  --primary: oklch(0.78 0.09 80);
-  --primary-foreground: oklch(0.22 0.02 52);
+  /* Altın — gece birincil (vurgu + metin kontrastı) */
+  --primary: oklch(0.8 0.1 86);
+  --primary-foreground: oklch(0.2 0.024 162);
 
-  --secondary: oklch(0.28 0.014 52);
-  --secondary-foreground: oklch(0.95 0.012 80);
+  --secondary: oklch(0.265 0.024 162);
+  --secondary-foreground: oklch(0.92 0.022 92);
 
-  --muted: oklch(0.28 0.014 52);
-  --muted-foreground: oklch(0.72 0.02 70);
+  --muted: oklch(0.265 0.024 162);
+  --muted-foreground: oklch(0.75 0.03 100);
 
-  --accent: oklch(0.45 0.06 78);
-  --accent-foreground: oklch(0.96 0.02 85);
+  --accent: oklch(0.5 0.07 88);
+  --accent-foreground: oklch(0.96 0.02 90);
 
   --destructive: oklch(0.62 0.2 25);
   --destructive-foreground: oklch(0.97 0.01 27);
 
-  --border: oklch(1 0 0 / 12%);
-  --input: oklch(1 0 0 / 16%);
-  --ring: oklch(0.78 0.09 80);
+  --border: oklch(0.9 0.03 150 / 14%);
+  --input: oklch(0.9 0.03 150 / 16%);
+  --ring: oklch(0.8 0.1 86);
 
-  --chart-1: oklch(0.78 0.09 80);
-  --chart-2: oklch(0.7 0.1 60);
-  --chart-3: oklch(0.68 0.12 45);
-  --chart-4: oklch(0.66 0.08 145);
-  --chart-5: oklch(0.6 0.08 30);
+  --chart-1: oklch(0.8 0.1 86);
+  --chart-2: oklch(0.66 0.08 150);
+  --chart-3: oklch(0.7 0.11 60);
+  --chart-4: oklch(0.6 0.07 165);
+  --chart-5: oklch(0.64 0.1 40);
 
-  --sidebar: oklch(0.22 0.014 52);
-  --sidebar-foreground: oklch(0.95 0.012 80);
-  --sidebar-primary: oklch(0.78 0.09 80);
-  --sidebar-primary-foreground: oklch(0.22 0.02 52);
-  --sidebar: oklch(0.255 0.014 54);
-  --sidebar-accent: oklch(0.34 0.04 80);
-  --sidebar-accent-foreground: oklch(0.96 0.012 80);
-  --sidebar-border: oklch(1 0 0 / 12%);
-  --sidebar-ring: oklch(0.78 0.09 80);
+  --sidebar: oklch(0.215 0.024 162);
+  --sidebar-foreground: oklch(0.92 0.022 92);
+  --sidebar-primary: oklch(0.8 0.1 86);
+  --sidebar-primary-foreground: oklch(0.2 0.024 162);
+  --sidebar-accent: oklch(0.32 0.04 150);
+  --sidebar-accent-foreground: oklch(0.96 0.012 90);
+  --sidebar-border: oklch(0.9 0.03 150 / 14%);
+  --sidebar-ring: oklch(0.8 0.1 86);
 
-  /* Gece nöromorfik kabartma */
-  --nm-light: 74 61 47;
-  --nm-dark: 8 6 4;
-  --nm-convex: linear-gradient(145deg, oklch(0.278 0.014 54), oklch(0.236 0.014 54));
-  --nm-convex-press: linear-gradient(145deg, oklch(0.236 0.014 54), oklch(0.278 0.014 54));
+  /* Gece nöromorfik kabartma — jade highlight + derin gölge */
+  --nm-light: 86 112 100;
+  --nm-dark: 4 10 7;
+  --nm-convex: linear-gradient(145deg, oklch(0.238 0.026 162), oklch(0.198 0.024 162));
+  --nm-convex-press: linear-gradient(145deg, oklch(0.198 0.024 162), oklch(0.238 0.026 162));
 }
 
 @theme inline {

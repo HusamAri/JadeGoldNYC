@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, LogOut, UserRound } from "lucide-react";
+import { Menu, LogOut } from "lucide-react";
 
 import { signOut } from "@/lib/actions/session";
 import { NAV_ITEMS } from "@/components/layout/nav-items";
 import { Logo } from "@/components/layout/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { UserAvatar } from "@/components/user-avatar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -18,7 +19,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export function Topbar({ email }: { email: string }) {
+export function Topbar({
+  email,
+  name,
+  avatarUrl,
+}: {
+  email: string;
+  name?: string | null;
+  avatarUrl?: string | null;
+}) {
   const pathname = usePathname();
   const current = NAV_ITEMS.find(
     (i) => pathname === i.href || pathname.startsWith(i.href + "/"),
@@ -61,14 +70,21 @@ export function Topbar({ email }: { email: string }) {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="sm" className="gap-2">
-              <UserRound className="size-4" />
-            <span className="hidden max-w-[180px] truncate sm:inline">
-              {email || "Kullanıcı"}
-            </span>
+              <UserAvatar
+                src={avatarUrl}
+                name={name}
+                email={email}
+                className="size-6"
+              />
+              <span className="hidden max-w-[180px] truncate sm:inline">
+                {name || email || "Kullanıcı"}
+              </span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-60">
-          <DropdownMenuLabel className="truncate">{email}</DropdownMenuLabel>
+          <DropdownMenuLabel className="truncate">
+            {name || email}
+          </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <div className="p-1">
             <form action={signOut}>

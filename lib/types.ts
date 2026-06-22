@@ -108,7 +108,14 @@ export type AuditAction =
   | "csv.import"
   | "etsy.connect"
   | "etsy.sync"
-  | "report.export";
+  | "report.export"
+  | "profile.update";
+
+export interface Profile {
+  id: string;
+  full_name: string | null;
+  avatar_url: string | null;
+}
 
 export interface AuditLog {
   id: string;
