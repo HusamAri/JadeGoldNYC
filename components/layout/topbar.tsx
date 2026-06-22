@@ -7,6 +7,7 @@ import { Menu, LogOut, UserRound } from "lucide-react";
 import { signOut } from "@/lib/actions/session";
 import { NAV_ITEMS } from "@/components/layout/nav-items";
 import { Logo } from "@/components/layout/logo";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -55,10 +56,12 @@ export function Topbar({ email }: { email: string }) {
         </h1>
       </div>
 
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="sm" className="gap-2">
-            <UserRound className="size-4" />
+      <div className="flex items-center gap-2">
+        <ThemeToggle />
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm" className="gap-2">
+              <UserRound className="size-4" />
             <span className="hidden max-w-[180px] truncate sm:inline">
               {email || "Kullanıcı"}
             </span>
@@ -79,7 +82,8 @@ export function Topbar({ email }: { email: string }) {
             </form>
           </div>
         </DropdownMenuContent>
-      </DropdownMenu>
+        </DropdownMenu>
+      </div>
     </header>
   );
 }
