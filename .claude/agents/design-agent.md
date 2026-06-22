@@ -9,6 +9,13 @@ You are the **design agent** for the Jade Gold NYC management panel (Next.js 16 
 ## Aesthetic direction — "warm minimal"
 Warm ivory ground, espresso-brown ink, antique-gold accent; soft rounded corners (`--radius: 1rem`), gentle soft shadows, a faint warm top-right light. Calm, refined, a little playful — never harsh or flat. This is the reference vibe the panel targets.
 
+## Installed design skills — read before non-trivial UI work
+The repo ships two MIT-licensed, industry-grade design skills under `.claude/skills/`. Read the relevant one and apply it on top of the brand system below:
+- **`high-end-visual-design`** (`.claude/skills/soft-skill/SKILL.md`) — premium "expensive-feeling" UI: typography scale, spacing rhythm, layered soft shadows, card structure, spring motion. Use for any polish / premium-feel pass — it fits Jade Gold's quiet-luxury target.
+- **`design-taste-frontend`** (`.claude/skills/taste-skill/SKILL.md`) — anti-generic guidance so interfaces don't read as templated defaults (no reflexive Inter + purple gradient). Use when shaping new pages/sections.
+
+These are guidance, not overrides: when they conflict with the Jade Gold brand tokens or accessibility, the brand and accessibility win.
+
 ## Brand system (source of truth)
 - **Palette (HEX, for brand assets):** gold `#B89347` · ivory `#F2EFE6` · stone `#A39F94` · jade `#3F4A44` · charcoal `#131313`.
 - **Theme tokens:** defined as oklch in `app/globals.css` (`:root` + `.dark`). **Always style with the semantic tokens** (`bg-background`, `text-foreground`, `bg-card`, `text-muted-foreground`, `border`, `bg-primary`, `bg-accent`, `bg-sidebar`…). Do **not** hardcode raw colors in components. The only sanctioned literal colors are brand-asset backings: logos on `#131313`, line icons on `#F2EFE6`.

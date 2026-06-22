@@ -40,6 +40,21 @@ takım yaklaşımı istendiğinde.
 /plugin install harness@harness-marketplace
 ```
 
+## 4. Taste / High-end visual design skill — kuruldu ✅
+Sektör seviyesi web UI/UX tasarım skill'i (MIT, `github.com/Leonxlnx/taste-skill`).
+Repoda `.claude/skills/` altında **vendor edildi** (Claude Code otomatik keşfeder):
+
+- **`high-end-visual-design`** (`soft-skill/`) — "pahalı hissettiren" premium UI: tipografi
+  ölçeği, boşluk ritmi, katmanlı yumuşak gölgeler, kart yapısı, yay (spring) hareket.
+  Jade Gold'un sakin-lüks hedefiyle örtüşür.
+- **`design-taste-frontend`** (`taste-skill/`) — şablon gibi görünmeyi engelleyen
+  "anti-slop" rehberi (refleks Inter + mor degrade yok).
+
+Lisans: `.claude/skills/TASTE-SKILL-LICENSE.txt`. Çekme, runner üzerinden yapıldı
+(`.github/workflows/install-taste-skill.yml`) — sandbox egress'i kapalı olduğu için.
+Daha fazla varyant (minimalist, brutalist, redesign, image-to-code…) aynı depoda;
+workflow'daki listeye ekleyip yeniden çalıştırarak vendor edilebilir.
+
 ## Dahil edilmeyenler
 LunarCrush, AWS Marketplace, Booking/Expedia/Tripadvisor, Spotify, Wix — bu proje
 için ilgisiz.
