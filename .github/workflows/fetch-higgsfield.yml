@@ -1,0 +1,42 @@
+name: Fetch Higgsfield vectors
+
+# GitHub-hosted runners have open internet, so they can pull the original
+# Higgsfield logo/icon SVGs from the public CDN that the dev sandbox cannot
+# reach. Triggered by pushing this workflow (or the fetch script); commits the
+# raw + transparency-stripped vectors under public/brand/higgsfield/ back to the
+# branch. The path filter excludes public/brand/** so the commit-back never
+# re-triggers the workflow.
+on:
+  workflow_dispatch:
+  push:
+    branches: [claude/serene-knuth-js7wvl]
+    paths:
+      - ".github/workflows/fetch-higgsfield.yml"
+      - "scripts/fetch-higgsfield-vectors.mjs"
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Fetch original Higgsfield vectors
+        run: node scripts/fetch-higgsfield-vectors.mjs
+      - name: Commit fetched vectors
+        run: |
+          if [[ -n "$(git status --porcelain public/brand/higgsfield)" ]]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add public/brand/higgsfield
+            git commit -m "chore(brand): orijinal Higgsfield vektörlerini CDN'den çek [skip ci]"
+            git push origin HEAD:claude/serene-knuth-js7wvl
+            echo "Pushed fetched vectors."
+          else
+            echo "No vectors fetched (CDN unreachable or unchanged)."
+            exit 1
+          fi
