@@ -12,14 +12,14 @@
 :root {
   --radius: 1rem;
 
-  /* Sıcak fildişi zemin / espresso mürekkep */
-  --background: oklch(0.965 0.018 78);
+  /* Nöromorfik sıcak fildişi zemin — kartlar zeminle aynı renk, gölgeyle kabarır */
+  --background: oklch(0.905 0.021 82);
   --foreground: oklch(0.29 0.03 56);
 
-  --card: oklch(0.99 0.01 82);
+  --card: oklch(0.905 0.021 82);
   --card-foreground: oklch(0.29 0.03 56);
 
-  --popover: oklch(0.99 0.01 82);
+  --popover: oklch(0.935 0.018 82);
   --popover-foreground: oklch(0.29 0.03 56);
 
   /* Espresso (birincil) */
@@ -50,22 +50,33 @@
   --chart-4: oklch(0.6 0.07 145);
   --chart-5: oklch(0.5 0.06 30);
 
-  --sidebar: oklch(0.945 0.024 80);
+  --sidebar: oklch(0.905 0.021 82);
   --sidebar-foreground: oklch(0.3 0.03 56);
   --sidebar-primary: oklch(0.42 0.05 52);
   --sidebar-primary-foreground: oklch(0.97 0.015 80);
   --sidebar-accent: oklch(0.86 0.06 82);
   --sidebar-accent-foreground: oklch(0.3 0.04 56);
-  --sidebar-border: oklch(0.87 0.025 78);
+  --sidebar-border: oklch(0.88 0.02 80);
   --sidebar-ring: oklch(0.62 0.08 72);
+
+  /* Nöromorfik kabartma sistemi — sıcak highlight (sol-üst) + sıcak taupe (sağ-alt) */
+  --nm-light: 255 251 244;
+  --nm-dark: 165 143 109;
+  --nm-convex: linear-gradient(145deg, oklch(0.922 0.02 82), oklch(0.888 0.022 82));
+  --nm-convex-press: linear-gradient(145deg, oklch(0.888 0.022 82), oklch(0.918 0.02 82));
+  --shadow-raised: -7px -7px 15px rgb(var(--nm-light) / 0.72), 7px 7px 18px rgb(var(--nm-dark) / 0.26);
+  --shadow-raised-sm: -4px -4px 9px rgb(var(--nm-light) / 0.7), 4px 4px 10px rgb(var(--nm-dark) / 0.24);
+  --shadow-hover: -9px -9px 20px rgb(var(--nm-light) / 0.8), 10px 10px 24px rgb(var(--nm-dark) / 0.3);
+  --shadow-pressed: inset -4px -4px 9px rgb(var(--nm-light) / 0.6), inset 4px 4px 10px rgb(var(--nm-dark) / 0.32);
+  --ease-premium: cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 .dark {
-  /* Sıcak espresso gece modu */
-  --background: oklch(0.19 0.012 55);
+  /* Nöromorfik espresso gece modu — kart = zemin */
+  --background: oklch(0.255 0.014 54);
   --foreground: oklch(0.95 0.012 80);
 
-  --card: oklch(0.23 0.014 52);
+  --card: oklch(0.255 0.014 54);
   --card-foreground: oklch(0.95 0.012 80);
 
   --popover: oklch(0.23 0.014 52);
@@ -101,10 +112,17 @@
   --sidebar-foreground: oklch(0.95 0.012 80);
   --sidebar-primary: oklch(0.78 0.09 80);
   --sidebar-primary-foreground: oklch(0.22 0.02 52);
+  --sidebar: oklch(0.255 0.014 54);
   --sidebar-accent: oklch(0.34 0.04 80);
   --sidebar-accent-foreground: oklch(0.96 0.012 80);
   --sidebar-border: oklch(1 0 0 / 12%);
   --sidebar-ring: oklch(0.78 0.09 80);
+
+  /* Gece nöromorfik kabartma */
+  --nm-light: 74 61 47;
+  --nm-dark: 8 6 4;
+  --nm-convex: linear-gradient(145deg, oklch(0.278 0.014 54), oklch(0.236 0.014 54));
+  --nm-convex-press: linear-gradient(145deg, oklch(0.236 0.014 54), oklch(0.278 0.014 54));
 }
 
 @theme inline {
@@ -162,5 +180,47 @@
       transparent 60%
     );
     background-attachment: fixed;
+  }
+}
+
+@layer components {
+  /* Nöromorfik yüzeyler — yukarı doğru kabartma (konveks), gölge düşürmüş kart değil */
+  .nm-raised {
+    background-image: var(--nm-convex);
+    box-shadow: var(--shadow-raised);
+  }
+  .nm-raised-sm {
+    background-image: var(--nm-convex);
+    box-shadow: var(--shadow-raised-sm);
+  }
+  .nm-pressed {
+    background-image: var(--nm-convex-press);
+    box-shadow: var(--shadow-pressed);
+  }
+  /* Tıklanabilir kabartma: hover'da daha çok kabarır, basınca içeri çöker */
+  .nm-interactive {
+    background-image: var(--nm-convex);
+    box-shadow: var(--shadow-raised-sm);
+    transition:
+      box-shadow 0.35s var(--ease-premium),
+      transform 0.2s var(--ease-premium),
+      background-image 0.35s var(--ease-premium);
+  }
+  .nm-interactive:hover {
+    box-shadow: var(--shadow-hover);
+  }
+  .nm-interactive:active {
+    background-image: var(--nm-convex-press);
+    box-shadow: var(--shadow-pressed);
+    transform: scale(0.98);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
   }
 }
