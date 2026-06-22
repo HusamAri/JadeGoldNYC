@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" height="1024" preserveAspectRatio="none" style="display: block;" version="1.1" viewBox="0 0 2048 2048" width="1024">
+<path d="M 0 0 L 2048 0 L 2048 2048 L 0 2048 L 0 0 z" fill="rgb(240,238,232)" transform="translate(0,0)"></path>
+<path d="M 989.474 325.214 C 1375.69 305.95 1704.42 603.394 1723.74 989.611 C 1743.07 1375.83 1445.67 1704.6 1059.46 1723.98 C 673.161 1743.37 344.301 1445.9 324.973 1059.6 C 305.644 673.295 603.168 344.482 989.474 325.214 z" fill="rgb(189,134,29)" transform="translate(0,0)"></path>
+<path d="M 1004.49 341.981 C 1381.24 331.029 1695.63 627.374 1706.94 1004.11 C 1718.25 1380.85 1422.21 1695.52 1045.48 1707.19 C 668.245 1718.88 353.057 1422.35 341.731 1045.1 C 330.405 667.853 627.237 352.948 1004.49 341.981 z" fill="rgb(240,238,232)" transform="translate(0,0)"></path>
+<metadata><recraft-signature>{"signed_by": "recraft", "signature_b64": "MvcESm9dFTkdjjVV7glvbjq11Tcz2Kg1sLsYF6qKRpkGiDmrYflArlh/ynqM0kZ+Pt6t5m8XXsd0PDAj2620BA==", "signing_algo": "Ed25519", "generation_timestamp": 1782123570, "identifier": "1fad9370-79d2-4fa0-abb6-1dbdb1a908ce"}</recraft-signature></metadata></svg>
