@@ -224,3 +224,38 @@
     animation-duration: 0.01ms !important;
   }
 }
+
+/* Hareket: yumuşak "yüksel" giriş + kademeli (stagger) */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+.animate-rise {
+  animation: rise 0.7s var(--ease-premium) both;
+}
+.stagger > * {
+  animation: rise 0.6s var(--ease-premium) both;
+}
+.stagger > *:nth-child(2) {
+  animation-delay: 0.06s;
+}
+.stagger > *:nth-child(3) {
+  animation-delay: 0.12s;
+}
+.stagger > *:nth-child(4) {
+  animation-delay: 0.18s;
+}
+.stagger > *:nth-child(5) {
+  animation-delay: 0.24s;
+}
+.stagger > *:nth-child(n + 6) {
+  animation-delay: 0.3s;
+}
