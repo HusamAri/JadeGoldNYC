@@ -37,10 +37,18 @@ export interface EtsyReceipt {
 export interface EtsyListing {
   listing_id: number;
   title?: string;
+  description?: string;
   sku?: string[];
   state?: string;
   price?: EtsyMoney;
   url?: string;
+  tags?: string[];
+  materials?: string[];
+  quantity?: number;
+  has_variations?: boolean;
+  featured_rank?: number;
+  last_modified_timestamp?: number;
+  images?: { listing_image_id?: number }[];
 }
 
 export interface EtsyReview {

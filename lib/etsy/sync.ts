@@ -170,7 +170,7 @@ export async function advanceEtsySync(
       } else if (phase === "listings") {
         const page = await client.get<EtsyListResponse<EtsyListing>>(
           etsyPaths.activeListings(shopId),
-          { limit: PAGE, offset },
+          { limit: PAGE, offset, includes: "Images" },
         );
         const results = page.results ?? [];
         if (results.length > 0) {
@@ -345,6 +345,14 @@ async function upsertListingsPage(
     price_cents: etsyMoneyToCents(l.price),
     currency: l.price?.currency_code ?? "USD",
     url: l.url ?? null,
+    description: l.description ?? null,
+    tags: l.tags ?? null,
+    materials: l.materials ?? null,
+    num_images: l.images?.length ?? null,
+    quantity: l.quantity ?? null,
+    has_variations: l.has_variations ?? null,
+    featured_rank: l.featured_rank ?? null,
+    last_modified_ts: l.last_modified_timestamp ?? null,
   }));
   const { error } = await admin
     .from("products")
