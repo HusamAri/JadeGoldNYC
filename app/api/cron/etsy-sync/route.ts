@@ -1,14 +1,16 @@
 import { NextResponse } from "next/server";
 
 import { createAdminClient } from "@/lib/supabase/admin";
-import { syncSales, syncListings, syncReviews } from "@/lib/etsy/sync";
+import { advanceEtsySync } from "@/lib/etsy/sync";
 
 // Etsy senkronu birden çok sayfalı API çağrısı yapar; süre limitini uzat.
 export const maxDuration = 60;
 
 /**
  * Vercel Cron hedefi. `Authorization: Bearer ${CRON_SECRET}` ile korunur.
- * Bağlı tüm organizasyonların Etsy verisini senkronize eder.
+ * Bağlı tüm organizasyonların Etsy verisini senkronize eder. Devam ettirilebilir
+ * senkronu ~50sn bütçeyle ilerletir; tamamlanmadıysa bir sonraki cron (veya
+ * kullanıcı) kaldığı yerden sürdürür.
  */
 export async function GET(request: Request) {
   const secret = process.env.CRON_SECRET;
@@ -26,10 +28,7 @@ export async function GET(request: Request) {
   const results: Record<string, unknown> = {};
   for (const c of (conns ?? []) as { org_id: string }[]) {
     try {
-      const r = await syncSales(c.org_id);
-      await syncListings(c.org_id);
-      await syncReviews(c.org_id);
-      results[c.org_id] = r;
+      results[c.org_id] = await advanceEtsySync(c.org_id, 50_000);
     } catch (e) {
       results[c.org_id] = {
         error: e instanceof Error ? e.message : "error",
@@ -39,3 +38,4 @@ export async function GET(request: Request) {
 
   return NextResponse.json({ ok: true, results });
 }
+

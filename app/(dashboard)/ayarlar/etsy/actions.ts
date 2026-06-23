@@ -3,31 +3,50 @@
 import { revalidatePath } from "next/cache";
 
 import { requireMembership } from "@/lib/auth";
-import { syncSales, syncListings, syncReviews } from "@/lib/etsy/sync";
+import {
+  advanceEtsySync,
+  getSyncProgress,
+  type SyncProgress,
+} from "@/lib/etsy/sync";
 import { EtsyNotConnectedError } from "@/lib/etsy/client";
 
-export interface SyncResult {
-  ok?: boolean;
-  error?: string;
-  imported?: number;
-}
-
-export async function runEtsySync(): Promise<SyncResult> {
+/**
+ * Senkronu bir adım ("domino" dilimi) ilerletir. Çağıran taraf (buton döngüsü)
+ * `done` olana kadar tekrar çağırır; her çağrı zaman bütçesiyle sınırlı olduğundan
+ * 60sn fonksiyon limitini aşmaz.
+ */
+export async function advanceEtsySyncAction(): Promise<SyncProgress> {
   const m = await requireMembership();
   try {
-    const sales = await syncSales(m.org_id);
-    await syncListings(m.org_id);
-    await syncReviews(m.org_id);
-    revalidatePath("/satislar");
-    revalidatePath("/panel");
-    revalidatePath("/ayarlar/etsy");
-    return { ok: true, imported: sales.imported };
-  } catch (e) {
-    if (e instanceof EtsyNotConnectedError) {
-      return { error: "Etsy bağlantısı yok. Önce mağazanızı bağlayın." };
+    const p = await advanceEtsySync(m.org_id);
+    if (p.done && p.status === "done") {
+      revalidatePath("/satislar");
+      revalidatePath("/panel");
+      revalidatePath("/ayarlar/etsy");
     }
+    return p;
+  } catch (e) {
+    const error =
+      e instanceof EtsyNotConnectedError
+        ? "Etsy bağlantısı yok. Önce mağazanızı bağlayın."
+        : e instanceof Error
+          ? e.message
+          : "Senkronizasyon sırasında hata oluştu.";
     return {
-      error: e instanceof Error ? e.message : "Senkronizasyon sırasında hata oluştu.",
+      done: true,
+      status: "error",
+      phase: "sales",
+      sales: 0,
+      items: 0,
+      products: 0,
+      reviews: 0,
+      error,
     };
   }
+}
+
+/** Canlı akış paneli için anlık ilerleme durumu. */
+export async function etsySyncStatusAction(): Promise<SyncProgress> {
+  const m = await requireMembership();
+  return getSyncProgress(m.org_id);
 }
