@@ -18,6 +18,8 @@ const PAGE = 100;
 const DEFAULT_BUDGET_MS = 40_000;
 // Ham ledger için tarih penceresi alt sınırı (2015-01-01). Etsy min/max_created ister.
 const LEDGER_MIN_CREATED = 1420070400;
+// Etsy ledger min_created↔max_created arası en fazla 31 gün; 30 günle pencerele.
+const LEDGER_WINDOW_S = 2_592_000;
 
 export interface SyncProgress {
   done: boolean;
@@ -40,6 +42,7 @@ interface CursorRow {
   sync_products: number | null;
   sync_reviews: number | null;
   sync_ledger: number | null;
+  sync_ledger_until: number | null;
   last_sync_at: string | null;
 }
 
@@ -65,7 +68,7 @@ export async function advanceEtsySync(
   const { data } = await admin
     .from("etsy_connection")
     .select(
-      "sync_status, sync_phase, sync_offset, sync_sales, sync_items, sync_products, sync_reviews, sync_ledger, last_sync_at",
+      "sync_status, sync_phase, sync_offset, sync_sales, sync_items, sync_products, sync_reviews, sync_ledger, sync_ledger_until, last_sync_at",
     )
     .eq("org_id", orgId)
     .maybeSingle();
@@ -88,6 +91,11 @@ export async function advanceEtsySync(
     reviews: resuming ? (cur!.sync_reviews ?? 0) : 0,
     ledger: resuming ? (cur!.sync_ledger ?? 0) : 0,
   };
+  // Ledger fazı 30 günlük pencerelerle geriye işler; işlenen pencerenin üst
+  // sınırı (max_created) imleçte tutulur. Yeni turda sıfırlanır (null → now).
+  let ledgerUntil: number | null = resuming
+    ? (cur!.sync_ledger_until ?? null)
+    : null;
 
   // Sales fazı: ilk tam tarama (last_sync_at yok) tüm geçmişi; sonraki turlar
   // artımlı (last_sync_at'ten beri, 1 saat örtüşmeli). Tur boyunca last_sync_at
@@ -108,6 +116,7 @@ export async function advanceEtsySync(
         sync_products: 0,
         sync_reviews: 0,
         sync_ledger: 0,
+        sync_ledger_until: null,
         sync_error: null,
         sync_started_at: new Date().toISOString(),
         sync_updated_at: new Date().toISOString(),
@@ -194,26 +203,40 @@ export async function advanceEtsySync(
         await persist();
       } else {
         // ledger — ham ücret/komisyon/reklam kayıtları (Adım 1: yalnız topla).
-        const page = await client.get<EtsyListResponse<EtsyLedgerEntry>>(
-          etsyPaths.ledgerEntries(shopId),
-          {
-            limit: PAGE,
-            offset,
-            min_created: LEDGER_MIN_CREATED,
-            max_created: Math.floor(Date.now() / 1000),
-          },
-        );
-        const results = page.results ?? [];
-        if (results.length > 0) {
-          await upsertLedgerPage(admin, orgId, results);
-          counts.ledger += results.length;
-        }
-        if (results.length < PAGE) {
+        // Etsy 31 gün sınırı: 30 günlük pencerelerle geriye doğru tara.
+        if (ledgerUntil == null) ledgerUntil = Math.floor(Date.now() / 1000);
+        if (ledgerUntil <= LEDGER_MIN_CREATED) {
           phase = "done";
+          await persist({ sync_ledger_until: ledgerUntil });
         } else {
-          offset += PAGE;
+          const minCreatedWin = Math.max(
+            ledgerUntil - LEDGER_WINDOW_S,
+            LEDGER_MIN_CREATED,
+          );
+          const page = await client.get<EtsyListResponse<EtsyLedgerEntry>>(
+            etsyPaths.ledgerEntries(shopId),
+            {
+              limit: PAGE,
+              offset,
+              min_created: minCreatedWin,
+              max_created: ledgerUntil,
+            },
+          );
+          const results = page.results ?? [];
+          if (results.length > 0) {
+            await upsertLedgerPage(admin, orgId, results);
+            counts.ledger += results.length;
+          }
+          if (results.length < PAGE) {
+            // Bu pencere bitti → daha eski pencereye geç.
+            ledgerUntil = minCreatedWin;
+            offset = 0;
+            if (ledgerUntil <= LEDGER_MIN_CREATED) phase = "done";
+          } else {
+            offset += PAGE;
+          }
+          await persist({ sync_ledger_until: ledgerUntil });
         }
-        await persist();
       }
     }
 
