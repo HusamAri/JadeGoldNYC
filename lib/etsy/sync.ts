@@ -169,8 +169,8 @@ export async function advanceEtsySync(
         }
       } else if (phase === "listings") {
         const page = await client.get<EtsyListResponse<EtsyListing>>(
-          etsyPaths.activeListings(shopId),
-          { limit: PAGE, offset, includes: "Images" },
+          etsyPaths.shopListings(shopId),
+          { limit: PAGE, offset, state: "active", includes: "Images" },
         );
         const results = page.results ?? [];
         if (results.length > 0) {
