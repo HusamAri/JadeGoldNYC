@@ -42,7 +42,7 @@ export default function LoginPage() {
         className="hidden lg:block"
       >
         <div className="relative flex h-full flex-col justify-between p-10 text-white">
-          <div className="flex items-center gap-2.5">
+          <div className="flex w-max items-center gap-3 rounded-2xl bg-black/25 px-3 py-2 ring-1 ring-white/15 backdrop-blur-sm">
             <Logo />
             <span className="font-semibold tracking-wide">
               JADE GOLD · NEW YORK
