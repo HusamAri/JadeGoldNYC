@@ -38,6 +38,23 @@ export interface ShipStationShipment {
   customerEmail?: string;
 }
 
+export interface ShipStationProduct {
+  productId: number;
+  sku?: string;
+  name?: string;
+  price?: number;
+  defaultCost?: number;
+  weightOz?: number;
+  active?: boolean;
+}
+
+export interface ShipStationCarrier {
+  name?: string;
+  code: string;
+  accountNumber?: string;
+  balance?: number;
+}
+
 /** Dolar (ondalık) → cent. */
 export function dollarsToCents(v?: number | null): number | null {
   if (v == null) return null;

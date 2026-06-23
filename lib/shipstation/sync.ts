@@ -8,19 +8,29 @@ import {
 import { shipStationPaths } from "@/lib/shipstation/endpoints";
 import {
   dollarsToCents,
+  type ShipStationCarrier,
   type ShipStationListResponse,
   type ShipStationOrder,
+  type ShipStationProduct,
   type ShipStationShipment,
 } from "@/lib/shipstation/types";
 
 const PAGE_SIZE = 500;
 const DEFAULT_BUDGET_MS = 40_000;
 
+type ShipStationPhase =
+  | "orders"
+  | "products"
+  | "carriers"
+  | "shipments"
+  | "done";
+
 export interface ShipStationProgress {
   done: boolean;
   status: "running" | "done" | "error" | "paused";
-  phase: "orders" | "shipments" | "done";
+  phase: ShipStationPhase;
   orders: number;
+  products: number;
   shipments: number;
   error?: string;
 }
@@ -30,6 +40,7 @@ interface StateRow {
   sync_phase: string | null;
   sync_page: number | null;
   sync_orders: number | null;
+  sync_products: number | null;
   sync_shipments: number | null;
 }
 
@@ -49,7 +60,9 @@ export async function advanceShipStationSync(
 
   const { data } = await admin
     .from("shipstation_connection")
-    .select("sync_status, sync_phase, sync_page, sync_orders, sync_shipments")
+    .select(
+      "sync_status, sync_phase, sync_page, sync_orders, sync_products, sync_shipments",
+    )
     .eq("org_id", orgId)
     .maybeSingle();
   const cur = data as StateRow | null;
@@ -59,12 +72,13 @@ export async function advanceShipStationSync(
     cur.sync_phase != null &&
     cur.sync_phase !== "done";
 
-  let phase: ShipStationProgress["phase"] = resuming
-    ? (cur!.sync_phase as ShipStationProgress["phase"])
+  let phase: ShipStationPhase = resuming
+    ? (cur!.sync_phase as ShipStationPhase)
     : "orders";
   let page = resuming ? (cur!.sync_page ?? 1) : 1;
   const counts = {
     orders: resuming ? (cur!.sync_orders ?? 0) : 0,
+    products: resuming ? (cur!.sync_products ?? 0) : 0,
     shipments: resuming ? (cur!.sync_shipments ?? 0) : 0,
   };
 
@@ -80,6 +94,7 @@ export async function advanceShipStationSync(
         sync_phase: phase,
         sync_page: page,
         sync_orders: counts.orders,
+        sync_products: counts.products,
         sync_shipments: counts.shipments,
         ...extra,
       },
@@ -94,6 +109,7 @@ export async function advanceShipStationSync(
         sync_phase: "orders",
         sync_page: 1,
         sync_orders: 0,
+        sync_products: 0,
         sync_shipments: 0,
         sync_error: null,
         sync_started_at: new Date().toISOString(),
@@ -122,11 +138,45 @@ export async function advanceShipStationSync(
         }
         const pages = res.pages ?? 1;
         if (page >= pages || orders.length === 0) {
-          phase = "shipments";
+          phase = "products";
           page = 1;
         } else {
           page += 1;
         }
+        await persist();
+      } else if (phase === "products") {
+        const res = await client.get<
+          ShipStationListResponse<ShipStationProduct>
+        >(
+          shipStationPaths.products,
+          { page, pageSize: PAGE_SIZE },
+          deadline,
+        );
+        const products = (res as { products?: ShipStationProduct[] }).products ?? [];
+        if (products.length > 0) {
+          await upsertProducts(admin, orgId, products);
+          counts.products += products.length;
+        }
+        const pages = res.pages ?? 1;
+        if (page >= pages || products.length === 0) {
+          phase = "carriers";
+          page = 1;
+        } else {
+          page += 1;
+        }
+        await persist();
+      } else if (phase === "carriers") {
+        // /carriers sayfasız bir dizi döner; tek çağrı.
+        const carriers = await client.get<ShipStationCarrier[]>(
+          shipStationPaths.carriers,
+          undefined,
+          deadline,
+        );
+        if (Array.isArray(carriers) && carriers.length > 0) {
+          await upsertCarriers(admin, orgId, carriers);
+        }
+        phase = "shipments";
+        page = 1;
         await persist();
       } else {
         const res = await client.get<
@@ -151,11 +201,18 @@ export async function advanceShipStationSync(
       }
     }
 
-    // Gönderi maliyetlerini Maliyetler/Kargo'ya yansıt (idempotent, non-fatal).
-    try {
-      await admin.rpc("rebuild_shipstation_costs", { p_org_id: orgId });
-    } catch {
-      // yok say
+    // Türetilmiş veriler (idempotent, non-fatal): kalemler + müşteriler ham
+    // siparişlerden, postaj maliyeti gönderilerden.
+    for (const fn of [
+      "rebuild_shipstation_order_items",
+      "rebuild_shipstation_customers",
+      "rebuild_shipstation_costs",
+    ]) {
+      try {
+        await admin.rpc(fn, { p_org_id: orgId });
+      } catch {
+        // yok say
+      }
     }
     await persist({ sync_status: "done", last_sync_at: new Date().toISOString() });
     return { done: true, status: "done", phase: "done", ...counts };
@@ -224,13 +281,60 @@ async function upsertShipments(
   if (error) throw new Error(`shipstation_shipments upsert: ${error.message}`);
 }
 
+async function upsertProducts(
+  admin: SupabaseClient,
+  orgId: string,
+  products: ShipStationProduct[],
+): Promise<void> {
+  const rows = products.map((p) => ({
+    org_id: orgId,
+    product_id: p.productId,
+    sku: p.sku ?? null,
+    name: p.name ?? null,
+    price_cents: dollarsToCents(p.price),
+    default_cost_cents: dollarsToCents(p.defaultCost),
+    weight_oz: p.weightOz ?? null,
+    active: p.active ?? null,
+    raw: p,
+  }));
+  const { error } = await admin
+    .from("shipstation_products")
+    .upsert(rows, { onConflict: "product_id" });
+  if (error) throw new Error(`shipstation_products upsert: ${error.message}`);
+}
+
+async function upsertCarriers(
+  admin: SupabaseClient,
+  orgId: string,
+  carriers: ShipStationCarrier[],
+): Promise<void> {
+  const rows = carriers
+    .filter((c) => c.code)
+    .map((c) => ({
+      org_id: orgId,
+      code: c.code,
+      name: c.name ?? null,
+      account_number: c.accountNumber ?? null,
+      balance_cents: dollarsToCents(c.balance),
+      raw: c,
+      updated_at: new Date().toISOString(),
+    }));
+  if (rows.length === 0) return;
+  const { error } = await admin
+    .from("shipstation_carriers")
+    .upsert(rows, { onConflict: "org_id,code" });
+  if (error) throw new Error(`shipstation_carriers upsert: ${error.message}`);
+}
+
 export async function getShipStationProgress(
   orgId: string,
 ): Promise<ShipStationProgress> {
   const admin = createAdminClient();
   const { data } = await admin
     .from("shipstation_connection")
-    .select("sync_status, sync_phase, sync_orders, sync_shipments, sync_error")
+    .select(
+      "sync_status, sync_phase, sync_orders, sync_products, sync_shipments, sync_error",
+    )
     .eq("org_id", orgId)
     .maybeSingle();
   const c = data as (StateRow & { sync_error: string | null }) | null;
@@ -240,8 +344,9 @@ export async function getShipStationProgress(
   return {
     done: status === "done" || status === "error" || status === "idle",
     status: status === "idle" ? "done" : status,
-    phase: (c?.sync_phase ?? "done") as ShipStationProgress["phase"],
+    phase: (c?.sync_phase ?? "done") as ShipStationPhase,
     orders: c?.sync_orders ?? 0,
+    products: c?.sync_products ?? 0,
     shipments: c?.sync_shipments ?? 0,
     error: c?.sync_error ?? undefined,
   };

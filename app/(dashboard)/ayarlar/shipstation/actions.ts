@@ -33,6 +33,7 @@ export async function advanceShipStationSyncAction(): Promise<ShipStationProgres
       status: "error",
       phase: "orders",
       orders: 0,
+      products: 0,
       shipments: 0,
       error,
     };
