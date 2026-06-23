@@ -29,13 +29,21 @@ interface ConnectionRow {
 export class EtsyClient {
   private constructor(
     private readonly apiKey: string,
+    private readonly apiSecret: string | undefined,
     private conn: ConnectionRow,
     private readonly admin: SupabaseClient,
   ) {}
 
+  // Etsy v3 API çağrıları x-api-key'de "keystring:shared_secret" bekler
+  // (OAuth client_id ise yalnız keystring'tir).
+  private get xApiKey(): string {
+    return this.apiSecret ? `${this.apiKey}:${this.apiSecret}` : this.apiKey;
+  }
+
   static async forOrg(orgId: string): Promise<EtsyClient> {
     const apiKey = process.env.ETSY_API_KEY;
     if (!apiKey) throw new Error("ETSY_API_KEY tanımlı değil.");
+    const apiSecret = process.env.ETSY_API_SECRET;
     const admin = createAdminClient();
     const { data } = await admin
       .from("etsy_connection")
@@ -45,7 +53,7 @@ export class EtsyClient {
       .eq("org_id", orgId)
       .maybeSingle();
     if (!data) throw new EtsyNotConnectedError();
-    return new EtsyClient(apiKey, data as ConnectionRow, admin);
+    return new EtsyClient(apiKey, apiSecret, data as ConnectionRow, admin);
   }
 
   get shopId(): number | null {
@@ -125,7 +133,7 @@ export class EtsyClient {
     }
     const res = await fetch(url, {
       headers: {
-        "x-api-key": this.apiKey,
+        "x-api-key": this.xApiKey,
         Authorization: `Bearer ${token}`,
       },
     });
