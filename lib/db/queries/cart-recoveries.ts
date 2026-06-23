@@ -1,6 +1,55 @@
 import { createClient } from "@/lib/supabase/server";
 import type { CartRecovery } from "@/lib/types";
 
+/** Müşteri Geri Kazanım — senkronlanan sipariş geçmişinden türetilen veriler. */
+export interface WinbackCandidate {
+  buyer_key: string;
+  buyer_name: string | null;
+  buyer_email: string | null;
+  order_count: number;
+  total_spent_cents: number;
+  last_order_date: string;
+  days_since: number;
+}
+
+export interface WinbackSummary {
+  total_customers: number;
+  repeat_customers: number;
+  lapsed_customers: number;
+  lapsed_value_cents: number;
+}
+
+/** Uzun süredir sipariş vermemiş müşteriler (harcamaya göre, en değerli üstte). */
+export async function getWinbackCandidates(
+  lapseDays = 90,
+  limit = 100,
+): Promise<WinbackCandidate[]> {
+  const supabase = await createClient();
+  const { data } = await supabase.rpc("winback_candidates", {
+    p_lapse_days: lapseDays,
+    p_limit: limit,
+  });
+  return (data ?? []) as WinbackCandidate[];
+}
+
+export async function getWinbackSummary(
+  lapseDays = 90,
+): Promise<WinbackSummary> {
+  const supabase = await createClient();
+  const { data } = await supabase.rpc("winback_summary", {
+    p_lapse_days: lapseDays,
+  });
+  const row = (data ?? [])[0] as WinbackSummary | undefined;
+  return (
+    row ?? {
+      total_customers: 0,
+      repeat_customers: 0,
+      lapsed_customers: 0,
+      lapsed_value_cents: 0,
+    }
+  );
+}
+
 export interface CartSummary {
   total: number;
   totalValueCents: number;

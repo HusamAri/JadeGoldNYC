@@ -54,7 +54,7 @@ export function CartRecoveryForm({
         toast.error(res.error);
         return;
       }
-      toast.success(mode === "create" ? "Sepet eklendi" : "Güncellendi");
+      toast.success(mode === "create" ? "Kayıt eklendi" : "Güncellendi");
       router.push("/sepet-kurtarma");
       router.refresh();
     });
@@ -73,15 +73,15 @@ export function CartRecoveryForm({
             <Input id="buyer_email" {...register("buyer_email")} />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="cart_value">Sepet Değeri</Label>
+            <Label htmlFor="cart_value">Değer (USD)</Label>
             <Input id="cart_value" inputMode="decimal" {...register("cart_value")} />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="abandoned_at">Terk Tarihi</Label>
+            <Label htmlFor="abandoned_at">Tarih</Label>
             <Input id="abandoned_at" type="date" {...register("abandoned_at")} />
           </div>
           <div className="space-y-2 sm:col-span-2">
-            <Label htmlFor="item_summary">Ürünler (özet)</Label>
+            <Label htmlFor="item_summary">Ürünler / Not (özet)</Label>
             <Input id="item_summary" {...register("item_summary")} />
           </div>
         </CardContent>
