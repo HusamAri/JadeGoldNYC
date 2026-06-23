@@ -19,8 +19,7 @@ const PAGE = 100;
  */
 export async function syncSales(orgId: string): Promise<{ imported: number }> {
   const client = await EtsyClient.forOrg(orgId);
-  const shopId = client.shopId;
-  if (!shopId) throw new Error("Etsy shop_id yok — önce bağlantıyı tamamlayın.");
+  const shopId = await client.requireShopId();
   const admin = createAdminClient();
 
   let offset = 0;
@@ -118,8 +117,7 @@ export async function syncSales(orgId: string): Promise<{ imported: number }> {
 /** Aktif Etsy listelerini products tablosuna senkronize eder. */
 export async function syncListings(orgId: string): Promise<{ imported: number }> {
   const client = await EtsyClient.forOrg(orgId);
-  const shopId = client.shopId;
-  if (!shopId) throw new Error("Etsy shop_id yok.");
+  const shopId = await client.requireShopId();
   const admin = createAdminClient();
 
   let offset = 0;
@@ -156,8 +154,7 @@ export async function syncListings(orgId: string): Promise<{ imported: number }>
 /** Mağaza yorumlarını reviews tablosuna senkronize eder. */
 export async function syncReviews(orgId: string): Promise<{ imported: number }> {
   const client = await EtsyClient.forOrg(orgId);
-  const shopId = client.shopId;
-  if (!shopId) throw new Error("Etsy shop_id yok.");
+  const shopId = await client.requireShopId();
   const admin = createAdminClient();
 
   let offset = 0;
