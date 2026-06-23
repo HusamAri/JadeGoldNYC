@@ -240,6 +240,14 @@ export async function advanceEtsySync(
       }
     }
 
+    // Ledger bitti → Etsy ücret/komisyon/reklamı costs'a yansıt (idempotent).
+    // Hata senkronu bozmasın (siparişler zaten yazıldı).
+    try {
+      await admin.rpc("rebuild_etsy_ledger_costs", { p_org_id: orgId });
+    } catch {
+      // yok say
+    }
+
     await persist({ sync_status: "done" });
     await logAudit(admin, {
       orgId,
