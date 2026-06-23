@@ -21,7 +21,8 @@ export async function GET(request: Request) {
   const redirectUri =
     process.env.ETSY_OAUTH_REDIRECT_URI || `${origin}/api/etsy/callback`;
   const scopes =
-    process.env.ETSY_SCOPES || "transactions_r listings_r email_r feedback_r";
+    process.env.ETSY_SCOPES ||
+    "shops_r transactions_r listings_r email_r feedback_r";
 
   const { verifier, challenge } = await generatePkce();
   const state = generateState();
