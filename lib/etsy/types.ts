@@ -53,6 +53,21 @@ export interface EtsyReview {
   created_timestamp?: number;
 }
 
+export interface EtsyLedgerEntry {
+  entry_id: number;
+  ledger_id?: number;
+  // Ücret türü ipuçları (Etsy değerleri belgesiz; ham saklanır, sonra eşlenir).
+  ledger_type?: string;
+  reference_type?: string;
+  reference_id?: string | number | null;
+  description?: string;
+  amount?: number; // tam sayı, minor unit (cent)
+  currency?: string;
+  balance?: number;
+  create_date?: number;
+  created_timestamp?: number;
+}
+
 export interface EtsyShop {
   shop_id: number;
   shop_name?: string;

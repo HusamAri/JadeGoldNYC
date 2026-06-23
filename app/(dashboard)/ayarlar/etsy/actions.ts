@@ -40,6 +40,7 @@ export async function advanceEtsySyncAction(): Promise<SyncProgress> {
       items: 0,
       products: 0,
       reviews: 0,
+      ledger: 0,
       error,
     };
   }

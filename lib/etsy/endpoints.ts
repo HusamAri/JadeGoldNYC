@@ -13,4 +13,6 @@ export const etsyPaths = {
   activeListings: (shopId: number | string) =>
     `/shops/${shopId}/listings/active`,
   reviews: (shopId: number | string) => `/shops/${shopId}/reviews`,
+  ledgerEntries: (shopId: number | string) =>
+    `/shops/${shopId}/payment-account/ledger-entries`,
 };
