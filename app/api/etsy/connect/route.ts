@@ -20,9 +20,21 @@ export async function GET(request: Request) {
 
   const redirectUri =
     process.env.ETSY_OAUTH_REDIRECT_URI || `${origin}/api/etsy/callback`;
-  const scopes =
-    process.env.ETSY_SCOPES ||
-    "shops_r transactions_r listings_r email_r feedback_r";
+  // Uygulamanın çalışması için zorunlu kapsamlar. ETSY_SCOPES env'i eksik/yanlış
+  // tanımlı olsa bile bunları garanti et (union) — özellikle shop_id için shops_r.
+  const REQUIRED_SCOPES = [
+    "shops_r",
+    "transactions_r",
+    "listings_r",
+    "email_r",
+    "feedback_r",
+  ];
+  const scopes = Array.from(
+    new Set([
+      ...(process.env.ETSY_SCOPES ?? "").split(/\s+/).filter(Boolean),
+      ...REQUIRED_SCOPES,
+    ]),
+  ).join(" ");
 
   const { verifier, challenge } = await generatePkce();
   const state = generateState();
