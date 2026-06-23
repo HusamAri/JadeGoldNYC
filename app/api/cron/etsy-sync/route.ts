@@ -3,6 +3,9 @@ import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { syncSales, syncListings, syncReviews } from "@/lib/etsy/sync";
 
+// Etsy senkronu birden çok sayfalı API çağrısı yapar; süre limitini uzat.
+export const maxDuration = 60;
+
 /**
  * Vercel Cron hedefi. `Authorization: Bearer ${CRON_SECRET}` ile korunur.
  * Bağlı tüm organizasyonların Etsy verisini senkronize eder.

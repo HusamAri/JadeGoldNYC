@@ -22,13 +22,28 @@ export async function syncSales(orgId: string): Promise<{ imported: number }> {
   const shopId = await client.requireShopId();
   const admin = createAdminClient();
 
+  // Artımlı senkron: yalnızca son senkrondan beri oluşan siparişleri çek.
+  // 1 saatlik örtüşme payı + idempotent upsert ile sınır kayıpları önlenir.
+  const { data: conn } = await admin
+    .from("etsy_connection")
+    .select("last_sync_at")
+    .eq("org_id", orgId)
+    .maybeSingle();
+  const lastSyncAt = (conn as { last_sync_at: string | null } | null)
+    ?.last_sync_at;
+  const minCreated = lastSyncAt
+    ? Math.floor(new Date(lastSyncAt).getTime() / 1000) - 3600
+    : undefined;
+
   let offset = 0;
   let imported = 0;
 
   for (;;) {
+    // includes=Transactions: kalemleri sipariş yanıtına gömerek sipariş başına
+    // ayrı istek (N+1) yapmaktan kaçın; süre/oran limiti yükü dramatik düşer.
     const data = await client.get<EtsyListResponse<EtsyReceipt>>(
       etsyPaths.receipts(shopId),
-      { limit: PAGE, offset },
+      { limit: PAGE, offset, includes: "Transactions", min_created: minCreated },
     );
     const results = data.results ?? [];
 
@@ -65,13 +80,18 @@ export async function syncSales(orgId: string): Promise<{ imported: number }> {
 
       imported++;
 
-      // Kalemler (transactions) — varsa upsert et.
+      // Kalemler (transactions) — varsa upsert et. Önce gömülü (includes ile
+      // gelen) transactions'ı kullan; yoksa sipariş başına tek istekle çek.
       const saleId = (upserted as { id: string } | null)?.id;
       if (saleId) {
-        const tx = await client.get<EtsyListResponse<EtsyTransaction>>(
-          etsyPaths.receiptTransactions(shopId, r.receipt_id),
-        );
-        const items = tx.results ?? [];
+        const items =
+          r.transactions ??
+          (
+            await client.get<EtsyListResponse<EtsyTransaction>>(
+              etsyPaths.receiptTransactions(shopId, r.receipt_id),
+            )
+          ).results ??
+          [];
         for (const t of items) {
           await admin.from("sale_items").upsert(
             {

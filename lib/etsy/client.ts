@@ -29,21 +29,25 @@ interface ConnectionRow {
 export class EtsyClient {
   private constructor(
     private readonly apiKey: string,
-    private readonly apiSecret: string | undefined,
+    private readonly apiSecret: string,
     private conn: ConnectionRow,
     private readonly admin: SupabaseClient,
   ) {}
 
-  // Etsy v3 API çağrıları x-api-key'de "keystring:shared_secret" bekler
-  // (OAuth client_id ise yalnız keystring'tir).
+  // Etsy v3 API çağrıları x-api-key'de "keystring:shared_secret" bekler.
+  // apiSecret forOrg()'ta zorunlu kılınır; yalnız keystring'e düşmeyiz
+  // (Etsy bunu 403 ile reddeder), bunun yerine net bir config hatası veririz.
   private get xApiKey(): string {
-    return this.apiSecret ? `${this.apiKey}:${this.apiSecret}` : this.apiKey;
+    return `${this.apiKey}:${this.apiSecret}`;
   }
 
   static async forOrg(orgId: string): Promise<EtsyClient> {
     const apiKey = process.env.ETSY_API_KEY;
     if (!apiKey) throw new Error("ETSY_API_KEY tanımlı değil.");
     const apiSecret = process.env.ETSY_API_SECRET;
+    // Etsy v3 her API çağrısında shared secret ister; eksikse sessizce
+    // keystring'e düşmek yerine erken ve anlaşılır hata ver.
+    if (!apiSecret) throw new Error("ETSY_API_SECRET tanımlı değil.");
     const admin = createAdminClient();
     const { data } = await admin
       .from("etsy_connection")

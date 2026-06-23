@@ -14,7 +14,9 @@ export async function GET(request: Request) {
   if (!m) return NextResponse.redirect(`${origin}/login`);
 
   const clientId = process.env.ETSY_API_KEY;
-  if (!clientId) {
+  // Etsy v3 API çağrıları keystring + shared secret ister. Secret yoksa bağlantı
+  // baştan kurulamaz (API 403); OAuth akışını başlatmadan config hatası ver.
+  if (!clientId || !process.env.ETSY_API_SECRET) {
     return NextResponse.redirect(`${origin}/ayarlar/etsy?error=config`);
   }
 
