@@ -17,11 +17,19 @@ import {
 
 export const metadata = { title: "Etsy Entegrasyonu" };
 
+// Senkronizasyon server action'ı bu rota üzerinden çalışır; Etsy API'leri
+// (N+1 olmadan bile) zaman alabildiğinden fonksiyon süresini uzat.
+export const maxDuration = 60;
+
 export default async function EtsyAyarlarPage() {
   const m = await requireMembership();
   const status = await getEtsyStatus(m.org_id);
   const connected = status.status === "connected";
-  const configured = Boolean(process.env.ETSY_API_KEY);
+  // Etsy v3 her API çağrısında keystring + shared secret ister; ikisi de yoksa
+  // "yapılandırılmış" sayma (yoksa Bağlan butonu config hatasına çarpıp döner).
+  const configured = Boolean(
+    process.env.ETSY_API_KEY && process.env.ETSY_API_SECRET,
+  );
 
   return (
     <div className="max-w-2xl">
@@ -62,14 +70,27 @@ export default async function EtsyAyarlarPage() {
             </dl>
 
             <div className="flex flex-wrap gap-2">
-              <Button asChild variant={connected ? "outline" : "default"}>
-                <a href="/api/etsy/connect">
+              {configured ? (
+                <Button asChild variant={connected ? "outline" : "default"}>
+                  <a href="/api/etsy/connect">
+                    <ExternalLink className="size-4" />
+                    {connected ? "Yeniden Bağlan" : "Etsy'ye Bağlan"}
+                  </a>
+                </Button>
+              ) : (
+                <Button disabled variant="default">
                   <ExternalLink className="size-4" />
-                  {connected ? "Yeniden Bağlan" : "Etsy'ye Bağlan"}
-                </a>
-              </Button>
+                  {"Etsy'ye Bağlan"}
+                </Button>
+              )}
               <EtsySyncButton disabled={!connected} />
             </div>
+            {!configured && (
+              <p className="text-destructive text-sm">
+                Bağlanmadan önce <code>ETSY_API_KEY</code> ve{" "}
+                <code>ETSY_API_SECRET</code> ortam değişkenlerini tanımlayın.
+              </p>
+            )}
           </CardContent>
         </Card>
 
@@ -87,8 +108,8 @@ export default async function EtsyAyarlarPage() {
           <CardContent className="text-muted-foreground space-y-2 text-sm">
             <p>
               {configured
-                ? "Etsy API anahtarı yapılandırılmış."
-                : "Etsy API anahtarı (ETSY_API_KEY) henüz tanımlı değil. Bağlantı için ortam değişkenlerini doldurun."}
+                ? "Etsy API anahtarı ve shared secret yapılandırılmış."
+                : "Etsy API anahtarı (ETSY_API_KEY) ve/veya shared secret (ETSY_API_SECRET) henüz tanımlı değil. Bağlantı için ortam değişkenlerini doldurun."}
             </p>
             <p>
               developers.etsy.com&apos;da uygulama kaydı açın;{" "}
