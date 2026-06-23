@@ -46,9 +46,11 @@ export async function GET(request: Request) {
     // shop_id'yi /users/me'den çekmeyi dene (best-effort).
     let shopId: number | null = null;
     try {
+      const apiSecret = process.env.ETSY_API_SECRET;
       const meRes = await fetch(`${ETSY_API_BASE}/users/me`, {
         headers: {
-          "x-api-key": clientId,
+          // Etsy v3 API: x-api-key = keystring:shared_secret
+          "x-api-key": apiSecret ? `${clientId}:${apiSecret}` : clientId,
           Authorization: `Bearer ${tok.access_token}`,
         },
       });
