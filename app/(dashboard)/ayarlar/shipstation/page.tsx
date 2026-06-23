@@ -1,4 +1,12 @@
-import { CheckCircle2, XCircle, Package, Truck } from "lucide-react";
+import {
+  CheckCircle2,
+  XCircle,
+  Package,
+  Truck,
+  Boxes,
+  ShoppingBag,
+  Users,
+} from "lucide-react";
 
 import { requireMembership } from "@/lib/auth";
 import { getShipStationStatus } from "@/lib/db/queries/shipstation";
@@ -78,7 +86,7 @@ export default async function ShipStationAyarlarPage() {
         </Card>
 
         {hasData && (
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
             <KpiCard
               label="Sipariş"
               value={formatNumber(status.orders)}
@@ -88,6 +96,21 @@ export default async function ShipStationAyarlarPage() {
               label="Gönderi"
               value={formatNumber(status.shipments)}
               icon={Truck}
+            />
+            <KpiCard
+              label="Ürün"
+              value={formatNumber(status.products)}
+              icon={Boxes}
+            />
+            <KpiCard
+              label="Kalem (satılan)"
+              value={formatNumber(status.items)}
+              icon={ShoppingBag}
+            />
+            <KpiCard
+              label="Müşteri"
+              value={formatNumber(status.customers)}
+              icon={Users}
             />
           </div>
         )}

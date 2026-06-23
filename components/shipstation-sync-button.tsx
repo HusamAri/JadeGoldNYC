@@ -16,6 +16,8 @@ import { formatNumber } from "@/lib/format";
 
 const PHASE_LABELS: Record<string, string> = {
   orders: "Siparişler",
+  products: "Ürünler",
+  carriers: "Kargo firmaları",
   shipments: "Gönderiler",
   done: "Tamamlandı",
 };
@@ -96,6 +98,12 @@ export function ShipStationSyncButton({ disabled }: { disabled?: boolean }) {
           <span>
             Sipariş{" "}
             <span className="text-foreground">{formatNumber(progress!.orders)}</span>
+          </span>
+          <span>
+            Ürün{" "}
+            <span className="text-foreground">
+              {formatNumber(progress!.products)}
+            </span>
           </span>
           <span>
             Gönderi{" "}

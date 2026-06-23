@@ -183,9 +183,12 @@ export async function advanceEtsySync(
           { limit: PAGE, offset, state: "active", includes: "Images" },
         );
         const results = page.results ?? [];
-        if (results.length > 0) {
-          await upsertListingsPage(admin, orgId, results);
-          counts.products += results.length;
+        // getListingsByShop?state=active geçici "edit" satırlarını da dönebiliyor;
+        // yalnız gerçekten aktif olanları yaz/say. Sayfalama ham uzunlukla.
+        const active = results.filter((l) => l.state === "active");
+        if (active.length > 0) {
+          await upsertListingsPage(admin, orgId, active);
+          counts.products += active.length;
         }
         if (results.length < PAGE) {
           phase = "reviews";
