@@ -12,11 +12,13 @@ export function Sidebar() {
 
   return (
     <aside className="bg-sidebar text-sidebar-foreground hidden w-64 shrink-0 flex-col md:flex">
-      <div className="flex h-16 items-center gap-2.5 px-5">
+      <div className="flex h-16 items-center gap-3 px-5">
         <Logo />
         <div className="flex flex-col leading-tight">
           <span className="text-sm font-semibold tracking-tight">Jade Gold NYC</span>
-          <span className="text-muted-foreground text-xs">Yönetim Paneli</span>
+          <span className="text-muted-foreground text-[0.7rem] tracking-wide">
+            Yönetim Paneli
+          </span>
         </div>
       </div>
       <nav className="flex-1 space-y-1.5 overflow-y-auto p-4">
