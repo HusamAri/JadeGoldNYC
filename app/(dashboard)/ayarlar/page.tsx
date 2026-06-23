@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Store, Plug, UserRound, ChevronRight } from "lucide-react";
+import { Store, Plug, Truck, UserRound, ChevronRight } from "lucide-react";
 
 import { requireMembership, getUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
@@ -29,6 +29,9 @@ export default async function AyarlarPage() {
     .maybeSingle();
   const status = await getEtsyStatus(m.org_id);
   const profile = user ? await getProfile(supabase, user.id) : null;
+  const shipStationConfigured = Boolean(
+    process.env.SHIPSTATION_API_KEY && process.env.SHIPSTATION_API_SECRET,
+  );
 
   return (
     <div className="max-w-2xl">
@@ -82,6 +85,30 @@ export default async function AyarlarPage() {
               </CardTitle>
               <CardDescription>
                 Mağaza bağlantısı, sipariş ve ürün senkronizasyonu
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </Link>
+
+        <Link href="/ayarlar/shipstation" className="block">
+          <Card className="hover:border-primary/40 transition-colors">
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between text-base">
+                <span className="flex items-center gap-2">
+                  <Truck className="size-4" />
+                  ShipStation Entegrasyonu
+                </span>
+                <span className="flex items-center gap-2">
+                  {shipStationConfigured ? (
+                    <Badge variant="success">Yapılandırıldı</Badge>
+                  ) : (
+                    <Badge variant="secondary">Yapılandırılmadı</Badge>
+                  )}
+                  <ChevronRight className="text-muted-foreground size-4" />
+                </span>
+              </CardTitle>
+              <CardDescription>
+                Sipariş, gönderi maliyeti (postaj) ve takip senkronizasyonu
               </CardDescription>
             </CardHeader>
           </Card>
