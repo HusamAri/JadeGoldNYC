@@ -43,6 +43,7 @@ export async function advanceShipStationSync(
   budgetMs = DEFAULT_BUDGET_MS,
 ): Promise<ShipStationProgress> {
   const startedAt = Date.now();
+  const deadline = startedAt + budgetMs;
   const client = ShipStationClient.fromEnv();
   const admin = createAdminClient();
 
@@ -112,6 +113,7 @@ export async function advanceShipStationSync(
         const res = await client.get<ShipStationListResponse<ShipStationOrder>>(
           shipStationPaths.orders,
           { page, pageSize: PAGE_SIZE, sortBy: "OrderDate", sortDir: "ASC" },
+          deadline,
         );
         const orders = res.orders ?? [];
         if (orders.length > 0) {
@@ -129,12 +131,11 @@ export async function advanceShipStationSync(
       } else {
         const res = await client.get<
           ShipStationListResponse<ShipStationShipment>
-        >(shipStationPaths.shipments, {
-          page,
-          pageSize: PAGE_SIZE,
-          sortBy: "ShipDate",
-          sortDir: "ASC",
-        });
+        >(
+          shipStationPaths.shipments,
+          { page, pageSize: PAGE_SIZE, sortBy: "ShipDate", sortDir: "ASC" },
+          deadline,
+        );
         const shipments = res.shipments ?? [];
         if (shipments.length > 0) {
           await upsertShipments(admin, orgId, shipments);
@@ -150,6 +151,12 @@ export async function advanceShipStationSync(
       }
     }
 
+    // Gönderi maliyetlerini Maliyetler/Kargo'ya yansıt (idempotent, non-fatal).
+    try {
+      await admin.rpc("rebuild_shipstation_costs", { p_org_id: orgId });
+    } catch {
+      // yok say
+    }
     await persist({ sync_status: "done", last_sync_at: new Date().toISOString() });
     return { done: true, status: "done", phase: "done", ...counts };
   } catch (e) {

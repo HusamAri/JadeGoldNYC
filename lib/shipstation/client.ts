@@ -41,6 +41,7 @@ export class ShipStationClient {
   async get<T>(
     path: string,
     query?: Record<string, string | number | undefined>,
+    deadlineMs?: number,
   ): Promise<T> {
     const url = new URL(SHIPSTATION_API_BASE + path);
     if (query) {
@@ -58,9 +59,16 @@ export class ShipStationClient {
 
     if (res.status === 429) {
       const reset = Number(res.headers.get("X-Rate-Limit-Reset") ?? "60");
-      if (reset > 0 && reset <= 20) {
-        await new Promise((r) => setTimeout(r, (reset + 1) * 1000));
-        return this.get<T>(path, query);
+      const waitMs = (reset + 1) * 1000;
+      // Yalnızca kısa beklemeler VE eylem süresine sığıyorsa bekle+yeniden dene;
+      // yoksa duraklat (server action 60sn'de öldürülmesin).
+      if (
+        reset > 0 &&
+        reset <= 20 &&
+        (deadlineMs == null || Date.now() + waitMs < deadlineMs)
+      ) {
+        await new Promise((r) => setTimeout(r, waitMs));
+        return this.get<T>(path, query, deadlineMs);
       }
       throw new ShipStationRateLimitError(reset);
     }
