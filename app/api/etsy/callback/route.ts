@@ -26,7 +26,11 @@ export async function GET(request: Request) {
   }
 
   const clientId = process.env.ETSY_API_KEY;
-  if (!clientId) {
+  const apiSecret = process.env.ETSY_API_SECRET;
+  // Etsy v3 API çağrıları keystring + shared secret ister; ikisi de zorunlu.
+  // Eksikse bağlantıyı "connected" gibi gösterip sonradan 403'e düşmek yerine
+  // baştan config hatası ver.
+  if (!clientId || !apiSecret) {
     return NextResponse.redirect(`${origin}/ayarlar/etsy?error=config`);
   }
   const redirectUri =
@@ -46,11 +50,10 @@ export async function GET(request: Request) {
     // shop_id'yi /users/me'den çekmeyi dene (best-effort).
     let shopId: number | null = null;
     try {
-      const apiSecret = process.env.ETSY_API_SECRET;
       const meRes = await fetch(`${ETSY_API_BASE}/users/me`, {
         headers: {
           // Etsy v3 API: x-api-key = keystring:shared_secret
-          "x-api-key": apiSecret ? `${clientId}:${apiSecret}` : clientId,
+          "x-api-key": `${clientId}:${apiSecret}`,
           Authorization: `Bearer ${tok.access_token}`,
         },
       });
