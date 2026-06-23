@@ -2,26 +2,33 @@ import Link from "next/link";
 import {
   Plus,
   Pencil,
-  ShoppingCart,
+  Users,
+  Repeat,
+  UserRoundX,
   DollarSign,
-  Clock,
   CheckCircle2,
-  Percent,
 } from "lucide-react";
 
 import {
   listCartRecoveries,
   getCartSummary,
+  getWinbackCandidates,
+  getWinbackSummary,
 } from "@/lib/db/queries/cart-recoveries";
 import { strParam, numParam, type RawSearchParams } from "@/lib/searchparams";
 import { CART_STATUSES } from "@/lib/constants";
-import { formatMoney, formatPercent } from "@/lib/money";
+import { formatMoney } from "@/lib/money";
 import { formatNumber, formatDate } from "@/lib/format";
 import { PageHeader } from "@/components/page-header";
 import { EmptyState } from "@/components/empty-state";
 import { KpiCard } from "@/components/kpi-card";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -37,9 +44,11 @@ import { DeleteButton } from "@/components/data-table/delete-button";
 import { CartStatusBadge } from "@/components/cart-status-badge";
 import { deleteCartRecovery } from "./actions";
 
-export const metadata = { title: "Sepet Kurtarma" };
+export const metadata = { title: "Müşteri Geri Kazanım" };
 
-export default async function SepetKurtarmaPage({
+const LAPSE_DAYS = 90;
+
+export default async function GeriKazanimPage({
   searchParams,
 }: {
   searchParams: Promise<RawSearchParams>;
@@ -50,7 +59,9 @@ export default async function SepetKurtarmaPage({
   const offset = numParam(sp.offset);
   const limit = 25;
 
-  const [{ rows, count }, summary] = await Promise.all([
+  const [candidates, winback, { rows, count }, tracking] = await Promise.all([
+    getWinbackCandidates(LAPSE_DAYS, 100),
+    getWinbackSummary(LAPSE_DAYS),
     listCartRecoveries({ status, search, limit, offset }),
     getCartSummary(),
   ]);
@@ -58,13 +69,13 @@ export default async function SepetKurtarmaPage({
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Sepet Kurtarma"
-        description="Terk edilen sepetleri ve geri kazanım aksiyonlarını takip edin"
+        title="Müşteri Geri Kazanım"
+        description="Uzun süredir sipariş vermemiş yüksek değerli müşterileri belirleyin ve geri kazanım aksiyonlarını takip edin"
         action={
           <Button asChild>
             <Link href="/sepet-kurtarma/yeni">
               <Plus />
-              Yeni Sepet
+              Yeni Kayıt
             </Link>
           </Button>
         }
@@ -72,35 +83,96 @@ export default async function SepetKurtarmaPage({
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-5">
         <KpiCard
-          label="Toplam Terk"
-          value={formatNumber(summary.total)}
-          icon={ShoppingCart}
+          label="Toplam Müşteri"
+          value={formatNumber(winback.total_customers)}
+          icon={Users}
         />
         <KpiCard
-          label="Terk Değeri"
-          value={formatMoney(summary.totalValueCents)}
-          icon={DollarSign}
-        />
-        <KpiCard label="Açık" value={formatNumber(summary.open)} icon={Clock} />
-        <KpiCard
-          label="Kazanılan"
-          value={formatMoney(summary.recoveredValueCents)}
-          icon={CheckCircle2}
-          hint={`${formatNumber(summary.recovered)} sepet`}
+          label="Tekrar Eden Müşteri"
+          value={formatNumber(winback.repeat_customers)}
+          icon={Repeat}
           accent="positive"
         />
         <KpiCard
-          label="Kazanım Oranı"
-          value={formatPercent(summary.recoveryRate)}
-          icon={Percent}
-          accent={summary.recoveryRate > 0 ? "positive" : "default"}
+          label={`${LAPSE_DAYS}+ Gün Gelmeyen`}
+          value={formatNumber(winback.lapsed_customers)}
+          icon={UserRoundX}
+        />
+        <KpiCard
+          label="Risk Altındaki Değer"
+          value={formatMoney(winback.lapsed_value_cents)}
+          icon={DollarSign}
+          hint="geçmiş ciro toplamı"
+        />
+        <KpiCard
+          label="Kazanılan"
+          value={formatMoney(tracking.recoveredValueCents)}
+          icon={CheckCircle2}
+          hint={`${formatNumber(tracking.recovered)} müşteri`}
+          accent="positive"
         />
       </div>
 
       <Card>
+        <CardHeader>
+          <CardTitle>Öncelikli Geri Kazanım Adayları</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {candidates.length === 0 ? (
+            <EmptyState
+              icon={Users}
+              title="Aday yok"
+              description="Etsy senkronundan sonra sipariş geçmişi burada müşteri bazında özetlenir; en değerli, uzun süredir gelmeyen müşteriler öne çıkar."
+            />
+          ) : (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Müşteri</TableHead>
+                  <TableHead className="text-right">Sipariş</TableHead>
+                  <TableHead className="text-right">Toplam Harcama</TableHead>
+                  <TableHead>Son Sipariş</TableHead>
+                  <TableHead className="text-right">Gün Önce</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {candidates.map((c) => (
+                  <TableRow key={c.buyer_key}>
+                    <TableCell className="max-w-[260px] truncate font-medium">
+                      {c.buyer_name ?? c.buyer_email ?? c.buyer_key}
+                      {c.buyer_email && c.buyer_name && (
+                        <span className="text-muted-foreground block truncate text-xs font-normal">
+                          {c.buyer_email}
+                        </span>
+                      )}
+                    </TableCell>
+                    <TableCell className="text-right tabular-nums">
+                      {formatNumber(c.order_count)}
+                    </TableCell>
+                    <TableCell className="text-right tabular-nums font-medium">
+                      {formatMoney(c.total_spent_cents)}
+                    </TableCell>
+                    <TableCell className="whitespace-nowrap">
+                      {formatDate(c.last_order_date)}
+                    </TableCell>
+                    <TableCell className="text-muted-foreground text-right tabular-nums">
+                      {formatNumber(c.days_since)}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          )}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Geri Kazanım Takibi</CardTitle>
+        </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-            <SearchInput placeholder="Alıcı, e-posta, ürün…" />
+            <SearchInput placeholder="Müşteri, e-posta, not…" />
             <FilterSelect
               paramKey="status"
               placeholder="Durum"
@@ -110,17 +182,17 @@ export default async function SepetKurtarmaPage({
 
           {rows.length === 0 ? (
             <EmptyState
-              icon={ShoppingCart}
-              title="Sepet kaydı yok"
-              description="Terk edilen sepetleri ekleyin; hatırlatma/teşvik aksiyonlarını ve sonucu (kazanıldı/kayıp) takip edin."
+              icon={CheckCircle2}
+              title="Takip kaydı yok"
+              description="Bir müşteriye ulaştığınızda kaydı buraya ekleyin; teşvik/aksiyon ve sonucu (kazanıldı/kayıp) takip edin."
             />
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Terk Tarihi</TableHead>
-                  <TableHead>Alıcı</TableHead>
-                  <TableHead className="text-right">Sepet Değeri</TableHead>
+                  <TableHead>Tarih</TableHead>
+                  <TableHead>Müşteri</TableHead>
+                  <TableHead className="text-right">Değer</TableHead>
                   <TableHead>Durum</TableHead>
                   <TableHead>Aksiyon</TableHead>
                   <TableHead className="text-right">Kazanılan</TableHead>

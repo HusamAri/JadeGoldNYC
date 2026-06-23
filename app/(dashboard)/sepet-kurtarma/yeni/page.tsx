@@ -2,9 +2,9 @@ import { PageHeader } from "@/components/page-header";
 import { CartRecoveryForm } from "@/components/cart-recovery-form";
 import type { CartRecoveryFormValues } from "@/lib/validations/cart-recovery";
 
-export const metadata = { title: "Yeni Sepet" };
+export const metadata = { title: "Yeni Geri Kazanım Kaydı" };
 
-export default function YeniSepetPage() {
+export default function YeniGeriKazanimPage() {
   const today = new Date().toISOString().slice(0, 10);
   const defaultValues: CartRecoveryFormValues = {
     buyer_name: "",
@@ -22,8 +22,8 @@ export default function YeniSepetPage() {
   return (
     <div>
       <PageHeader
-        title="Yeni Sepet"
-        description="Terk edilen bir sepeti ve kurtarma sürecini ekleyin"
+        title="Yeni Geri Kazanım Kaydı"
+        description="Bir müşteriye ulaştığınızda aksiyonu ve sonucu kaydedin"
       />
       <CartRecoveryForm mode="create" defaultValues={defaultValues} />
     </div>

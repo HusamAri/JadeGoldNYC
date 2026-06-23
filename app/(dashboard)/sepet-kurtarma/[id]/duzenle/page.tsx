@@ -5,7 +5,7 @@ import { PageHeader } from "@/components/page-header";
 import { CartRecoveryForm } from "@/components/cart-recovery-form";
 import type { CartRecoveryFormValues } from "@/lib/validations/cart-recovery";
 
-export const metadata = { title: "Sepeti Düzenle" };
+export const metadata = { title: "Kaydı Düzenle" };
 
 function dec(cents: number | null): string {
   return cents != null ? (cents / 100).toFixed(2) : "";
@@ -36,7 +36,7 @@ export default async function SepetDuzenlePage({
   return (
     <div>
       <PageHeader
-        title="Sepeti Düzenle"
+        title="Kaydı Düzenle"
         description={c.buyer_name ?? c.buyer_email ?? undefined}
       />
       <CartRecoveryForm

@@ -78,7 +78,7 @@ export const ENTITY_TYPE_LABELS: Record<string, string> = {
   csv_import: "CSV içe aktarma",
   shop_metrics: "Performans",
   product_metrics: "Ürün performansı",
-  cart_recoveries: "Sepet kurtarma",
+  cart_recoveries: "Müşteri geri kazanım",
   auth: "Oturum",
   report: "Rapor",
 };
