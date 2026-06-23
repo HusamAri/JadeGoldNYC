@@ -20,6 +20,8 @@ const DEFAULT_BUDGET_MS = 40_000;
 const LEDGER_MIN_CREATED = 1420070400;
 // Etsy ledger min_created↔max_created arası en fazla 31 gün; 30 günle pencerele.
 const LEDGER_WINDOW_S = 2_592_000;
+// Artımlı turlarda en son kayıttan geriye örtüşme payı (7 gün) — kayıp olmasın.
+const LEDGER_OVERLAP_S = 604_800;
 
 export interface SyncProgress {
   done: boolean;
@@ -43,6 +45,8 @@ interface CursorRow {
   sync_reviews: number | null;
   sync_ledger: number | null;
   sync_ledger_until: number | null;
+  sync_ledger_floor: number | null;
+  ledger_backfilled: boolean | null;
   last_sync_at: string | null;
 }
 
@@ -68,7 +72,7 @@ export async function advanceEtsySync(
   const { data } = await admin
     .from("etsy_connection")
     .select(
-      "sync_status, sync_phase, sync_offset, sync_sales, sync_items, sync_products, sync_reviews, sync_ledger, sync_ledger_until, last_sync_at",
+      "sync_status, sync_phase, sync_offset, sync_sales, sync_items, sync_products, sync_reviews, sync_ledger, sync_ledger_until, sync_ledger_floor, ledger_backfilled, last_sync_at",
     )
     .eq("org_id", orgId)
     .maybeSingle();
@@ -96,6 +100,11 @@ export async function advanceEtsySync(
   let ledgerUntil: number | null = resuming
     ? (cur!.sync_ledger_until ?? null)
     : null;
+  let ledgerFloor: number | null = resuming
+    ? (cur!.sync_ledger_floor ?? null)
+    : null;
+  // İlk tam backfill bir kez yapılır; sonrası artımlı. Bu bayrak turlar arası kalıcı.
+  const ledgerBackfilled = cur?.ledger_backfilled ?? false;
 
   // Sales fazı: ilk tam tarama (last_sync_at yok) tüm geçmişi; sonraki turlar
   // artımlı (last_sync_at'ten beri, 1 saat örtüşmeli). Tur boyunca last_sync_at
@@ -117,6 +126,7 @@ export async function advanceEtsySync(
         sync_reviews: 0,
         sync_ledger: 0,
         sync_ledger_until: null,
+        sync_ledger_floor: null,
         sync_error: null,
         sync_started_at: new Date().toISOString(),
         sync_updated_at: new Date().toISOString(),
@@ -202,17 +212,43 @@ export async function advanceEtsySync(
         }
         await persist();
       } else {
-        // ledger — ham ücret/komisyon/reklam kayıtları (Adım 1: yalnız topla).
-        // Etsy 31 gün sınırı: 30 günlük pencerelerle geriye doğru tara.
-        if (ledgerUntil == null) ledgerUntil = Math.floor(Date.now() / 1000);
-        if (ledgerUntil <= LEDGER_MIN_CREATED) {
+        // ledger — Etsy ücret/komisyon/reklam kayıtları. 30 günlük pencerelerle
+        // geriye doğru tara (Etsy 31 gün sınırı). İlk tur tüm geçmişi backfill
+        // eder; sonraki turlar artımlı (yalnız en son kayıttan beri).
+        if (ledgerUntil == null) {
+          ledgerUntil = Math.floor(Date.now() / 1000);
+          if (ledgerFloor == null) {
+            if (ledgerBackfilled) {
+              const { data: m } = await admin
+                .from("etsy_ledger_entries")
+                .select("created_timestamp")
+                .eq("org_id", orgId)
+                .order("created_timestamp", { ascending: false })
+                .limit(1)
+                .maybeSingle();
+              const maxTs = (m as { created_timestamp: number } | null)
+                ?.created_timestamp;
+              ledgerFloor = maxTs
+                ? maxTs - LEDGER_OVERLAP_S
+                : LEDGER_MIN_CREATED;
+            } else {
+              ledgerFloor = LEDGER_MIN_CREATED;
+            }
+          }
+          await persist({
+            sync_ledger_until: ledgerUntil,
+            sync_ledger_floor: ledgerFloor,
+          });
+        }
+        const floor = ledgerFloor ?? LEDGER_MIN_CREATED;
+        if (ledgerUntil <= floor) {
           phase = "done";
-          await persist({ sync_ledger_until: ledgerUntil });
+          // Tam backfill ilk kez bitti → bayrağı kalıcılaştır (sonrası artımlı).
+          const justBackfilled =
+            !ledgerBackfilled && floor <= LEDGER_MIN_CREATED;
+          await persist(justBackfilled ? { ledger_backfilled: true } : {});
         } else {
-          const minCreatedWin = Math.max(
-            ledgerUntil - LEDGER_WINDOW_S,
-            LEDGER_MIN_CREATED,
-          );
+          const minCreatedWin = Math.max(ledgerUntil - LEDGER_WINDOW_S, floor);
           const page = await client.get<EtsyListResponse<EtsyLedgerEntry>>(
             etsyPaths.ledgerEntries(shopId),
             {
@@ -228,10 +264,9 @@ export async function advanceEtsySync(
             counts.ledger += results.length;
           }
           if (results.length < PAGE) {
-            // Bu pencere bitti → daha eski pencereye geç.
+            // Bu pencere bitti → daha eski pencereye geç (üst kontrol bitirir).
             ledgerUntil = minCreatedWin;
             offset = 0;
-            if (ledgerUntil <= LEDGER_MIN_CREATED) phase = "done";
           } else {
             offset += PAGE;
           }
