@@ -18,6 +18,7 @@ const PHASE_LABELS: Record<string, string> = {
   sales: "Siparişler",
   listings: "Ürünler",
   reviews: "Yorumlar",
+  ledger: "Ücretler/Reklam",
   done: "Tamamlandı",
 };
 
@@ -101,6 +102,10 @@ export function EtsySyncButton({ disabled }: { disabled?: boolean }) {
           </span>
           <span>
             Yorum <span className="text-foreground">{formatNumber(progress!.reviews)}</span>
+          </span>
+          <span>
+            Ücret kaydı{" "}
+            <span className="text-foreground">{formatNumber(progress!.ledger)}</span>
           </span>
         </div>
       )}

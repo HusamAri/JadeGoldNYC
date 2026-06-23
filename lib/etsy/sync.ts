@@ -10,20 +10,24 @@ import {
   type EtsyReceipt,
   type EtsyListing,
   type EtsyReview,
+  type EtsyLedgerEntry,
 } from "@/lib/etsy/types";
 
 const PAGE = 100;
 // Tek çağrıda harcanacak süre bütçesi (fonksiyon 60sn; ~20sn pay bırak).
 const DEFAULT_BUDGET_MS = 40_000;
+// Ham ledger için tarih penceresi alt sınırı (2015-01-01). Etsy min/max_created ister.
+const LEDGER_MIN_CREATED = 1420070400;
 
 export interface SyncProgress {
   done: boolean;
   status: "running" | "done" | "error";
-  phase: "sales" | "listings" | "reviews" | "done";
+  phase: "sales" | "listings" | "reviews" | "ledger" | "done";
   sales: number;
   items: number;
   products: number;
   reviews: number;
+  ledger: number;
   error?: string;
 }
 
@@ -35,6 +39,7 @@ interface CursorRow {
   sync_items: number | null;
   sync_products: number | null;
   sync_reviews: number | null;
+  sync_ledger: number | null;
   last_sync_at: string | null;
 }
 
@@ -60,7 +65,7 @@ export async function advanceEtsySync(
   const { data } = await admin
     .from("etsy_connection")
     .select(
-      "sync_status, sync_phase, sync_offset, sync_sales, sync_items, sync_products, sync_reviews, last_sync_at",
+      "sync_status, sync_phase, sync_offset, sync_sales, sync_items, sync_products, sync_reviews, sync_ledger, last_sync_at",
     )
     .eq("org_id", orgId)
     .maybeSingle();
@@ -81,6 +86,7 @@ export async function advanceEtsySync(
     items: resuming ? (cur!.sync_items ?? 0) : 0,
     products: resuming ? (cur!.sync_products ?? 0) : 0,
     reviews: resuming ? (cur!.sync_reviews ?? 0) : 0,
+    ledger: resuming ? (cur!.sync_ledger ?? 0) : 0,
   };
 
   // Sales fazı: ilk tam tarama (last_sync_at yok) tüm geçmişi; sonraki turlar
@@ -101,6 +107,7 @@ export async function advanceEtsySync(
         sync_items: 0,
         sync_products: 0,
         sync_reviews: 0,
+        sync_ledger: 0,
         sync_error: null,
         sync_started_at: new Date().toISOString(),
         sync_updated_at: new Date().toISOString(),
@@ -118,6 +125,7 @@ export async function advanceEtsySync(
         sync_items: counts.items,
         sync_products: counts.products,
         sync_reviews: counts.reviews,
+        sync_ledger: counts.ledger,
         sync_updated_at: new Date().toISOString(),
         ...extra,
       })
@@ -167,8 +175,7 @@ export async function advanceEtsySync(
           offset += PAGE;
         }
         await persist();
-      } else {
-        // reviews
+      } else if (phase === "reviews") {
         const page = await client.get<EtsyListResponse<EtsyReview>>(
           etsyPaths.reviews(shopId),
           { limit: PAGE, offset },
@@ -177,6 +184,29 @@ export async function advanceEtsySync(
         if (results.length > 0) {
           await upsertReviewsPage(admin, orgId, results);
           counts.reviews += results.length;
+        }
+        if (results.length < PAGE) {
+          phase = "ledger";
+          offset = 0;
+        } else {
+          offset += PAGE;
+        }
+        await persist();
+      } else {
+        // ledger — ham ücret/komisyon/reklam kayıtları (Adım 1: yalnız topla).
+        const page = await client.get<EtsyListResponse<EtsyLedgerEntry>>(
+          etsyPaths.ledgerEntries(shopId),
+          {
+            limit: PAGE,
+            offset,
+            min_created: LEDGER_MIN_CREATED,
+            max_created: Math.floor(Date.now() / 1000),
+          },
+        );
+        const results = page.results ?? [];
+        if (results.length > 0) {
+          await upsertLedgerPage(admin, orgId, results);
+          counts.ledger += results.length;
         }
         if (results.length < PAGE) {
           phase = "done";
@@ -316,13 +346,42 @@ async function upsertReviewsPage(
   if (error) throw new Error(`reviews upsert: ${error.message}`);
 }
 
+/** Ham ledger kayıtlarını idempotent (entry_id) toplu upsert eder. */
+async function upsertLedgerPage(
+  admin: SupabaseClient,
+  orgId: string,
+  results: EtsyLedgerEntry[],
+): Promise<void> {
+  const rows = results.map((e) => {
+    const ts = e.created_timestamp ?? e.create_date ?? null;
+    return {
+      org_id: orgId,
+      entry_id: e.entry_id,
+      ledger_id: e.ledger_id ?? null,
+      ledger_type: e.ledger_type ?? null,
+      reference_type: e.reference_type ?? null,
+      reference_id: e.reference_id != null ? String(e.reference_id) : null,
+      description: e.description ?? null,
+      amount_cents: typeof e.amount === "number" ? e.amount : null,
+      currency: e.currency ?? null,
+      balance_cents: typeof e.balance === "number" ? e.balance : null,
+      created_timestamp: ts,
+      entry_date: ts != null ? new Date(ts * 1000).toISOString() : null,
+    };
+  });
+  const { error } = await admin
+    .from("etsy_ledger_entries")
+    .upsert(rows, { onConflict: "entry_id" });
+  if (error) throw new Error(`etsy_ledger_entries upsert: ${error.message}`);
+}
+
 /** Senkron ilerleme durumunu okur (canlı akış paneli için). */
 export async function getSyncProgress(orgId: string): Promise<SyncProgress> {
   const admin = createAdminClient();
   const { data } = await admin
     .from("etsy_connection")
     .select(
-      "sync_status, sync_phase, sync_sales, sync_items, sync_products, sync_reviews, sync_error",
+      "sync_status, sync_phase, sync_sales, sync_items, sync_products, sync_reviews, sync_ledger, sync_error",
     )
     .eq("org_id", orgId)
     .maybeSingle();
@@ -338,6 +397,7 @@ export async function getSyncProgress(orgId: string): Promise<SyncProgress> {
     items: c?.sync_items ?? 0,
     products: c?.sync_products ?? 0,
     reviews: c?.sync_reviews ?? 0,
+    ledger: c?.sync_ledger ?? 0,
     error: c?.sync_error ?? undefined,
   };
 }
