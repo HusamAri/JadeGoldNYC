@@ -12,58 +12,59 @@
 :root {
   --radius: 1rem;
 
-  /* Nöromorfik sıcak fildişi zemin — kartlar zeminle aynı renk, gölgeyle kabarır */
-  --background: oklch(0.905 0.021 82);
-  --foreground: oklch(0.29 0.03 56);
+  /* Marka zemini — soğuk fildişi (jade'e dönük nötr), kartlar zeminle aynı renk,
+     gölgeyle kabarır. Toprak/kahve değil; marka jade + antik altın. */
+  --background: oklch(0.912 0.012 128);
+  --foreground: oklch(0.27 0.022 165);
 
-  --card: oklch(0.905 0.021 82);
-  --card-foreground: oklch(0.29 0.03 56);
+  --card: oklch(0.912 0.012 128);
+  --card-foreground: oklch(0.27 0.022 165);
 
-  --popover: oklch(0.935 0.018 82);
-  --popover-foreground: oklch(0.29 0.03 56);
+  --popover: oklch(0.94 0.01 128);
+  --popover-foreground: oklch(0.27 0.022 165);
 
-  /* Espresso (birincil) */
-  --primary: oklch(0.42 0.05 52);
-  --primary-foreground: oklch(0.97 0.015 80);
+  /* Jade (birincil) — marka swatch #3F4A44 ölçeği, muted */
+  --primary: oklch(0.43 0.035 162);
+  --primary-foreground: oklch(0.97 0.012 110);
 
-  --secondary: oklch(0.93 0.022 78);
-  --secondary-foreground: oklch(0.33 0.035 56);
+  --secondary: oklch(0.925 0.014 140);
+  --secondary-foreground: oklch(0.32 0.026 162);
 
-  --muted: oklch(0.935 0.02 78);
-  --muted-foreground: oklch(0.52 0.03 60);
+  --muted: oklch(0.93 0.012 140);
+  --muted-foreground: oklch(0.47 0.022 160);
 
-  /* Antik altın (vurgu) */
-  --accent: oklch(0.82 0.075 80);
-  --accent-foreground: oklch(0.32 0.05 58);
+  /* Antik altın (vurgu) #B89347 */
+  --accent: oklch(0.81 0.085 85);
+  --accent-foreground: oklch(0.3 0.03 162);
 
   --destructive: oklch(0.58 0.21 27);
   --destructive-foreground: oklch(0.98 0.01 27);
 
-  --border: oklch(0.88 0.022 78);
-  --input: oklch(0.88 0.022 78);
-  --ring: oklch(0.62 0.08 72);
+  --border: oklch(0.875 0.013 145);
+  --input: oklch(0.875 0.013 145);
+  --ring: oklch(0.55 0.05 160);
 
-  /* Grafik paleti: sıcak kahve -> altın -> terrakota -> adaçayı */
-  --chart-1: oklch(0.55 0.09 60);
-  --chart-2: oklch(0.72 0.11 80);
-  --chart-3: oklch(0.63 0.12 45);
-  --chart-4: oklch(0.6 0.07 145);
-  --chart-5: oklch(0.5 0.06 30);
+  /* Grafik paleti: jade -> altın -> teal/adaçayı -> derin jade -> bronz altın */
+  --chart-1: oklch(0.5 0.045 162);
+  --chart-2: oklch(0.78 0.1 86);
+  --chart-3: oklch(0.6 0.05 178);
+  --chart-4: oklch(0.42 0.04 158);
+  --chart-5: oklch(0.62 0.07 72);
 
-  --sidebar: oklch(0.905 0.021 82);
-  --sidebar-foreground: oklch(0.3 0.03 56);
-  --sidebar-primary: oklch(0.42 0.05 52);
-  --sidebar-primary-foreground: oklch(0.97 0.015 80);
-  --sidebar-accent: oklch(0.86 0.06 82);
-  --sidebar-accent-foreground: oklch(0.3 0.04 56);
-  --sidebar-border: oklch(0.88 0.02 80);
-  --sidebar-ring: oklch(0.62 0.08 72);
+  --sidebar: oklch(0.912 0.012 128);
+  --sidebar-foreground: oklch(0.29 0.022 162);
+  --sidebar-primary: oklch(0.43 0.035 162);
+  --sidebar-primary-foreground: oklch(0.97 0.012 110);
+  --sidebar-accent: oklch(0.85 0.06 86);
+  --sidebar-accent-foreground: oklch(0.3 0.03 162);
+  --sidebar-border: oklch(0.875 0.013 145);
+  --sidebar-ring: oklch(0.55 0.05 160);
 
-  /* Nöromorfik kabartma sistemi — sıcak highlight (sol-üst) + sıcak taupe (sağ-alt) */
-  --nm-light: 255 251 244;
-  --nm-dark: 165 143 109;
-  --nm-convex: linear-gradient(145deg, oklch(0.922 0.02 82), oklch(0.888 0.022 82));
-  --nm-convex-press: linear-gradient(145deg, oklch(0.888 0.022 82), oklch(0.918 0.02 82));
+  /* Nöromorfik kabartma — fildişi highlight (sol-üst) + soğuk adaçayı-taupe (sağ-alt) */
+  --nm-light: 252 252 246;
+  --nm-dark: 150 158 138;
+  --nm-convex: linear-gradient(145deg, oklch(0.928 0.012 128), oklch(0.894 0.013 132));
+  --nm-convex-press: linear-gradient(145deg, oklch(0.894 0.013 132), oklch(0.924 0.012 128));
   --shadow-raised: -7px -7px 15px rgb(var(--nm-light) / 0.72), 7px 7px 18px rgb(var(--nm-dark) / 0.26);
   --shadow-raised-sm: -4px -4px 9px rgb(var(--nm-light) / 0.7), 4px 4px 10px rgb(var(--nm-dark) / 0.24);
   --shadow-hover: -9px -9px 20px rgb(var(--nm-light) / 0.8), 10px 10px 24px rgb(var(--nm-dark) / 0.3);
