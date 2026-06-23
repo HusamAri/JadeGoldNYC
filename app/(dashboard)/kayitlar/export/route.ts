@@ -5,7 +5,10 @@ import { AUDIT_ACTION_LABELS, AUDIT_SOURCE_LABELS } from "@/lib/constants";
 import { formatDateTime } from "@/lib/format";
 
 function cell(v: string | null | undefined) {
-  const s = v ?? "";
+  let s = v ?? "";
+  // CSV/formül enjeksiyonu: = + - @ (veya tab/CR) ile başlayan değerleri nötrle
+  // — Excel/Sheets bunları formül sanmasın diye başına tek tırnak ekle.
+  if (/^[=+\-@\t\r]/.test(s)) s = `'${s}`;
   return /[",\n\r;]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
 }
 
