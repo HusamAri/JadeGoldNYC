@@ -2,7 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 
 import { createAdminClient } from "@/lib/supabase/admin";
 import { refreshAccessToken } from "@/lib/etsy/oauth";
-import { ETSY_API_BASE } from "@/lib/etsy/endpoints";
+import { ETSY_API_BASE, etsyPaths } from "@/lib/etsy/endpoints";
 
 export class EtsyNotConnectedError extends Error {
   constructor(message = "Etsy bağlantısı bulunamadı.") {
@@ -50,6 +50,38 @@ export class EtsyClient {
 
   get shopId(): number | null {
     return this.conn.shop_id;
+  }
+
+  /**
+   * shop_id'yi getMe'den çözüp kalıcılaştırır. Callback'teki tek seferlik
+   * /users/me çağrısı (geçici hata vb.) boş döndüyse burada self-heal eder;
+   * istemcinin sağlam get()'i token yeniler + 429'da yeniden dener.
+   */
+  async resolveShopId(): Promise<number | null> {
+    if (this.conn.shop_id) return this.conn.shop_id;
+    const me = await this.get<{ user_id?: number; shop_id?: number | null }>(
+      etsyPaths.me(),
+    );
+    const shopId = me?.shop_id ?? null;
+    if (shopId) {
+      await this.admin
+        .from("etsy_connection")
+        .update({ shop_id: shopId })
+        .eq("id", this.conn.id);
+      this.conn = { ...this.conn, shop_id: shopId };
+    }
+    return shopId;
+  }
+
+  /** shop_id'yi garanti eder; bulunamazsa anlaşılır hata fırlatır. */
+  async requireShopId(): Promise<number> {
+    const shopId = this.conn.shop_id ?? (await this.resolveShopId());
+    if (!shopId) {
+      throw new Error(
+        "Etsy mağaza kimliği (shop_id) alınamadı. Mağazanızın açık olduğundan emin olun ya da yeniden bağlanın.",
+      );
+    }
+    return shopId;
   }
 
   private async ensureToken(): Promise<string> {
