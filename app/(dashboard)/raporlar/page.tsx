@@ -55,6 +55,7 @@ export default async function RaporlarPage({
               kpis={kpis}
               trend={d.trend}
               categories={d.costByCategory}
+              currency={cur}
             />
           </>
         }
