@@ -181,15 +181,21 @@ export function ReportExport({
   }
 
   function onExportPdf() {
-    const win = window.open("", "_blank", "noopener,noreferrer");
-    if (!win) return;
+    // noopener/noreferrer KULLANMA: tarayıcı noreferrer'ı no-opener sayar ve
+    // window.open null döner → yazılabilir handle kalmaz. Pencere same-origin
+    // about:blank; içeriği biz (esc'li) yazıyoruz, ters-tabnabbing riski yok.
+    const win = window.open("", "_blank");
+    if (!win) return; // açılır pencere engellendi
     win.document.open();
     win.document.write(buildPrintHtml());
     win.document.close();
-    win.addEventListener("load", () => {
+    // load zaten geçmiş olabilir (senkron yazım) → readyState'e göre tetikle.
+    const print = () => {
       win.focus();
       win.print();
-    });
+    };
+    if (win.document.readyState === "complete") print();
+    else win.addEventListener("load", print);
     void logReportExport(periodLabel);
   }
 
