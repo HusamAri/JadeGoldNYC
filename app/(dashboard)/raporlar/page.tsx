@@ -1,4 +1,4 @@
-import { resolvePeriod } from "@/lib/period";
+import { resolvePeriod, previousPeriod } from "@/lib/period";
 import { getDashboard } from "@/lib/db/queries/dashboard";
 import { strParam, type RawSearchParams } from "@/lib/searchparams";
 import { formatMoney, formatPercent } from "@/lib/money";
@@ -30,16 +30,27 @@ export default async function RaporlarPage({
 }) {
   const sp = await searchParams;
   const period = resolvePeriod(strParam(sp.period));
-  const d = await getDashboard(period);
+  const prev = previousPeriod(period);
+  const [d, prevData] = await Promise.all([
+    getDashboard(period),
+    prev ? getDashboard(prev) : Promise.resolve(null),
+  ]);
   const cur = d.currency;
 
+  function pctChange(current: number, previous: number | undefined | null): string | null {
+    if (previous == null || previous === 0) return null;
+    const change = ((current - previous) / Math.abs(previous)) * 100;
+    const arrow = change >= 0 ? "↑" : "↓";
+    return `${arrow} %${Math.abs(change).toFixed(1)}`;
+  }
+
   const kpis = [
-    { label: "Toplam Gelir", value: formatMoney(d.revenueCents, cur) },
-    { label: "Toplam Maliyet", value: formatMoney(d.costCents, cur) },
-    { label: "Net Kâr", value: formatMoney(d.profitCents, cur) },
-    { label: "Sipariş Sayısı", value: formatNumber(d.orderCount) },
-    { label: "Ortalama Sipariş", value: formatMoney(d.aovCents, cur) },
-    { label: "Kâr Marjı", value: formatPercent(d.margin) },
+    { label: "Toplam Gelir", value: formatMoney(d.revenueCents, cur), change: pctChange(d.revenueCents, prevData?.revenueCents) },
+    { label: "Toplam Maliyet", value: formatMoney(d.costCents, cur), change: pctChange(d.costCents, prevData?.costCents) },
+    { label: "Net Kar", value: formatMoney(d.profitCents, cur), change: pctChange(d.profitCents, prevData?.profitCents) },
+    { label: "Siparis Sayisi", value: formatNumber(d.orderCount), change: pctChange(d.orderCount, prevData?.orderCount) },
+    { label: "Ortalama Siparis", value: formatMoney(d.aovCents, cur), change: pctChange(d.aovCents, prevData?.aovCents) },
+    { label: "Kar Marji", value: formatPercent(d.margin), change: prevData ? pctChange(d.margin, prevData.margin) : null },
   ];
 
   return (
@@ -73,6 +84,11 @@ export default async function RaporlarPage({
                 <p className="mt-1 text-xl font-semibold tabular-nums">
                   {k.value}
                 </p>
+                {k.change && (
+                  <p className="text-muted-foreground mt-1 text-xs tabular-nums">
+                    {k.change}{prev ? ` (${prev.label})` : ""}
+                  </p>
+                )}
               </div>
             ))}
           </div>

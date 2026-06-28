@@ -11,6 +11,18 @@ export interface GoldCostSummaryData {
   itemsWithCost: number;
 }
 
+export interface TopCustomer {
+  buyerName: string;
+  orderCount: number;
+  revenueCents: number;
+}
+
+export interface ChannelBreakdown {
+  channel: string;
+  orderCount: number;
+  revenueCents: number;
+}
+
 export interface DashboardData {
   revenueCents: number;
   costCents: number;
@@ -22,6 +34,8 @@ export interface DashboardData {
   trend: { date: string; label: string; revenue: number; cost: number; orders: number }[];
   costByCategory: { name: string; value: number }[];
   topProducts: { title: string; quantity: number; revenue: number }[];
+  topCustomers: TopCustomer[];
+  channelBreakdown: ChannelBreakdown[];
   recent: AuditLog[];
   goldCosts: GoldCostSummaryData;
 }
@@ -39,7 +53,7 @@ export async function getDashboard(
   // --- Satışlar ---
   let salesQuery = supabase
     .from("sales")
-    .select("grand_total_cents, item_total_cents, order_date")
+    .select("grand_total_cents, item_total_cents, order_date, buyer_name, source")
     .neq("status", "cancelled")
     .lte("order_date", period.toIso);
   if (period.fromIso) salesQuery = salesQuery.gte("order_date", period.fromIso);
@@ -48,6 +62,8 @@ export async function getDashboard(
     grand_total_cents: number;
     item_total_cents: number;
     order_date: string;
+    buyer_name: string | null;
+    source: string;
   }[];
 
   // --- Maliyetler ---
@@ -161,6 +177,38 @@ export async function getDashboard(
     else materialCents += gc.amount_cents || 0;
   }
 
+  // --- En iyi müşteriler ---
+  const custMap = new Map<string, { orderCount: number; revenueCents: number }>();
+  for (const s of sales) {
+    const name = s.buyer_name?.trim() || "Isimsiz";
+    const e = custMap.get(name) ?? { orderCount: 0, revenueCents: 0 };
+    e.orderCount += 1;
+    e.revenueCents += s.grand_total_cents || s.item_total_cents || 0;
+    custMap.set(name, e);
+  }
+  const topCustomers: TopCustomer[] = [...custMap.entries()]
+    .map(([buyerName, v]) => ({ buyerName, ...v }))
+    .sort((a, b) => b.revenueCents - a.revenueCents)
+    .slice(0, 5);
+
+  // --- Kanal kırılımı ---
+  const CHANNEL_LABELS: Record<string, string> = {
+    etsy: "Etsy",
+    manual: "Manuel",
+    csv: "CSV Aktarım",
+  };
+  const chanMap = new Map<string, { orderCount: number; revenueCents: number }>();
+  for (const s of sales) {
+    const ch = s.source || "manual";
+    const e = chanMap.get(ch) ?? { orderCount: 0, revenueCents: 0 };
+    e.orderCount += 1;
+    e.revenueCents += s.grand_total_cents || s.item_total_cents || 0;
+    chanMap.set(ch, e);
+  }
+  const channelBreakdown: ChannelBreakdown[] = [...chanMap.entries()]
+    .map(([ch, v]) => ({ channel: CHANNEL_LABELS[ch] ?? ch, ...v }))
+    .sort((a, b) => b.revenueCents - a.revenueCents);
+
   const recent = await recentActivity(8);
 
   return {
@@ -174,6 +222,8 @@ export async function getDashboard(
     trend,
     costByCategory,
     topProducts,
+    topCustomers,
+    channelBreakdown,
     recent,
     goldCosts: {
       materialCents,
