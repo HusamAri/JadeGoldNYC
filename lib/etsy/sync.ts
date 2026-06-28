@@ -394,6 +394,7 @@ async function upsertListingsPage(
     description: l.description ?? null,
     tags: l.tags ?? null,
     materials: l.materials ?? null,
+    image_url: l.images?.[0]?.url_570xN ?? null,
     num_images: l.images?.length ?? null,
     quantity: l.quantity ?? null,
     has_variations: l.has_variations ?? null,

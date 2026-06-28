@@ -111,13 +111,22 @@ export default async function MaliyetlerPage({
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-1">
-                        <Button asChild variant="ghost" size="icon">
-                          <Link href={`/maliyetler/${c.id}/duzenle`}>
-                            <Pencil className="size-4" />
-                            <span className="sr-only">Düzenle</span>
-                          </Link>
-                        </Button>
-                        <DeleteButton action={deleteCost} id={c.id} />
+                        {c.source !== "gold_auto" && (
+                          <>
+                            <Button asChild variant="ghost" size="icon">
+                              <Link href={`/maliyetler/${c.id}/duzenle`}>
+                                <Pencil className="size-4" />
+                                <span className="sr-only">Düzenle</span>
+                              </Link>
+                            </Button>
+                            <DeleteButton action={deleteCost} id={c.id} />
+                          </>
+                        )}
+                        {c.source === "gold_auto" && (
+                          <Badge variant="outline" className="text-xs">
+                            Otomatik
+                          </Badge>
+                        )}
                       </div>
                     </TableCell>
                   </TableRow>
