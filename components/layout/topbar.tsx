@@ -8,6 +8,7 @@ import { signOut } from "@/lib/actions/session";
 import { NAV_ITEMS } from "@/components/layout/nav-items";
 import { Logo } from "@/components/layout/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { GoldPriceTicker } from "@/components/gold-price-ticker";
 import { UserAvatar } from "@/components/user-avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -66,6 +67,7 @@ export function Topbar({
       </div>
 
       <div className="flex items-center gap-2">
+        <GoldPriceTicker />
         <ThemeToggle />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

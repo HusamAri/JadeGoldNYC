@@ -6,10 +6,15 @@ import {
   ShoppingBag,
   Receipt,
   Percent,
+  Scale,
+  Gem,
+  Hammer,
 } from "lucide-react";
 
 import { resolvePeriod } from "@/lib/period";
 import { getDashboard } from "@/lib/db/queries/dashboard";
+import { getGoldPricePerOunce } from "@/lib/gold-price";
+import { TROY_OUNCE_GRAMS, KARAT_PURITY } from "@/lib/gold-cost";
 import { strParam, type RawSearchParams } from "@/lib/searchparams";
 import { formatMoney, formatPercent } from "@/lib/money";
 import { formatNumber, formatDateTime } from "@/lib/format";
@@ -47,8 +52,12 @@ export default async function PanelPage({
 }) {
   const sp = await searchParams;
   const period = resolvePeriod(strParam(sp.period));
-  const d = await getDashboard(period);
+  const [d, goldPriceOunce] = await Promise.all([
+    getDashboard(period),
+    getGoldPricePerOunce(),
+  ]);
   const cur = d.currency;
+  const goldPricePerGram = goldPriceOunce / TROY_OUNCE_GRAMS;
 
   return (
     <div className="space-y-6">
@@ -74,6 +83,40 @@ export default async function PanelPage({
         description={`Genel bakış · ${period.label}`}
         action={<PeriodSelector />}
       />
+
+      {/* ── Altın Fiyat Bilgisi ─────────────────────────────────────── */}
+      <Card>
+        <CardContent className="flex flex-wrap items-center gap-4 text-sm">
+          <div className="flex items-center gap-2">
+            <Scale className="text-muted-foreground size-4" />
+            <span className="text-muted-foreground">Guncel Altin:</span>
+            <span className="font-semibold tabular-nums">
+              ${formatNumber(goldPriceOunce)}/oz
+            </span>
+          </div>
+          <div className="text-muted-foreground">|</div>
+          <div>
+            <span className="text-muted-foreground">24K Gram: </span>
+            <span className="font-semibold tabular-nums">
+              ${goldPricePerGram.toFixed(2)}
+            </span>
+          </div>
+          <div className="text-muted-foreground">|</div>
+          <div>
+            <span className="text-muted-foreground">14K Gram: </span>
+            <span className="font-semibold tabular-nums">
+              ${(goldPricePerGram * KARAT_PURITY["14K"]).toFixed(2)}
+            </span>
+          </div>
+          <div className="text-muted-foreground">|</div>
+          <div>
+            <span className="text-muted-foreground">10K Gram: </span>
+            <span className="font-semibold tabular-nums">
+              ${(goldPricePerGram * KARAT_PURITY["10K"]).toFixed(2)}
+            </span>
+          </div>
+        </CardContent>
+      </Card>
 
       <div className="stagger grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-6">
         <KpiCard
@@ -109,6 +152,41 @@ export default async function PanelPage({
           accent={d.margin >= 0 ? "positive" : "negative"}
         />
       </div>
+
+      {/* ── Altın Maliyet Özeti ──────────────────────────────────────── */}
+      {d.goldCosts.totalGoldCents > 0 && (
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+          <KpiCard
+            label="Altin Malzeme"
+            value={formatMoney(d.goldCosts.materialCents, cur)}
+            icon={Gem}
+          />
+          <KpiCard
+            label="Iscilik"
+            value={formatMoney(d.goldCosts.laborCents, cur)}
+            icon={Hammer}
+          />
+          <KpiCard
+            label="Toplam Altin Maliyet"
+            value={formatMoney(d.goldCosts.totalGoldCents, cur)}
+            icon={Scale}
+          />
+          <KpiCard
+            label="Altin Kar Marji"
+            value={formatPercent(
+              d.revenueCents > 0
+                ? (d.revenueCents - d.goldCosts.totalGoldCents) / d.revenueCents
+                : 0,
+            )}
+            icon={Percent}
+            accent={
+              d.revenueCents > d.goldCosts.totalGoldCents
+                ? "positive"
+                : "negative"
+            }
+          />
+        </div>
+      )}
 
       <Card>
         <CardHeader>
@@ -174,6 +252,14 @@ export default async function PanelPage({
                 </TableBody>
               </Table>
             )}
+            <div className="mt-4">
+              <Link
+                href="/maliyetler/altin-maliyet"
+                className="text-primary text-sm font-medium hover:underline"
+              >
+                Altin maliyet analizi →
+              </Link>
+            </div>
           </CardContent>
         </Card>
 
