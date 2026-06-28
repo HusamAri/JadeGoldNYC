@@ -9,6 +9,8 @@ import {
   Scale,
   Gem,
   Hammer,
+  Users,
+  Store,
 } from "lucide-react";
 
 import { resolvePeriod, previousPeriod } from "@/lib/period";
@@ -293,7 +295,7 @@ export default async function PanelPage({
           <CardContent>
             {d.recent.length === 0 ? (
               <p className="text-muted-foreground text-sm">
-                Henüz kayıt yok.
+                Henuz kayit yok.
               </p>
             ) : (
               <ul className="space-y-3">
@@ -319,9 +321,97 @@ export default async function PanelPage({
                 href="/kayitlar"
                 className="text-primary text-sm font-medium hover:underline"
               >
-                Tüm kayıtları gör →
+                Tum kayitlari gor →
               </Link>
             </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* ── En Iyi Musteriler + Kanal Kirilimi ──────────────────────── */}
+      <div className="grid gap-6 lg:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Users className="size-4" />
+              En Iyi Musteriler
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {d.topCustomers.length === 0 ? (
+              <p className="text-muted-foreground text-sm">
+                Bu donemde musteri verisi yok.
+              </p>
+            ) : (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Musteri</TableHead>
+                    <TableHead className="text-right">Siparis</TableHead>
+                    <TableHead className="text-right">Toplam</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {d.topCustomers.map((c) => (
+                    <TableRow key={c.buyerName}>
+                      <TableCell className="max-w-[200px] truncate font-medium">
+                        {c.buyerName}
+                      </TableCell>
+                      <TableCell className="text-right tabular-nums">
+                        {formatNumber(c.orderCount)}
+                      </TableCell>
+                      <TableCell className="text-right tabular-nums">
+                        {formatMoney(c.revenueCents, cur)}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Store className="size-4" />
+              Satis Kanallari
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {d.channelBreakdown.length === 0 ? (
+              <p className="text-muted-foreground text-sm">
+                Bu donemde satis yok.
+              </p>
+            ) : (
+              <div className="space-y-4">
+                {d.channelBreakdown.map((ch) => {
+                  const pct =
+                    d.revenueCents > 0
+                      ? ch.revenueCents / d.revenueCents
+                      : 0;
+                  return (
+                    <div key={ch.channel} className="space-y-1.5">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="font-medium">{ch.channel}</span>
+                        <span className="text-muted-foreground tabular-nums">
+                          {formatMoney(ch.revenueCents, cur)} · {formatNumber(ch.orderCount)} siparis
+                        </span>
+                      </div>
+                      <div className="bg-muted h-2 overflow-hidden rounded-full">
+                        <div
+                          className="bg-primary h-full rounded-full transition-all"
+                          style={{ width: `${Math.round(pct * 100)}%` }}
+                        />
+                      </div>
+                      <p className="text-muted-foreground text-xs tabular-nums">
+                        {formatPercent(pct)}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>

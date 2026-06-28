@@ -3,6 +3,7 @@ import {
   endOfDay,
   subDays,
   subMonths,
+  subYears,
   startOfMonth,
   endOfMonth,
 } from "date-fns";
@@ -64,12 +65,9 @@ export function resolvePeriod(period?: string): ResolvedPeriod {
 }
 
 /**
- * Bir önceki dönemi hesaplar (karşılaştırma için).
- * - today → dün
- * - 7d → önceki 7 gün
- * - 30d → önceki 30 gün
- * - month → geçen ay
- * - all → null (karşılaştırma yok)
+ * Karsilastirma donemi hesaplar.
+ * Gunluk/haftalik analizlerde → onceki ay (ayni gunler)
+ * Aylik analizlerde → gecen sene (ayni ay)
  */
 export function previousPeriod(
   current: ResolvedPeriod,
@@ -77,37 +75,40 @@ export function previousPeriod(
   const now = new Date();
   switch (current.key) {
     case "today": {
-      const yesterday = subDays(now, 1);
+      const sameDay = subMonths(now, 1);
       return {
         key: "today",
-        fromIso: startOfDay(yesterday).toISOString(),
-        toIso: endOfDay(yesterday).toISOString(),
-        label: "Dün",
+        fromIso: startOfDay(sameDay).toISOString(),
+        toIso: endOfDay(sameDay).toISOString(),
+        label: "Gecen ay ayni gun",
       };
     }
     case "7d": {
+      const from = subMonths(subDays(now, 6), 1);
+      const to = subMonths(now, 1);
       return {
         key: "7d",
-        fromIso: startOfDay(subDays(now, 13)).toISOString(),
-        toIso: endOfDay(subDays(now, 7)).toISOString(),
-        label: "Önceki 7 gün",
+        fromIso: startOfDay(from).toISOString(),
+        toIso: endOfDay(to).toISOString(),
+        label: "Gecen ay ayni hafta",
       };
     }
     case "30d": {
+      const prevMonth = subMonths(now, 1);
       return {
         key: "30d",
-        fromIso: startOfDay(subDays(now, 59)).toISOString(),
-        toIso: endOfDay(subDays(now, 30)).toISOString(),
-        label: "Önceki 30 gün",
+        fromIso: startOfMonth(prevMonth).toISOString(),
+        toIso: endOfMonth(prevMonth).toISOString(),
+        label: "Gecen ay",
       };
     }
     case "month": {
-      const prevMonth = subMonths(now, 1);
+      const sameMonthLastYear = subYears(now, 1);
       return {
         key: "month",
-        fromIso: startOfMonth(prevMonth).toISOString(),
-        toIso: endOfMonth(prevMonth).toISOString(),
-        label: "Geçen ay",
+        fromIso: startOfMonth(sameMonthLastYear).toISOString(),
+        toIso: endOfMonth(sameMonthLastYear).toISOString(),
+        label: "Gecen sene ayni ay",
       };
     }
     case "all":
