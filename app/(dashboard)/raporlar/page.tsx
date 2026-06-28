@@ -50,7 +50,7 @@ export default async function RaporlarPage({
     { label: "Net Kar", value: formatMoney(d.profitCents, cur), change: pctChange(d.profitCents, prevData?.profitCents) },
     { label: "Siparis Sayisi", value: formatNumber(d.orderCount), change: pctChange(d.orderCount, prevData?.orderCount) },
     { label: "Ortalama Siparis", value: formatMoney(d.aovCents, cur), change: pctChange(d.aovCents, prevData?.aovCents) },
-    { label: "Kar Marji", value: formatPercent(d.margin), change: prevData ? pctChange(d.margin, prevData.margin) : null },
+    { label: "Kar Marji", value: formatPercent(d.margin), change: prevData ? (() => { const diff = (d.margin - prevData.margin) * 100; const arrow = diff >= 0 ? "↑" : "↓"; return `${arrow} %${Math.abs(diff).toFixed(1)}`; })() : null },
   ];
 
   return (
