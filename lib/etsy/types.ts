@@ -48,7 +48,7 @@ export interface EtsyListing {
   has_variations?: boolean;
   featured_rank?: number;
   last_modified_timestamp?: number;
-  images?: { listing_image_id?: number }[];
+  images?: { listing_image_id?: number; url_570xN?: string }[];
 }
 
 export interface EtsyReview {

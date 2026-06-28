@@ -4,6 +4,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { EtsyClient } from "@/lib/etsy/client";
 import { etsyPaths } from "@/lib/etsy/endpoints";
 import { logAudit } from "@/lib/audit";
+import { processGoldCostsForRecentSales } from "@/lib/gold-cost-entry";
 import {
   etsyMoneyToCents,
   type EtsyListResponse,
@@ -286,6 +287,13 @@ export async function advanceEtsySync(
       // yok say
     }
 
+    // Altın maliyet kalemlerini otomatik oluştur (idempotent).
+    try {
+      await processGoldCostsForRecentSales(admin, orgId);
+    } catch {
+      // yok say
+    }
+
     await persist({ sync_status: "done" });
     await logAudit(admin, {
       orgId,
@@ -386,6 +394,7 @@ async function upsertListingsPage(
     description: l.description ?? null,
     tags: l.tags ?? null,
     materials: l.materials ?? null,
+    image_url: l.images?.[0]?.url_570xN ?? null,
     num_images: l.images?.length ?? null,
     quantity: l.quantity ?? null,
     has_variations: l.has_variations ?? null,

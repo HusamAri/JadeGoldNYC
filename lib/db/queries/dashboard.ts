@@ -4,6 +4,25 @@ import { formatDate } from "@/lib/format";
 import type { ResolvedPeriod } from "@/lib/period";
 import type { AuditLog } from "@/lib/types";
 
+export interface GoldCostSummaryData {
+  materialCents: number;
+  laborCents: number;
+  totalGoldCents: number;
+  itemsWithCost: number;
+}
+
+export interface TopCustomer {
+  buyerName: string;
+  orderCount: number;
+  revenueCents: number;
+}
+
+export interface ChannelBreakdown {
+  channel: string;
+  orderCount: number;
+  revenueCents: number;
+}
+
 export interface DashboardData {
   revenueCents: number;
   costCents: number;
@@ -15,7 +34,10 @@ export interface DashboardData {
   trend: { date: string; label: string; revenue: number; cost: number; orders: number }[];
   costByCategory: { name: string; value: number }[];
   topProducts: { title: string; quantity: number; revenue: number }[];
+  topCustomers: TopCustomer[];
+  channelBreakdown: ChannelBreakdown[];
   recent: AuditLog[];
+  goldCosts: GoldCostSummaryData;
 }
 
 const round2 = (n: number) => Math.round(n * 100) / 100;
@@ -31,7 +53,7 @@ export async function getDashboard(
   // --- Satışlar ---
   let salesQuery = supabase
     .from("sales")
-    .select("grand_total_cents, item_total_cents, order_date")
+    .select("grand_total_cents, item_total_cents, order_date, buyer_name, source")
     .neq("status", "cancelled")
     .lte("order_date", period.toIso);
   if (period.fromIso) salesQuery = salesQuery.gte("order_date", period.fromIso);
@@ -40,6 +62,8 @@ export async function getDashboard(
     grand_total_cents: number;
     item_total_cents: number;
     order_date: string;
+    buyer_name: string | null;
+    source: string;
   }[];
 
   // --- Maliyetler ---
@@ -131,6 +155,60 @@ export async function getDashboard(
     .sort((a, b) => b.revenue - a.revenue)
     .slice(0, 5);
 
+  // --- Altın maliyet özeti (gold_auto kaynaklı) ---
+  let goldCostQuery = supabase
+    .from("costs")
+    .select("amount_cents, category:cost_categories(key)")
+    .eq("source", "gold_auto")
+    .lte("cost_date", toDate);
+  if (fromDate) goldCostQuery = goldCostQuery.gte("cost_date", fromDate);
+  const { data: goldCostRows } = await goldCostQuery;
+  const goldCosts_ = (goldCostRows ?? []) as unknown as {
+    amount_cents: number;
+    category: { key: string } | null;
+  }[];
+
+  let materialCents = 0;
+  let laborCents = 0;
+  for (const gc of goldCosts_) {
+    const key = gc.category?.key;
+    if (key === "malzeme") materialCents += gc.amount_cents || 0;
+    else if (key === "iscilik") laborCents += gc.amount_cents || 0;
+    else materialCents += gc.amount_cents || 0;
+  }
+
+  // --- En iyi müşteriler ---
+  const custMap = new Map<string, { orderCount: number; revenueCents: number }>();
+  for (const s of sales) {
+    const name = s.buyer_name?.trim() || "Isimsiz";
+    const e = custMap.get(name) ?? { orderCount: 0, revenueCents: 0 };
+    e.orderCount += 1;
+    e.revenueCents += s.grand_total_cents || s.item_total_cents || 0;
+    custMap.set(name, e);
+  }
+  const topCustomers: TopCustomer[] = [...custMap.entries()]
+    .map(([buyerName, v]) => ({ buyerName, ...v }))
+    .sort((a, b) => b.revenueCents - a.revenueCents)
+    .slice(0, 5);
+
+  // --- Kanal kırılımı ---
+  const CHANNEL_LABELS: Record<string, string> = {
+    etsy: "Etsy",
+    manual: "Manuel",
+    csv: "CSV Aktarım",
+  };
+  const chanMap = new Map<string, { orderCount: number; revenueCents: number }>();
+  for (const s of sales) {
+    const ch = s.source || "manual";
+    const e = chanMap.get(ch) ?? { orderCount: 0, revenueCents: 0 };
+    e.orderCount += 1;
+    e.revenueCents += s.grand_total_cents || s.item_total_cents || 0;
+    chanMap.set(ch, e);
+  }
+  const channelBreakdown: ChannelBreakdown[] = [...chanMap.entries()]
+    .map(([ch, v]) => ({ channel: CHANNEL_LABELS[ch] ?? ch, ...v }))
+    .sort((a, b) => b.revenueCents - a.revenueCents);
+
   const recent = await recentActivity(8);
 
   return {
@@ -144,6 +222,14 @@ export async function getDashboard(
     trend,
     costByCategory,
     topProducts,
+    topCustomers,
+    channelBreakdown,
     recent,
+    goldCosts: {
+      materialCents,
+      laborCents,
+      totalGoldCents: materialCents + laborCents,
+      itemsWithCost: goldCosts_.length,
+    },
   };
 }

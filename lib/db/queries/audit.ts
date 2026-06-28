@@ -4,6 +4,7 @@ import type { AuditLog } from "@/lib/types";
 export interface ListAuditOptions {
   entityType?: string;
   action?: string;
+  source?: string;
   search?: string;
   limit?: number;
   offset?: number;
@@ -22,6 +23,7 @@ export async function listAudit(opts: ListAuditOptions = {}) {
 
   if (opts.entityType) query = query.eq("entity_type", opts.entityType);
   if (opts.action) query = query.eq("action", opts.action);
+  if (opts.source) query = query.eq("source", opts.source);
   if (opts.search) {
     const s = opts.search.replace(/[,()%*]/g, " ").trim();
     if (s) query = query.or(`summary.ilike.%${s}%,actor_label.ilike.%${s}%`);

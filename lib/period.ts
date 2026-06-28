@@ -1,4 +1,12 @@
-import { startOfDay, endOfDay, subDays, startOfMonth } from "date-fns";
+import {
+  startOfDay,
+  endOfDay,
+  subDays,
+  subMonths,
+  subYears,
+  startOfMonth,
+  endOfMonth,
+} from "date-fns";
 
 export type PeriodKey = "today" | "7d" | "30d" | "month" | "all";
 
@@ -53,5 +61,58 @@ export function resolvePeriod(period?: string): ResolvedPeriod {
         toIso,
         label: "Son 30 gün",
       };
+  }
+}
+
+/**
+ * Karsilastirma donemi hesaplar.
+ * Gunluk/haftalik analizlerde → onceki ay (ayni gunler)
+ * Aylik analizlerde → gecen sene (ayni ay)
+ */
+export function previousPeriod(
+  current: ResolvedPeriod,
+): ResolvedPeriod | null {
+  const now = new Date();
+  switch (current.key) {
+    case "today": {
+      const sameDay = subMonths(now, 1);
+      return {
+        key: "today",
+        fromIso: startOfDay(sameDay).toISOString(),
+        toIso: endOfDay(sameDay).toISOString(),
+        label: "Gecen ay ayni gun",
+      };
+    }
+    case "7d": {
+      const from = subMonths(subDays(now, 6), 1);
+      const to = subMonths(now, 1);
+      return {
+        key: "7d",
+        fromIso: startOfDay(from).toISOString(),
+        toIso: endOfDay(to).toISOString(),
+        label: "Gecen ay ayni hafta",
+      };
+    }
+    case "30d": {
+      const prevMonth = subMonths(now, 1);
+      return {
+        key: "30d",
+        fromIso: startOfMonth(prevMonth).toISOString(),
+        toIso: endOfMonth(prevMonth).toISOString(),
+        label: "Gecen ay",
+      };
+    }
+    case "month": {
+      const sameMonthLastYear = subYears(now, 1);
+      return {
+        key: "month",
+        fromIso: startOfMonth(sameMonthLastYear).toISOString(),
+        toIso: endOfMonth(sameMonthLastYear).toISOString(),
+        label: "Gecen sene ayni ay",
+      };
+    }
+    case "all":
+    default:
+      return null;
   }
 }

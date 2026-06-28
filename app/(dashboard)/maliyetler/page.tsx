@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Plus, Pencil, Wallet } from "lucide-react";
+import { Plus, Pencil, Wallet, Gem } from "lucide-react";
 
 import { listCosts, listCostCategories } from "@/lib/db/queries/costs";
 import { strParam, numParam, type RawSearchParams } from "@/lib/searchparams";
@@ -47,12 +47,20 @@ export default async function MaliyetlerPage({
         title="Maliyetler"
         description="Malzeme, kargo, Etsy ücretleri, reklam ve diğer giderler"
         action={
-          <Button asChild>
-            <Link href="/maliyetler/yeni">
-              <Plus />
-              Yeni Maliyet
-            </Link>
-          </Button>
+          <>
+            <Button asChild variant="outline">
+              <Link href="/maliyetler/altin-maliyet">
+                <Gem />
+                Altin Maliyet
+              </Link>
+            </Button>
+            <Button asChild>
+              <Link href="/maliyetler/yeni">
+                <Plus />
+                Yeni Maliyet
+              </Link>
+            </Button>
+          </>
         }
       />
 
@@ -103,13 +111,22 @@ export default async function MaliyetlerPage({
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-1">
-                        <Button asChild variant="ghost" size="icon">
-                          <Link href={`/maliyetler/${c.id}/duzenle`}>
-                            <Pencil className="size-4" />
-                            <span className="sr-only">Düzenle</span>
-                          </Link>
-                        </Button>
-                        <DeleteButton action={deleteCost} id={c.id} />
+                        {c.source !== "gold_auto" && (
+                          <>
+                            <Button asChild variant="ghost" size="icon">
+                              <Link href={`/maliyetler/${c.id}/duzenle`}>
+                                <Pencil className="size-4" />
+                                <span className="sr-only">Düzenle</span>
+                              </Link>
+                            </Button>
+                            <DeleteButton action={deleteCost} id={c.id} />
+                          </>
+                        )}
+                        {c.source === "gold_auto" && (
+                          <Badge variant="outline" className="text-xs">
+                            Otomatik
+                          </Badge>
+                        )}
                       </div>
                     </TableCell>
                   </TableRow>
