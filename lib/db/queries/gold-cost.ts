@@ -3,9 +3,11 @@ import {
   detectKarat,
   extractWeightGrams,
   calculateGoldCost,
+  PURCHASE_PRICE_CENTS_PER_GRAM,
   type KaratType,
   type GoldCostBreakdown,
 } from "@/lib/gold-cost";
+import { requireMembership } from "@/lib/auth";
 
 // ── Satış kalemi + ürün bilgisi birleşik tipi ─────────────────────────
 
@@ -63,7 +65,20 @@ export interface GoldCostSummary {
 export async function getGoldCostAnalysis(
   goldPricePerOunceUsd: number,
 ): Promise<{ items: SoldItemWithCost[]; summary: GoldCostSummary }> {
+  const m = await requireMembership();
   const supabase = await createClient();
+
+  // Org ayarlarından özel alım fiyatlarını çek
+  const { data: orgData } = await supabase
+    .from("organizations")
+    .select("gold_settings")
+    .eq("id", m.org_id)
+    .maybeSingle();
+  const gs = (orgData as { gold_settings?: { purchase_price_14k_cents?: number; purchase_price_10k_cents?: number } } | null)?.gold_settings;
+  const customPurchasePrices: Record<KaratType, number> = {
+    "14K": gs?.purchase_price_14k_cents ?? PURCHASE_PRICE_CENTS_PER_GRAM["14K"],
+    "10K": gs?.purchase_price_10k_cents ?? PURCHASE_PRICE_CENTS_PER_GRAM["10K"],
+  };
 
   const { data: saleItemRows, error } = await supabase
     .from("sale_items")
@@ -136,7 +151,7 @@ export async function getGoldCostAnalysis(
 
     let cost: GoldCostBreakdown | null = null;
     if (karat && weightGrams) {
-      cost = calculateGoldCost(goldPricePerOunceUsd, karat, weightGrams);
+      cost = calculateGoldCost(goldPricePerOunceUsd, karat, weightGrams, customPurchasePrices);
     }
 
     return {

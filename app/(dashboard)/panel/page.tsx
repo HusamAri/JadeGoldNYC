@@ -11,7 +11,7 @@ import {
   Hammer,
 } from "lucide-react";
 
-import { resolvePeriod } from "@/lib/period";
+import { resolvePeriod, previousPeriod } from "@/lib/period";
 import { getDashboard } from "@/lib/db/queries/dashboard";
 import { getGoldPricePerOunce } from "@/lib/gold-price";
 import { TROY_OUNCE_GRAMS, KARAT_PURITY } from "@/lib/gold-cost";
@@ -52,12 +52,19 @@ export default async function PanelPage({
 }) {
   const sp = await searchParams;
   const period = resolvePeriod(strParam(sp.period));
-  const [d, goldPriceOunce] = await Promise.all([
+  const prev = previousPeriod(period);
+  const [d, goldPriceOunce, prevData] = await Promise.all([
     getDashboard(period),
     getGoldPricePerOunce(),
+    prev ? getDashboard(prev) : Promise.resolve(null),
   ]);
   const cur = d.currency;
   const goldPricePerGram = goldPriceOunce / TROY_OUNCE_GRAMS;
+
+  function pctChange(current: number, previous: number | undefined | null): number | null {
+    if (previous == null || previous === 0) return null;
+    return (current - previous) / Math.abs(previous);
+  }
 
   return (
     <div className="space-y-6">
@@ -123,33 +130,49 @@ export default async function PanelPage({
           label="Toplam Gelir"
           value={formatMoney(d.revenueCents, cur)}
           icon={DollarSign}
+          change={pctChange(d.revenueCents, prevData?.revenueCents)}
+          changeLabel={prev?.label}
         />
         <KpiCard
           label="Toplam Maliyet"
           value={formatMoney(d.costCents, cur)}
           icon={Wallet}
+          change={pctChange(d.costCents, prevData?.costCents)}
+          changeLabel={prev?.label}
         />
         <KpiCard
-          label="Net Kâr"
+          label="Net Kar"
           value={formatMoney(d.profitCents, cur)}
           icon={TrendingUp}
           accent={d.profitCents >= 0 ? "positive" : "negative"}
+          change={pctChange(d.profitCents, prevData?.profitCents)}
+          changeLabel={prev?.label}
         />
         <KpiCard
-          label="Sipariş Sayısı"
+          label="Siparis Sayisi"
           value={formatNumber(d.orderCount)}
           icon={ShoppingBag}
+          change={pctChange(d.orderCount, prevData?.orderCount)}
+          changeLabel={prev?.label}
         />
         <KpiCard
-          label="Ort. Sipariş"
+          label="Ort. Siparis"
           value={formatMoney(d.aovCents, cur)}
           icon={Receipt}
+          change={pctChange(d.aovCents, prevData?.aovCents)}
+          changeLabel={prev?.label}
         />
         <KpiCard
-          label="Kâr Marjı"
+          label="Kar Marji"
           value={formatPercent(d.margin)}
           icon={Percent}
           accent={d.margin >= 0 ? "positive" : "negative"}
+          change={
+            prevData
+              ? d.margin - prevData.margin
+              : null
+          }
+          changeLabel={prev?.label}
         />
       </div>
 

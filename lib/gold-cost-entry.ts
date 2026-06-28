@@ -18,7 +18,9 @@ import {
   detectKarat,
   extractWeightGrams,
   calculateGoldCost,
+  PURCHASE_PRICE_CENTS_PER_GRAM,
   type GoldCostBreakdown,
+  type KaratType,
 } from "@/lib/gold-cost";
 
 export interface GoldCostResult {
@@ -122,6 +124,18 @@ export async function createGoldCostForSale(
   // Altın fiyatını çek
   const goldPricePerOunce = await getGoldPricePerOunce();
 
+  // Org ayarlarından özel alım fiyatlarını çek
+  const { data: orgData } = await supabase
+    .from("organizations")
+    .select("gold_settings")
+    .eq("id", orgId)
+    .maybeSingle();
+  const gs = (orgData as { gold_settings?: { purchase_price_14k_cents?: number; purchase_price_10k_cents?: number } } | null)?.gold_settings;
+  const customPurchasePrices: Record<KaratType, number> = {
+    "14K": gs?.purchase_price_14k_cents ?? PURCHASE_PRICE_CENTS_PER_GRAM["14K"],
+    "10K": gs?.purchase_price_10k_cents ?? PURCHASE_PRICE_CENTS_PER_GRAM["10K"],
+  };
+
   // Maliyet kategorilerini çek
   const { data: cats } = await supabase
     .from("cost_categories")
@@ -165,6 +179,7 @@ export async function createGoldCostForSale(
       goldPricePerOunce,
       karat,
       weightGrams,
+      customPurchasePrices,
     );
 
     const qty = item.quantity || 1;

@@ -96,12 +96,14 @@ export function calculateGoldCost(
   goldPricePerOunceUsd: number,
   karat: KaratType,
   weightGrams: number,
+  customPurchasePrices?: Partial<Record<KaratType, number>>,
 ): GoldCostBreakdown {
   const pureGoldPerGramUsd = goldPricePerOunceUsd / TROY_OUNCE_GRAMS;
   const purity = KARAT_PURITY[karat];
   const karatGoldPerGramUsd = pureGoldPerGramUsd * purity;
 
-  const purchaseCentsPerGram = PURCHASE_PRICE_CENTS_PER_GRAM[karat];
+  const purchaseCentsPerGram =
+    customPurchasePrices?.[karat] ?? PURCHASE_PRICE_CENTS_PER_GRAM[karat];
   const purchasePerGramUsd = purchaseCentsPerGram / 100;
 
   const laborPerGramUsd = purchasePerGramUsd - karatGoldPerGramUsd;

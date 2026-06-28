@@ -34,6 +34,9 @@ const ENTITY_OPTIONS = Object.entries(ENTITY_TYPE_LABELS).map(
 const ACTION_OPTIONS = Object.entries(AUDIT_ACTION_LABELS).map(
   ([value, label]) => ({ value, label }),
 );
+const SOURCE_OPTIONS = Object.entries(AUDIT_SOURCE_LABELS).map(
+  ([value, label]) => ({ value, label }),
+);
 
 function actionVariant(
   action: string,
@@ -52,6 +55,7 @@ export default async function KayitlarPage({
   const sp = await searchParams;
   const entityType = strParam(sp.entity);
   const action = strParam(sp.action);
+  const source = strParam(sp.source);
   const search = strParam(sp.search);
   const offset = numParam(sp.offset);
   const limit = 30;
@@ -59,6 +63,7 @@ export default async function KayitlarPage({
   const { rows, count } = await listAudit({
     entityType,
     action,
+    source,
     search,
     limit,
     offset,
@@ -67,6 +72,7 @@ export default async function KayitlarPage({
   const exportQs = new URLSearchParams();
   if (entityType) exportQs.set("entity", entityType);
   if (action) exportQs.set("action", action);
+  if (source) exportQs.set("source", source);
   if (search) exportQs.set("search", search);
   const exportHref = `/kayitlar/export${
     exportQs.toString() ? `?${exportQs.toString()}` : ""
@@ -100,6 +106,11 @@ export default async function KayitlarPage({
               paramKey="action"
               placeholder="İşlem"
               options={ACTION_OPTIONS}
+            />
+            <FilterSelect
+              paramKey="source"
+              placeholder="Kaynak"
+              options={SOURCE_OPTIONS}
             />
           </div>
 
