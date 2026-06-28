@@ -10,5 +10,6 @@ alter table public.costs add constraint costs_source_check
     'csv'::text,
     'etsy'::text,
     'etsy_ledger'::text,
+    'shipstation'::text,
     'gold_auto'::text
   ]));
