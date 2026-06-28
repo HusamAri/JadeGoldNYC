@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import { createAdminClient } from "@/lib/supabase/admin";
 import { advanceEtsySync } from "@/lib/etsy/sync";
+import { processGoldCostsForRecentSales } from "@/lib/gold-cost-entry";
 
 // Etsy senkronu birden çok sayfalı API çağrısı yapar; süre limitini uzat.
 export const maxDuration = 60;
@@ -33,6 +34,13 @@ export async function GET(request: Request) {
       results[c.org_id] = {
         error: e instanceof Error ? e.message : "error",
       };
+    }
+
+    // Altın maliyet kalemlerini eksik satışlar için oluştur (idempotent).
+    try {
+      await processGoldCostsForRecentSales(admin, c.org_id);
+    } catch {
+      // yok say
     }
   }
 
