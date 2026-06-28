@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { requireMembership } from "@/lib/auth";
 import { logAudit } from "@/lib/audit";
+import { createGoldCostsForSales } from "@/lib/gold-cost-entry";
 import type { MappedSale } from "@/lib/csv/types";
 
 export interface CommitImportResult {
@@ -46,6 +47,7 @@ export async function commitSalesImport(input: {
   let imported = 0;
   let skipped = 0;
   const errors: string[] = [];
+  const importedSaleIds: string[] = [];
 
   for (const s of input.sales) {
     const saleRow = {
@@ -96,6 +98,7 @@ export async function commitSalesImport(input: {
       saleId = (data as { id: string }).id;
     }
     imported++;
+    if (saleId) importedSaleIds.push(saleId);
 
     if (saleId && s.items.length) {
       // Yeniden içe aktarmada çift kalem olmaması için önce mevcut kalemleri sil.
@@ -139,7 +142,13 @@ export async function commitSalesImport(input: {
     diff: { imported, skipped, filename: input.filename, template: input.template },
   });
 
+  // Altın maliyet kalemlerini otomatik oluştur (arka planda, hatayı yut)
+  if (importedSaleIds.length > 0) {
+    createGoldCostsForSales(supabase, importedSaleIds, m.org_id).catch(() => {});
+  }
+
   revalidatePath("/satislar");
+  revalidatePath("/maliyetler");
   revalidatePath("/panel");
   return { ok: true, imported, skipped };
 }

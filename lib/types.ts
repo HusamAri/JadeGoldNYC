@@ -22,7 +22,7 @@ export interface Member {
   role: Role;
 }
 
-export type SourceKind = "manual" | "csv" | "etsy";
+export type SourceKind = "manual" | "csv" | "etsy" | "etsy_ledger" | "gold_auto";
 
 export type SaleStatus =
   | "paid"

@@ -3,6 +3,7 @@ import { ArrowLeft, Gem, AlertTriangle, Scale } from "lucide-react";
 
 import { getGoldCostAnalysis } from "@/lib/db/queries/gold-cost";
 import { TROY_OUNCE_GRAMS, type KaratType } from "@/lib/gold-cost";
+import { getGoldPricePerOunce } from "@/lib/gold-price";
 import { formatMoney, formatPercent } from "@/lib/money";
 import { formatDate } from "@/lib/format";
 import { numParam, type RawSearchParams } from "@/lib/searchparams";
@@ -25,10 +26,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { EmptyState } from "@/components/empty-state";
+import { RetroactiveButton } from "./retroactive-button";
 
 export const metadata = { title: "Altın Maliyet Analizi" };
-
-const DEFAULT_GOLD_PRICE_PER_OUNCE = 4088;
 
 function fmtUsd(usd: number): string {
   return new Intl.NumberFormat("tr-TR", {
@@ -56,7 +56,8 @@ export default async function AltinMaliyetPage({
   searchParams: Promise<RawSearchParams>;
 }) {
   const sp = await searchParams;
-  const goldPriceOunce = numParam(sp.ons, DEFAULT_GOLD_PRICE_PER_OUNCE);
+  const livePrice = await getGoldPricePerOunce();
+  const goldPriceOunce = numParam(sp.ons, livePrice);
   const goldPricePerGram = goldPriceOunce / TROY_OUNCE_GRAMS;
 
   const { items, summary } = await getGoldCostAnalysis(goldPriceOunce);
@@ -67,12 +68,15 @@ export default async function AltinMaliyetPage({
         title="Altin Maliyet Analizi"
         description="Satilan urunlerin altin malzeme + iscilik maliyet kirilimi"
         action={
-          <Button asChild variant="outline">
-            <Link href="/maliyetler">
-              <ArrowLeft />
-              Maliyetler
-            </Link>
-          </Button>
+          <div className="flex items-center gap-2">
+            <RetroactiveButton />
+            <Button asChild variant="outline">
+              <Link href="/maliyetler">
+                <ArrowLeft />
+                Maliyetler
+              </Link>
+            </Button>
+          </div>
         }
       />
 

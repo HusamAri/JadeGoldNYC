@@ -4,6 +4,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { EtsyClient } from "@/lib/etsy/client";
 import { etsyPaths } from "@/lib/etsy/endpoints";
 import { logAudit } from "@/lib/audit";
+import { processGoldCostsForRecentSales } from "@/lib/gold-cost-entry";
 import {
   etsyMoneyToCents,
   type EtsyListResponse,
@@ -282,6 +283,13 @@ export async function advanceEtsySync(
     // Hata senkronu bozmasın (siparişler zaten yazıldı).
     try {
       await admin.rpc("rebuild_etsy_ledger_costs", { p_org_id: orgId });
+    } catch {
+      // yok say
+    }
+
+    // Altın maliyet kalemlerini otomatik oluştur (idempotent).
+    try {
+      await processGoldCostsForRecentSales(admin, orgId);
     } catch {
       // yok say
     }
