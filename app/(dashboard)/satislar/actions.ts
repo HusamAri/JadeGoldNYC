@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { requireMembership } from "@/lib/auth";
 import { saleFormSchema, type SaleFormValues } from "@/lib/validations/sale";
 import { parseMoneyToCents } from "@/lib/money";
+import { createGoldCostForSale } from "@/lib/gold-cost-entry";
 
 export interface SaleActionResult {
   ok?: boolean;
@@ -65,9 +66,15 @@ export async function createSale(
     .single();
   if (error) return { error: error.message };
 
+  const saleId = (data as { id: string }).id;
+
+  // Altın maliyet kalemlerini otomatik oluştur (arka planda, hatayı yut)
+  createGoldCostForSale(supabase, saleId, m.org_id).catch(() => {});
+
   revalidatePath("/satislar");
+  revalidatePath("/maliyetler");
   revalidatePath("/panel");
-  return { ok: true, id: (data as { id: string }).id };
+  return { ok: true, id: saleId };
 }
 
 export async function updateSale(
