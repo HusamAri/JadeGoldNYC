@@ -144,6 +144,7 @@ export default function MarkaKilavuzuPage() {
       <EditorialCard
         className="min-h-[280px] md:min-h-[340px]"
         image="/brand/gallery/koyu-franco.webp"
+        video="/brand/video/jade-altin-dolly.mp4"
         eyebrow="Jade Gold · New York City"
         title="Sessiz lüks, som altından."
         subtitle="New York'un nabzından doğan; 10K & 14K som altını çağdaş ve sade bir dille yorumlayan bir mücevher markası."

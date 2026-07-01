@@ -37,6 +37,7 @@ export default function LoginPage() {
       {/* Marka paneli (geniş ekran) */}
       <BrandTile
         src={BRAND_LOGIN_HERO}
+        video="/brand/video/atolye-el-isciligi.mp4"
         rounded={false}
         scrim
         className="hidden lg:block"
