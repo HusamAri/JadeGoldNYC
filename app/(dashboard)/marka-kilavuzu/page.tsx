@@ -54,6 +54,41 @@ const VALUES = [
   ["Şeffaflık", "Ayar, ağırlık ve köken açık. Güven, satıştan önce gelir."],
 ];
 
+const BRAND_PILLARS = [
+  {
+    pillar: "Malzeme Dürüstlüğü",
+    copy: "“Natural Type A jade. 14k solid gold. No plating.”",
+    signal: "Şeffaflık = güven",
+  },
+  {
+    pillar: "Küçük Parti",
+    copy: "“Made in batches of 12 or fewer.”",
+    signal: "Abartısız kıtlık",
+  },
+  {
+    pillar: "NYC Kökeni",
+    copy: "“Designed and crafted in New York.”",
+    signal: "Yerel lüks itibarı",
+  },
+  {
+    pillar: "Zanaat Mirası",
+    copy: "Atölye · araç · süreç görselleri",
+    signal: "İnsani bağ",
+  },
+  {
+    pillar: "Sade Tasarım",
+    copy: "Logosuz, temiz, minimal ayarlar",
+    signal: "Gösterişsiz özgüven",
+  },
+];
+
+const SLOGANS = [
+  "Quiet luxury, in solid gold.",
+  "Wear it forever. Never announce it.",
+  "Not plated. Not trending. Just gold.",
+  "Sessiz lüks, som altından.",
+];
+
 const PERSONAS = [
   {
     name: "Sophia · 34",
@@ -450,6 +485,96 @@ export default function MarkaKilavuzuPage() {
           Görselleri <code className="font-mono">public/brand/gallery/</code>{" "}
           klasörüne ilgili dosya adıyla ekleyin; otomatik görünür. Dosya yoksa
           zarif degrade gösterilir.
+        </p>
+      </section>
+
+      {/* Pazar fırsatı & konumlandırma */}
+      <section className="space-y-5">
+        <Eyebrow>08 · Pazar Fırsatı & Konumlandırma</Eyebrow>
+        <h2 className="font-serif text-3xl tracking-tight">Sahiplenilmemiş Konum</h2>
+        <Card>
+          <CardContent className="flex items-start gap-3 py-6">
+            <Quote className="size-5 shrink-0 text-[oklch(0.6_0.08_72)]" aria-hidden />
+            <p className="text-muted-foreground text-[15px] leading-relaxed">
+              Amerika&apos;da üretilen, doğal jade ile som altını birleştiren,
+              $85–$180 aralığında, şeffaf bir NYC el işçiliği hikâyesi olan
+              sessiz lüks mücevher — bu kesişimi hâlâ hiçbir Etsy satıcısı
+              sahiplenmiş değil. Bu, Jade Gold NYC&apos;nin fırsatı.
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base">Konumlandırma İfadesi</CardTitle>
+            <CardDescription>
+              Etsy mağaza tanıtımı, sosyal medya biyografisi ve basın kitinde
+              olduğu gibi kullanılabilir.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="font-serif text-lg leading-snug italic">
+              &ldquo;Handcrafted jade and gold jewelry for women who wear
+              quality without announcing it. Each piece is made in small
+              batches in New York, using natural jade and solid gold
+              settings — designed to be worn daily, kept forever, and passed
+              down.&rdquo;
+            </p>
+          </CardContent>
+        </Card>
+
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {BRAND_PILLARS.map((p) => (
+            <Card key={p.pillar}>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base">{p.pillar}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <p className="font-mono text-xs text-[#9a7d3e]">{p.copy}</p>
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  {p.signal}
+                </p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        <div className="grid gap-6 lg:grid-cols-2">
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base">Slogan Seçenekleri</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-2">
+                {SLOGANS.map((s) => (
+                  <li key={s} className="font-serif text-lg leading-snug">
+                    “{s}”
+                  </li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base">Mağaza Tanıtım Metni</CardTitle>
+              <CardDescription>Etsy “shop announcement” için hazır.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                “Jade Gold NYC crafts natural jade and solid 14k/18k gold
+                jewelry in small NYC batches — no plating, no shortcuts.
+                Quality you feel, not something you announce.”
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+
+        <p className="text-muted-foreground text-xs">
+          Uygulanabilir SEO/AEO adımları için{" "}
+          <a href="/ayarlar/buyume-stratejisi" className="underline">
+            Büyüme Stratejisi
+          </a>{" "}
+          sayfasına bakın.
         </p>
       </section>
     </div>
