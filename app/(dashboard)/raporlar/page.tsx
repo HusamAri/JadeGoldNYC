@@ -4,6 +4,7 @@ import { strParam, type RawSearchParams } from "@/lib/searchparams";
 import { formatMoney, formatPercent } from "@/lib/money";
 import { formatNumber, formatDate } from "@/lib/format";
 import { PageHeader } from "@/components/page-header";
+import { GoldStream } from "@/components/brand/gold-stream";
 import { PeriodSelector } from "@/components/period-selector";
 import { ReportExport } from "@/components/report-export";
 import {
@@ -54,7 +55,8 @@ export default async function RaporlarPage({
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="relative z-0 pb-28 space-y-6">
+      <GoldStream motif="seal" />
       <PageHeader
         title="Raporlar"
         description={`Dönem · ${period.label}`}

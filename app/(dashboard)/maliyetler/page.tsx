@@ -6,6 +6,7 @@ import { strParam, numParam, type RawSearchParams } from "@/lib/searchparams";
 import { formatMoney } from "@/lib/money";
 import { formatDate } from "@/lib/format";
 import { PageHeader } from "@/components/page-header";
+import { GoldStream } from "@/components/brand/gold-stream";
 import { EmptyState } from "@/components/empty-state";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -42,7 +43,8 @@ export default async function MaliyetlerPage({
   const catOptions = categories.map((c) => ({ value: c.id, label: c.label_tr }));
 
   return (
-    <div>
+    <div className="relative z-0 pb-28">
+      <GoldStream motif="scale" />
       <PageHeader
         title="Maliyetler"
         description="Malzeme, kargo, Etsy ücretleri, reklam ve diğer giderler"

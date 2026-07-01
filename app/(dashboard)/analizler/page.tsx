@@ -23,6 +23,7 @@ import {
 import { formatMoney, formatPercent } from "@/lib/money";
 import { formatNumber } from "@/lib/format";
 import { PageHeader } from "@/components/page-header";
+import { GoldStream } from "@/components/brand/gold-stream";
 import { EmptyState } from "@/components/empty-state";
 import { DeltaBadge } from "@/components/delta-badge";
 import { AutoRefresh } from "@/components/auto-refresh";
@@ -185,7 +186,8 @@ export default async function PerformansPage() {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="relative z-0 pb-28 space-y-6">
+      <GoldStream motif="spark" />
       <AutoRefresh intervalMs={60000} />
       <PageHeader
         title="Etsy Performansı"

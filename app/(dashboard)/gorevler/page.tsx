@@ -15,6 +15,7 @@ import {
 } from "@/lib/db/queries/tasks";
 import { formatNumber } from "@/lib/format";
 import { PageHeader } from "@/components/page-header";
+import { GoldStream } from "@/components/brand/gold-stream";
 import { KpiCard } from "@/components/kpi-card";
 import { Button } from "@/components/ui/button";
 import { TaskBoard } from "@/components/tasks/task-board";
@@ -29,7 +30,8 @@ export default async function GorevlerPage() {
   ]);
 
   return (
-    <div className="space-y-6">
+    <div className="relative z-0 pb-28 space-y-6">
+      <GoldStream motif="check" />
       <PageHeader
         title="Görevler"
         description="Etsy turnaround planı · ekip görev tahtası"

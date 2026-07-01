@@ -20,6 +20,7 @@ import { CART_STATUSES } from "@/lib/constants";
 import { formatMoney } from "@/lib/money";
 import { formatNumber, formatDate } from "@/lib/format";
 import { PageHeader } from "@/components/page-header";
+import { GoldStream } from "@/components/brand/gold-stream";
 import { EmptyState } from "@/components/empty-state";
 import { KpiCard } from "@/components/kpi-card";
 import { Button } from "@/components/ui/button";
@@ -82,7 +83,8 @@ export default async function GeriKazanimPage({
   })).filter((tier) => tier.rows.length > 0);
 
   return (
-    <div className="space-y-6">
+    <div className="relative z-0 pb-28 space-y-6">
+      <GoldStream motif="link" />
       <PageHeader
         title="Müşteri Geri Kazanım"
         description="Uzun süredir sipariş vermemiş yüksek değerli müşterileri belirleyin ve geri kazanım aksiyonlarını takip edin"

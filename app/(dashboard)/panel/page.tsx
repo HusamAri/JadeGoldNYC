@@ -23,6 +23,7 @@ import { formatNumber, formatDateTime } from "@/lib/format";
 import { auditSummary } from "@/lib/audit-format";
 import { PageHeader } from "@/components/page-header";
 import { EditorialCard } from "@/components/brand/editorial-card";
+import { GoldStream } from "@/components/brand/gold-stream";
 import { KpiCard } from "@/components/kpi-card";
 import { PeriodSelector } from "@/components/period-selector";
 import {
@@ -69,7 +70,10 @@ export default async function PanelPage({
   }
 
   return (
-    <div className="space-y-6">
+    <div className="relative z-0 pb-28 space-y-6">
+      {/* Sayfanın tepesinden en alta, kart aralarından akan erimiş altın
+          şeridi — kaydırmayla çizilir, en altta kolye ucuna dönüşür. */}
+      <GoldStream motif="necklace" />
       {/* Editorial hero — her kart kaydırma boyunca ekranda sabitlenip (pinned)
           videosunu kaydırma ilerlemesiyle oynatır, sonra bir sonrakine yer açar. */}
       <EditorialCard
