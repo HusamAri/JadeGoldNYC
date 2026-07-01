@@ -266,3 +266,47 @@ export interface CartRecovery {
   created_at: string;
   updated_at: string;
 }
+
+export type TaskStatus = "todo" | "doing" | "done";
+export type TaskPriority = "P0" | "P1" | "P2" | "P3";
+export type TaskLane = "A" | "B" | "owner";
+
+export interface Task {
+  id: string;
+  org_id: string;
+  title: string;
+  description: string | null;
+  status: TaskStatus;
+  priority: TaskPriority;
+  lane: TaskLane | null;
+  assignee_id: string | null;
+  effort: string | null;
+  due_date: string | null;
+  sort_order: number;
+  notes: string | null;
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface TaskAssignee {
+  user_id: string;
+  full_name: string | null;
+  avatar_url: string | null;
+  role: Role;
+}
+
+/** Görev + atanan kullanıcının profil bilgisi (join kolaylığı). */
+export interface TaskWithAssignee extends Task {
+  assignee?: TaskAssignee | null;
+}
+
+export interface TaskNote {
+  id: string;
+  org_id: string;
+  task_id: string;
+  body: string;
+  author_id: string | null;
+  author_label: string | null;
+  created_at: string;
+}
