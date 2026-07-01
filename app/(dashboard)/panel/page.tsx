@@ -22,7 +22,7 @@ import { formatMoney, formatPercent } from "@/lib/money";
 import { formatNumber, formatDateTime } from "@/lib/format";
 import { auditSummary } from "@/lib/audit-format";
 import { PageHeader } from "@/components/page-header";
-import { EditorialCard } from "@/components/brand/editorial-card";
+import { ScrollStory } from "@/components/brand/scroll-story";
 import { GoldStream } from "@/components/brand/gold-stream";
 import { KpiCard } from "@/components/kpi-card";
 import { PeriodSelector } from "@/components/period-selector";
@@ -74,23 +74,34 @@ export default async function PanelPage({
       {/* Sayfanın tepesinden en alta, kart aralarından akan erimiş altın
           şeridi — kaydırmayla çizilir, en altta kolye ucuna dönüşür. */}
       <GoldStream motif="necklace" />
-      {/* Editorial hero — her kart kaydırma boyunca ekranda sabitlenip (pinned)
-          videosunu kaydırma ilerlemesiyle oynatır, sonra bir sonrakine yer açar. */}
-      <EditorialCard
-        trackHeightVh={160}
-        image="/brand/gallery/koyu-franco.webp"
-        video="/brand/video/altin-zincir-orbit.mp4"
-        eyebrow="Jade Gold · New York"
-        title="Sessiz lüks, kalıcı değer"
-        subtitle="Som altın, el işçiliği — her parça bir miras."
-      />
-      <EditorialCard
-        trackHeightVh={160}
-        image="/brand/gallery/aydinlik-nugget.webp"
-        video="/brand/video/altin-yuzuk-yukselis.mp4"
-        eyebrow="Atölye"
-        title="Zarafetin sadeliği"
-        align="start"
+      {/* Süreç sahnesi — cevher → işçilik → eser. Kaydırma boyunca ekranda
+          sabit kalır; her bölümün videosu kaydırmayla kare kare akar, sıkı
+          kadrajdan açılır (zoom-out) ve açıklamasıyla birlikte bir sonraki
+          bölüme çapraz geçer. */}
+      <ScrollStory
+        chapters={[
+          {
+            src: "/brand/video/surec-cevher.mp4",
+            poster: "/brand/gallery/koyu-franco.webp",
+            eyebrow: "01 · Cevher",
+            title: "Ateşte arınan som altın",
+            text: "Her parça, eriyik som altının kalıba dökülmesiyle başlar — kaplama değil, özün kendisi.",
+          },
+          {
+            src: "/brand/video/surec-iscilik.mp4",
+            poster: "/brand/gallery/aydinlik-nugget.webp",
+            eyebrow: "02 · İşçilik",
+            title: "Elde biçimlenen halkalar",
+            text: "New York atölyesinde her halka tek tek eğelenir, parlatılır; kusursuzluk değil, karakter aranır.",
+          },
+          {
+            src: "/brand/video/surec-eser.mp4",
+            poster: "/brand/gallery/model-hamsa.webp",
+            eyebrow: "03 · Eser",
+            title: "Sessiz lüks, kalıcı değer",
+            text: "Jade ile som altın buluşur: her gün taşınan, bir ömür kalan parçalar.",
+          },
+        ]}
       />
 
       <PageHeader

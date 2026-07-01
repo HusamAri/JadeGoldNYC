@@ -47,6 +47,7 @@ export default function LoginPage() {
           <div className="w-max rounded-2xl bg-black/25 px-4 py-2.5 ring-1 ring-white/15 backdrop-blur-sm">
             <AnimatedLogo
               src="/brand/logo/logo-primary.svg"
+              viewBox="150 772 1744 507"
               alt="Jade Gold NYC"
               className="h-14"
             />
@@ -81,6 +82,7 @@ export default function LoginPage() {
             <CardTitle className="flex justify-center">
               <AnimatedLogo
                 src="/brand/logo/logo-wordmark.svg"
+                viewBox="187 872 1656 304"
                 animate
                 alt="Jade Gold NYC"
                 className="h-9"
