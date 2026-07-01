@@ -6,15 +6,18 @@ import {
   Star,
   Inbox,
   Flag,
+  AlertTriangle,
 } from "lucide-react";
 
 import { listReviews, getReviewSummary } from "@/lib/db/queries/reviews";
 import { strParam, numParam, type RawSearchParams } from "@/lib/searchparams";
 import { REVIEW_STATUSES } from "@/lib/constants";
 import { formatNumber, formatDate } from "@/lib/format";
+import { cn } from "@/lib/utils";
 import { PageHeader } from "@/components/page-header";
 import { EmptyState } from "@/components/empty-state";
 import { KpiCard } from "@/components/kpi-card";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -103,6 +106,12 @@ export default async function YorumlarPage({
           icon={Flag}
           accent={summary.flagged > 0 ? "negative" : "default"}
         />
+        <KpiCard
+          label="Yanıt Gerekli"
+          value={formatNumber(summary.needsResponse)}
+          icon={AlertTriangle}
+          accent={summary.needsResponse > 0 ? "negative" : "default"}
+        />
       </div>
 
       <Card>
@@ -140,36 +149,53 @@ export default async function YorumlarPage({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {rows.map((r) => (
-                  <TableRow key={r.id}>
-                    <TableCell className="whitespace-nowrap">
-                      {formatDate(r.review_date)}
-                    </TableCell>
-                    <TableCell className="max-w-[160px] truncate font-medium">
-                      {r.buyer_name ?? "—"}
-                    </TableCell>
-                    <TableCell>
-                      <RatingStars rating={r.rating} />
-                    </TableCell>
-                    <TableCell className="text-muted-foreground max-w-[320px] truncate">
-                      {r.review_text ?? "—"}
-                    </TableCell>
-                    <TableCell>
-                      <ReviewStatusBadge status={r.status} />
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end gap-1">
-                        <Button asChild variant="ghost" size="icon">
-                          <Link href={`/yorumlar/${r.id}/duzenle`}>
-                            <Pencil className="size-4" />
-                            <span className="sr-only">Düzenle</span>
-                          </Link>
-                        </Button>
-                        <DeleteButton action={deleteReview} id={r.id} />
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {rows.map((r) => {
+                  const needsResponse =
+                    r.status === "yeni" && r.rating != null && r.rating <= 3;
+                  return (
+                    <TableRow
+                      key={r.id}
+                      className={cn(
+                        needsResponse && "bg-destructive/5 hover:bg-destructive/10",
+                      )}
+                    >
+                      <TableCell className="whitespace-nowrap">
+                        {formatDate(r.review_date)}
+                      </TableCell>
+                      <TableCell className="max-w-[160px] truncate font-medium">
+                        {r.buyer_name ?? "—"}
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <RatingStars rating={r.rating} />
+                          {needsResponse && (
+                            <Badge variant="destructive">
+                              <AlertTriangle />
+                              Yanıt Gerekli
+                            </Badge>
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-muted-foreground max-w-[320px] truncate">
+                        {r.review_text ?? "—"}
+                      </TableCell>
+                      <TableCell>
+                        <ReviewStatusBadge status={r.status} />
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex justify-end gap-1">
+                          <Button asChild variant="ghost" size="icon">
+                            <Link href={`/yorumlar/${r.id}/duzenle`}>
+                              <Pencil className="size-4" />
+                              <span className="sr-only">Düzenle</span>
+                            </Link>
+                          </Button>
+                          <DeleteButton action={deleteReview} id={r.id} />
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
           )}

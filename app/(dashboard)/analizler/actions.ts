@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { requireMembership } from "@/lib/auth";
 import { metricFormSchema, type MetricFormValues } from "@/lib/validations/metric";
 import { parseMoneyToCents } from "@/lib/money";
+import { getPeriodSalesStats, type PeriodSalesStats } from "@/lib/db/queries/metrics";
 
 export interface MetricActionResult {
   ok?: boolean;
@@ -25,16 +26,13 @@ function moneyOrNull(s: string): number | null {
   return s.trim() ? parseMoneyToCents(s) : null;
 }
 
-function ratingOrNull(s: string): number | null {
-  const v = s.trim();
-  if (!v) return null;
-  const n = parseFloat(v.replace(",", "."));
-  if (!Number.isFinite(n)) return null;
-  return Math.min(5, Math.max(0, Math.round(n * 10) / 10));
-}
-
 function dateOrNull(s: string): string | null {
   return s.trim() ? s : null;
+}
+
+function roundRating(n: number | null): number | null {
+  if (n == null || !Number.isFinite(n)) return null;
+  return Math.min(5, Math.max(0, Math.round(n * 10) / 10));
 }
 
 function trafficOrNull(v: MetricFormValues): Record<string, number> | null {
@@ -51,17 +49,17 @@ function trafficOrNull(v: MetricFormValues): Record<string, number> | null {
   return Object.keys(obj).length ? obj : null;
 }
 
-function toRow(v: MetricFormValues) {
+function toRow(v: MetricFormValues, stats: PeriodSalesStats) {
   return {
     period_label: v.period_label,
     period_start: dateOrNull(v.period_start),
     period_end: dateOrNull(v.period_end),
     visits: intOrNull(v.visits),
-    orders: intOrNull(v.orders),
-    revenue_cents: moneyOrNull(v.revenue),
+    orders: stats.orders,
+    revenue_cents: stats.revenueCents,
     cart_abandon_amount_cents: moneyOrNull(v.cart_abandon_amount),
     cart_abandon_count: intOrNull(v.cart_abandon_count),
-    rating: ratingOrNull(v.rating),
+    rating: roundRating(stats.avgRating),
     ads_spend_cents: moneyOrNull(v.ads_spend),
     ads_revenue_cents: moneyOrNull(v.ads_revenue),
     traffic_sources: trafficOrNull(v),
@@ -80,10 +78,17 @@ export async function createMetric(
     };
   }
   const m = await requireMembership();
+  const periodStart = dateOrNull(parsed.data.period_start);
+  const periodEnd = dateOrNull(parsed.data.period_end);
+  const stats = await getPeriodSalesStats(periodStart, periodEnd);
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("shop_metrics")
-    .insert({ ...toRow(parsed.data), org_id: m.org_id, created_by: m.user_id })
+    .insert({
+      ...toRow(parsed.data, stats),
+      org_id: m.org_id,
+      created_by: m.user_id,
+    })
     .select("id")
     .single();
   if (error) return { error: error.message };
@@ -104,15 +109,43 @@ export async function updateMetric(
     };
   }
   await requireMembership();
+  const periodStart = dateOrNull(parsed.data.period_start);
+  const periodEnd = dateOrNull(parsed.data.period_end);
+  const stats = await getPeriodSalesStats(periodStart, periodEnd);
   const supabase = await createClient();
   const { error } = await supabase
     .from("shop_metrics")
-    .update(toRow(parsed.data))
+    .update(toRow(parsed.data, stats))
     .eq("id", id);
   if (error) return { error: error.message };
 
   revalidatePath("/analizler");
   return { ok: true, id };
+}
+
+export interface PeriodStatsPreview {
+  orders: number;
+  revenueCents: number;
+  avgRating: number | null;
+  ratedCount: number;
+}
+
+/**
+ * Dönem tarihleri girildiğinde formda canlı önizleme göstermek için — kayıt
+ * yazmaz, yalnızca sales/reviews'ten otomatik hesaplanacak değerleri döner.
+ */
+export async function previewPeriodStats(
+  periodStart: string,
+  periodEnd: string,
+): Promise<PeriodStatsPreview> {
+  await requireMembership();
+  const stats = await getPeriodSalesStats(dateOrNull(periodStart), dateOrNull(periodEnd));
+  return {
+    orders: stats.orders,
+    revenueCents: stats.revenueCents,
+    avgRating: stats.avgRating,
+    ratedCount: stats.ratedCount,
+  };
 }
 
 export async function deleteMetric(id: string): Promise<{ error?: string }> {
