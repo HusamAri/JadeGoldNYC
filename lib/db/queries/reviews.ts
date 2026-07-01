@@ -7,6 +7,7 @@ export interface ReviewSummary {
   avgRating: number;
   newCount: number;
   flagged: number;
+  needsResponse: number;
 }
 
 export async function getReviewSummary(): Promise<ReviewSummary> {
@@ -22,8 +23,11 @@ export async function getReviewSummary(): Promise<ReviewSummary> {
     : 0;
   const newCount = rows.filter((r) => r.status === "yeni").length;
   const flagged = rows.filter((r) => r.status === "isaretli").length;
+  const needsResponse = rows.filter(
+    (r) => r.status === "yeni" && r.rating != null && r.rating <= 3,
+  ).length;
 
-  return { total, ratedCount, avgRating, newCount, flagged };
+  return { total, ratedCount, avgRating, newCount, flagged, needsResponse };
 }
 
 export interface ListReviewOptions {
