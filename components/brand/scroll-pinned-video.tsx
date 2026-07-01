@@ -59,6 +59,10 @@ export function ScrollPinnedVideo({
     }
 
     video.addEventListener("loadedmetadata", onLoaded);
+    // Video zaten önbellekten yüklenmiş olabilir — bu durumda loadedmetadata
+    // useEffect'in dinleyici eklemesinden ÖNCE ateşlenmiş olur ve bir daha
+    // hiç tetiklenmez, `ready` sonsuza dek false kalır. Senkron kontrol et.
+    if (video.readyState >= 1) onLoaded();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
 
