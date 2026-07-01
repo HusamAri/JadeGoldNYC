@@ -1,4 +1,4 @@
--- 0032 — Görevler (Tasks) + görev notları (ekip görev yönetimi)
+-- 0035 — Görevler (Tasks) + görev notları (ekip görev yönetimi)
 -- ------------------------------------------------------------------
 -- Etsy turnaround planındaki işleri panelde yönetilebilir görevlere çevirir:
 -- durum (yapılacak/devam/tamam), öncelik (P0–P3), şerit (A/B/owner),
