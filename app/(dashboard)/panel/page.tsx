@@ -74,6 +74,7 @@ export default async function PanelPage({
         <EditorialCard
           className="min-h-[210px] md:min-h-[250px] lg:col-span-3"
           image="/brand/gallery/koyu-franco.webp"
+          video="/brand/video/altin-zincir-orbit.mp4"
           eyebrow="Jade Gold · New York"
           title="Sessiz lüks, kalıcı değer"
           subtitle="Som altın, el işçiliği — her parça bir miras."
@@ -81,6 +82,7 @@ export default async function PanelPage({
         <EditorialCard
           className="min-h-[210px] md:min-h-[250px] lg:col-span-2"
           image="/brand/gallery/aydinlik-nugget.webp"
+          video="/brand/video/altin-yuzuk-yukselis.mp4"
           eyebrow="Atölye"
           title="Zarafetin sadeliği"
           align="start"
