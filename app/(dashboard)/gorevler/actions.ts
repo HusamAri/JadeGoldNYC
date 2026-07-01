@@ -176,21 +176,16 @@ export async function handoverTask(
   const fromLabel = fromProfile?.full_name || user?.email || "Bir üye";
   const toLabel = toProfile?.full_name || "seçilen üye";
 
-  const { error: assignError } = await supabase
-    .from("tasks")
-    .update({ assignee_id: parsed.data.to_user_id })
-    .eq("id", taskId);
-  if (assignError) return { error: assignError.message };
-
-  const { error: noteError } = await supabase.from("task_notes").insert({
-    org_id: m.org_id,
-    task_id: taskId,
-    kind: "handover",
-    body: `${fromLabel} → ${toLabel}: ${parsed.data.body}`,
-    author_id: m.user_id,
-    author_label: fromLabel,
+  // Atama + not tek DB fonksiyonunda (atomik): not eklenemezse atama da geri alınır.
+  const { error } = await supabase.rpc("handover_task", {
+    p_task_id: taskId,
+    p_org_id: m.org_id,
+    p_to_user_id: parsed.data.to_user_id,
+    p_body: `${fromLabel} → ${toLabel}: ${parsed.data.body}`,
+    p_author_id: m.user_id,
+    p_author_label: fromLabel,
   });
-  if (noteError) return { error: noteError.message };
+  if (error) return { error: error.message };
 
   revalidatePath("/gorevler");
   revalidatePath(`/gorevler/${taskId}`);
