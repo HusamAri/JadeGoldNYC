@@ -9,6 +9,7 @@ import {
   MessageSquareText,
   ScrollText,
   FileBarChart,
+  ListChecks,
   Settings,
   type LucideIcon,
 } from "lucide-react";
@@ -21,6 +22,7 @@ export interface NavItem {
 
 export const NAV_ITEMS: NavItem[] = [
   { href: "/panel", label: "Panel", icon: LayoutDashboard },
+  { href: "/gorevler", label: "Görevler", icon: ListChecks },
   { href: "/satislar", label: "Satışlar", icon: ShoppingBag },
   { href: "/maliyetler", label: "Maliyetler", icon: Wallet },
   { href: "/analizler", label: "Performans", icon: BarChart3 },

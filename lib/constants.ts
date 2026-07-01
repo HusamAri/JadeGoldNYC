@@ -1,4 +1,11 @@
-import type { SaleStatus, CartRecoveryStatus, ReviewStatus } from "@/lib/types";
+import type {
+  SaleStatus,
+  CartRecoveryStatus,
+  ReviewStatus,
+  TaskStatus,
+  TaskPriority,
+  TaskLane,
+} from "@/lib/types";
 
 /** Sistem maliyet kategorileri (0006 + 0018 seed ile eşleşir). */
 export const COST_CATEGORIES = [
@@ -79,6 +86,8 @@ export const ENTITY_TYPE_LABELS: Record<string, string> = {
   shop_metrics: "Performans",
   product_metrics: "Ürün performansı",
   cart_recoveries: "Müşteri geri kazanım",
+  tasks: "Görev",
+  task_notes: "Görev notu",
   auth: "Oturum",
   report: "Rapor",
 };
@@ -94,5 +103,46 @@ export const CART_STATUSES: { value: CartRecoveryStatus; label: string }[] = [
 export const CART_STATUS_LABELS: Record<string, string> = Object.fromEntries(
   CART_STATUSES.map((s) => [s.value, s.label]),
 );
+
+/** Görev durumları (Kanban sütunları) ve Türkçe etiketleri. */
+export const TASK_STATUSES: { value: TaskStatus; label: string }[] = [
+  { value: "todo", label: "Yapılacak" },
+  { value: "doing", label: "Devam Ediyor" },
+  { value: "done", label: "Tamamlandı" },
+];
+
+export const TASK_STATUS_LABELS: Record<string, string> = Object.fromEntries(
+  TASK_STATUSES.map((s) => [s.value, s.label]),
+);
+
+/** Görev öncelikleri (turnaround planı P0–P3). */
+export const TASK_PRIORITIES: { value: TaskPriority; label: string }[] = [
+  { value: "P0", label: "P0 · Bu hafta" },
+  { value: "P1", label: "P1 · 2–4 hafta" },
+  { value: "P2", label: "P2 · 4–8 hafta" },
+  { value: "P3", label: "P3 · Sürekli" },
+];
+
+export const TASK_PRIORITY_LABELS: Record<string, string> = Object.fromEntries(
+  TASK_PRIORITIES.map((s) => [s.value, s.label]),
+);
+
+/** Operatör şeritleri (iki-operatör bölüşümü). */
+export const TASK_LANES: { value: TaskLane; label: string }[] = [
+  { value: "A", label: "A · Büyüme & Görünürlük" },
+  { value: "B", label: "B · Dönüşüm & Marka" },
+  { value: "owner", label: "Sahip Onayı" },
+];
+
+export const TASK_LANE_LABELS: Record<string, string> = Object.fromEntries(
+  TASK_LANES.map((s) => [s.value, s.label]),
+);
+
+/** Şerit için kısa etiket (kart üzerinde). */
+export const TASK_LANE_SHORT: Record<string, string> = {
+  A: "A · Büyüme",
+  B: "B · Dönüşüm",
+  owner: "Onay",
+};
 
 export const DEFAULT_CURRENCY = "USD";
