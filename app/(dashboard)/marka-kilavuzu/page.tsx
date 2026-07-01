@@ -1,9 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 // Marka varlıkları public/ (CDN) üzerinden; vektör/sabit boyut için düz <img>.
-import { ExternalLink, Quote } from "lucide-react";
+import { ExternalLink, ImagePlus, Quote } from "lucide-react";
 
 import { PageHeader } from "@/components/page-header";
 import { EditorialCard } from "@/components/brand/editorial-card";
+import { BrandTile } from "@/components/brand/brand-tile";
+import { BRAND_GALLERY } from "@/lib/brand-assets";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -414,6 +416,41 @@ export default function MarkaKilavuzuPage() {
             </ul>
           </CardContent>
         </Card>
+      </section>
+
+      {/* Görsel kimlik / galeri */}
+      <section className="space-y-5">
+        <Eyebrow>07 · Görsel Kimlik / Galeri</Eyebrow>
+        <h2 className="font-serif text-3xl tracking-tight">Fotoğraf Kütüphanesi</h2>
+        <p className="text-muted-foreground max-w-2xl text-[15px] leading-relaxed">
+          Jade Gold NYC marka çekimleri ve görsel öğelerinin tam kütüphanesi —
+          yukarıdaki küçük seçkinin devamı.
+        </p>
+
+        {BRAND_GALLERY.map((group) => (
+          <div key={group.key} className="space-y-3">
+            <div>
+              <h3 className="text-base font-semibold">{group.title}</h3>
+              <p className="text-muted-foreground text-sm">{group.description}</p>
+            </div>
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+              {group.assets.map((a) => (
+                <BrandTile key={a.src} src={a.src} scrim className="aspect-[4/5]">
+                  <div className="absolute inset-x-0 bottom-0 p-3">
+                    <p className="text-xs font-medium text-white">{a.caption}</p>
+                  </div>
+                </BrandTile>
+              ))}
+            </div>
+          </div>
+        ))}
+
+        <p className="text-muted-foreground flex items-center gap-2 text-xs">
+          <ImagePlus className="size-4 shrink-0" />
+          Görselleri <code className="font-mono">public/brand/gallery/</code>{" "}
+          klasörüne ilgili dosya adıyla ekleyin; otomatik görünür. Dosya yoksa
+          zarif degrade gösterilir.
+        </p>
       </section>
     </div>
   );
