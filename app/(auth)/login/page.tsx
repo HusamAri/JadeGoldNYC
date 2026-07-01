@@ -5,6 +5,7 @@ import { Building2, Gem, ShieldCheck, type LucideIcon } from "lucide-react";
 
 import { signIn, type SignInState } from "@/lib/actions/session";
 import { Logo } from "@/components/layout/logo";
+import { AnimatedLogo } from "@/components/brand/animated-logo";
 import { BrandTile } from "@/components/brand/brand-tile";
 import { BRAND_LOGIN_HERO } from "@/lib/brand-assets";
 import { Button } from "@/components/ui/button";
@@ -43,11 +44,12 @@ export default function LoginPage() {
         className="hidden lg:block"
       >
         <div className="relative flex h-full flex-col justify-between p-10 text-white">
-          <div className="flex w-max items-center gap-3 rounded-2xl bg-black/25 px-3 py-2 ring-1 ring-white/15 backdrop-blur-sm">
-            <Logo />
-            <span className="font-semibold tracking-wide">
-              JADE GOLD · NEW YORK
-            </span>
+          <div className="w-max rounded-2xl bg-black/25 px-4 py-2.5 ring-1 ring-white/15 backdrop-blur-sm">
+            <AnimatedLogo
+              src="/brand/logo/logo-primary.svg"
+              alt="Jade Gold NYC"
+              className="h-14"
+            />
           </div>
           <div>
             <h2 className="text-3xl leading-tight font-semibold">
@@ -76,7 +78,14 @@ export default function LoginPage() {
             <div className="mb-2 flex justify-center lg:hidden">
               <Logo className="size-11" />
             </div>
-            <CardTitle className="text-xl">Jade Gold NYC</CardTitle>
+            <CardTitle className="flex justify-center">
+              <AnimatedLogo
+                src="/brand/logo/logo-wordmark.svg"
+                animate
+                alt="Jade Gold NYC"
+                className="h-9"
+              />
+            </CardTitle>
             <CardDescription>Yönetim paneline giriş yapın</CardDescription>
           </CardHeader>
           <CardContent>

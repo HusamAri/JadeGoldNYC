@@ -10,6 +10,7 @@ import {
 } from "@/lib/constants";
 import { formatDateTime } from "@/lib/format";
 import { PageHeader } from "@/components/page-header";
+import { GoldStream } from "@/components/brand/gold-stream";
 import { EmptyState } from "@/components/empty-state";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -79,7 +80,8 @@ export default async function KayitlarPage({
   }`;
 
   return (
-    <div>
+    <div className="relative z-0 pb-28">
+      <GoldStream motif="ledger" />
       <PageHeader
         title="Kayıtlar"
         description="Şirket hafızası — her işlemin değişmez denetim logu"

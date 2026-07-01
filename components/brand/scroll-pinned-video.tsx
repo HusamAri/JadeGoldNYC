@@ -10,9 +10,17 @@ import { cn } from "@/lib/utils";
  * ilerlemesine göre değişir (aşağı ileri, yukarı otomatik geri sarar).
  * Sabitleme, kutunun kendi yüksekliğinden daha uzun bir "kaydırma rayı"
  * (track) içine sarılmasıyla sağlanır: ray boyunca kaydırıldıkça kutu sabit
- * kalır, ray bitince normal akışa döner. Arka plan `bg-background` ile site
- * temasıyla aynı renkte (harf kutusu / letterbox), video henüz hazır değilken
- * veya `prefers-reduced-motion`'da poster görseli sabit kalır.
+ * kalır, ray bitince normal akışa döner.
+ *
+ * 3 boyut hissi: video katmanı, kare akışına ek olarak kaydırma ilerlemesine
+ * bağlı hafif bir dikey sürüklenme + yavaş push-in ile üstteki sabit
+ * metin/scrim katmanından FARKLI hızda hareket eder (paralaks) — metin öndeki
+ * cam, video arkadaki derinlik gibi okunur. `--pin-progress` CSS değişkeni
+ * rAF içinde güncellenir; scale 1.1 kaydırma payını örter, kenar açılmaz.
+ *
+ * Harf kutusu (letterbox) her iki temada da BİLEREK koyu (marka Kömür #131313)
+ * — video bölgesi aydınlık/karanlık mod fark etmeksizin aynı görünür; video
+ * hazır değilken veya `prefers-reduced-motion`'da poster görseli sabit kalır.
  */
 export function ScrollPinnedVideo({
   src,
@@ -40,12 +48,15 @@ export function ScrollPinnedVideo({
     let raf = 0;
 
     function update() {
-      if (!ready || !video!.duration || !track) return;
+      if (!track) return;
       const total = track.offsetHeight - window.innerHeight;
       if (total <= 0) return;
       const rect = track.getBoundingClientRect();
       const progress = Math.min(1, Math.max(0, -rect.top / total));
-      video!.currentTime = progress * video!.duration;
+      track.style.setProperty("--pin-progress", progress.toFixed(4));
+      if (ready && video!.duration) {
+        video!.currentTime = progress * video!.duration;
+      }
     }
 
     function onScroll() {
@@ -65,6 +76,7 @@ export function ScrollPinnedVideo({
     if (video.readyState >= 1) onLoaded();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
+    update();
 
     return () => {
       video.removeEventListener("loadedmetadata", onLoaded);
@@ -82,7 +94,7 @@ export function ScrollPinnedVideo({
     >
       <div
         className={cn(
-          "bg-background sticky top-0 h-svh overflow-hidden",
+          "sticky top-0 h-svh overflow-hidden bg-[#131313]",
           className,
         )}
       >
@@ -94,6 +106,10 @@ export function ScrollPinnedVideo({
           playsInline
           preload="auto"
           className="absolute inset-0 size-full object-cover"
+          style={{
+            transform:
+              "translateY(calc((var(--pin-progress, 0.5) - 0.5) * 4%)) scale(calc(1.08 + var(--pin-progress, 0.5) * 0.06))",
+          }}
           aria-hidden
         />
         {children}

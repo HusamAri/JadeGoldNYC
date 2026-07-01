@@ -10,6 +10,7 @@ import { DESIGN_STATUSES } from "@/lib/constants";
 import { formatMoney } from "@/lib/money";
 import { formatDate } from "@/lib/format";
 import { PageHeader } from "@/components/page-header";
+import { GoldStream } from "@/components/brand/gold-stream";
 import { EmptyState } from "@/components/empty-state";
 import { DesignStatusBadge } from "@/components/design-status-badge";
 import { ProductWeightInput } from "@/components/product-weight-input";
@@ -77,7 +78,8 @@ export default async function TasarimlarPage({
   const listings = (products ?? []) as unknown as ProductListing[];
 
   return (
-    <div className="space-y-8">
+    <div className="relative z-0 pb-28 space-y-8">
+      <GoldStream motif="ring" />
       <PageHeader
         title="Tasarımlar"
         description="Tasarım hattını (taslak → onaylandı → yayında → arşiv) yönetin ve ürünlerle ilişkilendirin"

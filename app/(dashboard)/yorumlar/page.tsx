@@ -15,6 +15,7 @@ import { REVIEW_STATUSES } from "@/lib/constants";
 import { formatNumber, formatDate } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { PageHeader } from "@/components/page-header";
+import { GoldStream } from "@/components/brand/gold-stream";
 import { EmptyState } from "@/components/empty-state";
 import { KpiCard } from "@/components/kpi-card";
 import { Badge } from "@/components/ui/badge";
@@ -64,7 +65,8 @@ export default async function YorumlarPage({
   ]);
 
   return (
-    <div className="space-y-6">
+    <div className="relative z-0 pb-28 space-y-6">
+      <GoldStream motif="star" />
       <PageHeader
         title="Tüketici Yorumları"
         description="Etsy yorumlarını, puan trendini ve yanıt durumunu takip edin"

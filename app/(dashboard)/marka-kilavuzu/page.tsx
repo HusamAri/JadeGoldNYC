@@ -4,6 +4,7 @@ import { ExternalLink, ImagePlus, Quote } from "lucide-react";
 
 import { PageHeader } from "@/components/page-header";
 import { EditorialCard } from "@/components/brand/editorial-card";
+import { GoldStream } from "@/components/brand/gold-stream";
 import { BrandTile } from "@/components/brand/brand-tile";
 import { BRAND_GALLERY } from "@/lib/brand-assets";
 import { Button } from "@/components/ui/button";
@@ -126,7 +127,9 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 
 export default function MarkaKilavuzuPage() {
   return (
-    <div className="mx-auto max-w-5xl space-y-10">
+    <div className="relative z-0 pb-28 mx-auto max-w-5xl space-y-10">
+      {/* Kart aralarından akan, kaydırmayla çizilen erimiş altın şeridi. */}
+      <GoldStream motif="gem" />
       <PageHeader
         title="Marka Kılavuzu"
         description="Jade Gold NYC görsel ve sözlü kimlik sistemi — eksiksiz referans."

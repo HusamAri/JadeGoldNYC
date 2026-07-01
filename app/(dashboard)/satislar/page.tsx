@@ -7,6 +7,7 @@ import { SALE_STATUSES } from "@/lib/constants";
 import { formatMoney } from "@/lib/money";
 import { formatDate } from "@/lib/format";
 import { PageHeader } from "@/components/page-header";
+import { GoldStream } from "@/components/brand/gold-stream";
 import { EmptyState } from "@/components/empty-state";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -39,7 +40,8 @@ export default async function SatislarPage({
   const { rows, count } = await listSales({ search, status, limit, offset });
 
   return (
-    <div>
+    <div className="relative z-0 pb-28">
+      <GoldStream motif="gift" />
       <PageHeader
         title="Satışlar"
         description="Manuel, CSV ve Etsy siparişleri"
