@@ -17,6 +17,7 @@ export function KpiCard({
   accent = "default",
   change,
   changeLabel,
+  className,
 }: {
   label: string;
   value: string;
@@ -26,9 +27,10 @@ export function KpiCard({
   /** -1..1 arası yüzde değişim. null = gösterme. */
   change?: number | null;
   changeLabel?: string;
+  className?: string;
 }) {
   return (
-    <Card className="h-full min-w-0">
+    <Card className={cn("h-full min-w-0", className)}>
       <CardContent className="flex h-full items-start justify-between gap-3">
         <div className="flex min-w-0 flex-col">
           <p className="text-muted-foreground line-clamp-2 min-h-[2.5rem] text-sm leading-snug">

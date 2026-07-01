@@ -125,6 +125,7 @@ export default async function GeriKazanimPage({
           icon={CheckCircle2}
           hint={`${formatNumber(tracking.recovered)} müşteri`}
           accent="positive"
+          className="col-span-2 lg:col-span-1"
         />
       </div>
 

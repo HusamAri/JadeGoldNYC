@@ -111,6 +111,7 @@ export default async function ShipStationAyarlarPage() {
               label="Müşteri"
               value={formatNumber(status.customers)}
               icon={Users}
+              className="col-span-2 sm:col-span-1"
             />
           </div>
         )}
