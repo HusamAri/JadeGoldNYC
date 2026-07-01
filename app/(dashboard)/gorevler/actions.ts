@@ -8,6 +8,7 @@ import { getProfile } from "@/lib/db/queries/profile";
 import {
   taskFormSchema,
   taskNoteSchema,
+  taskHandoverSchema,
   taskStatusSchema,
   type TaskFormValues,
 } from "@/lib/validations/task";
@@ -146,6 +147,54 @@ export async function addTaskNote(
   if (error) return { error: error.message };
   revalidatePath(`/gorevler/${taskId}`);
   return {};
+}
+
+/**
+ * Devir: kendi bölümünü tamamlayan üye, zorunlu bir not düşerek görevi
+ * başka bir üyeye atar. Atama + not tek işlemde yapılır.
+ */
+export async function handoverTask(
+  taskId: string,
+  toUserId: string,
+  note: string,
+): Promise<TaskActionResult> {
+  const parsed = taskHandoverSchema.safeParse({ to_user_id: toUserId, body: note });
+  if (!parsed.success) {
+    return {
+      error: "Devir bilgileri geçersiz.",
+      fieldErrors: parsed.error.flatten().fieldErrors,
+    };
+  }
+  const m = await requireMembership();
+  const user = await getUser();
+  const supabase = await createClient();
+
+  const [fromProfile, toProfile] = await Promise.all([
+    user ? getProfile(supabase, user.id) : Promise.resolve(null),
+    getProfile(supabase, parsed.data.to_user_id),
+  ]);
+  const fromLabel = fromProfile?.full_name || user?.email || "Bir üye";
+  const toLabel = toProfile?.full_name || "seçilen üye";
+
+  const { error: assignError } = await supabase
+    .from("tasks")
+    .update({ assignee_id: parsed.data.to_user_id })
+    .eq("id", taskId);
+  if (assignError) return { error: assignError.message };
+
+  const { error: noteError } = await supabase.from("task_notes").insert({
+    org_id: m.org_id,
+    task_id: taskId,
+    kind: "handover",
+    body: `${fromLabel} → ${toLabel}: ${parsed.data.body}`,
+    author_id: m.user_id,
+    author_label: fromLabel,
+  });
+  if (noteError) return { error: noteError.message };
+
+  revalidatePath("/gorevler");
+  revalidatePath(`/gorevler/${taskId}`);
+  return { ok: true, id: taskId };
 }
 
 export async function deleteTaskNote(

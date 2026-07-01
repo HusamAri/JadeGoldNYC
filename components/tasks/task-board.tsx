@@ -11,7 +11,7 @@ import type { TaskWithAssignee, TaskPriority, TaskStatus } from "@/lib/types";
 import type { AssignableUser } from "@/lib/db/queries/tasks";
 import { TaskPriorityBadge } from "@/components/task-priority-badge";
 import { UserAvatar } from "@/components/user-avatar";
-import { Button } from "@/components/ui/button";
+import { FilterChip, SlideButton } from "@/components/tasks/motion";
 import { cn } from "@/lib/utils";
 
 const NEXT: Partial<Record<TaskStatus, TaskStatus>> = {
@@ -28,31 +28,6 @@ const PRIORITY_ORDER: Record<TaskPriority, number> = {
   P2: 2,
   P3: 3,
 };
-
-function Chip({
-  active,
-  onClick,
-  children,
-}: {
-  active: boolean;
-  onClick: () => void;
-  children: React.ReactNode;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={cn(
-        "rounded-full px-3 py-1 text-xs font-medium transition-[box-shadow,color] duration-300",
-        active
-          ? "bg-accent text-accent-foreground shadow-[var(--shadow-raised-sm)]"
-          : "text-muted-foreground hover:text-foreground",
-      )}
-    >
-      {children}
-    </button>
-  );
-}
 
 export function TaskBoard({
   tasks,
@@ -121,9 +96,9 @@ export function TaskBoard({
           Şerit
         </span>
         {laneChips.map((c) => (
-          <Chip key={c.v} active={lane === c.v} onClick={() => setLane(c.v)}>
+          <FilterChip key={c.v} active={lane === c.v} onClick={() => setLane(c.v)}>
             {c.l}
-          </Chip>
+          </FilterChip>
         ))}
       </div>
 
@@ -131,23 +106,23 @@ export function TaskBoard({
         <span className="text-muted-foreground mr-1 text-[0.7rem] font-medium tracking-wide uppercase">
           Atanan
         </span>
-        <Chip active={assignee === "all"} onClick={() => setAssignee("all")}>
+        <FilterChip active={assignee === "all"} onClick={() => setAssignee("all")}>
           Herkes
-        </Chip>
-        <Chip
+        </FilterChip>
+        <FilterChip
           active={assignee === "unassigned"}
           onClick={() => setAssignee("unassigned")}
         >
           Atanmamış
-        </Chip>
+        </FilterChip>
         {members.map((u) => (
-          <Chip
+          <FilterChip
             key={u.user_id}
             active={assignee === u.user_id}
             onClick={() => setAssignee(u.user_id)}
           >
             {u.full_name || "Üye"}
-          </Chip>
+          </FilterChip>
         ))}
       </div>
 
@@ -227,27 +202,25 @@ export function TaskBoard({
                       onClick={(e) => e.stopPropagation()}
                     >
                       {PREV[t.status] && (
-                        <Button
-                          variant="ghost"
-                          size="sm"
+                        <SlideButton
+                          direction="right"
                           disabled={pending}
                           onClick={() => move(t.id, PREV[t.status]!)}
                         >
                           <ChevronLeft className="size-3.5" />
                           Geri
-                        </Button>
+                        </SlideButton>
                       )}
                       {NEXT[t.status] && (
-                        <Button
-                          variant="ghost"
-                          size="sm"
+                        <SlideButton
+                          direction="left"
                           className="ml-auto"
                           disabled={pending}
                           onClick={() => move(t.id, NEXT[t.status]!)}
                         >
                           İleri
                           <ChevronRight className="size-3.5" />
-                        </Button>
+                        </SlideButton>
                       )}
                     </div>
                   </div>

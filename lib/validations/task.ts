@@ -27,5 +27,13 @@ export const taskNoteSchema = z.object({
 
 export type TaskNoteValues = z.infer<typeof taskNoteSchema>;
 
+/** Devir: görevi başka bir üyeye atarken zorunlu tamamlanma notu. */
+export const taskHandoverSchema = z.object({
+  to_user_id: z.string().trim().min(1, "Devredilecek üye seçin"),
+  body: z.string().trim().min(1, "Tamamlanan bölüm için bir not gerekli").max(2000),
+});
+
+export type TaskHandoverValues = z.infer<typeof taskHandoverSchema>;
+
 /** Hızlı Kanban aksiyonları için durum doğrulaması. */
 export const taskStatusSchema = taskStatusEnum;

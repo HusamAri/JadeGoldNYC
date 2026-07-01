@@ -301,11 +301,14 @@ export interface TaskWithAssignee extends Task {
   assignee?: TaskAssignee | null;
 }
 
+export type TaskNoteKind = "note" | "handover";
+
 export interface TaskNote {
   id: string;
   org_id: string;
   task_id: string;
   body: string;
+  kind: TaskNoteKind;
   author_id: string | null;
   author_label: string | null;
   created_at: string;
