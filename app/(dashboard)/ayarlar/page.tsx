@@ -7,6 +7,7 @@ import {
   UsersRound,
   Scale,
   Sparkles,
+  Rocket,
   ChevronRight,
 } from "lucide-react";
 
@@ -169,6 +170,23 @@ export default async function AyarlarPage() {
               </CardTitle>
               <CardDescription>
                 Platform güncellemelerinden mağazanız için elenmiş öneriler
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </Link>
+
+        <Link href="/ayarlar/buyume-stratejisi" className="block">
+          <Card className="hover:border-primary/40 transition-colors">
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between text-base">
+                <span className="flex items-center gap-2">
+                  <Rocket className="size-4" />
+                  Büyüme Stratejisi
+                </span>
+                <ChevronRight className="text-muted-foreground size-4" />
+              </CardTitle>
+              <CardDescription>
+                Etsy SEO + yapay zekâ arama (AEO) görünürlüğü için 90 günlük plan
               </CardDescription>
             </CardHeader>
           </Card>

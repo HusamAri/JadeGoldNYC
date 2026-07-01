@@ -33,13 +33,17 @@ export const SALE_STATUS_LABELS: Record<SaleStatus, string> = Object.fromEntries
   SALE_STATUSES.map((s) => [s.value, s.label]),
 ) as Record<SaleStatus, string>;
 
-/** Tasarım durumları (placeholder modül). */
+/** Tasarım durumları. */
 export const DESIGN_STATUSES = [
   { value: "taslak", label: "Taslak" },
   { value: "onaylandi", label: "Onaylandı" },
   { value: "yayinda", label: "Yayında" },
   { value: "arsiv", label: "Arşiv" },
 ] as const;
+
+export const DESIGN_STATUS_LABELS: Record<string, string> = Object.fromEntries(
+  DESIGN_STATUSES.map((s) => [s.value, s.label]),
+);
 
 /** Yorum durumları ve Türkçe etiketleri. */
 export const REVIEW_STATUSES: { value: ReviewStatus; label: string }[] = [

@@ -9,6 +9,7 @@ import {
   type CartRecoveryFormValues,
 } from "@/lib/validations/cart-recovery";
 import { parseMoneyToCents } from "@/lib/money";
+import { formatNumber, formatDate } from "@/lib/format";
 
 export interface CartActionResult {
   ok?: boolean;
@@ -83,4 +84,33 @@ export async function deleteCartRecovery(
   if (error) return { error: error.message };
   revalidatePath("/sepet-kurtarma");
   return {};
+}
+
+export interface WinbackCandidateInput {
+  buyer_name: string | null;
+  buyer_email: string | null;
+  order_count: number;
+  last_order_date: string;
+}
+
+/** Bir geri kazanım adayını takip listesine ekler (durum: yeni). */
+export async function addWinbackToTracking(
+  candidate: WinbackCandidateInput,
+): Promise<CartActionResult> {
+  const summary = `${formatNumber(candidate.order_count)} sipariş, son ${formatDate(
+    candidate.last_order_date,
+  )} tarihinde`;
+  const values: CartRecoveryFormValues = {
+    buyer_name: candidate.buyer_name ?? "",
+    buyer_email: candidate.buyer_email ?? "",
+    cart_value: "",
+    item_summary: summary,
+    abandoned_at: "",
+    status: "yeni",
+    action_taken: "",
+    incentive: "",
+    recovered_value: "",
+    notes: summary,
+  };
+  return createCartRecovery(values);
 }
