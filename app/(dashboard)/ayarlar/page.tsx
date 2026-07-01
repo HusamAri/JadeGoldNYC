@@ -4,6 +4,7 @@ import {
   Plug,
   Truck,
   UserRound,
+  UsersRound,
   Scale,
   Sparkles,
   ChevronRight,
@@ -73,6 +74,23 @@ export default async function AyarlarPage() {
             </div>
           </CardContent>
         </Card>
+
+        <Link href="/ayarlar/ekip" className="block">
+          <Card className="hover:border-primary/40 transition-colors">
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between text-base">
+                <span className="flex items-center gap-2">
+                  <UsersRound className="size-4" />
+                  Ekip
+                </span>
+                <ChevronRight className="text-muted-foreground size-4" />
+              </CardTitle>
+              <CardDescription>
+                Üyeleri yönet, roller ve davetler
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </Link>
 
         <Link href="/ayarlar/etsy" className="block">
           <Card className="hover:border-primary/40 transition-colors">

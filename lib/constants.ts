@@ -5,6 +5,7 @@ import type {
   TaskStatus,
   TaskPriority,
   TaskLane,
+  Role,
 } from "@/lib/types";
 
 /** Sistem maliyet kategorileri (0006 + 0018 seed ile eşleşir). */
@@ -144,5 +145,16 @@ export const TASK_LANE_SHORT: Record<string, string> = {
   B: "B · Dönüşüm",
   owner: "Onay",
 };
+
+/** Organizasyon rolleri ve Türkçe etiketleri (Ekip sayfası). */
+export const ROLES: { value: Role; label: string }[] = [
+  { value: "owner", label: "Sahip" },
+  { value: "admin", label: "Yönetici" },
+  { value: "member", label: "Üye" },
+];
+
+export const ROLE_LABELS: Record<Role, string> = Object.fromEntries(
+  ROLES.map((r) => [r.value, r.label]),
+) as Record<Role, string>;
 
 export const DEFAULT_CURRENCY = "USD";
