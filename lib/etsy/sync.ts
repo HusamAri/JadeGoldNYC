@@ -301,6 +301,15 @@ export async function advanceEtsySync(
       // yok say
     }
 
+    // İlk senkronda sales fazı listings'ten önce çalıştığı için product_id
+    // eşlemesi boş kalabilir; products doldukça (veya sıra ne olursa olsun)
+    // kendini onaran bağ tamiri (idempotent). Hata senkronu bozmasın.
+    try {
+      await admin.rpc("rebuild_sale_item_product_links", { p_org_id: orgId });
+    } catch {
+      // yok say
+    }
+
     await persist({ sync_status: "done" });
     await logAudit(admin, {
       orgId,
@@ -383,6 +392,7 @@ async function upsertSalesPage(
       product_id: t.listing_id
         ? (productIdByListing.get(t.listing_id) ?? null)
         : null,
+      etsy_listing_id: t.listing_id ?? null,
       etsy_transaction_id: t.transaction_id,
       title: t.title ?? null,
       sku: t.sku ?? null,
