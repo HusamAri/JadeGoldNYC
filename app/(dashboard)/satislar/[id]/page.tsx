@@ -166,10 +166,13 @@ export default async function SatisDetayPage({
                 negative
               />
               <SummaryRow
-                label="Etsy Ücretleri"
+                label="Etsy İşlem/Reklam Ücreti"
                 value={`- ${formatMoney(sale.etsy_fees_cents, currency)}`}
                 negative
               />
+              <p className="text-muted-foreground -mt-1 text-xs">
+                Ödeme işleme payı hariç; ayrıca Maliyetler&apos;de aylık izlenir.
+              </p>
               <Separator />
               <SummaryRow
                 label="Genel Toplam"
