@@ -1,16 +1,20 @@
 import { cn } from "@/lib/utils";
-import { ScrollScrubVideo } from "@/components/brand/scroll-scrub-video";
+import { ScrollPinnedVideo } from "@/components/brand/scroll-pinned-video";
 
 /**
  * Editorial marka kartı — çıkıntı (raised) kutunun tamamını kaplayan ürün çekimi
  * + marka tonlu (charcoal→şeffaf) scrim, üzerinde altın eyebrow ve sakin serif
  * başlık. Sessiz lüks; az ve asimetrik kullanılır, veri kartlarında değil.
- * `video` verilirse kaydırmayla (scroll) ilerleyen/geri saran bir klip
- * gösterilir; `image` her zaman poster/geri dönüş görseli olarak kalır.
+ *
+ * `video` verilirse kart, kaydırma boyunca EKRANDA SABİT kalan (position:
+ * sticky) bir video kutusuna dönüşür — yalnızca içindeki kare kaydırma
+ * ilerlemesine göre değişir (bkz. ScrollPinnedVideo). `image` her zaman
+ * poster/geri dönüş görseli olarak kalır.
  */
 export function EditorialCard({
   image,
   video,
+  trackHeightVh = 180,
   eyebrow,
   title,
   subtitle,
@@ -19,25 +23,15 @@ export function EditorialCard({
 }: {
   image: string;
   video?: string;
+  trackHeightVh?: number;
   eyebrow?: string;
   title: string;
   subtitle?: string;
   align?: "start" | "end";
   className?: string;
 }) {
-  return (
-    <div
-      className={cn(
-        "relative overflow-hidden rounded-[1.75rem] shadow-[var(--shadow-raised)]",
-        className,
-      )}
-    >
-      <div
-        className="absolute inset-0 scale-105 bg-cover bg-center"
-        style={{ backgroundImage: `url('${image}')` }}
-        aria-hidden
-      />
-      {video && <ScrollScrubVideo src={video} poster={image} />}
+  const overlay = (
+    <>
       {/* marka tonlu scrim — charcoal'dan şeffafa */}
       <div
         className="absolute inset-0 bg-gradient-to-t from-[#131313]/88 via-[#131313]/35 to-[#131313]/5"
@@ -61,6 +55,35 @@ export function EditorialCard({
           <p className="mt-2 max-w-sm text-sm text-white/80">{subtitle}</p>
         )}
       </div>
+    </>
+  );
+
+  if (video) {
+    return (
+      <ScrollPinnedVideo
+        src={video}
+        poster={image}
+        trackHeightVh={trackHeightVh}
+        className="overflow-hidden rounded-[1.75rem] shadow-[var(--shadow-raised)]"
+      >
+        {overlay}
+      </ScrollPinnedVideo>
+    );
+  }
+
+  return (
+    <div
+      className={cn(
+        "relative overflow-hidden rounded-[1.75rem] shadow-[var(--shadow-raised)]",
+        className,
+      )}
+    >
+      <div
+        className="absolute inset-0 scale-105 bg-cover bg-center"
+        style={{ backgroundImage: `url('${image}')` }}
+        aria-hidden
+      />
+      {overlay}
     </div>
   );
 }

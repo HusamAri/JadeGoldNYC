@@ -140,9 +140,10 @@ export default function MarkaKilavuzuPage() {
         }
       />
 
-      {/* Editorial açılış */}
+      {/* Editorial açılış — kaydırma boyunca ekranda sabitlenip (pinned)
+          videosunu kaydırma ilerlemesiyle oynatır. */}
       <EditorialCard
-        className="min-h-[280px] md:min-h-[340px]"
+        trackHeightVh={180}
         image="/brand/gallery/koyu-franco.webp"
         video="/brand/video/jade-altin-dolly.mp4"
         eyebrow="Jade Gold · New York City"

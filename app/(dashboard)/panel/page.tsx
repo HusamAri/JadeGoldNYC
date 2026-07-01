@@ -70,24 +70,24 @@ export default async function PanelPage({
 
   return (
     <div className="space-y-6">
-      <div className="grid gap-4 md:gap-6 lg:grid-cols-5">
-        <EditorialCard
-          className="min-h-[210px] md:min-h-[250px] lg:col-span-3"
-          image="/brand/gallery/koyu-franco.webp"
-          video="/brand/video/altin-zincir-orbit.mp4"
-          eyebrow="Jade Gold · New York"
-          title="Sessiz lüks, kalıcı değer"
-          subtitle="Som altın, el işçiliği — her parça bir miras."
-        />
-        <EditorialCard
-          className="min-h-[210px] md:min-h-[250px] lg:col-span-2"
-          image="/brand/gallery/aydinlik-nugget.webp"
-          video="/brand/video/altin-yuzuk-yukselis.mp4"
-          eyebrow="Atölye"
-          title="Zarafetin sadeliği"
-          align="start"
-        />
-      </div>
+      {/* Editorial hero — her kart kaydırma boyunca ekranda sabitlenip (pinned)
+          videosunu kaydırma ilerlemesiyle oynatır, sonra bir sonrakine yer açar. */}
+      <EditorialCard
+        trackHeightVh={160}
+        image="/brand/gallery/koyu-franco.webp"
+        video="/brand/video/altin-zincir-orbit.mp4"
+        eyebrow="Jade Gold · New York"
+        title="Sessiz lüks, kalıcı değer"
+        subtitle="Som altın, el işçiliği — her parça bir miras."
+      />
+      <EditorialCard
+        trackHeightVh={160}
+        image="/brand/gallery/aydinlik-nugget.webp"
+        video="/brand/video/altin-yuzuk-yukselis.mp4"
+        eyebrow="Atölye"
+        title="Zarafetin sadeliği"
+        align="start"
+      />
 
       <PageHeader
         title="Panel"
