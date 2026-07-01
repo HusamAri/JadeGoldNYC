@@ -1,5 +1,13 @@
 import Link from "next/link";
-import { Store, Plug, Truck, UserRound, Scale, ChevronRight } from "lucide-react";
+import {
+  Store,
+  Plug,
+  Truck,
+  UserRound,
+  Scale,
+  Sparkles,
+  ChevronRight,
+} from "lucide-react";
 
 import { requireMembership, getUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
@@ -126,6 +134,23 @@ export default async function AyarlarPage() {
               </CardTitle>
               <CardDescription>
                 Tedarikciden alim fiyatlari, iscilik oranlari ve altin fiyat kaynagi
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </Link>
+
+        <Link href="/ayarlar/etsy-guncellemeleri" className="block">
+          <Card className="hover:border-primary/40 transition-colors">
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between text-base">
+                <span className="flex items-center gap-2">
+                  <Sparkles className="size-4" />
+                  Etsy Güncellemeleri
+                </span>
+                <ChevronRight className="text-muted-foreground size-4" />
+              </CardTitle>
+              <CardDescription>
+                Platform güncellemelerinden mağazanız için elenmiş öneriler
               </CardDescription>
             </CardHeader>
           </Card>

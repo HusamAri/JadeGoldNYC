@@ -82,6 +82,8 @@ export function LiquidTabs<T extends string>({
     "idle",
   );
   const [bubbles, setBubbles] = useState<Bubble[]>([]);
+  // Akış sürerken kubbe gibi kabaran gölge; akış bitince normal kabartmaya döner.
+  const [moving, setMoving] = useState(false);
 
   const itemsKey = items.map((i) => i.value).join("|");
 
@@ -137,13 +139,15 @@ export function LiquidTabs<T extends string>({
       window.setTimeout(() => setBubbles([]), 600);
     };
 
+    setMoving(true);
+
     if (adjacent) {
       // Komşu sekme: gösterge esneyerek kayar, kabarcıklar geçiş noktasında patlar.
       setPhase("idle");
       setRect(next);
       spawnBubbles(midX, midY, Math.abs(next.x - prev.x));
     } else {
-      // Alakasız sekme: eski yerde erir, yeni yerde sıfırdan dolar.
+      // Alakasız sekme: eski yerde erir (küçük kalır), yeni yerde sıfırdan dolar.
       setPhase("shrink");
       const t1 = window.setTimeout(() => {
         setRect(next);
@@ -171,8 +175,10 @@ export function LiquidTabs<T extends string>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, itemsKey]);
 
+  // "shrink" VE "snap" sırasında küçük kalmalı; yalnız "grow"/"idle" tam boy.
+  const indicatorScale = phase === "grow" || phase === "idle" ? 1 : 0.15;
   const indicatorTransform = rect
-    ? `translate(${rect.x}px, ${rect.y}px) scale(${phase === "shrink" ? 0.15 : 1})`
+    ? `translate(${rect.x}px, ${rect.y}px) scale(${indicatorScale})`
     : undefined;
 
   const indicatorTransition =
@@ -183,6 +189,23 @@ export function LiquidTabs<T extends string>({
         : phase === "shrink"
           ? `transform 0.15s var(--ease-premium)`
           : `transform 0.55s var(--ease-liquid-slide), width 0.55s var(--ease-liquid-slide), height 0.55s var(--ease-liquid-slide)`;
+
+  // Gölge yalnız goo filtresinin DIŞINDaki bir katmanda anlamlı: filtrenin
+  // kontrast matrisi düşük-alfa yumuşak gölge kenarlarını saydamlaştırıp yutar.
+  const shadowTransition = `${indicatorTransition}, box-shadow 0.3s var(--ease-premium)`;
+  const shadowStyle: React.CSSProperties = {
+    width: rect?.w,
+    height: rect?.h,
+    transform: indicatorTransform,
+    transition: shadowTransition,
+    boxShadow: moving ? "var(--shadow-hover)" : "var(--shadow-raised-sm)",
+  };
+
+  function handleIndicatorTransitionEnd(e: React.TransitionEvent) {
+    if (e.propertyName !== "transform") return;
+    // "shrink" ara adımıdır; yalnız gerçek varış (idle/grow) akışı bitirir.
+    if (phase === "idle" || phase === "grow") setMoving(false);
+  }
 
   return (
     <div
@@ -203,6 +226,19 @@ export function LiquidTabs<T extends string>({
           <feBlend in="SourceGraphic" in2="goo" />
         </filter>
       </svg>
+
+      {/* Kabartma gölgesi — goo filtresinin ALTINDA, filtresiz; blob'un
+          kenarlarından taşarak "kabartma hissi" verir. Akış sürerken (moving)
+          kubbe gibi kabarır, akış bitince normal buton kabartmasına oturur. */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-20">
+        {rect && (
+          <span
+            className={cn("absolute top-0 left-0 rounded-full", indicatorClassName)}
+            style={shadowStyle}
+            onTransitionEnd={handleIndicatorTransitionEnd}
+          />
+        )}
+      </div>
 
       <div
         aria-hidden
