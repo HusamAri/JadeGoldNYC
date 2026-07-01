@@ -98,12 +98,13 @@ export async function createGoldCostForSale(
       description: string | null;
       tags: string[] | null;
       materials: string[] | null;
+      weight_grams: number | null;
     }
   >();
   if (productIds.length > 0) {
     const { data: products } = await supabase
       .from("products")
-      .select("id, title, description, tags, materials")
+      .select("id, title, description, tags, materials, weight_grams")
       .in("id", productIds);
     for (const p of (products ?? []) as {
       id: string;
@@ -111,12 +112,14 @@ export async function createGoldCostForSale(
       description: string | null;
       tags: string[] | null;
       materials: string[] | null;
+      weight_grams: number | null;
     }[]) {
       productMap.set(p.id, {
         title: p.title,
         description: p.description,
         tags: p.tags,
         materials: p.materials,
+        weight_grams: p.weight_grams,
       });
     }
   }
@@ -168,7 +171,10 @@ export async function createGoldCostForSale(
     const materials = prod?.materials ?? null;
 
     const karat = detectKarat(combinedTitle, tags, materials);
-    const weightGrams = extractWeightGrams(combinedTitle, description);
+    // Elle girilen ağırlık güvenilir kaynak; yalnız boşsa başlık/açıklama
+    // regex'ine düşülür (gerçek veride %1.7 isabet — bkz. Maliyetler denetimi).
+    const weightGrams =
+      prod?.weight_grams ?? extractWeightGrams(combinedTitle, description);
 
     if (!karat || !weightGrams) {
       result.skipped += item.quantity;

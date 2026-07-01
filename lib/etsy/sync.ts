@@ -287,6 +287,13 @@ export async function advanceEtsySync(
       // yok say
     }
 
+    // sales.etsy_fees_cents'i ledger'dan gerçek per-order ücretle doldur (idempotent).
+    try {
+      await admin.rpc("rebuild_sales_etsy_fees", { p_org_id: orgId });
+    } catch {
+      // yok say
+    }
+
     // Altın maliyet kalemlerini otomatik oluştur (idempotent).
     try {
       await processGoldCostsForRecentSales(admin, orgId);
@@ -351,6 +358,21 @@ async function upsertSalesPage(
     idByReceipt.set(row.etsy_receipt_id, row.id);
   }
 
+  // transaction.listing_id → products.id: altın maliyet motoru ürünün
+  // gerçek açıklamasına (ağırlık burada yazılı) yalnız bu bağ üzerinden erişir.
+  const { data: productRows } = await admin
+    .from("products")
+    .select("id, etsy_listing_id")
+    .eq("org_id", orgId)
+    .not("etsy_listing_id", "is", null);
+  const productIdByListing = new Map<number, string>();
+  for (const p of (productRows ?? []) as {
+    id: string;
+    etsy_listing_id: number;
+  }[]) {
+    productIdByListing.set(p.etsy_listing_id, p.id);
+  }
+
   const itemRows = results.flatMap((r) => {
     const saleId = idByReceipt.get(r.receipt_id);
     if (!saleId) return [];
@@ -358,6 +380,9 @@ async function upsertSalesPage(
     return (r.transactions ?? []).map((t) => ({
       org_id: orgId,
       sale_id: saleId,
+      product_id: t.listing_id
+        ? (productIdByListing.get(t.listing_id) ?? null)
+        : null,
       etsy_transaction_id: t.transaction_id,
       title: t.title ?? null,
       sku: t.sku ?? null,

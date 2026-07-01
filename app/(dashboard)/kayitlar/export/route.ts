@@ -20,6 +20,7 @@ export async function GET(request: Request) {
   const { rows } = await listAudit({
     entityType: sp.get("entity") ?? undefined,
     action: sp.get("action") ?? undefined,
+    source: sp.get("source") ?? undefined,
     search: sp.get("search") ?? undefined,
     limit: 5000,
     offset: 0,

@@ -7,6 +7,7 @@ import { BRAND_GALLERY } from "@/lib/brand-assets";
 import { formatMoney } from "@/lib/money";
 import { PageHeader } from "@/components/page-header";
 import { BrandTile } from "@/components/brand/brand-tile";
+import { ProductWeightInput } from "@/components/product-weight-input";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -28,6 +29,7 @@ interface ProductListing {
   materials: string[] | null;
   num_images: number | null;
   quantity: number | null;
+  weight_grams: number | null;
 }
 
 export default async function TasarimlarPage() {
@@ -36,7 +38,7 @@ export default async function TasarimlarPage() {
   const { data: products } = await supabase
     .from("products")
     .select(
-      "id, title, status, price_cents, currency, url, image_url, description, tags, materials, num_images, quantity",
+      "id, title, status, price_cents, currency, url, image_url, description, tags, materials, num_images, quantity, weight_grams",
     )
     .eq("org_id", m.org_id)
     .eq("status", "active")
@@ -139,6 +141,10 @@ export default async function TasarimlarPage() {
                       </Badge>
                     )}
                   </div>
+                  <ProductWeightInput
+                    productId={p.id}
+                    initialGrams={p.weight_grams}
+                  />
                   {p.materials && p.materials.length > 0 && (
                     <div className="flex flex-wrap gap-1">
                       {p.materials.slice(0, 5).map((mat) => (
