@@ -3,11 +3,12 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Trash2 } from "lucide-react";
+import { Trash2, ArrowRightLeft } from "lucide-react";
 
 import {
   moveTask,
   assignTask,
+  handoverTask,
   addTaskNote,
   deleteTaskNote,
 } from "@/app/(dashboard)/gorevler/actions";
@@ -18,6 +19,8 @@ import { formatDateTime } from "@/lib/format";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
+import { SlideButton } from "@/components/tasks/motion";
 import {
   Card,
   CardContent,
@@ -46,6 +49,12 @@ export function TaskPanel({
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [body, setBody] = useState("");
+  const [handoverTo, setHandoverTo] = useState("");
+  const [handoverNote, setHandoverNote] = useState("");
+
+  const handoverCandidates = members.filter(
+    (u) => u.user_id !== task.assignee_id,
+  );
 
   function run(fn: () => Promise<{ error?: string }>) {
     startTransition(async () => {
@@ -74,6 +83,23 @@ export function TaskPanel({
     });
   }
 
+  function submitHandover(e: React.FormEvent) {
+    e.preventDefault();
+    const text = handoverNote.trim();
+    if (!handoverTo || !text) return;
+    startTransition(async () => {
+      const res = await handoverTask(task.id, handoverTo, text);
+      if (res?.error) {
+        toast.error(res.error);
+        return;
+      }
+      setHandoverTo("");
+      setHandoverNote("");
+      toast.success("Görev devredildi");
+      router.refresh();
+    });
+  }
+
   return (
     <div className="space-y-6">
       <Card>
@@ -83,17 +109,22 @@ export function TaskPanel({
               Durum
             </p>
             <div className="flex flex-wrap gap-1.5">
-              {TASK_STATUSES.map((s) => (
-                <Button
-                  key={s.value}
-                  size="sm"
-                  variant={task.status === s.value ? "default" : "outline"}
-                  disabled={pending}
-                  onClick={() => run(() => moveTask(task.id, s.value))}
-                >
-                  {s.label}
-                </Button>
-              ))}
+              {TASK_STATUSES.map((s) =>
+                task.status === s.value ? (
+                  <Button key={s.value} size="sm" disabled={pending}>
+                    {s.label}
+                  </Button>
+                ) : (
+                  <SlideButton
+                    key={s.value}
+                    disabled={pending}
+                    onClick={() => run(() => moveTask(task.id, s.value))}
+                    className="border-input border"
+                  >
+                    {s.label}
+                  </SlideButton>
+                ),
+              )}
             </div>
           </div>
           <div className="space-y-1.5">
@@ -119,6 +150,63 @@ export function TaskPanel({
               </SelectContent>
             </Select>
           </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <ArrowRightLeft className="size-4" />
+            Görevi Devret
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-muted-foreground text-sm">
+            Kendi bölümünüzü tamamladığınızda, ne yaptığınızı not düşerek
+            görevi bir sonraki kişiye devredin.
+          </p>
+          <form onSubmit={submitHandover} className="space-y-3">
+            <div className="space-y-2">
+              <Label htmlFor="handover-to">Kime</Label>
+              <Select value={handoverTo} onValueChange={setHandoverTo}>
+                <SelectTrigger id="handover-to" className="w-full sm:w-72">
+                  <SelectValue placeholder="Üye seçin" />
+                </SelectTrigger>
+                <SelectContent>
+                  {handoverCandidates.length === 0 ? (
+                    <div className="text-muted-foreground px-2 py-1.5 text-sm">
+                      Devredilecek başka üye yok
+                    </div>
+                  ) : (
+                    handoverCandidates.map((u) => (
+                      <SelectItem key={u.user_id} value={u.user_id}>
+                        {u.full_name || "İsimsiz üye"}
+                      </SelectItem>
+                    ))
+                  )}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="handover-note">Tamamlanan bölüm / not</Label>
+              <Textarea
+                id="handover-note"
+                rows={2}
+                value={handoverNote}
+                onChange={(e) => setHandoverNote(e.target.value)}
+                placeholder="Ne tamamladınız, sıradaki kişi ne bilmeli?"
+              />
+            </div>
+            <div className="flex justify-end">
+              <Button
+                type="submit"
+                size="sm"
+                disabled={pending || !handoverTo || !handoverNote.trim()}
+              >
+                Devret
+              </Button>
+            </div>
+          </form>
         </CardContent>
       </Card>
 
@@ -150,8 +238,14 @@ export function TaskPanel({
               {notes.map((n) => (
                 <li key={n.id} className="nm-raised-sm rounded-2xl p-3">
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-sm font-medium">
+                    <span className="flex items-center gap-2 text-sm font-medium">
                       {n.author_label ?? "Üye"}
+                      {n.kind === "handover" && (
+                        <Badge variant="warning" className="gap-1">
+                          <ArrowRightLeft className="size-3" />
+                          Devir
+                        </Badge>
+                      )}
                     </span>
                     <span className="text-muted-foreground flex items-center gap-2 text-xs">
                       {formatDateTime(n.created_at, "d MMM HH:mm")}

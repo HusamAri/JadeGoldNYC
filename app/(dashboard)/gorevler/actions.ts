@@ -8,6 +8,7 @@ import { getProfile } from "@/lib/db/queries/profile";
 import {
   taskFormSchema,
   taskNoteSchema,
+  taskHandoverSchema,
   taskStatusSchema,
   type TaskFormValues,
 } from "@/lib/validations/task";
@@ -146,6 +147,49 @@ export async function addTaskNote(
   if (error) return { error: error.message };
   revalidatePath(`/gorevler/${taskId}`);
   return {};
+}
+
+/**
+ * Devir: kendi bölümünü tamamlayan üye, zorunlu bir not düşerek görevi
+ * başka bir üyeye atar. Atama + not tek işlemde yapılır.
+ */
+export async function handoverTask(
+  taskId: string,
+  toUserId: string,
+  note: string,
+): Promise<TaskActionResult> {
+  const parsed = taskHandoverSchema.safeParse({ to_user_id: toUserId, body: note });
+  if (!parsed.success) {
+    return {
+      error: "Devir bilgileri geçersiz.",
+      fieldErrors: parsed.error.flatten().fieldErrors,
+    };
+  }
+  const m = await requireMembership();
+  const user = await getUser();
+  const supabase = await createClient();
+
+  const [fromProfile, toProfile] = await Promise.all([
+    user ? getProfile(supabase, user.id) : Promise.resolve(null),
+    getProfile(supabase, parsed.data.to_user_id),
+  ]);
+  const fromLabel = fromProfile?.full_name || user?.email || "Bir üye";
+  const toLabel = toProfile?.full_name || "seçilen üye";
+
+  // Atama + not tek DB fonksiyonunda (atomik): not eklenemezse atama da geri alınır.
+  const { error } = await supabase.rpc("handover_task", {
+    p_task_id: taskId,
+    p_org_id: m.org_id,
+    p_to_user_id: parsed.data.to_user_id,
+    p_body: `${fromLabel} → ${toLabel}: ${parsed.data.body}`,
+    p_author_id: m.user_id,
+    p_author_label: fromLabel,
+  });
+  if (error) return { error: error.message };
+
+  revalidatePath("/gorevler");
+  revalidatePath(`/gorevler/${taskId}`);
+  return { ok: true, id: taskId };
 }
 
 export async function deleteTaskNote(
