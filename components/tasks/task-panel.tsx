@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { SlideButton } from "@/components/tasks/motion";
+import { LiquidTabs } from "@/components/tasks/liquid-tabs";
 import {
   Card,
   CardContent,
@@ -108,24 +108,14 @@ export function TaskPanel({
             <p className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
               Durum
             </p>
-            <div className="flex flex-wrap gap-1.5">
-              {TASK_STATUSES.map((s) =>
-                task.status === s.value ? (
-                  <Button key={s.value} size="sm" disabled={pending}>
-                    {s.label}
-                  </Button>
-                ) : (
-                  <SlideButton
-                    key={s.value}
-                    disabled={pending}
-                    onClick={() => run(() => moveTask(task.id, s.value))}
-                    className="border-input border"
-                  >
-                    {s.label}
-                  </SlideButton>
-                ),
-              )}
-            </div>
+            <LiquidTabs
+              items={TASK_STATUSES}
+              value={task.status}
+              onChange={(s) => run(() => moveTask(task.id, s))}
+              indicatorClassName="bg-primary"
+              activeTextClassName="text-primary-foreground"
+              disabled={pending}
+            />
           </div>
           <div className="space-y-1.5">
             <p className="text-muted-foreground text-xs font-medium tracking-wide uppercase">

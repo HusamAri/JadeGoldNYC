@@ -11,7 +11,8 @@ import type { TaskWithAssignee, TaskPriority, TaskStatus } from "@/lib/types";
 import type { AssignableUser } from "@/lib/db/queries/tasks";
 import { TaskPriorityBadge } from "@/components/task-priority-badge";
 import { UserAvatar } from "@/components/user-avatar";
-import { FilterChip, SlideButton } from "@/components/tasks/motion";
+import { SlideButton } from "@/components/tasks/motion";
+import { LiquidTabs } from "@/components/tasks/liquid-tabs";
 import { cn } from "@/lib/utils";
 
 const NEXT: Partial<Record<TaskStatus, TaskStatus>> = {
@@ -82,11 +83,16 @@ export function TaskBoard({
     });
   }
 
-  const laneChips = [
-    { v: "all", l: "Tümü" },
-    { v: "A", l: "A · Büyüme" },
-    { v: "B", l: "B · Dönüşüm" },
-    { v: "owner", l: "Onay" },
+  const laneItems = [
+    { value: "all", label: "Tümü" },
+    { value: "A", label: "A · Büyüme" },
+    { value: "B", label: "B · Dönüşüm" },
+    { value: "owner", label: "Onay" },
+  ];
+  const assigneeItems = [
+    { value: "all", label: "Herkes" },
+    { value: "unassigned", label: "Atanmamış" },
+    ...members.map((u) => ({ value: u.user_id, label: u.full_name || "Üye" })),
   ];
 
   return (
@@ -95,35 +101,14 @@ export function TaskBoard({
         <span className="text-muted-foreground mr-1 text-[0.7rem] font-medium tracking-wide uppercase">
           Şerit
         </span>
-        {laneChips.map((c) => (
-          <FilterChip key={c.v} active={lane === c.v} onClick={() => setLane(c.v)}>
-            {c.l}
-          </FilterChip>
-        ))}
+        <LiquidTabs items={laneItems} value={lane} onChange={setLane} />
       </div>
 
       <div className="flex flex-wrap items-center gap-1.5">
         <span className="text-muted-foreground mr-1 text-[0.7rem] font-medium tracking-wide uppercase">
           Atanan
         </span>
-        <FilterChip active={assignee === "all"} onClick={() => setAssignee("all")}>
-          Herkes
-        </FilterChip>
-        <FilterChip
-          active={assignee === "unassigned"}
-          onClick={() => setAssignee("unassigned")}
-        >
-          Atanmamış
-        </FilterChip>
-        {members.map((u) => (
-          <FilterChip
-            key={u.user_id}
-            active={assignee === u.user_id}
-            onClick={() => setAssignee(u.user_id)}
-          >
-            {u.full_name || "Üye"}
-          </FilterChip>
-        ))}
+        <LiquidTabs items={assigneeItems} value={assignee} onChange={setAssignee} />
       </div>
 
       <div className="flex items-center gap-3">
