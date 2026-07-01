@@ -70,6 +70,7 @@ export default async function GorevlerPage() {
           value={formatNumber(summary.p0Open)}
           icon={AlertTriangle}
           accent={summary.p0Open > 0 ? "negative" : "default"}
+          className="col-span-2 lg:col-span-1"
         />
       </div>
 
