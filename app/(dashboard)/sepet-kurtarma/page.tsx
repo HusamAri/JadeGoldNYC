@@ -42,11 +42,19 @@ import { FilterSelect } from "@/components/data-table/filter-select";
 import { Pagination } from "@/components/data-table/pagination";
 import { DeleteButton } from "@/components/data-table/delete-button";
 import { CartStatusBadge } from "@/components/cart-status-badge";
+import { AddWinbackButton } from "@/components/add-winback-button";
 import { deleteCartRecovery } from "./actions";
 
 export const metadata = { title: "Müşteri Geri Kazanım" };
 
 const LAPSE_DAYS = 90;
+const CANDIDATE_LIMIT = 500;
+
+const WINBACK_TIERS: { label: string; min: number; max: number }[] = [
+  { label: "90-180 gün", min: 90, max: 180 },
+  { label: "180-365 gün", min: 180, max: 365 },
+  { label: "365+ gün", min: 365, max: Infinity },
+];
 
 export default async function GeriKazanimPage({
   searchParams,
@@ -60,11 +68,18 @@ export default async function GeriKazanimPage({
   const limit = 25;
 
   const [candidates, winback, { rows, count }, tracking] = await Promise.all([
-    getWinbackCandidates(LAPSE_DAYS, 100),
+    getWinbackCandidates(LAPSE_DAYS, CANDIDATE_LIMIT),
     getWinbackSummary(LAPSE_DAYS),
     listCartRecoveries({ status, search, limit, offset }),
     getCartSummary(),
   ]);
+
+  const tiers = WINBACK_TIERS.map((tier) => ({
+    ...tier,
+    rows: candidates.filter(
+      (c) => c.days_since >= tier.min && c.days_since < tier.max,
+    ),
+  })).filter((tier) => tier.rows.length > 0);
 
   return (
     <div className="space-y-6">
@@ -117,7 +132,7 @@ export default async function GeriKazanimPage({
         <CardHeader>
           <CardTitle>Öncelikli Geri Kazanım Adayları</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-6">
           {candidates.length === 0 ? (
             <EmptyState
               icon={Users}
@@ -125,43 +140,61 @@ export default async function GeriKazanimPage({
               description="Etsy senkronundan sonra sipariş geçmişi burada müşteri bazında özetlenir; en değerli, uzun süredir gelmeyen müşteriler öne çıkar."
             />
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Müşteri</TableHead>
-                  <TableHead className="text-right">Sipariş</TableHead>
-                  <TableHead className="text-right">Toplam Harcama</TableHead>
-                  <TableHead>Son Sipariş</TableHead>
-                  <TableHead className="text-right">Gün Önce</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {candidates.map((c) => (
-                  <TableRow key={c.buyer_key}>
-                    <TableCell className="max-w-[260px] truncate font-medium">
-                      {c.buyer_name ?? c.buyer_email ?? c.buyer_key}
-                      {c.buyer_email && c.buyer_name && (
-                        <span className="text-muted-foreground block truncate text-xs font-normal">
-                          {c.buyer_email}
-                        </span>
-                      )}
-                    </TableCell>
-                    <TableCell className="text-right tabular-nums">
-                      {formatNumber(c.order_count)}
-                    </TableCell>
-                    <TableCell className="text-right tabular-nums font-medium">
-                      {formatMoney(c.total_spent_cents)}
-                    </TableCell>
-                    <TableCell className="whitespace-nowrap">
-                      {formatDate(c.last_order_date)}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground text-right tabular-nums">
-                      {formatNumber(c.days_since)}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+            tiers.map((tier) => (
+              <div key={tier.label} className="space-y-2">
+                <h3 className="text-muted-foreground text-sm font-medium">
+                  {tier.label}
+                </h3>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Müşteri</TableHead>
+                      <TableHead className="text-right">Sipariş</TableHead>
+                      <TableHead className="text-right">Toplam Harcama</TableHead>
+                      <TableHead>Son Sipariş</TableHead>
+                      <TableHead className="text-right">Gün Önce</TableHead>
+                      <TableHead className="w-1 text-right">İşlem</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {tier.rows.map((c) => (
+                      <TableRow key={c.buyer_key}>
+                        <TableCell className="max-w-[260px] truncate font-medium">
+                          {c.buyer_name ?? c.buyer_email ?? c.buyer_key}
+                          {c.buyer_email && c.buyer_name && (
+                            <span className="text-muted-foreground block truncate text-xs font-normal">
+                              {c.buyer_email}
+                            </span>
+                          )}
+                        </TableCell>
+                        <TableCell className="text-right tabular-nums">
+                          {formatNumber(c.order_count)}
+                        </TableCell>
+                        <TableCell className="text-right tabular-nums font-medium">
+                          {formatMoney(c.total_spent_cents)}
+                        </TableCell>
+                        <TableCell className="whitespace-nowrap">
+                          {formatDate(c.last_order_date)}
+                        </TableCell>
+                        <TableCell className="text-muted-foreground text-right tabular-nums">
+                          {formatNumber(c.days_since)}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <AddWinbackButton
+                            candidate={{
+                              buyer_name: c.buyer_name,
+                              buyer_email: c.buyer_email,
+                              order_count: c.order_count,
+                              last_order_date: c.last_order_date,
+                            }}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            ))
           )}
         </CardContent>
       </Card>
