@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { UserAvatar } from "@/components/user-avatar";
 import { LiquidTabs } from "@/components/tasks/liquid-tabs";
 import {
   Card,
@@ -55,6 +56,7 @@ export function TaskPanel({
   const handoverCandidates = members.filter(
     (u) => u.user_id !== task.assignee_id,
   );
+  const memberByUserId = new Map(members.map((u) => [u.user_id, u]));
 
   function run(fn: () => Promise<{ error?: string }>) {
     startTransition(async () => {
@@ -224,36 +226,50 @@ export function TaskPanel({
           {notes.length === 0 ? (
             <p className="text-muted-foreground text-sm">Henüz not yok.</p>
           ) : (
-            <ul className="space-y-3">
-              {notes.map((n) => (
-                <li key={n.id} className="nm-raised-sm rounded-2xl p-3">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="flex items-center gap-2 text-sm font-medium">
-                      {n.author_label ?? "Üye"}
-                      {n.kind === "handover" && (
-                        <Badge variant="warning" className="gap-1">
-                          <ArrowRightLeft className="size-3" />
-                          Devir
-                        </Badge>
-                      )}
-                    </span>
-                    <span className="text-muted-foreground flex items-center gap-2 text-xs">
-                      {formatDateTime(n.created_at, "d MMM HH:mm")}
-                      <button
-                        type="button"
-                        onClick={() =>
-                          run(() => deleteTaskNote(n.id, task.id))
-                        }
-                        className="text-muted-foreground hover:text-destructive transition-colors"
-                        aria-label="Notu sil"
-                      >
-                        <Trash2 className="size-3.5" />
-                      </button>
-                    </span>
-                  </div>
-                  <p className="mt-1 text-sm whitespace-pre-wrap">{n.body}</p>
-                </li>
-              ))}
+            <ul className="space-y-4">
+              {notes.map((n) => {
+                const author = n.author_id
+                  ? memberByUserId.get(n.author_id)
+                  : undefined;
+                return (
+                  <li key={n.id} className="flex items-start gap-3">
+                    <UserAvatar
+                      src={author?.avatar_url}
+                      name={author?.full_name ?? n.author_label}
+                      className="size-12 shrink-0"
+                    />
+                    <div className="nm-raised-sm min-w-0 flex-1 rounded-2xl rounded-tl-sm p-3">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="flex items-center gap-2 text-sm font-medium">
+                          {n.author_label ?? "Üye"}
+                          {n.kind === "handover" && (
+                            <Badge variant="warning" className="gap-1">
+                              <ArrowRightLeft className="size-3" />
+                              Devir
+                            </Badge>
+                          )}
+                        </span>
+                        <span className="text-muted-foreground flex items-center gap-2 text-xs">
+                          {formatDateTime(n.created_at, "d MMM HH:mm")}
+                          <button
+                            type="button"
+                            onClick={() =>
+                              run(() => deleteTaskNote(n.id, task.id))
+                            }
+                            className="text-muted-foreground hover:text-destructive transition-colors"
+                            aria-label="Notu sil"
+                          >
+                            <Trash2 className="size-3.5" />
+                          </button>
+                        </span>
+                      </div>
+                      <p className="mt-1 text-sm whitespace-pre-wrap">
+                        {n.body}
+                      </p>
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </CardContent>
