@@ -1,0 +1,41 @@
+name: Fetch brand videos
+
+# GitHub-hosted runners have open internet, so they can pull the Panel süreç
+# sahnesi videos from the Higgsfield CDN that the dev sandbox cannot reach.
+# Triggered by pushing this workflow (or the fetch script); commits the mp4s
+# under public/brand/video/ back to the branch. The path filter excludes
+# public/brand/** so the commit-back never re-triggers the workflow.
+on:
+  workflow_dispatch:
+  push:
+    branches: [claude/serene-knuth-js7wvl]
+    paths:
+      - ".github/workflows/fetch-brand-videos.yml"
+      - "scripts/fetch-brand-videos.mjs"
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Fetch brand videos
+        run: node scripts/fetch-brand-videos.mjs
+      - name: Commit fetched videos
+        run: |
+          if [[ -n "$(git status --porcelain public/brand/video)" ]]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add public/brand/video
+            git commit -m "chore(brand): süreç sahnesi videolarını CDN'den çek [skip ci]"
+            git push origin HEAD:claude/serene-knuth-js7wvl
+            echo "Pushed fetched videos."
+          else
+            echo "No videos fetched (CDN unreachable or unchanged)."
+            exit 1
+          fi
