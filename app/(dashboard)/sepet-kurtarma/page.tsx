@@ -50,6 +50,7 @@ export const metadata = { title: "Müşteri Geri Kazanım" };
 
 const LAPSE_DAYS = 90;
 const CANDIDATE_LIMIT = 500;
+const TIER_DISPLAY_LIMIT = 20;
 
 const WINBACK_TIERS: { label: string; min: number; max: number }[] = [
   { label: "90-180 gün", min: 90, max: 180 },
@@ -147,6 +148,11 @@ export default async function GeriKazanimPage({
               <div key={tier.label} className="space-y-2">
                 <h3 className="text-muted-foreground text-sm font-medium">
                   {tier.label}
+                  {tier.rows.length > TIER_DISPLAY_LIMIT && (
+                    <span className="ml-2">
+                      · en değerli {TIER_DISPLAY_LIMIT} gösteriliyor ({tier.rows.length} adaydan)
+                    </span>
+                  )}
                 </h3>
                 <Table>
                   <TableHeader>
@@ -160,7 +166,7 @@ export default async function GeriKazanimPage({
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {tier.rows.map((c) => (
+                    {tier.rows.slice(0, TIER_DISPLAY_LIMIT).map((c) => (
                       <TableRow key={c.buyer_key}>
                         <TableCell className="max-w-[260px] truncate font-medium">
                           {c.buyer_name ?? c.buyer_email ?? c.buyer_key}

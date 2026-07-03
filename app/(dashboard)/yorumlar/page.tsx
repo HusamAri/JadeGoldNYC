@@ -164,7 +164,7 @@ export default async function YorumlarPage({
                       <TableCell className="whitespace-nowrap">
                         {formatDate(r.review_date)}
                       </TableCell>
-                      <TableCell className="max-w-[160px] truncate font-medium">
+                      <TableCell className="max-w-[110px] truncate font-medium">
                         {r.buyer_name ?? "—"}
                       </TableCell>
                       <TableCell>
@@ -178,7 +178,7 @@ export default async function YorumlarPage({
                           )}
                         </div>
                       </TableCell>
-                      <TableCell className="text-muted-foreground max-w-[320px] truncate">
+                      <TableCell className="text-muted-foreground max-w-[420px] truncate">
                         {r.review_text ?? "—"}
                       </TableCell>
                       <TableCell>

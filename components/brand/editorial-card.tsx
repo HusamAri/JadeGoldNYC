@@ -10,11 +10,18 @@ import { ScrollPinnedVideo } from "@/components/brand/scroll-pinned-video";
  * sticky) bir video kutusuna dönüşür — yalnızca içindeki kare kaydırma
  * ilerlemesine göre değişir (bkz. ScrollPinnedVideo). `image` her zaman
  * poster/geri dönüş görseli olarak kalır.
+ *
+ * `compact` verilirse tam ekran kaydırma rayı KULLANILMAZ — sabit, makul
+ * yükseklikte (varsayılan 320px) normal bir kutuda sessiz döngülü video
+ * oynar. Veri yoğun sayfalarda (ör. Panel) kaydırma maliyeti olmadan marka
+ * anı için kullanılır.
  */
 export function EditorialCard({
   image,
   video,
   trackHeightVh = 180,
+  compact = false,
+  heightClassName = "h-[320px]",
   eyebrow,
   title,
   subtitle,
@@ -24,6 +31,8 @@ export function EditorialCard({
   image: string;
   video?: string;
   trackHeightVh?: number;
+  compact?: boolean;
+  heightClassName?: string;
   eyebrow?: string;
   title: string;
   subtitle?: string;
@@ -57,6 +66,31 @@ export function EditorialCard({
       </div>
     </>
   );
+
+  if (video && compact) {
+    return (
+      <div
+        className={cn(
+          "relative overflow-hidden rounded-[1.75rem] shadow-[var(--shadow-raised)]",
+          heightClassName,
+          className,
+        )}
+      >
+        <video
+          src={video}
+          poster={image}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          className="absolute inset-0 size-full object-cover"
+          aria-hidden
+        />
+        {overlay}
+      </div>
+    );
+  }
 
   if (video) {
     return (

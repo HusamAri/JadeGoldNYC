@@ -75,7 +75,9 @@ export default async function TasarimlarPage({
       .order("title", { ascending: true })
       .limit(200),
   ]);
-  const listings = (products ?? []) as unknown as ProductListing[];
+  const allListings = (products ?? []) as unknown as ProductListing[];
+  const LISTING_DISPLAY_LIMIT = 24;
+  const listings = allListings.slice(0, LISTING_DISPLAY_LIMIT);
 
   return (
     <div className="relative z-0 pb-28 space-y-8">
@@ -186,10 +188,13 @@ export default async function TasarimlarPage({
       <section className="space-y-3">
         <div>
           <h3 className="text-base font-semibold">
-            Etsy Listingleri ({listings.length})
+            Etsy Listingleri ({listings.length}
+            {allListings.length > listings.length ? ` / ${allListings.length}` : ""})
           </h3>
           <p className="text-muted-foreground text-sm">
             Etsy mağazasından senkronize edilen aktif ürün listingleri
+            {allListings.length > listings.length &&
+              ` — alfabetik ilk ${LISTING_DISPLAY_LIMIT} gösteriliyor`}
           </p>
         </div>
 
