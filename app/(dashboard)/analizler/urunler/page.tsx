@@ -4,6 +4,7 @@ import { Plus, Pencil, ArrowLeft, PackageSearch } from "lucide-react";
 import {
   listProductMetrics,
   listProductPeriods,
+  type ProductMetricListRow,
 } from "@/lib/db/queries/product-metrics";
 import { deriveProduct, type ProductTone } from "@/lib/product-performance";
 import { strParam, type RawSearchParams } from "@/lib/searchparams";
@@ -51,6 +52,19 @@ export default async function UrunPerformansPage({
     listProductPeriods(),
   ]);
 
+  // Dönem başlıklı gruplar (mobilde Dönem sütunu görünmeyince satırlar
+  // karışıyordu). Grup sırası listProductPeriods ile aynı: etikete göre azalan;
+  // grup içi sıra sorgudan (ciro/görüntülenme azalan) korunur.
+  const groups = new Map<string, ProductMetricListRow[]>();
+  for (const m of rows) {
+    const g = groups.get(m.period_label);
+    if (g) g.push(m);
+    else groups.set(m.period_label, [m]);
+  }
+  const orderedGroups = [...groups.entries()].sort(([a], [b]) =>
+    b.localeCompare(a, "tr"),
+  );
+
   return (
     <div>
       <PageHeader
@@ -95,7 +109,6 @@ export default async function UrunPerformansPage({
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Dönem</TableHead>
                   <TableHead>Ürün</TableHead>
                   <TableHead className="text-right">Görüntüleme</TableHead>
                   <TableHead className="text-right">Sipariş</TableHead>
@@ -108,18 +121,39 @@ export default async function UrunPerformansPage({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {rows.map((m) => {
+                {orderedGroups.map(([label, groupRows]) => [
+                  <TableRow
+                    key={`period-${label}`}
+                    className="bg-muted/50 hover:bg-muted/50"
+                  >
+                    <TableCell colSpan={9} className="py-2 font-semibold">
+                      {label}
+                      <span className="text-muted-foreground ml-2 text-xs font-normal">
+                        {groupRows.length} ürün
+                      </span>
+                    </TableCell>
+                  </TableRow>,
+                  ...groupRows.map((m) => {
                   const d = deriveProduct(m);
                   return (
                     <TableRow key={m.id}>
-                      <TableCell className="text-muted-foreground whitespace-nowrap">
-                        {m.period_label}
-                      </TableCell>
                       <TableCell className="max-w-[240px] truncate font-medium">
                         {m.product_title}
                       </TableCell>
                       <TableCell className="text-right tabular-nums">
-                        {m.views != null ? formatNumber(m.views) : "—"}
+                        {m.views != null ? (
+                          formatNumber(m.views)
+                        ) : m.product?.views != null ? (
+                          <span
+                            className="text-muted-foreground"
+                            title="Eşlenen Etsy ürününün ömür boyu toplam görüntülenmesi (senkron) — dönemsel değildir, dönüşüm hesabına girmez"
+                          >
+                            {formatNumber(m.product.views)}
+                            <span className="ml-1 text-xs">toplam</span>
+                          </span>
+                        ) : (
+                          "—"
+                        )}
                       </TableCell>
                       <TableCell className="text-right tabular-nums">
                         {m.orders != null ? formatNumber(m.orders) : "—"}
@@ -158,7 +192,8 @@ export default async function UrunPerformansPage({
                       </TableCell>
                     </TableRow>
                   );
-                })}
+                  }),
+                ])}
               </TableBody>
             </Table>
           )}

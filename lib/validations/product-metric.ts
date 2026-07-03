@@ -4,6 +4,8 @@ import { z } from "zod";
 export const productMetricFormSchema = z.object({
   period_label: z.string().trim().min(1, "Dönem etiketi gerekli").max(80),
   product_title: z.string().trim().min(1, "Ürün adı gerekli").max(200),
+  /** Eşlenen Etsy ürünü (products.id) — boş string = eşleme yok. */
+  product_id: z.string(),
   sku: z.string().trim().max(80),
   views: z.string(),
   orders: z.string(),

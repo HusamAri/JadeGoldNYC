@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { getProductMetric } from "@/lib/db/queries/product-metrics";
+import { listProducts } from "@/lib/db/queries/products";
 import { PageHeader } from "@/components/page-header";
 import { ProductMetricForm } from "@/components/product-metric-form";
 import type { ProductMetricFormValues } from "@/lib/validations/product-metric";
@@ -20,12 +21,13 @@ export default async function UrunDuzenlePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const m = await getProductMetric(id);
+  const [m, products] = await Promise.all([getProductMetric(id), listProducts()]);
   if (!m) notFound();
 
   const defaultValues: ProductMetricFormValues = {
     period_label: m.period_label,
     product_title: m.product_title,
+    product_id: m.product_id ?? "",
     sku: m.sku ?? "",
     views: num(m.views),
     orders: num(m.orders),
@@ -43,6 +45,7 @@ export default async function UrunDuzenlePage({
         mode="edit"
         metricId={m.id}
         defaultValues={defaultValues}
+        products={products.map((p) => ({ id: p.id, title: p.title }))}
       />
     </div>
   );

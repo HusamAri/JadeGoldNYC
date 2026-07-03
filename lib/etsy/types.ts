@@ -47,6 +47,8 @@ export interface EtsyListing {
   quantity?: number;
   has_variations?: boolean;
   featured_rank?: number;
+  views?: number;
+  num_favorers?: number;
   last_modified_timestamp?: number;
   images?: { listing_image_id?: number; url_570xN?: string }[];
 }
