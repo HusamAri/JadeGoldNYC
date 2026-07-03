@@ -1,19 +1,17 @@
 import Link from "next/link";
-import Image from "next/image";
-import { Plus, Pencil, ExternalLink, Package, Layers } from "lucide-react";
+import { Plus, Pencil, Package, Layers } from "lucide-react";
 
 import { requireMembership } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { listDesigns } from "@/lib/db/queries/designs";
 import { strParam, numParam, type RawSearchParams } from "@/lib/searchparams";
 import { DESIGN_STATUSES } from "@/lib/constants";
-import { formatMoney } from "@/lib/money";
 import { formatDate } from "@/lib/format";
 import { PageHeader } from "@/components/page-header";
 import { GoldStream } from "@/components/brand/gold-stream";
 import { EmptyState } from "@/components/empty-state";
 import { DesignStatusBadge } from "@/components/design-status-badge";
-import { ProductWeightInput } from "@/components/product-weight-input";
+import { EtsyListingGrid, type ProductListing } from "@/components/etsy-listing-grid";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -32,22 +30,6 @@ import { DeleteButton } from "@/components/data-table/delete-button";
 import { deleteDesign } from "./actions";
 
 export const metadata = { title: "Tasarımlar" };
-
-interface ProductListing {
-  id: string;
-  title: string;
-  status: string | null;
-  price_cents: number | null;
-  currency: string;
-  url: string | null;
-  image_url: string | null;
-  description: string | null;
-  tags: string[] | null;
-  materials: string[] | null;
-  num_images: number | null;
-  quantity: number | null;
-  weight_grams: number | null;
-}
 
 export default async function TasarimlarPage({
   searchParams,
@@ -75,9 +57,7 @@ export default async function TasarimlarPage({
       .order("title", { ascending: true })
       .limit(200),
   ]);
-  const allListings = (products ?? []) as unknown as ProductListing[];
-  const LISTING_DISPLAY_LIMIT = 24;
-  const listings = allListings.slice(0, LISTING_DISPLAY_LIMIT);
+  const listings = (products ?? []) as unknown as ProductListing[];
 
   return (
     <div className="relative z-0 pb-28 space-y-8">
@@ -188,13 +168,11 @@ export default async function TasarimlarPage({
       <section className="space-y-3">
         <div>
           <h3 className="text-base font-semibold">
-            Etsy Listingleri ({listings.length}
-            {allListings.length > listings.length ? ` / ${allListings.length}` : ""})
+            Etsy Listingleri ({listings.length})
           </h3>
           <p className="text-muted-foreground text-sm">
-            Etsy mağazasından senkronize edilen aktif ürün listingleri
-            {allListings.length > listings.length &&
-              ` — alfabetik ilk ${LISTING_DISPLAY_LIMIT} gösteriliyor`}
+            Etsy mağazasından senkronize edilen aktif ürün listingleri — ağırlık
+            girişi burada
           </p>
         </div>
 
@@ -209,78 +187,7 @@ export default async function TasarimlarPage({
             </CardContent>
           </Card>
         ) : (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {listings.map((p) => (
-              <Card key={p.id} className="overflow-hidden">
-                {p.image_url ? (
-                  <div className="bg-muted relative aspect-square">
-                    <Image
-                      src={p.image_url}
-                      alt={p.title}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      unoptimized
-                    />
-                  </div>
-                ) : (
-                  <div className="from-primary/20 to-accent/30 flex aspect-square items-center justify-center bg-gradient-to-br">
-                    <Package className="text-muted-foreground size-12" />
-                  </div>
-                )}
-                <CardContent className="space-y-2 p-4">
-                  <h4 className="line-clamp-2 text-sm font-medium leading-tight">
-                    {p.title}
-                  </h4>
-                  <div className="flex flex-wrap items-center gap-2">
-                    {p.price_cents != null && (
-                      <span className="text-sm font-semibold tabular-nums">
-                        {formatMoney(p.price_cents, p.currency)}
-                      </span>
-                    )}
-                    {p.quantity != null && (
-                      <Badge variant="secondary" className="text-xs">
-                        Stok: {p.quantity}
-                      </Badge>
-                    )}
-                    {p.num_images != null && p.num_images > 0 && (
-                      <Badge variant="outline" className="text-xs">
-                        {p.num_images} görsel
-                      </Badge>
-                    )}
-                  </div>
-                  <ProductWeightInput
-                    productId={p.id}
-                    initialGrams={p.weight_grams}
-                  />
-                  {p.materials && p.materials.length > 0 && (
-                    <div className="flex flex-wrap gap-1">
-                      {p.materials.slice(0, 5).map((mat) => (
-                        <Badge
-                          key={mat}
-                          variant="outline"
-                          className="text-xs font-normal"
-                        >
-                          {mat}
-                        </Badge>
-                      ))}
-                    </div>
-                  )}
-                  {p.url && (
-                    <a
-                      href={p.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-primary inline-flex items-center gap-1 text-xs hover:underline"
-                    >
-                      Etsy&apos;de gör
-                      <ExternalLink className="size-3" />
-                    </a>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          <EtsyListingGrid listings={listings} />
         )}
       </section>
     </div>
