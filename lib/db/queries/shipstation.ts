@@ -8,6 +8,8 @@ export interface ShipStationStatus {
   products: number;
   items: number;
   customers: number;
+  /** Takip numarası olan (Etsy'ye aktarılabilir) gönderi sayısı. */
+  shipmentsWithTracking: number;
 }
 
 export async function getShipStationStatus(): Promise<ShipStationStatus> {
@@ -22,6 +24,7 @@ export async function getShipStationStatus(): Promise<ShipStationStatus> {
     { count: products },
     { count: items },
     { count: customers },
+    { count: tracked },
   ] = await Promise.all([
     supabase
       .from("shipstation_connection")
@@ -32,6 +35,11 @@ export async function getShipStationStatus(): Promise<ShipStationStatus> {
     head("shipstation_products"),
     head("shipstation_order_items"),
     head("shipstation_customers"),
+    supabase
+      .from("shipstation_shipments")
+      .select("*", { count: "exact", head: true })
+      .not("tracking_number", "is", null)
+      .not("voided", "is", true),
   ]);
 
   const c = conn as { status: string; last_sync_at: string | null } | null;
@@ -43,5 +51,6 @@ export async function getShipStationStatus(): Promise<ShipStationStatus> {
     products: products ?? 0,
     items: items ?? 0,
     customers: customers ?? 0,
+    shipmentsWithTracking: tracked ?? 0,
   };
 }

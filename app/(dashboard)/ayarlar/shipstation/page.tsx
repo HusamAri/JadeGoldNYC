@@ -6,6 +6,7 @@ import {
   Boxes,
   ShoppingBag,
   Users,
+  MapPin,
 } from "lucide-react";
 
 import { requireMembership } from "@/lib/auth";
@@ -13,6 +14,7 @@ import { getShipStationStatus } from "@/lib/db/queries/shipstation";
 import { formatDateTime, formatNumber } from "@/lib/format";
 import { PageHeader } from "@/components/page-header";
 import { ShipStationSyncButton } from "@/components/shipstation-sync-button";
+import { SectionGuide } from "@/components/section-guide";
 import { Badge } from "@/components/ui/badge";
 import { KpiCard } from "@/components/kpi-card";
 import {
@@ -115,6 +117,80 @@ export default async function ShipStationAyarlarPage() {
             />
           </div>
         )}
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Truck className="text-primary size-4" />
+              Etsy&apos;ye Kargo Takibi (Zamanında Kargo)
+            </CardTitle>
+            <CardDescription>
+              Takip numaralarını Etsy&apos;ye ileterek &quot;Zamanında kargo&quot;
+              standardını güvenceye alın.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4 text-sm">
+            <div className="bg-muted/40 flex items-center gap-3 rounded-xl border px-4 py-3">
+              <MapPin className="text-primary size-5 shrink-0" />
+              <div>
+                <div className="text-foreground font-medium tabular-nums">
+                  {formatNumber(status.shipmentsWithTracking)} gönderide takip
+                  numarası var
+                </div>
+                <div className="text-muted-foreground text-xs">
+                  Senkronize edilen gönderiler içinde — Etsy&apos;ye aktarılmaya
+                  hazır veri.
+                </div>
+              </div>
+            </div>
+
+            <div className="text-muted-foreground space-y-2 leading-relaxed">
+              <p>
+                <b>Önemli:</b> Etsy, Ekim 2024&apos;ten sonra takip bilgisini API
+                ile Etsy&apos;ye yazma iznini yalnız <b>onaylı kargo
+                partnerlerine</b> (ABD&apos;de ShipStation ve GoShippo)
+                kısıtladı. Bu panel bir onaylı partner olmadığından takibi{" "}
+                <b>doğrudan API ile Etsy&apos;ye gönderemez</b> (çağrı 403 döner
+                ya da sessizce boş kalır).
+              </p>
+              <p>
+                İyi haber: <b>ShipStation zaten onaylı partner.</b> Doğru kurulum,
+                Etsy mağazanı ShipStation içinde bir <b>Store</b> (satış kanalı)
+                olarak bağlamaktır; ShipStation kargolamada takip numarasını{" "}
+                <b>otomatik Etsy&apos;ye geri yazar</b> ve &quot;Zamanında
+                kargo&quot; metriğini besler. Panel de bu gönderileri (yukarıdaki
+                sayı) senkronize edip maliyet ve teslim takibini gösterir.
+              </p>
+            </div>
+
+            <SectionGuide title="Etsy'yi ShipStation'a Store olarak bağla (adımlar)">
+              <ol>
+                <li>
+                  ShipStation → <b>Settings → Selling Channels → Store Setup</b>{" "}
+                  → <b>Connect a Store or Marketplace</b> → <b>Etsy</b> seç.
+                </li>
+                <li>
+                  Açılan Etsy oturumunda mağazana izin ver (bu, API anahtarı
+                  bağlantısından ayrıdır; asıl takip geri-yazımı buradan çalışır).
+                </li>
+                <li>
+                  Mağaza ayarlarında <b>Mark as Shipped / Notify Marketplace</b>{" "}
+                  (kargolayınca Etsy&apos;yi bilgilendir) seçeneğinin{" "}
+                  <b>açık</b> olduğundan emin ol.
+                </li>
+                <li>
+                  Bundan sonra ShipStation&apos;da oluşturduğun her etiket, takip
+                  numarasını otomatik Etsy siparişine işler ve alıcıya bildirir.
+                </li>
+                <li>
+                  Panelde <b>&quot;ShipStation&apos;ı Senkronize Et&quot;</b>{" "}
+                  butonu bu takip/maliyet verisini panele çeker (raporlama +
+                  teslim takibi için).
+                </li>
+              </ol>
+            </SectionGuide>
+          </CardContent>
+        </Card>
 
         <Card>
           <CardHeader>
