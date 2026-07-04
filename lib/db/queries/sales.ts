@@ -39,6 +39,50 @@ export async function listSales(opts: ListSalesOptions = {}) {
   return { rows: (data ?? []) as Sale[], count: count ?? 0, limit, offset };
 }
 
+export interface SalesAnalytics {
+  totals: {
+    orders: number;
+    gross_cents: number;
+    fees_cents: number;
+    discount_cents: number;
+    shipping_cents: number;
+    buyers: number;
+  };
+  monthly: { ym: string; orders: number; gross_cents: number }[];
+  countries: { country: string; orders: number; gross_cents: number }[];
+}
+
+/**
+ * Satışlar dashboard'u için toplu metrikler (DB-side aggregate RPC —
+ * sales_analytics, migration 0048). Liste ile aynı status/search filtresine
+ * saygı duyar; org RPC içinde current_org_id() ile ayrıca koşullanır.
+ */
+export async function getSalesAnalytics(
+  orgId: string,
+  opts: { search?: string; status?: string } = {},
+): Promise<SalesAnalytics> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("sales_analytics", {
+    p_org: orgId,
+    p_status: opts.status ?? null,
+    p_search: opts.search ?? null,
+  });
+  if (error) throw error;
+  const j = (data ?? {}) as Partial<SalesAnalytics>;
+  return {
+    totals: j.totals ?? {
+      orders: 0,
+      gross_cents: 0,
+      fees_cents: 0,
+      discount_cents: 0,
+      shipping_cents: 0,
+      buyers: 0,
+    },
+    monthly: j.monthly ?? [],
+    countries: j.countries ?? [],
+  };
+}
+
 export async function getSaleWithItems(id: string) {
   const supabase = await createClient();
   const { data: sale, error } = await supabase

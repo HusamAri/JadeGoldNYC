@@ -145,6 +145,52 @@ export function OrdersBarChart({
   );
 }
 
+/** Aylık ciro — altın tonlu tek-seri alan grafiği (Satışlar dashboard'u). */
+export function RevenueAreaChart({
+  data,
+}: {
+  data: { label: string; revenue: number }[];
+}) {
+  return (
+    <ResponsiveContainer width="100%" height={230}>
+      <AreaChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
+        <defs>
+          <linearGradient id="grad-sales-rev" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stopColor="var(--chart-2)" stopOpacity={0.4} />
+            <stop offset="95%" stopColor="var(--chart-2)" stopOpacity={0} />
+          </linearGradient>
+        </defs>
+        <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
+        <XAxis
+          dataKey="label"
+          tick={{ fontSize: 12, fill: "var(--muted-foreground)" }}
+          tickLine={false}
+          axisLine={false}
+        />
+        <YAxis
+          tick={{ fontSize: 12, fill: "var(--muted-foreground)" }}
+          tickLine={false}
+          axisLine={false}
+          width={46}
+          tickFormatter={(v: number) => `$${Math.round(v / 1000)}k`}
+        />
+        <Tooltip
+          {...GLASS_TOOLTIP}
+          formatter={(v) => [`$${Number(v).toLocaleString("en-US")}`, "Ciro"]}
+        />
+        <Area
+          type="monotone"
+          dataKey="revenue"
+          name="Ciro"
+          stroke="var(--chart-2)"
+          fill="url(#grad-sales-rev)"
+          strokeWidth={2}
+        />
+      </AreaChart>
+    </ResponsiveContainer>
+  );
+}
+
 export function CategoryPie({
   data,
 }: {
