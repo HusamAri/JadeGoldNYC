@@ -7,7 +7,12 @@ import { ArrowUpRight } from "lucide-react";
 
 import { WHATS_NEW, LATEST_WHATS_NEW_ID } from "@/lib/whats-new";
 import { formatDate } from "@/lib/format";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
 const STORAGE_KEY = "jg_whats_new_seen";
@@ -78,7 +83,7 @@ export function WhatsNew() {
     <Dialog open={open} onOpenChange={(o) => !o && dismiss()}>
       <DialogContent
         showCloseButton={false}
-        className="overflow-visible rounded-[1.9rem] border-[#E9D9A6]/50 bg-[#FCF6E4]/80 p-0 shadow-[0_30px_80px_-20px_rgba(40,30,6,0.5)] ring-1 ring-[#C9A84E]/15 backdrop-blur-2xl sm:max-w-[560px] dark:border-[#8A6D2E]/30 dark:bg-[#221d10]/80 dark:ring-[#C9A84E]/15"
+        className="jg-glass-3d overflow-hidden rounded-[1.9rem] border-[#E9D9A6]/50 bg-[#FCF6E4]/80 p-0 backdrop-blur-2xl sm:max-w-[560px] dark:border-[#8A6D2E]/30 dark:bg-[#221d10]/80"
       >
         {/* arka plan altın tozu */}
         <div
@@ -101,7 +106,9 @@ export function WhatsNew() {
           ))}
         </div>
 
-        {/* sağ üst köşeden asılı som altın zincir cutout */}
+        {/* Sağ üst köşeye asılı som altın zincir. Kart overflow-hidden olduğu
+            için zincirin üst/sağ ucu ÇERÇEVEYE kesilir → havada durmaz,
+            gerçekten köşeye asılmış/dökülmüş gibi durur. */}
         <Image
           src="/brand/cutout/gold-chains.webp"
           alt=""
@@ -109,7 +116,7 @@ export function WhatsNew() {
           width={560}
           height={510}
           priority
-          className="pointer-events-none absolute -top-14 -right-14 z-20 hidden w-[300px] rotate-[26deg] select-none drop-shadow-[0_16px_24px_rgba(30,22,4,0.5)] sm:block"
+          className="pointer-events-none absolute -top-10 -right-6 z-20 hidden w-[196px] rotate-[15deg] select-none drop-shadow-[0_14px_20px_rgba(30,22,4,0.45)] sm:block"
         />
 
         <div className="relative z-10 p-7 sm:pr-52">
@@ -117,14 +124,16 @@ export function WhatsNew() {
             Yenilikler
           </span>
           <div className="mt-1.5 flex items-center gap-2.5">
-            <h2 className="font-serif text-2xl leading-none">Neler Yeni</h2>
+            <DialogTitle className="font-serif text-2xl leading-none font-normal">
+              Neler Yeni
+            </DialogTitle>
             <span className="rounded-full bg-[oklch(0.62_0.09_86)]/18 px-2 py-0.5 text-xs font-semibold text-[oklch(0.5_0.09_86)]">
               {unseenCount} yeni
             </span>
           </div>
-          <p className="text-muted-foreground mt-1.5 max-w-sm text-sm">
+          <DialogDescription className="mt-1.5 max-w-sm">
             Panele eklenen son özellikler — kaçırmayın.
-          </p>
+          </DialogDescription>
 
           <ul className="mt-5 max-h-[46vh] space-y-4 overflow-y-auto pr-1">
             {entries.map((e) => {
