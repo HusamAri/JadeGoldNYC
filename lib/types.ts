@@ -142,6 +142,8 @@ export interface Product {
   price_cents: number | null;
   currency: string;
   url: string | null;
+  views: number | null;
+  num_favorers: number | null;
   created_at: string;
   updated_at: string;
 }

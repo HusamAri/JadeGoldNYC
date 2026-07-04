@@ -434,6 +434,8 @@ async function upsertListingsPage(
     quantity: l.quantity ?? null,
     has_variations: l.has_variations ?? null,
     featured_rank: l.featured_rank ?? null,
+    views: l.views ?? null,
+    num_favorers: l.num_favorers ?? null,
     last_modified_ts: l.last_modified_timestamp ?? null,
   }));
   const { error } = await admin

@@ -31,6 +31,7 @@ function toRow(v: ProductMetricFormValues) {
   return {
     period_label: v.period_label,
     product_title: v.product_title,
+    product_id: v.product_id || null,
     sku: v.sku || null,
     views: intOrNull(v.views),
     orders: intOrNull(v.orders),

@@ -1,7 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -19,20 +19,38 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+/** Radix SelectItem boş string value kabul etmez — "eşleme yok" nöbetçisi. */
+const NO_PRODUCT = "__none__";
+
+export interface ProductOption {
+  id: string;
+  title: string;
+}
 
 export function ProductMetricForm({
   mode,
   metricId,
   defaultValues,
+  products,
 }: {
   mode: "create" | "edit";
   metricId?: string;
   defaultValues: ProductMetricFormValues;
+  products: ProductOption[];
 }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm<ProductMetricFormValues>({
@@ -81,6 +99,38 @@ export function ProductMetricForm({
           <div className="space-y-2">
             <Label htmlFor="sku">SKU</Label>
             <Input id="sku" {...register("sku")} />
+          </div>
+          <div className="space-y-2 sm:col-span-3">
+            <Label>Etsy Ürünü</Label>
+            <Controller
+              control={control}
+              name="product_id"
+              render={({ field }) => (
+                <Select
+                  value={field.value || NO_PRODUCT}
+                  onValueChange={(v) =>
+                    field.onChange(v === NO_PRODUCT ? "" : v)
+                  }
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Etsy ürünüyle eşle (opsiyonel)" />
+                  </SelectTrigger>
+                  <SelectContent className="max-w-[min(90vw,42rem)]">
+                    <SelectItem value={NO_PRODUCT}>— Eşleme yok —</SelectItem>
+                    {products.map((p) => (
+                      <SelectItem key={p.id} value={p.id}>
+                        {p.title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+            <p className="text-muted-foreground text-sm">
+              Eşlenen ürünün Etsy toplam görüntülenmesi senkronla gelir ve
+              dönemsel görüntülenme boşsa tabloda &quot;toplam&quot; olarak
+              gösterilir.
+            </p>
           </div>
           <div className="space-y-2">
             <Label htmlFor="views">Görüntüleme</Label>

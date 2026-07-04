@@ -1,5 +1,10 @@
 import { createClient } from "@/lib/supabase/server";
-import type { ProductMetric } from "@/lib/types";
+import type { Product, ProductMetric } from "@/lib/types";
+
+/** Liste satırı: eşlenen Etsy ürününün senkron görüntülenme toplamı iliştirilir. */
+export type ProductMetricListRow = ProductMetric & {
+  product: Pick<Product, "title" | "views"> | null;
+};
 
 export async function listProductPeriods(): Promise<string[]> {
   const supabase = await createClient();
@@ -14,15 +19,17 @@ export async function listProductPeriods(): Promise<string[]> {
 
 export async function listProductMetrics(
   period?: string,
-): Promise<ProductMetric[]> {
+): Promise<ProductMetricListRow[]> {
   const supabase = await createClient();
-  let query = supabase.from("product_metrics").select("*");
+  let query = supabase
+    .from("product_metrics")
+    .select("*, product:products(title, views)");
   if (period) query = query.eq("period_label", period);
   query = query
     .order("revenue_cents", { ascending: false, nullsFirst: false })
     .order("views", { ascending: false, nullsFirst: false });
   const { data } = await query;
-  return (data ?? []) as ProductMetric[];
+  return (data ?? []) as ProductMetricListRow[];
 }
 
 export async function getProductMetric(
