@@ -73,6 +73,44 @@ export const WHATS_NEW: WhatsNewEntry[] = [
     isNew: true,
   },
   {
+    id: "2026-07-04-stok-isik",
+    date: "2026-07-04",
+    title: "Stok girişinde ışık odağı",
+    description:
+      "Hedef stok alanına tıklayınca sarı çerçeve yerine çukura bir köşeden vuran sıcak altın aydınlanma.",
+    category: "ux",
+    href: "/stok",
+    icon: Sparkles,
+  },
+  {
+    id: "2026-07-04-yorum-neon",
+    date: "2026-07-04",
+    title: "Yanıt gerekli yorumlarda neon",
+    description:
+      "Yanıt bekleyen yorumlarda alt-sol köşeden yayılan doğal, yönlü neon vurgu — dikkat çeker, rahatsız etmez.",
+    category: "ux",
+    href: "/yorumlar",
+    icon: AlertTriangle,
+  },
+  {
+    id: "2026-07-04-cam-arayuz",
+    date: "2026-07-04",
+    title: "3B buzlu-cam arayüz",
+    description:
+      "'Neler Yeni' popup'ı ve grafik tooltip'leri, altın tonlu hacimli (3B) buzlu cam diline geçti.",
+    category: "ux",
+    icon: PanelsTopLeft,
+  },
+  {
+    id: "2026-07-04-koyu-emboss",
+    date: "2026-07-04",
+    title: "Koyu tema mat kabartma",
+    description:
+      "Koyu temada kartlar daha mat bir yüzey + okunur bir kabartma (neumorphic) hissi kazandı.",
+    category: "ux",
+    icon: Moon,
+  },
+  {
     id: "2026-07-04-yildiz-satici",
     date: "2026-07-04",
     title: "Yıldız Satıcı takibi",
@@ -111,44 +149,6 @@ export const WHATS_NEW: WhatsNewEntry[] = [
     category: "feature",
     href: "/tasarimlar",
     icon: Search,
-  },
-  {
-    id: "2026-07-04-stok-isik",
-    date: "2026-07-04",
-    title: "Stok girişinde ışık odağı",
-    description:
-      "Hedef stok alanına tıklayınca sarı çerçeve yerine çukura bir köşeden vuran sıcak altın aydınlanma.",
-    category: "ux",
-    href: "/stok",
-    icon: Sparkles,
-  },
-  {
-    id: "2026-07-04-yorum-neon",
-    date: "2026-07-04",
-    title: "Yanıt gerekli yorumlarda neon",
-    description:
-      "Yanıt bekleyen yorumlarda alt-sol köşeden yayılan doğal, yönlü neon vurgu — dikkat çeker, rahatsız etmez.",
-    category: "ux",
-    href: "/yorumlar",
-    icon: AlertTriangle,
-  },
-  {
-    id: "2026-07-04-cam-arayuz",
-    date: "2026-07-04",
-    title: "3B buzlu-cam arayüz",
-    description:
-      "'Neler Yeni' popup'ı ve grafik tooltip'leri, altın tonlu hacimli (3B) buzlu cam diline geçti.",
-    category: "ux",
-    icon: PanelsTopLeft,
-  },
-  {
-    id: "2026-07-04-koyu-emboss",
-    date: "2026-07-04",
-    title: "Koyu tema mat kabartma",
-    description:
-      "Koyu temada kartlar daha mat bir yüzey + okunur bir kabartma (neumorphic) hissi kazandı.",
-    category: "ux",
-    icon: Moon,
   },
 ];
 
