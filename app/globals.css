@@ -32,6 +32,9 @@
   --glass-highlight: inset 0 1px 1.5px oklch(1 0 0 / 0.55);
   --glass-depth: inset 0 -14px 30px -20px oklch(0.25 0.03 40 / 0.3);
   --glass-sheen: linear-gradient(160deg, oklch(1 0 0 / 0.26), transparent 54%);
+  /* Input odak "çukura vuran ışık" rengi — sıcak altın; input inset (nm-pressed)
+     olduğu için odakta bir köşeden içeri vuran aydınlanma olarak kullanılır. */
+  --pit-glow: oklch(0.74 0.11 82 / 0.5);
 
   /* Jade (birincil) — marka swatch #3F4A44 ölçeği, muted */
   --primary: oklch(0.43 0.035 162);
@@ -106,6 +109,8 @@
   --glass-highlight: inset 0 1px 1.5px oklch(1 0 0 / 0.15);
   --glass-depth: inset 0 -14px 30px -20px oklch(0 0 0 / 0.45);
   --glass-sheen: linear-gradient(160deg, oklch(1 0 0 / 0.11), transparent 54%);
+  /* Gece: çukur daha koyu → ışık aydınlanması biraz daha parlak */
+  --pit-glow: oklch(0.82 0.12 86 / 0.55);
 
   /* Antik altın — gece birincil (vurgu + metin kontrastı) */
   --primary: oklch(0.8 0.1 86);
@@ -337,20 +342,21 @@
   animation: liquid-bubble-drift 0.55s var(--ease-liquid-slide) both;
 }
 
-/* Sessiz "neon" nabzı — yalnız yanıt gerektiren yorumlarda. Yumuşak, yavaş
-   nefes alan kırmızı ışıltı halesi (renk yanıp sönmesi YOK). prefers-reduced-
-   motion'da global kural animasyonu durdurur; kırmızı neon dış hat kalır. */
+/* Sessiz "neon" nabzı — yalnız yanıt gerektiren yorumlarda. Üniform halka
+   DEĞİL: ışık ALT-SOL köşeden yayılıyormuş gibi YÖNLÜ (negatif-x/pozitif-y
+   offset) ve doğal dağılır; iki katman farklı blur ile yumuşak spill verir.
+   prefers-reduced-motion'da global kural animasyonu durdurur; yönlü hale kalır. */
 @keyframes jg-neon {
   0%,
   100% {
     box-shadow:
-      0 0 3px rgba(239, 68, 68, 0.45),
-      0 0 7px rgba(239, 68, 68, 0.2);
+      -2px 2px 4px rgba(239, 68, 68, 0.32),
+      -5px 5px 13px rgba(239, 68, 68, 0.16);
   }
   50% {
     box-shadow:
-      0 0 7px rgba(239, 68, 68, 0.85),
-      0 0 15px rgba(239, 68, 68, 0.4);
+      -3px 3px 7px rgba(239, 68, 68, 0.68),
+      -9px 9px 24px rgba(239, 68, 68, 0.38);
   }
 }
 .jg-neon {
