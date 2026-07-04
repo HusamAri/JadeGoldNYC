@@ -161,9 +161,16 @@ export async function pushListingQuantity(
 
     let shouldSet: (p: EtsyInventoryProduct) => boolean;
     let before: number;
+    // "Zaten güncel" kontrolü: tek varyantta hedefe eşitlik yeter; tüm
+    // bedenlere uygula'da yalnız BÜTÜN varyantlar hedefteyse atlanır — aksi
+    // halde ilk varyant eşleşse bile diğerleri güncellenmeli.
+    let alreadyCurrent: boolean;
     if (applyToAll) {
       shouldSet = () => true;
       before = currentQuantityOf(live[0]);
+      alreadyCurrent = live.every(
+        (p) => currentQuantityOf(p) === targetQuantity,
+      );
     } else {
       const resolved = resolveTargetProduct(inventory, sku);
       if (!resolved.ok) {
@@ -184,9 +191,10 @@ export async function pushListingQuantity(
       const target = resolved.product;
       shouldSet = (p) => p === target;
       before = currentQuantityOf(target);
+      alreadyCurrent = before === targetQuantity;
     }
 
-    if (before === targetQuantity) {
+    if (alreadyCurrent) {
       return {
         listingId,
         sku,
