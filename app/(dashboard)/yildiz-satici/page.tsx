@@ -59,10 +59,7 @@ export default async function YildizSaticiPage({
   const editId = strParam(sp.edit);
   const isNew = strParam(sp.yeni) === "1";
 
-  const [snapshots, ratingStats] = await Promise.all([
-    listStarSellerSnapshots(),
-    getReviewRatingStats(),
-  ]);
+  const snapshots = await listStarSellerSnapshots();
 
   const latest = snapshots[0] ?? null;
   const editing = editId
@@ -70,6 +67,13 @@ export default async function YildizSaticiPage({
     : isNew
       ? null
       : latest;
+
+  // Otomatik doldurma: düzenlenen dönemin tarih aralığına göre (varsa),
+  // yoksa tüm yorumlar (yeni dönem için taban değer).
+  const ratingStats = await getReviewRatingStats(
+    editing?.period_start ?? null,
+    editing?.period_end ?? null,
+  );
 
   const latestValues = valuesOf(latest);
   const overall = overallLabel(latestValues);
@@ -168,6 +172,7 @@ export default async function YildizSaticiPage({
             : "Yeni dönem verisi gir"}
         </h2>
         <StarSellerForm
+          key={editing?.id ?? "new"}
           snapshotId={editing?.id}
           defaultValues={formDefaults}
           autoRating={{

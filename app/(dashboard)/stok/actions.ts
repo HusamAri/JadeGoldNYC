@@ -91,8 +91,8 @@ export async function previewStockSync(): Promise<{
  * Verilen ürün id'leri için Etsy'ye adet yazar (küçük parça — istemci domino
  * döngüsüyle çağırır, timeout riskini böler). Her liste için canlı envanter
  * okunur, yalnız hedef offering güncellenir, geri yazılır. Başarılı olanların
- * yerel products.quantity değeri de gerçek sonuca göre tazelenir. Denetim kaydı
- * yazmaz — akış sonunda finalizeStockSync tek kayıt atar.
+ * yerel products.quantity değeri de gerçek sonuca göre tazelenir. Denetim
+ * kaydı bu parti için burada, gerçek sonuçlardan (server-side) yazılır.
  */
 export async function applyStockSyncBatch(
   ids: string[],
