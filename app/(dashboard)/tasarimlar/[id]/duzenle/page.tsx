@@ -11,6 +11,7 @@ import { PageHeader } from "@/components/page-header";
 import { DesignForm } from "@/components/design-form";
 import { NewBoardForm } from "@/components/design-board/new-board-form";
 import { BoardCanvas } from "@/components/design-board/board-canvas";
+import { DeleteBoardButton } from "@/components/design-board/delete-board-button";
 import type { DesignFormValues } from "@/lib/validations/design";
 
 export const metadata = { title: "Tasarımı Düzenle" };
@@ -68,12 +69,17 @@ export default async function TasarimDuzenlePage({
       />
 
       <section className="space-y-3">
-        <div>
-          <h2 className="font-serif text-xl leading-tight">Görsel & Notlar</h2>
-          <p className="text-muted-foreground text-sm">
-            Mockup görselini yükleyin; bir noktaya tıklayıp not bırakın, ekip
-            yanıtlasın
-          </p>
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h2 className="font-serif text-xl leading-tight">Görsel & Notlar</h2>
+            <p className="text-muted-foreground text-sm">
+              Mockup görselini yükleyin; bir noktaya tıklayıp not bırakın, ekip
+              yanıtlasın
+            </p>
+          </div>
+          {board && board.imageUrl && (
+            <DeleteBoardButton boardId={board.id} designId={design.id} />
+          )}
         </div>
         {board && board.imageUrl ? (
           <BoardCanvas

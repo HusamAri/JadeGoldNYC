@@ -30,7 +30,7 @@ export default async function TasarimlarPage() {
   const supabase = await createClient();
 
   const [{ rows }, collections, thumbs, { data: products }] = await Promise.all([
-    listDesigns(m.org_id, { limit: 500 }),
+    listDesigns(m.org_id, { limit: 500, withCount: false }),
     listCollections(m.org_id),
     getDesignThumbs(m.org_id),
     supabase
