@@ -5,6 +5,7 @@ import {
   type EtsyInventory,
   type EtsyInventoryProduct,
   type EtsyInventoryUpdate,
+  type EtsyOfferingUpdate,
   type EtsyProductUpdate,
 } from "@/lib/etsy/types";
 
@@ -68,20 +69,33 @@ export function buildInventoryUpdate(
     .filter((p) => !p.is_deleted)
     .map((p) => {
       const isTarget = shouldSet(p);
-      const offerings = (p.offerings ?? [])
+      // PARA GÜVENLİĞİ: Etsy kısmi güncelleme kabul etmez — adet yazarken TÜM
+      // offering fiyatlarını da AYNEN geri göndeririz. Bir offering'in canlı
+      // fiyatı okunamazsa (etsyMoneyToUnit → 0/NaN) o fiyatı geri yazmak Etsy'de
+      // fiyatı SIFIRA çeker. Bu yüzden geçersiz fiyat görülürse fiyatı asla
+      // riske atmadan TÜM liste güncellemesini iptal ederiz (throw → çağıran
+      // pushListingQuantity yakalar, "error" döner, PUT yapılmaz).
+      const offerings: EtsyOfferingUpdate[] = (p.offerings ?? [])
         .filter((o) => !o.is_deleted)
-        .map((o) => ({
-          price: etsyMoneyToUnit(o.price),
-          quantity: isTarget ? newQuantity : (o.quantity ?? 0),
-          is_enabled: o.is_enabled ?? true,
-        }));
-      // Varyantsız listede bile Etsy en az bir offering bekler.
-      if (offerings.length === 0) {
-        offerings.push({
-          price: 0,
-          quantity: isTarget ? newQuantity : 0,
-          is_enabled: true,
+        .map((o) => {
+          const price = etsyMoneyToUnit(o.price);
+          if (!(price > 0)) {
+            throw new Error(
+              "Canlı fiyat okunamadı (0/eksik) — fiyatı korumak için stok güncellemesi iptal edildi.",
+            );
+          }
+          return {
+            price,
+            quantity: isTarget ? newQuantity : (o.quantity ?? 0),
+            is_enabled: o.is_enabled ?? true,
+          };
         });
+      // Offering'i price:0 ile YOKTAN YARATMA (fiyat sıfırlama riski) — okunabilir
+      // offering yoksa güvenli tarafta kalıp iptal et.
+      if (offerings.length === 0) {
+        throw new Error(
+          "Üründe okunabilir offering yok — fiyat güvenliği için stok güncellemesi atlandı.",
+        );
       }
       return {
         sku: p.sku ?? "",
