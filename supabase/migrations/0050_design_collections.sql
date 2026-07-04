@@ -19,6 +19,8 @@ create index if not exists design_collections_org_idx
 
 alter table public.design_collections enable row level security;
 
+-- CREATE POLICY IF NOT EXISTS yok; tam idempotentlik için önce düşür.
+drop policy if exists "design_collections_all" on public.design_collections;
 create policy "design_collections_all" on public.design_collections for all to authenticated
   using (org_id = public.current_org_id()) with check (org_id = public.current_org_id());
 
