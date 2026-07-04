@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Plus, Pencil, Package, Layers } from "lucide-react";
+import { Plus, Pencil, Package, Layers, LayoutGrid } from "lucide-react";
 
 import { requireMembership } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
@@ -66,12 +66,20 @@ export default async function TasarimlarPage({
         title="Tasarımlar"
         description="Tasarım hattını (taslak → onaylandı → yayında → arşiv) yönetin ve ürünlerle ilişkilendirin"
         action={
-          <Button asChild>
-            <Link href="/tasarimlar/yeni">
-              <Plus />
-              Yeni Tasarım
-            </Link>
-          </Button>
+          <>
+            <Button asChild variant="outline">
+              <Link href="/tasarimlar/pano">
+                <LayoutGrid />
+                Tasarım Panoları
+              </Link>
+            </Button>
+            <Button asChild>
+              <Link href="/tasarimlar/yeni">
+                <Plus />
+                Yeni Tasarım
+              </Link>
+            </Button>
+          </>
         }
       />
 
