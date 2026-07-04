@@ -191,6 +191,24 @@ export interface Review {
   updated_at: string;
 }
 
+export interface StarSellerSnapshot {
+  id: string;
+  org_id: string;
+  period_label: string;
+  period_start: string | null;
+  period_end: string | null;
+  next_chance_on: string | null;
+  message_response_rate: number | null;
+  on_time_shipping_rate: number | null;
+  avg_review_rating: number | null;
+  low_review_count: number | null;
+  case_count: number | null;
+  order_count: number | null;
+  note: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface CsvImport {
   id: string;
   org_id: string;

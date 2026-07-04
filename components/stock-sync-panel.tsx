@@ -9,7 +9,6 @@ import { toast } from "sonner";
 import {
   previewStockSync,
   applyStockSyncBatch,
-  finalizeStockSync,
   type StockChange,
 } from "@/app/(dashboard)/stok/actions";
 import type { PushOutcome } from "@/lib/etsy/inventory";
@@ -76,21 +75,10 @@ export function StockSyncPanel({ connected }: { connected: boolean }) {
       all.push(...res.outcomes);
       setProgress(Math.min(ids.length, i + slice.length));
     }
+    // Denetim kaydı artık her partide sunucuda gerçek sonuçlardan yazılıyor
+    // (applyStockSyncBatch) — istemci yalnız özet gösterir.
     const updated = all.filter((o) => o.status === "updated").length;
-    const skipped = all.filter((o) => o.status === "skipped").length;
     const errors = all.filter((o) => o.status === "error").length;
-    await finalizeStockSync({
-      updated,
-      skipped,
-      errors,
-      changes: all.map((o) => ({
-        sku: o.sku,
-        listingId: o.listingId,
-        before: o.before,
-        after: o.after,
-        status: o.status,
-      })),
-    });
     setOutcomes(all);
     setPhase("done");
     router.refresh();
