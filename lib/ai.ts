@@ -90,11 +90,19 @@ export async function aiGenerateText(opts: {
   maxOutputTokens?: number;
 }): Promise<string> {
   if (!isAIConfigured()) throw new AINotConfiguredError();
+  // Gemini 2.5 modelleri varsayılan olarak "thinking" (reasoning) token'ı harcar
+  // ve bunlar maxOutputTokens bütçesini yiyerek görünür yanıtı yarıda kesebilir
+  // (finishReason: "length"). Kısa yanıtlar (yorum cevabı vb.) için düşünmeyi
+  // kapatırız → kesilme yok, daha hızlı ve ucuz. Yalnız Gemini yolunda geçerli.
+  const providerOptions = geminiApiKey()
+    ? { google: { thinkingConfig: { thinkingBudget: 0 } } }
+    : undefined;
   const { text } = await generateText({
     model: resolveModel(opts.model),
     system: opts.system,
     prompt: opts.prompt,
     maxOutputTokens: opts.maxOutputTokens ?? 1024,
+    ...(providerOptions ? { providerOptions } : {}),
   });
   return text;
 }
