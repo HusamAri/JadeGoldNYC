@@ -1,7 +1,7 @@
 import Link from "next/link";
 import {
   Plus,
-  Pencil,
+  MessageSquareReply,
   MessageSquareText,
   Star,
   Inbox,
@@ -186,10 +186,14 @@ export default async function YorumlarPage({
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-1">
-                          <Button asChild variant="ghost" size="icon">
+                          <Button
+                            asChild
+                            variant={needsResponse ? "secondary" : "ghost"}
+                            size="sm"
+                          >
                             <Link href={`/yorumlar/${r.id}/duzenle`}>
-                              <Pencil className="size-4" />
-                              <span className="sr-only">Düzenle</span>
+                              <MessageSquareReply className="size-4" />
+                              Yanıtla
                             </Link>
                           </Button>
                           <DeleteButton action={deleteReview} id={r.id} />

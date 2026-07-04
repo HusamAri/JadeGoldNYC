@@ -185,6 +185,8 @@ export interface Review {
   source: SourceKind;
   status: ReviewStatus;
   internal_note: string | null;
+  response_text: string | null;
+  responded_at: string | null;
   created_at: string;
   updated_at: string;
 }
