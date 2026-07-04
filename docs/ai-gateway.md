@@ -1,23 +1,35 @@
-# AI Gateway — Jade Gold NYC
+# AI — Jade Gold NYC
 
-Panel, **Vercel AI Gateway** üzerinden LLM çağrıları için hazır altyapıya sahiptir.
-Tek sağlayıcıya bağlı kalmadan model slug'ı (`<sağlayıcı>/<model>`) ile çalışır;
-ayrı bir sağlayıcı paketi gerekmez.
+Panel'in LLM çağrıları için **iki sağlayıcı** desteği vardır (`lib/ai.ts`):
+
+1. **Google Gemini** (ücretsiz kota) — `GOOGLE_GENERATIVE_AI_API_KEY` (veya
+   `GEMINI_API_KEY`) tanımlıysa **ÖNCELİKLİ** kullanılır. Anahtar
+   [aistudio.google.com](https://aistudio.google.com) → "Get API key" ile ücretsiz
+   alınır. (Fatura hesabı bağlıysa proje ücretli Tier'a geçer — bkz. ücret notu.)
+2. **Vercel AI Gateway** — Gemini anahtarı yoksa devreye girer; tek sağlayıcıya
+   bağlı kalmadan model slug'ı (`<sağlayıcı>/<model>`) ile çalışır.
 
 ## Durum
 
-Şu an **altyapı kurulu, özellik bağlı değil**. `lib/ai.ts` anahtar girilene kadar
-**inert**'tir (Etsy entegrasyonu gibi) — çağrı yapılırsa `AINotConfiguredError` döner.
+**Bağlı ve kullanımda.** Yorum yanıtlama (Yorumlar modülü) AI taslağı için bunu
+kullanır. Hiçbir sağlayıcı yapılandırılmamışsa `lib/ai.ts` **inert**'tir — çağrı
+yapılırsa `AINotConfiguredError` döner ve UI zarifçe geri çekilir.
 
 ## Yapılandırma
 
-| Ortam | Değişken | Nasıl |
+| Öncelik | Değişken | Nasıl |
 |---|---|---|
-| Local geliştirme | `AI_GATEWAY_API_KEY` | Vercel → AI Gateway → API Keys'ten üret, `.env.local`'e koy |
-| Vercel (prod) | `VERCEL_OIDC_TOKEN` | Deploy sonrası **otomatik** enjekte edilir; anahtara gerek yok |
-| (opsiyonel) | `AI_MODEL` | Varsayılan modeli değiştirir (örn. `openai/gpt-5.5`) |
+| **1 (öncelikli)** | `GOOGLE_GENERATIVE_AI_API_KEY` (ya da `GEMINI_API_KEY`) | aistudio.google.com'dan ücretsiz key üret, `.env.local` + Vercel env'e koy |
+| 2 (local) | `AI_GATEWAY_API_KEY` | Vercel → AI Gateway → API Keys'ten üret, `.env.local`'e koy |
+| 2 (prod) | `VERCEL_OIDC_TOKEN` | Deploy sonrası **otomatik** enjekte edilir; anahtara gerek yok |
+| (opsiyonel) | `AI_MODEL` | Modeli değiştirir. **Gemini yolunda** model kimliği (ör. `gemini-2.5-flash`); **gateway yolunda** slug (ör. `openai/gpt-5.5`) |
 
-> Anahtarları **asla** koda/sohbete koymayın; yalnızca env. Sızan anahtarı Vercel'den
+> **Gemini ücret notu:** Fatura hesabı **bağlı olmayan** projede Free tier ($0,
+> düşük limit). Fatura bağlıysa Tier 1 (ücretli) — ama `gemini-2.5-flash` çok ucuz
+> (kısa yorum yanıtlarında ayda sent seviyesi) ve verin model eğitimine gitmez.
+> Billing'de bütçe alarmı kurmanız önerilir.
+
+> Anahtarları **asla** koda/sohbete koymayın; yalnızca env. Sızan anahtarı
 > hemen **rotate** edin.
 
 ## Kullanım
