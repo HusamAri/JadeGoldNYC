@@ -285,3 +285,21 @@
 .liquid-bubble {
   animation: liquid-bubble-drift 0.55s var(--ease-liquid-slide) both;
 }
+
+/* "Ambulans alarmı" — yanıt bekleyen yorumlarda dikkat çeken kırmızı nabız.
+   Kırmızı ışıltı halkası + hafif renk salınımı; prefers-reduced-motion'da
+   yukarıdaki global kural animasyonu durdurur (statik kırmızı kalır). */
+@keyframes jg-siren {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.55);
+    background-color: rgb(220, 38, 38);
+  }
+  50% {
+    box-shadow: 0 0 0 7px rgba(220, 38, 38, 0);
+    background-color: rgb(239, 68, 68);
+  }
+}
+.jg-siren {
+  animation: jg-siren 1.05s ease-in-out infinite;
+}

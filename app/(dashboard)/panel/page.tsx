@@ -25,6 +25,7 @@ import { PageHeader } from "@/components/page-header";
 import { GoldStream } from "@/components/brand/gold-stream";
 import { EditorialCard } from "@/components/brand/editorial-card";
 import { KpiCard } from "@/components/kpi-card";
+import { WhatsNew } from "@/components/whats-new";
 import { PeriodSelector } from "@/components/period-selector";
 import {
   TrendChart,
@@ -77,6 +78,8 @@ export default async function PanelPage({
         description={`Genel bakış · ${period.label}`}
         action={<PeriodSelector />}
       />
+
+      <WhatsNew />
 
       {/* Editorial marka şeridi — kompakt, sabit yükseklikte (kaydırma rayı
           YOK); veri panele hemen erişilsin diye tam ekran kaydırma-kilitleme
