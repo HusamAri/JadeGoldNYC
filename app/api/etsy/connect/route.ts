@@ -6,6 +6,7 @@ import {
   generatePkce,
   generateState,
   buildAuthorizeUrl,
+  resolveEtsyScopes,
 } from "@/lib/etsy/oauth";
 
 export async function GET(request: Request) {
@@ -22,21 +23,9 @@ export async function GET(request: Request) {
 
   const redirectUri =
     process.env.ETSY_OAUTH_REDIRECT_URI || `${origin}/api/etsy/callback`;
-  // Uygulamanın çalışması için zorunlu kapsamlar. ETSY_SCOPES env'i eksik/yanlış
-  // tanımlı olsa bile bunları garanti et (union) — özellikle shop_id için shops_r.
-  const REQUIRED_SCOPES = [
-    "shops_r",
-    "transactions_r",
-    "listings_r",
-    "email_r",
-    "feedback_r",
-  ];
-  const scopes = Array.from(
-    new Set([
-      ...(process.env.ETSY_SCOPES ?? "").split(/\s+/).filter(Boolean),
-      ...REQUIRED_SCOPES,
-    ]),
-  ).join(" ");
+  // Zorunlu kapsamlar (listings_w dahil) connect + callback arasında paylaşılır;
+  // böylece saklanan scope gerçekten istenen izni yansıtır.
+  const scopes = resolveEtsyScopes();
 
   const { verifier, challenge } = await generatePkce();
   const state = generateState();

@@ -153,4 +153,39 @@ export class EtsyClient {
     }
     return (await res.json()) as T;
   }
+
+  /**
+   * Yazma (POST/PUT/PATCH) isteği — JSON gövdesiyle. get() ile aynı token
+   * yenileme ve 429 yeniden deneme mantığını paylaşır. listings_w kapsamı
+   * yoksa Etsy 403 döndürür; çağıran taraf bunu anlaşılır mesaja çevirir.
+   */
+  async request<T>(
+    method: "POST" | "PUT" | "PATCH" | "DELETE",
+    path: string,
+    body?: unknown,
+    retry = 1,
+  ): Promise<T> {
+    const token = await this.ensureToken();
+    const res = await fetch(ETSY_API_BASE + path, {
+      method,
+      headers: {
+        "x-api-key": this.xApiKey,
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: body == null ? undefined : JSON.stringify(body),
+    });
+
+    if (res.status === 429 && retry > 0) {
+      await new Promise((r) => setTimeout(r, 1200));
+      return this.request<T>(method, path, body, retry - 1);
+    }
+    if (!res.ok) {
+      throw new Error(
+        `Etsy API hatası (${res.status}) ${method} ${path}: ${await res.text()}`,
+      );
+    }
+    const text = await res.text();
+    return (text ? JSON.parse(text) : undefined) as T;
+  }
 }

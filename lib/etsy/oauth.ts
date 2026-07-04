@@ -8,6 +8,31 @@
 export const ETSY_AUTHORIZE_URL = "https://www.etsy.com/oauth/connect";
 export const ETSY_TOKEN_URL = "https://api.etsy.com/v3/public/oauth/token";
 
+/**
+ * Uygulamanın çalışması için istenen Etsy kapsamları. `listings_w` stok
+ * senkronizasyonunun Etsy'ye YAZMA yönü için gereklidir. connect ve callback
+ * aynı listeyi kullanır; böylece etsy_connection.scope gerçekten istenen
+ * kapsamı yansıtır (yazma erişimini bu değerle koşullarız).
+ */
+export const ETSY_REQUIRED_SCOPES = [
+  "shops_r",
+  "transactions_r",
+  "listings_r",
+  "listings_w",
+  "email_r",
+  "feedback_r",
+] as const;
+
+/** İstenen kapsam string'i (env ETSY_SCOPES ile birleşik). */
+export function resolveEtsyScopes(): string {
+  return Array.from(
+    new Set([
+      ...(process.env.ETSY_SCOPES ?? "").split(/\s+/).filter(Boolean),
+      ...ETSY_REQUIRED_SCOPES,
+    ]),
+  ).join(" ");
+}
+
 function base64url(input: ArrayBuffer | Uint8Array): string {
   const bytes = input instanceof Uint8Array ? input : new Uint8Array(input);
   let str = "";
