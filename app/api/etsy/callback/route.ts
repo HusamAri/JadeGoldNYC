@@ -74,7 +74,11 @@ export async function GET(request: Request) {
         shop_id: shopId,
         access_token: tok.access_token,
         refresh_token: tok.refresh_token,
-        // Gerçekten istenen kapsamlar (listings_w dahil) — connect ile aynı.
+        // İSTENEN kapsamlar (listings_w dahil) — connect ile aynı. Etsy token
+        // yanıtı VERİLEN kapsamları döndürmez; bu yüzden iyimser bir yaklaşım:
+        // kullanıcı onay ekranında listings_w'yi reddederse scope yine yazılı
+        // görünür ve etsy_write_enabled true döner; gerçek YAZMA denemesi o
+        // durumda Etsy'den 403 alır (yeniden bağlanma bunu telafi eder).
         scope: resolveEtsyScopes(),
         access_token_expires_at: new Date(
           now + tok.expires_in * 1000,

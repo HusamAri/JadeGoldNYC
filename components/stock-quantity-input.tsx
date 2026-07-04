@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, type CSSProperties } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -25,7 +25,19 @@ export function StockQuantityInput({
 }) {
   const router = useRouter();
   const [value, setValue] = useState(initial != null ? String(initial) : "");
+  const [focused, setFocused] = useState(false);
   const [pending, startTransition] = useTransition();
+
+  // Odakta sarı halka yerine: çukur (nm-pressed) korunur + ALT-SOL köşeden
+  // içeri vuran çift-katman sıcak altın aydınlanma (bir köşede ışık yanmış da
+  // çukurun içine vurmuş gibi). Inline stil, base ring box-shadow'unu ezer.
+  const focusStyle: CSSProperties | undefined = focused
+    ? {
+        boxShadow:
+          "var(--shadow-pressed), inset 6px -6px 14px -4px var(--pit-glow), inset 11px -11px 28px -10px var(--pit-glow)",
+        outline: "none",
+      }
+    : undefined;
 
   const parsed = value.trim() === "" ? null : parseInt(value.trim(), 10);
   const changed = parsed != null && parsed !== current;
@@ -59,13 +71,18 @@ export function StockQuantityInput({
         placeholder="—"
         value={value}
         disabled={pending}
+        style={focusStyle}
+        onFocus={() => setFocused(true)}
         onChange={(e) => setValue(e.target.value.replace(/[^0-9]/g, ""))}
-        onBlur={save}
+        onBlur={() => {
+          setFocused(false);
+          save();
+        }}
         onKeyDown={(e) => {
           if (e.key === "Enter") e.currentTarget.blur();
         }}
         className={cn(
-          "h-8 w-20 px-2 text-right text-sm tabular-nums",
+          "h-8 w-20 px-2 text-right text-sm tabular-nums focus-visible:ring-0",
           changed && "border-[color:var(--gold-deep,#9A7A34)] font-semibold",
         )}
       />

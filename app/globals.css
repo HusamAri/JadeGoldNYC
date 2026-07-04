@@ -23,6 +23,19 @@
   --popover: oklch(0.94 0.01 128);
   --popover-foreground: oklch(0.27 0.022 165);
 
+  /* Buzlu-cam yüzeyler (grafik tooltip'leri vb.) — "Neler Yeni" popup'ıyla
+     aynı dil: hafif sarı/altın tonlu yarı saydam cam + altın hatlı çerçeve. */
+  --glass: oklch(0.965 0.014 116 / 0.72);
+  --glass-border: oklch(0.8 0.07 86 / 0.4);
+  /* 3B cam derinliği: üstte ışık yakalayan pah (highlight), altta iç gölge
+     (kalınlık), ve eğrisel bir sheen (parlama). Cam düz değil, hacimli görünür. */
+  --glass-highlight: inset 0 1px 1.5px oklch(1 0 0 / 0.55);
+  --glass-depth: inset 0 -14px 30px -20px oklch(0.25 0.03 40 / 0.3);
+  --glass-sheen: linear-gradient(160deg, oklch(1 0 0 / 0.26), transparent 54%);
+  /* Input odak "çukura vuran ışık" rengi — sıcak altın; input inset (nm-pressed)
+     olduğu için odakta bir köşeden içeri vuran aydınlanma olarak kullanılır. */
+  --pit-glow: oklch(0.74 0.11 82 / 0.5);
+
   /* Jade (birincil) — marka swatch #3F4A44 ölçeği, muted */
   --primary: oklch(0.43 0.035 162);
   --primary-foreground: oklch(0.97 0.012 110);
@@ -89,6 +102,16 @@
   --popover: oklch(0.272 0.022 160);
   --popover-foreground: oklch(0.92 0.018 95);
 
+  /* Gece buzlu-cam — koyu sıcak jade, altın hatlı yarı saydam */
+  --glass: oklch(0.28 0.024 160 / 0.72);
+  --glass-border: oklch(0.72 0.07 86 / 0.28);
+  /* Gece 3B cam — highlight zayıf (koyu camda az ışık), iç gölge daha derin */
+  --glass-highlight: inset 0 1px 1.5px oklch(1 0 0 / 0.15);
+  --glass-depth: inset 0 -14px 30px -20px oklch(0 0 0 / 0.45);
+  --glass-sheen: linear-gradient(160deg, oklch(1 0 0 / 0.11), transparent 54%);
+  /* Gece: çukur daha koyu → ışık aydınlanması biraz daha parlak */
+  --pit-glow: oklch(0.82 0.12 86 / 0.55);
+
   /* Antik altın — gece birincil (vurgu + metin kontrastı) */
   --primary: oklch(0.8 0.1 86);
   --primary-foreground: oklch(0.2 0.022 160);
@@ -124,11 +147,25 @@
   --sidebar-border: oklch(0.82 0.03 158 / 13%);
   --sidebar-ring: oklch(0.8 0.1 86);
 
-  /* Gece nöromorfik kabartma — muted jade highlight + derin gölge */
-  --nm-light: 82 98 90;
-  --nm-dark: 4 11 8;
-  --nm-convex: linear-gradient(145deg, oklch(0.255 0.024 160), oklch(0.211 0.02 160));
-  --nm-convex-press: linear-gradient(145deg, oklch(0.211 0.02 160), oklch(0.255 0.024 160));
+  /* Gece nöromorfik kabartma — MAT yüzey + kontrollü emboss.
+     Açık tonda kartlar konveks bir sheen'le kabarıyordu; koyu tonda o parlak
+     tonlama plastik görünüyordu. Burada: (1) yüzey neredeyse düz = mat, hafif
+     saten; (2) kabartma his SADECE gölge çiftinden gelir — sol-üst yumuşak
+     highlight, sağ-alt daha güçlü koyu gölge (koyu üzerinde koyu okunsun). */
+  --nm-light: 96 108 100; /* soft cool highlight — yüzeyden belirgin açık */
+  --nm-dark: 6 10 8; /* derin gölge */
+  --nm-convex: linear-gradient(145deg, oklch(0.247 0.02 160), oklch(0.229 0.02 160));
+  --nm-convex-press: linear-gradient(145deg, oklch(0.229 0.02 160), oklch(0.247 0.02 160));
+  /* Gece emboss: highlight düşük opaklık/geniş blur (mat, parlamasız),
+     koyu gölge daha opak (koyu zeminde raised okunsun). */
+  --shadow-raised: -6px -6px 16px rgb(var(--nm-light) / 0.16),
+    7px 7px 18px rgb(var(--nm-dark) / 0.5);
+  --shadow-raised-sm: -3px -3px 9px rgb(var(--nm-light) / 0.14),
+    4px 4px 11px rgb(var(--nm-dark) / 0.46);
+  --shadow-hover: -8px -8px 20px rgb(var(--nm-light) / 0.2),
+    10px 10px 24px rgb(var(--nm-dark) / 0.56);
+  --shadow-pressed: inset -4px -4px 9px rgb(var(--nm-light) / 0.12),
+    inset 4px 4px 10px rgb(var(--nm-dark) / 0.5);
 }
 
 @theme inline {
@@ -202,6 +239,25 @@
   .nm-pressed {
     background-image: var(--nm-convex-press);
     box-shadow: var(--shadow-pressed);
+  }
+  /* 3B buzlu cam — hacimli görünüm: dış derinlik gölgesi + üst pah highlight'ı
+     + alt iç gölge (kalınlık); ::before ile eğrisel sheen (ışık yansıması).
+     "Neler Yeni" popup'ı ve grafik tooltip'leri aynı cam dilini paylaşır. */
+  .jg-glass-3d {
+    position: relative;
+    box-shadow:
+      0 30px 80px -20px rgba(40, 30, 6, 0.55),
+      var(--glass-highlight),
+      var(--glass-depth);
+  }
+  .jg-glass-3d::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    background: var(--glass-sheen);
+    pointer-events: none;
   }
   /* Tıklanabilir kabartma: hover'da daha çok kabarır, basınca içeri çöker */
   .nm-interactive {
@@ -284,4 +340,42 @@
 }
 .liquid-bubble {
   animation: liquid-bubble-drift 0.55s var(--ease-liquid-slide) both;
+}
+
+/* Sessiz "neon" nabzı — yalnız yanıt gerektiren yorumlarda. Üniform halka
+   DEĞİL: ışık ALT-SOL köşeden yayılıyormuş gibi YÖNLÜ (negatif-x/pozitif-y
+   offset) ve doğal dağılır; iki katman farklı blur ile yumuşak spill verir.
+   prefers-reduced-motion'da global kural animasyonu durdurur; yönlü hale kalır. */
+@keyframes jg-neon {
+  0%,
+  100% {
+    box-shadow:
+      -2px 2px 4px rgba(239, 68, 68, 0.32),
+      -5px 5px 13px rgba(239, 68, 68, 0.16);
+  }
+  50% {
+    box-shadow:
+      -3px 3px 7px rgba(239, 68, 68, 0.68),
+      -9px 9px 24px rgba(239, 68, 68, 0.38);
+  }
+}
+.jg-neon {
+  animation: jg-neon 1.9s ease-in-out infinite;
+}
+
+/* "Neler Yeni" popup'ında arka plandaki parlayan altın tozu — yumuşak,
+   yavaş yanıp sönen noktalar. prefers-reduced-motion global kuralıyla durur. */
+@keyframes jg-twinkle {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.15);
+  }
+}
+.jg-twinkle {
+  animation: jg-twinkle 3.6s ease-in-out infinite;
 }

@@ -24,6 +24,27 @@ const COLORS = [
   "var(--chart-5)",
 ];
 
+/* Grafik tooltip'leri için ortak buzlu-cam stili — "Neler Yeni" popup'ıyla
+   aynı dil: yarı saydam sarı/altın tonlu cam + backdrop-blur + altın çerçeve.
+   Renkler tema değişkenlerinden gelir, açık/koyu modda otomatik uyar. */
+const GLASS_TOOLTIP = {
+  contentStyle: {
+    // 3B cam: sheen katmanı + yarı saydam cam zemin; highlight/derinlik
+    // gölgeleri tema değişkenlerinden (açık/koyu modda otomatik uyar).
+    background: "var(--glass-sheen), var(--glass)",
+    border: "1px solid var(--glass-border)",
+    borderRadius: 14,
+    fontSize: 12,
+    padding: "8px 12px",
+    color: "var(--popover-foreground)",
+    boxShadow:
+      "0 14px 34px -16px rgba(30, 22, 4, 0.5), var(--glass-highlight), var(--glass-depth)",
+    backdropFilter: "blur(12px)",
+    WebkitBackdropFilter: "blur(12px)",
+  },
+  labelStyle: { color: "var(--foreground)", fontWeight: 600, marginBottom: 2 },
+} as const;
+
 export function TrendChart({
   data,
 }: {
@@ -55,14 +76,7 @@ export function TrendChart({
           axisLine={false}
           width={48}
         />
-        <Tooltip
-          contentStyle={{
-            background: "var(--popover)",
-            border: "1px solid var(--border)",
-            borderRadius: 8,
-            fontSize: 12,
-          }}
-        />
+        <Tooltip {...GLASS_TOOLTIP} />
         <Area
           type="monotone"
           dataKey="revenue"
@@ -119,15 +133,7 @@ export function OrdersBarChart({
           axisLine={false}
           width={32}
         />
-        <Tooltip
-          cursor={{ fill: "var(--muted)", opacity: 0.4 }}
-          contentStyle={{
-            background: "var(--popover)",
-            border: "1px solid var(--border)",
-            borderRadius: 8,
-            fontSize: 12,
-          }}
-        />
+        <Tooltip cursor={{ fill: "var(--muted)", opacity: 0.4 }} {...GLASS_TOOLTIP} />
         <Bar
           dataKey="orders"
           name="Sipariş"
@@ -135,6 +141,52 @@ export function OrdersBarChart({
           radius={[3, 3, 0, 0]}
         />
       </BarChart>
+    </ResponsiveContainer>
+  );
+}
+
+/** Aylık ciro — altın tonlu tek-seri alan grafiği (Satışlar dashboard'u). */
+export function RevenueAreaChart({
+  data,
+}: {
+  data: { label: string; revenue: number }[];
+}) {
+  return (
+    <ResponsiveContainer width="100%" height={230}>
+      <AreaChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
+        <defs>
+          <linearGradient id="grad-sales-rev" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stopColor="var(--chart-2)" stopOpacity={0.4} />
+            <stop offset="95%" stopColor="var(--chart-2)" stopOpacity={0} />
+          </linearGradient>
+        </defs>
+        <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
+        <XAxis
+          dataKey="label"
+          tick={{ fontSize: 12, fill: "var(--muted-foreground)" }}
+          tickLine={false}
+          axisLine={false}
+        />
+        <YAxis
+          tick={{ fontSize: 12, fill: "var(--muted-foreground)" }}
+          tickLine={false}
+          axisLine={false}
+          width={46}
+          tickFormatter={(v: number) => `$${Math.round(v / 1000)}k`}
+        />
+        <Tooltip
+          {...GLASS_TOOLTIP}
+          formatter={(v) => [`$${Number(v).toLocaleString("en-US")}`, "Ciro"]}
+        />
+        <Area
+          type="monotone"
+          dataKey="revenue"
+          name="Ciro"
+          stroke="var(--chart-2)"
+          fill="url(#grad-sales-rev)"
+          strokeWidth={2}
+        />
+      </AreaChart>
     </ResponsiveContainer>
   );
 }
@@ -166,14 +218,7 @@ export function CategoryPie({
             <Cell key={i} fill={COLORS[i % COLORS.length]} />
           ))}
         </Pie>
-        <Tooltip
-          contentStyle={{
-            background: "var(--popover)",
-            border: "1px solid var(--border)",
-            borderRadius: 8,
-            fontSize: 12,
-          }}
-        />
+        <Tooltip {...GLASS_TOOLTIP} />
         <Legend
           wrapperStyle={{ fontSize: 12 }}
           iconType="circle"

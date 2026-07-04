@@ -11,6 +11,7 @@ import {
   FileBarChart,
   ListChecks,
   Boxes,
+  Star,
   Settings,
   type LucideIcon,
 } from "lucide-react";
@@ -27,6 +28,7 @@ export const NAV_ITEMS: NavItem[] = [
   { href: "/satislar", label: "Satışlar", icon: ShoppingBag },
   { href: "/maliyetler", label: "Maliyetler", icon: Wallet },
   { href: "/analizler", label: "Performans", icon: BarChart3 },
+  { href: "/yildiz-satici", label: "Yıldız Satıcı", icon: Star },
   { href: "/sepet-kurtarma", label: "Geri Kazanım", icon: UserRoundCheck },
   { href: "/tasarimlar", label: "Tasarımlar", icon: Palette },
   { href: "/stok", label: "Stok", icon: Boxes },

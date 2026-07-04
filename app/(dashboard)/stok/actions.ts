@@ -91,8 +91,8 @@ export async function previewStockSync(): Promise<{
  * Verilen ürün id'leri için Etsy'ye adet yazar (küçük parça — istemci domino
  * döngüsüyle çağırır, timeout riskini böler). Her liste için canlı envanter
  * okunur, yalnız hedef offering güncellenir, geri yazılır. Başarılı olanların
- * yerel products.quantity değeri de gerçek sonuca göre tazelenir. Denetim kaydı
- * yazmaz — akış sonunda finalizeStockSync tek kayıt atar.
+ * yerel products.quantity değeri de gerçek sonuca göre tazelenir. Denetim
+ * kaydı bu parti için burada, gerçek sonuçlardan (server-side) yazılır.
  */
 export async function applyStockSyncBatch(
   ids: string[],
@@ -144,7 +144,10 @@ export async function applyStockSyncBatch(
         before: null,
         after: r.target_quantity ?? 0,
         status: "skipped",
-        detail: "Etsy liste kimliği yok",
+        detail:
+          r.etsy_listing_id == null
+            ? "Etsy liste kimliği yok"
+            : "Hedef adet girilmemiş",
       });
       continue;
     }
@@ -173,26 +176,23 @@ export async function applyStockSyncBatch(
     }
   }
 
+  // Denetim kaydı SUNUCUDA, gerçek sonuçlardan üretilir (istemci verisine
+  // güvenilmez — şirket hafızası). Her parti kendi gerçek çıktısıyla loglanır;
+  // böylece kısmi senkronlar da (bir parti sonrası kesilse bile) iz bırakır.
+  const updated = outcomes.filter((o) => o.status === "updated").length;
+  const skipped = outcomes.filter((o) => o.status === "skipped").length;
+  const errors = outcomes.filter((o) => o.status === "error").length;
+  if (updated > 0 || errors > 0) {
+    await logAudit(supabase, {
+      orgId: m.org_id,
+      action: "etsy.stock_push",
+      entityType: "products",
+      summary: `Etsy stok senkronizasyonu: ${updated} güncellendi, ${skipped} atlandı, ${errors} hata`,
+      diff: outcomes,
+      source: "etsy",
+    });
+  }
+
   revalidatePath("/stok");
   return { outcomes };
-}
-
-/** Toplu gönderim bittikten sonra tek denetim kaydı (şirket hafızası). */
-export async function finalizeStockSync(summary: {
-  updated: number;
-  skipped: number;
-  errors: number;
-  changes: { sku: string | null; listingId: number; before: number | null; after: number; status: string }[];
-}): Promise<void> {
-  const m = await requireMembership();
-  if (summary.updated === 0 && summary.errors === 0) return;
-  const supabase = await createClient();
-  await logAudit(supabase, {
-    orgId: m.org_id,
-    action: "etsy.stock_push",
-    entityType: "products",
-    summary: `Etsy stok senkronizasyonu: ${summary.updated} güncellendi, ${summary.skipped} atlandı, ${summary.errors} hata`,
-    diff: summary.changes,
-    source: "etsy",
-  });
 }

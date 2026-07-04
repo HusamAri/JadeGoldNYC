@@ -182,14 +182,25 @@ export default async function YorumlarPage({
                         {r.review_text ?? "—"}
                       </TableCell>
                       <TableCell>
-                        <ReviewStatusBadge status={r.status} />
+                        {needsResponse ? (
+                          <span className="jg-neon inline-flex items-center rounded-full border border-red-500/70 px-2.5 py-0.5 text-xs font-semibold text-red-600 dark:text-red-400">
+                            Yeni
+                          </span>
+                        ) : (
+                          <ReviewStatusBadge status={r.status} />
+                        )}
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-1">
                           <Button
                             asChild
-                            variant={needsResponse ? "secondary" : "ghost"}
+                            variant="outline"
                             size="sm"
+                            className={cn(
+                              needsResponse
+                                ? "jg-neon border-red-500/70 text-red-600 hover:text-red-600 dark:text-red-400"
+                                : "border-transparent",
+                            )}
                           >
                             <Link href={`/yorumlar/${r.id}/duzenle`}>
                               <MessageSquareReply className="size-4" />
