@@ -119,11 +119,11 @@ export default async function SatislarPage({
 
       {/* Analiz paneli — liste filtresine (durum/arama) saygı duyar */}
       <section className="space-y-4">
-        {filtered && (
-          <p className="text-muted-foreground text-xs">
-            Aşağıdaki özet, uygulanan filtreye göre hesaplanmıştır.
-          </p>
-        )}
+        <p className="text-muted-foreground text-xs">
+          {filtered
+            ? "Özet, uygulanan filtreye göre hesaplanır."
+            : "Özet ciro ve sipariş sayısı iptal edilen siparişleri hariç tutar; alttaki liste tümünü gösterir."}
+        </p>
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
           <KpiCard
             label="Ciro (brüt)"

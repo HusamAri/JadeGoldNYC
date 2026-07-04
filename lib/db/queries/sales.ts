@@ -62,10 +62,13 @@ export async function getSalesAnalytics(
   opts: { search?: string; status?: string } = {},
 ): Promise<SalesAnalytics> {
   const supabase = await createClient();
+  // Arama terimini LİSTE ile AYNI şekilde temizle (sanitize) ki özet ile tablo
+  // aynı satır kümesini saysın; boşsa filtre uygulanmasın (null).
+  const cleaned = opts.search ? sanitize(opts.search) : "";
   const { data, error } = await supabase.rpc("sales_analytics", {
     p_org: orgId,
     p_status: opts.status ?? null,
-    p_search: opts.search ?? null,
+    p_search: cleaned || null,
   });
   if (error) throw error;
   const j = (data ?? {}) as Partial<SalesAnalytics>;
