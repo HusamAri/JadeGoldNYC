@@ -10,6 +10,7 @@ import {
   ScrollText,
   FileBarChart,
   ListChecks,
+  Boxes,
   Settings,
   type LucideIcon,
 } from "lucide-react";
@@ -28,6 +29,7 @@ export const NAV_ITEMS: NavItem[] = [
   { href: "/analizler", label: "Performans", icon: BarChart3 },
   { href: "/sepet-kurtarma", label: "Geri Kazanım", icon: UserRoundCheck },
   { href: "/tasarimlar", label: "Tasarımlar", icon: Palette },
+  { href: "/stok", label: "Stok", icon: Boxes },
   { href: "/marka-kilavuzu", label: "Marka Kılavuzu", icon: BookOpen },
   { href: "/yorumlar", label: "Yorumlar", icon: MessageSquareText },
   { href: "/kayitlar", label: "Kayıtlar", icon: ScrollText },

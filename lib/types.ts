@@ -108,6 +108,7 @@ export type AuditAction =
   | "csv.import"
   | "etsy.connect"
   | "etsy.sync"
+  | "etsy.stock_push"
   | "report.export"
   | "profile.update";
 
@@ -142,6 +143,10 @@ export interface Product {
   price_cents: number | null;
   currency: string;
   url: string | null;
+  quantity: number | null;
+  target_quantity: number | null;
+  has_variations: boolean | null;
+  image_url: string | null;
   views: number | null;
   num_favorers: number | null;
   created_at: string;
@@ -180,6 +185,8 @@ export interface Review {
   source: SourceKind;
   status: ReviewStatus;
   internal_note: string | null;
+  response_text: string | null;
+  responded_at: string | null;
   created_at: string;
   updated_at: string;
 }
