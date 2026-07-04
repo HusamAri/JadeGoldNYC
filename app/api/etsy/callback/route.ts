@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { createAdminClient } from "@/lib/supabase/admin";
-import { exchangeCode } from "@/lib/etsy/oauth";
+import { exchangeCode, resolveEtsyScopes } from "@/lib/etsy/oauth";
 import { ETSY_API_BASE } from "@/lib/etsy/endpoints";
 import { logAudit } from "@/lib/audit";
 
@@ -74,7 +74,8 @@ export async function GET(request: Request) {
         shop_id: shopId,
         access_token: tok.access_token,
         refresh_token: tok.refresh_token,
-        scope: process.env.ETSY_SCOPES ?? null,
+        // Gerçekten istenen kapsamlar (listings_w dahil) — connect ile aynı.
+        scope: resolveEtsyScopes(),
         access_token_expires_at: new Date(
           now + tok.expires_in * 1000,
         ).toISOString(),

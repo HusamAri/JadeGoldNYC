@@ -93,3 +93,75 @@ export function etsyMoneyToCents(m?: EtsyMoney | null): number {
   if (!m || !m.amount || !m.divisor) return 0;
   return Math.round((m.amount / m.divisor) * 100);
 }
+
+// ── Envanter (inventory / offerings) — stok senkronizasyonu ────────────
+// Etsy'de adet, liste düzeyinde DEĞİL her "offering" (varyant kombinasyonu)
+// düzeyinde tutulur. Adet güncellemek için önce GET /listings/{id}/inventory
+// ile tüm yapı okunur, yalnız hedef offering'in quantity'si değiştirilir ve
+// tüm products dizisi PUT ile geri yazılır (Etsy kısmi güncelleme kabul etmez).
+
+export interface EtsyOffering {
+  offering_id?: number;
+  quantity?: number;
+  is_enabled?: boolean;
+  is_deleted?: boolean;
+  price?: EtsyMoney;
+}
+
+export interface EtsyPropertyValue {
+  property_id: number;
+  property_name?: string;
+  scale_id?: number | null;
+  scale_name?: string | null;
+  value_ids?: number[];
+  values?: string[];
+}
+
+export interface EtsyInventoryProduct {
+  product_id?: number;
+  sku?: string;
+  is_deleted?: boolean;
+  offerings?: EtsyOffering[];
+  property_values?: EtsyPropertyValue[];
+}
+
+export interface EtsyInventory {
+  products: EtsyInventoryProduct[];
+  price_on_property?: number[];
+  quantity_on_property?: number[];
+  sku_on_property?: number[];
+}
+
+// PUT payload'ı — Etsy salt-okunur alanları (product_id, offering_id,
+// scale_name, is_deleted, property_name) reddettiği için ayrı, dar tipler.
+export interface EtsyOfferingUpdate {
+  price: number; // float (amount/divisor)
+  quantity: number;
+  is_enabled: boolean;
+}
+
+export interface EtsyPropertyValueUpdate {
+  property_id: number;
+  value_ids: number[];
+  values: string[];
+  scale_id?: number;
+}
+
+export interface EtsyProductUpdate {
+  sku: string;
+  property_values: EtsyPropertyValueUpdate[];
+  offerings: EtsyOfferingUpdate[];
+}
+
+export interface EtsyInventoryUpdate {
+  products: EtsyProductUpdate[];
+  price_on_property?: number[];
+  quantity_on_property?: number[];
+  sku_on_property?: number[];
+}
+
+/** Etsy para nesnesini float birime çevirir (PUT offering.price için). */
+export function etsyMoneyToUnit(m?: EtsyMoney | null): number {
+  if (!m || !m.amount || !m.divisor) return 0;
+  return Math.round((m.amount / m.divisor) * 100) / 100;
+}

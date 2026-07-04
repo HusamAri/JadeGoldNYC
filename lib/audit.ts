@@ -22,6 +22,7 @@ export async function logAudit(
       | "csv.import"
       | "etsy.connect"
       | "etsy.sync"
+      | "etsy.stock_push"
       | "report.export"
       | "profile.update"
     >;

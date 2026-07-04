@@ -18,4 +18,7 @@ export const etsyPaths = {
   reviews: (shopId: number | string) => `/shops/${shopId}/reviews`,
   ledgerEntries: (shopId: number | string) =>
     `/shops/${shopId}/payment-account/ledger-entries`,
+  // Envanter (adet) okuma/yazma — shop_id gerektirmez, listing_id yeterli.
+  listingInventory: (listingId: number | string) =>
+    `/listings/${listingId}/inventory`,
 };
