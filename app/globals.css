@@ -305,3 +305,20 @@
 .jg-neon {
   animation: jg-neon 1.9s ease-in-out infinite;
 }
+
+/* "Neler Yeni" popup'ında arka plandaki parlayan altın tozu — yumuşak,
+   yavaş yanıp sönen noktalar. prefers-reduced-motion global kuralıyla durur. */
+@keyframes jg-twinkle {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.15);
+  }
+}
+.jg-twinkle {
+  animation: jg-twinkle 3.6s ease-in-out infinite;
+}
