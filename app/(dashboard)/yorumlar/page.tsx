@@ -154,6 +154,7 @@ export default async function YorumlarPage({
                 {rows.map((r) => {
                   const needsResponse =
                     r.status === "yeni" && r.rating != null && r.rating <= 3;
+                  const unanswered = r.status === "yeni";
                   return (
                     <TableRow
                       key={r.id}
@@ -182,14 +183,21 @@ export default async function YorumlarPage({
                         {r.review_text ?? "—"}
                       </TableCell>
                       <TableCell>
-                        <ReviewStatusBadge status={r.status} />
+                        {unanswered ? (
+                          <span className="jg-siren inline-flex items-center rounded-full bg-red-600 px-2.5 py-0.5 text-xs font-semibold text-white">
+                            Yeni
+                          </span>
+                        ) : (
+                          <ReviewStatusBadge status={r.status} />
+                        )}
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-1">
                           <Button
                             asChild
-                            variant={needsResponse ? "secondary" : "ghost"}
+                            variant={unanswered ? "destructive" : "ghost"}
                             size="sm"
+                            className={cn(unanswered && "jg-siren text-white")}
                           >
                             <Link href={`/yorumlar/${r.id}/duzenle`}>
                               <MessageSquareReply className="size-4" />
