@@ -41,7 +41,14 @@ export async function getReviewRatingStats(
   const supabase = await createClient();
   let query = supabase.from("reviews").select("rating, review_date");
   if (periodStart) query = query.gte("review_date", periodStart);
-  if (periodEnd) query = query.lte("review_date", `${periodEnd}T23:59:59`);
+  if (periodEnd) {
+    // review_date timestamptz; bitiş gününün TAMAMINI dahil etmek için
+    // ertesi günün başlangıcından küçük (exclusive) sınır kullan — sabit
+    // "T23:59:59" eki yerine (saat/saniye ve zaman dilimi belirsizliği olmadan).
+    const next = new Date(`${periodEnd}T00:00:00Z`);
+    next.setUTCDate(next.getUTCDate() + 1);
+    query = query.lt("review_date", next.toISOString());
+  }
   const { data } = await query;
   const rows = (data ?? []) as { rating: number | null }[];
   const rated = rows.filter((r) => r.rating != null) as { rating: number }[];
