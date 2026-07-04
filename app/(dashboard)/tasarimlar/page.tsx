@@ -1,52 +1,37 @@
 import Link from "next/link";
-import { Plus, Pencil, Package, Layers, LayoutGrid } from "lucide-react";
+import { Plus, Pencil, Package, Layers, ImageOff, MessageSquare } from "lucide-react";
 
 import { requireMembership } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { listDesigns } from "@/lib/db/queries/designs";
-import { strParam, numParam, type RawSearchParams } from "@/lib/searchparams";
-import { DESIGN_STATUSES } from "@/lib/constants";
-import { formatDate } from "@/lib/format";
+import {
+  listCollections,
+  getDesignThumbs,
+} from "@/lib/db/queries/design-boards";
+import type { Design } from "@/lib/types";
 import { PageHeader } from "@/components/page-header";
 import { GoldStream } from "@/components/brand/gold-stream";
 import { EmptyState } from "@/components/empty-state";
 import { DesignStatusBadge } from "@/components/design-status-badge";
+import { NewCollectionForm } from "@/components/design-board/new-collection-form";
 import { EtsyListingGrid, type ProductListing } from "@/components/etsy-listing-grid";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { SearchInput } from "@/components/data-table/search-input";
-import { FilterSelect } from "@/components/data-table/filter-select";
-import { Pagination } from "@/components/data-table/pagination";
+import { Card } from "@/components/ui/card";
 import { DeleteButton } from "@/components/data-table/delete-button";
 import { deleteDesign } from "./actions";
 
 export const metadata = { title: "Tasarımlar" };
 
-export default async function TasarimlarPage({
-  searchParams,
-}: {
-  searchParams: Promise<RawSearchParams>;
-}) {
-  const sp = await searchParams;
-  const status = strParam(sp.status);
-  const search = strParam(sp.search);
-  const offset = numParam(sp.offset);
-  const limit = 25;
+type DesignRow = Design & { collection_id: string | null };
 
+export default async function TasarimlarPage() {
   const m = await requireMembership();
   const supabase = await createClient();
 
-  const [{ rows, count }, { data: products }] = await Promise.all([
-    listDesigns(m.org_id, { status, search, limit, offset }),
+  const [{ rows }, collections, thumbs, { data: products }] = await Promise.all([
+    listDesigns(m.org_id, { limit: 500 }),
+    listCollections(m.org_id),
+    getDesignThumbs(m.org_id),
     supabase
       .from("products")
       .select(
@@ -57,22 +42,39 @@ export default async function TasarimlarPage({
       .order("title", { ascending: true })
       .limit(200),
   ]);
+
+  const designs = rows as unknown as DesignRow[];
   const listings = (products ?? []) as unknown as ProductListing[];
 
+  // Koleksiyona göre grupla
+  const byCollection = new Map<string | null, DesignRow[]>();
+  for (const d of designs) {
+    const key = d.collection_id ?? null;
+    const list = byCollection.get(key) ?? [];
+    list.push(d);
+    byCollection.set(key, list);
+  }
+  const groups: { id: string | null; name: string; designs: DesignRow[] }[] = [
+    ...collections.map((c) => ({
+      id: c.id,
+      name: c.name,
+      designs: byCollection.get(c.id) ?? [],
+    })),
+  ];
+  const uncategorized = byCollection.get(null) ?? [];
+  if (uncategorized.length > 0) {
+    groups.push({ id: null, name: "Koleksiyonsuz", designs: uncategorized });
+  }
+
   return (
-    <div className="relative z-0 pb-28 space-y-8">
+    <div className="relative z-0 space-y-8 pb-28">
       <GoldStream motif="ring" />
       <PageHeader
         title="Tasarımlar"
-        description="Tasarım hattını (taslak → onaylandı → yayında → arşiv) yönetin ve ürünlerle ilişkilendirin"
+        description="Tasarımları koleksiyonlara (panolara) grupla; her tasarımın görseli + notlarıyla yönet"
         action={
           <>
-            <Button asChild variant="outline">
-              <Link href="/tasarimlar/pano">
-                <LayoutGrid />
-                Tasarım Panoları
-              </Link>
-            </Button>
+            <NewCollectionForm />
             <Button asChild>
               <Link href="/tasarimlar/yeni">
                 <Plus />
@@ -83,94 +85,82 @@ export default async function TasarimlarPage({
         }
       />
 
-      {/* ── Tasarım Hattı ─────────────────────────────────────────── */}
-      <Card>
-        <CardContent className="space-y-4">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-            <SearchInput placeholder="Ad, açıklama…" />
-            <FilterSelect
-              paramKey="status"
-              placeholder="Durum"
-              options={[...DESIGN_STATUSES]}
-            />
-          </div>
-
-          {rows.length === 0 ? (
-            <EmptyState
-              icon={Layers}
-              title="Tasarım yok"
-              description="İlk tasarım kaydınızı oluşturun; durumunu ve ilişkili ürünü takip edin."
-            />
-          ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Ad</TableHead>
-                  <TableHead>Durum</TableHead>
-                  <TableHead>Etiketler</TableHead>
-                  <TableHead className="text-right">Versiyon</TableHead>
-                  <TableHead>Güncellendi</TableHead>
-                  <TableHead className="w-1 text-right">İşlem</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {rows.map((d) => (
-                  <TableRow key={d.id}>
-                    <TableCell className="max-w-[240px] truncate font-medium">
+      {designs.length === 0 && collections.length === 0 ? (
+        <EmptyState
+          icon={Layers}
+          title="Tasarım yok"
+          description="Bir koleksiyon oluşturun ve 'Yeni Tasarım' ile ürün tasarımlarınızı ekleyin; her tasarıma mockup görseli + not ekleyebilirsiniz."
+        />
+      ) : (
+        groups.map((g) => (
+          <section key={g.id ?? "none"} className="space-y-3">
+            <div className="flex items-baseline gap-2">
+              <h3 className="font-serif text-xl leading-tight">{g.name}</h3>
+              <span className="text-muted-foreground text-sm tabular-nums">
+                {g.designs.length}
+              </span>
+            </div>
+            {g.designs.length === 0 ? (
+              <p className="text-muted-foreground rounded-2xl border border-dashed p-5 text-sm">
+                Bu koleksiyonda tasarım yok. &quot;Yeni Tasarım&quot; eklerken bu
+                koleksiyonu seçin.
+              </p>
+            ) : (
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                {g.designs.map((d) => {
+                  const thumb = thumbs.get(d.id);
+                  return (
+                    <Card key={d.id} className="gap-0 overflow-hidden p-0">
                       <Link
                         href={`/tasarimlar/${d.id}/duzenle`}
-                        className="hover:underline"
+                        className="bg-muted block aspect-video w-full overflow-hidden"
                       >
-                        {d.name}
+                        {thumb ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={thumb}
+                            alt={d.name}
+                            className="h-full w-full object-cover"
+                          />
+                        ) : (
+                          <span className="text-muted-foreground/50 flex h-full items-center justify-center">
+                            <ImageOff className="size-6" />
+                          </span>
+                        )}
                       </Link>
-                      {d.description && (
-                        <span className="text-muted-foreground block truncate text-xs font-normal">
-                          {d.description}
-                        </span>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <DesignStatusBadge status={d.status} />
-                    </TableCell>
-                    <TableCell className="max-w-[200px]">
-                      {d.tags && d.tags.length > 0 ? (
-                        <div className="flex flex-wrap gap-1">
-                          {d.tags.slice(0, 3).map((t) => (
-                            <Badge key={t} variant="outline" className="text-xs font-normal">
-                              {t}
-                            </Badge>
-                          ))}
-                        </div>
-                      ) : (
-                        <span className="text-muted-foreground">—</span>
-                      )}
-                    </TableCell>
-                    <TableCell className="text-right tabular-nums">
-                      v{d.version}
-                    </TableCell>
-                    <TableCell className="whitespace-nowrap">
-                      {formatDate(d.updated_at)}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end gap-1">
-                        <Button asChild variant="ghost" size="icon">
-                          <Link href={`/tasarimlar/${d.id}/duzenle`}>
-                            <Pencil className="size-4" />
-                            <span className="sr-only">Düzenle</span>
+                      <div className="flex items-start justify-between gap-1 px-3 py-2.5">
+                        <div className="min-w-0">
+                          <Link
+                            href={`/tasarimlar/${d.id}/duzenle`}
+                            className="block truncate text-sm font-medium hover:underline"
+                          >
+                            {d.name}
                           </Link>
-                        </Button>
-                        <DeleteButton action={deleteDesign} id={d.id} />
+                          <div className="mt-1 flex items-center gap-1.5">
+                            <DesignStatusBadge status={d.status} />
+                            {thumb && (
+                              <MessageSquare className="text-muted-foreground size-3" />
+                            )}
+                          </div>
+                        </div>
+                        <div className="flex shrink-0">
+                          <Button asChild variant="ghost" size="icon" className="size-8">
+                            <Link href={`/tasarimlar/${d.id}/duzenle`}>
+                              <Pencil className="size-3.5" />
+                              <span className="sr-only">Düzenle</span>
+                            </Link>
+                          </Button>
+                          <DeleteButton action={deleteDesign} id={d.id} />
+                        </div>
                       </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          )}
-
-          <Pagination count={count} limit={limit} offset={offset} />
-        </CardContent>
-      </Card>
+                    </Card>
+                  );
+                })}
+              </div>
+            )}
+          </section>
+        ))
+      )}
 
       {/* ── Etsy Listingleri (referans katalog) ──────────────────── */}
       <section className="space-y-3">
@@ -186,13 +176,13 @@ export default async function TasarimlarPage({
 
         {listings.length === 0 ? (
           <Card>
-            <CardContent className="flex flex-col items-center gap-2 py-8 text-center">
+            <div className="flex flex-col items-center gap-2 px-6 py-8 text-center">
               <Package className="text-muted-foreground size-8" />
               <p className="text-muted-foreground text-sm">
-                Henüz senkronize edilmiş listing yok. Etsy entegrasyonunu
-                ayarlar sayfasından bağlayabilirsiniz.
+                Henüz senkronize edilmiş listing yok. Etsy entegrasyonunu ayarlar
+                sayfasından bağlayabilirsiniz.
               </p>
-            </CardContent>
+            </div>
           </Card>
         ) : (
           <EtsyListingGrid listings={listings} />

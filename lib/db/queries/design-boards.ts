@@ -79,6 +79,63 @@ export async function listDesignBoards(
   }));
 }
 
+/** Org'un koleksiyonları (kullanıcının "pano"ları) — tasarımları gruplar. */
+export async function listCollections(
+  orgId: string,
+): Promise<{ id: string; name: string }[]> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("design_collections")
+    .select("id, name")
+    .eq("org_id", orgId)
+    .order("created_at", { ascending: true });
+  return (data ?? []) as { id: string; name: string }[];
+}
+
+/** design_id → imzalı görsel URL'i (panosu/görseli olan tasarımlar için). */
+export async function getDesignThumbs(
+  orgId: string,
+): Promise<Map<string, string>> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("design_boards")
+    .select("design_id, image_path")
+    .eq("org_id", orgId)
+    .not("design_id", "is", null);
+  const rows = (data ?? []) as { design_id: string; image_path: string }[];
+  const map = new Map<string, string>();
+  if (rows.length === 0) return map;
+  const signed = await Promise.all(
+    rows.map((r) =>
+      supabase.storage
+        .from("design-boards")
+        .createSignedUrl(r.image_path, SIGNED_URL_TTL),
+    ),
+  );
+  rows.forEach((r, i) => {
+    const url = signed[i]?.data?.signedUrl;
+    if (url && !map.has(r.design_id)) map.set(r.design_id, url);
+  });
+  return map;
+}
+
+/** Bir TASARIM kaydının panosu (0 veya 1) — pinler + thread + imzalı URL. */
+export async function getBoardByDesign(
+  designId: string,
+): Promise<(DesignBoardDetail & { imageUrl: string | null }) | null> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("design_boards")
+    .select("id")
+    .eq("design_id", designId)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  const boardId = (data as { id: string } | null)?.id;
+  if (!boardId) return null;
+  return getDesignBoard(boardId);
+}
+
 /** Tek pano — pinler + her pin'in yorum thread'i + imzalı görsel URL'i. */
 export async function getDesignBoard(
   id: string,

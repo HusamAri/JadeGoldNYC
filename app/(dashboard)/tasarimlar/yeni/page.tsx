@@ -1,5 +1,6 @@
 import { requireMembership } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
+import { listCollections } from "@/lib/db/queries/design-boards";
 import { PageHeader } from "@/components/page-header";
 import { DesignForm } from "@/components/design-form";
 import type { DesignFormValues } from "@/lib/validations/design";
@@ -9,22 +10,30 @@ export const metadata = { title: "Yeni Tasarım" };
 export default async function YeniTasarimPage() {
   const m = await requireMembership();
   const supabase = await createClient();
-  const { data: products } = await supabase
-    .from("products")
-    .select("id, title")
-    .eq("org_id", m.org_id)
-    .eq("status", "active")
-    .order("title", { ascending: true })
-    .limit(500);
+  const [{ data: products }, collections] = await Promise.all([
+    supabase
+      .from("products")
+      .select("id, title")
+      .eq("org_id", m.org_id)
+      .eq("status", "active")
+      .order("title", { ascending: true })
+      .limit(500),
+    listCollections(m.org_id),
+  ]);
   const options = ((products ?? []) as { id: string; title: string }[]).map(
     (p) => ({ value: p.id, label: p.title }),
   );
+  const collectionOptions = collections.map((c) => ({
+    value: c.id,
+    label: c.name,
+  }));
 
   const defaultValues: DesignFormValues = {
     name: "",
     description: "",
     status: "taslak",
     product_id: "",
+    collection_id: "",
     tags: "",
     version: "1",
   };
@@ -35,7 +44,12 @@ export default async function YeniTasarimPage() {
         title="Yeni Tasarım"
         description="Yeni bir tasarım kaydı oluşturun"
       />
-      <DesignForm mode="create" defaultValues={defaultValues} products={options} />
+      <DesignForm
+        mode="create"
+        defaultValues={defaultValues}
+        products={options}
+        collections={collectionOptions}
+      />
     </div>
   );
 }
