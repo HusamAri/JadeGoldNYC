@@ -28,10 +28,12 @@ interface Line {
 
 export function BoardCanvas({
   boardId,
+  designId,
   imageUrl,
   pins,
 }: {
   boardId: string;
+  designId: string;
   imageUrl: string;
   pins: DesignPin[];
 }) {
@@ -168,6 +170,7 @@ export function BoardCanvas({
           {pending && (
             <PendingComposer
               boardId={boardId}
+              designId={designId}
               pos={pending}
               onCancel={() => setPending(null)}
               onDone={() => {
@@ -187,7 +190,7 @@ export function BoardCanvas({
               key={p.id}
               index={i + 1}
               pin={p}
-              boardId={boardId}
+              designId={designId}
               active={activePin === p.id}
               onActivate={() => setActivePin(p.id)}
               cardRef={(el) => {
@@ -229,11 +232,13 @@ export function BoardCanvas({
 
 function PendingComposer({
   boardId,
+  designId,
   pos,
   onDone,
   onCancel,
 }: {
   boardId: string;
+  designId: string;
   pos: { x: number; y: number };
   onDone: () => void;
   onCancel: () => void;
@@ -245,7 +250,7 @@ function PendingComposer({
     const text = body.trim();
     if (!text) return;
     start(async () => {
-      const res = await addPin({ boardId, x: pos.x, y: pos.y, body: text });
+      const res = await addPin({ boardId, designId, x: pos.x, y: pos.y, body: text });
       if (res.error) {
         toast.error(res.error);
         return;
@@ -293,7 +298,7 @@ function PendingComposer({
 function PinCard({
   index,
   pin,
-  boardId,
+  designId,
   active,
   onActivate,
   cardRef,
@@ -301,7 +306,7 @@ function PinCard({
 }: {
   index: number;
   pin: DesignPin;
-  boardId: string;
+  designId: string;
   active: boolean;
   onActivate: () => void;
   cardRef: (el: HTMLElement | null) => void;
@@ -314,7 +319,7 @@ function PinCard({
     const text = reply.trim();
     if (!text) return;
     start(async () => {
-      const res = await addComment({ boardId, pinId: pin.id, body: text });
+      const res = await addComment({ pinId: pin.id, designId, body: text });
       if (res.error) {
         toast.error(res.error);
         return;

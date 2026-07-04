@@ -18,6 +18,7 @@ export const designFormSchema = z.object({
   description: z.string().trim().max(2000),
   status: designStatusEnum,
   product_id: z.string(),
+  collection_id: z.string(),
   tags: z.string().trim().max(500),
   version: z
     .string()

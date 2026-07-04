@@ -52,11 +52,30 @@ function toDesignRow(v: DesignFormValues) {
     description: v.description || null,
     status: v.status,
     product_id: v.product_id || null,
+    collection_id: v.collection_id || null,
     tags: parseTags(v.tags),
     version: v.version.trim() ? parseInt(v.version, 10) : 1,
     // storage_bucket/storage_path/thumbnail_path bilerek dokunulmuyor —
     // Storage altyapısı henüz yok (bkz. designs migrasyonu 0007).
   };
+}
+
+/** Yeni koleksiyon (pano) oluşturur — tasarımları gruplamak için. */
+export async function createCollection(
+  name: string,
+): Promise<{ ok?: boolean; id?: string; error?: string }> {
+  const m = await requireMembership();
+  const clean = name.trim().slice(0, 120);
+  if (!clean) return { error: "Koleksiyon adı gerekli." };
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("design_collections")
+    .insert({ org_id: m.org_id, name: clean, created_by: m.user_id })
+    .select("id")
+    .single();
+  if (error) return { error: error.message };
+  revalidatePath("/tasarimlar");
+  return { ok: true, id: (data as { id: string }).id };
 }
 
 export async function createDesign(

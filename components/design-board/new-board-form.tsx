@@ -7,7 +7,6 @@ import { ImagePlus, Loader2 } from "lucide-react";
 
 import { createBoard } from "@/app/(dashboard)/tasarimlar/pano/actions";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 
 /** Görselin doğal en/boyunu okur (leader-line ölçeği + oran için). */
 function readDimensions(
@@ -28,9 +27,9 @@ function readDimensions(
   });
 }
 
-export function NewBoardForm() {
+/** Bir tasarıma görsel (anotasyon panosu) yükler. */
+export function NewBoardForm({ designId }: { designId: string }) {
   const router = useRouter();
-  const [title, setTitle] = useState("");
   const [busy, setBusy] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -39,8 +38,9 @@ export function NewBoardForm() {
       toast.error("Lütfen bir görsel dosyası seçin.");
       return;
     }
-    if (file.size > 15 * 1024 * 1024) {
-      toast.error("Görsel 15 MB'ı aşamaz.");
+    // İstemci sınırı sunucu (10 MB) ve Next gövde limitiyle uyumlu.
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("Görsel 10 MB'ı aşamaz.");
       return;
     }
     setBusy(true);
@@ -48,16 +48,18 @@ export function NewBoardForm() {
       const { width, height } = await readDimensions(file);
       const fd = new FormData();
       fd.append("file", file);
-      fd.append("title", title.trim());
+      fd.append("designId", designId);
       fd.append("width", String(width || ""));
       fd.append("height", String(height || ""));
       const res = await createBoard(fd);
       if (res.error || !res.id) {
-        toast.error(res.error ?? "Pano oluşturulamadı.");
+        toast.error(res.error ?? "Görsel eklenemedi.");
         return;
       }
-      toast.success("Pano oluşturuldu.");
-      router.push(`/tasarimlar/pano/${res.id}`);
+      toast.success("Görsel eklendi.");
+      router.refresh();
+    } catch {
+      toast.error("Yükleme sırasında beklenmeyen bir hata oluştu.");
     } finally {
       setBusy(false);
       if (fileRef.current) fileRef.current.value = "";
@@ -65,14 +67,10 @@ export function NewBoardForm() {
   }
 
   return (
-    <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-      <Input
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        placeholder="Pano başlığı (opsiyonel)"
-        disabled={busy}
-        className="sm:max-w-xs"
-      />
+    <div className="rounded-2xl border border-dashed p-6 text-center">
+      <p className="text-muted-foreground mb-3 text-sm">
+        Bu tasarımın mockup görselini yükleyin; üzerine pin bırakıp not alın.
+      </p>
       <input
         ref={fileRef}
         type="file"
@@ -83,11 +81,7 @@ export function NewBoardForm() {
           if (f) onFile(f);
         }}
       />
-      <Button
-        type="button"
-        onClick={() => fileRef.current?.click()}
-        disabled={busy}
-      >
+      <Button type="button" onClick={() => fileRef.current?.click()} disabled={busy}>
         {busy ? (
           <Loader2 className="size-4 animate-spin" />
         ) : (
