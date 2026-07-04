@@ -154,7 +154,6 @@ export default async function YorumlarPage({
                 {rows.map((r) => {
                   const needsResponse =
                     r.status === "yeni" && r.rating != null && r.rating <= 3;
-                  const unanswered = r.status === "yeni";
                   return (
                     <TableRow
                       key={r.id}
@@ -183,8 +182,8 @@ export default async function YorumlarPage({
                         {r.review_text ?? "—"}
                       </TableCell>
                       <TableCell>
-                        {unanswered ? (
-                          <span className="jg-siren inline-flex items-center rounded-full bg-red-600 px-2.5 py-0.5 text-xs font-semibold text-white">
+                        {needsResponse ? (
+                          <span className="jg-neon inline-flex items-center rounded-full border border-red-500/70 px-2.5 py-0.5 text-xs font-semibold text-red-600 dark:text-red-400">
                             Yeni
                           </span>
                         ) : (
@@ -195,9 +194,13 @@ export default async function YorumlarPage({
                         <div className="flex justify-end gap-1">
                           <Button
                             asChild
-                            variant={unanswered ? "destructive" : "ghost"}
+                            variant="outline"
                             size="sm"
-                            className={cn(unanswered && "jg-siren text-white")}
+                            className={cn(
+                              needsResponse
+                                ? "jg-neon border-red-500/70 text-red-600 hover:text-red-600 dark:text-red-400"
+                                : "border-transparent",
+                            )}
                           >
                             <Link href={`/yorumlar/${r.id}/duzenle`}>
                               <MessageSquareReply className="size-4" />
