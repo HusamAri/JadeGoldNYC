@@ -14,6 +14,7 @@ import { GoldStream } from "@/components/brand/gold-stream";
 import { EmptyState } from "@/components/empty-state";
 import { DesignStatusBadge } from "@/components/design-status-badge";
 import { NewCollectionForm } from "@/components/design-board/new-collection-form";
+import { PanoVideoBackground } from "@/components/brand/pano-video-background";
 import { EtsyListingGrid, type ProductListing } from "@/components/etsy-listing-grid";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -68,6 +69,7 @@ export default async function TasarimlarPage() {
 
   return (
     <div className="relative z-0 space-y-8 pb-28">
+      <PanoVideoBackground />
       <GoldStream motif="ring" />
       <PageHeader
         title="Tasarımlar"

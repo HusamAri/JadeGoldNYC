@@ -11,8 +11,8 @@ export const config = {
     /*
      * Aşağıdakiler hariç tüm istek yollarıyla eşleş:
      * - _next/static, _next/image, favicon.ico
-     * - statik görsel uzantıları
+     * - statik görsel/video uzantıları
      */
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|mp4|webm)$).*)",
   ],
 };
