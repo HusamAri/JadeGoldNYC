@@ -1,16 +1,48 @@
 import Link from "next/link";
-import { Plus, Upload, Eye, Pencil, ShoppingBag } from "lucide-react";
+import {
+  Plus,
+  Upload,
+  Eye,
+  Pencil,
+  ShoppingBag,
+  DollarSign,
+  TrendingUp,
+  Receipt,
+  Percent,
+  Users,
+} from "lucide-react";
 
-import { listSales } from "@/lib/db/queries/sales";
+import { requireMembership } from "@/lib/auth";
+import { listSales, getSalesAnalytics } from "@/lib/db/queries/sales";
 import { strParam, numParam, type RawSearchParams } from "@/lib/searchparams";
 import { SALE_STATUSES } from "@/lib/constants";
 import { formatMoney } from "@/lib/money";
-import { formatDate } from "@/lib/format";
+import { formatDate, formatNumber } from "@/lib/format";
 import { PageHeader } from "@/components/page-header";
 import { GoldStream } from "@/components/brand/gold-stream";
 import { EmptyState } from "@/components/empty-state";
+import { KpiCard } from "@/components/kpi-card";
+import {
+  RevenueAreaChart,
+  OrdersBarChart,
+} from "@/components/charts/dashboard-charts";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+
+const TR_MON = [
+  "Oca", "Şub", "Mar", "Nis", "May", "Haz",
+  "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara",
+];
+function monthLabel(ym: string): string {
+  const [y, m] = ym.split("-");
+  return `${TR_MON[Number(m) - 1] ?? m} ${y.slice(2)}`;
+}
+const usd0 = (cents: number) =>
+  new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  }).format(cents / 100);
 import {
   Table,
   TableBody,
@@ -37,10 +69,32 @@ export default async function SatislarPage({
   const offset = numParam(sp.offset);
   const limit = 25;
 
-  const { rows, count } = await listSales({ search, status, limit, offset });
+  const m = await requireMembership();
+  const [{ rows, count }, analytics] = await Promise.all([
+    listSales({ search, status, limit, offset }),
+    getSalesAnalytics(m.org_id, { search, status }),
+  ]);
+
+  const t = analytics.totals;
+  const netCents = t.gross_cents - t.fees_cents;
+  const avgCents = t.orders > 0 ? Math.round(t.gross_cents / t.orders) : 0;
+  const feePct = t.gross_cents > 0 ? t.fees_cents / t.gross_cents : 0;
+  const revenueSeries = analytics.monthly.map((x) => ({
+    label: monthLabel(x.ym),
+    revenue: Math.round(x.gross_cents / 100),
+  }));
+  const orderSeries = analytics.monthly.map((x) => ({
+    label: monthLabel(x.ym),
+    orders: x.orders,
+  }));
+  const maxCountry = Math.max(
+    1,
+    ...analytics.countries.map((c) => c.gross_cents),
+  );
+  const filtered = Boolean(search || status);
 
   return (
-    <div className="relative z-0 pb-28">
+    <div className="relative z-0 space-y-6 pb-28">
       <GoldStream motif="gift" />
       <PageHeader
         title="Satışlar"
@@ -62,6 +116,106 @@ export default async function SatislarPage({
           </>
         }
       />
+
+      {/* Analiz paneli — liste filtresine (durum/arama) saygı duyar */}
+      <section className="space-y-4">
+        {filtered && (
+          <p className="text-muted-foreground text-xs">
+            Aşağıdaki özet, uygulanan filtreye göre hesaplanmıştır.
+          </p>
+        )}
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+          <KpiCard
+            label="Ciro (brüt)"
+            value={usd0(t.gross_cents)}
+            icon={DollarSign}
+          />
+          <KpiCard
+            label="Net (kesinti sonrası)"
+            value={usd0(netCents)}
+            icon={TrendingUp}
+            accent="positive"
+            hint="Etsy kesintisi düşülmüş"
+          />
+          <KpiCard
+            label="Sipariş"
+            value={formatNumber(t.orders)}
+            icon={ShoppingBag}
+          />
+          <KpiCard
+            label="Ort. Sipariş"
+            value={usd0(avgCents)}
+            icon={Receipt}
+          />
+          <KpiCard
+            label="Etsy Kesintisi"
+            value={usd0(t.fees_cents)}
+            icon={Percent}
+            hint={`Cironun %${(feePct * 100).toFixed(1)}'i`}
+          />
+          <KpiCard
+            label="Alıcı"
+            value={formatNumber(t.buyers)}
+            icon={Users}
+          />
+        </div>
+
+        {analytics.monthly.length > 0 && (
+          <div className="grid gap-4 lg:grid-cols-2">
+            <Card>
+              <CardContent className="space-y-3">
+                <h3 className="text-muted-foreground text-sm font-medium">
+                  Aylık Ciro · son 12 ay
+                </h3>
+                <RevenueAreaChart data={revenueSeries} />
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="space-y-3">
+                <h3 className="text-muted-foreground text-sm font-medium">
+                  Aylık Sipariş · son 12 ay
+                </h3>
+                <OrdersBarChart data={orderSeries} />
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
+        {analytics.countries.length > 0 && (
+          <Card>
+            <CardContent className="space-y-3">
+              <h3 className="text-muted-foreground text-sm font-medium">
+                Ülkeye Göre Ciro
+              </h3>
+              <ul className="space-y-2.5">
+                {analytics.countries.map((c) => (
+                  <li key={c.country} className="space-y-1">
+                    <div className="flex items-baseline justify-between text-sm">
+                      <span className="font-medium">
+                        {c.country}
+                        <span className="text-muted-foreground ml-2 text-xs font-normal">
+                          {formatNumber(c.orders)} sipariş
+                        </span>
+                      </span>
+                      <span className="tabular-nums font-medium">
+                        {usd0(c.gross_cents)}
+                      </span>
+                    </div>
+                    <div className="bg-muted h-1.5 overflow-hidden rounded-full">
+                      <div
+                        className="h-full rounded-full bg-[var(--chart-2)]"
+                        style={{
+                          width: `${((c.gross_cents / maxCountry) * 100).toFixed(1)}%`,
+                        }}
+                      />
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
+        )}
+      </section>
 
       <Card>
         <CardContent className="space-y-4">
