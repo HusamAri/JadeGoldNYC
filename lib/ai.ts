@@ -54,21 +54,27 @@ export class AINotConfiguredError extends Error {
 }
 
 /**
+ * Bir model tercihini (çağıran modeli veya AI_MODEL) Gemini model kimliğine
+ * çevirir. "google/x" öneki soyulur; başka sağlayıcı slug'ı ("openai/...")
+ * Gemini sağlayıcısıyla çalıştırılamayacağından varsayılan Gemini modeline düşer.
+ */
+function toGeminiModelId(pref: string | undefined): string {
+  if (!pref) return GEMINI_DEFAULT_MODEL;
+  if (pref.startsWith("google/")) return pref.slice("google/".length);
+  if (pref.includes("/")) return GEMINI_DEFAULT_MODEL;
+  return pref;
+}
+
+/**
  * Çağrı için model çözer. Gemini anahtarı varsa Gemini sağlayıcısını, yoksa
- * AI Gateway model slug'ını döndürür. `explicit` yalnız gateway yolunda
- * kullanılır; Gemini yolunda `AI_MODEL` (slug değilse) ya da varsayılan geçerli.
+ * AI Gateway model slug'ını döndürür. Her iki yolda da çağıranın verdiği
+ * `explicit` model önceliklidir (yoksa `AI_MODEL`, yoksa yol varsayılanı).
  */
 function resolveModel(explicit?: string): LanguageModel {
   const key = geminiApiKey();
   if (key) {
     const google = createGoogleGenerativeAI({ apiKey: key });
-    const configured = process.env.AI_MODEL;
-    // AI_MODEL bir gateway slug'ıysa (içinde "/") Gemini için kullanma.
-    const modelId =
-      configured && !configured.includes("/")
-        ? configured
-        : GEMINI_DEFAULT_MODEL;
-    return google(modelId);
+    return google(toGeminiModelId(explicit ?? process.env.AI_MODEL));
   }
   return explicit ?? process.env.AI_MODEL ?? GATEWAY_DEFAULT_MODEL;
 }
