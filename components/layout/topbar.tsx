@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Menu, LogOut } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { Menu, LogOut, ChevronLeft } from "lucide-react";
 
 import { signOut } from "@/lib/actions/session";
 import { NAV_ITEMS } from "@/components/layout/nav-items";
@@ -30,13 +30,30 @@ export function Topbar({
   avatarUrl?: string | null;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
   const current = NAV_ITEMS.find(
     (i) => pathname === i.href || pathname.startsWith(i.href + "/"),
   );
+  // Geri butonu yalnız alt/detay sayfalarında (bölüm ana sayfası veya Panel değil).
+  const isSubPage = pathname !== "/panel" && (!current || pathname !== current.href);
 
   return (
     <header className="bg-background/80 sticky top-0 z-30 flex h-16 items-center justify-between gap-3 px-4 shadow-[0_10px_24px_-20px_rgb(var(--nm-dark)/0.7)] backdrop-blur-md md:px-6">
       <div className="flex items-center gap-3">
+        {/* Geri — alt/detay sayfalarında */}
+        {isSubPage && (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => router.back()}
+            aria-label="Geri"
+            title="Geri"
+          >
+            <ChevronLeft />
+            <span className="sr-only">Geri</span>
+          </Button>
+        )}
+
         {/* Mobil menü */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
