@@ -50,6 +50,11 @@
   --accent: oklch(0.81 0.085 85);
   --accent-foreground: oklch(0.3 0.03 162);
 
+  /* Marka markı (logo) rengi — tema uyumlu. Aydınlıkta koyu antik altın
+     (fildişi zeminde ≥4.5:1); koyuda parlak altın (.dark'ta ayarlı). Logo
+     bileşeni SVG'yi bu tokenle maskeler; böylece mark her iki modda okunur. */
+  --brand-mark: oklch(0.5 0.1 76);
+
   --destructive: oklch(0.58 0.21 27);
   --destructive-foreground: oklch(0.98 0.01 27);
 
@@ -125,6 +130,9 @@
   --accent: oklch(0.5 0.06 95);
   --accent-foreground: oklch(0.96 0.02 92);
 
+  /* Gece: mark parlak altın (koyu jade zeminde ≥6:1) */
+  --brand-mark: oklch(0.82 0.11 88);
+
   --destructive: oklch(0.62 0.2 25);
   --destructive-foreground: oklch(0.97 0.01 27);
 
@@ -188,6 +196,7 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-brand-mark: var(--brand-mark);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
