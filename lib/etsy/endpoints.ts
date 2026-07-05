@@ -21,4 +21,9 @@ export const etsyPaths = {
   // Envanter (adet) okuma/yazma — shop_id gerektirmez, listing_id yeterli.
   listingInventory: (listingId: number | string) =>
     `/listings/${listingId}/inventory`,
+  // Tek listing okuma (açıklama vb.) — shop_id gerektirmez.
+  listing: (listingId: number | string) => `/listings/${listingId}`,
+  // updateListing (açıklama yazma) — shop_id + listings_w gerekir.
+  shopListing: (shopId: number | string, listingId: number | string) =>
+    `/shops/${shopId}/listings/${listingId}`,
 };
