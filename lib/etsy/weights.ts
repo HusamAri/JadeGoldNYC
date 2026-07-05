@@ -21,8 +21,9 @@ export function variantSizeLabel(v: VariantWeight): string {
     .filter(Boolean)
     .join(" · ");
   if (fromProps) return fromProps;
-  // SKU sonundaki beden: son "-" veya "." ardından gelen sayı (ör. BMC1-7.5)
-  const m = v.sku.match(/[-.]([0-9]+(?:\.[0-9]+)?)$/);
+  // SKU sonundaki beden: yalnız "-" ayıracından sonra (ör. BMC1-7, BMC1-7.5).
+  // Nokta ondalıktır; çok-noktalı/tiresiz SKU'da yanlış beden yerine SKU dön.
+  const m = v.sku.match(/-([0-9]+(?:\.[0-9]+)?)$/);
   return m ? `${m[1]}"` : v.sku;
 }
 

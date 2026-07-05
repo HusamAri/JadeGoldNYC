@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 export function MissingWeightsForm({ rows }: { rows: MissingWeightRow[] }) {
   const router = useRouter();
   const [values, setValues] = useState<Record<string, string>>({});
-  const [saving, setSaving] = useState<string | null>(null);
+  const [saving, setSaving] = useState<Set<string>>(new Set());
   const [done, setDone] = useState<Set<string>>(new Set());
 
   function save(sku: string) {
@@ -23,7 +23,7 @@ export function MissingWeightsForm({ rows }: { rows: MissingWeightRow[] }) {
       toast.error("Geçerli bir gram girin (ör. 5.7).");
       return;
     }
-    setSaving(sku);
+    setSaving((s) => new Set(s).add(sku));
     saveVariantWeight(sku, grams)
       .then((res) => {
         if (res.error) {
@@ -33,7 +33,13 @@ export function MissingWeightsForm({ rows }: { rows: MissingWeightRow[] }) {
         setDone((d) => new Set(d).add(sku));
         toast.success(`${sku} · ${grams} g kaydedildi.`);
       })
-      .finally(() => setSaving(null));
+      .finally(() =>
+        setSaving((s) => {
+          const n = new Set(s);
+          n.delete(sku);
+          return n;
+        }),
+      );
   }
 
   if (rows.length === 0) {
@@ -84,10 +90,10 @@ export function MissingWeightsForm({ rows }: { rows: MissingWeightRow[] }) {
                 <Button
                   type="button"
                   size="sm"
-                  disabled={saving === r.sku}
+                  disabled={saving.has(r.sku)}
                   onClick={() => save(r.sku)}
                 >
-                  {saving === r.sku ? (
+                  {saving.has(r.sku) ? (
                     <Loader2 className="size-4 animate-spin" />
                   ) : (
                     "Kaydet"

@@ -36,7 +36,7 @@ export function KpiCard({
   return (
     <Card
       className={cn(
-        "h-full min-w-0 transition-transform duration-200 ease-[var(--ease-premium)] hover:-translate-y-0.5",
+        "h-full min-w-0 transition-transform duration-200 ease-[var(--ease-premium)] hover:-translate-y-[3px]",
         className,
       )}
     >
