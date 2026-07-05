@@ -209,6 +209,16 @@ export async function advanceEtsySync(
           counts.reviews += results.length;
         }
         if (results.length < PAGE) {
+          // Yorum senkronu bitti → Etsy'de (alıcı tarafından) yanıtımızdan
+          // sonra değiştirilen yorumları panelde tekrar "yeni"ye çek. Hata
+          // senkronu bozmasın (yorumlar zaten yazıldı).
+          try {
+            await admin.rpc("reconcile_reviews_after_sync", {
+              p_org_id: orgId,
+            });
+          } catch {
+            // yok say
+          }
           phase = "ledger";
           offset = 0;
         } else {
@@ -451,6 +461,7 @@ async function upsertReviewsPage(
 ): Promise<void> {
   const rows = results.map((rv) => {
     const ts = rv.created_timestamp ?? rv.create_timestamp;
+    const updated = rv.updated_timestamp ?? rv.update_timestamp;
     return {
       org_id: orgId,
       etsy_review_id:
@@ -459,8 +470,12 @@ async function upsertReviewsPage(
       review_text: rv.review ?? null,
       language: rv.language ?? null,
       review_date: ts ? new Date(ts * 1000).toISOString() : null,
+      etsy_updated_at: updated ? new Date(updated * 1000).toISOString() : null,
       source: "etsy",
-      status: "yeni",
+      // status/response_text/responded_at/internal_note KASITLI gönderilmiyor:
+      // bunlar panele ait (yanıt takibi). Yeni satır DB default'u ile 'yeni'
+      // olur; MEVCUT satırın durumu/yanıtı upsert'te korunur (aksi halde her
+      // senkron panelde "yanıtlandı" işaretini "yeni"ye geri ezerdi).
     };
   });
   const { error } = await admin
