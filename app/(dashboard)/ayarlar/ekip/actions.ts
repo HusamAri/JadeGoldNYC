@@ -1,12 +1,16 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
 
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { requireMembership } from "@/lib/auth";
 import { countOwners } from "@/lib/db/queries/team";
 import type { Role } from "@/lib/types";
+
+/** İstemciden gelen rol değeri çalışma-zamanı doğrulaması (server action). */
+const roleSchema = z.enum(["owner", "admin", "member"]);
 
 export interface TeamActionResult {
   ok?: boolean;
@@ -46,6 +50,10 @@ export async function updateMemberRole(
 ): Promise<TeamActionResult> {
   const m = await requireMembership();
   if (m.role !== "owner") return { error: OWNER_ONLY_ERROR };
+
+  const parsedRole = roleSchema.safeParse(newRole);
+  if (!parsedRole.success) return { error: "Geçersiz rol." };
+  newRole = parsedRole.data;
 
   const supabase = await createClient();
   const { data: target } = await supabase

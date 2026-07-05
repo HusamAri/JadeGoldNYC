@@ -41,7 +41,15 @@ export default async function YorumDuzenlePage({
         respondedAt={r.responded_at}
         initialResponse={r.response_text}
       />
-      <ReviewForm mode="edit" reviewId={r.id} defaultValues={defaultValues} />
+      {/* key: yanıt panelinden durum değişince (router.refresh → yeni updated_at)
+          form yeniden monte olup güncel defaultValues'i alır — eski durumu
+          Kaydet'le geri yazmaz. */}
+      <ReviewForm
+        key={r.updated_at}
+        mode="edit"
+        reviewId={r.id}
+        defaultValues={defaultValues}
+      />
     </div>
   );
 }

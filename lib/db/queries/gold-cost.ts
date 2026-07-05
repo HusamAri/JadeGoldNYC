@@ -205,14 +205,16 @@ function buildSummary(items: SoldItemWithCost[]): GoldCostSummary {
   let analyzedItems = 0;
 
   for (const item of items) {
-    totalRevenueCents += item.lineTotalCents * item.quantity;
+    // line_total_cents zaten birim × adet içerir (bkz. etsy sync / csv mapper),
+    // bu yüzden gelirde tekrar adetle çarpma — yalnız birim-başı MALİYETLER × qty.
+    totalRevenueCents += item.lineTotalCents;
 
     if (item.cost && item.karat) {
       analyzedItems++;
       const qty = item.quantity;
       const k = byKarat[item.karat];
       k.count += qty;
-      k.revenueCents += item.lineTotalCents * qty;
+      k.revenueCents += item.lineTotalCents;
       k.goldCostCents += item.cost.totalGoldCostCents * qty;
       k.laborCostCents += item.cost.totalLaborCostCents * qty;
       k.purchaseCostCents += item.cost.totalPurchaseCostCents * qty;
