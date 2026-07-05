@@ -9,6 +9,7 @@ import {
   useTransition,
 } from "react";
 import { useRouter } from "next/navigation";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   ChevronRight,
   ChevronLeft,
@@ -70,6 +71,7 @@ export function TaskTimeline({
   const [pending, startTransition] = useTransition();
   const [lane, setLane] = useState("all");
   const [assignee, setAssignee] = useState("all");
+  const reduce = useReducedMotion();
 
   // "Bugün" mağaza saat dilimine (NYC) göre sunucuda hesaplanır — due_date'ler
   // de o takvimde; sabit tutmak SSR/hydration uyumunu da garanti eder.
@@ -262,16 +264,23 @@ export function TaskTimeline({
           )}
         </div>
 
-        {todayOffscreen && (
-          <button
-            type="button"
-            onClick={scrollToToday}
-            className="bg-accent text-accent-foreground absolute right-4 bottom-4 z-20 flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold shadow-[var(--shadow-raised-sm)] transition-transform hover:scale-105"
-          >
-            <ArrowDownToLine className="size-3.5" />
-            Bugüne dön
-          </button>
-        )}
+        <AnimatePresence>
+          {todayOffscreen && (
+            <motion.button
+              type="button"
+              onClick={scrollToToday}
+              initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.8, y: 8 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.8, y: 8 }}
+              transition={{ type: "spring", stiffness: 420, damping: 26 }}
+              whileTap={reduce ? undefined : { scale: 0.94 }}
+              className="bg-accent text-accent-foreground absolute right-4 bottom-4 z-20 flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold shadow-[var(--shadow-raised-sm)]"
+            >
+              <ArrowDownToLine className="size-3.5" />
+              Bugüne dön
+            </motion.button>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* ── Alt bölümler: Geciken + Kapsam ───────────────────────────── */}
@@ -374,12 +383,18 @@ function TimelineCard({
   onOpen: () => void;
   onMove: (id: string, status: TaskStatus) => void;
 }) {
+  const reduce = useReducedMotion();
   const done = t.status === "done";
   const overdue = section === "past" && !done;
   const late = overdue ? dayDiff(t.due_date as string, today) : 0;
 
   return (
-    <div className="relative flex items-start gap-3 py-1.5 pl-1">
+    <motion.div
+      initial={reduce ? { opacity: 0 } : { opacity: 0, x: -10 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+      className="relative flex items-start gap-3 py-1.5 pl-1"
+    >
       {/* Omurga düğümü */}
       <span
         aria-hidden
@@ -477,7 +492,7 @@ function TimelineCard({
           </div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }
 

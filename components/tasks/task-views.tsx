@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { CalendarRange, LayoutGrid } from "lucide-react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
 import type { TaskWithAssignee } from "@/lib/types";
 import type { AssignableUser } from "@/lib/db/queries/tasks";
@@ -20,6 +21,7 @@ export function TaskViews({
   serverToday: string;
 }) {
   const [view, setView] = useState<"timeline" | "board">("timeline");
+  const reduce = useReducedMotion();
 
   const tabs = [
     { value: "timeline" as const, label: "Zaman Çizelgesi", icon: CalendarRange },
@@ -50,11 +52,21 @@ export function TaskViews({
         })}
       </div>
 
-      {view === "timeline" ? (
-        <TaskTimeline tasks={tasks} members={members} serverToday={serverToday} />
-      ) : (
-        <TaskBoard tasks={tasks} members={members} />
-      )}
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={view}
+          initial={reduce ? { opacity: 0 } : { opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={reduce ? { opacity: 0 } : { opacity: 0, y: -10 }}
+          transition={{ duration: 0.26, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {view === "timeline" ? (
+            <TaskTimeline tasks={tasks} members={members} serverToday={serverToday} />
+          ) : (
+            <TaskBoard tasks={tasks} members={members} />
+          )}
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 }
