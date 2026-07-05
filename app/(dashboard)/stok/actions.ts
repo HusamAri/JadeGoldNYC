@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 
-import { requireMembership } from "@/lib/auth";
+import { requireMembership, isManager, MANAGER_ONLY_ERROR } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { logAudit } from "@/lib/audit";
 import { getEtsyWriteAccess } from "@/lib/db/queries/etsy";
@@ -24,7 +24,8 @@ export async function saveTargetQuantity(
   productId: string,
   qty: number | null,
 ): Promise<{ error?: string }> {
-  await requireMembership();
+  const m = await requireMembership();
+  if (!isManager(m.role)) return { error: MANAGER_ONLY_ERROR };
   if (qty != null && (!Number.isInteger(qty) || qty < 0)) {
     return { error: "Adet 0 veya daha büyük tam sayı olmalı." };
   }
@@ -103,6 +104,7 @@ export async function applyStockSyncBatch(
   error?: string;
 }> {
   const m = await requireMembership();
+  if (!isManager(m.role)) return { outcomes: [], error: MANAGER_ONLY_ERROR };
   if (ids.length === 0) return { outcomes: [] };
 
   const { writeEnabled } = await getEtsyWriteAccess(m.org_id);

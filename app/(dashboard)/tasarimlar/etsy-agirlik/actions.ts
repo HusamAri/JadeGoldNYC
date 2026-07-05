@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 
-import { requireMembership } from "@/lib/auth";
+import { requireMembership, isManager, MANAGER_ONLY_ERROR } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { EtsyClient } from "@/lib/etsy/client";
 import { getEtsyWriteAccess } from "@/lib/db/queries/etsy";
@@ -27,6 +27,7 @@ export async function pushWeightForListing(
   productId: string,
 ): Promise<WeightPushResult> {
   const m = await requireMembership();
+  if (!isManager(m.role)) return { error: MANAGER_ONLY_ERROR };
   const { writeEnabled } = await getEtsyWriteAccess(m.org_id);
   if (!writeEnabled) return { error: "Etsy yazma erişimi kapalı." };
 
@@ -63,6 +64,8 @@ export async function pushAllWeights(): Promise<{
   error?: string;
 }> {
   const m = await requireMembership();
+  if (!isManager(m.role))
+    return { updated: 0, unchanged: 0, errors: 0, error: MANAGER_ONLY_ERROR };
   const { writeEnabled } = await getEtsyWriteAccess(m.org_id);
   if (!writeEnabled)
     return { updated: 0, unchanged: 0, errors: 0, error: "Etsy yazma erişimi kapalı." };

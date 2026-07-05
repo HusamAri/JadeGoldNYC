@@ -41,3 +41,12 @@ export async function requireMembership(): Promise<Member> {
   if (!m) redirect("/login");
   return m;
 }
+
+/** Yönetici rolü (owner/admin) — hassas/yazma işlemleri (Etsy yazma, ekip). */
+export function isManager(role: string | null | undefined): boolean {
+  return role === "owner" || role === "admin";
+}
+
+/** Yönetici olmayan için standart hata mesajı. */
+export const MANAGER_ONLY_ERROR =
+  "Bu işlem için sahip (owner) veya yönetici (admin) yetkisi gerekir.";

@@ -15,6 +15,7 @@ export interface VariantSyncResult {
   skipped: number;
   errors: number;
   gramsMatched: number;
+  saleItemsLinked: number;
 }
 
 interface ListingRow {
@@ -98,6 +99,7 @@ export async function syncListingVariants(
     skipped: 0,
     errors: 0,
     gramsMatched: 0,
+    saleItemsLinked: 0,
   };
 
   for (const listing of listings) {
@@ -120,7 +122,24 @@ export async function syncListingVariants(
   }
 
   result.gramsMatched = await matchVariantWeights(admin, orgId);
+  result.saleItemsLinked = await linkSaleItemsBySku(admin, orgId);
   return result;
+}
+
+/**
+ * Satış kalemlerini SKU üzerinden ürüne bağlar (product_variants SKU↔product_id
+ * eşleşmesinden). Yalnız product_id'si boş kalemleri doldurur. Döndürdüğü sayı
+ * bu turda bağlanan kalem sayısıdır. (RPC: migration 0057.)
+ */
+export async function linkSaleItemsBySku(
+  admin: SupabaseClient,
+  orgId: string,
+): Promise<number> {
+  const { data, error } = await admin.rpc("link_sale_items_by_sku", {
+    p_org_id: orgId,
+  });
+  if (error) return 0;
+  return (data as number | null) ?? 0;
 }
 
 /**

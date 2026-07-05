@@ -61,6 +61,9 @@ export interface EtsyReview {
   language?: string;
   create_timestamp?: number;
   created_timestamp?: number;
+  // Alıcı yorumu düzenlerse ilerler — yanıtımızdan sonraki değişikliği yakalar.
+  update_timestamp?: number;
+  updated_timestamp?: number;
 }
 
 export interface EtsyLedgerEntry {
