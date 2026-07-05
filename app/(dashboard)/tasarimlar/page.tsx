@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Plus, Pencil, Package, Layers, ImageOff, MessageSquare } from "lucide-react";
+import { Plus, Pencil, Package, Layers, ImageOff, MessageSquare, Scale } from "lucide-react";
 
 import { requireMembership } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
@@ -77,6 +77,12 @@ export default async function TasarimlarPage() {
         action={
           <>
             <NewCollectionForm />
+            <Button asChild variant="outline">
+              <Link href="/tasarimlar/etsy-agirlik">
+                <Scale />
+                Etsy&apos;ye Ağırlık
+              </Link>
+            </Button>
             <Button asChild>
               <Link href="/tasarimlar/yeni">
                 <Plus />

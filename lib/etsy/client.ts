@@ -188,4 +188,43 @@ export class EtsyClient {
     const text = await res.text();
     return (text ? JSON.parse(text) : undefined) as T;
   }
+
+  /**
+   * Form-encoded yazma (application/x-www-form-urlencoded). Etsy'nin çoğu
+   * write ucu (ör. updateListing) JSON değil form bekler — envanter PUT'u
+   * istisna. undefined alanlar atlanır.
+   */
+  async requestForm<T>(
+    method: "POST" | "PUT" | "PATCH" | "DELETE",
+    path: string,
+    form: Record<string, string | number | undefined | null>,
+    retry = 1,
+  ): Promise<T> {
+    const token = await this.ensureToken();
+    const body = new URLSearchParams();
+    for (const [k, v] of Object.entries(form)) {
+      if (v != null) body.append(k, String(v));
+    }
+    const res = await fetch(ETSY_API_BASE + path, {
+      method,
+      headers: {
+        "x-api-key": this.xApiKey,
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body,
+    });
+
+    if (res.status === 429 && retry > 0) {
+      await new Promise((r) => setTimeout(r, 1200));
+      return this.requestForm<T>(method, path, form, retry - 1);
+    }
+    if (!res.ok) {
+      throw new Error(
+        `Etsy API hatası (${res.status}) ${method} ${path}: ${await res.text()}`,
+      );
+    }
+    const text = await res.text();
+    return (text ? JSON.parse(text) : undefined) as T;
+  }
 }
