@@ -106,7 +106,9 @@ export function calculateGoldCost(
     customPurchasePrices?.[karat] ?? PURCHASE_PRICE_CENTS_PER_GRAM[karat];
   const purchasePerGramUsd = purchaseCentsPerGram / 100;
 
-  const laborPerGramUsd = purchasePerGramUsd - karatGoldPerGramUsd;
+  // Altın ons fiyatı tedarik alım fiyatını aşarsa işçilik negatife düşebilir
+  // (kriz senaryosu); tabanı 0'da tut — negatif işçilik/marj gösterme.
+  const laborPerGramUsd = Math.max(0, purchasePerGramUsd - karatGoldPerGramUsd);
   const laborMarkup =
     karatGoldPerGramUsd > 0 ? laborPerGramUsd / karatGoldPerGramUsd : 0;
 

@@ -18,11 +18,15 @@ import { PageHeader } from "@/components/page-header";
 import { GoldStream } from "@/components/brand/gold-stream";
 import { KpiCard } from "@/components/kpi-card";
 import { Button } from "@/components/ui/button";
-import { TaskBoard } from "@/components/tasks/task-board";
+import { TaskViews } from "@/components/tasks/task-views";
 
 export const metadata = { title: "Görevler" };
 
 export default async function GorevlerPage() {
+  const today = new Date().toLocaleDateString("en-CA", {
+    timeZone: "America/New_York",
+  }); // YYYY-MM-DD, mağaza saat dilimi (NYC)
+
   const [tasks, members, summary] = await Promise.all([
     listTasks(),
     listAssignableUsers(),
@@ -76,7 +80,7 @@ export default async function GorevlerPage() {
         />
       </div>
 
-      <TaskBoard tasks={tasks} members={members} />
+      <TaskViews tasks={tasks} members={members} serverToday={today} />
     </div>
   );
 }
