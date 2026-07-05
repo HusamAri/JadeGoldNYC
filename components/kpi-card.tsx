@@ -1,7 +1,4 @@
-"use client";
-
 import type { LucideIcon } from "lucide-react";
-import { motion, useReducedMotion } from "framer-motion";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -12,6 +9,10 @@ function formatChange(change: number): string {
   return `${arrow} %${pct.toFixed(1)}`;
 }
 
+// NOT: Bu bir SUNUCU bileşenidir — `icon` prop'u bir React bileşeni (LucideIcon)
+// olduğundan client bileşenine dönüştürülemez (RSC sınırından fonksiyon/
+// bileşen geçilemez). Hover hareketi bu yüzden CSS ile yapılır (framer-motion
+// değil). prefers-reduced-motion'da global kural geçişi durdurur.
 export function KpiCard({
   label,
   value,
@@ -32,15 +33,14 @@ export function KpiCard({
   changeLabel?: string;
   className?: string;
 }) {
-  const reduce = useReducedMotion();
   return (
-    <motion.div
-      whileHover={reduce ? undefined : { y: -3 }}
-      transition={{ type: "spring", stiffness: 350, damping: 24 }}
-      className={cn("h-full min-w-0", className)}
+    <Card
+      className={cn(
+        "h-full min-w-0 transition-transform duration-200 ease-[var(--ease-premium)] hover:-translate-y-0.5",
+        className,
+      )}
     >
-      <Card className="h-full min-w-0">
-        <CardContent className="flex h-full items-start justify-between gap-3">
+      <CardContent className="flex h-full items-start justify-between gap-3">
         <div className="flex min-w-0 flex-col">
           <p className="text-muted-foreground line-clamp-2 min-h-[2.5rem] text-sm leading-snug">
             {label}
@@ -79,8 +79,7 @@ export function KpiCard({
             <Icon className="size-5" />
           </div>
         )}
-        </CardContent>
-      </Card>
-    </motion.div>
+      </CardContent>
+    </Card>
   );
 }
