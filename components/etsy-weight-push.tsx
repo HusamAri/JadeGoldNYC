@@ -125,7 +125,7 @@ export function EtsyWeightPush({
                 <Button
                   type="button"
                   size="sm"
-                  disabled={!writeEnabled || busy === p.productId}
+                  disabled={!writeEnabled || busy === p.productId || pendingAll}
                   onClick={() => pushOne(p.productId)}
                 >
                   {busy === p.productId ? (
