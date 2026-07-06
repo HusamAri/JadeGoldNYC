@@ -245,14 +245,14 @@
     background-image: url("/brand/pattern/jade-pattern.webp");
     background-repeat: repeat;
     background-position: top left;
-    background-size: 480px;
-    opacity: 0.05;
+    background-size: 460px;
+    opacity: 0.13;
   }
   /* Koyu mod: açık-zeminli desen ters çevrilir → koyu zemin + altın çizgi (tüm
      desenlere tek biçimde uyarlanır; hairline desenler de okunur). */
   .dark .jg-texture {
     filter: invert(1) hue-rotate(180deg);
-    opacity: 0.06;
+    opacity: 0.11;
   }
   @media print {
     .jg-texture {
