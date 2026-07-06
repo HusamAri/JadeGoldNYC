@@ -15,6 +15,7 @@ const SECTION_PATTERN: Record<string, string> = {
   analizler: "deco-kaleido",
   stok: "deco-sparse",
   tasarimlar: "deco-damask",
+  "gorsel-uretim": "deco-kaleido",
   yorumlar: "deco-quatrefoil",
 };
 const DEFAULT_PATTERN = "deco-crosshatch";

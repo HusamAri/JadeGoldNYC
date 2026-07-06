@@ -260,6 +260,28 @@
     }
   }
 
+  /* Altın toz — kırılgan, organik altın tozu tanecikleri (dijital pırıltı DEĞİL).
+     Art-deco filigranın ÜSTÜNE ince bir altın toz katmanı; taneler yoğunluk
+     alanıyla organik olarak kümelenir, seamless döşenir. Işıltı koyu modda
+     `screen` harmanıyla verilir (altın taneler koyu jade zeminde parlar); açık
+     modda altın fleck'ler şampanya zemine düşer. Statik — hareket yok. */
+  .jg-dust {
+    background-image: url("/brand/pattern/gold-dust.webp");
+    background-repeat: repeat;
+    background-position: top left;
+    background-size: 620px;
+    opacity: 0.42;
+  }
+  .dark .jg-dust {
+    opacity: 0.55;
+    mix-blend-mode: screen;
+  }
+  @media print {
+    .jg-dust {
+      display: none !important;
+    }
+  }
+
   /* Nöromorfik yüzeyler — yukarı doğru kabartma (konveks), gölge düşürmüş kart değil.
      İlk gölge katmanı ZEMİN renginde yumuşak bir hale: arka plan deseni kart
      kenarında sert kesilmez, zemine bükülerek erir (seamless kabartı hissi). */
