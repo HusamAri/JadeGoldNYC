@@ -4,7 +4,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { EtsyClient } from "@/lib/etsy/client";
 import { etsyPaths } from "@/lib/etsy/endpoints";
 import { logAudit } from "@/lib/audit";
-import { processGoldCostsForRecentSales } from "@/lib/gold-cost-entry";
+import { rebuildGoldCostsBulk } from "@/lib/gold-cost-entry";
 import {
   etsyMoneyToCents,
   type EtsyListResponse,
@@ -304,9 +304,11 @@ export async function advanceEtsySync(
       // yok say
     }
 
-    // Altın maliyet kalemlerini otomatik oluştur (idempotent).
+    // Altın maliyet kalemlerini otomatik oluştur (idempotent, küme-tabanlı RPC —
+    // on binlerce satışta Node döngüsü cron bütçesine sığmıyordu). Ağırlık
+    // (SKU→varyant) girildikçe her senkronda kendiliğinden dolar.
     try {
-      await processGoldCostsForRecentSales(admin, orgId);
+      await rebuildGoldCostsBulk(admin, orgId);
     } catch {
       // yok say
     }

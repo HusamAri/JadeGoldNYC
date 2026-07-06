@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 import { cn } from "@/lib/utils";
 
 /**
@@ -11,7 +9,24 @@ import { cn } from "@/lib/utils";
  *
  * - variant="mark"     → sadece monogram (varsayılan; dar/küçük alanlar)
  * - variant="wordmark" → monogram + JADE GOLD kelime markası kilidi (geniş alan)
+ *
+ * Renk TEMA UYUMLUDUR: SVG dosyaları CSS `mask` olarak kullanılır ve
+ * `--brand-mark` tokeniyle boyanır (aydınlıkta koyu antik altın, koyuda parlak
+ * altın) — böylece mark her iki modda da AA kontrastla okunur.
  */
+
+/** Tek renkli SVG'yi maske olarak kullanan tema-uyumlu boya stili. */
+const maskStyle = (src: string): React.CSSProperties => ({
+  maskImage: `url(${src})`,
+  WebkitMaskImage: `url(${src})`,
+  maskRepeat: "no-repeat",
+  WebkitMaskRepeat: "no-repeat",
+  maskPosition: "center",
+  WebkitMaskPosition: "center",
+  maskSize: "contain",
+  WebkitMaskSize: "contain",
+});
+
 export function Logo({
   className,
   variant = "mark",
@@ -20,7 +35,7 @@ export function Logo({
   variant?: "mark" | "wordmark";
 }) {
   // Mark kabı: ince nm-raised, concentric köşeler; iç padding ile monogram
-  // nefes alır. Şeffaf zeminli altın SVG, kart/sidebar zemininde AA kontrastta.
+  // nefes alır. Maskelenen altın SVG, kart/sidebar zemininde AA kontrastta.
   const mark = (
     <span
       className={cn(
@@ -28,13 +43,10 @@ export function Logo({
         className,
       )}
     >
-      <Image
-        src="/brand/logo/monogram-jg.svg"
-        alt=""
-        fill
-        sizes="44px"
-        className="object-contain p-[14%]"
-        priority
+      <span
+        aria-hidden
+        className="bg-brand-mark block size-full"
+        style={maskStyle("/brand/logo/monogram-jg.svg")}
       />
     </span>
   );
@@ -50,13 +62,10 @@ export function Logo({
   return (
     <span role="img" aria-label="Jade Gold NYC" className="inline-flex items-center gap-2.5">
       {mark}
-      <Image
-        src="/brand/logo/logo-wordmark.svg"
-        alt=""
-        width={148}
-        height={28}
-        className="h-5 w-auto"
-        priority
+      <span
+        aria-hidden
+        className="bg-brand-mark block h-5 w-[6.9rem]"
+        style={maskStyle("/brand/logo/logo-wordmark.svg")}
       />
     </span>
   );

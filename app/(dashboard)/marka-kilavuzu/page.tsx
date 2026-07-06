@@ -32,7 +32,8 @@ const LOGOS = [
   { src: "/brand/logo/logo-primary.svg", label: "Birincil kilit", alt: "JADE GOLD NYC birincil logo" },
   { src: "/brand/logo/logo-wordmark.svg", label: "Kelime markası", alt: "JADE GOLD kelime markası" },
   { src: "/brand/logo/logo-stacked.svg", label: "İstifli", alt: "JADE GOLD NYC istifli logo" },
-  { src: "/brand/logo/monogram-jg.svg", label: "JG Monogram", alt: "İç içe JG monogramı" },
+  { src: "/brand/logo/monogram-jg.svg", label: "Amblem / Mark", alt: "İç içe halka amblemi (uygulama markı)" },
+  { src: "/brand/logo/logo-arch.svg", label: "Kemer amblemi", alt: "Kemer monogram amblemi" },
   { src: "/brand/logo/seal-badge.svg", label: "Mühür", alt: "Jade Gold New York City mührü" },
 ];
 
@@ -319,18 +320,29 @@ export default function MarkaKilavuzuPage() {
         <Card>
           <CardHeader>
             <CardDescription>
-              Higgsfield orijinal vektörleri (SVG), antik altın · sıcak fildişi zemin.
+              Higgsfield orijinal vektörleri (SVG), tek antik altın tonuna uyarlandı.
+              Her mark hem aydınlık fildişi hem koyu jade zeminde okunur; uygulama
+              markı (amblem) sidebar’da tema rengine (
+              <code className="font-mono text-[11px]">--brand-mark</code>) göre uyum
+              sağlar.
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+            <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {LOGOS.map((l) => (
                 <li key={l.src} className="space-y-2">
-                  <div className="flex h-28 items-center justify-center rounded-xl bg-[#F0EEE8] p-3 ring-1 ring-black/5">
-                    <img src={l.src} alt={l.alt} className="h-full w-full object-contain" />
+                  <div className="grid grid-cols-2 overflow-hidden rounded-xl ring-1 ring-black/5">
+                    <div className="flex h-24 items-center justify-center bg-[#F0EEE8] p-4">
+                      <img src={l.src} alt={l.alt} className="h-full w-full object-contain" />
+                    </div>
+                    <div className="flex h-24 items-center justify-center bg-[#242C28] p-4">
+                      {/* Aynı mark koyu zeminde — okunabilirlik kanıtı (dekoratif kopya). */}
+                      <img src={l.src} alt="" aria-hidden className="h-full w-full object-contain" />
+                    </div>
                   </div>
                   <p className="text-muted-foreground text-center text-xs font-medium">
-                    {l.label}
+                    {l.label}{" "}
+                    <span className="text-muted-foreground/70">· fildişi / jade</span>
                   </p>
                 </li>
               ))}

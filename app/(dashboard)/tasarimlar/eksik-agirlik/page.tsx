@@ -20,7 +20,7 @@ export default async function EksikAgirlikPage({
   const search = strParam(sp.search);
   const offset = Math.max(0, Number(strParam(sp.offset) ?? 0) || 0);
 
-  const { rows, count } = await listVariantsMissingWeight(m.org_id, {
+  const { groups, count } = await listVariantsMissingWeight(m.org_id, {
     search,
     limit: LIMIT,
     offset,
@@ -40,7 +40,7 @@ export default async function EksikAgirlikPage({
         </span>
       </div>
 
-      <MissingWeightsForm rows={rows} />
+      <MissingWeightsForm groups={groups} />
 
       <Pagination count={count} limit={LIMIT} offset={offset} />
     </div>
