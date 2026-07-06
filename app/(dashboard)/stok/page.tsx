@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Package, Info } from "lucide-react";
+import { Package, Info, Layers } from "lucide-react";
 
 import { requireMembership } from "@/lib/auth";
 import { listStockProducts, type StockProduct } from "@/lib/db/queries/stock";
@@ -11,6 +11,7 @@ import { EmptyState } from "@/components/empty-state";
 import { StockQuantityInput } from "@/components/stock-quantity-input";
 import { StockSyncPanel } from "@/components/stock-sync-panel";
 import { VariantSyncButton } from "@/components/variant-sync-button";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Table,
@@ -77,6 +78,14 @@ export default async function StokPage() {
       <PageHeader
         title="Stok Senkronizasyonu"
         description="Her ürün için elde/hedef adedi girin; hazır olunca tek tuşla Etsy ile çift yönlü eşitleyin."
+        action={
+          <Button asChild variant="outline">
+            <Link href="/stok/varyant">
+              <Layers />
+              Varyant Stok
+            </Link>
+          </Button>
+        }
       />
 
       <StockSyncPanel connected={access.connected} />
