@@ -75,6 +75,8 @@ export const AUDIT_ACTION_LABELS: Record<string, string> = {
   "csv.import": "CSV içe aktarıldı",
   "etsy.connect": "Etsy bağlandı",
   "etsy.sync": "Etsy senkronizasyonu",
+  "etsy.stock_push": "Etsy stok gönderimi",
+  "etsy.variant_sync": "Etsy varyant senkronu",
   "report.export": "Rapor dışa aktarıldı",
 };
 

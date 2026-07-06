@@ -50,16 +50,20 @@ export async function createGoldCostForSale(
     laborCostCents: 0,
   };
 
-  // Daha önce yazılmış mı kontrol et
+  // Daha önce yazılmış KALEMLER (kalem-seviyesi idempotency). Satış seviyesinde
+  // kontrol edilirse, çok kalemli siparişte bir kalem maliyetlenince sonradan
+  // ağırlığı girilen diğer kalem asla işlenmez (Devin/Codex bulgusu). Yalnız
+  // sale_item_id'si zaten gold_auto olan kalemleri atlarız.
   const { data: existing } = await supabase
     .from("costs")
-    .select("id")
+    .select("sale_item_id")
     .eq("sale_id", saleId)
-    .eq("source", "gold_auto")
-    .limit(1);
-  if (existing && existing.length > 0) {
-    return result; // zaten işlenmiş
-  }
+    .eq("source", "gold_auto");
+  const costedItemIds = new Set(
+    ((existing ?? []) as { sale_item_id: string | null }[])
+      .map((r) => r.sale_item_id)
+      .filter(Boolean) as string[],
+  );
 
   // Satış bilgisi
   const { data: sale } = await supabase
@@ -187,11 +191,14 @@ export async function createGoldCostForSale(
     cost_date: string;
     vendor: string | null;
     sale_id: string;
+    sale_item_id: string;
     source: string;
     notes: string | null;
   }[] = [];
 
   for (const item of saleItems) {
+    // Kalem zaten maliyetlenmişse atla (kalem-seviyesi idempotency).
+    if (costedItemIds.has(item.id)) continue;
     const prod = item.product_id ? productMap.get(item.product_id) : null;
     const variant = item.sku ? variantMap.get(item.sku) : null;
     const combinedTitle = prod?.title ?? item.title ?? variant?.name ?? "";
@@ -244,6 +251,7 @@ export async function createGoldCostForSale(
       cost_date: orderDate,
       vendor: "Altin Tedarik",
       sale_id: saleId,
+      sale_item_id: item.id,
       source: "gold_auto",
       notes: `Ons: $${goldPricePerOunce} | Ayar: ${karat} | Agirlik: ${weightGrams}g | Adet: ${qty}`,
     });
@@ -258,6 +266,7 @@ export async function createGoldCostForSale(
       cost_date: orderDate,
       vendor: "Altin Tedarik",
       sale_id: saleId,
+      sale_item_id: item.id,
       source: "gold_auto",
       notes: `Iscilik orani: %${(cost.laborMarkup * 100).toFixed(1)}`,
     });
