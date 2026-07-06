@@ -9,6 +9,8 @@ import {
   Copy,
   Star,
   ChevronRight,
+  Check,
+  Circle,
 } from "lucide-react";
 
 import {
@@ -19,6 +21,7 @@ import {
   MODEL_LABEL,
   type PhotoKitItem,
 } from "@/lib/photo-kit/types";
+import { setPhotoProduced } from "@/app/(dashboard)/gorsel-uretim/actions";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -30,6 +33,7 @@ const LINE = "var(--line,#DED9CB)";
 type TierFilter = "all" | "1" | "2" | "3";
 type SceneFilter = "all" | PhotoKitItem["scene"];
 type CatFilter = "all" | PhotoKitItem["c"];
+type StatusFilter = "all" | "todo" | "done";
 
 async function copyText(text: string) {
   try {
@@ -51,11 +55,13 @@ const SCENE_DOT: Record<PhotoKitItem["scene"], string> = {
   silk: "linear-gradient(135deg,#e8cf9c,#c79b58)",
 };
 
-export function PhotoKitConsole() {
+export function PhotoKitConsole({ producedIds }: { producedIds: number[] }) {
   const [q, setQ] = useState("");
   const [tier, setTier] = useState<TierFilter>("all");
   const [scene, setScene] = useState<SceneFilter>("all");
   const [cat, setCat] = useState<CatFilter>("all");
+  const [status, setStatus] = useState<StatusFilter>("all");
+  const [done, setDone] = useState<Set<number>>(() => new Set(producedIds));
 
   const tierCounts = useMemo(
     () => ({
@@ -66,6 +72,41 @@ export function PhotoKitConsole() {
     [],
   );
 
+  const doneCount = done.size;
+  const total = PHOTO_KIT.length;
+  const pct = total ? Math.round((doneCount / total) * 100) : 0;
+
+  function toggleDone(id: number, next: boolean) {
+    // iyimser güncelleme
+    setDone((prev) => {
+      const s = new Set(prev);
+      if (next) s.add(id);
+      else s.delete(id);
+      return s;
+    });
+    setPhotoProduced(id, next)
+      .then((res) => {
+        if (res.error) {
+          toast.error(res.error);
+          setDone((prev) => {
+            const s = new Set(prev);
+            if (next) s.delete(id);
+            else s.add(id);
+            return s;
+          });
+        }
+      })
+      .catch(() => {
+        toast.error("Kaydedilemedi, tekrar deneyin.");
+        setDone((prev) => {
+          const s = new Set(prev);
+          if (next) s.delete(id);
+          else s.add(id);
+          return s;
+        });
+      });
+  }
+
   const list = useMemo(() => {
     const query = q.trim().toLowerCase();
     return PHOTO_KIT.filter(
@@ -73,12 +114,42 @@ export function PhotoKitConsole() {
         (tier === "all" || it.tier === Number(tier)) &&
         (scene === "all" || it.scene === scene) &&
         (cat === "all" || it.c === cat) &&
+        (status === "all" ||
+          (status === "done" ? done.has(it.id) : !done.has(it.id))) &&
         (query === "" || it.t.toLowerCase().includes(query)),
     );
-  }, [q, tier, scene, cat]);
+  }, [q, tier, scene, cat, status, done]);
 
   return (
     <div className="space-y-6 pb-16">
+      {/* İlerleme */}
+      <div
+        className="bg-card rounded-2xl border p-4"
+        style={{ borderColor: LINE }}
+      >
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <p className="font-semibold">Üretim İlerlemesi</p>
+          <p className="text-muted-foreground text-sm tabular-nums">
+            <b className="text-foreground">{doneCount}</b> / {total} üretildi ·{" "}
+            {total - doneCount} kaldı
+          </p>
+        </div>
+        <div
+          className="bg-muted mt-3 h-2.5 overflow-hidden rounded-full"
+          role="progressbar"
+          aria-valuenow={pct}
+          aria-valuemin={0}
+          aria-valuemax={100}
+        >
+          <div
+            className="h-full rounded-full transition-[width] duration-500"
+            style={{
+              width: `${pct}%`,
+              background: `linear-gradient(90deg, ${GOLD}, ${GOLD_DEEP})`,
+            }}
+          />
+        </div>
+      </div>
       {/* Metodoloji panelleri */}
       <div className="grid gap-4 md:grid-cols-3">
         <MethodPanel title="Kimlik Kilidi — En Kritik Kural">
@@ -212,6 +283,16 @@ export function PhotoKitConsole() {
             { v: "ring", label: "Yüzük" },
           ]}
         />
+        <Segmented
+          label="Durum"
+          value={status}
+          onChange={(v) => setStatus(v as StatusFilter)}
+          options={[
+            { v: "all", label: "Hepsi" },
+            { v: "todo", label: "Kalan", count: total - doneCount },
+            { v: "done", label: "Üretildi", count: doneCount },
+          ]}
+        />
 
         <span className="text-muted-foreground ml-auto pr-1 text-xs tabular-nums">
           {list.length} / {PHOTO_KIT.length} listing
@@ -229,7 +310,12 @@ export function PhotoKitConsole() {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {list.map((it) => (
-            <ProductCard key={it.id} it={it} />
+            <ProductCard
+              key={it.id}
+              it={it}
+              done={done.has(it.id)}
+              onToggle={toggleDone}
+            />
           ))}
         </div>
       )}
@@ -371,13 +457,29 @@ function Segmented({
   );
 }
 
-function ProductCard({ it }: { it: PhotoKitItem }) {
-  const tierColor =
-    it.tier === 1 ? GOLD : it.tier === 2 ? "var(--jade,#2F5D50)" : LINE;
+function ProductCard({
+  it,
+  done,
+  onToggle,
+}: {
+  it: PhotoKitItem;
+  done: boolean;
+  onToggle: (id: number, next: boolean) => void;
+}) {
+  const tierColor = done
+    ? "var(--jade,#2F5D50)"
+    : it.tier === 1
+      ? GOLD
+      : it.tier === 2
+        ? "var(--jade,#2F5D50)"
+        : LINE;
   return (
     <div
-      className="bg-card relative flex flex-col overflow-hidden rounded-2xl border"
-      style={{ borderColor: LINE }}
+      className={cn(
+        "bg-card relative flex flex-col overflow-hidden rounded-2xl border transition-opacity",
+        done && "opacity-75",
+      )}
+      style={{ borderColor: done ? "var(--jade,#2F5D50)" : LINE }}
     >
       <span
         aria-hidden
@@ -386,7 +488,17 @@ function ProductCard({ it }: { it: PhotoKitItem }) {
       />
       {/* başlık + çipler */}
       <div className="border-b px-4 py-3.5 pl-5" style={{ borderColor: LINE }}>
-        <p className="text-[15px] leading-snug font-semibold">{it.t}</p>
+        <div className="flex items-start justify-between gap-2">
+          <p className="text-[15px] leading-snug font-semibold">{it.t}</p>
+          {done && (
+            <span
+              className="inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold text-white"
+              style={{ background: "var(--jade,#2F5D50)" }}
+            >
+              <Check className="size-3" /> Üretildi
+            </span>
+          )}
+        </div>
         <div className="mt-2.5 flex flex-wrap gap-1.5">
           {it.tier === 1 ? (
             <Badge
@@ -452,10 +564,40 @@ function ProductCard({ it }: { it: PhotoKitItem }) {
       </div>
 
       {/* promptlar */}
-      <div className="flex flex-col gap-2 px-4 pt-1 pb-4 pl-5">
+      <div className="flex flex-col gap-2 px-4 pt-1 pb-3 pl-5">
         <PromptBlock label="Flat-lay Prompt" text={it.p} tone="flat" defaultOpen />
         <PromptBlock label="Model / 2. Açı" text={it.mp} tone="model" />
         <PromptBlock label="Negatif" text={it.n} tone="neg" />
+      </div>
+
+      {/* üretildi işareti */}
+      <div className="mt-auto px-4 pb-4 pl-5">
+        <button
+          type="button"
+          aria-pressed={done}
+          onClick={() => onToggle(it.id, !done)}
+          className={cn(
+            "inline-flex w-full items-center justify-center gap-2 rounded-lg border px-3 py-2.5 text-sm font-semibold transition-colors",
+            done
+              ? "border-transparent text-white"
+              : "hover:border-[color:var(--gold,#B89347)]",
+          )}
+          style={
+            done
+              ? { background: "var(--jade,#2F5D50)" }
+              : { borderColor: LINE }
+          }
+        >
+          {done ? (
+            <>
+              <Check className="size-4" /> Üretildi — geri al
+            </>
+          ) : (
+            <>
+              <Circle className="size-4" /> Üretildi olarak işaretle
+            </>
+          )}
+        </button>
       </div>
     </div>
   );
