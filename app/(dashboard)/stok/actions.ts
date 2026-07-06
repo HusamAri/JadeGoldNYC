@@ -206,6 +206,7 @@ export interface VariantSyncActionResult {
   variants?: number;
   saleItemsLinked?: number;
   gramsMatched?: number;
+  errors?: number;
   error?: string;
 }
 
@@ -231,16 +232,36 @@ export async function runVariantInventorySync(): Promise<VariantSyncActionResult
 
   try {
     const r = await syncListingVariants(m.org_id, { budgetMs: 50_000 });
+
+    // Şirket hafızası: etsy.* semantik olayı denetim loguna yazılır (CLAUDE.md).
+    // Kısmi hatalar (listing bazında yakalananlar) da kayda geçer.
+    const supabase = await createClient();
+    await logAudit(supabase, {
+      orgId: m.org_id,
+      action: "etsy.variant_sync",
+      entityType: "product_variants",
+      summary: `Etsy varyant senkronu: ${r.listings} listing, ${r.variants} varyant, ${r.saleItemsLinked} kalem bağlandı, ${r.gramsMatched} gram eşlendi, ${r.errors} hata`,
+      diff: r,
+      source: "etsy",
+    });
+
     revalidatePath("/stok");
     revalidatePath("/tasarimlar/eksik-agirlik");
     revalidatePath("/tasarimlar/etsy-agirlik");
     revalidatePath("/panel");
     return {
-      ok: true,
+      // Hiç listing işlenememiş VE hata varsa başarısız say; aksi halde başarı
+      // (kısmi hata sayısı errors ile döner, kullanıcıya bildirilir).
+      ok: !(r.listings === 0 && r.errors > 0),
       listings: r.listings,
       variants: r.variants,
       saleItemsLinked: r.saleItemsLinked,
       gramsMatched: r.gramsMatched,
+      errors: r.errors,
+      error:
+        r.listings === 0 && r.errors > 0
+          ? `Tüm listing'ler hata verdi (${r.errors}). Etsy bağlantısını/oturumunu kontrol edin.`
+          : undefined,
     };
   } catch (e) {
     if (e instanceof EtsyNotConnectedError) {

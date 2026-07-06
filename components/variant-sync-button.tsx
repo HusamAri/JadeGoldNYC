@@ -34,8 +34,14 @@ export function VariantSyncButton({ connected }: { connected: boolean }) {
         `${r.saleItemsLinked ?? 0} satış kalemi bağlandı`,
       ];
       if (r.gramsMatched) parts.push(`${r.gramsMatched} gram eşlendi`);
+      if (r.errors) parts.push(`${r.errors} listing hata verdi`);
       const summary = parts.join(" · ");
-      toast.success(summary);
+      // Bazı listing'ler hata verdiyse kısmi başarı — uyarı tonu ile göster.
+      if (r.errors && r.errors > 0) {
+        toast.warning(summary);
+      } else {
+        toast.success(summary);
+      }
       setMsg(summary);
       router.refresh();
     });

@@ -109,6 +109,7 @@ export type AuditAction =
   | "etsy.connect"
   | "etsy.sync"
   | "etsy.stock_push"
+  | "etsy.variant_sync"
   | "report.export"
   | "profile.update";
 
