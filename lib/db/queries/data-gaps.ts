@@ -27,12 +27,16 @@ export async function getDataGaps(orgId: string): Promise<DataGap[]> {
   const [
     { count: variantsMissingWeight },
     { count: reviewsNeedReply },
-    { count: saleItemsUnlinked },
+    { data: actionableUnlinked },
   ] = await Promise.all([
     head("product_variants").is("weight_grams", null),
     head("reviews").eq("status", "yeni").lte("rating", 3),
-    head("sale_items").is("product_id", null).not("sku", "is", null),
+    // Yalnız YAPILABİLİR (bağlanabilir) kalemleri say — SKU'su ürüne bağlı bir
+    // varyantla eşleşen ama henüz bağlanmamış olanlar. Silinmiş/eski listelere
+    // ait tarihsel kalemler (aktif ürüne ulaşmayan) sayılmaz — onlarla iş yok.
+    supabase.rpc("count_actionable_unlinked_items", { p_org_id: orgId }),
   ]);
+  const saleItemsUnlinked = (actionableUnlinked as number | null) ?? 0;
 
   const gaps: DataGap[] = [];
 
@@ -63,11 +67,11 @@ export async function getDataGaps(orgId: string): Promise<DataGap[]> {
   if ((saleItemsUnlinked ?? 0) > 0) {
     gaps.push({
       key: "sale_items_unlinked",
-      title: `${saleItemsUnlinked} satış kalemi ürüne bağlı değil`,
-      count: saleItemsUnlinked ?? 0,
-      hint: "Ürün-bazlı analiz ve varyant ağırlığından maliyet için Etsy tam senkronu gerekir.",
-      href: "/ayarlar/etsy",
-      actionLabel: "Etsy senkronu",
+      title: `${saleItemsUnlinked} satış kalemi ürüne bağlanabilir`,
+      count: saleItemsUnlinked,
+      hint: "SKU'su ürüne bağlı bir varyantla eşleşiyor; Stok sayfasındaki varyant senkronu bunları bağlar.",
+      href: "/stok",
+      actionLabel: "Varyantları senkronize et",
       tone: "info",
     });
   }
