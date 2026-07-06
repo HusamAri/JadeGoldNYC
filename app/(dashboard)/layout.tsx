@@ -4,6 +4,7 @@ import { getProfile } from "@/lib/db/queries/profile";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Topbar } from "@/components/layout/topbar";
 import { PageTransition } from "@/components/layout/page-transition";
+import { SectionPattern } from "@/components/layout/section-pattern";
 
 export default async function DashboardLayout({
   children,
@@ -18,6 +19,8 @@ export default async function DashboardLayout({
 
   return (
     <div className="flex min-h-svh">
+      {/* Bölüme (sekme) özel art-deco doku filigranı — route'a göre değişir. */}
+      <SectionPattern />
       <Sidebar />
       <div className="flex min-w-0 flex-1 flex-col">
         <Topbar
@@ -25,7 +28,7 @@ export default async function DashboardLayout({
           name={profile?.full_name ?? null}
           avatarUrl={profile?.avatar_url ?? null}
         />
-        <main className="bg-background flex-1 p-4 md:p-6 lg:p-8">
+        <main className="flex-1 p-4 md:p-6 lg:p-8">
           <PageTransition>{children}</PageTransition>
         </main>
       </div>

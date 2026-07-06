@@ -12,20 +12,20 @@
 :root {
   --radius: 1rem;
 
-  /* Marka zemini — soğuk fildişi (jade'e dönük nötr), kartlar zeminle aynı renk,
-     gölgeyle kabarır. Toprak/kahve değil; marka jade + antik altın. */
-  --background: oklch(0.912 0.012 128);
-  --foreground: oklch(0.27 0.022 165);
+  /* Marka zemini — sıcak şampanya/fildişi (som altın kuyumcu evi için premium),
+     kartlar zeminle aynı renk, gölgeyle kabarır. Espresso-kahve mürekkep. */
+  --background: oklch(0.945 0.012 88);
+  --foreground: oklch(0.27 0.022 74);
 
-  --card: oklch(0.912 0.012 128);
-  --card-foreground: oklch(0.27 0.022 165);
+  --card: oklch(0.945 0.012 88);
+  --card-foreground: oklch(0.27 0.022 74);
 
-  --popover: oklch(0.94 0.01 128);
-  --popover-foreground: oklch(0.27 0.022 165);
+  --popover: oklch(0.965 0.01 88);
+  --popover-foreground: oklch(0.27 0.022 74);
 
   /* Buzlu-cam yüzeyler (grafik tooltip'leri vb.) — "Neler Yeni" popup'ıyla
      aynı dil: hafif sarı/altın tonlu yarı saydam cam + altın hatlı çerçeve. */
-  --glass: oklch(0.965 0.014 116 / 0.72);
+  --glass: oklch(0.97 0.014 90 / 0.72);
   --glass-border: oklch(0.8 0.07 86 / 0.4);
   /* 3B cam derinliği: üstte ışık yakalayan pah (highlight), altta iç gölge
      (kalınlık), ve eğrisel bir sheen (parlama). Cam düz değil, hacimli görünür. */
@@ -40,15 +40,15 @@
   --primary: oklch(0.43 0.035 162);
   --primary-foreground: oklch(0.97 0.012 110);
 
-  --secondary: oklch(0.925 0.014 140);
-  --secondary-foreground: oklch(0.32 0.026 162);
+  --secondary: oklch(0.935 0.014 88);
+  --secondary-foreground: oklch(0.32 0.026 75);
 
-  --muted: oklch(0.93 0.012 140);
-  --muted-foreground: oklch(0.47 0.022 160);
+  --muted: oklch(0.94 0.012 88);
+  --muted-foreground: oklch(0.47 0.024 72);
 
   /* Antik altın (vurgu) #B89347 */
   --accent: oklch(0.81 0.085 85);
-  --accent-foreground: oklch(0.3 0.03 162);
+  --accent-foreground: oklch(0.3 0.03 75);
 
   /* Marka markı (logo) rengi — tema uyumlu. Aydınlıkta koyu antik altın
      (fildişi zeminde ≥4.5:1); koyuda parlak altın (.dark'ta ayarlı). Logo
@@ -58,8 +58,8 @@
   --destructive: oklch(0.58 0.21 27);
   --destructive-foreground: oklch(0.98 0.01 27);
 
-  --border: oklch(0.875 0.013 145);
-  --input: oklch(0.875 0.013 145);
+  --border: oklch(0.895 0.014 88);
+  --input: oklch(0.895 0.014 88);
   --ring: oklch(0.55 0.05 160);
 
   /* Grafik paleti: jade -> altın -> teal/adaçayı -> derin jade -> bronz altın */
@@ -69,20 +69,20 @@
   --chart-4: oklch(0.42 0.04 158);
   --chart-5: oklch(0.62 0.07 72);
 
-  --sidebar: oklch(0.912 0.012 128);
-  --sidebar-foreground: oklch(0.29 0.022 162);
+  --sidebar: oklch(0.945 0.012 88);
+  --sidebar-foreground: oklch(0.29 0.022 72);
   --sidebar-primary: oklch(0.43 0.035 162);
   --sidebar-primary-foreground: oklch(0.97 0.012 110);
   --sidebar-accent: oklch(0.85 0.06 86);
-  --sidebar-accent-foreground: oklch(0.3 0.03 162);
-  --sidebar-border: oklch(0.875 0.013 145);
+  --sidebar-accent-foreground: oklch(0.3 0.03 75);
+  --sidebar-border: oklch(0.895 0.014 88);
   --sidebar-ring: oklch(0.55 0.05 160);
 
-  /* Nöromorfik kabartma — fildişi highlight (sol-üst) + soğuk adaçayı-taupe (sağ-alt) */
-  --nm-light: 252 252 246;
-  --nm-dark: 150 158 138;
-  --nm-convex: linear-gradient(145deg, oklch(0.928 0.012 128), oklch(0.894 0.013 132));
-  --nm-convex-press: linear-gradient(145deg, oklch(0.894 0.013 132), oklch(0.924 0.012 128));
+  /* Nöromorfik kabartma — sıcak şampanya highlight (sol-üst) + sıcak taupe (sağ-alt) */
+  --nm-light: 254 252 245;
+  --nm-dark: 160 152 135;
+  --nm-convex: linear-gradient(145deg, oklch(0.955 0.012 88), oklch(0.93 0.013 88));
+  --nm-convex-press: linear-gradient(145deg, oklch(0.93 0.013 88), oklch(0.95 0.012 88));
   --shadow-raised: -7px -7px 15px rgb(var(--nm-light) / 0.72), 7px 7px 18px rgb(var(--nm-dark) / 0.26);
   --shadow-raised-sm: -4px -4px 9px rgb(var(--nm-light) / 0.7), 4px 4px 10px rgb(var(--nm-dark) / 0.24);
   --shadow-hover: -9px -9px 20px rgb(var(--nm-light) / 0.8), 10px 10px 24px rgb(var(--nm-dark) / 0.3);
@@ -236,6 +236,30 @@
 }
 
 @layer components {
+  /* Sessiz lüks filigran dokusu — çok düşük opaklıkta, tekrar eden desen.
+     Katman sabit ve etkileşimsizdir (layout'ta `fixed inset-0 -z-10`): zemin
+     renginin ÜSTÜNDE, içeriğin ALTINDA kalır; kartlar opak olduğu için desen
+     yalnızca boşluklarda fısıltı gibi görünür. Asset (jade-pattern.webp) henüz
+     yoksa katman şeffaftır — sadece premium düz zemin kalır (zarif düşüş). */
+  .jg-texture {
+    background-image: url("/brand/pattern/jade-pattern.webp");
+    background-repeat: repeat;
+    background-position: top left;
+    background-size: 480px;
+    opacity: 0.05;
+  }
+  /* Koyu mod: açık-zeminli desen ters çevrilir → koyu zemin + altın çizgi (tüm
+     desenlere tek biçimde uyarlanır; hairline desenler de okunur). */
+  .dark .jg-texture {
+    filter: invert(1) hue-rotate(180deg);
+    opacity: 0.06;
+  }
+  @media print {
+    .jg-texture {
+      display: none !important;
+    }
+  }
+
   /* Nöromorfik yüzeyler — yukarı doğru kabartma (konveks), gölge düşürmüş kart değil */
   .nm-raised {
     background-image: var(--nm-convex);
