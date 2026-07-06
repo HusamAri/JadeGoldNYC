@@ -18,8 +18,10 @@ export default async function DashboardLayout({
   const profile = user ? await getProfile(supabase, user.id) : null;
 
   return (
-    <div className="flex min-h-svh">
-      {/* Bölüme (sekme) özel art-deco doku filigranı — route'a göre değişir. */}
+    <div className="relative flex min-h-svh">
+      {/* Bölüme (sekme) özel art-deco doku filigranı — route'a göre değişir.
+          `absolute` (fixed değil) → sayfayla birlikte kayar; shell tüm içerik
+          yüksekliğine uzadığından desen tüm scroll boyunca sürer. */}
       <SectionPattern />
       <Sidebar />
       <div className="flex min-w-0 flex-1 flex-col">
