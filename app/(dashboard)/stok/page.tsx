@@ -10,6 +10,7 @@ import { PageHeader } from "@/components/page-header";
 import { EmptyState } from "@/components/empty-state";
 import { StockQuantityInput } from "@/components/stock-quantity-input";
 import { StockSyncPanel } from "@/components/stock-sync-panel";
+import { VariantSyncButton } from "@/components/variant-sync-button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Table,
@@ -79,6 +80,8 @@ export default async function StokPage() {
       />
 
       <StockSyncPanel connected={access.connected} />
+
+      <VariantSyncButton connected={access.connected} />
 
       {products.length === 0 ? (
         <EmptyState
