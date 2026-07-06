@@ -248,8 +248,11 @@
     background-size: 480px;
     opacity: 0.05;
   }
+  /* Koyu mod: açık-zeminli desen ters çevrilir → koyu zemin + altın çizgi (tüm
+     desenlere tek biçimde uyarlanır; hairline desenler de okunur). */
   .dark .jg-texture {
-    opacity: 0.025;
+    filter: invert(1) hue-rotate(180deg);
+    opacity: 0.06;
   }
   @media print {
     .jg-texture {

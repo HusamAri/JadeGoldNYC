@@ -4,6 +4,7 @@ import { getProfile } from "@/lib/db/queries/profile";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Topbar } from "@/components/layout/topbar";
 import { PageTransition } from "@/components/layout/page-transition";
+import { SectionPattern } from "@/components/layout/section-pattern";
 
 export default async function DashboardLayout({
   children,
@@ -18,10 +19,8 @@ export default async function DashboardLayout({
 
   return (
     <div className="flex min-h-svh">
-      {/* Sessiz lüks doku katmanı — sabit, tam ekran, etkileşimsiz filigran.
-          Zemin renginin ÜSTÜNDE ama içeriğin ALTINDA durur; asset yoksa zararsız
-          (yalnız düz premium zemin kalır). Bkz. .jg-texture (globals.css). */}
-      <div aria-hidden className="jg-texture pointer-events-none fixed inset-0 -z-10" />
+      {/* Bölüme (sekme) özel art-deco doku filigranı — route'a göre değişir. */}
+      <SectionPattern />
       <Sidebar />
       <div className="flex min-w-0 flex-1 flex-col">
         <Topbar
