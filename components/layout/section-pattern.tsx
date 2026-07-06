@@ -27,7 +27,7 @@ export function SectionPattern() {
   return (
     <div
       aria-hidden
-      className="jg-texture pointer-events-none fixed inset-0 -z-10"
+      className="jg-texture pointer-events-none absolute inset-0 -z-10"
       style={{ backgroundImage: `url(/brand/pattern/${name}.webp)` }}
     />
   );

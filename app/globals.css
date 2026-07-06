@@ -246,13 +246,13 @@
     background-repeat: repeat;
     background-position: top left;
     background-size: 460px;
-    opacity: 0.13;
+    opacity: 0.25;
   }
   /* Koyu mod: açık-zeminli desen ters çevrilir → koyu zemin + altın çizgi (tüm
      desenlere tek biçimde uyarlanır; hairline desenler de okunur). */
   .dark .jg-texture {
     filter: invert(1) hue-rotate(180deg);
-    opacity: 0.11;
+    opacity: 0.2;
   }
   @media print {
     .jg-texture {
@@ -260,10 +260,12 @@
     }
   }
 
-  /* Nöromorfik yüzeyler — yukarı doğru kabartma (konveks), gölge düşürmüş kart değil */
+  /* Nöromorfik yüzeyler — yukarı doğru kabartma (konveks), gölge düşürmüş kart değil.
+     İlk gölge katmanı ZEMİN renginde yumuşak bir hale: arka plan deseni kart
+     kenarında sert kesilmez, zemine bükülerek erir (seamless kabartı hissi). */
   .nm-raised {
     background-image: var(--nm-convex);
-    box-shadow: var(--shadow-raised);
+    box-shadow: 0 0 20px 6px var(--background), var(--shadow-raised);
   }
   .nm-raised-sm {
     background-image: var(--nm-convex);
@@ -302,7 +304,7 @@
       background-image 0.35s var(--ease-premium);
   }
   .nm-interactive:hover {
-    box-shadow: var(--shadow-hover);
+    box-shadow: 0 0 22px 7px var(--background), var(--shadow-hover);
     transform: translateY(-1px);
   }
   .nm-interactive:active {
