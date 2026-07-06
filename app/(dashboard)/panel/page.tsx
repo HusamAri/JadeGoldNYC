@@ -88,27 +88,18 @@ export default async function PanelPage({
 
       <DataGapsCard gaps={gaps} />
 
-      {/* Editorial marka şeridi — kompakt, sabit yükseklikte (kaydırma rayı
-          YOK); veri panele hemen erişilsin diye tam ekran kaydırma-kilitleme
-          kullanılmaz (bkz. EditorialCard `compact`). */}
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <EditorialCard
-          compact
-          image="/brand/gallery/koyu-franco.webp"
-          video="/brand/video/altin-zincir-orbit.mp4"
-          eyebrow="Jade Gold · New York"
-          title="Sessiz lüks, kalıcı değer"
-          subtitle="Som altın, el işçiliği — her parça bir miras."
-        />
-        <EditorialCard
-          compact
-          image="/brand/gallery/aydinlik-nugget.webp"
-          video="/brand/video/altin-yuzuk-yukselis.mp4"
-          eyebrow="Atölye"
-          title="Zarafetin sadeliği"
-          align="start"
-        />
-      </div>
+      {/* Editorial marka şeridi — tek, tam genişlikte kompakt banner (kaydırma
+          rayı YOK); veri panele hemen erişilsin diye tam ekran kaydırma-
+          kilitleme kullanılmaz (bkz. EditorialCard `compact`). */}
+      <EditorialCard
+        compact
+        heightClassName="h-[240px]"
+        image="/brand/gallery/koyu-franco.webp"
+        video="/brand/video/altin-zincir-orbit.mp4"
+        eyebrow="Jade Gold · New York"
+        title="Sessiz lüks, kalıcı değer"
+        subtitle="Som altın, el işçiliği — her parça bir miras."
+      />
 
       {/* ── Altın Fiyat Bilgisi ─────────────────────────────────────── */}
       <Card>

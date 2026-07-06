@@ -18,6 +18,10 @@ export default async function DashboardLayout({
 
   return (
     <div className="flex min-h-svh">
+      {/* Sessiz lüks doku katmanı — sabit, tam ekran, etkileşimsiz filigran.
+          Zemin renginin ÜSTÜNDE ama içeriğin ALTINDA durur; asset yoksa zararsız
+          (yalnız düz premium zemin kalır). Bkz. .jg-texture (globals.css). */}
+      <div aria-hidden className="jg-texture pointer-events-none fixed inset-0 -z-10" />
       <Sidebar />
       <div className="flex min-w-0 flex-1 flex-col">
         <Topbar
@@ -25,7 +29,7 @@ export default async function DashboardLayout({
           name={profile?.full_name ?? null}
           avatarUrl={profile?.avatar_url ?? null}
         />
-        <main className="bg-background flex-1 p-4 md:p-6 lg:p-8">
+        <main className="flex-1 p-4 md:p-6 lg:p-8">
           <PageTransition>{children}</PageTransition>
         </main>
       </div>
