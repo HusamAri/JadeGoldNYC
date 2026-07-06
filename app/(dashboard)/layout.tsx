@@ -23,6 +23,12 @@ export default async function DashboardLayout({
           `absolute` (fixed değil) → sayfayla birlikte kayar; shell tüm içerik
           yüksekliğine uzadığından desen tüm scroll boyunca sürer. */}
       <SectionPattern />
+      {/* Kırılgan altın toz — filigranın üstünde ambiyans katmanı; tüm
+          bölümlerde sabit, içeriğin altında, sayfayla birlikte kayar. */}
+      <div
+        aria-hidden
+        className="jg-dust pointer-events-none absolute inset-0 -z-10"
+      />
       <Sidebar />
       <div className="flex min-w-0 flex-1 flex-col">
         <Topbar
