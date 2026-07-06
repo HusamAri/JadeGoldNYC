@@ -6,12 +6,13 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS } from "@/components/layout/nav-items";
 import { Logo } from "@/components/layout/logo";
+import { WhatsNewNav } from "@/components/layout/whats-new-nav";
 
 export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="bg-sidebar text-sidebar-foreground hidden w-64 shrink-0 flex-col md:flex">
+    <aside className="bg-sidebar text-sidebar-foreground sticky top-0 hidden h-svh w-64 shrink-0 flex-col md:flex">
       <div className="flex h-16 items-center gap-3 px-5">
         <Logo />
         <div className="flex flex-col leading-tight">
@@ -49,6 +50,7 @@ export function Sidebar() {
           );
         })}
       </nav>
+      <WhatsNewNav />
     </aside>
   );
 }

@@ -85,8 +85,10 @@ export async function deleteReview(id: string): Promise<{ error?: string }> {
 
 /**
  * Yorum yanıtı taslağını kaydeder. `markAnswered` ise durumu "yanıtlandı" yapar
- * ve yanıt tarihini damgalar. (Etsy'ye gönderim API'de yok — yanıt Etsy sitesine
- * elle yapıştırılır; bu yalnız panel içi taslak + takip.)
+ * ve yanıt tarihini damgalar. (Etsy'ye gönderim/yanıt okuma API'de yok — yanıt
+ * Etsy sitesine elle yapıştırılır; panel yanıt takibinin tek kaynağıdır.) Bu
+ * durum artık Etsy senkronunda KORUNUR (0059): senkron "yanıtlandı"yı "yeni"ye
+ * geri ezmez; yalnız alıcı yorumu yanıttan sonra değiştirirse tekrar "yeni"ye çeker.
  */
 export async function saveReviewResponse(
   id: string,

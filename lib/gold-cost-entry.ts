@@ -50,16 +50,20 @@ export async function createGoldCostForSale(
     laborCostCents: 0,
   };
 
-  // Daha önce yazılmış mı kontrol et
+  // Daha önce yazılmış KALEMLER (kalem-seviyesi idempotency). Satış seviyesinde
+  // kontrol edilirse, çok kalemli siparişte bir kalem maliyetlenince sonradan
+  // ağırlığı girilen diğer kalem asla işlenmez (Devin/Codex bulgusu). Yalnız
+  // sale_item_id'si zaten gold_auto olan kalemleri atlarız.
   const { data: existing } = await supabase
     .from("costs")
-    .select("id")
+    .select("sale_item_id")
     .eq("sale_id", saleId)
-    .eq("source", "gold_auto")
-    .limit(1);
-  if (existing && existing.length > 0) {
-    return result; // zaten işlenmiş
-  }
+    .eq("source", "gold_auto");
+  const costedItemIds = new Set(
+    ((existing ?? []) as { sale_item_id: string | null }[])
+      .map((r) => r.sale_item_id)
+      .filter(Boolean) as string[],
+  );
 
   // Satış bilgisi
   const { data: sale } = await supabase
@@ -75,7 +79,7 @@ export async function createGoldCostForSale(
   // Satış kalemleri
   const { data: items } = await supabase
     .from("sale_items")
-    .select("id, title, quantity, product_id")
+    .select("id, title, quantity, product_id, sku")
     .eq("sale_id", saleId);
   if (!items || items.length === 0) return result;
 
@@ -84,8 +88,36 @@ export async function createGoldCostForSale(
     title: string | null;
     quantity: number;
     product_id: string | null;
+    sku: string | null;
   };
   const saleItems = items as ItemRow[];
+
+  // Varyant ağırlıkları SKU'ya bağlı (product_variants.weight_grams) — asıl
+  // güvenilir ağırlık kaynağı burası (products.weight_grams neredeyse boş).
+  // Kalemin SKU'suyla eşleşen varyantın gramı/adı çekilir.
+  const skus = [
+    ...new Set(saleItems.map((i) => i.sku).filter(Boolean)),
+  ] as string[];
+  const variantMap = new Map<
+    string,
+    { weight_grams: number | null; name: string | null }
+  >();
+  if (skus.length > 0) {
+    const { data: variants } = await supabase
+      .from("product_variants")
+      .select("sku, name, weight_grams")
+      .eq("org_id", orgId)
+      .in("sku", skus);
+    for (const v of (variants ?? []) as {
+      sku: string;
+      name: string | null;
+      weight_grams: number | null;
+    }[]) {
+      if (!variantMap.has(v.sku)) {
+        variantMap.set(v.sku, { weight_grams: v.weight_grams, name: v.name });
+      }
+    }
+  }
 
   // Ürün bilgisi (zenginleştirme alanları)
   const productIds = [
@@ -159,22 +191,33 @@ export async function createGoldCostForSale(
     cost_date: string;
     vendor: string | null;
     sale_id: string;
+    sale_item_id: string;
     source: string;
     notes: string | null;
   }[] = [];
 
   for (const item of saleItems) {
+    // Kalem zaten maliyetlenmişse atla (kalem-seviyesi idempotency).
+    if (costedItemIds.has(item.id)) continue;
     const prod = item.product_id ? productMap.get(item.product_id) : null;
-    const combinedTitle = prod?.title ?? item.title ?? "";
+    const variant = item.sku ? variantMap.get(item.sku) : null;
+    const combinedTitle = prod?.title ?? item.title ?? variant?.name ?? "";
     const description = prod?.description ?? null;
     const tags = prod?.tags ?? null;
     const materials = prod?.materials ?? null;
 
-    const karat = detectKarat(combinedTitle, tags, materials);
-    // Elle girilen ağırlık güvenilir kaynak; yalnız boşsa başlık/açıklama
-    // regex'ine düşülür (gerçek veride %1.7 isabet — bkz. Maliyetler denetimi).
+    // Ayar tespiti başlığa ek olarak varyant adından da beslenir (varyant adı
+    // çoğu zaman "14K …" taşır, ürüne bağlı olmayan kalemlerde tek ipucu odur).
+    const karatText = [combinedTitle, variant?.name ?? ""]
+      .filter(Boolean)
+      .join(" ");
+    const karat = detectKarat(karatText, tags, materials);
+    // Ağırlık önceliği: satılan tam varyantın SKU'suna bağlı gram (en kesin) →
+    // ürün gramı → son çare başlık/açıklama regex'i (gerçek veride ~%1.7 isabet).
     const weightGrams =
-      prod?.weight_grams ?? extractWeightGrams(combinedTitle, description);
+      variant?.weight_grams ??
+      prod?.weight_grams ??
+      extractWeightGrams(combinedTitle, description);
 
     if (!karat || !weightGrams) {
       result.skipped += item.quantity;
@@ -208,6 +251,7 @@ export async function createGoldCostForSale(
       cost_date: orderDate,
       vendor: "Altin Tedarik",
       sale_id: saleId,
+      sale_item_id: item.id,
       source: "gold_auto",
       notes: `Ons: $${goldPricePerOunce} | Ayar: ${karat} | Agirlik: ${weightGrams}g | Adet: ${qty}`,
     });
@@ -222,6 +266,7 @@ export async function createGoldCostForSale(
       cost_date: orderDate,
       vendor: "Altin Tedarik",
       sale_id: saleId,
+      sale_item_id: item.id,
       source: "gold_auto",
       notes: `Iscilik orani: %${(cost.laborMarkup * 100).toFixed(1)}`,
     });
@@ -262,6 +307,30 @@ export async function createGoldCostsForSales(
   }
 
   return { totalProcessed, totalSkipped, totalGoldCostCents, totalLaborCostCents };
+}
+
+/**
+ * Toplu/geriye dönük altın maliyeti — KÜME-tabanlı (`rebuild_gold_costs` RPC).
+ *
+ * Node döngüsü (processGoldCostsForRecentSales) satış başına birkaç sorgu atar;
+ * on binlerce satışta 40sn cron bütçesine sığmaz. Bu yol tüm çözülebilir
+ * kalemleri (SKU → product_variants.weight_grams) tek deyimde işler; ağırlık
+ * girildikçe her çağrıda kendiliğinden dolar. RPC service_role ister —
+ * çağıran istemci admin (service role) olmalı.
+ *
+ * @returns eklenen maliyet satırı sayısı (malzeme + işçilik).
+ */
+export async function rebuildGoldCostsBulk(
+  supabase: SupabaseClient,
+  orgId: string,
+): Promise<number> {
+  const goldPricePerOunce = await getGoldPricePerOunce();
+  const { data, error } = await supabase.rpc("rebuild_gold_costs", {
+    p_org_id: orgId,
+    p_gold_price_per_ounce: goldPricePerOunce,
+  });
+  if (error) throw new Error(error.message);
+  return (data as number) ?? 0;
 }
 
 /**

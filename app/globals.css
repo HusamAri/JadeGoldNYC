@@ -12,20 +12,20 @@
 :root {
   --radius: 1rem;
 
-  /* Marka zemini — soğuk fildişi (jade'e dönük nötr), kartlar zeminle aynı renk,
-     gölgeyle kabarır. Toprak/kahve değil; marka jade + antik altın. */
-  --background: oklch(0.912 0.012 128);
-  --foreground: oklch(0.27 0.022 165);
+  /* Marka zemini — sıcak şampanya/fildişi (som altın kuyumcu evi için premium),
+     kartlar zeminle aynı renk, gölgeyle kabarır. Espresso-kahve mürekkep. */
+  --background: oklch(0.945 0.012 88);
+  --foreground: oklch(0.27 0.022 74);
 
-  --card: oklch(0.912 0.012 128);
-  --card-foreground: oklch(0.27 0.022 165);
+  --card: oklch(0.945 0.012 88);
+  --card-foreground: oklch(0.27 0.022 74);
 
-  --popover: oklch(0.94 0.01 128);
-  --popover-foreground: oklch(0.27 0.022 165);
+  --popover: oklch(0.965 0.01 88);
+  --popover-foreground: oklch(0.27 0.022 74);
 
   /* Buzlu-cam yüzeyler (grafik tooltip'leri vb.) — "Neler Yeni" popup'ıyla
      aynı dil: hafif sarı/altın tonlu yarı saydam cam + altın hatlı çerçeve. */
-  --glass: oklch(0.965 0.014 116 / 0.72);
+  --glass: oklch(0.97 0.014 90 / 0.72);
   --glass-border: oklch(0.8 0.07 86 / 0.4);
   /* 3B cam derinliği: üstte ışık yakalayan pah (highlight), altta iç gölge
      (kalınlık), ve eğrisel bir sheen (parlama). Cam düz değil, hacimli görünür. */
@@ -40,21 +40,26 @@
   --primary: oklch(0.43 0.035 162);
   --primary-foreground: oklch(0.97 0.012 110);
 
-  --secondary: oklch(0.925 0.014 140);
-  --secondary-foreground: oklch(0.32 0.026 162);
+  --secondary: oklch(0.935 0.014 88);
+  --secondary-foreground: oklch(0.32 0.026 75);
 
-  --muted: oklch(0.93 0.012 140);
-  --muted-foreground: oklch(0.47 0.022 160);
+  --muted: oklch(0.94 0.012 88);
+  --muted-foreground: oklch(0.47 0.024 72);
 
   /* Antik altın (vurgu) #B89347 */
   --accent: oklch(0.81 0.085 85);
-  --accent-foreground: oklch(0.3 0.03 162);
+  --accent-foreground: oklch(0.3 0.03 75);
+
+  /* Marka markı (logo) rengi — tema uyumlu. Aydınlıkta koyu antik altın
+     (fildişi zeminde ≥4.5:1); koyuda parlak altın (.dark'ta ayarlı). Logo
+     bileşeni SVG'yi bu tokenle maskeler; böylece mark her iki modda okunur. */
+  --brand-mark: oklch(0.5 0.1 76);
 
   --destructive: oklch(0.58 0.21 27);
   --destructive-foreground: oklch(0.98 0.01 27);
 
-  --border: oklch(0.875 0.013 145);
-  --input: oklch(0.875 0.013 145);
+  --border: oklch(0.895 0.014 88);
+  --input: oklch(0.895 0.014 88);
   --ring: oklch(0.55 0.05 160);
 
   /* Grafik paleti: jade -> altın -> teal/adaçayı -> derin jade -> bronz altın */
@@ -64,20 +69,20 @@
   --chart-4: oklch(0.42 0.04 158);
   --chart-5: oklch(0.62 0.07 72);
 
-  --sidebar: oklch(0.912 0.012 128);
-  --sidebar-foreground: oklch(0.29 0.022 162);
+  --sidebar: oklch(0.945 0.012 88);
+  --sidebar-foreground: oklch(0.29 0.022 72);
   --sidebar-primary: oklch(0.43 0.035 162);
   --sidebar-primary-foreground: oklch(0.97 0.012 110);
   --sidebar-accent: oklch(0.85 0.06 86);
-  --sidebar-accent-foreground: oklch(0.3 0.03 162);
-  --sidebar-border: oklch(0.875 0.013 145);
+  --sidebar-accent-foreground: oklch(0.3 0.03 75);
+  --sidebar-border: oklch(0.895 0.014 88);
   --sidebar-ring: oklch(0.55 0.05 160);
 
-  /* Nöromorfik kabartma — fildişi highlight (sol-üst) + soğuk adaçayı-taupe (sağ-alt) */
-  --nm-light: 252 252 246;
-  --nm-dark: 150 158 138;
-  --nm-convex: linear-gradient(145deg, oklch(0.928 0.012 128), oklch(0.894 0.013 132));
-  --nm-convex-press: linear-gradient(145deg, oklch(0.894 0.013 132), oklch(0.924 0.012 128));
+  /* Nöromorfik kabartma — sıcak şampanya highlight (sol-üst) + sıcak taupe (sağ-alt) */
+  --nm-light: 254 252 245;
+  --nm-dark: 160 152 135;
+  --nm-convex: linear-gradient(145deg, oklch(0.955 0.012 88), oklch(0.93 0.013 88));
+  --nm-convex-press: linear-gradient(145deg, oklch(0.93 0.013 88), oklch(0.95 0.012 88));
   --shadow-raised: -7px -7px 15px rgb(var(--nm-light) / 0.72), 7px 7px 18px rgb(var(--nm-dark) / 0.26);
   --shadow-raised-sm: -4px -4px 9px rgb(var(--nm-light) / 0.7), 4px 4px 10px rgb(var(--nm-dark) / 0.24);
   --shadow-hover: -9px -9px 20px rgb(var(--nm-light) / 0.8), 10px 10px 24px rgb(var(--nm-dark) / 0.3);
@@ -124,6 +129,9 @@
 
   --accent: oklch(0.5 0.06 95);
   --accent-foreground: oklch(0.96 0.02 92);
+
+  /* Gece: mark parlak altın (koyu jade zeminde ≥6:1) */
+  --brand-mark: oklch(0.82 0.11 88);
 
   --destructive: oklch(0.62 0.2 25);
   --destructive-foreground: oklch(0.97 0.01 27);
@@ -188,6 +196,7 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-brand-mark: var(--brand-mark);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
@@ -227,10 +236,36 @@
 }
 
 @layer components {
-  /* Nöromorfik yüzeyler — yukarı doğru kabartma (konveks), gölge düşürmüş kart değil */
+  /* Sessiz lüks filigran dokusu — çok düşük opaklıkta, tekrar eden desen.
+     Katman sabit ve etkileşimsizdir (layout'ta `fixed inset-0 -z-10`): zemin
+     renginin ÜSTÜNDE, içeriğin ALTINDA kalır; kartlar opak olduğu için desen
+     yalnızca boşluklarda fısıltı gibi görünür. Asset (jade-pattern.webp) henüz
+     yoksa katman şeffaftır — sadece premium düz zemin kalır (zarif düşüş). */
+  .jg-texture {
+    background-image: url("/brand/pattern/jade-pattern.webp");
+    background-repeat: repeat;
+    background-position: top left;
+    background-size: 460px;
+    opacity: 0.25;
+  }
+  /* Koyu mod: açık-zeminli desen ters çevrilir → koyu zemin + altın çizgi (tüm
+     desenlere tek biçimde uyarlanır; hairline desenler de okunur). */
+  .dark .jg-texture {
+    filter: invert(1) hue-rotate(180deg);
+    opacity: 0.2;
+  }
+  @media print {
+    .jg-texture {
+      display: none !important;
+    }
+  }
+
+  /* Nöromorfik yüzeyler — yukarı doğru kabartma (konveks), gölge düşürmüş kart değil.
+     İlk gölge katmanı ZEMİN renginde yumuşak bir hale: arka plan deseni kart
+     kenarında sert kesilmez, zemine bükülerek erir (seamless kabartı hissi). */
   .nm-raised {
     background-image: var(--nm-convex);
-    box-shadow: var(--shadow-raised);
+    box-shadow: 0 0 20px 6px var(--background), var(--shadow-raised);
   }
   .nm-raised-sm {
     background-image: var(--nm-convex);
@@ -269,13 +304,13 @@
       background-image 0.35s var(--ease-premium);
   }
   .nm-interactive:hover {
-    box-shadow: var(--shadow-hover);
+    box-shadow: 0 0 22px 7px var(--background), var(--shadow-hover);
     transform: translateY(-1px);
   }
   .nm-interactive:active {
     background-image: var(--nm-convex-press);
     box-shadow: var(--shadow-pressed);
-    transform: scale(0.98);
+    transform: scale(0.96);
   }
 }
 
@@ -378,4 +413,84 @@
 }
 .jg-twinkle {
   animation: jg-twinkle 3.6s ease-in-out infinite;
+}
+
+/* "NEW" yıldız rozeti — KABARTMA (konveks yüzey + raised gölge) + altın NEON
+   halesi bir arada; son büyük yenilikleri öne çıkarır. prefers-reduced-motion
+   global kuralıyla nabız durur, kabartma + neon dış hat kalır. */
+@keyframes jg-star-neon {
+  0%,
+  100% {
+    box-shadow:
+      var(--shadow-raised-sm),
+      0 0 4px rgba(232, 198, 105, 0.5),
+      0 0 9px rgba(232, 198, 105, 0.28);
+  }
+  50% {
+    box-shadow:
+      var(--shadow-raised-sm),
+      0 0 8px rgba(232, 198, 105, 0.9),
+      0 0 18px rgba(232, 198, 105, 0.45);
+  }
+}
+.jg-star-neon {
+  background-image: var(--nm-convex);
+  animation: jg-star-neon 2.2s ease-in-out infinite;
+}
+
+/* ── Görev Zaman Çizelgesi ───────────────────────────────────────────────
+   "BUGÜN" düğümü: yavaşça nefes alan altın hale — zaman çizelgesinin odağı.
+   Geçmişte kalan gecikmeler: kırmızı neon nabız (jg-neon dili). Omurga:
+   akan erimiş altın degrade. prefers-reduced-motion global kuralıyla durur. */
+@keyframes tl-today-halo {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 3px var(--background),
+      0 0 7px 2px rgba(232, 198, 105, 0.55),
+      0 0 18px 5px rgba(232, 198, 105, 0.3);
+  }
+  50% {
+    box-shadow:
+      0 0 0 3px var(--background),
+      0 0 11px 3px rgba(232, 198, 105, 0.95),
+      0 0 30px 8px rgba(232, 198, 105, 0.55);
+  }
+}
+.tl-today-halo {
+  animation: tl-today-halo 2.6s ease-in-out infinite;
+}
+
+@keyframes tl-overdue-neon {
+  0%,
+  100% {
+    box-shadow:
+      -2px 2px 6px rgba(239, 68, 68, 0.26),
+      -6px 6px 16px rgba(239, 68, 68, 0.13);
+  }
+  50% {
+    box-shadow:
+      -3px 3px 9px rgba(239, 68, 68, 0.58),
+      -10px 10px 26px rgba(239, 68, 68, 0.32);
+  }
+}
+.tl-overdue-neon {
+  animation: tl-overdue-neon 2s ease-in-out infinite;
+}
+
+@keyframes tl-overdue-dot {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 2px var(--background),
+      0 0 5px 1px rgba(239, 68, 68, 0.5);
+  }
+  50% {
+    box-shadow:
+      0 0 0 2px var(--background),
+      0 0 10px 3px rgba(239, 68, 68, 0.9);
+  }
+}
+.tl-overdue-dot {
+  animation: tl-overdue-dot 2s ease-in-out infinite;
 }

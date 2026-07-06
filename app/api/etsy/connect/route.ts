@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { getMembership } from "@/lib/auth";
+import { getMembership, isManager } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
 import {
   generatePkce,
@@ -13,6 +13,11 @@ export async function GET(request: Request) {
   const origin = new URL(request.url).origin;
   const m = await getMembership();
   if (!m) return NextResponse.redirect(`${origin}/login`);
+  // Etsy bağlantısını yalnız owner/admin başlatabilir/değiştirebilir — düşük
+  // yetkili üye mağazanın bağlantısını/tokenlarını ele geçiremesin.
+  if (!isManager(m.role)) {
+    return NextResponse.redirect(`${origin}/ayarlar/etsy?error=forbidden`);
+  }
 
   const clientId = process.env.ETSY_API_KEY;
   // Etsy v3 API çağrıları keystring + shared secret ister. Secret yoksa bağlantı

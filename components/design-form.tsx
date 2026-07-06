@@ -32,11 +32,13 @@ export function DesignForm({
   designId,
   defaultValues,
   products,
+  collections,
 }: {
   mode: "create" | "edit";
   designId?: string;
   defaultValues: DesignFormValues;
   products: { value: string; label: string }[];
+  collections: { value: string; label: string }[];
 }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
@@ -123,6 +125,32 @@ export function DesignForm({
                     {products.map((p) => (
                       <SelectItem key={p.value} value={p.value}>
                         {p.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="collection_id">Koleksiyon (Pano)</Label>
+            <Controller
+              control={control}
+              name="collection_id"
+              render={({ field }) => (
+                <Select
+                  value={field.value ? field.value : NONE}
+                  onValueChange={(v) => field.onChange(v === NONE ? "" : v)}
+                >
+                  <SelectTrigger id="collection_id" className="w-full">
+                    <SelectValue placeholder="Koleksiyon seçin" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value={NONE}>— Koleksiyonsuz</SelectItem>
+                    {collections.map((c) => (
+                      <SelectItem key={c.value} value={c.value}>
+                        {c.label}
                       </SelectItem>
                     ))}
                   </SelectContent>

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 import { createAdminClient } from "@/lib/supabase/admin";
 import { advanceEtsySync } from "@/lib/etsy/sync";
-import { processGoldCostsForRecentSales } from "@/lib/gold-cost-entry";
+import { rebuildGoldCostsBulk } from "@/lib/gold-cost-entry";
 
 // Etsy senkronu birden çok sayfalı API çağrısı yapar; süre limitini uzat.
 export const maxDuration = 60;
@@ -36,9 +36,10 @@ export async function GET(request: Request) {
       };
     }
 
-    // Altın maliyet kalemlerini eksik satışlar için oluştur (idempotent).
+    // Altın maliyet kalemlerini eksik satışlar için oluştur (küme-tabanlı RPC,
+    // idempotent; SKU→varyant ağırlığı girildikçe kendiliğinden dolar).
     try {
-      await processGoldCostsForRecentSales(admin, c.org_id);
+      await rebuildGoldCostsBulk(admin, c.org_id);
     } catch {
       // yok say
     }

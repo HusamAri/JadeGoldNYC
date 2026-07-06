@@ -7,6 +7,7 @@ import { formatMoney } from "@/lib/money";
 import { formatDate } from "@/lib/format";
 import { PageHeader } from "@/components/page-header";
 import { GoldStream } from "@/components/brand/gold-stream";
+import { EditorialCard } from "@/components/brand/editorial-card";
 import { EmptyState } from "@/components/empty-state";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -64,6 +65,19 @@ export default async function MaliyetlerPage({
             </Button>
           </>
         }
+      />
+
+      {/* Tek, sessiz marka aksanı — atölye/malzeme temasıyla maliyet sayfasına
+          zarif bir giriş (galeri değil, tek kompakt banner). */}
+      <EditorialCard
+        compact
+        heightClassName="h-[200px]"
+        className="mb-6"
+        image="/brand/gallery/aydinlik-nugget.webp"
+        video="/brand/video/altin-yuzuk-yukselis.mp4"
+        eyebrow="Atölye"
+        title="Zarafetin sadeliği"
+        subtitle="Her maliyet, som altın el işçiliğinin arkasındaki değer."
       />
 
       <Card>

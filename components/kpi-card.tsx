@@ -9,6 +9,10 @@ function formatChange(change: number): string {
   return `${arrow} %${pct.toFixed(1)}`;
 }
 
+// NOT: Bu bir SUNUCU bileşenidir — `icon` prop'u bir React bileşeni (LucideIcon)
+// olduğundan client bileşenine dönüştürülemez (RSC sınırından fonksiyon/
+// bileşen geçilemez). Hover hareketi bu yüzden CSS ile yapılır (framer-motion
+// değil). prefers-reduced-motion'da global kural geçişi durdurur.
 export function KpiCard({
   label,
   value,
@@ -30,7 +34,12 @@ export function KpiCard({
   className?: string;
 }) {
   return (
-    <Card className={cn("h-full min-w-0", className)}>
+    <Card
+      className={cn(
+        "h-full min-w-0 transition-transform duration-200 ease-[var(--ease-premium)] hover:-translate-y-[3px]",
+        className,
+      )}
+    >
       <CardContent className="flex h-full items-start justify-between gap-3">
         <div className="flex min-w-0 flex-col">
           <p className="text-muted-foreground line-clamp-2 min-h-[2.5rem] text-sm leading-snug">

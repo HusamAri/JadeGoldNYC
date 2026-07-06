@@ -2,12 +2,13 @@
 
 import { revalidatePath } from "next/cache";
 
-import { requireMembership } from "@/lib/auth";
+import { requireMembership, isManager, MANAGER_ONLY_ERROR } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { logAudit } from "@/lib/audit";
 import { getEtsyWriteAccess } from "@/lib/db/queries/etsy";
 import { EtsyClient, EtsyNotConnectedError } from "@/lib/etsy/client";
 import { pushListingQuantity, type PushOutcome } from "@/lib/etsy/inventory";
+import { syncListingVariants } from "@/lib/etsy/variants";
 
 export interface StockChange {
   id: string;
@@ -24,7 +25,8 @@ export async function saveTargetQuantity(
   productId: string,
   qty: number | null,
 ): Promise<{ error?: string }> {
-  await requireMembership();
+  const m = await requireMembership();
+  if (!isManager(m.role)) return { error: MANAGER_ONLY_ERROR };
   if (qty != null && (!Number.isInteger(qty) || qty < 0)) {
     return { error: "Adet 0 veya daha büyük tam sayı olmalı." };
   }
@@ -103,6 +105,7 @@ export async function applyStockSyncBatch(
   error?: string;
 }> {
   const m = await requireMembership();
+  if (!isManager(m.role)) return { outcomes: [], error: MANAGER_ONLY_ERROR };
   if (ids.length === 0) return { outcomes: [] };
 
   const { writeEnabled } = await getEtsyWriteAccess(m.org_id);
@@ -195,4 +198,75 @@ export async function applyStockSyncBatch(
 
   revalidatePath("/stok");
   return { outcomes };
+}
+
+export interface VariantSyncActionResult {
+  ok?: boolean;
+  listings?: number;
+  variants?: number;
+  saleItemsLinked?: number;
+  gramsMatched?: number;
+  errors?: number;
+  error?: string;
+}
+
+/**
+ * Etsy varyant/envanter senkronunu ELLE tetikler. Her aktif listing'in Etsy
+ * envanterini gezip `product_variants`e SKU↔listing bağını, beden/renk
+ * property'lerini ve OFFERING BAŞINA adedi (stok) yazar; ardından ShipStation
+ * gramlarını eşler ve satış kalemlerini SKU üzerinden ürüne bağlar.
+ *
+ * Bu, "varyantlar listing'e bağlı değil / N kalem bağlı değil / stok varyanta
+ * dağılmıyor" durumunun kaynağını kapatır — varyantlar üretimde bu senkron
+ * çalışana dek product_id/adet alamaz (artık günlük cron da var, bkz. vercel.json).
+ * Ağır işlem; owner/admin ile sınırlı, admin (service role) istemciyle koşar.
+ */
+export async function runVariantInventorySync(): Promise<VariantSyncActionResult> {
+  const m = await requireMembership();
+  if (!isManager(m.role)) return { error: MANAGER_ONLY_ERROR };
+
+  const { connected } = await getEtsyWriteAccess(m.org_id);
+  if (!connected) {
+    return { error: "Etsy bağlı değil. Önce Ayarlar → Etsy'den bağlanın." };
+  }
+
+  try {
+    const r = await syncListingVariants(m.org_id, { budgetMs: 50_000 });
+
+    // Şirket hafızası: etsy.* semantik olayı denetim loguna yazılır (CLAUDE.md).
+    // Kısmi hatalar (listing bazında yakalananlar) da kayda geçer.
+    const supabase = await createClient();
+    await logAudit(supabase, {
+      orgId: m.org_id,
+      action: "etsy.variant_sync",
+      entityType: "product_variants",
+      summary: `Etsy varyant senkronu: ${r.listings} listing, ${r.variants} varyant, ${r.saleItemsLinked} kalem bağlandı, ${r.gramsMatched} gram eşlendi, ${r.errors} hata`,
+      diff: r,
+      source: "etsy",
+    });
+
+    revalidatePath("/stok");
+    revalidatePath("/tasarimlar/eksik-agirlik");
+    revalidatePath("/tasarimlar/etsy-agirlik");
+    revalidatePath("/panel");
+    return {
+      // Hiç listing işlenememiş VE hata varsa başarısız say; aksi halde başarı
+      // (kısmi hata sayısı errors ile döner, kullanıcıya bildirilir).
+      ok: !(r.listings === 0 && r.errors > 0),
+      listings: r.listings,
+      variants: r.variants,
+      saleItemsLinked: r.saleItemsLinked,
+      gramsMatched: r.gramsMatched,
+      errors: r.errors,
+      error:
+        r.listings === 0 && r.errors > 0
+          ? `Tüm listing'ler hata verdi (${r.errors}). Etsy bağlantısını/oturumunu kontrol edin.`
+          : undefined,
+    };
+  } catch (e) {
+    if (e instanceof EtsyNotConnectedError) {
+      return { error: "Etsy oturumu süresi doldu. Ayarlar → Etsy'den yeniden bağlanın." };
+    }
+    return { error: e instanceof Error ? e.message : "Varyant senkronu başarısız." };
+  }
 }

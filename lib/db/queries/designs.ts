@@ -6,6 +6,8 @@ export interface ListDesignOptions {
   search?: string;
   limit?: number;
   offset?: number;
+  /** Toplam sayım gerekmiyorsa (ör. koleksiyon görünümü) false verin. */
+  withCount?: boolean;
 }
 
 export async function listDesigns(orgId: string, opts: ListDesignOptions = {}) {
@@ -15,7 +17,7 @@ export async function listDesigns(orgId: string, opts: ListDesignOptions = {}) {
 
   let query = supabase
     .from("designs")
-    .select("*", { count: "exact" })
+    .select("*", opts.withCount === false ? undefined : { count: "exact" })
     .eq("org_id", orgId)
     .order("updated_at", { ascending: false })
     .range(offset, offset + limit - 1);

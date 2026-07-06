@@ -15,6 +15,8 @@ import {
 
 import { resolvePeriod, previousPeriod } from "@/lib/period";
 import { getDashboard } from "@/lib/db/queries/dashboard";
+import { getDataGaps } from "@/lib/db/queries/data-gaps";
+import { requireMembership } from "@/lib/auth";
 import { getGoldPricePerOunce } from "@/lib/gold-price";
 import { TROY_OUNCE_GRAMS, KARAT_PURITY } from "@/lib/gold-cost";
 import { strParam, type RawSearchParams } from "@/lib/searchparams";
@@ -26,6 +28,7 @@ import { GoldStream } from "@/components/brand/gold-stream";
 import { EditorialCard } from "@/components/brand/editorial-card";
 import { KpiCard } from "@/components/kpi-card";
 import { WhatsNew } from "@/components/whats-new";
+import { DataGapsCard } from "@/components/data-gaps-card";
 import { PeriodSelector } from "@/components/period-selector";
 import {
   TrendChart,
@@ -57,10 +60,12 @@ export default async function PanelPage({
   const sp = await searchParams;
   const period = resolvePeriod(strParam(sp.period));
   const prev = previousPeriod(period);
-  const [d, goldPriceOunce, prevData] = await Promise.all([
+  const m = await requireMembership();
+  const [d, goldPriceOunce, prevData, gaps] = await Promise.all([
     getDashboard(period),
     getGoldPricePerOunce(),
     prev ? getDashboard(prev) : Promise.resolve(null),
+    getDataGaps(m.org_id),
   ]);
   const cur = d.currency;
   const goldPricePerGram = goldPriceOunce / TROY_OUNCE_GRAMS;
@@ -81,27 +86,20 @@ export default async function PanelPage({
 
       <WhatsNew />
 
-      {/* Editorial marka şeridi — kompakt, sabit yükseklikte (kaydırma rayı
-          YOK); veri panele hemen erişilsin diye tam ekran kaydırma-kilitleme
-          kullanılmaz (bkz. EditorialCard `compact`). */}
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <EditorialCard
-          compact
-          image="/brand/gallery/koyu-franco.webp"
-          video="/brand/video/altin-zincir-orbit.mp4"
-          eyebrow="Jade Gold · New York"
-          title="Sessiz lüks, kalıcı değer"
-          subtitle="Som altın, el işçiliği — her parça bir miras."
-        />
-        <EditorialCard
-          compact
-          image="/brand/gallery/aydinlik-nugget.webp"
-          video="/brand/video/altin-yuzuk-yukselis.mp4"
-          eyebrow="Atölye"
-          title="Zarafetin sadeliği"
-          align="start"
-        />
-      </div>
+      <DataGapsCard gaps={gaps} />
+
+      {/* Editorial marka şeridi — tek, tam genişlikte kompakt banner (kaydırma
+          rayı YOK); veri panele hemen erişilsin diye tam ekran kaydırma-
+          kilitleme kullanılmaz (bkz. EditorialCard `compact`). */}
+      <EditorialCard
+        compact
+        heightClassName="h-[240px]"
+        image="/brand/gallery/koyu-franco.webp"
+        video="/brand/video/altin-zincir-orbit.mp4"
+        eyebrow="Jade Gold · New York"
+        title="Sessiz lüks, kalıcı değer"
+        subtitle="Som altın, el işçiliği — her parça bir miras."
+      />
 
       {/* ── Altın Fiyat Bilgisi ─────────────────────────────────────── */}
       <Card>
