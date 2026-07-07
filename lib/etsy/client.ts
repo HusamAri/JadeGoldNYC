@@ -227,4 +227,38 @@ export class EtsyClient {
     const text = await res.text();
     return (text ? JSON.parse(text) : undefined) as T;
   }
+
+  /**
+   * Multipart yazma (dosya yükleme — ör. uploadListingImage). Content-Type
+   * ELLE SET EDİLMEZ: fetch, FormData'dan boundary'li başlığı kendisi üretir.
+   * get() ile aynı token yenileme + 429 yeniden deneme mantığı.
+   */
+  async requestMultipart<T>(
+    method: "POST" | "PUT",
+    path: string,
+    form: FormData,
+    retry = 1,
+  ): Promise<T> {
+    const token = await this.ensureToken();
+    const res = await fetch(ETSY_API_BASE + path, {
+      method,
+      headers: {
+        "x-api-key": this.xApiKey,
+        Authorization: `Bearer ${token}`,
+      },
+      body: form,
+    });
+
+    if (res.status === 429 && retry > 0) {
+      await new Promise((r) => setTimeout(r, 1200));
+      return this.requestMultipart<T>(method, path, form, retry - 1);
+    }
+    if (!res.ok) {
+      throw new Error(
+        `Etsy API hatası (${res.status}) ${method} ${path}: ${await res.text()}`,
+      );
+    }
+    const text = await res.text();
+    return (text ? JSON.parse(text) : undefined) as T;
+  }
 }
