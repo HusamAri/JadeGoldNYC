@@ -126,14 +126,18 @@ export function GeneratedGallery({
     );
   }
 
-  async function uploadOne(img: GeneratedImage): Promise<boolean> {
+  // "fatal" = bağlantı/yetki sorunu — tüm partiyi etkiler, toplu yükleme
+  // tekrar denemeden hemen durmalı.
+  async function uploadOne(
+    img: GeneratedImage,
+  ): Promise<"ok" | "fail" | "fatal"> {
     const picked = listingId ? Number(listingId) : null;
     const target = img.etsyListingId ?? picked;
     if (!target) {
       toast.error(
         "Görsel bir listing'e bağlı değil — üstteki menüden listing seçin.",
       );
-      return false;
+      return "fail";
     }
     setUploading((s) => new Set(s).add(img.id));
     try {
@@ -142,14 +146,14 @@ export function GeneratedGallery({
         toast.error(
           "Etsy yazma erişimi kapalı. Ayarlar → Etsy'den yeniden bağlanın.",
         );
-        return false;
+        return "fatal";
       }
       if (r.error) {
         toast.error(r.error);
-        return false;
+        return "fail";
       }
       markUploaded(img.id);
-      return true;
+      return "ok";
     } finally {
       setUploading((s) => {
         const n = new Set(s);
@@ -180,13 +184,20 @@ export function GeneratedGallery({
     if (!ok) return;
     setBulkUploading(true);
     let done = 0;
-    let failed = 0;
+    let totalFailed = 0;
+    let streak = 0; // üst üste hata — başarıda sıfırlanır
     try {
       for (const img of pending) {
-        const success = await uploadOne(img);
-        if (success) done++;
-        else failed++;
-        if (failed >= 3) {
+        const outcome = await uploadOne(img);
+        if (outcome === "fatal") break; // bağlantı/yetki: parti geneli, dur
+        if (outcome === "ok") {
+          done++;
+          streak = 0;
+        } else {
+          totalFailed++;
+          streak++;
+        }
+        if (streak >= 3) {
           toast.warning("Üst üste hatalar — yükleme durduruldu.");
           break;
         }
@@ -194,8 +205,9 @@ export function GeneratedGallery({
     } finally {
       setBulkUploading(false);
     }
-    if (done > 0 && failed === 0) toast.success(`${done} görsel Etsy'ye yüklendi.`);
-    else if (done > 0) toast.warning(`${done} yüklendi · ${failed} hata.`);
+    if (done > 0 && totalFailed === 0)
+      toast.success(`${done} görsel Etsy'ye yüklendi.`);
+    else if (done > 0) toast.warning(`${done} yüklendi · ${totalFailed} hata.`);
     router.refresh();
   }
 
@@ -483,7 +495,13 @@ export function GeneratedGallery({
                       type="button"
                       variant="outline"
                       disabled={uploading.has(lightbox.id)}
-                      onClick={() => uploadOne(lightbox)}
+                      onClick={() =>
+                        uploadOne(lightbox).then(
+                          (r) =>
+                            r === "ok" &&
+                            toast.success("Görsel Etsy'ye yüklendi."),
+                        )
+                      }
                     >
                       {uploading.has(lightbox.id) ? (
                         <Loader2 className="size-4 animate-spin" />

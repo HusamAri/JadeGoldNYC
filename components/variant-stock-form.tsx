@@ -32,6 +32,10 @@ export function VariantStockForm({
   const [values, setValues] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState<Set<string>>(new Set());
   const [saved, setSaved] = useState<Set<string>>(new Set());
+  // Oturum içinde SON KAYDEDİLEN değerler — "değişmedi" kıyası prop'a değil
+  // buna bakar; yoksa kaydet→eski değere geri dön akışı sessizce atlanırdı
+  // (prop bayat kalır çünkü save() router.refresh çağırmaz).
+  const [lastSaved, setLastSaved] = useState<Record<string, number | null>>({});
   const [pushing, startPush] = useTransition();
 
   function currentTarget(sku: string, fallback: number | null): string {
@@ -48,8 +52,10 @@ export function VariantStockForm({
       return;
     }
     const qty = raw === "" ? null : parseInt(raw, 10);
-    // Değişmediyse sunucuya gitme
-    if (qty === (v.targetQuantity ?? null)) return;
+    // Değişmediyse sunucuya gitme (bu oturumda kaydedilen ?? sunucu değeri)
+    const baseline =
+      v.sku in lastSaved ? lastSaved[v.sku] : (v.targetQuantity ?? null);
+    if (qty === baseline) return;
     setSaving((s) => new Set(s).add(v.sku));
     saveVariantTarget(v.sku, qty)
       .then((res) => {
@@ -57,6 +63,7 @@ export function VariantStockForm({
           toast.error(res.error);
           return;
         }
+        setLastSaved((m) => ({ ...m, [v.sku]: qty }));
         setSaved((d) => new Set(d).add(v.sku));
         setTimeout(
           () =>

@@ -293,6 +293,11 @@ export function PhotoKitConsole({ producedIds }: { producedIds: number[] }) {
           ]}
         />
         <span className="text-muted-foreground ml-auto pr-1 text-xs tabular-nums">
+          {/* Filtre etkinken sayılar filtre kapsamındadır; üstteki ilerleme
+              çubuğu ise her zaman geneli gösterir — karışmasın diye etiketle */}
+          {tier !== "all" || scene !== "all" || cat !== "all" || q.trim() !== ""
+            ? "filtrede: "
+            : ""}
           {pending.length} kalan · {completed.length} üretildi
         </span>
       </div>

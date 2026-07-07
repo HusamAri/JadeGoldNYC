@@ -96,6 +96,7 @@ export const ENTITY_TYPE_LABELS: Record<string, string> = {
   cart_recoveries: "Müşteri geri kazanım",
   tasks: "Görev",
   task_notes: "Görev notu",
+  generated_images: "AI Görsel",
   auth: "Oturum",
   report: "Rapor",
 };
