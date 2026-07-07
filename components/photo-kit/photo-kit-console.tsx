@@ -237,7 +237,7 @@ export function PhotoKitConsole({ producedIds }: { producedIds: number[] }) {
         className="bg-background/80 sticky top-2 z-20 flex flex-wrap items-center gap-2.5 rounded-2xl border p-3 backdrop-blur-md"
         style={{ borderColor: LINE }}
       >
-        <div className="relative min-w-[180px] flex-1">
+        <div className="relative min-w-0 flex-1 basis-full sm:basis-auto">
           <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
           <Input
             value={q}
@@ -423,7 +423,7 @@ function Segmented({
     <div
       role="group"
       aria-label={label}
-      className="bg-muted/50 inline-flex gap-0.5 rounded-xl border p-0.5"
+      className="bg-muted/50 flex min-w-0 max-w-full flex-wrap gap-0.5 rounded-xl border p-0.5"
       style={{ borderColor: LINE }}
     >
       {options.map((o) => {
@@ -659,7 +659,7 @@ function PromptBlock({
         <ChevronRight className="text-muted-foreground ml-auto size-4 transition-transform group-open:rotate-90" />
       </summary>
       <div className="px-3 pb-3">
-        <p className="text-muted-foreground font-mono text-[12px] leading-relaxed whitespace-pre-wrap">
+        <p className="text-muted-foreground font-mono text-[12px] leading-relaxed break-words whitespace-pre-wrap">
           {text}
         </p>
       </div>
