@@ -11,6 +11,7 @@ import {
   ChevronRight,
   Check,
   Circle,
+  PartyPopper,
 } from "lucide-react";
 
 import {
@@ -33,7 +34,6 @@ const LINE = "var(--line,#DED9CB)";
 type TierFilter = "all" | "1" | "2" | "3";
 type SceneFilter = "all" | PhotoKitItem["scene"];
 type CatFilter = "all" | PhotoKitItem["c"];
-type StatusFilter = "all" | "todo" | "done";
 
 async function copyText(text: string) {
   try {
@@ -64,7 +64,6 @@ export function PhotoKitConsole({ producedIds }: { producedIds: number[] }) {
   const [tier, setTier] = useState<TierFilter>("all");
   const [scene, setScene] = useState<SceneFilter>("all");
   const [cat, setCat] = useState<CatFilter>("all");
-  const [status, setStatus] = useState<StatusFilter>("all");
   const [done, setDone] = useState<Set<number>>(() => new Set(producedIds));
 
   const tierCounts = useMemo(
@@ -118,11 +117,19 @@ export function PhotoKitConsole({ producedIds }: { producedIds: number[] }) {
         (tier === "all" || it.tier === Number(tier)) &&
         (scene === "all" || it.scene === scene) &&
         (cat === "all" || it.c === cat) &&
-        (status === "all" ||
-          (status === "done" ? done.has(it.id) : !done.has(it.id))) &&
         (query === "" || it.t.toLowerCase().includes(query)),
     );
-  }, [q, tier, scene, cat, status, done]);
+  }, [q, tier, scene, cat]);
+
+  // Üretilenler ana kuyruğu kalabalıklaştırmasın: iki ayrı bölüm.
+  const pending = useMemo(
+    () => list.filter((it) => !done.has(it.id)),
+    [list, done],
+  );
+  const completed = useMemo(
+    () => list.filter((it) => done.has(it.id)),
+    [list, done],
+  );
 
   return (
     <div className="space-y-6 pb-16">
@@ -285,23 +292,12 @@ export function PhotoKitConsole({ producedIds }: { producedIds: number[] }) {
             { v: "ring", label: "Yüzük" },
           ]}
         />
-        <Segmented
-          label="Durum"
-          value={status}
-          onChange={(v) => setStatus(v as StatusFilter)}
-          options={[
-            { v: "all", label: "Tümü" },
-            { v: "todo", label: "Kalan", count: total - doneCount },
-            { v: "done", label: "Üretildi", count: doneCount },
-          ]}
-        />
-
         <span className="text-muted-foreground ml-auto pr-1 text-xs tabular-nums">
-          {list.length} / {PHOTO_KIT.length} listing
+          {pending.length} kalan · {completed.length} üretildi
         </span>
       </div>
 
-      {/* Kart ızgarası */}
+      {/* Üretim kuyruğu — yalnız üretilMEyenler; üretilenler alt bölümde */}
       {list.length === 0 ? (
         <p
           className="text-muted-foreground rounded-2xl border border-dashed p-12 text-center text-sm"
@@ -309,17 +305,67 @@ export function PhotoKitConsole({ producedIds }: { producedIds: number[] }) {
         >
           Bu filtreyle eşleşen ürün yok.
         </p>
+      ) : pending.length === 0 ? (
+        <div
+          className="rounded-2xl border border-dashed p-12 text-center"
+          style={{ borderColor: "var(--jade,#2F5D50)" }}
+        >
+          <PartyPopper
+            className="mx-auto mb-3 size-8"
+            style={{ color: "var(--jade,#2F5D50)" }}
+          />
+          <p className="font-semibold">
+            Bu filtredeki tüm görseller üretildi!
+          </p>
+          <p className="text-muted-foreground mt-1 text-sm">
+            Üretilenler aşağıdaki bölümde — yanlış işaretlediysen oradan geri
+            alabilirsin.
+          </p>
+        </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-          {list.map((it) => (
+          {pending.map((it) => (
             <ProductCard
               key={it.id}
               it={it}
-              done={done.has(it.id)}
+              done={false}
               onToggle={toggleDone}
             />
           ))}
         </div>
+      )}
+
+      {/* Üretilenler — ayrı, katlanabilir bölüm (varsayılan kapalı) */}
+      {completed.length > 0 && (
+        <details className="group/done">
+          <summary
+            className="bg-card nm-raised-sm flex cursor-pointer list-none items-center gap-3 rounded-[1.75rem] px-5 py-4 select-none [&::-webkit-details-marker]:hidden"
+            aria-label={`Üretilenler bölümünü aç/kapat (${completed.length} listing)`}
+          >
+            <span
+              className="flex size-8 items-center justify-center rounded-full text-white"
+              style={{ background: "var(--jade,#2F5D50)" }}
+              aria-hidden
+            >
+              <Check className="size-4" />
+            </span>
+            <span className="font-semibold">Üretilenler</span>
+            <span className="text-muted-foreground text-sm tabular-nums">
+              {completed.length} listing
+            </span>
+            <ChevronRight className="text-muted-foreground ml-auto size-5 transition-transform group-open/done:rotate-90" />
+          </summary>
+          <div className="grid gap-4 pt-4 sm:grid-cols-2 xl:grid-cols-3">
+            {completed.map((it) => (
+              <ProductCard
+                key={it.id}
+                it={it}
+                done
+                onToggle={toggleDone}
+              />
+            ))}
+          </div>
+        </details>
       )}
 
       {/* Ek konseptler */}
