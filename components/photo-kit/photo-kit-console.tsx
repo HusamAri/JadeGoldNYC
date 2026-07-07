@@ -43,8 +43,12 @@ async function copyText(text: string) {
     ta.value = text;
     document.body.appendChild(ta);
     ta.select();
-    document.execCommand("copy");
+    const ok = document.execCommand("copy");
     ta.remove();
+    if (!ok) {
+      toast.error("Kopyalanamadı — metni elle seçip kopyalayın.");
+      return;
+    }
   }
   toast.success("Prompt kopyalandı");
 }
@@ -123,10 +127,7 @@ export function PhotoKitConsole({ producedIds }: { producedIds: number[] }) {
   return (
     <div className="space-y-6 pb-16">
       {/* İlerleme */}
-      <div
-        className="bg-card rounded-2xl border p-4"
-        style={{ borderColor: LINE }}
-      >
+      <div className="bg-card nm-raised-sm rounded-[1.75rem] p-4">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <p className="font-semibold">Üretim İlerlemesi</p>
           <p className="text-muted-foreground text-sm tabular-nums">
@@ -232,9 +233,10 @@ export function PhotoKitConsole({ producedIds }: { producedIds: number[] }) {
         </MethodPanel>
       </div>
 
-      {/* Araç çubuğu */}
+      {/* Araç çubuğu — sticky ofseti topbar'ın (h-16) altında kalacak kadar;
+          mobilde 4-5 satıra sardığı için sabitlenmez (ekranı yemesin). */}
       <div
-        className="bg-background/80 sticky top-2 z-20 flex flex-wrap items-center gap-2.5 rounded-2xl border p-3 backdrop-blur-md"
+        className="bg-background/80 z-20 flex flex-wrap items-center gap-2.5 rounded-2xl border p-3 backdrop-blur-md sm:sticky sm:top-[4.5rem]"
         style={{ borderColor: LINE }}
       >
         <div className="relative min-w-0 flex-1 basis-full sm:basis-auto">
@@ -264,7 +266,7 @@ export function PhotoKitConsole({ producedIds }: { producedIds: number[] }) {
           value={scene}
           onChange={(v) => setScene(v as SceneFilter)}
           options={[
-            { v: "all", label: "Sahne" },
+            { v: "all", label: "Tümü" },
             { v: "dark", label: "Lav" },
             { v: "light", label: "Keten" },
             { v: "silk", label: "İpek" },
@@ -275,7 +277,7 @@ export function PhotoKitConsole({ producedIds }: { producedIds: number[] }) {
           value={cat}
           onChange={(v) => setCat(v as CatFilter)}
           options={[
-            { v: "all", label: "Tür" },
+            { v: "all", label: "Tümü" },
             { v: "chain", label: "Zincir" },
             { v: "bracelet", label: "Bileklik" },
             { v: "earrings", label: "Küpe" },
@@ -288,7 +290,7 @@ export function PhotoKitConsole({ producedIds }: { producedIds: number[] }) {
           value={status}
           onChange={(v) => setStatus(v as StatusFilter)}
           options={[
-            { v: "all", label: "Hepsi" },
+            { v: "all", label: "Tümü" },
             { v: "todo", label: "Kalan", count: total - doneCount },
             { v: "done", label: "Üretildi", count: doneCount },
           ]}
@@ -336,8 +338,7 @@ export function PhotoKitConsole({ producedIds }: { producedIds: number[] }) {
           {PHOTO_CONCEPTS.map((c) => (
             <div
               key={c.name}
-              className="bg-card flex flex-col rounded-2xl border p-4"
-              style={{ borderColor: LINE }}
+              className="bg-card nm-raised-sm flex flex-col rounded-[1.75rem] p-4"
             >
               <div
                 className="mb-3 h-10 rounded-xl"
@@ -356,7 +357,7 @@ export function PhotoKitConsole({ producedIds }: { producedIds: number[] }) {
               <button
                 type="button"
                 onClick={() => copyText(c.prompt)}
-                className="mt-3 inline-flex w-fit items-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold transition-colors hover:border-[color:var(--gold,#B89347)]"
+                className="mt-3 inline-flex w-fit items-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold transition-colors pointer-coarse:min-h-11 hover:border-[color:var(--gold,#B89347)]"
                 style={{ borderColor: LINE }}
               >
                 <Copy className="size-3.5" />
@@ -378,10 +379,7 @@ function MethodPanel({
   children: React.ReactNode;
 }) {
   return (
-    <div
-      className="bg-card rounded-2xl border p-4"
-      style={{ borderColor: LINE }}
-    >
+    <div className="bg-card nm-raised-sm rounded-[1.75rem] p-4">
       <h3 className="flex items-center gap-2 font-semibold">
         <span
           className="size-2 rounded-full"
@@ -435,7 +433,7 @@ function Segmented({
             aria-pressed={active}
             onClick={() => onChange(o.v)}
             className={cn(
-              "inline-flex items-center gap-1.5 rounded-[0.6rem] px-2.5 py-1.5 text-xs font-semibold whitespace-nowrap transition-colors",
+              "inline-flex items-center gap-1.5 rounded-[0.6rem] px-2.5 py-1.5 text-xs font-semibold whitespace-nowrap transition-colors pointer-coarse:min-h-10 pointer-coarse:px-3",
               active
                 ? "bg-card text-foreground shadow-sm"
                 : "text-muted-foreground hover:text-foreground",
@@ -476,10 +474,11 @@ function ProductCard({
   return (
     <div
       className={cn(
-        "bg-card relative flex flex-col overflow-hidden rounded-2xl border transition-opacity",
+        // content-visibility: 118 kart tek seferde boyanmasın (kaydırınca render)
+        "bg-card nm-raised-sm relative flex flex-col overflow-hidden rounded-[1.75rem] border transition-opacity [content-visibility:auto] [contain-intrinsic-size:auto_540px]",
         done && "opacity-75",
       )}
-      style={{ borderColor: done ? "var(--jade,#2F5D50)" : LINE }}
+      style={{ borderColor: done ? "var(--jade,#2F5D50)" : "transparent" }}
     >
       <span
         aria-hidden
@@ -501,12 +500,8 @@ function ProductCard({
         </div>
         <div className="mt-2.5 flex flex-wrap gap-1.5">
           {it.tier === 1 ? (
-            <Badge
-              className="gap-1 border-transparent text-white"
-              style={{
-                background: `linear-gradient(150deg, ${GOLD}, ${GOLD_DEEP})`,
-              }}
-            >
+            // Altın zeminde koyu metin — beyaz/altın 2.9:1 AA'yı geçmez.
+            <Badge className="bg-accent text-accent-foreground gap-1 border-transparent">
               <Star className="size-3" /> T1 Öncelik
             </Badge>
           ) : (
@@ -547,7 +542,7 @@ function ProductCard({
           href={it.img}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold transition-colors hover:border-[color:var(--gold,#B89347)]"
+          className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold transition-colors pointer-coarse:min-h-11 hover:border-[color:var(--gold,#B89347)]"
           style={{ borderColor: LINE }}
         >
           <Download className="size-3.5" /> Referansı indir
@@ -556,7 +551,7 @@ function ProductCard({
           href={it.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-muted-foreground inline-flex flex-1 items-center justify-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold transition-colors hover:border-[color:var(--gold,#B89347)]"
+          className="text-muted-foreground inline-flex flex-1 items-center justify-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold transition-colors pointer-coarse:min-h-11 hover:border-[color:var(--gold,#B89347)]"
           style={{ borderColor: LINE }}
         >
           <ExternalLink className="size-3.5" /> Etsy
@@ -632,37 +627,40 @@ function PromptBlock({
   defaultOpen?: boolean;
 }) {
   const t = TONE[tone];
+  // Kopyala düğmesi <summary> İÇİNDE DEĞİL (iç içe etkileşimli öğe ekran
+  // okuyucuyu bozar): details'in kardeşi olarak başlık satırının üstüne
+  // mutlak konumlanır; klavye sırası da doğal kalır.
   return (
-    <details
-      open={defaultOpen}
-      className="group bg-muted/30 overflow-hidden rounded-xl border"
-      style={{ borderColor: LINE }}
-    >
-      <summary className="flex cursor-pointer list-none items-center gap-2 px-3 py-2.5 text-[13px] font-semibold select-none [&::-webkit-details-marker]:hidden">
-        <span
-          className="rounded-md px-1.5 py-0.5 text-[10px] font-extrabold tracking-wide uppercase"
-          style={{ background: t.bg, color: t.fg }}
-        >
-          {label}
-        </span>
-        <button
-          type="button"
-          onClick={(e) => {
-            e.preventDefault();
-            copyText(text);
-          }}
-          className="text-muted-foreground hover:text-foreground ml-1 inline-flex items-center gap-1.5 rounded-md border px-2 py-1 text-[11px] font-bold transition-colors hover:border-[color:var(--gold,#B89347)]"
-          style={{ borderColor: LINE }}
-        >
-          <Copy className="size-3" /> Kopyala
-        </button>
-        <ChevronRight className="text-muted-foreground ml-auto size-4 transition-transform group-open:rotate-90" />
-      </summary>
-      <div className="px-3 pb-3">
-        <p className="text-muted-foreground font-mono text-[12px] leading-relaxed break-words whitespace-pre-wrap">
-          {text}
-        </p>
-      </div>
-    </details>
+    <div className="relative">
+      <details
+        open={defaultOpen}
+        className="group bg-muted/30 overflow-hidden rounded-xl border"
+        style={{ borderColor: LINE }}
+      >
+        <summary className="flex cursor-pointer list-none items-center gap-2 px-3 py-2.5 pr-28 text-[13px] font-semibold select-none [&::-webkit-details-marker]:hidden">
+          <span
+            className="rounded-md px-1.5 py-0.5 text-[10px] font-extrabold tracking-wide uppercase"
+            style={{ background: t.bg, color: t.fg }}
+          >
+            {label}
+          </span>
+          <ChevronRight className="text-muted-foreground ml-auto size-4 transition-transform group-open:rotate-90" />
+        </summary>
+        <div className="px-3 pb-3">
+          <p className="text-muted-foreground font-mono text-[12px] leading-relaxed break-words whitespace-pre-wrap">
+            {text}
+          </p>
+        </div>
+      </details>
+      <button
+        type="button"
+        onClick={() => copyText(text)}
+        className="text-muted-foreground hover:text-foreground bg-card absolute top-1.5 right-9 inline-flex min-h-7 items-center gap-1.5 rounded-md border px-2 py-1 text-[11px] font-bold transition-colors pointer-coarse:min-h-10 pointer-coarse:px-3 hover:border-[color:var(--gold,#B89347)]"
+        style={{ borderColor: LINE }}
+        aria-label={`${label} metnini kopyala`}
+      >
+        <Copy className="size-3" /> Kopyala
+      </button>
+    </div>
   );
 }

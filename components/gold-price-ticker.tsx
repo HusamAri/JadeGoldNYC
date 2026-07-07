@@ -67,7 +67,7 @@ export function GoldPriceTicker({ className }: { className?: string }) {
       )}
     >
       <Scale className="text-muted-foreground size-3.5" />
-      <span className="text-muted-foreground">Altin:</span>
+      <span className="text-muted-foreground">Altın:</span>
       <span className="font-semibold">{fmtUsd(data.pricePerOunce)}/oz</span>
       <span className="text-muted-foreground">·</span>
       <span>14K {fmtUsd2(data.karat14PerGram)}/g</span>

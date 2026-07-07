@@ -36,6 +36,15 @@ export async function GET(request: Request) {
   if (!upstream.ok || !upstream.body)
     return new NextResponse("Görsel alınamadı", { status: 502 });
 
+  // İçerik doğrulaması: yalnız görüntü, makul boyutta (kötüye kullanım freni)
+  const type = upstream.headers.get("content-type") ?? "";
+  if (!type.startsWith("image/"))
+    return new NextResponse("Kaynak bir görsel değil", { status: 415 });
+  const len = Number(upstream.headers.get("content-length") ?? 0);
+  const MAX_BYTES = 60 * 1024 * 1024; // 2K PNG'ler ~15-25MB; 60MB güvenli tavan
+  if (len > MAX_BYTES)
+    return new NextResponse("Görsel çok büyük", { status: 413 });
+
   const ext = row.source_url.split(".").pop()?.split("?")[0] || "png";
   const base = (row.title || "jade-gold-nyc").replace(/[^\p{L}\p{N}_-]+/gu, "-");
   const filename = `${base}-${id.slice(0, 8)}.${ext}`;

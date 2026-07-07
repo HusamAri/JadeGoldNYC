@@ -15,7 +15,13 @@ export async function addImagesFromUrls(input: {
   urls: string;
   listingId?: number | null;
   title?: string | null;
-}): Promise<{ added?: number; skipped?: number; error?: string }> {
+}): Promise<{
+  added?: number;
+  duplicates?: number;
+  invalid?: number;
+  invalidLines?: string[];
+  error?: string;
+}> {
   const m = await requireMembership();
 
   const lines = input.urls
@@ -25,7 +31,7 @@ export async function addImagesFromUrls(input: {
   if (lines.length === 0) return { error: "En az bir görsel URL'i girin." };
 
   const valid = lines.filter(isHiggsfieldUrl);
-  const invalid = lines.length - valid.length;
+  const invalidLines = lines.filter((l) => !isHiggsfieldUrl(l));
   if (valid.length === 0)
     return {
       error: "Geçerli Higgsfield görsel bağlantısı bulunamadı (https, CDN).",
@@ -49,7 +55,13 @@ export async function addImagesFromUrls(input: {
 
   const added = data?.length ?? 0;
   revalidatePath("/gorsel-uretim/galeri");
-  return { added, skipped: rows.length - added + invalid };
+  revalidatePath("/gorsel-uretim"); // kit sayfasındaki galeri sayacı
+  return {
+    added,
+    duplicates: rows.length - added,
+    invalid: invalidLines.length,
+    invalidLines,
+  };
 }
 
 /** Bir görseli seçili/seçili değil olarak işaretler (final seçim). */
@@ -66,6 +78,7 @@ export async function toggleImageSelected(
     .eq("id", id);
   if (error) return { error: error.message };
   revalidatePath("/gorsel-uretim/galeri");
+  revalidatePath("/gorsel-uretim");
   return {};
 }
 
@@ -83,5 +96,6 @@ export async function deleteGeneratedImage(
     .eq("id", id);
   if (error) return { error: error.message };
   revalidatePath("/gorsel-uretim/galeri");
+  revalidatePath("/gorsel-uretim");
   return {};
 }

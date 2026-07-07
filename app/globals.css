@@ -55,6 +55,16 @@
      bileşeni SVG'yi bu tokenle maskeler; böylece mark her iki modda okunur. */
   --brand-mark: oklch(0.5 0.1 76);
 
+  /* Modül takma adları — bileşenlerde var(--gold) vb. olarak kullanılır.
+     Metin olarak kullanılacak altın HER ZAMAN --gold-deep (= brand-mark,
+     iki temada da ≥4.5:1); --gold yalnız çizgi/dolgu/vurgu yüzeyi içindir. */
+  --gold: oklch(0.68 0.1 84);
+  --gold-deep: var(--brand-mark);
+  --gold-tint: oklch(0.92 0.04 88);
+  --jade: oklch(0.43 0.035 162);
+  --jade-tint: oklch(0.9 0.02 162);
+  --line: var(--border);
+
   --destructive: oklch(0.58 0.21 27);
   --destructive-foreground: oklch(0.98 0.01 27);
 
@@ -132,6 +142,12 @@
 
   /* Gece: mark parlak altın (koyu jade zeminde ≥6:1) */
   --brand-mark: oklch(0.82 0.11 88);
+
+  /* Gece modül takma adları — koyu jade zeminde uyarlanmış tonlar */
+  --gold: oklch(0.74 0.1 86);
+  --gold-tint: oklch(0.33 0.04 90);
+  --jade: oklch(0.52 0.05 162);
+  --jade-tint: oklch(0.3 0.025 162);
 
   --destructive: oklch(0.62 0.2 25);
   --destructive-foreground: oklch(0.97 0.01 27);

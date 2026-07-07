@@ -2,14 +2,19 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { toast } from "sonner";
-import { Check, Loader2, Package, UploadCloud } from "lucide-react";
+import { Check, Info, Loader2, Package, UploadCloud } from "lucide-react";
 
 import {
   saveVariantTarget,
+  previewVariantPush,
   pushVariantStock,
 } from "@/app/(dashboard)/stok/varyant/actions";
-import type { VariantStockGroup } from "@/lib/db/queries/variant-stock";
+import type {
+  VariantStockGroup,
+  VariantStockRow,
+} from "@/lib/db/queries/variant-stock";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -17,9 +22,11 @@ import { Badge } from "@/components/ui/badge";
 export function VariantStockForm({
   groups,
   writeEnabled,
+  canEdit,
 }: {
   groups: VariantStockGroup[];
   writeEnabled: boolean;
+  canEdit: boolean;
 }) {
   const router = useRouter();
   const [values, setValues] = useState<Record<string, string>>({});
@@ -31,26 +38,31 @@ export function VariantStockForm({
     return values[sku] ?? (fallback != null ? String(fallback) : "");
   }
 
-  function save(sku: string) {
-    const raw = (values[sku] ?? "").trim();
-    const qty = raw === "" ? null : Number(raw.replace(/[^\d]/g, ""));
-    if (qty != null && (!Number.isInteger(qty) || qty < 0)) {
-      toast.error("Adet 0 veya daha büyük tam sayı olmalı.");
+  function save(v: VariantStockRow) {
+    // Kullanıcı bu inputa hiç yazmadıysa (görünen değer fallback) blur'da
+    // KAYDETME — aksi hâlde "" null'a dönüşüp kayıtlı hedefi sessizce siler.
+    if (values[v.sku] === undefined) return;
+    const raw = values[v.sku].trim();
+    if (raw !== "" && !/^\d+$/.test(raw)) {
+      toast.error("Adet yalnız rakam olmalı (0 veya daha büyük tam sayı).");
       return;
     }
-    setSaving((s) => new Set(s).add(sku));
-    saveVariantTarget(sku, qty)
+    const qty = raw === "" ? null : parseInt(raw, 10);
+    // Değişmediyse sunucuya gitme
+    if (qty === (v.targetQuantity ?? null)) return;
+    setSaving((s) => new Set(s).add(v.sku));
+    saveVariantTarget(v.sku, qty)
       .then((res) => {
         if (res.error) {
           toast.error(res.error);
           return;
         }
-        setSaved((d) => new Set(d).add(sku));
+        setSaved((d) => new Set(d).add(v.sku));
         setTimeout(
           () =>
             setSaved((d) => {
               const n = new Set(d);
-              n.delete(sku);
+              n.delete(v.sku);
               return n;
             }),
           1400,
@@ -59,7 +71,7 @@ export function VariantStockForm({
       .finally(() =>
         setSaving((s) => {
           const n = new Set(s);
-          n.delete(sku);
+          n.delete(v.sku);
           return n;
         }),
       );
@@ -67,21 +79,49 @@ export function VariantStockForm({
 
   function push() {
     startPush(async () => {
+      // Önce kapsam önizlemesi: org genelinde kaç varyant değişecek?
+      const preview = await previewVariantPush();
+      if (preview.error) {
+        toast.error(preview.error);
+        return;
+      }
+      if (preview.wouldChange === 0) {
+        toast.info("Değişecek varyant yok — hedefler Etsy ile aynı.");
+        return;
+      }
+      const capped = Math.min(preview.wouldChange, 40);
+      const ok = confirm(
+        `${preview.wouldChange} varyant Etsy'de güncellenecek (tüm listede — ekrandaki filtreden bağımsız).` +
+          (preview.wouldChange > 40
+            ? ` Bu turda ilk ${capped} tanesi gönderilir; kalanlar için tekrar basmanız gerekir.`
+            : "") +
+          "\n\nDevam edilsin mi?",
+      );
+      if (!ok) return;
+
       const r = await pushVariantStock();
       if (r.error) {
         toast.error(r.error);
         return;
       }
       if (r.needsReconnect) {
-        toast.error("Etsy yazma erişimi kapalı. Ayarlar → Etsy'den yeniden bağlanın.");
+        toast.error(
+          "Etsy yazma erişimi kapalı. Ayarlar → Etsy'den yeniden bağlanın.",
+        );
         return;
       }
       const parts = [`${r.updated} güncellendi`];
       if (r.unchanged) parts.push(`${r.unchanged} değişmedi`);
       if (r.errors) parts.push(`${r.errors} hata`);
-      const msg = parts.join(" · ");
-      if (r.errors) toast.warning(msg);
-      else toast.success(msg);
+      if (r.remaining > 0) {
+        toast.warning(
+          `${parts.join(" · ")} · ${r.remaining} varyant kaldı — "Etsy'ye Gönder"e tekrar basın.`,
+        );
+      } else if (r.errors) {
+        toast.warning(parts.join(" · "));
+      } else {
+        toast.success(parts.join(" · "));
+      }
       router.refresh();
     });
   }
@@ -97,19 +137,38 @@ export function VariantStockForm({
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-muted-foreground text-sm">
-          Her varyantın hedef adedini girin; hazır olunca Etsy&apos;ye offering
-          başına gönderin.
+          {canEdit
+            ? "Her varyantın hedef adedini girin; hazır olunca Etsy'ye offering başına gönderin."
+            : "Salt görüntüleme — hedef girmek için sahip (owner) veya yönetici (admin) yetkisi gerekir."}
         </p>
-        <Button type="button" onClick={push} disabled={pushing || !writeEnabled}>
-          {pushing ? (
-            <Loader2 className="size-4 animate-spin" />
-          ) : (
-            <UploadCloud className="size-4" />
+        <div className="flex flex-col items-end gap-1">
+          <Button
+            type="button"
+            onClick={push}
+            disabled={pushing || !writeEnabled || !canEdit}
+          >
+            {pushing ? (
+              <Loader2 className="size-4 animate-spin" />
+            ) : (
+              <UploadCloud className="size-4" />
+            )}
+            {pushing ? "Gönderiliyor…" : "Etsy'ye Gönder"}
+          </Button>
+          {!writeEnabled && (
+            <p className="text-muted-foreground flex items-center gap-1 text-xs">
+              <Info className="size-3.5" />
+              Etsy yazma erişimi kapalı —{" "}
+              <Link
+                href="/ayarlar/etsy"
+                className="font-medium underline underline-offset-2"
+              >
+                yeniden bağlanın
+              </Link>
+            </p>
           )}
-          {pushing ? "Gönderiliyor…" : "Etsy'ye Gönder"}
-        </Button>
+        </div>
       </div>
 
       {groups.map((g) => (
@@ -148,7 +207,7 @@ export function VariantStockForm({
                       </p>
                     )}
                   </div>
-                  <div className="flex items-center gap-1.5 whitespace-nowrap text-xs">
+                  <div className="flex items-center gap-1.5 text-xs whitespace-nowrap">
                     <span className="text-muted-foreground">Güncel</span>
                     <Badge variant="outline" className="tabular-nums">
                       {v.quantity ?? "—"}
@@ -159,11 +218,15 @@ export function VariantStockForm({
                       inputMode="numeric"
                       placeholder="Hedef"
                       value={target}
+                      disabled={!canEdit}
                       onChange={(e) =>
-                        setValues((s) => ({ ...s, [v.sku]: e.target.value }))
+                        setValues((s) => ({
+                          ...s,
+                          [v.sku]: e.target.value.replace(/[^0-9]/g, ""),
+                        }))
                       }
-                      onBlur={() => save(v.sku)}
-                      onKeyDown={(e) => e.key === "Enter" && save(v.sku)}
+                      onBlur={() => save(v)}
+                      onKeyDown={(e) => e.key === "Enter" && save(v)}
                       className={
                         "h-9 w-20 text-right tabular-nums" +
                         (willChange ? " border-[color:var(--gold,#B89347)]" : "")

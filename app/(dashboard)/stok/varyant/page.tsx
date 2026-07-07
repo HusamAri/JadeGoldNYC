@@ -1,4 +1,4 @@
-import { requireMembership } from "@/lib/auth";
+import { requireMembership, isManager } from "@/lib/auth";
 import { listVariantStock } from "@/lib/db/queries/variant-stock";
 import { getEtsyWriteAccess } from "@/lib/db/queries/etsy";
 import { strParam, type RawSearchParams } from "@/lib/searchparams";
@@ -34,7 +34,11 @@ export default async function VaryantStokPage({
         <SearchInput placeholder="SKU veya ad ara…" />
       </div>
 
-      <VariantStockForm groups={groups} writeEnabled={access.writeEnabled} />
+      <VariantStockForm
+        groups={groups}
+        writeEnabled={access.writeEnabled}
+        canEdit={isManager(m.role)}
+      />
     </div>
   );
 }
