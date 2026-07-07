@@ -40,10 +40,25 @@ export async function GET(request: Request) {
   const type = upstream.headers.get("content-type") ?? "";
   if (!type.startsWith("image/"))
     return new NextResponse("Kaynak bir görsel değil", { status: 415 });
-  const len = Number(upstream.headers.get("content-length") ?? 0);
   const MAX_BYTES = 60 * 1024 * 1024; // 2K PNG'ler ~15-25MB; 60MB güvenli tavan
+  const len = Number(upstream.headers.get("content-length") ?? 0);
   if (len > MAX_BYTES)
     return new NextResponse("Görsel çok büyük", { status: 413 });
+  // Content-Length yoksa (chunked) başlık kontrolü yetmez: gerçek baytları
+  // sayan bir katman sınırı akış sırasında da uygular.
+  let streamed = 0;
+  const capped = upstream.body.pipeThrough(
+    new TransformStream<Uint8Array, Uint8Array>({
+      transform(chunk, controller) {
+        streamed += chunk.byteLength;
+        if (streamed > MAX_BYTES) {
+          controller.error(new Error("Boyut sınırı aşıldı"));
+          return;
+        }
+        controller.enqueue(chunk);
+      },
+    }),
+  );
 
   const ext = row.source_url.split(".").pop()?.split("?")[0] || "png";
   const base = (row.title || "jade-gold-nyc").replace(/[^\p{L}\p{N}_-]+/gu, "-");
@@ -51,7 +66,7 @@ export async function GET(request: Request) {
   const contentType =
     upstream.headers.get("content-type") || "application/octet-stream";
 
-  return new NextResponse(upstream.body, {
+  return new NextResponse(capped, {
     headers: {
       "Content-Type": contentType,
       "Content-Disposition": `attachment; filename="${filename}"`,
