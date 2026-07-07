@@ -11,6 +11,8 @@ import {
   ImagePlus,
   Loader2,
   Images,
+  UploadCloud,
+  CheckCircle2,
 } from "lucide-react";
 
 import type { GeneratedImage } from "@/lib/db/queries/generated-images";
@@ -19,6 +21,7 @@ import {
   addImagesFromUrls,
   toggleImageSelected,
   deleteGeneratedImage,
+  uploadImageToListing,
 } from "@/app/(dashboard)/gorsel-uretim/galeri/actions";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -48,6 +51,8 @@ export function GeneratedGallery({
   const [listingId, setListingId] = useState<string>("");
   const [adding, startAdd] = useTransition();
   const [lightboxId, setLightboxId] = useState<string | null>(null);
+  const [uploading, setUploading] = useState<Set<string>>(new Set());
+  const [bulkUploading, setBulkUploading] = useState(false);
   // Tahmini _min.webp thumb'ı 404 olursa tam görsele düşmek için
   const [thumbFailed, setThumbFailed] = useState<Set<string>>(new Set());
 
@@ -111,6 +116,87 @@ export function GeneratedGallery({
       }
       router.refresh();
     });
+  }
+
+  function markUploaded(id: string) {
+    setItems((prev) =>
+      prev.map((i) =>
+        i.id === id ? { ...i, etsyUploadedAt: new Date().toISOString() } : i,
+      ),
+    );
+  }
+
+  async function uploadOne(img: GeneratedImage): Promise<boolean> {
+    const picked = listingId ? Number(listingId) : null;
+    const target = img.etsyListingId ?? picked;
+    if (!target) {
+      toast.error(
+        "Görsel bir listing'e bağlı değil — üstteki menüden listing seçin.",
+      );
+      return false;
+    }
+    setUploading((s) => new Set(s).add(img.id));
+    try {
+      const r = await uploadImageToListing(img.id, target);
+      if (r.needsReconnect) {
+        toast.error(
+          "Etsy yazma erişimi kapalı. Ayarlar → Etsy'den yeniden bağlanın.",
+        );
+        return false;
+      }
+      if (r.error) {
+        toast.error(r.error);
+        return false;
+      }
+      markUploaded(img.id);
+      return true;
+    } finally {
+      setUploading((s) => {
+        const n = new Set(s);
+        n.delete(img.id);
+        return n;
+      });
+    }
+  }
+
+  async function uploadSelected() {
+    const pending = items.filter((i) => i.isSelected && !i.etsyUploadedAt);
+    if (pending.length === 0) {
+      toast.info("Yüklenecek seçili görsel yok (hepsi zaten yüklü olabilir).");
+      return;
+    }
+    const unlinked = pending.filter((i) => !i.etsyListingId);
+    if (unlinked.length > 0 && !listingId) {
+      toast.error(
+        `${unlinked.length} seçili görsel listing'e bağlı değil — üstteki menüden listing seçin ya da bağlı olanları tek tek yükleyin.`,
+      );
+      return;
+    }
+    const ok = confirm(
+      `${pending.length} seçili görsel Etsy'ye ürün fotoğrafı olarak yüklenecek` +
+        ` (her biri kendi bağlı listing'ine${listingId ? ", bağsızlar menüdeki listing'e" : ""}).` +
+        "\nNot: Etsy bir listing'de en fazla 10 fotoğrafa izin verir.\n\nDevam edilsin mi?",
+    );
+    if (!ok) return;
+    setBulkUploading(true);
+    let done = 0;
+    let failed = 0;
+    try {
+      for (const img of pending) {
+        const success = await uploadOne(img);
+        if (success) done++;
+        else failed++;
+        if (failed >= 3) {
+          toast.warning("Üst üste hatalar — yükleme durduruldu.");
+          break;
+        }
+      }
+    } finally {
+      setBulkUploading(false);
+    }
+    if (done > 0 && failed === 0) toast.success(`${done} görsel Etsy'ye yüklendi.`);
+    else if (done > 0) toast.warning(`${done} yüklendi · ${failed} hata.`);
+    router.refresh();
   }
 
   function toggle(img: GeneratedImage) {
@@ -188,7 +274,7 @@ export function GeneratedGallery({
         </div>
       </div>
 
-      {/* Filtre + sayaç */}
+      {/* Filtre + sayaç + toplu yükleme */}
       <div className="flex flex-wrap items-center gap-3">
         <div
           className="bg-muted/50 flex max-w-full min-w-0 flex-wrap gap-0.5 rounded-xl border p-0.5"
@@ -218,6 +304,23 @@ export function GeneratedGallery({
             </button>
           ))}
         </div>
+        {canManage && (
+          <Button
+            type="button"
+            className="ml-auto"
+            onClick={uploadSelected}
+            disabled={bulkUploading || selectedCount === 0}
+          >
+            {bulkUploading ? (
+              <Loader2 className="size-4 animate-spin" />
+            ) : (
+              <UploadCloud className="size-4" />
+            )}
+            {bulkUploading
+              ? "Yükleniyor…"
+              : `Seçilenleri Etsy'ye Yükle (${items.filter((i) => i.isSelected && !i.etsyUploadedAt).length})`}
+          </Button>
+        )}
       </div>
 
       {/* Izgara */}
@@ -272,10 +375,25 @@ export function GeneratedGallery({
                   className="size-full object-cover"
                 />
               </button>
-              {/* seçili rozet — altın zeminde koyu metin (AA) */}
-              {img.isSelected && (
-                <span className="bg-accent text-accent-foreground absolute top-2 left-2 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold">
-                  <Star className="size-3 fill-current" /> Seçili
+              {/* rozetler — altın zeminde koyu metin (AA); yüklendi jade+beyaz */}
+              <span className="absolute top-2 left-2 flex flex-col items-start gap-1">
+                {img.isSelected && (
+                  <span className="bg-accent text-accent-foreground inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold">
+                    <Star className="size-3 fill-current" /> Seçili
+                  </span>
+                )}
+                {img.etsyUploadedAt && (
+                  <span
+                    className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold text-white"
+                    style={{ background: "var(--jade,#2F5D50)" }}
+                  >
+                    <CheckCircle2 className="size-3" /> Etsy&apos;de
+                  </span>
+                )}
+              </span>
+              {uploading.has(img.id) && (
+                <span className="absolute inset-0 flex items-center justify-center bg-black/40">
+                  <Loader2 className="size-6 animate-spin text-white" />
                 </span>
               )}
               {/* aksiyonlar — hover'da; dokunmatikte (hover yok) hep görünür */}
@@ -355,6 +473,26 @@ export function GeneratedGallery({
                     <Download className="size-4" /> İndir
                   </a>
                 </Button>
+                {canManage &&
+                  (lightbox.etsyUploadedAt ? (
+                    <Button type="button" variant="outline" disabled>
+                      <CheckCircle2 className="size-4" /> Etsy&apos;de yüklü
+                    </Button>
+                  ) : (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      disabled={uploading.has(lightbox.id)}
+                      onClick={() => uploadOne(lightbox)}
+                    >
+                      {uploading.has(lightbox.id) ? (
+                        <Loader2 className="size-4 animate-spin" />
+                      ) : (
+                        <UploadCloud className="size-4" />
+                      )}
+                      Etsy&apos;ye Yükle
+                    </Button>
+                  ))}
                 <Button asChild variant="ghost">
                   <a
                     href={lightbox.sourceUrl}

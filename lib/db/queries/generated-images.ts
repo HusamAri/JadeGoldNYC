@@ -13,6 +13,7 @@ export interface GeneratedImage {
   kind: string | null;
   isSelected: boolean;
   createdAt: string;
+  etsyUploadedAt: string | null;
 }
 
 type Row = {
@@ -28,6 +29,7 @@ type Row = {
   kind: string | null;
   is_selected: boolean;
   created_at: string;
+  etsy_uploaded_at: string | null;
 };
 
 function map(r: Row): GeneratedImage {
@@ -44,6 +46,7 @@ function map(r: Row): GeneratedImage {
     kind: r.kind,
     isSelected: r.is_selected,
     createdAt: r.created_at,
+    etsyUploadedAt: r.etsy_uploaded_at,
   };
 }
 
@@ -59,7 +62,7 @@ export async function listGeneratedImages(
   let query = supabase
     .from("generated_images")
     .select(
-      "id, etsy_listing_id, title, source_url, thumb_url, ref_url, prompt, model, aspect_ratio, kind, is_selected, created_at",
+      "id, etsy_listing_id, title, source_url, thumb_url, ref_url, prompt, model, aspect_ratio, kind, is_selected, created_at, etsy_uploaded_at",
     )
     .eq("org_id", orgId)
     .order("created_at", { ascending: false });

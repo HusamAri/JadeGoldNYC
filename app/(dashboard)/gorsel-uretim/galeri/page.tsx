@@ -17,7 +17,7 @@ export default async function GaleriPage() {
     <div className="space-y-6">
       <PageHeader
         title="Üretilen Görseller"
-        description="Higgsfield'da ürettiğin AI görselleri panelde toplanır; ekip beğendiğini seçer, isteyen indirir. Görseller Higgsfield'dan gösterilir — indirilene kadar siteye yük binmez."
+        description="Higgsfield'da ürettiğin AI görseller panelde toplanır; ekip beğendiğini yıldızlar, isteyen indirir, seçilenler tek tuşla Etsy listing'ine ürün fotoğrafı olarak yüklenir. Görseller Higgsfield'dan gösterilir — yükleme/indirme anına kadar siteye yük binmez."
         action={
           <Button asChild variant="outline">
             <Link href="/gorsel-uretim">
