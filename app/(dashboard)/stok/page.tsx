@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Package, Info, Layers } from "lucide-react";
 
-import { requireMembership } from "@/lib/auth";
+import { requireMembership, isManager } from "@/lib/auth";
 import { listStockProducts, type StockProduct } from "@/lib/db/queries/stock";
 import { getEtsyWriteAccess } from "@/lib/db/queries/etsy";
 import { formatNumber } from "@/lib/format";
@@ -52,6 +52,7 @@ function categorize(title: string): string {
 
 export default async function StokPage() {
   const m = await requireMembership();
+  const canEdit = isManager(m.role);
   const [products, access] = await Promise.all([
     listStockProducts(m.org_id),
     getEtsyWriteAccess(m.org_id),
@@ -187,6 +188,7 @@ export default async function StokPage() {
                             productId={p.id}
                             initial={p.target_quantity}
                             current={p.quantity}
+                            canEdit={canEdit}
                           />
                         </TableCell>
                       </TableRow>

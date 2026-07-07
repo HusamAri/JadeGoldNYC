@@ -59,21 +59,33 @@ export function StockSyncPanel({ connected }: { connected: boolean }) {
     setProgress(0);
     const ids = changes.map((c) => c.id);
     const all: PushOutcome[] = [];
-    for (let i = 0; i < ids.length; i += BATCH) {
-      const slice = ids.slice(i, i + BATCH);
-      const res = await applyStockSyncBatch(slice, applyToAll);
-      if (res.needsReconnect) {
-        toast.error("Yazma izni yok. Ayarlar → Etsy'den yeniden bağlanın.");
-        setPhase("review");
-        return;
+    try {
+      for (let i = 0; i < ids.length; i += BATCH) {
+        const slice = ids.slice(i, i + BATCH);
+        const res = await applyStockSyncBatch(slice, applyToAll);
+        if (res.needsReconnect) {
+          toast.error("Yazma izni yok. Ayarlar → Etsy'den yeniden bağlanın.");
+          setPhase("review");
+          return;
+        }
+        if (res.error) {
+          toast.error(res.error);
+          setPhase("review");
+          return;
+        }
+        all.push(...res.outcomes);
+        setProgress(Math.min(ids.length, i + slice.length));
       }
-      if (res.error) {
-        toast.error(res.error);
-        setPhase("review");
-        return;
-      }
-      all.push(...res.outcomes);
-      setProgress(Math.min(ids.length, i + slice.length));
+    } catch {
+      // Ağ hatası/parti reddi: sonsuz "Gönderiliyor…"da kalma — o ana dek
+      // uygulanan partilerin özetini göster ki kullanıcı ne gittiğini bilsin.
+      toast.error(
+        "Bağlantı hatası — gönderim yarıda kesildi. Özet, o ana kadar uygulananları gösterir.",
+      );
+      setOutcomes(all);
+      setPhase(all.length > 0 ? "done" : "review");
+      router.refresh();
+      return;
     }
     // Denetim kaydı artık her partide sunucuda gerçek sonuçlardan yazılıyor
     // (applyStockSyncBatch) — istemci yalnız özet gösterir.
