@@ -8,6 +8,7 @@ import {
   Info,
   CheckCircle2,
   PackageSearch,
+  ListChecks,
 } from "lucide-react";
 
 import { listMetrics } from "@/lib/db/queries/metrics";
@@ -194,6 +195,12 @@ export default async function PerformansPage() {
         description={`Güncel dönem · ${current.period_label}${previous ? ` (önceki: ${previous.period_label})` : ""}`}
         action={
           <>
+            <Button asChild variant="outline">
+              <Link href="/analizler/aksiyon-plani">
+                <ListChecks />
+                Aksiyon Planı
+              </Link>
+            </Button>
             <Button asChild variant="outline">
               <Link href="/analizler/urunler">
                 <PackageSearch />

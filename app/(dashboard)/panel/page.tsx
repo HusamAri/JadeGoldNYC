@@ -16,6 +16,7 @@ import {
 import { resolvePeriod, previousPeriod } from "@/lib/period";
 import { getDashboard } from "@/lib/db/queries/dashboard";
 import { getDataGaps } from "@/lib/db/queries/data-gaps";
+import { getTimelineData } from "@/lib/db/queries/timeline";
 import { requireMembership } from "@/lib/auth";
 import { getGoldPricePerOunce } from "@/lib/gold-price";
 import { TROY_OUNCE_GRAMS, KARAT_PURITY } from "@/lib/gold-cost";
@@ -24,6 +25,7 @@ import { formatMoney, formatPercent } from "@/lib/money";
 import { formatNumber, formatDateTime } from "@/lib/format";
 import { auditSummary } from "@/lib/audit-format";
 import { PageHeader } from "@/components/page-header";
+import { PanelTimeline } from "@/components/panel/panel-timeline";
 import { GoldStream } from "@/components/brand/gold-stream";
 import { EditorialCard } from "@/components/brand/editorial-card";
 import { KpiCard } from "@/components/kpi-card";
@@ -61,11 +63,12 @@ export default async function PanelPage({
   const period = resolvePeriod(strParam(sp.period));
   const prev = previousPeriod(period);
   const m = await requireMembership();
-  const [d, goldPriceOunce, prevData, gaps] = await Promise.all([
+  const [d, goldPriceOunce, prevData, gaps, timeline] = await Promise.all([
     getDashboard(period),
     getGoldPricePerOunce(),
     prev ? getDashboard(prev) : Promise.resolve(null),
     getDataGaps(m.org_id),
+    getTimelineData(m.org_id),
   ]);
   const cur = d.currency;
   const goldPricePerGram = goldPriceOunce / TROY_OUNCE_GRAMS;
@@ -85,6 +88,9 @@ export default async function PanelPage({
       />
 
       <WhatsNew />
+
+      {/* Yatay zaman çizelgesi — geniş; kaydırıcıyla geçmiş↔gelecek */}
+      <PanelTimeline data={timeline} />
 
       <DataGapsCard gaps={gaps} />
 
