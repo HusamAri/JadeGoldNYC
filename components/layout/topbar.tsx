@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { Menu, LogOut, ChevronLeft } from "lucide-react";
 
 import { signOut } from "@/lib/actions/session";
-import { NAV_ITEMS } from "@/components/layout/nav-items";
+import { NAV_ITEMS, NAV_GROUPS } from "@/components/layout/nav-items";
 import { Logo } from "@/components/layout/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { GoldPriceTicker } from "@/components/gold-price-ticker";
@@ -66,18 +66,25 @@ export function Topbar({
               <span className="sr-only">Menü</span>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-56">
-            {NAV_ITEMS.map((i) => {
-              const Icon = i.icon;
-              return (
-                <DropdownMenuItem key={i.href} asChild>
-                  <Link href={i.href}>
-                    <Icon className="size-4" />
-                    {i.label}
-                  </Link>
-                </DropdownMenuItem>
-              );
-            })}
+          <DropdownMenuContent align="start" className="max-h-[75vh] w-60 overflow-y-auto">
+            {NAV_GROUPS.map((g) => (
+              <div key={g.label}>
+                <p className="px-2 pt-2 pb-1 text-[0.62rem] font-bold tracking-[0.16em] text-[color:var(--brand-mark)]/80 uppercase select-none">
+                  {g.label}
+                </p>
+                {g.items.map((i) => {
+                  const Icon = i.icon;
+                  return (
+                    <DropdownMenuItem key={i.href} asChild>
+                      <Link href={i.href}>
+                        <Icon className="size-4" />
+                        {i.label}
+                      </Link>
+                    </DropdownMenuItem>
+                  );
+                })}
+              </div>
+            ))}
           </DropdownMenuContent>
         </DropdownMenu>
 
