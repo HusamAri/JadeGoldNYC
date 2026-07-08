@@ -8,7 +8,10 @@ import {
   listProductPeriods,
 } from "@/lib/db/queries/product-metrics";
 import { listMetricInquiries } from "@/lib/db/queries/metric-inquiries";
-import { evaluatePlaybook } from "@/lib/metrics-playbook/evaluate";
+import {
+  evaluatePlaybook,
+  collectRecentBranches,
+} from "@/lib/metrics-playbook/evaluate";
 import { PLAYBOOK_SOURCES } from "@/lib/metrics-playbook/playbook";
 import { PageHeader } from "@/components/page-header";
 import { Button } from "@/components/ui/button";
@@ -30,7 +33,10 @@ export default async function AksiyonPlaniPage() {
     ? await listProductMetrics(latestPeriod)
     : [];
 
-  const results = evaluatePlaybook({ metrics, productMetrics });
+  // Son 30 günde çatallanan sorular: hedef senaryoyu (sonuç notlarıyla) tetikler
+  const branches = collectRecentBranches(inquiryData.inquiries);
+
+  const results = evaluatePlaybook({ metrics, productMetrics, branches });
   const triggered = results.filter((r) => r.status === "triggered").length;
   const noData = results.filter((r) => r.status === "no-data").length;
 
@@ -38,7 +44,7 @@ export default async function AksiyonPlaniPage() {
     <div className="space-y-6">
       <PageHeader
         title="Metrik Aksiyon Planı"
-        description={`Etsy verilerin araştırmayla doğrulanmış senaryo matrisine göre değerlendirildi: ${triggered} senaryo tetiklendi · ${noData} senaryo veri bekliyor. Eksik/öznel bilgiler ekibe sorulur; görüş-oylamalarda herkes, veri isteğinde tek kişi yanıtlayınca soru incelemeye döner. Önerilen her aksiyon tek tuşla Görevler'e eklenir.`}
+        description={`Etsy verilerin araştırmayla doğrulanmış senaryo matrisine göre değerlendirildi: ${triggered} senaryo tetiklendi · ${noData} senaryo veri bekliyor. Eksik/öznel bilgiler ekibe sorulur — yanıtlar ANLIK işlenir (ilk yanıt soruyu incelemeye çeker, kimse beklenmez); yanıtlar farklı bir senaryoya işaret ederse sonuç notlarıyla o senaryoya çatallanır. Önerilen her aksiyon tek tuşla Görevler'e eklenir.`}
         action={
           <Button asChild variant="outline">
             <Link href="/analizler">

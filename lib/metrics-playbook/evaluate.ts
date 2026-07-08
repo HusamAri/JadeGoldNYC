@@ -15,6 +15,43 @@ export interface ScenarioResult {
   detail: string;
   /** Listing bazlı senaryolarda etkilenen ürün başlıkları */
   affected?: string[];
+  /** Ekip yanıtlarından bu senaryoya çatallanan soruların sonuç notları */
+  branchNotes?: { fromTitle: string; note: string }[];
+}
+
+/** Çatallanan soru → hedef senaryo bağı (soru başlığı + sonuç notu). */
+export interface ScenarioBranch {
+  scenarioId: string;
+  fromTitle: string;
+  note: string;
+}
+
+/**
+ * Çatallanmış sorulardan son `days` gün içindekileri senaryo bağına çevirir
+ * (bileşen dışında — tarih okuması saf-olmayan olduğundan burada yaşar).
+ */
+export function collectRecentBranches(
+  inquiries: {
+    title: string;
+    createdAt: string;
+    branchedToScenario: string | null;
+    branchNote: string | null;
+  }[],
+  days = 30,
+): ScenarioBranch[] {
+  const cutoff = Date.now() - days * 86_400_000;
+  return inquiries
+    .filter(
+      (i) =>
+        i.branchedToScenario &&
+        i.branchNote &&
+        new Date(i.createdAt).getTime() >= cutoff,
+    )
+    .map((i) => ({
+      scenarioId: i.branchedToScenario!,
+      fromTitle: i.title,
+      note: i.branchNote!,
+    }));
 }
 
 function pct(n: number): string {
@@ -34,6 +71,8 @@ function money(cents: number): string {
 export function evaluatePlaybook(input: {
   metrics: ShopMetric[]; // period_end desc sıralı
   productMetrics: ProductMetric[]; // en güncel dönemin satırları
+  /** Ekip yanıtlarından çatallanan senaryolar — durumu zorla tetikler */
+  branches?: ScenarioBranch[];
   now?: Date;
 }): ScenarioResult[] {
   const { metrics, productMetrics } = input;
@@ -296,6 +335,22 @@ export function evaluatePlaybook(input: {
   } else {
     push("product-views-no-orders", "no-data", "Listing metriği girilmemiş.");
     push("product-low-views", "no-data", "Listing metriği girilmemiş.");
+  }
+
+  // ÇATALLANMA: ekip yanıtları bir senaryoya işaret ettiyse, veri onu
+  // tetiklemese bile senaryo tetiklenmiş sayılır — sonuç yorumları karta
+  // işlenir (soru başlığı + not). Veri zaten tetiklediyse notlar eklenir.
+  for (const b of input.branches ?? []) {
+    const r = results.find((x) => x.scenario.id === b.scenarioId);
+    if (!r) continue;
+    r.branchNotes = [
+      ...(r.branchNotes ?? []),
+      { fromTitle: b.fromTitle, note: b.note },
+    ];
+    if (r.status !== "triggered") {
+      r.status = "triggered";
+      r.detail = `Ekip yanıtlarıyla çatallandı (veri tetiklemedi): ${r.detail}`;
+    }
   }
 
   // Sıra: tetiklenen kritik → tetiklenen uyarı → veri eksik → ok

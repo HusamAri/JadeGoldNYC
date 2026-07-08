@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {
   CheckCircle2,
+  GitBranch,
   Loader2,
   MessageCircleQuestion,
   Plus,
@@ -22,7 +23,9 @@ import {
   createInquiry,
   respondInquiry,
   resolveInquiry,
+  branchInquiry,
 } from "@/app/(dashboard)/analizler/aksiyon-plani/actions";
+import { PLAYBOOK } from "@/lib/metrics-playbook/playbook";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -36,22 +39,22 @@ const KIND_META: Record<
   data: {
     label: "Veri",
     icon: Database,
-    note: "Objektif veri — tek giriş soruyu incelemeye çeker.",
+    note: "Objektif veri — ilk giriş soruyu ANINDA incelemeye çeker.",
   },
   visual: {
     label: "Görsel kontrol",
     icon: Eye,
-    note: "Tüm üyeler bakıp yanıtlayınca incelemeye döner.",
+    note: "Anlık: ilk yanıtla incelemeye düşer; sonraki bakışlar da anında eklenir.",
   },
   opinion: {
     label: "Görüş",
     icon: MessagesSquare,
-    note: "Tüm üyeler görüş yazınca incelemeye döner.",
+    note: "Anlık: ilk görüşle incelemeye düşer; görüşler gelmeye devam eder.",
   },
   vote: {
     label: "Oylama",
     icon: Vote,
-    note: "Tüm üyeler oy verince incelemeye döner.",
+    note: "Anlık: ilk oyla incelemeye düşer; oy dağılımı canlı güncellenir.",
   },
 };
 
@@ -153,7 +156,6 @@ function InquiryCard({
   const meta = KIND_META[inquiry.kind];
   const Icon = meta.icon;
   const myResponse = inquiry.responses.find((r) => r.userId === currentUserId);
-  const required = inquiry.kind === "data" ? 1 : memberCount;
   const answered = inquiry.responses.length;
 
   function respond(option?: string) {
@@ -199,7 +201,7 @@ function InquiryCard({
         <p className="font-semibold">{inquiry.title}</p>
         <Badge variant="outline">{meta.label}</Badge>
         <span className="text-muted-foreground ml-auto text-xs tabular-nums">
-          {answered}/{required} yanıt
+          {answered}/{memberCount} üye yanıtladı
         </span>
       </div>
       {inquiry.body && (
@@ -306,34 +308,155 @@ function InquiryCard({
         </div>
       )}
 
-      {/* İnceleme kapanışı */}
+      {/* İnceleme kapanışı: düz kapat YA DA farklı senaryoya çatalla */}
       {inquiry.status === "review" && (
-        <div className="mt-3 flex items-center justify-between gap-2 border-t pt-3">
-          <p className="text-[13px] font-medium">
-            {inquiry.kind === "data" && inquiry.dataValue
-              ? "Veri alındı — değerlendirmeye işleyip kapatabilirsin."
-              : "Tüm yanıtlar toplandı — sonucu değerlendirip kapat."}
-          </p>
-          <Button
-            type="button"
-            size="sm"
-            variant="outline"
-            disabled={pending}
-            onClick={() =>
-              start(async () => {
-                const r = await resolveInquiry(inquiry.id);
-                if (r.error) toast.error(r.error);
-                else {
-                  toast.success("Soru kapatıldı.");
-                  router.refresh();
-                }
-              })
-            }
-          >
-            <CheckCircle2 className="size-4" /> Kapat
-          </Button>
+        <div className="mt-3 space-y-3 border-t pt-3">
+          <div className="flex items-center justify-between gap-2">
+            <p className="text-[13px] font-medium">
+              {inquiry.kind === "data" && inquiry.dataValue
+                ? "Veri alındı — değerlendirmeye işle, gerekirse çatalla."
+                : "Yanıtlar akıyor — sonucu değerlendir: kapat ya da işaret ettiği senaryoya çatalla."}
+            </p>
+            <Button
+              type="button"
+              size="sm"
+              variant="outline"
+              disabled={pending}
+              onClick={() =>
+                start(async () => {
+                  const r = await resolveInquiry(inquiry.id);
+                  if (r.error) toast.error(r.error);
+                  else {
+                    toast.success("Soru kapatıldı.");
+                    router.refresh();
+                  }
+                })
+              }
+            >
+              <CheckCircle2 className="size-4" /> Kapat
+            </Button>
+          </div>
+          <BranchForm inquiry={inquiry} />
         </div>
       )}
+
+      {/* Çatallanmış kapanış özeti */}
+      {inquiry.status === "resolved" && inquiry.branchedToScenario && (
+        <div className="mt-3 rounded-lg border-l-2 border-[color:var(--jade,#2F5D50)] bg-[color:var(--jade-tint,#DDE8E1)]/40 px-3 py-2">
+          <p className="flex items-center gap-1.5 text-xs font-semibold">
+            <GitBranch className="size-3.5" />
+            Çatallandı →{" "}
+            {PLAYBOOK.find((p) => p.id === inquiry.branchedToScenario)?.title ??
+              inquiry.branchedToScenario}
+          </p>
+          {inquiry.branchNote && (
+            <p className="text-muted-foreground mt-0.5 text-[12px] whitespace-pre-wrap">
+              {inquiry.branchNote}
+            </p>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/**
+ * Çatallanma formu: yanıtlar farklı bir senaryoya işaret ediyorsa hedef
+ * senaryo seçilir; sonuç notu, gelen yanıtların özetiyle önceden doldurulur
+ * ("sonuç yorumlar belirtilerek çatallanır").
+ */
+function BranchForm({ inquiry }: { inquiry: MetricInquiry }) {
+  const router = useRouter();
+  const [pending, start] = useTransition();
+  const [open, setOpen] = useState(false);
+  const [scenarioId, setScenarioId] = useState("");
+  const defaultNote = inquiry.responses
+    .map((r) => `${r.authorName ?? "Üye"}: ${r.body ?? r.option ?? ""}`)
+    .join("\n");
+  const [note, setNote] = useState("");
+
+  if (!open) {
+    return (
+      <Button
+        type="button"
+        size="sm"
+        variant="ghost"
+        onClick={() => {
+          setNote(defaultNote);
+          setOpen(true);
+        }}
+      >
+        <GitBranch className="size-4" /> Farklı senaryoya çatalla
+      </Button>
+    );
+  }
+
+  return (
+    <div
+      className="space-y-2 rounded-xl border p-3"
+      style={{ borderColor: "var(--line,#DED9CB)" }}
+    >
+      <select
+        value={scenarioId}
+        onChange={(e) => setScenarioId(e.target.value)}
+        className="bg-background h-9 w-full rounded-lg border px-3 text-sm"
+        style={{ borderColor: "var(--line,#DED9CB)" }}
+        aria-label="Hedef senaryo"
+      >
+        <option value="">Yanıtların işaret ettiği senaryoyu seç…</option>
+        {PLAYBOOK.map((p) => (
+          <option key={p.id} value={p.id}>
+            {p.title}
+          </option>
+        ))}
+      </select>
+      <Textarea
+        value={note}
+        onChange={(e) => setNote(e.target.value)}
+        rows={3}
+        className="font-mono text-xs"
+        placeholder="Sonuç notu — gelen yanıtların özeti (karta işlenir)"
+      />
+      <div className="flex gap-2">
+        <Button
+          type="button"
+          size="sm"
+          disabled={pending || !scenarioId || !note.trim()}
+          onClick={() =>
+            start(async () => {
+              const r = await branchInquiry({
+                inquiryId: inquiry.id,
+                scenarioId,
+                note,
+              });
+              if (r.error) {
+                toast.error(r.error);
+                return;
+              }
+              toast.success(
+                "Çatallandı — hedef senaryo yanıt notlarıyla tetiklendi.",
+              );
+              setOpen(false);
+              router.refresh();
+            })
+          }
+        >
+          {pending ? (
+            <Loader2 className="size-4 animate-spin" />
+          ) : (
+            <GitBranch className="size-4" />
+          )}
+          Çatalla
+        </Button>
+        <Button
+          type="button"
+          size="sm"
+          variant="ghost"
+          onClick={() => setOpen(false)}
+        >
+          Vazgeç
+        </Button>
+      </div>
     </div>
   );
 }

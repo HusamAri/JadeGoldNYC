@@ -45,11 +45,10 @@ export async function createInquiry(input: {
 }
 
 /**
- * Soruya yanıt ver. Çözülme kuralı:
- *  - kind='data' → objektif veri kişiye göre değişmez: İLK giriş soruyu
- *    'review'a çeker ve data_value olarak saklanır.
- *  - diğerleri → TÜM org üyeleri yanıtlayınca 'review'a çekilir.
- * Kişi başına tek yanıt (tekrar gönderim günceller).
+ * Soruya yanıt ver — ANLIK MOD: hiçbir türde tüm üyeler BEKLENMEZ.
+ * İlk yanıt soruyu anında 'review'a çeker; sonraki yanıtlar/güncellemeler
+ * incelemedeyken de anlık akmaya devam eder (kişi başına tek yanıt, upsert).
+ * kind='data'da girilen değer data_value olarak saklanır (objektif veri).
  */
 export async function respondInquiry(input: {
   inquiryId: string;
@@ -95,37 +94,20 @@ export async function respondInquiry(input: {
   );
   if (error) return { error: error.message };
 
-  // Çözülme kontrolü
-  let movedToReview = false;
-  if (inquiry.kind === "data") {
-    await supabase
-      .from("metric_inquiries")
-      .update({ status: "review", data_value: body ?? option })
-      .eq("org_id", m.org_id)
-      .eq("id", inquiry.id)
-      .eq("status", "open");
-    movedToReview = true;
-  } else {
-    const [{ count: responses }, { count: members }] = await Promise.all([
-      supabase
-        .from("metric_inquiry_responses")
-        .select("id", { count: "exact", head: true })
-        .eq("inquiry_id", inquiry.id),
-      supabase
-        .from("organization_members")
-        .select("id", { count: "exact", head: true })
-        .eq("org_id", m.org_id),
-    ]);
-    if ((responses ?? 0) >= (members ?? 1)) {
-      await supabase
-        .from("metric_inquiries")
-        .update({ status: "review" })
-        .eq("org_id", m.org_id)
-        .eq("id", inquiry.id)
-        .eq("status", "open");
-      movedToReview = true;
-    }
-  }
+  // ANLIK MOD: ilk yanıt soruyu hemen incelemeye çeker (üye beklenmez).
+  // Veri türünde girilen değer data_value'ya yazılır; diğer türlerde de
+  // sonradan gelen yanıtlar incelemedeyken akmaya devam eder.
+  const movedToReview = inquiry.status === "open";
+  await supabase
+    .from("metric_inquiries")
+    .update(
+      inquiry.kind === "data"
+        ? { status: "review", data_value: body ?? option }
+        : { status: "review" },
+    )
+    .eq("org_id", m.org_id)
+    .eq("id", inquiry.id)
+    .eq("status", "open");
 
   revalidatePath(PATH);
   return { movedToReview };
@@ -142,6 +124,38 @@ export async function resolveInquiry(
     .update({ status: "resolved", resolved_at: new Date().toISOString() })
     .eq("org_id", m.org_id)
     .eq("id", inquiryId);
+  if (error) return { error: error.message };
+  revalidatePath(PATH);
+  return {};
+}
+
+/**
+ * ÇATALLANMA: incelemedeki yanıtlar farklı bir senaryoya işaret ediyorsa,
+ * soru sonuç yorumları not edilerek o senaryoya çatallanır. Soru kapanır;
+ * hedef senaryo panoda "ekip girdisiyle tetiklendi" olarak (yanıt özetiyle)
+ * canlanır ve doğrulanmış aksiyonları göreve eklenebilir hâle gelir.
+ */
+export async function branchInquiry(input: {
+  inquiryId: string;
+  scenarioId: string;
+  note: string;
+}): Promise<{ error?: string }> {
+  const m = await requireMembership();
+  const note = input.note.trim();
+  if (!input.scenarioId) return { error: "Hedef senaryo seçin." };
+  if (!note) return { error: "Sonuç notu gerekli (yanıtların özeti)." };
+
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("metric_inquiries")
+    .update({
+      status: "resolved",
+      resolved_at: new Date().toISOString(),
+      branched_to_scenario: input.scenarioId,
+      branch_note: note.slice(0, 2000),
+    })
+    .eq("org_id", m.org_id)
+    .eq("id", input.inquiryId);
   if (error) return { error: error.message };
   revalidatePath(PATH);
   return {};

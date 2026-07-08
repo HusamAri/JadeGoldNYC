@@ -23,8 +23,9 @@ export interface MetricInquiry {
   dataValue: string | null;
   createdAt: string;
   responses: InquiryResponse[];
-  /** Çözülme için beklenen yanıt sayısı (data=1, diğerleri=üye sayısı) */
-  requiredResponses: number;
+  /** Çatallandıysa hedef playbook senaryosu + sonuç notu */
+  branchedToScenario: string | null;
+  branchNote: string | null;
 }
 
 type InquiryRow = {
@@ -36,6 +37,8 @@ type InquiryRow = {
   options: string[] | null;
   status: InquiryStatus;
   data_value: string | null;
+  branched_to_scenario: string | null;
+  branch_note: string | null;
   created_at: string;
   metric_inquiry_responses: {
     id: string;
@@ -57,7 +60,7 @@ export async function listMetricInquiries(orgId: string): Promise<{
     supabase
       .from("metric_inquiries")
       .select(
-        "id, scenario_id, title, body, kind, options, status, data_value, created_at, metric_inquiry_responses(id, user_id, author_name, body, option, created_at)",
+        "id, scenario_id, title, body, kind, options, status, data_value, branched_to_scenario, branch_note, created_at, metric_inquiry_responses(id, user_id, author_name, body, option, created_at)",
       )
       .eq("org_id", orgId)
       .order("created_at", { ascending: false }),
@@ -88,7 +91,8 @@ export async function listMetricInquiries(orgId: string): Promise<{
         option: x.option,
         createdAt: x.created_at,
       })),
-    requiredResponses: r.kind === "data" ? 1 : memberCount,
+    branchedToScenario: r.branched_to_scenario,
+    branchNote: r.branch_note,
   }));
 
   return { inquiries, memberCount };

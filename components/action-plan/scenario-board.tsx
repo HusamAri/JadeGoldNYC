@@ -132,6 +132,25 @@ function ScenarioCard({
         Tetik: {s.trigger}
       </p>
 
+      {/* Ekip yanıtlarından çatallanan sorular — sonuç yorumlarıyla */}
+      {r.branchNotes && r.branchNotes.length > 0 && (
+        <div className="mt-2 space-y-1.5">
+          {r.branchNotes.map((b, i) => (
+            <div
+              key={i}
+              className="rounded-lg border-l-2 border-[color:var(--jade,#2F5D50)] bg-[color:var(--jade-tint,#DDE8E1)]/40 px-3 py-2"
+            >
+              <p className="text-xs font-semibold">
+                Çatallanan soru: {b.fromTitle}
+              </p>
+              <p className="text-muted-foreground text-[12px] whitespace-pre-wrap">
+                {b.note}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
+
       {(r.status === "triggered" || r.status === "no-data") && (
         <details className="mt-3" open={defaultOpen}>
           <summary className="cursor-pointer text-sm font-semibold select-none">
