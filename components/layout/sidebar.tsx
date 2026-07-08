@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
-import { NAV_ITEMS } from "@/components/layout/nav-items";
+import { NAV_GROUPS } from "@/components/layout/nav-items";
 import { Logo } from "@/components/layout/logo";
 import { WhatsNewNav } from "@/components/layout/whats-new-nav";
 
@@ -22,33 +22,40 @@ export function Sidebar() {
           </span>
         </div>
       </div>
-      <nav className="flex-1 space-y-1.5 overflow-y-auto p-4">
-        {NAV_ITEMS.map((item) => {
-          const active =
-            pathname === item.href || pathname.startsWith(item.href + "/");
-          const Icon = item.icon;
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              aria-current={active ? "page" : undefined}
-              className={cn(
-                "flex items-center gap-3 rounded-2xl px-3.5 py-2.5 text-sm font-medium transition-[box-shadow,transform,color] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]",
-                active
-                  ? "nm-pressed text-foreground"
-                  : "text-sidebar-foreground/75 hover:text-foreground hover:[background-image:var(--nm-convex)] hover:[box-shadow:var(--shadow-raised-sm)]",
-              )}
-            >
-              <Icon
-                className={cn(
-                  "size-4 shrink-0 transition-colors",
-                  active && "text-[oklch(0.6_0.08_72)]",
-                )}
-              />
-              {item.label}
-            </Link>
-          );
-        })}
+      <nav className="flex-1 space-y-4 overflow-y-auto p-4">
+        {NAV_GROUPS.map((group) => (
+          <div key={group.label} className="space-y-1">
+            <p className="px-3.5 pb-0.5 text-[0.64rem] font-bold tracking-[0.18em] text-[color:var(--brand-mark)]/80 uppercase select-none">
+              {group.label}
+            </p>
+            {group.items.map((item) => {
+              const active =
+                pathname === item.href || pathname.startsWith(item.href + "/");
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  aria-current={active ? "page" : undefined}
+                  className={cn(
+                    "flex items-center gap-3 rounded-2xl px-3.5 py-2 text-sm font-medium transition-[box-shadow,transform,color] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]",
+                    active
+                      ? "nm-pressed text-foreground"
+                      : "text-sidebar-foreground/75 hover:text-foreground hover:[background-image:var(--nm-convex)] hover:[box-shadow:var(--shadow-raised-sm)]",
+                  )}
+                >
+                  <Icon
+                    className={cn(
+                      "size-4 shrink-0 transition-colors",
+                      active && "text-[oklch(0.6_0.08_72)]",
+                    )}
+                  />
+                  {item.label}
+                </Link>
+              );
+            })}
+          </div>
+        ))}
       </nav>
       <WhatsNewNav />
     </aside>

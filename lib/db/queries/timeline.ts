@@ -10,8 +10,15 @@ export interface TimelineTask {
   assigneeName: string | null;
 }
 
+export interface TimelineDay {
+  date: string; // YYYY-MM-DD
+  revenueCents: number;
+  orders: number;
+}
+
 export interface TimelineData {
   tasks: TimelineTask[];
+  days: TimelineDay[]; // geçmiş satış günleri (bağlam şeridi)
   windowStart: string;
   windowEnd: string;
 }
@@ -35,14 +42,36 @@ export async function getTimelineData(
     .slice(0, 10);
 
   const supabase = await createClient();
-  const { data } = await supabase
-    .from("tasks")
-    .select("id, title, status, priority, due_date, assignee_id")
-    .eq("org_id", orgId)
-    .not("due_date", "is", null)
-    .gte("due_date", startIso)
-    .lte("due_date", endIso)
-    .order("due_date", { ascending: true });
+  const [{ data }, salesRes] = await Promise.all([
+    supabase
+      .from("tasks")
+      .select("id, title, status, priority, due_date, assignee_id")
+      .eq("org_id", orgId)
+      .not("due_date", "is", null)
+      .gte("due_date", startIso)
+      .lte("due_date", endIso)
+      .order("due_date", { ascending: true }),
+    supabase
+      .from("sales")
+      .select("order_date, grand_total_cents, item_total_cents")
+      .eq("org_id", orgId)
+      .gte("order_date", startIso)
+      .order("order_date", { ascending: true })
+      .limit(5000),
+  ]);
+
+  const dayMap = new Map<string, TimelineDay>();
+  for (const s of (salesRes.data ?? []) as unknown as {
+    order_date: string;
+    grand_total_cents: number | null;
+    item_total_cents: number | null;
+  }[]) {
+    const d = s.order_date.slice(0, 10);
+    const e = dayMap.get(d) ?? { date: d, revenueCents: 0, orders: 0 };
+    e.revenueCents += s.grand_total_cents || s.item_total_cents || 0;
+    e.orders += 1;
+    dayMap.set(d, e);
+  }
 
   const rows = (data ?? []) as unknown as {
     id: string;
@@ -75,6 +104,7 @@ export async function getTimelineData(
       dueDate: r.due_date.slice(0, 10),
       assigneeName: r.assignee_id ? (names.get(r.assignee_id) ?? null) : null,
     })),
+    days: [...dayMap.values()].sort((a, b) => a.date.localeCompare(b.date)),
     windowStart: startIso,
     windowEnd: endIso,
   };

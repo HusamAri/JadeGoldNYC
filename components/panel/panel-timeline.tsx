@@ -10,8 +10,11 @@ const DAY_MS = 86_400_000;
 /** Görünür pencere genişliği (gün) */
 const WINDOW_DAYS = 42;
 /** Çip genişliği (gün cinsinden) — satır (lane) çakışma hesabında kullanılır */
-const CHIP_SPAN_DAYS = 8;
-const MAX_LANES = 4;
+const CHIP_SPAN_DAYS = 11;
+const MAX_LANES = 3;
+/** Görev bölgesi yüksekliği (üst) ve satış sütun bölgesi (alt), px */
+const LANE_H = 38;
+const SALES_H = 56;
 
 function fmtShort(iso: string): string {
   return new Date(iso + "T00:00:00").toLocaleDateString("tr-TR", {
@@ -76,6 +79,22 @@ export function PanelTimeline({ data }: { data: TimelineData }) {
   const pct = (rel: number) => ((rel - winStart) / WINDOW_DAYS) * 100;
   const windowLabel = `${fmtShort(isoAdd(todayIso, winStart))} — ${fmtShort(isoAdd(todayIso, winEnd))}`;
 
+  // Penceredeki satış günleri (bağlam şeridi, alt bölge)
+  const salesInWin = useMemo(() => {
+    return data.days
+      .map((d) => ({
+        ...d,
+        rel: Math.round(
+          (new Date(d.date + "T00:00:00").getTime() - todayMs) / DAY_MS,
+        ),
+      }))
+      .filter((d) => d.rel >= winStart && d.rel <= winEnd);
+  }, [data.days, winStart, winEnd, todayMs]);
+  const maxRevenue = useMemo(
+    () => Math.max(1, ...salesInWin.map((d) => d.revenueCents)),
+    [salesInWin],
+  );
+
   // Eksen işaretleri: 7 günde bir
   const ticks = useMemo(() => {
     const first = Math.ceil(winStart / 7) * 7;
@@ -95,11 +114,18 @@ export function PanelTimeline({ data }: { data: TimelineData }) {
           <Legend color="var(--gold,#B89347)" label="Sürüyor" />
           <Legend color="#059669" label="Bitti" />
           <Legend color="#b23b3b" label="Gecikmiş" />
+          <span className="inline-flex items-center gap-1">
+            <span className="inline-block h-2.5 w-1.5 rounded-[2px] bg-[color:var(--gold,#B89347)]/50" />
+            Günlük satış
+          </span>
         </span>
       </div>
 
-      {/* Şerit */}
-      <div className="relative mt-3 h-40 overflow-hidden">
+      {/* Şerit: üstte BÜYÜK görev çipleri, altta satış sütunları (bağlam) */}
+      <div
+        className="relative mt-3 overflow-hidden"
+        style={{ height: `${MAX_LANES * LANE_H + SALES_H + 22}px` }}
+      >
         {/* eksen çizgileri + etiketleri */}
         {ticks.map((r) => (
           <div
@@ -123,7 +149,22 @@ export function PanelTimeline({ data }: { data: TimelineData }) {
           </div>
         )}
 
-        {/* görev çipleri */}
+        {/* satış sütunları (alt bölge, eksen etiketinin üstünde) */}
+        {salesInWin.map((d) => (
+          <span
+            key={d.date}
+            title={`${fmtShort(d.date)} · ${d.orders} sipariş · $${(d.revenueCents / 100).toFixed(0)}`}
+            className="absolute -translate-x-1/2 rounded-t-[3px] bg-[color:var(--gold,#B89347)]/50"
+            style={{
+              left: `${pct(d.rel)}%`,
+              bottom: "16px",
+              width: `${Math.max(3, 100 / WINDOW_DAYS / 2.2)}%`,
+              height: `${Math.max(4, Math.round((d.revenueCents / maxRevenue) * (SALES_H - 8)))}px`,
+            }}
+          />
+        ))}
+
+        {/* görev çipleri — BÜYÜK, başrolde */}
         {placed.map((t) => {
           const overdue = t.status !== "done" && t.rel < 0;
           const color = overdue
@@ -138,21 +179,27 @@ export function PanelTimeline({ data }: { data: TimelineData }) {
               key={t.id}
               href={`/gorevler/${t.id}`}
               title={`${fmtShort(t.dueDate)} · ${t.title}${t.assigneeName ? ` · ${t.assigneeName}` : ""} (${t.priority})`}
-              className="bg-card absolute flex max-w-[220px] min-w-0 items-center gap-1.5 rounded-full border py-1 pr-2.5 pl-1.5 text-[11px] font-semibold shadow-sm transition-transform hover:z-10 hover:-translate-y-0.5"
+              className="bg-card absolute flex max-w-[300px] min-w-0 items-center gap-2 rounded-xl border-2 py-1.5 pr-3 pl-2 text-[12.5px] font-semibold shadow-md transition-transform hover:z-10 hover:-translate-y-0.5"
               style={{
                 left: `${pct(t.rel)}%`,
-                top: `${t.lane * 26 + 4}px`,
+                top: `${t.lane * LANE_H + 4}px`,
                 borderColor: color,
               }}
             >
               {t.status === "done" ? (
-                <CheckCircle2 className="size-3.5 shrink-0" style={{ color }} />
+                <CheckCircle2 className="size-[18px] shrink-0" style={{ color }} />
               ) : overdue ? (
-                <Timer className="size-3.5 shrink-0" style={{ color }} />
+                <Timer className="size-[18px] shrink-0" style={{ color }} />
               ) : (
-                <CircleDot className="size-3.5 shrink-0" style={{ color }} />
+                <CircleDot className="size-[18px] shrink-0" style={{ color }} />
               )}
-              <span className="truncate">{t.title}</span>
+              <span className="min-w-0">
+                <span className="block truncate leading-tight">{t.title}</span>
+                <span className="text-muted-foreground block text-[10px] leading-tight font-medium">
+                  {fmtShort(t.dueDate)}
+                  {t.assigneeName ? ` · ${t.assigneeName}` : ""} · {t.priority}
+                </span>
+              </span>
             </Link>
           );
         })}
