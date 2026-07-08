@@ -71,6 +71,12 @@ function money(cents: number): string {
 export function evaluatePlaybook(input: {
   metrics: ShopMetric[]; // period_end desc sıralı
   productMetrics: ProductMetric[]; // en güncel dönemin satırları
+  /** Etsy API günlük mağaza fotoğrafları (en yeni önce) — puan/tatil için */
+  shopSnapshots?: {
+    reviewAverage: number | null;
+    isVacation: boolean | null;
+    snapshotDate: string;
+  }[];
   /** Ekip yanıtlarından çatallanan senaryolar — durumu zorla tetikler */
   branches?: ScenarioBranch[];
   now?: Date;
@@ -225,20 +231,42 @@ export function evaluatePlaybook(input: {
     push("cart-abandon-high", "no-data", "Sepet terki verisi girilmemiş.");
   }
 
-  // --- Puan ---
-  if (cur?.rating != null) {
-    const dropped = prev?.rating != null && cur.rating < prev.rating;
-    if (cur.rating < 4.8 || dropped) {
+  // --- Puan --- (öncelik: Etsy API günlük fotoğrafı; yedek: manuel dönem)
+  const snaps = input.shopSnapshots ?? [];
+  const apiRating = snaps.find((s) => s.reviewAverage != null)?.reviewAverage;
+  const apiPrevRating = snaps
+    .slice(1)
+    .find((s) => s.reviewAverage != null)?.reviewAverage;
+  const rating = apiRating ?? cur?.rating ?? null;
+  const prevRating = apiRating != null ? (apiPrevRating ?? null) : (prev?.rating ?? null);
+  const ratingSrc = apiRating != null ? "Etsy API" : "manuel dönem";
+  if (rating != null) {
+    const dropped = prevRating != null && rating < prevRating;
+    if (rating < 4.8 || dropped) {
       push(
         "rating-drop",
         "triggered",
-        `Puan ${cur.rating}${prev?.rating != null ? ` (önceki ${prev.rating})` : ""} — Star Seller eşiği 4.8.`,
+        `Puan ${rating}${prevRating != null ? ` (önceki ${prevRating})` : ""} — Star Seller eşiği 4.8 (${ratingSrc}).`,
       );
     } else {
-      push("rating-drop", "ok", `Puan ${cur.rating}.`);
+      push("rating-drop", "ok", `Puan ${rating} (${ratingSrc}).`);
     }
   } else {
-    push("rating-drop", "no-data", "Puan verisi girilmemiş.");
+    push("rating-drop", "no-data", "Puan verisi yok (senkron/dönem bekleniyor).");
+  }
+
+  // --- Tatil modu (yalnız API bilir) ---
+  const latestSnap = snaps[0] ?? null;
+  if (latestSnap == null) {
+    push("vacation-mode", "no-data", "Mağaza fotoğrafı yok — ilk senkron bekleniyor.");
+  } else if (latestSnap.isVacation) {
+    push(
+      "vacation-mode",
+      "triggered",
+      `Etsy API'ye göre mağaza tatil modunda (${latestSnap.snapshotDate}).`,
+    );
+  } else {
+    push("vacation-mode", "ok", "Mağaza açık.");
   }
 
   // --- Trafik yoğunlaşması ---

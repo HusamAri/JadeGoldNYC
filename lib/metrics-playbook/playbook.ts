@@ -340,6 +340,23 @@ export const PLAYBOOK: PlaybookScenario[] = [
     ],
   },
   {
+    id: "vacation-mode",
+    title: "Mağaza tatil modunda",
+    dataset: "etsy_shop_snapshots (is_vacation)",
+    severity: "critical",
+    trigger: "Etsy API mağazayı tatil modunda raporluyor — satış tamamen durur.",
+    actions: [
+      {
+        title: "Tatil modunu kontrol et / kapat",
+        detail:
+          "Bilinçli değilse Shop Manager → Settings → Options'tan tatil modunu kapat. Bilinçliyse dönüş tarihini duyuruya yaz; uzun tatiller arama sıralamasını olumsuz etkileyebilir.",
+        source: "Etsy Help (Vacation Mode)",
+        priority: "P0",
+      },
+    ],
+    inquiries: [],
+  },
+  {
     id: "traffic-concentration",
     title: "Trafik tek kaynağa bağımlı",
     dataset: "shop_metrics (traffic_sources)",

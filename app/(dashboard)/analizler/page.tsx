@@ -23,6 +23,9 @@ import {
 } from "@/lib/performance";
 import { formatMoney, formatPercent } from "@/lib/money";
 import { formatNumber } from "@/lib/format";
+import { requireMembership } from "@/lib/auth";
+import { getEtsyInsights, type EtsyInsights } from "@/lib/db/queries/etsy-insights";
+import { EtsyViewsChart } from "@/components/charts/etsy-views-chart";
 import { PageHeader } from "@/components/page-header";
 import { GoldStream } from "@/components/brand/gold-stream";
 import { EmptyState } from "@/components/empty-state";
@@ -75,7 +78,11 @@ function pctDelta(
 }
 
 export default async function PerformansPage() {
-  const metrics = await listMetrics();
+  const m = await requireMembership();
+  const [metrics, insights] = await Promise.all([
+    listMetrics(),
+    getEtsyInsights(m.org_id),
+  ]);
 
   if (metrics.length === 0) {
     return (
@@ -105,6 +112,9 @@ export default async function PerformansPage() {
             </Button>
           }
         />
+        <div className="mt-6">
+          <EtsyApiSection insights={insights} />
+        </div>
       </div>
     );
   }
@@ -438,6 +448,157 @@ export default async function PerformansPage() {
           </Table>
         </CardContent>
       </Card>
+
+      <EtsyApiSection insights={insights} />
     </div>
+  );
+}
+
+/**
+ * Etsy API veri setleri (tam senkron): mağaza sağlık fotoğrafı + günlük
+ * görüntülenme serisi + en çok hareket eden listingler. Seri, günlük senkron
+ * fotoğraflarından türetilir — biriktikçe zenginleşir.
+ */
+function EtsyApiSection({ insights }: { insights: EtsyInsights }) {
+  const latest = insights.snapshots[0] ?? null;
+  const prev = insights.snapshots[1] ?? null;
+
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 pt-2">
+        <span className="text-[11px] font-bold tracking-[0.2em] text-[color:var(--brand-mark)] uppercase">
+          Etsy Verileri (API)
+        </span>
+        <h2 className="text-lg font-semibold tracking-tight">
+          Mağaza sağlığı ve görüntülenme trendi
+        </h2>
+        <span className="text-muted-foreground text-xs">
+          günlük senkron fotoğrafları · {insights.statDays} gün birikti
+        </span>
+      </div>
+
+      {latest ? (
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+          <ShopStat
+            label="Mağaza Takipçisi"
+            value={latest.numFavorers}
+            prevValue={prev?.numFavorers ?? null}
+          />
+          <ShopStat
+            label="Puan Ortalaması"
+            value={latest.reviewAverage}
+            prevValue={prev?.reviewAverage ?? null}
+            decimals={2}
+          />
+          <ShopStat
+            label="Toplam Yorum"
+            value={latest.reviewCount}
+            prevValue={prev?.reviewCount ?? null}
+          />
+          <ShopStat
+            label="Toplam Satış (ömür boyu)"
+            value={latest.transactionSoldCount}
+            prevValue={prev?.transactionSoldCount ?? null}
+          />
+        </div>
+      ) : (
+        <p className="text-muted-foreground rounded-2xl border border-dashed p-5 text-sm">
+          Mağaza sağlık fotoğrafı henüz yok — ilk Etsy senkronundan sonra
+          burada belirir (Ayarlar → Etsy → Şimdi Senkronize Et).
+        </p>
+      )}
+
+      <div className="grid gap-4 lg:grid-cols-3">
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <CardTitle>Günlük Görüntülenme (tüm listingler)</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {insights.viewsSeries.length >= 2 ? (
+              <EtsyViewsChart data={insights.viewsSeries} />
+            ) : (
+              <p className="text-muted-foreground py-10 text-center text-sm">
+                Seri birikiyor — {insights.statDays} günlük fotoğraf var; trend
+                için en az 3 gün gerekir. Günlük senkron otomatik biriktirir.
+              </p>
+            )}
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Dün En Çok Hareket Edenler</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {insights.topMovers.length === 0 ? (
+              <p className="text-muted-foreground text-sm">
+                İki günlük fotoğraf birikince listing bazlı hareketler burada
+                sıralanır.
+              </p>
+            ) : (
+              <ul className="space-y-2.5">
+                {insights.topMovers.map((t) => (
+                  <li
+                    key={t.etsyListingId}
+                    className="flex items-baseline justify-between gap-3 text-sm"
+                  >
+                    <span className="min-w-0 truncate font-medium">
+                      {t.title}
+                    </span>
+                    <span className="text-muted-foreground shrink-0 text-xs tabular-nums">
+                      +{formatNumber(t.deltaViews)} görüntülenme
+                      {t.deltaFavorers !== 0 &&
+                        ` · ${t.deltaFavorers > 0 ? "+" : ""}${t.deltaFavorers} fav`}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
+
+function ShopStat({
+  label,
+  value,
+  prevValue,
+  decimals = 0,
+}: {
+  label: string;
+  value: number | null;
+  prevValue: number | null;
+  decimals?: number;
+}) {
+  const delta =
+    value != null && prevValue != null ? value - prevValue : null;
+  return (
+    <Card>
+      <CardContent className="space-y-1">
+        <p className="text-muted-foreground text-[11px] font-bold tracking-[0.12em] uppercase">
+          {label}
+        </p>
+        <p className="text-2xl font-semibold tabular-nums">
+          {value != null
+            ? decimals > 0
+              ? value.toFixed(decimals)
+              : formatNumber(value)
+            : "—"}
+        </p>
+        {delta != null && delta !== 0 && (
+          <p
+            className={cn(
+              "text-xs font-semibold tabular-nums",
+              delta > 0 ? "text-primary" : "text-destructive",
+            )}
+          >
+            {delta > 0 ? "+" : ""}
+            {decimals > 0 ? delta.toFixed(decimals) : formatNumber(delta)} (önceki
+            fotoğrafa göre)
+          </p>
+        )}
+      </CardContent>
+    </Card>
   );
 }
