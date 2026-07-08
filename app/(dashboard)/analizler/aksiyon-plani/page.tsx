@@ -8,6 +8,7 @@ import {
   listProductPeriods,
 } from "@/lib/db/queries/product-metrics";
 import { listMetricInquiries } from "@/lib/db/queries/metric-inquiries";
+import { getEtsyInsights } from "@/lib/db/queries/etsy-insights";
 import {
   evaluatePlaybook,
   collectRecentBranches,
@@ -23,10 +24,11 @@ export const metadata = { title: "Aksiyon Planı" };
 export default async function AksiyonPlaniPage() {
   const m = await requireMembership();
 
-  const [metrics, periods, inquiryData] = await Promise.all([
+  const [metrics, periods, inquiryData, insights] = await Promise.all([
     listMetrics(),
     listProductPeriods(),
     listMetricInquiries(m.org_id),
+    getEtsyInsights(m.org_id),
   ]);
   const latestPeriod = periods[0];
   const productMetrics = latestPeriod
@@ -36,7 +38,12 @@ export default async function AksiyonPlaniPage() {
   // Son 30 günde çatallanan sorular: hedef senaryoyu (sonuç notlarıyla) tetikler
   const branches = collectRecentBranches(inquiryData.inquiries);
 
-  const results = evaluatePlaybook({ metrics, productMetrics, branches });
+  const results = evaluatePlaybook({
+    metrics,
+    productMetrics,
+    shopSnapshots: insights.snapshots,
+    branches,
+  });
   const triggered = results.filter((r) => r.status === "triggered").length;
   const noData = results.filter((r) => r.status === "no-data").length;
 
