@@ -12,6 +12,9 @@ import {
   type EtsyListing,
   type EtsyReview,
   type EtsyLedgerEntry,
+  type EtsyShop,
+  type EtsyShopSection,
+  type EtsyShippingProfile,
 } from "@/lib/etsy/types";
 
 const PAGE = 100;
@@ -27,7 +30,14 @@ const LEDGER_OVERLAP_S = 604_800;
 export interface SyncProgress {
   done: boolean;
   status: "running" | "done" | "error";
-  phase: "sales" | "listings" | "reviews" | "ledger" | "done";
+  phase:
+    | "sales"
+    | "listings"
+    | "listings_all"
+    | "reviews"
+    | "ledger"
+    | "extras"
+    | "done";
   sales: number;
   items: number;
   products: number;
@@ -192,12 +202,40 @@ export async function advanceEtsySync(
           counts.products += active.length;
         }
         if (results.length < PAGE) {
-          phase = "reviews";
+          // Aktif listeler bitti → diğer durumları da çek (tam envanter).
+          phase = "listings_all";
           offset = 0;
         } else {
           offset += PAGE;
         }
         await persist();
+      } else if (phase === "listings_all") {
+        // Aktif OLMAYAN listing durumları — API state başına ayrı sayfalama
+        // ister; durum imleci offset'e kodlanır (stateIdx*1e6 + sayfaOfseti).
+        const STATES = ["inactive", "sold_out", "draft", "expired"] as const;
+        const stateIdx = Math.floor(offset / 1_000_000);
+        const pageOffset = offset % 1_000_000;
+        if (stateIdx >= STATES.length) {
+          phase = "reviews";
+          offset = 0;
+          await persist();
+        } else {
+          const st = STATES[stateIdx];
+          const page = await client.get<EtsyListResponse<EtsyListing>>(
+            etsyPaths.shopListings(shopId),
+            { limit: PAGE, offset: pageOffset, state: st, includes: "Images" },
+          );
+          const results = page.results ?? [];
+          if (results.length > 0) {
+            await upsertListingsPage(admin, orgId, results);
+            counts.products += results.length;
+          }
+          offset =
+            results.length < PAGE
+              ? (stateIdx + 1) * 1_000_000 // sıradaki duruma geç
+              : stateIdx * 1_000_000 + pageOffset + PAGE;
+          await persist();
+        }
       } else if (phase === "reviews") {
         const page = await client.get<EtsyListResponse<EtsyReview>>(
           etsyPaths.reviews(shopId),
@@ -225,7 +263,7 @@ export async function advanceEtsySync(
           offset += PAGE;
         }
         await persist();
-      } else {
+      } else if (phase === "ledger") {
         // ledger — Etsy ücret/komisyon/reklam kayıtları. 30 günlük pencerelerle
         // geriye doğru tara (Etsy 31 gün sınırı). İlk tur tüm geçmişi backfill
         // eder; sonraki turlar artımlı (yalnız en son kayıttan beri).
@@ -256,7 +294,8 @@ export async function advanceEtsySync(
         }
         const floor = ledgerFloor ?? LEDGER_MIN_CREATED;
         if (ledgerUntil <= floor) {
-          phase = "done";
+          phase = "extras";
+          offset = 0;
           // Tam backfill ilk kez bitti → bayrağı kalıcılaştır (sonrası artımlı).
           const justBackfilled =
             !ledgerBackfilled && floor <= LEDGER_MIN_CREATED;
@@ -286,6 +325,14 @@ export async function advanceEtsySync(
           }
           await persist({ sync_ledger_until: ledgerUntil });
         }
+      } else {
+        // extras — API'nin sunduğu kalan her şey, tek geçişte:
+        // (1) getShop → günlük mağaza sağlık fotoğrafı,
+        // (2) mağaza bölümleri, (3) kargo profilleri,
+        // (4) listing views/favori GÜNLÜK fotoğrafı (tarihçeyi panel biriktirir).
+        await syncShopExtras(admin, client, orgId, shopId);
+        phase = "done";
+        await persist();
       }
     }
 
@@ -487,6 +534,128 @@ async function upsertReviewsPage(
 }
 
 /** Ham ledger kayıtlarını idempotent (entry_id) toplu upsert eder. */
+/**
+ * "extras" fazı: getShop günlük fotoğrafı + bölümler + kargo profilleri +
+ * listing istatistik fotoğrafı. Hepsi küçük/tek sayfa; hata senkronu
+ * düşürmesin diye her parça kendi içinde yutulur (bir sonraki turda tekrar
+ * denenir — upsert'ler idempotent).
+ */
+async function syncShopExtras(
+  admin: SupabaseClient,
+  client: EtsyClient,
+  orgId: string,
+  shopId: number,
+): Promise<void> {
+  const today = new Date().toISOString().slice(0, 10);
+
+  // (1) Mağaza sağlık fotoğrafı
+  try {
+    const shop = await client.get<EtsyShop>(etsyPaths.shop(shopId));
+    await admin.from("etsy_shop_snapshots").upsert(
+      {
+        org_id: orgId,
+        snapshot_date: today,
+        shop_name: shop.shop_name ?? null,
+        num_favorers: shop.num_favorers ?? null,
+        review_average: shop.review_average ?? null,
+        review_count: shop.review_count ?? null,
+        listing_active_count: shop.listing_active_count ?? null,
+        transaction_sold_count: shop.transaction_sold_count ?? null,
+        is_vacation: shop.is_vacation ?? null,
+        announcement: shop.announcement ?? null,
+        url: shop.url ?? null,
+        currency_code: shop.currency_code ?? null,
+      },
+      { onConflict: "org_id,snapshot_date" },
+    );
+  } catch {
+    // sıradaki turda yeniden denenir
+  }
+
+  // (2) Mağaza bölümleri
+  try {
+    const page = await client.get<EtsyListResponse<EtsyShopSection>>(
+      etsyPaths.shopSections(shopId),
+    );
+    const rows = (page.results ?? [])
+      .filter((x) => x.shop_section_id != null)
+      .map((x) => ({
+        org_id: orgId,
+        section_id: x.shop_section_id!,
+        title: x.title ?? null,
+        rank: x.rank ?? null,
+        active_listing_count: x.active_listing_count ?? null,
+        updated_at: new Date().toISOString(),
+      }));
+    if (rows.length > 0) {
+      await admin
+        .from("etsy_shop_sections")
+        .upsert(rows, { onConflict: "org_id,section_id" });
+    }
+  } catch {
+    // yut
+  }
+
+  // (3) Kargo profilleri
+  try {
+    const page = await client.get<EtsyListResponse<EtsyShippingProfile>>(
+      etsyPaths.shippingProfiles(shopId),
+    );
+    const rows = (page.results ?? [])
+      .filter((x) => x.shipping_profile_id != null)
+      .map((x) => ({
+        org_id: orgId,
+        profile_id: x.shipping_profile_id!,
+        title: x.title ?? null,
+        min_processing_days: x.min_processing_days ?? null,
+        max_processing_days: x.max_processing_days ?? null,
+        processing_days_display: x.processing_days_display_label ?? null,
+        origin_country_iso: x.origin_country_iso ?? null,
+        origin_postal_code: x.origin_postal_code ?? null,
+        updated_at: new Date().toISOString(),
+      }));
+    if (rows.length > 0) {
+      await admin
+        .from("etsy_shipping_profiles")
+        .upsert(rows, { onConflict: "org_id,profile_id" });
+    }
+  } catch {
+    // yut
+  }
+
+  // (4) Listing istatistik GÜNLÜK fotoğrafı — products'taki ömür boyu
+  // toplamlardan bugünün satırı yazılır; tarihsel seri panelde birikir.
+  try {
+    const { data } = await admin
+      .from("products")
+      .select("etsy_listing_id, views, num_favorers, quantity")
+      .eq("org_id", orgId)
+      .not("etsy_listing_id", "is", null);
+    const rows = ((data ?? []) as {
+      etsy_listing_id: number;
+      views: number | null;
+      num_favorers: number | null;
+      quantity: number | null;
+    }[]).map((r) => ({
+      org_id: orgId,
+      etsy_listing_id: r.etsy_listing_id,
+      stat_date: today,
+      views: r.views,
+      num_favorers: r.num_favorers,
+      quantity: r.quantity,
+    }));
+    for (let i = 0; i < rows.length; i += 500) {
+      await admin
+        .from("etsy_listing_stats")
+        .upsert(rows.slice(i, i + 500), {
+          onConflict: "org_id,etsy_listing_id,stat_date",
+        });
+    }
+  } catch {
+    // yut
+  }
+}
+
 async function upsertLedgerPage(
   admin: SupabaseClient,
   orgId: string,

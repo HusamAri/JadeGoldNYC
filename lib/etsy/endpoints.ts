@@ -29,4 +29,9 @@ export const etsyPaths = {
   // uploadListingImage (ürün fotoğrafı yükleme, multipart) — listings_w gerekir.
   listingImages: (shopId: number | string, listingId: number | string) =>
     `/shops/${shopId}/listings/${listingId}/images`,
+  // Mağaza bölümleri (başlık + aktif listing sayısı).
+  shopSections: (shopId: number | string) => `/shops/${shopId}/sections`,
+  // Kargo profilleri (işlem süresi, menşei).
+  shippingProfiles: (shopId: number | string) =>
+    `/shops/${shopId}/shipping-profiles`,
 };

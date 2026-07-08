@@ -17,8 +17,10 @@ import { formatNumber } from "@/lib/format";
 const PHASE_LABELS: Record<string, string> = {
   sales: "Siparişler",
   listings: "Ürünler",
+  listings_all: "Diğer listeler",
   reviews: "Yorumlar",
   ledger: "Ücretler/Reklam",
+  extras: "Mağaza verileri",
   done: "Tamamlandı",
 };
 
