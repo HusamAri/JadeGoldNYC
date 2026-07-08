@@ -84,6 +84,16 @@ export interface EtsyLedgerEntry {
 export interface EtsyShop {
   shop_id: number;
   shop_name?: string;
+  // getShop — mağaza sağlık fotoğrafında kullanılan alanlar
+  num_favorers?: number;
+  review_average?: number;
+  review_count?: number;
+  listing_active_count?: number;
+  transaction_sold_count?: number;
+  is_vacation?: boolean;
+  announcement?: string | null;
+  url?: string;
+  currency_code?: string;
 }
 
 export interface EtsyUser {
@@ -167,4 +177,23 @@ export interface EtsyInventoryUpdate {
 export function etsyMoneyToUnit(m?: EtsyMoney | null): number {
   if (!m || !m.amount || !m.divisor) return 0;
   return Math.round((m.amount / m.divisor) * 100) / 100;
+}
+
+/** Mağaza bölümü (getShopSections). */
+export interface EtsyShopSection {
+  shop_section_id?: number;
+  title?: string;
+  rank?: number;
+  active_listing_count?: number;
+}
+
+/** Kargo profili (getShopShippingProfiles) — profil düzeyi alanlar. */
+export interface EtsyShippingProfile {
+  shipping_profile_id?: number;
+  title?: string;
+  min_processing_days?: number;
+  max_processing_days?: number;
+  processing_days_display_label?: string;
+  origin_country_iso?: string;
+  origin_postal_code?: string;
 }
