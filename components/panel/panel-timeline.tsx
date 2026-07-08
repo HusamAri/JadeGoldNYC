@@ -2,192 +2,175 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import {
-  CalendarClock,
-  CheckCircle2,
-  CircleDot,
-  MessageCircleQuestion,
-} from "lucide-react";
+import { CalendarClock, CheckCircle2, CircleDot, Timer } from "lucide-react";
 
-import type {
-  TimelineData,
-  TimelineEvent,
-} from "@/lib/db/queries/timeline";
-import { cn } from "@/lib/utils";
+import type { TimelineData, TimelineTask } from "@/lib/db/queries/timeline";
 
 const DAY_MS = 86_400_000;
-/** Görünür pencere genişliği (gün) — geniş ekranda ~2 ay */
-const WINDOW_DAYS = 60;
-
-function isoAddDays(base: Date, days: number): string {
-  return new Date(base.getTime() + days * DAY_MS).toISOString().slice(0, 10);
-}
+/** Görünür pencere genişliği (gün) */
+const WINDOW_DAYS = 42;
+/** Çip genişliği (gün cinsinden) — satır (lane) çakışma hesabında kullanılır */
+const CHIP_SPAN_DAYS = 8;
+const MAX_LANES = 4;
 
 function fmtShort(iso: string): string {
-  const d = new Date(iso + "T00:00:00");
-  return d.toLocaleDateString("tr-TR", { day: "numeric", month: "short" });
+  return new Date(iso + "T00:00:00").toLocaleDateString("tr-TR", {
+    day: "numeric",
+    month: "short",
+  });
 }
 
+type PlacedTask = TimelineTask & { rel: number; lane: number };
+
 /**
- * Ana panel yatay zaman çizelgesi — geçmiş satışlar (altın sütunlar) ve
- * geçmiş+gelecek olaylar (görev/soru işaretleri) tek şeritte. Alttaki
- * kaydırıcı pencereyi geçmişe/geleceğe kaydırır; "bugün" çizgisi sabit renkte.
+ * Ana panel GÖREV zaman çizelgesi — yatay, geniş; bitiş tarihli görevler
+ * başlıklı çipler olarak şeritte durur (gecikmiş kırmızı · yapılacak jade ·
+ * sürüyor altın · biten yeşil). Alttaki kaydırıcı geçmiş↔gelecek gezdirir.
  */
 export function PanelTimeline({ data }: { data: TimelineData }) {
-  // offset: pencere merkezinin bugüne göre gün cinsinden kayması
-  const [offset, setOffset] = useState(0);
-  const today = useMemo(() => new Date(new Date().toISOString().slice(0, 10)), []);
-
-  const startIdx = offset - WINDOW_DAYS / 2; // bugüne göre gün
-  const days = useMemo(() => {
-    const revByDate = new Map(data.days.map((d) => [d.date, d]));
-    const eventsByDate = new Map<string, TimelineEvent[]>();
-    for (const e of data.events) {
-      const list = eventsByDate.get(e.date) ?? [];
-      list.push(e);
-      eventsByDate.set(e.date, list);
-    }
-    return Array.from({ length: WINDOW_DAYS }, (_, i) => {
-      const rel = startIdx + i;
-      const iso = isoAddDays(today, rel);
-      return {
-        iso,
-        rel,
-        day: revByDate.get(iso) ?? null,
-        events: eventsByDate.get(iso) ?? [],
-      };
-    });
-  }, [data, startIdx, today]);
-
-  const maxRevenue = useMemo(
-    () =>
-      Math.max(1, ...days.map((d) => d.day?.revenueCents ?? 0)),
-    [days],
+  const [offset, setOffset] = useState(0); // pencere merkezi, bugüne göre gün
+  const todayIso = useMemo(() => new Date().toISOString().slice(0, 10), []);
+  const todayMs = useMemo(
+    () => new Date(todayIso + "T00:00:00").getTime(),
+    [todayIso],
   );
 
-  const windowLabel = `${fmtShort(days[0].iso)} — ${fmtShort(days[days.length - 1].iso)}`;
-  const [hover, setHover] = useState<number | null>(null);
+  const winStart = offset - WINDOW_DAYS / 2;
+  const winEnd = offset + WINDOW_DAYS / 2;
+
+  // Penceredeki görevler + basit satır (lane) ataması: aynı satırda üst üste
+  // binmesin diye çipler CHIP_SPAN_DAYS aralığına göre açgözlü dağıtılır.
+  const placed = useMemo<PlacedTask[]>(() => {
+    const inWin = data.tasks
+      .map((t) => ({
+        ...t,
+        rel: Math.round(
+          (new Date(t.dueDate + "T00:00:00").getTime() - todayMs) / DAY_MS,
+        ),
+      }))
+      .filter((t) => t.rel >= winStart - CHIP_SPAN_DAYS && t.rel <= winEnd + 1)
+      .sort((a, b) => a.rel - b.rel);
+    const laneEnds: number[] = [];
+    const out: PlacedTask[] = [];
+    for (const t of inWin) {
+      let lane = laneEnds.findIndex((end) => t.rel > end);
+      if (lane === -1) {
+        if (laneEnds.length >= MAX_LANES) continue; // taşanlar sayıyla gösterilir
+        lane = laneEnds.length;
+        laneEnds.push(-Infinity);
+      }
+      laneEnds[lane] = t.rel + CHIP_SPAN_DAYS;
+      out.push({ ...t, lane });
+    }
+    return out;
+  }, [data.tasks, winStart, winEnd, todayMs]);
+
+  const hiddenCount =
+    data.tasks.filter((t) => {
+      const rel = Math.round(
+        (new Date(t.dueDate + "T00:00:00").getTime() - todayMs) / DAY_MS,
+      );
+      return rel >= winStart && rel <= winEnd;
+    }).length - placed.filter((t) => t.rel >= winStart && t.rel <= winEnd).length;
+
+  const pct = (rel: number) => ((rel - winStart) / WINDOW_DAYS) * 100;
+  const windowLabel = `${fmtShort(isoAdd(todayIso, winStart))} — ${fmtShort(isoAdd(todayIso, winEnd))}`;
+
+  // Eksen işaretleri: 7 günde bir
+  const ticks = useMemo(() => {
+    const first = Math.ceil(winStart / 7) * 7;
+    const arr: number[] = [];
+    for (let r = first; r <= winEnd; r += 7) arr.push(r);
+    return arr;
+  }, [winStart, winEnd]);
 
   return (
     <div className="bg-card nm-raised-sm w-full rounded-[1.75rem] p-4 sm:p-5">
       <div className="flex flex-wrap items-center gap-2">
         <CalendarClock className="size-4 text-[color:var(--gold-deep,#9A7A34)]" />
-        <p className="font-semibold">Zaman Çizelgesi</p>
+        <p className="font-semibold">Görev Zaman Çizelgesi</p>
         <span className="text-muted-foreground text-xs">{windowLabel}</span>
         <span className="text-muted-foreground ml-auto hidden gap-3 text-[11px] sm:flex">
-          <span className="inline-flex items-center gap-1">
-            <span className="inline-block h-2 w-2 rounded-[2px] bg-[color:var(--gold,#B89347)]" />
-            Satış
-          </span>
-          <span className="inline-flex items-center gap-1">
-            <CircleDot className="size-3 text-[color:var(--jade,#2F5D50)]" />
-            Görev
-          </span>
-          <span className="inline-flex items-center gap-1">
-            <MessageCircleQuestion className="size-3 text-[color:var(--gold-deep,#9A7A34)]" />
-            Soru
-          </span>
+          <Legend color="var(--jade,#2F5D50)" label="Yapılacak" />
+          <Legend color="var(--gold,#B89347)" label="Sürüyor" />
+          <Legend color="#059669" label="Bitti" />
+          <Legend color="#b23b3b" label="Gecikmiş" />
         </span>
       </div>
 
       {/* Şerit */}
-      <div className="relative mt-3 h-36 select-none">
-        <div className="absolute inset-0 flex">
-          {days.map((d, i) => {
-            const isToday = d.rel === 0;
-            const h =
-              d.day != null
-                ? Math.max(4, Math.round((d.day.revenueCents / maxRevenue) * 72))
-                : 0;
-            const hasEvents = d.events.length > 0;
-            return (
-              <div
-                key={d.iso}
-                className={cn(
-                  "relative flex-1 border-r border-transparent",
-                  isToday && "bg-[color:var(--jade,#2F5D50)]/5",
-                )}
-                onMouseEnter={() => setHover(i)}
-                onMouseLeave={() => setHover((v) => (v === i ? null : v))}
-              >
-                {/* bugün çizgisi */}
-                {isToday && (
-                  <span className="absolute inset-y-0 left-0 w-px bg-[color:var(--jade,#2F5D50)]" />
-                )}
-                {/* olay işaretleri (üst bölge) */}
-                {hasEvents && (
-                  <div className="absolute top-1 left-1/2 flex -translate-x-1/2 flex-col items-center gap-0.5">
-                    {d.events.slice(0, 3).map((e, j) => (
-                      <Link
-                        key={j}
-                        href={e.href}
-                        title={`${fmtShort(d.iso)} · ${e.label}`}
-                        className="block"
-                      >
-                        {e.type === "task-done" ? (
-                          <CheckCircle2 className="size-3.5 text-emerald-600" />
-                        ) : e.type === "inquiry" ? (
-                          <MessageCircleQuestion className="size-3.5 text-[color:var(--gold-deep,#9A7A34)]" />
-                        ) : (
-                          <CircleDot
-                            className={cn(
-                              "size-3.5",
-                              d.rel < 0
-                                ? "text-[color:#b23b3b]" // geçmiş ve bitmemiş: gecikmiş
-                                : "text-[color:var(--jade,#2F5D50)]",
-                            )}
-                          />
-                        )}
-                      </Link>
-                    ))}
-                    {d.events.length > 3 && (
-                      <span className="text-muted-foreground text-[9px] leading-none">
-                        +{d.events.length - 3}
-                      </span>
-                    )}
-                  </div>
-                )}
-                {/* satış sütunu (alt bölge) */}
-                {h > 0 && (
-                  <span
-                    className="absolute bottom-5 left-1/2 w-[55%] -translate-x-1/2 rounded-t-[3px] bg-[color:var(--gold,#B89347)]"
-                    style={{ height: `${h}px`, opacity: d.rel <= 0 ? 0.9 : 0.4 }}
-                  />
-                )}
-                {/* eksen etiketi — 5 günde bir */}
-                {(d.rel % 5 === 0 || isToday) && (
-                  <span
-                    className={cn(
-                      "absolute bottom-0 left-1/2 -translate-x-1/2 text-[9px] whitespace-nowrap tabular-nums",
-                      isToday
-                        ? "font-bold text-[color:var(--jade,#2F5D50)]"
-                        : "text-muted-foreground",
-                    )}
-                  >
-                    {isToday ? "Bugün" : fmtShort(d.iso)}
-                  </span>
-                )}
-                {/* hover bilgisi */}
-                {hover === i && (d.day || hasEvents) && (
-                  <div className="bg-popover text-popover-foreground absolute bottom-24 left-1/2 z-10 w-44 -translate-x-1/2 rounded-lg border p-2 text-[11px] shadow-lg">
-                    <p className="font-semibold">{fmtShort(d.iso)}</p>
-                    {d.day && (
-                      <p>
-                        {d.day.orders} sipariş · $
-                        {(d.day.revenueCents / 100).toFixed(0)}
-                      </p>
-                    )}
-                    {d.events.map((e, j) => (
-                      <p key={j} className="truncate">
-                        • {e.label}
-                      </p>
-                    ))}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
+      <div className="relative mt-3 h-40 overflow-hidden">
+        {/* eksen çizgileri + etiketleri */}
+        {ticks.map((r) => (
+          <div
+            key={r}
+            className="absolute inset-y-0"
+            style={{ left: `${pct(r)}%` }}
+          >
+            <span className="absolute inset-y-0 w-px bg-[color:var(--line,#DED9CB)]/60" />
+            <span className="text-muted-foreground absolute bottom-0 -translate-x-1/2 text-[9px] whitespace-nowrap tabular-nums">
+              {fmtShort(isoAdd(todayIso, r))}
+            </span>
+          </div>
+        ))}
+        {/* bugün çizgisi */}
+        {0 >= winStart && 0 <= winEnd && (
+          <div className="absolute inset-y-0" style={{ left: `${pct(0)}%` }}>
+            <span className="absolute inset-y-0 w-0.5 bg-[color:var(--jade,#2F5D50)]" />
+            <span className="absolute bottom-0 -translate-x-1/2 text-[9px] font-bold text-[color:var(--jade,#2F5D50)]">
+              Bugün
+            </span>
+          </div>
+        )}
+
+        {/* görev çipleri */}
+        {placed.map((t) => {
+          const overdue = t.status !== "done" && t.rel < 0;
+          const color = overdue
+            ? "#b23b3b"
+            : t.status === "done"
+              ? "#059669"
+              : t.status === "doing"
+                ? "var(--gold,#B89347)"
+                : "var(--jade,#2F5D50)";
+          return (
+            <Link
+              key={t.id}
+              href={`/gorevler/${t.id}`}
+              title={`${fmtShort(t.dueDate)} · ${t.title}${t.assigneeName ? ` · ${t.assigneeName}` : ""} (${t.priority})`}
+              className="bg-card absolute flex max-w-[220px] min-w-0 items-center gap-1.5 rounded-full border py-1 pr-2.5 pl-1.5 text-[11px] font-semibold shadow-sm transition-transform hover:z-10 hover:-translate-y-0.5"
+              style={{
+                left: `${pct(t.rel)}%`,
+                top: `${t.lane * 26 + 4}px`,
+                borderColor: color,
+              }}
+            >
+              {t.status === "done" ? (
+                <CheckCircle2 className="size-3.5 shrink-0" style={{ color }} />
+              ) : overdue ? (
+                <Timer className="size-3.5 shrink-0" style={{ color }} />
+              ) : (
+                <CircleDot className="size-3.5 shrink-0" style={{ color }} />
+              )}
+              <span className="truncate">{t.title}</span>
+            </Link>
+          );
+        })}
+
+        {placed.length === 0 && (
+          <p className="text-muted-foreground absolute inset-x-0 top-1/2 -translate-y-1/2 text-center text-sm">
+            Bu pencerede bitiş tarihli görev yok — kaydırıcıyla gez ya da{" "}
+            <Link href="/gorevler/yeni" className="underline underline-offset-2">
+              tarihli görev ekle
+            </Link>
+            .
+          </p>
+        )}
+        {hiddenCount > 0 && (
+          <span className="text-muted-foreground absolute top-1 right-1 rounded-full border px-2 py-0.5 text-[10px] tabular-nums">
+            +{hiddenCount} görev sığmadı — pencereyi daralt/kaydır
+          </span>
+        )}
       </div>
 
       {/* Kaydırıcı: geçmiş ↔ gelecek */}
@@ -216,5 +199,23 @@ export function PanelTimeline({ data }: { data: TimelineData }) {
         )}
       </div>
     </div>
+  );
+}
+
+function isoAdd(baseIso: string, days: number): string {
+  return new Date(new Date(baseIso + "T00:00:00").getTime() + days * DAY_MS)
+    .toISOString()
+    .slice(0, 10);
+}
+
+function Legend({ color, label }: { color: string; label: string }) {
+  return (
+    <span className="inline-flex items-center gap-1">
+      <span
+        className="inline-block size-2 rounded-full"
+        style={{ background: color }}
+      />
+      {label}
+    </span>
   );
 }
