@@ -32,7 +32,10 @@ export function SearchInput({
   }
 
   return (
-    <div className="relative w-full sm:max-w-xs">
+    // jg-glow-warm: odaklanınca/hover'da altından yükselen sıcak altın parıltı
+    // (bkz. IMG_5665). `position:relative` zaten arama ikonunun konumlandığı
+    // kapsayıcıda olduğundan `::after` haleyle çakışmaz.
+    <div className="jg-glow-warm relative w-full sm:max-w-xs">
       <Search className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2" />
       <Input
         value={value}

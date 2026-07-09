@@ -22,6 +22,7 @@ export function KpiCard({
   change,
   changeLabel,
   className,
+  splitTone = false,
 }: {
   label: string;
   value: string;
@@ -32,6 +33,12 @@ export function KpiCard({
   change?: number | null;
   changeLabel?: string;
   className?: string;
+  /**
+   * Panelin TEK bir hero/öne çıkan KPI'ı için: iki tonlu büyük rakam
+   * (üstte nötr, altta sıcak antik altın — bkz. IMG_5669). Tüm KPI
+   * kartlarında değil, yalnız en kritik metrikte kullanın.
+   */
+  splitTone?: boolean;
 }) {
   return (
     <Card
@@ -47,9 +54,10 @@ export function KpiCard({
           </p>
           <p
             className={cn(
-              "truncate text-2xl font-semibold tracking-tight tabular-nums",
-              accent === "positive" && "text-primary",
-              accent === "negative" && "text-destructive",
+              "truncate font-semibold tracking-tight tabular-nums",
+              splitTone ? "text-4xl leading-tight jg-split-tone" : "text-2xl",
+              !splitTone && accent === "positive" && "text-primary",
+              !splitTone && accent === "negative" && "text-destructive",
             )}
           >
             {value}

@@ -2,6 +2,10 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
+// Not: `<input>` bir "replaced element" olduğundan `::after` üretilen içerik
+// tüm tarayıcılarda güvenilir render edilmez. Odakta/hover'da IMG_5665'teki
+// gibi altından yükselen sıcak parıltı isteyen çağıranlar, Input'u
+// `<div className="jg-glow-warm relative">` ile sarmalı (bkz. SearchInput).
 function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   return (
     <input

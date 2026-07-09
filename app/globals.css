@@ -35,6 +35,11 @@
   /* Input odak "çukura vuran ışık" rengi — sıcak altın; input inset (nm-pressed)
      olduğu için odakta bir köşeden içeri vuran aydınlanma olarak kullanılır. */
   --pit-glow: oklch(0.74 0.11 82 / 0.5);
+  /* `.jg-glow-warm` halesi — aynı sıcak altın aile, --pit-glow ile tutarlı ama
+     öğenin ALTINDA/ÇEVRESİNDE yayılan daha geniş, daha dağınık bir ambiyans
+     ışığı için (bkz. IMG_5665 arama çubuğu, IMG_5664 termostat halesi). */
+  --glow-warm: oklch(0.78 0.1 84 / 0.4);
+  --glow-warm-strong: oklch(0.78 0.13 83 / 0.7);
 
   /* Jade (birincil) — marka swatch #3F4A44 ölçeği, muted */
   --primary: oklch(0.43 0.035 162);
@@ -126,6 +131,10 @@
   --glass-sheen: linear-gradient(160deg, oklch(1 0 0 / 0.11), transparent 54%);
   /* Gece: çukur daha koyu → ışık aydınlanması biraz daha parlak */
   --pit-glow: oklch(0.82 0.12 86 / 0.55);
+  /* Gece `.jg-glow-warm` halesi — koyu jade zeminde biraz daha parlak, aksi
+     halde koyu zeminde fark edilmez kalır. */
+  --glow-warm: oklch(0.8 0.11 86 / 0.45);
+  --glow-warm-strong: oklch(0.82 0.14 86 / 0.75);
 
   /* Antik altın — gece birincil (vurgu + metin kontrastı) */
   --primary: oklch(0.8 0.1 86);
@@ -332,23 +341,97 @@
     background: var(--glass-sheen);
     pointer-events: none;
   }
-  /* Tıklanabilir kabartma: hover'da daha çok kabarır, basınca içeri çöker */
+  /* Tıklanabilir kabartma: hover'da daha çok kabarır, basınca içeri çöker.
+     Geçiş biraz daha uzun/yumuşak — kabartma-çukur arası daha "dolgun" hissettirir. */
   .nm-interactive {
     background-image: var(--nm-convex);
     box-shadow: var(--shadow-raised-sm);
     transition:
-      box-shadow 0.35s var(--ease-premium),
-      transform 0.2s var(--ease-premium),
-      background-image 0.35s var(--ease-premium);
+      box-shadow 0.4s var(--ease-premium),
+      transform 0.3s var(--ease-premium),
+      background-image 0.4s var(--ease-premium);
   }
   .nm-interactive:hover {
     box-shadow: 0 0 22px 7px var(--background), var(--shadow-hover);
-    transform: translateY(-1px);
+    transform: translateY(-1.5px);
   }
   .nm-interactive:active {
     background-image: var(--nm-convex-press);
     box-shadow: var(--shadow-pressed);
     transform: scale(0.96);
+  }
+
+  /* Sıcak parıltı halesi — etkileşimli/öne çıkan öğelerin ALTINDA/ÇEVRESİNDE
+     yükselen yumuşak sıcak altın ışık (bkz. IMG_5665 arama çubuğu, IMG_5664
+     termostat halesi). `::after` ile öğenin ARKASINA yerleştirilir; böylece
+     box-shadow tabanlı diğer sınıflarla (nm-raised/nm-pressed/nm-interactive)
+     aynı elemanda ÇAKIŞMADAN birlikte kullanılabilir (iki ayrı katman).
+     Varsayılan hafif; hover/focus-within/focus-visible'da güçlenir.
+     prefers-reduced-motion global kuralı geçişi durdurur, hale kendisi kalır. */
+  .jg-glow-warm {
+    position: relative;
+    isolation: isolate;
+  }
+  .jg-glow-warm::after {
+    content: "";
+    position: absolute;
+    inset: 12% 8% -24%;
+    z-index: -1;
+    border-radius: inherit;
+    background: radial-gradient(closest-side, var(--glow-warm), transparent 72%);
+    filter: blur(14px);
+    opacity: 0.55;
+    pointer-events: none;
+    transition:
+      opacity 0.4s var(--ease-premium),
+      filter 0.4s var(--ease-premium);
+  }
+  .jg-glow-warm:hover::after,
+  .jg-glow-warm:focus-within::after,
+  .jg-glow-warm:focus-visible::after {
+    opacity: 1;
+    filter: blur(18px);
+    background: radial-gradient(closest-side, var(--glow-warm-strong), transparent 74%);
+  }
+  /* Büyük/dairesel öğeler için (FAB, ProgressRing) — daha geniş, daha yayılmış hale. */
+  .jg-glow-warm-lg::after {
+    inset: 6% 2% -32%;
+    filter: blur(24px);
+    opacity: 0.6;
+  }
+  .jg-glow-warm-lg:hover::after,
+  .jg-glow-warm-lg:focus-within::after,
+  .jg-glow-warm-lg:focus-visible::after {
+    filter: blur(30px);
+    opacity: 1;
+  }
+  /* Her zaman (hover beklemeden) hafifçe parlayan sabit hale — hero/öne çıkan
+     tekil göstergeler için (kullanıcı etkileşimi olmadan da "canlı" hissettirir). */
+  .jg-glow-warm-static::after {
+    opacity: 0.8;
+  }
+
+  /* İki-tonlu büyük rakam efekti — üstte nötr ön plan, altta sıcak antik
+     altın (bkz. IMG_5669). `background-clip: text` ile metin üstüne sert
+     kesimli (smooth degrade değil) bir ayrım uygulanır. Marka altını
+     `--gold-deep` her iki temada da ≥4.5:1 kontrast sağladığı için okunabilir
+     kalır. Arka planı desteklemeyen tarayıcılar için katı renk fallback'i. */
+  .jg-split-tone {
+    color: var(--foreground);
+    background-image: linear-gradient(
+      179deg,
+      var(--foreground) 0%,
+      var(--foreground) 50%,
+      var(--gold-deep) 50%,
+      var(--gold-deep) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+  @supports (background-clip: text) or (-webkit-background-clip: text) {
+    .jg-split-tone {
+      color: transparent;
+    }
   }
 }
 
