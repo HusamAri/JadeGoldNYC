@@ -13,8 +13,10 @@ const buttonVariants = cva(
           "bg-primary text-primary-foreground shadow-[var(--shadow-raised-sm)] hover:-translate-y-px hover:shadow-[var(--shadow-hover)] active:translate-y-0 active:scale-[0.96]",
         destructive:
           "bg-destructive text-destructive-foreground shadow-[var(--shadow-raised-sm)] hover:-translate-y-px hover:shadow-[var(--shadow-hover)] active:translate-y-0 active:scale-[0.96]",
-        outline: "bg-background text-foreground nm-interactive",
-        secondary: "bg-background text-foreground nm-interactive",
+        outline:
+          "bg-background text-foreground nm-interactive jg-glow-warm duration-300",
+        secondary:
+          "bg-background text-foreground nm-interactive jg-glow-warm duration-300",
         ghost:
           "text-foreground hover:bg-foreground/5 active:scale-[0.94] active:bg-foreground/10",
         link: "text-primary underline-offset-4 hover:underline active:opacity-70",
@@ -24,6 +26,8 @@ const buttonVariants = cva(
         sm: "h-8 gap-1.5 px-4 has-[>svg]:px-3",
         lg: "h-12 px-7 text-[0.95rem] has-[>svg]:px-5",
         icon: "size-10",
+        /** Büyük dairesel FAB — bkz. IMG_5673 (kabartmalı, tam yuvarlak, iri ikon). */
+        fab: "size-14 [&_svg:not([class*='size-'])]:size-6",
       },
     },
     defaultVariants: { variant: "default", size: "default" },

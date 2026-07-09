@@ -17,6 +17,7 @@ import { StarSellerCards, overallLabel } from "@/components/star-seller-cards";
 import { StarSellerForm } from "@/components/star-seller-form";
 import { EmptyState } from "@/components/empty-state";
 import { Button } from "@/components/ui/button";
+import { ProgressRing } from "@/components/ui/progress-ring";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -77,6 +78,11 @@ export default async function YildizSaticiPage({
 
   const latestValues = valuesOf(latest);
   const overall = overallLabel(latestValues);
+  // Star Seller ilerlemesi: 4 metrikten kaçı Star Seller hedefinde —
+  // gerçek/hesaplanmış veri (icat edilmiş bir "skor" değil).
+  const latestMetricViews = metricViews(latestValues);
+  const targetMetricCount = latestMetricViews.filter((m) => m.status === "target").length;
+  const starSellerProgress = (targetMetricCount / latestMetricViews.length) * 100;
 
   const formDefaults = editing
     ? StarSellerFormValuesFromRow(editing)
@@ -103,6 +109,14 @@ export default async function YildizSaticiPage({
           {/* Durum şeridi */}
           <Card>
             <CardContent className="flex flex-wrap items-center gap-x-6 gap-y-3">
+              <ProgressRing
+                value={starSellerProgress}
+                valueLabel={`${targetMetricCount}/${latestMetricViews.length}`}
+                label="Hedefte"
+                size={76}
+                strokeWidth={6}
+                aria-label={`Star Seller ilerlemesi: 4 metrikten ${targetMetricCount} tanesi hedefte`}
+              />
               <div className="flex items-center gap-2">
                 <Star className="text-primary size-5" />
                 <div>
