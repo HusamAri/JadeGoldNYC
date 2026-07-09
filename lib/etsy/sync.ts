@@ -710,3 +710,140 @@ export async function getSyncProgress(orgId: string): Promise<SyncProgress> {
     error: c?.sync_error ?? undefined,
   };
 }
+
+export interface EtsyListingChange {
+  title: string;
+  etsyListingId: number | null;
+}
+
+export interface EtsySyncSummary {
+  status: "running" | "done" | "error" | "idle";
+  phase: SyncProgress["phase"];
+  lastSyncAt: string | null;
+  startedAt: string | null;
+  updatedAt: string | null;
+  error?: string;
+  counts: {
+    sales: number;
+    items: number;
+    products: number;
+    reviews: number;
+    ledger: number;
+  };
+  linkedProducts: { total: number; active: number };
+  listingChanges: {
+    becameActive: EtsyListingChange[];
+    becameInactive: EtsyListingChange[];
+    moreActiveCount: number;
+    moreInactiveCount: number;
+  };
+}
+
+const LISTING_CHANGE_SHOW = 6;
+
+/**
+ * KALICI "Son Senkron Özeti" — sayfa her açıldığında (çalışan bir tur olsun
+ * olmasın) gösterilir. Ürün durum değişimleri ("ne geldi ne gitti") audit
+ * logdan çıkarılır: `sync_started_at`→`sync_updated_at` penceresinde
+ * `products` tablosuna yazılan status değişiklikleri (audit_trigger zaten her
+ * update'i before/after diff'iyle audit_log'a yazıyor — ayrı bir izleme
+ * tablosu gerekmez).
+ */
+export async function getLastSyncSummary(orgId: string): Promise<EtsySyncSummary> {
+  const admin = createAdminClient();
+  const { data } = await admin
+    .from("etsy_connection")
+    .select(
+      "sync_status, sync_phase, sync_sales, sync_items, sync_products, sync_reviews, sync_ledger, sync_error, last_sync_at, sync_started_at, sync_updated_at",
+    )
+    .eq("org_id", orgId)
+    .maybeSingle();
+  const c = data as
+    | (CursorRow & {
+        sync_error: string | null;
+        sync_started_at: string | null;
+        sync_updated_at: string | null;
+      })
+    | null;
+  const status = (c?.sync_status ?? "idle") as EtsySyncSummary["status"];
+
+  const [{ count: total }, { count: active }] = await Promise.all([
+    admin
+      .from("products")
+      .select("id", { count: "exact", head: true })
+      .eq("org_id", orgId)
+      .not("etsy_listing_id", "is", null),
+    admin
+      .from("products")
+      .select("id", { count: "exact", head: true })
+      .eq("org_id", orgId)
+      .not("etsy_listing_id", "is", null)
+      .eq("status", "active"),
+  ]);
+
+  const becameActive: EtsyListingChange[] = [];
+  const becameInactive: EtsyListingChange[] = [];
+  let moreActiveCount = 0;
+  let moreInactiveCount = 0;
+
+  if (c?.sync_started_at) {
+    const windowEnd = c.sync_updated_at ?? new Date().toISOString();
+    const { data: auditRows } = await admin
+      .from("audit_log")
+      .select("diff")
+      .eq("org_id", orgId)
+      .eq("entity_type", "products")
+      .eq("action", "update")
+      .gte("created_at", c.sync_started_at)
+      .lte("created_at", windowEnd)
+      .limit(1000);
+
+    for (const row of (auditRows ?? []) as { diff: unknown }[]) {
+      const diff = row.diff as {
+        before?: { status?: string | null };
+        after?: {
+          status?: string | null;
+          title?: string | null;
+          etsy_listing_id?: number | null;
+        };
+      } | null;
+      const before = diff?.before?.status ?? null;
+      const after = diff?.after?.status ?? null;
+      if (!diff?.after || before === after) continue;
+      const entry: EtsyListingChange = {
+        title: diff.after.title ?? "Ürün",
+        etsyListingId: diff.after.etsy_listing_id ?? null,
+      };
+      if (after === "active") {
+        if (becameActive.length < LISTING_CHANGE_SHOW) becameActive.push(entry);
+        else moreActiveCount++;
+      } else if (before === "active") {
+        if (becameInactive.length < LISTING_CHANGE_SHOW) becameInactive.push(entry);
+        else moreInactiveCount++;
+      }
+    }
+  }
+
+  return {
+    status,
+    phase: (c?.sync_phase ?? "done") as SyncProgress["phase"],
+    lastSyncAt: c?.last_sync_at ?? null,
+    startedAt: c?.sync_started_at ?? null,
+    updatedAt: c?.sync_updated_at ?? null,
+    error: c?.sync_error ?? undefined,
+    counts: {
+      sales: c?.sync_sales ?? 0,
+      items: c?.sync_items ?? 0,
+      products: c?.sync_products ?? 0,
+      reviews: c?.sync_reviews ?? 0,
+      ledger: c?.sync_ledger ?? 0,
+    },
+    linkedProducts: { total: total ?? 0, active: active ?? 0 },
+    listingChanges: {
+      becameActive,
+      becameInactive,
+      moreActiveCount,
+      moreInactiveCount,
+    },
+  };
+}

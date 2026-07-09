@@ -6,7 +6,9 @@ import { requireMembership } from "@/lib/auth";
 import {
   advanceEtsySync,
   getSyncProgress,
+  getLastSyncSummary,
   type SyncProgress,
+  type EtsySyncSummary,
 } from "@/lib/etsy/sync";
 import { EtsyNotConnectedError } from "@/lib/etsy/client";
 
@@ -50,4 +52,13 @@ export async function advanceEtsySyncAction(): Promise<SyncProgress> {
 export async function etsySyncStatusAction(): Promise<SyncProgress> {
   const m = await requireMembership();
   return getSyncProgress(m.org_id);
+}
+
+/**
+ * Kalıcı "Son Senkron Özeti" — sayfa yenilense/senkron çalışmıyor olsa bile
+ * son turun sayılarını, bağlı ürün adedini ve ürün durum değişimlerini döner.
+ */
+export async function getLastSyncSummaryAction(): Promise<EtsySyncSummary> {
+  const m = await requireMembership();
+  return getLastSyncSummary(m.org_id);
 }
