@@ -2,6 +2,7 @@ import { ExternalLink, CheckCircle2, XCircle } from "lucide-react";
 
 import { requireMembership } from "@/lib/auth";
 import { getEtsyStatus } from "@/lib/db/queries/etsy";
+import { getLastSyncSummary } from "@/lib/etsy/sync";
 import { formatDateTime } from "@/lib/format";
 import { PageHeader } from "@/components/page-header";
 import { EtsySyncButton } from "@/components/etsy-sync-button";
@@ -23,7 +24,10 @@ export const maxDuration = 60;
 
 export default async function EtsyAyarlarPage() {
   const m = await requireMembership();
-  const status = await getEtsyStatus(m.org_id);
+  const [status, summary] = await Promise.all([
+    getEtsyStatus(m.org_id),
+    getLastSyncSummary(m.org_id),
+  ]);
   const connected = status.status === "connected";
   // Etsy v3 her API çağrısında keystring + shared secret ister; ikisi de yoksa
   // "yapılandırılmış" sayma (yoksa Bağlan butonu config hatasına çarpıp döner).
@@ -83,7 +87,7 @@ export default async function EtsyAyarlarPage() {
                   {"Etsy'ye Bağlan"}
                 </Button>
               )}
-              <EtsySyncButton disabled={!connected} />
+              <EtsySyncButton disabled={!connected} initialSummary={summary} />
             </div>
             {!configured && (
               <p className="text-destructive text-sm">
