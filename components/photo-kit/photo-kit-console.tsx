@@ -227,7 +227,7 @@ export function PhotoKitConsole({ producedIds }: { producedIds: number[] }) {
                   </p>
                   <p className="text-muted-foreground text-xs">
                     {s === "dark" &&
-                      "Siyah volkanik taş / arduvaz, sıcak yandan ışık, altın rim — dramatik lüks."}
+                      "Siyah volkanik taş, sıcak yandan ışık, altın rim — dramatik lüks."}
                     {s === "light" &&
                       "Ekru keten + krem mermer, ferah gün ışığı — minimal ve zarif."}
                     {s === "silk" &&
