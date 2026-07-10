@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { requireMembership } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { logAudit } from "@/lib/audit";
-import type { ReportContent, TaskPriority } from "@/lib/types";
+import type { ReportContent, ReportTierKey, TaskPriority } from "@/lib/types";
 
 export async function logReportExport(label: string): Promise<void> {
   const m = await requireMembership();
@@ -24,6 +24,13 @@ export interface CreateReportTaskInput {
   description?: string;
   priority: TaskPriority;
   dueDate?: string;
+  /**
+   * Görevin rapor içeriğindeki karşılığı: hangi kademenin kaçıncı satırı.
+   * Verilirse, insert'ten dönen görev id'si `content.tiers[].items[].taskId`
+   * alanına geri yazılır — rapor sayfasındaki durum seçici buna bağlanır.
+   */
+  tierKey?: ReportTierKey;
+  itemIndex?: number;
 }
 
 export interface CreateReportInput {
@@ -65,6 +72,7 @@ export async function createReport(
   if (error) return { error: error.message };
   const reportId = (data as { id: string }).id;
 
+  let taskError: string | undefined;
   if (input.tasks && input.tasks.length > 0) {
     const rows = input.tasks.map((t, i) => ({
       org_id: m.org_id,
@@ -77,14 +85,53 @@ export async function createReport(
       created_by: m.user_id,
       sort_order: i,
     }));
-    const { error: taskError } = await supabase.from("tasks").insert(rows);
-    if (taskError) return { error: taskError.message, id: reportId };
+    const { data: inserted, error: insertError } = await supabase
+      .from("tasks")
+      .insert(rows)
+      .select("id, sort_order");
+
+    if (insertError) {
+      taskError = insertError.message;
+    } else {
+      // Dönen görev id'lerini içerikteki kademe satırlarına geri yaz — rapor
+      // sayfasındaki durum seçici `taskId` üzerinden çalışır. Eşleme sırayla
+      // değil sort_order ile (insert dönüş sırası garantili değildir).
+      const idByOrder = new Map(
+        ((inserted ?? []) as { id: string; sort_order: number }[]).map((r) => [
+          r.sort_order,
+          r.id,
+        ]),
+      );
+      let patched = false;
+      const content = input.content;
+      input.tasks.forEach((t, i) => {
+        if (t.tierKey == null || t.itemIndex == null) return;
+        const item = content.tiers
+          .find((tier) => tier.key === t.tierKey)
+          ?.items[t.itemIndex];
+        const id = idByOrder.get(i);
+        if (item && id) {
+          item.taskId = id;
+          patched = true;
+        }
+      });
+      if (patched) {
+        const { error: patchError } = await supabase
+          .from("reports")
+          .update({ content })
+          .eq("id", reportId);
+        if (patchError) taskError = patchError.message;
+      }
+    }
   }
 
+  // Rapor satırı bu noktada her durumda var — görev ekleme başarısız olsa
+  // bile cache tazelenmeli, yoksa rapor DB'de olduğu halde listede görünmez
+  // ve kullanıcı tekrar oluşturup kopya üretebilir.
   revalidatePath("/raporlar");
   revalidatePath(`/raporlar/${reportId}`);
   revalidatePath("/gorevler");
-  return { id: reportId };
+  return taskError ? { error: taskError, id: reportId } : { id: reportId };
 }
 
 export async function deleteReport(id: string): Promise<{ error?: string }> {
