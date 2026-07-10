@@ -99,6 +99,7 @@ export const ENTITY_TYPE_LABELS: Record<string, string> = {
   generated_images: "AI Görsel",
   auth: "Oturum",
   report: "Rapor",
+  reports: "Rapor",
 };
 
 /** Sepet kurtarma durumları. */
