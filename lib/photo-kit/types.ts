@@ -55,7 +55,7 @@ export const SCENE_LABEL: Record<PhotoKitItem["scene"], string> = {
 };
 
 export const SCENE_DESC: Record<PhotoKitItem["scene"], string> = {
-  dark: "Siyah volkanik taş / koyu arduvaz, sıcak yandan ışık, altın rim — dramatik lüks.",
+  dark: "Siyah volkanik taş, sıcak yandan ışık, altın rim — dramatik lüks.",
   light: "Ekru keten + krem mermer, ferah gün ışığı — minimal ve zarif.",
   silk: "Şampanya-altın saten kıvrımlar, sıcak parıltı — editoryal ve feminen.",
 };
