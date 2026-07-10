@@ -1,5 +1,9 @@
+import Link from "next/link";
+import { FileText } from "lucide-react";
+
 import { resolvePeriod, previousPeriod } from "@/lib/period";
 import { getDashboard } from "@/lib/db/queries/dashboard";
+import { listReports } from "@/lib/db/queries/reports";
 import { strParam, type RawSearchParams } from "@/lib/searchparams";
 import { formatMoney, formatPercent } from "@/lib/money";
 import { formatNumber, formatDate } from "@/lib/format";
@@ -7,6 +11,7 @@ import { PageHeader } from "@/components/page-header";
 import { GoldStream } from "@/components/brand/gold-stream";
 import { PeriodSelector } from "@/components/period-selector";
 import { ReportExport } from "@/components/report-export";
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -32,9 +37,10 @@ export default async function RaporlarPage({
   const sp = await searchParams;
   const period = resolvePeriod(strParam(sp.period));
   const prev = previousPeriod(period);
-  const [d, prevData] = await Promise.all([
+  const [d, prevData, savedReports] = await Promise.all([
     getDashboard(period),
     prev ? getDashboard(prev) : Promise.resolve(null),
+    listReports(),
   ]);
   const cur = d.currency;
 
@@ -73,6 +79,39 @@ export default async function RaporlarPage({
           </>
         }
       />
+
+      {savedReports.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Kayıtlı Raporlar</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            {savedReports.map((r) => (
+              <Link
+                key={r.id}
+                href={`/raporlar/${r.id}`}
+                className="hover:bg-muted/50 flex items-center gap-3 rounded-lg border p-3 transition-colors"
+              >
+                <div className="bg-accent text-accent-foreground flex size-9 shrink-0 items-center justify-center rounded-xl">
+                  <FileText className="size-4" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate font-medium">{r.title}</p>
+                  <p className="text-muted-foreground truncate text-xs">
+                    {formatDate(r.report_date)} · {r.category}
+                    {r.summary ? ` · ${r.summary}` : ""}
+                  </p>
+                </div>
+                {r.taskTotal > 0 && (
+                  <Badge variant="secondary" className="shrink-0 tabular-nums">
+                    {r.taskDone}/{r.taskTotal} görev
+                  </Badge>
+                )}
+              </Link>
+            ))}
+          </CardContent>
+        </Card>
+      )}
 
       <Card>
         <CardHeader>

@@ -116,6 +116,21 @@ export async function listTasks(
   return attachAssignees((data ?? []) as Task[]);
 }
 
+/** Bir rapordan çıkan görevler — durumları `tasks.status`'tan canlı okunur. */
+export async function listTasksByReport(
+  reportId: string,
+): Promise<TaskWithAssignee[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("tasks")
+    .select("*")
+    .eq("report_id", reportId)
+    .order("priority", { ascending: true })
+    .order("sort_order", { ascending: true });
+  if (error) throw error;
+  return attachAssignees((data ?? []) as Task[]);
+}
+
 export async function getTask(id: string): Promise<TaskWithAssignee | null> {
   const supabase = await createClient();
   const { data } = await supabase
