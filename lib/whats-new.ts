@@ -9,6 +9,7 @@ import {
   AlertTriangle,
   PanelsTopLeft,
   Moon,
+  Gem,
   type LucideIcon,
 } from "lucide-react";
 
@@ -40,6 +41,16 @@ export interface WhatsNewEntry {
 
 export const WHATS_NEW: WhatsNewEntry[] = [
   {
+    id: "2026-07-11-artifact-neumorphglass",
+    date: "2026-07-11",
+    title: "Artifact platformu + NeumorphGlass tasarım dili",
+    description:
+      "Panel çok markalı Artifact platformuna dönüştü: giriş, kurulum ve diğer şirketler yeni NeumorphGlass görünümünü (yumuşak kabartı/çukur yüzeyler, buzlu cam, iridesan holografik vurgu) kullanır. Jade Gold NYC kendi panelinde özgün sıcak kimliğini — renkler, desenler, logo ve görseller — korur.",
+    category: "feature",
+    icon: Gem,
+    isNew: true,
+  },
+  {
     id: "2026-07-04-satis-dashboard",
     date: "2026-07-04",
     title: "Satışlar analiz paneli",
@@ -70,7 +81,6 @@ export const WHATS_NEW: WhatsNewEntry[] = [
     category: "feature",
     href: "/ayarlar/shipstation",
     icon: Truck,
-    isNew: true,
   },
   {
     id: "2026-07-04-stok-isik",
