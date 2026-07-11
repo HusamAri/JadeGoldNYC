@@ -1,10 +1,12 @@
 "use client";
 
+import { useTransition } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, LogOut, ChevronLeft } from "lucide-react";
+import { Menu, LogOut, ChevronLeft, Check, Plus, Building2 } from "lucide-react";
 
-import { signOut } from "@/lib/actions/session";
+import { signOut, switchOrganization } from "@/lib/actions/session";
+import type { MembershipWithOrg } from "@/lib/auth";
 import { NAV_ITEMS, NAV_GROUPS } from "@/components/layout/nav-items";
 import { Logo } from "@/components/layout/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -24,12 +26,24 @@ export function Topbar({
   email,
   name,
   avatarUrl,
+  memberships,
+  activeOrgId,
 }: {
   email: string;
   name?: string | null;
   avatarUrl?: string | null;
+  memberships: MembershipWithOrg[];
+  activeOrgId: string;
 }) {
   const pathname = usePathname();
+  const [switchPending, startSwitch] = useTransition();
+
+  function onSwitchOrg(orgId: string) {
+    if (orgId === activeOrgId) return;
+    startSwitch(async () => {
+      await switchOrganization(orgId).catch(() => {});
+    });
+  }
   const current = NAV_ITEMS.find(
     (i) => pathname === i.href || pathname.startsWith(i.href + "/"),
   );
@@ -115,6 +129,30 @@ export function Topbar({
           <DropdownMenuLabel className="truncate">
             {name || email}
           </DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          {/* Şirketler — mobilde sidebar (ve oradaki seçici) görünmediğinden
+              şirket geçişi + yeni şirket kurma her ekranda buradan erişilir. */}
+          <DropdownMenuLabel className="text-muted-foreground flex items-center gap-1.5 text-[0.68rem] font-bold tracking-[0.12em] uppercase">
+            <Building2 className="size-3.5" />
+            Şirketler
+          </DropdownMenuLabel>
+          {memberships.map((m) => (
+            <DropdownMenuItem
+              key={m.org_id}
+              onSelect={() => onSwitchOrg(m.org_id)}
+              disabled={switchPending}
+              className="gap-2"
+            >
+              <span className="min-w-0 flex-1 truncate">{m.orgName}</span>
+              {m.org_id === activeOrgId && <Check className="size-4 shrink-0" />}
+            </DropdownMenuItem>
+          ))}
+          <DropdownMenuItem asChild>
+            <Link href="/kurulum" className="gap-2">
+              <Plus className="size-4" />
+              Yeni şirket kur
+            </Link>
+          </DropdownMenuItem>
           <DropdownMenuSeparator />
           <div className="p-1">
             <form action={signOut}>

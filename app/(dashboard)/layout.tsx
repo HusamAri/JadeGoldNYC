@@ -36,6 +36,8 @@ export default async function DashboardLayout({
           email={user?.email ?? ""}
           name={profile?.full_name ?? null}
           avatarUrl={profile?.avatar_url ?? null}
+          memberships={memberships}
+          activeOrgId={m.org_id}
         />
         <main className="flex-1 p-4 md:p-6 lg:p-8">
           <PageTransition>{children}</PageTransition>
