@@ -83,8 +83,10 @@ export function KpiCard({
           {hint && <p className="text-muted-foreground mt-1 text-xs">{hint}</p>}
         </div>
         {Icon && (
-          <div className="bg-accent text-accent-foreground flex size-11 shrink-0 items-center justify-center rounded-2xl shadow-[var(--shadow-raised-sm)]">
-            <Icon className="size-5" />
+          // Liquid glass çip — buzlu cam yüzey + sheen + ince hairline; ikon
+          // camın altında yüzer gibi durur (tema/marka kapsamında otomatik uyar).
+          <div className="text-accent-foreground relative flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-[color:var(--glass-border)] bg-[image:var(--glass-sheen),var(--glass)] shadow-[var(--lift-sm),var(--glass-highlight)] backdrop-blur-md">
+            <Icon className="relative size-5" />
           </div>
         )}
       </CardContent>

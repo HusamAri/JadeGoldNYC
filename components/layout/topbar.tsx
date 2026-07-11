@@ -65,7 +65,7 @@ export function Topbar({
   const parentHref = pathname.split("/").slice(0, -1).join("/") || "/panel";
 
   return (
-    <header className="bg-background/80 sticky top-0 z-30 flex h-16 items-center justify-between gap-3 px-4 shadow-[0_10px_24px_-20px_rgb(var(--nm-dark)/0.7)] backdrop-blur-md md:px-6">
+    <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-3 border-b border-[color:var(--glass-border)] bg-[image:var(--glass-sheen),var(--glass)] px-4 shadow-[0_14px_34px_-22px_var(--glass-outer),var(--glass-highlight)] backdrop-blur-xl [backdrop-filter:blur(20px)_saturate(160%)] md:px-6">
       <div className="flex items-center gap-3">
         {/* Geri — alt/detay sayfalarında */}
         {isSubPage && (
