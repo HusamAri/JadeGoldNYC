@@ -1,6 +1,5 @@
 import type { LucideIcon } from "lucide-react";
 
-import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 function formatChange(change: number): string {
@@ -41,13 +40,16 @@ export function KpiCard({
   splitTone?: boolean;
 }) {
   return (
-    <Card
+    // Liquid glass board — dev puntolu rakam bu camın üstünde yüzer. Yalnız
+    // KPI/istatistik kartlarında (rakamsal board) kullanılır; buzlu cam,
+    // içine gömülü renk sızıntısı ve lift gölgesiyle "cam" belirgin okunur.
+    <div
       className={cn(
-        "h-full min-w-0 transition-transform duration-200 ease-[var(--ease-premium)] hover:-translate-y-[3px]",
+        "glass-board relative flex h-full min-w-0 flex-col overflow-hidden rounded-[1.75rem] px-6 py-6 transition-transform duration-200 ease-[var(--ease-premium)] hover:-translate-y-[3px]",
         className,
       )}
     >
-      <CardContent className="flex h-full items-start justify-between gap-3">
+      <div className="flex h-full items-start justify-between gap-3">
         <div className="flex min-w-0 flex-col">
           <p className="text-muted-foreground line-clamp-2 min-h-[2.5rem] text-sm leading-snug">
             {label}
@@ -83,13 +85,13 @@ export function KpiCard({
           {hint && <p className="text-muted-foreground mt-1 text-xs">{hint}</p>}
         </div>
         {Icon && (
-          // Liquid glass çip — buzlu cam yüzey + sheen + ince hairline; ikon
-          // camın altında yüzer gibi durur (tema/marka kapsamında otomatik uyar).
-          <div className="text-accent-foreground relative flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-[color:var(--glass-border)] bg-[image:var(--glass-sheen),var(--glass)] shadow-[var(--lift-sm),var(--glass-highlight)] backdrop-blur-md">
-            <Icon className="relative size-5" />
+          // İkon kuyusu — cam board üstünde hafif frosted çip (ince hairline +
+          // highlight); kart zaten cam olduğundan çip sade tutulur.
+          <div className="text-foreground/75 flex size-11 shrink-0 items-center justify-center rounded-2xl border border-[color:var(--glass-border)] bg-white/25 shadow-[var(--glass-highlight)] dark:bg-white/[0.06]">
+            <Icon className="size-5" />
           </div>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

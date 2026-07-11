@@ -44,41 +44,54 @@ const GLASS_TOOLTIP = {
 } as const;
 
 /**
- * Paylaşılan SVG tanımları — 3B derinlik ve "neon" ışıma dili. Her grafik
- * kendi <defs>'ini basar (id'ler aynı SVG içinde çözülmeli):
+ * Paylaşılan SVG tanımları — TAM TEPEDEN bakılan 3B dili. Panelin geri
+ * kalanı gibi grafiklere de kuşbakışı bakarız; yükseklik izometrik yüzeyle
+ * DEĞİL, öğenin yüzeyin çok yukarısında durup ALTINA düşürdüğü yumuşak
+ * gölge + çevresine yaydığı ışık alanıyla anlatılır (nöromorfik dil).
  *  - spot: grafiğin arkasına düşen yumuşak holo/altın ışık halesi
- *  - neon: çizgi/nokta için yumuşak dış parıltı (feGaussianBlur + merge)
- *  - barFace: 3B ekstrüde barın ön yüzü için dikey degrade
- *  - barShadow: bar grubunun altına düşen yumuşak derinlik gölgesi
- * Renkler --chart-* tokenlarından; platformda holo periwinkle, JG'de altın.
+ *  - face: barın üstten degrade dolgusu (sol-üst highlight, sağ-alt gölge)
+ *  - area: çizginin yaydığı ışık — altına dökülen yumuşak glow
+ *  - float: öğeyi "çok yukarıda" gösteren birleşik filtre — aşağı ofsetli
+ *    koyu yumuşak gölge (yükseklik) + tonda dış glow (yayılan ışık)
+ * Renkler --chart-* tokenlarından; platformda holo, JG'de altın.
  */
 function ChartDefs({ id, tone = "var(--chart-1)" }: { id: string; tone?: string }) {
   return (
     <defs>
-      <radialGradient id={`${id}-spot`} cx="0.8" cy="0.1" r="0.7">
-        <stop offset="0%" stopColor={tone} stopOpacity="0.22" />
+      <radialGradient id={`${id}-spot`} cx="0.7" cy="0.1" r="0.8">
+        <stop offset="0%" stopColor={tone} stopOpacity="0.18" />
         <stop offset="100%" stopColor={tone} stopOpacity="0" />
       </radialGradient>
-      <linearGradient id={`${id}-face`} x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor={tone} stopOpacity="0.95" />
-        <stop offset="100%" stopColor={tone} stopOpacity="0.45" />
+      <linearGradient id={`${id}-face`} x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor="#ffffff" stopOpacity="0.5" />
+        <stop offset="24%" stopColor={tone} stopOpacity="0.98" />
+        <stop offset="100%" stopColor={tone} stopOpacity="0.72" />
       </linearGradient>
       <linearGradient id={`${id}-area`} x1="0" y1="0" x2="0" y2="1">
-        <stop offset="5%" stopColor={tone} stopOpacity="0.4" />
-        <stop offset="95%" stopColor={tone} stopOpacity="0" />
+        <stop offset="0%" stopColor={tone} stopOpacity="0.34" />
+        <stop offset="70%" stopColor={tone} stopOpacity="0.06" />
+        <stop offset="100%" stopColor={tone} stopOpacity="0" />
       </linearGradient>
-      <filter id={`${id}-neon`} x="-40%" y="-80%" width="180%" height="260%">
-        <feGaussianBlur stdDeviation="4" result="b" />
+      {/* "Çok yukarıda" hissi: aşağı ofsetli yumuşak koyu gölge (yüzeye düşer)
+          + tonda dış glow (yayılan ışık) + kaynak. Tek geçişte birleşir. */}
+      <filter id={`${id}-float`} x="-40%" y="-60%" width="180%" height="260%">
+        <feGaussianBlur in="SourceAlpha" stdDeviation="7" result="sblur" />
+        <feOffset in="sblur" dx="0" dy="14" result="soff" />
+        <feFlood floodColor="var(--glass-outer)" result="scol" />
+        <feComposite in="scol" in2="soff" operator="in" result="shadow" />
+        <feGaussianBlur in="SourceGraphic" stdDeviation="3.5" result="glow" />
         <feMerge>
-          <feMergeNode in="b" />
+          <feMergeNode in="shadow" />
+          <feMergeNode in="glow" />
           <feMergeNode in="SourceGraphic" />
         </feMerge>
       </filter>
-      <filter id={`${id}-depth`} x="-30%" y="-30%" width="160%" height="170%">
+      {/* Barlar için: yalnız aşağı düşen yumuşak gölge (kuşbakışı yükseklik). */}
+      <filter id={`${id}-drop`} x="-40%" y="-30%" width="180%" height="200%">
         <feDropShadow
           dx="0"
-          dy="6"
-          stdDeviation="5"
+          dy="9"
+          stdDeviation="6"
           floodColor="var(--glass-outer)"
         />
       </filter>
@@ -87,36 +100,41 @@ function ChartDefs({ id, tone = "var(--chart-1)" }: { id: string; tone?: string 
 }
 
 /**
- * 3B ekstrüde bar — üst yüz (aydınlık pah), ön yüz (degrade) ve sağ yan yüz
- * (koyu derinlik). Işık sağ-üstten; barlar tabandan hafifçe yükselir (kit dili).
- * Recharts custom `shape`; props Recharts'tan gelir (x/y/width/height/fill).
+ * TEPEDEN bakılan yükseltilmiş bar — izometrik yüz YOK. Düz, üstten
+ * aydınlatılmış (sol-üst beyaz highlight → sağ-alt tonda gölge) yuvarlak
+ * bar; ALTINA düşen yumuşak gölge (drop) barı yüzeyin yukarısında "yüzer"
+ * gösterir. Işık yönü panelin geri kalanıyla aynı. Recharts custom `shape`.
  */
-function Bar3D(props: {
+function BarRaised(props: {
   x?: number;
   y?: number;
   width?: number;
   height?: number;
   defsId: string;
-  tone: string;
 }) {
-  const { x = 0, y = 0, width = 0, height = 0, defsId, tone } = props;
+  const { x = 0, y = 0, width = 0, height = 0, defsId } = props;
   if (height <= 0 || width <= 0) return null;
-  const dx = Math.min(8, width * 0.5);
-  const dy = -dx;
-  const topFace = `${x},${y} ${x + dx},${y + dy} ${x + width + dx},${y + dy} ${x + width},${y}`;
-  const sideFace = `${x + width},${y} ${x + width + dx},${y + dy} ${x + width + dx},${y + height + dy} ${x + width},${y + height}`;
+  const r = Math.min(6, width * 0.32);
   return (
-    <g filter={`url(#${defsId}-depth)`}>
-      <polygon points={sideFace} fill={tone} opacity="0.4" />
+    <g filter={`url(#${defsId}-drop)`}>
       <rect
         x={x}
         y={y}
         width={width}
         height={height}
-        rx="3"
+        rx={r}
         fill={`url(#${defsId}-face)`}
       />
-      <polygon points={topFace} fill="#ffffff" opacity="0.72" />
+      {/* üst pah highlight'ı — kuşbakışı ışık yüzeye tepeden vurur */}
+      <rect
+        x={x + 1}
+        y={y + 1}
+        width={width - 2}
+        height={Math.min(3, height)}
+        rx={r * 0.6}
+        fill="#ffffff"
+        opacity="0.55"
+      />
     </g>
   );
 }
@@ -152,9 +170,9 @@ export function TrendChart({
           stroke="var(--chart-1)"
           fill="url(#trend-area)"
           strokeWidth={2.5}
-          filter="url(#trend-neon)"
+          filter="url(#trend-float)"
           dot={false}
-          activeDot={{ r: 5, fill: "var(--chart-1)", filter: "url(#trend-neon)" }}
+          activeDot={{ r: 5, fill: "var(--chart-1)", filter: "url(#trend-float)" }}
         />
         <Area
           type="monotone"
@@ -171,7 +189,7 @@ export function TrendChart({
   );
 }
 
-/** Günlük/dönemsel sipariş sayısı — 3B ekstrüde bar grafiği + spot ışık. */
+/** Günlük/dönemsel sipariş sayısı — tepeden yükseltilmiş barlar + spot ışık. */
 export function OrdersBarChart({
   data,
 }: {
@@ -215,7 +233,7 @@ export function OrdersBarChart({
         <Bar
           dataKey="orders"
           name="Sipariş"
-          shape={<Bar3D defsId="orders" tone="var(--chart-1)" />}
+          shape={<BarRaised defsId="orders" />}
           isAnimationActive={false}
         />
       </BarChart>
@@ -263,9 +281,9 @@ export function RevenueAreaChart({
           stroke="var(--chart-2)"
           fill="url(#rev-area)"
           strokeWidth={2.5}
-          filter="url(#rev-neon)"
+          filter="url(#rev-float)"
           dot={false}
-          activeDot={{ r: 5, fill: "var(--chart-2)", filter: "url(#rev-neon)" }}
+          activeDot={{ r: 5, fill: "var(--chart-2)", filter: "url(#rev-float)" }}
         />
       </AreaChart>
     </ResponsiveContainer>
