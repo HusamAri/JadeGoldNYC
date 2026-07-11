@@ -9,11 +9,14 @@ import {
   MapPin,
 } from "lucide-react";
 
-import { requireMembership } from "@/lib/auth";
+import { requireMembership, isManager } from "@/lib/auth";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { ShipStationClient } from "@/lib/shipstation/client";
 import { getShipStationStatus } from "@/lib/db/queries/shipstation";
 import { formatDateTime, formatNumber } from "@/lib/format";
 import { PageHeader } from "@/components/page-header";
 import { ShipStationSyncButton } from "@/components/shipstation-sync-button";
+import { ShipStationCredentialsForm } from "@/components/shipstation-credentials-form";
 import { SectionGuide } from "@/components/section-guide";
 import { Badge } from "@/components/ui/badge";
 import { KpiCard } from "@/components/kpi-card";
@@ -31,11 +34,14 @@ export const metadata = { title: "ShipStation Entegrasyonu" };
 export const maxDuration = 60;
 
 export default async function ShipStationAyarlarPage() {
-  await requireMembership();
-  const status = await getShipStationStatus();
-  const configured = Boolean(
-    process.env.SHIPSTATION_API_KEY && process.env.SHIPSTATION_API_SECRET,
-  );
+  const m = await requireMembership();
+  const admin = createAdminClient();
+  const [status, configured] = await Promise.all([
+    getShipStationStatus(),
+    // Platform: org'a özel anahtar VEYA (geriye dönük) platform env'i.
+    ShipStationClient.isConfiguredForOrg(admin, m.org_id),
+  ]);
+  const manager = isManager(m.role);
   const hasData = status.orders > 0 || status.shipments > 0;
 
   return (
@@ -78,10 +84,12 @@ export default async function ShipStationAyarlarPage() {
 
             <ShipStationSyncButton disabled={!configured} />
 
-            {!configured && (
+            {manager && <ShipStationCredentialsForm configured={configured} />}
+
+            {!configured && !manager && (
               <p className="text-destructive text-sm">
-                Vercel ortam değişkenlerine <code>SHIPSTATION_API_KEY</code> ve{" "}
-                <code>SHIPSTATION_API_SECRET</code> ekleyip yeniden dağıtın.
+                ShipStation anahtarlarını şirket sahibi/yöneticisi bu sayfadan
+                girebilir.
               </p>
             )}
           </CardContent>
@@ -207,8 +215,8 @@ export default async function ShipStationAyarlarPage() {
             <p>
               ShipStation → Settings → Account → API Settings bölümünden{" "}
               <strong>API Key</strong> ve <strong>API Secret</strong> alın;
-              Vercel ortam değişkenlerine <code>SHIPSTATION_API_KEY</code> ve{" "}
-              <code>SHIPSTATION_API_SECRET</code> olarak girin.
+              yukarıdaki forma girip kaydedin. Anahtarlar şirkete özeldir ve
+              yalnız sunucu tarafında saklanır — panel üyeleri okuyamaz.
             </p>
             <p>
               Gönderi maliyetleri (postaj) sonraki adımda Maliyetler →{" "}

@@ -21,18 +21,65 @@ const OWNER_ONLY_ERROR = "Bu işlem için sahip (owner) rolü gereklidir.";
 const LAST_OWNER_ERROR =
   "Organizasyonda en az bir sahip (owner) kalmalıdır. Bu işlem son sahibi kaldırır.";
 
-/** E-posta ile yeni üye davet eder (Supabase Auth invite). Yalnızca sahip. */
+/**
+ * E-posta ile yeni üye davet eder. Yalnızca sahip.
+ *
+ * Platform modeli: davet artık org'a bağlı — org_invites satırı yazılır;
+ * kullanıcı kaydolduğunda DB trigger'ı (handle_new_user) daveti tüketip
+ * DAVET EDEN şirkete üye yapar (eski davranış: ilk org'a girerdi).
+ * E-posta zaten kayıtlı bir kullanıcıya aitse davet maili yerine üyelik
+ * doğrudan eklenir (aynı hesap ikinci şirkete katılır).
+ */
 export async function inviteMember(email: string): Promise<TeamActionResult> {
   const m = await requireMembership();
   if (m.role !== "owner") return { error: OWNER_ONLY_ERROR };
 
-  const trimmed = email.trim();
+  const trimmed = email.trim().toLowerCase();
   if (!trimmed) return { error: "E-posta adresi gerekli." };
 
   try {
     const admin = createAdminClient();
+
+    // Davet kaydı — trigger'ın hangi org'a üye yapacağını belirler.
+    const { error: inviteRowError } = await admin.from("org_invites").upsert(
+      {
+        org_id: m.org_id,
+        email: trimmed,
+        role: "member",
+        invited_by: m.user_id,
+        accepted_at: null,
+      },
+      { onConflict: "org_id,email" },
+    );
+    if (inviteRowError) return { error: inviteRowError.message };
+
     const { error } = await admin.auth.admin.inviteUserByEmail(trimmed);
-    if (error) return { error: error.message };
+    if (error) {
+      // Kullanıcı zaten kayıtlıysa üyeliği doğrudan ekle.
+      const already = /already|registered|exists/i.test(error.message);
+      if (!already) return { error: error.message };
+
+      const { data: userList, error: listError } =
+        await admin.auth.admin.listUsers({ page: 1, perPage: 1000 });
+      if (listError) return { error: listError.message };
+      const target = userList.users.find(
+        (u) => u.email?.toLowerCase() === trimmed,
+      );
+      if (!target) return { error: error.message };
+
+      const { error: memberError } = await admin
+        .from("organization_members")
+        .upsert(
+          { org_id: m.org_id, user_id: target.id, role: "member" },
+          { onConflict: "org_id,user_id" },
+        );
+      if (memberError) return { error: memberError.message };
+      await admin
+        .from("org_invites")
+        .update({ accepted_at: new Date().toISOString() })
+        .eq("org_id", m.org_id)
+        .eq("email", trimmed);
+    }
   } catch (err) {
     return {
       error: err instanceof Error ? err.message : "Davet gönderilemedi.",

@@ -1,9 +1,9 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { Building2, Gem, ShieldCheck, type LucideIcon } from "lucide-react";
 
-import { signIn, type SignInState } from "@/lib/actions/session";
+import { signIn, signUp, type SignInState } from "@/lib/actions/session";
 import { Logo } from "@/components/layout/logo";
 import { AnimatedLogo } from "@/components/brand/animated-logo";
 import { BrandTile } from "@/components/brand/brand-tile";
@@ -30,8 +30,78 @@ function Value({ icon: Icon, label }: { icon: LucideIcon; label: string }) {
   );
 }
 
+function AuthForm({ mode }: { mode: "signin" | "signup" }) {
+  const signup = mode === "signup";
+  const [state, formAction, pending] = useActionState(
+    signup ? signUp : signIn,
+    initialState,
+  );
+
+  if (state.confirmEmail) {
+    return (
+      <p className="text-sm leading-relaxed" role="status">
+        Hesabınız oluşturuldu. E-postanıza gelen doğrulama bağlantısına
+        tıklayın; ardından giriş yapıp şirketinizi kurabilirsiniz.
+      </p>
+    );
+  }
+
+  return (
+    <form action={formAction} className="space-y-4">
+      {signup && (
+        <div className="space-y-2">
+          <Label htmlFor="full_name">Ad Soyad</Label>
+          <Input
+            id="full_name"
+            name="full_name"
+            autoComplete="name"
+            placeholder="Adınız Soyadınız"
+          />
+        </div>
+      )}
+      <div className="space-y-2">
+        <Label htmlFor="email">E-posta</Label>
+        <Input
+          id="email"
+          name="email"
+          type="email"
+          autoComplete="email"
+          placeholder="ornek@sirketiniz.com"
+          required
+        />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="password">Şifre</Label>
+        <Input
+          id="password"
+          name="password"
+          type="password"
+          autoComplete={signup ? "new-password" : "current-password"}
+          minLength={signup ? 8 : undefined}
+          required
+        />
+      </div>
+      {state.error && (
+        <p className="text-destructive text-sm" role="alert">
+          {state.error}
+        </p>
+      )}
+      <Button type="submit" className="w-full" disabled={pending}>
+        {pending
+          ? signup
+            ? "Hesap oluşturuluyor…"
+            : "Giriş yapılıyor…"
+          : signup
+            ? "Hesap oluştur"
+            : "Giriş yap"}
+      </Button>
+    </form>
+  );
+}
+
 export default function LoginPage() {
-  const [state, formAction, pending] = useActionState(signIn, initialState);
+  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const signup = mode === "signup";
 
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
@@ -88,40 +158,25 @@ export default function LoginPage() {
                 className="h-9"
               />
             </CardTitle>
-            <CardDescription>Yönetim paneline giriş yapın</CardDescription>
+            <CardDescription>
+              {signup
+                ? "Hesap oluşturun — sonra şirketinizi site içinden kurarsınız"
+                : "Yönetim paneline giriş yapın"}
+            </CardDescription>
           </CardHeader>
-          <CardContent>
-            <form action={formAction} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">E-posta</Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  placeholder="ornek@jadegoldnyc.com"
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="password">Şifre</Label>
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                />
-              </div>
-              {state.error && (
-                <p className="text-destructive text-sm" role="alert">
-                  {state.error}
-                </p>
-              )}
-              <Button type="submit" className="w-full" disabled={pending}>
-                {pending ? "Giriş yapılıyor…" : "Giriş yap"}
-              </Button>
-            </form>
+          <CardContent className="space-y-4">
+            {/* key: mod değişince form + aksiyon durumu sıfırlansın */}
+            <AuthForm key={mode} mode={mode} />
+            <p className="text-muted-foreground text-center text-sm">
+              {signup ? "Zaten hesabınız var mı? " : "Hesabınız yok mu? "}
+              <button
+                type="button"
+                onClick={() => setMode(signup ? "signin" : "signup")}
+                className="text-foreground underline underline-offset-2"
+              >
+                {signup ? "Giriş yapın" : "Hesap oluşturun"}
+              </button>
+            </p>
           </CardContent>
         </Card>
       </div>

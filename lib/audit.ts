@@ -27,6 +27,8 @@ export async function logAudit(
       | "etsy.image_upload"
       | "report.export"
       | "profile.update"
+      | "org.created"
+      | "shipstation.credentials"
     >;
     entityType: string;
     summary: string;

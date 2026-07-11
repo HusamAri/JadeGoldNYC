@@ -1,4 +1,7 @@
+import type { createAdminClient } from "@/lib/supabase/admin";
 import { SHIPSTATION_API_BASE } from "@/lib/shipstation/endpoints";
+
+type AdminClient = ReturnType<typeof createAdminClient>;
 
 export class ShipStationNotConfiguredError extends Error {
   constructor(message = "ShipStation API anahtarları tanımlı değil.") {
@@ -28,8 +31,46 @@ export class ShipStationClient {
     const key = process.env.SHIPSTATION_API_KEY;
     const secret = process.env.SHIPSTATION_API_SECRET;
     if (!key || !secret) throw new ShipStationNotConfiguredError();
+    return ShipStationClient.fromCredentials(key, secret);
+  }
+
+  static fromCredentials(key: string, secret: string): ShipStationClient {
     const basic = Buffer.from(`${key}:${secret}`).toString("base64");
     return new ShipStationClient(`Basic ${basic}`);
+  }
+
+  /**
+   * Org'a özel kimlik bilgisi (shipstation_credentials — service-role-only
+   * tablo, site içinden girilir); yoksa platform env'ine düşer (mevcut
+   * Jade Gold kurulumu bozulmadan çalışmaya devam eder).
+   */
+  static async forOrg(
+    admin: AdminClient,
+    orgId: string,
+  ): Promise<ShipStationClient> {
+    const { data } = await admin
+      .from("shipstation_credentials")
+      .select("api_key, api_secret")
+      .eq("org_id", orgId)
+      .maybeSingle();
+    const creds = data as { api_key: string; api_secret: string } | null;
+    if (creds?.api_key && creds?.api_secret) {
+      return ShipStationClient.fromCredentials(creds.api_key, creds.api_secret);
+    }
+    return ShipStationClient.fromEnv();
+  }
+
+  /** Org için kimlik bilgisi var mı (org kaydı YA DA platform env'i)? */
+  static async isConfiguredForOrg(
+    admin: AdminClient,
+    orgId: string,
+  ): Promise<boolean> {
+    if (ShipStationClient.isConfigured()) return true;
+    const { count } = await admin
+      .from("shipstation_credentials")
+      .select("org_id", { count: "exact", head: true })
+      .eq("org_id", orgId);
+    return (count ?? 0) > 0;
   }
 
   static isConfigured(): boolean {

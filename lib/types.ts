@@ -112,7 +112,9 @@ export type AuditAction =
   | "etsy.variant_sync"
   | "etsy.image_upload"
   | "report.export"
-  | "profile.update";
+  | "profile.update"
+  | "org.created"
+  | "shipstation.credentials";
 
 export interface Profile {
   id: string;

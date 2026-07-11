@@ -79,6 +79,8 @@ export const AUDIT_ACTION_LABELS: Record<string, string> = {
   "etsy.variant_sync": "Etsy varyant senkronu",
   "etsy.image_upload": "Etsy görsel yüklendi",
   "report.export": "Rapor dışa aktarıldı",
+  "org.created": "Şirket kuruldu",
+  "shipstation.credentials": "ShipStation anahtarları güncellendi",
 };
 
 /** Varlık tipleri için Türkçe etiketler (denetim logu görünümü). */
@@ -100,6 +102,9 @@ export const ENTITY_TYPE_LABELS: Record<string, string> = {
   auth: "Oturum",
   report: "Rapor",
   reports: "Rapor",
+  organizations: "Şirket",
+  org_invites: "Şirket daveti",
+  shipstation_connection: "ShipStation bağlantısı",
 };
 
 /** Sepet kurtarma durumları. */

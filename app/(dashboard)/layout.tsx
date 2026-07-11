@@ -1,4 +1,4 @@
-import { requireMembership, getUser } from "@/lib/auth";
+import { requireMembership, getUser, listMemberships } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { getProfile } from "@/lib/db/queries/profile";
 import { Sidebar } from "@/components/layout/sidebar";
@@ -12,8 +12,9 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   // Asıl kimlik kapısı (middleware hızlı yol, bu katman yetkili kontrol).
-  await requireMembership();
-  const user = await getUser();
+  // Üyeliği olmayan kullanıcı /kurulum sihirbazına yönlendirilir.
+  const m = await requireMembership();
+  const [user, memberships] = await Promise.all([getUser(), listMemberships()]);
   const supabase = await createClient();
   const profile = user ? await getProfile(supabase, user.id) : null;
 
@@ -29,7 +30,7 @@ export default async function DashboardLayout({
         aria-hidden
         className="jg-dust pointer-events-none absolute inset-0 -z-10"
       />
-      <Sidebar />
+      <Sidebar memberships={memberships} activeOrgId={m.org_id} />
       <div className="flex min-w-0 flex-1 flex-col">
         <Topbar
           email={user?.email ?? ""}
