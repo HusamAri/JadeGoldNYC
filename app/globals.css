@@ -45,6 +45,11 @@
   --lift-sm: 0 4px 14px rgb(60 70 110 / 0.1);
   --lift: 0 10px 30px rgb(60 70 110 / 0.14);
   --lift-lg: 0 24px 60px rgb(60 70 110 / 0.2);
+  /* Cam rengi sızıntısı — buzlu cam düz nötr yüzey üstünde bile "cam" okunsun
+     diye içine hafif iridesan holo ışık gömülür (platform); JG kapsamı bunu
+     sıcak altına eşler. .glass-board bu tokeni sheen + cam ile katmanlar. */
+  --glass-tint: radial-gradient(120% 150% at 84% -12%, rgb(255 201 230 / 0.16), transparent 56%),
+    radial-gradient(120% 130% at 6% 112%, rgb(182 220 255 / 0.16), transparent 56%);
   /* Input odak "çukura vuran ışık" + etkileşim halesi — holo leylak. */
   --pit-glow: rgb(157 140 255 / 0.4);
   --glow-warm: rgb(157 140 255 / 0.32);
@@ -151,6 +156,8 @@
   --lift-sm: 0 4px 14px rgb(0 0 0 / 0.35);
   --lift: 0 10px 30px rgb(0 0 0 / 0.45);
   --lift-lg: 0 24px 60px rgb(0 0 0 / 0.55);
+  --glass-tint: radial-gradient(120% 150% at 84% -12%, rgb(169 155 255 / 0.2), transparent 56%),
+    radial-gradient(120% 130% at 6% 112%, rgb(90 169 240 / 0.16), transparent 56%);
   /* Gece: çukur daha koyu → holo aydınlanma biraz daha parlak */
   --pit-glow: rgb(169 155 255 / 0.45);
   --glow-warm: rgb(169 155 255 / 0.38);
@@ -494,6 +501,24 @@
       0 0 26px rgb(196 150 255 / 0.34);
     border: 1px solid rgb(255 255 255 / 0.55);
   }
+
+  /* ── Liquid glass board ───────────────────────────────────────────────
+     YALNIZ dev puntolu / rakamsal istatistik kartlarında kullanılır (KPI).
+     Buzlu cam: içine gömülü hafif renk sızıntısı (--glass-tint) + sheen +
+     yarı saydam cam zemin; backdrop-blur ile arkadaki içerik/ışıma bulanır,
+     ince hairline + lift gölgesi ile yüzeyin ÜSTÜNDE yüzer. Düz nötr zemin
+     üstünde bile "cam" okunur (renk sızıntısı sayesinde). Marka/tema uyumlu. */
+  .glass-board {
+    background-image: var(--glass-tint), var(--glass-sheen);
+    background-color: var(--glass);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--lift), var(--glass-highlight), var(--glass-depth);
+    backdrop-filter: blur(20px) saturate(155%);
+    -webkit-backdrop-filter: blur(20px) saturate(155%);
+  }
+  .glass-board:hover {
+    box-shadow: var(--lift-lg), var(--glass-highlight), var(--glass-depth);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -792,6 +817,9 @@ html[data-brand="jade-gold"] {
   /* JG metin embossu — sıcak şampanya highlight + sıcak taupe gölge. */
   --text-emboss: -0.4px -0.4px 0.5px rgb(255 252 245 / 0.72),
     0.5px 0.7px 1.1px rgb(160 152 135 / 0.34);
+  /* JG cam sızıntısı — sıcak altın (holo yerine). */
+  --glass-tint: radial-gradient(120% 150% at 84% -12%, rgb(232 198 105 / 0.2), transparent 56%),
+    radial-gradient(120% 130% at 6% 112%, rgb(200 168 96 / 0.14), transparent 56%);
 }
 
 html[data-brand="jade-gold"].dark {
