@@ -116,6 +116,11 @@
   --sidebar-label: var(--muted-foreground);
   --neon-star: 169 155 255;
   --glass-outer: rgb(35 38 60 / 0.5);
+  /* Metin embossu — tüm yazılar (sayılar dâhil) yüzeyin ÜSTÜNDE hafifçe
+     kabarır: sol-üst beyaz highlight + sağ-alt yumuşak gölge (yüzey ışık
+     yönüyle aynı). Çok belli belirsiz; okunabilirliği bozmaz. */
+  --text-emboss: -0.4px -0.4px 0.5px rgb(255 255 255 / 0.7),
+    0.5px 0.7px 1.1px rgb(120 130 160 / 0.32);
   --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
 
   /* Liquid sekme göstergesi — komşu sekmeye kayarken esneyip taşan eğri,
@@ -211,6 +216,10 @@
     12px 12px 26px rgb(var(--nm-dark) / 0.6);
   --shadow-pressed: inset -4px -4px 8px rgb(var(--nm-light) / 0.045),
     inset 5px 5px 10px rgb(var(--nm-dark) / 0.55);
+  /* Gece metin embossu — highlight neredeyse görünmez beyaz, gölge derin
+     siyah (koyu yüzeyde kabartma okunur ama yine belli belirsiz). */
+  --text-emboss: -0.4px -0.4px 0.5px rgb(255 255 255 / 0.07),
+    0.5px 0.7px 1.4px rgb(0 0 0 / 0.5);
 }
 
 @theme inline {
@@ -265,6 +274,9 @@
   }
   body {
     @apply bg-background text-foreground;
+    /* Tüm metinler (sayılar dâhil) yüzeyin üstünde hafifçe kabarır —
+       text-shadow miras alınır, böylece başlık/gövde/rakam tek dilde. */
+    text-shadow: var(--text-emboss);
     /* Zemin: düz nötr yüzey + köşelerden süzülen yumuşak holo ışıma
        (kahraman arkası ışık — tek kroma kaynağı, çok düşük yoğunlukta). */
     background-image:
@@ -451,6 +463,12 @@
     .jg-split-tone {
       color: transparent;
     }
+  }
+  /* Degrade-kırpımlı metinlerde dolgu şeffaf olduğundan emboss gölgesi
+     hayalet bırakır — bu iki sınıfta text-shadow kapatılır. */
+  .jg-split-tone,
+  .holo-text {
+    text-shadow: none;
   }
 
   /* ── Holo yüzeyler — sistemin tek kroma patlaması ─────────────────────
@@ -771,6 +789,9 @@ html[data-brand="jade-gold"] {
   --sidebar-label: oklch(0.5 0.1 76 / 0.8);
   --neon-star: 232 198 105;
   --glass-outer: rgba(40, 30, 6, 0.55);
+  /* JG metin embossu — sıcak şampanya highlight + sıcak taupe gölge. */
+  --text-emboss: -0.4px -0.4px 0.5px rgb(255 252 245 / 0.72),
+    0.5px 0.7px 1.1px rgb(160 152 135 / 0.34);
 }
 
 html[data-brand="jade-gold"].dark {
@@ -872,6 +893,9 @@ html[data-brand="jade-gold"].dark {
   --btn-hero-fg: var(--primary-foreground);
   --sidebar-label: oklch(0.82 0.11 88 / 0.8);
   --neon-star: 232 198 105;
+  /* JG gece metin embossu — çok zayıf sıcak highlight + derin gölge. */
+  --text-emboss: -0.4px -0.4px 0.5px rgb(255 245 225 / 0.06),
+    0.5px 0.7px 1.4px rgb(0 0 0 / 0.48);
 }
 
 /* Jade Gold gövde ışıması — özgün sıcak altın radial (eskisi gibi). */
