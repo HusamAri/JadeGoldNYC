@@ -9,8 +9,10 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
+        /** Kahraman CTA — iridesan holo degrade; görünüm başına TEK holo buton.
+            Hover'da yüzer (lift), basınca köpüğe gömülür (inset + scale). */
         default:
-          "bg-primary text-primary-foreground shadow-[var(--shadow-raised-sm)] hover:-translate-y-px hover:shadow-[var(--shadow-hover)] active:translate-y-0 active:scale-[0.96]",
+          "[background-image:var(--grad-holo)] text-[#3a2f5e] shadow-[var(--lift)] hover:-translate-y-0.5 hover:shadow-[var(--lift-lg)] active:translate-y-0 active:scale-[0.97] active:shadow-[var(--shadow-pressed),inset_0_0_0_100px_rgba(0,0,0,0.05)]",
         destructive:
           "bg-destructive text-destructive-foreground shadow-[var(--shadow-raised-sm)] hover:-translate-y-px hover:shadow-[var(--shadow-hover)] active:translate-y-0 active:scale-[0.96]",
         outline:

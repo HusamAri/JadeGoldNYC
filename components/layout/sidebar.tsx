@@ -36,7 +36,7 @@ export function Sidebar({
       <nav className="flex-1 space-y-4 overflow-y-auto p-4">
         {NAV_GROUPS.map((group) => (
           <div key={group.label} className="space-y-1">
-            <p className="px-3.5 pb-0.5 text-[0.64rem] font-bold tracking-[0.18em] text-[color:var(--brand-mark)]/80 uppercase select-none">
+            <p className="text-muted-foreground px-3.5 pb-0.5 text-[0.64rem] font-bold tracking-[0.18em] uppercase select-none">
               {group.label}
             </p>
             {group.items.map((item) => {
@@ -59,7 +59,7 @@ export function Sidebar({
                   <Icon
                     className={cn(
                       "size-4 shrink-0 transition-colors",
-                      active && "text-[oklch(0.6_0.08_72)]",
+                      active && "text-[color:var(--gold-deep)]",
                     )}
                   />
                   {item.label}
