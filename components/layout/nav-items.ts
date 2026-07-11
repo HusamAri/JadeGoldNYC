@@ -21,6 +21,8 @@ export interface NavItem {
   href: string;
   label: string;
   icon: LucideIcon;
+  /** Yalnız Jade Gold organizasyonu aktifken görünür (marka-özel içerik). */
+  jadeGoldOnly?: boolean;
 }
 
 export interface NavGroup {
@@ -61,7 +63,9 @@ export const NAV_GROUPS: NavGroup[] = [
     label: "Ürün & Stüdyo",
     items: [
       { href: "/tasarimlar", label: "Tasarımlar", icon: Palette },
-      { href: "/gorsel-uretim", label: "Görsel Üretim", icon: Sparkles },
+      // Prompt kiti Jade Gold listinglerine özel statik içerik — diğer
+      // şirketlerde gizli (kendi kitleri üretilince ayrı açılır).
+      { href: "/gorsel-uretim", label: "Görsel Üretim", icon: Sparkles, jadeGoldOnly: true },
       { href: "/stok", label: "Stok", icon: Boxes },
     ],
   },
@@ -74,7 +78,7 @@ export const NAV_GROUPS: NavGroup[] = [
   {
     label: "Sistem",
     items: [
-      { href: "/marka-kilavuzu", label: "Marka Kılavuzu", icon: BookOpen },
+      { href: "/marka-kilavuzu", label: "Marka Kılavuzu", icon: BookOpen, jadeGoldOnly: true },
       { href: "/kayitlar", label: "Kayıtlar", icon: ScrollText },
       { href: "/ayarlar", label: "Ayarlar", icon: Settings },
     ],

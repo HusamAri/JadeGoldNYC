@@ -27,7 +27,7 @@ export function SetupForm() {
         <Input
           id="name"
           name="name"
-          placeholder="Örn. Jade Gold NYC"
+          placeholder="Örn. Yaso"
           maxLength={120}
           required
           autoFocus

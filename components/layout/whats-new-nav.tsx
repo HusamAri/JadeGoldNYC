@@ -13,7 +13,7 @@ export function WhatsNewNav() {
   return (
     <div className="border-sidebar-border/60 mt-1 border-t p-4">
       <div className="mb-2.5 flex items-center justify-between">
-        <span className="text-[0.7rem] font-semibold tracking-[0.16em] text-[color:var(--brand-mark)] uppercase">
+        <span className="text-[0.7rem] font-semibold tracking-[0.16em] text-[color:var(--gold-deep)] uppercase">
           Neler Yeni
         </span>
         <Link

@@ -1,4 +1,5 @@
 import { requireMembership, getUser, listMemberships } from "@/lib/auth";
+import { getBrandScope } from "@/lib/brand";
 import { createClient } from "@/lib/supabase/server";
 import { getProfile } from "@/lib/db/queries/profile";
 import { Sidebar } from "@/components/layout/sidebar";
@@ -14,9 +15,14 @@ export default async function DashboardLayout({
   // Asıl kimlik kapısı (middleware hızlı yol, bu katman yetkili kontrol).
   // Üyeliği olmayan kullanıcı /kurulum sihirbazına yönlendirilir.
   const m = await requireMembership();
-  const [user, memberships] = await Promise.all([getUser(), listMemberships()]);
+  const [user, memberships, brand] = await Promise.all([
+    getUser(),
+    listMemberships(),
+    getBrandScope(),
+  ]);
   const supabase = await createClient();
   const profile = user ? await getProfile(supabase, user.id) : null;
+  const showJadeGoldNav = brand === "jade-gold";
 
   return (
     <div className="relative flex min-h-svh">
@@ -30,7 +36,11 @@ export default async function DashboardLayout({
         aria-hidden
         className="jg-dust pointer-events-none absolute inset-0 -z-10"
       />
-      <Sidebar memberships={memberships} activeOrgId={m.org_id} />
+      <Sidebar
+        memberships={memberships}
+        activeOrgId={m.org_id}
+        showJadeGoldNav={showJadeGoldNav}
+      />
       <div className="flex min-w-0 flex-1 flex-col">
         <Topbar
           email={user?.email ?? ""}
@@ -38,6 +48,7 @@ export default async function DashboardLayout({
           avatarUrl={profile?.avatar_url ?? null}
           memberships={memberships}
           activeOrgId={m.org_id}
+          showJadeGoldNav={showJadeGoldNav}
         />
         <main className="flex-1 p-4 md:p-6 lg:p-8">
           <PageTransition>{children}</PageTransition>

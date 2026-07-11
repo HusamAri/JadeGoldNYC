@@ -26,9 +26,11 @@ export function SectionPattern() {
   const name = SECTION_PATTERN[segment] ?? DEFAULT_PATTERN;
 
   return (
+    // brand-jg: desen görselleri Jade Gold'un sıcak paletiyle pişirilmiş —
+    // platform (Artifact) kabuğunda gizlenir (bkz. globals.css marka kuralları).
     <div
       aria-hidden
-      className="jg-texture pointer-events-none absolute inset-0 -z-10"
+      className="brand-jg jg-texture pointer-events-none absolute inset-0 -z-10"
       style={{ backgroundImage: `url(/brand/pattern/${name}.webp)` }}
     />
   );

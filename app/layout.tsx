@@ -1,58 +1,80 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Sora, JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import { Toaster } from "@/components/ui/sonner";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { getBrandScope } from "@/lib/brand";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+// NeumorphGlass tip skalası: Sora (UI/başlık), JetBrains Mono (sayısal
+// okumalar), California Paradise (yalnız kahraman display başlıklar).
+const sora = Sora({
+  variable: "--font-sora",
+  subsets: ["latin", "latin-ext"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jbmono",
+  subsets: ["latin", "latin-ext"],
+});
+
+const california = localFont({
+  src: [
+    { path: "./fonts/CaliforniaParadise.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/CaliforniaParadise-Italic.woff2", weight: "400", style: "italic" },
+  ],
+  variable: "--font-california",
+  display: "swap",
 });
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  applicationName: "Jade Gold NYC",
+  applicationName: "Artifact",
   title: {
-    default: "Jade Gold NYC — Yönetim Paneli",
-    template: "%s · Jade Gold NYC",
+    default: "Artifact — Yönetim Platformu",
+    template: "%s · Artifact",
   },
   description:
-    "Jade Gold NYC Etsy mağazası için uçtan uca yönetim, loglama ve raporlama paneli.",
-  // Marka ikonları: sekme markı (app/icon.svg) + apple-touch (app/apple-icon.tsx)
+    "Çok markalı e-ticaret yönetim platformu — satış, maliyet, performans ve şirket hafızası tek çatıda.",
+  // Platform ikonları: sekme markı (app/icon.svg) + apple-touch (app/apple-icon.tsx)
   // Next.js dosya konvansiyonlarınca otomatik bağlanır; manifest'i burada bildiririz.
   manifest: "/manifest.webmanifest",
   openGraph: {
     type: "website",
-    siteName: "Jade Gold NYC",
-    title: "Jade Gold NYC — Yönetim Paneli",
+    siteName: "Artifact",
+    title: "Artifact — Yönetim Platformu",
     description:
-      "Satış, maliyet, performans ve şirket hafızası — mağazanızın tüm süreçleri tek panelde.",
+      "Satış, maliyet, performans ve şirket hafızası — tüm şirketleriniz tek platformda.",
     locale: "tr_TR",
   },
 };
 
 // Next 16: themeColor / viewport ayrı `viewport` export'unda olmalı.
-// Kömür (CHAR #131313) tema rengi marka monogram zemini ve manifest ile tutarlı.
+// NeumorphGlass yüzey renkleri — açıkta off-white, koyuda kömür.
 export const viewport: Viewport = {
-  themeColor: "#131313",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#eaecf3" },
+    { media: "(prefers-color-scheme: dark)", color: "#262935" },
+  ],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Marka kapsamı SUNUCUDA çözülür (flash yok): aktif şirket Jade Gold ise
+  // sıcak Jade Gold teması, diğer her bağlamda platform (Artifact) teması.
+  // Radix portalları <body>'ye bağlandığından öznitelik <html> üzerindedir.
+  const brand = await getBrandScope();
+
   return (
     <html
       lang="tr"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      data-brand={brand}
+      className={`${sora.variable} ${jetbrainsMono.variable} ${california.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="min-h-full bg-background text-foreground">

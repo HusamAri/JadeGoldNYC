@@ -240,11 +240,13 @@ export function GoldStream({
   }, []);
 
   return (
+    // brand-jg: altın şerit sabit antik-altın hex'lerle çizilir (Jade Gold
+    // ambiyansı) — platform (Artifact) kabuğunda gizlenir.
     <svg
       ref={svgRef}
       aria-hidden
       className={cn(
-        "pointer-events-none absolute inset-0 -z-10 size-full",
+        "brand-jg pointer-events-none absolute inset-0 -z-10 size-full",
         className,
       )}
     >

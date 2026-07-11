@@ -1,13 +1,11 @@
 "use client";
 
 import { useActionState, useState } from "react";
+import Image from "next/image";
 import { Building2, Gem, ShieldCheck, type LucideIcon } from "lucide-react";
 
 import { signIn, signUp, type SignInState } from "@/lib/actions/session";
 import { Logo } from "@/components/layout/logo";
-import { AnimatedLogo } from "@/components/brand/animated-logo";
-import { BrandTile } from "@/components/brand/brand-tile";
-import { BRAND_LOGIN_HERO } from "@/lib/brand-assets";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,8 +21,10 @@ const initialState: SignInState = {};
 
 function Value({ icon: Icon, label }: { icon: LucideIcon; label: string }) {
   return (
-    <div className="flex items-center gap-2 text-sm text-white/90">
-      <Icon className="size-4" />
+    <div className="text-foreground/80 flex items-center gap-2.5 text-sm">
+      <span className="nm-pressed flex size-8 items-center justify-center rounded-xl">
+        <Icon className="text-muted-foreground size-4" />
+      </span>
       {label}
     </div>
   );
@@ -105,58 +105,70 @@ export default function LoginPage() {
 
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
-      {/* Marka paneli (geniş ekran) */}
-      <BrandTile
-        src={BRAND_LOGIN_HERO}
-        video="/brand/video/atolye-el-isciligi.mp4"
-        rounded={false}
-        scrim
-        className="hidden lg:block"
-      >
-        <div className="relative flex h-full flex-col justify-between p-10 text-white">
-          <div className="w-max rounded-2xl bg-black/25 px-4 py-2.5 ring-1 ring-white/15 backdrop-blur-sm">
-            <AnimatedLogo
-              src="/brand/logo/logo-primary.svg"
-              viewBox="150 772 1744 507"
-              alt="Jade Gold NYC"
-              className="h-14"
-            />
+      {/* Platform paneli (geniş ekran) — NeumorphGlass kahraman: off-white
+          yüzey, arkada yumuşak holo ışıma, nöromorfik "A" karosu ve
+          California Paradise display başlık. Görünümün tek kroması holo. */}
+      <div className="bg-background relative hidden overflow-hidden lg:block">
+        <div
+          aria-hidden
+          className="absolute inset-0"
+          style={{
+            backgroundImage:
+              "radial-gradient(760px 520px at 78% 8%, rgb(212 198 255 / 0.55), transparent 62%), radial-gradient(640px 460px at 8% 92%, rgb(182 220 255 / 0.45), transparent 58%), radial-gradient(520px 380px at 52% 55%, rgb(255 201 230 / 0.28), transparent 60%)",
+          }}
+        />
+        {/* Dekoratif iridesan cam obje — referanslardaki gibi cutout;
+            Higgsfield render + Adobe Photoshop API arka plan kaldırma. */}
+        <Image
+          src="/brand/platform/holo-prism.webp"
+          alt=""
+          aria-hidden
+          width={539}
+          height={499}
+          priority
+          className="pointer-events-none absolute top-[13%] right-[7%] w-64 rotate-[8deg] select-none drop-shadow-[0_34px_54px_rgba(120,100,200,0.38)] xl:w-80"
+        />
+        <div className="relative flex h-full flex-col justify-between p-10">
+          <div className="flex items-center gap-3">
+            <span className="nm-raised-sm text-foreground flex size-11 items-center justify-center rounded-2xl pt-1 text-2xl [font-family:var(--font-display)]">
+              A
+            </span>
+            <span className="text-muted-foreground text-sm font-semibold tracking-[0.32em]">
+              ARTIFACT
+            </span>
           </div>
           <div>
-            <h2 className="text-3xl leading-tight font-semibold">
-              Yönetim Paneli
-            </h2>
-            <p className="mt-3 max-w-md text-white/80">
-              Satış, maliyet, performans ve şirket hafızası — mağazanızın tüm
-              süreçleri tek panelde.
+            <p className="text-muted-foreground text-xs font-semibold tracking-[0.16em] uppercase">
+              Yönetim Platformu
             </p>
-            <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
-              <Value icon={Building2} label="New York" />
-              <Value icon={Gem} label="10K & 14K Som Altın" />
+            <h2 className="text-foreground mt-4 text-7xl leading-none [font-family:var(--font-display)]">
+              Artifact
+            </h2>
+            <p className="text-muted-foreground mt-5 max-w-md">
+              Satış, maliyet, performans ve şirket hafızası — tüm
+              şirketleriniz tek platformda.
+            </p>
+            <div className="mt-7 flex flex-wrap gap-x-6 gap-y-3">
+              <Value icon={Building2} label="Çok Şirketli" />
+              <Value icon={Gem} label="Etsy & ShipStation" />
               <Value icon={ShieldCheck} label="Şirket Hafızası" />
             </div>
           </div>
-          <p className="text-xs text-white/60">
-            © {new Date().getFullYear()} Jade Gold NYC · Gizli · İç Kullanım
+          <p className="text-muted-foreground/70 text-xs">
+            © {new Date().getFullYear()} Artifact · Gizli · İç Kullanım
           </p>
         </div>
-      </BrandTile>
+      </div>
 
       {/* Giriş formu */}
       <div className="bg-muted/30 flex items-center justify-center p-6">
         <Card className="w-full max-w-sm">
           <CardHeader className="items-center text-center">
-            <div className="mb-2 flex justify-center lg:hidden">
+            <div className="mb-2 flex justify-center">
               <Logo className="size-11" />
             </div>
-            <CardTitle className="flex justify-center">
-              <AnimatedLogo
-                src="/brand/logo/logo-wordmark.svg"
-                viewBox="187 872 1656 304"
-                animate
-                alt="Jade Gold NYC"
-                className="h-9"
-              />
+            <CardTitle className="text-lg tracking-[0.3em]">
+              ARTIFACT
             </CardTitle>
             <CardDescription>
               {signup

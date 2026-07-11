@@ -9,8 +9,11 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
+        /** Kahraman CTA — marka-parametrik: platformda iridesan holo degrade,
+            Jade Gold'da özgün jade dolgusu (--btn-hero-*). Hover'da yüzer,
+            basınca köpüğe gömülür (inset + scale). */
         default:
-          "bg-primary text-primary-foreground shadow-[var(--shadow-raised-sm)] hover:-translate-y-px hover:shadow-[var(--shadow-hover)] active:translate-y-0 active:scale-[0.96]",
+          "[background-image:var(--btn-hero-bg)] text-[color:var(--btn-hero-fg)] shadow-[var(--lift)] hover:-translate-y-0.5 hover:shadow-[var(--lift-lg)] active:translate-y-0 active:scale-[0.97] active:shadow-[var(--shadow-pressed),inset_0_0_0_100px_rgba(0,0,0,0.05)]",
         destructive:
           "bg-destructive text-destructive-foreground shadow-[var(--shadow-raised-sm)] hover:-translate-y-px hover:shadow-[var(--shadow-hover)] active:translate-y-0 active:scale-[0.96]",
         outline:

@@ -29,12 +29,15 @@ export function Topbar({
   avatarUrl,
   memberships,
   activeOrgId,
+  showJadeGoldNav,
 }: {
   email: string;
   name?: string | null;
   avatarUrl?: string | null;
   memberships: MembershipWithOrg[];
   activeOrgId: string;
+  /** Aktif şirket Jade Gold ise marka-özel sekmeler mobil menüde de görünür. */
+  showJadeGoldNav: boolean;
 }) {
   const pathname = usePathname();
   const [switchPending, startSwitch] = useTransition();
@@ -95,6 +98,7 @@ export function Topbar({
                   {g.label}
                 </p>
                 {g.items.map((i) => {
+                  if (i.jadeGoldOnly && !showJadeGoldNav) return null;
                   const Icon = i.icon;
                   return (
                     <DropdownMenuItem key={i.href} asChild>
