@@ -864,9 +864,11 @@ html[data-brand="jade-gold"] {
   /* JG metin embossu — sıcak şampanya highlight + sıcak taupe gölge. */
   --text-emboss: -0.4px -0.4px 0.5px rgb(255 252 245 / 0.72),
     0.5px 0.7px 1.1px rgb(160 152 135 / 0.34);
-  /* JG cam sızıntısı — sıcak altın (holo yerine). */
-  --glass-tint: radial-gradient(120% 150% at 84% -12%, rgb(232 198 105 / 0.2), transparent 56%),
-    radial-gradient(120% 130% at 6% 112%, rgb(200 168 96 / 0.14), transparent 56%);
+  /* JG cam sızıntısı — jade-marka iridesan karışım: sağ-üstte antik altın,
+     sol-altta jade yeşili + ortada nane (holografik ama markaya sadık). */
+  --glass-tint: radial-gradient(120% 150% at 84% -12%, rgb(232 198 105 / 0.22), transparent 56%),
+    radial-gradient(120% 130% at 6% 112%, rgb(96 160 128 / 0.2), transparent 58%),
+    radial-gradient(90% 90% at 44% 60%, rgb(150 200 170 / 0.1), transparent 60%);
 }
 
 html[data-brand="jade-gold"].dark {
@@ -971,6 +973,10 @@ html[data-brand="jade-gold"].dark {
   /* JG gece metin embossu — çok zayıf sıcak highlight + derin gölge. */
   --text-emboss: -0.4px -0.4px 0.5px rgb(255 245 225 / 0.06),
     0.5px 0.7px 1.4px rgb(0 0 0 / 0.48);
+  /* JG gece cam sızıntısı — jade + altın iridesan (koyu zeminde biraz parlak). */
+  --glass-tint: radial-gradient(120% 150% at 84% -12%, rgb(232 198 105 / 0.26), transparent 56%),
+    radial-gradient(120% 130% at 6% 112%, rgb(96 180 140 / 0.22), transparent 58%),
+    radial-gradient(90% 90% at 44% 60%, rgb(150 210 180 / 0.1), transparent 60%);
 }
 
 /* Jade Gold gövde ışıması — özgün sıcak altın radial (eskisi gibi). */
