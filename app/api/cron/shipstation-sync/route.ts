@@ -19,15 +19,17 @@ export async function GET(request: Request) {
   if (!secret || auth !== `Bearer ${secret}`) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
-  if (!ShipStationClient.isConfigured()) {
-    return NextResponse.json({ ok: true, skipped: "shipstation not configured" });
-  }
-
   const admin = createAdminClient();
   const { data: orgs } = await admin.from("organizations").select("id");
 
   const results: Record<string, unknown> = {};
   for (const o of (orgs ?? []) as { id: string }[]) {
+    // Platform: kimlik bilgisi org-bazlı (env yalnız geriye dönük uyumluluk).
+    // Yapılandırılmamış org sessizce atlanır — global skip yok.
+    if (!(await ShipStationClient.isConfiguredForOrg(admin, o.id))) {
+      results[o.id] = { skipped: "not configured" };
+      continue;
+    }
     try {
       results[o.id] = await advanceShipStationSync(o.id, 50_000);
     } catch (e) {

@@ -21,24 +21,80 @@ export async function requireUser(): Promise<User> {
   return user;
 }
 
-/** Kullanıcının organizasyon üyeliği — RLS ve org_id çapası. */
+/**
+ * Kullanıcının AKTİF organizasyondaki üyeliği — RLS ve org_id çapası.
+ * Aktif şirket profiles.active_org_id ile seçilir (şirket seçici);
+ * geçersiz/boşsa ilk üyeliğe düşülür — DB'deki current_org_id() ile birebir
+ * aynı kural, yoksa uygulama ile RLS farklı org görürdü.
+ */
 export const getMembership = cache(async (): Promise<Member | null> => {
   const user = await getUser();
   if (!user) return null;
   const supabase = await createClient();
-  const { data } = await supabase
-    .from("organization_members")
-    .select("id, org_id, user_id, role")
-    .eq("user_id", user.id)
-    .limit(1)
-    .maybeSingle();
-  return (data as Member) ?? null;
+  const [{ data: rows }, { data: profile }] = await Promise.all([
+    supabase
+      .from("organization_members")
+      .select("id, org_id, user_id, role")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: true }),
+    supabase
+      .from("profiles")
+      .select("active_org_id")
+      .eq("id", user.id)
+      .maybeSingle(),
+  ]);
+  const memberships = (rows ?? []) as Member[];
+  if (memberships.length === 0) return null;
+  const activeOrgId = (profile as { active_org_id: string | null } | null)
+    ?.active_org_id;
+  return memberships.find((m) => m.org_id === activeOrgId) ?? memberships[0];
 });
 
-/** Üyelik yoksa /login'e yönlendirir; org_id ve rol döner. */
+/** Şirket seçici için: kullanıcının tüm üyelikleri + org adları. */
+export interface MembershipWithOrg extends Member {
+  orgName: string;
+}
+
+export const listMemberships = cache(
+  async (): Promise<MembershipWithOrg[]> => {
+    const user = await getUser();
+    if (!user) return [];
+    const supabase = await createClient();
+    const { data: rows } = await supabase
+      .from("organization_members")
+      .select("id, org_id, user_id, role")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: true });
+    const memberships = (rows ?? []) as Member[];
+    if (memberships.length === 0) return [];
+
+    const { data: orgs } = await supabase
+      .from("organizations")
+      .select("id, name")
+      .in(
+        "id",
+        memberships.map((m) => m.org_id),
+      );
+    const nameById = new Map(
+      ((orgs ?? []) as { id: string; name: string }[]).map((o) => [o.id, o.name]),
+    );
+    return memberships.map((m) => ({
+      ...m,
+      orgName: nameById.get(m.org_id) ?? "Şirket",
+    }));
+  },
+);
+
+/**
+ * Üyelik yoksa yönlendirir; org_id ve rol döner. Oturum yoksa /login'e,
+ * oturum var ama hiçbir şirkete üye değilse /kurulum sihirbazına (yeni
+ * kullanıcı kendi şirketini site içinden kurar).
+ */
 export async function requireMembership(): Promise<Member> {
+  const user = await getUser();
+  if (!user) redirect("/login");
   const m = await getMembership();
-  if (!m) redirect("/login");
+  if (!m) redirect("/kurulum");
   return m;
 }
 
