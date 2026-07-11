@@ -4,6 +4,7 @@ import { useTransition } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, LogOut, ChevronLeft, Check, Plus, Building2 } from "lucide-react";
+import { toast } from "sonner";
 
 import { signOut, switchOrganization } from "@/lib/actions/session";
 import type { MembershipWithOrg } from "@/lib/auth";
@@ -41,7 +42,14 @@ export function Topbar({
   function onSwitchOrg(orgId: string) {
     if (orgId === activeOrgId) return;
     startSwitch(async () => {
-      await switchOrganization(orgId).catch(() => {});
+      try {
+        await switchOrganization(orgId);
+      } catch (e) {
+        // redirect() kontrol-akışı istisnası normaldir; gerçek hatayı bildir.
+        if (e instanceof Error && !e.message.includes("NEXT_REDIRECT")) {
+          toast.error("Şirket değiştirilemedi.");
+        }
+      }
     });
   }
   const current = NAV_ITEMS.find(

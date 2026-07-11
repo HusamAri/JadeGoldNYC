@@ -40,9 +40,28 @@ export class ShipStationClient {
   }
 
   /**
+   * Platform env anahtarları YALNIZ tek bir org'a aittir — her org'a fallback
+   * olamaz, yoksa cron bir şirketin kargo verisini diğerinin tablolarına yazar
+   * (PR #130 inceleme bulgusu). Sahiplik: SHIPSTATION_ORG_ID env'i; o yoksa
+   * geriye dönük uyum için "platformda tek org varsa env onundur".
+   */
+  private static async envBelongsToOrg(
+    admin: AdminClient,
+    orgId: string,
+  ): Promise<boolean> {
+    if (!ShipStationClient.isConfigured()) return false;
+    const explicit = process.env.SHIPSTATION_ORG_ID;
+    if (explicit) return explicit === orgId;
+    const { count } = await admin
+      .from("organizations")
+      .select("id", { count: "exact", head: true });
+    return (count ?? 0) <= 1;
+  }
+
+  /**
    * Org'a özel kimlik bilgisi (shipstation_credentials — service-role-only
-   * tablo, site içinden girilir); yoksa platform env'ine düşer (mevcut
-   * Jade Gold kurulumu bozulmadan çalışmaya devam eder).
+   * tablo, site içinden girilir); yoksa platform env'i YALNIZ env'in sahibi
+   * org için kullanılır.
    */
   static async forOrg(
     admin: AdminClient,
@@ -57,20 +76,23 @@ export class ShipStationClient {
     if (creds?.api_key && creds?.api_secret) {
       return ShipStationClient.fromCredentials(creds.api_key, creds.api_secret);
     }
-    return ShipStationClient.fromEnv();
+    if (await ShipStationClient.envBelongsToOrg(admin, orgId)) {
+      return ShipStationClient.fromEnv();
+    }
+    throw new ShipStationNotConfiguredError();
   }
 
-  /** Org için kimlik bilgisi var mı (org kaydı YA DA platform env'i)? */
+  /** Org için kimlik bilgisi var mı (org kaydı YA DA org'a ait platform env'i)? */
   static async isConfiguredForOrg(
     admin: AdminClient,
     orgId: string,
   ): Promise<boolean> {
-    if (ShipStationClient.isConfigured()) return true;
     const { count } = await admin
       .from("shipstation_credentials")
       .select("org_id", { count: "exact", head: true })
       .eq("org_id", orgId);
-    return (count ?? 0) > 0;
+    if ((count ?? 0) > 0) return true;
+    return ShipStationClient.envBelongsToOrg(admin, orgId);
   }
 
   static isConfigured(): boolean {

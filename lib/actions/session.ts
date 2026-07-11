@@ -69,7 +69,12 @@ export async function signUp(
     options: { data: { full_name: fullName || null } },
   });
   if (error) {
-    return { error: error.message };
+    // Ham Supabase mesajı ("User already registered" vb.) hesap enumerasyonuna
+    // izin verir — istemciye genel mesaj dön (PR #130 inceleme bulgusu).
+    return {
+      error:
+        "Kayıt tamamlanamadı. Bilgileri kontrol edin; hesabınız varsa giriş yapmayı deneyin.",
+    };
   }
   // E-posta doğrulaması açıksa oturum dönmez; kullanıcıya bilgi ver.
   if (!data.session) {

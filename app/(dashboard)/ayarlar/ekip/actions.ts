@@ -59,12 +59,18 @@ export async function inviteMember(email: string): Promise<TeamActionResult> {
       const already = /already|registered|exists/i.test(error.message);
       if (!already) return { error: error.message };
 
-      const { data: userList, error: listError } =
-        await admin.auth.admin.listUsers({ page: 1, perPage: 1000 });
-      if (listError) return { error: listError.message };
-      const target = userList.users.find(
-        (u) => u.email?.toLowerCase() === trimmed,
-      );
+      // E-postayla kullanıcı ara — sayfalı (tek sayfa 1000 sınırına takılıp
+      // büyüyen platformda kullanıcıyı kaçırmasın; PR #130 inceleme bulgusu).
+      let target: { id: string } | undefined;
+      for (let page = 1; page <= 50 && !target; page++) {
+        const { data: userList, error: listError } =
+          await admin.auth.admin.listUsers({ page, perPage: 1000 });
+        if (listError) return { error: listError.message };
+        target = userList.users.find(
+          (u) => u.email?.toLowerCase() === trimmed,
+        );
+        if (userList.users.length < 1000) break;
+      }
       if (!target) return { error: error.message };
 
       const { error: memberError } = await admin
