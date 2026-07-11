@@ -3,8 +3,9 @@ import { Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
- * "NEW" yıldız rozeti — kabartma (konveks) + altın neon gölge. Son büyük
- * yenilikleri öne çıkarır. `withLabel` ile yanında "NEW" metni gösterilir.
+ * "NEW" yıldız rozeti — kabartma (konveks) + marka vurgusu neon gölge
+ * (JG'de altın, platformda holo periwinkle — --neon-star/--gold-deep).
+ * Son büyük yenilikleri öne çıkarır. `withLabel` ile "NEW" metni gösterilir.
  */
 export function NewStar({
   withLabel = true,
@@ -16,7 +17,7 @@ export function NewStar({
   return (
     <span
       className={cn(
-        "jg-star-neon inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold tracking-wide text-[oklch(0.5_0.09_86)] uppercase dark:text-[oklch(0.82_0.11_86)]",
+        "jg-star-neon inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold tracking-wide text-[color:var(--gold-deep)] uppercase",
         className,
       )}
     >

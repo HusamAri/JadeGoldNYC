@@ -83,7 +83,7 @@ export function WhatsNew() {
     <Dialog open={open} onOpenChange={(o) => !o && dismiss()}>
       <DialogContent
         showCloseButton={false}
-        className="jg-glass-3d overflow-hidden rounded-[1.9rem] border-white/60 bg-[#f4f6fb]/85 p-0 backdrop-blur-2xl sm:max-w-[560px] dark:border-white/10 dark:bg-[#2b2e3b]/85"
+        className="jg-glass-3d border-[color:var(--glass-border)] bg-[color:var(--popover)]/90 overflow-hidden rounded-[1.9rem] p-0 backdrop-blur-2xl sm:max-w-[560px]"
       >
         {/* arka plan altın tozu */}
         <div
@@ -93,7 +93,7 @@ export function WhatsNew() {
           {DUST.map((d, i) => (
             <span
               key={i}
-              className="jg-twinkle absolute rounded-full bg-[#cfc0ff]"
+              className="jg-twinkle absolute rounded-full bg-[color:var(--gold)]"
               style={{
                 left: d.x,
                 top: d.y,

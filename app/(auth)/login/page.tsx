@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useState } from "react";
+import Image from "next/image";
 import { Building2, Gem, ShieldCheck, type LucideIcon } from "lucide-react";
 
 import { signIn, signUp, type SignInState } from "@/lib/actions/session";
@@ -115,6 +116,17 @@ export default function LoginPage() {
             backgroundImage:
               "radial-gradient(760px 520px at 78% 8%, rgb(212 198 255 / 0.55), transparent 62%), radial-gradient(640px 460px at 8% 92%, rgb(182 220 255 / 0.45), transparent 58%), radial-gradient(520px 380px at 52% 55%, rgb(255 201 230 / 0.28), transparent 60%)",
           }}
+        />
+        {/* Dekoratif iridesan cam obje — referanslardaki gibi cutout;
+            Higgsfield render + Adobe Photoshop API arka plan kaldırma. */}
+        <Image
+          src="/brand/platform/holo-prism.webp"
+          alt=""
+          aria-hidden
+          width={539}
+          height={499}
+          priority
+          className="pointer-events-none absolute top-[13%] right-[7%] w-64 rotate-[8deg] select-none drop-shadow-[0_34px_54px_rgba(120,100,200,0.38)] xl:w-80"
         />
         <div className="relative flex h-full flex-col justify-between p-10">
           <div className="flex items-center gap-3">
