@@ -5,9 +5,6 @@ import { Building2, Gem, ShieldCheck, type LucideIcon } from "lucide-react";
 
 import { signIn, signUp, type SignInState } from "@/lib/actions/session";
 import { Logo } from "@/components/layout/logo";
-import { AnimatedLogo } from "@/components/brand/animated-logo";
-import { BrandTile } from "@/components/brand/brand-tile";
-import { BRAND_LOGIN_HERO } from "@/lib/brand-assets";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -105,58 +102,67 @@ export default function LoginPage() {
 
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
-      {/* Marka paneli (geniş ekran) */}
-      <BrandTile
-        src={BRAND_LOGIN_HERO}
-        video="/brand/video/atolye-el-isciligi.mp4"
-        rounded={false}
-        scrim
-        className="hidden lg:block"
-      >
+      {/* Platform paneli (geniş ekran) — Artifact kimliği: derin çivit
+          mürekkep zemin, faset elmas mark, isim + slogan. Marka görseli/
+          videosu yok; platform şirket-nötrdür. */}
+      <div className="relative hidden overflow-hidden bg-[oklch(0.2_0.03_268)] lg:block">
+        <div
+          aria-hidden
+          className="absolute inset-0"
+          style={{
+            backgroundImage:
+              "radial-gradient(820px 520px at 82% -10%, oklch(0.5 0.11 280 / 0.35), transparent 60%), radial-gradient(700px 460px at -8% 108%, oklch(0.45 0.08 250 / 0.28), transparent 55%)",
+          }}
+        />
         <div className="relative flex h-full flex-col justify-between p-10 text-white">
-          <div className="w-max rounded-2xl bg-black/25 px-4 py-2.5 ring-1 ring-white/15 backdrop-blur-sm">
-            <AnimatedLogo
-              src="/brand/logo/logo-primary.svg"
-              viewBox="150 772 1744 507"
-              alt="Jade Gold NYC"
-              className="h-14"
-            />
+          <div className="flex items-center gap-3">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinejoin="round"
+              strokeLinecap="round"
+              className="size-10 text-[oklch(0.82_0.09_282)]"
+              aria-hidden
+            >
+              <path d="M12 3 20.5 9.5 12 21 3.5 9.5Z" />
+              <path d="M3.5 9.5h17" />
+              <path d="M12 3 8.4 9.5 12 21l3.6-11.5Z" />
+            </svg>
+            <span className="text-xl font-semibold tracking-[0.32em]">
+              ARTIFACT
+            </span>
           </div>
           <div>
             <h2 className="text-3xl leading-tight font-semibold">
-              Yönetim Paneli
+              Yönetim Platformu
             </h2>
-            <p className="mt-3 max-w-md text-white/80">
-              Satış, maliyet, performans ve şirket hafızası — mağazanızın tüm
-              süreçleri tek panelde.
+            <p className="mt-3 max-w-md text-white/75">
+              Satış, maliyet, performans ve şirket hafızası — tüm
+              şirketleriniz tek platformda.
             </p>
             <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
-              <Value icon={Building2} label="New York" />
-              <Value icon={Gem} label="10K & 14K Som Altın" />
+              <Value icon={Building2} label="Çok Şirketli" />
+              <Value icon={Gem} label="Etsy & ShipStation" />
               <Value icon={ShieldCheck} label="Şirket Hafızası" />
             </div>
           </div>
-          <p className="text-xs text-white/60">
-            © {new Date().getFullYear()} Jade Gold NYC · Gizli · İç Kullanım
+          <p className="text-xs text-white/50">
+            © {new Date().getFullYear()} Artifact · Gizli · İç Kullanım
           </p>
         </div>
-      </BrandTile>
+      </div>
 
       {/* Giriş formu */}
       <div className="bg-muted/30 flex items-center justify-center p-6">
         <Card className="w-full max-w-sm">
           <CardHeader className="items-center text-center">
-            <div className="mb-2 flex justify-center lg:hidden">
+            <div className="mb-2 flex justify-center">
               <Logo className="size-11" />
             </div>
-            <CardTitle className="flex justify-center">
-              <AnimatedLogo
-                src="/brand/logo/logo-wordmark.svg"
-                viewBox="187 872 1656 304"
-                animate
-                alt="Jade Gold NYC"
-                className="h-9"
-              />
+            <CardTitle className="text-lg tracking-[0.3em]">
+              ARTIFACT
             </CardTitle>
             <CardDescription>
               {signup

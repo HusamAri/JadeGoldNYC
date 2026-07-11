@@ -1,23 +1,24 @@
 import type { MetadataRoute } from "next";
 
 /**
- * PWA manifesti — Jade Gold NYC yönetim paneli.
+ * PWA manifesti — Artifact yönetim platformu.
  *
- * Kömür (CHAR #131313) tema/zemin rengi: ana ekrana eklendiğinde marka
- * monogramı koyu zeminde antik altın olarak okunur (sekme markı `app/icon.svg`
- * ile tutarlı). Renkler markaya sadık; ikon mevcut marka monogramından gelir.
+ * Derin mürekkep (#14161d) tema/zemin: ana ekrana eklendiğinde platform
+ * elmas markı koyu zeminde çivit-leylak olarak okunur (sekme markı
+ * `app/icon.svg` ile tutarlı). Marka-nötr: şirketler (Jade Gold, Yaso, …)
+ * platformun kiracılarıdır, kabuk platform kimliğini taşır.
  */
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Jade Gold NYC — Yönetim Paneli",
-    short_name: "Jade Gold NYC",
+    name: "Artifact — Yönetim Platformu",
+    short_name: "Artifact",
     description:
-      "Jade Gold NYC Etsy mağazası için uçtan uca yönetim, loglama ve raporlama paneli.",
+      "Çok markalı e-ticaret yönetim platformu — satış, maliyet, performans ve şirket hafızası tek çatıda.",
     start_url: "/",
     display: "standalone",
     lang: "tr",
-    background_color: "#131313",
-    theme_color: "#131313",
+    background_color: "#14161d",
+    theme_color: "#14161d",
     icons: [
       {
         src: "/icon.svg",

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { getBrandScope } from "@/lib/brand";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -18,40 +19,46 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  applicationName: "Jade Gold NYC",
+  applicationName: "Artifact",
   title: {
-    default: "Jade Gold NYC — Yönetim Paneli",
-    template: "%s · Jade Gold NYC",
+    default: "Artifact — Yönetim Platformu",
+    template: "%s · Artifact",
   },
   description:
-    "Jade Gold NYC Etsy mağazası için uçtan uca yönetim, loglama ve raporlama paneli.",
-  // Marka ikonları: sekme markı (app/icon.svg) + apple-touch (app/apple-icon.tsx)
+    "Çok markalı e-ticaret yönetim platformu — satış, maliyet, performans ve şirket hafızası tek çatıda.",
+  // Platform ikonları: sekme markı (app/icon.svg) + apple-touch (app/apple-icon.tsx)
   // Next.js dosya konvansiyonlarınca otomatik bağlanır; manifest'i burada bildiririz.
   manifest: "/manifest.webmanifest",
   openGraph: {
     type: "website",
-    siteName: "Jade Gold NYC",
-    title: "Jade Gold NYC — Yönetim Paneli",
+    siteName: "Artifact",
+    title: "Artifact — Yönetim Platformu",
     description:
-      "Satış, maliyet, performans ve şirket hafızası — mağazanızın tüm süreçleri tek panelde.",
+      "Satış, maliyet, performans ve şirket hafızası — tüm şirketleriniz tek platformda.",
     locale: "tr_TR",
   },
 };
 
 // Next 16: themeColor / viewport ayrı `viewport` export'unda olmalı.
-// Kömür (CHAR #131313) tema rengi marka monogram zemini ve manifest ile tutarlı.
+// Derin mürekkep — platform (Artifact) sekme markı zeminiyle tutarlı.
 export const viewport: Viewport = {
-  themeColor: "#131313",
+  themeColor: "#14161d",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Marka kapsamı SUNUCUDA çözülür (flash yok): aktif şirket Jade Gold ise
+  // sıcak Jade Gold teması, diğer her bağlamda platform (Artifact) teması.
+  // Radix portalları <body>'ye bağlandığından öznitelik <html> üzerindedir.
+  const brand = await getBrandScope();
+
   return (
     <html
       lang="tr"
+      data-brand={brand}
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >

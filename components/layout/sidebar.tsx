@@ -13,9 +13,12 @@ import { WhatsNewNav } from "@/components/layout/whats-new-nav";
 export function Sidebar({
   memberships,
   activeOrgId,
+  showJadeGoldNav,
 }: {
   memberships: MembershipWithOrg[];
   activeOrgId: string;
+  /** Aktif şirket Jade Gold ise marka-özel sekmeler (Marka Kılavuzu, Görsel Üretim) görünür. */
+  showJadeGoldNav: boolean;
 }) {
   const pathname = usePathname();
 
@@ -37,6 +40,7 @@ export function Sidebar({
               {group.label}
             </p>
             {group.items.map((item) => {
+              if (item.jadeGoldOnly && !showJadeGoldNav) return null;
               const active =
                 pathname === item.href || pathname.startsWith(item.href + "/");
               const Icon = item.icon;

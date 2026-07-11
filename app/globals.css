@@ -615,3 +615,181 @@
 .tl-overdue-dot {
   animation: tl-overdue-dot 2s ease-in-out infinite;
 }
+
+/* ==================================================================
+   ARTIFACT — platform teması (çok-kiracılı kabuk).
+   Jade Gold NYC yalnız kendi organizasyonu aktifken yukarıdaki sıcak
+   temayı görür (html[data-brand="jade-gold"], dosyanın başındaki :root
+   değerleri). Diğer TÜM bağlamlar (login, kurulum, diğer şirketler)
+   bu soğuk grafit + çivit paletini alır: aynı nöromorfik dil, farklı
+   marka. Kök layout data-brand özniteliğini sunucuda basar; portallar
+   <body>'de olduğundan kapsam <html> üzerindedir.
+   ================================================================== */
+html[data-brand="artifact"] {
+  /* Soğuk porselen zemin, mürekkep metin */
+  --background: oklch(0.955 0.006 260);
+  --foreground: oklch(0.26 0.02 268);
+
+  --card: oklch(0.955 0.006 260);
+  --card-foreground: oklch(0.26 0.02 268);
+
+  --popover: oklch(0.97 0.005 260);
+  --popover-foreground: oklch(0.26 0.02 268);
+
+  --glass: oklch(0.975 0.006 262 / 0.72);
+  --glass-border: oklch(0.72 0.05 275 / 0.4);
+  --glass-highlight: inset 0 1px 1.5px oklch(1 0 0 / 0.55);
+  --glass-depth: inset 0 -14px 30px -20px oklch(0.25 0.03 270 / 0.3);
+  --glass-sheen: linear-gradient(160deg, oklch(1 0 0 / 0.26), transparent 54%);
+  --pit-glow: oklch(0.62 0.11 278 / 0.45);
+  --glow-warm: oklch(0.66 0.1 278 / 0.35);
+  --glow-warm-strong: oklch(0.66 0.13 278 / 0.6);
+
+  /* Çivit (birincil) */
+  --primary: oklch(0.44 0.09 275);
+  --primary-foreground: oklch(0.97 0.005 260);
+
+  --secondary: oklch(0.945 0.007 260);
+  --secondary-foreground: oklch(0.31 0.022 268);
+
+  --muted: oklch(0.945 0.007 260);
+  --muted-foreground: oklch(0.47 0.02 265);
+
+  /* Yumuşak menekşe (vurgu) */
+  --accent: oklch(0.8 0.05 280);
+  --accent-foreground: oklch(0.3 0.03 272);
+
+  --brand-mark: oklch(0.46 0.11 276);
+
+  /* Modül takma adları — bileşenler var(--gold)/var(--jade) kullanır;
+     Artifact kapsamında bunlar çivit/çelik aileye eşlenir ki hiçbir
+     bileşen sıcak altına düşmesin. */
+  --gold: oklch(0.6 0.09 278);
+  --gold-deep: var(--brand-mark);
+  --gold-tint: oklch(0.92 0.025 278);
+  --jade: oklch(0.46 0.06 225);
+  --jade-tint: oklch(0.91 0.018 235);
+
+  --destructive: oklch(0.58 0.21 27);
+  --destructive-foreground: oklch(0.98 0.01 27);
+
+  --border: oklch(0.9 0.008 262);
+  --input: oklch(0.9 0.008 262);
+  --ring: oklch(0.55 0.08 275);
+
+  /* Grafik paleti: çivit → menekşe → çelik mavi → derin lacivert → leylak */
+  --chart-1: oklch(0.5 0.09 275);
+  --chart-2: oklch(0.68 0.09 292);
+  --chart-3: oklch(0.58 0.07 235);
+  --chart-4: oklch(0.4 0.07 270);
+  --chart-5: oklch(0.62 0.06 310);
+
+  --sidebar: oklch(0.955 0.006 260);
+  --sidebar-foreground: oklch(0.28 0.02 268);
+  --sidebar-primary: oklch(0.44 0.09 275);
+  --sidebar-primary-foreground: oklch(0.97 0.005 260);
+  --sidebar-accent: oklch(0.86 0.04 278);
+  --sidebar-accent-foreground: oklch(0.3 0.03 272);
+  --sidebar-border: oklch(0.9 0.008 262);
+  --sidebar-ring: oklch(0.55 0.08 275);
+
+  /* Nöromorfik kabartma — soğuk beyaz highlight + çelik-gri gölge */
+  --nm-light: 253 253 255;
+  --nm-dark: 138 142 158;
+  --nm-convex: linear-gradient(145deg, oklch(0.965 0.006 260), oklch(0.94 0.007 262));
+  --nm-convex-press: linear-gradient(145deg, oklch(0.94 0.007 262), oklch(0.96 0.006 260));
+  --shadow-raised: -7px -7px 15px rgb(var(--nm-light) / 0.72), 7px 7px 18px rgb(var(--nm-dark) / 0.26);
+  --shadow-raised-sm: -4px -4px 9px rgb(var(--nm-light) / 0.7), 4px 4px 10px rgb(var(--nm-dark) / 0.24);
+  --shadow-hover: -9px -9px 20px rgb(var(--nm-light) / 0.8), 10px 10px 24px rgb(var(--nm-dark) / 0.3);
+  --shadow-pressed: inset -4px -4px 9px rgb(var(--nm-light) / 0.6), inset 4px 4px 10px rgb(var(--nm-dark) / 0.32);
+}
+
+html[data-brand="artifact"].dark {
+  /* Derin gece çiviti — mat, saten yüzey */
+  --background: oklch(0.225 0.02 268);
+  --foreground: oklch(0.93 0.008 262);
+
+  --card: oklch(0.225 0.02 268);
+  --card-foreground: oklch(0.93 0.008 262);
+
+  --popover: oklch(0.265 0.02 268);
+  --popover-foreground: oklch(0.93 0.008 262);
+
+  --glass: oklch(0.27 0.022 268 / 0.72);
+  --glass-border: oklch(0.7 0.06 280 / 0.28);
+  --glass-highlight: inset 0 1px 1.5px oklch(1 0 0 / 0.15);
+  --glass-depth: inset 0 -14px 30px -20px oklch(0 0 0 / 0.45);
+  --glass-sheen: linear-gradient(160deg, oklch(1 0 0 / 0.11), transparent 54%);
+  --pit-glow: oklch(0.76 0.11 280 / 0.5);
+  --glow-warm: oklch(0.74 0.1 280 / 0.4);
+  --glow-warm-strong: oklch(0.76 0.13 280 / 0.7);
+
+  --primary: oklch(0.76 0.09 280);
+  --primary-foreground: oklch(0.2 0.02 268);
+
+  --secondary: oklch(0.28 0.02 268);
+  --secondary-foreground: oklch(0.93 0.008 262);
+
+  --muted: oklch(0.28 0.02 268);
+  --muted-foreground: oklch(0.74 0.02 268);
+
+  --accent: oklch(0.48 0.06 280);
+  --accent-foreground: oklch(0.96 0.01 265);
+
+  --brand-mark: oklch(0.79 0.1 282);
+
+  --gold: oklch(0.72 0.09 280);
+  --gold-tint: oklch(0.32 0.04 278);
+  --jade: oklch(0.55 0.06 230);
+  --jade-tint: oklch(0.3 0.025 240);
+
+  --destructive: oklch(0.62 0.2 25);
+  --destructive-foreground: oklch(0.97 0.01 27);
+
+  --border: oklch(0.82 0.02 270 / 13%);
+  --input: oklch(0.82 0.02 270 / 15%);
+  --ring: oklch(0.76 0.09 280);
+
+  --chart-1: oklch(0.76 0.09 280);
+  --chart-2: oklch(0.62 0.06 250);
+  --chart-3: oklch(0.7 0.09 310);
+  --chart-4: oklch(0.55 0.05 268);
+  --chart-5: oklch(0.66 0.08 220);
+
+  --sidebar: oklch(0.225 0.02 268);
+  --sidebar-foreground: oklch(0.93 0.008 262);
+  --sidebar-primary: oklch(0.76 0.09 280);
+  --sidebar-primary-foreground: oklch(0.2 0.02 268);
+  --sidebar-accent: oklch(0.31 0.03 275);
+  --sidebar-accent-foreground: oklch(0.96 0.008 265);
+  --sidebar-border: oklch(0.82 0.02 270 / 13%);
+  --sidebar-ring: oklch(0.76 0.09 280);
+
+  /* Gece nöromorfik — mat yüzey, soğuk highlight/derin gölge (JG gece deseniyle aynı kural) */
+  --nm-light: 100 104 124;
+  --nm-dark: 6 8 14;
+  --nm-convex: linear-gradient(145deg, oklch(0.24 0.02 268), oklch(0.222 0.02 268));
+  --nm-convex-press: linear-gradient(145deg, oklch(0.222 0.02 268), oklch(0.24 0.02 268));
+  --shadow-raised: -6px -6px 16px rgb(var(--nm-light) / 0.16),
+    7px 7px 18px rgb(var(--nm-dark) / 0.5);
+  --shadow-raised-sm: -3px -3px 9px rgb(var(--nm-light) / 0.14),
+    4px 4px 11px rgb(var(--nm-dark) / 0.46);
+  --shadow-hover: -8px -8px 20px rgb(var(--nm-light) / 0.2),
+    10px 10px 24px rgb(var(--nm-dark) / 0.56);
+  --shadow-pressed: inset -4px -4px 9px rgb(var(--nm-light) / 0.12),
+    inset 4px 4px 10px rgb(var(--nm-dark) / 0.5);
+}
+
+/* Marka-koşullu görünürlük: bileşenler her iki markın işaretini de basar,
+   aktif kapsama göre biri gizlenir (sunucu-taraflı, flash yok). */
+html[data-brand="artifact"] .brand-jg {
+  display: none !important;
+}
+html[data-brand="jade-gold"] .brand-pf {
+  display: none !important;
+}
+
+/* Altın tozu ambiyansı Jade Gold'a özel — platform kabuğunda görünmez. */
+html[data-brand="artifact"] .jg-dust {
+  display: none !important;
+}
