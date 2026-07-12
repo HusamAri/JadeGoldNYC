@@ -8,6 +8,7 @@ import { formatMoney } from "@/lib/money";
 import { formatDate } from "@/lib/format";
 import { PageHeader } from "@/components/page-header";
 import { GoldStream } from "@/components/brand/gold-stream";
+import { CornerMarks } from "@/components/brand/corner-marks";
 import { EditorialCard } from "@/components/brand/editorial-card";
 import { EmptyState } from "@/components/empty-state";
 import { Button } from "@/components/ui/button";
@@ -69,19 +70,36 @@ export default async function MaliyetlerPage({
         }
       />
 
+      {/* Dekoratif indeks satırı (Spatial/Liquid .idx dili). */}
+      <div aria-hidden className="idx mb-4">
+        <span>Maliyetler / 01 · Atölye</span>
+        <span className="idx-bar" />
+        <span className="idx-ln" />
+        <span>Jade Gold · NYC</span>
+      </div>
       {/* Tek, sessiz marka aksanı — atölye/malzeme temasıyla maliyet sayfasına
-          zarif bir giriş (galeri değil, tek kompakt banner). */}
-      <EditorialCard
-        compact
-        heightClassName="h-[200px]"
-        className="mb-6"
-        image="/brand/gallery/aydinlik-nugget.webp"
-        video="/brand/video/altin-yuzuk-yukselis.mp4"
-        eyebrow="Atölye"
-        title="Zarafetin sadeliği"
-        subtitle="Her maliyet, som altın el işçiliğinin arkasındaki değer."
-      />
+          zarif bir giriş (galeri değil, tek kompakt banner). Sayfanın hero
+          anı: Spatial köşe işaretleri (dekoratif sarmalayıcı). */}
+      <div className="relative mb-6">
+        <EditorialCard
+          compact
+          heightClassName="h-[200px]"
+          image="/brand/gallery/aydinlik-nugget.webp"
+          video="/brand/video/altin-yuzuk-yukselis.mp4"
+          eyebrow="Atölye"
+          title="Zarafetin sadeliği"
+          subtitle="Her maliyet, som altın el işçiliğinin arkasındaki değer."
+        />
+        <CornerMarks />
+      </div>
 
+      {/* Dekoratif indeks satırı (Spatial/Liquid .idx dili). */}
+      <div aria-hidden className="idx mb-4">
+        <span>Maliyetler / 02 · Kayıtlar</span>
+        <span className="idx-bar" />
+        <span className="idx-ln" />
+        <span>Jade Gold · NYC</span>
+      </div>
       <Card>
         <CardContent className="space-y-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">

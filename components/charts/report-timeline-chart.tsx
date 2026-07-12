@@ -16,7 +16,13 @@ import {
 import type { ReportTimelinePoint } from "@/lib/types";
 import { formatDate } from "@/lib/format";
 
-import { BarNeo, ChartDefs, GLASS_TOOLTIP, GlowDot } from "./dashboard-charts";
+import {
+  BarNeo,
+  CHART_INK,
+  ChartDefs,
+  GLASS_TOOLTIP,
+  GlowDot,
+} from "./dashboard-charts";
 
 /**
  * İki ayrı ölçekli seri (indirim % ve sipariş adedi) tek eksende değil, iki
@@ -41,7 +47,7 @@ export function ReportTimelineChart({
   );
 
   return (
-    <div className="space-y-4">
+    <div className={`space-y-4 ${CHART_INK}`}>
       <div>
         <p className="idx mb-2">
           <span className="idx-bar" aria-hidden="true" />
@@ -51,7 +57,7 @@ export function ReportTimelineChart({
         <div className="nm-pressed rounded-2xl p-3">
           <ResponsiveContainer width="100%" height={130}>
             <AreaChart data={data} margin={{ top: 4, right: 12, left: 0, bottom: 0 }}>
-              <ChartDefs id="rtl-disc" tone="var(--chart-2)" />
+              <ChartDefs id="rtl-disc" tone="var(--jg-ink-2)" />
               <rect x="0" y="0" width="100%" height="100%" fill="url(#rtl-disc-spot)" />
               <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
               <XAxis dataKey="date" hide />
@@ -59,7 +65,7 @@ export function ReportTimelineChart({
                 tick={{
                   fontSize: 11,
                   fill: "var(--muted-foreground)",
-                  fontFamily: "var(--font-mono)",
+                  fontFamily: "var(--font-index)",
                 }}
                 tickLine={false}
                 axisLine={false}
@@ -74,9 +80,9 @@ export function ReportTimelineChart({
               />
               <ReferenceLine
                 x={cutoffDate}
-                stroke="var(--destructive)"
+                stroke="var(--jg-ink-neg)"
                 strokeDasharray="3 3"
-                label={{ value: cutoffLabel, position: "insideTopRight", fontSize: 10, fill: "var(--destructive)" }}
+                label={{ value: cutoffLabel, position: "insideTopRight", fontSize: 10, fill: "var(--jg-ink-neg)" }}
               />
               <Area
                 type="monotone"
@@ -84,14 +90,14 @@ export function ReportTimelineChart({
                 stroke="url(#rtl-disc-stroke)"
                 fill="url(#rtl-disc-area)"
                 strokeWidth={2.5}
-                filter="url(#rtl-disc-float)"
+                filter="url(#rtl-disc-lglow)"
                 dot={(p) => (
-                  <GlowDot {...p} defsId="rtl-disc" tone="var(--chart-2)" />
+                  <GlowDot {...p} defsId="rtl-disc" tone="var(--jg-ink-2)" />
                 )}
                 activeDot={{
                   r: 4,
-                  fill: "var(--chart-2)",
-                  filter: "url(#rtl-disc-float)",
+                  fill: "var(--jg-ink-2)",
+                  filter: "url(#rtl-disc-dotglow)",
                 }}
               />
             </AreaChart>
@@ -108,7 +114,7 @@ export function ReportTimelineChart({
         <div className="nm-pressed rounded-2xl p-3">
           <ResponsiveContainer width="100%" height={130}>
             <BarChart data={data} margin={{ top: 4, right: 12, left: 0, bottom: 0 }}>
-              <ChartDefs id="rtl-ord" tone="var(--chart-1)" />
+              <ChartDefs id="rtl-ord" tone="var(--jg-ink-1)" />
               <rect x="0" y="0" width="100%" height="100%" fill="url(#rtl-ord-spot)" />
               <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
               <XAxis
@@ -123,7 +129,7 @@ export function ReportTimelineChart({
                 tick={{
                   fontSize: 11,
                   fill: "var(--muted-foreground)",
-                  fontFamily: "var(--font-mono)",
+                  fontFamily: "var(--font-index)",
                 }}
                 tickLine={false}
                 axisLine={false}
@@ -136,7 +142,7 @@ export function ReportTimelineChart({
                 formatter={(v) => [v, "Sipariş"]}
                 labelFormatter={(l) => formatDate(String(l))}
               />
-              <ReferenceLine x={cutoffDate} stroke="var(--destructive)" strokeDasharray="3 3" />
+              <ReferenceLine x={cutoffDate} stroke="var(--jg-ink-neg)" strokeDasharray="3 3" />
               <Bar
                 dataKey="orders"
                 shape={<BarNeo defsId="rtl-ord" accentIndex={accentIdx} />}

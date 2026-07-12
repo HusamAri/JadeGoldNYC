@@ -116,7 +116,7 @@ export function WhatsNew() {
           width={560}
           height={510}
           priority
-          className="brand-jg pointer-events-none absolute -top-10 -right-6 z-20 hidden w-[196px] rotate-[15deg] select-none drop-shadow-[0_14px_20px_rgba(35,38,60,0.4)] sm:block"
+          className="brand-jg pointer-events-none absolute -top-10 -right-6 z-20 hidden w-[196px] rotate-[15deg] select-none drop-shadow-[0_7px_5px_rgba(66,62,98,0.3)] drop-shadow-[0_2px_1px_rgba(66,62,98,0.34)] sm:block"
         />
 
         <div className="relative z-10 p-7 sm:pr-52">

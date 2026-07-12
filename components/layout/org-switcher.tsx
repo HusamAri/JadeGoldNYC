@@ -55,7 +55,9 @@ export function OrgSwitcher({
         )}
         aria-label="Şirket seç"
       >
-        <span className="truncate text-sm font-semibold tracking-tight">
+        {/* Kiracı adı — Spatial marka dili: serif 600, sıkı tracking
+            (ref: .navglass .brand). */}
+        <span className="truncate text-[15px] leading-tight font-semibold tracking-[-0.01em] [font-family:var(--font-serif)]">
           {active?.orgName ?? "Şirket"}
         </span>
         <ChevronsUpDown className="text-muted-foreground size-3.5 shrink-0" />

@@ -12,11 +12,14 @@ const CHIP =
 const DOT =
   "size-1.5 shrink-0 rounded-full bg-(--tone) dark:shadow-[0_0_10px_0_var(--tone)]";
 
+/* Mürekkepler Spatial mor rampası (koyuda lume eşleri): P1 en koyu mor →
+   P3 soluk mor; P0 negatif 344. Jenerik turuncu/mavi chart tonları
+   KULLANILMAZ — P0..P3 etiketi her zaman görünür. */
 const TONE: Record<TaskPriority, string> = {
-  P0: "[--tone:var(--destructive)] bg-(--tone)/20 border-(--tone)/40",
-  P1: "[--tone:var(--chart-4)]",
-  P2: "[--tone:var(--chart-2)]",
-  P3: "[--tone:var(--muted-foreground)]",
+  P0: "[--tone:oklch(0.58_0.16_344)] dark:[--tone:oklch(0.74_0.12_344)] bg-(--tone)/20 border-(--tone)/40",
+  P1: "[--tone:oklch(0.54_0.20_278)] dark:[--tone:oklch(0.72_0.14_262)]",
+  P2: "[--tone:oklch(0.68_0.15_286)] dark:[--tone:oklch(0.78_0.12_278)]",
+  P3: "[--tone:oklch(0.83_0.07_290)] dark:[--tone:oklch(0.86_0.05_262)]",
 };
 
 export function TaskPriorityBadge({ priority }: { priority: TaskPriority }) {

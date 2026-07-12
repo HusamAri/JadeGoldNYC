@@ -1,14 +1,17 @@
 import type { Metadata, Viewport } from "next";
-import { Sora, JetBrains_Mono } from "next/font/google";
+import { Sora, JetBrains_Mono, Cormorant_Garamond } from "next/font/google";
 import localFont from "next/font/local";
 import { Toaster } from "@/components/ui/sonner";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { getBrandScope } from "@/lib/brand";
 import "./globals.css";
 
-// Amuletta tip sistemi — design system ile BİREBİR (handoff/typography):
+// Amuletta tip sistemi — design system + lab referansları (Spatial/Liquid/
+// Materials/Liquid_Dark) ile BİREBİR:
 //  • Sora (UI/başlık/gövde) — bold-minimalist
-//  • JetBrains Mono (dijital okumalar, index başlıkları)
+//  • JetBrains Mono (dijital okumalar, .idx index başlıkları)
+//  • Cormorant Garamond (--font-serif) — editorial serif; başlıklarda
+//    italik `em` vurgular (lab'lardaki `h2 em` dili)
 //  • California Paradise (display) — YALNIZ hero başlıklar/wordmark
 const sora = Sora({
   variable: "--font-sora",
@@ -18,6 +21,13 @@ const sora = Sora({
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jbmono",
   subsets: ["latin", "latin-ext"],
+});
+
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
+  subsets: ["latin", "latin-ext"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
 });
 
 const california = localFont({
@@ -58,7 +68,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#eaecf3" },
-    { media: "(prefers-color-scheme: dark)", color: "#262935" },
+    { media: "(prefers-color-scheme: dark)", color: "#14161e" },
   ],
 };
 
@@ -76,7 +86,7 @@ export default async function RootLayout({
     <html
       lang="tr"
       data-brand={brand}
-      className={`${sora.variable} ${jetbrainsMono.variable} ${california.variable} h-full antialiased`}
+      className={`${sora.variable} ${jetbrainsMono.variable} ${cormorant.variable} ${california.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="min-h-full bg-background text-foreground">

@@ -3,10 +3,11 @@ import type { MetadataRoute } from "next";
 /**
  * PWA manifesti — Amuletta yönetim platformu.
  *
- * NeumorphGlass kömür (#262935) tema/zemin: ana ekrana eklendiğinde platform
- * elmas markı koyu zeminde çivit-leylak olarak okunur (sekme markı
- * `app/icon.svg` ile tutarlı). Marka-nötr: şirketler (Jade Gold, Yaso, …)
- * platformun kiracılarıdır, kabuk platform kimliğini taşır.
+ * v3 lab kaydı: theme_color açık Spatial lavanta zemin (#eaecf3, sekme
+ * markı `app/icon.svg` karosuyla aynı), background_color koyu lume mürekkep
+ * (#14161e) — splash'ta lavanta orb markı koyu zeminden ayrışır.
+ * Marka-nötr: şirketler (Jade Gold, Yaso, …) platformun kiracılarıdır,
+ * kabuk platform kimliğini taşır.
  */
 export default function manifest(): MetadataRoute.Manifest {
   return {
@@ -17,8 +18,8 @@ export default function manifest(): MetadataRoute.Manifest {
     start_url: "/",
     display: "standalone",
     lang: "tr",
-    background_color: "#262935",
-    theme_color: "#262935",
+    background_color: "#14161e",
+    theme_color: "#eaecf3",
     icons: [
       {
         src: "/icon.svg",

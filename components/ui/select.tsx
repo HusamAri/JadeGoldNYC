@@ -37,7 +37,10 @@ function SelectTrigger({
       className={cn(
         // Inset oluk hap (Input dili) — odakta çukura vuran holo ışık (pit-glow).
         "nm-pressed bg-background data-[placeholder]:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground flex w-fit items-center justify-between gap-2 rounded-full px-4 py-2 text-sm whitespace-nowrap transition-[color,box-shadow] duration-300 ease-[var(--ease-premium)] outline-none disabled:cursor-not-allowed disabled:opacity-50 data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        // Koyu: lume çukur kuyu — oklch(0 0 0/0.35) zemin + var(--lume-pit).
+        "dark:[background-image:none] dark:[background-color:oklch(0_0_0/0.35)] dark:shadow-[var(--lume-pit)]",
         "focus-visible:ring-ring/60 focus-visible:ring-2 focus-visible:shadow-[var(--shadow-pressed),inset_6px_-6px_14px_-4px_var(--pit-glow),inset_11px_-11px_28px_-10px_var(--pit-glow)]",
+        "dark:focus-visible:shadow-[var(--lume-pit),inset_6px_-6px_14px_-4px_var(--pit-glow)]",
         "aria-invalid:ring-destructive/30",
         className,
       )}
@@ -64,7 +67,9 @@ function SelectContent({
         className={cn(
           // Buzlu cam panel — ortamın ÜSTÜNDE yüzer: cam zemin + sheen + hairline
           // kenar + iç pah highlight'ı + lift gölgesi; arkası backdrop-blur ile buzlanır.
-          "text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 relative z-50 max-h-(--radix-select-content-available-height) min-w-[8rem] origin-(--radix-select-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-xl border border-[color:var(--glass-border)] [background-color:var(--glass)] [background-image:var(--glass-sheen)] [backdrop-filter:var(--glass-filter)] shadow-[var(--lift),var(--glass-highlight)]",
+          "text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 relative z-50 max-h-(--radix-select-content-available-height) min-w-[8rem] origin-(--radix-select-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-2xl border border-[color:var(--glass-border)] [background-color:var(--glass)] [background-image:var(--glass-sheen)] [backdrop-filter:var(--glass-filter)] shadow-[var(--lift),var(--glass-highlight)]",
+          // Koyu: lume panel — opak #262935 hücre, 1px beyaz-%5 kenar, derin gölge.
+          "dark:[background-color:var(--lume-panel)] dark:[background-image:none] dark:[backdrop-filter:none] dark:[border-color:oklch(1_0_0/0.05)] dark:shadow-[0_20px_50px_oklch(0_0_0/0.4),inset_0_1px_0_oklch(1_0_0/0.06)]",
           position === "popper" &&
             "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
           className,

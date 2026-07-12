@@ -57,8 +57,9 @@ function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
     <tr
       data-slot="table-row"
       className={cn(
-        // Satır hover: çok hafif accent yıkaması (mikro-kroma; muted değil).
-        "hover:bg-accent/30 data-[state=selected]:bg-accent/50 border-b transition-colors duration-300",
+        // Hairline satır (açık: var(--border), koyu: beyaz %7 — lume kuralı);
+        // hover: açıkta hafif accent yıkaması, koyuda beyaz ışık banyosu.
+        "hover:bg-accent/30 data-[state=selected]:bg-accent/50 dark:hover:bg-white/[0.04] dark:data-[state=selected]:bg-white/[0.07] border-b transition-colors duration-300",
         className,
       )}
       {...props}
@@ -86,7 +87,10 @@ function TableCell({ className, ...props }: React.ComponentProps<"td">) {
       data-slot="table-cell"
       className={cn(
         // Sayısal hücreler hizalı okunur (tabular rakamlar — readout dili).
+        // Sağa hizalı (tutar/adet) hücreler index yüzüyle okunur: JetBrains
+        // readout; koyuda lume beyazı + 0 0 14px beyaz ışıma (lab reçetesi).
         "p-2 align-middle whitespace-nowrap tabular-nums [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+        "[&.text-right]:[font-family:var(--font-index)] [&.text-right]:text-[13px] dark:[&.text-right]:text-white dark:[&.text-right]:[text-shadow:0_0_14px_rgba(255,255,255,0.4)]",
         className,
       )}
       {...props}

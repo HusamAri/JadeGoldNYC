@@ -65,10 +65,11 @@ export function Topbar({
   const parentHref = pathname.split("/").slice(0, -1).join("/") || "/panel";
 
   return (
-    /* Spatial navglass — yarı saydam cam şerit: blur'lu beyaz cam + sheen,
-       altta hairline (--glass-border), içte pah highlight'ı + lift gölgesi.
-       Koyu modda token'lar camı kendiliğinden "ışık taşıyan" LUME cama çevirir. */
-    <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-3 border-b border-[color:var(--glass-border)] px-4 [background-color:var(--glass)] shadow-[var(--lift-sm),var(--glass-highlight)] [backdrop-filter:var(--glass-filter)] transition-[background-color,box-shadow] duration-500 ease-[var(--ease-premium)] [background-image:var(--glass-sheen)] md:px-6">
+    /* Spatial navglass pill — yüzen 999px cam şerit (ref: .navglass):
+       0.82 beyaz + blur, 1px beyaz-0.9 hairline, kuvvetli lift (0 14px 34px)
+       + üst pah highlight'ı. Koyuda LUME panel şeridine döner (ref: .cell —
+       #262935 panel, oklch(1 0 0/.05) kenar, 0 20px 50px derin gölge). */
+    <header className="sticky top-4 z-30 mx-3 mt-4 flex h-14 items-center justify-between gap-3 rounded-full border border-[color:oklch(1_0_0/0.9)] pr-[14px] pl-[22px] [background-color:oklch(1_0_0/0.82)] [backdrop-filter:var(--glass-filter)] [box-shadow:var(--lift),var(--glass-highlight)] transition-[background-color,box-shadow,border-color] duration-500 ease-[var(--ease-premium)] md:mx-6 dark:border-[color:oklch(1_0_0/0.05)] dark:[background-color:var(--lume-panel)] dark:[box-shadow:0_20px_50px_oklch(0_0_0/0.4),inset_0_1px_0_oklch(1_0_0/0.06)]">
       <div className="flex items-center gap-3">
         {/* Geri — alt/detay sayfalarında */}
         {isSubPage && (
@@ -117,11 +118,13 @@ export function Topbar({
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <Logo className="size-8 md:hidden" />
+        <Logo className="md:hidden" />
         {/* Editorial vurgu çizgisi (.idx-bar dili) — başlığın önünde kısa
             primary hairline; yalnız masaüstünde. */}
         <span aria-hidden className="hidden h-px w-6 shrink-0 bg-primary/70 md:block" />
-        <h1 className="text-base font-semibold tracking-tight md:text-lg">
+        {/* Bölüm adı — Spatial marka dili: serif 600, 20px, -.01em
+            (ref: .navglass .brand). */}
+        <h1 className="text-lg font-semibold tracking-[-0.01em] [font-family:var(--font-serif)] md:text-xl">
           {current?.label ?? "Panel"}
         </h1>
       </div>

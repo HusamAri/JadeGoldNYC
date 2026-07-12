@@ -20,6 +20,12 @@ export function PageHeader({
   eyebrow?: string;
   className?: string;
 }) {
+  // Görsel <em> vurgusu — DOM metni AYNEN kalır; yalnız son kelime italik
+  // serif mürekkebe sarılır (ref: Spatial .section-h h2 em / Lume .lsec h2 em).
+  const words = title.trim().split(" ");
+  const last = words[words.length - 1];
+  const head = words.slice(0, -1).join(" ");
+
   return (
     <div className={cn("mb-6 space-y-4", className)}>
       {image && (
@@ -36,23 +42,33 @@ export function PageHeader({
           </div>
         </BrandTile>
       )}
+      {/* Editorial index satırı — bölüm adı + kısa primary vurgu + uzayan
+          ince hairline (ref: .lsec .lhead — k + bar 34px + ln flex:1). */}
+      <div aria-hidden className="idx">
+        <span>{eyebrow ?? title}</span>
+        <span className="idx-bar" />
+        <span className="idx-ln" />
+      </div>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-1">
-          {/* Kahraman başlık — display serif (editorial dil). */}
-          <h2 className="display-emboss text-2xl font-semibold tracking-tight [font-family:var(--font-display)]">
-            {title}
+          {/* Kahraman başlık — editorial serif; koyuda yüzeyden kabarır
+              (display-emboss), em koyuda luminous periwinkle'a döner. */}
+          <h2 className="h-serif display-emboss text-3xl md:text-4xl">
+            {head ? (
+              <>
+                {head} <em>{last}</em>
+              </>
+            ) : (
+              title
+            )}
           </h2>
           {description && (
-            <p className="text-engraved text-muted-foreground text-sm">{description}</p>
+            <p className="text-engraved text-muted-foreground max-w-[60ch] text-sm">
+              {description}
+            </p>
           )}
         </div>
         {action && <div className="flex items-center gap-2">{action}</div>}
-      </div>
-      {/* Editorial index kuralı — kısa primary vurgu çizgisi + uzayan ince hairline
-          (.idx-bar / .idx-ln dili; dekoratif, metinsiz). */}
-      <div aria-hidden className="flex items-center gap-3">
-        <span className="bg-primary h-px w-9" />
-        <span className="bg-border h-px flex-1" />
       </div>
     </div>
   );

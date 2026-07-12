@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { ComponentType, SVGProps } from "react";
 import {
   Plus,
   ListChecks,
@@ -8,6 +9,7 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { SceneCutouts } from "@/components/scene-cutouts";
+import { cn } from "@/lib/utils";
 
 import {
   listTasks,
@@ -17,11 +19,39 @@ import {
 import { formatNumber } from "@/lib/format";
 import { PageHeader } from "@/components/page-header";
 import { GoldStream } from "@/components/brand/gold-stream";
+import { CornerMarks } from "@/components/brand/corner-marks";
 import { KpiCard } from "@/components/kpi-card";
 import { Button } from "@/components/ui/button";
 import { TaskViews } from "@/components/tasks/task-views";
 
 export const metadata = { title: "Görevler" };
+
+/**
+ * Lucide glifini Satışlar'daki lux-art gravür diline yaklaştırır: ince hat
+ * (strokeWidth 1) + soluk mor mürekkep — ham currentColor gri klipart yerine
+ * kart camının altında oyma filigran gibi okunur. KpiCard'ın verdiği
+ * konum/boyut sınıfları korunur; yalnız ton/opaklık üste yazılır.
+ */
+function luxLine(Icon: ComponentType<SVGProps<SVGSVGElement>>) {
+  return function LuxLineIcon({ className, style }: SVGProps<SVGSVGElement>) {
+    return (
+      <Icon
+        className={cn(
+          className,
+          "text-[oklch(0.68_0.15_286)] opacity-30 dark:text-[oklch(0.83_0.07_290)] dark:opacity-20",
+        )}
+        style={style}
+        strokeWidth={1}
+      />
+    );
+  };
+}
+
+const ListChecksArt = luxLine(ListChecks);
+const CircleDashedArt = luxLine(CircleDashed);
+const LoaderArt = luxLine(Loader);
+const CheckCircle2Art = luxLine(CheckCircle2);
+const AlertTriangleArt = luxLine(AlertTriangle);
 
 export default async function GorevlerPage() {
   const today = new Date().toLocaleDateString("en-CA", {
@@ -51,37 +81,57 @@ export default async function GorevlerPage() {
         }
       />
 
+      {/* Dekoratif indeks satırı (Spatial/Liquid .idx dili) — kendi boş
+          hattında durur; kart camının altına girmesin diye negatif çekme yok. */}
+      <div aria-hidden className="idx relative z-[2]">
+        <span>Görevler / 01 · Özet</span>
+        <span className="idx-bar" />
+        <span className="idx-ln" />
+        <span>Jade Gold · NYC</span>
+      </div>
+      {/* Ana KPI bölümü — Spatial hero köşe işaretleri (dekoratif sarmalayıcı). */}
+      <div className="relative">
       <div className="stagger grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-5">
         <KpiCard
           label="Toplam Görev"
           value={formatNumber(summary.total)}
-          icon={ListChecks}
+          icon={ListChecksArt}
         />
         <KpiCard
           label="Yapılacak"
           value={formatNumber(summary.todo)}
-          icon={CircleDashed}
+          icon={CircleDashedArt}
         />
         <KpiCard
           label="Devam Eden"
           value={formatNumber(summary.doing)}
-          icon={Loader}
+          icon={LoaderArt}
         />
         <KpiCard
           label="Tamamlanan"
           value={formatNumber(summary.done)}
-          icon={CheckCircle2}
+          icon={CheckCircle2Art}
           accent="positive"
         />
         <KpiCard
           label="Açık P0"
           value={formatNumber(summary.p0Open)}
-          icon={AlertTriangle}
+          icon={AlertTriangleArt}
           accent={summary.p0Open > 0 ? "negative" : "default"}
           className="col-span-2 lg:col-span-1"
         />
       </div>
+      <CornerMarks />
+      </div>
 
+      {/* Dekoratif indeks satırı (Spatial/Liquid .idx dili) — sekme pill'i
+          üstüne binmesin diye negatif çekme kaldırıldı. */}
+      <div aria-hidden className="idx relative z-[2]">
+        <span>Görevler / 02 · Tahta</span>
+        <span className="idx-bar" />
+        <span className="idx-ln" />
+        <span>Jade Gold · NYC</span>
+      </div>
       <TaskViews tasks={tasks} members={members} serverToday={today} />
     </div>
   );

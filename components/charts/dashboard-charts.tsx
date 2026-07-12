@@ -16,19 +16,63 @@ import {
   YAxis,
 } from "recharts";
 
+/**
+ * Grafik mürekkep değişkenleri — Spatial (açık) / Lume (koyu) kayıtları.
+ * Açık: Spatial mor oklch ailesi (0.54/0.66 0.20 278–286), negatif 0.58 0.16 344.
+ * Koyu: Lume — kuyruğu sönen beyaz iz (lineTrail), #c9cde6 alan fade'i, cam
+ * barlar (oklch .62/.9 262) + taban ışık havuzu, beyaz-stroke'lu uç nokta.
+ * Her grafiğin kök sarmalayıcısına uygulanır; SVG defs bu değişkenleri okur.
+ */
+export const CHART_INK = [
+  // — mürekkep ailesi (kategori/seri renkleri) —
+  "[--jg-ink-1:oklch(0.54_0.20_278)] dark:[--jg-ink-1:oklch(0.72_0.14_262)]",
+  "[--jg-ink-2:oklch(0.66_0.20_285)] dark:[--jg-ink-2:oklch(0.78_0.12_278)]",
+  "[--jg-ink-3:oklch(0.68_0.15_286)] dark:[--jg-ink-3:oklch(0.70_0.10_290)]",
+  "[--jg-ink-4:oklch(0.83_0.07_290)] dark:[--jg-ink-4:oklch(0.86_0.05_262)]",
+  "[--jg-ink-neg:oklch(0.58_0.16_344)] dark:[--jg-ink-neg:oklch(0.70_0.13_344)]",
+  // — çizgi izi (Spatial: mor yoğunlaşan; Lume: lineTrail beyaz, kuyruk söner) —
+  "[--jg-trail-0:oklch(0.54_0.20_278/.28)] dark:[--jg-trail-0:rgb(255_255_255/0)]",
+  "[--jg-trail-1:oklch(0.60_0.20_281/.75)] dark:[--jg-trail-1:rgb(203_210_255/.45)]",
+  "[--jg-trail-2:oklch(0.66_0.20_285)] dark:[--jg-trail-2:#ffffff]",
+  // — alan dolgusu (Lume: #c9cde6 .36→0 dikey fade) —
+  "[--jg-area-c:oklch(0.66_0.20_285/.34)] dark:[--jg-area-c:rgb(201_205_230/.36)]",
+  "[--jg-area-c0:oklch(0.66_0.20_285/0)] dark:[--jg-area-c0:rgb(201_205_230/0)]",
+  // — çizgi ışıması (yalnız koyuda; açıkta glow sadece uç noktada) —
+  "[--jg-lglow-a:transparent] dark:[--jg-lglow-a:rgb(205_214_255/.7)]",
+  "[--jg-lglow-b:transparent] dark:[--jg-lglow-b:rgb(150_160_255/.35)]",
+  // — uç nokta (Spatial sparkDot: beyaz + mor stroke; Lume ldot: 262 + beyaz stroke) —
+  "[--jg-dot-f:#ffffff] dark:[--jg-dot-f:oklch(0.72_0.14_262)]",
+  "[--jg-dot-s:oklch(0.60_0.20_278)] dark:[--jg-dot-s:oklch(1_0_0/.85)]",
+  "[--jg-dotglow:rgb(255_255_255/.9)] dark:[--jg-dotglow:rgb(205_214_255/.7)]",
+  // — barlar (Spatial iceUp cam sütun; Lume cam bar 0deg .62→.9 262) —
+  "[--jg-bar-0:oklch(0.86_0.08_278/.9)] dark:[--jg-bar-0:oklch(0.9_0.04_262/.16)]",
+  "[--jg-bar-1:oklch(0.62_0.19_278/.5)] dark:[--jg-bar-1:oklch(0.76_0.05_262/.25)]",
+  "[--jg-bar-2:oklch(0.50_0.20_278/.72)] dark:[--jg-bar-2:oklch(0.62_0.06_262/.34)]",
+  "[--jg-bar-edge:rgb(255_255_255/.55)] dark:[--jg-bar-edge:oklch(1_0_0/.28)]",
+  "[--jg-bar-edge-dim:rgb(255_255_255/.4)] dark:[--jg-bar-edge-dim:oklch(1_0_0/.12)]",
+  "[--jg-bar-dim:oklch(0.83_0.07_290/.35)] dark:[--jg-bar-dim:oklch(0.62_0.06_262/.15)]",
+  "[--jg-bar-shadow:oklch(0.56_0.19_278/.5)] dark:[--jg-bar-shadow:transparent]",
+  "[--jg-bar-glow:transparent] dark:[--jg-bar-glow:oklch(0.7_0.07_262/.3)]",
+  "[--jg-pool:transparent] dark:[--jg-pool:oklch(0.92_0.05_262/.85)]",
+  // — ray/oluk ve dilim kenarı —
+  "[--jg-groove:rgb(120_120_150/.14)] dark:[--jg-groove:oklch(0_0_0/.3)]",
+  "[--jg-track:rgb(122_122_155/.24)] dark:[--jg-track:oklch(0.75_0.08_262/.14)]",
+  "[--jg-slice-edge:rgb(255_255_255/.85)] dark:[--jg-slice-edge:oklch(1_0_0/.28)]",
+].join(" ");
+
 const COLORS = [
-  "var(--chart-1)",
-  "var(--chart-2)",
-  "var(--chart-3)",
-  "var(--chart-4)",
-  "var(--chart-5)",
+  "var(--jg-ink-1)",
+  "var(--jg-ink-2)",
+  "var(--jg-ink-3)",
+  "var(--jg-ink-4)",
+  "var(--jg-ink-neg)",
 ];
 
-/* Sayısal eksen okumaları — editorial dil: mono + tabular (idiom: readout). */
+/* Sayısal eksen okumaları — index yüzü (.idx dili): mono + tabular readout. */
 const MONO_TICK = {
   fontSize: 11,
   fill: "var(--muted-foreground)",
-  fontFamily: "var(--font-mono)",
+  fontFamily: "var(--font-index)",
 } as const;
 
 /* Grafik tooltip'leri için ortak buzlu-cam (liquid glass) stili — "Neler Yeni"
@@ -52,25 +96,23 @@ export const GLASS_TOOLTIP = {
 } as const;
 
 /**
- * Paylaşılan SVG tanımları — TAM TEPEDEN bakılan 3B dili. Panelin geri
- * kalanı gibi grafiklere de kuşbakışı bakarız; yükseklik izometrik yüzeyle
- * DEĞİL, öğenin yüzeyin çok yukarısında durup ALTINA düşürdüğü yumuşak
- * gölge + çevresine yaydığı ışık alanıyla anlatılır (nöromorfik dil).
- *  - spot: grafiğin arkasına düşen yumuşak holo/altın ışık halesi
- *  - face: TEK vurgu çubuğunun/serinin üstten degrade dolgusu
- *  - area: çizginin yaydığı ışık — altına dökülen, sönümlenen yumuşak glow
- *  - stroke: çizgiye soldan sağa yoğunlaşan "gradient iz" (lume trail)
- *  - neutral: nötr kabarık çubuk yüzeyine üstten vuran adaptif ışık sheen'i
- *  - halo: parlayan uç nokta (glow dot) çevresindeki ışık halesi
- *  - float: öğeyi "çok yukarıda" gösteren birleşik filtre — aşağı ofsetli
- *    koyu yumuşak gölge (yükseklik) + tonda dış glow (yayılan ışık)
- *  - drop: yalnız aşağı düşen yumuşak gölge (nötr kabarık öğeler)
+ * Paylaşılan SVG tanımları — lab-referans iki kayıt (CHART_INK değişkenleri
+ * üzerinden tema-duyarlı): açıkta Spatial cam/mor mürekkep, koyuda Lume
+ * "içeriden aydınlatılmış" dil.
+ *  - spot: grafiğin arkasına düşen yumuşak tonlu ışık halesi
+ *  - face: renkli cam sütun dolgusu (Spatial iceUp / lume cam bar)
+ *  - area: çizgi altı fade (mor / #c9cde6)
+ *  - stroke: çizgi izi (mor yoğunlaşan / lineTrail beyaz)
+ *  - halo: parlayan uç nokta çevresindeki ışık halesi
+ *  - bpool + pool: bar tabanındaki screen ışık havuzu (yalnız koyu)
+ *  - lglow: çizgi ışıması (yalnız koyu, çift drop-shadow)
+ *  - dotglow: uç nokta ışıması
+ *  - float/drop: sütun gölgesi — açıkta tonlu düşen gölge, koyuda dış glow
  *  - inset: oyulmuş oluk — üst iç gölge + alt iç dudak ışığı (nm-pressed dili)
- * Renkler --chart-* tokenlarından; platformda holo, JG'de altın.
  */
 export function ChartDefs({
   id,
-  tone = "var(--chart-1)",
+  tone = "var(--jg-ink-1)",
 }: {
   id: string;
   tone?: string;
@@ -78,59 +120,67 @@ export function ChartDefs({
   return (
     <defs>
       <radialGradient id={`${id}-spot`} cx="0.7" cy="0.1" r="0.8">
-        <stop offset="0%" stopColor={tone} stopOpacity="0.18" />
+        <stop offset="0%" stopColor={tone} stopOpacity="0.16" />
         <stop offset="100%" stopColor={tone} stopOpacity="0" />
       </radialGradient>
-      <linearGradient id={`${id}-face`} x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stopColor="#ffffff" stopOpacity="0.5" />
-        <stop offset="24%" stopColor={tone} stopOpacity="0.98" />
-        <stop offset="100%" stopColor={tone} stopOpacity="0.72" />
+      {/* Renkli cam sütun yüzü — açıkta Spatial iceUp (0.86→0.62→0.50 278),
+          koyuda lume cam bar (0deg: .62 .06 262/.34 → .9 .04 262/.16). */}
+      <linearGradient id={`${id}-face`} x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="var(--jg-bar-0)" />
+        <stop offset="50%" stopColor="var(--jg-bar-1)" />
+        <stop offset="100%" stopColor="var(--jg-bar-2)" />
       </linearGradient>
+      {/* Alan dolgusu — açıkta mor fade; koyuda #c9cde6 .36→0 (underFade). */}
       <linearGradient id={`${id}-area`} x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor={tone} stopOpacity="0.42" />
-        <stop offset="70%" stopColor={tone} stopOpacity="0.06" />
-        <stop offset="100%" stopColor={tone} stopOpacity="0" />
+        <stop offset="0%" stopColor="var(--jg-area-c)" />
+        <stop offset="100%" stopColor="var(--jg-area-c0)" />
       </linearGradient>
-      {/* Çizgi izi — geçmiş soluk, "şimdi"ye (sağa) doğru ışık yoğunlaşır. */}
+      {/* Çizgi izi — açıkta mor yoğunlaşır; koyuda lineTrail: kuyruğu sönen
+          beyaz (0 → #cbd2ff .45 → #fff). */}
       <linearGradient id={`${id}-stroke`} x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0%" stopColor={tone} stopOpacity="0.3" />
-        <stop offset="60%" stopColor={tone} stopOpacity="0.8" />
-        <stop offset="100%" stopColor={tone} stopOpacity="1" />
-      </linearGradient>
-      {/* Nötr kabarık çubuk sheen'i — --glass-border beyazı tema ile ölçeklenir
-          (açıkta belirgin, koyuda belli belirsiz lume kenarı). */}
-      <linearGradient id={`${id}-neutral`} x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor="var(--glass-border)" />
-        <stop offset="55%" stopColor="var(--glass-border)" stopOpacity="0.18" />
-        <stop offset="100%" stopColor="var(--glass-border)" stopOpacity="0" />
+        <stop offset="0%" stopColor="var(--jg-trail-0)" />
+        <stop offset="50%" stopColor="var(--jg-trail-1)" />
+        <stop offset="100%" stopColor="var(--jg-trail-2)" />
       </linearGradient>
       {/* Parlayan uç nokta halesi. */}
       <radialGradient id={`${id}-halo`}>
         <stop offset="0%" stopColor={tone} stopOpacity="0.5" />
         <stop offset="100%" stopColor={tone} stopOpacity="0" />
       </radialGradient>
-      {/* "Çok yukarıda" hissi: aşağı ofsetli yumuşak koyu gölge (yüzeye düşer)
-          + tonda dış glow (yayılan ışık) + kaynak. Tek geçişte birleşir. */}
-      <filter id={`${id}-float`} x="-40%" y="-60%" width="180%" height="260%">
-        <feGaussianBlur in="SourceAlpha" stdDeviation="7" result="sblur" />
-        <feOffset in="sblur" dx="0" dy="14" result="soff" />
-        <feFlood floodColor="var(--glass-outer)" result="scol" />
-        <feComposite in="scol" in2="soff" operator="in" result="shadow" />
-        <feGaussianBlur in="SourceGraphic" stdDeviation="3.5" result="glow" />
-        <feMerge>
-          <feMergeNode in="shadow" />
-          <feMergeNode in="glow" />
-          <feMergeNode in="SourceGraphic" />
-        </feMerge>
+      {/* Bar tabanındaki ışık havuzu (yalnız koyuda görünür; açıkta şeffaf). */}
+      <radialGradient id={`${id}-bpool`} cx="0.5" cy="1" r="0.9">
+        <stop offset="0%" stopColor="var(--jg-pool)" />
+        <stop offset="70%" stopColor="var(--jg-pool)" stopOpacity="0" />
+      </radialGradient>
+      {/* Çizgi ışıması — koyuda çift drop-shadow (0 0 6px + 0 0 16px);
+          açıkta flood'lar şeffaf → glow yok (yalnız uç noktada). */}
+      <filter id={`${id}-lglow`} x="-40%" y="-60%" width="180%" height="260%">
+        <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor="var(--jg-lglow-a)" />
+        <feDropShadow dx="0" dy="0" stdDeviation="8" floodColor="var(--jg-lglow-b)" />
       </filter>
-      {/* Nötr öğeler için: yalnız aşağı düşen yumuşak gölge (kuşbakışı yükseklik). */}
+      {/* Uç nokta ışıması — Spatial sparkDot: drop-shadow(0 0 8px beyaz .9). */}
+      <filter id={`${id}-dotglow`} x="-120%" y="-120%" width="340%" height="340%">
+        <feDropShadow dx="0" dy="0" stdDeviation="4" floodColor="var(--jg-dotglow)" />
+      </filter>
+      {/* Vurgu sütunu: açıkta tonlu düşen gölge (0 4px 5px mor .5 — Spatial
+          "tinted shadows"); koyuda dış glow (0 0 16px 262/.3 — lume). */}
+      <filter id={`${id}-float`} x="-40%" y="-60%" width="180%" height="260%">
+        <feDropShadow dx="0" dy="4" stdDeviation="2.5" floodColor="var(--jg-bar-shadow)" />
+        <feDropShadow dx="0" dy="0" stdDeviation="8" floodColor="var(--jg-bar-glow)" />
+      </filter>
+      {/* Nötr sütun: yalnız hafif tonlu düşen gölge (koyuda kapalı). */}
       <filter id={`${id}-drop`} x="-40%" y="-30%" width="180%" height="200%">
         <feDropShadow
           dx="0"
-          dy="9"
-          stdDeviation="6"
-          floodColor="var(--glass-outer)"
+          dy="4"
+          stdDeviation="3"
+          floodColor="var(--jg-bar-shadow)"
+          floodOpacity="0.6"
         />
+      </filter>
+      {/* Havuz blur'u — lume ::after blur(7px) karşılığı. */}
+      <filter id={`${id}-pool`} x="-60%" y="-60%" width="220%" height="220%">
+        <feGaussianBlur stdDeviation="7" />
       </filter>
       {/* Oyulmuş oluk — ışık tepeden geldiği için iç gölge ÜSTTE, alt dudakta
           ince adaptif highlight (nm-pressed'in SVG karşılığı). */}
@@ -177,16 +227,18 @@ export function GrooveTrack(props: {
       width={width}
       height={height}
       rx={r}
-      style={{ fill: "rgb(var(--nm-dark) / 0.2)" }}
+      style={{ fill: "var(--jg-groove)" }}
       filter={`url(#${defsId}-inset)`}
     />
   );
 }
 
 /**
- * TEPEDEN bakılan çubuk — oluk içinde TEK vurgu çubuğu accent (tone degradesi
- * + hafif glow: `-float`), diğerleri nötr kabarık (nm-raised dili: adaptif
- * beyaz sheen + yalnız aşağı düşen `-drop` gölgesi). `accentIndex` verilmezse
+ * Renkli cam sütun — açıkta Spatial "range column" (iceUp degradesi + 1px
+ * beyaz kenar + tonlu düşen gölge), koyuda lume cam bar (cam dolgu + 1px
+ * beyaz border + tabanda screen ışık havuzu + dış glow). HER sütun içten
+ * ışıklı camdır (referans: mat gri levha yok); vurgu sütunu tam yoğunlukta,
+ * diğerleri aynı cam malzemenin hafif soluk hâli. `accentIndex` verilmezse
  * tüm çubuklar accent kalır. Recharts custom `shape`; `index` Recharts'tan gelir.
  */
 export function BarNeo(props: {
@@ -203,37 +255,45 @@ export function BarNeo(props: {
   const accent = accentIndex == null || index === accentIndex;
   const r = Math.min(6, width * 0.32);
   return (
-    <g filter={`url(#${defsId}-${accent ? "float" : "drop"})`}>
-      <rect
-        x={x}
-        y={y}
-        width={width}
-        height={height}
-        rx={r}
-        fill={accent ? `url(#${defsId}-face)` : "var(--secondary)"}
-      />
-      {!accent && (
+    <g>
+      <g filter={`url(#${defsId}-float)`}>
         <rect
-          x={x}
-          y={y}
-          width={width}
-          height={height}
+          x={x + 0.5}
+          y={y + 0.5}
+          width={Math.max(width - 1, 1)}
+          height={Math.max(height - 1, 1)}
           rx={r}
-          style={{ fill: "rgb(var(--nm-dark) / 0.26)" }}
+          fill={`url(#${defsId}-face)`}
+          fillOpacity={accent ? 1 : 0.72}
+          stroke="var(--jg-bar-edge)"
+          strokeOpacity={accent ? 1 : 0.65}
+          strokeWidth={1}
         />
-      )}
-      {/* üst pah highlight'ı — kuşbakışı ışık yüzeye tepeden vurur */}
-      {width > 4 && (
-        <rect
-          x={x + 1}
-          y={y + 1}
-          width={width - 2}
-          height={Math.min(3, height)}
-          rx={r * 0.6}
-          fill="#ffffff"
-          opacity={accent ? 0.55 : 0.4}
-        />
-      )}
+        {/* üst iç highlight — ışık tepeden vurur (inset 0 1px 0 beyaz) */}
+        {width > 4 && (
+          <rect
+            x={x + 1.5}
+            y={y + 1.5}
+            width={width - 3}
+            height={Math.min(2, height)}
+            rx={r * 0.5}
+            fill="#ffffff"
+            opacity={accent ? 0.5 : 0.3}
+          />
+        )}
+      </g>
+      {/* tabanda ışık havuzu — lume ::after: radyal + blur(7px) + screen;
+          açıkta --jg-pool şeffaf olduğundan görünmez */}
+      <ellipse
+        aria-hidden="true"
+        cx={x + width / 2}
+        cy={y + height}
+        rx={width * 0.5}
+        ry={Math.min(20, height * 0.55)}
+        fill={`url(#${defsId}-bpool)`}
+        filter={`url(#${defsId}-pool)`}
+        style={{ mixBlendMode: "screen" }}
+      />
     </g>
   );
 }
@@ -251,7 +311,7 @@ export function GlowDot(props: {
   tone?: string;
   defsId: string;
 }) {
-  const { cx, cy, index, points, tone = "var(--chart-1)", defsId } = props;
+  const { cx, cy, index, points, defsId } = props;
   const last = (points?.length ?? 0) - 1;
   if (cx == null || cy == null || index == null || index !== last || last < 0) {
     return <g aria-hidden="true" />;
@@ -259,13 +319,16 @@ export function GlowDot(props: {
   return (
     <g aria-hidden="true">
       <circle cx={cx} cy={cy} r={11} fill={`url(#${defsId}-halo)`} />
+      {/* Açıkta Spatial sparkDot (beyaz + mor stroke + beyaz ışıma);
+          koyuda lume ldot (oklch .72 .14 262 + beyaz stroke + lume ışıma). */}
       <circle
         cx={cx}
         cy={cy}
         r={4}
-        fill={tone}
-        stroke="var(--glass-border)"
+        fill="var(--jg-dot-f)"
+        stroke="var(--jg-dot-s)"
         strokeWidth={1.5}
+        filter={`url(#${defsId}-dotglow)`}
       />
       <circle cx={cx - 1.2} cy={cy - 1.2} r={1.1} fill="#ffffff" opacity={0.9} />
     </g>
@@ -278,41 +341,48 @@ export function TrendChart({
   data: { label: string; revenue: number; cost: number }[];
 }) {
   return (
-    <ResponsiveContainer width="100%" height={260}>
-      <AreaChart data={data} margin={{ top: 10, right: 14, left: 0, bottom: 0 }}>
-        <ChartDefs id="trend" tone="var(--chart-1)" />
-        <rect x="0" y="0" width="100%" height="100%" fill="url(#trend-spot)" />
-        <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-        <XAxis
-          dataKey="label"
-          tick={{ fontSize: 12, fill: "var(--muted-foreground)" }}
-          tickLine={false}
-          axisLine={false}
-        />
-        <YAxis tick={MONO_TICK} tickLine={false} axisLine={false} width={48} />
-        <Tooltip {...GLASS_TOOLTIP} />
-        <Area
-          type="monotone"
-          dataKey="revenue"
-          name="Gelir"
-          stroke="var(--chart-1)"
-          fill="url(#trend-area)"
-          strokeWidth={2.5}
-          dot={(p) => <GlowDot {...p} defsId="trend" tone="var(--chart-1)" />}
-          activeDot={{ r: 5, fill: "var(--chart-1)", filter: "url(#trend-float)" }}
-        />
-        <Area
-          type="monotone"
-          dataKey="cost"
-          name="Maliyet"
-          stroke="var(--chart-4)"
-          fill="none"
-          strokeWidth={2}
-          strokeDasharray="4 3"
-          dot={false}
-        />
-      </AreaChart>
-    </ResponsiveContainer>
+    <div className={CHART_INK}>
+      <ResponsiveContainer width="100%" height={260}>
+        <AreaChart data={data} margin={{ top: 10, right: 14, left: 0, bottom: 0 }}>
+          <ChartDefs id="trend" tone="var(--jg-ink-1)" />
+          <rect x="0" y="0" width="100%" height="100%" fill="url(#trend-spot)" />
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+          <XAxis
+            dataKey="label"
+            tick={{ fontSize: 12, fill: "var(--muted-foreground)" }}
+            tickLine={false}
+            axisLine={false}
+          />
+          <YAxis tick={MONO_TICK} tickLine={false} axisLine={false} width={48} />
+          <Tooltip {...GLASS_TOOLTIP} />
+          <Area
+            type="monotone"
+            dataKey="revenue"
+            name="Gelir"
+            stroke="url(#trend-stroke)"
+            fill="url(#trend-area)"
+            strokeWidth={2.5}
+            filter="url(#trend-lglow)"
+            dot={(p) => <GlowDot {...p} defsId="trend" tone="var(--jg-ink-1)" />}
+            activeDot={{
+              r: 5,
+              fill: "var(--jg-ink-1)",
+              filter: "url(#trend-dotglow)",
+            }}
+          />
+          <Area
+            type="monotone"
+            dataKey="cost"
+            name="Maliyet"
+            stroke="var(--jg-ink-neg)"
+            fill="none"
+            strokeWidth={2}
+            strokeDasharray="4 3"
+            dot={false}
+          />
+        </AreaChart>
+      </ResponsiveContainer>
+    </div>
   );
 }
 
@@ -336,41 +406,43 @@ export function OrdersBarChart({
     0,
   );
   return (
-    <ResponsiveContainer width="100%" height={220}>
-      <BarChart data={data} margin={{ top: 16, right: 14, left: 0, bottom: 0 }}>
-        <ChartDefs id="orders" tone="var(--chart-1)" />
-        <rect x="0" y="0" width="100%" height="100%" fill="url(#orders-spot)" />
-        <CartesianGrid
-          strokeDasharray="3 3"
-          stroke="var(--border)"
-          vertical={false}
-        />
-        <XAxis
-          dataKey="label"
-          tick={{ fontSize: 12, fill: "var(--muted-foreground)" }}
-          tickLine={false}
-          axisLine={false}
-        />
-        <YAxis
-          allowDecimals={false}
-          tick={MONO_TICK}
-          tickLine={false}
-          axisLine={false}
-          width={32}
-        />
-        <Tooltip
-          cursor={{ fill: "var(--muted)", opacity: 0.35 }}
-          {...GLASS_TOOLTIP}
-        />
-        <Bar
-          dataKey="orders"
-          name="Sipariş"
-          shape={<BarNeo defsId="orders" accentIndex={accentIdx} />}
-          background={<GrooveTrack defsId="orders" />}
-          isAnimationActive={false}
-        />
-      </BarChart>
-    </ResponsiveContainer>
+    <div className={CHART_INK}>
+      <ResponsiveContainer width="100%" height={220}>
+        <BarChart data={data} margin={{ top: 16, right: 14, left: 0, bottom: 0 }}>
+          <ChartDefs id="orders" tone="var(--jg-ink-1)" />
+          <rect x="0" y="0" width="100%" height="100%" fill="url(#orders-spot)" />
+          <CartesianGrid
+            strokeDasharray="3 3"
+            stroke="var(--border)"
+            vertical={false}
+          />
+          <XAxis
+            dataKey="label"
+            tick={{ fontSize: 12, fill: "var(--muted-foreground)" }}
+            tickLine={false}
+            axisLine={false}
+          />
+          <YAxis
+            allowDecimals={false}
+            tick={MONO_TICK}
+            tickLine={false}
+            axisLine={false}
+            width={32}
+          />
+          <Tooltip
+            cursor={{ fill: "var(--muted)", opacity: 0.35 }}
+            {...GLASS_TOOLTIP}
+          />
+          <Bar
+            dataKey="orders"
+            name="Sipariş"
+            shape={<BarNeo defsId="orders" accentIndex={accentIdx} />}
+            background={<GrooveTrack defsId="orders" />}
+            isAnimationActive={false}
+          />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
   );
 }
 
@@ -381,44 +453,51 @@ export function RevenueAreaChart({
   data: { label: string; revenue: number }[];
 }) {
   return (
-    <ResponsiveContainer width="100%" height={230}>
-      <AreaChart data={data} margin={{ top: 12, right: 14, left: 0, bottom: 0 }}>
-        <ChartDefs id="rev" tone="var(--chart-2)" />
-        <rect x="0" y="0" width="100%" height="100%" fill="url(#rev-spot)" />
-        <CartesianGrid
-          strokeDasharray="3 3"
-          stroke="var(--border)"
-          vertical={false}
-        />
-        <XAxis
-          dataKey="label"
-          tick={{ fontSize: 12, fill: "var(--muted-foreground)" }}
-          tickLine={false}
-          axisLine={false}
-        />
-        <YAxis
-          tick={MONO_TICK}
-          tickLine={false}
-          axisLine={false}
-          width={46}
-          tickFormatter={(v: number) => `$${Math.round(v / 1000)}k`}
-        />
-        <Tooltip
-          {...GLASS_TOOLTIP}
-          formatter={(v) => [`$${Number(v).toLocaleString("en-US")}`, "Ciro"]}
-        />
-        <Area
-          type="monotone"
-          dataKey="revenue"
-          name="Ciro"
-          stroke="var(--chart-2)"
-          fill="url(#rev-area)"
-          strokeWidth={2.5}
-          dot={(p) => <GlowDot {...p} defsId="rev" tone="var(--chart-2)" />}
-          activeDot={{ r: 5, fill: "var(--chart-2)", filter: "url(#rev-float)" }}
-        />
-      </AreaChart>
-    </ResponsiveContainer>
+    <div className={CHART_INK}>
+      <ResponsiveContainer width="100%" height={230}>
+        <AreaChart data={data} margin={{ top: 12, right: 14, left: 0, bottom: 0 }}>
+          <ChartDefs id="rev" tone="var(--jg-ink-2)" />
+          <rect x="0" y="0" width="100%" height="100%" fill="url(#rev-spot)" />
+          <CartesianGrid
+            strokeDasharray="3 3"
+            stroke="var(--border)"
+            vertical={false}
+          />
+          <XAxis
+            dataKey="label"
+            tick={{ fontSize: 12, fill: "var(--muted-foreground)" }}
+            tickLine={false}
+            axisLine={false}
+          />
+          <YAxis
+            tick={MONO_TICK}
+            tickLine={false}
+            axisLine={false}
+            width={46}
+            tickFormatter={(v: number) => `$${Math.round(v / 1000)}k`}
+          />
+          <Tooltip
+            {...GLASS_TOOLTIP}
+            formatter={(v) => [`$${Number(v).toLocaleString("en-US")}`, "Ciro"]}
+          />
+          <Area
+            type="monotone"
+            dataKey="revenue"
+            name="Ciro"
+            stroke="url(#rev-stroke)"
+            fill="url(#rev-area)"
+            strokeWidth={2.5}
+            filter="url(#rev-lglow)"
+            dot={(p) => <GlowDot {...p} defsId="rev" tone="var(--jg-ink-2)" />}
+            activeDot={{
+              r: 5,
+              fill: "var(--jg-ink-2)",
+              filter: "url(#rev-dotglow)",
+            }}
+          />
+        </AreaChart>
+      </ResponsiveContainer>
+    </div>
   );
 }
 
@@ -436,10 +515,10 @@ export function CategoryPie({
   }
   const total = data.reduce((a, d) => a + (d.value ?? 0), 0);
   return (
-    // Digital-display halka: oyulmuş oluk (debossed ray) içinde accent yay;
-    // donut'un ortasında camsı disk üzerinde mono/segment tarzı toplam
-    // okuması (ışıklı) — "digital display" dili korunur.
-    <div className="relative">
+    // Analog kadran: açıkta Spatial donut (mor cam dilimler + tick halkası +
+    // iç cam hub), koyuda lume gauge (arc glow + tick conic halka + beyaz
+    // ışımalı font-index okuma).
+    <div className={`relative ${CHART_INK}`}>
       <ResponsiveContainer width="100%" height={260}>
         <PieChart>
           <ChartDefs id="pie" />
@@ -449,7 +528,7 @@ export function CategoryPie({
             dataKey="value"
             innerRadius={58}
             outerRadius={99}
-            fill="var(--muted)"
+            fill="var(--jg-track)"
             stroke="none"
             isAnimationActive={false}
             legendType="none"
@@ -464,29 +543,45 @@ export function CategoryPie({
             outerRadius={95}
             paddingAngle={2}
             cornerRadius={3}
-            stroke="var(--card)"
-            strokeWidth={2}
-            filter="url(#pie-drop)"
+            stroke="var(--jg-slice-edge)"
+            strokeWidth={1.5}
+            filter="url(#pie-float)"
           >
             {data.map((_, i) => (
               <Cell key={i} fill={COLORS[i % COLORS.length]} />
             ))}
           </Pie>
           <Tooltip {...GLASS_TOOLTIP} />
-          <Legend wrapperStyle={{ fontSize: 12 }} iconType="circle" />
+          <Legend
+            wrapperStyle={{
+              fontSize: 10,
+              fontFamily: "var(--font-index)",
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+            }}
+            iconType="circle"
+          />
         </PieChart>
       </ResponsiveContainer>
-      {/* Merkezî dijital okuma — halkanın göbeğinde camsı disk + ışıklı mono */}
+      {/* Merkezî okuma + tick halkası — Spatial/lume kadran dili */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 flex flex-col items-center justify-center"
         style={{ top: 0, height: 260, paddingBottom: 34 }}
       >
-        <div className="flex size-[104px] flex-col items-center justify-center rounded-full border border-[color:var(--glass-border)] [background-color:var(--glass)] [background-image:var(--glass-tint),var(--glass-sheen)] shadow-[var(--glass-highlight),var(--glass-ring),var(--glass-depth)] [backdrop-filter:var(--glass-filter-sm)]">
-          <span className="text-muted-foreground text-[0.6rem] font-semibold tracking-[0.22em] uppercase">
+        {/* Tick halkası — açıkta repeating-conic (70,52,120/.5, .6°/15°);
+            koyuda lume tick'leri (.9°/6°); yalnız dış ince bant maskelenir. */}
+        <div
+          className="absolute left-1/2 size-[204px] -translate-x-1/2 -translate-y-1/2 rounded-full [background-image:repeating-conic-gradient(from_-90deg,rgba(70,52,120,.5)_0deg_.6deg,transparent_.6deg_15deg)] [mask-image:radial-gradient(farthest-side,transparent_calc(100%_-_12px),#000_calc(100%_-_11px))] dark:[background-image:repeating-conic-gradient(from_-90deg,rgba(150,160,255,.45)_0deg_.9deg,transparent_.9deg_6deg)]"
+          style={{ top: "calc(50% - 17px)" }}
+        />
+        {/* İç cam hub — radyal beyaz→cam + Spatial iç gölge çifti; koyuda sade
+            lume yüzeyi (okuma kendisi ışır). */}
+        <div className="flex size-[104px] flex-col items-center justify-center rounded-full border border-[color:rgba(255,255,255,.7)] [background-image:radial-gradient(circle_at_40%_32%,#ffffff,var(--glass)_72%)] [backdrop-filter:var(--glass-filter-sm)] [box-shadow:inset_0_3px_7px_rgba(255,255,255,.8),inset_0_-8px_13px_rgba(56,38,106,.45),0_5px_9px_-3px_rgba(70,50,120,.4)] dark:border-[color:oklch(1_0_0/0.08)] dark:[background-color:oklch(1_0_0/0.04)] dark:[background-image:none] dark:[box-shadow:inset_0_1px_0_oklch(1_0_0/0.08)]">
+          <span className="text-muted-foreground text-[0.6rem] font-semibold tracking-[0.22em] uppercase [font-family:var(--font-index)]">
             Toplam
           </span>
-          <span className="text-digital mt-0.5 text-lg text-[color:var(--gold-deep)]">
+          <span className="text-foreground mt-0.5 text-xl font-medium [font-family:var(--font-index)] [text-shadow:0_1px_0_rgba(255,255,255,.85)] dark:text-white dark:[text-shadow:0_0_14px_rgba(255,255,255,.5)]">
             $
             {total.toLocaleString("en-US", {
               minimumFractionDigits: 0,

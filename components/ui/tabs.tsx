@@ -30,6 +30,9 @@ function TabsList({
         // `isolate`: tetikleyicinin -z lamp katmanı (after) rayın ÜSTÜNDE ama
         // hap dolgusunun ALTINDA boyanır (arkadan sızan ışık).
         "nm-pressed text-muted-foreground relative isolate inline-flex h-10 w-fit items-center justify-center rounded-full p-1",
+        // Koyu: lume seg rayı (Liquid_Dark .seg birebir) — oklch(0 0 0/0.3)
+        // zemin + lume-pit iç gölgesi.
+        "dark:[background-image:none] dark:[background-color:oklch(0_0_0/0.3)] dark:shadow-[var(--lume-pit)]",
         className,
       )}
       {...props}
@@ -46,13 +49,14 @@ function TabsTrigger({
       data-slot="tabs-trigger"
       className={cn(
         // Aktif sekme: konveks kabartı hap (raised-sm + text-primary) — çukur
-        // rayın içinde yükselir.
-        "text-muted-foreground hover:text-foreground data-[state=active]:text-primary data-[state=active]:[background-image:var(--nm-convex)] data-[state=active]:shadow-[var(--shadow-raised-sm)] focus-visible:ring-ring/50 relative inline-flex h-full flex-1 items-center justify-center gap-1.5 rounded-full px-3.5 py-1 text-sm font-medium whitespace-nowrap transition-[color,box-shadow] duration-300 ease-[var(--ease-premium)] outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-        // Lamp — aktif hapın ARKASINDA blur'lu accent radial (after, -z; rail
-        // isolate olduğundan hap dolgusunun altında, rayın üstünde parlar).
-        "after:absolute after:-inset-x-1.5 after:-inset-y-1 after:-z-10 after:rounded-full after:opacity-0 after:blur-[6px] after:transition-opacity after:duration-500 after:ease-[var(--ease-premium)] after:[background:radial-gradient(65%_85%_at_50%_50%,var(--pit-glow),transparent_78%)] data-[state=active]:after:opacity-100",
-        // Lume (koyu): aktif metinde belli belirsiz currentColor parıltısı.
-        "dark:data-[state=active]:[text-shadow:0_0_12px_color-mix(in_srgb,currentColor_40%,transparent)]",
+        // rayın içinde yükselir. Yazı index dilinde (mono, uppercase, tracking).
+        "text-muted-foreground hover:text-foreground data-[state=active]:text-primary data-[state=active]:[background-image:var(--nm-convex)] data-[state=active]:shadow-[var(--shadow-raised-sm)] focus-visible:ring-ring/50 relative inline-flex h-full flex-1 items-center justify-center gap-1.5 rounded-full px-3.5 py-1 font-mono text-xs font-medium tracking-[0.06em] uppercase whitespace-nowrap transition-[color,box-shadow] duration-300 ease-[var(--ease-premium)] outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        // Lamp — aktifin altında blur(7px) indigo radyal (Spatial .tabbar .lamp
+        // birebir: oklch(0.72 0.13 280/.38) → .10 %55 → transparent %75).
+        "after:absolute after:-inset-x-1.5 after:-inset-y-1 after:-z-10 after:rounded-full after:opacity-0 after:blur-[7px] after:transition-opacity after:duration-500 after:ease-[var(--ease-premium)] after:[background:radial-gradient(62%_58%_at_50%_32%,oklch(0.72_0.13_280/0.38),oklch(0.72_0.13_280/0.10)_55%,transparent_75%)] data-[state=active]:after:opacity-100",
+        // Lume (koyu): aktif hap oklch(1 0 0/0.14) + lume-hi + lume-glow,
+        // beyaz metin hafif ışımalı (Liquid_Dark .seg button.on birebir).
+        "dark:data-[state=active]:[background-image:none] dark:data-[state=active]:[background-color:oklch(1_0_0/0.14)] dark:data-[state=active]:shadow-[var(--lume-hi),var(--lume-glow)] dark:data-[state=active]:text-white dark:data-[state=active]:[text-shadow:0_0_10px_rgb(255_255_255/0.5)]",
         className,
       )}
       {...props}

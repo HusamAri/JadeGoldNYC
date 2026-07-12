@@ -53,7 +53,7 @@ export function EditorialCard({
         )}
       >
         {eyebrow && (
-          <span className="text-[11px] font-medium tracking-[0.3em] text-[oklch(0.87_0.1_86)] uppercase">
+          <span className="text-[11px] font-medium tracking-[0.3em] text-[oklch(0.87_0.1_86)] uppercase [font-family:var(--font-index)]">
             {eyebrow}
           </span>
         )}
