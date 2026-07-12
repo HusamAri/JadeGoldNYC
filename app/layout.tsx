@@ -96,6 +96,50 @@ export default async function RootLayout({
           }}
         />
         {children}
+        {/* Cam refraction filtreleri (DS fx-glass BİREBİR) — .glass-liquid
+            arkasındaki holo objeleri büker. Gizli, tek sefer; url(#liquid)
+            desteklemeyen tarayıcıda göz ardı edilir (progressive enhancement). */}
+        <svg
+          width="0"
+          height="0"
+          aria-hidden="true"
+          style={{ position: "absolute", pointerEvents: "none" }}
+        >
+          <filter id="refract" x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.009 0.014"
+              numOctaves={2}
+              seed={11}
+              result="noise"
+            />
+            <feGaussianBlur in="noise" stdDeviation="1.1" result="softnoise" />
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="softnoise"
+              scale={26}
+              xChannelSelector="R"
+              yChannelSelector="G"
+            />
+          </filter>
+          <filter id="liquid" x="-30%" y="-30%" width="160%" height="160%">
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.006 0.011"
+              numOctaves={2}
+              seed={4}
+              result="noise"
+            />
+            <feGaussianBlur in="noise" stdDeviation="1.4" result="softnoise" />
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="softnoise"
+              scale={46}
+              xChannelSelector="R"
+              yChannelSelector="G"
+            />
+          </filter>
+        </svg>
         <Toaster richColors position="top-right" />
         <SpeedInsights />
       </body>
