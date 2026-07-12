@@ -10,8 +10,10 @@ import {
   Scale,
   Gem,
   Hammer,
-  Users,
-} from "@/components/icons/lux";
+} from "@/components/icons/lux-art";
+// Satır içi (küçük, tek renk) kullanımlar için ince-çizgi SVG sürümleri —
+// currentColor'a saygı duyar (cutout PNG'ler yalnız KPI filigranında).
+import { Scale as ScaleLine, Users as UsersLine } from "@/components/icons/lux";
 
 import { resolvePeriod, previousPeriod } from "@/lib/period";
 import { getDashboard } from "@/lib/db/queries/dashboard";
@@ -98,7 +100,7 @@ export default async function PanelPage({
       <Card>
         <CardContent className="flex flex-wrap items-center gap-4 text-sm">
           <div className="flex items-center gap-2">
-            <Scale className="text-muted-foreground size-4" />
+            <ScaleLine className="text-muted-foreground size-4" />
             <span className="text-muted-foreground">Güncel Altın:</span>
             <span className="font-semibold tabular-nums">
               ${formatNumber(goldPriceOunce)}/oz
@@ -364,7 +366,7 @@ export default async function PanelPage({
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Users className="size-4" />
+              <UsersLine className="size-4" />
               En İyi Müşteriler
             </CardTitle>
           </CardHeader>

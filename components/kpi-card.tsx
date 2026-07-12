@@ -88,8 +88,7 @@ export function KpiCard({
       {Icon && (
         <Icon
           aria-hidden
-          strokeWidth={1.5}
-          className="pointer-events-none absolute z-0 size-[8.5rem] text-[color:var(--kpi-icon)]"
+          className="pointer-events-none absolute z-0 size-[8.5rem] object-contain opacity-60 dark:opacity-80"
           style={iconStyle}
         />
       )}

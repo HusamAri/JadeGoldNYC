@@ -7,7 +7,7 @@ import {
   Receipt,
   Percent,
   Users,
-} from "@/components/icons/lux";
+} from "@/components/icons/lux-art";
 
 import { requireMembership } from "@/lib/auth";
 import { listSales, getSalesAnalytics } from "@/lib/db/queries/sales";
