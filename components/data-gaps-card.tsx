@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 export function DataGapsCard({ gaps }: { gaps: DataGap[] }) {
   return (
     <Card>
-      <CardHeader className="flex-row items-center gap-2 space-y-0">
+      <CardHeader className="flex flex-row items-center gap-2 space-y-0">
         <ClipboardList className="text-muted-foreground size-4" />
         <CardTitle className="text-base">Eksik Bilgi</CardTitle>
         {gaps.length > 0 && (

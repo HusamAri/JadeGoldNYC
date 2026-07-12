@@ -53,9 +53,9 @@
   /* Arka planda süzülen holografik blob'lar (.holo-drift katmanı). Cam
      boardlar bunların üstünde durur → altında kalan kısım buzlanır, dışında
      kalan kısım açık görünür. Platform: pastel holo; JG: jade + altın. */
-  --holo-blobs: radial-gradient(38% 44% at 22% 28%, rgb(182 220 255 / 0.55), transparent 62%),
-    radial-gradient(36% 42% at 76% 36%, rgb(212 198 255 / 0.5), transparent 62%),
-    radial-gradient(42% 46% at 54% 82%, rgb(255 201 230 / 0.46), transparent 64%);
+  --holo-blobs: radial-gradient(38% 44% at 22% 28%, rgb(182 220 255 / 0.32), transparent 62%),
+    radial-gradient(36% 42% at 76% 36%, rgb(212 198 255 / 0.28), transparent 62%),
+    radial-gradient(42% 46% at 54% 82%, rgb(255 201 230 / 0.26), transparent 64%);
   /* KPI kutu ikonu — şeffaf değil, tona uyumlu KONTRAST renk (cam altında). */
   --kpi-icon: rgb(108 102 186 / 0.55);
   /* Input odak "çukura vuran ışık" + etkileşim halesi — holo leylak. */
@@ -299,8 +299,8 @@
     /* Zemin: düz nötr yüzey + köşelerden süzülen yumuşak holo ışıma
        (kahraman arkası ışık — tek kroma kaynağı, çok düşük yoğunlukta). */
     background-image:
-      radial-gradient(1100px 560px at 85% -8%, rgb(212 198 255 / 0.5), transparent 60%),
-      radial-gradient(900px 480px at -10% 108%, rgb(182 220 255 / 0.38), transparent 55%);
+      radial-gradient(1100px 560px at 85% -8%, rgb(212 198 255 / 0.3), transparent 60%),
+      radial-gradient(900px 480px at -10% 108%, rgb(182 220 255 / 0.22), transparent 55%);
     background-attachment: fixed;
   }
   .dark body {

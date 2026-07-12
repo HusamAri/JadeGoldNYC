@@ -16,11 +16,14 @@ import {
 import type { ReportTimelinePoint } from "@/lib/types";
 import { formatDate } from "@/lib/format";
 
+import { BarNeo, ChartDefs, GLASS_TOOLTIP, GlowDot } from "./dashboard-charts";
+
 /**
  * İki ayrı ölçekli seri (indirim % ve sipariş adedi) tek eksende değil, iki
  * dikey panelde — çift-eksen grafik yerine küçük-çoklu (small multiples).
  * Her panel `nm-pressed` ile yüzeye oyulmuş bir gösterge gibi görünür — derinlik
- * yalnız ışık/gölgeden gelir, renk eklenmez.
+ * yalnız ışık/gölgeden gelir. Panel etiketleri editorial `.idx` dilinde;
+ * çizgi gradient izli + parlayan uç noktalı, çubuklarda zirve gün TEK accent.
  */
 export function ReportTimelineChart({
   points,
@@ -32,26 +35,32 @@ export function ReportTimelineChart({
   cutoffLabel: string;
 }) {
   const data = points.map((p) => ({ ...p, label: formatDate(p.date) }));
+  const accentIdx = data.reduce(
+    (best, d, i) => ((d.orders ?? 0) > (data[best]?.orders ?? 0) ? i : best),
+    0,
+  );
 
   return (
     <div className="space-y-4">
       <div>
-        <p className="text-muted-foreground mb-2 text-xs font-semibold">
+        <p className="idx mb-2">
+          <span className="idx-bar" aria-hidden="true" />
           Günlük indirim %
+          <span className="idx-ln" aria-hidden="true" />
         </p>
         <div className="nm-pressed rounded-2xl p-3">
           <ResponsiveContainer width="100%" height={130}>
-            <AreaChart data={data} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
-              <defs>
-                <linearGradient id="grad-report-discount" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="var(--chart-2)" stopOpacity={0.4} />
-                  <stop offset="95%" stopColor="var(--chart-2)" stopOpacity={0} />
-                </linearGradient>
-              </defs>
+            <AreaChart data={data} margin={{ top: 4, right: 12, left: 0, bottom: 0 }}>
+              <ChartDefs id="rtl-disc" tone="var(--chart-2)" />
+              <rect x="0" y="0" width="100%" height="100%" fill="url(#rtl-disc-spot)" />
               <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
               <XAxis dataKey="date" hide />
               <YAxis
-                tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
+                tick={{
+                  fontSize: 11,
+                  fill: "var(--muted-foreground)",
+                  fontFamily: "var(--font-mono)",
+                }}
                 tickLine={false}
                 axisLine={false}
                 width={32}
@@ -59,6 +68,7 @@ export function ReportTimelineChart({
                 tickFormatter={(v) => `%${v}`}
               />
               <Tooltip
+                {...GLASS_TOOLTIP}
                 formatter={(v) => [`%${v}`, "İndirim"]}
                 labelFormatter={(l) => formatDate(String(l))}
               />
@@ -71,9 +81,18 @@ export function ReportTimelineChart({
               <Area
                 type="monotone"
                 dataKey="discountPct"
-                stroke="var(--chart-2)"
-                fill="url(#grad-report-discount)"
-                strokeWidth={2}
+                stroke="url(#rtl-disc-stroke)"
+                fill="url(#rtl-disc-area)"
+                strokeWidth={2.5}
+                filter="url(#rtl-disc-float)"
+                dot={(p) => (
+                  <GlowDot {...p} defsId="rtl-disc" tone="var(--chart-2)" />
+                )}
+                activeDot={{
+                  r: 4,
+                  fill: "var(--chart-2)",
+                  filter: "url(#rtl-disc-float)",
+                }}
               />
             </AreaChart>
           </ResponsiveContainer>
@@ -81,18 +100,16 @@ export function ReportTimelineChart({
       </div>
 
       <div>
-        <p className="text-muted-foreground mb-2 text-xs font-semibold">
+        <p className="idx mb-2">
+          <span className="idx-bar" aria-hidden="true" />
           Günlük sipariş adedi
+          <span className="idx-ln" aria-hidden="true" />
         </p>
         <div className="nm-pressed rounded-2xl p-3">
           <ResponsiveContainer width="100%" height={130}>
-            <BarChart data={data} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
-              <defs>
-                <linearGradient id="grad-report-orders-bar" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="color-mix(in oklab, var(--chart-1) 55%, white)" />
-                  <stop offset="100%" stopColor="var(--chart-1)" />
-                </linearGradient>
-              </defs>
+            <BarChart data={data} margin={{ top: 4, right: 12, left: 0, bottom: 0 }}>
+              <ChartDefs id="rtl-ord" tone="var(--chart-1)" />
+              <rect x="0" y="0" width="100%" height="100%" fill="url(#rtl-ord-spot)" />
               <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
               <XAxis
                 dataKey="date"
@@ -103,18 +120,28 @@ export function ReportTimelineChart({
                 minTickGap={28}
               />
               <YAxis
-                tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
+                tick={{
+                  fontSize: 11,
+                  fill: "var(--muted-foreground)",
+                  fontFamily: "var(--font-mono)",
+                }}
                 tickLine={false}
                 axisLine={false}
                 width={32}
                 allowDecimals={false}
               />
               <Tooltip
+                cursor={{ fill: "var(--muted)", opacity: 0.35 }}
+                {...GLASS_TOOLTIP}
                 formatter={(v) => [v, "Sipariş"]}
                 labelFormatter={(l) => formatDate(String(l))}
               />
               <ReferenceLine x={cutoffDate} stroke="var(--destructive)" strokeDasharray="3 3" />
-              <Bar dataKey="orders" fill="url(#grad-report-orders-bar)" radius={[2, 2, 0, 0]} />
+              <Bar
+                dataKey="orders"
+                shape={<BarNeo defsId="rtl-ord" accentIndex={accentIdx} />}
+                isAnimationActive={false}
+              />
             </BarChart>
           </ResponsiveContainer>
         </div>

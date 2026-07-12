@@ -133,16 +133,25 @@ export default function LoginPage() {
             <span className="nm-raised-sm text-foreground flex size-11 items-center justify-center rounded-2xl pt-1 text-2xl [font-family:var(--font-display)]">
               A
             </span>
-            <span className="text-muted-foreground text-sm font-semibold tracking-[0.32em]">
+            {/* Wordmark — editorial mono etiket dili (.idx ile aynı ses). */}
+            <span className="text-muted-foreground font-mono text-xs font-medium tracking-[0.32em]">
               AMULETTA
             </span>
           </div>
           <div>
-            <p className="text-muted-foreground text-xs font-semibold tracking-[0.16em] uppercase">
+            {/* Editorial index etiketi — mono, uppercase; kısa vurgu çizgisi
+                + sağa uzayan ince kural (.idx-bar / .idx-ln). */}
+            <p className="idx">
+              <span aria-hidden className="idx-bar" />
               Yönetim Platformu
+              <span aria-hidden className="idx-ln" />
             </p>
-            <h2 className="text-foreground mt-4 text-7xl leading-none [font-family:var(--font-display)]">
-              Amuletta
+            {/* Büyük sans başlık; vurgu kelimesi (tek kelimelik wordmark)
+                serif italik em — editorial başlık dili. */}
+            <h2 className="text-foreground mt-4 font-sans text-7xl leading-none font-semibold tracking-tight">
+              <em className="text-primary font-medium italic [font-family:var(--font-display)]">
+                Amuletta
+              </em>
             </h2>
             <p className="text-muted-foreground mt-5 max-w-md">
               Satış, maliyet, performans ve şirket hafızası — tüm
@@ -154,20 +163,25 @@ export default function LoginPage() {
               <Value icon={ShieldCheck} label="Şirket Hafızası" />
             </div>
           </div>
-          <p className="text-muted-foreground/70 text-xs">
+          {/* Kolofon — mono, hafif letterspaced (rakamlar tabular). */}
+          <p className="text-muted-foreground font-mono text-[11px] tracking-[0.12em] tabular-nums pl-10">
             © {new Date().getFullYear()} Amuletta · Gizli · İç Kullanım
           </p>
         </div>
       </div>
 
-      {/* Giriş formu */}
-      <div className="bg-muted/30 flex items-center justify-center p-6">
-        <Card className="w-full max-w-sm">
+      {/* Giriş formu — cam kart, arkasındaki holo ambiyansın ÜSTÜNDE yüzer
+          (kolon şeffaf; düz opak zemin yok). */}
+      <div className="relative flex items-center justify-center p-6">
+        {/* .glass-board: buzlu cam + hairline + lift; .sheen-sweep: kartın
+            üstünden kendi kendine geçen ışık süpürmesi. bg + hover gölgesi
+            Card'ın nöromorfik varsayılanlarını cam diline çevirir. */}
+        <Card className="glass-board sheen-sweep w-full max-w-sm bg-[color:var(--glass)] hover:shadow-[var(--lift-lg),var(--glass-highlight),var(--glass-depth)]">
           <CardHeader className="items-center text-center">
             <div className="mb-2 flex justify-center">
               <Logo className="size-11" />
             </div>
-            <CardTitle className="text-lg tracking-[0.3em]">
+            <CardTitle className="text-glass-display text-lg tracking-[0.3em]">
               AMULETTA
             </CardTitle>
             <CardDescription>

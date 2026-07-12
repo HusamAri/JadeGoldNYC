@@ -65,7 +65,10 @@ export function Topbar({
   const parentHref = pathname.split("/").slice(0, -1).join("/") || "/panel";
 
   return (
-    <header className="bg-background/80 sticky top-0 z-30 flex h-16 items-center justify-between gap-3 px-4 shadow-[0_10px_24px_-20px_rgb(var(--nm-dark)/0.7)] backdrop-blur-md md:px-6">
+    /* Spatial navglass — yarı saydam cam şerit: blur'lu beyaz cam + sheen,
+       altta hairline (--glass-border), içte pah highlight'ı + lift gölgesi.
+       Koyu modda token'lar camı kendiliğinden "ışık taşıyan" LUME cama çevirir. */
+    <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-3 border-b border-[color:var(--glass-border)] px-4 [background-color:var(--glass)] shadow-[var(--lift-sm),var(--glass-highlight)] backdrop-blur-xl transition-[background-color,box-shadow] duration-500 ease-[var(--ease-premium)] [background-image:var(--glass-sheen)] md:px-6">
       <div className="flex items-center gap-3">
         {/* Geri — alt/detay sayfalarında */}
         {isSubPage && (
@@ -94,7 +97,7 @@ export function Topbar({
           <DropdownMenuContent align="start" className="max-h-[75vh] w-60 overflow-y-auto">
             {NAV_GROUPS.map((g) => (
               <div key={g.label}>
-                <p className="px-2 pt-2 pb-1 text-[0.62rem] font-bold tracking-[0.16em] text-[color:var(--brand-mark)]/80 uppercase select-none">
+                <p className="px-2 pt-2 pb-1 font-mono text-[0.62rem] font-medium tracking-[0.16em] text-[color:var(--brand-mark)]/80 uppercase select-none">
                   {g.label}
                 </p>
                 {g.items.map((i) => {
@@ -115,7 +118,10 @@ export function Topbar({
         </DropdownMenu>
 
         <Logo className="size-8 md:hidden" />
-        <h1 className="text-base font-semibold md:text-lg">
+        {/* Editorial vurgu çizgisi (.idx-bar dili) — başlığın önünde kısa
+            primary hairline; yalnız masaüstünde. */}
+        <span aria-hidden className="hidden h-px w-6 shrink-0 bg-primary/70 md:block" />
+        <h1 className="text-base font-semibold tracking-tight md:text-lg">
           {current?.label ?? "Panel"}
         </h1>
       </div>
@@ -144,7 +150,7 @@ export function Topbar({
           <DropdownMenuSeparator />
           {/* Şirketler — mobilde sidebar (ve oradaki seçici) görünmediğinden
               şirket geçişi + yeni şirket kurma her ekranda buradan erişilir. */}
-          <DropdownMenuLabel className="text-muted-foreground flex items-center gap-1.5 text-[0.68rem] font-bold tracking-[0.12em] uppercase">
+          <DropdownMenuLabel className="text-muted-foreground flex items-center gap-1.5 font-mono text-[0.68rem] font-medium tracking-[0.14em] uppercase">
             <Building2 className="size-3.5" />
             Şirketler
           </DropdownMenuLabel>

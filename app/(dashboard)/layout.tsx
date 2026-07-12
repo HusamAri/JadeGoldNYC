@@ -24,7 +24,10 @@ export default async function DashboardLayout({
   const showJadeGoldNav = brand === "jade-gold";
 
   return (
-    <div className="relative flex min-h-svh">
+    /* `isolate`: arka plan katmanları (negatif z) bu bağlamda hapsolur —
+       holo-drift (z -10) en altta, lux-grain (z -9) onun ÜSTÜNDE, içerik ve
+       cam yüzeyler (topbar navglass, glass-board) hepsinin üstünde yüzer. */
+    <div className="relative isolate flex min-h-svh">
       {/* Hareketli holografik gradient — TÜM markalarda tek ambiyans arka plan.
           Çok yavaş kayan holo blob'lar (renkler token'dan: platform pastel holo,
           JG jade+altın). Statik desen/doku/toz KALDIRILDI; zemin düz mat +

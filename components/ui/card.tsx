@@ -8,7 +8,7 @@ function Card({ className, ...props }: React.ComponentProps<"div">) {
       data-slot="card"
       className={cn(
         // Nöromorfik yüzey: konveks kabartma + hover'da hafif yükselme (lift).
-        "bg-card text-card-foreground nm-raised flex flex-col gap-6 rounded-[1.75rem] py-6 transition-[box-shadow,transform] duration-500 ease-[var(--ease-premium)] hover:-translate-y-0.5 hover:shadow-[0_0_22px_7px_var(--background),var(--shadow-hover)]",
+        "bg-card text-card-foreground nm-raised flex flex-col gap-6 rounded-[1.75rem] py-6 transition-[box-shadow,transform] duration-500 ease-[var(--ease-premium)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-hover)]",
         className,
       )}
       {...props}
