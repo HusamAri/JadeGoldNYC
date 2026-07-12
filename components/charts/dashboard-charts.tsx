@@ -45,8 +45,8 @@ export const GLASS_TOOLTIP = {
     color: "var(--popover-foreground)",
     boxShadow:
       "0 18px 40px -18px var(--glass-outer), var(--glass-highlight), var(--glass-depth)",
-    backdropFilter: "blur(16px) saturate(150%)",
-    WebkitBackdropFilter: "blur(16px) saturate(150%)",
+    backdropFilter: "var(--glass-filter-sm)",
+    WebkitBackdropFilter: "var(--glass-filter-sm)",
   },
   labelStyle: { color: "var(--foreground)", fontWeight: 600, marginBottom: 2 },
 } as const;
@@ -482,7 +482,7 @@ export function CategoryPie({
         className="pointer-events-none absolute inset-x-0 flex flex-col items-center justify-center"
         style={{ top: 0, height: 260, paddingBottom: 34 }}
       >
-        <div className="flex size-[104px] flex-col items-center justify-center rounded-full border border-[color:var(--glass-border)] bg-[image:var(--glass-sheen),var(--glass)] shadow-[var(--glass-highlight),var(--glass-depth)] backdrop-blur-md">
+        <div className="flex size-[104px] flex-col items-center justify-center rounded-full border border-[color:var(--glass-border)] [background-color:var(--glass)] [background-image:var(--glass-tint),var(--glass-sheen)] shadow-[var(--glass-highlight),var(--glass-ring),var(--glass-depth)] [backdrop-filter:var(--glass-filter-sm)]">
           <span className="text-muted-foreground text-[0.6rem] font-semibold tracking-[0.22em] uppercase">
             Toplam
           </span>

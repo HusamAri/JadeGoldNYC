@@ -83,7 +83,7 @@ export function WhatsNew() {
     <Dialog open={open} onOpenChange={(o) => !o && dismiss()}>
       <DialogContent
         showCloseButton={false}
-        className="jg-glass-3d sheen-sweep border-[color:var(--glass-border)] bg-[color:var(--popover)]/90 overflow-hidden rounded-[1.9rem] p-0 backdrop-blur-2xl sm:max-w-[560px]"
+        className="jg-glass-3d sheen-sweep border-[color:var(--glass-border)] [background-color:var(--glass)] [background-image:var(--glass-tint),var(--glass-sheen)] overflow-hidden rounded-[1.9rem] p-0 [backdrop-filter:var(--glass-filter)] sm:max-w-[560px]"
       >
         {/* arka plan altın tozu */}
         <div

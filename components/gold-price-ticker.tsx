@@ -64,7 +64,7 @@ export function GoldPriceTicker({ className }: { className?: string }) {
     // okuma dili mono tabular (readout).
     <div
       className={cn(
-        "hidden items-center gap-3 rounded-full border border-(--glass-border) bg-(--glass) [background-image:var(--glass-sheen)] px-4 py-1.5 font-mono text-xs tabular-nums shadow-[var(--lift-sm),var(--glass-highlight)] backdrop-blur-md lg:flex",
+        "hidden items-center gap-3 rounded-full border border-(--glass-border) bg-(--glass) [background-image:var(--glass-sheen)] px-4 py-1.5 font-mono text-xs tabular-nums shadow-[var(--lift-sm),var(--glass-highlight)] [backdrop-filter:var(--glass-filter-sm)] lg:flex",
         className,
       )}
     >
