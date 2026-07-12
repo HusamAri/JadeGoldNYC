@@ -19,18 +19,20 @@ export function EmptyState({
   className?: string;
 }) {
   return (
+    // Boş durum = zemine bastırılmış nöromorfik oluk (pressed well);
+    // içindeki ikon çipi kabartılı (raised) — çift ışık dili.
     <div
       className={cn(
-        "bg-card/50 flex flex-col items-center justify-center rounded-xl border border-dashed p-10 text-center",
+        "nm-pressed flex flex-col items-center justify-center rounded-[1.5rem] p-10 text-center",
         className,
       )}
     >
       {Icon && (
-        <div className="bg-muted text-muted-foreground mb-3 flex size-12 items-center justify-center rounded-full">
+        <div className="text-muted-foreground mb-4 flex size-12 items-center justify-center rounded-full shadow-[var(--shadow-raised-sm)] [background-image:var(--nm-convex)]">
           <Icon className="size-6" />
         </div>
       )}
-      <h3 className="text-base font-semibold">{title}</h3>
+      <h3 className="text-carved text-base font-semibold">{title}</h3>
       {description && (
         <p className="text-muted-foreground mt-1 max-w-sm text-sm">
           {description}

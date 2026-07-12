@@ -81,7 +81,7 @@ export function KpiCard({
     //  3) içerik (etiket + dev puntolu rakam) — camın üstünde.
     <div
       className={cn(
-        "relative flex h-full min-w-0 flex-col overflow-hidden rounded-[1.75rem] px-6 py-6 transition-transform duration-200 ease-[var(--ease-premium)] hover:-translate-y-[3px]",
+        "sheen-sweep relative flex h-full min-w-0 flex-col overflow-hidden rounded-[1.75rem] px-6 py-6 transition-transform duration-300 ease-[var(--ease-premium)] hover:-translate-y-[3px]",
         className,
       )}
     >
@@ -99,12 +99,14 @@ export function KpiCard({
       />
       <div className="relative z-[2] flex h-full items-start justify-between gap-3">
         <div className="flex min-w-0 flex-col">
-          <p className="text-muted-foreground line-clamp-2 min-h-[2.5rem] text-sm leading-snug">
+          {/* Etiket — editorial .idx dili: mono, uppercase, geniş tracking. */}
+          <p className="text-muted-foreground line-clamp-2 min-h-[2.5rem] font-mono text-[11px] leading-[1.5] tracking-[0.16em] uppercase">
             {label}
           </p>
+          {/* Değer — mono-tabular büyük readout (digital display dili). */}
           <p
             className={cn(
-              "truncate font-semibold tracking-tight tabular-nums",
+              "truncate font-mono font-semibold tracking-tight tabular-nums",
               // Cam board üstünde büyük readout → "glass display" yazı stili.
               splitTone
                 ? "text-4xl leading-tight jg-split-tone"
@@ -118,7 +120,7 @@ export function KpiCard({
           {change != null && (
             <p
               className={cn(
-                "mt-1 text-xs font-medium tabular-nums",
+                "mt-1 font-mono text-xs font-medium tabular-nums",
                 change > 0 && "text-emerald-600",
                 change < 0 && "text-red-500",
                 change === 0 && "text-muted-foreground",

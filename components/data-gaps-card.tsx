@@ -16,7 +16,7 @@ export function DataGapsCard({ gaps }: { gaps: DataGap[] }) {
         <ClipboardList className="text-muted-foreground size-4" />
         <CardTitle className="text-base">Eksik Bilgi</CardTitle>
         {gaps.length > 0 && (
-          <span className="bg-amber-500/15 ml-auto rounded-full px-2 py-0.5 text-xs font-semibold text-amber-600 tabular-nums">
+          <span className="bg-amber-500/15 ml-auto rounded-full px-2 py-0.5 font-mono text-xs font-semibold text-amber-600 tabular-nums shadow-[var(--shadow-raised-sm)]">
             {gaps.length}
           </span>
         )}
