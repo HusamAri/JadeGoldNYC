@@ -8,10 +8,24 @@ function formatChange(change: number): string {
   return `${arrow} %${pct.toFixed(1)}`;
 }
 
+/** Etikete göre deterministik küçük hash (SSR-güvenli; Math.random yok). */
+function hashLabel(s: string): number {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  return h;
+}
+
+/** Kutu ikonunun kenarı yalayan konumu — 4 köşeden biri (bir kısmı dışarı). */
+const ICON_SPOTS = [
+  { bottom: "-16%", right: "-12%" },
+  { top: "-18%", right: "-10%" },
+  { bottom: "-14%", left: "-13%" },
+  { top: "-16%", left: "-11%" },
+] as const;
+
 // NOT: Bu bir SUNUCU bileşenidir — `icon` prop'u bir React bileşeni (LucideIcon)
-// olduğundan client bileşenine dönüştürülemez (RSC sınırından fonksiyon/
-// bileşen geçilemez). Hover hareketi bu yüzden CSS ile yapılır (framer-motion
-// değil). prefers-reduced-motion'da global kural geçişi durdurur.
+// olduğundan client bileşenine dönüştürülemez. Hover/süzülme hareketi CSS ile
+// yapılır. prefers-reduced-motion'da global kural animasyonu durdurur.
 export function KpiCard({
   label,
   value,
@@ -39,17 +53,49 @@ export function KpiCard({
    */
   splitTone?: boolean;
 }) {
+  // Her kutu FARKLI süzülür: etiketten türeyen deterministik faz/yön/süre.
+  const h = hashLabel(label);
+  const spot = ICON_SPOTS[h % ICON_SPOTS.length];
+  const iconStyle: React.CSSProperties = {
+    ...spot,
+    animationName: "kpi-icon-drift",
+    // çok çok yavaş — 64…92s; her kutuya farklı gecikme ve yön
+    animationDuration: `${64 + (h % 5) * 7}s`,
+    animationTimingFunction: "ease-in-out",
+    animationIterationCount: "infinite",
+    animationDirection: h % 2 === 0 ? "normal" : "reverse",
+    animationDelay: `-${h % 40}s`,
+    willChange: "transform",
+  };
+
   return (
-    // Liquid glass board — dev puntolu rakam bu camın üstünde yüzer. Yalnız
-    // KPI/istatistik kartlarında (rakamsal board) kullanılır; buzlu cam,
-    // içine gömülü renk sızıntısı ve lift gölgesiyle "cam" belirgin okunur.
+    // Kutu: şeffaf kap (arka plandaki süzülen holo görünür). İçinde 3 katman:
+    //  1) anlamlı kalın solid ikon — camın ALTINDA, kenardan taşar (bir kısmı
+    //     cam altında buzlanır, bir kısmı dışında açık kalır); çok yavaş süzülür.
+    //  2) cam yüzey (.glass-board) — backdrop-filter ikonu ve arkadaki holo'yu
+    //     buzlar; sheen + iridesan kenar.
+    //  3) içerik (etiket + dev puntolu rakam) — camın üstünde.
     <div
       className={cn(
-        "glass-board relative flex h-full min-w-0 flex-col overflow-hidden rounded-[1.75rem] px-6 py-6 transition-transform duration-200 ease-[var(--ease-premium)] hover:-translate-y-[3px]",
+        "relative flex h-full min-w-0 flex-col rounded-[1.75rem] px-6 py-6 transition-transform duration-200 ease-[var(--ease-premium)] hover:-translate-y-[3px]",
         className,
       )}
     >
-      <div className="flex h-full items-start justify-between gap-3">
+      {Icon && (
+        <Icon
+          aria-hidden
+          strokeWidth={2.4}
+          fill="currentColor"
+          className="text-foreground pointer-events-none absolute z-0 size-[9.5rem] opacity-[0.13] dark:opacity-[0.17]"
+          style={iconStyle}
+        />
+      )}
+      {/* cam yüzey — ikonu ve arkadaki süzülen holo'yu buzlar */}
+      <div
+        aria-hidden
+        className="glass-board absolute inset-0 z-[1] rounded-[1.75rem]"
+      />
+      <div className="relative z-[2] flex h-full items-start justify-between gap-3">
         <div className="flex min-w-0 flex-col">
           <p className="text-muted-foreground line-clamp-2 min-h-[2.5rem] text-sm leading-snug">
             {label}
@@ -84,13 +130,6 @@ export function KpiCard({
           )}
           {hint && <p className="text-muted-foreground mt-1 text-xs">{hint}</p>}
         </div>
-        {Icon && (
-          // İkon kuyusu — cam board üstünde hafif frosted çip (ince hairline +
-          // highlight); kart zaten cam olduğundan çip sade tutulur.
-          <div className="text-foreground/75 flex size-11 shrink-0 items-center justify-center rounded-2xl border border-[color:var(--glass-border)] bg-white/25 shadow-[var(--glass-highlight)] dark:bg-white/[0.06]">
-            <Icon className="size-5" />
-          </div>
-        )}
       </div>
     </div>
   );
