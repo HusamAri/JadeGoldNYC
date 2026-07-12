@@ -26,6 +26,11 @@ export default async function DashboardLayout({
 
   return (
     <div className="relative flex min-h-svh">
+      {/* Süzülen holografik arka plan — çok yavaş kayan holo blob'lar. Cam
+          boardlar (KPI) bunların üstünde durur → cam altında kalan kısım
+          buzlanır, dışında açık kalır. Her iki markada da (renkler token'dan:
+          platform pastel holo, JG jade+altın). */}
+      <div aria-hidden className="holo-drift" />
       {/* Bölüme (sekme) özel art-deco doku filigranı — route'a göre değişir.
           `absolute` (fixed değil) → sayfayla birlikte kayar; shell tüm içerik
           yüksekliğine uzadığından desen tüm scroll boyunca sürer. */}

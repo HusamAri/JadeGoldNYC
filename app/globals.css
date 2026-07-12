@@ -50,6 +50,12 @@
      sıcak altına eşler. .glass-board bu tokeni sheen + cam ile katmanlar. */
   --glass-tint: radial-gradient(120% 150% at 84% -12%, rgb(255 201 230 / 0.16), transparent 56%),
     radial-gradient(120% 130% at 6% 112%, rgb(182 220 255 / 0.16), transparent 56%);
+  /* Arka planda süzülen holografik blob'lar (.holo-drift katmanı). Cam
+     boardlar bunların üstünde durur → altında kalan kısım buzlanır, dışında
+     kalan kısım açık görünür. Platform: pastel holo; JG: jade + altın. */
+  --holo-blobs: radial-gradient(38% 44% at 22% 28%, rgb(182 220 255 / 0.55), transparent 62%),
+    radial-gradient(36% 42% at 76% 36%, rgb(212 198 255 / 0.5), transparent 62%),
+    radial-gradient(42% 46% at 54% 82%, rgb(255 201 230 / 0.46), transparent 64%);
   /* Input odak "çukura vuran ışık" + etkileşim halesi — holo leylak. */
   --pit-glow: rgb(157 140 255 / 0.4);
   --glow-warm: rgb(157 140 255 / 0.32);
@@ -158,6 +164,9 @@
   --lift-lg: 0 24px 60px rgb(0 0 0 / 0.55);
   --glass-tint: radial-gradient(120% 150% at 84% -12%, rgb(169 155 255 / 0.2), transparent 56%),
     radial-gradient(120% 130% at 6% 112%, rgb(90 169 240 / 0.16), transparent 56%);
+  --holo-blobs: radial-gradient(38% 44% at 22% 28%, rgb(120 130 220 / 0.5), transparent 62%),
+    radial-gradient(36% 42% at 76% 36%, rgb(150 120 230 / 0.44), transparent 62%),
+    radial-gradient(42% 46% at 54% 82%, rgb(210 120 180 / 0.4), transparent 64%);
   /* Gece: çukur daha koyu → holo aydınlanma biraz daha parlak */
   --pit-glow: rgb(169 155 255 / 0.45);
   --glow-warm: rgb(169 155 255 / 0.38);
@@ -566,6 +575,45 @@
       transparent 46%
     );
   }
+
+  /* ── Süzülen holografik arka plan ─────────────────────────────────────
+     Sayfanın arkasında çok yavaş süzülen holo blob'lar. Cam boardlar
+     (.glass-board, backdrop-filter) bunların üstünde durduğundan, blob'un
+     cam altında kalan kısmı BUZLANIR, dışında kalan kısmı açık görünür —
+     "liquid glass" hissinin asıl kaynağı. İki katman (::before/::after)
+     farklı hız/yönde süzülür → kayan iridesan interferans. prefers-reduced-
+     motion global kuralı hareketi durdurur (katman görünür kalır). */
+  .holo-drift {
+    position: absolute;
+    inset: -30%;
+    z-index: -10;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .holo-drift::before,
+  .holo-drift::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--holo-blobs);
+    background-repeat: no-repeat;
+    filter: blur(46px);
+    will-change: transform;
+  }
+  .holo-drift::before {
+    opacity: 0.5;
+    animation: holo-drift-a 46s ease-in-out infinite;
+  }
+  .holo-drift::after {
+    opacity: 0.36;
+    animation: holo-drift-b 62s ease-in-out infinite;
+  }
+  .dark .holo-drift::before {
+    opacity: 0.4;
+  }
+  .dark .holo-drift::after {
+    opacity: 0.28;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -574,6 +622,45 @@
   *::after {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
+  }
+}
+
+/* Arka plan holo blob süzülmesi — iki katman farklı yön/hızda (çok yavaş). */
+@keyframes holo-drift-a {
+  0% {
+    transform: translate(-5%, -4%) rotate(0deg) scale(1.12);
+  }
+  50% {
+    transform: translate(6%, 5%) rotate(9deg) scale(1.3);
+  }
+  100% {
+    transform: translate(-5%, -4%) rotate(0deg) scale(1.12);
+  }
+}
+@keyframes holo-drift-b {
+  0% {
+    transform: translate(5%, 4%) rotate(0deg) scale(1.2);
+  }
+  50% {
+    transform: translate(-6%, -5%) rotate(-11deg) scale(1.05);
+  }
+  100% {
+    transform: translate(5%, 4%) rotate(0deg) scale(1.2);
+  }
+}
+
+/* Kutu ikonu süzülmesi — ÇOK çok yavaş, geniş yörünge; her kutu farklı
+   faz/yön (bileşende animation-delay/direction ile). Cam formun bir kısmı
+   altında, bir kısmı dışında kalacak şekilde kenarı yalar. */
+@keyframes kpi-icon-drift {
+  0% {
+    transform: translate(0, 0) rotate(-4deg);
+  }
+  50% {
+    transform: translate(-14px, 10px) rotate(4deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(-4deg);
   }
 }
 
@@ -869,6 +956,10 @@ html[data-brand="jade-gold"] {
   --glass-tint: radial-gradient(120% 150% at 84% -12%, rgb(232 198 105 / 0.22), transparent 56%),
     radial-gradient(120% 130% at 6% 112%, rgb(96 160 128 / 0.2), transparent 58%),
     radial-gradient(90% 90% at 44% 60%, rgb(150 200 170 / 0.1), transparent 60%);
+  /* JG süzülen blob'lar — jade yeşili + antik altın + nane. */
+  --holo-blobs: radial-gradient(38% 44% at 22% 28%, rgb(232 198 105 / 0.5), transparent 62%),
+    radial-gradient(36% 42% at 76% 36%, rgb(96 160 128 / 0.46), transparent 62%),
+    radial-gradient(42% 46% at 54% 82%, rgb(150 200 170 / 0.4), transparent 64%);
 }
 
 html[data-brand="jade-gold"].dark {
@@ -977,6 +1068,10 @@ html[data-brand="jade-gold"].dark {
   --glass-tint: radial-gradient(120% 150% at 84% -12%, rgb(232 198 105 / 0.26), transparent 56%),
     radial-gradient(120% 130% at 6% 112%, rgb(96 180 140 / 0.22), transparent 58%),
     radial-gradient(90% 90% at 44% 60%, rgb(150 210 180 / 0.1), transparent 60%);
+  /* JG gece süzülen blob'lar — jade + altın (koyu zeminde biraz parlak). */
+  --holo-blobs: radial-gradient(38% 44% at 22% 28%, rgb(232 198 105 / 0.42), transparent 62%),
+    radial-gradient(36% 42% at 76% 36%, rgb(96 180 140 / 0.4), transparent 62%),
+    radial-gradient(42% 46% at 54% 82%, rgb(150 210 180 / 0.34), transparent 64%);
 }
 
 /* Jade Gold gövde ışıması — özgün sıcak altın radial (eskisi gibi). */
