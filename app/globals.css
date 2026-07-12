@@ -595,6 +595,36 @@
     mix-blend-mode: soft-light;
   }
 
+  /* ── Karanlık kabartma tipografi (referans: Liquid Dark) ──────────────
+     Koyu modda kahraman başlık YÜZEYİN KENDİSİNDEN kabarır: metin zeminden
+     bir tık açık, üstten vuran ışık highlight'ı + altına düşen derin çift
+     gölge. Alt metin ise yüzeye KAZINIR (oyuğa düşen gölge + alt dudak
+     ışığı). Açık temada dokunulmaz (mevcut emboss dili yeter). */
+  .dark .display-emboss {
+    color: #383d52;
+    text-shadow:
+      0 -1.5px 1px rgb(139 146 178 / 0.55),
+      0 -0.5px 0 rgb(160 166 198 / 0.35),
+      0 2px 3px rgb(8 9 14 / 0.85),
+      0 5px 10px rgb(5 6 10 / 0.45);
+  }
+  .dark .display-emboss em,
+  .dark .display-emboss .em {
+    color: #414762;
+    text-shadow:
+      0 -1.5px 1px rgb(150 158 196 / 0.6),
+      0 2px 3px rgb(8 9 14 / 0.85),
+      0 5px 12px rgb(5 6 10 / 0.45),
+      0 0 24px rgb(203 210 255 / 0.2),
+      0 0 56px rgb(203 210 255 / 0.12);
+  }
+  .dark .text-engraved {
+    color: #6d7288;
+    text-shadow:
+      0 -1px 1px rgb(5 6 10 / 0.9),
+      0 1px 0 rgb(96 102 130 / 0.55);
+  }
+
   /* ── Editorial index başlığı (referans: Artifact Studio .idx) ─────────
      Mono, geniş letter-spacing, uppercase — bölüm/figür etiketleri. Yanında
      kısa vurgu çizgisi + uzayan ince kural için .idx-bar/.idx-ln. */

@@ -39,11 +39,11 @@ export function PageHeader({
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-1">
           {/* Kahraman başlık — display serif (editorial dil). */}
-          <h2 className="text-2xl font-semibold tracking-tight [font-family:var(--font-display)]">
+          <h2 className="display-emboss text-2xl font-semibold tracking-tight [font-family:var(--font-display)]">
             {title}
           </h2>
           {description && (
-            <p className="text-muted-foreground text-sm">{description}</p>
+            <p className="text-engraved text-muted-foreground text-sm">{description}</p>
           )}
         </div>
         {action && <div className="flex items-center gap-2">{action}</div>}

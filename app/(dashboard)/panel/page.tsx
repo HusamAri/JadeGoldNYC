@@ -481,7 +481,7 @@ function SectionTitle({
       <span className="text-carved text-[11px] font-bold tracking-[0.2em] text-[color:var(--brand-mark)] uppercase">
         {eyebrow}
       </span>
-      <h2 className="text-lg font-semibold tracking-tight">{title}</h2>
+      <h2 className="display-emboss text-lg font-semibold tracking-tight">{title}</h2>
       {hint && <span className="text-muted-foreground text-xs">{hint}</span>}
     </div>
   );

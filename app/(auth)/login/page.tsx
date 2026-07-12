@@ -148,7 +148,7 @@ export default function LoginPage() {
             </p>
             {/* Büyük sans başlık; vurgu kelimesi (tek kelimelik wordmark)
                 serif italik em — editorial başlık dili. */}
-            <h2 className="text-foreground mt-4 font-sans text-7xl leading-none font-semibold tracking-tight">
+            <h2 className="display-emboss text-foreground mt-4 font-sans text-7xl leading-none font-semibold tracking-tight">
               <em className="text-primary font-medium italic [font-family:var(--font-display)]">
                 Amuletta
               </em>
