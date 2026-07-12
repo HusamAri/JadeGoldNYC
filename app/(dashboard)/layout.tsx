@@ -5,7 +5,6 @@ import { getProfile } from "@/lib/db/queries/profile";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Topbar } from "@/components/layout/topbar";
 import { PageTransition } from "@/components/layout/page-transition";
-import { SectionPattern } from "@/components/layout/section-pattern";
 
 export default async function DashboardLayout({
   children,
@@ -26,21 +25,11 @@ export default async function DashboardLayout({
 
   return (
     <div className="relative flex min-h-svh">
-      {/* Süzülen holografik arka plan — çok yavaş kayan holo blob'lar. Cam
-          boardlar (KPI) bunların üstünde durur → cam altında kalan kısım
-          buzlanır, dışında açık kalır. Her iki markada da (renkler token'dan:
-          platform pastel holo, JG jade+altın). */}
+      {/* Hareketli holografik gradient — TÜM markalarda tek ambiyans arka plan.
+          Çok yavaş kayan holo blob'lar (renkler token'dan: platform pastel holo,
+          JG jade+altın). Statik desen/doku/toz KALDIRILDI; zemin düz mat +
+          süzülen holo. Cam boardlar bunun üstünde durunca altı buzlanır. */}
       <div aria-hidden className="holo-drift" />
-      {/* Bölüme (sekme) özel art-deco doku filigranı — route'a göre değişir.
-          `absolute` (fixed değil) → sayfayla birlikte kayar; shell tüm içerik
-          yüksekliğine uzadığından desen tüm scroll boyunca sürer. */}
-      <SectionPattern />
-      {/* Kırılgan altın toz — filigranın üstünde ambiyans katmanı; tüm
-          bölümlerde sabit, içeriğin altında, sayfayla birlikte kayar. */}
-      <div
-        aria-hidden
-        className="jg-dust pointer-events-none absolute inset-0 -z-10"
-      />
       <Sidebar
         memberships={memberships}
         activeOrgId={m.org_id}

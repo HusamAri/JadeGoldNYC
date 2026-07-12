@@ -15,12 +15,13 @@ function hashLabel(s: string): number {
   return h;
 }
 
-/** Kutu ikonunun kenarı yalayan konumu — 4 köşeden biri (bir kısmı dışarı). */
+/** Kutu ikonunun konumu — YALNIZ sağ köşeler (sol-üstteki metinle çakışmaz);
+    karta clip'lenir → komşu kutulara taşmaz, kenarda kesilir (cam altında). */
 const ICON_SPOTS = [
-  { bottom: "-16%", right: "-12%" },
-  { top: "-18%", right: "-10%" },
-  { bottom: "-14%", left: "-13%" },
-  { top: "-16%", left: "-11%" },
+  { bottom: "-14%", right: "-8%" },
+  { top: "-15%", right: "-7%" },
+  { bottom: "-10%", right: "-12%" },
+  { top: "-12%", right: "-11%" },
 ] as const;
 
 // NOT: Bu bir SUNUCU bileşenidir — `icon` prop'u bir React bileşeni (LucideIcon)
@@ -77,16 +78,16 @@ export function KpiCard({
     //  3) içerik (etiket + dev puntolu rakam) — camın üstünde.
     <div
       className={cn(
-        "relative flex h-full min-w-0 flex-col rounded-[1.75rem] px-6 py-6 transition-transform duration-200 ease-[var(--ease-premium)] hover:-translate-y-[3px]",
+        "relative flex h-full min-w-0 flex-col overflow-hidden rounded-[1.75rem] px-6 py-6 transition-transform duration-200 ease-[var(--ease-premium)] hover:-translate-y-[3px]",
         className,
       )}
     >
       {Icon && (
         <Icon
           aria-hidden
-          strokeWidth={2.4}
+          strokeWidth={2.2}
           fill="currentColor"
-          className="text-foreground pointer-events-none absolute z-0 size-[9.5rem] opacity-[0.13] dark:opacity-[0.17]"
+          className="pointer-events-none absolute z-0 size-[8.5rem] text-[color:var(--kpi-icon)]"
           style={iconStyle}
         />
       )}
@@ -103,7 +104,10 @@ export function KpiCard({
           <p
             className={cn(
               "truncate font-semibold tracking-tight tabular-nums",
-              splitTone ? "text-4xl leading-tight jg-split-tone" : "text-2xl",
+              // Cam board üstünde büyük readout → "glass display" yazı stili.
+              splitTone
+                ? "text-4xl leading-tight jg-split-tone"
+                : "text-glass-display text-2xl",
               !splitTone && accent === "positive" && "text-primary",
               !splitTone && accent === "negative" && "text-destructive",
             )}

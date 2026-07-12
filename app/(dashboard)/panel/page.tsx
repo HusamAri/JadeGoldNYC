@@ -473,7 +473,8 @@ function SectionTitle({
 }) {
   return (
     <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 pt-2">
-      <span className="text-[11px] font-bold tracking-[0.2em] text-[color:var(--brand-mark)] uppercase">
+      {/* Eyebrow: zemine KAZINMIŞ (carved) etiket — nöromorfik yüzey dili */}
+      <span className="text-carved text-[11px] font-bold tracking-[0.2em] text-[color:var(--brand-mark)] uppercase">
         {eyebrow}
       </span>
       <h2 className="text-lg font-semibold tracking-tight">{title}</h2>

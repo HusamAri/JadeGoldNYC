@@ -302,37 +302,61 @@ export function CategoryPie({
       </div>
     );
   }
+  const total = data.reduce((a, d) => a + (d.value ?? 0), 0);
   return (
-    <ResponsiveContainer width="100%" height={260}>
-      <PieChart>
-        <defs>
-          <filter id="pie-depth" x="-20%" y="-20%" width="140%" height="150%">
-            <feDropShadow
-              dx="0"
-              dy="8"
-              stdDeviation="7"
-              floodColor="var(--glass-outer)"
-            />
-          </filter>
-        </defs>
-        <Pie
-          data={data}
-          dataKey="value"
-          nameKey="name"
-          innerRadius={55}
-          outerRadius={95}
-          paddingAngle={2}
-          stroke="var(--card)"
-          strokeWidth={2}
-          filter="url(#pie-depth)"
-        >
-          {data.map((_, i) => (
-            <Cell key={i} fill={COLORS[i % COLORS.length]} />
-          ))}
-        </Pie>
-        <Tooltip {...GLASS_TOOLTIP} />
-        <Legend wrapperStyle={{ fontSize: 12 }} iconType="circle" />
-      </PieChart>
-    </ResponsiveContainer>
+    // Digital-display halka: donut'un ortasında camsı bir disk üzerinde
+    // mono/segment tarzı toplam okuması (ışıklı) — "digital display" dili.
+    <div className="relative">
+      <ResponsiveContainer width="100%" height={260}>
+        <PieChart>
+          <defs>
+            <filter id="pie-depth" x="-20%" y="-20%" width="140%" height="150%">
+              <feDropShadow
+                dx="0"
+                dy="8"
+                stdDeviation="7"
+                floodColor="var(--glass-outer)"
+              />
+            </filter>
+          </defs>
+          <Pie
+            data={data}
+            dataKey="value"
+            nameKey="name"
+            innerRadius={62}
+            outerRadius={95}
+            paddingAngle={2}
+            stroke="var(--card)"
+            strokeWidth={2}
+            filter="url(#pie-depth)"
+          >
+            {data.map((_, i) => (
+              <Cell key={i} fill={COLORS[i % COLORS.length]} />
+            ))}
+          </Pie>
+          <Tooltip {...GLASS_TOOLTIP} />
+          <Legend wrapperStyle={{ fontSize: 12 }} iconType="circle" />
+        </PieChart>
+      </ResponsiveContainer>
+      {/* Merkezî dijital okuma — halkanın göbeğinde camsı disk + ışıklı mono */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 flex flex-col items-center justify-center"
+        style={{ top: 0, height: 260, paddingBottom: 34 }}
+      >
+        <div className="flex size-[104px] flex-col items-center justify-center rounded-full border border-[color:var(--glass-border)] bg-[image:var(--glass-sheen),var(--glass)] shadow-[var(--glass-highlight),var(--glass-depth)] backdrop-blur-md">
+          <span className="text-muted-foreground text-[0.6rem] font-semibold tracking-[0.22em] uppercase">
+            Toplam
+          </span>
+          <span className="text-digital mt-0.5 text-lg text-[color:var(--gold-deep)]">
+            $
+            {total.toLocaleString("en-US", {
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0,
+            })}
+          </span>
+        </div>
+      </div>
+    </div>
   );
 }

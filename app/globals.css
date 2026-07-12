@@ -56,6 +56,8 @@
   --holo-blobs: radial-gradient(38% 44% at 22% 28%, rgb(182 220 255 / 0.55), transparent 62%),
     radial-gradient(36% 42% at 76% 36%, rgb(212 198 255 / 0.5), transparent 62%),
     radial-gradient(42% 46% at 54% 82%, rgb(255 201 230 / 0.46), transparent 64%);
+  /* KPI kutu ikonu — şeffaf değil, tona uyumlu KONTRAST renk (cam altında). */
+  --kpi-icon: rgb(108 102 186 / 0.55);
   /* Input odak "çukura vuran ışık" + etkileşim halesi — holo leylak. */
   --pit-glow: rgb(157 140 255 / 0.4);
   --glow-warm: rgb(157 140 255 / 0.32);
@@ -167,6 +169,7 @@
   --holo-blobs: radial-gradient(38% 44% at 22% 28%, rgb(120 130 220 / 0.5), transparent 62%),
     radial-gradient(36% 42% at 76% 36%, rgb(150 120 230 / 0.44), transparent 62%),
     radial-gradient(42% 46% at 54% 82%, rgb(210 120 180 / 0.4), transparent 64%);
+  --kpi-icon: rgb(160 154 240 / 0.5);
   /* Gece: çukur daha koyu → holo aydınlanma biraz daha parlak */
   --pit-glow: rgb(169 155 255 / 0.45);
   --glow-warm: rgb(169 155 255 / 0.38);
@@ -614,6 +617,39 @@
   .dark .holo-drift::after {
     opacity: 0.28;
   }
+
+  /* ── Yüzeye göre yazı stilleri (NeumorphGlass kiti dili) ──────────────
+     Aynı sayfada yazılar bulundukları YÜZEYE göre farklı dil konuşur:
+     .text-digital  — dijital gösterge: mono, geniş tracking, ışıklı (sayaç,
+                      halka merkezi, canlı readout). Emboss kapalı.
+     .text-carved   — nöromorfik yüzeye KAZINMIŞ his: içeri gömük (koyu üst
+                      gölge + açık alt highlight). Bölüm etiketleri/eyebrow.
+     .text-glass-display — cam board üstünde: hafif dış ışıma + net highlight,
+                      camın üstünde "yüzen" büyük readout hissi. */
+  .text-digital {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-shadow: 0 0 10px color-mix(in srgb, currentColor 45%, transparent),
+      0 0 2px color-mix(in srgb, currentColor 55%, transparent);
+  }
+  .text-carved {
+    text-shadow: 0 1px 0 rgb(255 255 255 / 0.75),
+      0 -1px 1px rgb(80 90 120 / 0.35);
+  }
+  .dark .text-carved {
+    text-shadow: 0 1px 0 rgb(255 255 255 / 0.06),
+      0 -1px 1.5px rgb(0 0 0 / 0.6);
+  }
+  .text-glass-display {
+    text-shadow: 0 1px 0 rgb(255 255 255 / 0.5),
+      0 0 16px color-mix(in srgb, var(--gold-deep) 22%, transparent);
+  }
+  .dark .text-glass-display {
+    text-shadow: 0 1px 0 rgb(255 255 255 / 0.12),
+      0 0 18px color-mix(in srgb, var(--gold) 30%, transparent);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -960,6 +996,7 @@ html[data-brand="jade-gold"] {
   --holo-blobs: radial-gradient(38% 44% at 22% 28%, rgb(232 198 105 / 0.5), transparent 62%),
     radial-gradient(36% 42% at 76% 36%, rgb(96 160 128 / 0.46), transparent 62%),
     radial-gradient(42% 46% at 54% 82%, rgb(150 200 170 / 0.4), transparent 64%);
+  --kpi-icon: rgb(150 120 52 / 0.55);
 }
 
 html[data-brand="jade-gold"].dark {
@@ -1072,16 +1109,12 @@ html[data-brand="jade-gold"].dark {
   --holo-blobs: radial-gradient(38% 44% at 22% 28%, rgb(232 198 105 / 0.42), transparent 62%),
     radial-gradient(36% 42% at 76% 36%, rgb(96 180 140 / 0.4), transparent 62%),
     radial-gradient(42% 46% at 54% 82%, rgb(150 210 180 / 0.34), transparent 64%);
+  --kpi-icon: rgb(224 190 108 / 0.5);
 }
 
 /* Jade Gold gövde ışıması — özgün sıcak altın radial (eskisi gibi). */
-html[data-brand="jade-gold"] body {
-  background-image: radial-gradient(
-    1100px 560px at 85% -8%,
-    oklch(0.9 0.06 85 / 0.55),
-    transparent 60%
-  );
-}
+/* Jade Gold zemini: düz mat (sıcak radyal KALDIRILDI) — ambiyans artık
+   hareketli holografik gradient (.holo-drift) tarafından sağlanır. */
 
 /* Marka-koşullu görünürlük: bileşenler her iki markın işaretini de basar,
    aktif kapsama göre biri gizlenir (sunucu-taraflı, flash yok). */
