@@ -20,7 +20,7 @@ const badgeVariants = cva(
           "border-transparent bg-destructive text-white shadow-[var(--shadow-raised-sm)] [a&]:hover:bg-destructive/90",
         /** Cam çip — hairline kenar + sheen, ortamın üstünde süzülür. */
         outline:
-          "border-[color:var(--glass-border)] [background-color:var(--glass)] [background-image:var(--glass-sheen)] backdrop-blur-md shadow-[var(--lift-sm)] text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
+          "border-[color:var(--glass-border)] [background-color:var(--glass)] [background-image:var(--glass-sheen)] [backdrop-filter:var(--glass-filter-sm)] shadow-[var(--lift-sm)] text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
         success:
           "border-transparent bg-primary/15 text-primary [a&]:hover:bg-primary/25",
         warning:

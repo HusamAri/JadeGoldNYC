@@ -68,7 +68,7 @@ export function Topbar({
     /* Spatial navglass — yarı saydam cam şerit: blur'lu beyaz cam + sheen,
        altta hairline (--glass-border), içte pah highlight'ı + lift gölgesi.
        Koyu modda token'lar camı kendiliğinden "ışık taşıyan" LUME cama çevirir. */
-    <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-3 border-b border-[color:var(--glass-border)] px-4 [background-color:var(--glass)] shadow-[var(--lift-sm),var(--glass-highlight)] backdrop-blur-xl transition-[background-color,box-shadow] duration-500 ease-[var(--ease-premium)] [background-image:var(--glass-sheen)] md:px-6">
+    <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-3 border-b border-[color:var(--glass-border)] px-4 [background-color:var(--glass)] shadow-[var(--lift-sm),var(--glass-highlight)] [backdrop-filter:var(--glass-filter)] transition-[background-color,box-shadow] duration-500 ease-[var(--ease-premium)] [background-image:var(--glass-sheen)] md:px-6">
       <div className="flex items-center gap-3">
         {/* Geri — alt/detay sayfalarında */}
         {isSubPage && (
