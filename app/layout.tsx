@@ -31,10 +31,10 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  applicationName: "Artifact",
+  applicationName: "Amuletta",
   title: {
-    default: "Artifact — Yönetim Platformu",
-    template: "%s · Artifact",
+    default: "Amuletta — Yönetim Platformu",
+    template: "%s · Amuletta",
   },
   description:
     "Çok markalı e-ticaret yönetim platformu — satış, maliyet, performans ve şirket hafızası tek çatıda.",
@@ -43,8 +43,8 @@ export const metadata: Metadata = {
   manifest: "/manifest.webmanifest",
   openGraph: {
     type: "website",
-    siteName: "Artifact",
-    title: "Artifact — Yönetim Platformu",
+    siteName: "Amuletta",
+    title: "Amuletta — Yönetim Platformu",
     description:
       "Satış, maliyet, performans ve şirket hafızası — tüm şirketleriniz tek platformda.",
     locale: "tr_TR",
@@ -66,7 +66,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   // Marka kapsamı SUNUCUDA çözülür (flash yok): aktif şirket Jade Gold ise
-  // sıcak Jade Gold teması, diğer her bağlamda platform (Artifact) teması.
+  // sıcak Jade Gold teması, diğer her bağlamda platform (Amuletta) teması.
   // Radix portalları <body>'ye bağlandığından öznitelik <html> üzerindedir.
   const brand = await getBrandScope();
 

@@ -43,9 +43,9 @@ export const WHATS_NEW: WhatsNewEntry[] = [
   {
     id: "2026-07-11-artifact-neumorphglass",
     date: "2026-07-11",
-    title: "Artifact platformu + NeumorphGlass tasarım dili",
+    title: "Amuletta platformu + NeumorphGlass tasarım dili",
     description:
-      "Panel çok markalı Artifact platformuna dönüştü: giriş, kurulum ve diğer şirketler yeni NeumorphGlass görünümünü (yumuşak kabartı/çukur yüzeyler, buzlu cam, iridesan holografik vurgu) kullanır. Jade Gold NYC kendi panelinde özgün sıcak kimliğini — renkler, desenler, logo ve görseller — korur.",
+      "Panel çok markalı Amuletta platformuna dönüştü: giriş, kurulum ve diğer şirketler yeni NeumorphGlass görünümünü (yumuşak kabartı/çukur yüzeyler, buzlu cam, iridesan holografik vurgu) kullanır. Jade Gold NYC kendi panelinde özgün sıcak kimliğini — renkler, desenler, logo ve görseller — korur.",
     category: "feature",
     icon: Gem,
     isNew: true,
