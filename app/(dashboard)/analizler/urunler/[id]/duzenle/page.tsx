@@ -4,6 +4,7 @@ import { getProductMetric } from "@/lib/db/queries/product-metrics";
 import { listProducts } from "@/lib/db/queries/products";
 import { PageHeader } from "@/components/page-header";
 import { ProductMetricForm } from "@/components/product-metric-form";
+import { KeywordResearchPanel } from "@/components/keyword-research-panel";
 import type { ProductMetricFormValues } from "@/lib/validations/product-metric";
 
 export const metadata = { title: "Ürün Kaydını Düzenle" };
@@ -39,7 +40,7 @@ export default async function UrunDuzenlePage({
   };
 
   return (
-    <div>
+    <div className="space-y-6">
       <PageHeader title="Ürün Kaydını Düzenle" description={m.product_title} />
       <ProductMetricForm
         mode="edit"
@@ -47,6 +48,9 @@ export default async function UrunDuzenlePage({
         defaultValues={defaultValues}
         products={products.map((p) => ({ id: p.id, title: p.title }))}
       />
+      {/* Reklam analizi bağlamında rekabet fiyat araştırması — bu listing'in
+          anahtar kelimesinde organik ilk 10 rakip fiyatı. */}
+      <KeywordResearchPanel productId={m.product_id} />
     </div>
   );
 }
