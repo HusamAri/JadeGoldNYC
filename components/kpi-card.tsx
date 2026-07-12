@@ -1,6 +1,9 @@
-import type { LucideIcon } from "lucide-react";
+import type { ComponentType, SVGProps } from "react";
 
 import { cn } from "@/lib/utils";
+
+/** Hem Lucide hem markaya özel Lux ikonlarını kabul eden ikon tipi. */
+type IconType = ComponentType<SVGProps<SVGSVGElement>>;
 
 function formatChange(change: number): string {
   const pct = Math.abs(change * 100);
@@ -40,7 +43,7 @@ export function KpiCard({
 }: {
   label: string;
   value: string;
-  icon?: LucideIcon;
+  icon?: IconType;
   hint?: string;
   accent?: "default" | "positive" | "negative";
   /** -1..1 arası yüzde değişim. null = gösterme. */
@@ -85,8 +88,7 @@ export function KpiCard({
       {Icon && (
         <Icon
           aria-hidden
-          strokeWidth={2.2}
-          fill="currentColor"
+          strokeWidth={1.5}
           className="pointer-events-none absolute z-0 size-[8.5rem] text-[color:var(--kpi-icon)]"
           style={iconStyle}
         />

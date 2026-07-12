@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Store } from "lucide-react";
 import {
   DollarSign,
   Wallet,
@@ -10,8 +11,7 @@ import {
   Gem,
   Hammer,
   Users,
-  Store,
-} from "lucide-react";
+} from "@/components/icons/lux";
 
 import { resolvePeriod, previousPeriod } from "@/lib/period";
 import { getDashboard } from "@/lib/db/queries/dashboard";

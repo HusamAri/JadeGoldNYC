@@ -1,16 +1,13 @@
 import Link from "next/link";
+import { Plus, Upload, Eye, Pencil } from "lucide-react";
 import {
-  Plus,
-  Upload,
-  Eye,
-  Pencil,
   ShoppingBag,
   DollarSign,
   TrendingUp,
   Receipt,
   Percent,
   Users,
-} from "lucide-react";
+} from "@/components/icons/lux";
 
 import { requireMembership } from "@/lib/auth";
 import { listSales, getSalesAnalytics } from "@/lib/db/queries/sales";

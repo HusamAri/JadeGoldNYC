@@ -1,7 +1,9 @@
 import * as React from "react";
-import type { LucideIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+
+// Hem Lucide hem markaya özel Lux ikonlarını kabul eder.
+type IconType = React.ComponentType<React.SVGProps<SVGSVGElement>>;
 
 export function EmptyState({
   icon: Icon,
@@ -10,7 +12,7 @@ export function EmptyState({
   action,
   className,
 }: {
-  icon?: LucideIcon;
+  icon?: IconType;
   title: string;
   description?: string;
   action?: React.ReactNode;
