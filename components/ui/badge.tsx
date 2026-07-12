@@ -5,24 +5,26 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const badgeVariants = cva(
-  // Hap (pill) rozet — sayısal içerik tabular (mono okuma dili).
-  "inline-flex items-center justify-center rounded-full border px-2.5 py-0.5 text-xs font-medium tabular-nums w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-[color,box-shadow,background-color] duration-300 overflow-hidden",
+  // Hap (pill) rozet — lab .badge birebir: index yüzü (mono 10px, .12em
+  // tracking, uppercase), 6/12px dolgu; sayısal içerik tabular.
+  "inline-flex items-center justify-center rounded-full border px-3 py-1 font-mono text-[10px] font-medium tracking-[0.12em] uppercase tabular-nums w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-[color,box-shadow,background-color] duration-300 overflow-hidden",
   {
     variants: {
       variant: {
-        /** Dolgu rozet — kabartılı; koyu modda hafif dış ışıma (Lume). */
+        /** Vurgu rozeti — açıkta accent-soft leylak hap; koyuda lume çip:
+            oklch(1 0 0/0.12) + lume-hi + lume-glow, beyaz ışımalı metin. */
         default:
-          "border-transparent bg-primary text-primary-foreground shadow-[var(--shadow-raised-sm)] [a&]:hover:bg-primary/90 dark:shadow-[var(--shadow-raised-sm),0_0_14px_rgb(255_255_255/0.12)]",
-        /** Nötr kabartı hap — konveks yüzey + raised-sm gölge. */
+          "border-transparent bg-accent text-accent-foreground [a&]:hover:bg-accent/80 dark:[background-color:oklch(1_0_0/0.12)] dark:text-white dark:shadow-[var(--lume-hi),var(--lume-glow)] dark:[text-shadow:0_0_10px_rgb(255_255_255/0.4)]",
+        /** Nötr kabartı hap — konveks yüzey + raised-sm gölge; koyuda sakin lume çip. */
         secondary:
-          "border-transparent bg-secondary [background-image:var(--nm-convex)] text-secondary-foreground shadow-[var(--shadow-raised-sm)] [a&]:hover:bg-secondary/90",
+          "border-transparent bg-secondary [background-image:var(--nm-convex)] text-secondary-foreground shadow-[var(--shadow-raised-sm)] [a&]:hover:bg-secondary/90 dark:[background-image:none] dark:[background-color:oklch(1_0_0/0.07)] dark:shadow-[var(--lume-hi)]",
         destructive:
-          "border-transparent bg-destructive text-white shadow-[var(--shadow-raised-sm)] [a&]:hover:bg-destructive/90",
-        /** Cam çip — hairline kenar + sheen, ortamın üstünde süzülür. */
+          "border-transparent bg-destructive text-white shadow-[var(--shadow-raised-sm)] [a&]:hover:bg-destructive/90 dark:shadow-[0_0_14px_rgb(238_114_114/0.45)]",
+        /** Cam çip — hairline kenar + sheen; koyuda lume rozet (oklch(0 0 0/0.4) + lume-hi). */
         outline:
-          "border-[color:var(--glass-border)] [background-color:var(--glass)] [background-image:var(--glass-sheen)] [backdrop-filter:var(--glass-filter-sm)] shadow-[var(--lift-sm)] text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
+          "border-[color:var(--glass-border)] [background-color:var(--glass)] [background-image:var(--glass-sheen)] [backdrop-filter:var(--glass-filter-sm)] shadow-[var(--lift-sm)] text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground dark:[background-image:none] dark:[background-color:oklch(0_0_0/0.4)] dark:[border-color:oklch(1_0_0/0.1)] dark:shadow-[var(--lume-hi)]",
         success:
-          "border-transparent bg-primary/15 text-primary [a&]:hover:bg-primary/25",
+          "border-transparent bg-primary/15 text-primary [a&]:hover:bg-primary/25 dark:shadow-[0_0_12px_rgb(169_155_255/0.25)]",
         warning:
           "border-transparent bg-accent text-accent-foreground [a&]:hover:bg-accent/80",
       },

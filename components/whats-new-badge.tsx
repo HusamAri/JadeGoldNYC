@@ -17,7 +17,7 @@ export function NewStar({
   return (
     <span
       className={cn(
-        "jg-star-neon inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold tracking-wide text-[color:var(--gold-deep)] uppercase",
+        "jg-star-neon inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold tracking-wide text-[color:var(--gold-deep)] uppercase [font-family:var(--font-index)]",
         className,
       )}
     >

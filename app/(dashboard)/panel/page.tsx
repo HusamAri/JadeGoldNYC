@@ -30,6 +30,7 @@ import { auditSummary } from "@/lib/audit-format";
 import { PageHeader } from "@/components/page-header";
 import { PanelTimeline } from "@/components/panel/panel-timeline";
 import { GoldStream } from "@/components/brand/gold-stream";
+import { CornerMarks } from "@/components/brand/corner-marks";
 import { EditorialCard } from "@/components/brand/editorial-card";
 import { KpiCard } from "@/components/kpi-card";
 import { WhatsNew } from "@/components/whats-new";
@@ -134,11 +135,20 @@ export default async function PanelPage({
 
       {/* ══ GELİR & KÂRLILIK — grafik, sonuçlarında kullanılan metriklerle
           YAN YANA (Panel 2.0 okuma düzeni: sol grafik, sağ metrikler) ══ */}
+      {/* Dekoratif indeks satırı (Spatial/Liquid .idx dili) — başlık metni değişmez. */}
+      <div aria-hidden className="idx -mb-4">
+        <span>Panel / 01 · Gelir &amp; Kârlılık</span>
+        <span className="idx-bar" />
+        <span className="idx-ln" />
+        <span>Jade Gold · NYC</span>
+      </div>
       <SectionTitle
         eyebrow="Gelir & Kârlılık"
         title="Trend ve dönem metrikleri"
         hint={`${period.label}${prev ? ` · karşılaştırma: ${prev.label}` : ""}`}
       />
+      {/* Ana KPI bölümü — Spatial hero köşe işaretleri (dekoratif sarmalayıcı). */}
+      <div className="relative">
       <div className="grid gap-4 lg:grid-cols-3">
         <Card className="lg:col-span-2">
           <CardHeader>
@@ -181,8 +191,16 @@ export default async function PanelPage({
           />
         </div>
       </div>
+      <CornerMarks />
+      </div>
 
       {/* ══ SİPARİŞLER ══ */}
+      <div aria-hidden className="idx -mb-4">
+        <span>Panel / 02 · Siparişler</span>
+        <span className="idx-bar" />
+        <span className="idx-ln" />
+        <span>Jade Gold · NYC</span>
+      </div>
       <SectionTitle
         eyebrow="Siparişler"
         title="Günlük hacim ve sepet metrikleri"
@@ -215,6 +233,12 @@ export default async function PanelPage({
       </div>
 
       {/* ══ MALİYET YAPISI — kırılım grafiği + altın maliyet metrikleri ══ */}
+      <div aria-hidden className="idx -mb-4">
+        <span>Panel / 03 · Maliyet Yapısı</span>
+        <span className="idx-bar" />
+        <span className="idx-ln" />
+        <span>Jade Gold · NYC</span>
+      </div>
       <SectionTitle
         eyebrow="Maliyet Yapısı"
         title="Kırılım ve altın maliyeti"
@@ -271,6 +295,12 @@ export default async function PanelPage({
       </div>
 
       {/* ══ ÜRÜNLER & ETKİNLİK ══ */}
+      <div aria-hidden className="idx -mb-4">
+        <span>Panel / 04 · Ürünler &amp; Etkinlik</span>
+        <span className="idx-bar" />
+        <span className="idx-ln" />
+        <span>Jade Gold · NYC</span>
+      </div>
       <SectionTitle
         eyebrow="Ürünler & Etkinlik"
         title="En çok satanlar ve son kayıtlar"
@@ -433,9 +463,12 @@ export default async function PanelPage({
                           {formatMoney(ch.revenueCents, cur)} · {formatNumber(ch.orderCount)} sipariş
                         </span>
                       </div>
-                      <div className="bg-muted h-2 overflow-hidden rounded-full">
+                      {/* Sıvı dolgu: içe gölgeli pill ray (açık) / lume-pit
+                          çukur (koyu); dolgu grad-holo + mor ışıma (açık),
+                          lume-fill + lume-glow (koyu); üstünde kayan sheen. */}
+                      <div className="h-2.5 overflow-hidden rounded-full [background-color:rgb(122_122_155/0.16)] [box-shadow:inset_0_2px_4px_rgba(84,80,120,.28),inset_0_-1px_0_rgba(255,255,255,.7)] dark:[background-color:oklch(0_0_0/0.35)] dark:[box-shadow:var(--lume-pit)]">
                         <div
-                          className="bg-primary h-full rounded-full transition-all"
+                          className="sheen-sweep h-full rounded-full transition-all [background-image:var(--grad-holo)] [box-shadow:0_0_12px_oklch(0.62_0.20_278/0.5)] dark:[background-image:var(--lume-fill)] dark:[box-shadow:var(--lume-glow)]"
                           style={{ width: `${Math.round(pct * 100)}%` }}
                         />
                       </div>

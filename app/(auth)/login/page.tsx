@@ -105,20 +105,21 @@ export default function LoginPage() {
 
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
-      {/* Platform paneli (geniş ekran) — NeumorphGlass kahraman: off-white
-          yüzey, arkada yumuşak holo ışıma, nöromorfik "A" karosu ve
-          California Paradise display başlık. Görünümün tek kroması holo. */}
+      {/* Platform paneli (geniş ekran) — Spatial hero sahnesi: lavanta radyal
+          zemin (body) üstünde blur'lu indigo/peri orb'lar + inci küreler
+          (ref: Spatial .orbs — 360/300/220px blur(46px), pearl 44/30px),
+          serif wordmark + indigo orb marka ve California Paradise em başlık. */}
       <div className="bg-background relative hidden overflow-hidden lg:block">
-        <div
-          aria-hidden
-          className="absolute inset-0"
-          style={{
-            backgroundImage:
-              "radial-gradient(760px 520px at 78% 8%, rgb(212 198 255 / 0.55), transparent 62%), radial-gradient(640px 460px at 8% 92%, rgb(182 220 255 / 0.45), transparent 58%), radial-gradient(520px 380px at 52% 55%, rgb(255 201 230 / 0.28), transparent 60%)",
-          }}
-        />
-        {/* Dekoratif iridesan cam obje — referanslardaki gibi cutout;
-            Higgsfield render + Adobe Photoshop API arka plan kaldırma. */}
+        <div aria-hidden className="absolute inset-0 overflow-hidden dark:opacity-40">
+          <span className="absolute top-[60px] left-[2%] size-[360px] rounded-full bg-[oklch(0.66_0.20_285/0.45)] opacity-90 blur-[46px]" />
+          <span className="absolute top-[180px] right-[4%] size-[300px] rounded-full opacity-60 blur-[46px] [background-image:var(--grad-holo)]" />
+          <span className="absolute top-[340px] left-[40%] size-[220px] rounded-full bg-[oklch(0.66_0.20_285/0.45)] opacity-50 blur-[46px]" />
+          <span className="absolute top-[300px] left-[14%] size-[120px] rounded-[60%_40%_50%_50%/50%] bg-white shadow-[0_20px_50px_rgba(80,80,120,0.12)]" />
+          <span className="absolute top-[180px] left-[8%] size-[44px] rounded-full shadow-[var(--lift-sm)] [background:radial-gradient(circle_at_32%_28%,#ffffff,#e9e6f3_62%,#cfccdd_120%)]" />
+          <span className="absolute top-[430px] right-[24%] size-[30px] rounded-full shadow-[var(--lift-sm)] [background:radial-gradient(circle_at_32%_28%,#ffffff,#e9e6f3_62%,#cfccdd_120%)]" />
+        </div>
+        {/* Dekoratif iridesan cam obje — cutout doktrini: yumuşak taban +
+            keskin temas gölgesi çifti (ref: Spatial .obj / .cutout). */}
         <Image
           src="/brand/platform/holo-prism.webp"
           alt=""
@@ -126,15 +127,17 @@ export default function LoginPage() {
           width={539}
           height={499}
           priority
-          className="pointer-events-none absolute top-[13%] right-[7%] w-64 rotate-[8deg] select-none drop-shadow-[0_34px_54px_rgba(120,100,200,0.38)] xl:w-80"
+          className="pointer-events-none absolute top-[13%] right-[7%] w-64 rotate-[8deg] select-none [filter:drop-shadow(0_14px_18px_rgba(50,46,86,0.42))_drop-shadow(0_2px_1px_rgba(66,62,98,0.34))] xl:w-80"
         />
         <div className="relative flex h-full flex-col justify-between p-10">
-          <div className="flex items-center gap-3">
-            <span className="nm-raised-sm text-foreground flex size-11 items-center justify-center rounded-2xl pt-1 text-2xl [font-family:var(--font-display)]">
-              A
-            </span>
-            {/* Wordmark — editorial mono etiket dili (.idx ile aynı ses). */}
-            <span className="text-muted-foreground font-mono text-xs font-medium tracking-[0.32em]">
+          {/* Marka — Spatial .navglass .brand: 22px indigo orb + serif
+              wordmark (600 · 20px · -.01em), gap 10px. */}
+          <div className="flex items-center gap-2.5">
+            <span
+              aria-hidden
+              className="size-[22px] shrink-0 rounded-full [background-image:var(--grad-holo-radial)] [box-shadow:0_0_24px_rgb(157_140_255/0.35),inset_0_1px_1px_rgb(255_255_255/0.9),inset_0_-2px_5px_rgb(91_76_196/0.35)]"
+            />
+            <span className="text-foreground text-xl leading-none font-semibold tracking-[-0.01em] [font-family:var(--font-serif)]">
               AMULETTA
             </span>
           </div>
@@ -146,9 +149,9 @@ export default function LoginPage() {
               Yönetim Platformu
               <span aria-hidden className="idx-ln" />
             </p>
-            {/* Büyük sans başlık; vurgu kelimesi (tek kelimelik wordmark)
-                serif italik em — editorial başlık dili. */}
-            <h2 className="display-emboss text-foreground mt-4 font-sans text-7xl leading-none font-semibold tracking-tight">
+            {/* Büyük sans başlık — Spatial hero h1 formu (700 · 1.02 ·
+                -.025em); em = font-display (tek kullanım yeri). */}
+            <h2 className="display-emboss text-foreground mt-4 font-sans text-7xl leading-[1.02] font-bold tracking-tight">
               <em className="text-primary font-medium italic [font-family:var(--font-display)]">
                 Amuletta
               </em>
@@ -173,15 +176,33 @@ export default function LoginPage() {
       {/* Giriş formu — cam kart, arkasındaki holo ambiyansın ÜSTÜNDE yüzer
           (kolon şeffaf; düz opak zemin yok). */}
       <div className="relative flex items-center justify-center p-6">
-        {/* .glass-board: buzlu cam + hairline + lift; .sheen-sweep: kartın
-            üstünden kendi kendine geçen ışık süpürmesi. bg + hover gölgesi
-            Card'ın nöromorfik varsayılanlarını cam diline çevirir. */}
-        <Card className="glass-board sheen-sweep w-full max-w-sm bg-[color:var(--glass)] hover:shadow-[var(--lift-lg),var(--glass-highlight),var(--glass-depth)]">
+        {/* Cam form kartı (Card = Spatial glass + lift + 1px beyaz hairline)
+            + köşe işaretleri: 46px · 2.5px oklch(0.78 0.09 285/.85) yalnız
+            köşe yayları, radius 20px, ofset -30/-26px (ref: .hero-head .corner). */}
+        <div className="relative w-full max-w-sm">
+          <span
+            aria-hidden
+            className="pointer-events-none absolute -top-[26px] -left-[30px] hidden size-[46px] rounded-tl-[20px] border-t-[2.5px] border-l-[2.5px] border-[oklch(0.78_0.09_285/0.85)] sm:block dark:border-[oklch(0.78_0.09_285/0.45)]"
+          />
+          <span
+            aria-hidden
+            className="pointer-events-none absolute -top-[26px] -right-[30px] hidden size-[46px] rounded-tr-[20px] border-t-[2.5px] border-r-[2.5px] border-[oklch(0.78_0.09_285/0.85)] sm:block dark:border-[oklch(0.78_0.09_285/0.45)]"
+          />
+          <span
+            aria-hidden
+            className="pointer-events-none absolute -bottom-[26px] -left-[30px] hidden size-[46px] rounded-bl-[20px] border-b-[2.5px] border-l-[2.5px] border-[oklch(0.78_0.09_285/0.85)] sm:block dark:border-[oklch(0.78_0.09_285/0.45)]"
+          />
+          <span
+            aria-hidden
+            className="pointer-events-none absolute -right-[30px] -bottom-[26px] hidden size-[46px] rounded-br-[20px] border-r-[2.5px] border-b-[2.5px] border-[oklch(0.78_0.09_285/0.85)] sm:block dark:border-[oklch(0.78_0.09_285/0.45)]"
+          />
+          <Card className="sheen-sweep w-full">
           <CardHeader className="items-center text-center">
             <div className="mb-2 flex justify-center">
               <Logo className="size-11" />
             </div>
-            <CardTitle className="text-glass-display text-lg tracking-[0.3em]">
+            {/* Marka wordmark'ı — Spatial serif brand dili (600 · -.01em). */}
+            <CardTitle className="text-2xl tracking-[-0.01em] [font-family:var(--font-serif)]">
               AMULETTA
             </CardTitle>
             <CardDescription>
@@ -195,16 +216,19 @@ export default function LoginPage() {
             <AuthForm key={mode} mode={mode} />
             <p className="text-muted-foreground text-center text-sm">
               {signup ? "Zaten hesabınız var mı? " : "Hesabınız yok mu? "}
+              {/* Liquid/04 lbtn.link formu: mürekkep metin; alt çizgi 1px,
+                  hover'da soldan scaleX(0→1), .4s premium ease. */}
               <button
                 type="button"
                 onClick={() => setMode(signup ? "signin" : "signup")}
-                className="text-foreground underline underline-offset-2"
+                className="text-foreground relative after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-[400ms] after:ease-[var(--ease-premium)] hover:after:scale-x-100"
               >
                 {signup ? "Giriş yapın" : "Hesap oluşturun"}
               </button>
             </p>
           </CardContent>
-        </Card>
+          </Card>
+        </div>
       </div>
     </div>
   );

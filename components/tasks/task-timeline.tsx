@@ -207,15 +207,15 @@ export function TaskTimeline({
       <div className="relative">
         <div
           ref={scrollRef}
-          className="relative max-h-[68vh] overflow-y-auto overflow-x-hidden rounded-[1.75rem] border bg-secondary/30 px-4 py-6 sm:px-6"
+          className="bg-secondary/30 relative max-h-[68vh] overflow-x-hidden overflow-y-auto rounded-[1.75rem] border px-4 py-6 sm:px-6 dark:border-[color:oklch(1_0_0/0.05)] dark:bg-[color:var(--lume-panel)] dark:shadow-[inset_0_1px_0_oklch(1_0_0/0.06)]"
         >
-          {/* Omurga — akan erimiş altın */}
+          {/* Omurga — marka vurgu token'ı (v3: --gold mor aileye eşlendi) */}
           <div
             aria-hidden
             className="pointer-events-none absolute top-0 bottom-0 left-[calc(0.75rem+7px)] w-px sm:left-[calc(1.5rem+7px)]"
             style={{
               background:
-                "linear-gradient(to bottom, transparent, #B89347 8%, #B89347 92%, transparent)",
+                "linear-gradient(to bottom, transparent, var(--gold) 8%, var(--gold) 92%, transparent)",
             }}
           />
           {/* Geçmişe karışan üst tül */}
@@ -234,11 +234,11 @@ export function TaskTimeline({
 
           {/* ── BUGÜN çıpası ── */}
           <div ref={todayRef} className="relative my-3 flex items-center gap-3 pl-1">
-            <span className="tl-today-halo relative z-10 grid size-[15px] place-items-center rounded-full bg-[#E8C669]">
-              <span className="size-1.5 rounded-full bg-[#7a5a1a]" />
+            <span className="tl-today-halo relative z-10 grid size-[15px] place-items-center rounded-full bg-[color:var(--gold)]">
+              <span className="size-1.5 rounded-full bg-white/90" />
             </span>
             <div className="flex items-baseline gap-2">
-              <span className="font-serif text-lg leading-none font-semibold text-[#B89347]">
+              <span className="font-serif text-lg leading-none font-semibold text-[color:var(--gold-deep)]">
                 BUGÜN
               </span>
               <span className="text-muted-foreground text-xs tabular-nums">
@@ -351,7 +351,7 @@ function renderWithDayLabels(
             {labelDay(last)}
           </span>
           {section === "past" && diff > 0 && (
-            <span className="text-[0.7rem] font-medium text-red-500/70">
+            <span className="text-[0.7rem] font-medium text-[oklch(0.58_0.16_344)]/70 dark:text-[oklch(0.74_0.12_344)]/70">
               · {diff} gün önce
             </span>
           )}
@@ -400,14 +400,15 @@ function TimelineCard({
         aria-hidden
         className={cn(
           "relative z-10 mt-3.5 size-[15px] shrink-0 rounded-full border-2 border-[var(--background)]",
-          done && "bg-[#B89347]",
-          overdue && "tl-overdue-dot bg-red-500",
-          !done && !overdue && section === "today" && "bg-[#E8C669]",
+          done && "bg-[color:var(--gold)]",
+          overdue &&
+            "tl-overdue-dot bg-[oklch(0.58_0.16_344)] dark:bg-[oklch(0.74_0.12_344)]",
+          !done && !overdue && section === "today" && "bg-[color:var(--gold)]",
           !done && !overdue && section === "future" && "bg-muted-foreground/40",
         )}
       >
         {done && (
-          <Check className="absolute inset-0 m-auto size-2.5 text-[#3b2c10]" strokeWidth={3.5} />
+          <Check className="absolute inset-0 m-auto size-2.5 text-white" strokeWidth={3.5} />
         )}
       </span>
 
@@ -431,7 +432,7 @@ function TimelineCard({
             </span>
           )}
           {overdue && (
-            <span className="flex items-center gap-1 rounded-full bg-red-500/12 px-1.5 py-0.5 text-[10px] font-semibold text-red-500">
+            <span className="flex items-center gap-1 rounded-full bg-[oklch(0.58_0.16_344)]/12 px-1.5 py-0.5 text-[10px] font-semibold text-[oklch(0.58_0.16_344)] dark:bg-[oklch(0.74_0.12_344)]/15 dark:text-[oklch(0.74_0.12_344)]">
               <CalendarClock className="size-3" />
               {late} gün gecikti
             </span>
@@ -517,7 +518,9 @@ function Section({
         <Icon
           className={cn(
             "size-4",
-            tone === "danger" && count > 0 ? "text-red-500" : "text-muted-foreground",
+            tone === "danger" && count > 0
+              ? "text-[oklch(0.58_0.16_344)] dark:text-[oklch(0.74_0.12_344)]"
+              : "text-muted-foreground",
           )}
         />
         {title}
@@ -560,7 +563,9 @@ function MiniRow({
         <span
           className={cn(
             "shrink-0 text-[0.7rem] font-medium",
-            danger ? "text-red-500" : "text-muted-foreground",
+            danger
+              ? "text-[oklch(0.58_0.16_344)] dark:text-[oklch(0.74_0.12_344)]"
+              : "text-muted-foreground",
           )}
         >
           {meta}

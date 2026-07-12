@@ -13,11 +13,16 @@ const CHIP =
 const DOT =
   "size-1.5 shrink-0 rounded-full bg-(--tone) dark:shadow-[0_0_10px_0_var(--tone)]";
 
+/* Mürekkepler Spatial mor rampası (koyuda lume eşleri): paid en koyu mor →
+   completed soluk mor; cancelled negatif 344. Jenerik chart paleti
+   (yeşil/mavi/turuncu) KULLANILMAZ — etiket her zaman görünür olduğundan
+   renk-anlam kaybı yok. */
 const TONE: Record<SaleStatus, string> = {
-  paid: "[--tone:var(--chart-4)]",
-  completed: "[--tone:var(--chart-5)]",
-  shipped: "[--tone:var(--chart-2)]",
-  cancelled: "[--tone:var(--destructive)] bg-(--tone)/20 border-(--tone)/40",
+  paid: "[--tone:oklch(0.54_0.20_278)] dark:[--tone:oklch(0.72_0.14_262)]",
+  completed: "[--tone:oklch(0.83_0.07_290)] dark:[--tone:oklch(0.86_0.05_262)]",
+  shipped: "[--tone:oklch(0.68_0.15_286)] dark:[--tone:oklch(0.78_0.12_278)]",
+  cancelled:
+    "[--tone:oklch(0.58_0.16_344)] dark:[--tone:oklch(0.74_0.12_344)] bg-(--tone)/20 border-(--tone)/40",
   refunded: "[--tone:var(--muted-foreground)] border-dashed",
 };
 

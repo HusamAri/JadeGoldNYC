@@ -76,26 +76,33 @@ export function KpiCard({
     // Kutu: şeffaf kap (arka plandaki süzülen holo görünür). İçinde 3 katman:
     //  1) anlamlı kalın solid ikon — camın ALTINDA, kenardan taşar (bir kısmı
     //     cam altında buzlanır, bir kısmı dışında açık kalır); çok yavaş süzülür.
-    //  2) cam yüzey (.glass-board) — backdrop-filter ikonu ve arkadaki holo'yu
-    //     buzlar; sheen + iridesan kenar.
+    //  2) cam yüzey — açıkta Spatial .stat camı, koyuda lume hücre;
+    //     backdrop-filter ikonu ve arkadaki holo'yu buzlar.
     //  3) içerik (etiket + dev puntolu rakam) — camın üstünde.
     <div
       className={cn(
-        "sheen-sweep relative flex h-full min-w-0 flex-col overflow-hidden rounded-[1.75rem] px-6 py-6 transition-transform duration-300 ease-[var(--ease-premium)] hover:-translate-y-[3px]",
+        "sheen-sweep relative flex h-full min-w-0 flex-col overflow-hidden rounded-[18px] px-6 py-6 transition-transform duration-300 ease-[var(--ease-premium)] hover:-translate-y-0.5 dark:rounded-[26px]",
         className,
       )}
     >
       {Icon && (
         <Icon
           aria-hidden
-          className="pointer-events-none absolute z-0 size-[8.5rem] object-contain opacity-[0.88] dark:opacity-80"
+          // Açıkta camın ALTINDA (z-0, buzlanır); koyuda panel OPAK olduğundan
+          // camın üstünde çok soluk oyma filigran olarak durur (dark:z-[2],
+          // içerik DOM'da sonra geldiği için üstte kalır). Ham Lucide geçse
+          // bile gri klipart'a düşmesin diye varsayılan mürekkep soluk mor.
+          className="pointer-events-none absolute z-0 size-[8.5rem] object-contain text-[oklch(0.68_0.15_286)] opacity-[0.88] dark:z-[2] dark:text-[oklch(0.83_0.07_290)] dark:opacity-[0.14]"
           style={iconStyle}
         />
       )}
-      {/* cam yüzey — ikonu ve arkadaki süzülen holo'yu buzlar */}
+      {/* cam yüzey — açıkta Spatial .stat kutusu (cam + 1px beyaz kenar +
+          glass-hi), koyuda OPAK lume hücre (Liquid_Dark .cell birebir:
+          #262935 panel + 0.05 beyaz kenar + 0 20px 50px gölge + üst iç
+          highlight; saydamlık/backdrop-blur yok). */}
       <div
         aria-hidden
-        className="glass-board absolute inset-0 z-[1] rounded-[1.75rem]"
+        className="absolute inset-0 z-[1] rounded-[18px] border border-[color:var(--glass-border)] [backdrop-filter:var(--glass-filter)] [background-color:var(--glass)] [box-shadow:var(--lift),var(--glass-highlight)] dark:rounded-[26px] dark:border-[color:oklch(1_0_0/0.05)] dark:[backdrop-filter:none] dark:[background-color:var(--lume-panel)] dark:[box-shadow:0_20px_50px_oklch(0_0_0/0.4),inset_0_1px_0_oklch(1_0_0/0.06)]"
       />
       <div className="relative z-[2] flex h-full items-start justify-between gap-3">
         <div className="flex min-w-0 flex-col">
@@ -103,16 +110,23 @@ export function KpiCard({
           <p className="text-muted-foreground line-clamp-2 min-h-[2.5rem] font-mono text-[11px] leading-[1.5] tracking-[0.16em] uppercase">
             {label}
           </p>
-          {/* Değer — mono-tabular büyük readout (digital display dili). */}
+          {/* Değer — font-index readout: açıkta Spatial mürekkebi,
+              koyuda lume beyazı + 0 0 14px beyaz ışıma. */}
           <p
             className={cn(
               "truncate font-mono font-semibold tracking-tight tabular-nums",
-              // Cam board üstünde büyük readout → "glass display" yazı stili.
               splitTone
                 ? "text-4xl leading-tight jg-split-tone"
-                : "text-glass-display text-2xl",
-              !splitTone && accent === "positive" && "text-primary",
-              !splitTone && accent === "negative" && "text-destructive",
+                : "text-2xl dark:[text-shadow:0_0_14px_rgba(255,255,255,.5)]",
+              !splitTone &&
+                accent === "default" &&
+                "text-foreground dark:text-white",
+              !splitTone &&
+                accent === "positive" &&
+                "text-[oklch(0.50_0.19_278)] dark:text-[oklch(0.80_0.10_278)]",
+              !splitTone &&
+                accent === "negative" &&
+                "text-[oklch(0.58_0.16_344)] dark:text-[oklch(0.74_0.12_344)]",
             )}
           >
             {value}
@@ -121,8 +135,10 @@ export function KpiCard({
             <p
               className={cn(
                 "mt-1 font-mono text-xs font-medium tabular-nums",
-                change > 0 && "text-emerald-600",
-                change < 0 && "text-red-500",
+                change > 0 &&
+                  "text-[oklch(0.50_0.19_278)] dark:text-[oklch(0.80_0.10_278)]",
+                change < 0 &&
+                  "text-[oklch(0.58_0.16_344)] dark:text-[oklch(0.74_0.12_344)]",
                 change === 0 && "text-muted-foreground",
               )}
             >

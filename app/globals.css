@@ -146,17 +146,39 @@
      sıfırdan dolarken hafif zıplayan (damla oturur gibi) eğri. */
   --ease-liquid-slide: cubic-bezier(0.5, 1.6, 0.3, 0.9);
   --ease-liquid-pop: cubic-bezier(0.34, 1.76, 0.64, 1);
+
+  /* Lume tokenlarının AÇIK tema karşılıkları — açıkta ışıma yok, nötr
+     eşdeğerler (utility'ler gece .dark blokta gerçek lume değerini alır). */
+  --lume-panel: var(--card);
+  --lume-edge: var(--glass-border);
+  --lume-hi: var(--glass-highlight);
+  --lume-pit: inset 0 2px 6px rgb(84 80 120 / 0.22), inset 0 -1px 0 rgb(255 255 255 / 0.7);
+  --lume-glass: var(--glass);
+  --lume-glow: 0 0 0 0 transparent;
+  --lume-glow-lg: 0 0 0 0 transparent;
+  --lume-fill: var(--grad-holo);
 }
 
 .dark {
-  /* Gece nöromorfizm — kömür (charcoal) zemin, aynı çift ışık dili.
-     Highlight çok düşük opaklıkta beyaz, gölge derin siyah (kitin koyu
-     panellerindeki gibi); holo kroması gece de aynı pastel ailede kalır. */
-  --background: #262935;
+  /* Gece = LUME register (Liquid_Dark lab'ı birebir): derin mürekkep ground
+     (oklch 262 ailesi), üstünde kömür lume paneller; kontroller içten ışıklı.
+     Highlight çok düşük opaklıkta beyaz, gölge derin siyah; holo kroması
+     gece luminous periwinkle beyazlarına kayar. */
+  --background: #14161e;
   --foreground: #eef0f6;
 
   --card: #262935;
   --card-foreground: #eef0f6;
+
+  /* Lume tokenları — içten ışıklı kontrol dili (dolgu/kenar/çukur/ışıma). */
+  --lume-panel: #262935;
+  --lume-edge: rgb(255 255 255 / 0.14);
+  --lume-hi: inset 0 1px 0 rgb(255 255 255 / 0.12);
+  --lume-pit: inset 0 4px 12px rgb(0 0 0 / 0.5), inset 0 -1px 0 rgb(255 255 255 / 0.06);
+  --lume-glass: rgb(255 255 255 / 0.08);
+  --lume-glow: 0 0 12px rgb(205 214 255 / 0.45);
+  --lume-glow-lg: 0 0 22px rgb(205 214 255 / 0.6), 0 0 44px rgb(150 160 255 / 0.28);
+  --lume-fill: linear-gradient(90deg, rgb(150 160 220 / 0.9), #e8ebff);
 
   --popover: #2b2e3b;
   --popover-foreground: #eef0f6;
@@ -290,6 +312,10 @@
 
   --font-sans: var(--font-sora);
   --font-mono: var(--font-jbmono);
+  /* Editorial serif — lab'ların --font-serif'i; başlıklar + italik em vurgular. */
+  --font-serif: var(--font-cormorant);
+  /* Index yüzü — .idx etiketleri/rakamsal okumalar (lab'ların --font-index'i). */
+  --font-index: var(--font-jbmono);
   /* Display — California Paradise; YALNIZ kahraman başlıklar/wordmark. */
   --font-display: var(--font-california);
 }
@@ -300,20 +326,21 @@
   }
   body {
     @apply bg-background text-foreground;
-    /* Tüm metinler (sayılar dâhil) yüzeyin üstünde hafifçe kabarır —
-       text-shadow miras alınır, böylece başlık/gövde/rakam tek dilde. */
-    text-shadow: var(--text-emboss);
-    /* Zemin: düz nötr yüzey + köşelerden süzülen yumuşak holo ışıma
-       (kahraman arkası ışık — tek kroma kaynağı, çok düşük yoğunlukta). */
+    /* Zemin — Spatial lab'ın BİREBİR zemini: tepeden süzülen lavanta radyal
+       (f3f2f7→eceaf1→e6e3ee) + köşelerde çok düşük yoğunluklu holo ışıma.
+       NOT: gövde metni lab'lardaki gibi TEMİZ mürekkep — global text-shadow
+       yok; emboss/engrave yalnız bilinçli başlık utility'lerinde. */
     background-image:
-      radial-gradient(1100px 560px at 85% -8%, rgb(212 198 255 / 0.3), transparent 60%),
-      radial-gradient(900px 480px at -10% 108%, rgb(182 220 255 / 0.22), transparent 55%);
+      radial-gradient(1100px 560px at 85% -8%, rgb(212 198 255 / 0.24), transparent 60%),
+      radial-gradient(900px 480px at -10% 108%, rgb(182 220 255 / 0.18), transparent 55%),
+      radial-gradient(120% 90% at 50% 0%, #f3f2f7 0%, #eceaf1 46%, #e6e3ee 100%);
     background-attachment: fixed;
   }
   .dark body {
+    /* Lume ground — Liquid_Dark'ın BİREBİR zemini: tepe ışığı housing'e
+       süzülür, kenarlara doğru derin mürekkebe iner (oklch 262 ailesi). */
     background-image:
-      radial-gradient(1100px 560px at 85% -8%, rgb(157 140 255 / 0.1), transparent 60%),
-      radial-gradient(900px 480px at -10% 108%, rgb(90 169 240 / 0.07), transparent 55%);
+      radial-gradient(90% 70% at 50% 10%, oklch(0.26 0.02 262), oklch(0.165 0.015 262) 70%);
   }
 }
 
@@ -598,6 +625,27 @@
     text-shadow:
       0 -1px 1px rgb(5 6 10 / 0.9),
       0 1px 0 rgb(96 102 130 / 0.55);
+  }
+
+  /* ── Editorial serif başlık (referans: lab'ların h2/h1 dili) ──────────
+     Cormorant serif, hafif sıkı tracking; içindeki `em` İTALİK + vurgu
+     mürekkebi (açıkta basılı menekşe, gecede luminous periwinkle — lab'larda
+     `h2 em{ font-style:italic; color:var(--accent-deep) }`). */
+  .h-serif {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+  .h-serif em,
+  .h-serif .em {
+    font-style: italic;
+    font-weight: 500;
+    color: var(--gold-deep);
+  }
+  .dark .h-serif em,
+  .dark .h-serif .em {
+    color: #cfc8ff;
+    text-shadow: 0 0 26px rgb(203 210 255 / 0.35);
   }
 
   /* ── Editorial index başlığı (referans: Artifact Studio .idx) ─────────
