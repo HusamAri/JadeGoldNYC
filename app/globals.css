@@ -36,15 +36,15 @@
   --grad-holo-radial: radial-gradient(120% 120% at 20% 0%, var(--holo-sky), var(--holo-lilac) 40%, var(--holo-pink) 70%, var(--holo-peach));
 
   /* Buzlu cam — ~%46 beyaz + blur; yüzeyin ÜSTÜNDE yüzen katmanlar için. */
-  --glass: rgb(255 255 255 / 0.46);
-  --glass-border: rgb(255 255 255 / 0.65);
+  --glass: rgb(255 255 255 / 0.55);
+  --glass-border: rgb(255 255 255 / 0.72);
   --glass-highlight: inset 0 1px 1.5px rgb(255 255 255 / 0.85);
   --glass-depth: inset 0 -14px 30px -20px rgb(60 70 110 / 0.28);
-  --glass-sheen: linear-gradient(160deg, rgb(255 255 255 / 0.32), transparent 54%);
+  --glass-sheen: linear-gradient(135deg, rgb(255 255 255 / 0.5), transparent 42%);
   /* Cam "lift" gölgeleri — yüzen paneller kazınmaz, üstte süzülür. */
   --lift-sm: 0 4px 14px rgb(60 70 110 / 0.1);
-  --lift: 0 10px 30px rgb(60 70 110 / 0.14);
-  --lift-lg: 0 24px 60px rgb(60 70 110 / 0.2);
+  --lift: 0 14px 34px -12px rgb(60 70 110 / 0.5), 0 2px 8px -2px rgb(60 70 110 / 0.3);
+  --lift-lg: 0 30px 60px -30px rgb(60 70 110 / 0.45);
   /* Cam rengi sızıntısı — buzlu cam düz nötr yüzey üstünde bile "cam" okunsun
      diye içine hafif iridesan holo ışık gömülür (platform); JG kapsamı bunu
      sıcak altına eşler. .glass-board bu tokeni sheen + cam ile katmanlar. */
@@ -156,13 +156,13 @@
   --popover-foreground: #eef0f6;
 
   /* Gece buzlu cam — koyu yarı saydam + ince beyaz hairline */
-  --glass: rgb(38 41 53 / 0.55);
-  --glass-border: rgb(255 255 255 / 0.1);
-  --glass-highlight: inset 0 1px 1.5px rgb(255 255 255 / 0.14);
+  --glass: rgb(255 255 255 / 0.07);
+  --glass-border: rgb(255 255 255 / 0.14);
+  --glass-highlight: inset 0 1px 0 rgb(255 255 255 / 0.12);
   --glass-depth: inset 0 -14px 30px -20px rgb(0 0 0 / 0.5);
-  --glass-sheen: linear-gradient(160deg, rgb(255 255 255 / 0.1), transparent 54%);
+  --glass-sheen: linear-gradient(135deg, rgb(255 255 255 / 0.09), transparent 42%);
   --lift-sm: 0 4px 14px rgb(0 0 0 / 0.35);
-  --lift: 0 10px 30px rgb(0 0 0 / 0.45);
+  --lift: 0 20px 50px rgb(0 0 0 / 0.4);
   --lift-lg: 0 24px 60px rgb(0 0 0 / 0.55);
   --glass-tint: radial-gradient(120% 150% at 84% -12%, rgb(169 155 255 / 0.2), transparent 56%),
     radial-gradient(120% 130% at 6% 112%, rgb(90 169 240 / 0.16), transparent 56%);
@@ -595,6 +595,104 @@
     mix-blend-mode: soft-light;
   }
 
+  /* ── Editorial index başlığı (referans: Artifact Studio .idx) ─────────
+     Mono, geniş letter-spacing, uppercase — bölüm/figür etiketleri. Yanında
+     kısa vurgu çizgisi + uzayan ince kural için .idx-bar/.idx-ln. */
+  .idx {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .idx .idx-bar {
+    width: 36px;
+    height: 1px;
+    background: var(--primary);
+  }
+  .idx .idx-ln {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── Kendi kendine süpüren cam parıltısı (referans: Spatial cardSheen) ──
+     Cam kartların üstünden 7.5s'de bir geçen ışık yansıması; reduced-motion
+     tercihinde durur. */
+  .sheen-sweep {
+    position: relative;
+    overflow: hidden;
+  }
+  .sheen-sweep::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(
+      114deg,
+      transparent 32%,
+      rgb(255 255 255 / 0.3) 47%,
+      rgb(255 255 255 / 0.04) 53%,
+      transparent 66%
+    );
+    transform: translateX(-125%);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .sheen-sweep::after {
+      animation: card-sheen 7.5s ease-in-out infinite;
+    }
+    .sheen-sweep:nth-child(2n)::after {
+      animation-delay: -2.4s;
+    }
+    .sheen-sweep:nth-child(3n)::after {
+      animation-delay: -4.3s;
+    }
+  }
+  .dark .sheen-sweep::after {
+    background: linear-gradient(
+      114deg,
+      transparent 32%,
+      rgb(255 255 255 / 0.12) 47%,
+      rgb(255 255 255 / 0.02) 53%,
+      transparent 66%
+    );
+  }
+
+  /* ── Marka kutusu — kiracı logosu panelin başında SINIRLI bir oyukta ──
+     (referans: Materials .spec niche) Kazınmış girinti + içine oturan logo;
+     kiracı kimliği yalnız bu kutuda yaşar, arayüzün geri kalanı Amuletta. */
+  .brand-box {
+    position: relative;
+    border-radius: 18px;
+    background: var(--nm-convex-press);
+    box-shadow:
+      var(--shadow-pressed),
+      inset 0 -1px 0 rgb(var(--nm-light) / 0.5);
+    overflow: hidden;
+  }
+  .dark .brand-box {
+    box-shadow:
+      var(--shadow-pressed),
+      inset 0 -1px 0 rgb(255 255 255 / 0.06);
+  }
+  .brand-box::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(
+      120% 90% at 50% -20%,
+      rgb(var(--nm-dark) / 0.14),
+      transparent 55%
+    );
+  }
+
   /* ── Süzülen holografik arka plan ─────────────────────────────────────
      Sayfanın arkasında çok yavaş süzülen holo blob'lar. Cam boardlar
      (.glass-board, backdrop-filter) bunların üstünde durduğundan, blob'un
@@ -906,245 +1004,9 @@
   animation: tl-overdue-dot 2s ease-in-out infinite;
 }
 
-/* ==================================================================
-   MARKA KAPSAMI — Jade Gold NYC kendi panelinde ÖZGÜN sıcak paletini
-   korur (şampanya/fildişi zemin, jade birincil, antik altın vurgu,
-   sıcak nöromorfik gölgeler). Platform kabuğu (login, kurulum ve
-   diğer tüm şirketler) dosyanın başındaki NeumorphGlass paletini alır.
-   html[data-brand] ayrıca medya görünürlüğünü yönetir (logo, desen,
-   altın tozu, altın şerit yalnız Jade Gold'da).
-   ================================================================== */
-html[data-brand="jade-gold"] {
-  --radius: 1rem;
 
 
-  /* Marka zemini — sıcak şampanya/fildişi (som altın kuyumcu evi için premium),
-     kartlar zeminle aynı renk, gölgeyle kabarır. Espresso-kahve mürekkep. */
-  --background: oklch(0.945 0.012 88);
-  --foreground: oklch(0.27 0.022 74);
 
-  --card: oklch(0.945 0.012 88);
-  --card-foreground: oklch(0.27 0.022 74);
-
-  --popover: oklch(0.965 0.01 88);
-  --popover-foreground: oklch(0.27 0.022 74);
-
-  /* Buzlu-cam yüzeyler (grafik tooltip'leri vb.) — "Neler Yeni" popup'ıyla
-     aynı dil: hafif sarı/altın tonlu yarı saydam cam + altın hatlı çerçeve. */
-  --glass: oklch(0.97 0.014 90 / 0.72);
-  --glass-border: oklch(0.8 0.07 86 / 0.4);
-  /* 3B cam derinliği: üstte ışık yakalayan pah (highlight), altta iç gölge
-     (kalınlık), ve eğrisel bir sheen (parlama). Cam düz değil, hacimli görünür. */
-  --glass-highlight: inset 0 1px 1.5px oklch(1 0 0 / 0.55);
-  --glass-depth: inset 0 -14px 30px -20px oklch(0.25 0.03 40 / 0.3);
-  --glass-sheen: linear-gradient(160deg, oklch(1 0 0 / 0.26), transparent 54%);
-  /* Input odak "çukura vuran ışık" rengi — sıcak altın; input inset (nm-pressed)
-     olduğu için odakta bir köşeden içeri vuran aydınlanma olarak kullanılır. */
-  --pit-glow: oklch(0.74 0.11 82 / 0.5);
-  /* `.jg-glow-warm` halesi — aynı sıcak altın aile, --pit-glow ile tutarlı ama
-     öğenin ALTINDA/ÇEVRESİNDE yayılan daha geniş, daha dağınık bir ambiyans
-     ışığı için (bkz. IMG_5665 arama çubuğu, IMG_5664 termostat halesi). */
-  --glow-warm: oklch(0.78 0.1 84 / 0.4);
-  --glow-warm-strong: oklch(0.78 0.13 83 / 0.7);
-
-  /* Jade (birincil) — marka swatch #3F4A44 ölçeği, muted */
-  --primary: oklch(0.4 0.055 164);
-  --primary-foreground: oklch(0.97 0.012 110);
-
-  --secondary: oklch(0.935 0.014 88);
-  --secondary-foreground: oklch(0.32 0.026 75);
-
-  --muted: oklch(0.94 0.012 88);
-  --muted-foreground: oklch(0.47 0.024 72);
-
-  /* Antik altın (vurgu) #B89347 */
-  --accent: oklch(0.81 0.085 85);
-  --accent-foreground: oklch(0.3 0.03 75);
-
-  /* Marka markı (logo) rengi — tema uyumlu. Aydınlıkta koyu antik altın
-     (fildişi zeminde ≥4.5:1); koyuda parlak altın (.dark'ta ayarlı). Logo
-     bileşeni SVG'yi bu tokenle maskeler; böylece mark her iki modda okunur. */
-  --brand-mark: oklch(0.5 0.1 76);
-
-  /* Modül takma adları — bileşenlerde var(--gold) vb. olarak kullanılır.
-     Metin olarak kullanılacak altın HER ZAMAN --gold-deep (= brand-mark,
-     iki temada da ≥4.5:1); --gold yalnız çizgi/dolgu/vurgu yüzeyi içindir. */
-  --gold: oklch(0.68 0.1 84);
-  --gold-deep: var(--brand-mark);
-  --gold-tint: oklch(0.92 0.04 88);
-  --jade: oklch(0.4 0.055 164);
-  --jade-tint: oklch(0.89 0.03 164);
-  --line: var(--border);
-
-  --destructive: oklch(0.58 0.21 27);
-  --destructive-foreground: oklch(0.98 0.01 27);
-
-  --border: oklch(0.895 0.014 88);
-  --input: oklch(0.895 0.014 88);
-  --ring: oklch(0.55 0.05 160);
-
-  /* Grafik paleti: jade -> altın -> teal/adaçayı -> derin jade -> bronz altın */
-  --chart-1: oklch(0.47 0.06 164);
-  --chart-2: oklch(0.78 0.1 86);
-  --chart-3: oklch(0.6 0.05 178);
-  --chart-4: oklch(0.4 0.052 162);
-  --chart-5: oklch(0.62 0.07 72);
-
-  --sidebar: oklch(0.945 0.012 88);
-  --sidebar-foreground: oklch(0.29 0.022 72);
-  --sidebar-primary: oklch(0.4 0.055 164);
-  --sidebar-primary-foreground: oklch(0.97 0.012 110);
-  --sidebar-accent: oklch(0.85 0.06 86);
-  --sidebar-accent-foreground: oklch(0.3 0.03 75);
-  --sidebar-border: oklch(0.895 0.014 88);
-  --sidebar-ring: oklch(0.55 0.05 160);
-
-  /* Nöromorfik kabartma — sıcak şampanya highlight (sol-üst) + sıcak taupe (sağ-alt) */
-  --nm-light: 254 252 245;
-  --nm-dark: 160 152 135;
-  --nm-convex: linear-gradient(145deg, oklch(0.955 0.012 88), oklch(0.93 0.013 88));
-  --nm-convex-press: linear-gradient(145deg, oklch(0.93 0.013 88), oklch(0.95 0.012 88));
-  --shadow-raised: -7px -7px 15px rgb(var(--nm-light) / 0.72), 7px 7px 18px rgb(var(--nm-dark) / 0.26);
-  --shadow-raised-sm: -4px -4px 9px rgb(var(--nm-light) / 0.7), 4px 4px 10px rgb(var(--nm-dark) / 0.24);
-  --shadow-hover: -9px -9px 20px rgb(var(--nm-light) / 0.8), 10px 10px 24px rgb(var(--nm-dark) / 0.3);
-  --shadow-pressed: inset -4px -4px 9px rgb(var(--nm-light) / 0.6), inset 4px 4px 10px rgb(var(--nm-dark) / 0.32);
-
-  /* NeumorphGlass entegrasyon tokenları — JG sıcak eşlenikleri */
-  --lift-sm: 0 4px 14px rgb(70 55 20 / 0.12);
-  --lift: 0 10px 30px rgb(70 55 20 / 0.16);
-  --lift-lg: 0 24px 60px rgb(70 55 20 / 0.22);
-  --btn-hero-bg: linear-gradient(var(--primary), var(--primary));
-  --btn-hero-fg: var(--primary-foreground);
-  --sidebar-label: oklch(0.5 0.1 76 / 0.8);
-  --neon-star: 232 198 105;
-  --glass-outer: rgba(40, 30, 6, 0.55);
-  /* JG metin embossu — sıcak şampanya highlight + sıcak taupe gölge. */
-  --text-emboss: -0.4px -0.4px 0.5px rgb(255 252 245 / 0.72),
-    0.5px 0.7px 1.1px rgb(160 152 135 / 0.34);
-  /* JG cam sızıntısı — jade-marka iridesan karışım: sağ-üstte antik altın,
-     sol-altta jade yeşili + ortada nane (holografik ama markaya sadık). */
-  --glass-tint: radial-gradient(120% 150% at 84% -12%, rgb(232 198 105 / 0.22), transparent 56%),
-    radial-gradient(120% 130% at 6% 112%, rgb(70 150 114 / 0.22), transparent 58%),
-    radial-gradient(90% 90% at 44% 60%, rgb(150 200 170 / 0.1), transparent 60%);
-  /* JG süzülen blob'lar — jade yeşili + antik altın + nane. */
-  --holo-blobs: radial-gradient(38% 44% at 22% 28%, rgb(232 198 105 / 0.5), transparent 62%),
-    radial-gradient(36% 42% at 76% 36%, rgb(70 150 114 / 0.48), transparent 62%),
-    radial-gradient(42% 46% at 54% 82%, rgb(150 200 170 / 0.4), transparent 64%);
-  --kpi-icon: rgb(150 120 52 / 0.55);
-}
-
-html[data-brand="jade-gold"].dark {
-
-  /* Nöromorfik gece modu — marka JADE #3F4A44 ölçeğinde MUTED yeşil zemin,
-     antik altın metin kontrastı. (Doygun zümrüt değil; markaya sadık.) */
-  --background: oklch(0.224 0.03 164);
-  --foreground: oklch(0.92 0.018 95);
-
-  --card: oklch(0.224 0.03 164);
-  --card-foreground: oklch(0.92 0.018 95);
-
-  --popover: oklch(0.262 0.03 164);
-  --popover-foreground: oklch(0.92 0.018 95);
-
-  /* Gece buzlu-cam — koyu sıcak jade, altın hatlı yarı saydam */
-  --glass: oklch(0.278 0.034 164 / 0.72);
-  --glass-border: oklch(0.72 0.07 86 / 0.28);
-  /* Gece 3B cam — highlight zayıf (koyu camda az ışık), iç gölge daha derin */
-  --glass-highlight: inset 0 1px 1.5px oklch(1 0 0 / 0.15);
-  --glass-depth: inset 0 -14px 30px -20px oklch(0 0 0 / 0.45);
-  --glass-sheen: linear-gradient(160deg, oklch(1 0 0 / 0.11), transparent 54%);
-  /* Gece: çukur daha koyu → ışık aydınlanması biraz daha parlak */
-  --pit-glow: oklch(0.82 0.12 86 / 0.55);
-  /* Gece `.jg-glow-warm` halesi — koyu jade zeminde biraz daha parlak, aksi
-     halde koyu zeminde fark edilmez kalır. */
-  --glow-warm: oklch(0.8 0.11 86 / 0.45);
-  --glow-warm-strong: oklch(0.82 0.14 86 / 0.75);
-
-  /* Antik altın — gece birincil (vurgu + metin kontrastı) */
-  --primary: oklch(0.8 0.1 86);
-  --primary-foreground: oklch(0.2 0.022 160);
-
-  --secondary: oklch(0.29 0.032 164);
-  --secondary-foreground: oklch(0.92 0.018 95);
-
-  --muted: oklch(0.29 0.032 164);
-  --muted-foreground: oklch(0.75 0.022 120);
-
-  --accent: oklch(0.5 0.06 95);
-  --accent-foreground: oklch(0.96 0.02 92);
-
-  /* Gece: mark parlak altın (koyu jade zeminde ≥6:1) */
-  --brand-mark: oklch(0.82 0.11 88);
-
-  /* Gece modül takma adları — koyu jade zeminde uyarlanmış tonlar */
-  --gold: oklch(0.74 0.1 86);
-  --gold-tint: oklch(0.33 0.04 90);
-  --jade: oklch(0.55 0.062 164);
-  --jade-tint: oklch(0.3 0.032 164);
-
-  --destructive: oklch(0.62 0.2 25);
-  --destructive-foreground: oklch(0.97 0.01 27);
-
-  --border: oklch(0.82 0.03 158 / 13%);
-  --input: oklch(0.82 0.03 158 / 15%);
-  --ring: oklch(0.8 0.1 86);
-
-  --chart-1: oklch(0.8 0.1 86);
-  --chart-2: oklch(0.6 0.062 164);
-  --chart-3: oklch(0.7 0.1 60);
-  --chart-4: oklch(0.55 0.052 164);
-  --chart-5: oklch(0.66 0.1 40);
-
-  --sidebar: oklch(0.224 0.03 164);
-  --sidebar-foreground: oklch(0.92 0.018 95);
-  --sidebar-primary: oklch(0.8 0.1 86);
-  --sidebar-primary-foreground: oklch(0.2 0.022 160);
-  --sidebar-accent: oklch(0.32 0.03 158);
-  --sidebar-accent-foreground: oklch(0.96 0.012 92);
-  --sidebar-border: oklch(0.82 0.03 158 / 13%);
-  --sidebar-ring: oklch(0.8 0.1 86);
-
-  /* Gece nöromorfik kabartma — MAT yüzey + kontrollü emboss.
-     Açık tonda kartlar konveks bir sheen'le kabarıyordu; koyu tonda o parlak
-     tonlama plastik görünüyordu. Burada: (1) yüzey neredeyse düz = mat, hafif
-     saten; (2) kabartma his SADECE gölge çiftinden gelir — sol-üst yumuşak
-     highlight, sağ-alt daha güçlü koyu gölge (koyu üzerinde koyu okunsun). */
-  --nm-light: 96 108 100; /* soft cool highlight — yüzeyden belirgin açık */
-  --nm-dark: 6 10 8; /* derin gölge */
-  --nm-convex: linear-gradient(145deg, oklch(0.247 0.02 160), oklch(0.229 0.02 160));
-  --nm-convex-press: linear-gradient(145deg, oklch(0.229 0.02 160), oklch(0.247 0.02 160));
-  /* Gece emboss: highlight düşük opaklık/geniş blur (mat, parlamasız),
-     koyu gölge daha opak (koyu zeminde raised okunsun). */
-  --shadow-raised: -6px -6px 16px rgb(var(--nm-light) / 0.16),
-    7px 7px 18px rgb(var(--nm-dark) / 0.5);
-  --shadow-raised-sm: -3px -3px 9px rgb(var(--nm-light) / 0.14),
-    4px 4px 11px rgb(var(--nm-dark) / 0.46);
-  --shadow-hover: -8px -8px 20px rgb(var(--nm-light) / 0.2),
-    10px 10px 24px rgb(var(--nm-dark) / 0.56);
-  --shadow-pressed: inset -4px -4px 9px rgb(var(--nm-light) / 0.12),
-    inset 4px 4px 10px rgb(var(--nm-dark) / 0.5);
-
-  /* NeumorphGlass entegrasyon tokenları — JG gece eşlenikleri */
-  --lift-sm: 0 4px 14px rgb(0 0 0 / 0.35);
-  --lift: 0 10px 30px rgb(0 0 0 / 0.45);
-  --lift-lg: 0 24px 60px rgb(0 0 0 / 0.55);
-  --btn-hero-bg: linear-gradient(var(--primary), var(--primary));
-  --btn-hero-fg: var(--primary-foreground);
-  --sidebar-label: oklch(0.82 0.11 88 / 0.8);
-  --neon-star: 232 198 105;
-  /* JG gece metin embossu — çok zayıf sıcak highlight + derin gölge. */
-  --text-emboss: -0.4px -0.4px 0.5px rgb(255 245 225 / 0.06),
-    0.5px 0.7px 1.4px rgb(0 0 0 / 0.48);
-  /* JG gece cam sızıntısı — jade + altın iridesan (koyu zeminde biraz parlak). */
-  --glass-tint: radial-gradient(120% 150% at 84% -12%, rgb(232 198 105 / 0.26), transparent 56%),
-    radial-gradient(120% 130% at 6% 112%, rgb(72 166 126 / 0.24), transparent 58%),
-    radial-gradient(90% 90% at 44% 60%, rgb(150 210 180 / 0.1), transparent 60%);
-  /* JG gece süzülen blob'lar — jade + altın (koyu zeminde biraz parlak). */
-  --holo-blobs: radial-gradient(38% 44% at 22% 28%, rgb(232 198 105 / 0.42), transparent 62%),
-    radial-gradient(36% 42% at 76% 36%, rgb(72 166 126 / 0.42), transparent 62%),
-    radial-gradient(42% 46% at 54% 82%, rgb(150 210 180 / 0.34), transparent 64%);
-  --kpi-icon: rgb(224 190 108 / 0.5);
-}
 
 /* Jade Gold gövde ışıması — özgün sıcak altın radial (eskisi gibi). */
 /* Jade Gold zemini: düz mat (sıcak radyal KALDIRILDI) — ambiyans artık
@@ -1162,4 +1024,15 @@ html[data-brand="jade-gold"] .brand-pf {
 /* Altın tozu ambiyansı Jade Gold'a özel — platform kabuğunda görünmez. */
 html[data-brand="artifact"] .jg-dust {
   display: none !important;
+}
+
+/* Cam üstünden geçen ışık süpürmesi (referans: Spatial cardSheen). */
+@keyframes card-sheen {
+  0% {
+    transform: translateX(-125%);
+  }
+  52%,
+  100% {
+    transform: translateX(125%);
+  }
 }
