@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -21,6 +22,15 @@ export function Sidebar({
   showJadeGoldNav: boolean;
 }) {
   const pathname = usePathname();
+  const navRef = useRef<HTMLElement>(null);
+
+  // Aktif nav öğesi katlanan (overflow-y-auto) rayda görünür kalsın —
+  // rota değişince en yakın konuma kaydır (görsel geri bildirim; davranış yok).
+  useEffect(() => {
+    navRef.current
+      ?.querySelector('[aria-current="page"]')
+      ?.scrollIntoView({ block: "nearest" });
+  }, [pathname]);
 
   return (
     /* Koyuda zeminden (#14161e) bir tık derin, lume panellerden koyu
@@ -46,14 +56,19 @@ export function Sidebar({
           </div>
         </div>
       </div>
-      <nav className="flex-1 space-y-3 overflow-y-auto p-4">
+      {/* Fade maskesi: üst/alt kenarda içerik taştığını gösterir; scroll-padding
+          pill'in tam katlama sınırında ortadan kesilmesini önler. */}
+      <nav
+        ref={navRef}
+        className="flex-1 space-y-3 overflow-y-auto p-4 [scroll-padding-block:1.25rem] [mask-image:linear-gradient(to_bottom,transparent,#000_14px,#000_calc(100%-20px),transparent)]"
+      >
         {NAV_GROUPS.map((group) => (
           /* Neu ray — grup çukur bir ray içinde (ref: Spatial .seg/.tabbar:
              neu-inset ray + içinde kabarık aktif). Koyuda ray, derin panelin
              içine oyulmuş lume çukuruna döner (--lume-pit). */
           <div
             key={group.label}
-            className="nm-pressed space-y-1 rounded-2xl p-1.5 dark:bg-[#171922] dark:[background-image:none] dark:[box-shadow:var(--lume-pit)]"
+            className="nm-pressed space-y-1 overflow-clip rounded-2xl p-1.5 dark:bg-[#171922] dark:[background-image:none] dark:[box-shadow:var(--lume-pit)]"
           >
             <p className="px-2.5 pt-1.5 pb-1 text-[0.64rem] font-bold tracking-[0.18em] text-[color:var(--sidebar-label)] uppercase select-none">
               {group.label}

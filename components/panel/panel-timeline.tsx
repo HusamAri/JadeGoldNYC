@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { CalendarClock, CheckCircle2, CircleDot, Timer } from "lucide-react";
 
@@ -43,6 +43,28 @@ export function PanelTimeline({ data }: { data: TimelineData }) {
   const winStart = offset - WINDOW_DAYS / 2;
   const winEnd = offset + WINDOW_DAYS / 2;
 
+  // Şerit genişliğini ölç: çip genişliği ve lane çakışma aralığı PİKSEL
+  // gerçeğine bağlanır (dar viewport'ta çipler üst üste binmesin / kart
+  // kenarından taşmasın diye).
+  const stripRef = useRef<HTMLDivElement | null>(null);
+  const [stripW, setStripW] = useState(0);
+  useEffect(() => {
+    const el = stripRef.current;
+    if (!el) return;
+    const measure = () => setStripW(el.clientWidth);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+  // Çip azami genişliği: geniş ekranda 300px, dar ekranda şeridin ~%62'si.
+  const chipMaxPx = stripW > 0 ? Math.min(300, Math.round(stripW * 0.62)) : 300;
+  // Lane hesabı için çip genişliğinin gün karşılığı (px → gün dönüşümü).
+  const chipSpanDays =
+    stripW > 0
+      ? Math.max(CHIP_SPAN_DAYS, Math.ceil(chipMaxPx / (stripW / WINDOW_DAYS)))
+      : CHIP_SPAN_DAYS;
+
   // Penceredeki görevler + basit satır (lane) ataması: aynı satırda üst üste
   // binmesin diye çipler CHIP_SPAN_DAYS aralığına göre açgözlü dağıtılır.
   const placed = useMemo<PlacedTask[]>(() => {
@@ -53,7 +75,7 @@ export function PanelTimeline({ data }: { data: TimelineData }) {
           (new Date(t.dueDate + "T00:00:00").getTime() - todayMs) / DAY_MS,
         ),
       }))
-      .filter((t) => t.rel >= winStart - CHIP_SPAN_DAYS && t.rel <= winEnd + 1)
+      .filter((t) => t.rel >= winStart - chipSpanDays && t.rel <= winEnd + 1)
       .sort((a, b) => a.rel - b.rel);
     const laneEnds: number[] = [];
     const out: PlacedTask[] = [];
@@ -64,11 +86,11 @@ export function PanelTimeline({ data }: { data: TimelineData }) {
         lane = laneEnds.length;
         laneEnds.push(-Infinity);
       }
-      laneEnds[lane] = t.rel + CHIP_SPAN_DAYS;
+      laneEnds[lane] = t.rel + chipSpanDays;
       out.push({ ...t, lane });
     }
     return out;
-  }, [data.tasks, winStart, winEnd, todayMs]);
+  }, [data.tasks, winStart, winEnd, todayMs, chipSpanDays]);
 
   const hiddenCount =
     data.tasks.filter((t) => {
@@ -135,6 +157,7 @@ export function PanelTimeline({ data }: { data: TimelineData }) {
 
       {/* Şerit: üstte BÜYÜK görev çipleri, altta satış sütunları (bağlam) */}
       <div
+        ref={stripRef}
         className="relative mt-3 overflow-hidden px-2 [mask-image:linear-gradient(90deg,transparent,#000_16px,#000_calc(100%-26px),transparent)]"
         style={{ height: `${MAX_LANES * LANE_H + SALES_H + 22}px` }}
       >
@@ -191,9 +214,12 @@ export function PanelTimeline({ data }: { data: TimelineData }) {
               key={t.id}
               href={`/gorevler/${t.id}`}
               title={`${fmtShort(t.dueDate)} · ${t.title}${t.assigneeName ? ` · ${t.assigneeName}` : ""} (${t.priority})`}
-              className="absolute flex max-w-[300px] min-w-0 items-center gap-2 rounded-full border border-[color:var(--glass-border)] py-1.5 pr-3.5 pl-2 text-[12.5px] font-semibold shadow-[var(--lift-sm)] transition-transform hover:z-10 hover:-translate-y-0.5 [backdrop-filter:var(--glass-filter-sm)] [background-color:var(--glass)] [background-image:var(--glass-sheen)] dark:border-[color:oklch(1_0_0/0.25)] dark:shadow-[0_10px_24px_oklch(0_0_0/0.45),0_0_16px_oklch(0.7_0.07_262/0.2)] dark:[background-color:var(--lume-glass)] dark:[background-image:none]"
+              className="absolute flex min-w-0 items-center gap-2 rounded-full border border-[color:var(--glass-border)] py-1.5 pr-3.5 pl-2 text-[12.5px] font-semibold shadow-[var(--lift-sm)] transition-transform hover:z-10 hover:-translate-y-0.5 [backdrop-filter:var(--glass-filter-sm)] [background-color:var(--glass)] [background-image:var(--glass-sheen)] dark:border-[color:oklch(1_0_0/0.25)] dark:shadow-[0_10px_24px_oklch(0_0_0/0.45),0_0_16px_oklch(0.7_0.07_262/0.2)] dark:[background-color:var(--lume-glass)] dark:[background-image:none]"
               style={{
-                left: `${pct(t.rel)}%`,
+                // Çip sağ kenardan taşmasın: left, (100% - çip genişliği)
+                // ile clamp'lenir; genişlik viewport'a göre sınırlanır.
+                left: `clamp(0%, ${pct(t.rel)}%, calc(100% - ${chipMaxPx}px))`,
+                maxWidth: `${chipMaxPx}px`,
                 top: `${t.lane * LANE_H + 4}px`,
               }}
             >

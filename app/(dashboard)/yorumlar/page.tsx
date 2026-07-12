@@ -147,7 +147,7 @@ export default async function YorumlarPage({
                   <TableHead>Puan</TableHead>
                   <TableHead>Yorum</TableHead>
                   <TableHead>Durum</TableHead>
-                  <TableHead className="w-1 text-right">İşlem</TableHead>
+                  <TableHead className="text-right whitespace-nowrap">İşlem</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -164,8 +164,14 @@ export default async function YorumlarPage({
                       <TableCell className="whitespace-nowrap">
                         {formatDate(r.review_date)}
                       </TableCell>
-                      <TableCell className="max-w-[110px] truncate font-medium">
-                        {r.buyer_name ?? "—"}
+                      <TableCell className="font-medium">
+                        {/* max-w bir td'de güvenilir değil — iç div ile kırp. */}
+                        <div
+                          className="max-w-[110px] truncate"
+                          title={r.buyer_name ?? undefined}
+                        >
+                          {r.buyer_name ?? "—"}
+                        </div>
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
@@ -178,8 +184,13 @@ export default async function YorumlarPage({
                           )}
                         </div>
                       </TableCell>
-                      <TableCell className="text-muted-foreground max-w-[420px] truncate">
-                        {r.review_text ?? "—"}
+                      <TableCell className="text-muted-foreground">
+                        <div
+                          className="max-w-[260px] truncate xl:max-w-[420px]"
+                          title={r.review_text ?? undefined}
+                        >
+                          {r.review_text ?? "—"}
+                        </div>
                       </TableCell>
                       <TableCell>
                         {needsResponse ? (
@@ -190,7 +201,7 @@ export default async function YorumlarPage({
                           <ReviewStatusBadge status={r.status} />
                         )}
                       </TableCell>
-                      <TableCell className="text-right">
+                      <TableCell className="text-right whitespace-nowrap">
                         <div className="flex justify-end gap-1">
                           <Button
                             asChild

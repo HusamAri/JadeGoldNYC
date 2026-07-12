@@ -102,7 +102,7 @@ export function KpiCard({
           highlight; saydamlık/backdrop-blur yok). */}
       <div
         aria-hidden
-        className="absolute inset-0 z-[1] rounded-[18px] border border-[color:var(--glass-border)] [backdrop-filter:var(--glass-filter)] [background-color:var(--glass)] [box-shadow:var(--lift),var(--glass-highlight)] dark:rounded-[26px] dark:border-[color:oklch(1_0_0/0.05)] dark:[backdrop-filter:none] dark:[background-color:var(--lume-panel)] dark:[box-shadow:0_20px_50px_oklch(0_0_0/0.4),inset_0_1px_0_oklch(1_0_0/0.06)]"
+        className="glass-liquid absolute inset-0 z-[1] rounded-[18px] border border-[color:var(--glass-border)] [backdrop-filter:var(--glass-filter)] [background-color:var(--glass)] [box-shadow:var(--lift),var(--glass-highlight)] dark:rounded-[26px] dark:border-[color:oklch(1_0_0/0.05)] dark:[backdrop-filter:none] dark:[background-color:var(--lume-panel)] dark:[box-shadow:0_20px_50px_oklch(0_0_0/0.4),inset_0_1px_0_oklch(1_0_0/0.06)]"
       />
       <div className="relative z-[2] flex h-full items-start justify-between gap-3">
         <div className="flex min-w-0 flex-col">
@@ -113,11 +113,23 @@ export function KpiCard({
           {/* Değer — font-index readout: açıkta Spatial mürekkebi,
               koyuda lume beyazı + 0 0 14px beyaz ışıma. */}
           <p
+            title={typeof value === "string" ? value : undefined}
             className={cn(
-              "truncate font-mono font-semibold tracking-tight tabular-nums",
+              // Mobil dar kolonlarda değer ASLA elipslenmesin: truncate yerine
+              // kademeli punto — rakam her zaman tam okunur.
+              "font-mono font-semibold tracking-tight break-normal tabular-nums",
+              // Uzun finansal değerler ('$2.913.363,72' gibi) dar 5'li grid
+              // kartında da tek satırda tam okunur: uzunluğa göre punto düşer.
               splitTone
-                ? "text-4xl leading-tight jg-split-tone"
-                : "text-2xl dark:[text-shadow:0_0_14px_rgba(255,255,255,.5)]",
+                ? "text-3xl min-[420px]:text-4xl leading-tight jg-split-tone"
+                : cn(
+                    typeof value === "string" && value.length > 13
+                      ? "text-base min-[420px]:text-lg"
+                      : typeof value === "string" && value.length > 10
+                        ? "text-lg min-[420px]:text-xl"
+                        : "text-xl min-[420px]:text-2xl",
+                    "leading-tight dark:[text-shadow:0_0_14px_rgba(255,255,255,.5)]",
+                  ),
               !splitTone &&
                 accent === "default" &&
                 "text-foreground dark:text-white",

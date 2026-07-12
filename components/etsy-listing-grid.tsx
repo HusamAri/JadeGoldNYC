@@ -29,6 +29,23 @@ export interface ProductListing {
 const DEFAULT_VISIBLE = 24;
 
 /**
+ * Etsy başlıkları HTML entity'leriyle gelebiliyor ("Men&#39;s" gibi) —
+ * görüntülemeden önce metne çevir (salt görsel; veri değişmez).
+ */
+function decodeEntities(s: string): string {
+  return s
+    .replace(/&#(\d+);/g, (_, c: string) => String.fromCodePoint(Number(c)))
+    .replace(/&#x([0-9a-fA-F]+);/g, (_, c: string) =>
+      String.fromCodePoint(parseInt(c, 16)),
+    )
+    .replace(/&quot;/g, '"')
+    .replace(/&apos;/g, "'")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&amp;/g, "&");
+}
+
+/**
  * Etsy referans katalog kartları. Ağırlık girişi (altın maliyet motorunun tek
  * kaynağı) yalnızca bu kartlarda olduğundan hiçbir ürün kalıcı olarak
  * erişilemez kalmamalı — bu yüzden sayfa yükünü sınırlamak için arama +
@@ -77,7 +94,7 @@ export function EtsyListingGrid({ listings }: { listings: ProductListing[] }) {
                 <div className="bg-muted relative aspect-square">
                   <Image
                     src={p.image_url}
-                    alt={p.title}
+                    alt={decodeEntities(p.title)}
                     fill
                     className="object-cover"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -91,7 +108,7 @@ export function EtsyListingGrid({ listings }: { listings: ProductListing[] }) {
               )}
               <CardContent className="space-y-2 p-4">
                 <h4 className="line-clamp-2 text-sm font-medium leading-tight">
-                  {p.title}
+                  {decodeEntities(p.title)}
                 </h4>
                 <div className="flex flex-wrap items-center gap-2">
                   {p.price_cents != null && (

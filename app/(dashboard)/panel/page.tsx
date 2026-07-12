@@ -136,7 +136,7 @@ export default async function PanelPage({
       {/* ══ GELİR & KÂRLILIK — grafik, sonuçlarında kullanılan metriklerle
           YAN YANA (Panel 2.0 okuma düzeni: sol grafik, sağ metrikler) ══ */}
       {/* Dekoratif indeks satırı (Spatial/Liquid .idx dili) — başlık metni değişmez. */}
-      <div aria-hidden className="idx -mb-4">
+      <div aria-hidden className="idx sm:-mb-4">
         <span>Panel / 01 · Gelir &amp; Kârlılık</span>
         <span className="idx-bar" />
         <span className="idx-ln" />
@@ -195,7 +195,7 @@ export default async function PanelPage({
       </div>
 
       {/* ══ SİPARİŞLER ══ */}
-      <div aria-hidden className="idx -mb-4">
+      <div aria-hidden className="idx sm:-mb-4">
         <span>Panel / 02 · Siparişler</span>
         <span className="idx-bar" />
         <span className="idx-ln" />
@@ -233,7 +233,7 @@ export default async function PanelPage({
       </div>
 
       {/* ══ MALİYET YAPISI — kırılım grafiği + altın maliyet metrikleri ══ */}
-      <div aria-hidden className="idx -mb-4">
+      <div aria-hidden className="idx sm:-mb-4">
         <span>Panel / 03 · Maliyet Yapısı</span>
         <span className="idx-bar" />
         <span className="idx-ln" />
@@ -295,7 +295,7 @@ export default async function PanelPage({
       </div>
 
       {/* ══ ÜRÜNLER & ETKİNLİK ══ */}
-      <div aria-hidden className="idx -mb-4">
+      <div aria-hidden className="idx sm:-mb-4">
         <span>Panel / 04 · Ürünler &amp; Etkinlik</span>
         <span className="idx-bar" />
         <span className="idx-ln" />
@@ -306,7 +306,7 @@ export default async function PanelPage({
         title="En çok satanlar ve son kayıtlar"
       />
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card>
           <CardHeader>
             <CardTitle>En Çok Satan Ürünler</CardTitle>
@@ -394,7 +394,7 @@ export default async function PanelPage({
       </div>
 
       {/* ── En İyi Müşteriler + Kanal Kirilimi ──────────────────────── */}
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">

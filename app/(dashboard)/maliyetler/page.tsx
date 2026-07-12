@@ -126,15 +126,24 @@ export default async function MaliyetlerPage({
                   <TableHead>Kategori</TableHead>
                   <TableHead>Tedarikçi</TableHead>
                   <TableHead className="text-right">Tutar</TableHead>
-                  <TableHead className="w-1 text-right">İşlem</TableHead>
+                  <TableHead className="text-right whitespace-nowrap">İşlem</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {rows.map((c) => (
                   <TableRow key={c.id}>
-                    <TableCell>{formatDate(c.cost_date)}</TableCell>
+                    <TableCell className="whitespace-nowrap">
+                      {formatDate(c.cost_date)}
+                    </TableCell>
+                    {/* Uzun açıklama tabloyu karttan taşırmasın: sınırlı
+                        genişlik + truncate; tam metin title tooltip'inde. */}
                     <TableCell className="font-medium">
-                      {c.description}
+                      <div
+                        className="max-w-[260px] truncate xl:max-w-[340px]"
+                        title={c.description}
+                      >
+                        {c.description}
+                      </div>
                     </TableCell>
                     <TableCell>
                       <Badge variant="secondary">
@@ -142,10 +151,10 @@ export default async function MaliyetlerPage({
                       </Badge>
                     </TableCell>
                     <TableCell>{c.vendor ?? "—"}</TableCell>
-                    <TableCell className="text-right tabular-nums">
+                    <TableCell className="text-right whitespace-nowrap tabular-nums">
                       {formatMoney(c.amount_cents, c.currency)}
                     </TableCell>
-                    <TableCell className="text-right">
+                    <TableCell className="text-right whitespace-nowrap">
                       <div className="flex justify-end gap-1">
                         {c.source !== "gold_auto" && (
                           <>

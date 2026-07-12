@@ -69,7 +69,11 @@ export function Topbar({
        0.82 beyaz + blur, 1px beyaz-0.9 hairline, kuvvetli lift (0 14px 34px)
        + üst pah highlight'ı. Koyuda LUME panel şeridine döner (ref: .cell —
        #262935 panel, oklch(1 0 0/.05) kenar, 0 20px 50px derin gölge). */
-    <header className="sticky top-4 z-30 mx-3 mt-4 flex h-14 items-center justify-between gap-3 rounded-full border border-[color:oklch(1_0_0/0.9)] pr-[14px] pl-[22px] [background-color:oklch(1_0_0/0.82)] [backdrop-filter:var(--glass-filter)] [box-shadow:var(--lift),var(--glass-highlight)] transition-[background-color,box-shadow,border-color] duration-500 ease-[var(--ease-premium)] md:mx-6 dark:border-[color:oklch(1_0_0/0.05)] dark:[background-color:var(--lume-panel)] dark:[box-shadow:0_20px_50px_oklch(0_0_0/0.4),inset_0_1px_0_oklch(1_0_0/0.06)]">
+    /* Sticky sarmalayıcı: viewport tepesine yapışır; üstteki 16px boşluk ve
+       pill'in yuvarlak köşeleri, zemine karışan gradient maske ile örtülür —
+       kaydırılan içerik pill'in üstünde/çevresinde tam kontrastla görünmez. */
+    <div className="sticky top-0 z-30 px-3 pt-4 before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:-bottom-3 before:-z-10 before:bg-gradient-to-b before:from-background before:via-background/80 before:to-transparent md:px-6">
+    <header className="relative flex h-14 items-center justify-between gap-3 rounded-full border border-[color:oklch(1_0_0/0.9)] pr-[14px] pl-[22px] [background-color:oklch(1_0_0/0.82)] [backdrop-filter:var(--glass-filter)] [box-shadow:var(--lift),var(--glass-highlight)] transition-[background-color,box-shadow,border-color] duration-500 ease-[var(--ease-premium)] dark:border-[color:oklch(1_0_0/0.05)] dark:[background-color:var(--lume-panel)] dark:[box-shadow:0_20px_50px_oklch(0_0_0/0.4),inset_0_1px_0_oklch(1_0_0/0.06)]">
       <div className="flex items-center gap-3">
         {/* Geri — alt/detay sayfalarında */}
         {isSubPage && (
@@ -190,5 +194,6 @@ export function Topbar({
         </DropdownMenu>
       </div>
     </header>
+    </div>
   );
 }

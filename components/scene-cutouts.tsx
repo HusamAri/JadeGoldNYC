@@ -134,12 +134,19 @@ export function SceneCutouts({ page }: { page: "panel" | "satislar" | "maliyetle
       {page === "panel" && (
         <>
           <SceneCutout kind="stones" depth="far" className="bottom-3 left-10" />
-          <SceneCutout kind="candle" depth="near" className="top-2 right-32 md:right-56" />
+          {/* Mobilde gizli: 390px'te mum, başlık/select şeridine düşüp okumayı
+              bozuyordu — cutout'lar yalnız boş zeminlere denk gelmeli. */}
+          <SceneCutout kind="candle" depth="near" className="max-md:hidden! top-2 right-32 md:right-56" />
         </>
       )}
       {page === "satislar" && (
         <>
-          <SceneCutout kind="chains" depth="near" className="top-24 -right-6 rotate-6" />
+          {/* Mobilde gizli: zincir, CTA butonu + idx etiketi bölgesine denk
+              gelip mono etiketi okunmaz kılıyordu. */}
+          {/* Masaüstünde zincir .idx satırının ('Jade Gold · NYC' sağ etiketi)
+              ALTINA iner — parlak cutout soluk etiketi/KPI braketini örtmez
+              (brief: okumayı asla engellemez). */}
+          <SceneCutout kind="chains" depth="near" className="max-sm:hidden! top-44 -right-6 rotate-6" />
           <SceneCutout kind="prism" depth="far" className="bottom-3 left-10" />
         </>
       )}
