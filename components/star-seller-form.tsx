@@ -89,7 +89,7 @@ export function StarSellerForm({
       </Card>
 
       <Card>
-        <CardHeader className="flex-row items-center justify-between gap-2 space-y-0">
+        <CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0">
           <CardTitle className="text-base">Metrikler</CardTitle>
           <Button type="button" variant="outline" size="sm" onClick={autofillRating}>
             <Wand2 className="size-4" />

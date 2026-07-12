@@ -30,7 +30,7 @@ export function PageHeader({
           className="h-24 rounded-[1.5rem] shadow-[var(--shadow-raised)] md:h-28"
         >
           <div className="relative flex h-full items-end p-5">
-            <span className="text-[11px] font-medium tracking-[0.28em] text-[oklch(0.87_0.09_85)] uppercase">
+            <span className="font-mono text-[11px] font-medium tracking-[0.28em] text-[oklch(0.87_0.09_85)] uppercase">
               {eyebrow ?? title}
             </span>
           </div>
@@ -38,12 +38,21 @@ export function PageHeader({
       )}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-1">
-          <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
+          {/* Kahraman başlık — display serif (editorial dil). */}
+          <h2 className="display-emboss text-2xl font-semibold tracking-tight [font-family:var(--font-display)]">
+            {title}
+          </h2>
           {description && (
-            <p className="text-muted-foreground text-sm">{description}</p>
+            <p className="text-engraved text-muted-foreground text-sm">{description}</p>
           )}
         </div>
         {action && <div className="flex items-center gap-2">{action}</div>}
+      </div>
+      {/* Editorial index kuralı — kısa primary vurgu çizgisi + uzayan ince hairline
+          (.idx-bar / .idx-ln dili; dekoratif, metinsiz). */}
+      <div aria-hidden className="flex items-center gap-3">
+        <span className="bg-primary h-px w-9" />
+        <span className="bg-border h-px flex-1" />
       </div>
     </div>
   );

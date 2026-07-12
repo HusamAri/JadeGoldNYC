@@ -7,7 +7,8 @@ function Card({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="card"
       className={cn(
-        "bg-card text-card-foreground nm-raised flex flex-col gap-6 rounded-[1.75rem] py-6",
+        // Nöromorfik yüzey: konveks kabartma + hover'da hafif yükselme (lift).
+        "bg-card text-card-foreground nm-raised flex flex-col gap-6 rounded-[1.75rem] py-6 transition-[box-shadow,transform] duration-500 ease-[var(--ease-premium)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-hover)]",
         className,
       )}
       {...props}
@@ -32,7 +33,11 @@ function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-title"
-      className={cn("leading-none font-semibold", className)}
+      className={cn(
+        // Nöromorfik yüzeye hafifçe kazınmış başlık (text-carved dili).
+        "text-carved leading-none font-semibold tracking-tight",
+        className,
+      )}
       {...props}
     />
   );

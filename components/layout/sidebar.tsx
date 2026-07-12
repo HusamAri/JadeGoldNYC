@@ -24,13 +24,24 @@ export function Sidebar({
 
   return (
     <aside className="bg-sidebar text-sidebar-foreground sticky top-0 hidden h-svh w-64 shrink-0 flex-col md:flex">
-      <div className="flex h-16 items-center gap-3 px-5">
-        <Logo />
-        <div className="flex min-w-0 flex-col leading-tight">
-          <OrgSwitcher memberships={memberships} activeOrgId={activeOrgId} />
-          <span className="text-muted-foreground text-[0.7rem] tracking-wide">
-            Yönetim Paneli
-          </span>
+      {/* Uygulama markası — Amuletta (serif italik, editorial) */}
+      <div className="flex h-14 items-center px-5">
+        <span className="text-foreground text-xl leading-none font-medium tracking-tight [font-family:var(--font-display)]">
+          Amuletta<em className="text-primary not-italic">.</em>
+        </span>
+        <span className="idx ml-auto !gap-0 text-[9px]">panel</span>
+      </div>
+      {/* Marka kutusu — kiracı (şirket) kimliği yalnız bu SINIRLI kutuda:
+          kazınmış oyuk içinde logo + şirket seçici. Arayüzün kalanı Amuletta. */}
+      <div className="px-4 pb-1">
+        <div className="brand-box flex items-center gap-3 px-3.5 py-3">
+          <Logo />
+          <div className="relative z-[1] flex min-w-0 flex-col leading-tight">
+            <OrgSwitcher memberships={memberships} activeOrgId={activeOrgId} />
+            <span className="text-muted-foreground text-[0.68rem] tracking-wide">
+              Marka Alanı
+            </span>
+          </div>
         </div>
       </div>
       <nav className="flex-1 space-y-4 overflow-y-auto p-4">

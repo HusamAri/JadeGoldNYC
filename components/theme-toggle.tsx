@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useSyncExternalStore } from "react";
-import { Sun, Moon, Monitor, type LucideIcon } from "lucide-react";
+import { Sun, Moon, Monitor, Check, type LucideIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -74,17 +74,19 @@ export function ThemeToggle() {
       <DropdownMenuContent align="end" className="w-40">
         {OPTIONS.map((o) => {
           const Icon = o.icon;
+          const active = theme === o.key;
           return (
             <DropdownMenuItem
               key={o.key}
               onClick={() => choose(o.key)}
-              className={cn(
-                "gap-2",
-                theme === o.key && "text-[oklch(0.6_0.08_72)]",
-              )}
+              // Aktif tema: token rengi (primary) + onay imi — renk tek sinyal değil.
+              className={cn("gap-2", active && "text-primary font-medium")}
             >
               <Icon className="size-4" />
               {o.label}
+              {active && (
+                <Check aria-hidden className="text-primary ml-auto size-3.5" />
+              )}
             </DropdownMenuItem>
           );
         })}

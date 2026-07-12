@@ -246,7 +246,7 @@ export function GoldStream({
       ref={svgRef}
       aria-hidden
       className={cn(
-        "brand-jg pointer-events-none absolute inset-0 -z-10 size-full",
+        "brand-jg pointer-events-none absolute inset-0 -z-10 size-full opacity-45 blur-[1.5px]",
         className,
       )}
     >

@@ -11,6 +11,7 @@ import {
   Gem,
   Hammer,
 } from "@/components/icons/lux-art";
+import { SceneCutouts } from "@/components/scene-cutouts";
 // Satır içi (küçük, tek renk) kullanımlar için ince-çizgi SVG sürümleri —
 // currentColor'a saygı duyar (cutout PNG'ler yalnız KPI filigranında).
 import { Scale as ScaleLine, Users as UsersLine } from "@/components/icons/lux";
@@ -82,6 +83,7 @@ export default async function PanelPage({
 
   return (
     <div className="relative z-0 pb-28 space-y-6">
+      <SceneCutouts page="panel" />
       <GoldStream motif="necklace" />
       <PageHeader
         title="Panel"
@@ -479,7 +481,7 @@ function SectionTitle({
       <span className="text-carved text-[11px] font-bold tracking-[0.2em] text-[color:var(--brand-mark)] uppercase">
         {eyebrow}
       </span>
-      <h2 className="text-lg font-semibold tracking-tight">{title}</h2>
+      <h2 className="display-emboss text-lg font-semibold tracking-tight">{title}</h2>
       {hint && <span className="text-muted-foreground text-xs">{hint}</span>}
     </div>
   );

@@ -10,10 +10,12 @@ const buttonVariants = cva(
     variants: {
       variant: {
         /** Kahraman CTA — marka-parametrik: platformda iridesan holo degrade,
-            Jade Gold'da özgün jade dolgusu (--btn-hero-*). Hover'da yüzer,
-            basınca köpüğe gömülür (inset + scale). */
+            Jade Gold'da özgün jade dolgusu (--btn-hero-*). Hover'da yüzer +
+            liquid-fill: alt kenardan yükselen --primary katmanı (after:, metnin
+            ALTINDA / holo zeminin ÜSTÜNDE); basınca köpüğe gömülür (inset + scale).
+            Koyu modda dolgu hafif dış ışıma taşır (Lume — belli belirsiz). */
         default:
-          "[background-image:var(--btn-hero-bg)] text-[color:var(--btn-hero-fg)] shadow-[var(--lift)] hover:-translate-y-0.5 hover:shadow-[var(--lift-lg)] active:translate-y-0 active:scale-[0.97] active:shadow-[var(--shadow-pressed),inset_0_0_0_100px_rgba(0,0,0,0.05)]",
+          "relative isolate overflow-hidden [background-image:var(--btn-hero-bg)] text-[color:var(--btn-hero-fg)] shadow-[var(--lift)] after:absolute after:inset-0 after:-z-10 after:rounded-full after:bg-primary after:origin-bottom after:scale-y-0 after:transition-transform after:duration-500 after:ease-[var(--ease-premium)] hover:after:scale-y-100 hover:text-primary-foreground hover:-translate-y-0.5 hover:shadow-[var(--lift-lg)] active:translate-y-0 active:scale-[0.97] active:shadow-[var(--shadow-pressed),inset_0_0_0_100px_rgba(0,0,0,0.05)] dark:hover:shadow-[var(--lift-lg),0_0_14px_rgb(255_255_255/0.28)]",
         destructive:
           "bg-destructive text-destructive-foreground shadow-[var(--shadow-raised-sm)] hover:-translate-y-px hover:shadow-[var(--shadow-hover)] active:translate-y-0 active:scale-[0.96]",
         outline:

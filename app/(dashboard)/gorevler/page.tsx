@@ -7,6 +7,7 @@ import {
   CheckCircle2,
   AlertTriangle,
 } from "lucide-react";
+import { SceneCutouts } from "@/components/scene-cutouts";
 
 import {
   listTasks,
@@ -35,6 +36,7 @@ export default async function GorevlerPage() {
 
   return (
     <div className="relative z-0 pb-28 space-y-6">
+      <SceneCutouts page="gorevler" />
       <GoldStream motif="check" />
       <PageHeader
         title="Görevler"

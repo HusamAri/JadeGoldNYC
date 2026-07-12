@@ -15,7 +15,7 @@ export function DeltaBadge({
   goodWhenUp?: boolean;
 }) {
   if (deltaPct == null || !Number.isFinite(deltaPct)) {
-    return <span className="text-muted-foreground text-xs">—</span>;
+    return <span className="text-muted-foreground font-mono text-xs">—</span>;
   }
   const up = deltaPct > 0.0001;
   const down = deltaPct < -0.0001;
@@ -26,7 +26,9 @@ export function DeltaBadge({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-0.5 text-xs font-medium tabular-nums",
+        // Sayısal okuma mono (readout dili); koyu modda hafif Lume ışıması.
+        "inline-flex items-center gap-0.5 font-mono text-xs font-medium tabular-nums",
+        "dark:[text-shadow:0_0_12px_color-mix(in_srgb,currentColor_40%,transparent)]",
         good && "text-primary",
         bad && "text-destructive",
         !good && !bad && "text-muted-foreground",

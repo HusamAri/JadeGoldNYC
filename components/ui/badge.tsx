@@ -5,18 +5,22 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const badgeVariants = cva(
-  "inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-[color,box-shadow] overflow-hidden",
+  // Hap (pill) rozet — sayısal içerik tabular (mono okuma dili).
+  "inline-flex items-center justify-center rounded-full border px-2.5 py-0.5 text-xs font-medium tabular-nums w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-[color,box-shadow,background-color] duration-300 overflow-hidden",
   {
     variants: {
       variant: {
+        /** Dolgu rozet — kabartılı; koyu modda hafif dış ışıma (Lume). */
         default:
-          "border-transparent bg-primary text-primary-foreground [a&]:hover:bg-primary/90",
+          "border-transparent bg-primary text-primary-foreground shadow-[var(--shadow-raised-sm)] [a&]:hover:bg-primary/90 dark:shadow-[var(--shadow-raised-sm),0_0_14px_rgb(255_255_255/0.12)]",
+        /** Nötr kabartı hap — konveks yüzey + raised-sm gölge. */
         secondary:
-          "border-transparent bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90",
+          "border-transparent bg-secondary [background-image:var(--nm-convex)] text-secondary-foreground shadow-[var(--shadow-raised-sm)] [a&]:hover:bg-secondary/90",
         destructive:
-          "border-transparent bg-destructive text-white [a&]:hover:bg-destructive/90",
+          "border-transparent bg-destructive text-white shadow-[var(--shadow-raised-sm)] [a&]:hover:bg-destructive/90",
+        /** Cam çip — hairline kenar + sheen, ortamın üstünde süzülür. */
         outline:
-          "text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
+          "border-[color:var(--glass-border)] [background-color:var(--glass)] [background-image:var(--glass-sheen)] backdrop-blur-md shadow-[var(--lift-sm)] text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
         success:
           "border-transparent bg-primary/15 text-primary [a&]:hover:bg-primary/25",
         warning:

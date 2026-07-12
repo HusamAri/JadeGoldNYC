@@ -123,7 +123,7 @@ export function PanelTimeline({ data }: { data: TimelineData }) {
 
       {/* Şerit: üstte BÜYÜK görev çipleri, altta satış sütunları (bağlam) */}
       <div
-        className="relative mt-3 overflow-hidden"
+        className="relative mt-3 overflow-hidden px-2 [mask-image:linear-gradient(90deg,transparent,#000_16px,#000_calc(100%-26px),transparent)]"
         style={{ height: `${MAX_LANES * LANE_H + SALES_H + 22}px` }}
       >
         {/* eksen çizgileri + etiketleri */}
@@ -143,7 +143,7 @@ export function PanelTimeline({ data }: { data: TimelineData }) {
         {0 >= winStart && 0 <= winEnd && (
           <div className="absolute inset-y-0" style={{ left: `${pct(0)}%` }}>
             <span className="absolute inset-y-0 w-0.5 bg-[color:var(--jade,#2F5D50)]" />
-            <span className="absolute bottom-0 -translate-x-1/2 text-[9px] font-bold text-[color:var(--jade,#2F5D50)]">
+            <span className="absolute bottom-3.5 -translate-x-1/2 rounded bg-[color:var(--card)]/85 px-1 text-[9px] font-bold text-[color:var(--jade,#2F5D50)] backdrop-blur-[2px]">
               Bugün
             </span>
           </div>
@@ -214,7 +214,7 @@ export function PanelTimeline({ data }: { data: TimelineData }) {
           </p>
         )}
         {hiddenCount > 0 && (
-          <span className="text-muted-foreground absolute top-1 right-1 rounded-full border px-2 py-0.5 text-[10px] tabular-nums">
+          <span className="text-muted-foreground absolute right-2 bottom-6 z-10 rounded-full border bg-[color:var(--card)]/90 px-2 py-0.5 text-[10px] tabular-nums backdrop-blur-sm">
             +{hiddenCount} görev sığmadı — pencereyi daralt/kaydır
           </span>
         )}

@@ -22,11 +22,12 @@ export function SectionGuide({
     <details
       open={defaultOpen}
       className={cn(
-        "group border-border bg-muted/40 rounded-xl border",
+        // Zemine bastırılmış bilgi oluğu (nöromorfik pressed groove).
+        "group nm-pressed rounded-[1.25rem]",
         className,
       )}
     >
-      <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-3 text-sm font-medium select-none">
+      <summary className="flex cursor-pointer list-none items-center gap-2 rounded-[1.25rem] px-4 py-3 text-sm font-medium select-none">
         <Info className="text-primary size-4 shrink-0" />
         <span>{title}</span>
         <ChevronDown className="text-muted-foreground ml-auto size-4 transition-transform group-open:rotate-180" />
