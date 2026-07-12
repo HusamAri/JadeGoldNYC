@@ -27,7 +27,9 @@ export default async function DashboardLayout({
     /* `isolate`: arka plan katmanları (negatif z) bu bağlamda hapsolur —
        holo-drift (z -10) en altta, lux-grain (z -9) onun ÜSTÜNDE, içerik ve
        cam yüzeyler (topbar navglass, glass-board) hepsinin üstünde yüzer. */
-    <div className="relative isolate flex min-h-svh">
+    /* `overflow-x-clip`: holo-drift (inset:-30%) kökten yana taşıp her sayfada
+       yatay scrollbar açmasın — scroll konteyneri oluşturmadan yatay kırpar. */
+    <div className="relative isolate flex min-h-svh overflow-x-clip">
       {/* Hareketli holografik gradient — TÜM markalarda tek ambiyans arka plan.
           Çok yavaş kayan holo blob'lar (renkler token'dan: platform pastel holo,
           JG jade+altın). Statik desen/doku/toz KALDIRILDI; zemin düz mat +

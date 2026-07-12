@@ -754,8 +754,10 @@
      farklı hız/yönde süzülür → kayan iridesan interferans. prefers-reduced-
      motion global kuralı hareketi durdurur (katman görünür kalır). */
   .holo-drift {
+    /* Kap ekran sınırında kalır (yatay taşma yaratmaz); -%30 büyüme
+       overflow:hidden ile kırpılan pseudo katmanlara taşındı. */
     position: absolute;
-    inset: -30%;
+    inset: 0;
     z-index: -10;
     overflow: hidden;
     pointer-events: none;
@@ -764,7 +766,7 @@
   .holo-drift::after {
     content: "";
     position: absolute;
-    inset: 0;
+    inset: -30%;
     background-image: var(--holo-blobs);
     background-repeat: no-repeat;
     filter: blur(46px);

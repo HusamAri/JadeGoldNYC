@@ -283,13 +283,15 @@ export function BarNeo(props: {
         )}
       </g>
       {/* tabanda ışık havuzu — lume ::after: radyal + blur(7px) + screen;
-          açıkta --jg-pool şeffaf olduğundan görünmez */}
+          açıkta --jg-pool şeffaf olduğundan görünmez. Havuz bar tabanının
+          İÇİNDE kalır (referans lume reçetesi): elips tamamen çizim alanında,
+          eksen etiketlerine (Eyl 25 vb.) taşmaz. */}
       <ellipse
         aria-hidden="true"
         cx={x + width / 2}
-        cy={y + height}
+        cy={y + height - Math.min(14, height * 0.45)}
         rx={width * 0.5}
-        ry={Math.min(20, height * 0.55)}
+        ry={Math.min(14, height * 0.45)}
         fill={`url(#${defsId}-bpool)`}
         filter={`url(#${defsId}-pool)`}
         style={{ mixBlendMode: "screen" }}

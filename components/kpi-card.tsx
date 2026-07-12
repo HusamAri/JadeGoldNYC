@@ -113,11 +113,23 @@ export function KpiCard({
           {/* Değer — font-index readout: açıkta Spatial mürekkebi,
               koyuda lume beyazı + 0 0 14px beyaz ışıma. */}
           <p
+            title={typeof value === "string" ? value : undefined}
             className={cn(
-              "truncate font-mono font-semibold tracking-tight tabular-nums",
+              // Mobil dar kolonlarda değer ASLA elipslenmesin: truncate yerine
+              // kademeli punto — rakam her zaman tam okunur.
+              "font-mono font-semibold tracking-tight break-normal tabular-nums",
+              // Uzun finansal değerler ('$2.913.363,72' gibi) dar 5'li grid
+              // kartında da tek satırda tam okunur: uzunluğa göre punto düşer.
               splitTone
-                ? "text-4xl leading-tight jg-split-tone"
-                : "text-2xl dark:[text-shadow:0_0_14px_rgba(255,255,255,.5)]",
+                ? "text-3xl min-[420px]:text-4xl leading-tight jg-split-tone"
+                : cn(
+                    typeof value === "string" && value.length > 13
+                      ? "text-base min-[420px]:text-lg"
+                      : typeof value === "string" && value.length > 10
+                        ? "text-lg min-[420px]:text-xl"
+                        : "text-xl min-[420px]:text-2xl",
+                    "leading-tight dark:[text-shadow:0_0_14px_rgba(255,255,255,.5)]",
+                  ),
               !splitTone &&
                 accent === "default" &&
                 "text-foreground dark:text-white",
