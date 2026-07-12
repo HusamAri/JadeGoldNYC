@@ -2,11 +2,11 @@ import { ImageResponse } from "next/og";
 
 /**
  * Paylaşım kartı (Open Graph / Twitter) — derin mürekkep (#14161d) zeminde
- * çivit-leylak (#a5adff) Artifact faset elmas markı + "ARTIFACT" + ince kural
+ * çivit-leylak (#a5adff) Amuletta faset elmas markı + "AMULETTA" + ince kural
  * çizgisi + "YÖNETİM PLATFORMU". Ölçülü ve yerel: harici CDN/font yok
  * (next/og varsayılan Geist fallback'i kullanılır).
  */
-export const alt = "Artifact — Yönetim Platformu";
+export const alt = "Amuletta — Yönetim Platformu";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -62,7 +62,7 @@ export default function OpengraphImage() {
               color: "#EFF0F6",
             }}
           >
-            ARTIFACT
+            AMULETTA
           </div>
 
           {/* İnce çivit kural çizgisi */}

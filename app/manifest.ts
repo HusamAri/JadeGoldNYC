@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 /**
- * PWA manifesti — Artifact yönetim platformu.
+ * PWA manifesti — Amuletta yönetim platformu.
  *
  * NeumorphGlass kömür (#262935) tema/zemin: ana ekrana eklendiğinde platform
  * elmas markı koyu zeminde çivit-leylak olarak okunur (sekme markı
@@ -10,8 +10,8 @@ import type { MetadataRoute } from "next";
  */
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Artifact — Yönetim Platformu",
-    short_name: "Artifact",
+    name: "Amuletta — Yönetim Platformu",
+    short_name: "Amuletta",
     description:
       "Çok markalı e-ticaret yönetim platformu — satış, maliyet, performans ve şirket hafızası tek çatıda.",
     start_url: "/",

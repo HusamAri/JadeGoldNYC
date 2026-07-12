@@ -281,10 +281,10 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --font-sans: var(--font-sora);
+  --font-sans: var(--font-space);
   --font-mono: var(--font-jbmono);
-  /* Display — California Paradise; YALNIZ kahraman başlıklar (hero) için. */
-  --font-display: var(--font-california);
+  /* Display — Fraunces; YALNIZ kahraman başlıklar/wordmark için. */
+  --font-display: var(--font-fraunces);
 }
 
 @layer base {
@@ -578,6 +578,22 @@
       transparent 46%
     );
   }
+  /* Cam yüzeye de ince gren — kartlar da mat/dokulu (buzlu cam + doku). */
+  .glass-board::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0.09;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .dark .glass-board::after {
+    opacity: 0.14;
+    mix-blend-mode: soft-light;
+  }
 
   /* ── Süzülen holografik arka plan ─────────────────────────────────────
      Sayfanın arkasında çok yavaş süzülen holo blob'lar. Cam boardlar
@@ -627,12 +643,12 @@
     inset: 0;
     z-index: -9;
     pointer-events: none;
-    opacity: 0.035;
+    opacity: 0.11;
     mix-blend-mode: overlay;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
   .dark .lux-grain {
-    opacity: 0.055;
+    opacity: 0.16;
     mix-blend-mode: soft-light;
   }
 

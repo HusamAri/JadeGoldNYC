@@ -4,14 +4,14 @@ import { createClient } from "@/lib/supabase/server";
 import { getMembership } from "@/lib/auth";
 
 /**
- * Platform kimliği — Artifact.
+ * Platform kimliği — Amuletta.
  *
  * Panel artık çok-kiracılı bir platform: kabuk (login, kurulum, sekme başlığı,
  * manifest, kenar çubuğu kromu, renk skalası) PLATFORM markasını taşır.
  * Jade Gold NYC yalnız KENDİ organizasyonu aktifken kendi sıcak temasını ve
- * monogramını görür — diğer tüm bağlamlar Artifact görünümündedir.
+ * monogramını görür — diğer tüm bağlamlar Amuletta görünümündedir.
  */
-export const PLATFORM_NAME = "Artifact";
+export const PLATFORM_NAME = "Amuletta";
 export const PLATFORM_TAGLINE =
   "Çok markalı e-ticaret yönetim platformu — satış, maliyet, performans ve şirket hafızası tek çatıda.";
 
@@ -21,7 +21,7 @@ export type BrandScope = "artifact" | "jade-gold";
 
 /**
  * Aktif organizasyona göre marka kapsamı. Oturum yoksa ya da aktif şirket
- * Jade Gold değilse platform (Artifact) kapsamı döner. Kök layout bunu
+ * Jade Gold değilse platform (Amuletta) kapsamı döner. Kök layout bunu
  * `<html data-brand>` olarak basar; tüm tema tokenleri bu özniteliği izler.
  */
 export const getBrandScope = cache(async (): Promise<BrandScope> => {

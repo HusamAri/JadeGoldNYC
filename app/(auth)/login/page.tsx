@@ -134,7 +134,7 @@ export default function LoginPage() {
               A
             </span>
             <span className="text-muted-foreground text-sm font-semibold tracking-[0.32em]">
-              ARTIFACT
+              AMULETTA
             </span>
           </div>
           <div>
@@ -142,7 +142,7 @@ export default function LoginPage() {
               Yönetim Platformu
             </p>
             <h2 className="text-foreground mt-4 text-7xl leading-none [font-family:var(--font-display)]">
-              Artifact
+              Amuletta
             </h2>
             <p className="text-muted-foreground mt-5 max-w-md">
               Satış, maliyet, performans ve şirket hafızası — tüm
@@ -155,7 +155,7 @@ export default function LoginPage() {
             </div>
           </div>
           <p className="text-muted-foreground/70 text-xs">
-            © {new Date().getFullYear()} Artifact · Gizli · İç Kullanım
+            © {new Date().getFullYear()} Amuletta · Gizli · İç Kullanım
           </p>
         </div>
       </div>
@@ -168,7 +168,7 @@ export default function LoginPage() {
               <Logo className="size-11" />
             </div>
             <CardTitle className="text-lg tracking-[0.3em]">
-              ARTIFACT
+              AMULETTA
             </CardTitle>
             <CardDescription>
               {signup
