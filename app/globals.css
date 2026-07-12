@@ -281,10 +281,10 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --font-sans: var(--font-sora);
+  --font-sans: var(--font-space);
   --font-mono: var(--font-jbmono);
-  /* Display — California Paradise; YALNIZ kahraman başlıklar (hero) için. */
-  --font-display: var(--font-california);
+  /* Display — Fraunces; YALNIZ kahraman başlıklar/wordmark için. */
+  --font-display: var(--font-fraunces);
 }
 
 @layer base {

@@ -1,15 +1,17 @@
 import type { Metadata, Viewport } from "next";
-import { Sora, JetBrains_Mono } from "next/font/google";
-import localFont from "next/font/local";
+import { Space_Grotesk, JetBrains_Mono, Fraunces } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { getBrandScope } from "@/lib/brand";
 import "./globals.css";
 
-// NeumorphGlass tip skalası: Sora (UI/başlık), JetBrains Mono (sayısal
-// okumalar), California Paradise (yalnız kahraman display başlıklar).
-const sora = Sora({
-  variable: "--font-sora",
+// Amuletta tip sistemi — "analitik + estetik":
+//  • Space Grotesk (UI/başlık): geometrik, teknik, ayırt edici — analitik ses.
+//  • JetBrains Mono (sayısal okumalar): tabular, hassas — veriye saygı.
+//  • Fraunces (display/wordmark): yüksek kontrastlı, optik-ölçekli zarif serif
+//    — kuyumcuya yakışan estetik; harf yapısı yine hassas/yapısal.
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space",
   subsets: ["latin", "latin-ext"],
 });
 
@@ -18,13 +20,11 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin", "latin-ext"],
 });
 
-const california = localFont({
-  src: [
-    { path: "./fonts/CaliforniaParadise.woff2", weight: "400", style: "normal" },
-    { path: "./fonts/CaliforniaParadise-Italic.woff2", weight: "400", style: "italic" },
-  ],
-  variable: "--font-california",
-  display: "swap",
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
+  subsets: ["latin", "latin-ext"],
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
 });
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
@@ -74,7 +74,7 @@ export default async function RootLayout({
     <html
       lang="tr"
       data-brand={brand}
-      className={`${sora.variable} ${jetbrainsMono.variable} ${california.variable} h-full antialiased`}
+      className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} ${fraunces.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="min-h-full bg-background text-foreground">
