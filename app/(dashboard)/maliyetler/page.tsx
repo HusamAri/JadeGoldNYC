@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Plus, Pencil, Wallet, Gem } from "lucide-react";
+import { SceneCutouts } from "@/components/scene-cutouts";
 
 import { listCosts, listCostCategories } from "@/lib/db/queries/costs";
 import { strParam, numParam, type RawSearchParams } from "@/lib/searchparams";
@@ -45,6 +46,7 @@ export default async function MaliyetlerPage({
 
   return (
     <div className="relative z-0 pb-28">
+      <SceneCutouts page="maliyetler" />
       <GoldStream motif="scale" />
       <PageHeader
         title="Maliyetler"

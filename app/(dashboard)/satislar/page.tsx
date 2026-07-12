@@ -17,6 +17,7 @@ import { formatMoney } from "@/lib/money";
 import { formatDate, formatNumber } from "@/lib/format";
 import { PageHeader } from "@/components/page-header";
 import { GoldStream } from "@/components/brand/gold-stream";
+import { SceneCutouts } from "@/components/scene-cutouts";
 import { EmptyState } from "@/components/empty-state";
 import { KpiCard } from "@/components/kpi-card";
 import {
@@ -92,6 +93,7 @@ export default async function SatislarPage({
 
   return (
     <div className="relative z-0 space-y-6 pb-28">
+      <SceneCutouts page="satislar" />
       <GoldStream motif="gift" />
       <PageHeader
         title="Satışlar"

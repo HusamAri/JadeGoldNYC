@@ -11,6 +11,7 @@ import {
   Gem,
   Hammer,
 } from "@/components/icons/lux-art";
+import { SceneCutouts } from "@/components/scene-cutouts";
 // Satır içi (küçük, tek renk) kullanımlar için ince-çizgi SVG sürümleri —
 // currentColor'a saygı duyar (cutout PNG'ler yalnız KPI filigranında).
 import { Scale as ScaleLine, Users as UsersLine } from "@/components/icons/lux";
@@ -82,6 +83,7 @@ export default async function PanelPage({
 
   return (
     <div className="relative z-0 pb-28 space-y-6">
+      <SceneCutouts page="panel" />
       <GoldStream motif="necklace" />
       <PageHeader
         title="Panel"
