@@ -30,6 +30,8 @@ export default async function DashboardLayout({
           JG jade+altın). Statik desen/doku/toz KALDIRILDI; zemin düz mat +
           süzülen holo. Cam boardlar bunun üstünde durunca altı buzlanır. */}
       <div aria-hidden className="holo-drift" />
+      {/* Mat "pahalı doku" — çok ince gren; zemine kadife/kâğıt dokusu. */}
+      <div aria-hidden className="lux-grain" />
       <Sidebar
         memberships={memberships}
         activeOrgId={m.org_id}
