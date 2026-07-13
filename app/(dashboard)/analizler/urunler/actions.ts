@@ -160,6 +160,7 @@ export async function researchProductNow(
       m.org_id,
       (conn as { shop_id: number | null } | null)?.shop_id ?? null,
       product as ProductRow,
+      true, // derin: aynı-varyant karşılaştırması dahil
     );
     revalidatePath("/analizler/urunler");
     if (r.status === "no-keyword") {

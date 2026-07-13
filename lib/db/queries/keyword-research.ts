@@ -1,5 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
-import type { CompetitorRow } from "@/lib/etsy/keyword-research";
+import type {
+  CompetitorRow,
+  VariantComparison,
+} from "@/lib/etsy/keyword-research";
 
 /** Bir listing için son rekabet araştırması anlık görüntüsü. */
 export interface KeywordResearchSnapshot {
@@ -16,6 +19,7 @@ export interface KeywordResearchSnapshot {
   median_cents: number | null;
   our_rank_pct: number | null;
   results: CompetitorRow[];
+  variant_comparison: VariantComparison[] | null;
 }
 
 /** Listing'in araştırma kelimesi meta bilgisi (editör önizlemesi için). */

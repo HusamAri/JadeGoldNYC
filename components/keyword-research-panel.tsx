@@ -126,8 +126,75 @@ export async function KeywordResearchPanel({
                   )}
                 </div>
 
+                {/* Aynı-varyant karşılaştırması (derin mod — "şimdi araştır"). */}
+                {snap.variant_comparison && snap.variant_comparison.length > 0 && (
+                  <div className="space-y-2 border-t pt-3">
+                    <p className="text-muted-foreground font-mono text-[10px] tracking-[0.14em] uppercase">
+                      Aynı varyant · rakip fiyat bandı
+                    </p>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="text-muted-foreground text-left text-xs">
+                            <th className="py-1 pr-3 font-medium">Varyant</th>
+                            <th className="py-1 pr-3 text-right font-medium">Bizim</th>
+                            <th className="py-1 pr-3 text-right font-medium">Rakip medyan</th>
+                            <th className="py-1 pr-3 text-right font-medium">Bant</th>
+                            <th className="py-1 text-right font-medium">Konum</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {snap.variant_comparison.map((v) => (
+                            <tr key={v.sku} className="border-t">
+                              <td className="py-1.5 pr-3">{v.label}</td>
+                              <td className="py-1.5 pr-3 text-right font-mono tabular-nums">
+                                {v.our_price_cents != null
+                                  ? formatMoney(v.our_price_cents, cur)
+                                  : "—"}
+                              </td>
+                              <td className="py-1.5 pr-3 text-right font-mono tabular-nums">
+                                {v.median_cents != null
+                                  ? formatMoney(v.median_cents, cur)
+                                  : "—"}
+                              </td>
+                              <td className="text-muted-foreground py-1.5 pr-3 text-right font-mono text-xs tabular-nums">
+                                {v.basis === "variant" && v.min_cents != null
+                                  ? `${formatMoney(v.min_cents, cur)}–${formatMoney(v.max_cents!, cur)} · ${v.competitor_count}`
+                                  : "eşleşme yok"}
+                              </td>
+                              <td className="py-1.5 text-right">
+                                {v.our_rank_pct == null ? (
+                                  <span className="text-muted-foreground">—</span>
+                                ) : (
+                                  <span
+                                    className={
+                                      v.our_rank_pct >= 0.85
+                                        ? "text-[oklch(0.58_0.16_344)] dark:text-[oklch(0.74_0.12_344)]"
+                                        : "text-[oklch(0.50_0.19_278)] dark:text-[oklch(0.80_0.10_278)]"
+                                    }
+                                  >
+                                    %{Math.round(v.our_rank_pct * 100)}
+                                  </span>
+                                )}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    <p className="text-muted-foreground text-xs">
+                      Konum = rakiplerin yüzde kaçından pahalıyız (aynı beden/ayar
+                      eşleşen rakipler). &ldquo;eşleşme yok&rdquo; = o varyantta aynı
+                      beden/ayarlı rakip bulunamadı.
+                    </p>
+                  </div>
+                )}
+
                 {snap.results.length > 0 && (
                   <ul className="space-y-1.5">
+                    <li className="text-muted-foreground font-mono text-[10px] tracking-[0.14em] uppercase">
+                      Organik ilk 10 (listing fiyatı)
+                    </li>
                     {snap.results.slice(0, 10).map((c) => (
                       <li
                         key={c.position}
