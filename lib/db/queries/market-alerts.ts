@@ -40,6 +40,28 @@ export async function getMarketPriceAlerts(
     .eq("status", "active")
     .in("price_position", ["pahali", "ucuz"])
     .order("deviation_pct", { ascending: false })
-    .limit(limit);
-  return (data as MarketPriceAlert[] | null) ?? [];
+    .limit(limit + 20); // karar verilmişleri eleyeceğiz — biraz fazla çek
+  const alerts = (data as (MarketPriceAlert & { researched_at: string })[] | null) ?? [];
+  if (alerts.length === 0) return [];
+
+  // Karar verilmiş uyarıları gizle: en güncel karar, bu araştırmadan SONRA
+  // verilmişse (yani bu uyarıya cevaben) artık gösterme.
+  const { data: decisions } = await supabase
+    .from("latest_market_decision")
+    .select("product_id, created_at")
+    .in(
+      "product_id",
+      alerts.map((a) => a.product_id),
+    );
+  const decidedAt = new Map(
+    ((decisions as { product_id: string; created_at: string }[] | null) ?? []).map(
+      (d) => [d.product_id, d.created_at],
+    ),
+  );
+  return alerts
+    .filter((a) => {
+      const dec = decidedAt.get(a.product_id);
+      return !dec || new Date(dec) < new Date(a.researched_at);
+    })
+    .slice(0, limit);
 }

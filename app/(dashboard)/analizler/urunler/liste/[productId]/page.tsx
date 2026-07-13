@@ -4,8 +4,11 @@ import { ExternalLink } from "lucide-react";
 
 import { createClient } from "@/lib/supabase/server";
 import { formatMoney } from "@/lib/money";
+import { getListingHealth } from "@/lib/db/queries/listing-health";
+import { getLatestDecision } from "@/app/(dashboard)/analizler/urunler/liste/actions";
 import { PageHeader } from "@/components/page-header";
 import { KeywordResearchPanel } from "@/components/keyword-research-panel";
+import { ListingActionPanel } from "@/components/listing-action-panel";
 import { Card, CardContent } from "@/components/ui/card";
 
 export const metadata = { title: "Rakip & Pazar Analizi" };
@@ -39,6 +42,11 @@ export default async function ListingAnalizPage({
     .maybeSingle();
   const product = data as ListingRow | null;
   if (!product) notFound();
+
+  const [health, decision] = await Promise.all([
+    getListingHealth(product.id),
+    getLatestDecision(product.id),
+  ]);
 
   const decoded = product.title
     .replace(/&#(\d+);/g, (_, c: string) => String.fromCodePoint(Number(c)))
@@ -86,6 +94,8 @@ export default async function ListingAnalizPage({
           )}
         </CardContent>
       </Card>
+
+      {health && <ListingActionPanel health={health} decision={decision} />}
 
       <KeywordResearchPanel productId={product.id} />
     </div>

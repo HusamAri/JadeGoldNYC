@@ -245,6 +245,8 @@ export interface MarketPosition {
   deviation_pct: number | null;
   confidence: "yuksek" | "orta" | "dusuk";
   recommendation: string | null;
+  /** Motorun önerdiği TAM fiyat (uygula butonu bunu kullanır); yoksa null. */
+  suggested_price_cents: number | null;
 }
 
 /** Rakip başlığından gram çıkarıp $/g döndürür (yoksa null). */
@@ -275,6 +277,7 @@ export function computeMarketPosition(
     deviation_pct: null,
     confidence: "dusuk",
     recommendation: null,
+    suggested_price_cents: null,
   };
   if (!karat) return empty;
 
@@ -348,10 +351,12 @@ export function computeMarketPosition(
   const priceAt = (perGram: number): number | null =>
     ourWeight && ourWeight > 0 ? Math.round(perGram * ourWeight) : null;
   let rec: string | null = null;
+  let suggested: number | null = null; // uygula butonunun kullanacağı tam fiyat
 
   if (position === "pahali") {
     const targetBand = priceAt(high); // banda giren en yüksek (marjı korur)
     const targetMid = priceAt(avg); // rekabetçi (daha agresif)
+    suggested = targetBand; // öneri: bant içine çek (marjı korur)
     rec =
       `PAHALI · bizim ${fg(ourPerGram!)} — pazar bandı ${fg(low)}–${fg(high)} (${src}, ${confidence} güven), %${Math.round((deviation ?? 0) * 100)} üstünde. ` +
       `Önerilen fiyat: ${fp(targetBand)} (bant içine; şu an ${fp(product.price_cents)}), agresif: ${fp(targetMid)}. ` +
@@ -360,12 +365,14 @@ export function computeMarketPosition(
   } else if (position === "ucuz") {
     if (ourPerGram != null && ourPerGram < breakevenPerGram) {
       const targetFloor = priceAt(Math.round(breakevenPerGram * 1.4));
+      suggested = targetFloor;
       rec =
         `ZARAR RİSKİ · bizim ${fg(ourPerGram)} maliyet tabanı ${fg(breakevenPerGram)} ALTINDA — acil düzelt. ` +
         `Önerilen minimum fiyat: ${fp(targetFloor)} (taban×1,4). En çok fayda: fiyatı düzeltmek; bu üründe reklam para yakar.`;
     } else {
       const targetLow = priceAt(low);
       const targetMid = priceAt(avg);
+      suggested = targetMid; // hedef: bant ortası (zam fırsatı)
       rec =
         `UCUZ · bizim ${fg(ourPerGram!)} — pazar bandı ${fg(low)}–${fg(high)} ALTINDA (${src}, ${confidence} güven). ` +
         `Zam fırsatı: en az ${fp(targetLow)} (bant alt sınırı), hedef ${fp(targetMid)}. ` +
@@ -391,6 +398,7 @@ export function computeMarketPosition(
     deviation_pct: deviation,
     confidence,
     recommendation: rec,
+    suggested_price_cents: suggested,
   };
 }
 
@@ -511,6 +519,7 @@ export async function researchListing(
     deviation_pct: market.deviation_pct,
     confidence: market.confidence,
     recommendation: market.recommendation,
+    suggested_price_cents: market.suggested_price_cents,
   });
 
   return {
