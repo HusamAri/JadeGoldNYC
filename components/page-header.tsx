@@ -51,9 +51,10 @@ export function PageHeader({
       </div>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-1">
-          {/* Kahraman başlık — editorial serif; koyuda yüzeyden kabarır
-              (display-emboss), em koyuda luminous periwinkle'a döner. */}
-          <h2 className="h-serif display-emboss text-3xl md:text-4xl">
+          {/* Kahraman başlık — SANS bold gövde + SERİF İTALİK vurgu (son kelime);
+              büyük & kalın (ref: Liquid Dark). Koyuda display-emboss ile yüzeyden
+              kabarır, em luminous periwinkle'a döner. */}
+          <h2 className="h-display display-emboss text-4xl md:text-5xl">
             {head ? (
               <>
                 {head} <em>{last}</em>

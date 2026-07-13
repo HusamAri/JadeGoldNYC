@@ -697,6 +697,30 @@
     text-shadow: 0 0 26px rgb(203 210 255 / 0.35);
   }
 
+  /* ── Kahraman başlık: SANS bold + SERİF İTALİK vurgu (referans: Liquid Dark)
+     Büyük, kalın Sora sans gövde; vurgulanan son kelime Cormorant serif İTALİK
+     (açıkta basılı altın-menekşe mürekkep, gecede luminous periwinkle).
+     display-emboss ile birlikte koyuda yüzeyin kendisinden kabarır — em'de
+     text-shadow'u display-emboss verir (burada yalnız renk değişir). */
+  .h-display {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.04;
+  }
+  .h-display em,
+  .h-display .em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--gold-deep);
+  }
+  .dark .h-display em,
+  .dark .h-display .em {
+    color: #cfc8ff;
+  }
+
   /* ── Editorial index başlığı (referans: Artifact Studio .idx) ─────────
      Mono, geniş letter-spacing, uppercase — bölüm/figür etiketleri. Yanında
      kısa vurgu çizgisi + uzayan ince kural için .idx-bar/.idx-ln. */
