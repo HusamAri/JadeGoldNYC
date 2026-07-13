@@ -116,9 +116,9 @@ export function ListingActionPanel({ health, decision }: Props) {
         </div>
 
         {/* Holistik aksiyon (satış + dönüşüm + tedarik + pazar birlikte) */}
-        <div className={`space-y-1.5 rounded-lg border-l-4 p-3 ${meta.ring}`}>
+        <div className={`space-y-1.5 rounded-xl border-l-4 p-3.5 shadow-[var(--lift-sm)] ${meta.ring}`}>
           <div className="flex items-center gap-2">
-            <Icon className={`size-4 ${meta.tone}`} />
+            <Icon aria-hidden className={`size-4 ${meta.tone}`} />
             <span className={`font-semibold ${meta.tone}`}>{a.title}</span>
           </div>
           <p className="text-sm leading-relaxed">{a.reasoning}</p>
@@ -133,7 +133,7 @@ export function ListingActionPanel({ health, decision }: Props) {
           {health.cancel_rate != null && (
             <span>
               İptal oranı:{" "}
-              <b className={health.cancel_rate >= 0.4 ? "text-red-600" : "text-foreground"}>
+              <b className={health.cancel_rate >= 0.4 ? "text-destructive" : "text-foreground"}>
                 %{Math.round(health.cancel_rate * 100)}
               </b>
             </span>
@@ -153,12 +153,12 @@ export function ListingActionPanel({ health, decision }: Props) {
 
         {/* Karar verilmişse: durum + sonraki aksiyon */}
         {decision ? (
-          <div className="bg-secondary/40 space-y-1 rounded-lg border p-3">
+          <div className="bg-secondary/40 space-y-1 rounded-xl border p-3.5 shadow-[var(--lift-sm)]">
             <div className="flex items-center gap-2 text-sm font-medium">
               {decision.decision === "applied" ? (
-                <Check className="size-4 text-emerald-600" />
+                <Check aria-hidden className="size-4 text-emerald-600" />
               ) : (
-                <X className="size-4 text-amber-600" />
+                <X aria-hidden className="size-4 text-amber-600" />
               )}
               {DECISION_LABEL[decision.decision]}
               {decision.applied_price_cents != null && (
@@ -191,7 +191,7 @@ export function ListingActionPanel({ health, decision }: Props) {
                     disabled={pending}
                     className="bg-primary text-primary-foreground inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium disabled:opacity-50"
                   >
-                    <Sparkles className="size-4" />
+                    <Sparkles aria-hidden className="size-4" />
                     Önerilen fiyatı uygula ({fmt(suggested)})
                   </button>
                   <button
@@ -200,7 +200,7 @@ export function ListingActionPanel({ health, decision }: Props) {
                     disabled={pending}
                     className="border-border inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-medium disabled:opacity-50"
                   >
-                    <X className="size-4" />
+                    <X aria-hidden className="size-4" />
                     Uygulama, gerekçe sun
                   </button>
                   {market?.price_position === "pahali" && (
@@ -212,8 +212,11 @@ export function ListingActionPanel({ health, decision }: Props) {
 
                 {rejectOpen && (
                   <div className="space-y-2 rounded-lg border p-3">
-                    <label className="text-sm font-medium">Reddetme gerekçesi</label>
+                    <label htmlFor="reject-reason" className="text-sm font-medium">
+                      Reddetme gerekçesi
+                    </label>
                     <select
+                      id="reject-reason"
                       value={reason}
                       onChange={(e) => setReason(e.target.value as RejectReason)}
                       className="border-border bg-background w-full rounded-md border px-2 py-1.5 text-sm"
@@ -228,6 +231,7 @@ export function ListingActionPanel({ health, decision }: Props) {
                       value={note}
                       onChange={(e) => setNote(e.target.value)}
                       placeholder="Not (opsiyonel)…"
+                      aria-label="Reddetme notu"
                       rows={2}
                       className="border-border bg-background w-full rounded-md border px-2 py-1.5 text-sm"
                     />
@@ -248,7 +252,7 @@ export function ListingActionPanel({ health, decision }: Props) {
                 Aksiyon için yukarıdaki öneriyi izleyin.
               </p>
             )}
-            {err && <p className="text-sm text-red-600">{err}</p>}
+            {err && <p className="text-destructive text-sm">{err}</p>}
           </div>
         )}
       </CardContent>

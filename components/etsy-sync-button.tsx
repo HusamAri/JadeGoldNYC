@@ -179,7 +179,7 @@ function LastSyncSummaryPanel({ summary }: { summary: EtsySyncSummary }) {
         <div className="grid gap-3 sm:grid-cols-2">
           {listingChanges.becameActive.length > 0 && (
             <ListingChangeList
-              icon={<ArrowUpRight className="size-3.5 text-emerald-600" />}
+              icon={<ArrowUpRight aria-hidden className="size-3.5 text-emerald-600" />}
               label="Aktif oldu"
               items={listingChanges.becameActive}
               moreCount={listingChanges.moreActiveCount}
@@ -187,7 +187,7 @@ function LastSyncSummaryPanel({ summary }: { summary: EtsySyncSummary }) {
           )}
           {listingChanges.becameInactive.length > 0 && (
             <ListingChangeList
-              icon={<ArrowDownRight className="size-3.5 text-[color:#b23b3b]" />}
+              icon={<ArrowDownRight aria-hidden className="text-destructive size-3.5" />}
               label="Pasife düştü"
               items={listingChanges.becameInactive}
               moreCount={listingChanges.moreInactiveCount}
@@ -233,7 +233,7 @@ function ListingChangeList({
                   className="hover:text-foreground inline-flex max-w-full items-center gap-1"
                 >
                   <span className="truncate">{it.title}</span>
-                  <ExternalLink className="size-3 shrink-0" />
+                  <ExternalLink aria-hidden className="size-3 shrink-0" />
                 </a>
               ) : (
                 it.title

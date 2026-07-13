@@ -77,7 +77,7 @@ export async function KeywordResearchPanel({
         {/* Gram-normalize pazar konumu + spesifik aksiyon önerisi */}
         {snap?.recommendation && snap.price_position && snap.price_position !== "belirsiz" && (
           <div
-            className={`space-y-1.5 rounded-lg border-l-4 p-3 ${
+            className={`space-y-1.5 rounded-xl border-l-4 p-3.5 shadow-[var(--lift-sm)] ${
               snap.price_position === "pahali"
                 ? "border-red-500 bg-red-500/5"
                 : snap.price_position === "ucuz"

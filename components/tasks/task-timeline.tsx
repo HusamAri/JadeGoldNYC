@@ -416,7 +416,12 @@ function TimelineCard({
         role="button"
         tabIndex={0}
         onClick={onOpen}
-        onKeyDown={(e) => e.key === "Enter" && onOpen()}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            onOpen();
+          }
+        }}
         className={cn(
           "nm-raised-sm focus-visible:ring-ring/60 min-w-0 flex-1 cursor-pointer rounded-2xl p-3 outline-none transition-shadow duration-300 hover:shadow-[var(--shadow-hover)] focus-visible:ring-2",
           overdue && "tl-overdue-neon",
@@ -551,7 +556,12 @@ function MiniRow({
       role="button"
       tabIndex={0}
       onClick={onOpen}
-      onKeyDown={(e) => e.key === "Enter" && onOpen()}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onOpen();
+        }
+      }}
       className={cn(
         "nm-raised-sm focus-visible:ring-ring/60 flex cursor-pointer items-center gap-2 rounded-xl p-2.5 outline-none transition-shadow duration-300 hover:shadow-[var(--shadow-hover)] focus-visible:ring-2",
         danger && "tl-overdue-neon",

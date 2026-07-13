@@ -9,6 +9,7 @@ import { formatMoney, formatPercent } from "@/lib/money";
 import { formatNumber, formatDate } from "@/lib/format";
 import { PageHeader } from "@/components/page-header";
 import { GoldStream } from "@/components/brand/gold-stream";
+import { SceneCutouts } from "@/components/scene-cutouts";
 import { PeriodSelector } from "@/components/period-selector";
 import { ReportExport } from "@/components/report-export";
 import { Badge } from "@/components/ui/badge";
@@ -63,6 +64,7 @@ export default async function RaporlarPage({
   return (
     <div className="relative z-0 pb-28 space-y-6">
       <GoldStream motif="seal" />
+      <SceneCutouts page="raporlar" />
       <PageHeader
         title="Raporlar"
         description={`Dönem · ${period.label}`}
@@ -90,7 +92,7 @@ export default async function RaporlarPage({
               <Link
                 key={r.id}
                 href={`/raporlar/${r.id}`}
-                className="hover:bg-muted/50 flex items-center gap-3 rounded-lg border p-3 transition-colors"
+                className="nm-raised-sm nm-interactive flex items-center gap-3 rounded-2xl p-3"
               >
                 <div className="bg-accent text-accent-foreground flex size-9 shrink-0 items-center justify-center rounded-xl">
                   <FileText className="size-4" />
@@ -120,7 +122,7 @@ export default async function RaporlarPage({
         <CardContent>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
             {kpis.map((k) => (
-              <div key={k.label} className="rounded-lg border p-4">
+              <div key={k.label} className="nm-raised-sm rounded-2xl p-4">
                 <p className="text-muted-foreground text-sm">{k.label}</p>
                 <p className="mt-1 text-xl font-semibold tabular-nums">
                   {k.value}

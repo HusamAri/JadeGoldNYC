@@ -23,6 +23,35 @@ export function applyTheme(theme: Theme) {
   document.documentElement.classList.toggle("dark", dark);
 }
 
+/**
+ * Tema geçişini ANIMASYONLU uygular — View Transitions API ile tıklanan
+ * noktadan büyüyen dairesel reveal (design-system "liquid" geçiş dili).
+ * API yoksa / reduced-motion / değişiklik yoksa anlık toggle'a düşer.
+ */
+function applyThemeAnimated(theme: Theme, x: number, y: number) {
+  const root = document.documentElement;
+  const dark = theme === "dark" || (theme === "system" && prefersDark());
+  const willChange = dark !== root.classList.contains("dark");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const startVT = (
+    document as Document & {
+      startViewTransition?: (cb: () => void) => unknown;
+    }
+  ).startViewTransition;
+
+  if (!willChange || !startVT || reduce) {
+    root.classList.toggle("dark", dark);
+    return;
+  }
+  // Reveal merkezini CSS'e geçir (tıklama noktası).
+  root.style.setProperty("--vt-x", `${x}px`);
+  root.style.setProperty("--vt-y", `${y}px`);
+  startVT.call(document, () => {
+    root.classList.toggle("dark", dark);
+  });
+}
+
 // localStorage'ı harici depo gibi oku — set-state-in-effect ve hydration uyumsuzluğu olmadan.
 function subscribe(cb: () => void) {
   const mq = window.matchMedia("(prefers-color-scheme: dark)");
@@ -56,9 +85,12 @@ export function ThemeToggle() {
     return () => mq.removeEventListener("change", onChange);
   }, []);
 
-  function choose(next: Theme) {
+  function choose(next: Theme, e?: React.MouseEvent) {
     localStorage.setItem("theme", next);
-    applyTheme(next);
+    // Tıklama noktasından dairesel reveal (yoksa viewport merkezi).
+    const x = e?.clientX ?? window.innerWidth - 40;
+    const y = e?.clientY ?? 40;
+    applyThemeAnimated(next, x, y);
     window.dispatchEvent(new Event("themechange"));
   }
 
@@ -78,7 +110,7 @@ export function ThemeToggle() {
           return (
             <DropdownMenuItem
               key={o.key}
-              onClick={() => choose(o.key)}
+              onClick={(e) => choose(o.key, e)}
               // Aktif tema: token rengi (primary) + onay imi — renk tek sinyal değil.
               className={cn("gap-2", active && "text-primary font-medium")}
             >

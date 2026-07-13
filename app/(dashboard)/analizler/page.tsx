@@ -246,7 +246,7 @@ export default async function PerformansPage() {
                   <li
                     key={i}
                     className={cn(
-                      "flex items-start gap-3 rounded-md border p-3",
+                      "flex items-start gap-3 rounded-2xl border p-3.5 shadow-[var(--lift-sm)]",
                       a.level === "danger" &&
                         "border-destructive/30 bg-destructive/5",
                       a.level === "warning" && "border-accent bg-accent/30",
@@ -364,7 +364,7 @@ export default async function PerformansPage() {
                             {formatNumber(value)} · {formatPercent(pct)}
                           </span>
                         </div>
-                        <div className="bg-muted h-2 overflow-hidden rounded-full">
+                        <div className="nm-pressed h-2 overflow-hidden rounded-full">
                           <div
                             className="bg-primary h-full rounded-full"
                             style={{ width: `${Math.round(pct * 100)}%` }}

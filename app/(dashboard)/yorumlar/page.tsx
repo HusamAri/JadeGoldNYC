@@ -16,6 +16,7 @@ import { formatNumber, formatDate } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { PageHeader } from "@/components/page-header";
 import { GoldStream } from "@/components/brand/gold-stream";
+import { SceneCutouts } from "@/components/scene-cutouts";
 import { EmptyState } from "@/components/empty-state";
 import { KpiCard } from "@/components/kpi-card";
 import { Badge } from "@/components/ui/badge";
@@ -67,6 +68,7 @@ export default async function YorumlarPage({
   return (
     <div className="relative z-0 pb-28 space-y-6">
       <GoldStream motif="star" />
+      <SceneCutouts page="yorumlar" />
       <PageHeader
         title="Tüketici Yorumları"
         description="Etsy yorumlarını, puan trendini ve yanıt durumunu takip edin"
@@ -80,7 +82,7 @@ export default async function YorumlarPage({
         }
       />
 
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-5">
         <KpiCard
           label="Toplam Yorum"
           value={formatNumber(summary.total)}
@@ -113,6 +115,7 @@ export default async function YorumlarPage({
           value={formatNumber(summary.needsResponse)}
           icon={AlertTriangle}
           accent={summary.needsResponse > 0 ? "negative" : "default"}
+          className="col-span-2 lg:col-span-1"
         />
       </div>
 

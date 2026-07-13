@@ -14,7 +14,7 @@ import {
 import { SceneCutouts } from "@/components/scene-cutouts";
 // Satır içi (küçük, tek renk) kullanımlar için ince-çizgi SVG sürümleri —
 // currentColor'a saygı duyar (cutout PNG'ler yalnız KPI filigranında).
-import { Scale as ScaleLine, Users as UsersLine } from "@/components/icons/lux";
+import { Users as UsersLine } from "@/components/icons/lux";
 
 import { resolvePeriod, previousPeriod } from "@/lib/period";
 import { getDashboard } from "@/lib/db/queries/dashboard";
@@ -106,39 +106,54 @@ export default async function PanelPage({
       {/* Pazar bandı dışında fiyatlanan aktif listingler (günlük araştırmadan) */}
       <MarketPriceAlertsCard alerts={marketAlerts} />
 
-      {/* ── Güncel Altın Fiyatı (bağlam şeridi) ─────────────────────── */}
-      <Card>
-        <CardContent className="flex flex-wrap items-center gap-4 text-sm">
-          <div className="flex items-center gap-2">
-            <ScaleLine className="text-muted-foreground size-4" />
-            <span className="text-muted-foreground">Güncel Altın:</span>
-            <span className="font-semibold tabular-nums">
-              ${formatNumber(goldPriceOunce)}/oz
+      {/* ── Güncel Altın Fiyatı — öne çıkan yüzen cam şerit ───────────────
+          Buzlu cam board (.glass-board) yüzeyin ÜSTÜNDE süzülür; girişte
+          yumuşak "yüksel" (.animate-rise); hero rakam cam üstünde yüzen büyük
+          display (.text-glass-display); tek kahraman rozet iridesan holo dolgu
+          (.holo-fill); arkada dekoratif marka altın tozu dokusu (.jg-dust). */}
+      <div className="glass-board animate-rise relative isolate overflow-hidden rounded-[26px] px-6 py-7">
+        {/* Dekoratif marka doku katmanı — yalnız fısıltı; içeriğin altında. */}
+        <div
+          aria-hidden
+          className="jg-dust pointer-events-none absolute inset-0 rounded-[inherit]"
+        />
+        <div className="relative z-10 flex flex-wrap items-center gap-x-10 gap-y-5">
+          {/* Hero — holo rozet + cam üstünde yüzen büyük altın fiyatı */}
+          <div className="flex items-center gap-4">
+            <span
+              aria-hidden
+              className="holo-fill inline-flex size-12 shrink-0 items-center justify-center rounded-2xl text-white"
+            >
+              <Gem className="size-6" />
             </span>
+            <div className="flex flex-col">
+              <span className="text-muted-foreground font-mono text-[11px] tracking-[0.16em] uppercase">
+                Güncel Altın
+              </span>
+              <span className="flex items-baseline gap-1.5">
+                <span className="text-glass-display font-mono text-4xl font-semibold tabular-nums tracking-tight">
+                  ${formatNumber(goldPriceOunce)}
+                </span>
+                <span className="text-muted-foreground text-sm font-medium">
+                  /oz
+                </span>
+              </span>
+            </div>
           </div>
-          <div className="text-muted-foreground">|</div>
-          <div>
-            <span className="text-muted-foreground">24K Gram: </span>
-            <span className="font-semibold tabular-nums">
-              ${goldPricePerGram.toFixed(2)}
-            </span>
+          {/* Karat gram okumaları — dengeli, hizalı üçlü grid (simetri) */}
+          <div className="grid flex-1 grid-cols-3 gap-x-6 gap-y-1 text-sm">
+            <GramReadout label="24K Gram" value={goldPricePerGram} />
+            <GramReadout
+              label="14K Gram"
+              value={goldPricePerGram * KARAT_PURITY["14K"]}
+            />
+            <GramReadout
+              label="10K Gram"
+              value={goldPricePerGram * KARAT_PURITY["10K"]}
+            />
           </div>
-          <div className="text-muted-foreground">|</div>
-          <div>
-            <span className="text-muted-foreground">14K Gram: </span>
-            <span className="font-semibold tabular-nums">
-              ${(goldPricePerGram * KARAT_PURITY["14K"]).toFixed(2)}
-            </span>
-          </div>
-          <div className="text-muted-foreground">|</div>
-          <div>
-            <span className="text-muted-foreground">10K Gram: </span>
-            <span className="font-semibold tabular-nums">
-              ${(goldPricePerGram * KARAT_PURITY["10K"]).toFixed(2)}
-            </span>
-          </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* ══ GELİR & KÂRLILIK — grafik, sonuçlarında kullanılan metriklerle
           YAN YANA (Panel 2.0 okuma düzeni: sol grafik, sağ metrikler) ══ */}
@@ -184,7 +199,7 @@ export default async function PanelPage({
             label="Net Kâr"
             value={formatMoney(d.profitCents, cur)}
             icon={TrendingUp}
-            accent={d.profitCents >= 0 ? "positive" : "negative"}
+            holo
             change={pctChange(d.profitCents, prevData?.profitCents)}
             changeLabel={prev?.label}
           />
@@ -405,7 +420,7 @@ export default async function PanelPage({
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <UsersLine className="size-4" />
+              <UsersLine aria-hidden className="size-4" />
               En İyi Müşteriler
             </CardTitle>
           </CardHeader>
@@ -446,7 +461,7 @@ export default async function PanelPage({
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Store className="size-4" />
+              <Store aria-hidden className="size-4" />
               Satış Kanalları
             </CardTitle>
           </CardHeader>
@@ -501,6 +516,18 @@ export default async function PanelPage({
         title="Sessiz lüks, kalıcı değer"
         subtitle="Som altın, el işçiliği — her parça bir miras."
       />
+    </div>
+  );
+}
+
+/** Altın fiyat şeridinde karat gram okuması — hizalı etiket + tabular değer. */
+function GramReadout({ label, value }: { label: string; value: number }) {
+  return (
+    <div className="flex flex-col">
+      <span className="text-muted-foreground font-mono text-[11px] tracking-[0.12em] uppercase">
+        {label}
+      </span>
+      <span className="font-semibold tabular-nums">${value.toFixed(2)}</span>
     </div>
   );
 }

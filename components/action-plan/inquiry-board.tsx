@@ -221,7 +221,7 @@ function InquiryCard({
                 return (
                   <div key={o} className="flex items-center gap-2 text-sm">
                     <span className="w-40 shrink-0 truncate sm:w-56">{o}</span>
-                    <div className="bg-muted h-2 flex-1 overflow-hidden rounded-full">
+                    <div className="nm-pressed h-2 flex-1 overflow-hidden rounded-full">
                       <div
                         className="h-full rounded-full"
                         style={{

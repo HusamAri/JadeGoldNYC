@@ -697,6 +697,30 @@
     text-shadow: 0 0 26px rgb(203 210 255 / 0.35);
   }
 
+  /* ── Kahraman başlık: SANS bold + SERİF İTALİK vurgu (referans: Liquid Dark)
+     Büyük, kalın Sora sans gövde; vurgulanan son kelime Cormorant serif İTALİK
+     (açıkta basılı altın-menekşe mürekkep, gecede luminous periwinkle).
+     display-emboss ile birlikte koyuda yüzeyin kendisinden kabarır — em'de
+     text-shadow'u display-emboss verir (burada yalnız renk değişir). */
+  .h-display {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.04;
+  }
+  .h-display em,
+  .h-display .em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--gold-deep);
+  }
+  .dark .h-display em,
+  .dark .h-display .em {
+    color: #cfc8ff;
+  }
+
   /* ── Editorial index başlığı (referans: Artifact Studio .idx) ─────────
      Mono, geniş letter-spacing, uppercase — bölüm/figür etiketleri. Yanında
      kısa vurgu çizgisi + uzayan ince kural için .idx-bar/.idx-ln. */
@@ -1202,5 +1226,36 @@ html[data-brand="artifact"] .jg-dust {
   }
   100% {
     transform: translate(0, 0) scale(1);
+  }
+}
+
+/* ── Tema geçişi: dairesel reveal (View Transitions API) ──────────────────
+   Tema toggle tıklandığında YENİ tema, tıklanan noktadan büyüyen bir daireyle
+   açılır (Husam Web design-system "liquid" geçiş dili); eski tema altta sabit
+   kalır. Bileşen --vt-x/--vt-y ile merkezi verir. reduced-motion'da kapanır. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-old(root) {
+  z-index: 0;
+}
+::view-transition-new(root) {
+  z-index: 1;
+  animation: vt-theme-reveal 0.5s var(--ease-premium, cubic-bezier(0.22, 1, 0.36, 1))
+    both;
+}
+@keyframes vt-theme-reveal {
+  from {
+    clip-path: circle(0% at var(--vt-x, 100%) var(--vt-y, 0px));
+  }
+  to {
+    clip-path: circle(150% at var(--vt-x, 100%) var(--vt-y, 0px));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-new(root) {
+    animation: none;
   }
 }

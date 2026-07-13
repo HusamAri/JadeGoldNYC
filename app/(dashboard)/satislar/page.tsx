@@ -212,7 +212,7 @@ export default async function SatislarPage({
                         {usd0(c.gross_cents)}
                       </span>
                     </div>
-                    <div className="bg-muted h-1.5 overflow-hidden rounded-full">
+                    <div className="nm-pressed h-2 overflow-hidden rounded-full">
                       <div
                         className="h-full rounded-full bg-[var(--chart-2)]"
                         style={{
