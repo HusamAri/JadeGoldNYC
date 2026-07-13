@@ -38,9 +38,11 @@ const ORDER: AlertSeverity[] = ["kritik", "onemli", "bilgi"];
  * sıralı. "Neler yolunda gitmiyor?" için tek bakış noktası.
  */
 export function AlertCenterCard({ data }: { data: AlertCenter }) {
-  const { alerts, counts, total } = data;
+  const { alerts, counts, total, currency } = data;
   const topSeverity: AlertSeverity =
     counts.kritik > 0 ? "kritik" : counts.onemli > 0 ? "onemli" : "bilgi";
+  // Görünür önem grupları — başlık çipleri ve gövde aynı listeden beslenir.
+  const visibleSeverities = ORDER.filter((s) => counts[s] > 0);
 
   return (
     <Card>
@@ -54,7 +56,7 @@ export function AlertCenterCard({ data }: { data: AlertCenter }) {
         <CardTitle className="text-base">Uyarı Merkezi</CardTitle>
         {total > 0 && (
           <div className="ml-auto flex items-center gap-1.5">
-            {ORDER.filter((s) => counts[s] > 0).map((s) => (
+            {visibleSeverities.map((s) => (
               <span
                 key={s}
                 className={cn(
@@ -77,7 +79,7 @@ export function AlertCenterCard({ data }: { data: AlertCenter }) {
           </p>
         ) : (
           <div className="space-y-5">
-            {ORDER.filter((s) => counts[s] > 0).map((severity) => {
+            {visibleSeverities.map((severity) => {
               const meta = SEVERITY_META[severity];
               const items = alerts.filter((a) => a.severity === severity);
               return (
@@ -116,7 +118,7 @@ export function AlertCenterCard({ data }: { data: AlertCenter }) {
                                   )}
                                   title="Dondurulan potansiyel gelir"
                                 >
-                                  {formatMoney(a.costCents, "USD")}
+                                  {formatMoney(a.costCents, currency)}
                                 </span>
                               )}
                             </span>

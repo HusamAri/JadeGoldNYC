@@ -582,13 +582,17 @@ export function CategoryPie({
           style={{ top: "calc(50% - 17px)" }}
         />
         {/* Tick halkası — açıkta repeating-conic (70,52,120/.5, .6°/15°);
-            koyuda lume tick'leri (.9°/6°). İki maske kesişir: dış ince bant ∩
-            üstten-alta sönümlenme → alttaki tick'ler silinir (simetri bozulmaz),
-            ticker'lar üst rim'e sarılır (silindir ağzı hissi). */}
+            koyuda lume tick'leri (.9°/6°). İki maske İÇ İÇE elemanda: dış
+            sarmalayıcı üstten-alta sönümler (alt tick'ler silinir — simetri
+            bozulmaz, tick'ler üst rim'e sarılır: silindir ağzı hissi), içteki
+            dış ince bandı keser. mask-composite gerektirmez — desteklemeyen
+            motorda maskeler union'a düşüp diski doldurmasın diye. */}
         <div
-          className="absolute left-1/2 size-[204px] -translate-x-1/2 -translate-y-1/2 rounded-full [background-image:repeating-conic-gradient(from_-90deg,rgba(70,52,120,.5)_0deg_.6deg,transparent_.6deg_15deg)] [mask-image:radial-gradient(farthest-side,transparent_calc(100%_-_12px),#000_calc(100%_-_11px)),linear-gradient(to_bottom,#000_0%,#000_40%,transparent_88%)] [mask-composite:intersect] [-webkit-mask-composite:source-in] dark:[background-image:repeating-conic-gradient(from_-90deg,rgba(150,160,255,.45)_0deg_.9deg,transparent_.9deg_6deg)]"
+          className="absolute left-1/2 size-[204px] -translate-x-1/2 -translate-y-1/2 [mask-image:linear-gradient(to_bottom,#000_0%,#000_40%,transparent_88%)]"
           style={{ top: "calc(50% - 17px)" }}
-        />
+        >
+          <div className="size-full rounded-full [background-image:repeating-conic-gradient(from_-90deg,rgba(70,52,120,.5)_0deg_.6deg,transparent_.6deg_15deg)] [mask-image:radial-gradient(farthest-side,transparent_calc(100%_-_12px),#000_calc(100%_-_11px))] dark:[background-image:repeating-conic-gradient(from_-90deg,rgba(150,160,255,.45)_0deg_.9deg,transparent_.9deg_6deg)]" />
+        </div>
         {/* İç cam hub — radyal beyaz→cam + Spatial iç gölge çifti; koyuda sade
             lume yüzeyi (okuma kendisi ışır). */}
         <div className="flex size-[104px] flex-col items-center justify-center rounded-full border border-[color:rgba(255,255,255,.7)] [background-image:radial-gradient(circle_at_40%_32%,#ffffff,var(--glass)_72%)] [backdrop-filter:var(--glass-filter-sm)] [box-shadow:inset_0_3px_7px_rgba(255,255,255,.8),inset_0_-8px_13px_rgba(56,38,106,.45),0_5px_9px_-3px_rgba(70,50,120,.4)] dark:border-[color:oklch(1_0_0/0.08)] dark:[background-color:oklch(1_0_0/0.04)] dark:[background-image:none] dark:[box-shadow:inset_0_1px_0_oklch(1_0_0/0.08)]">

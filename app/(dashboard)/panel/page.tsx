@@ -35,6 +35,8 @@ import { EditorialCard } from "@/components/brand/editorial-card";
 import { KpiCard } from "@/components/kpi-card";
 import { WhatsNew } from "@/components/whats-new";
 import { AlertCenterCard } from "@/components/alert-center";
+import { MarketPriceAlertsCard } from "@/components/market-price-alerts-card";
+import { getMarketPriceAlerts } from "@/lib/db/queries/market-alerts";
 import { PeriodSelector } from "@/components/period-selector";
 import {
   TrendChart,
@@ -67,13 +69,14 @@ export default async function PanelPage({
   const period = resolvePeriod(strParam(sp.period));
   const prev = previousPeriod(period);
   const m = await requireMembership();
-  const [d, goldPriceOunce, prevData, alertCenter, timeline] =
+  const [d, goldPriceOunce, prevData, alertCenter, timeline, marketAlerts] =
     await Promise.all([
       getDashboard(period),
       getGoldPricePerOunce(),
       prev ? getDashboard(prev) : Promise.resolve(null),
       getAlertCenter(m.org_id),
       getTimelineData(m.org_id),
+      getMarketPriceAlerts(m.org_id),
     ]);
   const cur = d.currency;
   const goldPricePerGram = goldPriceOunce / TROY_OUNCE_GRAMS;
@@ -98,6 +101,10 @@ export default async function PanelPage({
       {/* Uyarı Merkezi — sistem genelindeki tüm aksiyon sinyalleri tek yerde,
           3 önem derecesi + bedele göre sıralı. "Neler yolunda gitmiyor?" */}
       <AlertCenterCard data={alertCenter} />
+
+      {/* Pazar uyarıları DETAY/AKSİYON yüzeyi — merkez özet sayar, bu kart
+          listing-başına sapma + karar linki verir (merkez satırı buraya işaret eder). */}
+      <MarketPriceAlertsCard alerts={marketAlerts} />
 
       {/* Görev yol haritası + satış bağlamı — geniş; kaydırıcıyla geçmiş↔gelecek */}
       <PanelTimeline data={timeline} />

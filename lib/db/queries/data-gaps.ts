@@ -1,5 +1,10 @@
 import { createClient } from "@/lib/supabase/server";
 
+/** Uyarı önem derecesi — Uyarı Merkezi (lib/db/queries/alerts.ts) ile paylaşılır.
+ *  kritik = para kaybı akıyor/sistem kırık · onemli = performans aşınıyor ·
+ *  bilgi = hijyen/bakım. */
+export type AlertSeverity = "kritik" | "onemli" | "bilgi";
+
 export interface DataGap {
   key: string;
   title: string;
@@ -10,13 +15,18 @@ export interface DataGap {
   href: string;
   actionLabel: string;
   tone: "warn" | "info";
+  /** Uyarı Merkezi'ndeki önem derecesi — gap kendi önemini kendisi taşır,
+   *  dışarıda anahtar-string eşlemesi gerekmez (eklerken tek yerde karar). */
+  severity: AlertSeverity;
 }
 
 /**
  * Analizleri etkileyen EKSİK verileri gruplayıp sayar. Her grup, kullanıcının
  * bilgiyi girebileceği bir sayfaya link verir. Yeni bir eksik-veri türü
- * eklemek = buraya bir sayım + bir DataGap satırı eklemek.
+ * eklemek = buraya bir sayım + bir DataGap satırı eklemek (severity dahil).
  * Yalnız count > 0 olan gruplar döner (sırf sorun olanlar gösterilir).
+ * NOT: Ürün-durumu uyarıları (stok bitti / süresi doldu) burada DEĞİL —
+ * sayı+bedel tek sorgudan çıksın diye lib/db/queries/alerts.ts üretir.
  */
 export async function getDataGaps(orgId: string): Promise<DataGap[]> {
   const supabase = await createClient();
@@ -28,8 +38,6 @@ export async function getDataGaps(orgId: string): Promise<DataGap[]> {
     { count: variantsMissingWeight },
     { count: reviewsNeedReply },
     { data: actionableUnlinked },
-    { count: soldOutProducts },
-    { count: expiredProducts },
   ] = await Promise.all([
     head("product_variants").is("weight_grams", null),
     head("reviews").eq("status", "yeni").lte("rating", 3),
@@ -37,39 +45,10 @@ export async function getDataGaps(orgId: string): Promise<DataGap[]> {
     // varyantla eşleşen ama henüz bağlanmamış olanlar. Silinmiş/eski listelere
     // ait tarihsel kalemler (aktif ürüne ulaşmayan) sayılmaz — onlarla iş yok.
     supabase.rpc("count_actionable_unlinked_items", { p_org_id: orgId }),
-    // Stoğu biten (Etsy `sold_out`) ve süresi dolan (`expired`) listingler —
-    // satış kaybı/görünmezlik; senkron kartında anlık görünüyordu ama ana
-    // sayfada kalıcı aksiyon flag'i yoktu.
-    head("products").eq("status", "sold_out"),
-    head("products").eq("status", "expired"),
   ]);
   const saleItemsUnlinked = (actionableUnlinked as number | null) ?? 0;
 
   const gaps: DataGap[] = [];
-
-  if ((soldOutProducts ?? 0) > 0) {
-    gaps.push({
-      key: "products_sold_out",
-      title: `${soldOutProducts} ürün tükendi — şu an satılamıyor`,
-      count: soldOutProducts ?? 0,
-      hint: "Stok bitince listing kapanıyor; müşteri o ürünü başka mağazadan alıyor ve Etsy sıralamanda geriliyorsun. Stok ekleyip yeniden yayınla, satışa geri dönsün.",
-      href: "/tasarimlar?status=sold_out",
-      actionLabel: "Tükenenleri gör",
-      tone: "warn",
-    });
-  }
-
-  if ((expiredProducts ?? 0) > 0) {
-    gaps.push({
-      key: "products_expired",
-      title: `${expiredProducts} listing süresi doldu`,
-      count: expiredProducts ?? 0,
-      hint: "Süresi dolan ürün aramada hiç çıkmıyor — alıcılar seni bulamıyor, o listinge gelen trafik tamamen kesiliyor. Yenile, tekrar görünür olsun.",
-      href: "/tasarimlar?status=expired",
-      actionLabel: "Süresi dolanları gör",
-      tone: "warn",
-    });
-  }
 
   if ((variantsMissingWeight ?? 0) > 0) {
     gaps.push({
@@ -80,6 +59,7 @@ export async function getDataGaps(orgId: string): Promise<DataGap[]> {
       href: "/tasarimlar/eksik-agirlik",
       actionLabel: "Ağırlıkları gir",
       tone: "warn",
+      severity: "onemli",
     });
   }
 
@@ -92,6 +72,7 @@ export async function getDataGaps(orgId: string): Promise<DataGap[]> {
       href: "/yorumlar",
       actionLabel: "Yanıtla",
       tone: "warn",
+      severity: "onemli",
     });
   }
 
@@ -104,6 +85,7 @@ export async function getDataGaps(orgId: string): Promise<DataGap[]> {
       href: "/stok",
       actionLabel: "Varyantları bağla",
       tone: "info",
+      severity: "bilgi",
     });
   }
 

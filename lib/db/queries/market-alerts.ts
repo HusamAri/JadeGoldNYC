@@ -44,8 +44,15 @@ export async function getMarketPriceAlerts(
   const alerts = (data as (MarketPriceAlert & { researched_at: string })[] | null) ?? [];
   if (alerts.length === 0) return [];
 
-  // Karar verilmiş uyarıları gizle: en güncel karar, bu araştırmadan SONRA
-  // verilmişse (yani bu uyarıya cevaben) artık gösterme.
+  const undecided = await filterUndecided(supabase, alerts);
+  return undecided.slice(0, limit);
+}
+
+/** Karar verilmiş uyarıları ele: en güncel karar bu araştırmadan SONRAYSA
+ *  (yani uyarıya cevaben verildiyse) uyarı kapanmış sayılır. */
+async function filterUndecided<
+  T extends { product_id: string; researched_at: string },
+>(supabase: Awaited<ReturnType<typeof createClient>>, alerts: T[]): Promise<T[]> {
   const { data: decisions } = await supabase
     .from("latest_market_decision")
     .select("product_id, created_at")
@@ -58,10 +65,40 @@ export async function getMarketPriceAlerts(
       (d) => [d.product_id, d.created_at],
     ),
   );
-  return alerts
-    .filter((a) => {
-      const dec = decidedAt.get(a.product_id);
-      return !dec || new Date(dec) < new Date(a.researched_at);
-    })
-    .slice(0, limit);
+  return alerts.filter((a) => {
+    const dec = decidedAt.get(a.product_id);
+    return !dec || new Date(dec) < new Date(a.researched_at);
+  });
+}
+
+export interface MarketAlertCounts {
+  total: number;
+  pahali: number;
+  ucuz: number;
+}
+
+/**
+ * Bant dışı listing SAYILARI — Uyarı Merkezi başlığı için. Görüntüleme
+ * limitinden bağımsız TÜM açık uyarıları sayar (limit'li liste sorgusundan
+ * türetilen sayı 50'de doyuyordu); dar kolon seçer, aynı karar filtresini
+ * uygular.
+ */
+export async function getMarketAlertCounts(
+  orgId: string,
+): Promise<MarketAlertCounts> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("market_price_alerts")
+    .select("product_id, researched_at, price_position")
+    .eq("org_id", orgId)
+    .eq("status", "active")
+    .in("price_position", ["pahali", "ucuz"]);
+  const rows =
+    (data as
+      | { product_id: string; researched_at: string; price_position: "pahali" | "ucuz" }[]
+      | null) ?? [];
+  if (rows.length === 0) return { total: 0, pahali: 0, ucuz: 0 };
+  const open = await filterUndecided(supabase, rows);
+  const pahali = open.filter((r) => r.price_position === "pahali").length;
+  return { total: open.length, pahali, ucuz: open.length - pahali };
 }

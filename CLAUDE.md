@@ -41,3 +41,4 @@ Jade Gold NYC Etsy mağazası için uçtan uca yönetim/raporlama paneli. Tüm s
 - Dev tooling (superpowers/codegraph) için `docs/dev-tooling.md`.
 
 @AGENTS.md
+@docs/second-brain.md
