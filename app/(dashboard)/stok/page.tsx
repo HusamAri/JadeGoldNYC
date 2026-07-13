@@ -116,7 +116,7 @@ export default async function StokPage() {
                   yazabilmek için{" "}
                   <Link
                     href="/ayarlar/etsy"
-                    className="text-[color:var(--gold-deep,#9A7A34)] font-medium hover:underline"
+                    className="font-medium text-[color:var(--gold-deep)] hover:underline"
                   >
                     Etsy&apos;yi yeniden bağlayın
                   </Link>{" "}
@@ -130,7 +130,7 @@ export default async function StokPage() {
             const rows = groups.get(cat)!;
             return (
               <section key={cat} className="space-y-2">
-                <div className="flex items-baseline gap-3 border-b-2 border-[color:var(--gold,#B89347)] pb-2">
+                <div className="flex items-baseline gap-3 border-b-2 border-[color:var(--gold)] pb-2">
                   <h2 className="text-lg font-semibold">{cat}</h2>
                   <span className="text-muted-foreground ml-auto text-xs font-medium tabular-nums">
                     {formatNumber(rows.length)} ürün
@@ -161,7 +161,7 @@ export default async function StokPage() {
                               width={40}
                               height={40}
                               unoptimized
-                              className="size-10 rounded-md border border-[color:var(--line,#DED9CB)] object-cover"
+                              className="size-10 rounded-md border border-border object-cover"
                             />
                           ) : (
                             <span className="bg-muted text-muted-foreground flex size-10 items-center justify-center rounded-md text-[10px] font-semibold">
@@ -214,11 +214,11 @@ function StatChip({
   accent?: boolean;
 }) {
   return (
-    <div className="inline-flex items-baseline gap-2 rounded-full border border-[color:var(--line,#DED9CB)] px-3.5 py-1.5">
+    <div className="inline-flex items-baseline gap-2 rounded-full border border-border px-3.5 py-1.5">
       <b
         className={
           accent
-            ? "text-[color:var(--gold-deep,#9A7A34)] tabular-nums"
+            ? "text-[color:var(--gold-deep)] tabular-nums"
             : "tabular-nums"
         }
       >

@@ -69,11 +69,15 @@ export function EtsyListingGrid({ listings }: { listings: ProductListing[] }) {
   return (
     <div className="space-y-3">
       <div className="relative max-w-sm">
-        <Search className="text-muted-foreground absolute top-1/2 left-2.5 size-4 -translate-y-1/2" />
+        <Search
+          aria-hidden
+          className="text-muted-foreground absolute top-1/2 left-2.5 size-4 -translate-y-1/2"
+        />
         <Input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Listing ara…"
+          aria-label="Listing ara"
           className="pl-8"
         />
       </div>
@@ -81,7 +85,7 @@ export function EtsyListingGrid({ listings }: { listings: ProductListing[] }) {
       {visible.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center gap-2 py-8 text-center">
-            <Package className="text-muted-foreground size-8" />
+            <Package aria-hidden className="text-muted-foreground size-8" />
             <p className="text-muted-foreground text-sm">
               Aramayla eşleşen listing yok.
             </p>
@@ -109,7 +113,7 @@ export function EtsyListingGrid({ listings }: { listings: ProductListing[] }) {
                   </div>
                 ) : (
                   <div className="from-primary/20 to-accent/30 flex aspect-square items-center justify-center bg-gradient-to-br">
-                    <Package className="text-muted-foreground size-12" />
+                    <Package aria-hidden className="text-muted-foreground size-12" />
                   </div>
                 )}
               </Link>
@@ -151,7 +155,7 @@ export function EtsyListingGrid({ listings }: { listings: ProductListing[] }) {
                     href={`/analizler/urunler/liste/${p.id}`}
                     className="text-primary inline-flex items-center gap-1 text-xs font-medium hover:underline"
                   >
-                    <TrendingUp className="size-3" />
+                    <TrendingUp aria-hidden className="size-3" />
                     Rakip & pazar analizi
                   </Link>
                   {p.url && (
@@ -162,7 +166,7 @@ export function EtsyListingGrid({ listings }: { listings: ProductListing[] }) {
                       className="text-muted-foreground inline-flex items-center gap-1 text-xs hover:underline"
                     >
                       Etsy&apos;de gör
-                      <ExternalLink className="size-3" />
+                      <ExternalLink aria-hidden className="size-3" />
                     </a>
                   )}
                 </div>

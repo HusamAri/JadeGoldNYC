@@ -103,7 +103,7 @@ export function SalesImportWizard() {
       <Card>
         <CardContent>
           <label className="border-input hover:bg-muted/40 flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border border-dashed p-8 text-center transition-colors">
-            <UploadCloud className="text-muted-foreground size-8" />
+            <UploadCloud aria-hidden className="text-muted-foreground size-8" />
             <span className="text-sm font-medium">
               CSV dosyasını seçmek için tıklayın
             </span>
@@ -124,7 +124,7 @@ export function SalesImportWizard() {
           {filename && (
             <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <div className="text-muted-foreground flex items-center gap-2 text-sm">
-                <FileSpreadsheet className="size-4" />
+                <FileSpreadsheet aria-hidden className="size-4" />
                 {filename} · {rows.length} satır
               </div>
               <div className="space-y-1.5">
@@ -155,7 +155,7 @@ export function SalesImportWizard() {
           <CardContent className="space-y-4">
             {warnings.length > 0 && (
               <div className="bg-accent/40 text-accent-foreground flex items-start gap-2 rounded-md p-3 text-sm">
-                <AlertTriangle className="mt-0.5 size-4 shrink-0" />
+                <AlertTriangle aria-hidden className="mt-0.5 size-4 shrink-0" />
                 <div>
                   {warnings.length} uyarı.{" "}
                   {warnings.slice(0, 3).join(" ")}

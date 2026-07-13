@@ -122,7 +122,7 @@ export function StockSyncPanel({ connected }: { connected: boolean }) {
       <Card>
         <CardContent className="space-y-3 py-4">
           <div className="flex items-center gap-2 font-medium">
-            <CheckCircle2 className="size-4 text-[color:var(--jade,#3F4A44)]" />
+            <CheckCircle2 aria-hidden className="size-4 text-[color:var(--jade)]" />
             Senkronizasyon tamamlandı
           </div>
           <div className="text-muted-foreground flex flex-wrap gap-x-5 gap-y-1 text-sm tabular-nums">
@@ -131,7 +131,7 @@ export function StockSyncPanel({ connected }: { connected: boolean }) {
             <span>Hata <b className="text-foreground">{problems.length}</b></span>
           </div>
           {problems.length > 0 && (
-            <ul className="space-y-1 text-xs text-[color:var(--destructive,#b3261e)]">
+            <ul className="text-destructive space-y-1 text-xs">
               {problems.slice(0, 8).map((o, i) => (
                 <li key={i}>
                   {o.sku ?? o.listingId}: {o.detail}
@@ -157,16 +157,16 @@ export function StockSyncPanel({ connected }: { connected: boolean }) {
             {formatNumber(changes.length)} ürün değişecek
           </div>
           {!writeEnabled && (
-            <span className="inline-flex items-center gap-1.5 text-xs text-[color:var(--gold-deep,#9A7A34)]">
-              <TriangleAlert className="size-3.5" />
+            <span className="inline-flex items-center gap-1.5 text-xs text-[color:var(--gold-deep)]">
+              <TriangleAlert aria-hidden className="size-3.5" />
               Yazma izni yok — yeniden bağlanın
             </span>
           )}
         </div>
 
-        <div className="max-h-72 overflow-y-auto rounded-lg border border-[color:var(--line,#DED9CB)]">
+        <div className="max-h-72 overflow-y-auto rounded-lg border border-border">
           <table className="w-full text-sm">
-            <thead className="text-muted-foreground sticky top-0 bg-[color:var(--panel,#F2EFE6)] text-xs">
+            <thead className="text-muted-foreground bg-card sticky top-0 text-xs">
               <tr>
                 <th className="px-3 py-2 text-left font-medium">Ürün</th>
                 <th className="px-3 py-2 text-left font-medium">SKU</th>
@@ -176,7 +176,7 @@ export function StockSyncPanel({ connected }: { connected: boolean }) {
             </thead>
             <tbody>
               {changes.map((c) => (
-                <tr key={c.id} className="border-t border-[color:var(--line-soft,#E9E4D7)]">
+                <tr key={c.id} className="border-border border-t">
                   <td className="max-w-[280px] truncate px-3 py-1.5">{c.title}</td>
                   <td className="text-muted-foreground px-3 py-1.5 font-mono text-xs">
                     {c.sku ?? "—"}

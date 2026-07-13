@@ -217,10 +217,19 @@ export default async function YildizSaticiPage({
               <TableBody>
                 {snapshots.map((s) => {
                   const status = overallStatus(metricViews(valuesOf(s)));
+                  const statusLabel =
+                    status === "target"
+                      ? "Hedefte"
+                      : status === "standard"
+                        ? "Standart"
+                        : status === "risk"
+                          ? "Risk"
+                          : "Veri yok";
                   return (
                     <TableRow key={s.id}>
                       <TableCell className="font-medium">
                         <span
+                          aria-hidden
                           className={cn(
                             "mr-2 inline-block size-2 rounded-full align-middle",
                             status === "target"
@@ -232,6 +241,7 @@ export default async function YildizSaticiPage({
                                   : "bg-muted-foreground/40",
                           )}
                         />
+                        <span className="sr-only">{statusLabel}: </span>
                         {s.period_label}
                       </TableCell>
                       <TableCell className="text-right tabular-nums">

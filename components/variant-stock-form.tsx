@@ -224,6 +224,7 @@ export function VariantStockForm({
                     <Input
                       inputMode="numeric"
                       placeholder="Hedef"
+                      aria-label={`${v.sku} hedef adet`}
                       value={target}
                       disabled={!canEdit}
                       onChange={(e) =>
@@ -236,14 +237,20 @@ export function VariantStockForm({
                       onKeyDown={(e) => e.key === "Enter" && save(v)}
                       className={
                         "h-9 w-20 text-right tabular-nums" +
-                        (willChange ? " border-[color:var(--gold,#B89347)]" : "")
+                        (willChange ? " border-[color:var(--gold)]" : "")
                       }
                     />
                     {saving.has(v.sku) && (
-                      <Loader2 className="text-muted-foreground absolute top-1/2 right-2 size-3.5 -translate-y-1/2 animate-spin" />
+                      <Loader2
+                        aria-hidden
+                        className="text-muted-foreground absolute top-1/2 right-2 size-3.5 -translate-y-1/2 animate-spin"
+                      />
                     )}
                     {saved.has(v.sku) && !saving.has(v.sku) && (
-                      <Check className="absolute top-1/2 right-2 size-3.5 -translate-y-1/2 text-emerald-600" />
+                      <Check
+                        aria-label="Kaydedildi"
+                        className="absolute top-1/2 right-2 size-3.5 -translate-y-1/2 text-emerald-600"
+                      />
                     )}
                   </div>
                 </div>

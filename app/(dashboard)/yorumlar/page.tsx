@@ -80,7 +80,7 @@ export default async function YorumlarPage({
         }
       />
 
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-5">
         <KpiCard
           label="Toplam Yorum"
           value={formatNumber(summary.total)}
@@ -113,6 +113,7 @@ export default async function YorumlarPage({
           value={formatNumber(summary.needsResponse)}
           icon={AlertTriangle}
           accent={summary.needsResponse > 0 ? "negative" : "default"}
+          className="col-span-2 lg:col-span-1"
         />
       </div>
 

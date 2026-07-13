@@ -90,21 +90,21 @@ export default async function AltinMaliyetPage({
               {fmtUsd(goldPriceOunce)}
             </span>
           </div>
-          <div className="text-muted-foreground">|</div>
+          <div aria-hidden className="text-muted-foreground">|</div>
           <div>
             <span className="text-muted-foreground">Gram Fiyati (24K): </span>
             <span className="font-semibold tabular-nums">
               {fmtUsd(goldPricePerGram)}
             </span>
           </div>
-          <div className="text-muted-foreground">|</div>
+          <div aria-hidden className="text-muted-foreground">|</div>
           <div>
             <span className="text-muted-foreground">14K Gram Degeri: </span>
             <span className="font-semibold tabular-nums">
               {fmtUsd(goldPricePerGram * 0.585)}
             </span>
           </div>
-          <div className="text-muted-foreground">|</div>
+          <div aria-hidden className="text-muted-foreground">|</div>
           <div>
             <span className="text-muted-foreground">10K Gram Degeri: </span>
             <span className="font-semibold tabular-nums">
@@ -115,7 +115,7 @@ export default async function AltinMaliyetPage({
       </Card>
 
       {/* ── KPI'lar ─────────────────────────────────────────────────── */}
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className="stagger grid grid-cols-2 gap-4 lg:grid-cols-4">
         <KpiCard
           label="Analiz Edilen Kalem"
           value={`${summary.analyzedItems} / ${summary.totalItems}`}

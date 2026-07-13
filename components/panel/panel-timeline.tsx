@@ -140,7 +140,7 @@ export function PanelTimeline({ data }: { data: TimelineData }) {
       }
     >
       <div className="flex flex-wrap items-center gap-2">
-        <CalendarClock className="size-4 text-[color:var(--gold-deep)]" />
+        <CalendarClock aria-hidden className="size-4 text-[color:var(--gold-deep)]" />
         <p className="font-semibold">Görev Zaman Çizelgesi</p>
         <span className="text-muted-foreground text-xs">{windowLabel}</span>
         <span className="text-muted-foreground ml-auto hidden gap-3 text-[11px] sm:flex">

@@ -14,7 +14,7 @@ function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
         // Odak: çukur korunur + accent halka + köşeden çukura vuran holo ışık.
         "focus-visible:ring-ring/60 focus-visible:ring-2 focus-visible:shadow-[var(--shadow-pressed),inset_6px_-6px_14px_-4px_var(--pit-glow),inset_11px_-11px_28px_-10px_var(--pit-glow)]",
         "dark:focus-visible:shadow-[var(--lume-pit),inset_6px_-6px_14px_-4px_var(--pit-glow)]",
-        "aria-invalid:ring-destructive/30",
+        "aria-invalid:ring-2 aria-invalid:ring-destructive/30",
         className,
       )}
       {...props}

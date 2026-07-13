@@ -55,6 +55,7 @@ export function NewCollectionForm() {
           if (e.key === "Escape") setOpen(false);
         }}
         placeholder="Koleksiyon adı (ör. Men's Collection)"
+        aria-label="Koleksiyon adı"
         className="h-9 w-56"
         disabled={pending}
       />

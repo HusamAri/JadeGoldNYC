@@ -110,27 +110,27 @@ export default async function PanelPage({
       <Card>
         <CardContent className="flex flex-wrap items-center gap-4 text-sm">
           <div className="flex items-center gap-2">
-            <ScaleLine className="text-muted-foreground size-4" />
+            <ScaleLine aria-hidden className="text-muted-foreground size-4" />
             <span className="text-muted-foreground">Güncel Altın:</span>
             <span className="font-semibold tabular-nums">
               ${formatNumber(goldPriceOunce)}/oz
             </span>
           </div>
-          <div className="text-muted-foreground">|</div>
+          <div aria-hidden className="text-muted-foreground">|</div>
           <div>
             <span className="text-muted-foreground">24K Gram: </span>
             <span className="font-semibold tabular-nums">
               ${goldPricePerGram.toFixed(2)}
             </span>
           </div>
-          <div className="text-muted-foreground">|</div>
+          <div aria-hidden className="text-muted-foreground">|</div>
           <div>
             <span className="text-muted-foreground">14K Gram: </span>
             <span className="font-semibold tabular-nums">
               ${(goldPricePerGram * KARAT_PURITY["14K"]).toFixed(2)}
             </span>
           </div>
-          <div className="text-muted-foreground">|</div>
+          <div aria-hidden className="text-muted-foreground">|</div>
           <div>
             <span className="text-muted-foreground">10K Gram: </span>
             <span className="font-semibold tabular-nums">
@@ -405,7 +405,7 @@ export default async function PanelPage({
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <UsersLine className="size-4" />
+              <UsersLine aria-hidden className="size-4" />
               En İyi Müşteriler
             </CardTitle>
           </CardHeader>
@@ -446,7 +446,7 @@ export default async function PanelPage({
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Store className="size-4" />
+              <Store aria-hidden className="size-4" />
               Satış Kanalları
             </CardTitle>
           </CardHeader>

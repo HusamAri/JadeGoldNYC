@@ -258,6 +258,7 @@ export function GeneratedGallery({
           onChange={(e) => setUrls(e.target.value)}
           placeholder="https://…cloudfront.net/…hf_….png"
           rows={3}
+          aria-label="Higgsfield görsel bağlantıları (satır başına bir URL)"
           className="mt-3 font-mono text-xs"
         />
         <div className="mt-3 flex flex-wrap items-center gap-2">

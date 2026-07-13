@@ -38,7 +38,7 @@ export function ProductWeightInput({
       <Label htmlFor={`weight-${productId}`} className="sr-only">
         Ağırlık (gram)
       </Label>
-      <Scale className="text-muted-foreground size-3.5 shrink-0" />
+      <Scale aria-hidden className="text-muted-foreground size-3.5 shrink-0" />
       <Input
         id={`weight-${productId}`}
         inputMode="decimal"

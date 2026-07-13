@@ -145,7 +145,7 @@ export default async function TasarimlarPage() {
                           />
                         ) : (
                           <span className="text-muted-foreground/50 flex h-full items-center justify-center">
-                            <ImageOff className="size-6" />
+                            <ImageOff aria-hidden className="size-6" />
                           </span>
                         )}
                       </Link>
@@ -160,7 +160,10 @@ export default async function TasarimlarPage() {
                           <div className="mt-1 flex items-center gap-1.5">
                             <DesignStatusBadge status={d.status} />
                             {thumb && (
-                              <MessageSquare className="text-muted-foreground size-3" />
+                              <MessageSquare
+                                aria-hidden
+                                className="text-muted-foreground size-3"
+                              />
                             )}
                           </div>
                         </div>
@@ -185,10 +188,13 @@ export default async function TasarimlarPage() {
 
       {/* ── Etsy Listingleri (referans katalog) ──────────────────── */}
       <section className="space-y-3">
-        <div>
-          <h3 className="text-base font-semibold">
-            Etsy Listingleri ({listings.length})
-          </h3>
+        <div className="space-y-1">
+          <div className="flex items-baseline gap-2">
+            <h3 className="font-serif text-xl leading-tight">Etsy Listingleri</h3>
+            <span className="text-muted-foreground text-sm tabular-nums">
+              {listings.length}
+            </span>
+          </div>
           <p className="text-muted-foreground text-sm">
             Etsy mağazasından senkronize edilen aktif ürün listingleri — ağırlık
             girişi burada
@@ -198,7 +204,7 @@ export default async function TasarimlarPage() {
         {listings.length === 0 ? (
           <Card>
             <div className="flex flex-col items-center gap-2 px-6 py-8 text-center">
-              <Package className="text-muted-foreground size-8" />
+              <Package aria-hidden className="text-muted-foreground size-8" />
               <p className="text-muted-foreground text-sm">
                 Henüz senkronize edilmiş listing yok. Etsy entegrasyonunu ayarlar
                 sayfasından bağlayabilirsiniz.

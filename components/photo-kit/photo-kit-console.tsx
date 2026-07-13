@@ -145,6 +145,7 @@ export function PhotoKitConsole({ producedIds }: { producedIds: number[] }) {
         <div
           className="bg-muted mt-3 h-2.5 overflow-hidden rounded-full"
           role="progressbar"
+          aria-label="Üretim ilerlemesi"
           aria-valuenow={pct}
           aria-valuemin={0}
           aria-valuemax={100}
