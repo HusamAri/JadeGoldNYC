@@ -19,6 +19,18 @@ ne yapılamadı" ayrı ayrı işaretlendi.
 - `weight_source` = ağırlığın nereden geldiği: `description` (başlık/açıklama),
   `shipstation` (kargo tartısı), `inferred` (tahmin). `inferred` olanlar teyit
   edilmeli.
+- **Eksik ağırlıkların hesaplanması (2. tur):**
+  - **Franco (1891642136):** ShipStation'da gerçek ölçü yok. Franco kare-örgü
+    olduğundan kütle/uzunluk ≈ genişlik². Bilinen 1.8MM Franco verisi tam
+    lineer (**0.156 g/inç**); buna kalibre edip `g = 0.156 × (MM/1.8)² × boy`
+    ile tahmin edildi. **Doğrulama:** üretilen marjlar %42–53 → bilinen 1.8MM
+    bandıyla (%49–53) birebir tutarlı. Yine de bunlar **geometrik tahmin**,
+    ölçüm değil — üretimde teyit edilmeli.
+  - **Herringbone (1294201622) & Mariner (1320317404):** Panelde varyasyon
+    satırı yok, ama listing açıklamasında **satıcının beyan ettiği gerçek
+    ağırlık tablosu** var. Boya göre lineer ölçeklendi (`g = (beyan_g / anchor_boy)
+    × boy`). Bunlar tahmin değil, satıcı beyanı; fiyat satırı DB'de olmadığı
+    için yalnız gram+maliyet çıkarıldı (marj yok).
 
 ## Genel özet
 
@@ -26,14 +38,14 @@ ne yapılamadı" ayrı ayrı işaretlendi.
 |---|---|---|---|---|---|---|
 | 1 | 1849001180 | 10K Figaro | 2 ($505) | 42 | 14.436 | ✅ Gram + marj (30 varyasyon) |
 | 2 | 1862661659 | 14K Round Box | 5 ($8.373) | 96 | 19.756 | ℹ️ Referans/örnek — sağlıklı |
-| 3 | 1320317404 | 10K Mariner | 0 | 0 | 22.064 | ⚠️ DB'de varyasyon yok |
+| 3 | 1320317404 | 10K Mariner | 0 | 0 | 22.064 | ✅ Gram+maliyet (20 beden, açıklama ağırlığı) |
 | 4 | 1863505492 | 14K Figaro | 0 | 33 | 6.877 | ✅ Gram + marj (25 varyasyon) |
 | 5 | 1849022518 | 10K Rope | 3 ($6.095) | 5 | 1.238 | 🚩 "Kapanabilir" notu YANLIŞ — satıyor |
-| 6 | 1891642136 | 10K Franco | 0 | 117 | 5.185 | ⚠️ Kısmi (5/25 varyasyon; 20 ağırlık boş) |
+| 6 | 1891642136 | 10K Franco | 0 | 117 | 5.185 | ✅ 25 varyasyon (5 gerçek + 20 tahmin) |
 | 7 | 1485089843 | 14K Beaded Ball | 0 | 23 | 13.871 | ✅ Gram + marj + 🔴 fiyat hatası bulundu |
 | 8 | 1868666012 | 14K Figaro | 0 | 1 | 536 | ℹ️ Ölü — kapatma notu doğru |
 | 9 | 1199260535 | 14K Rope Bileklik | 0 | 321 | 121.567 | ℹ️ Marj sağlıklı; reklam Etsy'de |
-| 10 | 1294201622 | 10K Herringbone | 0 | 0 | 47.215 | ⚠️ DB'de varyasyon yok |
+| 10 | 1294201622 | 10K Herringbone | 0 | 0 | 47.215 | ✅ Gram+maliyet (20 beden, açıklama ağırlığı) |
 
 ---
 
@@ -99,11 +111,37 @@ ne yapılamadı" ayrı ayrı işaretlendi.
 ## 3 — 1320317404 · 10K Puffed Mariner Anchor Chain
 **Görev:** "Stok durumuna göre karar verilecek."
 
-- **Yapılamadı:** Bu listing için `product_variants` tablosunda **hiç kayıt
-  yok** → gram/maliyet hesaplanamıyor.
-- **Karar zaten insan/tedarik konusu** (stok/temin). Veri tarafı:
+- **Yapıldı (2. tur):** `product_variants` boş, ama açıklamada **satıcı beyanı
+  ağırlık tablosu** var (18" bazlı): 7.6mm=16.88g, 10.2mm=21.50g, 12.2mm=23g,
+  14.4mm=26.50g. Boya göre ölçekleyip gram+maliyet çıkarıldı (10K, $65/g).
+  Fiyat satırı DB'de olmadığı için marj hesaplanamadı.
+- **Karar hâlâ insan/tedarik konusu** (stok/temin). Veri tarafı:
   22.064 görüntülenme, 365 favori, **0 sipariş** — yüksek ilgi, sıfır satış.
-  Yani "temin edilebilir mi" sorusu netleşirse, talep var; öncelik verilebilir.
+  Not: başlıktaki "4.2/5/6mm" ile ağırlık tablosundaki mm'ler farklı (biri tel,
+  diğeri puf genişliği); tablo satıcının verdiği gerçek gramlardır.
+
+| Genişlik | Boy | Ağırlık (g) | Maliyet (10K) |
+|---|---|---|---|
+| 7.6mm | 16" | 15.00 | $975.31 |
+| 7.6mm | 18" | 16.88 | $1.097.23 |
+| 7.6mm | 20" | 18.76 | $1.219.14 |
+| 7.6mm | 22" | 20.63 | $1.341.05 |
+| 7.6mm | 24" | 22.51 | $1.462.97 |
+| 10.2mm | 16" | 19.11 | $1.242.18 |
+| 10.2mm | 18" | 21.50 | $1.397.45 |
+| 10.2mm | 20" | 23.89 | $1.552.72 |
+| 10.2mm | 22" | 26.28 | $1.707.99 |
+| 10.2mm | 24" | 28.67 | $1.863.26 |
+| 12.2mm | 16" | 20.44 | $1.328.91 |
+| 12.2mm | 18" | 23.00 | $1.495.03 |
+| 12.2mm | 20" | 25.56 | $1.661.14 |
+| 12.2mm | 22" | 28.11 | $1.827.25 |
+| 12.2mm | 24" | 30.67 | $1.993.37 |
+| 14.4mm | 16" | 23.56 | $1.531.09 |
+| 14.4mm | 18" | 26.50 | $1.722.47 |
+| 14.4mm | 20" | 29.44 | $1.913.86 |
+| 14.4mm | 22" | 32.39 | $2.105.25 |
+| 14.4mm | 24" | 35.33 | $2.296.63 |
 
 ---
 
@@ -163,14 +201,11 @@ ne yapılamadı" ayrı ayrı işaretlendi.
 ## 6 — 1891642136 · 10K Real Yellow Gold Franco Chain
 **Görevler:** fiyat analizi · tüm varyasyon gram cost (gamze) · favori size tekli listing (gamze) · keyword reklam (husam)
 
-- **Kısmen yapıldı:** 25 varyasyondan yalnız **5'inin ağırlığı DB'de dolu**
-  (1.8MM tüm boylar); 20 varyasyonun `weight_grams` alanı **boş** →
-  gram maliyeti çıkmıyor.
-- Hesaplanabilen 5 varyasyon: marj **%49.1 – %53.5** (sağlıklı). Bunların
-  `weight_source = inferred` (tahmin) — teyit edilmeli.
-- **Blokaj:** Kalan 20 beden (2.2 / 2.4 / 3.2 / 4MM) için önce ağırlık verisi
-  Etsy/ShipStation'dan senkronlanmalı; sonra tam tablo çıkar. Bu, gamze'nin
-  "tüm varyasyon gram cost" görevinin ön koşulu.
+- **Tamamlandı (2. tur):** 5 varyasyonun (1.8MM) ağırlığı DB'de vardı; kalan
+  **20 varyasyon geometrik modelle hesaplandı** (0.156 g/inç @1.8MM, kütle ∝ MM²).
+  Üretilen marjlar **%42.5 – %53.0** → bilinen 1.8MM bandıyla (%49–53) tutarlı,
+  model doğrulandı. ShipStation'da gerçek ölçü olmadığı için bunlar **tahmin**;
+  üretimde teyit önerilir.
 - **Not:** Listede "0 order" — gerçekte ömür **117 sipariş** (son 2026-02-15).
   Güçlü bir geçmiş satıcı; yeniden canlandırmaya değer.
 - **Yapılamadı:** favori-size tekli listing (Etsy'de listing oluşturma) +
@@ -183,7 +218,29 @@ ne yapılamadı" ayrı ayrı işaretlendi.
 | 1.8MM · 20" | 3.12 | $429.57 | $202.80 | $226.77 | 52.8 |
 | 1.8MM · 22" | 3.43 | $476.01 | $222.95 | $253.06 | 53.2 |
 | 1.8MM · 24" | 3.74 | $522.45 | $243.10 | $279.35 | 53.5 |
-| 2.2 / 2.4 / 3.2 / 4MM (20 beden) | — (boş) | $510–$2.090 | — | — | ⚠️ ağırlık yok |
+| *2.2MM · 16"* | *3.73* | $510.84 | *$242.36* | *$268.48* | *52.6* |
+| *2.2MM · 18"* | *4.19* | $580.50 | *$272.65* | *$307.85* | *53.0* |
+| *2.2MM · 20"* | *4.66* | $626.94 | *$302.95* | *$323.99* | *51.7* |
+| *2.2MM · 22"* | *5.13* | $684.99 | *$333.24* | *$351.75* | *51.4* |
+| *2.2MM · 24"* | *5.59* | $743.04 | *$363.54* | *$379.50* | *51.1* |
+| *2.4MM · 16"* | *4.44* | $580.50 | *$288.43* | *$292.07* | *50.3* |
+| *2.4MM · 18"* | *4.99* | $650.16 | *$324.48* | *$325.68* | *50.1* |
+| *2.4MM · 20"* | *5.55* | $719.82 | *$360.53* | *$359.29* | *49.9* |
+| *2.4MM · 22"* | *6.10* | $789.48 | *$396.59* | *$392.89* | *49.8* |
+| *2.4MM · 24"* | *6.66* | $859.14 | *$432.64* | *$426.50* | *49.6* |
+| *3.2MM · 16"* | *7.89* | $986.85 | *$512.76* | *$474.09* | *48.0* |
+| *3.2MM · 18"* | *8.87* | $1.102.95 | *$576.85* | *$526.10* | *47.7* |
+| *3.2MM · 20"* | *9.86* | $1.219.05 | *$640.95* | *$578.10* | *47.4* |
+| *3.2MM · 22"* | *10.85* | $1.335.15 | *$705.04* | *$630.11* | *47.2* |
+| *3.2MM · 24"* | *11.83* | $1.451.25 | *$769.14* | *$682.11* | *47.0* |
+| *4MM · 16"* | *12.33* | $1.393.20 | *$801.19* | *$592.01* | *42.5* |
+| *4MM · 18"* | *13.87* | $1.567.35 | *$901.33* | *$666.02* | *42.5* |
+| *4MM · 20"* | *15.41* | $1.741.50 | *$1.001.48* | *$740.02* | *42.5* |
+| *4MM · 22"* | *16.95* | $1.915.65 | *$1.101.63* | *$814.02* | *42.5* |
+| *4MM · 24"* | *18.49* | $2.089.80 | *$1.201.78* | *$888.02* | *42.5* |
+
+> *İtalik* satırlar geometrik tahmindir (ağırlık ölçülmedi); marjlar bilgi
+> amaçlı. 1.8MM satırları DB'deki gerçek ağırlıklardır.
 
 ---
 
@@ -261,12 +318,38 @@ ne yapılamadı" ayrı ayrı işaretlendi.
 ## 10 — 1294201622 · 10K Solid Gold Herringbone Necklace
 **Görev:** "Gramlarda değişiklik var, update edilecek (gamze)."
 
-- **Yapılamadı:** Bu listing için `product_variants` tablosunda **hiç kayıt
-  yok** → güncellenecek gram verisi panelde mevcut değil.
-- Ön koşul: varyasyonlar/gramlar Etsy'den senkronlanmalı ya da elle
-  girilmeli; sonra güncelleme + gram maliyeti yapılabilir.
+- **Yapıldı (2. tur):** `product_variants` boş, ama açıklamada **satıcı beyanı
+  ağırlık tablosu** var (20" bazlı): 2.3mm=3.72g, 2.7mm=4.35g, 3.7mm=7.20g,
+  4.5mm=8.20g. Boya göre ölçekleyip gram+maliyet çıkarıldı (10K, $65/g).
+  (Başlıkta 6mm de geçiyor ama açıklamada ağırlığı verilmemiş → tabloda yok.)
+  Fiyat satırı DB'de olmadığı için marj hesaplanamadı.
+- **Kalan ön koşul:** Bu tabloyu panele/Etsy'ye varyasyon olarak girmek + fiyat
+  belirlemek gamze'nin görevi; gram tarafı artık hazır.
 - Veri: 47.215 görüntülenme, 893 favori, **0 sipariş** — yüksek ilgi, sıfır
   satış. Doğru gram/fiyat kurulumu bu listing için öncelikli.
+
+| Genişlik | Boy | Ağırlık (g) | Maliyet (10K) |
+|---|---|---|---|
+| 2.3mm | 16" | 2.98 | $193.44 |
+| 2.3mm | 18" | 3.35 | $217.62 |
+| 2.3mm | 20" | 3.72 | $241.80 |
+| 2.3mm | 22" | 4.09 | $265.98 |
+| 2.3mm | 24" | 4.46 | $290.16 |
+| 2.7mm | 16" | 3.48 | $226.20 |
+| 2.7mm | 18" | 3.92 | $254.48 |
+| 2.7mm | 20" | 4.35 | $282.75 |
+| 2.7mm | 22" | 4.79 | $311.03 |
+| 2.7mm | 24" | 5.22 | $339.30 |
+| 3.7mm | 16" | 5.76 | $374.40 |
+| 3.7mm | 18" | 6.48 | $421.20 |
+| 3.7mm | 20" | 7.20 | $468.00 |
+| 3.7mm | 22" | 7.92 | $514.80 |
+| 3.7mm | 24" | 8.64 | $561.60 |
+| 4.5mm | 16" | 6.56 | $426.40 |
+| 4.5mm | 18" | 7.38 | $479.70 |
+| 4.5mm | 20" | 8.20 | $533.00 |
+| 4.5mm | 22" | 9.02 | $586.30 |
+| 4.5mm | 24" | 9.84 | $639.60 |
 
 ---
 
@@ -279,8 +362,10 @@ ne yapılamadı" ayrı ayrı işaretlendi.
 3. **🚩 1849022518 — KAPATMAYIN:** son 30 günde $6.095 satmış; "kapanabilir"
    notu hatalı.
 4. **🟠 1863505492 — 2.6MM·18" underpriced** ($365 → ~$500 olmalı; marj %18.5).
-5. **🟠 1891642136 & 1294201622 & 1320317404 — veri eksik:** varyasyon
-   ağırlıkları senkronlanmadan gram/fiyat görevleri tamamlanamaz.
+5. **🟢 1891642136 / 1294201622 / 1320317404 — gram maliyetleri hesaplandı**
+   (Franco geometrik tahmin; Herringbone & Mariner satıcı beyanı ağırlık).
+   Kalan iş: bu gramları panele/Etsy'ye varyasyon olarak işlemek + Franco
+   tahminlerini üretimde teyit etmek.
 
 ## Yapılamayanlar (Etsy paneli / dış kaynak / insan kararı)
 
