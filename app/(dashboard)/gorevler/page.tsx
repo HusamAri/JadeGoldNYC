@@ -65,7 +65,7 @@ export default async function GorevlerPage() {
   ]);
 
   return (
-    <div className="relative z-0 pb-28 space-y-6">
+    <div className="relative z-0 pb-28 space-y-8">
       <SceneCutouts page="gorevler" />
       <GoldStream motif="check" />
       <PageHeader
@@ -91,7 +91,7 @@ export default async function GorevlerPage() {
       </div>
       {/* Ana KPI bölümü — Spatial hero köşe işaretleri (dekoratif sarmalayıcı). */}
       <div className="relative">
-      <div className="stagger grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-5">
+      <div className="stagger grid grid-cols-2 gap-5 lg:grid-cols-3 xl:grid-cols-5">
         <KpiCard
           label="Toplam Görev"
           value={formatNumber(summary.total)}

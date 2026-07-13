@@ -91,9 +91,11 @@ export default async function SatislarPage({
     ...analytics.countries.map((c) => c.gross_cents),
   );
   const filtered = Boolean(search || status);
+  // Özet KPI'ları toplulaştırılmış USD (usd0 zaten USD varsayar) → Money için para birimi.
+  const cur = "USD";
 
   return (
-    <div className="relative z-0 space-y-6 pb-28">
+    <div className="relative z-0 space-y-8 pb-28">
       <SceneCutouts page="satislar" />
       <GoldStream motif="gift" />
       <PageHeader
@@ -133,15 +135,17 @@ export default async function SatislarPage({
         </p>
         {/* Ana KPI bölümü — Spatial hero köşe işaretleri (dekoratif sarmalayıcı). */}
         <div className="relative">
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-2 gap-5 md:grid-cols-3">
           <KpiCard
             label="Ciro (brüt)"
-            value={usd0(t.gross_cents)}
+            cents={t.gross_cents}
+            currency={cur}
             icon={DollarSign}
           />
           <KpiCard
             label="Net (kesinti sonrası)"
-            value={usd0(netCents)}
+            cents={netCents}
+            currency={cur}
             icon={TrendingUp}
             accent="positive"
             hint="Etsy kesintisi düşülmüş"
@@ -153,12 +157,14 @@ export default async function SatislarPage({
           />
           <KpiCard
             label="Ort. Sipariş"
-            value={usd0(avgCents)}
+            cents={avgCents}
+            currency={cur}
             icon={Receipt}
           />
           <KpiCard
             label="Etsy Kesintisi"
-            value={usd0(t.fees_cents)}
+            cents={t.fees_cents}
+            currency={cur}
             icon={Percent}
             hint={`Cironun %${(feePct * 100).toFixed(1)}'i`}
           />
@@ -172,8 +178,8 @@ export default async function SatislarPage({
         </div>
 
         {analytics.monthly.length > 0 && (
-          <div className="grid gap-4 lg:grid-cols-2">
-            <Card>
+          <div className="grid gap-5 lg:grid-cols-2">
+            <Card className="glass-iced">
               <CardContent className="space-y-3">
                 <h3 className="text-muted-foreground text-sm font-medium">
                   Aylık Ciro · son 12 ay
@@ -181,7 +187,7 @@ export default async function SatislarPage({
                 <RevenueAreaChart data={revenueSeries} />
               </CardContent>
             </Card>
-            <Card>
+            <Card className="glass-iced">
               <CardContent className="space-y-3">
                 <h3 className="text-muted-foreground text-sm font-medium">
                   Aylık Sipariş · son 12 ay
@@ -201,18 +207,19 @@ export default async function SatislarPage({
               <ul className="space-y-2.5">
                 {analytics.countries.map((c) => (
                   <li key={c.country} className="space-y-1">
-                    <div className="flex items-baseline justify-between text-sm">
-                      <span className="font-medium">
+                    <div className="flex items-baseline justify-between gap-3 text-sm">
+                      {/* Uzun ülke adı liste satırında tek satır kalır, taşarsa yatay kaydırılır. */}
+                      <span className="scroll-x min-w-0 font-medium">
                         {c.country}
                         <span className="text-muted-foreground ml-2 text-xs font-normal">
                           {formatNumber(c.orders)} sipariş
                         </span>
                       </span>
-                      <span className="tabular-nums font-medium">
+                      <span className="shrink-0 tabular-nums font-medium">
                         {usd0(c.gross_cents)}
                       </span>
                     </div>
-                    <div className="bg-muted h-1.5 overflow-hidden rounded-full">
+                    <div className="nm-pressed h-2 overflow-hidden rounded-full">
                       <div
                         className="h-full rounded-full bg-[var(--chart-2)]"
                         style={{
@@ -235,7 +242,7 @@ export default async function SatislarPage({
         <span className="idx-ln" />
         <span>Jade Gold · NYC</span>
       </div>
-      <Card>
+      <Card className="glass-fluted">
         <CardContent className="space-y-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <SearchInput placeholder="Sipariş no, alıcı…" />

@@ -1,6 +1,8 @@
 import type { ComponentType, SVGProps } from "react";
 
 import { cn } from "@/lib/utils";
+import { formatMoney } from "@/lib/money";
+import { Money } from "@/components/money";
 
 /** Hem Lucide hem markaya özel Lux ikonlarını kabul eden ikon tipi. */
 type IconType = ComponentType<SVGProps<SVGSVGElement>>;
@@ -33,6 +35,8 @@ const ICON_SPOTS = [
 export function KpiCard({
   label,
   value,
+  cents,
+  currency = "USD",
   icon: Icon,
   hint,
   accent = "default",
@@ -40,9 +44,14 @@ export function KpiCard({
   changeLabel,
   className,
   splitTone = false,
+  holo = false,
 }: {
   label: string;
-  value: string;
+  /** Metin değer. Para için `cents` verin — kuruş küçük/aşağı kayar (estetik). */
+  value?: string;
+  /** Para tutarı (cent). Verilirse `value` yerine <Money> ile gösterilir. */
+  cents?: number | null;
+  currency?: string;
   icon?: IconType;
   hint?: string;
   accent?: "default" | "positive" | "negative";
@@ -56,7 +65,19 @@ export function KpiCard({
    * kartlarında değil, yalnız en kritik metrikte kullanın.
    */
   splitTone?: boolean;
+  /**
+   * Görünüm başına TEK kahraman KPI için iridesan holografik rakam
+   * (.holo-text — sistemin tek kroma patlaması). Net Kâr gibi en kritik
+   * metrikte kullanın; accent renginin yerine geçer.
+   */
+  holo?: boolean;
 }) {
+  // Para modu: cents verilirse <Money> ile göster (kuruş küçük/aşağı); punto
+  // ölçeği için biçimlenmiş metnin uzunluğunu kullan.
+  const isMoney = cents != null;
+  const displayString = isMoney ? formatMoney(cents, currency) : (value ?? "");
+  const valueLen = displayString.length;
+
   // Her kutu FARKLI süzülür: etiketten türeyen deterministik faz/yön/süre.
   const h = hashLabel(label);
   const spot = ICON_SPOTS[h % ICON_SPOTS.length];
@@ -113,7 +134,7 @@ export function KpiCard({
           {/* Değer — font-index readout: açıkta Spatial mürekkebi,
               koyuda lume beyazı + 0 0 14px beyaz ışıma. */}
           <p
-            title={typeof value === "string" ? value : undefined}
+            title={displayString || undefined}
             className={cn(
               // Mobil dar kolonlarda değer ASLA elipslenmesin: truncate yerine
               // kademeli punto — rakam her zaman tam okunur.
@@ -123,25 +144,36 @@ export function KpiCard({
               splitTone
                 ? "text-3xl min-[420px]:text-4xl leading-tight jg-split-tone"
                 : cn(
-                    typeof value === "string" && value.length > 13
+                    valueLen > 13
                       ? "text-base min-[420px]:text-lg"
-                      : typeof value === "string" && value.length > 10
+                      : valueLen > 10
                         ? "text-lg min-[420px]:text-xl"
                         : "text-xl min-[420px]:text-2xl",
-                    "leading-tight dark:[text-shadow:0_0_14px_rgba(255,255,255,.5)]",
+                    "leading-tight",
+                    // Holo kahraman: iridesan degrade rakam — accent/ışıma yok.
+                    holo
+                      ? "holo-text"
+                      : "dark:[text-shadow:0_0_14px_rgba(255,255,255,.5)]",
                   ),
               !splitTone &&
+                !holo &&
                 accent === "default" &&
                 "text-foreground dark:text-white",
               !splitTone &&
+                !holo &&
                 accent === "positive" &&
                 "text-[oklch(0.50_0.19_278)] dark:text-[oklch(0.80_0.10_278)]",
               !splitTone &&
+                !holo &&
                 accent === "negative" &&
                 "text-[oklch(0.58_0.16_344)] dark:text-[oklch(0.74_0.12_344)]",
             )}
           >
-            {value}
+            {isMoney ? (
+              <Money cents={cents} currency={currency} />
+            ) : (
+              value
+            )}
           </p>
           {change != null && (
             <p

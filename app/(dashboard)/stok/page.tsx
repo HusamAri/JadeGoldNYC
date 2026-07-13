@@ -7,6 +7,7 @@ import { listStockProducts, type StockProduct } from "@/lib/db/queries/stock";
 import { getEtsyWriteAccess } from "@/lib/db/queries/etsy";
 import { formatNumber } from "@/lib/format";
 import { PageHeader } from "@/components/page-header";
+import { SceneCutouts } from "@/components/scene-cutouts";
 import { EmptyState } from "@/components/empty-state";
 import { StockQuantityInput } from "@/components/stock-quantity-input";
 import { StockSyncPanel } from "@/components/stock-sync-panel";
@@ -75,7 +76,8 @@ export default async function StokPage() {
   ).length;
 
   return (
-    <div className="space-y-6">
+    <div className="relative z-0 space-y-8 pb-28">
+      <SceneCutouts page="stok" />
       <PageHeader
         title="Stok Senkronizasyonu"
         description="Her ürün için elde/hedef adedi girin; hazır olunca tek tuşla Etsy ile çift yönlü eşitleyin."
@@ -101,10 +103,13 @@ export default async function StokPage() {
         />
       ) : (
         <>
-          <div className="flex flex-wrap items-center gap-3">
-            <StatChip label="Ürün" value={products.length} />
-            <StatChip label="Doldurulan" value={filled} />
-            <StatChip label="Değişecek" value={pending} accent />
+          {/* Özet şerit — sayfanın hero özeti: berrak cam board (.glass-board) */}
+          <div className="glass-board relative isolate overflow-hidden rounded-2xl px-6 py-5">
+            <div className="relative z-10 flex flex-wrap items-center gap-3">
+              <StatChip label="Ürün" value={products.length} />
+              <StatChip label="Doldurulan" value={filled} />
+              <StatChip label="Değişecek" value={pending} accent />
+            </div>
           </div>
 
           {!access.writeEnabled && access.connected && (
@@ -116,7 +121,7 @@ export default async function StokPage() {
                   yazabilmek için{" "}
                   <Link
                     href="/ayarlar/etsy"
-                    className="text-[color:var(--gold-deep,#9A7A34)] font-medium hover:underline"
+                    className="font-medium text-[color:var(--gold-deep)] hover:underline"
                   >
                     Etsy&apos;yi yeniden bağlayın
                   </Link>{" "}
@@ -130,12 +135,14 @@ export default async function StokPage() {
             const rows = groups.get(cat)!;
             return (
               <section key={cat} className="space-y-2">
-                <div className="flex items-baseline gap-3 border-b-2 border-[color:var(--gold,#B89347)] pb-2">
+                <div className="flex items-baseline gap-3 border-b-2 border-[color:var(--gold)] pb-2">
                   <h2 className="text-lg font-semibold">{cat}</h2>
                   <span className="text-muted-foreground ml-auto text-xs font-medium tabular-nums">
                     {formatNumber(rows.length)} ürün
                   </span>
                 </div>
+                {/* Tablo kabı — dikey oluklu cam (.glass-fluted) */}
+                <div className="glass-fluted rounded-2xl p-2 sm:p-3">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -161,7 +168,7 @@ export default async function StokPage() {
                               width={40}
                               height={40}
                               unoptimized
-                              className="size-10 rounded-md border border-[color:var(--line,#DED9CB)] object-cover"
+                              className="size-10 rounded-md border border-border object-cover"
                             />
                           ) : (
                             <span className="bg-muted text-muted-foreground flex size-10 items-center justify-center rounded-md text-[10px] font-semibold">
@@ -169,13 +176,16 @@ export default async function StokPage() {
                             </span>
                           )}
                         </TableCell>
-                        <TableCell className="max-w-[320px] truncate font-medium">
-                          {p.title}
-                          {p.has_variations && (
-                            <span className="text-muted-foreground ml-2 text-xs font-normal">
-                              varyantlı
-                            </span>
-                          )}
+                        <TableCell className="max-w-[320px] font-medium">
+                          {/* Uzun ürün adı: kırpma yerine yatay kaydırma (.scroll-x) */}
+                          <div className="scroll-x">
+                            {p.title}
+                            {p.has_variations && (
+                              <span className="text-muted-foreground ml-2 text-xs font-normal">
+                                varyantlı
+                              </span>
+                            )}
+                          </div>
                         </TableCell>
                         <TableCell className="text-muted-foreground font-mono text-xs">
                           {p.sku ?? "—"}
@@ -195,6 +205,7 @@ export default async function StokPage() {
                     ))}
                   </TableBody>
                 </Table>
+                </div>
               </section>
             );
           })}
@@ -214,11 +225,11 @@ function StatChip({
   accent?: boolean;
 }) {
   return (
-    <div className="inline-flex items-baseline gap-2 rounded-full border border-[color:var(--line,#DED9CB)] px-3.5 py-1.5">
+    <div className="nm-raised-sm inline-flex items-baseline gap-2 rounded-full px-4 py-1.5">
       <b
         className={
           accent
-            ? "text-[color:var(--gold-deep,#9A7A34)] tabular-nums"
+            ? "text-[color:var(--gold-deep)] tabular-nums"
             : "tabular-nums"
         }
       >

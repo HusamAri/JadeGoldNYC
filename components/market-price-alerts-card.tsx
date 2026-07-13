@@ -23,7 +23,7 @@ export function MarketPriceAlertsCard({
   return (
     <Card>
       <CardHeader className="flex flex-row items-center gap-2 space-y-0">
-        <Scale className="text-muted-foreground size-4" />
+        <Scale aria-hidden className="text-muted-foreground size-4" />
         <CardTitle className="text-base">Pazar Fiyat Uyarıları</CardTitle>
         {alerts.length > 0 && (
           <span className="bg-red-500/15 ml-auto rounded-full px-2 py-0.5 font-mono text-xs font-semibold text-red-600 tabular-nums shadow-[var(--shadow-raised-sm)]">
@@ -34,7 +34,7 @@ export function MarketPriceAlertsCard({
       <CardContent>
         {alerts.length === 0 ? (
           <p className="text-muted-foreground flex items-center gap-2 py-2 text-sm">
-            <CircleCheck className="size-4 text-emerald-600" />
+            <CircleCheck aria-hidden className="size-4 text-emerald-600" />
             Bant dışı fiyat yok — listingler pazar aralığında.
           </p>
         ) : (

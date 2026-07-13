@@ -25,7 +25,9 @@ export function PeriodSelector() {
 
   return (
     <Select value={value} onValueChange={onValueChange}>
-      <SelectTrigger className="w-[160px]" size="sm">
+      {/* Nöromorfik etkileşimli kontrol — konveks kabartma; hover'da yükselir,
+          basınca içeri çöker (.nm-interactive). */}
+      <SelectTrigger className="nm-interactive w-[160px]" size="sm">
         <SelectValue />
       </SelectTrigger>
       <SelectContent>

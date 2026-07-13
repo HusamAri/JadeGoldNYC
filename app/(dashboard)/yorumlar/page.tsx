@@ -16,6 +16,7 @@ import { formatNumber, formatDate } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { PageHeader } from "@/components/page-header";
 import { GoldStream } from "@/components/brand/gold-stream";
+import { SceneCutouts } from "@/components/scene-cutouts";
 import { EmptyState } from "@/components/empty-state";
 import { KpiCard } from "@/components/kpi-card";
 import { Badge } from "@/components/ui/badge";
@@ -65,8 +66,9 @@ export default async function YorumlarPage({
   ]);
 
   return (
-    <div className="relative z-0 pb-28 space-y-6">
+    <div className="relative z-0 pb-28 space-y-8">
       <GoldStream motif="star" />
+      <SceneCutouts page="yorumlar" />
       <PageHeader
         title="Tüketici Yorumları"
         description="Etsy yorumlarını, puan trendini ve yanıt durumunu takip edin"
@@ -80,7 +82,7 @@ export default async function YorumlarPage({
         }
       />
 
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-5 lg:grid-cols-3 xl:grid-cols-5">
         <KpiCard
           label="Toplam Yorum"
           value={formatNumber(summary.total)}
@@ -113,11 +115,14 @@ export default async function YorumlarPage({
           value={formatNumber(summary.needsResponse)}
           icon={AlertTriangle}
           accent={summary.needsResponse > 0 ? "negative" : "default"}
+          className="col-span-2 lg:col-span-1"
         />
       </div>
 
-      <Card>
-        <CardContent className="space-y-4">
+      {/* Tablo/liste kabı — dikey oluklu cam (glass-fluted); yarıçapı Card'dan
+          miras alır, içerik otomatik z-index:1 ile oluğun üstünde kalır. */}
+      <Card className="glass-fluted">
+        <CardContent className="space-y-6">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <SearchInput placeholder="Alıcı, yorum metni…" />
             <FilterSelect
@@ -165,9 +170,10 @@ export default async function YorumlarPage({
                         {formatDate(r.review_date)}
                       </TableCell>
                       <TableCell className="font-medium">
-                        {/* max-w bir td'de güvenilir değil — iç div ile kırp. */}
+                        {/* max-w bir td'de güvenilir değil — iç div ile sınırla;
+                            uzun ad kırpılmaz, tek satır kalıp yatay kaydırılır. */}
                         <div
-                          className="max-w-[110px] truncate"
+                          className="max-w-[110px] scroll-x"
                           title={r.buyer_name ?? undefined}
                         >
                           {r.buyer_name ?? "—"}
@@ -186,7 +192,7 @@ export default async function YorumlarPage({
                       </TableCell>
                       <TableCell className="text-muted-foreground">
                         <div
-                          className="max-w-[260px] truncate xl:max-w-[420px]"
+                          className="max-w-[260px] scroll-x xl:max-w-[420px]"
                           title={r.review_text ?? undefined}
                         >
                           {r.review_text ?? "—"}

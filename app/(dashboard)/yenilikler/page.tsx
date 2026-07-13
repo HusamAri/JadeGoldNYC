@@ -45,7 +45,7 @@ export default function YeniliklerPage() {
               <h2 className="font-serif text-xl leading-tight">{s.title}</h2>
               <p className="text-muted-foreground text-sm">{s.desc}</p>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-4">
               {items.map((e) => {
                 const Icon = e.icon;
                 return (

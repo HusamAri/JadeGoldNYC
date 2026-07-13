@@ -46,7 +46,7 @@ export default async function MaliyetlerPage({
   const catOptions = categories.map((c) => ({ value: c.id, label: c.label_tr }));
 
   return (
-    <div className="relative z-0 pb-28">
+    <div className="relative z-0 space-y-8 pb-28">
       <SceneCutouts page="maliyetler" />
       <GoldStream motif="scale" />
       <PageHeader
@@ -71,7 +71,7 @@ export default async function MaliyetlerPage({
       />
 
       {/* Dekoratif indeks satırı (Spatial/Liquid .idx dili). */}
-      <div aria-hidden className="idx mb-4">
+      <div aria-hidden className="idx sm:-mb-4">
         <span>Maliyetler / 01 · Atölye</span>
         <span className="idx-bar" />
         <span className="idx-ln" />
@@ -80,7 +80,7 @@ export default async function MaliyetlerPage({
       {/* Tek, sessiz marka aksanı — atölye/malzeme temasıyla maliyet sayfasına
           zarif bir giriş (galeri değil, tek kompakt banner). Sayfanın hero
           anı: Spatial köşe işaretleri (dekoratif sarmalayıcı). */}
-      <div className="relative mb-6">
+      <div className="relative">
         <EditorialCard
           compact
           heightClassName="h-[200px]"
@@ -94,13 +94,15 @@ export default async function MaliyetlerPage({
       </div>
 
       {/* Dekoratif indeks satırı (Spatial/Liquid .idx dili). */}
-      <div aria-hidden className="idx mb-4">
+      <div aria-hidden className="idx sm:-mb-4">
         <span>Maliyetler / 02 · Kayıtlar</span>
         <span className="idx-bar" />
         <span className="idx-ln" />
         <span>Jade Gold · NYC</span>
       </div>
-      <Card>
+      {/* Kayıt tablosu kabı — bölüm hiyerarşisinde tablo yüzeyi: dikey oluklu
+          cam (.glass-fluted). Yarıçapı Card'dan (rounded-[26px]) devralır. */}
+      <Card className="glass-fluted">
         <CardContent className="space-y-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <SearchInput placeholder="Açıklama, tedarikçi…" />
@@ -135,11 +137,12 @@ export default async function MaliyetlerPage({
                     <TableCell className="whitespace-nowrap">
                       {formatDate(c.cost_date)}
                     </TableCell>
-                    {/* Uzun açıklama tabloyu karttan taşırmasın: sınırlı
-                        genişlik + truncate; tam metin title tooltip'inde. */}
+                    {/* Uzun açıklama kayıt satırında tek satır kalır; sınırlı
+                        genişliği taşarsa yatay kaydırılır (.scroll-x) — kırpılıp
+                        gizlenmez; tam metin title tooltip'inde de durur. */}
                     <TableCell className="font-medium">
                       <div
-                        className="max-w-[260px] truncate xl:max-w-[340px]"
+                        className="scroll-x max-w-[260px] xl:max-w-[340px]"
                         title={c.description}
                       >
                         {c.description}

@@ -173,6 +173,7 @@ export function VariantCalculator() {
                   value={r.sku}
                   onChange={(e) => setRow(i, "sku", e.target.value)}
                   placeholder="ör. C14-22"
+                  aria-label={`Satır ${i + 1} SKU`}
                   className="font-mono"
                 />
                 <Input
@@ -180,12 +181,14 @@ export function VariantCalculator() {
                   value={r.weight}
                   onChange={(e) => setRow(i, "weight", e.target.value)}
                   placeholder="—"
+                  aria-label={`Satır ${i + 1} ağırlık (gram)`}
                 />
                 <Input
                   inputMode="decimal"
                   value={r.price}
                   onChange={(e) => setRow(i, "price", e.target.value)}
                   placeholder="—"
+                  aria-label={`Satır ${i + 1} fiyat (USD)`}
                 />
                 <Button
                   type="button"
@@ -225,7 +228,7 @@ export function VariantCalculator() {
         <Card>
           <CardContent className="space-y-3">
             <div className="idx">
-              <Sparkles className="size-4" />
+              <Sparkles aria-hidden className="size-4" />
               <span>Hesaplanan varyantlar</span>
               <span className="idx-bar" />
               <span className="idx-ln" />

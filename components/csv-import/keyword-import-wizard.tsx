@@ -107,8 +107,8 @@ export function KeywordImportWizard() {
     <div className="space-y-4">
       <Card>
         <CardContent className="space-y-4">
-          <label className="border-border hover:bg-accent/40 flex cursor-pointer flex-col items-center gap-2 rounded-[18px] border border-dashed px-6 py-10 text-center transition-colors">
-            <UploadCloud className="text-muted-foreground size-8" />
+          <label className="nm-pressed border-border/60 flex cursor-pointer flex-col items-center gap-2 rounded-2xl border border-dashed px-6 py-10 text-center transition-all">
+            <UploadCloud aria-hidden className="text-muted-foreground size-8" />
             <span className="text-sm font-medium">
               Etsy Stats arama-terimi CSV&apos;sini seç
             </span>
@@ -138,7 +138,7 @@ export function KeywordImportWizard() {
 
       {warnings.length > 0 && (
         <div className="text-muted-foreground flex items-start gap-2 text-sm">
-          <AlertTriangle className="mt-0.5 size-4 shrink-0 text-[oklch(0.70_0.15_60)]" />
+          <AlertTriangle aria-hidden className="mt-0.5 size-4 shrink-0 text-[var(--chart-4)]" />
           <ul className="space-y-0.5">
             {warnings.map((w, i) => (
               <li key={i}>{w}</li>
