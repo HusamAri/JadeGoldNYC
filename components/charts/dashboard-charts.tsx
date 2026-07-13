@@ -80,6 +80,9 @@ const MONO_TICK = {
    Renkler tema değişkenlerinden gelir, açık/koyu + marka kapsamında otomatik uyar.
    Diğer grafik dosyaları da aynı camı paylaşır (tek kaynak). */
 export const GLASS_TOOLTIP = {
+  // Tooltip, grafik üstüne absolute binen merkez okuma/ada katmanının ALTINDA
+  // kalmasın — popup her zaman en üstte okunur.
+  wrapperStyle: { zIndex: 50 },
   contentStyle: {
     background: "var(--glass-sheen), var(--glass)",
     border: "1px solid var(--glass-border)",
@@ -571,10 +574,19 @@ export function CategoryPie({
         className="pointer-events-none absolute inset-x-0 flex flex-col items-center justify-center"
         style={{ top: 0, height: 260, paddingBottom: 34 }}
       >
-        {/* Tick halkası — açıkta repeating-conic (70,52,120/.5, .6°/15°);
-            koyuda lume tick'leri (.9°/6°); yalnız dış ince bant maskelenir. */}
+        {/* Silindir gölgesi — tick bandına vuran ışık/gölge: üst rim beyaz
+            highlight, alt rim mor gölge. Düz halkayı içe kavisli bir silindir
+            duvarı gibi okutur (3B derinlik). */}
         <div
-          className="absolute left-1/2 size-[204px] -translate-x-1/2 -translate-y-1/2 rounded-full [background-image:repeating-conic-gradient(from_-90deg,rgba(70,52,120,.5)_0deg_.6deg,transparent_.6deg_15deg)] [mask-image:radial-gradient(farthest-side,transparent_calc(100%_-_12px),#000_calc(100%_-_11px))] dark:[background-image:repeating-conic-gradient(from_-90deg,rgba(150,160,255,.45)_0deg_.9deg,transparent_.9deg_6deg)]"
+          className="absolute left-1/2 size-[204px] -translate-x-1/2 -translate-y-1/2 rounded-full [background-image:linear-gradient(to_bottom,rgba(255,255,255,.55),transparent_44%,rgba(56,38,106,.22))] [mask-image:radial-gradient(farthest-side,transparent_calc(100%_-_13px),#000_calc(100%_-_12px))] dark:[background-image:linear-gradient(to_bottom,rgba(210,218,255,.32),transparent_46%,rgba(0,0,0,.4))]"
+          style={{ top: "calc(50% - 17px)" }}
+        />
+        {/* Tick halkası — açıkta repeating-conic (70,52,120/.5, .6°/15°);
+            koyuda lume tick'leri (.9°/6°). İki maske kesişir: dış ince bant ∩
+            üstten-alta sönümlenme → alttaki tick'ler silinir (simetri bozulmaz),
+            ticker'lar üst rim'e sarılır (silindir ağzı hissi). */}
+        <div
+          className="absolute left-1/2 size-[204px] -translate-x-1/2 -translate-y-1/2 rounded-full [background-image:repeating-conic-gradient(from_-90deg,rgba(70,52,120,.5)_0deg_.6deg,transparent_.6deg_15deg)] [mask-image:radial-gradient(farthest-side,transparent_calc(100%_-_12px),#000_calc(100%_-_11px)),linear-gradient(to_bottom,#000_0%,#000_40%,transparent_88%)] [mask-composite:intersect] [-webkit-mask-composite:source-in] dark:[background-image:repeating-conic-gradient(from_-90deg,rgba(150,160,255,.45)_0deg_.9deg,transparent_.9deg_6deg)]"
           style={{ top: "calc(50% - 17px)" }}
         />
         {/* İç cam hub — radyal beyaz→cam + Spatial iç gölge çifti; koyuda sade

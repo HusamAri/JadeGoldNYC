@@ -18,7 +18,7 @@ import { Scale as ScaleLine, Users as UsersLine } from "@/components/icons/lux";
 
 import { resolvePeriod, previousPeriod } from "@/lib/period";
 import { getDashboard } from "@/lib/db/queries/dashboard";
-import { getDataGaps } from "@/lib/db/queries/data-gaps";
+import { getAlertCenter } from "@/lib/db/queries/alerts";
 import { getTimelineData } from "@/lib/db/queries/timeline";
 import { requireMembership } from "@/lib/auth";
 import { getGoldPricePerOunce } from "@/lib/gold-price";
@@ -34,9 +34,7 @@ import { CornerMarks } from "@/components/brand/corner-marks";
 import { EditorialCard } from "@/components/brand/editorial-card";
 import { KpiCard } from "@/components/kpi-card";
 import { WhatsNew } from "@/components/whats-new";
-import { DataGapsCard } from "@/components/data-gaps-card";
-import { MarketPriceAlertsCard } from "@/components/market-price-alerts-card";
-import { getMarketPriceAlerts } from "@/lib/db/queries/market-alerts";
+import { AlertCenterCard } from "@/components/alert-center";
 import { PeriodSelector } from "@/components/period-selector";
 import {
   TrendChart,
@@ -69,14 +67,13 @@ export default async function PanelPage({
   const period = resolvePeriod(strParam(sp.period));
   const prev = previousPeriod(period);
   const m = await requireMembership();
-  const [d, goldPriceOunce, prevData, gaps, timeline, marketAlerts] =
+  const [d, goldPriceOunce, prevData, alertCenter, timeline] =
     await Promise.all([
       getDashboard(period),
       getGoldPricePerOunce(),
       prev ? getDashboard(prev) : Promise.resolve(null),
-      getDataGaps(m.org_id),
+      getAlertCenter(m.org_id),
       getTimelineData(m.org_id),
-      getMarketPriceAlerts(m.org_id),
     ]);
   const cur = d.currency;
   const goldPricePerGram = goldPriceOunce / TROY_OUNCE_GRAMS;
@@ -98,13 +95,12 @@ export default async function PanelPage({
 
       <WhatsNew />
 
+      {/* Uyarı Merkezi — sistem genelindeki tüm aksiyon sinyalleri tek yerde,
+          3 önem derecesi + bedele göre sıralı. "Neler yolunda gitmiyor?" */}
+      <AlertCenterCard data={alertCenter} />
+
       {/* Görev yol haritası + satış bağlamı — geniş; kaydırıcıyla geçmiş↔gelecek */}
       <PanelTimeline data={timeline} />
-
-      <DataGapsCard gaps={gaps} />
-
-      {/* Pazar bandı dışında fiyatlanan aktif listingler (günlük araştırmadan) */}
-      <MarketPriceAlertsCard alerts={marketAlerts} />
 
       {/* ── Güncel Altın Fiyatı (bağlam şeridi) ─────────────────────── */}
       <Card>

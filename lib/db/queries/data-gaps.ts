@@ -28,6 +28,8 @@ export async function getDataGaps(orgId: string): Promise<DataGap[]> {
     { count: variantsMissingWeight },
     { count: reviewsNeedReply },
     { data: actionableUnlinked },
+    { count: soldOutProducts },
+    { count: expiredProducts },
   ] = await Promise.all([
     head("product_variants").is("weight_grams", null),
     head("reviews").eq("status", "yeni").lte("rating", 3),
@@ -35,17 +37,46 @@ export async function getDataGaps(orgId: string): Promise<DataGap[]> {
     // varyantla eşleşen ama henüz bağlanmamış olanlar. Silinmiş/eski listelere
     // ait tarihsel kalemler (aktif ürüne ulaşmayan) sayılmaz — onlarla iş yok.
     supabase.rpc("count_actionable_unlinked_items", { p_org_id: orgId }),
+    // Stoğu biten (Etsy `sold_out`) ve süresi dolan (`expired`) listingler —
+    // satış kaybı/görünmezlik; senkron kartında anlık görünüyordu ama ana
+    // sayfada kalıcı aksiyon flag'i yoktu.
+    head("products").eq("status", "sold_out"),
+    head("products").eq("status", "expired"),
   ]);
   const saleItemsUnlinked = (actionableUnlinked as number | null) ?? 0;
 
   const gaps: DataGap[] = [];
 
+  if ((soldOutProducts ?? 0) > 0) {
+    gaps.push({
+      key: "products_sold_out",
+      title: `${soldOutProducts} ürün tükendi — şu an satılamıyor`,
+      count: soldOutProducts ?? 0,
+      hint: "Stok bitince listing kapanıyor; müşteri o ürünü başka mağazadan alıyor ve Etsy sıralamanda geriliyorsun. Stok ekleyip yeniden yayınla, satışa geri dönsün.",
+      href: "/tasarimlar?status=sold_out",
+      actionLabel: "Tükenenleri gör",
+      tone: "warn",
+    });
+  }
+
+  if ((expiredProducts ?? 0) > 0) {
+    gaps.push({
+      key: "products_expired",
+      title: `${expiredProducts} listing süresi doldu`,
+      count: expiredProducts ?? 0,
+      hint: "Süresi dolan ürün aramada hiç çıkmıyor — alıcılar seni bulamıyor, o listinge gelen trafik tamamen kesiliyor. Yenile, tekrar görünür olsun.",
+      href: "/tasarimlar?status=expired",
+      actionLabel: "Süresi dolanları gör",
+      tone: "warn",
+    });
+  }
+
   if ((variantsMissingWeight ?? 0) > 0) {
     gaps.push({
       key: "variant_weights",
-      title: `${variantsMissingWeight} varyantın ağırlığı (gram) eksik`,
+      title: `${variantsMissingWeight} varyantın gram bilgisi eksik`,
       count: variantsMissingWeight ?? 0,
-      hint: "Altın maliyeti ve kâr/marj analizleri gramla hesaplanır; eksik gram = tahmini/eksik maliyet.",
+      hint: "Gram bilinmeyince altın maliyetini ve gerçek kârını hesaplayamıyoruz — yanlış fiyatlıyor, farkında olmadan zarar edebiliyorsun. Ağırlıkları gir, kâr rakamların doğru olsun.",
       href: "/tasarimlar/eksik-agirlik",
       actionLabel: "Ağırlıkları gir",
       tone: "warn",
@@ -55,9 +86,9 @@ export async function getDataGaps(orgId: string): Promise<DataGap[]> {
   if ((reviewsNeedReply ?? 0) > 0) {
     gaps.push({
       key: "reviews_reply",
-      title: `${reviewsNeedReply} olumsuz yorum yanıt bekliyor`,
+      title: `${reviewsNeedReply} olumsuz yorum yanıtsız`,
       count: reviewsNeedReply ?? 0,
-      hint: "Yanıt oranı ve Yıldız Satıcı metriklerini etkiler.",
+      hint: "Yanıtsız olumsuz yorum yeni alıcıların gözüne ilk çarpan şey oluyor ve Yıldız Satıcı puanını düşürüyor. Yanıtla, hem güveni hem puanı koru.",
       href: "/yorumlar",
       actionLabel: "Yanıtla",
       tone: "warn",
@@ -67,11 +98,11 @@ export async function getDataGaps(orgId: string): Promise<DataGap[]> {
   if ((saleItemsUnlinked ?? 0) > 0) {
     gaps.push({
       key: "sale_items_unlinked",
-      title: `${saleItemsUnlinked} satış kalemi ürüne bağlanabilir`,
+      title: `${saleItemsUnlinked} satış bir ürüne bağlı değil`,
       count: saleItemsUnlinked,
-      hint: "SKU'su ürüne bağlı bir varyantla eşleşiyor; Stok sayfasındaki varyant senkronu bunları bağlar.",
+      hint: "Bu satışlar bir ürüne bağlanmadığı için ürün bazlı kâr ve performans raporlarında görünmüyor — rakamların eksik çıkıyor. Bağla, raporların tam olsun.",
       href: "/stok",
-      actionLabel: "Varyantları senkronize et",
+      actionLabel: "Varyantları bağla",
       tone: "info",
     });
   }
