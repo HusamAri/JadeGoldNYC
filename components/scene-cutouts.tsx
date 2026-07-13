@@ -146,9 +146,9 @@ export function SceneCutouts({
       {page === "panel" && (
         <>
           <SceneCutout kind="stones" depth="far" className="bottom-3 left-10" />
-          {/* Mobilde gizli: 390px'te mum, başlık/select şeridine düşüp okumayı
-              bozuyordu — cutout'lar yalnız boş zeminlere denk gelmeli. */}
-          <SceneCutout kind="candle" depth="near" className="max-md:hidden! top-2 right-32 md:right-56" />
+          {/* Mum AĞIR obje → zemine oturur (yerçekimi); alt-sağ gutter'da,
+              içeriğin arkasında. Havada süzülmez. Mobilde gizli. */}
+          <SceneCutout kind="candle" depth="near" className="max-md:hidden! bottom-0 right-10 md:right-16" />
         </>
       )}
       {page === "satislar" && (
