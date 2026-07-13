@@ -1,5 +1,10 @@
 import { createClient } from "@/lib/supabase/server";
 
+/** Uyarı önem derecesi — Uyarı Merkezi (lib/db/queries/alerts.ts) ile paylaşılır.
+ *  kritik = para kaybı akıyor/sistem kırık · onemli = performans aşınıyor ·
+ *  bilgi = hijyen/bakım. */
+export type AlertSeverity = "kritik" | "onemli" | "bilgi";
+
 export interface DataGap {
   key: string;
   title: string;
@@ -10,13 +15,18 @@ export interface DataGap {
   href: string;
   actionLabel: string;
   tone: "warn" | "info";
+  /** Uyarı Merkezi'ndeki önem derecesi — gap kendi önemini kendisi taşır,
+   *  dışarıda anahtar-string eşlemesi gerekmez (eklerken tek yerde karar). */
+  severity: AlertSeverity;
 }
 
 /**
  * Analizleri etkileyen EKSİK verileri gruplayıp sayar. Her grup, kullanıcının
  * bilgiyi girebileceği bir sayfaya link verir. Yeni bir eksik-veri türü
- * eklemek = buraya bir sayım + bir DataGap satırı eklemek.
+ * eklemek = buraya bir sayım + bir DataGap satırı eklemek (severity dahil).
  * Yalnız count > 0 olan gruplar döner (sırf sorun olanlar gösterilir).
+ * NOT: Ürün-durumu uyarıları (stok bitti / süresi doldu) burada DEĞİL —
+ * sayı+bedel tek sorgudan çıksın diye lib/db/queries/alerts.ts üretir.
  */
 export async function getDataGaps(orgId: string): Promise<DataGap[]> {
   const supabase = await createClient();
@@ -43,36 +53,39 @@ export async function getDataGaps(orgId: string): Promise<DataGap[]> {
   if ((variantsMissingWeight ?? 0) > 0) {
     gaps.push({
       key: "variant_weights",
-      title: `${variantsMissingWeight} varyantın ağırlığı (gram) eksik`,
+      title: `${variantsMissingWeight} varyantın gram bilgisi eksik`,
       count: variantsMissingWeight ?? 0,
-      hint: "Altın maliyeti ve kâr/marj analizleri gramla hesaplanır; eksik gram = tahmini/eksik maliyet.",
+      hint: "Gram bilinmeyince altın maliyetini ve gerçek kârını hesaplayamıyoruz — yanlış fiyatlıyor, farkında olmadan zarar edebiliyorsun. Ağırlıkları gir, kâr rakamların doğru olsun.",
       href: "/tasarimlar/eksik-agirlik",
       actionLabel: "Ağırlıkları gir",
       tone: "warn",
+      severity: "onemli",
     });
   }
 
   if ((reviewsNeedReply ?? 0) > 0) {
     gaps.push({
       key: "reviews_reply",
-      title: `${reviewsNeedReply} olumsuz yorum yanıt bekliyor`,
+      title: `${reviewsNeedReply} olumsuz yorum yanıtsız`,
       count: reviewsNeedReply ?? 0,
-      hint: "Yanıt oranı ve Yıldız Satıcı metriklerini etkiler.",
+      hint: "Yanıtsız olumsuz yorum yeni alıcıların gözüne ilk çarpan şey oluyor ve Yıldız Satıcı puanını düşürüyor. Yanıtla, hem güveni hem puanı koru.",
       href: "/yorumlar",
       actionLabel: "Yanıtla",
       tone: "warn",
+      severity: "onemli",
     });
   }
 
   if ((saleItemsUnlinked ?? 0) > 0) {
     gaps.push({
       key: "sale_items_unlinked",
-      title: `${saleItemsUnlinked} satış kalemi ürüne bağlanabilir`,
+      title: `${saleItemsUnlinked} satış bir ürüne bağlı değil`,
       count: saleItemsUnlinked,
-      hint: "SKU'su ürüne bağlı bir varyantla eşleşiyor; Stok sayfasındaki varyant senkronu bunları bağlar.",
+      hint: "Bu satışlar bir ürüne bağlanmadığı için ürün bazlı kâr ve performans raporlarında görünmüyor — rakamların eksik çıkıyor. Bağla, raporların tam olsun.",
       href: "/stok",
-      actionLabel: "Varyantları senkronize et",
+      actionLabel: "Varyantları bağla",
       tone: "info",
+      severity: "bilgi",
     });
   }
 

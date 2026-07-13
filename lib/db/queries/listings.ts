@@ -117,7 +117,7 @@ function sanitize(term: string): string {
 
 const PAGE_SIZE = 1000;
 
-interface PageResult<T> {
+export interface PageResult<T> {
   data: T[] | null;
   error: { message: string } | null;
 }
@@ -126,8 +126,9 @@ interface PageResult<T> {
  * PostgREST varsayılan satır limitini (1000) aşan kümeler için sayfalı toplu
  * okuma. Her sayfada TAZE builder kurulmalı (aynı builder'da range tekrar
  * çağrılamaz); deterministik sıra için sorguya `.order(...)` verilmelidir.
+ * (Diğer sorgu modülleri de kullanır — ör. market-alerts sayımları.)
  */
-async function fetchAllPages<T>(
+export async function fetchAllPages<T>(
   page: (from: number, to: number) => PromiseLike<PageResult<T>>,
 ): Promise<T[]> {
   const all: T[] = [];
