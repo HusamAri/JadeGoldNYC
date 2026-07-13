@@ -1,86 +1,108 @@
 import Link from "next/link";
-import { Plus, Pencil, Package, Layers, ImageOff, MessageSquare, Scale, Calculator } from "lucide-react";
+import {
+  Plus,
+  Calculator,
+  Scale,
+  LayoutGrid,
+  ImageOff,
+  ExternalLink,
+  Package,
+  SearchX,
+} from "lucide-react";
+import {
+  Gem,
+  Scale as LuxScale,
+  TrendingUp,
+} from "@/components/icons/lux-art";
 
 import { requireMembership } from "@/lib/auth";
-import { createClient } from "@/lib/supabase/server";
-import { listDesigns } from "@/lib/db/queries/designs";
-import {
-  listCollections,
-  getDesignThumbs,
-} from "@/lib/db/queries/design-boards";
-import type { Design } from "@/lib/types";
+import { listListingsIndex } from "@/lib/db/queries/listings";
+import { strParam, type RawSearchParams } from "@/lib/searchparams";
+import { formatMoney } from "@/lib/money";
+import { formatNumber } from "@/lib/format";
 import { PageHeader } from "@/components/page-header";
 import { GoldStream } from "@/components/brand/gold-stream";
+import { CornerMarks } from "@/components/brand/corner-marks";
 import { EmptyState } from "@/components/empty-state";
-import { DesignStatusBadge } from "@/components/design-status-badge";
-import { NewCollectionForm } from "@/components/design-board/new-collection-form";
-import { PanoVideoBackground } from "@/components/brand/pano-video-background";
-import { EtsyListingGrid, type ProductListing } from "@/components/etsy-listing-grid";
+import { KpiCard } from "@/components/kpi-card";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { DeleteButton } from "@/components/data-table/delete-button";
-import { deleteDesign } from "./actions";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { SearchInput } from "@/components/data-table/search-input";
+import { FilterSelect } from "@/components/data-table/filter-select";
 
 export const metadata = { title: "Listeler" };
 
-type DesignRow = Design & { collection_id: string | null };
+/** Etsy listing durumları (sync `l.state`den gelir) + Türkçe etiket/rozet. */
+const LISTING_STATUSES: {
+  value: string;
+  label: string;
+  variant: "success" | "secondary" | "outline" | "warning" | "destructive";
+}[] = [
+  { value: "active", label: "Aktif", variant: "success" },
+  { value: "edit", label: "Düzenlemede", variant: "secondary" },
+  { value: "draft", label: "Taslak", variant: "secondary" },
+  { value: "inactive", label: "Pasif", variant: "outline" },
+  { value: "sold_out", label: "Tükendi", variant: "warning" },
+  { value: "expired", label: "Süresi doldu", variant: "destructive" },
+];
 
-export default async function TasarimlarPage() {
-  const m = await requireMembership();
-  const supabase = await createClient();
+function statusMeta(status: string | null) {
+  return (
+    LISTING_STATUSES.find((s) => s.value === status) ?? {
+      value: status ?? "",
+      label: status ?? "—",
+      variant: "outline" as const,
+    }
+  );
+}
 
-  const [{ rows }, collections, thumbs, { data: products }] = await Promise.all([
-    listDesigns(m.org_id, { limit: 500, withCount: false }),
-    listCollections(m.org_id),
-    getDesignThumbs(m.org_id),
-    supabase
-      .from("products")
-      .select(
-        "id, title, status, price_cents, currency, url, image_url, description, tags, materials, num_images, quantity, weight_grams",
-      )
-      .eq("org_id", m.org_id)
-      .eq("status", "active")
-      .order("title", { ascending: true })
-      .limit(200),
-  ]);
+export default async function ListelerPage({
+  searchParams,
+}: {
+  searchParams: Promise<RawSearchParams>;
+}) {
+  const sp = await searchParams;
+  const search = strParam(sp.search);
+  const status = strParam(sp.status);
 
-  const designs = rows as unknown as DesignRow[];
-  const listings = (products ?? []) as unknown as ProductListing[];
+  await requireMembership();
+  const rows = await listListingsIndex({ search, status });
 
-  // Koleksiyona göre grupla
-  const byCollection = new Map<string | null, DesignRow[]>();
-  for (const d of designs) {
-    const key = d.collection_id ?? null;
-    const list = byCollection.get(key) ?? [];
-    list.push(d);
-    byCollection.set(key, list);
-  }
-  const groups: { id: string | null; name: string; designs: DesignRow[] }[] = [
-    ...collections.map((c) => ({
-      id: c.id,
-      name: c.name,
-      designs: byCollection.get(c.id) ?? [],
-    })),
-  ];
-  const uncategorized = byCollection.get(null) ?? [];
-  if (uncategorized.length > 0) {
-    groups.push({ id: null, name: "Koleksiyonsuz", designs: uncategorized });
-  }
+  const total = rows.length;
+  const active = rows.filter((r) => r.status === "active").length;
+  const missingWeight = rows.filter((r) => r.missing_weight_count > 0).length;
+  const noKeyword = rows.filter(
+    (r) => !(r.research_keyword ?? "").trim(),
+  ).length;
+  const filtered = Boolean(search || status);
 
   return (
-    <div className="relative z-0 space-y-8 pb-28">
-      <PanoVideoBackground />
+    <div className="relative z-0 space-y-6 pb-28">
       <GoldStream motif="ring" />
       <PageHeader
         title="Listeler"
-        description="Ürün listeleri ve tasarım panoları — yeni liste için otomatik varyant (ağırlık↔beden, fiyat↔ağırlık) hesapla; tasarımları koleksiyon panolarında yönet"
+        description="Tüm Etsy listingleri tek sayfada — varyantlar, rakip fiyatlar, reklam performansı ve eksik alanlar listing detayında"
         action={
           <>
-            <NewCollectionForm />
             <Button asChild variant="outline">
               <Link href="/tasarimlar/varyant-hesapla">
                 <Calculator />
                 Otomatik Varyant
+              </Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link href="/tasarimlar/pano">
+                <LayoutGrid />
+                Yeni Tasarım Panosu
               </Link>
             </Button>
             <Button asChild variant="outline">
@@ -90,125 +112,217 @@ export default async function TasarimlarPage() {
               </Link>
             </Button>
             <Button asChild>
-              <Link href="/tasarimlar/yeni">
+              <Link href="/tasarimlar/listing/yeni">
                 <Plus />
-                Yeni Tasarım
+                Yeni Listing
               </Link>
             </Button>
           </>
         }
       />
 
-      <div className="idx">
-        <span>Yeni Tasarım Panosu</span>
+      {/* Özet — liste filtresine (durum/arama) saygı duyar */}
+      <section className="space-y-4">
+        <div aria-hidden className="idx">
+          <span>Listeler / 01 · Özet</span>
+          <span className="idx-bar" />
+          <span className="idx-ln" />
+          <span>Jade Gold · NYC</span>
+        </div>
+        {filtered && (
+          <p className="text-muted-foreground text-xs">
+            Özet, uygulanan filtreye göre hesaplanır.
+          </p>
+        )}
+        <div className="relative">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            <KpiCard
+              label="Toplam Listing"
+              value={formatNumber(total)}
+              icon={Gem}
+            />
+            <KpiCard
+              label="Aktif"
+              value={formatNumber(active)}
+              icon={TrendingUp}
+              accent="positive"
+            />
+            <KpiCard
+              label="Eksik Gramlı"
+              value={formatNumber(missingWeight)}
+              icon={LuxScale}
+              accent={missingWeight > 0 ? "negative" : "default"}
+              hint="En az bir varyantında gram yok"
+            />
+            <KpiCard
+              label="Kelimesiz"
+              value={formatNumber(noKeyword)}
+              icon={SearchX}
+              accent={noKeyword > 0 ? "negative" : "default"}
+              hint="Araştırma kelimesi girilmemiş"
+            />
+          </div>
+          <CornerMarks />
+        </div>
+      </section>
+
+      <div aria-hidden className="idx -mb-3">
+        <span>Listeler / 02 · Listingler</span>
         <span className="idx-bar" />
         <span className="idx-ln" />
-        <span className="normal-case">koleksiyon panoları</span>
+        <span>Jade Gold · NYC</span>
       </div>
+      <Card>
+        <CardContent className="space-y-4">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <SearchInput placeholder="Başlık veya SKU…" />
+            <FilterSelect
+              paramKey="status"
+              placeholder="Durum"
+              options={LISTING_STATUSES.map((s) => ({
+                value: s.value,
+                label: s.label,
+              }))}
+            />
+          </div>
 
-      {designs.length === 0 && collections.length === 0 ? (
-        <EmptyState
-          icon={Layers}
-          title="Tasarım yok"
-          description="Bir koleksiyon oluşturun ve 'Yeni Tasarım' ile ürün tasarımlarınızı ekleyin; her tasarıma mockup görseli + not ekleyebilirsiniz."
-        />
-      ) : (
-        groups.map((g) => (
-          <section key={g.id ?? "none"} className="space-y-3">
-            <div className="flex items-baseline gap-2">
-              <h3 className="font-serif text-xl leading-tight">{g.name}</h3>
-              <span className="text-muted-foreground text-sm tabular-nums">
-                {g.designs.length}
-              </span>
-            </div>
-            {g.designs.length === 0 ? (
-              <p className="text-muted-foreground rounded-2xl border border-dashed p-5 text-sm">
-                Bu koleksiyonda tasarım yok. &quot;Yeni Tasarım&quot; eklerken bu
-                koleksiyonu seçin.
-              </p>
-            ) : (
-              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-                {g.designs.map((d) => {
-                  const thumb = thumbs.get(d.id);
+          {rows.length === 0 ? (
+            <EmptyState
+              icon={Package}
+              title="Listing yok"
+              description="Henüz listing bulunamadı. Etsy senkronu ayarlar sayfasından çalıştırın veya 'Yeni Listing' ile taslak açın."
+              action={
+                <Button asChild>
+                  <Link href="/tasarimlar/listing/yeni">
+                    <Plus />
+                    Yeni Listing
+                  </Link>
+                </Button>
+              }
+            />
+          ) : (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-12">Görsel</TableHead>
+                  <TableHead>Listing</TableHead>
+                  <TableHead>Durum</TableHead>
+                  <TableHead className="text-right">Fiyat</TableHead>
+                  <TableHead className="text-right">Varyant</TableHead>
+                  <TableHead>Kelime</TableHead>
+                  <TableHead className="text-right">Reklam · 30g</TableHead>
+                  <TableHead className="w-1 text-right">Etsy</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {rows.map((r) => {
+                  const sm = statusMeta(r.status);
+                  const keyword = (r.research_keyword ?? "").trim();
                   return (
-                    <Card key={d.id} className="gap-0 overflow-hidden p-0">
-                      <Link
-                        href={`/tasarimlar/${d.id}/duzenle`}
-                        className="bg-muted block aspect-video w-full overflow-hidden"
-                      >
-                        {thumb ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
-                            src={thumb}
-                            alt={d.name}
-                            className="h-full w-full object-cover"
-                          />
-                        ) : (
-                          <span className="text-muted-foreground/50 flex h-full items-center justify-center">
-                            <ImageOff className="size-6" />
+                    <TableRow key={r.id}>
+                      <TableCell>
+                        <Link
+                          href={`/tasarimlar/listing/${r.id}`}
+                          className="bg-muted block size-10 overflow-hidden rounded-lg"
+                        >
+                          {r.image_url ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img
+                              src={r.image_url}
+                              alt={r.title}
+                              className="h-full w-full object-cover"
+                            />
+                          ) : (
+                            <span className="text-muted-foreground/50 flex h-full items-center justify-center">
+                              <ImageOff className="size-4" />
+                            </span>
+                          )}
+                        </Link>
+                      </TableCell>
+                      <TableCell className="max-w-[280px]">
+                        <Link
+                          href={`/tasarimlar/listing/${r.id}`}
+                          className="block truncate font-medium hover:underline"
+                        >
+                          {r.title}
+                        </Link>
+                        {r.etsy_listing_id != null && (
+                          <span className="text-muted-foreground font-mono text-xs tabular-nums">
+                            #{r.etsy_listing_id}
                           </span>
                         )}
-                      </Link>
-                      <div className="flex items-start justify-between gap-1 px-3 py-2.5">
-                        <div className="min-w-0">
-                          <Link
-                            href={`/tasarimlar/${d.id}/duzenle`}
-                            className="block truncate text-sm font-medium hover:underline"
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={sm.variant}>{sm.label}</Badge>
+                      </TableCell>
+                      <TableCell className="text-right tabular-nums">
+                        {r.price_cents != null
+                          ? formatMoney(r.price_cents, r.currency)
+                          : "—"}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <span className="tabular-nums">{r.variant_count}</span>
+                        {r.missing_weight_count > 0 && (
+                          <span className="ml-2 inline-block rounded-full bg-amber-500/15 px-2 py-0.5 font-mono text-[10px] font-semibold text-amber-600 tabular-nums dark:text-amber-300">
+                            {r.missing_weight_count} gramsız
+                          </span>
+                        )}
+                      </TableCell>
+                      <TableCell className="max-w-[180px]">
+                        {keyword ? (
+                          <Badge
+                            variant={r.has_research ? "success" : "outline"}
+                            className="max-w-full"
+                            title={
+                              r.has_research
+                                ? "Rakip araştırması var"
+                                : "Henüz rakip araştırması yok"
+                            }
                           >
-                            {d.name}
-                          </Link>
-                          <div className="mt-1 flex items-center gap-1.5">
-                            <DesignStatusBadge status={d.status} />
-                            {thumb && (
-                              <MessageSquare className="text-muted-foreground size-3" />
-                            )}
-                          </div>
-                        </div>
-                        <div className="flex shrink-0">
-                          <Button asChild variant="ghost" size="icon" className="size-8">
-                            <Link href={`/tasarimlar/${d.id}/duzenle`}>
-                              <Pencil className="size-3.5" />
-                              <span className="sr-only">Düzenle</span>
-                            </Link>
+                            <span className="truncate normal-case tracking-normal">
+                              {keyword}
+                            </span>
+                          </Badge>
+                        ) : (
+                          <span className="text-muted-foreground font-mono text-[10px] tracking-[0.12em] uppercase">
+                            kelime yok
+                          </span>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-right tabular-nums">
+                        {r.ads30_spend_cents != null
+                          ? formatMoney(r.ads30_spend_cents, r.currency)
+                          : "—"}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {r.etsy_listing_id != null ? (
+                          <Button asChild variant="ghost" size="icon">
+                            <a
+                              href={`https://www.etsy.com/listing/${r.etsy_listing_id}`}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              <ExternalLink className="size-4" />
+                              <span className="sr-only">Etsy&apos;de aç</span>
+                            </a>
                           </Button>
-                          <DeleteButton action={deleteDesign} id={d.id} />
-                        </div>
-                      </div>
-                    </Card>
+                        ) : (
+                          <span className="text-muted-foreground">—</span>
+                        )}
+                      </TableCell>
+                    </TableRow>
                   );
                 })}
-              </div>
-            )}
-          </section>
-        ))
-      )}
+              </TableBody>
+            </Table>
+          )}
 
-      {/* ── Etsy Listingleri (referans katalog) ──────────────────── */}
-      <section className="space-y-3">
-        <div>
-          <h3 className="text-base font-semibold">
-            Etsy Listingleri ({listings.length})
-          </h3>
-          <p className="text-muted-foreground text-sm">
-            Etsy mağazasından senkronize edilen aktif ürün listingleri — ağırlık
-            girişi burada
+          <p className="text-muted-foreground text-xs">
+            {formatNumber(total)} listing gösteriliyor — tümü tek sayfada,
+            sayfalama yok.
           </p>
-        </div>
-
-        {listings.length === 0 ? (
-          <Card>
-            <div className="flex flex-col items-center gap-2 px-6 py-8 text-center">
-              <Package className="text-muted-foreground size-8" />
-              <p className="text-muted-foreground text-sm">
-                Henüz senkronize edilmiş listing yok. Etsy entegrasyonunu ayarlar
-                sayfasından bağlayabilirsiniz.
-              </p>
-            </div>
-          </Card>
-        ) : (
-          <EtsyListingGrid listings={listings} />
-        )}
-      </section>
+        </CardContent>
+      </Card>
     </div>
   );
 }
