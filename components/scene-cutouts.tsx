@@ -118,7 +118,19 @@ export function SceneCutout({
  * Sayfa sahneleri — hangi sayfada hangi objeler, hangi derinlik/konumda.
  * Ebeveynin `relative` olması yeterli; katman içerik ALTINDA kalır.
  */
-export function SceneCutouts({ page }: { page: "panel" | "satislar" | "maliyetler" | "gorevler" }) {
+export function SceneCutouts({
+  page,
+}: {
+  page:
+    | "panel"
+    | "satislar"
+    | "maliyetler"
+    | "gorevler"
+    | "yorumlar"
+    | "raporlar"
+    | "yildiz-satici"
+    | "stok";
+}) {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 -z-[4] overflow-hidden">
       {/* Koyu zemin sakinleştirici — holo-drift'in menekşe bloom'unu üst
@@ -158,6 +170,43 @@ export function SceneCutouts({ page }: { page: "panel" | "satislar" | "maliyetle
       )}
       {page === "gorevler" && (
         <SceneCutout kind="prism" depth="far" className="bottom-4 right-12" />
+      )}
+      {/* Mobilde gizli objeler yalnız boş zeminlere denk gelir; dar ekranda
+          okumayı bozmasın diye alt-köşe far objeler sm+ ile sınırlı. */}
+      {page === "yorumlar" && (
+        <SceneCutout
+          kind="stones"
+          depth="far"
+          className="max-sm:hidden! bottom-3 left-10"
+        />
+      )}
+      {page === "raporlar" && (
+        <SceneCutout
+          kind="prism"
+          depth="far"
+          className="max-sm:hidden! bottom-4 right-12"
+        />
+      )}
+      {page === "yildiz-satici" && (
+        <>
+          <SceneCutout
+            kind="chains"
+            depth="near"
+            className="max-md:hidden! top-40 -right-6 rotate-6"
+          />
+          <SceneCutout
+            kind="candle"
+            depth="far"
+            className="max-sm:hidden! bottom-3 left-8"
+          />
+        </>
+      )}
+      {page === "stok" && (
+        <SceneCutout
+          kind="stones"
+          depth="near"
+          className="max-sm:hidden! bottom-2 left-8"
+        />
       )}
     </div>
   );

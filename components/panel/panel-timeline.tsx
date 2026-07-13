@@ -9,6 +9,8 @@ import type { TimelineData, TimelineTask } from "@/lib/db/queries/timeline";
 const DAY_MS = 86_400_000;
 /** Görünür pencere genişliği (gün) */
 const WINDOW_DAYS = 42;
+/** Dar (mobil) ekranda görünür pencere — sıkışmayı önlemek için daha az gün */
+const WINDOW_DAYS_SM = 24;
 /** Çip genişliği (gün cinsinden) — satır (lane) çakışma hesabında kullanılır */
 const CHIP_SPAN_DAYS = 11;
 const MAX_LANES = 3;
@@ -40,9 +42,6 @@ export function PanelTimeline({ data }: { data: TimelineData }) {
     [todayIso],
   );
 
-  const winStart = offset - WINDOW_DAYS / 2;
-  const winEnd = offset + WINDOW_DAYS / 2;
-
   // Şerit genişliğini ölç: çip genişliği ve lane çakışma aralığı PİKSEL
   // gerçeğine bağlanır (dar viewport'ta çipler üst üste binmesin / kart
   // kenarından taşmasın diye).
@@ -57,12 +56,18 @@ export function PanelTimeline({ data }: { data: TimelineData }) {
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
+
+  // Görünür pencere DAR ekranda daralır: mobilde 42 gün fazla sıkışıktı
+  // (çipler üst üste + minik). <560px'te 24 güne düşür → çipler yayılır, okunur.
+  const windowDays = stripW > 0 && stripW < 560 ? WINDOW_DAYS_SM : WINDOW_DAYS;
+  const winStart = offset - windowDays / 2;
+  const winEnd = offset + windowDays / 2;
   // Çip azami genişliği: geniş ekranda 300px, dar ekranda şeridin ~%62'si.
   const chipMaxPx = stripW > 0 ? Math.min(300, Math.round(stripW * 0.62)) : 300;
   // Lane hesabı için çip genişliğinin gün karşılığı (px → gün dönüşümü).
   const chipSpanDays =
     stripW > 0
-      ? Math.max(CHIP_SPAN_DAYS, Math.ceil(chipMaxPx / (stripW / WINDOW_DAYS)))
+      ? Math.max(CHIP_SPAN_DAYS, Math.ceil(chipMaxPx / (stripW / windowDays)))
       : CHIP_SPAN_DAYS;
 
   // Penceredeki görevler + basit satır (lane) ataması: aynı satırda üst üste
@@ -100,7 +105,7 @@ export function PanelTimeline({ data }: { data: TimelineData }) {
       return rel >= winStart && rel <= winEnd;
     }).length - placed.filter((t) => t.rel >= winStart && t.rel <= winEnd).length;
 
-  const pct = (rel: number) => ((rel - winStart) / WINDOW_DAYS) * 100;
+  const pct = (rel: number) => ((rel - winStart) / windowDays) * 100;
   const windowLabel = `${fmtShort(isoAdd(todayIso, winStart))} — ${fmtShort(isoAdd(todayIso, winEnd))}`;
 
   // Penceredeki satış günleri (bağlam şeridi, alt bölge)
@@ -193,7 +198,7 @@ export function PanelTimeline({ data }: { data: TimelineData }) {
             style={{
               left: `${pct(d.rel)}%`,
               bottom: "16px",
-              width: `${Math.max(3, 100 / WINDOW_DAYS / 2.2)}%`,
+              width: `${Math.max(3, 100 / windowDays / 2.2)}%`,
               height: `${Math.max(4, Math.round((d.revenueCents / maxRevenue) * (SALES_H - 8)))}px`,
             }}
           />

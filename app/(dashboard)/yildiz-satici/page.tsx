@@ -12,6 +12,7 @@ import type { StarSellerSnapshot } from "@/lib/types";
 import { overallStatus, metricViews, type StarSellerValues } from "@/lib/star-seller";
 import { PageHeader } from "@/components/page-header";
 import { GoldStream } from "@/components/brand/gold-stream";
+import { SceneCutouts } from "@/components/scene-cutouts";
 import { SectionGuide } from "@/components/section-guide";
 import { StarSellerCards, overallLabel } from "@/components/star-seller-cards";
 import { StarSellerForm } from "@/components/star-seller-form";
@@ -91,6 +92,7 @@ export default async function YildizSaticiPage({
   return (
     <div className="relative z-0 space-y-6 pb-28">
       <GoldStream motif="star" />
+      <SceneCutouts page="yildiz-satici" />
       <PageHeader
         title="Yıldız Satıcı"
         description="Etsy Star Seller metriklerini dönem bazında takip edin; hizmet standardı ve Star Seller hedefiyle karşılaştırın."
