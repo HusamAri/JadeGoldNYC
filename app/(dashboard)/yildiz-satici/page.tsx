@@ -90,7 +90,7 @@ export default async function YildizSaticiPage({
     : EMPTY_FORM;
 
   return (
-    <div className="relative z-0 space-y-6 pb-28">
+    <div className="relative z-0 space-y-8 pb-28">
       <GoldStream motif="star" />
       <SceneCutouts page="yildiz-satici" />
       <PageHeader
@@ -108,8 +108,8 @@ export default async function YildizSaticiPage({
 
       {latest ? (
         <>
-          {/* Durum şeridi */}
-          <Card>
+          {/* Durum şeridi — sayfanın hero/özet şeridi: berrak cam board */}
+          <Card className="glass-board">
             <CardContent className="flex flex-wrap items-center gap-x-6 gap-y-3">
               <ProgressRing
                 value={starSellerProgress}
@@ -198,9 +198,9 @@ export default async function YildizSaticiPage({
         />
       </section>
 
-      {/* Geçmiş */}
+      {/* Geçmiş — uzun liste/tablo kabı: dikey oluklu cam */}
       {snapshots.length > 0 && (
-        <Card>
+        <Card className="glass-fluted">
           <CardHeader>
             <CardTitle>Dönem Geçmişi</CardTitle>
           </CardHeader>

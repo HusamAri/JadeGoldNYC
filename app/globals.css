@@ -674,6 +674,40 @@
     mix-blend-mode: screen;
     opacity: 0.5;
   }
+
+  /* ── Taşan metin — liste satırı = yatay kaydır, kutu = alt satıra sar ────
+     Kullanıcı kuralı: listelerde satıra sığmayan metin KAYDIRILIR (tek satır
+     kalır, yatay kaydırma), kutularda ALT SATIRA GEÇER (sarar). */
+  /* Liste satırındaki uzun tek-satır metin: taşarsa yatayda kaydırılır;
+     ince, soluk kaydırma çubuğu (marka menekşesi), satır sarmaz. Ebeveyn
+     min-w-0 olmalı ki flex içinde daralabilsin. */
+  .scroll-x {
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in oklch, var(--foreground) 22%, transparent) transparent;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+  }
+  .scroll-x::-webkit-scrollbar {
+    height: 4px;
+  }
+  .scroll-x::-webkit-scrollbar-thumb {
+    background: color-mix(in oklch, var(--foreground) 22%, transparent);
+    border-radius: 999px;
+  }
+  .scroll-x::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  /* Kutu/kart içindeki metin: her zaman alt satıra sarar (asla elipslenmez);
+     uzun kelimeler/URL'ler de kırılır. */
+  .wrap-box {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
   /* Cam yüzeye de ince gren — kartlar da mat/dokulu (buzlu cam + doku). */
   .glass-board::after {
     content: "";

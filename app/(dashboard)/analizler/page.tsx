@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import {
   Plus,
   Pencil,
@@ -22,6 +23,7 @@ import {
   type AlertLevel,
 } from "@/lib/performance";
 import { formatMoney, formatPercent } from "@/lib/money";
+import { Money } from "@/components/money";
 import { formatNumber } from "@/lib/format";
 import { requireMembership } from "@/lib/auth";
 import { getEtsyInsights, type EtsyInsights } from "@/lib/db/queries/etsy-insights";
@@ -141,7 +143,7 @@ export default async function PerformansPage() {
 
   const kpis: {
     label: string;
-    value: string;
+    value: ReactNode;
     delta: number | null;
     goodWhenUp: boolean;
     accent?: string;
@@ -170,24 +172,36 @@ export default async function PerformansPage() {
     {
       label: "Ciro",
       value:
-        current.revenue_cents != null
-          ? formatMoney(current.revenue_cents, currency)
-          : "—",
+        current.revenue_cents != null ? (
+          <Money cents={current.revenue_cents} currency={currency} />
+        ) : (
+          "—"
+        ),
       delta: pctDelta(current.revenue_cents, previous?.revenue_cents),
       goodWhenUp: true,
     },
     {
       label: "Ort. Sepet (AOV)",
-      value: dCur.aovCents != null ? formatMoney(dCur.aovCents, currency) : "—",
+      value:
+        dCur.aovCents != null ? (
+          <Money cents={dCur.aovCents} currency={currency} />
+        ) : (
+          "—"
+        ),
       delta: pctDelta(dCur.aovCents, dPrev.aovCents),
       goodWhenUp: true,
     },
     {
       label: "Sepette Terk",
       value:
-        current.cart_abandon_amount_cents != null
-          ? formatMoney(current.cart_abandon_amount_cents, currency)
-          : "—",
+        current.cart_abandon_amount_cents != null ? (
+          <Money
+            cents={current.cart_abandon_amount_cents}
+            currency={currency}
+          />
+        ) : (
+          "—"
+        ),
       delta: pctDelta(
         current.cart_abandon_amount_cents,
         previous?.cart_abandon_amount_cents,
@@ -197,7 +211,7 @@ export default async function PerformansPage() {
   ];
 
   return (
-    <div className="relative z-0 pb-28 space-y-6">
+    <div className="relative z-0 pb-28 space-y-8">
       <GoldStream motif="spark" />
       <AutoRefresh intervalMs={60000} />
       <PageHeader
@@ -227,8 +241,8 @@ export default async function PerformansPage() {
         }
       />
 
-      {/* Uyarılar */}
-      <Card>
+      {/* Uyarılar — sayfanın hero/özet şeridi: berrak cam board (.glass-board) */}
+      <Card className="glass-board">
         <CardHeader>
           <CardTitle>Uyarılar</CardTitle>
         </CardHeader>
@@ -274,7 +288,7 @@ export default async function PerformansPage() {
       </Card>
 
       {/* KPI'lar (önceki döneme göre) */}
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-6">
+      <div className="grid grid-cols-2 gap-5 lg:grid-cols-3 xl:grid-cols-6">
         {kpis.map((k) => (
           <Card key={k.label}>
             <CardContent className="space-y-1">
@@ -379,8 +393,8 @@ export default async function PerformansPage() {
         </Card>
       </div>
 
-      {/* Snapshot Geçmişi */}
-      <Card>
+      {/* Snapshot Geçmişi — uzun tablo kabı: dikey oluklu cam (.glass-fluted) */}
+      <Card className="glass-fluted">
         <CardHeader>
           <CardTitle>Dönem Geçmişi</CardTitle>
         </CardHeader>
@@ -478,7 +492,7 @@ function EtsyApiSection({ insights }: { insights: EtsyInsights }) {
       </div>
 
       {latest ? (
-        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-5 lg:grid-cols-4">
           <ShopStat
             label="Mağaza Takipçisi"
             value={latest.numFavorers}
@@ -508,7 +522,7 @@ function EtsyApiSection({ insights }: { insights: EtsyInsights }) {
         </p>
       )}
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
         <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle>Günlük Görüntülenme (tüm listingler)</CardTitle>
@@ -541,7 +555,7 @@ function EtsyApiSection({ insights }: { insights: EtsyInsights }) {
                     key={t.etsyListingId}
                     className="flex items-baseline justify-between gap-3 text-sm"
                   >
-                    <span className="min-w-0 truncate font-medium">
+                    <span className="scroll-x min-w-0 font-medium">
                       {t.title}
                     </span>
                     <span className="text-muted-foreground shrink-0 text-xs tabular-nums">

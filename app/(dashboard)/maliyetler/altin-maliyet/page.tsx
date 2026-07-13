@@ -63,7 +63,7 @@ export default async function AltinMaliyetPage({
   const { items, summary } = await getGoldCostAnalysis(goldPriceOunce);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <PageHeader
         title="Altin Maliyet Analizi"
         description="Satilan urunlerin altin malzeme + iscilik maliyet kirilimi"
@@ -80,8 +80,9 @@ export default async function AltinMaliyetPage({
         }
       />
 
-      {/* ── Altın Fiyat Bilgisi ─────────────────────────────────────── */}
-      <Card>
+      {/* ── Altın Fiyat Bilgisi — sayfanın hero/özet şeridi: berrak cam board
+          (.glass-board). Yarıçapı Card'dan (rounded-[26px]) devralır. ────── */}
+      <Card className="glass-board">
         <CardContent className="grid grid-cols-2 gap-y-5 text-sm sm:grid-cols-4">
           <div className="flex flex-col items-center gap-1 text-center">
             <span className="text-muted-foreground flex items-center gap-1.5 text-xs">
@@ -114,7 +115,7 @@ export default async function AltinMaliyetPage({
       </Card>
 
       {/* ── KPI'lar ─────────────────────────────────────────────────── */}
-      <div className="stagger grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className="stagger grid grid-cols-2 gap-5 lg:grid-cols-4">
         <KpiCard
           label="Analiz Edilen Kalem"
           value={`${summary.analyzedItems} / ${summary.totalItems}`}
@@ -122,25 +123,27 @@ export default async function AltinMaliyetPage({
         />
         <KpiCard
           label="Toplam Alim Maliyeti"
-          value={formatMoney(summary.totalPurchaseCostCents)}
+          cents={summary.totalPurchaseCostCents}
           icon={Scale}
         />
         <KpiCard
           label="Altin Malzeme Degeri"
-          value={formatMoney(summary.totalGoldCostCents)}
+          cents={summary.totalGoldCostCents}
         />
         <KpiCard
           label="Toplam Iscilik"
-          value={formatMoney(summary.totalLaborCostCents)}
+          cents={summary.totalLaborCostCents}
         />
       </div>
 
       {/* ── Ayar Bazlı Kırılım ─────────────────────────────────────── */}
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid gap-6 lg:grid-cols-2">
         {(["14K", "10K"] as const).map((k) => {
           const s = summary.byKarat[k];
           return (
-            <Card key={k}>
+            // İkincil özet bölümü — buzlu/mat cam (.glass-iced); hero board'dan
+            // bir ton geride durur. Yarıçapı Card'dan devralır.
+            <Card key={k} className="glass-iced">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Badge variant={karatBadgeVariant(k)}>{k}</Badge>
@@ -184,8 +187,9 @@ export default async function AltinMaliyetPage({
         })}
       </div>
 
-      {/* ── Detay Tablosu ──────────────────────────────────────────── */}
-      <Card>
+      {/* ── Detay Tablosu — tablo/liste yüzeyi: dikey oluklu cam (.glass-fluted).
+          Yarıçapı Card'dan (rounded-[26px]) devralır. ──────────────────── */}
+      <Card className="glass-fluted">
         <CardHeader>
           <CardTitle>Kalem Detaylari</CardTitle>
         </CardHeader>
@@ -218,8 +222,12 @@ export default async function AltinMaliyetPage({
                       <TableCell className="whitespace-nowrap">
                         {formatDate(item.orderDate)}
                       </TableCell>
-                      <TableCell className="max-w-[260px] truncate font-medium">
-                        {item.title}
+                      {/* Ürün adı kayıt satırında tek satır kalır; taşarsa
+                          kırpılmaz, yatay kaydırılır (.scroll-x). */}
+                      <TableCell className="font-medium">
+                        <div className="scroll-x max-w-[260px]" title={item.title}>
+                          {item.title}
+                        </div>
                       </TableCell>
                       <TableCell>
                         {item.karat ? (

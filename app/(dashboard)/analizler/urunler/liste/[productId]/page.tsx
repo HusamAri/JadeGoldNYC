@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { ExternalLink } from "lucide-react";
 
 import { createClient } from "@/lib/supabase/server";
-import { formatMoney } from "@/lib/money";
+import { Money } from "@/components/money";
 import { getListingHealth } from "@/lib/db/queries/listing-health";
 import { getLatestDecision } from "@/app/(dashboard)/analizler/urunler/liste/actions";
 import { PageHeader } from "@/components/page-header";
@@ -55,7 +55,7 @@ export default async function ListingAnalizPage({
     .replace(/&amp;/g, "&");
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <PageHeader
         title="Rakip & Pazar Analizi"
         description={decoded}
@@ -69,14 +69,20 @@ export default async function ListingAnalizPage({
         }
       />
 
-      <Card>
+      {/* Fiyat/durum özet şeridi — sayfa hero'su: berrak cam board (.glass-board) */}
+      <Card className="glass-board">
         <CardContent className="flex flex-wrap items-center gap-4 text-sm">
           <span>
             <span className="text-muted-foreground">Bizim fiyat: </span>
             <span className="font-semibold tabular-nums">
-              {product.price_cents != null
-                ? formatMoney(product.price_cents, product.currency ?? "USD")
-                : "—"}
+              {product.price_cents != null ? (
+                <Money
+                  cents={product.price_cents}
+                  currency={product.currency ?? "USD"}
+                />
+              ) : (
+                "—"
+              )}
             </span>
           </span>
           {product.status && (

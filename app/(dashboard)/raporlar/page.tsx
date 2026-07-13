@@ -7,6 +7,7 @@ import { listReports } from "@/lib/db/queries/reports";
 import { strParam, type RawSearchParams } from "@/lib/searchparams";
 import { formatMoney, formatPercent } from "@/lib/money";
 import { formatNumber, formatDate } from "@/lib/format";
+import { Money } from "@/components/money";
 import { PageHeader } from "@/components/page-header";
 import { GoldStream } from "@/components/brand/gold-stream";
 import { SceneCutouts } from "@/components/scene-cutouts";
@@ -52,17 +53,25 @@ export default async function RaporlarPage({
     return `${arrow} %${Math.abs(change).toFixed(1)}`;
   }
 
-  const kpis = [
-    { label: "Toplam Gelir", value: formatMoney(d.revenueCents, cur), change: pctChange(d.revenueCents, prevData?.revenueCents) },
-    { label: "Toplam Maliyet", value: formatMoney(d.costCents, cur), change: pctChange(d.costCents, prevData?.costCents) },
-    { label: "Net Kar", value: formatMoney(d.profitCents, cur), change: pctChange(d.profitCents, prevData?.profitCents) },
-    { label: "Siparis Sayisi", value: formatNumber(d.orderCount), change: pctChange(d.orderCount, prevData?.orderCount) },
-    { label: "Ortalama Siparis", value: formatMoney(d.aovCents, cur), change: pctChange(d.aovCents, prevData?.aovCents) },
-    { label: "Kar Marji", value: formatPercent(d.margin), change: prevData ? (() => { const diff = (d.margin - prevData.margin) * 100; const arrow = diff >= 0 ? "↑" : "↓"; return `${arrow} %${Math.abs(diff).toFixed(1)}`; })() : null },
+  // cents alanı: öne çıkan para tutarları <Money/> ile gösterilir; para
+  // olmayanlar (adet/oran) cents=null → düz value metniyle kalır. value alanı
+  // ReportExport (CSV/PDF) için string olarak korunur.
+  const kpis: {
+    label: string;
+    value: string;
+    cents: number | null;
+    change: string | null;
+  }[] = [
+    { label: "Toplam Gelir", value: formatMoney(d.revenueCents, cur), cents: d.revenueCents, change: pctChange(d.revenueCents, prevData?.revenueCents) },
+    { label: "Toplam Maliyet", value: formatMoney(d.costCents, cur), cents: d.costCents, change: pctChange(d.costCents, prevData?.costCents) },
+    { label: "Net Kar", value: formatMoney(d.profitCents, cur), cents: d.profitCents, change: pctChange(d.profitCents, prevData?.profitCents) },
+    { label: "Siparis Sayisi", value: formatNumber(d.orderCount), cents: null, change: pctChange(d.orderCount, prevData?.orderCount) },
+    { label: "Ortalama Siparis", value: formatMoney(d.aovCents, cur), cents: d.aovCents, change: pctChange(d.aovCents, prevData?.aovCents) },
+    { label: "Kar Marji", value: formatPercent(d.margin), cents: null, change: prevData ? (() => { const diff = (d.margin - prevData.margin) * 100; const arrow = diff >= 0 ? "↑" : "↓"; return `${arrow} %${Math.abs(diff).toFixed(1)}`; })() : null },
   ];
 
   return (
-    <div className="relative z-0 pb-28 space-y-6">
+    <div className="relative z-0 pb-28 space-y-8">
       <GoldStream motif="seal" />
       <SceneCutouts page="raporlar" />
       <PageHeader
@@ -83,7 +92,7 @@ export default async function RaporlarPage({
       />
 
       {savedReports.length > 0 && (
-        <Card>
+        <Card className="glass-iced">
           <CardHeader>
             <CardTitle>Kayıtlı Raporlar</CardTitle>
           </CardHeader>
@@ -98,8 +107,10 @@ export default async function RaporlarPage({
                   <FileText className="size-4" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="truncate font-medium">{r.title}</p>
-                  <p className="text-muted-foreground truncate text-xs">
+                  {/* Liste satırı tek-satır başlığı: kırpma yerine yatay kaydır */}
+                  <p className="scroll-x font-medium">{r.title}</p>
+                  {/* Açıklama metni kutu içinde: alt satıra sarsın (özet kırpılmasın) */}
+                  <p className="wrap-box text-muted-foreground text-xs">
                     {formatDate(r.report_date)} · {r.category}
                     {r.summary ? ` · ${r.summary}` : ""}
                   </p>
@@ -115,17 +126,21 @@ export default async function RaporlarPage({
         </Card>
       )}
 
-      <Card>
+      <Card className="glass-board">
         <CardHeader>
           <CardTitle>Özet (Kâr / Zarar)</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+          <div className="grid grid-cols-2 gap-5 sm:grid-cols-3">
             {kpis.map((k) => (
               <div key={k.label} className="nm-raised-sm rounded-2xl p-4">
                 <p className="text-muted-foreground text-sm">{k.label}</p>
                 <p className="mt-1 text-xl font-semibold tabular-nums">
-                  {k.value}
+                  {k.cents != null ? (
+                    <Money cents={k.cents} currency={cur} />
+                  ) : (
+                    k.value
+                  )}
                 </p>
                 {k.change && (
                   <p className="text-muted-foreground mt-1 text-xs tabular-nums">
@@ -139,7 +154,7 @@ export default async function RaporlarPage({
       </Card>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <Card>
+        <Card className="glass-fluted">
           <CardHeader>
             <CardTitle>Günlük Gelir / Maliyet</CardTitle>
           </CardHeader>
@@ -175,7 +190,7 @@ export default async function RaporlarPage({
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="glass-fluted">
           <CardHeader>
             <CardTitle>Maliyet Kategorileri</CardTitle>
           </CardHeader>
