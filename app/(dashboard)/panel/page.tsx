@@ -35,6 +35,8 @@ import { EditorialCard } from "@/components/brand/editorial-card";
 import { KpiCard } from "@/components/kpi-card";
 import { WhatsNew } from "@/components/whats-new";
 import { DataGapsCard } from "@/components/data-gaps-card";
+import { MarketPriceAlertsCard } from "@/components/market-price-alerts-card";
+import { getMarketPriceAlerts } from "@/lib/db/queries/market-alerts";
 import { PeriodSelector } from "@/components/period-selector";
 import {
   TrendChart,
@@ -67,13 +69,15 @@ export default async function PanelPage({
   const period = resolvePeriod(strParam(sp.period));
   const prev = previousPeriod(period);
   const m = await requireMembership();
-  const [d, goldPriceOunce, prevData, gaps, timeline] = await Promise.all([
-    getDashboard(period),
-    getGoldPricePerOunce(),
-    prev ? getDashboard(prev) : Promise.resolve(null),
-    getDataGaps(m.org_id),
-    getTimelineData(m.org_id),
-  ]);
+  const [d, goldPriceOunce, prevData, gaps, timeline, marketAlerts] =
+    await Promise.all([
+      getDashboard(period),
+      getGoldPricePerOunce(),
+      prev ? getDashboard(prev) : Promise.resolve(null),
+      getDataGaps(m.org_id),
+      getTimelineData(m.org_id),
+      getMarketPriceAlerts(m.org_id),
+    ]);
   const cur = d.currency;
   const goldPricePerGram = goldPriceOunce / TROY_OUNCE_GRAMS;
 
@@ -98,6 +102,9 @@ export default async function PanelPage({
       <PanelTimeline data={timeline} />
 
       <DataGapsCard gaps={gaps} />
+
+      {/* Pazar bandı dışında fiyatlanan aktif listingler (günlük araştırmadan) */}
+      <MarketPriceAlertsCard alerts={marketAlerts} />
 
       {/* ── Güncel Altın Fiyatı (bağlam şeridi) ─────────────────────── */}
       <Card>
