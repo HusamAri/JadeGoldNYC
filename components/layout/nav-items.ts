@@ -62,7 +62,7 @@ export const NAV_GROUPS: NavGroup[] = [
   {
     label: "Ürün & Stüdyo",
     items: [
-      { href: "/tasarimlar", label: "Tasarımlar", icon: Palette },
+      { href: "/tasarimlar", label: "Listeler", icon: Palette },
       // Prompt kiti Jade Gold listinglerine özel statik içerik — diğer
       // şirketlerde gizli (kendi kitleri üretilince ayrı açılır).
       { href: "/gorsel-uretim", label: "Görsel Üretim", icon: Sparkles, jadeGoldOnly: true },

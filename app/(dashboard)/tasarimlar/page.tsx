@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Plus, Pencil, Package, Layers, ImageOff, MessageSquare, Scale } from "lucide-react";
+import { Plus, Pencil, Package, Layers, ImageOff, MessageSquare, Scale, Calculator } from "lucide-react";
 
 import { requireMembership } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
@@ -21,7 +21,7 @@ import { Card } from "@/components/ui/card";
 import { DeleteButton } from "@/components/data-table/delete-button";
 import { deleteDesign } from "./actions";
 
-export const metadata = { title: "Tasarımlar" };
+export const metadata = { title: "Listeler" };
 
 type DesignRow = Design & { collection_id: string | null };
 
@@ -72,11 +72,17 @@ export default async function TasarimlarPage() {
       <PanoVideoBackground />
       <GoldStream motif="ring" />
       <PageHeader
-        title="Tasarımlar"
-        description="Tasarımları koleksiyonlara (panolara) grupla; her tasarımın görseli + notlarıyla yönet"
+        title="Listeler"
+        description="Ürün listeleri ve tasarım panoları — yeni liste için otomatik varyant (ağırlık↔beden, fiyat↔ağırlık) hesapla; tasarımları koleksiyon panolarında yönet"
         action={
           <>
             <NewCollectionForm />
+            <Button asChild variant="outline">
+              <Link href="/tasarimlar/varyant-hesapla">
+                <Calculator />
+                Otomatik Varyant
+              </Link>
+            </Button>
             <Button asChild variant="outline">
               <Link href="/tasarimlar/etsy-agirlik">
                 <Scale />
@@ -92,6 +98,13 @@ export default async function TasarimlarPage() {
           </>
         }
       />
+
+      <div className="idx">
+        <span>Yeni Tasarım Panosu</span>
+        <span className="idx-bar" />
+        <span className="idx-ln" />
+        <span className="normal-case">koleksiyon panoları</span>
+      </div>
 
       {designs.length === 0 && collections.length === 0 ? (
         <EmptyState
