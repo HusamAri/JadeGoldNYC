@@ -2,7 +2,8 @@
 
 import { useMemo, useState } from "react";
 import Image from "next/image";
-import { ExternalLink, Package, Search } from "lucide-react";
+import Link from "next/link";
+import { ExternalLink, Package, Search, TrendingUp } from "lucide-react";
 
 import { formatMoney } from "@/lib/money";
 import { ProductWeightInput } from "@/components/product-weight-input";
@@ -90,26 +91,34 @@ export function EtsyListingGrid({ listings }: { listings: ProductListing[] }) {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {visible.map((p) => (
             <Card key={p.id} className="overflow-hidden">
-              {p.image_url ? (
-                <div className="bg-muted relative aspect-square">
-                  <Image
-                    src={p.image_url}
-                    alt={decodeEntities(p.title)}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    unoptimized
-                  />
-                </div>
-              ) : (
-                <div className="from-primary/20 to-accent/30 flex aspect-square items-center justify-center bg-gradient-to-br">
-                  <Package className="text-muted-foreground size-12" />
-                </div>
-              )}
+              <Link
+                href={`/analizler/urunler/liste/${p.id}`}
+                className="group block"
+                title="Rakip & pazar analizini aç"
+              >
+                {p.image_url ? (
+                  <div className="bg-muted relative aspect-square">
+                    <Image
+                      src={p.image_url}
+                      alt={decodeEntities(p.title)}
+                      fill
+                      className="object-cover transition-opacity group-hover:opacity-90"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      unoptimized
+                    />
+                  </div>
+                ) : (
+                  <div className="from-primary/20 to-accent/30 flex aspect-square items-center justify-center bg-gradient-to-br">
+                    <Package className="text-muted-foreground size-12" />
+                  </div>
+                )}
+              </Link>
               <CardContent className="space-y-2 p-4">
-                <h4 className="line-clamp-2 text-sm font-medium leading-tight">
-                  {decodeEntities(p.title)}
-                </h4>
+                <Link href={`/analizler/urunler/liste/${p.id}`}>
+                  <h4 className="hover:text-primary line-clamp-2 text-sm font-medium leading-tight transition-colors">
+                    {decodeEntities(p.title)}
+                  </h4>
+                </Link>
                 <div className="flex flex-wrap items-center gap-2">
                   {p.price_cents != null && (
                     <span className="text-sm font-semibold tabular-nums">
@@ -137,17 +146,26 @@ export function EtsyListingGrid({ listings }: { listings: ProductListing[] }) {
                     ))}
                   </div>
                 )}
-                {p.url && (
-                  <a
-                    href={p.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary inline-flex items-center gap-1 text-xs hover:underline"
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 pt-0.5">
+                  <Link
+                    href={`/analizler/urunler/liste/${p.id}`}
+                    className="text-primary inline-flex items-center gap-1 text-xs font-medium hover:underline"
                   >
-                    Etsy&apos;de gör
-                    <ExternalLink className="size-3" />
-                  </a>
-                )}
+                    <TrendingUp className="size-3" />
+                    Rakip & pazar analizi
+                  </Link>
+                  {p.url && (
+                    <a
+                      href={p.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-muted-foreground inline-flex items-center gap-1 text-xs hover:underline"
+                    >
+                      Etsy&apos;de gör
+                      <ExternalLink className="size-3" />
+                    </a>
+                  )}
+                </div>
               </CardContent>
             </Card>
           ))}

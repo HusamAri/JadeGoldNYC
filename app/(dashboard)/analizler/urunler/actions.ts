@@ -12,6 +12,7 @@ import {
 import { parseMoneyToCents } from "@/lib/money";
 import { EtsyClient, EtsyNotConnectedError } from "@/lib/etsy/client";
 import { researchListing, type ProductRow } from "@/lib/etsy/keyword-research";
+import { getGoldPricePerOunce } from "@/lib/gold-price";
 
 export interface ProductMetricActionResult {
   ok?: boolean;
@@ -128,7 +129,7 @@ export async function researchProductNow(
   const { data: product } = await admin
     .from("products")
     .select(
-      "id, title, price_cents, currency, tags, research_keyword, etsy_listing_id",
+      "id, title, price_cents, currency, tags, research_keyword, etsy_listing_id, weight_grams",
     )
     .eq("id", productId)
     .eq("org_id", m.org_id)
@@ -154,12 +155,14 @@ export async function researchProductNow(
     .maybeSingle();
 
   try {
+    const goldOunceUsd = await getGoldPricePerOunce();
     const r = await researchListing(
       admin,
       client,
       m.org_id,
       (conn as { shop_id: number | null } | null)?.shop_id ?? null,
       product as ProductRow,
+      goldOunceUsd,
       true, // derin: aynı-varyant karşılaştırması dahil
     );
     revalidatePath("/analizler/urunler");

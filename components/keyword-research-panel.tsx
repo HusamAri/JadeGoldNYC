@@ -74,6 +74,56 @@ export async function KeywordResearchPanel({
           fallback={fallbackTag}
         />
 
+        {/* Gram-normalize pazar konumu + spesifik aksiyon önerisi */}
+        {snap?.recommendation && snap.price_position && snap.price_position !== "belirsiz" && (
+          <div
+            className={`space-y-1.5 rounded-lg border-l-4 p-3 ${
+              snap.price_position === "pahali"
+                ? "border-red-500 bg-red-500/5"
+                : snap.price_position === "ucuz"
+                  ? "border-sky-500 bg-sky-500/5"
+                  : "border-emerald-500 bg-emerald-500/5"
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <span
+                className={`rounded-full px-2 py-0.5 text-xs font-semibold uppercase ${
+                  snap.price_position === "pahali"
+                    ? "bg-red-500/15 text-red-600"
+                    : snap.price_position === "ucuz"
+                      ? "bg-sky-500/15 text-sky-600"
+                      : "bg-emerald-500/15 text-emerald-600"
+                }`}
+              >
+                {snap.price_position === "pahali"
+                  ? "Pazara göre pahalı"
+                  : snap.price_position === "ucuz"
+                    ? "Pazara göre ucuz"
+                    : "Bant içinde"}
+              </span>
+              {snap.our_per_gram_cents != null && (
+                <span className="text-muted-foreground font-mono text-xs tabular-nums">
+                  Biz ${(snap.our_per_gram_cents / 100).toFixed(0)}/g · pazar $
+                  {snap.market_low_per_gram_cents != null
+                    ? (snap.market_low_per_gram_cents / 100).toFixed(0)
+                    : "—"}
+                  –$
+                  {snap.market_high_per_gram_cents != null
+                    ? (snap.market_high_per_gram_cents / 100).toFixed(0)
+                    : "—"}
+                  /g
+                </span>
+              )}
+              {snap.confidence && (
+                <span className="text-muted-foreground ml-auto text-[10px] uppercase">
+                  {snap.confidence} güven
+                </span>
+              )}
+            </div>
+            <p className="text-sm leading-relaxed">{snap.recommendation}</p>
+          </div>
+        )}
+
         {!snap ? (
           <p className="text-muted-foreground text-sm">
             Bu listing için henüz araştırma yok. Sistem tüm listingleri 7 gruba
@@ -191,33 +241,42 @@ export async function KeywordResearchPanel({
                 )}
 
                 {snap.results.length > 0 && (
-                  <ul className="space-y-1.5">
+                  <ul className="space-y-2 border-t pt-3">
                     <li className="text-muted-foreground font-mono text-[10px] tracking-[0.14em] uppercase">
-                      Organik ilk 10 (listing fiyatı)
+                      Organik ilk 10 rakip · mağaza + link
                     </li>
                     {snap.results.slice(0, 10).map((c) => (
                       <li
                         key={c.position}
                         className="flex items-baseline justify-between gap-3 text-sm"
                       >
-                        <span className="text-muted-foreground min-w-0 truncate">
-                          <span className="font-mono text-xs">
-                            {String(c.position).padStart(2, "0")}
-                          </span>{" "}
-                          {c.url ? (
-                            <a
-                              href={c.url}
-                              target="_blank"
-                              rel="noreferrer noopener"
-                              className="hover:text-foreground hover:underline"
-                            >
-                              {c.title}
-                            </a>
-                          ) : (
-                            c.title
+                        <span className="min-w-0 flex-1">
+                          <span className="flex items-baseline gap-1.5">
+                            <span className="text-muted-foreground font-mono text-xs">
+                              {String(c.position).padStart(2, "0")}
+                            </span>
+                            {c.url ? (
+                              <a
+                                href={c.url}
+                                target="_blank"
+                                rel="noreferrer noopener"
+                                className="text-primary min-w-0 truncate hover:underline"
+                              >
+                                {c.title}
+                              </a>
+                            ) : (
+                              <span className="text-muted-foreground min-w-0 truncate">
+                                {c.title}
+                              </span>
+                            )}
+                          </span>
+                          {c.shop_name && (
+                            <span className="text-muted-foreground ml-[1.7rem] block truncate text-xs">
+                              {c.shop_name}
+                            </span>
                           )}
                         </span>
-                        <span className="font-mono tabular-nums">
+                        <span className="font-mono tabular-nums shrink-0">
                           {formatMoney(c.price_cents, c.currency)}
                         </span>
                       </li>
