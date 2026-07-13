@@ -487,3 +487,35 @@ export async function getListingDetail(
 
   return { product, variants, ads, lifetimeSales, gaps };
 }
+
+// ── Pazar konumu (gram-bazlı) — #148 market_price_alerts görünümünden ────
+// Günlük pazar araştırması rutini keyword_research'e $/gram konum yazınca dolar;
+// yoksa null (kart görünmez — zarif). LCC detayında rakip bölümünü tamamlar.
+
+export interface ListingMarketPosition {
+  price_position: "pahali" | "ucuz" | "bantta" | "belirsiz";
+  our_per_gram_cents: number | null;
+  market_low_per_gram_cents: number | null;
+  market_avg_per_gram_cents: number | null;
+  market_high_per_gram_cents: number | null;
+  melt_per_gram_cents: number | null;
+  deviation_pct: number | null;
+  confidence: "yuksek" | "orta" | "dusuk" | null;
+  recommendation: string | null;
+}
+
+export async function getListingMarketPosition(
+  productId: string,
+): Promise<ListingMarketPosition | null> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("market_price_alerts")
+    .select(
+      "price_position, our_per_gram_cents, market_low_per_gram_cents, market_avg_per_gram_cents, market_high_per_gram_cents, melt_per_gram_cents, deviation_pct, confidence, recommendation",
+    )
+    .eq("product_id", productId)
+    .maybeSingle();
+  const row = data as ListingMarketPosition | null;
+  if (!row || !row.price_position) return null;
+  return row;
+}

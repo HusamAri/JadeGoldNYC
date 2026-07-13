@@ -3,13 +3,17 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 
 import { requireMembership } from "@/lib/auth";
-import { getListingDetail } from "@/lib/db/queries/listings";
+import {
+  getListingDetail,
+  getListingMarketPosition,
+} from "@/lib/db/queries/listings";
 import { getListingImages, type ListingImage } from "@/lib/etsy/images";
 import { formatMoney } from "@/lib/money";
 import { PageHeader } from "@/components/page-header";
 import { KeywordResearchPanel } from "@/components/keyword-research-panel";
 import { ImageStrip } from "@/components/listing/image-strip";
 import { VariantEditor } from "@/components/listing/variant-editor";
+import { MarketPositionCard } from "@/components/listing/market-position-card";
 import { AdsSummaryCard } from "@/components/listing/ads-summary-card";
 import { ListingGapsCard } from "@/components/listing/listing-gaps-card";
 import { ListingFieldsForm } from "@/components/listing/listing-fields-form";
@@ -79,6 +83,9 @@ export default async function ListingDetayPage({
     product.etsy_listing_id != null
       ? await getListingImages(m.org_id, product.etsy_listing_id)
       : [];
+
+  // Pazar konumu ($/gram) — günlük rutin doldurunca dolu, yoksa null (kart yok).
+  const marketPosition = await getListingMarketPosition(product.id);
 
   const status = product.status
     ? (STATUS_LABELS[product.status] ?? {
@@ -203,6 +210,12 @@ export default async function ListingDetayPage({
       {/* 04 · Rakip fiyat eşleşmeleri — hazır panel AYNEN (kendi kartı var). */}
       <section id="rakip" className="space-y-4 scroll-mt-24">
         <SectionIdx n="04" name="Rakip fiyat eşleşmeleri" />
+        {marketPosition && (
+          <MarketPositionCard
+            position={marketPosition}
+            currency={product.currency}
+          />
+        )}
         <KeywordResearchPanel productId={product.id} />
       </section>
 
