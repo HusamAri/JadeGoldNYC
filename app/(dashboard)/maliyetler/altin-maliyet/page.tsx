@@ -82,31 +82,30 @@ export default async function AltinMaliyetPage({
 
       {/* ── Altın Fiyat Bilgisi ─────────────────────────────────────── */}
       <Card>
-        <CardContent className="flex flex-wrap items-center gap-4 text-sm">
-          <div className="flex items-center gap-2">
-            <Scale className="text-muted-foreground size-4" />
-            <span className="text-muted-foreground">Altin Ons Fiyati:</span>
+        <CardContent className="grid grid-cols-2 gap-y-5 text-sm sm:grid-cols-4">
+          <div className="flex flex-col items-center gap-1 text-center">
+            <span className="text-muted-foreground flex items-center gap-1.5 text-xs">
+              <Scale className="size-3.5" />
+              Altin Ons Fiyati
+            </span>
             <span className="font-semibold tabular-nums">
               {fmtUsd(goldPriceOunce)}
             </span>
           </div>
-          <div aria-hidden className="text-muted-foreground">|</div>
-          <div>
-            <span className="text-muted-foreground">Gram Fiyati (24K): </span>
+          <div className="border-border flex flex-col items-center gap-1 text-center sm:border-l">
+            <span className="text-muted-foreground text-xs">Gram Fiyati (24K)</span>
             <span className="font-semibold tabular-nums">
               {fmtUsd(goldPricePerGram)}
             </span>
           </div>
-          <div aria-hidden className="text-muted-foreground">|</div>
-          <div>
-            <span className="text-muted-foreground">14K Gram Degeri: </span>
+          <div className="border-border flex flex-col items-center gap-1 text-center sm:border-l">
+            <span className="text-muted-foreground text-xs">14K Gram Degeri</span>
             <span className="font-semibold tabular-nums">
               {fmtUsd(goldPricePerGram * 0.585)}
             </span>
           </div>
-          <div aria-hidden className="text-muted-foreground">|</div>
-          <div>
-            <span className="text-muted-foreground">10K Gram Degeri: </span>
+          <div className="border-border flex flex-col items-center gap-1 text-center sm:border-l">
+            <span className="text-muted-foreground text-xs">10K Gram Degeri</span>
             <span className="font-semibold tabular-nums">
               {fmtUsd(goldPricePerGram * 0.416)}
             </span>

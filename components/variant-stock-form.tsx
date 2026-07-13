@@ -135,7 +135,7 @@ export function VariantStockForm({
 
   if (groups.length === 0) {
     return (
-      <p className="text-muted-foreground rounded-2xl border border-dashed p-6 text-center text-sm">
+      <p className="nm-pressed text-muted-foreground rounded-2xl p-6 text-center text-sm">
         Bağlı varyant bulunamadı. Önce Stok sayfasından &quot;Varyantları Senkronize
         Et&quot; ile Etsy envanterini çekin.
       </p>
@@ -179,7 +179,7 @@ export function VariantStockForm({
       </div>
 
       {groups.map((g) => (
-        <div key={g.productId} className="overflow-hidden rounded-2xl border">
+        <div key={g.productId} className="nm-raised overflow-hidden rounded-[26px]">
           <div className="bg-muted/40 flex items-center gap-2.5 border-b px-3 py-2.5 sm:px-4">
             <Package className="text-muted-foreground size-4 shrink-0" />
             <div className="min-w-0 flex-1">

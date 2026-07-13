@@ -116,7 +116,7 @@ export function ListingActionPanel({ health, decision }: Props) {
         </div>
 
         {/* Holistik aksiyon (satış + dönüşüm + tedarik + pazar birlikte) */}
-        <div className={`space-y-1.5 rounded-lg border-l-4 p-3 ${meta.ring}`}>
+        <div className={`space-y-1.5 rounded-xl border-l-4 p-3.5 shadow-[var(--lift-sm)] ${meta.ring}`}>
           <div className="flex items-center gap-2">
             <Icon aria-hidden className={`size-4 ${meta.tone}`} />
             <span className={`font-semibold ${meta.tone}`}>{a.title}</span>
@@ -153,7 +153,7 @@ export function ListingActionPanel({ health, decision }: Props) {
 
         {/* Karar verilmişse: durum + sonraki aksiyon */}
         {decision ? (
-          <div className="bg-secondary/40 space-y-1 rounded-lg border p-3">
+          <div className="bg-secondary/40 space-y-1 rounded-xl border p-3.5 shadow-[var(--lift-sm)]">
             <div className="flex items-center gap-2 text-sm font-medium">
               {decision.decision === "applied" ? (
                 <Check aria-hidden className="size-4 text-emerald-600" />

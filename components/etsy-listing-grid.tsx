@@ -112,8 +112,8 @@ export function EtsyListingGrid({ listings }: { listings: ProductListing[] }) {
                     />
                   </div>
                 ) : (
-                  <div className="from-primary/20 to-accent/30 flex aspect-square items-center justify-center bg-gradient-to-br">
-                    <Package aria-hidden className="text-muted-foreground size-12" />
+                  <div className="nm-pressed flex aspect-square items-center justify-center">
+                    <Package aria-hidden className="text-muted-foreground/60 size-12" />
                   </div>
                 )}
               </Link>

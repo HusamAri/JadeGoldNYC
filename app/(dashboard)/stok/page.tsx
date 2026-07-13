@@ -214,7 +214,7 @@ function StatChip({
   accent?: boolean;
 }) {
   return (
-    <div className="inline-flex items-baseline gap-2 rounded-full border border-border px-3.5 py-1.5">
+    <div className="nm-raised-sm inline-flex items-baseline gap-2 rounded-full px-4 py-1.5">
       <b
         className={
           accent

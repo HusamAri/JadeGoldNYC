@@ -90,7 +90,7 @@ export default async function RaporlarPage({
               <Link
                 key={r.id}
                 href={`/raporlar/${r.id}`}
-                className="hover:bg-muted/50 flex items-center gap-3 rounded-lg border p-3 transition-colors"
+                className="nm-raised-sm nm-interactive flex items-center gap-3 rounded-2xl p-3"
               >
                 <div className="bg-accent text-accent-foreground flex size-9 shrink-0 items-center justify-center rounded-xl">
                   <FileText className="size-4" />
@@ -120,7 +120,7 @@ export default async function RaporlarPage({
         <CardContent>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
             {kpis.map((k) => (
-              <div key={k.label} className="rounded-lg border p-4">
+              <div key={k.label} className="nm-raised-sm rounded-2xl p-4">
                 <p className="text-muted-foreground text-sm">{k.label}</p>
                 <p className="mt-1 text-xl font-semibold tabular-nums">
                   {k.value}

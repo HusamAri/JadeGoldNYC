@@ -40,6 +40,7 @@ export function KpiCard({
   changeLabel,
   className,
   splitTone = false,
+  holo = false,
 }: {
   label: string;
   value: string;
@@ -56,6 +57,12 @@ export function KpiCard({
    * kartlarında değil, yalnız en kritik metrikte kullanın.
    */
   splitTone?: boolean;
+  /**
+   * Görünüm başına TEK kahraman KPI için iridesan holografik rakam
+   * (.holo-text — sistemin tek kroma patlaması). Net Kâr gibi en kritik
+   * metrikte kullanın; accent renginin yerine geçer.
+   */
+  holo?: boolean;
 }) {
   // Her kutu FARKLI süzülür: etiketten türeyen deterministik faz/yön/süre.
   const h = hashLabel(label);
@@ -128,15 +135,22 @@ export function KpiCard({
                       : typeof value === "string" && value.length > 10
                         ? "text-lg min-[420px]:text-xl"
                         : "text-xl min-[420px]:text-2xl",
-                    "leading-tight dark:[text-shadow:0_0_14px_rgba(255,255,255,.5)]",
+                    "leading-tight",
+                    // Holo kahraman: iridesan degrade rakam — accent/ışıma yok.
+                    holo
+                      ? "holo-text"
+                      : "dark:[text-shadow:0_0_14px_rgba(255,255,255,.5)]",
                   ),
               !splitTone &&
+                !holo &&
                 accent === "default" &&
                 "text-foreground dark:text-white",
               !splitTone &&
+                !holo &&
                 accent === "positive" &&
                 "text-[oklch(0.50_0.19_278)] dark:text-[oklch(0.80_0.10_278)]",
               !splitTone &&
+                !holo &&
                 accent === "negative" &&
                 "text-[oklch(0.58_0.16_344)] dark:text-[oklch(0.74_0.12_344)]",
             )}

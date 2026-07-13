@@ -122,7 +122,7 @@ export default async function TasarimlarPage() {
               </span>
             </div>
             {g.designs.length === 0 ? (
-              <p className="text-muted-foreground rounded-2xl border border-dashed p-5 text-sm">
+              <p className="text-muted-foreground nm-pressed rounded-2xl p-5 text-sm">
                 Bu koleksiyonda tasarım yok. &quot;Yeni Tasarım&quot; eklerken bu
                 koleksiyonu seçin.
               </p>

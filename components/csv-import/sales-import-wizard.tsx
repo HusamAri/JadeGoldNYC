@@ -102,7 +102,7 @@ export function SalesImportWizard() {
     <div className="max-w-4xl space-y-6">
       <Card>
         <CardContent>
-          <label className="border-input hover:bg-muted/40 flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border border-dashed p-8 text-center transition-colors">
+          <label className="nm-pressed border-border/60 flex cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border border-dashed p-10 text-center transition-all">
             <UploadCloud aria-hidden className="text-muted-foreground size-8" />
             <span className="text-sm font-medium">
               CSV dosyasını seçmek için tıklayın

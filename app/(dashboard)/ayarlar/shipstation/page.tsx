@@ -138,7 +138,7 @@ export default async function ShipStationAyarlarPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4 text-sm">
-            <div className="bg-muted/40 flex items-center gap-3 rounded-xl border px-4 py-3">
+            <div className="nm-pressed flex items-center gap-3 rounded-2xl px-4 py-3">
               <MapPin className="text-primary size-5 shrink-0" />
               <div>
                 <div className="text-foreground font-medium tabular-nums">

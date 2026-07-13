@@ -164,7 +164,7 @@ export function StockSyncPanel({ connected }: { connected: boolean }) {
           )}
         </div>
 
-        <div className="max-h-72 overflow-y-auto rounded-lg border border-border">
+        <div className="nm-pressed max-h-72 overflow-y-auto rounded-2xl">
           <table className="w-full text-sm">
             <thead className="text-muted-foreground bg-card sticky top-0 text-xs">
               <tr>
