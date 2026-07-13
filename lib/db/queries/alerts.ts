@@ -103,12 +103,14 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
         .select("status, price_cents, currency")
         .eq("org_id", orgId)
         .in("status", PRODUCT_STATUS_ALERTS.map((s) => s.status)),
-      // Karar bekleyen ekip soruları (metric_inquiries open).
+      // Karar bekleyen ekip soruları — open VE review: ilk yanıt soruyu
+      // 'review'a taşır ama kapama/dallandırma kararı hâlâ bekler; yalnız
+      // 'open' sayılsaydı ilk yanıt gelir gelmez uyarı sessizce kaybolurdu.
       supabase
         .from("metric_inquiries")
         .select("*", { count: "exact", head: true })
         .eq("org_id", orgId)
-        .eq("status", "open"),
+        .neq("status", "resolved"),
       // Algoritma engelli: fiyat/pazar algoritması eksik veriden (gram/rakip)
       // "belirsiz" kaldığı, araştırılmış aktif listingler.
       supabase
