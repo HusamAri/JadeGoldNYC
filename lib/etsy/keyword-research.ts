@@ -8,6 +8,14 @@ import {
   type EtsyPropertyValue,
   type EtsyInventory,
 } from "@/lib/etsy/types";
+import { getGoldPricePerOunce } from "@/lib/gold-price";
+import {
+  detectKarat,
+  extractWeightGrams,
+  KARAT_PURITY,
+  PURCHASE_PRICE_CENTS_PER_GRAM,
+  TROY_OUNCE_GRAMS,
+} from "@/lib/gold-cost";
 
 /**
  * Rekabet fiyat araştırması motoru.
@@ -33,6 +41,9 @@ interface EtsyActiveListing {
   url?: string;
   shop_id?: number;
   price?: EtsyMoney;
+  // includes=Shop ile gelir (uçtan uca değişebilen şekil — iki olasılığı da tut).
+  shop_name?: string;
+  Shop?: { shop_name?: string };
 }
 interface EtsyActiveSearch {
   count: number;
@@ -193,6 +204,8 @@ export interface CompetitorRow {
   price_cents: number;
   currency: string;
   shop: number | null;
+  /** Mağaza adı (includes=Shop ile; eski kayıtlarda olmayabilir). */
+  shop_name: string | null;
   url: string | null;
   position: number;
 }
@@ -212,6 +225,173 @@ export interface ProductRow {
   tags: string[] | null;
   research_keyword: string | null;
   etsy_listing_id: number | null;
+  weight_grams: number | null;
+}
+
+// ── Pazar konumu (gram-normalize melt çarpanı) ─────────────────────────────
+// Metodoloji: docs/pazar-arastirma-metodolojisi.md
+// Katı altın perakende bandı, araştırmadan kalibre melt çarpanları:
+const MARKET_MULT_LOW = 1.3; // bunun altı: çok ucuz (kalite algısı/marj riski)
+const MARKET_MULT_HIGH = 2.3; // bunun üstü: pazara göre pahalı
+const MARKET_MULT_MID = 1.8;
+
+export interface MarketPosition {
+  our_per_gram_cents: number | null;
+  market_low_per_gram_cents: number | null;
+  market_avg_per_gram_cents: number | null;
+  market_high_per_gram_cents: number | null;
+  melt_per_gram_cents: number | null;
+  price_position: "pahali" | "ucuz" | "bantta" | "belirsiz";
+  deviation_pct: number | null;
+  confidence: "yuksek" | "orta" | "dusuk";
+  recommendation: string | null;
+}
+
+/** Rakip başlığından gram çıkarıp $/g döndürür (yoksa null). */
+function competitorPerGram(c: CompetitorRow): number | null {
+  const g = extractWeightGrams(c.title, null);
+  if (!g || g <= 0) return null;
+  return c.price_cents / g;
+}
+
+/**
+ * Bir listing için gram-normalize pazar konumu hesaplar.
+ * Rakip başlıklarından gram çıkarabildiğimiz kadarıyla CANLI $/g bandı kurar;
+ * yeterli değilse (n<5) melt-çarpanı kalibre bandına düşer (güven=dusuk).
+ */
+export function computeMarketPosition(
+  product: ProductRow,
+  competitors: CompetitorRow[],
+  goldOunceUsd: number,
+): MarketPosition {
+  const karat = detectKarat(product.title, product.tags);
+  const empty: MarketPosition = {
+    our_per_gram_cents: null,
+    market_low_per_gram_cents: null,
+    market_avg_per_gram_cents: null,
+    market_high_per_gram_cents: null,
+    melt_per_gram_cents: null,
+    price_position: "belirsiz",
+    deviation_pct: null,
+    confidence: "dusuk",
+    recommendation: null,
+  };
+  if (!karat) return empty;
+
+  const meltPerGram = Math.round(
+    (goldOunceUsd / TROY_OUNCE_GRAMS) * KARAT_PURITY[karat] * 100,
+  );
+  const breakevenPerGram = PURCHASE_PRICE_CENTS_PER_GRAM[karat]; // taban maliyet
+
+  // Bizim $/g: ürün fiyatı ÷ ürün ağırlığı (yaklaşık — varyant başı değil).
+  const ourWeight = product.weight_grams;
+  const ourPerGram =
+    product.price_cents != null && ourWeight && ourWeight > 0
+      ? Math.round(product.price_cents / ourWeight)
+      : null;
+
+  // Aynı ayardaki rakiplerin $/g'si (başlıktan gram + makul melt üstü).
+  const rivalPerGram = competitors
+    .filter((c) => {
+      const k = detectKarat(c.title);
+      return k === karat; // bire bir ayar eşleşmesi
+    })
+    .map((c) => competitorPerGram(c))
+    .filter((v): v is number => v != null && v >= meltPerGram * 0.9);
+
+  let low: number, avg: number, high: number;
+  let confidence: MarketPosition["confidence"];
+  if (rivalPerGram.length >= 5) {
+    const sorted = [...rivalPerGram].sort((a, b) => a - b);
+    const q = (p: number) => sorted[Math.min(sorted.length - 1, Math.floor(p * sorted.length))];
+    low = q(0.25);
+    avg = median(sorted);
+    high = q(0.75);
+    confidence = rivalPerGram.length >= 10 ? "yuksek" : "orta";
+  } else {
+    // Yedek: kalibre melt-çarpanı bandı (güven düşük).
+    low = Math.round(meltPerGram * MARKET_MULT_LOW);
+    avg = Math.round(meltPerGram * MARKET_MULT_MID);
+    high = Math.round(meltPerGram * MARKET_MULT_HIGH);
+    confidence = "dusuk";
+  }
+
+  let position: MarketPosition["price_position"] = "bantta";
+  let deviation: number | null = null;
+  if (ourPerGram != null) {
+    if (ourPerGram < breakevenPerGram) {
+      position = "ucuz"; // maliyet altı — zarar riski
+      deviation = ourPerGram / breakevenPerGram - 1;
+    } else if (ourPerGram > high) {
+      position = "pahali";
+      deviation = ourPerGram / high - 1;
+    } else if (ourPerGram < low) {
+      position = "ucuz";
+      deviation = ourPerGram / low - 1;
+    } else {
+      position = "bantta";
+      deviation = ourPerGram / avg - 1;
+    }
+  } else {
+    position = "belirsiz";
+  }
+
+  const fg = (c: number) => `$${(c / 100).toFixed(0)}/g`;
+  const fp = (c: number | null) =>
+    c == null ? "—" : `$${(c / 100).toFixed(0)}`;
+  const rivalN = rivalPerGram.length;
+  const src =
+    confidence === "dusuk"
+      ? "kalibre band (rakip $/g az)"
+      : `${rivalN} rakip $/g`;
+  // Bizim mevcut fiyat ve önerilen tam fiyat (hedef $/g × ağırlık).
+  const priceAt = (perGram: number): number | null =>
+    ourWeight && ourWeight > 0 ? Math.round(perGram * ourWeight) : null;
+  let rec: string | null = null;
+
+  if (position === "pahali") {
+    const targetBand = priceAt(high); // banda giren en yüksek (marjı korur)
+    const targetMid = priceAt(avg); // rekabetçi (daha agresif)
+    rec =
+      `PAHALI · bizim ${fg(ourPerGram!)} — pazar bandı ${fg(low)}–${fg(high)} (${src}, ${confidence} güven), %${Math.round((deviation ?? 0) * 100)} üstünde. ` +
+      `Önerilen fiyat: ${fp(targetBand)} (bant içine; şu an ${fp(product.price_cents)}), agresif: ${fp(targetMid)}. ` +
+      `En çok fayda: FİYAT düşürmek — pahalı üründe reklam bütçesi dönüşüm getirmez (Temmuz'da reklam brüt kârın ~%80'iydi), reklamı artırmadan önce fiyatı banda çek. ` +
+      `Tedarik: iptal oranı yüksek varyantta önce stok kararı, indirim değil.`;
+  } else if (position === "ucuz") {
+    if (ourPerGram != null && ourPerGram < breakevenPerGram) {
+      const targetFloor = priceAt(Math.round(breakevenPerGram * 1.4));
+      rec =
+        `ZARAR RİSKİ · bizim ${fg(ourPerGram)} maliyet tabanı ${fg(breakevenPerGram)} ALTINDA — acil düzelt. ` +
+        `Önerilen minimum fiyat: ${fp(targetFloor)} (taban×1,4). En çok fayda: fiyatı düzeltmek; bu üründe reklam para yakar.`;
+    } else {
+      const targetLow = priceAt(low);
+      const targetMid = priceAt(avg);
+      rec =
+        `UCUZ · bizim ${fg(ourPerGram!)} — pazar bandı ${fg(low)}–${fg(high)} ALTINDA (${src}, ${confidence} güven). ` +
+        `Zam fırsatı: en az ${fp(targetLow)} (bant alt sınırı), hedef ${fp(targetMid)}. ` +
+        `En çok fayda: reklamdan ÖNCE fiyatı bant içine çek — talep zaten var, marj masada kalıyor. 2. teyit beklenmeli.`;
+    }
+  } else if (position === "bantta") {
+    rec =
+      `BANTTA · ${fg(ourPerGram!)} pazar aralığında (${fg(low)}–${fg(high)}). Fiyat rekabetçi. ` +
+      `En çok fayda: fiyat değil, GÖRÜNÜRLÜK — dönüşümü zaten iyiyse hedefli/daraltılmış reklam ya da SEO ile trafik artır.`;
+  } else {
+    rec = ourWeight
+      ? "Ağırlık var ama fiyat yok — konum hesaplanamadı."
+      : "Ürün ağırlığı girilmemiş — $/g konumu için 'Listeler' sekmesinde ağırlık girin.";
+  }
+
+  return {
+    our_per_gram_cents: ourPerGram,
+    market_low_per_gram_cents: low,
+    market_avg_per_gram_cents: avg,
+    market_high_per_gram_cents: high,
+    melt_per_gram_cents: meltPerGram,
+    price_position: position,
+    deviation_pct: deviation,
+    confidence,
+    recommendation: rec,
+  };
 }
 
 /** Bir listing'in araştırma kelimesini çözer (override → birincil tag). */
@@ -229,6 +409,7 @@ export async function researchListing(
   orgId: string,
   ownShopId: number | null,
   product: ProductRow,
+  goldOunceUsd: number,
   deep = false,
 ): Promise<ResearchResult> {
   const keyword = resolveKeyword(product);
@@ -238,7 +419,13 @@ export async function researchListing(
 
   const search = await client.get<EtsyActiveSearch>(
     etsyPaths.activeListingsSearch(),
-    { keywords: keyword, limit: 20, sort_on: "score", sort_order: "down" },
+    {
+      keywords: keyword,
+      limit: 20,
+      sort_on: "score",
+      sort_order: "down",
+      includes: "Shop", // rakip mağaza adını da getir
+    },
   );
 
   const currency = product.currency ?? "USD";
@@ -257,6 +444,7 @@ export async function researchListing(
     price_cents: moneyToCents(l.price) as number,
     currency: l.price?.currency_code ?? currency,
     shop: l.shop_id ?? null,
+    shop_name: l.shop_name ?? l.Shop?.shop_name ?? null,
     url: l.url ?? null,
     position: i + 1,
   }));
@@ -302,6 +490,8 @@ export async function researchListing(
     }
   }
 
+  const market = computeMarketPosition(product, competitors, goldOunceUsd);
+
   await admin.from("keyword_research").insert({
     org_id: orgId,
     product_id: product.id,
@@ -312,6 +502,15 @@ export async function researchListing(
     ...stats,
     results: competitors,
     variant_comparison: variantComparison,
+    our_per_gram_cents: market.our_per_gram_cents,
+    market_low_per_gram_cents: market.market_low_per_gram_cents,
+    market_avg_per_gram_cents: market.market_avg_per_gram_cents,
+    market_high_per_gram_cents: market.market_high_per_gram_cents,
+    melt_per_gram_cents: market.melt_per_gram_cents,
+    price_position: market.price_position,
+    deviation_pct: market.deviation_pct,
+    confidence: market.confidence,
+    recommendation: market.recommendation,
   });
 
   return {
@@ -330,6 +529,7 @@ export async function advanceKeywordResearch(
   group: number,
 ): Promise<Record<string, unknown>> {
   const admin = createAdminClient();
+  const goldOunceUsd = await getGoldPricePerOunce(); // grup başına tek çekim
   const { data: conns } = await admin
     .from("etsy_connection")
     .select("org_id, shop_id")
@@ -350,7 +550,7 @@ export async function advanceKeywordResearch(
     const { data: products } = await admin
       .from("products")
       .select(
-        "id, title, price_cents, currency, tags, research_keyword, etsy_listing_id",
+        "id, title, price_cents, currency, tags, research_keyword, etsy_listing_id, weight_grams",
       )
       .eq("org_id", conn.org_id)
       .eq("research_group", group)
@@ -362,7 +562,14 @@ export async function advanceKeywordResearch(
     let errors = 0;
     for (const p of (products ?? []) as ProductRow[]) {
       try {
-        const r = await researchListing(admin, client, conn.org_id, conn.shop_id, p);
+        const r = await researchListing(
+          admin,
+          client,
+          conn.org_id,
+          conn.shop_id,
+          p,
+          goldOunceUsd,
+        );
         if (r.status === "ok") ok++;
         else if (r.status === "no-keyword") noKeyword++;
         else noResults++;

@@ -20,6 +20,16 @@ export interface KeywordResearchSnapshot {
   our_rank_pct: number | null;
   results: CompetitorRow[];
   variant_comparison: VariantComparison[] | null;
+  // Gram-normalize pazar konumu (0076) — günlük rutin doldurur.
+  our_per_gram_cents: number | null;
+  market_low_per_gram_cents: number | null;
+  market_avg_per_gram_cents: number | null;
+  market_high_per_gram_cents: number | null;
+  melt_per_gram_cents: number | null;
+  price_position: "pahali" | "ucuz" | "bantta" | "belirsiz" | null;
+  deviation_pct: number | null;
+  confidence: "yuksek" | "orta" | "dusuk" | null;
+  recommendation: string | null;
 }
 
 /** Listing'in araştırma kelimesi meta bilgisi (editör önizlemesi için). */
