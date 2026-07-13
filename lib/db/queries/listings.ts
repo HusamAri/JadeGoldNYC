@@ -1,0 +1,452 @@
+import { createClient } from "@/lib/supabase/server";
+import type { EtsyPropertyValue } from "@/lib/etsy/types";
+
+/**
+ * Listing Komuta Merkezi — veri katmanı.
+ * Yalnız sunucu tarafında kullanılır (createClient = RLS'li istemci; org
+ * kapsamı RLS politikalarıyla sağlanır). Kontratlar LCC brief G1 ile birebirdir;
+ * G2 (indeks sayfası) ve G3 (detay sayfası) bu tiplere kodlar.
+ */
+
+// ── Kontrat tipleri ──────────────────────────────────────────────────
+
+export interface ListingIndexRow {
+  id: string;
+  etsy_listing_id: number | null;
+  title: string;
+  status: string | null; // 'active' | 'draft' | ...
+  image_url: string | null;
+  price_cents: number | null;
+  currency: string;
+  quantity: number | null;
+  num_images: number | null;
+  variant_count: number;
+  missing_weight_count: number; // weight_grams null olan varyant sayısı
+  research_keyword: string | null;
+  has_research: boolean; // keyword_research kaydı var mı
+  ads30_spend_cents: number | null; // period_label ilike '%son 30%' toplamı
+  ads30_orders: number | null;
+}
+
+export interface ListingVariantRow {
+  sku: string;
+  name: string | null;
+  /** properties values join(' · ') || name || sku */
+  label: string;
+  price_cents: number | null;
+  quantity: number | null;
+  weight_grams: number | null;
+  weight_source: string | null;
+  active: boolean | null;
+}
+
+export interface ListingAds {
+  son30: {
+    spend_cents: number;
+    revenue_cents: number;
+    clicks: number;
+    orders: number;
+    views: number;
+  } | null;
+  lifetime_metrics: {
+    spend_cents: number;
+    revenue_cents: number;
+    clicks: number;
+    orders: number;
+    views: number;
+    periods: number;
+  };
+  periods: {
+    period_label: string;
+    views: number | null;
+    orders: number | null;
+    revenue_cents: number | null;
+    ads_spend_cents: number | null;
+    ads_revenue_cents: number | null;
+  }[];
+}
+
+export interface ListingLifetimeSales {
+  orders: number;
+  units: number;
+  revenue_cents: number;
+}
+
+export interface ListingGaps {
+  missing_weights: number;
+  total_variants: number;
+  no_research_keyword: boolean;
+  no_description: boolean;
+  no_tags: boolean;
+  no_materials: boolean;
+  no_image: boolean;
+  unpriced_variants: number;
+}
+
+export interface ListingDetail {
+  product: {
+    id: string;
+    etsy_listing_id: number | null;
+    title: string;
+    status: string | null;
+    description: string | null;
+    tags: string[] | null;
+    materials: string[] | null;
+    price_cents: number | null;
+    currency: string;
+    quantity: number | null;
+    url: string | null;
+    image_url: string | null;
+    num_images: number | null;
+    research_keyword: string | null;
+    sku: string | null;
+  };
+  variants: ListingVariantRow[];
+  ads: ListingAds;
+  /** sale_items (etsy_listing_id VEYA product_id eşleşen; sales.status <> 'cancelled') */
+  lifetimeSales: ListingLifetimeSales;
+  gaps: ListingGaps;
+}
+
+// ── Yardımcılar ──────────────────────────────────────────────────────
+
+/** PostgREST `.or()` filtresine güvenli giriş için temizler. */
+function sanitize(term: string): string {
+  return term.replace(/[,()%*]/g, " ").trim();
+}
+
+const PAGE_SIZE = 1000;
+
+interface PageResult<T> {
+  data: T[] | null;
+  error: { message: string } | null;
+}
+
+/**
+ * PostgREST varsayılan satır limitini (1000) aşan kümeler için sayfalı toplu
+ * okuma. Her sayfada TAZE builder kurulmalı (aynı builder'da range tekrar
+ * çağrılamaz); deterministik sıra için sorguya `.order(...)` verilmelidir.
+ */
+async function fetchAllPages<T>(
+  page: (from: number, to: number) => PromiseLike<PageResult<T>>,
+): Promise<T[]> {
+  const all: T[] = [];
+  for (let from = 0; ; from += PAGE_SIZE) {
+    const { data, error } = await page(from, from + PAGE_SIZE - 1);
+    if (error) throw new Error(error.message);
+    const rows = data ?? [];
+    all.push(...rows);
+    if (rows.length < PAGE_SIZE) break;
+  }
+  return all;
+}
+
+function sumField<T>(rows: T[], pick: (r: T) => number | null | undefined): number {
+  let total = 0;
+  for (const r of rows) total += pick(r) ?? 0;
+  return total;
+}
+
+/** "Etsy Ads · son 30g" gibi son-30-gün dönem etiketi mi? (ilike '%son 30%') */
+function isSon30(label: string): boolean {
+  return label.toLowerCase().includes("son 30");
+}
+
+/** property_values → okunur varyant etiketi; yoksa name, o da yoksa SKU. */
+function variantLabel(v: {
+  sku: string;
+  name: string | null;
+  properties: EtsyPropertyValue[] | null;
+}): string {
+  const parts = (v.properties ?? [])
+    .map((p) => (p.values ?? []).join(", "))
+    .filter(Boolean);
+  if (parts.length) return parts.join(" · ");
+  return (v.name ?? "").trim() || v.sku;
+}
+
+// ── DB satır tipleri (dar cast'ler) ──────────────────────────────────
+
+interface ProductIndexDbRow {
+  id: string;
+  etsy_listing_id: number | null;
+  title: string;
+  status: string | null;
+  image_url: string | null;
+  price_cents: number | null;
+  currency: string | null;
+  quantity: number | null;
+  num_images: number | null;
+  research_keyword: string | null;
+}
+
+interface VariantAggDbRow {
+  product_id: string | null;
+  weight_grams: number | null;
+}
+
+interface Ads30DbRow {
+  product_id: string | null;
+  ads_spend_cents: number | null;
+  orders: number | null;
+}
+
+interface ResearchDbRow {
+  product_id: string;
+}
+
+interface VariantDbRow {
+  sku: string;
+  name: string | null;
+  properties: EtsyPropertyValue[] | null;
+  price_cents: number | null;
+  quantity: number | null;
+  weight_grams: number | string | null; // numeric — bazı sürücüler string döndürür
+  weight_source: string | null;
+  active: boolean | null;
+}
+
+interface MetricDbRow {
+  period_label: string;
+  views: number | null;
+  orders: number | null;
+  revenue_cents: number | null;
+  ads_clicks: number | null;
+  ads_spend_cents: number | null;
+  ads_revenue_cents: number | null;
+}
+
+interface SaleItemDbRow {
+  sale_id: string;
+  quantity: number | null;
+  line_total_cents: number | null;
+}
+
+// ── İndeks: tüm listingler tek sorgu setiyle (N+1 yok) ───────────────
+
+/**
+ * Tüm listingler (sayfalama yok — tek sayfa; ~320 satır sorun değil).
+ * Varyant/metrik/araştırma verileri TOPLU çekilir ve Map ile birleştirilir.
+ * `search` başlık/SKU ilike; `status` eq.
+ */
+export async function listListingsIndex(opts?: {
+  search?: string;
+  status?: string;
+}): Promise<ListingIndexRow[]> {
+  const supabase = await createClient();
+  const search = opts?.search ? sanitize(opts.search) : "";
+  const status = opts?.status;
+
+  const products = await fetchAllPages<ProductIndexDbRow>((from, to) => {
+    let q = supabase
+      .from("products")
+      .select(
+        "id, etsy_listing_id, title, status, image_url, price_cents, currency, quantity, num_images, research_keyword",
+      );
+    if (status) q = q.eq("status", status);
+    if (search) q = q.or(`title.ilike.%${search}%,sku.ilike.%${search}%`);
+    return q
+      .order("title", { ascending: true })
+      .order("id", { ascending: true })
+      .range(from, to);
+  });
+  if (products.length === 0) return [];
+
+  const ids = new Set(products.map((p) => p.id));
+
+  // Toplu yan veriler — RLS org'a kısıtlar; ürün filtresi Map aşamasında.
+  const [variants, adsRows, researchRows] = await Promise.all([
+    fetchAllPages<VariantAggDbRow>((from, to) =>
+      supabase
+        .from("product_variants")
+        .select("product_id, weight_grams")
+        .not("product_id", "is", null)
+        .order("id", { ascending: true })
+        .range(from, to),
+    ),
+    fetchAllPages<Ads30DbRow>((from, to) =>
+      supabase
+        .from("product_metrics")
+        .select("product_id, ads_spend_cents, orders")
+        .ilike("period_label", "%son 30%")
+        .not("product_id", "is", null)
+        .order("id", { ascending: true })
+        .range(from, to),
+    ),
+    fetchAllPages<ResearchDbRow>((from, to) =>
+      supabase
+        .from("keyword_research")
+        .select("product_id")
+        .order("id", { ascending: true })
+        .range(from, to),
+    ),
+  ]);
+
+  const variantAgg = new Map<string, { total: number; missing: number }>();
+  for (const v of variants) {
+    if (!v.product_id || !ids.has(v.product_id)) continue;
+    const agg = variantAgg.get(v.product_id) ?? { total: 0, missing: 0 };
+    agg.total += 1;
+    if (v.weight_grams == null) agg.missing += 1;
+    variantAgg.set(v.product_id, agg);
+  }
+
+  const adsAgg = new Map<string, { spend: number; orders: number }>();
+  for (const m of adsRows) {
+    if (!m.product_id || !ids.has(m.product_id)) continue;
+    const agg = adsAgg.get(m.product_id) ?? { spend: 0, orders: 0 };
+    agg.spend += m.ads_spend_cents ?? 0;
+    agg.orders += m.orders ?? 0;
+    adsAgg.set(m.product_id, agg);
+  }
+
+  const researched = new Set(researchRows.map((r) => r.product_id));
+
+  return products.map((p) => {
+    const va = variantAgg.get(p.id);
+    const ads = adsAgg.get(p.id);
+    return {
+      id: p.id,
+      etsy_listing_id: p.etsy_listing_id,
+      title: p.title,
+      status: p.status,
+      image_url: p.image_url,
+      price_cents: p.price_cents,
+      currency: p.currency ?? "USD",
+      quantity: p.quantity,
+      num_images: p.num_images,
+      variant_count: va?.total ?? 0,
+      missing_weight_count: va?.missing ?? 0,
+      research_keyword: p.research_keyword,
+      has_research: researched.has(p.id),
+      ads30_spend_cents: ads ? ads.spend : null,
+      ads30_orders: ads ? ads.orders : null,
+    };
+  });
+}
+
+// ── Detay: tek listing'in komuta-merkezi verisi ──────────────────────
+
+export async function getListingDetail(
+  id: string,
+): Promise<ListingDetail | null> {
+  const supabase = await createClient();
+
+  const { data: pData, error: pError } = await supabase
+    .from("products")
+    .select(
+      "id, etsy_listing_id, title, status, description, tags, materials, price_cents, currency, quantity, url, image_url, num_images, research_keyword, sku",
+    )
+    .eq("id", id)
+    .maybeSingle();
+  if (pError) throw new Error(pError.message);
+  if (!pData) return null;
+  const product = pData as ListingDetail["product"];
+
+  const [variantRows, metricRows, saleItemRows] = await Promise.all([
+    (async () => {
+      const { data, error } = await supabase
+        .from("product_variants")
+        .select(
+          "sku, name, properties, price_cents, quantity, weight_grams, weight_source, active",
+        )
+        .eq("product_id", id)
+        .order("sku", { ascending: true });
+      if (error) throw new Error(error.message);
+      return (data ?? []) as VariantDbRow[];
+    })(),
+    (async () => {
+      const { data, error } = await supabase
+        .from("product_metrics")
+        .select(
+          "period_label, views, orders, revenue_cents, ads_clicks, ads_spend_cents, ads_revenue_cents",
+        )
+        .eq("product_id", id)
+        .order("period_label", { ascending: false });
+      if (error) throw new Error(error.message);
+      return (data ?? []) as MetricDbRow[];
+    })(),
+    // Ömürlük gerçek satış: etsy_listing_id VEYA product_id eşleşen kalemler;
+    // iptal edilen siparişler hariç (sales.status <> 'cancelled').
+    fetchAllPages<SaleItemDbRow>((from, to) => {
+      let q = supabase
+        .from("sale_items")
+        .select("sale_id, quantity, line_total_cents, sales!inner(status)")
+        .neq("sales.status", "cancelled");
+      q =
+        product.etsy_listing_id != null
+          ? q.or(
+              `product_id.eq.${id},etsy_listing_id.eq.${product.etsy_listing_id}`,
+            )
+          : q.eq("product_id", id);
+      return q.order("id", { ascending: true }).range(from, to);
+    }),
+  ]);
+
+  const variants: ListingVariantRow[] = variantRows.map((v) => ({
+    sku: v.sku,
+    name: v.name,
+    label: variantLabel(v),
+    price_cents: v.price_cents,
+    quantity: v.quantity,
+    weight_grams: v.weight_grams == null ? null : Number(v.weight_grams),
+    weight_source: v.weight_source,
+    active: v.active,
+  }));
+
+  const son30Rows = metricRows.filter((m) => isSon30(m.period_label));
+  const ads: ListingAds = {
+    son30: son30Rows.length
+      ? {
+          spend_cents: sumField(son30Rows, (m) => m.ads_spend_cents),
+          revenue_cents: sumField(son30Rows, (m) => m.ads_revenue_cents),
+          clicks: sumField(son30Rows, (m) => m.ads_clicks),
+          orders: sumField(son30Rows, (m) => m.orders),
+          views: sumField(son30Rows, (m) => m.views),
+        }
+      : null,
+    lifetime_metrics: {
+      spend_cents: sumField(metricRows, (m) => m.ads_spend_cents),
+      revenue_cents: sumField(metricRows, (m) => m.ads_revenue_cents),
+      clicks: sumField(metricRows, (m) => m.ads_clicks),
+      orders: sumField(metricRows, (m) => m.orders),
+      views: sumField(metricRows, (m) => m.views),
+      periods: metricRows.length,
+    },
+    periods: metricRows.map((m) => ({
+      period_label: m.period_label,
+      views: m.views,
+      orders: m.orders,
+      revenue_cents: m.revenue_cents,
+      ads_spend_cents: m.ads_spend_cents,
+      ads_revenue_cents: m.ads_revenue_cents,
+    })),
+  };
+
+  const saleIds = new Set<string>();
+  let units = 0;
+  let revenue = 0;
+  for (const s of saleItemRows) {
+    saleIds.add(s.sale_id);
+    units += s.quantity ?? 0;
+    revenue += s.line_total_cents ?? 0;
+  }
+  const lifetimeSales: ListingLifetimeSales = {
+    orders: saleIds.size,
+    units,
+    revenue_cents: revenue,
+  };
+
+  const gaps: ListingGaps = {
+    missing_weights: variants.filter((v) => v.weight_grams == null).length,
+    total_variants: variants.length,
+    no_research_keyword: !(product.research_keyword ?? "").trim(),
+    no_description: !(product.description ?? "").trim(),
+    no_tags: !product.tags || product.tags.length === 0,
+    no_materials: !product.materials || product.materials.length === 0,
+    no_image: !(product.image_url ?? "").trim(),
+    unpriced_variants: variants.filter((v) => v.price_cents == null).length,
+  };
+
+  return { product, variants, ads, lifetimeSales, gaps };
+}
