@@ -55,8 +55,8 @@ export async function advanceShipStationSync(
 ): Promise<ShipStationProgress> {
   const startedAt = Date.now();
   const deadline = startedAt + budgetMs;
-  const client = ShipStationClient.fromEnv();
   const admin = createAdminClient();
+  const client = await ShipStationClient.forOrg(admin, orgId);
 
   const { data } = await admin
     .from("shipstation_connection")

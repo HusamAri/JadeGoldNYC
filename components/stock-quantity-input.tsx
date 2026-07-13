@@ -18,10 +18,13 @@ export function StockQuantityInput({
   productId,
   initial,
   current,
+  canEdit = true,
 }: {
   productId: string;
   initial: number | null;
   current: number | null;
+  /** Manager değilse salt görüntüleme — yazamayacak kişiye açık input gösterme. */
+  canEdit?: boolean;
 }) {
   const router = useRouter();
   const [value, setValue] = useState(initial != null ? String(initial) : "");
@@ -70,7 +73,7 @@ export function StockQuantityInput({
         inputMode="numeric"
         placeholder="—"
         value={value}
-        disabled={pending}
+        disabled={pending || !canEdit}
         style={focusStyle}
         onFocus={() => setFocused(true)}
         onChange={(e) => setValue(e.target.value.replace(/[^0-9]/g, ""))}

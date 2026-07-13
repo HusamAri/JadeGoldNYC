@@ -12,11 +12,11 @@ import { cn } from "@/lib/utils";
 export function DataGapsCard({ gaps }: { gaps: DataGap[] }) {
   return (
     <Card>
-      <CardHeader className="flex-row items-center gap-2 space-y-0">
+      <CardHeader className="flex flex-row items-center gap-2 space-y-0">
         <ClipboardList className="text-muted-foreground size-4" />
         <CardTitle className="text-base">Eksik Bilgi</CardTitle>
         {gaps.length > 0 && (
-          <span className="bg-amber-500/15 ml-auto rounded-full px-2 py-0.5 text-xs font-semibold text-amber-600 tabular-nums">
+          <span className="bg-amber-500/15 ml-auto rounded-full px-2 py-0.5 font-mono text-xs font-semibold text-amber-600 tabular-nums shadow-[var(--shadow-raised-sm)]">
             {gaps.length}
           </span>
         )}

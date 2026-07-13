@@ -1,7 +1,9 @@
 import * as React from "react";
-import type { LucideIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+
+// Hem Lucide hem markaya özel Lux ikonlarını kabul eder.
+type IconType = React.ComponentType<React.SVGProps<SVGSVGElement>>;
 
 export function EmptyState({
   icon: Icon,
@@ -10,25 +12,34 @@ export function EmptyState({
   action,
   className,
 }: {
-  icon?: LucideIcon;
+  icon?: IconType;
   title: string;
   description?: string;
   action?: React.ReactNode;
   className?: string;
 }) {
   return (
+    // Boş durum = zemine bastırılmış nöromorfik oluk (pressed well);
+    // içindeki ikon çipi kabartılı (raised) — çift ışık dili. Kuyunun içinde
+    // lab'ların indeks-etiket dili (.idx) dekoratif satır olarak yaşar.
     <div
       className={cn(
-        "bg-card/50 flex flex-col items-center justify-center rounded-xl border border-dashed p-10 text-center",
+        "nm-pressed flex flex-col items-center justify-center rounded-[1.5rem] p-10 text-center",
         className,
       )}
     >
+      {/* Editorial indeks satırı — dekor (ref: Liquid .idx "Bölüm / 0N · Ad"). */}
+      <div aria-hidden className="idx mb-4 justify-center gap-2.5 opacity-80">
+        <span className="idx-bar w-6" />
+        <span>Kayıt / 00 · Boş</span>
+        <span className="idx-bar w-6" />
+      </div>
       {Icon && (
-        <div className="bg-muted text-muted-foreground mb-3 flex size-12 items-center justify-center rounded-full">
+        <div className="text-muted-foreground mb-4 flex size-12 items-center justify-center rounded-full shadow-[var(--shadow-raised-sm)] [background-image:var(--nm-convex)]">
           <Icon className="size-6" />
         </div>
       )}
-      <h3 className="text-base font-semibold">{title}</h3>
+      <h3 className="text-carved text-base font-semibold">{title}</h3>
       {description && (
         <p className="text-muted-foreground mt-1 max-w-sm text-sm">
           {description}

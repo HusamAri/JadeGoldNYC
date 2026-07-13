@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Plus, Pencil, Wallet, Gem } from "lucide-react";
+import { SceneCutouts } from "@/components/scene-cutouts";
 
 import { listCosts, listCostCategories } from "@/lib/db/queries/costs";
 import { strParam, numParam, type RawSearchParams } from "@/lib/searchparams";
@@ -7,6 +8,7 @@ import { formatMoney } from "@/lib/money";
 import { formatDate } from "@/lib/format";
 import { PageHeader } from "@/components/page-header";
 import { GoldStream } from "@/components/brand/gold-stream";
+import { CornerMarks } from "@/components/brand/corner-marks";
 import { EditorialCard } from "@/components/brand/editorial-card";
 import { EmptyState } from "@/components/empty-state";
 import { Button } from "@/components/ui/button";
@@ -45,6 +47,7 @@ export default async function MaliyetlerPage({
 
   return (
     <div className="relative z-0 pb-28">
+      <SceneCutouts page="maliyetler" />
       <GoldStream motif="scale" />
       <PageHeader
         title="Maliyetler"
@@ -67,19 +70,36 @@ export default async function MaliyetlerPage({
         }
       />
 
+      {/* Dekoratif indeks satırı (Spatial/Liquid .idx dili). */}
+      <div aria-hidden className="idx mb-4">
+        <span>Maliyetler / 01 · Atölye</span>
+        <span className="idx-bar" />
+        <span className="idx-ln" />
+        <span>Jade Gold · NYC</span>
+      </div>
       {/* Tek, sessiz marka aksanı — atölye/malzeme temasıyla maliyet sayfasına
-          zarif bir giriş (galeri değil, tek kompakt banner). */}
-      <EditorialCard
-        compact
-        heightClassName="h-[200px]"
-        className="mb-6"
-        image="/brand/gallery/aydinlik-nugget.webp"
-        video="/brand/video/altin-yuzuk-yukselis.mp4"
-        eyebrow="Atölye"
-        title="Zarafetin sadeliği"
-        subtitle="Her maliyet, som altın el işçiliğinin arkasındaki değer."
-      />
+          zarif bir giriş (galeri değil, tek kompakt banner). Sayfanın hero
+          anı: Spatial köşe işaretleri (dekoratif sarmalayıcı). */}
+      <div className="relative mb-6">
+        <EditorialCard
+          compact
+          heightClassName="h-[200px]"
+          image="/brand/gallery/aydinlik-nugget.webp"
+          video="/brand/video/altin-yuzuk-yukselis.mp4"
+          eyebrow="Atölye"
+          title="Zarafetin sadeliği"
+          subtitle="Her maliyet, som altın el işçiliğinin arkasındaki değer."
+        />
+        <CornerMarks />
+      </div>
 
+      {/* Dekoratif indeks satırı (Spatial/Liquid .idx dili). */}
+      <div aria-hidden className="idx mb-4">
+        <span>Maliyetler / 02 · Kayıtlar</span>
+        <span className="idx-bar" />
+        <span className="idx-ln" />
+        <span>Jade Gold · NYC</span>
+      </div>
       <Card>
         <CardContent className="space-y-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -106,15 +126,24 @@ export default async function MaliyetlerPage({
                   <TableHead>Kategori</TableHead>
                   <TableHead>Tedarikçi</TableHead>
                   <TableHead className="text-right">Tutar</TableHead>
-                  <TableHead className="w-1 text-right">İşlem</TableHead>
+                  <TableHead className="text-right whitespace-nowrap">İşlem</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {rows.map((c) => (
                   <TableRow key={c.id}>
-                    <TableCell>{formatDate(c.cost_date)}</TableCell>
+                    <TableCell className="whitespace-nowrap">
+                      {formatDate(c.cost_date)}
+                    </TableCell>
+                    {/* Uzun açıklama tabloyu karttan taşırmasın: sınırlı
+                        genişlik + truncate; tam metin title tooltip'inde. */}
                     <TableCell className="font-medium">
-                      {c.description}
+                      <div
+                        className="max-w-[260px] truncate xl:max-w-[340px]"
+                        title={c.description}
+                      >
+                        {c.description}
+                      </div>
                     </TableCell>
                     <TableCell>
                       <Badge variant="secondary">
@@ -122,10 +151,10 @@ export default async function MaliyetlerPage({
                       </Badge>
                     </TableCell>
                     <TableCell>{c.vendor ?? "—"}</TableCell>
-                    <TableCell className="text-right tabular-nums">
+                    <TableCell className="text-right whitespace-nowrap tabular-nums">
                       {formatMoney(c.amount_cents, c.currency)}
                     </TableCell>
-                    <TableCell className="text-right">
+                    <TableCell className="text-right whitespace-nowrap">
                       <div className="flex justify-end gap-1">
                         {c.source !== "gold_auto" && (
                           <>

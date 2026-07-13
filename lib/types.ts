@@ -110,8 +110,11 @@ export type AuditAction =
   | "etsy.sync"
   | "etsy.stock_push"
   | "etsy.variant_sync"
+  | "etsy.image_upload"
   | "report.export"
-  | "profile.update";
+  | "profile.update"
+  | "org.created"
+  | "shipstation.credentials";
 
 export interface Profile {
   id: string;
@@ -312,6 +315,8 @@ export interface Task {
   due_date: string | null;
   sort_order: number;
   notes: string | null;
+  /** Bu görevin çıktığı kaynak rapor (varsa) — bkz. `Report`. */
+  report_id: string | null;
   created_by: string | null;
   created_at: string;
   updated_at: string;
@@ -340,4 +345,91 @@ export interface TaskNote {
   author_id: string | null;
   author_label: string | null;
   created_at: string;
+}
+
+// ── Raporlar (kayıtlı analiz raporları) ──────────────────────────────
+
+/** Rapor gövdesindeki bir bulgu bölümü. */
+export interface ReportFinding {
+  heading: string;
+  body: string;
+}
+
+/** KPI/istatistik kartı — önce/sonra veya tekil değer. */
+export interface ReportStat {
+  label: string;
+  value: string;
+  delta?: string;
+  direction?: "up" | "down" | "flat";
+}
+
+/** Günlük zaman serisi noktası (ör. indirim % + sipariş adedi). */
+export interface ReportTimelinePoint {
+  date: string;
+  discountPct: number;
+  orders: number;
+}
+
+/** Yıldan yıla karşılaştırma noktası. */
+export interface ReportYoyPoint {
+  label: string;
+  value: number;
+  note?: string;
+}
+
+export type ReportTierKey = "reinstate" | "test" | "hold";
+
+/** Bir kademedeki tek listing satırı; `taskId` doluysa Görevler'e bağlıdır. */
+export interface ReportTierItem {
+  title: string;
+  priceCents: number;
+  evidence: string;
+  action: string;
+  taskId?: string;
+}
+
+export interface ReportTier {
+  key: ReportTierKey;
+  label: string;
+  note: string;
+  items: ReportTierItem[];
+}
+
+/** `reports.content` JSONB'sinin şekli. */
+export interface ReportContent {
+  findings: ReportFinding[];
+  stats: ReportStat[];
+  timeline?: { points: ReportTimelinePoint[]; cutoffDate: string; cutoffLabel: string };
+  yoy?: ReportYoyPoint[];
+  tiers: ReportTier[];
+  sourceNote?: string;
+}
+
+export interface Report {
+  id: string;
+  org_id: string;
+  title: string;
+  category: string;
+  summary: string | null;
+  content: ReportContent;
+  report_date: string;
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+/** Rapor + o rapordan çıkan (bağlı) görevlerin canlı durumu. */
+export interface ReportWithTasks extends Report {
+  tasks: TaskWithAssignee[];
+}
+
+export interface ReportListItem {
+  id: string;
+  title: string;
+  category: string;
+  summary: string | null;
+  report_date: string;
+  created_at: string;
+  taskTotal: number;
+  taskDone: number;
 }

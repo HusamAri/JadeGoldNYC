@@ -1,19 +1,30 @@
 import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 import { DESIGN_STATUS_LABELS } from "@/lib/constants";
 
-const VARIANT: Record<
-  string,
-  "secondary" | "warning" | "success" | "outline"
-> = {
-  taslak: "secondary",
-  onaylandi: "warning",
-  yayinda: "success",
-  arsiv: "outline",
+/* Durum çipi — idx mikro dili: mono, küçük uppercase, geniş letterspace.
+   Durum rengi tek `--tone` değişkeninden türer (nokta + yumuşak tint zemin +
+   ince renkli hairline); metin yüksek kontrastlı ön plan renginde kalır —
+   renk hiçbir zaman tek sinyal değildir (etiket her zaman görünür).
+   Arşiv: kesikli hairline (renk dışı ikinci sinyal). */
+const CHIP =
+  "gap-1.5 border-(--tone)/30 bg-(--tone)/12 px-2.5 py-1 font-mono text-[10px]/[1.5] tracking-[0.14em] uppercase text-foreground shadow-none dark:shadow-none";
+const DOT =
+  "size-1.5 shrink-0 rounded-full bg-(--tone) dark:shadow-[0_0_10px_0_var(--tone)]";
+
+const TONE: Record<string, string> = {
+  taslak: "[--tone:var(--muted-foreground)]",
+  onaylandi: "[--tone:var(--chart-4)]",
+  yayinda: "[--tone:var(--chart-5)]",
+  arsiv: "[--tone:var(--muted-foreground)] border-dashed",
 };
 
 export function DesignStatusBadge({ status }: { status: string }) {
   return (
-    <Badge variant={VARIANT[status] ?? "secondary"}>
+    <Badge
+      className={cn(CHIP, TONE[status] ?? "[--tone:var(--muted-foreground)]")}
+    >
+      <span aria-hidden className={DOT} />
       {DESIGN_STATUS_LABELS[status] ?? status}
     </Badge>
   );

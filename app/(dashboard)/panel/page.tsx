@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Store } from "lucide-react";
 import {
   DollarSign,
   Wallet,
@@ -9,13 +10,16 @@ import {
   Scale,
   Gem,
   Hammer,
-  Users,
-  Store,
-} from "lucide-react";
+} from "@/components/icons/lux-art";
+import { SceneCutouts } from "@/components/scene-cutouts";
+// Satır içi (küçük, tek renk) kullanımlar için ince-çizgi SVG sürümleri —
+// currentColor'a saygı duyar (cutout PNG'ler yalnız KPI filigranında).
+import { Scale as ScaleLine, Users as UsersLine } from "@/components/icons/lux";
 
 import { resolvePeriod, previousPeriod } from "@/lib/period";
 import { getDashboard } from "@/lib/db/queries/dashboard";
 import { getDataGaps } from "@/lib/db/queries/data-gaps";
+import { getTimelineData } from "@/lib/db/queries/timeline";
 import { requireMembership } from "@/lib/auth";
 import { getGoldPricePerOunce } from "@/lib/gold-price";
 import { TROY_OUNCE_GRAMS, KARAT_PURITY } from "@/lib/gold-cost";
@@ -24,11 +28,15 @@ import { formatMoney, formatPercent } from "@/lib/money";
 import { formatNumber, formatDateTime } from "@/lib/format";
 import { auditSummary } from "@/lib/audit-format";
 import { PageHeader } from "@/components/page-header";
+import { PanelTimeline } from "@/components/panel/panel-timeline";
 import { GoldStream } from "@/components/brand/gold-stream";
+import { CornerMarks } from "@/components/brand/corner-marks";
 import { EditorialCard } from "@/components/brand/editorial-card";
 import { KpiCard } from "@/components/kpi-card";
 import { WhatsNew } from "@/components/whats-new";
 import { DataGapsCard } from "@/components/data-gaps-card";
+import { MarketPriceAlertsCard } from "@/components/market-price-alerts-card";
+import { getMarketPriceAlerts } from "@/lib/db/queries/market-alerts";
 import { PeriodSelector } from "@/components/period-selector";
 import {
   TrendChart,
@@ -61,12 +69,15 @@ export default async function PanelPage({
   const period = resolvePeriod(strParam(sp.period));
   const prev = previousPeriod(period);
   const m = await requireMembership();
-  const [d, goldPriceOunce, prevData, gaps] = await Promise.all([
-    getDashboard(period),
-    getGoldPricePerOunce(),
-    prev ? getDashboard(prev) : Promise.resolve(null),
-    getDataGaps(m.org_id),
-  ]);
+  const [d, goldPriceOunce, prevData, gaps, timeline, marketAlerts] =
+    await Promise.all([
+      getDashboard(period),
+      getGoldPricePerOunce(),
+      prev ? getDashboard(prev) : Promise.resolve(null),
+      getDataGaps(m.org_id),
+      getTimelineData(m.org_id),
+      getMarketPriceAlerts(m.org_id),
+    ]);
   const cur = d.currency;
   const goldPricePerGram = goldPriceOunce / TROY_OUNCE_GRAMS;
 
@@ -77,6 +88,7 @@ export default async function PanelPage({
 
   return (
     <div className="relative z-0 pb-28 space-y-6">
+      <SceneCutouts page="panel" />
       <GoldStream motif="necklace" />
       <PageHeader
         title="Panel"
@@ -86,27 +98,20 @@ export default async function PanelPage({
 
       <WhatsNew />
 
+      {/* Görev yol haritası + satış bağlamı — geniş; kaydırıcıyla geçmiş↔gelecek */}
+      <PanelTimeline data={timeline} />
+
       <DataGapsCard gaps={gaps} />
 
-      {/* Editorial marka şeridi — tek, tam genişlikte kompakt banner (kaydırma
-          rayı YOK); veri panele hemen erişilsin diye tam ekran kaydırma-
-          kilitleme kullanılmaz (bkz. EditorialCard `compact`). */}
-      <EditorialCard
-        compact
-        heightClassName="h-[240px]"
-        image="/brand/gallery/koyu-franco.webp"
-        video="/brand/video/altin-zincir-orbit.mp4"
-        eyebrow="Jade Gold · New York"
-        title="Sessiz lüks, kalıcı değer"
-        subtitle="Som altın, el işçiliği — her parça bir miras."
-      />
+      {/* Pazar bandı dışında fiyatlanan aktif listingler (günlük araştırmadan) */}
+      <MarketPriceAlertsCard alerts={marketAlerts} />
 
-      {/* ── Altın Fiyat Bilgisi ─────────────────────────────────────── */}
+      {/* ── Güncel Altın Fiyatı (bağlam şeridi) ─────────────────────── */}
       <Card>
         <CardContent className="flex flex-wrap items-center gap-4 text-sm">
           <div className="flex items-center gap-2">
-            <Scale className="text-muted-foreground size-4" />
-            <span className="text-muted-foreground">Guncel Altin:</span>
+            <ScaleLine className="text-muted-foreground size-4" />
+            <span className="text-muted-foreground">Güncel Altın:</span>
             <span className="font-semibold tabular-nums">
               ${formatNumber(goldPriceOunce)}/oz
             </span>
@@ -135,102 +140,23 @@ export default async function PanelPage({
         </CardContent>
       </Card>
 
-      <div className="stagger grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-6">
-        <KpiCard
-          label="Toplam Gelir"
-          value={formatMoney(d.revenueCents, cur)}
-          icon={DollarSign}
-          change={pctChange(d.revenueCents, prevData?.revenueCents)}
-          changeLabel={prev?.label}
-        />
-        <KpiCard
-          label="Toplam Maliyet"
-          value={formatMoney(d.costCents, cur)}
-          icon={Wallet}
-          change={pctChange(d.costCents, prevData?.costCents)}
-          changeLabel={prev?.label}
-        />
-        <KpiCard
-          label="Net Kar"
-          value={formatMoney(d.profitCents, cur)}
-          icon={TrendingUp}
-          accent={d.profitCents >= 0 ? "positive" : "negative"}
-          change={pctChange(d.profitCents, prevData?.profitCents)}
-          changeLabel={prev?.label}
-        />
-        <KpiCard
-          label="Siparis Sayisi"
-          value={formatNumber(d.orderCount)}
-          icon={ShoppingBag}
-          change={pctChange(d.orderCount, prevData?.orderCount)}
-          changeLabel={prev?.label}
-        />
-        <KpiCard
-          label="Ort. Siparis"
-          value={formatMoney(d.aovCents, cur)}
-          icon={Receipt}
-          change={pctChange(d.aovCents, prevData?.aovCents)}
-          changeLabel={prev?.label}
-        />
-        <KpiCard
-          label="Kar Marji"
-          value={formatPercent(d.margin)}
-          icon={Percent}
-          accent={d.margin >= 0 ? "positive" : "negative"}
-          change={
-            prevData
-              ? d.margin - prevData.margin
-              : null
-          }
-          changeLabel={prev?.label}
-        />
+      {/* ══ GELİR & KÂRLILIK — grafik, sonuçlarında kullanılan metriklerle
+          YAN YANA (Panel 2.0 okuma düzeni: sol grafik, sağ metrikler) ══ */}
+      {/* Dekoratif indeks satırı (Spatial/Liquid .idx dili) — başlık metni değişmez. */}
+      <div aria-hidden className="idx sm:-mb-4">
+        <span>Panel / 01 · Gelir &amp; Kârlılık</span>
+        <span className="idx-bar" />
+        <span className="idx-ln" />
+        <span>Jade Gold · NYC</span>
       </div>
-
-      {/* ── Altın Maliyet Özeti ──────────────────────────────────────── */}
-      {d.goldCosts.totalGoldCents > 0 && (
-        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-          <KpiCard
-            label="Altin Malzeme"
-            value={formatMoney(d.goldCosts.materialCents, cur)}
-            icon={Gem}
-          />
-          <KpiCard
-            label="Iscilik"
-            value={formatMoney(d.goldCosts.laborCents, cur)}
-            icon={Hammer}
-          />
-          <KpiCard
-            label="Toplam Altin Maliyet"
-            value={formatMoney(d.goldCosts.totalGoldCents, cur)}
-            icon={Scale}
-          />
-          <KpiCard
-            label="Altin Kar Marji"
-            value={formatPercent(
-              d.revenueCents > 0
-                ? (d.revenueCents - d.goldCosts.totalGoldCents) / d.revenueCents
-                : 0,
-            )}
-            icon={Percent}
-            accent={
-              d.revenueCents > d.goldCosts.totalGoldCents
-                ? "positive"
-                : "negative"
-            }
-          />
-        </div>
-      )}
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Günlük Sipariş Sayısı</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <OrdersBarChart data={d.trend} />
-        </CardContent>
-      </Card>
-
-      <div className="grid gap-6 lg:grid-cols-3">
+      <SectionTitle
+        eyebrow="Gelir & Kârlılık"
+        title="Trend ve dönem metrikleri"
+        hint={`${period.label}${prev ? ` · karşılaştırma: ${prev.label}` : ""}`}
+      />
+      {/* Ana KPI bölümü — Spatial hero köşe işaretleri (dekoratif sarmalayıcı). */}
+      <div className="relative">
+      <div className="grid gap-4 lg:grid-cols-3">
         <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle>Gelir / Maliyet Trendi</CardTitle>
@@ -239,6 +165,92 @@ export default async function PanelPage({
             <TrendChart data={d.trend} />
           </CardContent>
         </Card>
+        <div className="stagger grid grid-cols-2 content-start gap-4">
+          <KpiCard
+            label="Toplam Gelir"
+            value={formatMoney(d.revenueCents, cur)}
+            icon={DollarSign}
+            change={pctChange(d.revenueCents, prevData?.revenueCents)}
+            changeLabel={prev?.label}
+          />
+          <KpiCard
+            label="Toplam Maliyet"
+            value={formatMoney(d.costCents, cur)}
+            icon={Wallet}
+            change={pctChange(d.costCents, prevData?.costCents)}
+            changeLabel={prev?.label}
+          />
+          <KpiCard
+            label="Net Kâr"
+            value={formatMoney(d.profitCents, cur)}
+            icon={TrendingUp}
+            accent={d.profitCents >= 0 ? "positive" : "negative"}
+            change={pctChange(d.profitCents, prevData?.profitCents)}
+            changeLabel={prev?.label}
+          />
+          <KpiCard
+            label="Kâr Marjı"
+            value={formatPercent(d.margin)}
+            icon={Percent}
+            accent={d.margin >= 0 ? "positive" : "negative"}
+            change={prevData ? d.margin - prevData.margin : null}
+            changeLabel={prev?.label}
+          />
+        </div>
+      </div>
+      <CornerMarks />
+      </div>
+
+      {/* ══ SİPARİŞLER ══ */}
+      <div aria-hidden className="idx sm:-mb-4">
+        <span>Panel / 02 · Siparişler</span>
+        <span className="idx-bar" />
+        <span className="idx-ln" />
+        <span>Jade Gold · NYC</span>
+      </div>
+      <SectionTitle
+        eyebrow="Siparişler"
+        title="Günlük hacim ve sepet metrikleri"
+      />
+      <div className="grid gap-4 lg:grid-cols-3">
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <CardTitle>Günlük Sipariş Sayısı</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <OrdersBarChart data={d.trend} />
+          </CardContent>
+        </Card>
+        <div className="grid content-start gap-4">
+          <KpiCard
+            label="Sipariş Sayısı"
+            value={formatNumber(d.orderCount)}
+            icon={ShoppingBag}
+            change={pctChange(d.orderCount, prevData?.orderCount)}
+            changeLabel={prev?.label}
+          />
+          <KpiCard
+            label="Ort. Sipariş (AOV)"
+            value={formatMoney(d.aovCents, cur)}
+            icon={Receipt}
+            change={pctChange(d.aovCents, prevData?.aovCents)}
+            changeLabel={prev?.label}
+          />
+        </div>
+      </div>
+
+      {/* ══ MALİYET YAPISI — kırılım grafiği + altın maliyet metrikleri ══ */}
+      <div aria-hidden className="idx sm:-mb-4">
+        <span>Panel / 03 · Maliyet Yapısı</span>
+        <span className="idx-bar" />
+        <span className="idx-ln" />
+        <span>Jade Gold · NYC</span>
+      </div>
+      <SectionTitle
+        eyebrow="Maliyet Yapısı"
+        title="Kırılım ve altın maliyeti"
+      />
+      <div className="grid gap-4 lg:grid-cols-3">
         <Card>
           <CardHeader>
             <CardTitle>Maliyet Kırılımı</CardTitle>
@@ -247,9 +259,61 @@ export default async function PanelPage({
             <CategoryPie data={d.costByCategory} />
           </CardContent>
         </Card>
+        {d.goldCosts.totalGoldCents > 0 ? (
+          <div className="grid grid-cols-2 content-start gap-4 lg:col-span-2">
+            <KpiCard
+              label="Altın Malzeme"
+              value={formatMoney(d.goldCosts.materialCents, cur)}
+              icon={Gem}
+            />
+            <KpiCard
+              label="İşçilik"
+              value={formatMoney(d.goldCosts.laborCents, cur)}
+              icon={Hammer}
+            />
+            <KpiCard
+              label="Toplam Altın Maliyet"
+              value={formatMoney(d.goldCosts.totalGoldCents, cur)}
+              icon={Scale}
+            />
+            <KpiCard
+              label="Altın Kâr Marjı"
+              value={formatPercent(
+                d.revenueCents > 0
+                  ? (d.revenueCents - d.goldCosts.totalGoldCents) /
+                      d.revenueCents
+                  : 0,
+              )}
+              icon={Percent}
+              accent={
+                d.revenueCents > d.goldCosts.totalGoldCents
+                  ? "positive"
+                  : "negative"
+              }
+            />
+          </div>
+        ) : (
+          <Card className="lg:col-span-2">
+            <CardContent className="text-muted-foreground flex h-full items-center justify-center text-sm">
+              Bu dönemde altın maliyeti kaydı yok.
+            </CardContent>
+          </Card>
+        )}
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      {/* ══ ÜRÜNLER & ETKİNLİK ══ */}
+      <div aria-hidden className="idx sm:-mb-4">
+        <span>Panel / 04 · Ürünler &amp; Etkinlik</span>
+        <span className="idx-bar" />
+        <span className="idx-ln" />
+        <span>Jade Gold · NYC</span>
+      </div>
+      <SectionTitle
+        eyebrow="Ürünler & Etkinlik"
+        title="En çok satanlar ve son kayıtlar"
+      />
+
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card>
           <CardHeader>
             <CardTitle>En Çok Satan Ürünler</CardTitle>
@@ -290,7 +354,7 @@ export default async function PanelPage({
                 href="/maliyetler/altin-maliyet"
                 className="text-primary text-sm font-medium hover:underline"
               >
-                Altin maliyet analizi →
+                Altın maliyet analizi →
               </Link>
             </div>
           </CardContent>
@@ -303,7 +367,7 @@ export default async function PanelPage({
           <CardContent>
             {d.recent.length === 0 ? (
               <p className="text-muted-foreground text-sm">
-                Henuz kayit yok.
+                Henüz kayıt yok.
               </p>
             ) : (
               <ul className="space-y-3">
@@ -329,20 +393,20 @@ export default async function PanelPage({
                 href="/kayitlar"
                 className="text-primary text-sm font-medium hover:underline"
               >
-                Tum kayitlari gor →
+                Tüm kayıtları gör →
               </Link>
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* ── En Iyi Musteriler + Kanal Kirilimi ──────────────────────── */}
-      <div className="grid gap-6 lg:grid-cols-2">
+      {/* ── En İyi Müşteriler + Kanal Kirilimi ──────────────────────── */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Users className="size-4" />
-              En Iyi Musteriler
+              <UsersLine className="size-4" />
+              En İyi Müşteriler
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -354,7 +418,7 @@ export default async function PanelPage({
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Musteri</TableHead>
+                    <TableHead>Müşteri</TableHead>
                     <TableHead className="text-right">Siparis</TableHead>
                     <TableHead className="text-right">Toplam</TableHead>
                   </TableRow>
@@ -383,13 +447,13 @@ export default async function PanelPage({
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Store className="size-4" />
-              Satis Kanallari
+              Satış Kanalları
             </CardTitle>
           </CardHeader>
           <CardContent>
             {d.channelBreakdown.length === 0 ? (
               <p className="text-muted-foreground text-sm">
-                Bu donemde satis yok.
+                Bu dönemde satış yok.
               </p>
             ) : (
               <div className="space-y-4">
@@ -403,12 +467,15 @@ export default async function PanelPage({
                       <div className="flex items-center justify-between text-sm">
                         <span className="font-medium">{ch.channel}</span>
                         <span className="text-muted-foreground tabular-nums">
-                          {formatMoney(ch.revenueCents, cur)} · {formatNumber(ch.orderCount)} siparis
+                          {formatMoney(ch.revenueCents, cur)} · {formatNumber(ch.orderCount)} sipariş
                         </span>
                       </div>
-                      <div className="bg-muted h-2 overflow-hidden rounded-full">
+                      {/* Sıvı dolgu: içe gölgeli pill ray (açık) / lume-pit
+                          çukur (koyu); dolgu grad-holo + mor ışıma (açık),
+                          lume-fill + lume-glow (koyu); üstünde kayan sheen. */}
+                      <div className="h-2.5 overflow-hidden rounded-full [background-color:rgb(122_122_155/0.16)] [box-shadow:inset_0_2px_4px_rgba(84,80,120,.28),inset_0_-1px_0_rgba(255,255,255,.7)] dark:[background-color:oklch(0_0_0/0.35)] dark:[box-shadow:var(--lume-pit)]">
                         <div
-                          className="bg-primary h-full rounded-full transition-all"
+                          className="sheen-sweep h-full rounded-full transition-all [background-image:var(--grad-holo)] [box-shadow:0_0_12px_oklch(0.62_0.20_278/0.5)] dark:[background-image:var(--lume-fill)] dark:[box-shadow:var(--lume-glow)]"
                           style={{ width: `${Math.round(pct * 100)}%` }}
                         />
                       </div>
@@ -423,6 +490,39 @@ export default async function PanelPage({
           </CardContent>
         </Card>
       </div>
+
+      {/* Editorial marka şeridi — veri önce gelsin diye Panel 2.0'da en altta */}
+      <EditorialCard
+        compact
+        heightClassName="h-[240px]"
+        image="/brand/gallery/koyu-franco.webp"
+        video="/brand/video/altin-zincir-orbit.mp4"
+        eyebrow="Jade Gold · New York"
+        title="Sessiz lüks, kalıcı değer"
+        subtitle="Som altın, el işçiliği — her parça bir miras."
+      />
+    </div>
+  );
+}
+
+/** Panel 2.0 bölüm başlığı — altın eyebrow + başlık + opsiyonel ipucu. */
+function SectionTitle({
+  eyebrow,
+  title,
+  hint,
+}: {
+  eyebrow: string;
+  title: string;
+  hint?: string;
+}) {
+  return (
+    <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 pt-2">
+      {/* Eyebrow: zemine KAZINMIŞ (carved) etiket — nöromorfik yüzey dili */}
+      <span className="text-carved text-[11px] font-bold tracking-[0.2em] text-[color:var(--brand-mark)] uppercase">
+        {eyebrow}
+      </span>
+      <h2 className="display-emboss text-lg font-semibold tracking-tight">{title}</h2>
+      {hint && <span className="text-muted-foreground text-xs">{hint}</span>}
     </div>
   );
 }

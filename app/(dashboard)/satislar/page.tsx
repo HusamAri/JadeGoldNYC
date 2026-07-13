@@ -1,16 +1,13 @@
 import Link from "next/link";
+import { Plus, Upload, Eye, Pencil } from "lucide-react";
 import {
-  Plus,
-  Upload,
-  Eye,
-  Pencil,
   ShoppingBag,
   DollarSign,
   TrendingUp,
   Receipt,
   Percent,
   Users,
-} from "lucide-react";
+} from "@/components/icons/lux-art";
 
 import { requireMembership } from "@/lib/auth";
 import { listSales, getSalesAnalytics } from "@/lib/db/queries/sales";
@@ -20,6 +17,8 @@ import { formatMoney } from "@/lib/money";
 import { formatDate, formatNumber } from "@/lib/format";
 import { PageHeader } from "@/components/page-header";
 import { GoldStream } from "@/components/brand/gold-stream";
+import { CornerMarks } from "@/components/brand/corner-marks";
+import { SceneCutouts } from "@/components/scene-cutouts";
 import { EmptyState } from "@/components/empty-state";
 import { KpiCard } from "@/components/kpi-card";
 import {
@@ -95,6 +94,7 @@ export default async function SatislarPage({
 
   return (
     <div className="relative z-0 space-y-6 pb-28">
+      <SceneCutouts page="satislar" />
       <GoldStream motif="gift" />
       <PageHeader
         title="Satışlar"
@@ -119,11 +119,20 @@ export default async function SatislarPage({
 
       {/* Analiz paneli — liste filtresine (durum/arama) saygı duyar */}
       <section className="space-y-4">
+        {/* Dekoratif indeks satırı (Spatial/Liquid .idx dili). */}
+        <div aria-hidden className="idx">
+          <span>Satışlar / 01 · Özet</span>
+          <span className="idx-bar" />
+          <span className="idx-ln" />
+          <span>Jade Gold · NYC</span>
+        </div>
         <p className="text-muted-foreground text-xs">
           {filtered
             ? "Özet, uygulanan filtreye göre hesaplanır."
             : "Özet ciro ve sipariş sayısı iptal edilen siparişleri hariç tutar; alttaki liste tümünü gösterir."}
         </p>
+        {/* Ana KPI bölümü — Spatial hero köşe işaretleri (dekoratif sarmalayıcı). */}
+        <div className="relative">
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
           <KpiCard
             label="Ciro (brüt)"
@@ -158,6 +167,8 @@ export default async function SatislarPage({
             value={formatNumber(t.buyers)}
             icon={Users}
           />
+        </div>
+        <CornerMarks />
         </div>
 
         {analytics.monthly.length > 0 && (
@@ -217,6 +228,13 @@ export default async function SatislarPage({
         )}
       </section>
 
+      {/* Dekoratif indeks satırı (Spatial/Liquid .idx dili). */}
+      <div aria-hidden className="idx -mb-3">
+        <span>Satışlar / 02 · Kayıtlar</span>
+        <span className="idx-bar" />
+        <span className="idx-ln" />
+        <span>Jade Gold · NYC</span>
+      </div>
       <Card>
         <CardContent className="space-y-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">

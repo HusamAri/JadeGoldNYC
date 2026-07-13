@@ -60,18 +60,28 @@ export function GoldPriceTicker({ className }: { className?: string }) {
   if (!data) return null;
 
   return (
+    // Cam çip — hairline kenar + sheen + blur, ortamın üstünde süzülür;
+    // okuma dili mono tabular (readout).
     <div
       className={cn(
-        "bg-accent/50 hidden items-center gap-3 rounded-xl px-3 py-1.5 text-xs tabular-nums lg:flex",
+        "hidden items-center gap-3 rounded-full border border-(--glass-border) bg-(--glass) [background-image:var(--glass-sheen)] px-4 py-1.5 font-mono text-xs tabular-nums shadow-[var(--lift-sm),var(--glass-highlight)] [backdrop-filter:var(--glass-filter-sm)] lg:flex",
         className,
       )}
     >
-      <Scale className="text-muted-foreground size-3.5" />
-      <span className="text-muted-foreground">Altin:</span>
-      <span className="font-semibold">{fmtUsd(data.pricePerOunce)}/oz</span>
-      <span className="text-muted-foreground">·</span>
+      <Scale aria-hidden className="text-muted-foreground size-3.5" />
+      <span className="text-muted-foreground text-[10px]/[1.5] tracking-[0.14em] uppercase">
+        Altın:
+      </span>
+      <span className="font-semibold text-(--gold-deep) dark:[text-shadow:0_0_12px_color-mix(in_srgb,currentColor_40%,transparent)]">
+        {fmtUsd(data.pricePerOunce)}/oz
+      </span>
+      <span aria-hidden className="text-muted-foreground">
+        ·
+      </span>
       <span>14K {fmtUsd2(data.karat14PerGram)}/g</span>
-      <span className="text-muted-foreground">·</span>
+      <span aria-hidden className="text-muted-foreground">
+        ·
+      </span>
       <span>10K {fmtUsd2(data.karat10PerGram)}/g</span>
     </div>
   );

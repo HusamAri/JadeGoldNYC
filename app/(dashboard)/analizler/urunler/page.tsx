@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Plus, Pencil, ArrowLeft, PackageSearch } from "lucide-react";
+import { Plus, Pencil, ArrowLeft, PackageSearch, Upload } from "lucide-react";
 
 import {
   listProductMetrics,
@@ -76,6 +76,12 @@ export default async function UrunPerformansPage({
               <Link href="/analizler">
                 <ArrowLeft />
                 Performans
+              </Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link href="/analizler/urunler/anahtar-kelime">
+                <Upload />
+                Anahtar Kelime CSV
               </Link>
             </Button>
             <Button asChild>

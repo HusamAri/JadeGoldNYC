@@ -20,6 +20,24 @@ export interface TaskActionResult {
   fieldErrors?: Record<string, string[]>;
 }
 
+/**
+ * Görev bir rapordan çıktıysa (`report_id` dolu), o raporun sayfasını da
+ * tazele — durum tek satırda (tasks.status) tutulur, Görevler'de değişen her
+ * yerde (Raporlar dahil) görünür.
+ */
+async function revalidateLinkedReport(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  taskId: string,
+) {
+  const { data } = await supabase
+    .from("tasks")
+    .select("report_id")
+    .eq("id", taskId)
+    .maybeSingle();
+  const reportId = (data as { report_id: string | null } | null)?.report_id;
+  if (reportId) revalidatePath(`/raporlar/${reportId}`);
+}
+
 function toRow(v: TaskFormValues) {
   return {
     title: v.title,
@@ -76,6 +94,7 @@ export async function updateTask(
   if (error) return { error: error.message };
   revalidatePath("/gorevler");
   revalidatePath(`/gorevler/${id}`);
+  await revalidateLinkedReport(supabase, id);
   return { ok: true, id };
 }
 
@@ -104,6 +123,7 @@ export async function moveTask(
   if (error) return { error: error.message };
   revalidatePath("/gorevler");
   revalidatePath(`/gorevler/${id}`);
+  await revalidateLinkedReport(supabase, id);
   return {};
 }
 
@@ -121,6 +141,7 @@ export async function assignTask(
   if (error) return { error: error.message };
   revalidatePath("/gorevler");
   revalidatePath(`/gorevler/${id}`);
+  await revalidateLinkedReport(supabase, id);
   return {};
 }
 

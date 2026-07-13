@@ -12,6 +12,9 @@ export const etsyPaths = {
   ) => `/shops/${shopId}/receipts/${receiptId}/transactions`,
   activeListings: (shopId: number | string) =>
     `/shops/${shopId}/listings/active`,
+  // Uygulama düzeyi (mağazalar arası) aktif listing araması — rekabet fiyat
+  // araştırması. keywords + sort_on=score ile organik/relevans sıralı sonuç.
+  activeListingsSearch: () => `/listings/active`,
   // getListingsByShop — includes (Images vb.) yalnız bu uçta desteklenir;
   // state=active ile aktif listeler döner.
   shopListings: (shopId: number | string) => `/shops/${shopId}/listings`,
@@ -26,4 +29,12 @@ export const etsyPaths = {
   // updateListing (açıklama yazma) — shop_id + listings_w gerekir.
   shopListing: (shopId: number | string, listingId: number | string) =>
     `/shops/${shopId}/listings/${listingId}`,
+  // uploadListingImage (ürün fotoğrafı yükleme, multipart) — listings_w gerekir.
+  listingImages: (shopId: number | string, listingId: number | string) =>
+    `/shops/${shopId}/listings/${listingId}/images`,
+  // Mağaza bölümleri (başlık + aktif listing sayısı).
+  shopSections: (shopId: number | string) => `/shops/${shopId}/sections`,
+  // Kargo profilleri (işlem süresi, menşei).
+  shippingProfiles: (shopId: number | string) =>
+    `/shops/${shopId}/shipping-profiles`,
 };

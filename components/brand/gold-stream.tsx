@@ -240,11 +240,16 @@ export function GoldStream({
   }, []);
 
   return (
+    // brand-jg: altın şerit sabit antik-altın hex'lerle çizilir (Jade Gold
+    // ambiyansı) — platform (Artifact) kabuğunda gizlenir.
     <svg
       ref={svgRef}
       aria-hidden
       className={cn(
-        "pointer-events-none absolute inset-0 -z-10 size-full",
+        // İçerik panellerinin HEP altında kalan ortam ışığı: en geride (-z-20,
+        // SceneCutouts -z-[4] katmanının da altında); koyuda daha da kısık —
+        // opak lume panellerin arasındaki boşluklardan sızan filament hissi.
+        "brand-jg pointer-events-none absolute inset-0 -z-20 size-full opacity-45 blur-[1.5px] dark:opacity-30",
         className,
       )}
     >

@@ -1,23 +1,25 @@
 import type { MetadataRoute } from "next";
 
 /**
- * PWA manifesti — Jade Gold NYC yönetim paneli.
+ * PWA manifesti — Amuletta yönetim platformu.
  *
- * Kömür (CHAR #131313) tema/zemin rengi: ana ekrana eklendiğinde marka
- * monogramı koyu zeminde antik altın olarak okunur (sekme markı `app/icon.svg`
- * ile tutarlı). Renkler markaya sadık; ikon mevcut marka monogramından gelir.
+ * v3 lab kaydı: theme_color açık Spatial lavanta zemin (#eaecf3, sekme
+ * markı `app/icon.svg` karosuyla aynı), background_color koyu lume mürekkep
+ * (#14161e) — splash'ta lavanta orb markı koyu zeminden ayrışır.
+ * Marka-nötr: şirketler (Jade Gold, Yaso, …) platformun kiracılarıdır,
+ * kabuk platform kimliğini taşır.
  */
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Jade Gold NYC — Yönetim Paneli",
-    short_name: "Jade Gold NYC",
+    name: "Amuletta — Yönetim Platformu",
+    short_name: "Amuletta",
     description:
-      "Jade Gold NYC Etsy mağazası için uçtan uca yönetim, loglama ve raporlama paneli.",
+      "Çok markalı e-ticaret yönetim platformu — satış, maliyet, performans ve şirket hafızası tek çatıda.",
     start_url: "/",
     display: "standalone",
     lang: "tr",
-    background_color: "#131313",
-    theme_color: "#131313",
+    background_color: "#14161e",
+    theme_color: "#eaecf3",
     icons: [
       {
         src: "/icon.svg",

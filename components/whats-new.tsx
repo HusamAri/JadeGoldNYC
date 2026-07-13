@@ -83,7 +83,7 @@ export function WhatsNew() {
     <Dialog open={open} onOpenChange={(o) => !o && dismiss()}>
       <DialogContent
         showCloseButton={false}
-        className="jg-glass-3d overflow-hidden rounded-[1.9rem] border-[#E9D9A6]/50 bg-[#FCF6E4]/80 p-0 backdrop-blur-2xl sm:max-w-[560px] dark:border-[#8A6D2E]/30 dark:bg-[#221d10]/80"
+        className="jg-glass-3d sheen-sweep border-[color:var(--glass-border)] [background-color:var(--glass)] [background-image:var(--glass-tint),var(--glass-sheen)] overflow-hidden rounded-[1.9rem] p-0 [backdrop-filter:var(--glass-filter)] sm:max-w-[560px]"
       >
         {/* arka plan altın tozu */}
         <div
@@ -93,7 +93,7 @@ export function WhatsNew() {
           {DUST.map((d, i) => (
             <span
               key={i}
-              className="jg-twinkle absolute rounded-full bg-[#E7C669]"
+              className="jg-twinkle absolute rounded-full bg-[color:var(--gold)] dark:shadow-[0_0_14px_var(--gold)]"
               style={{
                 left: d.x,
                 top: d.y,
@@ -116,18 +116,21 @@ export function WhatsNew() {
           width={560}
           height={510}
           priority
-          className="pointer-events-none absolute -top-10 -right-6 z-20 hidden w-[196px] rotate-[15deg] select-none drop-shadow-[0_14px_20px_rgba(30,22,4,0.45)] sm:block"
+          className="brand-jg pointer-events-none absolute -top-10 -right-6 z-20 hidden w-[196px] rotate-[15deg] select-none drop-shadow-[0_7px_5px_rgba(66,62,98,0.3)] drop-shadow-[0_2px_1px_rgba(66,62,98,0.34)] sm:block"
         />
 
         <div className="relative z-10 p-7 sm:pr-52">
-          <span className="text-[11px] font-medium tracking-[0.28em] text-[oklch(0.6_0.1_86)] uppercase">
+          {/* Editorial eyebrow (.idx) — mono, letterspaced, kısa vurgu çizgisi. */}
+          <span className="idx gap-2.5 font-medium tracking-[0.28em] text-[color:var(--gold-deep)]">
+            <span aria-hidden className="idx-bar w-6" />
             Yenilikler
           </span>
           <div className="mt-1.5 flex items-center gap-2.5">
-            <DialogTitle className="font-serif text-2xl leading-none font-normal">
-              Neler Yeni
+            <DialogTitle className="text-2xl leading-none font-normal [font-family:var(--font-display)]">
+              Neler{" "}
+              <em className="text-primary italic">Yeni</em>
             </DialogTitle>
-            <span className="rounded-full bg-[oklch(0.62_0.09_86)]/18 px-2 py-0.5 text-xs font-semibold text-[oklch(0.5_0.09_86)]">
+            <span className="rounded-full bg-[color:var(--gold)]/18 px-2 py-0.5 font-mono text-xs font-semibold text-[color:var(--gold-deep)] tabular-nums">
               {unseenCount} yeni
             </span>
           </div>
@@ -140,13 +143,13 @@ export function WhatsNew() {
               const Icon = e.icon;
               return (
                 <li key={e.id} className="flex gap-3">
-                  <span className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-full bg-[oklch(0.62_0.09_86)]/15 text-[oklch(0.5_0.09_86)] ring-1 ring-[oklch(0.62_0.09_86)]/20">
+                  <span className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-full bg-[color:var(--gold)]/15 text-[color:var(--gold-deep)] shadow-[var(--glass-highlight)] ring-1 ring-[color:var(--gold)]/20">
                     <Icon className="size-4" />
                   </span>
                   <div className="min-w-0">
                     <div className="flex items-baseline gap-2">
                       <span className="font-medium">{e.title}</span>
-                      <span className="text-muted-foreground shrink-0 text-xs tabular-nums whitespace-nowrap">
+                      <span className="text-muted-foreground shrink-0 font-mono text-xs tabular-nums whitespace-nowrap">
                         {formatDate(e.date)}
                       </span>
                       {e.href && (

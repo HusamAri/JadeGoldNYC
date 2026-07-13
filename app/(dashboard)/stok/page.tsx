@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Package, Info } from "lucide-react";
+import { Package, Info, Layers } from "lucide-react";
 
-import { requireMembership } from "@/lib/auth";
+import { requireMembership, isManager } from "@/lib/auth";
 import { listStockProducts, type StockProduct } from "@/lib/db/queries/stock";
 import { getEtsyWriteAccess } from "@/lib/db/queries/etsy";
 import { formatNumber } from "@/lib/format";
@@ -11,6 +11,7 @@ import { EmptyState } from "@/components/empty-state";
 import { StockQuantityInput } from "@/components/stock-quantity-input";
 import { StockSyncPanel } from "@/components/stock-sync-panel";
 import { VariantSyncButton } from "@/components/variant-sync-button";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Table,
@@ -51,6 +52,7 @@ function categorize(title: string): string {
 
 export default async function StokPage() {
   const m = await requireMembership();
+  const canEdit = isManager(m.role);
   const [products, access] = await Promise.all([
     listStockProducts(m.org_id),
     getEtsyWriteAccess(m.org_id),
@@ -77,6 +79,14 @@ export default async function StokPage() {
       <PageHeader
         title="Stok Senkronizasyonu"
         description="Her ürün için elde/hedef adedi girin; hazır olunca tek tuşla Etsy ile çift yönlü eşitleyin."
+        action={
+          <Button asChild variant="outline">
+            <Link href="/stok/varyant">
+              <Layers />
+              Varyant Stok
+            </Link>
+          </Button>
+        }
       />
 
       <StockSyncPanel connected={access.connected} />
@@ -178,6 +188,7 @@ export default async function StokPage() {
                             productId={p.id}
                             initial={p.target_quantity}
                             current={p.quantity}
+                            canEdit={canEdit}
                           />
                         </TableCell>
                       </TableRow>

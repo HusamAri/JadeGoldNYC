@@ -5,25 +5,40 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-medium transition-[box-shadow,transform,background-color,color] duration-200 ease-[cubic-bezier(0.32,0.72,0,1)] will-change-transform disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-ring/60 focus-visible:ring-[3px] focus-visible:ring-offset-2 focus-visible:ring-offset-background aria-invalid:ring-destructive/30 cursor-pointer",
+  // lbtn formu (Liquid/04) — pill, index yüzü (mono 12px, .1em tracking,
+  // uppercase); dolgu varyantlarında hover'da ::before katmanı ALTTAN yükselir
+  // (translateY(100%)→0, .5s ease-premium); ghost/link'te alt çizgi scaleX(0→1).
+  "relative isolate inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-mono text-xs font-medium tracking-[0.1em] uppercase transition-[color,background-color,border-color,box-shadow,transform] [transition-duration:450ms,450ms,450ms,300ms,220ms] ease-[var(--ease-premium)] will-change-transform disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-ring/60 focus-visible:ring-[3px] focus-visible:ring-offset-2 focus-visible:ring-offset-background aria-invalid:ring-destructive/30 cursor-pointer",
   {
     variants: {
       variant: {
+        /** Kahraman CTA — grad-holo pill + glow (Spatial nav pill: 0 0 24px
+            rgb(157 140 255/.35) + lift-sm). Hover'da mürekkep dolgu ALTTAN
+            yükselir (lbtn.gold dili: dolgu --primary, metin beyaza döner). */
         default:
-          "bg-primary text-primary-foreground shadow-[var(--shadow-raised-sm)] hover:-translate-y-px hover:shadow-[var(--shadow-hover)] active:translate-y-0 active:scale-[0.96]",
+          "overflow-hidden border border-transparent [background-image:var(--btn-hero-bg)] text-[color:var(--btn-hero-fg)] shadow-[0_0_24px_rgb(157_140_255/0.35),var(--lift-sm)] before:absolute before:inset-0 before:-z-10 before:rounded-full before:bg-primary before:translate-y-full before:transition-transform before:duration-500 before:ease-[var(--ease-premium)] hover:before:translate-y-0 hover:text-primary-foreground hover:-translate-y-0.5 hover:shadow-[0_0_24px_rgb(157_140_255/0.45),var(--lift)] active:translate-y-0 active:scale-[0.97] dark:shadow-[0_0_24px_rgb(169_155_255/0.3),var(--lift-sm)] dark:hover:shadow-[0_0_28px_rgb(205_214_255/0.4),var(--lift)]",
+        /** Dolu tehlike pill'i — lbtn.gold deseni: dolgu sabit, hover'da bir
+            ton koyusu alttan dolar, metin beyaz kalır. */
         destructive:
-          "bg-destructive text-destructive-foreground shadow-[var(--shadow-raised-sm)] hover:-translate-y-px hover:shadow-[var(--shadow-hover)] active:translate-y-0 active:scale-[0.96]",
-        outline: "bg-background text-foreground nm-interactive",
-        secondary: "bg-background text-foreground nm-interactive",
+          "overflow-hidden border border-transparent bg-destructive text-destructive-foreground shadow-[var(--lift-sm)] before:absolute before:inset-0 before:-z-10 before:rounded-full before:[background:color-mix(in_srgb,var(--destructive)_72%,black)] before:translate-y-full before:transition-transform before:duration-500 before:ease-[var(--ease-premium)] hover:before:translate-y-0 hover:-translate-y-0.5 hover:shadow-[var(--lift)] active:translate-y-0 active:scale-[0.97]",
+        /** lbtn (Liquid/04 birebir): şeffaf zemin + 1px mürekkep border;
+            hover'da mürekkep dolgu alttan yükselir, metin zemin rengine döner. */
+        outline:
+          "overflow-hidden border border-foreground bg-transparent text-foreground before:absolute before:inset-0 before:-z-10 before:rounded-full before:bg-foreground before:translate-y-full before:transition-transform before:duration-500 before:ease-[var(--ease-premium)] hover:before:translate-y-0 hover:text-background active:scale-[0.97]",
+        secondary:
+          "overflow-hidden border border-foreground bg-transparent text-foreground before:absolute before:inset-0 before:-z-10 before:rounded-full before:bg-foreground before:translate-y-full before:transition-transform before:duration-500 before:ease-[var(--ease-premium)] hover:before:translate-y-0 hover:text-background active:scale-[0.97]",
+        /** lbtn.link dili — bordersız; hover'da 1px alt çizgi soldan dolar. */
         ghost:
-          "text-foreground hover:bg-foreground/5 active:scale-[0.94] active:bg-foreground/10",
-        link: "text-primary underline-offset-4 hover:underline active:opacity-70",
+          "text-foreground before:absolute before:left-1.5 before:right-1.5 before:bottom-1.5 before:h-px before:bg-foreground before:origin-left before:scale-x-0 before:transition-transform before:duration-[400ms] before:ease-[var(--ease-premium)] hover:before:scale-x-100 active:opacity-70",
+        link: "text-primary before:absolute before:left-1.5 before:right-1.5 before:bottom-1.5 before:h-px before:bg-primary before:origin-left before:scale-x-0 before:transition-transform before:duration-[400ms] before:ease-[var(--ease-premium)] hover:before:scale-x-100 active:opacity-70",
       },
       size: {
         default: "h-10 px-5 py-2 has-[>svg]:px-4",
         sm: "h-8 gap-1.5 px-4 has-[>svg]:px-3",
-        lg: "h-12 px-7 text-[0.95rem] has-[>svg]:px-5",
+        lg: "h-12 px-7 text-[13px] has-[>svg]:px-5",
         icon: "size-10",
+        /** Büyük dairesel FAB — kabartmalı, tam yuvarlak, iri ikon. */
+        fab: "size-14 [&_svg:not([class*='size-'])]:size-6",
       },
     },
     defaultVariants: { variant: "default", size: "default" },
