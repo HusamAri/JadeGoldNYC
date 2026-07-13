@@ -84,7 +84,7 @@ export default async function GeriKazanimPage({
   })).filter((tier) => tier.rows.length > 0);
 
   return (
-    <div className="relative z-0 pb-28 space-y-6">
+    <div className="relative z-0 pb-28 space-y-8">
       <GoldStream motif="link" />
       <PageHeader
         title="Müşteri Geri Kazanım"
@@ -99,7 +99,7 @@ export default async function GeriKazanimPage({
         }
       />
 
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-5">
+      <div className="grid grid-cols-2 gap-5 lg:grid-cols-3 xl:grid-cols-5">
         <KpiCard
           label="Toplam Müşteri"
           value={formatNumber(winback.total_customers)}
@@ -118,13 +118,13 @@ export default async function GeriKazanimPage({
         />
         <KpiCard
           label="Risk Altındaki Değer"
-          value={formatMoney(winback.lapsed_value_cents)}
+          cents={winback.lapsed_value_cents}
           icon={DollarSign}
           hint="geçmiş ciro toplamı"
         />
         <KpiCard
           label="Kazanılan"
-          value={formatMoney(tracking.recoveredValueCents)}
+          cents={tracking.recoveredValueCents}
           icon={CheckCircle2}
           hint={`${formatNumber(tracking.recovered)} müşteri`}
           accent="positive"
@@ -132,7 +132,8 @@ export default async function GeriKazanimPage({
         />
       </div>
 
-      <Card>
+      {/* İkincil özet/bilgi bölümü — buzlu mat cam (glass-iced). */}
+      <Card className="glass-iced">
         <CardHeader>
           <CardTitle>Öncelikli Geri Kazanım Adayları</CardTitle>
         </CardHeader>
@@ -168,10 +169,10 @@ export default async function GeriKazanimPage({
                   <TableBody>
                     {tier.rows.slice(0, TIER_DISPLAY_LIMIT).map((c) => (
                       <TableRow key={c.buyer_key}>
-                        <TableCell className="max-w-[260px] truncate font-medium">
+                        <TableCell className="max-w-[260px] scroll-x font-medium">
                           {c.buyer_name ?? c.buyer_email ?? c.buyer_key}
                           {c.buyer_email && c.buyer_name && (
-                            <span className="text-muted-foreground block truncate text-xs font-normal">
+                            <span className="text-muted-foreground scroll-x block text-xs font-normal">
                               {c.buyer_email}
                             </span>
                           )}
@@ -208,7 +209,8 @@ export default async function GeriKazanimPage({
         </CardContent>
       </Card>
 
-      <Card>
+      {/* Uzun kayıt listesi/tablo kabı — dikey oluklu cam (glass-fluted). */}
+      <Card className="glass-fluted">
         <CardHeader>
           <CardTitle>Geri Kazanım Takibi</CardTitle>
         </CardHeader>
@@ -247,7 +249,7 @@ export default async function GeriKazanimPage({
                     <TableCell className="whitespace-nowrap">
                       {formatDate(c.abandoned_at)}
                     </TableCell>
-                    <TableCell className="max-w-[180px] truncate font-medium">
+                    <TableCell className="max-w-[180px] scroll-x font-medium">
                       {c.buyer_name ?? c.buyer_email ?? "—"}
                     </TableCell>
                     <TableCell className="text-right tabular-nums">
@@ -258,7 +260,7 @@ export default async function GeriKazanimPage({
                     <TableCell>
                       <CartStatusBadge status={c.status} />
                     </TableCell>
-                    <TableCell className="text-muted-foreground max-w-[200px] truncate">
+                    <TableCell className="text-muted-foreground max-w-[200px] scroll-x">
                       {c.action_taken ?? "—"}
                     </TableCell>
                     <TableCell className="text-right tabular-nums">

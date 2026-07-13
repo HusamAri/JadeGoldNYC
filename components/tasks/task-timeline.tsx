@@ -212,7 +212,7 @@ export function TaskTimeline({
           {/* Omurga — marka vurgu token'ı (v3: --gold mor aileye eşlendi) */}
           <div
             aria-hidden
-            className="pointer-events-none absolute top-0 bottom-0 left-[calc(0.75rem+7px)] w-px sm:left-[calc(1.5rem+7px)]"
+            className="pointer-events-none absolute top-0 bottom-0 left-[calc(1.25rem+7.5px)] w-px sm:left-[calc(1.75rem+7.5px)]"
             style={{
               background:
                 "linear-gradient(to bottom, transparent, var(--gold) 8%, var(--gold) 92%, transparent)",

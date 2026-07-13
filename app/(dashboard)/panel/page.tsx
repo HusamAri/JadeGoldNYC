@@ -87,7 +87,7 @@ export default async function PanelPage({
   }
 
   return (
-    <div className="relative z-0 pb-28 space-y-6">
+    <div className="relative z-0 pb-28 space-y-8">
       <SceneCutouts page="panel" />
       <GoldStream motif="necklace" />
       <PageHeader
@@ -171,7 +171,7 @@ export default async function PanelPage({
       />
       {/* Ana KPI bölümü — Spatial hero köşe işaretleri (dekoratif sarmalayıcı). */}
       <div className="relative">
-      <div className="grid gap-4 lg:grid-cols-3">
+      <div className="grid gap-5 lg:grid-cols-3">
         <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle>Gelir / Maliyet Trendi</CardTitle>
@@ -180,24 +180,27 @@ export default async function PanelPage({
             <TrendChart data={d.trend} />
           </CardContent>
         </Card>
-        <div className="stagger grid grid-cols-2 content-start gap-4">
+        <div className="stagger grid grid-cols-2 content-start gap-4 sm:gap-5">
           <KpiCard
             label="Toplam Gelir"
-            value={formatMoney(d.revenueCents, cur)}
+            cents={d.revenueCents}
+            currency={cur}
             icon={DollarSign}
             change={pctChange(d.revenueCents, prevData?.revenueCents)}
             changeLabel={prev?.label}
           />
           <KpiCard
             label="Toplam Maliyet"
-            value={formatMoney(d.costCents, cur)}
+            cents={d.costCents}
+            currency={cur}
             icon={Wallet}
             change={pctChange(d.costCents, prevData?.costCents)}
             changeLabel={prev?.label}
           />
           <KpiCard
             label="Net Kâr"
-            value={formatMoney(d.profitCents, cur)}
+            cents={d.profitCents}
+            currency={cur}
             icon={TrendingUp}
             holo
             change={pctChange(d.profitCents, prevData?.profitCents)}
@@ -227,7 +230,7 @@ export default async function PanelPage({
         eyebrow="Siparişler"
         title="Günlük hacim ve sepet metrikleri"
       />
-      <div className="grid gap-4 lg:grid-cols-3">
+      <div className="grid gap-5 lg:grid-cols-3">
         <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle>Günlük Sipariş Sayısı</CardTitle>
@@ -246,7 +249,8 @@ export default async function PanelPage({
           />
           <KpiCard
             label="Ort. Sipariş (AOV)"
-            value={formatMoney(d.aovCents, cur)}
+            cents={d.aovCents}
+            currency={cur}
             icon={Receipt}
             change={pctChange(d.aovCents, prevData?.aovCents)}
             changeLabel={prev?.label}
@@ -265,7 +269,7 @@ export default async function PanelPage({
         eyebrow="Maliyet Yapısı"
         title="Kırılım ve altın maliyeti"
       />
-      <div className="grid gap-4 lg:grid-cols-3">
+      <div className="grid gap-5 lg:grid-cols-3">
         <Card>
           <CardHeader>
             <CardTitle>Maliyet Kırılımı</CardTitle>
@@ -278,17 +282,20 @@ export default async function PanelPage({
           <div className="grid grid-cols-2 content-start gap-4 lg:col-span-2">
             <KpiCard
               label="Altın Malzeme"
-              value={formatMoney(d.goldCosts.materialCents, cur)}
+              cents={d.goldCosts.materialCents}
+            currency={cur}
               icon={Gem}
             />
             <KpiCard
               label="İşçilik"
-              value={formatMoney(d.goldCosts.laborCents, cur)}
+              cents={d.goldCosts.laborCents}
+            currency={cur}
               icon={Hammer}
             />
             <KpiCard
               label="Toplam Altın Maliyet"
-              value={formatMoney(d.goldCosts.totalGoldCents, cur)}
+              cents={d.goldCosts.totalGoldCents}
+            currency={cur}
               icon={Scale}
             />
             <KpiCard

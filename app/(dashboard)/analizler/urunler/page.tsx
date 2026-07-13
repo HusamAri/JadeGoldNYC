@@ -66,7 +66,7 @@ export default async function UrunPerformansPage({
   );
 
   return (
-    <div>
+    <div className="space-y-8">
       <PageHeader
         title="Ürün Performansı"
         description="Ürün başına görüntüleme, dönüşüm, ciro ve Etsy Ads ROAS"
@@ -94,7 +94,8 @@ export default async function UrunPerformansPage({
         }
       />
 
-      <Card>
+      {/* Ürün tablosu kabı — uzun liste: dikey oluklu cam (.glass-fluted) */}
+      <Card className="glass-fluted">
         <CardContent className="space-y-4">
           {periods.length > 0 && (
             <FilterSelect

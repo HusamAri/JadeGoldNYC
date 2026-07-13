@@ -56,7 +56,7 @@ export default async function GorevDetayPage({
     : "Atanmamış";
 
   return (
-    <div className="max-w-3xl space-y-6">
+    <div className="max-w-3xl space-y-8">
       <PageHeader
         title={task.title}
         description={TASK_PRIORITY_LABELS[task.priority]}
@@ -92,7 +92,7 @@ export default async function GorevDetayPage({
             <p className="text-sm whitespace-pre-wrap">{task.description}</p>
           )}
 
-          <div className="grid grid-cols-2 gap-4 text-sm sm:grid-cols-3">
+          <div className="grid grid-cols-2 gap-5 text-sm sm:grid-cols-3">
             <Meta label="Atanan">
               <span className="flex items-center gap-2">
                 {task.assignee && (

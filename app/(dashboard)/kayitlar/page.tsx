@@ -80,7 +80,7 @@ export default async function KayitlarPage({
   }`;
 
   return (
-    <div className="relative z-0 pb-28">
+    <div className="relative z-0 pb-28 space-y-8">
       <GoldStream motif="ledger" />
       <PageHeader
         title="Kayıtlar"
@@ -95,8 +95,9 @@ export default async function KayitlarPage({
         }
       />
 
-      <Card>
-        <CardContent className="space-y-4">
+      {/* Denetim logu — uzun liste/tablo kabı: dikey oluklu cam (.glass-fluted). */}
+      <Card className="glass-fluted">
+        <CardContent className="space-y-6">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <SearchInput placeholder="Özet, kullanıcı…" />
             <FilterSelect
@@ -139,7 +140,7 @@ export default async function KayitlarPage({
                     <TableCell className="whitespace-nowrap">
                       {formatDateTime(a.created_at)}
                     </TableCell>
-                    <TableCell className="max-w-[160px] truncate">
+                    <TableCell className="max-w-[160px] scroll-x">
                       {a.actor_label ?? "Sistem"}
                     </TableCell>
                     <TableCell>

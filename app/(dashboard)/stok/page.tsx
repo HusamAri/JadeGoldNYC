@@ -76,7 +76,7 @@ export default async function StokPage() {
   ).length;
 
   return (
-    <div className="relative z-0 space-y-6 pb-28">
+    <div className="relative z-0 space-y-8 pb-28">
       <SceneCutouts page="stok" />
       <PageHeader
         title="Stok Senkronizasyonu"
@@ -103,10 +103,13 @@ export default async function StokPage() {
         />
       ) : (
         <>
-          <div className="flex flex-wrap items-center gap-3">
-            <StatChip label="Ürün" value={products.length} />
-            <StatChip label="Doldurulan" value={filled} />
-            <StatChip label="Değişecek" value={pending} accent />
+          {/* Özet şerit — sayfanın hero özeti: berrak cam board (.glass-board) */}
+          <div className="glass-board relative isolate overflow-hidden rounded-2xl px-6 py-5">
+            <div className="relative z-10 flex flex-wrap items-center gap-3">
+              <StatChip label="Ürün" value={products.length} />
+              <StatChip label="Doldurulan" value={filled} />
+              <StatChip label="Değişecek" value={pending} accent />
+            </div>
           </div>
 
           {!access.writeEnabled && access.connected && (
@@ -138,6 +141,8 @@ export default async function StokPage() {
                     {formatNumber(rows.length)} ürün
                   </span>
                 </div>
+                {/* Tablo kabı — dikey oluklu cam (.glass-fluted) */}
+                <div className="glass-fluted rounded-2xl p-2 sm:p-3">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -171,13 +176,16 @@ export default async function StokPage() {
                             </span>
                           )}
                         </TableCell>
-                        <TableCell className="max-w-[320px] truncate font-medium">
-                          {p.title}
-                          {p.has_variations && (
-                            <span className="text-muted-foreground ml-2 text-xs font-normal">
-                              varyantlı
-                            </span>
-                          )}
+                        <TableCell className="max-w-[320px] font-medium">
+                          {/* Uzun ürün adı: kırpma yerine yatay kaydırma (.scroll-x) */}
+                          <div className="scroll-x">
+                            {p.title}
+                            {p.has_variations && (
+                              <span className="text-muted-foreground ml-2 text-xs font-normal">
+                                varyantlı
+                              </span>
+                            )}
+                          </div>
                         </TableCell>
                         <TableCell className="text-muted-foreground font-mono text-xs">
                           {p.sku ?? "—"}
@@ -197,6 +205,7 @@ export default async function StokPage() {
                     ))}
                   </TableBody>
                 </Table>
+                </div>
               </section>
             );
           })}
