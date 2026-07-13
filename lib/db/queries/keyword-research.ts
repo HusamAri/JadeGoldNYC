@@ -18,6 +18,25 @@ export interface KeywordResearchSnapshot {
   results: CompetitorRow[];
 }
 
+/** Listing'in araştırma kelimesi meta bilgisi (editör önizlemesi için). */
+export interface ProductResearchMeta {
+  research_keyword: string | null;
+  tags: string[] | null;
+  price_cents: number | null;
+}
+
+export async function getProductResearchMeta(
+  productId: string,
+): Promise<ProductResearchMeta | null> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("products")
+    .select("research_keyword, tags, price_cents")
+    .eq("id", productId)
+    .maybeSingle();
+  return (data as ProductResearchMeta | null) ?? null;
+}
+
 /** Verilen ürünün EN GÜNCEL araştırma anlık görüntüsü (RLS: org üyesi). */
 export async function getLatestKeywordResearch(
   productId: string,

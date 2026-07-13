@@ -1,9 +1,13 @@
 import { TrendingUp } from "@/components/icons/lux-art";
 
-import { getLatestKeywordResearch } from "@/lib/db/queries/keyword-research";
+import {
+  getLatestKeywordResearch,
+  getProductResearchMeta,
+} from "@/lib/db/queries/keyword-research";
 import { formatMoney } from "@/lib/money";
 import { formatDate } from "@/lib/format";
 import { Card, CardContent } from "@/components/ui/card";
+import { KeywordResearchControls } from "@/components/keyword-research-controls";
 
 /**
  * Rekabet fiyat araştırması paneli — bir listing için, "araştırma kelimesi"nde
@@ -17,7 +21,11 @@ export async function KeywordResearchPanel({
   productId: string | null | undefined;
 }) {
   if (!productId) return null;
-  const snap = await getLatestKeywordResearch(productId);
+  const [snap, meta] = await Promise.all([
+    getLatestKeywordResearch(productId),
+    getProductResearchMeta(productId),
+  ]);
+  const fallbackTag = meta?.tags?.find((t) => t && t.trim().length > 0) ?? null;
 
   const cur = snap?.currency ?? "USD";
   const band =
@@ -58,6 +66,13 @@ export async function KeywordResearchPanel({
             <span className="normal-case">{formatDate(snap.researched_at)}</span>
           )}
         </div>
+
+        {/* Anahtar kelime editörü + "şimdi araştır" — cron'u beklemeden test. */}
+        <KeywordResearchControls
+          productId={productId}
+          currentKeyword={meta?.research_keyword ?? null}
+          fallback={fallbackTag}
+        />
 
         {!snap ? (
           <p className="text-muted-foreground text-sm">
