@@ -12,6 +12,9 @@ export const etsyPaths = {
   ) => `/shops/${shopId}/receipts/${receiptId}/transactions`,
   activeListings: (shopId: number | string) =>
     `/shops/${shopId}/listings/active`,
+  // Uygulama düzeyi (mağazalar arası) aktif listing araması — rekabet fiyat
+  // araştırması. keywords + sort_on=score ile organik/relevans sıralı sonuç.
+  activeListingsSearch: () => `/listings/active`,
   // getListingsByShop — includes (Images vb.) yalnız bu uçta desteklenir;
   // state=active ile aktif listeler döner.
   shopListings: (shopId: number | string) => `/shops/${shopId}/listings`,
