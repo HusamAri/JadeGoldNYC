@@ -208,6 +208,7 @@ interface VariantDbRow {
 
 interface MetricDbRow {
   period_label: string;
+  created_at: string;
   views: number | null;
   orders: number | null;
   revenue_cents: number | null;
@@ -237,6 +238,27 @@ export async function listListingsIndex(opts?: {
   const search = opts?.search ? sanitize(opts.search) : "";
   const status = opts?.status;
 
+  // Varyant SKU'suyla da bulunabilsin (Codex P2): kullanıcı siparişte/varyantta
+  // gördüğü SKU'yu arar; o SKU parent listing'de değil product_variants'ta olur.
+  // Eşleşen varyantların product_id'lerini önce topla, products .or()'una ekle.
+  let variantSkuIds: string[] = [];
+  if (search) {
+    const vids = await fetchAllPages<{ product_id: string | null }>((from, to) =>
+      supabase
+        .from("product_variants")
+        .select("product_id")
+        .ilike("sku", `%${search}%`)
+        .not("product_id", "is", null)
+        .order("id", { ascending: true })
+        .range(from, to),
+    );
+    variantSkuIds = [
+      ...new Set(
+        vids.map((v) => v.product_id).filter((x): x is string => !!x),
+      ),
+    ].slice(0, 500);
+  }
+
   const products = await fetchAllPages<ProductIndexDbRow>((from, to) => {
     let q = supabase
       .from("products")
@@ -244,7 +266,11 @@ export async function listListingsIndex(opts?: {
         "id, etsy_listing_id, title, status, image_url, price_cents, currency, quantity, num_images, research_keyword",
       );
     if (status) q = q.eq("status", status);
-    if (search) q = q.or(`title.ilike.%${search}%,sku.ilike.%${search}%`);
+    if (search) {
+      const clauses = [`title.ilike.%${search}%`, `sku.ilike.%${search}%`];
+      if (variantSkuIds.length) clauses.push(`id.in.(${variantSkuIds.join(",")})`);
+      q = q.or(clauses.join(","));
+    }
     return q
       .order("title", { ascending: true })
       .order("id", { ascending: true })
@@ -359,10 +385,10 @@ export async function getListingDetail(
       const { data, error } = await supabase
         .from("product_metrics")
         .select(
-          "period_label, views, orders, revenue_cents, ads_clicks, ads_spend_cents, ads_revenue_cents",
+          "period_label, created_at, views, orders, revenue_cents, ads_clicks, ads_spend_cents, ads_revenue_cents",
         )
         .eq("product_id", id)
-        .order("period_label", { ascending: false });
+        .order("created_at", { ascending: false });
       if (error) throw new Error(error.message);
       return (data ?? []) as MetricDbRow[];
     })(),
@@ -394,7 +420,18 @@ export async function getListingDetail(
     active: v.active,
   }));
 
-  const son30Rows = metricRows.filter((m) => isSon30(m.period_label));
+  // Çift sayım koruması (Codex P2): aynı dönem etiketinin birden çok snapshot'ı
+  // (ör. birden çok "son 30g" kaydı) toplama iki kez girmesin — etikete göre EN
+  // GÜNCEL kaydı tut (metricRows created_at desc geldiğinden ilk gelen en yeni).
+  // NOT: farklı etiketli ama örtüşen kümülatif bir import varsa bu tam çözmez;
+  // o durumda dönemleri ayrı tutmak veri girişinin sorumluluğu.
+  const latestByLabel = new Map<string, MetricDbRow>();
+  for (const m of metricRows) {
+    if (!latestByLabel.has(m.period_label)) latestByLabel.set(m.period_label, m);
+  }
+  const dedupedMetrics = [...latestByLabel.values()];
+
+  const son30Rows = dedupedMetrics.filter((m) => isSon30(m.period_label));
   const ads: ListingAds = {
     son30: son30Rows.length
       ? {
@@ -406,14 +443,14 @@ export async function getListingDetail(
         }
       : null,
     lifetime_metrics: {
-      spend_cents: sumField(metricRows, (m) => m.ads_spend_cents),
-      revenue_cents: sumField(metricRows, (m) => m.ads_revenue_cents),
-      clicks: sumField(metricRows, (m) => m.ads_clicks),
-      orders: sumField(metricRows, (m) => m.orders),
-      views: sumField(metricRows, (m) => m.views),
-      periods: metricRows.length,
+      spend_cents: sumField(dedupedMetrics, (m) => m.ads_spend_cents),
+      revenue_cents: sumField(dedupedMetrics, (m) => m.ads_revenue_cents),
+      clicks: sumField(dedupedMetrics, (m) => m.ads_clicks),
+      orders: sumField(dedupedMetrics, (m) => m.orders),
+      views: sumField(dedupedMetrics, (m) => m.views),
+      periods: dedupedMetrics.length,
     },
-    periods: metricRows.map((m) => ({
+    periods: dedupedMetrics.map((m) => ({
       period_label: m.period_label,
       views: m.views,
       orders: m.orders,
