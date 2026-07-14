@@ -33,7 +33,12 @@ export interface DashboardData {
   currency: string;
   trend: { date: string; label: string; revenue: number; cost: number; orders: number }[];
   costByCategory: { name: string; value: number }[];
-  topProducts: { title: string; quantity: number; revenue: number }[];
+  topProducts: {
+    title: string;
+    sku: string | null;
+    quantity: number;
+    revenue: number;
+  }[];
   topCustomers: TopCustomer[];
   channelBreakdown: ChannelBreakdown[];
   recent: AuditLog[];
@@ -83,7 +88,7 @@ export async function getDashboard(
   // --- Satış kalemleri (en çok satan ürünler) ---
   let itemsQuery = supabase
     .from("sale_items")
-    .select("title, quantity, line_total_cents, sales!inner(order_date, status)")
+    .select("title, sku, quantity, line_total_cents, sales!inner(order_date, status)")
     .neq("sales.status", "cancelled")
     .lte("sales.order_date", period.toIso)
     .limit(2000);
@@ -91,6 +96,7 @@ export async function getDashboard(
   const { data: itemRows } = await itemsQuery;
   const items = (itemRows ?? []) as {
     title: string | null;
+    sku: string | null;
     quantity: number;
     line_total_cents: number;
   }[];
@@ -141,17 +147,31 @@ export async function getDashboard(
     .map(([name, value]) => ({ name, value: round2(value) }))
     .sort((a, b) => b.value - a.value);
 
-  // --- En çok satan ürünler ---
-  const prodMap = new Map<string, { quantity: number; revenue: number }>();
+  // --- En çok satan ürünler — SKU bazlı (başlık METNİ değil). Her varyantın
+  // kendi SKU'su var; listing bir SKU grubunun klasörüdür. Başlık düzenlenince
+  // tarihsel satışın bölünmemesi ve varyant-düzeyi doğruluk için anahtar SKU;
+  // SKU'suz eski/manuel kalemler başlığa düşer (geriye uyumlu).
+  const prodMap = new Map<
+    string,
+    { title: string; sku: string | null; quantity: number; revenue: number }
+  >();
   for (const it of items) {
-    const title = it.title ?? "—";
-    const e = prodMap.get(title) ?? { quantity: 0, revenue: 0 };
+    const sku = it.sku?.trim() || null;
+    const key = sku ? `sku:${sku}` : `title:${it.title ?? "—"}`;
+    const e =
+      prodMap.get(key) ??
+      { title: it.title ?? "—", sku, quantity: 0, revenue: 0 };
     e.quantity += it.quantity || 0;
     e.revenue += (it.line_total_cents || 0) / 100;
-    prodMap.set(title, e);
+    prodMap.set(key, e);
   }
-  const topProducts = [...prodMap.entries()]
-    .map(([title, v]) => ({ title, quantity: v.quantity, revenue: round2(v.revenue) }))
+  const topProducts = [...prodMap.values()]
+    .map((v) => ({
+      title: v.title,
+      sku: v.sku,
+      quantity: v.quantity,
+      revenue: round2(v.revenue),
+    }))
     .sort((a, b) => b.revenue - a.revenue)
     .slice(0, 5);
 

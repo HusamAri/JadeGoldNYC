@@ -3,7 +3,7 @@
   "crons": [
     {
       "path": "/api/cron/etsy-sync",
-      "schedule": "0 6 * * *"
+      "schedule": "0 */6 * * *"
     },
     {
       "path": "/api/cron/shipstation-sync",

@@ -24,6 +24,9 @@ export interface EtsyReceipt {
   name?: string;
   buyer_email?: string;
   created_timestamp?: number;
+  updated_timestamp?: number;
+  is_paid?: boolean;
+  is_shipped?: boolean;
   grandtotal?: EtsyMoney;
   subtotal?: EtsyMoney;
   total_shipping_cost?: EtsyMoney;
