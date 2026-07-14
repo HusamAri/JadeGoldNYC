@@ -44,6 +44,15 @@ export interface WhatsNewEntry {
 
 export const WHATS_NEW: WhatsNewEntry[] = [
   {
+    id: "2026-07-14-panel-hiz",
+    date: "2026-07-14",
+    title: "Panel 15 kat akıcı: 4 → 60 FPS",
+    description:
+      "Sayfayı ağırlaştıran şeyler ölçümle bulundu ve tek tek düzeltildi: ilk yüke binen 10.7MB'lık marka videosu artık görünüme gelince yükleniyor, dev PNG'ler 30 kat küçük webp'e döndü, cam yüzeylerin sürekli yeniden çizilmesine yol açan arka plan süzülmeleri sakinleştirildi (ışık oyunları artık hover'da canlanıyor) ve ağır paneller sayfa kabuğundan sonra akarak doluyor. İlk anlamlı görüntü 10.6sn'den ~2sn'ye indi.",
+    category: "ux",
+    icon: Sparkles,
+  },
+  {
     id: "2026-07-14-siparis-durumu-webhook",
     date: "2026-07-14",
     title: "Siparişler artık gerçek durumuyla + anlık webhook",

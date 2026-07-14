@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { Store } from "lucide-react";
 import {
@@ -71,15 +72,15 @@ export default async function PanelPage({
   const period = resolvePeriod(strParam(sp.period));
   const prev = previousPeriod(period);
   const m = await requireMembership();
-  const [d, goldPriceOunce, prevData, alertCenter, timeline, marketAlerts] =
-    await Promise.all([
-      getDashboard(period),
-      getGoldPricePerOunce(),
-      prev ? getDashboard(prev) : Promise.resolve(null),
-      getAlertCenter(m.org_id),
-      getTimelineData(m.org_id),
-      getMarketPriceAlerts(m.org_id),
-    ]);
+  // PERF: yalnız KABUĞUN ihtiyacı burada beklenir (KPI + altın). Ağır dallar
+  // (uyarı merkezi ← tüm listing açıklamaları, çizelge, pazar uyarıları)
+  // kendi async bileşenlerinde Suspense ile STREAM edilir — TTFB en yavaş
+  // dala kilitlenmez, kabuk saniyeler önce görünür.
+  const [d, goldPriceOunce, prevData] = await Promise.all([
+    getDashboard(period),
+    getGoldPricePerOunce(),
+    prev ? getDashboard(prev) : Promise.resolve(null),
+  ]);
   const cur = d.currency;
   const goldPricePerGram = goldPriceOunce / TROY_OUNCE_GRAMS;
 
@@ -100,21 +101,22 @@ export default async function PanelPage({
 
       <WhatsNew />
 
-      {/* Uyarı Board'u — uyarılar 3B sahnede havada asılı cam kutular
-          (kritik=renkli, önemli=liquid, bilgi=buzlu cam). Uzamsal genel bakış. */}
-      <AlertBoard3D data={alertCenter} />
-
-      {/* Uyarı Merkezi — sistem genelindeki tüm aksiyon sinyalleri tek yerde,
-          3 önem derecesi + bedele göre sıralı. "Neler yolunda gitmiyor?"
-          (Board özet sahnedir; bu kart okunabilir DETAY listesi olarak kalır.) */}
-      <AlertCenterCard data={alertCenter} />
+      {/* Uyarı Board'u + Merkezi — en ağır veri dalı (tüm listing denetimi);
+          Suspense ile sonradan akar, kabuğu bekletmez. */}
+      <Suspense fallback={<SectionSkeleton h="h-[420px]" label="Uyarılar yükleniyor…" />}>
+        <AlertsSection orgId={m.org_id} />
+      </Suspense>
 
       {/* Pazar uyarıları DETAY/AKSİYON yüzeyi — merkez özet sayar, bu kart
           listing-başına sapma + karar linki verir (merkez satırı buraya işaret eder). */}
-      <MarketPriceAlertsCard alerts={marketAlerts} />
+      <Suspense fallback={<SectionSkeleton h="h-[180px]" label="Pazar uyarıları…" />}>
+        <MarketAlertsSection orgId={m.org_id} />
+      </Suspense>
 
       {/* Görev yol haritası + satış bağlamı — geniş; kaydırıcıyla geçmiş↔gelecek */}
-      <PanelTimeline data={timeline} />
+      <Suspense fallback={<SectionSkeleton h="h-[260px]" label="Zaman çizelgesi…" />}>
+        <TimelineSection orgId={m.org_id} />
+      </Suspense>
 
       {/* ── Güncel Altın Fiyatı — öne çıkan yüzen cam şerit ───────────────
           Buzlu cam board (.glass-board) yüzeyin ÜSTÜNDE süzülür; girişte
@@ -538,6 +540,41 @@ export default async function PanelPage({
         title="Sessiz lüks, kalıcı değer"
         subtitle="Som altın, el işçiliği — her parça bir miras."
       />
+    </div>
+  );
+}
+
+/** Ağır dalların stream edilen bölümleri — her biri kendi verisini bekler. */
+async function AlertsSection({ orgId }: { orgId: string }) {
+  const alertCenter = await getAlertCenter(orgId);
+  return (
+    <>
+      <AlertBoard3D data={alertCenter} />
+      <AlertCenterCard data={alertCenter} />
+    </>
+  );
+}
+
+async function MarketAlertsSection({ orgId }: { orgId: string }) {
+  const alerts = await getMarketPriceAlerts(orgId);
+  return <MarketPriceAlertsCard alerts={alerts} />;
+}
+
+async function TimelineSection({ orgId }: { orgId: string }) {
+  const timeline = await getTimelineData(orgId);
+  return <PanelTimeline data={timeline} />;
+}
+
+/** Akış beklenirken sakin cam iskelet — yükseklik gerçek bölüme yakın tutulur
+    (layout kayması olmasın). */
+function SectionSkeleton({ h, label }: { h: string; label: string }) {
+  return (
+    <div
+      className={`relative overflow-hidden rounded-[26px] border border-[color:var(--glass-border)] [background-color:var(--glass)] ${h} motion-safe:animate-pulse dark:border-[color:oklch(1_0_0/0.05)] dark:[background-color:var(--lume-panel)]`}
+    >
+      <span className="text-muted-foreground absolute inset-0 flex items-center justify-center font-mono text-[11px] tracking-[0.14em] uppercase">
+        {label}
+      </span>
     </div>
   );
 }

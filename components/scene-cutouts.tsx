@@ -41,19 +41,20 @@ const KIND = {
     shadow: CUTOUT_SHADOW,
   },
   stones: {
-    src: "/brand/cutout/stones.png",
+    // 320px webp (ekranda ≤160px görünür; PNG orijinali 657KB→21KB)
+    src: "/brand/cutout/stones-sm.webp",
     motion: "", // taşlar hareket etmez — gerçekçilik
     shadow: CUTOUT_SHADOW,
   },
   candle: {
-    src: "/brand/cutout/candle.png",
+    src: "/brand/cutout/candle-sm.webp",
     motion: "", // mum gövdesi sabit; yalnız alev yaşar
     shadow:
       "drop-shadow-[0_12px_12px_rgba(0,0,0,0.55)] drop-shadow-[0_3px_4px_rgba(0,0,0,0.5)]",
   },
   // EON üretim görseli — som altın alyans çifti (Higgsfield üretimi cutout).
   rings: {
-    src: "/brand/cutout/eon-rings.png",
+    src: "/brand/cutout/eon-rings-sm.webp",
     motion: "", // ağır metal objeler zeminde durur — gerçekçilik
     shadow: CUTOUT_SHADOW,
   },

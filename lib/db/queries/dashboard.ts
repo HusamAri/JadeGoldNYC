@@ -55,37 +55,21 @@ export async function getDashboard(
   const fromDate = period.fromIso ? period.fromIso.slice(0, 10) : null;
   const toDate = period.toIso.slice(0, 10);
 
-  // --- Satışlar ---
+  // --- Sorgular (PERF: 3 sorgu SIRALI await yerine birlikte koşar; kritik
+  // yol tek round-trip süresine iner — panel TTFB ölçümünde ana kalemlerden) ---
   let salesQuery = supabase
     .from("sales")
     .select("grand_total_cents, item_total_cents, order_date, buyer_name, source")
     .neq("status", "cancelled")
     .lte("order_date", period.toIso);
   if (period.fromIso) salesQuery = salesQuery.gte("order_date", period.fromIso);
-  const { data: salesRows } = await salesQuery;
-  const sales = (salesRows ?? []) as {
-    grand_total_cents: number;
-    item_total_cents: number;
-    order_date: string;
-    buyer_name: string | null;
-    source: string;
-  }[];
 
-  // --- Maliyetler ---
   let costQuery = supabase
     .from("costs")
     .select("amount_cents, cost_date, category:cost_categories(label_tr)")
     .lte("cost_date", toDate);
   if (fromDate) costQuery = costQuery.gte("cost_date", fromDate);
-  const { data: costRows } = await costQuery;
-  // Supabase to-one gömülü ilişkiyi statik olarak dizi sanıyor; çalışmada nesne döner.
-  const costs = (costRows ?? []) as unknown as {
-    amount_cents: number;
-    cost_date: string;
-    category: { label_tr: string } | null;
-  }[];
 
-  // --- Satış kalemleri (en çok satan ürünler) ---
   let itemsQuery = supabase
     .from("sale_items")
     .select("title, sku, quantity, line_total_cents, sales!inner(order_date, status)")
@@ -93,7 +77,23 @@ export async function getDashboard(
     .lte("sales.order_date", period.toIso)
     .limit(2000);
   if (period.fromIso) itemsQuery = itemsQuery.gte("sales.order_date", period.fromIso);
-  const { data: itemRows } = await itemsQuery;
+
+  const [{ data: salesRows }, { data: costRows }, { data: itemRows }] =
+    await Promise.all([salesQuery, costQuery, itemsQuery]);
+
+  const sales = (salesRows ?? []) as {
+    grand_total_cents: number;
+    item_total_cents: number;
+    order_date: string;
+    buyer_name: string | null;
+    source: string;
+  }[];
+  // Supabase to-one gömülü ilişkiyi statik olarak dizi sanıyor; çalışmada nesne döner.
+  const costs = (costRows ?? []) as unknown as {
+    amount_cents: number;
+    cost_date: string;
+    category: { label_tr: string } | null;
+  }[];
   const items = (itemRows ?? []) as {
     title: string | null;
     sku: string | null;
@@ -175,14 +175,17 @@ export async function getDashboard(
     .sort((a, b) => b.revenue - a.revenue)
     .slice(0, 5);
 
-  // --- Altın maliyet özeti (gold_auto kaynaklı) ---
+  // --- Altın maliyet özeti (gold_auto kaynaklı) — son etkinlikle paralel ---
   let goldCostQuery = supabase
     .from("costs")
     .select("amount_cents, category:cost_categories(key)")
     .eq("source", "gold_auto")
     .lte("cost_date", toDate);
   if (fromDate) goldCostQuery = goldCostQuery.gte("cost_date", fromDate);
-  const { data: goldCostRows } = await goldCostQuery;
+  const [{ data: goldCostRows }, recent] = await Promise.all([
+    goldCostQuery,
+    recentActivity(8),
+  ]);
   const goldCosts_ = (goldCostRows ?? []) as unknown as {
     amount_cents: number;
     category: { key: string } | null;
@@ -228,8 +231,6 @@ export async function getDashboard(
   const channelBreakdown: ChannelBreakdown[] = [...chanMap.entries()]
     .map(([ch, v]) => ({ channel: CHANNEL_LABELS[ch] ?? ch, ...v }))
     .sort((a, b) => b.revenueCents - a.revenueCents);
-
-  const recent = await recentActivity(8);
 
   return {
     revenueCents,

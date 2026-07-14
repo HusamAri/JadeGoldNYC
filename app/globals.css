@@ -138,8 +138,10 @@
     0.5px 0.7px 1.1px rgb(120 130 160 / 0.32);
   --sheen-angle: 135deg;
   /* Cam optik yoğunluğu — DS effects.css BİREBİR: --glass-blur / -sm. */
-  --glass-filter: blur(22px) saturate(150%);
-  --glass-filter-sm: blur(12px) saturate(140%);
+  /* PERF: blur maliyeti yarıçapla süperlineer büyür; 22→12 ve 12→8 cam hissini
+     korur (cam üstünde hep metin/kontrast var), kare bütçesini ciddi rahatlatır. */
+  --glass-filter: blur(12px) saturate(150%);
+  --glass-filter-sm: blur(8px) saturate(140%);
   /* Cam iç halkası — 1px iridesan iç kenar (rim tek kaynaktan). */
   --glass-ring: inset 0 0 0 1px rgb(255 255 255 / 0.08);
   --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
@@ -345,7 +347,8 @@
       radial-gradient(1100px 560px at 85% -8%, rgb(212 198 255 / 0.24), transparent 60%),
       radial-gradient(900px 480px at -10% 108%, rgb(182 220 255 / 0.18), transparent 55%),
       radial-gradient(120% 90% at 50% 0%, #f3f2f7 0%, #eceaf1 46%, #e6e3ee 100%);
-    background-attachment: fixed;
+    /* PERF: background-attachment:fixed her scroll karesinde tam-viewport
+       yeniden rasterizasyon demekti — kaldırıldı (degrade sayfayla kayar). */
   }
   .dark body {
     /* Lume ground — Liquid_Dark'ın BİREBİR zemini: tepe ışığı housing'e
@@ -760,20 +763,17 @@
       linear-gradient(160deg, rgb(205 214 255 / 0.12), transparent 62%);
   }
   @media (prefers-reduced-motion: no-preference) {
-    .glass-liquid::before {
+    /* PERF: caustic ışık gezintisi hover'da — 10 KPI camında sürekli hasar
+       bölgesi yaratıp backdrop cache'ini bozuyordu (eşzamanlılık ölçümü). */
+    .glass-liquid:hover::before,
+    .group:hover > .glass-liquid::before {
       animation: caustic-drift 5.5s var(--ease-premium) infinite;
     }
   }
-  /* Refraction — DS'in imzası: url(#liquid) ile arkadaki holo objeler
-     büker + daha az blur (liquid daha net/lensli). Yalnız destekleyen
-     tarayıcıda; diğerinde base glass-board buzlu camı kalır. */
-  @supports (backdrop-filter: url("#liquid")) or (-webkit-backdrop-filter: url("#liquid")) {
-    /* YALNIZ açık tema (saydam cam) — koyuda KPI opak lume panel, backdrop yok. */
-    :root:not(.dark) .glass-liquid {
-      backdrop-filter: blur(2px) url("#liquid") saturate(160%);
-      -webkit-backdrop-filter: blur(2px) url("#liquid") saturate(160%);
-    }
-  }
+  /* Refraction (url(#liquid) SVG displacement) KALDIRILDI — PERF: url()
+     backdrop'u GPU'da hızlandırılamıyor, 10 KPI camını her karede CPU'da
+     yeniden rasterize ettiriyordu (/panel 4 FPS ölçümünün baş aktörlerinden).
+     Buzlu cam (base .glass-liquid blur'u) tasarımın kendi zarif düşüş yolu. */
 
   /* ── Karanlık kabartma tipografi (referans: Liquid Dark) ──────────────
      Koyu modda kahraman başlık YÜZEYİN KENDİSİNDEN kabarır: metin zeminden
@@ -909,10 +909,13 @@
     transform: translateX(-125%);
   }
   @media (prefers-reduced-motion: no-preference) {
-    .sheen-sweep::after {
+    /* PERF: kart parlaması artık HOVER'da yaşar — 12 kartın sürekli ışık
+       süpürmesi kare bütçesini yiyordu (ölçüm: tek başına 14 FPS'e düşürüyordu). */
+    .sheen-sweep:hover::after,
+    .sheen-sweep:focus-within::after {
       animation: card-sheen 7.5s ease-in-out infinite;
     }
-    .sheen-sweep:nth-child(2n)::after {
+    .sheen-sweep:nth-child(2n):hover::after {
       animation-delay: -2.4s;
     }
     .sheen-sweep:nth-child(3n)::after {
@@ -983,15 +986,16 @@
     background-image: var(--holo-blobs);
     background-repeat: no-repeat;
     filter: blur(46px);
-    will-change: transform;
+    /* PERF: SÜREKLİ süzülme kaldırıldı (holo-drift-a/b). Tam-viewport blur(46)
+       katmanının her karede kayması, üstündeki TÜM cam yüzeylerin backdrop'unu
+       yeniden örnekletiyordu — /panel ölçümünde tek başına 60→5 FPS. Katmanlar
+       statik ambiyans olarak kalır; bir kez rasterize edilir ve cache'lenir. */
   }
   .holo-drift::before {
     opacity: 0.5;
-    animation: holo-drift-a 46s ease-in-out infinite;
   }
   .holo-drift::after {
     opacity: 0.36;
-    animation: holo-drift-b 62s ease-in-out infinite;
   }
   .dark .holo-drift::before {
     opacity: 0.4;
@@ -1091,6 +1095,13 @@
 /* Kutu ikonu süzülmesi — ÇOK çok yavaş, geniş yörünge; her kutu farklı
    faz/yön (bileşende animation-delay/direction ile). Cam formun bir kısmı
    altında, bir kısmı dışında kalacak şekilde kenarı yalar. */
+/* KPI ikonu hover'da süzülür (süre/yön/faz inline style'dan gelir). */
+@media (prefers-reduced-motion: no-preference) {
+  .sheen-sweep:hover .kpi-icon {
+    animation-name: kpi-icon-drift;
+  }
+}
+
 @keyframes kpi-icon-drift {
   0% {
     transform: translate(0, 0) rotate(-4deg);
@@ -1176,7 +1187,8 @@
   }
 }
 .jg-twinkle {
-  animation: jg-twinkle 3.6s ease-in-out infinite;
+  /* PERF: sonsuz → 5 parıltı; sonra toz sabit kalır (kompozit maliyeti sıfırlanır). */
+  animation: jg-twinkle 3.6s ease-in-out 3;
 }
 
 /* "NEW" yıldız rozeti — KABARTMA (konveks yüzey + raised gölge) + altın NEON
@@ -1320,7 +1332,9 @@
   border-radius: inherit;
   pointer-events: none;
   z-index: -1;
-  animation: pulse-opacity 2s ease-in-out infinite;
+  /* PERF: sonsuz nabız her karede kompoziti tetikliyordu (/panel ölçümü) —
+     dikkat ilk saniyelerde çekilir (6 vuruş), sonra hale parlak sabitlenir. */
+  animation: pulse-opacity 2s ease-in-out 3 both;
 }
 .jg-neon {
   box-shadow:
@@ -1543,8 +1557,11 @@ html[data-brand="artifact"] .jg-dust {
     oklch(0.95 0.06 80 / 0.22) 53%,
     transparent 68%
   );
-  animation: ab-liquid-sheen 6.5s ease-in-out infinite alternate;
   pointer-events: none;
+}
+/* PERF: liquid camın gezen parlaması hover'da canlanır (idle statik parlak iz). */
+.ab-liquid:hover::after {
+  animation: ab-liquid-sheen 6.5s ease-in-out infinite alternate;
 }
 .dark .ab-liquid::after {
   background: linear-gradient(
@@ -1554,6 +1571,15 @@ html[data-brand="artifact"] .jg-dust {
     oklch(0.85 0.1 75 / 0.1) 53%,
     transparent 68%
   );
+}
+
+/* Cam BOZMASI (backdrop-filter) yalnız etkileşimde: süzülen kutuda sürekli
+   backdrop örneklemesi compositor'ı boğuyordu (ölçüm: /panel 4 FPS). Idle'da
+   gradient yüzey + glow cam hissini taşır; hover/focus'ta gerçek bozma gelir. */
+.ab-glass:hover,
+.ab-glass:focus-visible {
+  backdrop-filter: var(--ab-filter);
+  -webkit-backdrop-filter: var(--ab-filter);
 }
 
 .ab-frost::before {

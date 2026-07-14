@@ -350,7 +350,9 @@ export function PanelTimeline({ data }: { data: TimelineData }) {
               href={`/gorevler/${t.id}`}
               title={`${fmtShort(t.dueDate)} · ${t.title}${t.assigneeName ? ` · ${t.assigneeName}` : ""} (${t.priority})${progress != null ? ` · %${progress}` : ""}${done ? " · tamamlandı" : ""}`}
               className={
-                "soft-in absolute z-10 flex min-w-0 items-center gap-2 overflow-hidden rounded-full border py-1.5 pr-3.5 pl-2 text-[12.5px] font-semibold shadow-[var(--lift-sm)] transition-transform hover:z-20 hover:-translate-y-0.5 active:translate-y-0 [backdrop-filter:var(--glass-filter-sm)] [background-color:var(--glass)] [background-image:var(--glass-sheen)] dark:shadow-[0_10px_24px_oklch(0_0_0/0.45),0_0_16px_oklch(0.7_0.07_262/0.2)] dark:[background-color:var(--lume-glass)] dark:[background-image:none] " +
+                // PERF: idle'da backdrop-filter YOK (arkada süzülen küreler her
+                // karede yeniden örneklemeye zorluyordu); cam bozması hover'da.
+                "soft-in absolute z-10 flex min-w-0 items-center gap-2 overflow-hidden rounded-full border py-1.5 pr-3.5 pl-2 text-[12.5px] font-semibold shadow-[var(--lift-sm)] transition-transform hover:z-20 hover:-translate-y-0.5 active:translate-y-0 hover:[backdrop-filter:var(--glass-filter-sm)] [background-color:var(--glass)] [background-image:var(--glass-sheen)] dark:shadow-[0_10px_24px_oklch(0_0_0/0.45),0_0_16px_oklch(0.7_0.07_262/0.2)] dark:[background-color:var(--lume-glass)] dark:[background-image:none] " +
                 (done
                   ? "border-white/60 dark:border-white/20"
                   : "border-[color:var(--glass-border)] dark:border-[color:oklch(1_0_0/0.25)] ") +
@@ -371,11 +373,18 @@ export function PanelTimeline({ data }: { data: TimelineData }) {
                     <span
                       key={i}
                       aria-hidden
+                      // PERF: parça başına backdrop-filter (çip başına 5 örnekleyici!)
+                      // compositor'ı boğuyordu — parça farklılığı artık ucuz bir
+                      // yarı saydam ton katmanıyla verilir (clip-path + çatlak
+                      // çizgileri + savrulma kırık cam dilini taşımaya devam eder).
                       className="absolute inset-0 rounded-full motion-safe:animate-[tl-shard-drift_7s_ease-in-out_infinite]"
                       style={
                         {
                           clipPath: s.clip,
-                          backdropFilter: `blur(${1 + age * 1.5}px) saturate(${1.2 + i * 0.15}) brightness(${1 + (i % 2 === 0 ? 0.06 : -0.05)})`,
+                          background:
+                            i % 2 === 0
+                              ? `linear-gradient(${120 + i * 40}deg, oklch(1 0 0 / ${0.14 + age * 0.05}), oklch(0.9 0.03 290 / 0.04))`
+                              : `linear-gradient(${140 + i * 35}deg, oklch(0.75 0.05 285 / ${0.1 + age * 0.04}), oklch(1 0 0 / 0.03))`,
                           "--sx": `${s.dx * age}px`,
                           "--sy": `${s.dy * age}px`,
                           "--sr": `${s.rot * age}deg`,
