@@ -27,6 +27,7 @@ import { strParam, type RawSearchParams } from "@/lib/searchparams";
 import { formatMoney, formatPercent } from "@/lib/money";
 import { formatNumber, formatDateTime } from "@/lib/format";
 import { auditSummary } from "@/lib/audit-format";
+import { OrgMark } from "@/components/brand/org-mark";
 import { PageHeader } from "@/components/page-header";
 import { PanelTimeline } from "@/components/panel/panel-timeline";
 import { GoldStream } from "@/components/brand/gold-stream";
@@ -165,7 +166,7 @@ export default async function PanelPage({
         <span>Panel / 01 · Gelir &amp; Kârlılık</span>
         <span className="idx-bar" />
         <span className="idx-ln" />
-        <span>Jade Gold · NYC</span>
+        <span><OrgMark /></span>
       </div>
       <SectionTitle
         eyebrow="Gelir & Kârlılık"
@@ -227,7 +228,7 @@ export default async function PanelPage({
         <span>Panel / 02 · Siparişler</span>
         <span className="idx-bar" />
         <span className="idx-ln" />
-        <span>Jade Gold · NYC</span>
+        <span><OrgMark /></span>
       </div>
       <SectionTitle
         eyebrow="Siparişler"
@@ -266,7 +267,7 @@ export default async function PanelPage({
         <span>Panel / 03 · Maliyet Yapısı</span>
         <span className="idx-bar" />
         <span className="idx-ln" />
-        <span>Jade Gold · NYC</span>
+        <span><OrgMark /></span>
       </div>
       <SectionTitle
         eyebrow="Maliyet Yapısı"
@@ -331,7 +332,7 @@ export default async function PanelPage({
         <span>Panel / 04 · Ürünler &amp; Etkinlik</span>
         <span className="idx-bar" />
         <span className="idx-ln" />
-        <span>Jade Gold · NYC</span>
+        <span><OrgMark /></span>
       </div>
       <SectionTitle
         eyebrow="Ürünler & Etkinlik"

@@ -20,6 +20,7 @@ import { listListingsIndex } from "@/lib/db/queries/listings";
 import { strParam, type RawSearchParams } from "@/lib/searchparams";
 import { formatMoney } from "@/lib/money";
 import { formatNumber } from "@/lib/format";
+import { OrgMark } from "@/components/brand/org-mark";
 import { PageHeader } from "@/components/page-header";
 import { GoldStream } from "@/components/brand/gold-stream";
 import { CornerMarks } from "@/components/brand/corner-marks";
@@ -127,7 +128,7 @@ export default async function ListelerPage({
           <span>Listeler / 01 · Özet</span>
           <span className="idx-bar" />
           <span className="idx-ln" />
-          <span>Jade Gold · NYC</span>
+          <span><OrgMark /></span>
         </div>
         {filtered && (
           <p className="text-muted-foreground text-xs">
@@ -170,7 +171,7 @@ export default async function ListelerPage({
         <span>Listeler / 02 · Listingler</span>
         <span className="idx-bar" />
         <span className="idx-ln" />
-        <span>Jade Gold · NYC</span>
+        <span><OrgMark /></span>
       </div>
       <Card>
         <CardContent className="space-y-4">

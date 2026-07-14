@@ -84,8 +84,24 @@ const PRODUCT_STATUS_ALERTS: {
 export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
   const supabase = await createClient();
 
-  const [gaps, etsy, marketCounts, orgRow, statusProducts, openInquiries, blockedAlgo, p0Tasks] =
-    await Promise.all([
+  // Olumsuz analiz pencereleri: son 30 gün vs önceki 30 gün.
+  const now = Date.now();
+  const iso30 = new Date(now - 30 * 86_400_000).toISOString();
+  const iso60 = new Date(now - 60 * 86_400_000).toISOString();
+
+  const [
+    gaps,
+    etsy,
+    marketCounts,
+    orgRow,
+    statusProducts,
+    openInquiries,
+    blockedAlgo,
+    p0Tasks,
+    recentSales,
+    son30Metrics,
+    meltRows,
+  ] = await Promise.all([
       getDataGaps(orgId),
       getEtsyStatus(orgId),
       // Bant dışı sayılar — görüntüleme limitinden bağımsız tam sayım.
@@ -127,6 +143,34 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
         .eq("org_id", orgId)
         .eq("priority", "P0")
         .neq("status", "done"),
+      // Gelir düşüşü: son 60 günün satışları (iptal hariç) — JS'te iki 30
+      // günlük pencereye bölünür (dashboard ile aynı gelir semantiği).
+      supabase
+        .from("sales")
+        .select("order_date, grand_total_cents, item_total_cents")
+        .eq("org_id", orgId)
+        .neq("status", "cancelled")
+        .gte("order_date", iso60),
+      // Boşa reklam + düşük dönüşüm: aktif ürünlerin "son 30" dönem metrikleri.
+      // Aynı etikete birden çok anlık görüntü olabilir — JS'te ürün başına en
+      // güncel kayıt alınır (display-limit/çift sayım dersleri).
+      supabase
+        .from("product_metrics")
+        .select(
+          "product_id, created_at, views, orders, ads_spend_cents, ads_revenue_cents, products!inner(status)",
+        )
+        .eq("org_id", orgId)
+        .eq("products.status", "active")
+        .ilike("period_label", "%son 30%"),
+      // Eritme-altı fiyat: PostgREST kolon-kolon kıyas yapamaz — dar satırlar
+      // çekilip JS'te our_per_gram < melt_per_gram karşılaştırılır.
+      supabase
+        .from("market_price_alerts")
+        .select("product_id, our_per_gram_cents, melt_per_gram_cents")
+        .eq("org_id", orgId)
+        .eq("status", "active")
+        .not("our_per_gram_cents", "is", null)
+        .not("melt_per_gram_cents", "is", null),
     ]);
 
   // Sorgu hataları sessizce "her şey yolunda"ya dönüşmesin — logla.
@@ -136,6 +180,9 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
     ["inquiries", openInquiries],
     ["algo", blockedAlgo],
     ["tasks", p0Tasks],
+    ["sales", recentSales],
+    ["metrics", son30Metrics],
+    ["melt", meltRows],
   ] as const) {
     if (res.error) console.error(`[alert-center] ${name} sorgusu:`, res.error.message);
   }
@@ -257,7 +304,117 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
     });
   }
 
-  // 7) Acil (P0) açık görev → zamana duyarlı iş (KRİTİK).
+  // ── Olumsuz analiz sinyalleri: yalnız eksik veri değil, KÖTÜYE GİDEN her
+  // metrik de merkezde flaglenir (gelir düşüşü, boşa reklam, zararına satış,
+  // bakan-ama-almayan trafik). ──────────────────────────────────────────────
+
+  // 7) Gelir düşüşü — son 30 gün vs önceki 30 gün (iptal hariç, dashboard
+  // semantiği: grand_total || item_total).
+  let rev30 = 0;
+  let revPrev = 0;
+  for (const s of (recentSales.data ?? []) as {
+    order_date: string;
+    grand_total_cents: number | null;
+    item_total_cents: number | null;
+  }[]) {
+    const amt = s.grand_total_cents || s.item_total_cents || 0;
+    if (s.order_date >= iso30) rev30 += amt;
+    else revPrev += amt;
+  }
+  // Gürültü tabanı: önceki dönem en az $100 olsun; ≥%20 düşüş uyarı üretir.
+  if (revPrev >= 10_000 && rev30 < revPrev * 0.8) {
+    const dropPct = Math.round((1 - rev30 / revPrev) * 100);
+    alerts.push({
+      key: "revenue_decline",
+      severity: dropPct >= 40 ? "kritik" : "onemli",
+      title: `Gelir son 30 günde %${dropPct} düştü`,
+      hint: "Bir önceki 30 güne göre satışlar belirgin geriledi — bu gidişle aylık ciro erimeye devam eder. Reklamları, fiyat konumunu ve stoğu birlikte gözden geçir; sebep genelde bu üçünden biri.",
+      count: 1,
+      href: "/analizler",
+      actionLabel: "Analizlere git",
+      costCents: revPrev - rev30,
+    });
+  }
+
+  // 8) Boşa reklam + bakan-ama-almayan trafik — ürün başına EN GÜNCEL "son 30"
+  // metriği (aynı etikete birden çok anlık görüntü olabilir; çift sayma).
+  type MetricRow = {
+    product_id: string | null;
+    created_at: string;
+    views: number | null;
+    orders: number | null;
+    ads_spend_cents: number | null;
+    ads_revenue_cents: number | null;
+  };
+  const latestByProduct = new Map<string, MetricRow>();
+  for (const m of ((son30Metrics.data ?? []) as unknown as MetricRow[]).sort(
+    (a, b) => b.created_at.localeCompare(a.created_at),
+  )) {
+    if (m.product_id && !latestByProduct.has(m.product_id))
+      latestByProduct.set(m.product_id, m);
+  }
+  let wastedAdsCount = 0;
+  let wastedAdsCents = 0;
+  let noConvCount = 0;
+  for (const m of latestByProduct.values()) {
+    const spend = m.ads_spend_cents ?? 0;
+    if (spend > 0 && (m.ads_revenue_cents ?? 0) === 0) {
+      wastedAdsCount += 1;
+      wastedAdsCents += spend;
+    }
+    if ((m.views ?? 0) >= 100 && (m.orders ?? 0) === 0) noConvCount += 1;
+  }
+  if (wastedAdsCount > 0) {
+    alerts.push({
+      key: "ads_wasted",
+      severity: "onemli",
+      title: `${wastedAdsCount} üründe reklam parası boşa gidiyor`,
+      hint: "Son 30 günde bu ürünlere reklam harcandı ama tek kuruş getiri yok — bütçe her gün eriyor. Reklamı durdur ya da listing'i (görsel/fiyat/başlık) düzeltip yeniden dene.",
+      count: wastedAdsCount,
+      href: "/analizler/urunler",
+      actionLabel: "Reklamları gözden geçir",
+      costCents: wastedAdsCents,
+    });
+  }
+  if (noConvCount > 0) {
+    alerts.push({
+      key: "views_no_orders",
+      severity: "onemli",
+      title: `${noConvCount} ürün çok bakılıyor ama hiç satmıyor`,
+      hint: "Son 30 günde 100+ görüntülemeye rağmen sıfır sipariş — alıcı geliyor, dönüşmüyor. Fiyat, ilk görsel ya da kargo süresi caydırıyor olabilir; bu üçünü test et.",
+      count: noConvCount,
+      href: "/analizler/urunler",
+      actionLabel: "Ürünleri incele",
+      costCents: null,
+    });
+  }
+
+  // 9) Eritme-altı fiyat → hurda değerinin altında satış = garanti zarar (KRİTİK).
+  const meltBelow = (
+    (meltRows.data ?? []) as {
+      our_per_gram_cents: number | null;
+      melt_per_gram_cents: number | null;
+    }[]
+  ).filter(
+    (r) =>
+      r.our_per_gram_cents != null &&
+      r.melt_per_gram_cents != null &&
+      r.our_per_gram_cents < r.melt_per_gram_cents,
+  ).length;
+  if (meltBelow > 0) {
+    alerts.push({
+      key: "below_melt",
+      severity: "kritik",
+      title: `${meltBelow} ürün eritme değerinin ALTINDA satılıyor`,
+      hint: "Gram fiyatı altının hurda değerinin bile altında — her satış garantili zarar. Bu fiyatları bugün düzelt.",
+      count: meltBelow,
+      href: "/analizler/urunler",
+      actionLabel: "Fiyatları düzelt",
+      costCents: null,
+    });
+  }
+
+  // 10) Acil (P0) açık görev → zamana duyarlı iş (KRİTİK).
   const p0Open = p0Tasks.count ?? 0;
   if (p0Open > 0) {
     alerts.push({

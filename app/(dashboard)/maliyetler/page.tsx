@@ -6,6 +6,7 @@ import { listCosts, listCostCategories } from "@/lib/db/queries/costs";
 import { strParam, numParam, type RawSearchParams } from "@/lib/searchparams";
 import { formatMoney } from "@/lib/money";
 import { formatDate } from "@/lib/format";
+import { OrgMark } from "@/components/brand/org-mark";
 import { PageHeader } from "@/components/page-header";
 import { GoldStream } from "@/components/brand/gold-stream";
 import { CornerMarks } from "@/components/brand/corner-marks";
@@ -75,7 +76,7 @@ export default async function MaliyetlerPage({
         <span>Maliyetler / 01 · Atölye</span>
         <span className="idx-bar" />
         <span className="idx-ln" />
-        <span>Jade Gold · NYC</span>
+        <span><OrgMark /></span>
       </div>
       {/* Tek, sessiz marka aksanı — atölye/malzeme temasıyla maliyet sayfasına
           zarif bir giriş (galeri değil, tek kompakt banner). Sayfanın hero
@@ -98,7 +99,7 @@ export default async function MaliyetlerPage({
         <span>Maliyetler / 02 · Kayıtlar</span>
         <span className="idx-bar" />
         <span className="idx-ln" />
-        <span>Jade Gold · NYC</span>
+        <span><OrgMark /></span>
       </div>
       {/* Kayıt tablosu kabı — bölüm hiyerarşisinde tablo yüzeyi: dikey oluklu
           cam (.glass-fluted). Yarıçapı Card'dan (rounded-[26px]) devralır. */}
