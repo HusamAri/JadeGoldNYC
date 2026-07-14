@@ -1178,9 +1178,65 @@
    global kuralıyla nabız durur, kabartma + neon dış hat kalır. */
 
 /* ── Görev Zaman Çizelgesi ───────────────────────────────────────────────
-   "BUGÜN" düğümü: yavaşça nefes alan altın hale — zaman çizelgesinin odağı.
-   Geçmişte kalan gecikmeler: kırmızı neon nabız (jg-neon dili). Omurga:
-   akan erimiş altın degrade. prefers-reduced-motion global kuralıyla durur. */
+   v2 dili: yaklaşan görevler PARILDAR (tl-shimmer süpürmesi), biten görevler
+   KIRIK CAMDIR (tl-shard parçaları geçmişe doğru dağılıp çözülür), olaylar
+   camların arkasında havada asılı gradient kürelerdir (tl-orb salınımı).
+   prefers-reduced-motion global kuralıyla tümü durur. */
+
+@keyframes tl-shimmer {
+  0% {
+    transform: translateX(-130%) skewX(-18deg);
+  }
+  100% {
+    transform: translateX(260%) skewX(-18deg);
+  }
+}
+.tl-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 45%;
+  border-radius: inherit;
+  background: linear-gradient(
+    100deg,
+    transparent 8%,
+    oklch(1 0 0 / 0.55) 48%,
+    oklch(0.9 0.06 290 / 0.35) 58%,
+    transparent 92%
+  );
+  animation: tl-shimmer 3.4s ease-in-out infinite;
+  pointer-events: none;
+}
+.dark .tl-shimmer::after {
+  background: linear-gradient(
+    100deg,
+    transparent 8%,
+    oklch(0.95 0.03 262 / 0.28) 48%,
+    oklch(0.8 0.1 278 / 0.2) 58%,
+    transparent 92%
+  );
+}
+
+@keyframes tl-orb-float {
+  0%,
+  100% {
+    translate: 0 -4px;
+  }
+  50% {
+    translate: 0 4px;
+  }
+}
+
+@keyframes tl-shard-drift {
+  0%,
+  100% {
+    transform: translate(var(--sx, 0), var(--sy, 0)) rotate(var(--sr, 0deg));
+  }
+  50% {
+    transform: translate(calc(var(--sx, 0) * 1.35), calc(var(--sy, 0) * 1.35))
+      rotate(calc(var(--sr, 0deg) * 1.4));
+  }
+}
 
 
 
@@ -1402,4 +1458,74 @@ html[data-brand="artifact"] .jg-dust {
   100% {
     opacity: 1;
   }
+}
+
+/* ── Uyarı Merkezi 3B Board ──────────────────────────────────────────────
+   Havada asılı cam kutular: her kutu kendi fazında süzülür (ab-float),
+   liquid camın yüzeyinde yavaş bir parlama gezinir (ab-liquid), buzlu cam
+   kristal çizgi dokusu taşır (ab-frost). Malzeme önem derecesine bağlı:
+   kritik = renkli (yakut) cam · önemli = liquid (kehribar) cam ·
+   bilgi = buzlu/ice cam. prefers-reduced-motion global kuralıyla durur. */
+
+@keyframes ab-float {
+  0%,
+  100% {
+    transform: translateY(-6px) rotate(-0.5deg);
+  }
+  50% {
+    transform: translateY(7px) rotate(0.6deg);
+  }
+}
+
+@keyframes ab-liquid-sheen {
+  0% {
+    transform: translateX(-60%) rotate(10deg);
+  }
+  100% {
+    transform: translateX(60%) rotate(10deg);
+  }
+}
+.ab-liquid::after {
+  content: "";
+  position: absolute;
+  inset: -45%;
+  border-radius: inherit;
+  background: linear-gradient(
+    115deg,
+    transparent 32%,
+    oklch(1 0 0 / 0.35) 46%,
+    oklch(0.95 0.06 80 / 0.22) 53%,
+    transparent 68%
+  );
+  animation: ab-liquid-sheen 6.5s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+.dark .ab-liquid::after {
+  background: linear-gradient(
+    115deg,
+    transparent 32%,
+    oklch(0.95 0.04 80 / 0.16) 46%,
+    oklch(0.85 0.1 75 / 0.1) 53%,
+    transparent 68%
+  );
+}
+
+.ab-frost::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    repeating-linear-gradient(
+      115deg,
+      oklch(1 0 0 / 0.11) 0 2px,
+      transparent 2px 9px
+    ),
+    repeating-linear-gradient(
+      -32deg,
+      oklch(1 0 0 / 0.07) 0 1px,
+      transparent 1px 13px
+    );
+  opacity: 0.55;
+  pointer-events: none;
 }

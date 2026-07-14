@@ -4,7 +4,12 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { CalendarClock, CheckCircle2, CircleDot, Timer } from "lucide-react";
 
-import type { TimelineData, TimelineTask } from "@/lib/db/queries/timeline";
+import type {
+  TimelineData,
+  TimelineEvent,
+  TimelineTask,
+} from "@/lib/db/queries/timeline";
+import { TASK_COLOR_BY_KEY, taskIconUrl } from "@/lib/task-style";
 
 const DAY_MS = 86_400_000;
 /** Görünür pencere genişliği (gün) */
@@ -14,9 +19,9 @@ const WINDOW_DAYS_SM = 24;
 /** Çip genişliği (gün cinsinden) — satır (lane) çakışma hesabında kullanılır */
 const CHIP_SPAN_DAYS = 11;
 const MAX_LANES = 3;
-/** Görev bölgesi yüksekliği (üst) ve satış sütun bölgesi (alt), px */
+/** Görev bölgesi yüksekliği (üst) ve olay bölgesi payı (alt), px */
 const LANE_H = 38;
-const SALES_H = 56;
+const EVENT_H = 56;
 
 function fmtShort(iso: string): string {
   return new Date(iso + "T00:00:00").toLocaleDateString("tr-TR", {
@@ -25,17 +30,102 @@ function fmtShort(iso: string): string {
   });
 }
 
+/** Deterministik minik hash — olay küresi yerleşimi/salınımı için. */
+function hash(s: string): number {
+  let h = 2166136261;
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return Math.abs(h);
+}
+
 type PlacedTask = TimelineTask & { rel: number; lane: number };
+type PlacedEvent = TimelineEvent & { rel: number };
+
+/** Olay türü → kontrast gradient mürekkepleri (mor aileye komplemanter). */
+const EVENT_INK: Record<
+  TimelineEvent["kind"],
+  { label: string; hi: string; lo: string; glow: string }
+> = {
+  satis: {
+    label: "Satış",
+    hi: "oklch(0.92 0.12 95)",
+    lo: "oklch(0.68 0.14 70)",
+    glow: "oklch(0.8 0.14 85 / 0.5)",
+  },
+  yorum: {
+    label: "Yorum",
+    hi: "oklch(0.9 0.1 350)",
+    lo: "oklch(0.62 0.19 350)",
+    glow: "oklch(0.72 0.17 350 / 0.5)",
+  },
+  sistem: {
+    label: "Sistem",
+    hi: "oklch(0.92 0.09 195)",
+    lo: "oklch(0.6 0.12 210)",
+    glow: "oklch(0.75 0.12 200 / 0.5)",
+  },
+};
 
 /**
- * Ana panel GÖREV zaman çizelgesi — yatay, geniş; bitiş tarihli görevler
- * cam pill çipler olarak şeritte durur. Durum mürekkepleri Spatial mor
- * ailesinden türer (yapılacak koyu mor · sürüyor orta mor · biten soluk mor ·
- * gecikmiş negatif 344); koyu temada lume eşleri. Alttaki kaydırıcı neu çukur
- * ray + cam thumb ile geçmiş↔gelecek gezdirir.
+ * KIRIK CAM parça geometrisi — pill yüzeyini kırılma noktasından (sol-üst
+ * üçte birlik) dağılan 5 parçaya böler. Parçalar ayrı backdrop-filter
+ * örneklediği için arkadaki olay küreleri her parçada FARKLI bozulur;
+ * kayma yönleri kırılma yönünü izler (geçmişe/sola savrulma).
+ */
+const SHARDS: {
+  clip: string;
+  dx: number; // savrulma yönü (px, age=1'de)
+  dy: number;
+  rot: number; // derece (age=1'de)
+}[] = [
+  { clip: "polygon(0% 0%, 34% 0%, 26% 52%, 0% 78%)", dx: -14, dy: -5, rot: -7 },
+  { clip: "polygon(34% 0%, 70% 0%, 60% 46%, 26% 52%)", dx: -6, dy: -9, rot: -3 },
+  { clip: "polygon(70% 0%, 100% 0%, 100% 55%, 60% 46%)", dx: -2, dy: -4, rot: 2 },
+  { clip: "polygon(0% 78%, 26% 52%, 60% 46%, 48% 100%, 0% 100%)", dx: -10, dy: 7, rot: -5 },
+  { clip: "polygon(60% 46%, 100% 55%, 100% 100%, 48% 100%)", dx: -4, dy: 9, rot: 3 },
+];
+
+/** Kırılma çizgileri — parça sınırlarını izleyen ince cam çatlağı (SVG). */
+function CrackLines() {
+  return (
+    <svg
+      aria-hidden
+      className="pointer-events-none absolute inset-0 h-full w-full opacity-70"
+      viewBox="0 0 100 100"
+      preserveAspectRatio="none"
+    >
+      <g
+        fill="none"
+        strokeWidth="0.9"
+        className="stroke-white/70 dark:stroke-white/35"
+        vectorEffect="non-scaling-stroke"
+      >
+        <path d="M34 0 L26 52 L0 78" />
+        <path d="M70 0 L60 46 L26 52" />
+        <path d="M100 55 L60 46" />
+        <path d="M26 52 L48 100" />
+        <path d="M60 46 L48 100" />
+        <path d="M26 52 L18 34" strokeWidth="0.5" />
+        <path d="M60 46 L68 62" strokeWidth="0.5" />
+      </g>
+    </svg>
+  );
+}
+
+/**
+ * Ana panel GÖREV zaman çizelgesi v2 — yatay, geniş.
+ * · Yaklaşan görevler PARILDAR (shimmer süpürmesi).
+ * · Süren görevler ilerleme YÜZDESİ taşır (ince dolum çubuğu + rozet).
+ * · Biten görevler KIRIK CAMDIR; geçmişe gittikçe parçalar savrulup çözülür.
+ * · OLAYLAR (satış günü, yorum, sistem) camların ARKASINDA havada asılı
+ *   kontrast gradient kürelerdir; yalnız hover'da cam popup detay verir.
+ * Alttaki kaydırıcı geçmiş↔gelecek gezdirir.
  */
 export function PanelTimeline({ data }: { data: TimelineData }) {
   const [offset, setOffset] = useState(0); // pencere merkezi, bugüne göre gün
+  const [hoverEvent, setHoverEvent] = useState<string | null>(null);
   const todayIso = useMemo(() => new Date().toISOString().slice(0, 10), []);
   const todayMs = useMemo(
     () => new Date(todayIso + "T00:00:00").getTime(),
@@ -57,21 +147,16 @@ export function PanelTimeline({ data }: { data: TimelineData }) {
     return () => ro.disconnect();
   }, []);
 
-  // Görünür pencere DAR ekranda daralır: mobilde 42 gün fazla sıkışıktı
-  // (çipler üst üste + minik). <560px'te 24 güne düşür → çipler yayılır, okunur.
   const windowDays = stripW > 0 && stripW < 560 ? WINDOW_DAYS_SM : WINDOW_DAYS;
   const winStart = offset - windowDays / 2;
   const winEnd = offset + windowDays / 2;
-  // Çip azami genişliği: geniş ekranda 300px, dar ekranda şeridin ~%62'si.
   const chipMaxPx = stripW > 0 ? Math.min(300, Math.round(stripW * 0.62)) : 300;
-  // Lane hesabı için çip genişliğinin gün karşılığı (px → gün dönüşümü).
   const chipSpanDays =
     stripW > 0
       ? Math.max(CHIP_SPAN_DAYS, Math.ceil(chipMaxPx / (stripW / windowDays)))
       : CHIP_SPAN_DAYS;
 
-  // Penceredeki görevler + basit satır (lane) ataması: aynı satırda üst üste
-  // binmesin diye çipler CHIP_SPAN_DAYS aralığına göre açgözlü dağıtılır.
+  // Penceredeki görevler + satır (lane) ataması.
   const placed = useMemo<PlacedTask[]>(() => {
     const inWin = data.tasks
       .map((t) => ({
@@ -107,22 +192,19 @@ export function PanelTimeline({ data }: { data: TimelineData }) {
 
   const pct = (rel: number) => ((rel - winStart) / windowDays) * 100;
   const windowLabel = `${fmtShort(isoAdd(todayIso, winStart))} — ${fmtShort(isoAdd(todayIso, winEnd))}`;
+  const stripH = MAX_LANES * LANE_H + EVENT_H + 22;
 
-  // Penceredeki satış günleri (bağlam şeridi, alt bölge)
-  const salesInWin = useMemo(() => {
-    return data.days
-      .map((d) => ({
-        ...d,
+  // Penceredeki olaylar — küreler tüm şeride "havada asılı" dağılır.
+  const eventsInWin = useMemo<PlacedEvent[]>(() => {
+    return data.events
+      .map((e) => ({
+        ...e,
         rel: Math.round(
-          (new Date(d.date + "T00:00:00").getTime() - todayMs) / DAY_MS,
+          (new Date(e.date + "T00:00:00").getTime() - todayMs) / DAY_MS,
         ),
       }))
-      .filter((d) => d.rel >= winStart && d.rel <= winEnd);
-  }, [data.days, winStart, winEnd, todayMs]);
-  const maxRevenue = useMemo(
-    () => Math.max(1, ...salesInWin.map((d) => d.revenueCents)),
-    [salesInWin],
-  );
+      .filter((e) => e.rel >= winStart && e.rel <= winEnd);
+  }, [data.events, winStart, winEnd, todayMs]);
 
   // Eksen işaretleri: 7 günde bir
   const ticks = useMemo(() => {
@@ -135,8 +217,6 @@ export function PanelTimeline({ data }: { data: TimelineData }) {
   return (
     <div
       className={
-        // Açık: Spatial cam kart; koyu: opak lume hücre (Liquid_Dark .cell).
-        // Durum mürekkepleri tek yerden: mor aile (koyuda lume eşleri).
         "w-full rounded-[26px] border border-[color:var(--glass-border)] p-4 sm:p-5 " +
         "[background-color:var(--glass)] [background-image:var(--glass-sheen)] [backdrop-filter:var(--glass-filter)] shadow-[var(--lift),var(--glass-highlight)] " +
         "dark:border-[color:oklch(1_0_0/0.05)] dark:[background-color:var(--lume-panel)] dark:[background-image:none] dark:[backdrop-filter:none] dark:shadow-[0_20px_50px_oklch(0_0_0/0.4),inset_0_1px_0_oklch(1_0_0/0.06)] " +
@@ -150,21 +230,31 @@ export function PanelTimeline({ data }: { data: TimelineData }) {
         <span className="text-muted-foreground text-xs">{windowLabel}</span>
         <span className="text-muted-foreground ml-auto hidden gap-3 text-[11px] sm:flex">
           <Legend color="var(--tl-todo)" label="Yapılacak" />
-          <Legend color="var(--tl-doing)" label="Sürüyor" />
-          <Legend color="var(--tl-done)" label="Bitti" />
+          <Legend color="var(--tl-doing)" label="Sürüyor · %" />
+          <span className="inline-flex items-center gap-1">
+            <span className="relative inline-block size-2.5 overflow-hidden rounded-[3px] border border-white/70 bg-[color:var(--tl-done)]/40 dark:border-white/30">
+              <span className="absolute inset-x-0 top-1/2 h-px -rotate-12 bg-white/80 dark:bg-white/50" />
+            </span>
+            Bitti (kırık cam)
+          </span>
           <Legend color="var(--tl-late)" label="Gecikmiş" />
           <span className="inline-flex items-center gap-1">
-            <span className="inline-block h-2.5 w-1.5 rounded-[2px] [background-image:linear-gradient(0deg,oklch(0.62_0.19_278/.6),oklch(0.86_0.08_278/.4))] dark:[background-image:linear-gradient(0deg,oklch(0.62_0.06_262/.5),oklch(0.9_0.04_262/.25))]" />
-            Günlük satış
+            <span
+              className="inline-block size-2.5 rounded-full"
+              style={{
+                backgroundImage: `radial-gradient(circle at 32% 30%, ${EVENT_INK.satis.hi}, ${EVENT_INK.satis.lo} 70%)`,
+              }}
+            />
+            Olaylar
           </span>
         </span>
       </div>
 
-      {/* Şerit: üstte BÜYÜK görev çipleri, altta satış sütunları (bağlam) */}
+      {/* Şerit: arkada olay küreleri, önde görev çipleri */}
       <div
         ref={stripRef}
         className="relative mt-3 overflow-hidden px-2 [mask-image:linear-gradient(90deg,transparent,#000_16px,#000_calc(100%-26px),transparent)]"
-        style={{ height: `${MAX_LANES * LANE_H + SALES_H + 22}px` }}
+        style={{ height: `${stripH}px` }}
       >
         {/* eksen çizgileri + etiketleri */}
         {ticks.map((r) => (
@@ -179,9 +269,9 @@ export function PanelTimeline({ data }: { data: TimelineData }) {
             </span>
           </div>
         ))}
-        {/* bugün çizgisi — açıkta mor mürekkep, koyuda beyaz + white glow (lume) */}
+        {/* bugün çizgisi */}
         {0 >= winStart && 0 <= winEnd && (
-          <div className="absolute inset-y-0" style={{ left: `${pct(0)}%` }}>
+          <div className="absolute inset-y-0 z-[5]" style={{ left: `${pct(0)}%` }}>
             <span className="absolute inset-y-0 w-0.5 bg-[oklch(0.54_0.20_278)] shadow-[0_0_8px_oklch(0.62_0.20_278/0.45)] dark:bg-white dark:shadow-[0_0_10px_rgba(205,214,255,0.7)]" />
             <span className="absolute bottom-3.5 -translate-x-1/2 rounded border border-[color:var(--glass-border)] [background-color:var(--glass)] [background-image:var(--glass-sheen)] px-1 text-[9px] font-bold text-[oklch(0.50_0.19_278)] [backdrop-filter:var(--glass-filter-sm)] dark:border-[color:oklch(1_0_0/0.25)] dark:text-white dark:[text-shadow:0_0_10px_rgba(255,255,255,0.5)]">
               Bugün
@@ -189,66 +279,173 @@ export function PanelTimeline({ data }: { data: TimelineData }) {
           </div>
         )}
 
-        {/* satış sütunları (alt bölge, eksen etiketinin üstünde) */}
-        {salesInWin.map((d) => (
-          <span
-            key={d.date}
-            title={`${fmtShort(d.date)} · ${d.orders} sipariş · $${(d.revenueCents / 100).toFixed(0)}`}
-            className="absolute -translate-x-1/2 rounded-t-[3px] border border-[color:rgb(255_255_255/.5)] [background-image:linear-gradient(0deg,oklch(0.62_0.19_278/.5),oklch(0.86_0.08_278/.3))] dark:border-[color:oklch(1_0_0/.28)] dark:[background-image:linear-gradient(0deg,oklch(0.62_0.06_262/.34),oklch(0.9_0.04_262/.16))] dark:shadow-[0_6px_10px_-2px_oklch(0.92_0.05_262/.4),0_0_16px_oklch(0.7_0.07_262/.3)]"
-            style={{
-              left: `${pct(d.rel)}%`,
-              bottom: "16px",
-              width: `${Math.max(3, 100 / windowDays / 2.2)}%`,
-              height: `${Math.max(4, Math.round((d.revenueCents / maxRevenue) * (SALES_H - 8)))}px`,
-            }}
-          />
-        ))}
+        {/* OLAY KÜRELERİ — camların arkasında havada asılı (z-[1] < çip z-10).
+            Alan boyunca eşit-ama-rastgele dağılım: y konumu tarih+tür
+            hash'inden türetilir (deterministik; render'lar arasında sabit). */}
+        {eventsInWin.map((e) => {
+          const id = `${e.kind}:${e.date}:${e.title}`;
+          const h = hash(id);
+          const ink = EVENT_INK[e.kind];
+          const size = 11 + Math.round(e.weight * 17);
+          const yPct = 10 + (h % 62);
+          const isHover = hoverEvent === id;
+          return (
+            <span
+              key={id}
+              className="absolute z-[1] -translate-x-1/2 -translate-y-1/2"
+              style={{ left: `${pct(e.rel)}%`, top: `${yPct}%` }}
+            >
+              <span
+                onMouseEnter={() => setHoverEvent(id)}
+                onMouseLeave={() => setHoverEvent(null)}
+                className="block cursor-default rounded-full transition-transform duration-300 hover:scale-125 motion-safe:animate-[tl-orb-float_var(--dur)_ease-in-out_infinite]"
+                style={
+                  {
+                    width: `${size}px`,
+                    height: `${size}px`,
+                    backgroundImage: `radial-gradient(circle at 32% 28%, ${ink.hi}, ${ink.lo} 68%, transparent 100%)`,
+                    boxShadow: `0 0 ${6 + size / 2}px ${ink.glow}, inset 0 1px 1px oklch(1 0 0 / 0.5)`,
+                    "--dur": `${5 + (h % 5)}s`,
+                    animationDelay: `${-(h % 4000)}ms`,
+                  } as React.CSSProperties
+                }
+              />
+              {/* Cam popup — YALNIZ hover'da */}
+              {isHover && (
+                <span className="absolute bottom-full left-1/2 z-30 mb-2 w-max max-w-[220px] -translate-x-1/2 rounded-xl border border-[color:var(--glass-border)] [background-color:var(--glass)] [background-image:var(--glass-sheen)] px-3 py-2 text-left shadow-[var(--lift-sm)] [backdrop-filter:var(--glass-filter)] dark:border-[color:oklch(1_0_0/0.2)] dark:[background-color:var(--lume-glass)] dark:[background-image:none]">
+                  <span className="block text-[11px] leading-tight font-semibold">
+                    {e.title}
+                  </span>
+                  <span className="text-muted-foreground block font-mono text-[9.5px] leading-tight tracking-[0.1em] uppercase">
+                    {fmtShort(e.date)} · {ink.label} · {e.detail}
+                  </span>
+                </span>
+              )}
+            </span>
+          );
+        })}
 
-        {/* görev çipleri — cam pill'ler; durum mürekkebi yalnız küçük glifte */}
+        {/* GÖREV ÇİPLERİ */}
         {placed.map((t) => {
           const overdue = t.status !== "done" && t.rel < 0;
+          const done = t.status === "done";
+          // Geçmişe dağılma şiddeti: bitmiş görev ne kadar eskiyse parçalar
+          // o kadar savrulur ve çip o kadar çözülür (dissolve).
+          const age = done ? Math.min(1, Math.max(0, -t.rel) / 45) : 0;
+          const taskColor = t.color ? TASK_COLOR_BY_KEY.get(t.color) : null;
           const color = overdue
             ? "var(--tl-late)"
-            : t.status === "done"
+            : done
               ? "var(--tl-done)"
               : t.status === "doing"
                 ? "var(--tl-doing)"
                 : "var(--tl-todo)";
+          const progress =
+            t.status === "doing" && t.progress != null
+              ? Math.max(0, Math.min(100, t.progress))
+              : null;
           return (
             <Link
               key={t.id}
               href={`/gorevler/${t.id}`}
-              title={`${fmtShort(t.dueDate)} · ${t.title}${t.assigneeName ? ` · ${t.assigneeName}` : ""} (${t.priority})`}
-              className="absolute flex min-w-0 items-center gap-2 rounded-full border border-[color:var(--glass-border)] py-1.5 pr-3.5 pl-2 text-[12.5px] font-semibold shadow-[var(--lift-sm)] transition-transform hover:z-10 hover:-translate-y-0.5 [backdrop-filter:var(--glass-filter-sm)] [background-color:var(--glass)] [background-image:var(--glass-sheen)] dark:border-[color:oklch(1_0_0/0.25)] dark:shadow-[0_10px_24px_oklch(0_0_0/0.45),0_0_16px_oklch(0.7_0.07_262/0.2)] dark:[background-color:var(--lume-glass)] dark:[background-image:none]"
+              title={`${fmtShort(t.dueDate)} · ${t.title}${t.assigneeName ? ` · ${t.assigneeName}` : ""} (${t.priority})${progress != null ? ` · %${progress}` : ""}${done ? " · tamamlandı" : ""}`}
+              className={
+                "absolute z-10 flex min-w-0 items-center gap-2 overflow-hidden rounded-full border py-1.5 pr-3.5 pl-2 text-[12.5px] font-semibold shadow-[var(--lift-sm)] transition-transform hover:z-20 hover:-translate-y-0.5 [backdrop-filter:var(--glass-filter-sm)] [background-color:var(--glass)] [background-image:var(--glass-sheen)] dark:shadow-[0_10px_24px_oklch(0_0_0/0.45),0_0_16px_oklch(0.7_0.07_262/0.2)] dark:[background-color:var(--lume-glass)] dark:[background-image:none] " +
+                (done
+                  ? "border-white/60 dark:border-white/20"
+                  : "border-[color:var(--glass-border)] dark:border-[color:oklch(1_0_0/0.25)] ") +
+                (t.status === "todo" && !overdue ? " tl-shimmer relative" : "")
+              }
               style={{
-                // Çip sağ kenardan taşmasın: left, (100% - çip genişliği)
-                // ile clamp'lenir; genişlik viewport'a göre sınırlanır.
                 left: `clamp(0%, ${pct(t.rel)}%, calc(100% - ${chipMaxPx}px))`,
                 maxWidth: `${chipMaxPx}px`,
                 top: `${t.lane * LANE_H + 4}px`,
+                opacity: done ? 1 - age * 0.55 : 1,
               }}
             >
-              {t.status === "done" ? (
-                <CheckCircle2 className="size-[18px] shrink-0" style={{ color }} />
-              ) : overdue ? (
-                <Timer className="size-[18px] shrink-0" style={{ color }} />
-              ) : (
-                <CircleDot className="size-[18px] shrink-0" style={{ color }} />
+              {/* KIRIK CAM katmanı — parçalar ayrı backdrop örnekler; arkadaki
+                  küreler her parçada farklı bozulur, savrulma geçmişe bakar. */}
+              {done && (
+                <>
+                  {SHARDS.map((s, i) => (
+                    <span
+                      key={i}
+                      aria-hidden
+                      className="absolute inset-0 rounded-full motion-safe:animate-[tl-shard-drift_7s_ease-in-out_infinite]"
+                      style={
+                        {
+                          clipPath: s.clip,
+                          backdropFilter: `blur(${1 + age * 1.5}px) saturate(${1.2 + i * 0.15}) brightness(${1 + (i % 2 === 0 ? 0.06 : -0.05)})`,
+                          "--sx": `${s.dx * age}px`,
+                          "--sy": `${s.dy * age}px`,
+                          "--sr": `${s.rot * age}deg`,
+                          animationDelay: `${-i * 900}ms`,
+                          opacity: 1 - age * 0.3,
+                        } as React.CSSProperties
+                      }
+                    />
+                  ))}
+                  <CrackLines />
+                </>
               )}
-              <span className="min-w-0">
-                <span className="block truncate leading-tight">{t.title}</span>
+
+              {/* Süren görev: ilerleme dolumu (ince alt çubuk) */}
+              {progress != null && (
+                <span
+                  aria-hidden
+                  className="absolute inset-y-0 left-0 rounded-full bg-[color:var(--tl-doing)]/12 dark:bg-[color:var(--tl-doing)]/18"
+                  style={{ width: `${progress}%` }}
+                />
+              )}
+
+              {t.icon ? (
+                <span
+                  aria-hidden
+                  className="relative z-10 inline-block size-[18px] shrink-0"
+                  style={{
+                    backgroundColor: taskColor?.ink ?? color,
+                    maskImage: `url(${taskIconUrl(t.icon)})`,
+                    maskSize: "contain",
+                    maskRepeat: "no-repeat",
+                    maskPosition: "center",
+                    WebkitMaskImage: `url(${taskIconUrl(t.icon)})`,
+                    WebkitMaskSize: "contain",
+                    WebkitMaskRepeat: "no-repeat",
+                    WebkitMaskPosition: "center",
+                  }}
+                />
+              ) : done ? (
+                <CheckCircle2 className="relative z-10 size-[18px] shrink-0" style={{ color }} />
+              ) : overdue ? (
+                <Timer className="relative z-10 size-[18px] shrink-0" style={{ color }} />
+              ) : (
+                <CircleDot className="relative z-10 size-[18px] shrink-0" style={{ color }} />
+              )}
+              <span className="relative z-10 min-w-0">
+                <span
+                  className="block truncate leading-tight"
+                  style={done ? { textDecorationLine: "line-through", textDecorationColor: "oklch(0.6 0.05 290 / 0.5)" } : undefined}
+                >
+                  {t.title}
+                </span>
                 <span className="text-muted-foreground block truncate font-mono text-[9px] leading-tight tracking-[0.12em] uppercase">
                   {fmtShort(t.dueDate)}
                   {t.assigneeName ? ` · ${t.assigneeName}` : ""} · {t.priority}
+                  {done && " · bitti"}
                 </span>
               </span>
+              {progress != null && (
+                <span className="relative z-10 ml-auto shrink-0 rounded-full bg-[color:var(--tl-doing)]/15 px-1.5 py-0.5 font-mono text-[10px] font-bold text-[color:var(--tl-doing)] tabular-nums">
+                  %{progress}
+                </span>
+              )}
             </Link>
           );
         })}
 
-        {placed.length === 0 && (
+        {placed.length === 0 && eventsInWin.length === 0 && (
           <p className="text-muted-foreground absolute inset-x-0 top-1/2 -translate-y-1/2 text-center text-sm">
-            Bu pencerede bitiş tarihli görev yok — kaydırıcıyla gez ya da{" "}
+            Bu pencerede tarihli görev ya da olay yok — kaydırıcıyla gez ya da{" "}
             <Link href="/gorevler/yeni" className="underline underline-offset-2">
               tarihli görev ekle
             </Link>
@@ -274,8 +471,6 @@ export function PanelTimeline({ data }: { data: TimelineData }) {
           onChange={(e) => setOffset(Number(e.target.value))}
           aria-label="Zaman penceresini kaydır (geçmiş-gelecek)"
           className={
-            // Ray: neu çukur (açık) / lume-pit çukur (koyu). Thumb: beyaz
-            // radyal cam; koyuda lume-glow-lg ışıması.
             "h-2.5 flex-1 cursor-ew-resize appearance-none rounded-full " +
             "[background-color:rgb(120_120_150/0.12)] [box-shadow:var(--shadow-pressed)] dark:[background-color:oklch(0_0_0/0.35)] dark:[box-shadow:var(--lume-pit)] " +
             "[&::-webkit-slider-thumb]:size-4 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border [&::-webkit-slider-thumb]:border-[color:rgb(255_255_255/.85)] [&::-webkit-slider-thumb]:[background-image:radial-gradient(circle_at_35%_30%,#ffffff,#dcd6ff_75%)] [&::-webkit-slider-thumb]:[box-shadow:var(--shadow-raised-sm),0_0_12px_oklch(0.62_0.20_278/0.35)] " +

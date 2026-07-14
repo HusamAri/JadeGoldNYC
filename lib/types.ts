@@ -315,6 +315,12 @@ export interface Task {
   due_date: string | null;
   sort_order: number;
   notes: string | null;
+  /** Süren görevin ilerleme yüzdesi (0-100); null = belirtilmedi. */
+  progress: number | null;
+  /** Görev ikon anahtarı (lib/task-style.ts TASK_ICONS). */
+  icon: string | null;
+  /** İsimlendirilmiş renk anahtarı (lib/task-style.ts TASK_COLORS). */
+  color: string | null;
   /** Bu görevin çıktığı kaynak rapor (varsa) — bkz. `Report`. */
   report_id: string | null;
   created_by: string | null;
