@@ -792,6 +792,17 @@
       0 0 24px rgb(203 210 255 / 0.2),
       0 0 56px rgb(203 210 255 / 0.12);
   }
+  /* embossLight (Liquid_Dark birebir): kabartma vurgu 12sn'de bir "nefes alır"
+     — opacity .92→1, quiet ease, alternate. Yalnız koyu + motion tercihine
+     saygılı; ışığın canlılığı hissedilir ama asla dikkat dağıtmaz. */
+  @media (prefers-reduced-motion: no-preference) {
+    .dark .display-emboss em,
+    .dark .display-emboss .em,
+    .dark .h-serif em,
+    .dark .h-serif .em {
+      animation: emboss-light 12s var(--ease-quiet, ease-in-out) infinite alternate;
+    }
+  }
   .dark .text-engraved {
     color: #6d7288;
     text-shadow:
@@ -1380,5 +1391,15 @@ html[data-brand="artifact"] .jg-dust {
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-new(root) {
     animation: none;
+  }
+}
+
+/* Liquid_Dark embossLight: kabartma vurgunun sakin ışık nefesi (.92→1). */
+@keyframes emboss-light {
+  0% {
+    opacity: 0.92;
+  }
+  100% {
+    opacity: 1;
   }
 }
