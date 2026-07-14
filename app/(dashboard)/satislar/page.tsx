@@ -15,6 +15,7 @@ import { strParam, numParam, type RawSearchParams } from "@/lib/searchparams";
 import { SALE_STATUSES } from "@/lib/constants";
 import { formatMoney } from "@/lib/money";
 import { formatDate, formatNumber } from "@/lib/format";
+import { OrgMark } from "@/components/brand/org-mark";
 import { PageHeader } from "@/components/page-header";
 import { GoldStream } from "@/components/brand/gold-stream";
 import { CornerMarks } from "@/components/brand/corner-marks";
@@ -126,7 +127,7 @@ export default async function SatislarPage({
           <span>Satışlar / 01 · Özet</span>
           <span className="idx-bar" />
           <span className="idx-ln" />
-          <span>Jade Gold · NYC</span>
+          <span><OrgMark /></span>
         </div>
         <p className="text-muted-foreground text-xs">
           {filtered
@@ -240,7 +241,7 @@ export default async function SatislarPage({
         <span>Satışlar / 02 · Kayıtlar</span>
         <span className="idx-bar" />
         <span className="idx-ln" />
-        <span>Jade Gold · NYC</span>
+        <span><OrgMark /></span>
       </div>
       <Card className="glass-fluted">
         <CardContent className="space-y-4">

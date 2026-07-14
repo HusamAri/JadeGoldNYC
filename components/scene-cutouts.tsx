@@ -14,6 +14,7 @@
  *  • prefers-reduced-motion: global kural animasyonları durdurur.
  */
 import { cn } from "@/lib/utils";
+import { getActiveOrgSlug } from "@/lib/auth";
 
 type Depth = "near" | "far";
 
@@ -50,9 +51,36 @@ const KIND = {
     shadow:
       "drop-shadow-[0_12px_12px_rgba(0,0,0,0.55)] drop-shadow-[0_3px_4px_rgba(0,0,0,0.5)]",
   },
+  // EON üretim görseli — som altın alyans çifti (Higgsfield üretimi cutout).
+  rings: {
+    src: "/brand/cutout/eon-rings.png",
+    motion: "", // ağır metal objeler zeminde durur — gerçekçilik
+    shadow: CUTOUT_SHADOW,
+  },
 } as const;
 
 export type CutoutKind = keyof typeof KIND;
+
+/**
+ * Marka-duyarlı cutout çevirisi — ürün görselleri markaya aittir; bir markanın
+ * paneli başka markanın ürününü GÖSTEREMEZ. Jade: kendi seti. EON: alyans
+ * cutout'u. Diğer/gelecek org'lar: nötr (yalnız platform prizması).
+ * null = o obje bu markada hiç render edilmez.
+ */
+type Brand = "jade" | "eon" | "neutral";
+
+const BRAND_KIND: Record<Brand, Record<CutoutKind, CutoutKind | null>> = {
+  jade: { chains: "chains", stones: "stones", candle: "candle", prism: "prism", rings: "rings" },
+  eon: { chains: "rings", stones: "rings", candle: null, prism: "prism", rings: "rings" },
+  neutral: { chains: null, stones: null, candle: null, prism: "prism", rings: null },
+};
+
+function resolveBrand(slug: string | null): Brand {
+  if (!slug) return "neutral";
+  if (slug.startsWith("jade")) return "jade";
+  if (slug.startsWith("eon")) return "eon";
+  return "neutral";
+}
 
 export function SceneCutout({
   kind,
@@ -117,8 +145,10 @@ export function SceneCutout({
 /**
  * Sayfa sahneleri — hangi sayfada hangi objeler, hangi derinlik/konumda.
  * Ebeveynin `relative` olması yeterli; katman içerik ALTINDA kalır.
+ * Async RSC: aktif org'un markasına göre cutout seti çevrilir (Jade seti
+ * yalnız Jade'de; EON alyans görselini görür, diğer org'lar nötr kalır).
  */
-export function SceneCutouts({
+export async function SceneCutouts({
   page,
 }: {
   page:
@@ -131,6 +161,13 @@ export function SceneCutouts({
     | "yildiz-satici"
     | "stok";
 }) {
+  const map = BRAND_KIND[resolveBrand(await getActiveOrgSlug())];
+  /** Marka çevirili cutout — düz render yardımcısı (bileşen DEĞİL: render
+   *  içinde bileşen tanımlamak state sıfırlar); karşılığı yoksa null. */
+  const place = (kind: CutoutKind, depth: Depth, className: string) => {
+    const k = map[kind];
+    return k ? <SceneCutout kind={k} depth={depth} className={className} /> : null;
+  };
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 -z-[4] overflow-hidden">
       {/* Koyu zemin sakinleştirici — holo-drift'in menekşe bloom'unu üst
@@ -145,10 +182,10 @@ export function SceneCutouts({
           kenarına oturan mum — .candle-obj top:-84px dili). */}
       {page === "panel" && (
         <>
-          <SceneCutout kind="stones" depth="far" className="bottom-3 left-10" />
+          {place("stones", "far", "bottom-3 left-10")}
           {/* Mum AĞIR obje → zemine oturur (yerçekimi); alt-sağ gutter'da,
               içeriğin arkasında. Havada süzülmez. Mobilde gizli. */}
-          <SceneCutout kind="candle" depth="near" className="max-md:hidden! bottom-0 right-10 md:right-16" />
+          {place("candle", "near", "max-md:hidden! bottom-0 right-10 md:right-16")}
         </>
       )}
       {page === "satislar" && (
@@ -158,56 +195,31 @@ export function SceneCutouts({
           {/* Masaüstünde zincir .idx satırının ('Jade Gold · NYC' sağ etiketi)
               ALTINA iner — parlak cutout soluk etiketi/KPI braketini örtmez
               (brief: okumayı asla engellemez). */}
-          <SceneCutout kind="chains" depth="near" className="max-sm:hidden! top-44 -right-6 rotate-6" />
-          <SceneCutout kind="prism" depth="far" className="bottom-3 left-10" />
+          {place("chains", "near", "max-sm:hidden! top-44 -right-6 rotate-6")}
+          {place("prism", "far", "bottom-3 left-10")}
         </>
       )}
       {page === "maliyetler" && (
         <>
-          <SceneCutout kind="stones" depth="near" className="bottom-2 left-8" />
-          <SceneCutout kind="prism" depth="far" className="bottom-6 right-14" />
+          {place("stones", "near", "bottom-2 left-8")}
+          {place("prism", "far", "bottom-6 right-14")}
         </>
       )}
-      {page === "gorevler" && (
-        <SceneCutout kind="prism" depth="far" className="bottom-4 right-12" />
-      )}
+      {page === "gorevler" && place("prism", "far", "bottom-4 right-12")}
       {/* Mobilde gizli objeler yalnız boş zeminlere denk gelir; dar ekranda
           okumayı bozmasın diye alt-köşe far objeler sm+ ile sınırlı. */}
-      {page === "yorumlar" && (
-        <SceneCutout
-          kind="stones"
-          depth="far"
-          className="max-sm:hidden! bottom-3 left-10"
-        />
-      )}
-      {page === "raporlar" && (
-        <SceneCutout
-          kind="prism"
-          depth="far"
-          className="max-sm:hidden! bottom-4 right-12"
-        />
-      )}
+      {page === "yorumlar" &&
+        place("stones", "far", "max-sm:hidden! bottom-3 left-10")}
+      {page === "raporlar" &&
+        place("prism", "far", "max-sm:hidden! bottom-4 right-12")}
       {page === "yildiz-satici" && (
         <>
-          <SceneCutout
-            kind="chains"
-            depth="near"
-            className="max-md:hidden! top-40 -right-6 rotate-6"
-          />
-          <SceneCutout
-            kind="candle"
-            depth="far"
-            className="max-sm:hidden! bottom-3 left-8"
-          />
+          {place("chains", "near", "max-md:hidden! top-40 -right-6 rotate-6")}
+          {place("candle", "far", "max-sm:hidden! bottom-3 left-8")}
         </>
       )}
-      {page === "stok" && (
-        <SceneCutout
-          kind="stones"
-          depth="near"
-          className="max-sm:hidden! bottom-2 left-8"
-        />
-      )}
+      {page === "stok" &&
+        place("stones", "near", "max-sm:hidden! bottom-2 left-8")}
     </div>
   );
 }

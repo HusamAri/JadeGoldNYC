@@ -50,6 +50,31 @@ export const getMembership = cache(async (): Promise<Member | null> => {
   return memberships.find((m) => m.org_id === activeOrgId) ?? memberships[0];
 });
 
+/**
+ * Aktif organizasyonun kimliği (istek başına memoize) — marka-duyarlı görsel
+ * seçimleri (sahne cutout seti) ve .idx marka kuyruğu için. Yoksa null.
+ */
+export const getActiveOrg = cache(
+  async (): Promise<{ name: string; slug: string } | null> => {
+    const m = await getMembership();
+    if (!m) return null;
+    const supabase = await createClient();
+    const { data } = await supabase
+      .from("organizations")
+      .select("name, slug")
+      .eq("id", m.org_id)
+      .maybeSingle();
+    const row = data as { name: string | null; slug: string | null } | null;
+    if (!row?.slug) return null;
+    return { name: row.name ?? row.slug, slug: row.slug };
+  },
+);
+
+/** Geriye dönük: yalnız slug isteyenler için. */
+export const getActiveOrgSlug = cache(async (): Promise<string | null> => {
+  return (await getActiveOrg())?.slug ?? null;
+});
+
 /** Şirket seçici için: kullanıcının tüm üyelikleri + org adları. */
 export interface MembershipWithOrg extends Member {
   orgName: string;

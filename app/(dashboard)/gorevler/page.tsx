@@ -17,6 +17,7 @@ import {
   getTaskSummary,
 } from "@/lib/db/queries/tasks";
 import { formatNumber } from "@/lib/format";
+import { OrgMark } from "@/components/brand/org-mark";
 import { PageHeader } from "@/components/page-header";
 import { GoldStream } from "@/components/brand/gold-stream";
 import { CornerMarks } from "@/components/brand/corner-marks";
@@ -87,7 +88,7 @@ export default async function GorevlerPage() {
         <span>Görevler / 01 · Özet</span>
         <span className="idx-bar" />
         <span className="idx-ln" />
-        <span>Jade Gold · NYC</span>
+        <span><OrgMark /></span>
       </div>
       {/* Ana KPI bölümü — Spatial hero köşe işaretleri (dekoratif sarmalayıcı). */}
       <div className="relative">
@@ -130,7 +131,7 @@ export default async function GorevlerPage() {
         <span>Görevler / 02 · Tahta</span>
         <span className="idx-bar" />
         <span className="idx-ln" />
-        <span>Jade Gold · NYC</span>
+        <span><OrgMark /></span>
       </div>
       <TaskViews tasks={tasks} members={members} serverToday={today} />
     </div>
