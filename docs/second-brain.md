@@ -23,6 +23,16 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
   gerçek çıktı.
 - **Checkpoint erken commit (2026-07):** Konteyner geçici — iş biriktirmeden anlamlı
   her adımda commit at. Push kilitliyse bile local commit işi korur.
+- **Performans: tahmin değil bisection (2026-07):** "Sayfa ağır"da önce prod build
+  + FPS ölç, sonra şüphelileri CANLI sayfada tek tek kapat/aç (`getAnimations()`
+  pause/play, injected CSS) ve her adımda ölç. Vaka: sezgisel şüpheli backdrop-filter
+  masumdu (kapatınca 5 FPS); gerçek katiller tam-viewport blur zemin süzülmesi +
+  CPU-rasterize `url(#svg)` backdrop çıktı — 4→60 FPS. Ek ders: her aile tek başına
+  ucuz olsa da eşzamanlı hasar bölgeleri süperadditif; ambient animasyonu bölgesel tut.
+- **API sınırını kabul et, vekilini kur (2026-07):** Dış API bir alanı hiç
+  vermiyorsa (Etsy yorum yanıtı) o alanda panel tek doğruluk kaynağı İLAN edilir ve
+  akış ona göre kurulur (0059 deseni) — "senkronlarız" diye söz verme; en yakın
+  sinyalle (update_timestamp) telafi kur.
 
 ## Ürün/UX dersleri
 
@@ -84,3 +94,12 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
 - **Snapshot'lı metrikte önce dedupe (2026-07):** Aynı dönem etiketi birden çok
   anlık görüntü taşıyabilir — sayı/toplamdan önce ürün başına EN GÜNCEL kayıt
   seçilir; yoksa çift sayılır (LCC metrik dersiyle aynı kök).
+- **Webhook = sinyal, veri değil (2026-07):** Webhook gövdesi asla doğrudan DB'ye
+  yazılmaz — imza doğrula (HMAC + timestamp penceresi), id çöz, veriyi API'den
+  OAuth'la taze çek, idempotent upsert; günlük cron uzlaştırması emniyet ağı kalır.
+- **Artımlı senkron pencereyi LAST_MODIFIED ile açar (2026-07):** `min_created`
+  penceresi, durumu SONRADAN değişen kaydı (iptal/kargo) yapısal olarak kaçırır —
+  Etsy sipariş durumları bu yüzden yıllarca bayat kalmıştı; `min_last_modified` kullan.
+- **Statü asla hardcode yazılmaz (2026-07):** Kaynak API'nin durum alanı eşlenmeden
+  sabit değer basmak ("completed") tüm downstream filtreleri ölü koda çevirir; yazım
+  farkları ('canceled' vs 'cancelled') tek sözlükte sabitlenir (0080 vakası).
