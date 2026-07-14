@@ -76,6 +76,11 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
   sayfa istenen ızgaraya (6×5) uymayabilir (6×6 + tekrar hücreler çıktı) —
   kesme script'ine geçmeden görseli aç, satır/sütunu say, hücre→anahtar
   eşlemesini elle kur; körlemesine dilimleme yanlış ikonları yerleştirir.
+- **Animasyonlu öğede Playwright hover (2026-07):** Sürekli süzülen (infinite
+  animation) öğede `hover()`/`scrollIntoViewIfNeeded()` "element is not stable"
+  ile takılır — `evaluate(scrollIntoView)` + `mouse.move(bbox merkezi)` kullan,
+  önce kaplayan overlay'leri (Neler Yeni popup'ı) kapat; computed-style okuması
+  yanıltabilir, son hakem hover anındaki ekran görüntüsüdür.
 - **Snapshot'lı metrikte önce dedupe (2026-07):** Aynı dönem etiketi birden çok
   anlık görüntü taşıyabilir — sayı/toplamdan önce ürün başına EN GÜNCEL kayıt
   seçilir; yoksa çift sayılır (LCC metrik dersiyle aynı kök).

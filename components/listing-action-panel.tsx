@@ -189,7 +189,7 @@ export function ListingActionPanel({ health, decision }: Props) {
                     type="button"
                     onClick={onApply}
                     disabled={pending}
-                    className="bg-primary text-primary-foreground inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium disabled:opacity-50"
+                    className="bg-primary text-primary-foreground inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium shadow-[var(--lift-sm)] transition-[translate,scale,box-shadow,opacity] duration-200 hover:-translate-y-0.5 hover:shadow-[var(--lift)] active:translate-y-0 active:scale-[0.97] disabled:opacity-50"
                   >
                     <Sparkles aria-hidden className="size-4" />
                     Önerilen fiyatı uygula ({fmt(suggested)})
@@ -198,7 +198,7 @@ export function ListingActionPanel({ health, decision }: Props) {
                     type="button"
                     onClick={() => setRejectOpen((v) => !v)}
                     disabled={pending}
-                    className="border-border inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-medium disabled:opacity-50"
+                    className="border-border hover:border-foreground/40 hover:bg-accent/50 inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-medium transition-[border-color,background-color,scale] duration-200 active:scale-[0.97] disabled:opacity-50"
                   >
                     <X aria-hidden className="size-4" />
                     Uygulama, gerekçe sun
@@ -239,7 +239,7 @@ export function ListingActionPanel({ health, decision }: Props) {
                       type="button"
                       onClick={onReject}
                       disabled={pending}
-                      className="bg-secondary inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium disabled:opacity-50"
+                      className="bg-secondary hover:bg-secondary/80 inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-[background-color,scale] duration-200 active:scale-[0.97] disabled:opacity-50"
                     >
                       Gerekçeyi kaydet
                     </button>

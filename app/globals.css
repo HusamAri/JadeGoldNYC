@@ -329,6 +329,12 @@
   * {
     @apply border-border outline-ring/50;
   }
+  /* Tailwind v4 preflight butonları cursor:default bırakır — tıklanabilir
+     her ham buton el imleci alsın (ui/Button zaten kendisi ekliyor). */
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
   body {
     @apply bg-background text-foreground;
     /* Zemin — Spatial lab'ın BİREBİR zemini: tepeden süzülen lavanta radyal
@@ -1235,6 +1241,46 @@
   50% {
     transform: translate(calc(var(--sx, 0) * 1.35), calc(var(--sy, 0) * 1.35))
       rotate(calc(var(--sr, 0deg) * 1.4));
+  }
+}
+
+/* Hafif GİRİŞ motion'u — yalnız opacity+filter anime edilir; transform /
+   translate / scale utility'lerine dokunmaz, böylece Tailwind'in konum
+   sınıflarıyla (translate-x-1/2 vb.) çakışmaz. reduced-motion global
+   kuralıyla durur. */
+@keyframes soft-in {
+  from {
+    opacity: 0;
+    filter: blur(5px);
+  }
+  to {
+    opacity: 1;
+    filter: none;
+  }
+}
+.soft-in {
+  animation: soft-in 0.4s var(--ease-premium) both;
+}
+
+/* Süren görev dolum çubuğu — mount'ta 0'dan gerçek yüzdeye akarak dolar
+   (hedef genişlik inline style'dan gelir; keyframe yalnız başlangıcı verir). */
+@keyframes tl-fill {
+  from {
+    width: 0;
+  }
+}
+
+/* Görev formu ikon seçici — seçim anında minik "pop"; native scale property
+   anime edilir, hover'daki scale utility'siyle aynı kanaldan geçer. */
+@keyframes icon-pop {
+  0% {
+    scale: 0.82;
+  }
+  55% {
+    scale: 1.12;
+  }
+  100% {
+    scale: 1;
   }
 }
 

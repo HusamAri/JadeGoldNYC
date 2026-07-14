@@ -149,7 +149,7 @@ export function BoardCanvas({
                 aria-label={`${i + 1}. nota git`}
                 style={{ left: `${p.x * 100}%`, top: `${p.y * 100}%` }}
                 className={cn(
-                  "text-primary-foreground absolute flex size-6 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full text-[11px] font-bold ring-2 ring-white transition-transform",
+                  "text-primary-foreground absolute flex size-6 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full text-[11px] font-bold ring-2 ring-white transition-transform hover:scale-125 active:scale-110",
                   "bg-primary shadow-[var(--lift-sm)]",
                   activePin === p.id && "ring-ring scale-125",
                 )}

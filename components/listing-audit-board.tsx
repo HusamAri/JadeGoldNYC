@@ -77,7 +77,7 @@ export function ListingAuditBoard({ groups }: { groups: AuditGroup[] }) {
           <Card key={g.key} className="p-0">
             <button
               type="button"
-              className="flex w-full items-start gap-3 p-4 text-left"
+              className="hover:bg-accent/40 flex w-full items-start gap-3 rounded-[inherit] p-4 text-left transition-colors duration-200 active:bg-accent/60"
               onClick={() => setOpen(isOpen ? null : g.key)}
               aria-expanded={isOpen}
             >
@@ -111,7 +111,7 @@ export function ListingAuditBoard({ groups }: { groups: AuditGroup[] }) {
             </button>
 
             {isOpen && (
-              <CardContent className="space-y-2 border-t pt-3 pb-4">
+              <CardContent className="soft-in space-y-2 border-t pt-3 pb-4">
                 {g.autoFixable && (
                   <div className="flex items-center justify-between gap-3 rounded-xl border border-dashed p-3">
                     <p className="text-muted-foreground text-xs">
