@@ -142,84 +142,107 @@ export function SceneCutout({
   );
 }
 
+type SceneLayer = "back" | "front";
+
+interface Placement {
+  kind: CutoutKind;
+  depth: Depth;
+  className: string;
+  /** back = içerik arkasında; front = kart kenarına BİNER (önde durur). */
+  layer: SceneLayer;
+}
+
+type ScenePage =
+  | "panel"
+  | "satislar"
+  | "maliyetler"
+  | "gorevler"
+  | "yorumlar"
+  | "raporlar"
+  | "yildiz-satici"
+  | "stok";
+
 /**
- * Sayfa sahneleri — hangi sayfada hangi objeler, hangi derinlik/konumda.
- * Ebeveynin `relative` olması yeterli; katman içerik ALTINDA kalır.
+ * Sayfa sahneleri — hangi objeler, hangi derinlik/katman/konumda. Gerçekçi
+ * derinlik: bazı objeler kartların ARKASINDA kaybolur (back), bazıları kart
+ * köşe/kenarının ÖNÜNE sarkar (front) — takı masaya, kart üstüne bırakılmış
+ * gibi. Ön objeler yalnız köşe/kenara biner, metni asla örtmez; mobilde
+ * gizlenir. Mum daima arkada (housing kenarına oturan mum dili).
+ */
+const SCENES: Record<ScenePage, Placement[]> = {
+  panel: [
+    { kind: "stones", depth: "far", className: "bottom-3 left-10", layer: "back" },
+    // Mum AĞIR obje → zemine oturur; alt-sağ gutter'da içeriğin arkasında.
+    { kind: "candle", depth: "near", className: "max-md:hidden! bottom-0 right-10 md:right-16", layer: "back" },
+  ],
+  satislar: [
+    // Zincir kart sırasının sağ üst köşesine ÖNDEN sarkar — kartın üstüne
+    // bırakılmış takı hissi (metin bölgesine girmez, köşeye biner).
+    { kind: "chains", depth: "near", className: "max-sm:hidden! top-44 -right-6 rotate-6", layer: "front" },
+    { kind: "prism", depth: "far", className: "bottom-3 left-10", layer: "back" },
+  ],
+  maliyetler: [
+    // Taşlar alt-sol kart köşesinin önünde durur (masaya konmuş taş).
+    { kind: "stones", depth: "near", className: "bottom-2 left-8", layer: "front" },
+    { kind: "prism", depth: "far", className: "bottom-6 right-14", layer: "back" },
+  ],
+  gorevler: [
+    { kind: "prism", depth: "far", className: "bottom-4 right-12", layer: "back" },
+  ],
+  yorumlar: [
+    { kind: "stones", depth: "far", className: "max-sm:hidden! bottom-3 left-10", layer: "back" },
+  ],
+  raporlar: [
+    { kind: "prism", depth: "far", className: "max-sm:hidden! bottom-4 right-12", layer: "back" },
+  ],
+  "yildiz-satici": [
+    { kind: "chains", depth: "near", className: "max-md:hidden! top-40 -right-6 rotate-6", layer: "front" },
+    { kind: "candle", depth: "far", className: "max-sm:hidden! bottom-3 left-8", layer: "back" },
+  ],
+  stok: [
+    { kind: "stones", depth: "near", className: "max-sm:hidden! bottom-2 left-8", layer: "front" },
+  ],
+};
+
+/**
  * Async RSC: aktif org'un markasına göre cutout seti çevrilir (Jade seti
  * yalnız Jade'de; EON alyans görselini görür, diğer org'lar nötr kalır).
+ * İKİ KARDEŞ katman döner: -z arka sahne + z-[2] ön sahne. Negatif z-index'li
+ * kap stacking context yarattığından ön objeler onun İÇİNDEN öne çıkamaz —
+ * ön katman ayrı kardeş kap olmak zorunda. Her iki katman pointer-events-none.
  */
-export async function SceneCutouts({
-  page,
-}: {
-  page:
-    | "panel"
-    | "satislar"
-    | "maliyetler"
-    | "gorevler"
-    | "yorumlar"
-    | "raporlar"
-    | "yildiz-satici"
-    | "stok";
-}) {
+export async function SceneCutouts({ page }: { page: ScenePage }) {
   const map = BRAND_KIND[resolveBrand(await getActiveOrgSlug())];
-  /** Marka çevirili cutout — düz render yardımcısı (bileşen DEĞİL: render
-   *  içinde bileşen tanımlamak state sıfırlar); karşılığı yoksa null. */
-  const place = (kind: CutoutKind, depth: Depth, className: string) => {
-    const k = map[kind];
-    return k ? <SceneCutout kind={k} depth={depth} className={className} /> : null;
-  };
+  const resolved = SCENES[page]
+    .map((pl) => ({ ...pl, kind: map[pl.kind] }))
+    .filter((pl): pl is Placement => pl.kind != null);
+  const render = (pl: Placement, i: number) => (
+    <SceneCutout key={i} kind={pl.kind} depth={pl.depth} className={pl.className} />
+  );
+  const back = resolved.filter((p) => p.layer === "back");
+  const front = resolved.filter((p) => p.layer === "front");
+
   return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 -z-[4] overflow-hidden">
-      {/* Koyu zemin sakinleştirici — holo-drift'in menekşe bloom'unu üst
-          bölgede düşük kromalı soğuk griye çeker (referans lume ground:
-          oklch ~262, krom 0.02). Yalnız koyuda; kartlar opak olduğundan
-          etkisi boşluklarda okunur. */}
-      <span className="absolute inset-x-0 top-0 hidden h-[42rem] dark:block [background:radial-gradient(120%_100%_at_50%_0%,oklch(0.20_0.015_262/0.55),transparent_70%)]" />
-      {/* Yerleşim: sayfaların pb-28 alt "gutter"ı + üst hero şeridi — objeler
-          içeriğin ARKASINDA kalır; görünür kısımları boş zeminlere denk gelir.
-          Mum yüksek obje: üst gövdesi + alevi başlık şeridinde görünür, alt
-          gövdesi ilk kart sırasının ARKASINDA kaybolur (referans: housing
-          kenarına oturan mum — .candle-obj top:-84px dili). */}
-      {page === "panel" && (
-        <>
-          {place("stones", "far", "bottom-3 left-10")}
-          {/* Mum AĞIR obje → zemine oturur (yerçekimi); alt-sağ gutter'da,
-              içeriğin arkasında. Havada süzülmez. Mobilde gizli. */}
-          {place("candle", "near", "max-md:hidden! bottom-0 right-10 md:right-16")}
-        </>
+    <>
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-[4] overflow-hidden"
+      >
+        {/* Koyu zemin sakinleştirici — holo-drift'in menekşe bloom'unu üst
+            bölgede düşük kromalı soğuk griye çeker (referans lume ground:
+            oklch ~262, krom 0.02). Yalnız koyuda; kartlar opak olduğundan
+            etkisi boşluklarda okunur. */}
+        <span className="absolute inset-x-0 top-0 hidden h-[42rem] dark:block [background:radial-gradient(120%_100%_at_50%_0%,oklch(0.20_0.015_262/0.55),transparent_70%)]" />
+        {back.map(render)}
+      </div>
+      {front.length > 0 && (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-[2] overflow-hidden"
+        >
+          {front.map(render)}
+        </div>
       )}
-      {page === "satislar" && (
-        <>
-          {/* Mobilde gizli: zincir, CTA butonu + idx etiketi bölgesine denk
-              gelip mono etiketi okunmaz kılıyordu. */}
-          {/* Masaüstünde zincir .idx satırının ('Jade Gold · NYC' sağ etiketi)
-              ALTINA iner — parlak cutout soluk etiketi/KPI braketini örtmez
-              (brief: okumayı asla engellemez). */}
-          {place("chains", "near", "max-sm:hidden! top-44 -right-6 rotate-6")}
-          {place("prism", "far", "bottom-3 left-10")}
-        </>
-      )}
-      {page === "maliyetler" && (
-        <>
-          {place("stones", "near", "bottom-2 left-8")}
-          {place("prism", "far", "bottom-6 right-14")}
-        </>
-      )}
-      {page === "gorevler" && place("prism", "far", "bottom-4 right-12")}
-      {/* Mobilde gizli objeler yalnız boş zeminlere denk gelir; dar ekranda
-          okumayı bozmasın diye alt-köşe far objeler sm+ ile sınırlı. */}
-      {page === "yorumlar" &&
-        place("stones", "far", "max-sm:hidden! bottom-3 left-10")}
-      {page === "raporlar" &&
-        place("prism", "far", "max-sm:hidden! bottom-4 right-12")}
-      {page === "yildiz-satici" && (
-        <>
-          {place("chains", "near", "max-md:hidden! top-40 -right-6 rotate-6")}
-          {place("candle", "far", "max-sm:hidden! bottom-3 left-8")}
-        </>
-      )}
-      {page === "stok" &&
-        place("stones", "near", "max-sm:hidden! bottom-2 left-8")}
-    </div>
+    </>
   );
 }
