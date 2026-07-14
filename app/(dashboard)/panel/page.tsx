@@ -366,9 +366,14 @@ export default async function PanelPage({
                 </TableHeader>
                 <TableBody>
                   {d.topProducts.map((p) => (
-                    <TableRow key={p.title}>
-                      <TableCell className="max-w-[280px] truncate font-medium">
-                        {p.title}
+                    <TableRow key={p.sku ?? p.title}>
+                      <TableCell className="max-w-[280px] font-medium">
+                        <span className="block truncate">{p.title}</span>
+                        {p.sku && (
+                          <span className="text-muted-foreground block font-mono text-[10px] tracking-[0.08em] uppercase">
+                            {p.sku}
+                          </span>
+                        )}
                       </TableCell>
                       <TableCell className="text-right tabular-nums">
                         {formatNumber(p.quantity)}

@@ -119,9 +119,11 @@ export async function advanceEtsySync(
   const ledgerBackfilled = cur?.ledger_backfilled ?? false;
 
   // Sales fazı: ilk tam tarama (last_sync_at yok) tüm geçmişi; sonraki turlar
-  // artımlı (last_sync_at'ten beri, 1 saat örtüşmeli). Tur boyunca last_sync_at
-  // sales bitene kadar yazılmadığından min_created chunk'lar arası stabildir.
-  const minCreated = cur?.last_sync_at
+  // artımlı. Pencere MIN_LAST_MODIFIED ile açılır (min_created DEĞİL): durumu
+  // sonradan değişen eski sipariş (kargolandı → completed, iptal → cancelled)
+  // ancak last_modified penceresine girer; created penceresi bu güncellemeleri
+  // yapısal olarak kaçırıyordu. 1 saat örtüşme payı korunur.
+  const minLastModified = cur?.last_sync_at
     ? Math.floor(new Date(cur.last_sync_at).getTime() / 1000) - 3600
     : undefined;
 
@@ -172,7 +174,7 @@ export async function advanceEtsySync(
       if (phase === "sales") {
         const page = await client.get<EtsyListResponse<EtsyReceipt>>(
           etsyPaths.receipts(shopId),
-          { limit: PAGE, offset, min_created: minCreated },
+          { limit: PAGE, offset, min_last_modified: minLastModified },
         );
         const results = page.results ?? [];
         if (results.length > 0) {
@@ -387,8 +389,36 @@ export async function advanceEtsySync(
   }
 }
 
+/**
+ * Etsy receipt.status → panel satış durumu (0005/0080 sözlüğü).
+ * Etsy enum'u: open · payment processing · paid · completed · canceled ·
+ * fully refunded · partially refunded. Panel: tek-kelime + çift-L 'cancelled'.
+ */
+export function mapReceiptStatus(r: EtsyReceipt): string {
+  switch ((r.status ?? "").toLowerCase()) {
+    case "open":
+      return "open";
+    case "payment processing":
+      return "processing";
+    case "paid":
+      // Kargolanmış ama henüz "completed" damgalanmamış sipariş → shipped.
+      return r.is_shipped ? "shipped" : "paid";
+    case "completed":
+      return "completed";
+    case "canceled":
+      return "cancelled";
+    case "fully refunded":
+      return "refunded";
+    case "partially refunded":
+      return "partially_refunded";
+    default:
+      // Bilinmeyen/boş durum: eski davranışla uyumlu güvenli varsayılan.
+      return "completed";
+  }
+}
+
 /** Bir sayfa siparişi + gömülü kalemleri toplu upsert eder; kalem sayısını döner. */
-async function upsertSalesPage(
+export async function upsertSalesPage(
   admin: SupabaseClient,
   orgId: string,
   results: EtsyReceipt[],
@@ -400,7 +430,7 @@ async function upsertSalesPage(
     order_no: String(r.receipt_id),
     buyer_name: r.name ?? null,
     buyer_email: r.buyer_email ?? null,
-    status: "completed",
+    status: mapReceiptStatus(r),
     order_date: new Date(
       (r.created_timestamp ?? Date.now() / 1000) * 1000,
     ).toISOString(),
@@ -511,7 +541,11 @@ async function upsertReviewsPage(
   orgId: string,
   results: EtsyReview[],
 ): Promise<void> {
-  const rows = results.map((rv) => {
+  // transaction_id'siz yorum onConflict anahtarına giremez → her senkronda
+  // mükerrer satır üretirdi; atla (panelde zaten kimliksiz izlenemez).
+  const rows = results
+    .filter((rv) => rv.transaction_id != null)
+    .map((rv) => {
     const ts = rv.created_timestamp ?? rv.create_timestamp;
     const updated = rv.updated_timestamp ?? rv.update_timestamp;
     return {

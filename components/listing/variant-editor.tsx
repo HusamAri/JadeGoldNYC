@@ -72,6 +72,8 @@ const WEIGHT_SOURCE_LABELS: Record<string, string> = {
   inferred: "çıkarım",
   etsy: "etsy",
   description: "açıklama",
+  "description-scaled": "açıklama·ölçekli",
+  shipstation: "tartı",
 };
 
 /**

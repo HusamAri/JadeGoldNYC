@@ -25,11 +25,14 @@ export interface Member {
 export type SourceKind = "manual" | "csv" | "etsy" | "etsy_ledger" | "gold_auto";
 
 export type SaleStatus =
+  | "open"
+  | "processing"
   | "paid"
   | "completed"
   | "shipped"
   | "cancelled"
-  | "refunded";
+  | "refunded"
+  | "partially_refunded";
 
 export interface Sale {
   id: string;
