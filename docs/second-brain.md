@@ -57,3 +57,14 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
 - **Multi-tenant kilidi (2026-07):** Org verisi okuyan her fonksiyon `org_id`
   parametre sözleşmesini UYGULAR (`.eq("org_id", orgId)`) — RLS'in aktif-org
   varsayımına yaslanmaz; iki org'lu kullanıcıda karışır.
+- **Marka görselleri org'a aittir (2026-07):** Ortak UI'daki ürün görselleri ve
+  marka imzaları ("Jade Gold · NYC" kuyruğu, cutout seti) hardcode edilemez —
+  aktif org'dan çözülür (OrgMark, BRAND_KIND çevirisi); yeni org nötr düşer.
+- **Negatif z-index kabından çocuk öne çıkamaz (2026-07):** `-z-*` konumlu kap
+  stacking context'tir; "önde duracak" öğe için KARDEŞ pozitif-z kap gerekir.
+- **Metadata rotaları auth'tan muaf (2026-07):** proxy/middleware matcher'ı
+  `/apple-icon`, `/manifest.webmanifest`, OG/Twitter görsellerini login'e
+  yönlendirmemeli — sosyal botlar ve iOS 307'yi takip edip görseli kaybeder.
+- **Snapshot'lı metrikte önce dedupe (2026-07):** Aynı dönem etiketi birden çok
+  anlık görüntü taşıyabilir — sayı/toplamdan önce ürün başına EN GÜNCEL kayıt
+  seçilir; yoksa çift sayılır (LCC metrik dersiyle aynı kök).
