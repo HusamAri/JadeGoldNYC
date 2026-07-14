@@ -79,18 +79,19 @@ export function KpiCard({
   const valueLen = displayString.length;
 
   // Her kutu FARKLI süzülür: etiketten türeyen deterministik faz/yön/süre.
+  // PERF: süzülme yalnız HOVER'da — 10 ikonun camın altında sürekli kıpırdaması
+  // 10 backdrop'un her karede yeniden örneklenmesi demekti (eşzamanlılık
+  // ölçümünde ana kalemlerden). Idle'da ikon sabit → cam bir kez blur'lanır.
   const h = hashLabel(label);
   const spot = ICON_SPOTS[h % ICON_SPOTS.length];
   const iconStyle: React.CSSProperties = {
     ...spot,
-    animationName: "kpi-icon-drift",
-    // çok çok yavaş — 64…92s; her kutuya farklı gecikme ve yön
+    // animasyon adı hover'da CSS'ten atanır (globals: .kpi-icon)
     animationDuration: `${64 + (h % 5) * 7}s`,
     animationTimingFunction: "ease-in-out",
     animationIterationCount: "infinite",
     animationDirection: h % 2 === 0 ? "normal" : "reverse",
     animationDelay: `-${h % 40}s`,
-    willChange: "transform",
   };
 
   return (
@@ -113,7 +114,7 @@ export function KpiCard({
           // camın üstünde çok soluk oyma filigran olarak durur (dark:z-[2],
           // içerik DOM'da sonra geldiği için üstte kalır). Ham Lucide geçse
           // bile gri klipart'a düşmesin diye varsayılan mürekkep soluk mor.
-          className="pointer-events-none absolute z-0 size-[8.5rem] object-contain text-[oklch(0.68_0.15_286)] opacity-[0.88] dark:z-[2] dark:text-[oklch(0.83_0.07_290)] dark:opacity-[0.14]"
+          className="kpi-icon pointer-events-none absolute z-0 size-[8.5rem] object-contain text-[oklch(0.68_0.15_286)] opacity-[0.88] dark:z-[2] dark:text-[oklch(0.83_0.07_290)] dark:opacity-[0.14]"
           style={iconStyle}
         />
       )}

@@ -218,19 +218,15 @@ export function AlertBoard3D({ data }: { data: AlertCenter }) {
                     animationDuration: "0.6s",
                   }}
                 >
-                  <div
-                    className="motion-safe:animate-[ab-float_var(--dur)_ease-in-out_infinite]"
-                    style={
-                      {
-                        "--dur": `${p.durMs}ms`,
-                        animationDelay: `${p.delayMs}ms`,
-                      } as React.CSSProperties
-                    }
-                  >
+                  {/* PERF: sürekli ab-float süzülmesi kaldırıldı — 14 kutunun
+                      her-kare hareketi kompoziti boğuyordu (ölçüm: 5 FPS).
+                      Derinlik/eğim + kademeli giriş uzamsal dili taşımaya
+                      devam ediyor; hover'da cam bozması ve büyüme canlı. */}
+                  <div>
                     <Link
                       href={a.href}
                       className={cn(
-                        "group relative block overflow-visible rounded-2xl border p-3 transition-transform duration-300 hover:z-30 hover:scale-[1.06] focus-visible:z-30 focus-visible:scale-[1.06] active:scale-[1.01] active:duration-150",
+                        "group ab-glass relative block overflow-visible rounded-2xl border p-3 transition-transform duration-300 hover:z-30 hover:scale-[1.06] focus-visible:z-30 focus-visible:scale-[1.06] active:scale-[1.01] active:duration-150",
                         "[background-image:var(--ab-surface)] dark:[background-image:var(--ab-surface-dark)]",
                         m.extra,
                       )}
@@ -238,10 +234,13 @@ export function AlertBoard3D({ data }: { data: AlertCenter }) {
                         width: `${m.width}px`,
                         "--ab-surface": m.surface,
                         "--ab-surface-dark": m.surfaceDark,
+                        // PERF: backdrop-filter süzülen kutuda HER KAREDE yeniden
+                        // örneklenir (14 kutu × blur 3-13px = FPS katili). Cam
+                        // bozması yalnız HOVER'da devreye girer (.ab-glass);
+                        // idle'da gradient yüzey + glow zaten cam hissi verir.
+                        "--ab-filter": m.filter,
                         borderColor: m.border,
                         boxShadow: `${m.glow}, inset 0 1px 0 oklch(1 0 0 / 0.45)`,
-                        backdropFilter: m.filter,
-                        WebkitBackdropFilter: m.filter,
                       } as React.CSSProperties}
                     >
                       <span

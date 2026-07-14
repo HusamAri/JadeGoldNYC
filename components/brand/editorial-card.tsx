@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { ScrollPinnedVideo } from "@/components/brand/scroll-pinned-video";
+import { LazyLoopVideo } from "@/components/brand/lazy-loop-video";
 
 /**
  * Editorial marka kartı — çıkıntı (raised) kutunun tamamını kaplayan ürün çekimi
@@ -76,16 +77,11 @@ export function EditorialCard({
           className,
         )}
       >
-        <video
+        {/* Görünüme gelmeden video İNMEZ (panelde 10MB+ tasarruf) — poster taşır. */}
+        <LazyLoopVideo
           src={video}
           poster={image}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
           className="absolute inset-0 size-full object-cover"
-          aria-hidden
         />
         {overlay}
       </div>
