@@ -17,6 +17,9 @@ export default async function YeniGorevPage() {
     effort: "",
     due_date: "",
     notes: "",
+    progress: "",
+    icon: "",
+    color: "",
   };
 
   return (

@@ -72,6 +72,10 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
 - **JSX'te ifade↔kelime boşluğu `{" "}` ile sabitlenir (2026-07):** `{sayı} kelime`
   bitişik ("54listing") render edilebilir — sayaç metinlerinde boşluğu açık `{" "}`
   olarak yaz. Kaynak koddaki boşluğa güvenme; gerçek render ölçümü yakaladı.
+- **AI ikon sayfası: kesmeden önce gerçek grid'i say (2026-07):** Üretilen
+  sayfa istenen ızgaraya (6×5) uymayabilir (6×6 + tekrar hücreler çıktı) —
+  kesme script'ine geçmeden görseli aç, satır/sütunu say, hücre→anahtar
+  eşlemesini elle kur; körlemesine dilimleme yanlış ikonları yerleştirir.
 - **Snapshot'lı metrikte önce dedupe (2026-07):** Aynı dönem etiketi birden çok
   anlık görüntü taşıyabilir — sayı/toplamdan önce ürün başına EN GÜNCEL kayıt
   seçilir; yoksa çift sayılır (LCC metrik dersiyle aynı kök).

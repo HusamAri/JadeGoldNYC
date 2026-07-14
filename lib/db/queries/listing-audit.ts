@@ -56,7 +56,6 @@ type ProductRow = {
   title: string | null;
   description: string | null;
   tags: string[] | null;
-  materials: string[] | null;
   num_images: number | null;
 };
 
@@ -70,7 +69,7 @@ export async function getListingAudit(
   const rows = await fetchAllPages<ProductRow>((from, to) =>
     supabase
       .from("products")
-      .select("id, etsy_listing_id, title, description, tags, materials, num_images")
+      .select("id, etsy_listing_id, title, description, tags, num_images")
       .eq("org_id", orgId)
       .eq("status", "active")
       .order("title", { ascending: true })
@@ -85,7 +84,6 @@ export async function getListingAudit(
       title: r.title ?? "",
       description: r.description,
       tags: r.tags,
-      materials: r.materials,
       numImages: r.num_images,
     });
     for (const f of findings) {

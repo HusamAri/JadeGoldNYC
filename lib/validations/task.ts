@@ -16,6 +16,17 @@ export const taskFormSchema = z.object({
   effort: z.string().trim().max(80),
   due_date: z.string().trim().max(20),
   notes: z.string().trim().max(2000),
+  /** İlerleme yüzdesi metni; boş = belirtilmedi. */
+  progress: z
+    .string()
+    .trim()
+    .refine((v) => !v || (/^\d{1,3}$/.test(v) && Number(v) <= 100), {
+      message: "0-100 arası bir yüzde girin",
+    }),
+  /** Görev ikonu anahtarı (lib/task-style.ts); boş = durum glifi. */
+  icon: z.string().trim().max(40),
+  /** İsimlendirilmiş renk anahtarı (lib/task-style.ts); boş = tema rengi. */
+  color: z.string().trim().max(40),
 });
 
 export type TaskFormValues = z.infer<typeof taskFormSchema>;

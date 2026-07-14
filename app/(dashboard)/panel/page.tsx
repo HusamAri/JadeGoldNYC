@@ -36,6 +36,7 @@ import { EditorialCard } from "@/components/brand/editorial-card";
 import { KpiCard } from "@/components/kpi-card";
 import { WhatsNew } from "@/components/whats-new";
 import { AlertCenterCard } from "@/components/alert-center";
+import { AlertBoard3D } from "@/components/alert-board-3d";
 import { MarketPriceAlertsCard } from "@/components/market-price-alerts-card";
 import { getMarketPriceAlerts } from "@/lib/db/queries/market-alerts";
 import { PeriodSelector } from "@/components/period-selector";
@@ -99,8 +100,13 @@ export default async function PanelPage({
 
       <WhatsNew />
 
+      {/* Uyarı Board'u — uyarılar 3B sahnede havada asılı cam kutular
+          (kritik=renkli, önemli=liquid, bilgi=buzlu cam). Uzamsal genel bakış. */}
+      <AlertBoard3D data={alertCenter} />
+
       {/* Uyarı Merkezi — sistem genelindeki tüm aksiyon sinyalleri tek yerde,
-          3 önem derecesi + bedele göre sıralı. "Neler yolunda gitmiyor?" */}
+          3 önem derecesi + bedele göre sıralı. "Neler yolunda gitmiyor?"
+          (Board özet sahnedir; bu kart okunabilir DETAY listesi olarak kalır.) */}
       <AlertCenterCard data={alertCenter} />
 
       {/* Pazar uyarıları DETAY/AKSİYON yüzeyi — merkez özet sayar, bu kart

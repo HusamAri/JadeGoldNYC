@@ -24,6 +24,9 @@ export function AddTaskButton({ task }: { task: EtsyUpdateTask }) {
         effort: task.effort,
         due_date: "",
         notes: "",
+        progress: "",
+        icon: "",
+        color: "",
       });
       if (res?.error) {
         toast.error(res.error);

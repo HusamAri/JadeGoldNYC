@@ -49,6 +49,9 @@ function toRow(v: TaskFormValues) {
     effort: v.effort || null,
     due_date: v.due_date ? v.due_date : null,
     notes: v.notes || null,
+    progress: v.progress ? Number(v.progress) : null,
+    icon: v.icon || null,
+    color: v.color || null,
   };
 }
 
