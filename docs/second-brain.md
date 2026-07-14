@@ -65,6 +65,13 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
 - **Metadata rotaları auth'tan muaf (2026-07):** proxy/middleware matcher'ı
   `/apple-icon`, `/manifest.webmanifest`, OG/Twitter görsellerini login'e
   yönlendirmemeli — sosyal botlar ve iOS 307'yi takip edip görseli kaybeder.
+- **Vekil durum no-op yolda da eşitlenir (2026-07):** Uzak durumun yerel vekiline
+  ("products.description = Etsy açıklaması" gibi) dayanan güncel/bekliyor ayrımında,
+  uzak taraf zaten günceldeyken DE vekili eşitle — yoksa bayat vekil, öğeyi sonsuza
+  dek "bekliyor" listesinde bırakır (Etsy ağırlık gönderiminin unchanged yolu).
+- **JSX'te ifade↔kelime boşluğu `{" "}` ile sabitlenir (2026-07):** `{sayı} kelime`
+  bitişik ("54listing") render edilebilir — sayaç metinlerinde boşluğu açık `{" "}`
+  olarak yaz. Kaynak koddaki boşluğa güvenme; gerçek render ölçümü yakaladı.
 - **Snapshot'lı metrikte önce dedupe (2026-07):** Aynı dönem etiketi birden çok
   anlık görüntü taşıyabilir — sayı/toplamdan önce ürün başına EN GÜNCEL kayıt
   seçilir; yoksa çift sayılır (LCC metrik dersiyle aynı kök).
