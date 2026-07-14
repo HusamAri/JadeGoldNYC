@@ -3,6 +3,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { EtsyClient } from "@/lib/etsy/client";
 import { etsyPaths } from "@/lib/etsy/endpoints";
+import { decodeHtmlEntities } from "@/lib/etsy/text";
 import { logAudit } from "@/lib/audit";
 import { rebuildGoldCostsBulk } from "@/lib/gold-cost-entry";
 import {
@@ -479,7 +480,9 @@ async function upsertListingsPage(
   const rows = results.map((l) => ({
     org_id: orgId,
     etsy_listing_id: l.listing_id,
-    title: l.title ?? `Liste ${l.listing_id}`,
+    // Etsy API başlıkları HTML-escape'li döndürür ("7.5&quot;") — panelde
+    // ham entity görünmesin diye senkron sınırında çözülür.
+    title: l.title ? decodeHtmlEntities(l.title) : `Liste ${l.listing_id}`,
     sku: l.sku?.[0] ?? null,
     status: l.state ?? null,
     price_cents: etsyMoneyToCents(l.price),

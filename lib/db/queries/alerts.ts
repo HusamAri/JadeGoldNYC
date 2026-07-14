@@ -5,6 +5,7 @@ import {
 } from "@/lib/db/queries/data-gaps";
 import { getEtsyStatus } from "@/lib/db/queries/etsy";
 import { getMarketAlertCounts } from "@/lib/db/queries/market-alerts";
+import { getListingAuditSummary } from "@/lib/db/queries/listing-audit";
 
 /**
  * UYARI MERKEZİ — sistemin HER yerindeki aksiyon gerektiren sinyalleri tek
@@ -93,6 +94,7 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
     gaps,
     etsy,
     marketCounts,
+    auditSummary,
     orgRow,
     statusProducts,
     openInquiries,
@@ -106,6 +108,11 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
       getEtsyStatus(orgId),
       // Bant dışı sayılar — görüntüleme limitinden bağımsız tam sayım.
       getMarketAlertCounts(orgId),
+      // Listing denetimi: belgeli Etsy arama sinyalleri (tag/başlık/açıklama).
+      getListingAuditSummary(orgId).catch((e) => {
+        console.error("[alert-center] listing-audit:", e);
+        return [];
+      }),
       // costCents'in para birimi: org varsayılanı.
       supabase
         .from("organizations")
@@ -285,6 +292,22 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
       count: blockedCount,
       href: "/tasarimlar",
       actionLabel: "Eksikleri tamamla",
+      costCents: null,
+    });
+  }
+
+  // 5b) Listing denetimi — belgeli Etsy arama sinyalleri (eksik tag, tekrarlı
+  // başlık kelimesi, boş malzeme/açıklama…). Severity kontrolün kendisinden
+  // gelir; Düzelt akışı yalnız etkilenen listingleri gösterir.
+  for (const entry of auditSummary) {
+    alerts.push({
+      key: `listing_audit_${entry.key}`,
+      severity: entry.severity,
+      title: entry.title,
+      hint: entry.hint,
+      count: entry.count,
+      href: "/tasarimlar/iyilestir",
+      actionLabel: "İyileştirmeye git",
       costCents: null,
     });
   }

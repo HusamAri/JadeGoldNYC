@@ -40,10 +40,20 @@ export async function pushWeightForListing(
     const detail = await getListing(client, target.etsyListingId);
     const fresh = detail.description ?? "";
     const next = injectWeightBlock(fresh, target.block);
-    if (next === fresh) return { ok: true, unchanged: true };
+    const supabase = await createClient();
+    if (next === fresh) {
+      // Etsy zaten güncel — yerel kopya bayatsa eşitle ki "bekleyen"
+      // listesinde takılı kalmasın (upToDate vekili yerel açıklamadır).
+      await supabase
+        .from("products")
+        .update({ description: fresh })
+        .eq("id", productId)
+        .eq("org_id", m.org_id);
+      revalidatePath(PATH);
+      return { ok: true, unchanged: true };
+    }
 
     await updateListingDescription(client, target.etsyListingId, next);
-    const supabase = await createClient();
     await supabase
       .from("products")
       .update({ description: next })
@@ -83,6 +93,11 @@ export async function pushAllWeights(): Promise<{
       const fresh = detail.description ?? "";
       const next = injectWeightBlock(fresh, t.block);
       if (next === fresh) {
+        await supabase
+          .from("products")
+          .update({ description: fresh })
+          .eq("id", t.productId)
+          .eq("org_id", m.org_id);
         unchanged++;
         continue;
       }

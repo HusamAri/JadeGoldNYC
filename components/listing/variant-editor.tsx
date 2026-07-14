@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Loader2, Save, Sparkles } from "lucide-react";
+import { Calculator, Loader2, Save, Sparkles } from "lucide-react";
 
 import { updateVariant } from "@/app/(dashboard)/tasarimlar/listing/[id]/actions";
 import {
@@ -216,10 +217,18 @@ export function VariantEditor({
           Fiyat, gram ve adet satır içinde düzenlenir; her satır kendi
           Kaydet&rsquo;iyle yazılır.
         </p>
-        <Button type="button" variant="outline" size="sm" onClick={autoFill}>
-          <Sparkles className="size-4" />
-          Eksikleri otomatik hesapla
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button type="button" variant="ghost" size="sm" asChild>
+            <Link href={`/tasarimlar/varyant-hesapla?listing=${productId}`}>
+              <Calculator className="size-4" />
+              Hesaplayıcıda aç
+            </Link>
+          </Button>
+          <Button type="button" variant="outline" size="sm" onClick={autoFill}>
+            <Sparkles className="size-4" />
+            Eksikleri otomatik hesapla
+          </Button>
+        </div>
       </div>
 
       <div className="overflow-x-auto">

@@ -8,6 +8,7 @@ import {
   ExternalLink,
   Package,
   SearchX,
+  Wand2,
 } from "lucide-react";
 import {
   Gem,
@@ -110,6 +111,12 @@ export default async function ListelerPage({
               <Link href="/tasarimlar/etsy-agirlik">
                 <Scale />
                 Etsy&apos;ye Ağırlık
+              </Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link href="/tasarimlar/iyilestir">
+                <Wand2 />
+                İyileştir
               </Link>
             </Button>
             <Button asChild>
