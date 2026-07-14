@@ -5,6 +5,7 @@ import { PageHeader } from "@/components/page-header";
 import { SearchInput } from "@/components/data-table/search-input";
 import { Pagination } from "@/components/data-table/pagination";
 import { MissingWeightsForm } from "@/components/missing-weights-form";
+import { FillFromDescriptionButton } from "@/components/fill-from-description-button";
 
 export const metadata = { title: "Eksik Ağırlıklar" };
 
@@ -35,9 +36,12 @@ export default async function EksikAgirlikPage({
 
       <div className="flex items-center justify-between gap-3">
         <SearchInput placeholder="SKU veya ad ara…" />
-        <span className="text-muted-foreground shrink-0 text-sm tabular-nums">
-          {count} eksik
-        </span>
+        <div className="flex shrink-0 items-center gap-3">
+          <FillFromDescriptionButton />
+          <span className="text-muted-foreground shrink-0 text-sm tabular-nums">
+            {count} eksik
+          </span>
+        </div>
       </div>
 
       <MissingWeightsForm groups={groups} />
