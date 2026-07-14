@@ -17,16 +17,18 @@ export interface AuditProductInput {
   title: string;
   description: string | null;
   tags: string[] | null;
-  materials: string[] | null;
   numImages: number | null;
 }
 
 export type AuditCheckKey =
   | "tags_missing"
   | "tags_duplicate"
+  | "tags_single_word"
   | "title_repeat"
-  | "materials_missing"
+  | "title_rules"
+  | "title_long"
   | "description_missing"
+  | "description_copies_title"
   | "images_low"
   | "title_entities";
 
@@ -89,7 +91,7 @@ export const AUDIT_CHECKS: AuditCheckDef[] = [
     fixHref: (id) => `/tasarimlar/listing/${id}`,
     fixLabel: "Tag'leri düzenle",
     sourceLabel: "Etsy Seller Handbook — Keywords 101: Everything You Need to Know",
-    sourceUrl: "https://www.etsy.com/seller-handbook/article/371398403109",
+    sourceUrl: "https://www.etsy.com/seller-handbook/article/keywords-101-everything-you-need-to-know/382774281517",
   },
   {
     key: "tags_duplicate",
@@ -98,48 +100,78 @@ export const AUDIT_CHECKS: AuditCheckDef[] = [
     hint: "Aynı (ya da yalnız çoğul eki farklı) tag'i iki kez yazmak ikinci slotu çöpe atar — Etsy zaten tekil/çoğul eşleşmesini kendisi yapar. Yinelenen tag'i sil, yerine yeni bir arama ifadesi ekle.",
     fixHref: (id) => `/tasarimlar/listing/${id}`,
     fixLabel: "Tag'leri düzenle",
-    sourceLabel: "Etsy Seller Handbook — Keywords 101",
-    sourceUrl: "https://www.etsy.com/seller-handbook/article/371398403109",
+    sourceLabel: "Etsy Seller Handbook — Keywords 101 (don't repeat tags)",
+    sourceUrl: "https://www.etsy.com/seller-handbook/article/keywords-101-everything-you-need-to-know/382774281517",
+  },
+  {
+    key: "tags_single_word",
+    severity: "bilgi",
+    title: (n) => `${n} listing'de tek kelimelik tag'ler çoğunlukta`,
+    hint: "Etsy açıkça söylüyor: 'custom bracelet' gibi çok kelimeli ifadeler, 'custom' + 'bracelet' gibi tek kelimelerden GÜÇLÜDÜR ve long-tail aramalar daha iyi dönüşür. Tek kelimelik tag'leri alıcının gerçekte yazdığı ifadelerle birleştir.",
+    fixHref: (id) => `/tasarimlar/listing/${id}`,
+    fixLabel: "Tag'leri düzenle",
+    sourceLabel: "Etsy Seller Handbook — Keywords 101 (multi-word phrases)",
+    sourceUrl: "https://www.etsy.com/seller-handbook/article/keywords-101-everything-you-need-to-know/382774281517",
   },
   {
     key: "title_repeat",
     severity: "bilgi",
     title: (n) => `${n} listing başlığında tekrarlı kelime var`,
-    hint: "Aynı kelimeyi başlıkta tekrar etmek sıralamaya HİÇBİR katkı yapmaz — Etsy kelimeyi bir kez sayar. Tekrarlar 140 karakterlik başlık bütçesini yiyor; tekrar yerine yeni bir anahtar ifade yaz (en önemli kelimeler başa).",
+    hint: "Etsy'nin başlık rehberi net: 'tekrarlanan kelime ve ifadeleri kaldırın' — tekrar alıcıyı yorar, başlığın işini arama zaten bütünsel yapıyor. Tekrar yerine ürünü anlatan yeni bir ifade yaz.",
     fixHref: (id) => `/tasarimlar/listing/${id}`,
     fixLabel: "Başlığı düzenle",
-    sourceLabel: "Etsy Seller Handbook — Keywords 101",
-    sourceUrl: "https://www.etsy.com/seller-handbook/article/371398403109",
+    sourceLabel: "Etsy Seller Handbook — New Guidance for Listing Titles",
+    sourceUrl: "https://www.etsy.com/seller-handbook/article/1399426136697",
   },
   {
-    key: "materials_missing",
+    key: "title_rules",
     severity: "onemli",
-    title: (n) => `${n} listing'de malzeme (materials) boş`,
-    hint: "Malzeme ve nitelik alanları aramada tag gibi eşleşir — boş bırakınca '14k solid gold' arayan alıcıya görünmüyorsun. Malzemeleri doldur; alıcı filtrelerinde de yer alırsın.",
+    title: (n) => `${n} listing başlığı Etsy'nin sabit kurallarını zorluyor`,
+    hint: "Etsy'nin sert başlık kuralları var: en fazla 140 karakter, en fazla 3 TAMAMEN BÜYÜK kelime, $ ^ ` hiç kullanılamaz, % : & yalnız bir kez. Kural dışı başlık kaydedilemez ya da kırpılır — düzenlemede sorun yaşamadan önce düzelt.",
     fixHref: (id) => `/tasarimlar/listing/${id}`,
-    fixLabel: "Malzemeleri doldur",
-    sourceLabel: "Etsy Help — How Etsy Search Works (listing quality & relevancy)",
-    sourceUrl: "https://help.etsy.com/hc/en-us/articles/115015745428",
+    fixLabel: "Başlığı düzenle",
+    sourceLabel: "Etsy Help — Using Listing Titles to Get Found in Search",
+    sourceUrl: "https://help.etsy.com/hc/en-us/articles/360000337827",
+  },
+  {
+    key: "title_long",
+    severity: "bilgi",
+    title: (n) => `${n} listing başlığı 15 kelimeden uzun`,
+    hint: "Etsy'nin güncel başlık rehberi 15 kelimenin altını öneriyor: alıcı (özellikle mobilde) ilk birkaç kelimeyi görür; gerisi taranabilirliği düşürür. Sıralama kaybı değil, okunabilirlik önerisi — en önemli ifadeler öne, gereksiz kuyruk kırpılsın.",
+    fixHref: (id) => `/tasarimlar/listing/${id}`,
+    fixLabel: "Başlığı düzenle",
+    sourceLabel: "Etsy Seller Handbook — New Guidance for Listing Titles",
+    sourceUrl: "https://www.etsy.com/seller-handbook/article/1399426136697",
   },
   {
     key: "description_missing",
     severity: "onemli",
     title: (n) => `${n} listing'in açıklaması boş ya da çok kısa`,
-    hint: "Etsy araması 2022'den beri açıklamaları da tarıyor; boş/kısa açıklama hem eşleşme kaybettirir hem alıcı güvenini düşürür. İlk cümlelere ürünün anahtar kelimelerini doğal biçimde yerleştir.",
+    hint: "Etsy araması açıklamalardaki kelimeleri de eşleştiriyor; boş/kısa açıklama hem eşleşme kaybettirir hem alıcı güvenini düşürür. Etsy'nin önerisi: anahtar kelimeleri İLK BİRKAÇ CÜMLEYE doğal biçimde yerleştir.",
     fixHref: (id) => `/tasarimlar/listing/${id}`,
     fixLabel: "Açıklama yaz",
-    sourceLabel: "Etsy Seller Handbook — descriptions in Etsy search",
-    sourceUrl: "https://www.etsy.com/seller-handbook/article/1017850985674",
+    sourceLabel: "Etsy Seller Handbook — Keywords 101 (descriptions)",
+    sourceUrl: "https://www.etsy.com/seller-handbook/article/keywords-101-everything-you-need-to-know/382774281517",
+  },
+  {
+    key: "description_copies_title",
+    severity: "bilgi",
+    title: (n) => `${n} listing'in açıklaması başlığın kopyasıyla açılıyor`,
+    hint: "Etsy açıkça 'başlığınızı aynen kopyalamayın, anahtar kelime listesi dizmeyin' diyor — açılış cümlesi alıcıya (ve aramaya) yeni bilgi taşımalı. İlk cümleyi ürünü anlatan doğal bir cümleyle değiştir.",
+    fixHref: (id) => `/tasarimlar/listing/${id}`,
+    fixLabel: "Açıklamayı düzenle",
+    sourceLabel: "Etsy Seller Handbook — Keywords 101 (descriptions)",
+    sourceUrl: "https://www.etsy.com/seller-handbook/article/keywords-101-everything-you-need-to-know/382774281517",
   },
   {
     key: "images_low",
     severity: "bilgi",
     title: (n) => `${n} listing ${LOW_IMAGE_THRESHOLD}'ten az fotoğraf kullanıyor`,
-    hint: "Etsy 10 foto slotu verir ve çok açılı fotoğrafın dönüşümü artırdığını söyler — az fotoğraf, bakan alıcının 'emin olamayıp' çıkması demek. Detay/ölçek/kullanım karesi ekleyerek 10 slota yaklaş.",
+    hint: "Etsy'nin rehberi: '10 görselin hepsini kullanmak dönüşümü artırabilir' — her ek kare alıcıya karar verdiren bilgidir; az fotoğraf, bakan alıcının emin olamayıp çıkması demek. Detay/ölçek/kullanım karesi ekleyerek 10 slota yaklaş. (Bu bir dönüşüm önerisi; sıralama iddiası değil.)",
     fixHref: (id) => `/tasarimlar/listing/${id}`,
     fixLabel: "Listing'i aç",
-    sourceLabel: "Etsy Seller Handbook — 5 Ways to Improve Your Listing Photos",
-    sourceUrl: "https://www.etsy.com/seller-handbook/article/361776103175",
+    sourceLabel: "Etsy Seller Handbook — The Anatomy of a Well-Crafted Listing",
+    sourceUrl: "https://www.etsy.com/seller-handbook/article/1347574487014",
   },
   {
     key: "title_entities",
@@ -176,13 +208,41 @@ export function auditProduct(p: AuditProductInput): AuditFinding[] {
     out.push({ key: "tags_duplicate", detail: dupes.join(" · ") });
   }
 
+  // Tek kelimelik tag çoğunluğu — Etsy: çok kelimeli ifadeler daha güçlü.
+  const singles = tags.filter((t) => !t.trim().includes(" "));
+  if (tags.length > 0 && singles.length >= Math.ceil(tags.length / 2)) {
+    out.push({
+      key: "tags_single_word",
+      detail: `${singles.length}/${tags.length} tek kelime`,
+    });
+  }
+
   const repeats = findTitleRepeats(p.title);
   if (repeats.length > 0) {
     out.push({ key: "title_repeat", detail: repeats.join(" · ") });
   }
 
-  if ((p.materials ?? []).filter((m) => m.trim()).length === 0) {
-    out.push({ key: "materials_missing", detail: "0/13 malzeme" });
+  // Etsy'nin SERT başlık kuralları (form doğrulaması): 140 karakter,
+  // en çok 3 TAMAMEN BÜYÜK kelime, $ ^ ` yasak, % : & en fazla birer kez.
+  const ruleHits: string[] = [];
+  if (p.title.length > 140) ruleHits.push(`${p.title.length}/140 karakter`);
+  const capsWords = p.title
+    .split(/\s+/)
+    .filter((w) => w.length >= 2 && /^[A-Z0-9&%:]+$/.test(w) && /[A-Z]/.test(w));
+  if (capsWords.length > 3) ruleHits.push(`${capsWords.length} BÜYÜK kelime`);
+  const forbidden = p.title.match(/[$^`]/g);
+  if (forbidden) ruleHits.push(`yasak karakter: ${[...new Set(forbidden)].join(" ")}`);
+  for (const ch of ["%", ":", "&"]) {
+    const n = p.title.split(ch).length - 1;
+    if (n > 1) ruleHits.push(`'${ch}' ${n} kez`);
+  }
+  if (ruleHits.length > 0) {
+    out.push({ key: "title_rules", detail: ruleHits.join(" · ") });
+  }
+
+  const wordCount = p.title.split(/\s+/).filter(Boolean).length;
+  if (wordCount > 15) {
+    out.push({ key: "title_long", detail: `${wordCount} kelime` });
   }
 
   const desc = (p.description ?? "").trim();
@@ -191,6 +251,11 @@ export function auditProduct(p: AuditProductInput): AuditFinding[] {
       key: "description_missing",
       detail: desc.length === 0 ? "açıklama yok" : `${desc.length} karakter`,
     });
+  } else if (
+    p.title.trim().length > 20 &&
+    desc.toLowerCase().startsWith(p.title.trim().toLowerCase())
+  ) {
+    out.push({ key: "description_copies_title", detail: "açılış = başlık" });
   }
 
   if (p.numImages != null && p.numImages < LOW_IMAGE_THRESHOLD) {
