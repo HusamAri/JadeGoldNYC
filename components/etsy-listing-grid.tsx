@@ -180,7 +180,7 @@ export function EtsyListingGrid({ listings }: { listings: ProductListing[] }) {
         <button
           type="button"
           onClick={() => setShowAll(true)}
-          className="text-primary text-sm font-medium hover:underline"
+          className="text-primary inline-block text-sm font-medium underline-offset-4 transition-[translate,opacity] duration-200 hover:translate-x-0.5 hover:underline active:opacity-70"
         >
           {hiddenCount} listing daha göster →
         </button>

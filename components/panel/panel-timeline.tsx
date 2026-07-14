@@ -312,7 +312,7 @@ export function PanelTimeline({ data }: { data: TimelineData }) {
               />
               {/* Cam popup — YALNIZ hover'da */}
               {isHover && (
-                <span className="absolute bottom-full left-1/2 z-30 mb-2 w-max max-w-[220px] -translate-x-1/2 rounded-xl border border-[color:var(--glass-border)] [background-color:var(--glass)] [background-image:var(--glass-sheen)] px-3 py-2 text-left shadow-[var(--lift-sm)] [backdrop-filter:var(--glass-filter)] dark:border-[color:oklch(1_0_0/0.2)] dark:[background-color:var(--lume-glass)] dark:[background-image:none]">
+                <span className="soft-in absolute bottom-full left-1/2 z-30 mb-2 w-max max-w-[220px] -translate-x-1/2 rounded-xl border border-[color:var(--glass-border)] [background-color:var(--glass)] [background-image:var(--glass-sheen)] px-3 py-2 text-left shadow-[var(--lift-sm)] [backdrop-filter:var(--glass-filter)] dark:border-[color:oklch(1_0_0/0.2)] dark:[background-color:var(--lume-glass)] dark:[background-image:none]">
                   <span className="block text-[11px] leading-tight font-semibold">
                     {e.title}
                   </span>
@@ -350,7 +350,7 @@ export function PanelTimeline({ data }: { data: TimelineData }) {
               href={`/gorevler/${t.id}`}
               title={`${fmtShort(t.dueDate)} · ${t.title}${t.assigneeName ? ` · ${t.assigneeName}` : ""} (${t.priority})${progress != null ? ` · %${progress}` : ""}${done ? " · tamamlandı" : ""}`}
               className={
-                "absolute z-10 flex min-w-0 items-center gap-2 overflow-hidden rounded-full border py-1.5 pr-3.5 pl-2 text-[12.5px] font-semibold shadow-[var(--lift-sm)] transition-transform hover:z-20 hover:-translate-y-0.5 [backdrop-filter:var(--glass-filter-sm)] [background-color:var(--glass)] [background-image:var(--glass-sheen)] dark:shadow-[0_10px_24px_oklch(0_0_0/0.45),0_0_16px_oklch(0.7_0.07_262/0.2)] dark:[background-color:var(--lume-glass)] dark:[background-image:none] " +
+                "soft-in absolute z-10 flex min-w-0 items-center gap-2 overflow-hidden rounded-full border py-1.5 pr-3.5 pl-2 text-[12.5px] font-semibold shadow-[var(--lift-sm)] transition-transform hover:z-20 hover:-translate-y-0.5 active:translate-y-0 [backdrop-filter:var(--glass-filter-sm)] [background-color:var(--glass)] [background-image:var(--glass-sheen)] dark:shadow-[0_10px_24px_oklch(0_0_0/0.45),0_0_16px_oklch(0.7_0.07_262/0.2)] dark:[background-color:var(--lume-glass)] dark:[background-image:none] " +
                 (done
                   ? "border-white/60 dark:border-white/20"
                   : "border-[color:var(--glass-border)] dark:border-[color:oklch(1_0_0/0.25)] ") +
@@ -393,7 +393,7 @@ export function PanelTimeline({ data }: { data: TimelineData }) {
               {progress != null && (
                 <span
                   aria-hidden
-                  className="absolute inset-y-0 left-0 rounded-full bg-[color:var(--tl-doing)]/12 dark:bg-[color:var(--tl-doing)]/18"
+                  className="absolute inset-y-0 left-0 rounded-full bg-[color:var(--tl-doing)]/12 motion-safe:animate-[tl-fill_0.9s_var(--ease-premium)_both] dark:bg-[color:var(--tl-doing)]/18"
                   style={{ width: `${progress}%` }}
                 />
               )}
@@ -483,7 +483,7 @@ export function PanelTimeline({ data }: { data: TimelineData }) {
           <button
             type="button"
             onClick={() => setOffset(0)}
-            className="text-muted-foreground hover:text-foreground border-border hover:border-foreground/40 rounded-full border px-3 py-1 text-[11px] font-medium tracking-[0.1em] uppercase transition-colors [font-family:var(--font-index)] dark:hover:border-[color:oklch(1_0_0/.3)]"
+            className="soft-in text-muted-foreground hover:text-foreground border-border hover:border-foreground/40 cursor-pointer rounded-full border px-3 py-1 text-[11px] font-medium tracking-[0.1em] uppercase transition-[color,border-color,translate,scale] hover:-translate-y-px active:translate-y-0 active:scale-95 [font-family:var(--font-index)] dark:hover:border-[color:oklch(1_0_0/.3)]"
           >
             Bugüne dön
           </button>

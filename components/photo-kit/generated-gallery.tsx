@@ -360,7 +360,7 @@ export function GeneratedGallery({
               <button
                 type="button"
                 onClick={() => setLightboxId(img.id)}
-                className="block size-full cursor-zoom-in"
+                className="group/zoom block size-full cursor-zoom-in overflow-hidden"
                 aria-label={`Büyüt: ${img.title || "üretilen görsel"}`}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -381,7 +381,7 @@ export function GeneratedGallery({
                       return n;
                     })
                   }
-                  className="size-full object-cover"
+                  className="size-full object-cover transition-[scale,filter] duration-500 ease-[var(--ease-premium)] group-hover/zoom:scale-105 group-hover/zoom:brightness-105 group-active/zoom:scale-100"
                 />
               </button>
               {/* rozetler — altın zeminde koyu metin (AA); yüklendi jade+beyaz */}

@@ -206,10 +206,10 @@ export function TaskForm({
                         title={c.name}
                         onClick={() => field.onChange(active ? "" : c.key)}
                         className={cn(
-                          "flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-medium transition-all",
+                          "flex cursor-pointer items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-medium transition-all hover:-translate-y-0.5 active:translate-y-0 active:scale-95",
                           active
                             ? "border-transparent text-white shadow-[var(--lift-sm)]"
-                            : "border-border text-muted-foreground hover:border-foreground/40",
+                            : "border-border text-muted-foreground hover:border-foreground/40 hover:shadow-[var(--lift-sm)]",
                         )}
                         style={active ? { backgroundColor: c.ink } : undefined}
                       >
@@ -253,15 +253,17 @@ export function TaskForm({
                                 iconField.onChange(active ? "" : ic.key)
                               }
                               className={cn(
-                                "nm-pressed flex aspect-square items-center justify-center rounded-xl transition-all",
+                                "nm-pressed flex aspect-square cursor-pointer items-center justify-center rounded-xl transition-all active:scale-90",
                                 active
-                                  ? "ring-ring/70 shadow-[var(--shadow-pressed),0_0_10px_var(--pit-glow)] ring-2"
-                                  : "opacity-70 hover:opacity-100",
+                                  ? // Seçim anında minik pop — icon-pop native scale anime eder
+                                    "ring-ring/70 shadow-[var(--shadow-pressed),0_0_10px_var(--pit-glow)] ring-2 motion-safe:animate-[icon-pop_0.35s_var(--ease-premium)]"
+                                  : "opacity-70 hover:scale-[1.08] hover:opacity-100",
                               )}
                             >
                               <span
                                 aria-hidden
-                                className="inline-block size-6"
+                                // Renk skalası değişince tüm ikonlar yumuşakça yeniden mürekkeplenir
+                                className="inline-block size-6 transition-[background-color] duration-500"
                                 style={{
                                   backgroundColor: ink,
                                   maskImage: `url(${taskIconUrl(ic.key)})`,

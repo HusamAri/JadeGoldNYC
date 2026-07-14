@@ -201,17 +201,21 @@ export function AlertBoard3D({ data }: { data: AlertCenter }) {
             className="absolute inset-0"
             style={{ transformStyle: "preserve-3d" }}
           >
-            {boxes.map(({ alert: a, ...p }) => {
+            {boxes.map(({ alert: a, ...p }, i) => {
               const m = MATERIAL[a.severity];
               return (
                 <div
                   key={a.key}
-                  className="absolute"
+                  // Kademeli belirme: kutular sahneye sırayla yerleşir
+                  // (soft-in yalnız opacity+blur — inline 3B transform'a dokunmaz).
+                  className="soft-in absolute"
                   style={{
                     left: `${p.xPct}%`,
                     top: `${p.yPct}%`,
                     transform: `translate(-50%, -50%) translateZ(${p.z}px) rotateX(${p.rotX}deg) rotateY(${p.rotY}deg)`,
                     transformStyle: "preserve-3d",
+                    animationDelay: `${i * 70}ms`,
+                    animationDuration: "0.6s",
                   }}
                 >
                   <div
@@ -226,7 +230,7 @@ export function AlertBoard3D({ data }: { data: AlertCenter }) {
                     <Link
                       href={a.href}
                       className={cn(
-                        "group relative block overflow-visible rounded-2xl border p-3 transition-transform duration-300 hover:z-30 hover:scale-[1.06] focus-visible:z-30 focus-visible:scale-[1.06]",
+                        "group relative block overflow-visible rounded-2xl border p-3 transition-transform duration-300 hover:z-30 hover:scale-[1.06] focus-visible:z-30 focus-visible:scale-[1.06] active:scale-[1.01] active:duration-150",
                         "[background-image:var(--ab-surface)] dark:[background-image:var(--ab-surface-dark)]",
                         m.extra,
                       )}
@@ -270,7 +274,7 @@ export function AlertBoard3D({ data }: { data: AlertCenter }) {
                       )}
 
                       {/* Hover detay popup'ı — cam üstünde cam */}
-                      <span className="pointer-events-none invisible absolute bottom-[calc(100%+8px)] left-1/2 z-40 w-[240px] -translate-x-1/2 rounded-xl border border-[color:var(--glass-border)] [background-color:var(--glass)] [background-image:var(--glass-sheen)] px-3 py-2 opacity-0 shadow-[var(--lift-sm)] [backdrop-filter:var(--glass-filter)] transition-opacity duration-200 group-hover:visible group-hover:opacity-100 dark:border-[color:oklch(1_0_0/0.2)] dark:[background-color:var(--lume-glass)] dark:[background-image:none]">
+                      <span className="pointer-events-none invisible absolute bottom-[calc(100%+8px)] left-1/2 z-40 w-[240px] -translate-x-1/2 translate-y-1.5 rounded-xl border border-[color:var(--glass-border)] [background-color:var(--glass)] [background-image:var(--glass-sheen)] px-3 py-2 opacity-0 shadow-[var(--lift-sm)] [backdrop-filter:var(--glass-filter)] transition-[opacity,translate] duration-200 ease-[var(--ease-premium)] group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 dark:border-[color:oklch(1_0_0/0.2)] dark:[background-color:var(--lume-glass)] dark:[background-image:none]">
                         <span className="text-muted-foreground block text-[11px] leading-relaxed">
                           {a.hint}
                         </span>
