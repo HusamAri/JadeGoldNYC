@@ -64,6 +64,15 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
 - **OAuth callback = kalıcı domain (2026-07):** Redirect URI asla hash'li deployment
   URL'i (`*-abc123.vercel.app`) olamaz — deployment silinince akış kırılır
   (DEPLOYMENT_NOT_FOUND). Daima custom domain, env + sağlayıcı kaydı birebir aynı.
+- **Saf motoru bağımsız derle-çalıştır ile kanıtla (2026-07):** İçe aktarmasız saf
+  fonksiyon motorunu (ör. `lib/seo/keyword-engine`) commit'ten önce dosyayı kopyalayıp
+  test harness ekleyerek `tsc`+`node` ile birkaç senaryoda çalıştır. Vaka: SEO üreticide
+  "silver silver ring" (metal ikilenmesi), zincirsiz+unisex'te 13'e ulaşmama ve yüzükte
+  "real gold **chain**" — üçü de yalnız gerçek çıktı görülünce yakalandı, tsc/lint bunları
+  görmez.
+- **İsim yanıltır, kaynağı oku (2026-07):** Yeni "keyword/SEO" modülü kurmadan önce
+  mevcut `keyword-research.ts`'i açtım — adı "keyword" ama işi RAKİP FİYAT araştırması.
+  Çakışma sandığım şey tamamlayıcı çıktı. Kural: sembol adına göre "var/yok" deme, dosyayı aç.
 - **Multi-tenant kilidi (2026-07):** Org verisi okuyan her fonksiyon `org_id`
   parametre sözleşmesini UYGULAR (`.eq("org_id", orgId)`) — RLS'in aktif-org
   varsayımına yaslanmaz; iki org'lu kullanıcıda karışır.
