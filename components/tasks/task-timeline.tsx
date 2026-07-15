@@ -28,6 +28,10 @@ import type { TaskWithAssignee, TaskPriority, TaskStatus } from "@/lib/types";
 import type { AssignableUser } from "@/lib/db/queries/tasks";
 import { TaskPriorityBadge } from "@/components/task-priority-badge";
 import { TASK_COLOR_BY_KEY, taskIconUrl } from "@/lib/task-style";
+import {
+  HorizontalTimelineBand,
+  type HTask,
+} from "@/components/timeline/horizontal-band";
 import { UserAvatar } from "@/components/user-avatar";
 import { SlideButton } from "@/components/tasks/motion";
 import { LiquidTabs } from "@/components/tasks/liquid-tabs";
@@ -120,6 +124,27 @@ export function TaskTimeline({
     [pastList],
   );
 
+  // Geniş yatay band için normalize edilmiş görevler (şerit/atanan filtreli).
+  const bandTasks: HTask[] = useMemo(
+    () =>
+      filtered
+        .filter((t) => t.due_date)
+        .map((t) => ({
+          id: t.id,
+          title: t.title,
+          day: t.due_date as string,
+          status:
+            t.status === "done" ? "done" : t.status === "doing" ? "doing" : "todo",
+          priority: t.priority,
+          progress: t.progress ?? null,
+          icon: t.icon ?? null,
+          color: t.color ?? null,
+          assigneeName: t.assignee?.full_name ?? null,
+          href: `/gorevler/${t.id}`,
+        })),
+    [filtered],
+  );
+
   // Açılışta BUGÜN düğümünü kabın ortasına getir — sayfa hep today odağında.
   useEffect(() => {
     const sc = scrollRef.current;
@@ -203,6 +228,13 @@ export function TaskTimeline({
         </span>
         <LiquidTabs items={assigneeItems} value={assignee} onChange={setAssignee} />
       </div>
+
+      {/* ── Geniş yatay bakış — geçmiş ← bugün → gelecek (sürüklenir) ─── */}
+      <HorizontalTimelineBand
+        tasks={bandTasks}
+        today={today}
+        title="Zaman Çizelgesi — Geniş Bakış"
+      />
 
       {/* ── Zaman çizelgesi (BUGÜN odaklı, geçmiş yukarı geriler) ─────── */}
       <div className="relative">
