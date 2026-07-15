@@ -27,6 +27,7 @@ import { TASK_LANE_SHORT } from "@/lib/constants";
 import type { TaskWithAssignee, TaskPriority, TaskStatus } from "@/lib/types";
 import type { AssignableUser } from "@/lib/db/queries/tasks";
 import { TaskPriorityBadge } from "@/components/task-priority-badge";
+import { TASK_COLOR_BY_KEY, taskIconUrl } from "@/lib/task-style";
 import { UserAvatar } from "@/components/user-avatar";
 import { SlideButton } from "@/components/tasks/motion";
 import { LiquidTabs } from "@/components/tasks/liquid-tabs";
@@ -387,6 +388,11 @@ function TimelineCard({
   const done = t.status === "done";
   const overdue = section === "past" && !done;
   const late = overdue ? dayDiff(t.due_date as string, today) : 0;
+  const taskColor = t.color ? TASK_COLOR_BY_KEY.get(t.color) : null;
+  const progress =
+    t.status === "doing" && t.progress != null
+      ? Math.max(0, Math.min(100, t.progress))
+      : null;
 
   return (
     <motion.div
@@ -395,17 +401,29 @@ function TimelineCard({
       transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
       className="relative flex items-start gap-3 py-1.5 pl-1"
     >
-      {/* Omurga düğümü */}
+      {/* Omurga düğümü — görev rengi (varsa) skalanın mürekkebiyle; yoksa
+          duruma göre. Renk ATANMIŞSA gecikme pembesi/altın onu ezmez. */}
       <span
         aria-hidden
         className={cn(
           "relative z-10 mt-3.5 size-[15px] shrink-0 rounded-full border-2 border-[var(--background)]",
-          done && "bg-[color:var(--gold)]",
-          overdue &&
-            "tl-overdue-dot bg-[oklch(0.58_0.16_344)] dark:bg-[oklch(0.74_0.12_344)]",
-          !done && !overdue && section === "today" && "bg-[color:var(--gold)]",
-          !done && !overdue && section === "future" && "bg-muted-foreground/40",
+          overdue && !taskColor && "tl-overdue-dot",
+          !taskColor && done && "bg-[color:var(--gold)]",
+          !taskColor &&
+            overdue &&
+            "bg-[oklch(0.58_0.16_344)] dark:bg-[oklch(0.74_0.12_344)]",
+          !taskColor &&
+            !done &&
+            !overdue &&
+            section === "today" &&
+            "bg-[color:var(--gold)]",
+          !taskColor &&
+            !done &&
+            !overdue &&
+            section === "future" &&
+            "bg-muted-foreground/40",
         )}
+        style={taskColor ? { backgroundColor: taskColor.ink } : undefined}
       >
         {done && (
           <Check className="absolute inset-0 m-auto size-2.5 text-white" strokeWidth={3.5} />
@@ -457,16 +475,52 @@ function TimelineCard({
           </span>
         </div>
 
-        <p
-          className={cn(
-            "text-sm leading-snug font-medium",
-            done && "text-muted-foreground line-through",
+        <div className="flex items-center gap-2">
+          {/* Görev ikonu — skala mürekkebiyle boyanır (CSS mask) */}
+          {t.icon && (
+            <span
+              aria-hidden
+              className="inline-block size-[18px] shrink-0"
+              style={{
+                backgroundColor: taskColor?.ink ?? "var(--gold-deep)",
+                maskImage: `url(${taskIconUrl(t.icon)})`,
+                maskSize: "contain",
+                maskRepeat: "no-repeat",
+                maskPosition: "center",
+                WebkitMaskImage: `url(${taskIconUrl(t.icon)})`,
+                WebkitMaskSize: "contain",
+                WebkitMaskRepeat: "no-repeat",
+                WebkitMaskPosition: "center",
+              }}
+            />
           )}
-        >
-          {t.title}
-        </p>
+          <p
+            className={cn(
+              "min-w-0 flex-1 text-sm leading-snug font-medium",
+              done && "text-muted-foreground line-through",
+            )}
+          >
+            {t.title}
+          </p>
+          {progress != null && (
+            <span className="shrink-0 rounded-full bg-[color:var(--gold)]/12 px-1.5 py-0.5 font-mono text-[10px] font-bold text-[color:var(--gold-deep)] tabular-nums">
+              %{progress}
+            </span>
+          )}
+        </div>
         {t.effort && (
           <p className="text-muted-foreground mt-1 text-xs">{t.effort}</p>
+        )}
+        {progress != null && (
+          <span
+            aria-hidden
+            className="mt-1.5 block h-1 overflow-hidden rounded-full bg-[color:var(--gold)]/12"
+          >
+            <span
+              className="block h-full rounded-full bg-[color:var(--gold)] motion-safe:animate-[tl-fill_0.9s_var(--ease-premium)_both]"
+              style={{ width: `${progress}%` }}
+            />
+          </span>
         )}
 
         {!done && (

@@ -562,7 +562,12 @@ async function MarketAlertsSection({ orgId }: { orgId: string }) {
 
 async function TimelineSection({ orgId }: { orgId: string }) {
   const timeline = await getTimelineData(orgId);
-  return <PanelTimeline data={timeline} />;
+  // "Bugün" mağaza saat diliminde (NYC) — due_date'ler o takvimde tutulur;
+  // sunucuda hesaplanır ki SSR/hydration ve gün ayrımı tutarlı olsun.
+  const serverToday = new Date().toLocaleDateString("en-CA", {
+    timeZone: "America/New_York",
+  });
+  return <PanelTimeline data={timeline} serverToday={serverToday} />;
 }
 
 /** Akış beklenirken sakin cam iskelet — yükseklik gerçek bölüme yakın tutulur

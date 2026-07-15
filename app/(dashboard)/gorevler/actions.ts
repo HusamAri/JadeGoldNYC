@@ -21,6 +21,18 @@ export interface TaskActionResult {
 }
 
 /**
+ * Mağaza saat dilimindeki (NYC) bugünün tarihi (YYYY-MM-DD). Sunucu UTC'de
+ * çalıştığından `toISOString()` gece yarısı civarı yanlış güne kayabilir;
+ * due_date'ler NYC takviminde tutulduğundan (bkz. gorevler/page.tsx) tamamlama
+ * damgası da bu takvimden gelmeli.
+ */
+function nycToday(): string {
+  return new Date().toLocaleDateString("en-CA", {
+    timeZone: "America/New_York",
+  });
+}
+
+/**
  * Görev bir rapordan çıktıysa (`report_id` dolu), o raporun sayfasını da
  * tazele — durum tek satırda (tasks.status) tutulur, Görevler'de değişen her
  * yerde (Raporlar dahil) görünür.
@@ -39,6 +51,11 @@ async function revalidateLinkedReport(
 }
 
 function toRow(v: TaskFormValues) {
+  // Tamamlanan görevin bitiş günü = termin: form 'done' ile kaydedilir ve
+  // KULLANICI açıkça termin girmemişse, tamamlandığı gün due_date olur.
+  // Elle bir termin girildiyse (v.due_date dolu) kullanıcı niyetini KORU.
+  const due_date =
+    v.due_date ? v.due_date : v.status === "done" ? nycToday() : null;
   return {
     title: v.title,
     description: v.description || null,
@@ -47,7 +64,7 @@ function toRow(v: TaskFormValues) {
     lane: v.lane ? v.lane : null,
     assignee_id: v.assignee_id ? v.assignee_id : null,
     effort: v.effort || null,
-    due_date: v.due_date ? v.due_date : null,
+    due_date,
     notes: v.notes || null,
     progress: v.progress ? Number(v.progress) : null,
     icon: v.icon || null,
@@ -119,10 +136,13 @@ export async function moveTask(
   if (!parsed.success) return { error: "Geçersiz durum." };
   await requireMembership();
   const supabase = await createClient();
-  const { error } = await supabase
-    .from("tasks")
-    .update({ status: parsed.data })
-    .eq("id", id);
+  // Hızlı "Tamamla" aksiyonu asıl tamamlama yoludur (Kanban/timeline/rapor
+  // hepsi buraya iner): 'done'a geçişte bitiş günü = termin.
+  const patch =
+    parsed.data === "done"
+      ? { status: parsed.data, due_date: nycToday() }
+      : { status: parsed.data };
+  const { error } = await supabase.from("tasks").update(patch).eq("id", id);
   if (error) return { error: error.message };
   revalidatePath("/gorevler");
   revalidatePath(`/gorevler/${id}`);
