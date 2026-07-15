@@ -49,6 +49,14 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
 
 ## Teknik desenler
 
+- **Bütünlük bayrağı tüm veri şekillerini kapsar (2026-07):** "Künye tam" gibi
+  eksiksizlik sinyali, alanın yalnız BİR taşıyıcısını sayarsa diğer şekli sessizce
+  boş geçer. Vaka: gram bütünlüğü SADECE varyant-başına ölçülüyordu; varyantsız
+  tek-parça listing'de `missing_weights=0` çıkıp gramsız 107/108 listing "künye tam"
+  görünüyordu. Kural: bayrağı hem varyantlı (per-varyant) hem varyantsız (ürün
+  seviyesi `products.weight_grams`) yola göre kur; SQL ile kaç kaydın hangi şekle
+  düştüğünü doğrula. Ek: bayrağı flagleyince aynı ekranda düzeltme girişini de sun
+  (varyantsız boş durumda ürün gramajı input'u) — "action sinyali + ne yap" dersi.
 - **Sayı, display-limit'li sorgudan türetilmez (2026-07):** `getX(limit=50).length`
   50'de doyar — başlık/sayaç için ayrı tam sayım (`count: exact` veya dar-kolon tam
   çekim) kullan.
