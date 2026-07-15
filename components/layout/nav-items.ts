@@ -14,6 +14,7 @@ import {
   Boxes,
   Star,
   Settings,
+  TextSearch,
   type LucideIcon,
 } from "lucide-react";
 
@@ -63,6 +64,7 @@ export const NAV_GROUPS: NavGroup[] = [
     label: "Ürün & Stüdyo",
     items: [
       { href: "/tasarimlar", label: "Listeler", icon: Palette },
+      { href: "/seo-yardimcisi", label: "SEO Yardımcısı", icon: TextSearch },
       // Prompt kiti Jade Gold listinglerine özel statik içerik — diğer
       // şirketlerde gizli (kendi kitleri üretilince ayrı açılır).
       { href: "/gorsel-uretim", label: "Görsel Üretim", icon: Sparkles, jadeGoldOnly: true },
