@@ -209,15 +209,17 @@ export function PanelTimeline({
       <div className="relative mt-3">
         <div
           ref={scrollRef}
-          className="relative max-h-[64vh] overflow-x-hidden overflow-y-auto rounded-2xl px-1 py-2"
+          className="relative max-h-[64vh] overflow-x-hidden overflow-y-auto rounded-2xl px-1 py-2 [mask-image:linear-gradient(to_bottom,transparent,#000_22px,#000_calc(100%-22px),transparent)] [perspective:1400px] [perspective-origin:0%_50%]"
         >
-          {/* Omurga çizgisi */}
+          {/* Omurga — ışıyan hacimli ray (derinlik hissi) */}
           <div
             aria-hidden
-            className="pointer-events-none absolute top-0 bottom-0 left-[9px] w-px"
+            className="pointer-events-none absolute top-0 bottom-0 left-[8px] w-[3px] rounded-full"
             style={{
               background:
                 "linear-gradient(to bottom, transparent, var(--gold, oklch(0.62 0.20 278)) 6%, var(--gold, oklch(0.62 0.20 278)) 94%, transparent)",
+              boxShadow:
+                "0 0 10px color-mix(in oklch, var(--gold, oklch(0.62 0.20 278)) 45%, transparent)",
             }}
           />
 
@@ -354,30 +356,40 @@ function DayBlock({
         </div>
       )}
 
-      {/* Günün olay rozetleri */}
+      {/* Günün olayları — havada süzülen hacimli küreler (radial küre + ışıma
+          + iç highlight + drop-shadow = derinlik). Boyut olay ağırlığından. */}
       {bucket.events.length > 0 && (
-        <div className="relative mb-1.5 flex flex-wrap gap-1.5 pl-9">
+        <div className="relative mb-2 flex flex-wrap items-center gap-x-4 gap-y-2 pl-9">
           {bucket.events.map((e, i) => {
             const ink = EVENT_INK[e.kind];
+            const size = 16 + Math.round((e.weight ?? 0.4) * 16); // 16-32px
             return (
               <span
                 key={`${e.kind}-${i}`}
                 title={`${ink.label} · ${e.title}${e.detail ? " · " + e.detail : ""}`}
-                className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-medium"
-                style={{
-                  borderColor: ink.lo,
-                  color: ink.lo,
-                }}
+                className="group/orb inline-flex items-center gap-2"
               >
                 <span
                   aria-hidden
-                  className="inline-block size-2 rounded-full"
+                  className="relative inline-block shrink-0 rounded-full transition-transform duration-300 group-hover/orb:scale-110"
                   style={{
-                    backgroundImage: `radial-gradient(circle at 32% 30%, ${ink.hi}, ${ink.lo} 70%)`,
+                    width: `${size}px`,
+                    height: `${size}px`,
+                    backgroundImage: `radial-gradient(circle at 32% 28%, ${ink.hi}, ${ink.lo} 66%, transparent 100%)`,
+                    boxShadow: `0 ${Math.round(size / 3)}px ${size}px ${ink.glow}, 0 2px 4px ${ink.glow}, inset 0 1px 2px oklch(1 0 0 / 0.6)`,
                   }}
                 />
-                {ink.label}
-                <span className="max-w-[120px] truncate opacity-80">{e.title}</span>
+                <span className="flex min-w-0 flex-col leading-tight">
+                  <span
+                    className="text-[10px] font-semibold"
+                    style={{ color: ink.lo }}
+                  >
+                    {ink.label}
+                  </span>
+                  <span className="text-muted-foreground max-w-[150px] truncate text-[9px]">
+                    {e.title}
+                  </span>
+                </span>
               </span>
             );
           })}
@@ -409,25 +421,37 @@ function TaskRow({ task: t, today }: { task: TimelineTask; today: string }) {
       : null;
   const late = overdue ? dayDiff(t.dueDate as string, today) : 0;
 
+  const ink = taskColor ? taskColor.ink : nodeColor;
+
   return (
     <Link
       href={`/gorevler/${t.id}`}
-      className="group relative flex items-start gap-3 py-1 pl-1"
+      className="group relative flex items-start gap-3 py-1 pl-1 [transform-style:preserve-3d]"
     >
-      {/* Omurga düğümü — görev rengi (yoksa duruma göre) */}
+      {/* Omurga düğümü — ışıyan 3B boncuk (radial highlight + renkli hale). */}
       <span
         aria-hidden
-        className="relative z-10 mt-2 size-[15px] shrink-0 rounded-full border-2 border-[var(--background)]"
-        style={{ backgroundColor: taskColor ? taskColor.ink : nodeColor }}
+        className="relative z-10 mt-3 size-[16px] shrink-0 rounded-full transition-transform duration-300 group-hover:scale-110"
+        style={{
+          background: `radial-gradient(circle at 35% 30%, color-mix(in oklch, ${ink} 55%, white), ${ink} 72%)`,
+          boxShadow: `0 0 0 3px var(--background), 0 2px 6px color-mix(in oklch, ${ink} 45%, transparent), 0 0 12px color-mix(in oklch, ${ink} 40%, transparent), inset 0 1px 1.5px oklch(1 0 0 / 0.65)`,
+        }}
       />
 
+      {/* Kart — derinlikli cam: renkli sol aksan + görev rengine göre ışıma;
+          hover'da hafifçe öne kalkar (translateY + gölge büyür + renkli hale
+          = derinlik). Glow rengi CSS değişkeninden gelir (görev rengi). */}
       <div
         className={
-          "min-w-0 flex-1 rounded-2xl border border-[color:var(--glass-border)] px-3 py-2 transition-shadow duration-300 group-hover:shadow-[var(--lift-sm)] " +
-          "[background-color:var(--glass)] dark:border-[color:oklch(1_0_0/0.06)] dark:[background-color:var(--lume-glass)] " +
+          "relative min-w-0 flex-1 overflow-hidden rounded-2xl border border-l-[3px] border-[color:var(--glass-border)] py-2 pr-3 pl-3 shadow-[var(--lift-sm)] transition-[transform,box-shadow] duration-300 ease-[var(--ease-premium)] group-hover:-translate-y-0.5 group-hover:shadow-[var(--lift),0_0_20px_var(--task-glow)] " +
+          "[background-color:var(--glass)] [background-image:var(--glass-sheen)] dark:border-[color:oklch(1_0_0/0.06)] dark:[background-color:var(--lume-glass)] dark:[background-image:none] " +
           (overdue ? "tl-overdue-neon " : "") +
           (done ? "opacity-65 " : "")
         }
+        style={{
+          borderLeftColor: ink,
+          ["--task-glow" as string]: `color-mix(in oklch, ${ink} 26%, transparent)`,
+        }}
       >
         <div className="flex items-center gap-2">
           {/* İkon — skala mürekkebiyle boyanır (CSS mask) */}
