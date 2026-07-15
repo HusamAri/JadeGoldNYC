@@ -121,3 +121,9 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
   elle üretildiğinden 37KB tek statement'ta transkripsiyon hatası (UUID'de boşluk)
   girdi. Çözüm: tekrarlı URL önekini SQL'de `||` ile yeniden kur, kısa token'ları
   ~6KB'lık parçalarda gönder, sonda `count`la doğrula.
+- **Ebeveyn-id gerektiren alt-varlığı oluşturma formuna taşı (2026-07):** Alt
+  varlık (tasarım görseli/panosu) yükleme `design_id` istediği için yalnız KAYIT
+  sonrası (düzenle sayfası) eklenebiliyordu. Çözüm: yeni-kayıt formunda görseli
+  istemcide TUT, submit'te önce `createDesign` → dönen id ile `createBoard`'ı
+  ard arda çağır (tek akış). Yükleme hata verse bile ebeveyn korunur; kullanıcıyı
+  düzenle sayfasına al ki tekrar denesin — mevcut upload action'ı yeniden kullan.
