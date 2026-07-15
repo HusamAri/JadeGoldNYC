@@ -16,6 +16,11 @@ import type {
   TimelineTask,
 } from "@/lib/db/queries/timeline";
 import { TASK_COLOR_BY_KEY, taskIconUrl } from "@/lib/task-style";
+import {
+  HorizontalTimelineBand,
+  type HTask,
+  type HEvent,
+} from "@/components/timeline/horizontal-band";
 
 const fmtDay = new Intl.DateTimeFormat("tr-TR", {
   weekday: "short",
@@ -172,7 +177,38 @@ export function PanelTimeline({
     });
   };
 
+  const bandTasks: HTask[] = data.tasks
+    .filter((t) => t.dueDate)
+    .map((t) => ({
+      id: t.id,
+      title: t.title,
+      day: t.dueDate,
+      status: t.status === "done" ? "done" : t.status === "doing" ? "doing" : "todo",
+      priority: t.priority,
+      progress: t.progress,
+      icon: t.icon,
+      color: t.color,
+      assigneeName: t.assigneeName,
+      href: `/gorevler/${t.id}`,
+    }));
+  const bandEvents: HEvent[] = data.events.map((e) => ({
+    day: e.date,
+    kind: e.kind,
+    title: e.title,
+    detail: e.detail,
+    weight: e.weight,
+  }));
+
   return (
+    <div className="space-y-4">
+      {/* Geniş yatay bakış — geçmiş ← bugün → gelecek (sürüklenir kanvas) */}
+      <HorizontalTimelineBand
+        tasks={bandTasks}
+        events={bandEvents}
+        today={today}
+        title="Görev Zaman Çizelgesi — Geniş Bakış"
+      />
+
     <div
       className={
         "w-full rounded-[26px] border border-[color:var(--glass-border)] p-4 sm:p-5 " +
@@ -290,6 +326,7 @@ export function PanelTimeline({
           </button>
         )}
       </div>
+    </div>
     </div>
   );
 }
