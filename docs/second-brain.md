@@ -103,3 +103,12 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
 - **Statü asla hardcode yazılmaz (2026-07):** Kaynak API'nin durum alanı eşlenmeden
   sabit değer basmak ("completed") tüm downstream filtreleri ölü koda çevirir; yazım
   farkları ('canceled' vs 'cancelled') tek sözlükte sabitlenir (0080 vakası).
+- **Dışa çıkan görselden köken meta verisi sök (2026-07):** Etsy'ye yüklenen ya
+  da indirilen ürün fotoğrafı üreteç etiketi taşımamalı (Higgsfield PNG `tEXt
+  hf-job-id`). Çıkış noktalarında (upload action + indirme proxy) chunk-bazlı
+  strip; renk/derinlik chunk'ları korunur. UYARI: piksele gömülü SynthID
+  filigranı meta veri DEĞİLDİR, sökülemez — "tamamen temiz" diye vaat etme.
+- **Büyük MCP SQL'i parça + yeniden-kurgu ile yaz (2026-07):** execute_sql metni
+  elle üretildiğinden 37KB tek statement'ta transkripsiyon hatası (UUID'de boşluk)
+  girdi. Çözüm: tekrarlı URL önekini SQL'de `||` ile yeniden kur, kısa token'ları
+  ~6KB'lık parçalarda gönder, sonda `count`la doğrula.
