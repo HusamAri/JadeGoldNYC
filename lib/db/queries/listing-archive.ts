@@ -8,6 +8,7 @@ export interface ArchiveRow {
   numImages: number | null;
   archivedImages: number;
   archivedVideos: number;
+  etsyDeletedAt: string | null;
 }
 
 type ProductRow = {
@@ -16,6 +17,7 @@ type ProductRow = {
   title: string | null;
   status: string | null;
   num_images: number | null;
+  etsy_deleted_at: string | null;
 };
 
 type MediaRow = { etsy_listing_id: number; kind: string };
@@ -30,7 +32,7 @@ export async function getArchiveOverview(orgId: string): Promise<ArchiveRow[]> {
   const [{ data: products }, { data: media }] = await Promise.all([
     supabase
       .from("products")
-      .select("id, etsy_listing_id, title, status, num_images")
+      .select("id, etsy_listing_id, title, status, num_images, etsy_deleted_at")
       .eq("org_id", orgId)
       .not("etsy_listing_id", "is", null)
       .order("status", { ascending: true })
@@ -63,6 +65,7 @@ export async function getArchiveOverview(orgId: string): Promise<ArchiveRow[]> {
         numImages: p.num_images,
         archivedImages: c.image,
         archivedVideos: c.video,
+        etsyDeletedAt: p.etsy_deleted_at,
       };
     });
 }

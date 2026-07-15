@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { requireMembership, isManager, MANAGER_ONLY_ERROR } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { logAudit } from "@/lib/audit";
-import { EtsyNotConnectedError } from "@/lib/etsy/client";
+import { EtsyClient, EtsyNotConnectedError } from "@/lib/etsy/client";
 import {
   getListingArchiveImages,
   getListingArchiveVideos,
@@ -171,4 +171,89 @@ export async function archiveListing(
 
   revalidatePath("/arsiv");
   return { images: okImages, videos: okVideos, skipped };
+}
+
+export interface DeleteResult {
+  ok?: boolean;
+  needsReconnect?: boolean;
+  error?: string;
+}
+
+/**
+ * Bir listing'i Etsy'DEN siler ama panelde İZİNİ TUTAR: `products` satırı
+ * silinmez, yalnız `etsy_deleted_at` işaretlenir (geriye dönük arşiv).
+ *
+ * GÜVENLİK: (1) yalnız owner/admin; (2) ARŞİV ZORUNLU — bu listing'in en az bir
+ * `listing_media` kaydı yoksa silme reddedilir (medya kaybolmasın); (3) Etsy
+ * silme `listings_d` scope'u ister — yoksa Etsy 403 döner ve yeniden-bağlanma
+ * istenir. Etsy'de zaten yoksa (404) idempotent: yalnız işaret bırakılır.
+ */
+export async function deleteEtsyListing(
+  etsyListingId: number,
+): Promise<DeleteResult> {
+  const m = await requireMembership();
+  if (!isManager(m.role)) return { error: MANAGER_ONLY_ERROR };
+  if (!Number.isInteger(etsyListingId)) return { error: "Geçersiz listing." };
+
+  const supabase = await createClient();
+  const { data: product } = await supabase
+    .from("products")
+    .select("id, title")
+    .eq("org_id", m.org_id)
+    .eq("etsy_listing_id", etsyListingId)
+    .maybeSingle();
+  if (!product) return { error: "Listing bulunamadı." };
+  const title = (product as { title?: string } | null)?.title ?? null;
+
+  // Arşiv güvencesi: silmeden önce medya panelde olmalı.
+  const { count } = await supabase
+    .from("listing_media")
+    .select("id", { count: "exact", head: true })
+    .eq("org_id", m.org_id)
+    .eq("etsy_listing_id", etsyListingId);
+  if (!count || count === 0) {
+    return {
+      error:
+        "Önce bu listing'i arşivleyin — Etsy'den silmeden önce görsel/video panelde olmalı.",
+    };
+  }
+
+  let client: EtsyClient;
+  try {
+    client = await EtsyClient.forOrg(m.org_id);
+  } catch (e) {
+    if (e instanceof EtsyNotConnectedError) return { needsReconnect: true };
+    return {
+      error: e instanceof Error ? e.message : "Etsy istemcisi kurulamadı.",
+    };
+  }
+
+  try {
+    await client.request("DELETE", `/listings/${etsyListingId}`);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "Silme başarısız.";
+    // 403: listings_d (silme) kapsamı yok → silme izniyle yeniden bağlan.
+    if (msg.includes("(403)")) return { needsReconnect: true };
+    // 404: Etsy'de zaten yok — idempotent, işareti bırakıp devam et.
+    if (!msg.includes("(404)")) return { error: msg };
+  }
+
+  // Panelde izi kalsın: satır SİLİNMEZ, yalnız işaretlenir.
+  await supabase
+    .from("products")
+    .update({ etsy_deleted_at: new Date().toISOString() })
+    .eq("org_id", m.org_id)
+    .eq("etsy_listing_id", etsyListingId);
+
+  await logAudit(supabase, {
+    orgId: m.org_id,
+    action: "listing.delete_etsy",
+    entityType: "products",
+    entityId: String(etsyListingId),
+    summary: `Listing #${etsyListingId} Etsy'den silindi (panelde arşiv kaldı)${title ? ` — ${title}` : ""}`,
+    source: "etsy",
+  });
+
+  revalidatePath("/arsiv");
+  return { ok: true };
 }
