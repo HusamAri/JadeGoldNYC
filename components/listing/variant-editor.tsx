@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { Calculator, Loader2, Save, Sparkles } from "lucide-react";
 
 import { updateVariant } from "@/app/(dashboard)/tasarimlar/listing/[id]/actions";
+import { ProductWeightInput } from "@/components/product-weight-input";
 import {
   inferWeightsBySize,
   distributePriceByWeight,
@@ -87,10 +88,13 @@ export function VariantEditor({
   productId,
   variants,
   currency,
+  productWeightGrams,
 }: {
   productId: string;
   variants: ListingVariantRow[];
   currency: string;
+  /** Varyantsız (tek-parça) listing'de künye gramajı — ürün seviyesinde tutulur. */
+  productWeightGrams?: number | null;
 }) {
   const router = useRouter();
   const [rows, setRows] = useState<Record<string, RowState>>(() =>
@@ -102,10 +106,23 @@ export function VariantEditor({
 
   if (variants.length === 0) {
     return (
-      <p className="text-muted-foreground rounded-2xl border border-dashed p-6 text-center text-sm">
-        Bu listing&apos;de varyant yok. Varyantlar Etsy senkronundan gelir ya da
-        yeni listing açılışında girilir.
-      </p>
+      <div className="space-y-4 rounded-2xl border border-dashed p-6">
+        <p className="text-muted-foreground text-center text-sm">
+          Bu listing&apos;de varyant yok. Varyantlar Etsy senkronundan gelir ya
+          da yeni listing açılışında girilir.
+        </p>
+        {/* Tek-parça listing: künye gramajı ürün seviyesinde girilir — künye
+            "tam" sayılması için gerekli. */}
+        <div className="flex flex-col items-center gap-1.5">
+          <p className="text-muted-foreground text-xs">
+            Ürün gramajı (altın maliyet motorunun ve künye bütünlüğünün kaynağı):
+          </p>
+          <ProductWeightInput
+            productId={productId}
+            initialGrams={productWeightGrams ?? null}
+          />
+        </div>
+      </div>
     );
   }
 
