@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 
 import { requireMembership, isManager, MANAGER_ONLY_ERROR } from "@/lib/auth";
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { EtsyClient } from "@/lib/etsy/client";
 import { getEtsyWriteAccess } from "@/lib/db/queries/etsy";
 import { updateListingTags } from "@/lib/etsy/listing";
@@ -41,7 +41,7 @@ interface Row {
  */
 async function pushRow(
   client: EtsyClient,
-  supabase: Awaited<ReturnType<typeof createClient>>,
+  supabase: ReturnType<typeof createAdminClient>,
   orgId: string,
   userId: string,
   row: Row,
@@ -110,7 +110,7 @@ export async function pushSeoTag(id: string): Promise<SeoPushResult> {
   const { writeEnabled } = await getEtsyWriteAccess(m.org_id);
   if (!writeEnabled) return { error: "Etsy yazma erişimi kapalı." };
 
-  const supabase = await createClient();
+  const supabase = createAdminClient();
   const { data } = await supabase
     .from("seo_tag_optimizations")
     .select("id, etsy_listing_id, proposed_tags, status")
@@ -145,7 +145,7 @@ export async function pushSeoBatch(
   const { writeEnabled } = await getEtsyWriteAccess(m.org_id);
   if (!writeEnabled) return { pushed: 0, failed: 0, error: "Etsy yazma erişimi kapalı." };
 
-  const supabase = await createClient();
+  const supabase = createAdminClient();
   const { data } = await supabase
     .from("seo_tag_optimizations")
     .select("id, etsy_listing_id, proposed_tags, status")
@@ -172,7 +172,7 @@ export async function pushSeoBatch(
 export async function rejectSeoTag(id: string): Promise<SeoPushResult> {
   const m = await requireMembership();
   if (!isManager(m.role)) return { error: MANAGER_ONLY_ERROR };
-  const supabase = await createClient();
+  const supabase = createAdminClient();
   const { error } = await supabase
     .from("seo_tag_optimizations")
     .update({ status: "rejected" })
@@ -187,7 +187,7 @@ export async function rejectSeoTag(id: string): Promise<SeoPushResult> {
 export async function resetSeoTag(id: string): Promise<SeoPushResult> {
   const m = await requireMembership();
   if (!isManager(m.role)) return { error: MANAGER_ONLY_ERROR };
-  const supabase = await createClient();
+  const supabase = createAdminClient();
   const { error } = await supabase
     .from("seo_tag_optimizations")
     .update({ status: "pending", error: null })
@@ -207,7 +207,7 @@ export async function updateProposedTags(
   if (!isManager(m.role)) return { error: MANAGER_ONLY_ERROR };
   const invalid = validateTags(tags);
   if (invalid) return { error: invalid };
-  const supabase = await createClient();
+  const supabase = createAdminClient();
   const { error } = await supabase
     .from("seo_tag_optimizations")
     .update({ proposed_tags: tags })
