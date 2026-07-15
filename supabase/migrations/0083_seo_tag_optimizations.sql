@@ -1,4 +1,4 @@
--- 0081 — SEO tag optimizasyonları (13-tag önerileri: öneri → onay → Etsy'ye gönder → ölç)
+-- 0083 — SEO tag optimizasyonları (13-tag önerileri: öneri → onay → Etsy'ye gönder → ölç)
 --
 -- 115 aktif listing için değer-öncelikli optimize 13-tag setleri burada yaşar.
 -- Akış: pending (öneri) → approved (onaylandı) → pushed (Etsy'ye yazıldı) veya

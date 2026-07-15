@@ -49,6 +49,14 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
 
 ## Teknik desenler
 
+- **Bütünlük bayrağı tüm veri şekillerini kapsar (2026-07):** "Künye tam" gibi
+  eksiksizlik sinyali, alanın yalnız BİR taşıyıcısını sayarsa diğer şekli sessizce
+  boş geçer. Vaka: gram bütünlüğü SADECE varyant-başına ölçülüyordu; varyantsız
+  tek-parça listing'de `missing_weights=0` çıkıp gramsız 107/108 listing "künye tam"
+  görünüyordu. Kural: bayrağı hem varyantlı (per-varyant) hem varyantsız (ürün
+  seviyesi `products.weight_grams`) yola göre kur; SQL ile kaç kaydın hangi şekle
+  düştüğünü doğrula. Ek: bayrağı flagleyince aynı ekranda düzeltme girişini de sun
+  (varyantsız boş durumda ürün gramajı input'u) — "action sinyali + ne yap" dersi.
 - **Sayı, display-limit'li sorgudan türetilmez (2026-07):** `getX(limit=50).length`
   50'de doyar — başlık/sayaç için ayrı tam sayım (`count: exact` veya dar-kolon tam
   çekim) kullan.
@@ -127,3 +135,15 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
   istemcide TUT, submit'te önce `createDesign` → dönen id ile `createBoard`'ı
   ard arda çağır (tek akış). Yükleme hata verse bile ebeveyn korunur; kullanıcıyı
   düzenle sayfasına al ki tekrar denesin — mevcut upload action'ı yeniden kullan.
+- **Silmeden önce dış medyayı Storage'a KALICI çek (2026-07):** Etsy'de listing
+  silinecekse, canlı-fetch (getListingImages) yetmez — silince kaybolur. Video ise
+  panelde hiç saklanmıyordu. Çözüm: `listing_media` tablosu + özel bucket
+  (`listing-archive`, org-klasörü RLS); server action Etsy CDN'inden baytı çekip
+  bucket'a yükler, idempotent upsert eder (org+listing+kind+media_id). Etsy auth
+  yalnız canlı app'te çalıştığı için pull uygulama içinden tetiklenir; migration
+  MCP ile önceden uygulanır ki preview'da hazır olsun.
+- **Dış silmeyi arşiv-önce + scope-check ile geçitle (2026-07):** Canlı Etsy
+  listing'i silmek geri alınamaz; önce medya `listing_media`'ya arşivlenmemişse
+  silme REDDEDİLİR (kayıp önlenir), yalnız owner/admin, iki adımlı UI onayı ve
+  `listings_d` yoksa Etsy 403 → yeniden-bağlan sinyali. Panel kaydı SİLİNMEZ:
+  `products.etsy_deleted_at` işaretlenir (geriye dönük iz korunur), 404 idempotent.

@@ -43,6 +43,14 @@ export function ListingGapsCard({ gaps }: { gaps: ListingGaps }) {
       focus: false,
     });
   }
+  if (gaps.no_weight) {
+    items.push({
+      key: "weight",
+      label: "Gram (ağırlık) yok",
+      targetId: VARIANTS_ANCHOR,
+      focus: false,
+    });
+  }
   if (gaps.unpriced_variants > 0) {
     items.push({
       key: "unpriced",

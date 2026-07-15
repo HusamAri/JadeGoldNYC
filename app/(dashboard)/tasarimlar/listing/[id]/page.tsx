@@ -195,13 +195,18 @@ export default async function ListingDetayPage({
                         ? ` · ${gaps.missing_weights} gram eksik`
                         : ""
                     }`
-                  : undefined
+                  : gaps.no_weight
+                    ? "Varyantsız · gram eksik"
+                    : product.weight_grams != null
+                      ? `Varyantsız · ${product.weight_grams} g`
+                      : undefined
               }
             />
             <VariantEditor
               productId={product.id}
               variants={variants}
               currency={product.currency}
+              productWeightGrams={product.weight_grams}
             />
           </CardContent>
         </Card>

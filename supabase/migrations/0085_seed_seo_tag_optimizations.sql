@@ -1,4 +1,4 @@
--- 0083 — SEO etiket optimizasyonu öneri tohumu (Jade Gold, tek seferlik veri)
+-- 0085 — SEO etiket optimizasyonu öneri tohumu (Jade Gold, tek seferlik veri)
 --
 -- 115 aktif Jade Gold listing için değer-öncelikli optimize 13-tag önerileri.
 -- Bunlar bir kerelik AI analizinin ÇIKTISIDIR (fixture değil), o yüzden yalnız

@@ -1,6 +1,6 @@
--- 0082 — SEO etiket optimizasyonu RLS sıkılaştırma (güvenlik düzeltmesi)
+-- 0084 — SEO etiket optimizasyonu RLS sıkılaştırma (güvenlik düzeltmesi)
 --
--- 0081'deki "seo_tag_opt_update" politikası her authenticated org üyesine
+-- 0083'teki "seo_tag_opt_update" politikası her authenticated org üyesine
 -- UPDATE veriyordu; sütun kısıtı yoktu. Yönetici olmayan bir üye tarayıcı
 -- Supabase istemcisiyle status/pushed_*/baseline alanlarını değiştirip
 -- server-action'daki isManager kapısını atlayabilir, deney durumunu bozabilir.

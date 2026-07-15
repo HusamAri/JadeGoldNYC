@@ -16,6 +16,7 @@ import {
   Settings,
   TextSearch,
   Tags,
+  Archive,
   type LucideIcon,
 } from "lucide-react";
 
@@ -70,6 +71,7 @@ export const NAV_GROUPS: NavGroup[] = [
       // Prompt kiti Jade Gold listinglerine özel statik içerik — diğer
       // şirketlerde gizli (kendi kitleri üretilince ayrı açılır).
       { href: "/gorsel-uretim", label: "Görsel Üretim", icon: Sparkles, jadeGoldOnly: true },
+      { href: "/arsiv", label: "Listing Arşivi", icon: Archive },
       { href: "/stok", label: "Stok", icon: Boxes },
     ],
   },
