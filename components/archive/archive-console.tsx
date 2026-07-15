@@ -9,11 +9,14 @@ import {
   Check,
   Loader2,
   ExternalLink,
+  Trash2,
 } from "lucide-react";
 
 import {
   archiveListing,
+  deleteEtsyListing,
   type ArchiveResult,
+  type DeleteResult,
 } from "@/app/(dashboard)/arsiv/actions";
 import type { ArchiveRow } from "@/lib/db/queries/listing-archive";
 import { Button } from "@/components/ui/button";
@@ -25,6 +28,9 @@ type RowState = {
   images: number;
   videos: number;
   done: boolean;
+  deleted: boolean;
+  deleting: boolean;
+  confirming: boolean;
   error?: string;
 };
 
@@ -44,6 +50,9 @@ export function ArchiveConsole({
           images: r.archivedImages,
           videos: r.archivedVideos,
           done: r.archivedImages > 0 || r.archivedVideos > 0,
+          deleted: r.etsyDeletedAt != null,
+          deleting: false,
+          confirming: false,
         },
       ]),
     ),
@@ -72,6 +81,7 @@ export function ArchiveConsole({
     setState((p) => ({
       ...p,
       [listingId]: {
+        ...p[listingId],
         busy: false,
         images: res.images ?? p[listingId]?.images ?? 0,
         videos: res.videos ?? p[listingId]?.videos ?? 0,
@@ -80,6 +90,34 @@ export function ArchiveConsole({
       },
     }));
     return res;
+  }
+
+  async function onDelete(listingId: number, title: string | null) {
+    setState((p) => ({
+      ...p,
+      [listingId]: { ...p[listingId], deleting: true, confirming: false, error: undefined },
+    }));
+    let res: DeleteResult;
+    try {
+      res = await deleteEtsyListing(listingId);
+    } catch {
+      res = { error: "Beklenmeyen bir hata oluştu." };
+    }
+    const reconnectMsg = "Silme izni yok (listings_d) — Etsy'yi silme yetkisiyle yeniden bağlayın.";
+    setState((p) => ({
+      ...p,
+      [listingId]: {
+        ...p[listingId],
+        deleting: false,
+        deleted: res.ok ? true : p[listingId]?.deleted,
+        error: res.error ?? (res.needsReconnect ? reconnectMsg : undefined),
+      },
+    }));
+    if (res.ok) {
+      toast.success(`${title ?? "Listing"} Etsy'den silindi — arşiv panelde kaldı`);
+    } else {
+      toast.error(res.error ?? (res.needsReconnect ? reconnectMsg : "Silinemedi."));
+    }
   }
 
   async function onOne(listingId: number, title: string | null) {
@@ -172,6 +210,14 @@ export function ArchiveConsole({
                     <Badge variant="outline" className="capitalize">
                       {r.status ?? "—"}
                     </Badge>
+                    {s?.deleted && (
+                      <Badge
+                        className="border-transparent text-white"
+                        style={{ background: "#b23b3b" }}
+                      >
+                        Etsy&apos;den silindi
+                      </Badge>
+                    )}
                     <span className="inline-flex items-center gap-1 tabular-nums">
                       <ImageIcon className="size-3" />
                       {s?.images ?? r.archivedImages}
@@ -198,26 +244,80 @@ export function ArchiveConsole({
                     <p className="text-destructive mt-1 text-xs">{s.error}</p>
                   )}
                 </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => onOne(r.listingId, r.title)}
-                  disabled={!canArchive || s?.busy || bulkBusy}
-                  className={cn(s?.done && "text-[color:var(--jade,#2F5D50)]")}
-                >
-                  {s?.busy ? (
-                    <Loader2 className="size-4 animate-spin" />
-                  ) : s?.done ? (
-                    <Check className="size-4" />
-                  ) : (
-                    <Archive className="size-4" />
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => onOne(r.listingId, r.title)}
+                    disabled={!canArchive || s?.busy || bulkBusy || s?.deleting}
+                    className={cn(s?.done && "text-[color:var(--jade,#2F5D50)]")}
+                  >
+                    {s?.busy ? (
+                      <Loader2 className="size-4 animate-spin" />
+                    ) : s?.done ? (
+                      <Check className="size-4" />
+                    ) : (
+                      <Archive className="size-4" />
+                    )}
+                    {s?.busy
+                      ? "Çekiliyor…"
+                      : s?.done
+                        ? "Yeniden çek"
+                        : "Arşivle"}
+                  </Button>
+
+                  {/* Etsy'den sil — yalnız ARŞİVLENMİŞ ve henüz silinmemiş
+                      listingde; iki adımlı onay (medya kaybı geri alınamaz). */}
+                  {canArchive && s?.done && !s?.deleted && (
+                    s?.confirming ? (
+                      <div className="flex items-center gap-1">
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => onDelete(r.listingId, r.title)}
+                          disabled={s?.deleting}
+                        >
+                          {s?.deleting ? (
+                            <Loader2 className="size-4 animate-spin" />
+                          ) : (
+                            <Trash2 className="size-4" />
+                          )}
+                          {s?.deleting ? "Siliniyor…" : "Onayla, sil"}
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() =>
+                            setState((p) => ({
+                              ...p,
+                              [r.listingId]: { ...p[r.listingId], confirming: false },
+                            }))
+                          }
+                          disabled={s?.deleting}
+                        >
+                          Vazgeç
+                        </Button>
+                      </div>
+                    ) : (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-[#b23b3b] hover:text-[#b23b3b]"
+                        onClick={() =>
+                          setState((p) => ({
+                            ...p,
+                            [r.listingId]: { ...p[r.listingId], confirming: true },
+                          }))
+                        }
+                        disabled={bulkBusy}
+                        title="Etsy'den siler; arşiv panelde kalır"
+                      >
+                        <Trash2 className="size-4" />
+                        Etsy&apos;den sil
+                      </Button>
+                    )
                   )}
-                  {s?.busy
-                    ? "Çekiliyor…"
-                    : s?.done
-                      ? "Yeniden çek"
-                      : "Arşivle"}
-                </Button>
+                </div>
               </div>
             );
           })}

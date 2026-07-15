@@ -134,3 +134,8 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
   bucket'a yükler, idempotent upsert eder (org+listing+kind+media_id). Etsy auth
   yalnız canlı app'te çalıştığı için pull uygulama içinden tetiklenir; migration
   MCP ile önceden uygulanır ki preview'da hazır olsun.
+- **Dış silmeyi arşiv-önce + scope-check ile geçitle (2026-07):** Canlı Etsy
+  listing'i silmek geri alınamaz; önce medya `listing_media`'ya arşivlenmemişse
+  silme REDDEDİLİR (kayıp önlenir), yalnız owner/admin, iki adımlı UI onayı ve
+  `listings_d` yoksa Etsy 403 → yeniden-bağlan sinyali. Panel kaydı SİLİNMEZ:
+  `products.etsy_deleted_at` işaretlenir (geriye dönük iz korunur), 404 idempotent.
