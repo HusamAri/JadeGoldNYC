@@ -127,3 +127,10 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
   istemcide TUT, submit'te önce `createDesign` → dönen id ile `createBoard`'ı
   ard arda çağır (tek akış). Yükleme hata verse bile ebeveyn korunur; kullanıcıyı
   düzenle sayfasına al ki tekrar denesin — mevcut upload action'ı yeniden kullan.
+- **Silmeden önce dış medyayı Storage'a KALICI çek (2026-07):** Etsy'de listing
+  silinecekse, canlı-fetch (getListingImages) yetmez — silince kaybolur. Video ise
+  panelde hiç saklanmıyordu. Çözüm: `listing_media` tablosu + özel bucket
+  (`listing-archive`, org-klasörü RLS); server action Etsy CDN'inden baytı çekip
+  bucket'a yükler, idempotent upsert eder (org+listing+kind+media_id). Etsy auth
+  yalnız canlı app'te çalıştığı için pull uygulama içinden tetiklenir; migration
+  MCP ile önceden uygulanır ki preview'da hazır olsun.
