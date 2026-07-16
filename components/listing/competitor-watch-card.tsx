@@ -1,6 +1,6 @@
 "use client";
 
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Plus, X } from "lucide-react";
 import { toast } from "sonner";
@@ -13,6 +13,28 @@ import type { CompetitorWatchItem } from "@/lib/db/queries/keyword-research";
 import { formatMoney } from "@/lib/money";
 import { formatDate } from "@/lib/format";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+
+/** Ürün başına rakip üst sınırı (server action ile aynı). */
+const MAX_COMPETITORS = 10;
+
+/**
+ * Rakip renk kimliği paleti — `color` null olduğunda indeks bazlı belirleyici
+ * (deterministic) renk. Matris örtüsü de aynı renkleri kullanabilsin diye
+ * dışa açık.
+ */
+export const WATCH_PALETTE = [
+  "#6366F1",
+  "#E0568A",
+  "#0EA5A4",
+  "#D97706",
+  "#7C3AED",
+  "#DB2777",
+  "#059669",
+  "#DC2626",
+  "#2563EB",
+  "#CA8A04",
+] as const;
 
 /**
  * Rakip seti (STR tarzı sabit comp-set) — 0091.
@@ -124,27 +146,36 @@ export function CompetitorWatchList({
         Rakip seti · {items.length} sabit takip
       </p>
       <ul className="space-y-2">
-        {items.map((item) => (
+        {items.map((item, i) => {
+          const dot = item.color ?? WATCH_PALETTE[i % WATCH_PALETTE.length];
+          return (
           <li
             key={item.id}
             className="flex items-start justify-between gap-3 text-sm"
           >
             <span className="min-w-0 flex-1">
-              {item.url ? (
-                <a
-                  href={item.url}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="text-primary block truncate hover:underline"
-                >
-                  {item.title ?? `Listing #${item.competitor_listing_id}`}
-                </a>
-              ) : (
-                <span className="block truncate">
-                  {item.title ?? `Listing #${item.competitor_listing_id}`}
-                </span>
-              )}
-              <span className="text-muted-foreground block truncate text-xs">
+              <span className="flex min-w-0 items-center gap-1.5">
+                <span
+                  aria-hidden
+                  className="inline-block size-2.5 shrink-0 rounded-full"
+                  style={{ backgroundColor: dot }}
+                />
+                {item.url ? (
+                  <a
+                    href={item.url}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="text-primary min-w-0 truncate hover:underline"
+                  >
+                    {item.title ?? `Listing #${item.competitor_listing_id}`}
+                  </a>
+                ) : (
+                  <span className="min-w-0 truncate">
+                    {item.title ?? `Listing #${item.competitor_listing_id}`}
+                  </span>
+                )}
+              </span>
+              <span className="text-muted-foreground ml-4 block truncate text-xs">
                 {item.shop_name ?? "Mağaza bilinmiyor"}
                 {item.last_state === "gone" && (
                   <span className="text-destructive"> · Etsy&apos;den kalktı</span>
@@ -181,12 +212,100 @@ export function CompetitorWatchList({
               </Button>
             </span>
           </li>
-        ))}
+          );
+        })}
       </ul>
       <p className="text-muted-foreground text-xs">
         Fiyatlar günlük tazelenir; son 48 saatte ≥3 taze kayıt olduğunda fiyat
         bandı organik arama yerine bu setten kurulur.
       </p>
+    </div>
+  );
+}
+
+/**
+ * Elle rakip linki ekleme formu — Etsy listing URL'i girilir, action URL'den
+ * listing_id çözer. Ürün başına 10 rakip üst sınırı: kalan slot "N/10" olarak
+ * gösterilir; sınıra ulaşınca input+düğme pasifleşir. 0 rakipte de görünür
+ * (ilk rakibi eklemek için) — bu yüzden CompetitorWatchList'ten AYRI mount edilir.
+ */
+export function AddCompetitorLinkForm({
+  productId,
+  currentCount,
+}: {
+  productId: string;
+  /** Aktif rakip sayısı (listCompetitorWatch uzunluğu). */
+  currentCount: number;
+}) {
+  const [url, setUrl] = useState("");
+  const [pending, start] = useTransition();
+  const router = useRouter();
+
+  const atMax = currentCount >= MAX_COMPETITORS;
+  const remaining = Math.max(0, MAX_COMPETITORS - currentCount);
+
+  function submit() {
+    const trimmed = url.trim();
+    if (!trimmed) {
+      toast.error("Etsy listing linki girin.");
+      return;
+    }
+    start(async () => {
+      const r = await addCompetitorToSet(productId, { url: trimmed });
+      if (r.error) toast.error(r.error);
+      else {
+        toast.success("Rakip setine eklendi — fiyatı günlük takip edilecek");
+        setUrl("");
+        router.refresh();
+      }
+    });
+  }
+
+  return (
+    <div className="space-y-1.5 border-t pt-3">
+      <div className="flex items-center justify-between gap-2">
+        <p className="text-muted-foreground font-mono text-[10px] tracking-[0.14em] uppercase">
+          Elle rakip linki ekle
+        </p>
+        <span className="text-muted-foreground font-mono text-[10px] tabular-nums">
+          {currentCount}/{MAX_COMPETITORS}
+        </span>
+      </div>
+      <form
+        className="flex items-center gap-2"
+        onSubmit={(e) => {
+          e.preventDefault();
+          submit();
+        }}
+      >
+        <Input
+          type="url"
+          inputMode="url"
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
+          placeholder="https://www.etsy.com/listing/..."
+          disabled={atMax || pending}
+          className="h-9 flex-1"
+          aria-label="Rakip Etsy listing linki"
+        />
+        <Button
+          type="submit"
+          variant="outline"
+          size="sm"
+          disabled={atMax || pending}
+        >
+          <Plus className="size-3" />
+          Rakip linki ekle
+        </Button>
+      </form>
+      {atMax ? (
+        <p className="text-muted-foreground text-xs">En fazla 10 rakip</p>
+      ) : (
+        <p className="text-muted-foreground text-xs">
+          {remaining} slot kaldı — Etsy listing linkini yapıştırın, fiyatı günlük
+          takip edilir.
+        </p>
+      )}
     </div>
   );
 }

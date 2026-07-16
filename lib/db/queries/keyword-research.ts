@@ -168,6 +168,8 @@ export interface CompetitorWatchItem {
   shop_name: string | null;
   title: string | null;
   url: string | null;
+  /** Rakibin kimlik rengi (kart + matris örtüsünde nokta); null → paletten türetilir. */
+  color: string | null;
   last_price_cents: number | null;
   last_currency: string | null;
   /** Etsy listing durumu ('active', ...) | 'gone' (listing kalkmış). */
@@ -184,6 +186,7 @@ interface WatchDbRow {
   shop_name: string | null;
   title: string | null;
   url: string | null;
+  color: string | null;
 }
 
 interface WatchPriceDbRow {
@@ -201,7 +204,7 @@ export async function listCompetitorWatch(
   const supabase = await createClient();
   const { data: wData, error: wError } = await supabase
     .from("competitor_watch")
-    .select("id, competitor_listing_id, shop_name, title, url")
+    .select("id, competitor_listing_id, shop_name, title, url, color")
     .eq("product_id", productId)
     .eq("active", true)
     .order("created_at", { ascending: true });
@@ -242,6 +245,7 @@ export async function listCompetitorWatch(
       shop_name: w.shop_name,
       title: w.title,
       url: w.url,
+      color: w.color,
       last_price_cents: last?.price_cents ?? null,
       last_currency: last?.currency ?? null,
       last_state: last?.state ?? null,

@@ -98,28 +98,50 @@ function revalidateWatchSurfaces(productId: string) {
  * seferlik fiyat çekimi denenir (kart hemen dolsun); Etsy bağlı değilse cron
  * ertesi gün doldurur.
  */
+/** Ürün başına sabit rakip seti üst sınırı (elle link ekleme + organik ekleme). */
+const MAX_COMPETITORS_PER_PRODUCT = 10;
+
 export async function addCompetitorToSet(
   productId: string,
   competitor: {
-    listing_id: number | null;
+    listing_id?: number | null;
     url: string | null;
-    title: string | null;
-    shop_name: string | null;
+    title?: string | null;
+    shop_name?: string | null;
+    color?: string | null;
   },
 ): Promise<CompetitorWatchActionResult> {
   const m = await requireMembership();
   const listingId =
     competitor.listing_id ?? parseListingIdFromUrl(competitor.url);
   if (!listingId)
-    return { error: "Rakip listing kimliği çözülemedi (eski kayıt, URL yok)." };
+    return { error: "Rakip listing kimliği çözülemedi (geçerli bir Etsy listing linki girin)." };
 
   const admin = createAdminClient();
+
+  // 10'luk üst sınır: zaten sette OLMAYAN yeni bir listing eklenirken kontrol
+  // edilir (aynı listing'in yeniden aktiflenmesi sınırı artırmaz — upsert).
+  const { data: existing, error: exErr } = await admin
+    .from("competitor_watch")
+    .select("competitor_listing_id")
+    .eq("org_id", m.org_id)
+    .eq("product_id", productId)
+    .eq("active", true);
+  if (exErr) return { error: exErr.message };
+  const rows = (existing ?? []) as { competitor_listing_id: number }[];
+  const alreadyWatched = rows.some(
+    (w) => w.competitor_listing_id === listingId,
+  );
+  if (!alreadyWatched && rows.length >= MAX_COMPETITORS_PER_PRODUCT)
+    return { error: "En fazla 10 rakip eklenebilir." };
+
   const r = await addCompetitorWatch(admin, m.org_id, m.user_id, {
     product_id: productId,
     competitor_listing_id: listingId,
-    shop_name: competitor.shop_name,
-    title: competitor.title,
+    shop_name: competitor.shop_name ?? null,
+    title: competitor.title ?? null,
     url: competitor.url,
+    color: competitor.color ?? null,
   });
   if ("error" in r) return { error: r.error };
 
