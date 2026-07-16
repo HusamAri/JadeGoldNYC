@@ -1,5 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
-import type { EtsyPropertyValue } from "@/lib/etsy/types";
+import {
+  variantPropertyParts,
+  type RawVariantProperties,
+} from "@/lib/variant-properties";
 
 /**
  * Listing Komuta Merkezi — veri katmanı.
@@ -161,15 +164,17 @@ function isSon30(label: string): boolean {
   return label.toLowerCase().includes("son 30");
 }
 
-/** property_values → okunur varyant etiketi; yoksa name, o da yoksa SKU. */
+/**
+ * property_values → okunur varyant etiketi; yoksa name, o da yoksa SKU.
+ * `properties` iki şekilde gelebilir (Etsy dizisi VEYA EON düz nesnesi) —
+ * `variantPropertyParts` ikisini de güvenle indirger (nesnede `.map` çökerdi).
+ */
 function variantLabel(v: {
   sku: string;
   name: string | null;
-  properties: EtsyPropertyValue[] | null;
+  properties: RawVariantProperties;
 }): string {
-  const parts = (v.properties ?? [])
-    .map((p) => (p.values ?? []).join(", "))
-    .filter(Boolean);
+  const parts = variantPropertyParts(v.properties);
   if (parts.length) return parts.join(" · ");
   return (v.name ?? "").trim() || v.sku;
 }
@@ -207,7 +212,8 @@ interface ResearchDbRow {
 interface VariantDbRow {
   sku: string;
   name: string | null;
-  properties: EtsyPropertyValue[] | null;
+  // İki şekil: Etsy senkron dizisi VEYA EON düz nesnesi (bkz. variant-properties).
+  properties: RawVariantProperties;
   price_cents: number | null;
   quantity: number | null;
   weight_grams: number | string | null; // numeric — bazı sürücüler string döndürür

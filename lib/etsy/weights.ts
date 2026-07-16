@@ -1,4 +1,7 @@
-import type { EtsyPropertyValue } from "@/lib/etsy/types";
+import {
+  variantPropertyParts,
+  type RawVariantProperties,
+} from "@/lib/variant-properties";
 
 /** Açıklamaya gömülen gram bloğunun işaretçileri (idempotent güncelleme için). */
 export const WEIGHT_BLOCK_START = "<!-- JG-WEIGHTS -->";
@@ -7,8 +10,8 @@ export const WEIGHT_BLOCK_END = "<!-- /JG-WEIGHTS -->";
 export interface VariantWeight {
   sku: string;
   weightGrams: number;
-  /** Etsy property_values (varsa beden/renk buradan). */
-  properties?: EtsyPropertyValue[] | null;
+  /** Varyant property'leri — Etsy dizisi VEYA EON düz nesnesi (varsa beden/renk). */
+  properties?: RawVariantProperties;
 }
 
 /**
@@ -16,10 +19,8 @@ export interface VariantWeight {
  * (ör. "7 inches"), yoksa SKU sonundaki bedeni (…-7, …-7.5, ….7.5) ayıklar.
  */
 export function variantSizeLabel(v: VariantWeight): string {
-  const fromProps = (v.properties ?? [])
-    .map((p) => (p.values ?? []).join(", "))
-    .filter(Boolean)
-    .join(" · ");
+  // properties Etsy dizisi VEYA EON düz nesnesi olabilir — ikisini de indirge.
+  const fromProps = variantPropertyParts(v.properties).join(" · ");
   if (fromProps) return fromProps;
   // SKU sonundaki beden: yalnız "-" ayıracından sonra (ör. BMC1-7, BMC1-7.5).
   // Nokta ondalıktır; çok-noktalı/tiresiz SKU'da yanlış beden yerine SKU dön.
