@@ -40,4 +40,9 @@ export const etsyPaths = {
   // Kargo profilleri (işlem süresi, menşei).
   shippingProfiles: (shopId: number | string) =>
     `/shops/${shopId}/shipping-profiles`,
+  // İade politikaları — createDraftListing fiziksel üründe return_policy_id ister.
+  returnPolicies: (shopId: number | string) =>
+    `/shops/${shopId}/policies/return`,
+  // Satıcı taksonomisi (kategori ağacı) — taxonomy_id çözümü için.
+  sellerTaxonomyNodes: () => `/seller-taxonomy/nodes`,
 };
