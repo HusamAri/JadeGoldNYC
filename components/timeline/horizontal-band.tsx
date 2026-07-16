@@ -13,20 +13,28 @@ import { ArrowLeftToLine } from "lucide-react";
 import { TASK_COLOR_BY_KEY, taskIconUrl } from "@/lib/task-style";
 
 /* ────────────────────────────────────────────────────────────────────────
- * GENİŞ YATAY ZAMAN BANDI (v4) — ana panel + görevler ortak bileşeni.
+ * GENİŞ YATAY ZAMAN BANDI (v5) — ana panel + görevler ortak bileşeni.
  *
- * Kullanıcı yatay çizelgeyi geri istedi ("çok daha geniş olsun"): eski
- * WINDOW_DAYS=42 / MAX_LANES=3 düzeni hem dardı hem aynı güne düşen görevleri
- * düşürüyordu. Yeni band:
- *  • Zaman ekseni YATAY (sol=geçmiş, sağ=gelecek); x = tarih → gerçek anlam.
- *  • Pencere veriden türer (min/max gün) + geniş px/gün → uzun, kaydırılır kanvas.
- *  • Görevler TAVANSIZ şeritlerde eksenin üstünde/altında dizilir — düşme yok.
+ * v4 sorunu: çip 168px genişken x yalnız tarihe (dayPx=34) bağlıydı ve
+ * çakışma çözümü SADECE aynı gün içindeydi — tarihi yakın görevler merkezde
+ * üst üste binip metinleri okunmaz kılıyordu. v5:
+ *  • 4 RAY (üst-iç / alt-iç / üst-dış / alt-dış): kartlar tarih sırasına göre
+ *    round-robin tercih + greedy x-aralık kontrolüyle raylara dağıtılır;
+ *    tercih rayı doluysa sıradaki raya, 4'ü de doluysa en erken boşalan raya
+ *    SAĞA itilerek (yatay ofset) girer → hiçbir kart metni üst üste binmez,
+ *    yerleşim deterministiktir (render'lar arası zıplamaz).
+ *  • LEADER LINE: her kart, eksendeki boncuğuna ince eğik SVG çizgiyle bağlı —
+ *    kart nereye kayarsa kaysın tarih aidiyeti görünür kalır.
+ *  • DERİNLİK: iç raylar önde (z-20, gölgeli), dış raylar arkada (z-10,
+ *    %96 ölçek, gölgesiz); hover kartı öne alır (z-40 + derin gölge).
+ *    Negatif z-index kabı YOK — katmanlar kardeş pozitif z ile kurulur.
+ *  • TARİHSİZ görevler (opsiyonel `floating` prop) çizgiye bağlanmadan kartın
+ *    kenarlarında süzülür; kutunun ~12px dışına taşarlar (kap kırpmaz).
  *  • Olay küreleri (satış/yorum/sistem) eksenin altında süzülür → derinlik.
- *  • 3B boncuk düğüm + cam çip + perspektif = yataydaki "derinlikli" his.
  *
- * Perf dersi: idle'da animasyon/backdrop churn YOK. Çipler/küreler
- * IntersectionObserver ile bir kez belirir (reveal), gerisi hover-tetikli.
- * prefers-reduced-motion global kuralıyla tüm geçişler durur.
+ * Perf dersi: idle'da backdrop churn YOK; süzülme transform-only ve bölgeseldir.
+ * Çipler/küreler IntersectionObserver ile bir kez belirir (reveal), gerisi
+ * hover-tetikli. prefers-reduced-motion global kuralıyla tüm hareket durur.
  * ──────────────────────────────────────────────────────────────────────── */
 
 export interface HTask {
@@ -50,7 +58,24 @@ export interface HEvent {
   weight: number; // 0-1
 }
 
+/** Tarihsiz görev — çizgiye bağlanmaz, bandın kenarlarında süzülür. */
+export interface HFloatTask {
+  id: string;
+  title: string;
+  icon: string | null; // task-style anahtarı
+  color: string | null; // task-style anahtarı
+  priority?: string | null;
+  done?: boolean;
+  href: string;
+}
+
 const DAY_MS = 86_400_000;
+
+/* Kart geometrisi — yerleşim (çakışma) hesabı da bu sabitleri kullanır. */
+const CHIP_W = 168; // kart genişliği (px)
+const CHIP_GAP = 12; // aynı rayda iki kart arası asgari boşluk (px)
+const CHIP_H = 52; // yükseklik payı (yerleşim/ray hesabı için)
+const ROW = 58; // ray başına dikey adım (iç ray → dış ray)
 
 /** Olay türü → kontrast gradient mürekkepleri (mor aileye komplemanter). */
 const EVENT_INK: Record<
@@ -111,12 +136,15 @@ function hash(s: string): number {
 export function HorizontalTimelineBand({
   tasks,
   events = [],
+  floating = [],
   today,
   title = "Zaman Çizelgesi",
   dayPx = 34,
 }: {
   tasks: HTask[];
   events?: HEvent[];
+  /** Tarihsiz görevler — eksene bağlanmaz, kartın kenarlarında süzülür. */
+  floating?: HFloatTask[];
   today: string;
   title?: string;
   dayPx?: number;
@@ -143,32 +171,63 @@ export function HorizontalTimelineBand({
     max = max > addDays(today, 30) ? addDays(max, 6) : addDays(today, 30);
     const span = Math.max(1, dayDiff(min, max));
 
-    // Görevleri güne göre grupla; gün içinde öncelik/başlığa göre sırala.
-    const byDay = new Map<string, HTask[]>();
-    for (const t of tasks) {
-      const arr = byDay.get(t.day) ?? [];
-      arr.push(t);
-      byDay.set(t.day, arr);
-    }
+    // ── Kartları 4 raya deterministik dağıt (çakışma çözümü) ────────────
+    // Tarih sırasına göre round-robin ray tercihi + greedy x-aralık kontrolü:
+    // kartın [x-84, x+84] aralığı tercih rayında doluysa sıradaki raya kayar;
+    // 4 ray da doluysa en erken boşalan raya SAĞA itilerek girer (yatay
+    // ofset — leader line aidiyeti korur). Sıralama anahtarı (gün, öncelik,
+    // başlık, id) tam belirleyici → render'lar arası yerleşim zıplamaz.
+    const sorted = [...tasks].sort(
+      (a, b) =>
+        a.day.localeCompare(b.day) ||
+        (PRIORITY_ORDER[a.priority ?? ""] ?? 9) -
+          (PRIORITY_ORDER[b.priority ?? ""] ?? 9) ||
+        a.title.localeCompare(b.title) ||
+        a.id.localeCompare(b.id),
+    );
+    const rails = [
+      { up: true, lane: 1, lastEnd: -Infinity }, // üst-iç (önde)
+      { up: false, lane: 1, lastEnd: -Infinity }, // alt-iç (önde)
+      { up: true, lane: 2, lastEnd: -Infinity }, // üst-dış (arkada)
+      { up: false, lane: 2, lastEnd: -Infinity }, // alt-dış (arkada)
+    ];
     let maxUp = 0;
     let maxDown = 0;
-    const placed: (HTask & { x: number; lane: number; up: boolean })[] = [];
-    for (const [day, arr] of byDay) {
-      arr.sort(
-        (a, b) =>
-          (PRIORITY_ORDER[a.priority ?? ""] ?? 9) -
-            (PRIORITY_ORDER[b.priority ?? ""] ?? 9) ||
-          a.title.localeCompare(b.title),
-      );
-      const x = dayDiff(min, day) * dayPx;
-      arr.forEach((t, i) => {
-        // 0 üst, 1 alt, 2 üst… şeritte yığ (tavansız)
-        const up = i % 2 === 0;
-        const lane = Math.floor(i / 2) + 1;
-        if (up) maxUp = Math.max(maxUp, lane);
-        else maxDown = Math.max(maxDown, lane);
-        placed.push({ ...t, x, lane, up });
-      });
+    let maxChipEnd = 0;
+    const placed: (HTask & {
+      x: number;
+      chipX: number;
+      lane: number;
+      up: boolean;
+    })[] = [];
+    for (let i = 0; i < sorted.length; i++) {
+      const t = sorted[i];
+      const x = dayDiff(min, t.day) * dayPx;
+      // hafif organik yatay ofset (deterministik hash) — merkez yığılmasını kırar
+      const desired = x + ((hash(t.id) % 13) - 6);
+      let ri = -1;
+      for (let k = 0; k < rails.length; k++) {
+        const cand = (i + k) % rails.length; // round-robin başlangıç
+        if (desired - CHIP_W / 2 >= rails[cand].lastEnd + CHIP_GAP) {
+          ri = cand;
+          break;
+        }
+      }
+      let chipX = desired;
+      if (ri === -1) {
+        // hepsi dolu → en erken boşalan ray + sağa itme
+        ri = 0;
+        for (let k = 1; k < rails.length; k++) {
+          if (rails[k].lastEnd < rails[ri].lastEnd) ri = k;
+        }
+        chipX = rails[ri].lastEnd + CHIP_GAP + CHIP_W / 2;
+      }
+      rails[ri].lastEnd = chipX + CHIP_W / 2;
+      maxChipEnd = Math.max(maxChipEnd, chipX + CHIP_W / 2);
+      const { up, lane } = rails[ri];
+      if (up) maxUp = Math.max(maxUp, lane);
+      else maxDown = Math.max(maxDown, lane);
+      placed.push({ ...t, x, chipX, lane, up });
     }
 
     const placedEvents = events.map((e) => ({
@@ -195,7 +254,8 @@ export function HorizontalTimelineBand({
       min,
       max,
       span,
-      width: span * dayPx,
+      // sağa itilen kart kanvası aşabilir → genişliği itmeye göre uzat
+      width: Math.max(span * dayPx, maxChipEnd + CHIP_GAP),
       placed,
       placedEvents,
       months,
@@ -206,8 +266,6 @@ export function HorizontalTimelineBand({
   }, [tasks, events, today, dayPx]);
 
   const PAD = 40;
-  const ROW = 44; // şerit yüksekliği (boncuk→çip mesafesi)
-  const CHIP_H = 34;
   const EVENT_BAND = 96; // eksen altında küre bölgesi
   const topH = PAD + model.maxUp * ROW + CHIP_H;
   const bottomH = PAD + Math.max(model.maxDown * ROW + CHIP_H, EVENT_BAND);
@@ -291,7 +349,7 @@ export function HorizontalTimelineBand({
   return (
     <div
       className={
-        "w-full rounded-[26px] border border-[color:var(--glass-border)] p-4 sm:p-5 " +
+        "relative w-full rounded-[26px] border border-[color:var(--glass-border)] p-4 sm:p-5 " +
         "[background-color:var(--glass)] [background-image:var(--glass-sheen)] [backdrop-filter:var(--glass-filter)] shadow-[var(--lift),var(--glass-highlight)] " +
         "dark:border-[color:oklch(1_0_0/0.05)] dark:[background-color:var(--lume-panel)] dark:[background-image:none] dark:[backdrop-filter:none] dark:shadow-[0_20px_50px_oklch(0_0_0/0.4),inset_0_1px_0_oklch(1_0_0/0.06)] " +
         "[--tl-todo:oklch(0.54_0.20_278)] [--tl-doing:oklch(0.66_0.20_285)] [--tl-done:oklch(0.83_0.07_290)] [--tl-late:oklch(0.58_0.16_344)] " +
@@ -302,6 +360,7 @@ export function HorizontalTimelineBand({
         <p className="font-semibold">{title}</p>
         <span className="text-muted-foreground text-xs">
           {total} tarihli görev · {doneCount} bitti · {overdueCount} gecikme
+          {floating.length > 0 && <> · {floating.length} tarihsiz süzülüyor</>}
         </span>
         <span className="text-muted-foreground/70 ml-auto hidden text-[11px] sm:inline">
           ↔ sürükle / kaydır · geçmiş ← bugün → gelecek
@@ -395,14 +454,14 @@ export function HorizontalTimelineBand({
               );
             })}
 
-            {/* Görev boncukları + çipleri */}
+            {/* Görev boncukları + kartları (leader line ile bağlı) */}
             {model.placed.map((t) => (
               <BandTask
                 key={t.id}
                 task={t}
                 axisY={axisY}
                 left={PAD + t.x}
-                row={ROW}
+                chipDx={t.chipX - t.x}
                 today={today}
                 onClickCapture={swallowIfDragged}
               />
@@ -433,7 +492,91 @@ export function HorizontalTimelineBand({
           </button>
         )}
       </div>
+
+      {/* ── Tarihsiz görevler — çizgiye bağlı değil, kenarlarda süzülür ────
+          Katman kartın ~12px DIŞINA taşar (kap overflow-hidden değil, kırpmaz);
+          z-20 kardeş katman = scroller içeriğinin üstünde, "Bugüne dön" (z-30)
+          altında. Negatif z-index kabı yok (stacking-context tuzağı). */}
+      {floating.length > 0 && (
+        <div className="pointer-events-none absolute -inset-3 z-20">
+          {floating.slice(0, FLOAT_SLOTS.length).map((f, i) => (
+            <FloatingChip key={f.id} item={f} slot={i} />
+          ))}
+          {floating.length > FLOAT_SLOTS.length && (
+            <span
+              className="text-muted-foreground absolute right-[38%] top-0.5 rounded-full border border-[color:var(--glass-border)] bg-card px-2 py-0.5 text-[10px] font-medium shadow-[var(--lift-sm)]"
+              title="Diğer tarihsiz görevler Kapsam bölümünde"
+            >
+              +{floating.length - FLOAT_SLOTS.length} tarihsiz
+            </span>
+          )}
+        </div>
+      )}
     </div>
+  );
+}
+
+/* Süzülen tarihsiz çipler için deterministik kenar yuvaları — merkez (BUGÜN
+   odağı) ve başlık satırı boş bırakılır; kenarlarda ~12px dışa taşarlar. */
+const FLOAT_SLOTS: React.CSSProperties[] = [
+  { left: "-4px", top: "34%" },
+  { right: "-4px", top: "22%" },
+  { left: "14%", bottom: "-2px" },
+  { right: "22%", bottom: "0px" },
+  { left: "44%", bottom: "-4px" },
+  { right: "-2px", bottom: "30%" },
+];
+
+/** Tarihsiz görev çipi — leader line'sız, yavaş/bölgesel float animasyonlu. */
+function FloatingChip({ item: f, slot }: { item: HFloatTask; slot: number }) {
+  const taskColor = f.color ? TASK_COLOR_BY_KEY.get(f.color) : null;
+  const ink = taskColor?.ink ?? "var(--tl-todo)";
+  const h = hash(f.id);
+  const dur = 9 + (h % 6); // 9–14 sn — çip başına farklı tempo
+  const delay = -(h % 7); // negatif gecikme = fazlar senkron başlamaz
+  return (
+    <Link
+      href={f.href}
+      title={f.title}
+      className="focus-visible:ring-ring/60 pointer-events-auto absolute block rounded-full outline-none focus-visible:ring-2"
+      style={{
+        ...FLOAT_SLOTS[slot],
+        animation: `tl-float-${slot % 2 ? "b" : "a"} ${dur}s ease-in-out ${delay}s infinite`,
+      }}
+    >
+      <span className="bg-card flex max-w-48 items-center gap-1.5 rounded-full border border-[color:var(--glass-border)] px-2.5 py-1 shadow-[var(--lift-sm)] transition-[scale,box-shadow] duration-300 ease-[var(--ease-premium)] hover:scale-105 hover:shadow-[var(--lift)] dark:border-[color:oklch(1_0_0/0.1)]">
+        {f.icon && (
+          <span
+            aria-hidden
+            className="inline-block size-[13px] shrink-0"
+            style={{
+              backgroundColor: ink,
+              maskImage: `url(${taskIconUrl(f.icon)})`,
+              maskSize: "contain",
+              maskRepeat: "no-repeat",
+              maskPosition: "center",
+              WebkitMaskImage: `url(${taskIconUrl(f.icon)})`,
+              WebkitMaskSize: "contain",
+              WebkitMaskRepeat: "no-repeat",
+              WebkitMaskPosition: "center",
+            }}
+          />
+        )}
+        <span
+          className={
+            "truncate text-[11px] font-semibold " +
+            (f.done ? "text-muted-foreground line-through" : "text-foreground")
+          }
+        >
+          {f.title}
+        </span>
+        {f.priority && (
+          <span className="text-muted-foreground shrink-0 font-mono text-[9px] font-bold">
+            {f.priority}
+          </span>
+        )}
+      </span>
+    </Link>
   );
 }
 
@@ -488,19 +631,20 @@ function BandOrb({
   );
 }
 
-/** Eksen üstünde/altında bir görev: 3B boncuk düğüm + bağ + cam çip. */
+/** Eksen üstünde/altında bir görev: 3B boncuk + eğik leader line + cam kart. */
 function BandTask({
   task: t,
   axisY,
   left,
-  row,
+  chipDx,
   today,
   onClickCapture,
 }: {
   task: HTask & { lane: number; up: boolean };
   axisY: number;
   left: number;
-  row: number;
+  /** Kartın boncuğa göre yatay ofseti (çakışma itmesi + organik jitter). */
+  chipDx: number;
   today: string;
   onClickCapture: (e: React.MouseEvent) => void;
 }) {
@@ -538,30 +682,50 @@ function BandTask({
       ? Math.max(0, Math.min(100, t.progress))
       : null;
 
-  const stem = t.lane * row - 8; // boncuktan çipe uzaklık
-  const chipTop = t.up ? axisY - stem - 26 : axisY + stem + 4;
-  const connTop = t.up ? axisY - stem + 2 : axisY + 6;
-  const connH = stem - 4;
+  const front = t.lane === 1; // iç ray önde, dış ray arkada (derinlik)
+  const stem = t.lane * ROW - 10; // boncuktan kart kenarına dikey uzaklık
+  const chipTop = t.up ? axisY - stem - CHIP_H : axisY + stem;
+
+  // Leader line kutusu — boncuk (yerel x=0) ile kart merkezi (x=chipDx)
+  // arasında eğik ince çizgi; kart nereye itilirse itilsin aidiyet görünür.
+  const lineTop = t.up ? axisY - stem : axisY + 8;
+  const lineH = Math.max(1, stem - 8);
+  const boxL = Math.min(0, chipDx) - 1;
+  const boxW = Math.abs(chipDx) + 2;
+  const beadX = -boxL; // yerel koordinatta boncuk
+  const chipXL = chipDx - boxL; // yerel koordinatta kart merkezi
 
   return (
     <div
       ref={ref}
-      className="absolute z-10 [transform-style:preserve-3d]"
+      className={
+        "absolute hover:z-40 focus-within:z-40 " + (front ? "z-20" : "z-10")
+      }
       style={{ left: `${left}px`, top: 0, bottom: 0 }}
     >
-      {/* Bağ çubuğu (boncuk → çip) */}
-      <span
+      {/* Leader line (boncuk → kart) — kartın altında kalır */}
+      <svg
         aria-hidden
-        className="absolute w-px"
+        className="absolute overflow-visible"
         style={{
-          left: 0,
-          top: `${connTop}px`,
-          height: `${Math.max(0, connH)}px`,
-          background: `linear-gradient(${t.up ? "to top" : "to bottom"}, ${ink}, transparent)`,
-          opacity: shown ? 0.5 : 0,
+          left: `${boxL}px`,
+          top: `${lineTop}px`,
+          width: `${boxW}px`,
+          height: `${lineH}px`,
+          opacity: shown ? 0.55 : 0,
           transition: "opacity 500ms var(--ease-premium)",
         }}
-      />
+      >
+        <line
+          x1={beadX}
+          y1={t.up ? lineH : 0}
+          x2={chipXL}
+          y2={t.up ? 0 : lineH}
+          stroke={ink}
+          strokeWidth={1}
+          strokeLinecap="round"
+        />
+      </svg>
       {/* Eksen boncuğu — ışıyan 3B düğüm */}
       <span
         aria-hidden
@@ -574,12 +738,14 @@ function BandTask({
         }}
       />
 
-      {/* Cam çip */}
+      {/* Cam kart — zemin OPAK-yakın (--glass-strong): alttaki küre/çizgi
+          metni asla bozamaz. İç ray önde (gölgeli), dış ray arkada (küçük). */}
       <Link
         href={t.href}
         onClickCapture={onClickCapture}
-        className="group absolute block w-[168px] -translate-x-1/2"
+        className="focus-visible:ring-ring/60 group absolute block w-[168px] -translate-x-1/2 rounded-xl outline-none focus-visible:ring-2"
         style={{
+          left: `${chipDx}px`,
           top: `${chipTop}px`,
           transform: shown
             ? "translateX(-50%)"
@@ -590,10 +756,12 @@ function BandTask({
       >
         <div
           className={
-            "relative overflow-hidden rounded-xl border border-l-[3px] border-[color:var(--glass-border)] px-2.5 py-1.5 shadow-[var(--lift-sm)] transition-[transform,box-shadow] duration-300 ease-[var(--ease-premium)] group-hover:-translate-y-0.5 group-hover:shadow-[var(--lift),0_0_18px_var(--task-glow)] " +
-            "[background-color:var(--glass)] [background-image:var(--glass-sheen)] dark:border-[color:oklch(1_0_0/0.06)] dark:[background-color:var(--lume-glass)] dark:[background-image:none] " +
-            (overdue ? "tl-overdue-neon " : "") +
-            (done ? "opacity-70 " : "")
+            "relative overflow-hidden rounded-xl border border-l-[3px] border-[color:var(--glass-border)] px-2.5 py-1.5 transition-[transform,scale,box-shadow] duration-300 ease-[var(--ease-premium)] group-hover:-translate-y-0.5 group-hover:shadow-[var(--lift),0_0_18px_var(--task-glow)] " +
+            "[background-color:var(--glass-strong)] [background-image:var(--glass-sheen)] dark:border-[color:oklch(1_0_0/0.08)] dark:[background-image:none] " +
+            (front
+              ? "shadow-[var(--lift-sm)] "
+              : "scale-[0.96] shadow-none group-hover:scale-100 ") +
+            (overdue ? "tl-overdue-neon " : "")
           }
           style={{
             borderLeftColor: ink,
