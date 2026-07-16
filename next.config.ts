@@ -15,9 +15,12 @@ const nextConfig: NextConfig = {
     // reddettiğinden Supabase Storage host'u burada izinlenir.
     remotePatterns: [
       {
+        // Yalnız BU projenin public storage'ı — wildcard host (*.supabase.co)
+        // her Supabase projesinden kimliksiz görsel proxy'sine izin verirdi.
+        // Bucket'a da daraltıldı (eon-media = EON kapak hero'ları).
         protocol: "https",
-        hostname: "*.supabase.co",
-        pathname: "/storage/v1/object/public/**",
+        hostname: "sewbrqflcrlgczilrusw.supabase.co",
+        pathname: "/storage/v1/object/public/eon-media/**",
       },
     ],
   },
