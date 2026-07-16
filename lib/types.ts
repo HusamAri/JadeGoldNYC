@@ -118,6 +118,7 @@ export type AuditAction =
   | "csv.import"
   | "etsy.connect"
   | "etsy.sync"
+  | "etsy.reconcile"
   | "etsy.stock_push"
   | "etsy.variant_sync"
   | "etsy.image_upload"
