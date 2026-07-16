@@ -53,8 +53,12 @@ export async function getDashboard(
   currency = "USD",
 ): Promise<DashboardData> {
   const supabase = await createClient();
-  const fromDate = period.fromIso ? period.fromIso.slice(0, 10) : null;
-  const toDate = period.toIso.slice(0, 10);
+  // cost_date TARİH-only kolon: pencere ISO'ları NY takvim gününe çevrilir.
+  // toIso NY gün-sonu ANI olduğundan UTC'de ertesi takvim gününe düşer —
+  // slice(0,10) üst sınırı 1 gün taşırıp (ör. geçen ay penceresine 1 Temmuz
+  // maliyetini sızdırıp) MoM kâr kıyasını çarpıtıyordu (denetim R3 bulgusu).
+  const fromDate = period.fromIso ? dayKeyNY(period.fromIso) : null;
+  const toDate = dayKeyNY(period.toIso);
 
   // --- Sorgular (PERF: 3 sorgu SIRALI await yerine birlikte koşar; kritik
   // yol tek round-trip süresine iner — panel TTFB ölçümünde ana kalemlerden) ---
