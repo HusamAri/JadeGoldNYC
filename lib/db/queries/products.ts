@@ -6,6 +6,7 @@ export async function listProducts(): Promise<Product[]> {
   const { data } = await supabase
     .from("products")
     .select("*")
+    .is("archived_at", null)
     .order("title", { ascending: true })
     .limit(500);
   return (data ?? []) as Product[];

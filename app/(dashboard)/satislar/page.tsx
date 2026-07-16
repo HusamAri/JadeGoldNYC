@@ -10,7 +10,11 @@ import {
 } from "@/components/icons/lux-art";
 
 import { requireMembership } from "@/lib/auth";
-import { listSales, getSalesAnalytics } from "@/lib/db/queries/sales";
+import {
+  listSales,
+  getSalesAnalytics,
+  getMonthlySalesSeries,
+} from "@/lib/db/queries/sales";
 import { strParam, numParam, type RawSearchParams } from "@/lib/searchparams";
 import { SALE_STATUSES } from "@/lib/constants";
 import { formatMoney } from "@/lib/money";
@@ -70,23 +74,70 @@ export default async function SatislarPage({
   const limit = 25;
 
   const m = await requireMembership();
-  const [{ rows, count }, analytics] = await Promise.all([
+  // 24 aylık TS aylıklaştırması: RPC'nin 12 aylık grafiğine "geçen yıl aynı ay"
+  // overlay'i + KPI'lara MoM/YoY rozetleri için (RPC değişmeden, aynı filtreler).
+  const [{ rows, count }, analytics, monthly24] = await Promise.all([
     listSales({ search, status, limit, offset }),
     getSalesAnalytics(m.org_id, { search, status }),
+    getMonthlySalesSeries(m.org_id, { months: 24, search, status }),
   ]);
 
   const t = analytics.totals;
   const netCents = t.gross_cents - t.fees_cents;
   const avgCents = t.orders > 0 ? Math.round(t.gross_cents / t.orders) : 0;
   const feePct = t.gross_cents > 0 ? t.fees_cents / t.gross_cents : 0;
+
+  // ── MoM / YoY karşılaştırmaları (bu ay vs geçen ay · vs geçen yıl aynı ay) ──
+  const byYm = new Map(monthly24.map((x) => [x.ym, x]));
+  const ymOf = (dt: Date) =>
+    `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, "0")}`;
+  const now = new Date();
+  const thisMonth = byYm.get(ymOf(now));
+  const lastMonth = byYm.get(ymOf(new Date(now.getFullYear(), now.getMonth() - 1, 1)));
+  const lastYearMonth = byYm.get(ymOf(new Date(now.getFullYear() - 1, now.getMonth(), 1)));
+  const pct = (curVal: number, prevVal: number | undefined | null): number | null =>
+    prevVal == null || prevVal === 0 ? null : (curVal - prevVal) / Math.abs(prevVal);
+  /** Aylık metrik için iki rozet: MoM + YoY (pencere hep görünür; veri yoksa
+      KpiCard "veri yok" yazar — kısıt gizlenmez). */
+  const monthlyComparisons = (
+    pick: (x: { orders: number; gross_cents: number }) => number,
+  ) => [
+    {
+      change: pct(thisMonth ? pick(thisMonth) : 0, lastMonth ? pick(lastMonth) : null),
+      label: "Bu ay vs geçen ay",
+    },
+    {
+      change: pct(
+        thisMonth ? pick(thisMonth) : 0,
+        lastYearMonth ? pick(lastYearMonth) : null,
+      ),
+      label: "Bu ay vs geçen yıl aynı ay",
+    },
+  ];
+  const monthlyAov = (x: { orders: number; gross_cents: number }) =>
+    x.orders > 0 ? x.gross_cents / x.orders : 0;
+
+  // ── Grafik overlay'i: her ayın karşısına GEÇEN YIL aynı ayı hizala.
+  // 24 aylık pencere son 12 ayın tüm YoY karşılıklarını kapsar; kayıt yokluğu
+  // pencere içinde gerçek 0 demektir. Geçen yıl HİÇ veri yoksa overlay yerine
+  // etikette "geçen yıl verisi yok" denir (seri sessizce gizlenmez).
+  const prevYm = (ym: string) => `${Number(ym.slice(0, 4)) - 1}${ym.slice(4)}`;
+  const yoyHasData = analytics.monthly.some((x) => byYm.has(prevYm(x.ym)));
   const revenueSeries = analytics.monthly.map((x) => ({
     label: monthLabel(x.ym),
     revenue: Math.round(x.gross_cents / 100),
+    compareRevenue: yoyHasData
+      ? Math.round((byYm.get(prevYm(x.ym))?.gross_cents ?? 0) / 100)
+      : null,
   }));
   const orderSeries = analytics.monthly.map((x) => ({
     label: monthLabel(x.ym),
     orders: x.orders,
+    prevOrders: yoyHasData ? (byYm.get(prevYm(x.ym))?.orders ?? 0) : null,
   }));
+  const yoyCaption = yoyHasData
+    ? "son 12 ay · kesikli/soluk: geçen yıl aynı ay"
+    : "son 12 ay · geçen yıl verisi yok";
   const maxCountry = Math.max(
     1,
     ...analytics.countries.map((c) => c.gross_cents),
@@ -142,6 +193,7 @@ export default async function SatislarPage({
             cents={t.gross_cents}
             currency={cur}
             icon={DollarSign}
+            comparisons={monthlyComparisons((x) => x.gross_cents)}
           />
           <KpiCard
             label="Net (kesinti sonrası)"
@@ -155,12 +207,14 @@ export default async function SatislarPage({
             label="Sipariş"
             value={formatNumber(t.orders)}
             icon={ShoppingBag}
+            comparisons={monthlyComparisons((x) => x.orders)}
           />
           <KpiCard
             label="Ort. Sipariş"
             cents={avgCents}
             currency={cur}
             icon={Receipt}
+            comparisons={monthlyComparisons(monthlyAov)}
           />
           <KpiCard
             label="Etsy Kesintisi"
@@ -183,17 +237,25 @@ export default async function SatislarPage({
             <Card className="glass-iced">
               <CardContent className="space-y-3">
                 <h3 className="text-muted-foreground text-sm font-medium">
-                  Aylık Ciro · son 12 ay
+                  Aylık Ciro{" "}
+                  <span className="text-xs font-normal">· {yoyCaption}</span>
                 </h3>
-                <RevenueAreaChart data={revenueSeries} />
+                <RevenueAreaChart
+                  data={revenueSeries}
+                  compareLabel={yoyHasData ? "Geçen yıl aynı ay" : undefined}
+                />
               </CardContent>
             </Card>
             <Card className="glass-iced">
               <CardContent className="space-y-3">
                 <h3 className="text-muted-foreground text-sm font-medium">
-                  Aylık Sipariş · son 12 ay
+                  Aylık Sipariş{" "}
+                  <span className="text-xs font-normal">· {yoyCaption}</span>
                 </h3>
-                <OrdersBarChart data={orderSeries} />
+                <OrdersBarChart
+                  data={orderSeries}
+                  compareLabel={yoyHasData ? "Geçen yıl aynı ay" : undefined}
+                />
               </CardContent>
             </Card>
           </div>
@@ -203,7 +265,9 @@ export default async function SatislarPage({
           <Card>
             <CardContent className="space-y-3">
               <h3 className="text-muted-foreground text-sm font-medium">
-                Ülkeye Göre Ciro
+                Ülkeye Göre Ciro{" "}
+                {/* Pencere etiketi: bu kırılım dönem filtresine tabi değildir. */}
+                <span className="text-xs font-normal">· tüm zamanlar</span>
               </h3>
               <ul className="space-y-2.5">
                 {analytics.countries.map((c) => (

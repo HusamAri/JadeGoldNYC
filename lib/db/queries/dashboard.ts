@@ -78,8 +78,15 @@ export async function getDashboard(
     .limit(2000);
   if (period.fromIso) itemsQuery = itemsQuery.gte("sales.order_date", period.fromIso);
 
-  const [{ data: salesRows }, { data: costRows }, { data: itemRows }] =
-    await Promise.all([salesQuery, costQuery, itemsQuery]);
+  const [
+    { data: salesRows, error: salesErr },
+    { data: costRows, error: costErr },
+    { data: itemRows, error: itemsErr },
+  ] = await Promise.all([salesQuery, costQuery, itemsQuery]);
+  // Hata sessizce "veri yok"a dönüşmesin — en azından yüzeye çıkar.
+  if (salesErr) console.error("getDashboard sales sorgusu:", salesErr.message);
+  if (costErr) console.error("getDashboard costs sorgusu:", costErr.message);
+  if (itemsErr) console.error("getDashboard sale_items sorgusu:", itemsErr.message);
 
   const sales = (salesRows ?? []) as {
     grand_total_cents: number;
@@ -182,10 +189,11 @@ export async function getDashboard(
     .eq("source", "gold_auto")
     .lte("cost_date", toDate);
   if (fromDate) goldCostQuery = goldCostQuery.gte("cost_date", fromDate);
-  const [{ data: goldCostRows }, recent] = await Promise.all([
+  const [{ data: goldCostRows, error: goldErr }, recent] = await Promise.all([
     goldCostQuery,
     recentActivity(8),
   ]);
+  if (goldErr) console.error("getDashboard altın maliyet sorgusu:", goldErr.message);
   const goldCosts_ = (goldCostRows ?? []) as unknown as {
     amount_cents: number;
     category: { key: string } | null;

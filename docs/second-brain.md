@@ -10,6 +10,9 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
   `origin/main`'i incele — aynı özellik paralel oturumda çoktan (hatta daha iyi)
   eklenmiş olabilir. Vaka: $/gram pazar motoru iki kez yazıldı; main'deki üstündü,
   bizimki geri çekildi. Kural: motor/altyapı işine başlamadan main'de sembol taraması.
+  Güçlendirme (2026-07): kural VERİ müdahaleleri için de geçerli — kullanıcı "başka
+  oturumda ilerliyorum" dediği anda o iş koluna ait geri-dönüşü zor DB operasyonları
+  (SKU yeniden adlandırma, silindi-işaretleme) durdurulur; yalnız kendi dalının işi yapılır.
 - **Kanıtla, varsayma (2026-07):** "İzin kapalı", "veri yok" gibi durum iddialarını
   DB'den SQL ile doğrula. Vaka: Etsy yazma izni "kapalı" sanılıyordu; `etsy_write_enabled`
   sorgusu `true` döndü — bir adım boşa planlanmıştı.

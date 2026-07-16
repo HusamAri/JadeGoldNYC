@@ -13,6 +13,18 @@ function formatChange(change: number): string {
   return `${arrow} %${pct.toFixed(1)}`;
 }
 
+/**
+ * Tek karşılaştırma satırı — "geçen döneme göre" / "geçen yıla göre" gibi.
+ * `change` null ise karşılaştırma penceresi VAR ama verisi yok demektir;
+ * satır gizlenmez, "veri yok" ibaresi gösterilir (veri kısıtı görünür kalır).
+ */
+export interface KpiComparison {
+  /** -1..1 arası yüzde değişim (marj gibi oranlarda puan farkı). */
+  change: number | null;
+  /** Karşılaştırma dönemi etiketi (ör. "Geçen ay", "Geçen yıl aynı dönem"). */
+  label: string;
+}
+
 /** Etikete göre deterministik küçük hash (SSR-güvenli; Math.random yok). */
 function hashLabel(s: string): number {
   let h = 0;
@@ -42,6 +54,7 @@ export function KpiCard({
   accent = "default",
   change,
   changeLabel,
+  comparisons,
   className,
   splitTone = false,
   holo = false,
@@ -58,6 +71,11 @@ export function KpiCard({
   /** -1..1 arası yüzde değişim. null = gösterme. */
   change?: number | null;
   changeLabel?: string;
+  /**
+   * Çoklu karşılaştırma rozetleri (MoM + YoY). `change`/`changeLabel`
+   * ikilisinin çok pencereli hâli; ikisi birlikte verilirse önce bu çizilir.
+   */
+  comparisons?: KpiComparison[];
   className?: string;
   /**
    * Panelin TEK bir hero/öne çıkan KPI'ı için: iki tonlu büyük rakam
@@ -176,6 +194,41 @@ export function KpiCard({
               value
             )}
           </p>
+          {comparisons && comparisons.length > 0 && (
+            <div className="mt-1 space-y-0.5">
+              {comparisons.map((c) =>
+                c.change != null ? (
+                  <p
+                    key={c.label}
+                    title={`${c.label} ile karşılaştırma`}
+                    className={cn(
+                      "font-mono text-xs font-medium tabular-nums",
+                      c.change > 0 &&
+                        "text-[oklch(0.50_0.19_278)] dark:text-[oklch(0.80_0.10_278)]",
+                      c.change < 0 &&
+                        "text-[oklch(0.58_0.16_344)] dark:text-[oklch(0.74_0.12_344)]",
+                      c.change === 0 && "text-muted-foreground",
+                    )}
+                  >
+                    {formatChange(c.change)}
+                    <span className="text-muted-foreground font-normal">
+                      {" "}
+                      {c.label}
+                    </span>
+                  </p>
+                ) : (
+                  // Karşılaştırma penceresi var ama verisi yok — kısıtı söyle,
+                  // sessizce gizleme (kullanıcı kuralı).
+                  <p
+                    key={c.label}
+                    className="text-muted-foreground font-mono text-xs"
+                  >
+                    {c.label}: veri yok
+                  </p>
+                ),
+              )}
+            </div>
+          )}
           {change != null && (
             <p
               className={cn(

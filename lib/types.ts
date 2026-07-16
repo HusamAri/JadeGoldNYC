@@ -74,12 +74,17 @@ export interface SaleItem {
   created_at: string;
 }
 
+/** Maliyete katlanan taraf (EON ortaklık yapısı): H | Y | I (I = doğrudan kârdan). */
+export type CostBearer = "H" | "Y" | "I";
+
 export interface CostCategory {
   id: string;
   org_id: string;
   key: string;
   label_tr: string;
   is_system: boolean;
+  /** Bu kategorideki maliyetlere otomatik atanan taraf (boşsa atama yok). */
+  default_bearer: CostBearer | null;
 }
 
 export interface Cost {
@@ -91,6 +96,8 @@ export interface Cost {
   currency: string;
   cost_date: string;
   vendor: string | null;
+  /** Maliyete katlanan taraf; NULL = atanmamış (tek sahipli org'larda normal). */
+  bearer: CostBearer | null;
   sale_id: string | null;
   source: SourceKind;
   receipt_url: string | null;
@@ -158,6 +165,8 @@ export interface Product {
   image_url: string | null;
   views: number | null;
   num_favorers: number | null;
+  /** Panel arşiv damgası — dolu = listelerden gizli (Arşiv filtresi hariç). */
+  archived_at: string | null;
   created_at: string;
   updated_at: string;
 }
