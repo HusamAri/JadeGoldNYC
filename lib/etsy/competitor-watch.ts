@@ -26,6 +26,7 @@ export interface CompetitorWatchRow {
   title: string | null;
   url: string | null;
   note: string | null;
+  color: string | null;
   active: boolean;
 }
 
@@ -64,24 +65,29 @@ export async function addCompetitorWatch(
     title?: string | null;
     url?: string | null;
     note?: string | null;
+    color?: string | null;
   },
 ): Promise<{ id: string } | { error: string }> {
+  // Renk yalnız verildiğinde yazılır — upsert'te var olan kaydın rengini
+  // undefined'la ezmemek için koşullu eklenir.
+  const row: Record<string, unknown> = {
+    org_id: orgId,
+    product_id: input.product_id,
+    competitor_listing_id: input.competitor_listing_id,
+    shop_name: input.shop_name ?? null,
+    title: input.title ?? null,
+    url:
+      input.url ??
+      `https://www.etsy.com/listing/${input.competitor_listing_id}`,
+    note: input.note ?? null,
+    active: true,
+    created_by: userId,
+  };
+  if (input.color != null) row.color = input.color;
   const { data, error } = await admin
     .from("competitor_watch")
     .upsert(
-      {
-        org_id: orgId,
-        product_id: input.product_id,
-        competitor_listing_id: input.competitor_listing_id,
-        shop_name: input.shop_name ?? null,
-        title: input.title ?? null,
-        url:
-          input.url ??
-          `https://www.etsy.com/listing/${input.competitor_listing_id}`,
-        note: input.note ?? null,
-        active: true,
-        created_by: userId,
-      },
+      row,
       { onConflict: "org_id,product_id,competitor_listing_id" },
     )
     .select("id")

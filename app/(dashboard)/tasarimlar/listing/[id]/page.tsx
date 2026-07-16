@@ -14,6 +14,7 @@ import { KeywordResearchPanel } from "@/components/keyword-research-panel";
 import { ImageStrip } from "@/components/listing/image-strip";
 import { VariantEditor } from "@/components/listing/variant-editor";
 import { MarketPositionCard } from "@/components/listing/market-position-card";
+import { VariantMatrix } from "@/components/listing/variant-matrix";
 import { RepriceRuleCard } from "@/components/listing/reprice-rule-card";
 import { AdsSummaryCard } from "@/components/listing/ads-summary-card";
 import { ListingGapsCard } from "@/components/listing/listing-gaps-card";
@@ -222,6 +223,9 @@ export default async function ListingDetayPage({
             currency={product.currency}
           />
         )}
+        {/* Varyant matrisi — genişlik × beden (fiyat + gram); varyantsız
+            listing'de kendini gizler (null döner). */}
+        <VariantMatrix productId={product.id} />
         <KeywordResearchPanel productId={product.id} />
         {/* Otomatik fiyat kuralı — rakip çapasına bağlı reprice motoru
             (kapalı/öneri/otomatik); araştırma panelinin hemen altında, çünkü

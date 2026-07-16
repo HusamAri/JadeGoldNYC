@@ -15,6 +15,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { KeywordResearchControls } from "@/components/keyword-research-controls";
 import {
+  AddCompetitorLinkForm,
   AddCompetitorToSetButton,
   CompetitorWatchList,
 } from "@/components/listing/competitor-watch-card";
@@ -414,6 +415,12 @@ export async function KeywordResearchPanel({
 
         {/* Rakip seti — sabit takip; snapshot olmasa da izlemeler görünür. */}
         <CompetitorWatchList productId={productId} items={watchItems} />
+        {/* Elle rakip linki ekleme — 0 rakipte de görünür (ilk rakibi eklemek
+            için); üst sınır 10. */}
+        <AddCompetitorLinkForm
+          productId={productId}
+          currentCount={watchItems.length}
+        />
       </CardContent>
     </Card>
   );
