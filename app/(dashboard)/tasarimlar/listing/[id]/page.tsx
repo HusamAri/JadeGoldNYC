@@ -19,6 +19,7 @@ import { RepriceRuleCard } from "@/components/listing/reprice-rule-card";
 import { AdsSummaryCard } from "@/components/listing/ads-summary-card";
 import { ListingGapsCard } from "@/components/listing/listing-gaps-card";
 import { ListingFieldsForm } from "@/components/listing/listing-fields-form";
+import { EtsyCopyCard, type EtsyCopyField } from "@/components/listing/etsy-copy-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -37,6 +38,20 @@ function decodeEntities(s: string): string {
     .replace(/&lt;/g, "<")
     .replace(/&gt;/g, ">")
     .replace(/&amp;/g, "&");
+}
+
+/** Açıklama sonundaki dahili not bloğunu söker — scripts/eon-push-drafts.ts
+ *  stripInternalTrailer ile BİREBİR aynı desen (kopyalanan metin = Etsy'ye
+ *  giden metin). Künye içeriği ayrıca kurulum notu olarak gösterilir. */
+function splitInternalTrailer(desc: string): {
+  clean: string;
+  note: string | null;
+} {
+  const m = desc.match(/\n*---\n\[EON \d\d · ([\s\S]*)\]$/m);
+  return {
+    clean: desc.replace(/\n*---\n\[EON [\s\S]*\]$/m, "").trimEnd(),
+    note: m ? m[1] : null,
+  };
 }
 
 const STATUS_LABELS: Record<
@@ -183,12 +198,50 @@ export default async function ListingDetayPage({
         <ListingGapsCard gaps={gaps} />
       </section>
 
-      {/* 03 · Varyantlar — inline editör + otomatik dolum. */}
+      {/* 03 · Etsy'ye kopyala — manuel listing açma panosu (alan alan kopya).
+          Açıklama sunucuda temizlenir; kopyalanan = Etsy'ye giden metin. */}
+      <section id="kopyala" className="scroll-mt-24">
+        <Card>
+          <CardContent className="space-y-4">
+            <SectionIdx n="03" name="Etsy'ye kopyala" />
+            {(() => {
+              const { clean, note } = splitInternalTrailer(
+                product.description ?? "",
+              );
+              const fields: EtsyCopyField[] = [
+                {
+                  label: "Başlık",
+                  value: decodeEntities(product.title),
+                  hint: `${decodeEntities(product.title).length}/140 karakter`,
+                },
+                {
+                  label: "Etiketler",
+                  value: (product.tags ?? []).join(", "),
+                  hint: `${product.tags?.length ?? 0}/13 · virgülle yapıştır`,
+                },
+                {
+                  label: "Malzemeler",
+                  value: (product.materials ?? []).join(", "),
+                },
+                {
+                  label: "Açıklama",
+                  value: clean,
+                  multiline: true,
+                  hint: note ? "iç not temizlendi" : undefined,
+                },
+              ].filter((f) => f.value.length > 0);
+              return <EtsyCopyCard fields={fields} setupNote={note} />;
+            })()}
+          </CardContent>
+        </Card>
+      </section>
+
+      {/* 04 · Varyantlar — inline editör + otomatik dolum. */}
       <section id="varyantlar" className="scroll-mt-24">
         <Card>
           <CardContent className="space-y-4">
             <SectionIdx
-              n="03"
+              n="04"
               name="Varyantlar"
               tail={
                 variants.length > 0
@@ -214,9 +267,9 @@ export default async function ListingDetayPage({
         </Card>
       </section>
 
-      {/* 04 · Rakip fiyat eşleşmeleri — hazır panel AYNEN (kendi kartı var). */}
+      {/* 05 · Rakip fiyat eşleşmeleri — hazır panel AYNEN (kendi kartı var). */}
       <section id="rakip" className="space-y-4 scroll-mt-24">
-        <SectionIdx n="04" name="Rakip fiyat eşleşmeleri" />
+        <SectionIdx n="05" name="Rakip fiyat eşleşmeleri" />
         {marketPosition && (
           <MarketPositionCard
             position={marketPosition}
@@ -237,12 +290,12 @@ export default async function ListingDetayPage({
         />
       </section>
 
-      {/* 05 · Reklam & performans. */}
+      {/* 06 · Reklam & performans. */}
       <section id="reklam" className="scroll-mt-24">
         <Card>
           <CardContent className="space-y-4">
             <SectionIdx
-              n="05"
+              n="06"
               name="Reklam & performans"
               tail={
                 ads.periods.length > 0
