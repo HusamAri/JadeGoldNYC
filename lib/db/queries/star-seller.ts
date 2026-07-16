@@ -3,11 +3,13 @@ import type { StarSellerSnapshot } from "@/lib/types";
 
 export async function listStarSellerSnapshots(): Promise<StarSellerSnapshot[]> {
   const supabase = await createClient();
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("star_seller_snapshots")
     .select("*")
     .order("period_end", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false });
+  // Hata sessizce "veri yok"a dönüşmesin — en azından yüzeye çıkar.
+  if (error) console.error("[star-seller] snapshot listesi:", error.message);
   return (data ?? []) as StarSellerSnapshot[];
 }
 
@@ -15,11 +17,12 @@ export async function getStarSellerSnapshot(
   id: string,
 ): Promise<StarSellerSnapshot | null> {
   const supabase = await createClient();
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("star_seller_snapshots")
     .select("*")
     .eq("id", id)
     .maybeSingle();
+  if (error) console.error("[star-seller] snapshot kaydı:", error.message);
   return (data as StarSellerSnapshot) ?? null;
 }
 
@@ -49,7 +52,8 @@ export async function getReviewRatingStats(
     next.setUTCDate(next.getUTCDate() + 1);
     query = query.lt("review_date", next.toISOString());
   }
-  const { data } = await query;
+  const { data, error } = await query;
+  if (error) console.error("[star-seller] reviews sorgusu:", error.message);
   const rows = (data ?? []) as { rating: number | null }[];
   const rated = rows.filter((r) => r.rating != null) as { rating: number }[];
   const ratedCount = rated.length;

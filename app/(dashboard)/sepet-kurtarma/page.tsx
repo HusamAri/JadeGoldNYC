@@ -238,11 +238,26 @@ export default async function GeriKazanimPage({
           </div>
 
           {rows.length === 0 ? (
-            <EmptyState
-              icon={CheckCircle2}
-              title="Takip kaydı yok"
-              description="Bir müşteriye ulaştığınızda kaydı buraya ekleyin; teşvik/aksiyon ve sonucu (kazanıldı/kayıp) takip edin."
-            />
+            // Aktif filtre/aramada "kayıt yok" yanıltır — filtre sonucu boş
+            // olduğunu söyle ve tek tıkla temizleme yolu sun.
+            search || status ? (
+              <EmptyState
+                icon={CheckCircle2}
+                title="Bu filtreyle sonuç yok"
+                description="Arama veya durum filtresine uyan takip kaydı bulunamadı. Filtreyi temizleyip tüm kayıtları görebilirsiniz."
+                action={
+                  <Button asChild variant="outline">
+                    <Link href="/sepet-kurtarma">Filtreyi temizle</Link>
+                  </Button>
+                }
+              />
+            ) : (
+              <EmptyState
+                icon={CheckCircle2}
+                title="Takip kaydı yok"
+                description="Bir müşteriye ulaştığınızda kaydı buraya ekleyin; teşvik/aksiyon ve sonucu (kazanıldı/kayıp) takip edin."
+              />
+            )
           ) : (
             <Table>
               <TableHeader>

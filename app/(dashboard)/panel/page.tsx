@@ -564,6 +564,14 @@ export default async function PanelPage({
                 </TableBody>
               </Table>
             )}
+            <div className="mt-4">
+              <Link
+                href="/sepet-kurtarma"
+                className="text-primary text-sm font-medium hover:underline"
+              >
+                Müşteri geri kazanımı →
+              </Link>
+            </div>
           </CardContent>
         </Card>
 
@@ -611,6 +619,14 @@ export default async function PanelPage({
                 })}
               </div>
             )}
+            <div className="mt-4">
+              <Link
+                href="/satislar"
+                className="text-primary text-sm font-medium hover:underline"
+              >
+                Tüm satışları gör →
+              </Link>
+            </div>
           </CardContent>
         </Card>
       </div>

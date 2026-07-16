@@ -100,7 +100,8 @@ export interface MonthlySalesPoint {
  * hariç — status NOT NULL, 0005). RPC'nin 12 aylık penceresi değiştirilmeden,
  * YoY overlay + MoM/YoY rozetleri için daha geniş pencere (varsayılan 24 ay)
  * dar kolonlarla sayfalı çekilir ve TS tarafında aylıklaştırılır.
- * Tutarlar cent (RPC gibi grand_total_cents toplamı).
+ * Tutarlar cent — panel/RPC ile AYNI gelir semantiği (0094):
+ * grand_total yoksa item_total'a düşülür.
  */
 export async function getMonthlySalesSeries(
   orgId: string,
@@ -121,10 +122,11 @@ export async function getMonthlySalesSeries(
   const rows = await fetchAllPages<{
     order_date: string;
     grand_total_cents: number | null;
+    item_total_cents: number | null;
   }>((from, to) => {
     let q = supabase
       .from("sales")
-      .select("order_date, grand_total_cents")
+      .select("order_date, grand_total_cents, item_total_cents")
       // Multi-tenant kilidi: RLS'in aktif-org varsayımına yaslanma.
       .eq("org_id", orgId)
       .gte("order_date", fromIso)
@@ -146,7 +148,9 @@ export async function getMonthlySalesSeries(
     const ym = r.order_date.slice(0, 7);
     const e = byYm.get(ym) ?? { orders: 0, gross_cents: 0 };
     e.orders += 1;
-    e.gross_cents += r.grand_total_cents ?? 0;
+    // Gelir semantiği tekleşti (0094): grand_total boşsa item_total'a düş —
+    // panel/dashboard ve sales_analytics RPC'siyle aynı.
+    e.gross_cents += r.grand_total_cents || r.item_total_cents || 0;
     byYm.set(ym, e);
   }
   return [...byYm.entries()]
@@ -164,11 +168,13 @@ export async function getSaleWithItems(id: string) {
   if (error) throw error;
   if (!sale) return null;
 
-  const { data: items } = await supabase
+  const { data: items, error: itemsErr } = await supabase
     .from("sale_items")
     .select("*")
     .eq("sale_id", id)
     .order("created_at", { ascending: true });
+  // Hata sessizce "kalem yok"a dönüşmesin — en azından yüzeye çıkar.
+  if (itemsErr) console.error("[sales] sale_items sorgusu:", itemsErr.message);
 
   return { sale: sale as Sale, items: (items ?? []) as SaleItem[] };
 }
