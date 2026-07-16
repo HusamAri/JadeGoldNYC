@@ -11,6 +11,7 @@ import {
   ScrollText,
   FileBarChart,
   ListChecks,
+  Megaphone,
   Boxes,
   Star,
   Settings,
@@ -51,6 +52,7 @@ export const NAV_GROUPS: NavGroup[] = [
     items: [
       { href: "/satislar", label: "Satışlar", icon: ShoppingBag },
       { href: "/maliyetler", label: "Maliyetler", icon: Wallet },
+      { href: "/reklamlar", label: "Reklamlar", icon: Megaphone },
       { href: "/raporlar", label: "Raporlar", icon: FileBarChart },
     ],
   },
