@@ -26,6 +26,7 @@ export async function logAudit(
       | "etsy.stock_push"
       | "etsy.variant_sync"
       | "etsy.image_upload"
+      | "etsy.reprice"
       | "listing.archive"
       | "listing.delete_etsy"
       | "report.export"
