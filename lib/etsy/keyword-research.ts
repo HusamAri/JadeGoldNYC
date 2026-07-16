@@ -5,10 +5,14 @@ import { EtsyClient, EtsyNotConnectedError } from "@/lib/etsy/client";
 import { etsyPaths } from "@/lib/etsy/endpoints";
 import {
   etsyMoneyToCents,
-  type EtsyPropertyValue,
   type EtsyInventory,
 } from "@/lib/etsy/types";
 import { getGoldPricePerOunce } from "@/lib/gold-price";
+import {
+  asEtsyProperties,
+  variantPropertyParts,
+  type RawVariantProperties,
+} from "@/lib/variant-properties";
 import {
   detectKarat,
   extractWeightGrams,
@@ -74,8 +78,9 @@ interface VariantTokens {
 }
 
 /** property_values dizisinden beden/ayar token'larını çıkarır. */
-function tokenize(props?: EtsyPropertyValue[] | null): VariantTokens {
-  const text = (props ?? [])
+function tokenize(props?: RawVariantProperties): VariantTokens {
+  // props Etsy dizisi VEYA EON düz nesnesi olabilir — kanonik diziye indirge.
+  const text = asEtsyProperties(props)
     .flatMap((p) => p.values ?? [])
     .join(" ")
     .toLowerCase();
@@ -138,7 +143,8 @@ async function fetchCompetitorOfferings(
 export interface OurVariant {
   sku: string;
   name: string | null;
-  properties: EtsyPropertyValue[] | null;
+  // Etsy dizisi VEYA EON düz nesnesi (bkz. variant-properties).
+  properties: RawVariantProperties;
   price_cents: number | null;
   weight_grams: number | null;
 }
@@ -164,9 +170,7 @@ function buildVariantComparison(
   return ourVariants.map((v) => {
     const vt = tokenize(v.properties);
     const label =
-      (v.properties ?? [])
-        .flatMap((p) => p.values ?? [])
-        .join(" · ") || v.name || v.sku;
+      variantPropertyParts(v.properties).join(" · ") || v.name || v.sku;
     const matched = competitorOfferings.filter((c) => tokensMatch(vt, c.tokens));
     const prices = matched.map((c) => c.price_cents);
     if (!prices.length) {
