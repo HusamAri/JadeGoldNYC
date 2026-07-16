@@ -60,6 +60,9 @@ interface ResearchRow {
   researched_at: string;
   currency: string;
   result_count: number;
+  /** 0095: bandın gerçekten kurulduğu rakip sayısı (rakip seti aktifken
+   *  organik sayıdan ayrışır). Eski kayıtlarda null → result_count'a düşülür. */
+  band_result_count: number | null;
   avg_cents: number | null;
   median_cents: number | null;
   melt_per_gram_cents: number | null;
@@ -328,10 +331,14 @@ async function evaluateRule(
       anchorCents,
     );
   }
-  if (research.result_count < MIN_RESULT_COUNT) {
+  // Bandın kurulduğu sayı: rakip seti aktifken organik result_count değil
+  // band_result_count esas alınır (aksi halde comp-set'li ürün organik zayıf
+  // diye sonsuza dek atlanırdı — denetim R2 #3).
+  const bandCount = research.band_result_count ?? research.result_count;
+  if (bandCount < MIN_RESULT_COUNT) {
     return log(
       "atlandi",
-      `Rakip sayısı çok az (${research.result_count} < ${MIN_RESULT_COUNT}) — band şüpheli.`,
+      `Rakip sayısı çok az (${bandCount} < ${MIN_RESULT_COUNT}) — band şüpheli.`,
       null,
       anchorCents,
     );
@@ -573,7 +580,7 @@ export async function evaluateRepriceRules(
         const { data: researchRow, error: resErr } = await admin
           .from("keyword_research")
           .select(
-            "id, keyword, researched_at, currency, result_count, avg_cents, median_cents, melt_per_gram_cents, confidence, price_position, data_suspect",
+            "id, keyword, researched_at, currency, result_count, band_result_count, avg_cents, median_cents, melt_per_gram_cents, confidence, price_position, data_suspect",
           )
           .eq("org_id", org)
           .eq("product_id", rule.product_id)

@@ -97,6 +97,9 @@ export function RepriceRuleCard({
   hasVariations: boolean;
 }) {
   const [loading, setLoading] = useState(true);
+  // Yükleme hatası kalıcı tutulur: geçici toast yetmez — hata görülmeden
+  // varsayılan (boş) form kaydedilirse GERÇEK kural ezilir (denetim R2 #9).
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [hasRule, setHasRule] = useState(false);
   const [writeEnabled, setWriteEnabled] = useState(false);
@@ -111,9 +114,11 @@ export function RepriceRuleCard({
       if (cancelled) return;
       if ("error" in data) {
         toast.error(data.error);
+        setLoadError(data.error);
         setLoading(false);
         return;
       }
+      setLoadError(null);
       if (data.rule) {
         setHasRule(true);
         setLastAppliedAt(data.rule.last_applied_at);
@@ -164,6 +169,22 @@ export function RepriceRuleCard({
         <span className="text-muted-foreground text-sm">
           Fiyat kuralı yükleniyor…
         </span>
+      </div>
+    );
+  }
+
+  if (loadError) {
+    // Kalıcı hata durumu: form GÖSTERİLMEZ — boş varsayılanların kaydedilip
+    // mevcut kuralı ezmesi engellenir; kullanıcı sayfayı yenileyerek dener.
+    return (
+      <div className="nm-raised space-y-2 rounded-[1.5rem] p-5">
+        <p className="text-destructive text-sm font-medium">
+          Fiyat kuralı yüklenemedi
+        </p>
+        <p className="text-muted-foreground text-sm">
+          {loadError} — mevcut kural ezilmesin diye düzenleme kapatıldı.
+          Sayfayı yenileyip tekrar deneyin.
+        </p>
       </div>
     );
   }

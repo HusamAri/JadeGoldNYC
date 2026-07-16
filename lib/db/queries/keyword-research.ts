@@ -38,6 +38,9 @@ export interface KeywordResearchSnapshot {
   basis_note: string | null;
   data_suspect: boolean | null;
   band_source: BandSource | null;
+  /** 0095: bandın kurulduğu rakip sayısı (rakip setiyle organikten ayrışır);
+   *  eski kayıtlarda null → result_count'a düşülür. */
+  band_result_count: number | null;
 }
 
 /** Listing'in araştırma kelimesi meta bilgisi (editör önizlemesi için). */

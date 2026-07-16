@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { recentActivity } from "@/lib/db/queries/audit";
-import { fetchAllPages } from "@/lib/db/queries/listings";
+import { fetchAllPages, type PageResult } from "@/lib/db/queries/listings";
 import { formatDate } from "@/lib/format";
 import { dayKeyNY, type ResolvedPeriod } from "@/lib/period";
 import type { AuditLog } from "@/lib/types";
@@ -58,18 +58,62 @@ export async function getDashboard(
 
   // --- Sorgular (PERF: 3 sorgu SIRALI await yerine birlikte koşar; kritik
   // yol tek round-trip süresine iner — panel TTFB ölçümünde ana kalemlerden) ---
-  let salesQuery = supabase
-    .from("sales")
-    .select("grand_total_cents, item_total_cents, order_date, buyer_name, source")
-    .neq("status", "cancelled")
-    .lte("order_date", period.toIso);
-  if (period.fromIso) salesQuery = salesQuery.gte("order_date", period.fromIso);
+  // Manşet KPI kaynakları da TAM sayfalanır — sayfasız sorgu PostgREST'in
+  // örtük 1000-satır sınırına takılır ve geniş pencerede (özellikle 'all')
+  // gelir/sipariş sessizce EKSİK sayılırdı (denetim R2 bulgusu #1).
+  const salesPromise = fetchAllPages<{
+    grand_total_cents: number;
+    item_total_cents: number;
+    order_date: string;
+    buyer_name: string | null;
+    source: string;
+  }>((from, to) => {
+    let q = supabase
+      .from("sales")
+      .select(
+        "grand_total_cents, item_total_cents, order_date, buyer_name, source",
+      )
+      .neq("status", "cancelled")
+      .lte("order_date", period.toIso)
+      .order("id", { ascending: true })
+      .range(from, to);
+    if (period.fromIso) q = q.gte("order_date", period.fromIso);
+    return q;
+  }).catch((e: unknown) => {
+    console.error(
+      "getDashboard sales sorgusu:",
+      e instanceof Error ? e.message : e,
+    );
+    return [];
+  });
 
-  let costQuery = supabase
-    .from("costs")
-    .select("amount_cents, cost_date, category:cost_categories(label_tr)")
-    .lte("cost_date", toDate);
-  if (fromDate) costQuery = costQuery.gte("cost_date", fromDate);
+  const costsPromise = fetchAllPages<{
+    amount_cents: number;
+    cost_date: string;
+    // Supabase to-one gömülüyü statik olarak dizi sanır; çalışmada nesne döner.
+    category: { label_tr: string } | null;
+  }>((from, to) => {
+    let q = supabase
+      .from("costs")
+      .select("amount_cents, cost_date, category:cost_categories(label_tr)")
+      .lte("cost_date", toDate)
+      .order("id", { ascending: true })
+      .range(from, to);
+    if (fromDate) q = q.gte("cost_date", fromDate);
+    return q as unknown as PromiseLike<
+      PageResult<{
+        amount_cents: number;
+        cost_date: string;
+        category: { label_tr: string } | null;
+      }>
+    >;
+  }).catch((e: unknown) => {
+    console.error(
+      "getDashboard costs sorgusu:",
+      e instanceof Error ? e.message : e,
+    );
+    return [];
+  });
 
   // Kalemler TAM çekilir (fetchAllPages) — eski sırasız limit(2000) hangi
   // 2000 satırın geleceğini belirsiz bırakıyordu ve "En Çok Satanlar"ı
@@ -98,29 +142,12 @@ export async function getDashboard(
     return [];
   });
 
-  const [
-    { data: salesRows, error: salesErr },
-    { data: costRows, error: costErr },
-    itemRows,
-  ] = await Promise.all([salesQuery, costQuery, itemsPromise]);
-  // Hata sessizce "veri yok"a dönüşmesin — en azından yüzeye çıkar.
-  if (salesErr) console.error("getDashboard sales sorgusu:", salesErr.message);
-  if (costErr) console.error("getDashboard costs sorgusu:", costErr.message);
-
-  const sales = (salesRows ?? []) as {
-    grand_total_cents: number;
-    item_total_cents: number;
-    order_date: string;
-    buyer_name: string | null;
-    source: string;
-  }[];
-  // Supabase to-one gömülü ilişkiyi statik olarak dizi sanıyor; çalışmada nesne döner.
-  const costs = (costRows ?? []) as unknown as {
-    amount_cents: number;
-    cost_date: string;
-    category: { label_tr: string } | null;
-  }[];
-  const items = itemRows;
+  // Hatalar promise'lerin kendi .catch'lerinde loglanır (boş diziye düşer).
+  const [sales, costs, items] = await Promise.all([
+    salesPromise,
+    costsPromise,
+    itemsPromise,
+  ]);
 
   // --- Toplamlar ---
   const revenueCents = sales.reduce(

@@ -418,9 +418,11 @@ export function computeMarketPosition(
     high = Math.round(meltPerGram * MARKET_MULT_HIGH);
     confidence = "dusuk";
   }
-  // Rakip seti banda hükmediyorsa güven yüksektir (küme elle doğrulanmış,
-  // fiyatlar canlı çekilmiş — bkz. 0091).
-  if (compSet) confidence = "yuksek";
+  // NOT: rakip seti CANLI banda hükmediyorsa güven zaten yukarıda "yuksek"
+  // atanır (rivalPerGram >= minRivals dalı). Yedek kalibre banda düşüldüyse
+  // güven "dusuk" KALMALI — set üyesi başlıklarından gram çıkarılamadıysa
+  // band setten değil melt çarpanından gelmiştir; onu "yüksek güven" diye
+  // etiketlemek yanıltır (denetim R2 #5).
 
   const fg = (c: number) => `$${(c / 100).toFixed(0)}/g`;
   const fp = (c: number | null) =>
@@ -695,6 +697,10 @@ export async function researchListing(
     our_price_cents: our,
     currency,
     result_count: competitors.length,
+    // Bandın GERÇEKTEN kurulduğu rakip sayısı — rakip seti aktifken organik
+    // sayıdan ayrışır; reprice eşiği ve panel band tablosu bunu okur
+    // (denetim R2 #3: aksi halde comp-set bandı organik sayıya takılıyordu).
+    band_result_count: bandRows.length,
     ...stats,
     results: competitors,
     variant_comparison: variantComparison,
@@ -735,10 +741,12 @@ export async function advanceKeywordResearch(
 ): Promise<Record<string, unknown>> {
   const admin = createAdminClient();
   const goldOunceUsd = await getGoldPricePerOunce(); // grup başına tek çekim
-  const { data: conns } = await admin
+  const { data: conns, error: connsError } = await admin
     .from("etsy_connection")
     .select("org_id, shop_id")
     .eq("status", "connected");
+  if (connsError)
+    console.error("[keyword-research] conns sorgusu:", connsError.message);
 
   const out: Record<string, unknown> = {};
   for (const conn of (conns ?? []) as { org_id: string; shop_id: number | null }[]) {
@@ -752,7 +760,7 @@ export async function advanceKeywordResearch(
       continue;
     }
 
-    const { data: products } = await admin
+    const { data: products, error: productsError } = await admin
       .from("products")
       .select(
         "id, title, price_cents, currency, tags, research_keyword, etsy_listing_id, weight_grams",
@@ -760,6 +768,11 @@ export async function advanceKeywordResearch(
       .eq("org_id", conn.org_id)
       .eq("research_group", group)
       .eq("status", "active");
+    if (productsError)
+      console.error(
+        "[keyword-research] products sorgusu:",
+        productsError.message,
+      );
 
     let ok = 0;
     let noKeyword = 0;
@@ -778,7 +791,13 @@ export async function advanceKeywordResearch(
         if (r.status === "ok") ok++;
         else if (r.status === "no-keyword") noKeyword++;
         else noResults++;
-      } catch {
+      } catch (e) {
+        // Hata sessizce sayaca gömülmesin — hangi ürün/neden görünür olsun
+        // (".error yutulmaz" dersi; insert/şema hataları buraya düşer).
+        console.error(
+          `[keyword-research] ürün ${p.id} araştırması:`,
+          e instanceof Error ? e.message : e,
+        );
         errors++;
       }
       await new Promise((r) => setTimeout(r, 220));
