@@ -529,9 +529,11 @@ export async function createDraftListingFromProduct(
 // ── Loop besleyicileri ───────────────────────────────────────────────────────
 
 /**
- * İnceleme loop'unun ONAYLADIĞI (featured_rank dolu) ama henüz Etsy'de
- * oluşturulmamış taslakları başlık sırasıyla döndürür — motorun çekeceği liste.
- * Multi-tenant kilidi: her sorgu org_id ile kapsanır.
+ * İnceleme loop'unun ONAYLADIĞI ama henüz Etsy'de oluşturulmamış taslakları
+ * başlık sırasıyla döndürür — motorun çekeceği liste.
+ * OK sinyali: `research_keyword` dolu (inceleme loop'u onaylarken bu alanı
+ * yazar; kanıt: onaylı 2 taslakta dolu, gerisi boş — featured_rank hiç
+ * kullanılmıyor). Multi-tenant kilidi: her sorgu org_id ile kapsanır.
  */
 export async function listApprovedUncreatedDrafts(
   admin: SupabaseClient,
@@ -543,7 +545,7 @@ export async function listApprovedUncreatedDrafts(
       "id, org_id, etsy_listing_id, title, description, tags, materials, price_cents, quantity, image_url",
     )
     .eq("org_id", orgId)
-    .not("featured_rank", "is", null)
+    .not("research_keyword", "is", null)
     .is("etsy_listing_id", null)
     .is("archived_at", null)
     .eq("status", "draft")

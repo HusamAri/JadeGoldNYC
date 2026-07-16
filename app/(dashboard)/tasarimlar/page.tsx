@@ -17,7 +17,9 @@ import {
 } from "@/components/icons/lux-art";
 
 import { requireMembership } from "@/lib/auth";
+import { createClient } from "@/lib/supabase/server";
 import { listListingsIndex } from "@/lib/db/queries/listings";
+import { EtsyCreateButton } from "@/components/listing/etsy-create-button";
 import { strParam, type RawSearchParams } from "@/lib/searchparams";
 import { formatMoney } from "@/lib/money";
 import { formatNumber } from "@/lib/format";
@@ -82,6 +84,17 @@ export default async function ListelerPage({
   await requireMembership();
   const rows = await listListingsIndex({ search, status });
 
+  // Etsy'de oluşturmaya hazır (onaylı: research_keyword dolu, henüz Etsy'de
+  // yok) taslak sayısı — RLS aktif org'a kısıtlar. Bu sayı, dışa-dönük
+  // oluşturma düğmesini besler.
+  const { count: approvedCount } = await (await createClient())
+    .from("products")
+    .select("id", { count: "exact", head: true })
+    .not("research_keyword", "is", null)
+    .is("etsy_listing_id", null)
+    .is("archived_at", null)
+    .eq("status", "draft");
+
   const total = rows.length;
   const active = rows.filter((r) => r.status === "active").length;
   const missingWeight = rows.filter((r) => r.missing_weight_count > 0).length;
@@ -131,6 +144,22 @@ export default async function ListelerPage({
           </>
         }
       />
+
+      {/* Etsy'de oluşturma — yalnız onaylı taslak varken görünür. Dışa-dönük:
+          canlı Etsy'ye DRAFT yazar; önce 1 taslakta doğrula, sonra toplu. */}
+      {(approvedCount ?? 0) > 0 && (
+        <Card>
+          <CardContent className="space-y-3">
+            <div aria-hidden className="idx">
+              <span>Listeler / 00 · Etsy&apos;de oluştur</span>
+              <span className="idx-bar" />
+              <span className="idx-ln" />
+              <span><OrgMark /></span>
+            </div>
+            <EtsyCreateButton approvedCount={approvedCount ?? 0} />
+          </CardContent>
+        </Card>
+      )}
 
       {/* Özet — liste filtresine (durum/arama) saygı duyar */}
       <section className="space-y-4">
