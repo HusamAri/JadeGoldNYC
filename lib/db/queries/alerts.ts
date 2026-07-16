@@ -6,6 +6,7 @@ import {
 import { getEtsyStatus } from "@/lib/db/queries/etsy";
 import { getMarketAlertCounts } from "@/lib/db/queries/market-alerts";
 import { getListingAuditSummary } from "@/lib/db/queries/listing-audit";
+import { computeAdsSignals } from "@/lib/db/queries/ads-actions";
 
 /**
  * UYARI MERKEZİ — sistemin HER yerindeki aksiyon gerektiren sinyalleri tek
@@ -420,6 +421,33 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
       href: "/analizler/urunler",
       actionLabel: "Reklamları gözden geçir",
       costCents: wastedAdsCents,
+    });
+  }
+  // 8b) BÜTÇE YİYEN — tek ürün toplam reklam harcamasının ≥%35'ini çekiyor VE
+  // ROAS < 1,5 (aynı son30 verisi yeniden kullanılır; yeni sorgu yok). Kural
+  // ve eşikler reklam motorundan gelir (ads-actions.ts — tek kaynak); boşa
+  // harcayanlar (getiri=0) zaten ads_wasted'da, motor onları burada saymaz.
+  const budgetEaters = computeAdsSignals(
+    [...latestByProduct.entries()].map(([productId, mm]) => ({
+      productId,
+      spendCents: mm.ads_spend_cents ?? 0,
+      adsRevenueCents: mm.ads_revenue_cents ?? 0,
+    })),
+  ).filter((s) => s.signal === "butce_yiyen");
+  if (budgetEaters.length > 0) {
+    const top = budgetEaters[0]; // harcamaya göre sıralı gelir
+    alerts.push({
+      key: "ads_budget_eater",
+      severity: "onemli",
+      title:
+        budgetEaters.length === 1
+          ? `Bir ürün reklam bütçesinin %${Math.round(top.share * 100)}'ini tek başına yiyor`
+          : `${budgetEaters.length} ürün reklam bütçesini tek başına yiyor`,
+      hint: "Harcamanın büyük payı tek listingde toplanmış ama getirisi harcamayı karşılamıyor (ROAS < 1,5) — bütçe diğer ürünlere dağılamıyor ve her gün eriyor. Reklamlar sayfasında azalt/incele kararını ver; uygulamayı Etsy Reklam panosunda elle yap.",
+      count: budgetEaters.length,
+      href: "/reklamlar",
+      actionLabel: "Reklam kararını ver",
+      costCents: budgetEaters.reduce((s, b) => s + b.row.spendCents, 0),
     });
   }
   if (noConvCount > 0) {
