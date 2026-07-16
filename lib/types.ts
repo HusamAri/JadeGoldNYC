@@ -123,6 +123,7 @@ export type AuditAction =
   | "etsy.variant_sync"
   | "etsy.image_upload"
   | "etsy.reprice"
+  | "etsy.listing_create"
   | "listing.archive"
   | "listing.delete_etsy"
   | "report.export"

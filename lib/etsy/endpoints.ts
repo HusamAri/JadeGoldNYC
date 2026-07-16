@@ -40,4 +40,11 @@ export const etsyPaths = {
   // Kargo profilleri (işlem süresi, menşei).
   shippingProfiles: (shopId: number | string) =>
     `/shops/${shopId}/shipping-profiles`,
+  // Satıcı taksonomi ağacı (Jewelry > Rings ...) — public, api-key yeterli.
+  sellerTaxonomyNodes: () => `/seller-taxonomy/nodes`,
+  // createListing (yeni draft listing, POST, form-encoded) — listings_w gerekir.
+  createListing: (shopId: number | string) => `/shops/${shopId}/listings`,
+  // İade politikaları (GET) — createListing'e return_policy_id sağlamak için.
+  returnPolicies: (shopId: number | string) =>
+    `/shops/${shopId}/policies/return`,
 };
