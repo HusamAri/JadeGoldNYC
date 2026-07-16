@@ -970,9 +970,12 @@
      farklı hız/yönde süzülür → kayan iridesan interferans. prefers-reduced-
      motion global kuralı hareketi durdurur (katman görünür kalır). */
   .holo-drift {
-    /* Kap ekran sınırında kalır (yatay taşma yaratmaz); -%30 büyüme
-       overflow:hidden ile kırpılan pseudo katmanlara taşındı. */
-    position: absolute;
+    /* Kap VIEWPORT'a sabit (parallax derinlik katmanı): scroll'da içerik tam
+       hızda akarken blob katmanları --par-y üzerinden çok daha yavaş süzülür
+       → sayfa katmanlarına derinlik. (Eski `absolute` kap sayfa boyuna
+       yayılıyordu; uzun sayfada blob'lar yukarıda kalıp ambiyans kayboluyordu —
+       fixed + parallax ikisini birden çözer.) */
+    position: fixed;
     inset: 0;
     z-index: -10;
     overflow: hidden;
@@ -989,7 +992,23 @@
     /* PERF: SÜREKLİ süzülme kaldırıldı (holo-drift-a/b). Tam-viewport blur(46)
        katmanının her karede kayması, üstündeki TÜM cam yüzeylerin backdrop'unu
        yeniden örnekletiyordu — /panel ölçümünde tek başına 60→5 FPS. Katmanlar
-       statik ambiyans olarak kalır; bir kez rasterize edilir ve cache'lenir. */
+       statik ambiyans olarak kalır; bir kez rasterize edilir ve cache'lenir.
+       PARALLAX bu kuralı BOZMAZ: --par-y yalnız kullanıcı scroll ettiği anda
+       değişir (idle'da sıfır iş) ve translate3d compositor'da uygulanır —
+       blur yeniden rasterize edilmez, doku yeniden örneklenmez. */
+    /* İki katman iki ayrı derinlik: ::before uzak (içerik hızının %14'ü),
+       ::after biraz daha yakın (%26) — scroll'da aralarındaki fark derinliği
+       hissettirir. --par-y'yi ParallaxDrift runtime'ı yazar (yoksa 0 = statik). */
+    transform: translate3d(0, calc(var(--par-y, 0px) * -0.14), 0);
+  }
+  .holo-drift::after {
+    transform: translate3d(0, calc(var(--par-y, 0px) * -0.26), 0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .holo-drift::before,
+    .holo-drift::after {
+      transform: none;
+    }
   }
   .holo-drift::before {
     opacity: 0.5;

@@ -5,6 +5,7 @@ import { getProfile } from "@/lib/db/queries/profile";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Topbar } from "@/components/layout/topbar";
 import { PageTransition } from "@/components/layout/page-transition";
+import { ParallaxDrift } from "@/components/motion/parallax-drift";
 
 export default async function DashboardLayout({
   children,
@@ -37,6 +38,9 @@ export default async function DashboardLayout({
       <div aria-hidden className="holo-drift" />
       {/* Mat "pahalı doku" — çok ince gren; zemine kadife/kâğıt dokusu. */}
       <div aria-hidden className="lux-grain" />
+      {/* Scroll-parallax: holo katmanları içerikten yavaş süzülür (derinlik).
+          Idle'da sıfır iş; reduced-motion/dokunmatikte hiç bağlanmaz. */}
+      <ParallaxDrift />
       <Sidebar
         memberships={memberships}
         activeOrgId={m.org_id}
