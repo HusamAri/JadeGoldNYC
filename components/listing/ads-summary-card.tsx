@@ -31,9 +31,10 @@ function roas(revenueCents: number, spendCents: number): string {
 }
 
 /**
- * Reklam & performans özeti — iki sütun: "Son 30 gün" (Etsy Ads dönem
- * kayıtları) ve "Ömürlük" (tüm metrik dönemlerinin toplamı + panel satış
- * kayıtlarından gerçek sipariş/adet/ciro). Altında dönem mini tablosu.
+ * Reklam & performans özeti — iki sütun: '"son 30" etiketli dönem'
+ * (kullanıcı girişli dönem etiketi eşleşmesi — takvimsel pencere DEĞİL) ve
+ * "Ömürlük" (tüm metrik dönemlerinin toplamı + panel satış kayıtlarından
+ * gerçek sipariş/adet/ciro). Altında dönem mini tablosu.
  * Hiç metrik yoksa /analizler/urunler'e yönlendiren boş durum.
  */
 export function AdsSummaryCard({
@@ -86,28 +87,47 @@ export function AdsSummaryCard({
 
   const lt = ads.lifetime_metrics;
 
+  // Dürüst etiket: "son 30" bloğu GERÇEK bir tarih penceresi değil —
+  // kullanıcının "son 30" geçen dönem etiketiyle girdiği kayıtların özeti
+  // (etiket başına en güncel kayıt). Hangi etiketlerin eşleştiğini göster.
+  const son30Labels = [
+    ...new Set(
+      ads.periods
+        .filter((p) => p.period_label.toLowerCase().includes("son 30"))
+        .map((p) => p.period_label),
+    ),
+  ];
+
   return (
     <div className="space-y-5">
       <div className="grid gap-6 md:grid-cols-2">
-        {/* Son 30 gün — Etsy Ads dönem kayıtları. */}
+        {/* "son 30" etiketli dönem kayıtları — takvimsel pencere değil. */}
         <div className="space-y-3">
           <p className="text-muted-foreground font-mono text-[11px] tracking-[0.16em] uppercase">
-            Son 30 gün
+            &ldquo;Son 30&rdquo; etiketli dönem
           </p>
           {ads.son30 ? (
-            <div className="grid grid-cols-2 gap-3">
-              <Stat
-                label="Harcama"
-                value={formatMoney(ads.son30.spend_cents, currency)}
-              />
-              <Stat
-                label="ROAS"
-                value={roas(ads.son30.revenue_cents, ads.son30.spend_cents)}
-                hint={`getiri ${formatMoney(ads.son30.revenue_cents, currency)}`}
-              />
-              <Stat label="Tıklama" value={formatNumber(ads.son30.clicks)} />
-              <Stat label="Sipariş" value={formatNumber(ads.son30.orders)} />
-            </div>
+            <>
+              <div className="grid grid-cols-2 gap-3">
+                <Stat
+                  label="Harcama"
+                  value={formatMoney(ads.son30.spend_cents, currency)}
+                />
+                <Stat
+                  label="ROAS"
+                  value={roas(ads.son30.revenue_cents, ads.son30.spend_cents)}
+                  hint={`getiri ${formatMoney(ads.son30.revenue_cents, currency)}`}
+                />
+                <Stat label="Tıklama" value={formatNumber(ads.son30.clicks)} />
+                <Stat label="Sipariş" value={formatNumber(ads.son30.orders)} />
+              </div>
+              <p className="text-muted-foreground text-xs">
+                Kullanıcı girişli dönem etiketi eşleşmesi
+                {son30Labels.length > 0 && <> ({son30Labels.join(", ")})</>} —
+                gerçek tarih penceresi değildir; etiket başına en güncel kayıt
+                sayılır.
+              </p>
+            </>
           ) : (
             <p className="text-muted-foreground text-sm">
               Son 30 gün kaydı yok — &ldquo;Etsy Ads · son 30g&rdquo; etiketli
@@ -125,7 +145,7 @@ export function AdsSummaryCard({
             <Stat
               label="Reklam harcaması"
               value={formatMoney(lt.spend_cents, currency)}
-              hint={`${formatNumber(lt.periods)} dönem`}
+              hint={`${formatNumber(lt.periods)} dönem kaydının toplamı`}
             />
             <Stat
               label="ROAS"
@@ -163,7 +183,8 @@ export function AdsSummaryCard({
       {/* Dönem mini tablosu. */}
       <div className="space-y-2 border-t pt-4">
         <p className="text-muted-foreground font-mono text-[10px] tracking-[0.14em] uppercase">
-          Dönem kayıtları
+          Dönem kayıtları · etiket başına en güncel (
+          {formatNumber(ads.periods.length)})
         </p>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">

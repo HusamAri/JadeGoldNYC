@@ -1,5 +1,12 @@
 import { createClient } from "@/lib/supabase/server";
 
+/**
+ * Listing istatistik penceresi (gün): görüntülenme serisi ve top movers bu
+ * pencereyle sınırlıdır. UI etiketi de BU sabitten beslenir — etiket ve sorgu
+ * ayrışmasın (meta veri kaynağında taşınır kuralı).
+ */
+export const ETSY_INSIGHTS_WINDOW_DAYS = 45;
+
 export interface ShopSnapshot {
   snapshotDate: string;
   numFavorers: number | null;
@@ -48,7 +55,7 @@ function fmtLabel(iso: string): string {
  */
 export async function getEtsyInsights(orgId: string): Promise<EtsyInsights> {
   const supabase = await createClient();
-  const since = new Date(Date.now() - 45 * 86_400_000)
+  const since = new Date(Date.now() - ETSY_INSIGHTS_WINDOW_DAYS * 86_400_000)
     .toISOString()
     .slice(0, 10);
 

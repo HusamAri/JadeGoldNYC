@@ -27,6 +27,7 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -100,33 +101,38 @@ export default async function GeriKazanimPage({
       />
 
       <div className="grid grid-cols-2 gap-5 lg:grid-cols-3 xl:grid-cols-5">
+        {/* Kapsam: winback_* RPC'leri TÜM sipariş geçmişi üzerinden müşteri
+            (e-posta/isim anahtarlı) bazında özetler; eşik LAPSE_DAYS. */}
         <KpiCard
           label="Toplam Müşteri"
           value={formatNumber(winback.total_customers)}
           icon={Users}
+          hint="tüm sipariş geçmişi"
         />
         <KpiCard
           label="Tekrar Eden Müşteri"
           value={formatNumber(winback.repeat_customers)}
           icon={Repeat}
           accent="positive"
+          hint="2+ sipariş · tüm zamanlar"
         />
         <KpiCard
           label={`${LAPSE_DAYS}+ Gün Gelmeyen`}
           value={formatNumber(winback.lapsed_customers)}
           icon={UserRoundX}
+          hint={`son siparişi ${LAPSE_DAYS}+ gün önce`}
         />
         <KpiCard
           label="Risk Altındaki Değer"
           cents={winback.lapsed_value_cents}
           icon={DollarSign}
-          hint="geçmiş ciro toplamı"
+          hint={`${LAPSE_DAYS}+ gün gelmeyenlerin geçmiş ciro toplamı`}
         />
         <KpiCard
           label="Kazanılan"
           cents={tracking.recoveredValueCents}
           icon={CheckCircle2}
-          hint={`${formatNumber(tracking.recovered)} müşteri`}
+          hint={`${formatNumber(tracking.recovered)} müşteri · tüm takip kayıtları`}
           accent="positive"
           className="col-span-2 lg:col-span-1"
         />
@@ -136,6 +142,13 @@ export default async function GeriKazanimPage({
       <Card className="glass-iced">
         <CardHeader>
           <CardTitle>Öncelikli Geri Kazanım Adayları</CardTitle>
+          {/* Pencere/eşik ibaresi: aday sorgusu LAPSE_DAYS eşiği + harcamaya
+              göre en değerli CANDIDATE_LIMIT müşteriyle sınırlı. */}
+          <CardDescription className="text-xs">
+            son siparişi {LAPSE_DAYS}+ gün önce olan müşteriler · toplam
+            harcamaya göre en değerli {formatNumber(CANDIDATE_LIMIT)} aday ·
+            dilimler: {WINBACK_TIERS.map((t) => t.label).join(" / ")}
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {candidates.length === 0 ? (

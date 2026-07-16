@@ -24,9 +24,13 @@ import {
 } from "@/lib/performance";
 import { formatMoney, formatPercent } from "@/lib/money";
 import { Money } from "@/components/money";
-import { formatNumber } from "@/lib/format";
+import { formatNumber, formatDate } from "@/lib/format";
 import { requireMembership } from "@/lib/auth";
-import { getEtsyInsights, type EtsyInsights } from "@/lib/db/queries/etsy-insights";
+import {
+  getEtsyInsights,
+  ETSY_INSIGHTS_WINDOW_DAYS,
+  type EtsyInsights,
+} from "@/lib/db/queries/etsy-insights";
 import { EtsyViewsChart } from "@/components/charts/etsy-views-chart";
 import { PageHeader } from "@/components/page-header";
 import { GoldStream } from "@/components/brand/gold-stream";
@@ -37,7 +41,13 @@ import { DeleteButton } from "@/components/data-table/delete-button";
 import { deleteMetric } from "./actions";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -397,6 +407,12 @@ export default async function PerformansPage() {
       <Card className="glass-fluted">
         <CardHeader>
           <CardTitle>Dönem Geçmişi</CardTitle>
+          {/* Kapsam: listMetrics limitsizdir — tüm kayıtlar burada. Dönemler
+              kullanıcı girişli etiketlerdir (takvimsel pencere değil). */}
+          <CardDescription className="text-xs">
+            tüm dönem kayıtları · {metrics.length} kayıt · kullanıcı girişli
+            dönem etiketleri
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
@@ -487,7 +503,8 @@ function EtsyApiSection({ insights }: { insights: EtsyInsights }) {
           Mağaza sağlığı ve görüntülenme trendi
         </h2>
         <span className="text-muted-foreground text-xs">
-          günlük senkron fotoğrafları · {insights.statDays} gün birikti
+          günlük senkron fotoğrafları
+          {latest && ` · son fotoğraf: ${formatDate(latest.snapshotDate)}`}
         </span>
       </div>
 
@@ -497,22 +514,26 @@ function EtsyApiSection({ insights }: { insights: EtsyInsights }) {
             label="Mağaza Takipçisi"
             value={latest.numFavorers}
             prevValue={prev?.numFavorers ?? null}
+            prevDate={prev?.snapshotDate ?? null}
           />
           <ShopStat
             label="Puan Ortalaması"
             value={latest.reviewAverage}
             prevValue={prev?.reviewAverage ?? null}
+            prevDate={prev?.snapshotDate ?? null}
             decimals={2}
           />
           <ShopStat
             label="Toplam Yorum"
             value={latest.reviewCount}
             prevValue={prev?.reviewCount ?? null}
+            prevDate={prev?.snapshotDate ?? null}
           />
           <ShopStat
             label="Toplam Satış (ömür boyu)"
             value={latest.transactionSoldCount}
             prevValue={prev?.transactionSoldCount ?? null}
+            prevDate={prev?.snapshotDate ?? null}
           />
         </div>
       ) : (
@@ -526,13 +547,19 @@ function EtsyApiSection({ insights }: { insights: EtsyInsights }) {
         <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle>Günlük Görüntülenme (tüm listingler)</CardTitle>
+            {/* Veri penceresi — sorguyla aynı sabitten (ETSY_INSIGHTS_WINDOW_DAYS). */}
+            <CardDescription className="text-xs">
+              son {ETSY_INSIGHTS_WINDOW_DAYS} gün penceresi ·{" "}
+              {insights.statDays} günlük fotoğraf
+            </CardDescription>
           </CardHeader>
           <CardContent>
             {insights.viewsSeries.length >= 2 ? (
               <EtsyViewsChart data={insights.viewsSeries} />
             ) : (
               <p className="text-muted-foreground py-10 text-center text-sm">
-                Seri birikiyor — {insights.statDays} günlük fotoğraf var; trend
+                Seri birikiyor — son {ETSY_INSIGHTS_WINDOW_DAYS} gün
+                penceresinde {insights.statDays} günlük fotoğraf var; trend
                 için en az 3 gün gerekir. Günlük senkron otomatik biriktirir.
               </p>
             )}
@@ -541,6 +568,9 @@ function EtsyApiSection({ insights }: { insights: EtsyInsights }) {
         <Card>
           <CardHeader>
             <CardTitle>Dün En Çok Hareket Edenler</CardTitle>
+            <CardDescription className="text-xs">
+              son iki fotoğraf günü arasındaki fark · ilk 8 listing
+            </CardDescription>
           </CardHeader>
           <CardContent>
             {insights.topMovers.length === 0 ? (
@@ -578,11 +608,14 @@ function ShopStat({
   label,
   value,
   prevValue,
+  prevDate,
   decimals = 0,
 }: {
   label: string;
   value: number | null;
   prevValue: number | null;
+  /** Delta'nın referansı: önceki günlük fotoğrafın tarihi (kullanıcı görsün). */
+  prevDate?: string | null;
   decimals?: number;
 }) {
   const delta =
@@ -608,8 +641,11 @@ function ShopStat({
             )}
           >
             {delta > 0 ? "+" : ""}
-            {decimals > 0 ? delta.toFixed(decimals) : formatNumber(delta)} (önceki
-            fotoğrafa göre)
+            {decimals > 0 ? delta.toFixed(decimals) : formatNumber(delta)}{" "}
+            <span className="text-muted-foreground font-normal">
+              önceki fotoğrafa göre
+              {prevDate ? ` (${formatDate(prevDate)})` : ""}
+            </span>
           </p>
         )}
       </CardContent>
