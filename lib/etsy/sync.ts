@@ -60,6 +60,7 @@ interface CursorRow {
   sync_ledger_floor: number | null;
   ledger_backfilled: boolean | null;
   last_sync_at: string | null;
+  sync_started_at: string | null;
 }
 
 /**
@@ -84,7 +85,7 @@ export async function advanceEtsySync(
   const { data } = await admin
     .from("etsy_connection")
     .select(
-      "sync_status, sync_phase, sync_offset, sync_sales, sync_items, sync_products, sync_reviews, sync_ledger, sync_ledger_until, sync_ledger_floor, ledger_backfilled, last_sync_at",
+      "sync_status, sync_phase, sync_offset, sync_sales, sync_items, sync_products, sync_reviews, sync_ledger, sync_ledger_until, sync_ledger_floor, ledger_backfilled, last_sync_at, sync_started_at",
     )
     .eq("org_id", orgId)
     .maybeSingle();
@@ -127,7 +128,13 @@ export async function advanceEtsySync(
     ? Math.floor(new Date(cur.last_sync_at).getTime() / 1000) - 3600
     : undefined;
 
+  // Listing mutabakatının tarama işareti: bu turun başlangıcı. Taramada
+  // görülen her listing upsert'lenir → set_updated_at trigger'ı updated_at'i
+  // bu işaretin SONRASINA taşır; işaretten eski kalanlar Etsy'de yok demektir.
+  let syncStartedAtIso = resuming ? cur?.sync_started_at ?? null : null;
+
   if (!resuming) {
+    syncStartedAtIso = new Date().toISOString();
     await admin
       .from("etsy_connection")
       .update({
@@ -142,7 +149,7 @@ export async function advanceEtsySync(
         sync_ledger_until: null,
         sync_ledger_floor: null,
         sync_error: null,
-        sync_started_at: new Date().toISOString(),
+        sync_started_at: syncStartedAtIso,
         sync_updated_at: new Date().toISOString(),
       })
       .eq("org_id", orgId);
@@ -219,6 +226,11 @@ export async function advanceEtsySync(
         const stateIdx = Math.floor(offset / 1_000_000);
         const pageOffset = offset % 1_000_000;
         if (stateIdx >= STATES.length) {
+          // TAM envanter taraması bitti (active + inactive/sold_out/draft/
+          // expired). Genel kural: Etsy nihai kaynak — taramada karşılığı
+          // olmayan listing panelden de silinir. Yalnız tam tarama sonunda
+          // çalışır; kısmi/yarıda kalan tarama asla silme tetiklemez.
+          await reconcileUnmatchedListings(admin, orgId, syncStartedAtIso);
           phase = "reviews";
           offset = 0;
           await persist();
@@ -534,6 +546,90 @@ async function upsertListingsPage(
     .from("products")
     .upsert(rows, { onConflict: "org_id,etsy_listing_id" });
   if (error) throw new Error(`products upsert: ${error.message}`);
+}
+
+/**
+ * Etsy-panel listing mutabakatı (genel kural: nihai kaynak Etsy).
+ * Tam envanter taraması bittikten sonra çağrılır: taramada GÖRÜLMEYEN
+ * (updated_at, tarama başlangıcından eski kalan) etsy_listing_id'li ürünler
+ * panelden silinir — Etsy'de olmayan hiçbir listing panelde yaşamaz.
+ *
+ * Güvenlik sınırları:
+ * - Yalnız TAM tarama sonunda çağrılır (kısmi taramada asla) ve tarama
+ *   işareti (sweepStartIso) yoksa hiçbir şey yapmaz.
+ * - Yanlış yön imkânsız: taramada görülen her satır upsert'lenip updated_at'i
+ *   işaretin sonrasına taşınır; yalnız hiç dokunulmayanlar silinir.
+ * - Panel-doğumlu taslaklar (etsy_listing_id NULL) kapsam dışıdır.
+ * - Satış geçmişi korunur (sale_items.product_id FK'sı SET NULL; kalemdeki
+ *   etsy_listing_id izi durur). listing_media arşivi de silinmez (kalıcı arşiv).
+ * - product_variants FK'sı SET NULL olduğundan yetim varyant (ve işgal edilen
+ *   SKU) kalmasın diye varyantlar açıkça silinir.
+ */
+async function reconcileUnmatchedListings(
+  admin: SupabaseClient,
+  orgId: string,
+  sweepStartIso: string | null,
+): Promise<number> {
+  if (!sweepStartIso) return 0;
+
+  const { data, error } = await admin
+    .from("products")
+    .select("id, etsy_listing_id, sku, title")
+    .eq("org_id", orgId)
+    .not("etsy_listing_id", "is", null)
+    .lt("updated_at", sweepStartIso);
+  if (error) {
+    // Mutabakat okuması düşerse senkronu düşürme — bir sonraki tam taramada
+    // tekrar denenir; ama sessiz kalma.
+    console.error("[etsy-sync] mutabakat okuması:", error.message);
+    return 0;
+  }
+  const stale = (data ?? []) as {
+    id: string;
+    etsy_listing_id: number;
+    sku: string | null;
+    title: string;
+  }[];
+  if (stale.length === 0) return 0;
+
+  const CHUNK = 100;
+  for (let i = 0; i < stale.length; i += CHUNK) {
+    const part = stale.slice(i, i + CHUNK);
+    const ids = part.map((r) => r.id);
+    const listingIds = part.map((r) => r.etsy_listing_id);
+    // Varyantlar: product_id bağıyla VE (daha önce yetim kalmışsa)
+    // etsy_listing_id bağıyla temizlenir.
+    const { error: vErr } = await admin
+      .from("product_variants")
+      .delete()
+      .eq("org_id", orgId)
+      .or(
+        `product_id.in.(${ids.join(",")}),etsy_listing_id.in.(${listingIds.join(",")})`,
+      );
+    if (vErr) throw new Error(`mutabakat varyant silme: ${vErr.message}`);
+    const { error: pErr } = await admin
+      .from("products")
+      .delete()
+      .eq("org_id", orgId)
+      .in("id", ids);
+    if (pErr) throw new Error(`mutabakat ürün silme: ${pErr.message}`);
+  }
+
+  await logAudit(admin, {
+    orgId,
+    action: "etsy.reconcile",
+    entityType: "products",
+    summary: `Etsy mutabakatı: taramada karşılığı olmayan ${stale.length} listing panelden silindi`,
+    diff: {
+      deleted: stale.map((r) => ({
+        etsy_listing_id: r.etsy_listing_id,
+        sku: r.sku,
+        title: r.title,
+      })),
+    },
+    source: "etsy",
+  });
+  return stale.length;
 }
 
 async function upsertReviewsPage(
