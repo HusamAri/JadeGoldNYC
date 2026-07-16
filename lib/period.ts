@@ -17,6 +17,27 @@ export interface ResolvedPeriod {
   label: string;
 }
 
+/** Mağaza saat dilimi — panel "bugün"ü bu takvimle hesaplar (panel/page.tsx). */
+const STORE_TIME_ZONE = "America/New_York";
+
+// en-CA yerel ayarı YYYY-MM-DD üretir; tek Intl örneği (format çağrısı ucuz).
+const NY_DAY_FORMAT = new Intl.DateTimeFormat("en-CA", {
+  timeZone: STORE_TIME_ZONE,
+});
+
+/**
+ * Bir timestamptz ISO değerini mağaza saat diliminin (America/New_York)
+ * gün anahtarına (YYYY-MM-DD) çevirir. Gün-bazlı gruplamalar bunu kullanır ki
+ * "bugün" panelin NY takvimiyle aynı güne düşsün — `iso.slice(0, 10)` UTC
+ * gününü verir ve NY akşam satışlarını ertesi güne kaydırırdı.
+ * Tarih-only değer (YYYY-MM-DD) zaten takvim günüdür; dokunulmadan döner
+ * (UTC-geceyarısı yorumuyla bir gün geriye kaymasın).
+ */
+export function dayKeyNY(iso: string): string {
+  if (iso.length <= 10) return iso;
+  return NY_DAY_FORMAT.format(new Date(iso));
+}
+
 export const PERIOD_OPTIONS: { value: PeriodKey; label: string }[] = [
   { value: "today", label: "Bugün" },
   { value: "7d", label: "Son 7 gün" },

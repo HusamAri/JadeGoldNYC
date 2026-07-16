@@ -34,21 +34,24 @@ function normalizeContent(c: Partial<ReportContent> | null): ReportContent {
 /** Kayıtlı raporlar listesi (en yeni önce) + her rapora bağlı görev ilerlemesi. */
 export async function listReports(): Promise<ReportListItem[]> {
   const supabase = await createClient();
-  const { data: reports } = await supabase
+  const { data: reports, error: reportsErr } = await supabase
     .from("reports")
     .select("id, title, category, summary, report_date, created_at")
     .order("report_date", { ascending: false })
     .order("created_at", { ascending: false });
+  // Hata sessizce "veri yok"a dönüşmesin — en azından yüzeye çıkar.
+  if (reportsErr) console.error("[reports] rapor listesi:", reportsErr.message);
   const rows = (reports ?? []) as Omit<ReportRow, "content" | "org_id" | "created_by" | "updated_at">[];
   if (rows.length === 0) return [];
 
-  const { data: tasks } = await supabase
+  const { data: tasks, error: tasksErr } = await supabase
     .from("tasks")
     .select("report_id, status")
     .in(
       "report_id",
       rows.map((r) => r.id),
     );
+  if (tasksErr) console.error("[reports] görev sorgusu:", tasksErr.message);
   const taskRows = (tasks ?? []) as { report_id: string | null; status: string }[];
 
   return rows.map((r) => {
@@ -69,7 +72,8 @@ export async function listReports(): Promise<ReportListItem[]> {
 /** Tek rapor + ona bağlı görevlerin canlı durumu (Görevler'deki aynı satır). */
 export async function getReport(id: string): Promise<ReportWithTasks | null> {
   const supabase = await createClient();
-  const { data } = await supabase.from("reports").select("*").eq("id", id).maybeSingle();
+  const { data, error } = await supabase.from("reports").select("*").eq("id", id).maybeSingle();
+  if (error) console.error("[reports] rapor kaydı:", error.message);
   if (!data) return null;
   const row = data as ReportRow;
   const report: Report = { ...row, content: normalizeContent(row.content) };

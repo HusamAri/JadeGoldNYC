@@ -1,7 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
 import { recentActivity } from "@/lib/db/queries/audit";
+import { fetchAllPages } from "@/lib/db/queries/listings";
 import { formatDate } from "@/lib/format";
-import type { ResolvedPeriod } from "@/lib/period";
+import { dayKeyNY, type ResolvedPeriod } from "@/lib/period";
 import type { AuditLog } from "@/lib/types";
 
 export interface GoldCostSummaryData {
@@ -70,23 +71,41 @@ export async function getDashboard(
     .lte("cost_date", toDate);
   if (fromDate) costQuery = costQuery.gte("cost_date", fromDate);
 
-  let itemsQuery = supabase
-    .from("sale_items")
-    .select("title, sku, quantity, line_total_cents, sales!inner(order_date, status)")
-    .neq("sales.status", "cancelled")
-    .lte("sales.order_date", period.toIso)
-    .limit(2000);
-  if (period.fromIso) itemsQuery = itemsQuery.gte("sales.order_date", period.fromIso);
+  // Kalemler TAM çekilir (fetchAllPages) — eski sırasız limit(2000) hangi
+  // 2000 satırın geleceğini belirsiz bırakıyordu ve "En Çok Satanlar"ı
+  // keyfî bir alt kümeden hesaplıyordu. Dönem filtresi hacmi zaten sınırlar.
+  const itemsPromise = fetchAllPages<{
+    title: string | null;
+    sku: string | null;
+    quantity: number;
+    line_total_cents: number;
+  }>((from, to) => {
+    let q = supabase
+      .from("sale_items")
+      .select("title, sku, quantity, line_total_cents, sales!inner(order_date, status)")
+      .neq("sales.status", "cancelled")
+      .lte("sales.order_date", period.toIso)
+      .order("id", { ascending: true })
+      .range(from, to);
+    if (period.fromIso) q = q.gte("sales.order_date", period.fromIso);
+    return q;
+  }).catch((e: unknown) => {
+    // fetchAllPages hatayı fırlatır; panel boş kalmasın — logla, boş dön.
+    console.error(
+      "getDashboard sale_items sorgusu:",
+      e instanceof Error ? e.message : e,
+    );
+    return [];
+  });
 
   const [
     { data: salesRows, error: salesErr },
     { data: costRows, error: costErr },
-    { data: itemRows, error: itemsErr },
-  ] = await Promise.all([salesQuery, costQuery, itemsQuery]);
+    itemRows,
+  ] = await Promise.all([salesQuery, costQuery, itemsPromise]);
   // Hata sessizce "veri yok"a dönüşmesin — en azından yüzeye çıkar.
   if (salesErr) console.error("getDashboard sales sorgusu:", salesErr.message);
   if (costErr) console.error("getDashboard costs sorgusu:", costErr.message);
-  if (itemsErr) console.error("getDashboard sale_items sorgusu:", itemsErr.message);
 
   const sales = (salesRows ?? []) as {
     grand_total_cents: number;
@@ -101,12 +120,7 @@ export async function getDashboard(
     cost_date: string;
     category: { label_tr: string } | null;
   }[];
-  const items = (itemRows ?? []) as {
-    title: string | null;
-    sku: string | null;
-    quantity: number;
-    line_total_cents: number;
-  }[];
+  const items = itemRows;
 
   // --- Toplamlar ---
   const revenueCents = sales.reduce(
@@ -122,7 +136,11 @@ export async function getDashboard(
   // --- Gün bazlı trend ---
   const dayMap = new Map<string, { revenue: number; cost: number; orders: number }>();
   for (const s of sales) {
-    const d = s.order_date.slice(0, 10);
+    // Gün anahtarı mağaza saat diliminde (NY): panel "bugün"ü NY takvimiyle
+    // hesaplar (panel/page.tsx); UTC slice NY akşam satışlarını ertesi güne
+    // kaydırıp "Bugün" görünümünü boş gösterebiliyordu. cost_date zaten
+    // tarih-only olduğundan aşağıdaki maliyet gruplaması etkilenmez.
+    const d = dayKeyNY(s.order_date);
     const e = dayMap.get(d) ?? { revenue: 0, cost: 0, orders: 0 };
     e.revenue += (s.grand_total_cents || s.item_total_cents || 0) / 100;
     e.orders += 1;

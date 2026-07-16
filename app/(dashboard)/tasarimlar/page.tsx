@@ -198,19 +198,34 @@ export default async function ListelerPage({
           </div>
 
           {rows.length === 0 ? (
-            <EmptyState
-              icon={Package}
-              title="Listing yok"
-              description="Henüz listing bulunamadı. Etsy senkronu ayarlar sayfasından çalıştırın veya 'Yeni Listing' ile taslak açın."
-              action={
-                <Button asChild>
-                  <Link href="/tasarimlar/listing/yeni">
-                    <Plus />
-                    Yeni Listing
-                  </Link>
-                </Button>
-              }
-            />
+            // Aktif filtre/aramada "kayıt yok" yanıltır — filtre sonucu boş
+            // olduğunu söyle ve tek tıkla temizleme yolu sun.
+            filtered ? (
+              <EmptyState
+                icon={Package}
+                title="Bu filtreyle sonuç yok"
+                description="Arama veya durum filtresine uyan listing bulunamadı. Filtreyi temizleyip tüm listingleri görebilirsiniz."
+                action={
+                  <Button asChild variant="outline">
+                    <Link href="/tasarimlar">Filtreyi temizle</Link>
+                  </Button>
+                }
+              />
+            ) : (
+              <EmptyState
+                icon={Package}
+                title="Listing yok"
+                description="Henüz listing bulunamadı. Etsy senkronu ayarlar sayfasından çalıştırın veya 'Yeni Listing' ile taslak açın."
+                action={
+                  <Button asChild>
+                    <Link href="/tasarimlar/listing/yeni">
+                      <Plus />
+                      Yeni Listing
+                    </Link>
+                  </Button>
+                }
+              />
+            )
           ) : (
             <Table>
               <TableHeader>

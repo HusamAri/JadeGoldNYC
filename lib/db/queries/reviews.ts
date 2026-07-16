@@ -12,7 +12,9 @@ export interface ReviewSummary {
 
 export async function getReviewSummary(): Promise<ReviewSummary> {
   const supabase = await createClient();
-  const { data } = await supabase.from("reviews").select("status, rating");
+  const { data, error } = await supabase.from("reviews").select("status, rating");
+  // Hata sessizce "veri yok"a dönüşmesin — en azından yüzeye çıkar.
+  if (error) console.error("[reviews] özet sorgusu:", error.message);
   const rows = (data ?? []) as { status: string; rating: number | null }[];
 
   const total = rows.length;
@@ -66,10 +68,11 @@ export async function listReviews(opts: ListReviewOptions = {}) {
 
 export async function getReview(id: string): Promise<Review | null> {
   const supabase = await createClient();
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("reviews")
     .select("*")
     .eq("id", id)
     .maybeSingle();
+  if (error) console.error("[reviews] yorum kaydı:", error.message);
   return (data as Review) ?? null;
 }

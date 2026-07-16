@@ -155,11 +155,26 @@ export default async function MaliyetlerPage({
           )}
 
           {rows.length === 0 ? (
-            <EmptyState
-              icon={Wallet}
-              title="Maliyet kaydı yok"
-              description="Henüz gider kaydı yok. İlk maliyetinizi ekleyin."
-            />
+            // Aktif filtre/aramada "kayıt yok" yanıltır — filtre sonucu boş
+            // olduğunu söyle ve tek tıkla temizleme yolu sun.
+            search || categoryId || bearer ? (
+              <EmptyState
+                icon={Wallet}
+                title="Bu filtreyle sonuç yok"
+                description="Arama, kategori veya taraf filtresine uyan gider kaydı bulunamadı. Filtreyi temizleyip tüm kayıtları görebilirsiniz."
+                action={
+                  <Button asChild variant="outline">
+                    <Link href="/maliyetler">Filtreyi temizle</Link>
+                  </Button>
+                }
+              />
+            ) : (
+              <EmptyState
+                icon={Wallet}
+                title="Maliyet kaydı yok"
+                description="Henüz gider kaydı yok. İlk maliyetinizi ekleyin."
+              />
+            )
           ) : (
             <Table>
               <TableHeader>

@@ -115,14 +115,13 @@ export default async function AltinMaliyetPage({
       </Card>
 
       {/* ── KPI'lar ─────────────────────────────────────────────────── */}
-      {/* Kapsam etiketi — sorgu gerçeği: tüm zamanlar, iptaller hariç, en
-          güncel 2000 satış kalemi (getGoldCostAnalysis limit'i). Hiçbir veri
-          penceresi/kısıtı belirtilmeden gösterilmez. */}
+      {/* Kapsam etiketi — sorgu gerçeği: tüm zamanlar, iptaller hariç, TÜM
+          satış kalemleri (getGoldCostAnalysis fetchAllPages ile tam çeker;
+          eski 2.000 kayıt limiti kalktı). */}
       <div className="space-y-2">
         <p className="text-muted-foreground text-xs">
           Kapsam: tüm zamanlar · iptal edilen siparişler hariç satılan tüm
-          kalemler (en güncel 2.000 kayıt) · maliyetler yukarıdaki ons
-          fiyatıyla hesaplanır
+          kalemler · maliyetler yukarıdaki ons fiyatıyla hesaplanır
         </p>
         <div className="stagger grid grid-cols-2 gap-5 lg:grid-cols-4">
         <KpiCard

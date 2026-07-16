@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { fetchAllPages } from "@/lib/db/queries/listings";
 import {
   detectKarat,
   extractWeightGrams,
@@ -69,27 +70,18 @@ export async function getGoldCostAnalysis(
   const supabase = await createClient();
 
   // Org ayarlarından özel alım fiyatlarını çek
-  const { data: orgData } = await supabase
+  const { data: orgData, error: orgErr } = await supabase
     .from("organizations")
     .select("gold_settings")
     .eq("id", m.org_id)
     .maybeSingle();
+  // Hata sessizce "varsayılan fiyat"a dönüşmesin — en azından yüzeye çıkar.
+  if (orgErr) console.error("[gold-cost] gold_settings sorgusu:", orgErr.message);
   const gs = (orgData as { gold_settings?: { purchase_price_14k_cents?: number; purchase_price_10k_cents?: number } } | null)?.gold_settings;
   const customPurchasePrices: Record<KaratType, number> = {
     "14K": gs?.purchase_price_14k_cents ?? PURCHASE_PRICE_CENTS_PER_GRAM["14K"],
     "10K": gs?.purchase_price_10k_cents ?? PURCHASE_PRICE_CENTS_PER_GRAM["10K"],
   };
-
-  const { data: saleItemRows, error } = await supabase
-    .from("sale_items")
-    .select(
-      "id, sale_id, product_id, title, quantity, line_total_cents, created_at, sales!inner(order_date, buyer_name, status)",
-    )
-    .neq("sales.status", "cancelled")
-    .order("created_at", { ascending: false })
-    .limit(2000);
-
-  if (error) throw error;
 
   type RawRow = {
     id: string;
@@ -101,7 +93,28 @@ export async function getGoldCostAnalysis(
     created_at: string;
     sales: { order_date: string; buyer_name: string | null };
   };
-  const rawItems = (saleItemRows ?? []) as unknown as RawRow[];
+  // TAM küme (fetchAllPages) — eski limit(2000) KPI toplamlarını en güncel
+  // 2000 kalemle kırpıyordu; kalem hacmi (~9k) tam sayfalama için sorun değil.
+  // Org kilidi AÇIK (multi-tenant kuralı): RLS'in aktif-org varsayımına
+  // yaslanma — iki org'lu kullanıcıda kayıtlar karışırdı.
+  const rawItems = await fetchAllPages<RawRow>(
+    (from, to) =>
+      supabase
+        .from("sale_items")
+        .select(
+          "id, sale_id, product_id, title, quantity, line_total_cents, created_at, sales!inner(order_date, buyer_name, status)",
+        )
+        .eq("org_id", m.org_id)
+        .neq("sales.status", "cancelled")
+        .order("created_at", { ascending: false })
+        .order("id", { ascending: false })
+        // Supabase to-one gömülü ilişkiyi statik olarak dizi sanıyor;
+        // çalışmada nesne döner (dashboard.ts'teki aynı cast gerekçesi).
+        .range(from, to) as unknown as PromiseLike<{
+        data: RawRow[] | null;
+        error: { message: string } | null;
+      }>,
+  );
 
   const productIds = [
     ...new Set(rawItems.map((r) => r.product_id).filter(Boolean)),
@@ -118,10 +131,12 @@ export async function getGoldCostAnalysis(
   >();
 
   if (productIds.length > 0) {
-    const { data: products } = await supabase
+    const { data: products, error: productsErr } = await supabase
       .from("products")
       .select("id, title, description, tags, materials")
       .in("id", productIds);
+    if (productsErr)
+      console.error("[gold-cost] products sorgusu:", productsErr.message);
 
     for (const p of (products ?? []) as {
       id: string;

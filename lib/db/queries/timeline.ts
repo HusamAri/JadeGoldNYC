@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { dayKeyNY } from "@/lib/period";
 import type { TaskStatus, TaskPriority } from "@/lib/types";
 
 export interface TimelineTask {
@@ -59,7 +60,7 @@ export async function getTimelineData(
     .slice(0, 10);
 
   const supabase = await createClient();
-  const [{ data }, salesRes, reviewsRes, sysRes] = await Promise.all([
+  const [tasksRes, salesRes, reviewsRes, sysRes] = await Promise.all([
     supabase
       .from("tasks")
       .select(
@@ -97,20 +98,32 @@ export async function getTimelineData(
       .limit(100),
   ]);
 
+  // Sorgu hataları sessizce "veri yok"a dönüşmesin — en azından yüzeye çıkar.
+  for (const [name, res] of [
+    ["tasks", tasksRes],
+    ["sales", salesRes],
+    ["reviews", reviewsRes],
+    ["audit", sysRes],
+  ] as const) {
+    if (res.error) console.error(`[timeline] ${name} sorgusu:`, res.error.message);
+  }
+
   const dayMap = new Map<string, TimelineDay>();
   for (const s of (salesRes.data ?? []) as unknown as {
     order_date: string;
     grand_total_cents: number | null;
     item_total_cents: number | null;
   }[]) {
-    const d = s.order_date.slice(0, 10);
+    // Gün anahtarı mağaza saat diliminde (NY): panel "bugün"ü NY takvimiyle
+    // hesaplar; UTC slice NY akşam satışlarını ertesi güne kaydırıyordu.
+    const d = dayKeyNY(s.order_date);
     const e = dayMap.get(d) ?? { date: d, revenueCents: 0, orders: 0 };
     e.revenueCents += s.grand_total_cents || s.item_total_cents || 0;
     e.orders += 1;
     dayMap.set(d, e);
   }
 
-  const rows = (data ?? []) as unknown as {
+  const rows = (tasksRes.data ?? []) as unknown as {
     id: string;
     title: string;
     status: TaskStatus;
@@ -126,10 +139,12 @@ export async function getTimelineData(
   const assigneeIds = [...new Set(rows.map((r) => r.assignee_id).filter(Boolean))] as string[];
   const names = new Map<string, string | null>();
   if (assigneeIds.length > 0) {
-    const { data: profiles } = await supabase
+    const { data: profiles, error: profilesErr } = await supabase
       .from("profiles")
       .select("id, full_name")
       .in("id", assigneeIds);
+    if (profilesErr)
+      console.error("[timeline] profiles sorgusu:", profilesErr.message);
     for (const p of (profiles ?? []) as { id: string; full_name: string | null }[]) {
       names.set(p.id, p.full_name);
     }

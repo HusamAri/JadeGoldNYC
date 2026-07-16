@@ -319,11 +319,26 @@ export default async function SatislarPage({
           </div>
 
           {rows.length === 0 ? (
-            <EmptyState
-              icon={ShoppingBag}
-              title="Satış kaydı yok"
-              description="Henüz satış yok. Yeni satış ekleyin veya Etsy CSV dosyanızı içe aktarın."
-            />
+            // Aktif filtre/aramada "kayıt yok" yanıltır — filtre sonucu boş
+            // olduğunu söyle ve tek tıkla temizleme yolu sun.
+            filtered ? (
+              <EmptyState
+                icon={ShoppingBag}
+                title="Bu filtreyle sonuç yok"
+                description="Arama veya durum filtresine uyan satış bulunamadı. Filtreyi temizleyip tüm kayıtları görebilirsiniz."
+                action={
+                  <Button asChild variant="outline">
+                    <Link href="/satislar">Filtreyi temizle</Link>
+                  </Button>
+                }
+              />
+            ) : (
+              <EmptyState
+                icon={ShoppingBag}
+                title="Satış kaydı yok"
+                description="Henüz satış yok. Yeni satış ekleyin veya Etsy CSV dosyanızı içe aktarın."
+              />
+            )
           ) : (
             <Table>
               <TableHeader>

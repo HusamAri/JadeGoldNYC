@@ -138,11 +138,26 @@ export default async function YorumlarPage({
           </div>
 
           {rows.length === 0 ? (
-            <EmptyState
-              icon={MessageSquareText}
-              title="Yorum yok"
-              description="Müşteri yorumlarını elle ekleyin ya da Etsy senkronizasyonu ile çekin. Puan trendini, yanıt durumunu ve işaretli yorumları buradan yönetin."
-            />
+            // Aktif filtre/aramada "kayıt yok" yanıltır — filtre sonucu boş
+            // olduğunu söyle ve tek tıkla temizleme yolu sun.
+            search || status || rating ? (
+              <EmptyState
+                icon={MessageSquareText}
+                title="Bu filtreyle sonuç yok"
+                description="Arama, durum veya puan filtresine uyan yorum bulunamadı. Filtreyi temizleyip tüm yorumları görebilirsiniz."
+                action={
+                  <Button asChild variant="outline">
+                    <Link href="/yorumlar">Filtreyi temizle</Link>
+                  </Button>
+                }
+              />
+            ) : (
+              <EmptyState
+                icon={MessageSquareText}
+                title="Yorum yok"
+                description="Müşteri yorumlarını elle ekleyin ya da Etsy senkronizasyonu ile çekin. Puan trendini, yanıt durumunu ve işaretli yorumları buradan yönetin."
+              />
+            )
           ) : (
             <Table>
               <TableHeader>
