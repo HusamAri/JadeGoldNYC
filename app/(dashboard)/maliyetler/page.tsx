@@ -2,11 +2,13 @@ import Link from "next/link";
 import { Plus, Pencil, Wallet, Gem } from "lucide-react";
 import { SceneCutouts } from "@/components/scene-cutouts";
 
+import { requireMembership } from "@/lib/auth";
 import {
   getCostBearerTotals,
   listCosts,
   listCostCategories,
 } from "@/lib/db/queries/costs";
+import { OperatingProfitCard } from "@/components/costs/operating-profit-card";
 import { COST_BEARERS, bearerMeta } from "@/lib/cost-bearer";
 import { strParam, numParam, type RawSearchParams } from "@/lib/searchparams";
 import { formatMoney } from "@/lib/money";
@@ -47,6 +49,7 @@ export default async function MaliyetlerPage({
   const offset = numParam(sp.offset);
   const limit = 25;
 
+  const m = await requireMembership();
   const [{ rows, count }, categories, bearerTotals] = await Promise.all([
     listCosts({ search, categoryId, bearer, limit, offset }),
     listCostCategories(),
@@ -103,6 +106,10 @@ export default async function MaliyetlerPage({
         />
         <CornerMarks />
       </div>
+
+      {/* İşletme kârı (EBITDA): sipariş-başı marj değil, işletme seviyesinin
+          gerçeği — gelir − değişken = katkı; katkı − sabit = kâr; başa-baş. */}
+      <OperatingProfitCard orgId={m.org_id} />
 
       {/* Dekoratif indeks satırı (Spatial/Liquid .idx dili). */}
       <div aria-hidden className="idx sm:-mb-4">
