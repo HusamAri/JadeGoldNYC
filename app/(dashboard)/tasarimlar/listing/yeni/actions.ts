@@ -96,6 +96,14 @@ export async function createDraftListing(
   const rows = input.variants
     .map((r) => ({ ...r, sku: r.sku.trim() }))
     .filter((r) => r.sku);
+  // Platform kuralı: SKU'suz listing/varyant olamaz — tüm satırlar SKU'suzsa
+  // kayıt sessizce sıfır-varyantlı düşerdi (evrensel anahtar ihlali).
+  if (rows.length === 0) {
+    return {
+      error:
+        "En az bir varyantın SKU'su gerekli — SKU'suz listing oluşturulamaz (SKU tüm sistemlerin ortak anahtarıdır).",
+    };
+  }
   const skuSet = new Set(rows.map((r) => r.sku));
   if (skuSet.size !== rows.length) {
     return { error: "Varyant SKU'ları benzersiz olmalı." };

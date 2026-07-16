@@ -4,6 +4,10 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { EtsyClient } from "@/lib/etsy/client";
 import { etsyPaths } from "@/lib/etsy/endpoints";
 import { decodeHtmlEntities } from "@/lib/etsy/text";
+import {
+  mintSingleItemSku,
+  NON_INVENTORY_LISTING_IDS,
+} from "@/lib/etsy/sku";
 import { logAudit } from "@/lib/audit";
 import { rebuildGoldCostsBulk } from "@/lib/gold-cost-entry";
 import {
@@ -525,7 +529,16 @@ async function upsertListingsPage(
     // Etsy API başlıkları HTML-escape'li döndürür ("7.5&quot;") — panelde
     // ham entity görünmesin diye senkron sınırında çözülür.
     title: l.title ? decodeHtmlEntities(l.title) : `Liste ${l.listing_id}`,
-    sku: l.sku?.[0] ?? null,
+    // SKU = evrensel anahtar: Etsy tek-parça listing'de SKU boş dönebilir —
+    // senkron sınırında deterministik SKU üretilir (0086 formülü; her turda
+    // aynı değer → backfill mirror'ı null'a ezilmez, yeni listing SKU'suz
+    // doğamaz). Varyantlı listing'de SKU varyant seviyesinde yaşar (null OK).
+    sku:
+      l.sku?.[0] ??
+      (l.has_variations === false &&
+      !NON_INVENTORY_LISTING_IDS.has(l.listing_id)
+        ? mintSingleItemSku(l.title, l.listing_id)
+        : null),
     status: l.state ?? null,
     price_cents: etsyMoneyToCents(l.price),
     currency: l.price?.currency_code ?? "USD",
