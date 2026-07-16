@@ -4,6 +4,13 @@ import { revalidatePath } from "next/cache";
 
 import { requireMembership } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { EtsyClient } from "@/lib/etsy/client";
+import {
+  addCompetitorWatch,
+  captureWatchPrice,
+  deactivateCompetitorWatch,
+  parseListingIdFromUrl,
+} from "@/lib/etsy/competitor-watch";
 import type { MappedKeywordRow } from "@/lib/csv/mappers/etsy-keywords";
 
 export interface KeywordImportResult {
@@ -68,4 +75,79 @@ export async function commitKeywordImport(
 
   revalidatePath("/analizler/urunler");
   return { ok: true, matched: updates.length, unmatched };
+}
+
+// ── Rakip seti (0091) — organik rakibi sabit comp-set'e ekle/çıkar ──────────
+// Panel birden çok sayfada render edilir; action sonrası istemci router.refresh
+// çağırır, yine de bilinen yüzeyler revalidate edilir.
+
+export interface CompetitorWatchActionResult {
+  ok?: boolean;
+  error?: string;
+}
+
+function revalidateWatchSurfaces(productId: string) {
+  revalidatePath(`/tasarimlar/listing/${productId}`);
+  revalidatePath(`/analizler/urunler/liste/${productId}`);
+  revalidatePath("/analizler/urunler");
+}
+
+/**
+ * Organik rakip satırını ürünün sabit rakip setine ekler. Eski snapshot'larda
+ * listing_id yoktur — URL'den /listing/(\d+)/ ile çözülür. Ekler eklemez tek
+ * seferlik fiyat çekimi denenir (kart hemen dolsun); Etsy bağlı değilse cron
+ * ertesi gün doldurur.
+ */
+export async function addCompetitorToSet(
+  productId: string,
+  competitor: {
+    listing_id: number | null;
+    url: string | null;
+    title: string | null;
+    shop_name: string | null;
+  },
+): Promise<CompetitorWatchActionResult> {
+  const m = await requireMembership();
+  const listingId =
+    competitor.listing_id ?? parseListingIdFromUrl(competitor.url);
+  if (!listingId)
+    return { error: "Rakip listing kimliği çözülemedi (eski kayıt, URL yok)." };
+
+  const admin = createAdminClient();
+  const r = await addCompetitorWatch(admin, m.org_id, m.user_id, {
+    product_id: productId,
+    competitor_listing_id: listingId,
+    shop_name: competitor.shop_name,
+    title: competitor.title,
+    url: competitor.url,
+  });
+  if ("error" in r) return { error: r.error };
+
+  try {
+    const client = await EtsyClient.forOrg(m.org_id);
+    await captureWatchPrice(admin, client, {
+      id: r.id,
+      org_id: m.org_id,
+      competitor_listing_id: listingId,
+    });
+  } catch {
+    // İlk fiyat çekilemedi (Etsy bağlı değil / geçici hata) — izleme durur,
+    // günlük cron fiyatı doldurur.
+  }
+
+  revalidateWatchSurfaces(productId);
+  return { ok: true };
+}
+
+/** İzlemeyi rakip setinden çıkarır (pasifler — fiyat tarihi korunur). */
+export async function removeCompetitorFromSet(
+  productId: string,
+  watchId: string,
+): Promise<CompetitorWatchActionResult> {
+  const m = await requireMembership();
+  const admin = createAdminClient();
+  const r = await deactivateCompetitorWatch(admin, m.org_id, watchId);
+  if (r.error) return { error: r.error };
+  revalidateWatchSurfaces(productId);
+  return { ok: true };
 }

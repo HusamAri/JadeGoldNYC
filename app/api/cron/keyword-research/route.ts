@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { advanceKeywordResearch } from "@/lib/etsy/keyword-research";
+import { refreshAllCompetitorPrices } from "@/lib/etsy/competitor-watch";
 
 // Bir grupta ~40-55 listing × Etsy araması yapılır; süre limitini uzat.
 export const maxDuration = 60;
@@ -23,6 +24,10 @@ export async function GET(request: Request) {
   const dayOfYear = Math.floor((now.getTime() - startOfYear) / 86_400_000);
   const group = dayOfYear % 7;
 
+  // Rakip seti fiyatları ÖNCE tazelenir ki bugünün grubu araştırılırken
+  // band taze rakip-seti kayıtlarından kurulabilsin (0091).
+  const competitorWatch = await refreshAllCompetitorPrices();
+
   const results = await advanceKeywordResearch(group);
-  return NextResponse.json({ ok: true, group, results });
+  return NextResponse.json({ ok: true, group, results, competitorWatch });
 }

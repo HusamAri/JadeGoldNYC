@@ -16,6 +16,7 @@ import {
   PURCHASE_PRICE_CENTS_PER_GRAM,
   TROY_OUNCE_GRAMS,
 } from "@/lib/gold-cost";
+import { getFreshCompetitorSetPrices } from "@/lib/etsy/competitor-watch";
 
 /**
  * Rekabet fiyat araştırması motoru.
@@ -208,6 +209,9 @@ export interface CompetitorRow {
   shop_name: string | null;
   url: string | null;
   position: number;
+  /** Etsy listing_id — rakip setine ekleme için (eski kayıtlarda yok; url'den
+   *  /listing/(\d+)/ ile çözülür). */
+  listing_id?: number | null;
 }
 
 export interface ResearchResult {
@@ -235,6 +239,67 @@ const MARKET_MULT_LOW = 1.3; // bunun altı: çok ucuz (kalite algısı/marj ris
 const MARKET_MULT_HIGH = 2.3; // bunun üstü: pazara göre pahalı
 const MARKET_MULT_MID = 1.8;
 
+// Fiziksel-mantık guard'ı: $/g melt'in yarısının ALTI imkânsızdır (hurda değeri
+// bile satış fiyatını aşar) → bu ZARAR değil VERİ HATASI sinyalidir (ağırlık
+// fazla girilmiş ya da fiyat/ağırlık farklı varyantlara ait). 20 katının ÜSTÜ
+// de absürttür (ağırlık eksik girilmiş). İki uçta da öneri üretmek yanıltır.
+const DATA_SUSPECT_LOW_MELT_RATIO = 0.5;
+const DATA_SUSPECT_HIGH_MELT_RATIO = 20;
+
+/** Fiyat bandının kaynağı: organik arama mı, sabit rakip seti mi (0091). */
+export type BandSource = "organik" | "rakip-seti";
+
+/** Bizim $/g'nin hangi fiyat/ağırlık çiftinden kurulduğu (varyant-farkında). */
+export interface PriceBasis {
+  price_cents: number | null;
+  weight_grams: number | null;
+  /** Kayda yazılan insan-okur temel açıklaması (basis_note kolonu). */
+  note: string;
+}
+
+/** resolvePriceBasis'in ihtiyaç duyduğu dar varyant kolonları. */
+export interface VariantBasisRow {
+  sku: string;
+  price_cents: number | null;
+  weight_grams: number | string | null; // numeric — bazı sürücüler string döndürür
+}
+
+/**
+ * Varyant-farkında fiyat/ağırlık temeli: products.price_cents listing'in EN
+ * DÜŞÜK varyant fiyatıdır — $/g'de ağırlık da O varyanta ait olmalı. En düşük
+ * fiyatlı ve ağırlığı OLAN varyant seçilir; hiç yoksa ürün alanlarına düşülür.
+ */
+export function resolvePriceBasis(
+  product: ProductRow,
+  variants: VariantBasisRow[],
+): PriceBasis {
+  const paired = variants
+    .map((v) => ({
+      sku: v.sku,
+      price: v.price_cents,
+      weight: v.weight_grams == null ? null : Number(v.weight_grams),
+    }))
+    .filter(
+      (v): v is { sku: string; price: number; weight: number } =>
+        v.price != null && v.price > 0 && v.weight != null && v.weight > 0,
+    )
+    .sort((a, b) => a.price - b.price);
+  if (paired.length > 0) {
+    const v = paired[0];
+    return {
+      price_cents: v.price,
+      weight_grams: v.weight,
+      note: `varyant temeli: en düşük fiyatlı gramajlı varyant ${v.sku} ($${(v.price / 100).toFixed(0)} · ${v.weight} g)`,
+    };
+  }
+  return {
+    price_cents: product.price_cents,
+    weight_grams:
+      product.weight_grams == null ? null : Number(product.weight_grams),
+    note: "ürün temeli: listing fiyatı + ürün gramajı (fiyat+gram çifti olan varyant yok)",
+  };
+}
+
 export interface MarketPosition {
   our_per_gram_cents: number | null;
   market_low_per_gram_cents: number | null;
@@ -244,9 +309,27 @@ export interface MarketPosition {
   price_position: "pahali" | "ucuz" | "bantta" | "belirsiz";
   deviation_pct: number | null;
   confidence: "yuksek" | "orta" | "dusuk";
+  /** Eski tek-metin öneri — geriye dönük dolmaya devam eder (what+why+action). */
   recommendation: string | null;
   /** Motorun önerdiği TAM fiyat (uygula butonu bunu kullanır); yoksa null. */
   suggested_price_cents: number | null;
+  /** Fiziksel-mantık guard'ı: $/g imkânsızsa true — zarar değil veri hatası. */
+  data_suspect: boolean;
+  /** Yapılandırılmış hüküm (insancıl metin dersi): ne oldu / neden / ne yap. */
+  verdict_what: string | null;
+  verdict_why: string | null;
+  verdict_action: string | null;
+  /** Bizim $/g hangi fiyat/ağırlık temelinden kuruldu (varyant mı ürün mü). */
+  basis_note: string | null;
+  band_source: BandSource;
+}
+
+export interface MarketPositionOptions {
+  /** Varyant-farkında fiyat/ağırlık temeli; verilmezse ürün alanları. */
+  basis?: PriceBasis | null;
+  /** Band kaynağı — 'rakip-seti' ise ayar filtresi atlanır (küme elle
+   *  doğrulanmış), $/g eşiği 3'e düşer ve güven 'yuksek' olur. */
+  bandSource?: BandSource;
 }
 
 /** Rakip başlığından gram çıkarıp $/g döndürür (yoksa null). */
@@ -259,13 +342,24 @@ function competitorPerGram(c: CompetitorRow): number | null {
 /**
  * Bir listing için gram-normalize pazar konumu hesaplar.
  * Rakip başlıklarından gram çıkarabildiğimiz kadarıyla CANLI $/g bandı kurar;
- * yeterli değilse (n<5) melt-çarpanı kalibre bandına düşer (güven=dusuk).
+ * yeterli değilse (organikte n<5, rakip setinde n<3) melt-çarpanı kalibre
+ * bandına düşer. Bizim $/g imkânsız çıkarsa (melt×0,5 altı / melt×20 üstü)
+ * öneri ÜRETMEZ — bunu veri hatası (data_suspect) olarak işaretler.
  */
 export function computeMarketPosition(
   product: ProductRow,
   competitors: CompetitorRow[],
   goldOunceUsd: number,
+  opts?: MarketPositionOptions,
 ): MarketPosition {
+  const bandSource: BandSource = opts?.bandSource ?? "organik";
+  const compSet = bandSource === "rakip-seti";
+  const basis = opts?.basis ?? null;
+  const basisNote =
+    basis?.note ?? "ürün temeli: listing fiyatı + ürün gramajı";
+  const basePrice = basis ? basis.price_cents : product.price_cents;
+  const ourWeight = basis ? basis.weight_grams : product.weight_grams;
+
   const karat = detectKarat(product.title, product.tags);
   const empty: MarketPosition = {
     our_per_gram_cents: null,
@@ -278,6 +372,12 @@ export function computeMarketPosition(
     confidence: "dusuk",
     recommendation: null,
     suggested_price_cents: null,
+    data_suspect: false,
+    verdict_what: null,
+    verdict_why: null,
+    verdict_action: null,
+    basis_note: basisNote,
+    band_source: bandSource,
   };
   if (!karat) return empty;
 
@@ -286,37 +386,78 @@ export function computeMarketPosition(
   );
   const breakevenPerGram = PURCHASE_PRICE_CENTS_PER_GRAM[karat]; // taban maliyet
 
-  // Bizim $/g: ürün fiyatı ÷ ürün ağırlığı (yaklaşık — varyant başı değil).
-  const ourWeight = product.weight_grams;
+  // Bizim $/g: temel fiyat ÷ temel ağırlık (varyant-farkında — bkz. basis).
   const ourPerGram =
-    product.price_cents != null && ourWeight && ourWeight > 0
-      ? Math.round(product.price_cents / ourWeight)
+    basePrice != null && ourWeight && ourWeight > 0
+      ? Math.round(basePrice / ourWeight)
       : null;
 
-  // Aynı ayardaki rakiplerin $/g'si (başlıktan gram + makul melt üstü).
+  // Rakiplerin $/g'si (başlıktan gram + makul melt üstü). Organikte bire bir
+  // ayar eşleşmesi aranır; rakip seti elle doğrulanmış küme olduğundan
+  // başlıkta ayar geçmese de sayılır.
   const rivalPerGram = competitors
-    .filter((c) => {
-      const k = detectKarat(c.title);
-      return k === karat; // bire bir ayar eşleşmesi
-    })
+    .filter((c) => compSet || detectKarat(c.title) === karat)
     .map((c) => competitorPerGram(c))
     .filter((v): v is number => v != null && v >= meltPerGram * 0.9);
 
   let low: number, avg: number, high: number;
   let confidence: MarketPosition["confidence"];
-  if (rivalPerGram.length >= 5) {
+  const minRivals = compSet ? 3 : 5;
+  if (rivalPerGram.length >= minRivals) {
     const sorted = [...rivalPerGram].sort((a, b) => a - b);
     const q = (p: number) => sorted[Math.min(sorted.length - 1, Math.floor(p * sorted.length))];
-    low = q(0.25);
-    avg = median(sorted);
-    high = q(0.75);
-    confidence = rivalPerGram.length >= 10 ? "yuksek" : "orta";
+    // Tam sayı cent disiplini: $/g bölümleri float üretir, kolonlar integer.
+    low = Math.round(q(0.25));
+    avg = Math.round(median(sorted));
+    high = Math.round(q(0.75));
+    confidence = compSet || rivalPerGram.length >= 10 ? "yuksek" : "orta";
   } else {
     // Yedek: kalibre melt-çarpanı bandı (güven düşük).
     low = Math.round(meltPerGram * MARKET_MULT_LOW);
     avg = Math.round(meltPerGram * MARKET_MULT_MID);
     high = Math.round(meltPerGram * MARKET_MULT_HIGH);
     confidence = "dusuk";
+  }
+  // Rakip seti banda hükmediyorsa güven yüksektir (küme elle doğrulanmış,
+  // fiyatlar canlı çekilmiş — bkz. 0091).
+  if (compSet) confidence = "yuksek";
+
+  const fg = (c: number) => `$${(c / 100).toFixed(0)}/g`;
+  const fp = (c: number | null) =>
+    c == null ? "—" : `$${(c / 100).toFixed(0)}`;
+
+  // ── Fiziksel-mantık guard'ı: imkânsız $/g = veri hatası, zarar değil ──
+  const suspectLow =
+    ourPerGram != null && ourPerGram < meltPerGram * DATA_SUSPECT_LOW_MELT_RATIO;
+  const suspectHigh =
+    ourPerGram != null && ourPerGram > meltPerGram * DATA_SUSPECT_HIGH_MELT_RATIO;
+  if (suspectLow || suspectHigh) {
+    const what = `VERİ ŞÜPHELİ · ${fg(ourPerGram!)} ${karat} için fiziksel olarak ${
+      suspectLow ? "imkânsız derecede düşük" : "absürt derecede yüksek"
+    } (melt ${fg(meltPerGram)})`;
+    const why = suspectLow
+      ? `Fiyat ${fp(basePrice)} ÷ ağırlık ${ourWeight} g = ${fg(ourPerGram!)}; oysa ${karat} hurda (melt) değeri bile ${fg(meltPerGram)}. Bu ZARAR değil VERİ HATASI sinyali: büyük olasılıkla ağırlık fazla girilmiş ya da fiyat/ağırlık eşleşmesi yanlış (${basisNote}).`
+      : `Fiyat ${fp(basePrice)} ÷ ağırlık ${ourWeight} g = ${fg(ourPerGram!)} — ${karat} melt değeri ${fg(meltPerGram)}'ın 20 katından fazla. Büyük olasılıkla ağırlık eksik/yanlış girilmiş (${basisNote}).`;
+    const action =
+      "Öneri üretilmedi. Listeler > listing detayında ağırlığı ve varyant fiyat/ağırlık eşleşmesini düzeltin, sonra 'Şimdi araştır' ile yenileyin.";
+    return {
+      our_per_gram_cents: ourPerGram,
+      market_low_per_gram_cents: low,
+      market_avg_per_gram_cents: avg,
+      market_high_per_gram_cents: high,
+      melt_per_gram_cents: meltPerGram,
+      price_position: "belirsiz",
+      deviation_pct: null,
+      confidence,
+      recommendation: `${what}. ${why} ${action}`,
+      suggested_price_cents: null, // imkânsız $/g'den fiyat türetilmez
+      data_suspect: true,
+      verdict_what: what,
+      verdict_why: why,
+      verdict_action: action,
+      basis_note: basisNote,
+      band_source: bandSource,
+    };
   }
 
   let position: MarketPosition["price_position"] = "bantta";
@@ -339,53 +480,55 @@ export function computeMarketPosition(
     position = "belirsiz";
   }
 
-  const fg = (c: number) => `$${(c / 100).toFixed(0)}/g`;
-  const fp = (c: number | null) =>
-    c == null ? "—" : `$${(c / 100).toFixed(0)}`;
   const rivalN = rivalPerGram.length;
-  const src =
-    confidence === "dusuk"
+  const src = compSet
+    ? `rakip seti · ${competitors.length} kayıt`
+    : confidence === "dusuk"
       ? "kalibre band (rakip $/g az)"
       : `${rivalN} rakip $/g`;
   // Bizim mevcut fiyat ve önerilen tam fiyat (hedef $/g × ağırlık).
   const priceAt = (perGram: number): number | null =>
     ourWeight && ourWeight > 0 ? Math.round(perGram * ourWeight) : null;
-  let rec: string | null = null;
+  let what: string | null = null;
+  let why: string | null = null;
+  let action: string | null = null;
   let suggested: number | null = null; // uygula butonunun kullanacağı tam fiyat
 
   if (position === "pahali") {
     const targetBand = priceAt(high); // banda giren en yüksek (marjı korur)
     const targetMid = priceAt(avg); // rekabetçi (daha agresif)
     suggested = targetBand; // öneri: bant içine çek (marjı korur)
-    rec =
-      `PAHALI · bizim ${fg(ourPerGram!)} — pazar bandı ${fg(low)}–${fg(high)} (${src}, ${confidence} güven), %${Math.round((deviation ?? 0) * 100)} üstünde. ` +
-      `Önerilen fiyat: ${fp(targetBand)} (bant içine; şu an ${fp(product.price_cents)}), agresif: ${fp(targetMid)}. ` +
-      `En çok fayda: FİYAT düşürmek — pahalı üründe reklam bütçesi dönüşüm getirmez (Temmuz'da reklam brüt kârın ~%80'iydi), reklamı artırmadan önce fiyatı banda çek. ` +
-      `Tedarik: iptal oranı yüksek varyantta önce stok kararı, indirim değil.`;
+    what = `PAHALI · pazar bandının %${Math.round((deviation ?? 0) * 100)} üstünde`;
+    why = `Bizim ${fg(ourPerGram!)} (${basisNote}); pazar bandı ${fg(low)}–${fg(high)} (${src}, ${confidence} güven).`;
+    action =
+      `Önerilen fiyat: ${fp(targetBand)} (bant içine; şu an ${fp(basePrice)}), agresif: ${fp(targetMid)}. ` +
+      `En çok fayda: FİYAT düşürmek — pahalı üründe reklam bütçesi dönüşüm getirmez, reklamı artırmadan önce fiyatı banda çek.`;
   } else if (position === "ucuz") {
     if (ourPerGram != null && ourPerGram < breakevenPerGram) {
       const targetFloor = priceAt(Math.round(breakevenPerGram * 1.4));
       suggested = targetFloor;
-      rec =
-        `ZARAR RİSKİ · bizim ${fg(ourPerGram)} maliyet tabanı ${fg(breakevenPerGram)} ALTINDA — acil düzelt. ` +
-        `Önerilen minimum fiyat: ${fp(targetFloor)} (taban×1,4). En çok fayda: fiyatı düzeltmek; bu üründe reklam para yakar.`;
+      what = `ZARAR RİSKİ · ${fg(ourPerGram)} maliyet tabanı ${fg(breakevenPerGram)} ALTINDA`;
+      why = `Gram başına satış fiyatı alım maliyetinin altında (${basisNote}) — bu fiyatla her satış zarar yazar.`;
+      action = `Acil düzelt: önerilen minimum fiyat ${fp(targetFloor)} (taban×1,4). En çok fayda: fiyatı düzeltmek; bu üründe reklam para yakar.`;
     } else {
       const targetLow = priceAt(low);
       const targetMid = priceAt(avg);
       suggested = targetMid; // hedef: bant ortası (zam fırsatı)
-      rec =
-        `UCUZ · bizim ${fg(ourPerGram!)} — pazar bandı ${fg(low)}–${fg(high)} ALTINDA (${src}, ${confidence} güven). ` +
-        `Zam fırsatı: en az ${fp(targetLow)} (bant alt sınırı), hedef ${fp(targetMid)}. ` +
-        `En çok fayda: reklamdan ÖNCE fiyatı bant içine çek — talep zaten var, marj masada kalıyor. 2. teyit beklenmeli.`;
+      what = `UCUZ · pazar bandı ${fg(low)}–${fg(high)} ALTINDA`;
+      why = `Bizim ${fg(ourPerGram!)} (${basisNote}); ${src}, ${confidence} güven.`;
+      action = `Zam fırsatı: en az ${fp(targetLow)} (bant alt sınırı), hedef ${fp(targetMid)}. Reklamdan ÖNCE fiyatı bant içine çek — talep zaten var, marj masada kalıyor. 2. teyit beklenmeli.`;
     }
   } else if (position === "bantta") {
-    rec =
-      `BANTTA · ${fg(ourPerGram!)} pazar aralığında (${fg(low)}–${fg(high)}). Fiyat rekabetçi. ` +
-      `En çok fayda: fiyat değil, GÖRÜNÜRLÜK — dönüşümü zaten iyiyse hedefli/daraltılmış reklam ya da SEO ile trafik artır.`;
+    what = `BANTTA · ${fg(ourPerGram!)} pazar aralığında (${fg(low)}–${fg(high)})`;
+    why = `Fiyat rekabetçi (${src}, ${confidence} güven; ${basisNote}).`;
+    action =
+      "En çok fayda: fiyat değil, GÖRÜNÜRLÜK — dönüşümü zaten iyiyse hedefli/daraltılmış reklam ya da SEO ile trafik artır.";
   } else {
-    rec = ourWeight
+    what = "KONUM BELİRSİZ · $/g hesaplanamadı";
+    why = ourWeight
       ? "Ağırlık var ama fiyat yok — konum hesaplanamadı."
-      : "Ürün ağırlığı girilmemiş — $/g konumu için 'Listeler' sekmesinde ağırlık girin.";
+      : "Ürün/varyant ağırlığı girilmemiş — $/g konumu için gram gerekli.";
+    action = "Listeler > listing detayında ağırlığı girin, sonra 'Şimdi araştır' ile yenileyin.";
   }
 
   return {
@@ -397,8 +540,14 @@ export function computeMarketPosition(
     price_position: position,
     deviation_pct: deviation,
     confidence,
-    recommendation: rec,
+    recommendation: what ? `${what}. ${why ?? ""} ${action ?? ""}`.trim() : null,
     suggested_price_cents: suggested,
+    data_suspect: false,
+    verdict_what: what,
+    verdict_why: why,
+    verdict_action: action,
+    basis_note: basisNote,
+    band_source: bandSource,
   };
 }
 
@@ -455,10 +604,54 @@ export async function researchListing(
     shop_name: l.shop_name ?? l.Shop?.shop_name ?? null,
     url: l.url ?? null,
     position: i + 1,
+    listing_id: l.listing_id ?? null, // rakip setine ekleme için
   }));
 
-  const prices = competitors.map((c) => c.price_cents);
-  const our = product.price_cents;
+  // Varyantlar: fiyat/ağırlık temeli için HER modda dar kolon; deep modda
+  // aynı-varyant karşılaştırması için tam kolon (tek sorgu iki ihtiyaca yeter).
+  const { data: varRows, error: varError } = await admin
+    .from("product_variants")
+    .select(
+      deep
+        ? "sku, name, properties, price_cents, weight_grams"
+        : "sku, price_cents, weight_grams",
+    )
+    .eq("org_id", orgId)
+    .eq("product_id", product.id);
+  if (varError)
+    console.error("keyword-research: varyant sorgusu hatası:", varError.message);
+  // Dar modda name/properties yok — basis yalnız sku+fiyat+gram okur; deep
+  // karşılaştırması yalnız tam kolonlu satırlarla çalışır (aşağıda deep guard).
+  const variantRows = (varRows ?? []) as unknown as OurVariant[];
+  const basis = resolvePriceBasis(product, variantRows);
+
+  // Rakip seti (0091): son 48 saatte ≥3 taze fiyat varsa band ORGANİK arama
+  // yerine buradan kurulur — organik sonuçlar yine `results`e yazılır ama
+  // banda rakip seti hükmeder.
+  const compSetPrices = await getFreshCompetitorSetPrices(
+    admin,
+    orgId,
+    product.id,
+    currency,
+  );
+  const bandSource: BandSource =
+    compSetPrices.length >= 3 ? "rakip-seti" : "organik";
+  const bandRows: CompetitorRow[] =
+    bandSource === "rakip-seti"
+      ? compSetPrices.map((c, i) => ({
+          title: c.title ?? "",
+          price_cents: c.price_cents,
+          currency: c.currency,
+          shop: null,
+          shop_name: c.shop_name,
+          url: c.url,
+          position: i + 1,
+          listing_id: c.competitor_listing_id,
+        }))
+      : competitors;
+
+  const prices = bandRows.map((c) => c.price_cents);
+  const our = product.price_cents; // listing fiyatı — $/g temeli ayrı (basis)
   const stats = prices.length
     ? {
         min_cents: Math.min(...prices),
@@ -479,28 +672,23 @@ export async function researchListing(
   // Derin mod: rakip varyantlarını çekip bizimkilerle eşleştir (aynı-varyant
   // fiyat karşılaştırması). Maliyeti sınırlamak için ilk 8 rakip.
   let variantComparison: VariantComparison[] | null = null;
-  if (deep) {
-    const { data: ourVars } = await admin
-      .from("product_variants")
-      .select("sku, name, properties, price_cents, weight_grams")
-      .eq("org_id", orgId)
-      .eq("product_id", product.id);
-    const ourVariants = (ourVars ?? []) as OurVariant[];
-    if (ourVariants.length > 0) {
-      const offerings: CompetitorOffering[] = [];
-      for (const l of rawCompetitors.slice(0, 8)) {
-        if (l.listing_id == null) continue;
-        const offs = await fetchCompetitorOfferings(client, l.listing_id, currency);
-        offerings.push(...offs);
-        await new Promise((r) => setTimeout(r, 160));
-      }
-      variantComparison = buildVariantComparison(ourVariants, offerings);
+  if (deep && variantRows.length > 0) {
+    const offerings: CompetitorOffering[] = [];
+    for (const l of rawCompetitors.slice(0, 8)) {
+      if (l.listing_id == null) continue;
+      const offs = await fetchCompetitorOfferings(client, l.listing_id, currency);
+      offerings.push(...offs);
+      await new Promise((r) => setTimeout(r, 160));
     }
+    variantComparison = buildVariantComparison(variantRows, offerings);
   }
 
-  const market = computeMarketPosition(product, competitors, goldOunceUsd);
+  const market = computeMarketPosition(product, bandRows, goldOunceUsd, {
+    basis,
+    bandSource,
+  });
 
-  await admin.from("keyword_research").insert({
+  const { error: insertError } = await admin.from("keyword_research").insert({
     org_id: orgId,
     product_id: product.id,
     keyword,
@@ -520,7 +708,15 @@ export async function researchListing(
     confidence: market.confidence,
     recommendation: market.recommendation,
     suggested_price_cents: market.suggested_price_cents,
+    data_suspect: market.data_suspect,
+    verdict_what: market.verdict_what,
+    verdict_why: market.verdict_why,
+    verdict_action: market.verdict_action,
+    basis_note: market.basis_note,
+    band_source: market.band_source,
   });
+  if (insertError)
+    throw new Error(`keyword_research yazılamadı: ${insertError.message}`);
 
   return {
     product_id: product.id,

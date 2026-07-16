@@ -14,6 +14,7 @@ import { KeywordResearchPanel } from "@/components/keyword-research-panel";
 import { ImageStrip } from "@/components/listing/image-strip";
 import { VariantEditor } from "@/components/listing/variant-editor";
 import { MarketPositionCard } from "@/components/listing/market-position-card";
+import { RepriceRuleCard } from "@/components/listing/reprice-rule-card";
 import { AdsSummaryCard } from "@/components/listing/ads-summary-card";
 import { ListingGapsCard } from "@/components/listing/listing-gaps-card";
 import { ListingFieldsForm } from "@/components/listing/listing-fields-form";
@@ -222,6 +223,14 @@ export default async function ListingDetayPage({
           />
         )}
         <KeywordResearchPanel productId={product.id} />
+        {/* Otomatik fiyat kuralı — rakip çapasına bağlı reprice motoru
+            (kapalı/öneri/otomatik); araştırma panelinin hemen altında, çünkü
+            çapası buradaki araştırma kaydıdır. */}
+        <RepriceRuleCard
+          productId={product.id}
+          currency={product.currency}
+          hasVariations={variants.length > 1}
+        />
       </section>
 
       {/* 05 · Reklam & performans. */}
