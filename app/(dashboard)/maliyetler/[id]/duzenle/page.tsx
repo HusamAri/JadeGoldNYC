@@ -31,6 +31,9 @@ export default async function MaliyetDuzenlePage({
     currency: cost.currency,
     cost_date: cost.cost_date.slice(0, 10),
     vendor: cost.vendor ?? "",
+    // Trigger'la otomatik atanmış taraf da burada açık değer olarak görünür;
+    // "auto" yalnız hiç atanmamış kayıtta kalır (dürüst gösterim).
+    bearer: cost.bearer ?? "auto",
     notes: cost.notes ?? "",
   };
 

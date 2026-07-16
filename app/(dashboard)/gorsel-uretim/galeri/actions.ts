@@ -9,6 +9,7 @@ import { getEtsyWriteAccess } from "@/lib/db/queries/etsy";
 import { EtsyClient, EtsyNotConnectedError } from "@/lib/etsy/client";
 import { etsyPaths } from "@/lib/etsy/endpoints";
 import { isHiggsfieldUrl, deriveThumbUrl } from "@/lib/photo-kit/higgsfield";
+import { stripImageMetadata } from "@/lib/photo-kit/strip-metadata";
 
 /**
  * Higgsfield görsel URL'lerini panele ekler (satır başına bir URL). Yalnız
@@ -162,6 +163,10 @@ export async function uploadImageToListing(
   const buf = await upstream.arrayBuffer();
   if (buf.byteLength > 60 * 1024 * 1024)
     return { error: "Görsel çok büyük (60MB üstü)." };
+  // Üreteç/köken meta verisini sök (ör. Higgsfield `hf-job-id`) — mağazaya
+  // yüklenen ürün fotoğrafı kaynağını ele veren etiketler taşımasın. (Görünmez
+  // SynthID filigranı meta veri değildir; bununla sökülemez.)
+  const clean = stripImageMetadata(new Uint8Array(buf));
 
   let client: EtsyClient;
   try {
@@ -183,7 +188,7 @@ export async function uploadImageToListing(
     const form = new FormData();
     form.append(
       "image",
-      new Blob([buf], { type }),
+      new Blob([clean], { type }),
       `jade-gold-${row.id.slice(0, 8)}.${ext}`,
     );
     if (row.title) form.append("alt_text", row.title.slice(0, 250));

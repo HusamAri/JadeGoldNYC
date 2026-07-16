@@ -63,7 +63,7 @@ export default async function AltinMaliyetPage({
   const { items, summary } = await getGoldCostAnalysis(goldPriceOunce);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <PageHeader
         title="Altin Maliyet Analizi"
         description="Satilan urunlerin altin malzeme + iscilik maliyet kirilimi"
@@ -80,33 +80,33 @@ export default async function AltinMaliyetPage({
         }
       />
 
-      {/* ── Altın Fiyat Bilgisi ─────────────────────────────────────── */}
-      <Card>
-        <CardContent className="flex flex-wrap items-center gap-4 text-sm">
-          <div className="flex items-center gap-2">
-            <Scale className="text-muted-foreground size-4" />
-            <span className="text-muted-foreground">Altin Ons Fiyati:</span>
+      {/* ── Altın Fiyat Bilgisi — sayfanın hero/özet şeridi: berrak cam board
+          (.glass-board). Yarıçapı Card'dan (rounded-[26px]) devralır. ────── */}
+      <Card className="glass-board">
+        <CardContent className="grid grid-cols-2 gap-y-5 text-sm sm:grid-cols-4">
+          <div className="flex flex-col items-center gap-1 text-center">
+            <span className="text-muted-foreground flex items-center gap-1.5 text-xs">
+              <Scale className="size-3.5" />
+              Altin Ons Fiyati
+            </span>
             <span className="font-semibold tabular-nums">
               {fmtUsd(goldPriceOunce)}
             </span>
           </div>
-          <div className="text-muted-foreground">|</div>
-          <div>
-            <span className="text-muted-foreground">Gram Fiyati (24K): </span>
+          <div className="border-border flex flex-col items-center gap-1 text-center sm:border-l">
+            <span className="text-muted-foreground text-xs">Gram Fiyati (24K)</span>
             <span className="font-semibold tabular-nums">
               {fmtUsd(goldPricePerGram)}
             </span>
           </div>
-          <div className="text-muted-foreground">|</div>
-          <div>
-            <span className="text-muted-foreground">14K Gram Degeri: </span>
+          <div className="border-border flex flex-col items-center gap-1 text-center sm:border-l">
+            <span className="text-muted-foreground text-xs">14K Gram Degeri</span>
             <span className="font-semibold tabular-nums">
               {fmtUsd(goldPricePerGram * 0.585)}
             </span>
           </div>
-          <div className="text-muted-foreground">|</div>
-          <div>
-            <span className="text-muted-foreground">10K Gram Degeri: </span>
+          <div className="border-border flex flex-col items-center gap-1 text-center sm:border-l">
+            <span className="text-muted-foreground text-xs">10K Gram Degeri</span>
             <span className="font-semibold tabular-nums">
               {fmtUsd(goldPricePerGram * 0.416)}
             </span>
@@ -115,7 +115,15 @@ export default async function AltinMaliyetPage({
       </Card>
 
       {/* ── KPI'lar ─────────────────────────────────────────────────── */}
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      {/* Kapsam etiketi — sorgu gerçeği: tüm zamanlar, iptaller hariç, TÜM
+          satış kalemleri (getGoldCostAnalysis fetchAllPages ile tam çeker;
+          eski 2.000 kayıt limiti kalktı). */}
+      <div className="space-y-2">
+        <p className="text-muted-foreground text-xs">
+          Kapsam: tüm zamanlar · iptal edilen siparişler hariç satılan tüm
+          kalemler · maliyetler yukarıdaki ons fiyatıyla hesaplanır
+        </p>
+        <div className="stagger grid grid-cols-2 gap-5 lg:grid-cols-4">
         <KpiCard
           label="Analiz Edilen Kalem"
           value={`${summary.analyzedItems} / ${summary.totalItems}`}
@@ -123,25 +131,28 @@ export default async function AltinMaliyetPage({
         />
         <KpiCard
           label="Toplam Alim Maliyeti"
-          value={formatMoney(summary.totalPurchaseCostCents)}
+          cents={summary.totalPurchaseCostCents}
           icon={Scale}
         />
         <KpiCard
           label="Altin Malzeme Degeri"
-          value={formatMoney(summary.totalGoldCostCents)}
+          cents={summary.totalGoldCostCents}
         />
         <KpiCard
           label="Toplam Iscilik"
-          value={formatMoney(summary.totalLaborCostCents)}
+          cents={summary.totalLaborCostCents}
         />
+        </div>
       </div>
 
       {/* ── Ayar Bazlı Kırılım ─────────────────────────────────────── */}
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid gap-6 lg:grid-cols-2">
         {(["14K", "10K"] as const).map((k) => {
           const s = summary.byKarat[k];
           return (
-            <Card key={k}>
+            // İkincil özet bölümü — buzlu/mat cam (.glass-iced); hero board'dan
+            // bir ton geride durur. Yarıçapı Card'dan devralır.
+            <Card key={k} className="glass-iced">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Badge variant={karatBadgeVariant(k)}>{k}</Badge>
@@ -185,8 +196,9 @@ export default async function AltinMaliyetPage({
         })}
       </div>
 
-      {/* ── Detay Tablosu ──────────────────────────────────────────── */}
-      <Card>
+      {/* ── Detay Tablosu — tablo/liste yüzeyi: dikey oluklu cam (.glass-fluted).
+          Yarıçapı Card'dan (rounded-[26px]) devralır. ──────────────────── */}
+      <Card className="glass-fluted">
         <CardHeader>
           <CardTitle>Kalem Detaylari</CardTitle>
         </CardHeader>
@@ -219,8 +231,12 @@ export default async function AltinMaliyetPage({
                       <TableCell className="whitespace-nowrap">
                         {formatDate(item.orderDate)}
                       </TableCell>
-                      <TableCell className="max-w-[260px] truncate font-medium">
-                        {item.title}
+                      {/* Ürün adı kayıt satırında tek satır kalır; taşarsa
+                          kırpılmaz, yatay kaydırılır (.scroll-x). */}
+                      <TableCell className="font-medium">
+                        <div className="scroll-x max-w-[260px]" title={item.title}>
+                          {item.title}
+                        </div>
                       </TableCell>
                       <TableCell>
                         {item.karat ? (

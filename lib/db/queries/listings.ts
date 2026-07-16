@@ -75,6 +75,13 @@ export interface ListingLifetimeSales {
 export interface ListingGaps {
   missing_weights: number;
   total_variants: number;
+  /**
+   * Varyantı OLMAYAN listing'de ürün gramajı (products.weight_grams) da yoksa
+   * true. Varyantlı listing'de gram bütünlüğü `missing_weights` ile ölçülür;
+   * bu bayrak yalnız tek-parça (varyantsız) listing'in gram boşluğunu yakalar —
+   * yoksa gramsız listing sessizce "künye tam" görünürdü.
+   */
+  no_weight: boolean;
   no_research_keyword: boolean;
   no_description: boolean;
   no_tags: boolean;
@@ -100,6 +107,7 @@ export interface ListingDetail {
     num_images: number | null;
     research_keyword: string | null;
     sku: string | null;
+    weight_grams: number | null;
   };
   variants: ListingVariantRow[];
   ads: ListingAds;
@@ -117,7 +125,7 @@ function sanitize(term: string): string {
 
 const PAGE_SIZE = 1000;
 
-interface PageResult<T> {
+export interface PageResult<T> {
   data: T[] | null;
   error: { message: string } | null;
 }
@@ -126,8 +134,9 @@ interface PageResult<T> {
  * PostgREST varsayılan satır limitini (1000) aşan kümeler için sayfalı toplu
  * okuma. Her sayfada TAZE builder kurulmalı (aynı builder'da range tekrar
  * çağrılamaz); deterministik sıra için sorguya `.order(...)` verilmelidir.
+ * (Diğer sorgu modülleri de kullanır — ör. market-alerts sayımları.)
  */
-async function fetchAllPages<T>(
+export async function fetchAllPages<T>(
   page: (from: number, to: number) => PromiseLike<PageResult<T>>,
 ): Promise<T[]> {
   const all: T[] = [];
@@ -228,7 +237,9 @@ interface SaleItemDbRow {
 /**
  * Tüm listingler (sayfalama yok — tek sayfa; ~320 satır sorun değil).
  * Varyant/metrik/araştırma verileri TOPLU çekilir ve Map ile birleştirilir.
- * `search` başlık/SKU ilike; `status` eq.
+ * `search` başlık/SKU ilike; `status` eq. Panel arşivi (products.archived_at)
+ * varsayılan olarak HARİÇTİR; `status === "arsiv"` özel değeriyle yalnız
+ * arşivdekiler listelenir (Etsy durumu değil, panel yaşam-döngüsü filtresi).
  */
 export async function listListingsIndex(opts?: {
   search?: string;
@@ -236,7 +247,8 @@ export async function listListingsIndex(opts?: {
 }): Promise<ListingIndexRow[]> {
   const supabase = await createClient();
   const search = opts?.search ? sanitize(opts.search) : "";
-  const status = opts?.status;
+  const archivedOnly = opts?.status === "arsiv";
+  const status = archivedOnly ? undefined : opts?.status;
 
   // Varyant SKU'suyla da bulunabilsin (Codex P2): kullanıcı siparişte/varyantta
   // gördüğü SKU'yu arar; o SKU parent listing'de değil product_variants'ta olur.
@@ -265,6 +277,9 @@ export async function listListingsIndex(opts?: {
       .select(
         "id, etsy_listing_id, title, status, image_url, price_cents, currency, quantity, num_images, research_keyword",
       );
+    q = archivedOnly
+      ? q.not("archived_at", "is", null)
+      : q.is("archived_at", null);
     if (status) q = q.eq("status", status);
     if (search) {
       const clauses = [`title.ilike.%${search}%`, `sku.ilike.%${search}%`];
@@ -361,13 +376,17 @@ export async function getListingDetail(
   const { data: pData, error: pError } = await supabase
     .from("products")
     .select(
-      "id, etsy_listing_id, title, status, description, tags, materials, price_cents, currency, quantity, url, image_url, num_images, research_keyword, sku",
+      "id, etsy_listing_id, title, status, description, tags, materials, price_cents, currency, quantity, url, image_url, num_images, research_keyword, sku, weight_grams",
     )
     .eq("id", id)
     .maybeSingle();
   if (pError) throw new Error(pError.message);
   if (!pData) return null;
-  const product = pData as ListingDetail["product"];
+  const raw = pData as ListingDetail["product"] & { weight_grams: unknown };
+  const product: ListingDetail["product"] = {
+    ...raw,
+    weight_grams: raw.weight_grams == null ? null : Number(raw.weight_grams),
+  };
 
   const [variantRows, metricRows, saleItemRows] = await Promise.all([
     (async () => {
@@ -477,6 +496,9 @@ export async function getListingDetail(
   const gaps: ListingGaps = {
     missing_weights: variants.filter((v) => v.weight_grams == null).length,
     total_variants: variants.length,
+    // Varyantsız tek-parça listing'de gram, ürün gramajından gelir; o da yoksa
+    // künye eksiktir. (Varyantlıda bütünlük missing_weights ile ölçülür.)
+    no_weight: variants.length === 0 && product.weight_grams == null,
     no_research_keyword: !(product.research_keyword ?? "").trim(),
     no_description: !(product.description ?? "").trim(),
     no_tags: !product.tags || product.tags.length === 0,

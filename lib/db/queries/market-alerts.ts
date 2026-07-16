@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { fetchAllPages } from "@/lib/db/queries/listings";
 
 /** Pazar konumu uyarısı — `market_price_alerts` görünümünden (en güncel araştırma). */
 export interface MarketPriceAlert {
@@ -49,22 +50,25 @@ export async function getMarketPriceAlerts(
 }
 
 /** Karar verilmiş uyarıları ele: en güncel karar bu araştırmadan SONRAYSA
- *  (yani uyarıya cevaben verildiyse) uyarı kapanmış sayılır. */
+ *  (yani uyarıya cevaben verildiyse) uyarı kapanmış sayılır. Karar sorgusu
+ *  ürün-id listesini parçalara böler — büyük kümede .in() URL sınırına
+ *  takılmasın. */
 async function filterUndecided<
   T extends { product_id: string; researched_at: string },
 >(supabase: Awaited<ReturnType<typeof createClient>>, alerts: T[]): Promise<T[]> {
-  const { data: decisions } = await supabase
-    .from("latest_market_decision")
-    .select("product_id, created_at")
-    .in(
-      "product_id",
-      alerts.map((a) => a.product_id),
-    );
-  const decidedAt = new Map(
-    ((decisions as { product_id: string; created_at: string }[] | null) ?? []).map(
-      (d) => [d.product_id, d.created_at],
-    ),
-  );
+  const ids = [...new Set(alerts.map((a) => a.product_id))];
+  const decidedAt = new Map<string, string>();
+  const CHUNK = 200;
+  for (let i = 0; i < ids.length; i += CHUNK) {
+    const { data: decisions } = await supabase
+      .from("latest_market_decision")
+      .select("product_id, created_at")
+      .in("product_id", ids.slice(i, i + CHUNK));
+    for (const d of (decisions as { product_id: string; created_at: string }[] | null) ??
+      []) {
+      decidedAt.set(d.product_id, d.created_at);
+    }
+  }
   return alerts.filter((a) => {
     const dec = decidedAt.get(a.product_id);
     return !dec || new Date(dec) < new Date(a.researched_at);
@@ -87,16 +91,22 @@ export async function getMarketAlertCounts(
   orgId: string,
 ): Promise<MarketAlertCounts> {
   const supabase = await createClient();
-  const { data } = await supabase
-    .from("market_price_alerts")
-    .select("product_id, researched_at, price_position")
-    .eq("org_id", orgId)
-    .eq("status", "active")
-    .in("price_position", ["pahali", "ucuz"]);
-  const rows =
-    (data as
-      | { product_id: string; researched_at: string; price_position: "pahali" | "ucuz" }[]
-      | null) ?? [];
+  // Sayfalı tam çekim — tek select PostgREST'in ilk sayfasında (1000) kalır,
+  // sayaç yine sessizce doyardı; tüm satırlar karar filtresinden geçmeli.
+  const rows = await fetchAllPages<{
+    product_id: string;
+    researched_at: string;
+    price_position: "pahali" | "ucuz";
+  }>((from, to) =>
+    supabase
+      .from("market_price_alerts")
+      .select("product_id, researched_at, price_position")
+      .eq("org_id", orgId)
+      .eq("status", "active")
+      .in("price_position", ["pahali", "ucuz"])
+      .order("product_id", { ascending: true })
+      .range(from, to),
+  );
   if (rows.length === 0) return { total: 0, pahali: 0, ucuz: 0 };
   const open = await filterUndecided(supabase, rows);
   const pahali = open.filter((r) => r.price_position === "pahali").length;

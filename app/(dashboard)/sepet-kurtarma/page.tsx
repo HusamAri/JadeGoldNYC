@@ -27,6 +27,7 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -84,7 +85,7 @@ export default async function GeriKazanimPage({
   })).filter((tier) => tier.rows.length > 0);
 
   return (
-    <div className="relative z-0 pb-28 space-y-6">
+    <div className="relative z-0 pb-28 space-y-8">
       <GoldStream motif="link" />
       <PageHeader
         title="Müşteri Geri Kazanım"
@@ -99,42 +100,55 @@ export default async function GeriKazanimPage({
         }
       />
 
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-5">
+      <div className="grid grid-cols-2 gap-5 lg:grid-cols-3 xl:grid-cols-5">
+        {/* Kapsam: winback_* RPC'leri TÜM sipariş geçmişi üzerinden müşteri
+            (e-posta/isim anahtarlı) bazında özetler; eşik LAPSE_DAYS. */}
         <KpiCard
           label="Toplam Müşteri"
           value={formatNumber(winback.total_customers)}
           icon={Users}
+          hint="tüm sipariş geçmişi"
         />
         <KpiCard
           label="Tekrar Eden Müşteri"
           value={formatNumber(winback.repeat_customers)}
           icon={Repeat}
           accent="positive"
+          hint="2+ sipariş · tüm zamanlar"
         />
         <KpiCard
           label={`${LAPSE_DAYS}+ Gün Gelmeyen`}
           value={formatNumber(winback.lapsed_customers)}
           icon={UserRoundX}
+          hint={`son siparişi ${LAPSE_DAYS}+ gün önce`}
         />
         <KpiCard
           label="Risk Altındaki Değer"
-          value={formatMoney(winback.lapsed_value_cents)}
+          cents={winback.lapsed_value_cents}
           icon={DollarSign}
-          hint="geçmiş ciro toplamı"
+          hint={`${LAPSE_DAYS}+ gün gelmeyenlerin geçmiş ciro toplamı`}
         />
         <KpiCard
           label="Kazanılan"
-          value={formatMoney(tracking.recoveredValueCents)}
+          cents={tracking.recoveredValueCents}
           icon={CheckCircle2}
-          hint={`${formatNumber(tracking.recovered)} müşteri`}
+          hint={`${formatNumber(tracking.recovered)} müşteri · tüm takip kayıtları`}
           accent="positive"
           className="col-span-2 lg:col-span-1"
         />
       </div>
 
-      <Card>
+      {/* İkincil özet/bilgi bölümü — buzlu mat cam (glass-iced). */}
+      <Card className="glass-iced">
         <CardHeader>
           <CardTitle>Öncelikli Geri Kazanım Adayları</CardTitle>
+          {/* Pencere/eşik ibaresi: aday sorgusu LAPSE_DAYS eşiği + harcamaya
+              göre en değerli CANDIDATE_LIMIT müşteriyle sınırlı. */}
+          <CardDescription className="text-xs">
+            son siparişi {LAPSE_DAYS}+ gün önce olan müşteriler · toplam
+            harcamaya göre en değerli {formatNumber(CANDIDATE_LIMIT)} aday ·
+            dilimler: {WINBACK_TIERS.map((t) => t.label).join(" / ")}
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {candidates.length === 0 ? (
@@ -168,10 +182,10 @@ export default async function GeriKazanimPage({
                   <TableBody>
                     {tier.rows.slice(0, TIER_DISPLAY_LIMIT).map((c) => (
                       <TableRow key={c.buyer_key}>
-                        <TableCell className="max-w-[260px] truncate font-medium">
+                        <TableCell className="max-w-[260px] scroll-x font-medium">
                           {c.buyer_name ?? c.buyer_email ?? c.buyer_key}
                           {c.buyer_email && c.buyer_name && (
-                            <span className="text-muted-foreground block truncate text-xs font-normal">
+                            <span className="text-muted-foreground scroll-x block text-xs font-normal">
                               {c.buyer_email}
                             </span>
                           )}
@@ -208,7 +222,8 @@ export default async function GeriKazanimPage({
         </CardContent>
       </Card>
 
-      <Card>
+      {/* Uzun kayıt listesi/tablo kabı — dikey oluklu cam (glass-fluted). */}
+      <Card className="glass-fluted">
         <CardHeader>
           <CardTitle>Geri Kazanım Takibi</CardTitle>
         </CardHeader>
@@ -223,11 +238,26 @@ export default async function GeriKazanimPage({
           </div>
 
           {rows.length === 0 ? (
-            <EmptyState
-              icon={CheckCircle2}
-              title="Takip kaydı yok"
-              description="Bir müşteriye ulaştığınızda kaydı buraya ekleyin; teşvik/aksiyon ve sonucu (kazanıldı/kayıp) takip edin."
-            />
+            // Aktif filtre/aramada "kayıt yok" yanıltır — filtre sonucu boş
+            // olduğunu söyle ve tek tıkla temizleme yolu sun.
+            search || status ? (
+              <EmptyState
+                icon={CheckCircle2}
+                title="Bu filtreyle sonuç yok"
+                description="Arama veya durum filtresine uyan takip kaydı bulunamadı. Filtreyi temizleyip tüm kayıtları görebilirsiniz."
+                action={
+                  <Button asChild variant="outline">
+                    <Link href="/sepet-kurtarma">Filtreyi temizle</Link>
+                  </Button>
+                }
+              />
+            ) : (
+              <EmptyState
+                icon={CheckCircle2}
+                title="Takip kaydı yok"
+                description="Bir müşteriye ulaştığınızda kaydı buraya ekleyin; teşvik/aksiyon ve sonucu (kazanıldı/kayıp) takip edin."
+              />
+            )
           ) : (
             <Table>
               <TableHeader>
@@ -247,7 +277,7 @@ export default async function GeriKazanimPage({
                     <TableCell className="whitespace-nowrap">
                       {formatDate(c.abandoned_at)}
                     </TableCell>
-                    <TableCell className="max-w-[180px] truncate font-medium">
+                    <TableCell className="max-w-[180px] scroll-x font-medium">
                       {c.buyer_name ?? c.buyer_email ?? "—"}
                     </TableCell>
                     <TableCell className="text-right tabular-nums">
@@ -258,7 +288,7 @@ export default async function GeriKazanimPage({
                     <TableCell>
                       <CartStatusBadge status={c.status} />
                     </TableCell>
-                    <TableCell className="text-muted-foreground max-w-[200px] truncate">
+                    <TableCell className="text-muted-foreground max-w-[200px] scroll-x">
                       {c.action_taken ?? "—"}
                     </TableCell>
                     <TableCell className="text-right tabular-nums">

@@ -145,6 +145,7 @@ export function PhotoKitConsole({ producedIds }: { producedIds: number[] }) {
         <div
           className="bg-muted mt-3 h-2.5 overflow-hidden rounded-full"
           role="progressbar"
+          aria-label="Üretim ilerlemesi"
           aria-valuenow={pct}
           aria-valuemin={0}
           aria-valuemax={100}
@@ -304,10 +305,7 @@ export function PhotoKitConsole({ producedIds }: { producedIds: number[] }) {
 
       {/* Üretim kuyruğu — yalnız üretilMEyenler; üretilenler alt bölümde */}
       {list.length === 0 ? (
-        <p
-          className="text-muted-foreground rounded-2xl border border-dashed p-12 text-center text-sm"
-          style={{ borderColor: LINE }}
-        >
+        <p className="text-muted-foreground nm-pressed rounded-2xl p-12 text-center text-sm">
           Bu filtreyle eşleşen ürün yok.
         </p>
       ) : pending.length === 0 ? (
@@ -472,8 +470,7 @@ function Segmented({
     <div
       role="group"
       aria-label={label}
-      className="bg-muted/50 flex min-w-0 max-w-full flex-wrap gap-0.5 rounded-xl border p-0.5"
-      style={{ borderColor: LINE }}
+      className="nm-pressed flex min-w-0 max-w-full flex-wrap gap-0.5 rounded-xl p-1"
     >
       {options.map((o) => {
         const active = value === o.v;
@@ -484,9 +481,9 @@ function Segmented({
             aria-pressed={active}
             onClick={() => onChange(o.v)}
             className={cn(
-              "inline-flex items-center gap-1.5 rounded-[0.6rem] px-2.5 py-1.5 text-xs font-semibold whitespace-nowrap transition-colors pointer-coarse:min-h-10 pointer-coarse:px-3",
+              "inline-flex items-center gap-1.5 rounded-[0.6rem] px-2.5 py-1.5 text-xs font-semibold whitespace-nowrap transition-all pointer-coarse:min-h-10 pointer-coarse:px-3",
               active
-                ? "bg-card text-foreground shadow-sm"
+                ? "nm-raised-sm text-foreground"
                 : "text-muted-foreground hover:text-foreground",
             )}
           >

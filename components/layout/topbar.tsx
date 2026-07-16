@@ -183,7 +183,7 @@ export function Topbar({
             <form action={signOut}>
               <button
                 type="submit"
-                className="text-destructive hover:bg-accent flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-sm"
+                className="text-destructive hover:bg-accent flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-sm transition-colors duration-150 active:bg-accent/70"
               >
                 <LogOut className="size-4" />
                 Çıkış yap

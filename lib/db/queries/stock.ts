@@ -28,6 +28,7 @@ export async function listStockProducts(orgId: string): Promise<StockProduct[]> 
     )
     .eq("org_id", orgId)
     .eq("status", "active")
+    .is("archived_at", null)
     .order("title", { ascending: true });
   return (data ?? []) as unknown as StockProduct[];
 }

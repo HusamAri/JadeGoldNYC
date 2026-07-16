@@ -138,8 +138,10 @@
     0.5px 0.7px 1.1px rgb(120 130 160 / 0.32);
   --sheen-angle: 135deg;
   /* Cam optik yoğunluğu — DS effects.css BİREBİR: --glass-blur / -sm. */
-  --glass-filter: blur(22px) saturate(150%);
-  --glass-filter-sm: blur(12px) saturate(140%);
+  /* PERF: blur maliyeti yarıçapla süperlineer büyür; 22→12 ve 12→8 cam hissini
+     korur (cam üstünde hep metin/kontrast var), kare bütçesini ciddi rahatlatır. */
+  --glass-filter: blur(12px) saturate(150%);
+  --glass-filter-sm: blur(8px) saturate(140%);
   /* Cam iç halkası — 1px iridesan iç kenar (rim tek kaynaktan). */
   --glass-ring: inset 0 0 0 1px rgb(255 255 255 / 0.08);
   --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
@@ -329,6 +331,12 @@
   * {
     @apply border-border outline-ring/50;
   }
+  /* Tailwind v4 preflight butonları cursor:default bırakır — tıklanabilir
+     her ham buton el imleci alsın (ui/Button zaten kendisi ekliyor). */
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
   body {
     @apply bg-background text-foreground;
     /* Zemin — Spatial lab'ın BİREBİR zemini: tepeden süzülen lavanta radyal
@@ -339,7 +347,8 @@
       radial-gradient(1100px 560px at 85% -8%, rgb(212 198 255 / 0.24), transparent 60%),
       radial-gradient(900px 480px at -10% 108%, rgb(182 220 255 / 0.18), transparent 55%),
       radial-gradient(120% 90% at 50% 0%, #f3f2f7 0%, #eceaf1 46%, #e6e3ee 100%);
-    background-attachment: fixed;
+    /* PERF: background-attachment:fixed her scroll karesinde tam-viewport
+       yeniden rasterizasyon demekti — kaldırıldı (degrade sayfayla kayar). */
   }
   .dark body {
     /* Lume ground — Liquid_Dark'ın BİREBİR zemini: tepe ışığı housing'e
@@ -585,6 +594,129 @@
       var(--glass-ring),
       var(--glass-depth);
   }
+
+  /* ── Cam TİPLERİ — bölüm hiyerarşisi (referans: iced / fluted glass) ────
+     Aynı sayfada bölüm değişince cam tipi değişir: hero=glass-board (berrak),
+     ikincil bölüm=glass-iced (buzlu/mat, daha opak), tablo/liste=glass-fluted
+     (dikey oluklu refraksiyon). Hepsi köşe yarıçapını (border-radius:inherit)
+     kaptan alır; koyuda opak lume panele düşer. */
+
+  /* İced: daha yoğun buzlanma + daha opak zemin + ince buz greni. Sakin,
+     ikincil bölümler için (hero'dan bir ton geride durur). */
+  .glass-iced {
+    position: relative;
+    isolation: isolate;
+    border-radius: inherit;
+    background-color: var(--glass-strong);
+    background-image: var(--glass-sheen);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--lift-sm), var(--glass-highlight), var(--glass-ring);
+    backdrop-filter: blur(30px) saturate(130%);
+    -webkit-backdrop-filter: blur(30px) saturate(130%);
+  }
+  .glass-iced::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background-image: radial-gradient(rgb(255 255 255 / 0.5) 0.5px, transparent 0.6px);
+    background-size: 3px 3px;
+    opacity: 0.35;
+    mix-blend-mode: overlay;
+  }
+  .dark .glass-iced {
+    background-color: var(--lume-panel);
+    background-image: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: 0 16px 40px oklch(0 0 0 / 0.32), inset 0 1px 0 oklch(1 0 0 / 0.05);
+  }
+
+  /* Fluted: dikey oluklu (reeded) cam — ışık dikey şeritlerde kırılır. Tablo/
+     liste konteynerleri için; içerik ::before flute katmanının üstünde durur. */
+  .glass-fluted {
+    position: relative;
+    isolation: isolate;
+    border-radius: inherit;
+    background-color: var(--glass);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--lift), var(--glass-highlight), var(--glass-ring);
+    backdrop-filter: var(--glass-filter);
+    -webkit-backdrop-filter: var(--glass-filter);
+  }
+  .glass-fluted::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background-image: repeating-linear-gradient(
+      90deg,
+      rgb(255 255 255 / 0.16) 0px,
+      rgb(255 255 255 / 0.02) 5px,
+      rgb(90 80 130 / 0.07) 10px,
+      rgb(255 255 255 / 0.16) 15px
+    );
+    mix-blend-mode: soft-light;
+    opacity: 0.9;
+  }
+  .glass-fluted > * {
+    position: relative;
+    z-index: 1;
+  }
+  .dark .glass-fluted {
+    background-color: var(--lume-panel);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: 0 20px 50px oklch(0 0 0 / 0.4), inset 0 1px 0 oklch(1 0 0 / 0.06);
+  }
+  .dark .glass-fluted::before {
+    background-image: repeating-linear-gradient(
+      90deg,
+      oklch(1 0 0 / 0.05) 0px,
+      transparent 5px,
+      oklch(0.7 0.07 262 / 0.06) 10px,
+      oklch(1 0 0 / 0.05) 15px
+    );
+    mix-blend-mode: screen;
+    opacity: 0.5;
+  }
+
+  /* ── Taşan metin — liste satırı = yatay kaydır, kutu = alt satıra sar ────
+     Kullanıcı kuralı: listelerde satıra sığmayan metin KAYDIRILIR (tek satır
+     kalır, yatay kaydırma), kutularda ALT SATIRA GEÇER (sarar). */
+  /* Liste satırındaki uzun tek-satır metin: taşarsa yatayda kaydırılır;
+     ince, soluk kaydırma çubuğu (marka menekşesi), satır sarmaz. Ebeveyn
+     min-w-0 olmalı ki flex içinde daralabilsin. */
+  .scroll-x {
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in oklch, var(--foreground) 22%, transparent) transparent;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+  }
+  .scroll-x::-webkit-scrollbar {
+    height: 4px;
+  }
+  .scroll-x::-webkit-scrollbar-thumb {
+    background: color-mix(in oklch, var(--foreground) 22%, transparent);
+    border-radius: 999px;
+  }
+  .scroll-x::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  /* Kutu/kart içindeki metin: her zaman alt satıra sarar (asla elipslenmez);
+     uzun kelimeler/URL'ler de kırılır. */
+  .wrap-box {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
   /* Cam yüzeye de ince gren — kartlar da mat/dokulu (buzlu cam + doku). */
   .glass-board::after {
     content: "";
@@ -631,20 +763,17 @@
       linear-gradient(160deg, rgb(205 214 255 / 0.12), transparent 62%);
   }
   @media (prefers-reduced-motion: no-preference) {
-    .glass-liquid::before {
+    /* PERF: caustic ışık gezintisi hover'da — 10 KPI camında sürekli hasar
+       bölgesi yaratıp backdrop cache'ini bozuyordu (eşzamanlılık ölçümü). */
+    .glass-liquid:hover::before,
+    .group:hover > .glass-liquid::before {
       animation: caustic-drift 5.5s var(--ease-premium) infinite;
     }
   }
-  /* Refraction — DS'in imzası: url(#liquid) ile arkadaki holo objeler
-     büker + daha az blur (liquid daha net/lensli). Yalnız destekleyen
-     tarayıcıda; diğerinde base glass-board buzlu camı kalır. */
-  @supports (backdrop-filter: url("#liquid")) or (-webkit-backdrop-filter: url("#liquid")) {
-    /* YALNIZ açık tema (saydam cam) — koyuda KPI opak lume panel, backdrop yok. */
-    :root:not(.dark) .glass-liquid {
-      backdrop-filter: blur(2px) url("#liquid") saturate(160%);
-      -webkit-backdrop-filter: blur(2px) url("#liquid") saturate(160%);
-    }
-  }
+  /* Refraction (url(#liquid) SVG displacement) KALDIRILDI — PERF: url()
+     backdrop'u GPU'da hızlandırılamıyor, 10 KPI camını her karede CPU'da
+     yeniden rasterize ettiriyordu (/panel 4 FPS ölçümünün baş aktörlerinden).
+     Buzlu cam (base .glass-liquid blur'u) tasarımın kendi zarif düşüş yolu. */
 
   /* ── Karanlık kabartma tipografi (referans: Liquid Dark) ──────────────
      Koyu modda kahraman başlık YÜZEYİN KENDİSİNDEN kabarır: metin zeminden
@@ -668,6 +797,17 @@
       0 5px 12px rgb(5 6 10 / 0.45),
       0 0 24px rgb(203 210 255 / 0.2),
       0 0 56px rgb(203 210 255 / 0.12);
+  }
+  /* embossLight (Liquid_Dark birebir): kabartma vurgu 12sn'de bir "nefes alır"
+     — opacity .92→1, quiet ease, alternate. Yalnız koyu + motion tercihine
+     saygılı; ışığın canlılığı hissedilir ama asla dikkat dağıtmaz. */
+  @media (prefers-reduced-motion: no-preference) {
+    .dark .display-emboss em,
+    .dark .display-emboss .em,
+    .dark .h-serif em,
+    .dark .h-serif .em {
+      animation: emboss-light 12s var(--ease-quiet, ease-in-out) infinite alternate;
+    }
   }
   .dark .text-engraved {
     color: #6d7288;
@@ -695,6 +835,30 @@
   .dark .h-serif .em {
     color: #cfc8ff;
     text-shadow: 0 0 26px rgb(203 210 255 / 0.35);
+  }
+
+  /* ── Kahraman başlık: SANS bold + SERİF İTALİK vurgu (referans: Liquid Dark)
+     Büyük, kalın Sora sans gövde; vurgulanan son kelime Cormorant serif İTALİK
+     (açıkta basılı altın-menekşe mürekkep, gecede luminous periwinkle).
+     display-emboss ile birlikte koyuda yüzeyin kendisinden kabarır — em'de
+     text-shadow'u display-emboss verir (burada yalnız renk değişir). */
+  .h-display {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.04;
+  }
+  .h-display em,
+  .h-display .em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--gold-deep);
+  }
+  .dark .h-display em,
+  .dark .h-display .em {
+    color: #cfc8ff;
   }
 
   /* ── Editorial index başlığı (referans: Artifact Studio .idx) ─────────
@@ -745,10 +909,13 @@
     transform: translateX(-125%);
   }
   @media (prefers-reduced-motion: no-preference) {
-    .sheen-sweep::after {
+    /* PERF: kart parlaması artık HOVER'da yaşar — 12 kartın sürekli ışık
+       süpürmesi kare bütçesini yiyordu (ölçüm: tek başına 14 FPS'e düşürüyordu). */
+    .sheen-sweep:hover::after,
+    .sheen-sweep:focus-within::after {
       animation: card-sheen 7.5s ease-in-out infinite;
     }
-    .sheen-sweep:nth-child(2n)::after {
+    .sheen-sweep:nth-child(2n):hover::after {
       animation-delay: -2.4s;
     }
     .sheen-sweep:nth-child(3n)::after {
@@ -803,9 +970,12 @@
      farklı hız/yönde süzülür → kayan iridesan interferans. prefers-reduced-
      motion global kuralı hareketi durdurur (katman görünür kalır). */
   .holo-drift {
-    /* Kap ekran sınırında kalır (yatay taşma yaratmaz); -%30 büyüme
-       overflow:hidden ile kırpılan pseudo katmanlara taşındı. */
-    position: absolute;
+    /* Kap VIEWPORT'a sabit (parallax derinlik katmanı): scroll'da içerik tam
+       hızda akarken blob katmanları --par-y üzerinden çok daha yavaş süzülür
+       → sayfa katmanlarına derinlik. (Eski `absolute` kap sayfa boyuna
+       yayılıyordu; uzun sayfada blob'lar yukarıda kalıp ambiyans kayboluyordu —
+       fixed + parallax ikisini birden çözer.) */
+    position: fixed;
     inset: 0;
     z-index: -10;
     overflow: hidden;
@@ -819,15 +989,32 @@
     background-image: var(--holo-blobs);
     background-repeat: no-repeat;
     filter: blur(46px);
-    will-change: transform;
+    /* PERF: SÜREKLİ süzülme kaldırıldı (holo-drift-a/b). Tam-viewport blur(46)
+       katmanının her karede kayması, üstündeki TÜM cam yüzeylerin backdrop'unu
+       yeniden örnekletiyordu — /panel ölçümünde tek başına 60→5 FPS. Katmanlar
+       statik ambiyans olarak kalır; bir kez rasterize edilir ve cache'lenir.
+       PARALLAX bu kuralı BOZMAZ: --par-y yalnız kullanıcı scroll ettiği anda
+       değişir (idle'da sıfır iş) ve translate3d compositor'da uygulanır —
+       blur yeniden rasterize edilmez, doku yeniden örneklenmez. */
+    /* İki katman iki ayrı derinlik: ::before uzak (içerik hızının %14'ü),
+       ::after biraz daha yakın (%26) — scroll'da aralarındaki fark derinliği
+       hissettirir. --par-y'yi ParallaxDrift runtime'ı yazar (yoksa 0 = statik). */
+    transform: translate3d(0, calc(var(--par-y, 0px) * -0.14), 0);
+  }
+  .holo-drift::after {
+    transform: translate3d(0, calc(var(--par-y, 0px) * -0.26), 0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .holo-drift::before,
+    .holo-drift::after {
+      transform: none;
+    }
   }
   .holo-drift::before {
     opacity: 0.5;
-    animation: holo-drift-a 46s ease-in-out infinite;
   }
   .holo-drift::after {
     opacity: 0.36;
-    animation: holo-drift-b 62s ease-in-out infinite;
   }
   .dark .holo-drift::before {
     opacity: 0.4;
@@ -927,6 +1114,13 @@
 /* Kutu ikonu süzülmesi — ÇOK çok yavaş, geniş yörünge; her kutu farklı
    faz/yön (bileşende animation-delay/direction ile). Cam formun bir kısmı
    altında, bir kısmı dışında kalacak şekilde kenarı yalar. */
+/* KPI ikonu hover'da süzülür (süre/yön/faz inline style'dan gelir). */
+@media (prefers-reduced-motion: no-preference) {
+  .sheen-sweep:hover .kpi-icon {
+    animation-name: kpi-icon-drift;
+  }
+}
+
 @keyframes kpi-icon-drift {
   0% {
     transform: translate(0, 0) rotate(-4deg);
@@ -1012,7 +1206,8 @@
   }
 }
 .jg-twinkle {
-  animation: jg-twinkle 3.6s ease-in-out infinite;
+  /* PERF: sonsuz → 5 parıltı; sonra toz sabit kalır (kompozit maliyeti sıfırlanır). */
+  animation: jg-twinkle 3.6s ease-in-out 3;
 }
 
 /* "NEW" yıldız rozeti — KABARTMA (konveks yüzey + raised gölge) + altın NEON
@@ -1020,9 +1215,127 @@
    global kuralıyla nabız durur, kabartma + neon dış hat kalır. */
 
 /* ── Görev Zaman Çizelgesi ───────────────────────────────────────────────
-   "BUGÜN" düğümü: yavaşça nefes alan altın hale — zaman çizelgesinin odağı.
-   Geçmişte kalan gecikmeler: kırmızı neon nabız (jg-neon dili). Omurga:
-   akan erimiş altın degrade. prefers-reduced-motion global kuralıyla durur. */
+   v2 dili: yaklaşan görevler PARILDAR (tl-shimmer süpürmesi), biten görevler
+   KIRIK CAMDIR (tl-shard parçaları geçmişe doğru dağılıp çözülür), olaylar
+   camların arkasında havada asılı gradient kürelerdir (tl-orb salınımı).
+   prefers-reduced-motion global kuralıyla tümü durur. */
+
+@keyframes tl-shimmer {
+  0% {
+    transform: translateX(-130%) skewX(-18deg);
+  }
+  100% {
+    transform: translateX(260%) skewX(-18deg);
+  }
+}
+.tl-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 45%;
+  border-radius: inherit;
+  background: linear-gradient(
+    100deg,
+    transparent 8%,
+    oklch(1 0 0 / 0.55) 48%,
+    oklch(0.9 0.06 290 / 0.35) 58%,
+    transparent 92%
+  );
+  animation: tl-shimmer 3.4s ease-in-out infinite;
+  pointer-events: none;
+}
+.dark .tl-shimmer::after {
+  background: linear-gradient(
+    100deg,
+    transparent 8%,
+    oklch(0.95 0.03 262 / 0.28) 48%,
+    oklch(0.8 0.1 278 / 0.2) 58%,
+    transparent 92%
+  );
+}
+
+@keyframes tl-orb-float {
+  0%,
+  100% {
+    translate: 0 -4px;
+  }
+  50% {
+    translate: 0 4px;
+  }
+}
+
+@keyframes tl-shard-drift {
+  0%,
+  100% {
+    transform: translate(var(--sx, 0), var(--sy, 0)) rotate(var(--sr, 0deg));
+  }
+  50% {
+    transform: translate(calc(var(--sx, 0) * 1.35), calc(var(--sy, 0) * 1.35))
+      rotate(calc(var(--sr, 0deg) * 1.4));
+  }
+}
+
+/* Hafif GİRİŞ motion'u — yalnız opacity+filter anime edilir; transform /
+   translate / scale utility'lerine dokunmaz, böylece Tailwind'in konum
+   sınıflarıyla (translate-x-1/2 vb.) çakışmaz. reduced-motion global
+   kuralıyla durur. */
+@keyframes soft-in {
+  from {
+    opacity: 0;
+    filter: blur(5px);
+  }
+  to {
+    opacity: 1;
+    filter: none;
+  }
+}
+.soft-in {
+  animation: soft-in 0.4s var(--ease-premium) both;
+}
+
+/* Süren görev dolum çubuğu — mount'ta 0'dan gerçek yüzdeye akarak dolar
+   (hedef genişlik inline style'dan gelir; keyframe yalnız başlangıcı verir). */
+@keyframes tl-fill {
+  from {
+    width: 0;
+  }
+}
+
+/* Tarihsiz görev çipleri — zaman bandının kenarlarında "havada" süzülme.
+   Perf dersi: transform-only, küçük genlik (≤7px), bölgesel; blur/filter YOK.
+   prefers-reduced-motion global kuralı (yukarıda) animasyonu durdurur. */
+@keyframes tl-float-a {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(-0.5deg);
+  }
+  50% {
+    transform: translate(5px, -7px) rotate(0.5deg);
+  }
+}
+@keyframes tl-float-b {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0.5deg);
+  }
+  50% {
+    transform: translate(-6px, 6px) rotate(-0.5deg);
+  }
+}
+
+/* Görev formu ikon seçici — seçim anında minik "pop"; native scale property
+   anime edilir, hover'daki scale utility'siyle aynı kanaldan geçer. */
+@keyframes icon-pop {
+  0% {
+    scale: 0.82;
+  }
+  55% {
+    scale: 1.12;
+  }
+  100% {
+    scale: 1;
+  }
+}
 
 
 
@@ -1060,7 +1373,9 @@
   border-radius: inherit;
   pointer-events: none;
   z-index: -1;
-  animation: pulse-opacity 2s ease-in-out infinite;
+  /* PERF: sonsuz nabız her karede kompoziti tetikliyordu (/panel ölçümü) —
+     dikkat ilk saniyelerde çekilir (6 vuruş), sonra hale parlak sabitlenir. */
+  animation: pulse-opacity 2s ease-in-out 3 both;
 }
 .jg-neon {
   box-shadow:
@@ -1203,4 +1518,127 @@ html[data-brand="artifact"] .jg-dust {
   100% {
     transform: translate(0, 0) scale(1);
   }
+}
+
+/* ── Tema geçişi: dairesel reveal (View Transitions API) ──────────────────
+   Tema toggle tıklandığında YENİ tema, tıklanan noktadan büyüyen bir daireyle
+   açılır (Husam Web design-system "liquid" geçiş dili); eski tema altta sabit
+   kalır. Bileşen --vt-x/--vt-y ile merkezi verir. reduced-motion'da kapanır. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-old(root) {
+  z-index: 0;
+}
+::view-transition-new(root) {
+  z-index: 1;
+  animation: vt-theme-reveal 0.5s var(--ease-premium, cubic-bezier(0.22, 1, 0.36, 1))
+    both;
+}
+@keyframes vt-theme-reveal {
+  from {
+    clip-path: circle(0% at var(--vt-x, 100%) var(--vt-y, 0px));
+  }
+  to {
+    clip-path: circle(150% at var(--vt-x, 100%) var(--vt-y, 0px));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
+
+/* Liquid_Dark embossLight: kabartma vurgunun sakin ışık nefesi (.92→1). */
+@keyframes emboss-light {
+  0% {
+    opacity: 0.92;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* ── Uyarı Merkezi 3B Board ──────────────────────────────────────────────
+   Havada asılı cam kutular: her kutu kendi fazında süzülür (ab-float),
+   liquid camın yüzeyinde yavaş bir parlama gezinir (ab-liquid), buzlu cam
+   kristal çizgi dokusu taşır (ab-frost). Malzeme önem derecesine bağlı:
+   kritik = renkli (yakut) cam · önemli = liquid (kehribar) cam ·
+   bilgi = buzlu/ice cam. prefers-reduced-motion global kuralıyla durur. */
+
+@keyframes ab-float {
+  0%,
+  100% {
+    transform: translateY(-6px) rotate(-0.5deg);
+  }
+  50% {
+    transform: translateY(7px) rotate(0.6deg);
+  }
+}
+
+@keyframes ab-liquid-sheen {
+  0% {
+    transform: translateX(-60%) rotate(10deg);
+  }
+  100% {
+    transform: translateX(60%) rotate(10deg);
+  }
+}
+.ab-liquid::after {
+  content: "";
+  position: absolute;
+  inset: -45%;
+  border-radius: inherit;
+  background: linear-gradient(
+    115deg,
+    transparent 32%,
+    oklch(1 0 0 / 0.35) 46%,
+    oklch(0.95 0.06 80 / 0.22) 53%,
+    transparent 68%
+  );
+  pointer-events: none;
+}
+/* PERF: liquid camın gezen parlaması hover'da canlanır (idle statik parlak iz). */
+.ab-liquid:hover::after {
+  animation: ab-liquid-sheen 6.5s ease-in-out infinite alternate;
+}
+.dark .ab-liquid::after {
+  background: linear-gradient(
+    115deg,
+    transparent 32%,
+    oklch(0.95 0.04 80 / 0.16) 46%,
+    oklch(0.85 0.1 75 / 0.1) 53%,
+    transparent 68%
+  );
+}
+
+/* Cam BOZMASI (backdrop-filter) yalnız etkileşimde: süzülen kutuda sürekli
+   backdrop örneklemesi compositor'ı boğuyordu (ölçüm: /panel 4 FPS). Idle'da
+   gradient yüzey + glow cam hissini taşır; hover/focus'ta gerçek bozma gelir. */
+.ab-glass:hover,
+.ab-glass:focus-visible {
+  backdrop-filter: var(--ab-filter);
+  -webkit-backdrop-filter: var(--ab-filter);
+}
+
+.ab-frost::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    repeating-linear-gradient(
+      115deg,
+      oklch(1 0 0 / 0.11) 0 2px,
+      transparent 2px 9px
+    ),
+    repeating-linear-gradient(
+      -32deg,
+      oklch(1 0 0 / 0.07) 0 1px,
+      transparent 1px 13px
+    );
+  opacity: 0.55;
+  pointer-events: none;
 }

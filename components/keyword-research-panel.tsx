@@ -1,35 +1,67 @@
+import Link from "next/link";
+
 import { TrendingUp } from "@/components/icons/lux-art";
 
 import {
   getLatestKeywordResearch,
   getProductResearchMeta,
+  getProductDemandSignal,
+  listCompetitorWatch,
+  diagnoseDemand,
 } from "@/lib/db/queries/keyword-research";
 import { formatMoney } from "@/lib/money";
 import { formatDate } from "@/lib/format";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { KeywordResearchControls } from "@/components/keyword-research-controls";
+import {
+  AddCompetitorLinkForm,
+  AddCompetitorToSetButton,
+  CompetitorWatchList,
+} from "@/components/listing/competitor-watch-card";
 
 /**
  * Rekabet fiyat araştırması paneli — bir listing için, "araştırma kelimesi"nde
  * Etsy'de organik çıkan ilk 10 rakip ürünün fiyat bandı + bizim fiyatımızın
- * konumu. Reklam/analiz sayfasında listing bağlamında gösterilir. Veri günlük
- * cron (7-grup rotasyon) ile dolar; henüz yoksa zarif boş durum.
+ * konumu. Hüküm hiyerarşik sunulur: (1) tek satır hüküm rozeti, (2) neden,
+ * (3) ne yap + tek birincil düğme, (4) talep teşhisi, (5) band + rakip listesi.
+ * Sabit rakip seti (0091) varsa band ondan kurulur ve kartta ayrı bölümde
+ * son fiyat + önceki kayda göre değişimle görünür. Veri günlük cron ile dolar.
  */
+
+/** Eski snapshot'larda listing_id yok — URL'den çöz (0091 sete ekleme). */
+function listingIdFromUrl(url: string | null): number | null {
+  if (!url) return null;
+  const m = /\/listing\/(\d+)/.exec(url);
+  return m ? Number(m[1]) : null;
+}
+
+const POSITION_LABELS: Record<string, string> = {
+  pahali: "Pazara göre pahalı",
+  ucuz: "Pazara göre ucuz",
+  bantta: "Bant içinde",
+};
+
 export async function KeywordResearchPanel({
   productId,
 }: {
   productId: string | null | undefined;
 }) {
   if (!productId) return null;
-  const [snap, meta] = await Promise.all([
+  const [snap, meta, watchItems] = await Promise.all([
     getLatestKeywordResearch(productId),
     getProductResearchMeta(productId),
+    listCompetitorWatch(productId),
   ]);
   const fallbackTag = meta?.tags?.find((t) => t && t.trim().length > 0) ?? null;
 
   const cur = snap?.currency ?? "USD";
+  // Band tablosunun kapısı: bandın KURULDUĞU sayı (rakip seti aktifken
+  // organik 0 olsa da band vardır — denetim R2 #3). Eski kayıtlarda null →
+  // organik sayıya düşülür.
+  const bandCount = snap ? (snap.band_result_count ?? snap.result_count) : 0;
   const band =
-    snap && snap.result_count > 0
+    snap && bandCount > 0
       ? ([
           { k: "En düşük", v: snap.min_cents },
           { k: "Medyan", v: snap.median_cents },
@@ -55,6 +87,48 @@ export async function KeywordResearchPanel({
         ? "text-[oklch(0.58_0.16_344)] dark:text-[oklch(0.74_0.12_344)]"
         : "text-[oklch(0.50_0.19_278)] dark:text-[oklch(0.80_0.10_278)]";
 
+  // Hüküm: veri şüphesi 'belirsiz' pozisyonla gelir ama gösterilir (amber).
+  const suspect = snap?.data_suspect === true;
+  const showVerdict =
+    !!snap &&
+    (suspect || (snap.price_position && snap.price_position !== "belirsiz")) &&
+    !!(snap.verdict_what ?? snap.recommendation);
+  const bandSourceLabel =
+    snap?.band_source === "rakip-seti" ? "Rakip seti" : "Organik arama";
+
+  // "Ucuzsa neden satamıyoruz" teşhisi — yalnız ucuz/bantta iken sorgulanır.
+  const demand =
+    snap && (snap.price_position === "ucuz" || snap.price_position === "bantta")
+      ? await getProductDemandSignal(productId)
+      : null;
+  const diagnosis = diagnoseDemand(demand);
+
+  const verdictTone = suspect
+    ? {
+        block: "border-amber-500 bg-amber-500/5",
+        badge: "bg-amber-500/15 text-amber-600",
+        label: "Veri şüpheli",
+      }
+    : snap?.price_position === "pahali"
+      ? {
+          block: "border-red-500 bg-red-500/5",
+          badge: "bg-red-500/15 text-red-600",
+          label: POSITION_LABELS.pahali,
+        }
+      : snap?.price_position === "ucuz"
+        ? {
+            block: "border-sky-500 bg-sky-500/5",
+            badge: "bg-sky-500/15 text-sky-600",
+            label: POSITION_LABELS.ucuz,
+          }
+        : {
+            block: "border-emerald-500 bg-emerald-500/5",
+            badge: "bg-emerald-500/15 text-emerald-600",
+            label: POSITION_LABELS.bantta,
+          };
+
+  const watchedIds = new Set(watchItems.map((w) => w.competitor_listing_id));
+
   return (
     <Card>
       <CardContent className="space-y-4">
@@ -74,32 +148,17 @@ export async function KeywordResearchPanel({
           fallback={fallbackTag}
         />
 
-        {/* Gram-normalize pazar konumu + spesifik aksiyon önerisi */}
-        {snap?.recommendation && snap.price_position && snap.price_position !== "belirsiz" && (
+        {/* Hüküm bloğu: rozet → neden → ne yap → teşhis (insancıl metin dersi). */}
+        {showVerdict && snap && (
           <div
-            className={`space-y-1.5 rounded-lg border-l-4 p-3 ${
-              snap.price_position === "pahali"
-                ? "border-red-500 bg-red-500/5"
-                : snap.price_position === "ucuz"
-                  ? "border-sky-500 bg-sky-500/5"
-                  : "border-emerald-500 bg-emerald-500/5"
-            }`}
+            className={`space-y-2 rounded-xl border-l-4 p-3.5 shadow-[var(--lift-sm)] ${verdictTone.block}`}
           >
-            <div className="flex items-center gap-2">
+            {/* 1 · Tek satır hüküm rozeti + güven + band kaynağı */}
+            <div className="flex flex-wrap items-center gap-2">
               <span
-                className={`rounded-full px-2 py-0.5 text-xs font-semibold uppercase ${
-                  snap.price_position === "pahali"
-                    ? "bg-red-500/15 text-red-600"
-                    : snap.price_position === "ucuz"
-                      ? "bg-sky-500/15 text-sky-600"
-                      : "bg-emerald-500/15 text-emerald-600"
-                }`}
+                className={`rounded-full px-2 py-0.5 text-xs font-semibold uppercase ${verdictTone.badge}`}
               >
-                {snap.price_position === "pahali"
-                  ? "Pazara göre pahalı"
-                  : snap.price_position === "ucuz"
-                    ? "Pazara göre ucuz"
-                    : "Bant içinde"}
+                {verdictTone.label}
               </span>
               {snap.our_per_gram_cents != null && (
                 <span className="text-muted-foreground font-mono text-xs tabular-nums">
@@ -114,13 +173,54 @@ export async function KeywordResearchPanel({
                   /g
                 </span>
               )}
-              {snap.confidence && (
-                <span className="text-muted-foreground ml-auto text-[10px] uppercase">
-                  {snap.confidence} güven
+              <span className="text-muted-foreground ml-auto flex items-center gap-2 text-[10px] uppercase">
+                <span className="bg-accent text-accent-foreground rounded-full px-2 py-0.5">
+                  {bandSourceLabel}
                 </span>
-              )}
+                {snap.confidence && <span>{snap.confidence} güven</span>}
+              </span>
             </div>
-            <p className="text-sm leading-relaxed">{snap.recommendation}</p>
+
+            {/* 2 · Neden — hüküm gerekçesi + veri temeli (daima görünür) */}
+            <p className="text-sm leading-relaxed">
+              <span className="text-muted-foreground font-mono text-[10px] tracking-[0.14em] uppercase">
+                Neden ·{" "}
+              </span>
+              {snap.verdict_why ?? snap.recommendation}
+            </p>
+            <p className="text-muted-foreground text-xs">
+              Veri: band {bandCount} rakiptan ({bandSourceLabel}) ·{" "}
+              {snap.result_count} organik sonuç ·{" "}
+              {formatDate(snap.researched_at)}
+              {snap.basis_note ? ` · ${snap.basis_note}` : ""}
+            </p>
+
+            {/* 3 · Ne yap — aksiyon + tek birincil düğme */}
+            {(snap.verdict_action ?? snap.recommendation) && (
+              <div className="flex flex-wrap items-center justify-between gap-2 border-t pt-2">
+                <p className="min-w-0 flex-1 text-sm leading-relaxed">
+                  <span className="text-muted-foreground font-mono text-[10px] tracking-[0.14em] uppercase">
+                    Ne yap ·{" "}
+                  </span>
+                  {snap.verdict_action ?? snap.recommendation}
+                </p>
+                <Button asChild variant="outline" size="sm" className="shrink-0">
+                  <Link href={`/tasarimlar/listing/${productId}`}>
+                    {suspect ? "Ağırlığı düzelt" : "Listing'i düzenle"}
+                  </Link>
+                </Button>
+              </div>
+            )}
+
+            {/* 4 · Teşhis — ucuzsa/banttaysa neden satmıyor? */}
+            {diagnosis && (
+              <p className="border-t pt-2 text-sm leading-relaxed">
+                <span className="text-muted-foreground font-mono text-[10px] tracking-[0.14em] uppercase">
+                  Teşhis ·{" "}
+                </span>
+                {diagnosis.text}
+              </p>
+            )}
           </div>
         )}
 
@@ -134,13 +234,16 @@ export async function KeywordResearchPanel({
           </p>
         ) : (
           <>
+            {/* Veri penceresi/kaynağı — daima görünür. */}
             <div className="flex flex-wrap items-center gap-2 text-sm">
               <span className="text-muted-foreground">Anahtar kelime:</span>
               <span className="bg-accent text-accent-foreground rounded-full px-3 py-1 font-mono text-xs tracking-wide uppercase">
                 {snap.keyword}
               </span>
               <span className="text-muted-foreground">
-                · {snap.result_count} organik rakip
+                · band {bandCount} rakip ({bandSourceLabel}) ·{" "}
+                {snap.result_count} organik ·{" "}
+                {formatDate(snap.researched_at)}
               </span>
             </div>
 
@@ -245,42 +348,59 @@ export async function KeywordResearchPanel({
                     <li className="text-muted-foreground font-mono text-[10px] tracking-[0.14em] uppercase">
                       Organik ilk 10 rakip · mağaza + link
                     </li>
-                    {snap.results.slice(0, 10).map((c) => (
-                      <li
-                        key={c.position}
-                        className="flex items-baseline justify-between gap-3 text-sm"
-                      >
-                        <span className="min-w-0 flex-1">
-                          <span className="flex items-baseline gap-1.5">
-                            <span className="text-muted-foreground font-mono text-xs">
-                              {String(c.position).padStart(2, "0")}
+                    {snap.results.slice(0, 10).map((c) => {
+                      const listingId = c.listing_id ?? listingIdFromUrl(c.url);
+                      return (
+                        <li
+                          key={c.position}
+                          className="flex items-baseline justify-between gap-3 text-sm"
+                        >
+                          <span className="min-w-0 flex-1">
+                            <span className="flex items-baseline gap-1.5">
+                              <span className="text-muted-foreground font-mono text-xs">
+                                {String(c.position).padStart(2, "0")}
+                              </span>
+                              {c.url ? (
+                                <a
+                                  href={c.url}
+                                  target="_blank"
+                                  rel="noreferrer noopener"
+                                  className="text-primary min-w-0 truncate hover:underline"
+                                >
+                                  {c.title}
+                                </a>
+                              ) : (
+                                <span className="text-muted-foreground min-w-0 truncate">
+                                  {c.title}
+                                </span>
+                              )}
                             </span>
-                            {c.url ? (
-                              <a
-                                href={c.url}
-                                target="_blank"
-                                rel="noreferrer noopener"
-                                className="text-primary min-w-0 truncate hover:underline"
-                              >
-                                {c.title}
-                              </a>
-                            ) : (
-                              <span className="text-muted-foreground min-w-0 truncate">
-                                {c.title}
+                            {c.shop_name && (
+                              <span className="text-muted-foreground ml-[1.7rem] block truncate text-xs">
+                                {c.shop_name}
                               </span>
                             )}
                           </span>
-                          {c.shop_name && (
-                            <span className="text-muted-foreground ml-[1.7rem] block truncate text-xs">
-                              {c.shop_name}
+                          <span className="flex shrink-0 items-baseline gap-2">
+                            <span className="font-mono tabular-nums">
+                              {formatMoney(c.price_cents, c.currency)}
                             </span>
-                          )}
-                        </span>
-                        <span className="font-mono tabular-nums shrink-0">
-                          {formatMoney(c.price_cents, c.currency)}
-                        </span>
-                      </li>
-                    ))}
+                            {listingId != null && (
+                              <AddCompetitorToSetButton
+                                productId={productId}
+                                competitor={{
+                                  listing_id: listingId,
+                                  url: c.url,
+                                  title: c.title,
+                                  shop_name: c.shop_name,
+                                }}
+                                watched={watchedIds.has(listingId)}
+                              />
+                            )}
+                          </span>
+                        </li>
+                      );
+                    })}
                   </ul>
                 )}
               </>
@@ -292,6 +412,15 @@ export async function KeywordResearchPanel({
             )}
           </>
         )}
+
+        {/* Rakip seti — sabit takip; snapshot olmasa da izlemeler görünür. */}
+        <CompetitorWatchList productId={productId} items={watchItems} />
+        {/* Elle rakip linki ekleme — 0 rakipte de görünür (ilk rakibi eklemek
+            için); üst sınır 10. */}
+        <AddCompetitorLinkForm
+          productId={productId}
+          currentCount={watchItems.length}
+        />
       </CardContent>
     </Card>
   );

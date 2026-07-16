@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Loader2, Save, Sparkles } from "lucide-react";
+import { Calculator, Loader2, Save, Sparkles } from "lucide-react";
 
 import { updateVariant } from "@/app/(dashboard)/tasarimlar/listing/[id]/actions";
+import { ProductWeightInput } from "@/components/product-weight-input";
 import {
   inferWeightsBySize,
   distributePriceByWeight,
@@ -71,6 +73,8 @@ const WEIGHT_SOURCE_LABELS: Record<string, string> = {
   inferred: "çıkarım",
   etsy: "etsy",
   description: "açıklama",
+  "description-scaled": "açıklama·ölçekli",
+  shipstation: "tartı",
 };
 
 /**
@@ -84,10 +88,13 @@ export function VariantEditor({
   productId,
   variants,
   currency,
+  productWeightGrams,
 }: {
   productId: string;
   variants: ListingVariantRow[];
   currency: string;
+  /** Varyantsız (tek-parça) listing'de künye gramajı — ürün seviyesinde tutulur. */
+  productWeightGrams?: number | null;
 }) {
   const router = useRouter();
   const [rows, setRows] = useState<Record<string, RowState>>(() =>
@@ -99,10 +106,23 @@ export function VariantEditor({
 
   if (variants.length === 0) {
     return (
-      <p className="text-muted-foreground rounded-2xl border border-dashed p-6 text-center text-sm">
-        Bu listing&apos;de varyant yok. Varyantlar Etsy senkronundan gelir ya da
-        yeni listing açılışında girilir.
-      </p>
+      <div className="space-y-4 rounded-2xl border border-dashed p-6">
+        <p className="text-muted-foreground text-center text-sm">
+          Bu listing&apos;de varyant yok. Varyantlar Etsy senkronundan gelir ya
+          da yeni listing açılışında girilir.
+        </p>
+        {/* Tek-parça listing: künye gramajı ürün seviyesinde girilir — künye
+            "tam" sayılması için gerekli. */}
+        <div className="flex flex-col items-center gap-1.5">
+          <p className="text-muted-foreground text-xs">
+            Ürün gramajı (altın maliyet motorunun ve künye bütünlüğünün kaynağı):
+          </p>
+          <ProductWeightInput
+            productId={productId}
+            initialGrams={productWeightGrams ?? null}
+          />
+        </div>
+      </div>
     );
   }
 
@@ -216,10 +236,18 @@ export function VariantEditor({
           Fiyat, gram ve adet satır içinde düzenlenir; her satır kendi
           Kaydet&rsquo;iyle yazılır.
         </p>
-        <Button type="button" variant="outline" size="sm" onClick={autoFill}>
-          <Sparkles className="size-4" />
-          Eksikleri otomatik hesapla
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button type="button" variant="ghost" size="sm" asChild>
+            <Link href={`/tasarimlar/varyant-hesapla?listing=${productId}`}>
+              <Calculator className="size-4" />
+              Hesaplayıcıda aç
+            </Link>
+          </Button>
+          <Button type="button" variant="outline" size="sm" onClick={autoFill}>
+            <Sparkles className="size-4" />
+            Eksikleri otomatik hesapla
+          </Button>
+        </div>
       </div>
 
       <div className="overflow-x-auto">

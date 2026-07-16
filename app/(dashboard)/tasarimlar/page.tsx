@@ -8,6 +8,7 @@ import {
   ExternalLink,
   Package,
   SearchX,
+  Wand2,
 } from "lucide-react";
 import {
   Gem,
@@ -20,6 +21,7 @@ import { listListingsIndex } from "@/lib/db/queries/listings";
 import { strParam, type RawSearchParams } from "@/lib/searchparams";
 import { formatMoney } from "@/lib/money";
 import { formatNumber } from "@/lib/format";
+import { OrgMark } from "@/components/brand/org-mark";
 import { PageHeader } from "@/components/page-header";
 import { GoldStream } from "@/components/brand/gold-stream";
 import { CornerMarks } from "@/components/brand/corner-marks";
@@ -53,6 +55,9 @@ const LISTING_STATUSES: {
   { value: "inactive", label: "Pasif", variant: "outline" },
   { value: "sold_out", label: "Tükendi", variant: "warning" },
   { value: "expired", label: "Süresi doldu", variant: "destructive" },
+  // Panel yaşam-döngüsü filtresi (Etsy durumu değil): arşivlenenler
+  // varsayılan listeden gizlidir, yalnız bu seçenekle görünür.
+  { value: "arsiv", label: "Arşiv (panel)", variant: "outline" },
 ];
 
 function statusMeta(status: string | null) {
@@ -111,6 +116,12 @@ export default async function ListelerPage({
                 Etsy&apos;ye Ağırlık
               </Link>
             </Button>
+            <Button asChild variant="outline">
+              <Link href="/tasarimlar/iyilestir">
+                <Wand2 />
+                İyileştir
+              </Link>
+            </Button>
             <Button asChild>
               <Link href="/tasarimlar/listing/yeni">
                 <Plus />
@@ -127,7 +138,7 @@ export default async function ListelerPage({
           <span>Listeler / 01 · Özet</span>
           <span className="idx-bar" />
           <span className="idx-ln" />
-          <span>Jade Gold · NYC</span>
+          <span><OrgMark /></span>
         </div>
         {filtered && (
           <p className="text-muted-foreground text-xs">
@@ -170,7 +181,7 @@ export default async function ListelerPage({
         <span>Listeler / 02 · Listingler</span>
         <span className="idx-bar" />
         <span className="idx-ln" />
-        <span>Jade Gold · NYC</span>
+        <span><OrgMark /></span>
       </div>
       <Card>
         <CardContent className="space-y-4">
@@ -187,19 +198,34 @@ export default async function ListelerPage({
           </div>
 
           {rows.length === 0 ? (
-            <EmptyState
-              icon={Package}
-              title="Listing yok"
-              description="Henüz listing bulunamadı. Etsy senkronu ayarlar sayfasından çalıştırın veya 'Yeni Listing' ile taslak açın."
-              action={
-                <Button asChild>
-                  <Link href="/tasarimlar/listing/yeni">
-                    <Plus />
-                    Yeni Listing
-                  </Link>
-                </Button>
-              }
-            />
+            // Aktif filtre/aramada "kayıt yok" yanıltır — filtre sonucu boş
+            // olduğunu söyle ve tek tıkla temizleme yolu sun.
+            filtered ? (
+              <EmptyState
+                icon={Package}
+                title="Bu filtreyle sonuç yok"
+                description="Arama veya durum filtresine uyan listing bulunamadı. Filtreyi temizleyip tüm listingleri görebilirsiniz."
+                action={
+                  <Button asChild variant="outline">
+                    <Link href="/tasarimlar">Filtreyi temizle</Link>
+                  </Button>
+                }
+              />
+            ) : (
+              <EmptyState
+                icon={Package}
+                title="Listing yok"
+                description="Henüz listing bulunamadı. Etsy senkronu ayarlar sayfasından çalıştırın veya 'Yeni Listing' ile taslak açın."
+                action={
+                  <Button asChild>
+                    <Link href="/tasarimlar/listing/yeni">
+                      <Plus />
+                      Yeni Listing
+                    </Link>
+                  </Button>
+                }
+              />
+            )
           ) : (
             <Table>
               <TableHeader>

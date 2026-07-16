@@ -23,7 +23,7 @@ async function fetchFromMetalsDev(): Promise<number | null> {
   try {
     const res = await fetch(
       "https://api.metals.dev/v1/latest?api_key=demo&currency=USD&unit=toz",
-      { signal: AbortSignal.timeout(8000) },
+      { signal: AbortSignal.timeout(3000), next: { revalidate: 3600 } },
     );
     if (!res.ok) return null;
     const data = (await res.json()) as {
@@ -42,7 +42,8 @@ async function fetchFromGoldApi(): Promise<number | null> {
   try {
     const res = await fetch("https://www.goldapi.io/api/XAU/USD", {
       headers: { "x-access-token": apiKey },
-      signal: AbortSignal.timeout(8000),
+      signal: AbortSignal.timeout(3000),
+      next: { revalidate: 3600 },
     });
     if (!res.ok) return null;
     const data = (await res.json()) as { price?: number };
@@ -57,7 +58,8 @@ async function fetchFromGoldApi(): Promise<number | null> {
 async function fetchFromMetalsLive(): Promise<number | null> {
   try {
     const res = await fetch("https://api.metals.live/v1/spot/gold", {
-      signal: AbortSignal.timeout(8000),
+      signal: AbortSignal.timeout(3000),
+      next: { revalidate: 3600 },
     });
     if (!res.ok) return null;
     const data = (await res.json()) as { price?: number }[] | { price?: number };

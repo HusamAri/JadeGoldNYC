@@ -16,6 +16,50 @@ export interface ListingWeightPreview {
   previewDescription: string;
   /** Blok yerel açıklamada zaten var mı (idempotent gösterge). */
   alreadyHasBlock: boolean;
+  /**
+   * Açıklamadaki blok, üretilen güncel blokla birebir aynı mı — true ise
+   * gönderim no-op olur; listede "bekleyen" değil "güncel" grubuna düşer.
+   */
+  upToDate: boolean;
+}
+
+export interface VariantListingOption {
+  id: string;
+  title: string;
+  variantCount: number;
+}
+
+/**
+ * Otomatik Varyant hesaplayıcısının listing seçicisi — org'un varyantı olan
+ * ürünleri (id + başlık + varyant sayısı). Sayım gömülü aggregate ile alınır;
+ * satır limiti riski yok (ürün sayısı < sayfa boyutu).
+ */
+export async function listVariantListingOptions(
+  orgId: string,
+): Promise<VariantListingOption[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("products")
+    .select("id, title, product_variants(count)")
+    .eq("org_id", orgId)
+    .is("archived_at", null)
+    .order("title", { ascending: true });
+  if (error) {
+    console.error("[variant-weights] listVariantListingOptions:", error.message);
+    return [];
+  }
+  const rows = (data ?? []) as {
+    id: string;
+    title: string | null;
+    product_variants: { count: number }[] | null;
+  }[];
+  return rows
+    .map((r) => ({
+      id: r.id,
+      title: r.title ?? "Başlıksız listing",
+      variantCount: r.product_variants?.[0]?.count ?? 0,
+    }))
+    .filter((r) => r.variantCount > 0);
 }
 
 interface VariantRow {
@@ -87,14 +131,17 @@ export async function listingsWithVariantWeights(
     const block = buildWeightBlock(weights, { karatHint });
     if (!block) continue;
     const desc = p.description ?? "";
+    const previewDescription = injectWeightBlock(desc, block);
     out.push({
       productId,
       etsyListingId: p.etsy_listing_id,
       title: p.title ?? `Liste ${p.etsy_listing_id}`,
       variantCount: weights.filter((w) => w.weightGrams > 0).length,
       block,
-      previewDescription: injectWeightBlock(desc, block),
+      previewDescription,
       alreadyHasBlock: desc.includes("<!-- JG-WEIGHTS -->"),
+      // Yerel açıklama gönderim SONRASI yazıldığı için Etsy durumunun vekilidir.
+      upToDate: desc.length > 0 && previewDescription === desc,
     });
   }
   out.sort((a, b) => a.title.localeCompare(b.title));

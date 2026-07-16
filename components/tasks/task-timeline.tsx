@@ -27,6 +27,12 @@ import { TASK_LANE_SHORT } from "@/lib/constants";
 import type { TaskWithAssignee, TaskPriority, TaskStatus } from "@/lib/types";
 import type { AssignableUser } from "@/lib/db/queries/tasks";
 import { TaskPriorityBadge } from "@/components/task-priority-badge";
+import { TASK_COLOR_BY_KEY, taskIconUrl } from "@/lib/task-style";
+import {
+  HorizontalTimelineBand,
+  type HTask,
+  type HFloatTask,
+} from "@/components/timeline/horizontal-band";
 import { UserAvatar } from "@/components/user-avatar";
 import { SlideButton } from "@/components/tasks/motion";
 import { LiquidTabs } from "@/components/tasks/liquid-tabs";
@@ -119,6 +125,50 @@ export function TaskTimeline({
     [pastList],
   );
 
+  // Geniş yatay band için normalize edilmiş görevler (şerit/atanan filtreli).
+  const bandTasks: HTask[] = useMemo(
+    () =>
+      filtered
+        .filter((t) => t.due_date)
+        .map((t) => ({
+          id: t.id,
+          title: t.title,
+          day: t.due_date as string,
+          status:
+            t.status === "done" ? "done" : t.status === "doing" ? "doing" : "todo",
+          priority: t.priority,
+          progress: t.progress ?? null,
+          icon: t.icon ?? null,
+          color: t.color ?? null,
+          assigneeName: t.assignee?.full_name ?? null,
+          href: `/gorevler/${t.id}`,
+        })),
+    [filtered],
+  );
+
+  // Tarihsiz görevler bandın kenarlarında "havada" süzülür (leader line'sız).
+  // Aktif olanlar önce — deterministik sıra, çipler render'lar arası zıplamaz.
+  const floatTasks: HFloatTask[] = useMemo(
+    () =>
+      [...undated]
+        .sort(
+          (a, b) =>
+            Number(a.status === "done") - Number(b.status === "done") ||
+            PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority] ||
+            a.sort_order - b.sort_order,
+        )
+        .map((t) => ({
+          id: t.id,
+          title: t.title,
+          icon: t.icon ?? null,
+          color: t.color ?? null,
+          priority: t.priority,
+          done: t.status === "done",
+          href: `/gorevler/${t.id}`,
+        })),
+    [undated],
+  );
+
   // Açılışta BUGÜN düğümünü kabın ortasına getir — sayfa hep today odağında.
   useEffect(() => {
     const sc = scrollRef.current;
@@ -203,6 +253,15 @@ export function TaskTimeline({
         <LiquidTabs items={assigneeItems} value={assignee} onChange={setAssignee} />
       </div>
 
+      {/* ── Geniş yatay bakış — geçmiş ← bugün → gelecek (sürüklenir);
+             tarihsiz görevler kartın kenarlarında süzülür ─────────────── */}
+      <HorizontalTimelineBand
+        tasks={bandTasks}
+        floating={floatTasks}
+        today={today}
+        title="Zaman Çizelgesi — Geniş Bakış"
+      />
+
       {/* ── Zaman çizelgesi (BUGÜN odaklı, geçmiş yukarı geriler) ─────── */}
       <div className="relative">
         <div
@@ -212,7 +271,7 @@ export function TaskTimeline({
           {/* Omurga — marka vurgu token'ı (v3: --gold mor aileye eşlendi) */}
           <div
             aria-hidden
-            className="pointer-events-none absolute top-0 bottom-0 left-[calc(0.75rem+7px)] w-px sm:left-[calc(1.5rem+7px)]"
+            className="pointer-events-none absolute top-0 bottom-0 left-[calc(1.25rem+7.5px)] w-px sm:left-[calc(1.75rem+7.5px)]"
             style={{
               background:
                 "linear-gradient(to bottom, transparent, var(--gold) 8%, var(--gold) 92%, transparent)",
@@ -387,6 +446,11 @@ function TimelineCard({
   const done = t.status === "done";
   const overdue = section === "past" && !done;
   const late = overdue ? dayDiff(t.due_date as string, today) : 0;
+  const taskColor = t.color ? TASK_COLOR_BY_KEY.get(t.color) : null;
+  const progress =
+    t.status === "doing" && t.progress != null
+      ? Math.max(0, Math.min(100, t.progress))
+      : null;
 
   return (
     <motion.div
@@ -395,17 +459,29 @@ function TimelineCard({
       transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
       className="relative flex items-start gap-3 py-1.5 pl-1"
     >
-      {/* Omurga düğümü */}
+      {/* Omurga düğümü — görev rengi (varsa) skalanın mürekkebiyle; yoksa
+          duruma göre. Renk ATANMIŞSA gecikme pembesi/altın onu ezmez. */}
       <span
         aria-hidden
         className={cn(
           "relative z-10 mt-3.5 size-[15px] shrink-0 rounded-full border-2 border-[var(--background)]",
-          done && "bg-[color:var(--gold)]",
-          overdue &&
-            "tl-overdue-dot bg-[oklch(0.58_0.16_344)] dark:bg-[oklch(0.74_0.12_344)]",
-          !done && !overdue && section === "today" && "bg-[color:var(--gold)]",
-          !done && !overdue && section === "future" && "bg-muted-foreground/40",
+          overdue && !taskColor && "tl-overdue-dot",
+          !taskColor && done && "bg-[color:var(--gold)]",
+          !taskColor &&
+            overdue &&
+            "bg-[oklch(0.58_0.16_344)] dark:bg-[oklch(0.74_0.12_344)]",
+          !taskColor &&
+            !done &&
+            !overdue &&
+            section === "today" &&
+            "bg-[color:var(--gold)]",
+          !taskColor &&
+            !done &&
+            !overdue &&
+            section === "future" &&
+            "bg-muted-foreground/40",
         )}
+        style={taskColor ? { backgroundColor: taskColor.ink } : undefined}
       >
         {done && (
           <Check className="absolute inset-0 m-auto size-2.5 text-white" strokeWidth={3.5} />
@@ -416,7 +492,12 @@ function TimelineCard({
         role="button"
         tabIndex={0}
         onClick={onOpen}
-        onKeyDown={(e) => e.key === "Enter" && onOpen()}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            onOpen();
+          }
+        }}
         className={cn(
           "nm-raised-sm focus-visible:ring-ring/60 min-w-0 flex-1 cursor-pointer rounded-2xl p-3 outline-none transition-shadow duration-300 hover:shadow-[var(--shadow-hover)] focus-visible:ring-2",
           overdue && "tl-overdue-neon",
@@ -452,16 +533,52 @@ function TimelineCard({
           </span>
         </div>
 
-        <p
-          className={cn(
-            "text-sm leading-snug font-medium",
-            done && "text-muted-foreground line-through",
+        <div className="flex items-center gap-2">
+          {/* Görev ikonu — skala mürekkebiyle boyanır (CSS mask) */}
+          {t.icon && (
+            <span
+              aria-hidden
+              className="inline-block size-[18px] shrink-0"
+              style={{
+                backgroundColor: taskColor?.ink ?? "var(--gold-deep)",
+                maskImage: `url(${taskIconUrl(t.icon)})`,
+                maskSize: "contain",
+                maskRepeat: "no-repeat",
+                maskPosition: "center",
+                WebkitMaskImage: `url(${taskIconUrl(t.icon)})`,
+                WebkitMaskSize: "contain",
+                WebkitMaskRepeat: "no-repeat",
+                WebkitMaskPosition: "center",
+              }}
+            />
           )}
-        >
-          {t.title}
-        </p>
+          <p
+            className={cn(
+              "min-w-0 flex-1 text-sm leading-snug font-medium",
+              done && "text-muted-foreground line-through",
+            )}
+          >
+            {t.title}
+          </p>
+          {progress != null && (
+            <span className="shrink-0 rounded-full bg-[color:var(--gold)]/12 px-1.5 py-0.5 font-mono text-[10px] font-bold text-[color:var(--gold-deep)] tabular-nums">
+              %{progress}
+            </span>
+          )}
+        </div>
         {t.effort && (
           <p className="text-muted-foreground mt-1 text-xs">{t.effort}</p>
+        )}
+        {progress != null && (
+          <span
+            aria-hidden
+            className="mt-1.5 block h-1 overflow-hidden rounded-full bg-[color:var(--gold)]/12"
+          >
+            <span
+              className="block h-full rounded-full bg-[color:var(--gold)] motion-safe:animate-[tl-fill_0.9s_var(--ease-premium)_both]"
+              style={{ width: `${progress}%` }}
+            />
+          </span>
         )}
 
         {!done && (
@@ -551,7 +668,12 @@ function MiniRow({
       role="button"
       tabIndex={0}
       onClick={onOpen}
-      onKeyDown={(e) => e.key === "Enter" && onOpen()}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onOpen();
+        }
+      }}
       className={cn(
         "nm-raised-sm focus-visible:ring-ring/60 flex cursor-pointer items-center gap-2 rounded-xl p-2.5 outline-none transition-shadow duration-300 hover:shadow-[var(--shadow-hover)] focus-visible:ring-2",
         danger && "tl-overdue-neon",

@@ -1,11 +1,14 @@
 import { z } from "zod";
 
 export const saleStatusEnum = z.enum([
+  "open",
+  "processing",
   "paid",
   "completed",
   "shipped",
   "cancelled",
   "refunded",
+  "partially_refunded",
 ]);
 
 /**

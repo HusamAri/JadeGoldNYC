@@ -2,10 +2,18 @@ import Link from "next/link";
 import { Plus, Pencil, Wallet, Gem } from "lucide-react";
 import { SceneCutouts } from "@/components/scene-cutouts";
 
-import { listCosts, listCostCategories } from "@/lib/db/queries/costs";
+import { requireMembership } from "@/lib/auth";
+import {
+  getCostBearerTotals,
+  listCosts,
+  listCostCategories,
+} from "@/lib/db/queries/costs";
+import { OperatingProfitCard } from "@/components/costs/operating-profit-card";
+import { COST_BEARERS, bearerMeta } from "@/lib/cost-bearer";
 import { strParam, numParam, type RawSearchParams } from "@/lib/searchparams";
 import { formatMoney } from "@/lib/money";
 import { formatDate } from "@/lib/format";
+import { OrgMark } from "@/components/brand/org-mark";
 import { PageHeader } from "@/components/page-header";
 import { GoldStream } from "@/components/brand/gold-stream";
 import { CornerMarks } from "@/components/brand/corner-marks";
@@ -26,6 +34,7 @@ import { SearchInput } from "@/components/data-table/search-input";
 import { FilterSelect } from "@/components/data-table/filter-select";
 import { Pagination } from "@/components/data-table/pagination";
 import { DeleteButton } from "@/components/data-table/delete-button";
+import { CostCategoryBearerEditor } from "@/components/cost-category-bearer";
 import { deleteCost } from "./actions";
 
 export default async function MaliyetlerPage({
@@ -36,17 +45,22 @@ export default async function MaliyetlerPage({
   const sp = await searchParams;
   const search = strParam(sp.search);
   const categoryId = strParam(sp.category);
+  const bearer = strParam(sp.bearer);
   const offset = numParam(sp.offset);
   const limit = 25;
 
-  const [{ rows, count }, categories] = await Promise.all([
-    listCosts({ search, categoryId, limit, offset }),
+  const m = await requireMembership();
+  const [{ rows, count }, categories, bearerTotals] = await Promise.all([
+    listCosts({ search, categoryId, bearer, limit, offset }),
     listCostCategories(),
+    // Taraf toplamları aktif filtre kümesini izler (taraf filtresi hariç —
+    // H/Y/I dağılımı tek tarafa daraltılmışken de tam resmi göstersin).
+    getCostBearerTotals({ search, categoryId }),
   ]);
   const catOptions = categories.map((c) => ({ value: c.id, label: c.label_tr }));
 
   return (
-    <div className="relative z-0 pb-28">
+    <div className="relative z-0 space-y-8 pb-28">
       <SceneCutouts page="maliyetler" />
       <GoldStream motif="scale" />
       <PageHeader
@@ -71,16 +85,16 @@ export default async function MaliyetlerPage({
       />
 
       {/* Dekoratif indeks satırı (Spatial/Liquid .idx dili). */}
-      <div aria-hidden className="idx mb-4">
+      <div aria-hidden className="idx sm:-mb-4">
         <span>Maliyetler / 01 · Atölye</span>
         <span className="idx-bar" />
         <span className="idx-ln" />
-        <span>Jade Gold · NYC</span>
+        <span><OrgMark /></span>
       </div>
       {/* Tek, sessiz marka aksanı — atölye/malzeme temasıyla maliyet sayfasına
           zarif bir giriş (galeri değil, tek kompakt banner). Sayfanın hero
           anı: Spatial köşe işaretleri (dekoratif sarmalayıcı). */}
-      <div className="relative mb-6">
+      <div className="relative">
         <EditorialCard
           compact
           heightClassName="h-[200px]"
@@ -93,14 +107,20 @@ export default async function MaliyetlerPage({
         <CornerMarks />
       </div>
 
+      {/* İşletme kârı (EBITDA): sipariş-başı marj değil, işletme seviyesinin
+          gerçeği — gelir − değişken = katkı; katkı − sabit = kâr; başa-baş. */}
+      <OperatingProfitCard orgId={m.org_id} />
+
       {/* Dekoratif indeks satırı (Spatial/Liquid .idx dili). */}
-      <div aria-hidden className="idx mb-4">
+      <div aria-hidden className="idx sm:-mb-4">
         <span>Maliyetler / 02 · Kayıtlar</span>
         <span className="idx-bar" />
         <span className="idx-ln" />
-        <span>Jade Gold · NYC</span>
+        <span><OrgMark /></span>
       </div>
-      <Card>
+      {/* Kayıt tablosu kabı — bölüm hiyerarşisinde tablo yüzeyi: dikey oluklu
+          cam (.glass-fluted). Yarıçapı Card'dan (rounded-[26px]) devralır. */}
+      <Card className="glass-fluted">
         <CardContent className="space-y-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <SearchInput placeholder="Açıklama, tedarikçi…" />
@@ -109,14 +129,59 @@ export default async function MaliyetlerPage({
               placeholder="Kategori"
               options={catOptions}
             />
+            <FilterSelect
+              paramKey="bearer"
+              placeholder="Taraf"
+              options={[
+                ...COST_BEARERS.map((b) => ({ value: b.value, label: b.label })),
+                { value: "none", label: "Atanmamış" },
+              ]}
+            />
           </div>
 
+          {/* Taraf dağılımı — aktif arama/kategori filtresi için TAM toplam
+              (sayfalamadan bağımsız); kurlar ayrı gösterilir, karıştırılmaz. */}
+          {bearerTotals.length > 0 && (
+            <div className="text-muted-foreground flex flex-wrap gap-x-4 gap-y-1 text-xs">
+              {bearerTotals
+                .slice()
+                .sort((a, b) =>
+                  `${a.bearer ?? "z"}${a.currency}`.localeCompare(
+                    `${b.bearer ?? "z"}${b.currency}`,
+                  ),
+                )
+                .map((t) => (
+                  <span key={`${t.bearer ?? "-"}-${t.currency}`}>
+                    <span className="text-foreground font-medium">
+                      {bearerMeta(t.bearer)?.short ?? "Atanmamış"}
+                    </span>{" "}
+                    {formatMoney(t.amount_cents, t.currency)} · {t.count} kayıt
+                  </span>
+                ))}
+            </div>
+          )}
+
           {rows.length === 0 ? (
-            <EmptyState
-              icon={Wallet}
-              title="Maliyet kaydı yok"
-              description="Henüz gider kaydı yok. İlk maliyetinizi ekleyin."
-            />
+            // Aktif filtre/aramada "kayıt yok" yanıltır — filtre sonucu boş
+            // olduğunu söyle ve tek tıkla temizleme yolu sun.
+            search || categoryId || bearer ? (
+              <EmptyState
+                icon={Wallet}
+                title="Bu filtreyle sonuç yok"
+                description="Arama, kategori veya taraf filtresine uyan gider kaydı bulunamadı. Filtreyi temizleyip tüm kayıtları görebilirsiniz."
+                action={
+                  <Button asChild variant="outline">
+                    <Link href="/maliyetler">Filtreyi temizle</Link>
+                  </Button>
+                }
+              />
+            ) : (
+              <EmptyState
+                icon={Wallet}
+                title="Maliyet kaydı yok"
+                description="Henüz gider kaydı yok. İlk maliyetinizi ekleyin."
+              />
+            )
           ) : (
             <Table>
               <TableHeader>
@@ -124,6 +189,7 @@ export default async function MaliyetlerPage({
                   <TableHead>Tarih</TableHead>
                   <TableHead>Açıklama</TableHead>
                   <TableHead>Kategori</TableHead>
+                  <TableHead>Taraf</TableHead>
                   <TableHead>Tedarikçi</TableHead>
                   <TableHead className="text-right">Tutar</TableHead>
                   <TableHead className="text-right whitespace-nowrap">İşlem</TableHead>
@@ -135,11 +201,12 @@ export default async function MaliyetlerPage({
                     <TableCell className="whitespace-nowrap">
                       {formatDate(c.cost_date)}
                     </TableCell>
-                    {/* Uzun açıklama tabloyu karttan taşırmasın: sınırlı
-                        genişlik + truncate; tam metin title tooltip'inde. */}
+                    {/* Uzun açıklama kayıt satırında tek satır kalır; sınırlı
+                        genişliği taşarsa yatay kaydırılır (.scroll-x) — kırpılıp
+                        gizlenmez; tam metin title tooltip'inde de durur. */}
                     <TableCell className="font-medium">
                       <div
-                        className="max-w-[260px] truncate xl:max-w-[340px]"
+                        className="scroll-x max-w-[260px] xl:max-w-[340px]"
                         title={c.description}
                       >
                         {c.description}
@@ -149,6 +216,16 @@ export default async function MaliyetlerPage({
                       <Badge variant="secondary">
                         {c.category?.label_tr ?? "—"}
                       </Badge>
+                    </TableCell>
+                    <TableCell>
+                      {(() => {
+                        const bm = bearerMeta(c.bearer);
+                        return bm ? (
+                          <Badge variant={bm.variant}>{bm.short}</Badge>
+                        ) : (
+                          <span className="text-muted-foreground">—</span>
+                        );
+                      })()}
                     </TableCell>
                     <TableCell>{c.vendor ?? "—"}</TableCell>
                     <TableCell className="text-right whitespace-nowrap tabular-nums">
@@ -181,6 +258,26 @@ export default async function MaliyetlerPage({
           )}
 
           <Pagination count={count} limit={limit} offset={offset} />
+        </CardContent>
+      </Card>
+
+      {/* Dekoratif indeks satırı (Spatial/Liquid .idx dili). */}
+      <div aria-hidden className="idx sm:-mb-4">
+        <span>Maliyetler / 03 · Otomatik taraf ataması</span>
+        <span className="idx-bar" />
+        <span className="idx-ln" />
+        <span><OrgMark /></span>
+      </div>
+      {/* EON ortaklığı: kategoriye varsayılan taraf tanımla — taraf seçilmeden
+          giren her maliyet (form/altın motoru/CSV) bu varsayılanı otomatik alır. */}
+      <Card>
+        <CardContent className="space-y-4">
+          <p className="text-muted-foreground text-sm">
+            Kategoriye varsayılan taraf tanımlayın; taraf seçilmeden girilen her
+            maliyet (elle giriş, altın motoru, CSV) bu varsayılanı otomatik alır.
+            Formda elle seçilen taraf her zaman kazanır.
+          </p>
+          <CostCategoryBearerEditor categories={categories} />
         </CardContent>
       </Card>
     </div>

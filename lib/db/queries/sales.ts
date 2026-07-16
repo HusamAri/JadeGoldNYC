@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { fetchAllPages } from "@/lib/db/queries/listings";
 import type { Sale, SaleItem } from "@/lib/types";
 
 /** PostgREST `.or()` filtresine güvenli giriş için temizler. */
@@ -86,6 +87,77 @@ export async function getSalesAnalytics(
   };
 }
 
+export interface MonthlySalesPoint {
+  /** "YYYY-MM" */
+  ym: string;
+  orders: number;
+  gross_cents: number;
+}
+
+/**
+ * Son `months` ayın aylık ciro/sipariş toplamları — sales_analytics RPC'siyle
+ * AYNI filtre mantığı (org + status/search; status filtresi yoksa iptaller
+ * hariç — status NOT NULL, 0005). RPC'nin 12 aylık penceresi değiştirilmeden,
+ * YoY overlay + MoM/YoY rozetleri için daha geniş pencere (varsayılan 24 ay)
+ * dar kolonlarla sayfalı çekilir ve TS tarafında aylıklaştırılır.
+ * Tutarlar cent — panel/RPC ile AYNI gelir semantiği (0094):
+ * grand_total yoksa item_total'a düşülür.
+ */
+export async function getMonthlySalesSeries(
+  orgId: string,
+  opts: { months?: number; search?: string; status?: string } = {},
+): Promise<MonthlySalesPoint[]> {
+  const supabase = await createClient();
+  const months = opts.months ?? 24;
+  const now = new Date();
+  // Pencere başı: (months-1) ay öncesinin ay başı — RPC'nin
+  // date_trunc('month', now()) - interval mantığıyla aynı hizada.
+  const fromIso = new Date(
+    now.getFullYear(),
+    now.getMonth() - (months - 1),
+    1,
+  ).toISOString();
+  const cleaned = opts.search ? sanitize(opts.search) : "";
+
+  const rows = await fetchAllPages<{
+    order_date: string;
+    grand_total_cents: number | null;
+    item_total_cents: number | null;
+  }>((from, to) => {
+    let q = supabase
+      .from("sales")
+      .select("order_date, grand_total_cents, item_total_cents")
+      // Multi-tenant kilidi: RLS'in aktif-org varsayımına yaslanma.
+      .eq("org_id", orgId)
+      .gte("order_date", fromIso)
+      .order("order_date", { ascending: true })
+      .order("id", { ascending: true })
+      .range(from, to);
+    if (opts.status) q = q.eq("status", opts.status);
+    else q = q.neq("status", "cancelled");
+    if (cleaned) {
+      q = q.or(
+        `order_no.ilike.%${cleaned}%,buyer_name.ilike.%${cleaned}%,buyer_email.ilike.%${cleaned}%`,
+      );
+    }
+    return q;
+  });
+
+  const byYm = new Map<string, { orders: number; gross_cents: number }>();
+  for (const r of rows) {
+    const ym = r.order_date.slice(0, 7);
+    const e = byYm.get(ym) ?? { orders: 0, gross_cents: 0 };
+    e.orders += 1;
+    // Gelir semantiği tekleşti (0094): grand_total boşsa item_total'a düş —
+    // panel/dashboard ve sales_analytics RPC'siyle aynı.
+    e.gross_cents += r.grand_total_cents || r.item_total_cents || 0;
+    byYm.set(ym, e);
+  }
+  return [...byYm.entries()]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([ym, v]) => ({ ym, ...v }));
+}
+
 export async function getSaleWithItems(id: string) {
   const supabase = await createClient();
   const { data: sale, error } = await supabase
@@ -96,11 +168,13 @@ export async function getSaleWithItems(id: string) {
   if (error) throw error;
   if (!sale) return null;
 
-  const { data: items } = await supabase
+  const { data: items, error: itemsErr } = await supabase
     .from("sale_items")
     .select("*")
     .eq("sale_id", id)
     .order("created_at", { ascending: true });
+  // Hata sessizce "kalem yok"a dönüşmesin — en azından yüzeye çıkar.
+  if (itemsErr) console.error("[sales] sale_items sorgusu:", itemsErr.message);
 
   return { sale: sale as Sale, items: (items ?? []) as SaleItem[] };
 }

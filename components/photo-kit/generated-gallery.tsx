@@ -258,6 +258,7 @@ export function GeneratedGallery({
           onChange={(e) => setUrls(e.target.value)}
           placeholder="https://…cloudfront.net/…hf_….png"
           rows={3}
+          aria-label="Higgsfield görsel bağlantıları (satır başına bir URL)"
           className="mt-3 font-mono text-xs"
         />
         <div className="mt-3 flex flex-wrap items-center gap-2">
@@ -289,8 +290,7 @@ export function GeneratedGallery({
       {/* Filtre + sayaç + toplu yükleme */}
       <div className="flex flex-wrap items-center gap-3">
         <div
-          className="bg-muted/50 flex max-w-full min-w-0 flex-wrap gap-0.5 rounded-xl border p-0.5"
-          style={{ borderColor: LINE }}
+          className="nm-pressed flex max-w-full min-w-0 flex-wrap gap-0.5 rounded-xl p-1"
           role="group"
           aria-label="Filtre"
         >
@@ -306,9 +306,9 @@ export function GeneratedGallery({
               aria-pressed={filter === v}
               onClick={() => setFilter(v)}
               className={cn(
-                "rounded-[0.6rem] px-3 py-1.5 text-xs font-semibold transition-colors pointer-coarse:min-h-10",
+                "rounded-[0.6rem] px-3 py-1.5 text-xs font-semibold transition-all pointer-coarse:min-h-10",
                 filter === v
-                  ? "bg-card text-foreground shadow-sm"
+                  ? "nm-raised-sm text-foreground"
                   : "text-muted-foreground hover:text-foreground",
               )}
             >
@@ -337,10 +337,7 @@ export function GeneratedGallery({
 
       {/* Izgara */}
       {shown.length === 0 ? (
-        <div
-          className="text-muted-foreground rounded-2xl border border-dashed p-12 text-center text-sm"
-          style={{ borderColor: LINE }}
-        >
+        <div className="text-muted-foreground nm-pressed rounded-2xl p-12 text-center text-sm">
           <Images className="mx-auto mb-3 size-8 opacity-40" />
           {items.length === 0
             ? "Henüz görsel yok. Yukarıdan Higgsfield bağlantılarını yapıştırarak ekle."
@@ -363,7 +360,7 @@ export function GeneratedGallery({
               <button
                 type="button"
                 onClick={() => setLightboxId(img.id)}
-                className="block size-full cursor-zoom-in"
+                className="group/zoom block size-full cursor-zoom-in overflow-hidden"
                 aria-label={`Büyüt: ${img.title || "üretilen görsel"}`}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -384,7 +381,7 @@ export function GeneratedGallery({
                       return n;
                     })
                   }
-                  className="size-full object-cover"
+                  className="size-full object-cover transition-[scale,filter] duration-500 ease-[var(--ease-premium)] group-hover/zoom:scale-105 group-hover/zoom:brightness-105 group-active/zoom:scale-100"
                 />
               </button>
               {/* rozetler — altın zeminde koyu metin (AA); yüklendi jade+beyaz */}

@@ -104,7 +104,7 @@ export function ScrollPinnedVideo({
           poster={poster}
           muted
           playsInline
-          preload="auto"
+          preload="metadata"
           className="absolute inset-0 size-full object-cover"
           style={{
             transform:

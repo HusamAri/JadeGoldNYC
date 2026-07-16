@@ -9,7 +9,9 @@ import { toast } from "sonner";
 import { taskFormSchema, type TaskFormValues } from "@/lib/validations/task";
 import { createTask, updateTask } from "@/app/(dashboard)/gorevler/actions";
 import { TASK_STATUSES, TASK_PRIORITIES, TASK_LANES } from "@/lib/constants";
+import { TASK_COLORS, TASK_ICONS, taskIconUrl } from "@/lib/task-style";
 import type { AssignableUser } from "@/lib/db/queries/tasks";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -181,6 +183,124 @@ export function TaskForm({
           <div className="space-y-2">
             <Label htmlFor="due_date">Termin</Label>
             <Input id="due_date" type="date" {...register("due_date")} />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Görünüm & ilerleme: ikon (renk skalasıyla boyanır) + isimli renk + % */}
+      <Card>
+        <CardContent className="space-y-5">
+          <div className="space-y-2">
+            <Label>Renk (isimli skala)</Label>
+            <Controller
+              control={control}
+              name="color"
+              render={({ field }) => (
+                <div className="flex flex-wrap gap-2">
+                  {TASK_COLORS.map((c) => {
+                    const active = field.value === c.key;
+                    return (
+                      <button
+                        key={c.key}
+                        type="button"
+                        title={c.name}
+                        onClick={() => field.onChange(active ? "" : c.key)}
+                        className={cn(
+                          "flex cursor-pointer items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-medium transition-all hover:-translate-y-0.5 active:translate-y-0 active:scale-95",
+                          active
+                            ? "border-transparent text-white shadow-[var(--lift-sm)]"
+                            : "border-border text-muted-foreground hover:border-foreground/40 hover:shadow-[var(--lift-sm)]",
+                        )}
+                        style={active ? { backgroundColor: c.ink } : undefined}
+                      >
+                        <span
+                          className="inline-block size-3 rounded-full border border-white/50"
+                          style={{ backgroundColor: c.ink }}
+                        />
+                        {c.name}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label>Görev ikonu</Label>
+            <Controller
+              control={control}
+              name="icon"
+              render={({ field: iconField }) => (
+                <Controller
+                  control={control}
+                  name="color"
+                  render={({ field: colorField }) => {
+                    const ink =
+                      TASK_COLORS.find((c) => c.key === colorField.value)?.ink ??
+                      "oklch(0.45 0.05 285)";
+                    return (
+                      <div className="grid grid-cols-6 gap-1.5 sm:grid-cols-10">
+                        {TASK_ICONS.map((ic) => {
+                          const active = iconField.value === ic.key;
+                          return (
+                            <button
+                              key={ic.key}
+                              type="button"
+                              title={ic.label}
+                              aria-pressed={active}
+                              onClick={() =>
+                                iconField.onChange(active ? "" : ic.key)
+                              }
+                              className={cn(
+                                "nm-pressed flex aspect-square cursor-pointer items-center justify-center rounded-xl transition-all active:scale-90",
+                                active
+                                  ? // Seçim anında minik pop — icon-pop native scale anime eder
+                                    "ring-ring/70 shadow-[var(--shadow-pressed),0_0_10px_var(--pit-glow)] ring-2 motion-safe:animate-[icon-pop_0.35s_var(--ease-premium)]"
+                                  : "opacity-70 hover:scale-[1.08] hover:opacity-100",
+                              )}
+                            >
+                              <span
+                                aria-hidden
+                                // Renk skalası değişince tüm ikonlar yumuşakça yeniden mürekkeplenir
+                                className="inline-block size-6 transition-[background-color] duration-500"
+                                style={{
+                                  backgroundColor: ink,
+                                  maskImage: `url(${taskIconUrl(ic.key)})`,
+                                  maskSize: "contain",
+                                  maskRepeat: "no-repeat",
+                                  maskPosition: "center",
+                                  WebkitMaskImage: `url(${taskIconUrl(ic.key)})`,
+                                  WebkitMaskSize: "contain",
+                                  WebkitMaskRepeat: "no-repeat",
+                                  WebkitMaskPosition: "center",
+                                }}
+                              />
+                              <span className="sr-only">{ic.label}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    );
+                  }}
+                />
+              )}
+            />
+            <p className="text-muted-foreground text-xs">
+              İkon, seçtiğin renk skalasındaki mürekkeple boyanır; zaman
+              çizelgesi ve görev listelerinde görünür.
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="progress">İlerleme (%) — süren görevlerde</Label>
+            <Input
+              id="progress"
+              inputMode="numeric"
+              placeholder="örn. 40"
+              className="w-32"
+              {...register("progress")}
+            />
           </div>
         </CardContent>
       </Card>

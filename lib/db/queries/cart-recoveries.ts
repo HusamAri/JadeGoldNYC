@@ -25,10 +25,12 @@ export async function getWinbackCandidates(
   limit = 100,
 ): Promise<WinbackCandidate[]> {
   const supabase = await createClient();
-  const { data } = await supabase.rpc("winback_candidates", {
+  const { data, error } = await supabase.rpc("winback_candidates", {
     p_lapse_days: lapseDays,
     p_limit: limit,
   });
+  // Hata sessizce "veri yok"a dönüşmesin — en azından yüzeye çıkar.
+  if (error) console.error("[cart-recoveries] winback_candidates:", error.message);
   return (data ?? []) as WinbackCandidate[];
 }
 
@@ -36,9 +38,10 @@ export async function getWinbackSummary(
   lapseDays = 90,
 ): Promise<WinbackSummary> {
   const supabase = await createClient();
-  const { data } = await supabase.rpc("winback_summary", {
+  const { data, error } = await supabase.rpc("winback_summary", {
     p_lapse_days: lapseDays,
   });
+  if (error) console.error("[cart-recoveries] winback_summary:", error.message);
   const row = (data ?? [])[0] as WinbackSummary | undefined;
   return (
     row ?? {
@@ -62,9 +65,10 @@ export interface CartSummary {
 
 export async function getCartSummary(): Promise<CartSummary> {
   const supabase = await createClient();
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("cart_recoveries")
     .select("status, cart_value_cents, recovered_value_cents");
+  if (error) console.error("[cart-recoveries] özet sorgusu:", error.message);
   const rows = (data ?? []) as {
     status: string;
     cart_value_cents: number | null;
@@ -73,8 +77,11 @@ export async function getCartSummary(): Promise<CartSummary> {
 
   const total = rows.length;
   const totalValueCents = rows.reduce((a, r) => a + (r.cart_value_cents ?? 0), 0);
-  const recovered = rows.filter((r) => r.status === "kazanildi").length;
-  const recoveredValueCents = rows.reduce(
+  const recoveredRows = rows.filter((r) => r.status === "kazanildi");
+  const recovered = recoveredRows.length;
+  // Kazanılan tutar yalnız sonucu 'kazanildi' olan kayıtlardan toplanır —
+  // açık/kayıp kayıtlara girilmiş tutarlar özete sızmasın.
+  const recoveredValueCents = recoveredRows.reduce(
     (a, r) => a + (r.recovered_value_cents ?? 0),
     0,
   );
@@ -131,10 +138,11 @@ export async function listCartRecoveries(opts: ListCartOptions = {}) {
 
 export async function getCartRecovery(id: string): Promise<CartRecovery | null> {
   const supabase = await createClient();
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("cart_recoveries")
     .select("*")
     .eq("id", id)
     .maybeSingle();
+  if (error) console.error("[cart-recoveries] kayıt sorgusu:", error.message);
   return (data as CartRecovery) ?? null;
 }

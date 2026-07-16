@@ -4,8 +4,13 @@ import { revalidatePath } from "next/cache";
 
 import { createClient } from "@/lib/supabase/server";
 import { requireMembership } from "@/lib/auth";
-import { costFormSchema, type CostFormValues } from "@/lib/validations/cost";
+import {
+  bearerToRow,
+  costFormSchema,
+  type CostFormValues,
+} from "@/lib/validations/cost";
 import { parseMoneyToCents } from "@/lib/money";
+import type { CostBearer } from "@/lib/types";
 
 export interface CostActionResult {
   ok?: boolean;
@@ -22,6 +27,7 @@ function toRow(v: CostFormValues) {
     currency: (v.currency || "USD").toUpperCase(),
     cost_date: v.cost_date,
     vendor: v.vendor || null,
+    bearer: bearerToRow(v.bearer),
     notes: v.notes || null,
   };
 }
@@ -77,6 +83,26 @@ export async function updateCost(
   revalidatePath("/maliyetler");
   revalidatePath("/panel");
   return { ok: true, id };
+}
+
+/**
+ * Kategori varsayılan tarafı (otomatik atama kaynağı). NULL = atama yok.
+ * Trigger yalnız bearer'ı BOŞ gelen maliyetlere uygular; elle seçim korunur.
+ */
+export async function setCategoryDefaultBearer(
+  categoryId: string,
+  bearer: CostBearer | null,
+): Promise<{ error?: string }> {
+  await requireMembership();
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("cost_categories")
+    .update({ default_bearer: bearer })
+    .eq("id", categoryId);
+  if (error) return { error: error.message };
+
+  revalidatePath("/maliyetler");
+  return {};
 }
 
 export async function deleteCost(id: string): Promise<{ error?: string }> {

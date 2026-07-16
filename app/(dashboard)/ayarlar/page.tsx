@@ -51,7 +51,7 @@ export default async function AyarlarPage() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
-              <Store className="size-4" />
+              <Store aria-hidden className="size-4" />
               Organizasyon
             </CardTitle>
           </CardHeader>
@@ -81,10 +81,10 @@ export default async function AyarlarPage() {
             <CardHeader>
               <CardTitle className="flex items-center justify-between text-base">
                 <span className="flex items-center gap-2">
-                  <UsersRound className="size-4" />
+                  <UsersRound aria-hidden className="size-4" />
                   Ekip
                 </span>
-                <ChevronRight className="text-muted-foreground size-4" />
+                <ChevronRight aria-hidden className="text-muted-foreground size-4" />
               </CardTitle>
               <CardDescription>
                 Üyeleri yönet, roller ve davetler
@@ -98,7 +98,7 @@ export default async function AyarlarPage() {
             <CardHeader>
               <CardTitle className="flex items-center justify-between text-base">
                 <span className="flex items-center gap-2">
-                  <Plug className="size-4" />
+                  <Plug aria-hidden className="size-4" />
                   Etsy Entegrasyonu
                 </span>
                 <span className="flex items-center gap-2">
@@ -107,7 +107,7 @@ export default async function AyarlarPage() {
                   ) : (
                     <Badge variant="secondary">Bağlı değil</Badge>
                   )}
-                  <ChevronRight className="text-muted-foreground size-4" />
+                  <ChevronRight aria-hidden className="text-muted-foreground size-4" />
                 </span>
               </CardTitle>
               <CardDescription>
@@ -122,7 +122,7 @@ export default async function AyarlarPage() {
             <CardHeader>
               <CardTitle className="flex items-center justify-between text-base">
                 <span className="flex items-center gap-2">
-                  <Truck className="size-4" />
+                  <Truck aria-hidden className="size-4" />
                   ShipStation Entegrasyonu
                 </span>
                 <span className="flex items-center gap-2">
@@ -131,7 +131,7 @@ export default async function AyarlarPage() {
                   ) : (
                     <Badge variant="secondary">Yapılandırılmadı</Badge>
                   )}
-                  <ChevronRight className="text-muted-foreground size-4" />
+                  <ChevronRight aria-hidden className="text-muted-foreground size-4" />
                 </span>
               </CardTitle>
               <CardDescription>
@@ -146,10 +146,10 @@ export default async function AyarlarPage() {
             <CardHeader>
               <CardTitle className="flex items-center justify-between text-base">
                 <span className="flex items-center gap-2">
-                  <Scale className="size-4" />
+                  <Scale aria-hidden className="size-4" />
                   Altin Maliyet Ayarlari
                 </span>
-                <ChevronRight className="text-muted-foreground size-4" />
+                <ChevronRight aria-hidden className="text-muted-foreground size-4" />
               </CardTitle>
               <CardDescription>
                 Tedarikciden alim fiyatlari, iscilik oranlari ve altin fiyat kaynagi
@@ -163,10 +163,10 @@ export default async function AyarlarPage() {
             <CardHeader>
               <CardTitle className="flex items-center justify-between text-base">
                 <span className="flex items-center gap-2">
-                  <Sparkles className="size-4" />
+                  <Sparkles aria-hidden className="size-4" />
                   Etsy Güncellemeleri
                 </span>
-                <ChevronRight className="text-muted-foreground size-4" />
+                <ChevronRight aria-hidden className="text-muted-foreground size-4" />
               </CardTitle>
               <CardDescription>
                 Platform güncellemelerinden mağazanız için elenmiş öneriler
@@ -180,10 +180,10 @@ export default async function AyarlarPage() {
             <CardHeader>
               <CardTitle className="flex items-center justify-between text-base">
                 <span className="flex items-center gap-2">
-                  <Rocket className="size-4" />
+                  <Rocket aria-hidden className="size-4" />
                   Büyüme Stratejisi
                 </span>
-                <ChevronRight className="text-muted-foreground size-4" />
+                <ChevronRight aria-hidden className="text-muted-foreground size-4" />
               </CardTitle>
               <CardDescription>
                 Etsy SEO + yapay zekâ arama (AEO) görünürlüğü için 90 günlük plan
@@ -193,14 +193,14 @@ export default async function AyarlarPage() {
         </Link>
 
         <Link href="/ayarlar/profil" className="block">
-          <Card className="transition-shadow hover:shadow-[var(--shadow-hover)]">
+          <Card className="hover:border-primary/40 transition-colors">
             <CardHeader>
               <CardTitle className="flex items-center justify-between text-base">
                 <span className="flex items-center gap-2">
-                  <UserRound className="size-4" />
+                  <UserRound aria-hidden className="size-4" />
                   Profil
                 </span>
-                <ChevronRight className="text-muted-foreground size-4" />
+                <ChevronRight aria-hidden className="text-muted-foreground size-4" />
               </CardTitle>
               <CardDescription>
                 Ad ve profil fotoğrafını düzenle

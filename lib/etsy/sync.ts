@@ -3,6 +3,11 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { EtsyClient } from "@/lib/etsy/client";
 import { etsyPaths } from "@/lib/etsy/endpoints";
+import { decodeHtmlEntities } from "@/lib/etsy/text";
+import {
+  mintSingleItemSku,
+  NON_INVENTORY_LISTING_IDS,
+} from "@/lib/etsy/sku";
 import { logAudit } from "@/lib/audit";
 import { rebuildGoldCostsBulk } from "@/lib/gold-cost-entry";
 import {
@@ -59,6 +64,7 @@ interface CursorRow {
   sync_ledger_floor: number | null;
   ledger_backfilled: boolean | null;
   last_sync_at: string | null;
+  sync_started_at: string | null;
 }
 
 /**
@@ -83,7 +89,7 @@ export async function advanceEtsySync(
   const { data } = await admin
     .from("etsy_connection")
     .select(
-      "sync_status, sync_phase, sync_offset, sync_sales, sync_items, sync_products, sync_reviews, sync_ledger, sync_ledger_until, sync_ledger_floor, ledger_backfilled, last_sync_at",
+      "sync_status, sync_phase, sync_offset, sync_sales, sync_items, sync_products, sync_reviews, sync_ledger, sync_ledger_until, sync_ledger_floor, ledger_backfilled, last_sync_at, sync_started_at",
     )
     .eq("org_id", orgId)
     .maybeSingle();
@@ -118,13 +124,21 @@ export async function advanceEtsySync(
   const ledgerBackfilled = cur?.ledger_backfilled ?? false;
 
   // Sales fazı: ilk tam tarama (last_sync_at yok) tüm geçmişi; sonraki turlar
-  // artımlı (last_sync_at'ten beri, 1 saat örtüşmeli). Tur boyunca last_sync_at
-  // sales bitene kadar yazılmadığından min_created chunk'lar arası stabildir.
-  const minCreated = cur?.last_sync_at
+  // artımlı. Pencere MIN_LAST_MODIFIED ile açılır (min_created DEĞİL): durumu
+  // sonradan değişen eski sipariş (kargolandı → completed, iptal → cancelled)
+  // ancak last_modified penceresine girer; created penceresi bu güncellemeleri
+  // yapısal olarak kaçırıyordu. 1 saat örtüşme payı korunur.
+  const minLastModified = cur?.last_sync_at
     ? Math.floor(new Date(cur.last_sync_at).getTime() / 1000) - 3600
     : undefined;
 
+  // Listing mutabakatının tarama işareti: bu turun başlangıcı. Taramada
+  // görülen her listing upsert'lenir → set_updated_at trigger'ı updated_at'i
+  // bu işaretin SONRASINA taşır; işaretten eski kalanlar Etsy'de yok demektir.
+  let syncStartedAtIso = resuming ? cur?.sync_started_at ?? null : null;
+
   if (!resuming) {
+    syncStartedAtIso = new Date().toISOString();
     await admin
       .from("etsy_connection")
       .update({
@@ -139,7 +153,7 @@ export async function advanceEtsySync(
         sync_ledger_until: null,
         sync_ledger_floor: null,
         sync_error: null,
-        sync_started_at: new Date().toISOString(),
+        sync_started_at: syncStartedAtIso,
         sync_updated_at: new Date().toISOString(),
       })
       .eq("org_id", orgId);
@@ -171,7 +185,7 @@ export async function advanceEtsySync(
       if (phase === "sales") {
         const page = await client.get<EtsyListResponse<EtsyReceipt>>(
           etsyPaths.receipts(shopId),
-          { limit: PAGE, offset, min_created: minCreated },
+          { limit: PAGE, offset, min_last_modified: minLastModified },
         );
         const results = page.results ?? [];
         if (results.length > 0) {
@@ -216,6 +230,11 @@ export async function advanceEtsySync(
         const stateIdx = Math.floor(offset / 1_000_000);
         const pageOffset = offset % 1_000_000;
         if (stateIdx >= STATES.length) {
+          // TAM envanter taraması bitti (active + inactive/sold_out/draft/
+          // expired). Genel kural: Etsy nihai kaynak — taramada karşılığı
+          // olmayan listing panelden de silinir. Yalnız tam tarama sonunda
+          // çalışır; kısmi/yarıda kalan tarama asla silme tetiklemez.
+          await reconcileUnmatchedListings(admin, orgId, syncStartedAtIso);
           phase = "reviews";
           offset = 0;
           await persist();
@@ -386,8 +405,36 @@ export async function advanceEtsySync(
   }
 }
 
+/**
+ * Etsy receipt.status → panel satış durumu (0005/0080 sözlüğü).
+ * Etsy enum'u: open · payment processing · paid · completed · canceled ·
+ * fully refunded · partially refunded. Panel: tek-kelime + çift-L 'cancelled'.
+ */
+export function mapReceiptStatus(r: EtsyReceipt): string {
+  switch ((r.status ?? "").toLowerCase()) {
+    case "open":
+      return "open";
+    case "payment processing":
+      return "processing";
+    case "paid":
+      // Kargolanmış ama henüz "completed" damgalanmamış sipariş → shipped.
+      return r.is_shipped ? "shipped" : "paid";
+    case "completed":
+      return "completed";
+    case "canceled":
+      return "cancelled";
+    case "fully refunded":
+      return "refunded";
+    case "partially refunded":
+      return "partially_refunded";
+    default:
+      // Bilinmeyen/boş durum: eski davranışla uyumlu güvenli varsayılan.
+      return "completed";
+  }
+}
+
 /** Bir sayfa siparişi + gömülü kalemleri toplu upsert eder; kalem sayısını döner. */
-async function upsertSalesPage(
+export async function upsertSalesPage(
   admin: SupabaseClient,
   orgId: string,
   results: EtsyReceipt[],
@@ -399,7 +446,7 @@ async function upsertSalesPage(
     order_no: String(r.receipt_id),
     buyer_name: r.name ?? null,
     buyer_email: r.buyer_email ?? null,
-    status: "completed",
+    status: mapReceiptStatus(r),
     order_date: new Date(
       (r.created_timestamp ?? Date.now() / 1000) * 1000,
     ).toISOString(),
@@ -479,8 +526,19 @@ async function upsertListingsPage(
   const rows = results.map((l) => ({
     org_id: orgId,
     etsy_listing_id: l.listing_id,
-    title: l.title ?? `Liste ${l.listing_id}`,
-    sku: l.sku?.[0] ?? null,
+    // Etsy API başlıkları HTML-escape'li döndürür ("7.5&quot;") — panelde
+    // ham entity görünmesin diye senkron sınırında çözülür.
+    title: l.title ? decodeHtmlEntities(l.title) : `Liste ${l.listing_id}`,
+    // SKU = evrensel anahtar: Etsy tek-parça listing'de SKU boş dönebilir —
+    // senkron sınırında deterministik SKU üretilir (0086 formülü; her turda
+    // aynı değer → backfill mirror'ı null'a ezilmez, yeni listing SKU'suz
+    // doğamaz). Varyantlı listing'de SKU varyant seviyesinde yaşar (null OK).
+    sku:
+      l.sku?.[0] ??
+      (l.has_variations === false &&
+      !NON_INVENTORY_LISTING_IDS.has(l.listing_id)
+        ? mintSingleItemSku(l.title, l.listing_id)
+        : null),
     status: l.state ?? null,
     price_cents: etsyMoneyToCents(l.price),
     currency: l.price?.currency_code ?? "USD",
@@ -503,12 +561,100 @@ async function upsertListingsPage(
   if (error) throw new Error(`products upsert: ${error.message}`);
 }
 
+/**
+ * Etsy-panel listing mutabakatı (genel kural: nihai kaynak Etsy).
+ * Tam envanter taraması bittikten sonra çağrılır: taramada GÖRÜLMEYEN
+ * (updated_at, tarama başlangıcından eski kalan) etsy_listing_id'li ürünler
+ * panelden silinir — Etsy'de olmayan hiçbir listing panelde yaşamaz.
+ *
+ * Güvenlik sınırları:
+ * - Yalnız TAM tarama sonunda çağrılır (kısmi taramada asla) ve tarama
+ *   işareti (sweepStartIso) yoksa hiçbir şey yapmaz.
+ * - Yanlış yön imkânsız: taramada görülen her satır upsert'lenip updated_at'i
+ *   işaretin sonrasına taşınır; yalnız hiç dokunulmayanlar silinir.
+ * - Panel-doğumlu taslaklar (etsy_listing_id NULL) kapsam dışıdır.
+ * - Satış geçmişi korunur (sale_items.product_id FK'sı SET NULL; kalemdeki
+ *   etsy_listing_id izi durur). listing_media arşivi de silinmez (kalıcı arşiv).
+ * - product_variants FK'sı SET NULL olduğundan yetim varyant (ve işgal edilen
+ *   SKU) kalmasın diye varyantlar açıkça silinir.
+ */
+async function reconcileUnmatchedListings(
+  admin: SupabaseClient,
+  orgId: string,
+  sweepStartIso: string | null,
+): Promise<number> {
+  if (!sweepStartIso) return 0;
+
+  const { data, error } = await admin
+    .from("products")
+    .select("id, etsy_listing_id, sku, title")
+    .eq("org_id", orgId)
+    .not("etsy_listing_id", "is", null)
+    .lt("updated_at", sweepStartIso);
+  if (error) {
+    // Mutabakat okuması düşerse senkronu düşürme — bir sonraki tam taramada
+    // tekrar denenir; ama sessiz kalma.
+    console.error("[etsy-sync] mutabakat okuması:", error.message);
+    return 0;
+  }
+  const stale = (data ?? []) as {
+    id: string;
+    etsy_listing_id: number;
+    sku: string | null;
+    title: string;
+  }[];
+  if (stale.length === 0) return 0;
+
+  const CHUNK = 100;
+  for (let i = 0; i < stale.length; i += CHUNK) {
+    const part = stale.slice(i, i + CHUNK);
+    const ids = part.map((r) => r.id);
+    const listingIds = part.map((r) => r.etsy_listing_id);
+    // Varyantlar: product_id bağıyla VE (daha önce yetim kalmışsa)
+    // etsy_listing_id bağıyla temizlenir.
+    const { error: vErr } = await admin
+      .from("product_variants")
+      .delete()
+      .eq("org_id", orgId)
+      .or(
+        `product_id.in.(${ids.join(",")}),etsy_listing_id.in.(${listingIds.join(",")})`,
+      );
+    if (vErr) throw new Error(`mutabakat varyant silme: ${vErr.message}`);
+    const { error: pErr } = await admin
+      .from("products")
+      .delete()
+      .eq("org_id", orgId)
+      .in("id", ids);
+    if (pErr) throw new Error(`mutabakat ürün silme: ${pErr.message}`);
+  }
+
+  await logAudit(admin, {
+    orgId,
+    action: "etsy.reconcile",
+    entityType: "products",
+    summary: `Etsy mutabakatı: taramada karşılığı olmayan ${stale.length} listing panelden silindi`,
+    diff: {
+      deleted: stale.map((r) => ({
+        etsy_listing_id: r.etsy_listing_id,
+        sku: r.sku,
+        title: r.title,
+      })),
+    },
+    source: "etsy",
+  });
+  return stale.length;
+}
+
 async function upsertReviewsPage(
   admin: SupabaseClient,
   orgId: string,
   results: EtsyReview[],
 ): Promise<void> {
-  const rows = results.map((rv) => {
+  // transaction_id'siz yorum onConflict anahtarına giremez → her senkronda
+  // mükerrer satır üretirdi; atla (panelde zaten kimliksiz izlenemez).
+  const rows = results
+    .filter((rv) => rv.transaction_id != null)
+    .map((rv) => {
     const ts = rv.created_timestamp ?? rv.create_timestamp;
     const updated = rv.updated_timestamp ?? rv.update_timestamp;
     return {

@@ -75,6 +75,15 @@ const MONO_TICK = {
   fontFamily: "var(--font-index)",
 } as const;
 
+/* Legend — CategoryPie ile aynı .idx dili (mono, uppercase, geniş tracking).
+   Karşılaştırma overlay'li grafiklerde seri adları buradan okunur. */
+const LEGEND_STYLE: React.CSSProperties = {
+  fontSize: 10,
+  fontFamily: "var(--font-index)",
+  letterSpacing: "0.06em",
+  textTransform: "uppercase",
+};
+
 /* Grafik tooltip'leri için ortak buzlu-cam (liquid glass) stili — "Neler Yeni"
    popup'ıyla aynı dil: yarı saydam cam + backdrop-blur + ince çerçeve + sheen.
    Renkler tema değişkenlerinden gelir, açık/koyu + marka kapsamında otomatik uyar.
@@ -342,8 +351,17 @@ export function GlowDot(props: {
 
 export function TrendChart({
   data,
+  compareLabel,
 }: {
-  data: { label: string; revenue: number; cost: number }[];
+  data: {
+    label: string;
+    revenue: number;
+    cost: number;
+    /** Önceki dönemin aynı gün-index'ine hizalanmış geliri (overlay). */
+    prevRevenue?: number | null;
+  }[];
+  /** Verilirse `prevRevenue` kesikli/soluk ikinci gelir çizgisi olarak çizilir. */
+  compareLabel?: string;
 }) {
   return (
     <div className={CHART_INK}>
@@ -360,6 +378,23 @@ export function TrendChart({
           />
           <YAxis tick={MONO_TICK} tickLine={false} axisLine={false} width={48} />
           <Tooltip {...GLASS_TOOLTIP} />
+          <Legend wrapperStyle={LEGEND_STYLE} iconType="plainline" />
+          {/* Önceki dönem overlay'i — soluk + kesikli; gün index'ine hizalı.
+              DOM'da önce gelir ki asıl seriler üstte kalsın. */}
+          {compareLabel && (
+            <Area
+              type="monotone"
+              dataKey="prevRevenue"
+              name={compareLabel}
+              stroke="var(--jg-ink-4)"
+              strokeOpacity={0.8}
+              fill="none"
+              strokeWidth={1.5}
+              strokeDasharray="6 4"
+              dot={false}
+              connectNulls
+            />
+          )}
           <Area
             type="monotone"
             dataKey="revenue"
@@ -395,8 +430,16 @@ export function TrendChart({
  *  zirve gün TEK accent (degrade + glow), kalanı nötr raised. */
 export function OrdersBarChart({
   data,
+  compareLabel,
 }: {
-  data: { label: string; orders: number }[];
+  data: {
+    label: string;
+    orders: number;
+    /** Karşılaştırma dönemi sipariş sayısı (soluk overlay bar). */
+    prevOrders?: number | null;
+  }[];
+  /** Verilirse `prevOrders` soluk ikinci bar serisi olarak çizilir. */
+  compareLabel?: string;
 }) {
   const total = data.reduce((a, d) => a + (d.orders ?? 0), 0);
   if (total === 0) {
@@ -438,6 +481,7 @@ export function OrdersBarChart({
             cursor={{ fill: "var(--muted)", opacity: 0.35 }}
             {...GLASS_TOOLTIP}
           />
+          {compareLabel && <Legend wrapperStyle={LEGEND_STYLE} iconType="circle" />}
           <Bar
             dataKey="orders"
             name="Sipariş"
@@ -445,6 +489,19 @@ export function OrdersBarChart({
             background={<GrooveTrack defsId="orders" />}
             isAnimationActive={false}
           />
+          {/* Karşılaştırma dönemi — aynı cam dilin soluk hâli (dim dolgu),
+              oyuk ray yok: asıl seriden görsel olarak geride durur. */}
+          {compareLabel && (
+            <Bar
+              dataKey="prevOrders"
+              name={compareLabel}
+              fill="var(--jg-bar-dim)"
+              stroke="var(--jg-bar-edge-dim)"
+              strokeWidth={1}
+              radius={[4, 4, 0, 0]}
+              isAnimationActive={false}
+            />
+          )}
         </BarChart>
       </ResponsiveContainer>
     </div>
@@ -454,8 +511,16 @@ export function OrdersBarChart({
 /** Aylık ciro — gradient izli çizgi + parlayan uç nokta + spot ışık (Satışlar). */
 export function RevenueAreaChart({
   data,
+  compareLabel,
 }: {
-  data: { label: string; revenue: number }[];
+  data: {
+    label: string;
+    revenue: number;
+    /** Geçen yılın aynı ayına hizalanmış ciro (kesikli overlay). */
+    compareRevenue?: number | null;
+  }[];
+  /** Verilirse `compareRevenue` kesikli/soluk ikinci çizgi olarak çizilir. */
+  compareLabel?: string;
 }) {
   return (
     <div className={CHART_INK}>
@@ -483,8 +548,29 @@ export function RevenueAreaChart({
           />
           <Tooltip
             {...GLASS_TOOLTIP}
-            formatter={(v) => [`$${Number(v).toLocaleString("en-US")}`, "Ciro"]}
+            formatter={(v, name) => [
+              `$${Number(v).toLocaleString("en-US")}`,
+              String(name),
+            ]}
           />
+          {compareLabel && (
+            <Legend wrapperStyle={LEGEND_STYLE} iconType="plainline" />
+          )}
+          {/* Geçen yıl overlay'i — soluk + kesikli; asıl serinin altında çizilir. */}
+          {compareLabel && (
+            <Area
+              type="monotone"
+              dataKey="compareRevenue"
+              name={compareLabel}
+              stroke="var(--jg-ink-4)"
+              strokeOpacity={0.8}
+              fill="none"
+              strokeWidth={1.5}
+              strokeDasharray="6 4"
+              dot={false}
+              connectNulls
+            />
+          )}
           <Area
             type="monotone"
             dataKey="revenue"
@@ -595,7 +681,7 @@ export function CategoryPie({
         </div>
         {/* İç cam hub — radyal beyaz→cam + Spatial iç gölge çifti; koyuda sade
             lume yüzeyi (okuma kendisi ışır). */}
-        <div className="flex size-[104px] flex-col items-center justify-center rounded-full border border-[color:rgba(255,255,255,.7)] [background-image:radial-gradient(circle_at_40%_32%,#ffffff,var(--glass)_72%)] [backdrop-filter:var(--glass-filter-sm)] [box-shadow:inset_0_3px_7px_rgba(255,255,255,.8),inset_0_-8px_13px_rgba(56,38,106,.45),0_5px_9px_-3px_rgba(70,50,120,.4)] dark:border-[color:oklch(1_0_0/0.08)] dark:[background-color:oklch(1_0_0/0.04)] dark:[background-image:none] dark:[box-shadow:inset_0_1px_0_oklch(1_0_0/0.08)]">
+        <div className="flex size-[118px] flex-col items-center justify-center rounded-full border border-[color:rgba(255,255,255,.7)] [background-image:radial-gradient(circle_at_40%_32%,#ffffff,var(--glass)_72%)] [backdrop-filter:var(--glass-filter-sm)] [box-shadow:inset_0_3px_7px_rgba(255,255,255,.8),inset_0_-8px_13px_rgba(56,38,106,.45),0_5px_9px_-3px_rgba(70,50,120,.4)] dark:border-[color:oklch(1_0_0/0.08)] dark:[background-color:oklch(1_0_0/0.04)] dark:[background-image:none] dark:[box-shadow:inset_0_1px_0_oklch(1_0_0/0.08)]">
           <span className="text-muted-foreground text-[0.6rem] font-semibold tracking-[0.22em] uppercase [font-family:var(--font-index)]">
             Toplam
           </span>

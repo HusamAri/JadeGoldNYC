@@ -29,6 +29,9 @@ export default async function GorevDuzenlePage({
     effort: task.effort ?? "",
     due_date: task.due_date ?? "",
     notes: task.notes ?? "",
+    progress: task.progress != null ? String(task.progress) : "",
+    icon: task.icon ?? "",
+    color: task.color ?? "",
   };
 
   return (

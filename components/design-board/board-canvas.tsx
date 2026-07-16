@@ -146,11 +146,12 @@ export function BoardCanvas({
                     .get(p.id)
                     ?.scrollIntoView({ block: "nearest", behavior: "smooth" });
                 }}
+                aria-label={`${i + 1}. nota git`}
                 style={{ left: `${p.x * 100}%`, top: `${p.y * 100}%` }}
                 className={cn(
-                  "absolute flex size-6 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full text-[11px] font-bold text-white ring-2 ring-white transition-transform",
-                  "bg-[oklch(0.58_0.1_66)] shadow-[0_2px_6px_rgba(30,22,4,0.5)]",
-                  activePin === p.id && "scale-125 ring-[oklch(0.85_0.12_86)]",
+                  "text-primary-foreground absolute flex size-6 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full text-[11px] font-bold ring-2 ring-white transition-transform hover:scale-125 active:scale-110",
+                  "bg-primary shadow-[var(--lift-sm)]",
+                  activePin === p.id && "ring-ring scale-125",
                 )}
               >
                 {i + 1}
@@ -212,7 +213,7 @@ export function BoardCanvas({
               <path
                 d={`M ${l.x1} ${l.y1} L ${l.x2} ${l.y2}`}
                 fill="none"
-                stroke="oklch(0.62 0.09 86)"
+                stroke="var(--primary)"
                 strokeWidth={activePin === l.id ? 2 : 1.25}
                 strokeOpacity={activePin === l.id ? 0.95 : 0.45}
               />
@@ -220,7 +221,7 @@ export function BoardCanvas({
                 cx={l.x1}
                 cy={l.y1}
                 r={2.5}
-                fill="oklch(0.62 0.09 86)"
+                fill="var(--primary)"
               />
             </g>
           ))}
@@ -269,6 +270,7 @@ function PendingComposer({
         value={body}
         onChange={(e) => setBody(e.target.value)}
         placeholder="Bu nokta hakkında yorumun…"
+        aria-label="Yeni not — seçilen noktaya"
         rows={3}
         className="border-input bg-background focus-visible:ring-ring/60 w-full resize-none rounded-xl border px-3 py-2 text-sm outline-none focus-visible:ring-2"
       />
@@ -336,12 +338,12 @@ function PinCard({
       className={cn(
         "bg-card rounded-2xl border p-3 transition-shadow",
         active
-          ? "ring-[oklch(0.62_0.09_86)]/60 ring-2"
+          ? "ring-primary/60 ring-2"
           : "shadow-[var(--shadow-raised-sm)]",
       )}
     >
       <div className="mb-2 flex items-center gap-2">
-        <span className="flex size-5 items-center justify-center rounded-full bg-[oklch(0.58_0.1_66)] text-[10px] font-bold text-white">
+        <span className="bg-primary text-primary-foreground flex size-5 items-center justify-center rounded-full text-[10px] font-bold">
           {index}
         </span>
         <span className="text-muted-foreground text-xs">
@@ -374,6 +376,7 @@ function PinCard({
             }
           }}
           placeholder="Yanıtla…"
+          aria-label="Yanıtla"
           className="border-input bg-background focus-visible:ring-ring/60 h-8 min-w-0 flex-1 rounded-full border px-3 text-sm outline-none focus-visible:ring-2"
         />
         <Button

@@ -10,11 +10,16 @@ import {
 } from "@/components/icons/lux-art";
 
 import { requireMembership } from "@/lib/auth";
-import { listSales, getSalesAnalytics } from "@/lib/db/queries/sales";
+import {
+  listSales,
+  getSalesAnalytics,
+  getMonthlySalesSeries,
+} from "@/lib/db/queries/sales";
 import { strParam, numParam, type RawSearchParams } from "@/lib/searchparams";
 import { SALE_STATUSES } from "@/lib/constants";
 import { formatMoney } from "@/lib/money";
 import { formatDate, formatNumber } from "@/lib/format";
+import { OrgMark } from "@/components/brand/org-mark";
 import { PageHeader } from "@/components/page-header";
 import { GoldStream } from "@/components/brand/gold-stream";
 import { CornerMarks } from "@/components/brand/corner-marks";
@@ -69,31 +74,80 @@ export default async function SatislarPage({
   const limit = 25;
 
   const m = await requireMembership();
-  const [{ rows, count }, analytics] = await Promise.all([
+  // 24 aylık TS aylıklaştırması: RPC'nin 12 aylık grafiğine "geçen yıl aynı ay"
+  // overlay'i + KPI'lara MoM/YoY rozetleri için (RPC değişmeden, aynı filtreler).
+  const [{ rows, count }, analytics, monthly24] = await Promise.all([
     listSales({ search, status, limit, offset }),
     getSalesAnalytics(m.org_id, { search, status }),
+    getMonthlySalesSeries(m.org_id, { months: 24, search, status }),
   ]);
 
   const t = analytics.totals;
   const netCents = t.gross_cents - t.fees_cents;
   const avgCents = t.orders > 0 ? Math.round(t.gross_cents / t.orders) : 0;
   const feePct = t.gross_cents > 0 ? t.fees_cents / t.gross_cents : 0;
+
+  // ── MoM / YoY karşılaştırmaları (bu ay vs geçen ay · vs geçen yıl aynı ay) ──
+  const byYm = new Map(monthly24.map((x) => [x.ym, x]));
+  const ymOf = (dt: Date) =>
+    `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, "0")}`;
+  const now = new Date();
+  const thisMonth = byYm.get(ymOf(now));
+  const lastMonth = byYm.get(ymOf(new Date(now.getFullYear(), now.getMonth() - 1, 1)));
+  const lastYearMonth = byYm.get(ymOf(new Date(now.getFullYear() - 1, now.getMonth(), 1)));
+  const pct = (curVal: number, prevVal: number | undefined | null): number | null =>
+    prevVal == null || prevVal === 0 ? null : (curVal - prevVal) / Math.abs(prevVal);
+  /** Aylık metrik için iki rozet: MoM + YoY (pencere hep görünür; veri yoksa
+      KpiCard "veri yok" yazar — kısıt gizlenmez). */
+  const monthlyComparisons = (
+    pick: (x: { orders: number; gross_cents: number }) => number,
+  ) => [
+    {
+      change: pct(thisMonth ? pick(thisMonth) : 0, lastMonth ? pick(lastMonth) : null),
+      label: "Bu ay vs geçen ay",
+    },
+    {
+      change: pct(
+        thisMonth ? pick(thisMonth) : 0,
+        lastYearMonth ? pick(lastYearMonth) : null,
+      ),
+      label: "Bu ay vs geçen yıl aynı ay",
+    },
+  ];
+  const monthlyAov = (x: { orders: number; gross_cents: number }) =>
+    x.orders > 0 ? x.gross_cents / x.orders : 0;
+
+  // ── Grafik overlay'i: her ayın karşısına GEÇEN YIL aynı ayı hizala.
+  // 24 aylık pencere son 12 ayın tüm YoY karşılıklarını kapsar; kayıt yokluğu
+  // pencere içinde gerçek 0 demektir. Geçen yıl HİÇ veri yoksa overlay yerine
+  // etikette "geçen yıl verisi yok" denir (seri sessizce gizlenmez).
+  const prevYm = (ym: string) => `${Number(ym.slice(0, 4)) - 1}${ym.slice(4)}`;
+  const yoyHasData = analytics.monthly.some((x) => byYm.has(prevYm(x.ym)));
   const revenueSeries = analytics.monthly.map((x) => ({
     label: monthLabel(x.ym),
     revenue: Math.round(x.gross_cents / 100),
+    compareRevenue: yoyHasData
+      ? Math.round((byYm.get(prevYm(x.ym))?.gross_cents ?? 0) / 100)
+      : null,
   }));
   const orderSeries = analytics.monthly.map((x) => ({
     label: monthLabel(x.ym),
     orders: x.orders,
+    prevOrders: yoyHasData ? (byYm.get(prevYm(x.ym))?.orders ?? 0) : null,
   }));
+  const yoyCaption = yoyHasData
+    ? "son 12 ay · kesikli/soluk: geçen yıl aynı ay"
+    : "son 12 ay · geçen yıl verisi yok";
   const maxCountry = Math.max(
     1,
     ...analytics.countries.map((c) => c.gross_cents),
   );
   const filtered = Boolean(search || status);
+  // Özet KPI'ları toplulaştırılmış USD (usd0 zaten USD varsayar) → Money için para birimi.
+  const cur = "USD";
 
   return (
-    <div className="relative z-0 space-y-6 pb-28">
+    <div className="relative z-0 space-y-8 pb-28">
       <SceneCutouts page="satislar" />
       <GoldStream motif="gift" />
       <PageHeader
@@ -124,7 +178,7 @@ export default async function SatislarPage({
           <span>Satışlar / 01 · Özet</span>
           <span className="idx-bar" />
           <span className="idx-ln" />
-          <span>Jade Gold · NYC</span>
+          <span><OrgMark /></span>
         </div>
         <p className="text-muted-foreground text-xs">
           {filtered
@@ -133,15 +187,18 @@ export default async function SatislarPage({
         </p>
         {/* Ana KPI bölümü — Spatial hero köşe işaretleri (dekoratif sarmalayıcı). */}
         <div className="relative">
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-2 gap-5 md:grid-cols-3">
           <KpiCard
             label="Ciro (brüt)"
-            value={usd0(t.gross_cents)}
+            cents={t.gross_cents}
+            currency={cur}
             icon={DollarSign}
+            comparisons={monthlyComparisons((x) => x.gross_cents)}
           />
           <KpiCard
             label="Net (kesinti sonrası)"
-            value={usd0(netCents)}
+            cents={netCents}
+            currency={cur}
             icon={TrendingUp}
             accent="positive"
             hint="Etsy kesintisi düşülmüş"
@@ -150,15 +207,19 @@ export default async function SatislarPage({
             label="Sipariş"
             value={formatNumber(t.orders)}
             icon={ShoppingBag}
+            comparisons={monthlyComparisons((x) => x.orders)}
           />
           <KpiCard
             label="Ort. Sipariş"
-            value={usd0(avgCents)}
+            cents={avgCents}
+            currency={cur}
             icon={Receipt}
+            comparisons={monthlyComparisons(monthlyAov)}
           />
           <KpiCard
             label="Etsy Kesintisi"
-            value={usd0(t.fees_cents)}
+            cents={t.fees_cents}
+            currency={cur}
             icon={Percent}
             hint={`Cironun %${(feePct * 100).toFixed(1)}'i`}
           />
@@ -172,21 +233,29 @@ export default async function SatislarPage({
         </div>
 
         {analytics.monthly.length > 0 && (
-          <div className="grid gap-4 lg:grid-cols-2">
-            <Card>
+          <div className="grid gap-5 lg:grid-cols-2">
+            <Card className="glass-iced">
               <CardContent className="space-y-3">
                 <h3 className="text-muted-foreground text-sm font-medium">
-                  Aylık Ciro · son 12 ay
+                  Aylık Ciro{" "}
+                  <span className="text-xs font-normal">· {yoyCaption}</span>
                 </h3>
-                <RevenueAreaChart data={revenueSeries} />
+                <RevenueAreaChart
+                  data={revenueSeries}
+                  compareLabel={yoyHasData ? "Geçen yıl aynı ay" : undefined}
+                />
               </CardContent>
             </Card>
-            <Card>
+            <Card className="glass-iced">
               <CardContent className="space-y-3">
                 <h3 className="text-muted-foreground text-sm font-medium">
-                  Aylık Sipariş · son 12 ay
+                  Aylık Sipariş{" "}
+                  <span className="text-xs font-normal">· {yoyCaption}</span>
                 </h3>
-                <OrdersBarChart data={orderSeries} />
+                <OrdersBarChart
+                  data={orderSeries}
+                  compareLabel={yoyHasData ? "Geçen yıl aynı ay" : undefined}
+                />
               </CardContent>
             </Card>
           </div>
@@ -196,23 +265,26 @@ export default async function SatislarPage({
           <Card>
             <CardContent className="space-y-3">
               <h3 className="text-muted-foreground text-sm font-medium">
-                Ülkeye Göre Ciro
+                Ülkeye Göre Ciro{" "}
+                {/* Pencere etiketi: bu kırılım dönem filtresine tabi değildir. */}
+                <span className="text-xs font-normal">· tüm zamanlar</span>
               </h3>
               <ul className="space-y-2.5">
                 {analytics.countries.map((c) => (
                   <li key={c.country} className="space-y-1">
-                    <div className="flex items-baseline justify-between text-sm">
-                      <span className="font-medium">
+                    <div className="flex items-baseline justify-between gap-3 text-sm">
+                      {/* Uzun ülke adı liste satırında tek satır kalır, taşarsa yatay kaydırılır. */}
+                      <span className="scroll-x min-w-0 font-medium">
                         {c.country}
                         <span className="text-muted-foreground ml-2 text-xs font-normal">
                           {formatNumber(c.orders)} sipariş
                         </span>
                       </span>
-                      <span className="tabular-nums font-medium">
+                      <span className="shrink-0 tabular-nums font-medium">
                         {usd0(c.gross_cents)}
                       </span>
                     </div>
-                    <div className="bg-muted h-1.5 overflow-hidden rounded-full">
+                    <div className="nm-pressed h-2 overflow-hidden rounded-full">
                       <div
                         className="h-full rounded-full bg-[var(--chart-2)]"
                         style={{
@@ -233,9 +305,9 @@ export default async function SatislarPage({
         <span>Satışlar / 02 · Kayıtlar</span>
         <span className="idx-bar" />
         <span className="idx-ln" />
-        <span>Jade Gold · NYC</span>
+        <span><OrgMark /></span>
       </div>
-      <Card>
+      <Card className="glass-fluted">
         <CardContent className="space-y-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <SearchInput placeholder="Sipariş no, alıcı…" />
@@ -247,11 +319,26 @@ export default async function SatislarPage({
           </div>
 
           {rows.length === 0 ? (
-            <EmptyState
-              icon={ShoppingBag}
-              title="Satış kaydı yok"
-              description="Henüz satış yok. Yeni satış ekleyin veya Etsy CSV dosyanızı içe aktarın."
-            />
+            // Aktif filtre/aramada "kayıt yok" yanıltır — filtre sonucu boş
+            // olduğunu söyle ve tek tıkla temizleme yolu sun.
+            filtered ? (
+              <EmptyState
+                icon={ShoppingBag}
+                title="Bu filtreyle sonuç yok"
+                description="Arama veya durum filtresine uyan satış bulunamadı. Filtreyi temizleyip tüm kayıtları görebilirsiniz."
+                action={
+                  <Button asChild variant="outline">
+                    <Link href="/satislar">Filtreyi temizle</Link>
+                  </Button>
+                }
+              />
+            ) : (
+              <EmptyState
+                icon={ShoppingBag}
+                title="Satış kaydı yok"
+                description="Henüz satış yok. Yeni satış ekleyin veya Etsy CSV dosyanızı içe aktarın."
+              />
+            )
           ) : (
             <Table>
               <TableHeader>

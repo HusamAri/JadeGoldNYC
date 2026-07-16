@@ -25,11 +25,14 @@ export interface Member {
 export type SourceKind = "manual" | "csv" | "etsy" | "etsy_ledger" | "gold_auto";
 
 export type SaleStatus =
+  | "open"
+  | "processing"
   | "paid"
   | "completed"
   | "shipped"
   | "cancelled"
-  | "refunded";
+  | "refunded"
+  | "partially_refunded";
 
 export interface Sale {
   id: string;
@@ -71,12 +74,17 @@ export interface SaleItem {
   created_at: string;
 }
 
+/** Maliyete katlanan taraf (EON ortaklık yapısı): H | Y | I (I = doğrudan kârdan). */
+export type CostBearer = "H" | "Y" | "I";
+
 export interface CostCategory {
   id: string;
   org_id: string;
   key: string;
   label_tr: string;
   is_system: boolean;
+  /** Bu kategorideki maliyetlere otomatik atanan taraf (boşsa atama yok). */
+  default_bearer: CostBearer | null;
 }
 
 export interface Cost {
@@ -88,6 +96,8 @@ export interface Cost {
   currency: string;
   cost_date: string;
   vendor: string | null;
+  /** Maliyete katlanan taraf; NULL = atanmamış (tek sahipli org'larda normal). */
+  bearer: CostBearer | null;
   sale_id: string | null;
   source: SourceKind;
   receipt_url: string | null;
@@ -108,9 +118,13 @@ export type AuditAction =
   | "csv.import"
   | "etsy.connect"
   | "etsy.sync"
+  | "etsy.reconcile"
   | "etsy.stock_push"
   | "etsy.variant_sync"
   | "etsy.image_upload"
+  | "etsy.reprice"
+  | "listing.archive"
+  | "listing.delete_etsy"
   | "report.export"
   | "profile.update"
   | "org.created"
@@ -153,6 +167,8 @@ export interface Product {
   image_url: string | null;
   views: number | null;
   num_favorers: number | null;
+  /** Panel arşiv damgası — dolu = listelerden gizli (Arşiv filtresi hariç). */
+  archived_at: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -315,6 +331,12 @@ export interface Task {
   due_date: string | null;
   sort_order: number;
   notes: string | null;
+  /** Süren görevin ilerleme yüzdesi (0-100); null = belirtilmedi. */
+  progress: number | null;
+  /** Görev ikon anahtarı (lib/task-style.ts TASK_ICONS). */
+  icon: string | null;
+  /** İsimlendirilmiş renk anahtarı (lib/task-style.ts TASK_COLORS). */
+  color: string | null;
   /** Bu görevin çıktığı kaynak rapor (varsa) — bkz. `Report`. */
   report_id: string | null;
   created_by: string | null;

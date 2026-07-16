@@ -6,6 +6,9 @@ export const etsyPaths = {
   shopByName: (name: string) =>
     `/shops?shop_name=${encodeURIComponent(name)}`,
   receipts: (shopId: number | string) => `/shops/${shopId}/receipts`,
+  // Tek sipariş (webhook resource_url'inden id çözülünce taze durum çekilir).
+  receipt: (shopId: number | string, receiptId: number | string) =>
+    `/shops/${shopId}/receipts/${receiptId}`,
   receiptTransactions: (
     shopId: number | string,
     receiptId: number | string,
@@ -37,4 +40,9 @@ export const etsyPaths = {
   // Kargo profilleri (işlem süresi, menşei).
   shippingProfiles: (shopId: number | string) =>
     `/shops/${shopId}/shipping-profiles`,
+  // İade politikaları — createDraftListing fiziksel üründe return_policy_id ister.
+  returnPolicies: (shopId: number | string) =>
+    `/shops/${shopId}/policies/return`,
+  // Satıcı taksonomisi (kategori ağacı) — taxonomy_id çözümü için.
+  sellerTaxonomyNodes: () => `/seller-taxonomy/nodes`,
 };

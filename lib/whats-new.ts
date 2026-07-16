@@ -10,6 +10,9 @@ import {
   PanelsTopLeft,
   Moon,
   Gem,
+  CalendarClock,
+  Scale,
+  Webhook,
   type LucideIcon,
 } from "lucide-react";
 
@@ -41,6 +44,57 @@ export interface WhatsNewEntry {
 
 export const WHATS_NEW: WhatsNewEntry[] = [
   {
+    id: "2026-07-14-panel-hiz",
+    date: "2026-07-14",
+    title: "Panel 15 kat akıcı: 4 → 60 FPS",
+    description:
+      "Sayfayı ağırlaştıran şeyler ölçümle bulundu ve tek tek düzeltildi: ilk yüke binen 10.7MB'lık marka videosu artık görünüme gelince yükleniyor, dev PNG'ler 30 kat küçük webp'e döndü, cam yüzeylerin sürekli yeniden çizilmesine yol açan arka plan süzülmeleri sakinleştirildi (ışık oyunları artık hover'da canlanıyor) ve ağır paneller sayfa kabuğundan sonra akarak doluyor. İlk anlamlı görüntü 10.6sn'den ~2sn'ye indi.",
+    category: "ux",
+    icon: Sparkles,
+  },
+  {
+    id: "2026-07-14-siparis-durumu-webhook",
+    date: "2026-07-14",
+    title: "Siparişler artık gerçek durumuyla + anlık webhook",
+    description:
+      "Açık, kargolanan, tamamlanan ve iptal edilen Etsy siparişleri panele artık GERÇEK durumuyla yansıyor (iptaller ciroya karışmıyor). Etsy'nin yeni webhook'ları bağlandı: sipariş ödendiğinde/iptal edildiğinde/kargolandığında panel saniyeler içinde haberdar oluyor; günlük senkron emniyet ağı olarak devam ediyor. En çok satanlar da isimle değil SKU ile takip ediliyor — her varyant kendi satışını görür.",
+    category: "feature",
+    href: "/satislar",
+    icon: Webhook,
+    isNew: true,
+  },
+  {
+    id: "2026-07-14-gramaj-aciklamadan",
+    date: "2026-07-14",
+    title: "1175 varyant gramajı açıklamalardan otomatik doldu",
+    description:
+      "Listing açıklamalarındaki 'Average Weight' tabloları okunup varyantlarla eşleştirildi: eksik gramaj 2037'den 862'ye indi. Motor 10+ yazım kalıbını çözüyor, tabloda olmayan boyutu ürünün kendi katsayısıyla tahmin ediyor ve tartıyla çelişen bayat açıklamaları atlıyor (doğrulama: medyan hata %2.9). Eksik Ağırlıklar sayfasındaki 'Açıklamalardan doldur' butonuyla istediğin an yeniden çalışır.",
+    category: "feature",
+    href: "/tasarimlar/eksik-agirlik",
+    icon: Scale,
+    isNew: true,
+  },
+  {
+    id: "2026-07-14-cizelge-v2-board",
+    date: "2026-07-14",
+    title: "Zaman Çizelgesi v2 + görev ikonları + 3B Uyarı Board'u",
+    description:
+      "Ana paneldeki çizelgede biten görevler kırık cama dönüşüp geçmişe savruluyor, sürenler ilerleme yüzdesi taşıyor, yaklaşanlar parıldıyor; satış/yorum olayları camların arkasında süzülen küreler oldu. Görev formuna 30 parçalı Art-Deco ikon seti + 12 taş isimli renk skalası geldi. Uyarılar ayrıca havada asılı 3B cam kutular olarak geniş bir board'da yaşıyor (kritik=yakut, önemli=liquid kehribar, bilgi=buzlu cam).",
+    category: "feature",
+    href: "/panel",
+    icon: CalendarClock,
+    isNew: true,
+  },
+  {
+    id: "2026-07-14-motion-turu",
+    date: "2026-07-14",
+    title: "Hafif motion turu + her buton artık tepkili",
+    description:
+      "Yeni özelliklere kademeli belirme, seçim 'pop'ları ve hover süzülmeleri eklendi. Site genelinde tepkisiz butonlar (listing aksiyon paneli, denetim akordeonu, çıkış, galeri, board pinleri) hover/basma geri bildirimi kazandı; tüm tıklanabilirlerde el imleci standartlaştı. Hepsi 'hareket azalt' tercihinde kendiliğinden durur.",
+    category: "ux",
+    icon: Sparkles,
+  },
+  {
     id: "2026-07-11-artifact-neumorphglass",
     date: "2026-07-11",
     title: "Amuletta platformu + NeumorphGlass tasarım dili",
@@ -48,7 +102,6 @@ export const WHATS_NEW: WhatsNewEntry[] = [
       "Panel çok markalı Amuletta platformuna dönüştü: giriş, kurulum ve diğer şirketler yeni NeumorphGlass görünümünü (yumuşak kabartı/çukur yüzeyler, buzlu cam, iridesan holografik vurgu) kullanır. Jade Gold NYC kendi panelinde özgün sıcak kimliğini — renkler, desenler, logo ve görseller — korur.",
     category: "feature",
     icon: Gem,
-    isNew: true,
   },
   {
     id: "2026-07-04-satis-dashboard",
@@ -59,7 +112,6 @@ export const WHATS_NEW: WhatsNewEntry[] = [
     category: "feature",
     href: "/satislar",
     icon: BarChart3,
-    isNew: true,
   },
   {
     id: "2026-07-04-ai-yorum-yanit",
@@ -70,7 +122,6 @@ export const WHATS_NEW: WhatsNewEntry[] = [
     category: "feature",
     href: "/yorumlar",
     icon: Sparkles,
-    isNew: true,
   },
   {
     id: "2026-07-04-kargo-takip",

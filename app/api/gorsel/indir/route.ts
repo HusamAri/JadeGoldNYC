@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { getMembership } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { isHiggsfieldUrl } from "@/lib/photo-kit/higgsfield";
+import { stripImageMetadata } from "@/lib/photo-kit/strip-metadata";
 
 /**
  * Üretilen görsel indirme proxy'si. Görsel yalnız kullanıcı indir dediğinde
@@ -45,7 +46,8 @@ export async function GET(request: Request) {
   if (len > MAX_BYTES)
     return new NextResponse("Görsel çok büyük", { status: 413 });
   // Content-Length yoksa (chunked) başlık kontrolü yetmez: gerçek baytları
-  // sayan bir katman sınırı akış sırasında da uygular.
+  // sayan bir katman sınırı akış sırasında da uygular. Meta veri temizliği tüm
+  // baytı gerektirdiği için akışı buffer'a alır, sonra köken etiketlerini söker.
   let streamed = 0;
   const capped = upstream.body.pipeThrough(
     new TransformStream<Uint8Array, Uint8Array>({
@@ -60,13 +62,23 @@ export async function GET(request: Request) {
     }),
   );
 
+  let clean: Uint8Array<ArrayBuffer>;
+  try {
+    const raw = new Uint8Array(await new Response(capped).arrayBuffer());
+    // Üreteç/köken meta verisini sök (ör. Higgsfield `hf-job-id`); ürün fotoğrafı
+    // temiz gider. Görünmez SynthID filigranı meta veri değildir, sökülemez.
+    clean = stripImageMetadata(raw);
+  } catch {
+    return new NextResponse("Görsel çok büyük", { status: 413 });
+  }
+
   const ext = row.source_url.split(".").pop()?.split("?")[0] || "png";
   const base = (row.title || "jade-gold-nyc").replace(/[^\p{L}\p{N}_-]+/gu, "-");
   const filename = `${base}-${id.slice(0, 8)}.${ext}`;
   const contentType =
     upstream.headers.get("content-type") || "application/octet-stream";
 
-  return new NextResponse(capped, {
+  return new NextResponse(clean, {
     headers: {
       "Content-Type": contentType,
       "Content-Disposition": `attachment; filename="${filename}"`,

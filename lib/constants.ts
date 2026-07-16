@@ -22,11 +22,14 @@ export const COST_CATEGORIES = [
 
 /** Satış durumları ve Türkçe etiketleri. */
 export const SALE_STATUSES: { value: SaleStatus; label: string }[] = [
+  { value: "open", label: "Açık" },
+  { value: "processing", label: "Ödeme işleniyor" },
   { value: "paid", label: "Ödendi" },
   { value: "completed", label: "Tamamlandı" },
   { value: "shipped", label: "Kargolandı" },
   { value: "cancelled", label: "İptal" },
   { value: "refunded", label: "İade" },
+  { value: "partially_refunded", label: "Kısmi iade" },
 ];
 
 export const SALE_STATUS_LABELS: Record<SaleStatus, string> = Object.fromEntries(

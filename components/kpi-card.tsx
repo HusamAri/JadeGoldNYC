@@ -1,6 +1,8 @@
 import type { ComponentType, SVGProps } from "react";
 
 import { cn } from "@/lib/utils";
+import { formatMoney } from "@/lib/money";
+import { Money } from "@/components/money";
 
 /** Hem Lucide hem markaya özel Lux ikonlarını kabul eden ikon tipi. */
 type IconType = ComponentType<SVGProps<SVGSVGElement>>;
@@ -9,6 +11,18 @@ function formatChange(change: number): string {
   const pct = Math.abs(change * 100);
   const arrow = change >= 0 ? "↑" : "↓";
   return `${arrow} %${pct.toFixed(1)}`;
+}
+
+/**
+ * Tek karşılaştırma satırı — "geçen döneme göre" / "geçen yıla göre" gibi.
+ * `change` null ise karşılaştırma penceresi VAR ama verisi yok demektir;
+ * satır gizlenmez, "veri yok" ibaresi gösterilir (veri kısıtı görünür kalır).
+ */
+export interface KpiComparison {
+  /** -1..1 arası yüzde değişim (marj gibi oranlarda puan farkı). */
+  change: number | null;
+  /** Karşılaştırma dönemi etiketi (ör. "Geçen ay", "Geçen yıl aynı dönem"). */
+  label: string;
 }
 
 /** Etikete göre deterministik küçük hash (SSR-güvenli; Math.random yok). */
@@ -33,22 +47,35 @@ const ICON_SPOTS = [
 export function KpiCard({
   label,
   value,
+  cents,
+  currency = "USD",
   icon: Icon,
   hint,
   accent = "default",
   change,
   changeLabel,
+  comparisons,
   className,
   splitTone = false,
+  holo = false,
 }: {
   label: string;
-  value: string;
+  /** Metin değer. Para için `cents` verin — kuruş küçük/aşağı kayar (estetik). */
+  value?: string;
+  /** Para tutarı (cent). Verilirse `value` yerine <Money> ile gösterilir. */
+  cents?: number | null;
+  currency?: string;
   icon?: IconType;
   hint?: string;
   accent?: "default" | "positive" | "negative";
   /** -1..1 arası yüzde değişim. null = gösterme. */
   change?: number | null;
   changeLabel?: string;
+  /**
+   * Çoklu karşılaştırma rozetleri (MoM + YoY). `change`/`changeLabel`
+   * ikilisinin çok pencereli hâli; ikisi birlikte verilirse önce bu çizilir.
+   */
+  comparisons?: KpiComparison[];
   className?: string;
   /**
    * Panelin TEK bir hero/öne çıkan KPI'ı için: iki tonlu büyük rakam
@@ -56,20 +83,33 @@ export function KpiCard({
    * kartlarında değil, yalnız en kritik metrikte kullanın.
    */
   splitTone?: boolean;
+  /**
+   * Görünüm başına TEK kahraman KPI için iridesan holografik rakam
+   * (.holo-text — sistemin tek kroma patlaması). Net Kâr gibi en kritik
+   * metrikte kullanın; accent renginin yerine geçer.
+   */
+  holo?: boolean;
 }) {
+  // Para modu: cents verilirse <Money> ile göster (kuruş küçük/aşağı); punto
+  // ölçeği için biçimlenmiş metnin uzunluğunu kullan.
+  const isMoney = cents != null;
+  const displayString = isMoney ? formatMoney(cents, currency) : (value ?? "");
+  const valueLen = displayString.length;
+
   // Her kutu FARKLI süzülür: etiketten türeyen deterministik faz/yön/süre.
+  // PERF: süzülme yalnız HOVER'da — 10 ikonun camın altında sürekli kıpırdaması
+  // 10 backdrop'un her karede yeniden örneklenmesi demekti (eşzamanlılık
+  // ölçümünde ana kalemlerden). Idle'da ikon sabit → cam bir kez blur'lanır.
   const h = hashLabel(label);
   const spot = ICON_SPOTS[h % ICON_SPOTS.length];
   const iconStyle: React.CSSProperties = {
     ...spot,
-    animationName: "kpi-icon-drift",
-    // çok çok yavaş — 64…92s; her kutuya farklı gecikme ve yön
+    // animasyon adı hover'da CSS'ten atanır (globals: .kpi-icon)
     animationDuration: `${64 + (h % 5) * 7}s`,
     animationTimingFunction: "ease-in-out",
     animationIterationCount: "infinite",
     animationDirection: h % 2 === 0 ? "normal" : "reverse",
     animationDelay: `-${h % 40}s`,
-    willChange: "transform",
   };
 
   return (
@@ -92,7 +132,7 @@ export function KpiCard({
           // camın üstünde çok soluk oyma filigran olarak durur (dark:z-[2],
           // içerik DOM'da sonra geldiği için üstte kalır). Ham Lucide geçse
           // bile gri klipart'a düşmesin diye varsayılan mürekkep soluk mor.
-          className="pointer-events-none absolute z-0 size-[8.5rem] object-contain text-[oklch(0.68_0.15_286)] opacity-[0.88] dark:z-[2] dark:text-[oklch(0.83_0.07_290)] dark:opacity-[0.14]"
+          className="kpi-icon pointer-events-none absolute z-0 size-[8.5rem] object-contain text-[oklch(0.68_0.15_286)] opacity-[0.88] dark:z-[2] dark:text-[oklch(0.83_0.07_290)] dark:opacity-[0.14]"
           style={iconStyle}
         />
       )}
@@ -113,7 +153,7 @@ export function KpiCard({
           {/* Değer — font-index readout: açıkta Spatial mürekkebi,
               koyuda lume beyazı + 0 0 14px beyaz ışıma. */}
           <p
-            title={typeof value === "string" ? value : undefined}
+            title={displayString || undefined}
             className={cn(
               // Mobil dar kolonlarda değer ASLA elipslenmesin: truncate yerine
               // kademeli punto — rakam her zaman tam okunur.
@@ -123,26 +163,72 @@ export function KpiCard({
               splitTone
                 ? "text-3xl min-[420px]:text-4xl leading-tight jg-split-tone"
                 : cn(
-                    typeof value === "string" && value.length > 13
+                    valueLen > 13
                       ? "text-base min-[420px]:text-lg"
-                      : typeof value === "string" && value.length > 10
+                      : valueLen > 10
                         ? "text-lg min-[420px]:text-xl"
                         : "text-xl min-[420px]:text-2xl",
-                    "leading-tight dark:[text-shadow:0_0_14px_rgba(255,255,255,.5)]",
+                    "leading-tight",
+                    // Holo kahraman: iridesan degrade rakam — accent/ışıma yok.
+                    holo
+                      ? "holo-text"
+                      : "dark:[text-shadow:0_0_14px_rgba(255,255,255,.5)]",
                   ),
               !splitTone &&
+                !holo &&
                 accent === "default" &&
                 "text-foreground dark:text-white",
               !splitTone &&
+                !holo &&
                 accent === "positive" &&
                 "text-[oklch(0.50_0.19_278)] dark:text-[oklch(0.80_0.10_278)]",
               !splitTone &&
+                !holo &&
                 accent === "negative" &&
                 "text-[oklch(0.58_0.16_344)] dark:text-[oklch(0.74_0.12_344)]",
             )}
           >
-            {value}
+            {isMoney ? (
+              <Money cents={cents} currency={currency} />
+            ) : (
+              value
+            )}
           </p>
+          {comparisons && comparisons.length > 0 && (
+            <div className="mt-1 space-y-0.5">
+              {comparisons.map((c) =>
+                c.change != null ? (
+                  <p
+                    key={c.label}
+                    title={`${c.label} ile karşılaştırma`}
+                    className={cn(
+                      "font-mono text-xs font-medium tabular-nums",
+                      c.change > 0 &&
+                        "text-[oklch(0.50_0.19_278)] dark:text-[oklch(0.80_0.10_278)]",
+                      c.change < 0 &&
+                        "text-[oklch(0.58_0.16_344)] dark:text-[oklch(0.74_0.12_344)]",
+                      c.change === 0 && "text-muted-foreground",
+                    )}
+                  >
+                    {formatChange(c.change)}
+                    <span className="text-muted-foreground font-normal">
+                      {" "}
+                      {c.label}
+                    </span>
+                  </p>
+                ) : (
+                  // Karşılaştırma penceresi var ama verisi yok — kısıtı söyle,
+                  // sessizce gizleme (kullanıcı kuralı).
+                  <p
+                    key={c.label}
+                    className="text-muted-foreground font-mono text-xs"
+                  >
+                    {c.label}: veri yok
+                  </p>
+                ),
+              )}
+            </div>
+          )}
           {change != null && (
             <p
               className={cn(

@@ -28,6 +28,7 @@ export function EtsyWeightPush({
   const [pendingAll, startAll] = useTransition();
   const [busy, setBusy] = useState<string | null>(null);
   const [open, setOpen] = useState<string | null>(null);
+  const [showDone, setShowDone] = useState(false);
 
   function pushOne(productId: string) {
     setBusy(productId);
@@ -75,20 +76,94 @@ export function EtsyWeightPush({
     );
   }
 
-  const total = previews.length;
+  const pending = previews.filter((p) => !p.upToDate);
+  const done = previews.filter((p) => p.upToDate);
+
+  /** Tek listing kartı — bekleyen ve güncel bölümlerde aynı yüzey. */
+  function renderCard(p: ListingWeightPreview) {
+    const isOpen = open === p.productId;
+    return (
+      <Card key={p.productId} className={cn("p-0", p.upToDate && "opacity-70")}>
+        <div className="flex items-center gap-3 p-3">
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-medium">{p.title}</p>
+            <p className="text-muted-foreground text-xs">
+              {p.variantCount} beden ·{" "}
+              {p.upToDate
+                ? "Etsy'de güncel"
+                : p.alreadyHasBlock
+                  ? "blok mevcut, içeriği değişti (güncellenecek)"
+                  : "blok eklenecek"}
+            </p>
+          </div>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => setOpen(isOpen ? null : p.productId)}
+          >
+            Önizle
+            <ChevronDown
+              className={cn("size-3.5 transition-transform", isOpen && "rotate-180")}
+            />
+          </Button>
+          <Button
+            type="button"
+            size="sm"
+            variant={p.upToDate ? "outline" : "default"}
+            disabled={!writeEnabled || busy === p.productId || pendingAll}
+            onClick={() => pushOne(p.productId)}
+          >
+            {busy === p.productId ? (
+              <Loader2 className="size-4 animate-spin" />
+            ) : p.upToDate ? (
+              <Check className="size-3.5" />
+            ) : (
+              <Send className="size-3.5" />
+            )}
+            {p.upToDate ? "Yeniden gönder" : "Gönder"}
+          </Button>
+        </div>
+        {isOpen && (
+          <pre className="text-muted-foreground max-h-64 overflow-auto border-t bg-secondary/40 p-3 text-xs whitespace-pre-wrap">
+            {p.block}
+          </pre>
+        )}
+      </Card>
+    );
+  }
 
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-muted-foreground text-sm">
-          <span className="text-foreground font-semibold tabular-nums">{total}</span>{" "}
-          listing için beden→gram bloğu hazır. Açıklamalara idempotent (işaretli)
-          eklenir; tekrar gönderim çoğaltmaz.
+          {pending.length > 0 ? (
+            <>
+              <span className="text-foreground font-semibold tabular-nums">
+                {pending.length}
+              </span>{" "}
+              listing gönderim bekliyor
+              {done.length > 0 && (
+                <> · {done.length}{" "}listing zaten güncel</>
+              )}
+              . Açıklamalara idempotent (işaretli) eklenir; tekrar gönderim
+              çoğaltmaz.
+            </>
+          ) : (
+            <>
+              <Check className="mr-1 inline size-4 text-emerald-600" />
+              Hepsi gönderildi — {done.length}{" "}listing&rsquo;in açıklaması
+              güncel beden→gram bloğunu taşıyor. Gram değişirse ilgili listing
+              yeniden buraya düşer.
+            </>
+          )}
         </p>
-        <Button onClick={pushAll} disabled={!writeEnabled || pendingAll}>
-          {pendingAll ? <Loader2 className="animate-spin" /> : <Send />}
-          Tümünü Gönder
-        </Button>
+        {pending.length > 0 && (
+          <Button onClick={pushAll} disabled={!writeEnabled || pendingAll}>
+            {pendingAll ? <Loader2 className="animate-spin" /> : <Send />}
+            Bekleyenleri Gönder ({pending.length})
+          </Button>
+        )}
       </div>
 
       {!writeEnabled && (
@@ -99,54 +174,29 @@ export function EtsyWeightPush({
         </p>
       )}
 
-      <div className="space-y-2.5">
-        {previews.map((p) => {
-          const isOpen = open === p.productId;
-          return (
-            <Card key={p.productId} className="p-0">
-              <div className="flex items-center gap-3 p-3">
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-medium">{p.title}</p>
-                  <p className="text-muted-foreground text-xs">
-                    {p.variantCount} beden · {p.alreadyHasBlock ? "blok mevcut (güncellenir)" : "blok eklenecek"}
-                  </p>
-                </div>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setOpen(isOpen ? null : p.productId)}
-                >
-                  Önizle
-                  <ChevronDown
-                    className={cn("size-3.5 transition-transform", isOpen && "rotate-180")}
-                  />
-                </Button>
-                <Button
-                  type="button"
-                  size="sm"
-                  disabled={!writeEnabled || busy === p.productId || pendingAll}
-                  onClick={() => pushOne(p.productId)}
-                >
-                  {busy === p.productId ? (
-                    <Loader2 className="size-4 animate-spin" />
-                  ) : p.alreadyHasBlock ? (
-                    <Check className="size-3.5" />
-                  ) : (
-                    <Send className="size-3.5" />
-                  )}
-                  Gönder
-                </Button>
-              </div>
-              {isOpen && (
-                <pre className="text-muted-foreground max-h-64 overflow-auto border-t bg-secondary/40 p-3 text-xs whitespace-pre-wrap">
-                  {p.block}
-                </pre>
-              )}
-            </Card>
-          );
-        })}
-      </div>
+      {pending.length > 0 && (
+        <div className="space-y-2.5">{pending.map((p) => renderCard(p))}</div>
+      )}
+
+      {done.length > 0 && (
+        <div className="space-y-2.5">
+          <button
+            type="button"
+            className="text-muted-foreground hover:text-foreground flex items-center gap-2 text-xs font-medium tracking-wide uppercase transition-colors"
+            onClick={() => setShowDone((s) => !s)}
+            aria-expanded={showDone}
+          >
+            <Check className="size-3.5 text-emerald-600" />
+            Etsy&rsquo;de güncel ({done.length})
+            <ChevronDown
+              className={cn("size-3.5 transition-transform", showDone && "rotate-180")}
+            />
+          </button>
+          {showDone && (
+            <div className="space-y-2.5">{done.map((p) => renderCard(p))}</div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

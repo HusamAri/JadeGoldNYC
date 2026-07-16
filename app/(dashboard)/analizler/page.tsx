@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import {
   Plus,
   Pencil,
@@ -22,9 +23,14 @@ import {
   type AlertLevel,
 } from "@/lib/performance";
 import { formatMoney, formatPercent } from "@/lib/money";
-import { formatNumber } from "@/lib/format";
+import { Money } from "@/components/money";
+import { formatNumber, formatDate } from "@/lib/format";
 import { requireMembership } from "@/lib/auth";
-import { getEtsyInsights, type EtsyInsights } from "@/lib/db/queries/etsy-insights";
+import {
+  getEtsyInsights,
+  ETSY_INSIGHTS_WINDOW_DAYS,
+  type EtsyInsights,
+} from "@/lib/db/queries/etsy-insights";
 import { EtsyViewsChart } from "@/components/charts/etsy-views-chart";
 import { PageHeader } from "@/components/page-header";
 import { GoldStream } from "@/components/brand/gold-stream";
@@ -35,7 +41,13 @@ import { DeleteButton } from "@/components/data-table/delete-button";
 import { deleteMetric } from "./actions";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -141,7 +153,7 @@ export default async function PerformansPage() {
 
   const kpis: {
     label: string;
-    value: string;
+    value: ReactNode;
     delta: number | null;
     goodWhenUp: boolean;
     accent?: string;
@@ -170,24 +182,36 @@ export default async function PerformansPage() {
     {
       label: "Ciro",
       value:
-        current.revenue_cents != null
-          ? formatMoney(current.revenue_cents, currency)
-          : "—",
+        current.revenue_cents != null ? (
+          <Money cents={current.revenue_cents} currency={currency} />
+        ) : (
+          "—"
+        ),
       delta: pctDelta(current.revenue_cents, previous?.revenue_cents),
       goodWhenUp: true,
     },
     {
       label: "Ort. Sepet (AOV)",
-      value: dCur.aovCents != null ? formatMoney(dCur.aovCents, currency) : "—",
+      value:
+        dCur.aovCents != null ? (
+          <Money cents={dCur.aovCents} currency={currency} />
+        ) : (
+          "—"
+        ),
       delta: pctDelta(dCur.aovCents, dPrev.aovCents),
       goodWhenUp: true,
     },
     {
       label: "Sepette Terk",
       value:
-        current.cart_abandon_amount_cents != null
-          ? formatMoney(current.cart_abandon_amount_cents, currency)
-          : "—",
+        current.cart_abandon_amount_cents != null ? (
+          <Money
+            cents={current.cart_abandon_amount_cents}
+            currency={currency}
+          />
+        ) : (
+          "—"
+        ),
       delta: pctDelta(
         current.cart_abandon_amount_cents,
         previous?.cart_abandon_amount_cents,
@@ -197,7 +221,7 @@ export default async function PerformansPage() {
   ];
 
   return (
-    <div className="relative z-0 pb-28 space-y-6">
+    <div className="relative z-0 pb-28 space-y-8">
       <GoldStream motif="spark" />
       <AutoRefresh intervalMs={60000} />
       <PageHeader
@@ -227,8 +251,8 @@ export default async function PerformansPage() {
         }
       />
 
-      {/* Uyarılar */}
-      <Card>
+      {/* Uyarılar — sayfanın hero/özet şeridi: berrak cam board (.glass-board) */}
+      <Card className="glass-board">
         <CardHeader>
           <CardTitle>Uyarılar</CardTitle>
         </CardHeader>
@@ -246,7 +270,7 @@ export default async function PerformansPage() {
                   <li
                     key={i}
                     className={cn(
-                      "flex items-start gap-3 rounded-md border p-3",
+                      "flex items-start gap-3 rounded-2xl border p-3.5 shadow-[var(--lift-sm)]",
                       a.level === "danger" &&
                         "border-destructive/30 bg-destructive/5",
                       a.level === "warning" && "border-accent bg-accent/30",
@@ -274,7 +298,7 @@ export default async function PerformansPage() {
       </Card>
 
       {/* KPI'lar (önceki döneme göre) */}
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-6">
+      <div className="grid grid-cols-2 gap-5 lg:grid-cols-3 xl:grid-cols-6">
         {kpis.map((k) => (
           <Card key={k.label}>
             <CardContent className="space-y-1">
@@ -364,7 +388,7 @@ export default async function PerformansPage() {
                             {formatNumber(value)} · {formatPercent(pct)}
                           </span>
                         </div>
-                        <div className="bg-muted h-2 overflow-hidden rounded-full">
+                        <div className="nm-pressed h-2 overflow-hidden rounded-full">
                           <div
                             className="bg-primary h-full rounded-full"
                             style={{ width: `${Math.round(pct * 100)}%` }}
@@ -379,10 +403,16 @@ export default async function PerformansPage() {
         </Card>
       </div>
 
-      {/* Snapshot Geçmişi */}
-      <Card>
+      {/* Snapshot Geçmişi — uzun tablo kabı: dikey oluklu cam (.glass-fluted) */}
+      <Card className="glass-fluted">
         <CardHeader>
           <CardTitle>Dönem Geçmişi</CardTitle>
+          {/* Kapsam: listMetrics limitsizdir — tüm kayıtlar burada. Dönemler
+              kullanıcı girişli etiketlerdir (takvimsel pencere değil). */}
+          <CardDescription className="text-xs">
+            tüm dönem kayıtları · {metrics.length} kayıt · kullanıcı girişli
+            dönem etiketleri
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
@@ -473,32 +503,37 @@ function EtsyApiSection({ insights }: { insights: EtsyInsights }) {
           Mağaza sağlığı ve görüntülenme trendi
         </h2>
         <span className="text-muted-foreground text-xs">
-          günlük senkron fotoğrafları · {insights.statDays} gün birikti
+          günlük senkron fotoğrafları
+          {latest && ` · son fotoğraf: ${formatDate(latest.snapshotDate)}`}
         </span>
       </div>
 
       {latest ? (
-        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-5 lg:grid-cols-4">
           <ShopStat
             label="Mağaza Takipçisi"
             value={latest.numFavorers}
             prevValue={prev?.numFavorers ?? null}
+            prevDate={prev?.snapshotDate ?? null}
           />
           <ShopStat
             label="Puan Ortalaması"
             value={latest.reviewAverage}
             prevValue={prev?.reviewAverage ?? null}
+            prevDate={prev?.snapshotDate ?? null}
             decimals={2}
           />
           <ShopStat
             label="Toplam Yorum"
             value={latest.reviewCount}
             prevValue={prev?.reviewCount ?? null}
+            prevDate={prev?.snapshotDate ?? null}
           />
           <ShopStat
             label="Toplam Satış (ömür boyu)"
             value={latest.transactionSoldCount}
             prevValue={prev?.transactionSoldCount ?? null}
+            prevDate={prev?.snapshotDate ?? null}
           />
         </div>
       ) : (
@@ -508,17 +543,23 @@ function EtsyApiSection({ insights }: { insights: EtsyInsights }) {
         </p>
       )}
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
         <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle>Günlük Görüntülenme (tüm listingler)</CardTitle>
+            {/* Veri penceresi — sorguyla aynı sabitten (ETSY_INSIGHTS_WINDOW_DAYS). */}
+            <CardDescription className="text-xs">
+              son {ETSY_INSIGHTS_WINDOW_DAYS} gün penceresi ·{" "}
+              {insights.statDays} günlük fotoğraf
+            </CardDescription>
           </CardHeader>
           <CardContent>
             {insights.viewsSeries.length >= 2 ? (
               <EtsyViewsChart data={insights.viewsSeries} />
             ) : (
               <p className="text-muted-foreground py-10 text-center text-sm">
-                Seri birikiyor — {insights.statDays} günlük fotoğraf var; trend
+                Seri birikiyor — son {ETSY_INSIGHTS_WINDOW_DAYS} gün
+                penceresinde {insights.statDays} günlük fotoğraf var; trend
                 için en az 3 gün gerekir. Günlük senkron otomatik biriktirir.
               </p>
             )}
@@ -527,6 +568,9 @@ function EtsyApiSection({ insights }: { insights: EtsyInsights }) {
         <Card>
           <CardHeader>
             <CardTitle>Dün En Çok Hareket Edenler</CardTitle>
+            <CardDescription className="text-xs">
+              son iki fotoğraf günü arasındaki fark · ilk 8 listing
+            </CardDescription>
           </CardHeader>
           <CardContent>
             {insights.topMovers.length === 0 ? (
@@ -541,7 +585,7 @@ function EtsyApiSection({ insights }: { insights: EtsyInsights }) {
                     key={t.etsyListingId}
                     className="flex items-baseline justify-between gap-3 text-sm"
                   >
-                    <span className="min-w-0 truncate font-medium">
+                    <span className="scroll-x min-w-0 font-medium">
                       {t.title}
                     </span>
                     <span className="text-muted-foreground shrink-0 text-xs tabular-nums">
@@ -564,11 +608,14 @@ function ShopStat({
   label,
   value,
   prevValue,
+  prevDate,
   decimals = 0,
 }: {
   label: string;
   value: number | null;
   prevValue: number | null;
+  /** Delta'nın referansı: önceki günlük fotoğrafın tarihi (kullanıcı görsün). */
+  prevDate?: string | null;
   decimals?: number;
 }) {
   const delta =
@@ -594,8 +641,11 @@ function ShopStat({
             )}
           >
             {delta > 0 ? "+" : ""}
-            {decimals > 0 ? delta.toFixed(decimals) : formatNumber(delta)} (önceki
-            fotoğrafa göre)
+            {decimals > 0 ? delta.toFixed(decimals) : formatNumber(delta)}{" "}
+            <span className="text-muted-foreground font-normal">
+              önceki fotoğrafa göre
+              {prevDate ? ` (${formatDate(prevDate)})` : ""}
+            </span>
           </p>
         )}
       </CardContent>

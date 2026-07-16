@@ -4,6 +4,10 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { EtsyClient } from "@/lib/etsy/client";
 import { getListingInventory } from "@/lib/etsy/inventory";
 import {
+  mintSingleItemSku,
+  NON_INVENTORY_LISTING_IDS,
+} from "@/lib/etsy/sku";
+import {
   etsyMoneyToCents,
   type EtsyInventoryProduct,
   type EtsyPropertyValue,
@@ -39,8 +43,23 @@ function toRows(
   listing: ListingRow,
   products: EtsyInventoryProduct[],
 ) {
-  return products
-    .filter((p) => !p.is_deleted && (p.sku ?? "").trim() !== "")
+  const live = products.filter((p) => !p.is_deleted);
+  // Tek-parça listing SKU'suz yaşayabilir — SKU'suz envanteri düşürmek bu
+  // listing'i varyantsız (ve evrensel anahtarsız) bırakıyordu (0086 kök
+  // nedeni). Tek canlı ürünlü + SKU'suz envantere deterministik SKU basılır;
+  // formül senkron/backfill ile aynı olduğundan upsert (org_id,sku) kararlıdır.
+  if (
+    live.length === 1 &&
+    (live[0].sku ?? "").trim() === "" &&
+    !NON_INVENTORY_LISTING_IDS.has(listing.etsy_listing_id)
+  ) {
+    live[0] = {
+      ...live[0],
+      sku: mintSingleItemSku(listing.title, listing.etsy_listing_id),
+    };
+  }
+  return live
+    .filter((p) => (p.sku ?? "").trim() !== "")
     .map((p) => {
       const offerings = (p.offerings ?? []).filter((o) => !o.is_deleted);
       const priceCents = offerings.length

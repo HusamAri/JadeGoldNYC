@@ -11,8 +11,10 @@ export const config = {
     /*
      * Aşağıdakiler hariç tüm istek yollarıyla eşleş:
      * - _next/static, _next/image, favicon.ico
+     * - metadata dosya rotaları (apple-icon, icon, opengraph/twitter-image,
+     *   manifest) — sosyal botlar ve cihazlar login'e YÖNLENDİRİLEMEZ
      * - statik görsel/video uzantıları
      */
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|mp4|webm)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|apple-icon|icon|opengraph-image|twitter-image|manifest.webmanifest|robots.txt|sitemap.xml|.*\\.(?:svg|png|jpg|jpeg|gif|webp|mp4|webm)$).*)",
   ],
 };

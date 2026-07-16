@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Pencil } from "lucide-react";
@@ -5,6 +6,7 @@ import { Pencil } from "lucide-react";
 import { getSaleWithItems } from "@/lib/db/queries/sales";
 import { formatMoney } from "@/lib/money";
 import { formatDate } from "@/lib/format";
+import { Money } from "@/components/money";
 import { PageHeader } from "@/components/page-header";
 import { Button } from "@/components/ui/button";
 import {
@@ -33,7 +35,7 @@ function SummaryRow({
   negative,
 }: {
   label: string;
-  value: string;
+  value: ReactNode;
   strong?: boolean;
   negative?: boolean;
 }) {
@@ -65,7 +67,7 @@ export default async function SatisDetayPage({
   const netCents = sale.grand_total_cents - sale.etsy_fees_cents;
 
   return (
-    <div>
+    <div className="space-y-8">
       <PageHeader
         title={`Satış ${sale.order_no ?? ""}`}
         description={formatDate(sale.order_date, "d MMMM yyyy")}
@@ -88,7 +90,7 @@ export default async function SatisDetayPage({
       />
 
       <div className="grid gap-6 lg:grid-cols-3">
-        <Card className="lg:col-span-2">
+        <Card className="lg:col-span-2 glass-fluted">
           <CardHeader>
             <CardTitle>Kalemler</CardTitle>
           </CardHeader>
@@ -111,7 +113,7 @@ export default async function SatisDetayPage({
                 <TableBody>
                   {items.map((it) => (
                     <TableRow key={it.id}>
-                      <TableCell className="font-medium">
+                      <TableCell className="wrap-box font-medium">
                         {it.title ?? "—"}
                       </TableCell>
                       <TableCell>{it.sku ?? "—"}</TableCell>
@@ -132,7 +134,7 @@ export default async function SatisDetayPage({
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="glass-iced">
           <CardHeader>
             <CardTitle>Özet</CardTitle>
           </CardHeader>
@@ -176,12 +178,14 @@ export default async function SatisDetayPage({
               <Separator />
               <SummaryRow
                 label="Genel Toplam"
-                value={formatMoney(sale.grand_total_cents, currency)}
+                value={
+                  <Money cents={sale.grand_total_cents} currency={currency} />
+                }
                 strong
               />
               <SummaryRow
                 label="Net (ücret sonrası)"
-                value={formatMoney(netCents, currency)}
+                value={<Money cents={netCents} currency={currency} />}
                 strong
               />
             </div>

@@ -38,14 +38,15 @@ export function TaskViews({
               key={t.value}
               type="button"
               onClick={() => setView(t.value)}
+              aria-pressed={active}
               className={cn(
-                "flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors",
+                "flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors focus-visible:ring-ring/60 outline-none focus-visible:ring-2",
                 active
                   ? "bg-accent text-accent-foreground shadow-[var(--shadow-raised-sm)]"
                   : "text-muted-foreground hover:text-foreground",
               )}
             >
-              <t.icon className="size-3.5" />
+              <t.icon aria-hidden className="size-3.5" />
               {t.label}
             </button>
           );

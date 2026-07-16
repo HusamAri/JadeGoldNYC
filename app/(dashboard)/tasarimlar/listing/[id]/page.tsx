@@ -14,6 +14,8 @@ import { KeywordResearchPanel } from "@/components/keyword-research-panel";
 import { ImageStrip } from "@/components/listing/image-strip";
 import { VariantEditor } from "@/components/listing/variant-editor";
 import { MarketPositionCard } from "@/components/listing/market-position-card";
+import { VariantMatrix } from "@/components/listing/variant-matrix";
+import { RepriceRuleCard } from "@/components/listing/reprice-rule-card";
 import { AdsSummaryCard } from "@/components/listing/ads-summary-card";
 import { ListingGapsCard } from "@/components/listing/listing-gaps-card";
 import { ListingFieldsForm } from "@/components/listing/listing-fields-form";
@@ -195,13 +197,18 @@ export default async function ListingDetayPage({
                         ? ` · ${gaps.missing_weights} gram eksik`
                         : ""
                     }`
-                  : undefined
+                  : gaps.no_weight
+                    ? "Varyantsız · gram eksik"
+                    : product.weight_grams != null
+                      ? `Varyantsız · ${product.weight_grams} g`
+                      : undefined
               }
             />
             <VariantEditor
               productId={product.id}
               variants={variants}
               currency={product.currency}
+              productWeightGrams={product.weight_grams}
             />
           </CardContent>
         </Card>
@@ -216,7 +223,18 @@ export default async function ListingDetayPage({
             currency={product.currency}
           />
         )}
+        {/* Varyant matrisi — genişlik × beden (fiyat + gram); varyantsız
+            listing'de kendini gizler (null döner). */}
+        <VariantMatrix productId={product.id} />
         <KeywordResearchPanel productId={product.id} />
+        {/* Otomatik fiyat kuralı — rakip çapasına bağlı reprice motoru
+            (kapalı/öneri/otomatik); araştırma panelinin hemen altında, çünkü
+            çapası buradaki araştırma kaydıdır. */}
+        <RepriceRuleCard
+          productId={product.id}
+          currency={product.currency}
+          hasVariations={variants.length > 1}
+        />
       </section>
 
       {/* 05 · Reklam & performans. */}

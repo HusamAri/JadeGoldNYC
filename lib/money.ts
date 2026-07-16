@@ -55,6 +55,36 @@ export function formatMoney(
   }).format((cents ?? 0) / 100);
 }
 
+/**
+ * Para tutarını iki parçaya böler: `main` (para birimi + tam sayı) ve
+ * `fraction` (ondalık ayraç + kuruş). UI'da kuruşu küçük/aşağı kaydırıp
+ * estetik "büyük tutar + küçük ondalık" görünümü için (bkz. <Money>).
+ */
+export function formatMoneyParts(
+  cents: number | null | undefined,
+  currency = "USD",
+  locale = "tr-TR",
+): { main: string; fraction: string } {
+  const parts = new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: currency || "USD",
+  }).formatToParts((cents ?? 0) / 100);
+  let main = "";
+  let fraction = "";
+  let afterDecimal = false;
+  for (const p of parts) {
+    if (p.type === "decimal") {
+      afterDecimal = true;
+      fraction += p.value;
+    } else if (afterDecimal) {
+      fraction += p.value;
+    } else {
+      main += p.value;
+    }
+  }
+  return { main, fraction };
+}
+
 /** Yüzde biçimi (0.182 -> "%18,2"). */
 export function formatPercent(ratio: number | null | undefined, digits = 1): string {
   const v = Number.isFinite(ratio ?? NaN) ? (ratio as number) : 0;

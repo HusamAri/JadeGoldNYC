@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { Scale } from "lucide-react";
 import { toast } from "sonner";
 
@@ -18,6 +19,7 @@ export function ProductWeightInput({
 }) {
   const [value, setValue] = useState(initialGrams != null ? String(initialGrams) : "");
   const [pending, startTransition] = useTransition();
+  const router = useRouter();
 
   function save() {
     const trimmed = value.trim();
@@ -30,6 +32,8 @@ export function ProductWeightInput({
         return;
       }
       toast.success("Ağırlık kaydedildi");
+      // Bulunduğu RSC'yi tazele — künye boşluk kartı gramajı hemen yansıtsın.
+      router.refresh();
     });
   }
 
@@ -38,7 +42,7 @@ export function ProductWeightInput({
       <Label htmlFor={`weight-${productId}`} className="sr-only">
         Ağırlık (gram)
       </Label>
-      <Scale className="text-muted-foreground size-3.5 shrink-0" />
+      <Scale aria-hidden className="text-muted-foreground size-3.5 shrink-0" />
       <Input
         id={`weight-${productId}`}
         inputMode="decimal"

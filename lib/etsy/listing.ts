@@ -33,3 +33,23 @@ export async function updateListingDescription(
     { description },
   );
 }
+
+/**
+ * Listing etiketlerini (tags) günceller (updateListing PATCH, form-encoded).
+ * `listings_w` kapsamı + shop_id gerektirir. Etsy `tags`'i virgülle ayrılmış
+ * TEK string bekler; kelimeleri kendisi kombinler. Yalnız `tags` alanına
+ * dokunur; diğer alanlar Etsy tarafında korunur. Etsy kuralı: ≤13 tag, her
+ * biri ≤20 karakter (çağıran taraf doğrular).
+ */
+export async function updateListingTags(
+  client: EtsyClient,
+  listingId: number,
+  tags: string[],
+): Promise<void> {
+  const shopId = await client.requireShopId();
+  await client.requestForm<unknown>(
+    "PATCH",
+    etsyPaths.shopListing(shopId, listingId),
+    { tags: tags.join(",") },
+  );
+}

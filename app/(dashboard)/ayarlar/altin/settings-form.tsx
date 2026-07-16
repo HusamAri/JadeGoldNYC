@@ -51,7 +51,7 @@ export function GoldSettingsForm({ price14k, price10k }: Props) {
         <p className="text-destructive text-sm">{state.error}</p>
       )}
       {state.ok && (
-        <p className="text-sm text-emerald-600">Ayarlar kaydedildi.</p>
+        <p className="text-primary text-sm">Ayarlar kaydedildi.</p>
       )}
 
       <Button type="submit" disabled={pending}>

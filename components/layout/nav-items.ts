@@ -11,9 +11,13 @@ import {
   ScrollText,
   FileBarChart,
   ListChecks,
+  Megaphone,
   Boxes,
   Star,
   Settings,
+  TextSearch,
+  Tags,
+  Archive,
   type LucideIcon,
 } from "lucide-react";
 
@@ -48,6 +52,7 @@ export const NAV_GROUPS: NavGroup[] = [
     items: [
       { href: "/satislar", label: "Satışlar", icon: ShoppingBag },
       { href: "/maliyetler", label: "Maliyetler", icon: Wallet },
+      { href: "/reklamlar", label: "Reklamlar", icon: Megaphone },
       { href: "/raporlar", label: "Raporlar", icon: FileBarChart },
     ],
   },
@@ -63,9 +68,12 @@ export const NAV_GROUPS: NavGroup[] = [
     label: "Ürün & Stüdyo",
     items: [
       { href: "/tasarimlar", label: "Listeler", icon: Palette },
+      { href: "/seo-yardimcisi", label: "SEO Yardımcısı", icon: TextSearch },
+      { href: "/seo-etiketleri", label: "SEO Etiketleri", icon: Tags },
       // Prompt kiti Jade Gold listinglerine özel statik içerik — diğer
       // şirketlerde gizli (kendi kitleri üretilince ayrı açılır).
       { href: "/gorsel-uretim", label: "Görsel Üretim", icon: Sparkles, jadeGoldOnly: true },
+      { href: "/arsiv", label: "Listing Arşivi", icon: Archive },
       { href: "/stok", label: "Stok", icon: Boxes },
     ],
   },
