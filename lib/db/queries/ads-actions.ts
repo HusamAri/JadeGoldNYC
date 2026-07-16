@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { fetchAllPages } from "@/lib/db/queries/listings";
 
 /**
  * REKLAM KARAR MOTORU — Etsy Open API v3 reklam (Etsy Ads) kontrolü/verisi
@@ -178,17 +179,28 @@ export interface AdsOverview {
 
 export async function getAdsOverview(orgId: string): Promise<AdsOverview> {
   const supabase = await createClient();
-  const [metricsRes, orgRes] = await Promise.all([
-    // Tam çekim, dar kolon — sayılar display-limit'li sorgudan türetilmez.
+  const [metricRowsRaw, orgRes] = await Promise.all([
+    // GERÇEKTEN tam çekim: sayfasız sorgu PostgREST'in örtük 1000-satır
+    // sınırına takılır — toplamlar sessizce eksilirdi (denetim R2 #1).
     // Aktif ürünler: aksiyon alınabilecek (yayında olan) listingler.
-    supabase
-      .from("product_metrics")
-      .select(
-        "product_id, product_title, created_at, views, orders, ads_clicks, ads_spend_cents, ads_revenue_cents, products!inner(status)",
-      )
-      .eq("org_id", orgId)
-      .eq("products.status", "active")
-      .ilike("period_label", ADS_PERIOD_MATCH),
+    fetchAllPages<Record<string, unknown>>((from, to) =>
+      supabase
+        .from("product_metrics")
+        .select(
+          "product_id, product_title, created_at, views, orders, ads_clicks, ads_spend_cents, ads_revenue_cents, products!inner(status)",
+        )
+        .eq("org_id", orgId)
+        .eq("products.status", "active")
+        .ilike("period_label", ADS_PERIOD_MATCH)
+        .order("id", { ascending: true })
+        .range(from, to),
+    ).catch((e: unknown) => {
+      console.error(
+        "[reklamlar] metrics sorgusu:",
+        e instanceof Error ? e.message : e,
+      );
+      return [] as Record<string, unknown>[];
+    }),
     supabase
       .from("organizations")
       .select("default_currency")
@@ -196,8 +208,6 @@ export async function getAdsOverview(orgId: string): Promise<AdsOverview> {
       .maybeSingle(),
   ]);
   // Hata sessizce "veri yok"a dönüşmesin — yüzeye çıkar.
-  if (metricsRes.error)
-    console.error("[reklamlar] metrics sorgusu:", metricsRes.error.message);
   if (orgRes.error) console.error("[reklamlar] org sorgusu:", orgRes.error.message);
 
   const currency =
@@ -217,7 +227,7 @@ export async function getAdsOverview(orgId: string): Promise<AdsOverview> {
   // Aynı dönem etiketi birden çok anlık görüntü taşıyabilir — ürün başına
   // EN GÜNCEL kayıt seçilir (snapshot dedupe dersi; çift sayım yok).
   const latestByProduct = new Map<string, MetricRow>();
-  for (const m of ((metricsRes.data ?? []) as unknown as MetricRow[]).sort(
+  for (const m of (metricRowsRaw as unknown as MetricRow[]).sort(
     (a, b) => b.created_at.localeCompare(a.created_at),
   )) {
     if (m.product_id && !latestByProduct.has(m.product_id))
@@ -336,6 +346,9 @@ export async function createAdsAction(input: {
     reason: input.reason,
     metric_snapshot: input.snapshot,
   });
+  // 0095 kısmi UNIQUE indeksi yarışın kaybedenini 23505 ile durdurur — kayıt
+  // zaten kuyruktadır, kullanıcıya hata gösterme (gerçek idempotens).
+  if (error && error.code === "23505") return {};
   if (error) return { error: error.message };
   return {};
 }

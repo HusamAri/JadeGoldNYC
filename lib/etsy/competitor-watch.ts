@@ -139,7 +139,11 @@ export async function captureWatchPrice(
     priceCents = cents > 0 ? cents : null;
     currency = l.price?.currency_code ?? "USD";
   } catch (e) {
-    if (e instanceof Error && /\(404\)/.test(e.message)) {
+    // EtsyClient hata formatı sabittir: "Etsy API hatası (STATUS) ..."
+    // (lib/etsy/client.ts). Önekli eşleşme: mesaj gövdesinde geçen rastgele
+    // bir "(404)" ile karışmaz; format değişirse gone yazılamaz ama listing
+    // geçici hata sayılıp bir sonraki turda yeniden denenir (güvenli yön).
+    if (e instanceof Error && /^Etsy API hatası \(404\)/.test(e.message)) {
       state = "gone"; // listing Etsy'den kaldırılmış
     } else {
       throw e;

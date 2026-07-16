@@ -111,6 +111,21 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
   ile takılır — `evaluate(scrollIntoView)` + `mouse.move(bbox merkezi)` kullan,
   önce kaplayan overlay'leri (Neler Yeni popup'ı) kapat; computed-style okuması
   yanıltabilir, son hakem hover anındaki ekran görüntüsüdür.
+- **Gün-anahtarı hangi takvimse pencere de o takvimde (2026-07):** Gruplama
+  anahtarı mağaza saat dilimine (NY) geçirilirken sorgu pencereleri UTC gün
+  sınırında bırakılırsa kenar kayar — "Bugün" NY-dünün akşamını sayar, NY-bugünün
+  akşamını kaçırır; KPI ile trend farklı takvim anlatır. Kural: pencere üretimi
+  (resolvePeriod) ve gün-anahtarı (dayKeyNY) TEK takvim çerçevesinden türesin;
+  DST kenarlarını gerçek çalıştırmayla test et (nyDayStartUtc/nyDayEndUtc).
+- **Türetilmiş metrik hangi kümeden kurulduysa sayacı da o küme (2026-07):**
+  Band rakip setinden kurulurken result_count organik sayıyı taşıyınca reprice
+  eşiği ve UI kapısı yanlış kümeye baktı (comp-set'li ürün "rakip az" diye
+  atlandı). Kural: bir metriğin kaynağı koşula göre değişiyorsa, kaynak kümenin
+  boyutu AYRI alanda (band_result_count) taşınır; tüketiciler onu okur.
+- **SQL coalesce ≠ JS || (2026-07):** Gelir semantiği "grand_total || item_total"
+  RPC'ye coalesce ile taşınınca sıfır-kenarı ayrıştı (JS sıfırda da düşer, SQL
+  yalnız NULL'da). Kural: JS `||` davranışını SQL'e taşırken nullif(x,0) kullan;
+  iki yüzeyin eşitliğini kenar değerle (0, NULL) doğrula.
 - **Snapshot'lı metrikte önce dedupe (2026-07):** Aynı dönem etiketi birden çok
   anlık görüntü taşıyabilir — sayı/toplamdan önce ürün başına EN GÜNCEL kayıt
   seçilir; yoksa çift sayılır (LCC metrik dersiyle aynı kök).

@@ -55,8 +55,12 @@ export async function KeywordResearchPanel({
   const fallbackTag = meta?.tags?.find((t) => t && t.trim().length > 0) ?? null;
 
   const cur = snap?.currency ?? "USD";
+  // Band tablosunun kapısı: bandın KURULDUĞU sayı (rakip seti aktifken
+  // organik 0 olsa da band vardır — denetim R2 #3). Eski kayıtlarda null →
+  // organik sayıya düşülür.
+  const bandCount = snap ? (snap.band_result_count ?? snap.result_count) : 0;
   const band =
-    snap && snap.result_count > 0
+    snap && bandCount > 0
       ? ([
           { k: "En düşük", v: snap.min_cents },
           { k: "Medyan", v: snap.median_cents },
@@ -184,8 +188,9 @@ export async function KeywordResearchPanel({
               {snap.verdict_why ?? snap.recommendation}
             </p>
             <p className="text-muted-foreground text-xs">
-              Veri: {snap.result_count} organik rakip ·{" "}
-              {formatDate(snap.researched_at)} · kaynak: {bandSourceLabel}
+              Veri: band {bandCount} rakiptan ({bandSourceLabel}) ·{" "}
+              {snap.result_count} organik sonuç ·{" "}
+              {formatDate(snap.researched_at)}
               {snap.basis_note ? ` · ${snap.basis_note}` : ""}
             </p>
 
@@ -235,8 +240,9 @@ export async function KeywordResearchPanel({
                 {snap.keyword}
               </span>
               <span className="text-muted-foreground">
-                · {snap.result_count} organik rakip ·{" "}
-                {formatDate(snap.researched_at)} · band: {bandSourceLabel}
+                · band {bandCount} rakip ({bandSourceLabel}) ·{" "}
+                {snap.result_count} organik ·{" "}
+                {formatDate(snap.researched_at)}
               </span>
             </div>
 
