@@ -160,6 +160,10 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
   bucket'a yükler, idempotent upsert eder (org+listing+kind+media_id). Etsy auth
   yalnız canlı app'te çalıştığı için pull uygulama içinden tetiklenir; migration
   MCP ile önceden uygulanır ki preview'da hazır olsun.
+- **Teslimat repo'ya inmeden iş bitmiş sayılmaz (2026-07):** Scratchpad/Drive'a bırakılan
+  çıktı ekip için görünmezdir ve konteynerle ölür — kullanıcı haklı olarak "repo olarak
+  kimse bir şey yapmaz ki" dedi. Kural: uçtan uca işin karar/paket/runbook artefaktları
+  repo'da yaşar (`docs/<işkolu>/` + README runbook); Drive/scratchpad yalnız kopya/aracı.
 - **Dış silmeyi arşiv-önce + scope-check ile geçitle (2026-07):** Canlı Etsy
   listing'i silmek geri alınamaz; önce medya `listing_media`'ya arşivlenmemişse
   silme REDDEDİLİR (kayıp önlenir), yalnız owner/admin, iki adımlı UI onayı ve
