@@ -1,0 +1,16 @@
+{
+  "judged_at": "2026-07-16",
+  "workflow": "wf_caf2e1aa-6f9 (26 ajan: 5 boyut + çapraz + itiraz paneli)",
+  "ready": ["01", "02", "03", "04", "05", "06", "13", "14", "15"],
+  "fix": [],
+  "hold": ["07", "08", "09", "10", "11", "12"],
+  "fail": ["16"],
+  "price_changes": [],
+  "price_note": "Baz fiyatlara dokunulmaz — 40/40 Dome hücresi modele ±%2.3, hiçbiri model altında değil. Açılış kolu Etsy SALE mekaniğiyle (04-06 + 13-15, %10-15), baz fiyat sabit. 13-15 PUBLISH'i Milgrain gram SQL doğrulamasına bağlı (band1-max ~2.0g çıkarsa $315→$345).",
+  "corrections_vs_judge": [
+    "Tag takas tablosundaki ÇIKAR kalemlerinin bir kısmı DB'de yok (custom gold ring, womens gold band, plain gold band, heirloom jewelry@13-15) — takaslar gerçek tag setlerine göre yeniden kuruldu, niyet korundu (anniversary klonu çıkar, mm + karat kimliği gir, kardeş ayrış).",
+    "Gram cümlesi rakamları düzeltildi: 14k 7mm 10.6g DEĞİL 8.4g (B1); 10k 7mm 9.4g DEĞİL 7.4g (B1) — eon_variants.sql birincil kanıt.",
+    "6mm fiyat çapaları doğrulandı: 14k $1,015 (EON-01-6MM-B1=101500), 10k $670 (EON-04-6MM-B1=67000).",
+    "ONAYLANDI damgası '[EON NN · ' ÖNEKİNİ KORUR ('[EON 01 · ONAYLANDI 2026-07-16 · ...') — skeleton'daki '[ONAYLANDI ✓ · EON' formatı push script'in stripInternalTrailer regex'ini (\\[EON ) kırar ve dahili not Etsy'ye sızardı."
+  ]
+}
