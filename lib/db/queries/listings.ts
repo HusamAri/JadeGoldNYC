@@ -237,7 +237,9 @@ interface SaleItemDbRow {
 /**
  * Tüm listingler (sayfalama yok — tek sayfa; ~320 satır sorun değil).
  * Varyant/metrik/araştırma verileri TOPLU çekilir ve Map ile birleştirilir.
- * `search` başlık/SKU ilike; `status` eq.
+ * `search` başlık/SKU ilike; `status` eq. Panel arşivi (products.archived_at)
+ * varsayılan olarak HARİÇTİR; `status === "arsiv"` özel değeriyle yalnız
+ * arşivdekiler listelenir (Etsy durumu değil, panel yaşam-döngüsü filtresi).
  */
 export async function listListingsIndex(opts?: {
   search?: string;
@@ -245,7 +247,8 @@ export async function listListingsIndex(opts?: {
 }): Promise<ListingIndexRow[]> {
   const supabase = await createClient();
   const search = opts?.search ? sanitize(opts.search) : "";
-  const status = opts?.status;
+  const archivedOnly = opts?.status === "arsiv";
+  const status = archivedOnly ? undefined : opts?.status;
 
   // Varyant SKU'suyla da bulunabilsin (Codex P2): kullanıcı siparişte/varyantta
   // gördüğü SKU'yu arar; o SKU parent listing'de değil product_variants'ta olur.
@@ -274,6 +277,9 @@ export async function listListingsIndex(opts?: {
       .select(
         "id, etsy_listing_id, title, status, image_url, price_cents, currency, quantity, num_images, research_keyword",
       );
+    q = archivedOnly
+      ? q.not("archived_at", "is", null)
+      : q.is("archived_at", null);
     if (status) q = q.eq("status", status);
     if (search) {
       const clauses = [`title.ilike.%${search}%`, `sku.ilike.%${search}%`];

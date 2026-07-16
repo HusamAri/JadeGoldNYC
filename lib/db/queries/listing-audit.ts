@@ -72,6 +72,7 @@ export async function getListingAudit(
       .select("id, etsy_listing_id, title, description, tags, num_images")
       .eq("org_id", orgId)
       .eq("status", "active")
+      .is("archived_at", null)
       .order("title", { ascending: true })
       .range(from, to),
   );

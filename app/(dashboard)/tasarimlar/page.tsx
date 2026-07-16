@@ -55,6 +55,9 @@ const LISTING_STATUSES: {
   { value: "inactive", label: "Pasif", variant: "outline" },
   { value: "sold_out", label: "Tükendi", variant: "warning" },
   { value: "expired", label: "Süresi doldu", variant: "destructive" },
+  // Panel yaşam-döngüsü filtresi (Etsy durumu değil): arşivlenenler
+  // varsayılan listeden gizlidir, yalnız bu seçenekle görünür.
+  { value: "arsiv", label: "Arşiv (panel)", variant: "outline" },
 ];
 
 function statusMeta(status: string | null) {

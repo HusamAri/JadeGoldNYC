@@ -103,6 +103,8 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
     recentSales,
     son30Metrics,
     meltRows,
+    lastShopSnapshot,
+    lastManualMetric,
   ] = await Promise.all([
       getDataGaps(orgId),
       getEtsyStatus(orgId),
@@ -125,6 +127,7 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
         .from("products")
         .select("status, price_cents, currency")
         .eq("org_id", orgId)
+        .is("archived_at", null)
         .in("status", PRODUCT_STATUS_ALERTS.map((s) => s.status)),
       // Karar bekleyen ekip soruları — open VE review: ilk yanıt soruyu
       // 'review'a taşır ama kapama/dallandırma kararı hâlâ bekler; yalnız
@@ -178,6 +181,24 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
         .eq("status", "active")
         .not("our_per_gram_cents", "is", null)
         .not("melt_per_gram_cents", "is", null),
+      // Veri tazeliği bekçisi: son günlük senkron fotoğrafı — cron kırılırsa
+      // grafikler sessizce bayatlar; bunu Uyarı Merkezi flagler ("aksiyon
+      // sinyali ana sayfada" kuralı; kimse Etsy senkron kartını izlemiyor).
+      supabase
+        .from("etsy_shop_snapshots")
+        .select("snapshot_date")
+        .eq("org_id", orgId)
+        .order("snapshot_date", { ascending: false })
+        .limit(1)
+        .maybeSingle(),
+      // Manuel dönem metrikleri (analizler): en son kullanıcı girişi.
+      supabase
+        .from("shop_metrics")
+        .select("created_at")
+        .eq("org_id", orgId)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle(),
     ]);
 
   // Sorgu hataları sessizce "her şey yolunda"ya dönüşmesin — logla.
@@ -190,6 +211,8 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
     ["sales", recentSales],
     ["metrics", son30Metrics],
     ["melt", meltRows],
+    ["snapshot", lastShopSnapshot],
+    ["manualMetric", lastManualMetric],
   ] as const) {
     if (res.error) console.error(`[alert-center] ${name} sorgusu:`, res.error.message);
   }
@@ -435,6 +458,54 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
       actionLabel: "Fiyatları düzelt",
       costCents: null,
     });
+  }
+
+  // 9b) Veri tazeliği bekçisi — güncellenmeyen veri sessiz kalmasın.
+  // Günlük senkron fotoğrafı 2+ gün eskiyse cron/senkron kırık demektir
+  // (bağlantı sağlıklı görünse bile): grafikler ve karşılaştırmalar bayat
+  // veriyle karar verdirir. Yalnız bağlı org'da anlamlı.
+  if (etsy.status === "connected") {
+    const snapDate = (lastShopSnapshot.data as { snapshot_date: string } | null)
+      ?.snapshot_date;
+    const snapAgeDays = snapDate
+      ? Math.floor((now - new Date(snapDate).getTime()) / 86_400_000)
+      : null;
+    if (snapAgeDays == null || snapAgeDays >= 2) {
+      alerts.push({
+        key: "sync_snapshot_stale",
+        severity: "kritik",
+        title:
+          snapAgeDays == null
+            ? "Günlük senkron fotoğrafı hiç yok — trendler boş"
+            : `Günlük senkron ${snapAgeDays} gündür çalışmamış`,
+        hint: "Görüntülenme/sağlık grafikleri son fotoğrafta donmuş durumda — bayat veriyle karar veriyorsun ve boşluk geriye dönük doldurulamıyor. Etsy senkronunu elle tetikle; düzelmiyorsa cron/bağlantıyı kontrol et.",
+        count: 1,
+        href: "/ayarlar/etsy",
+        actionLabel: "Senkronu tetikle",
+        costCents: null,
+      });
+    }
+  }
+  // Manuel dönem metrikleri 30+ gündür girilmemişse karşılaştırma kartları
+  // (dönüşüm, sepette terk…) eski dönemi "güncel" gibi gösterir (BİLGİ).
+  {
+    const lastManual = (lastManualMetric.data as { created_at: string } | null)
+      ?.created_at;
+    const manualAgeDays = lastManual
+      ? Math.floor((now - new Date(lastManual).getTime()) / 86_400_000)
+      : null;
+    if (manualAgeDays != null && manualAgeDays >= 30) {
+      alerts.push({
+        key: "manual_metrics_stale",
+        severity: "bilgi",
+        title: `Manuel dönem metrikleri ${manualAgeDays} gündür güncellenmedi`,
+        hint: "Analizler'deki dönüşüm/sepette terk kartları en son girilen dönemi 'güncel' diye gösteriyor — yeni dönem fotoğrafını gir ki karşılaştırmalar bugünü anlatsın.",
+        count: 1,
+        href: "/analizler",
+        actionLabel: "Yeni dönem gir",
+        costCents: null,
+      });
+    }
   }
 
   // 10) Acil (P0) açık görev → zamana duyarlı iş (KRİTİK).

@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { costFormSchema, type CostFormValues } from "@/lib/validations/cost";
+import { COST_BEARERS } from "@/lib/cost-bearer";
 import { createCost, updateCost } from "@/app/(dashboard)/maliyetler/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -146,6 +147,37 @@ export function CostForm({
           <div className="space-y-2">
             <Label htmlFor="vendor">Tedarikçi</Label>
             <Input id="vendor" {...register("vendor")} />
+          </div>
+
+          {/* Maliyete katlanan taraf (EON ortaklığı): elle H/Y/I seçilir ya da
+              "Otomatik" bırakılır — o zaman kategorinin varsayılan tarafı
+              (varsa) DB trigger'ıyla atanır. */}
+          <div className="space-y-2">
+            <Label htmlFor="bearer">Katlanan Taraf</Label>
+            <Controller
+              control={control}
+              name="bearer"
+              render={({ field }) => (
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger id="bearer" className="w-full">
+                    <SelectValue placeholder="Taraf seçin" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="auto">
+                      Otomatik (kategori varsayılanı)
+                    </SelectItem>
+                    {COST_BEARERS.map((b) => (
+                      <SelectItem key={b.value} value={b.value}>
+                        {b.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+            {errors.bearer && (
+              <p className="text-destructive text-sm">{errors.bearer.message}</p>
+            )}
           </div>
         </CardContent>
       </Card>

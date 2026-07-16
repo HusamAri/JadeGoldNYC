@@ -42,6 +42,7 @@ export async function listVariantListingOptions(
     .from("products")
     .select("id, title, product_variants(count)")
     .eq("org_id", orgId)
+    .is("archived_at", null)
     .order("title", { ascending: true });
   if (error) {
     console.error("[variant-weights] listVariantListingOptions:", error.message);

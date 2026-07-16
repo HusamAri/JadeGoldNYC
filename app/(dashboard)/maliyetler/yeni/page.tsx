@@ -17,6 +17,7 @@ export default async function YeniMaliyetPage() {
     currency: "USD",
     cost_date: today,
     vendor: "",
+    bearer: "auto",
     notes: "",
   };
 
