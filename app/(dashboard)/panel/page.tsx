@@ -17,8 +17,8 @@ import { SceneCutouts } from "@/components/scene-cutouts";
 // currentColor'a saygı duyar (cutout PNG'ler yalnız KPI filigranında).
 import { Users as UsersLine } from "@/components/icons/lux";
 
-import { resolvePeriod, previousPeriod } from "@/lib/period";
-import { getDashboard } from "@/lib/db/queries/dashboard";
+import { resolvePeriod, previousPeriod, samePeriodLastYear } from "@/lib/period";
+import { getDashboard, type DashboardData } from "@/lib/db/queries/dashboard";
 import { getAlertCenter } from "@/lib/db/queries/alerts";
 import { getTimelineData } from "@/lib/db/queries/timeline";
 import { requireMembership } from "@/lib/auth";
@@ -71,15 +71,17 @@ export default async function PanelPage({
   const sp = await searchParams;
   const period = resolvePeriod(strParam(sp.period));
   const prev = previousPeriod(period);
+  const lastYear = samePeriodLastYear(period);
   const m = await requireMembership();
   // PERF: yalnız KABUĞUN ihtiyacı burada beklenir (KPI + altın). Ağır dallar
   // (uyarı merkezi ← tüm listing açıklamaları, çizelge, pazar uyarıları)
   // kendi async bileşenlerinde Suspense ile STREAM edilir — TTFB en yavaş
   // dala kilitlenmez, kabuk saniyeler önce görünür.
-  const [d, goldPriceOunce, prevData] = await Promise.all([
+  const [d, goldPriceOunce, prevData, lastYearData] = await Promise.all([
     getDashboard(period),
     getGoldPricePerOunce(),
     prev ? getDashboard(prev) : Promise.resolve(null),
+    lastYear ? getDashboard(lastYear) : Promise.resolve(null),
   ]);
   const cur = d.currency;
   const goldPricePerGram = goldPriceOunce / TROY_OUNCE_GRAMS;
@@ -88,6 +90,75 @@ export default async function PanelPage({
     if (previous == null || previous === 0) return null;
     return (current - previous) / Math.abs(previous);
   }
+
+  /** Her KPI için İKİ karşılaştırma rozeti: önceki dönem (MoM) + geçen yıl (YoY).
+      Pencere varsa satır her zaman görünür; veri yoksa "veri yok" yazılır. */
+  function kpiComparisons(pick: (x: DashboardData) => number) {
+    const list: { change: number | null; label: string }[] = [];
+    if (prev)
+      list.push({
+        change: pctChange(pick(d), prevData ? pick(prevData) : null),
+        label: prev.label,
+      });
+    if (lastYear)
+      list.push({
+        change: pctChange(pick(d), lastYearData ? pick(lastYearData) : null),
+        label: lastYear.label,
+      });
+    return list;
+  }
+
+  /** Kâr marjı için puan farkı (oran − oran); gelir yoksa veri yok sayılır. */
+  const marginComparisons = [
+    ...(prev
+      ? [{
+          change:
+            prevData && prevData.revenueCents > 0
+              ? d.margin - prevData.margin
+              : null,
+          label: prev.label,
+        }]
+      : []),
+    ...(lastYear
+      ? [{
+          change:
+            lastYearData && lastYearData.revenueCents > 0
+              ? d.margin - lastYearData.margin
+              : null,
+          label: lastYear.label,
+        }]
+      : []),
+  ];
+
+  // ── Önceki dönem overlay'i — gün index'ine göre hizala (takvim boşlukları
+  // iki pencerede de aynı ofsetle kayar; trend yalnız verili günleri taşır). ──
+  const dayIndex = (dateIso: string, fromIso: string) =>
+    Math.floor(
+      (new Date(dateIso).getTime() - new Date(fromIso).getTime()) / 86_400_000,
+    );
+  let trendData: (DashboardData["trend"][number] & {
+    prevRevenue?: number | null;
+    prevOrders?: number | null;
+  })[] = d.trend;
+  if (prev?.fromIso && period.fromIso && prevData) {
+    const prevByIdx = new Map<number, { revenue: number; orders: number }>();
+    for (const t of prevData.trend)
+      prevByIdx.set(dayIndex(t.date, prev.fromIso), {
+        revenue: t.revenue,
+        orders: t.orders,
+      });
+    trendData = d.trend.map((t) => {
+      const p = prevByIdx.get(dayIndex(t.date, period.fromIso!));
+      return { ...t, prevRevenue: p?.revenue ?? null, prevOrders: p?.orders ?? null };
+    });
+  }
+  const prevTrendEmpty = prevData != null && prevData.trend.length === 0;
+  /** Grafik altı pencere/karşılaştırma etiketi (veri kısıtı görünür kalsın). */
+  const compareCaption = prev
+    ? prevTrendEmpty
+      ? `${period.label} · ${prev.label.toLocaleLowerCase("tr-TR")} verisi yok`
+      : `${period.label} · kesikli/soluk: ${prev.label.toLocaleLowerCase("tr-TR")}`
+    : `${period.label} · karşılaştırma yok (tüm zamanlar)`;
 
   return (
     <div className="relative z-0 pb-28 space-y-8">
@@ -179,7 +250,7 @@ export default async function PanelPage({
       <SectionTitle
         eyebrow="Gelir & Kârlılık"
         title="Trend ve dönem metrikleri"
-        hint={`${period.label}${prev ? ` · karşılaştırma: ${prev.label}` : ""}`}
+        hint={`${period.label}${prev ? ` · MoM: ${prev.label.toLocaleLowerCase("tr-TR")}` : ""}${lastYear ? ` · YoY: ${lastYear.label.toLocaleLowerCase("tr-TR")}` : " · karşılaştırma yok (tüm zamanlar)"}`}
       />
       {/* Ana KPI bölümü — Spatial hero köşe işaretleri (dekoratif sarmalayıcı). */}
       <div className="relative">
@@ -187,9 +258,20 @@ export default async function PanelPage({
         <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle>Gelir / Maliyet Trendi</CardTitle>
+            {/* Pencere + karşılaştırma dönemi etiketi — veri kısıtı ekranda. */}
+            <p className="text-muted-foreground text-xs">{compareCaption}</p>
           </CardHeader>
           <CardContent>
-            <TrendChart data={d.trend} />
+            {/* Önceki dönem tamamen boşsa overlay çizilmez — kısıt üstteki
+                etikette söylenir ("verisi yok"), sessiz gizleme yok. */}
+            <TrendChart
+              data={trendData}
+              compareLabel={
+                prev && !prevTrendEmpty
+                  ? `Gelir · ${prev.label.toLocaleLowerCase("tr-TR")}`
+                  : undefined
+              }
+            />
           </CardContent>
         </Card>
         <div className="stagger grid grid-cols-2 content-start gap-4 sm:gap-5">
@@ -198,16 +280,14 @@ export default async function PanelPage({
             cents={d.revenueCents}
             currency={cur}
             icon={DollarSign}
-            change={pctChange(d.revenueCents, prevData?.revenueCents)}
-            changeLabel={prev?.label}
+            comparisons={kpiComparisons((x) => x.revenueCents)}
           />
           <KpiCard
             label="Toplam Maliyet"
             cents={d.costCents}
             currency={cur}
             icon={Wallet}
-            change={pctChange(d.costCents, prevData?.costCents)}
-            changeLabel={prev?.label}
+            comparisons={kpiComparisons((x) => x.costCents)}
           />
           <KpiCard
             label="Net Kâr"
@@ -215,16 +295,14 @@ export default async function PanelPage({
             currency={cur}
             icon={TrendingUp}
             holo
-            change={pctChange(d.profitCents, prevData?.profitCents)}
-            changeLabel={prev?.label}
+            comparisons={kpiComparisons((x) => x.profitCents)}
           />
           <KpiCard
             label="Kâr Marjı"
             value={formatPercent(d.margin)}
             icon={Percent}
             accent={d.margin >= 0 ? "positive" : "negative"}
-            change={prevData ? d.margin - prevData.margin : null}
-            changeLabel={prev?.label}
+            comparisons={marginComparisons}
           />
         </div>
       </div>
@@ -246,9 +324,18 @@ export default async function PanelPage({
         <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle>Günlük Sipariş Sayısı</CardTitle>
+            {/* Pencere + karşılaştırma dönemi etiketi — veri kısıtı ekranda. */}
+            <p className="text-muted-foreground text-xs">{compareCaption}</p>
           </CardHeader>
           <CardContent>
-            <OrdersBarChart data={d.trend} />
+            <OrdersBarChart
+              data={trendData}
+              compareLabel={
+                prev && !prevTrendEmpty
+                  ? prev.label.toLocaleLowerCase("tr-TR")
+                  : undefined
+              }
+            />
           </CardContent>
         </Card>
         <div className="grid content-start gap-4">
@@ -256,16 +343,14 @@ export default async function PanelPage({
             label="Sipariş Sayısı"
             value={formatNumber(d.orderCount)}
             icon={ShoppingBag}
-            change={pctChange(d.orderCount, prevData?.orderCount)}
-            changeLabel={prev?.label}
+            comparisons={kpiComparisons((x) => x.orderCount)}
           />
           <KpiCard
             label="Ort. Sipariş (AOV)"
             cents={d.aovCents}
             currency={cur}
             icon={Receipt}
-            change={pctChange(d.aovCents, prevData?.aovCents)}
-            changeLabel={prev?.label}
+            comparisons={kpiComparisons((x) => x.aovCents)}
           />
         </div>
       </div>

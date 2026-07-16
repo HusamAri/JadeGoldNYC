@@ -103,16 +103,49 @@ export function previousPeriod(
       };
     }
     case "month": {
-      const sameMonthLastYear = subYears(now, 1);
+      // Bitişik önceki dönem = geçen ay (MoM). Geçen yılın aynı ayı artık
+      // ayrı pencere olarak samePeriodLastYear'dan gelir (YoY).
+      const prevMonth = subMonths(now, 1);
       return {
         key: "month",
-        fromIso: startOfMonth(sameMonthLastYear).toISOString(),
-        toIso: endOfMonth(sameMonthLastYear).toISOString(),
-        label: "Gecen sene ayni ay",
+        fromIso: startOfMonth(prevMonth).toISOString(),
+        toIso: endOfMonth(prevMonth).toISOString(),
+        label: "Geçen ay",
       };
     }
     case "all":
     default:
       return null;
   }
+}
+
+/**
+ * Geçen yılın AYNI dönemi (aynı tarih aralığı - 1 yıl) — YoY karşılaştırması.
+ * 'all' için null (tüm zamanların geçen-yıl karşılığı yok).
+ */
+export function samePeriodLastYear(
+  current: ResolvedPeriod,
+): ResolvedPeriod | null {
+  if (current.key === "all" || !current.fromIso) return null;
+  return {
+    key: current.key,
+    fromIso: subYears(new Date(current.fromIso), 1).toISOString(),
+    toIso: subYears(new Date(current.toIso), 1).toISOString(),
+    label: "Geçen yıl aynı dönem",
+  };
+}
+
+export interface ComparisonWindows {
+  /** Önceki bitişik dönem (MoM / geçen ay mantığı). 'all' için null. */
+  prev: ResolvedPeriod | null;
+  /** Geçen yılın aynı dönemi (YoY). 'all' için null. */
+  lastYear: ResolvedPeriod | null;
+}
+
+/** Bir dönemin İKİ karşılaştırma penceresini birlikte üretir (MoM + YoY). */
+export function comparisonWindows(current: ResolvedPeriod): ComparisonWindows {
+  return {
+    prev: previousPeriod(current),
+    lastYear: samePeriodLastYear(current),
+  };
 }
