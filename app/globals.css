@@ -1282,6 +1282,28 @@
   }
 }
 
+/* Tarihsiz görev çipleri — zaman bandının kenarlarında "havada" süzülme.
+   Perf dersi: transform-only, küçük genlik (≤7px), bölgesel; blur/filter YOK.
+   prefers-reduced-motion global kuralı (yukarıda) animasyonu durdurur. */
+@keyframes tl-float-a {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(-0.5deg);
+  }
+  50% {
+    transform: translate(5px, -7px) rotate(0.5deg);
+  }
+}
+@keyframes tl-float-b {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0.5deg);
+  }
+  50% {
+    transform: translate(-6px, 6px) rotate(-0.5deg);
+  }
+}
+
 /* Görev formu ikon seçici — seçim anında minik "pop"; native scale property
    anime edilir, hover'daki scale utility'siyle aynı kanaldan geçer. */
 @keyframes icon-pop {

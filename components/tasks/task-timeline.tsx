@@ -31,6 +31,7 @@ import { TASK_COLOR_BY_KEY, taskIconUrl } from "@/lib/task-style";
 import {
   HorizontalTimelineBand,
   type HTask,
+  type HFloatTask,
 } from "@/components/timeline/horizontal-band";
 import { UserAvatar } from "@/components/user-avatar";
 import { SlideButton } from "@/components/tasks/motion";
@@ -145,6 +146,29 @@ export function TaskTimeline({
     [filtered],
   );
 
+  // Tarihsiz görevler bandın kenarlarında "havada" süzülür (leader line'sız).
+  // Aktif olanlar önce — deterministik sıra, çipler render'lar arası zıplamaz.
+  const floatTasks: HFloatTask[] = useMemo(
+    () =>
+      [...undated]
+        .sort(
+          (a, b) =>
+            Number(a.status === "done") - Number(b.status === "done") ||
+            PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority] ||
+            a.sort_order - b.sort_order,
+        )
+        .map((t) => ({
+          id: t.id,
+          title: t.title,
+          icon: t.icon ?? null,
+          color: t.color ?? null,
+          priority: t.priority,
+          done: t.status === "done",
+          href: `/gorevler/${t.id}`,
+        })),
+    [undated],
+  );
+
   // Açılışta BUGÜN düğümünü kabın ortasına getir — sayfa hep today odağında.
   useEffect(() => {
     const sc = scrollRef.current;
@@ -229,9 +253,11 @@ export function TaskTimeline({
         <LiquidTabs items={assigneeItems} value={assignee} onChange={setAssignee} />
       </div>
 
-      {/* ── Geniş yatay bakış — geçmiş ← bugün → gelecek (sürüklenir) ─── */}
+      {/* ── Geniş yatay bakış — geçmiş ← bugün → gelecek (sürüklenir);
+             tarihsiz görevler kartın kenarlarında süzülür ─────────────── */}
       <HorizontalTimelineBand
         tasks={bandTasks}
+        floating={floatTasks}
         today={today}
         title="Zaman Çizelgesi — Geniş Bakış"
       />
