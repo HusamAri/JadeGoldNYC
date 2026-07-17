@@ -538,6 +538,9 @@ export async function createDraftListingFromProduct(
               price: offeringCents / 100,
               quantity: v.quantity ?? listingQuantity,
               is_enabled: true,
+              // Etsy 2025: her offering'in de işlem profili olmalı ("All
+              // offerings need readiness state") — listing-düzeyi yetmiyor.
+              readiness_state_id: profiles.readinessStateId,
             },
           ],
         };
