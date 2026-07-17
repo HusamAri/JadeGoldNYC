@@ -48,11 +48,13 @@ import { logAudit } from "@/lib/audit";
  *     hata verir ama listing ve envanter KORUNUR (kısmi başarı).
  */
 
-/** Kişiselleştirme talimatı — iç gravür (script ile aynı metin, 30 char limit). */
+/**
+ * Kişiselleştirme talimatı — iç gravür (script ile aynı metin, 30 char limit).
+ * Etsy `instructions` alanı EN FAZLA 120 karakter (aşılırsa 400 too_long) — kısa tut.
+ */
 const PERSONALIZATION_INSTRUCTIONS =
-  "Optional. Enter the engraving for the inside of the band: a date, initials, " +
-  "coordinates, or a short phrase (up to 30 characters). Script by default, " +
-  "write BLOCK if you prefer block letters. Leave blank for no engraving.";
+  "Optional inside-band engraving, up to 30 characters. " +
+  "Script by default; type BLOCK for block letters. Blank = none.";
 
 /** Etsy custom variation slot id'leri (en fazla iki eksen). */
 const CUSTOM_SLOT_IDS = [513, 514] as const;
