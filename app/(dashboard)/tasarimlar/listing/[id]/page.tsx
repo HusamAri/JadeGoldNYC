@@ -183,6 +183,7 @@ export default async function ListingDetayPage({
             <SectionIdx n="02" name="Künye & boşluklar" />
             <ListingFieldsForm
               productId={product.id}
+              alreadyOnEtsy={product.etsy_listing_id != null}
               initial={{
                 title: product.title,
                 description: product.description,

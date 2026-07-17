@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import {
   advanceEtsySyncAction,
   etsySyncStatusAction,
+  resyncVariantsAction,
 } from "@/app/(dashboard)/ayarlar/etsy/actions";
 import type { SyncProgress, EtsySyncSummary } from "@/lib/etsy/sync";
 import { Button } from "@/components/ui/button";
@@ -40,6 +41,9 @@ export function EtsySyncButton({
   const router = useRouter();
   const [running, setRunning] = useState(false);
   const [progress, setProgress] = useState<SyncProgress | null>(null);
+  // Ana senkron bittikten sonra varyant fazı (Etsy-ayna mutabakatı) — "tek
+  // butonda her şey": listing/sipariş/yorum/ücret + VARYANTLAR tek tıkta.
+  const [variantPhase, setVariantPhase] = useState(false);
   const runningRef = useRef(false);
 
   // Çalışırken her ~1.5sn'de ilerlemeyi yokla → satır satır canlı akış hissi.
@@ -75,11 +79,23 @@ export function EtsySyncButton({
           break;
         }
         if (r.done) {
-          toast.success(
-            `Senkronize edildi: ${formatNumber(r.sales)} yeni sipariş · ${formatNumber(
-              r.items,
-            )} yeni kalem`,
-          );
+          // Ana senkron bitti → varyantları + Etsy-ayna mutabakatını çek
+          // (tek buton her şeyi çeker). Envanter büyükse tek dilimde biter
+          // (285 listing ~50sn bütçe); bitmezse bir sonraki tıkta tamamlanır.
+          setVariantPhase(true);
+          const v = await resyncVariantsAction();
+          setVariantPhase(false);
+          if (!v.ok) {
+            toast.error(v.error ?? "Varyant çekimi başarısız");
+          } else {
+            toast.success(
+              `Senkronize edildi: ${formatNumber(r.sales)} sipariş · ` +
+                `${formatNumber(r.items)} kalem · ${formatNumber(v.variants)} varyant` +
+                (v.removed > 0
+                  ? ` · ${formatNumber(v.removed)} eşleşmeyen varyant silindi`
+                  : ""),
+            );
+          }
           router.refresh();
           break;
         }
@@ -87,6 +103,7 @@ export function EtsySyncButton({
     } finally {
       runningRef.current = false;
       setRunning(false);
+      setVariantPhase(false);
     }
   }
 
@@ -98,7 +115,11 @@ export function EtsySyncButton({
     <div className="flex w-full flex-col gap-2">
       <Button onClick={onClick} disabled={running || disabled}>
         <RefreshCw className={cn("size-4", running && "animate-spin")} />
-        {running ? "Senkronize ediliyor…" : "Şimdi Senkronize Et"}
+        {running
+          ? variantPhase
+            ? "Varyantlar çekiliyor…"
+            : "Senkronize ediliyor…"
+          : "Etsy'den her şeyi çek"}
       </Button>
 
       {showFeed && (

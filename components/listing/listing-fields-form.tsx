@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { SendToEtsyButton } from "@/components/listing/send-to-etsy-button";
 
 /** Boşluk kartının odaklanabilmesi için alan id'leri (tek kaynak). */
 export const LISTING_FIELD_IDS = {
@@ -57,9 +58,13 @@ const MISSING_RING =
 export function ListingFieldsForm({
   productId,
   initial,
+  alreadyOnEtsy = false,
 }: {
   productId: string;
   initial: ListingFieldsInitial;
+  /** Listing zaten Etsy'de mi (etsy_listing_id dolu)? "Etsy'e gönder" yalnız
+   *  taslakta (false) görünür — mükerrer taslak açılmaz. */
+  alreadyOnEtsy?: boolean;
 }) {
   const router = useRouter();
   const [saving, setSaving] = useState(false);
@@ -222,10 +227,15 @@ export function ListingFieldsForm({
         <p className="text-muted-foreground text-xs">
           Amber işaretli alanlar eksik — doldurup kaydedin.
         </p>
-        <Button type="button" onClick={save} disabled={saving}>
-          {saving ? <Loader2 className="size-4 animate-spin" /> : <Save />}
-          Künyeyi kaydet
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button type="button" onClick={save} disabled={saving}>
+            {saving ? <Loader2 className="size-4 animate-spin" /> : <Save />}
+            Künyeyi kaydet
+          </Button>
+          {/* Taslağı (etsy_listing_id boş) Etsy'de DRAFT açar; zaten Etsy'de
+              olan listing'de gizlenir (mükerrer taslak önlenir). */}
+          {!alreadyOnEtsy && <SendToEtsyButton productId={productId} />}
+        </div>
       </div>
     </div>
   );
