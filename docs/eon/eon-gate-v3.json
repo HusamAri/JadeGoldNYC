@@ -1,0 +1,183 @@
+{
+  "_note": "EON v3 gate — yaln*z 34 temiz taslak (39 eksi zaten Etsy'de dokunulmus 5 aile). scripts/eon-push-drafts.ts --gate ile kullanilir; status=PASS filtrelenir, no ile [EON NN] kunyesinden urun bulunur.",
+  "_skipped_families": [
+    "02 (GLD-R-1401 star)",
+    "25 (RSG-R-1003)",
+    "28 (GLD-R-1004)",
+    "31 (WHG-R-1004)",
+    "34 (RSG-R-1004)"
+  ],
+  "catalog": "v3",
+  "listings": [
+    {
+      "no": "01",
+      "status": "PASS",
+      "sku": "GLD-R-1001"
+    },
+    {
+      "no": "03",
+      "status": "PASS",
+      "sku": "GLD-R-1801"
+    },
+    {
+      "no": "04",
+      "status": "PASS",
+      "sku": "WHG-R-1001"
+    },
+    {
+      "no": "05",
+      "status": "PASS",
+      "sku": "WHG-R-1401"
+    },
+    {
+      "no": "06",
+      "status": "PASS",
+      "sku": "WHG-R-1801"
+    },
+    {
+      "no": "07",
+      "status": "PASS",
+      "sku": "RSG-R-1001"
+    },
+    {
+      "no": "08",
+      "status": "PASS",
+      "sku": "RSG-R-1401"
+    },
+    {
+      "no": "09",
+      "status": "PASS",
+      "sku": "RSG-R-1801"
+    },
+    {
+      "no": "10",
+      "status": "PASS",
+      "sku": "GLD-R-1002"
+    },
+    {
+      "no": "11",
+      "status": "PASS",
+      "sku": "GLD-R-1402"
+    },
+    {
+      "no": "12",
+      "status": "PASS",
+      "sku": "GLD-R-1802"
+    },
+    {
+      "no": "13",
+      "status": "PASS",
+      "sku": "WHG-R-1002"
+    },
+    {
+      "no": "14",
+      "status": "PASS",
+      "sku": "WHG-R-1402"
+    },
+    {
+      "no": "15",
+      "status": "PASS",
+      "sku": "WHG-R-1802"
+    },
+    {
+      "no": "16",
+      "status": "PASS",
+      "sku": "RSG-R-1002"
+    },
+    {
+      "no": "17",
+      "status": "PASS",
+      "sku": "RSG-R-1402"
+    },
+    {
+      "no": "18",
+      "status": "PASS",
+      "sku": "RSG-R-1802"
+    },
+    {
+      "no": "19",
+      "status": "PASS",
+      "sku": "GLD-R-1003"
+    },
+    {
+      "no": "20",
+      "status": "PASS",
+      "sku": "GLD-R-1403"
+    },
+    {
+      "no": "21",
+      "status": "PASS",
+      "sku": "GLD-R-1803"
+    },
+    {
+      "no": "22",
+      "status": "PASS",
+      "sku": "WHG-R-1003"
+    },
+    {
+      "no": "23",
+      "status": "PASS",
+      "sku": "WHG-R-1403"
+    },
+    {
+      "no": "24",
+      "status": "PASS",
+      "sku": "WHG-R-1803"
+    },
+    {
+      "no": "26",
+      "status": "PASS",
+      "sku": "RSG-R-1403"
+    },
+    {
+      "no": "27",
+      "status": "PASS",
+      "sku": "RSG-R-1803"
+    },
+    {
+      "no": "29",
+      "status": "PASS",
+      "sku": "GLD-R-1404"
+    },
+    {
+      "no": "30",
+      "status": "PASS",
+      "sku": "GLD-R-1804"
+    },
+    {
+      "no": "32",
+      "status": "PASS",
+      "sku": "WHG-R-1404"
+    },
+    {
+      "no": "33",
+      "status": "PASS",
+      "sku": "WHG-R-1804"
+    },
+    {
+      "no": "35",
+      "status": "PASS",
+      "sku": "RSG-R-1404"
+    },
+    {
+      "no": "36",
+      "status": "PASS",
+      "sku": "RSG-R-1804"
+    },
+    {
+      "no": "37",
+      "status": "PASS",
+      "sku": "GLD-R-1005"
+    },
+    {
+      "no": "38",
+      "status": "PASS",
+      "sku": "GLD-R-1405"
+    },
+    {
+      "no": "39",
+      "status": "PASS",
+      "sku": "GLD-R-1805"
+    }
+  ]
+}
