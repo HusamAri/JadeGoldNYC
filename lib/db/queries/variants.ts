@@ -3,11 +3,13 @@ import { createClient } from "@/lib/supabase/server";
 /**
  * Varyant matrisi (genişlik × beden) sorgusu — 0100.
  *
- * EON alyanslarında varyantlar iki eksene yayılır: Width (2–8mm) ve
- * "Ring Size" bandı (4 sabit band). Bu sorgu `product_variants`'i 2-D matris
- * için gruplar: satırlar = Width (mm'ye göre artan), sütunlar = sabit sıralı
- * beden bandları. Her hücre fiyat + gram + para birimi taşır. Org kapsamı
- * kardeş sorgularla (getListingDetail) aynı desen: RLS istemcisi + product_id.
+ * EON alyanslarında varyantlar iki eksene yayılır: Width (mm, katalog v2'de
+ * kalınlık katlanmış: "6mm · 1.5mm thick") ve "Ring Size" (eski 4 sabit band
+ * VEYA katalog v2 tek-sayı bedenler "4".."16" — sütunlar veriden türer).
+ * Bu sorgu `product_variants`'i 2-D matris için gruplar: satırlar = Width
+ * (mm'ye göre artan), sütunlar = band/beden kanonik sırada. Her hücre fiyat +
+ * gram + para birimi taşır. Org kapsamı kardeş sorgularla (getListingDetail)
+ * aynı desen: RLS istemcisi + product_id.
  */
 
 /** Beden bandları — sabit sütun sırası (üründen bağımsız kanonik sıra). */
@@ -78,9 +80,32 @@ export async function getProductVariantMatrix(
   }
 
   const rows = (data ?? []) as VariantMatrixDbRow[];
-  const bandIndex = new Map<string, number>(
+
+  // Sütunlar: veride ne varsa o — eski 4 sabit band VEYA yeni tek-sayı bedenler
+  // (katalog v2: "4".."16"). Tek-sayı bedenler sayısal artan, bandlar kanonik
+  // sırada; karışık/bilinmeyen değerler alfabetik sona düşer.
+  const seen = new Set<string>();
+  for (const v of rows) {
+    const band = (v.properties ?? {})["Ring Size"];
+    if (band != null && band !== "") seen.add(band);
+  }
+  const legacyOrder = new Map<string, number>(
     RING_SIZE_BANDS.map((b, i) => [b, i]),
   );
+  const bands = [...seen].sort((a, b) => {
+    const la = legacyOrder.get(a);
+    const lb = legacyOrder.get(b);
+    if (la != null && lb != null) return la - lb;
+    if (la != null) return -1;
+    if (lb != null) return 1;
+    const na = Number(a);
+    const nb = Number(b);
+    if (!Number.isNaN(na) && !Number.isNaN(nb)) return na - nb;
+    if (!Number.isNaN(na)) return -1;
+    if (!Number.isNaN(nb)) return 1;
+    return a.localeCompare(b);
+  });
+  const bandIndex = new Map<string, number>(bands.map((b, i) => [b, i]));
 
   // Genişlik anahtarına göre grupla; her grup band-indeksli hücre dizisi tutar.
   const byWidth = new Map<string, VariantMatrixRow>();
@@ -109,7 +134,7 @@ export async function getProductVariantMatrix(
       row = {
         width,
         widthMm: widthToMm(width),
-        cells: RING_SIZE_BANDS.map(() => null),
+        cells: bands.map(() => null),
       };
       byWidth.set(width, row);
     }
@@ -124,11 +149,12 @@ export async function getProductVariantMatrix(
   const sortedRows = [...byWidth.values()].sort((a, b) => {
     const am = Number.isNaN(a.widthMm) ? Infinity : a.widthMm;
     const bm = Number.isNaN(b.widthMm) ? Infinity : b.widthMm;
-    return am - bm;
+    // Aynı mm'de kalınlık etiketi sıralar ("6mm · 1.5mm" < "6mm · 2.0mm").
+    return am - bm || a.width.localeCompare(b.width);
   });
 
   return {
-    bands: RING_SIZE_BANDS,
+    bands,
     rows: sortedRows,
     currency,
     hasWeights,
