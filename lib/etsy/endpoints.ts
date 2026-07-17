@@ -39,6 +39,12 @@ export const etsyPaths = {
   // uploadListingImage (ürün fotoğrafı yükleme, multipart) — listings_w gerekir.
   listingImages: (shopId: number | string, listingId: number | string) =>
     `/shops/${shopId}/listings/${listingId}/images`,
+  // Kişiselleştirme (2025 migrasyonu): legacy is_personalizable/personalization_*
+  // create alanları KALDIRILDI. Listing oluşturulduktan sonra bu uca JSON
+  // `personalization_questions` dizisi POST edilir. Çoklu soru için query
+  // `supports_multiple_personalization_questions=true` gerekir.
+  listingPersonalization: (shopId: number | string, listingId: number | string) =>
+    `/shops/${shopId}/listings/${listingId}/personalization`,
   // Mağaza bölümleri (başlık + aktif listing sayısı).
   shopSections: (shopId: number | string) => `/shops/${shopId}/sections`,
   // Kargo profilleri (işlem süresi, menşei).
