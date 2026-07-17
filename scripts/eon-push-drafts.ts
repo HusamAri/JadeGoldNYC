@@ -283,8 +283,9 @@ async function main() {
         readiness_state_id: readinessStateId ?? undefined,
       }],
     }));
-    await client.request("PUT", etsyPaths.listingInventory(listing.listing_id), {
+    await client.request("PUT", etsyPaths.listingInventory(listing.listing_id) + "?legacy=false", {
       products,
+      readiness_state_on_property: [],
       price_on_property: [513, 514],
       quantity_on_property: [],
       sku_on_property: [513, 514],

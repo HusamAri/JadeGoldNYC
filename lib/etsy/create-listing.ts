@@ -545,13 +545,22 @@ export async function createDraftListingFromProduct(
           ],
         };
       });
-      await client.request("PUT", etsyPaths.listingInventory(listingId), {
-        products: inventoryProducts,
-        // Her tam kombinasyon benzersiz fiyat/sku taşır → kullanılan tüm slotlar.
-        price_on_property: usedSlots,
-        quantity_on_property: [],
-        sku_on_property: usedSlots,
-      });
+      // legacy=false: Etsy 2025 envanter modeli — offering-düzeyi
+      // readiness_state_id'yi yalnız bu modda kabul eder (yoksa "All offerings
+      // need readiness state"). readiness_state_on_property=[] → işlem profili
+      // hiçbir property'ye göre DEĞİŞMEZ (tüm offering'ler aynı made-to-order).
+      await client.request(
+        "PUT",
+        etsyPaths.listingInventory(listingId) + "?legacy=false",
+        {
+          products: inventoryProducts,
+          // Her tam kombinasyon benzersiz fiyat/sku taşır → kullanılan tüm slotlar.
+          price_on_property: usedSlots,
+          quantity_on_property: [],
+          sku_on_property: usedSlots,
+          readiness_state_on_property: [],
+        },
+      );
     } catch (e) {
       // Listing açıldı ama envanter yazılamadı — KISMI başarı; kullanıcı düzeltsin.
       return {
