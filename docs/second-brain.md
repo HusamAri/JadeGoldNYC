@@ -196,3 +196,27 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
   silme REDDEDİLİR (kayıp önlenir), yalnız owner/admin, iki adımlı UI onayı ve
   `listings_d` yoksa Etsy 403 → yeniden-bağlan sinyali. Panel kaydı SİLİNMEZ:
   `products.etsy_deleted_at` işaretlenir (geriye dönük iz korunur), 404 idempotent.
+- **Gömülü prose regex ile temizlenmez, yeniden yazılır (2026-07):** 39 açıklamadan
+  "iki kalınlık" dilini sökmek gerekti; kalınlık cümleleri (131 varyant) genişlik
+  rehberliğiyle iç içe örülüydü → regex düzyazıyı bozardı. Çözüm: LLM ile yeniden
+  yaz, sonra KOD-tabanlı doğrulama koş (leak sayacı SQL: `ilike '%2.0mm%'`, `%two
+  thick%`, `%whole US%` = 0; `%whole and half%` = 39). Ders: yapısal token (SKU,
+  property) regex'le; anlam taşıyan prose yeniden-yazımla değişir; ikisini de canlı
+  sayaçla doğrula, "kod doğru görünüyor" ile bitirme.
+- **Geri-dönüşü zor katalog transform'unu üretici+migration+canlı-sayaç üçlüsüyle bitir (2026-07):**
+  EON v2→v3 (yarım beden ekle, 2.0mm kaldır) DB'ye MCP ile parçalı uygulandı;
+  ama iş "repo'ya inmeden bitmez" (önceki ders). Kural: (1) saf üretici
+  (`gen_catalog_v3.py`, yalnız gram tablosu okur, iç assert'lerle 10.725/275/SKU
+  tekilliği) ÜRETİMİ tek kaynakta tutar; (2) `0101` migration canlıya uygulanan
+  SQL'in AYNISINI taşır (preview provizyonu + kayıt) — Bölüm A varyant transform,
+  Bölüm B 39 metin UPDATE; (3) üretici çıktısı canlı DB ile birebir çapraz-doğrulanır
+  (örneklem gram/fiyat + global min/max = DB). Ek: iki metin batch'ini `cat`'lerken
+  dosya sonu newline'ı yoksa son+ilk statement tek satıra yapışır (`grep -c '^update'`
+  39 yerine 38 verdi) → araya `printf '\n'` koy, sayımla doğrula.
+- **"Breakeven üstü" ≠ "kârlı" — marjı ayrı kanıtla (2026-07):** Kullanıcı "ama kârla
+  satıyoruz değil mi?" diye sordu; breakeven kontrolü yalnız melt tabanını (ham metal
+  + %10) geçtiğini gösterir. Gerçek kâr = satış − HAM altın maliyeti (breakeven×0.90)
+  − kargo payı; ayrı SQL ile hesapla (min/ort/max marj + zararına satan sayısı = 0).
+  Ayrıca dürüst ol: bu marj metal+kargo üstüdür, Etsy ücreti (~%9-10) + işçilik
+  düşülmemiştir — "kârlı" derken kapsamı söyle. Vaka: min %24.9 (yıldız, dar genişlik),
+  ort %35.7; 0 zararına.

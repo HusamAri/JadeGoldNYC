@@ -1,10 +1,12 @@
 # EON 16-Listing Yayın Kiti (2026-07-16)
 
-> **⚠️ GÜNCEL KATALOG: v2 — `katalog-v2.md`.** Aşağıdaki 16-listing kiti (v1)
-> **emekli**dir: karat başına ayrı listing + tam varyant matrisi (39 listing ×
-> 286 varyant) ile değiştirildi. Yeni yapı, SKU şeması, gram düzeltmeleri, fiyat
-> kalibrasyonu, SEO şablonu ve DB runbook'u için **`docs/eon/katalog-v2.md`**'yi
-> oku. Bu dosya yalnız tarihsel kayıt olarak durur.
+> **⚠️ GÜNCEL KATALOG: v3 — `katalog-v3.md`.** 39 karat-ayrık listing korunur;
+> v3 transform'u **yarım bedenler ekler** (US 4–16 tam+yarım = 25) ve **2.0mm
+> kalınlığı kaldırır** (tek 1.5mm) → **275 varyant/listing, 10.725 toplam**;
+> ayrıca 39 açıklamadaki iki-kalınlık dilini temizler. Yapı temeli (SKU aile
+> düzeni, gram tabloları, fiyat kalibrasyonu, SEO şablonu) v2'de tanımlıdır:
+> **`docs/eon/katalog-v2.md`**. Aşağıdaki 16-listing kiti (v1) **emekli**dir;
+> yalnız tarihsel kayıt olarak durur.
 
 EON Fine Jewelry'nin 16-listing lansmanının **tam yayın kiti** — karar, onay paketi,
 push girdisi ve QA motoru burada yaşar. Konteyner/scratchpad geçicidir; bu klasör
