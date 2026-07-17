@@ -88,10 +88,10 @@ function findTaxonomy(nodes: TaxNode[], name: string): TaxNode | null {
   return null;
 }
 
+// Etsy `instructions` alanı EN FAZLA 120 karakter (aşılırsa 400 too_long) — kısa tut.
 const PERSONALIZATION =
-  "Optional. Enter the engraving for the inside of the band: a date, initials, " +
-  "coordinates, or a short phrase (up to 30 characters). Script by default, " +
-  "write BLOCK if you prefer block letters. Leave blank for no engraving.";
+  "Optional inside-band engraving, up to 30 characters. " +
+  "Script by default; type BLOCK for block letters. Blank = none.";
 
 async function main() {
   const gate = JSON.parse(readFileSync(GATE, "utf8")) as { listings: GateRow[] };
