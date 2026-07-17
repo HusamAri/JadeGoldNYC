@@ -77,10 +77,11 @@ export async function getGoldCostAnalysis(
     .maybeSingle();
   // Hata sessizce "varsayılan fiyat"a dönüşmesin — en azından yüzeye çıkar.
   if (orgErr) console.error("[gold-cost] gold_settings sorgusu:", orgErr.message);
-  const gs = (orgData as { gold_settings?: { purchase_price_14k_cents?: number; purchase_price_10k_cents?: number } } | null)?.gold_settings;
+  const gs = (orgData as { gold_settings?: { purchase_price_14k_cents?: number; purchase_price_10k_cents?: number; purchase_price_18k_cents?: number } } | null)?.gold_settings;
   const customPurchasePrices: Record<KaratType, number> = {
     "14K": gs?.purchase_price_14k_cents ?? PURCHASE_PRICE_CENTS_PER_GRAM["14K"],
     "10K": gs?.purchase_price_10k_cents ?? PURCHASE_PRICE_CENTS_PER_GRAM["10K"],
+    "18K": gs?.purchase_price_18k_cents ?? PURCHASE_PRICE_CENTS_PER_GRAM["18K"],
   };
 
   type RawRow = {
@@ -204,6 +205,14 @@ function buildSummary(items: SoldItemWithCost[]): GoldCostSummary {
       avgLaborMarkup: 0,
     },
     "14K": {
+      count: 0,
+      revenueCents: 0,
+      goldCostCents: 0,
+      laborCostCents: 0,
+      purchaseCostCents: 0,
+      avgLaborMarkup: 0,
+    },
+    "18K": {
       count: 0,
       revenueCents: 0,
       goldCostCents: 0,
