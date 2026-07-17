@@ -21,6 +21,10 @@ export const etsyPaths = {
   // getListingsByShop — includes (Images vb.) yalnız bu uçta desteklenir;
   // state=active ile aktif listeler döner.
   shopListings: (shopId: number | string) => `/shops/${shopId}/listings`,
+  // createDraftListing (POST, form-encoded) — panel taslağını Etsy'de DRAFT
+  // listing olarak açar. shopListings ile aynı uç; niyet netliği için ayrı ad.
+  // listings_w kapsamı gerekir.
+  createListing: (shopId: number | string) => `/shops/${shopId}/listings`,
   reviews: (shopId: number | string) => `/shops/${shopId}/reviews`,
   ledgerEntries: (shopId: number | string) =>
     `/shops/${shopId}/payment-account/ledger-entries`,
