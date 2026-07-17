@@ -57,6 +57,23 @@ const PERSONALIZATION_INSTRUCTIONS =
 /** Etsy custom variation slot id'leri (en fazla iki eksen). */
 const CUSTOM_SLOT_IDS = [513, 514] as const;
 
+/**
+ * Kargo paketi ölçüleri — yüzük kutusu + koruyucu zarf (kullanıcı kararı).
+ * Etsy hesaplı (calculated) kargo profili listing'de item_weight + boyut ŞART
+ * koşar (yoksa create 400). Bu değerler listing'e yazılınca create her profil
+ * tipiyle çalışır. Kargo bedeli fiyata gömülü (free shipping) olduğundan bu
+ * ölçüler yalnız Etsy'nin zorunlu alanını doldurur; ABD ücretsiz kalır.
+ * Tüm yüzükler için sabit: hafif altın yüzük + sunum kutusu + kabarcıklı zarf.
+ */
+const PARCEL = {
+  weight: 3,
+  weight_unit: "oz",
+  length: 4,
+  width: 4,
+  height: 2,
+  dimensions_unit: "in",
+} as const;
+
 /** Açıklamanın sonundaki dahili not bloğunu söker: "\n\n---\n[EON NN · ...]".
  *  scripts/eon-push-drafts.ts stripInternalTrailer ile BİREBİR aynı desen. */
 export function stripInternalTrailer(desc: string): string {
@@ -438,6 +455,14 @@ export async function createDraftListingFromProduct(
       return_policy_id: profiles.returnPolicyId ?? undefined,
       // Etsy 2025 migrasyonu: fiziksel listing'de işlem profili ZORUNLU.
       readiness_state_id: profiles.readinessStateId,
+      // Paket ağırlık + boyut (yüzük kutusu) — hesaplı profil bunları şart
+      // koşar; free shipping'te fiyata gömülü olduğundan alıcıya yansımaz.
+      item_weight: PARCEL.weight,
+      item_weight_unit: PARCEL.weight_unit,
+      item_length: PARCEL.length,
+      item_width: PARCEL.width,
+      item_height: PARCEL.height,
+      item_dimensions_unit: PARCEL.dimensions_unit,
       tags: tags.join(","),
       materials: materials.join(","),
       is_personalizable: "true",
