@@ -92,7 +92,17 @@ girdisi olarak kalıcı (aşağı bkz.).
 ## 4. Fiyatlandırma
 
 **Formül:** `fiyat = gram(karat, genişlik, kalınlık, beden) × hedef-$/g(karat, sınıf)`,
-$5 adımına **yukarı** yuvarlanır. Her fiyat karat breakeven tabanının üstündedir.
+$5 adımına **yukarı** yuvarlanır, **+ $10 sabit kargo payı** eklenir. Her fiyat
+karat breakeven tabanının üstündedir.
+
+**Kargo payı (kullanıcı kararı):** mağaza **ücretsiz kargo** sunar (Etsy aramada
+ödüllendirir + açıklamalardaki "free tracked shipping" vaadiyle uyumlu). Ücretsiz
+kargoda posta bedelini satıcı üstlenir → her varyant fiyatına **$10 sabit** gömülür
+(yüzük hafif, kargo pratikte sabit; ABD takipli posta ~$5-6 + gömülü tutara Etsy/
+ödeme ücreti + tampon; `SHIPPING_ALLOWANCE_CENTS`). Etsy'de **manuel (sabit/ücretsiz)
+kargo profili** kurulur; kod hesaplı (calculated) yerine `profile_type="manual"`
+profilini TERCİH eder (`resolveShopProfiles`) — hesaplı profil item_weight ister ve
+alıcıdan posta alır (istenmez).
 
 **Spot (üretim anı):** $4005 / troy ons → saf $128.76/g.
 Pure $/g = spot ÷ 31.1035; melt $/g = pure × saflık (10K 0.4167 · 14K 0.585 · 18K 0.75).

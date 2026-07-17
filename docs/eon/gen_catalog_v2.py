@@ -114,9 +114,15 @@ def ppg_usd(l):
     is_star = l["family"] == pricing.get("star_family")
     return pk["star_target_ppg_usd"] if is_star else pk["standard_target_ppg_usd"]
 
+# Ücretsiz kargo → posta bedeli fiyata gömülür (kullanıcı kararı). Yüzük hafif,
+# kargo pratikte sabit; ABD takipli posta ~$5-6 + gömülü tutara Etsy/ödeme
+# ücreti + tampon. $5 katı korunur.
+SHIPPING_ALLOWANCE_CENTS = 10_00
+
 def price_cents(grams, ppg):
     raw = grams * ppg * 100.0
-    return int(math.ceil(raw / 500.0) * 500)  # $5 adımına YUKARI
+    gold = math.ceil(raw / 500.0) * 500  # $5 adımına YUKARI
+    return int(gold + SHIPPING_ALLOWANCE_CENTS)
 
 all_skus = set()
 total_variants = 0

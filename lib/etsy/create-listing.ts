@@ -162,23 +162,34 @@ export async function resolveShopProfiles(
 ): Promise<ShopProfiles> {
   let shippingProfileId: number | null = null;
 
-  // 1) Panel tablosu (org kilidi) — senkron doldurmuşsa canlı çağrıdan kaçınırız.
-  const { data: stored } = await admin
-    .from("etsy_shipping_profiles")
-    .select("profile_id")
-    .eq("org_id", orgId)
-    .order("updated_at", { ascending: false })
-    .limit(1)
-    .maybeSingle();
-  const storedId = (stored as { profile_id: number | null } | null)?.profile_id;
-  if (storedId != null) shippingProfileId = Number(storedId);
-
-  // 2) Panelde yoksa canlı GET.
-  if (shippingProfileId == null) {
+  // Kargo profili — SABİT/manuel (profile_type="manual") TERCİH edilir.
+  // Neden: hesaplı (calculated) profil alıcıdan ağırlığa göre posta alır VE
+  // listing'de item_weight/boyut şart koşar (yoksa create 400). Açıklamalar
+  // "free shipping" vaat ettiğinden ve kargo bedeli fiyata gömüldüğünden
+  // sabit/ücretsiz profil doğru olandır. Canlı GET profile_type taşır; manuel
+  // yoksa panel-stored / ilk profile düşülür (o org'da calculated tek seçenekse
+  // create Etsy'nin net ağırlık hatasını döndürür — kullanıcı yönlendirilir).
+  try {
     const sp = await client.get<{
-      results: { shipping_profile_id: number }[];
+      results: { shipping_profile_id: number; profile_type?: string | null }[];
     }>(etsyPaths.shippingProfiles(shopId));
-    shippingProfileId = sp.results?.[0]?.shipping_profile_id ?? null;
+    const profiles = sp.results ?? [];
+    const manual = profiles.find((p) => p.profile_type === "manual");
+    shippingProfileId = (manual ?? profiles[0])?.shipping_profile_id ?? null;
+  } catch {
+    // Canlı okunamadı → panel tablosuna düş (tip bilgisi yok).
+  }
+  if (shippingProfileId == null) {
+    const { data: stored } = await admin
+      .from("etsy_shipping_profiles")
+      .select("profile_id")
+      .eq("org_id", orgId)
+      .order("updated_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    const storedId = (stored as { profile_id: number | null } | null)
+      ?.profile_id;
+    if (storedId != null) shippingProfileId = Number(storedId);
   }
 
   // İade politikası — okunamazsa null (yut, create yine denenir).
