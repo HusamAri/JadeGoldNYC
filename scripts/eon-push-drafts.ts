@@ -235,10 +235,8 @@ async function main() {
       item_dimensions_unit: "in",
       tags: (prod.tags as string[]).join(","),
       materials: ((prod.materials as string[]) ?? []).join(","),
-      is_personalizable: "true",
-      personalization_is_required: "false",
-      personalization_char_count_max: 30,
-      personalization_instructions: PERSONALIZATION,
+      // legacy is_personalizable/personalization_* Etsy 2025'te create'te
+      // DEPRECATED — create sonrası ayrı personalization ucundan yazılır (aşağıda).
       should_auto_renew: "false",
       type: "physical",
     };
@@ -246,6 +244,29 @@ async function main() {
       "POST", etsyPaths.shopListings(shopId), createForm,
     );
     console.log(`✓ ${g.no}: taslak açıldı #${listing.listing_id} (state=${listing.state})`);
+
+    // 1b) Kişiselleştirme (iç gravür) — ayrı uç (2025 migrasyonu).
+    try {
+      await client.request(
+        "POST",
+        etsyPaths.listingPersonalization(shopId, listing.listing_id) +
+          "?supports_multiple_personalization_questions=true",
+        {
+          personalization_questions: [
+            {
+              question_type: "text_input",
+              question_text: "Inside band engraving (optional)",
+              instructions: PERSONALIZATION,
+              required: false,
+              max_allowed_characters: 30,
+            },
+          ],
+        },
+      );
+      console.log(`  kişiselleştirme (gravür) eklendi`);
+    } catch (e) {
+      console.warn(`  kişiselleştirme eklenemedi: ${e instanceof Error ? e.message : String(e)}`);
+    }
 
     // 2) Varyasyon envanteri: Width (513) × Ring Size (514), ikisi de fiyat taşır.
     const products = variants.map((v) => ({

@@ -465,10 +465,8 @@ export async function createDraftListingFromProduct(
       item_dimensions_unit: PARCEL.dimensions_unit,
       tags: tags.join(","),
       materials: materials.join(","),
-      is_personalizable: "true",
-      personalization_is_required: "false",
-      personalization_char_count_max: 30,
-      personalization_instructions: PERSONALIZATION_INSTRUCTIONS,
+      // NOT: legacy is_personalizable/personalization_* alanları Etsy 2025'te
+      // create'te DEPRECATED — create sonrası ayrı personalization ucundan yazılır.
       should_auto_renew: "false",
       state: "draft",
       type: "physical",
@@ -488,6 +486,34 @@ export async function createDraftListingFromProduct(
   }
 
   const url = `https://www.etsy.com/listing/${listingId}`;
+
+  // ── 1b) Kişiselleştirme (iç gravür) — 2025 migrasyonu: legacy create alanları
+  // yerine ayrı uç. Tek metin sorusu (opsiyonel, 30 char). Başarısız olursa
+  // listing yaşar; uyarı eklenir (buton "gravür eklenemedi" der, elle eklenebilir).
+  try {
+    await client.request(
+      "POST",
+      etsyPaths.listingPersonalization(shopId, listingId) +
+        "?supports_multiple_personalization_questions=true",
+      {
+        personalization_questions: [
+          {
+            question_type: "text_input",
+            question_text: "Inside band engraving (optional)",
+            instructions: PERSONALIZATION_INSTRUCTIONS,
+            required: false,
+            max_allowed_characters: 30,
+          },
+        ],
+      },
+    );
+  } catch (e) {
+    warnings.push(
+      `Kişiselleştirme (iç gravür) eklenemedi: ${
+        e instanceof Error ? e.message : String(e)
+      }. Listing açıldı; gravür alanını Etsy'de elle ekleyebilirsiniz.`,
+    );
+  }
 
   // ── 2) Envanter PUT (yalnız gerçek varyasyon varsa). ──────────────────────
   // Değişen property yoksa (tek fiyat/tek varyant) createListing'in otomatik
