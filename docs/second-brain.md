@@ -6,6 +6,33 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
 
 ## Süreç dersleri
 
+- **Dış API migrasyonunu hata mesajından adım adım çöz, tek listing'de kanıtla
+  (2026-07):** Etsy 2025 listing-create sözleşmesi 5 yerde değişti; her düzeltme
+  bir sonraki 400'ü açtı — (1) create'te `readiness_state_id` ZORUNLU, (2) hesaplı
+  kargo profili `item_weight`+boyut ister → sabit/manuel profil TERCİH + paket
+  ölçüsü, (3) legacy `is_personalizable/personalization_*` DEPRECATED → ayrı
+  `/listings/{id}/personalization` ucu, (4) envanter PUT her offering'de
+  `readiness_state_id` + `?legacy=false` + `readiness_state_on_property=[]`. Kural:
+  eğitim verisi bayat olabilir — dış API'yi CANLI hata metniyle sür; her create
+  alanı değişmiş olabilir; migration/tutorial dokümanını fetch'le teyit et; ilk
+  canlı gönderimi TEK listing'de dene (kısmi başarı orphan taslak bırakır: create
+  başarılı + envanter patlar → panelde etsy_listing_id yazılmaz → retry duplicate
+  açar; kullanıcı orphan'ları elle siler).
+- **Ücretsiz kargo = bedel fiyata gömülür (2026-07):** "free shipping" satıcının
+  postayı üstlenmesidir → her varyant fiyatına sabit kargo payı (\$10; yüzük hafif,
+  kargo ~sabit) eklenir. Ayrıca profil ABD'de ücretsiz olmalı yoksa alıcı çift öder
+  (fiyattaki pay + checkout postası). Metod: `SHIPPING_ALLOWANCE_CENTS` hem üretici
+  Python'da hem MASTER SQL fiyat formülünde (`*500 + 1000`) — ikisi ayrı yer, ikisini
+  de güncelle (yıldız ayrı UPDATE'le girmişti, master eksik kalmıştı; yakalandı).
+- **Büyük seed'i idempotent migration + tek uygulama ile bas, sadakati uzunlukla
+  doğrula (2026-07):** ~120KB metin MCP execute_sql'e elle parça parça yapıştırmak
+  token-israfı + hata riski. Doğru: kendi kendine yeten idempotent migration
+  (`0100`: staging IF NOT EXISTS, metin on-conflict upsert, master NOT EXISTS ile
+  zaten-canlı yıldızı atlar, cleanup) tek/az çağrıda uygula; SONRA her açıklamanın
+  DB uzunluğunu kaynak JSON ile karşılaştır (reprodüksiyon drift'i yakalar — 38/39
+  birebir, yıldız eski koşudandı → kanonik sürümle eşitlendi).
+
+
 - **Paralel iş kolu kontrolü (2026-07):** Bir özellik kurmadan ÖNCE `git fetch` +
   `origin/main`'i incele — aynı özellik paralel oturumda çoktan (hatta daha iyi)
   eklenmiş olabilir. Vaka: $/gram pazar motoru iki kez yazıldı; main'deki üstündü,
