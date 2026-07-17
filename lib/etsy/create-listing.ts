@@ -105,14 +105,54 @@ export async function resolveWeddingBandTaxonomyId(
 export interface ShopProfiles {
   shippingProfileId: number | null;
   returnPolicyId: number | null;
+  /** İşlem profili (readiness state) — Etsy fiziksel üründe zorunlu. */
+  readinessStateId: number | null;
 }
 
 /**
- * Kargo profili + iade politikası çözümü:
+ * Bir işlem profili (readiness state) çözer; yoksa oluşturur. Etsy 2025
+ * migrasyonundan beri fiziksel listing `readiness_state_id` ZORUNLU. Mevcut
+ * tanımlardan `made_to_order` tercih edilir (listinglerimiz sipariş üzerine);
+ * yoksa ilk tanım; hiç yoksa made-to-order 5–7 gün oluşturulur (kargo metniyle
+ * tutarlı). Okunamaz/oluşturulamazsa null döner (create adımı net hata verir).
+ */
+async function resolveReadinessStateId(
+  client: EtsyClient,
+  shopId: number,
+): Promise<number | null> {
+  try {
+    const rs = await client.get<{
+      results?: { readiness_state_id: number; readiness_state: string }[];
+    }>(etsyPaths.readinessStateDefinitions(shopId));
+    const defs = rs.results ?? [];
+    const found =
+      defs.find((d) => d.readiness_state === "made_to_order")
+        ?.readiness_state_id ?? defs[0]?.readiness_state_id;
+    if (found != null) return found;
+    // Hiç tanım yok → made-to-order 5–7 gün oluştur (idempotent değil ama yalnız
+    // tanım hiç yoksa çalışır; sonraki çağrılar mevcut tanımı bulur).
+    const created = await client.requestForm<{ readiness_state_id: number }>(
+      "POST",
+      etsyPaths.readinessStateDefinitions(shopId),
+      {
+        readiness_state: "made_to_order",
+        min_processing_time: 5,
+        max_processing_time: 7,
+      },
+    );
+    return created.readiness_state_id ?? null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Kargo profili + iade politikası + işlem profili çözümü:
  *  - Kargo: önce panelin `etsy_shipping_profiles` tablosundan (org kilidi) İLK
  *    profil; yoksa canlı GET shippingProfiles ilk kayıt.
  *  - İade: canlı GET returnPolicies ilk kayıt (okunamzsa null — Etsy fiziksel
  *    üründe iade politikası ister ama create adımı yine denenir).
+ *  - İşlem profili: resolveReadinessStateId (mevcut made_to_order / ilk / oluştur).
  */
 export async function resolveShopProfiles(
   admin: SupabaseClient,
@@ -152,7 +192,9 @@ export async function resolveShopProfiles(
     returnPolicyId = null;
   }
 
-  return { shippingProfileId, returnPolicyId };
+  const readinessStateId = await resolveReadinessStateId(client, shopId);
+
+  return { shippingProfileId, returnPolicyId, readinessStateId };
 }
 
 /** Panel varyantı (create için gereken alt küme). */
@@ -354,6 +396,16 @@ export async function createDraftListingFromProduct(
       error: "Mağazada kargo profili bulunamadı — Etsy'de bir profil oluşturun.",
     };
   }
+  if (profiles.readinessStateId == null) {
+    return {
+      ok: false,
+      step: "create",
+      error:
+        "Mağazada işlem profili (processing profile) yok ve oluşturulamadı — " +
+        "Etsy Shop Manager > Settings > Shipping'ten made-to-order bir işlem " +
+        "süresi ekleyin, sonra tekrar deneyin.",
+    };
+  }
 
   const tags = sanitizeTags(product.tags);
   const materials = sanitizeMaterials(product.materials);
@@ -373,6 +425,8 @@ export async function createDraftListingFromProduct(
       taxonomy_id: taxonomyId,
       shipping_profile_id: profiles.shippingProfileId,
       return_policy_id: profiles.returnPolicyId ?? undefined,
+      // Etsy 2025 migrasyonu: fiziksel listing'de işlem profili ZORUNLU.
+      readiness_state_id: profiles.readinessStateId,
       tags: tags.join(","),
       materials: materials.join(","),
       is_personalizable: "true",
