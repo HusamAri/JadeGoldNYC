@@ -279,10 +279,13 @@ async function main() {
         price: (v.price_cents ?? 0) / 100,
         quantity: v.quantity ?? QTY,
         is_enabled: true,
+        // Etsy 2025: her offering'in işlem profili olmalı.
+        readiness_state_id: readinessStateId ?? undefined,
       }],
     }));
-    await client.request("PUT", etsyPaths.listingInventory(listing.listing_id), {
+    await client.request("PUT", etsyPaths.listingInventory(listing.listing_id) + "?legacy=false", {
       products,
+      readiness_state_on_property: [],
       price_on_property: [513, 514],
       quantity_on_property: [],
       sku_on_property: [513, 514],
