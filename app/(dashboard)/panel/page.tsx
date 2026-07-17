@@ -38,6 +38,7 @@ import { KpiCard } from "@/components/kpi-card";
 import { WhatsNew } from "@/components/whats-new";
 import { AlertCenterCard } from "@/components/alert-center";
 import { AlertBoard3D } from "@/components/alert-board-3d";
+import { AlertResolutionTracker } from "@/components/panel/alert-resolution-tracker";
 import { MarketPriceAlertsCard } from "@/components/market-price-alerts-card";
 import { getMarketPriceAlerts } from "@/lib/db/queries/market-alerts";
 import { PeriodSelector } from "@/components/period-selector";
@@ -650,6 +651,9 @@ async function AlertsSection({ orgId }: { orgId: string }) {
   const alertCenter = await getAlertCenter(orgId);
   return (
     <>
+      {/* Görsel çıktı yok: o an açık uyarıları izler, kaybolanları (çözülen)
+          Görevler'e TAMAMLANMIŞ görev olarak yazar (şirket hafızası izi). */}
+      <AlertResolutionTracker alerts={alertCenter.alerts} />
       <AlertBoard3D data={alertCenter} />
       <AlertCenterCard data={alertCenter} />
     </>

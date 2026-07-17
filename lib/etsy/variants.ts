@@ -4,10 +4,6 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { EtsyClient } from "@/lib/etsy/client";
 import { getListingInventory } from "@/lib/etsy/inventory";
 import {
-  mintSingleItemSku,
-  NON_INVENTORY_LISTING_IDS,
-} from "@/lib/etsy/sku";
-import {
   etsyMoneyToCents,
   type EtsyInventoryProduct,
   type EtsyPropertyValue,
@@ -46,20 +42,9 @@ function toRows(
   products: EtsyInventoryProduct[],
 ) {
   const live = products.filter((p) => !p.is_deleted);
-  // Tek-parça listing SKU'suz yaşayabilir — SKU'suz envanteri düşürmek bu
-  // listing'i varyantsız (ve evrensel anahtarsız) bırakıyordu (0086 kök
-  // nedeni). Tek canlı ürünlü + SKU'suz envantere deterministik SKU basılır;
-  // formül senkron/backfill ile aynı olduğundan upsert (org_id,sku) kararlıdır.
-  if (
-    live.length === 1 &&
-    (live[0].sku ?? "").trim() === "" &&
-    !NON_INVENTORY_LISTING_IDS.has(listing.etsy_listing_id)
-  ) {
-    live[0] = {
-      ...live[0],
-      sku: mintSingleItemSku(listing.title, listing.etsy_listing_id),
-    };
-  }
+  // Saf-Etsy kuralı (kullanıcı): panel Etsy'yi BİREBİR yansıtır — Etsy SKU'yu
+  // ne veriyorsa o. Mint (panel-üretimi yedek SKU) KALDIRILDI: Etsy'de SKU
+  // yoksa panelde de varyant satırı oluşmaz. Yalnız SKU'lu offering'ler yazılır.
   return live
     .filter((p) => (p.sku ?? "").trim() !== "")
     .map((p) => {
@@ -128,24 +113,27 @@ export async function syncListingVariants(
     if (Date.now() > deadline) break;
     try {
       const inv = await getListingInventory(client, listing.etsy_listing_id);
-      const rows = toRows(orgId, listing, inv.products ?? []);
-      result.skipped += (inv.products ?? []).length - rows.length;
+      const etsyProducts = inv.products ?? [];
+      const rows = toRows(orgId, listing, etsyProducts);
+      result.skipped += etsyProducts.length - rows.length;
       if (rows.length > 0) {
         const { error } = await admin
           .from("product_variants")
           .upsert(rows, { onConflict: "org_id,sku" });
         if (error) throw new Error(error.message);
         result.variants += rows.length;
+      }
 
-        // Etsy-ayna mutabakatı (kullanıcı kuralı: eşleşmeyen varyant kalmaz).
-        // Bu üründe Etsy'nin ARTIK döndürmediği SKU'lu varyantlar silinir.
-        // keepSkus = bu turda Etsy envanterinden yazılan SKU seti (mint dahil —
-        // tek-parça Etsy-boş SKU'da mint deterministik anahtardır).
-        // GÜVENLİK: yalnız rows.length > 0 iken (envanter kesin okundu) çalışır;
-        // geçici hata/boş yanıtta silme yapılmaz (transient wipe önlenir).
-        // ID-bazlı silme: Etsy SKU'ları kullanıcı-tanımlı olabilir (virgül/
-        // parantez), o yüzden in-listesini SKU metniyle kurmak yerine silinecek
-        // satırların UUID'leri JS'te hesaplanır (enjeksiyon/kaçış riski yok).
+      // Etsy-ayna mutabakatı (kullanıcı kuralı: eşleşmeyen varyant kalmaz).
+      // Etsy envanteri KESİN okunduysa (getListingInventory throw etmedi ve en
+      // az bir ürün döndü), bu üründe Etsy'de karşılığı olmayan panel varyantları
+      // silinir. keepSkus = Etsy'nin SKU'lu offering'lerinden yazılanlar; Etsy
+      // hiç SKU vermediyse keepSkus BOŞ → tüm eski (ör. backfill) varyantlar
+      // silinir (saf-Etsy: SKU yoksa panelde de yok). GÜVENLİK: yalnız
+      // etsyProducts>0 iken çalışır — geçici hata (throw) veya boş yanıtta silme
+      // yapılmaz (transient wipe önlenir). ID-bazlı silme: kullanıcı-tanımlı Etsy
+      // SKU'larında (virgül/parantez) enjeksiyon/kaçış riski yok.
+      if (etsyProducts.length > 0) {
         const keepSkus = new Set(rows.map((r) => r.sku));
         const { data: existing, error: exErr } = await admin
           .from("product_variants")
