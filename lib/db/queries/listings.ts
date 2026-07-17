@@ -244,11 +244,22 @@ interface SaleItemDbRow {
 export async function listListingsIndex(opts?: {
   search?: string;
   status?: string;
+  /**
+   * Yaşam-döngüsü kapsamı (Etsy-ayna kuralı):
+   *   "etsy"        → yalnız Etsy'de var olan listing'ler (etsy_listing_id dolu).
+   *                   Ana "Listeler" ekranı — Etsy'de ne varsa o.
+   *   "suggestions" → panel-kayıtlı taslaklar (etsy_listing_id boş, arşivsiz) —
+   *                   henüz Etsy'de olmayan öneriler.
+   *   "archived"    → arşivlenenler (archived_at dolu).
+   * Varsayılan "etsy". Geriye uyum: eski `status==='arsiv'` → "archived".
+   */
+  scope?: "etsy" | "suggestions" | "archived";
 }): Promise<ListingIndexRow[]> {
   const supabase = await createClient();
   const search = opts?.search ? sanitize(opts.search) : "";
-  const archivedOnly = opts?.status === "arsiv";
-  const status = archivedOnly ? undefined : opts?.status;
+  const scope: "etsy" | "suggestions" | "archived" =
+    opts?.scope ?? (opts?.status === "arsiv" ? "archived" : "etsy");
+  const status = opts?.status === "arsiv" ? undefined : opts?.status;
 
   // Varyant SKU'suyla da bulunabilsin (Codex P2): kullanıcı siparişte/varyantta
   // gördüğü SKU'yu arar; o SKU parent listing'de değil product_variants'ta olur.
@@ -277,9 +288,16 @@ export async function listListingsIndex(opts?: {
       .select(
         "id, etsy_listing_id, title, status, image_url, price_cents, currency, quantity, num_images, research_keyword",
       );
-    q = archivedOnly
-      ? q.not("archived_at", "is", null)
-      : q.is("archived_at", null);
+    if (scope === "archived") {
+      q = q.not("archived_at", "is", null);
+    } else {
+      q = q.is("archived_at", null);
+      // "etsy" → yalnız Etsy'de olanlar; "suggestions" → yalnız panel-taslakları.
+      q =
+        scope === "etsy"
+          ? q.not("etsy_listing_id", "is", null)
+          : q.is("etsy_listing_id", null);
+    }
     if (status) q = q.eq("status", status);
     if (search) {
       const clauses = [`title.ilike.%${search}%`, `sku.ilike.%${search}%`];
