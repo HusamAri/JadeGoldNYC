@@ -197,10 +197,13 @@ def sql_str(s):
 def sql_arr(items):
     return "ARRAY[" + ",".join(sql_str(x) for x in items) + "]::text[]"
 
-ARCHIVE = """-- Eski 17 EON taslağı arşive (katalog v2 bunların yerini alır)
+ARCHIVE = """-- Eski EON taslaklarını arşive (katalog v2 bunların yerini alır).
+-- GÜVENLİK: yalnız sku'suz (eski) taslaklar — katalog v2 listing'leri aile
+-- kodlu sku taşır, bu koşul onları KORUR (idempotent; yeni seti arşivlemez).
 update products set archived_at = now(), updated_at = now()
  where org_id = (select id from organizations where name = 'EON')
-   and etsy_listing_id is null and archived_at is null and status = 'draft';
+   and etsy_listing_id is null and archived_at is null and status = 'draft'
+   and sku is null;
 """
 
 STAGING = """create table if not exists public.eon_seed_texts (
@@ -250,6 +253,10 @@ ins as (
   select eon.id, t.family, t.title, t.description, t.tags, t.materials, 'draft',
          'USD', {QTY}, true, t.image_url, t.research_keyword, t.research_group
   from eon_seed_texts t, eon
+  -- İdempotent + zaten-canlı yıldızı ATLA: org'da aynı sku varsa ekleme.
+  where not exists (
+    select 1 from products p2 where p2.org_id = eon.id and p2.sku = t.family
+  )
   returning id, sku
 ),
 sizes as (
@@ -277,7 +284,7 @@ select (select id from eon),
          'Width', v.width || 'mm · ' || (case v.thick when '1.5' then '1.5' else '2.0' end) || 'mm thick',
          'Ring Size', v.size::text
        ),
-       (ceil((v.grams * v.ppg_cents) / 500.0) * 500)::int,
+       (ceil((v.grams * v.ppg_cents) / 500.0) * 500 + {SHIPPING_ALLOWANCE_CENTS})::int,
        {QTY}, v.grams, 'catalog_v2', true, 'USD'
 from vrows v;
 
