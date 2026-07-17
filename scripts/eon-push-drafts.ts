@@ -18,6 +18,7 @@
  *   npx tsx scripts/eon-push-drafts.ts --gate ./eon-gate-report.json \
  *     [--only 01,04,13] [--qty 20] [--images-dir ./eon-covers] \
  *     [--taxonomy <id>] [--shipping-profile <id>] [--return-policy <id>]
+ *     [--readiness <id>]   (işlem profili — verilmezse çözülür/oluşturulur)
  *
  * GERÇEK Etsy kimliği gerekir (canlı ortam; .env.local: ETSY_API_KEY/SECRET +
  * SUPABASE_SERVICE_ROLE_KEY + SUPABASE_URL). İdempotent: etsy_listing_id dolu
@@ -148,6 +149,35 @@ async function main() {
     }
   }
 
+  // İşlem profili (readiness state) — Etsy 2025 migrasyonundan beri fiziksel
+  // listing'de ZORUNLU. --readiness <id> verilebilir; yoksa mevcut made_to_order
+  // (ya da ilk) tanım; hiç yoksa made-to-order 5–7 gün oluşturulur.
+  let readinessStateId = argVal("--readiness")
+    ? parseInt(argVal("--readiness")!, 10) : null;
+  if (!readinessStateId) {
+    try {
+      const rs = await client.get<{
+        results?: { readiness_state_id: number; readiness_state: string }[];
+      }>(etsyPaths.readinessStateDefinitions(shopId));
+      const defs = rs.results ?? [];
+      readinessStateId =
+        defs.find((d) => d.readiness_state === "made_to_order")
+          ?.readiness_state_id ?? defs[0]?.readiness_state_id ?? null;
+      if (!readinessStateId) {
+        const created = await client.requestForm<{ readiness_state_id: number }>(
+          "POST", etsyPaths.readinessStateDefinitions(shopId),
+          { readiness_state: "made_to_order", min_processing_time: 5, max_processing_time: 7 },
+        );
+        readinessStateId = created.readiness_state_id ?? null;
+        console.log(`İşlem profili oluşturuldu: ${readinessStateId} (made-to-order 5-7 gün)`);
+      } else {
+        console.log(`İşlem profili: ${readinessStateId}`);
+      }
+    } catch {
+      console.warn("İşlem profili okunamadı/oluşturulamadı — create 400 verebilir.");
+    }
+  }
+
   let created = 0;
   for (const g of pass) {
     // Panel kaydı + varyantlar
@@ -194,6 +224,7 @@ async function main() {
       taxonomy_id: taxonomyId,
       shipping_profile_id: shippingProfileId,
       return_policy_id: returnPolicyId ?? undefined,
+      readiness_state_id: readinessStateId ?? undefined,
       tags: (prod.tags as string[]).join(","),
       materials: ((prod.materials as string[]) ?? []).join(","),
       is_personalizable: "true",

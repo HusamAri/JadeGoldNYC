@@ -47,6 +47,11 @@ export const etsyPaths = {
   // İade politikaları — createDraftListing fiziksel üründe return_policy_id ister.
   returnPolicies: (shopId: number | string) =>
     `/shops/${shopId}/policies/return`,
+  // İşlem profilleri (readiness states) — Etsy 2025 migrasyonundan beri fiziksel
+  // listing'de `readiness_state_id` ZORUNLU. GET liste / POST oluştur (aynı uç).
+  // Alanlar: readiness_state (ready_to_ship|made_to_order), min/max_processing_time.
+  readinessStateDefinitions: (shopId: number | string) =>
+    `/shops/${shopId}/readiness-state-definitions`,
   // Satıcı taksonomisi (kategori ağacı) — taxonomy_id çözümü için.
   sellerTaxonomyNodes: () => `/seller-taxonomy/nodes`,
 };
