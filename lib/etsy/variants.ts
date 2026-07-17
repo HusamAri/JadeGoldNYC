@@ -20,6 +20,8 @@ export interface VariantSyncResult {
   errors: number;
   gramsMatched: number;
   saleItemsLinked: number;
+  /** Etsy'de artık olmayan (eşleşmeyen) silinen panel varyantı sayısı. */
+  removed: number;
 }
 
 interface ListingRow {
@@ -119,6 +121,7 @@ export async function syncListingVariants(
     errors: 0,
     gramsMatched: 0,
     saleItemsLinked: 0,
+    removed: 0,
   };
 
   for (const listing of listings) {
@@ -133,6 +136,46 @@ export async function syncListingVariants(
           .upsert(rows, { onConflict: "org_id,sku" });
         if (error) throw new Error(error.message);
         result.variants += rows.length;
+
+        // Etsy-ayna mutabakatı (kullanıcı kuralı: eşleşmeyen varyant kalmaz).
+        // Bu üründe Etsy'nin ARTIK döndürmediği SKU'lu varyantlar silinir.
+        // keepSkus = bu turda Etsy envanterinden yazılan SKU seti (mint dahil —
+        // tek-parça Etsy-boş SKU'da mint deterministik anahtardır).
+        // GÜVENLİK: yalnız rows.length > 0 iken (envanter kesin okundu) çalışır;
+        // geçici hata/boş yanıtta silme yapılmaz (transient wipe önlenir).
+        // ID-bazlı silme: Etsy SKU'ları kullanıcı-tanımlı olabilir (virgül/
+        // parantez), o yüzden in-listesini SKU metniyle kurmak yerine silinecek
+        // satırların UUID'leri JS'te hesaplanır (enjeksiyon/kaçış riski yok).
+        const keepSkus = new Set(rows.map((r) => r.sku));
+        const { data: existing, error: exErr } = await admin
+          .from("product_variants")
+          .select("id, sku")
+          .eq("org_id", orgId)
+          .eq("product_id", listing.id);
+        if (exErr) {
+          console.error(
+            `[variants] mutabakat okuma (${listing.etsy_listing_id}):`,
+            exErr.message,
+          );
+        } else {
+          const staleIds = (existing ?? [])
+            .filter((v) => !keepSkus.has((v as { sku: string }).sku))
+            .map((v) => (v as { id: string }).id);
+          if (staleIds.length > 0) {
+            const { error: delErr } = await admin
+              .from("product_variants")
+              .delete()
+              .in("id", staleIds);
+            if (delErr) {
+              console.error(
+                `[variants] mutabakat silme (${listing.etsy_listing_id}):`,
+                delErr.message,
+              );
+            } else {
+              result.removed += staleIds.length;
+            }
+          }
+        }
       }
       result.listings += 1;
     } catch {

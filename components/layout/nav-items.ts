@@ -18,6 +18,7 @@ import {
   TextSearch,
   Tags,
   Archive,
+  Lightbulb,
   type LucideIcon,
 } from "lucide-react";
 
@@ -68,6 +69,7 @@ export const NAV_GROUPS: NavGroup[] = [
     label: "Ürün & Stüdyo",
     items: [
       { href: "/tasarimlar", label: "Listeler", icon: Palette },
+      { href: "/listing-onerileri", label: "Listing Önerileri", icon: Lightbulb },
       { href: "/seo-yardimcisi", label: "SEO Yardımcısı", icon: TextSearch },
       { href: "/seo-etiketleri", label: "SEO Etiketleri", icon: Tags },
       // Prompt kiti Jade Gold listinglerine özel statik içerik — diğer
