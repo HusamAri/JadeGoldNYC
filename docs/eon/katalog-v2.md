@@ -104,6 +104,14 @@ kargo profili** kurulur; kod hesaplı (calculated) yerine `profile_type="manual"
 profilini TERCİH eder (`resolveShopProfiles`) — hesaplı profil item_weight ister ve
 alıcıdan posta alır (istenmez).
 
+**Paket ölçüleri:** create form'a **item_weight 3 oz + boyut 4×4×2 in** (yüzük
+kutusu + koruyucu zarf, sabit) yazılır (`create-listing.ts` PARCEL + push script).
+Etsy hesaplı profil bu alanları zorunlu tutar; değerler yazılınca create HER profil
+tipiyle çalışır. **Tutarlılık kuralı:** fiyata gömülü $10 kargo payı ile çift
+tahsili önlemek için profil ABD'de **ücretsiz** olmalı (manuel-ücretsiz VEYA
+hesaplı-ama-ABD-ücretsiz). Profil ABD postasını alıcıya keserse $10 payı
+kaldırılmalı (aksi halde alıcı iki kez öder).
+
 **Spot (üretim anı):** $4005 / troy ons → saf $128.76/g.
 Pure $/g = spot ÷ 31.1035; melt $/g = pure × saflık (10K 0.4167 · 14K 0.585 · 18K 0.75).
 Breakeven $/g = tedarik alım $/g ÷ 0.90 (Etsy ücret payı %10); alım 10K $65 · 14K $101 · 18K $129.

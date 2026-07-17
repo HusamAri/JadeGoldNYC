@@ -225,6 +225,14 @@ async function main() {
       shipping_profile_id: shippingProfileId,
       return_policy_id: returnPolicyId ?? undefined,
       readiness_state_id: readinessStateId ?? undefined,
+      // Paket ağırlık + yüzük kutusu boyutu (hesaplı profil şart koşar;
+      // free shipping'te fiyata gömülü → alıcıya yansımaz).
+      item_weight: 3,
+      item_weight_unit: "oz",
+      item_length: 4,
+      item_width: 4,
+      item_height: 2,
+      item_dimensions_unit: "in",
       tags: (prod.tags as string[]).join(","),
       materials: ((prod.materials as string[]) ?? []).join(","),
       is_personalizable: "true",
