@@ -182,6 +182,21 @@ Migration dosyası (`0100`) 1–7'nin tek transaction eşdeğeridir (preview pro
 `[EON ${g.no} ` ile yapar — v2 için 39 grup + iki-hane sıfır-dolgu + tek-sayı
 beden şemasına uyarlanmalı. İlk canlı gönderim tek listing'de doğrulanır.
 
+## 6.1 Kademeli açılış — ilk listing canlıya hazır (2026-07-17)
+
+Kullanıcı "ilk listing'i açmaya başlayayım" dediği için **yıldız ürün tek başına
+önce uygulandı** (kalanı workflow bitince toplu eklenir; çakışma yok):
+
+- **Uygulanan:** `GLD-R-1401` = **14K Yellow Gold Dome** (no 02) — panel taslağı,
+  **286 varyant**, fiyat **$215–$2.725** (yıldız hedefi 135.6 $/g). Eski 17 taslak
+  arşivlendi (arşiv toplam 27). Örneklem gram/fiyat tabloyla birebir doğrulandı.
+- **Nasıl açılır:** panelde listing detayına gir → **"Etsy'e gönder"** butonu
+  (EON `listings_w` yetkili + bağlı; buton `[EON NN]` künyesini söker, 286
+  varyantı 513/514 slotlarına yazar, Karat/Metal sabitlerini açıklamaya not düşer).
+- **Kalan 38:** workflow metinleri bitince üretici `GLD-R-1401` HARİÇ koşulur
+  (master SQL yalnız staging'deki satırları basar → çakışma yok). Bu yüzden tam
+  apply'da yıldızın texts satırı yüklenmez.
+
 ## 7. Riskler / işaretli varsayımlar
 
 - **18K alım maliyeti türetilmiş** (~$129/g, 14K'dan saflık oranıyla) — gerçek
