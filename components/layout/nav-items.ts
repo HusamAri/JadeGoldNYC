@@ -21,6 +21,7 @@ import {
   Lightbulb,
   Compass,
   Stethoscope,
+  Share2,
   type LucideIcon,
 } from "lucide-react";
 
@@ -83,6 +84,13 @@ export const NAV_GROUPS: NavGroup[] = [
       { href: "/gorsel-uretim", label: "Görsel Üretim", icon: Sparkles, jadeGoldOnly: true },
       { href: "/arsiv", label: "Listing Arşivi", icon: Archive },
       { href: "/stok", label: "Stok", icon: Boxes },
+    ],
+  },
+  {
+    label: "Pazarlama",
+    items: [
+      // Tüm şirketlerde aynı özellik; içerik org'a özel (EON seed / Jade boş).
+      { href: "/sosyal", label: "Sosyal Medya", icon: Share2 },
     ],
   },
   {
