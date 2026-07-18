@@ -17,6 +17,30 @@ export const PLATFORM_TAGLINE =
 
 export const JADE_GOLD_SLUG = "jade-gold-nyc";
 
+/**
+ * EON markası. Migrasyonlar (0087/0089/0090) EON'u `organizations.name = 'EON'`
+ * ile tanır; uygulama içi geçit için slug'ı da destekleriz.
+ */
+export const EON_SLUG = "eon";
+
+/**
+ * Aktif organizasyon EON mu? Drive'dan görsel ekleme gibi EON'a özel yetenekler
+ * yalnız EON aktifken açılır. Oturum/üyelik yoksa false.
+ */
+export const isEonActive = cache(async (): Promise<boolean> => {
+  const m = await getMembership();
+  if (!m) return false;
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("organizations")
+    .select("name, slug")
+    .eq("id", m.org_id)
+    .maybeSingle();
+  const org = data as { name: string | null; slug: string | null } | null;
+  if (!org) return false;
+  return org.slug === EON_SLUG || (org.name ?? "").toUpperCase() === "EON";
+});
+
 export type BrandScope = "artifact" | "jade-gold";
 
 /**

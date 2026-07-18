@@ -173,6 +173,23 @@ export interface Product {
   updated_at: string;
 }
 
+/** Bir listing/ürüne bağlı galeri görseli — sıralanabilir, çıkarılabilir. */
+export type ListingImageSource = "upload" | "drive" | "url";
+
+export interface ListingImage {
+  id: string;
+  org_id: string;
+  product_id: string;
+  url: string;
+  storage_path: string | null;
+  source: ListingImageSource;
+  drive_file_id: string | null;
+  alt: string | null;
+  position: number;
+  created_by: string | null;
+  created_at: string;
+}
+
 export interface Design {
   id: string;
   org_id: string;
