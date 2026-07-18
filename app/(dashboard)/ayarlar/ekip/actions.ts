@@ -118,8 +118,12 @@ export async function updateMemberRole(
   if (!row) return { error: "Üye bulunamadı." };
 
   if (row.role === "owner" && newRole !== "owner") {
-    const owners = await countOwners(row.org_id);
-    if (owners <= 1) return { error: LAST_OWNER_ERROR };
+    try {
+      const owners = await countOwners(row.org_id);
+      if (owners <= 1) return { error: LAST_OWNER_ERROR };
+    } catch (e) {
+      return { error: e instanceof Error ? e.message : "Sahip sayısı okunamadı." };
+    }
   }
 
   const { error } = await supabase
@@ -149,8 +153,12 @@ export async function removeMember(memberRowId: string): Promise<TeamActionResul
   if (!row) return { error: "Üye bulunamadı." };
 
   if (row.role === "owner") {
-    const owners = await countOwners(row.org_id);
-    if (owners <= 1) return { error: LAST_OWNER_ERROR };
+    try {
+      const owners = await countOwners(row.org_id);
+      if (owners <= 1) return { error: LAST_OWNER_ERROR };
+    } catch (e) {
+      return { error: e instanceof Error ? e.message : "Sahip sayısı okunamadı." };
+    }
   }
 
   const { error } = await supabase
