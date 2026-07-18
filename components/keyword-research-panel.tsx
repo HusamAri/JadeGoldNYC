@@ -11,14 +11,10 @@ import {
 } from "@/lib/db/queries/keyword-research";
 import { formatMoney } from "@/lib/money";
 import { formatDate } from "@/lib/format";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { KeywordResearchControls } from "@/components/keyword-research-controls";
-import {
-  AddCompetitorLinkForm,
-  AddCompetitorToSetButton,
-  CompetitorWatchList,
-} from "@/components/listing/competitor-watch-card";
+import { SimilarListingsGrid } from "@/components/listing/similar-listings-grid";
 
 /**
  * Rekabet fiyat araştırması paneli — bir listing için, "araştırma kelimesi"nde
@@ -29,13 +25,6 @@ import {
  * son fiyat + önceki kayda göre değişimle görünür. Veri günlük cron ile dolar.
  */
 
-/** Eski snapshot'larda listing_id yok — URL'den çöz (0091 sete ekleme). */
-function listingIdFromUrl(url: string | null): number | null {
-  if (!url) return null;
-  const m = /\/listing\/(\d+)/.exec(url);
-  return m ? Number(m[1]) : null;
-}
-
 const POSITION_LABELS: Record<string, string> = {
   pahali: "Pazara göre pahalı",
   ucuz: "Pazara göre ucuz",
@@ -44,8 +33,11 @@ const POSITION_LABELS: Record<string, string> = {
 
 export async function KeywordResearchPanel({
   productId,
+  bare = false,
 }: {
   productId: string | null | undefined;
+  /** ListingPanel içindeyken true — çift Card çerçevesi olmasın. */
+  bare?: boolean;
 }) {
   if (!productId) return null;
   const [snap, meta, watchItems] = await Promise.all([
@@ -127,26 +119,36 @@ export async function KeywordResearchPanel({
             label: POSITION_LABELS.bantta,
           };
 
-  const watchedIds = new Set(watchItems.map((w) => w.competitor_listing_id));
-
-  return (
-    <Card>
-      <CardContent className="space-y-4">
-        <div className="idx">
-          <span>Rekabet · fiyat araştırması</span>
-          <span className="idx-bar" />
-          <span className="idx-ln" />
-          {snap && (
-            <span className="normal-case">{formatDate(snap.researched_at)}</span>
-          )}
-        </div>
-
+  const body = (
+    <div className="space-y-4">
         {/* Anahtar kelime editörü + "şimdi araştır" — cron'u beklemeden test. */}
         <KeywordResearchControls
           productId={productId}
           currentKeyword={meta?.research_keyword ?? null}
           fallback={fallbackTag}
         />
+
+        {/* Birincil yüzey: benzer içerik ızgarası + elle link. */}
+        <SimilarListingsGrid
+          productId={productId}
+          results={snap?.results ?? []}
+          watchItems={watchItems}
+          keyword={snap?.keyword ?? meta?.research_keyword ?? fallbackTag}
+        />
+
+        {/* Band / hüküm / tablo — scroll yükü; kapalı başlar. */}
+        <details className="group/kr border-border/60 rounded-[1.25rem] border">
+          <summary className="text-muted-foreground flex cursor-pointer list-none items-center gap-2 px-4 py-3 text-sm select-none [&::-webkit-details-marker]:hidden">
+            <span className="font-mono text-[10px] tracking-[0.14em] uppercase">
+              Fiyat bandı & hüküm
+            </span>
+            <span className="ml-auto text-xs">
+              {band
+                ? `${bandCount} rakip · ${bandSourceLabel}`
+                : "tarama sonrası dolar"}
+            </span>
+          </summary>
+          <div className="space-y-4 border-t px-4 py-4">
 
         {/* Hüküm bloğu: rozet → neden → ne yap → teşhis (insancıl metin dersi). */}
         {showVerdict && snap && (
@@ -343,66 +345,6 @@ export async function KeywordResearchPanel({
                   </div>
                 )}
 
-                {snap.results.length > 0 && (
-                  <ul className="space-y-2 border-t pt-3">
-                    <li className="text-muted-foreground font-mono text-[10px] tracking-[0.14em] uppercase">
-                      Organik ilk 10 rakip · mağaza + link
-                    </li>
-                    {snap.results.slice(0, 10).map((c) => {
-                      const listingId = c.listing_id ?? listingIdFromUrl(c.url);
-                      return (
-                        <li
-                          key={c.position}
-                          className="flex items-baseline justify-between gap-3 text-sm"
-                        >
-                          <span className="min-w-0 flex-1">
-                            <span className="flex items-baseline gap-1.5">
-                              <span className="text-muted-foreground font-mono text-xs">
-                                {String(c.position).padStart(2, "0")}
-                              </span>
-                              {c.url ? (
-                                <a
-                                  href={c.url}
-                                  target="_blank"
-                                  rel="noreferrer noopener"
-                                  className="text-primary min-w-0 truncate hover:underline"
-                                >
-                                  {c.title}
-                                </a>
-                              ) : (
-                                <span className="text-muted-foreground min-w-0 truncate">
-                                  {c.title}
-                                </span>
-                              )}
-                            </span>
-                            {c.shop_name && (
-                              <span className="text-muted-foreground ml-[1.7rem] block truncate text-xs">
-                                {c.shop_name}
-                              </span>
-                            )}
-                          </span>
-                          <span className="flex shrink-0 items-baseline gap-2">
-                            <span className="font-mono tabular-nums">
-                              {formatMoney(c.price_cents, c.currency)}
-                            </span>
-                            {listingId != null && (
-                              <AddCompetitorToSetButton
-                                productId={productId}
-                                competitor={{
-                                  listing_id: listingId,
-                                  url: c.url,
-                                  title: c.title,
-                                  shop_name: c.shop_name,
-                                }}
-                                watched={watchedIds.has(listingId)}
-                              />
-                            )}
-                          </span>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                )}
               </>
             ) : (
               <p className="text-muted-foreground text-sm">
@@ -412,16 +354,15 @@ export async function KeywordResearchPanel({
             )}
           </>
         )}
+          </div>
+        </details>
+    </div>
+  );
 
-        {/* Rakip seti — sabit takip; snapshot olmasa da izlemeler görünür. */}
-        <CompetitorWatchList productId={productId} items={watchItems} />
-        {/* Elle rakip linki ekleme — 0 rakipte de görünür (ilk rakibi eklemek
-            için); üst sınır 10. */}
-        <AddCompetitorLinkForm
-          productId={productId}
-          currentCount={watchItems.length}
-        />
-      </CardContent>
+  if (bare) return body;
+  return (
+    <Card>
+      <CardContent className="space-y-4">{body}</CardContent>
     </Card>
   );
 }

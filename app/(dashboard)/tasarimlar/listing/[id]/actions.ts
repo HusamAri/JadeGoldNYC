@@ -161,3 +161,48 @@ export async function updateVariant(
   revalidatePath("/tasarimlar");
   return { ok: true };
 }
+
+/**
+ * Tek fiyat → listing'in TÜM varyantlarına. Günlük iş: beden/ayar başına
+ * ayrı fiyat nadiren; çoğu listing tek fiyattan satılır. Gram'a dokunmaz
+ * (weight_source korunur).
+ */
+export async function updateVariantsBulkPrice(
+  productId: string,
+  price: string,
+): Promise<ListingActionResult & { updated?: number }> {
+  const m = await requireMembership();
+  if (!productId.trim()) return { error: "Listing gerekli." };
+  if (!price.trim()) return { error: "Toplu fiyat girin (ör. 129,00)." };
+
+  const priceCents = parseMoneyToCents(price);
+  if (priceCents <= 0) return { error: "Geçerli bir fiyat girin (ör. 129,00)." };
+
+  const admin = createAdminClient();
+  const { data, error } = await admin
+    .from("product_variants")
+    .update({
+      price_cents: priceCents,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("org_id", m.org_id)
+    .eq("product_id", productId)
+    .select("sku");
+  if (error) return { error: error.message };
+  const updated = data?.length ?? 0;
+  if (updated === 0) return { error: "Bu listing'de güncellenecek varyant yok." };
+
+  // Ürün seviyesindeki vitrin fiyatını da aynı tut (liste kartları / künye).
+  await admin
+    .from("products")
+    .update({
+      price_cents: priceCents,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("org_id", m.org_id)
+    .eq("id", productId);
+
+  revalidatePath(`/tasarimlar/listing/${productId}`);
+  revalidatePath("/tasarimlar");
+  return { ok: true, updated };
+}
