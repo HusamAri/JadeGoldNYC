@@ -40,10 +40,18 @@ docker info >/dev/null 2>&1 || { echo "Docker is not available"; exit 1; }
 if ! supabase status >/dev/null 2>&1; then
   log "Starting Supabase (bare, migrations applied manually below)"
   HOLD="$(mktemp -d)"
+  # Guarantee migrations are restored even if `supabase start` is interrupted
+  # (Ctrl-C / SIGTERM) — otherwise supabase/migrations would be left empty and
+  # the worktree would show every migration deleted.
+  restore_migrations() {
+    mv "$HOLD"/*.sql supabase/migrations/ 2>/dev/null || true
+    rmdir "$HOLD" 2>/dev/null || true
+  }
+  trap 'restore_migrations' EXIT INT TERM
   mv supabase/migrations/*.sql "$HOLD"/ 2>/dev/null || true
   supabase start || true
-  mv "$HOLD"/*.sql supabase/migrations/ 2>/dev/null || true
-  rmdir "$HOLD" 2>/dev/null || true
+  restore_migrations
+  trap - EXIT INT TERM
 fi
 
 DB_CONTAINER="$(docker ps --format '{{.Names}}' | grep -m1 supabase_db)"
@@ -81,11 +89,27 @@ EOF
 HAS_MEMBER="$(psql_admin -tAc "select 1 from public.organization_members m join auth.users u on u.id=m.user_id where u.email='${TEST_EMAIL}' limit 1" 2>/dev/null || true)"
 if [ "$HAS_MEMBER" != "1" ]; then
   log "Creating test user ${TEST_EMAIL} and granting org ownership"
-  curl -s -X POST "${API_URL}/auth/v1/admin/users" \
+  # Best effort: a 422 ("email exists") is fine and handled by the assert below;
+  # we do NOT trust this response, we assert the user exists before continuing.
+  curl -sS -X POST "${API_URL}/auth/v1/admin/users" \
     -H "apikey: ${SERVICE_ROLE_KEY}" -H "Authorization: Bearer ${SERVICE_ROLE_KEY}" \
     -H "Content-Type: application/json" \
     -d "{\"email\":\"${TEST_EMAIL}\",\"password\":\"${TEST_PASSWORD}\",\"email_confirm\":true,\"user_metadata\":{\"full_name\":\"Husam Ari\"}}" \
-    >/dev/null || true
+    >/dev/null 2>&1 || true
+
+  # Assert the user actually exists (Auth API may be unreachable / erroring);
+  # never print usable-looking credentials for a user that was not created.
+  USER_OK=""
+  for _ in $(seq 1 10); do
+    USER_OK="$(psql_admin -tAc "select 1 from auth.users where email='${TEST_EMAIL}' limit 1" 2>/dev/null || true)"
+    [ "$USER_OK" = "1" ] && break
+    sleep 1
+  done
+  if [ "$USER_OK" != "1" ]; then
+    echo "HATA: test kullanıcısı oluşturulamadı (Supabase Auth admin API'ye ulaşılamadı mı?)." >&2
+    exit 1
+  fi
+
   psql_admin >/dev/null <<SQL
 insert into public.profiles (id, full_name)
   select id, 'Husam Ari' from auth.users where email='${TEST_EMAIL}'
