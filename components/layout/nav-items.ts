@@ -19,6 +19,7 @@ import {
   Tags,
   Archive,
   Lightbulb,
+  Compass,
   type LucideIcon,
 } from "lucide-react";
 
@@ -46,6 +47,7 @@ export const NAV_GROUPS: NavGroup[] = [
     items: [
       { href: "/panel", label: "Panel", icon: LayoutDashboard },
       { href: "/gorevler", label: "Görevler", icon: ListChecks },
+      { href: "/rehber", label: "Kullanım Rehberi", icon: Compass },
     ],
   },
   {
