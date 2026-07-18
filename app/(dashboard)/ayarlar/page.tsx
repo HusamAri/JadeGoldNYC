@@ -9,12 +9,17 @@ import {
   Sparkles,
   Rocket,
   ChevronRight,
+  ShoppingBag,
+  Bot,
 } from "lucide-react";
 
 import { requireMembership, getUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { getEtsyStatus } from "@/lib/db/queries/etsy";
+import { getShopifyStatus } from "@/lib/db/queries/shopify";
 import { getProfile } from "@/lib/db/queries/profile";
+import { isAIConfigured } from "@/lib/ai";
+import { isShopifyConfigured } from "@/lib/shopify/client";
 import { PageHeader } from "@/components/page-header";
 import { UserAvatar } from "@/components/user-avatar";
 import { Badge } from "@/components/ui/badge";
@@ -38,9 +43,15 @@ export default async function AyarlarPage() {
     .eq("id", m.org_id)
     .maybeSingle();
   const status = await getEtsyStatus(m.org_id);
+  const shopifyStatus = await getShopifyStatus(m.org_id);
   const profile = user ? await getProfile(supabase, user.id) : null;
   const shipStationConfigured = Boolean(
     process.env.SHIPSTATION_API_KEY && process.env.SHIPSTATION_API_SECRET,
+  );
+  const shopifyConfigured = isShopifyConfigured();
+  const aiConfigured = isAIConfigured();
+  const geminiReady = Boolean(
+    process.env.GOOGLE_GENERATIVE_AI_API_KEY || process.env.GEMINI_API_KEY,
   );
 
   return (
@@ -117,6 +128,32 @@ export default async function AyarlarPage() {
           </Card>
         </Link>
 
+        <Link href="/ayarlar/shopify" className="block">
+          <Card className="hover:border-primary/40 transition-colors">
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between text-base">
+                <span className="flex items-center gap-2">
+                  <ShoppingBag aria-hidden className="size-4" />
+                  Shopify
+                </span>
+                <span className="flex items-center gap-2">
+                  {shopifyStatus.status === "connected" ? (
+                    <Badge variant="success">Bağlı</Badge>
+                  ) : shopifyConfigured ? (
+                    <Badge variant="secondary">Hazır</Badge>
+                  ) : (
+                    <Badge variant="secondary">Yapılandırılmadı</Badge>
+                  )}
+                  <ChevronRight aria-hidden className="text-muted-foreground size-4" />
+                </span>
+              </CardTitle>
+              <CardDescription>
+                Yeni marka / ikinci kanal — OAuth bağlantı hazırlığı
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </Link>
+
         <Link href="/ayarlar/shipstation" className="block">
           <Card className="hover:border-primary/40 transition-colors">
             <CardHeader>
@@ -140,6 +177,34 @@ export default async function AyarlarPage() {
             </CardHeader>
           </Card>
         </Link>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center justify-between text-base">
+              <span className="flex items-center gap-2">
+                <Bot aria-hidden className="size-4" />
+                AI / SEO motoru
+              </span>
+              {aiConfigured ? (
+                <Badge variant="success">
+                  {geminiReady ? "Gemini hazır" : "Gateway hazır"}
+                </Badge>
+              ) : (
+                <Badge variant="secondary">İnert</Badge>
+              )}
+            </CardTitle>
+            <CardDescription>
+              SEO Yardımcısı kural tabanlı (anahtarsız). Yorum AI + Anahtar Kelime
+              AI genişletme:{" "}
+              {aiConfigured
+                ? geminiReady
+                  ? "GOOGLE_GENERATIVE_AI_API_KEY aktif."
+                  : "AI Gateway aktif (Gemini yok)."
+                : "GOOGLE_GENERATIVE_AI_API_KEY veya AI_GATEWAY_API_KEY ekleyin — yoksa özellikler zarifçe kapanır."}{" "}
+              Ayrıntı: docs/ai-gateway.md
+            </CardDescription>
+          </CardHeader>
+        </Card>
 
         <Link href="/ayarlar/altin" className="block">
           <Card className="hover:border-primary/40 transition-colors">
