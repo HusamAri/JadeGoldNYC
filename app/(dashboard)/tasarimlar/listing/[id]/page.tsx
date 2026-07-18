@@ -3,11 +3,16 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 
 import { requireMembership } from "@/lib/auth";
+import { isEonActive } from "@/lib/brand";
+import { createClient } from "@/lib/supabase/server";
 import {
   getListingDetail,
   getListingMarketPosition,
 } from "@/lib/db/queries/listings";
 import { getListingImages, type ListingImage } from "@/lib/etsy/images";
+import { listListingImages } from "@/lib/db/queries/listing-images";
+import type { ListingImage as ManagedListingImage } from "@/lib/types";
+import { ListingImageManager } from "@/components/listing/listing-image-manager";
 import { formatMoney } from "@/lib/money";
 import { PageHeader } from "@/components/page-header";
 import { KeywordResearchPanel } from "@/components/keyword-research-panel";
@@ -104,6 +109,14 @@ export default async function ListingDetayPage({
   // Pazar konumu ($/gram) — günlük rutin doldurunca dolu, yoksa null (kart yok).
   const marketPosition = await getListingMarketPosition(product.id);
 
+  // EON'a özel: panelden yönetilen çoklu görsel galerisi (Drive/yükleme + sırala).
+  const eon = await isEonActive();
+  let managedImages: ManagedListingImage[] = [];
+  if (eon) {
+    const supabase = await createClient();
+    managedImages = await listListingImages(supabase, product.id);
+  }
+
   const status = product.status
     ? (STATUS_LABELS[product.status] ?? {
         label: product.status,
@@ -175,6 +188,29 @@ export default async function ListingDetayPage({
           </CardContent>
         </Card>
       </section>
+
+      {/* 01B · Görsel yönetimi — yalnız EON: Drive/yükleme + çıkar + sırala. */}
+      {eon && (
+        <section id="gorsel-yonetimi" className="scroll-mt-24">
+          <Card>
+            <CardContent className="space-y-4">
+              <SectionIdx
+                n="01B"
+                name="Görsel Yönetimi"
+                tail={
+                  managedImages.length > 0
+                    ? `EON · ${managedImages.length} görsel`
+                    : "EON · Drive/yükleme"
+                }
+              />
+              <ListingImageManager
+                productId={product.id}
+                images={managedImages}
+              />
+            </CardContent>
+          </Card>
+        </section>
+      )}
 
       {/* 02 · Künye & boşluklar. */}
       <section id="kunye" className="grid gap-6 scroll-mt-24 lg:grid-cols-3">
