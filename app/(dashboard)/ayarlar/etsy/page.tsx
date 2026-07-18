@@ -6,6 +6,10 @@ import { getLastSyncSummary } from "@/lib/etsy/sync";
 import { formatDateTime } from "@/lib/format";
 import { PageHeader } from "@/components/page-header";
 import { EtsySyncButton } from "@/components/etsy-sync-button";
+import {
+  ApiCredentialGuide,
+  ETSY_WRITE_GUIDE,
+} from "@/components/setup/api-credential-guide";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -90,10 +94,12 @@ export default async function EtsyAyarlarPage() {
               <EtsySyncButton disabled={!connected} initialSummary={summary} />
             </div>
             {!configured && (
-              <p className="text-destructive text-sm">
-                Bağlanmadan önce <code>ETSY_API_KEY</code> ve{" "}
-                <code>ETSY_API_SECRET</code> ortam değişkenlerini tanımlayın.
-              </p>
+              <div className="space-y-2">
+                <p className="text-destructive text-sm">
+                  Bağlanmadan önce Etsy API anahtarlarını eklemen gerekir.
+                </p>
+                <ApiCredentialGuide items={[ETSY_WRITE_GUIDE]} />
+              </div>
             )}
           </CardContent>
         </Card>
@@ -113,13 +119,7 @@ export default async function EtsyAyarlarPage() {
             <p>
               {configured
                 ? "Etsy API anahtarı ve shared secret yapılandırılmış."
-                : "Etsy API anahtarı (ETSY_API_KEY) ve/veya shared secret (ETSY_API_SECRET) henüz tanımlı değil. Bağlantı için ortam değişkenlerini doldurun."}
-            </p>
-            <p>
-              developers.etsy.com&apos;da uygulama kaydı açın;{" "}
-              <code>ETSY_API_KEY</code> ve <code>ETSY_API_SECRET</code>{" "}
-              değerlerini girin ve redirect URI&apos;yi{" "}
-              <code>/api/etsy/callback</code> olarak kaydedin.
+                : "Anahtarlar henüz yok. Yukarıdaki adım adım rehberi izle; tam metin: docs/seo-api-kurulum.md bölüm 3."}
             </p>
           </CardContent>
         </Card>
