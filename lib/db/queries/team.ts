@@ -73,10 +73,14 @@ export async function listOrgMembers(orgId: string): Promise<OrgMember[]> {
 /** Organizasyondaki 'owner' rolündeki üye sayısı (son sahip korumasi için). */
 export async function countOwners(orgId: string): Promise<number> {
   const supabase = await createClient();
-  const { count } = await supabase
+  const { count, error } = await supabase
     .from("organization_members")
     .select("id", { count: "exact", head: true })
     .eq("org_id", orgId)
     .eq("role", "owner");
+  // Hatayı YUTMA: `count ?? 0` sessizce 0 dönerse son-sahip koruması yanlış
+  // tetiklenir (birden çok sahip varken "son sahip" reddi) — sayımı güvenilmez
+  // yapan hatayı yüzeye çıkar ki çağıran gerçek hatayı göstersin.
+  if (error) throw new Error(`Sahip sayısı okunamadı: ${error.message}`);
   return count ?? 0;
 }

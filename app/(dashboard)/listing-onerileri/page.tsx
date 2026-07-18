@@ -20,6 +20,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ListingLifecycleButton } from "@/components/listing/listing-lifecycle-button";
+import { ReconcileEtsyButton } from "@/components/listing/reconcile-etsy-button";
 
 export const metadata = { title: "Listing Önerileri" };
 
@@ -44,12 +45,15 @@ export default async function ListingOnerileriPage() {
         title="Listing Önerileri"
         description="Etsy'de henüz olmayan panel taslakları ve arşivlenmiş listing'ler. Ana Listeler ekranı yalnız Etsy'de var olanları gösterir."
         action={
-          <Button asChild variant="outline">
-            <Link href="/tasarimlar/listing/yeni">
-              <Plus />
-              Yeni Taslak
-            </Link>
-          </Button>
+          <div className="flex flex-wrap items-center gap-2">
+            <ReconcileEtsyButton />
+            <Button asChild variant="outline">
+              <Link href="/tasarimlar/listing/yeni">
+                <Plus />
+                Yeni Taslak
+              </Link>
+            </Button>
+          </div>
         }
       />
 
