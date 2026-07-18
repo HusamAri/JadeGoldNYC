@@ -25,16 +25,23 @@ const LIFECYCLE_LABEL: Record<SalesDiagnostics["lifecycle"], string> = {
   dormant: "Hareketsiz",
 };
 
+function pct(n: number | null): string {
+  return n == null ? "—" : `${n > 0 ? "+" : ""}${Math.round(n * 100)}%`;
+}
+
 /**
- * Panel üstündeki Satış Tanısı özet kartı — headline + en kritik 3 sinyal +
- * tam teşhis sayfasına link. Veriyi çağıran Suspense bölümü sağlar.
+ * Panel üstündeki Aylık Tanı özet kartı — dönem + en kritik açık aksiyonlar
+ * + tam teşhis sayfasına link.
  */
 export function PanelDiagnosticCard({ data }: { data: SalesDiagnostics }) {
-  const top = data.signals
+  const top = data.openFixes
     .filter((s) => s.severity === "critical" || s.severity === "warning")
     .slice(0, 3);
-  const show = top.length > 0 ? top : data.signals.slice(0, 2);
+  const show = top.length > 0 ? top : data.openFixes.slice(0, 2);
   const urgent = data.lifecycle === "stalled" || data.lifecycle === "declining";
+  const downMonths = data.months.filter(
+    (m) => !m.isPartial && (m.status === "down" || m.status === "zero"),
+  ).length;
 
   return (
     <Card
@@ -48,7 +55,7 @@ export function PanelDiagnosticCard({ data }: { data: SalesDiagnostics }) {
           <div className="min-w-0 space-y-1.5">
             <div className="flex flex-wrap items-center gap-2">
               <Stethoscope className="size-4 shrink-0" />
-              <span className="font-semibold">Satış Tanısı</span>
+              <span className="font-semibold">Aylık Tanı</span>
               <Badge
                 variant={
                   urgent
@@ -62,6 +69,15 @@ export function PanelDiagnosticCard({ data }: { data: SalesDiagnostics }) {
               </Badge>
             </div>
             <p className="text-sm font-medium">{data.headline}</p>
+            <p className="text-muted-foreground text-xs">
+              {data.fromLabel} → {data.toLabel}
+              {downMonths > 0
+                ? ` · ${downMonths} ay geriledi/sıfır`
+                : ""}
+              {data.latestComplete
+                ? ` · Son tam ay ${data.latestComplete.label}: ${pct(data.latestComplete.ordersChangePct)} vs ${data.latestComplete.prevLabel ?? "—"}`
+                : ""}
+            </p>
           </div>
           <Button asChild variant="outline" size="sm">
             <Link href="/analizler/tani">
@@ -74,10 +90,7 @@ export function PanelDiagnosticCard({ data }: { data: SalesDiagnostics }) {
         {show.length > 0 && (
           <ul className="space-y-2">
             {show.map((s, i) => (
-              <li
-                key={i}
-                className="flex items-start gap-2 text-sm"
-              >
+              <li key={i} className="flex items-start gap-2 text-sm">
                 {(s.severity === "critical" || s.severity === "warning") && (
                   <AlertTriangle
                     className={cn(
@@ -92,7 +105,13 @@ export function PanelDiagnosticCard({ data }: { data: SalesDiagnostics }) {
                   <div className="flex flex-wrap items-center gap-1.5">
                     <span className="font-medium">{s.title}</span>
                     <Badge variant={SEVERITY_BADGE[s.severity]}>
-                      {s.severity}
+                      {s.severity === "critical"
+                        ? "kritik"
+                        : s.severity === "warning"
+                          ? "uyarı"
+                          : s.severity === "good"
+                            ? "iyi"
+                            : "bilgi"}
                     </Badge>
                   </div>
                   <p className="text-muted-foreground line-clamp-2 text-xs">
