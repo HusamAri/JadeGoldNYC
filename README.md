@@ -56,6 +56,10 @@ npm run build       # üretim derlemesi
    redirect URI'yi (`/api/etsy/callback`) hem yerel hem prod için kaydedin. Panelde
    **Ayarlar → Etsy → Bağlan** ile OAuth akışını başlatın.
 7. İlk kullanıcıyı Supabase panelinden oluşturun; `0013` seed'i tek organizasyonu kurar.
+8. **SEO (opsiyonel ama güçlü):** Gemini + DataForSEO + Etsy yazma izni için adım
+   adım kılavuz → [`docs/seo-api-kurulum.md`](docs/seo-api-kurulum.md). Panelde
+   **Anahtar Kelime** ve **SEO Etiketleri** sayfaları eksik anahtarda aynı
+   adımları gösterir.
 
 ## Klasör yapısı
 
