@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { ChevronDown, ExternalLink, KeyRound } from "lucide-react";
+import { ExternalLink, KeyRound } from "lucide-react";
 
+import { AnimatedDisclosure } from "@/components/ui/animated-disclosure";
 import { cn } from "@/lib/utils";
 
 export interface ApiGuideStep {
@@ -58,58 +58,46 @@ export function ApiCredentialGuide({
 }
 
 function GuideAccordion({ item }: { item: ApiGuideItem }) {
-  const [open, setOpen] = useState(false);
   return (
-    <div className="bg-background rounded-lg border">
-      <button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        className="flex w-full items-start gap-2 px-3 py-2.5 text-left text-sm"
-        aria-expanded={open}
-      >
-        <div className="min-w-0 flex-1 space-y-0.5">
-          <p className="font-medium">{item.title}</p>
-          <p className="text-muted-foreground text-xs">{item.why}</p>
-        </div>
-        <ChevronDown
-          className={cn(
-            "text-muted-foreground mt-0.5 size-4 shrink-0 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]",
-            open && "rotate-180",
-          )}
-        />
-      </button>
-      {open && (
-        <div className="border-t px-3 py-3 space-y-3">
-          <p className="text-muted-foreground font-mono text-[11px]">
-            Env: {item.envVars.join(" · ")}
-          </p>
-          <ol className="list-decimal space-y-2 pl-4 text-sm">
-            {item.steps.map((step, i) => (
-              <li key={i} className="leading-snug">
-                <span>{step.text}</span>
-                {step.href && (
-                  <>
-                    {" "}
-                    <a
-                      href={step.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-primary inline-flex items-center gap-0.5 font-medium underline-offset-2 hover:underline"
-                    >
-                      {step.hrefLabel ?? "Aç"}
-                      <ExternalLink className="size-3" />
-                    </a>
-                  </>
-                )}
-              </li>
-            ))}
-          </ol>
-          {item.tip && (
-            <p className="text-muted-foreground text-xs">{item.tip}</p>
-          )}
-        </div>
+    <AnimatedDisclosure
+      className="bg-background"
+      summaryClassName="px-3 py-2.5 text-sm"
+      panelClassName="space-y-3 px-3 py-3"
+      summary={
+        <span className="block min-w-0 space-y-0.5">
+          <span className="block font-medium">{item.title}</span>
+          <span className="text-muted-foreground block text-xs">{item.why}</span>
+        </span>
+      }
+    >
+      <p className="text-muted-foreground font-mono text-[11px]">
+        Env: {item.envVars.join(" · ")}
+      </p>
+      <ol className="list-decimal space-y-2 pl-4 text-sm">
+        {item.steps.map((step, i) => (
+          <li key={i} className="leading-snug">
+            <span>{step.text}</span>
+            {step.href && (
+              <>
+                {" "}
+                <a
+                  href={step.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary inline-flex items-center gap-0.5 font-medium underline-offset-2 hover:underline"
+                >
+                  {step.hrefLabel ?? "Aç"}
+                  <ExternalLink className="size-3" />
+                </a>
+              </>
+            )}
+          </li>
+        ))}
+      </ol>
+      {item.tip && (
+        <p className="text-muted-foreground text-xs">{item.tip}</p>
       )}
-    </div>
+    </AnimatedDisclosure>
   );
 }
 
