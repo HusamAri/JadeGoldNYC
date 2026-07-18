@@ -70,6 +70,7 @@ export const NAV_GROUPS: NavGroup[] = [
     label: "Ürün & Stüdyo",
     items: [
       { href: "/tasarimlar", label: "Listeler", icon: Palette },
+      { href: "/anahtar-kelime", label: "Anahtar Kelime", icon: TextSearch },
       { href: "/seo-yardimcisi", label: "SEO Yardımcısı", icon: TextSearch },
       { href: "/seo-etiketleri", label: "SEO Etiketleri", icon: Tags },
       // Prompt kiti Jade Gold listinglerine özel statik içerik — diğer
