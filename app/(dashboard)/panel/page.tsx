@@ -183,7 +183,7 @@ export default async function PanelPage({
         <SyncPromptSection orgId={m.org_id} />
       </Suspense>
 
-      {/* Satış Tanısı özeti — panelin üstünde görünür; tam teşhis /analizler/tani. */}
+      {/* Aylık Tanı özeti — panelin üstünde; tam teşhis /analizler/tani. */}
       <Suspense
         fallback={<SectionSkeleton h="h-[140px]" label="Satış tanısı…" />}
       >
@@ -697,7 +697,7 @@ async function SyncPromptSection({ orgId }: { orgId: string }) {
   );
 }
 
-/** Panel üstü Satış Tanısı özeti — stream edilir, tam sayfa /analizler/tani. */
+/** Panel üstü Aylık Tanı özeti — stream edilir, tam sayfa /analizler/tani. */
 async function DiagnosticSection({ orgId }: { orgId: string }) {
   const data = await getSalesDiagnostics(orgId);
   return <PanelDiagnosticCard data={data} />;

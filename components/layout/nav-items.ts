@@ -60,8 +60,10 @@ export const NAV_GROUPS: NavGroup[] = [
   {
     label: "Analiz",
     items: [
+      // Aylık Tanı üstte — Ocak→bugün ay ay değerlendirme; Performans'tan
+      // ayrı rota (prefix çakışması lib/nav matchNavItem ile çözülür).
+      { href: "/analizler/tani", label: "Aylık Tanı", icon: Stethoscope },
       { href: "/analizler", label: "Performans", icon: BarChart3 },
-      { href: "/analizler/tani", label: "Satış Tanısı", icon: Stethoscope },
       { href: "/yildiz-satici", label: "Yıldız Satıcı", icon: Star },
       { href: "/sepet-kurtarma", label: "Geri Kazanım", icon: UserRoundCheck },
     ],
