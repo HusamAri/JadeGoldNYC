@@ -20,6 +20,7 @@ import {
   Archive,
   Lightbulb,
   Compass,
+  Stethoscope,
   type LucideIcon,
 } from "lucide-react";
 
@@ -46,6 +47,8 @@ export const NAV_GROUPS: NavGroup[] = [
     label: "Genel",
     items: [
       { href: "/panel", label: "Panel", icon: LayoutDashboard },
+      // Üst sekme: Satış Tanısı panel özetinin yanında her zaman görünür olsun.
+      { href: "/analizler/tani", label: "Satış Tanısı", icon: Stethoscope },
       { href: "/gorevler", label: "Görevler", icon: ListChecks },
       { href: "/rehber", label: "Kullanım Rehberi", icon: Compass },
     ],
@@ -72,6 +75,7 @@ export const NAV_GROUPS: NavGroup[] = [
     items: [
       { href: "/tasarimlar", label: "Listeler", icon: Palette },
       { href: "/listing-onerileri", label: "Listing Önerileri", icon: Lightbulb },
+      { href: "/anahtar-kelime", label: "Anahtar Kelime", icon: TextSearch },
       { href: "/seo-yardimcisi", label: "SEO Yardımcısı", icon: TextSearch },
       { href: "/seo-etiketleri", label: "SEO Etiketleri", icon: Tags },
       // Prompt kiti Jade Gold listinglerine özel statik içerik — diğer
