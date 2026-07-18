@@ -234,3 +234,71 @@ export function distributePriceByWeight(
   }
   return out;
 }
+
+/**
+ * Belirlenen (çapa) varyantın fiyatından diğerlerini grama göre yeniden yazar.
+ *
+ * Şu anki listing içi fiyat ↔ ağırlık çarpanını (doğrusal: gram_fiyatı·g +
+ * işçilik) bilinen fiyatlardan okur; çapa yeni fiyata oturacak şekilde eğriyi
+ * ölçekler. Bilinen fiyat < 2 ise saf orantı: P_i = P_çapa · (g_i / g_çapa).
+ *
+ * Boş hücreleri dolduran `distributePriceByWeight`'ten farkı: ağırlığı olan
+ * TÜM hedefleri (çapa dahil) yeniden hesaplar — toplu fiyat için.
+ */
+export function propagatePricesFromAnchor(
+  variants: DistVariant[],
+  anchorSku: string,
+  anchorPriceCents: number,
+): PricePrediction[] {
+  if (!(anchorPriceCents > 0)) return [];
+  const withW = variants.filter(
+    (v) => v.weightGrams != null && v.weightGrams > 0,
+  );
+  const anchor = withW.find((v) => v.sku === anchorSku);
+  if (!anchor) return [];
+
+  const wAnchor = anchor.weightGrams as number;
+  const known = withW.filter((v) => v.priceCents != null && v.priceCents > 0);
+
+  let predict: ((w: number) => number) | null = null;
+  let model: PricePrediction["model"] = "weight-proportional";
+  let confidence: Confidence = "medium";
+
+  if (known.length >= 2) {
+    const reg = linreg(
+      known.map((v) => ({
+        x: v.weightGrams as number,
+        y: v.priceCents as number,
+      })),
+    );
+    if (reg && reg.r2 >= 0.6) {
+      const predAtAnchor = reg.a * wAnchor + reg.b;
+      if (predAtAnchor > 0) {
+        const scale = anchorPriceCents / predAtAnchor;
+        predict = (w) => scale * (reg.a * w + reg.b);
+        model = "weight-linear";
+        confidence =
+          reg.r2 >= 0.95 ? "high" : reg.r2 >= 0.85 ? "medium" : "low";
+      }
+    }
+  }
+
+  if (!predict) {
+    // Tek nokta veya zayıf uyum → gram orantısı (çarpan = P/g çapa).
+    predict = (w) => (anchorPriceCents * w) / wAnchor;
+    model = "weight-proportional";
+    confidence = known.length >= 1 ? "medium" : "low";
+  }
+
+  const out: PricePrediction[] = [];
+  for (const v of withW) {
+    const cents = Math.round(predict(v.weightGrams as number));
+    if (cents > 0) {
+      out.push({ sku: v.sku, priceCents: cents, model, confidence });
+    }
+  }
+  // Çapayı yuvarlama kaymasından kurtar — tam girilen fiyat.
+  const anchorOut = out.find((p) => p.sku === anchorSku);
+  if (anchorOut) anchorOut.priceCents = anchorPriceCents;
+  return out;
+}

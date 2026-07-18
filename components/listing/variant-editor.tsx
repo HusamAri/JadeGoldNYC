@@ -1,20 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Calculator, Loader2, Save, Sparkles } from "lucide-react";
+import {
+  Calculator,
+  Loader2,
+  Save,
+  Sparkles,
+  Layers,
+} from "lucide-react";
 
 import { updateVariant } from "@/app/(dashboard)/tasarimlar/listing/[id]/actions";
 import { ProductWeightInput } from "@/components/product-weight-input";
 import {
   inferWeightsBySize,
   distributePriceByWeight,
+  propagatePricesFromAnchor,
   type DistVariant,
 } from "@/lib/etsy/distribute";
 import type { ListingVariantRow } from "@/lib/db/queries/listings";
-import { centsToDecimal } from "@/lib/money";
+import {
+  detectKarat,
+  purchaseCostCentsForGrams,
+  type KaratType,
+} from "@/lib/gold-cost";
+import { centsToDecimal, formatMoney } from "@/lib/money";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -78,23 +90,32 @@ const WEIGHT_SOURCE_LABELS: Record<string, string> = {
 };
 
 /**
- * Varyant editörü — satır başına SKU/etiket + inline fiyat($)/gram/adet
- * Input'ları; satır bazlı kaydet (updateVariant). "Eksikleri otomatik hesapla"
- * distribute.ts motoruyla (ağırlık ← beden, fiyat ← ağırlık) SADECE boş
- * hücrelere öneri yazar; öneriler mor vurguludur ve satır kaydedilmeden
- * veritabanına YAZILMAZ.
+ * Varyant editörü — satır başına SKU/etiket + inline fiyat($)/maliyet/gram/adet.
+ * "Eksikleri otomatik hesapla" yalnız boş hücreleri doldurur.
+ * "Bu fiyattan toplu" seçili satırın fiyatını çapa alır; listing içi fiyat↔gram
+ * çarpanıyla diğer varyantları grama göre yeniden yazar.
  */
 export function VariantEditor({
   productId,
   variants,
   currency,
   productWeightGrams,
+  productTitle,
+  productTags,
+  productMaterials,
+  purchasePrice14kCents,
+  purchasePrice10kCents,
 }: {
   productId: string;
   variants: ListingVariantRow[];
   currency: string;
   /** Varyantsız (tek-parça) listing'de künye gramajı — ürün seviyesinde tutulur. */
   productWeightGrams?: number | null;
+  productTitle?: string;
+  productTags?: string[] | null;
+  productMaterials?: string[] | null;
+  purchasePrice14kCents?: number;
+  purchasePrice10kCents?: number;
 }) {
   const router = useRouter();
   const [rows, setRows] = useState<Record<string, RowState>>(() =>
@@ -103,16 +124,41 @@ export function VariantEditor({
   const [suggested, setSuggested] = useState<Record<string, Suggestion>>({});
   const [weightDirty, setWeightDirty] = useState<Set<string>>(new Set());
   const [saving, setSaving] = useState<Set<string>>(new Set());
+  const [anchorSku, setAnchorSku] = useState<string | null>(
+    () => variants.find((v) => v.price_cents != null)?.sku ?? variants[0]?.sku ?? null,
+  );
+
+  const karat: KaratType | null = useMemo(
+    () =>
+      detectKarat(
+        productTitle ?? "",
+        productTags,
+        productMaterials,
+      ),
+    [productTitle, productTags, productMaterials],
+  );
+
+  const purchasePrices = useMemo(
+    () => ({
+      "14K": purchasePrice14kCents,
+      "10K": purchasePrice10kCents,
+    }),
+    [purchasePrice14kCents, purchasePrice10kCents],
+  );
+
+  function costForGrams(grams: number | null): number | null {
+    if (grams == null || !karat) return null;
+    return purchaseCostCentsForGrams(grams, karat, purchasePrices);
+  }
 
   if (variants.length === 0) {
+    const singleCost = costForGrams(productWeightGrams ?? null);
     return (
       <div className="space-y-4 rounded-2xl border border-dashed p-6">
         <p className="text-muted-foreground text-center text-sm">
           Bu listing&apos;de varyant yok. Varyantlar Etsy senkronundan gelir ya
           da yeni listing açılışında girilir.
         </p>
-        {/* Tek-parça listing: künye gramajı ürün seviyesinde girilir — künye
-            "tam" sayılması için gerekli. */}
         <div className="flex flex-col items-center gap-1.5">
           <p className="text-muted-foreground text-xs">
             Ürün gramajı (altın maliyet motorunun ve künye bütünlüğünün kaynağı):
@@ -121,6 +167,12 @@ export function VariantEditor({
             productId={productId}
             initialGrams={productWeightGrams ?? null}
           />
+          {singleCost != null && (
+            <p className="text-muted-foreground text-xs tabular-nums">
+              Tahmini alım maliyeti: {formatMoney(singleCost, currency)}
+              {karat ? ` · ${karat}` : ""}
+            </p>
+          )}
         </div>
       </div>
     );
@@ -131,16 +183,17 @@ export function VariantEditor({
     if (key === "weight") {
       setWeightDirty((s) => new Set(s).add(sku));
     }
-    // Elle düzenlenen hücre artık öneri değil.
+    if (key === "price") {
+      setAnchorSku(sku);
+    }
     const field = key === "weight" ? "weight" : key === "price" ? "price" : null;
     if (field) {
       setSuggested((sg) => ({ ...sg, [sku]: { ...sg[sku], [field]: false } }));
     }
   }
 
-  /** Boş gram/fiyat hücrelerine distribute.ts önerilerini yazar (mor, kayıtsız). */
-  function autoFill() {
-    const base: DistVariant[] = variants.map((v) => {
+  function distBase(): DistVariant[] {
+    return variants.map((v) => {
       const r = rows[v.sku];
       return {
         sku: v.sku,
@@ -148,7 +201,11 @@ export function VariantEditor({
         priceCents: toCents(r?.price ?? ""),
       };
     });
+  }
 
+  /** Boş gram/fiyat hücrelerine distribute.ts önerilerini yazar (mor, kayıtsız). */
+  function autoFill() {
+    const base = distBase();
     const wPreds = inferWeightsBySize(base);
     const wMap = new Map(wPreds.map((p) => [p.sku, p]));
     const withWeights: DistVariant[] = base.map((v) => ({
@@ -165,7 +222,7 @@ export function VariantEditor({
 
     for (const p of wPreds) {
       const r = nextRows[p.sku];
-      if (!r || r.weight.trim()) continue; // yalnız BOŞ hücre
+      if (!r || r.weight.trim()) continue;
       nextRows[p.sku] = { ...r, weight: p.weightGrams.toFixed(2) };
       nextSuggested[p.sku] = { ...nextSuggested[p.sku], weight: true };
       nextDirty.add(p.sku);
@@ -193,6 +250,85 @@ export function VariantEditor({
     setWeightDirty(nextDirty);
     toast.success(
       `${wCount} gram, ${pCount} fiyat önerisi dolduruldu — mor değerler kaydetmeden yazılmaz.`,
+    );
+  }
+
+  /**
+   * Çapa satırın fiyatından tüm varyant fiyatlarını grama göre yeniden yazar.
+   * Mevcut fiyat↔gram eğrisini (çarpan + işçilik) koruyup çapaya ölçekler.
+   */
+  function bulkFromAnchor(sku?: string) {
+    const targetSku = sku ?? anchorSku;
+    if (!targetSku) {
+      toast.error("Önce bir varyant fiyatı seç veya gir.");
+      return;
+    }
+    const r = rows[targetSku];
+    const anchorPrice = toCents(r?.price ?? "");
+    const anchorWeight = toGram(r?.weight ?? "");
+    if (anchorPrice == null) {
+      toast.error("Çapa varyantta geçerli bir satış fiyatı olmalı.");
+      return;
+    }
+    if (anchorWeight == null) {
+      toast.error("Çapa varyantta gram olmalı — önce gramı gir veya otomatik hesapla.");
+      return;
+    }
+
+    const base = distBase();
+    // Eksik gramları bedenden tamamla ki dağıtım kapsamı genişlesin.
+    const wPreds = inferWeightsBySize(base);
+    const wMap = new Map(wPreds.map((p) => [p.sku, p]));
+    const withWeights: DistVariant[] = base.map((v) => ({
+      ...v,
+      weightGrams: v.weightGrams ?? wMap.get(v.sku)?.weightGrams ?? null,
+    }));
+
+    const preds = propagatePricesFromAnchor(
+      withWeights,
+      targetSku,
+      anchorPrice,
+    );
+    if (preds.length === 0) {
+      toast.info("Dağıtılacak ağırlıklı varyant bulunamadı.");
+      return;
+    }
+
+    const nextRows = { ...rows };
+    const nextSuggested: Record<string, Suggestion> = { ...suggested };
+    const nextDirty = new Set(weightDirty);
+    let filledWeights = 0;
+    let priced = 0;
+
+    for (const p of wPreds) {
+      const row = nextRows[p.sku];
+      if (!row || row.weight.trim()) continue;
+      nextRows[p.sku] = { ...row, weight: p.weightGrams.toFixed(2) };
+      nextSuggested[p.sku] = { ...nextSuggested[p.sku], weight: true };
+      nextDirty.add(p.sku);
+      filledWeights += 1;
+    }
+    for (const p of preds) {
+      const row = nextRows[p.sku];
+      if (!row) continue;
+      const nextPrice = (p.priceCents / 100).toFixed(2);
+      if (row.price === nextPrice && p.sku === targetSku) continue;
+      nextRows[p.sku] = { ...nextRows[p.sku], price: nextPrice };
+      nextSuggested[p.sku] = {
+        ...nextSuggested[p.sku],
+        price: p.sku !== targetSku,
+      };
+      priced += 1;
+    }
+
+    setRows(nextRows);
+    setSuggested(nextSuggested);
+    setWeightDirty(nextDirty);
+    setAnchorSku(targetSku);
+    toast.success(
+      `${targetSku} çapasından ${priced} fiyat grama göre yazıldı` +
+        (filledWeights > 0 ? ` · ${filledWeights} gram önerildi` : "") +
+        " — mor değerler kaydetmeden yazılmaz.",
     );
   }
 
@@ -233,15 +369,26 @@ export function VariantEditor({
     <div className="space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-muted-foreground text-xs">
-          Fiyat, gram ve adet satır içinde düzenlenir; her satır kendi
-          Kaydet&rsquo;iyle yazılır.
+          Fiyat yanında alım maliyeti görünür
+          {karat ? ` (${karat})` : " (ayar başlıktan okunamadı)"}. Toplu fiyat:
+          bir satırı çapa seçip grama göre dağıt.
         </p>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <Button type="button" variant="ghost" size="sm" asChild>
             <Link href={`/tasarimlar/varyant-hesapla?listing=${productId}`}>
               <Calculator className="size-4" />
               Hesaplayıcıda aç
             </Link>
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => bulkFromAnchor()}
+            disabled={!anchorSku}
+          >
+            <Layers className="size-4" />
+            Toplu fiyat (çapa → gram)
           </Button>
           <Button type="button" variant="outline" size="sm" onClick={autoFill}>
             <Sparkles className="size-4" />
@@ -254,9 +401,11 @@ export function VariantEditor({
         <Table>
           <TableHeader>
             <TableRow>
+              <TableHead className="w-10">Çapa</TableHead>
               <TableHead>SKU</TableHead>
               <TableHead>Varyant</TableHead>
-              <TableHead className="text-right">Fiyat ($)</TableHead>
+              <TableHead className="text-right">Satış ($)</TableHead>
+              <TableHead className="text-right">Maliyet ($)</TableHead>
               <TableHead className="text-right">Gram</TableHead>
               <TableHead className="text-right">Adet</TableHead>
               <TableHead>Kaynak</TableHead>
@@ -268,11 +417,28 @@ export function VariantEditor({
               const r = rows[v.sku];
               const sg = suggested[v.sku] ?? {};
               const isSaving = saving.has(v.sku);
+              const grams = toGram(r?.weight ?? "");
+              const costCents = costForGrams(grams);
+              const priceCents = toCents(r?.price ?? "");
+              const isAnchor = anchorSku === v.sku;
               return (
                 <TableRow
                   key={v.sku}
-                  className={cn(v.active === false && "opacity-60")}
+                  className={cn(
+                    v.active === false && "opacity-60",
+                    isAnchor && "bg-[color-mix(in_oklab,var(--brand)_6%,transparent)]",
+                  )}
                 >
+                  <TableCell>
+                    <input
+                      type="radio"
+                      name="price-anchor"
+                      checked={isAnchor}
+                      onChange={() => setAnchorSku(v.sku)}
+                      aria-label={`${v.sku} toplu fiyat çapası`}
+                      className="accent-[var(--brand)]"
+                    />
+                  </TableCell>
                   <TableCell className="font-mono text-xs whitespace-nowrap">
                     {v.sku}
                   </TableCell>
@@ -298,6 +464,30 @@ export function VariantEditor({
                         sg.price && SUGGESTED_CLASS,
                       )}
                     />
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <div className="text-muted-foreground ml-auto space-y-0.5 text-xs tabular-nums">
+                      <div>
+                        {costCents != null
+                          ? formatMoney(costCents, currency)
+                          : "—"}
+                      </div>
+                      {costCents != null &&
+                        priceCents != null &&
+                        priceCents > 0 && (
+                          <div
+                            className={cn(
+                              "font-mono text-[10px]",
+                              priceCents >= costCents
+                                ? "text-emerald-700 dark:text-emerald-400"
+                                : "text-rose-700 dark:text-rose-400",
+                            )}
+                          >
+                            {priceCents >= costCents ? "+" : ""}
+                            {formatMoney(priceCents - costCents, currency)}
+                          </div>
+                        )}
+                    </div>
                   </TableCell>
                   <TableCell className="text-right">
                     <Input
@@ -332,20 +522,31 @@ export function VariantEditor({
                         : "—"}
                   </TableCell>
                   <TableCell className="text-right">
-                    <Button
-                      type="button"
-                      size="sm"
-                      variant="outline"
-                      disabled={isSaving}
-                      onClick={() => save(v.sku)}
-                    >
-                      {isSaving ? (
-                        <Loader2 className="size-4 animate-spin" />
-                      ) : (
-                        <Save className="size-4" />
-                      )}
-                      Kaydet
-                    </Button>
+                    <div className="flex justify-end gap-1">
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="ghost"
+                        title="Bu satırı çapa alıp tüm fiyatları grama dağıt"
+                        onClick={() => bulkFromAnchor(v.sku)}
+                      >
+                        <Layers className="size-4" />
+                      </Button>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="outline"
+                        disabled={isSaving}
+                        onClick={() => save(v.sku)}
+                      >
+                        {isSaving ? (
+                          <Loader2 className="size-4 animate-spin" />
+                        ) : (
+                          <Save className="size-4" />
+                        )}
+                        Kaydet
+                      </Button>
+                    </div>
                   </TableCell>
                 </TableRow>
               );
@@ -355,9 +556,10 @@ export function VariantEditor({
       </div>
 
       <p className="text-muted-foreground text-xs">
-        Otomatik hesap: eksik gramlar bedenden (SKU&rsquo;daki ölçüden), eksik
-        fiyatlar ağırlıktan dağıtılır — yalnız boş hücreler doldurulur, para
-        birimi {currency}.
+        Toplu fiyat: çapa satırın satış fiyatı + mevcut varyantlar arası
+        fiyat/gram eğrisiyle diğerleri yeniden yazılır (işçilik sabiti korunur;
+        tek fiyat noktasında saf gram orantısı). Eksik otomatik: yalnız boş
+        hücreler. Para birimi {currency}.
       </p>
     </div>
   );

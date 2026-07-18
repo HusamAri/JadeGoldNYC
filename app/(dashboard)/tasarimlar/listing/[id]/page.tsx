@@ -9,6 +9,7 @@ import {
   getListingDetail,
   getListingMarketPosition,
 } from "@/lib/db/queries/listings";
+import { getGoldSettings } from "@/lib/db/queries/gold-settings";
 import { getListingImages, type ListingImage } from "@/lib/etsy/images";
 import { listListingImages } from "@/lib/db/queries/listing-images";
 import type { ListingImage as ManagedListingImage } from "@/lib/types";
@@ -84,6 +85,18 @@ export default async function ListingDetayPage({
   const detail = await getListingDetail(id);
   if (!detail) notFound();
   const { product, variants, ads, lifetimeSales, gaps } = detail;
+  const goldSettings = await getGoldSettings();
+  /** Künye maliyet satırı: tek SKU gramı yoksa medyan varyant gramı. */
+  const kunyeWeightGrams =
+    product.weight_grams ??
+    (() => {
+      const grams = variants
+        .map((v) => v.weight_grams)
+        .filter((g): g is number => g != null && g > 0)
+        .sort((a, b) => a - b);
+      if (grams.length === 0) return null;
+      return grams[Math.floor(grams.length / 2)] ?? null;
+    })();
 
   // Canlı Etsy görselleri — bağlı değilse/geç kalırsa [] (graceful, tek deneme).
   const images: ListingImage[] =
@@ -213,6 +226,10 @@ export default async function ListingDetayPage({
                 quantity: product.quantity,
                 research_keyword: product.research_keyword,
               }}
+              weightGrams={kunyeWeightGrams}
+              purchasePrice14kCents={goldSettings.purchase_price_14k_cents}
+              purchasePrice10kCents={goldSettings.purchase_price_10k_cents}
+              currency={product.currency}
             />
           </CardContent>
         </Card>
@@ -245,6 +262,11 @@ export default async function ListingDetayPage({
               variants={variants}
               currency={product.currency}
               productWeightGrams={product.weight_grams}
+              productTitle={product.title}
+              productTags={product.tags}
+              productMaterials={product.materials}
+              purchasePrice14kCents={goldSettings.purchase_price_14k_cents}
+              purchasePrice10kCents={goldSettings.purchase_price_10k_cents}
             />
           </CardContent>
         </Card>
