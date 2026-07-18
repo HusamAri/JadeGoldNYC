@@ -40,6 +40,11 @@ interface EtsyMoney {
   divisor: number;
   currency_code: string;
 }
+interface EtsyListingImage {
+  url_570xN?: string;
+  url_75x75?: string;
+  url_170x135?: string;
+}
 interface EtsyActiveListing {
   listing_id: number;
   title: string;
@@ -49,6 +54,9 @@ interface EtsyActiveListing {
   // includes=Shop ile gelir (uçtan uca değişebilen şekil — iki olasılığı da tut).
   shop_name?: string;
   Shop?: { shop_name?: string };
+  // includes=Images — benzer kart ızgarası için ilk görsel.
+  Images?: EtsyListingImage[];
+  images?: EtsyListingImage[];
 }
 interface EtsyActiveSearch {
   count: number;
@@ -216,6 +224,8 @@ export interface CompetitorRow {
   /** Etsy listing_id — rakip setine ekleme için (eski kayıtlarda yok; url'den
    *  /listing/(\d+)/ ile çözülür). */
   listing_id?: number | null;
+  /** İlk listing görseli (includes=Images; eski snapshot'larda yok). */
+  image_url?: string | null;
 }
 
 export interface ResearchResult {
@@ -587,7 +597,8 @@ export async function researchListing(
       limit: 20,
       sort_on: "score",
       sort_order: "down",
-      includes: "Shop", // rakip mağaza adını da getir
+      // Shop = mağaza adı; Images = benzer-listing kart ızgarası.
+      includes: "Shop,Images",
     },
   );
 
@@ -602,16 +613,23 @@ export async function researchListing(
     })
     .slice(0, 10);
 
-  const competitors: CompetitorRow[] = rawCompetitors.map((l, i) => ({
-    title: l.title,
-    price_cents: moneyToCents(l.price) as number,
-    currency: l.price?.currency_code ?? currency,
-    shop: l.shop_id ?? null,
-    shop_name: l.shop_name ?? l.Shop?.shop_name ?? null,
-    url: l.url ?? null,
-    position: i + 1,
-    listing_id: l.listing_id ?? null, // rakip setine ekleme için
-  }));
+  const competitors: CompetitorRow[] = rawCompetitors.map((l, i) => {
+    const imgs = l.Images ?? l.images ?? [];
+    const first = imgs[0];
+    const image_url =
+      first?.url_570xN ?? first?.url_170x135 ?? first?.url_75x75 ?? null;
+    return {
+      title: l.title,
+      price_cents: moneyToCents(l.price) as number,
+      currency: l.price?.currency_code ?? currency,
+      shop: l.shop_id ?? null,
+      shop_name: l.shop_name ?? l.Shop?.shop_name ?? null,
+      url: l.url ?? null,
+      position: i + 1,
+      listing_id: l.listing_id ?? null, // rakip setine ekleme için
+      image_url,
+    };
+  });
 
   // Varyantlar: fiyat/ağırlık temeli için HER modda dar kolon; deep modda
   // aynı-varyant karşılaştırması için tam kolon (tek sorgu iki ihtiyaca yeter).
