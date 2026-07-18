@@ -20,6 +20,9 @@ import { Users as UsersLine } from "@/components/icons/lux";
 import { resolvePeriod, previousPeriod, samePeriodLastYear } from "@/lib/period";
 import { getDashboard, type DashboardData } from "@/lib/db/queries/dashboard";
 import { getAlertCenter } from "@/lib/db/queries/alerts";
+import { getEtsyStatus } from "@/lib/db/queries/etsy";
+import { getLastSyncSummary } from "@/lib/etsy/sync";
+import { PanelSyncPrompt } from "@/components/panel/panel-sync-prompt";
 import { getTimelineData } from "@/lib/db/queries/timeline";
 import { requireMembership } from "@/lib/auth";
 import { getGoldPricePerOunce } from "@/lib/gold-price";
@@ -172,6 +175,12 @@ export default async function PanelPage({
       />
 
       <WhatsNew />
+
+      {/* Panel ilk açılışında (oturum başına bir kez) Etsy senkron hatırlatıcısı;
+          verisini kendi async bileşeninde stream eder, kabuğu bekletmez. */}
+      <Suspense fallback={null}>
+        <SyncPromptSection orgId={m.org_id} />
+      </Suspense>
 
       {/* Uyarı Board'u + Merkezi — en ağır veri dalı (tüm listing denetimi);
           Suspense ile sonradan akar, kabuğu bekletmez. */}
@@ -663,6 +672,24 @@ async function AlertsSection({ orgId }: { orgId: string }) {
 async function MarketAlertsSection({ orgId }: { orgId: string }) {
   const alerts = await getMarketPriceAlerts(orgId);
   return <MarketPriceAlertsCard alerts={alerts} />;
+}
+
+/** Panel ilk açılış Etsy senkron popup'ı — durum + son özet burada beklenir. */
+async function SyncPromptSection({ orgId }: { orgId: string }) {
+  const [status, summary] = await Promise.all([
+    getEtsyStatus(orgId),
+    getLastSyncSummary(orgId),
+  ]);
+  const configured = Boolean(
+    process.env.ETSY_API_KEY && process.env.ETSY_API_SECRET,
+  );
+  return (
+    <PanelSyncPrompt
+      connected={status.status === "connected"}
+      configured={configured}
+      initialSummary={summary}
+    />
+  );
 }
 
 async function TimelineSection({ orgId }: { orgId: string }) {
