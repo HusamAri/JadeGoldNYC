@@ -18,6 +18,7 @@ import {
   TextSearch,
   Tags,
   Archive,
+  Stethoscope,
   type LucideIcon,
 } from "lucide-react";
 
@@ -60,6 +61,7 @@ export const NAV_GROUPS: NavGroup[] = [
     label: "Analiz",
     items: [
       { href: "/analizler", label: "Performans", icon: BarChart3 },
+      { href: "/analizler/tani", label: "Satış Tanısı", icon: Stethoscope },
       { href: "/yildiz-satici", label: "Yıldız Satıcı", icon: Star },
       { href: "/sepet-kurtarma", label: "Geri Kazanım", icon: UserRoundCheck },
     ],
