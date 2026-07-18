@@ -67,6 +67,11 @@ import {
 
 export const metadata = { title: "Panel" };
 
+// Panel ilk-açılış popup'ından başlatılan Etsy senkronu bu rota segmentinin
+// maxDuration'ını miras alır (ayarlar/etsy'deki gibi). Varsayılan süre büyük
+// sync dilimlerini kesmesin diye 60sn.
+export const maxDuration = 60;
+
 export default async function PanelPage({
   searchParams,
 }: {
