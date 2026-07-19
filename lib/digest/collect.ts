@@ -27,6 +27,15 @@ function abs(path: string): string {
   return `${appBaseUrl()}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
+/** Prod’da migration 0106 henüz uygulanmadıysa PostgREST bu hatayı verir. */
+function isMissingDigestSettingsColumn(error: { message?: string } | null): boolean {
+  const msg = error?.message ?? "";
+  return (
+    msg.includes("digest_settings") &&
+    (msg.includes("schema cache") || msg.includes("does not exist"))
+  );
+}
+
 function escPct(n: number | null): string | null {
   if (n == null || !Number.isFinite(n)) return null;
   const sign = n > 0 ? "+" : "";
@@ -103,11 +112,23 @@ export async function collectOrgDigest(
   orgId: string,
   now = new Date(),
 ): Promise<OrgDigest | null> {
-  const { data: orgRow } = await admin
+  let { data: orgRow, error: orgErr } = await admin
     .from("organizations")
     .select("id, name, slug, default_currency, digest_settings")
     .eq("id", orgId)
     .maybeSingle();
+
+  // Migration 0106 yoksa kolon yok — gönderimi kilitleme; varsayılan açık.
+  if (isMissingDigestSettingsColumn(orgErr)) {
+    const fallback = await admin
+      .from("organizations")
+      .select("id, name, slug, default_currency")
+      .eq("id", orgId)
+      .maybeSingle();
+    orgRow = fallback.data
+      ? { ...fallback.data, digest_settings: { enabled: true } }
+      : null;
+  }
 
   if (!orgRow) return null;
 
@@ -565,9 +586,15 @@ export async function collectOrgDigest(
 export async function listDigestOrgIds(
   admin: SupabaseClient,
 ): Promise<string[]> {
-  const { data } = await admin
+  const { data, error } = await admin
     .from("organizations")
     .select("id, digest_settings");
+
+  if (isMissingDigestSettingsColumn(error)) {
+    const fallback = await admin.from("organizations").select("id");
+    return ((fallback.data ?? []) as { id: string }[]).map((r) => r.id);
+  }
+
   const out: string[] = [];
   for (const row of (data ?? []) as {
     id: string;
