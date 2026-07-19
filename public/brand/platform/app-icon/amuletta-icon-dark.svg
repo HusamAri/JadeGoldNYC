@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Amuletta">
+  <!-- Amuletta app icon  dark. Deep navy ground + luminous periwinkle orb + serif A. -->
+  <defs>
+    <radialGradient id="am-ground-d" cx="50%" cy="0%" r="120%">
+      <stop offset="0%" stop-color="#1c1f2a"/>
+      <stop offset="55%" stop-color="#14161e"/>
+      <stop offset="100%" stop-color="#10121a"/>
+    </radialGradient>
+    <radialGradient id="am-orb-d" cx="32%" cy="28%" r="90%">
+      <stop offset="0%" stop-color="#e4deff"/>
+      <stop offset="40%" stop-color="#a99bff"/>
+      <stop offset="72%" stop-color="#7a6ae0"/>
+      <stop offset="100%" stop-color="#4a3cb0"/>
+    </radialGradient>
+    <radialGradient id="am-spec-d" cx="35%" cy="22%" r="55%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.5"/>
+      <stop offset="55%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="am-glow-d" x="-25%" y="-25%" width="150%" height="150%">
+      <feGaussianBlur stdDeviation="14" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#am-ground-d)"/>
+  <circle cx="256" cy="268" r="172" fill="#a99bff" opacity="0.22"/>
+  <g filter="url(#am-glow-d)">
+    <circle cx="256" cy="256" r="168" fill="url(#am-orb-d)"/>
+    <circle cx="256" cy="256" r="168" fill="url(#am-spec-d)"/>
+  </g>
+  <g transform="translate(256 262) scale(7.2) translate(-24 -23.7)"
+     stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M24 10.8 14.6 36.6" stroke-width="2"/>
+    <path d="M24 10.8 33.4 36.6" stroke-width="3.6"/>
+    <path d="M16.9 28.4h14.2" stroke-width="2"/>
+    <path d="M11.4 36.6h6.4" stroke-width="2"/>
+    <path d="M30.2 36.6h6.4" stroke-width="2"/>
+  </g>
+</svg>
