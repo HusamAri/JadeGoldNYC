@@ -83,6 +83,12 @@ export async function sendDigestNow(): Promise<{
           "Özet üretilemedi. Çoğu zaman sebep: production DB’de digest_settings kolonu yok (migration 0106). Supabase SQL Editor’da ekleyin, sonra tekrar deneyin.",
       };
     }
+    if (result.skipped.includes("e-postalı")) {
+      return {
+        error:
+          "Org üyelerinin e-postası bulunamadı. Ayarlar → Ekip’te üyeleri kontrol et; sorun sürerse service-role / auth admin erişimini doğrula.",
+      };
+    }
     return { error: result.skipped };
   }
   return { ok: true, recipients: result?.recipients ?? 0 };

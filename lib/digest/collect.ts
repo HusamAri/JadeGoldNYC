@@ -630,14 +630,16 @@ export async function listDigestRecipients(
     ]),
   );
 
-  const { data: authData } = await admin.auth.admin.listUsers({
-    page: 1,
-    perPage: Math.max(200, ids.length),
-  });
+  // listUsers sayfalı — büyüyen platformda üye ilk 200’de olmayabilir (PR #130).
+  // Üye sayısı küçük; her id için getUserById güvenilir.
   const emails = new Map<string, string>();
-  for (const u of authData?.users ?? []) {
-    if (u.email && ids.includes(u.id)) emails.set(u.id, u.email);
-  }
+  await Promise.all(
+    ids.map(async (id) => {
+      const { data, error } = await admin.auth.admin.getUserById(id);
+      if (error || !data.user?.email) return;
+      emails.set(id, data.user.email);
+    }),
+  );
 
   const roleRank = (r: string) =>
     r === "owner" ? 0 : r === "admin" ? 1 : 2;
