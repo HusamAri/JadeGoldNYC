@@ -31,6 +31,8 @@ export interface NavItem {
   icon: LucideIcon;
   /** Yalnız Jade Gold organizasyonu aktifken görünür (marka-özel içerik). */
   jadeGoldOnly?: boolean;
+  /** Jade Gold veya EON aktifken görünür (Marka Kılavuzu vb.). */
+  brandBook?: boolean;
 }
 
 export interface NavGroup {
@@ -103,7 +105,7 @@ export const NAV_GROUPS: NavGroup[] = [
   {
     label: "Sistem",
     items: [
-      { href: "/marka-kilavuzu", label: "Marka Kılavuzu", icon: BookOpen, jadeGoldOnly: true },
+      { href: "/marka-kilavuzu", label: "Marka Kılavuzu", icon: BookOpen, brandBook: true },
       { href: "/kayitlar", label: "Kayıtlar", icon: ScrollText },
       { href: "/ayarlar", label: "Ayarlar", icon: Settings },
     ],

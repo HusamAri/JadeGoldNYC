@@ -31,6 +31,7 @@ export function Topbar({
   memberships,
   activeOrgId,
   showJadeGoldNav,
+  showBrandBookNav,
 }: {
   email: string;
   name?: string | null;
@@ -39,6 +40,8 @@ export function Topbar({
   activeOrgId: string;
   /** Aktif şirket Jade Gold ise marka-özel sekmeler mobil menüde de görünür. */
   showJadeGoldNav: boolean;
+  /** Jade Gold veya EON — Marka Kılavuzu. */
+  showBrandBookNav: boolean;
 }) {
   const pathname = usePathname();
   const [switchPending, startSwitch] = useTransition();
@@ -106,6 +109,7 @@ export function Topbar({
                 </p>
                 {g.items.map((i) => {
                   if (i.jadeGoldOnly && !showJadeGoldNav) return null;
+                  if (i.brandBook && !showBrandBookNav) return null;
                   const Icon = i.icon;
                   return (
                     <DropdownMenuItem key={i.href} asChild>

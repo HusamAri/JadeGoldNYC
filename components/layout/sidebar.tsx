@@ -16,11 +16,14 @@ export function Sidebar({
   memberships,
   activeOrgId,
   showJadeGoldNav,
+  showBrandBookNav,
 }: {
   memberships: MembershipWithOrg[];
   activeOrgId: string;
-  /** Aktif şirket Jade Gold ise marka-özel sekmeler (Marka Kılavuzu, Görsel Üretim) görünür. */
+  /** Aktif şirket Jade Gold ise marka-özel sekmeler (Görsel Üretim) görünür. */
   showJadeGoldNav: boolean;
+  /** Jade Gold veya EON — Marka Kılavuzu. */
+  showBrandBookNav: boolean;
 }) {
   const pathname = usePathname();
   const navRef = useRef<HTMLElement>(null);
@@ -77,6 +80,7 @@ export function Sidebar({
             </p>
             {group.items.map((item) => {
               if (item.jadeGoldOnly && !showJadeGoldNav) return null;
+              if (item.brandBook && !showBrandBookNav) return null;
               const active = item.href === activeHref;
               const Icon = item.icon;
               return (
