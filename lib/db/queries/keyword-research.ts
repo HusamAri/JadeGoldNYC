@@ -288,7 +288,8 @@ export async function listCompetitorVariantMatches(
   return (data ?? []) as CompetitorVariantMatchItem[];
 }
 
-/** Eşleştirme diyaloğu için bizim varyant özeti. */
+/** Eşleştirme diyaloğu için bizim varyant özeti.
+ *  Varyantsız listingde ürün SKU/başlığı tek seçenek olarak döner. */
 export async function listProductVariantOptions(
   productId: string,
 ): Promise<{ sku: string; label: string }[]> {
@@ -302,7 +303,7 @@ export async function listProductVariantOptions(
     console.error("product_variants (eşleştirme) hatası:", error.message);
     return [];
   }
-  return ((data ?? []) as {
+  const rows = ((data ?? []) as {
     sku: string;
     name: string | null;
     properties: { values?: string[] }[] | null;
@@ -315,4 +316,19 @@ export async function listProductVariantOptions(
       v.name ||
       v.sku,
   }));
+  if (rows.length > 0) return rows;
+
+  const { data: p, error: pErr } = await supabase
+    .from("products")
+    .select("sku, title")
+    .eq("id", productId)
+    .maybeSingle();
+  if (pErr) {
+    console.error("products (eşleştirme fallback) hatası:", pErr.message);
+    return [];
+  }
+  const product = p as { sku: string | null; title: string } | null;
+  if (!product) return [];
+  const sku = product.sku?.trim() || productId.slice(0, 8);
+  return [{ sku, label: product.title || sku }];
 }
