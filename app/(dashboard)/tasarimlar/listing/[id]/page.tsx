@@ -213,6 +213,7 @@ export default async function ListingDetayPage({
             <ListingFieldsForm
               productId={product.id}
               alreadyOnEtsy={product.etsy_listing_id != null}
+              hasVariations={variants.length > 0}
               initial={{
                 title: product.title,
                 description: product.description,

@@ -51,11 +51,9 @@ export function ListingPanel({
           "hover:bg-[color-mix(in_oklab,var(--surface-2)_40%,transparent)]",
         )}
       >
-        <div className="min-w-0 flex-1 space-y-2">
+        <div className="min-w-0 flex-1 space-y-1.5">
           <div aria-hidden className="idx">
-            <span>
-              Listing / {n} · {name}
-            </span>
+            <span>Listing / {n}</span>
             <span className="idx-bar" />
             <span className="idx-ln" />
             {tail ? <span className="normal-case">{tail}</span> : null}
@@ -68,7 +66,6 @@ export function ListingPanel({
           className={cn(
             "nm-raised-sm inline-flex size-10 shrink-0 items-center justify-center rounded-full",
             open && "text-[var(--brand)]",
-            !open && "disclosure-chevron-bob",
           )}
           aria-hidden
         >
