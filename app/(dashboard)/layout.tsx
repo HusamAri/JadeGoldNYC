@@ -6,6 +6,7 @@ import { Sidebar } from "@/components/layout/sidebar";
 import { Topbar } from "@/components/layout/topbar";
 import { PageTransition } from "@/components/layout/page-transition";
 import { ParallaxDrift } from "@/components/motion/parallax-drift";
+import { AmbientPointer } from "@/components/motion/ambient-pointer";
 
 export default async function DashboardLayout({
   children,
@@ -41,6 +42,8 @@ export default async function DashboardLayout({
       {/* Scroll-parallax: holo katmanları içerikten yavaş süzülür (derinlik).
           Idle'da sıfır iş; reduced-motion/dokunmatikte hiç bağlanmaz. */}
       <ParallaxDrift />
+      {/* Soft window light — pointer → --pointer-x/y; kartlarda sessiz highlight. */}
+      <AmbientPointer />
       <Sidebar
         memberships={memberships}
         activeOrgId={m.org_id}

@@ -145,6 +145,29 @@
   /* Cam iç halkası — 1px iridesan iç kenar (rim tek kaynaktan). */
   --glass-ring: inset 0 0 0 1px rgb(255 255 255 / 0.08);
   --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Sessiz oturum — hover/gölge settle (aşırı bounce yok). */
+  --ease-quiet: cubic-bezier(0.33, 1, 0.32, 1);
+  /* Motion süreleri — lib/motion.ts ile hizalı. */
+  --motion-press: 180ms;
+  --motion-hover: 280ms;
+  --motion-reveal: 560ms;
+  --motion-page: 380ms;
+  --motion-chain: 45ms;
+  /* Ambient pointer light (AmbientPointer yazar; yoksa üst-orta pencere ışığı). */
+  --pointer-x: 52%;
+  --pointer-y: 18%;
+  /* Doğal katmanlı gölge — tek “dijital halo” yerine yumuşak mesafe + contact. */
+  --lift-natural-sm:
+    0 1px 2px rgb(45 40 55 / 0.045),
+    0 4px 12px rgb(45 40 55 / 0.06);
+  --lift-natural:
+    0 1px 2px rgb(45 40 55 / 0.04),
+    0 6px 16px -4px rgb(45 40 55 / 0.08),
+    0 18px 40px -16px rgb(45 40 55 / 0.14);
+  --lift-natural-lg:
+    0 2px 4px rgb(45 40 55 / 0.04),
+    0 12px 28px -8px rgb(45 40 55 / 0.1),
+    0 32px 64px -28px rgb(45 40 55 / 0.18);
 
   /* Liquid sekme göstergesi — komşu sekmeye kayarken esneyip taşan eğri,
      sıfırdan dolarken hafif zıplayan (damla oturur gibi) eğri. */
@@ -200,6 +223,17 @@
   --lift-sm: 0 4px 14px rgb(0 0 0 / 0.35);
   --lift: 0 20px 50px rgb(0 0 0 / 0.4);
   --lift-lg: 0 24px 60px rgb(0 0 0 / 0.55);
+  --lift-natural-sm:
+    0 1px 2px rgb(0 0 0 / 0.28),
+    0 4px 14px rgb(0 0 0 / 0.32);
+  --lift-natural:
+    0 2px 4px rgb(0 0 0 / 0.28),
+    0 10px 28px -6px rgb(0 0 0 / 0.38),
+    0 28px 56px -24px rgb(0 0 0 / 0.45);
+  --lift-natural-lg:
+    0 2px 6px rgb(0 0 0 / 0.3),
+    0 16px 40px -10px rgb(0 0 0 / 0.42),
+    0 40px 72px -28px rgb(0 0 0 / 0.5);
   --glass-tint: radial-gradient(120% 150% at 84% -12%, rgb(169 155 255 / 0.2), transparent 56%),
     radial-gradient(120% 130% at 6% 112%, rgb(90 169 240 / 0.16), transparent 56%);
   --holo-blobs: radial-gradient(38% 44% at 22% 28%, rgb(120 130 220 / 0.5), transparent 62%),
@@ -1675,4 +1709,126 @@ html[data-brand="artifact"] .jg-dust {
 
 .disclosure-hint-closed {
   animation: disclosure-ring 2.4s ease-in-out infinite;
+}
+
+/* ── Calm site motion (scroll / press / chain / ambient light) ─────────────
+   Quiet physicality: cards rise into view, press into surface, soft window
+   light follows pointer. Prefers transform/opacity; reduced-motion kills it. */
+
+@keyframes calm-reveal {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+    filter: blur(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    filter: blur(0);
+  }
+}
+
+@keyframes calm-chain-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* Panel kartları scroll ile sessizce yükselir — bir kez (range entry). */
+    main [data-slot="card"],
+    main .glass-board,
+    main .nm-raised,
+    main .motion-reveal {
+      animation: calm-reveal var(--motion-reveal) var(--ease-premium) both;
+      animation-timeline: view(block);
+      animation-range: entry 0% entry 42%;
+    }
+
+    /* Zincir: aynı ebeveyndeki kardeşler birbirini hafif gecikmeyle izler. */
+    main .motion-chain > * {
+      animation: calm-chain-in 0.5s var(--ease-premium) both;
+      animation-timeline: view(block);
+      animation-range: entry 0% entry 38%;
+    }
+    main .motion-chain > *:nth-child(2) {
+      animation-delay: calc(var(--motion-chain) * 1);
+    }
+    main .motion-chain > *:nth-child(3) {
+      animation-delay: calc(var(--motion-chain) * 2);
+    }
+    main .motion-chain > *:nth-child(4) {
+      animation-delay: calc(var(--motion-chain) * 3);
+    }
+    main .motion-chain > *:nth-child(5) {
+      animation-delay: calc(var(--motion-chain) * 4);
+    }
+    main .motion-chain > *:nth-child(n + 6) {
+      animation-delay: calc(var(--motion-chain) * 5);
+    }
+  }
+}
+
+/* Ambient soft light on glass cards — natural window, not neon spotlight. */
+@media (prefers-reduced-motion: no-preference) {
+  main [data-slot="card"]::before {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    z-index: 0;
+    opacity: 0.55;
+    transition: opacity var(--motion-hover) var(--ease-quiet);
+    background: radial-gradient(
+      520px circle at var(--pointer-x) var(--pointer-y),
+      rgb(255 255 255 / 0.14),
+      transparent 42%
+    );
+  }
+  main [data-slot="card"]:hover::before {
+    opacity: 0.85;
+  }
+  main [data-slot="card"] > * {
+    position: relative;
+    z-index: 1;
+  }
+  .dark main [data-slot="card"]::before {
+    background: radial-gradient(
+      480px circle at var(--pointer-x) var(--pointer-y),
+      rgb(255 255 255 / 0.06),
+      transparent 40%
+    );
+  }
+}
+
+/* Press reaction — surface settles into the desk. */
+@media (prefers-reduced-motion: no-preference) {
+  main [data-slot="card"]:active {
+    transform: translateY(0) scale(0.992);
+    transition-duration: var(--motion-press);
+  }
+  main a:active [data-slot="card"],
+  main button:active {
+    transition-duration: var(--motion-press);
+  }
+}
+
+/* Natural lift preference on interactive glass (overrides harsh single halo). */
+@media (prefers-reduced-motion: no-preference) {
+  main [data-slot="card"] {
+    box-shadow: var(--lift-natural), var(--glass-highlight);
+    transition:
+      box-shadow var(--motion-hover) var(--ease-quiet),
+      transform var(--motion-hover) var(--ease-quiet);
+  }
+  main [data-slot="card"]:hover {
+    box-shadow: var(--lift-natural-lg), var(--glass-highlight);
+  }
 }
