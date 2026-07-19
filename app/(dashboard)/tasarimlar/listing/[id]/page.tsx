@@ -9,6 +9,7 @@ import {
   getListingDetail,
   getListingMarketPosition,
 } from "@/lib/db/queries/listings";
+import { getGoldSettings } from "@/lib/db/queries/gold-settings";
 import { getListingImages, type ListingImage } from "@/lib/etsy/images";
 import { listListingImages } from "@/lib/db/queries/listing-images";
 import type { ListingImage as ManagedListingImage } from "@/lib/types";
@@ -85,6 +86,7 @@ export default async function ListingDetayPage({
   const detail = await getListingDetail(id);
   if (!detail) notFound();
   const { product, variants, ads, lifetimeSales, gaps } = detail;
+  const goldSettings = await getGoldSettings();
 
   // Canlı Etsy görselleri — bağlı değilse/geç kalırsa [] (graceful, tek deneme).
   const images: ListingImage[] =
@@ -269,6 +271,11 @@ export default async function ListingDetayPage({
           variants={variants}
           currency={product.currency}
           productWeightGrams={product.weight_grams}
+          productTitle={product.title}
+          productTags={product.tags}
+          productMaterials={product.materials}
+          purchasePrice14kCents={goldSettings.purchase_price_14k_cents}
+          purchasePrice10kCents={goldSettings.purchase_price_10k_cents}
         />
       </ListingPanel>
 

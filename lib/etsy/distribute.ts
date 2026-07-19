@@ -234,3 +234,86 @@ export function distributePriceByWeight(
   }
   return out;
 }
+
+/**
+ * Çapa varyantın birim fiyatından ($/g = P_çapa / g_çapa) diğer tüm
+ * ağırlıklı varyantları yazar: P_i = birim · g_i.
+ *
+ * Tek fiyat girince tüm matris grama göre güncellenir — işçilik/eğri
+ * ölçeklemesi YOK (wedding band 2–12mm gibi genişlik matrisleri için).
+ */
+export function propagatePricesFromAnchor(
+  variants: DistVariant[],
+  anchorSku: string,
+  anchorPriceCents: number,
+): PricePrediction[] {
+  if (!(anchorPriceCents > 0)) return [];
+  const withW = variants.filter(
+    (v) => v.weightGrams != null && v.weightGrams > 0,
+  );
+  const anchor = withW.find((v) => v.sku === anchorSku);
+  if (!anchor) return [];
+
+  const wAnchor = anchor.weightGrams as number;
+  if (!(wAnchor > 0)) return [];
+
+  const unitCentsPerGram = anchorPriceCents / wAnchor;
+  const out: PricePrediction[] = [];
+  for (const v of withW) {
+    const cents =
+      v.sku === anchorSku
+        ? anchorPriceCents
+        : Math.round(unitCentsPerGram * (v.weightGrams as number));
+    if (cents > 0) {
+      out.push({
+        sku: v.sku,
+        priceCents: cents,
+        model: "weight-proportional",
+        confidence: "high",
+      });
+    }
+  }
+  return out;
+}
+
+/** Çapa fiyat / gram → birim satış ($/g, cent). */
+export function unitPriceCentsPerGram(
+  priceCents: number,
+  weightGrams: number,
+): number | null {
+  if (!(priceCents > 0) || !(weightGrams > 0)) return null;
+  return priceCents / weightGrams;
+}
+
+/**
+ * Toplu fiyat girdisi = EN DÜŞÜK gramlı varyantın satış fiyatı.
+ * Örn. 700$ ve min 2g → birim 350$/g → 2.50g = 875$.
+ */
+export function propagatePricesFromMinGramPrice(
+  variants: DistVariant[],
+  minGramPriceCents: number,
+): { predictions: PricePrediction[]; minSku: string; minGrams: number; unitCentsPerGram: number } | null {
+  if (!(minGramPriceCents > 0)) return null;
+  const withW = variants.filter(
+    (v) => v.weightGrams != null && v.weightGrams > 0,
+  );
+  if (withW.length === 0) return null;
+
+  let min = withW[0];
+  for (const v of withW) {
+    if ((v.weightGrams as number) < (min.weightGrams as number)) min = v;
+  }
+  const minGrams = min.weightGrams as number;
+  const predictions = propagatePricesFromAnchor(
+    withW,
+    min.sku,
+    minGramPriceCents,
+  );
+  if (predictions.length === 0) return null;
+  return {
+    predictions,
+    minSku: min.sku,
+    minGrams,
+    unitCentsPerGram: minGramPriceCents / minGrams,
+  };
+}

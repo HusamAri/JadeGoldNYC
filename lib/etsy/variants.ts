@@ -74,6 +74,48 @@ function toRows(
 }
 
 /**
+ * Tek listing'in Etsy envanterinden varyant fiyat/adetlerini panel'e yazar
+ * (gram dokunulmaz). Panelde yanlışlıkla ezilen fiyatları Etsy'ye döndürmek için.
+ * Yalnız Etsy'deki SKU'lu offering'ler yazılır — panel SKU üretmez.
+ */
+export async function syncOneListingVariants(
+  orgId: string,
+  productId: string,
+): Promise<{ variants: number; error?: string }> {
+  const admin = createAdminClient();
+  const { data: listingData, error: listingErr } = await admin
+    .from("products")
+    .select("id, etsy_listing_id, title")
+    .eq("org_id", orgId)
+    .eq("id", productId)
+    .maybeSingle();
+  if (listingErr) return { variants: 0, error: listingErr.message };
+  const listing = listingData as ListingRow | null;
+  if (!listing?.etsy_listing_id) {
+    return { variants: 0, error: "Bu listing Etsy'ye bağlı değil." };
+  }
+
+  try {
+    const client = await EtsyClient.forOrg(orgId);
+    const inv = await getListingInventory(client, listing.etsy_listing_id);
+    const rows = toRows(orgId, listing, inv.products ?? []);
+    if (rows.length === 0) {
+      return { variants: 0, error: "Etsy envanterinde SKU'lu varyant yok." };
+    }
+    const { error } = await admin
+      .from("product_variants")
+      .upsert(rows, { onConflict: "org_id,sku" });
+    if (error) return { variants: 0, error: error.message };
+    return { variants: rows.length };
+  } catch (e) {
+    return {
+      variants: 0,
+      error: e instanceof Error ? e.message : "Etsy varyant senkronu başarısız",
+    };
+  }
+}
+
+/**
  * Etsy envanterini gezip her listing'in varyantlarını `product_variants`e yazar
  * (SKU↔listing eşleşmesi + beden/renk property'leri + fiyat/adet). Ağırlık
  * alanına DOKUNMAZ; grams ShipStation'dan eşlenir (matchVariantWeights).
