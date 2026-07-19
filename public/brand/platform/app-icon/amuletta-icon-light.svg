@@ -1,42 +1,29 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Amuletta">
-  <!-- Negatif alan: indigo disk içinden A kesilir; zemin A’yı oluşturur.
-       Üçgen counterform = mücevher/kapı boşluğu. -->
-  <defs>
-    <filter id="soft" x="-8%" y="-8%" width="116%" height="116%">
-      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#3F4A44" flood-opacity="0.14"/>
-    </filter>
-    <linearGradient id="stone" x1="28%" y1="12%" x2="72%" y2="88%">
-      <stop offset="0%" stop-color="#8a7ae6"/>
-      <stop offset="45%" stop-color="#6b5bd6"/>
-      <stop offset="100%" stop-color="#4a3cb0"/>
-    </linearGradient>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none" role="img" aria-label="Amuletta">
+  <!-- Yay/halka markası — iki hilal + üçgen; negatif alan A. -->
   <rect width="512" height="512" rx="112" fill="#eaecf3"/>
-  <!-- Soft ambient contact shadow -->
-  <ellipse cx="256" cy="400" rx="150" ry="28" fill="#343949" opacity="0.08"/>
-  <g filter="url(#soft)">
-    <!-- evenodd: disk − A stroke voids − inner triangle -->
-    <path
-      fill="url(#stone)"
-      fill-rule="evenodd"
-      d="
-        M256 72
-        A184 184 0 1 1 255.9 72
-        Z
-        M256 128
-        L168 360
-        L196 360
-        L220 292
-        L292 292
-        L316 360
-        L344 360
-        Z
-        M232 248
-        L280 248
-        L256 184
-        Z
-      "/>
+  <ellipse cx="256" cy="412" rx="132" ry="22" fill="#343949" opacity="0.07"/>
+  <g fill="#6b5bd6">
+    <!-- Sol hilal (içe bakıyor) -->
+    <path fill-rule="evenodd" d="
+      M210 98
+      C118 130 72 210 72 286
+      C72 378 148 448 240 448
+      C198 448 148 400 148 286
+      C148 198 178 130 210 98
+      Z"/>
+    <!-- Sağ hilal -->
+    <path fill-rule="evenodd" d="
+      M302 98
+      C394 130 440 210 440 286
+      C440 378 364 448 272 448
+      C314 448 364 400 364 286
+      C364 198 334 130 302 98
+      Z"/>
+    <!-- Üst birleşim köprüsü (hafif örtüşme) -->
+    <ellipse cx="256" cy="118" rx="28" ry="22" opacity="0.85"/>
+    <!-- A çapraz çubuğu / mücevher üçgeni -->
+    <path d="M256 292 L214 358 L298 358 Z"/>
   </g>
-  <!-- Natural highlight (soft, not neon) -->
-  <ellipse cx="198" cy="168" rx="54" ry="28" fill="#ffffff" opacity="0.18" transform="rotate(-28 198 168)"/>
+  <!-- Doğal speküler (mat, neon değil) -->
+  <ellipse cx="168" cy="180" rx="36" ry="18" fill="#ffffff" opacity="0.14" transform="rotate(-24 168 180)"/>
 </svg>
