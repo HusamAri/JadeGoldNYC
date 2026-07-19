@@ -20,8 +20,11 @@ import {
 export interface ListingIndexRow {
   id: string;
   etsy_listing_id: number | null;
-  /** Ürün-seviye (aile) SKU — Etsy aynası; boş olmaz. */
-  sku: string;
+  /**
+   * Ürün-seviye (aile) SKU — Etsy aynası. Varyantlı listing'de SKU çoğu zaman
+   * yalnız varyantta yaşar; ürün satırında null olabilir (sync kuralı).
+   */
+  sku: string | null;
   title: string;
   status: string | null; // 'active' | 'draft' | ...
   image_url: string | null;
@@ -311,16 +314,18 @@ export async function listListingsIndex(opts?: {
           ? q.not("etsy_listing_id", "is", null)
           : q.is("etsy_listing_id", null);
     }
-    if (status) q = q.eq("status", status);
-    // SKU zorunlu — Etsy aynası; boş SKU panel listesine girmez.
-    q = q.not("sku", "is", null).neq("sku", "");
+    // Etsy state genelde küçük harf; ilike ile büyük/küçük duyarsız eşle.
+    if (status) q = q.ilike("status", status);
+    // Ürün SKU zorunlu DEĞİL: Etsy sync `l.sku?.[0] ?? null` yazar; varyantlı
+    // listing'de SKU ürün satırında boş kalır (varyantta yaşar). Boş SKU'yu
+    // elemek Listeler'de Aktif=0 gibi görünür (Etsy'de yüzlerce aktif varken).
     if (search) {
       const clauses = [`title.ilike.%${search}%`, `sku.ilike.%${search}%`];
       if (variantSkuIds.length) clauses.push(`id.in.(${variantSkuIds.join(",")})`);
       q = q.or(clauses.join(","));
     }
     return q
-      .order("sku", { ascending: false })
+      .order("sku", { ascending: false, nullsFirst: false })
       .order("id", { ascending: false })
       .range(from, to);
   });
@@ -376,15 +381,14 @@ export async function listListingsIndex(opts?: {
 
   const researched = new Set(researchRows.map((r) => r.product_id));
 
-  const mapped = products
-    .filter((p) => (p.sku ?? "").trim().length > 0)
-    .map((p) => {
+  const mapped = products.map((p) => {
     const va = variantAgg.get(p.id);
     const ads = adsAgg.get(p.id);
+    const sku = (p.sku ?? "").trim();
     return {
       id: p.id,
       etsy_listing_id: p.etsy_listing_id,
-      sku: (p.sku as string).trim(),
+      sku: sku.length > 0 ? sku : null,
       title: p.title,
       status: p.status,
       image_url: p.image_url,
@@ -400,8 +404,8 @@ export async function listListingsIndex(opts?: {
       ads30_orders: ads ? ads.orders : null,
     };
   });
-  // Küçük SKU altta, büyük/yeni üstte (doğal sayı: 0009 < 0010).
-  return sortListingsBySkuDesc(mapped);
+  // Küçük SKU altta, büyük/yeni üstte; SKU'suzlar sonda (varyantlı Etsy listing).
+  return sortListingsBySkuDesc(mapped, { keepMissingSku: true });
 }
 
 // ── Detay: tek listing'in komuta-merkezi verisi ──────────────────────

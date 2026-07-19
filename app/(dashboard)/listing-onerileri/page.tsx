@@ -170,7 +170,7 @@ function LifecycleTable({
                 </span>
               </Link>
               <div className="text-muted-foreground mt-0.5 font-mono text-[11px] tracking-wide">
-                {r.sku}
+                {r.sku ?? "—"}
               </div>
             </TableCell>
             <TableCell className="text-right whitespace-nowrap tabular-nums">
