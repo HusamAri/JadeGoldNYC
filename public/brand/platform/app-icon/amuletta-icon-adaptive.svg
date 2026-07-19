@@ -1,38 +1,34 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="Amuletta">
-  <!-- Favicon / PWA  prefers-color-scheme ile aç1k/koyu. -->
+  <!-- Favicon — negatif A; prefers-color-scheme. -->
   <defs>
     <style>
-      .g { fill: #eaecf3; }
-      .orb-a { stop-color: #cfc8ff; }
-      .orb-b { stop-color: #8a7ae6; }
-      .orb-c { stop-color: #6b5bd6; }
-      .orb-d { stop-color: #4030a0; }
-      .glow { fill: #6b5bd6; opacity: 0.2; }
+      .bg { fill: #eaecf3; }
+      .disc { fill: #6b5bd6; }
       @media (prefers-color-scheme: dark) {
-        .g { fill: #14161e; }
-        .orb-a { stop-color: #e4deff; }
-        .orb-b { stop-color: #a99bff; }
-        .orb-c { stop-color: #7a6ae0; }
-        .orb-d { stop-color: #4a3cb0; }
-        .glow { fill: #a99bff; opacity: 0.28; }
+        .bg { fill: #14161e; }
+        .disc { fill: #a99bff; }
       }
     </style>
-    <radialGradient id="o" cx="0.32" cy="0.28" r="0.9">
-      <stop class="orb-a" offset="0"/>
-      <stop class="orb-b" offset="0.48"/>
-      <stop class="orb-c" offset="0.68"/>
-      <stop class="orb-d" offset="1"/>
-    </radialGradient>
   </defs>
-  <rect class="g" width="48" height="48" rx="10.5"/>
-  <circle class="glow" cx="24" cy="25.2" r="16.5"/>
-  <circle cx="24" cy="24" r="16" fill="url(#o)"/>
-  <g transform="translate(24 24.4) scale(0.66) translate(-24 -23.7)"
-     stroke="#ffffff" fill="none" stroke-linecap="round">
-    <path d="M24 10.8 14.6 36.6" stroke-width="2"/>
-    <path d="M24 10.8 33.4 36.6" stroke-width="3.6"/>
-    <path d="M16.9 28.4h14.2" stroke-width="2"/>
-    <path d="M11.4 36.6h6.4" stroke-width="2"/>
-    <path d="M30.2 36.6h6.4" stroke-width="2"/>
-  </g>
+  <rect class="bg" width="48" height="48" rx="10.5"/>
+  <path
+    class="disc"
+    fill-rule="evenodd"
+    d="
+      M24 6.5
+      A17.5 17.5 0 1 1 23.99 6.5
+      Z
+      M24 12
+      L15.5 34.5
+      L18.2 34.5
+      L20.5 28
+      L27.5 28
+      L29.8 34.5
+      L32.5 34.5
+      Z
+      M21.6 23.8
+      L26.4 23.8
+      L24 17.2
+      Z
+    "/>
 </svg>
