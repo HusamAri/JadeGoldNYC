@@ -45,6 +45,18 @@ interface EtsyActiveListing {
   // includes=Shop ile gelir (uçtan uca değişebilen şekil — iki olasılığı da tut).
   shop_name?: string;
   Shop?: { shop_name?: string };
+  // includes=Images — kapak için ilk görsel.
+  images?: { url_75x75?: string; url_170x135?: string; url_570xN?: string }[];
+  Images?: { url_75x75?: string; url_170x135?: string; url_570xN?: string }[];
+}
+
+function listingImageUrl(l: EtsyActiveListing): string | null {
+  const imgs = l.images ?? l.Images ?? [];
+  const first = imgs[0];
+  if (!first) return null;
+  return (
+    first.url_170x135 ?? first.url_75x75 ?? first.url_570xN ?? null
+  );
 }
 interface EtsyActiveSearch {
   count: number;
@@ -102,15 +114,29 @@ function tokensMatch(a: VariantTokens, b: VariantTokens): boolean {
   return false;
 }
 
-interface CompetitorOffering {
+export interface CompetitorOffering {
+  listing_id: number;
+  product_id: number | null;
+  label: string;
   tokens: VariantTokens;
   price_cents: number;
+}
+
+/** Manuel eşleştirme satırı — otomatik token eşlemesini tamamlar/ezir. */
+export interface VariantMatchOverride {
+  our_sku: string;
+  competitor_listing_id: number;
+  competitor_product_id: number | null;
+  competitor_label: string | null;
+  competitor_size: string | null;
+  competitor_karat: string | null;
+  price_cents: number | null;
 }
 
 /** Bir rakip listing'in varyant offering'lerini çeker (okunamıyorsa boş).
  *  Public getListing?includes=Inventory kullanılır — sahiplik gerektirmez,
  *  aktif listing'in herkese açık varyant/fiyatlarını döndürür. */
-async function fetchCompetitorOfferings(
+export async function fetchCompetitorOfferings(
   client: EtsyClient,
   listingId: number,
   currency: string,
@@ -127,7 +153,20 @@ async function fetchCompetitorOfferings(
       const off = (p.offerings ?? []).find((o) => !o.is_deleted);
       const cents = etsyMoneyToCents(off?.price);
       if (!cents || (off?.price && off.price.currency_code !== currency)) continue;
-      out.push({ tokens: tokenize(p.property_values), price_cents: cents });
+      const tokens = tokenize(p.property_values);
+      const label =
+        (p.property_values ?? [])
+          .flatMap((pv) => pv.values ?? [])
+          .join(" · ") ||
+        (p.sku ? String(p.sku) : null) ||
+        (p.product_id != null ? `#${p.product_id}` : "Tek fiyat");
+      out.push({
+        listing_id: listingId,
+        product_id: p.product_id ?? null,
+        label,
+        tokens,
+        price_cents: cents,
+      });
     }
     return out;
   } catch {
@@ -156,10 +195,12 @@ export interface VariantComparison {
   basis: "variant" | "none";
 }
 
-/** Bizim varyantlar × rakip offering'ler → varyant başına fiyat bandı + konum. */
-function buildVariantComparison(
+/** Bizim varyantlar × rakip offering'ler → varyant başına fiyat bandı + konum.
+ *  Manuel eşleşmeler: aynı rakip listing için otomatik token eşlemesini ezer. */
+export function buildVariantComparison(
   ourVariants: OurVariant[],
   competitorOfferings: CompetitorOffering[],
+  manualMatches: VariantMatchOverride[] = [],
 ): VariantComparison[] {
   return ourVariants.map((v) => {
     const vt = tokenize(v.properties);
@@ -167,8 +208,20 @@ function buildVariantComparison(
       (v.properties ?? [])
         .flatMap((p) => p.values ?? [])
         .join(" · ") || v.name || v.sku;
-    const matched = competitorOfferings.filter((c) => tokensMatch(vt, c.tokens));
-    const prices = matched.map((c) => c.price_cents);
+    const manuals = manualMatches.filter((m) => m.our_sku === v.sku);
+    const manualListingIds = new Set(
+      manuals.map((m) => m.competitor_listing_id),
+    );
+    const auto = competitorOfferings.filter(
+      (c) =>
+        tokensMatch(vt, c.tokens) && !manualListingIds.has(c.listing_id),
+    );
+    const prices = [
+      ...auto.map((c) => c.price_cents),
+      ...manuals
+        .map((m) => m.price_cents)
+        .filter((p): p is number => p != null && p > 0),
+    ];
     if (!prices.length) {
       return {
         sku: v.sku,
@@ -212,6 +265,8 @@ export interface CompetitorRow {
   /** Etsy listing_id — rakip setine ekleme için (eski kayıtlarda yok; url'den
    *  /listing/(\d+)/ ile çözülür). */
   listing_id?: number | null;
+  /** Kapak küçük resmi (includes=Images; eski kayıtlarda yok). */
+  image_url?: string | null;
 }
 
 export interface ResearchResult {
@@ -583,7 +638,7 @@ export async function researchListing(
       limit: 20,
       sort_on: "score",
       sort_order: "down",
-      includes: "Shop", // rakip mağaza adını da getir
+      includes: "Shop,Images", // mağaza adı + kapak görseli
     },
   );
 
@@ -607,6 +662,7 @@ export async function researchListing(
     url: l.url ?? null,
     position: i + 1,
     listing_id: l.listing_id ?? null, // rakip setine ekleme için
+    image_url: listingImageUrl(l),
   }));
 
   // Varyantlar: fiyat/ağırlık temeli için HER modda dar kolon; deep modda
@@ -673,6 +729,7 @@ export async function researchListing(
 
   // Derin mod: rakip varyantlarını çekip bizimkilerle eşleştir (aynı-varyant
   // fiyat karşılaştırması). Maliyeti sınırlamak için ilk 8 rakip.
+  // Manuel eşleşmeler otomatik token eşlemesini ezer.
   let variantComparison: VariantComparison[] | null = null;
   if (deep && variantRows.length > 0) {
     const offerings: CompetitorOffering[] = [];
@@ -682,7 +739,19 @@ export async function researchListing(
       offerings.push(...offs);
       await new Promise((r) => setTimeout(r, 160));
     }
-    variantComparison = buildVariantComparison(variantRows, offerings);
+    const { data: matchRows } = await admin
+      .from("competitor_variant_match")
+      .select(
+        "our_sku, competitor_listing_id, competitor_product_id, competitor_label, competitor_size, competitor_karat, price_cents",
+      )
+      .eq("org_id", orgId)
+      .eq("product_id", product.id);
+    const manuals = (matchRows ?? []) as VariantMatchOverride[];
+    variantComparison = buildVariantComparison(
+      variantRows,
+      offerings,
+      manuals,
+    );
   }
 
   const market = computeMarketPosition(product, bandRows, goldOunceUsd, {

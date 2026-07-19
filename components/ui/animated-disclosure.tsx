@@ -14,6 +14,11 @@ type AnimatedDisclosureProps = {
   panelClassName?: string;
   /** Soft amber pulse when closed so the control reads as expandable. */
   hintClosed?: boolean;
+  /**
+   * `height` — klasik yükseklik açılımı (SectionGuide).
+   * `rise` — alttan kabararak (y + blur) açılır; rakip paneli için.
+   */
+  motion?: "height" | "rise";
 };
 
 export function AnimatedDisclosure({
@@ -24,10 +29,12 @@ export function AnimatedDisclosure({
   summaryClassName,
   panelClassName,
   hintClosed = true,
+  motion: motionMode = "height",
 }: AnimatedDisclosureProps) {
   const [open, setOpen] = useState(defaultOpen);
   const panelId = useId();
   const reduceMotion = useReducedMotion();
+  const rise = motionMode === "rise";
 
   return (
     <div
@@ -82,7 +89,9 @@ export function AnimatedDisclosure({
             initial={
               reduceMotion
                 ? { height: "auto", opacity: 1 }
-                : { height: 0, opacity: 0 }
+                : rise
+                  ? { height: 0, opacity: 0 }
+                  : { height: 0, opacity: 0 }
             }
             animate={{ height: "auto", opacity: 1 }}
             exit={
@@ -93,11 +102,40 @@ export function AnimatedDisclosure({
             transition={
               reduceMotion
                 ? { duration: 0 }
-                : { height: { duration: 0.28, ease: [0.22, 1, 0.36, 1] }, opacity: { duration: 0.2 } }
+                : {
+                    height: { duration: 0.28, ease: [0.22, 1, 0.36, 1] },
+                    opacity: { duration: 0.2 },
+                  }
             }
             className="overflow-hidden border-t border-[color-mix(in_oklab,var(--border)_55%,transparent)]"
           >
-            <div className={cn("px-4 py-3.5", panelClassName)}>{children}</div>
+            <motion.div
+              initial={
+                reduceMotion || !rise
+                  ? false
+                  : { opacity: 0, y: 14, filter: "blur(4px)" }
+              }
+              animate={
+                reduceMotion || !rise
+                  ? { opacity: 1, y: 0, filter: "blur(0px)" }
+                  : { opacity: 1, y: 0, filter: "blur(0px)" }
+              }
+              exit={
+                reduceMotion || !rise
+                  ? undefined
+                  : { opacity: 0, y: 8, filter: "blur(2px)" }
+              }
+              transition={
+                reduceMotion
+                  ? { duration: 0 }
+                  : rise
+                    ? { duration: 0.34, ease: [0.22, 1, 0.36, 1] }
+                    : { duration: 0 }
+              }
+              className={cn("px-4 py-3.5", panelClassName)}
+            >
+              {children}
+            </motion.div>
           </motion.div>
         ) : null}
       </AnimatePresence>
