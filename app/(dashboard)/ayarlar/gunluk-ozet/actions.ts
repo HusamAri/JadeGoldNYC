@@ -17,11 +17,18 @@ export async function setDigestEnabled(
   // Org update RLS dar olabilir — membership doğrulandıktan sonra admin yazar
   // (altın ayarlarıyla aynı güven modeli: yalnız owner/admin buraya gelir).
   const admin = createAdminClient();
-  const { data: row } = await admin
+  const { data: row, error: readErr } = await admin
     .from("organizations")
     .select("digest_settings")
     .eq("id", m.org_id)
     .maybeSingle();
+
+  if (readErr?.message?.includes("digest_settings")) {
+    return {
+      error:
+        "Veritabanında digest_settings kolonu yok. Supabase SQL Editor’da migration 0106’yı çalıştırın.",
+    };
+  }
 
   const prev =
     (row as { digest_settings?: Record<string, unknown> } | null)
@@ -34,7 +41,15 @@ export async function setDigestEnabled(
     })
     .eq("id", m.org_id);
 
-  if (error) return { error: error.message };
+  if (error) {
+    if (error.message.includes("digest_settings")) {
+      return {
+        error:
+          "Veritabanında digest_settings kolonu yok. Supabase SQL Editor’da migration 0106’yı çalıştırın.",
+      };
+    }
+    return { error: error.message };
+  }
   revalidatePath("/ayarlar/gunluk-ozet");
   revalidatePath("/ayarlar");
   return { ok: true };
@@ -61,6 +76,20 @@ export async function sendDigestNow(): Promise<{
   const summary = await sendDailyDigests(admin, { orgId: m.org_id });
   const result = summary.results[m.org_id];
   if (result?.error) return { error: result.error };
-  if (result?.skipped) return { error: result.skipped };
+  if (result?.skipped) {
+    if (result.skipped.includes("digest kapalı")) {
+      return {
+        error:
+          "Özet üretilemedi. Çoğu zaman sebep: production DB’de digest_settings kolonu yok (migration 0106). Supabase SQL Editor’da ekleyin, sonra tekrar deneyin.",
+      };
+    }
+    if (result.skipped.includes("e-postalı")) {
+      return {
+        error:
+          "Org üyelerinin e-postası bulunamadı. Ayarlar → Ekip’te üyeleri kontrol et; sorun sürerse service-role / auth admin erişimini doğrula.",
+      };
+    }
+    return { error: result.skipped };
+  }
   return { ok: true, recipients: result?.recipients ?? 0 };
 }
