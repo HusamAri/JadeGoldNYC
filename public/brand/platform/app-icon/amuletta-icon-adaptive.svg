@@ -1,19 +1,51 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="Amuletta">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Amuletta">
+  <!--
+    Referans yay/halka ile birebir: tepede birleşen iki hilal,
+    altta açık vesica, ortada yukarı bakan üçgen (negatif A).
+  -->
   <defs>
     <style>
-      .bg { fill: #eaecf3; }
-      .mk { fill: #6b5bd6; }
+      .bg { fill: #f5f3f9; }
+      .mk { fill: #7b6bcf; }
       @media (prefers-color-scheme: dark) {
         .bg { fill: #14161e; }
         .mk { fill: #a99bff; }
       }
     </style>
+    <filter id="paper" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3" result="n"/>
+      <feComponentTransfer in="n" result="g">
+        <feFuncA type="table" tableValues="0 0.04"/>
+      </feComponentTransfer>
+      <feBlend in="SourceGraphic" in2="g" mode="multiply"/>
+    </filter>
+    <filter id="lift" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2.5" stdDeviation="2.8" flood-color="#2f2a4a" flood-opacity="0.18"/>
+    </filter>
   </defs>
-  <rect class="bg" width="48" height="48" rx="10.5"/>
-  <g class="mk">
-    <path d="M19.7 9.2C11.1 12.2 6.8 19.7 6.8 26.8C6.8 35.4 13.9 42 22.5 42C18.6 42 13.9 37.5 13.9 26.8C13.9 18.6 16.7 12.2 19.7 9.2Z"/>
-    <path d="M28.3 9.2C36.9 12.2 41.2 19.7 41.2 26.8C41.2 35.4 34.1 42 25.5 42C29.4 42 34.1 37.5 34.1 26.8C34.1 18.6 31.3 12.2 28.3 9.2Z"/>
-    <ellipse cx="24" cy="11.1" rx="2.6" ry="2.1"/>
-    <path d="M24 27.4 L20.1 33.6 L27.9 33.6 Z"/>
+
+  <rect class="bg" width="512" height="512" rx="114" filter="url(#paper)"/>
+
+  <g class="mk" filter="url(#lift)" transform="translate(256 258) scale(4.15) translate(-50 -50)">
+    <!-- Sol hilal — tepe 50,14’te birleşir; altta açık -->
+    <path d="
+      M 50 14
+      C 30.5 14.5 17 29.5 17 50.5
+      C 17 71.5 29.5 86.5 47.5 88.5
+      C 41 81 37.5 68.5 37.5 52
+      C 37.5 35.5 41.5 23 50 14
+      Z
+    "/>
+    <!-- Sağ hilal — ayna -->
+    <path d="
+      M 50 14
+      C 69.5 14.5 83 29.5 83 50.5
+      C 83 71.5 70.5 86.5 52.5 88.5
+      C 59 81 62.5 68.5 62.5 52
+      C 62.5 35.5 58.5 23 50 14
+      Z
+    "/>
+    <!-- Üçgen (A çaprazı) -->
+    <path d="M 50 56.5 L 42.8 70.2 L 57.2 70.2 Z"/>
   </g>
 </svg>
