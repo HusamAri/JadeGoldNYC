@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<title>EON Fine Jewelry — Brand Guidelines</title>
+<meta name="hz:slide-selector" content=".board"/>
+<meta name="hz:canvas-width" content="1728"/>
+<meta name="hz:canvas-height" content="1152"/>
+<meta name="description" content="EON Fine Jewelry brand guidelines — silent luxury wedding bands."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet"/>
+<style>
+  /* ============================================================
+     EON Fine Jewelry — Brand Guidelines Board (1728 × 1152)
+     Palette (locked): ink/accent #1C1C1C · paper #F5F3EF · muted #6B6B6B
+                       surface #FFFFFF · card #F0EEE9 · mist #C8C4BC
+                       dark paper #121212 · dark accent #E8E4DC
+     Type (locked): Cormorant Garamond (display) + DM Sans (UI/body)
+     ============================================================ */
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    display:flex; justify-content:center; align-items:center;
+    min-height:100vh; background:#0A0A0A;
+  }
+
+  .board {
+    position:relative; width:1728px; height:1152px;
+    background:#121212; color:#F5F3EF; overflow:hidden;
+    font-family:"DM Sans", "Futura", "Century Gothic", sans-serif;
+  }
+  .board::before {
+    content:""; position:absolute; inset:28px;
+    border:1px solid rgba(232,228,220,.14);
+    pointer-events:none; z-index:3;
+  }
+  .board > * { position:relative; z-index:1; }
+
+  /* Faint architectural watermark — clear of copy */
+  .board-watermark {
+    position:absolute; right:-120px; bottom:-140px; width:560px; height:560px;
+    opacity:.04; pointer-events:none; z-index:0;
+  }
+  .board-watermark svg { width:100%; height:100%; }
+
+  /* ---- shared type ---- */
+  .eyebrow {
+    font-family:"DM Sans", sans-serif; font-weight:700; font-size:11px;
+    letter-spacing:3.2px; text-transform:uppercase; color:#C8C4BC;
+  }
+  .num {
+    font-family:"DM Sans", sans-serif; font-weight:500; font-size:11px;
+    letter-spacing:2px; color:#6B6B6B;
+  }
+
+  /* ---- header ---- */
+  .header {
+    position:absolute; left:64px; top:56px; right:64px; height:104px;
+    display:flex; justify-content:space-between; align-items:flex-start;
+  }
+  .h-brand {
+    font-family:"DM Sans", sans-serif; font-weight:500; font-size:36px;
+    letter-spacing:16px; color:#E8E4DC; line-height:1;
+  }
+  .h-sub {
+    font-family:"DM Sans", sans-serif; font-weight:500; font-size:11px;
+    letter-spacing:5.5px; color:#C8C4BC; margin-top:14px;
+  }
+  .h-right { text-align:right; }
+  .h-title {
+    font-family:"Cormorant Garamond", "Didot", "Bodoni MT", serif;
+    font-style:italic; font-weight:400; font-size:28px; color:#F5F3EF; line-height:1;
+  }
+  .h-meta {
+    font-family:"DM Sans", sans-serif; font-weight:500; font-size:11px;
+    letter-spacing:3.5px; color:#C8C4BC; margin-top:14px;
+  }
+  .rule {
+    position:absolute; left:64px; right:64px; top:172px; height:1px;
+    background:linear-gradient(90deg, #E8E4DC, rgba(232,228,220,.08));
+  }
+
+  /* ---- hero ---- */
+  .hero {
+    position:absolute; left:64px; top:198px; width:560px; height:612px;
+    overflow:hidden; border-radius:2px; background:#1C1C1C;
+  }
+  .hero-stage {
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    background:
+      radial-gradient(ellipse at 50% 38%, rgba(245,243,239,.06) 0%, transparent 55%),
+      #1C1C1C;
+  }
+  .hero-stage img {
+    width:78%; height:auto; max-height:72%;
+    object-fit:contain; filter:contrast(1.04) saturate(.94);
+  }
+  .hero .scrim {
+    position:absolute; inset:0; pointer-events:none;
+    background:linear-gradient(180deg,
+      rgba(18,18,18,.12) 0%,
+      rgba(18,18,18,0) 28%,
+      rgba(18,18,18,.25) 58%,
+      rgba(18,18,18,.96) 100%);
+  }
+  .hero .stamp {
+    position:absolute; top:22px; right:22px; width:72px; height:72px;
+    opacity:.22; pointer-events:none;
+  }
+  .hero .stamp svg { width:100%; height:100%; }
+  .hero .cap { position:absolute; left:36px; right:36px; bottom:36px; }
+  .hero .cap h2 {
+    font-family:"Cormorant Garamond", "Didot", serif; font-weight:400;
+    font-size:52px; line-height:.98; color:#F5F3EF; letter-spacing:.4px;
+  }
+  .hero .cap h2 em { font-style:italic; color:#E8E4DC; }
+  .hero .cap p {
+    font-family:"DM Sans", sans-serif; font-weight:500; font-size:12px;
+    letter-spacing:4.5px; color:#C8C4BC; text-transform:uppercase; margin-top:16px;
+  }
+
+  /* ---- panels ---- */
+  .panel { position:absolute; border-radius:2px; }
+  .panel-head {
+    display:flex; align-items:baseline; gap:12px; margin-bottom:14px;
+  }
+  .light {
+    background:#F5F3EF; color:#1C1C1C;
+    box-shadow:0 1px 0 rgba(28,28,28,.06);
+  }
+  .light .eyebrow { color:#1C1C1C; }
+  .light .num { color:#6B6B6B; }
+
+  .corner-mark {
+    position:absolute; top:16px; right:18px; width:22px; height:22px;
+    opacity:.35; pointer-events:none;
+  }
+  .corner-mark svg { width:100%; height:100%; }
+
+  /* === 01 Logo System === */
+  #logosys { left:660px; top:198px; width:1004px; height:286px; padding:24px 30px; }
+  .ls-body { display:flex; gap:28px; align-items:stretch; height:210px; margin-top:2px; }
+  .ls-ref { width:340px; flex:none; display:flex; flex-direction:column; }
+  .ls-ref-stage {
+    flex:1; display:flex; align-items:center; justify-content:center;
+    background:#FFFFFF; border:1px solid rgba(28,28,28,.10); border-radius:2px; padding:20px;
+  }
+  .ls-ref-stage svg { width:280px; }
+  .ls-ref-cap {
+    font-family:"DM Sans", sans-serif; font-weight:700; font-size:10px;
+    letter-spacing:2px; color:#6B6B6B; text-transform:uppercase; margin-top:10px;
+  }
+  .ls-variants { flex:1; display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+  .ls-var { display:flex; flex-direction:column; }
+  .ls-var-stage {
+    flex:1; display:flex; align-items:center; justify-content:center;
+    background:#FFFFFF; border:1px solid rgba(28,28,28,.10); border-radius:2px;
+  }
+  .ls-var-stage.ink { background:#1C1C1C; }
+  .ls-var-stage svg { max-width:130px; max-height:100px; }
+  .ls-var-stage.mono svg { width:64px; height:64px; }
+  .ls-var-stage.word svg { width:150px; }
+  .ls-var-cap {
+    font-family:"DM Sans", sans-serif; font-weight:500; font-size:9.5px;
+    letter-spacing:1.6px; color:#6B6B6B; text-transform:uppercase; margin-top:8px;
+  }
+
+  /* === 02 Colour === */
+  #color { left:660px; top:504px; width:494px; height:300px; padding:22px 26px; }
+  .chips { list-style:none; display:flex; flex-direction:column; gap:11px; margin-top:4px; }
+  .chip { display:flex; align-items:center; gap:14px; }
+  .chip-color { width:52px; height:34px; border-radius:2px; flex:none; }
+  .chip-meta { display:flex; align-items:baseline; gap:10px; width:100%; }
+  .chip-name {
+    font-family:"DM Sans", sans-serif; font-weight:700; font-size:12px;
+    letter-spacing:.3px; color:#1C1C1C; width:118px;
+  }
+  .chip-hex {
+    font-family:"DM Sans", sans-serif; font-weight:700; font-size:11px;
+    letter-spacing:1px; color:#1C1C1C; width:78px; opacity:.72;
+  }
+  .chip-use {
+    font-family:"DM Sans", sans-serif; font-weight:500; font-size:10.5px;
+    letter-spacing:.2px; color:#6B6B6B;
+  }
+
+  /* === 03 Typography === */
+  #type { left:1170px; top:504px; width:494px; height:300px; padding:22px 26px; }
+  .type-row { display:flex; gap:24px; margin-top:8px; }
+  .type-spec { flex:1; }
+  .type-Aa { font-size:78px; line-height:.84; color:#1C1C1C; }
+  .type-Aa.s {
+    font-family:"Cormorant Garamond", "Didot", serif; font-weight:400; font-style:italic;
+  }
+  .type-Aa.g {
+    font-family:"DM Sans", sans-serif; font-weight:500; letter-spacing:-1px;
+  }
+  .type-name {
+    font-family:"DM Sans", sans-serif; font-weight:700; font-size:12.5px;
+    letter-spacing:.4px; color:#1C1C1C; margin-top:16px;
+  }
+  .type-desc {
+    font-family:"DM Sans", sans-serif; font-weight:500; font-size:11px;
+    letter-spacing:.15px; color:#6B6B6B; margin-top:6px; line-height:1.55;
+  }
+  .type-scale {
+    font-family:"DM Sans", sans-serif; font-weight:500; font-size:10px;
+    letter-spacing:1.4px; color:#6B6B6B; text-transform:uppercase;
+    margin-top:14px; padding-top:12px; border-top:1px solid rgba(28,28,28,.12);
+  }
+
+  /* === 04 Collections === */
+  #collections { left:660px; top:824px; width:494px; height:234px; padding:20px 24px; }
+  .col-grid {
+    list-style:none; display:grid; grid-template-columns:1fr 1fr; gap:8px 18px; margin-top:6px;
+  }
+  .col-item {
+    display:flex; align-items:baseline; gap:10px;
+    padding:8px 0; border-bottom:1px solid rgba(28,28,28,.10);
+  }
+  .col-name {
+    font-family:"Cormorant Garamond", serif; font-weight:500; font-size:20px;
+    color:#1C1C1C; letter-spacing:.3px; min-width:118px;
+  }
+  .col-form {
+    font-family:"DM Sans", sans-serif; font-weight:500; font-size:10px;
+    letter-spacing:1.4px; text-transform:uppercase; color:#6B6B6B;
+  }
+  .col-note {
+    font-family:"DM Sans", sans-serif; font-weight:500; font-size:11px;
+    color:#6B6B6B; line-height:1.5; margin-top:12px;
+  }
+
+  /* === 05 Principles === */
+  #principles { left:1170px; top:824px; width:494px; height:234px; padding:20px 24px; }
+  .prin-list { list-style:none; display:flex; flex-direction:column; gap:10px; margin-top:6px; }
+  .prin-row { display:flex; gap:14px; align-items:flex-start; }
+  .prin-key {
+    font-family:"DM Sans", sans-serif; font-weight:700; font-size:11px;
+    letter-spacing:1.8px; text-transform:uppercase; color:#1C1C1C;
+    width:108px; flex:none; padding-top:2px;
+  }
+  .prin-val {
+    font-family:"DM Sans", sans-serif; font-weight:500; font-size:12px;
+    color:#6B6B6B; line-height:1.45;
+  }
+
+  /* ---- photography band ---- */
+  .photo-head {
+    position:absolute; left:64px; top:830px;
+    display:flex; align-items:baseline; gap:12px; z-index:1;
+  }
+  .photo-band {
+    position:absolute; left:64px; top:856px; width:560px; height:202px; z-index:1;
+  }
+  .ph {
+    position:absolute; top:0; overflow:hidden; border-radius:2px; background:#1C1C1C;
+  }
+  .ph img {
+    width:100%; height:100%; object-fit:cover; display:block;
+    filter:saturate(.9) contrast(1.03);
+  }
+  .ph::after {
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(18,18,18,0) 48%, rgba(18,18,18,.88) 100%);
+  }
+  .ph figcaption {
+    position:absolute; left:12px; bottom:11px; right:12px; z-index:1;
+    font-family:"DM Sans", sans-serif; font-weight:700; font-size:9.5px;
+    letter-spacing:1.3px; text-transform:uppercase; color:#F5F3EF;
+  }
+  .ph-main { left:0; width:280px; height:202px; }
+  .ph-main img { object-fit:contain; object-position:center 42%; padding:18px 24px 36px; }
+  .ph-tile { width:130px; height:95px; }
+  .ph-tile.a { left:292px; top:0; }
+  .ph-tile.b { left:430px; top:0; }
+  .ph-tile.c { left:292px; top:107px; width:268px; height:95px; }
+  .ph-arch {
+    display:flex; align-items:center; justify-content:center;
+    background:#1C1C1C;
+  }
+  .ph-arch span {
+    font-family:"Cormorant Garamond", serif; font-style:italic; font-weight:400;
+    font-size:22px; color:#E8E4DC; letter-spacing:.5px; position:relative; z-index:1;
+  }
+  .ph-arch.mist { background:#262626; }
+  .ph-arch.card { background:#1C1C1C; }
+  .ph-arch.paper {
+    background:#F0EEE9;
+  }
+  .ph-arch.paper span { color:#1C1C1C; }
+  .ph-arch.paper::after { background:none; }
+  .ph-arch.paper figcaption { color:#1C1C1C; }
+</style>
+</head>
+<body>
+  <div class="board" data-canvas-width="1728" data-canvas-height="1152" role="img" aria-label="EON Fine Jewelry brand guidelines board">
+
+    <!-- Watermark: architectural E -->
+    <div class="board-watermark" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+        <rect x="8" y="8" width="104" height="104" stroke="#E8E4DC" stroke-width="1.25"/>
+        <g fill="#E8E4DC">
+          <rect x="34" y="32" width="52" height="7"/>
+          <rect x="34" y="56.5" width="40" height="7"/>
+          <rect x="34" y="81" width="52" height="7"/>
+          <rect x="34" y="32" width="7" height="56"/>
+        </g>
+      </svg>
+    </div>
+
+    <header class="header">
+      <div>
+        <div class="h-brand">EON</div>
+        <div class="h-sub">FINE JEWELRY</div>
+      </div>
+      <div class="h-right">
+        <div class="h-title">Brand Guidelines</div>
+        <div class="h-meta">SILENT LUXURY · WEDDING BANDS · 01</div>
+      </div>
+    </header>
+    <div class="rule" aria-hidden="true"></div>
+
+    <!-- Hero -->
+    <section class="hero" aria-label="Feature">
+      <div class="hero-stage">
+        <img src="../cutout/eon-rings.png" width="495" height="470" alt="Two solid gold EON wedding bands — dome and faceted architectural profiles"/>
+      </div>
+      <div class="scrim" aria-hidden="true"></div>
+      <div class="stamp" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+          <rect x="8" y="8" width="104" height="104" stroke="#E8E4DC" stroke-width="1.25"/>
+          <g fill="#E8E4DC">
+            <rect x="34" y="32" width="52" height="7"/>
+            <rect x="34" y="56.5" width="40" height="7"/>
+            <rect x="34" y="81" width="52" height="7"/>
+            <rect x="34" y="32" width="7" height="56"/>
+          </g>
+        </svg>
+      </div>
+      <div class="cap">
+        <h2>Quiet<br/><em>Architecture</em></h2>
+        <p>Solid gold · never plated</p>
+      </div>
+    </section>
+
+    <!-- 01 · Logo System -->
+    <section class="panel light" id="logosys" aria-label="Logo system">
+      <div class="panel-head"><span class="eyebrow">Logo System</span><span class="num">/ 01</span></div>
+      <div class="corner-mark" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+          <rect x="8" y="8" width="104" height="104" stroke="#1C1C1C" stroke-width="1.25"/>
+          <g fill="#1C1C1C">
+            <rect x="34" y="32" width="52" height="7"/>
+            <rect x="34" y="56.5" width="40" height="7"/>
+            <rect x="34" y="81" width="52" height="7"/>
+            <rect x="34" y="32" width="7" height="56"/>
+          </g>
+        </svg>
+      </div>
+      <div class="ls-body">
+        <div class="ls-ref">
+          <div class="ls-ref-stage">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 120" fill="none" role="img" aria-label="EON Fine Jewelry primary lockup">
+              <g fill="#1C1C1C">
+                <path d="M48 18h58v7H56.5V40H100v7H56.5V61H106v7H48V18z"/>
+                <path d="M186 18c24.5 0 43.5 15.6 43.5 32.5S210.5 83 186 83s-43.5-15.6-43.5-32.5S161.5 18 186 18zm0 8c-17.8 0-31 11.2-31 24.5S168.2 75 186 75s31-11.2 31-24.5S203.8 26 186 26z"/>
+                <path d="M258 18h8l48.5 36.5V18h8.5v50h-8L266.5 31.5V68H258V18z"/>
+              </g>
+              <line x1="48" y1="88" x2="372" y2="88" stroke="#1C1C1C" stroke-width="0.75" opacity="0.55"/>
+              <text x="210" y="108" text-anchor="middle" fill="#1C1C1C"
+                    font-family="DM Sans, system-ui, sans-serif"
+                    font-size="11" font-weight="500" letter-spacing="4.5">FINE JEWELRY</text>
+            </svg>
+          </div>
+          <div class="ls-ref-cap">Primary lockup · reference</div>
+        </div>
+        <div class="ls-variants">
+          <div class="ls-var">
+            <div class="ls-var-stage word">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 72" fill="none" role="img" aria-label="EON wordmark">
+                <g fill="#1C1C1C">
+                  <path d="M24 14h52v6.5H31.5V33H72v6.5H31.5V51.5H76V58H24V14z"/>
+                  <path d="M148 14c22.6 0 40 14.8 40 30s-17.4 30-40 30-40-14.8-40-30 17.4-30 40-30zm0 7.2c-16.2 0-28.2 10.4-28.2 22.8S131.8 66.8 148 66.8s28.2-10.4 28.2-22.8S164.2 21.2 148 21.2z"/>
+                  <path d="M216 14h7.2l44.8 33.6V14H275v44h-7.2L223 24.4V58H216V14z"/>
+                </g>
+              </svg>
+            </div>
+            <div class="ls-var-cap">Wordmark</div>
+          </div>
+          <div class="ls-var">
+            <div class="ls-var-stage mono">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none" role="img" aria-label="EON monogram">
+                <rect x="8" y="8" width="104" height="104" stroke="#1C1C1C" stroke-width="1.25"/>
+                <g fill="#1C1C1C">
+                  <rect x="34" y="32" width="52" height="7"/>
+                  <rect x="34" y="56.5" width="40" height="7"/>
+                  <rect x="34" y="81" width="52" height="7"/>
+                  <rect x="34" y="32" width="7" height="56"/>
+                </g>
+              </svg>
+            </div>
+            <div class="ls-var-cap">Monogram</div>
+          </div>
+          <div class="ls-var">
+            <div class="ls-var-stage ink mono">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none" role="img" aria-label="EON monogram reversed">
+                <rect x="8" y="8" width="104" height="104" stroke="#E8E4DC" stroke-width="1.25"/>
+                <g fill="#E8E4DC">
+                  <rect x="34" y="32" width="52" height="7"/>
+                  <rect x="34" y="56.5" width="40" height="7"/>
+                  <rect x="34" y="81" width="52" height="7"/>
+                  <rect x="34" y="32" width="7" height="56"/>
+                </g>
+              </svg>
+            </div>
+            <div class="ls-var-cap">Reverse</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 · Colour -->
+    <section class="panel light" id="color" aria-label="Colour palette">
+      <div class="panel-head"><span class="eyebrow">Colour</span><span class="num">/ 02</span></div>
+      <ul class="chips">
+        <li class="chip">
+          <span class="chip-color" style="background:#1C1C1C" title="#1C1C1C"></span>
+          <span class="chip-meta">
+            <span class="chip-name">Charcoal Ink</span>
+            <span class="chip-hex">#1C1C1C</span>
+            <span class="chip-use">Primary · marks &amp; type</span>
+          </span>
+        </li>
+        <li class="chip">
+          <span class="chip-color" style="background:#F5F3EF;border:1px solid rgba(28,28,28,.14)" title="#F5F3EF"></span>
+          <span class="chip-meta">
+            <span class="chip-name">Warm Paper</span>
+            <span class="chip-hex">#F5F3EF</span>
+            <span class="chip-use">Light ground</span>
+          </span>
+        </li>
+        <li class="chip">
+          <span class="chip-color" style="background:#6B6B6B" title="#6B6B6B"></span>
+          <span class="chip-meta">
+            <span class="chip-name">Muted Stone</span>
+            <span class="chip-hex">#6B6B6B</span>
+            <span class="chip-use">Secondary text</span>
+          </span>
+        </li>
+        <li class="chip">
+          <span class="chip-color" style="background:#F0EEE9;border:1px solid rgba(28,28,28,.14)" title="#F0EEE9"></span>
+          <span class="chip-meta">
+            <span class="chip-name">Card Clay</span>
+            <span class="chip-hex">#F0EEE9</span>
+            <span class="chip-use">Surfaces · panels</span>
+          </span>
+        </li>
+        <li class="chip">
+          <span class="chip-color" style="background:#C8C4BC;border:1px solid rgba(28,28,28,.10)" title="#C8C4BC"></span>
+          <span class="chip-meta">
+            <span class="chip-name">Mist</span>
+            <span class="chip-hex">#C8C4BC</span>
+            <span class="chip-use">Dark UI · soft accent</span>
+          </span>
+        </li>
+        <li class="chip">
+          <span class="chip-color" style="background:#121212" title="#121212"></span>
+          <span class="chip-meta">
+            <span class="chip-name">Night Paper</span>
+            <span class="chip-hex">#121212</span>
+            <span class="chip-use">Dark ground</span>
+          </span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 03 · Typography -->
+    <section class="panel light" id="type" aria-label="Typography">
+      <div class="panel-head"><span class="eyebrow">Typography</span><span class="num">/ 03</span></div>
+      <div class="type-row">
+        <div class="type-spec">
+          <div class="type-Aa s">Aa</div>
+          <div class="type-name">Cormorant Garamond</div>
+          <div class="type-desc">Quiet high-contrast serif. Collection names, headlines &amp; editorial voice.</div>
+        </div>
+        <div class="type-spec">
+          <div class="type-Aa g">Aa</div>
+          <div class="type-name">DM Sans</div>
+          <div class="type-desc">Geometric sans. Logotype support, labels, UI &amp; body.</div>
+        </div>
+      </div>
+      <div class="type-scale">Display · Heading · Body · Label / caps</div>
+    </section>
+
+    <!-- Photography (left column under hero) -->
+    <div class="photo-head">
+      <span class="eyebrow">Photography</span>
+      <span class="num">/ 06 — PRODUCT ON VOID</span>
+    </div>
+    <div class="photo-band" aria-label="Photography specimens">
+      <figure class="ph ph-main">
+        <img src="../cutout/eon-rings.png" width="280" height="202" alt="EON wedding band pair on black"/>
+        <figcaption>Cutout · black void</figcaption>
+      </figure>
+      <figure class="ph ph-tile a ph-arch mist">
+        <span>Meridian</span>
+        <figcaption>Dome</figcaption>
+      </figure>
+      <figure class="ph ph-tile b ph-arch paper">
+        <span>Obelisk</span>
+        <figcaption>Flat</figcaption>
+      </figure>
+      <figure class="ph ph-tile c ph-arch card">
+        <span>Keystone · Cornice · Testament</span>
+        <figcaption>Architectural families</figcaption>
+      </figure>
+    </div>
+
+    <!-- 04 · Collections -->
+    <section class="panel light" id="collections" aria-label="Collection names">
+      <div class="panel-head"><span class="eyebrow">Collections</span><span class="num">/ 04</span></div>
+      <ul class="col-grid">
+        <li class="col-item"><span class="col-name">Meridian</span><span class="col-form">Dome</span></li>
+        <li class="col-item"><span class="col-name">Obelisk</span><span class="col-form">Flat</span></li>
+        <li class="col-item"><span class="col-name">Testament</span><span class="col-form">Signet</span></li>
+        <li class="col-item"><span class="col-name">Keystone</span><span class="col-form">Beveled</span></li>
+        <li class="col-item"><span class="col-name">Cornice</span><span class="col-form">Slim</span></li>
+      </ul>
+      <p class="col-note">Names read as architecture, not ornament. Speak the form — never the trend.</p>
+    </section>
+
+    <!-- 05 · Principles -->
+    <section class="panel light" id="principles" aria-label="Brand principles">
+      <div class="panel-head"><span class="eyebrow">Principles</span><span class="num">/ 05</span></div>
+      <ul class="prin-list">
+        <li class="prin-row">
+          <span class="prin-key">Material</span>
+          <span class="prin-val">Solid gold only — 10K &amp; 14K. Never plated. Weight is honesty.</span>
+        </li>
+        <li class="prin-row">
+          <span class="prin-key">Silence</span>
+          <span class="prin-val">No flash, no purple, no gold glitter. Charcoal on paper is enough.</span>
+        </li>
+        <li class="prin-row">
+          <span class="prin-key">Form</span>
+          <span class="prin-val">Profiles are structural: dome, flat, bevel, slim. Beauty is load-bearing.</span>
+        </li>
+        <li class="prin-row">
+          <span class="prin-key">Place</span>
+          <span class="prin-val">eonfinejewelry.com — the site speaks as quietly as the metal.</span>
+        </li>
+      </ul>
+    </section>
+
+  </div>
+</body>
+</html>

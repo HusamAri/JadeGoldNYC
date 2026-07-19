@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 72" fill="none" role="img" aria-label="EON wordmark">
+  <!-- Architectural geometric wordmark · charcoal on transparent -->
+  <g fill="#1C1C1C">
+    <!-- E -->
+    <path d="M24 14h52v6.5H31.5V33H72v6.5H31.5V51.5H76V58H24V14z"/>
+    <!-- O  open architectural ring -->
+    <path d="M148 14c22.6 0 40 14.8 40 30s-17.4 30-40 30-40-14.8-40-30 17.4-30 40-30zm0 7.2c-16.2 0-28.2 10.4-28.2 22.8S131.8 66.8 148 66.8s28.2-10.4 28.2-22.8S164.2 21.2 148 21.2z"/>
+    <!-- N -->
+    <path d="M216 14h7.2l44.8 33.6V14H275v44h-7.2L223 24.4V58H216V14z"/>
+  </g>
+</svg>
