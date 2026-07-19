@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Search, Plus, Trash2, Sparkles, Info, Check } from "lucide-react";
+import { Search, Plus, Trash2, Sparkles, Check } from "lucide-react";
 import { toast } from "sonner";
 
 import {
@@ -16,6 +16,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+  ApiCredentialGuide,
+  KEYWORD_API_GUIDES,
+} from "@/components/setup/api-credential-guide";
 
 const SOURCE_LABEL: Record<string, string> = {
   rule: "kural",
@@ -29,18 +33,19 @@ const SOURCE_LABEL: Record<string, string> = {
 export function KeywordWorkbench({
   products,
   saved,
+  initialSources,
 }: {
   products: { id: string; title: string }[];
   saved: KeywordIdeaRow[];
+  /** Sunucudan gelen anlık kaynak durumu — sayfa açılır açılmaz rehber görünsün. */
+  initialSources: { ai: boolean; demand: boolean };
 }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [seed, setSeed] = useState("");
   const [productId, setProductId] = useState<string>("");
   const [candidates, setCandidates] = useState<KeywordCandidate[]>([]);
-  const [sources, setSources] = useState<{ ai: boolean; demand: boolean } | null>(
-    null,
-  );
+  const [sources, setSources] = useState(initialSources);
   const savedSet = new Set(saved.map((s) => s.keyword.toLowerCase()));
 
   function onResearch() {
@@ -120,27 +125,29 @@ export function KeywordWorkbench({
             </Button>
           </div>
 
-          {sources && (
-            <div className="flex flex-wrap items-center gap-2 text-xs">
-              <span className="text-muted-foreground">Kaynaklar:</span>
-              <Badge variant={sources.demand ? "success" : "secondary"}>
-                talep {sources.demand ? "bağlı" : "kapalı"}
-              </Badge>
-              <Badge variant={sources.ai ? "success" : "secondary"}>
-                <Sparkles className="size-3" />
-                AI {sources.ai ? "açık" : "kapalı"}
-              </Badge>
-            </div>
-          )}
+          <div className="flex flex-wrap items-center gap-2 text-xs">
+            <span className="text-muted-foreground">Kaynaklar:</span>
+            <Badge variant={sources.demand ? "success" : "secondary"}>
+              talep {sources.demand ? "bağlı" : "kapalı"}
+            </Badge>
+            <Badge variant={sources.ai ? "success" : "secondary"}>
+              <Sparkles className="size-3" />
+              AI {sources.ai ? "açık" : "kapalı"}
+            </Badge>
+            {!sources.demand && !sources.ai && (
+              <span className="text-muted-foreground">
+                Şu an yalnız kural motoru çalışıyor.
+              </span>
+            )}
+          </div>
 
-          {sources && (!sources.demand || !sources.ai) && (
-            <p className="text-muted-foreground flex items-start gap-1.5 text-xs">
-              <Info className="mt-0.5 size-3.5 shrink-0" />
-              Gerçek arama hacmi için DataForSEO (DATAFORSEO_LOGIN/PASSWORD) veya
-              Google Ads; AI genişletme için Gemini
-              (GOOGLE_GENERATIVE_AI_API_KEY) anahtarını Secrets&apos;a ekleyin.
-              Şu an kural motoru adayları gösteriliyor.
-            </p>
+          {(!sources.demand || !sources.ai) && (
+            <ApiCredentialGuide
+              items={[
+                ...(!sources.ai ? [KEYWORD_API_GUIDES.ai] : []),
+                ...(!sources.demand ? [KEYWORD_API_GUIDES.demand] : []),
+              ]}
+            />
           )}
         </CardContent>
       </Card>

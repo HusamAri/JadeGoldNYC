@@ -87,6 +87,17 @@ export default async function ListingDetayPage({
   if (!detail) notFound();
   const { product, variants, ads, lifetimeSales, gaps } = detail;
   const goldSettings = await getGoldSettings();
+  /** Künye maliyet satırı: tek SKU gramı yoksa medyan varyant gramı. */
+  const kunyeWeightGrams =
+    product.weight_grams ??
+    (() => {
+      const grams = variants
+        .map((v) => v.weight_grams)
+        .filter((g): g is number => g != null && g > 0)
+        .sort((a, b) => a - b);
+      if (grams.length === 0) return null;
+      return grams[Math.floor(grams.length / 2)] ?? null;
+    })();
 
   // Canlı Etsy görselleri — bağlı değilse/geç kalırsa [] (graceful, tek deneme).
   const images: ListingImage[] =
@@ -209,6 +220,10 @@ export default async function ListingDetayPage({
                 quantity: product.quantity,
                 research_keyword: product.research_keyword,
               }}
+              weightGrams={kunyeWeightGrams}
+              purchasePrice14kCents={goldSettings.purchase_price_14k_cents}
+              purchasePrice10kCents={goldSettings.purchase_price_10k_cents}
+              currency={product.currency}
             />
           </ListingPanel>
         </div>

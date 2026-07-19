@@ -6,7 +6,8 @@ import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import type { MembershipWithOrg } from "@/lib/auth";
-import { NAV_GROUPS } from "@/components/layout/nav-items";
+import { NAV_GROUPS, NAV_ITEMS } from "@/components/layout/nav-items";
+import { matchNavItem } from "@/lib/nav";
 import { Logo } from "@/components/layout/logo";
 import { OrgSwitcher } from "@/components/layout/org-switcher";
 import { WhatsNewNav } from "@/components/layout/whats-new-nav";
@@ -23,6 +24,7 @@ export function Sidebar({
 }) {
   const pathname = usePathname();
   const navRef = useRef<HTMLElement>(null);
+  const activeHref = matchNavItem(NAV_ITEMS, pathname)?.href;
 
   // Aktif nav öğesi katlanan (overflow-y-auto) rayda görünür kalsın —
   // rota değişince en yakın konuma kaydır (görsel geri bildirim; davranış yok).
@@ -75,8 +77,7 @@ export function Sidebar({
             </p>
             {group.items.map((item) => {
               if (item.jadeGoldOnly && !showJadeGoldNav) return null;
-              const active =
-                pathname === item.href || pathname.startsWith(item.href + "/");
+              const active = item.href === activeHref;
               const Icon = item.icon;
               return (
                 <Link
