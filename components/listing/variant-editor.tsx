@@ -32,6 +32,7 @@ import {
   inferWeightsBySize,
   distributePriceByWeight,
   propagatePricesFromAnchor,
+  propagatePricesFromMinGramPrice,
   unitPriceCentsPerGram,
   type DistVariant,
 } from "@/lib/etsy/distribute";
@@ -145,6 +146,8 @@ export function VariantEditor({
     null,
   );
   const [undoing, setUndoing] = useState(false);
+  /** Toplu kutu: EN DÜŞÜK gramlı varyantın satış fiyatı (örn. 700). */
+  const [bulkMinPrice, setBulkMinPrice] = useState("");
   const [anchorSku, setAnchorSku] = useState<string | null>(
     () => variants.find((v) => v.price_cents != null)?.sku ?? variants[0]?.sku ?? null,
   );
@@ -195,6 +198,27 @@ export function VariantEditor({
     if (p == null || w == null) return null;
     return unitPriceCentsPerGram(p, w);
   }, [anchorSku, rows]);
+
+  /** Taslak satırlardan (yoksa sunucu gramından) en hafif varyant. */
+  const minGramInfo = useMemo(() => {
+    let best: { sku: string; grams: number } | null = null;
+    for (const v of variants) {
+      const g = toGram(rows[v.sku]?.weight ?? "") ?? v.weight_grams;
+      if (g == null || !(g > 0)) continue;
+      if (!best || g < best.grams) best = { sku: v.sku, grams: g };
+    }
+    return best;
+  }, [variants, rows]);
+
+  const bulkUnitPreview = useMemo(() => {
+    const price = toCents(bulkMinPrice);
+    if (price == null || !minGramInfo) return null;
+    return {
+      unit: price / minGramInfo.grams,
+      minSku: minGramInfo.sku,
+      minGrams: minGramInfo.grams,
+    };
+  }, [bulkMinPrice, minGramInfo]);
 
   function costForGrams(grams: number | null): number | null {
     if (grams == null || !karat) return null;
@@ -319,9 +343,9 @@ export function VariantEditor({
       const unitLabel =
         unit != null ? ` · birim ${(unit / 100).toFixed(2)} $/g` : "";
       toast.success(
-        `${targetSku} birim fiyatından ${priced} varyant güncellendi${unitLabel}` +
+        `${targetSku} birim fiyatından ${priced} varyant taslakta${unitLabel}` +
           (filledWeights > 0 ? ` · ${filledWeights} gram önerildi` : "") +
-          " — kaydetmeden yazılmaz.",
+          " — Önizle ve uygula ile onayla.",
       );
     }
   }
@@ -410,6 +434,66 @@ export function VariantEditor({
       return;
     }
     applyUnitPriceFrom(targetSku, rowsRef.current);
+  }
+
+  /**
+   * Toplu kutu: girilen tutar = min-gram varyantın fiyatı.
+   * Taslağa yaz → önizleme aç (onay olmadan DB’ye yazılmaz).
+   */
+  function applyBulkMinGramDraft() {
+    const priceCents = toCents(bulkMinPrice);
+    if (priceCents == null) {
+      toast.error("Min-gram satış fiyatı gir (örn. 700).");
+      return;
+    }
+    const rs = rowsRef.current;
+    const base = distBaseFrom(rs);
+    const wPreds = inferWeightsBySize(base);
+    const wMap = new Map(wPreds.map((p) => [p.sku, p]));
+    const withWeights: DistVariant[] = base.map((v) => ({
+      ...v,
+      weightGrams: v.weightGrams ?? wMap.get(v.sku)?.weightGrams ?? null,
+    }));
+
+    const result = propagatePricesFromMinGramPrice(withWeights, priceCents);
+    if (!result) {
+      toast.error(
+        "Gramı olan varyant yok — önce gramları gir veya eksikleri hesapla.",
+      );
+      return;
+    }
+
+    const nextRows = { ...rs };
+    const nextSuggested: Record<string, Suggestion> = { ...suggested };
+    const nextDirty = new Set(weightDirty);
+
+    for (const p of wPreds) {
+      const row = nextRows[p.sku];
+      if (!row || row.weight.trim()) continue;
+      nextRows[p.sku] = { ...row, weight: p.weightGrams.toFixed(2) };
+      nextSuggested[p.sku] = { ...nextSuggested[p.sku], weight: true };
+      nextDirty.add(p.sku);
+    }
+    for (const p of result.predictions) {
+      const row = nextRows[p.sku];
+      if (!row) continue;
+      nextRows[p.sku] = {
+        ...row,
+        price: (p.priceCents / 100).toFixed(2),
+      };
+      nextSuggested[p.sku] = { ...nextSuggested[p.sku], price: true };
+    }
+
+    setRows(nextRows);
+    rowsRef.current = nextRows;
+    setSuggested(nextSuggested);
+    setWeightDirty(nextDirty);
+    setAnchorSku(result.minSku);
+    toast.success(
+      `Taslak: min ${result.minGrams.toFixed(2)}g = $${(priceCents / 100).toFixed(2)} · birim ${(result.unitCentsPerGram / 100).toFixed(2)} $/g · ${result.predictions.length} varyant — önizleyip onayla.`,
+    );
+    // Önizlemeyi bir tick sonra aç (state settle).
+    setTimeout(() => setPreviewOpen(true), 0);
   }
 
   function buildPreviewRows(): PricePreviewRow[] {
@@ -567,7 +651,7 @@ export function VariantEditor({
   ).length;
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       {undoSnapshot && undoSnapshot.length > 0 && (
         <div className="bg-muted/40 flex flex-wrap items-center justify-between gap-2 rounded-xl border px-3 py-2 text-sm">
           <span>
@@ -590,9 +674,64 @@ export function VariantEditor({
         </div>
       )}
 
+      {/* Birincil yol: min-gram fiyatı → birim $/g × tüm gramlar */}
+      <div className="nm-pressed space-y-3 rounded-[1.25rem] p-4">
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div className="space-y-1">
+            <p className="font-mono text-[10px] tracking-[0.14em] uppercase">
+              Toplu fiyat · min gram → birim $/g
+            </p>
+            <p className="text-muted-foreground text-xs">
+              {variants.length} varyant
+              {minGramInfo
+                ? ` · en hafif ${minGramInfo.grams.toFixed(2)}g (${minGramInfo.sku})`
+                : " · gram eksik"}
+              . Girdiğin tutar en düşük gramlı varyantın satış fiyatıdır; diğerleri
+              birim gram fiyatıyla çarpılır. Önizle → onay olmadan yazılmaz.
+            </p>
+          </div>
+          <Button type="button" variant="ghost" size="sm" asChild>
+            <Link href={`/tasarimlar/varyant-hesapla?listing=${productId}`}>
+              <Calculator className="size-4" />
+              Hesaplayıcı
+            </Link>
+          </Button>
+        </div>
+        <form
+          className="flex flex-wrap items-center gap-2"
+          onSubmit={(e) => {
+            e.preventDefault();
+            applyBulkMinGramDraft();
+          }}
+        >
+          <div className="relative">
+            <span className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2 text-sm">
+              $
+            </span>
+            <Input
+              inputMode="decimal"
+              value={bulkMinPrice}
+              onChange={(e) => setBulkMinPrice(e.target.value)}
+              placeholder="700.00"
+              className="h-10 w-36 pl-7 text-right tabular-nums"
+              aria-label="Min gram varyant satış fiyatı"
+            />
+          </div>
+          <Button type="submit" disabled={!minGramInfo}>
+            <Eye className="size-4" />
+            Önizle ve dağıt
+          </Button>
+          {bulkUnitPreview && (
+            <span className="text-muted-foreground font-mono text-xs tabular-nums">
+              → {(bulkUnitPreview.unit / 100).toFixed(2)} $/g × gram
+            </span>
+          )}
+        </form>
+      </div>
+
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-muted-foreground text-xs">
-          Taslak: birim fiyatla ($/g × gram) dağıt → önizle → onayla.
+          Tek tek / çapa satır: birim fiyatla dağıt → önizle → onayla.
           {anchorUnit != null
             ? ` · çapa ${(anchorUnit / 100).toFixed(2)} $/g`
             : ""}
