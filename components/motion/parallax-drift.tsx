@@ -44,15 +44,25 @@ export function ParallaxDrift() {
     }));
 
     let raf = 0;
+    // Soft settle toward scroll target — avoids stepped digital jumps.
+    let currentY = window.scrollY;
+    let targetY = currentY;
+    const LERP = 0.14;
+
     const apply = () => {
       raf = 0;
-      const y = window.scrollY;
+      targetY = window.scrollY;
+      currentY += (targetY - currentY) * LERP;
+      if (Math.abs(targetY - currentY) < 0.15) currentY = targetY;
+      const y = currentY;
       const parY = MAX_SHIFT_PX * (1 - Math.exp(-y / TAU_PX));
       root.style.setProperty("--par-y", `${parY.toFixed(1)}px`);
       for (const { el, speed } of layers) {
         // hız<1: içerikten geri kalır (uzak); hız>1: öne geçer (yakın).
         el.style.transform = `translate3d(0, ${(y * (1 - speed)).toFixed(1)}px, 0)`;
       }
+      // Keep easing until settled (chain with scroll inertia).
+      if (currentY !== targetY) raf = requestAnimationFrame(apply);
     };
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(apply);
