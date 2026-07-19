@@ -29,7 +29,7 @@ const SECTIONS: {
 
 export default function YeniliklerPage() {
   return (
-    <div className="relative z-0 max-w-3xl space-y-8 pb-28">
+    <div className="page-stack relative z-0 max-w-3xl pb-32">
       <GoldStream motif="star" />
       <PageHeader
         title="Neler Yeni"

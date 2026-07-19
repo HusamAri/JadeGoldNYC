@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { springs } from "@/lib/motion";
 
 /**
- * Click/hover reaction wrapper — soft scale settle (physical press into surface).
+ * Press feedback only — no hover lift (glass/neu stays still; shadow does lift).
  * Prefer for non-button interactive tiles; buttons already have CSS active scale.
  */
 export function Pressable({
@@ -27,8 +27,7 @@ export function Pressable({
   return (
     <motion.div
       className={cn("will-change-transform", className)}
-      whileHover={{ y: -2 }}
-      whileTap={{ scale: firm ? 0.975 : 0.985, y: 0 }}
+      whileTap={{ scale: firm ? 0.985 : 0.992 }}
       transition={springs.snappy}
     >
       {children}

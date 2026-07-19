@@ -85,7 +85,7 @@ export default async function GeriKazanimPage({
   })).filter((tier) => tier.rows.length > 0);
 
   return (
-    <div className="relative z-0 pb-28 space-y-8">
+    <div className="page-stack relative z-0 pb-32">
       <GoldStream motif="link" />
       <PageHeader
         title="Müşteri Geri Kazanım"

@@ -39,7 +39,7 @@ export default async function ListingOnerileriPage() {
   ]);
 
   return (
-    <div className="relative z-0 space-y-8 pb-28">
+    <div className="page-stack relative z-0 pb-32">
       <GoldStream motif="ring" />
       <PageHeader
         title="Listing Önerileri"

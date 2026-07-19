@@ -172,7 +172,7 @@ export default async function PanelPage({
     : `${period.label} · karşılaştırma yok (tüm zamanlar)`;
 
   return (
-    <div className="motion-chain relative z-0 space-y-8 pb-28">
+    <div className="page-stack relative z-0 pb-32">
       <SceneCutouts page="panel" />
       <GoldStream motif="necklace" />
       <PageHeader
@@ -298,7 +298,7 @@ export default async function PanelPage({
             />
           </CardContent>
         </Card>
-        <div className="motion-chain stagger grid grid-cols-2 content-start gap-4 sm:gap-5">
+        <div className="stagger grid grid-cols-2 content-start gap-5 sm:gap-6">
           <KpiCard
             label="Toplam Gelir"
             cents={d.revenueCents}

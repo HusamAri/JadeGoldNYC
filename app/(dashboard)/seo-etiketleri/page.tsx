@@ -24,7 +24,7 @@ export default async function SeoEtiketleriPage() {
   const summary = summarizeSeo(rows);
 
   return (
-    <div className="space-y-6 pb-24">
+    <div className="page-stack pb-28">
       <PageHeader
         eyebrow="SEO Etiket Optimizasyonu"
         title="SEO Etiket Optimizasyonu"

@@ -14,7 +14,7 @@ export default async function EtsyAgirlikPage() {
   ]);
 
   return (
-    <div className="space-y-6 pb-24">
+    <div className="page-stack pb-28">
       <PageHeader
         title="Etsy'ye Ağırlık Gönder"
         description="Varyant gramajlarını listing açıklamalarına beden→gram tablosu olarak işleyin (idempotent)"

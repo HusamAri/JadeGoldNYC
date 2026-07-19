@@ -80,7 +80,7 @@ export default async function KayitlarPage({
   }`;
 
   return (
-    <div className="relative z-0 pb-28 space-y-8">
+    <div className="page-stack relative z-0 pb-32">
       <GoldStream motif="ledger" />
       <PageHeader
         title="Kayıtlar"

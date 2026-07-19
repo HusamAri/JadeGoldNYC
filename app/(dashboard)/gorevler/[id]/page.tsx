@@ -66,7 +66,7 @@ export default async function GorevDetayPage({
       : null;
 
   return (
-    <div className="relative z-0 max-w-3xl space-y-8">
+    <div className="page-stack relative z-0 max-w-3xl">
       <GoldStream motif="check" />
       <PageHeader
         title={task.title}

@@ -89,7 +89,7 @@ export default async function ListelerPage({
   const filtered = Boolean(search || status);
 
   return (
-    <div className="relative z-0 space-y-6 pb-28">
+    <div className="page-stack relative z-0 pb-32">
       <GoldStream motif="ring" />
       <PageHeader
         title="Listeler"

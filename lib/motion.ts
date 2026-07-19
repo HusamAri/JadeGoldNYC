@@ -29,13 +29,13 @@ export const durations = {
   chain: 0.045,
 } as const;
 
-/** Shared enter variant — opacity + short rise (no blur in JS; CSS owns blur). */
+/** Shared enter — opacity + tiny rise (never animate filter/backdrop-filter). */
 export const revealVariants = {
-  hidden: { opacity: 0, y: 12 },
+  hidden: { opacity: 0, y: 6 },
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: durations.reveal, ease: easePremium },
+    transition: { duration: 0.4, ease: easePremium },
   },
 };
 
@@ -44,16 +44,16 @@ export const chainContainer = {
   show: {
     transition: {
       staggerChildren: durations.chain,
-      delayChildren: 0.04,
+      delayChildren: 0.03,
     },
   },
 };
 
 export const chainItem = {
-  hidden: { opacity: 0, y: 10 },
+  hidden: { opacity: 0, y: 6 },
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.48, ease: easePremium },
+    transition: { duration: 0.36, ease: easePremium },
   },
 };
