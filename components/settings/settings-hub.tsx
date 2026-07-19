@@ -162,8 +162,8 @@ export function SettingsHub(props: SettingsHubProps) {
         transition={{ duration: 0.75, delay: 0.06, ease }}
         className="relative mb-10"
       >
-        <div className="rounded-[2rem] border border-black/5 bg-black/[0.03] p-1.5 shadow-[var(--shadow-raised)] dark:border-white/5 dark:bg-white/[0.03] dark:shadow-[0_28px_60px_rgb(0_0_0/0.45)]">
-          <div className="relative overflow-hidden rounded-[calc(2rem-0.375rem)] border border-[color:var(--glass-border)] [background-color:var(--glass-strong)] [background-image:var(--glass-sheen),var(--glass-tint)] shadow-[var(--glass-highlight),var(--glass-depth)] [backdrop-filter:var(--glass-filter)] dark:[background-color:var(--lume-panel)] dark:[background-image:radial-gradient(120%_90%_at_12%_-20%,oklch(0.45_0.12_278/0.35),transparent_55%),linear-gradient(180deg,oklch(1_0_0/0.04),transparent)]">
+        <div className="rounded-[2rem] border border-black/[0.06] bg-[linear-gradient(145deg,rgb(255_255_255/0.55),rgb(163_177_198/0.18))] p-1.5 shadow-[var(--shadow-hover)] dark:border-white/5 dark:bg-white/[0.03] dark:shadow-[0_28px_60px_rgb(0_0_0/0.45),0_0_40px_rgb(169_155_255/0.12)]">
+          <div className="relative overflow-hidden rounded-[calc(2rem-0.375rem)] border border-[color:var(--glass-border)] [background-color:var(--glass-strong)] [background-image:var(--glass-sheen),var(--glass-tint)] shadow-[var(--glass-highlight),var(--glass-depth),var(--lift)] [backdrop-filter:var(--glass-filter)] dark:[background-color:var(--lume-panel)] dark:[background-image:radial-gradient(120%_90%_at_12%_-20%,oklch(0.45_0.12_278/0.35),transparent_55%),linear-gradient(180deg,oklch(1_0_0/0.04),transparent)] dark:shadow-[var(--lume-hi),var(--lift),0_0_48px_rgb(169_155_255/0.18)]">
             <div className="grid gap-6 p-6 md:grid-cols-[1.2fr_0.8fr] md:p-8">
               <div className="space-y-5">
                 <div className="flex items-start gap-3">
@@ -317,15 +317,17 @@ function SettingsTile({
       <Link
         href={tile.href}
         className={cn(
-          "group relative block rounded-[1.75rem] border border-black/5 bg-black/[0.03] p-1.5 transition-[transform,box-shadow] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-1 hover:shadow-[var(--shadow-hover)] active:scale-[0.985] dark:border-white/5 dark:bg-white/[0.03]",
+          "group relative block rounded-[1.75rem] border border-black/[0.06] bg-[linear-gradient(145deg,rgb(255_255_255/0.5),rgb(163_177_198/0.16))] p-1.5 transition-[transform,box-shadow] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-1 hover:shadow-[var(--shadow-hover)] active:scale-[0.985] dark:border-white/5 dark:bg-white/[0.03]",
           large && "min-h-[168px]",
+          live &&
+            "shadow-[0_0_0_1px_rgb(52_211_153/0.25),0_0_28px_rgb(52_211_153/0.18)] dark:shadow-[0_0_0_1px_rgb(52_211_153/0.35),0_0_36px_rgb(52_211_153/0.28)]",
         )}
       >
         <div
           className={cn(
-            "relative h-full overflow-hidden rounded-[calc(1.75rem-0.375rem)] border border-[color:var(--glass-border)] [background-color:var(--glass)] [background-image:var(--nm-convex)] shadow-[var(--shadow-raised-sm),var(--glass-highlight)] dark:border-white/10 dark:[background-color:var(--lume-panel)] dark:[background-image:linear-gradient(160deg,oklch(1_0_0/0.06),transparent_45%)] dark:shadow-[var(--lume-hi),0_18px_40px_rgb(0_0_0/0.4)]",
+            "relative h-full overflow-hidden rounded-[calc(1.75rem-0.375rem)] border border-[color:var(--glass-border)] [background-color:var(--glass)] [background-image:var(--nm-convex),var(--glass-sheen)] shadow-[var(--shadow-raised),var(--glass-highlight)] [backdrop-filter:var(--glass-filter-sm)] dark:border-white/10 dark:[background-color:var(--lume-panel)] dark:[background-image:linear-gradient(160deg,oklch(1_0_0/0.06),transparent_45%)] dark:shadow-[var(--lume-hi),0_18px_40px_rgb(0_0_0/0.4)] dark:[backdrop-filter:none]",
             live &&
-              "dark:shadow-[var(--lume-hi),var(--lume-glow),0_18px_40px_rgb(0_0_0/0.4)]",
+              "border-emerald-400/35 shadow-[var(--shadow-raised),0_0_24px_rgb(52_211_153/0.22)] dark:border-emerald-300/40 dark:shadow-[var(--lume-hi),var(--lume-glow),0_18px_40px_rgb(0_0_0/0.4),0_0_32px_rgb(52_211_153/0.35)]",
           )}
         >
           {/* Neon edge lamp */}

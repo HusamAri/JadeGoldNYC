@@ -1642,3 +1642,37 @@ html[data-brand="artifact"] .jg-dust {
   opacity: 0.55;
   pointer-events: none;
 }
+
+/* Dropdown / disclosure affordance — kapalıyken “açılabilir” sinyali.
+   prefers-reduced-motion global kuralı animasyonu durdurur. */
+@keyframes disclosure-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(3px);
+  }
+}
+
+@keyframes disclosure-ring {
+  0%,
+  100% {
+    box-shadow:
+      0 10px 28px -20px rgba(28, 25, 23, 0.45),
+      0 0 0 0 color-mix(in oklab, var(--brand) 0%, transparent);
+  }
+  50% {
+    box-shadow:
+      0 10px 28px -20px rgba(28, 25, 23, 0.45),
+      0 0 0 3px color-mix(in oklab, var(--brand) 22%, transparent);
+  }
+}
+
+.disclosure-chevron-bob {
+  animation: disclosure-bob 1.6s ease-in-out infinite;
+}
+
+.disclosure-hint-closed {
+  animation: disclosure-ring 2.4s ease-in-out infinite;
+}
