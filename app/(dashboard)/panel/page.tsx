@@ -172,7 +172,7 @@ export default async function PanelPage({
     : `${period.label} · karşılaştırma yok (tüm zamanlar)`;
 
   return (
-    <div className="relative z-0 pb-28 space-y-8">
+    <div className="motion-chain relative z-0 space-y-8 pb-28">
       <SceneCutouts page="panel" />
       <GoldStream motif="necklace" />
       <PageHeader
@@ -189,9 +189,9 @@ export default async function PanelPage({
         <SyncPromptSection orgId={m.org_id} />
       </Suspense>
 
-      {/* Satış Tanısı özeti — panelin üstünde görünür; tam teşhis /analizler/tani. */}
+      {/* Aylık Tanı özeti — panelin üstünde; tam teşhis /analizler/tani. */}
       <Suspense
-        fallback={<SectionSkeleton h="h-[140px]" label="Satış tanısı…" />}
+        fallback={<SectionSkeleton h="h-[140px]" label="Aylık tanı…" />}
       >
         <DiagnosticSection orgId={m.org_id} />
       </Suspense>
@@ -298,7 +298,7 @@ export default async function PanelPage({
             />
           </CardContent>
         </Card>
-        <div className="stagger grid grid-cols-2 content-start gap-4 sm:gap-5">
+        <div className="motion-chain stagger grid grid-cols-2 content-start gap-4 sm:gap-5">
           <KpiCard
             label="Toplam Gelir"
             cents={d.revenueCents}
@@ -706,7 +706,7 @@ async function SyncPromptSection({ orgId }: { orgId: string }) {
   );
 }
 
-/** Panel üstü Satış Tanısı özeti — stream edilir, tam sayfa /analizler/tani. */
+/** Panel üstü Aylık Tanı özeti — stream edilir, tam sayfa /analizler/tani. */
 async function DiagnosticSection({ orgId }: { orgId: string }) {
   const data = await getSalesDiagnostics(orgId);
   return <PanelDiagnosticCard data={data} />;

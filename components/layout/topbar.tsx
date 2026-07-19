@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { signOut, switchOrganization } from "@/lib/actions/session";
 import type { MembershipWithOrg } from "@/lib/auth";
 import { NAV_ITEMS, NAV_GROUPS } from "@/components/layout/nav-items";
+import { matchNavItem } from "@/lib/nav";
 import { Logo } from "@/components/layout/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { GoldPriceTicker } from "@/components/gold-price-ticker";
@@ -55,9 +56,7 @@ export function Topbar({
       }
     });
   }
-  const current = NAV_ITEMS.find(
-    (i) => pathname === i.href || pathname.startsWith(i.href + "/"),
-  );
+  const current = matchNavItem(NAV_ITEMS, pathname);
   // Geri butonu yalnız alt/detay sayfalarında (bölüm ana sayfası veya Panel değil).
   const isSubPage = pathname !== "/panel" && (!current || pathname !== current.href);
   // Bir üst seviyeye git (segment kırp) — tarayıcı geçmişine güvenmez, uygulama

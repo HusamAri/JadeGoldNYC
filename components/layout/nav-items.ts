@@ -48,8 +48,6 @@ export const NAV_GROUPS: NavGroup[] = [
     label: "Genel",
     items: [
       { href: "/panel", label: "Panel", icon: LayoutDashboard },
-      // Üst sekme: Satış Tanısı panel özetinin yanında her zaman görünür olsun.
-      { href: "/analizler/tani", label: "Satış Tanısı", icon: Stethoscope },
       { href: "/gorevler", label: "Görevler", icon: ListChecks },
       { href: "/rehber", label: "Kullanım Rehberi", icon: Compass },
     ],
@@ -66,6 +64,9 @@ export const NAV_GROUPS: NavGroup[] = [
   {
     label: "Analiz",
     items: [
+      // Aylık Tanı üstte — Ocak→bugün ay ay değerlendirme; Performans'tan
+      // ayrı rota (prefix çakışması lib/nav matchNavItem ile çözülür).
+      { href: "/analizler/tani", label: "Aylık Tanı", icon: Stethoscope },
       { href: "/analizler", label: "Performans", icon: BarChart3 },
       { href: "/yildiz-satici", label: "Yıldız Satıcı", icon: Star },
       { href: "/sepet-kurtarma", label: "Geri Kazanım", icon: UserRoundCheck },

@@ -7,23 +7,35 @@ import {
   getProductResearchMeta,
   getProductDemandSignal,
   listCompetitorWatch,
+  listCompetitorVariantMatches,
+  listProductVariantOptions,
   diagnoseDemand,
 } from "@/lib/db/queries/keyword-research";
 import { formatMoney } from "@/lib/money";
 import { formatDate } from "@/lib/format";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { KeywordResearchControls } from "@/components/keyword-research-controls";
-import { SimilarListingsGrid } from "@/components/listing/similar-listings-grid";
+import {
+  AddCompetitorLinkForm,
+  AddCompetitorToSetButton,
+  CompetitorWatchList,
+} from "@/components/listing/competitor-watch-card";
+import { CompetitorProductRow } from "@/components/listing/competitor-product-row";
+import { CompetitorSection } from "@/components/listing/competitor-section";
+import { CompetitorMatchDialog } from "@/components/listing/competitor-match-dialog";
 
 /**
- * Rekabet fiyat araştırması paneli — bir listing için, "araştırma kelimesi"nde
- * Etsy'de organik çıkan ilk 10 rakip ürünün fiyat bandı + bizim fiyatımızın
- * konumu. Hüküm hiyerarşik sunulur: (1) tek satır hüküm rozeti, (2) neden,
- * (3) ne yap + tek birincil düğme, (4) talep teşhisi, (5) band + rakip listesi.
- * Sabit rakip seti (0091) varsa band ondan kurulur ve kartta ayrı bölümde
- * son fiyat + önceki kayda göre değişimle görünür. Veri günlük cron ile dolar.
+ * Rekabet fiyat araştırması paneli — kompakt görselli rakip satırları,
+ * başlıkla açılan bölümler (alttan kabarma), manuel varyant eşleştirme.
  */
+
+/** Eski snapshot'larda listing_id yok — URL'den çöz (0091 sete ekleme). */
+function listingIdFromUrl(url: string | null): number | null {
+  if (!url) return null;
+  const m = /\/listing\/(\d+)/.exec(url);
+  return m ? Number(m[1]) : null;
+}
 
 const POSITION_LABELS: Record<string, string> = {
   pahali: "Pazara göre pahalı",
@@ -40,17 +52,16 @@ export async function KeywordResearchPanel({
   bare?: boolean;
 }) {
   if (!productId) return null;
-  const [snap, meta, watchItems] = await Promise.all([
+  const [snap, meta, watchItems, matches, ourVariants] = await Promise.all([
     getLatestKeywordResearch(productId),
     getProductResearchMeta(productId),
     listCompetitorWatch(productId),
+    listCompetitorVariantMatches(productId),
+    listProductVariantOptions(productId),
   ]);
   const fallbackTag = meta?.tags?.find((t) => t && t.trim().length > 0) ?? null;
 
   const cur = snap?.currency ?? "USD";
-  // Band tablosunun kapısı: bandın KURULDUĞU sayı (rakip seti aktifken
-  // organik 0 olsa da band vardır — denetim R2 #3). Eski kayıtlarda null →
-  // organik sayıya düşülür.
   const bandCount = snap ? (snap.band_result_count ?? snap.result_count) : 0;
   const band =
     snap && bandCount > 0
@@ -62,7 +73,6 @@ export async function KeywordResearchPanel({
         ] as const)
       : null;
 
-  // Bizim konum: rakiplerin yüzde kaçından pahalıyız (0 = en ucuz).
   const pct = snap?.our_rank_pct;
   const posLabel =
     pct == null
@@ -79,7 +89,6 @@ export async function KeywordResearchPanel({
         ? "text-[oklch(0.58_0.16_344)] dark:text-[oklch(0.74_0.12_344)]"
         : "text-[oklch(0.50_0.19_278)] dark:text-[oklch(0.80_0.10_278)]";
 
-  // Hüküm: veri şüphesi 'belirsiz' pozisyonla gelir ama gösterilir (amber).
   const suspect = snap?.data_suspect === true;
   const showVerdict =
     !!snap &&
@@ -88,7 +97,6 @@ export async function KeywordResearchPanel({
   const bandSourceLabel =
     snap?.band_source === "rakip-seti" ? "Rakip seti" : "Organik arama";
 
-  // "Ucuzsa neden satamıyoruz" teşhisi — yalnız ucuz/bantta iken sorgulanır.
   const demand =
     snap && (snap.price_position === "ucuz" || snap.price_position === "bantta")
       ? await getProductDemandSignal(productId)
@@ -119,43 +127,32 @@ export async function KeywordResearchPanel({
             label: POSITION_LABELS.bantta,
           };
 
+  const watchedIds = new Set(watchItems.map((w) => w.competitor_listing_id));
+  const organicDefaultOpen =
+    watchItems.length === 0 && (snap?.results?.length ?? 0) > 0;
+  const variantDefaultOpen = false;
+
   const body = (
-    <div className="space-y-4">
-        {/* Anahtar kelime editörü + "şimdi araştır" — cron'u beklemeden test. */}
+    <div className="space-y-3">
+        <div className="idx">
+          <span>Rekabet · fiyat araştırması</span>
+          <span className="idx-bar" />
+          <span className="idx-ln" />
+          {snap && (
+            <span className="normal-case">{formatDate(snap.researched_at)}</span>
+          )}
+        </div>
+
         <KeywordResearchControls
           productId={productId}
           currentKeyword={meta?.research_keyword ?? null}
           fallback={fallbackTag}
         />
 
-        {/* Birincil yüzey: benzer içerik ızgarası + elle link. */}
-        <SimilarListingsGrid
-          productId={productId}
-          results={snap?.results ?? []}
-          watchItems={watchItems}
-          keyword={snap?.keyword ?? meta?.research_keyword ?? fallbackTag}
-        />
-
-        {/* Band / hüküm / tablo — scroll yükü; kapalı başlar. */}
-        <details className="group/kr border-border/60 rounded-[1.25rem] border">
-          <summary className="text-muted-foreground flex cursor-pointer list-none items-center gap-2 px-4 py-3 text-sm select-none [&::-webkit-details-marker]:hidden">
-            <span className="font-mono text-[10px] tracking-[0.14em] uppercase">
-              Fiyat bandı & hüküm
-            </span>
-            <span className="ml-auto text-xs">
-              {band
-                ? `${bandCount} rakip · ${bandSourceLabel}`
-                : "tarama sonrası dolar"}
-            </span>
-          </summary>
-          <div className="space-y-4 border-t px-4 py-4">
-
-        {/* Hüküm bloğu: rozet → neden → ne yap → teşhis (insancıl metin dersi). */}
         {showVerdict && snap && (
           <div
-            className={`space-y-2 rounded-xl border-l-4 p-3.5 shadow-[var(--lift-sm)] ${verdictTone.block}`}
+            className={`space-y-2 rounded-xl border-l-4 p-3 shadow-[var(--lift-sm)] ${verdictTone.block}`}
           >
-            {/* 1 · Tek satır hüküm rozeti + güven + band kaynağı */}
             <div className="flex flex-wrap items-center gap-2">
               <span
                 className={`rounded-full px-2 py-0.5 text-xs font-semibold uppercase ${verdictTone.badge}`}
@@ -183,7 +180,6 @@ export async function KeywordResearchPanel({
               </span>
             </div>
 
-            {/* 2 · Neden — hüküm gerekçesi + veri temeli (daima görünür) */}
             <p className="text-sm leading-relaxed">
               <span className="text-muted-foreground font-mono text-[10px] tracking-[0.14em] uppercase">
                 Neden ·{" "}
@@ -197,7 +193,6 @@ export async function KeywordResearchPanel({
               {snap.basis_note ? ` · ${snap.basis_note}` : ""}
             </p>
 
-            {/* 3 · Ne yap — aksiyon + tek birincil düğme */}
             {(snap.verdict_action ?? snap.recommendation) && (
               <div className="flex flex-wrap items-center justify-between gap-2 border-t pt-2">
                 <p className="min-w-0 flex-1 text-sm leading-relaxed">
@@ -214,7 +209,6 @@ export async function KeywordResearchPanel({
               </div>
             )}
 
-            {/* 4 · Teşhis — ucuzsa/banttaysa neden satmıyor? */}
             {diagnosis && (
               <p className="border-t pt-2 text-sm leading-relaxed">
                 <span className="text-muted-foreground font-mono text-[10px] tracking-[0.14em] uppercase">
@@ -236,7 +230,6 @@ export async function KeywordResearchPanel({
           </p>
         ) : (
           <>
-            {/* Veri penceresi/kaynağı — daima görünür. */}
             <div className="flex flex-wrap items-center gap-2 text-sm">
               <span className="text-muted-foreground">Anahtar kelime:</span>
               <span className="bg-accent text-accent-foreground rounded-full px-3 py-1 font-mono text-xs tracking-wide uppercase">
@@ -251,20 +244,20 @@ export async function KeywordResearchPanel({
 
             {band ? (
               <>
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                   {band.map((b) => (
                     <div key={b.k} className="space-y-0.5">
                       <p className="text-muted-foreground font-mono text-[10px] tracking-[0.14em] uppercase">
                         {b.k}
                       </p>
-                      <p className="font-mono text-lg font-semibold tabular-nums">
+                      <p className="font-mono text-base font-semibold tabular-nums">
                         {b.v != null ? formatMoney(b.v, cur) : "—"}
                       </p>
                     </div>
                   ))}
                 </div>
 
-                <div className="flex flex-wrap items-baseline justify-between gap-2 border-t pt-3">
+                <div className="flex flex-wrap items-baseline justify-between gap-2 border-t pt-2">
                   <span className="text-sm">
                     <span className="text-muted-foreground">Bizim fiyat: </span>
                     <span className="font-mono font-semibold tabular-nums">
@@ -274,77 +267,140 @@ export async function KeywordResearchPanel({
                     </span>
                   </span>
                   {posLabel && (
-                    <span className={`flex items-center gap-1.5 text-sm font-medium ${posTone}`}>
+                    <span
+                      className={`flex items-center gap-1.5 text-sm font-medium ${posTone}`}
+                    >
                       <TrendingUp className="size-4" />
                       {posLabel}
                     </span>
                   )}
                 </div>
 
-                {/* Aynı-varyant karşılaştırması (derin mod — "şimdi araştır"). */}
-                {snap.variant_comparison && snap.variant_comparison.length > 0 && (
-                  <div className="space-y-2 border-t pt-3">
-                    <p className="text-muted-foreground font-mono text-[10px] tracking-[0.14em] uppercase">
-                      Aynı varyant · rakip fiyat bandı
-                    </p>
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-sm">
-                        <thead>
-                          <tr className="text-muted-foreground text-left text-xs">
-                            <th className="py-1 pr-3 font-medium">Varyant</th>
-                            <th className="py-1 pr-3 text-right font-medium">Bizim</th>
-                            <th className="py-1 pr-3 text-right font-medium">Rakip medyan</th>
-                            <th className="py-1 pr-3 text-right font-medium">Bant</th>
-                            <th className="py-1 text-right font-medium">Konum</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {snap.variant_comparison.map((v) => (
-                            <tr key={v.sku} className="border-t">
-                              <td className="py-1.5 pr-3">{v.label}</td>
-                              <td className="py-1.5 pr-3 text-right font-mono tabular-nums">
-                                {v.our_price_cents != null
-                                  ? formatMoney(v.our_price_cents, cur)
-                                  : "—"}
-                              </td>
-                              <td className="py-1.5 pr-3 text-right font-mono tabular-nums">
-                                {v.median_cents != null
-                                  ? formatMoney(v.median_cents, cur)
-                                  : "—"}
-                              </td>
-                              <td className="text-muted-foreground py-1.5 pr-3 text-right font-mono text-xs tabular-nums">
-                                {v.basis === "variant" && v.min_cents != null
-                                  ? `${formatMoney(v.min_cents, cur)}–${formatMoney(v.max_cents!, cur)} · ${v.competitor_count}`
-                                  : "eşleşme yok"}
-                              </td>
-                              <td className="py-1.5 text-right">
-                                {v.our_rank_pct == null ? (
-                                  <span className="text-muted-foreground">—</span>
-                                ) : (
-                                  <span
-                                    className={
-                                      v.our_rank_pct >= 0.85
-                                        ? "text-[oklch(0.58_0.16_344)] dark:text-[oklch(0.74_0.12_344)]"
-                                        : "text-[oklch(0.50_0.19_278)] dark:text-[oklch(0.80_0.10_278)]"
-                                    }
-                                  >
-                                    %{Math.round(v.our_rank_pct * 100)}
-                                  </span>
-                                )}
-                              </td>
+                {snap.variant_comparison &&
+                  snap.variant_comparison.length > 0 && (
+                    <CompetitorSection
+                      title="Aynı varyant · rakip bandı"
+                      meta={`${snap.variant_comparison.length} satır`}
+                      defaultOpen={variantDefaultOpen}
+                    >
+                      <div className="overflow-x-auto px-1">
+                        <table className="w-full text-sm">
+                          <thead>
+                            <tr className="text-muted-foreground text-left text-xs">
+                              <th className="py-1 pr-3 font-medium">Varyant</th>
+                              <th className="py-1 pr-3 text-right font-medium">
+                                Bizim
+                              </th>
+                              <th className="py-1 pr-3 text-right font-medium">
+                                Rakip medyan
+                              </th>
+                              <th className="py-1 pr-3 text-right font-medium">
+                                Bant
+                              </th>
+                              <th className="py-1 text-right font-medium">
+                                Konum
+                              </th>
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                    <p className="text-muted-foreground text-xs">
-                      Konum = rakiplerin yüzde kaçından pahalıyız (aynı beden/ayar
-                      eşleşen rakipler). &ldquo;eşleşme yok&rdquo; = o varyantta aynı
-                      beden/ayarlı rakip bulunamadı.
-                    </p>
-                  </div>
-                )}
+                          </thead>
+                          <tbody>
+                            {snap.variant_comparison.map((v) => (
+                              <tr key={v.sku} className="border-t">
+                                <td className="py-1.5 pr-3">{v.label}</td>
+                                <td className="py-1.5 pr-3 text-right font-mono tabular-nums">
+                                  {v.our_price_cents != null
+                                    ? formatMoney(v.our_price_cents, cur)
+                                    : "—"}
+                                </td>
+                                <td className="py-1.5 pr-3 text-right font-mono tabular-nums">
+                                  {v.median_cents != null
+                                    ? formatMoney(v.median_cents, cur)
+                                    : "—"}
+                                </td>
+                                <td className="text-muted-foreground py-1.5 pr-3 text-right font-mono text-xs tabular-nums">
+                                  {v.basis === "variant" && v.min_cents != null
+                                    ? `${formatMoney(v.min_cents, cur)}–${formatMoney(v.max_cents!, cur)} · ${v.competitor_count}`
+                                    : "eşleşme yok"}
+                                </td>
+                                <td className="py-1.5 text-right">
+                                  {v.our_rank_pct == null ? (
+                                    <span className="text-muted-foreground">
+                                      —
+                                    </span>
+                                  ) : (
+                                    <span
+                                      className={
+                                        v.our_rank_pct >= 0.85
+                                          ? "text-[oklch(0.58_0.16_344)] dark:text-[oklch(0.74_0.12_344)]"
+                                          : "text-[oklch(0.50_0.19_278)] dark:text-[oklch(0.80_0.10_278)]"
+                                      }
+                                    >
+                                      %{Math.round(v.our_rank_pct * 100)}
+                                    </span>
+                                  )}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                      <p className="text-muted-foreground px-1 text-xs">
+                        Manuel eşleştirme satırlardaki{" "}
+                        <span className="font-medium">Eşleştir</span> ile yapılır;
+                        sonraki derin araştırmada banda yansır.
+                      </p>
+                    </CompetitorSection>
+                  )}
 
+                {snap.results.length > 0 && (
+                  <CompetitorSection
+                    title="İlgili ürünler · organik"
+                    meta={`${Math.min(10, snap.results.length)} rakip`}
+                    defaultOpen={organicDefaultOpen}
+                  >
+                    <ul className="divide-y divide-[color-mix(in_oklab,var(--border)_40%,transparent)]">
+                      {snap.results.slice(0, 10).map((c) => {
+                        const listingId =
+                          c.listing_id ?? listingIdFromUrl(c.url);
+                        return (
+                          <CompetitorProductRow
+                            key={c.position}
+                            imageUrl={c.image_url}
+                            title={c.title}
+                            href={c.url}
+                            shop={c.shop_name}
+                            rank={c.position}
+                            price={formatMoney(c.price_cents, c.currency)}
+                            actions={
+                              listingId != null ? (
+                                <>
+                                  <CompetitorMatchDialog
+                                    productId={productId}
+                                    competitorListingId={listingId}
+                                    competitorTitle={c.title}
+                                    currency={c.currency}
+                                    ourVariants={ourVariants}
+                                    existingMatches={matches}
+                                  />
+                                  <AddCompetitorToSetButton
+                                    productId={productId}
+                                    competitor={{
+                                      listing_id: listingId,
+                                      url: c.url,
+                                      title: c.title,
+                                      shop_name: c.shop_name,
+                                      image_url: c.image_url,
+                                    }}
+                                    watched={watchedIds.has(listingId)}
+                                  />
+                                </>
+                              ) : undefined
+                            }
+                          />
+                        );
+                      })}
+                    </ul>
+                  </CompetitorSection>
+                )}
               </>
             ) : (
               <p className="text-muted-foreground text-sm">
@@ -354,15 +410,28 @@ export async function KeywordResearchPanel({
             )}
           </>
         )}
-          </div>
-        </details>
+
+        <CompetitorWatchList
+          productId={productId}
+          items={watchItems}
+          ourVariants={ourVariants}
+          matches={matches}
+          currency={cur}
+        />
+
+        <div className="nm-pressed rounded-2xl px-3 py-2.5">
+          <AddCompetitorLinkForm
+            productId={productId}
+            currentCount={watchItems.length}
+          />
+        </div>
     </div>
   );
 
   if (bare) return body;
   return (
     <Card>
-      <CardContent className="space-y-4">{body}</CardContent>
+      <CardContent className="space-y-3">{body}</CardContent>
     </Card>
   );
 }

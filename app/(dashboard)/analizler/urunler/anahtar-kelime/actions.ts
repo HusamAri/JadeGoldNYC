@@ -109,6 +109,7 @@ export async function addCompetitorToSet(
     title?: string | null;
     shop_name?: string | null;
     color?: string | null;
+    image_url?: string | null;
   },
 ): Promise<CompetitorWatchActionResult> {
   const m = await requireMembership();
@@ -142,6 +143,7 @@ export async function addCompetitorToSet(
     title: competitor.title ?? null,
     url: competitor.url,
     color: competitor.color ?? null,
+    image_url: competitor.image_url ?? null,
   });
   if ("error" in r) return { error: r.error };
 
@@ -170,6 +172,149 @@ export async function removeCompetitorFromSet(
   const admin = createAdminClient();
   const r = await deactivateCompetitorWatch(admin, m.org_id, watchId);
   if (r.error) return { error: r.error };
+  revalidateWatchSurfaces(productId);
+  return { ok: true };
+}
+
+// ── Manuel varyant eşleştirme (0102) ───────────────────────────────────────
+
+export interface CompetitorOfferingOption {
+  product_id: number | null;
+  label: string;
+  size: string | null;
+  karat: string | null;
+  price_cents: number;
+}
+
+/** Rakip listing'in canlı tekliflerini çeker (eşleştirme diyaloğu). */
+export async function listCompetitorOfferingsForMatch(
+  competitorListingId: number,
+  currency = "USD",
+): Promise<{ offerings?: CompetitorOfferingOption[]; error?: string }> {
+  const m = await requireMembership();
+  try {
+    const client = await EtsyClient.forOrg(m.org_id);
+    const { fetchCompetitorOfferings } = await import(
+      "@/lib/etsy/keyword-research"
+    );
+    const offs = await fetchCompetitorOfferings(
+      client,
+      competitorListingId,
+      currency,
+    );
+    return {
+      offerings: offs.map((o) => ({
+        product_id: o.product_id,
+        label: o.label,
+        size: o.tokens.size,
+        karat: o.tokens.karat,
+        price_cents: o.price_cents,
+      })),
+    };
+  } catch (e) {
+    return {
+      error:
+        e instanceof Error
+          ? e.message
+          : "Rakip teklifleri okunamadı (Etsy bağlantısı?).",
+    };
+  }
+}
+
+/**
+ * Bizim SKU ↔ rakip teklif eşlemesini kaydeder (upsert).
+ * SKU kaynağı yalnız Etsy senkronu: product_variants.sku veya (varyantsızsa)
+ * products.sku. Uydurma / ürün-id dilimi / elle icat SKU reddedilir.
+ * products / product_variants satırlarına ASLA yazılmaz.
+ */
+export async function saveCompetitorVariantMatch(
+  productId: string,
+  input: {
+    our_sku: string;
+    competitor_listing_id: number;
+    competitor_product_id?: number | null;
+    competitor_label?: string | null;
+    competitor_size?: string | null;
+    competitor_karat?: string | null;
+    price_cents?: number | null;
+    currency?: string;
+  },
+): Promise<CompetitorWatchActionResult> {
+  const m = await requireMembership();
+  const ourSku = input.our_sku.trim();
+  if (!ourSku) return { error: "Bizim varyant (SKU) seçin." };
+  if (!input.competitor_listing_id)
+    return { error: "Rakip listing kimliği gerekli." };
+
+  const admin = createAdminClient();
+
+  // SKU truth: Etsy sync alanları — eşleşme tablosuna yazmadan önce doğrula.
+  const { data: variantHit, error: vErr } = await admin
+    .from("product_variants")
+    .select("sku")
+    .eq("org_id", m.org_id)
+    .eq("product_id", productId)
+    .eq("sku", ourSku)
+    .maybeSingle();
+  if (vErr) return { error: vErr.message };
+
+  let allowed = !!variantHit;
+  if (!allowed) {
+    const { data: productHit, error: pErr } = await admin
+      .from("products")
+      .select("sku")
+      .eq("org_id", m.org_id)
+      .eq("id", productId)
+      .maybeSingle();
+    if (pErr) return { error: pErr.message };
+    const productSku = (productHit as { sku: string | null } | null)?.sku?.trim();
+    allowed = !!productSku && productSku === ourSku;
+  }
+  if (!allowed) {
+    return {
+      error:
+        "SKU Etsy kaydıyla eşleşmiyor — yalnız senkron varyant/ürün SKU’su seçilebilir.",
+    };
+  }
+
+  const { error } = await admin.from("competitor_variant_match").upsert(
+    {
+      org_id: m.org_id,
+      product_id: productId,
+      our_sku: ourSku,
+      competitor_listing_id: input.competitor_listing_id,
+      competitor_product_id: input.competitor_product_id ?? null,
+      competitor_label: input.competitor_label ?? null,
+      competitor_size: input.competitor_size ?? null,
+      competitor_karat: input.competitor_karat ?? null,
+      price_cents: input.price_cents ?? null,
+      currency: input.currency ?? "USD",
+      created_by: m.user_id,
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: "org_id,product_id,our_sku,competitor_listing_id" },
+  );
+  if (error) return { error: error.message };
+  revalidateWatchSurfaces(productId);
+  return { ok: true };
+}
+
+/** Tek eşleştirmeyi siler. */
+export async function removeCompetitorVariantMatch(
+  productId: string,
+  matchId: string,
+): Promise<CompetitorWatchActionResult> {
+  const m = await requireMembership();
+  const admin = createAdminClient();
+  const { data, error } = await admin
+    .from("competitor_variant_match")
+    .delete()
+    .eq("id", matchId)
+    .eq("org_id", m.org_id)
+    .eq("product_id", productId)
+    .select("id");
+  if (error) return { error: error.message };
+  if (!data?.length) return { error: "Eşleştirme bulunamadı." };
   revalidateWatchSurfaces(productId);
   return { ok: true };
 }

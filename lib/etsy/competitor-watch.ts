@@ -27,6 +27,7 @@ export interface CompetitorWatchRow {
   url: string | null;
   note: string | null;
   color: string | null;
+  image_url: string | null;
   active: boolean;
 }
 
@@ -66,9 +67,10 @@ export async function addCompetitorWatch(
     url?: string | null;
     note?: string | null;
     color?: string | null;
+    image_url?: string | null;
   },
 ): Promise<{ id: string } | { error: string }> {
-  // Renk yalnız verildiğinde yazılır — upsert'te var olan kaydın rengini
+  // Renk/görsel yalnız verildiğinde yazılır — upsert'te var olan kaydı
   // undefined'la ezmemek için koşullu eklenir.
   const row: Record<string, unknown> = {
     org_id: orgId,
@@ -84,6 +86,7 @@ export async function addCompetitorWatch(
     created_by: userId,
   };
   if (input.color != null) row.color = input.color;
+  if (input.image_url != null) row.image_url = input.image_url;
   const { data, error } = await admin
     .from("competitor_watch")
     .upsert(
@@ -120,13 +123,22 @@ interface EtsyPublicListing {
   state?: string;
   title?: string;
   price?: EtsyMoney;
+  images?: { url_75x75?: string; url_170x135?: string; url_570xN?: string }[];
+  Images?: { url_75x75?: string; url_170x135?: string; url_570xN?: string }[];
+}
+
+function publicListingImageUrl(l: EtsyPublicListing): string | null {
+  const imgs = l.images ?? l.Images ?? [];
+  const first = imgs[0];
+  if (!first) return null;
+  return first.url_170x135 ?? first.url_75x75 ?? first.url_570xN ?? null;
 }
 
 /**
  * Tek izlemenin canlı fiyatını public getListing ile çekip
  * `competitor_prices`e ekler (tarih serisi — her çağrı yeni satır).
  * Listing 404 dönerse state='gone' kaydedilir; diğer hatalar fırlatılır
- * (geçici hata 'gone' sanılmasın).
+ * (geçici hata 'gone' sanılmasın). Kapak görseli varsa watch satırına yazılır.
  */
 export async function captureWatchPrice(
   admin: SupabaseClient,
@@ -136,14 +148,19 @@ export async function captureWatchPrice(
   let priceCents: number | null = null;
   let currency = "USD";
   let state = "active";
+  let imageUrl: string | null = null;
+  let title: string | null = null;
   try {
     const l = await client.get<EtsyPublicListing>(
       etsyPaths.listing(watch.competitor_listing_id),
+      { includes: "Images" },
     );
     state = l.state ?? "active";
     const cents = etsyMoneyToCents(l.price);
     priceCents = cents > 0 ? cents : null;
     currency = l.price?.currency_code ?? "USD";
+    imageUrl = publicListingImageUrl(l);
+    title = l.title?.trim() || null;
   } catch (e) {
     // EtsyClient hata formatı sabittir: "Etsy API hatası (STATUS) ..."
     // (lib/etsy/client.ts). Önekli eşleşme: mesaj gövdesinde geçen rastgele
@@ -165,6 +182,21 @@ export async function captureWatchPrice(
   });
   if (error)
     console.error("competitor-watch: fiyat kaydı yazılamadı:", error.message);
+
+  // Kapak / başlık — fiyat serisinden bağımsız; boşsa ezme.
+  if (imageUrl || title) {
+    const patch: Record<string, unknown> = {};
+    if (imageUrl) patch.image_url = imageUrl;
+    if (title) patch.title = title;
+    const { error: upErr } = await admin
+      .from("competitor_watch")
+      .update(patch)
+      .eq("id", watch.id)
+      .eq("org_id", watch.org_id);
+    if (upErr)
+      console.error("competitor-watch: görsel güncellenemedi:", upErr.message);
+  }
+
   return { state, price_cents: priceCents };
 }
 

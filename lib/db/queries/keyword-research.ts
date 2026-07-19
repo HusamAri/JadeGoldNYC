@@ -168,6 +168,7 @@ export interface CompetitorWatchItem {
   shop_name: string | null;
   title: string | null;
   url: string | null;
+  image_url: string | null;
   /** Rakibin kimlik rengi (kart + matris örtüsünde nokta); null → paletten türetilir. */
   color: string | null;
   last_price_cents: number | null;
@@ -180,12 +181,23 @@ export interface CompetitorWatchItem {
   prev_captured_at: string | null;
 }
 
+export interface CompetitorVariantMatchItem {
+  id: string;
+  our_sku: string;
+  competitor_listing_id: number;
+  competitor_product_id: number | null;
+  competitor_label: string | null;
+  price_cents: number | null;
+  currency: string;
+}
+
 interface WatchDbRow {
   id: string;
   competitor_listing_id: number;
   shop_name: string | null;
   title: string | null;
   url: string | null;
+  image_url: string | null;
   color: string | null;
 }
 
@@ -204,7 +216,7 @@ export async function listCompetitorWatch(
   const supabase = await createClient();
   const { data: wData, error: wError } = await supabase
     .from("competitor_watch")
-    .select("id, competitor_listing_id, shop_name, title, url, color")
+    .select("id, competitor_listing_id, shop_name, title, url, image_url, color")
     .eq("product_id", productId)
     .eq("active", true)
     .order("created_at", { ascending: true });
@@ -245,6 +257,7 @@ export async function listCompetitorWatch(
       shop_name: w.shop_name,
       title: w.title,
       url: w.url,
+      image_url: w.image_url,
       color: w.color,
       last_price_cents: last?.price_cents ?? null,
       last_currency: last?.currency ?? null,
@@ -254,4 +267,75 @@ export async function listCompetitorWatch(
       prev_captured_at: prev?.captured_at ?? null,
     };
   });
+}
+
+/** Ürünün manuel varyant eşleştirmeleri (RLS). */
+export async function listCompetitorVariantMatches(
+  productId: string,
+): Promise<CompetitorVariantMatchItem[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("competitor_variant_match")
+    .select(
+      "id, our_sku, competitor_listing_id, competitor_product_id, competitor_label, price_cents, currency",
+    )
+    .eq("product_id", productId)
+    .order("created_at", { ascending: true });
+  if (error) {
+    console.error("competitor_variant_match sorgusu hatası:", error.message);
+    return [];
+  }
+  return (data ?? []) as CompetitorVariantMatchItem[];
+}
+
+/**
+ * Eşleştirme diyaloğu için bizim varyant özeti.
+ * SKU kaynağı yalnız Etsy senkronu (`product_variants.sku`). Uydurma kimlik
+ * (ürün uuid dilimi vb.) üretilmez. Varyantsız listingde `products.sku`
+ * (yine Etsy’den) doluysa tek seçenek olarak döner; boşsa liste boş kalır.
+ */
+export async function listProductVariantOptions(
+  productId: string,
+): Promise<{ sku: string; label: string }[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("product_variants")
+    .select("sku, name, properties")
+    .eq("product_id", productId)
+    .order("sku", { ascending: true });
+  if (error) {
+    console.error("product_variants (eşleştirme) hatası:", error.message);
+    return [];
+  }
+  const rows = ((data ?? []) as {
+    sku: string;
+    name: string | null;
+    properties: { values?: string[] }[] | null;
+  }[])
+    .filter((v) => !!v.sku?.trim())
+    .map((v) => ({
+      sku: v.sku,
+      label:
+        (v.properties ?? [])
+          .flatMap((p) => p.values ?? [])
+          .join(" · ") ||
+        v.name ||
+        v.sku,
+    }));
+  if (rows.length > 0) return rows;
+
+  const { data: p, error: pErr } = await supabase
+    .from("products")
+    .select("sku, title")
+    .eq("id", productId)
+    .maybeSingle();
+  if (pErr) {
+    console.error("products (eşleştirme) hatası:", pErr.message);
+    return [];
+  }
+  const product = p as { sku: string | null; title: string } | null;
+  const etsySku = product?.sku?.trim();
+  // Etsy ürün SKU’su yoksa eşleştirme seçeneği yok — asla id uydurma.
+  if (!etsySku) return [];
+  return [{ sku: etsySku, label: product?.title?.trim() || etsySku }];
 }

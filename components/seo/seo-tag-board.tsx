@@ -24,6 +24,10 @@ import {
   resetSeoTag,
 } from "@/app/(dashboard)/seo-etiketleri/actions";
 import { cn } from "@/lib/utils";
+import {
+  ApiCredentialGuide,
+  ETSY_WRITE_GUIDE,
+} from "@/components/setup/api-credential-guide";
 
 const ARCH_META: Record<
   string,
@@ -160,11 +164,13 @@ export function SeoTagBoard({
           </button>
         </div>
         {!writeEnabled && (
-          <p className="mt-2 flex items-center gap-1.5 text-xs text-[oklch(0.55_0.20_20)]">
-            <AlertTriangle className="size-3.5" />
-            Etsy yazma erişimi kapalı — gönderim için Ayarlar&apos;dan
-            Etsy&apos;yi yazma izniyle bağlayın.
-          </p>
+          <div className="mt-3 space-y-2">
+            <p className="flex items-center gap-1.5 text-xs text-[oklch(0.55_0.20_20)]">
+              <AlertTriangle className="size-3.5 shrink-0" />
+              Etsy yazma erişimi kapalı — aşağıdaki adımlarla aç, sonra gönder.
+            </p>
+            <ApiCredentialGuide items={[ETSY_WRITE_GUIDE]} />
+          </div>
         )}
         {writeEnabled && !isManager && (
           <p className="text-muted-foreground mt-2 text-xs">
