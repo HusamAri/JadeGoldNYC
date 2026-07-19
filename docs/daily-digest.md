@@ -10,8 +10,9 @@ Her sabah (cron `11:00 UTC`) org üyelerine marka renkli HTML özet gider:
 
 ## Kurulum
 
-1. Migration `0101_digest_email_settings.sql` uygulanmış olmalı (`digest_settings`).
-2. Env:
+1. Migration `0106_digest_email_settings.sql` uygulanmış olmalı (`digest_settings`).
+2. `lib/supabase/middleware.ts` içinde `/api/cron` public olmalı (yoksa Vercel Cron login’e 307 alır).
+3. Env:
 
 ```bash
 RESEND_API_KEY=re_...
