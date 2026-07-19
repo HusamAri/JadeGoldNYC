@@ -108,16 +108,29 @@ export default async function ReklamlarPage() {
 
       {/* DÜRÜSTLÜK NOTU — API sınırı gizlenmez, ilan edilir (0059 deseni). */}
       <Card>
-        <CardContent className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-muted-foreground max-w-[75ch] text-sm">
-            <span className="text-foreground font-medium">
-              Bu panel Etsy reklamını doğrudan değiştiremez
-            </span>{" "}
-            — Etsy Open API v3 reklam (Etsy Ads) kontrolü sunmuyor. Karar burada
-            verilir ve kuyrukta takip edilir; kapatma/azaltma/artırma işlemini
-            Etsy Reklam panosunda elle yapıp dönüşte &quot;Yapıldı&quot;
-            işaretleyin — panel öncesi/sonrası ölçümü tutar.
-          </p>
+        <CardContent className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div className="text-muted-foreground max-w-[75ch] space-y-2 text-sm">
+            <p>
+              <span className="text-foreground font-medium">
+                Bu panel Etsy reklamını doğrudan değiştiremez
+              </span>{" "}
+              — Etsy Open API v3 reklam (Etsy Ads) kontrolü ve listing ROAS
+              verisi sunmuyor. Karar burada verilir; kapatma/azaltma/artırma
+              Etsy Reklam panosunda elle yapılıp &quot;Yapıldı&quot; işaretlenir.
+            </p>
+            <p>
+              Listing harcama / tık / ROAS satırları{" "}
+              <span className="text-foreground font-medium">
+                Analizler → Ürün performansı
+              </span>{" "}
+              üzerinden &quot;son 30&quot; etiketli metrik olarak girilir (Etsy
+              Ads ekranından kopya). ShipStation veya Etsy senkronu bu tabloyu
+              doldurmaz. Mağaza geneli reklam ücretleri (prolist / offsite) ise
+              ledger senkronuyla{" "}
+              <span className="text-foreground font-medium">Maliyetler</span>
+              &apos;e otomatik düşer.
+            </p>
+          </div>
           <Button asChild variant="outline" size="sm" className="shrink-0">
             <a href={ETSY_ADS_URL} target="_blank" rel="noreferrer">
               <ExternalLink />
@@ -401,8 +414,8 @@ export default async function ReklamlarPage() {
           {spendingRows.length === 0 ? (
             <EmptyState
               icon={Megaphone}
-              title="Reklam harcaması yok"
-              description={`"${ADS_PERIOD_LABEL}" penceresinde reklam harcaması kaydı bulunamadı. Analizler'den ürün metriklerini (Etsy Ads sütunlarıyla) girin.`}
+              title="Reklam harcaması kaydı yok"
+              description={`"${ADS_PERIOD_LABEL}" etiketli ürün metriği yok. Bu, senkron hatası değil: listing ROAS Etsy API'den gelmez. Analizler → Ürün performansına Etsy Ads'ten kopyalanmış "son 30" satırı girin. Mağaza reklam ücreti için Maliyetler'e bakın.`}
             />
           ) : (
             <Table>
