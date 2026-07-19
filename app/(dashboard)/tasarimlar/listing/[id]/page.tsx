@@ -29,6 +29,7 @@ import { EtsyCopyCard, type EtsyCopyField } from "@/components/listing/etsy-copy
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ListingPanel } from "@/components/listing/listing-panel";
+import { AnimatedDisclosure } from "@/components/ui/animated-disclosure";
 
 export const metadata = { title: "Listing Detayı" };
 
@@ -73,7 +74,8 @@ const STATUS_LABELS: Record<
 
 /**
  * Listing Komuta Merkezi — tek listing'in tüm detayları tek sayfada.
- * Uzun bölümler ListingPanel (<details>) ile katlanır; varsayılan açık:
+ * Uzun bölümler ListingPanel ile katlanır (nm-raised + motion);
+ * varsayılan açık: Künye, Varyantlar, Rakip. Kapalı: Görseller, Kopyala, Reklam.
  * künye + varyant toplu fiyat + rakip benzerler. Geri kalan scroll yükü değil.
  */
 export default async function ListingDetayPage({
@@ -310,21 +312,24 @@ export default async function ListingDetayPage({
             />
           )}
           <KeywordResearchPanel productId={product.id} bare />
-          <details className="group/mx border-border/60 rounded-[1.25rem] border">
-            <summary className="text-muted-foreground flex cursor-pointer list-none items-center gap-2 px-4 py-3 text-sm select-none [&::-webkit-details-marker]:hidden">
-              <span className="font-mono text-[10px] tracking-[0.14em] uppercase">
-                Varyant matrisi & otomatik fiyat
+          <AnimatedDisclosure
+            defaultOpen={false}
+            className="nm-raised-sm border-0 bg-transparent shadow-none"
+            summaryClassName="px-4 py-3"
+            panelClassName="space-y-4 px-4 py-4"
+            summary={
+              <span className="font-mono text-[11px] font-medium tracking-[0.16em] uppercase">
+                Varyant matrisi &amp; otomatik fiyat
               </span>
-            </summary>
-            <div className="space-y-4 border-t px-4 py-4">
-              <VariantMatrix productId={product.id} />
-              <RepriceRuleCard
-                productId={product.id}
-                currency={product.currency}
-                hasVariations={variants.length > 1}
-              />
-            </div>
-          </details>
+            }
+          >
+            <VariantMatrix productId={product.id} />
+            <RepriceRuleCard
+              productId={product.id}
+              currency={product.currency}
+              hasVariations={variants.length > 1}
+            />
+          </AnimatedDisclosure>
         </div>
       </ListingPanel>
 
