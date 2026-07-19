@@ -9,7 +9,12 @@ import {
   updateListingFields,
   type ListingFieldsInput,
 } from "@/app/(dashboard)/tasarimlar/listing/[id]/actions";
-import { centsToDecimal } from "@/lib/money";
+import {
+  detectKarat,
+  purchaseCostCentsForGrams,
+  type KaratType,
+} from "@/lib/gold-cost";
+import { centsToDecimal, formatMoney, parseMoneyToCents } from "@/lib/money";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -57,9 +62,18 @@ const MISSING_RING =
 export function ListingFieldsForm({
   productId,
   initial,
+  weightGrams = null,
+  purchasePrice14kCents,
+  purchasePrice10kCents,
+  currency = "USD",
 }: {
   productId: string;
   initial: ListingFieldsInitial;
+  /** Tek-SKU / ürün seviye gram — maliyet tahmini için. */
+  weightGrams?: number | null;
+  purchasePrice14kCents?: number;
+  purchasePrice10kCents?: number;
+  currency?: string;
 }) {
   const router = useRouter();
   const [saving, setSaving] = useState(false);
@@ -88,6 +102,39 @@ export function ListingFieldsForm({
     }),
     [fields],
   );
+
+  const priceCost = useMemo(() => {
+    const tags = fields.tags
+      .split(",")
+      .map((t) => t.trim())
+      .filter(Boolean);
+    const materials = fields.materials
+      .split(",")
+      .map((t) => t.trim())
+      .filter(Boolean);
+    const karat: KaratType | null = detectKarat(
+      fields.title,
+      tags,
+      materials,
+    );
+    if (!karat || weightGrams == null || !(weightGrams > 0)) {
+      return { karat, costCents: null as number | null };
+    }
+    const costCents = purchaseCostCentsForGrams(weightGrams, karat, {
+      "14K": purchasePrice14kCents,
+      "10K": purchasePrice10kCents,
+    });
+    return { karat, costCents };
+  }, [
+    fields.title,
+    fields.tags,
+    fields.materials,
+    weightGrams,
+    purchasePrice14kCents,
+    purchasePrice10kCents,
+  ]);
+
+  const saleCents = parseMoneyToCents(fields.price);
 
   function set(key: keyof ListingFieldsInput, value: string) {
     setFields((f) => ({ ...f, [key]: value }));
@@ -175,7 +222,7 @@ export function ListingFieldsForm({
       <div className="grid gap-4 sm:grid-cols-3">
         <div className="space-y-1.5">
           <div className="flex items-center gap-2">
-            <Label htmlFor={LISTING_FIELD_IDS.price}>Fiyat ($)</Label>
+            <Label htmlFor={LISTING_FIELD_IDS.price}>Satış fiyatı ($)</Label>
             {missing.price && <MissingChip />}
           </div>
           <Input
@@ -186,6 +233,33 @@ export function ListingFieldsForm({
             placeholder="129,00"
             className={cn("tabular-nums", missing.price && MISSING_RING)}
           />
+          {priceCost.costCents != null ? (
+            <p className="text-muted-foreground text-xs tabular-nums">
+              Alım maliyeti: {formatMoney(priceCost.costCents, currency)}
+              {priceCost.karat ? ` · ${priceCost.karat}` : ""}
+              {weightGrams != null ? ` · ${weightGrams} g` : ""}
+              {saleCents > 0 && (
+                <>
+                  {" · "}
+                  <span
+                    className={
+                      saleCents >= priceCost.costCents
+                        ? "text-emerald-700 dark:text-emerald-400"
+                        : "text-rose-700 dark:text-rose-400"
+                    }
+                  >
+                    {saleCents >= priceCost.costCents ? "+" : ""}
+                    {formatMoney(saleCents - priceCost.costCents, currency)}
+                  </span>
+                </>
+              )}
+            </p>
+          ) : (
+            <p className="text-muted-foreground text-xs">
+              Maliyet için ayar (10K/14K) ve gram gerekir
+              {weightGrams == null ? " — varyant/ürün gramı eksik" : ""}.
+            </p>
+          )}
         </div>
         <div className="space-y-1.5">
           <div className="flex items-center gap-2">
