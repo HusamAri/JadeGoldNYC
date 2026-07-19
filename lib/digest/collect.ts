@@ -2,6 +2,10 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 
 import { computeAdsSignals } from "@/lib/db/queries/ads-actions";
 import { resolveDigestBrand } from "@/lib/digest/brand";
+import {
+  actionPassesLevel,
+  normalizeDigestContentPrefs,
+} from "@/lib/digest/preferences";
 import type {
   DigestActionItem,
   DigestActivityItem,
@@ -137,10 +141,12 @@ export async function collectOrgDigest(
     name: string;
     slug: string | null;
     default_currency: string | null;
-    digest_settings: { enabled?: boolean } | null;
+    digest_settings: Record<string, unknown> | null;
   };
 
   if (org.digest_settings?.enabled === false) return null;
+
+  const prefs = normalizeDigestContentPrefs(org.digest_settings);
 
   const currency = org.default_currency || "USD";
   const theme = resolveDigestBrand(org.slug, org.name);
@@ -559,24 +565,30 @@ export async function collectOrgDigest(
     dateStyle: "long",
   }).format(now);
 
+  const filteredActions = uniqueActions
+    .filter((a) => actionPassesLevel(a.severity, prefs.actionLevel))
+    .slice(0, 12);
+
+  // Tercih kapalı bölümleri boşalt — konu satırı ve HTML tutarlı kalsın.
   return {
     orgId: org.id,
     orgName: org.name,
     orgSlug: org.slug,
     currency,
     theme,
+    prefs,
     windowLabel: `${windowLabel} · son 24 saat (New York)`,
     generatedAtLabel: new Intl.DateTimeFormat("tr-TR", {
       timeZone: STORE_TZ,
       dateStyle: "medium",
       timeStyle: "short",
     }).format(now),
-    kpis,
-    weekTrend,
-    actions: uniqueActions.slice(0, 12),
-    happened: happened.slice(0, 12),
-    finished: finished.slice(0, 8),
-    suggestions: suggestions.slice(0, 6),
+    kpis: prefs.sections.performance ? kpis : [],
+    weekTrend: prefs.sections.trend ? weekTrend : [],
+    actions: prefs.sections.actions ? filteredActions : [],
+    happened: prefs.sections.activity ? happened.slice(0, 12) : [],
+    finished: prefs.sections.activity ? finished.slice(0, 8) : [],
+    suggestions: prefs.sections.suggestions ? suggestions.slice(0, 6) : [],
     panelUrl: abs("/panel"),
     alertsHref: abs("/panel"),
   };

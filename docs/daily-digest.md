@@ -28,8 +28,12 @@ Yedek (SMTP yoksa): `RESEND_API_KEY` + `RESEND_FROM_EMAIL`.
 
 ## Kullanım
 
-- Ayarlar → **Günlük özet e-posta**: aç/kapa, **alıcı listesi** (elle), HTML önizleme, şimdi gönder.
+- Ayarlar → **Günlük özet e-posta**: aç/kapa, **alıcı listesi** (elle), **neler gelsin**, HTML önizleme, şimdi gönder.
   - Alıcı kutusu doluysa yalnız o adreslere gider; boşsa org üyelerine.
+  - İçerik tercihleri (`digest_settings.sections` + `actionLevel`):
+    - Bölümler: son 24 saat, 7 günlük gidişat, aksiyonlar, öneriler, şirket hafızası.
+    - Aksiyon eşiği: yalnız kritik → kritik+önemli → tümü.
+    - Kapalı bölüm mail HTML’inde hiç basılmaz; tercih kaydı hemen sonraki gönderime yansır.
 - Önizleme: oturum açıkken `/api/digest/preview`
 - Cron: `GET /api/cron/daily-digest` + `Authorization: Bearer $CRON_SECRET`
 - Tek org / kuru koşu: `?org=<uuid>&dry=1`

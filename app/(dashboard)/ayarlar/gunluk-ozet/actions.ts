@@ -5,6 +5,11 @@ import { revalidatePath } from "next/cache";
 import { requireMembership, requireUser } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { parseDigestEmailList } from "@/lib/digest/emails";
+import {
+  normalizeDigestContentPrefs,
+  type DigestActionLevel,
+  type DigestSectionKey,
+} from "@/lib/digest/preferences";
 import { sendDailyDigests } from "@/lib/digest/send";
 import { isEmailConfigured } from "@/lib/email/send";
 
@@ -107,6 +112,59 @@ export async function setDigestRecipients(
   revalidatePath("/ayarlar/gunluk-ozet");
   revalidatePath("/ayarlar");
   return { ok: true, emails };
+}
+
+/** Hangi bölümler + aksiyon eşiği — preference center. */
+export async function setDigestContentPrefs(input: {
+  sections: Partial<Record<DigestSectionKey, boolean>>;
+  actionLevel: DigestActionLevel;
+}): Promise<{
+  ok?: boolean;
+  error?: string;
+  sections?: Record<DigestSectionKey, boolean>;
+  actionLevel?: DigestActionLevel;
+}> {
+  const m = await requireMembership();
+  if (m.role !== "owner" && m.role !== "admin") {
+    return { error: "Yalnız owner/admin içerik tercihlerini değiştirebilir." };
+  }
+
+  const normalized = normalizeDigestContentPrefs({
+    sections: input.sections,
+    actionLevel: input.actionLevel,
+  });
+
+  const { admin, prev, error: readError } = await readDigestSettings(m.org_id);
+  if (readError) return { error: readError };
+
+  const { error } = await admin
+    .from("organizations")
+    .update({
+      digest_settings: {
+        ...prev,
+        sections: normalized.sections,
+        actionLevel: normalized.actionLevel,
+      },
+    })
+    .eq("id", m.org_id);
+
+  if (error) {
+    if (error.message.includes("digest_settings")) {
+      return {
+        error:
+          "Veritabanında digest_settings kolonu yok. Supabase SQL Editor’da migration 0106’yı çalıştırın.",
+      };
+    }
+    return { error: error.message };
+  }
+
+  revalidatePath("/ayarlar/gunluk-ozet");
+  revalidatePath("/ayarlar");
+  return {
+    ok: true,
+    sections: normalized.sections,
+    actionLevel: normalized.actionLevel,
+  };
 }
 
 /** Owner/admin: kendi org’una anında bir digesti gönder (test). */

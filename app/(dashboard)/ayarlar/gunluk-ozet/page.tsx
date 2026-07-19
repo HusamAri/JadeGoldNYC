@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { PageHeader } from "@/components/page-header";
 import { DigestSettingsCard } from "@/components/settings/digest-settings-card";
 import { Card, CardContent } from "@/components/ui/card";
+import { normalizeDigestContentPrefs } from "@/lib/digest/preferences";
 import { isEmailConfigured } from "@/lib/email/resend";
 
 export const metadata = { title: "Günlük özet e-posta" };
@@ -18,7 +19,7 @@ export default async function GunlukOzetAyarPage() {
 
   const settings = (
     data as {
-      digest_settings?: { enabled?: boolean; emails?: unknown };
+      digest_settings?: Record<string, unknown> | null;
     } | null
   )?.digest_settings;
   const enabled = settings?.enabled !== false;
@@ -28,18 +29,20 @@ export default async function GunlukOzetAyarPage() {
         .map((e) => e.trim())
         .filter(Boolean)
     : [];
+  const contentPrefs = normalizeDigestContentPrefs(settings ?? {});
 
   return (
     <div className="space-y-6">
       <PageHeader
         title="Günlük özet e-posta"
-        description="Mağazan için her sabah markalı HTML özet: son 24 saat, aksiyonlar, öneriler ve gidişat."
+        description="Mağazan için her sabah markalı HTML özet. Alıcıları ve hangi blokların geleceğini buradan seç."
       />
       <Card>
         <CardContent className="pt-6">
           <DigestSettingsCard
             enabled={enabled}
             emails={emails}
+            contentPrefs={contentPrefs}
             canManage={m.role === "owner" || m.role === "admin"}
             emailConfigured={isEmailConfigured()}
           />
