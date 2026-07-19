@@ -4,8 +4,32 @@ import { revalidatePath } from "next/cache";
 
 import { requireMembership, requireUser } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { parseDigestEmailList } from "@/lib/digest/emails";
 import { sendDailyDigests } from "@/lib/digest/send";
 import { isEmailConfigured } from "@/lib/email/send";
+
+async function readDigestSettings(orgId: string) {
+  const admin = createAdminClient();
+  const { data: row, error: readErr } = await admin
+    .from("organizations")
+    .select("digest_settings")
+    .eq("id", orgId)
+    .maybeSingle();
+
+  if (readErr?.message?.includes("digest_settings")) {
+    return {
+      admin,
+      prev: null as Record<string, unknown> | null,
+      error:
+        "Veritabanında digest_settings kolonu yok. Supabase SQL Editor’da migration 0106’yı çalıştırın.",
+    };
+  }
+
+  const prev =
+    (row as { digest_settings?: Record<string, unknown> } | null)
+      ?.digest_settings ?? {};
+  return { admin, prev, error: null as string | null };
+}
 
 export async function setDigestEnabled(
   enabled: boolean,
@@ -15,25 +39,8 @@ export async function setDigestEnabled(
     return { error: "Yalnız owner/admin günlük özeti açıp kapatabilir." };
   }
 
-  // Org update RLS dar olabilir — membership doğrulandıktan sonra admin yazar
-  // (altın ayarlarıyla aynı güven modeli: yalnız owner/admin buraya gelir).
-  const admin = createAdminClient();
-  const { data: row, error: readErr } = await admin
-    .from("organizations")
-    .select("digest_settings")
-    .eq("id", m.org_id)
-    .maybeSingle();
-
-  if (readErr?.message?.includes("digest_settings")) {
-    return {
-      error:
-        "Veritabanında digest_settings kolonu yok. Supabase SQL Editor’da migration 0106’yı çalıştırın.",
-    };
-  }
-
-  const prev =
-    (row as { digest_settings?: Record<string, unknown> } | null)
-      ?.digest_settings ?? {};
+  const { admin, prev, error: readError } = await readDigestSettings(m.org_id);
+  if (readError) return { error: readError };
 
   const { error } = await admin
     .from("organizations")
@@ -54,6 +61,52 @@ export async function setDigestEnabled(
   revalidatePath("/ayarlar/gunluk-ozet");
   revalidatePath("/ayarlar");
   return { ok: true };
+}
+
+/** Elle alıcı listesi — satır/virgül ayrılmış metin. Boş = org üyelerine düş. */
+export async function setDigestRecipients(
+  raw: string,
+): Promise<{ ok?: boolean; error?: string; emails?: string[] }> {
+  const m = await requireMembership();
+  if (m.role !== "owner" && m.role !== "admin") {
+    return { error: "Yalnız owner/admin alıcı listesini değiştirebilir." };
+  }
+
+  const emails = parseDigestEmailList(raw);
+  const invalidLeft = raw
+    .split(/[\n,;]+/)
+    .map((p) => p.trim())
+    .filter(Boolean)
+    .filter((p) => !emails.includes(p.toLowerCase()));
+  if (invalidLeft.length > 0) {
+    return {
+      error: `Geçersiz e-posta: ${invalidLeft.slice(0, 3).join(", ")}`,
+    };
+  }
+
+  const { admin, prev, error: readError } = await readDigestSettings(m.org_id);
+  if (readError) return { error: readError };
+
+  const { error } = await admin
+    .from("organizations")
+    .update({
+      digest_settings: { ...prev, emails },
+    })
+    .eq("id", m.org_id);
+
+  if (error) {
+    if (error.message.includes("digest_settings")) {
+      return {
+        error:
+          "Veritabanında digest_settings kolonu yok. Supabase SQL Editor’da migration 0106’yı çalıştırın.",
+      };
+    }
+    return { error: error.message };
+  }
+
+  revalidatePath("/ayarlar/gunluk-ozet");
+  revalidatePath("/ayarlar");
+  return { ok: true, emails };
 }
 
 /** Owner/admin: kendi org’una anında bir digesti gönder (test). */
@@ -96,8 +149,8 @@ export async function sendDigestNow(): Promise<{
     if (result.skipped.includes("e-postalı")) {
       return {
         error: sessionEmail
-          ? "Üye e-postaları çözülemedi ve oturum e-postası da kullanılamadı."
-          : "Oturumunda e-posta yok; Ayarlar → Ekip’te üyeleri kontrol et.",
+          ? "Alıcı yok. Ayarlar’da e-posta listesine en az bir adres ekle."
+          : "Alıcı listesi boş ve oturumunda e-posta yok.",
       };
     }
     return { error: result.skipped };

@@ -16,9 +16,18 @@ export default async function GunlukOzetAyarPage() {
     .eq("id", m.org_id)
     .maybeSingle();
 
-  const settings = (data as { digest_settings?: { enabled?: boolean } } | null)
-    ?.digest_settings;
+  const settings = (
+    data as {
+      digest_settings?: { enabled?: boolean; emails?: unknown };
+    } | null
+  )?.digest_settings;
   const enabled = settings?.enabled !== false;
+  const emails = Array.isArray(settings?.emails)
+    ? (settings.emails as unknown[])
+        .filter((e): e is string => typeof e === "string")
+        .map((e) => e.trim())
+        .filter(Boolean)
+    : [];
 
   return (
     <div className="space-y-6">
@@ -30,6 +39,7 @@ export default async function GunlukOzetAyarPage() {
         <CardContent className="pt-6">
           <DigestSettingsCard
             enabled={enabled}
+            emails={emails}
             canManage={m.role === "owner" || m.role === "admin"}
             emailConfigured={isEmailConfigured()}
           />

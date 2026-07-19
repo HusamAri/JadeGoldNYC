@@ -606,11 +606,35 @@ export async function listDigestOrgIds(
   return out;
 }
 
-/** Org üyelerinin e-postaları (owner + admin öncelikli; hepsi gönderilir). */
+/** Org digest alıcıları — elle liste varsa o, yoksa org üyeleri. */
 export async function listDigestRecipients(
   admin: SupabaseClient,
   orgId: string,
 ): Promise<{ email: string; name: string | null; role: string }[]> {
+  const { data: orgRow } = await admin
+    .from("organizations")
+    .select("digest_settings")
+    .eq("id", orgId)
+    .maybeSingle();
+  const settings = (
+    orgRow as { digest_settings?: { emails?: unknown } } | null
+  )?.digest_settings;
+  const manual = Array.isArray(settings?.emails)
+    ? (settings.emails as unknown[])
+        .map((e) => (typeof e === "string" ? e.trim().toLowerCase() : ""))
+        .filter((e) => e.includes("@"))
+    : [];
+  if (manual.length > 0) {
+    const seen = new Set<string>();
+    return manual
+      .filter((e) => {
+        if (seen.has(e)) return false;
+        seen.add(e);
+        return true;
+      })
+      .map((email) => ({ email, name: null, role: "manual" }));
+  }
+
   const { data: members } = await admin
     .from("organization_members")
     .select("user_id, role")

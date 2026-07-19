@@ -28,7 +28,8 @@ Yedek (SMTP yoksa): `RESEND_API_KEY` + `RESEND_FROM_EMAIL`.
 
 ## Kullanım
 
-- Ayarlar → **Günlük özet e-posta**: aç/kapa, HTML önizleme, şimdi gönder.
+- Ayarlar → **Günlük özet e-posta**: aç/kapa, **alıcı listesi** (elle), HTML önizleme, şimdi gönder.
+  - Alıcı kutusu doluysa yalnız o adreslere gider; boşsa org üyelerine.
 - Önizleme: oturum açıkken `/api/digest/preview`
 - Cron: `GET /api/cron/daily-digest` + `Authorization: Bearer $CRON_SECRET`
 - Tek org / kuru koşu: `?org=<uuid>&dry=1`
