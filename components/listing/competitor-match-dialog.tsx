@@ -165,8 +165,8 @@ export function CompetitorMatchDialog({
           <DialogTitle>Varyant eşleştir</DialogTitle>
           <DialogDescription>
             {competitorTitle
-              ? `"${competitorTitle}" teklifini bizim bir SKU ile bağla. Otomatik beden/ayar eşlemesini ezer.`
-              : "Rakip teklifi bizim bir SKU ile bağla."}
+              ? `"${competitorTitle}" teklifini bizim Etsy SKU’muzla bağla. Otomatik beden/ayar eşlemesini ezer. SKU değiştirilmez — yalnız eşleşme kaydı yazılır.`
+              : "Rakip teklifi bizim Etsy SKU’muzla bağla. SKU kaynağı Etsy senkronu; ürün SKU’su değiştirilmez."}
           </DialogDescription>
         </DialogHeader>
 

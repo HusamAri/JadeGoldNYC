@@ -221,7 +221,12 @@ export async function listCompetitorOfferingsForMatch(
   }
 }
 
-/** Bizim SKU ↔ rakip teklif eşlemesini kaydeder (upsert). */
+/**
+ * Bizim SKU ↔ rakip teklif eşlemesini kaydeder (upsert).
+ * SKU kaynağı yalnız Etsy senkronu: product_variants.sku veya (varyantsızsa)
+ * products.sku. Uydurma / ürün-id dilimi / elle icat SKU reddedilir.
+ * products / product_variants satırlarına ASLA yazılmaz.
+ */
 export async function saveCompetitorVariantMatch(
   productId: string,
   input: {
@@ -236,16 +241,47 @@ export async function saveCompetitorVariantMatch(
   },
 ): Promise<CompetitorWatchActionResult> {
   const m = await requireMembership();
-  if (!input.our_sku.trim()) return { error: "Bizim varyant (SKU) seçin." };
+  const ourSku = input.our_sku.trim();
+  if (!ourSku) return { error: "Bizim varyant (SKU) seçin." };
   if (!input.competitor_listing_id)
     return { error: "Rakip listing kimliği gerekli." };
 
   const admin = createAdminClient();
+
+  // SKU truth: Etsy sync alanları — eşleşme tablosuna yazmadan önce doğrula.
+  const { data: variantHit, error: vErr } = await admin
+    .from("product_variants")
+    .select("sku")
+    .eq("org_id", m.org_id)
+    .eq("product_id", productId)
+    .eq("sku", ourSku)
+    .maybeSingle();
+  if (vErr) return { error: vErr.message };
+
+  let allowed = !!variantHit;
+  if (!allowed) {
+    const { data: productHit, error: pErr } = await admin
+      .from("products")
+      .select("sku")
+      .eq("org_id", m.org_id)
+      .eq("id", productId)
+      .maybeSingle();
+    if (pErr) return { error: pErr.message };
+    const productSku = (productHit as { sku: string | null } | null)?.sku?.trim();
+    allowed = !!productSku && productSku === ourSku;
+  }
+  if (!allowed) {
+    return {
+      error:
+        "SKU Etsy kaydıyla eşleşmiyor — yalnız senkron varyant/ürün SKU’su seçilebilir.",
+    };
+  }
+
   const { error } = await admin.from("competitor_variant_match").upsert(
     {
       org_id: m.org_id,
       product_id: productId,
-      our_sku: input.our_sku.trim(),
+      our_sku: ourSku,
       competitor_listing_id: input.competitor_listing_id,
       competitor_product_id: input.competitor_product_id ?? null,
       competitor_label: input.competitor_label ?? null,

@@ -288,7 +288,12 @@ export async function listCompetitorVariantMatches(
   return (data ?? []) as CompetitorVariantMatchItem[];
 }
 
-/** Eşleştirme diyaloğu için bizim varyant özeti. */
+/**
+ * Eşleştirme diyaloğu için bizim varyant özeti.
+ * SKU kaynağı yalnız Etsy senkronu (`product_variants.sku`). Uydurma kimlik
+ * (ürün uuid dilimi vb.) üretilmez. Varyantsız listingde `products.sku`
+ * (yine Etsy’den) doluysa tek seçenek olarak döner; boşsa liste boş kalır.
+ */
 export async function listProductVariantOptions(
   productId: string,
 ): Promise<{ sku: string; label: string }[]> {
@@ -302,17 +307,35 @@ export async function listProductVariantOptions(
     console.error("product_variants (eşleştirme) hatası:", error.message);
     return [];
   }
-  return ((data ?? []) as {
+  const rows = ((data ?? []) as {
     sku: string;
     name: string | null;
     properties: { values?: string[] }[] | null;
-  }[]).map((v) => ({
-    sku: v.sku,
-    label:
-      (v.properties ?? [])
-        .flatMap((p) => p.values ?? [])
-        .join(" · ") ||
-      v.name ||
-      v.sku,
-  }));
+  }[])
+    .filter((v) => !!v.sku?.trim())
+    .map((v) => ({
+      sku: v.sku,
+      label:
+        (v.properties ?? [])
+          .flatMap((p) => p.values ?? [])
+          .join(" · ") ||
+        v.name ||
+        v.sku,
+    }));
+  if (rows.length > 0) return rows;
+
+  const { data: p, error: pErr } = await supabase
+    .from("products")
+    .select("sku, title")
+    .eq("id", productId)
+    .maybeSingle();
+  if (pErr) {
+    console.error("products (eşleştirme) hatası:", pErr.message);
+    return [];
+  }
+  const product = p as { sku: string | null; title: string } | null;
+  const etsySku = product?.sku?.trim();
+  // Etsy ürün SKU’su yoksa eşleştirme seçeneği yok — asla id uydurma.
+  if (!etsySku) return [];
+  return [{ sku: etsySku, label: product?.title?.trim() || etsySku }];
 }
