@@ -47,7 +47,9 @@ export async function listProductsLite(
     .select("id, title, sku")
     .eq("org_id", orgId)
     .is("archived_at", null)
-    .order("sku", { ascending: false, nullsFirst: false })
+    .not("sku", "is", null)
+    .neq("sku", "")
+    .order("sku", { ascending: false })
     .limit(500);
   if (error) {
     console.error("listProductsLite:", error.message);

@@ -20,8 +20,8 @@ import {
 export interface ListingIndexRow {
   id: string;
   etsy_listing_id: number | null;
-  /** Ürün-seviye (aile) SKU — liste sırası buna göre (büyük/yeni üstte). */
-  sku: string | null;
+  /** Ürün-seviye (aile) SKU — Etsy aynası; boş olmaz. */
+  sku: string;
   title: string;
   status: string | null; // 'active' | 'draft' | ...
   image_url: string | null;
@@ -312,14 +312,15 @@ export async function listListingsIndex(opts?: {
           : q.is("etsy_listing_id", null);
     }
     if (status) q = q.eq("status", status);
+    // SKU zorunlu — Etsy aynası; boş SKU panel listesine girmez.
+    q = q.not("sku", "is", null).neq("sku", "");
     if (search) {
       const clauses = [`title.ilike.%${search}%`, `sku.ilike.%${search}%`];
       if (variantSkuIds.length) clauses.push(`id.in.(${variantSkuIds.join(",")})`);
       q = q.or(clauses.join(","));
     }
-    // DB sırası yaklaşık; doğal SKU ↓ (yeni üstte) aşağıda JS ile kesinleşir.
     return q
-      .order("sku", { ascending: false, nullsFirst: false })
+      .order("sku", { ascending: false })
       .order("id", { ascending: false })
       .range(from, to);
   });
@@ -375,13 +376,15 @@ export async function listListingsIndex(opts?: {
 
   const researched = new Set(researchRows.map((r) => r.product_id));
 
-  const mapped = products.map((p) => {
+  const mapped = products
+    .filter((p) => (p.sku ?? "").trim().length > 0)
+    .map((p) => {
     const va = variantAgg.get(p.id);
     const ads = adsAgg.get(p.id);
     return {
       id: p.id,
       etsy_listing_id: p.etsy_listing_id,
-      sku: p.sku,
+      sku: (p.sku as string).trim(),
       title: p.title,
       status: p.status,
       image_url: p.image_url,

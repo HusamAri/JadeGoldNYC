@@ -8,7 +8,9 @@ export async function listProducts(): Promise<Product[]> {
     .from("products")
     .select("*")
     .is("archived_at", null)
-    .order("sku", { ascending: false, nullsFirst: false })
+    .not("sku", "is", null)
+    .neq("sku", "")
+    .order("sku", { ascending: false })
     .limit(500);
   return sortListingsBySkuDesc((data ?? []) as Product[]);
 }

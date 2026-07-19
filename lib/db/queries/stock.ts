@@ -30,7 +30,9 @@ export async function listStockProducts(orgId: string): Promise<StockProduct[]> 
     .eq("org_id", orgId)
     .eq("status", "active")
     .is("archived_at", null)
-    .order("sku", { ascending: false, nullsFirst: false });
+    .not("sku", "is", null)
+    .neq("sku", "")
+    .order("sku", { ascending: false });
   return sortListingsBySkuDesc(
     (data ?? []) as unknown as StockProduct[],
   );

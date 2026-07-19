@@ -70,12 +70,13 @@ export async function sendListingToEtsy(
     .eq("product_id", productId)
     .eq("active", true);
   if (vErr) return { error: vErr.message };
-  const variants = sortVariantsByWidthThenSize(
-    ((vData ?? []) as DraftVariant[]).map((v) => ({
-      ...v,
-      sku: v.sku ?? "",
-    })),
-  ) as DraftVariant[];
+  const withSku = ((vData ?? []) as DraftVariant[]).filter(
+    (v): v is DraftVariant & { sku: string } => (v.sku ?? "").trim().length > 0,
+  );
+  if (withSku.length === 0) {
+    return { error: "Listing SKU’suz varyant — Etsy senkronunu kontrol edin." };
+  }
+  const variants = sortVariantsByWidthThenSize(withSku);
 
   let client: EtsyClient;
   let shopId: number;

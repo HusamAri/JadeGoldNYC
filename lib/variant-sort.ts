@@ -133,36 +133,25 @@ function compareSizeLabels(
   return a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" });
 }
 
-/** Doğal SKU karşılaştırması (0009 < 0010). */
-export function compareSkuAsc(
-  a: string | null | undefined,
-  b: string | null | undefined,
-): number {
-  const aa = (a ?? "").trim();
-  const bb = (b ?? "").trim();
-  if (!aa && !bb) return 0;
-  if (!aa) return 1; // boş SKU alta
-  if (!bb) return -1;
-  return aa.localeCompare(bb, undefined, { numeric: true, sensitivity: "base" });
+/** Doğal SKU karşılaştırması (0009 < 0010). SKU her zaman dolu beklenir. */
+export function compareSkuAsc(a: string, b: string): number {
+  return a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" });
 }
 
 /**
  * Listing sırası: büyük/yeni SKU üstte, küçük altta.
- * Boş SKU en alta.
+ * SKU zorunlu — boş/null satırlar listeye girmez (`hasProductSku`).
  */
-export function compareListingSkuDesc(
-  a: string | null | undefined,
-  b: string | null | undefined,
-): number {
-  const aa = (a ?? "").trim();
-  const bb = (b ?? "").trim();
-  if (!aa && !bb) return 0;
-  if (!aa) return 1;
-  if (!bb) return -1;
-  return bb.localeCompare(aa, undefined, {
+export function compareListingSkuDesc(a: string, b: string): number {
+  return b.localeCompare(a, undefined, {
     numeric: true,
     sensitivity: "base",
   });
+}
+
+/** Ürün-seviye SKU dolu mu (Etsy aynası; boş SKU panelde yok sayılır). */
+export function hasProductSku(sku: string | null | undefined): boolean {
+  return (sku ?? "").trim().length > 0;
 }
 
 export function sortVariantsByWidthThenSize<T extends VariantSortable>(
@@ -174,5 +163,7 @@ export function sortVariantsByWidthThenSize<T extends VariantSortable>(
 export function sortListingsBySkuDesc<T extends { sku?: string | null }>(
   rows: T[],
 ): T[] {
-  return [...rows].sort((a, b) => compareListingSkuDesc(a.sku, b.sku));
+  return rows
+    .filter((r) => hasProductSku(r.sku))
+    .sort((a, b) => compareListingSkuDesc(a.sku!.trim(), b.sku!.trim()));
 }

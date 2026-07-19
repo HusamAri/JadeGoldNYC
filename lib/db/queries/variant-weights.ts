@@ -44,7 +44,9 @@ export async function listVariantListingOptions(
     .select("id, title, sku, product_variants(count)")
     .eq("org_id", orgId)
     .is("archived_at", null)
-    .order("sku", { ascending: false, nullsFirst: false });
+    .not("sku", "is", null)
+    .neq("sku", "")
+    .order("sku", { ascending: false });
   if (error) {
     console.error("[variant-weights] listVariantListingOptions:", error.message);
     return [];
