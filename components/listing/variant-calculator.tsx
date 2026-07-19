@@ -4,11 +4,12 @@ import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Loader2, Plus, Save, Trash2, Sparkles } from "lucide-react";
+import { Layers, Loader2, Plus, Save, Trash2, Sparkles } from "lucide-react";
 
 import {
   inferWeightsBySize,
   distributePriceByWeight,
+  propagatePricesFromAnchor,
   parseSkuParts,
   type DistVariant,
 } from "@/lib/etsy/distribute";
@@ -18,6 +19,10 @@ import {
   type ApplyVariantItem,
 } from "@/app/(dashboard)/tasarimlar/varyant-hesapla/actions";
 import type { VariantListingOption } from "@/lib/db/queries/variant-weights";
+import {
+  purchaseCostCentsForGrams,
+  type KaratType,
+} from "@/lib/gold-cost";
 import { formatMoney } from "@/lib/money";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -85,9 +90,13 @@ function toGram(s: string): number | null {
 export function VariantCalculator({
   listings = [],
   initialListingId,
+  purchasePrice14kCents,
+  purchasePrice10kCents,
 }: {
   listings?: VariantListingOption[];
   initialListingId?: string;
+  purchasePrice14kCents?: number;
+  purchasePrice10kCents?: number;
 }) {
   const router = useRouter();
   const [listingId, setListingId] = useState<string>(
@@ -98,11 +107,15 @@ export function VariantCalculator({
   const [karat, setKarat] = useState("14");
   const [spot, setSpot] = useState(""); // altın gram fiyatı USD/g (ops.)
   const [markup, setMarkup] = useState("2.5");
+  const [anchorIndex, setAnchorIndex] = useState(0);
   const [rows, setRows] = useState<Row[]>([
     { ...EMPTY },
     { ...EMPTY },
     { ...EMPTY },
   ]);
+
+  const karatType: KaratType | null =
+    karat === "10" ? "10K" : karat === "14" ? "14K" : null;
 
   function loadRows(id: string) {
     startLoading(async () => {
@@ -192,6 +205,83 @@ export function VariantCalculator({
 
   function setRow(i: number, key: keyof Row, value: string) {
     setRows((rs) => rs.map((r, j) => (j === i ? { ...r, [key]: value } : r)));
+    if (key === "price") setAnchorIndex(i);
+  }
+
+  /**
+   * Çapa satırın fiyatından tüm satır fiyatlarını grama göre yeniden yazar
+   * (mevcut fiyat↔gram çarpanı korunur; boşları da doldurur).
+   */
+  function bulkFromAnchor() {
+    const anchor = rows[anchorIndex];
+    if (!anchor?.sku.trim()) {
+      toast.error("Çapa satırda SKU olmalı.");
+      return;
+    }
+    const anchorPrice = toCents(anchor.price);
+    if (anchorPrice == null) {
+      toast.error("Çapa satırda satış fiyatı olmalı.");
+      return;
+    }
+
+    const base: DistVariant[] = rows
+      .filter((r) => r.sku.trim())
+      .map((r) => ({
+        sku: r.sku.trim(),
+        weightGrams: toGram(r.weight),
+        priceCents: toCents(r.price),
+      }));
+    const wPred = new Map(inferWeightsBySize(base).map((p) => [p.sku, p]));
+    const withWeights: DistVariant[] = base.map((v) => ({
+      ...v,
+      weightGrams: v.weightGrams ?? wPred.get(v.sku)?.weightGrams ?? null,
+    }));
+    const anchorSku = anchor.sku.trim();
+    if (
+      withWeights.find((v) => v.sku === anchorSku)?.weightGrams == null
+    ) {
+      toast.error("Çapa satırda gram olmalı (veya bedenden çıkarılamıyor).");
+      return;
+    }
+
+    const preds = propagatePricesFromAnchor(
+      withWeights,
+      anchorSku,
+      anchorPrice,
+    );
+    if (preds.length === 0) {
+      toast.info("Dağıtılacak ağırlıklı satır yok.");
+      return;
+    }
+    const priceMap = new Map(preds.map((p) => [p.sku, p.priceCents]));
+    const weightMap = new Map(
+      withWeights
+        .filter((v) => v.weightGrams != null)
+        .map((v) => [v.sku, v.weightGrams as number]),
+    );
+
+    setRows((rs) =>
+      rs.map((r) => {
+        const sku = r.sku.trim();
+        if (!sku) return r;
+        const next: Row = { ...r };
+        const w = weightMap.get(sku);
+        if (w != null && !r.weight.trim()) next.weight = w.toFixed(2);
+        const p = priceMap.get(sku);
+        if (p != null) next.price = (p / 100).toFixed(2);
+        return next;
+      }),
+    );
+    const w = toGram(anchor.weight) ?? withWeights.find((v) => v.sku === anchorSku)?.weightGrams;
+    const unit =
+      w && anchorPrice
+        ? (anchorPrice / w / 100).toFixed(2)
+        : null;
+    toast.success(
+      `${anchorSku} birim fiyatından ${preds.length} varyant yazıldı` +
+        (unit ? ` (${unit} $/g)` : "") +
+        ".",
+    );
   }
 
   const boundListing =
@@ -307,17 +397,26 @@ export function VariantCalculator({
           </div>
 
           <div className="space-y-2">
-            <div className="text-muted-foreground grid grid-cols-[1fr_7rem_7rem_2.5rem] gap-2 font-mono text-[11px] tracking-wide uppercase">
+            <div className="text-muted-foreground grid grid-cols-[2.5rem_1fr_7rem_7rem_2.5rem] gap-2 font-mono text-[11px] tracking-wide uppercase">
+              <span>Çapa</span>
               <span>SKU (beden gömülü)</span>
               <span>Ağırlık (g)</span>
-              <span>Fiyat ($)</span>
+              <span>Satış ($)</span>
               <span />
             </div>
             {rows.map((r, i) => (
               <div
                 key={i}
-                className="grid grid-cols-[1fr_7rem_7rem_2.5rem] items-center gap-2"
+                className="grid grid-cols-[2.5rem_1fr_7rem_7rem_2.5rem] items-center gap-2"
               >
+                <input
+                  type="radio"
+                  name="calc-anchor"
+                  checked={anchorIndex === i}
+                  onChange={() => setAnchorIndex(i)}
+                  aria-label={`Satır ${i + 1} toplu fiyat çapası`}
+                  className="accent-[var(--brand)] justify-self-center"
+                />
                 <Input
                   value={r.sku}
                   onChange={(e) => setRow(i, "sku", e.target.value)}
@@ -337,7 +436,7 @@ export function VariantCalculator({
                   value={r.price}
                   onChange={(e) => setRow(i, "price", e.target.value)}
                   placeholder="—"
-                  aria-label={`Satır ${i + 1} fiyat (USD)`}
+                  aria-label={`Satır ${i + 1} satış fiyatı (USD)`}
                 />
                 <Button
                   type="button"
@@ -354,21 +453,33 @@ export function VariantCalculator({
                 </Button>
               </div>
             ))}
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => setRows((rs) => [...rs, { ...EMPTY }])}
-            >
-              <Plus className="size-4" />
-              Varyant ekle
-            </Button>
+            <div className="flex flex-wrap gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setRows((rs) => [...rs, { ...EMPTY }])}
+              >
+                <Plus className="size-4" />
+                Varyant ekle
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={bulkFromAnchor}
+              >
+                <Layers className="size-4" />
+                Birim fiyattan dağıt ($/g × gram)
+              </Button>
+            </div>
           </div>
 
           <p className="text-muted-foreground text-xs">
             2 · En az bir varyanta ağırlık gir → kalan ağırlıklar bedenden
-            çıkarılır. En az bir fiyat gir (veya altın gram fiyatı) → kalan
-            fiyatlar ağırlıktan dağıtılır. Hesap anlıktır.
+            çıkarılır. Eksik fiyatlar ağırlıktan dolar. Toplu fiyat: çapa
+            satırın satışından mevcut fiyat/gram çarpanıyla tümünü yeniden
+            yazar. Hesap anlıktır.
           </p>
         </CardContent>
       </Card>
@@ -406,12 +517,21 @@ export function VariantCalculator({
                     <TableHead>SKU</TableHead>
                     <TableHead className="text-right">Beden</TableHead>
                     <TableHead className="text-right">Ağırlık (g)</TableHead>
-                    <TableHead className="text-right">Fiyat</TableHead>
+                    <TableHead className="text-right">Satış</TableHead>
+                    <TableHead className="text-right">Maliyet</TableHead>
                     <TableHead>Kaynak</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {computed.map((c) => (
+                  {computed.map((c) => {
+                    const costCents =
+                      karatType && c.weightGrams != null
+                        ? purchaseCostCentsForGrams(c.weightGrams, karatType, {
+                            "14K": purchasePrice14kCents,
+                            "10K": purchasePrice10kCents,
+                          })
+                        : null;
+                    return (
                     <TableRow key={c.sku}>
                       <TableCell className="font-mono">{c.sku}</TableCell>
                       <TableCell className="text-right tabular-nums">
@@ -423,6 +543,11 @@ export function VariantCalculator({
                       <TableCell className="text-right font-mono tabular-nums">
                         {c.priceCents != null
                           ? formatMoney(c.priceCents, "USD")
+                          : "—"}
+                      </TableCell>
+                      <TableCell className="text-muted-foreground text-right font-mono text-xs tabular-nums">
+                        {costCents != null
+                          ? formatMoney(costCents, "USD")
                           : "—"}
                       </TableCell>
                       <TableCell className="text-muted-foreground text-xs">
@@ -437,7 +562,8 @@ export function VariantCalculator({
                         {c.confidence !== "—" && ` (${c.confidence})`}
                       </TableCell>
                     </TableRow>
-                  ))}
+                    );
+                  })}
                 </TableBody>
               </Table>
             </div>

@@ -134,3 +134,19 @@ export function calculateGoldCost(
     totalPurchaseCostCents,
   };
 }
+
+/**
+ * Gram × tedarik alım fiyatı → toplam maliyet (cent). Spot ons gerekmez;
+ * satış fiyatı yanında hızlı maliyet göstermek için.
+ */
+export function purchaseCostCentsForGrams(
+  weightGrams: number,
+  karat: KaratType,
+  customPurchasePrices?: Partial<Record<KaratType, number>>,
+): number | null {
+  if (!(weightGrams > 0)) return null;
+  const perGram =
+    customPurchasePrices?.[karat] ?? PURCHASE_PRICE_CENTS_PER_GRAM[karat];
+  if (!(perGram > 0)) return null;
+  return Math.round(perGram * weightGrams);
+}
