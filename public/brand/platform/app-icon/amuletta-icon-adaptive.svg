@@ -1,34 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="Amuletta">
-  <!-- Favicon — negatif A; prefers-color-scheme. -->
   <defs>
     <style>
       .bg { fill: #eaecf3; }
-      .disc { fill: #6b5bd6; }
+      .mk { fill: #6b5bd6; }
       @media (prefers-color-scheme: dark) {
         .bg { fill: #14161e; }
-        .disc { fill: #a99bff; }
+        .mk { fill: #a99bff; }
       }
     </style>
   </defs>
   <rect class="bg" width="48" height="48" rx="10.5"/>
-  <path
-    class="disc"
-    fill-rule="evenodd"
-    d="
-      M24 6.5
-      A17.5 17.5 0 1 1 23.99 6.5
-      Z
-      M24 12
-      L15.5 34.5
-      L18.2 34.5
-      L20.5 28
-      L27.5 28
-      L29.8 34.5
-      L32.5 34.5
-      Z
-      M21.6 23.8
-      L26.4 23.8
-      L24 17.2
-      Z
-    "/>
+  <g class="mk">
+    <path d="M19.7 9.2C11.1 12.2 6.8 19.7 6.8 26.8C6.8 35.4 13.9 42 22.5 42C18.6 42 13.9 37.5 13.9 26.8C13.9 18.6 16.7 12.2 19.7 9.2Z"/>
+    <path d="M28.3 9.2C36.9 12.2 41.2 19.7 41.2 26.8C41.2 35.4 34.1 42 25.5 42C29.4 42 34.1 37.5 34.1 26.8C34.1 18.6 31.3 12.2 28.3 9.2Z"/>
+    <ellipse cx="24" cy="11.1" rx="2.6" ry="2.1"/>
+    <path d="M24 27.4 L20.1 33.6 L27.9 33.6 Z"/>
+  </g>
 </svg>

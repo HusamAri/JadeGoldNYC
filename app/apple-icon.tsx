@@ -1,11 +1,8 @@
 import { ImageResponse } from "next/og";
 
 /**
- * apple-touch-icon — Spatial register: lavanta radyal zemin (#eaecf3)
- * üzerinde indigo orb (#6b5bd6 ailesi, ışık tepeden) içinde beyaz serif "A"
- * monogramı. `app/icon.svg`, OG kartı ve manifest renkleriyle tutarlı.
- * SVG yerine PNG üretiriz çünkü iOS apple-touch-icon SVG'yi güvenilir
- * işlemez.
+ * apple-touch-icon — Amuletta yay/halka negatif-A markası.
+ * iOS SVG’yi güvenilir işlemez; PNG üretiriz.
  */
 export const size = { width: 180, height: 180 };
 export const contentType = "image/png";
@@ -21,40 +18,25 @@ export default function AppleIcon() {
           alignItems: "center",
           justifyContent: "center",
           background: "#eaecf3",
-          backgroundImage:
-            "radial-gradient(220px 160px at 50% -10%, #f6f5fa 0%, rgba(246,245,250,0) 70%), radial-gradient(160px 130px at 82% 0%, rgba(212,198,255,0.5), transparent 66%), radial-gradient(150px 120px at 8% 100%, rgba(182,220,255,0.4), transparent 62%)",
         }}
       >
-        {/* İndigo orb + serif "A" monogram */}
-        <div
-          style={{
-            width: 124,
-            height: 124,
-            borderRadius: "50%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            background:
-              "radial-gradient(circle at 32% 28%, #cfc8ff 0%, #8a7ae6 48%, #6b5bd6 66%, #4030a0 100%)",
-            boxShadow:
-              "0 14px 26px rgba(80,64,180,0.38), 0 0 34px rgba(157,140,255,0.45), inset 0 2px 4px rgba(255,255,255,0.55), inset 0 -9px 16px rgba(38,26,96,0.4)",
-          }}
+        <svg
+          width="124"
+          height="124"
+          viewBox="0 0 100 100"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          <svg
-            width="74"
-            height="74"
-            viewBox="0 0 48 48"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <g stroke="#ffffff" fill="none" strokeLinecap="round">
-              <path d="M24 10.8 14.6 36.6" strokeWidth="1.7" />
-              <path d="M24 10.8 33.4 36.6" strokeWidth="3.1" />
-              <path d="M16.9 28.4h14.2" strokeWidth="1.7" />
-              <path d="M11.4 36.6h6.4" strokeWidth="1.7" />
-              <path d="M30.2 36.6h6.4" strokeWidth="1.7" />
-            </g>
-          </svg>
-        </div>
+          <path
+            fill="#6b5bd6"
+            d="M38.5 12C20.5 18.5 11.5 34 11.5 48.5C11.5 67 26.5 81 44 81C35.5 81 25.5 71.5 25.5 48.5C25.5 31.5 31.5 18.5 38.5 12Z"
+          />
+          <path
+            fill="#6b5bd6"
+            d="M61.5 12C79.5 18.5 88.5 34 88.5 48.5C88.5 67 73.5 81 56 81C64.5 81 74.5 71.5 74.5 48.5C74.5 31.5 68.5 18.5 61.5 12Z"
+          />
+          <ellipse cx="50" cy="16.5" rx="5.5" ry="4.2" fill="#6b5bd6" />
+          <path fill="#6b5bd6" d="M50 52 L41.5 65.5 L58.5 65.5 Z" />
+        </svg>
       </div>
     ),
     { ...size },

@@ -18,6 +18,7 @@ import {
 } from "@/app/(dashboard)/ayarlar/etsy/actions";
 import type { SyncProgress, EtsySyncSummary } from "@/lib/etsy/sync";
 import { Button } from "@/components/ui/button";
+import { useFrost } from "@/components/layout/frost-provider";
 import { cn } from "@/lib/utils";
 import { formatNumber, formatDateTime } from "@/lib/format";
 
@@ -39,6 +40,7 @@ export function EtsySyncButton({
   initialSummary: EtsySyncSummary;
 }) {
   const router = useRouter();
+  const frost = useFrost();
   const [running, setRunning] = useState(false);
   const [progress, setProgress] = useState<SyncProgress | null>(null);
   // Ana senkron bittikten sonra varyant fazı (Etsy-ayna mutabakatı) — "tek
@@ -69,6 +71,7 @@ export function EtsySyncButton({
     runningRef.current = true;
     setRunning(true);
     setProgress(null);
+    frost.show("syncing", "Etsy senkronize ediliyor…");
     try {
       // "Domino": her dilim bittiğinde bir sonrakini tetikle.
       for (;;) {
@@ -104,6 +107,7 @@ export function EtsySyncButton({
       runningRef.current = false;
       setRunning(false);
       setVariantPhase(false);
+      frost.hide();
     }
   }
 

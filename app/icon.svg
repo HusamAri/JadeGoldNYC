@@ -1,27 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="Artifact">
-  <!-- Sekme markı — Spatial register: lavanta radyal zeminde (yumuşak köşeli
-       karo) indigo orb + beyaz serif "A" monogramı. Işık tepeden: orb
-       highlight'ı 32%/28%'de, zemin radyali tepe merkezli. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="Amuletta">
+  <!-- Sekme ikonu — yay/halka negatif A; prefers-color-scheme. -->
   <defs>
-    <radialGradient id="am-ground" cx="0.5" cy="0" r="1.2">
-      <stop offset="0" stop-color="#f6f5fa" />
-      <stop offset="0.55" stop-color="#eaecf3" />
-      <stop offset="1" stop-color="#e2dfec" />
-    </radialGradient>
-    <radialGradient id="am-orb" cx="0.32" cy="0.28" r="0.9">
-      <stop offset="0" stop-color="#cfc8ff" />
-      <stop offset="0.48" stop-color="#8a7ae6" />
-      <stop offset="0.68" stop-color="#6b5bd6" />
-      <stop offset="1" stop-color="#4030a0" />
-    </radialGradient>
+    <style>
+      .bg { fill: #eaecf3; }
+      .mk { fill: #6b5bd6; }
+      @media (prefers-color-scheme: dark) {
+        .bg { fill: #14161e; }
+        .mk { fill: #a99bff; }
+      }
+    </style>
   </defs>
-  <rect width="48" height="48" rx="10.5" fill="url(#am-ground)" />
-  <circle cx="24" cy="24" r="16" fill="url(#am-orb)" />
-  <g transform="translate(24 24.4) scale(0.66) translate(-24 -23.7)" stroke="#ffffff" fill="none" stroke-linecap="round">
-    <path d="M24 10.8 14.6 36.6" stroke-width="2" />
-    <path d="M24 10.8 33.4 36.6" stroke-width="3.6" />
-    <path d="M16.9 28.4h14.2" stroke-width="2" />
-    <path d="M11.4 36.6h6.4" stroke-width="2" />
-    <path d="M30.2 36.6h6.4" stroke-width="2" />
+  <rect class="bg" width="48" height="48" rx="10.5"/>
+  <g class="mk">
+    <path d="M19.7 9.2C11.1 12.2 6.8 19.7 6.8 26.8C6.8 35.4 13.9 42 22.5 42C18.6 42 13.9 37.5 13.9 26.8C13.9 18.6 16.7 12.2 19.7 9.2Z"/>
+    <path d="M28.3 9.2C36.9 12.2 41.2 19.7 41.2 26.8C41.2 35.4 34.1 42 25.5 42C29.4 42 34.1 37.5 34.1 26.8C34.1 18.6 31.3 12.2 28.3 9.2Z"/>
+    <ellipse cx="24" cy="11.1" rx="2.6" ry="2.1"/>
+    <path d="M24 27.4 L20.1 33.6 L27.9 33.6 Z"/>
   </g>
 </svg>

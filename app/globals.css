@@ -1756,3 +1756,182 @@ html[data-brand="artifact"] .jg-dust {
   flex-direction: column;
   gap: clamp(2.25rem, 3.5vw, 3.5rem);
 }
+
+/* ── Amuletta frost overlay (yay/halka mark + buz + dalga) ─────────────── */
+.frost-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  pointer-events: all;
+}
+.frost-veil {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--background) 72%, transparent);
+  backdrop-filter: blur(14px) saturate(1.05);
+  -webkit-backdrop-filter: blur(14px) saturate(1.05);
+  transition: opacity 0.55s var(--ease-premium),
+    backdrop-filter 0.55s var(--ease-premium);
+}
+.dark .frost-veil {
+  background: color-mix(in srgb, var(--background) 78%, transparent);
+}
+.frost-center {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+}
+.frost-label {
+  margin: 0;
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+  color: var(--muted-foreground);
+}
+.frost-mark {
+  color: var(--primary);
+  filter: drop-shadow(0 2px 8px color-mix(in srgb, var(--primary) 28%, transparent));
+}
+.frost-tone-loading .frost-mark {
+  color: var(--primary);
+}
+.frost-tone-updating .frost-mark {
+  color: var(--jade);
+}
+.frost-tone-syncing .frost-mark {
+  color: var(--gold);
+}
+
+.frost-waves {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+}
+.frost-waves span {
+  position: absolute;
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 999px;
+  border: 1.5px solid color-mix(in srgb, var(--primary) 35%, transparent);
+  transform: scale(0.4);
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .frost-mark-loading .am-arc-left {
+    animation: frost-arc-breathe 2.4s var(--ease-premium) infinite;
+    transform-origin: 38% 48%;
+  }
+  .frost-mark-loading .am-arc-right {
+    animation: frost-arc-breathe 2.4s var(--ease-premium) infinite reverse;
+    transform-origin: 62% 48%;
+  }
+  .frost-mark-loading .am-arc-gem {
+    animation: frost-gem-pulse 1.8s var(--ease-premium) infinite;
+  }
+  .frost-mark-updating .am-arc-gem {
+    animation: frost-gem-pulse 1.1s var(--ease-premium) infinite;
+  }
+  .frost-mark-updating .am-mark-arcs {
+    animation: frost-soft-spin 6s linear infinite;
+    transform-origin: 50% 50%;
+  }
+  .frost-mark-syncing .am-arc-left,
+  .frost-mark-syncing .am-arc-right {
+    animation: frost-orbit-nudge 1.6s var(--ease-premium) infinite alternate;
+  }
+  .frost-mark-syncing .am-arc-left {
+    transform-origin: 50% 50%;
+  }
+  .frost-mark-syncing .am-arc-right {
+    animation-delay: 0.2s;
+    transform-origin: 50% 50%;
+  }
+
+  .frost-revealing .frost-veil {
+    animation: frost-thaw 0.75s var(--ease-premium) forwards;
+  }
+  .frost-revealing .frost-center {
+    animation: frost-mark-out 0.45s var(--ease-premium) forwards;
+  }
+  .frost-revealing .frost-waves {
+    opacity: 1;
+  }
+  .frost-revealing .frost-waves span:nth-child(1) {
+    animation: frost-wave 0.75s var(--ease-premium) forwards;
+  }
+  .frost-revealing .frost-waves span:nth-child(2) {
+    animation: frost-wave 0.75s var(--ease-premium) 0.08s forwards;
+  }
+  .frost-revealing .frost-waves span:nth-child(3) {
+    animation: frost-wave 0.75s var(--ease-premium) 0.16s forwards;
+  }
+}
+
+@keyframes frost-arc-breathe {
+  0%,
+  100% {
+    transform: translateX(0) scale(1);
+  }
+  50% {
+    transform: translateX(1.5px) scale(1.03);
+  }
+}
+@keyframes frost-gem-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.55;
+    transform: translateY(-1px);
+  }
+}
+@keyframes frost-soft-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes frost-orbit-nudge {
+  from {
+    transform: rotate(-4deg);
+  }
+  to {
+    transform: rotate(4deg);
+  }
+}
+@keyframes frost-wave {
+  0% {
+    transform: scale(0.35);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(18);
+    opacity: 0;
+  }
+}
+@keyframes frost-thaw {
+  to {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+  }
+}
+@keyframes frost-mark-out {
+  to {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+}
