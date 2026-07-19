@@ -21,6 +21,10 @@ export const etsyPaths = {
   // getListingsByShop — includes (Images vb.) yalnız bu uçta desteklenir;
   // state=active ile aktif listeler döner.
   shopListings: (shopId: number | string) => `/shops/${shopId}/listings`,
+  // createDraftListing (POST, form-encoded) — panel taslağını Etsy'de DRAFT
+  // listing olarak açar. shopListings ile aynı uç; niyet netliği için ayrı ad.
+  // listings_w kapsamı gerekir.
+  createListing: (shopId: number | string) => `/shops/${shopId}/listings`,
   reviews: (shopId: number | string) => `/shops/${shopId}/reviews`,
   ledgerEntries: (shopId: number | string) =>
     `/shops/${shopId}/payment-account/ledger-entries`,
@@ -35,6 +39,12 @@ export const etsyPaths = {
   // uploadListingImage (ürün fotoğrafı yükleme, multipart) — listings_w gerekir.
   listingImages: (shopId: number | string, listingId: number | string) =>
     `/shops/${shopId}/listings/${listingId}/images`,
+  // Kişiselleştirme (2025 migrasyonu): legacy is_personalizable/personalization_*
+  // create alanları KALDIRILDI. Listing oluşturulduktan sonra bu uca JSON
+  // `personalization_questions` dizisi POST edilir. Çoklu soru için query
+  // `supports_multiple_personalization_questions=true` gerekir.
+  listingPersonalization: (shopId: number | string, listingId: number | string) =>
+    `/shops/${shopId}/listings/${listingId}/personalization`,
   // Mağaza bölümleri (başlık + aktif listing sayısı).
   shopSections: (shopId: number | string) => `/shops/${shopId}/sections`,
   // Kargo profilleri (işlem süresi, menşei).
@@ -43,6 +53,11 @@ export const etsyPaths = {
   // İade politikaları — createDraftListing fiziksel üründe return_policy_id ister.
   returnPolicies: (shopId: number | string) =>
     `/shops/${shopId}/policies/return`,
+  // İşlem profilleri (readiness states) — Etsy 2025 migrasyonundan beri fiziksel
+  // listing'de `readiness_state_id` ZORUNLU. GET liste / POST oluştur (aynı uç).
+  // Alanlar: readiness_state (ready_to_ship|made_to_order), min/max_processing_time.
+  readinessStateDefinitions: (shopId: number | string) =>
+    `/shops/${shopId}/readiness-state-definitions`,
   // Satıcı taksonomisi (kategori ağacı) — taxonomy_id çözümü için.
   sellerTaxonomyNodes: () => `/seller-taxonomy/nodes`,
 };

@@ -27,8 +27,8 @@ type RevealProps = {
 } & Omit<HTMLMotionProps<"div">, "children" | "className">;
 
 /**
- * Scroll-into-view reveal — quiet rise. CSS view-timeline handles most cards
- * site-wide; use this for explicit chains or non-card blocks.
+ * Opt-in scroll reveal — quiet opacity + y. Do not wrap every card;
+ * dense dashboards should stay still (fatigue).
  */
 export function Reveal({
   children,

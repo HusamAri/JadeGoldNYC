@@ -147,7 +147,7 @@ export default async function SatislarPage({
   const cur = "USD";
 
   return (
-    <div className="relative z-0 space-y-8 pb-28">
+    <div className="page-stack relative z-0 pb-32">
       <SceneCutouts page="satislar" />
       <GoldStream motif="gift" />
       <PageHeader

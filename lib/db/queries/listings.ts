@@ -1,5 +1,12 @@
 import { createClient } from "@/lib/supabase/server";
-import type { EtsyPropertyValue } from "@/lib/etsy/types";
+import {
+  variantPropertyParts,
+  type RawVariantProperties,
+} from "@/lib/variant-properties";
+import {
+  sortListingsBySkuDesc,
+  sortVariantsByWidthThenSize,
+} from "@/lib/variant-sort";
 
 /**
  * Listing Komuta Merkezi — veri katmanı.
@@ -13,6 +20,8 @@ import type { EtsyPropertyValue } from "@/lib/etsy/types";
 export interface ListingIndexRow {
   id: string;
   etsy_listing_id: number | null;
+  /** Ürün-seviye (aile) SKU — Etsy aynası; boş olmaz. */
+  sku: string;
   title: string;
   status: string | null; // 'active' | 'draft' | ...
   image_url: string | null;
@@ -161,15 +170,17 @@ function isSon30(label: string): boolean {
   return label.toLowerCase().includes("son 30");
 }
 
-/** property_values → okunur varyant etiketi; yoksa name, o da yoksa SKU. */
+/**
+ * property_values → okunur varyant etiketi; yoksa name, o da yoksa SKU.
+ * `properties` iki şekilde gelebilir (Etsy dizisi VEYA EON düz nesnesi) —
+ * `variantPropertyParts` ikisini de güvenle indirger (nesnede `.map` çökerdi).
+ */
 function variantLabel(v: {
   sku: string;
   name: string | null;
-  properties: EtsyPropertyValue[] | null;
+  properties: RawVariantProperties;
 }): string {
-  const parts = (v.properties ?? [])
-    .map((p) => (p.values ?? []).join(", "))
-    .filter(Boolean);
+  const parts = variantPropertyParts(v.properties);
   if (parts.length) return parts.join(" · ");
   return (v.name ?? "").trim() || v.sku;
 }
@@ -179,6 +190,7 @@ function variantLabel(v: {
 interface ProductIndexDbRow {
   id: string;
   etsy_listing_id: number | null;
+  sku: string | null;
   title: string;
   status: string | null;
   image_url: string | null;
@@ -207,7 +219,8 @@ interface ResearchDbRow {
 interface VariantDbRow {
   sku: string;
   name: string | null;
-  properties: EtsyPropertyValue[] | null;
+  // İki şekil: Etsy senkron dizisi VEYA EON düz nesnesi (bkz. variant-properties).
+  properties: RawVariantProperties;
   price_cents: number | null;
   quantity: number | null;
   weight_grams: number | string | null; // numeric — bazı sürücüler string döndürür
@@ -244,11 +257,22 @@ interface SaleItemDbRow {
 export async function listListingsIndex(opts?: {
   search?: string;
   status?: string;
+  /**
+   * Yaşam-döngüsü kapsamı (Etsy-ayna kuralı):
+   *   "etsy"        → yalnız Etsy'de var olan listing'ler (etsy_listing_id dolu).
+   *                   Ana "Listeler" ekranı — Etsy'de ne varsa o.
+   *   "suggestions" → panel-kayıtlı taslaklar (etsy_listing_id boş, arşivsiz) —
+   *                   henüz Etsy'de olmayan öneriler.
+   *   "archived"    → arşivlenenler (archived_at dolu).
+   * Varsayılan "etsy". Geriye uyum: eski `status==='arsiv'` → "archived".
+   */
+  scope?: "etsy" | "suggestions" | "archived";
 }): Promise<ListingIndexRow[]> {
   const supabase = await createClient();
   const search = opts?.search ? sanitize(opts.search) : "";
-  const archivedOnly = opts?.status === "arsiv";
-  const status = archivedOnly ? undefined : opts?.status;
+  const scope: "etsy" | "suggestions" | "archived" =
+    opts?.scope ?? (opts?.status === "arsiv" ? "archived" : "etsy");
+  const status = opts?.status === "arsiv" ? undefined : opts?.status;
 
   // Varyant SKU'suyla da bulunabilsin (Codex P2): kullanıcı siparişte/varyantta
   // gördüğü SKU'yu arar; o SKU parent listing'de değil product_variants'ta olur.
@@ -275,20 +299,29 @@ export async function listListingsIndex(opts?: {
     let q = supabase
       .from("products")
       .select(
-        "id, etsy_listing_id, title, status, image_url, price_cents, currency, quantity, num_images, research_keyword",
+        "id, etsy_listing_id, sku, title, status, image_url, price_cents, currency, quantity, num_images, research_keyword",
       );
-    q = archivedOnly
-      ? q.not("archived_at", "is", null)
-      : q.is("archived_at", null);
+    if (scope === "archived") {
+      q = q.not("archived_at", "is", null);
+    } else {
+      q = q.is("archived_at", null);
+      // "etsy" → yalnız Etsy'de olanlar; "suggestions" → yalnız panel-taslakları.
+      q =
+        scope === "etsy"
+          ? q.not("etsy_listing_id", "is", null)
+          : q.is("etsy_listing_id", null);
+    }
     if (status) q = q.eq("status", status);
+    // SKU zorunlu — Etsy aynası; boş SKU panel listesine girmez.
+    q = q.not("sku", "is", null).neq("sku", "");
     if (search) {
       const clauses = [`title.ilike.%${search}%`, `sku.ilike.%${search}%`];
       if (variantSkuIds.length) clauses.push(`id.in.(${variantSkuIds.join(",")})`);
       q = q.or(clauses.join(","));
     }
     return q
-      .order("title", { ascending: true })
-      .order("id", { ascending: true })
+      .order("sku", { ascending: false })
+      .order("id", { ascending: false })
       .range(from, to);
   });
   if (products.length === 0) return [];
@@ -343,12 +376,15 @@ export async function listListingsIndex(opts?: {
 
   const researched = new Set(researchRows.map((r) => r.product_id));
 
-  return products.map((p) => {
+  const mapped = products
+    .filter((p) => (p.sku ?? "").trim().length > 0)
+    .map((p) => {
     const va = variantAgg.get(p.id);
     const ads = adsAgg.get(p.id);
     return {
       id: p.id,
       etsy_listing_id: p.etsy_listing_id,
+      sku: (p.sku as string).trim(),
       title: p.title,
       status: p.status,
       image_url: p.image_url,
@@ -364,6 +400,8 @@ export async function listListingsIndex(opts?: {
       ads30_orders: ads ? ads.orders : null,
     };
   });
+  // Küçük SKU altta, büyük/yeni üstte (doğal sayı: 0009 < 0010).
+  return sortListingsBySkuDesc(mapped);
 }
 
 // ── Detay: tek listing'in komuta-merkezi verisi ──────────────────────
@@ -428,13 +466,26 @@ export async function getListingDetail(
     }),
   ]);
 
-  const variants: ListingVariantRow[] = variantRows.map((v) => ({
+  const sorted = sortVariantsByWidthThenSize(
+    variantRows.map((v) => ({
+      sku: v.sku,
+      name: v.name,
+      label: variantLabel(v),
+      properties: v.properties,
+      price_cents: v.price_cents,
+      quantity: v.quantity,
+      weight_grams: v.weight_grams == null ? null : Number(v.weight_grams),
+      weight_source: v.weight_source,
+      active: v.active,
+    })),
+  );
+  const variants: ListingVariantRow[] = sorted.map((v) => ({
     sku: v.sku,
     name: v.name,
-    label: variantLabel(v),
+    label: v.label,
     price_cents: v.price_cents,
     quantity: v.quantity,
-    weight_grams: v.weight_grams == null ? null : Number(v.weight_grams),
+    weight_grams: v.weight_grams,
     weight_source: v.weight_source,
     active: v.active,
   }));

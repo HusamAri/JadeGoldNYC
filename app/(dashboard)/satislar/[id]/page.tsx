@@ -67,7 +67,7 @@ export default async function SatisDetayPage({
   const netCents = sale.grand_total_cents - sale.etsy_fees_cents;
 
   return (
-    <div className="space-y-8">
+    <div className="page-stack">
       <PageHeader
         title={`Satış ${sale.order_no ?? ""}`}
         description={formatDate(sale.order_date, "d MMMM yyyy")}

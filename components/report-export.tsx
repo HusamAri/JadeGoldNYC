@@ -1,5 +1,7 @@
 "use client";
 
+import { useTransition } from "react";
+import { toast } from "sonner";
 import { Download, Printer } from "lucide-react";
 
 import { logReportExport } from "@/app/(dashboard)/raporlar/actions";
@@ -37,6 +39,8 @@ export function ReportExport({
   categories,
   currency = "USD",
 }: ExportPayload) {
+  const [pending, startTransition] = useTransition();
+
   function buildCsv(): string {
     const lines: string[] = [];
     lines.push(q("Jade Gold NYC — Rapor"));
@@ -67,7 +71,7 @@ export function ReportExport({
     a.download = `jadegoldnyc-rapor-${new Date().toISOString().slice(0, 10)}.csv`;
     a.click();
     URL.revokeObjectURL(url);
-    void logReportExport(periodLabel);
+    startTransition(() => void logReportExport(periodLabel));
   }
 
   // Paydaşa giden çıktı: markalı (monogram + JADE GOLD kelime kilidi + ince altın
@@ -185,7 +189,12 @@ export function ReportExport({
     // window.open null döner → yazılabilir handle kalmaz. Pencere same-origin
     // about:blank; içeriği biz (esc'li) yazıyoruz, ters-tabnabbing riski yok.
     const win = window.open("", "_blank");
-    if (!win) return; // açılır pencere engellendi
+    if (!win) {
+      // Açılır pencere engellendi → sessiz kalma, kullanıcıya söyle (buton donuk
+      // görünmesin). Kullanıcı tarayıcı ayarından izin verip tekrar dener.
+      toast.error("Yazdırma penceresi açılamadı — tarayıcı açılır pencereyi engelledi.");
+      return;
+    }
     win.document.open();
     win.document.write(buildPrintHtml());
     win.document.close();
@@ -196,16 +205,16 @@ export function ReportExport({
     };
     if (win.document.readyState === "complete") print();
     else win.addEventListener("load", print);
-    void logReportExport(periodLabel);
+    startTransition(() => void logReportExport(periodLabel));
   }
 
   return (
     <>
-      <Button variant="outline" onClick={onExportPdf}>
+      <Button variant="outline" onClick={onExportPdf} disabled={pending}>
         <Printer className="size-4" />
         PDF / Yazdır
       </Button>
-      <Button variant="outline" onClick={onExportCsv}>
+      <Button variant="outline" onClick={onExportCsv} disabled={pending}>
         <Download className="size-4" />
         CSV Dışa Aktar
       </Button>

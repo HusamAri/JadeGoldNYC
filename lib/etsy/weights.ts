@@ -1,14 +1,30 @@
-import type { EtsyPropertyValue } from "@/lib/etsy/types";
+import {
+  variantPropertyParts,
+  type RawVariantProperties,
+} from "@/lib/variant-properties";
 
-/** Açıklamaya gömülen gram bloğunun işaretçileri (idempotent güncelleme için). */
+/**
+ * ESKİ işaretçiler — Etsy açıklaması DÜZ METİNDİR ve bu HTML yorumlarını
+ * round-trip'te SİLER; bu yüzden idempotentlik artık marker'a değil blok
+ * METİN İMZASINA dayanır (başlık `WEIGHT_HEADER_RE` … footer `WEIGHT_FOOTER`).
+ * Sabitler yalnız DB'de kalmış eski marker'lı blokları söküp temizlemek için
+ * korunuyor; `buildWeightBlock` ARTIK bu marker'ları ÜRETMEZ.
+ */
 export const WEIGHT_BLOCK_START = "<!-- JG-WEIGHTS -->";
 export const WEIGHT_BLOCK_END = "<!-- /JG-WEIGHTS -->";
+
+/** Blok kapanış cümlesi — hem üretimde hem sökme imzasında kullanılır. */
+export const WEIGHT_FOOTER =
+  "Weights are approximate and may vary slightly per piece.";
+
+/** Blok başlık imzası: "Weight by size (…solid gold):" (karatlı/karatsız). */
+const WEIGHT_HEADER_RE = /Weight by size \([^)]*\):/;
 
 export interface VariantWeight {
   sku: string;
   weightGrams: number;
-  /** Etsy property_values (varsa beden/renk buradan). */
-  properties?: EtsyPropertyValue[] | null;
+  /** Varyant property'leri — Etsy dizisi VEYA EON düz nesnesi (varsa beden/renk). */
+  properties?: RawVariantProperties;
 }
 
 /**
@@ -16,10 +32,8 @@ export interface VariantWeight {
  * (ör. "7 inches"), yoksa SKU sonundaki bedeni (…-7, …-7.5, ….7.5) ayıklar.
  */
 export function variantSizeLabel(v: VariantWeight): string {
-  const fromProps = (v.properties ?? [])
-    .map((p) => (p.values ?? []).join(", "))
-    .filter(Boolean)
-    .join(" · ");
+  // properties Etsy dizisi VEYA EON düz nesnesi olabilir — ikisini de indirge.
+  const fromProps = variantPropertyParts(v.properties).join(" · ");
   if (fromProps) return fromProps;
   // SKU sonundaki beden: yalnız "-" ayıracından sonra (ör. BMC1-7, BMC1-7.5).
   // Nokta ondalıktır; çok-noktalı/tiresiz SKU'da yanlış beden yerine SKU dön.
@@ -51,15 +65,8 @@ export function buildWeightBlock(
     ? `Weight by size (${opts.karatHint} solid gold):`
     : "Weight by size (solid gold):";
 
-  return [
-    WEIGHT_BLOCK_START,
-    "",
-    header,
-    ...lines,
-    "",
-    "Weights are approximate and may vary slightly per piece.",
-    WEIGHT_BLOCK_END,
-  ].join("\n");
+  // HTML-yorum marker'ı YOK (Etsy siliyor) — blok kendi metin imzasıyla tanınır.
+  return [header, ...lines, "", WEIGHT_FOOTER].join("\n");
 }
 
 function formatGrams(g: number): string {
@@ -68,24 +75,35 @@ function formatGrams(g: number): string {
 }
 
 /**
- * Gram bloğunu açıklamaya yerleştirir. Blok zaten varsa (işaretçiler arası)
- * DEĞİŞTİRİR; yoksa sona ekler. Böylece tekrar çalıştırınca çoğaltmaz.
- * `block` boşsa mevcut blok kaldırılır (temizlik).
+ * Açıklamadaki TÜM ağırlık bloklarını söker — hem eski HTML-yorum marker'lı
+ * bloklar (panel DB'de kalmış olabilir) hem Etsy'nin marker'ı sildiği
+ * marker'sız metin-imzalı kopyalar (round-trip sonrası çoğalanlar). Idempotentlik
+ * marker'a DEĞİL blok metin imzasına (başlık … footer) dayanır — yoksa her push
+ * yeni blok ekleyip biriktirir (gerçek vaka: 158 listing'de 3-4 kopya).
+ */
+export function stripWeightBlocks(description: string): string {
+  const footer = WEIGHT_FOOTER.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const header = WEIGHT_HEADER_RE.source;
+  return (description ?? "")
+    // 1) Eski marker'lı bloklar (uçtan uca, marker dahil)
+    .replace(
+      new RegExp(`\\n*${WEIGHT_BLOCK_START}[\\s\\S]*?${WEIGHT_BLOCK_END}\\n*`, "g"),
+      "\n",
+    )
+    // 2) Marker'sız metin-imzalı bloklar (başlıktan footer'a; çoklu)
+    .replace(new RegExp(`\\n*${header}[\\s\\S]*?${footer}\\n*`, "g"), "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .replace(/\s+$/, "");
+}
+
+/**
+ * Gram bloğunu açıklamaya IDEMPOTENT yerleştirir: önce MEVCUT tüm bloklar
+ * (marker'lı + marker'sız kopyalar) sökülür, sonra tek taze blok eklenir.
+ * Böylece tekrar tekrar çalıştırılsa da çoğalmaz. `block` boşsa yalnız
+ * temizlik yapılır (blok kaldırılır).
  */
 export function injectWeightBlock(description: string, block: string): string {
-  const desc = description ?? "";
-  const startIdx = desc.indexOf(WEIGHT_BLOCK_START);
-  const endIdx = desc.indexOf(WEIGHT_BLOCK_END);
-
-  if (startIdx !== -1 && endIdx !== -1 && endIdx > startIdx) {
-    const before = desc.slice(0, startIdx).replace(/\s+$/, "");
-    const after = desc.slice(endIdx + WEIGHT_BLOCK_END.length).replace(/^\s+/, "");
-    if (!block) {
-      return [before, after].filter(Boolean).join("\n\n");
-    }
-    return [before, block, after].filter(Boolean).join("\n\n");
-  }
-
-  if (!block) return desc;
-  return [desc.replace(/\s+$/, ""), block].filter(Boolean).join("\n\n");
+  const base = stripWeightBlocks(description ?? "");
+  if (!block) return base;
+  return [base, block].filter(Boolean).join("\n\n");
 }

@@ -9,22 +9,27 @@
 export const KARAT_PURITY: Record<KaratType, number> = {
   "10K": 0.416,
   "14K": 0.585,
+  "18K": 0.75,
 };
 
-/** Tedarikçi alım fiyatı (USD cent / gram). */
+/** Tedarikçi alım fiyatı (USD cent / gram).
+ *  18K: gerçek tedarik verisi yok — 14K'dan saflık oranıyla türetilmiş
+ *  VARSAYIM (101 × 0.75/0.585 ≈ 129). Tedarikçi fiyatı gelince güncellenir. */
 export const PURCHASE_PRICE_CENTS_PER_GRAM: Record<KaratType, number> = {
   "10K": 65_00,
   "14K": 101_00,
+  "18K": 129_00,
 };
 
 /** 1 troy ons = 31.1035 gram. */
 export const TROY_OUNCE_GRAMS = 31.1035;
 
-export type KaratType = "10K" | "14K";
+export type KaratType = "10K" | "14K" | "18K";
 
 // ── Ayar tespiti ──────────────────────────────────────────────────────
 
 const KARAT_PATTERNS: { re: RegExp; karat: KaratType }[] = [
+  { re: /\b18\s*[kK](?:arat|t)?\b/i, karat: "18K" },
   { re: /\b14\s*[kK](?:arat|t)?\b/i, karat: "14K" },
   { re: /\b10\s*[kK](?:arat|t)?\b/i, karat: "10K" },
 ];

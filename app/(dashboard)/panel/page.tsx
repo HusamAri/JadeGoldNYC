@@ -43,6 +43,7 @@ import { KpiCard } from "@/components/kpi-card";
 import { WhatsNew } from "@/components/whats-new";
 import { AlertCenterCard } from "@/components/alert-center";
 import { AlertBoard3D } from "@/components/alert-board-3d";
+import { AlertResolutionTracker } from "@/components/panel/alert-resolution-tracker";
 import { MarketPriceAlertsCard } from "@/components/market-price-alerts-card";
 import { getMarketPriceAlerts } from "@/lib/db/queries/market-alerts";
 import { PeriodSelector } from "@/components/period-selector";
@@ -67,6 +68,11 @@ import {
 } from "@/components/ui/table";
 
 export const metadata = { title: "Panel" };
+
+// Panel ilk-açılış popup'ından başlatılan Etsy senkronu bu rota segmentinin
+// maxDuration'ını miras alır (ayarlar/etsy'deki gibi). Varsayılan süre büyük
+// sync dilimlerini kesmesin diye 60sn.
+export const maxDuration = 60;
 
 export default async function PanelPage({
   searchParams,
@@ -166,7 +172,7 @@ export default async function PanelPage({
     : `${period.label} · karşılaştırma yok (tüm zamanlar)`;
 
   return (
-    <div className="motion-chain relative z-0 space-y-8 pb-28">
+    <div className="page-stack relative z-0 pb-32">
       <SceneCutouts page="panel" />
       <GoldStream motif="necklace" />
       <PageHeader
@@ -185,7 +191,7 @@ export default async function PanelPage({
 
       {/* Aylık Tanı özeti — panelin üstünde; tam teşhis /analizler/tani. */}
       <Suspense
-        fallback={<SectionSkeleton h="h-[140px]" label="Satış tanısı…" />}
+        fallback={<SectionSkeleton h="h-[140px]" label="Aylık tanı…" />}
       >
         <DiagnosticSection orgId={m.org_id} />
       </Suspense>
@@ -292,7 +298,7 @@ export default async function PanelPage({
             />
           </CardContent>
         </Card>
-        <div className="motion-chain stagger grid grid-cols-2 content-start gap-4 sm:gap-5">
+        <div className="stagger grid grid-cols-2 content-start gap-5 sm:gap-6">
           <KpiCard
             label="Toplam Gelir"
             cents={d.revenueCents}
@@ -668,6 +674,9 @@ async function AlertsSection({ orgId }: { orgId: string }) {
   const alertCenter = await getAlertCenter(orgId);
   return (
     <>
+      {/* Görsel çıktı yok: o an açık uyarıları izler, kaybolanları (çözülen)
+          Görevler'e TAMAMLANMIŞ görev olarak yazar (şirket hafızası izi). */}
+      <AlertResolutionTracker alerts={alertCenter.alerts} />
       <AlertBoard3D data={alertCenter} />
       <AlertCenterCard data={alertCenter} />
     </>

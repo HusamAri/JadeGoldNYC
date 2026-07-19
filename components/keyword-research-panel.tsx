@@ -45,8 +45,11 @@ const POSITION_LABELS: Record<string, string> = {
 
 export async function KeywordResearchPanel({
   productId,
+  bare = false,
 }: {
   productId: string | null | undefined;
+  /** ListingPanel içindeyken true — çift Card çerçevesi olmasın. */
+  bare?: boolean;
 }) {
   if (!productId) return null;
   const [snap, meta, watchItems, matches, ourVariants] = await Promise.all([
@@ -129,9 +132,8 @@ export async function KeywordResearchPanel({
     watchItems.length === 0 && (snap?.results?.length ?? 0) > 0;
   const variantDefaultOpen = false;
 
-  return (
-    <Card>
-      <CardContent className="space-y-3">
+  const body = (
+    <div className="space-y-3">
         <div className="idx">
           <span>Rekabet · fiyat araştırması</span>
           <span className="idx-bar" />
@@ -423,7 +425,13 @@ export async function KeywordResearchPanel({
             currentCount={watchItems.length}
           />
         </div>
-      </CardContent>
+    </div>
+  );
+
+  if (bare) return body;
+  return (
+    <Card>
+      <CardContent className="space-y-3">{body}</CardContent>
     </Card>
   );
 }

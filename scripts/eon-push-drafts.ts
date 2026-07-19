@@ -18,6 +18,7 @@
  *   npx tsx scripts/eon-push-drafts.ts --gate ./eon-gate-report.json \
  *     [--only 01,04,13] [--qty 20] [--images-dir ./eon-covers] \
  *     [--taxonomy <id>] [--shipping-profile <id>] [--return-policy <id>]
+ *     [--readiness <id>]   (işlem profili — verilmezse çözülür/oluşturulur)
  *
  * GERÇEK Etsy kimliği gerekir (canlı ortam; .env.local: ETSY_API_KEY/SECRET +
  * SUPABASE_SERVICE_ROLE_KEY + SUPABASE_URL). İdempotent: etsy_listing_id dolu
@@ -87,10 +88,10 @@ function findTaxonomy(nodes: TaxNode[], name: string): TaxNode | null {
   return null;
 }
 
+// Etsy `instructions` alanı EN FAZLA 120 karakter (aşılırsa 400 too_long) — kısa tut.
 const PERSONALIZATION =
-  "Optional. Enter the engraving for the inside of the band: a date, initials, " +
-  "coordinates, or a short phrase (up to 30 characters). Script by default, " +
-  "write BLOCK if you prefer block letters. Leave blank for no engraving.";
+  "Optional inside-band engraving, up to 30 characters. " +
+  "Script by default; type BLOCK for block letters. Blank = none.";
 
 async function main() {
   const gate = JSON.parse(readFileSync(GATE, "utf8")) as { listings: GateRow[] };
@@ -148,6 +149,35 @@ async function main() {
     }
   }
 
+  // İşlem profili (readiness state) — Etsy 2025 migrasyonundan beri fiziksel
+  // listing'de ZORUNLU. --readiness <id> verilebilir; yoksa mevcut made_to_order
+  // (ya da ilk) tanım; hiç yoksa made-to-order 5–7 gün oluşturulur.
+  let readinessStateId = argVal("--readiness")
+    ? parseInt(argVal("--readiness")!, 10) : null;
+  if (!readinessStateId) {
+    try {
+      const rs = await client.get<{
+        results?: { readiness_state_id: number; readiness_state: string }[];
+      }>(etsyPaths.readinessStateDefinitions(shopId));
+      const defs = rs.results ?? [];
+      readinessStateId =
+        defs.find((d) => d.readiness_state === "made_to_order")
+          ?.readiness_state_id ?? defs[0]?.readiness_state_id ?? null;
+      if (!readinessStateId) {
+        const created = await client.requestForm<{ readiness_state_id: number }>(
+          "POST", etsyPaths.readinessStateDefinitions(shopId),
+          { readiness_state: "made_to_order", min_processing_time: 5, max_processing_time: 7 },
+        );
+        readinessStateId = created.readiness_state_id ?? null;
+        console.log(`İşlem profili oluşturuldu: ${readinessStateId} (made-to-order 5-7 gün)`);
+      } else {
+        console.log(`İşlem profili: ${readinessStateId}`);
+      }
+    } catch {
+      console.warn("İşlem profili okunamadı/oluşturulamadı — create 400 verebilir.");
+    }
+  }
+
   let created = 0;
   for (const g of pass) {
     // Panel kaydı + varyantlar
@@ -194,12 +224,19 @@ async function main() {
       taxonomy_id: taxonomyId,
       shipping_profile_id: shippingProfileId,
       return_policy_id: returnPolicyId ?? undefined,
+      readiness_state_id: readinessStateId ?? undefined,
+      // Paket ağırlık + yüzük kutusu boyutu (hesaplı profil şart koşar;
+      // free shipping'te fiyata gömülü → alıcıya yansımaz).
+      item_weight: 3,
+      item_weight_unit: "oz",
+      item_length: 4,
+      item_width: 4,
+      item_height: 2,
+      item_dimensions_unit: "in",
       tags: (prod.tags as string[]).join(","),
       materials: ((prod.materials as string[]) ?? []).join(","),
-      is_personalizable: "true",
-      personalization_is_required: "false",
-      personalization_char_count_max: 30,
-      personalization_instructions: PERSONALIZATION,
+      // legacy is_personalizable/personalization_* Etsy 2025'te create'te
+      // DEPRECATED — create sonrası ayrı personalization ucundan yazılır (aşağıda).
       should_auto_renew: "false",
       type: "physical",
     };
@@ -207,6 +244,29 @@ async function main() {
       "POST", etsyPaths.shopListings(shopId), createForm,
     );
     console.log(`✓ ${g.no}: taslak açıldı #${listing.listing_id} (state=${listing.state})`);
+
+    // 1b) Kişiselleştirme (iç gravür) — ayrı uç (2025 migrasyonu).
+    try {
+      await client.request(
+        "POST",
+        etsyPaths.listingPersonalization(shopId, listing.listing_id) +
+          "?supports_multiple_personalization_questions=true",
+        {
+          personalization_questions: [
+            {
+              question_type: "text_input",
+              question_text: "Inside band engraving (optional)",
+              instructions: PERSONALIZATION,
+              required: false,
+              max_allowed_characters: 30,
+            },
+          ],
+        },
+      );
+      console.log(`  kişiselleştirme (gravür) eklendi`);
+    } catch (e) {
+      console.warn(`  kişiselleştirme eklenemedi: ${e instanceof Error ? e.message : String(e)}`);
+    }
 
     // 2) Varyasyon envanteri: Width (513) × Ring Size (514), ikisi de fiyat taşır.
     const products = variants.map((v) => ({
@@ -219,10 +279,13 @@ async function main() {
         price: (v.price_cents ?? 0) / 100,
         quantity: v.quantity ?? QTY,
         is_enabled: true,
+        // Etsy 2025: her offering'in işlem profili olmalı.
+        readiness_state_id: readinessStateId ?? undefined,
       }],
     }));
-    await client.request("PUT", etsyPaths.listingInventory(listing.listing_id), {
+    await client.request("PUT", etsyPaths.listingInventory(listing.listing_id) + "?legacy=false", {
       products,
+      readiness_state_on_property: [],
       price_on_property: [513, 514],
       quantity_on_property: [],
       sku_on_property: [513, 514],

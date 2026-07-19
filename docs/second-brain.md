@@ -6,6 +6,33 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
 
 ## Süreç dersleri
 
+- **Dış API migrasyonunu hata mesajından adım adım çöz, tek listing'de kanıtla
+  (2026-07):** Etsy 2025 listing-create sözleşmesi 5 yerde değişti; her düzeltme
+  bir sonraki 400'ü açtı — (1) create'te `readiness_state_id` ZORUNLU, (2) hesaplı
+  kargo profili `item_weight`+boyut ister → sabit/manuel profil TERCİH + paket
+  ölçüsü, (3) legacy `is_personalizable/personalization_*` DEPRECATED → ayrı
+  `/listings/{id}/personalization` ucu, (4) envanter PUT her offering'de
+  `readiness_state_id` + `?legacy=false` + `readiness_state_on_property=[]`. Kural:
+  eğitim verisi bayat olabilir — dış API'yi CANLI hata metniyle sür; her create
+  alanı değişmiş olabilir; migration/tutorial dokümanını fetch'le teyit et; ilk
+  canlı gönderimi TEK listing'de dene (kısmi başarı orphan taslak bırakır: create
+  başarılı + envanter patlar → panelde etsy_listing_id yazılmaz → retry duplicate
+  açar; kullanıcı orphan'ları elle siler).
+- **Ücretsiz kargo = bedel fiyata gömülür (2026-07):** "free shipping" satıcının
+  postayı üstlenmesidir → her varyant fiyatına sabit kargo payı (\$10; yüzük hafif,
+  kargo ~sabit) eklenir. Ayrıca profil ABD'de ücretsiz olmalı yoksa alıcı çift öder
+  (fiyattaki pay + checkout postası). Metod: `SHIPPING_ALLOWANCE_CENTS` hem üretici
+  Python'da hem MASTER SQL fiyat formülünde (`*500 + 1000`) — ikisi ayrı yer, ikisini
+  de güncelle (yıldız ayrı UPDATE'le girmişti, master eksik kalmıştı; yakalandı).
+- **Büyük seed'i idempotent migration + tek uygulama ile bas, sadakati uzunlukla
+  doğrula (2026-07):** ~120KB metin MCP execute_sql'e elle parça parça yapıştırmak
+  token-israfı + hata riski. Doğru: kendi kendine yeten idempotent migration
+  (`0100`: staging IF NOT EXISTS, metin on-conflict upsert, master NOT EXISTS ile
+  zaten-canlı yıldızı atlar, cleanup) tek/az çağrıda uygula; SONRA her açıklamanın
+  DB uzunluğunu kaynak JSON ile karşılaştır (reprodüksiyon drift'i yakalar — 38/39
+  birebir, yıldız eski koşudandı → kanonik sürümle eşitlendi).
+
+
 - **Paralel iş kolu kontrolü (2026-07):** Bir özellik kurmadan ÖNCE `git fetch` +
   `origin/main`'i incele — aynı özellik paralel oturumda çoktan (hatta daha iyi)
   eklenmiş olabilir. Vaka: $/gram pazar motoru iki kez yazıldı; main'deki üstündü,
@@ -160,8 +187,36 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
   bucket'a yükler, idempotent upsert eder (org+listing+kind+media_id). Etsy auth
   yalnız canlı app'te çalıştığı için pull uygulama içinden tetiklenir; migration
   MCP ile önceden uygulanır ki preview'da hazır olsun.
+- **Teslimat repo'ya inmeden iş bitmiş sayılmaz (2026-07):** Scratchpad/Drive'a bırakılan
+  çıktı ekip için görünmezdir ve konteynerle ölür — kullanıcı haklı olarak "repo olarak
+  kimse bir şey yapmaz ki" dedi. Kural: uçtan uca işin karar/paket/runbook artefaktları
+  repo'da yaşar (`docs/<işkolu>/` + README runbook); Drive/scratchpad yalnız kopya/aracı.
 - **Dış silmeyi arşiv-önce + scope-check ile geçitle (2026-07):** Canlı Etsy
   listing'i silmek geri alınamaz; önce medya `listing_media`'ya arşivlenmemişse
   silme REDDEDİLİR (kayıp önlenir), yalnız owner/admin, iki adımlı UI onayı ve
   `listings_d` yoksa Etsy 403 → yeniden-bağlan sinyali. Panel kaydı SİLİNMEZ:
   `products.etsy_deleted_at` işaretlenir (geriye dönük iz korunur), 404 idempotent.
+- **Gömülü prose regex ile temizlenmez, yeniden yazılır (2026-07):** 39 açıklamadan
+  "iki kalınlık" dilini sökmek gerekti; kalınlık cümleleri (131 varyant) genişlik
+  rehberliğiyle iç içe örülüydü → regex düzyazıyı bozardı. Çözüm: LLM ile yeniden
+  yaz, sonra KOD-tabanlı doğrulama koş (leak sayacı SQL: `ilike '%2.0mm%'`, `%two
+  thick%`, `%whole US%` = 0; `%whole and half%` = 39). Ders: yapısal token (SKU,
+  property) regex'le; anlam taşıyan prose yeniden-yazımla değişir; ikisini de canlı
+  sayaçla doğrula, "kod doğru görünüyor" ile bitirme.
+- **Geri-dönüşü zor katalog transform'unu üretici+migration+canlı-sayaç üçlüsüyle bitir (2026-07):**
+  EON v2→v3 (yarım beden ekle, 2.0mm kaldır) DB'ye MCP ile parçalı uygulandı;
+  ama iş "repo'ya inmeden bitmez" (önceki ders). Kural: (1) saf üretici
+  (`gen_catalog_v3.py`, yalnız gram tablosu okur, iç assert'lerle 10.725/275/SKU
+  tekilliği) ÜRETİMİ tek kaynakta tutar; (2) `0101` migration canlıya uygulanan
+  SQL'in AYNISINI taşır (preview provizyonu + kayıt) — Bölüm A varyant transform,
+  Bölüm B 39 metin UPDATE; (3) üretici çıktısı canlı DB ile birebir çapraz-doğrulanır
+  (örneklem gram/fiyat + global min/max = DB). Ek: iki metin batch'ini `cat`'lerken
+  dosya sonu newline'ı yoksa son+ilk statement tek satıra yapışır (`grep -c '^update'`
+  39 yerine 38 verdi) → araya `printf '\n'` koy, sayımla doğrula.
+- **"Breakeven üstü" ≠ "kârlı" — marjı ayrı kanıtla (2026-07):** Kullanıcı "ama kârla
+  satıyoruz değil mi?" diye sordu; breakeven kontrolü yalnız melt tabanını (ham metal
+  + %10) geçtiğini gösterir. Gerçek kâr = satış − HAM altın maliyeti (breakeven×0.90)
+  − kargo payı; ayrı SQL ile hesapla (min/ort/max marj + zararına satan sayısı = 0).
+  Ayrıca dürüst ol: bu marj metal+kargo üstüdür, Etsy ücreti (~%9-10) + işçilik
+  düşülmemiştir — "kârlı" derken kapsamı söyle. Vaka: min %24.9 (yıldız, dar genişlik),
+  ort %35.7; 0 zararına.

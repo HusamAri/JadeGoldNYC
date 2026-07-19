@@ -25,9 +25,10 @@ import { RepriceRuleCard } from "@/components/listing/reprice-rule-card";
 import { AdsSummaryCard } from "@/components/listing/ads-summary-card";
 import { ListingGapsCard } from "@/components/listing/listing-gaps-card";
 import { ListingFieldsForm } from "@/components/listing/listing-fields-form";
+import { EtsyCopyCard, type EtsyCopyField } from "@/components/listing/etsy-copy-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { ListingPanel } from "@/components/listing/listing-panel";
 
 export const metadata = { title: "Listing Detayı" };
 
@@ -45,6 +46,20 @@ function decodeEntities(s: string): string {
     .replace(/&amp;/g, "&");
 }
 
+/** Açıklama sonundaki dahili not bloğunu söker — scripts/eon-push-drafts.ts
+ *  stripInternalTrailer ile BİREBİR aynı desen (kopyalanan metin = Etsy'ye
+ *  giden metin). Künye içeriği ayrıca kurulum notu olarak gösterilir. */
+function splitInternalTrailer(desc: string): {
+  clean: string;
+  note: string | null;
+} {
+  const m = desc.match(/\n*---\n\[EON \d\d · ([\s\S]*)\]$/m);
+  return {
+    clean: desc.replace(/\n*---\n\[EON [\s\S]*\]$/m, "").trimEnd(),
+    note: m ? m[1] : null,
+  };
+}
+
 const STATUS_LABELS: Record<
   string,
   { label: string; variant: "success" | "secondary" | "warning" | "outline" }
@@ -56,24 +71,10 @@ const STATUS_LABELS: Record<
   expired: { label: "Süresi doldu", variant: "outline" },
 };
 
-/** Bölüm indeks başlığı — Amuletta .idx dili ("Listing / 0N · Ad"). */
-function SectionIdx({ n, name, tail }: { n: string; name: string; tail?: string }) {
-  return (
-    <div aria-hidden className="idx">
-      <span>
-        Listing / {n} · {name}
-      </span>
-      <span className="idx-bar" />
-      <span className="idx-ln" />
-      {tail && <span className="normal-case">{tail}</span>}
-    </div>
-  );
-}
-
 /**
- * Listing Komuta Merkezi — tek listing'in tüm detayları tek sayfada:
- * 01 canlı görseller · 02 künye + boşluklar · 03 varyant editörü ·
- * 04 rakip fiyat eşleşmeleri · 05 reklam & performans.
+ * Listing Komuta Merkezi — tek listing'in tüm detayları tek sayfada.
+ * Uzun bölümler ListingPanel (<details>) ile katlanır; varsayılan açık:
+ * künye + varyant toplu fiyat + rakip benzerler. Geri kalan scroll yükü değil.
  */
 export default async function ListingDetayPage({
   params,
@@ -163,60 +164,53 @@ export default async function ListingDetayPage({
         }
       />
 
-      {/* 01 · Görseller — yan yana yatay şerit. */}
-      <section id="gorseller" className="scroll-mt-24">
-        <Card>
-          <CardContent className="space-y-4">
-            <SectionIdx
-              n="01"
-              name="Görseller"
-              tail={
-                images.length > 0
-                  ? `${images.length} canlı görsel`
-                  : product.num_images
-                    ? `Etsy'de ${product.num_images} görsel`
-                    : undefined
-              }
-            />
-            <ImageStrip
-              images={images}
-              fallbackUrl={product.image_url}
-              title={decodeEntities(product.title)}
-            />
-          </CardContent>
-        </Card>
-      </section>
+      {/* 01 · Görseller — kapalı; üstte zaten thumbnail/vitrin var. */}
+      <ListingPanel
+        id="gorseller"
+        n="01"
+        name="Görseller"
+        defaultOpen={false}
+        tail={
+          images.length > 0
+            ? `${images.length} canlı görsel`
+            : product.num_images
+              ? `Etsy'de ${product.num_images} görsel`
+              : undefined
+        }
+      >
+        <ImageStrip
+          images={images}
+          fallbackUrl={product.image_url}
+          title={decodeEntities(product.title)}
+        />
+      </ListingPanel>
 
-      {/* 01B · Görsel yönetimi — yalnız EON: Drive/yükleme + çıkar + sırala. */}
       {eon && (
-        <section id="gorsel-yonetimi" className="scroll-mt-24">
-          <Card>
-            <CardContent className="space-y-4">
-              <SectionIdx
-                n="01B"
-                name="Görsel Yönetimi"
-                tail={
-                  managedImages.length > 0
-                    ? `EON · ${managedImages.length} görsel`
-                    : "EON · Drive/yükleme"
-                }
-              />
-              <ListingImageManager
-                productId={product.id}
-                images={managedImages}
-              />
-            </CardContent>
-          </Card>
-        </section>
+        <ListingPanel
+          id="gorsel-yonetimi"
+          n="01B"
+          name="Görsel Yönetimi"
+          defaultOpen={false}
+          tail={
+            managedImages.length > 0
+              ? `EON · ${managedImages.length} görsel`
+              : "EON · Drive/yükleme"
+          }
+        >
+          <ListingImageManager
+            productId={product.id}
+            images={managedImages}
+          />
+        </ListingPanel>
       )}
 
-      {/* 02 · Künye & boşluklar. */}
-      <section id="kunye" className="grid gap-6 scroll-mt-24 lg:grid-cols-3">
-        <Card className="lg:col-span-2">
-          <CardContent className="space-y-4">
-            <SectionIdx n="02" name="Künye & boşluklar" />
+      {/* 02 · Künye — günlük giriş noktası, açık. */}
+      <div id="kunye" className="grid gap-4 scroll-mt-24 lg:grid-cols-3">
+        <div className="lg:col-span-2">
+          <ListingPanel n="02" name="Künye & boşluklar" defaultOpen>
             <ListingFieldsForm
               productId={product.id}
+              alreadyOnEtsy={product.etsy_listing_id != null}
               initial={{
                 title: product.title,
                 description: product.description,
@@ -231,91 +225,126 @@ export default async function ListingDetayPage({
               purchasePrice10kCents={goldSettings.purchase_price_10k_cents}
               currency={product.currency}
             />
-          </CardContent>
-        </Card>
+          </ListingPanel>
+        </div>
         <ListingGapsCard gaps={gaps} />
-      </section>
+      </div>
 
-      {/* 03 · Varyantlar — inline editör + otomatik dolum. */}
-      <section id="varyantlar" className="scroll-mt-24">
-        <Card>
-          <CardContent className="space-y-4">
-            <SectionIdx
-              n="03"
-              name="Varyantlar"
-              tail={
-                variants.length > 0
-                  ? `${variants.length} varyant${
-                      gaps.missing_weights > 0
-                        ? ` · ${gaps.missing_weights} gram eksik`
-                        : ""
-                    }`
-                  : gaps.no_weight
-                    ? "Varyantsız · gram eksik"
-                    : product.weight_grams != null
-                      ? `Varyantsız · ${product.weight_grams} g`
-                      : undefined
-              }
-            />
-            <VariantEditor
-              productId={product.id}
-              variants={variants}
-              currency={product.currency}
-              productWeightGrams={product.weight_grams}
-              productTitle={product.title}
-              productTags={product.tags}
-              productMaterials={product.materials}
-              purchasePrice14kCents={goldSettings.purchase_price_14k_cents}
-              purchasePrice10kCents={goldSettings.purchase_price_10k_cents}
-            />
-          </CardContent>
-        </Card>
-      </section>
+      <ListingPanel id="kopyala" n="03" name="Etsy'ye kopyala" defaultOpen={false}>
+        {(() => {
+          const { clean, note } = splitInternalTrailer(
+            product.description ?? "",
+          );
+          const fields: EtsyCopyField[] = [
+            {
+              label: "Başlık",
+              value: decodeEntities(product.title),
+              hint: `${decodeEntities(product.title).length}/140 karakter`,
+            },
+            {
+              label: "Etiketler",
+              value: (product.tags ?? []).join(", "),
+              hint: `${product.tags?.length ?? 0}/13 · virgülle yapıştır`,
+            },
+            {
+              label: "Malzemeler",
+              value: (product.materials ?? []).join(", "),
+            },
+            {
+              label: "Açıklama",
+              value: clean,
+              multiline: true,
+              hint: note ? "iç not temizlendi" : undefined,
+            },
+          ].filter((f) => f.value.length > 0);
+          return <EtsyCopyCard fields={fields} setupNote={note} />;
+        })()}
+      </ListingPanel>
 
-      {/* 04 · Rakip fiyat eşleşmeleri — hazır panel AYNEN (kendi kartı var). */}
-      <section id="rakip" className="space-y-4 scroll-mt-24">
-        <SectionIdx n="04" name="Rakip fiyat eşleşmeleri" />
-        {marketPosition && (
-          <MarketPositionCard
-            position={marketPosition}
-            currency={product.currency}
-          />
-        )}
-        {/* Varyant matrisi — genişlik × beden (fiyat + gram); varyantsız
-            listing'de kendini gizler (null döner). */}
-        <VariantMatrix productId={product.id} />
-        <KeywordResearchPanel productId={product.id} />
-        {/* Otomatik fiyat kuralı — rakip çapasına bağlı reprice motoru
-            (kapalı/öneri/otomatik); araştırma panelinin hemen altında, çünkü
-            çapası buradaki araştırma kaydıdır. */}
-        <RepriceRuleCard
+      {/* 04 · Varyantlar — toplu fiyat açık; satır satır içeride katlı. */}
+      <ListingPanel
+        id="varyantlar"
+        n="04"
+        name="Varyantlar"
+        defaultOpen
+        tail={
+          variants.length > 0
+            ? `${variants.length} varyant${
+                gaps.missing_weights > 0
+                  ? ` · ${gaps.missing_weights} gram eksik`
+                  : ""
+              }`
+            : gaps.no_weight
+              ? "Varyantsız · gram eksik"
+              : product.weight_grams != null
+                ? `Varyantsız · ${product.weight_grams} g`
+                : undefined
+        }
+      >
+        <VariantEditor
           productId={product.id}
+          variants={variants}
           currency={product.currency}
-          hasVariations={variants.length > 1}
+          productWeightGrams={product.weight_grams}
+          productTitle={product.title}
+          productTags={product.tags}
+          productMaterials={product.materials}
+          purchasePrice14kCents={goldSettings.purchase_price_14k_cents}
+          purchasePrice10kCents={goldSettings.purchase_price_10k_cents}
         />
-      </section>
+      </ListingPanel>
 
-      {/* 05 · Reklam & performans. */}
-      <section id="reklam" className="scroll-mt-24">
-        <Card>
-          <CardContent className="space-y-4">
-            <SectionIdx
-              n="05"
-              name="Reklam & performans"
-              tail={
-                ads.periods.length > 0
-                  ? `${ads.periods.length} dönem kaydı`
-                  : undefined
-              }
-            />
-            <AdsSummaryCard
-              ads={ads}
-              lifetimeSales={lifetimeSales}
+      {/* 05 · Rakip — benzer listingler birincil; matris/reprice katlı. */}
+      <ListingPanel
+        id="rakip"
+        n="05"
+        name="Rakip & benzerler"
+        defaultOpen
+        tail="benzer kartlar · elle link"
+      >
+        <div className="space-y-4">
+          {marketPosition && (
+            <MarketPositionCard
+              position={marketPosition}
               currency={product.currency}
             />
-          </CardContent>
-        </Card>
-      </section>
+          )}
+          <KeywordResearchPanel productId={product.id} bare />
+          <details className="group/mx border-border/60 rounded-[1.25rem] border">
+            <summary className="text-muted-foreground flex cursor-pointer list-none items-center gap-2 px-4 py-3 text-sm select-none [&::-webkit-details-marker]:hidden">
+              <span className="font-mono text-[10px] tracking-[0.14em] uppercase">
+                Varyant matrisi & otomatik fiyat
+              </span>
+            </summary>
+            <div className="space-y-4 border-t px-4 py-4">
+              <VariantMatrix productId={product.id} />
+              <RepriceRuleCard
+                productId={product.id}
+                currency={product.currency}
+                hasVariations={variants.length > 1}
+              />
+            </div>
+          </details>
+        </div>
+      </ListingPanel>
+
+      <ListingPanel
+        id="reklam"
+        n="06"
+        name="Reklam & performans"
+        defaultOpen={false}
+        tail={
+          ads.periods.length > 0
+            ? `${ads.periods.length} dönem kaydı`
+            : undefined
+        }
+      >
+        <AdsSummaryCard
+          ads={ads}
+          lifetimeSales={lifetimeSales}
+          currency={product.currency}
+        />
+      </ListingPanel>
     </div>
   );
 }

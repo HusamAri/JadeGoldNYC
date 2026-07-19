@@ -25,7 +25,7 @@ export default async function AnahtarKelimePage() {
   ]);
 
   return (
-    <div className="space-y-6 pb-20">
+    <div className="page-stack pb-24">
       <PageHeader
         title="Anahtar Kelime Araştırma"
         eyebrow="SEO · talep"

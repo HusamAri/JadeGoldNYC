@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { SendToEtsyButton } from "@/components/listing/send-to-etsy-button";
 
 /** Boşluk kartının odaklanabilmesi için alan id'leri (tek kaynak). */
 export const LISTING_FIELD_IDS = {
@@ -62,6 +63,7 @@ const MISSING_RING =
 export function ListingFieldsForm({
   productId,
   initial,
+  alreadyOnEtsy = false,
   weightGrams = null,
   purchasePrice14kCents,
   purchasePrice10kCents,
@@ -69,6 +71,8 @@ export function ListingFieldsForm({
 }: {
   productId: string;
   initial: ListingFieldsInitial;
+  /** Listing zaten Etsy'de mi? "Etsy'e gönder" yalnız taslakta görünür. */
+  alreadyOnEtsy?: boolean;
   /** Tek-SKU / ürün seviye gram — maliyet tahmini için. */
   weightGrams?: number | null;
   purchasePrice14kCents?: number;
@@ -296,10 +300,13 @@ export function ListingFieldsForm({
         <p className="text-muted-foreground text-xs">
           Amber işaretli alanlar eksik — doldurup kaydedin.
         </p>
-        <Button type="button" onClick={save} disabled={saving}>
-          {saving ? <Loader2 className="size-4 animate-spin" /> : <Save />}
-          Künyeyi kaydet
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button type="button" onClick={save} disabled={saving}>
+            {saving ? <Loader2 className="size-4 animate-spin" /> : <Save />}
+            Künyeyi kaydet
+          </Button>
+          {!alreadyOnEtsy && <SendToEtsyButton productId={productId} />}
+        </div>
       </div>
     </div>
   );

@@ -9,6 +9,7 @@ import {
   Package,
   SearchX,
   Wand2,
+  Lightbulb,
 } from "lucide-react";
 import {
   Gem,
@@ -55,9 +56,6 @@ const LISTING_STATUSES: {
   { value: "inactive", label: "Pasif", variant: "outline" },
   { value: "sold_out", label: "Tükendi", variant: "warning" },
   { value: "expired", label: "Süresi doldu", variant: "destructive" },
-  // Panel yaşam-döngüsü filtresi (Etsy durumu değil): arşivlenenler
-  // varsayılan listeden gizlidir, yalnız bu seçenekle görünür.
-  { value: "arsiv", label: "Arşiv (panel)", variant: "outline" },
 ];
 
 function statusMeta(status: string | null) {
@@ -91,11 +89,11 @@ export default async function ListelerPage({
   const filtered = Boolean(search || status);
 
   return (
-    <div className="relative z-0 space-y-6 pb-28">
+    <div className="page-stack relative z-0 pb-32">
       <GoldStream motif="ring" />
       <PageHeader
         title="Listeler"
-        description="Tüm Etsy listingleri tek sayfada — varyantlar, rakip fiyatlar, reklam performansı ve eksik alanlar listing detayında"
+        description="Etsy'de var olan listing'ler (Etsy'nin aynası) — varyantlar, rakip fiyatlar, reklam performansı ve eksik alanlar listing detayında. Panel taslakları ve arşiv: Listing Önerileri."
         action={
           <>
             <Button asChild variant="outline">
@@ -214,15 +212,23 @@ export default async function ListelerPage({
             ) : (
               <EmptyState
                 icon={Package}
-                title="Listing yok"
-                description="Henüz listing bulunamadı. Etsy senkronu ayarlar sayfasından çalıştırın veya 'Yeni Listing' ile taslak açın."
+                title="Etsy'de listing yok"
+                description="Bu ekran yalnız Etsy'de var olanları gösterir. Etsy senkronunu Ayarlar'dan çalıştırın; panelde hazırladığınız taslaklar 'Listing Önerileri' ekranındadır."
                 action={
-                  <Button asChild>
-                    <Link href="/tasarimlar/listing/yeni">
-                      <Plus />
-                      Yeni Listing
-                    </Link>
-                  </Button>
+                  <div className="flex flex-wrap justify-center gap-2">
+                    <Button asChild variant="outline">
+                      <Link href="/listing-onerileri">
+                        <Lightbulb />
+                        Listing Önerileri
+                      </Link>
+                    </Button>
+                    <Button asChild>
+                      <Link href="/tasarimlar/listing/yeni">
+                        <Plus />
+                        Yeni Taslak
+                      </Link>
+                    </Button>
+                  </div>
                 }
               />
             )
@@ -272,11 +278,12 @@ export default async function ListelerPage({
                         >
                           {r.title}
                         </Link>
-                        {r.etsy_listing_id != null && (
-                          <span className="text-muted-foreground font-mono text-xs tabular-nums">
-                            #{r.etsy_listing_id}
-                          </span>
-                        )}
+                        <div className="text-muted-foreground mt-0.5 flex flex-wrap items-center gap-x-2 font-mono text-[11px] tracking-wide">
+                          <span>{r.sku}</span>
+                          {r.etsy_listing_id != null ? (
+                            <span className="tabular-nums">#{r.etsy_listing_id}</span>
+                          ) : null}
+                        </div>
                       </TableCell>
                       <TableCell>
                         <Badge variant={sm.variant}>{sm.label}</Badge>

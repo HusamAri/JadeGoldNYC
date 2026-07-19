@@ -16,6 +16,11 @@
  * ayrı tablolar açar; eşleştirme bölüm bilgisine saygı duyar.
  */
 
+import {
+  asEtsyProperties,
+  type RawVariantProperties,
+} from "@/lib/variant-properties";
+
 // ── Tipler ────────────────────────────────────────────────────────────────
 
 export interface DescWeightEntry {
@@ -315,9 +320,11 @@ interface PropertyValue {
   property_name?: string | null;
 }
 
-/** Varyantın property değerlerinden mm/inç/stil/beden bilgisi çıkarır. */
+/** Varyantın property değerlerinden mm/inç/stil/beden bilgisi çıkarır.
+ *  properties Etsy dizisi VEYA EON düz nesnesi olabilir; asEtsyProperties ile
+ *  indirgenir (nesnede `for…of` iterable-değil hatası verirdi). */
 export function extractVariantSize(
-  properties: PropertyValue[] | null | undefined,
+  properties: PropertyValue[] | RawVariantProperties,
 ): VariantSizeInfo {
   const info: VariantSizeInfo = {
     mm: [],
@@ -327,7 +334,7 @@ export function extractVariantSize(
     bareNums: [],
     pendantOnly: false,
   };
-  for (const p of properties ?? []) {
+  for (const p of asEtsyProperties(properties as RawVariantProperties)) {
     const scale = (p.scale_name ?? "").toLowerCase();
     const pname = (p.property_name ?? "").toLowerCase();
     for (const vRaw of p.values ?? []) {

@@ -1,4 +1,4 @@
--- 0102 — Rakip görselleri + manuel varyant eşleştirme
+-- 0107 — Rakip görselleri + manuel varyant eşleştirme
 -- ------------------------------------------------------------------
 -- 1) competitor_watch.image_url: kapak küçük resmi (Etsy CDN).
 -- 2) competitor_variant_match: bizim SKU ↔ rakip listing/teklif eşlemesi

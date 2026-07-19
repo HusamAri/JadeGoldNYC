@@ -58,7 +58,7 @@ export default async function TasarimDuzenlePage({
   };
 
   return (
-    <div className="space-y-8">
+    <div className="page-stack">
       <PageHeader title="Tasarımı Düzenle" description={design.name} />
       <DesignForm
         mode="edit"

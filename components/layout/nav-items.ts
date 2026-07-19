@@ -18,7 +18,10 @@ import {
   TextSearch,
   Tags,
   Archive,
+  Lightbulb,
+  Compass,
   Stethoscope,
+  Share2,
   type LucideIcon,
 } from "lucide-react";
 
@@ -46,6 +49,7 @@ export const NAV_GROUPS: NavGroup[] = [
     items: [
       { href: "/panel", label: "Panel", icon: LayoutDashboard },
       { href: "/gorevler", label: "Görevler", icon: ListChecks },
+      { href: "/rehber", label: "Kullanım Rehberi", icon: Compass },
     ],
   },
   {
@@ -72,6 +76,7 @@ export const NAV_GROUPS: NavGroup[] = [
     label: "Ürün & Stüdyo",
     items: [
       { href: "/tasarimlar", label: "Listeler", icon: Palette },
+      { href: "/listing-onerileri", label: "Listing Önerileri", icon: Lightbulb },
       { href: "/anahtar-kelime", label: "Anahtar Kelime", icon: TextSearch },
       { href: "/seo-yardimcisi", label: "SEO Yardımcısı", icon: TextSearch },
       { href: "/seo-etiketleri", label: "SEO Etiketleri", icon: Tags },
@@ -80,6 +85,13 @@ export const NAV_GROUPS: NavGroup[] = [
       { href: "/gorsel-uretim", label: "Görsel Üretim", icon: Sparkles, jadeGoldOnly: true },
       { href: "/arsiv", label: "Listing Arşivi", icon: Archive },
       { href: "/stok", label: "Stok", icon: Boxes },
+    ],
+  },
+  {
+    label: "Pazarlama",
+    items: [
+      // Tüm şirketlerde aynı özellik; içerik org'a özel (EON seed / Jade boş).
+      { href: "/sosyal", label: "Sosyal Medya", icon: Share2 },
     ],
   },
   {

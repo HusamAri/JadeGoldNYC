@@ -1,0 +1,320 @@
+{
+ "generated": "2026-07-16",
+ "gate_version": 2,
+ "listings": [
+  {
+   "no": "01",
+   "family": "Dome14K",
+   "color": "Yellow",
+   "title": "14K Yellow Gold Dome Comfort Fit Wedding Band, Personalized Engraved Heirloom Ring, 3-7mm Solid Gold",
+   "status": "PASS",
+   "fail_reasons": [],
+   "hold_reasons": [],
+   "warnings": [
+    "WIDTH+SIZE guide master Drive'a kullanıcı yükleyecek (tek-master kararı)",
+    "KvsJewelery/VibrantStone başlık/fiyatı DB'de yok — canlı çekim (cron veya push sonrası ilk fiyat yakalama) ile doğrulanmalı"
+   ],
+   "anchor_usd": 555,
+   "hero": "eon-hero-v2-dome-14K.jpg",
+   "partner_photos": 17,
+   "videos": 5,
+   "approved": "ONAYLANDI 2026-07-16"
+  },
+  {
+   "no": "02",
+   "family": "Dome14K",
+   "color": "White",
+   "title": "14K White Gold Dome Comfort Fit Wedding Band, Personalized Engraved Heirloom Ring, 3-7mm Solid Gold",
+   "status": "PASS",
+   "fail_reasons": [],
+   "hold_reasons": [],
+   "warnings": [
+    "WIDTH+SIZE guide master Drive'a kullanıcı yükleyecek (tek-master kararı)",
+    "KvsJewelery/VibrantStone başlık/fiyatı DB'de yok — canlı çekim (cron veya push sonrası ilk fiyat yakalama) ile doğrulanmalı"
+   ],
+   "anchor_usd": 555,
+   "hero": "eon-hero-v2-dome-white-14k.jpg",
+   "partner_photos": 17,
+   "videos": 5,
+   "approved": "ONAYLANDI 2026-07-16"
+  },
+  {
+   "no": "03",
+   "family": "Dome14K",
+   "color": "Rose",
+   "title": "14K Rose Gold Dome Comfort Fit Wedding Band, Personalized Engraved Heirloom Ring, 3-7mm Solid Gold",
+   "status": "PASS",
+   "fail_reasons": [],
+   "hold_reasons": [],
+   "warnings": [
+    "WIDTH+SIZE guide master Drive'a kullanıcı yükleyecek (tek-master kararı)",
+    "KvsJewelery/VibrantStone başlık/fiyatı DB'de yok — canlı çekim (cron veya push sonrası ilk fiyat yakalama) ile doğrulanmalı"
+   ],
+   "anchor_usd": 555,
+   "hero": "eon-hero-v2-dome-rose-14k.jpg",
+   "partner_photos": 17,
+   "videos": 5,
+   "approved": "ONAYLANDI 2026-07-16"
+  },
+  {
+   "no": "04",
+   "family": "Dome10K",
+   "color": "Yellow",
+   "title": "10K Yellow Gold Dome Comfort Fit Wedding Band, Personalized Engraved Ring, Affordable Solid Gold Band",
+   "status": "PASS",
+   "fail_reasons": [],
+   "hold_reasons": [],
+   "warnings": [
+    "WIDTH+SIZE guide master Drive'a kullanıcı yükleyecek (tek-master kararı)",
+    "KvsJewelery/VibrantStone başlık/fiyatı DB'de yok — canlı çekim (cron veya push sonrası ilk fiyat yakalama) ile doğrulanmalı"
+   ],
+   "anchor_usd": 380,
+   "hero": "eon-hero-v2-dome-10K.jpg",
+   "partner_photos": 17,
+   "videos": 5,
+   "approved": "ONAYLANDI 2026-07-16"
+  },
+  {
+   "no": "05",
+   "family": "Dome10K",
+   "color": "White",
+   "title": "10K White Gold Dome Comfort Fit Wedding Band, Personalized Engraved Ring, Affordable Solid Gold Band",
+   "status": "PASS",
+   "fail_reasons": [],
+   "hold_reasons": [],
+   "warnings": [
+    "WIDTH+SIZE guide master Drive'a kullanıcı yükleyecek (tek-master kararı)",
+    "KvsJewelery/VibrantStone başlık/fiyatı DB'de yok — canlı çekim (cron veya push sonrası ilk fiyat yakalama) ile doğrulanmalı"
+   ],
+   "anchor_usd": 380,
+   "hero": "eon-hero-v2-dome-white-10k.jpg",
+   "partner_photos": 17,
+   "videos": 5,
+   "approved": "ONAYLANDI 2026-07-16"
+  },
+  {
+   "no": "06",
+   "family": "Dome10K",
+   "color": "Rose",
+   "title": "10K Rose Gold Dome Comfort Fit Wedding Band, Personalized Engraved Ring, Affordable Solid Gold Band",
+   "status": "PASS",
+   "fail_reasons": [],
+   "hold_reasons": [],
+   "warnings": [
+    "WIDTH+SIZE guide master Drive'a kullanıcı yükleyecek (tek-master kararı)",
+    "KvsJewelery/VibrantStone başlık/fiyatı DB'de yok — canlı çekim (cron veya push sonrası ilk fiyat yakalama) ile doğrulanmalı"
+   ],
+   "anchor_usd": 380,
+   "hero": "eon-hero-v2-dome-rose-10k.jpg",
+   "partner_photos": 17,
+   "videos": 5,
+   "approved": "ONAYLANDI 2026-07-16"
+  },
+  {
+   "no": "07",
+   "family": "Flat14K",
+   "color": "Yellow",
+   "title": "14K Yellow Gold Flat Wedding Band, Personalized Engraved Modern Ring, 3-7mm Solid Gold Band Her Him",
+   "status": "HOLD",
+   "fail_reasons": [],
+   "hold_reasons": [
+    "HOLD: gram tablosu TAHMİN faktörlü (Flat) — partner gram teyidi yayın öncesi zorunlu (nihai doküman #1)"
+   ],
+   "warnings": [
+    "WIDTH+SIZE guide master Drive'a kullanıcı yükleyecek (tek-master kararı)",
+    "KvsJewelery/VibrantStone başlık/fiyatı DB'de yok — canlı çekim (cron veya push sonrası ilk fiyat yakalama) ile doğrulanmalı"
+   ],
+   "anchor_usd": 625,
+   "hero": "eon-hero-v2-flat-14K.jpg",
+   "partner_photos": 12,
+   "videos": 3
+  },
+  {
+   "no": "08",
+   "family": "Flat14K",
+   "color": "White",
+   "title": "14K White Gold Flat Wedding Band, Personalized Engraved Modern Ring, 3-7mm Solid Gold Band Her Him",
+   "status": "HOLD",
+   "fail_reasons": [],
+   "hold_reasons": [
+    "HOLD: gram tablosu TAHMİN faktörlü (Flat) — partner gram teyidi yayın öncesi zorunlu (nihai doküman #1)"
+   ],
+   "warnings": [
+    "WIDTH+SIZE guide master Drive'a kullanıcı yükleyecek (tek-master kararı)",
+    "KvsJewelery/VibrantStone başlık/fiyatı DB'de yok — canlı çekim (cron veya push sonrası ilk fiyat yakalama) ile doğrulanmalı"
+   ],
+   "anchor_usd": 625,
+   "hero": "eon-hero-v2-flat-white-14k.jpg",
+   "partner_photos": 12,
+   "videos": 3
+  },
+  {
+   "no": "09",
+   "family": "Flat14K",
+   "color": "Rose",
+   "title": "14K Rose Gold Flat Wedding Band, Personalized Engraved Modern Ring, 3-7mm Solid Gold Band Her Him",
+   "status": "HOLD",
+   "fail_reasons": [],
+   "hold_reasons": [
+    "HOLD: gram tablosu TAHMİN faktörlü (Flat) — partner gram teyidi yayın öncesi zorunlu (nihai doküman #1)"
+   ],
+   "warnings": [
+    "WIDTH+SIZE guide master Drive'a kullanıcı yükleyecek (tek-master kararı)",
+    "KvsJewelery/VibrantStone başlık/fiyatı DB'de yok — canlı çekim (cron veya push sonrası ilk fiyat yakalama) ile doğrulanmalı"
+   ],
+   "anchor_usd": 625,
+   "hero": "eon-hero-v2-flat-rose-14k.jpg",
+   "partner_photos": 12,
+   "videos": 3
+  },
+  {
+   "no": "10",
+   "family": "Beveled14K",
+   "color": "Yellow",
+   "title": "14K Yellow Gold Beveled Wedding Band 6mm 8mm, Personalized Wide Statement Ring, Solid Gold",
+   "status": "HOLD",
+   "fail_reasons": [],
+   "hold_reasons": [
+    "HOLD: gram tablosu TAHMİN faktörlü (Beveled) — partner gram teyidi yayın öncesi zorunlu (nihai doküman #1)"
+   ],
+   "warnings": [
+    "WIDTH+SIZE guide master Drive'a kullanıcı yükleyecek (tek-master kararı)",
+    "KvsJewelery/VibrantStone başlık/fiyatı DB'de yok — canlı çekim (cron veya push sonrası ilk fiyat yakalama) ile doğrulanmalı"
+   ],
+   "anchor_usd": 1105,
+   "hero": "eon-hero-v2-beveled-14K.jpg",
+   "partner_photos": 24,
+   "videos": 3
+  },
+  {
+   "no": "11",
+   "family": "Beveled14K",
+   "color": "White",
+   "title": "14K White Gold Beveled Wedding Band 6mm, Personalized Wide Statement Ring, Solid Gold",
+   "status": "HOLD",
+   "fail_reasons": [],
+   "hold_reasons": [
+    "HOLD: gram tablosu TAHMİN faktörlü (Beveled) — partner gram teyidi yayın öncesi zorunlu (nihai doküman #1)"
+   ],
+   "warnings": [
+    "WIDTH+SIZE guide master Drive'a kullanıcı yükleyecek (tek-master kararı)",
+    "KvsJewelery/VibrantStone başlık/fiyatı DB'de yok — canlı çekim (cron veya push sonrası ilk fiyat yakalama) ile doğrulanmalı"
+   ],
+   "anchor_usd": 1105,
+   "hero": "eon-hero-v2-beveled-white-14k.jpg",
+   "partner_photos": 24,
+   "videos": 3
+  },
+  {
+   "no": "12",
+   "family": "Beveled14K",
+   "color": "Rose",
+   "title": "14K Rose Gold Beveled Wedding Band 6mm, Personalized Wide Statement Ring, Solid Gold",
+   "status": "HOLD",
+   "fail_reasons": [],
+   "hold_reasons": [
+    "HOLD: gram tablosu TAHMİN faktörlü (Beveled) — partner gram teyidi yayın öncesi zorunlu (nihai doküman #1)"
+   ],
+   "warnings": [
+    "WIDTH+SIZE guide master Drive'a kullanıcı yükleyecek (tek-master kararı)",
+    "KvsJewelery/VibrantStone başlık/fiyatı DB'de yok — canlı çekim (cron veya push sonrası ilk fiyat yakalama) ile doğrulanmalı"
+   ],
+   "anchor_usd": 1105,
+   "hero": "eon-hero-v2-beveled-rose-14k.jpg",
+   "partner_photos": 24,
+   "videos": 3
+  },
+  {
+   "no": "13",
+   "family": "Milgrain14K",
+   "color": "Yellow",
+   "title": "14K Yellow Gold Milgrain Wedding Band 2mm, Personalized Vintage Stacking Ring, Engraved Heirloom",
+   "status": "PASS",
+   "fail_reasons": [],
+   "hold_reasons": [],
+   "warnings": [
+    "WIDTH+SIZE guide master Drive'a kullanıcı yükleyecek (tek-master kararı)",
+    "KvsJewelery/VibrantStone başlık/fiyatı DB'de yok — canlı çekim (cron veya push sonrası ilk fiyat yakalama) ile doğrulanmalı"
+   ],
+   "anchor_usd": 315,
+   "hero": "eon-hero-v2-milgrain-14K.jpg",
+   "partner_photos": 23,
+   "videos": 6,
+   "approved": "ONAYLANDI 2026-07-16"
+  },
+  {
+   "no": "14",
+   "family": "Milgrain14K",
+   "color": "White",
+   "title": "14K White Gold Milgrain Wedding Band 2mm, Personalized Vintage Stacking Ring, Engraved Heirloom",
+   "status": "PASS",
+   "fail_reasons": [],
+   "hold_reasons": [],
+   "warnings": [
+    "WIDTH+SIZE guide master Drive'a kullanıcı yükleyecek (tek-master kararı)",
+    "KvsJewelery/VibrantStone başlık/fiyatı DB'de yok — canlı çekim (cron veya push sonrası ilk fiyat yakalama) ile doğrulanmalı"
+   ],
+   "anchor_usd": 315,
+   "hero": "eon-hero-v2-milgrain-white-14k.jpg",
+   "partner_photos": 23,
+   "videos": 6,
+   "approved": "ONAYLANDI 2026-07-16"
+  },
+  {
+   "no": "15",
+   "family": "Milgrain14K",
+   "color": "Rose",
+   "title": "14K Rose Gold Milgrain Wedding Band 2mm, Personalized Vintage Stacking Ring, Engraved Heirloom",
+   "status": "PASS",
+   "fail_reasons": [],
+   "hold_reasons": [],
+   "warnings": [
+    "WIDTH+SIZE guide master Drive'a kullanıcı yükleyecek (tek-master kararı)",
+    "KvsJewelery/VibrantStone başlık/fiyatı DB'de yok — canlı çekim (cron veya push sonrası ilk fiyat yakalama) ile doğrulanmalı"
+   ],
+   "anchor_usd": 315,
+   "hero": "eon-hero-v2-milgrain-rose-14k.jpg",
+   "partner_photos": 23,
+   "videos": 6,
+   "approved": "ONAYLANDI 2026-07-16"
+  },
+  {
+   "no": "16",
+   "family": "Knife14K",
+   "color": "Yellow",
+   "title": "14K Yellow Gold Knife Edge Wedding Band, Personalized Modern Architectural Ring, Solid Gold",
+   "status": "FAIL",
+   "fail_reasons": [
+    "partner foto havuzu 0 (<5) — Knife"
+   ],
+   "hold_reasons": [
+    "HOLD: gram tablosu TAHMİN faktörlü (Knife) — partner gram teyidi yayın öncesi zorunlu (nihai doküman #1)"
+   ],
+   "warnings": [
+    "video yok — Etsy videosu boost sinyali (Knife: çekim gerekli)",
+    "WIDTH+SIZE guide master Drive'a kullanıcı yükleyecek (tek-master kararı)",
+    "KvsJewelery/VibrantStone başlık/fiyatı DB'de yok — canlı çekim (cron veya push sonrası ilk fiyat yakalama) ile doğrulanmalı"
+   ],
+   "anchor_usd": 505,
+   "hero": "eon-hero-v2-knife-14K.jpg",
+   "partner_photos": 0,
+   "videos": 0
+  }
+ ],
+ "judged_at": "2026-07-16",
+ "decision": {
+  "ready": [
+   "01",
+   "02",
+   "03",
+   "04",
+   "05",
+   "06",
+   "13",
+   "14",
+   "15"
+  ],
+  "source": "eon-yayin-karar.md",
+  "workflow": "wf_caf2e1aa-6f9 (26 ajan: 5 boyut + çapraz + itiraz paneli)"
+ }
+}

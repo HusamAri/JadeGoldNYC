@@ -66,7 +66,7 @@ export default async function UrunPerformansPage({
   );
 
   return (
-    <div className="space-y-8">
+    <div className="page-stack">
       <PageHeader
         title="Ürün Performansı"
         description="Ürün başına görüntüleme, dönüşüm, ciro ve Etsy Ads ROAS"

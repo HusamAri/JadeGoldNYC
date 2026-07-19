@@ -92,7 +92,7 @@ export default async function ReklamlarPage() {
   const spendingRows = rows.filter((r) => r.spendCents > 0);
 
   return (
-    <div className="relative z-0 space-y-8 pb-28">
+    <div className="page-stack relative z-0 pb-32">
       <PageHeader
         title="Reklamlar"
         description="Etsy Ads harcamasını değerlendir, boşa gideni kapat, bütçe yiyeni dizginle, fırsatı büyüt — karar burada, uygulama Etsy'de"
