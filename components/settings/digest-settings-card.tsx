@@ -131,8 +131,8 @@ export function DigestSettingsCard({
         <div className="space-y-1">
           <p className="text-base font-medium">Her sabah e-posta özeti</p>
           <p className="text-muted-foreground text-sm leading-relaxed">
-            Son 24 saatin satışları, aksiyon bekleyenler, öneriler, olan/biten
-            olaylar ve 7 günlük gidişat — marka renkleriyle HTML mail.
+            Satış, reklam, uyarılar, fiyat önerileri, ilgilenme skoru ve ekip
+            paneli — marka renkleriyle HTML brifing.
           </p>
         </div>
         <div className="flex shrink-0 gap-1 rounded-full border p-1">
@@ -321,12 +321,16 @@ export function DigestSettingsCard({
           cron’larından sonra.
         </li>
         <li>
-          İçerik blokları yukarıdaki tercihlerle seçilir; aksiyon eşiği gürültüyü
-          kısar.
+          İçerik blokları yukarıdaki tercihlerle seçilir. “Neler oldu” yalnız
+          kullanıcı işlemlerini gösterir; sistem/cron hariç.
+        </li>
+        <li>
+          Panel süresi audit olaylarından yaklaşık hesaplanır (gerçek oturum
+          sayacı değil).
         </li>
         <li className="flex items-center gap-1.5">
           <Mail className="size-3.5" />
-          Konu satırı marka adı + (açıksa) gelir + kritik sayısı taşır.
+          Konu satırı marka + gelir + kritik + ilgilenme skoru taşıyabilir.
         </li>
       </ul>
     </div>
