@@ -12,7 +12,7 @@ export default async function IyilestirPage() {
   );
 
   return (
-    <div className="space-y-6 pb-24">
+    <div className="page-stack pb-28">
       <PageHeader
         title="Listing İyileştirme"
         description={`${auditedCount} aktif listing, Etsy'nin belgeli arama sinyallerine göre tarandı — ${

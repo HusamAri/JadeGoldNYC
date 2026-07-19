@@ -90,7 +90,7 @@ export default async function YildizSaticiPage({
     : EMPTY_FORM;
 
   return (
-    <div className="relative z-0 space-y-8 pb-28">
+    <div className="page-stack relative z-0 pb-32">
       <GoldStream motif="star" />
       <SceneCutouts page="yildiz-satici" />
       <PageHeader

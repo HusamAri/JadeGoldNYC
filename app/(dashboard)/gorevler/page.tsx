@@ -66,7 +66,7 @@ export default async function GorevlerPage() {
   ]);
 
   return (
-    <div className="relative z-0 pb-28 space-y-8">
+    <div className="page-stack relative z-0 pb-32">
       <SceneCutouts page="gorevler" />
       <GoldStream motif="check" />
       <PageHeader

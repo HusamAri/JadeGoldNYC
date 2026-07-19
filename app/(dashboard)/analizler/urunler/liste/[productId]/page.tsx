@@ -55,7 +55,7 @@ export default async function ListingAnalizPage({
     .replace(/&amp;/g, "&");
 
   return (
-    <div className="space-y-8">
+    <div className="page-stack">
       <PageHeader
         title="Rakip & Pazar Analizi"
         description={decoded}

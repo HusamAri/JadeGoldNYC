@@ -16,7 +16,7 @@ type AnimatedDisclosureProps = {
   hintClosed?: boolean;
   /**
    * `height` — klasik yükseklik açılımı (SectionGuide).
-   * `rise` — alttan kabararak (y + blur) açılır; rakip paneli için.
+   * `rise` — kısa opacity + y (no blur — filter blur feels digital/janky).
    */
   motion?: "height" | "rise";
 };
@@ -111,25 +111,23 @@ export function AnimatedDisclosure({
           >
             <motion.div
               initial={
-                reduceMotion || !rise
-                  ? false
-                  : { opacity: 0, y: 14, filter: "blur(4px)" }
+                reduceMotion || !rise ? false : { opacity: 0, y: 6 }
               }
               animate={
                 reduceMotion || !rise
-                  ? { opacity: 1, y: 0, filter: "blur(0px)" }
-                  : { opacity: 1, y: 0, filter: "blur(0px)" }
+                  ? { opacity: 1, y: 0 }
+                  : { opacity: 1, y: 0 }
               }
               exit={
                 reduceMotion || !rise
                   ? undefined
-                  : { opacity: 0, y: 8, filter: "blur(2px)" }
+                  : { opacity: 0, y: 4 }
               }
               transition={
                 reduceMotion
                   ? { duration: 0 }
                   : rise
-                    ? { duration: 0.34, ease: [0.22, 1, 0.36, 1] }
+                    ? { duration: 0.28, ease: [0.22, 1, 0.36, 1] }
                     : { duration: 0 }
               }
               className={cn("px-4 py-3.5", panelClassName)}

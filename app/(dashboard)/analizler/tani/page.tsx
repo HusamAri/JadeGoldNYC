@@ -14,7 +14,7 @@ export default async function AylikTaniPage() {
   const data = await getSalesDiagnostics(m.org_id);
 
   return (
-    <div className="space-y-6 pb-20">
+    <div className="page-stack pb-24">
       <PageHeader
         title="Aylık Tanı"
         eyebrow={`${data.fromLabel} → ${data.toLabel}`}

@@ -27,7 +27,7 @@ export function PageHeader({
   const head = words.slice(0, -1).join(" ");
 
   return (
-    <div className={cn("mb-6 space-y-4", className)}>
+    <div className={cn("mb-8 space-y-5 md:mb-10", className)}>
       {image && (
         <BrandTile
           src={image}

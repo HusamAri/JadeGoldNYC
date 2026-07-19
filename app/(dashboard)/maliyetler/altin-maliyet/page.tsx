@@ -63,7 +63,7 @@ export default async function AltinMaliyetPage({
   const { items, summary } = await getGoldCostAnalysis(goldPriceOunce);
 
   return (
-    <div className="space-y-8">
+    <div className="page-stack">
       <PageHeader
         title="Altin Maliyet Analizi"
         description="Satilan urunlerin altin malzeme + iscilik maliyet kirilimi"

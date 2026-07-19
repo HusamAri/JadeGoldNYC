@@ -473,24 +473,22 @@
     background: var(--glass-sheen);
     pointer-events: none;
   }
-  /* Tıklanabilir kabartma: hover'da daha çok kabarır, basınca içeri çöker.
-     Geçiş biraz daha uzun/yumuşak — kabartma-çukur arası daha "dolgun" hissettirir. */
+  /* Neu press: shadow settle only on hover (no float). Active = gentle inset. */
   .nm-interactive {
     background-image: var(--nm-convex);
     box-shadow: var(--shadow-raised-sm);
     transition:
-      box-shadow 0.4s var(--ease-premium),
-      transform 0.3s var(--ease-premium),
-      background-image 0.4s var(--ease-premium);
+      box-shadow 0.32s var(--ease-quiet),
+      background-image 0.32s var(--ease-quiet),
+      transform 0.2s var(--ease-quiet);
   }
   .nm-interactive:hover {
     box-shadow: 0 0 22px 7px var(--background), var(--shadow-hover);
-    transform: translateY(-1.5px);
   }
   .nm-interactive:active {
     background-image: var(--nm-convex-press);
     box-shadow: var(--shadow-pressed);
-    transform: scale(0.96);
+    transform: scale(0.988);
   }
 
   /* Sıcak parıltı halesi — etkileşimli/öne çıkan öğelerin ALTINDA/ÇEVRESİNDE
@@ -1171,20 +1169,18 @@
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(14px);
-    filter: blur(6px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
     transform: none;
-    filter: none;
   }
 }
 .animate-rise {
-  animation: rise 0.7s var(--ease-premium) both;
+  animation: rise 0.55s var(--ease-quiet) both;
 }
 .stagger > * {
-  animation: rise 0.6s var(--ease-premium) both;
+  animation: rise 0.5s var(--ease-quiet) both;
 }
 .stagger > *:nth-child(2) {
   animation-delay: 0.06s;
@@ -1704,34 +1700,26 @@ html[data-brand="artifact"] .jg-dust {
 }
 
 .disclosure-chevron-bob {
-  animation: disclosure-bob 1.6s ease-in-out infinite;
+  animation: disclosure-bob 2.4s ease-in-out infinite;
 }
 
+/* Kapalı disclosure — pulse ring YOK (dijital his); yalnız soft border. */
 .disclosure-hint-closed {
-  animation: disclosure-ring 2.4s ease-in-out infinite;
+  /* no infinite ring — NN/g: motion is feedback, not decoration */
 }
 
-/* ── Calm site motion (scroll / press / chain / ambient light) ─────────────
-   Quiet physicality: cards rise into view, press into surface, soft window
-   light follows pointer. Prefers transform/opacity; reduced-motion kills it. */
+/* ── Soft UI motion (glass + neu) ──────────────────────────────────────────
+   Research (NN/g, glass/neu 2025–26):
+   - Animate transform/opacity only — never backdrop-filter
+   - One glass layer per group; generous negative space
+   - Hover: tiny lift + shadow settle (≤2px), not float circus
+   - No per-card scroll choreography on dense dashboards (fatigue)
+   - prefers-reduced-motion already kills durations globally above */
 
 @keyframes calm-reveal {
   from {
     opacity: 0;
-    transform: translate3d(0, 10px, 0);
-    filter: blur(3px);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-    filter: blur(0);
-  }
-}
-
-@keyframes calm-chain-in {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 8px, 0);
+    transform: translate3d(0, 6px, 0);
   }
   to {
     opacity: 1;
@@ -1739,96 +1727,32 @@ html[data-brand="artifact"] .jg-dust {
   }
 }
 
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    /* Panel kartları scroll ile sessizce yükselir — bir kez (range entry). */
-    main [data-slot="card"],
-    main .glass-board,
-    main .nm-raised,
-    main .motion-reveal {
-      animation: calm-reveal var(--motion-reveal) var(--ease-premium) both;
-      animation-timeline: view(block);
-      animation-range: entry 0% entry 42%;
-    }
-
-    /* Zincir: aynı ebeveyndeki kardeşler birbirini hafif gecikmeyle izler. */
-    main .motion-chain > * {
-      animation: calm-chain-in 0.5s var(--ease-premium) both;
-      animation-timeline: view(block);
-      animation-range: entry 0% entry 38%;
-    }
-    main .motion-chain > *:nth-child(2) {
-      animation-delay: calc(var(--motion-chain) * 1);
-    }
-    main .motion-chain > *:nth-child(3) {
-      animation-delay: calc(var(--motion-chain) * 2);
-    }
-    main .motion-chain > *:nth-child(4) {
-      animation-delay: calc(var(--motion-chain) * 3);
-    }
-    main .motion-chain > *:nth-child(5) {
-      animation-delay: calc(var(--motion-chain) * 4);
-    }
-    main .motion-chain > *:nth-child(n + 6) {
-      animation-delay: calc(var(--motion-chain) * 5);
-    }
-  }
-}
-
-/* Ambient soft light on glass cards — natural window, not neon spotlight. */
+/* Opt-in only — do NOT apply to every card (dashboard noise). */
 @media (prefers-reduced-motion: no-preference) {
-  main [data-slot="card"]::before {
-    content: "";
-    pointer-events: none;
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    z-index: 0;
-    opacity: 0.55;
-    transition: opacity var(--motion-hover) var(--ease-quiet);
-    background: radial-gradient(
-      520px circle at var(--pointer-x) var(--pointer-y),
-      rgb(255 255 255 / 0.14),
-      transparent 42%
-    );
-  }
-  main [data-slot="card"]:hover::before {
-    opacity: 0.85;
-  }
-  main [data-slot="card"] > * {
-    position: relative;
-    z-index: 1;
-  }
-  .dark main [data-slot="card"]::before {
-    background: radial-gradient(
-      480px circle at var(--pointer-x) var(--pointer-y),
-      rgb(255 255 255 / 0.06),
-      transparent 40%
-    );
+  main .motion-reveal {
+    animation: calm-reveal 0.45s var(--ease-quiet) both;
   }
 }
 
-/* Press reaction — surface settles into the desk. */
-@media (prefers-reduced-motion: no-preference) {
-  main [data-slot="card"]:active {
-    transform: translateY(0) scale(0.992);
-    transition-duration: var(--motion-press);
-  }
-  main a:active [data-slot="card"],
-  main button:active {
-    transition-duration: var(--motion-press);
-  }
-}
-
-/* Natural lift preference on interactive glass (overrides harsh single halo). */
+/* Glass cards: soft neu lift via shadow only — no scale, no pointer spotlight. */
 @media (prefers-reduced-motion: no-preference) {
   main [data-slot="card"] {
     box-shadow: var(--lift-natural), var(--glass-highlight);
-    transition:
-      box-shadow var(--motion-hover) var(--ease-quiet),
-      transform var(--motion-hover) var(--ease-quiet);
+    transition: box-shadow 0.32s var(--ease-quiet);
   }
   main [data-slot="card"]:hover {
     box-shadow: var(--lift-natural-lg), var(--glass-highlight);
   }
+}
+
+/* Generous page rhythm — breathing room between major blocks. */
+.page-stack {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.75rem, 2.5vw, 2.75rem);
+}
+.page-stack-loose {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2.25rem, 3.5vw, 3.5rem);
 }

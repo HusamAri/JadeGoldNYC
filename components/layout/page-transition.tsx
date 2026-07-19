@@ -2,11 +2,10 @@
 
 import { usePathname } from "next/navigation";
 import { MotionConfig, motion, useReducedMotion } from "framer-motion";
-import { springs } from "@/lib/motion";
 
 /**
- * Panel geneli sayfa geçişi. Giriş-only (exit yok) — gezinme gecikmesiz.
- * Calm spring settle; reduced-motion → kısa fade.
+ * Page enter — opacity only (optional 4px rise). No chain stagger on children:
+ * dense dashboards feel broken when every block choreographs on route change.
  */
 export function PageTransition({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -16,14 +15,10 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
     <MotionConfig reducedMotion="user">
       <motion.div
         key={pathname}
-        initial={reduce ? { opacity: 0 } : { opacity: 0, y: 10 }}
+        initial={reduce ? false : { opacity: 0, y: 4 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={
-          reduce
-            ? { duration: 0.12 }
-            : springs.gentle
-        }
-        className="motion-chain"
+        transition={{ duration: reduce ? 0 : 0.28, ease: [0.22, 1, 0.36, 1] }}
+        className="mx-auto w-full max-w-[1480px]"
       >
         {children}
       </motion.div>
