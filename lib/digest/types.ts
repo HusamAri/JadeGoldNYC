@@ -5,15 +5,39 @@ export type DigestBrandId = "jade-gold" | "amuletta" | "eon";
 export interface DigestBrandTheme {
   id: DigestBrandId;
   brandName: string;
+  wordmark: string;
   accent: string;
   ink: string;
   muted: string;
   paper: string;
   surface: string;
+  /** KPI / chip yüzey — panel card hissi */
+  card: string;
   danger: string;
   warn: string;
   ok: string;
-  wordmark: string;
+  headerBg: string;
+  headerInk: string;
+  headerMuted: string;
+  border: string;
+  /** Panel holo-drift hissi — public path */
+  bgImage: string;
+  dark: {
+    accent: string;
+    ink: string;
+    muted: string;
+    paper: string;
+    surface: string;
+    card: string;
+    danger: string;
+    warn: string;
+    ok: string;
+    headerBg: string;
+    headerInk: string;
+    headerMuted: string;
+    border: string;
+    bgImage: string;
+  };
 }
 
 export interface DigestKpi {

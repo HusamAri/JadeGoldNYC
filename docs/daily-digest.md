@@ -43,10 +43,12 @@ Yedek (SMTP yoksa): `RESEND_API_KEY` + `RESEND_FROM_EMAIL`.
 - Cron: `GET /api/cron/daily-digest` + `Authorization: Bearer $CRON_SECRET`
 - Tek org / kuru koşu: `?org=<uuid>&dry=1`
 
-## Marka paletleri
+## Marka paletleri (panel token)
 
-| Org | Palet |
-|-----|--------|
-| Jade Gold NYC | Antique Gold `#B89347`, ivory, jade ink |
-| EON | Siyah / sıcak kağıt |
-| Diğer | Amuletta (mor vurgu) |
+| Org | Açık | Koyu | Arka plan |
+|-----|------|------|-----------|
+| Amuletta / diğer | `#eaecf3` + indigo `#6b5bd6` | `#14161e` + `#a99bff` | `bg-amuletta-*.jpg` (holo-drift) |
+| Jade Gold NYC | ivory + antik altın | kömür + altın | `bg-jade-*.jpg` |
+| EON | sıcak kâğıt + siyah | koyu nötr | jade dokusu |
+
+Mail HTML `prefers-color-scheme: dark` ile panel dark token’larına döner; arka plan görselleri `NEXT_PUBLIC_APP_URL` üzerinden gömülür.
