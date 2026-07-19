@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { sortListingsBySkuDesc } from "@/lib/variant-sort";
 
 export interface KeywordIdeaRow {
   id: string;
@@ -36,21 +37,24 @@ export async function listSavedKeywords(
   return (data ?? []) as KeywordIdeaRow[];
 }
 
-/** Ürün seçici için hafif liste (id + başlık). */
+/** Ürün seçici için hafif liste (id + başlık). SKU ↓ — yeni üstte. */
 export async function listProductsLite(
   orgId: string,
 ): Promise<{ id: string; title: string }[]> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("products")
-    .select("id, title")
+    .select("id, title, sku")
     .eq("org_id", orgId)
     .is("archived_at", null)
-    .order("created_at", { ascending: false })
+    .not("sku", "is", null)
+    .neq("sku", "")
+    .order("sku", { ascending: false })
     .limit(500);
   if (error) {
     console.error("listProductsLite:", error.message);
     return [];
   }
-  return (data ?? []) as { id: string; title: string }[];
+  const rows = (data ?? []) as { id: string; title: string; sku: string | null }[];
+  return sortListingsBySkuDesc(rows).map(({ id, title }) => ({ id, title }));
 }

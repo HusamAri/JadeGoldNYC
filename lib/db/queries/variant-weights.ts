@@ -5,6 +5,7 @@ import {
   injectWeightBlock,
   type VariantWeight,
 } from "@/lib/etsy/weights";
+import { sortListingsBySkuDesc } from "@/lib/variant-sort";
 
 export interface ListingWeightPreview {
   productId: string;
@@ -40,10 +41,12 @@ export async function listVariantListingOptions(
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("products")
-    .select("id, title, product_variants(count)")
+    .select("id, title, sku, product_variants(count)")
     .eq("org_id", orgId)
     .is("archived_at", null)
-    .order("title", { ascending: true });
+    .not("sku", "is", null)
+    .neq("sku", "")
+    .order("sku", { ascending: false });
   if (error) {
     console.error("[variant-weights] listVariantListingOptions:", error.message);
     return [];
@@ -51,15 +54,22 @@ export async function listVariantListingOptions(
   const rows = (data ?? []) as {
     id: string;
     title: string | null;
+    sku: string | null;
     product_variants: { count: number }[] | null;
   }[];
-  return rows
+  const mapped = rows
     .map((r) => ({
       id: r.id,
       title: r.title ?? "Başlıksız listing",
+      sku: r.sku,
       variantCount: r.product_variants?.[0]?.count ?? 0,
     }))
     .filter((r) => r.variantCount > 0);
+  return sortListingsBySkuDesc(mapped).map(({ id, title, variantCount }) => ({
+    id,
+    title,
+    variantCount,
+  }));
 }
 
 interface VariantRow {

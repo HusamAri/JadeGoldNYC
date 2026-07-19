@@ -4,6 +4,11 @@ import type {
   CompetitorRow,
   VariantComparison,
 } from "@/lib/etsy/keyword-research";
+import {
+  variantPropertyParts,
+  type RawVariantProperties,
+} from "@/lib/variant-properties";
+import { sortVariantsByWidthThenSize } from "@/lib/variant-sort";
 
 /** Bir listing için son rekabet araştırması anlık görüntüsü. */
 export interface KeywordResearchSnapshot {
@@ -301,27 +306,27 @@ export async function listProductVariantOptions(
   const { data, error } = await supabase
     .from("product_variants")
     .select("sku, name, properties")
-    .eq("product_id", productId)
-    .order("sku", { ascending: true });
+    .eq("product_id", productId);
   if (error) {
     console.error("product_variants (eşleştirme) hatası:", error.message);
     return [];
   }
-  const rows = ((data ?? []) as {
-    sku: string;
-    name: string | null;
-    properties: { values?: string[] }[] | null;
-  }[])
-    .filter((v) => !!v.sku?.trim())
-    .map((v) => ({
-      sku: v.sku,
-      label:
-        (v.properties ?? [])
-          .flatMap((p) => p.values ?? [])
-          .join(" · ") ||
-        v.name ||
-        v.sku,
-    }));
+  const rows = sortVariantsByWidthThenSize(
+    ((data ?? []) as {
+      sku: string;
+      name: string | null;
+      properties: RawVariantProperties;
+    }[])
+      .filter((v) => !!v.sku?.trim())
+      .map((v) => ({
+        sku: v.sku,
+        properties: v.properties,
+        label:
+          variantPropertyParts(v.properties).join(" · ") ||
+          v.name ||
+          v.sku,
+      })),
+  ).map(({ sku, label }) => ({ sku, label }));
   if (rows.length > 0) return rows;
 
   const { data: p, error: pErr } = await supabase
