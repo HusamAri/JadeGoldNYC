@@ -22,14 +22,22 @@ export default function manifest(): MetadataRoute.Manifest {
     theme_color: "#eaecf3",
     icons: [
       {
+        src: "/icon.png",
+        type: "image/png",
+        sizes: "512x512",
+        purpose: "any",
+      },
+      {
         src: "/icon.svg",
         type: "image/svg+xml",
         sizes: "any",
+        purpose: "any",
       },
       {
-        src: "/apple-icon",
+        src: "/apple-icon.png",
         type: "image/png",
         sizes: "180x180",
+        purpose: "any",
       },
     ],
   };

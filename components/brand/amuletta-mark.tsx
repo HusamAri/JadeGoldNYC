@@ -1,8 +1,7 @@
 import { cn } from "@/lib/utils";
 
 /**
- * Amuletta yay/halka markası — iki hilal + üçgen; negatif alan A.
- * Katmanlar frost/loading animasyonu için ayrı class’larla hedeflenir.
+ * Amuletta yay/halka — referans negatif-alan A (iki hilal + üçgen).
  */
 export function AmulettaMark({
   className,
@@ -22,14 +21,16 @@ export function AmulettaMark({
       <g className="am-mark-arcs" fill="currentColor">
         <path
           className="am-arc-left"
-          d="M38.5 12C20.5 18.5 11.5 34 11.5 48.5C11.5 67 26.5 81 44 81C35.5 81 25.5 71.5 25.5 48.5C25.5 31.5 31.5 18.5 38.5 12Z"
+          d="M50 14C30.5 14.5 17 29.5 17 50.5C17 71.5 29.5 86.5 47.5 88.5C41 81 37.5 68.5 37.5 52C37.5 35.5 41.5 23 50 14Z"
         />
         <path
           className="am-arc-right"
-          d="M61.5 12C79.5 18.5 88.5 34 88.5 48.5C88.5 67 73.5 81 56 81C64.5 81 74.5 71.5 74.5 48.5C74.5 31.5 68.5 18.5 61.5 12Z"
+          d="M50 14C69.5 14.5 83 29.5 83 50.5C83 71.5 70.5 86.5 52.5 88.5C59 81 62.5 68.5 62.5 52C62.5 35.5 58.5 23 50 14Z"
         />
-        <ellipse className="am-arc-join" cx="50" cy="16.5" rx="5.5" ry="4.2" />
-        <path className="am-arc-gem" d="M50 52 L41.5 65.5 L58.5 65.5 Z" />
+        <path
+          className="am-arc-gem"
+          d="M50 56.5 L42.8 70.2 L57.2 70.2 Z"
+        />
       </g>
     </svg>
   );

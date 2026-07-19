@@ -1,29 +1,51 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none" role="img" aria-label="Amuletta">
-  <!-- Yay/halka markası — iki hilal + üçgen; negatif alan A. -->
-  <rect width="512" height="512" rx="112" fill="#eaecf3"/>
-  <ellipse cx="256" cy="412" rx="132" ry="22" fill="#343949" opacity="0.07"/>
-  <g fill="#6b5bd6">
-    <!-- Sol hilal (içe bakıyor) -->
-    <path fill-rule="evenodd" d="
-      M210 98
-      C118 130 72 210 72 286
-      C72 378 148 448 240 448
-      C198 448 148 400 148 286
-      C148 198 178 130 210 98
-      Z"/>
-    <!-- Sağ hilal -->
-    <path fill-rule="evenodd" d="
-      M302 98
-      C394 130 440 210 440 286
-      C440 378 364 448 272 448
-      C314 448 364 400 364 286
-      C364 198 334 130 302 98
-      Z"/>
-    <!-- Üst birleşim köprüsü (hafif örtüşme) -->
-    <ellipse cx="256" cy="118" rx="28" ry="22" opacity="0.85"/>
-    <!-- A çapraz çubuğu / mücevher üçgeni -->
-    <path d="M256 292 L214 358 L298 358 Z"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Amuletta">
+  <!--
+    Referans yay/halka ile birebir: tepede birleşen iki hilal,
+    altta açık vesica, ortada yukarı bakan üçgen (negatif A).
+  -->
+  <defs>
+    <style>
+      .bg { fill: #f5f3f9; }
+      .mk { fill: #7b6bcf; }
+      @media (prefers-color-scheme: dark) {
+        .bg { fill: #14161e; }
+        .mk { fill: #a99bff; }
+      }
+    </style>
+    <filter id="paper" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3" result="n"/>
+      <feComponentTransfer in="n" result="g">
+        <feFuncA type="table" tableValues="0 0.04"/>
+      </feComponentTransfer>
+      <feBlend in="SourceGraphic" in2="g" mode="multiply"/>
+    </filter>
+    <filter id="lift" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2.5" stdDeviation="2.8" flood-color="#2f2a4a" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+
+  <rect class="bg" width="512" height="512" rx="114" filter="url(#paper)"/>
+
+  <g class="mk" filter="url(#lift)" transform="translate(256 258) scale(4.15) translate(-50 -50)">
+    <!-- Sol hilal — tepe 50,14’te birleşir; altta açık -->
+    <path d="
+      M 50 14
+      C 30.5 14.5 17 29.5 17 50.5
+      C 17 71.5 29.5 86.5 47.5 88.5
+      C 41 81 37.5 68.5 37.5 52
+      C 37.5 35.5 41.5 23 50 14
+      Z
+    "/>
+    <!-- Sağ hilal — ayna -->
+    <path d="
+      M 50 14
+      C 69.5 14.5 83 29.5 83 50.5
+      C 83 71.5 70.5 86.5 52.5 88.5
+      C 59 81 62.5 68.5 62.5 52
+      C 62.5 35.5 58.5 23 50 14
+      Z
+    "/>
+    <!-- Üçgen (A çaprazı) -->
+    <path d="M 50 56.5 L 42.8 70.2 L 57.2 70.2 Z"/>
   </g>
-  <!-- Doğal speküler (mat, neon değil) -->
-  <ellipse cx="168" cy="180" rx="36" ry="18" fill="#ffffff" opacity="0.14" transform="rotate(-24 168 180)"/>
 </svg>
