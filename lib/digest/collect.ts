@@ -6,11 +6,23 @@ import {
   actionPassesLevel,
   normalizeDigestContentPrefs,
 } from "@/lib/digest/preferences";
+import {
+  collectAdsTotals,
+  collectListingEngagement,
+  collectTopPriceTips,
+  estimatePanelPresence,
+  formatHumanActivitySummary,
+  isHumanAuditRow,
+  type AuditPresenceRow,
+} from "@/lib/digest/lenses";
 import type {
   DigestActionItem,
   DigestActivityItem,
   DigestDayPoint,
+  DigestEngagement,
   DigestKpi,
+  DigestPresenceRow,
+  DigestPriceTip,
   DigestSuggestion,
   OrgDigest,
 } from "@/lib/digest/types";
@@ -116,11 +128,12 @@ export async function collectOrgDigest(
   orgId: string,
   now = new Date(),
 ): Promise<OrgDigest | null> {
-  let { data: orgRow, error: orgErr } = await admin
+  const { data: orgRowInitial, error: orgErr } = await admin
     .from("organizations")
     .select("id, name, slug, default_currency, digest_settings")
     .eq("id", orgId)
     .maybeSingle();
+  let orgRow = orgRowInitial;
 
   // Migration 0106 yoksa kolon yok — gönderimi kilitleme; varsayılan açık.
   if (isMissingDigestSettingsColumn(orgErr)) {
@@ -169,7 +182,6 @@ export async function collectOrgDigest(
     etsyConn,
     soldOut,
     expired,
-    reviewsNew,
     reviewsNeedReply,
     inquiriesOpen,
     p0Tasks,
@@ -177,6 +189,8 @@ export async function collectOrgDigest(
     auditRows,
     productMetrics,
     lastSnapshot,
+    adsActionsDone,
+    resolvedAlertTasks,
   ] = await Promise.all([
     admin
       .from("sales")
@@ -217,11 +231,6 @@ export async function collectOrgDigest(
       .from("reviews")
       .select("*", { count: "exact", head: true })
       .eq("org_id", orgId)
-      .gte("created_at", bounds.startIso),
-    admin
-      .from("reviews")
-      .select("*", { count: "exact", head: true })
-      .eq("org_id", orgId)
       .eq("status", "yeni")
       .lte("rating", 3),
     admin
@@ -242,14 +251,14 @@ export async function collectOrgDigest(
       .eq("status", "done")
       .gte("updated_at", bounds.startIso)
       .order("updated_at", { ascending: false })
-      .limit(8),
+      .limit(20),
     admin
       .from("audit_log")
-      .select("created_at, summary, source, action")
+      .select("created_at, summary, source, action, actor_id, actor_label")
       .eq("org_id", orgId)
       .gte("created_at", bounds.startIso)
       .order("created_at", { ascending: false })
-      .limit(20),
+      .limit(200),
     admin
       .from("product_metrics")
       .select(
@@ -267,6 +276,29 @@ export async function collectOrgDigest(
       .order("snapshot_date", { ascending: false })
       .limit(1)
       .maybeSingle(),
+    admin
+      .from("ads_actions")
+      .select("id, kind, reason, decided_at, status, products(title)")
+      .eq("org_id", orgId)
+      .eq("status", "yapildi")
+      .gte("decided_at", bounds.startIso)
+      .order("decided_at", { ascending: false })
+      .limit(12),
+    admin
+      .from("tasks")
+      .select("id, title, updated_at")
+      .eq("org_id", orgId)
+      .eq("status", "done")
+      .ilike("title", "Çözüldü:%")
+      .gte("updated_at", bounds.startIso)
+      .order("updated_at", { ascending: false })
+      .limit(12),
+  ]);
+
+  const [adsTotals, priceTipRows, engagementRaw] = await Promise.all([
+    collectAdsTotals(admin, orgId),
+    collectTopPriceTips(admin, orgId, currency, 5),
+    collectListingEngagement(admin, orgId),
   ]);
 
   const curr = sumSales((sales24.data ?? []) as SaleRow[]);
@@ -498,50 +530,27 @@ export async function collectOrgDigest(
 
   const happened: DigestActivityItem[] = [];
   const finished: DigestActivityItem[] = [];
+  const closedAlerts: DigestActivityItem[] = [];
 
-  const newReviews = reviewsNew.count ?? 0;
-  if (curr.orders > 0) {
-    happened.push({
-      whenLabel: "Son 24 saat",
-      summary: `${curr.orders} sipariş · ${formatMoney(curr.revenueCents, currency)} gelir`,
-      source: "sales",
-    });
-  }
-  if (newReviews > 0) {
-    happened.push({
-      whenLabel: "Son 24 saat",
-      summary: `${newReviews} yeni yorum geldi`,
-      source: "reviews",
-    });
-  }
-  if (etsy?.last_sync_at && etsy.last_sync_at >= bounds.startIso) {
-    happened.push({
-      whenLabel: formatWhen(etsy.last_sync_at),
-      summary: "Etsy senkronu tamamlandı / ilerledi",
-      source: "etsy",
-    });
-  }
-
-  for (const row of (auditRows.data ?? []) as {
-    created_at: string;
-    summary: string | null;
-    source: string | null;
-    action: string | null;
-  }[]) {
-    const summary = (row.summary ?? row.action ?? "Olay").trim();
-    if (!summary) continue;
+  // Neler oldu = yalnız insan eylemleri (sistem/cron yok).
+  const auditList = (auditRows.data ?? []) as AuditPresenceRow[];
+  for (const row of auditList) {
+    if (!isHumanAuditRow(row)) continue;
+    const summary = formatHumanActivitySummary(row);
     const item: DigestActivityItem = {
       whenLabel: formatWhen(row.created_at),
       summary,
       source: row.source,
+      actor: row.actor_label,
     };
     const action = (row.action ?? "").toLowerCase();
+    const low = summary.toLowerCase();
     if (
       action.includes("done") ||
       action.includes("complete") ||
-      action.includes("finish") ||
-      summary.toLowerCase().includes("tamam") ||
-      summary.toLowerCase().includes("kapandı")
+      low.includes("tamam") ||
+      low.includes("kapandı") ||
+      low.includes("çözüldü")
     ) {
       finished.push(item);
     } else {
@@ -553,12 +562,100 @@ export async function collectOrgDigest(
     title: string;
     updated_at: string;
   }[]) {
+    if (t.title.startsWith("Çözüldü:")) continue; // closedAlerts'e gider
     finished.push({
       whenLabel: formatWhen(t.updated_at),
       summary: `Görev bitti: ${t.title}`,
       source: "tasks",
     });
   }
+
+  for (const t of (resolvedAlertTasks.data ?? []) as {
+    title: string;
+    updated_at: string;
+  }[]) {
+    closedAlerts.push({
+      whenLabel: formatWhen(t.updated_at),
+      summary: t.title.replace(/^Çözüldü:\s*/i, "Kapandı: "),
+      source: "alerts",
+    });
+  }
+
+  for (const a of (adsActionsDone.data ?? []) as {
+    kind: string;
+    reason: string | null;
+    decided_at: string | null;
+    products:
+      | { title: string }
+      | { title: string }[]
+      | null;
+  }[]) {
+    const prod = Array.isArray(a.products) ? a.products[0] : a.products;
+    const title = prod?.title ?? "Listing";
+    const when = a.decided_at ? formatWhen(a.decided_at) : "Son 24 saat";
+    closedAlerts.push({
+      whenLabel: when,
+      summary: `Reklam aksiyonu yapıldı (${a.kind}): ${title}`,
+      source: "ads",
+    });
+  }
+
+  const adsKpis: DigestKpi[] = [
+    {
+      label: "Reklam harcama (30g)",
+      value: formatMoney(adsTotals.spendCents, currency),
+      tone: "neutral",
+    },
+    {
+      label: "Reklam getirisi",
+      value: formatMoney(adsTotals.adsRevenueCents, currency),
+      tone: "neutral",
+    },
+    {
+      label: "ROAS",
+      value:
+        adsTotals.roas != null ? `${adsTotals.roas.toFixed(2)}x` : "—",
+      deltaLabel:
+        adsTotals.spendingProductCount > 0
+          ? `${adsTotals.spendingProductCount} ürün harcıyor · ${adsTotals.adsClicks} tık`
+          : "Metrik girilmemiş olabilir",
+      tone:
+        adsTotals.roas == null
+          ? "flat"
+          : adsTotals.roas >= 2
+            ? "up"
+            : adsTotals.roas < 1
+              ? "down"
+              : "flat",
+    },
+  ];
+
+  const priceTips: DigestPriceTip[] = priceTipRows.map((t) => ({
+    title: t.title,
+    position: t.position,
+    body: t.body,
+    href: abs(t.hrefPath),
+  }));
+
+  const engagement: DigestEngagement | null = engagementRaw
+    ? {
+        shopScore: engagementRaw.shopScore,
+        shopLabel: engagementRaw.shopLabel,
+        windowLabel: engagementRaw.windowLabel,
+        movers: engagementRaw.movers,
+      }
+    : null;
+
+  const teamPresence: DigestPresenceRow[] = estimatePanelPresence(auditList)
+    .slice(0, 8)
+    .map((p) => ({
+      name: p.name,
+      minutesLabel:
+        p.minutes >= 60
+          ? `${Math.floor(p.minutes / 60)}s ${p.minutes % 60}dk`
+          : `${p.minutes} dk`,
+      events: p.events,
+    }));
 
   const windowLabel = new Intl.DateTimeFormat("tr-TR", {
     timeZone: STORE_TZ,
@@ -568,6 +665,8 @@ export async function collectOrgDigest(
   const filteredActions = uniqueActions
     .filter((a) => actionPassesLevel(a.severity, prefs.actionLevel))
     .slice(0, 12);
+
+  const s = prefs.sections;
 
   // Tercih kapalı bölümleri boşalt — konu satırı ve HTML tutarlı kalsın.
   return {
@@ -583,14 +682,21 @@ export async function collectOrgDigest(
       dateStyle: "medium",
       timeStyle: "short",
     }).format(now),
-    kpis: prefs.sections.performance ? kpis : [],
-    weekTrend: prefs.sections.trend ? weekTrend : [],
-    actions: prefs.sections.actions ? filteredActions : [],
-    happened: prefs.sections.activity ? happened.slice(0, 12) : [],
-    finished: prefs.sections.activity ? finished.slice(0, 8) : [],
-    suggestions: prefs.sections.suggestions ? suggestions.slice(0, 6) : [],
+    kpis: s.performance ? kpis : [],
+    adsKpis: s.ads ? adsKpis : [],
+    weekTrend: s.trend ? weekTrend : [],
+    actions: s.actions ? filteredActions : [],
+    closedAlerts: s.closedAlerts ? closedAlerts.slice(0, 10) : [],
+    priceTips: s.priceTips ? priceTips : [],
+    engagement: s.engagement ? engagement : null,
+    teamPresence: s.team ? teamPresence : [],
+    happened: s.activity ? happened.slice(0, 14) : [],
+    finished: s.activity ? finished.slice(0, 8) : [],
+    suggestions: s.suggestions ? suggestions.slice(0, 6) : [],
     panelUrl: abs("/panel"),
     alertsHref: abs("/panel"),
+    adsHref: abs("/reklamlar"),
+    settingsHref: abs("/ayarlar/gunluk-ozet"),
   };
 }
 

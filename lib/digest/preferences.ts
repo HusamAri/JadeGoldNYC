@@ -1,12 +1,17 @@
 /**
  * Günlük özet içerik tercihleri — preference-center best practice:
- * 3–5 net kategori, yalnız gerçekten gönderilebilen seçenekler, varsayılan hepsi açık.
+ * net kategoriler, yalnız gerçekten gönderilebilen seçenekler, varsayılan hepsi açık.
  */
 
 export const DIGEST_SECTION_KEYS = [
   "performance",
+  "ads",
   "trend",
   "actions",
+  "closedAlerts",
+  "priceTips",
+  "engagement",
+  "team",
   "suggestions",
   "activity",
 ] as const;
@@ -28,24 +33,44 @@ export const DIGEST_SECTION_META: Record<
   { label: string; description: string }
 > = {
   performance: {
-    label: "Son 24 saat",
+    label: "Satış · son 24 saat",
     description: "Gelir, sipariş, ortalama sipariş ve önceki güne kıyas.",
+  },
+  ads: {
+    label: "Reklam",
+    description: "Son 30 harcama, getiri, ROAS ve tıklama.",
   },
   trend: {
     label: "7 günlük gidişat",
     description: "NY takvimine göre günlük gelir ve sipariş tablosu.",
   },
   actions: {
-    label: "Aksiyon bekleyenler",
-    description: "Etsy, stok, yorum, P0 görev, bayat sync, reklam uyarıları.",
+    label: "Açık uyarılar",
+    description: "Etsy, stok, yorum, P0, sync, reklam uyarıları.",
+  },
+  closedAlerts: {
+    label: "Kapanan uyarılar",
+    description: "Son 24 saatte çözülen uyarılar ve yapılan reklam aksiyonları.",
+  },
+  priceTips: {
+    label: "En değerli 5 fiyat önerisi",
+    description: "Pazar bandı sapmasına göre en yüksek değerli öneriler.",
+  },
+  engagement: {
+    label: "Sayfa ilgilenme skoru",
+    description: "Mağaza skoru + en çok ilgilenilen listingler (görüntülenme/favori).",
+  },
+  team: {
+    label: "Panelde kim ne kadar",
+    description: "Üyelerin yaklaşık panel süresi (audit olaylarından).",
   },
   suggestions: {
     label: "Öneriler",
     description: "Reklam sinyalleri, boş gün, düşük puanlı yorum fırsatları.",
   },
   activity: {
-    label: "Şirket hafızası",
-    description: "Neler oldu + neler bitti (audit ve kapanan görevler).",
+    label: "Neler oldu (insan)",
+    description: "Yalnız kullanıcıların yaptığı işler — sistem/cron güncellemeleri yok.",
   },
 };
 
@@ -70,8 +95,13 @@ export const DIGEST_ACTION_LEVEL_META: Record<
 export function defaultDigestSections(): DigestSections {
   return {
     performance: true,
+    ads: true,
     trend: true,
     actions: true,
+    closedAlerts: true,
+    priceTips: true,
+    engagement: true,
+    team: true,
     suggestions: true,
     activity: true,
   };

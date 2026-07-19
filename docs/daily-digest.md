@@ -1,12 +1,17 @@
 # Günlük marka özet e-postası
 
-Her sabah (cron `11:00 UTC`) org üyelerine marka renkli HTML özet gider:
+Her sabah (cron `11:00 UTC`) seçili alıcılara marka renkli HTML brifing gider.
+Tek satış özeti değil — çok lens’li bakış:
 
-- Son 24 saat gelir / sipariş (+ önceki 24s kıyas)
-- 7 günlük gidişat
-- Aksiyon bekleyenler (Etsy kopuk, stok, yorum, P0 görev, reklam…)
-- Öneriler (reklam sinyalleri, boş gün uyarısı)
-- Neler oldu / neler bitti (audit + biten görevler)
+- **Satış** — son 24 saat gelir / sipariş (+ önceki 24s kıyas)
+- **Reklam** — son 30 harcama, getiri, ROAS
+- **7 günlük gidişat**
+- **Açık uyarılar** + **kapanan uyarılar** (Çözüldü görevleri, yapılan reklam aksiyonları)
+- **En değerli 5 fiyat önerisi** (sapma × güven × fiyat farkı)
+- **Sayfa ilgilenme skoru** (listing görüntülenme/favori)
+- **Panelde kim ne kadar** (audit’ten yaklaşık süre)
+- **Neler oldu** — yalnız kullanıcı eylemleri (sistem/cron hariç)
+- Öneriler (reklam sinyalleri, boş gün, yorum)
 
 ## Kurulum
 
@@ -28,12 +33,12 @@ Yedek (SMTP yoksa): `RESEND_API_KEY` + `RESEND_FROM_EMAIL`.
 
 ## Kullanım
 
-- Ayarlar → **Günlük özet e-posta**: aç/kapa, **alıcı listesi** (elle), **neler gelsin**, HTML önizleme, şimdi gönder.
+- Ayarlar → **Günlük özet e-posta**: aç/kapa, **alıcı listesi**, **neler gelsin**, HTML önizleme, şimdi gönder.
   - Alıcı kutusu doluysa yalnız o adreslere gider; boşsa org üyelerine.
   - İçerik tercihleri (`digest_settings.sections` + `actionLevel`):
-    - Bölümler: son 24 saat, 7 günlük gidişat, aksiyonlar, öneriler, şirket hafızası.
-    - Aksiyon eşiği: yalnız kritik → kritik+önemli → tümü.
-    - Kapalı bölüm mail HTML’inde hiç basılmaz; tercih kaydı hemen sonraki gönderime yansır.
+    - performance, ads, trend, actions, closedAlerts, priceTips, engagement, team, suggestions, activity
+    - Aksiyon eşiği: yalnız kritik → kritik+önemli → tümü
+    - Kapalı bölüm mail HTML’inde hiç basılmaz
 - Önizleme: oturum açıkken `/api/digest/preview`
 - Cron: `GET /api/cron/daily-digest` + `Authorization: Bearer $CRON_SECRET`
 - Tek org / kuru koşu: `?org=<uuid>&dry=1`

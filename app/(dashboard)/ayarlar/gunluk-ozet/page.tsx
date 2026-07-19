@@ -35,7 +35,7 @@ export default async function GunlukOzetAyarPage() {
     <div className="space-y-6">
       <PageHeader
         title="Günlük özet e-posta"
-        description="Mağazan için her sabah markalı HTML özet. Alıcıları ve hangi blokların geleceğini buradan seç."
+        description="Çok lens’li sabah brifingi: satış, reklam, uyarılar, fiyat, ilgilenme, ekip. Alıcıları ve blokları buradan seç."
       />
       <Card>
         <CardContent className="pt-6">
