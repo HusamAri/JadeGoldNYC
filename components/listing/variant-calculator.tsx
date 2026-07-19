@@ -272,8 +272,15 @@ export function VariantCalculator({
         return next;
       }),
     );
+    const w = toGram(anchor.weight) ?? withWeights.find((v) => v.sku === anchorSku)?.weightGrams;
+    const unit =
+      w && anchorPrice
+        ? (anchorPrice / w / 100).toFixed(2)
+        : null;
     toast.success(
-      `${anchorSku} çapasından ${preds.length} fiyat grama göre yazıldı.`,
+      `${anchorSku} birim fiyatından ${preds.length} varyant yazıldı` +
+        (unit ? ` (${unit} $/g)` : "") +
+        ".",
     );
   }
 
@@ -463,7 +470,7 @@ export function VariantCalculator({
                 onClick={bulkFromAnchor}
               >
                 <Layers className="size-4" />
-                Toplu fiyat (çapa → gram)
+                Birim fiyattan dağıt ($/g × gram)
               </Button>
             </div>
           </div>

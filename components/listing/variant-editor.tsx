@@ -1,23 +1,38 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {
   Calculator,
+  Eye,
   Loader2,
   Save,
   Sparkles,
   Layers,
+  RotateCcw,
+  Undo2,
 } from "lucide-react";
 
-import { updateVariant } from "@/app/(dashboard)/tasarimlar/listing/[id]/actions";
+import {
+  updateVariant,
+  restoreVariantPricesFromEtsy,
+  restoreVariantPricesFromAudit,
+  saveVariantsBulkPrices,
+  undoVariantPrices,
+  type VariantPriceSnapshot,
+} from "@/app/(dashboard)/tasarimlar/listing/[id]/actions";
 import { ProductWeightInput } from "@/components/product-weight-input";
+import {
+  PriceChangePreviewDialog,
+  type PricePreviewRow,
+} from "@/components/listing/price-change-preview";
 import {
   inferWeightsBySize,
   distributePriceByWeight,
   propagatePricesFromAnchor,
+  unitPriceCentsPerGram,
   type DistVariant,
 } from "@/lib/etsy/distribute";
 import type { ListingVariantRow } from "@/lib/db/queries/listings";
@@ -90,10 +105,9 @@ const WEIGHT_SOURCE_LABELS: Record<string, string> = {
 };
 
 /**
- * Varyant editörü — satır başına SKU/etiket + inline fiyat($)/maliyet/gram/adet.
- * "Eksikleri otomatik hesapla" yalnız boş hücreleri doldurur.
- * "Bu fiyattan toplu" seçili satırın fiyatını çapa alır; listing içi fiyat↔gram
- * çarpanıyla diğer varyantları grama göre yeniden yazar.
+ * Varyant editörü — birim fiyat ($/g) merkezli.
+ * Bir varyanta satış fiyatı girilince diğerleri P_i = (P/g) · g_i ile dolar.
+ * Etsy / audit geri alma ile ezilen matrisi eski haline döndürebilirsin.
  */
 export function VariantEditor({
   productId,
@@ -124,9 +138,36 @@ export function VariantEditor({
   const [suggested, setSuggested] = useState<Record<string, Suggestion>>({});
   const [weightDirty, setWeightDirty] = useState<Set<string>>(new Set());
   const [saving, setSaving] = useState<Set<string>>(new Set());
+  const [restoring, setRestoring] = useState(false);
+  const [bulkSaving, setBulkSaving] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [undoSnapshot, setUndoSnapshot] = useState<VariantPriceSnapshot[] | null>(
+    null,
+  );
+  const [undoing, setUndoing] = useState(false);
   const [anchorSku, setAnchorSku] = useState<string | null>(
     () => variants.find((v) => v.price_cents != null)?.sku ?? variants[0]?.sku ?? null,
   );
+  const propagateTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const rowsRef = useRef(rows);
+  useEffect(() => {
+    rowsRef.current = rows;
+  }, [rows]);
+
+  // Etsy/audit geri alma sonrası sunucu verisini ekrana yansıt.
+  const serverFingerprint = variants
+    .map(
+      (v) =>
+        `${v.sku}:${v.price_cents ?? ""}:${v.weight_grams ?? ""}:${v.quantity ?? ""}`,
+    )
+    .join("|");
+  const prevFingerprint = useRef(serverFingerprint);
+  useEffect(() => {
+    if (prevFingerprint.current === serverFingerprint) return;
+    prevFingerprint.current = serverFingerprint;
+    setRows(initialRows(variants));
+    setSuggested({});
+  }, [serverFingerprint, variants]);
 
   const karat: KaratType | null = useMemo(
     () =>
@@ -145,6 +186,15 @@ export function VariantEditor({
     }),
     [purchasePrice14kCents, purchasePrice10kCents],
   );
+
+  const anchorUnit = useMemo(() => {
+    if (!anchorSku) return null;
+    const r = rows[anchorSku];
+    const p = toCents(r?.price ?? "");
+    const w = toGram(r?.weight ?? "");
+    if (p == null || w == null) return null;
+    return unitPriceCentsPerGram(p, w);
+  }, [anchorSku, rows]);
 
   function costForGrams(grams: number | null): number | null {
     if (grams == null || !karat) return null;
@@ -178,29 +228,129 @@ export function VariantEditor({
     );
   }
 
-  function setRow(sku: string, key: keyof RowState, value: string) {
-    setRows((rs) => ({ ...rs, [sku]: { ...rs[sku], [key]: value } }));
-    if (key === "weight") {
-      setWeightDirty((s) => new Set(s).add(sku));
-    }
-    if (key === "price") {
-      setAnchorSku(sku);
-    }
-    const field = key === "weight" ? "weight" : key === "price" ? "price" : null;
-    if (field) {
-      setSuggested((sg) => ({ ...sg, [sku]: { ...sg[sku], [field]: false } }));
-    }
-  }
-
-  function distBase(): DistVariant[] {
+  function distBaseFrom(rs: Record<string, RowState>): DistVariant[] {
     return variants.map((v) => {
-      const r = rows[v.sku];
+      const r = rs[v.sku];
       return {
         sku: v.sku,
         weightGrams: toGram(r?.weight ?? ""),
         priceCents: toCents(r?.price ?? ""),
       };
     });
+  }
+
+  function distBase(): DistVariant[] {
+    return distBaseFrom(rows);
+  }
+
+  /** Çapa fiyat + gram → birim $/g ile tüm satırları güncelle (ekranda). */
+  function applyUnitPriceFrom(
+    targetSku: string,
+    rs: Record<string, RowState>,
+    opts?: { silent?: boolean },
+  ) {
+    const r = rs[targetSku];
+    const anchorPrice = toCents(r?.price ?? "");
+    const anchorWeight = toGram(r?.weight ?? "");
+    if (anchorPrice == null || anchorWeight == null) {
+      if (!opts?.silent) {
+        toast.error(
+          "Çapa satırda satış fiyatı ve gram olmalı — önce gramı gir.",
+        );
+      }
+      return;
+    }
+
+    const base = distBaseFrom(rs);
+    const wPreds = inferWeightsBySize(base);
+    const wMap = new Map(wPreds.map((p) => [p.sku, p]));
+    const withWeights: DistVariant[] = base.map((v) => ({
+      ...v,
+      weightGrams: v.weightGrams ?? wMap.get(v.sku)?.weightGrams ?? null,
+    }));
+    // Çapanın güncel fiyatını kullan (base eski rows'tan gelebilir).
+    const withAnchor = withWeights.map((v) =>
+      v.sku === targetSku ? { ...v, priceCents: anchorPrice } : v,
+    );
+
+    const preds = propagatePricesFromAnchor(
+      withAnchor,
+      targetSku,
+      anchorPrice,
+    );
+    if (preds.length === 0) {
+      if (!opts?.silent) toast.info("Dağıtılacak ağırlıklı varyant yok.");
+      return;
+    }
+
+    const nextRows = { ...rs };
+    const nextSuggested: Record<string, Suggestion> = { ...suggested };
+    const nextDirty = new Set(weightDirty);
+    let filledWeights = 0;
+    let priced = 0;
+    const unit = unitPriceCentsPerGram(anchorPrice, anchorWeight);
+
+    for (const p of wPreds) {
+      const row = nextRows[p.sku];
+      if (!row || row.weight.trim()) continue;
+      nextRows[p.sku] = { ...row, weight: p.weightGrams.toFixed(2) };
+      nextSuggested[p.sku] = { ...nextSuggested[p.sku], weight: true };
+      nextDirty.add(p.sku);
+      filledWeights += 1;
+    }
+    for (const p of preds) {
+      const row = nextRows[p.sku];
+      if (!row) continue;
+      const nextPrice = (p.priceCents / 100).toFixed(2);
+      if (row.price === nextPrice) continue;
+      nextRows[p.sku] = { ...nextRows[p.sku], price: nextPrice };
+      nextSuggested[p.sku] = {
+        ...nextSuggested[p.sku],
+        price: p.sku !== targetSku,
+      };
+      priced += 1;
+    }
+
+    setRows(nextRows);
+    setSuggested(nextSuggested);
+    setWeightDirty(nextDirty);
+    setAnchorSku(targetSku);
+    if (!opts?.silent) {
+      const unitLabel =
+        unit != null ? ` · birim ${(unit / 100).toFixed(2)} $/g` : "";
+      toast.success(
+        `${targetSku} birim fiyatından ${priced} varyant güncellendi${unitLabel}` +
+          (filledWeights > 0 ? ` · ${filledWeights} gram önerildi` : "") +
+          " — kaydetmeden yazılmaz.",
+      );
+    }
+  }
+
+  function setRow(sku: string, key: keyof RowState, value: string) {
+    setRows((rs) => {
+      const next = { ...rs, [sku]: { ...rs[sku], [key]: value } };
+      rowsRef.current = next;
+      return next;
+    });
+    if (key === "weight") {
+      setWeightDirty((s) => new Set(s).add(sku));
+    }
+    if (key === "price") {
+      setAnchorSku(sku);
+      if (propagateTimer.current) clearTimeout(propagateTimer.current);
+      propagateTimer.current = setTimeout(() => {
+        const rs = rowsRef.current;
+        const price = toCents(rs[sku]?.price ?? "");
+        const weight = toGram(rs[sku]?.weight ?? "");
+        if (price != null && weight != null) {
+          applyUnitPriceFrom(sku, rs, { silent: true });
+        }
+      }, 450);
+    }
+    const field = key === "weight" ? "weight" : key === "price" ? "price" : null;
+    if (field) {
+      setSuggested((sg) => ({ ...sg, [sku]: { ...sg[sku], [field]: false } }));
+    }
   }
 
   /** Boş gram/fiyat hücrelerine distribute.ts önerilerini yazar (mor, kayıtsız). */
@@ -253,88 +403,135 @@ export function VariantEditor({
     );
   }
 
-  /**
-   * Çapa satırın fiyatından tüm varyant fiyatlarını grama göre yeniden yazar.
-   * Mevcut fiyat↔gram eğrisini (çarpan + işçilik) koruyup çapaya ölçekler.
-   */
   function bulkFromAnchor(sku?: string) {
     const targetSku = sku ?? anchorSku;
     if (!targetSku) {
       toast.error("Önce bir varyant fiyatı seç veya gir.");
       return;
     }
-    const r = rows[targetSku];
-    const anchorPrice = toCents(r?.price ?? "");
-    const anchorWeight = toGram(r?.weight ?? "");
-    if (anchorPrice == null) {
-      toast.error("Çapa varyantta geçerli bir satış fiyatı olmalı.");
-      return;
-    }
-    if (anchorWeight == null) {
-      toast.error("Çapa varyantta gram olmalı — önce gramı gir veya otomatik hesapla.");
-      return;
-    }
+    applyUnitPriceFrom(targetSku, rowsRef.current);
+  }
 
-    const base = distBase();
-    // Eksik gramları bedenden tamamla ki dağıtım kapsamı genişlesin.
-    const wPreds = inferWeightsBySize(base);
-    const wMap = new Map(wPreds.map((p) => [p.sku, p]));
-    const withWeights: DistVariant[] = base.map((v) => ({
-      ...v,
-      weightGrams: v.weightGrams ?? wMap.get(v.sku)?.weightGrams ?? null,
+  function buildPreviewRows(): PricePreviewRow[] {
+    return variants.map((v) => ({
+      sku: v.sku,
+      label: v.label,
+      grams: toGram(rows[v.sku]?.weight ?? "") ?? v.weight_grams,
+      beforeCents: v.price_cents,
+      afterCents: toCents(rows[v.sku]?.price ?? ""),
     }));
+  }
 
-    const preds = propagatePricesFromAnchor(
-      withWeights,
-      targetSku,
-      anchorPrice,
-    );
-    if (preds.length === 0) {
-      toast.info("Dağıtılacak ağırlıklı varyant bulunamadı.");
+  function openPricePreview() {
+    const preview = buildPreviewRows();
+    const changed = preview.filter((r) => r.beforeCents !== r.afterCents);
+    if (changed.length === 0) {
+      toast.info("Kayda değer fiyat değişikliği yok.");
       return;
     }
-
-    const nextRows = { ...rows };
-    const nextSuggested: Record<string, Suggestion> = { ...suggested };
-    const nextDirty = new Set(weightDirty);
-    let filledWeights = 0;
-    let priced = 0;
-
-    for (const p of wPreds) {
-      const row = nextRows[p.sku];
-      if (!row || row.weight.trim()) continue;
-      nextRows[p.sku] = { ...row, weight: p.weightGrams.toFixed(2) };
-      nextSuggested[p.sku] = { ...nextSuggested[p.sku], weight: true };
-      nextDirty.add(p.sku);
-      filledWeights += 1;
+    const missingAfter = changed.filter((r) => r.afterCents == null);
+    if (missingAfter.length > 0) {
+      toast.error("Yeni fiyat boş olan satır var — doldur veya eskiye döndür.");
+      return;
     }
-    for (const p of preds) {
-      const row = nextRows[p.sku];
-      if (!row) continue;
-      const nextPrice = (p.priceCents / 100).toFixed(2);
-      if (row.price === nextPrice && p.sku === targetSku) continue;
-      nextRows[p.sku] = { ...nextRows[p.sku], price: nextPrice };
-      nextSuggested[p.sku] = {
-        ...nextSuggested[p.sku],
-        price: p.sku !== targetSku,
-      };
-      priced += 1;
-    }
+    setPreviewOpen(true);
+  }
 
-    setRows(nextRows);
-    setSuggested(nextSuggested);
-    setWeightDirty(nextDirty);
-    setAnchorSku(targetSku);
-    toast.success(
-      `${targetSku} çapasından ${priced} fiyat grama göre yazıldı` +
-        (filledWeights > 0 ? ` · ${filledWeights} gram önerildi` : "") +
-        " — mor değerler kaydetmeden yazılmaz.",
+  function confirmPriceApply() {
+    const preview = buildPreviewRows().filter(
+      (r) => r.beforeCents !== r.afterCents && r.afterCents != null,
     );
+    if (preview.length === 0) {
+      setPreviewOpen(false);
+      return;
+    }
+    const items = preview.map((r) => ({
+      sku: r.sku,
+      price: ((r.afterCents as number) / 100).toFixed(2),
+    }));
+    setBulkSaving(true);
+    saveVariantsBulkPrices(productId, items)
+      .then((res) => {
+        if (res.error) {
+          toast.error(res.error);
+          return;
+        }
+        if (res.previous) setUndoSnapshot(res.previous);
+        setSuggested({});
+        setPreviewOpen(false);
+        toast.success(
+          `${res.updated ?? 0} fiyat uygulandı — geri alabilirsin.`,
+        );
+        router.refresh();
+      })
+      .finally(() => setBulkSaving(false));
+  }
+
+  function undoLastApply() {
+    if (!undoSnapshot?.length) {
+      toast.info("Geri alınacak son uygulama yok.");
+      return;
+    }
+    setUndoing(true);
+    undoVariantPrices(productId, undoSnapshot)
+      .then((res) => {
+        if (res.error) {
+          toast.error(res.error);
+          return;
+        }
+        toast.success(`${res.restored ?? 0} fiyat geri alındı.`);
+        setUndoSnapshot(null);
+        router.refresh();
+      })
+      .finally(() => setUndoing(false));
+  }
+
+  function restoreFromEtsy() {
+    setRestoring(true);
+    restoreVariantPricesFromEtsy(productId)
+      .then((res) => {
+        if (res.error) {
+          toast.error(res.error);
+          return;
+        }
+        toast.success(
+          `Etsy’den ${res.variants ?? 0} varyant fiyatı geri alındı.`,
+        );
+        router.refresh();
+      })
+      .finally(() => setRestoring(false));
+  }
+
+  function restoreFromAudit() {
+    setRestoring(true);
+    restoreVariantPricesFromAudit(productId)
+      .then((res) => {
+        if (res.error) {
+          toast.error(res.error);
+          return;
+        }
+        toast.success(
+          `Önceki fiyatlara dönüldü (${res.restored ?? 0} varyant).`,
+        );
+        router.refresh();
+      })
+      .finally(() => setRestoring(false));
   }
 
   function save(sku: string) {
     const r = rows[sku];
     if (!r) return;
+    const server = variants.find((v) => v.sku === sku);
+    const draftPrice = toCents(r.price);
+    const priceChanged = (server?.price_cents ?? null) !== draftPrice;
+
+    // Fiyat değiştiyse önizleme zorunlu; yalnız gram/adet ise doğrudan yaz.
+    if (priceChanged) {
+      setAnchorSku(sku);
+      openPricePreview();
+      return;
+    }
+
     setSaving((s) => new Set(s).add(sku));
     updateVariant(productId, sku, {
       price: r.price,
@@ -365,13 +562,44 @@ export function VariantEditor({
       );
   }
 
+  const pendingPriceChanges = buildPreviewRows().filter(
+    (r) => r.beforeCents !== r.afterCents,
+  ).length;
+
   return (
     <div className="space-y-3">
+      {undoSnapshot && undoSnapshot.length > 0 && (
+        <div className="bg-muted/40 flex flex-wrap items-center justify-between gap-2 rounded-xl border px-3 py-2 text-sm">
+          <span>
+            Son fiyat uygulaması geri alınabilir ({undoSnapshot.length} satır).
+          </span>
+          <Button
+            type="button"
+            size="sm"
+            variant="outline"
+            disabled={undoing}
+            onClick={undoLastApply}
+          >
+            {undoing ? (
+              <Loader2 className="size-4 animate-spin" />
+            ) : (
+              <Undo2 className="size-4" />
+            )}
+            Geri al
+          </Button>
+        </div>
+      )}
+
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-muted-foreground text-xs">
-          Fiyat yanında alım maliyeti görünür
-          {karat ? ` (${karat})` : " (ayar başlıktan okunamadı)"}. Toplu fiyat:
-          bir satırı çapa seçip grama göre dağıt.
+          Taslak: birim fiyatla ($/g × gram) dağıt → önizle → onayla.
+          {anchorUnit != null
+            ? ` · çapa ${(anchorUnit / 100).toFixed(2)} $/g`
+            : ""}
+          {pendingPriceChanges > 0
+            ? ` · ${pendingPriceChanges} taslak değişiklik`
+            : ""}
+          {karat ? ` · maliyet ${karat}` : ""}.
         </p>
         <div className="flex flex-wrap items-center gap-2">
           <Button type="button" variant="ghost" size="sm" asChild>
@@ -384,11 +612,47 @@ export function VariantEditor({
             type="button"
             variant="outline"
             size="sm"
+            disabled={restoring}
+            onClick={restoreFromEtsy}
+            title="Etsy envanterindeki fiyatlara dön"
+          >
+            {restoring ? (
+              <Loader2 className="size-4 animate-spin" />
+            ) : (
+              <RotateCcw className="size-4" />
+            )}
+            Etsy’den geri al
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            disabled={restoring}
+            onClick={restoreFromAudit}
+            title="Panel audit’indeki önceki fiyatlara dön"
+          >
+            <Undo2 className="size-4" />
+            Audit’ten geri al
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
             onClick={() => bulkFromAnchor()}
             disabled={!anchorSku}
           >
             <Layers className="size-4" />
-            Toplu fiyat (çapa → gram)
+            Birim fiyattan dağıt
+          </Button>
+          <Button
+            type="button"
+            size="sm"
+            disabled={bulkSaving || pendingPriceChanges === 0}
+            onClick={openPricePreview}
+          >
+            <Eye className="size-4" />
+            Önizle ve uygula
+            {pendingPriceChanges > 0 ? ` (${pendingPriceChanges})` : ""}
           </Button>
           <Button type="button" variant="outline" size="sm" onClick={autoFill}>
             <Sparkles className="size-4" />
@@ -556,11 +820,24 @@ export function VariantEditor({
       </div>
 
       <p className="text-muted-foreground text-xs">
-        Toplu fiyat: çapa satırın satış fiyatı + mevcut varyantlar arası
-        fiyat/gram eğrisiyle diğerleri yeniden yazılır (işçilik sabiti korunur;
-        tek fiyat noktasında saf gram orantısı). Eksik otomatik: yalnız boş
-        hücreler. Para birimi {currency}.
+        Akış: taslak düzenle → Önizle ve uygula → Onayla. Uygulamadan sonra
+        &ldquo;Geri al&rdquo;. Satır Kaydet fiyat için de önizlemeyi açar;
+        yalnız gram/adet doğrudan yazılır. Para {currency}.
       </p>
+
+      <PriceChangePreviewDialog
+        open={previewOpen}
+        onOpenChange={setPreviewOpen}
+        rows={buildPreviewRows()}
+        currency={currency}
+        unitLabel={
+          anchorUnit != null
+            ? `${(anchorUnit / 100).toFixed(2)} $/g`
+            : null
+        }
+        confirming={bulkSaving}
+        onConfirm={confirmPriceApply}
+      />
     </div>
   );
 }
