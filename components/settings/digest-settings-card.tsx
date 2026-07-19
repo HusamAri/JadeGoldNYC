@@ -99,9 +99,10 @@ export function DigestSettingsCard({
 
       {!emailConfigured && (
         <p className="rounded-xl border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-sm text-amber-800 dark:text-amber-200">
-          Gönderim için <code className="font-mono text-xs">RESEND_API_KEY</code>{" "}
-          ve <code className="font-mono text-xs">RESEND_FROM_EMAIL</code> gerekir
-          (Vercel env / .env.local). Anahtar yokken cron inert kalır.
+          Gönderim için Gmail SMTP (
+          <code className="font-mono text-xs">SMTP_USER</code> +{" "}
+          <code className="font-mono text-xs">SMTP_PASS</code> App Password) veya
+          Resend gerekir. Yokken cron inert kalır.
         </p>
       )}
 

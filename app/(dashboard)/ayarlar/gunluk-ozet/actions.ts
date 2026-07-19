@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { requireMembership, requireUser } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendDailyDigests } from "@/lib/digest/send";
+import { isEmailConfigured } from "@/lib/email/send";
 
 export async function setDigestEnabled(
   enabled: boolean,
@@ -65,10 +66,10 @@ export async function sendDigestNow(): Promise<{
   if (m.role !== "owner" && m.role !== "admin") {
     return { error: "Yalnız owner/admin test gönderimi yapabilir." };
   }
-  if (!process.env.RESEND_API_KEY?.trim()) {
+  if (!isEmailConfigured()) {
     return {
       error:
-        "RESEND_API_KEY tanımlı değil. .env.local veya Vercel env’e ekleyin.",
+        "E-posta yapılandırılmadı. Vercel’de SMTP_USER + SMTP_PASS (Gmail App Password) veya RESEND_API_KEY ekleyin.",
     };
   }
 

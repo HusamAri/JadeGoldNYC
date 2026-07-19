@@ -39,7 +39,9 @@ export async function sendDailyDigests(
   };
 
   if (!opts.dryRun && !isEmailConfigured()) {
-    summary.errors.push("RESEND_API_KEY tanımlı değil.");
+    summary.errors.push(
+      "E-posta yapılandırılmadı (SMTP_USER/SMTP_PASS veya RESEND_API_KEY).",
+    );
     return summary;
   }
 

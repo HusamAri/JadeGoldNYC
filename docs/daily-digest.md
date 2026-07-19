@@ -12,16 +12,19 @@ Her sabah (cron `11:00 UTC`) org üyelerine marka renkli HTML özet gider:
 
 1. Migration `0106_digest_email_settings.sql` uygulanmış olmalı (`digest_settings`).
 2. `lib/supabase/middleware.ts` içinde `/api/cron` public olmalı (yoksa Vercel Cron login’e 307 alır).
-3. Env:
+3. Env (Gmail/Workspace SMTP öncelikli):
 
 ```bash
-RESEND_API_KEY=re_...
-RESEND_FROM_EMAIL="Jade Gold NYC <ozet@senin-domainin.com>"
+SMTP_USER=husamari@gmail.com
+SMTP_PASS=xxxx-xxxx-xxxx-xxxx   # Google App Password
+EMAIL_FROM="Jade Gold NYC <husamari@gmail.com>"
 CRON_SECRET=...
 NEXT_PUBLIC_APP_URL=https://senin-domainin.com
 ```
 
-3. Resend’de domain doğrula; yoksa test için `onboarding@resend.dev` kullan (yalnız kendi hesabına gider).
+App Password: Google hesabı → Güvenlik → 2 adımlı doğrulama → Uygulama şifreleri.
+
+Yedek (SMTP yoksa): `RESEND_API_KEY` + `RESEND_FROM_EMAIL`.
 
 ## Kullanım
 
