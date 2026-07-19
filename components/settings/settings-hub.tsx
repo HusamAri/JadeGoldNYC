@@ -12,6 +12,7 @@ import {
   Sparkles,
   Rocket,
   ArrowUpRight,
+  Mail,
   type LucideIcon,
 } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
@@ -95,6 +96,12 @@ export function SettingsHub(props: SettingsHubProps) {
   ];
 
   const strategy: Tile[] = [
+    {
+      href: "/ayarlar/gunluk-ozet",
+      title: "Günlük özet e-posta",
+      description: "Son 24 saat, aksiyonlar ve gidişat — markalı HTML mail",
+      icon: Mail,
+    },
     {
       href: "/ayarlar/etsy-guncellemeleri",
       title: "Etsy güncellemeleri",
