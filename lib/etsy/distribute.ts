@@ -284,3 +284,36 @@ export function unitPriceCentsPerGram(
   if (!(priceCents > 0) || !(weightGrams > 0)) return null;
   return priceCents / weightGrams;
 }
+
+/**
+ * Toplu fiyat girdisi = EN DÜŞÜK gramlı varyantın satış fiyatı.
+ * Örn. 700$ ve min 2g → birim 350$/g → 2.50g = 875$.
+ */
+export function propagatePricesFromMinGramPrice(
+  variants: DistVariant[],
+  minGramPriceCents: number,
+): { predictions: PricePrediction[]; minSku: string; minGrams: number; unitCentsPerGram: number } | null {
+  if (!(minGramPriceCents > 0)) return null;
+  const withW = variants.filter(
+    (v) => v.weightGrams != null && v.weightGrams > 0,
+  );
+  if (withW.length === 0) return null;
+
+  let min = withW[0];
+  for (const v of withW) {
+    if ((v.weightGrams as number) < (min.weightGrams as number)) min = v;
+  }
+  const minGrams = min.weightGrams as number;
+  const predictions = propagatePricesFromAnchor(
+    withW,
+    min.sku,
+    minGramPriceCents,
+  );
+  if (predictions.length === 0) return null;
+  return {
+    predictions,
+    minSku: min.sku,
+    minGrams,
+    unitCentsPerGram: minGramPriceCents / minGrams,
+  };
+}
