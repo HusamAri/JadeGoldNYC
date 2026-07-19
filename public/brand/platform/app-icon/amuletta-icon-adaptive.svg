@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="Amuletta">
+  <!-- Favicon — negatif A; prefers-color-scheme. -->
+  <defs>
+    <style>
+      .bg { fill: #eaecf3; }
+      .disc { fill: #6b5bd6; }
+      @media (prefers-color-scheme: dark) {
+        .bg { fill: #14161e; }
+        .disc { fill: #a99bff; }
+      }
+    </style>
+  </defs>
+  <rect class="bg" width="48" height="48" rx="10.5"/>
+  <path
+    class="disc"
+    fill-rule="evenodd"
+    d="
+      M24 6.5
+      A17.5 17.5 0 1 1 23.99 6.5
+      Z
+      M24 12
+      L15.5 34.5
+      L18.2 34.5
+      L20.5 28
+      L27.5 28
+      L29.8 34.5
+      L32.5 34.5
+      Z
+      M21.6 23.8
+      L26.4 23.8
+      L24 17.2
+      Z
+    "/>
+</svg>

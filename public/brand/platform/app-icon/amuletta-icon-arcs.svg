@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Amuletta arcs">
+  <!-- Alternatif: iki yay; negatif bo_luk Ay1 ima eder. -->
+  <rect width="512" height="512" rx="112" fill="#eaecf3"/>
+  <g fill="#6b5bd6" fill-rule="evenodd">
+    <!-- Outer amulet ring -->
+    <path d="
+      M256 64
+      A192 192 0 1 1 255.9 64
+      Z
+      M256 112
+      A144 144 0 1 0 256.1 112
+      Z
+    "/>
+    <!-- Inner arcs that leave an A-shaped void in the center band -->
+    <path d="
+      M256 150
+      L318 340
+      L286 340
+      L256 250
+      L226 340
+      L194 340
+      Z
+      M232 286
+      L280 286
+      L256 220
+      Z
+    " opacity="0"/>
+  </g>
+  <!-- Positive A bridge as thin negative-space cue: cut in ring thickness via overlay -->
+  <path
+    fill="#eaecf3"
+    fill-rule="evenodd"
+    d="
+      M256 150
+      L330 355
+      L292 355
+      L270 300
+      L242 300
+      L220 355
+      L182 355
+      Z
+      M230 268
+      L282 268
+      L256 200
+      Z
+    "/>
+</svg>

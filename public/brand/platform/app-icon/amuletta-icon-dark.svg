@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Amuletta">
+  <!-- Koyu: periwinkle disk, negatif A koyu zemini gösterir. -->
+  <defs>
+    <filter id="soft-d" x="-8%" y="-8%" width="116%" height="116%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.45"/>
+    </filter>
+    <linearGradient id="stone-d" x1="28%" y1="12%" x2="72%" y2="88%">
+      <stop offset="0%" stop-color="#c4b8ff"/>
+      <stop offset="42%" stop-color="#a99bff"/>
+      <stop offset="100%" stop-color="#6b5bd6"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="#14161e"/>
+  <ellipse cx="256" cy="404" rx="148" ry="26" fill="#000000" opacity="0.35"/>
+  <g filter="url(#soft-d)">
+    <path
+      fill="url(#stone-d)"
+      fill-rule="evenodd"
+      d="
+        M256 72
+        A184 184 0 1 1 255.9 72
+        Z
+        M256 128
+        L168 360
+        L196 360
+        L220 292
+        L292 292
+        L316 360
+        L344 360
+        Z
+        M232 248
+        L280 248
+        L256 184
+        Z
+      "/>
+  </g>
+  <ellipse cx="198" cy="168" rx="54" ry="28" fill="#ffffff" opacity="0.16" transform="rotate(-28 198 168)"/>
+</svg>
