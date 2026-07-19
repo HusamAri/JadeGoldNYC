@@ -161,3 +161,123 @@ export async function updateVariant(
   revalidatePath("/tasarimlar");
   return { ok: true };
 }
+
+/**
+ * Etsy envanterindeki fiyat/adetleri bu listing'in varyantlarına yazar
+ * (gram korunur). Panelde toplu fiyatla ezilen matrisi Etsy'ye döndürmek için.
+ */
+export async function restoreVariantPricesFromEtsy(
+  productId: string,
+): Promise<ListingActionResult & { variants?: number }> {
+  const m = await requireMembership();
+  const { syncOneListingVariants } = await import("@/lib/etsy/variants");
+  const res = await syncOneListingVariants(m.org_id, productId);
+  if (res.error) return { error: res.error };
+  revalidatePath(`/tasarimlar/listing/${productId}`);
+  revalidatePath("/tasarimlar");
+  return { ok: true, variants: res.variants };
+}
+
+/**
+ * Audit log'daki son fiyat değişiminden ÖNCEKİ price_cents değerlerine döner
+ * (Etsy senkronu yoksa / panel-only değişiklik için).
+ */
+export async function restoreVariantPricesFromAudit(
+  productId: string,
+): Promise<ListingActionResult & { restored?: number }> {
+  const m = await requireMembership();
+  const admin = createAdminClient();
+
+  const { data: variants, error: vErr } = await admin
+    .from("product_variants")
+    .select("id, sku, price_cents")
+    .eq("org_id", m.org_id)
+    .eq("product_id", productId);
+  if (vErr) return { error: vErr.message };
+  const rows = (variants ?? []) as {
+    id: string;
+    sku: string;
+    price_cents: number | null;
+  }[];
+  if (rows.length === 0) return { error: "Varyant yok." };
+
+  let restored = 0;
+  for (const v of rows) {
+    const { data: logs } = await admin
+      .from("audit_log")
+      .select("diff, created_at")
+      .eq("org_id", m.org_id)
+      .eq("entity_type", "product_variants")
+      .eq("entity_id", v.id)
+      .eq("action", "update")
+      .order("created_at", { ascending: false })
+      .limit(20);
+
+    type Diff = {
+      before?: { price_cents?: number | null };
+      after?: { price_cents?: number | null };
+    };
+    let prevPrice: number | null | undefined;
+    for (const log of (logs ?? []) as { diff: Diff }[]) {
+      const before = log.diff?.before?.price_cents;
+      const after = log.diff?.after?.price_cents;
+      if (before !== after && before != null) {
+        prevPrice = before;
+        break;
+      }
+    }
+    if (prevPrice == null || prevPrice === v.price_cents) continue;
+
+    const { error } = await admin
+      .from("product_variants")
+      .update({
+        price_cents: prevPrice,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("org_id", m.org_id)
+      .eq("id", v.id);
+    if (!error) restored += 1;
+  }
+
+  if (restored === 0) {
+    return {
+      error:
+        "Audit’te geri alınacak fiyat değişimi bulunamadı. Etsy’den geri almayı dene.",
+    };
+  }
+
+  revalidatePath(`/tasarimlar/listing/${productId}`);
+  revalidatePath("/tasarimlar");
+  return { ok: true, restored };
+}
+
+/** Birim fiyatla hesaplanmış satırları toplu kaydet. */
+export async function saveVariantsBulkPrices(
+  productId: string,
+  items: { sku: string; price: string }[],
+): Promise<ListingActionResult & { updated?: number }> {
+  const m = await requireMembership();
+  if (items.length === 0) return { error: "Kaydedilecek fiyat yok." };
+  const admin = createAdminClient();
+  let updated = 0;
+  for (const it of items) {
+    if (!it.sku.trim() || !it.price.trim()) continue;
+    const priceCents = parseMoneyToCents(it.price);
+    if (priceCents <= 0) continue;
+    const { data, error } = await admin
+      .from("product_variants")
+      .update({
+        price_cents: priceCents,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("org_id", m.org_id)
+      .eq("product_id", productId)
+      .eq("sku", it.sku)
+      .select("sku");
+    if (error) return { error: `${it.sku}: ${error.message}` };
+    if (data && data.length > 0) updated += 1;
+  }
+  revalidatePath(`/tasarimlar/listing/${productId}`);
+  revalidatePath("/tasarimlar");
+  return { ok: true, updated };
+}
