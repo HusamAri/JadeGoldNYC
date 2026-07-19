@@ -152,6 +152,8 @@ export function computeAdsSignals<T extends AdsSignalInput>(
 
 export interface AdsOverviewRow extends AdsSignalInput {
   title: string;
+  /** products.image_url — Etsy senkronundan; yoksa null */
+  imageUrl: string | null;
   createdAt: string;
   views: number;
   orders: number;
@@ -187,7 +189,7 @@ export async function getAdsOverview(orgId: string): Promise<AdsOverview> {
       supabase
         .from("product_metrics")
         .select(
-          "product_id, product_title, created_at, views, orders, ads_clicks, ads_spend_cents, ads_revenue_cents, products!inner(status)",
+          "product_id, product_title, created_at, views, orders, ads_clicks, ads_spend_cents, ads_revenue_cents, products!inner(status, title, image_url)",
         )
         .eq("org_id", orgId)
         .eq("products.status", "active")
@@ -214,6 +216,11 @@ export async function getAdsOverview(orgId: string): Promise<AdsOverview> {
     (orgRes.data as { default_currency: string | null } | null)
       ?.default_currency ?? "USD";
 
+  type ProductJoin =
+    | { status: string; title: string | null; image_url: string | null }
+    | { status: string; title: string | null; image_url: string | null }[]
+    | null;
+
   type MetricRow = {
     product_id: string | null;
     product_title: string;
@@ -223,6 +230,7 @@ export async function getAdsOverview(orgId: string): Promise<AdsOverview> {
     ads_clicks: number | null;
     ads_spend_cents: number | null;
     ads_revenue_cents: number | null;
+    products: ProductJoin;
   };
   // Aynı dönem etiketi birden çok anlık görüntü taşıyabilir — ürün başına
   // EN GÜNCEL kayıt seçilir (snapshot dedupe dersi; çift sayım yok).
@@ -235,16 +243,21 @@ export async function getAdsOverview(orgId: string): Promise<AdsOverview> {
   }
 
   const rows: AdsOverviewRow[] = [...latestByProduct.entries()]
-    .map(([productId, m]) => ({
-      productId,
-      title: m.product_title,
-      createdAt: m.created_at,
-      views: m.views ?? 0,
-      orders: m.orders ?? 0,
-      adsClicks: m.ads_clicks ?? 0,
-      spendCents: m.ads_spend_cents ?? 0,
-      adsRevenueCents: m.ads_revenue_cents ?? 0,
-    }))
+    .map(([productId, m]) => {
+      const prod = Array.isArray(m.products) ? m.products[0] : m.products;
+      const liveTitle = prod?.title?.trim();
+      return {
+        productId,
+        title: liveTitle || m.product_title || "Listing",
+        imageUrl: prod?.image_url?.trim() || null,
+        createdAt: m.created_at,
+        views: m.views ?? 0,
+        orders: m.orders ?? 0,
+        adsClicks: m.ads_clicks ?? 0,
+        spendCents: m.ads_spend_cents ?? 0,
+        adsRevenueCents: m.ads_revenue_cents ?? 0,
+      };
+    })
     .sort((a, b) => b.spendCents - a.spendCents);
 
   let spendCents = 0;
@@ -297,7 +310,7 @@ export interface AdsActionRow {
   status: AdsActionStatus;
   decided_at: string | null;
   created_at: string;
-  product: { title: string } | null;
+  product: { title: string; image_url: string | null } | null;
 }
 
 export async function listAdsActions(orgId: string): Promise<AdsActionRow[]> {
@@ -305,7 +318,7 @@ export async function listAdsActions(orgId: string): Promise<AdsActionRow[]> {
   const { data, error } = await supabase
     .from("ads_actions")
     .select(
-      "id, product_id, kind, reason, metric_snapshot, status, decided_at, created_at, product:products(title)",
+      "id, product_id, kind, reason, metric_snapshot, status, decided_at, created_at, product:products(title, image_url)",
     )
     .eq("org_id", orgId)
     .order("created_at", { ascending: false });

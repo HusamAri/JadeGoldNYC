@@ -2,6 +2,7 @@ import {
   CheckCircle2,
   ExternalLink,
   Flag,
+  ImageOff,
   ListChecks,
   Megaphone,
   MousePointerClick,
@@ -9,6 +10,7 @@ import {
   TrendingUp,
   Wallet,
 } from "lucide-react";
+import Link from "next/link";
 
 import { requireMembership } from "@/lib/auth";
 import {
@@ -115,7 +117,12 @@ export default async function ReklamlarPage() {
                 Bu panel Etsy reklamını doğrudan değiştiremez
               </span>{" "}
               — Etsy Open API v3 reklam (Etsy Ads) kontrolü ve listing ROAS
-              verisi sunmuyor. Karar burada verilir; kapatma/azaltma/artırma
+              verisi sunmuyor. Sayılar{" "}
+              <Link href="/analizler/urunler" className="text-foreground underline">
+                Analizler → Ürün Performansı
+              </Link>
+              &apos;na elle girilen &quot;son 30&quot; metriklerinden gelir
+              (Etsy senkronu bunu doldurmaz). Karar burada; kapatma/azaltma/artırma
               Etsy Reklam panosunda elle yapılıp &quot;Yapıldı&quot; işaretlenir.
             </p>
             <p>
@@ -222,8 +229,36 @@ export default async function ReklamlarPage() {
               <Card key={`${s.row.productId}-${s.signal}`}>
                 <CardContent className="space-y-3">
                   <div className="flex items-start justify-between gap-3">
-                    <p className="font-medium">{s.row.title}</p>
-                    <Badge variant={meta.badgeVariant}>{meta.title}</Badge>
+                    <div className="flex min-w-0 items-start gap-3">
+                      <Link
+                        href={`/tasarimlar/listing/${s.row.productId}`}
+                        className="bg-muted relative block size-14 shrink-0 overflow-hidden rounded-xl"
+                      >
+                        {s.row.imageUrl ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={s.row.imageUrl}
+                            alt={s.row.title}
+                            className="h-full w-full object-cover"
+                          />
+                        ) : (
+                          <span className="text-muted-foreground/50 flex h-full items-center justify-center">
+                            <ImageOff className="size-5" />
+                          </span>
+                        )}
+                      </Link>
+                      <div className="min-w-0 space-y-1">
+                        <Link
+                          href={`/tasarimlar/listing/${s.row.productId}`}
+                          className="hover:text-primary line-clamp-2 font-medium transition-colors"
+                        >
+                          {s.row.title}
+                        </Link>
+                      </div>
+                    </div>
+                    <Badge variant={meta.badgeVariant} className="shrink-0">
+                      {meta.title}
+                    </Badge>
                   </div>
                   {/* Neden — sayılarla: harcama, getiri, ROAS, bütçe payı. */}
                   <p className="text-sm tabular-nums">
@@ -319,8 +354,28 @@ export default async function ReklamlarPage() {
                         {formatDate(a.created_at)}
                       </TableCell>
                       <TableCell className="font-medium">
-                        <div className="scroll-x max-w-[220px]" title={a.product?.title}>
-                          {a.product?.title ?? "—"}
+                        <div className="flex max-w-[260px] items-center gap-2.5">
+                          <span className="bg-muted relative block size-9 shrink-0 overflow-hidden rounded-lg">
+                            {a.product?.image_url ? (
+                              // eslint-disable-next-line @next/next/no-img-element
+                              <img
+                                src={a.product.image_url}
+                                alt=""
+                                className="h-full w-full object-cover"
+                              />
+                            ) : (
+                              <span className="text-muted-foreground/40 flex h-full items-center justify-center">
+                                <ImageOff className="size-3.5" />
+                              </span>
+                            )}
+                          </span>
+                          <Link
+                            href={`/tasarimlar/listing/${a.product_id}`}
+                            className="scroll-x hover:text-primary min-w-0 truncate transition-colors"
+                            title={a.product?.title ?? undefined}
+                          >
+                            {a.product?.title ?? "—"}
+                          </Link>
                         </div>
                       </TableCell>
                       <TableCell>
@@ -434,8 +489,31 @@ export default async function ReklamlarPage() {
                 {spendingRows.slice(0, SPEND_TABLE_LIMIT).map((r) => (
                   <TableRow key={r.productId}>
                     <TableCell className="font-medium">
-                      <div className="scroll-x max-w-[280px]" title={r.title}>
-                        {r.title}
+                      <div className="flex max-w-[300px] items-center gap-2.5">
+                        <Link
+                          href={`/tasarimlar/listing/${r.productId}`}
+                          className="bg-muted relative block size-9 shrink-0 overflow-hidden rounded-lg"
+                        >
+                          {r.imageUrl ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img
+                              src={r.imageUrl}
+                              alt=""
+                              className="h-full w-full object-cover"
+                            />
+                          ) : (
+                            <span className="text-muted-foreground/40 flex h-full items-center justify-center">
+                              <ImageOff className="size-3.5" />
+                            </span>
+                          )}
+                        </Link>
+                        <Link
+                          href={`/tasarimlar/listing/${r.productId}`}
+                          className="scroll-x hover:text-primary min-w-0 truncate transition-colors"
+                          title={r.title}
+                        >
+                          {r.title}
+                        </Link>
                       </div>
                     </TableCell>
                     <TableCell className="text-right tabular-nums">
