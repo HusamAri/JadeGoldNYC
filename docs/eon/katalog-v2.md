@@ -144,6 +144,11 @@ mevcut reprice motoru sürdürür.
 Çıktı: workflow (5 mercek web araştırması → sentez → 39 listing yaz+adversarial
 doğrula). Tam şablon + araştırma: `scratchpad/eon-wf-template-pricing.json`.
 
+**Size & width edge (2026-07):** büyük beden (US 11–13) ve geniş bant (6–8 mm)
+Etsy’de gerçek avantaj. Pilot + kurallar: `docs/eon/seo-size-width-edge.md`
+(Meridian=Dome, Keystone=Beveled; Cornice slim iddiası envanter uyana kadar yok;
+doorway sayfa yok). Migration `0108_eon_seo_size_width_edge.sql`.
+
 - **Başlık formülü:** `[Karat] Solid [Color] Gold Wedding Band, [Profil/Fit], [Genişlik aralığı]`.
   Birincil anahtar (`solid [karat] [color] gold wedding band`) ilk **40 karakter**
   içinde, kullanıcının aradığı kelime sırasında; <15 kelime; tekrar/öznel sıfat/
