@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {
   Calculator,
+  Eye,
   Loader2,
   Save,
   Sparkles,
@@ -19,8 +20,14 @@ import {
   restoreVariantPricesFromEtsy,
   restoreVariantPricesFromAudit,
   saveVariantsBulkPrices,
+  undoVariantPrices,
+  type VariantPriceSnapshot,
 } from "@/app/(dashboard)/tasarimlar/listing/[id]/actions";
 import { ProductWeightInput } from "@/components/product-weight-input";
+import {
+  PriceChangePreviewDialog,
+  type PricePreviewRow,
+} from "@/components/listing/price-change-preview";
 import {
   inferWeightsBySize,
   distributePriceByWeight,
@@ -133,6 +140,11 @@ export function VariantEditor({
   const [saving, setSaving] = useState<Set<string>>(new Set());
   const [restoring, setRestoring] = useState(false);
   const [bulkSaving, setBulkSaving] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [undoSnapshot, setUndoSnapshot] = useState<VariantPriceSnapshot[] | null>(
+    null,
+  );
+  const [undoing, setUndoing] = useState(false);
   const [anchorSku, setAnchorSku] = useState<string | null>(
     () => variants.find((v) => v.price_cents != null)?.sku ?? variants[0]?.sku ?? null,
   );
@@ -400,10 +412,42 @@ export function VariantEditor({
     applyUnitPriceFrom(targetSku, rowsRef.current);
   }
 
-  function saveAllPrices() {
-    const items = variants.map((v) => ({
+  function buildPreviewRows(): PricePreviewRow[] {
+    return variants.map((v) => ({
       sku: v.sku,
-      price: rows[v.sku]?.price ?? "",
+      label: v.label,
+      grams: toGram(rows[v.sku]?.weight ?? "") ?? v.weight_grams,
+      beforeCents: v.price_cents,
+      afterCents: toCents(rows[v.sku]?.price ?? ""),
+    }));
+  }
+
+  function openPricePreview() {
+    const preview = buildPreviewRows();
+    const changed = preview.filter((r) => r.beforeCents !== r.afterCents);
+    if (changed.length === 0) {
+      toast.info("Kayda değer fiyat değişikliği yok.");
+      return;
+    }
+    const missingAfter = changed.filter((r) => r.afterCents == null);
+    if (missingAfter.length > 0) {
+      toast.error("Yeni fiyat boş olan satır var — doldur veya eskiye döndür.");
+      return;
+    }
+    setPreviewOpen(true);
+  }
+
+  function confirmPriceApply() {
+    const preview = buildPreviewRows().filter(
+      (r) => r.beforeCents !== r.afterCents && r.afterCents != null,
+    );
+    if (preview.length === 0) {
+      setPreviewOpen(false);
+      return;
+    }
+    const items = preview.map((r) => ({
+      sku: r.sku,
+      price: ((r.afterCents as number) / 100).toFixed(2),
     }));
     setBulkSaving(true);
     saveVariantsBulkPrices(productId, items)
@@ -412,11 +456,34 @@ export function VariantEditor({
           toast.error(res.error);
           return;
         }
-        toast.success(`${res.updated ?? 0} varyant fiyatı kaydedildi.`);
+        if (res.previous) setUndoSnapshot(res.previous);
         setSuggested({});
+        setPreviewOpen(false);
+        toast.success(
+          `${res.updated ?? 0} fiyat uygulandı — geri alabilirsin.`,
+        );
         router.refresh();
       })
       .finally(() => setBulkSaving(false));
+  }
+
+  function undoLastApply() {
+    if (!undoSnapshot?.length) {
+      toast.info("Geri alınacak son uygulama yok.");
+      return;
+    }
+    setUndoing(true);
+    undoVariantPrices(productId, undoSnapshot)
+      .then((res) => {
+        if (res.error) {
+          toast.error(res.error);
+          return;
+        }
+        toast.success(`${res.restored ?? 0} fiyat geri alındı.`);
+        setUndoSnapshot(null);
+        router.refresh();
+      })
+      .finally(() => setUndoing(false));
   }
 
   function restoreFromEtsy() {
@@ -454,6 +521,17 @@ export function VariantEditor({
   function save(sku: string) {
     const r = rows[sku];
     if (!r) return;
+    const server = variants.find((v) => v.sku === sku);
+    const draftPrice = toCents(r.price);
+    const priceChanged = (server?.price_cents ?? null) !== draftPrice;
+
+    // Fiyat değiştiyse önizleme zorunlu; yalnız gram/adet ise doğrudan yaz.
+    if (priceChanged) {
+      setAnchorSku(sku);
+      openPricePreview();
+      return;
+    }
+
     setSaving((s) => new Set(s).add(sku));
     updateVariant(productId, sku, {
       price: r.price,
@@ -484,14 +562,42 @@ export function VariantEditor({
       );
   }
 
+  const pendingPriceChanges = buildPreviewRows().filter(
+    (r) => r.beforeCents !== r.afterCents,
+  ).length;
+
   return (
     <div className="space-y-3">
+      {undoSnapshot && undoSnapshot.length > 0 && (
+        <div className="bg-muted/40 flex flex-wrap items-center justify-between gap-2 rounded-xl border px-3 py-2 text-sm">
+          <span>
+            Son fiyat uygulaması geri alınabilir ({undoSnapshot.length} satır).
+          </span>
+          <Button
+            type="button"
+            size="sm"
+            variant="outline"
+            disabled={undoing}
+            onClick={undoLastApply}
+          >
+            {undoing ? (
+              <Loader2 className="size-4 animate-spin" />
+            ) : (
+              <Undo2 className="size-4" />
+            )}
+            Geri al
+          </Button>
+        </div>
+      )}
+
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-muted-foreground text-xs">
-          Bir satıra satış fiyatı gir → diğerleri birim fiyatla ($/g × gram)
-          dolar
+          Taslak: birim fiyatla ($/g × gram) dağıt → önizle → onayla.
           {anchorUnit != null
             ? ` · çapa ${(anchorUnit / 100).toFixed(2)} $/g`
+            : ""}
+          {pendingPriceChanges > 0
+            ? ` · ${pendingPriceChanges} taslak değişiklik`
             : ""}
           {karat ? ` · maliyet ${karat}` : ""}.
         </p>
@@ -526,7 +632,7 @@ export function VariantEditor({
             title="Panel audit’indeki önceki fiyatlara dön"
           >
             <Undo2 className="size-4" />
-            Önceki fiyatlar
+            Audit’ten geri al
           </Button>
           <Button
             type="button"
@@ -541,15 +647,12 @@ export function VariantEditor({
           <Button
             type="button"
             size="sm"
-            disabled={bulkSaving}
-            onClick={saveAllPrices}
+            disabled={bulkSaving || pendingPriceChanges === 0}
+            onClick={openPricePreview}
           >
-            {bulkSaving ? (
-              <Loader2 className="size-4 animate-spin" />
-            ) : (
-              <Save className="size-4" />
-            )}
-            Tüm fiyatları kaydet
+            <Eye className="size-4" />
+            Önizle ve uygula
+            {pendingPriceChanges > 0 ? ` (${pendingPriceChanges})` : ""}
           </Button>
           <Button type="button" variant="outline" size="sm" onClick={autoFill}>
             <Sparkles className="size-4" />
@@ -717,11 +820,24 @@ export function VariantEditor({
       </div>
 
       <p className="text-muted-foreground text-xs">
-        Birim fiyat: P_i = (P_çapa / g_çapa) × g_i. Fiyat yazınca diğerleri
-        otomatik dolar; &ldquo;Tüm fiyatları kaydet&rdquo; veya satır Kaydet ile
-        yazılır. Yanlışlıkla ezildiyse &ldquo;Etsy’den geri al&rdquo;. Para{" "}
-        {currency}.
+        Akış: taslak düzenle → Önizle ve uygula → Onayla. Uygulamadan sonra
+        &ldquo;Geri al&rdquo;. Satır Kaydet fiyat için de önizlemeyi açar;
+        yalnız gram/adet doğrudan yazılır. Para {currency}.
       </p>
+
+      <PriceChangePreviewDialog
+        open={previewOpen}
+        onOpenChange={setPreviewOpen}
+        rows={buildPreviewRows()}
+        currency={currency}
+        unitLabel={
+          anchorUnit != null
+            ? `${(anchorUnit / 100).toFixed(2)} $/g`
+            : null
+        }
+        confirming={bulkSaving}
+        onConfirm={confirmPriceApply}
+      />
     </div>
   );
 }

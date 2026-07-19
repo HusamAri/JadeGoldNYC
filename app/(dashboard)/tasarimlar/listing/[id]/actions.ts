@@ -251,14 +251,35 @@ export async function restoreVariantPricesFromAudit(
   return { ok: true, restored };
 }
 
-/** Birim fiyatla hesaplanmış satırları toplu kaydet. */
+export type VariantPriceSnapshot = {
+  sku: string;
+  price_cents: number | null;
+};
+
+/** Toplu fiyat yazımı — önceki fiyatları döner (geri alma için). */
 export async function saveVariantsBulkPrices(
   productId: string,
   items: { sku: string; price: string }[],
-): Promise<ListingActionResult & { updated?: number }> {
+): Promise<
+  ListingActionResult & {
+    updated?: number;
+    previous?: VariantPriceSnapshot[];
+  }
+> {
   const m = await requireMembership();
   if (items.length === 0) return { error: "Kaydedilecek fiyat yok." };
   const admin = createAdminClient();
+
+  const skus = items.map((i) => i.sku.trim()).filter(Boolean);
+  const { data: beforeRows, error: beforeErr } = await admin
+    .from("product_variants")
+    .select("sku, price_cents")
+    .eq("org_id", m.org_id)
+    .eq("product_id", productId)
+    .in("sku", skus);
+  if (beforeErr) return { error: beforeErr.message };
+  const previous = (beforeRows ?? []) as VariantPriceSnapshot[];
+
   let updated = 0;
   for (const it of items) {
     if (!it.sku.trim() || !it.price.trim()) continue;
@@ -279,5 +300,33 @@ export async function saveVariantsBulkPrices(
   }
   revalidatePath(`/tasarimlar/listing/${productId}`);
   revalidatePath("/tasarimlar");
-  return { ok: true, updated };
+  return { ok: true, updated, previous };
+}
+
+/** Geri alma: önceki fiyat anlık görüntüsünü yeniden yazar. */
+export async function undoVariantPrices(
+  productId: string,
+  previous: VariantPriceSnapshot[],
+): Promise<ListingActionResult & { restored?: number }> {
+  const m = await requireMembership();
+  if (previous.length === 0) return { error: "Geri alınacak anlık görüntü yok." };
+  const admin = createAdminClient();
+  let restored = 0;
+  for (const it of previous) {
+    const { data, error } = await admin
+      .from("product_variants")
+      .update({
+        price_cents: it.price_cents,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("org_id", m.org_id)
+      .eq("product_id", productId)
+      .eq("sku", it.sku)
+      .select("sku");
+    if (error) return { error: `${it.sku}: ${error.message}` };
+    if (data && data.length > 0) restored += 1;
+  }
+  revalidatePath(`/tasarimlar/listing/${productId}`);
+  revalidatePath("/tasarimlar");
+  return { ok: true, restored };
 }
