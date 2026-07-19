@@ -1,10 +1,10 @@
 /**
  * Outbound e-posta — Gmail/Workspace SMTP öncelikli, Resend yedek.
  *
- * Gmail (Google Workspace):
- *   SMTP_USER=husam.ari@artifact-studio.com   # giriş (App Password bu hesaba)
+ * Gmail (kişisel veya Workspace):
+ *   SMTP_USER=husamari@gmail.com
  *   SMTP_PASS=<Google App Password>
- *   EMAIL_FROM="Jade Gold NYC <istanbul@artifact-studio.com>"  # görünen gönderen (alias)
+ *   EMAIL_FROM="Jade Gold NYC <husamari@gmail.com>"
  *   (opsiyonel) SMTP_HOST=smtp.gmail.com  SMTP_PORT=587
  *
  * Resend (yedek):

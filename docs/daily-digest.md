@@ -15,15 +15,14 @@ Her sabah (cron `11:00 UTC`) org üyelerine marka renkli HTML özet gider:
 3. Env (Gmail/Workspace SMTP öncelikli):
 
 ```bash
-SMTP_USER=husam.ari@artifact-studio.com          # giriş + App Password
-SMTP_PASS=xxxx-xxxx-xxxx-xxxx
-EMAIL_FROM="Jade Gold NYC <istanbul@artifact-studio.com>"  # görünen gönderen (alias)
+SMTP_USER=husamari@gmail.com
+SMTP_PASS=xxxx-xxxx-xxxx-xxxx   # Google App Password
+EMAIL_FROM="Jade Gold NYC <husamari@gmail.com>"
 CRON_SECRET=...
 NEXT_PUBLIC_APP_URL=https://senin-domainin.com
 ```
 
-App Password: Google hesabı → Güvenlik → 2 adımlı doğrulama → Uygulama şifreleri.  
-Gmail’de `istanbul@` için “Send mail as” / alias tanımlı olmalı (yoksa Gmail From’u reddeder).
+App Password: Google hesabı → Güvenlik → 2 adımlı doğrulama → Uygulama şifreleri.
 
 Yedek (SMTP yoksa): `RESEND_API_KEY` + `RESEND_FROM_EMAIL`.
 
