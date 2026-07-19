@@ -1,8 +1,19 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-/** Kimlik gerektirmeyen yollar. */
-const PUBLIC_PREFIXES = ["/login", "/api/etsy/callback"];
+/**
+ * Kimlik gerektirmeyen yollar.
+ * `/api/cron/*` Bearer CRON_SECRET ile kendini korur — oturum yokken de
+ * ulaşılabilir olmalı (aksi halde Vercel Cron login'e 307 alır, mail/senkron
+ * hiç çalışmaz). Webhook / OAuth callback da dışarıdan gelir.
+ */
+const PUBLIC_PREFIXES = [
+  "/login",
+  "/api/cron",
+  "/api/etsy/callback",
+  "/api/etsy/webhook",
+  "/api/shopify/callback",
+];
 
 /**
  * Her istekte Supabase oturum çerezini tazeler ve korumalı rotaları korur.
