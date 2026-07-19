@@ -59,8 +59,9 @@ const LISTING_STATUSES: {
 ];
 
 function statusMeta(status: string | null) {
+  const key = (status ?? "").toLowerCase();
   return (
-    LISTING_STATUSES.find((s) => s.value === status) ?? {
+    LISTING_STATUSES.find((s) => s.value === key) ?? {
       value: status ?? "",
       label: status ?? "—",
       variant: "outline" as const,
@@ -81,7 +82,10 @@ export default async function ListelerPage({
   const rows = await listListingsIndex({ search, status });
 
   const total = rows.length;
-  const active = rows.filter((r) => r.status === "active").length;
+  // Etsy `state` sync'te olduğu gibi gelir (küçük harf); KPI büyük/küçük duyarsız.
+  const active = rows.filter(
+    (r) => (r.status ?? "").toLowerCase() === "active",
+  ).length;
   const missingWeight = rows.filter((r) => r.missing_weight_count > 0).length;
   const noKeyword = rows.filter(
     (r) => !(r.research_keyword ?? "").trim(),
@@ -279,7 +283,7 @@ export default async function ListelerPage({
                           {r.title}
                         </Link>
                         <div className="text-muted-foreground mt-0.5 flex flex-wrap items-center gap-x-2 font-mono text-[11px] tracking-wide">
-                          <span>{r.sku}</span>
+                          <span>{r.sku ?? "—"}</span>
                           {r.etsy_listing_id != null ? (
                             <span className="tabular-nums">#{r.etsy_listing_id}</span>
                           ) : null}
