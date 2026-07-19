@@ -28,7 +28,7 @@ export function AnimatedDisclosure({
   className,
   summaryClassName,
   panelClassName,
-  hintClosed = true,
+  hintClosed = false,
   motion: motionMode = "height",
 }: AnimatedDisclosureProps) {
   const [open, setOpen] = useState(defaultOpen);

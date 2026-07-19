@@ -36,11 +36,17 @@ export const LISTING_FIELD_IDS = {
 export interface ListingFieldsInitial {
   title: string;
   description: string | null;
-  tags: string[] | null;
-  materials: string[] | null;
+  tags: string[] | string | null;
+  materials: string[] | string | null;
   price_cents: number | null;
   quantity: number | null;
   research_keyword: string | null;
+}
+
+function listToCsv(v: string[] | string | null | undefined): string {
+  if (v == null) return "";
+  if (typeof v === "string") return v.trim();
+  return v.join(", ");
 }
 
 /** Boş alan etiketi — amber "eksik" vurgusu (Amuletta data-gaps çip dili). */
@@ -64,6 +70,7 @@ export function ListingFieldsForm({
   productId,
   initial,
   alreadyOnEtsy = false,
+  hasVariations = false,
   weightGrams = null,
   purchasePrice14kCents,
   purchasePrice10kCents,
@@ -73,6 +80,8 @@ export function ListingFieldsForm({
   initial: ListingFieldsInitial;
   /** Listing zaten Etsy'de mi? "Etsy'e gönder" yalnız taslakta görünür. */
   alreadyOnEtsy?: boolean;
+  /** Varyantlı listingde ürün fiyat/adet Etsy'de genelde boş — eksik sayma. */
+  hasVariations?: boolean;
   /** Tek-SKU / ürün seviye gram — maliyet tahmini için. */
   weightGrams?: number | null;
   purchasePrice14kCents?: number;
@@ -84,8 +93,8 @@ export function ListingFieldsForm({
   const [fields, setFields] = useState<ListingFieldsInput>(() => ({
     title: initial.title,
     description: initial.description ?? "",
-    tags: (initial.tags ?? []).join(", "),
-    materials: (initial.materials ?? []).join(", "),
+    tags: listToCsv(initial.tags),
+    materials: listToCsv(initial.materials),
     price:
       initial.price_cents != null
         ? centsToDecimal(initial.price_cents).toFixed(2)
@@ -94,8 +103,8 @@ export function ListingFieldsForm({
     research_keyword: initial.research_keyword ?? "",
   }));
 
-  const missing = useMemo(
-    () => ({
+  const missing = useMemo(() => {
+    const base = {
       title: !fields.title.trim(),
       description: !fields.description.trim(),
       tags: !fields.tags.trim(),
@@ -103,9 +112,16 @@ export function ListingFieldsForm({
       price: !fields.price.trim(),
       quantity: !fields.quantity.trim(),
       research_keyword: !fields.research_keyword.trim(),
-    }),
-    [fields],
-  );
+    };
+    // Varyantlı ürünlerde fiyat/adet varyant satırında yaşar — künyede "eksik" yanıltır.
+    if (hasVariations) {
+      base.price = false;
+      base.quantity = false;
+    }
+    return base;
+  }, [fields, hasVariations]);
+
+  const anyMissing = Object.values(missing).some(Boolean);
 
   const priceCost = useMemo(() => {
     const tags = fields.tags
@@ -226,7 +242,15 @@ export function ListingFieldsForm({
       <div className="grid gap-4 sm:grid-cols-3">
         <div className="space-y-1.5">
           <div className="flex items-center gap-2">
-            <Label htmlFor={LISTING_FIELD_IDS.price}>Satış fiyatı ($)</Label>
+            <Label htmlFor={LISTING_FIELD_IDS.price}>
+              Satış fiyatı ($)
+              {hasVariations ? (
+                <span className="text-muted-foreground font-normal">
+                  {" "}
+                  · varyantlarda
+                </span>
+              ) : null}
+            </Label>
             {missing.price && <MissingChip />}
           </div>
           <Input
@@ -267,7 +291,15 @@ export function ListingFieldsForm({
         </div>
         <div className="space-y-1.5">
           <div className="flex items-center gap-2">
-            <Label htmlFor={LISTING_FIELD_IDS.quantity}>Adet</Label>
+            <Label htmlFor={LISTING_FIELD_IDS.quantity}>
+              Adet
+              {hasVariations ? (
+                <span className="text-muted-foreground font-normal">
+                  {" "}
+                  · varyantlarda
+                </span>
+              ) : null}
+            </Label>
             {missing.quantity && <MissingChip />}
           </div>
           <Input
@@ -298,7 +330,11 @@ export function ListingFieldsForm({
 
       <div className="flex items-center justify-between gap-3">
         <p className="text-muted-foreground text-xs">
-          Amber işaretli alanlar eksik — doldurup kaydedin.
+          {anyMissing
+            ? "Amber işaretli alanlar eksik — doldurup kaydedin."
+            : hasVariations
+              ? "Künye dolu. Fiyat ve adet varyant satırlarında."
+              : "Künye dolu."}
         </p>
         <div className="flex items-center gap-2">
           <Button type="button" onClick={save} disabled={saving}>
