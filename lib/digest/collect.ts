@@ -630,16 +630,31 @@ export async function listDigestRecipients(
     ]),
   );
 
-  // listUsers sayfalı — büyüyen platformda üye ilk 200’de olmayabilir (PR #130).
-  // Üye sayısı küçük; her id için getUserById güvenilir.
+  // getUserById tercih (sayfalama yok). Boş kalırsa listUsers sayfalı yedek
+  // (PR #130 ile aynı desen — service-role / API sürümü farklarına karşı).
   const emails = new Map<string, string>();
   await Promise.all(
     ids.map(async (id) => {
       const { data, error } = await admin.auth.admin.getUserById(id);
-      if (error || !data.user?.email) return;
-      emails.set(id, data.user.email);
+      const email = data?.user?.email?.trim();
+      if (error || !email) return;
+      emails.set(id, email);
     }),
   );
+
+  if (emails.size === 0) {
+    for (let page = 1; page <= 50; page++) {
+      const { data: userList, error: listErr } =
+        await admin.auth.admin.listUsers({ page, perPage: 1000 });
+      if (listErr) break;
+      for (const u of userList.users) {
+        const email = u.email?.trim();
+        if (email && ids.includes(u.id)) emails.set(u.id, email);
+      }
+      if (userList.users.length < 1000) break;
+      if (emails.size >= ids.length) break;
+    }
+  }
 
   const roleRank = (r: string) =>
     r === "owner" ? 0 : r === "admin" ? 1 : 2;

@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 
-import { requireMembership } from "@/lib/auth";
+import { requireMembership, requireUser } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendDailyDigests } from "@/lib/digest/send";
 
@@ -72,8 +72,17 @@ export async function sendDigestNow(): Promise<{
     };
   }
 
+  // Oturum e-postası — admin.listUsers/getUserById boş dönerse yedek alıcı.
+  const user = await requireUser();
+  const sessionEmail = user.email?.trim() ?? "";
+
   const admin = createAdminClient();
-  const summary = await sendDailyDigests(admin, { orgId: m.org_id });
+  const summary = await sendDailyDigests(admin, {
+    orgId: m.org_id,
+    extraRecipients: sessionEmail
+      ? [{ email: sessionEmail, name: null, role: m.role }]
+      : undefined,
+  });
   const result = summary.results[m.org_id];
   if (result?.error) return { error: result.error };
   if (result?.skipped) {
@@ -85,8 +94,9 @@ export async function sendDigestNow(): Promise<{
     }
     if (result.skipped.includes("e-postalı")) {
       return {
-        error:
-          "Org üyelerinin e-postası bulunamadı. Ayarlar → Ekip’te üyeleri kontrol et; sorun sürerse service-role / auth admin erişimini doğrula.",
+        error: sessionEmail
+          ? "Üye e-postaları çözülemedi ve oturum e-postası da kullanılamadı."
+          : "Oturumunda e-posta yok; Ayarlar → Ekip’te üyeleri kontrol et.",
       };
     }
     return { error: result.skipped };
