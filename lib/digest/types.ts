@@ -1,3 +1,5 @@
+import type { DigestContentPrefs } from "@/lib/digest/preferences";
+
 export type DigestBrandId = "jade-gold" | "amuletta" | "eon";
 
 export interface DigestBrandTheme {
@@ -56,6 +58,8 @@ export interface OrgDigest {
   /** Örn. 18 Temmuz 2026 · son 24 saat (NY) */
   windowLabel: string;
   generatedAtLabel: string;
+  /** İçerik tercihleri — render hangi blokları basacağını buradan okur. */
+  prefs: DigestContentPrefs;
   kpis: DigestKpi[];
   weekTrend: DigestDayPoint[];
   actions: DigestActionItem[];

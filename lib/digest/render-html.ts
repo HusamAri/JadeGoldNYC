@@ -29,9 +29,11 @@ function toneColor(
 /**
  * E-posta istemcisine uyumlu, marka paletli HTML digest.
  * Tablo düzeni + inline stil; harici CSS/font yok.
+ * Bölümler `digest.prefs.sections` ile açılıp kapanır (preference center).
  */
 export function renderDigestHtml(digest: OrgDigest): string {
   const t = digest.theme;
+  const s = digest.prefs.sections;
 
   const kpiCells = digest.kpis
     .map(
@@ -97,14 +99,56 @@ export function renderDigestHtml(digest: OrgDigest): string {
       ? `<p style="margin:0;color:${t.muted};font-size:13px;">Bugün ek öneri yok; metrikler dengede görünüyor.</p>`
       : digest.suggestions
           .map(
-            (s) => `
+            (sug) => `
       <div style="padding:12px 0;border-bottom:1px solid ${t.paper};">
-        <div style="font-size:14px;font-weight:600;color:${t.ink};">${esc(s.title)}</div>
-        <div style="font-size:13px;color:${t.muted};margin-top:4px;line-height:1.45;">${esc(s.body)}</div>
-        <a href="${esc(s.href)}" style="display:inline-block;margin-top:6px;font-size:12px;font-weight:600;color:${t.accent};text-decoration:none;">Panele git →</a>
+        <div style="font-size:14px;font-weight:600;color:${t.ink};">${esc(sug.title)}</div>
+        <div style="font-size:13px;color:${t.muted};margin-top:4px;line-height:1.45;">${esc(sug.body)}</div>
+        <a href="${esc(sug.href)}" style="display:inline-block;margin-top:6px;font-size:12px;font-weight:600;color:${t.accent};text-decoration:none;">Panele git →</a>
       </div>`,
           )
           .join("");
+
+  const section = (inner: string) =>
+    `<tr><td style="padding:8px 28px 18px;font-family:Helvetica,Arial,sans-serif;">${inner}</td></tr>`;
+
+  const bodySections = [
+    s.performance
+      ? section(`
+              <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:${t.accent};margin-bottom:10px;">Son 24 saat</div>
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>${kpiCells}</tr></table>`)
+      : "",
+    s.trend
+      ? section(`
+              <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:${t.accent};margin-bottom:8px;">Gidişat · 7 gün</div>
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <th align="left" style="font-size:11px;color:${t.muted};font-weight:500;padding-bottom:6px;">Gün</th>
+                  <th align="right" style="font-size:11px;color:${t.muted};font-weight:500;padding-bottom:6px;">Gelir</th>
+                  <th align="right" style="font-size:11px;color:${t.muted};font-weight:500;padding-bottom:6px;">Sipariş</th>
+                </tr>
+                ${trendRows}
+              </table>`)
+      : "",
+    s.actions
+      ? section(`
+              <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:${t.accent};margin-bottom:4px;">Aksiyon bekleyenler</div>
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">${actionRows}</table>`)
+      : "",
+    s.suggestions
+      ? section(`
+              <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:${t.accent};margin-bottom:8px;">Öneriler</div>
+              ${suggestionRows}`)
+      : "",
+    s.activity
+      ? `${section(`
+              <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:${t.accent};margin-bottom:8px;">Neler oldu</div>
+              ${listBlock(digest.happened, "Son 24 saatte kayda değer olay yok.")}`)}${section(`
+              <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:${t.accent};margin-bottom:8px;">Neler bitti</div>
+              ${listBlock(digest.finished, "Kapanan görev/olay kaydı yok.")}`)}`
+      : "",
+  ]
+    .filter(Boolean)
+    .join("\n");
 
   return `<!doctype html>
 <html lang="tr">
@@ -126,61 +170,14 @@ export function renderDigestHtml(digest: OrgDigest): string {
             </td>
           </tr>
 
-          <tr>
-            <td style="padding:22px 28px 8px;font-family:Helvetica,Arial,sans-serif;">
-              <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:${t.accent};margin-bottom:10px;">Son 24 saat</div>
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>${kpiCells}</tr></table>
-            </td>
-          </tr>
-
-          <tr>
-            <td style="padding:18px 28px;font-family:Helvetica,Arial,sans-serif;">
-              <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:${t.accent};margin-bottom:8px;">Gidişat · 7 gün</div>
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-                <tr>
-                  <th align="left" style="font-size:11px;color:${t.muted};font-weight:500;padding-bottom:6px;">Gün</th>
-                  <th align="right" style="font-size:11px;color:${t.muted};font-weight:500;padding-bottom:6px;">Gelir</th>
-                  <th align="right" style="font-size:11px;color:${t.muted};font-weight:500;padding-bottom:6px;">Sipariş</th>
-                </tr>
-                ${trendRows}
-              </table>
-            </td>
-          </tr>
-
-          <tr>
-            <td style="padding:8px 28px 18px;font-family:Helvetica,Arial,sans-serif;">
-              <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:${t.accent};margin-bottom:4px;">Aksiyon bekleyenler</div>
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">${actionRows}</table>
-            </td>
-          </tr>
-
-          <tr>
-            <td style="padding:8px 28px 18px;font-family:Helvetica,Arial,sans-serif;">
-              <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:${t.accent};margin-bottom:8px;">Öneriler</div>
-              ${suggestionRows}
-            </td>
-          </tr>
-
-          <tr>
-            <td style="padding:8px 28px 18px;font-family:Helvetica,Arial,sans-serif;">
-              <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:${t.accent};margin-bottom:8px;">Neler oldu</div>
-              ${listBlock(digest.happened, "Son 24 saatte kayda değer olay yok.")}
-            </td>
-          </tr>
-
-          <tr>
-            <td style="padding:8px 28px 22px;font-family:Helvetica,Arial,sans-serif;">
-              <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:${t.accent};margin-bottom:8px;">Neler bitti</div>
-              ${listBlock(digest.finished, "Kapanan görev/olay kaydı yok.")}
-            </td>
-          </tr>
+          ${bodySections}
 
           <tr>
             <td style="padding:20px 28px;background:${t.paper};font-family:Helvetica,Arial,sans-serif;text-align:center;">
               <a href="${esc(digest.panelUrl)}" style="display:inline-block;padding:12px 22px;background:${t.accent};color:${t.paper};text-decoration:none;font-size:13px;font-weight:600;letter-spacing:0.04em;">Panele git</a>
               <div style="margin-top:14px;font-size:11px;color:${t.muted};line-height:1.5;">
                 Üretildi: ${esc(digest.generatedAtLabel)} · ${esc(t.brandName)}<br/>
-                Bu özeti kapatmak için Ayarlar → Günlük özet.
+                Bu özeti özelleştirmek için Ayarlar → Günlük özet.
               </div>
             </td>
           </tr>
@@ -193,8 +190,12 @@ export function renderDigestHtml(digest: OrgDigest): string {
 }
 
 export function renderDigestSubject(digest: OrgDigest): string {
-  const rev = digest.kpis.find((k) => k.label.startsWith("Gelir"));
-  const actions = digest.actions.filter((a) => a.severity === "kritik").length;
+  const rev = digest.prefs.sections.performance
+    ? digest.kpis.find((k) => k.label.startsWith("Gelir"))
+    : null;
+  const actions = digest.prefs.sections.actions
+    ? digest.actions.filter((a) => a.severity === "kritik").length
+    : 0;
   const parts = [
     `${digest.theme.brandName}`,
     "günlük özet",
