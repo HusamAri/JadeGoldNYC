@@ -3,6 +3,10 @@ import {
   variantPropertyParts,
   type RawVariantProperties,
 } from "@/lib/variant-properties";
+import {
+  sortListingsBySkuDesc,
+  sortVariantsByWidthThenSize,
+} from "@/lib/variant-sort";
 
 /**
  * Listing Komuta Merkezi — veri katmanı.
@@ -16,6 +20,8 @@ import {
 export interface ListingIndexRow {
   id: string;
   etsy_listing_id: number | null;
+  /** Ürün-seviye (aile) SKU — liste sırası buna göre (büyük/yeni üstte). */
+  sku: string | null;
   title: string;
   status: string | null; // 'active' | 'draft' | ...
   image_url: string | null;
@@ -184,6 +190,7 @@ function variantLabel(v: {
 interface ProductIndexDbRow {
   id: string;
   etsy_listing_id: number | null;
+  sku: string | null;
   title: string;
   status: string | null;
   image_url: string | null;
@@ -292,7 +299,7 @@ export async function listListingsIndex(opts?: {
     let q = supabase
       .from("products")
       .select(
-        "id, etsy_listing_id, title, status, image_url, price_cents, currency, quantity, num_images, research_keyword",
+        "id, etsy_listing_id, sku, title, status, image_url, price_cents, currency, quantity, num_images, research_keyword",
       );
     if (scope === "archived") {
       q = q.not("archived_at", "is", null);
@@ -310,9 +317,10 @@ export async function listListingsIndex(opts?: {
       if (variantSkuIds.length) clauses.push(`id.in.(${variantSkuIds.join(",")})`);
       q = q.or(clauses.join(","));
     }
+    // DB sırası yaklaşık; doğal SKU ↓ (yeni üstte) aşağıda JS ile kesinleşir.
     return q
-      .order("title", { ascending: true })
-      .order("id", { ascending: true })
+      .order("sku", { ascending: false, nullsFirst: false })
+      .order("id", { ascending: false })
       .range(from, to);
   });
   if (products.length === 0) return [];
@@ -367,12 +375,13 @@ export async function listListingsIndex(opts?: {
 
   const researched = new Set(researchRows.map((r) => r.product_id));
 
-  return products.map((p) => {
+  const mapped = products.map((p) => {
     const va = variantAgg.get(p.id);
     const ads = adsAgg.get(p.id);
     return {
       id: p.id,
       etsy_listing_id: p.etsy_listing_id,
+      sku: p.sku,
       title: p.title,
       status: p.status,
       image_url: p.image_url,
@@ -388,6 +397,8 @@ export async function listListingsIndex(opts?: {
       ads30_orders: ads ? ads.orders : null,
     };
   });
+  // Küçük SKU altta, büyük/yeni üstte (doğal sayı: 0009 < 0010).
+  return sortListingsBySkuDesc(mapped);
 }
 
 // ── Detay: tek listing'in komuta-merkezi verisi ──────────────────────
@@ -452,13 +463,26 @@ export async function getListingDetail(
     }),
   ]);
 
-  const variants: ListingVariantRow[] = variantRows.map((v) => ({
+  const sorted = sortVariantsByWidthThenSize(
+    variantRows.map((v) => ({
+      sku: v.sku,
+      name: v.name,
+      label: variantLabel(v),
+      properties: v.properties,
+      price_cents: v.price_cents,
+      quantity: v.quantity,
+      weight_grams: v.weight_grams == null ? null : Number(v.weight_grams),
+      weight_source: v.weight_source,
+      active: v.active,
+    })),
+  );
+  const variants: ListingVariantRow[] = sorted.map((v) => ({
     sku: v.sku,
     name: v.name,
-    label: variantLabel(v),
+    label: v.label,
     price_cents: v.price_cents,
     quantity: v.quantity,
-    weight_grams: v.weight_grams == null ? null : Number(v.weight_grams),
+    weight_grams: v.weight_grams,
     weight_source: v.weight_source,
     active: v.active,
   }));

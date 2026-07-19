@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { requireMembership } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { sortVariantsByWidthThenSize } from "@/lib/variant-sort";
 
 /**
  * Otomatik Varyant hesaplayıcısının listing bağı — seçilen listing'in varyant
@@ -25,12 +26,30 @@ export async function fetchListingVariantRows(
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("product_variants")
-    .select("sku, weight_grams, price_cents")
+    .select("sku, weight_grams, price_cents, properties")
     .eq("org_id", m.org_id)
-    .eq("product_id", productId)
-    .order("sku", { ascending: true });
+    .eq("product_id", productId);
   if (error) return { error: error.message };
-  return { rows: (data as CalcVariantRow[] | null) ?? [] };
+  const sorted = sortVariantsByWidthThenSize(
+    ((data ?? []) as {
+      sku: string;
+      weight_grams: number | null;
+      price_cents: number | null;
+      properties: unknown;
+    }[]).map((r) => ({
+      sku: r.sku,
+      properties: r.properties as never,
+      weight_grams: r.weight_grams,
+      price_cents: r.price_cents,
+    })),
+  );
+  return {
+    rows: sorted.map((r) => ({
+      sku: r.sku,
+      weight_grams: r.weight_grams,
+      price_cents: r.price_cents,
+    })),
+  };
 }
 
 export interface ApplyVariantItem {

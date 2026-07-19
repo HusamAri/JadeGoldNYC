@@ -11,6 +11,7 @@ import {
   type DraftProduct,
   type DraftVariant,
 } from "@/lib/etsy/create-listing";
+import { sortVariantsByWidthThenSize } from "@/lib/variant-sort";
 
 /**
  * "Etsy'e gönder" — panel taslağını (etsy_listing_id boş) Etsy'de DRAFT listing
@@ -67,10 +68,14 @@ export async function sendListingToEtsy(
     .select("sku, properties, price_cents, quantity")
     .eq("org_id", m.org_id)
     .eq("product_id", productId)
-    .eq("active", true)
-    .order("sku", { ascending: true });
+    .eq("active", true);
   if (vErr) return { error: vErr.message };
-  const variants = (vData ?? []) as DraftVariant[];
+  const variants = sortVariantsByWidthThenSize(
+    ((vData ?? []) as DraftVariant[]).map((v) => ({
+      ...v,
+      sku: v.sku ?? "",
+    })),
+  ) as DraftVariant[];
 
   let client: EtsyClient;
   let shopId: number;

@@ -169,6 +169,11 @@ function LifecycleTable({
                   {r.title}
                 </span>
               </Link>
+              {r.sku ? (
+                <div className="text-muted-foreground mt-0.5 font-mono text-[11px] tracking-wide">
+                  {r.sku}
+                </div>
+              ) : null}
             </TableCell>
             <TableCell className="text-right whitespace-nowrap tabular-nums">
               {r.price_cents != null

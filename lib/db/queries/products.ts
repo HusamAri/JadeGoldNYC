@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import type { Product } from "@/lib/types";
+import { sortListingsBySkuDesc } from "@/lib/variant-sort";
 
 export async function listProducts(): Promise<Product[]> {
   const supabase = await createClient();
@@ -7,7 +8,7 @@ export async function listProducts(): Promise<Product[]> {
     .from("products")
     .select("*")
     .is("archived_at", null)
-    .order("title", { ascending: true })
+    .order("sku", { ascending: false, nullsFirst: false })
     .limit(500);
-  return (data ?? []) as Product[];
+  return sortListingsBySkuDesc((data ?? []) as Product[]);
 }

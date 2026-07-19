@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { sortListingsBySkuDesc } from "@/lib/variant-sort";
 
 export interface StockProduct {
   id: string;
@@ -17,7 +18,7 @@ export interface StockProduct {
 /**
  * Stok çalışma sayfası için aktif ürünler. Kategori panelde başlıktan türetilir
  * (products tablosunda kategori kolonu yok). Etsy'den senkronlanan ürünler
- * üzerinden çalışır.
+ * üzerinden çalışır. Sıra: genel SKU ↓ (yeni üstte).
  */
 export async function listStockProducts(orgId: string): Promise<StockProduct[]> {
   const supabase = await createClient();
@@ -29,6 +30,8 @@ export async function listStockProducts(orgId: string): Promise<StockProduct[]> 
     .eq("org_id", orgId)
     .eq("status", "active")
     .is("archived_at", null)
-    .order("title", { ascending: true });
-  return (data ?? []) as unknown as StockProduct[];
+    .order("sku", { ascending: false, nullsFirst: false });
+  return sortListingsBySkuDesc(
+    (data ?? []) as unknown as StockProduct[],
+  );
 }

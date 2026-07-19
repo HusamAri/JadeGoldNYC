@@ -278,11 +278,12 @@ export default async function ListelerPage({
                         >
                           {r.title}
                         </Link>
-                        {r.etsy_listing_id != null && (
-                          <span className="text-muted-foreground font-mono text-xs tabular-nums">
-                            #{r.etsy_listing_id}
-                          </span>
-                        )}
+                        <div className="text-muted-foreground mt-0.5 flex flex-wrap items-center gap-x-2 font-mono text-[11px] tracking-wide">
+                          {r.sku ? <span>{r.sku}</span> : null}
+                          {r.etsy_listing_id != null ? (
+                            <span className="tabular-nums">#{r.etsy_listing_id}</span>
+                          ) : null}
+                        </div>
                       </TableCell>
                       <TableCell>
                         <Badge variant={sm.variant}>{sm.label}</Badge>
