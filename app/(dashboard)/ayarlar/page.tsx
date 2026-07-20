@@ -1,6 +1,7 @@
 import { requireMembership, getUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { getEtsyStatus } from "@/lib/db/queries/etsy";
+import { getShopierStatus } from "@/lib/db/queries/shopier";
 import { getProfile } from "@/lib/db/queries/profile";
 import { formatDateTime } from "@/lib/format";
 import { SettingsHub } from "@/components/settings/settings-hub";
@@ -21,6 +22,7 @@ export default async function AyarlarPage() {
     .eq("id", m.org_id)
     .maybeSingle();
   const status = await getEtsyStatus(m.org_id);
+  const shopier = await getShopierStatus(m.org_id);
   const profile = user ? await getProfile(supabase, user.id) : null;
   const shipStationConfigured = Boolean(
     process.env.SHIPSTATION_API_KEY && process.env.SHIPSTATION_API_SECRET,
@@ -41,6 +43,7 @@ export default async function AyarlarPage() {
         status.last_sync_at ? formatDateTime(status.last_sync_at) : null
       }
       shipStationConfigured={shipStationConfigured}
+      shopierConnected={shopier.status === "connected"}
       profileName={profile?.full_name ?? null}
       profileEmail={user?.email ?? null}
       avatarUrl={profile?.avatar_url ?? null}

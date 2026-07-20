@@ -4,6 +4,7 @@ import { FileText } from "lucide-react";
 import { resolvePeriod, previousPeriod, samePeriodLastYear } from "@/lib/period";
 import { getDashboard } from "@/lib/db/queries/dashboard";
 import { listReports } from "@/lib/db/queries/reports";
+import { requireMembership } from "@/lib/auth";
 import { strParam, type RawSearchParams } from "@/lib/searchparams";
 import { formatMoney, formatPercent } from "@/lib/money";
 import { formatNumber, formatDate } from "@/lib/format";
@@ -40,10 +41,11 @@ export default async function RaporlarPage({
   const period = resolvePeriod(strParam(sp.period));
   const prev = previousPeriod(period);
   const lastYear = samePeriodLastYear(period);
+  const m = await requireMembership();
   const [d, prevData, lastYearData, savedReports] = await Promise.all([
-    getDashboard(period),
-    prev ? getDashboard(prev) : Promise.resolve(null),
-    lastYear ? getDashboard(lastYear) : Promise.resolve(null),
+    getDashboard(period, m.org_id),
+    prev ? getDashboard(prev, m.org_id) : Promise.resolve(null),
+    lastYear ? getDashboard(lastYear, m.org_id) : Promise.resolve(null),
     listReports(),
   ]);
   const cur = d.currency;

@@ -31,6 +31,41 @@ export async function OperatingProfitCard({ orgId }: { orgId: string }) {
   }
   const rows = [...s.months].reverse(); // en yeni ay üstte
   const current = rows[0];
+  const cur = s.currency;
+
+  // Dürüstlük: hiç gelir/maliyet kaydı yoksa sıfır dolu tablo "gerçek sıfır"
+  // gibi okunmasın — kategorisiz veya org varsayılanı dışı kayıt varsa da
+  // boş sayılmaz (uyarılar ayrı gösterilir).
+  const allZero =
+    rows.length === 0 ||
+    (rows.every(
+      (m) =>
+        m.revenue_cents === 0 &&
+        m.variable_cents === 0 &&
+        m.fixed_cents === 0 &&
+        m.orders === 0 &&
+        m.uncategorized_cents === 0,
+    ) &&
+      s.salesNonUsd === 0 &&
+      s.costsNonUsd === 0);
+  if (allZero) {
+    return (
+      <Card>
+        <CardContent className="p-5">
+          <p className="text-carved text-xs font-semibold tracking-wider uppercase">
+            İşletme kârı (EBITDA)
+          </p>
+          <p className="text-muted-foreground mt-2 max-w-[75ch] text-sm">
+            {rows.length > 0 ? `Son ${rows.length} ayda` : "Henüz"} gelir ya da
+            maliyet kaydı yok — tablo bu yüzden boş, bu bir hesap sonucu değil.
+            Satışlar Etsy senkronuyla, Etsy ücret/reklam maliyetleri ledger
+            senkronuyla otomatik dolar; malzeme/kargo gibi giderler bu sayfadan
+            elle ya da CSV ile girilir.
+          </p>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card>
@@ -45,7 +80,7 @@ export async function OperatingProfitCard({ orgId }: { orgId: string }) {
               başa-baş = sabiti karşılayan sipariş adedi
             </p>
           </div>
-          {current ? <MonthBadge m={current} /> : null}
+          {current ? <MonthBadge m={current} currency={cur} /> : null}
         </div>
 
         <div className="overflow-x-auto">
@@ -79,19 +114,19 @@ export async function OperatingProfitCard({ orgId }: { orgId: string }) {
                     ) : null}
                   </td>
                   <td className="py-1.5 pr-3 text-right tabular-nums">
-                    {formatMoney(m.revenue_cents, "USD")}
+                    {formatMoney(m.revenue_cents, cur)}
                     <span className="text-muted-foreground ml-1 text-[10px]">
                       {m.orders} sip.
                     </span>
                   </td>
                   <td className="py-1.5 pr-3 text-right tabular-nums">
-                    {formatMoney(m.variable_cents, "USD")}
+                    {formatMoney(m.variable_cents, cur)}
                   </td>
                   <td className="py-1.5 pr-3 text-right tabular-nums">
-                    {formatMoney(m.contribution_cents, "USD")}
+                    {formatMoney(m.contribution_cents, cur)}
                   </td>
                   <td className="py-1.5 pr-3 text-right tabular-nums">
-                    {formatMoney(m.fixed_cents, "USD")}
+                    {formatMoney(m.fixed_cents, cur)}
                   </td>
                   <td
                     className={cn(
@@ -100,7 +135,7 @@ export async function OperatingProfitCard({ orgId }: { orgId: string }) {
                       m.ebitda_cents < 0 && "text-red-600 dark:text-red-400",
                     )}
                   >
-                    {formatMoney(m.ebitda_cents, "USD")}
+                    {formatMoney(m.ebitda_cents, cur)}
                   </td>
                   <td className="text-muted-foreground py-1.5 text-right tabular-nums">
                     {m.breakeven_orders != null
@@ -113,13 +148,20 @@ export async function OperatingProfitCard({ orgId }: { orgId: string }) {
           </table>
         </div>
 
-        <Warnings s={{ rows, salesNonUsd: s.salesNonUsd, costsNonUsd: s.costsNonUsd }} />
+        <Warnings
+          s={{
+            rows,
+            salesNonUsd: s.salesNonUsd,
+            costsNonUsd: s.costsNonUsd,
+            currency: cur,
+          }}
+        />
       </CardContent>
     </Card>
   );
 }
 
-function MonthBadge({ m }: { m: OperatingMonth }) {
+function MonthBadge({ m, currency }: { m: OperatingMonth; currency: string }) {
   const positive = m.ebitda_cents >= 0;
   const Icon = positive ? TrendingUp : TrendingDown;
   return (
@@ -132,7 +174,7 @@ function MonthBadge({ m }: { m: OperatingMonth }) {
       )}
     >
       <Icon className="size-4" />
-      {formatMoney(m.ebitda_cents, "USD")}
+      {formatMoney(m.ebitda_cents, currency)}
       <span className="font-normal opacity-70">bu ay</span>
     </div>
   );
@@ -141,17 +183,22 @@ function MonthBadge({ m }: { m: OperatingMonth }) {
 function Warnings({
   s,
 }: {
-  s: { rows: OperatingMonth[]; salesNonUsd: number; costsNonUsd: number };
+  s: {
+    rows: OperatingMonth[];
+    salesNonUsd: number;
+    costsNonUsd: number;
+    currency: string;
+  };
 }) {
   const uncategorized = s.rows.reduce((a, m) => a + m.uncategorized_cents, 0);
   const notes: string[] = [];
   if (uncategorized > 0)
     notes.push(
-      `${formatMoney(uncategorized, "USD")} kategorisiz maliyet hesap DIŞI kaldı — kategorize et ki katkı/sabit doğru ayrışsın.`,
+      `${formatMoney(uncategorized, s.currency)} kategorisiz maliyet hesap DIŞI kaldı — kategorize et ki katkı/sabit doğru ayrışsın.`,
     );
   if (s.salesNonUsd > 0 || s.costsNonUsd > 0)
     notes.push(
-      `USD dışı ${s.salesNonUsd + s.costsNonUsd} kayıt toplama girmedi (kurlar tek sayıya toplanmaz).`,
+      `Org varsayılanı (${s.currency}) dışı ${s.salesNonUsd + s.costsNonUsd} kayıt toplama girmedi (kurlar tek sayıya toplanmaz).`,
     );
   if (!notes.length) return null;
   return (

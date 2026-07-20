@@ -158,6 +158,10 @@ export interface AdsOverviewRow extends AdsSignalInput {
   views: number;
   orders: number;
   adsClicks: number;
+  /** Karar bağlamı: canlı ürün alanları (products join'inden). */
+  etsyListingId: number | null;
+  priceCents: number | null;
+  quantity: number | null;
 }
 
 export interface AdsOverview {
@@ -189,7 +193,7 @@ export async function getAdsOverview(orgId: string): Promise<AdsOverview> {
       supabase
         .from("product_metrics")
         .select(
-          "product_id, product_title, created_at, views, orders, ads_clicks, ads_spend_cents, ads_revenue_cents, products!inner(status, title, image_url)",
+          "product_id, product_title, created_at, views, orders, ads_clicks, ads_spend_cents, ads_revenue_cents, products!inner(status, title, image_url, etsy_listing_id, price_cents, quantity)",
         )
         .eq("org_id", orgId)
         .eq("products.status", "active")
@@ -217,8 +221,22 @@ export async function getAdsOverview(orgId: string): Promise<AdsOverview> {
       ?.default_currency ?? "USD";
 
   type ProductJoin =
-    | { status: string; title: string | null; image_url: string | null }
-    | { status: string; title: string | null; image_url: string | null }[]
+    | {
+        status: string;
+        title: string | null;
+        image_url: string | null;
+        etsy_listing_id: number | null;
+        price_cents: number | null;
+        quantity: number | null;
+      }
+    | {
+        status: string;
+        title: string | null;
+        image_url: string | null;
+        etsy_listing_id: number | null;
+        price_cents: number | null;
+        quantity: number | null;
+      }[]
     | null;
 
   type MetricRow = {
@@ -256,6 +274,9 @@ export async function getAdsOverview(orgId: string): Promise<AdsOverview> {
         adsClicks: m.ads_clicks ?? 0,
         spendCents: m.ads_spend_cents ?? 0,
         adsRevenueCents: m.ads_revenue_cents ?? 0,
+        etsyListingId: prod?.etsy_listing_id ?? null,
+        priceCents: prod?.price_cents ?? null,
+        quantity: prod?.quantity ?? null,
       };
     })
     .sort((a, b) => b.spendCents - a.spendCents);
@@ -299,6 +320,12 @@ export interface AdsMetricSnapshot {
   share?: number;
   /** Fotoğrafın veri penceresi (metrik kaydının created_at'i). */
   window_to?: string | null;
+  /** Karar anındaki organik bağlam (fotoğraf farkı serisi) — önce/sonra
+   *  kıyası reklam metriğiyle sınırlı kalmasın. */
+  organic_views_delta?: number | null;
+  organic_conversion?: number | null;
+  price_cents?: number | null;
+  quantity?: number | null;
 }
 
 export interface AdsActionRow {

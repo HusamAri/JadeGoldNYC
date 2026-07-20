@@ -9,6 +9,7 @@ import {
   UserRound,
   UsersRound,
   Scale,
+  ShoppingCart,
   Sparkles,
   Rocket,
   ArrowUpRight,
@@ -27,6 +28,7 @@ export type SettingsHubProps = {
   etsyConnected: boolean;
   etsyLastSync: string | null;
   shipStationConfigured: boolean;
+  shopierConnected: boolean;
   profileName: string | null;
   profileEmail: string | null;
   avatarUrl: string | null;
@@ -46,7 +48,9 @@ const ease = [0.32, 0.72, 0, 1] as const;
 export function SettingsHub(props: SettingsHubProps) {
   const reduce = useReducedMotion();
   const liveCount =
-    (props.etsyConnected ? 1 : 0) + (props.shipStationConfigured ? 1 : 0);
+    (props.etsyConnected ? 1 : 0) +
+    (props.shipStationConfigured ? 1 : 0) +
+    (props.shopierConnected ? 1 : 0);
 
   const connections: Tile[] = [
     {
@@ -70,6 +74,16 @@ export function SettingsHub(props: SettingsHubProps) {
       status: {
         live: props.shipStationConfigured,
         label: props.shipStationConfigured ? "Hazır" : "Bekliyor",
+      },
+    },
+    {
+      href: "/ayarlar/shopier",
+      title: "Shopier",
+      description: "Türkiye kanalı — sipariş senkronu (PAT API)",
+      icon: ShoppingCart,
+      status: {
+        live: props.shopierConnected,
+        label: props.shopierConnected ? "Bağlı" : "Bağlı değil",
       },
     },
   ];
