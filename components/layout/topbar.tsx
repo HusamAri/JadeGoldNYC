@@ -184,13 +184,15 @@ export function Topbar({
           <DropdownMenuSeparator />
           <div className="p-1">
             <form action={signOut}>
-              <button
+              <Button
                 type="submit"
-                className="text-destructive hover:bg-accent flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-sm transition-colors duration-150 active:bg-accent/70"
+                variant="ghost"
+                size="sm"
+                className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10"
               >
                 <LogOut className="size-4" />
                 Çıkış yap
-              </button>
+              </Button>
             </form>
           </div>
         </DropdownMenuContent>

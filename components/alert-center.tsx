@@ -103,7 +103,7 @@ export function AlertCenterCard({ data }: { data: AlertCenter }) {
                       <li key={a.key}>
                         <Link
                           href={a.href}
-                          className="group hover:bg-secondary/40 -mx-2 flex items-center gap-3 rounded-lg px-2 py-3 transition-colors"
+                          className="group hover:bg-secondary/40 focus-visible:ring-ring/60 focus-visible:ring-[3px] focus-visible:ring-offset-2 focus-visible:ring-offset-background -mx-2 flex items-center gap-3 rounded-lg px-2 py-3 transition-colors outline-none"
                         >
                           <span className="min-w-0 flex-1">
                             <span className="flex items-center gap-2">

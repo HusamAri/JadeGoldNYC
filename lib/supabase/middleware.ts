@@ -11,6 +11,7 @@ const PUBLIC_PREFIXES = [
   "/login",
   "/privacy",
   "/api/cron",
+  "/api/ops",
   "/api/etsy/callback",
   "/api/etsy/webhook",
   "/api/shopify/callback",

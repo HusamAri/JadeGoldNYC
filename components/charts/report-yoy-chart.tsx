@@ -4,6 +4,7 @@ import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxi
 
 import type { ReportYoyPoint } from "@/lib/types";
 
+import { useChartAnimation } from "@/lib/motion";
 import {
   BarNeo,
   CHART_INK,
@@ -19,6 +20,7 @@ import {
  * hafif glow, geçmiş yıllar nötr raised. Değer etiketleri mono readout.
  */
 export function ReportYoyChart({ points }: { points: ReportYoyPoint[] }) {
+  const anim = useChartAnimation();
   const accentIdx = points.length - 1;
   return (
     <div className={`nm-pressed rounded-2xl p-3 ${CHART_INK}`}>
@@ -55,7 +57,7 @@ export function ReportYoyChart({ points }: { points: ReportYoyPoint[] }) {
             dataKey="value"
             shape={<BarNeo defsId="yoy" accentIndex={accentIdx} />}
             background={<GrooveTrack defsId="yoy" />}
-            isAnimationActive={false}
+            {...anim}
             label={{
               position: "top",
               fontSize: 11,

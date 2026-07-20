@@ -8,9 +8,9 @@ function Card({ className, ...props }: React.ComponentProps<"div">) {
       data-slot="card"
       className={cn(
         "text-card-foreground relative flex flex-col gap-7 rounded-[1.75rem] border py-7",
-        // Shadow settle only — no translate/scale (glass stays still; light does the work).
-        "transition-[box-shadow,background-color] duration-300 ease-[var(--ease-quiet)]",
-        "[background-color:var(--glass)] [background-image:var(--glass-sheen)] [border-color:var(--glass-border)] [backdrop-filter:var(--glass-filter)] shadow-[var(--lift-natural),var(--glass-highlight)] hover:shadow-[var(--lift-natural-lg),var(--glass-highlight)]",
+        // Shadow settle + tiny lift — glass stays still; light and translate do the work.
+        "transition-[box-shadow,transform,background-color] duration-300 ease-[var(--ease-quiet)]",
+        "[background-color:var(--glass)] [background-image:var(--glass-sheen)] [border-color:var(--glass-border)] [backdrop-filter:var(--glass-filter)] shadow-[var(--lift-natural),var(--glass-highlight)] hover:-translate-y-0.5 hover:shadow-[var(--lift-natural-lg),var(--glass-highlight)]",
         "dark:[background-color:var(--lume-panel)] dark:[background-image:none] dark:[backdrop-filter:none] dark:[border-color:oklch(1_0_0/0.05)] dark:shadow-[var(--lift-natural),inset_0_1px_0_oklch(1_0_0/0.06)] dark:hover:shadow-[var(--lift-natural-lg),inset_0_1px_0_oklch(1_0_0/0.06)]",
         className,
       )}
