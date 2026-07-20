@@ -9,6 +9,7 @@ import { NextResponse, type NextRequest } from "next/server";
  */
 const PUBLIC_PREFIXES = [
   "/login",
+  "/privacy",
   "/api/cron",
   "/api/etsy/callback",
   "/api/etsy/webhook",
