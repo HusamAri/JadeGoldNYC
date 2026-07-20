@@ -34,6 +34,8 @@ export async function logAudit(
       | "profile.update"
       | "org.created"
       | "shipstation.credentials"
+      | "shopier.credentials"
+      | "shopier.sync"
     >;
     entityType: string;
     summary: string;

@@ -129,7 +129,9 @@ export type AuditAction =
   | "report.export"
   | "profile.update"
   | "org.created"
-  | "shipstation.credentials";
+  | "shipstation.credentials"
+  | "shopier.credentials"
+  | "shopier.sync";
 
 export interface Profile {
   id: string;
