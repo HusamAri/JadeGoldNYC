@@ -17,6 +17,9 @@ function hasWeightBlock(description: string | null): boolean {
   return (
     /Weight by size \([^)]*\):/.test(d) ||
     d.includes("<!-- JG-WEIGHTS -->") ||
+    d.includes("&lt;!-- JG-WEIGHTS --&gt;") ||
+    d.includes("<!-- /JG-WEIGHTS -->") ||
+    d.includes("&lt;!-- /JG-WEIGHTS --&gt;") ||
     d.includes("Weights are approximate and may vary slightly per piece.")
   );
 }
