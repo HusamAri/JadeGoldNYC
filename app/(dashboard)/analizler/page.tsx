@@ -563,6 +563,14 @@ function EtsyApiSection({ insights }: { insights: EtsyInsights }) {
                 için en az 3 gün gerekir. Günlük senkron otomatik biriktirir.
               </p>
             )}
+            {/* API sınırı ilan edilir: kaynak kırılımı yok, vekilleri var. */}
+            <p className="text-muted-foreground mt-3 text-xs">
+              Etsy API trafik kaynağı kırılımı (sosyal / arama / direkt)
+              vermez; kaynak dağılımı yalnız Etsy Stats ekranındadır.
+              Paneldeki vekiller: arama terimleri (Etsy Stats CSV içe
+              aktarımı), Offsite Ads atıflı siparişler (Reklamlar) ve sosyal
+              gönderi takibi (Sosyal).
+            </p>
           </CardContent>
         </Card>
         <Card>
@@ -585,9 +593,20 @@ function EtsyApiSection({ insights }: { insights: EtsyInsights }) {
                     key={t.etsyListingId}
                     className="flex items-baseline justify-between gap-3 text-sm"
                   >
-                    <span className="scroll-x min-w-0 font-medium">
-                      {t.title}
-                    </span>
+                    {/* Drill-down: hareketin kaynağına tek tıkla inilir
+                        (listing detayındaki Görüntülenme trendi paneli). */}
+                    {t.productId ? (
+                      <Link
+                        href={`/tasarimlar/listing/${t.productId}`}
+                        className="scroll-x min-w-0 font-medium hover:underline"
+                      >
+                        {t.title}
+                      </Link>
+                    ) : (
+                      <span className="scroll-x min-w-0 font-medium">
+                        {t.title}
+                      </span>
+                    )}
                     <span className="text-muted-foreground shrink-0 text-xs tabular-nums">
                       +{formatNumber(t.deltaViews)} görüntülenme
                       {t.deltaFavorers !== 0 &&
