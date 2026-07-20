@@ -10,6 +10,8 @@ import {
   getListingMarketPosition,
 } from "@/lib/db/queries/listings";
 import { getGoldSettings } from "@/lib/db/queries/gold-settings";
+import { listCompetitorVariantMatches } from "@/lib/db/queries/keyword-research";
+import { projectPricesFromCompetitorMatches } from "@/lib/etsy/competitor-gram-price";
 import { getListingImages, type ListingImage } from "@/lib/etsy/images";
 import { listListingImages } from "@/lib/db/queries/listing-images";
 import type { ListingImage as ManagedListingImage } from "@/lib/types";
@@ -88,7 +90,18 @@ export default async function ListingDetayPage({
   const detail = await getListingDetail(id);
   if (!detail) notFound();
   const { product, variants, ads, lifetimeSales, gaps } = detail;
-  const goldSettings = await getGoldSettings();
+  const [goldSettings, rivalMatches] = await Promise.all([
+    getGoldSettings(),
+    listCompetitorVariantMatches(product.id),
+  ]);
+  const rivalProjection = projectPricesFromCompetitorMatches(
+    rivalMatches,
+    variants.map((v) => ({
+      sku: v.sku,
+      weightGrams: v.weight_grams,
+      priceCents: v.price_cents,
+    })),
+  );
   /** Künye maliyet satırı: tek SKU gramı yoksa medyan varyant gramı. */
   const kunyeWeightGrams =
     product.weight_grams ??
@@ -294,6 +307,7 @@ export default async function ListingDetayPage({
           productMaterials={product.materials}
           purchasePrice14kCents={goldSettings.purchase_price_14k_cents}
           purchasePrice10kCents={goldSettings.purchase_price_10k_cents}
+          rivalProjection={rivalProjection}
         />
       </ListingPanel>
 
