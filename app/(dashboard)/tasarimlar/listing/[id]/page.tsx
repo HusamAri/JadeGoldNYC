@@ -23,6 +23,8 @@ import { MarketPositionCard } from "@/components/listing/market-position-card";
 import { VariantMatrix } from "@/components/listing/variant-matrix";
 import { RepriceRuleCard } from "@/components/listing/reprice-rule-card";
 import { AdsSummaryCard } from "@/components/listing/ads-summary-card";
+import { ViewsTrendCard } from "@/components/listing/views-trend-card";
+import { getListingViewsTrends } from "@/lib/db/queries/etsy-insights";
 import { ListingGapsCard } from "@/components/listing/listing-gaps-card";
 import { ListingFieldsForm } from "@/components/listing/listing-fields-form";
 import { EtsyCopyCard, type EtsyCopyField } from "@/components/listing/etsy-copy-card";
@@ -107,6 +109,14 @@ export default async function ListingDetayPage({
 
   // Pazar konumu ($/gram) — günlük rutin doldurunca dolu, yoksa null (kart yok).
   const marketPosition = await getListingMarketPosition(product.id);
+
+  // Görüntülenme trendi — günlük Etsy fotoğraf birikiminden (API tarihçe vermez).
+  const viewsTrend =
+    product.etsy_listing_id != null
+      ? ((await getListingViewsTrends(m.org_id, [product.etsy_listing_id])).get(
+          product.etsy_listing_id,
+        ) ?? null)
+      : null;
 
   // EON'a özel: panelden yönetilen çoklu görsel galerisi (Drive/yükleme + sırala).
   const eon = await isEonActive();
@@ -345,6 +355,22 @@ export default async function ListingDetayPage({
           currency={product.currency}
         />
       </ListingPanel>
+
+      {product.etsy_listing_id != null && (
+        <ListingPanel
+          id="goruntulenme"
+          n="07"
+          name="Görüntülenme trendi"
+          defaultOpen={false}
+          tail={
+            viewsTrend && viewsTrend.statDays >= 2
+              ? `${viewsTrend.statDays} günlük fotoğraf`
+              : "seri olgunlaşıyor"
+          }
+        >
+          <ViewsTrendCard trend={viewsTrend} />
+        </ListingPanel>
+      )}
     </div>
   );
 }
