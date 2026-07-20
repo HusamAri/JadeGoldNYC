@@ -85,14 +85,18 @@ export async function GET(request: Request) {
   const dryRun = url.searchParams.get("dry") === "1";
   const pushEtsy = url.searchParams.get("etsy") !== "0";
 
-  const connectionString =
+  const raw =
     process.env.POSTGRES_URL_NON_POOLING || process.env.POSTGRES_URL;
-  if (!connectionString) {
+  if (!raw) {
     return NextResponse.json(
       { error: "POSTGRES_URL(_NON_POOLING) missing" },
       { status: 503 },
     );
   }
+  // Vercel/Supabase zincirinde self-signed CA; pg varsayılanı reddeder.
+  const connectionString = raw.includes("sslmode=")
+    ? raw.replace(/sslmode=[^&]+/i, "sslmode=no-verify")
+    : `${raw}${raw.includes("?") ? "&" : "?"}sslmode=no-verify`;
 
   const client = new Client({
     connectionString,
