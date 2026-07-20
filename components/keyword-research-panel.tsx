@@ -380,6 +380,7 @@ export async function KeywordResearchPanel({
                                     currency={c.currency}
                                     ourVariants={ourVariants}
                                     existingMatches={matches}
+                                    fallbackPriceCents={c.price_cents}
                                   />
                                   <AddCompetitorToSetButton
                                     productId={productId}

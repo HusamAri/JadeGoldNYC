@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useTransition } from "react";
+import { useMemo, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Link2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
@@ -41,6 +41,7 @@ export function CompetitorMatchDialog({
   currency = "USD",
   ourVariants,
   existingMatches,
+  fallbackPriceCents = null,
 }: {
   productId: string;
   competitorListingId: number;
@@ -48,6 +49,8 @@ export function CompetitorMatchDialog({
   currency?: string;
   ourVariants: { sku: string; label: string; weight_grams?: number | null }[];
   existingMatches: CompetitorVariantMatchItem[];
+  /** Teklif listesi boşsa (veya seçilmezse) kullanılacak listing fiyatı. */
+  fallbackPriceCents?: number | null;
 }) {
   const [open, setOpen] = useState(false);
   const [sku, setSku] = useState<string>("");
@@ -58,6 +61,19 @@ export function CompetitorMatchDialog({
   const [pending, start] = useTransition();
   const loadGen = useRef(0);
   const router = useRouter();
+
+  const sortedVariants = useMemo(() => {
+    return [...ourVariants].sort((a, b) => {
+      const ag = a.weight_grams != null && a.weight_grams > 0 ? 0 : 1;
+      const bg = b.weight_grams != null && b.weight_grams > 0 ? 0 : 1;
+      if (ag !== bg) return ag - bg;
+      return a.label.localeCompare(b.label, "tr");
+    });
+  }, [ourVariants]);
+
+  const noVariants = ourVariants.length === 0;
+  const canUseListingFallback =
+    fallbackPriceCents != null && fallbackPriceCents > 0;
 
   const forThisListing = existingMatches.filter(
     (m) => m.competitor_listing_id === competitorListingId,
@@ -74,6 +90,7 @@ export function CompetitorMatchDialog({
     const gen = ++loadGen.current;
     setLoadingOffs(true);
     setLoadError(null);
+    setOfferingKey("");
     void listCompetitorOfferingsForMatch(competitorListingId, currency).then(
       (r) => {
         if (gen !== loadGen.current) return;
@@ -81,9 +98,18 @@ export function CompetitorMatchDialog({
         if (r.error) {
           setLoadError(r.error);
           setOfferings([]);
+          if (fallbackPriceCents != null && fallbackPriceCents > 0) {
+            setOfferingKey("__listing__");
+          }
           return;
         }
-        setOfferings(r.offerings ?? []);
+        const offs = r.offerings ?? [];
+        setOfferings(offs);
+        if (offs.length === 0 && fallbackPriceCents != null && fallbackPriceCents > 0) {
+          setOfferingKey("__listing__");
+        } else if (offs.length === 1) {
+          setOfferingKey("0");
+        }
       },
     );
   }
@@ -93,17 +119,46 @@ export function CompetitorMatchDialog({
     if (next) loadOfferings();
   }
 
+  function listingFallbackOffering(): CompetitorOfferingOption | null {
+    if (fallbackPriceCents == null || !(fallbackPriceCents > 0)) return null;
+    return {
+      product_id: null,
+      label: competitorTitle ?? "Listing fiyatı",
+      size: null,
+      karat: null,
+      price_cents: fallbackPriceCents,
+    };
+  }
+
   function selectedOffering(): CompetitorOfferingOption | null {
-    if (!offeringKey) return null;
-    if (offeringKey === "__listing__") {
-      // Tek fiyat / listing seviyesi — ilk teklif veya yok.
-      return offerings[0] ?? null;
+    const key =
+      offeringKey ||
+      (offerings.length === 0 && canUseListingFallback ? "__listing__" : "");
+    if (!key) return null;
+    if (key === "__listing__") {
+      return listingFallbackOffering() ?? offerings[0] ?? null;
     }
-    const idx = Number(offeringKey);
+    const idx = Number(key);
     return Number.isFinite(idx) ? (offerings[idx] ?? null) : null;
   }
 
+  function resolvePriceCents(
+    off: CompetitorOfferingOption | null,
+  ): number | null {
+    if (off?.price_cents != null && off.price_cents > 0) return off.price_cents;
+    if (fallbackPriceCents != null && fallbackPriceCents > 0) {
+      return fallbackPriceCents;
+    }
+    return null;
+  }
+
   function save() {
+    if (ourVariants.length === 0) {
+      toast.error(
+        "Bu listingde eşleştirilecek Etsy SKU’su yok — önce Etsy senkronu yapın.",
+      );
+      return;
+    }
     if (!sku) {
       toast.error("Bizim varyantı seçin.");
       return;
@@ -113,6 +168,19 @@ export function CompetitorMatchDialog({
       toast.error("Rakip teklif seçin.");
       return;
     }
+    const priceCents = resolvePriceCents(off);
+    if (priceCents == null) {
+      toast.error(
+        "Rakip fiyatı yok — teklif seçin veya listing fiyatı bilinen bir rakip kullanın.",
+      );
+      return;
+    }
+    const chosen = sortedVariants.find((v) => v.sku === sku);
+    if (chosen && !(chosen.weight_grams != null && chosen.weight_grams > 0)) {
+      toast.message(
+        "Bu SKU gramsız — eşleşme kaydolur ama $/g yansıması için gram girin.",
+      );
+    }
     start(async () => {
       const r = await saveCompetitorVariantMatch(productId, {
         our_sku: sku,
@@ -121,7 +189,7 @@ export function CompetitorMatchDialog({
         competitor_label: off?.label ?? competitorTitle ?? null,
         competitor_size: off?.size ?? null,
         competitor_karat: off?.karat ?? null,
-        price_cents: off?.price_cents ?? null,
+        price_cents: priceCents,
         currency,
       });
       if (r.error) toast.error(r.error);
@@ -144,8 +212,6 @@ export function CompetitorMatchDialog({
     });
   }
 
-  if (ourVariants.length === 0) return null;
-
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
@@ -154,7 +220,11 @@ export function CompetitorMatchDialog({
           variant="ghost"
           size="sm"
           className="h-7 px-2 text-[10px] tracking-wide uppercase"
-          title="Bu rakibi bizim bir varyantla eşleştir"
+          title={
+            noVariants
+              ? "Eşleştirilecek SKU yok — Etsy senkronu gerekli"
+              : "Bu rakibi bizim bir varyantla eşleştir"
+          }
         >
           <Link2 className="size-3" />
           {matchedLabel ? "Eşleşti" : "Eşleştir"}
@@ -171,26 +241,33 @@ export function CompetitorMatchDialog({
         </DialogHeader>
 
         <div className="space-y-3">
-          <div className="space-y-1.5">
-            <p className="text-muted-foreground font-mono text-[10px] tracking-[0.14em] uppercase">
-              Bizim varyant
+          {noVariants ? (
+            <p className="text-muted-foreground rounded-lg border border-dashed px-3 py-2 text-sm">
+              Bu listingde senkron varyant / ürün SKU’su yok. Üstten Etsy
+              senkronunu çalıştırıp sayfayı yenileyin; sonra eşleştirme açılır.
             </p>
-            <Select value={sku} onValueChange={setSku}>
-              <SelectTrigger className="w-full" size="sm">
-                <SelectValue placeholder="Varyant seç…" />
-              </SelectTrigger>
-              <SelectContent>
-                {ourVariants.map((v) => (
-                  <SelectItem key={v.sku} value={v.sku}>
-                    {v.label}
-                    <span className="text-muted-foreground ml-1 font-mono text-[10px]">
-                      {v.sku}
-                    </span>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+          ) : (
+            <div className="space-y-1.5">
+              <p className="text-muted-foreground font-mono text-[10px] tracking-[0.14em] uppercase">
+                Bizim varyant
+              </p>
+              <Select value={sku} onValueChange={setSku}>
+                <SelectTrigger className="w-full" size="sm">
+                  <SelectValue placeholder="Varyant seç…" />
+                </SelectTrigger>
+                <SelectContent>
+                  {sortedVariants.map((v) => (
+                    <SelectItem key={v.sku} value={v.sku}>
+                      {v.label}
+                      <span className="text-muted-foreground ml-1 font-mono text-[10px]">
+                        {v.sku}
+                      </span>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
 
           <div className="space-y-1.5">
             <p className="text-muted-foreground font-mono text-[10px] tracking-[0.14em] uppercase">
@@ -202,20 +279,63 @@ export function CompetitorMatchDialog({
                 Teklifler yükleniyor…
               </p>
             ) : loadError ? (
-              <p className="text-destructive text-sm">{loadError}</p>
+              <div className="space-y-2">
+                <p className="text-destructive text-sm">{loadError}</p>
+                {canUseListingFallback && (
+                  <p className="text-muted-foreground text-sm">
+                    Listing fiyatı yedek:{" "}
+                    <span className="text-foreground font-mono tabular-nums">
+                      {formatMoney(fallbackPriceCents!, currency)}
+                    </span>
+                  </p>
+                )}
+              </div>
             ) : offerings.length === 0 ? (
-              <p className="text-muted-foreground text-sm">
-                Varyant teklifi yok — listing fiyatı eşleştirilir (yeniden araştır
-                sonrası güncellenir).
-              </p>
+              <div className="space-y-2">
+                <p className="text-muted-foreground text-sm">
+                  Varyant teklifi yok
+                  {canUseListingFallback
+                    ? " — bilinen listing fiyatı kullanılacak."
+                    : " ve listing fiyatı da yok; eşleştirme $/g yansıtamaz."}
+                </p>
+                {canUseListingFallback && (
+                  <Select
+                    value={offeringKey || "__listing__"}
+                    onValueChange={setOfferingKey}
+                  >
+                    <SelectTrigger className="w-full" size="sm">
+                      <SelectValue placeholder="Listing fiyatı" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="__listing__">
+                        Listing fiyatı
+                        <span className="text-muted-foreground ml-1 font-mono text-[10px] tabular-nums">
+                          {formatMoney(fallbackPriceCents!, currency)}
+                        </span>
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
+              </div>
             ) : (
               <Select value={offeringKey} onValueChange={setOfferingKey}>
                 <SelectTrigger className="w-full" size="sm">
                   <SelectValue placeholder="Teklif seç…" />
                 </SelectTrigger>
                 <SelectContent>
+                  {canUseListingFallback && (
+                    <SelectItem value="__listing__">
+                      Listing fiyatı
+                      <span className="text-muted-foreground ml-1 font-mono text-[10px] tabular-nums">
+                        {formatMoney(fallbackPriceCents!, currency)}
+                      </span>
+                    </SelectItem>
+                  )}
                   {offerings.map((o, i) => (
-                    <SelectItem key={`${o.product_id ?? i}-${o.label}`} value={String(i)}>
+                    <SelectItem
+                      key={`${o.product_id ?? i}-${o.label}`}
+                      value={String(i)}
+                    >
                       {o.label}
                       <span className="text-muted-foreground ml-1 font-mono text-[10px] tabular-nums">
                         {formatMoney(o.price_cents, currency)}
@@ -243,6 +363,11 @@ export function CompetitorMatchDialog({
                       <span className="text-muted-foreground">
                         {" "}
                         ← {m.competitor_label}
+                      </span>
+                    )}
+                    {m.price_cents != null && (
+                      <span className="text-muted-foreground ml-1 font-mono text-[10px] tabular-nums">
+                        {formatMoney(m.price_cents, m.currency ?? currency)}
                       </span>
                     )}
                   </span>
@@ -273,7 +398,14 @@ export function CompetitorMatchDialog({
             <Button
               type="button"
               size="sm"
-              disabled={pending || !sku || (offerings.length > 0 && !offeringKey)}
+              disabled={
+                pending ||
+                noVariants ||
+                !sku ||
+                (offerings.length > 0
+                  ? !offeringKey
+                  : !canUseListingFallback)
+              }
               onClick={save}
             >
               {pending ? <Loader2 className="size-3.5 animate-spin" /> : null}

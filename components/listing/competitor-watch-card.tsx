@@ -190,6 +190,7 @@ export function CompetitorWatchList({
                     currency={item.last_currency ?? currency}
                     ourVariants={ourVariants}
                     existingMatches={matches}
+                    fallbackPriceCents={item.last_price_cents}
                   />
                   <Button
                     type="button"

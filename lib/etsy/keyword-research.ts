@@ -148,11 +148,14 @@ export async function fetchCompetitorOfferings(
     );
     const products = resp.inventory?.products ?? [];
     const out: CompetitorOffering[] = [];
+    type RawOff = CompetitorOffering & { currency_code: string | null };
+    const raw: RawOff[] = [];
     for (const p of products) {
       if (p.is_deleted) continue;
       const off = (p.offerings ?? []).find((o) => !o.is_deleted);
       const cents = etsyMoneyToCents(off?.price);
-      if (!cents || (off?.price && off.price.currency_code !== currency)) continue;
+      if (!cents) continue;
+      const code = off?.price?.currency_code ?? null;
       const tokens = tokenize(p.property_values);
       const label =
         (p.property_values ?? [])
@@ -160,12 +163,32 @@ export async function fetchCompetitorOfferings(
           .join(" · ") ||
         (p.sku ? String(p.sku) : null) ||
         (p.product_id != null ? `#${p.product_id}` : "Tek fiyat");
-      out.push({
+      raw.push({
         listing_id: listingId,
         product_id: p.product_id ?? null,
         label,
         tokens,
         price_cents: cents,
+        currency_code: code,
+      });
+    }
+    // Eşleştirme için: istenen para birimi varsa onu tercih et; hiç yoksa
+    // yine fiyatlı teklifleri döndür (boş liste = price_cents null = projeksiyon yok).
+    const preferred = raw.filter(
+      (o) => !o.currency_code || o.currency_code === currency,
+    );
+    const chosen = preferred.length > 0 ? preferred : raw;
+    for (const o of chosen) {
+      const label =
+        o.currency_code && o.currency_code !== currency
+          ? `${o.label} (${o.currency_code})`
+          : o.label;
+      out.push({
+        listing_id: o.listing_id,
+        product_id: o.product_id,
+        label,
+        tokens: o.tokens,
+        price_cents: o.price_cents,
       });
     }
     return out;

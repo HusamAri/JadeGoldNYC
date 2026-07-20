@@ -162,7 +162,6 @@ export function VariantEditor({
   const [anchorSku, setAnchorSku] = useState<string | null>(
     () => variants.find((v) => v.price_cents != null)?.sku ?? variants[0]?.sku ?? null,
   );
-  const propagateTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const rowsRef = useRef(rows);
   useEffect(() => {
     rowsRef.current = rows;
@@ -370,22 +369,23 @@ export function VariantEditor({
     if (key === "weight") {
       setWeightDirty((s) => new Set(s).add(sku));
     }
+    // Fiyat yazınca yalnız bu satır + çapa seçimi değişir.
+    // Tüm varyantlara yayılım için açıkça "Birim fiyattan dağıt" gerekir.
     if (key === "price") {
       setAnchorSku(sku);
-      if (propagateTimer.current) clearTimeout(propagateTimer.current);
-      propagateTimer.current = setTimeout(() => {
-        const rs = rowsRef.current;
-        const price = toCents(rs[sku]?.price ?? "");
-        const weight = toGram(rs[sku]?.weight ?? "");
-        if (price != null && weight != null) {
-          applyUnitPriceFrom(sku, rs, { silent: true });
-        }
-      }, 450);
     }
     const field = key === "weight" ? "weight" : key === "price" ? "price" : null;
     if (field) {
       setSuggested((sg) => ({ ...sg, [sku]: { ...sg[sku], [field]: false } }));
     }
+  }
+
+  function resetDraft() {
+    setRows(initialRows(variants));
+    setSuggested({});
+    setWeightDirty(new Set());
+    rowsRef.current = initialRows(variants);
+    toast.info("Taslak sıfırlandı — paneldeki kayıtlı fiyatlar geri yüklendi.");
   }
 
   /** Boş gram/fiyat hücrelerine distribute.ts önerilerini yazar (mor, kayıtsız). */
@@ -800,7 +800,9 @@ export function VariantEditor({
 
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-muted-foreground text-xs">
-          Tek tek / çapa satır: birim fiyatla dağıt → önizle → onayla.
+          Tek fiyat yalnız o satırı değiştirir. Hepsine yaymak için &ldquo;Birim
+          fiyattan dağıt&rdquo; → önizle → onayla (yalnız panel; Etsy&rsquo;ye
+          gitmez).
           {anchorUnit != null
             ? ` · çapa ${(anchorUnit / 100).toFixed(2)} $/g`
             : ""}
@@ -816,20 +818,32 @@ export function VariantEditor({
               Hesaplayıcıda aç
             </Link>
           </Button>
+          {pendingPriceChanges > 0 && (
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={resetDraft}
+              title="Kaydedilmemiş taslak fiyatları at, paneldeki değerlere dön"
+            >
+              <RotateCcw className="size-4" />
+              Taslağı sıfırla
+            </Button>
+          )}
           <Button
             type="button"
             variant="outline"
             size="sm"
             disabled={restoring}
             onClick={restoreFromEtsy}
-            title="Etsy envanterindeki fiyatlara dön"
+            title="Etsy envanterini çekip panel fiyatlarını Etsy ile eşitle (Etsy’ye yazmaz)"
           >
             {restoring ? (
               <Loader2 className="size-4 animate-spin" />
             ) : (
               <RotateCcw className="size-4" />
             )}
-            Etsy’den geri al
+            Etsy’den çek
           </Button>
           <Button
             type="button"
@@ -848,6 +862,7 @@ export function VariantEditor({
             size="sm"
             onClick={() => bulkFromAnchor()}
             disabled={!anchorSku}
+            title="Çapa satırın $/g birim fiyatını tüm gramlı varyantlara taslak olarak yaz"
           >
             <Layers className="size-4" />
             Birim fiyattan dağıt

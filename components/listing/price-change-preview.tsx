@@ -61,7 +61,9 @@ export function PriceChangePreviewDialog({
         <DialogHeader>
           <DialogTitle>Fiyat değişikliği önizleme</DialogTitle>
           <DialogDescription>
-            Henüz kaydedilmedi. Onaylarsan panele yazılır; sonra geri alabilirsin.
+            Henüz kaydedilmedi. Onaylarsan yalnız panele yazılır (Etsy&rsquo;ye
+            gönderilmez). Son uygulamayı &ldquo;Geri al&rdquo; ile bozabilirsin;
+            Etsy ile eşitlemek için &ldquo;Etsy&rsquo;den çek&rdquo;.
             {unitLabel ? ` Birim: ${unitLabel}.` : ""}
           </DialogDescription>
         </DialogHeader>
