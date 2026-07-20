@@ -21,8 +21,13 @@ export async function getShopierStatus(orgId: string): Promise<ShopierStatus> {
       .eq("org_id", orgId)
       .eq("source", "shopier"),
   ]);
-  if (rpcRes.error)
-    console.error("[shopier] durum RPC:", rpcRes.error.message);
+  if (rpcRes.error) {
+    // Migration 0110 henüz yoksa RPC da yoktur — disconnected say, gürültü yapma.
+    const msg = rpcRes.error.message ?? "";
+    if (!/could not find|does not exist|schema cache/i.test(msg)) {
+      console.error("[shopier] durum RPC:", msg);
+    }
+  }
 
   const row = (Array.isArray(rpcRes.data) ? rpcRes.data[0] : rpcRes.data) as
     | {

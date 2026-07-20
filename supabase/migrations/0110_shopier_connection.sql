@@ -1,4 +1,4 @@
--- 0108 — Shopier bağlantısı (PAT REST API, org başına tek satır)
+-- 0110 — Shopier bağlantısı (PAT REST API, org başına tek satır)
 -- ------------------------------------------------------------------
 -- Shopier resmi PAT (kişisel erişim anahtarı) REST API'si (api.shopier.com/v1)
 -- sipariş/ürün verisi verir. Bu iskelet SİPARİŞ senkronunu kurar:
