@@ -1757,6 +1757,47 @@ html[data-brand="artifact"] .jg-dust {
   gap: clamp(2.25rem, 3.5vw, 3.5rem);
 }
 
+/* ── Cursor-reactive spotlight (Amuletta "pencere ışığı") ────────────────
+   Kart-lokal --mx/--my değişkenlerinden beslenen geniş, çok düşük opaklıklı
+   radyal ışık — sert spotlight değil, camda doğal yansıma. useCursorGlow
+   hook'u değişkenleri yazar; katman yalnız hover'da görünür (sakin settle).
+   Tek paint bölgesi: kartın kendi ::after'ı; backdrop churn YOK. */
+.cursor-glow {
+  position: relative;
+}
+.cursor-glow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    210px circle at var(--mx, 50%) var(--my, 50%),
+    rgb(255 255 255 / 0.16),
+    transparent 68%
+  );
+  opacity: 0;
+  transition: opacity 0.45s var(--ease-premium);
+}
+.cursor-glow:hover::after,
+.cursor-glow:focus-visible::after,
+.cursor-glow:focus-within::after {
+  opacity: 1;
+}
+.dark .cursor-glow::after {
+  background: radial-gradient(
+    210px circle at var(--mx, 50%) var(--my, 50%),
+    rgb(205 214 255 / 0.12),
+    transparent 68%
+  );
+}
+/* İçerik ışık katmanının altında kalmasın diye z-index düzeni. */
+.cursor-glow > * {
+  position: relative;
+  z-index: 2;
+}
+
 /* ── Amuletta frost overlay (yay/halka mark + buz + dalga) ─────────────── */
 .frost-overlay {
   position: fixed;

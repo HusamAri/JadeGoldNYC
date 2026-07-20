@@ -1,11 +1,14 @@
+"use client";
+
 import Link from "next/link";
 import { CircleCheck, TriangleAlert } from "lucide-react";
 
 import type { Alert, AlertCenter, AlertSeverity } from "@/lib/db/queries/alerts";
 import { formatMoney } from "@/lib/money";
+import { useCursorGlow } from "@/components/motion/cursor-glow";
 import { cn } from "@/lib/utils";
 
-/** Deterministik minik hash — kutu yerleşimi/salınım fazı için. */
+/** Deterministik minik hash — kutu fazı/jitter'ı için (render'lar arası sabit). */
 function hash(s: string): number {
   let h = 2166136261;
   for (let i = 0; i < s.length; i++) {
@@ -26,22 +29,24 @@ const MATERIAL: Record<
   {
     label: string;
     matLabel: string;
-    z: number; // derinlik bandı merkezi (px) — kritik önde, bilgi arkada
+    bandY: number; // sahnedeki yatay bandın dikey merkezi (%)
+    z: number; // derinlik (px) — kritik önde, bilgi arkada
     width: number; // px
     surface: string; // background-image
     surfaceDark: string;
     border: string;
     glow: string;
     text: string;
-    filter: string; // backdrop-filter
+    filter: string; // backdrop-filter (yalnız hover'da)
     extra?: "ab-liquid" | "ab-frost";
   }
 > = {
   kritik: {
     label: "Kritik",
     matLabel: "renkli cam",
-    z: 80,
-    width: 200,
+    bandY: 27,
+    z: 56,
+    width: 208,
     surface:
       "linear-gradient(135deg, oklch(0.62 0.19 20 / 0.34), oklch(0.5 0.22 15 / 0.16))",
     surfaceDark:
@@ -54,8 +59,9 @@ const MATERIAL: Record<
   onemli: {
     label: "Önemli",
     matLabel: "liquid cam",
-    z: 10,
-    width: 184,
+    bandY: 54,
+    z: 0,
+    width: 192,
     surface:
       "linear-gradient(120deg, oklch(0.8 0.12 78 / 0.2), oklch(0.72 0.14 62 / 0.08))",
     surfaceDark:
@@ -69,8 +75,9 @@ const MATERIAL: Record<
   bilgi: {
     label: "Bilgi",
     matLabel: "buzlu cam",
-    z: -70,
-    width: 168,
+    bandY: 80,
+    z: -56,
+    width: 176,
     surface:
       "linear-gradient(160deg, oklch(0.92 0.03 220 / 0.32), oklch(0.85 0.04 210 / 0.18))",
     surfaceDark:
@@ -84,72 +91,61 @@ const MATERIAL: Record<
 };
 
 const ORDER: AlertSeverity[] = ["kritik", "onemli", "bilgi"];
-/** Board'da aynı anda asılı duran en çok kutu — kalanı liste kartına düşer. */
-const MAX_BOXES = 14;
+/** Bant başına en çok kutu — negative space'i korumak için sert tavan. */
+const MAX_PER_BAND = 5;
 
 interface PlacedBox {
   alert: Alert;
   xPct: number;
   yPct: number;
   z: number;
-  rotX: number;
-  rotY: number;
-  durMs: number;
   delayMs: number;
 }
 
 /**
- * Alana EŞİT ama RASTGELE dağılım: kutu sayısına göre bir hücre ızgarası
- * kurulur, hücreler ızgara boyuna aralarında asal bir adımla (stride)
- * karıştırılarak gezilir — her kutu farklı hücreye düşer (eşitlik), hücre
- * içindeki konum + derinlik + eğim uyarı anahtarının hash'inden gelir
- * (rastgelelik; deterministik, render'lar arası sabit).
+ * DÜZENLİ VİTRİN yerleşimi (v2) — eski sürüm her kutuyu rastgele hücre+3B
+ * rotasyonla fırlatıyordu ("corrupted" his). Yeni dil: her önem derecesi kendi
+ * yatay bandında SAKİN, EŞİT aralıklı dizilir; kritik önde ve üstte, bilgi
+ * arkada ve altta. Jitter yalnız ±%3 nefes payı — kompozisyon okunur kalır.
+ * Derinlik tek eksende (translateZ), rotasyon YOK; motion cursor-reactive
+ * ışık + hover settle'dan gelir.
  */
-function placeBoxes(alerts: Alert[]): PlacedBox[] {
-  const n = alerts.length;
-  const cols = Math.max(3, Math.ceil(Math.sqrt(n * 2.6)));
-  const rows = Math.max(2, Math.ceil(n / cols));
-  const cells = cols * rows;
-  // cells'e göre asal bir stride (altın orana yakın başla, asal olana yürü)
-  let stride = Math.max(1, Math.round(cells * 0.618));
-  const gcd = (a: number, b: number): number => (b === 0 ? a : gcd(b, a % b));
-  while (gcd(stride, cells) !== 1) stride++;
-
-  return alerts.map((a, i) => {
-    const h = hash(a.key);
-    const cell = ((i + 1) * stride) % cells;
-    const col = cell % cols;
-    const row = Math.floor(cell / cols);
-    const jx = ((h % 100) / 100 - 0.5) * 0.55; // hücre içi kayma (±%27)
-    const jy = (((h >> 5) % 100) / 100 - 0.5) * 0.5;
-    const m = MATERIAL[a.severity];
-    return {
-      alert: a,
-      xPct: Math.min(94, Math.max(6, ((col + 0.5 + jx) / cols) * 100)),
-      yPct: Math.min(86, Math.max(14, ((row + 0.5 + jy) / rows) * 100)),
-      z: m.z + (((h >> 9) % 44) - 22),
-      rotX: ((h >> 3) % 11) - 5,
-      rotY: ((h >> 13) % 17) - 8,
-      durMs: 5200 + (h % 4600),
-      delayMs: -(h % 5000),
-    };
-  });
+function placeBoxes(alerts: Alert[]): { boxes: PlacedBox[]; overflow: number } {
+  const boxes: PlacedBox[] = [];
+  let placed = 0;
+  for (const sev of ORDER) {
+    const items = alerts
+      .filter((a) => a.severity === sev)
+      .slice(0, MAX_PER_BAND);
+    const n = items.length;
+    items.forEach((a, i) => {
+      const h = hash(a.key);
+      const jx = ((h % 100) / 100 - 0.5) * 6; // ±%3 nefes payı
+      const jy = (((h >> 5) % 100) / 100 - 0.5) * 5;
+      boxes.push({
+        alert: a,
+        xPct: Math.min(91, Math.max(9, ((i + 0.5) / n) * 100 + jx)),
+        yPct: MATERIAL[sev].bandY + jy,
+        z: MATERIAL[sev].z + (((h >> 9) % 18) - 9),
+        delayMs: placed * 60,
+      });
+      placed++;
+    });
+  }
+  return { boxes, overflow: alerts.length - placed };
 }
 
 /**
- * UYARI MERKEZİ 3B BOARD — geniş bir sahnede havada asılı, önlü-arkalı
- * kesişen cam kutular. Kritikler renkli cam olarak öne, önemliler liquid
- * cam olarak orta düzleme, bilgiler buzlu cam olarak arkaya asılır; hepsi
- * alana eşit-ama-rastgele dağılır ve kendi fazında süzülür. Kutuya hover →
- * detay; tık → aksiyon yüzeyi. Ayrıntılı liste kartı ayrıca yaşar
- * (özet + detay ikilisi); bu board "neler asılı duruyor?"un uzamsal halidir.
+ * UYARI BOARD'U v2 — sakin vitrin: önem derecesine göre üç yatay banda dizilmiş
+ * cam kutular (kritik renkli cam önde/üstte · önemli liquid cam ortada · bilgi
+ * buzlu cam arkada/altta). Cursor-reactive "pencere ışığı" her kutuda pointer'ı
+ * takip eder; hover'da cam bozması + hafif yükselme. Eski rastgele 3B saçılım
+ * kaldırıldı — negative space kompozisyonun parçası. Ayrıntılı liste kartı
+ * ayrıca yaşar (özet + detay ikilisi).
  */
 export function AlertBoard3D({ data }: { data: AlertCenter }) {
   const { alerts, counts, total, currency } = data;
-  const shown = alerts.slice(0, MAX_BOXES);
-  const overflow = total - shown.length;
-  const boxes = placeBoxes(shown);
-  // Önem grupları legend'i — sayaçlar tam listeden (kesilen değil).
+  const { boxes, overflow } = placeBoxes(alerts);
   const visibleSeverities = ORDER.filter((s) => counts[s] > 0);
 
   return (
@@ -166,8 +162,14 @@ export function AlertBoard3D({ data }: { data: AlertCenter }) {
         />
         <p className="font-semibold">Uyarı Board&rsquo;u</p>
         <span className="text-muted-foreground text-xs">
-          havada asılı {shown.length} uyarı
-          {overflow > 0 && ` · +${overflow} listede`}
+          {total > 0 ? (
+            <>
+              havada asılı {boxes.length} uyarı
+              {overflow > 0 && ` · +${overflow} listede`}
+            </>
+          ) : (
+            "aksiyon bekleyen yok"
+          )}
         </span>
         <span className="text-muted-foreground ml-auto hidden gap-3 font-mono text-[10px] tracking-[0.08em] uppercase sm:flex">
           {ORDER.map((s) => (
@@ -186,10 +188,10 @@ export function AlertBoard3D({ data }: { data: AlertCenter }) {
         </span>
       </div>
 
-      {/* 3B sahne */}
+      {/* Sakin vitrin sahnesi — üç bant, tek eksen derinlik */}
       <div
         className="relative h-[340px] sm:h-[380px]"
-        style={{ perspective: "1300px", perspectiveOrigin: "50% 42%" }}
+        style={{ perspective: "1200px", perspectiveOrigin: "50% 42%" }}
       >
         {total === 0 ? (
           <p className="text-muted-foreground absolute inset-x-0 top-1/2 flex -translate-y-1/2 items-center justify-center gap-2 text-sm">
@@ -201,99 +203,106 @@ export function AlertBoard3D({ data }: { data: AlertCenter }) {
             className="absolute inset-0"
             style={{ transformStyle: "preserve-3d" }}
           >
-            {boxes.map(({ alert: a, ...p }, i) => {
-              const m = MATERIAL[a.severity];
-              return (
-                <div
-                  key={a.key}
-                  // Kademeli belirme: kutular sahneye sırayla yerleşir
-                  // (soft-in yalnız opacity+blur — inline 3B transform'a dokunmaz).
-                  className="soft-in absolute"
-                  style={{
-                    left: `${p.xPct}%`,
-                    top: `${p.yPct}%`,
-                    transform: `translate(-50%, -50%) translateZ(${p.z}px) rotateX(${p.rotX}deg) rotateY(${p.rotY}deg)`,
-                    transformStyle: "preserve-3d",
-                    animationDelay: `${i * 70}ms`,
-                    animationDuration: "0.6s",
-                  }}
-                >
-                  {/* PERF: sürekli ab-float süzülmesi kaldırıldı — 14 kutunun
-                      her-kare hareketi kompoziti boğuyordu (ölçüm: 5 FPS).
-                      Derinlik/eğim + kademeli giriş uzamsal dili taşımaya
-                      devam ediyor; hover'da cam bozması ve büyüme canlı. */}
-                  <div>
-                    <Link
-                      href={a.href}
-                      className={cn(
-                        "group ab-glass relative block overflow-visible rounded-2xl border p-3 transition-transform duration-300 hover:z-30 hover:scale-[1.06] focus-visible:z-30 focus-visible:scale-[1.06] active:scale-[1.01] active:duration-150",
-                        "[background-image:var(--ab-surface)] dark:[background-image:var(--ab-surface-dark)]",
-                        m.extra,
-                      )}
-                      style={{
-                        width: `${m.width}px`,
-                        "--ab-surface": m.surface,
-                        "--ab-surface-dark": m.surfaceDark,
-                        // PERF: backdrop-filter süzülen kutuda HER KAREDE yeniden
-                        // örneklenir (14 kutu × blur 3-13px = FPS katili). Cam
-                        // bozması yalnız HOVER'da devreye girer (.ab-glass);
-                        // idle'da gradient yüzey + glow zaten cam hissi verir.
-                        "--ab-filter": m.filter,
-                        borderColor: m.border,
-                        boxShadow: `${m.glow}, inset 0 1px 0 oklch(1 0 0 / 0.45)`,
-                      } as React.CSSProperties}
-                    >
-                      <span
-                        className={cn(
-                          "font-mono text-[9px] font-bold tracking-[0.16em] uppercase",
-                          m.text,
-                        )}
-                      >
-                        {m.label}
-                        {a.count > 1 && (
-                          <span className="ml-1 tabular-nums opacity-80">
-                            ×{a.count}
-                          </span>
-                        )}
-                      </span>
-                      <span className="mt-0.5 block text-[12px] leading-snug font-semibold [text-shadow:0_1px_2px_oklch(1_0_0/0.3)] dark:[text-shadow:0_1px_3px_oklch(0_0_0/0.5)]">
-                        {a.title}
-                      </span>
-                      {a.costCents != null && a.costCents > 0 && (
-                        <span
-                          className={cn(
-                            "mt-1 inline-block rounded-full border px-1.5 py-0.5 font-mono text-[10px] font-bold tabular-nums",
-                            m.text,
-                          )}
-                          style={{ borderColor: m.border }}
-                          title="Dondurulan potansiyel gelir"
-                        >
-                          {formatMoney(a.costCents, currency)}
-                        </span>
-                      )}
-
-                      {/* Hover detay popup'ı — cam üstünde cam */}
-                      <span className="pointer-events-none invisible absolute bottom-[calc(100%+8px)] left-1/2 z-40 w-[240px] -translate-x-1/2 translate-y-1.5 rounded-xl border border-[color:var(--glass-border)] [background-color:var(--glass)] [background-image:var(--glass-sheen)] px-3 py-2 opacity-0 shadow-[var(--lift-sm)] [backdrop-filter:var(--glass-filter)] transition-[opacity,translate] duration-200 ease-[var(--ease-premium)] group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 dark:border-[color:oklch(1_0_0/0.2)] dark:[background-color:var(--lume-glass)] dark:[background-image:none]">
-                        <span className="text-muted-foreground block text-[11px] leading-relaxed">
-                          {a.hint}
-                        </span>
-                        <span
-                          className={cn(
-                            "mt-1 block font-mono text-[10px] font-bold tracking-[0.1em] uppercase",
-                            m.text,
-                          )}
-                        >
-                          {a.actionLabel} →
-                        </span>
-                      </span>
-                    </Link>
-                  </div>
-                </div>
-              );
-            })}
+            {boxes.map((b) => (
+              <AlertBox key={b.alert.key} box={b} currency={currency} />
+            ))}
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+/** Tek cam kutu — cursor-reactive ışık + hover cam bozması. */
+function AlertBox({
+  box,
+  currency,
+}: {
+  box: PlacedBox;
+  currency: string;
+}) {
+  const { alert: a, xPct, yPct, z, delayMs } = box;
+  const m = MATERIAL[a.severity];
+  const { ref, onPointerMove } = useCursorGlow<HTMLAnchorElement>();
+
+  return (
+    <div
+      // Kademeli belirme: kutular sahneye sırayla yerleşir
+      // (soft-in yalnız opacity+blur — inline 3B transform'a dokunmaz).
+      className="soft-in absolute"
+      style={{
+        left: `${xPct}%`,
+        top: `${yPct}%`,
+        transform: `translate(-50%, -50%) translateZ(${z}px)`,
+        transformStyle: "preserve-3d",
+        animationDelay: `${delayMs}ms`,
+        animationDuration: "0.6s",
+      }}
+    >
+      <Link
+        ref={ref}
+        onPointerMove={onPointerMove}
+        href={a.href}
+        className={cn(
+          "group cursor-glow ab-glass relative block overflow-hidden rounded-2xl border p-3 transition-[transform,box-shadow] duration-300 ease-[var(--ease-premium)] hover:z-30 hover:-translate-y-1 focus-visible:z-30 focus-visible:-translate-y-1 active:translate-y-0 active:duration-150",
+          "[background-image:var(--ab-surface)] dark:[background-image:var(--ab-surface-dark)]",
+          m.extra,
+        )}
+        style={
+          {
+            width: `${m.width}px`,
+            "--ab-surface": m.surface,
+            "--ab-surface-dark": m.surfaceDark,
+            // PERF: backdrop-filter yalnız HOVER'da devreye girer (.ab-glass);
+            // idle'da gradient yüzey + glow zaten cam hissi verir.
+            "--ab-filter": m.filter,
+            borderColor: m.border,
+            boxShadow: `${m.glow}, inset 0 1px 0 oklch(1 0 0 / 0.45)`,
+          } as React.CSSProperties
+        }
+      >
+        <span
+          className={cn(
+            "font-mono text-[9px] font-bold tracking-[0.16em] uppercase",
+            m.text,
+          )}
+        >
+          {m.label}
+          {a.count > 1 && (
+            <span className="ml-1 tabular-nums opacity-80">×{a.count}</span>
+          )}
+        </span>
+        <span className="mt-0.5 block text-[12px] leading-snug font-semibold [text-shadow:0_1px_2px_oklch(1_0_0/0.3)] dark:[text-shadow:0_1px_3px_oklch(0_0_0/0.5)]">
+          {a.title}
+        </span>
+        {a.costCents != null && a.costCents > 0 && (
+          <span
+            className={cn(
+              "mt-1 inline-block rounded-full border px-1.5 py-0.5 font-mono text-[10px] font-bold tabular-nums",
+              m.text,
+            )}
+            style={{ borderColor: m.border }}
+            title="Dondurulan potansiyel gelir"
+          >
+            {formatMoney(a.costCents, currency)}
+          </span>
+        )}
+
+        {/* Hover detay popup'ı — cam üstünde cam */}
+        <span className="pointer-events-none invisible absolute bottom-[calc(100%+8px)] left-1/2 z-40 w-[240px] -translate-x-1/2 translate-y-1.5 rounded-xl border border-[color:var(--glass-border)] [background-color:var(--glass)] [background-image:var(--glass-sheen)] px-3 py-2 opacity-0 shadow-[var(--lift-sm)] [backdrop-filter:var(--glass-filter)] transition-[opacity,translate] duration-200 ease-[var(--ease-premium)] group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 dark:border-[color:oklch(1_0_0/0.2)] dark:[background-color:var(--lume-glass)] dark:[background-image:none]">
+          <span className="text-muted-foreground block text-[11px] leading-relaxed">
+            {a.hint}
+          </span>
+          <span
+            className={cn(
+              "mt-1 block font-mono text-[10px] font-bold tracking-[0.1em] uppercase",
+              m.text,
+            )}
+          >
+            {a.actionLabel} →
+          </span>
+        </span>
+      </Link>
     </div>
   );
 }
