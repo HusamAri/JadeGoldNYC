@@ -33,6 +33,7 @@ import {
   type HTask,
   type HFloatTask,
 } from "@/components/timeline/horizontal-band";
+import { useCursorGlow } from "@/components/motion/cursor-glow";
 import { UserAvatar } from "@/components/user-avatar";
 import { SlideButton } from "@/components/tasks/motion";
 import { LiquidTabs } from "@/components/tasks/liquid-tabs";
@@ -86,6 +87,16 @@ export function TaskTimeline({
   const scrollRef = useRef<HTMLDivElement>(null);
   const todayRef = useRef<HTMLDivElement>(null);
   const [todayOffscreen, setTodayOffscreen] = useState(false);
+  // Omurga ışığı — scroll kabındaki pointer'ı --my'ye yazar; omurga cursor'a
+  // yakın noktada yumuşakça parlar (panel çizelgesiyle aynı dil).
+  const { ref: glowRef, onPointerMove } = useCursorGlow<HTMLDivElement>();
+  const setScrollRefs = useCallback(
+    (el: HTMLDivElement | null) => {
+      scrollRef.current = el;
+      glowRef.current = el;
+    },
+    [glowRef],
+  );
 
   const filtered = useMemo(
     () =>
@@ -263,9 +274,10 @@ export function TaskTimeline({
       />
 
       {/* ── Zaman çizelgesi (BUGÜN odaklı, geçmiş yukarı geriler) ─────── */}
-      <div className="relative">
+      <div className="group/tl relative">
         <div
-          ref={scrollRef}
+          ref={setScrollRefs}
+          onPointerMove={onPointerMove}
           className="bg-secondary/30 relative max-h-[68vh] overflow-x-hidden overflow-y-auto rounded-[1.75rem] border px-4 py-6 sm:px-6 dark:border-[color:oklch(1_0_0/0.05)] dark:bg-[color:var(--lume-panel)] dark:shadow-[inset_0_1px_0_oklch(1_0_0/0.06)]"
         >
           {/* Omurga — marka vurgu token'ı (v3: --gold mor aileye eşlendi) */}
@@ -275,6 +287,15 @@ export function TaskTimeline({
             style={{
               background:
                 "linear-gradient(to bottom, transparent, var(--gold) 8%, var(--gold) 92%, transparent)",
+            }}
+          />
+          {/* Omurga ışığı — cursor'un dikey konumuna süzülen yumuşak hale. */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute top-0 bottom-0 left-[calc(1.25rem+8px)] w-[90px] -translate-x-1/2 opacity-0 transition-opacity duration-500 ease-[var(--ease-premium)] group-hover/tl:opacity-100 sm:left-[calc(1.75rem+8px)]"
+            style={{
+              background:
+                "radial-gradient(46px 150px at 50% var(--my, 50%), color-mix(in oklch, var(--gold) 22%, transparent), transparent 72%)",
             }}
           />
           {/* Geçmişe karışan üst tül */}
@@ -404,7 +425,7 @@ function renderWithDayLabels(
       out.push(
         <div
           key={`day-${last}`}
-          className="relative mt-3 mb-1.5 flex items-center gap-2 pl-9"
+          className="relative mt-6 mb-2 flex items-center gap-2 pl-9 first:mt-2"
         >
           <span className="text-muted-foreground/70 text-[0.7rem] font-medium tracking-wide uppercase">
             {labelDay(last)}
@@ -451,6 +472,7 @@ function TimelineCard({
     t.status === "doing" && t.progress != null
       ? Math.max(0, Math.min(100, t.progress))
       : null;
+  const { ref: glowRef, onPointerMove } = useCursorGlow<HTMLDivElement>();
 
   return (
     <motion.div
@@ -489,6 +511,8 @@ function TimelineCard({
       </span>
 
       <div
+        ref={glowRef}
+        onPointerMove={onPointerMove}
         role="button"
         tabIndex={0}
         onClick={onOpen}
@@ -499,7 +523,7 @@ function TimelineCard({
           }
         }}
         className={cn(
-          "nm-raised-sm focus-visible:ring-ring/60 min-w-0 flex-1 cursor-pointer rounded-2xl p-3 outline-none transition-shadow duration-300 hover:shadow-[var(--shadow-hover)] focus-visible:ring-2",
+          "nm-raised-sm cursor-glow focus-visible:ring-ring/60 min-w-0 flex-1 cursor-pointer overflow-hidden rounded-2xl p-3 outline-none transition-shadow duration-300 hover:shadow-[var(--shadow-hover)] focus-visible:ring-2",
           overdue && "tl-overdue-neon",
           section === "past" && !overdue && "opacity-70",
           done && "opacity-60",
