@@ -31,6 +31,10 @@ import {
   ADS_LEDGER_WINDOW_DAYS,
   getAdsLedgerOverview,
 } from "@/lib/db/queries/ads-ledger";
+import {
+  getListingViewsTrends,
+  type ListingViewsTrend,
+} from "@/lib/db/queries/etsy-insights";
 import { formatMoney, formatPercent } from "@/lib/money";
 import { formatDate, formatNumber } from "@/lib/format";
 import { OrgMark } from "@/components/brand/org-mark";
@@ -81,6 +85,25 @@ export default async function ReklamlarPage() {
 
   const signals = computeAdsSignals(rows);
   const rowByProduct = new Map(rows.map((r) => [r.productId, r]));
+
+  // Sinyal kartlarının ORGANİK bağlamı — kapat/azalt/artır kararı elle girilen
+  // reklam metriğiyle sınırlı kalmasın: aynı listing'in fotoğraf-farkı
+  // görüntülenme trendi + aynı aralıktaki dönüşüm (sınırlı küme, sinyaller).
+  const signalListingIds = [
+    ...new Set(
+      signals
+        .map((s) => s.row.etsyListingId)
+        .filter((n): n is number => n != null),
+    ),
+  ];
+  const trendByListing: Map<number, ListingViewsTrend> =
+    signalListingIds.length > 0
+      ? await getListingViewsTrends(m.org_id, signalListingIds)
+      : new Map();
+  const trendFor = (r: AdsOverviewRow): ListingViewsTrend | null =>
+    r.etsyListingId != null
+      ? (trendByListing.get(r.etsyListingId) ?? null)
+      : null;
   // Aynı ürün+tür beklemedeyken kartta ikinci kez "Aksiyona al" gösterilmez.
   const pendingKeys = new Set(
     actions
@@ -97,14 +120,21 @@ export default async function ReklamlarPage() {
   const reasonFor = (s: AdsSignal<AdsOverviewRow>) =>
     `${ADS_SIGNAL_META[s.signal].title}: ${formatMoney(s.row.spendCents, currency)} harcama, ${formatMoney(s.row.adsRevenueCents, currency)} getiri, ROAS ${fmtRoas(s.roas)}, bütçe payı ${formatPercent(s.share)} ("${ADS_PERIOD_LABEL}" · ${formatDate(s.row.createdAt)})`;
 
-  const snapshotFor = (s: AdsSignal<AdsOverviewRow>) =>
-    JSON.stringify({
+  const snapshotFor = (s: AdsSignal<AdsOverviewRow>) => {
+    const t = trendFor(s.row);
+    return JSON.stringify({
       spend_cents: s.row.spendCents,
       ads_revenue_cents: s.row.adsRevenueCents,
       roas: s.roas,
       share: s.share,
       window_to: s.row.createdAt,
+      // Karar anındaki organik bağlam da fotoğrafa girer (önce/sonra kıyası).
+      organic_views_delta: t?.viewsDelta ?? null,
+      organic_conversion: t?.conversion ?? null,
+      price_cents: s.row.priceCents,
+      quantity: s.row.quantity,
     } satisfies AdsMetricSnapshot);
+  };
 
   const spendingRows = rows.filter((r) => r.spendCents > 0);
 
@@ -427,6 +457,7 @@ export default async function ReklamlarPage() {
         <div className="grid gap-5 md:grid-cols-2">
           {signals.map((s) => {
             const meta = ADS_SIGNAL_META[s.signal];
+            const t = trendFor(s.row);
             return (
               <Card key={`${s.row.productId}-${s.signal}`}>
                 <CardContent className="space-y-3">
@@ -447,6 +478,53 @@ export default async function ReklamlarPage() {
                     · ROAS <span className="font-medium">{fmtRoas(s.roas)}</span>{" "}
                     · Bütçe payı{" "}
                     <span className="font-medium">{formatPercent(s.share)}</span>
+                  </p>
+                  {/* Karar bağlamı — organik trend (API fotoğraf farkı,
+                      GERÇEK aralık) + canlı fiyat/stok. "son 30" etiketli
+                      reklam satırından ayrı pencere olduğu açıkça yazılır. */}
+                  <p className="text-muted-foreground text-sm tabular-nums">
+                    {t && t.statDays >= 2 && t.viewsDelta != null ? (
+                      <>
+                        Organik{" "}
+                        <span className="text-foreground font-medium">
+                          {formatNumber(t.viewsDelta)} görüntülenme
+                        </span>
+                        {t.favorersDelta != null && (
+                          <>
+                            {" "}
+                            · favori{" "}
+                            <span className="text-foreground font-medium">
+                              {t.favorersDelta > 0 ? "+" : ""}
+                              {formatNumber(t.favorersDelta)}
+                            </span>
+                          </>
+                        )}{" "}
+                        · dönüşüm{" "}
+                        <span className="text-foreground font-medium">
+                          {t.conversion != null
+                            ? formatPercent(t.conversion)
+                            : "—"}
+                        </span>{" "}
+                        <span className="text-xs">
+                          (fotoğraf farkı · {formatDate(t.coveredFrom!)} –{" "}
+                          {formatDate(t.coveredTo!)})
+                        </span>
+                      </>
+                    ) : (
+                      <>Organik seri olgunlaşıyor (günlük senkron biriktirir)</>
+                    )}
+                    {" "}· fiyat{" "}
+                    <span className="text-foreground font-medium">
+                      {s.row.priceCents != null
+                        ? formatMoney(s.row.priceCents, currency)
+                        : "—"}
+                    </span>{" "}
+                    · stok{" "}
+                    <span className="text-foreground font-medium">
+                      {s.row.quantity != null
+                        ? formatNumber(s.row.quantity)
+                        : "—"}
+                    </span>
                   </p>
                   <p className="text-muted-foreground text-sm">{meta.hint}</p>
                   <div className="flex flex-wrap items-center gap-2">

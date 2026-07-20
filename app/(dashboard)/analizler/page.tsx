@@ -563,6 +563,14 @@ function EtsyApiSection({ insights }: { insights: EtsyInsights }) {
                 için en az 3 gün gerekir. Günlük senkron otomatik biriktirir.
               </p>
             )}
+            {/* API sınırı ilan edilir: kaynak kırılımı yok, vekilleri var. */}
+            <p className="text-muted-foreground mt-3 text-xs">
+              Etsy API trafik kaynağı kırılımı (sosyal / arama / direkt)
+              vermez; kaynak dağılımı yalnız Etsy Stats ekranındadır.
+              Paneldeki vekiller: arama terimleri (Etsy Stats CSV içe
+              aktarımı), Offsite Ads atıflı siparişler (Reklamlar) ve sosyal
+              gönderi takibi (Sosyal).
+            </p>
           </CardContent>
         </Card>
         <Card>
