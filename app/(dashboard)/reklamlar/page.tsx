@@ -1,10 +1,14 @@
 import {
+  CalendarDays,
   CheckCircle2,
   ExternalLink,
   Flag,
+  Globe,
   ListChecks,
   Megaphone,
   MousePointerClick,
+  Satellite,
+  ShoppingBag,
   Target,
   TrendingUp,
   Wallet,
@@ -23,6 +27,10 @@ import {
   type AdsOverviewRow,
   type AdsSignal,
 } from "@/lib/db/queries/ads-actions";
+import {
+  ADS_LEDGER_WINDOW_DAYS,
+  getAdsLedgerOverview,
+} from "@/lib/db/queries/ads-ledger";
 import { formatMoney, formatPercent } from "@/lib/money";
 import { formatDate, formatNumber } from "@/lib/format";
 import { OrgMark } from "@/components/brand/org-mark";
@@ -51,16 +59,25 @@ const ETSY_ADS_URL = "https://www.etsy.com/your/shops/me/advertising";
  *  toplam/sayılar TAM kümeden hesaplanır, display-limit'ten türetilmez). */
 const SPEND_TABLE_LIMIT = 15;
 
+/** API (ledger) tablolarının görüntü sınırı — toplamlar tam kümeden. */
+const LEDGER_TABLE_LIMIT = 10;
+
 const fmtRoas = (r: number | null) =>
   r == null ? "—" : `${formatNumber(r, 2)}×`;
 
 export default async function ReklamlarPage() {
   const m = await requireMembership();
-  const [overview, actions] = await Promise.all([
+  const [overview, actions, ledger] = await Promise.all([
     getAdsOverview(m.org_id),
     listAdsActions(m.org_id),
+    getAdsLedgerOverview(m.org_id),
   ]);
   const { rows, totals, window, currency } = overview;
+
+  // API penceresi etiketi — GERÇEK takvim aralığı (etiket eşleşmesi değil).
+  const ledgerWindowLabel = `son ${ADS_LEDGER_WINDOW_DAYS} gün · ${formatDate(ledger.window.fromIso)} – ${formatDate(ledger.window.toIso)} · Etsy API (ledger)`;
+  const hasLedgerData =
+    ledger.days.length > 0 || ledger.offsiteOrders.length > 0;
 
   const signals = computeAdsSignals(rows);
   const rowByProduct = new Map(rows.map((r) => [r.productId, r]));
@@ -108,16 +125,34 @@ export default async function ReklamlarPage() {
 
       {/* DÜRÜSTLÜK NOTU — API sınırı gizlenmez, ilan edilir (0059 deseni). */}
       <Card>
-        <CardContent className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-muted-foreground max-w-[75ch] text-sm">
-            <span className="text-foreground font-medium">
-              Bu panel Etsy reklamını doğrudan değiştiremez
-            </span>{" "}
-            — Etsy Open API v3 reklam (Etsy Ads) kontrolü sunmuyor. Karar burada
-            verilir ve kuyrukta takip edilir; kapatma/azaltma/artırma işlemini
-            Etsy Reklam panosunda elle yapıp dönüşte &quot;Yapıldı&quot;
-            işaretleyin — panel öncesi/sonrası ölçümü tutar.
-          </p>
+        <CardContent className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div className="text-muted-foreground max-w-[75ch] space-y-2 text-sm">
+            <p>
+              <span className="text-foreground font-medium">
+                Bu panel Etsy reklamını doğrudan değiştiremez
+              </span>{" "}
+              — Etsy Open API v3 reklam (Etsy Ads) kontrolü ve listing başına
+              tık/harcama verisi sunmuyor. Karar burada verilir ve kuyrukta
+              takip edilir; kapatma/azaltma/artırma işlemini Etsy Reklam
+              panosunda elle yapıp dönüşte &quot;Yapıldı&quot; işaretleyin —
+              panel öncesi/sonrası ölçümü tutar.
+            </p>
+            <p>
+              Bu sayfada iki veri kaynağı var:{" "}
+              <span className="text-foreground font-medium">
+                Etsy API (ledger)
+              </span>{" "}
+              bölümü mağaza geneli Etsy Ads harcamasını ve Offsite Ads
+              ücret/atıflarını senkronla OTOMATİK çeker (Etsy bağlanan her
+              şirkette kendiliğinden dolar; CSV/elle giriş istemez). Listing
+              başına harcama/tık/ROAS tablolarıysa API&apos;de olmadığından{" "}
+              <span className="text-foreground font-medium">
+                Analizler → Ürün performansı
+              </span>{" "}
+              üzerinden &quot;{ADS_PERIOD_LABEL}&quot; etiketli elle girilen
+              metriklerden gelir.
+            </p>
+          </div>
           <Button asChild variant="outline" size="sm" className="shrink-0">
             <a href={ETSY_ADS_URL} target="_blank" rel="noreferrer">
               <ExternalLink />
@@ -126,6 +161,193 @@ export default async function ReklamlarPage() {
           </Button>
         </CardContent>
       </Card>
+
+      {/* Dekoratif indeks satırı (Spatial/Liquid .idx dili). */}
+      <div aria-hidden className="idx sm:-mb-4">
+        <span>Reklamlar / 01 · Etsy API (ledger) — otomatik</span>
+        <span className="idx-bar" />
+        <span className="idx-ln" />
+        <span><OrgMark /></span>
+      </div>
+
+      {/* API-KAYNAKLI BÖLÜM — org-bağımsız: Etsy bağlanan her şirkette
+          (Jade, EON, sonrakiler) senkron ledger'ı bu bölümü otomatik doldurur. */}
+      {!ledger.connected && !hasLedgerData ? (
+        <Card>
+          <CardContent>
+            <EmptyState
+              icon={Satellite}
+              title="Etsy bağlı değil"
+              description="Ayarlar → Etsy'den bağlantı kurulunca senkron, reklam ücretlerini (Etsy Ads günlük harcaması + Offsite Ads sipariş ücretleri) ledger'dan otomatik çeker — CSV ya da elle giriş gerekmez."
+            />
+          </CardContent>
+        </Card>
+      ) : !hasLedgerData ? (
+        <Card>
+          <CardContent>
+            <EmptyState
+              icon={Satellite}
+              title="Son 30 günde reklam ücreti kaydı yok"
+              description={`Ledger senkronu bağlı ama ${ledgerWindowLabel} penceresinde prolist/offsite kaydı bulunamadı. Etsy Ads kapalıysa bu normaldir; senkron sonrası ücretler burada kendiliğinden görünür.`}
+            />
+          </CardContent>
+        </Card>
+      ) : (
+        <>
+          <div className="grid grid-cols-2 gap-5 lg:grid-cols-4">
+            <KpiCard
+              label="Etsy Ads Harcaması (Onsite)"
+              cents={ledger.onsiteSpendCents}
+              currency={ledger.currency}
+              icon={Megaphone}
+              hint={`${formatNumber(ledger.onsiteDays)} günde ücret kesildi · ${ledgerWindowLabel}`}
+            />
+            <KpiCard
+              label="Offsite Ads Ücreti"
+              cents={ledger.offsiteFeeCents}
+              currency={ledger.currency}
+              icon={Globe}
+              hint={`sipariş başına kesilen komisyon · ${ledgerWindowLabel}`}
+            />
+            <KpiCard
+              label="Offsite Kaynaklı Sipariş"
+              value={formatNumber(ledger.offsiteOrderCount)}
+              icon={ShoppingBag}
+              hint={`ledger ücret kaydı → sipariş bağı · ${ledgerWindowLabel}`}
+            />
+            <KpiCard
+              label="Offsite Kaynaklı Ciro"
+              cents={ledger.offsiteRevenueCents}
+              currency={ledger.currency}
+              icon={TrendingUp}
+              accent={
+                ledger.offsiteFeeCents > 0 &&
+                ledger.offsiteRevenueCents > ledger.offsiteFeeCents
+                  ? "positive"
+                  : "default"
+              }
+              hint={
+                ledger.offsiteFeeCents > 0
+                  ? `ciro / ücret ${fmtRoas(ledger.offsiteRevenueCents / ledger.offsiteFeeCents)} · ${ledgerWindowLabel}`
+                  : ledgerWindowLabel
+              }
+            />
+          </div>
+
+          <div className="grid gap-5 lg:grid-cols-2">
+            {/* Günlük seri — yalnız kaydı olan günler; toplamlar tam kümeden. */}
+            <Card>
+              <CardContent className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <CalendarDays className="text-muted-foreground size-4" />
+                  <p className="text-sm font-medium">Günlük reklam ücreti</p>
+                </div>
+                <p className="text-muted-foreground text-xs">
+                  {ledgerWindowLabel} · kaydı olan{" "}
+                  {formatNumber(ledger.days.length)} günden en yeni{" "}
+                  {formatNumber(Math.min(LEDGER_TABLE_LIMIT, ledger.days.length))}{" "}
+                  tanesi — toplamlar tam kümeden.
+                  {ledger.otherCurrencyCount > 0 &&
+                    ` ${formatNumber(ledger.otherCurrencyCount)} kayıt farklı kurda (toplam dışı).`}
+                </p>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Gün</TableHead>
+                      <TableHead className="text-right">Etsy Ads</TableHead>
+                      <TableHead className="text-right">Offsite</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {ledger.days.slice(0, LEDGER_TABLE_LIMIT).map((d) => (
+                      <TableRow key={d.date}>
+                        <TableCell className="whitespace-nowrap">
+                          {formatDate(d.date)}
+                        </TableCell>
+                        <TableCell className="text-right tabular-nums">
+                          {formatMoney(d.onsiteCents, ledger.currency)}
+                        </TableCell>
+                        <TableCell className="text-right tabular-nums">
+                          {formatMoney(d.offsiteCents, ledger.currency)}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+
+            {/* Offsite atıf kırılımı — ücret kesilen siparişlerdeki listingler. */}
+            <Card>
+              <CardContent className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <Globe className="text-muted-foreground size-4" />
+                  <p className="text-sm font-medium">
+                    Offsite Ads&apos;in getirdiği listingler
+                  </p>
+                </div>
+                <p className="text-muted-foreground text-xs">
+                  Ücret kesilen {formatNumber(ledger.offsiteOrderCount)}{" "}
+                  siparişin kalem kırılımı · ciroya göre ilk{" "}
+                  {formatNumber(
+                    Math.min(LEDGER_TABLE_LIMIT, ledger.offsiteListings.length),
+                  )}{" "}
+                  listing. Onsite (Etsy Ads) listing kırılımını API vermez.
+                </p>
+                {ledger.offsiteListings.length === 0 ? (
+                  <p className="text-muted-foreground text-sm">
+                    Bu pencerede offsite ücretli sipariş yok.
+                  </p>
+                ) : (
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Listing</TableHead>
+                        <TableHead className="text-right">Sipariş</TableHead>
+                        <TableHead className="text-right">Adet</TableHead>
+                        <TableHead className="text-right">Ciro</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {ledger.offsiteListings
+                        .slice(0, LEDGER_TABLE_LIMIT)
+                        .map((l) => (
+                          <TableRow key={`${l.etsyListingId ?? l.title}`}>
+                            <TableCell className="font-medium">
+                              <div
+                                className="scroll-x max-w-[240px]"
+                                title={l.title}
+                              >
+                                {l.title}
+                              </div>
+                            </TableCell>
+                            <TableCell className="text-right tabular-nums">
+                              {formatNumber(l.orders)}
+                            </TableCell>
+                            <TableCell className="text-right tabular-nums">
+                              {formatNumber(l.units)}
+                            </TableCell>
+                            <TableCell className="text-right tabular-nums">
+                              {formatMoney(l.revenueCents, ledger.currency)}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                    </TableBody>
+                  </Table>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        </>
+      )}
+
+      {/* Dekoratif indeks satırı (Spatial/Liquid .idx dili). */}
+      <div aria-hidden className="idx sm:-mb-4">
+        <span>Reklamlar / 02 · &quot;{ADS_PERIOD_LABEL}&quot; metrikleri — elle girilen</span>
+        <span className="idx-bar" />
+        <span className="idx-ln" />
+        <span><OrgMark /></span>
+      </div>
 
       {/* Genel bakış KPI'ları — pencere etiketi her kartta yazılı. */}
       <div className="grid grid-cols-2 gap-5 lg:grid-cols-3 xl:grid-cols-5">
@@ -185,7 +407,7 @@ export default async function ReklamlarPage() {
 
       {/* Dekoratif indeks satırı (Spatial/Liquid .idx dili). */}
       <div aria-hidden className="idx sm:-mb-4">
-        <span>Reklamlar / 01 · Aksiyon önerileri</span>
+        <span>Reklamlar / 03 · Aksiyon önerileri</span>
         <span className="idx-bar" />
         <span className="idx-ln" />
         <span><OrgMark /></span>
@@ -266,7 +488,7 @@ export default async function ReklamlarPage() {
 
       {/* Dekoratif indeks satırı (Spatial/Liquid .idx dili). */}
       <div aria-hidden className="idx sm:-mb-4">
-        <span>Reklamlar / 02 · Aksiyon kuyruğu</span>
+        <span>Reklamlar / 04 · Aksiyon kuyruğu</span>
         <span className="idx-bar" />
         <span className="idx-ln" />
         <span><OrgMark /></span>
@@ -385,7 +607,7 @@ export default async function ReklamlarPage() {
 
       {/* Dekoratif indeks satırı (Spatial/Liquid .idx dili). */}
       <div aria-hidden className="idx sm:-mb-4">
-        <span>Reklamlar / 03 · Harcama dağılımı</span>
+        <span>Reklamlar / 05 · Harcama dağılımı</span>
         <span className="idx-bar" />
         <span className="idx-ln" />
         <span><OrgMark /></span>
