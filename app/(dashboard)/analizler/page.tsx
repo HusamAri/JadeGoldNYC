@@ -593,9 +593,20 @@ function EtsyApiSection({ insights }: { insights: EtsyInsights }) {
                     key={t.etsyListingId}
                     className="flex items-baseline justify-between gap-3 text-sm"
                   >
-                    <span className="scroll-x min-w-0 font-medium">
-                      {t.title}
-                    </span>
+                    {/* Drill-down: hareketin kaynağına tek tıkla inilir
+                        (listing detayındaki Görüntülenme trendi paneli). */}
+                    {t.productId ? (
+                      <Link
+                        href={`/tasarimlar/listing/${t.productId}`}
+                        className="scroll-x min-w-0 font-medium hover:underline"
+                      >
+                        {t.title}
+                      </Link>
+                    ) : (
+                      <span className="scroll-x min-w-0 font-medium">
+                        {t.title}
+                      </span>
+                    )}
                     <span className="text-muted-foreground shrink-0 text-xs tabular-nums">
                       +{formatNumber(t.deltaViews)} görüntülenme
                       {t.deltaFavorers !== 0 &&

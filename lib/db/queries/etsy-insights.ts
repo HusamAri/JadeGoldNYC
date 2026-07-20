@@ -26,6 +26,8 @@ export interface ViewsSeriesPoint {
 
 export interface TopMover {
   etsyListingId: number;
+  /** Panel ürün kaydı (drill-down linki için) — eşleşme yoksa null. */
+  productId: string | null;
   title: string;
   deltaViews: number;
   deltaFavorers: number;
@@ -77,7 +79,7 @@ export async function getEtsyInsights(orgId: string): Promise<EtsyInsights> {
       .limit(10000),
     supabase
       .from("products")
-      .select("etsy_listing_id, title")
+      .select("id, etsy_listing_id, title")
       .eq("org_id", orgId)
       .not("etsy_listing_id", "is", null),
   ]);
@@ -142,13 +144,14 @@ export async function getEtsyInsights(orgId: string): Promise<EtsyInsights> {
   }
 
   // En çok hareket edenler: son iki fotoğraf günü arasındaki listing farkları
-  const titleMap = new Map(
+  const productByListing = new Map(
     (
       (productsRes.data ?? []) as unknown as {
+        id: string;
         etsy_listing_id: number;
         title: string;
       }[]
-    ).map((p) => [p.etsy_listing_id, p.title]),
+    ).map((p) => [p.etsy_listing_id, { id: p.id, title: p.title }]),
   );
   let topMovers: TopMover[] = [];
   if (dates.length >= 2) {
@@ -157,9 +160,11 @@ export async function getEtsyInsights(orgId: string): Promise<EtsyInsights> {
     topMovers = [...curM.entries()]
       .map(([id, curRow]) => {
         const prevRow = prev.get(id);
+        const product = productByListing.get(id);
         return {
           etsyListingId: id,
-          title: titleMap.get(id) ?? `Listing #${id}`,
+          productId: product?.id ?? null,
+          title: product?.title ?? `Listing #${id}`,
           deltaViews: prevRow
             ? Math.max(0, (curRow.views ?? 0) - (prevRow.views ?? 0))
             : 0,
