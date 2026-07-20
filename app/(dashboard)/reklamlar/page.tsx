@@ -12,6 +12,7 @@ import {
   ShoppingBag,
   Target,
   TrendingUp,
+  Upload,
   Wallet,
 } from "lucide-react";
 import Link from "next/link";
@@ -146,12 +147,20 @@ export default async function ReklamlarPage() {
         title="Reklamlar"
         description="Etsy Ads harcamasını değerlendir, boşa gideni kapat, bütçe yiyeni dizginle, fırsatı büyüt — karar burada, uygulama Etsy'de"
         action={
-          <Button asChild variant="outline">
-            <a href={ETSY_ADS_URL} target="_blank" rel="noreferrer">
-              <ExternalLink />
-              Etsy Reklam panosu
-            </a>
-          </Button>
+          <>
+            <Button asChild variant="outline">
+              <Link href="/reklamlar/ice-aktar">
+                <Upload />
+                CSV İçe Aktar
+              </Link>
+            </Button>
+            <Button asChild variant="outline">
+              <a href={ETSY_ADS_URL} target="_blank" rel="noreferrer">
+                <ExternalLink />
+                Etsy Reklam panosu
+              </a>
+            </Button>
+          </>
         }
       />
 
