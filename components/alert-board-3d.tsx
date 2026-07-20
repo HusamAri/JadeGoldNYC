@@ -244,7 +244,7 @@ function AlertBox({
         onPointerMove={onPointerMove}
         href={a.href}
         className={cn(
-          "group cursor-glow ab-glass relative block overflow-hidden rounded-2xl border p-3 transition-[transform,box-shadow] duration-300 ease-[var(--ease-premium)] hover:z-30 hover:-translate-y-1 focus-visible:z-30 focus-visible:-translate-y-1 active:translate-y-0 active:duration-150",
+          "group cursor-glow ab-glass relative block overflow-visible rounded-2xl border p-3 transition-[transform,box-shadow] duration-300 ease-[var(--ease-premium)] hover:z-30 hover:-translate-y-1 focus-visible:z-30 focus-visible:-translate-y-1 active:translate-y-0 active:duration-150",
           "[background-image:var(--ab-surface)] dark:[background-image:var(--ab-surface-dark)]",
           m.extra,
         )}
