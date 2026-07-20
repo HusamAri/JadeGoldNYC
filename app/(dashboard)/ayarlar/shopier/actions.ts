@@ -63,7 +63,18 @@ export async function saveShopierPat(
     },
     { onConflict: "org_id" },
   );
-  if (error) return { error: error.message };
+  if (error) {
+    // Tablo henüz yok (migration 0110 uygulanmamış) — İngilizce şema hatasını
+    // Türkçe yola çevir; aksi halde kullanıcı "schema cache" ile kalır.
+    const msg = error.message ?? "";
+    if (/shopier_connection|schema cache|does not exist/i.test(msg)) {
+      return {
+        error:
+          "Shopier tablosu henüz veritabanında yok. Supabase SQL Editor'de migration 0110_shopier_connection.sql dosyasını çalıştırın, sonra bu sayfayı yenileyip tekrar deneyin.",
+      };
+    }
+    return { error: error.message };
+  }
 
   const supabase = await createClient();
   await logAudit(supabase, {

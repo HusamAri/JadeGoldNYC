@@ -1,8 +1,10 @@
 import { requireMembership, getUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { getEtsyStatus } from "@/lib/db/queries/etsy";
 import { getShopierStatus } from "@/lib/db/queries/shopier";
 import { getProfile } from "@/lib/db/queries/profile";
+import { ShipStationClient } from "@/lib/shipstation/client";
 import { formatDateTime } from "@/lib/format";
 import { SettingsHub } from "@/components/settings/settings-hub";
 
@@ -16,17 +18,20 @@ export default async function AyarlarPage() {
   const m = await requireMembership();
   const user = await getUser();
   const supabase = await createClient();
+  const admin = createAdminClient();
   const { data: org } = await supabase
     .from("organizations")
     .select("name, default_currency")
     .eq("id", m.org_id)
     .maybeSingle();
-  const status = await getEtsyStatus(m.org_id);
-  const shopier = await getShopierStatus(m.org_id);
-  const profile = user ? await getProfile(supabase, user.id) : null;
-  const shipStationConfigured = Boolean(
-    process.env.SHIPSTATION_API_KEY && process.env.SHIPSTATION_API_SECRET,
-  );
+  const [status, shopier, profile, shipStationConfigured] = await Promise.all([
+    getEtsyStatus(m.org_id),
+    getShopierStatus(m.org_id),
+    user ? getProfile(supabase, user.id) : Promise.resolve(null),
+    // Org'a özel: global env anahtarı başka şirkete ait olabilir —
+    // hub neon'u yalnız BU org için kimlik bilgisi varken yanar.
+    ShipStationClient.isConfiguredForOrg(admin, m.org_id),
+  ]);
 
   const orgName =
     (org as { name?: string } | null)?.name ?? "Organizasyon";

@@ -73,7 +73,7 @@ export function SettingsHub(props: SettingsHubProps) {
       featured: true,
       status: {
         live: props.shipStationConfigured,
-        label: props.shipStationConfigured ? "Hazır" : "Bekliyor",
+        label: props.shipStationConfigured ? "Bağlı" : "Bağlı değil",
       },
     },
     {
@@ -167,7 +167,7 @@ export function SettingsHub(props: SettingsHubProps) {
           <div className="flex flex-wrap items-center gap-2">
             <PulseChip
               live={liveCount > 0}
-              label={`${liveCount}/2 bağlantı aktif`}
+              label={`${liveCount}/3 bağlantı aktif`}
             />
             <span className="text-muted-foreground font-mono text-[10px] tracking-[0.18em] uppercase">
               {props.role}
