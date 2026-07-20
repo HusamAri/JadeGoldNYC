@@ -131,7 +131,7 @@ export function AdsImportWizard() {
 
           {headers.length > 0 && (
             <div className="grid gap-3 sm:grid-cols-3">
-              {colSelect("title", "Listing başlığı sütunu")}
+              {colSelect("listing", "Listing başlığı sütunu")}
               {colSelect("views", "Görüntülenme — ops.")}
               {colSelect("orders", "Sipariş — ops.")}
               {colSelect("clicks", "Reklam tıklaması — ops.")}

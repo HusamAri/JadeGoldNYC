@@ -57,3 +57,29 @@ export const chainItem = {
     transition: { duration: 0.36, ease: easePremium },
   },
 };
+
+/** Recharts animation config — long, calm entrances that respect reduced motion. */
+export const chartAnimation = {
+  duration: 900,
+  easing: "ease-out" as const,
+  begin: 60,
+};
+
+import { useReducedMotion } from "framer-motion";
+
+/**
+ * Returns Recharts animation props for charts. Bars/pies grow/expand in slowly
+ * and settle quietly; users who prefer reduced motion get no animation.
+ */
+export function useChartAnimation() {
+  const reduce = useReducedMotion();
+  if (reduce) {
+    return { isAnimationActive: false as const };
+  }
+  return {
+    isAnimationActive: true as const,
+    animationDuration: chartAnimation.duration,
+    animationEasing: chartAnimation.easing,
+    animationBegin: chartAnimation.begin,
+  };
+}
