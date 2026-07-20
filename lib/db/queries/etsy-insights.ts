@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { fetchAllPages, type PageResult } from "@/lib/db/queries/listings";
 
 /**
  * Listing istatistik penceresi (gün): görüntülenme serisi ve top movers bu
@@ -49,6 +50,13 @@ function fmtLabel(iso: string): string {
   });
 }
 
+type ListingStatRow = {
+  etsy_listing_id: number;
+  stat_date: string;
+  views: number | null;
+  num_favorers: number | null;
+};
+
 /**
  * Etsy tam-senkron veri setlerinden içgörüler: mağaza sağlık fotoğrafları +
  * listing istatistik fotoğraflarından türetilen GÜNLÜK görüntülenme serisi ve
@@ -61,7 +69,7 @@ export async function getEtsyInsights(orgId: string): Promise<EtsyInsights> {
     .toISOString()
     .slice(0, 10);
 
-  const [snapRes, statsRes, productsRes] = await Promise.all([
+  const [snapRes, stats, productsRes] = await Promise.all([
     supabase
       .from("etsy_shop_snapshots")
       .select(
@@ -70,13 +78,21 @@ export async function getEtsyInsights(orgId: string): Promise<EtsyInsights> {
       .eq("org_id", orgId)
       .order("snapshot_date", { ascending: false })
       .limit(60),
-    supabase
-      .from("etsy_listing_stats")
-      .select("etsy_listing_id, stat_date, views, num_favorers")
-      .eq("org_id", orgId)
-      .gte("stat_date", since)
-      .order("stat_date", { ascending: true })
-      .limit(10000),
+    fetchAllPages<ListingStatRow>((from, to) =>
+      supabase
+        .from("etsy_listing_stats")
+        .select("etsy_listing_id, stat_date, views, num_favorers")
+        .eq("org_id", orgId)
+        .gte("stat_date", since)
+        .order("id", { ascending: true })
+        .range(from, to),
+    ).catch((e: unknown) => {
+      console.error(
+        "[etsy-insights] listing stats sorgusu:",
+        e instanceof Error ? e.message : e,
+      );
+      return [];
+    }),
     supabase
       .from("products")
       .select("id, etsy_listing_id, title")
@@ -105,17 +121,10 @@ export async function getEtsyInsights(orgId: string): Promise<EtsyInsights> {
   }));
 
   // Listing fotoğraflarını (tarih → listing → değer) grupla
-  type StatRow = {
-    etsy_listing_id: number;
-    stat_date: string;
-    views: number | null;
-    num_favorers: number | null;
-  };
-  const stats = (statsRes.data ?? []) as unknown as StatRow[];
-  const byDate = new Map<string, Map<number, StatRow>>();
+  const byDate = new Map<string, Map<number, ListingStatRow>>();
   for (const r of stats) {
     const d = r.stat_date.slice(0, 10);
-    const m = byDate.get(d) ?? new Map<number, StatRow>();
+    const m = byDate.get(d) ?? new Map<number, ListingStatRow>();
     m.set(r.etsy_listing_id, r);
     byDate.set(d, m);
   }
@@ -226,25 +235,25 @@ export async function getListingViewsTrends(
     .toISOString()
     .slice(0, 10);
 
-  const { data: statRows, error: statsErr } = await supabase
-    .from("etsy_listing_stats")
-    .select("etsy_listing_id, stat_date, views, num_favorers")
-    .eq("org_id", orgId)
-    .in("etsy_listing_id", ids)
-    .gte("stat_date", since)
-    .order("stat_date", { ascending: true })
-    .limit(10_000);
-  if (statsErr)
-    console.error("[etsy-insights] listing stats sorgusu:", statsErr.message);
+  const statRows = await fetchAllPages<ListingStatRow>((from, to) =>
+    supabase
+      .from("etsy_listing_stats")
+      .select("etsy_listing_id, stat_date, views, num_favorers")
+      .eq("org_id", orgId)
+      .in("etsy_listing_id", ids)
+      .gte("stat_date", since)
+      .order("id", { ascending: true })
+      .range(from, to),
+  ).catch((e: unknown) => {
+    console.error(
+      "[etsy-insights] listing stats sorgusu:",
+      e instanceof Error ? e.message : e,
+    );
+    return [] as ListingStatRow[];
+  });
 
-  type StatRow = {
-    etsy_listing_id: number;
-    stat_date: string;
-    views: number | null;
-    num_favorers: number | null;
-  };
-  const byListing = new Map<number, StatRow[]>();
-  for (const r of (statRows ?? []) as unknown as StatRow[]) {
+  const byListing = new Map<number, ListingStatRow[]>();
+  for (const r of statRows) {
     const arr = byListing.get(r.etsy_listing_id) ?? [];
     arr.push(r);
     byListing.set(r.etsy_listing_id, arr);
@@ -298,29 +307,44 @@ export async function getListingViewsTrends(
   // Dönüşüm: her listing'in kendi kapsanan aralığındaki satış kalemleri.
   // Tek sorguda pencerenin tamamı çekilir, listing başına aralık filtresi
   // bellek tarafında uygulanır (kapsanan aralıklar listing başına farklı).
-  const { data: itemRows, error: itemsErr } = await supabase
-    .from("sale_items")
-    .select("etsy_listing_id, quantity, sales!inner(order_date, status)")
-    .eq("org_id", orgId)
-    .in("etsy_listing_id", ids)
-    .neq("sales.status", "cancelled")
-    .gte("sales.order_date", `${since}T00:00:00Z`)
-    .limit(10_000);
-  if (itemsErr)
-    console.error("[etsy-insights] dönüşüm sorgusu:", itemsErr.message);
-
-  for (const raw of (itemRows ?? []) as unknown as {
+  type TrendItemRow = {
     etsy_listing_id: number | null;
+    sale_id: string;
     quantity: number | null;
     sales: { order_date: string | null; status: string | null } | null;
-  }[]) {
+  };
+  const itemRows = await fetchAllPages<TrendItemRow>((from, to) =>
+    supabase
+      .from("sale_items")
+      .select("sale_id, etsy_listing_id, quantity, sales!inner(order_date, status)")
+      .eq("org_id", orgId)
+      .in("etsy_listing_id", ids)
+      .neq("sales.status", "cancelled")
+      .gte("sales.order_date", `${since}T00:00:00Z`)
+      .order("id", { ascending: true })
+      .range(from, to) as unknown as PromiseLike<PageResult<TrendItemRow>>,
+  ).catch((e: unknown) => {
+    console.error(
+      "[etsy-insights] dönüşüm sorgusu:",
+      e instanceof Error ? e.message : e,
+    );
+    return [];
+  });
+
+  const ordersSeen = new Map<number, Set<string>>();
+  for (const raw of itemRows) {
     if (raw.etsy_listing_id == null) continue;
     const t = out.get(raw.etsy_listing_id);
     if (!t || !t.coveredFrom || !t.coveredTo) continue;
     const day = (raw.sales?.order_date ?? "").slice(0, 10);
     // Kapsanan aralık dışındaki sipariş sayılmaz (görüntülenme paydası yok).
     if (day < t.coveredFrom || day > t.coveredTo) continue;
-    t.orders += 1;
+    const seen = ordersSeen.get(raw.etsy_listing_id) ?? new Set<string>();
+    if (!seen.has(raw.sale_id)) {
+      seen.add(raw.sale_id);
+      t.orders += 1;
+    }
+    ordersSeen.set(raw.etsy_listing_id, seen);
     t.units += raw.quantity ?? 1;
   }
   for (const t of out.values()) {

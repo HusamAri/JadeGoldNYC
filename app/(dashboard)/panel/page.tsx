@@ -89,10 +89,10 @@ export default async function PanelPage({
   // kendi async bileşenlerinde Suspense ile STREAM edilir — TTFB en yavaş
   // dala kilitlenmez, kabuk saniyeler önce görünür.
   const [d, goldPriceOunce, prevData, lastYearData] = await Promise.all([
-    getDashboard(period),
+    getDashboard(period, m.org_id),
     getGoldPricePerOunce(),
-    prev ? getDashboard(prev) : Promise.resolve(null),
-    lastYear ? getDashboard(lastYear) : Promise.resolve(null),
+    prev ? getDashboard(prev, m.org_id) : Promise.resolve(null),
+    lastYear ? getDashboard(lastYear, m.org_id) : Promise.resolve(null),
   ]);
   const cur = d.currency;
   const goldPricePerGram = goldPriceOunce / TROY_OUNCE_GRAMS;

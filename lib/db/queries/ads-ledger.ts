@@ -210,7 +210,8 @@ export async function getAdsLedgerOverview(
     .filter((n) => Number.isFinite(n));
 
   const offsiteOrders: OffsiteOrderRow[] = [];
-  const listingAgg = new Map<string, OffsiteListingRow>();
+  type ListingAgg = OffsiteListingRow & { _saleIds: Set<string> };
+  const listingAgg = new Map<string, ListingAgg>();
   let offsiteRevenueCents = 0;
 
   const CHUNK = 200;
@@ -287,8 +288,12 @@ export async function getAdsLedgerOverview(
             orders: 0,
             units: 0,
             revenueCents: 0,
-          } satisfies OffsiteListingRow);
-        agg.orders += 1;
+            _saleIds: new Set<string>(),
+          } satisfies ListingAgg);
+        if (!agg._saleIds.has(it.sale_id)) {
+          agg._saleIds.add(it.sale_id);
+          agg.orders += 1;
+        }
         agg.units += it.quantity ?? 1;
         agg.revenueCents += it.line_total_cents ?? 0;
         listingAgg.set(key, agg);
@@ -299,9 +304,13 @@ export async function getAdsLedgerOverview(
   offsiteOrders.sort((a, b) =>
     (b.orderDate ?? "").localeCompare(a.orderDate ?? ""),
   );
-  const offsiteListings = [...listingAgg.values()].sort(
-    (a, b) => b.revenueCents - a.revenueCents,
-  );
+  const offsiteListings = [...listingAgg.values()]
+    .map((row) => {
+      const { _saleIds, ...rest } = row;
+      void _saleIds;
+      return rest;
+    })
+    .sort((a, b) => b.revenueCents - a.revenueCents);
 
   return {
     connected,
