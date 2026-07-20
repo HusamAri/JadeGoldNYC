@@ -84,14 +84,33 @@ function formatGrams(g: number): string {
 export function stripWeightBlocks(description: string): string {
   const footer = WEIGHT_FOOTER.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const header = WEIGHT_HEADER_RE.source;
+  // Etsy bazen HTML yorumlarını entity olarak saklar (&lt;!-- … --&gt;).
+  const startEsc = WEIGHT_BLOCK_START.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const endEsc = WEIGHT_BLOCK_END.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const startEnt = startEsc.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const endEnt = endEsc.replace(/</g, "&lt;").replace(/>/g, "&gt;");
   return (description ?? "")
-    // 1) Eski marker'lı bloklar (uçtan uca, marker dahil)
+    // 1) Marker'lı bloklar (ham HTML yorum)
     .replace(
-      new RegExp(`\\n*${WEIGHT_BLOCK_START}[\\s\\S]*?${WEIGHT_BLOCK_END}\\n*`, "g"),
+      new RegExp(`\\n*${startEsc}[\\s\\S]*?${endEsc}\\n*`, "g"),
+      "\n",
+    )
+    // 1b) Entity-encode edilmiş marker'lı bloklar
+    .replace(
+      new RegExp(`\\n*${startEnt}[\\s\\S]*?${endEnt}\\n*`, "g"),
       "\n",
     )
     // 2) Marker'sız metin-imzalı bloklar (başlıktan footer'a; çoklu)
     .replace(new RegExp(`\\n*${header}[\\s\\S]*?${footer}\\n*`, "g"), "\n")
+    // 3) Orphan boş marker çiftleri / yalnız kalan marker satırları
+    .replace(
+      new RegExp(
+        `\\n*(?:${startEsc}|${startEnt})\\s*(?:${endEsc}|${endEnt})\\n*`,
+        "g",
+      ),
+      "\n",
+    )
+    .replace(new RegExp(`\\n*(?:${startEsc}|${endEsc}|${startEnt}|${endEnt})\\n*`, "g"), "\n")
     .replace(/\n{3,}/g, "\n\n")
     .replace(/\s+$/, "");
 }
