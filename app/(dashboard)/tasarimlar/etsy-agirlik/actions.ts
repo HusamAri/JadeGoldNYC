@@ -7,10 +7,19 @@ import { createClient } from "@/lib/supabase/server";
 import { EtsyClient } from "@/lib/etsy/client";
 import { getEtsyWriteAccess } from "@/lib/db/queries/etsy";
 import { getListing, updateListingDescription } from "@/lib/etsy/listing";
-import { injectWeightBlock } from "@/lib/etsy/weights";
+import { injectWeightBlock, stripWeightBlocks } from "@/lib/etsy/weights";
 import { listingsWithVariantWeights } from "@/lib/db/queries/variant-weights";
 
 const PATH = "/tasarimlar/etsy-agirlik";
+
+function hasWeightBlock(description: string | null): boolean {
+  const d = description ?? "";
+  return (
+    /Weight by size \([^)]*\):/.test(d) ||
+    d.includes("<!-- JG-WEIGHTS -->") ||
+    d.includes("Weights are approximate and may vary slightly per piece.")
+  );
+}
 
 export interface WeightPushResult {
   ok?: boolean;
@@ -115,4 +124,88 @@ export async function pushAllWeights(): Promise<{
 
   revalidatePath(PATH);
   return { updated, unchanged, errors };
+}
+
+/**
+ * Açıklamalardaki beden→gram bloklarını söker (DB + Etsy).
+ * Yanlışlıkla tüm Jade listing'lere basılan blokları geri almak için.
+ */
+export async function stripAllWeightBlocks(): Promise<{
+  updated: number;
+  unchanged: number;
+  errors: number;
+  scanned: number;
+  error?: string;
+}> {
+  const m = await requireMembership();
+  if (!isManager(m.role))
+    return {
+      updated: 0,
+      unchanged: 0,
+      errors: 0,
+      scanned: 0,
+      error: MANAGER_ONLY_ERROR,
+    };
+  const { writeEnabled } = await getEtsyWriteAccess(m.org_id);
+  if (!writeEnabled)
+    return {
+      updated: 0,
+      unchanged: 0,
+      errors: 0,
+      scanned: 0,
+      error: "Etsy yazma erişimi kapalı.",
+    };
+
+  const supabase = await createClient();
+  const { data: products, error } = await supabase
+    .from("products")
+    .select("id, etsy_listing_id, description")
+    .eq("org_id", m.org_id)
+    .is("archived_at", null);
+  if (error) {
+    return {
+      updated: 0,
+      unchanged: 0,
+      errors: 0,
+      scanned: 0,
+      error: error.message,
+    };
+  }
+
+  const client = await EtsyClient.forOrg(m.org_id);
+  let updated = 0;
+  let unchanged = 0;
+  let errors = 0;
+  const rows = products ?? [];
+
+  for (const p of rows) {
+    if (!hasWeightBlock(p.description as string | null)) continue;
+    if (p.etsy_listing_id == null) continue;
+    try {
+      const detail = await getListing(client, Number(p.etsy_listing_id));
+      const fresh = detail.description ?? "";
+      const next = stripWeightBlocks(fresh);
+      if (next === fresh) {
+        await supabase
+          .from("products")
+          .update({ description: fresh })
+          .eq("id", p.id)
+          .eq("org_id", m.org_id);
+        unchanged++;
+        continue;
+      }
+      await updateListingDescription(client, Number(p.etsy_listing_id), next);
+      await supabase
+        .from("products")
+        .update({ description: next })
+        .eq("id", p.id)
+        .eq("org_id", m.org_id);
+      updated++;
+    } catch {
+      errors++;
+    }
+  }
+
+  revalidatePath(PATH);
+  return { updated, unchanged, errors, scanned: rows.length };
 }
