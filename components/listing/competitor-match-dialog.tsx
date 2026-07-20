@@ -46,7 +46,7 @@ export function CompetitorMatchDialog({
   competitorListingId: number;
   competitorTitle?: string | null;
   currency?: string;
-  ourVariants: { sku: string; label: string }[];
+  ourVariants: { sku: string; label: string; weight_grams?: number | null }[];
   existingMatches: CompetitorVariantMatchItem[];
 }) {
   const [open, setOpen] = useState(false);
@@ -165,8 +165,8 @@ export function CompetitorMatchDialog({
           <DialogTitle>Varyant eşleştir</DialogTitle>
           <DialogDescription>
             {competitorTitle
-              ? `"${competitorTitle}" teklifini bizim Etsy SKU’muzla bağla. Otomatik beden/ayar eşlemesini ezer. SKU değiştirilmez — yalnız eşleşme kaydı yazılır.`
-              : "Rakip teklifi bizim Etsy SKU’muzla bağla. SKU kaynağı Etsy senkronu; ürün SKU’su değiştirilmez."}
+              ? `"${competitorTitle}" teklifini bizim Etsy SKU’muzla bağla. Gramı olan varyantı seç — kayıt sonrası Satış sütununda rakip $/g × gram yansıması görünür.`
+              : "Rakip teklifi bizim Etsy SKU’muzla bağla. Gramı olan çapadan tüm varyantlara fiyat yansır."}
           </DialogDescription>
         </DialogHeader>
 

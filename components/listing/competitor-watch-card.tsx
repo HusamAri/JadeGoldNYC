@@ -142,7 +142,7 @@ export function CompetitorWatchList({
 }: {
   productId: string;
   items: CompetitorWatchItem[];
-  ourVariants?: { sku: string; label: string }[];
+  ourVariants?: { sku: string; label: string; weight_grams?: number | null }[];
   matches?: CompetitorVariantMatchItem[];
   currency?: string;
 }) {

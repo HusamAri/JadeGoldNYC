@@ -301,11 +301,11 @@ export async function listCompetitorVariantMatches(
  */
 export async function listProductVariantOptions(
   productId: string,
-): Promise<{ sku: string; label: string }[]> {
+): Promise<{ sku: string; label: string; weight_grams: number | null }[]> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("product_variants")
-    .select("sku, name, properties")
+    .select("sku, name, properties, weight_grams")
     .eq("product_id", productId);
   if (error) {
     console.error("product_variants (eşleştirme) hatası:", error.message);
@@ -316,31 +316,59 @@ export async function listProductVariantOptions(
       sku: string;
       name: string | null;
       properties: RawVariantProperties;
+      weight_grams: number | string | null;
     }[])
       .filter((v) => !!v.sku?.trim())
-      .map((v) => ({
-        sku: v.sku,
-        properties: v.properties,
-        label:
+      .map((v) => {
+        const grams =
+          v.weight_grams == null ? null : Number(v.weight_grams);
+        const base =
           variantPropertyParts(v.properties).join(" · ") ||
           v.name ||
-          v.sku,
-      })),
-  ).map(({ sku, label }) => ({ sku, label }));
+          v.sku;
+        const label =
+          grams != null && Number.isFinite(grams) && grams > 0
+            ? `${base} · ${grams} g`
+            : `${base} · gramsız`;
+        return {
+          sku: v.sku,
+          properties: v.properties,
+          label,
+          weight_grams:
+            grams != null && Number.isFinite(grams) ? grams : null,
+        };
+      }),
+  ).map(({ sku, label, weight_grams }) => ({ sku, label, weight_grams }));
   if (rows.length > 0) return rows;
 
   const { data: p, error: pErr } = await supabase
     .from("products")
-    .select("sku, title")
+    .select("sku, title, weight_grams")
     .eq("id", productId)
     .maybeSingle();
   if (pErr) {
     console.error("products (eşleştirme) hatası:", pErr.message);
     return [];
   }
-  const product = p as { sku: string | null; title: string } | null;
+  const product = p as {
+    sku: string | null;
+    title: string;
+    weight_grams: number | string | null;
+  } | null;
   const etsySku = product?.sku?.trim();
   // Etsy ürün SKU’su yoksa eşleştirme seçeneği yok — asla id uydurma.
   if (!etsySku) return [];
-  return [{ sku: etsySku, label: product?.title?.trim() || etsySku }];
+  const grams =
+    product?.weight_grams == null ? null : Number(product.weight_grams);
+  const title = product?.title?.trim() || etsySku;
+  return [
+    {
+      sku: etsySku,
+      label:
+        grams != null && Number.isFinite(grams) && grams > 0
+          ? `${title} · ${grams} g`
+          : `${title} · gramsız`,
+      weight_grams: grams != null && Number.isFinite(grams) ? grams : null,
+    },
+  ];
 }
