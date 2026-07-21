@@ -33,6 +33,7 @@ export function Topbar({
   showJadeGoldNav,
   showBrandBookNav,
   platformCapabilities,
+  emblem,
 }: {
   email: string;
   name?: string | null;
@@ -45,6 +46,8 @@ export function Topbar({
   showBrandBookNav: boolean;
   /** Aktif platform yetenekleri — `capability` işaretli sekmeler filtrelenir. */
   platformCapabilities: Record<string, boolean>;
+  /** Aktif org'un LUME işareti (sunucuda render edilir; mobil başlıkta). */
+  emblem?: React.ReactNode;
 }) {
   const pathname = usePathname();
   const [switchPending, startSwitch] = useTransition();
@@ -134,6 +137,8 @@ export function Topbar({
         {/* Editorial vurgu çizgisi (.idx-bar dili) — başlığın önünde kısa
             primary hairline; yalnız masaüstünde. */}
         <span aria-hidden className="hidden h-px w-6 shrink-0 bg-primary/70 md:block" />
+        {/* Org lume işareti — "panel yazısının yanında", holo gradient + ışıma. */}
+        {emblem}
         {/* Bölüm adı — Spatial marka dili: serif 600, 20px, -.01em
             (ref: .navglass .brand). */}
         <h1 className="text-lg font-semibold tracking-[-0.01em] [font-family:var(--font-serif)] md:text-xl">
