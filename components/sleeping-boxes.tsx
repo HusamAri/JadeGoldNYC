@@ -24,6 +24,23 @@ export interface SleepingBox {
   hint?: string;
 }
 
+/**
+ * Tek bölümün YERİNDE ince uyuyan satırı — Suspense ile stream edilen bölümler
+ * sayfa-sonu listesine yazamaz (kabuk render'ı çoktan bitti); boşken tam boy
+ * kart yerine bu satırı çizerler. Görsel dil SleepingBoxes ile aynı.
+ */
+export function SleepingNote({ name, hint }: SleepingBox) {
+  return (
+    <p className="text-muted-foreground/60 flex items-center justify-center gap-2 py-1 text-center text-xs">
+      <MoonStar aria-hidden className="size-3.5 shrink-0 opacity-70" />
+      <span>
+        <span className="font-medium">{name}</span> uyuyor
+        {hint ? <span className="opacity-70"> — {hint}</span> : null}
+      </span>
+    </p>
+  );
+}
+
 export function SleepingBoxes({ items }: { items: SleepingBox[] }) {
   if (items.length === 0) return null;
   return (
