@@ -48,7 +48,6 @@ import { EditorialCard } from "@/components/brand/editorial-card";
 import { KpiCard } from "@/components/kpi-card";
 import { WhatsNew } from "@/components/whats-new";
 import { AlertCenterCard } from "@/components/alert-center";
-import { AlertBoard3D } from "@/components/alert-board-3d";
 import {
   SleepingBoxes,
   SleepingNote,
@@ -716,14 +715,13 @@ async function AlertsSection({ orgId }: { orgId: string }) {
       {/* Görsel çıktı yok: o an açık uyarıları izler, kaybolanları (çözülen)
           Görevler'e TAMAMLANMIŞ görev olarak yazar (şirket hafızası izi). */}
       <AlertResolutionTracker alerts={alertCenter.alerts} />
+      {/* 3B uyarı board'u kullanıcı kararıyla EMEKLİ — özet artık üst bardaki
+          bildirim zilinde; bu kart detay/aksiyon yüzeyi olarak kalır. */}
       {alertCenter.total > 0 ? (
-        <>
-          <AlertBoard3D data={alertCenter} />
-          <AlertCenterCard data={alertCenter} />
-        </>
+        <AlertCenterCard data={alertCenter} />
       ) : (
         <SleepingNote
-          name="Uyarı Board'u & Merkezi"
+          name="Uyarı Merkezi"
           hint="her şey yolunda; aksiyon bekleyen uyarı çıkınca uyanır"
         />
       )}
