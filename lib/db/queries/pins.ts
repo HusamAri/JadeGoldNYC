@@ -5,16 +5,48 @@ import type { PinSticker, TargetPin } from "@/lib/pins/meta";
 // RSC tarafındaki tüketiciler için buradan da dışa verilir.
 export * from "@/lib/pins/meta";
 
-/** Kullanıcının kendi seti — tepside gösterilir; seti olmayan kullanıcıda boş. */
-export async function getMyStickers(userId: string): Promise<PinSticker[]> {
+/**
+ * ORTAK pin kütüphanesi — tüm kullanıcıların rozet pinleri (kullanıcı kararı:
+ * herkes herkesin pinini iğneleyebilir). Portre pinleri (kind='person')
+ * kütüphaneye GİRMEZ — onlar profil pinidir. Tepside sahibine göre gruplanır.
+ */
+export async function getPinLibrary(): Promise<PinSticker[]> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("pin_stickers")
-    .select("id, key, label, src, kind")
-    .eq("owner_user_id", userId)
+    .select("id, key, label, src, kind, owner_user_id")
+    .eq("kind", "badge")
     .order("sort", { ascending: true });
-  if (error) console.error("[pins] getMyStickers:", error.message);
-  return (data as PinSticker[] | null) ?? [];
+  if (error) console.error("[pins] getPinLibrary:", error.message);
+  const rows =
+    (data as
+      | (Omit<PinSticker, "ownerName"> & { owner_user_id: string })[]
+      | null) ?? [];
+  if (rows.length === 0) return [];
+
+  const ownerIds = [...new Set(rows.map((r) => r.owner_user_id))];
+  const names = new Map<string, string>();
+  const { data: profs } = await supabase
+    .from("profiles")
+    .select("id, full_name")
+    .in("id", ownerIds);
+  for (const p of (profs as { id: string; full_name: string | null }[] | null) ?? [])
+    if (p.full_name) names.set(p.id, p.full_name);
+
+  return rows
+    .map((r) => ({
+      id: r.id,
+      key: r.key,
+      label: r.label,
+      src: r.src,
+      kind: r.kind,
+      ownerName: names.get(r.owner_user_id) ?? null,
+    }))
+    .sort(
+      (a, b) =>
+        (a.ownerName ?? "").localeCompare(b.ownerName ?? "", "tr") ||
+        a.label.localeCompare(b.label, "tr"),
+    );
 }
 
 /**

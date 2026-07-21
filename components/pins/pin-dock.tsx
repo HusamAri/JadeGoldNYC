@@ -1,5 +1,5 @@
 import { getMembership, getUser } from "@/lib/auth";
-import { getMyStickers, getPinsForTargets } from "@/lib/db/queries/pins";
+import { getPinLibrary, getPinsForTargets } from "@/lib/db/queries/pins";
 import { PinBoard } from "@/components/pins/pin-board";
 
 /**
@@ -24,7 +24,7 @@ export async function PinDock({
   if (!m || !user) return null;
   const [pinMap, myStickers] = await Promise.all([
     getPinsForTargets(m.org_id, targetType, [targetId]),
-    getMyStickers(user.id),
+    getPinLibrary(),
   ]);
   const pins = pinMap.get(targetId) ?? [];
   if (pins.length === 0 && myStickers.length === 0) return null;

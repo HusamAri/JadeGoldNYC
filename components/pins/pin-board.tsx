@@ -61,7 +61,7 @@ export function PinBoard({
   targetType: "task" | "sale" | "event" | "audit";
   targetId: string;
   pins: TargetPin[];
-  /** Kullanıcının kendi seti — boşsa "+" hiç görünmez (salt izleme). */
+  /** Ortak pin kütüphanesi (herkesin rozetleri) — boşsa "+" hiç görünmez. */
   myStickers: PinSticker[];
   /** Aktif kullanıcı id'si — yalnız KENDİ pinleri tıkla-kaldır olur. */
   meId?: string;
@@ -156,38 +156,56 @@ export function PinBoard({
               <Plus className="size-3.5" />
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-64">
+          <DropdownMenuContent
+            align="start"
+            className="max-h-[65vh] w-64 overflow-y-auto"
+          >
             <DropdownMenuLabel className="text-muted-foreground font-mono text-[0.65rem] tracking-[0.14em] uppercase">
-              Pin setin
+              Pin kütüphanesi
             </DropdownMenuLabel>
-            <div className="grid grid-cols-4 gap-1 p-1.5">
-              {myStickers.map((st) => (
-                <button
-                  key={st.id}
-                  type="button"
-                  title={st.label}
-                  disabled={pending}
-                  onClick={() =>
-                    startTransition(async () => {
-                      const r = await addPin({
-                        targetType,
-                        targetId,
-                        stickerId: st.id,
-                        path: pathname,
-                      });
-                      if (r.error) toast.error(r.error);
-                    })
-                  }
-                  className="hover:bg-secondary/60 flex aspect-square cursor-pointer items-center justify-center rounded-lg border-0 bg-transparent p-1.5 transition-[background-color,transform] duration-200 hover:scale-105 disabled:opacity-50"
-                >
-                  <img
-                    src={st.src}
-                    alt={st.label}
-                    className="max-h-full max-w-full object-contain [filter:drop-shadow(0_2px_4px_rgb(48_42_60/0.25))]"
-                  />
-                </button>
-              ))}
-            </div>
+            {/* Ortak kütüphane, sahibine göre gruplu (kullanıcı kararı:
+                herkes herkesin rozetini iğneleyebilir). */}
+            {[...new Set(myStickers.map((s) => s.ownerName ?? ""))].map(
+              (owner) => (
+                <div key={owner || "ortak"}>
+                  {owner && (
+                    <p className="text-muted-foreground/70 px-2 pt-1.5 text-[0.62rem] font-semibold tracking-[0.12em] uppercase">
+                      {owner}
+                    </p>
+                  )}
+                  <div className="grid grid-cols-4 gap-1 p-1.5">
+                    {myStickers
+                      .filter((s) => (s.ownerName ?? "") === owner)
+                      .map((st) => (
+                        <button
+                          key={st.id}
+                          type="button"
+                          title={st.label}
+                          disabled={pending}
+                          onClick={() =>
+                            startTransition(async () => {
+                              const r = await addPin({
+                                targetType,
+                                targetId,
+                                stickerId: st.id,
+                                path: pathname,
+                              });
+                              if (r.error) toast.error(r.error);
+                            })
+                          }
+                          className="hover:bg-secondary/60 flex aspect-square cursor-pointer items-center justify-center rounded-lg border-0 bg-transparent p-1.5 transition-[background-color,transform] duration-200 hover:scale-105 disabled:opacity-50"
+                        >
+                          <img
+                            src={st.src}
+                            alt={st.label}
+                            className="max-h-full max-w-full object-contain [filter:drop-shadow(0_2px_4px_rgb(48_42_60/0.25))]"
+                          />
+                        </button>
+                      ))}
+                  </div>
+                </div>
+              ),
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       )}

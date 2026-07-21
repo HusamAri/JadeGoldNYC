@@ -25,12 +25,17 @@ const SRC =
   "/tmp/claude-0/-home-user-JadeGoldNYC/26940d52-aed1-5d7a-9a7c-1fcc52d905e8/scratchpad/pins-src";
 const OUT = new URL("../public/pins", import.meta.url).pathname;
 
-/** Sheet ayarları: dark=koyu keçe zemin (gölge korunmaz, eşik dar). */
+/** Sheet ayarları: dark=koyu keçe zemin (gölge korunmaz, eşik dar).
+    satMax: gölge-benzeri sayılan azami doygunluk; shadowFloor: bu ham
+    alfanın altı toz sayılıp silinir — grenli kağıtta ikisi de yüksek. */
 const SHEETS = {
   "sheet0.webp": { dark: false, bgTol: 38 }, // Gamze — krem kumaş
   "sheet1.webp": { dark: false, bgTol: 38 }, // Hüsam — beyaz
   "sheet2.webp": { dark: true, bgTol: 26 }, // Yasin A — siyah keçe
   "sheet3.webp": { dark: true, bgTol: 26 }, // Yasin B — siyah keçe
+  // Efe — bej KAĞIT: gren çok kuvvetli; dar eşikler taneleri "pin" sanıp
+  // bileşenleri köprülüyor ve gölge tozunu bırakıyordu (kontak bulgusu).
+  "sheet4.png": { dark: false, bgTol: 56, satMax: 0.5, shadowFloor: 0.26 },
 };
 
 /**
@@ -90,11 +95,58 @@ const SETS = {
     { key: "naive", sheet: "sheet3.webp", box: [485, 1120, 290, 190] },
     { key: "star", sheet: "sheet3.webp", box: [770, 1070, 250, 265] },
   ],
+  efe: [
+    // noShadow: krop, Boss/EFE/Raptor'un boyalı gölgelerini de kapsıyor —
+    // gölge katmanı tümden atılır; avatar render'ı zaten CSS gölgesi verir.
+    // satMax 0.8: bej kağıttaki SICAK (doygun kahve) gölgeler yürünebilir
+    // olsun ki komşu parçalar portreden ayrışsın; onlyMain kalanları süpürür.
+    // seedGrid: komşularla portre arasında KAPALI kağıt cepleri kalıyor ve
+    // bitişiklik hepsini tek bileşene yapıştırıyordu — kesin-zemin (dist<28)
+    // noktalarına otomatik tohum ekilir, cepler boşalır, kopan komşu
+    // parçaları onlyMain süpürür. Portreyi kendi altın çerçevesi korur.
+    // bgColor: bu kropun kenar şeridi komşu pinlerle dolu — medyan zemin
+    // tahmini kirleniyordu (170,139,83 ölçüp gerçek kağıdı 60 mesafeyle
+    // eliyordu). Temiz kağıt örneği elle verilir.
+    {
+      key: "person",
+      sheet: "sheet4.png",
+      box: [255, 320, 490, 610],
+      noShadow: true,
+      onlyMain: true,
+      satMax: 0.8,
+      seedGrid: true,
+      bgColor: [196, 174, 146],
+    },
+    { key: "efe-name", sheet: "sheet4.png", box: [40, 225, 370, 205] },
+    { key: "raptor", sheet: "sheet4.png", box: [605, 170, 515, 350] },
+    { key: "boss", sheet: "sheet4.png", box: [20, 465, 325, 255] },
+    { key: "money", sheet: "sheet4.png", box: [715, 505, 400, 315] },
+    { key: "jg-medallion", sheet: "sheet4.png", box: [25, 820, 380, 375] },
+    { key: "cuban-chain", sheet: "sheet4.png", box: [400, 885, 375, 375] },
+    {
+      key: "jade-ring",
+      sheet: "sheet4.png",
+      box: [755, 845, 350, 375],
+      holeSeeds: [[180, 260]],
+    },
+  ],
 };
 
 const lum = (r, g, b) => 0.299 * r + 0.587 * g + 0.114 * b;
 
-async function cutPin(sheetFile, { box: [bx, by, bw, bh], holeSeeds }, outPath) {
+async function cutPin(
+  sheetFile,
+  {
+    box: [bx, by, bw, bh],
+    holeSeeds,
+    noShadow,
+    onlyMain,
+    satMax: pinSatMax,
+    seedGrid,
+    bgColor,
+  },
+  outPath,
+) {
   const cfg = SHEETS[sheetFile];
   const { data, info } = await sharp(path.join(SRC, sheetFile))
     .extract({ left: bx, top: by, width: bw, height: bh })
@@ -113,7 +165,9 @@ async function cutPin(sheetFile, { box: [bx, by, bw, bh], holeSeeds }, outPath) 
       ring[0].push(data[i]); ring[1].push(data[i + 1]); ring[2].push(data[i + 2]);
     }
   const med = (a) => a.sort((p, q) => p - q)[a.length >> 1];
-  const bg = [med(ring[0]), med(ring[1]), med(ring[2])];
+  // Kenar şeridi komşu pinlerle doluysa medyan kirlenir — pin, temiz zemin
+  // örneğini bgColor ile elle verebilir.
+  const bg = bgColor ?? [med(ring[0]), med(ring[1]), med(ring[2])];
   const Lbg = lum(...bg);
 
   const isBgLike = (i) => {
@@ -121,13 +175,14 @@ async function cutPin(sheetFile, { box: [bx, by, bw, bh], holeSeeds }, outPath) 
     return Math.sqrt(dr * dr + dg * dg + db * db) < cfg.bgTol;
   };
   // Gölge pikseli (yalnız açık zemin): zeminden koyu, düşük doygunluk.
+  const satMax = pinSatMax ?? cfg.satMax ?? 0.35;
   const isShadowLike = (i) => {
     if (cfg.dark) return false;
     const r = data[i], g = data[i + 1], b = data[i + 2];
     const L = lum(r, g, b);
     const mx = Math.max(r, g, b), mn = Math.min(r, g, b);
     const sat = mx === 0 ? 0 : (mx - mn) / mx;
-    return L < Lbg && L > Lbg * 0.38 && sat < 0.35;
+    return L < Lbg && L > Lbg * 0.38 && sat < satMax;
   };
 
   // 1) Kenarlardan flood-fill.
@@ -152,9 +207,19 @@ async function cutPin(sheetFile, { box: [bx, by, bw, bh], holeSeeds }, outPath) 
     }
   }
 
-  // 1b) Elle verilen delik tohumları (koyu zemin: yüzük içi) — zemin-benzeri
-  //     pikseller üzerinden ikinci fill; "outside" işaretlenir (alfa 0 yolu).
-  for (const [sx, sy] of holeSeeds ?? []) {
+  // 1b) Delik tohumları — elle verilenler + (seedGrid) 32px ızgarada KESİN
+  //     zemin (dist<28) noktaları; kapalı cepler böyle boşalır. Fill,
+  //     "outside" işaretler (alfa 0 yolu).
+  const seeds = [...(holeSeeds ?? [])];
+  if (seedGrid) {
+    for (let y = 8; y < H; y += 32)
+      for (let x = 8; x < W; x += 32) {
+        const i = px(x, y);
+        const dr = data[i] - bg[0], dg = data[i + 1] - bg[1], db = data[i + 2] - bg[2];
+        if (Math.sqrt(dr * dr + dg * dg + db * db) < 28) seeds.push([x, y]);
+      }
+  }
+  for (const [sx, sy] of seeds) {
     const idx = sy * W + sx;
     if (idx < 0 || idx >= W * H || outside[idx]) continue;
     if (!isBgLike(px(sx, sy))) continue;
@@ -202,6 +267,10 @@ async function cutPin(sheetFile, { box: [bx, by, bw, bh], holeSeeds }, outPath) 
   }
   let mainComp = 0;
   for (let c = 1; c < ncomp; c++) if (compArea[c] > compArea[mainComp]) mainComp = c;
+  // Mini gren adacıkları (zincir içi gibi çevrili bölgelerde kalan taneler):
+  // ana olmayan, 200px altı iç parçalar atılır — gerçek eşlikçiler (yıldız
+  // parıltısı ~1000px+) etkilenmez.
+  const tooSmall = (c) => c !== mainComp && compArea[c] < 200;
 
   // 3) Çevrili zemin delikleri (yalnız AÇIK zemin — otomatik güvenli):
   //    bölge piksellerinin ≥%70'i zeminle NEREDEYSE AYNI ise (dist<16) delik
@@ -231,19 +300,23 @@ async function cutPin(sheetFile, { box: [bx, by, bw, bh], holeSeeds }, outPath) 
     const x = idx % W, y = (idx / W) | 0;
     const i = px(x, y), o = idx * 4;
     if (outside[idx]) {
-      if (!cfg.dark) {
+      if (!cfg.dark && !noShadow) {
         const L = lum(data[i], data[i + 1], data[i + 2]);
-        // Alfa tabanı: kumaş greni ~0.05 ham alfa üretir ve koyu panelde
-        // "tozlu dikdörtgen" olarak görünür — 0.14 altı sıfırlanır, kalan
+        // Alfa tabanı: zemin greni düşük ham alfa üretir ve koyu panelde
+        // "tozlu dikdörtgen" olarak görünür — taban altı sıfırlanır, kalan
         // gerçek gölge yeniden ölçeklenir (kontak-sayfa doğrulama bulgusu).
+        const floor = cfg.shadowFloor ?? 0.14;
         const raw = ((Lbg - L) / Lbg) * 1.55;
-        const a = raw < 0.14 ? 0 : Math.min(0.62, (raw - 0.14) * 1.8);
+        const a = raw < floor ? 0 : Math.min(0.62, (raw - floor) * 1.8);
         rgba[o] = INK[0]; rgba[o + 1] = INK[1]; rgba[o + 2] = INK[2];
         rgba[o + 3] = Math.round(a * 255);
       }
     } else if (
       comp[idx] !== mainComp &&
-      (touchesBorder[comp[idx]] || isHole[comp[idx]])
+      (onlyMain ||
+        touchesBorder[comp[idx]] ||
+        isHole[comp[idx]] ||
+        tooSmall(comp[idx]))
     ) {
       rgba[o + 3] = 0;
     } else {

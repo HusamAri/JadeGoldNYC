@@ -29,7 +29,7 @@ import { PanelDiagnosticCard } from "@/components/panel/panel-diagnostic-card";
 import { getTimelineData } from "@/lib/db/queries/timeline";
 import {
   eventPinTargetId,
-  getMyStickers,
+  getPinLibrary,
   getPinsForTargets,
 } from "@/lib/db/queries/pins";
 import { requireMembership, getUser } from "@/lib/auth";
@@ -791,7 +791,7 @@ async function TimelineSection({ orgId }: { orgId: string }) {
   const [taskPins, eventPins, myStickers] = await Promise.all([
     getPinsForTargets(orgId, "task", timeline.tasks.map((t) => t.id)),
     getPinsForTargets(orgId, "event", timeline.events.map(eventPinTargetId)),
-    user ? getMyStickers(user.id) : Promise.resolve([]),
+    getPinLibrary(),
   ]);
   return (
     <PanelTimeline

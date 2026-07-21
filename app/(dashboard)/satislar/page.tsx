@@ -62,7 +62,7 @@ import { Pagination } from "@/components/data-table/pagination";
 import { DeleteButton } from "@/components/data-table/delete-button";
 import { SaleStatusBadge } from "@/components/sale-status-badge";
 import { getUser } from "@/lib/auth";
-import { getMyStickers, getPinsForTargets } from "@/lib/db/queries/pins";
+import { getPinLibrary, getPinsForTargets } from "@/lib/db/queries/pins";
 import { PinBoard } from "@/components/pins/pin-board";
 import { deleteSale } from "./actions";
 
@@ -92,7 +92,7 @@ export default async function SatislarPage({
   const user = await getUser();
   const [pinMap, myStickers] = await Promise.all([
     getPinsForTargets(m.org_id, "sale", rows.map((r) => r.id)),
-    user ? getMyStickers(user.id) : Promise.resolve([]),
+    getPinLibrary(),
   ]);
 
   const t = analytics.totals;

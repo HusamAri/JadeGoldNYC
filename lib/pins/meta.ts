@@ -5,13 +5,17 @@
  * ve bu modülü yeniden dışa verir (ads/meta.ts deseni — PR #265 dersi).
  */
 
-/** Kullanıcının kendi pin setindeki bir sticker (pin_stickers satırı). */
+/** Ortak pin kütüphanesindeki bir sticker (pin_stickers satırı). Kural
+    (kullanıcı kararı): rozetler HERKESE açık; portre pinleri (kind='person')
+    kütüphaneye girmez — onlar profil pinidir. */
 export interface PinSticker {
   id: string;
   key: string;
   label: string;
   src: string;
   kind: "person" | "badge";
+  /** Setin sahibi (tepside grup başlığı) — profil adı yoksa null. */
+  ownerName: string | null;
 }
 
 /** Bir hedefe iğnelenmiş pin (görsel + kim iğneledi). */
