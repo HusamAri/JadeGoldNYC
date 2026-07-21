@@ -32,6 +32,7 @@ export function Topbar({
   activeOrgId,
   showJadeGoldNav,
   showBrandBookNav,
+  platformCapabilities,
 }: {
   email: string;
   name?: string | null;
@@ -42,6 +43,8 @@ export function Topbar({
   showJadeGoldNav: boolean;
   /** Jade Gold veya EON — Marka Kılavuzu. */
   showBrandBookNav: boolean;
+  /** Aktif platform yetenekleri — `capability` işaretli sekmeler filtrelenir. */
+  platformCapabilities: Record<string, boolean>;
 }) {
   const pathname = usePathname();
   const [switchPending, startSwitch] = useTransition();
@@ -110,6 +113,8 @@ export function Topbar({
                 {g.items.map((i) => {
                   if (i.jadeGoldOnly && !showJadeGoldNav) return null;
                   if (i.brandBook && !showBrandBookNav) return null;
+                  if (i.capability && !platformCapabilities[i.capability])
+                    return null;
                   const Icon = i.icon;
                   return (
                     <DropdownMenuItem key={i.href} asChild>

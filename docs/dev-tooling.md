@@ -58,3 +58,11 @@ workflow'daki listeye ekleyip yeniden çalıştırarak vendor edilebilir.
 ## Dahil edilmeyenler
 LunarCrush, AWS Marketplace, Booking/Expedia/Tripadvisor, Spotify, Wix — bu proje
 için ilgisiz.
+
+## 5. panel-qa dinamik workflow — kuruldu ✅
+`.claude/workflows/panel-qa.js` — istenince koşulan çok-ajanlı kalite taraması:
+5 mercek (mantık hatası · buton tepkiselliği · kırık rota · hata-yutma · görsel)
+paralel tarar, her bulgu adversarial çürütücüden geçer, doğrulananlar önem
+sırasıyla `auto_fixable` işaretli raporlanır. Çağrı: "panel-qa workflow'unu koş"
+(kapsam daraltma: `{ scope: "gorevler" }`). Bulgular elle ya da ayrı bir düzeltme
+turuyla uygulanır; sahte-pozitifler çürütücüde elenir.
