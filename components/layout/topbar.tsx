@@ -10,7 +10,6 @@ import { signOut, switchOrganization } from "@/lib/actions/session";
 import type { MembershipWithOrg } from "@/lib/auth";
 import { NAV_ITEMS, NAV_GROUPS } from "@/components/layout/nav-items";
 import { matchNavItem } from "@/lib/nav";
-import { Logo } from "@/components/layout/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { GoldPriceTicker } from "@/components/gold-price-ticker";
 import { UserAvatar } from "@/components/user-avatar";
@@ -133,12 +132,13 @@ export function Topbar({
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <Logo className="md:hidden" />
+        {/* Aktif ŞİRKETİN işareti app ikonunun yerinde — büyük, lume/holo
+            gradient (kullanıcı kararı: Amuletta logosu + başlık yanı küçük
+            işaret kaldırıldı; marka kimliği tek ve büyük burada yaşar). */}
+        {emblem}
         {/* Editorial vurgu çizgisi (.idx-bar dili) — başlığın önünde kısa
             primary hairline; yalnız masaüstünde. */}
         <span aria-hidden className="hidden h-px w-6 shrink-0 bg-primary/70 md:block" />
-        {/* Org lume işareti — "panel yazısının yanında", holo gradient + ışıma. */}
-        {emblem}
         {/* Bölüm adı — Spatial marka dili: serif 600, 20px, -.01em
             (ref: .navglass .brand). */}
         <h1 className="text-lg font-semibold tracking-[-0.01em] [font-family:var(--font-serif)] md:text-xl">

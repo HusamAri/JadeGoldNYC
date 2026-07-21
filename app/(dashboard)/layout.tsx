@@ -76,7 +76,7 @@ export default async function DashboardLayout({
           showJadeGoldNav={showJadeGoldNav}
           showBrandBookNav={showBrandBookNav}
           platformCapabilities={platformCapabilities}
-          emblem={<OrgEmblemLume className="h-[18px]" />}
+          emblem={<OrgEmblemLume className="h-[30px]" />}
         />
         {/* Generous padding — glass needs air; dense dashboards feel cheap. */}
         <main className="flex-1 px-5 py-8 sm:px-8 sm:py-10 lg:px-12 lg:py-12">
