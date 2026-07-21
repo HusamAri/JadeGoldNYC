@@ -15,7 +15,7 @@ import {
   ADS_TRIAGE,
   ADS_ACTION_KIND_META,
   type AdsTriageOption,
-} from "@/lib/db/queries/ads-actions";
+} from "@/lib/ads/meta";
 import { createAdsAction } from "@/app/(dashboard)/reklamlar/actions";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
