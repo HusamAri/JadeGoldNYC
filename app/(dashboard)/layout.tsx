@@ -8,6 +8,7 @@ import { Topbar } from "@/components/layout/topbar";
 import { PageTransition } from "@/components/layout/page-transition";
 import {
   OrgEmblemBackdrop,
+  OrgEmblemLume,
   OrgEmblemSignature,
 } from "@/components/brand/org-emblem";
 import { ParallaxDrift } from "@/components/motion/parallax-drift";
@@ -63,6 +64,7 @@ export default async function DashboardLayout({
         showJadeGoldNav={showJadeGoldNav}
         showBrandBookNav={showBrandBookNav}
         platformCapabilities={platformCapabilities}
+        emblem={<OrgEmblemLume className="h-[13px]" />}
       />
       <div className="flex min-w-0 flex-1 flex-col">
         <Topbar
@@ -74,6 +76,7 @@ export default async function DashboardLayout({
           showJadeGoldNav={showJadeGoldNav}
           showBrandBookNav={showBrandBookNav}
           platformCapabilities={platformCapabilities}
+          emblem={<OrgEmblemLume className="h-[18px]" />}
         />
         {/* Generous padding — glass needs air; dense dashboards feel cheap. */}
         <main className="flex-1 px-5 py-8 sm:px-8 sm:py-10 lg:px-12 lg:py-12">

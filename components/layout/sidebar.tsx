@@ -18,6 +18,7 @@ export function Sidebar({
   showJadeGoldNav,
   showBrandBookNav,
   platformCapabilities,
+  emblem,
 }: {
   memberships: MembershipWithOrg[];
   activeOrgId: string;
@@ -31,6 +32,12 @@ export function Sidebar({
    * ilgili yetenek açıkken görünür (Etsy dışı org'da Etsy motorları gizlenir).
    */
   platformCapabilities: Record<string, boolean>;
+  /**
+   * Aktif org'un LUME işareti (holo gradient + ışıma) — sunucuda render
+   * edilip prop olarak iner (bu bileşen client; async org çözümü yapamaz).
+   * Başlıktaki "panel" etiketinin yanında durur.
+   */
+  emblem?: React.ReactNode;
 }) {
   const pathname = usePathname();
   const navRef = useRef<HTMLElement>(null);
@@ -53,7 +60,10 @@ export function Sidebar({
         <span className="text-foreground text-xl leading-none font-medium tracking-tight [font-family:var(--font-display)]">
           Amuletta<em className="text-primary not-italic">.</em>
         </span>
-        <span className="idx ml-auto !gap-0 text-[9px]">panel</span>
+        <span className="idx ml-auto !gap-1.5 text-[9px]">
+          {emblem}
+          panel
+        </span>
       </div>
       {/* Marka kutusu — kiracı (şirket) kimliği yalnız bu SINIRLI kutuda:
           kazınmış oyuk içinde logo + şirket seçici. Arayüzün kalanı Amuletta. */}

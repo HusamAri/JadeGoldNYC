@@ -117,6 +117,42 @@ export async function OrgEmblemSignature() {
   );
 }
 
+/**
+ * LUME işaret — org ikonu panelin holo gradient'iyle boyanır + ışıklı
+ * (sidebar başlığındaki "panel" yazısının yanı için). Teknik: ikonun alfası
+ * CSS mask olur, dolgu --grad-holo gradient'i; çift drop-shadow lume ışıması
+ * verir (koyuda daha belirgin). Görselin kendi renkleri KULLANILMAZ — işaret
+ * panel dilinde parlar.
+ */
+export async function OrgEmblemLume({ className }: { className?: string }) {
+  const org = await getActiveOrg();
+  const e = emblemFor(org?.slug);
+  return (
+    <span
+      aria-hidden
+      className={cn(
+        "relative inline-block shrink-0 align-middle",
+        e.ratio,
+        // Işıma: dar sıcak çekirdek + geniş yumuşak hale (periwinkle lume).
+        "[filter:drop-shadow(0_0_3px_rgb(169_155_255/0.6))_drop-shadow(0_0_9px_rgb(169_155_255/0.35))]",
+        "dark:[filter:drop-shadow(0_0_4px_rgb(205_214_255/0.7))_drop-shadow(0_0_12px_rgb(169_155_255/0.45))]",
+        className,
+      )}
+      style={{
+        backgroundImage: "var(--grad-holo)",
+        maskImage: `url(${e.src})`,
+        maskRepeat: "no-repeat",
+        maskPosition: "center",
+        maskSize: "contain",
+        WebkitMaskImage: `url(${e.src})`,
+        WebkitMaskRepeat: "no-repeat",
+        WebkitMaskPosition: "center",
+        WebkitMaskSize: "contain",
+      }}
+    />
+  );
+}
+
 /** Satır içi mini işaret — PageHeader idx kuyruğunda org imzası. */
 export async function OrgEmblemMini() {
   const org = await getActiveOrg();
