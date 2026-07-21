@@ -27,7 +27,7 @@ const DEPTH: Record<Depth, string> = {
    BİREBİR: drop-shadow(0 7px 5px rgba(66,62,98,.30)) + (0 2px 1px …/.34);
    mum Liquid_Dark reçetesi: (0 12px 12px rgba(0,0,0,.55)) + (0 3px 4px …/.5). */
 const CUTOUT_SHADOW =
-  "drop-shadow-[0_7px_5px_rgba(66,62,98,0.3)] drop-shadow-[0_2px_1px_rgba(66,62,98,0.34)]";
+  "drop-shadow-[0_2px_2px_rgba(66,62,98,0.32)] drop-shadow-[0_8px_12px_rgba(66,62,98,0.22)] drop-shadow-[0_20px_30px_rgba(66,62,98,0.12)]";
 
 const KIND = {
   chains: {

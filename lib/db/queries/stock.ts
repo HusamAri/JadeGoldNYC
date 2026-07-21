@@ -22,7 +22,7 @@ export interface StockProduct {
  */
 export async function listStockProducts(orgId: string): Promise<StockProduct[]> {
   const supabase = await createClient();
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("products")
     .select(
       "id, etsy_listing_id, sku, title, quantity, target_quantity, has_variations, image_url, price_cents, currency, url",
@@ -33,6 +33,8 @@ export async function listStockProducts(orgId: string): Promise<StockProduct[]> 
     .not("sku", "is", null)
     .neq("sku", "")
     .order("sku", { ascending: false });
+  // Hata sessizce "stok işi yok" gibi boş sayfaya dönüşmesin.
+  if (error) console.error("[stok] listStockProducts:", error.message);
   return sortListingsBySkuDesc(
     (data ?? []) as unknown as StockProduct[],
   );

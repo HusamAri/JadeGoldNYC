@@ -117,6 +117,10 @@ export function SalesImportWizard() {
               onChange={(e) => {
                 const f = e.target.files?.[0];
                 if (f) void onFile(f);
+                // Aynı dosya (düzeltilip) yeniden seçilince change TEKRAR
+                // tetiklensin — value sıfırlanmazsa sihirbaz eski ayrıştırmayı
+                // sessizce tutar.
+                e.target.value = "";
               }}
             />
           </label>

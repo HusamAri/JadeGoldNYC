@@ -1,3 +1,4 @@
+import { getActivePlatform } from "@/lib/platform";
 import Link from "next/link";
 import {
   Plus,
@@ -53,6 +54,7 @@ export default async function YorumlarPage({
 }: {
   searchParams: Promise<RawSearchParams>;
 }) {
+  const platform = await getActivePlatform();
   const sp = await searchParams;
   const status = strParam(sp.status);
   const rating = strParam(sp.rating);
@@ -71,7 +73,7 @@ export default async function YorumlarPage({
       <SceneCutouts page="yorumlar" />
       <PageHeader
         title="Tüketici Yorumları"
-        description="Etsy yorumlarını, puan trendini ve yanıt durumunu takip edin"
+        description={`${platform.label} yorumlarını, puan trendini ve yanıt durumunu takip edin`}
         action={
           <Button asChild>
             <Link href="/yorumlar/yeni">
@@ -155,7 +157,7 @@ export default async function YorumlarPage({
               <EmptyState
                 icon={MessageSquareText}
                 title="Yorum yok"
-                description="Müşteri yorumlarını elle ekleyin ya da Etsy senkronizasyonu ile çekin. Puan trendini, yanıt durumunu ve işaretli yorumları buradan yönetin."
+                description={`Müşteri yorumlarını elle ekleyin ya da ${platform.label} senkronizasyonu ile çekin. Puan trendini, yanıt durumunu ve işaretli yorumları buradan yönetin.`}
               />
             )
           ) : (

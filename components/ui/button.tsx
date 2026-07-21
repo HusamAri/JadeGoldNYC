@@ -16,7 +16,7 @@ const buttonVariants = cva(
             rgb(157 140 255/.35) + lift-sm). Hover'da mürekkep dolgu ALTTAN
             yükselir (lbtn.gold dili: dolgu --primary, metin beyaza döner). */
         default:
-          "overflow-hidden border border-transparent [background-image:var(--btn-hero-bg)] text-[color:var(--btn-hero-fg)] shadow-[0_0_24px_rgb(157_140_255/0.35),var(--lift-sm)] before:absolute before:inset-0 before:-z-10 before:rounded-full before:bg-primary before:translate-y-full before:transition-transform before:duration-500 before:ease-[var(--ease-premium)] hover:before:translate-y-0 hover:text-primary-foreground hover:-translate-y-0.5 hover:shadow-[0_0_24px_rgb(157_140_255/0.45),var(--lift)] active:translate-y-0 active:scale-[0.97] dark:shadow-[0_0_24px_rgb(169_155_255/0.3),var(--lift-sm)] dark:hover:shadow-[0_0_28px_rgb(205_214_255/0.4),var(--lift)]",
+          "overflow-hidden border border-transparent [background-image:var(--btn-hero-bg)] text-[color:var(--btn-hero-fg)] shadow-[0_6px_22px_-4px_rgb(157_140_255/0.45),var(--lift-sm)] before:absolute before:inset-0 before:-z-10 before:rounded-full before:bg-primary before:translate-y-full before:transition-transform before:duration-500 before:ease-[var(--ease-premium)] hover:before:translate-y-0 hover:text-primary-foreground hover:-translate-y-0.5 hover:shadow-[0_10px_28px_-4px_rgb(157_140_255/0.5),var(--lift)] active:translate-y-0 active:scale-[0.97] dark:shadow-[0_6px_22px_-4px_rgb(169_155_255/0.4),var(--lift-sm)] dark:hover:shadow-[0_10px_28px_-4px_rgb(205_214_255/0.45),var(--lift)]",
         /** Dolu tehlike pill'i — lbtn.gold deseni: dolgu sabit, hover'da bir
             ton koyusu alttan dolar, metin beyaz kalır. */
         destructive:

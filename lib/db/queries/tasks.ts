@@ -163,7 +163,9 @@ export interface TaskSummary {
 
 export async function getTaskSummary(): Promise<TaskSummary> {
   const supabase = await createClient();
-  const { data } = await supabase.from("tasks").select("status, priority");
+  const { data, error } = await supabase.from("tasks").select("status, priority");
+  // Hata sessizce 0/0/0 özet (bkz. second-brain: sorgu .error yutulmaz).
+  if (error) console.error("[tasks] getTaskSummary:", error.message);
   const rows = (data ?? []) as { status: string; priority: string }[];
   const count = (s: string) => rows.filter((r) => r.status === s).length;
   return {

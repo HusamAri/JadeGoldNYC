@@ -110,7 +110,19 @@ export function RepriceRuleCard({
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      const data = await getRepriceCardData(productId);
+      // Action REDDEDERSE (ağ kopması vb.) {error} şekli hiç dönmez — catch'siz
+      // kalırsa kart sonsuza dek "yükleniyor"da takılır.
+      let data: Awaited<ReturnType<typeof getRepriceCardData>>;
+      try {
+        data = await getRepriceCardData(productId);
+      } catch (e) {
+        if (cancelled) return;
+        const msg = e instanceof Error ? e.message : "Kural verisi yüklenemedi.";
+        toast.error(msg);
+        setLoadError(msg);
+        setLoading(false);
+        return;
+      }
       if (cancelled) return;
       if ("error" in data) {
         toast.error(data.error);
@@ -148,8 +160,16 @@ export function RepriceRuleCard({
 
   async function handleSave() {
     setSaving(true);
-    const res = await saveRepriceRule(productId, form);
-    setSaving(false);
+    let res: Awaited<ReturnType<typeof saveRepriceRule>>;
+    try {
+      res = await saveRepriceRule(productId, form);
+    } catch (e) {
+      // finally'siz reject butonu sonsuza dek disabled bırakırdı.
+      toast.error(e instanceof Error ? e.message : "Kural kaydedilemedi.");
+      return;
+    } finally {
+      setSaving(false);
+    }
     if (res.error) {
       toast.error(res.error);
       return;

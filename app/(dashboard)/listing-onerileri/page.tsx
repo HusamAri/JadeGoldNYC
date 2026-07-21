@@ -152,7 +152,7 @@ function LifecycleTable({
                 <img
                   src={r.image_url}
                   alt=""
-                  className="size-10 rounded-md object-cover"
+                  className="thumb-lift border-border size-10 rounded-md border object-cover"
                 />
               ) : (
                 <div className="bg-muted text-muted-foreground flex size-10 items-center justify-center rounded-md">

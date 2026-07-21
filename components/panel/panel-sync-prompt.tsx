@@ -71,12 +71,20 @@ export function PanelSyncPrompt({
 
         {connected ? (
           <EtsySyncButton initialSummary={initialSummary} />
-        ) : (
-          <Button asChild disabled={!configured}>
+        ) : configured ? (
+          <Button asChild>
             <Link href="/ayarlar/etsy">
               <ExternalLink className="size-4" />
               Etsy&apos;ye Bağlan
             </Link>
+          </Button>
+        ) : (
+          /* asChild + disabled anchor'da ÇALIŞMAZ (a :disabled bilmez) — buton
+             "disabled görünüp" tıklanabilir kalıyordu. Yapılandırma yoksa
+             gerçek disabled buton + neden açıklaması göster. */
+          <Button disabled title="ETSY_API_KEY / SECRET yapılandırılmadan bağlantı kurulamaz">
+            <ExternalLink className="size-4" />
+            Etsy&apos;ye Bağlan (yapılandırma gerekli)
           </Button>
         )}
 

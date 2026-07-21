@@ -1,3 +1,4 @@
+import { getActivePlatform } from "@/lib/platform";
 import { Suspense } from "react";
 import Link from "next/link";
 import { Store } from "lucide-react";
@@ -690,6 +691,10 @@ async function MarketAlertsSection({ orgId }: { orgId: string }) {
 
 /** Panel ilk açılış Etsy senkron popup'ı — durum + son özet burada beklenir. */
 async function SyncPromptSection({ orgId }: { orgId: string }) {
+  // Etsy'ye özel davet: platform kimliği Etsy DEĞİLSE (Shopify/Shopier org'u)
+  // "Etsy'nizi bağlayın" popup'ı gösterilmez — kafa karıştırır.
+  const platform = await getActivePlatform();
+  if (platform.key !== "etsy" && platform.key !== "none") return null;
   const [status, summary] = await Promise.all([
     getEtsyStatus(orgId),
     getLastSyncSummary(orgId),

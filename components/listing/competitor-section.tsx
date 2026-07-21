@@ -26,7 +26,7 @@ export function CompetitorSection({
       motion="rise"
       defaultOpen={defaultOpen}
       hintClosed
-      className={cn("nm-pressed rounded-2xl border-0 shadow-none", className)}
+      className={cn("nm-pressed rounded-2xl border-0", className)}
       summaryClassName="px-3 py-2.5"
       panelClassName="space-y-1 px-2 pt-1 pb-2.5"
       summary={

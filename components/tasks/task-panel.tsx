@@ -52,6 +52,9 @@ export function TaskPanel({
   const [body, setBody] = useState("");
   const [handoverTo, setHandoverTo] = useState("");
   const [handoverNote, setHandoverNote] = useState("");
+  // Not silme iki adımlı: ilk tık silahlar (ikon kızarır), ikinci tık siler —
+  // devir geçmişi taşıyan notlar tek yanlış tıkla kalıcı silinmesin.
+  const [armedNoteId, setArmedNoteId] = useState<string | null>(null);
 
   const handoverCandidates = members.filter(
     (u) => u.user_id !== task.assignee_id,
@@ -253,11 +256,35 @@ export function TaskPanel({
                           {formatDateTime(n.created_at, "d MMM HH:mm")}
                           <button
                             type="button"
-                            onClick={() =>
-                              run(() => deleteTaskNote(n.id, task.id))
+                            disabled={pending}
+                            onClick={() => {
+                              if (armedNoteId !== n.id) {
+                                setArmedNoteId(n.id);
+                                toast.warning(
+                                  "Silmek için tekrar tıklayın — not kalıcı silinir.",
+                                );
+                                setTimeout(
+                                  () =>
+                                    setArmedNoteId((cur) =>
+                                      cur === n.id ? null : cur,
+                                    ),
+                                  3500,
+                                );
+                                return;
+                              }
+                              setArmedNoteId(null);
+                              run(() => deleteTaskNote(n.id, task.id));
+                            }}
+                            className={
+                              armedNoteId === n.id
+                                ? "text-destructive transition-colors disabled:opacity-50"
+                                : "text-muted-foreground hover:text-destructive transition-colors disabled:opacity-50"
                             }
-                            className="text-muted-foreground hover:text-destructive transition-colors"
-                            aria-label="Notu sil"
+                            aria-label={
+                              armedNoteId === n.id
+                                ? "Silmeyi onayla"
+                                : "Notu sil"
+                            }
                           >
                             <Trash2 className="size-3.5" />
                           </button>

@@ -17,6 +17,7 @@ export function Sidebar({
   activeOrgId,
   showJadeGoldNav,
   showBrandBookNav,
+  platformCapabilities,
 }: {
   memberships: MembershipWithOrg[];
   activeOrgId: string;
@@ -24,6 +25,12 @@ export function Sidebar({
   showJadeGoldNav: boolean;
   /** Jade Gold veya EON — Marka Kılavuzu. */
   showBrandBookNav: boolean;
+  /**
+   * Aktif platformun yetenek bayrakları (lib/platform.ts) — `capability`
+   * işaretli sekmeler (Yıldız Satıcı, Reklamlar, SEO Etiketleri) yalnız
+   * ilgili yetenek açıkken görünür (Etsy dışı org'da Etsy motorları gizlenir).
+   */
+  platformCapabilities: Record<string, boolean>;
 }) {
   const pathname = usePathname();
   const navRef = useRef<HTMLElement>(null);
@@ -81,6 +88,8 @@ export function Sidebar({
             {group.items.map((item) => {
               if (item.jadeGoldOnly && !showJadeGoldNav) return null;
               if (item.brandBook && !showBrandBookNav) return null;
+              if (item.capability && !platformCapabilities[item.capability])
+                return null;
               const active = item.href === activeHref;
               const Icon = item.icon;
               return (

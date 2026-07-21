@@ -43,10 +43,15 @@
   --glass-highlight: inset 0 1px 1.5px rgb(255 255 255 / 0.85);
   --glass-depth: inset 0 -14px 30px -20px rgb(60 70 110 / 0.28);
   --glass-sheen: linear-gradient(var(--sheen-angle), rgb(255 255 255 / 0.5), transparent 42%);
-  /* Cam "lift" gölgeleri — yüzen paneller kazınmaz, üstte süzülür. */
-  --lift-sm: 0 4px 14px rgb(60 70 110 / 0.1);
-  --lift: 0 14px 34px -12px rgb(60 70 110 / 0.5), 0 2px 8px -2px rgb(60 70 110 / 0.3);
-  --lift-lg: 0 30px 60px -30px rgb(60 70 110 / 0.45);
+  /* Cam "lift" gölgeleri — yüzen paneller kazınmaz, üstte süzülür.
+     DOĞAL IŞIK RÖTUŞU: tek sert katman yerine kontak (1-2px) + anahtar +
+     ambient katmanları; mürekkep sıcak-erguvan (48 42 60), blur > offset —
+     yüzey "dijital yapıştırma" değil, ışık altında duran cam gibi okunur. */
+  --lift-sm: 0 1px 2px rgb(48 42 60 / 0.07), 0 4px 12px -2px rgb(60 70 110 / 0.12);
+  --lift: 0 1px 2px rgb(48 42 60 / 0.08), 0 8px 20px -6px rgb(48 42 60 / 0.16),
+    0 22px 44px -16px rgb(60 70 110 / 0.22);
+  --lift-lg: 0 2px 4px rgb(48 42 60 / 0.08), 0 16px 36px -10px rgb(48 42 60 / 0.18),
+    0 34px 64px -28px rgb(60 70 110 / 0.24);
   /* Cam rengi sızıntısı — buzlu cam düz nötr yüzey üstünde bile "cam" okunsun
      diye içine hafif iridesan holo ışık gömülür (platform); JG kapsamı bunu
      sıcak altına eşler. .glass-board bu tokeni sheen + cam ile katmanlar. */
@@ -121,10 +126,17 @@
   --nm-dark: 163 177 198;
   --nm-convex: linear-gradient(145deg, #f3f5fb, #e4e7f0);
   --nm-convex-press: linear-gradient(145deg, #e4e7f0, #f2f4fa);
-  --shadow-raised: -6px -6px 12px rgb(var(--nm-light) / 0.9), 6px 6px 14px rgb(var(--nm-dark) / 0.55);
-  --shadow-raised-sm: -3px -3px 6px rgb(var(--nm-light) / 0.9), 3px 3px 6px rgb(var(--nm-dark) / 0.55);
-  --shadow-hover: -12px -12px 24px rgb(var(--nm-light) / 0.9), 14px 14px 30px rgb(var(--nm-dark) / 0.55);
-  --shadow-pressed: inset -4px -4px 8px rgb(var(--nm-light) / 0.9), inset 5px 5px 10px rgb(var(--nm-dark) / 0.55);
+  /* DOĞAL IŞIK RÖTUŞU: simetrik 45° çift (şişirilmiş sticker hissi) yerine
+     yerçekimine uyan katmanlar — yumuşak sol-üst highlight + kontak + anahtar
+     + ambient; gölge mürekkebi sıcak-erguvan (48 42 60), çelik gri değil. */
+  --shadow-raised: -3px -5px 10px rgb(var(--nm-light) / 0.72), 0 1px 2px rgb(48 42 60 / 0.1),
+    3px 7px 16px rgb(48 42 60 / 0.16), 8px 18px 34px -12px rgb(48 42 60 / 0.16);
+  --shadow-raised-sm: -2px -3px 6px rgb(var(--nm-light) / 0.7), 0 1px 1.5px rgb(48 42 60 / 0.1),
+    2px 4px 10px rgb(48 42 60 / 0.14);
+  --shadow-hover: -4px -7px 14px rgb(var(--nm-light) / 0.75), 0 2px 3px rgb(48 42 60 / 0.1),
+    6px 14px 30px -6px rgb(48 42 60 / 0.2), 12px 28px 52px -18px rgb(48 42 60 / 0.16);
+  --shadow-pressed: inset 0 2px 6px rgb(48 42 60 / 0.2), inset 2px 3px 8px rgb(48 42 60 / 0.12),
+    inset 0 -1px 0 rgb(var(--nm-light) / 0.65);
   /* Marka-parametrik tokenlar — Jade Gold kapsamı kendi değerlerini basar. */
   --btn-hero-bg: var(--grad-holo);
   --btn-hero-fg: #3a2f5e;
@@ -297,14 +309,16 @@
   --nm-dark: 0 0 0;
   --nm-convex: linear-gradient(145deg, #2c2f3c, #22242f);
   --nm-convex-press: linear-gradient(145deg, #22242f, #2b2e3b);
-  --shadow-raised: -6px -6px 14px rgb(var(--nm-light) / 0.05),
-    7px 7px 16px rgb(var(--nm-dark) / 0.55);
-  --shadow-raised-sm: -3px -3px 8px rgb(var(--nm-light) / 0.05),
-    4px 4px 9px rgb(var(--nm-dark) / 0.5);
-  --shadow-hover: -10px -10px 22px rgb(var(--nm-light) / 0.06),
-    12px 12px 26px rgb(var(--nm-dark) / 0.6);
-  --shadow-pressed: inset -4px -4px 8px rgb(var(--nm-light) / 0.045),
-    inset 5px 5px 10px rgb(var(--nm-dark) / 0.55);
+  /* DOĞAL IŞIK (koyu): sahte sol-üst beyaz parıltı yerine ince üst rim ışığı;
+     gölge saf siyah değil mavi-siyah mürekkep (8 9 16), aşağı yönlü katmanlı. */
+  --shadow-raised: 0 -1px 0 rgb(var(--nm-light) / 0.05), 0 2px 4px rgb(8 9 16 / 0.45),
+    0 10px 24px -6px rgb(8 9 16 / 0.55);
+  --shadow-raised-sm: 0 -1px 0 rgb(var(--nm-light) / 0.05), 0 1px 3px rgb(8 9 16 / 0.4),
+    0 6px 14px -4px rgb(8 9 16 / 0.5);
+  --shadow-hover: 0 -1px 0 rgb(var(--nm-light) / 0.06), 0 4px 8px rgb(8 9 16 / 0.45),
+    0 16px 34px -8px rgb(8 9 16 / 0.6);
+  --shadow-pressed: inset 0 2px 6px rgb(8 9 16 / 0.55), inset 2px 3px 8px rgb(8 9 16 / 0.35),
+    inset 0 -1px 0 rgb(var(--nm-light) / 0.04);
   /* Gece metin embossu — highlight neredeyse görünmez beyaz, gölge derin
      siyah (koyu yüzeyde kabartma okunur ama yine belli belirsiz). */
   --text-emboss: -0.4px -0.4px 0.5px rgb(255 255 255 / 0.07),
@@ -444,7 +458,11 @@
      kenarında sert kesilmez, zemine bükülerek erir (seamless kabartı hissi). */
   .nm-raised {
     background-image: var(--nm-convex);
-    box-shadow: 0 0 20px 6px var(--background), var(--shadow-raised);
+    /* Hale opak DEĞİL — opak zemin-rengi halka "sticker konturu" gibi okunur;
+       yarı saydam eriyik desen-kaynaşması amacını korur, sentetik halkayı siler. */
+    box-shadow:
+      0 0 16px 4px color-mix(in srgb, var(--background) 55%, transparent),
+      var(--shadow-raised);
   }
   .nm-raised-sm {
     background-image: var(--nm-convex);
@@ -453,6 +471,18 @@
   .nm-pressed {
     background-image: var(--nm-convex-press);
     box-shadow: var(--shadow-pressed);
+  }
+  /* Ürün küçük-görselleri sayfaya OTURSUN: kontak + yumuşak anahtar gölge —
+     görsel tabloya yapıştırılmış düz dikdörtgen değil, yüzeyde duran baskı. */
+  .thumb-lift {
+    box-shadow:
+      0 1px 2px rgb(48 42 60 / 0.2),
+      0 3px 8px -2px rgb(48 42 60 / 0.16);
+  }
+  .dark .thumb-lift {
+    box-shadow:
+      0 1px 2px rgb(0 0 0 / 0.5),
+      0 4px 10px -2px rgb(0 0 0 / 0.4);
   }
   /* 3B buzlu cam — hacimli görünüm: dış derinlik gölgesi + üst pah highlight'ı
      + alt iç gölge (kalınlık); ::before ile eğrisel sheen (ışık yansıması).
@@ -483,7 +513,9 @@
       transform 0.2s var(--ease-quiet);
   }
   .nm-interactive:hover {
-    box-shadow: 0 0 22px 7px var(--background), var(--shadow-hover);
+    box-shadow:
+      0 0 18px 5px color-mix(in srgb, var(--background) 55%, transparent),
+      var(--shadow-hover);
   }
   .nm-interactive:active {
     background-image: var(--nm-convex-press);

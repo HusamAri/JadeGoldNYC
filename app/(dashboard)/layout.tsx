@@ -1,5 +1,6 @@
 import { requireMembership, getUser, listMemberships } from "@/lib/auth";
 import { getBrandScope, isEonActive } from "@/lib/brand";
+import { getActivePlatform } from "@/lib/platform";
 import { createClient } from "@/lib/supabase/server";
 import { getProfile } from "@/lib/db/queries/profile";
 import { Sidebar } from "@/components/layout/sidebar";
@@ -15,16 +16,21 @@ export default async function DashboardLayout({
   // Asıl kimlik kapısı (middleware hızlı yol, bu katman yetkili kontrol).
   // Üyeliği olmayan kullanıcı /kurulum sihirbazına yönlendirilir.
   const m = await requireMembership();
-  const [user, memberships, brand, eon] = await Promise.all([
+  const [user, memberships, brand, eon, platform] = await Promise.all([
     getUser(),
     listMemberships(),
     getBrandScope(),
     isEonActive(),
+    getActivePlatform(),
   ]);
   const supabase = await createClient();
   const profile = user ? await getProfile(supabase, user.id) : null;
   const showJadeGoldNav = brand === "jade-gold";
   const showBrandBookNav = showJadeGoldNav || eon;
+  // Platform-yetenek bayrakları nav'a düz obje olarak iner (client bileşen).
+  const platformCapabilities: Record<string, boolean> = {
+    ...platform.capabilities,
+  };
 
   return (
     /* `isolate`: arka plan katmanları (negatif z) bu bağlamda hapsolur —
@@ -48,6 +54,7 @@ export default async function DashboardLayout({
         activeOrgId={m.org_id}
         showJadeGoldNav={showJadeGoldNav}
         showBrandBookNav={showBrandBookNav}
+        platformCapabilities={platformCapabilities}
       />
       <div className="flex min-w-0 flex-1 flex-col">
         <Topbar
@@ -58,6 +65,7 @@ export default async function DashboardLayout({
           activeOrgId={m.org_id}
           showJadeGoldNav={showJadeGoldNav}
           showBrandBookNav={showBrandBookNav}
+          platformCapabilities={platformCapabilities}
         />
         {/* Generous padding — glass needs air; dense dashboards feel cheap. */}
         <main className="flex-1 px-5 py-8 sm:px-8 sm:py-10 lg:px-12 lg:py-12">

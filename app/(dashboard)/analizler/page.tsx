@@ -1,3 +1,4 @@
+import { getActivePlatform } from "@/lib/platform";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import {
@@ -58,7 +59,7 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 
-export const metadata = { title: "Etsy Performansı" };
+export const metadata = { title: "Performans" };
 
 const TRAFFIC_LABELS: Record<string, string> = {
   etsy_app: "Etsy App / Sayfa",
@@ -91,6 +92,7 @@ function pctDelta(
 
 export default async function PerformansPage() {
   const m = await requireMembership();
+  const platform = await getActivePlatform();
   const [metrics, insights] = await Promise.all([
     listMetrics(),
     getEtsyInsights(m.org_id),
@@ -100,7 +102,7 @@ export default async function PerformansPage() {
     return (
       <div>
         <PageHeader
-          title="Etsy Performansı"
+          title={`${platform.label} Performansı`}
           description="Dönüşüm hunisi, yatırım karar çerçevesi ve otomatik uyarılar"
           action={
             <Button asChild>
@@ -225,7 +227,7 @@ export default async function PerformansPage() {
       <GoldStream motif="spark" />
       <AutoRefresh intervalMs={60000} />
       <PageHeader
-        title="Etsy Performansı"
+        title={`${platform.label} Performansı`}
         description={`Güncel dönem · ${current.period_label}${previous ? ` (önceki: ${previous.period_label})` : ""}`}
         action={
           <>

@@ -1,3 +1,6 @@
+import { notFound } from "next/navigation";
+
+import { getActivePlatform } from "@/lib/platform";
 import Link from "next/link";
 import { Star, Plus, Pencil, CalendarClock } from "lucide-react";
 
@@ -57,6 +60,10 @@ export default async function YildizSaticiPage({
 }: {
   searchParams: Promise<RawSearchParams>;
 }) {
+  // Star Seller Etsy'ye özel bir programdır — platform yeteneği kapalıysa
+  // (Shopify/Shopier org'u) sayfa yok sayılır (nav zaten gizler; bu, derin link koruması).
+  const platform = await getActivePlatform();
+  if (!platform.capabilities.starSeller) notFound();
   const sp = await searchParams;
   const editId = strParam(sp.edit);
   const isNew = strParam(sp.yeni) === "1";
