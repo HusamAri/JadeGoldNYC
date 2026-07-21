@@ -22,7 +22,15 @@ const ADS_PERIOD_MATCH = "%son 30%";
 // ── Aksiyon türleri + meta — META KAYNAĞINDA TAŞINIR (dışarıda string-key
 // eşleme haritası kurulmaz; yeni tür = yalnız burası). ──────────────────────
 
-export const ADS_ACTION_KINDS = ["kapat", "azalt", "artir", "incele"] as const;
+export const ADS_ACTION_KINDS = [
+  "kapat",
+  "azalt",
+  "artir",
+  "incele",
+  "listing_duzelt",
+  "daralt",
+  "bekle",
+] as const;
 export type AdsActionKind = (typeof ADS_ACTION_KINDS)[number];
 
 export const ADS_ACTION_KIND_META: Record<AdsActionKind, { label: string }> = {
@@ -30,6 +38,10 @@ export const ADS_ACTION_KIND_META: Record<AdsActionKind, { label: string }> = {
   azalt: { label: "Bütçeyi azalt" },
   artir: { label: "Bütçeyi artır" },
   incele: { label: "İncele" },
+  // Triyaj sonuçları (0112): reklam DOĞRU çalışıyorsa sorun listing'dedir.
+  listing_duzelt: { label: "Listing'i düzelt (reklama dokunma)" },
+  daralt: { label: "Hedefi daralt (etiket/negatif kelime)" },
+  bekle: { label: "Bekle (veri az)" },
 };
 
 export type AdsActionStatus = "beklemede" | "yapildi" | "yok_sayildi";
@@ -72,13 +84,13 @@ export const ADS_SIGNAL_META: Record<
 > = {
   bosa: {
     title: "Boşa harcama",
-    hint: "Son 30 günde reklama para gitti ama tek kuruş getiri yok — bütçe her gün eriyor. Reklamı Etsy panosunda kapat ya da listing'i (görsel/fiyat/başlık) düzeltip yeniden dene.",
+    hint: "Son 30 günde reklama para gitti ama tek kuruş getiri yok — bütçe her gün eriyor. Kapatmadan ÖNCE triyajı çalıştır: terimler hedefteyse sorun reklam değil listing'dir (kapatmak yanlış ilacı içmek olur).",
     suggestedKinds: ["kapat"],
     badgeVariant: "destructive",
   },
   butce_yiyen: {
     title: "Bütçe yiyen",
-    hint: "Bu ürün reklam bütçesinin büyük payını tek başına çekiyor ama getirisi harcamayı karşılamıyor — diğer ürünler görünmüyor, para verimsiz akıyor. Bütçesini azalt ya da listing'i inceleyip sorunu bul.",
+    hint: "Bu ürün reklam bütçesinin büyük payını tek başına çekiyor ama getirisi harcamayı karşılamıyor. Körlemesine kapatma/azaltma YOK — önce Etsy'de arama terimleri raporuna bak ve triyajı çalıştır: sorun reklamda mı, listing'de mi, hedeflemede mi ortaya çıkar.",
     suggestedKinds: ["azalt", "incele"],
     badgeVariant: "warning",
   },
@@ -88,6 +100,78 @@ export const ADS_SIGNAL_META: Record<
     suggestedKinds: ["artir"],
     badgeVariant: "success",
   },
+};
+
+// ── TRİYAJ KARAR AĞACI — bütçe yiyen / boşa harcayan listing kuralı.
+// Etsy API arama-terimi raporu SUNMAZ; panel bu yüzden raporu KULLANICIYA
+// okutur ve cevaba göre DOĞRU aksiyonu önerir (karar günlüğü deseni).
+// Meta kaynağında taşınır: UI bu ağacı aynen çizer, kendi metin/eşleme
+// haritası kurmaz. ──────────────────────────────────────────────────────────
+
+export interface AdsTriageOption {
+  key: string;
+  /** Kullanıcının rapora bakınca seçeceği durum. */
+  answer: string;
+  /** Teşhis — ne oluyor, sorun nerede yaşıyor. */
+  verdict: string;
+  /** Ne yapılır (kullanıcının kuralının kendisi). */
+  action: string;
+  /** Kuyruğa düşecek aksiyon türü. */
+  kind: AdsActionKind;
+  /** Ek uyarı (ör. az veriyle kapatma). */
+  caution?: string;
+}
+
+export const ADS_TRIAGE: {
+  /** Triyaj hangi sinyaller için önerilir. */
+  appliesTo: AdsSignalKind[];
+  intro: string;
+  question: string;
+  options: AdsTriageOption[];
+} = {
+  appliesTo: ["bosa", "butce_yiyen"],
+  intro:
+    "Önce Etsy Reklam panosunda bu listing'in ARAMA TERİMLERİ raporunu aç — reklam gerçekte hangi aramalarla eşleşiyor? Karar oradan çıkar, tahminden değil.",
+  question: "Reklamın eşleştiği terimler ne söylüyor?",
+  options: [
+    {
+      key: "hedefte",
+      answer: "Terimler hedefte, yine de sipariş yok",
+      verdict:
+        "Reklam işini DOĞRU yapıyor (doğru arayan doğru sayfaya iniyor) — sorun reklamda değil, listing sayfasında: güven boşluğu (sıfır yorum), fotoğraflar, fiyat çerçevesi.",
+      action:
+        "Reklama DOKUNMA. Listing'i düzelt: fotoğraflar, fiyat sunumu, zamanla yorumlar. Reklamı kapatmak yanlış ilacı içmek olur.",
+      kind: "listing_duzelt",
+    },
+    {
+      key: "hedef_disi",
+      answer: "Terimler hedef dışı (yanlış niyetli trafik)",
+      verdict:
+        'Reklam yanlış aramalarla eşleşiyor (ör. "gold ring" arayıp $50 fantezi yüzük isteyen, $445 som altın alyansa iniyor) — tıklayan asla bu alıcı değil.',
+      action:
+        "DARALT: uyumsuz etiketi listing'den çıkar; Etsy bu listing için negatif kelime sunuyorsa terimi hariç tut.",
+      kind: "daralt",
+    },
+    {
+      key: "hic_donusmez",
+      answer: "Trafik hiç dönüşmez (yanlış kategori/fiyat aralığı/niyet)",
+      verdict:
+        "Listing kalitesinden bağımsız, gelen trafiğin bu ürünü alma niyeti yok — yanlış kategori, yanlış fiyat kademesi ya da yanlış niyet.",
+      action: "Reklamı bu listing için kapat — bütçe hiç dönüşmeyecek trafiğe akıyor.",
+      kind: "kapat",
+      caution:
+        "Bunu 3 günlük harcamayla BİLEMEZSİN — en az 7-14 günlük terim verisi olmadan kapatma kararı verme.",
+    },
+    {
+      key: "veri_az",
+      answer: "Emin değilim / veri çok taze (birkaç gün)",
+      verdict:
+        "Birkaç günlük harcama örüntü göstermez; erken karar hem yanlış kapatma hem yanlış büyütme riskidir.",
+      action:
+        "BEKLE — birkaç gün daha terim verisi biriksin, sonra triyajı tekrar çalıştır. Karar kuyruğa 'bekle' olarak düşer ki takipte kalsın.",
+      kind: "bekle",
+    },
+  ],
 };
 
 // ── SAF sinyal üretimi — DB'siz, yan etkisiz; sayfa ve Uyarı Merkezi aynı
