@@ -1,3 +1,4 @@
+import { getActivePlatform } from "@/lib/platform";
 import Image from "next/image";
 import Link from "next/link";
 import { Package, Info, Layers } from "lucide-react";
@@ -53,6 +54,7 @@ function categorize(title: string): string {
 
 export default async function StokPage() {
   const m = await requireMembership();
+  const platform = await getActivePlatform();
   const canEdit = isManager(m.role);
   const [products, access] = await Promise.all([
     listStockProducts(m.org_id),
@@ -80,7 +82,7 @@ export default async function StokPage() {
       <SceneCutouts page="stok" />
       <PageHeader
         title="Stok Senkronizasyonu"
-        description="Her ürün için elde/hedef adedi girin; hazır olunca tek tuşla Etsy ile çift yönlü eşitleyin."
+        description={`Her ürün için elde/hedef adedi girin; hazır olunca tek tuşla ${platform.label} ile çift yönlü eşitleyin.`}
         action={
           <Button asChild variant="outline">
             <Link href="/stok/varyant">

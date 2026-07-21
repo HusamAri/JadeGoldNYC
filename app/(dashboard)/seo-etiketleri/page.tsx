@@ -1,3 +1,6 @@
+import { notFound } from "next/navigation";
+
+import { getActivePlatform } from "@/lib/platform";
 import { requireMembership, isManager } from "@/lib/auth";
 import { getEtsyWriteAccess } from "@/lib/db/queries/etsy";
 import {
@@ -16,6 +19,9 @@ export const metadata = { title: "SEO Etiket Optimizasyonu" };
  * Push CANLI Etsy'ye yazar; yalnız yönetici + Etsy yazma izni açıkken.
  */
 export default async function SeoEtiketleriPage() {
+  // SEO etiket push'u Etsy'ye canlı yazar — yetenek kapalıysa derin link koruması.
+  const platform = await getActivePlatform();
+  if (!platform.capabilities.seoTagPush) notFound();
   const m = await requireMembership();
   const [rows, write] = await Promise.all([
     getSeoOptimizations(m.org_id),

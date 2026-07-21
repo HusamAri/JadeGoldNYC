@@ -40,6 +40,10 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
   Güçlendirme (2026-07): kural VERİ müdahaleleri için de geçerli — kullanıcı "başka
   oturumda ilerliyorum" dediği anda o iş koluna ait geri-dönüşü zor DB operasyonları
   (SKU yeniden adlandırma, silindi-işaretleme) durdurulur; yalnız kendi dalının işi yapılır.
+  Güçlendirme-2 (2026-07): "X'i geri getir/kur" istenince de önce main taranır —
+  "Shopify bağlantısını getir" istendi; lib/shopify + lib/shopier + migration'lar
+  paralel oturumda ÇOKTAN inmişti; eksik olan yalnız uyarlama katmanıydı
+  (getActivePlatform + yetenek-bazlı nav/caption). Sıfırdan kurmak çift iş olurdu.
 - **Kanıtla, varsayma (2026-07):** "İzin kapalı", "veri yok" gibi durum iddialarını
   DB'den SQL ile doğrula. Vaka: Etsy yazma izni "kapalı" sanılıyordu; `etsy_write_enabled`
   sorgusu `true` döndü — bir adım boşa planlanmıştı.
@@ -117,6 +121,11 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
 - **Marka görselleri org'a aittir (2026-07):** Ortak UI'daki ürün görselleri ve
   marka imzaları ("Jade Gold · NYC" kuyruğu, cutout seti) hardcode edilemez —
   aktif org'dan çözülür (OrgMark, BRAND_KIND çevirisi); yeni org nötr düşer.
+- **Tailwind v4: utility, @layer components'ı ezer — "kozmetik" shadow-none gölgeyi siler (2026-07):**
+  `.nm-pressed` gibi bileşen sınıfının yanına yazılan `shadow-none` utility'si
+  KAZANIR ve bileşenin box-shadow'unu tamamen siler (iki yerde nm-* yüzeyi düz
+  karta dönmüştü). Kural: bileşen-sınıflı öğeye aynı özelliği ezen utility ekleme;
+  eklenmişse muhtemelen yanlışlıkladır, kaldır ve görsel farkı kontrol et.
 - **Negatif z-index kabından çocuk öne çıkamaz (2026-07):** `-z-*` konumlu kap
   stacking context'tir; "önde duracak" öğe için KARDEŞ pozitif-z kap gerekir.
 - **Metadata rotaları auth'tan muaf (2026-07):** proxy/middleware matcher'ı

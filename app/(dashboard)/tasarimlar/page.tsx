@@ -1,3 +1,4 @@
+import { getActivePlatform } from "@/lib/platform";
 import Link from "next/link";
 import {
   Plus,
@@ -74,6 +75,7 @@ export default async function ListelerPage({
 }: {
   searchParams: Promise<RawSearchParams>;
 }) {
+  const platform = await getActivePlatform();
   const sp = await searchParams;
   const search = strParam(sp.search);
   const status = strParam(sp.status);
@@ -97,7 +99,7 @@ export default async function ListelerPage({
       <GoldStream motif="ring" />
       <PageHeader
         title="Listeler"
-        description="Etsy'de var olan listing'ler (Etsy'nin aynası) — varyantlar, rakip fiyatlar, reklam performansı ve eksik alanlar listing detayında. Panel taslakları ve arşiv: Listing Önerileri."
+        description={`${platform.label}'de var olan listing'ler (platformun aynası) — varyantlar, rakip fiyatlar, reklam performansı ve eksik alanlar listing detayında. Panel taslakları ve arşiv: Listing Önerileri.`}
         action={
           <>
             <Button asChild variant="outline">

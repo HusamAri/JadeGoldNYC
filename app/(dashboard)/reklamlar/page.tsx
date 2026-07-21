@@ -1,3 +1,6 @@
+import { notFound } from "next/navigation";
+
+import { getActivePlatform } from "@/lib/platform";
 import {
   CalendarDays,
   CheckCircle2,
@@ -73,6 +76,9 @@ const fmtRoas = (r: number | null) =>
   r == null ? "—" : `${formatNumber(r, 2)}×`;
 
 export default async function ReklamlarPage() {
+  // Reklam sinyalleri Etsy Ads verisine bağlı — yetenek kapalıysa derin link koruması.
+  const platform = await getActivePlatform();
+  if (!platform.capabilities.adsSignals) notFound();
   const m = await requireMembership();
   const [overview, actions, ledger] = await Promise.all([
     getAdsOverview(m.org_id),

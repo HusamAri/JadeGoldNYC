@@ -1,3 +1,4 @@
+import { getActivePlatform } from "@/lib/platform";
 import Link from "next/link";
 import { Plus, Upload, Eye, Pencil } from "lucide-react";
 import {
@@ -67,6 +68,8 @@ export default async function SatislarPage({
 }: {
   searchParams: Promise<RawSearchParams>;
 }) {
+  // Platform dili hardcode edilmez — bağlı platformun adı (Etsy/Shopify/Shopier).
+  const platform = await getActivePlatform();
   const sp = await searchParams;
   const search = strParam(sp.search);
   const status = strParam(sp.status);
@@ -152,7 +155,7 @@ export default async function SatislarPage({
       <GoldStream motif="gift" />
       <PageHeader
         title="Satışlar"
-        description="Manuel, CSV ve Etsy siparişleri"
+        description={`Manuel, CSV ve ${platform.label} siparişleri`}
         action={
           <>
             <Button asChild variant="outline">
@@ -201,7 +204,7 @@ export default async function SatislarPage({
             currency={cur}
             icon={TrendingUp}
             accent="positive"
-            hint="Etsy kesintisi düşülmüş"
+            hint={`${platform.label} kesintisi düşülmüş`}
           />
           <KpiCard
             label="Sipariş"
@@ -217,7 +220,7 @@ export default async function SatislarPage({
             comparisons={monthlyComparisons(monthlyAov)}
           />
           <KpiCard
-            label="Etsy Kesintisi"
+            label={`${platform.label} Kesintisi`}
             cents={t.fees_cents}
             currency={cur}
             icon={Percent}
@@ -336,7 +339,7 @@ export default async function SatislarPage({
               <EmptyState
                 icon={ShoppingBag}
                 title="Satış kaydı yok"
-                description="Henüz satış yok. Yeni satış ekleyin veya Etsy CSV dosyanızı içe aktarın."
+                description={`Henüz satış yok. Yeni satış ekleyin veya ${platform.label} CSV dosyanızı içe aktarın.`}
               />
             )
           ) : (
