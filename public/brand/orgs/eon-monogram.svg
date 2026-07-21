@@ -1,9 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none" role="img" aria-label="EON monogram">
-                <rect x="8" y="8" width="104" height="104" stroke="#1C1C1C" stroke-width="1.25"/>
-                <g fill="#1C1C1C">
-                  <rect x="34" y="32" width="52" height="7"/>
-                  <rect x="34" y="56.5" width="40" height="7"/>
-                  <rect x="34" y="81" width="52" height="7"/>
-                  <rect x="34" y="32" width="7" height="56"/>
-                </g>
-              </svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none" role="img" aria-label="EON mark">
+  <!-- EON işareti (kullanıcı tarifi): "| ||" — tek çubuk + sıkı çift çubuk;
+       grup arası geniş, çift arası dar. Mürekkep #1C1C1C; koyu temada
+       dark:invert ile döner (org-emblem.tsx). -->
+  <g fill="#1C1C1C">
+    <rect x="36" y="28" width="9" height="64" rx="1.5" />
+    <rect x="60" y="28" width="9" height="64" rx="1.5" />
+    <rect x="75" y="28" width="9" height="64" rx="1.5" />
+  </g>
+</svg>
