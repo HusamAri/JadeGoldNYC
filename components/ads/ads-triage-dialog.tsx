@@ -110,12 +110,47 @@ export function AdsTriageDialog({
           <DialogDescription>{ADS_TRIAGE.intro}</DialogDescription>
         </DialogHeader>
 
-        <Button asChild variant="outline" size="sm" className="w-fit">
-          <a href={adsUrl} target="_blank" rel="noreferrer">
+        {/* Etsy panele GÖMÜLEMEZ (frame-ancestors + 3. taraf çerez bölmeleme
+            oturumu kırar) — en iyi eşdeğer: ekranın sağ yarısına konumlu YAN
+            PENCERE; panel solda kalır, rapor sağda, triyaj yan yana yürür.
+            Adlandırılmış pencere: tekrar tıklamak aynı pencereyi öne getirir. */}
+        <div className="flex flex-wrap items-center gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="w-fit"
+            onClick={() => {
+              const sw = window.screen.availWidth ?? 1440;
+              const sh = window.screen.availHeight ?? 900;
+              const w = Math.min(980, Math.round(sw * 0.52));
+              const h = Math.round(sh * 0.92);
+              const win = window.open(
+                adsUrl,
+                "etsy-ads-terms",
+                `popup=yes,width=${w},height=${h},left=${sw - w},top=0`,
+              );
+              if (!win) {
+                toast.error(
+                  "Yan pencere engellendi — tarayıcı açılır pencere iznini verin ya da yandaki 'sekmede aç' bağlantısını kullanın.",
+                );
+                return;
+              }
+              win.focus();
+            }}
+          >
             <ExternalLink className="size-4" />
-            Etsy Reklam panosu → Arama terimleri
+            Arama terimlerini YAN PENCEREDE aç
+          </Button>
+          <a
+            href={adsUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="text-muted-foreground hover:text-foreground text-xs underline-offset-2 hover:underline"
+          >
+            sekmede aç
           </a>
-        </Button>
+        </div>
 
         <div className="space-y-1.5">
           <p className="text-sm font-medium">{ADS_TRIAGE.question}</p>
