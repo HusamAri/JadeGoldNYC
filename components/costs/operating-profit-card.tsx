@@ -7,6 +7,7 @@ import {
 import { formatMoney } from "@/lib/money";
 import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
+import { SleepingNote } from "@/components/sleeping-boxes";
 
 /**
  * İşletme kârı (EBITDA) kartı — /maliyetler.
@@ -49,21 +50,13 @@ export async function OperatingProfitCard({ orgId }: { orgId: string }) {
       s.salesNonUsd === 0 &&
       s.costsNonUsd === 0);
   if (allZero) {
+    // Uyuyan-kutu kuralı: sıfır dolu tablo da, uzun boş-durum kartı da yok —
+    // ince satır kalır ("gerçek sıfır" sanılmasın diye ipucu nedeni söyler).
     return (
-      <Card>
-        <CardContent className="p-5">
-          <p className="text-carved text-xs font-semibold tracking-wider uppercase">
-            İşletme kârı (EBITDA)
-          </p>
-          <p className="text-muted-foreground mt-2 max-w-[75ch] text-sm">
-            {rows.length > 0 ? `Son ${rows.length} ayda` : "Henüz"} gelir ya da
-            maliyet kaydı yok — tablo bu yüzden boş, bu bir hesap sonucu değil.
-            Satışlar Etsy senkronuyla, Etsy ücret/reklam maliyetleri ledger
-            senkronuyla otomatik dolar; malzeme/kargo gibi giderler bu sayfadan
-            elle ya da CSV ile girilir.
-          </p>
-        </CardContent>
-      </Card>
+      <SleepingNote
+        name="İşletme kârı (EBITDA)"
+        hint="satış/maliyet kaydı gelince (senkron + elle giriş) kendiliğinden dolar"
+      />
     );
   }
 

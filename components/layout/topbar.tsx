@@ -11,6 +11,7 @@ import type { MembershipWithOrg } from "@/lib/auth";
 import { NAV_ITEMS, NAV_GROUPS } from "@/components/layout/nav-items";
 import { matchNavItem } from "@/lib/nav";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { NotificationBell } from "@/components/notifications/notification-bell";
 import { GoldPriceTicker } from "@/components/gold-price-ticker";
 import { UserAvatar } from "@/components/user-avatar";
 import { Button } from "@/components/ui/button";
@@ -136,6 +137,9 @@ export function Topbar({
             gradient (kullanıcı kararı: Amuletta logosu + başlık yanı küçük
             işaret kaldırıldı; marka kimliği tek ve büyük burada yaşar). */}
         {emblem}
+        {/* Bildirim zili — sol üst (kullanıcı kararı): uyarı sinyalleri
+            dropdown listede; ilk bildirim sağdan kayan cam kartla duyurulur. */}
+        <NotificationBell />
         {/* Editorial vurgu çizgisi (.idx-bar dili) — başlığın önünde kısa
             primary hairline; yalnız masaüstünde. */}
         <span aria-hidden className="hidden h-px w-6 shrink-0 bg-primary/70 md:block" />

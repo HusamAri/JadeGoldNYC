@@ -2,7 +2,7 @@ import { ScrollText, Download } from "lucide-react";
 
 import { listAudit } from "@/lib/db/queries/audit";
 import { getMembership, getUser } from "@/lib/auth";
-import { getMyStickers, getPinsForTargets } from "@/lib/db/queries/pins";
+import { getPinLibrary, getPinsForTargets } from "@/lib/db/queries/pins";
 import { PinBoard } from "@/components/pins/pin-board";
 import { strParam, numParam, type RawSearchParams } from "@/lib/searchparams";
 import { auditSummary } from "@/lib/audit-format";
@@ -80,7 +80,7 @@ export default async function KayitlarPage({
     m
       ? getPinsForTargets(m.org_id, "audit", rows.map((r) => String(r.id)))
       : Promise.resolve(new Map()),
-    user ? getMyStickers(user.id) : Promise.resolve([]),
+    getPinLibrary(),
   ]);
 
   const exportQs = new URLSearchParams();

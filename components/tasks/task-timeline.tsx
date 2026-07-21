@@ -365,13 +365,23 @@ export function TaskTimeline({
         </AnimatePresence>
       </div>
 
-      {/* ── Alt bölümler: Geciken + Kapsam ───────────────────────────── */}
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+      {/* ── Alt bölümler: Geciken + Kapsam — uyuyan-kutu kuralı: boş bölüm
+          çizilmez (özet satırı sayıları zaten taşıyor), tek doluysa tam
+          genişlik alır. ─────────────────────────────────────────────── */}
+      {(overdue.length > 0 || undated.length > 0) && (
+      <div
+        className={
+          overdue.length > 0 && undated.length > 0
+            ? "grid grid-cols-1 gap-4 lg:grid-cols-2"
+            : "grid grid-cols-1 gap-4"
+        }
+      >
+        {overdue.length > 0 && (
         <Section
           icon={Flame}
           title="Geciken Görevler"
           count={overdue.length}
-          tone={overdue.length > 0 ? "danger" : "muted"}
+          tone="danger"
           empty="Geciken görev yok — güncelsin."
         >
           {overdue.map((t) => (
@@ -384,7 +394,9 @@ export function TaskTimeline({
             />
           ))}
         </Section>
+        )}
 
+        {undated.length > 0 && (
         <Section
           icon={Layers}
           title="Kapsam (tarihsiz)"
@@ -401,7 +413,9 @@ export function TaskTimeline({
             />
           ))}
         </Section>
+        )}
       </div>
+      )}
 
       <p className="text-muted-foreground/70 text-center text-xs">
         {doneCount} tamamlandı · {overdue.length} gecikme · {todayList.length} bugün ·{" "}

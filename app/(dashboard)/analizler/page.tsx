@@ -8,7 +8,6 @@ import {
   AlertTriangle,
   ShieldAlert,
   Info,
-  CheckCircle2,
   PackageSearch,
   ListChecks,
 } from "lucide-react";
@@ -36,6 +35,10 @@ import { EtsyViewsChart } from "@/components/charts/etsy-views-chart";
 import { PageHeader } from "@/components/page-header";
 import { GoldStream } from "@/components/brand/gold-stream";
 import { EmptyState } from "@/components/empty-state";
+import {
+  SleepingBoxes,
+  type SleepingBox,
+} from "@/components/sleeping-boxes";
 import { DeltaBadge } from "@/components/delta-badge";
 import { AutoRefresh } from "@/components/auto-refresh";
 import { DeleteButton } from "@/components/data-table/delete-button";
@@ -222,6 +225,45 @@ export default async function PerformansPage() {
     },
   ];
 
+  // ── UYUYAN KUTULAR: verisi olmayan ikincil bölüm çizilmez; adı ve nasıl
+  // uyanacağı sayfa sonundaki ince listede (panel/reklamlar deseni). ──
+  const hasFramework = framework.length > 0;
+  const hasTraffic = !!traffic && trafficTotal > 0;
+  const hasShopSnapshot = insights.snapshots.length > 0;
+  const hasViewsSeries = insights.viewsSeries.length >= 2;
+  const hasTopMovers = insights.topMovers.length > 0;
+  const sleeping: SleepingBox[] = [];
+  if (alerts.length === 0)
+    sleeping.push({
+      name: "Uyarılar",
+      hint: "eşik altına düşülünce uyanır (şimdilik üstündesiniz)",
+    });
+  if (!hasFramework)
+    sleeping.push({
+      name: "Yatırım Karar Çerçevesi",
+      hint: "karşılaştırma verisi birikince",
+    });
+  if (!hasTraffic)
+    sleeping.push({
+      name: "Trafik Kaynakları",
+      hint: "dönem trafiği girilince",
+    });
+  if (!hasShopSnapshot)
+    sleeping.push({
+      name: "Mağaza sağlık fotoğrafı",
+      hint: "ilk Etsy senkronundan sonra",
+    });
+  if (!hasViewsSeries)
+    sleeping.push({
+      name: "Günlük Görüntülenme",
+      hint: "3 günlük senkron fotoğrafı birikince",
+    });
+  if (!hasTopMovers)
+    sleeping.push({
+      name: "En Çok Hareket Edenler",
+      hint: "iki günlük fotoğraf birikince",
+    });
+
   return (
     <div className="page-stack relative z-0 pb-32">
       <GoldStream motif="spark" />
@@ -253,18 +295,14 @@ export default async function PerformansPage() {
         }
       />
 
-      {/* Uyarılar — sayfanın hero/özet şeridi: berrak cam board (.glass-board) */}
+      {/* Uyarılar — sayfanın hero/özet şeridi: berrak cam board (.glass-board).
+          Uyarı yoksa kart uyur (adı sayfa sonunda, olumlu ipucuyla). */}
+      {alerts.length > 0 && (
       <Card className="glass-board">
         <CardHeader>
           <CardTitle>Uyarılar</CardTitle>
         </CardHeader>
         <CardContent>
-          {alerts.length === 0 ? (
-            <div className="text-primary flex items-center gap-2 text-sm">
-              <CheckCircle2 className="size-4" />
-              Aktif uyarı yok — eşiklerin üstündesiniz.
-            </div>
-          ) : (
             <ul className="space-y-2">
               {alerts.map((a, i) => {
                 const Icon = ALERT_ICON[a.level];
@@ -295,9 +333,9 @@ export default async function PerformansPage() {
                 );
               })}
             </ul>
-          )}
         </CardContent>
       </Card>
+      )}
 
       {/* KPI'lar (önceki döneme göre) */}
       <div className="grid grid-cols-2 gap-5 lg:grid-cols-3 xl:grid-cols-6">
@@ -324,18 +362,21 @@ export default async function PerformansPage() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        {/* Yatırım Karar Çerçevesi */}
+      {/* Karar çerçevesi + trafik — verisi olmayan kutu uyur, kalan akar. */}
+      {(hasFramework || hasTraffic) && (
+      <div
+        className={
+          hasFramework && hasTraffic
+            ? "grid grid-cols-1 gap-6 lg:grid-cols-2"
+            : "grid grid-cols-1 gap-6"
+        }
+      >
+        {hasFramework && (
         <Card>
           <CardHeader>
             <CardTitle>Yatırım Karar Çerçevesi</CardTitle>
           </CardHeader>
           <CardContent>
-            {framework.length === 0 ? (
-              <p className="text-muted-foreground text-sm">
-                Karşılaştırma için daha fazla veri gerekli.
-              </p>
-            ) : (
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -362,21 +403,16 @@ export default async function PerformansPage() {
                   ))}
                 </TableBody>
               </Table>
-            )}
           </CardContent>
         </Card>
+        )}
 
-        {/* Trafik Kaynakları */}
+        {hasTraffic && traffic && (
         <Card>
           <CardHeader>
             <CardTitle>Trafik Kaynakları</CardTitle>
           </CardHeader>
           <CardContent>
-            {!traffic || trafficTotal === 0 ? (
-              <p className="text-muted-foreground text-sm">
-                Bu dönem için trafik kaynağı girilmemiş.
-              </p>
-            ) : (
               <ul className="space-y-3">
                 {Object.entries(traffic)
                   .sort(([, a], [, b]) => b - a)
@@ -400,10 +436,11 @@ export default async function PerformansPage() {
                     );
                   })}
               </ul>
-            )}
           </CardContent>
         </Card>
+        )}
       </div>
+      )}
 
       {/* Snapshot Geçmişi — uzun tablo kabı: dikey oluklu cam (.glass-fluted) */}
       <Card className="glass-fluted">
@@ -482,6 +519,9 @@ export default async function PerformansPage() {
       </Card>
 
       <EtsyApiSection insights={insights} />
+
+      {/* Uyuyan kutular — verisi olmadığı için bu sayfada gizlenen bölümler. */}
+      <SleepingBoxes items={sleeping} />
     </div>
   );
 }
@@ -494,6 +534,11 @@ export default async function PerformansPage() {
 function EtsyApiSection({ insights }: { insights: EtsyInsights }) {
   const latest = insights.snapshots[0] ?? null;
   const prev = insights.snapshots[1] ?? null;
+  // Uyuyan-kutu kuralı: verisi olmayan alt kutular çizilmez (adları ana
+  // sayfa sonundaki listede); üçü de boşsa bölüm başlığıyla birlikte uyur.
+  const showChart = insights.viewsSeries.length >= 2;
+  const showMovers = insights.topMovers.length > 0;
+  if (!latest && !showChart && !showMovers) return null;
 
   return (
     <div className="space-y-4">
@@ -510,7 +555,7 @@ function EtsyApiSection({ insights }: { insights: EtsyInsights }) {
         </span>
       </div>
 
-      {latest ? (
+      {latest && (
         <div className="grid grid-cols-2 gap-5 lg:grid-cols-4">
           <ShopStat
             label="Mağaza Takipçisi"
@@ -538,15 +583,18 @@ function EtsyApiSection({ insights }: { insights: EtsyInsights }) {
             prevDate={prev?.snapshotDate ?? null}
           />
         </div>
-      ) : (
-        <p className="text-muted-foreground rounded-2xl border border-dashed p-5 text-sm">
-          Mağaza sağlık fotoğrafı henüz yok — ilk Etsy senkronundan sonra
-          burada belirir (Ayarlar → Etsy → Şimdi Senkronize Et).
-        </p>
       )}
 
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
-        <Card className="lg:col-span-2">
+      {(showChart || showMovers) && (
+      <div
+        className={
+          showChart && showMovers
+            ? "grid grid-cols-1 gap-5 lg:grid-cols-3"
+            : "grid grid-cols-1 gap-5"
+        }
+      >
+        {showChart && (
+        <Card className={showMovers ? "lg:col-span-2" : undefined}>
           <CardHeader>
             <CardTitle>Günlük Görüntülenme (tüm listingler)</CardTitle>
             {/* Veri penceresi — sorguyla aynı sabitten (ETSY_INSIGHTS_WINDOW_DAYS). */}
@@ -556,39 +604,26 @@ function EtsyApiSection({ insights }: { insights: EtsyInsights }) {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {insights.viewsSeries.length >= 2 ? (
-              <EtsyViewsChart data={insights.viewsSeries} />
-            ) : (
-              <p className="text-muted-foreground py-10 text-center text-sm">
-                Seri birikiyor — son {ETSY_INSIGHTS_WINDOW_DAYS} gün
-                penceresinde {insights.statDays} günlük fotoğraf var; trend
-                için en az 3 gün gerekir. Günlük senkron otomatik biriktirir.
-              </p>
-            )}
+            <EtsyViewsChart data={insights.viewsSeries} />
             {/* API sınırı ilan edilir: kaynak kırılımı yok, vekilleri var. */}
             <p className="text-muted-foreground mt-3 text-xs">
-              Etsy API trafik kaynağı kırılımı (sosyal / arama / direkt)
-              vermez; kaynak dağılımı yalnız Etsy Stats ekranındadır.
-              Paneldeki vekiller: arama terimleri (Etsy Stats CSV içe
-              aktarımı), Offsite Ads atıflı siparişler (Reklamlar) ve sosyal
-              gönderi takibi (Sosyal).
+              Etsy API kaynak kırılımı (sosyal/arama/direkt) vermez — vekiller:
+              arama terimleri (CSV), Offsite atıfları (Reklamlar), sosyal takip.
             </p>
           </CardContent>
         </Card>
+        )}
+        {showMovers && (
         <Card>
           <CardHeader>
-            <CardTitle>Dün En Çok Hareket Edenler</CardTitle>
+            {/* "Dün" değil — fark son iki FOTOĞRAF günü arasıdır (senkron
+                atlarsa dün olmayabilir); başlık yanıltmasın. */}
+            <CardTitle>En Çok Hareket Edenler</CardTitle>
             <CardDescription className="text-xs">
               son iki fotoğraf günü arasındaki fark · ilk 8 listing
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {insights.topMovers.length === 0 ? (
-              <p className="text-muted-foreground text-sm">
-                İki günlük fotoğraf birikince listing bazlı hareketler burada
-                sıralanır.
-              </p>
-            ) : (
               <ul className="space-y-2.5">
                 {insights.topMovers.map((t) => (
                   <li
@@ -617,10 +652,11 @@ function EtsyApiSection({ insights }: { insights: EtsyInsights }) {
                   </li>
                 ))}
               </ul>
-            )}
           </CardContent>
         </Card>
+        )}
       </div>
+      )}
     </div>
   );
 }
