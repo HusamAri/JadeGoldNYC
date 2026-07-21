@@ -332,7 +332,9 @@ export function TaskTimeline({
               Bugüne planlı görev yok.
             </p>
           ) : (
-            <div className="mb-3">{todayList.map((t) => card(t, "today"))}</div>
+            <div className="mb-3">
+              <CappedTasks tasks={todayList} section="today" card={card} />
+            </div>
           )}
 
           {renderWithDayLabels(futureList, today, "future", card)}
@@ -409,43 +411,121 @@ export function TaskTimeline({
   );
 }
 
-/** Gün değiştikçe küçük tarih etiketi ekleyerek listeyi çizer. */
+/** Günde görünür kart tavanı — fazlası "+N daha" ile katlanır (yoğun günler
+    çizelgeyi boğmasın; "Planı Yay" zaten günde ≤5 açık görev hedefler). */
+const DAY_VISIBLE_CAP = 5;
+
+/** Gün değiştikçe grup başlığı + sayaç; 5'ten kalabalık günler katlanır. */
 function renderWithDayLabels(
   list: TaskWithAssignee[],
   today: string,
   section: Section,
   card: (t: TaskWithAssignee, s: Section) => React.ReactNode,
 ) {
-  const out: React.ReactNode[] = [];
-  let last: string | null = null;
+  // Ardışık aynı-gün görevleri grupla (liste zaten tarihe sıralı gelir).
+  const groups: { day: string; tasks: TaskWithAssignee[] }[] = [];
   for (const t of list) {
-    if (t.due_date !== last) {
-      last = t.due_date as string;
-      const diff = dayDiff(last, today);
-      out.push(
-        <div
-          key={`day-${last}`}
-          className="relative mt-6 mb-2 flex items-center gap-2 pl-9 first:mt-2"
-        >
-          <span className="text-muted-foreground/70 text-[0.7rem] font-medium tracking-wide uppercase">
-            {labelDay(last)}
-          </span>
-          {section === "past" && diff > 0 && (
-            <span className="text-[0.7rem] font-medium text-[oklch(0.58_0.16_344)]/70 dark:text-[oklch(0.74_0.12_344)]/70">
-              · {diff} gün önce
-            </span>
-          )}
-          {section === "future" && diff < 0 && (
-            <span className="text-muted-foreground/50 text-[0.7rem]">
-              · {-diff} gün sonra
-            </span>
-          )}
-        </div>,
-      );
-    }
-    out.push(card(t, section));
+    const day = t.due_date as string;
+    const g = groups[groups.length - 1];
+    if (g && g.day === day) g.tasks.push(t);
+    else groups.push({ day, tasks: [t] });
   }
-  return out;
+  return groups.map((g) => (
+    <DayGroup key={`day-${g.day}`} group={g} today={today} section={section} card={card} />
+  ));
+}
+
+function DayGroup({
+  group: g,
+  today,
+  section,
+  card,
+}: {
+  group: { day: string; tasks: TaskWithAssignee[] };
+  today: string;
+  section: Section;
+  card: (t: TaskWithAssignee, s: Section) => React.ReactNode;
+}) {
+  const diff = dayDiff(g.day, today);
+  const openCount = g.tasks.filter((t) => t.status !== "done").length;
+  const crowded = openCount > DAY_VISIBLE_CAP;
+
+  return (
+    <div className="relative">
+      {/* Gün başlığı — tarih çipi + sayaç + sağa uzayan ince ayraç. */}
+      <div className="relative mt-6 mb-2 flex items-center gap-2 pl-9 first:mt-2">
+        <span className="text-muted-foreground/80 rounded-full border border-[color:var(--glass-border)] px-2 py-0.5 text-[0.68rem] font-medium tracking-wide uppercase [background-color:var(--glass)] dark:border-[color:oklch(1_0_0/0.08)] dark:[background-color:oklch(1_0_0/0.04)]">
+          {labelDay(g.day)}
+        </span>
+        <span className="text-muted-foreground/60 text-[0.68rem] tabular-nums">
+          {g.tasks.length} görev
+        </span>
+        {section === "past" && diff > 0 && (
+          <span className="text-[0.7rem] font-medium text-[oklch(0.58_0.16_344)]/70 dark:text-[oklch(0.74_0.12_344)]/70">
+            · {diff} gün önce
+          </span>
+        )}
+        {section === "future" && diff < 0 && (
+          <span className="text-muted-foreground/50 text-[0.7rem]">
+            · {-diff} gün sonra
+          </span>
+        )}
+        {crowded && (
+          <span
+            className="rounded-full border border-[oklch(0.76_0.13_75/0.5)] px-1.5 py-px text-[0.62rem] font-semibold text-amber-700 dark:text-amber-300"
+            title={`Bu günde ${openCount} açık görev var — 'Planı Yay' günde 5'e dengeler.`}
+          >
+            yoğun
+          </span>
+        )}
+        <span
+          aria-hidden
+          className="ml-1 h-px flex-1 bg-gradient-to-r from-[color:var(--glass-border)] to-transparent"
+        />
+      </div>
+
+      <CappedTasks tasks={g.tasks} section={section} card={card} />
+    </div>
+  );
+}
+
+/** 5-üstü görev listesini katlar — "+N daha" / "daralt". Gün grubu ve BUGÜN
+    bölümü aynı davranışı paylaşır (yoğun gün çizelgeyi boğmaz). */
+function CappedTasks({
+  tasks,
+  section,
+  card,
+}: {
+  tasks: TaskWithAssignee[];
+  section: Section;
+  card: (t: TaskWithAssignee, s: Section) => React.ReactNode;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const visible = expanded ? tasks : tasks.slice(0, DAY_VISIBLE_CAP);
+  const hidden = tasks.length - visible.length;
+  return (
+    <>
+      {visible.map((t) => card(t, section))}
+      {hidden > 0 && (
+        <button
+          type="button"
+          onClick={() => setExpanded(true)}
+          className="text-muted-foreground hover:text-foreground relative mt-1 mb-2 ml-9 rounded-full border border-dashed border-[color:var(--glass-border)] px-3 py-1 text-[0.7rem] font-medium transition-colors"
+        >
+          +{hidden} görev daha göster
+        </button>
+      )}
+      {expanded && tasks.length > DAY_VISIBLE_CAP && (
+        <button
+          type="button"
+          onClick={() => setExpanded(false)}
+          className="text-muted-foreground/70 hover:text-foreground relative mt-1 mb-2 ml-9 text-[0.68rem] transition-colors"
+        >
+          daralt
+        </button>
+      )}
+    </>
+  );
 }
 
 function TimelineCard({

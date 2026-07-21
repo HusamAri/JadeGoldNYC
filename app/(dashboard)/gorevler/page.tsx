@@ -24,6 +24,7 @@ import { CornerMarks } from "@/components/brand/corner-marks";
 import { KpiCard } from "@/components/kpi-card";
 import { Button } from "@/components/ui/button";
 import { TaskViews } from "@/components/tasks/task-views";
+import { SpreadPlanButton } from "@/components/tasks/spread-plan-button";
 
 export const metadata = { title: "Görevler" };
 
@@ -73,12 +74,15 @@ export default async function GorevlerPage() {
         title="Görevler"
         description="Etsy turnaround planı · ekip görev tahtası"
         action={
-          <Button asChild>
-            <Link href="/gorevler/yeni">
-              <Plus />
-              Yeni Görev
-            </Link>
-          </Button>
+          <div className="flex flex-wrap items-center gap-2">
+            <SpreadPlanButton />
+            <Button asChild>
+              <Link href="/gorevler/yeni">
+                <Plus />
+                Yeni Görev
+              </Link>
+            </Button>
+          </div>
         }
       />
 

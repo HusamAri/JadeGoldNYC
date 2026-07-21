@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { requireMembership, getUser } from "@/lib/auth";
 import { getProfile } from "@/lib/db/queries/profile";
+import { planSpread, type SchedulableTask } from "@/lib/tasks/schedule";
 import {
   taskFormSchema,
   taskNoteSchema,
@@ -125,6 +126,54 @@ export async function deleteTask(id: string): Promise<{ error?: string }> {
   if (error) return { error: error.message };
   revalidatePath("/gorevler");
   return {};
+}
+
+export interface SpreadPlanResult {
+  ok?: boolean;
+  error?: string;
+  /** Termini değişen görev sayısı. */
+  moved?: number;
+  /** Planın yayıldığı gün sayısı. */
+  days?: number;
+}
+
+/**
+ * "Planı Yay" — açık görevleri bugünden ileriye dengeli dağıtır (günde ≤5,
+ * P0 önce; tamamlananlara ve tavana uyan ileri terminlere dokunmaz).
+ * Motor saf (lib/tasks/schedule.ts), burada yalnız okunur + uygulanır.
+ */
+export async function spreadTaskPlan(): Promise<SpreadPlanResult> {
+  const m = await requireMembership();
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("tasks")
+    .select("id, status, priority, due_date")
+    .eq("org_id", m.org_id);
+  if (error) return { error: error.message };
+
+  const changes = planSpread((data ?? []) as SchedulableTask[], nycToday());
+  if (changes.length === 0) return { ok: true, moved: 0, days: 0 };
+
+  // Küçük parti (tipik <40) — satır satır uygula, ilk hatada dur ve söyle
+  // (kısmi uygulanmışsa tekrar koşmak idempotent: motor deterministik).
+  for (const c of changes) {
+    const { error: uErr } = await supabase
+      .from("tasks")
+      .update({ due_date: c.to })
+      .eq("id", c.id)
+      .eq("org_id", m.org_id);
+    if (uErr)
+      return {
+        error: `Plan kısmen uygulandı (${c.id} güncellenemedi: ${uErr.message}) — tekrar deneyin.`,
+      };
+  }
+
+  revalidatePath("/gorevler");
+  return {
+    ok: true,
+    moved: changes.length,
+    days: new Set(changes.map((c) => c.to)).size,
+  };
 }
 
 /** Hızlı Kanban aksiyonu: görevi bir sütundan diğerine taşı. */
