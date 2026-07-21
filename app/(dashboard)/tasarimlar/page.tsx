@@ -99,7 +99,7 @@ export default async function ListelerPage({
       <GoldStream motif="ring" />
       <PageHeader
         title="Listeler"
-        description={`${platform.label}'de var olan listing'ler (platformun aynası) — varyantlar, rakip fiyatlar, reklam performansı ve eksik alanlar listing detayında. Panel taslakları ve arşiv: Listing Önerileri.`}
+        description={`${platform.label}'deki listing'lerin aynası — detaylar listing sayfasında; taslaklar ve arşiv Listing Önerileri'nde.`}
         action={
           <>
             <Button asChild variant="outline">
@@ -357,8 +357,7 @@ export default async function ListelerPage({
           )}
 
           <p className="text-muted-foreground text-xs">
-            {formatNumber(total)} listing gösteriliyor — tümü tek sayfada,
-            sayfalama yok.
+            {formatNumber(total)} listing — tümü listelendi.
           </p>
         </CardContent>
       </Card>

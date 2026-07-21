@@ -20,7 +20,6 @@ import { GoldStream } from "@/components/brand/gold-stream";
 import { SceneCutouts } from "@/components/scene-cutouts";
 import { EmptyState } from "@/components/empty-state";
 import { KpiCard } from "@/components/kpi-card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -197,15 +196,10 @@ export default async function YorumlarPage({
                         </div>
                       </TableCell>
                       <TableCell>
-                        <div className="flex items-center gap-2">
-                          <RatingStars rating={r.rating} />
-                          {needsResponse && (
-                            <Badge variant="destructive">
-                              <AlertTriangle />
-                              Yanıt Gerekli
-                            </Badge>
-                          )}
-                        </div>
+                        {/* Tek sinyal kuralı: "yanıt gerekli" yalnız Durum
+                            kolonunda söylenir — yıldızın yanında rozet tekrarı
+                            yok (aynı satırda üç kez aynı mesaj vardı). */}
+                        <RatingStars rating={r.rating} />
                       </TableCell>
                       <TableCell className="text-muted-foreground">
                         <div
@@ -218,7 +212,7 @@ export default async function YorumlarPage({
                       <TableCell>
                         {needsResponse ? (
                           <span className="jg-neon inline-flex items-center rounded-full border border-red-500/70 px-2.5 py-0.5 text-xs font-semibold text-red-600 dark:text-red-400">
-                            Yeni
+                            Yanıt Gerekli
                           </span>
                         ) : (
                           <ReviewStatusBadge status={r.status} />
