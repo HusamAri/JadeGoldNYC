@@ -8,10 +8,8 @@ import {
   Flag,
   Globe,
   ImageOff,
-  ListChecks,
   Megaphone,
   MousePointerClick,
-  Satellite,
   ShoppingBag,
   Target,
   TrendingUp,
@@ -46,7 +44,6 @@ import { formatMoney, formatPercent } from "@/lib/money";
 import { formatDate, formatNumber } from "@/lib/format";
 import { OrgMark } from "@/components/brand/org-mark";
 import { PageHeader } from "@/components/page-header";
-import { EmptyState } from "@/components/empty-state";
 import { KpiCard } from "@/components/kpi-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -61,6 +58,10 @@ import {
 } from "@/components/ui/table";
 import { createAdsAction, markAdsAction } from "./actions";
 import { AdsTriageDialog } from "@/components/ads/ads-triage-dialog";
+import {
+  SleepingBoxes,
+  type SleepingBox,
+} from "@/components/sleeping-boxes";
 
 export const metadata = { title: "Reklamlar" };
 
@@ -149,11 +150,43 @@ export default async function ReklamlarPage() {
 
   const spendingRows = rows.filter((r) => r.spendCents > 0);
 
+  // ── UYUYAN KUTULAR: verisi olmayan bölüm tam boy render edilmez; adı ve
+  // "nasıl uyanır" ipucu sayfa sonundaki ince listede anılır (panel deseni). ──
+  const hasManualMetrics = rows.length > 0;
+  const sleeping: SleepingBox[] = [];
+  if (!hasLedgerData)
+    sleeping.push({
+      name: "Etsy API (ledger)",
+      hint: ledger.connected
+        ? "son 30 günde reklam ücreti kesilince otomatik dolar"
+        : "Ayarlar → Etsy bağlanınca otomatik dolar",
+    });
+  if (!hasManualMetrics)
+    sleeping.push({
+      name: `"${ADS_PERIOD_LABEL}" metrikleri & harcama dağılımı`,
+      hint: "Analizler → Ürün performansına 'son 30' satırı girilince",
+    });
+  else if (spendingRows.length === 0)
+    sleeping.push({
+      name: "Harcama Dağılımı",
+      hint: "harcamalı ürün metriği girilince",
+    });
+  if (signals.length === 0)
+    sleeping.push({
+      name: "Aksiyon Önerileri",
+      hint: "sinyal üreten ürün çıkınca (şimdilik her şey yolunda)",
+    });
+  if (actions.length === 0)
+    sleeping.push({
+      name: "Aksiyon Kuyruğu",
+      hint: "önerilerden 'Aksiyona al' deyince dolar",
+    });
+
   return (
     <div className="page-stack relative z-0 pb-32">
       <PageHeader
         title="Reklamlar"
-        description="Etsy Ads harcamasını değerlendir, boşa gideni kapat, bütçe yiyeni dizginle, fırsatı büyüt — karar burada, uygulama Etsy'de"
+        description="Etsy Ads kararları — karar burada, uygulama Etsy'de"
         action={
           <>
             <Button asChild variant="outline">
@@ -211,38 +244,17 @@ export default async function ReklamlarPage() {
         </CardContent>
       </Card>
 
-      {/* Dekoratif indeks satırı (Spatial/Liquid .idx dili). */}
-      <div aria-hidden className="idx sm:-mb-4">
-        <span>Reklamlar / 01 · Etsy API (ledger) — otomatik</span>
-        <span className="idx-bar" />
-        <span className="idx-ln" />
-        <span><OrgMark /></span>
-      </div>
-
       {/* API-KAYNAKLI BÖLÜM — org-bağımsız: Etsy bağlanan her şirkette
-          (Jade, EON, sonrakiler) senkron ledger'ı bu bölümü otomatik doldurur. */}
-      {!ledger.connected && !hasLedgerData ? (
-        <Card>
-          <CardContent>
-            <EmptyState
-              icon={Satellite}
-              title="Etsy bağlı değil"
-              description="Ayarlar → Etsy'den bağlantı kurulunca senkron, reklam ücretlerini (Etsy Ads günlük harcaması + Offsite Ads sipariş ücretleri) ledger'dan otomatik çeker — CSV ya da elle giriş gerekmez."
-            />
-          </CardContent>
-        </Card>
-      ) : !hasLedgerData ? (
-        <Card>
-          <CardContent>
-            <EmptyState
-              icon={Satellite}
-              title="Son 30 günde reklam ücreti kaydı yok"
-              description={`Ledger senkronu bağlı ama ${ledgerWindowLabel} penceresinde prolist/offsite kaydı bulunamadı. Etsy Ads kapalıysa bu normaldir; senkron sonrası ücretler burada kendiliğinden görünür.`}
-            />
-          </CardContent>
-        </Card>
-      ) : (
+          (Jade, EON, sonrakiler) senkron ledger'ı bu bölümü otomatik doldurur.
+          Uyuyan-kutu kuralı: veri yoksa bölüm çizilmez (adı sayfa sonunda). */}
+      {hasLedgerData && (
         <>
+          <div aria-hidden className="idx sm:-mb-4">
+            <span>Reklamlar / 01 · Etsy API (ledger) — otomatik</span>
+            <span className="idx-bar" />
+            <span className="idx-ln" />
+            <span><OrgMark /></span>
+          </div>
           <div className="grid grid-cols-2 gap-5 lg:grid-cols-4">
             <KpiCard
               label="Etsy Ads Harcaması (Onsite)"
@@ -390,7 +402,10 @@ export default async function ReklamlarPage() {
         </>
       )}
 
-      {/* Dekoratif indeks satırı (Spatial/Liquid .idx dili). */}
+      {/* Elle girilen "son 30" katmanı — hiç metrik yoksa KPI/tablolar
+          çizilmez (uyuyan kutu; giriş yolu ipucu sayfa sonunda). */}
+      {hasManualMetrics && (
+      <>
       <div aria-hidden className="idx sm:-mb-4">
         <span>Reklamlar / 02 · &quot;{ADS_PERIOD_LABEL}&quot; metrikleri — elle girilen</span>
         <span className="idx-bar" />
@@ -453,26 +468,17 @@ export default async function ReklamlarPage() {
           className="col-span-2 lg:col-span-1"
         />
       </div>
+      </>
+      )}
 
-      {/* Dekoratif indeks satırı (Spatial/Liquid .idx dili). */}
-      <div aria-hidden className="idx sm:-mb-4">
-        <span>Reklamlar / 03 · Aksiyon önerileri</span>
-        <span className="idx-bar" />
-        <span className="idx-ln" />
-        <span><OrgMark /></span>
-      </div>
-
-      {signals.length === 0 ? (
-        <Card>
-          <CardContent>
-            <EmptyState
-              icon={CheckCircle2}
-              title="Aksiyon sinyali yok"
-              description={`Boşa harcama, bütçe yiyen ya da büyütme fırsatı üreten ürün bulunmadı (${windowLabel}). Yeni "son 30" metrikleri girildikçe sinyaller burada belirir.`}
-            />
-          </CardContent>
-        </Card>
-      ) : (
+      {signals.length > 0 && (
+        <>
+        <div aria-hidden className="idx sm:-mb-4">
+          <span>Reklamlar / 03 · Aksiyon önerileri</span>
+          <span className="idx-bar" />
+          <span className="idx-ln" />
+          <span><OrgMark /></span>
+        </div>
         <div className="grid gap-5 md:grid-cols-2">
           {signals.map((s) => {
             const meta = ADS_SIGNAL_META[s.signal];
@@ -611,18 +617,19 @@ export default async function ReklamlarPage() {
                       </a>
                     </Button>
                   </div>
-                  <p className="text-muted-foreground text-xs">
-                    Bu panel Etsy reklamını doğrudan değiştiremez (API
-                    sunmuyor) — karar burada, uygulama Etsy&apos;de.
-                  </p>
                 </CardContent>
               </Card>
             );
           })}
         </div>
+        </>
       )}
 
-      {/* Dekoratif indeks satırı (Spatial/Liquid .idx dili). */}
+      {/* Ölçüm döngüsü: beklemede → Etsy'de elle uygula → Yapıldı işaretle →
+          karar anı fotoğrafı vs güncel "son 30" metriği kıyası.
+          Kuyruk boşsa bölüm uyur (adı sayfa sonunda). */}
+      {actions.length > 0 && (
+      <>
       <div aria-hidden className="idx sm:-mb-4">
         <span>Reklamlar / 04 · Aksiyon kuyruğu</span>
         <span className="idx-bar" />
@@ -630,17 +637,8 @@ export default async function ReklamlarPage() {
         <span><OrgMark /></span>
       </div>
 
-      {/* Ölçüm döngüsü: beklemede → Etsy'de elle uygula → Yapıldı işaretle →
-          karar anı fotoğrafı vs güncel "son 30" metriği kıyası. */}
       <Card className="glass-fluted">
         <CardContent className="space-y-4">
-          {actions.length === 0 ? (
-            <EmptyState
-              icon={ListChecks}
-              title="Kuyrukta aksiyon yok"
-              description="Yukarıdaki önerilerden 'Aksiyona al' dediğinizde karar buraya düşer; Etsy panosunda uyguladıktan sonra 'Yapıldı' işaretleyin ki öncesi/sonrası ölçülsün."
-            />
-          ) : (
             <Table>
               <TableHeader>
                 <TableRow>
@@ -757,11 +755,14 @@ export default async function ReklamlarPage() {
                 })}
               </TableBody>
             </Table>
-          )}
         </CardContent>
       </Card>
+      </>
+      )}
 
-      {/* Dekoratif indeks satırı (Spatial/Liquid .idx dili). */}
+      {/* Harcama dağılımı — harcamalı ürün yoksa uyur (adı sayfa sonunda). */}
+      {spendingRows.length > 0 && (
+      <>
       <div aria-hidden className="idx sm:-mb-4">
         <span>Reklamlar / 05 · Harcama dağılımı</span>
         <span className="idx-bar" />
@@ -776,13 +777,6 @@ export default async function ReklamlarPage() {
             üründen en yüksek {formatNumber(Math.min(SPEND_TABLE_LIMIT, spendingRows.length))}{" "}
             tanesi gösteriliyor — toplamlar tam kümeden hesaplanır.
           </p>
-          {spendingRows.length === 0 ? (
-            <EmptyState
-              icon={Megaphone}
-              title="Reklam harcaması kaydı yok"
-              description={`"${ADS_PERIOD_LABEL}" etiketli ürün metriği yok. Bu, senkron hatası değil: listing ROAS Etsy API'den gelmez. Analizler → Ürün performansına Etsy Ads'ten kopyalanmış "son 30" satırı girin. Mağaza reklam ücreti için Maliyetler'e bakın.`}
-            />
-          ) : (
             <Table>
               <TableHeader>
                 <TableRow>
@@ -850,9 +844,13 @@ export default async function ReklamlarPage() {
                 ))}
               </TableBody>
             </Table>
-          )}
         </CardContent>
       </Card>
+      </>
+      )}
+
+      {/* Uyuyan kutular — verisi olmadığı için bu sayfada gizlenen bölümler. */}
+      <SleepingBoxes items={sleeping} />
     </div>
   );
 }
