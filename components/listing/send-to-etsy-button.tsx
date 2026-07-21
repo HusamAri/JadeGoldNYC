@@ -59,6 +59,18 @@ export function SendToEtsyButton({ productId }: { productId: string }) {
         );
         router.refresh();
       })
+      .catch((e: unknown) => {
+        // Reject (canlı Etsy yazımı ortasında ağ kopması) sessiz kalamaz —
+        // taslağın açılıp açılmadığı belirsizdir; tekrar denemeden önce
+        // Etsy Drafts kontrol edilmeli (idempotens çift açabilir).
+        toast.error(
+          e instanceof Error ? e.message : "Etsy'e gönderim yarıda kesildi.",
+          {
+            description:
+              "Taslak açılmış olabilir — tekrar denemeden önce Etsy Drafts'ı kontrol edin.",
+          },
+        );
+      })
       .finally(() => setSending(false));
   }
 

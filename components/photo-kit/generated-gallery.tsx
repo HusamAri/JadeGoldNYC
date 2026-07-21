@@ -232,12 +232,19 @@ export function GeneratedGallery({
     if (!confirm("Bu görseli panelden kaldır?")) return;
     setItems((prev) => prev.filter((i) => i.id !== img.id));
     if (lightboxId === img.id) setLightboxId(null);
-    deleteGeneratedImage(img.id).then((r) => {
-      if (r.error) {
-        toast.error(r.error);
+    deleteGeneratedImage(img.id)
+      .then((r) => {
+        if (r.error) {
+          toast.error(r.error);
+          setItems((prev) => [img, ...prev]);
+        }
+      })
+      .catch((e: unknown) => {
+        // Reject'te geri-alma dalı hiç koşmazdı: görsel UI'dan kaybolur ama
+        // DB'de kalırdı — optimistic kaldırmayı geri sar.
+        toast.error(e instanceof Error ? e.message : "Görsel silinemedi.");
         setItems((prev) => [img, ...prev]);
-      }
-    });
+      });
   }
 
   return (

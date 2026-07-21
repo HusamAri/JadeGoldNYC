@@ -74,8 +74,8 @@ export function CompetitorMatchDialog({
     const gen = ++loadGen.current;
     setLoadingOffs(true);
     setLoadError(null);
-    void listCompetitorOfferingsForMatch(competitorListingId, currency).then(
-      (r) => {
+    void listCompetitorOfferingsForMatch(competitorListingId, currency)
+      .then((r) => {
         if (gen !== loadGen.current) return;
         setLoadingOffs(false);
         if (r.error) {
@@ -84,8 +84,14 @@ export function CompetitorMatchDialog({
           return;
         }
         setOfferings(r.offerings ?? []);
-      },
-    );
+      })
+      .catch((e: unknown) => {
+        // Reject (ağ kopması) catch'siz kalırsa yükleyici sonsuza dek döner.
+        if (gen !== loadGen.current) return;
+        setLoadingOffs(false);
+        setLoadError(e instanceof Error ? e.message : "Varyantlar yüklenemedi.");
+        setOfferings([]);
+      });
   }
 
   function handleOpenChange(next: boolean) {

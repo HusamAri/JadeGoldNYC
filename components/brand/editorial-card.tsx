@@ -72,7 +72,7 @@ export function EditorialCard({
     return (
       <div
         className={cn(
-          "relative overflow-hidden rounded-[1.75rem] shadow-[var(--shadow-raised)]",
+          "relative overflow-hidden rounded-[1.75rem] shadow-[var(--lift-natural-lg)]",
           heightClassName,
           className,
         )}
@@ -94,7 +94,7 @@ export function EditorialCard({
         src={video}
         poster={image}
         trackHeightVh={trackHeightVh}
-        className="overflow-hidden rounded-[1.75rem] shadow-[var(--shadow-raised)]"
+        className="overflow-hidden rounded-[1.75rem] shadow-[var(--lift-natural-lg)]"
       >
         {overlay}
       </ScrollPinnedVideo>
@@ -104,7 +104,7 @@ export function EditorialCard({
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-[1.75rem] shadow-[var(--shadow-raised)]",
+        "relative overflow-hidden rounded-[1.75rem] shadow-[var(--lift-natural-lg)]",
         className,
       )}
     >

@@ -168,7 +168,7 @@ export default async function StokPage() {
                               width={40}
                               height={40}
                               unoptimized
-                              className="size-10 rounded-md border border-border object-cover"
+                              className="thumb-lift size-10 rounded-md border border-border object-cover"
                             />
                           ) : (
                             <span className="bg-muted text-muted-foreground flex size-10 items-center justify-center rounded-md text-[10px] font-semibold">

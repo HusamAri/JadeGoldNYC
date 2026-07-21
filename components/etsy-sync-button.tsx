@@ -103,6 +103,13 @@ export function EtsySyncButton({
           break;
         }
       }
+    } catch (e) {
+      // Reject (senkron ortasında ağ kopması) yalnız finally ile sessizce
+      // temizleniyordu — kullanıcı senkronun yarıda kaldığını bilmeli.
+      toast.error(
+        e instanceof Error ? e.message : "Senkronizasyon yarıda kesildi.",
+        { description: "Tekrar tıklayın — kaldığı dilimden devam eder." },
+      );
     } finally {
       runningRef.current = false;
       setRunning(false);

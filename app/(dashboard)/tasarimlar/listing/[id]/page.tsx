@@ -339,7 +339,7 @@ export default async function ListingDetayPage({
           <KeywordResearchPanel productId={product.id} bare />
           <AnimatedDisclosure
             defaultOpen={false}
-            className="nm-raised-sm border-0 bg-transparent shadow-none"
+            className="nm-raised-sm border-0"
             summaryClassName="px-4 py-3"
             panelClassName="space-y-4 px-4 py-4"
             summary={
