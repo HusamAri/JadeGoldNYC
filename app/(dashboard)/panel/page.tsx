@@ -27,7 +27,12 @@ import { getSalesDiagnostics } from "@/lib/db/queries/diagnostics";
 import { PanelSyncPrompt } from "@/components/panel/panel-sync-prompt";
 import { PanelDiagnosticCard } from "@/components/panel/panel-diagnostic-card";
 import { getTimelineData } from "@/lib/db/queries/timeline";
-import { requireMembership } from "@/lib/auth";
+import {
+  eventPinTargetId,
+  getMyStickers,
+  getPinsForTargets,
+} from "@/lib/db/queries/pins";
+import { requireMembership, getUser } from "@/lib/auth";
 import { getGoldPricePerOunce } from "@/lib/gold-price";
 import { TROY_OUNCE_GRAMS, KARAT_PURITY } from "@/lib/gold-cost";
 import { strParam, type RawSearchParams } from "@/lib/searchparams";
@@ -782,7 +787,26 @@ async function TimelineSection({ orgId }: { orgId: string }) {
         hint="tarihli görev ya da olay eklenince uyanır (Görevler → yeni)"
       />
     );
-  return <PanelTimeline data={timeline} serverToday={serverToday} />;
+  // Pinler: görev kartları + olay küreleri iğnelenebilir yüzey. Toplu çekim;
+  // Map → düz obje (RSC-client sınırında serileşme).
+  const user = await getUser();
+  const [taskPins, eventPins, myStickers] = await Promise.all([
+    getPinsForTargets(orgId, "task", timeline.tasks.map((t) => t.id)),
+    getPinsForTargets(orgId, "event", timeline.events.map(eventPinTargetId)),
+    user ? getMyStickers(user.id) : Promise.resolve([]),
+  ]);
+  return (
+    <PanelTimeline
+      data={timeline}
+      serverToday={serverToday}
+      pinCtx={{
+        taskPins: Object.fromEntries(taskPins),
+        eventPins: Object.fromEntries(eventPins),
+        myStickers,
+        meId: user?.id,
+      }}
+    />
+  );
 }
 
 /** Akış beklenirken sakin cam iskelet — yükseklik gerçek bölüme yakın tutulur

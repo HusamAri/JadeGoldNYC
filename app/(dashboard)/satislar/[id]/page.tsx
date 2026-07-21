@@ -26,6 +26,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { SaleStatusBadge } from "@/components/sale-status-badge";
 import { DeleteButton } from "@/components/data-table/delete-button";
+import { PinDock } from "@/components/pins/pin-dock";
 import { deleteSale } from "../actions";
 
 function SummaryRow({
@@ -88,6 +89,9 @@ export default async function SatisDetayPage({
           </>
         }
       />
+
+      {/* Pinler — satışa iğnelenen setler (ekipçe görünür, sete özel). */}
+      <PinDock targetType="sale" targetId={sale.id} size="lg" />
 
       <div className="grid gap-6 lg:grid-cols-3">
         <Card className="lg:col-span-2 glass-fluted">

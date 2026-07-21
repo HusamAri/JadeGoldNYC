@@ -17,6 +17,7 @@ import { TaskStatusBadge } from "@/components/task-status-badge";
 import { TaskPanel } from "@/components/tasks/task-panel";
 import { DeleteButton } from "@/components/data-table/delete-button";
 import { UserAvatar } from "@/components/user-avatar";
+import { PinDock } from "@/components/pins/pin-dock";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -93,6 +94,13 @@ export default async function GorevDetayPage({
       <Card>
         <CardContent className="space-y-4">
           <div className="flex items-start gap-3">
+            {/* Pinler — göreve iğnelenen setler (herkesinki görünür). */}
+            <PinDock
+              targetType="task"
+              targetId={task.id}
+              size="lg"
+              className="order-last ml-auto"
+            />
             {/* Görevin kendi mücevher ikonu + rengi (maske ile boyanır). */}
             {task.icon && (
               <span

@@ -15,6 +15,12 @@ import type {
   TimelineEvent,
   TimelineTask,
 } from "@/lib/db/queries/timeline";
+import {
+  eventPinTargetId,
+  type PinSticker,
+  type TargetPin,
+} from "@/lib/pins/meta";
+import { PinBoard } from "@/components/pins/pin-board";
 import { TASK_COLOR_BY_KEY, taskIconUrl } from "@/lib/task-style";
 import { useCursorGlow } from "@/components/motion/cursor-glow";
 import {
@@ -85,12 +91,23 @@ interface DayBucket {
  * Observer ile bir kez belirir (reveal); idle'da animasyon/backdrop churn YOK
  * (perf dersi). prefers-reduced-motion global kuralıyla tüm geçişler durur.
  */
+/** Görev/olay pinleri + kullanıcının seti — sunucudan toplu iner (Map değil
+    düz obje: RSC→client sınırında serileşebilir olmalı). */
+export interface TimelinePinCtx {
+  taskPins: Record<string, TargetPin[]>;
+  eventPins: Record<string, TargetPin[]>;
+  myStickers: PinSticker[];
+  meId?: string;
+}
+
 export function PanelTimeline({
   data,
   serverToday,
+  pinCtx,
 }: {
   data: TimelineData;
   serverToday: string;
+  pinCtx?: TimelinePinCtx;
 }) {
   const today = serverToday;
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -298,7 +315,7 @@ export function PanelTimeline({
                 </p>
               )}
               {past.map((b) => (
-                <DayBlock key={b.day} bucket={b} today={today} />
+                <DayBlock key={b.day} bucket={b} today={today} pinCtx={pinCtx} />
               ))}
 
               {/* BUGÜN çıpası */}
@@ -319,7 +336,12 @@ export function PanelTimeline({
                 </div>
               </div>
               {todayBucket ? (
-                <DayBlock bucket={todayBucket} today={today} noLabel />
+                <DayBlock
+                  bucket={todayBucket}
+                  today={today}
+                  noLabel
+                  pinCtx={pinCtx}
+                />
               ) : (
                 <p className="text-muted-foreground/60 relative mb-2 pl-9 text-xs">
                   Bugüne planlı görev yok.
@@ -327,7 +349,7 @@ export function PanelTimeline({
               )}
 
               {future.map((b) => (
-                <DayBlock key={b.day} bucket={b} today={today} />
+                <DayBlock key={b.day} bucket={b} today={today} pinCtx={pinCtx} />
               ))}
               {future.length === 0 && (
                 <p className="text-muted-foreground/60 relative mt-1 pl-9 text-xs italic">
@@ -360,10 +382,12 @@ function DayBlock({
   bucket,
   today,
   noLabel,
+  pinCtx,
 }: {
   bucket: DayBucket;
   today: string;
   noLabel?: boolean;
+  pinCtx?: TimelinePinCtx;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(false);
@@ -450,6 +474,18 @@ function DayBlock({
                     {e.title}
                   </span>
                 </span>
+                {/* Olay pinleri — olay türetilmiş satır: bileşik hedef anahtarı. */}
+                {pinCtx && (
+                  <PinBoard
+                    targetType="event"
+                    targetId={eventPinTargetId(e)}
+                    pins={pinCtx.eventPins[eventPinTargetId(e)] ?? []}
+                    myStickers={pinCtx.myStickers}
+                    meId={pinCtx.meId}
+                    size="sm"
+                    quietReveal="group-hover/orb:opacity-100"
+                  />
+                )}
               </span>
             );
           })}
@@ -457,14 +493,24 @@ function DayBlock({
       )}
 
       {bucket.tasks.map((t) => (
-        <TaskRow key={t.id} task={t} today={today} />
+        <TaskRow key={t.id} task={t} today={today} pinCtx={pinCtx} />
       ))}
     </div>
   );
 }
 
-/** Tek görev satırı — omurga düğümü (renk) + ikon + başlık + durum/ilerleme. */
-function TaskRow({ task: t, today }: { task: TimelineTask; today: string }) {
+/** Tek görev satırı — omurga düğümü (renk) + ikon + başlık + durum/ilerleme.
+    Pinler kartın sağ üst köşesine İĞNELENİR: Link'in kardeşi (iç içe
+    interaktif eleman olmasın), mutlak konum; tık yayılımı PinBoard'da kesilir. */
+function TaskRow({
+  task: t,
+  today,
+  pinCtx,
+}: {
+  task: TimelineTask;
+  today: string;
+  pinCtx?: TimelinePinCtx;
+}) {
   const done = t.status === "done";
   const overdue = !done && !!t.dueDate && t.dueDate < today;
   const taskColor = t.color ? TASK_COLOR_BY_KEY.get(t.color) : null;
@@ -485,6 +531,7 @@ function TaskRow({ task: t, today }: { task: TimelineTask; today: string }) {
   const { ref, onPointerMove } = useCursorGlow<HTMLDivElement>();
 
   return (
+    <div className="group/tlrow relative">
     <Link
       href={`/gorevler/${t.id}`}
       className="group relative flex items-start gap-3 py-2 pl-1 [transform-style:preserve-3d]"
@@ -582,6 +629,19 @@ function TaskRow({ task: t, today }: { task: TimelineTask; today: string }) {
         )}
       </div>
     </Link>
+      {pinCtx && (
+        <PinBoard
+          targetType="task"
+          targetId={t.id}
+          pins={pinCtx.taskPins[t.id] ?? []}
+          myStickers={pinCtx.myStickers}
+          meId={pinCtx.meId}
+          size="sm"
+          quietReveal="group-hover/tlrow:opacity-100"
+          className="absolute top-0.5 right-2 z-10"
+        />
+      )}
+    </div>
   );
 }
 
