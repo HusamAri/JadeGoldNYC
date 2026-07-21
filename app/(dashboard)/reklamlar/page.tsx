@@ -26,6 +26,7 @@ import {
   ADS_ACTION_STATUS_META,
   ADS_PERIOD_LABEL,
   ADS_SIGNAL_META,
+  ADS_TRIAGE,
   computeAdsSignals,
   getAdsOverview,
   listAdsActions,
@@ -59,6 +60,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { createAdsAction, markAdsAction } from "./actions";
+import { AdsTriageDialog } from "@/components/ads/ads-triage-dialog";
 
 export const metadata = { title: "Reklamlar" };
 
@@ -573,6 +575,17 @@ export default async function ReklamlarPage() {
                   </p>
                   <p className="text-muted-foreground text-sm">{meta.hint}</p>
                   <div className="flex flex-wrap items-center gap-2">
+                    {/* KURAL: körlemesine kapat/azalt yok — önce arama terimi
+                        triyajı (karar ağacı kaynak modülde: ADS_TRIAGE). */}
+                    {ADS_TRIAGE.appliesTo.includes(s.signal) && (
+                      <AdsTriageDialog
+                        productId={s.row.productId}
+                        productTitle={s.row.title}
+                        reason={reasonFor(s)}
+                        snapshot={snapshotFor(s)}
+                        adsUrl={ETSY_ADS_URL}
+                      />
+                    )}
                     {meta.suggestedKinds.map((k) =>
                       pendingKeys.has(`${s.row.productId}:${k}`) ? (
                         <Badge key={k} variant="outline">
@@ -585,7 +598,7 @@ export default async function ReklamlarPage() {
                           <input type="hidden" name="kind" value={k} />
                           <input type="hidden" name="reason" value={reasonFor(s)} />
                           <input type="hidden" name="snapshot" value={snapshotFor(s)} />
-                          <Button type="submit" size="sm">
+                          <Button type="submit" size="sm" variant="outline">
                             Aksiyona al · {ADS_ACTION_KIND_META[k].label}
                           </Button>
                         </form>

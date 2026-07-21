@@ -2,6 +2,7 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 import { BrandTile } from "@/components/brand/brand-tile";
+import { OrgEmblemMini } from "@/components/brand/org-emblem";
 
 export function PageHeader({
   title,
@@ -48,6 +49,8 @@ export function PageHeader({
         <span>{eyebrow ?? title}</span>
         <span className="idx-bar" />
         <span className="idx-ln" />
+        {/* Panel başı imzası — aktif org'un mini amblemi (editorial kuyruk). */}
+        <OrgEmblemMini />
       </div>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-1">
