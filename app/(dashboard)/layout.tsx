@@ -6,6 +6,10 @@ import { getProfile } from "@/lib/db/queries/profile";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Topbar } from "@/components/layout/topbar";
 import { PageTransition } from "@/components/layout/page-transition";
+import {
+  OrgEmblemBackdrop,
+  OrgEmblemSignature,
+} from "@/components/brand/org-emblem";
 import { ParallaxDrift } from "@/components/motion/parallax-drift";
 
 export default async function DashboardLayout({
@@ -49,6 +53,10 @@ export default async function DashboardLayout({
       {/* Scroll-parallax: holo katmanları içerikten yavaş süzülür (derinlik).
           Idle'da sıfır iş; reduced-motion/dokunmatikte hiç bağlanmaz. */}
       <ParallaxDrift />
+      {/* Org amblem katmanı — DEV filigran sağ-alt negatif alanda (her
+          sayfada, içerik altında) + köşe imzası. Marka org'dan çözülür. */}
+      <OrgEmblemBackdrop />
+      <OrgEmblemSignature />
       <Sidebar
         memberships={memberships}
         activeOrgId={m.org_id}
