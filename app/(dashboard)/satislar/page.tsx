@@ -61,6 +61,9 @@ import { FilterSelect } from "@/components/data-table/filter-select";
 import { Pagination } from "@/components/data-table/pagination";
 import { DeleteButton } from "@/components/data-table/delete-button";
 import { SaleStatusBadge } from "@/components/sale-status-badge";
+import { getUser } from "@/lib/auth";
+import { getMyStickers, getPinsForTargets } from "@/lib/db/queries/pins";
+import { PinBoard } from "@/components/pins/pin-board";
 import { deleteSale } from "./actions";
 
 export default async function SatislarPage({
@@ -83,6 +86,13 @@ export default async function SatislarPage({
     listSales({ search, status, limit, offset }),
     getSalesAnalytics(m.org_id, { search, status }),
     getMonthlySalesSeries(m.org_id, { months: 24, search, status }),
+  ]);
+
+  // Pinler: satışlar iğnelenebilir yüzey — liste tek toplu sorguyla.
+  const user = await getUser();
+  const [pinMap, myStickers] = await Promise.all([
+    getPinsForTargets(m.org_id, "sale", rows.map((r) => r.id)),
+    user ? getMyStickers(user.id) : Promise.resolve([]),
   ]);
 
   const t = analytics.totals;
@@ -361,7 +371,19 @@ export default async function SatislarPage({
                     <TableCell className="font-medium">
                       {s.order_no ?? "—"}
                     </TableCell>
-                    <TableCell>{s.buyer_name ?? "—"}</TableCell>
+                    <TableCell>
+                      <span className="flex items-center gap-2">
+                        {s.buyer_name ?? "—"}
+                        <PinBoard
+                          targetType="sale"
+                          targetId={s.id}
+                          pins={pinMap.get(s.id) ?? []}
+                          myStickers={myStickers}
+                          meId={user?.id}
+                          size="sm"
+                        />
+                      </span>
+                    </TableCell>
                     <TableCell>
                       <SaleStatusBadge status={s.status} />
                     </TableCell>
