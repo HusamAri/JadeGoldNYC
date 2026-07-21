@@ -100,15 +100,21 @@ interface PlacedBox {
   yPct: number;
   z: number;
   delayMs: number;
+  /** Popup hangi yöne açılır — üst banttaki kutu panelden taşmasın diye ALTA. */
+  popSide: "top" | "bottom";
+  /** Kenar kutularında popup içe hizalanır (viewport/panel dışına taşmaz). */
+  popAlign: "left" | "center" | "right";
 }
 
 /**
- * DÜZENLİ VİTRİN yerleşimi (v2) — eski sürüm her kutuyu rastgele hücre+3B
- * rotasyonla fırlatıyordu ("corrupted" his). Yeni dil: her önem derecesi kendi
- * yatay bandında SAKİN, EŞİT aralıklı dizilir; kritik önde ve üstte, bilgi
- * arkada ve altta. Jitter yalnız ±%3 nefes payı — kompozisyon okunur kalır.
- * Derinlik tek eksende (translateZ), rotasyon YOK; motion cursor-reactive
- * ışık + hover settle'dan gelir.
+ * DÜZENLİ VİTRİN yerleşimi (v3) — v2'nin iki sorunu düzeltildi:
+ *  1) Komşu kutular METİN üstünde biniyordu (5 kutu × %20 aralık < kutu
+ *     genişliği) → ZİGZAG: bant içinde kutular bir aşağı bir yukarı diziliyor;
+ *     yatay komşular artık en fazla KÖŞELERDE (metinsiz alanda) değer.
+ *  2) Jitter ±%1.5'e indirildi — kompozisyon sakin, bindirme öngörülebilir.
+ * Popup yönü/hizası burada DETERMİNİSTİK hesaplanır (çarpışma-farkında
+ * yerleşim: üst bant alta açılır, kenar kutuları içe hizalanır) — çalışma
+ * anında flip hesabına gerek kalmaz.
  */
 function placeBoxes(alerts: Alert[]): { boxes: PlacedBox[]; overflow: number } {
   const boxes: PlacedBox[] = [];
@@ -120,14 +126,20 @@ function placeBoxes(alerts: Alert[]): { boxes: PlacedBox[]; overflow: number } {
     const n = items.length;
     items.forEach((a, i) => {
       const h = hash(a.key);
-      const jx = ((h % 100) / 100 - 0.5) * 6; // ±%3 nefes payı
-      const jy = (((h >> 5) % 100) / 100 - 0.5) * 5;
+      const jx = ((h % 100) / 100 - 0.5) * 3; // ±%1.5 nefes payı
+      // Zigzag: çift indeks bandın üstüne, tek indeks altına — komşular
+      // dikeyde ayrışır, olası bindirme yalnız köşe değmesi olur.
+      const zig = n > 1 ? (i % 2 === 0 ? -7 : 7) : 0;
+      const xPct = Math.min(90, Math.max(10, ((i + 0.5) / n) * 100 + jx));
+      const yPct = MATERIAL[sev].bandY + zig;
       boxes.push({
         alert: a,
-        xPct: Math.min(91, Math.max(9, ((i + 0.5) / n) * 100 + jx)),
-        yPct: MATERIAL[sev].bandY + jy,
+        xPct,
+        yPct,
         z: MATERIAL[sev].z + (((h >> 9) % 18) - 9),
         delayMs: placed * 60,
+        popSide: yPct < 42 ? "bottom" : "top",
+        popAlign: xPct < 24 ? "left" : xPct > 76 ? "right" : "center",
       });
       placed++;
     });
@@ -188,21 +200,20 @@ export function AlertBoard3D({ data }: { data: AlertCenter }) {
         </span>
       </div>
 
-      {/* Sakin vitrin sahnesi — üç bant, tek eksen derinlik */}
-      <div
-        className="relative h-[340px] sm:h-[380px]"
-        style={{ perspective: "1200px", perspectiveOrigin: "50% 42%" }}
-      >
+      {/* Sakin vitrin sahnesi — derinlik DÜZ sahnede ölçek+z-index ile.
+          (v2'deki perspective+preserve-3d+translateZ, popup'ı projeksiyonla
+          YANA kaydırıyor ve 3B bağlamda z-index/hover katmanlaması
+          çalışmıyordu — kanattaki kutuların açıklaması sağa açılır görünür,
+          kaplanan kutu hover tepkisi vermezdi. Ölçek aynı derinlik hissini
+          verir; hit-test ve katmanlama normal 2B kurallarına döner.) */}
+      <div className="relative h-[340px] sm:h-[380px]">
         {total === 0 ? (
           <p className="text-muted-foreground absolute inset-x-0 top-1/2 flex -translate-y-1/2 items-center justify-center gap-2 text-sm">
             <CircleCheck className="size-4 text-emerald-600" />
             Board boş — havada asılı uyarı yok, her şey yolunda.
           </p>
         ) : (
-          <div
-            className="absolute inset-0"
-            style={{ transformStyle: "preserve-3d" }}
-          >
+          <div className="absolute inset-0">
             {boxes.map((b) => (
               <AlertBox key={b.alert.key} box={b} currency={currency} />
             ))}
@@ -221,20 +232,25 @@ function AlertBox({
   box: PlacedBox;
   currency: string;
 }) {
-  const { alert: a, xPct, yPct, z, delayMs } = box;
+  const { alert: a, xPct, yPct, z, delayMs, popSide, popAlign } = box;
   const m = MATERIAL[a.severity];
   const { ref, onPointerMove } = useCursorGlow<HTMLAnchorElement>();
+  // Derinlik = ölçek (eski translateZ/perspective eşleniği: 1200px sahnede
+  // z=56 ≈ %4.9 büyüme). Katman sırası banda göre; hover'lı kutu :has ile
+  // HER ZAMAN en üste çıkar → kaplanan kutular da tepki verir/okunur.
+  const scale = 1 + z / 1150;
+  const bandZ = z > 20 ? 30 : z < -20 ? 10 : 20;
 
   return (
     <div
       // Kademeli belirme: kutular sahneye sırayla yerleşir
-      // (soft-in yalnız opacity+blur — inline 3B transform'a dokunmaz).
-      className="soft-in absolute"
+      // (soft-in yalnız opacity+blur — inline transform'a dokunmaz).
+      className="soft-in absolute [&:has(a:hover)]:z-40 [&:has(a:focus-visible)]:z-40"
       style={{
         left: `${xPct}%`,
         top: `${yPct}%`,
-        transform: `translate(-50%, -50%) translateZ(${z}px)`,
-        transformStyle: "preserve-3d",
+        zIndex: bandZ,
+        transform: `translate(-50%, -50%) scale(${scale.toFixed(3)})`,
         animationDelay: `${delayMs}ms`,
         animationDuration: "0.6s",
       }}
@@ -288,8 +304,21 @@ function AlertBox({
           </span>
         )}
 
-        {/* Hover detay popup'ı — cam üstünde cam */}
-        <span className="pointer-events-none invisible absolute bottom-[calc(100%+8px)] left-1/2 z-40 w-[240px] -translate-x-1/2 translate-y-1.5 rounded-xl border border-[color:var(--glass-border)] [background-color:var(--glass)] [background-image:var(--glass-sheen)] px-3 py-2 opacity-0 shadow-[var(--lift-sm)] [backdrop-filter:var(--glass-filter)] transition-[opacity,translate] duration-200 ease-[var(--ease-premium)] group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 dark:border-[color:oklch(1_0_0/0.2)] dark:[background-color:var(--lume-glass)] dark:[background-image:none]">
+        {/* Hover detay popup'ı — cam üstünde cam. Yön/hiza yerleşimde
+            DETERMİNİSTİK seçilir (çarpışma-farkında): üst banttaki kutu
+            panelden taşmasın diye ALTA açılır, kenar kutularında içe hizalanır
+            — açıklama artık kartın hep ÜSTÜNDE/ALTINDA belirir, yana kaymaz. */}
+        <span
+          className={cn(
+            "pointer-events-none invisible absolute z-40 w-[240px] rounded-xl border border-[color:var(--glass-border)] [background-color:var(--glass)] [background-image:var(--glass-sheen)] px-3 py-2 opacity-0 shadow-[var(--lift-sm)] [backdrop-filter:var(--glass-filter)] transition-[opacity,translate] duration-200 ease-[var(--ease-premium)] group-hover:visible group-hover:opacity-100 group-focus-visible:visible group-focus-visible:opacity-100 dark:border-[color:oklch(1_0_0/0.2)] dark:[background-color:var(--lume-glass)] dark:[background-image:none]",
+            popSide === "top"
+              ? "bottom-[calc(100%+8px)] translate-y-1.5 group-hover:translate-y-0"
+              : "top-[calc(100%+8px)] -translate-y-1.5 group-hover:translate-y-0",
+            popAlign === "center" && "left-1/2 -translate-x-1/2",
+            popAlign === "left" && "left-0",
+            popAlign === "right" && "right-0",
+          )}
+        >
           <span className="text-muted-foreground block text-[11px] leading-relaxed">
             {a.hint}
           </span>

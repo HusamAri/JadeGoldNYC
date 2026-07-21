@@ -111,7 +111,9 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
   test harness ekleyerek `tsc`+`node` ile birkaç senaryoda çalıştır. Vaka: SEO üreticide
   "silver silver ring" (metal ikilenmesi), zincirsiz+unisex'te 13'e ulaşmama ve yüzükte
   "real gold **chain**" — üçü de yalnız gerçek çıktı görülünce yakalandı, tsc/lint bunları
-  görmez.
+  görmez. Güçlendirme (2026-07): görev-yayma motorunda canlı test, ileri-gün
+  taşmasının BUGÜNE çekildiğini gösterdi (kullanıcının verdiği ileri tarih öne
+  alınmaz — yalnız ileri itilir); kural assert'te değil ÇIKTIDA görünür oldu.
 - **İsim yanıltır, kaynağı oku (2026-07):** Yeni "keyword/SEO" modülü kurmadan önce
   mevcut `keyword-research.ts`'i açtım — adı "keyword" ama işi RAKİP FİYAT araştırması.
   Çakışma sandığım şey tamamlayıcı çıktı. Kural: sembol adına göre "var/yok" deme, dosyayı aç.
