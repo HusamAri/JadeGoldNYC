@@ -562,7 +562,15 @@ function TaskRow({
           ["--task-glow" as string]: `color-mix(in oklch, ${ink} 26%, transparent)`,
         }}
       >
-        <div className="flex items-center gap-2">
+        {/* Pinler kartın sağ-üst köşesine iliştirilir (absolute, scrapbook);
+            pin varsa başlık satırına sağ dolgu ayrılır ki %ilerleme rozeti ve
+            başlık sonu pin kümesinin ALTINDA kaybolmasın (veri değeri örtülmez). */}
+        <div
+          className={
+            "flex items-center gap-2" +
+            ((pinCtx?.taskPins?.[t.id]?.length ?? 0) > 0 ? " pr-12" : "")
+          }
+        >
           {/* İkon — skala mürekkebiyle boyanır (CSS mask) */}
           {t.icon ? (
             <span

@@ -69,8 +69,15 @@ export function Topbar({
   // Geri butonu yalnız alt/detay sayfalarında (bölüm ana sayfası veya Panel değil).
   const isSubPage = pathname !== "/panel" && (!current || pathname !== current.href);
   // Bir üst seviyeye git (segment kırp) — tarayıcı geçmişine güvenmez, uygulama
-  // dışına çıkmaz. Ör. /satislar/123/duzenle → /satislar/123 → /satislar.
-  const parentHref = pathname.split("/").slice(0, -1).join("/") || "/panel";
+  // dışına çıkmaz. Düzenleme sayfalarında ('.../[id]/duzenle') üst '[id]' detay
+  // sayfası çoğu modülde YOK (maliyetler, analizler[/urunler], sepet-kurtarma,
+  // tasarimlar, yorumlar) → tek segment kırpmak 404 üretir. Bu yüzden 'duzenle'
+  // sayfasında iki segment kırpıp modül listesine dön (her modülde liste var);
+  // diğer alt sayfalarda tek segment. Ör. /maliyetler/123/duzenle → /maliyetler.
+  const segments = pathname.split("/").filter(Boolean);
+  const upTo = segments[segments.length - 1] === "duzenle" ? -2 : -1;
+  const up = segments.slice(0, upTo);
+  const parentHref = up.length ? `/${up.join("/")}` : "/panel";
 
   return (
     /* Spatial navglass pill — yüzen 999px cam şerit (ref: .navglass):

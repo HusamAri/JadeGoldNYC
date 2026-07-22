@@ -14,11 +14,14 @@ const DEFAULTS: GoldSettings = {
 export async function getGoldSettings(): Promise<GoldSettings> {
   const m = await requireMembership();
   const supabase = await createClient();
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("organizations")
     .select("gold_settings")
     .eq("id", m.org_id)
     .maybeSingle();
+  // Hata sessizce "varsayılan fiyat"a dönüşmesin — maliyet/marj hesabını
+  // besler; en azından yüzeye çıkar (kardeş gold-cost.ts deseni).
+  if (error) console.error("[ayarlar] gold_settings sorgusu:", error.message);
 
   const raw = (data as { gold_settings?: Partial<GoldSettings> } | null)
     ?.gold_settings;
