@@ -8,6 +8,7 @@ import {
   Receipt,
   Percent,
   Users,
+  Wallet,
 } from "@/components/icons/lux-art";
 
 import { requireMembership } from "@/lib/auth";
@@ -99,6 +100,8 @@ export default async function SatislarPage({
   const netCents = t.gross_cents - t.fees_cents;
   const avgCents = t.orders > 0 ? Math.round(t.gross_cents / t.orders) : 0;
   const feePct = t.gross_cents > 0 ? t.fees_cents / t.gross_cents : 0;
+  const discountPct =
+    t.gross_cents > 0 ? (t.discount_cents / t.gross_cents) * 100 : 0;
 
   // ── MoM / YoY karşılaştırmaları (bu ay vs geçen ay · vs geçen yıl aynı ay) ──
   const byYm = new Map(monthly24.map((x) => [x.ym, x]));
@@ -235,6 +238,16 @@ export default async function SatislarPage({
             currency={cur}
             icon={Percent}
             hint={`Cironun %${(feePct * 100).toFixed(1)}'i`}
+          />
+          {/* İndirim — kupon/sipariş indirimleri (Etsy discount_amt senkrondan;
+              manuel/CSV girişlerinde de). Ciro zaten indirimli tutardır; bu
+              kart verilen indirim toplamını ayrıca görünür kılar. */}
+          <KpiCard
+            label="İndirim"
+            cents={t.discount_cents}
+            currency={cur}
+            icon={Wallet}
+            hint={`Cironun %${discountPct.toFixed(1)}'i · kupon/sipariş indirimi`}
           />
           <KpiCard
             label="Alıcı"
