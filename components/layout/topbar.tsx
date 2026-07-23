@@ -145,8 +145,11 @@ export function Topbar({
             işaret kaldırıldı; marka kimliği tek ve büyük burada yaşar). */}
         {emblem}
         {/* Bildirim zili — sol üst (kullanıcı kararı): uyarı sinyalleri
-            dropdown listede; ilk bildirim sağdan kayan cam kartla duyurulur. */}
-        <NotificationBell />
+            dropdown listede; ilk bildirim sağdan kayan cam kartla duyurulur.
+            key + orgId: şirket değiştirilince zil YENİDEN MONTE olur ve aktif
+            org için tazeler — yoksa istemci zil mount'taki eski şirketin
+            uyarılarını tutup farklı şirketlerin alertlerini karıştırıyordu. */}
+        <NotificationBell key={activeOrgId} orgId={activeOrgId} />
         {/* Editorial vurgu çizgisi (.idx-bar dili) — başlığın önünde kısa
             primary hairline; yalnız masaüstünde. */}
         <span aria-hidden className="hidden h-px w-6 shrink-0 bg-primary/70 md:block" />
