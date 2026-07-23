@@ -170,6 +170,10 @@ export interface Product {
   image_url: string | null;
   views: number | null;
   num_favorers: number | null;
+  /** Manuel girilen aktif indirim yüzdesi (0..90; 0 = indirim yok). Etsy API
+   *  aktif Sale/kupon vermediğinden satıcı kendi girer; indirimli fiyat panelde
+   *  türetilir (lib/discount.ts), Etsy'ye yazılmaz. Migration 0115. */
+  discount_pct: number;
   /** Panel arşiv damgası — dolu = listelerden gizli (Arşiv filtresi hariç). */
   archived_at: string | null;
   created_at: string;

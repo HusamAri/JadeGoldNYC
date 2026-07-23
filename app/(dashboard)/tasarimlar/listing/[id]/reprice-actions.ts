@@ -214,3 +214,42 @@ export async function saveRepriceRule(
   revalidatePath(`/tasarimlar/listing/${productId}`);
   return { ok: true };
 }
+
+/**
+ * Listing indirim yüzdesini (0..90 tam sayı) kaydeder — MANUEL giriş.
+ * Etsy Open API v3 aktif Sale/promosyon ya da kupon kodunu okutmuyor (0115),
+ * bu yüzden satıcı Etsy'de yürüttüğü indirimi buraya girer; indirimli fiyat
+ * panelde türetilir (lib/discount.ts) ve Etsy'ye YAZILMAZ (taban fiyat
+ * değişmez). Üyelik yeterli — künye düzenlemesi gibi (owner/admin şart değil).
+ */
+export async function setListingDiscount(
+  productId: string,
+  pct: number,
+): Promise<{ ok?: boolean; error?: string }> {
+  const m = await requireMembership();
+  const n = Math.round(Number(pct));
+  if (!Number.isFinite(n) || n < 0 || n > 90) {
+    return { error: "İndirim %0–90 arası olmalı." };
+  }
+
+  const admin = createAdminClient();
+  // Ürün bu org'a mı ait? (yabancı product_id'ye yazılmasın — multi-tenant kilidi)
+  const { data: product, error: prodErr } = await admin
+    .from("products")
+    .select("id")
+    .eq("id", productId)
+    .eq("org_id", m.org_id)
+    .maybeSingle();
+  if (prodErr) return { error: prodErr.message };
+  if (!product) return { error: "Ürün bulunamadı." };
+
+  const { error } = await admin
+    .from("products")
+    .update({ discount_pct: n })
+    .eq("id", productId)
+    .eq("org_id", m.org_id);
+  if (error) return { error: error.message };
+
+  revalidatePath(`/tasarimlar/listing/${productId}`);
+  return { ok: true };
+}

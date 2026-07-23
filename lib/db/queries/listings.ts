@@ -121,6 +121,8 @@ export interface ListingDetail {
     research_keyword: string | null;
     sku: string | null;
     weight_grams: number | null;
+    /** Manuel indirim yüzdesi (0..90; migration 0115). */
+    discount_pct: number;
   };
   variants: ListingVariantRow[];
   ads: ListingAds;
@@ -438,7 +440,7 @@ export async function getListingDetail(
   const { data: pData, error: pError } = await supabase
     .from("products")
     .select(
-      "id, etsy_listing_id, title, status, description, tags, materials, price_cents, currency, quantity, url, image_url, num_images, research_keyword, sku, weight_grams",
+      "id, etsy_listing_id, title, status, description, tags, materials, price_cents, currency, quantity, url, image_url, num_images, research_keyword, sku, weight_grams, discount_pct",
     )
     .eq("id", id)
     .maybeSingle();
@@ -448,6 +450,7 @@ export async function getListingDetail(
   const product: ListingDetail["product"] = {
     ...raw,
     weight_grams: raw.weight_grams == null ? null : Number(raw.weight_grams),
+    discount_pct: Number(raw.discount_pct ?? 0),
   };
 
   const [variantRows, metricRows, saleItemRows] = await Promise.all([
