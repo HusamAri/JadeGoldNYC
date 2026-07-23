@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Vendored agent skills (üçüncü parti içerik — uygulama kodu değil):
+    ".agents/**",
+    ".claude/skills/**",
   ]),
 ]);
 
