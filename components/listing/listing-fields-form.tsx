@@ -75,6 +75,7 @@ export function ListingFieldsForm({
   purchasePrice14kCents,
   purchasePrice10kCents,
   currency = "USD",
+  variantPriceRange = null,
 }: {
   productId: string;
   initial: ListingFieldsInitial;
@@ -87,7 +88,12 @@ export function ListingFieldsForm({
   purchasePrice14kCents?: number;
   purchasePrice10kCents?: number;
   currency?: string;
+  /** Varyant fiyat aralığı (min–max cent). Varyantlı listingde künye fiyatı
+   *  bunun SALT-OKUNUR aynasıdır; gerçek fiyat varyant satırlarında düzenlenir. */
+  variantPriceRange?: { minCents: number; maxCents: number } | null;
 }) {
+  // Varyantlı listingde künye fiyatı düzenlenmez → aynası varyantlardan gelir.
+  const mirrorPrice = hasVariations && variantPriceRange != null;
   const router = useRouter();
   const [saving, setSaving] = useState(false);
   const [fields, setFields] = useState<ListingFieldsInput>(() => ({
@@ -244,49 +250,67 @@ export function ListingFieldsForm({
           <div className="flex items-center gap-2">
             <Label htmlFor={LISTING_FIELD_IDS.price}>
               Satış fiyatı ($)
-              {hasVariations ? (
+              {mirrorPrice ? (
                 <span className="text-muted-foreground font-normal">
                   {" "}
-                  · varyantlarda
+                  · varyantlardan
                 </span>
               ) : null}
             </Label>
-            {missing.price && <MissingChip />}
+            {missing.price && !mirrorPrice && <MissingChip />}
           </div>
-          <Input
-            id={LISTING_FIELD_IDS.price}
-            inputMode="decimal"
-            value={fields.price}
-            onChange={(e) => set("price", e.target.value)}
-            placeholder="129,00"
-            className={cn("tabular-nums", missing.price && MISSING_RING)}
-          />
-          {priceCost.costCents != null ? (
-            <p className="text-muted-foreground text-xs tabular-nums">
-              Alım maliyeti: {formatMoney(priceCost.costCents, currency)}
-              {priceCost.karat ? ` · ${priceCost.karat}` : ""}
-              {weightGrams != null ? ` · ${weightGrams} g` : ""}
-              {saleCents > 0 && (
-                <>
-                  {" · "}
-                  <span
-                    className={
-                      saleCents >= priceCost.costCents
-                        ? "text-emerald-700 dark:text-emerald-400"
-                        : "text-rose-700 dark:text-rose-400"
-                    }
-                  >
-                    {saleCents >= priceCost.costCents ? "+" : ""}
-                    {formatMoney(saleCents - priceCost.costCents, currency)}
-                  </span>
-                </>
-              )}
-            </p>
+          {mirrorPrice ? (
+            // Salt-okunur ayna: aralık varyant satırlarından gelir; künyeden
+            // düzenlenmez (yoksa aşağıdaki gerçek varyant fiyatlarıyla ayrışır).
+            <>
+              <div className="border-input bg-muted/40 text-muted-foreground flex h-9 items-center rounded-md border px-3 text-sm tabular-nums">
+                {variantPriceRange!.minCents === variantPriceRange!.maxCents
+                  ? formatMoney(variantPriceRange!.minCents, currency)
+                  : `${formatMoney(variantPriceRange!.minCents, currency)} – ${formatMoney(variantPriceRange!.maxCents, currency)}`}
+              </div>
+              <p className="text-muted-foreground text-xs">
+                Fiyatlar aşağıda varyant satırlarında düzenlenir; künye onun
+                aynasıdır. Maliyet/marj varyant matrisinde.
+              </p>
+            </>
           ) : (
-            <p className="text-muted-foreground text-xs">
-              Maliyet için ayar (10K/14K) ve gram gerekir
-              {weightGrams == null ? " — varyant/ürün gramı eksik" : ""}.
-            </p>
+            <>
+              <Input
+                id={LISTING_FIELD_IDS.price}
+                inputMode="decimal"
+                value={fields.price}
+                onChange={(e) => set("price", e.target.value)}
+                placeholder="129,00"
+                className={cn("tabular-nums", missing.price && MISSING_RING)}
+              />
+              {priceCost.costCents != null ? (
+                <p className="text-muted-foreground text-xs tabular-nums">
+                  Alım maliyeti: {formatMoney(priceCost.costCents, currency)}
+                  {priceCost.karat ? ` · ${priceCost.karat}` : ""}
+                  {weightGrams != null ? ` · ${weightGrams} g` : ""}
+                  {saleCents > 0 && (
+                    <>
+                      {" · "}
+                      <span
+                        className={
+                          saleCents >= priceCost.costCents
+                            ? "text-emerald-700 dark:text-emerald-400"
+                            : "text-rose-700 dark:text-rose-400"
+                        }
+                      >
+                        {saleCents >= priceCost.costCents ? "+" : ""}
+                        {formatMoney(saleCents - priceCost.costCents, currency)}
+                      </span>
+                    </>
+                  )}
+                </p>
+              ) : (
+                <p className="text-muted-foreground text-xs">
+                  Maliyet için ayar (10K/14K) ve gram gerekir
+                  {weightGrams == null ? " — varyant/ürün gramı eksik" : ""}.
+                </p>
+              )}
+            </>
           )}
         </div>
         <div className="space-y-1.5">

@@ -270,6 +270,14 @@ export default async function ListingDetayPage({
               purchasePrice14kCents={goldSettings.purchase_price_14k_cents}
               purchasePrice10kCents={goldSettings.purchase_price_10k_cents}
               currency={product.currency}
+              variantPriceRange={(() => {
+                const ps = variants
+                  .map((v) => v.price_cents)
+                  .filter((c): c is number => c != null);
+                return ps.length
+                  ? { minCents: Math.min(...ps), maxCents: Math.max(...ps) }
+                  : null;
+              })()}
             />
           </ListingPanel>
         </div>
