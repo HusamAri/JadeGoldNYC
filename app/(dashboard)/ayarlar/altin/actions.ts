@@ -2,8 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 
-import { requireMembership } from "@/lib/auth";
-import { createClient } from "@/lib/supabase/server";
+import { requireMembership, isManager, MANAGER_ONLY_ERROR } from "@/lib/auth";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 export interface GoldSettingsResult {
   ok?: boolean;
@@ -14,7 +14,13 @@ export async function saveGoldSettings(
   formData: FormData,
 ): Promise<GoldSettingsResult> {
   const m = await requireMembership();
-  const supabase = await createClient();
+  // Org geneli alım fiyatları TÜM maliyet/marj/breakeven/reprice hesabını
+  // besler → yalnız owner/admin. Ayrıca organizations tablosunda UPDATE RLS
+  // policy'si YOK (0012/0071: yalnız SELECT); user-scoped client 0 satır
+  // günceller ve sessizce {ok:true} döndürürdü — admin client ile yaz (org
+  // kilidi .eq("id", org_id) korunur).
+  if (!isManager(m.role)) return { error: MANAGER_ONLY_ERROR };
+  const supabase = createAdminClient();
 
   const price14k = parseFloat(formData.get("price_14k") as string);
   const price10k = parseFloat(formData.get("price_10k") as string);
