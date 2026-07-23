@@ -31,6 +31,8 @@ import { getListingViewsTrends } from "@/lib/db/queries/etsy-insights";
 import { ListingGapsCard } from "@/components/listing/listing-gaps-card";
 import { ListingFieldsForm } from "@/components/listing/listing-fields-form";
 import { EtsyCopyCard, type EtsyCopyField } from "@/components/listing/etsy-copy-card";
+import { SeoHelperConsole } from "@/components/seo/seo-helper-console";
+import { inferSeoInput } from "@/lib/seo/keyword-engine";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ListingPanel } from "@/components/listing/listing-panel";
@@ -417,6 +419,25 @@ export default async function ListingDetayPage({
           <ViewsTrendCard trend={viewsTrend} />
         </ListingPanel>
       )}
+
+      {/* 08 · SEO Yardımcısı — künyeden çıkarımla önceden dolu üretici konsol.
+          Çıktılar kopyalanır; yazma sahipleri değişmez (künye formu = elle
+          kaydet, /seo-etiketleri = onaylı canlı Etsy tag push). */}
+      <ListingPanel
+        id="seo-yardimcisi"
+        n="08"
+        name="SEO Yardımcısı"
+        defaultOpen={false}
+        tail="başlık + 13 etiket üretici · künyeden çıkarım"
+      >
+        <SeoHelperConsole
+          initial={inferSeoInput(
+            decodeEntities(product.title),
+            product.tags,
+            product.materials,
+          )}
+        />
+      </ListingPanel>
     </div>
   );
 }

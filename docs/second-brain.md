@@ -114,6 +114,10 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
   görmez. Güçlendirme (2026-07): görev-yayma motorunda canlı test, ileri-gün
   taşmasının BUGÜNE çekildiğini gösterdi (kullanıcının verdiği ileri tarih öne
   alınmaz — yalnız ileri itilir); kural assert'te değil ÇIKTIDA görünür oldu.
+  Güçlendirme-2 (2026-07): girdi uzayı küçükse nokta senaryosu yerine TAM
+  KOMBİNATORİK süpürme koş (SEO motoru: 2520 kombinasyon × 5 invariant) —
+  "13'e ulaşmama" bug'ı yalnız dar bir kombinasyonda (zincirsiz+kaplama+classic)
+  çıkıyordu; el senaryoları o hücreye denk gelmemişti, süpürme geldi.
 - **İsim yanıltır, kaynağı oku (2026-07):** Yeni "keyword/SEO" modülü kurmadan önce
   mevcut `keyword-research.ts`'i açtım — adı "keyword" ama işi RAKİP FİYAT araştırması.
   Çakışma sandığım şey tamamlayıcı çıktı. Kural: sembol adına göre "var/yok" deme, dosyayı aç.
