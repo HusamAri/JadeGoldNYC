@@ -24,7 +24,7 @@ export default async function SosyalPage() {
   ]);
 
   return (
-    <div className="space-y-6">
+    <div className="page-stack">
       <PageHeader
         title="Sosyal Medya"
         eyebrow="İçerik takvimi"

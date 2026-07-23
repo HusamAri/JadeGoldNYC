@@ -69,8 +69,15 @@ export function Topbar({
   // Geri butonu yalnız alt/detay sayfalarında (bölüm ana sayfası veya Panel değil).
   const isSubPage = pathname !== "/panel" && (!current || pathname !== current.href);
   // Bir üst seviyeye git (segment kırp) — tarayıcı geçmişine güvenmez, uygulama
-  // dışına çıkmaz. Ör. /satislar/123/duzenle → /satislar/123 → /satislar.
-  const parentHref = pathname.split("/").slice(0, -1).join("/") || "/panel";
+  // dışına çıkmaz. Düzenleme sayfalarında ('.../[id]/duzenle') üst '[id]' detay
+  // sayfası çoğu modülde YOK (maliyetler, analizler[/urunler], sepet-kurtarma,
+  // tasarimlar, yorumlar) → tek segment kırpmak 404 üretir. Bu yüzden 'duzenle'
+  // sayfasında iki segment kırpıp modül listesine dön (her modülde liste var);
+  // diğer alt sayfalarda tek segment. Ör. /maliyetler/123/duzenle → /maliyetler.
+  const segments = pathname.split("/").filter(Boolean);
+  const upTo = segments[segments.length - 1] === "duzenle" ? -2 : -1;
+  const up = segments.slice(0, upTo);
+  const parentHref = up.length ? `/${up.join("/")}` : "/panel";
 
   return (
     /* Spatial navglass pill — yüzen 999px cam şerit (ref: .navglass):
@@ -138,8 +145,11 @@ export function Topbar({
             işaret kaldırıldı; marka kimliği tek ve büyük burada yaşar). */}
         {emblem}
         {/* Bildirim zili — sol üst (kullanıcı kararı): uyarı sinyalleri
-            dropdown listede; ilk bildirim sağdan kayan cam kartla duyurulur. */}
-        <NotificationBell />
+            dropdown listede; ilk bildirim sağdan kayan cam kartla duyurulur.
+            key + orgId: şirket değiştirilince zil YENİDEN MONTE olur ve aktif
+            org için tazeler — yoksa istemci zil mount'taki eski şirketin
+            uyarılarını tutup farklı şirketlerin alertlerini karıştırıyordu. */}
+        <NotificationBell key={activeOrgId} orgId={activeOrgId} />
         {/* Editorial vurgu çizgisi (.idx-bar dili) — başlığın önünde kısa
             primary hairline; yalnız masaüstünde. */}
         <span aria-hidden className="hidden h-px w-6 shrink-0 bg-primary/70 md:block" />

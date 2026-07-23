@@ -12,7 +12,7 @@ export const metadata = { title: "Listing SEO Yardımcısı" };
 export default async function SeoYardimcisiPage() {
   await requireMembership();
   return (
-    <div className="space-y-6">
+    <div className="page-stack">
       <PageHeader
         eyebrow="Listing SEO Yardımcısı"
         title="Listing SEO Yardımcısı"

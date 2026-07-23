@@ -46,13 +46,18 @@ const DOT: Record<Severity, string> = {
 
 const INTRO_SEEN_KEY = "amuletta-notif-intro-v1";
 
-export function NotificationBell() {
+export function NotificationBell({ orgId }: { orgId: string }) {
   const [items, setItems] = useState<NotifItem[]>([]);
   const [currency, setCurrency] = useState("USD");
   const [intro, setIntro] = useState<NotifItem | null>(null);
   const [introShown, setIntroShown] = useState(false); // slide-in tetiği
   const dismissTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // orgId bağımlılığı: aktif şirket değişince yeni org için yeniden çekilir.
+  // Parent ayrıca key={orgId} ile bu bileşeni REMOUNT eder → state (items/intro)
+  // sıfırdan başlar; iki-org'lu kullanıcıda eski şirketin uyarılarının yeni
+  // şirkete karışmasını önler (remount zaten temiz [] verdiğinden ayrıca
+  // setItems([]) gerekmez — efekt içi senkron setState cascading render yaratır).
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -87,7 +92,7 @@ export function NotificationBell() {
       cancelled = true;
       if (dismissTimer.current) clearTimeout(dismissTimer.current);
     };
-  }, []);
+  }, [orgId]);
 
   const kritik = items.filter((i) => i.severity === "kritik").length;
 

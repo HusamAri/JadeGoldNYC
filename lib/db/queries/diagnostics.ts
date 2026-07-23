@@ -506,13 +506,18 @@ export async function getSalesDiagnostics(
 
   let pendingSeoTags = 0;
   try {
-    const { count } = await supabase
+    const { count, error } = await supabase
       .from("seo_tag_optimizations")
       .select("id", { count: "exact", head: true })
       .eq("org_id", orgId)
       .not("status", "in", "(pushed,rejected)");
+    // Sorgu hatası sessizce 0'a düşmesin — "bekleyen yok" ile "sorgu patladı"
+    // ayırt edilebilsin.
+    if (error)
+      console.error("[tanı] seo_tag_optimizations sayımı:", error.message);
     pendingSeoTags = count ?? 0;
-  } catch {
+  } catch (e) {
+    console.error("[tanı] seo_tag_optimizations sayımı (istisna):", e);
     pendingSeoTags = 0;
   }
 

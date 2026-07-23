@@ -53,7 +53,8 @@ export async function listVariantStock(
     if (s) query = query.or(`sku.ilike.%${s}%,name.ilike.%${s}%`);
   }
 
-  const { data } = await query;
+  const { data, error } = await query;
+  if (error) console.error("[stok] variant-stock sorgusu:", error.message);
   const rows = (data ?? []) as unknown as Row[];
 
   const groups: VariantStockGroup[] = [];

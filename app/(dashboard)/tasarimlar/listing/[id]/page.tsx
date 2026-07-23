@@ -23,6 +23,7 @@ import { ImageStrip } from "@/components/listing/image-strip";
 import { VariantEditor } from "@/components/listing/variant-editor";
 import { MarketPositionCard } from "@/components/listing/market-position-card";
 import { VariantMatrix } from "@/components/listing/variant-matrix";
+import { DiscountControl } from "@/components/listing/discount-control";
 import { RepriceRuleCard } from "@/components/listing/reprice-rule-card";
 import { AdsSummaryCard } from "@/components/listing/ads-summary-card";
 import { ViewsTrendCard } from "@/components/listing/views-trend-card";
@@ -163,7 +164,8 @@ export default async function ListingDetayPage({
   ].filter(Boolean);
 
   return (
-    <div className="space-y-6">
+    // page-stack: panel geneliyle aynı cömert dikey ritim (space-y-6 dardı).
+    <div className="page-stack">
       <PageHeader
         title={decodeEntities(product.title)}
         eyebrow="Listing Komuta Merkezi"
@@ -255,6 +257,27 @@ export default async function ListingDetayPage({
         </div>
         <ListingGapsCard gaps={gaps} />
       </div>
+
+      {/* 02B · İndirim — manuel Etsy Sale/kupon yüzdesi (API vermiyor);
+          indirimli fiyat panelde türetilir, varyant matrisinde gösterilir. */}
+      <ListingPanel
+        id="indirim"
+        n="02B"
+        name="İndirim"
+        defaultOpen={product.discount_pct > 0}
+        tail={
+          product.discount_pct > 0
+            ? `%${product.discount_pct} aktif`
+            : "indirim yok"
+        }
+      >
+        <DiscountControl
+          productId={product.id}
+          initialPct={product.discount_pct}
+          basePriceCents={product.price_cents}
+          currency={product.currency}
+        />
+      </ListingPanel>
 
       <ListingPanel id="kopyala" n="03" name="Etsy'ye kopyala" defaultOpen={false}>
         {(() => {
@@ -348,7 +371,10 @@ export default async function ListingDetayPage({
               </span>
             }
           >
-            <VariantMatrix productId={product.id} />
+            <VariantMatrix
+              productId={product.id}
+              discountPct={product.discount_pct}
+            />
             <RepriceRuleCard
               productId={product.id}
               currency={product.currency}

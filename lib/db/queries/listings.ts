@@ -33,6 +33,8 @@ export interface ListingIndexRow {
   currency: string;
   quantity: number | null;
   num_images: number | null;
+  /** Manuel indirim yüzdesi (0..90; 0 = indirim yok). Migration 0115. */
+  discount_pct: number;
   variant_count: number;
   missing_weight_count: number; // weight_grams null olan varyant sayısı
   research_keyword: string | null;
@@ -121,6 +123,8 @@ export interface ListingDetail {
     research_keyword: string | null;
     sku: string | null;
     weight_grams: number | null;
+    /** Manuel indirim yüzdesi (0..90; migration 0115). */
+    discount_pct: number;
   };
   variants: ListingVariantRow[];
   ads: ListingAds;
@@ -203,6 +207,7 @@ interface ProductIndexDbRow {
   quantity: number | null;
   num_images: number | null;
   research_keyword: string | null;
+  discount_pct: number | null;
 }
 
 interface VariantAggDbRow {
@@ -307,7 +312,7 @@ export async function listListingsIndex(opts?: {
     let q = supabase
       .from("products")
       .select(
-        "id, etsy_listing_id, sku, title, status, image_url, price_cents, currency, quantity, num_images, research_keyword",
+        "id, etsy_listing_id, sku, title, status, image_url, price_cents, currency, quantity, num_images, research_keyword, discount_pct",
       );
     if (scope === "archived") {
       q = q.not("archived_at", "is", null);
@@ -416,6 +421,7 @@ export async function listListingsIndex(opts?: {
         currency: p.currency ?? "USD",
         quantity: p.quantity,
         num_images: p.num_images,
+        discount_pct: Number(p.discount_pct ?? 0),
         variant_count: va.total,
         missing_weight_count: va.missing,
         research_keyword: p.research_keyword,
@@ -438,7 +444,7 @@ export async function getListingDetail(
   const { data: pData, error: pError } = await supabase
     .from("products")
     .select(
-      "id, etsy_listing_id, title, status, description, tags, materials, price_cents, currency, quantity, url, image_url, num_images, research_keyword, sku, weight_grams",
+      "id, etsy_listing_id, title, status, description, tags, materials, price_cents, currency, quantity, url, image_url, num_images, research_keyword, sku, weight_grams, discount_pct",
     )
     .eq("id", id)
     .maybeSingle();
@@ -448,6 +454,7 @@ export async function getListingDetail(
   const product: ListingDetail["product"] = {
     ...raw,
     weight_grams: raw.weight_grams == null ? null : Number(raw.weight_grams),
+    discount_pct: Number(raw.discount_pct ?? 0),
   };
 
   const [variantRows, metricRows, saleItemRows] = await Promise.all([
