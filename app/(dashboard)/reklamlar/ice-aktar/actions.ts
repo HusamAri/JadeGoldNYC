@@ -6,6 +6,7 @@ import { requireMembership } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { ADS_PERIOD_LABEL } from "@/lib/db/queries/ads-actions";
 import type { MappedAdsRow } from "@/lib/csv/mappers/etsy-ads";
+import type { MappedAdsDailyRow } from "@/lib/csv/mappers/etsy-ads-daily";
 
 export interface CommitAdsImportResult {
   ok?: boolean;
@@ -72,4 +73,47 @@ export async function commitAdsImport(
     matched,
     unmatched: inserts.length - matched,
   };
+}
+
+export interface CommitAdsDailyImportResult {
+  ok?: boolean;
+  imported?: number;
+  error?: string;
+}
+
+/**
+ * Mağaza geneli GÜNLÜK reklam satırlarını `ad_daily_stats`'e yazar (Etsy
+ * Reklam panosunun "stats over time" dışa aktarımı). Idempotent: (org_id,
+ * stat_date) çakışmasında üzerine yazar — aynı ayı tekrar yüklemek satır
+ * çoğaltmaz. Reklamlar panosu bu seriyi "Etsy Reklam · günlük" bölümünde okur.
+ */
+export async function commitAdsDailyImport(
+  rows: MappedAdsDailyRow[],
+  currency = "USD",
+): Promise<CommitAdsDailyImportResult> {
+  const m = await requireMembership();
+  if (!rows.length) return { error: "İçe aktarılacak günlük satır yok." };
+
+  const supabase = await createClient();
+  const payload = rows.map((r) => ({
+    org_id: m.org_id,
+    stat_date: r.date,
+    views: r.views,
+    clicks: r.clicks,
+    orders: r.orders,
+    revenue_cents: r.revenueCents,
+    spend_cents: r.spendCents,
+    ending_budget_cents: r.endingBudgetCents,
+    currency,
+    source: "etsy_ads_csv",
+    created_by: m.user_id,
+  }));
+
+  const { error } = await supabase
+    .from("ad_daily_stats")
+    .upsert(payload, { onConflict: "org_id,stat_date" });
+  if (error) return { error: error.message };
+
+  revalidatePath("/reklamlar");
+  return { ok: true, imported: payload.length };
 }
