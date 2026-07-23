@@ -733,6 +733,24 @@ export function VariantEditor({
               rowsRef.current = nextRows;
               setSuggested(nextSuggested);
               setAnchorSku(rivalProjection.basisSku);
+              // Toplu fiyat kutusunu da eşitle: kutu min-gram varyantın satış
+              // fiyatıdır; en hafif varyantın yansıtılan fiyatını yaz ki
+              // "→ $/g × gram" ipucu rakip birim fiyatını göstersin (drift yok).
+              let lightest: { sku: string; grams: number } | null = null;
+              for (const v of variants) {
+                const g =
+                  toGram(nextRows[v.sku]?.weight ?? "") ?? v.weight_grams;
+                if (g == null || !(g > 0)) continue;
+                if (!lightest || g < lightest.grams)
+                  lightest = { sku: v.sku, grams: g };
+              }
+              const minProjected =
+                lightest != null
+                  ? rivalProjection.projectedCentsBySku[lightest.sku]
+                  : undefined;
+              if (minProjected != null) {
+                setBulkMinPrice((minProjected / 100).toFixed(2));
+              }
               toast.success(
                 `${n} varyant taslağa yazıldı (amber) — Önizle ve uygula ile onayla.`,
               );

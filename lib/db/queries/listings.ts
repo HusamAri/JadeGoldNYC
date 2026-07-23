@@ -218,6 +218,7 @@ interface VariantAggDbRow {
 
 interface Ads30DbRow {
   product_id: string | null;
+  created_at: string;
   ads_spend_cents: number | null;
   orders: number | null;
 }
@@ -355,7 +356,7 @@ export async function listListingsIndex(opts?: {
     fetchAllPages<Ads30DbRow>((from, to) =>
       supabase
         .from("product_metrics")
-        .select("product_id, ads_spend_cents, orders")
+        .select("product_id, created_at, ads_spend_cents, orders")
         .ilike("period_label", "%son 30%")
         .not("product_id", "is", null)
         .order("id", { ascending: true })
@@ -392,13 +393,22 @@ export async function listListingsIndex(opts?: {
     variantAgg.set(v.product_id, agg);
   }
 
-  const adsAgg = new Map<string, { spend: number; orders: number }>();
+  // Aynı "son 30" etiketine ürün başına BİRDEN ÇOK anlık görüntü birikir
+  // (ads CSV import upsert değil, her ay yeni satır ekler; 0016'da unique yok)
+  // → toplamak çift/üç sayar. Ürün başına EN GÜNCEL snapshot'ı seç (created_at
+  // desc), tıpkı getListingDetail / ads-actions / alerts'in yaptığı gibi.
+  const adsLatest = new Map<string, Ads30DbRow>();
   for (const m of adsRows) {
     if (!m.product_id || !ids.has(m.product_id)) continue;
-    const agg = adsAgg.get(m.product_id) ?? { spend: 0, orders: 0 };
-    agg.spend += m.ads_spend_cents ?? 0;
-    agg.orders += m.orders ?? 0;
-    adsAgg.set(m.product_id, agg);
+    const prev = adsLatest.get(m.product_id);
+    if (!prev || m.created_at > prev.created_at) adsLatest.set(m.product_id, m);
+  }
+  const adsAgg = new Map<string, { spend: number; orders: number }>();
+  for (const [pid, m] of adsLatest) {
+    adsAgg.set(pid, {
+      spend: m.ads_spend_cents ?? 0,
+      orders: m.orders ?? 0,
+    });
   }
 
   const researched = new Set(researchRows.map((r) => r.product_id));

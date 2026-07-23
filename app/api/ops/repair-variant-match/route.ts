@@ -65,10 +65,11 @@ function hasWeightBlock(description: string | null): boolean {
   );
 }
 
-/** Acil onarım — merge sonrası kaldırılacak tek kullanımlık token. */
-const ONE_SHOT =
-  process.env.REPAIR_ONE_SHOT_TOKEN ||
-  "jade-repair-0107-strip-weights-2026-07-20";
+/** Acil onarım — tek kullanımlık token YALNIZ ortam değişkeninden. Kod içine
+ *  sabit token gömülmez (repo public; gömülü sabit = herkese açık tetikleme).
+ *  REPAIR_ONE_SHOT_TOKEN tanımsızsa bu yol KAPALI (fail-closed) — yalnız
+ *  CRON_SECRET Bearer ile çalışır. */
+const ONE_SHOT = process.env.REPAIR_ONE_SHOT_TOKEN;
 
 export async function GET(request: Request) {
   const secret = process.env.CRON_SECRET;
@@ -76,7 +77,8 @@ export async function GET(request: Request) {
   const url = new URL(request.url);
   const oneShot = url.searchParams.get("token");
   const authorized =
-    (secret && auth === `Bearer ${secret}`) || oneShot === ONE_SHOT;
+    (secret && auth === `Bearer ${secret}`) ||
+    (ONE_SHOT != null && ONE_SHOT.length > 0 && oneShot === ONE_SHOT);
   if (!authorized) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }

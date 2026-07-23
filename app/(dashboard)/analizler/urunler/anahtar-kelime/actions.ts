@@ -2,6 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 
+import type { SupabaseClient } from "@supabase/supabase-js";
+
 import { requireMembership } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { EtsyClient } from "@/lib/etsy/client";
@@ -11,6 +13,11 @@ import {
   deactivateCompetitorWatch,
   parseListingIdFromUrl,
 } from "@/lib/etsy/competitor-watch";
+import {
+  fetchCompetitorOfferings,
+  proposeAutoMatches,
+} from "@/lib/etsy/keyword-research";
+import type { RawVariantProperties } from "@/lib/variant-properties";
 import type { MappedKeywordRow } from "@/lib/csv/mappers/etsy-keywords";
 
 export interface KeywordImportResult {
@@ -84,6 +91,126 @@ export async function commitKeywordImport(
 export interface CompetitorWatchActionResult {
   ok?: boolean;
   error?: string;
+  /** Ekleme/otomatik eşleştirmede kurulan yeni eşleşme sayısı (varsa). */
+  matched?: number;
+}
+
+/**
+ * "Aynı varyantı otomatik eşleştir" — verilen rakip listing'in canlı
+ * tekliflerini çeker, bizim varyantlarla beden/ayar token'ıyla TEK-KESİN
+ * eşleşenleri `competitor_variant_match`'e yazar. Zaten (bu listing için)
+ * eşlenen SKU'lar atlanır → manuel eşleşme ezilmez, çift yazılmaz. Belirsiz
+ * eşleşmeler manuel EŞLEŞTİR'e bırakılır. SKU kaynağı product_variants
+ * olduğundan ayrıca doğrulama gerekmez. Yeni eşleşme sayısını döndürür.
+ */
+async function autoMatchWithClient(
+  admin: SupabaseClient,
+  client: EtsyClient,
+  orgId: string,
+  userId: string,
+  productId: string,
+  competitorListingId: number,
+  currency: string,
+): Promise<number> {
+  const { data: variants, error: vErr } = await admin
+    .from("product_variants")
+    .select("sku, properties")
+    .eq("org_id", orgId)
+    .eq("product_id", productId);
+  if (vErr) {
+    console.error("[rakip-oto-eşleştir] varyant sorgusu:", vErr.message);
+    return 0;
+  }
+  const ours = ((variants ?? []) as {
+    sku: string | null;
+    properties: RawVariantProperties;
+  }[])
+    .filter((v) => !!v.sku?.trim())
+    .map((v) => ({ sku: v.sku as string, properties: v.properties }));
+  if (ours.length === 0) return 0;
+
+  const offerings = await fetchCompetitorOfferings(
+    client,
+    competitorListingId,
+    currency,
+  );
+  if (offerings.length === 0) return 0;
+
+  const proposals = proposeAutoMatches(ours, offerings);
+  if (proposals.length === 0) return 0;
+
+  // Bu rakip listing için zaten eşlenen SKU'ları atla (manuel ezilmesin).
+  const { data: existing } = await admin
+    .from("competitor_variant_match")
+    .select("our_sku")
+    .eq("org_id", orgId)
+    .eq("product_id", productId)
+    .eq("competitor_listing_id", competitorListingId);
+  const already = new Set(
+    ((existing ?? []) as { our_sku: string }[]).map((r) => r.our_sku),
+  );
+  const fresh = proposals.filter((p) => !already.has(p.our_sku));
+  if (fresh.length === 0) return 0;
+
+  const nowIso = new Date().toISOString();
+  const rows = fresh.map((p) => ({
+    org_id: orgId,
+    product_id: productId,
+    our_sku: p.our_sku,
+    competitor_listing_id: competitorListingId,
+    competitor_product_id: p.competitor_product_id,
+    competitor_label: p.competitor_label,
+    competitor_size: p.competitor_size,
+    competitor_karat: p.competitor_karat,
+    price_cents: p.price_cents,
+    currency,
+    created_by: userId,
+    updated_at: nowIso,
+  }));
+  const { error } = await admin
+    .from("competitor_variant_match")
+    .upsert(rows, {
+      onConflict: "org_id,product_id,our_sku,competitor_listing_id",
+    });
+  if (error) {
+    console.error("[rakip-oto-eşleştir] upsert:", error.message);
+    return 0;
+  }
+  return rows.length;
+}
+
+/** Var olan bir rakip için aynı varyantları elle tetiklenen otomatik eşleştirme. */
+export async function autoMatchCompetitor(
+  productId: string,
+  competitorListingId: number,
+  currency = "USD",
+): Promise<CompetitorWatchActionResult> {
+  const m = await requireMembership();
+  if (!competitorListingId)
+    return { error: "Rakip listing kimliği gerekli." };
+  const admin = createAdminClient();
+  let client: EtsyClient;
+  try {
+    client = await EtsyClient.forOrg(m.org_id);
+  } catch (e) {
+    return {
+      error:
+        e instanceof Error
+          ? e.message
+          : "Otomatik eşleştirme için Etsy bağlantısı gerekli.",
+    };
+  }
+  const matched = await autoMatchWithClient(
+    admin,
+    client,
+    m.org_id,
+    m.user_id,
+    productId,
+    competitorListingId,
+    currency,
+  );
+  revalidateWatchSurfaces(productId);
+  return { ok: true, matched };
 }
 
 function revalidateWatchSurfaces(productId: string) {
@@ -147,6 +274,10 @@ export async function addCompetitorToSet(
   });
   if ("error" in r) return { error: r.error };
 
+  // Ekler eklemez: (1) tek seferlik fiyat çekimi, (2) aynı varyantları otomatik
+  // eşleştir (tek Etsy istemcisiyle). Etsy bağlı değilse ikisi de sessizce
+  // atlanır; kart yine eklenir, günlük cron fiyatı sonra doldurur.
+  let matched = 0;
   try {
     const client = await EtsyClient.forOrg(m.org_id);
     await captureWatchPrice(admin, client, {
@@ -154,13 +285,22 @@ export async function addCompetitorToSet(
       org_id: m.org_id,
       competitor_listing_id: listingId,
     });
+    matched = await autoMatchWithClient(
+      admin,
+      client,
+      m.org_id,
+      m.user_id,
+      productId,
+      listingId,
+      "USD",
+    );
   } catch {
-    // İlk fiyat çekilemedi (Etsy bağlı değil / geçici hata) — izleme durur,
-    // günlük cron fiyatı doldurur.
+    // İlk fiyat/eşleştirme yapılamadı (Etsy bağlı değil / geçici hata) —
+    // izleme durur; manuel EŞLEŞTİR ve günlük cron fiyatı telafi eder.
   }
 
   revalidateWatchSurfaces(productId);
-  return { ok: true };
+  return { ok: true, matched };
 }
 
 /** İzlemeyi rakip setinden çıkarır (pasifler — fiyat tarihi korunur). */

@@ -42,7 +42,7 @@ export function MarketPriceAlertsCard({
             {alerts.map((a) => (
               <li key={a.product_id}>
                 <Link
-                  href={`/analizler/urunler/${a.product_id}/duzenle`}
+                  href={`/tasarimlar/listing/${a.product_id}`}
                   className="group hover:bg-secondary/40 -mx-2 flex items-center gap-3 rounded-lg px-2 py-3 transition-colors"
                 >
                   <span

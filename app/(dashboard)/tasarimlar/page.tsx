@@ -20,6 +20,14 @@ import {
 
 import { requireMembership } from "@/lib/auth";
 import { listListingsIndex } from "@/lib/db/queries/listings";
+import {
+  deriveKarat,
+  deriveColor,
+  deriveGroup,
+  KARAT_OPTIONS,
+  COLOR_OPTIONS,
+  GROUP_OPTIONS,
+} from "@/lib/listing-facets";
 import { strParam, type RawSearchParams } from "@/lib/searchparams";
 import { formatMoney } from "@/lib/money";
 import { formatNumber } from "@/lib/format";
@@ -79,9 +87,22 @@ export default async function ListelerPage({
   const sp = await searchParams;
   const search = strParam(sp.search);
   const status = strParam(sp.status);
+  const karat = strParam(sp.karat);
+  const renk = strParam(sp.renk);
+  const grup = strParam(sp.grup);
 
   await requireMembership();
-  const rows = await listListingsIndex({ search, status });
+  const fetched = await listListingsIndex({ search, status });
+
+  // Facet filtreleri (ayar/renk/grup) başlık+SKU'dan türetilir — Etsy shop
+  // section senkronda yok; tüm satırlar zaten tek sayfada geldiğinden filtre
+  // burada uygulanır (lib/listing-facets.ts, gerçek katalogla test edildi).
+  const rows = fetched.filter((r) => {
+    if (karat && deriveKarat(r.title, r.sku) !== karat) return false;
+    if (renk && deriveColor(r.title, r.sku) !== renk) return false;
+    if (grup && deriveGroup(r.title) !== grup) return false;
+    return true;
+  });
 
   const total = rows.length;
   // Etsy `state` sync'te olduğu gibi gelir (küçük harf); KPI büyük/küçük duyarsız.
@@ -92,7 +113,7 @@ export default async function ListelerPage({
   const noKeyword = rows.filter(
     (r) => !(r.research_keyword ?? "").trim(),
   ).length;
-  const filtered = Boolean(search || status);
+  const filtered = Boolean(search || status || karat || renk || grup);
 
   return (
     <div className="page-stack relative z-0 pb-32">
@@ -189,7 +210,7 @@ export default async function ListelerPage({
       </div>
       <Card>
         <CardContent className="space-y-4">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
             <SearchInput placeholder="Başlık veya SKU…" />
             <FilterSelect
               paramKey="status"
@@ -198,6 +219,26 @@ export default async function ListelerPage({
                 value: s.value,
                 label: s.label,
               }))}
+            />
+            {/* Facet filtreleri — başlık/SKU'dan türetilir (shop-section verisi
+                senkronda yok; pratik karşılığı bu üçlü). */}
+            <FilterSelect
+              paramKey="karat"
+              placeholder="Ayar"
+              options={KARAT_OPTIONS}
+              className="w-[110px]"
+            />
+            <FilterSelect
+              paramKey="renk"
+              placeholder="Renk"
+              options={COLOR_OPTIONS}
+              className="w-[140px]"
+            />
+            <FilterSelect
+              paramKey="grup"
+              placeholder="Grup"
+              options={GROUP_OPTIONS}
+              className="w-[150px]"
             />
           </div>
 
