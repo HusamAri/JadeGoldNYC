@@ -4,7 +4,6 @@ import {
   detectKarat,
   extractWeightGrams,
   calculateGoldCost,
-  PURCHASE_PRICE_CENTS_PER_GRAM,
   type KaratType,
   type GoldCostBreakdown,
 } from "@/lib/gold-cost";
@@ -78,11 +77,13 @@ export async function getGoldCostAnalysis(
   // Hata sessizce "varsayılan fiyat"a dönüşmesin — en azından yüzeye çıkar.
   if (orgErr) console.error("[gold-cost] gold_settings sorgusu:", orgErr.message);
   const gs = (orgData as { gold_settings?: { purchase_price_14k_cents?: number; purchase_price_10k_cents?: number; purchase_price_18k_cents?: number } } | null)?.gold_settings;
-  const customPurchasePrices: Record<KaratType, number> = {
-    "14K": gs?.purchase_price_14k_cents ?? PURCHASE_PRICE_CENTS_PER_GRAM["14K"],
-    "10K": gs?.purchase_price_10k_cents ?? PURCHASE_PRICE_CENTS_PER_GRAM["10K"],
-    "18K": gs?.purchase_price_18k_cents ?? PURCHASE_PRICE_CENTS_PER_GRAM["18K"],
-  };
+  // YALNIZ org'un gerçekten girdiği fiyatlar geçilir (Partial): 18K boşsa
+  // calculateGoldCost canlı spottan türetir (melt18 + 14K işçilik primi) —
+  // statik $129 varsayımını buraya doldurmak türetimi engellerdi.
+  const customPurchasePrices: Partial<Record<KaratType, number>> = {};
+  if (gs?.purchase_price_14k_cents) customPurchasePrices["14K"] = gs.purchase_price_14k_cents;
+  if (gs?.purchase_price_10k_cents) customPurchasePrices["10K"] = gs.purchase_price_10k_cents;
+  if (gs?.purchase_price_18k_cents) customPurchasePrices["18K"] = gs.purchase_price_18k_cents;
 
   type RawRow = {
     id: string;
