@@ -10,6 +10,8 @@ import {
   getListingMarketPosition,
 } from "@/lib/db/queries/listings";
 import { getGoldSettings } from "@/lib/db/queries/gold-settings";
+import { getGoldPricePerOunce } from "@/lib/gold-price";
+import { detectKarat, derivePurchase18kCentsPerGram } from "@/lib/gold-cost";
 import { listCompetitorVariantMatches } from "@/lib/db/queries/keyword-research";
 import { projectPricesFromCompetitorMatches } from "@/lib/etsy/competitor-gram-price";
 import { getListingImages, type ListingImage } from "@/lib/etsy/images";
@@ -116,6 +118,22 @@ export default async function ListingDetayPage({
       if (grams.length === 0) return null;
       return grams[Math.floor(grams.length / 2)] ?? null;
     })();
+
+  // İndirim simülatörü maliyet tabanı: gram × ayar alım fiyatı (cent/g).
+  // 10K/14K org ayarından; 18K canlı spot + 14K işçilik priminden türetilir.
+  // Ayar tespit edilemezse null → simülatör kendini gizler, uydurmaz.
+  const simKarat = detectKarat(product.title, product.tags, product.materials);
+  const simCostPerGramCents =
+    simKarat === "10K"
+      ? goldSettings.purchase_price_10k_cents
+      : simKarat === "14K"
+        ? goldSettings.purchase_price_14k_cents
+        : simKarat === "18K"
+          ? derivePurchase18kCentsPerGram(
+              await getGoldPricePerOunce(),
+              goldSettings.purchase_price_14k_cents,
+            )
+          : null;
 
   // Canlı Etsy görselleri — bağlı değilse/geç kalırsa [] (graceful, tek deneme).
   const images: ListingImage[] =
@@ -259,7 +277,9 @@ export default async function ListingDetayPage({
       </div>
 
       {/* 02B · İndirim — manuel Etsy Sale/kupon yüzdesi (API vermiyor);
-          indirimli fiyat panelde türetilir, varyant matrisinde gösterilir. */}
+          indirimli fiyat panelde türetilir, varyant matrisinde gösterilir.
+          Simülatör: yüzde yazarken maliyet altına düşen varyantlar anında
+          listelenir (maliyet = gram × ayar alım fiyatı; 18K canlı türetim). */}
       <ListingPanel
         id="indirim"
         n="02B"
@@ -276,6 +296,15 @@ export default async function ListingDetayPage({
           initialPct={product.discount_pct}
           basePriceCents={product.price_cents}
           currency={product.currency}
+          costPerGramCents={simCostPerGramCents}
+          variants={variants
+            .filter((v) => v.price_cents != null)
+            .map((v) => ({
+              sku: v.sku,
+              price_cents: v.price_cents as number,
+              weight_grams:
+                v.weight_grams == null ? null : Number(v.weight_grams),
+            }))}
         />
       </ListingPanel>
 
