@@ -733,16 +733,16 @@ export default async function ReklamlarPage() {
                             <form action={markAdsAction}>
                               <input type="hidden" name="id" value={a.id} />
                               <input type="hidden" name="status" value="yapildi" />
-                              <Button type="submit" size="sm" variant="outline">
+                              <SubmitButton size="sm" variant="outline">
                                 Yapıldı
-                              </Button>
+                              </SubmitButton>
                             </form>
                             <form action={markAdsAction}>
                               <input type="hidden" name="id" value={a.id} />
                               <input type="hidden" name="status" value="yok_sayildi" />
-                              <Button type="submit" size="sm" variant="ghost">
+                              <SubmitButton size="sm" variant="ghost">
                                 Yok say
-                              </Button>
+                              </SubmitButton>
                             </form>
                           </div>
                         ) : (

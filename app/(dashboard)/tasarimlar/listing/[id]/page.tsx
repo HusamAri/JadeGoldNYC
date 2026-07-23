@@ -164,7 +164,8 @@ export default async function ListingDetayPage({
   ].filter(Boolean);
 
   return (
-    <div className="space-y-6">
+    // page-stack: panel geneliyle aynı cömert dikey ritim (space-y-6 dardı).
+    <div className="page-stack">
       <PageHeader
         title={decodeEntities(product.title)}
         eyebrow="Listing Komuta Merkezi"

@@ -178,13 +178,13 @@ function LifecycleTable({
               {r.price_cents == null ? (
                 "—"
               ) : r.discount_pct > 0 ? (
-                <span className="inline-flex items-center gap-1.5">
-                  <Badge
-                    variant="outline"
-                    className="text-[color:var(--tl-doing)] text-[10px]"
-                  >
+                // Sessiz vurgu: tek renkli fiyat + üstü çizili taban yeter;
+                // kutu rozet ayrı bir yarışan vurgu olurdu. Yüzde, sakin
+                // mono-muted metin olarak fiyatın önünde durur.
+                <span className="inline-flex items-baseline gap-1.5">
+                  <span className="text-muted-foreground font-mono text-[10px]">
                     −%{r.discount_pct}
-                  </Badge>
+                  </span>
                   <span className="text-[color:var(--tl-doing)] font-medium">
                     {formatMoney(
                       discountedCents(r.price_cents, r.discount_pct) ??

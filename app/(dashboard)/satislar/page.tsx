@@ -240,15 +240,19 @@ export default async function SatislarPage({
             hint={`Cironun %${(feePct * 100).toFixed(1)}'i`}
           />
           {/* İndirim — kupon/sipariş indirimleri (Etsy discount_amt senkrondan;
-              manuel/CSV girişlerinde de). Ciro zaten indirimli tutardır; bu
-              kart verilen indirim toplamını ayrıca görünür kılar. */}
-          <KpiCard
-            label="İndirim"
-            cents={t.discount_cents}
-            currency={cur}
-            icon={Wallet}
-            hint={`Cironun %${discountPct.toFixed(1)}'i · kupon/sipariş indirimi`}
-          />
+              manuel/CSV girişlerinde de). Ciro zaten indirimli tutardır; kart
+              verilen indirim toplamını görünür kılar. YALNIZ indirim varken
+              render edilir: $0 kartı bilgi taşımaz ve 3'lü ızgarayı tek öksüz
+              satıra bölerdi (sessiz-lüks: sıfır-değerli vurgu gösterme). */}
+          {t.discount_cents > 0 && (
+            <KpiCard
+              label="İndirim"
+              cents={t.discount_cents}
+              currency={cur}
+              icon={Wallet}
+              hint={`Cironun %${discountPct.toFixed(1)}'i · kupon/sipariş indirimi`}
+            />
+          )}
           <KpiCard
             label="Alıcı"
             value={formatNumber(t.buyers)}
