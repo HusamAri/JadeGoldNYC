@@ -219,7 +219,9 @@ const CHAIN_TYPES: ProductType[] = ["necklace", "bracelet", "anklet"];
 
 const FOCUS_ADJECTIVES: Record<Focus, string[]> = {
   dainty: ["dainty", "thin", "delicate", "minimalist"],
-  classic: ["classic", "everyday"],
+  // "simple" — kısa üründe (earrings/ring) 20 kr sınırına sığan üçüncü sıfat;
+  // dar kombinasyonlarda (zincirsiz + kaplama) havuz 13'ün altına düşmesin.
+  classic: ["classic", "everyday", "simple"],
   bold: ["thick", "chunky", "bold", "statement"],
 };
 
@@ -271,6 +273,7 @@ function tagCandidates(input: SeoInput): Record<Bucket, string[]> {
   if (style) ne.push(`${style} ${type}`); // "herringbone necklace"
   if (style && mp.karat) ne.push(`${mp.karat} ${style}`); // "10k herringbone"
   ne.push(`${metal} ${type}`); // "gold necklace" / "silver ring"
+  ne.push(`${metal} ${jewelryWord}`); // "gold jewelry" — jenerik yedek
 
   const nasil: string[] = [];
   if (style === "herringbone" || style === "snake") {
@@ -317,6 +320,8 @@ function tagCandidates(input: SeoInput): Record<Bucket, string[]> {
   neden.push("birthday gift");
   neden.push(`everyday ${type}`);
   if (audience !== "men") neden.push("gift for mom");
+  neden.push("christmas gift"); // sezonluk jenerikler — dar havuz yedeği
+  neden.push("wedding gift");
 
   return { ne, nasil, kim, stil, neden };
 }
@@ -571,4 +576,90 @@ export function generateSeo(input: SeoInput): SeoResult {
 /** Etiketleri Etsy'ye yapıştırmaya hazır virgüllü satır. */
 export function tagsToLine(tags: SeoTag[]): string {
   return tags.map((t) => t.text).join(", ");
+}
+
+// ── Mevcut künyeden çıkarım (listing detay gömme) ──────────────────────────
+
+/**
+ * Mevcut listing künyesinden (başlık + etiketler + malzemeler) SeoInput
+ * çıkarır — listing detay sayfası konsolu bu değerlerle önceden doldurur,
+ * kullanıcı yalnız ince ayar yapar. Saf ve iddiasız: malzemede solid kanıtı
+ * (karat/"solid") yoksa kaplama varsayılır — dürüstlük kuralı çıkarımda da
+ * geçerli; yanlış yönde hata "solid demek"ten iyidir.
+ */
+export function inferSeoInput(
+  title: string,
+  tags?: string[] | null,
+  materials?: string[] | null,
+): SeoInput {
+  const text = [title, ...(tags ?? []), ...(materials ?? [])]
+    .join(" ")
+    .toLowerCase();
+
+  // Ürün tipi — spesifik kelimeler önce; "earring" içindeki "ring"i
+  // \bring\b eşlemez (word boundary), yine de sıra earrings → ring.
+  let productType: ProductType = "necklace";
+  if (/\banklet/.test(text)) productType = "anklet";
+  else if (/\bbracelet/.test(text)) productType = "bracelet";
+  else if (/\bearring/.test(text)) productType = "earrings";
+  else if (/\bring\b/.test(text)) productType = "ring";
+
+  // Zincir stili — ilk eşleşen kazanır; herringbone en spesifik, başta.
+  let chainStyle: ChainStyle = "";
+  if (CHAIN_TYPES.includes(productType)) {
+    const styles: ChainStyle[] = [
+      "herringbone",
+      "cuban",
+      "figaro",
+      "paperclip",
+      "snake",
+      "rope",
+      "box",
+      "bead",
+    ];
+    for (const s of styles) {
+      if (new RegExp(`\\b${s}`).test(text)) {
+        chainStyle = s;
+        break;
+      }
+    }
+  }
+
+  // Malzeme — açık kaplama/filled/vermeil sinyalleri karat'tan ÖNCE okunur
+  // ("18k gold plated" karat içerir ama plated'dır); sonra karat → solid.
+  const karatMatch = text.match(/\b(10|14|18)\s*k\b/);
+  let material: Material;
+  if (/vermeil/.test(text)) material = "gold-vermeil";
+  else if (/\bfilled\b/.test(text)) material = "gold-filled";
+  else if (/plated|kaplama/.test(text)) material = "gold-plated";
+  else if (/sterling|\b925\b/.test(text)) material = "sterling-silver";
+  else if (karatMatch) material = `${karatMatch[1]}k-solid` as Material;
+  else if (/\bsolid\b/.test(text)) material = "14k-solid"; // solid ama karatsız — en yaygın ayar
+  else if (/silver|gümüş/.test(text)) material = "sterling-silver";
+  else material = "gold-plated"; // kanıt yok → iddiasız varsayım
+
+  // Odak — ince/kalın sinyali; yoksa klasik.
+  let focus: Focus = "classic";
+  if (/dainty|\bthin\b|delicate|minimalist/.test(text)) focus = "dainty";
+  else if (/thick|chunky|\bbold\b|statement|heavy/.test(text)) focus = "bold";
+
+  // Kitle — "women/womens" içindeki "men"i \bmen\b eşlemez; yine de
+  // önce açık kadın sinyali okunur.
+  let audience: Audience = "women";
+  if (/unisex/.test(text)) audience = "unisex";
+  else if (/wom[ae]n|\bher\b|ladies/.test(text)) audience = "women";
+  else if (/\bmen\b|\bmens\b|men's|\bhim\b/.test(text)) audience = "men";
+
+  const widthMatch = text.match(/(\d+(?:\.\d+)?)\s*mm/);
+
+  return {
+    productType,
+    chainStyle,
+    material,
+    focus,
+    market: "US", // metinden çıkarılamaz; mağaza varsayılanı
+    audience,
+    widthMm: widthMatch ? widthMatch[1] : "",
+    occasion: "",
+  };
 }
