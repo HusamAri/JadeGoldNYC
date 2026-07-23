@@ -17,6 +17,10 @@ import {
   TROY_OUNCE_GRAMS,
 } from "@/lib/gold-cost";
 import { getFreshCompetitorSetPrices } from "@/lib/etsy/competitor-watch";
+import {
+  asEtsyProperties,
+  type RawVariantProperties,
+} from "@/lib/variant-properties";
 
 /**
  * Rekabet fiyat araştırması motoru.
@@ -251,6 +255,52 @@ export function buildVariantComparison(
       basis: "variant",
     };
   });
+}
+
+/** Otomatik eşleştirme önerisi — bizim SKU ↔ rakip teklif (tek kesin eşleşme). */
+export interface AutoMatchProposal {
+  our_sku: string;
+  competitor_product_id: number | null;
+  competitor_label: string;
+  competitor_size: string | null;
+  competitor_karat: string | null;
+  price_cents: number;
+}
+
+/**
+ * Rakip sete bir listing eklenince "aynı varyant"ları otomatik eşler. Aynılık,
+ * manuel/oto karşılaştırmayla AYNI motordan gelir (tokenize + tokensMatch:
+ * beden ve/veya ayar token'ı). Yanlış eşleşmeyi önlemek için YALNIZ tek-kesin
+ * eşleşme kabul edilir: bir varyantımıza rakipte birden çok offering uyuyorsa
+ * (belirsiz) ATLANIR ve manuel EŞLEŞTİR'e bırakılır; bedeni/ayarı hiç
+ * çözülemeyen (somut token'sız) varyant da atlanır. Böylece "aynı ise otomatik,
+ * şüpheliyse elle" kuralı korunur.
+ */
+export function proposeAutoMatches(
+  ourVariants: { sku: string; properties: RawVariantProperties }[],
+  offerings: CompetitorOffering[],
+): AutoMatchProposal[] {
+  const out: AutoMatchProposal[] = [];
+  for (const v of ourVariants) {
+    const sku = (v.sku ?? "").trim();
+    if (!sku) continue;
+    const vt = tokenize(asEtsyProperties(v.properties));
+    if (!vt.size && !vt.karat) continue; // eşleşecek somut token yok
+    const hits = offerings.filter(
+      (o) => o.price_cents > 0 && tokensMatch(vt, o.tokens),
+    );
+    if (hits.length !== 1) continue; // belirsiz (0 veya >1) → manuele bırak
+    const o = hits[0];
+    out.push({
+      our_sku: sku,
+      competitor_product_id: o.product_id,
+      competitor_label: o.label,
+      competitor_size: o.tokens.size,
+      competitor_karat: o.tokens.karat,
+      price_cents: o.price_cents,
+    });
+  }
+  return out;
 }
 
 export interface CompetitorRow {

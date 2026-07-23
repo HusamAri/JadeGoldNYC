@@ -2,10 +2,11 @@
 
 import { useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Link2, Loader2 } from "lucide-react";
+import { Link2, Loader2, Wand2 } from "lucide-react";
 import { toast } from "sonner";
 
 import {
+  autoMatchCompetitor,
   listCompetitorOfferingsForMatch,
   removeCompetitorVariantMatch,
   saveCompetitorVariantMatch,
@@ -150,6 +151,22 @@ export function CompetitorMatchDialog({
     });
   }
 
+  function autoMatch() {
+    start(async () => {
+      const r = await autoMatchCompetitor(productId, competitorListingId, currency);
+      if (r.error) toast.error(r.error);
+      else if (r.matched && r.matched > 0) {
+        toast.success(`${r.matched} aynı varyant otomatik eşleşti`);
+        setOpen(false);
+        router.refresh();
+      } else {
+        toast.info(
+          "Otomatik eşlenecek kesin varyant yok — beden/ayar belirsiz, elle eşleştir.",
+        );
+      }
+    });
+  }
+
   if (ourVariants.length === 0) return null;
 
   return (
@@ -177,6 +194,25 @@ export function CompetitorMatchDialog({
         </DialogHeader>
 
         <div className="space-y-3">
+          {/* Aynı varyantları (beden/ayar) tek tıkla otomatik eşle — belirsizler
+              elle bırakılır. Ekleme anında da otomatik çalışır; bu buton sonradan
+              yeniden denemek / zaten eklenmiş rakip için. */}
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="w-full"
+            disabled={pending}
+            onClick={autoMatch}
+          >
+            {pending ? (
+              <Loader2 className="size-3.5 animate-spin" />
+            ) : (
+              <Wand2 className="size-3.5" />
+            )}
+            Aynı varyantları otomatik eşleştir
+          </Button>
+
           <div className="space-y-1.5">
             <p className="text-muted-foreground font-mono text-[10px] tracking-[0.14em] uppercase">
               Bizim varyant
