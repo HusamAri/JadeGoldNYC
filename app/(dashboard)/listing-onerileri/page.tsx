@@ -4,6 +4,7 @@ import { Lightbulb, Archive, Plus, ExternalLink, ImageOff } from "lucide-react";
 import { requireMembership } from "@/lib/auth";
 import { listListingsIndex } from "@/lib/db/queries/listings";
 import { formatMoney } from "@/lib/money";
+import { discountedCents } from "@/lib/discount";
 import { OrgMark } from "@/components/brand/org-mark";
 import { PageHeader } from "@/components/page-header";
 import { GoldStream } from "@/components/brand/gold-stream";
@@ -174,9 +175,30 @@ function LifecycleTable({
               </div>
             </TableCell>
             <TableCell className="text-right whitespace-nowrap tabular-nums">
-              {r.price_cents != null
-                ? formatMoney(r.price_cents, r.currency)
-                : "—"}
+              {r.price_cents == null ? (
+                "—"
+              ) : r.discount_pct > 0 ? (
+                <span className="inline-flex items-center gap-1.5">
+                  <Badge
+                    variant="outline"
+                    className="text-[color:var(--tl-doing)] text-[10px]"
+                  >
+                    −%{r.discount_pct}
+                  </Badge>
+                  <span className="text-[color:var(--tl-doing)] font-medium">
+                    {formatMoney(
+                      discountedCents(r.price_cents, r.discount_pct) ??
+                        r.price_cents,
+                      r.currency,
+                    )}
+                  </span>
+                  <span className="text-muted-foreground/70 text-xs line-through">
+                    {formatMoney(r.price_cents, r.currency)}
+                  </span>
+                </span>
+              ) : (
+                formatMoney(r.price_cents, r.currency)
+              )}
             </TableCell>
             <TableCell className="text-right tabular-nums">
               {r.variant_count > 0 ? (
