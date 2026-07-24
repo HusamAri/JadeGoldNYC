@@ -4,8 +4,12 @@ import { useState, useTransition } from "react";
 import { toast } from "sonner";
 import { Tag, TriangleAlert } from "lucide-react";
 
-import { formatMoney } from "@/lib/money";
-import { clampDiscountPct, discountedCents } from "@/lib/discount";
+import { formatMoney, parseMoneyToCents, centsToDecimal } from "@/lib/money";
+import {
+  clampDiscountPct,
+  discountedCents,
+  discountWindowStatus,
+} from "@/lib/discount";
 import { setListingDiscount } from "@/app/(dashboard)/tasarimlar/listing/[id]/reprice-actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,6 +36,10 @@ export function DiscountControl({
   currency,
   costPerGramCents = null,
   variants = [],
+  initialStartAt = null,
+  initialEndAt = null,
+  initialMinOrderCents = null,
+  todayIso,
 }: {
   productId: string;
   initialPct: number;
@@ -41,14 +49,38 @@ export function DiscountControl({
   costPerGramCents?: number | null;
   /** Varyantlar (fiyat + gram) — indirimli fiyatı maliyetle kıyaslamak için. */
   variants?: SimVariant[];
+  /** İndirim tarih aralığı + minimum sepet eşiği (panel planlaması). */
+  initialStartAt?: string | null;
+  initialEndAt?: string | null;
+  initialMinOrderCents?: number | null;
+  /** Sunucudan gelen bugün (YYYY-MM-DD) — pencere durumu için. */
+  todayIso: string;
 }) {
   const [value, setValue] = useState(String(clampDiscountPct(initialPct)));
   const [savedPct, setSavedPct] = useState(clampDiscountPct(initialPct));
+  const [startAt, setStartAt] = useState(initialStartAt ?? "");
+  const [endAt, setEndAt] = useState(initialEndAt ?? "");
+  const [minOrder, setMinOrder] = useState(
+    initialMinOrderCents != null
+      ? String(centsToDecimal(initialMinOrderCents))
+      : "",
+  );
   const [pending, start] = useTransition();
 
   const pct = clampDiscountPct(Number(value.replace(",", ".")));
   const preview = discountedCents(basePriceCents, pct);
-  const dirty = pct !== savedPct;
+  const minOrderCents = minOrder.trim() ? parseMoneyToCents(minOrder) : null;
+  const savedMinOrder =
+    initialMinOrderCents != null
+      ? String(centsToDecimal(initialMinOrderCents))
+      : "";
+  const dirty =
+    pct !== savedPct ||
+    startAt !== (initialStartAt ?? "") ||
+    endAt !== (initialEndAt ?? "") ||
+    minOrder !== savedMinOrder;
+  const windowStatus =
+    pct > 0 ? discountWindowStatus(startAt || null, endAt || null, todayIso) : null;
 
   // Simülatör: girilen yüzdede indirimli fiyatı METAL MALİYETİNİN (gram × ayar
   // alım fiyatı) altına düşen varyantları anında listeler. Yalnız gramı olan
@@ -79,7 +111,12 @@ export function DiscountControl({
 
   function save() {
     start(async () => {
-      const res = await setListingDiscount(productId, pct);
+      const res = await setListingDiscount(productId, {
+        pct,
+        startAt: startAt || null,
+        endAt: endAt || null,
+        minOrderCents,
+      });
       if (res.error) {
         toast.error(res.error);
         return;
@@ -91,6 +128,12 @@ export function DiscountControl({
       );
     });
   }
+
+  const WINDOW_META: Record<string, { label: string; cls: string }> = {
+    aktif: { label: "aktif", cls: "text-emerald-600 dark:text-emerald-400" },
+    planli: { label: "planlı", cls: "text-[color:var(--tl-doing)]" },
+    gecmis: { label: "süresi doldu", cls: "text-muted-foreground" },
+  };
 
   return (
     <div className="space-y-3">
@@ -136,6 +179,65 @@ export function DiscountControl({
               </p>
             )}
           </div>
+        )}
+      </div>
+
+      {/* Tarih aralığı + minimum sepet eşiği — panel planlaması (Etsy'ye
+          yazılmaz). İndirim yüzdesi 0 ise pasif/temizlenir. */}
+      <div className="flex flex-wrap items-end gap-4">
+        <label className="space-y-1">
+          <span className="text-muted-foreground block font-mono text-[10px] tracking-[0.14em] uppercase">
+            Başlangıç
+          </span>
+          <Input
+            type="date"
+            value={startAt}
+            max={endAt || undefined}
+            onChange={(e) => setStartAt(e.target.value)}
+            disabled={pct === 0}
+            className="w-40 tabular-nums"
+            aria-label="İndirim başlangıç tarihi"
+          />
+        </label>
+        <label className="space-y-1">
+          <span className="text-muted-foreground block font-mono text-[10px] tracking-[0.14em] uppercase">
+            Bitiş
+          </span>
+          <Input
+            type="date"
+            value={endAt}
+            min={startAt || undefined}
+            onChange={(e) => setEndAt(e.target.value)}
+            disabled={pct === 0}
+            className="w-40 tabular-nums"
+            aria-label="İndirim bitiş tarihi"
+          />
+        </label>
+        <label className="space-y-1">
+          <span className="text-muted-foreground block font-mono text-[10px] tracking-[0.14em] uppercase">
+            Min. sepet ({currency})
+          </span>
+          <Input
+            inputMode="decimal"
+            value={minOrder}
+            onChange={(e) => setMinOrder(e.target.value)}
+            placeholder="—"
+            disabled={pct === 0}
+            className="w-28 text-right tabular-nums"
+            aria-label="Minimum sepet toplamı"
+          />
+        </label>
+        {windowStatus && (
+          <span
+            className={
+              "font-mono text-[11px] " + WINDOW_META[windowStatus].cls
+            }
+          >
+            {(startAt || endAt) ? WINDOW_META[windowStatus].label : "süresiz"}
+            {minOrderCents != null
+              ? ` · min ${formatMoney(minOrderCents, currency)}`
+              : ""}
+          </span>
         )}
       </div>
 

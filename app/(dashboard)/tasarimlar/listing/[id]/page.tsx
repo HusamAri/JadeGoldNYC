@@ -326,6 +326,10 @@ export default async function ListingDetayPage({
           basePriceCents={product.price_cents}
           currency={product.currency}
           costPerGramCents={simCostPerGramCents}
+          initialStartAt={product.discount_start_at}
+          initialEndAt={product.discount_end_at}
+          initialMinOrderCents={product.discount_min_order_cents}
+          todayIso={new Date().toISOString().slice(0, 10)}
           variants={variants
             .filter((v) => v.price_cents != null)
             .map((v) => ({

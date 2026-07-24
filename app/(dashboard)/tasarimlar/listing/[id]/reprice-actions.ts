@@ -222,15 +222,37 @@ export async function saveRepriceRule(
  * panelde türetilir (lib/discount.ts) ve Etsy'ye YAZILMAZ (taban fiyat
  * değişmez). Üyelik yeterli — künye düzenlemesi gibi (owner/admin şart değil).
  */
+export interface DiscountInput {
+  pct: number;
+  /** 'YYYY-MM-DD' ya da null (aralıksız = her zaman aktif). */
+  startAt?: string | null;
+  endAt?: string | null;
+  /** Minimum SEPET toplamı (cent) ya da null. */
+  minOrderCents?: number | null;
+}
+
 export async function setListingDiscount(
   productId: string,
-  pct: number,
+  input: DiscountInput,
 ): Promise<{ ok?: boolean; error?: string }> {
   const m = await requireMembership();
-  const n = Math.round(Number(pct));
+  const n = Math.round(Number(input.pct));
   if (!Number.isFinite(n) || n < 0 || n > 90) {
     return { error: "İndirim %0–90 arası olmalı." };
   }
+  const startAt = input.startAt?.trim() || null;
+  const endAt = input.endAt?.trim() || null;
+  const isoDate = /^\d{4}-\d{2}-\d{2}$/;
+  if (startAt && !isoDate.test(startAt))
+    return { error: "Başlangıç tarihi geçersiz." };
+  if (endAt && !isoDate.test(endAt))
+    return { error: "Bitiş tarihi geçersiz." };
+  if (startAt && endAt && endAt < startAt)
+    return { error: "Bitiş tarihi başlangıçtan önce olamaz." };
+  const minOrderCents =
+    input.minOrderCents != null && input.minOrderCents > 0
+      ? Math.round(input.minOrderCents)
+      : null;
 
   const admin = createAdminClient();
   // Ürün bu org'a mı ait? (yabancı product_id'ye yazılmasın — multi-tenant kilidi)
@@ -245,11 +267,18 @@ export async function setListingDiscount(
 
   const { error } = await admin
     .from("products")
-    .update({ discount_pct: n })
+    .update({
+      discount_pct: n,
+      // İndirim yoksa pencere/eşik da temizlenir (kalıntı kalmasın).
+      discount_start_at: n > 0 ? startAt : null,
+      discount_end_at: n > 0 ? endAt : null,
+      discount_min_order_cents: n > 0 ? minOrderCents : null,
+    })
     .eq("id", productId)
     .eq("org_id", m.org_id);
   if (error) return { error: error.message };
 
   revalidatePath(`/tasarimlar/listing/${productId}`);
+  revalidatePath("/indirimler");
   return { ok: true };
 }
