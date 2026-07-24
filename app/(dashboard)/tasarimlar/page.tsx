@@ -130,7 +130,6 @@ export default async function ListelerPage({
 }: {
   searchParams: Promise<RawSearchParams>;
 }) {
-  const platform = await getActivePlatform();
   const sp = await searchParams;
   const search = strParam(sp.search);
   const status = strParam(sp.status);
@@ -138,8 +137,13 @@ export default async function ListelerPage({
   const renk = strParam(sp.renk);
   const grup = strParam(sp.grup);
 
-  await requireMembership();
-  const fetched = await listListingsIndex({ search, status });
+  // Platform durumu (3 RPC), auth kapısı ve listing çekimi birbirinden
+  // bağımsız — eskiden sırayla await ediliyordu, artık tek turda paralel.
+  const [platform, , fetched] = await Promise.all([
+    getActivePlatform(),
+    requireMembership(),
+    listListingsIndex({ search, status }),
+  ]);
 
   // Facet filtreleri (ayar/renk/grup) başlık+SKU'dan türetilir — Etsy shop
   // section senkronda yok; tüm satırlar zaten tek sayfada geldiğinden filtre

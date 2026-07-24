@@ -123,6 +123,124 @@ export function buildInventoryUpdate(
   };
 }
 
+/**
+ * Envanteri, her offering'in fiyatını panel DB'sindeki karşılık gelen SKU
+ * fiyatına çekecek PUT payload'ına dönüştürür (varyantlı listing dahil — her
+ * ürün SKU'suyla eşlenir). Diğer her şey (adet, is_enabled, property_values,
+ * price_on_property) AYNEN korunur.
+ *
+ * PARA GÜVENLİĞİ (buildInventoryUpdate ile aynı ilke): bir SKU için DB fiyatı
+ * yoksa Etsy'nin CANLI fiyatı geri yazılır; ikisi de geçersizse (0/okunamaz)
+ * fiyatı SIFIRA çekmemek için TÜM güncelleme iptal edilir (throw). `changed`,
+ * gerçekten farklı olan offering sayısıdır — 0 ise çağıran PUT'u atlar.
+ */
+export function buildPriceSyncUpdate(
+  inventory: EtsyInventory,
+  priceBySkuCents: Map<string, number>,
+): { update: EtsyInventoryUpdate; changed: number } {
+  let changed = 0;
+  const products: EtsyProductUpdate[] = (inventory.products ?? [])
+    .filter((p) => !p.is_deleted)
+    .map((p) => {
+      const sku = p.sku ?? "";
+      const dbCents = priceBySkuCents.get(sku);
+      const dbUnit = dbCents != null && dbCents > 0 ? dbCents / 100 : null;
+      const offerings: EtsyOfferingUpdate[] = (p.offerings ?? [])
+        .filter((o) => !o.is_deleted)
+        .map((o) => {
+          const liveUnit = etsyMoneyToUnit(o.price);
+          const targetUnit = dbUnit ?? liveUnit;
+          if (!(targetUnit > 0)) {
+            throw new Error(
+              "Fiyat okunamadı (DB'de yok, Etsy fiyatı da 0/eksik) — fiyatı sıfırlamamak için güncelleme iptal edildi.",
+            );
+          }
+          if (
+            dbUnit != null &&
+            Math.round(liveUnit * 100) !== Math.round(dbUnit * 100)
+          ) {
+            changed += 1;
+          }
+          return {
+            price: targetUnit,
+            quantity: o.quantity ?? 0,
+            is_enabled: o.is_enabled ?? true,
+          };
+        });
+      if (offerings.length === 0) {
+        throw new Error(
+          "Üründe okunabilir offering yok — fiyat güvenliği için güncelleme atlandı.",
+        );
+      }
+      return {
+        sku,
+        property_values: (p.property_values ?? []).map((pv) => ({
+          property_id: pv.property_id,
+          value_ids: pv.value_ids ?? [],
+          values: pv.values ?? [],
+          ...(pv.scale_id != null ? { scale_id: pv.scale_id } : {}),
+        })),
+        offerings,
+      };
+    });
+
+  return {
+    update: {
+      products,
+      ...(inventory.price_on_property
+        ? { price_on_property: inventory.price_on_property }
+        : {}),
+      ...(inventory.quantity_on_property
+        ? { quantity_on_property: inventory.quantity_on_property }
+        : {}),
+      ...(inventory.sku_on_property
+        ? { sku_on_property: inventory.sku_on_property }
+        : {}),
+    },
+    changed,
+  };
+}
+
+export type PricePushOutcome = {
+  listingId: number;
+  status: "updated" | "unchanged" | "error";
+  changed: number;
+  detail?: string;
+};
+
+/**
+ * Tek listing için: envanteri oku → offering fiyatlarını DB SKU fiyatlarına
+ * çek → değişiklik varsa geri yaz. Hata fırlatmaz (toplu akışta bir liste
+ * patlarsa diğerleri sürsün); PricePushOutcome döner. Fiyat DB'de değişmemişse
+ * PUT yapılmaz (idempotent — tekrar çalıştırma güvenli, "unchanged" döner).
+ */
+export async function pushListingPrices(
+  client: EtsyClient,
+  listingId: number,
+  priceBySkuCents: Map<string, number>,
+): Promise<PricePushOutcome> {
+  try {
+    const inventory = await getListingInventory(client, listingId);
+    const live = (inventory.products ?? []).filter((p) => !p.is_deleted);
+    if (live.length === 0) {
+      return { listingId, status: "unchanged", changed: 0, detail: "Envanter boş" };
+    }
+    const { update, changed } = buildPriceSyncUpdate(inventory, priceBySkuCents);
+    if (changed === 0) {
+      return { listingId, status: "unchanged", changed: 0 };
+    }
+    await putListingInventory(client, listingId, update);
+    return { listingId, status: "updated", changed };
+  } catch (e) {
+    return {
+      listingId,
+      status: "error",
+      changed: 0,
+      detail: e instanceof Error ? e.message : "Bilinmeyen hata",
+    };
+  }
+}
+
 /** Güncellenmiş envanteri Etsy'ye yazar (PUT). listings_w kapsamı gerektirir. */
 export async function putListingInventory(
   client: EtsyClient,

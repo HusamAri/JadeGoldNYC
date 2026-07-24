@@ -90,8 +90,9 @@ export default async function SatislarPage({
   ]);
 
   // Pinler: satışlar iğnelenebilir yüzey — liste tek toplu sorguyla.
-  const user = await getUser();
-  const [pinMap, myStickers] = await Promise.all([
+  // getUser bağımsız → pin sorgularıyla aynı turda (bir tur tasarrufu).
+  const [user, pinMap, myStickers] = await Promise.all([
+    getUser(),
     getPinsForTargets(m.org_id, "sale", rows.map((r) => r.id)),
     getPinLibrary(),
   ]);
