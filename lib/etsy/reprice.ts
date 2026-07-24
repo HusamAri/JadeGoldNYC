@@ -5,6 +5,7 @@ import { EtsyClient, EtsyNotConnectedError } from "@/lib/etsy/client";
 import {
   getListingInventory,
   putListingInventory,
+  resolveReadinessStateId,
 } from "@/lib/etsy/inventory";
 import type {
   EtsyInventory,
@@ -113,6 +114,7 @@ const CONFIDENCE_RANK: Record<RepriceConfidence, number> = {
 export function buildPriceUpdate(
   inventory: EtsyInventory,
   newPriceCents: number,
+  readinessStateId?: number | null,
 ): EtsyInventoryUpdate {
   if (!(newPriceCents > 0)) {
     throw new Error("Geçersiz hedef fiyat — envanter güncellemesi iptal edildi.");
@@ -134,6 +136,10 @@ export function buildPriceUpdate(
       price,
       quantity: o.quantity ?? 0,
       is_enabled: o.is_enabled ?? true,
+      // 2025 (?legacy=false): tek offering'de de readiness zorunlu.
+      ...(readinessStateId != null
+        ? { readiness_state_id: readinessStateId }
+        : {}),
     }));
   if (offerings.length === 0) {
     throw new Error(
@@ -146,6 +152,9 @@ export function buildPriceUpdate(
         sku: product.sku ?? "",
         property_values: (product.property_values ?? []).map((pv) => ({
           property_id: pv.property_id,
+          ...(pv.property_name != null
+            ? { property_name: pv.property_name }
+            : {}),
           value_ids: pv.value_ids ?? [],
           values: pv.values ?? [],
           ...(pv.scale_id != null ? { scale_id: pv.scale_id } : {}),
@@ -162,6 +171,7 @@ export function buildPriceUpdate(
     ...(inventory.sku_on_property
       ? { sku_on_property: inventory.sku_on_property }
       : {}),
+    ...(readinessStateId != null ? { readiness_state_on_property: [] } : {}),
   };
 }
 
@@ -439,8 +449,12 @@ async function evaluateRule(
   try {
     const client = await ctx.getClient();
     const inventory = await getListingInventory(client, product.etsy_listing_id);
-    const update = buildPriceUpdate(inventory, target);
-    await putListingInventory(client, product.etsy_listing_id, update);
+    // 2025 modeli: tek offering'de de readiness + ?legacy=false gerekir.
+    const readinessStateId = await resolveReadinessStateId(client);
+    const update = buildPriceUpdate(inventory, target, readinessStateId);
+    await putListingInventory(client, product.etsy_listing_id, update, {
+      legacy: readinessStateId != null ? false : undefined,
+    });
   } catch (e) {
     const msg = e instanceof Error ? e.message : "Bilinmeyen Etsy hatası";
     console.error(

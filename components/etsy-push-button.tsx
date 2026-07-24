@@ -32,6 +32,7 @@ export function EtsyPushButton({
     total: number;
     updated: number;
     unchanged: number;
+    skipped: number;
     errors: number;
   } | null>(null);
   const runningRef = useRef(false);
@@ -47,6 +48,7 @@ export function EtsyPushButton({
     frost.show("syncing", "Fiyatlar Etsy'ye gönderiliyor…");
     let updated = 0;
     let unchanged = 0;
+    let skipped = 0;
     let errors = 0;
     const errSamples: string[] = [];
     try {
@@ -60,6 +62,7 @@ export function EtsyPushButton({
         }
         updated += r.updated;
         unchanged += r.unchanged;
+        skipped += r.skipped;
         errors += r.errors;
         for (const e of r.sampleErrors)
           if (errSamples.length < 5) errSamples.push(e);
@@ -70,23 +73,35 @@ export function EtsyPushButton({
           total,
           updated,
           unchanged,
+          skipped,
           errors,
         });
         if (r.done) {
+          // "Fiyatı olan varyant yok" (skipped) durumunu ayrı anlat: hiç
+          // pushable listing yoksa kullanıcı "0 güncellendi"yi doğru yorumlar.
+          const skipNote =
+            skipped > 0 ? ` · ${formatNumber(skipped)} fiyatsız (atlandı)` : "";
           if (total === 0) {
             toast.info("Etsy'de fiyat yazılacak listing yok.");
+          } else if (updated === 0 && unchanged === 0 && errors === 0) {
+            // Hepsi atlandı: gönderilecek fiyatlı varyant hiç yoktu.
+            toast.info(
+              `Gönderilecek fiyat bulunamadı — ${formatNumber(
+                skipped,
+              )} listing'de fiyatlı varyant yok. Önce varyant fiyatlarını girin.`,
+            );
           } else if (errors > 0) {
             toast.warning(
               `Gönderildi: ${formatNumber(updated)} güncellendi · ${formatNumber(
                 unchanged,
-              )} zaten güncel · ${formatNumber(errors)} hata`,
+              )} zaten güncel${skipNote} · ${formatNumber(errors)} hata`,
               { description: errSamples.join(" · ") || undefined },
             );
           } else {
             toast.success(
               `Etsy'ye gönderildi: ${formatNumber(updated)} listing güncellendi · ${formatNumber(
                 unchanged,
-              )} zaten güncel`,
+              )} zaten güncel${skipNote}`,
             );
           }
           router.refresh();
@@ -160,6 +175,14 @@ export function EtsyPushButton({
             Zaten güncel{" "}
             <span className="text-foreground">{formatNumber(progress.unchanged)}</span>
           </span>
+          {progress.skipped > 0 && (
+            <span>
+              Fiyatsız{" "}
+              <span className="text-foreground">
+                {formatNumber(progress.skipped)}
+              </span>
+            </span>
+          )}
           {progress.errors > 0 && (
             <span className="text-destructive">
               Hata {formatNumber(progress.errors)}

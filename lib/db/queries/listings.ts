@@ -510,26 +510,64 @@ export async function getListingDetail(
 ): Promise<ListingDetail | null> {
   const supabase = await createClient();
 
+  // Taban kolonlar HER ZAMAN vardır; indirim-penceresi kolonları (0118) DB'de
+  // henüz olmayabilir (migration gecikmesi). Bunları ayrı, HATA-TOLERANSLI bir
+  // seçimle çek: yoksa detay sayfası 500 olmasın (additive kolon eksikliği
+  // sayfayı düşürmemeli — pencere null düşer, migration uygulanınca dolar).
+  const BASE_COLS =
+    "id, etsy_listing_id, title, status, description, tags, materials, price_cents, currency, quantity, url, image_url, num_images, research_keyword, sku, weight_grams, discount_pct";
   const { data: pData, error: pError } = await supabase
     .from("products")
-    .select(
-      "id, etsy_listing_id, title, status, description, tags, materials, price_cents, currency, quantity, url, image_url, num_images, research_keyword, sku, weight_grams, discount_pct, discount_start_at, discount_end_at, discount_min_order_cents",
-    )
+    .select(BASE_COLS)
     .eq("id", id)
     .maybeSingle();
   if (pError) throw new Error(pError.message);
   if (!pData) return null;
+
+  // İndirim penceresi kolonları — ayrı ve toleranslı (kolon yoksa null).
+  let discountWindow: {
+    discount_start_at: string | null;
+    discount_end_at: string | null;
+    discount_min_order_cents: number | null;
+  } = {
+    discount_start_at: null,
+    discount_end_at: null,
+    discount_min_order_cents: null,
+  };
+  {
+    const { data: dw, error: dwErr } = await supabase
+      .from("products")
+      .select("discount_start_at, discount_end_at, discount_min_order_cents")
+      .eq("id", id)
+      .maybeSingle();
+    if (dwErr) {
+      // Büyük olasılıkla 0118 migration'ı henüz uygulanmadı — sessiz geç.
+      console.error(
+        "[listing-detail] indirim penceresi kolonları okunamadı (0118?):",
+        dwErr.message,
+      );
+    } else if (dw) {
+      const w = dw as {
+        discount_start_at: string | null;
+        discount_end_at: string | null;
+        discount_min_order_cents: number | string | null;
+      };
+      discountWindow = {
+        discount_start_at: w.discount_start_at ?? null,
+        discount_end_at: w.discount_end_at ?? null,
+        discount_min_order_cents:
+          w.discount_min_order_cents == null
+            ? null
+            : Number(w.discount_min_order_cents),
+      };
+    }
+  }
   const raw = pData as ListingDetail["product"] & { weight_grams: unknown };
   const product: ListingDetail["product"] = {
     ...raw,
     weight_grams: raw.weight_grams == null ? null : Number(raw.weight_grams),
     discount_pct: Number(raw.discount_pct ?? 0),
-    discount_start_at: raw.discount_start_at ?? null,
-    discount_end_at: raw.discount_end_at ?? null,
-    discount_min_order_cents:
-      raw.discount_min_order_cents == null
-        ? null
-        : Number(raw.discount_min_order_cents),
+    ...discountWindow,
   };
 
   const [variantRows, metricRows, saleItemRows] = await Promise.all([

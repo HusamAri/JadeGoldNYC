@@ -163,6 +163,10 @@ export interface PushPricesResult {
   nextOffset: number;
   updated: number;
   unchanged: number;
+  /** Gönderilecek fiyatı olan varyantı OLMAYAN listing (Etsy'ye dokunulmadı).
+   *  "zaten güncel"den (unchanged) ayrı tutulur ki "0 güncellendi" teşhis
+   *  edilebilsin: hiç fiyat yoktu mu, yoksa Etsy zaten aynı mıydı? */
+  skipped: number;
   errors: number;
   sampleErrors: string[];
   error?: string;
@@ -187,6 +191,7 @@ export async function pushAllPricesToEtsyAction(
     nextOffset: offset,
     updated: 0,
     unchanged: 0,
+    skipped: 0,
     errors: 0,
     sampleErrors: [],
     ...over,
@@ -230,6 +235,7 @@ export async function pushAllPricesToEtsyAction(
 
   let updated = 0;
   let unchanged = 0;
+  let skipped = 0;
   let errors = 0;
   const sampleErrors: string[] = [];
   const start = Date.now();
@@ -263,8 +269,8 @@ export async function pushAllPricesToEtsyAction(
       propsBySku.set(sku, variantPropsForMatch(v.properties));
     }
     if (priceBySku.size === 0) {
-      unchanged += 1; // yazılacak fiyat yok — dokunma
-      continue;
+      skipped += 1; // yazılacak fiyat yok — dokunma ("zaten güncel"den ayrı say
+      continue; // ki "0 güncellendi" teşhis edilebilsin)
     }
     const r = await pushListingPrices(
       client,
@@ -290,5 +296,14 @@ export async function pushAllPricesToEtsyAction(
     revalidatePath("/tasarimlar");
     revalidatePath("/ayarlar/etsy");
   }
-  return { done, total, nextOffset: i, updated, unchanged, errors, sampleErrors };
+  return {
+    done,
+    total,
+    nextOffset: i,
+    updated,
+    unchanged,
+    skipped,
+    errors,
+    sampleErrors,
+  };
 }

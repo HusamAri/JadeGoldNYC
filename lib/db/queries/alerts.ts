@@ -125,10 +125,11 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
         .eq("id", orgId)
         .maybeSingle(),
       // Stoğu biten/süresi dolan listingler — TEK sorgudan hem sayı hem
-      // dondurulan potansiyel gelir (bedele göre sıralama için).
+      // dondurulan potansiyel gelir (bedele göre sıralama için). id + quantity
+      // de çekilir: "sold_out" state'i panel stoğuyla çapraz-doğrulanır (aşağı).
       supabase
         .from("products")
-        .select("status, price_cents, currency")
+        .select("id, status, price_cents, currency, quantity")
         .eq("org_id", orgId)
         .is("archived_at", null)
         .in("status", PRODUCT_STATUS_ALERTS.map((s) => s.status)),
@@ -234,14 +235,55 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
     (orgRow.data as { default_currency: string | null } | null)?.default_currency ??
     "USD";
 
-  // Durum başına sayı + dondurulan gelir (yalnız org para birimindeki fiyatlar
-  // toplanır — farklı kurları tek sayıya karıştırmak yanıltıcı olur).
-  const byStatus: Record<string, { count: number; sumCents: number }> = {};
-  for (const p of (statusProducts.data ?? []) as {
+  const statusRows = (statusProducts.data ?? []) as {
+    id: string;
     status: string;
     price_cents: number | null;
     currency: string | null;
-  }[]) {
+    quantity: number | null;
+  }[];
+
+  // "Tükendi" doğrulaması (kullanıcı vakası: "sold_out diyor ama stok var").
+  // products.status Etsy listing state'inin BİREBİR aynası (sync.ts) ve Etsy'de
+  // "sold_out" KALICIDIR — yeniden stoklama/yenileme sonrası bile günlük senkron
+  // gelene dek bayat kalır (senkron günlerce kırık kalabildi). Bu yüzden state'i
+  // tek başına doğruluk kaynağı sayma: panelin KENDİ bildiği stok (ürün adedi ya
+  // da varyant adedi > 0) varsa ürün gerçekten tükenmemiştir → "tükendi" alarmı
+  // yanlış olur, sayma. (Yalnız sold_out'a uygulanır; "expired" stoktan bağımsız
+  // olarak listing süresinin dolmasıdır.) Bütünlük: adet varyantlı listing'de
+  // varyantta, tek-parçada products.quantity'de yaşar — ikisi de kontrol edilir.
+  const soldOutIds = statusRows
+    .filter((p) => p.status === "sold_out")
+    .map((p) => p.id);
+  const variantStockByProduct = new Map<string, number>();
+  if (soldOutIds.length > 0) {
+    const { data: vq, error: vqErr } = await supabase
+      .from("product_variants")
+      .select("product_id, quantity")
+      .eq("org_id", orgId)
+      .in("product_id", soldOutIds);
+    if (vqErr)
+      console.error("[alert-center] sold_out varyant stok sorgusu:", vqErr.message);
+    for (const v of (vq ?? []) as {
+      product_id: string | null;
+      quantity: number | null;
+    }[]) {
+      if (!v.product_id) continue;
+      variantStockByProduct.set(
+        v.product_id,
+        (variantStockByProduct.get(v.product_id) ?? 0) + (v.quantity ?? 0),
+      );
+    }
+  }
+  const hasKnownStock = (p: { id: string; quantity: number | null }) =>
+    (p.quantity ?? 0) > 0 || (variantStockByProduct.get(p.id) ?? 0) > 0;
+
+  // Durum başına sayı + dondurulan gelir (yalnız org para birimindeki fiyatlar
+  // toplanır — farklı kurları tek sayıya karıştırmak yanıltıcı olur).
+  const byStatus: Record<string, { count: number; sumCents: number }> = {};
+  for (const p of statusRows) {
+    // Çelişkili state: stok varken "sold_out" → bayat/yanlış, sayma.
+    if (p.status === "sold_out" && hasKnownStock(p)) continue;
     const b = (byStatus[p.status] ??= { count: 0, sumCents: 0 });
     b.count += 1;
     if ((p.currency ?? currency) === currency) b.sumCents += p.price_cents ?? 0;
