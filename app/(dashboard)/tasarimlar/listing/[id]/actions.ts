@@ -8,6 +8,10 @@ import { parseMoneyToCents } from "@/lib/money";
 import { getEtsyWriteAccess } from "@/lib/db/queries/etsy";
 import { EtsyClient, EtsyNotConnectedError } from "@/lib/etsy/client";
 import { pushListingPrices } from "@/lib/etsy/inventory";
+import {
+  variantPropsForMatch,
+  type RawVariantProperties,
+} from "@/lib/variant-properties";
 
 /**
  * Listing Komuta Merkezi — detay sayfası yazma action'ları.
@@ -379,25 +383,29 @@ export async function pushListingPricesToEtsyAction(
 
   const { data: vRows, error: vErr } = await admin
     .from("product_variants")
-    .select("sku, price_cents")
+    .select("sku, price_cents, properties")
     .eq("org_id", m.org_id)
     .eq("product_id", productId);
   if (vErr) return { error: vErr.message };
   const priceBySku = new Map<string, number>();
+  const propsBySku = new Map<string, { name: string; value: string }[]>();
   for (const v of (vRows ?? []) as {
     sku: string | null;
     price_cents: number | null;
+    properties: RawVariantProperties;
   }[]) {
     const sku = (v.sku ?? "").trim();
-    if (sku && v.price_cents != null && v.price_cents > 0)
+    if (!sku) continue;
+    if (v.price_cents != null && v.price_cents > 0)
       priceBySku.set(sku, v.price_cents);
+    propsBySku.set(sku, variantPropsForMatch(v.properties));
   }
   if (priceBySku.size === 0)
     return { error: "Fiyatı olan varyant yok — gönderilecek fiyat bulunamadı." };
 
   try {
     const client = await EtsyClient.forOrg(m.org_id);
-    const r = await pushListingPrices(client, etsyId, priceBySku);
+    const r = await pushListingPrices(client, etsyId, priceBySku, propsBySku);
     if (r.status === "error")
       return { error: r.detail ?? "Etsy'ye gönderilemedi." };
     revalidatePath(`/tasarimlar/listing/${productId}`);

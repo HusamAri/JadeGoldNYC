@@ -138,12 +138,21 @@ export function buildPriceSyncUpdate(
   inventory: EtsyInventory,
   priceBySkuCents: Map<string, number>,
   readinessStateId?: number | null,
+  /** SKU → panel varyant property'leri ({name, value}) — Etsy GET property_name
+   *  null döndüğünde 2025 PUT için ismi buradan (değer eşleşmesiyle) doldurur. */
+  propsBySku?: Map<string, { name: string; value: string }[]>,
 ): { update: EtsyInventoryUpdate; changed: number } {
   let changed = 0;
   const products: EtsyProductUpdate[] = (inventory.products ?? [])
     .filter((p) => !p.is_deleted)
     .map((p) => {
       const sku = p.sku ?? "";
+      // DB varyant property'lerinden değer→isim haritası (küçük harf eşleşme).
+      const nameByValue = new Map<string, string>();
+      for (const pr of propsBySku?.get(sku) ?? []) {
+        const v = (pr.value ?? "").trim().toLowerCase();
+        if (v && pr.name) nameByValue.set(v, pr.name);
+      }
       const dbCents = priceBySkuCents.get(sku);
       const dbUnit = dbCents != null && dbCents > 0 ? dbCents / 100 : null;
       const offerings: EtsyOfferingUpdate[] = (p.offerings ?? [])
@@ -180,16 +189,20 @@ export function buildPriceSyncUpdate(
       }
       return {
         sku,
-        property_values: (p.property_values ?? []).map((pv) => ({
-          property_id: pv.property_id,
-          // 2025 PUT property_name'i string ister — canlı envanterden koru.
-          ...(pv.property_name != null
-            ? { property_name: pv.property_name }
-            : {}),
-          value_ids: pv.value_ids ?? [],
-          values: pv.values ?? [],
-          ...(pv.scale_id != null ? { scale_id: pv.scale_id } : {}),
-        })),
+        property_values: (p.property_values ?? []).map((pv) => {
+          // 2025 PUT property_name'i string ister. Etsy GET null döndürüyorsa
+          // (özellikle custom slot 513/514) DB değerinden ada eşle.
+          const firstVal = (pv.values?.[0] ?? "").trim().toLowerCase();
+          const resolvedName =
+            pv.property_name ?? nameByValue.get(firstVal) ?? null;
+          return {
+            property_id: pv.property_id,
+            ...(resolvedName != null ? { property_name: resolvedName } : {}),
+            value_ids: pv.value_ids ?? [],
+            values: pv.values ?? [],
+            ...(pv.scale_id != null ? { scale_id: pv.scale_id } : {}),
+          };
+        }),
         offerings,
       };
     });
@@ -257,6 +270,7 @@ export async function pushListingPrices(
   client: EtsyClient,
   listingId: number,
   priceBySkuCents: Map<string, number>,
+  propsBySku?: Map<string, { name: string; value: string }[]>,
 ): Promise<PricePushOutcome> {
   try {
     const inventory = await getListingInventory(client, listingId);
@@ -272,6 +286,7 @@ export async function pushListingPrices(
       inventory,
       priceBySkuCents,
       readinessStateId,
+      propsBySku,
     );
     if (changed === 0) {
       return { listingId, status: "unchanged", changed: 0 };

@@ -13,6 +13,10 @@ import {
 import { syncListingVariants } from "@/lib/etsy/variants";
 import { getEtsyWriteAccess } from "@/lib/db/queries/etsy";
 import { pushListingPrices } from "@/lib/etsy/inventory";
+import {
+  variantPropsForMatch,
+  type RawVariantProperties,
+} from "@/lib/variant-properties";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { EtsyClient, EtsyNotConnectedError } from "@/lib/etsy/client";
 
@@ -235,7 +239,7 @@ export async function pushAllPricesToEtsyAction(
     const l = listings[i];
     const { data: vRows, error: vErr } = await admin
       .from("product_variants")
-      .select("sku, price_cents")
+      .select("sku, price_cents, properties")
       .eq("org_id", m.org_id)
       .eq("product_id", l.id);
     if (vErr) {
@@ -245,20 +249,29 @@ export async function pushAllPricesToEtsyAction(
       continue;
     }
     const priceBySku = new Map<string, number>();
+    const propsBySku = new Map<string, { name: string; value: string }[]>();
     for (const v of (vRows ?? []) as {
       sku: string | null;
       price_cents: number | null;
+      properties: RawVariantProperties;
     }[]) {
       const sku = (v.sku ?? "").trim();
-      if (sku && v.price_cents != null && v.price_cents > 0) {
+      if (!sku) continue;
+      if (v.price_cents != null && v.price_cents > 0) {
         priceBySku.set(sku, v.price_cents);
       }
+      propsBySku.set(sku, variantPropsForMatch(v.properties));
     }
     if (priceBySku.size === 0) {
       unchanged += 1; // yazılacak fiyat yok — dokunma
       continue;
     }
-    const r = await pushListingPrices(client, l.etsy_listing_id, priceBySku);
+    const r = await pushListingPrices(
+      client,
+      l.etsy_listing_id,
+      priceBySku,
+      propsBySku,
+    );
     if (r.status === "updated") {
       updated += 1;
       // Etsy'ye yazılan turlar arası rate-limit nefesi.
