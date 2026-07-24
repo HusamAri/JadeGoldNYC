@@ -39,7 +39,11 @@ const california = localFont({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+// NEXT_PUBLIC_SITE_URL tanımlıysa onu kullan; değilse production alan adına
+// düş. localhost fallback'i prod build'de og:image / twitter:image URL'lerini
+// kırıyordu (sosyal önizleme kartı boş geliyordu).
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://amuletta.artifactstudio.info";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
