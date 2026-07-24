@@ -22,6 +22,7 @@ import {
   Compass,
   Stethoscope,
   Share2,
+  Percent,
   type LucideIcon,
 } from "lucide-react";
 
@@ -66,6 +67,7 @@ export const NAV_GROUPS: NavGroup[] = [
       { href: "/satislar", label: "Satışlar", icon: ShoppingBag },
       { href: "/maliyetler", label: "Maliyetler", icon: Wallet },
       { href: "/reklamlar", label: "Reklamlar", icon: Megaphone, capability: "adsSignals" },
+      { href: "/indirimler", label: "İndirimler", icon: Percent },
       { href: "/raporlar", label: "Raporlar", icon: FileBarChart },
     ],
   },

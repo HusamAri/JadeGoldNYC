@@ -44,3 +44,33 @@ export function discountAmountCents(
   const disc = discountedCents(baseCents, pct);
   return disc == null ? 0 : baseCents - disc;
 }
+
+export type DiscountWindow = "aktif" | "planli" | "gecmis";
+
+/**
+ * Tarih aralığına göre indirim durumu (gün bazlı, YYYY-MM-DD). Aralık yoksa
+ * (iki uç da boş) her zaman "aktif". Başlangıç gelecekteyse "planli", bitiş
+ * geçmişse "gecmis"; ikisi arasındaysa "aktif". `todayIso` çağırandan gelir
+ * (saf/test edilebilir kalsın).
+ */
+export function discountWindowStatus(
+  startAt: string | null | undefined,
+  endAt: string | null | undefined,
+  todayIso: string,
+): DiscountWindow {
+  const t = todayIso.slice(0, 10);
+  const s = startAt ? startAt.slice(0, 10) : null;
+  const e = endAt ? endAt.slice(0, 10) : null;
+  if (s && t < s) return "planli";
+  if (e && t > e) return "gecmis";
+  return "aktif";
+}
+
+/** İndirim bugün geçerli mi (tarih aralığı içinde)? */
+export function isDiscountActive(
+  startAt: string | null | undefined,
+  endAt: string | null | undefined,
+  todayIso: string,
+): boolean {
+  return discountWindowStatus(startAt, endAt, todayIso) === "aktif";
+}

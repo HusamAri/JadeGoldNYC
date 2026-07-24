@@ -174,6 +174,10 @@ export interface Product {
    *  aktif Sale/kupon vermediğinden satıcı kendi girer; indirimli fiyat panelde
    *  türetilir (lib/discount.ts), Etsy'ye yazılmaz. Migration 0115. */
   discount_pct: number;
+  /** İndirim tarih aralığı + minimum sepet eşiği (panel planlaması, 0118). */
+  discount_start_at: string | null;
+  discount_end_at: string | null;
+  discount_min_order_cents: number | null;
   /** Panel arşiv damgası — dolu = listelerden gizli (Arşiv filtresi hariç). */
   archived_at: string | null;
   created_at: string;
