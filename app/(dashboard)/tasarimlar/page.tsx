@@ -30,7 +30,9 @@ import {
 } from "@/lib/listing-facets";
 import { strParam, type RawSearchParams } from "@/lib/searchparams";
 import { formatMoney } from "@/lib/money";
+import { clampDiscountPct, discountedCents } from "@/lib/discount";
 import { formatNumber } from "@/lib/format";
+import type { ListingIndexRow } from "@/lib/db/queries/listings";
 import { OrgMark } from "@/components/brand/org-mark";
 import { PageHeader } from "@/components/page-header";
 import { GoldStream } from "@/components/brand/gold-stream";
@@ -66,6 +68,51 @@ const LISTING_STATUSES: {
   { value: "sold_out", label: "Tükendi", variant: "warning" },
   { value: "expired", label: "Süresi doldu", variant: "destructive" },
 ];
+
+/** min/max cent → "min" ya da "min – max" (eşitse tek). */
+function formatRange(
+  minC: number | null,
+  maxC: number | null,
+  currency: string,
+): string {
+  if (minC == null) return "—";
+  const lo = formatMoney(minC, currency);
+  if (maxC == null || maxC === minC) return lo;
+  return `${lo} – ${formatMoney(maxC, currency)}`;
+}
+
+/**
+ * Liste "Fiyat" hücresi — tek taban fiyatı değil, SKU'lu varyantların GERÇEK
+ * satış aralığını (min–max) gösterir; manuel indirim (discount_pct) varsa
+ * indirimli aralığı öne çıkarır, taban aralığı üstü çizili + "-%X" rozetiyle
+ * verir (indirim yalnız panelde; Etsy tabanı değişmez — 0115 kuralı).
+ */
+function PriceCell({ r }: { r: ListingIndexRow }) {
+  const min = r.min_variant_price_cents ?? r.price_cents;
+  const max = r.max_variant_price_cents ?? r.price_cents;
+  if (min == null) return <span className="text-muted-foreground">—</span>;
+  const pct = clampDiscountPct(r.discount_pct);
+  if (pct > 0) {
+    const dMin = discountedCents(min, pct);
+    const dMax = discountedCents(max ?? min, pct);
+    return (
+      <div className="flex flex-col items-end gap-0.5">
+        <span className="font-medium text-emerald-700 dark:text-emerald-400">
+          {formatRange(dMin, dMax, r.currency)}
+        </span>
+        <span className="text-muted-foreground text-[11px]">
+          <span className="line-through">
+            {formatRange(min, max, r.currency)}
+          </span>
+          <span className="ml-1 rounded bg-emerald-500/15 px-1 font-mono text-[10px] font-semibold text-emerald-700 dark:text-emerald-300">
+            -%{pct}
+          </span>
+        </span>
+      </div>
+    );
+  }
+  return <span>{formatRange(min, max, r.currency)}</span>;
+}
 
 function statusMeta(status: string | null) {
   const key = (status ?? "").toLowerCase();
@@ -336,9 +383,7 @@ export default async function ListelerPage({
                         <Badge variant={sm.variant}>{sm.label}</Badge>
                       </TableCell>
                       <TableCell className="text-right tabular-nums">
-                        {r.price_cents != null
-                          ? formatMoney(r.price_cents, r.currency)
-                          : "—"}
+                        <PriceCell r={r} />
                       </TableCell>
                       <TableCell className="text-right">
                         <span className="tabular-nums">{r.variant_count}</span>
