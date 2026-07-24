@@ -181,7 +181,12 @@ export async function fetchCompetitorOfferings(
 export interface OurVariant {
   sku: string;
   name: string | null;
-  properties: EtsyPropertyValue[] | null;
+  // NOT: DB'de `product_variants.properties` iki şekilde saklanır — Etsy dizisi
+  // (Jade Gold) ya da düz nesne (EON seed). Tip önceden yalnız diziyi ilan
+  // ediyordu; EON nesnesi geldiğinde `.flatMap`/tokenize ÇÖKÜYORDU
+  // ("(a ?? []).flatMap is not a function"). Ham tip + asEtsyProperties ile
+  // her iki şekil de güvenle normalize edilir.
+  properties: RawVariantProperties;
   price_cents: number | null;
   weight_grams: number | null;
 }
@@ -207,11 +212,12 @@ export function buildVariantComparison(
   manualMatches: VariantMatchOverride[] = [],
 ): VariantComparison[] {
   return ourVariants.map((v) => {
-    const vt = tokenize(v.properties);
+    // Her iki property şeklini (Etsy dizisi / EON düz nesne) kanonik diziye
+    // indirge — aksi halde EON nesnesinde tokenize/`.flatMap` çöker.
+    const props = asEtsyProperties(v.properties);
+    const vt = tokenize(props);
     const label =
-      (v.properties ?? [])
-        .flatMap((p) => p.values ?? [])
-        .join(" · ") || v.name || v.sku;
+      props.flatMap((p) => p.values ?? []).join(" · ") || v.name || v.sku;
     const manuals = manualMatches.filter((m) => m.our_sku === v.sku);
     const manualListingIds = new Set(
       manuals.map((m) => m.competitor_listing_id),
