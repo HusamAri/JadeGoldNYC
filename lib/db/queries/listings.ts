@@ -348,30 +348,61 @@ export async function listListingsIndex(opts?: {
   if (products.length === 0) return [];
 
   const ids = new Set(products.map((p) => p.id));
+  const idList = [...ids];
 
-  // Toplu yan veriler — RLS org'a kısıtlar; ürün filtresi Map aşamasında.
+  // Yan verileri EKRANDAKİ ürünlere daralt: eskiden bu üç fetch org'un TÜM
+  // product_variants / "son 30" product_metrics / keyword_research tablosunu
+  // sayfa sayfa çekip JS'te `ids.has()` ile eliyordu — ~10k+ varyantlı org'da
+  // (EON) her Listeler yüklemesinde bütün tablo taranıyordu. Artık `product_id`
+  // IN (ekrandaki ürünler) ile filtreleniyor; büyük id listesi PostgREST URL
+  // sınırına takılmasın diye ~300'lük parçalara bölünür (chunk'lar sıralı,
+  // üç tablo birbirine paralel).
+  const ID_CHUNK = 300;
+  const fetchForIds = async <T>(
+    build: (
+      chunk: string[],
+      from: number,
+      to: number,
+    ) => Parameters<typeof fetchAllPages<T>>[0] extends (
+      from: number,
+      to: number,
+    ) => infer R
+      ? R
+      : never,
+  ): Promise<T[]> => {
+    const out: T[] = [];
+    for (let i = 0; i < idList.length; i += ID_CHUNK) {
+      const chunk = idList.slice(i, i + ID_CHUNK);
+      const rows = await fetchAllPages<T>((from, to) => build(chunk, from, to));
+      out.push(...rows);
+    }
+    return out;
+  };
+
+  // Toplu yan veriler — org + EKRANDAKİ ürünlerle kısıtlı.
   const [variants, adsRows, researchRows] = await Promise.all([
-    fetchAllPages<VariantAggDbRow>((from, to) =>
+    fetchForIds<VariantAggDbRow>((chunk, from, to) =>
       supabase
         .from("product_variants")
         .select("product_id, weight_grams, price_cents, sku")
-        .not("product_id", "is", null)
+        .in("product_id", chunk)
         .order("id", { ascending: true })
         .range(from, to),
     ),
-    fetchAllPages<Ads30DbRow>((from, to) =>
+    fetchForIds<Ads30DbRow>((chunk, from, to) =>
       supabase
         .from("product_metrics")
         .select("product_id, created_at, ads_spend_cents, orders")
         .ilike("period_label", "%son 30%")
-        .not("product_id", "is", null)
+        .in("product_id", chunk)
         .order("id", { ascending: true })
         .range(from, to),
     ),
-    fetchAllPages<ResearchDbRow>((from, to) =>
+    fetchForIds<ResearchDbRow>((chunk, from, to) =>
       supabase
         .from("keyword_research")
         .select("product_id")
+        .in("product_id", chunk)
         .order("id", { ascending: true })
         .range(from, to),
     ),

@@ -29,7 +29,10 @@ import { DiscountControl } from "@/components/listing/discount-control";
 import { RepriceRuleCard } from "@/components/listing/reprice-rule-card";
 import { AdsSummaryCard } from "@/components/listing/ads-summary-card";
 import { ViewsTrendCard } from "@/components/listing/views-trend-card";
-import { getListingViewsTrends } from "@/lib/db/queries/etsy-insights";
+import {
+  getListingViewsTrends,
+  type ListingViewsTrend,
+} from "@/lib/db/queries/etsy-insights";
 import { ListingGapsCard } from "@/components/listing/listing-gaps-card";
 import { ListingFieldsForm } from "@/components/listing/listing-fields-form";
 import { EtsyCopyCard, type EtsyCopyField } from "@/components/listing/etsy-copy-card";
@@ -97,10 +100,38 @@ export default async function ListingDetayPage({
   const detail = await getListingDetail(id);
   if (!detail) notFound();
   const { product, variants, ads, lifetimeSales, gaps } = detail;
-  const [goldSettings, rivalMatches] = await Promise.all([
+  // Ayar SENKRON tespit edilir (detectKarat await'siz) → 18K spot fetch'i de
+  // aşağıdaki tek Promise.all'a girebilir. `detail` bilindikten sonra bu yedi
+  // veri birbirinden BAĞIMSIZ; eskiden sırayla await ediliyordu (~6 tur), artık
+  // tek turda paralel. Yalnız managedImages `eon` sonucuna bağlı (EON-only 2. tur).
+  const simKarat = detectKarat(product.title, product.tags, product.materials);
+  const etsyListingId = product.etsy_listing_id;
+  const [
+    goldSettings,
+    rivalMatches,
+    goldOunce,
+    images,
+    marketPosition,
+    viewsTrendMap,
+    eon,
+  ] = await Promise.all([
     getGoldSettings(),
     listCompetitorVariantMatches(product.id),
+    simKarat === "18K" ? getGoldPricePerOunce() : Promise.resolve<number | null>(null),
+    // Canlı Etsy görselleri — bağlı değilse/geç kalırsa [] (graceful, tek deneme).
+    etsyListingId != null
+      ? getListingImages(m.org_id, etsyListingId)
+      : Promise.resolve<ListingImage[]>([]),
+    // Pazar konumu ($/gram) — günlük rutin doldurunca dolu, yoksa null.
+    getListingMarketPosition(product.id),
+    // Görüntülenme trendi — günlük Etsy fotoğraf birikiminden.
+    etsyListingId != null
+      ? getListingViewsTrends(m.org_id, [etsyListingId])
+      : Promise.resolve(new Map<number, ListingViewsTrend>()),
+    // EON'a özel: panelden yönetilen çoklu görsel galerisi.
+    isEonActive(),
   ]);
+
   const rivalProjection = projectPricesFromCompetitorMatches(
     rivalMatches,
     variants.map((v) => ({
@@ -124,7 +155,6 @@ export default async function ListingDetayPage({
   // İndirim simülatörü maliyet tabanı: gram × ayar alım fiyatı (cent/g).
   // 10K/14K org ayarından; 18K canlı spot + 14K işçilik priminden türetilir.
   // Ayar tespit edilemezse null → simülatör kendini gizler, uydurmaz.
-  const simKarat = detectKarat(product.title, product.tags, product.materials);
   const simCostPerGramCents =
     simKarat === "10K"
       ? goldSettings.purchase_price_10k_cents
@@ -132,30 +162,14 @@ export default async function ListingDetayPage({
         ? goldSettings.purchase_price_14k_cents
         : simKarat === "18K"
           ? derivePurchase18kCentsPerGram(
-              await getGoldPricePerOunce(),
+              goldOunce ?? 0,
               goldSettings.purchase_price_14k_cents,
             )
           : null;
 
-  // Canlı Etsy görselleri — bağlı değilse/geç kalırsa [] (graceful, tek deneme).
-  const images: ListingImage[] =
-    product.etsy_listing_id != null
-      ? await getListingImages(m.org_id, product.etsy_listing_id)
-      : [];
-
-  // Pazar konumu ($/gram) — günlük rutin doldurunca dolu, yoksa null (kart yok).
-  const marketPosition = await getListingMarketPosition(product.id);
-
-  // Görüntülenme trendi — günlük Etsy fotoğraf birikiminden (API tarihçe vermez).
   const viewsTrend =
-    product.etsy_listing_id != null
-      ? ((await getListingViewsTrends(m.org_id, [product.etsy_listing_id])).get(
-          product.etsy_listing_id,
-        ) ?? null)
-      : null;
+    etsyListingId != null ? (viewsTrendMap.get(etsyListingId) ?? null) : null;
 
-  // EON'a özel: panelden yönetilen çoklu görsel galerisi (Drive/yükleme + sırala).
-  const eon = await isEonActive();
   let managedImages: ManagedListingImage[] = [];
   if (eon) {
     const supabase = await createClient();
