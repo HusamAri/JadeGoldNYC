@@ -64,11 +64,18 @@ export function buildInventoryUpdate(
   inventory: EtsyInventory,
   shouldSet: (product: EtsyInventoryProduct) => boolean,
   newQuantity: number,
+  readinessStateId?: number | null,
+  propsBySku?: Map<string, { name: string; value: string }[]>,
 ): EtsyInventoryUpdate {
   const products: EtsyProductUpdate[] = (inventory.products ?? [])
     .filter((p) => !p.is_deleted)
     .map((p) => {
       const isTarget = shouldSet(p);
+      const nameByValue = new Map<string, string>();
+      for (const pr of propsBySku?.get(p.sku ?? "") ?? []) {
+        const v = (pr.value ?? "").trim().toLowerCase();
+        if (v && pr.name) nameByValue.set(v, pr.name);
+      }
       // PARA GÜVENLİĞİ: Etsy kısmi güncelleme kabul etmez — adet yazarken TÜM
       // offering fiyatlarını da AYNEN geri göndeririz. Bir offering'in canlı
       // fiyatı okunamazsa (etsyMoneyToUnit → 0/NaN) o fiyatı geri yazmak Etsy'de
@@ -88,6 +95,10 @@ export function buildInventoryUpdate(
             price,
             quantity: isTarget ? newQuantity : (o.quantity ?? 0),
             is_enabled: o.is_enabled ?? true,
+            // 2025 modeli (?legacy=false): her offering'e işlem profili.
+            ...(readinessStateId != null
+              ? { readiness_state_id: readinessStateId }
+              : {}),
           };
         });
       // Offering'i price:0 ile YOKTAN YARATMA (fiyat sıfırlama riski) — okunabilir
@@ -99,12 +110,18 @@ export function buildInventoryUpdate(
       }
       return {
         sku: p.sku ?? "",
-        property_values: (p.property_values ?? []).map((pv) => ({
-          property_id: pv.property_id,
-          value_ids: pv.value_ids ?? [],
-          values: pv.values ?? [],
-          ...(pv.scale_id != null ? { scale_id: pv.scale_id } : {}),
-        })),
+        property_values: (p.property_values ?? []).map((pv) => {
+          const firstVal = (pv.values?.[0] ?? "").trim().toLowerCase();
+          const resolvedName =
+            pv.property_name ?? nameByValue.get(firstVal) ?? null;
+          return {
+            property_id: pv.property_id,
+            ...(resolvedName != null ? { property_name: resolvedName } : {}),
+            value_ids: pv.value_ids ?? [],
+            values: pv.values ?? [],
+            ...(pv.scale_id != null ? { scale_id: pv.scale_id } : {}),
+          };
+        }),
         offerings,
       };
     });
@@ -120,6 +137,7 @@ export function buildInventoryUpdate(
     ...(inventory.sku_on_property
       ? { sku_on_property: inventory.sku_on_property }
       : {}),
+    ...(readinessStateId != null ? { readiness_state_on_property: [] } : {}),
   };
 }
 
@@ -346,6 +364,7 @@ export async function pushListingQuantity(
   sku: string | null,
   targetQuantity: number,
   applyToAll = false,
+  propsBySku?: Map<string, { name: string; value: string }[]>,
 ): Promise<PushOutcome> {
   try {
     const inventory = await getListingInventory(client, listingId);
@@ -406,8 +425,20 @@ export async function pushListingQuantity(
         detail: "Adet zaten güncel",
       };
     }
-    const update = buildInventoryUpdate(inventory, shouldSet, targetQuantity);
-    await putListingInventory(client, listingId, update);
+    // 2025 modeli: fiziksel listing envanter PUT'u her offering'de readiness
+    // state ister. Çözebilirsek ?legacy=false ile göndeririz (fiyat itişiyle
+    // aynı sözleşme); çözemezsek legacy PUT'a düşeriz.
+    const readinessStateId = await resolveReadinessStateId(client);
+    const update = buildInventoryUpdate(
+      inventory,
+      shouldSet,
+      targetQuantity,
+      readinessStateId,
+      propsBySku,
+    );
+    await putListingInventory(client, listingId, update, {
+      legacy: readinessStateId != null ? false : undefined,
+    });
     return {
       listingId,
       sku,
