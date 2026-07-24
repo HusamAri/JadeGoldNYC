@@ -211,6 +211,27 @@ export async function advanceEtsySync(
           await upsertListingsPage(admin, orgId, active);
           counts.products += active.length;
         }
+        // VERİ KAYBI GUARD'ı: "edit" (Etsy'de düzenlenmekte) gibi geçici
+        // durumdaki satırlar aktif yazımdan ELENİR ama Etsy'de CANLIDIR. Yazılıp
+        // upsert'lenmezlerse updated_at bayat kalır ve mutabakat (reconcile) bu
+        // canlı listing'i + varyant SKU'larını SİLER. Bu yüzden taramada
+        // görülen aktif-olmayan satırların updated_at'ini "görüldü" olarak
+        // tazele (statülerine dokunma) → reconcile onları silmez.
+        const seenTransientIds = results
+          .filter((l) => l.state !== "active" && l.listing_id != null)
+          .map((l) => l.listing_id as number);
+        if (seenTransientIds.length > 0) {
+          const { error: touchErr } = await admin
+            .from("products")
+            .update({ updated_at: new Date().toISOString() })
+            .eq("org_id", orgId)
+            .in("etsy_listing_id", seenTransientIds);
+          if (touchErr)
+            console.error(
+              "[etsy-sync] geçici durum tazeleme:",
+              touchErr.message,
+            );
+        }
         if (results.length < PAGE) {
           // Aktif listeler bitti → diğer durumları da çek (tam envanter).
           phase = "listings_all";
@@ -423,9 +444,13 @@ export function mapReceiptStatus(r: EtsyReceipt): string {
       return "refunded";
     case "partially refunded":
       return "partially_refunded";
-    default:
-      // Bilinmeyen/boş durum: eski davranışla uyumlu güvenli varsayılan.
-      return "completed";
+    default: {
+      // Statü ASLA hardcode edilmez (second-brain 0080): bilinmeyen/yeni Etsy
+      // değerini "completed" saymak geliri şişirir + iadeyi/iptali maskeler.
+      // Ham değeri (boşlukları alt-çizgiyle) OLDUĞU GİBİ taşı; boşsa "open".
+      const raw = (r.status ?? "").toLowerCase().trim().replace(/\s+/g, "_");
+      return raw || "open";
+    }
   }
 }
 

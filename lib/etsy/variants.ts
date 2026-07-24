@@ -46,7 +46,14 @@ function toRows(
   // ne veriyorsa o. Mint (panel-üretimi yedek SKU) KALDIRILDI: Etsy'de SKU
   // yoksa panelde de varyant satırı oluşmaz. Yalnız SKU'lu offering'ler yazılır.
   return live
-    .filter((p) => (p.sku ?? "").trim() !== "")
+    .filter(
+      (p) =>
+        (p.sku ?? "").trim() !== "" &&
+        // Okunabilir (silinmemiş) offering yoksa YAZMA: aksi halde price_cents
+        // null + quantity 0 upsert'lenip paneldeki iyi fiyat/adedi EZER. Etsy'de
+        // offering yoksa yazacak bir şey de yok — mevcut satır korunur.
+        (p.offerings ?? []).some((o) => !o.is_deleted),
+    )
     .map((p) => {
       const offerings = (p.offerings ?? []).filter((o) => !o.is_deleted);
       const priceCents = offerings.length
