@@ -30,6 +30,11 @@ export interface ListingIndexRow {
   status: string | null; // 'active' | 'draft' | ...
   image_url: string | null;
   price_cents: number | null;
+  /** SKU'lu varyantların satış fiyatı aralığı (varsa) — liste "Fiyat" sütunu
+   *  tek taban fiyatı değil GERÇEK aralığı gösterir. Tek varyant/eşit fiyatta
+   *  min == max. Hiç fiyatlı varyant yoksa null (products.price_cents'e düşer). */
+  min_variant_price_cents: number | null;
+  max_variant_price_cents: number | null;
   currency: string;
   quantity: number | null;
   num_images: number | null;
@@ -213,6 +218,7 @@ interface ProductIndexDbRow {
 interface VariantAggDbRow {
   product_id: string | null;
   weight_grams: number | null;
+  price_cents: number | null;
   sku: string | null;
 }
 
@@ -348,7 +354,7 @@ export async function listListingsIndex(opts?: {
     fetchAllPages<VariantAggDbRow>((from, to) =>
       supabase
         .from("product_variants")
-        .select("product_id, weight_grams, sku")
+        .select("product_id, weight_grams, price_cents, sku")
         .not("product_id", "is", null)
         .order("id", { ascending: true })
         .range(from, to),
@@ -375,7 +381,13 @@ export async function listListingsIndex(opts?: {
   // (Etsy sync de yalnız SKU'lu offering yazar — boş SKU varyant panelde oluşmaz.)
   const variantAgg = new Map<
     string,
-    { total: number; missing: number; labelSku: string }
+    {
+      total: number;
+      missing: number;
+      labelSku: string;
+      minPrice: number | null;
+      maxPrice: number | null;
+    }
   >();
   for (const v of variants) {
     if (!v.product_id || !ids.has(v.product_id)) continue;
@@ -385,9 +397,19 @@ export async function listListingsIndex(opts?: {
       total: 0,
       missing: 0,
       labelSku: vSku,
+      minPrice: null,
+      maxPrice: null,
     };
     agg.total += 1;
     if (v.weight_grams == null) agg.missing += 1;
+    // Fiyat aralığı: SKU'lu varyantların satış fiyatından min/max (275 varyantlı
+    // alyansta liste "Fiyat" sütunu tek taban değil gerçek aralığı göstersin).
+    if (v.price_cents != null && v.price_cents > 0) {
+      agg.minPrice =
+        agg.minPrice == null ? v.price_cents : Math.min(agg.minPrice, v.price_cents);
+      agg.maxPrice =
+        agg.maxPrice == null ? v.price_cents : Math.max(agg.maxPrice, v.price_cents);
+    }
     // Sıra/etiket için en "büyük" varyant SKU (listing SKU boşken).
     if (compareListingSkuDesc(vSku, agg.labelSku) < 0) agg.labelSku = vSku;
     variantAgg.set(v.product_id, agg);
@@ -428,6 +450,8 @@ export async function listListingsIndex(opts?: {
         status: p.status,
         image_url: p.image_url,
         price_cents: p.price_cents,
+        min_variant_price_cents: va.minPrice,
+        max_variant_price_cents: va.maxPrice,
         currency: p.currency ?? "USD",
         quantity: p.quantity,
         num_images: p.num_images,
