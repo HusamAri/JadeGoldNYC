@@ -137,6 +137,7 @@ export function buildInventoryUpdate(
 export function buildPriceSyncUpdate(
   inventory: EtsyInventory,
   priceBySkuCents: Map<string, number>,
+  readinessStateId?: number | null,
 ): { update: EtsyInventoryUpdate; changed: number } {
   let changed = 0;
   const products: EtsyProductUpdate[] = (inventory.products ?? [])
@@ -165,6 +166,11 @@ export function buildPriceSyncUpdate(
             price: targetUnit,
             quantity: o.quantity ?? 0,
             is_enabled: o.is_enabled ?? true,
+            // 2025 modeli: her offering'e işlem profili (listing-düzeyi tek
+            // readiness). readinessStateId yoksa alan atlanır (legacy PUT).
+            ...(readinessStateId != null
+              ? { readiness_state_id: readinessStateId }
+              : {}),
           };
         });
       if (offerings.length === 0) {
@@ -196,9 +202,38 @@ export function buildPriceSyncUpdate(
       ...(inventory.sku_on_property
         ? { sku_on_property: inventory.sku_on_property }
         : {}),
+      // 2025 PUT (?legacy=false) readiness_state_on_property bekler; işlem
+      // profili property'ye göre değişmediğinden [].
+      ...(readinessStateId != null ? { readiness_state_on_property: [] } : {}),
     },
     changed,
   };
+}
+
+/**
+ * Listing'in işlem profilini (readiness state) çözer — 2025 envanter PUT'unda
+ * her offering'e verilir. Mağaza tanımlarından made_to_order (yoksa ilk) seçilir;
+ * okunamazsa null (çağıran legacy PUT'a düşer). create-listing ile aynı mantık.
+ */
+export async function resolveReadinessStateId(
+  client: EtsyClient,
+): Promise<number | null> {
+  try {
+    const shopId = await client.resolveShopId();
+    if (shopId == null) return null;
+    const rs = await client.get<{
+      results?: { readiness_state_id: number; readiness_state: string }[];
+    }>(etsyPaths.readinessStateDefinitions(shopId));
+    const defs = rs.results ?? [];
+    return (
+      defs.find((d) => d.readiness_state === "made_to_order")
+        ?.readiness_state_id ??
+      defs[0]?.readiness_state_id ??
+      null
+    );
+  } catch {
+    return null;
+  }
 }
 
 export type PricePushOutcome = {
@@ -225,11 +260,21 @@ export async function pushListingPrices(
     if (live.length === 0) {
       return { listingId, status: "unchanged", changed: 0, detail: "Envanter boş" };
     }
-    const { update, changed } = buildPriceSyncUpdate(inventory, priceBySkuCents);
+    // 2025 modeli: fiziksel listing envanter PUT'u her offering'de readiness
+    // state ister ("All offerings need readiness state"). Çözebilirsek
+    // ?legacy=false ile o profili göndeririz; çözemezsek legacy PUT'a düşeriz.
+    const readinessStateId = await resolveReadinessStateId(client);
+    const { update, changed } = buildPriceSyncUpdate(
+      inventory,
+      priceBySkuCents,
+      readinessStateId,
+    );
     if (changed === 0) {
       return { listingId, status: "unchanged", changed: 0 };
     }
-    await putListingInventory(client, listingId, update);
+    await putListingInventory(client, listingId, update, {
+      legacy: readinessStateId != null ? false : undefined,
+    });
     return { listingId, status: "updated", changed };
   } catch (e) {
     return {
@@ -241,17 +286,23 @@ export async function pushListingPrices(
   }
 }
 
-/** Güncellenmiş envanteri Etsy'ye yazar (PUT). listings_w kapsamı gerektirir. */
+/**
+ * Güncellenmiş envanteri Etsy'ye yazar (PUT). listings_w kapsamı gerektirir.
+ * `legacy: false` → 2025 envanter modeli (`?legacy=false`): offering-düzeyi
+ * readiness_state_id'yi yalnız bu mod kabul eder. Belirtilmezse eski (legacy)
+ * yol korunur (reprice/stok gibi mevcut çağıranlar davranış değiştirmez).
+ */
 export async function putListingInventory(
   client: EtsyClient,
   listingId: number,
   update: EtsyInventoryUpdate,
+  opts?: { legacy?: boolean },
 ): Promise<void> {
-  await client.request<unknown>(
-    "PUT",
-    etsyPaths.listingInventory(listingId),
-    update,
-  );
+  const path =
+    opts?.legacy === false
+      ? etsyPaths.listingInventory(listingId) + "?legacy=false"
+      : etsyPaths.listingInventory(listingId);
+  await client.request<unknown>("PUT", path, update);
 }
 
 export type PushOutcome = {

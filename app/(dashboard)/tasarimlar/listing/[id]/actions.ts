@@ -2,9 +2,12 @@
 
 import { revalidatePath } from "next/cache";
 
-import { requireMembership } from "@/lib/auth";
+import { requireMembership, isManager, MANAGER_ONLY_ERROR } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { parseMoneyToCents } from "@/lib/money";
+import { getEtsyWriteAccess } from "@/lib/db/queries/etsy";
+import { EtsyClient, EtsyNotConnectedError } from "@/lib/etsy/client";
+import { pushListingPrices } from "@/lib/etsy/inventory";
 
 /**
  * Listing Komuta Merkezi — detay sayfası yazma action'ları.
@@ -329,4 +332,83 @@ export async function undoVariantPrices(
   revalidatePath(`/tasarimlar/listing/${productId}`);
   revalidatePath("/tasarimlar");
   return { ok: true, restored };
+}
+
+export interface PushOneResult {
+  ok?: boolean;
+  /** Gerçekten Etsy'ye yazıldı mı (fiyat farklıydı)? */
+  updated?: boolean;
+  /** Değişen offering sayısı (updated ise). */
+  changed?: number;
+  /** Etsy zaten panelle aynıydı — yazılmadı. */
+  unchanged?: boolean;
+  needsReconnect?: boolean;
+  error?: string;
+}
+
+/**
+ * TEK listing'in varyant fiyatlarını Etsy'ye yazar (kanarya: toplu itiş öncesi
+ * bir ilanda dene-doğrula). Toplu "Etsy'e her şeyi gönder" ile AYNI güvenli
+ * çekirdeği kullanır (pushListingPrices): DB'de fiyatı olmayan SKU'da Etsy
+ * canlı fiyatı korunur, fark yoksa PUT atlanır, fiyat asla sıfırlanmaz. Sonuç
+ * NEDEN'i açıkça döner (yazma izni yok / bağlı değil / değişiklik yok / hata).
+ */
+export async function pushListingPricesToEtsyAction(
+  productId: string,
+): Promise<PushOneResult> {
+  const m = await requireMembership();
+  if (!isManager(m.role)) return { error: MANAGER_ONLY_ERROR };
+  const { writeEnabled } = await getEtsyWriteAccess(m.org_id);
+  if (!writeEnabled)
+    return {
+      error:
+        "Etsy yazma izni (listings_w) kapalı — Ayarlar → Etsy'de 'Yeniden Bağlan' ile yazma iznini onaylayın.",
+    };
+
+  const admin = createAdminClient();
+  const { data: prod, error: prodErr } = await admin
+    .from("products")
+    .select("etsy_listing_id")
+    .eq("org_id", m.org_id)
+    .eq("id", productId)
+    .maybeSingle();
+  if (prodErr) return { error: prodErr.message };
+  const etsyId = (prod as { etsy_listing_id: number | null } | null)
+    ?.etsy_listing_id;
+  if (etsyId == null) return { error: "Bu listing Etsy'e bağlı değil." };
+
+  const { data: vRows, error: vErr } = await admin
+    .from("product_variants")
+    .select("sku, price_cents")
+    .eq("org_id", m.org_id)
+    .eq("product_id", productId);
+  if (vErr) return { error: vErr.message };
+  const priceBySku = new Map<string, number>();
+  for (const v of (vRows ?? []) as {
+    sku: string | null;
+    price_cents: number | null;
+  }[]) {
+    const sku = (v.sku ?? "").trim();
+    if (sku && v.price_cents != null && v.price_cents > 0)
+      priceBySku.set(sku, v.price_cents);
+  }
+  if (priceBySku.size === 0)
+    return { error: "Fiyatı olan varyant yok — gönderilecek fiyat bulunamadı." };
+
+  try {
+    const client = await EtsyClient.forOrg(m.org_id);
+    const r = await pushListingPrices(client, etsyId, priceBySku);
+    if (r.status === "error")
+      return { error: r.detail ?? "Etsy'ye gönderilemedi." };
+    revalidatePath(`/tasarimlar/listing/${productId}`);
+    return {
+      ok: true,
+      updated: r.status === "updated",
+      changed: r.changed,
+      unchanged: r.status === "unchanged",
+    };
+  } catch (e) {
+    if (e instanceof EtsyNotConnectedError) return { needsReconnect: true };
+    return { error: e instanceof Error ? e.message : "Etsy'ye gönderilemedi." };
+  }
 }

@@ -15,6 +15,7 @@ import { detectKarat, derivePurchase18kCentsPerGram } from "@/lib/gold-cost";
 import { listCompetitorVariantMatches } from "@/lib/db/queries/keyword-research";
 import { projectPricesFromCompetitorMatches } from "@/lib/etsy/competitor-gram-price";
 import { getListingImages, type ListingImage } from "@/lib/etsy/images";
+import { getEtsyWriteAccess } from "@/lib/db/queries/etsy";
 import { listListingImages } from "@/lib/db/queries/listing-images";
 import type { ListingImage as ManagedListingImage } from "@/lib/types";
 import { ListingImageManager } from "@/components/listing/listing-image-manager";
@@ -23,6 +24,7 @@ import { PageHeader } from "@/components/page-header";
 import { KeywordResearchPanel } from "@/components/keyword-research-panel";
 import { ImageStrip } from "@/components/listing/image-strip";
 import { VariantEditor } from "@/components/listing/variant-editor";
+import { EtsyPricePushButton } from "@/components/listing/etsy-price-push-button";
 import { MarketPositionCard } from "@/components/listing/market-position-card";
 import { VariantMatrix } from "@/components/listing/variant-matrix";
 import { DiscountControl } from "@/components/listing/discount-control";
@@ -114,6 +116,7 @@ export default async function ListingDetayPage({
     marketPosition,
     viewsTrendMap,
     eon,
+    writeAccess,
   ] = await Promise.all([
     getGoldSettings(),
     listCompetitorVariantMatches(product.id),
@@ -130,6 +133,8 @@ export default async function ListingDetayPage({
       : Promise.resolve(new Map<number, ListingViewsTrend>()),
     // EON'a özel: panelden yönetilen çoklu görsel galerisi.
     isEonActive(),
+    // Fiyat itiş butonu için Etsy yazma izni.
+    getEtsyWriteAccess(m.org_id),
   ]);
 
   const rivalProjection = projectPricesFromCompetitorMatches(
@@ -383,6 +388,21 @@ export default async function ListingDetayPage({
                 : undefined
         }
       >
+        {/* Kanarya: bu listing'in panel fiyatlarını Etsy'ye gönder — toplu
+            itiş öncesi tek ilanda dene-doğrula; sonucu net raporlar. */}
+        {etsyListingId != null && (
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-xl border px-3 py-2">
+            <p className="text-muted-foreground text-xs">
+              Panel varyant fiyatlarını bu listing için Etsy&apos;ye gönder
+              (yalnız farklı olanlar yazılır; fiyat sıfırlanmaz).
+            </p>
+            <EtsyPricePushButton
+              productId={product.id}
+              writeEnabled={writeAccess.writeEnabled}
+              hasEtsyListing={etsyListingId != null}
+            />
+          </div>
+        )}
         <VariantEditor
           productId={product.id}
           variants={variants}
