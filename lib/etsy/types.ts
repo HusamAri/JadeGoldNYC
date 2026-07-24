@@ -164,6 +164,12 @@ export interface EtsyOfferingUpdate {
 
 export interface EtsyPropertyValueUpdate {
   property_id: number;
+  /**
+   * 2025 envanter PUT'u (`?legacy=false`) property_name'i STRING olarak ister
+   * ("Expected string value for 'property_name' (got NULL)"). GET envanterinden
+   * korunur; legacy PUT'ta gönderilmese de zararsızdır.
+   */
+  property_name?: string;
   value_ids: number[];
   values: string[];
   scale_id?: number;

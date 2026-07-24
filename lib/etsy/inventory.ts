@@ -182,6 +182,10 @@ export function buildPriceSyncUpdate(
         sku,
         property_values: (p.property_values ?? []).map((pv) => ({
           property_id: pv.property_id,
+          // 2025 PUT property_name'i string ister — canlı envanterden koru.
+          ...(pv.property_name != null
+            ? { property_name: pv.property_name }
+            : {}),
           value_ids: pv.value_ids ?? [],
           values: pv.values ?? [],
           ...(pv.scale_id != null ? { scale_id: pv.scale_id } : {}),
