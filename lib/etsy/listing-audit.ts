@@ -188,6 +188,77 @@ export const AUDIT_CHECKS: AuditCheckDef[] = [
 
 export const AUDIT_CHECK_BY_KEY = new Map(AUDIT_CHECKS.map((c) => [c.key, c]));
 
+/**
+ * Alura Listing Helper tarzı kategori — skor kartında pass/fail ikonu.
+ * Etsy Seller Handbook gruplarıyla hizalı: title / tags / description / photos / other.
+ */
+export type AuditCategory = "title" | "tags" | "description" | "photos" | "other";
+
+export const AUDIT_CATEGORY_BY_KEY: Record<AuditCheckKey, AuditCategory> = {
+  tags_missing: "tags",
+  tags_duplicate: "tags",
+  tags_single_word: "tags",
+  title_repeat: "title",
+  title_rules: "title",
+  title_long: "title",
+  title_entities: "title",
+  description_missing: "description",
+  description_copies_title: "description",
+  images_low: "photos",
+};
+
+/** Bulgu başına puan düşümü — Alura LQS (1–100) vekili; handbook sinyallerine göre. */
+const SCORE_PENALTY: Record<AuditCheckKey, number> = {
+  tags_missing: 15,
+  tags_duplicate: 5,
+  tags_single_word: 5,
+  title_rules: 15,
+  title_repeat: 5,
+  title_long: 5,
+  title_entities: 3,
+  description_missing: 15,
+  description_copies_title: 5,
+  images_low: 10,
+};
+
+export interface ListingQualityScore {
+  /** 1–100, Alura Listing Quality Score benzeri. */
+  score: number;
+  /** Kategori başına: bulgu yoksa true. */
+  categories: Record<AuditCategory, boolean>;
+  findings: AuditFinding[];
+}
+
+/** Tek listing için 1–100 kalite skoru + kategori durumu. */
+export function scoreListing(p: AuditProductInput): ListingQualityScore {
+  const findings = auditProduct(p);
+  let score = 100;
+  for (const f of findings) {
+    score -= SCORE_PENALTY[f.key] ?? 5;
+  }
+  score = Math.max(1, Math.min(100, score));
+
+  const categories: Record<AuditCategory, boolean> = {
+    title: true,
+    tags: true,
+    description: true,
+    photos: true,
+    other: true,
+  };
+  for (const f of findings) {
+    categories[AUDIT_CATEGORY_BY_KEY[f.key]] = false;
+  }
+
+  return { score, categories, findings };
+}
+
+/** Mağaza skoru = aktif listing skorlarının ortalaması (Alura shop score). */
+export function averageListingScore(scores: number[]): number | null {
+  if (scores.length === 0) return null;
+  const sum = scores.reduce((a, b) => a + b, 0);
+  return Math.round(sum / scores.length);
+}
+
 /** Tek ürünü tüm kontrollerden geçirir. */
 export function auditProduct(p: AuditProductInput): AuditFinding[] {
   const out: AuditFinding[] = [];

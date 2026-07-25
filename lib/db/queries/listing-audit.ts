@@ -3,7 +3,9 @@ import { fetchAllPages } from "@/lib/db/queries/listings";
 import {
   AUDIT_CHECKS,
   AUDIT_CHECK_BY_KEY,
-  auditProduct,
+  averageListingScore,
+  scoreListing,
+  type AuditCategory,
   type AuditCheckDef,
   type AuditCheckKey,
 } from "@/lib/etsy/listing-audit";
@@ -46,6 +48,12 @@ export interface ListingAuditResult {
   groups: AuditGroup[];
   auditedCount: number;
   findingCount: number;
+  /**
+   * Alura Listing Helper vekili: mağaza skoru (aktif listing ortalaması, 1–100)
+   * + kategori bazında kaç listing geçiyor.
+   */
+  shopScore: number | null;
+  categoryPassCounts: Record<AuditCategory, { pass: number; total: number }>;
 }
 
 const SEVERITY_RANK: Record<string, number> = { kritik: 0, onemli: 1, bilgi: 2 };
@@ -78,16 +86,34 @@ export async function getListingAudit(
   );
 
   const byKey = new Map<AuditCheckKey, AuditItem[]>();
+  const scores: number[] = [];
+  const categoryPassCounts: Record<
+    AuditCategory,
+    { pass: number; total: number }
+  > = {
+    title: { pass: 0, total: 0 },
+    tags: { pass: 0, total: 0 },
+    description: { pass: 0, total: 0 },
+    photos: { pass: 0, total: 0 },
+    other: { pass: 0, total: 0 },
+  };
+
   for (const r of rows) {
-    const findings = auditProduct({
+    const input = {
       id: r.id,
       etsyListingId: r.etsy_listing_id,
       title: r.title ?? "",
       description: r.description,
       tags: r.tags,
       numImages: r.num_images,
-    });
-    for (const f of findings) {
+    };
+    const scored = scoreListing(input);
+    scores.push(scored.score);
+    for (const cat of Object.keys(categoryPassCounts) as AuditCategory[]) {
+      categoryPassCounts[cat].total += 1;
+      if (scored.categories[cat]) categoryPassCounts[cat].pass += 1;
+    }
+    for (const f of scored.findings) {
       const def = AUDIT_CHECK_BY_KEY.get(f.key)!;
       const list = byKey.get(f.key) ?? [];
       list.push({
@@ -127,6 +153,8 @@ export async function getListingAudit(
     groups,
     auditedCount: rows.length,
     findingCount: groups.reduce((s, g) => s + g.count, 0),
+    shopScore: averageListingScore(scores),
+    categoryPassCounts,
   };
 }
 

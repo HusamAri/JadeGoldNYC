@@ -70,8 +70,13 @@ where p.org_id=(select id from organizations where name='EON')
 
 Yeni create yolu (`lib/etsy/personalization.ts`) iki soru yazar: iç gravür
 (30 char) + Engraving style dropdown (The Signature | The Ornament |
-The Monument | The Editorial — FONT RENDER PLATES). Mevcut listing'leri
-eşitlemek için (prod secret'larla):
+The Monument | The Editorial — FONT RENDER PLATES).
+
+**Panel (tercih):** EON org aktifken `/tasarimlar/iyilestir` → «Kişiselleştirme · EON»
+kartı → **Tara** (canlı sapmalar) → **Hepsini gönder**. Alura Listing Helper
+fix deseni; yönetici + Etsy yazma gerekir. Görsel sync bu kartta yok.
+
+**CLI (görsel dahil, prod secret'larla):**
 
 ```bash
 # Kuru prova — sapmaları listeler, yazmaz

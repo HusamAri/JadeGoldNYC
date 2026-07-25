@@ -79,6 +79,11 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
 
 ## Teknik desenler
 
+- **Harici araç parity = aynı yüzey, aynı kapı (2026-07):** Alura Listing Helper
+  gibi dış Etsy araçlarını kopyalarken yeni modül açma — panelde zaten olan listing
+  kalite yüzeyine (`/tasarimlar/iyilestir`) skor + checklist + canlı fix koy; yazma
+  kapısı SEO batch ile aynı (`isManager` + `getEtsyWriteAccess`). Canlı Etsy taramayı
+  sayfa yüküne bağlama — «Tara» on-demand (rate limit / gecikme).
 - **Bütünlük bayrağı tüm veri şekillerini kapsar (2026-07):** "Künye tam" gibi
   eksiksizlik sinyali, alanın yalnız BİR taşıyıcısını sayarsa diğer şekli sessizce
   boş geçer. Vaka: gram bütünlüğü SADECE varyant-başına ölçülüyordu; varyantsız
