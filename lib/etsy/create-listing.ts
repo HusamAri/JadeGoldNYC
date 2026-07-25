@@ -2,6 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 
 import type { EtsyClient } from "@/lib/etsy/client";
 import { etsyPaths } from "@/lib/etsy/endpoints";
+import { applyEonPersonalization } from "@/lib/etsy/personalization";
 import { asEtsyProperties, type RawVariantProperties } from "@/lib/variant-properties";
 import { logAudit } from "@/lib/audit";
 
@@ -12,7 +13,8 @@ import { logAudit } from "@/lib/audit";
  * kullanıcı listing'i "tailor" ettikten sonra tek tuşla Etsy'de TASLAK (draft —
  * yayınlanmaz) listing açılır. Akış:
  *   1. createListing (POST, form-encoded): başlık, temiz açıklama, tag/materyal,
- *      çapa fiyat (en düşük varyant), kişiselleştirme AÇIK (30 char iç gravür).
+ *      çapa fiyat (en düşük varyant); sonra personalization: 30 char iç gravür
+ *      + Engraving style dropdown (Script|Block).
  *   2. Envanter PUT: DEĞİŞEN property'ler custom slot 513/514'e; her iki eksen de
  *      fiyat taşır (price_on_property = kullanılan slotlar); fiyat/adet/sku per
  *      offering panel varyantlarından. Sabit property'ler açıklamada kalır.
@@ -31,9 +33,8 @@ import { logAudit } from "@/lib/audit";
  *  B. taxonomy_id: "Wedding Bands" düğümü ağaçtan çözülür (yoksa "Rings").
  *     Canlıda taksonomi adı değişmişse veya ağaç şekli farklıysa çözüm boş
  *     dönebilir → o durumda create adımı "Etsy kategorisi çözülemedi" ile durur.
- *  C. Kişiselleştirme: is_personalizable=true, required=false, max=30 char.
- *     Bant alyanslarında bu iç gravür talimatıdır; Etsy 30 char'ı aşan talebi
- *     reddeder.
+ *  C. Kişiselleştirme: text_input iç gravür (ops, max=30) + dropdown
+ *     "Engraving style" (Script|Block). lib/etsy/personalization.ts kanonu.
  *  D. Varyasyon eşleme: Etsy en fazla 2 custom variation ekseni kabul eder →
  *     DEĞİŞEN ilk 2 property slot 513/514'e; 2'den fazla değişen varsa (nadir)
  *     kalanı açıklamaya not düşülür (canlıda uyarı olarak döneriz).
@@ -47,14 +48,6 @@ import { logAudit } from "@/lib/audit";
  *     public bucket). İmzalı/özel URL ise fetch 400/403 döner → görsel adımı
  *     hata verir ama listing ve envanter KORUNUR (kısmi başarı).
  */
-
-/**
- * Kişiselleştirme talimatı — iç gravür (script ile aynı metin, 30 char limit).
- * Etsy `instructions` alanı EN FAZLA 120 karakter (aşılırsa 400 too_long) — kısa tut.
- */
-const PERSONALIZATION_INSTRUCTIONS =
-  "Optional inside-band engraving, up to 30 characters. " +
-  "Script by default; type BLOCK for block letters. Blank = none.";
 
 /** Etsy custom variation slot id'leri (en fazla iki eksen). */
 const CUSTOM_SLOT_IDS = [513, 514] as const;
@@ -489,31 +482,16 @@ export async function createDraftListingFromProduct(
 
   const url = `https://www.etsy.com/listing/${listingId}`;
 
-  // ── 1b) Kişiselleştirme (iç gravür) — 2025 migrasyonu: legacy create alanları
-  // yerine ayrı uç. Tek metin sorusu (opsiyonel, 30 char). Başarısız olursa
-  // listing yaşar; uyarı eklenir (buton "gravür eklenemedi" der, elle eklenebilir).
+  // ── 1b) Kişiselleştirme — iç gravür (30 char) + engraving style dropdown.
+  // 2025 migrasyonu: ayrı uç; POST replace semantics. Başarısız olursa listing
+  // yaşar; uyarı eklenir (elle / sync script ile tamamlanır).
   try {
-    await client.request(
-      "POST",
-      etsyPaths.listingPersonalization(shopId, listingId) +
-        "?supports_multiple_personalization_questions=true",
-      {
-        personalization_questions: [
-          {
-            question_type: "text_input",
-            question_text: "Inside band engraving (optional)",
-            instructions: PERSONALIZATION_INSTRUCTIONS,
-            required: false,
-            max_allowed_characters: 30,
-          },
-        ],
-      },
-    );
+    await applyEonPersonalization(client, shopId, listingId);
   } catch (e) {
     warnings.push(
-      `Kişiselleştirme (iç gravür) eklenemedi: ${
+      `Kişiselleştirme (gravür + style) eklenemedi: ${
         e instanceof Error ? e.message : String(e)
-      }. Listing açıldı; gravür alanını Etsy'de elle ekleyebilirsiniz.`,
+      }. Listing açıldı; scripts/eon-sync-personalization.ts ile tamamlayabilirsiniz.`,
     );
   }
 

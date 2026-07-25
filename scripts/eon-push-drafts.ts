@@ -31,6 +31,7 @@ import { createClient } from "@supabase/supabase-js";
 
 import { EtsyClient } from "../lib/etsy/client";
 import { etsyPaths } from "../lib/etsy/endpoints";
+import { applyEonPersonalization } from "../lib/etsy/personalization";
 
 // ── .env.local (Next dışı bağlam) ─────────────────────────────────────────
 for (const line of readFileSync(".env.local", "utf8").split("\n")) {
@@ -87,11 +88,6 @@ function findTaxonomy(nodes: TaxNode[], name: string): TaxNode | null {
   }
   return null;
 }
-
-// Etsy `instructions` alanı EN FAZLA 120 karakter (aşılırsa 400 too_long) — kısa tut.
-const PERSONALIZATION =
-  "Optional inside-band engraving, up to 30 characters. " +
-  "Script by default; type BLOCK for block letters. Blank = none.";
 
 async function main() {
   const gate = JSON.parse(readFileSync(GATE, "utf8")) as { listings: GateRow[] };
@@ -245,25 +241,10 @@ async function main() {
     );
     console.log(`✓ ${g.no}: taslak açıldı #${listing.listing_id} (state=${listing.state})`);
 
-    // 1b) Kişiselleştirme (iç gravür) — ayrı uç (2025 migrasyonu).
+    // 1b) Kişiselleştirme — iç gravür (30) + engraving style dropdown.
     try {
-      await client.request(
-        "POST",
-        etsyPaths.listingPersonalization(shopId, listing.listing_id) +
-          "?supports_multiple_personalization_questions=true",
-        {
-          personalization_questions: [
-            {
-              question_type: "text_input",
-              question_text: "Inside band engraving (optional)",
-              instructions: PERSONALIZATION,
-              required: false,
-              max_allowed_characters: 30,
-            },
-          ],
-        },
-      );
-      console.log(`  kişiselleştirme (gravür) eklendi`);
+      await applyEonPersonalization(client, shopId, listing.listing_id);
+      console.log(`  kişiselleştirme (gravür + style) eklendi`);
     } catch (e) {
       console.warn(`  kişiselleştirme eklenemedi: ${e instanceof Error ? e.message : String(e)}`);
     }
