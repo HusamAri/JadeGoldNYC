@@ -69,17 +69,18 @@ where p.org_id=(select id from organizations where name='EON')
 ## Kişiselleştirme + engraving style (tüm aktif/taslak)
 
 Yeni create yolu (`lib/etsy/personalization.ts`) iki soru yazar: iç gravür
-(30 char) + Engraving style dropdown (Script|Block). Mevcut listing'leri
+(30 char) + Engraving style dropdown (The Signature | The Ornament |
+The Monument | The Editorial — FONT RENDER PLATES). Mevcut listing'leri
 eşitlemek için (prod secret'larla):
 
 ```bash
 # Kuru prova — sapmaları listeler, yazmaz
 npx tsx scripts/eon-sync-personalization.ts --dry-run
 
-# Kanonik 30-char + style uygula
+# Kanonik 30-char + 4-plate style uygula
 npx tsx scripts/eon-sync-personalization.ts
 
-# + iç-gravür / style guide görseli (rank 8'e; yoksa yükle, varsa değiştir)
+# + FONT RENDER PLATES görseli (rank 8; yoksa yükle, varsa değiştir)
 npx tsx scripts/eon-sync-personalization.ts \
   --image docs/eon/assets/engraving-style.jpg
 ```

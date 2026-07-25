@@ -4,7 +4,8 @@
  *
  * Kanon (`lib/etsy/personalization.ts`):
  *   1. text_input  "Inside band engraving (optional)"  max=30  required=false
- *   2. dropdown    "Engraving style"  Script | Block     required=false
+ *   2. dropdown    "Engraving style"
+ *        The Signature | The Ornament | The Monument | The Editorial
  *
  * Sapma varsa (eski tek-soru, farklı char limiti, style yok, uzun instructions)
  * POST ile TAM SET yazılır (Etsy replace semantics).

@@ -6,11 +6,17 @@ import { etsyPaths } from "@/lib/etsy/endpoints";
  *
  * İki soru:
  *  1. text_input — iç gravür metni, isteğe bağlı, max 30 karakter
- *  2. dropdown  — engraving style (Script / Block), isteğe bağlı
+ *  2. dropdown  — engraving style (FONT RENDER PLATES), isteğe bağlı
+ *
+ * Style seçenekleri EON font plate setiyle birebir:
+ *   The Signature (Great Vibes · script · default)
+ *   The Ornament  (Cinzel Decorative)
+ *   The Monument  (Cinzel)
+ *   The Editorial (Prata)
  *
  * Etsy `instructions` ≤120 char; dropdown'da instructions YASAK.
- * POST listing personalization mevcut soruları TAMAMEN değiştirir
- * (replace semantics) — bu yüzden her yazımda her iki soru birlikte gider.
+ * Dropdown label ≤20 char. POST replace semantics — her yazımda
+ * her iki soru birlikte gider.
  */
 
 /** Etsy text_input instructions (≤120). Style artık ayrı dropdown'da. */
@@ -22,8 +28,16 @@ export const ENGRAVING_MAX_CHARS = 30;
 export const ENGRAVING_QUESTION_TEXT = "Inside band engraving (optional)";
 export const ENGRAVING_STYLE_QUESTION_TEXT = "Engraving style";
 
-/** Dropdown labels — Etsy max 20 char each. */
-export const ENGRAVING_STYLE_OPTIONS = ["Script", "Block"] as const;
+/**
+ * Dropdown labels — Etsy max 20 char each.
+ * Sıra: Signature önce (plate default / script).
+ */
+export const ENGRAVING_STYLE_OPTIONS = [
+  "The Signature",
+  "The Ornament",
+  "The Monument",
+  "The Editorial",
+] as const;
 
 export type PersonalizationQuestionType =
   | "text_input"
