@@ -45,6 +45,15 @@ export const etsyPaths = {
   // `supports_multiple_personalization_questions=true` gerekir.
   listingPersonalization: (shopId: number | string, listingId: number | string) =>
     `/shops/${shopId}/listings/${listingId}/personalization`,
+  // GET — shop_id gerekmez; mevcut soruları okur (audit / sync).
+  listingPersonalizationByListing: (listingId: number | string) =>
+    `/listings/${listingId}/personalization`,
+  // Tek listing görseli silme (rank/replace için).
+  listingImage: (
+    shopId: number | string,
+    listingId: number | string,
+    listingImageId: number | string,
+  ) => `/shops/${shopId}/listings/${listingId}/images/${listingImageId}`,
   // Mağaza bölümleri (başlık + aktif listing sayısı).
   shopSections: (shopId: number | string) => `/shops/${shopId}/sections`,
   // Kargo profilleri (işlem süresi, menşei).

@@ -66,6 +66,24 @@ where p.org_id=(select id from organizations where name='EON')
 -- beklenen: pushed = 34
 ```
 
+## Kişiselleştirme + engraving style (tüm aktif/taslak)
+
+Yeni create yolu (`lib/etsy/personalization.ts`) iki soru yazar: iç gravür
+(30 char) + Engraving style dropdown (Script|Block). Mevcut listing'leri
+eşitlemek için (prod secret'larla):
+
+```bash
+# Kuru prova — sapmaları listeler, yazmaz
+npx tsx scripts/eon-sync-personalization.ts --dry-run
+
+# Kanonik 30-char + style uygula
+npx tsx scripts/eon-sync-personalization.ts
+
+# + iç-gravür / style guide görseli (rank 8'e; yoksa yükle, varsa değiştir)
+npx tsx scripts/eon-sync-personalization.ts \
+  --image docs/eon/assets/engraving-style.jpg
+```
+
 ## Notlar
 
 - **Görselsiz** taslak: Etsy taslağa izin verir ama YAYIN için her listing'e en az
