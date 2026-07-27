@@ -1,0 +1,10 @@
+Audit Buyer Memory data quality in code + docs/buyer-memory.md assumptions:
+
+1. How many sale_items lack variations after capture ship?
+2. Are identity collisions (same name, different email) handled?
+3. Are SKU→size/width inferences documented?
+
+If a small code fix improves capture, open a tiny PR on branch
+artifact/<descriptive-name>-b469.
+Otherwise append findings to docs/buyer-memory.md (short "Quality log"
+section) and stop. Prefer no change over noisy churn.

@@ -1,0 +1,11 @@
+Wire returning-buyer reminders per docs/buyer-memory.md.
+
+Requirements:
+1. On sale upsert when buyer_id already existed → create/update alert
+   key returning_buyer (severity: onemli) with TLDR of prior facts
+2. Sale detail banner uses same TLDR (single source)
+3. Optional: daily digest section "bugün dönenler" via existing digest pipeline
+4. No duplicate copy across surfaces — one helper builds the reminder text
+
+Keep UI focused. typecheck + lint. Draft PR.
+Branch naming: artifact/<descriptive-name>-b469.

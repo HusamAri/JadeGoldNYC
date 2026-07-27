@@ -1,0 +1,104 @@
+name: Buyer Memory loops
+
+# Launches Cursor Cloud Agents for Buyer Memory slices (docs/buyer-memory.md).
+# Requires repo secret CURSOR_API_KEY from https://cursor.com/dashboard/api
+#
+# Schedules (UTC ≈ Europe/Istanbul -3 in summer):
+#   A capture  — Mon 06:00 UTC
+#   B identity — Wed 06:00 UTC
+#   C remind   — Fri 06:00 UTC
+#   E quality  — every other Sunday 06:00 UTC (day-of-month 1-7|15-21)
+#   D clean    — PR opened/synchronize when buyer-memory paths change
+
+on:
+  schedule:
+    - cron: "0 6 * * 1" # A
+    - cron: "0 6 * * 3" # B
+    - cron: "0 6 * * 5" # C
+    - cron: "0 6 1-7,15-21 * 0" # E biweekly-ish
+  workflow_dispatch:
+    inputs:
+      loop:
+        description: "Loop id"
+        required: true
+        type: choice
+        options: [A, B, C, D, E]
+      pr_url:
+        description: "PR URL (required for D)"
+        required: false
+        type: string
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - "docs/buyer-memory.md"
+      - "docs/automations/buyer-memory-loops.md"
+      - "app/(dashboard)/musteriler/**"
+      - "lib/db/queries/buyers*"
+      - "supabase/migrations/*buyer*"
+      - "scripts/buyer-memory-loops/**"
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  launch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Resolve loop
+        id: pick
+        env:
+          EVENT: ${{ github.event_name }}
+          CRON: ${{ github.event.schedule }}
+          INPUT_LOOP: ${{ inputs.loop }}
+          PR_URL_IN: ${{ inputs.pr_url }}
+          PR_HTML: ${{ github.event.pull_request.html_url }}
+        run: |
+          set -euo pipefail
+          LOOP=""
+          PR_URL=""
+          if [[ "$EVENT" == "workflow_dispatch" ]]; then
+            LOOP="$INPUT_LOOP"
+            PR_URL="${PR_URL_IN:-}"
+          elif [[ "$EVENT" == "pull_request" ]]; then
+            LOOP="D"
+            PR_URL="$PR_HTML"
+          else
+            case "$CRON" in
+              "0 6 * * 1") LOOP="A" ;;
+              "0 6 * * 3") LOOP="B" ;;
+              "0 6 * * 5") LOOP="C" ;;
+              "0 6 1-7,15-21 * 0") LOOP="E" ;;
+              *) echo "Unknown schedule: $CRON"; exit 1 ;;
+            esac
+          fi
+          echo "loop=$LOOP" >> "$GITHUB_OUTPUT"
+          echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
+          echo "Resolved loop=$LOOP pr_url=${PR_URL:-none}"
+
+      - name: Launch Cursor cloud agent
+        env:
+          CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
+          LOOP: ${{ steps.pick.outputs.loop }}
+          PR_URL: ${{ steps.pick.outputs.pr_url }}
+        run: |
+          set -euo pipefail
+          if [[ -z "${CURSOR_API_KEY:-}" ]]; then
+            echo "::error::CURSOR_API_KEY secret missing. Add User API Key from https://cursor.com/dashboard/api"
+            exit 2
+          fi
+          ARGS=("$LOOP")
+          if [[ "$LOOP" == "D" ]]; then
+            if [[ -z "${PR_URL:-}" ]]; then
+              echo "::error::Loop D requires a PR URL"
+              exit 1
+            fi
+            ARGS+=(--pr-url "$PR_URL")
+          fi
+          node scripts/buyer-memory-loops/launch.mjs "${ARGS[@]}"

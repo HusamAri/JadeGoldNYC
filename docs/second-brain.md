@@ -66,6 +66,11 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
 
 ## Ürün/UX dersleri
 
+- **Müşteri hafızası = tek yüzey (2026-07):** Etsy alıcıyı tutmaz; panelde
+  CRM notlarını satış/yorum/sepet’e dağıtma. Tek golden record (`/musteriler`),
+  otomatik fact (Etsy variations + SKU) + elle not, dönüşte ince şerit + uyarı.
+  Geri Kazanım lapse filtresi kalır, ikinci CRM olmaz. Kaynak: `docs/buyer-memory.md`;
+  Cursor loop’lar: `docs/automations/buyer-memory-loops.md`.
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
   gereken hiçbir bilgi alt sayfada gömülü kalamaz — Uyarı Merkezi'ne bağla
   (3 önem derecesi + bedele göre sıralı). Vaka: "Pasife düştü" yalnız Etsy senkron
