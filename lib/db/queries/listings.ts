@@ -117,6 +117,8 @@ export interface ListingDetail {
     research_keyword: string | null;
     sku: string | null;
     weight_grams: number | null;
+    /** Sabit birim maliyet (cent); null = yok. Tüm varyantlara uygulanır. */
+    listing_cost_cents: number | null;
   };
   variants: ListingVariantRow[];
   ads: ListingAds;
@@ -414,16 +416,21 @@ export async function getListingDetail(
   const { data: pData, error: pError } = await supabase
     .from("products")
     .select(
-      "id, etsy_listing_id, title, status, description, tags, materials, price_cents, currency, quantity, url, image_url, num_images, research_keyword, sku, weight_grams",
+      "id, etsy_listing_id, title, status, description, tags, materials, price_cents, currency, quantity, url, image_url, num_images, research_keyword, sku, weight_grams, listing_cost_cents",
     )
     .eq("id", id)
     .maybeSingle();
   if (pError) throw new Error(pError.message);
   if (!pData) return null;
-  const raw = pData as ListingDetail["product"] & { weight_grams: unknown };
+  const raw = pData as ListingDetail["product"] & {
+    weight_grams: unknown;
+    listing_cost_cents: unknown;
+  };
   const product: ListingDetail["product"] = {
     ...raw,
     weight_grams: raw.weight_grams == null ? null : Number(raw.weight_grams),
+    listing_cost_cents:
+      raw.listing_cost_cents == null ? null : Number(raw.listing_cost_cents),
   };
 
   const [variantRows, metricRows, saleItemRows] = await Promise.all([

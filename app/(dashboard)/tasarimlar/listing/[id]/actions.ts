@@ -30,6 +30,11 @@ export interface ListingFieldsInput {
   price: string;
   quantity: string;
   research_keyword: string;
+  /**
+   * Sabit birim maliyet (tüm varyantlar). Boş = yok (null).
+   * Satışta listing_fixed olarak işlenir; altın auto-işçiliği yerine geçer.
+   */
+  listing_cost: string;
 }
 
 function splitList(s: string): string[] | null {
@@ -71,6 +76,14 @@ export async function updateListingFields(
     if (priceCents <= 0) return { error: "Geçerli bir fiyat girin (ör. 129,00)." };
   }
 
+  let listingCostCents: number | null = null;
+  if (fields.listing_cost.trim()) {
+    listingCostCents = parseMoneyToCents(fields.listing_cost);
+    if (listingCostCents <= 0) {
+      return { error: "Sabit maliyet 0'dan büyük olmalı (ör. 45,00) ya da boş bırakın." };
+    }
+  }
+
   const quantity = parseIntOrNull(fields.quantity);
   if (quantity === "invalid") return { error: "Adet tam sayı olmalı." };
 
@@ -85,6 +98,7 @@ export async function updateListingFields(
       price_cents: priceCents,
       quantity,
       research_keyword: fields.research_keyword.trim() || null,
+      listing_cost_cents: listingCostCents,
       updated_at: new Date().toISOString(),
     })
     .eq("id", id)

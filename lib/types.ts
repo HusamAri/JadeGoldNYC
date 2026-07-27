@@ -170,6 +170,11 @@ export interface Product {
   image_url: string | null;
   views: number | null;
   num_favorers: number | null;
+  /**
+   * Sabit birim maliyet (cent). Tüm varyantlara uygulanır; satışta
+   * source='listing_fixed' olarak işlenir. null = yok.
+   */
+  listing_cost_cents?: number | null;
   /** Panel arşiv damgası — dolu = listelerden gizli (Arşiv filtresi hariç). */
   archived_at: string | null;
   created_at: string;

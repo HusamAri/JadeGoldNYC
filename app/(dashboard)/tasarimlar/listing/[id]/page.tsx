@@ -217,6 +217,7 @@ export default async function ListingDetayPage({
                 tags: product.tags,
                 materials: product.materials,
                 price_cents: product.price_cents,
+                listing_cost_cents: product.listing_cost_cents,
                 quantity: product.quantity,
                 research_keyword: product.research_keyword,
               }}

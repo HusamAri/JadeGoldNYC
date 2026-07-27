@@ -1,11 +1,12 @@
 /**
- * Satış kalemlerinden otomatik altın maliyet kalemi oluşturma.
+ * Satış kalemlerinden otomatik maliyet kalemi oluşturma.
  *
  * Her satış gerçekleştiğinde (manuel, CSV, Etsy):
  *  1. sale_items'dan kalem başlıkları çekilir
  *  2. Başlık/ürün bilgisinden ayar (10K/14K) ve ağırlık tespit edilir
- *  3. Güncel altın fiyatıyla malzeme + işçilik maliyeti hesaplanır
- *  4. İki ayrı maliyet kalemi yazılır: "malzeme" ve "iscilik"
+ *  3. Güncel altın fiyatıyla malzeme (+ gerekirse işçilik) hesaplanır
+ *  4. products.listing_cost_cents doluysa sabit listing maliyeti yazılır
+ *     (source=listing_fixed); bu durumda auto-işçilik atlanır (çift sayım yok)
  *
  * Stok tutulmadığından tedarik satış sonrası yapılır — bu yüzden maliyet
  * satış anındaki altın fiyatına göre hesaplanır.
@@ -56,14 +57,19 @@ export async function createGoldCostForSale(
   // sale_item_id'si zaten gold_auto olan kalemleri atlarız.
   const { data: existing } = await supabase
     .from("costs")
-    .select("sale_item_id")
+    .select("sale_item_id, source")
     .eq("sale_id", saleId)
-    .eq("source", "gold_auto");
-  const costedItemIds = new Set(
-    ((existing ?? []) as { sale_item_id: string | null }[])
-      .map((r) => r.sale_item_id)
-      .filter(Boolean) as string[],
-  );
+    .in("source", ["gold_auto", "listing_fixed"]);
+  const costedGoldItemIds = new Set<string>();
+  const costedListingItemIds = new Set<string>();
+  for (const r of (existing ?? []) as {
+    sale_item_id: string | null;
+    source: string;
+  }[]) {
+    if (!r.sale_item_id) continue;
+    if (r.source === "gold_auto") costedGoldItemIds.add(r.sale_item_id);
+    if (r.source === "listing_fixed") costedListingItemIds.add(r.sale_item_id);
+  }
 
   // Satış bilgisi
   const { data: sale } = await supabase
@@ -100,28 +106,42 @@ export async function createGoldCostForSale(
   ] as string[];
   const variantMap = new Map<
     string,
-    { weight_grams: number | null; name: string | null }
+    {
+      weight_grams: number | null;
+      name: string | null;
+      product_id: string | null;
+    }
   >();
   if (skus.length > 0) {
     const { data: variants } = await supabase
       .from("product_variants")
-      .select("sku, name, weight_grams")
+      .select("sku, name, weight_grams, product_id")
       .eq("org_id", orgId)
       .in("sku", skus);
     for (const v of (variants ?? []) as {
       sku: string;
       name: string | null;
       weight_grams: number | null;
+      product_id: string | null;
     }[]) {
       if (!variantMap.has(v.sku)) {
-        variantMap.set(v.sku, { weight_grams: v.weight_grams, name: v.name });
+        variantMap.set(v.sku, {
+          weight_grams: v.weight_grams,
+          name: v.name,
+          product_id: v.product_id,
+        });
       }
     }
   }
 
-  // Ürün bilgisi (zenginleştirme alanları)
+  // Ürün bilgisi (zenginleştirme + listing sabit maliyet)
   const productIds = [
-    ...new Set(saleItems.map((i) => i.product_id).filter(Boolean)),
+    ...new Set(
+      [
+        ...saleItems.map((i) => i.product_id),
+        ...[...variantMap.values()].map((v) => v.product_id),
+      ].filter(Boolean),
+    ),
   ] as string[];
   const productMap = new Map<
     string,
@@ -131,12 +151,15 @@ export async function createGoldCostForSale(
       tags: string[] | null;
       materials: string[] | null;
       weight_grams: number | null;
+      listing_cost_cents: number | null;
     }
   >();
   if (productIds.length > 0) {
     const { data: products } = await supabase
       .from("products")
-      .select("id, title, description, tags, materials, weight_grams")
+      .select(
+        "id, title, description, tags, materials, weight_grams, listing_cost_cents",
+      )
       .in("id", productIds);
     for (const p of (products ?? []) as {
       id: string;
@@ -145,6 +168,7 @@ export async function createGoldCostForSale(
       tags: string[] | null;
       materials: string[] | null;
       weight_grams: number | null;
+      listing_cost_cents: number | null;
     }[]) {
       productMap.set(p.id, {
         title: p.title,
@@ -152,6 +176,7 @@ export async function createGoldCostForSale(
         tags: p.tags,
         materials: p.materials,
         weight_grams: p.weight_grams,
+        listing_cost_cents: p.listing_cost_cents,
       });
     }
   }
@@ -198,14 +223,39 @@ export async function createGoldCostForSale(
   }[] = [];
 
   for (const item of saleItems) {
-    // Kalem zaten maliyetlenmişse atla (kalem-seviyesi idempotency).
-    if (costedItemIds.has(item.id)) continue;
-    const prod = item.product_id ? productMap.get(item.product_id) : null;
     const variant = item.sku ? variantMap.get(item.sku) : null;
+    const productId = item.product_id ?? variant?.product_id ?? null;
+    const prod = productId ? productMap.get(productId) : null;
     const combinedTitle = prod?.title ?? item.title ?? variant?.name ?? "";
     const description = prod?.description ?? null;
     const tags = prod?.tags ?? null;
     const materials = prod?.materials ?? null;
+    const listingCostCents = prod?.listing_cost_cents ?? null;
+    const hasListingFixed =
+      listingCostCents != null && listingCostCents > 0;
+    const qty = item.quantity || 1;
+
+    // Listing sabit birim maliyet — gram/ayar gerekmez; tüm varyantlara aynı.
+    if (hasListingFixed && !costedListingItemIds.has(item.id)) {
+      costRows.push({
+        org_id: orgId,
+        category_id: catMap.get("iscilik") ?? null,
+        description: `Listing sabit maliyet — × ${qty} (${combinedTitle.slice(0, 60)})`,
+        amount_cents: listingCostCents * qty,
+        currency: "USD",
+        cost_date: orderDate,
+        vendor: null,
+        sale_id: saleId,
+        sale_item_id: item.id,
+        source: "listing_fixed",
+        notes: `products.listing_cost_cents=${listingCostCents} × adet ${qty}`,
+      });
+      result.laborCostCents += listingCostCents * qty;
+      costedListingItemIds.add(item.id);
+    }
+
+    // Altın auto — kalem zaten gold_auto ise atla.
+    if (costedGoldItemIds.has(item.id)) continue;
 
     // Ayar tespiti başlığa ek olarak varyant adından da beslenir (varyant adı
     // çoğu zaman "14K …" taşır, ürüne bağlı olmayan kalemlerde tek ipucu odur).
@@ -232,12 +282,10 @@ export async function createGoldCostForSale(
       customPurchasePrices,
     );
 
-    const qty = item.quantity || 1;
     const goldCents = cost.totalGoldCostCents * qty;
     const laborCents = cost.totalLaborCostCents * qty;
 
     result.goldCostCents += goldCents;
-    result.laborCostCents += laborCents;
     result.processed += qty;
 
     const label = `${karat} ${weightGrams}g`;
@@ -257,20 +305,23 @@ export async function createGoldCostForSale(
       notes: `Ons: $${goldPricePerOunce} | Ayar: ${karat} | Agirlik: ${weightGrams}g | Adet: ${qty}`,
     });
 
-    // İşçilik kalemi
-    costRows.push({
-      org_id: orgId,
-      category_id: catMap.get("iscilik") ?? null,
-      description: `Iscilik — ${label} × ${qty} (${combinedTitle.slice(0, 60)})`,
-      amount_cents: laborCents,
-      currency: "USD",
-      cost_date: orderDate,
-      vendor: "Altin Tedarik",
-      sale_id: saleId,
-      sale_item_id: item.id,
-      source: "gold_auto",
-      notes: `Iscilik orani: %${(cost.laborMarkup * 100).toFixed(1)}`,
-    });
+    // İşçilik: listing sabit maliyet varsa onu kullan (çift sayım yok).
+    if (!hasListingFixed) {
+      result.laborCostCents += laborCents;
+      costRows.push({
+        org_id: orgId,
+        category_id: catMap.get("iscilik") ?? null,
+        description: `Iscilik — ${label} × ${qty} (${combinedTitle.slice(0, 60)})`,
+        amount_cents: laborCents,
+        currency: "USD",
+        cost_date: orderDate,
+        vendor: "Altin Tedarik",
+        sale_id: saleId,
+        sale_item_id: item.id,
+        source: "gold_auto",
+        notes: `Iscilik orani: %${(cost.laborMarkup * 100).toFixed(1)}`,
+      });
+    }
   }
 
   if (costRows.length > 0) {
@@ -331,7 +382,15 @@ export async function rebuildGoldCostsBulk(
     p_gold_price_per_ounce: goldPricePerOunce,
   });
   if (error) throw new Error(error.message);
-  return (data as number) ?? 0;
+  const goldRows = (data as number) ?? 0;
+
+  // Listing sabit maliyet — altın RPC'den bağımsız (gram/ayar gerekmez).
+  const { data: fixedData, error: fixedErr } = await supabase.rpc(
+    "rebuild_listing_fixed_costs",
+    { p_org_id: orgId },
+  );
+  if (fixedErr) throw new Error(fixedErr.message);
+  return goldRows + ((fixedData as number) ?? 0);
 }
 
 /**

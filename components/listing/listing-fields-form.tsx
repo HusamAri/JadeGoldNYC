@@ -29,6 +29,7 @@ export const LISTING_FIELD_IDS = {
   tags: "alan-tags",
   materials: "alan-materials",
   price: "alan-price",
+  listing_cost: "alan-listing-cost",
   quantity: "alan-quantity",
   research_keyword: "alan-kelime",
 } as const;
@@ -39,6 +40,8 @@ export interface ListingFieldsInitial {
   tags: string[] | null;
   materials: string[] | null;
   price_cents: number | null;
+  /** Sabit birim maliyet (cent); null = yok. */
+  listing_cost_cents: number | null;
   quantity: number | null;
   research_keyword: string | null;
 }
@@ -89,6 +92,10 @@ export function ListingFieldsForm({
     price:
       initial.price_cents != null
         ? centsToDecimal(initial.price_cents).toFixed(2)
+        : "",
+    listing_cost:
+      initial.listing_cost_cents != null
+        ? centsToDecimal(initial.listing_cost_cents).toFixed(2)
         : "",
     quantity: initial.quantity != null ? String(initial.quantity) : "",
     research_keyword: initial.research_keyword ?? "",
@@ -223,7 +230,7 @@ export function ListingFieldsForm({
         </div>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="space-y-1.5">
           <div className="flex items-center gap-2">
             <Label htmlFor={LISTING_FIELD_IDS.price}>Satış fiyatı ($)</Label>
@@ -239,7 +246,7 @@ export function ListingFieldsForm({
           />
           {priceCost.costCents != null ? (
             <p className="text-muted-foreground text-xs tabular-nums">
-              Alım maliyeti: {formatMoney(priceCost.costCents, currency)}
+              Altın alım tahmini: {formatMoney(priceCost.costCents, currency)}
               {priceCost.karat ? ` · ${priceCost.karat}` : ""}
               {weightGrams != null ? ` · ${weightGrams} g` : ""}
               {saleCents > 0 && (
@@ -260,10 +267,27 @@ export function ListingFieldsForm({
             </p>
           ) : (
             <p className="text-muted-foreground text-xs">
-              Maliyet için ayar (10K/14K) ve gram gerekir
+              Altın tahmini için ayar (10K/14K) ve gram gerekir
               {weightGrams == null ? " — varyant/ürün gramı eksik" : ""}.
             </p>
           )}
+        </div>
+        <div className="space-y-1.5">
+          <Label htmlFor={LISTING_FIELD_IDS.listing_cost}>
+            Sabit birim maliyet ($)
+          </Label>
+          <Input
+            id={LISTING_FIELD_IDS.listing_cost}
+            inputMode="decimal"
+            value={fields.listing_cost}
+            onChange={(e) => set("listing_cost", e.target.value)}
+            placeholder="45,00"
+            className="tabular-nums"
+          />
+          <p className="text-muted-foreground text-xs leading-relaxed">
+            Tüm varyantlara aynı. Satışta işçilik olarak işlenir; doluyken altın
+            auto-işçilik yazılmaz (malzeme ayrı kalır). Boş = formül işçiliği.
+          </p>
         </div>
         <div className="space-y-1.5">
           <div className="flex items-center gap-2">
