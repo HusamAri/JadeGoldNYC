@@ -1,0 +1,12 @@
+Review this PR against docs/buyer-memory.md cleanliness rules.
+
+FAIL if:
+- A second free-text customer note UI appears outside /musteriler/[id]
+- Sepet-kurtarma gained CRM/profile duplication
+- Sale detail shows a full biography instead of a thin strip + link
+- Sections repeat the same facts (TLDR and facts list identical blobs)
+
+PASS if each surface has one job and auto facts are not retyped as manual notes.
+
+Comment with PASS/FAIL checklist. Request changes only on FAIL.
+Do not open a competing PR.

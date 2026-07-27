@@ -1,0 +1,15 @@
+Continue Buyer Memory per docs/buyer-memory.md.
+
+Build or finish:
+- buyers + buyer_facts + buyer_notes tables (RLS org-scoped)
+- backfill buyers from sales (email-first identity_key)
+- sales.buyer_id FK
+- /musteriler list + /musteriler/[id] profile:
+  ONE composition: TLDR → structured facts → timeline → add-note
+- Sale detail: thin returning-buyer strip linking to profile ONLY
+  (no second note form)
+
+Reject scope creep: do not redesign sepet-kurtarma into a CRM.
+Follow module pattern: page + actions + queries + zod.
+typecheck + lint. Draft PR. Demo screenshot of /musteriler/[id] if possible.
+Branch naming: artifact/<descriptive-name>-b469.

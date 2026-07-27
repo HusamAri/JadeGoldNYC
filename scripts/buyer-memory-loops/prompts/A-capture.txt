@@ -1,0 +1,23 @@
+You implement / harden Buyer Memory capture for JadeGoldNYC.
+
+Read docs/buyer-memory.md first. Goal this run: persist Etsy receipt
+transaction variations/personalization onto sale_items (or buyer_facts),
+without inventing a second CRM UI.
+
+Check:
+- lib/etsy/types.ts EtsyTransaction
+- lib/etsy/sync.ts upsertSalesPage
+- Whether variations / product_data are dropped
+
+If gaps remain:
+1. Extend types + sync (smallest safe change)
+2. Map known EON keys (size, width, engraving text/style, gift*) into
+   structured fields or jsonb
+3. Migration if needed (next free number after existing migrations)
+4. npm run typecheck + lint
+5. Open a focused draft PR; title feat(buyers): capture Etsy variations
+6. Do NOT add duplicate note UIs on /satislar or /sepet-kurtarma
+
+Branch naming must match artifact/<descriptive-name>-b469.
+
+If already complete, do nothing and write a short note in the PR/comment.
