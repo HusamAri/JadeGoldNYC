@@ -1,395 +1,409 @@
 # Amuletta PHASE 0 — Inventory (no code)
 
-> **⚠️ SUPERSEDED — do not action the DELETE list in this file.**
-> This pass graded the panel as a **single-shop (EON)** product. **ADDENDUM 1
-> (multi-tenant correction)** overrides it: Amuletta serves **three** shops — EON,
-> Jade Gold, Seselka — and the DELETE list may only contain items used by **no**
-> shop, or EON-only obsolete items. Anything Jade Gold or Seselka uses is KEEP or
-> KEEP+FLAG. The Alura and external-pricing boundaries are **EON-only feature
-> flags, not code deletions.**
->
-> Measured per-shop counts already overturn a large part of §2.3 — e.g. Jade Gold
-> has **62** `keyword_research` rows (more than EON's 44), **19**
-> `seo_tag_optimizations`, **171** `generated_images`, **64** `photo_production`.
-> The corrected, per-shop-attributed inventory lives in
-> **`phase-0-inventory-multitenant.md`**. This file is retained only as the
-> single-shop reading and for the measurements in §1, §4.5 and §5, which stand.
-
-_Scan date: 2026-07-28 · Repo `JadeGoldNYC` · Live DB `sewbrqflcrlgczilrusw` · Org EON `9d0336c0-…`_
+_Scan date: 2026-07-28 · Repo `JadeGoldNYC` · Live DB `sewbrqflcrlgczilrusw`_
+_**Revision: ADDENDUM 1 (multi-tenant correction) applied.** Where the v2 brief and ADDENDUM 1 conflict, ADDENDUM 1 wins._
 
 Graded against **THE ONE RULE**: _a metric may exist in the panel only if crossing a
 threshold creates a concrete task._
-Allowed tree: `Revenue = Visits × Conversion × AOV`; `Visits = Etsy search + Etsy internal + Ads + External`; plus `Contribution margin per order`.
+Tree: `Revenue = Visits × Conversion × AOV`; `Visits = Etsy search + Etsy internal + Ads + External`; plus `Contribution margin per order`.
 
-**Nothing in this document has been deleted or changed. Awaiting approval.**
+**Nothing has been deleted or changed. PHASE 4 cleanup is blocked until you confirm the per-shop usage table in §3.**
 
 ---
 
-## 0. Verdict at a glance
+## 0. The three shops
 
-| | Screens/routes | API routes | lib subsystems | Query modules | DB tables |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| KEEP | 11 | 6 | 9 | 28 | 26 |
-| MERGE | 14 | 2 | 3 | 0 | 6 |
-| DELETE | 49 | 8 | 12 | 19 | 27 |
+| Shop | Platform | Products | Sales | Ledger | Listing stats | Reviews | Costs | Tasks |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| **EON Fine Jewelry** | Etsy | 41 | 5 | 205 | 300 | 0 | 25 | 16 |
+| **Jade Gold NYC** | Etsy + ShipStation | 121 | 10,848 | 70,722 | 4,172 | 3,012 | 16,560 | 42 |
+| **Seselka Home** | Shopier | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 
-(DB row excludes the 13 `ha_*` tables, which belong to another application — see §4.5.)
+Two facts that govern every verdict below:
 
-**74 dashboard routes → 4 screens.** Roughly **19,000 lines** of route/component code
-and **6,500 lines** of backend are removal candidates, of which **~11,000 lines are
-hard scope violations** (pricing engine, keyword research, messaging, real-time).
+1. **Jade Gold is the data-rich shop**, by three orders of magnitude. Read as "the EON
+   panel", this codebase looks full of dead features. It is not — Jade Gold is the sole
+   user of six subsystems.
+2. **Seselka is a shell.** Zero rows in every org-scoped table; only a
+   `shopier_connection`. It uses nothing yet. So _"Seselka doesn't use it"_ is never a
+   valid deletion argument, and Seselka's four screens will be empty until it has data.
 
-Dropped external dependencies: DataForSEO, Gemini keyword expansion, Higgsfield.
-Crons: 6 → 1 weekly.
+### Verdict counts
+
+| Surface | KEEP | KEEP+FLAG | MERGE | DELETE |
+| --- | ---: | ---: | ---: | ---: |
+| Screens / routes | 13 | 9 | 14 | 12 |
+| API routes | 8 | 0 | 2 | 6 |
+| lib subsystems | 12 | 5 | 1 | 3 |
+| Query modules | 30 | 9 | 0 | 8 |
+| DB tables | 40 | 8 | 6 | 5 |
+
+DELETE is now **34 items**, down from 116 in the single-shop first pass. §2 is the
+accounting of what ADDENDUM 1 rescued.
 
 ---
 
 ## 1. Five findings that change the plan
 
-These are the things worth reading before approving anything.
+### 1.1 Sample-size guards behave oppositely on the two live shops
 
-### 1.1 The sample-size guard grays out almost the entire panel — today
-
-Measured against live EON data:
-
-| Guard | Threshold | Reality | Result |
+| Guard | Threshold | EON | Jade Gold |
 | --- | --- | --- | --- |
-| Listing level | ≥ 100 views | **2 of 54** listings qualify | 52 rows gray |
-| Shop level | ≥ 10 orders / trailing 7d | **5 orders lifetime** | every shop card gray |
+| Listing level | ≥ 100 views | **2 of 54** pass | most pass |
+| Shop level | ≥ 10 orders / 7d | **5 lifetime** → fails | 10,848 sales → passes |
 
-July 2026 actuals: **261 visits · 5 orders · 1.92% conversion · $1,356.29 revenue ·
-$271.26 AOV · $116.12 ad spend.** Max views on any listing: 148. Average: 10.
+EON's July actuals: **261 visits · 5 orders · 1.92% conversion · $1,356.29 revenue ·
+$271.26 AOV · $116.12 ad spend.** Max views on any EON listing: 148. Average: 10.
 
-This is the guard behaving correctly, not a bug — but it means at launch the panel
-shows **one live number (contribution margin, which always fires) and 6 gray boxes.**
-Worth confirming you want that, because it is the honest reading of the data and it is
-also a panel that looks empty. Options: (a) ship it gray as specified, (b) show the
-gray value with a "n of 100" progress affordance so the operator sees the distance to
-significance. Recommend (b) — same honesty, non-zero information.
+So the same screen must suppress on EON and publish on Jade Gold — which is exactly why
+ADDENDUM 1 §6 makes the guards per shop. At launch EON shows one live number
+(contribution margin, which always fires) and gray boxes elsewhere. Recommend showing
+the gray value with an "n of 100" distance-to-significance affordance rather than a bare
+gray box: same honesty, non-zero information.
 
 ### 1.2 Per-listing views and favorites ARE available from the API
 
-The spec lists traffic as CSV-only. That is correct for **traffic by source** and
-**search terms**, but `views` and `num_favorers` are fields on the Etsy **listing**
-resource, and this repo already snapshots them daily into `etsy_listing_stats`
-(54 listings × 15 days, populated by `lib/etsy/sync.ts`).
+The v2 brief lists traffic as CSV-only. True for **traffic by source** and **search
+terms** — but `views` and `num_favorers` are fields on the Etsy **listing** resource, and
+`lib/etsy/sync.ts` already snapshots them daily into `etsy_listing_stats` (EON 300 rows,
+Jade 4,172).
 
-This matters because two of your eight rules depend on exactly these fields:
+Two of your eight rules therefore need **no CSV at all**:
+`views > 25 AND favorites = 0` (fires on **1 EON listing today**) and the favorites term
+of the ads-pause rule.
 
-- `views > 25 AND favorites = 0` → "first photo or price mismatch"  ← **1 listing fires today**
-- `spend > $30 AND orders = 0 AND favorites < 2` → "pause ad"
+### 1.3 Etsy Ads spend is in the ledger — the Ads CSV is only partly needed
 
-So those two rules need **no CSV import at all**. Recommend keeping the daily snapshot
-(it is the only Visits-shaped signal the API gives) but reading it weekly.
+`etsy_ledger_entries` already carries, per order: `transaction` fee,
+`PAYMENT_PROCESSING_FEE`, `shipping_labels`, `prolist` (**onsite Ads spend**),
+`offsite_ads_fee` (**the 15%**), `PAYMENT_GROSS`. Every cash term in your
+contribution-margin formula except gold/labor/packaging is already there, from the API.
+The Ads CSV is still needed for **clicks and per-listing attribution** — not for spend.
 
-### 1.3 Etsy Ads spend is in the ledger — the Ads CSV is partly redundant
+### 1.4 Contribution margin exists once, and is wrong in one specific way
 
-`etsy_ledger_entries` (already synced, 205 rows for EON) carries real money:
-
-| ledger_type | EON | meaning |
-| --- | ---: | --- |
-| `PAYMENT_GROSS` | +$1,356.29 | gross revenue |
-| `transaction` | −$81.88 | Etsy transaction fee |
-| `PAYMENT_PROCESSING_FEE` | −$41.94 | processing |
-| `shipping_labels` | −$28.18 | postage |
-| `prolist` | −$114.58 | **onsite Etsy Ads spend** |
-| `tier_2_subscription` | −$120.00 | Etsy Plus |
-| `offsite_ads_fee` | (745 rows shop-wide) | **the 15% offsite fee** |
-
-Every cash term in your contribution-margin formula except gold/labor/packaging is
-already in this table, per order, from the API. The Ads CSV is still needed for
-**clicks and per-listing attribution**, but not for spend.
-
-### 1.4 Contribution margin exists once, and it is wrong in one specific way
-
-`operating_profit_monthly` (migration `0097`) is the only correct variable/fixed split
-in the repo. But it classifies cost category `reklam` as **fixed** — and both
+`operating_profit_monthly` (migration `0097`) is the only correct variable/fixed split in
+the repo — but it classifies cost category `reklam` as **fixed**, and both
 `offsite_ads_fee` and `prolist` land in `reklam`. Offsite Ads is a **per-order 15%
-variable fee**. So contribution margin today **excludes ad cost entirely and
-overstates per-order profitability.**
+variable fee**. So contribution margin today **excludes ad cost entirely and overstates
+per-order profitability.**
 
 Also: `PAYMENT_PROCESSING_FEE` is deliberately excluded from per-order fees (migration
-`0040`) because its `reference_id` doesn't map to a receipt — it only lands in
-aggregates. Per-order fee is therefore real but incomplete.
+`0040`) because its `reference_id` doesn't map to a receipt. Per-order fee is real but
+incomplete.
 
-Good news: all three ingredients for a true per-order margin already exist per order
+All three ingredients for a true per-order margin already exist per order
 (`sales.etsy_fees_cents`, gold COGS from `0060`/`0061`, ShipStation actual postage).
-Nothing joins them yet. **This is one join plus one `is_fixed` correction**, not a build.
+Nothing joins them. **One join plus one `is_fixed` correction**, not a build.
 
-Also verified: **10,668 of 10,668 EON variants have `weight_grams`.** The COGS input is
-100% complete — no backfill needed.
+Verified: **10,668 of 10,668 EON variants have `weight_grams`.** COGS input is complete.
 
-### 1.5 The panel contains a second pricing engine, wired to a cron
+### 1.5 A second pricing engine is wired to a cron — and it is EON-only
 
-This is the largest scope violation and it is not dormant:
+`app/api/cron/reprice` → `evaluateRepriceRules()` → anchors to a competitor `$/gram` band
+→ computes a target price → in `mode='otomatik'` **PUTs it to live Etsy inventory** and
+mirrors into `products.price_cents`. No human in the loop.
 
-`app/api/cron/reprice` → `evaluateRepriceRules()` → anchors to a competitor `$/gram`
-band → computes a target price → in `mode='otomatik'` **PUTs it to live Etsy inventory**
-and mirrors it into `products.price_cents`. No human in the loop.
+`reprice_rules` (4 rows) and `reprice_log` (8 rows) are **EON-only; Jade Gold has zero**.
+That makes it the one large deletion that survives ADDENDUM 1 — EON-only _and_ obsolete
+under EON's own external-pricing rule.
 
-Price computation also lives in: `lib/etsy/keyword-research.ts` (`suggested_price_cents`),
-`competitor-gram-price.ts`, `distribute.ts`, `/tasarimlar/varyant-hesapla`,
-`VariantEditor`, `RepriceRuleCard`, `discount-bundles.ts`, and a one-click
-**"Önerilen fiyatı uygula"** button on `/analizler/urunler/liste/[productId]`.
-
-Under the boundary "Amuletta never computes a recommended price", all of it goes.
-**Recommend disabling the reprice cron first, before anything else**, since it can
-mutate the live shop while we work.
+**Recommend disabling this cron first, before anything else.** It can mutate the live
+shop while we work.
 
 ---
 
-## 2. Screens — KEEP / MERGE / DELETE
+## 2. What ADDENDUM 1 changed — the rescue list
 
-### 2.1 KEEP (11) — these become the four screens
+**The most important section.** A single-shop reading produces a DELETE list that
+destroys the working shop.
 
-| Route / surface | Metric | Task it creates | Target screen |
+### 2.1 Rescued because Jade Gold uses them and EON does not
+
+| Item | EON | Jade | Single-shop verdict | Corrected | Why the first read was wrong |
+| --- | ---: | ---: | --- | --- | --- |
+| `reviews` + review surfaces | 0 | **3,012** | DELETE | **KEEP+FLAG** | Jade's entire review history and conversion signal. Alura boundary is EON-only. |
+| `generated_images` | 0 | **171** | DELETE | **KEEP** | 171 Jade production images — deleting the table deletes the studio. |
+| `photo_production` | 0 | **64** | DELETE | **KEEP** | 64 live Jade photo jobs. |
+| `seo_tag_optimizations` | 0 | **19** | DELETE | **KEEP+FLAG** | Jade is the *only* user; flag OFF for EON, code stays. |
+| `cart_recoveries` | 0 | **2** | DELETE | **KEEP+FLAG** | Low volume ≠ zero volume. |
+| `ads_actions` | 0 | **2** | DELETE | **KEEP** | The write side of the Ads branch; Screens 2 and 4 both need it. |
+| `star_seller_snapshots` | 0 | **1** | DELETE | **KEEP** | Already capability-gated by `starSeller`. |
+| `task_notes` | 0 | **1** | DELETE | **KEEP** | **This table _is_ the decision log** — half of Screen 4. |
+
+### 2.2 Rescued because both shops use them
+
+| Item | EON | Jade | Corrected | Note |
+| --- | ---: | ---: | --- | --- |
+| `keyword_research` | 44 | **62** | **KEEP+FLAG** | Jade uses it *more* than EON. Flag OFF for EON only. |
+| `keyword_ideas` | 3 | 2 | **KEEP+FLAG** | Same flag. |
+| `competitor_prices` | 663 | 106 | **KEEP+FLAG** | Same flag. |
+| `competitor_watch` | 105 | 18 | **KEEP+FLAG** | Same flag. |
+| `designs` / `design_boards` | 3 / 3 | 6 / 8 | **KEEP** | Both shops. |
+| `ad_daily_stats` | 209 | 208 | **KEEP** | Both shops; feeds Screen 2. |
+| `product_metrics` | 56 | 15 | **KEEP** | Both shops; feeds Screen 3. |
+| `reports` | 1 | 3 | **MERGE** | Report→task linkage seeds the decision log. |
+
+### 2.3 The Alura boundary is a flag, not a deletion
+
+`/anahtar-kelime`, `/seo-etiketleri`, `/seo-yardimcisi`, `/sepet-kurtarma`,
+`/yorumlar/[id]/duzenle` (AI reply drafting), `KeywordResearchPanel`, `lib/keywords`,
+`lib/seo/keyword-engine` — all **KEEP+FLAG**, off for EON, on for Jade Gold.
+
+Only the DataForSEO paid dependency is worth a separate decision: Jade uses the
+keyword tables, but whether it needs live DataForSEO enrichment (vs. the stored rows) is
+a cost question for you, not a scope question.
+
+---
+
+## 3. Per-shop usage table
+
+Legend — **Tree**: R=Revenue, V=Visits, C=Conversion, AOV, CM=Contribution margin,
+I=Infrastructure, — =outside tree.
+
+### 3.1 Screens
+
+| Route | Used by | Metric | Task | Tree | Verdict | Note |
+| --- | --- | --- | --- | --- | --- | --- |
+| `/analizler` 6 KPI cards | EON+Jade | conversion, visits, orders, revenue, AOV | conv <1%, visits −15% | R/V/C/AOV | **KEEP** | → Screen 1. Already the tree. |
+| `/analizler` alerts (`lib/performance.ts`) | EON+Jade | 6 numeric thresholds | all six | mixed | **KEEP** | → Screen 4. Cleanest threshold logic in repo. |
+| `/analizler` Trafik Kaynakları | EON+Jade | visits per source | source shift | V | **KEEP** | → Screen 2. |
+| `/analizler/yeni`, `[id]/duzenle` | EON+Jade | input form | weekly entry | V/C | **KEEP** | Only path for traffic data. Strip embedded `KeywordResearchPanel`. |
+| `/analizler/urunler` | EON+Jade | views, orders, conv, revenue, ad spend, ROAS | zero-sales, ad-waste | R/C | **KEEP** | → Screen 3. Missing favorites + margin. |
+| `/analizler/urunler/yeni`, `[id]/duzenle` | EON+Jade | per-product entry | — | R | **KEEP** | Input to Screen 3. |
+| `/maliyetler` OperatingProfitCard | EON+Jade | contribution, EBITDA, breakeven | breakeven not met | CM | **KEEP** | → Screen 1. See §1.4 bug. |
+| `/maliyetler` cost ledger | EON+Jade | per-cost rows | — | CM | **KEEP** | Input. Jade 16,560 rows. |
+| `/reklamlar` §01+§02 | EON+Jade | ad spend, ROAS, offsite fee | ROAS <1 | V/CM | **KEEP** | → Screen 2 + margin. |
+| `/reklamlar` §04 signal cards | EON+Jade | spend + organic + reason | pause/reduce/increase | V/C | **KEEP** | → Screen 4. Best action generator in repo. |
+| `/reklamlar` §05 action queue | Jade | before/after spend + ROAS | — (it *is* the log) | mixed | **KEEP** | → Screen 4. Needs explicit measure-date. |
+| `/gorevler` + `[id]` + `yeni` + `duzenle` | EON+Jade | open P0 | work the P0 | I | **KEEP** | → Screen 4 sink. |
+| `/satislar` order table + `[id]` + `yeni` | EON+Jade | order records | — | R | **KEEP** | Raw record, not a screen. Strip PinBoard. |
+| `/satislar/ice-aktar`, `/reklamlar/ice-aktar` | EON+Jade | — | weekly import | I | **KEEP** | CSV spine. |
+| `/ayarlar` + `/etsy` + `/profil` + `/ekip` | all three | connection state | reconnect | I | **KEEP** | Gates every number. Drop `EtsyPushButton`. |
+| `/ayarlar/altin` | EON+Jade | spot, $/g, purchase price | — | CM | **KEEP** | Read-only cost assumptions (allowed). |
+| `/ayarlar/shipstation` | Jade | sync + counts | — | CM | **KEEP** | Real postage. Drop the 5 count tiles. |
+| `/ayarlar/shopier` | **Seselka** | connection, orders | — | I | **KEEP** | Seselka's only platform. Was DELETE in v1 — wrong. |
+| `/anahtar-kelime` | EON+Jade | search volume, competition, CPC | — | — | **KEEP+FLAG** | `keywordResearch` OFF for EON. |
+| `/seo-etiketleri` | **Jade only** | 13-tag proposals, measure loop | push tags | — | **KEEP+FLAG** | `seoTagPush` already exists; OFF for EON. |
+| `/seo-yardimcisi` + listing panel 08 | EON+Jade | generated title/tags | — | — | **KEEP+FLAG** | Same flag. |
+| `/sepet-kurtarma` (3 routes) | **Jade only** | lapsed customers, risk value | reach out | — | **KEEP+FLAG** | `buyerFollowup` OFF for EON. |
+| `/yorumlar` + `[id]/duzenle` | **Jade only** (3,012) | rating, awaiting reply | rating ≤3 → respond | C | **KEEP+FLAG** | Keep ≤3-star rule for both; AI reply drafting OFF for EON. |
+| `/yildiz-satici` | **Jade only** | response rate, on-time ship | on-time < target | — | **KEEP+FLAG** | `starSeller` already exists. |
+| `/gorsel-uretim` + `/galeri` | **Jade only** (171) | produced count | — | — | **KEEP+FLAG** | `jadeGoldOnly` already set in nav. |
+| `/tasarimlar` + `/eksik-agirlik` | EON+Jade | listings, missing grams | fill gram | CM | **MERGE** | → Screen 3 gap filter. Drop "kelimesiz" KPI. |
+| `/tasarimlar/iyilestir` | EON+Jade | tags n/13, title length, images | edit listing | C | **MERGE** | → Screen 4. See §5 rule 4 direction bug. |
+| `/tasarimlar/listing/[id]` | EON+Jade | 8 panels | mixed | mixed | **MERGE** | Keep 02/04/06/07 → Screen 3 detail. Panels 02B, 05 → flag. |
+| `/tasarimlar/pano`, `/yeni`, `[id]/duzenle` | EON+Jade | design counts | — | — | **KEEP** | Both shops have rows. Not a screen. |
+| `/panel` trend, KPI quad, orders+AOV | EON+Jade | revenue/cost/orders/AOV | — | R/AOV | **MERGE** | → Screen 1. |
+| `/panel` Uyarı Merkezi (~20 generators) | EON+Jade | ranked alerts + cost-of-inaction | yes | mixed | **MERGE** | → Screen 4. Drop 3 pricing rows. |
+| `/panel` top products, Aylık Tanı | EON+Jade | top-5, MoM narrative | — | R | **MERGE** | → Screens 1 & 3. |
+| `/analizler/tani` `openFixes` | EON+Jade | MoM diagnosis | −15%/−30% drops | R/C | **MERGE** | → Screen 4. Drop the 813-line prose. |
+| `/analizler/aksiyon-plani` matrix | EON+Jade | scenarios triggered | add to tasks | mixed | **MERGE** | → Screen 4. |
+| `/analizler` Dönem Geçmişi | EON+Jade | period history | — | R | **MERGE** | → Screen 1 4-week trend. |
+| `/satislar` KPI row | EON+Jade | 7 KPIs | — | R/AOV/CM | **MERGE** | 3rd rendering of revenue/orders/AOV. |
+| `/raporlar` + `[id]` | EON+Jade | 6 KPIs + tables | — | R | **MERGE** | 5th rendering. Keep export + task linkage. |
+| `/maliyetler/altin-maliyet` | EON+Jade | per-item COGS | fill weights | CM | **MERGE** | → Screen 3. Drop `?ons=` what-if. |
+| `/listing-onerileri` | EON+Jade | draft/archived counts | — | — | **MERGE** | → Screen 3 filter. |
+| `/ayarlar/gunluk-ozet` | EON+Jade | digest recipients | — | I | **MERGE** | Repoint daily → weekly. |
+| `/panel` gold ticker, cost pie, activity feed, channels, timeline, sync nag | EON+Jade | — | none | — | **DELETE** | No threshold, no task. |
+| `/panel` + `/maliyetler` chrome (SceneCutouts, GoldStream, EditorialCard, CornerMarks, `.idx`, PinBoard) | EON+Jade | — | none | — | **DELETE** | ~25% of `panel/page.tsx`. |
+| `/analizler` ShopStat tiles, top-movers | EON+Jade | followers, lifetime sales | none | — | **DELETE** | Vanity. |
+| `/analizler` `AutoRefresh intervalMs={60000}` | EON+Jade | — | none | — | **DELETE** | 60s poller on weekly data. Violates "no pollers". |
+| `/analizler/aksiyon-plani` InquiryBoard | **none** (0 rows) | open questions | creates a question | — | **DELETE** | `metric_inquiries` empty in all three shops. |
+| `/analizler/urunler/liste/[productId]` | EON+Jade | competitor band, suggested price | reprice | — | **DELETE** | Price recommendation + one-click apply. EON rule; Jade keeps the *data* via `keyword_research`, not this screen. |
+| `/tasarimlar/varyant-hesapla` | EON | computes prices from weight | — | — | **DELETE** | In-house pricing engine. |
+| `/tasarimlar/listing/yeni`, `/etsy-agirlik` | EON | authoring + auto-price | none | — | **DELETE** | Etsy write path + pricing. |
+| `/indirimler` | **none** (0 rows) | — | none | — | **DELETE** | `discount_bundles` empty everywhere. |
+| `/stok` + `/stok/varyant` | EON+Jade | target vs Etsy qty | push stock | — | **DELETE** as screens | OOS signal already an alert row. |
+| `/arsiv` | EON (84) | — | none | — | **MERGE** | `listing_media` is EON's pre-deletion archive; keep the table, drop the console. |
+| `/kayitlar` | EON+Jade | audit rows | none | — | **DELETE** as screen | Table stays (§4.4). |
+| `/marka-kilavuzu`, `/rehber`, `/yenilikler`, `/ayarlar/buyume-stratejisi`, `/ayarlar/etsy-guncellemeleri` | EON+Jade | — | none | — | **DELETE** | Static prose. |
+| `/sosyal` (3 routes) | EON+Jade | post counts | none | — | **DELETE** | Stores zero performance data, so no threshold can fire. |
+| `/ayarlar/shopify` | **none** | connection | none | — | **DELETE** | Inert, no keys, no shop connected. |
+
+### 3.2 API routes
+
+| Route | Used by | Verdict | Note |
 | --- | --- | --- | --- |
-| `/analizler` 6 KPI cards | Conversion, Visits, Orders, Revenue, AOV | conv <1%, visits −15% | **1 · Weekly summary** |
-| `/analizler` alerts (`lib/performance.ts`) | 6 hard numeric thresholds | all six | **4 · Action queue** |
-| `/analizler` Trafik Kaynakları | visits per source | source share shift | **2 · Traffic split** |
-| `/analizler/yeni` + `[id]/duzenle` | — (input form) | weekly data entry | input to 1 & 2 |
-| `/analizler/urunler` table | views, orders, conv, revenue, ad spend, ROAS | zero-sales, ad-waste | **3 · Product ledger** |
-| `/analizler/urunler/yeni` + `[id]/duzenle` | — (input form) | per-listing entry | input to 3 |
-| `/maliyetler` OperatingProfitCard | contribution, EBITDA, breakeven | breakeven not met | **1 · Weekly summary** |
-| `/reklamlar` §01+§02 (CSV + ledger) | ad spend, ROAS, offsite fee | ROAS <1 | **2 · Traffic split** + margin |
-| `/reklamlar` §04 signal cards | spend + organic context + reason | pause / reduce / increase | **4 · Action queue** |
-| `/reklamlar` §05 action queue | before/after spend + ROAS per decision | — (it IS the log) | **4 · Decision log** |
-| `/gorevler` + `[id]` + `yeni` + `duzenle` | open P0 count | work the P0 | **4 · Action queue** |
+| `cron/etsy-sync` | EON+Jade | **KEEP** | The data spine. Retarget to weekly. |
+| `cron/shipstation-sync` | Jade | **KEEP** | Only source of actual postage. |
+| `cron/daily-digest` | EON+Jade | **KEEP** | Rename weekly; strip the price-recommendation lens. |
+| `etsy/connect`, `etsy/callback` | EON+Jade | **KEEP** | Shrink scopes to read-only once write paths go. |
+| `notifications` | EON+Jade | **KEEP** | Already a threshold→task feed. |
+| `gold-price` | EON+Jade | **KEEP** | Must become a *persisted weekly* snapshot. |
+| `cron/etsy-variants` | EON+Jade | **MERGE** | Into `etsy-sync` — same auth, client, budget. |
+| `digest/preview` | EON+Jade | **MERGE** | Into digest. |
+| `cron/reprice` | EON only | **DELETE** | Computes + pushes price (§1.5). |
+| `cron/keyword-research` | EON+Jade | **DELETE the cron** | Keyword *tables* stay for Jade; the nightly competitor crawl is the real-time/scope problem. |
+| `etsy/webhook` | EON+Jade | **DELETE** | Real-time; its own doc says it only cuts latency. |
+| `ops/repair-variant-match` | — | **DELETE** | One-shot repair as an endpoint; duplicated in `scripts/`. |
+| `gorsel/indir` | Jade | **KEEP+FLAG** | Higgsfield proxy — Jade's studio uses it. Was DELETE in v1; wrong. |
+| `shopify/connect`, `shopify/callback` | **none** | **DELETE** | No shop connected. Never validates HMAC despite its doc. |
 
-Plus non-screen keeps: `/satislar` order table (raw record, drill-down),
-`/satislar/ice-aktar` + `/reklamlar/ice-aktar` (CSV spine), `/maliyetler` cost ledger
-(input), `/ayarlar` + `/ayarlar/{etsy,profil,ekip,altin,shipstation}` (plumbing +
-read-only cost assumptions).
+### 3.3 lib subsystems
 
-**Screens 1 and 2 are ~70% built already** — they just live behind a route named
-"analizler" while `/panel`, the landing page, shows none of the tree.
+| Module | Used by | Verdict | Note |
+| --- | --- | --- | --- |
+| `lib/etsy` read spine — `client, oauth, endpoints, sync, variants, images, media, reconcile, text, types`, read half of `inventory`, `listing-audit` | EON+Jade | **KEEP** | The verified data surface. |
+| `lib/metrics-playbook` (885) | EON+Jade | **KEEP** | **The threshold→task engine. Highest-value asset.** Thresholds move to per-shop config. |
+| `lib/ads/meta.ts` (227) | EON+Jade | **KEEP** | Clean pure/impure split. |
+| `lib/tasks/schedule.ts` (106) | EON+Jade | **KEEP** | Pure, ≤5/day, forward-only. |
+| `lib/shipstation` (568) | Jade | **KEEP** | Actual postage + weights. |
+| `lib/csv` | EON+Jade | **KEEP** | Keep sales/costs/ads mappers. **Build the shop-stats traffic mapper.** |
+| `lib/digest`, `lib/email` | EON+Jade | **KEEP** | Strip `lenses.ts:117–219` price-recommendation lens. |
+| `lib/platform.ts`, `lib/brand.ts`, `lib/actions/session.ts` | all three | **KEEP** | **Shared infrastructure — never delete.** The flag layer §6 builds on. |
+| `lib/shopier` (476) | **Seselka** | **KEEP** | Seselka's only platform. Was DELETE in v1 — wrong. |
+| `lib/keywords` (342) | EON+Jade | **KEEP+FLAG** | `keywordResearch` OFF for EON. DataForSEO cost is a separate call. |
+| `lib/seo/keyword-engine` (665) | EON+Jade | **KEEP+FLAG** | Same flag. |
+| `lib/photo-kit` (2,167) | Jade | **KEEP+FLAG** | `jadeGoldOnly`. |
+| `lib/pins` (41) | EON (5) | **KEEP+FLAG** | EON-only, decorative; flag rather than delete. |
+| `lib/validations` | EON+Jade | **KEEP** | Keep all — every module they validate survives in some shop. |
+| `lib/etsy/reprice.ts` (637), `competitor-gram-price.ts` (98), `distribute.ts` (319) | EON | **DELETE** | Price computation; EON-only. |
+| `lib/etsy` write paths — `create-listing.ts` (652), `listing.ts`, `weights.ts`, `description-weights.ts` (648) | EON | **DELETE** | Etsy mutation; EON's catalog push is finished. |
+| `lib/shopify/client.ts` (57) | **none** | **DELETE** | Inert. |
+| `lib/etsy/keyword-research.ts` (1,006) | EON+Jade | **MERGE** | Despite the name it is *competitor price* research. Salvage the comp-set read for Jade; delete `suggested_price_cents`. |
 
-### 2.2 MERGE (14)
+### 3.4 Query modules (50) and scripts
 
-| Route / surface | Into | Why |
-| --- | --- | --- |
-| `/panel` trend chart, KPI quad, orders+AOV | Weekly summary | same numbers, weekly cadence |
-| `/panel` Uyarı Merkezi (~20 generators) | Action queue | already threshold→task→href shaped; drop 3 pricing rows |
-| `/panel` top products | Product ledger | full ledger supersedes arbitrary top-5 |
-| `/panel` Aylık Tanı summary | Weekly summary headline | second rendering of same signal |
-| `/analizler/tani` `openFixes` | Action queue | real thresholds buried in an 813-line narrative |
-| `/analizler/aksiyon-plani` scenario matrix | Action queue | closest existing thing to screen 4 |
-| `/analizler` Dönem Geçmişi | Weekly summary (4-week trend) | it is the trend data source |
-| `/analizler` daily views chart | Traffic split (proxy row) | views ≠ visits; keep as fallback |
-| `/satislar` KPI row | Weekly summary + margin | 3rd rendering of revenue/orders/AOV |
-| `/raporlar` ReportExport | Weekly summary (export button) | the one useful piece of that route |
-| `/raporlar/[id]` report→task linkage | Decision log | seed of hypothesis→result tracking |
-| `/maliyetler/altin-maliyet` per-item COGS | Product ledger | correct COGS feed; drop the `?ons=` what-if |
-| `/reklamlar` §03, §06, daily tables | one Ads row + ledger column | three parallel ad-spend truths on one page |
-| `/tasarimlar` + `/tasarimlar/eksik-agirlik` | Product ledger (gap filter) | gram completeness gates margin |
-| `/ayarlar/gunluk-ozet` | Weekly summary delivery | repoint daily → weekly |
-
-### 2.3 DELETE — scope violations (18 routes)
-
-| Route | Boundary breached |
-| --- | --- |
-| `/anahtar-kelime` (+ DataForSEO, Gemini) | keyword research → Alura |
-| `/seo-etiketleri` | tag mining + rank tracking → Alura |
-| `/seo-yardimcisi` + listing panel 08 | tag/title generation → Alura |
-| `/analizler/urunler/anahtar-kelime` | keyword CSV → Alura |
-| `/analizler/urunler/liste/[productId]` | competitor mining **and** price recommendation (worst offender) |
-| `/tasarimlar/varyant-hesapla` | computes prices from weight × purchase price |
-| `/tasarimlar/listing/[id]` panels 02B, 05, 08 | discount sim, reprice rule, $/gram, keyword panel |
-| `/tasarimlar/listing/yeni` | authoring + auto-price-from-weight |
-| `/panel` Pazar Fiyat Uyarıları | competitor mining + reprice recommendation |
-| `/panel` En İyi Müşteriler | feeds buyer follow-up → Alura |
-| `/sepet-kurtarma` (3 routes) | buyer win-back outreach → Alura |
-| `/yorumlar/[id]/duzenle` (`generateReviewReply`) | AI-drafts buyer messages → Alura |
-| `/sosyal` (3 routes) | posting calendar + hashtag authoring, zero performance data |
-| `/gorsel-uretim` (2 routes) | AI image generation |
-| `/indirimler` | promotional pricing config |
-| `/analizler` `AutoRefresh intervalMs={60000}` | 60-second poller on manually-entered weekly data |
-| `/reklamlar` AdsTriageDialog | search-term triage → Alura |
-| `/ayarlar/{shopier,shopify}` | non-Etsy channels, outside the tree |
-
-### 2.4 DELETE — no metric, no task (31 routes)
-
-`/raporlar` summary+tables (5th rendering of the panel KPI block, identical
-`getDashboard()` call) · `/panel` gold ticker, cost pie, activity feed, sales-channel
-card, timeline, sync nag · `/panel` + `/maliyetler` decorative chrome (SceneCutouts,
-GoldStream, EditorialCard, CornerMarks, `.idx` rows, PinBoard stickers — ~25% of
-`panel/page.tsx`) · `/analizler` ShopStat vanity tiles (followers, lifetime sales),
-top-movers · `/analizler/aksiyon-plani` InquiryBoard · `/satislar` monthly charts,
-country revenue · `/maliyetler` bearer editor · `/stok` + `/stok/varyant` ·
-`/arsiv` · `/kayitlar` (as a screen; table stays) · `/listing-onerileri` (→ ledger
-filter) · `/tasarimlar/{pano,yeni,[id]/duzenle,etsy-agirlik}` · `/yorumlar` +
-`/yorumlar/yeni` (keep only the ≤3-star rule) · `/yildiz-satici` · `/marka-kilavuzu` ·
-`/rehber` · `/yenilikler`
-
-> `/rehber` is **445 lines of instructions for 20 screens**, and its own docstring says
-> _"Birçok güçlü özellik var ama kimse nasıl kullanılacağını bilmiyor."_ That file is the
-> strongest existing argument for the four-screen target — deleting the screens deletes
-> the need for the manual.
+- **KEEP 30** — core tree (`sales, products, listings, costs, metrics, dashboard, reports, reviews, variants, variant-stock, variant-weights, stock, product-metrics, profile, team, audit, timeline, tasks, alerts, data-gaps`), ads (`ads-actions, ads-daily, ads-ledger`), Etsy ops (`etsy, etsy-insights, listing-audit, diagnostics, missing-weights`), plus `shipstation`, `shopier`, `listing-archive`, `listing-images`.
+  _Caveat:_ `alerts.ts` emits `below_melt`, `discount_below_melt`, `market_price_position` — three pricing rows to remove for EON.
+- **KEEP+FLAG 9** — `keyword-research, keyword-ideas, seo-tags, market-alerts, cart-recoveries, star-seller, designs, design-boards, generated-images, photo-production`.
+- **DELETE 8** — `discount-bundles`, `metric-inquiries`, `shopify`, `pins`, `gold-cost`/`gold-settings` price-recommendation halves (assumption read stays), `listing-health` price half.
+- **Scripts** — KEEP `dev-supabase-setup.sh`, `fill-weights-from-description.ts`, `cut-pins.mjs` + brand generators (Jade studio). DELETE `eon-push-drafts.ts`, `restore-listing-prices-from-etsy.ts`, `ops-repair-*`, `eon-ghost-bank`, `eon-upload-covers`, `eon-qa/` — spent EON one-shots and write paths.
 
 ---
 
-## 3. Backend
+## 4. DELETE list — with the evidence
 
-### 3.1 API routes (16)
+Only these clear ADDENDUM 1 rule 2 (used by no shop, or EON-only and obsolete).
 
-| Verdict | Routes |
-| --- | --- |
-| **KEEP** | `cron/etsy-sync` (the data spine), `cron/shipstation-sync`, `etsy/connect`, `etsy/callback`, `notifications` (already a threshold→task feed), `cron/daily-digest` → rename weekly |
-| **MERGE** | `cron/etsy-variants` → into `etsy-sync`; `digest/preview` → into digest; `gold-price` → becomes a weekly **persisted** snapshot |
-| **DELETE — violation** | `cron/reprice` (computes + pushes price), `cron/keyword-research`, `etsy/webhook` (real-time; its own doc says it only cuts latency), `shopify/connect`, `shopify/callback` |
-| **DELETE — dead** | `ops/repair-variant-match` (one-shot repair masquerading as an endpoint, duplicated in `scripts/`), `gorsel/indir` (Higgsfield proxy) |
+### 4.1 Zero rows in all three shops
+`market_price_decisions` (0/0/0) · `metric_inquiries` + `metric_inquiry_responses` (0/0/0) ·
+`discount_bundles` (0/0/0) · `csv_imports` (0/0/0)
 
-### 3.2 `lib/etsy` — split the read spine from the write paths
+### 4.2 EON-only and obsolete under EON's external-pricing rule
+`reprice_rules` (EON 4, Jade 0) · `reprice_log` (EON 8, Jade 0) · `cron/reprice` ·
+`lib/etsy/reprice.ts` · `/tasarimlar/varyant-hesapla`
 
-**KEEP (read = the verified data surface):** `client`, `oauth`, `endpoints`, `sync`,
-`variants`, `images`, `media`, `reconcile`, `text`, `types`, read half of `inventory`,
-and `listing-audit` (pure quality checks, feeds Conversion tasks).
+### 4.3 No shop connected
+`shopify_connection` · `lib/shopify` · `app/api/shopify/*` — no org has a Shopify row.
 
-**DELETE — violation:** `reprice.ts` (637), `keyword-research.ts` (1006),
-`competitor-watch.ts` (355), `competitor-gram-price.ts` (98), `distribute.ts` (319).
-
-**DELETE — Etsy write paths:** `create-listing.ts` (652), `listing.ts` (description
-PATCH), `weights.ts`, `description-weights.ts` (648), `arsiv` listing delete,
-`gorsel-uretim` image upload, `EtsyPushButton`.
-
-`lib/etsy/sync.ts` runs 6 phases — receipts+transactions → listings → listings_all →
-reviews → **ledger** → extras (shop snapshot, sections, shipping profiles, listing
-views/favorites). Every phase maps to the verified data surface. This file stays.
-
-### 3.3 Other lib subsystems
-
-| KEEP | MERGE / surgery | DELETE |
-| --- | --- | --- |
-| `metrics-playbook` (885 — **the threshold→task engine, highest-value asset**) | `digest` (strip the `suggested_price_cents` lens, `lenses.ts:117–219`) | `keywords` (342) — Alura |
-| `ads/meta.ts` (227 — clean pure/impure split, thresholds in one place) | `csv` (keep sales/costs/ads; **delete `etsy-keywords.ts`**; **build the shop-stats traffic mapper**) | `seo/keyword-engine.ts` (665) — Alura |
-| `tasks/schedule.ts` (106 — pure, ≤5/day, forward-only) | `gold-cost`/`gold-settings` → read-only assumptions only | `photo-kit` (2,167) |
-| `shipstation` (568 — actual postage + weights) | | `pins` (41), `shopier` (476), `shopify` (57) |
-| `email` (184), `actions/session.ts` | | `actions/pins.ts` |
-
-### 3.4 `lib/db/queries` (50 modules)
-
-- **KEEP 20** — core tree: `sales, products, listings, costs, metrics, dashboard, reports, reviews, variants, variant-stock, variant-weights, stock, product-metrics, profile, team, audit, timeline, tasks, alerts, data-gaps`.
-  _Caveat:_ `alerts.ts` emits `below_melt`, `discount_below_melt`, `market_price_position` — those three rows are pricing and must be removed.
-- **KEEP 3 ads** — `ads-actions`, `ads-daily`, `ads-ledger` (highest-fidelity ad cost, needs no CSV, already joins offsite fee → receipt → sale).
-- **KEEP 5 Etsy ops** — `etsy`, `etsy-insights`, `listing-audit`, `diagnostics`, `missing-weights`.
-- **DELETE 7 — violation** — `keyword-research`, `keyword-ideas`, `market-alerts`, `seo-tags`, `discount-bundles`, plus salvage-then-delete `listing-health` (mixes real health signals with `suggested_price_cents`).
-- **DELETE 12** — `designs`, `design-boards`, `generated-images`, `photo-production`, `pins`, `social`, `cart-recoveries`, `listing-archive`, `listing-images`, `star-seller`, `shopier`, `shopify`.
-- **Second look before deleting:** `metric-inquiries` (the "ask the team" branch of the playbook) — it creates a *question*, not a task, so by the rule it goes; flagging because it was deliberate design.
-
-### 3.5 Scripts
-
-KEEP `dev-supabase-setup.sh` (required to run the app), `fill-weights-from-description.ts`
-(one-shot, feeds COGS). DELETE the rest — `eon-push-drafts.ts` and
-`restore-listing-prices-from-etsy.ts` are Etsy write/pricing paths; `eon-qa/` (5 Python),
-`eon-ghost-bank`, `eon-upload-covers`, `ops-repair-*` are spent one-shots; the four
-brand/creative `.mjs` generators carry no metric.
-
----
-
-## 4. Database — 72 tables
-
-### 4.1 KEEP (18)
-`organizations, organization_members, profiles, org_invites, platform_admins` (tenancy) ·
-`products, product_variants` (catalog + grams) · `sales, sale_items` (revenue) ·
-`etsy_connection, etsy_ledger_entries, etsy_listing_stats, etsy_shop_snapshots` (API spine) ·
-`costs, cost_categories` (COGS) · `shop_metrics, product_metrics` (weekly batch) ·
-`tasks` (action queue)
-
-### 4.2 MERGE / rework (6)
-`ad_daily_stats` + `ads_actions` → ads row + decision log · `task_notes` → decision-log
-entries · `csv_imports` → weekly import ledger · `alert_state` → rule-fire dedupe ·
-`reviews` → keep only for the ≤3-star and no-review rules
-
-### 4.3 DELETE — scope violations (11)
-`keyword_research, keyword_ideas, seo_tag_optimizations, competitor_prices,
-competitor_watch, competitor_variant_match, market_price_alerts, market_price_decisions,
-latest_market_decision, reprice_rules, reprice_log`
-
-### 4.4 DELETE — outside the tree (16)
-`designs, design_boards, design_collections, design_pins, design_pin_comments,
-generated_images, photo_production, pins, pin_stickers, discount_bundles,
-star_seller_snapshots, cart_recoveries, metric_inquiries, metric_inquiry_responses,
-shopier_connection, etsy_oauth_states`(keep if OAuth stays)
-
-### 4.5 Two things I will not touch without your word
+### 4.4 Two things I will not touch without your word
 
 **`ha_*` — 13 tables from a different application.**
-`ha_hotels, ha_guests, ha_departments, ha_shift_reports, ha_handover_items,
-ha_follow_ups, ha_hotel_members, ha_reminder_logs, ha_users`, etc. **No migration in
-this repo creates them. No line of app code references them.** They appear to be a
-hotel-handover app sharing this Supabase project. They are not Amuletta's to delete —
-confirm with whoever owns that app first. Flagging, not touching.
+`ha_hotels, ha_guests, ha_departments, ha_shift_reports, ha_handover_items, ha_follow_ups,
+ha_hotel_members, ha_reminder_logs, ha_users`, etc. **No migration in this repo creates
+them. No line of app code references them.** They appear to belong to a hotel-handover
+app sharing this Supabase project — note the `handover-atlas` Vercel project on the same
+account. Not Amuletta's to delete. Flagging, not touching.
 
 **`audit_log` — 274,570 rows, 336 MB, the largest object in the database.**
-It is written by a Postgres trigger on every create/update/delete (company memory, per
-`CLAUDE.md`). By the ONE RULE it shows no metric and creates no task, so `/kayitlar` as a
-*screen* goes. But it is also the compliance trail, and it is 336 MB. Recommend: keep the
-table, delete the screen, add a retention policy. Your call on retention window.
-
-### 4.6 New tables PHASE 1 needs
-`weekly_gold_price(date, usd_per_ozt)` — **nothing persists spot today**;
-`lib/gold-price.ts` only holds a 1-hour in-process cache with a hardcoded `4088`
-fallback. A cost snapshot at order time cannot be reconstructed. ·
-`pricing_engine_import` (read-only xlsx mirror + import timestamp) ·
-`weekly_traffic` (shop-stats CSV) · `decision_log` (date, hypothesis, change, measure
-date, result) — `ads_actions` is the closest existing shape but is ads-only and has no
-measure-date.
+Written by a Postgres trigger on every write (company memory, per `CLAUDE.md`). Shows no
+metric and creates no task, so `/kayitlar` as a *screen* goes — but it is the compliance
+trail. Recommend: keep the table, delete the screen, add a retention policy. Your call on
+the window.
 
 ---
 
-## 5. Rules engine — what exists vs. what must be built
+## 5. Rules engine — per shop
+
+Thresholds move to per-shop config. v2 numbers are **EON calibration (AOV ~$250)**; Jade
+and Seselka inherit neutral defaults and stay silent until you calibrate them.
 
 | # | Rule | Status | Where / gap |
 | --- | --- | --- | --- |
-| 1 | `contribution_margin < 0` or price below floor | **Rework** | `operating_profit_monthly` is monthly, not per-order, and excludes ad cost (§1.4). Floor logic exists but inside the pricing engine being deleted — floor must come from the xlsx import. |
-| 2 | ads: 30d, spend >$30, orders 0, favorites <2 | **Exists, needs rewiring** | `lib/ads/meta.ts` + `ads-ledger.ts` have spend and orders; favorites from `etsy_listing_stats`. Thresholds differ — align to spec. |
+| 1 | `contribution_margin < 0` or price below floor | **Rework** | Monthly not per-order; excludes ad cost (§1.4). Floor must come from the xlsx import, not the deleted engine. |
+| 2 | ads: 30d, spend >$30, orders 0, favorites <2 | **Exists, rewire** | `lib/ads/meta.ts` + `ads-ledger.ts` + `etsy_listing_stats`. Thresholds differ — align, then per-shop. |
 | 3 | views >25 AND favorites 0 (30d) | **Exists** | `etsy_listing_stats`. **1 EON listing fires today.** No CSV needed. |
-| 4 | title <110 chars OR tags <13 | **Half exists — direction bug** | `lib/etsy/listing-audit.ts` flags titles that are too **long** (>140 chars, >15 words). A 60-char title passes silently today. Tag rule `tags < 13` is correct and reusable as-is. |
-| 5 | size scale attribute missing / style attribute wrong | **Missing** | Attributes are fetched but no completeness check exists. |
-| 6 | receipt has personalization or half-size note → QC gate | **Missing entirely** | Grep across the repo finds personalization only in outbound listing-**creation** code. **Nothing reads the buyer's personalization value off a receipt.** Your highest-value rule (2 of first 5 orders shipped with spec errors) has zero implementation — it must be built, not salvaged. |
-| 7 | delivered +7d, no review, no follow-up logged | **Partly** | `reviews` synced; delivery date from ShipStation. "Follow-up logged" needs a field — and note the follow-up itself is Alura's, so the panel only checks that it *fired*. |
-| 8 | gold spot moved >5% since last reprice import | **Missing** | No persisted spot history (§4.6). Needs `weekly_gold_price` first. |
+| 4 | title <110 chars OR tags <13 | **Half exists — direction bug** | `lib/etsy/listing-audit.ts` flags titles that are too **long** (>140 chars, >15 words). A 60-char title passes silently. Tag rule `tags < 13` is correct and reusable. |
+| 5 | size scale / style attribute wrong | **Missing** | Attributes fetched, no completeness check. |
+| 6 | personalization or half-size → QC gate | **Missing entirely** | Personalization appears only in outbound listing-*creation* code. **Nothing reads the buyer's personalization value off a receipt.** Your highest-value rule (2 of first 5 EON orders shipped with spec errors) must be built, not salvaged. |
+| 7 | delivered +7d, no review, no follow-up | **Partly** | `reviews` synced (Jade 3,012, EON 0); delivery from ShipStation (Jade only). Needs a "follow-up logged" field. Panel only checks that Alura *fired*. |
+| 8 | gold spot moved >5% since last reprice import | **Missing** | No persisted spot history — `lib/gold-price.ts` is a 1-hour in-process cache with a hardcoded `4088` fallback. Needs `weekly_gold_price` first. |
 
 **Score: 2 usable as-is, 3 need rework, 3 must be built.**
 
 ---
 
-## 6. Gaps PHASE 1 must close
+## 6. The feature-flag layer already exists
 
-1. **Traffic-source CSV importer does not exist.** `shop_metrics.traffic_sources` is a
-   hand-typed jsonb. This is the weakest leg of the tree — Revenue/AOV/margin are
-   API-served, Visits is not. `lib/csv/mappers/etsy-ads-daily.ts` is a good template
-   (fuzzy header aliasing, `Jul 1, 2026` date parsing, TZ-safe, dedupe-by-day, upsert).
-2. **The pricing-engine xlsx is not in the repo** and there is **no xlsx parser
-   dependency** in `package.json`. Both need adding, plus the file itself
-   (`2026-07-16-eon-pricing-engine.xlsx`).
-3. **Architecture families do not exist as data.** Meridian / Obelisk / Testament /
-   Keystone / Cornice appear only as prose in `public/brand/README.md` and two
-   migrations. Screen 3 requires a family column + Wide flag per listing — needs a
-   mapping you supply.
-4. **Catalog is 41 listings, target is 16.** EON currently has 26 active + 14 draft +
-   1 sold_out (non-archived). The lock-down to 16 is a data decision, not a code one.
-5. **Existing traffic data has an integrity problem.** July `traffic_sources` sums to
-   **326 across six buckets while `visits` reads 261**, and `etsy_app` and `etsy_ads`
-   are both exactly `107` — which looks like a copy error at entry. The importer should
-   validate that sources sum to visits and reject rather than absorb the discrepancy.
+ADDENDUM 1 §4 needs per-shop flags, not deletion. Three mechanisms are already in place:
 
-Mapping the six existing buckets onto your four sources is otherwise clean:
-`etsy_search` → Etsy search · `etsy_app + etsy_marketing` → Etsy internal ·
-`etsy_ads` → Ads · `direct + social` → External.
+| Layer | File | What it gates |
+| --- | --- | --- |
+| Platform capabilities | `lib/platform.ts` | `sync, listingPush, seoTagPush, adsSignals, starSeller, reprice, stockSync` — derived from etsy/shopify/shopier |
+| Brand/org identity | `lib/brand.ts` | `getBrandScope`, `isEonActive` |
+| Nav gating | `components/layout/nav-items.ts` + `sidebar.tsx:99-101` | `jadeGoldOnly`, `brandBook`, `capability` |
+
+**What's missing:** an explicit per-org feature-flag store not derived from platform or
+brand identity. `organizations` already carries `gold_settings jsonb` and
+`digest_settings jsonb` — so `feature_flags jsonb` and `rules_config jsonb` follow an
+established precedent rather than inventing a mechanism.
+
+Flags PHASE 1 should add: `keywordResearch` (OFF for EON), `buyerFollowup` (OFF for EON),
+`externalPricing` (ON for EON — suppresses any in-panel price computation),
+`photoStudio` (Jade only).
 
 ---
 
-## 7. What I recommend deciding now
+## 7. Per-shop readiness on the four screens
 
-1. **Disable the reprice cron immediately** (§1.5) — it can rewrite live Etsy prices
-   while we work. This is the one item I would not wait on.
-2. **Gray-box behaviour** (§1.1) — ship fully gray as specified, or gray + "n of 100"
+| Screen | EON | Jade Gold | Seselka |
+| --- | --- | --- | --- |
+| **1 · Weekly summary** | Revenue/AOV real; conversion + visits from 1 manual period row; **shop guard fails (5 orders)** → mostly gray | Full — 10,848 sales, 16,560 cost rows, guard passes | **Empty** — no data at all |
+| **2 · Traffic split** | 1 period row, and it has an integrity bug (§8.5) | 2 period rows + 208 ad-days | **Empty** |
+| **3 · Product ledger** | 41 products, 300 stat rows, grams 100% complete; **52 of 54 rows gray** | 121 products, 4,172 stat rows, most rows publish | **Empty** — 0 products |
+| **4 · Action queue** | 16 tasks; rule 3 fires on 1 listing; margin rule always fires | 42 tasks, 1 decision-log note, 2 ads actions | **Empty** |
+
+Be blunt with yourself about Seselka: it is a connected Shopier account with nothing
+behind it. Its four screens will be empty scaffolding until it has products and orders,
+and no rule should fire for it.
+
+---
+
+## 8. Gaps PHASE 1 must close
+
+1. **Traffic-source CSV importer does not exist.** `shop_metrics.traffic_sources` is
+   hand-typed jsonb. Weakest leg of the tree. `lib/csv/mappers/etsy-ads-daily.ts` is a
+   good template (fuzzy header aliasing, `Jul 1, 2026` parsing, TZ-safe, dedupe-by-day).
+2. **The pricing-engine xlsx is not in the repo** and `package.json` has **no xlsx parser
+   dependency**. Both needed, plus `2026-07-16-eon-pricing-engine.xlsx` itself.
+   Jade and Seselka get adapter stubs; their margin columns gray as "cost model pending".
+3. **Architecture families do not exist as data.** Meridian / Obelisk / Testament /
+   Keystone / Cornice appear only as prose in `public/brand/README.md` and two migrations.
+   Screen 3 needs a family column + Wide flag — needs a mapping you supply. **EON only**;
+   Jade and Seselka need their own grouping or none.
+4. **EON catalog is 41 listings, target is 16.** 26 active + 14 draft + 1 sold_out.
+   A data decision, not a code one.
+5. **EON's existing traffic row has an integrity bug.** July `traffic_sources` sums to
+   **326 across six buckets while `visits` reads 261**, and `etsy_app` and `etsy_ads` are
+   both exactly `107` — which looks like a copy error at entry. The importer should
+   validate that sources sum to visits and reject rather than absorb it.
+6. **New tables:** `weekly_gold_price(date, usd_per_ozt)`, `pricing_engine_import`
+   (read-only mirror + timestamp), `weekly_traffic`, `decision_log` (date, hypothesis,
+   change, measure date, result — `task_notes` and `ads_actions` are the closest existing
+   shapes but neither has a measure-date).
+
+Source mapping is otherwise clean: `etsy_search` → Etsy search ·
+`etsy_app + etsy_marketing` → Etsy internal · `etsy_ads` → Ads · `direct + social` → External.
+
+---
+
+## 9. Decisions needed from you
+
+1. **Confirm the §3 per-shop usage table.** ADDENDUM 1 §7 blocks PHASE 4 cleanup until
+   you do. Specifically confirm that Jade Gold really does use the keyword/SEO/studio
+   stack, and that Seselka is expected to stay empty for now.
+2. **Disable the reprice cron immediately** (§1.5) — it can rewrite live Etsy prices while
+   we work. The one item I would not wait on.
+3. **Gray-box behaviour** (§1.1) — fully gray as specified, or gray + "n of 100"
    distance-to-significance. I recommend the latter.
-3. **`ha_*` tables** (§4.5) — confirm they belong to another app and who owns them.
-4. **`audit_log` retention** (§4.5) — keep table, delete screen, pick a window.
-5. **Architecture family mapping** (§6.3) — needed for screen 3.
-6. **The xlsx** (§6.2) — drop `2026-07-16-eon-pricing-engine.xlsx` in the repo so
-   PHASE 1 can build the read-only mirror against the real sheet.
+4. **`ha_*` tables** (§4.4) — confirm they belong to the handover app and who owns them.
+5. **`audit_log` retention** (§4.4) — keep table, delete screen, pick a window.
+6. **DataForSEO** — Jade uses the keyword tables; does it still need paid live enrichment,
+   or are the stored rows enough?
+7. **Architecture family mapping** (§8.3) — needed for EON's Screen 3.
+8. **The xlsx** (§8.2) — drop it in the repo so PHASE 1 can build the read-only mirror
+   against the real sheet.
 
 Nothing is deleted until you approve this list.
