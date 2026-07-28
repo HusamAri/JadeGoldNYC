@@ -1,24 +1,27 @@
 import { NextResponse } from "next/server";
 
-import { evaluateRepriceRules } from "@/lib/etsy/reprice";
-
-// Kural başına en çok 1 envanter GET + 1 PUT yapılır; süre limitini uzat.
-export const maxDuration = 60;
-
 /**
- * Vercel Cron hedefi — günlük 10:00 UTC (rakip araştırması cron'u 09:00'da
- * taze anlık görüntüyü yazdıktan SONRA çalışır). Aktif reprice kurallarını
- * tüm org'lar için değerlendirir: mode='otomatik' + varyantsız listing'de
- * Etsy fiyatı güncellenir, aksi halde öneri loglanır (reprice_log).
- * `Authorization: Bearer ${CRON_SECRET}` ile korunur; kural yoksa inert.
+ * DEVRE DIŞI — otomatik yeniden fiyatlama kaldırıldı (2026-07-28).
+ *
+ * Fiyat artık panelin DIŞINDA belirlenir (EON fiyat motoru xlsx). Panel fiyat
+ * ÖNERMEZ, HESAPLAMAZ ve canlı mağazaya YAZMAZ; yalnız gram tablosu + maliyet
+ * varsayımlarını salt-okunur içe aktarır. Bu uç eskiden `evaluateRepriceRules()`
+ * çağırıp `mode='otomatik'` kurallarda Etsy envanterine PUT atıyordu — yani
+ * insan onayı OLMADAN canlı fiyat değiştirebiliyordu.
+ *
+ * Vercel cron kaydı (`vercel.json`) kaldırıldı; rota da burada sonlandırıldı ki
+ * elde kalan bir zamanlayıcı ya da elle çağrı motoru yeniden çalıştıramasın.
+ * `reprice_rules` / `reprice_log` tabloları ve `lib/etsy/reprice.ts` PHASE 4
+ * temizliğinde silinir (kayıt izi o güne kadar korunur).
  */
-export async function GET(request: Request) {
-  const secret = process.env.CRON_SECRET;
-  const auth = request.headers.get("authorization");
-  if (!secret || auth !== `Bearer ${secret}`) {
-    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
-  }
-
-  const results = await evaluateRepriceRules();
-  return NextResponse.json({ ok: true, results });
+export async function GET() {
+  return NextResponse.json(
+    {
+      ok: false,
+      disabled: true,
+      reason:
+        "Otomatik yeniden fiyatlama kaldırıldı. Fiyat panel dışında (EON fiyat motoru) belirlenir; panel fiyat hesaplamaz ve Etsy'ye yazmaz.",
+    },
+    { status: 410 },
+  );
 }

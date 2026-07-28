@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { requireMembership } from "@/lib/auth";
+import { pricingWriteBlocked } from "@/lib/feature-flags";
 
 export type RejectReason =
   | "tedarik"
@@ -36,6 +37,9 @@ export async function applyMarketPrice(input: {
   suggestedPriceCents: number;
 }): Promise<{ ok?: boolean; error?: string }> {
   const m = await requireMembership();
+  // Fiyat panel dışında belirleniyorsa (EON) önerilen fiyat UYGULANAMAZ.
+  const pricingBlocked = await pricingWriteBlocked(m.org_id);
+  if (pricingBlocked) return { error: pricingBlocked };
   const { productId, researchId, suggestedPriceCents } = input;
   if (!Number.isFinite(suggestedPriceCents) || suggestedPriceCents <= 0) {
     return { error: "Geçersiz fiyat." };

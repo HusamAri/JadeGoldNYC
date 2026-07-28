@@ -12,6 +12,7 @@ import {
 } from "@/lib/etsy/sync";
 import { syncListingVariants } from "@/lib/etsy/variants";
 import { getEtsyWriteAccess } from "@/lib/db/queries/etsy";
+import { pricingWriteBlocked } from "@/lib/feature-flags";
 import { pushListingPrices } from "@/lib/etsy/inventory";
 import {
   variantPropsForMatch,
@@ -197,6 +198,10 @@ export async function pushAllPricesToEtsyAction(
     ...over,
   });
   if (!isManager(m.role)) return base({ error: MANAGER_ONLY_ERROR });
+  // Fiyat panel dışında belirleniyorsa (EON) panel ASLA fiyat yazmaz — elle
+  // girilen canlı fiyatları ezmesin diye kapı en başta.
+  const pricingBlocked = await pricingWriteBlocked(m.org_id);
+  if (pricingBlocked) return base({ error: pricingBlocked });
   const { writeEnabled } = await getEtsyWriteAccess(m.org_id);
   if (!writeEnabled)
     return base({ error: "Etsy yazma erişimi kapalı (listings_w gerekli)." });
