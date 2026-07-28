@@ -407,3 +407,115 @@ Source mapping is otherwise clean: `etsy_search` → Etsy search ·
    against the real sheet.
 
 Nothing is deleted until you approve this list.
+
+---
+
+## 10. Decisions received (2026-07-28) — §3 CONFIRMED
+
+Husam confirmed the per-shop usage table after running the dual-column check
+against Jade Gold and Seselka usage. PHASE 4 is unblocked, subject to the riders
+below. Answers to §9, in order:
+
+| # | Decision |
+| --- | --- |
+| 1 | **§3 confirmed.** All 34 DELETE items are zero-row-everywhere, EON-only-and-obsolete, or inert Shopify. Jade Gold does actively use the keyword/SEO/studio stack → KEEP+FLAG as graded. Seselka is a shell by design; it stays empty and **no rule may fire for it**. |
+| 2 | **Reprice killed immediately.** Done — see §11. |
+| 3 | **Gray + "n of 100"** distance-to-significance approved. |
+| 4 | **`ha_*` belongs to handover-atlas** (same repo, second Vercel project), owner Husam. **Freeze: flag, never touch from Amuletta.** |
+| 5 | **`audit_log`:** keep table, delete screen, **retention 90 days**. Revisit at the 60-day pricing review. |
+| 6 | **DataForSEO:** stored rows are enough — **paid live enrichment OFF**, re-enable on demand only if a concrete Jade task needs fresh volume data. |
+| 7 | **Architecture families:** Husam supplies a CSV (`listing_id, family, wide`). **Do not block PHASE 1** — gray the family column until it lands. |
+| 8 | **Pricing xlsx** lands at the next desktop session. Importer spec in §12. |
+
+### Riders on PHASE 4 (must hold before the relevant deletion executes)
+
+**(a) `/stok` write path — SETTLED, safe to delete.**
+Required check: zero Jade Gold stock-push writes in the last 90 days.
+Measured 2026-07-28 against `audit_log` (`action = 'etsy.stock_push'`, the key
+written by both `stok/actions.ts` and `stok/varyant/actions.ts`):
+
+| Shop | last 90d | last 180d | all time |
+| --- | ---: | ---: | ---: |
+| EON | 0 | 0 | 0 |
+| Jade Gold | 0 | 0 | 0 |
+| Seselka | 0 | 0 | 0 |
+
+Verified as a true zero, not a logging gap: `etsy.*` auditing demonstrably works
+on both live shops over the same window (Jade `etsy.sync` 81, `etsy.variant_sync`
+7, `etsy.image_upload` 2; EON `etsy.sync` 74, `etsy.listing_create` 29).
+`etsy.stock_push` has simply never been written by anyone.
+**Conclusion: no flag needed — the `/stok` write path can be deleted outright.**
+_Caveat on the definition:_ `logAudit` only fires when `updated > 0 || errors > 0`,
+so a push in which every row was skipped leaves no trace. That is the correct
+definition of a *write*, so the conclusion stands.
+
+**(b) OAuth scope shrink is EON-only.** When narrowing to read-only, EON only —
+**Jade Gold keeps the listing-write scope for `seoTagPush`.** Not yet
+implemented; PHASE 4 item.
+
+### PHASE 4 follow-up log
+
+- **Calculator UI lock for EON — DEFERRED** (Husam, 2026-07-28). The in-panel
+  price calculators (`components/listing/variant-editor.tsx` anchor-$/g
+  propagation, `variant-calculator.tsx`, `listing-composer.tsx`, and
+  `/tasarimlar/varyant-hesapla`) still compute suggested prices into **panel**
+  fields. They can no longer reach the live shop — every push path is gated on
+  `externalPricing` (§11) — so this is cosmetic honesty, not a safety hole.
+  Lock them visibly for EON in PHASE 4.
+- Remove `reprice_rules`, `reprice_log`, `lib/etsy/reprice.ts` (audit trail kept
+  until then).
+- Apply the §4 DELETE list; drop the `/kayitlar` screen and add 90-day
+  `audit_log` retention.
+- Turn DataForSEO live enrichment off in config.
+
+---
+
+## 11. Reprice kill — shipped 2026-07-28
+
+Decision #2, executed ahead of everything else because Husam was hand-entering
+verified spot-4090 prices into the live shop the same day. **From this point the
+panel may not recompute or overwrite a price.**
+
+| Change | Where | Effect |
+| --- | --- | --- |
+| Cron schedule removed | `vercel.json` | `/api/cron/reprice` no longer fires (was 10:00 UTC daily) |
+| Route dead-ended | `app/api/cron/reprice/route.ts` | Returns 410 and no longer imports the engine, so a leftover scheduler or manual call cannot restart it |
+| Per-shop flags | `0119_org_feature_flags.sql` | `organizations.feature_flags` jsonb, following the `gold_settings` / `digest_settings` precedent |
+| Flag reader | `lib/feature-flags.ts` | **Fails closed** — an unreadable flag refuses the price write rather than risk overwriting live prices |
+| Write gates | 4 server actions | `pushAllPricesToEtsyAction`, `pushListingPricesToEtsyAction`, `applyMarketPrice`, `saveRepriceRule` |
+
+Flags as applied live (verified by query after migration):
+
+| Shop | externalPricing | keywordResearch | buyerFollowup | photoStudio |
+| --- | --- | --- | --- | --- |
+| EON | **true** | false | false | _(default true)_ |
+| Jade Gold | false | true | true | true |
+| Seselka | false | _(default true)_ | _(default true)_ | false |
+
+`evaluateRepriceRules()` now has **zero live callers**. Typecheck, eslint and
+`npm run build` all pass.
+
+**Deployment order matters:** because the flag reader fails closed, migration
+`0119` must be applied **before or with** the deploy. Applied to the live
+database on 2026-07-28 and confirmed present before the PR was opened.
+
+---
+
+## 12. Pricing-engine importer spec (PHASE 1)
+
+Supplied by Husam 2026-07-28; the xlsx itself lands at his next desktop session.
+The importer mirrors these **read-only** with an import timestamp and never
+recomputes them:
+
+| Field | Value / formula |
+| --- | --- |
+| Spot | one cell |
+| Multiplier | 1.55 |
+| Thickness standard | 2.0 mm |
+| Floor | `(landed + 0.45) / 0.895` |
+| Offsite floor | `(landed + 0.45) / 0.745` |
+| Engine price | `landed × 1.55` |
+| List price | `ceiling(engine / 0.75, 5)` |
+
+The importer must also **validate that traffic sources sum to visits and reject
+on mismatch** (§8.5 — EON's July row sums to 326 against a recorded 261).
