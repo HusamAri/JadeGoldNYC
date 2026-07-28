@@ -6,6 +6,7 @@ import { requireMembership, isManager, MANAGER_ONLY_ERROR } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { parseMoneyToCents } from "@/lib/money";
 import { getEtsyWriteAccess } from "@/lib/db/queries/etsy";
+import { pricingWriteBlocked } from "@/lib/feature-flags";
 import { EtsyClient, EtsyNotConnectedError } from "@/lib/etsy/client";
 import { pushListingPrices } from "@/lib/etsy/inventory";
 import {
@@ -362,6 +363,9 @@ export async function pushListingPricesToEtsyAction(
 ): Promise<PushOneResult> {
   const m = await requireMembership();
   if (!isManager(m.role)) return { error: MANAGER_ONLY_ERROR };
+  // Fiyat panel dışında belirleniyorsa (EON) panel fiyat yazmaz.
+  const pricingBlocked = await pricingWriteBlocked(m.org_id);
+  if (pricingBlocked) return { error: pricingBlocked };
   const { writeEnabled } = await getEtsyWriteAccess(m.org_id);
   if (!writeEnabled)
     return {

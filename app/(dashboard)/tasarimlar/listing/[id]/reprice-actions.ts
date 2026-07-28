@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 
 import { requireMembership } from "@/lib/auth";
+import { pricingWriteBlocked } from "@/lib/feature-flags";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getEtsyWriteAccess } from "@/lib/db/queries/etsy";
 import { parseMoneyToCents } from "@/lib/money";
@@ -130,6 +131,10 @@ export async function saveRepriceRule(
   input: RepriceRuleInput,
 ): Promise<{ ok?: boolean; error?: string }> {
   const m = await requireMembership();
+  // Fiyat panel dışında belirleniyorsa (EON) reprice kuralı KURULAMAZ —
+  // motor kaldırıldı, kural kaydetmek yanlış beklenti yaratır.
+  const pricingBlocked = await pricingWriteBlocked(m.org_id);
+  if (pricingBlocked) return { error: pricingBlocked };
 
   if (!MODES.includes(input.mode as RepriceMode)) {
     return { error: "Geçersiz mod." };
