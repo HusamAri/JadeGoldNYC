@@ -97,16 +97,25 @@ export function EtsyListingGrid({ listings }: { listings: ProductListing[] }) {
             <Card key={p.id} className="overflow-hidden">
               <Link
                 href={`/analizler/urunler/liste/${p.id}`}
-                className="group block"
+                /* Klavye odağı: görsel bağlantısında hiçbir sinyal yoktu.
+                   Outline tabanlı halka gölgeyle yarışmaz (jg-focus-outline). */
+                className="jg-focus-outline group block"
                 title="Rakip & pazar analizini aç"
               >
                 {p.image_url ? (
-                  <div className="bg-muted relative aspect-square">
+                  /* thumb-lift: fotoğraf karta YAPIŞTIRILMIŞ düz dikdörtgen
+                     değil, yüzeyde duran baskı (alt kenarında kontak gölgesi).
+                     overflow-hidden: hover'da büyüyen görsel kendi çerçevesinde
+                     kalır → alttaki metne taşmaz (vitrin camı). */
+                  <div className="thumb-lift bg-muted relative aspect-square overflow-hidden">
                     <Image
                       src={p.image_url}
                       alt={decodeEntities(p.title)}
                       fill
-                      className="object-cover transition-opacity group-hover:opacity-90"
+                      /* Eski `group-hover:opacity-90` KALDIRILDI: tıklanabilir
+                         bir öğenin hover'da SÖNMESİ "pasif/devre dışı" sinyali
+                         veriyordu. Yerine camın ardındaki ürüne YAKLAŞMA. */
+                      className="object-cover transition-transform duration-500 ease-[var(--ease-premium)] group-hover:scale-[1.03] motion-reduce:group-hover:scale-100"
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       unoptimized
                     />

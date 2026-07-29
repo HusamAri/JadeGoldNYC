@@ -1,9 +1,12 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useMemo, useOptimistic, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { motion, useReducedMotion } from "framer-motion";
 import { ChevronLeft, ChevronRight, UserRound } from "lucide-react";
 import { toast } from "sonner";
+
+import { springs } from "@/lib/motion";
 
 import { moveTask } from "@/app/(dashboard)/gorevler/actions";
 import { TASK_STATUSES, TASK_LANE_SHORT } from "@/lib/constants";
@@ -38,13 +41,30 @@ export function TaskBoard({
   members: AssignableUser[];
 }) {
   const router = useRouter();
-  const [pending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
   const [lane, setLane] = useState<string>("all");
   const [assignee, setAssignee] = useState<string>("all");
+  // Taşınmakta olan görev — YALNIZ o kartın düğmeleri kilitlenir. Eskiden tek
+  // bir `pending` tüm kartların düğmelerini kapatıyordu: bir görevi taşımak
+  // sunucu turu boyunca panonun TAMAMINI donduruyordu.
+  const [movingId, setMovingId] = useState<string | null>(null);
+  const reduce = useReducedMotion();
+
+  // TIKLAMA ANINDA hareket: kart sunucu turunu beklemeden yeni kolona geçer.
+  // Sunucu hata dönerse (veya taze veri geldiğinde) React iyimser durumu
+  // otomatik atar → kart geri kayar + toast hatayı söyler.
+  // Veri/aksiyon sözleşmesi (moveTask argümanları) DEĞİŞMEDİ.
+  const [optimisticTasks, applyOptimisticMove] = useOptimistic(
+    tasks,
+    (state: TaskWithAssignee[], patch: { id: string; status: TaskStatus }) =>
+      state.map((t) =>
+        t.id === patch.id ? { ...t, status: patch.status } : t,
+      ),
+  );
 
   const filtered = useMemo(
     () =>
-      tasks.filter((t) => {
+      optimisticTasks.filter((t) => {
         if (lane !== "all" && (t.lane ?? "") !== lane) return false;
         if (assignee === "unassigned" && t.assignee_id) return false;
         if (
@@ -55,7 +75,7 @@ export function TaskBoard({
           return false;
         return true;
       }),
-    [tasks, lane, assignee],
+    [optimisticTasks, lane, assignee],
   );
 
   const columns = TASK_STATUSES.map((s) => ({
@@ -69,17 +89,28 @@ export function TaskBoard({
       ),
   }));
 
-  const doneCount = tasks.filter((t) => t.status === "done").length;
-  const pct = tasks.length ? Math.round((doneCount / tasks.length) * 100) : 0;
+  // İlerleme çubuğu da iyimser kümeden okunur: kart taşındığı anda sayaç da
+  // ilerler (aynı tıklamanın iki farklı gerçeği olmaz).
+  const doneCount = optimisticTasks.filter((t) => t.status === "done").length;
+  const pct = optimisticTasks.length
+    ? Math.round((doneCount / optimisticTasks.length) * 100)
+    : 0;
 
   function move(id: string, status: TaskStatus) {
     startTransition(async () => {
+      // İyimser yazma transition'ın İÇİNDE olmak zorunda (React sözleşmesi).
+      applyOptimisticMove({ id, status });
+      setMovingId(id);
       const res = await moveTask(id, status);
       if (res?.error) {
         toast.error(res.error);
+        setMovingId(null);
         return;
       }
+      // Transition içindeki `router.refresh()` taze RSC yükü gelene kadar
+      // sürer → iyimser durum tam o ana kadar tutar, kart iki kez oynamaz.
       router.refresh();
+      setMovingId(null);
     });
   }
 
@@ -113,9 +144,12 @@ export function TaskBoard({
 
       <div className="flex items-center gap-3">
         <div className="nm-pressed h-2 flex-1 overflow-hidden rounded-full">
+          {/* Dolgu `width` DEĞİL `scaleX` ile büyür: genişlik animasyonu her
+              karede layout+paint tetikler (bütçe beyaz listesi dışı), transform
+              yalnız kompozitörde koşar. */}
           <div
-            className="bg-accent h-full rounded-full transition-[width] duration-500"
-            style={{ width: `${pct}%` }}
+            className="bg-accent h-full w-full origin-left rounded-full transition-transform duration-500 ease-[var(--ease-premium)]"
+            style={{ transform: `scaleX(${pct / 100})` }}
           />
         </div>
         <span className="text-muted-foreground shrink-0 text-xs tabular-nums">
@@ -137,8 +171,25 @@ export function TaskBoard({
                 </p>
               ) : (
                 col.items.map((t) => (
-                  <div
+                  /* `layoutId`: kart bir kolondan diğerine geçerken FLIP ile
+                     KAYAR (eski konumdan yenisine) — "bir şey oldu ama nerede?"
+                     sorusu doğmaz. Hareket yalnız transform. useReducedMotion
+                     ile JS tarafında da guard'lı (bütçe md.9).
+                     NOT: components/motion/pressable.tsx bilerek kullanılmadı —
+                     kalıcı `will-change-transform` yazıyor; 20+ kartta bu,
+                     "statik will-change <=5 element" bütçesini deler. Onun
+                     basma fiziği (springs.snappy + scale .985) burada whileTap
+                     olarak birebir veriliyor; yer değiştirme calm yayla. */
+                  <motion.div
                     key={t.id}
+                    layout={reduce ? false : "position"}
+                    layoutId={reduce ? undefined : `task-card-${t.id}`}
+                    transition={springs.calm}
+                    whileTap={
+                      reduce
+                        ? undefined
+                        : { scale: 0.985, transition: springs.snappy }
+                    }
                     role="button"
                     tabIndex={0}
                     onClick={() => router.push(`/gorevler/${t.id}`)}
@@ -148,7 +199,7 @@ export function TaskBoard({
                         router.push(`/gorevler/${t.id}`);
                       }
                     }}
-                    className="nm-raised-sm cursor-pointer rounded-2xl p-3 transition-shadow duration-300 outline-none hover:shadow-[var(--shadow-hover)] focus-visible:ring-2 focus-visible:ring-ring/60"
+                    className="nm-raised-sm focus-visible:ring-ring/60 cursor-pointer rounded-2xl p-3 transition-shadow duration-300 outline-none hover:shadow-[var(--shadow-hover)] focus-visible:ring-2"
                   >
                     <div className="mb-2 flex items-center gap-2">
                       <TaskPriorityBadge priority={t.priority} />
@@ -192,7 +243,7 @@ export function TaskBoard({
                       {PREV[t.status] && (
                         <SlideButton
                           direction="right"
-                          disabled={pending}
+                          disabled={movingId === t.id}
                           onClick={() => move(t.id, PREV[t.status]!)}
                         >
                           <ChevronLeft className="size-3.5" />
@@ -203,7 +254,7 @@ export function TaskBoard({
                         <SlideButton
                           direction="left"
                           className="ml-auto"
-                          disabled={pending}
+                          disabled={movingId === t.id}
                           onClick={() => move(t.id, NEXT[t.status]!)}
                         >
                           İleri
@@ -211,7 +262,7 @@ export function TaskBoard({
                         </SlideButton>
                       )}
                     </div>
-                  </div>
+                  </motion.div>
                 ))
               )}
             </div>

@@ -139,7 +139,20 @@ function AlertRow({
         ref={ref}
         onPointerMove={onPointerMove}
         href={a.href}
-        className="group cursor-glow hover:bg-secondary/40 focus-visible:ring-ring/60 focus-visible:ring-[3px] focus-visible:ring-offset-2 focus-visible:ring-offset-background flex items-center gap-3 rounded-xl px-3 py-3 transition-[background-color,transform] duration-300 ease-[var(--ease-premium)] outline-none"
+        className={cn(
+          "group cursor-glow hover:bg-secondary/40 focus-visible:ring-ring/60 focus-visible:ring-[3px] focus-visible:ring-offset-2 focus-visible:ring-offset-background flex items-center gap-3 rounded-xl px-3 py-3 outline-none",
+          // Tıklanabilir KUTU sözleşmesi: hover'da satır karttan kalkar,
+          // basışta yüzeye oturur (asimetrik fizik).
+          "jg-tactile",
+          // Geçişler BURADA per-property yazılmak zorunda: `transition-*`
+          // utility'si (utilities katmanı) jg-tactile'ın transition'ını
+          // KOMPLE ezer — sadece `transition-colors` yazsaydık transform
+          // geçiş listesinden düşer, basma fiziği tamamen kaybolurdu.
+          // Sıra: background-color / box-shadow / transform.
+          "transition-[background-color,box-shadow,transform] [transition-duration:300ms,var(--motion-hover),var(--motion-press-out)] [transition-timing-function:var(--ease-premium),var(--ease-quiet),var(--ease-press-out)]",
+          // Basış hızlı ve lineer; bırakış yukarıdaki yaylanan eğriye döner.
+          "active:[transition-duration:var(--motion-press-in)] active:[transition-timing-function:linear]",
+        )}
       >
         <span className="min-w-0 flex-1">
           <span className="flex items-center gap-2">

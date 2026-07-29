@@ -11,6 +11,50 @@
   deseni. Her iki marka kapsamı da bu paleti kullanır — Jade Gold panelinde
   yalnız medya (logo/desen/video) korunur (html[data-brand] görünürlük kuralları).
 */
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PERFORMANS BÜTÇESİ — TEK DOĞRULUK KAYNAĞI (sonraki oturumlar buraya bakar)
+   ───────────────────────────────────────────────────────────────────────
+   Bu panelde bir kez tam-viewport blur zemin süzülmesi + CPU-rasterize
+   url(#svg) backdrop FPS'i 4'e düşürdü (60'a çıkarıldı). Aşağıdaki sınırlar
+   o ölçümün kalıntısıdır; ihlal REGRESYON sayılır.
+
+   1) SÜREKLİ (infinite) ANİMASYON: viewport başına <=3 eşzamanlı, her biri
+      <=200x200px hasar bölgesi, periyot >=2s (yeni ambient >=6s).
+   2) ANİME EDİLEBİLİR ÖZELLİK BEYAZ LİSTESİ: transform (translate3d/scale/
+      rotate) + opacity. clip-path YALNIZ tek seferlik geçişte.
+      YASAK (keyframe/transition farketmez): backdrop-filter, filter,
+      width/height/top/left, background-position, mask-*.
+      box-shadow yalnız DURUM GEÇİŞİ (hover/active transition) ile değişir —
+      keyframe ile ASLA.
+   3) backdrop-filter: ekranda aynı anda <=8 yüzey, blur yarıçapı <=16px,
+      fonksiyon zinciri <=2. YENİ `position:fixed; inset:0` backdrop-filter
+      katmanı KESİNLİKLE YASAK (mevcut .frost-veil son taşıyıcıdır ve artık
+      animasyonsuzdur — çoğaltma).
+   4) ALTIN KURAL: bir backdrop-filter yüzeyinin ALTINDA kalan hiçbir katman
+      animasyonlu/parallax OLAMAZ; backdrop-filter TAŞIYAN bir öğe de
+      döndürülemez / eğilemez / scale edilemez (her kare backdrop cache'i
+      çöper).
+   5) SLOT SAYIMI (ikisi de DOLU, üçüncüsü eklenemez):
+      · tam-viewport mix-blend-mode katmanı  → .lux-grain
+      · tam-viewport ambiyans katmanı        → .holo-drift
+   6) 3D: perspective YALNIZ kapta (.jg-depth-scene), transform-style
+      preserve-3d <=2 seviye, rotateX/Y genliği <=6deg, her 3D kap
+      `contain: paint`, tilt yalnız (pointer:fine)+hover, sayfa başına <=4
+      eşzamanlı hedef.
+   7) will-change: statik/kalıcı kullanım toplam <=5 element; gerisi
+      hover/pointerdown'da açılır (bkz. .glass-liquid:hover::before).
+   8) LOADING: yeni loading.tsx blur/backdrop İÇERMEZ, fixed/pointer-events:
+      all almaz, nav'ı kapatmaz. İskelet nabzı yalnız opacity ve ekran başına
+      <=3 nabız bloğu; gerisi .jg-skel-ladder ile STATİK merdiven.
+   9) Her yeni hareket prefers-reduced-motion altında sönümlenir; JS-sürücülü
+      hareket ayrıca matchMedia/useReducedMotion ile guard'lanır. AMA hareketi
+      söndürürken GERİ BİLDİRİMİ silme (metinsel ilerleme sinyali kalır) ve
+      GÖRÜNÜM'ü (box-shadow) reduced-motion sorgusunun İÇİNE koyma.
+   YAPMA: yeni url(#svg) backdrop filtresi; hover-kapılı animasyonu infinite'e
+   geri çevirme; .nm-* sınıflı öğeye aynı özelliği ezen utility (shadow-none)
+   ekleme (Tailwind v4'te utility @layer components'ı EZER).
+   ═══════════════════════════════════════════════════════════════════════ */
 :root {
   --radius: 1.25rem;
 
@@ -196,6 +240,37 @@
   --lume-glow: 0 0 0 0 transparent;
   --lume-glow-lg: 0 0 0 0 transparent;
   --lume-fill: var(--grad-holo);
+
+  /* ── DOKUNSAL FİZİK (A1) — asimetrik basma zamanlaması ─────────────────
+     Gerçek bir tuş HIZLI iner, YAVAŞ ve hafif yaylanarak kalkar. Simetrik
+     süre "yazılım" hissi verir; asimetri "malzeme" hissi verir. Bu ikili,
+     tıklanabilir her yüzeyin (.jg-pressable/.jg-tactile/Button) sözleşmesi. */
+  /* Basış: parmak değdiği an — göz gecikmeyi burada yakalar, kısa tut. */
+  --motion-press-in: 90ms;
+  /* Bırakış: yüzey geri kalkar — nefes alacak kadar uzun, yaylanma burada. */
+  --motion-press-out: 260ms;
+  /* Bırakış eğrisi: hedefi hafif aşıp oturur (yay). Yalnız bırakışta. */
+  --ease-press-out: cubic-bezier(0.34, 1.5, 0.64, 1);
+  /* Çıkış eğrisi: giden öğe hızlanarak gider (giriş ≠ çıkış; çıkış daha kısa). */
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  /* Tek odak dili — klavye kullanıcısı için 3px halka (tema --ring'inden). */
+  --focus-ring: 0 0 0 3px color-mix(in srgb, var(--ring) 60%, transparent);
+
+  /* ── İSKELET (A4) ──────────────────────────────────────────────────────
+     Nabız periyodu; .jg-skel tüketir. Bütçe md.1: >=2s hedefine yakın tut. */
+  --skel-pulse: 1.6s;
+
+  /* ── DERİNLİK (A5) ─────────────────────────────────────────────────────
+     Sahne perspektifi — YALNIZ .jg-depth-scene kabında kullanılır. 900px
+     "sinematik" değil "masa üstü" derinliği: eğim küçükken bile okunur,
+     büyük genlikte bozulmaya (bakış açısı kırılması) izin vermez. */
+  --depth-perspective: 900px;
+  /* Yapışkan tablo başlığı scroll'da içerikten AYRILIR — altına düşen gölge.
+     Yalnız durum geçişiyle (stuck) açılır; keyframe ile ASLA. */
+  --sticky-head-shadow: 0 6px 14px -8px rgb(45 40 55 / 0.28);
+  /* Satır "kontak" gölgesi — hover'daki satır zeminden 1px kopar gibi durur. */
+  --row-contact: inset 0 0 0 1px color-mix(in srgb, var(--ring) 12%, transparent),
+    0 1px 2px rgb(45 40 55 / 0.06);
 }
 
 .dark {
@@ -323,6 +398,12 @@
      siyah (koyu yüzeyde kabartma okunur ama yine belli belirsiz). */
   --text-emboss: -0.4px -0.4px 0.5px rgb(255 255 255 / 0.07),
     0.5px 0.7px 1.4px rgb(0 0 0 / 0.5);
+
+  /* Derinlik tokenlarının gece karşılıkları — koyu zeminde gri gölge okunmaz;
+     mürekkep derinleşir, kontak çizgisi ışıklı rim'e döner (lume dili). */
+  --sticky-head-shadow: 0 8px 18px -8px rgb(8 9 16 / 0.7);
+  --row-contact: inset 0 0 0 1px rgb(255 255 255 / 0.06),
+    0 1px 2px rgb(8 9 16 / 0.4);
 }
 
 @theme inline {
@@ -658,6 +739,15 @@
       var(--glass-ring),
       var(--glass-depth);
   }
+  /* PERF (bütçe md.3): koyu modda kardeşleri (.glass-iced/.glass-fluted) zaten
+     opak lume panele düşüyordu; .glass-board düşmüyordu — gece 14 backdrop
+     yüzeyi bedavaya gidiyordu. Gece cam OPAK panel: backdrop yükü sıfır,
+     görünüm değişmez (lume dili zaten mat). */
+  .dark .glass-board {
+    background-color: var(--lume-panel);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
 
   /* ── Cam TİPLERİ — bölüm hiyerarşisi (referans: iced / fluted glass) ────
      Aynı sayfada bölüm değişince cam tipi değişir: hero=glass-board (berrak),
@@ -675,8 +765,11 @@
     background-image: var(--glass-sheen);
     border: 1px solid var(--glass-border);
     box-shadow: var(--lift-sm), var(--glass-highlight), var(--glass-ring);
-    backdrop-filter: blur(30px) saturate(130%);
-    -webkit-backdrop-filter: blur(30px) saturate(130%);
+    /* PERF (bütçe md.3): blur(30px) bütçenin iki katıydı ve blur maliyeti
+       yarıçapla süperlineer büyür — ortak cam yoğunluğuna (12px) indirildi;
+       zemin --glass-strong olduğu için "buzlu/mat" okuması korunur. */
+    backdrop-filter: var(--glass-filter);
+    -webkit-backdrop-filter: var(--glass-filter);
   }
   .glass-iced::after {
     content: "";
@@ -819,7 +912,9 @@
     background:
       radial-gradient(58% 44% at 30% 16%, rgb(255 255 255 / 0.42), transparent 56%),
       linear-gradient(160deg, rgb(255 255 255 / 0.22), transparent 62%);
-    will-change: transform;
+    /* PERF (bütçe md.7): will-change BURADA DEĞİL — kalıcı olarak yazıldığında
+       ekrandaki her KPI camı için bir kompozitör katmanı ayrılıyordu (10 cam =
+       10 boşuna katman). Hover'da açılır (aşağıda). */
   }
   .dark .glass-liquid::before {
     background:
@@ -832,6 +927,8 @@
     .glass-liquid:hover::before,
     .group:hover > .glass-liquid::before {
       animation: caustic-drift 5.5s var(--ease-premium) infinite;
+      /* Katman yalnız gezinti süresince ayrılır (bütçe md.7). */
+      will-change: transform;
     }
   }
   /* Refraction (url(#liquid) SVG displacement) KALDIRILDI — PERF: url()
@@ -1136,6 +1233,284 @@
   .dark .text-glass-display {
     text-shadow: 0 1px 0 rgb(255 255 255 / 0.12),
       0 0 18px color-mix(in srgb, var(--gold) 30%, transparent);
+  }
+
+  /* ══════════════════════════════════════════════════════════════════════
+     JG ETKİLEŞİM PRİMİTİFLERİ — basma fiziği, temas ışığı, iskelet, derinlik
+     Hepsi RSC'de çalışır (client wrapper GEREKTİRMEZ) ve bütçenin beyaz
+     listesinde kalır: yalnız transform/opacity animasyonu + box-shadow'un
+     DURUM GEÇİŞİ. Süresiz (infinite) animasyon yalnız .jg-skel'de, o da
+     yalnız opacity.
+     ══════════════════════════════════════════════════════════════════════ */
+
+  /* ── A2 · BASMA (press) ────────────────────────────────────────────────
+     .jg-pressable — ince/satır-içi kontroller (sekme, çip, ikon düğmesi,
+     link-buton) için en hafif basma karşılığı. Asimetrik fizik: basış hızlı
+     ve lineer (parmak anında yüzeyi indirir), bırakış uzun ve yaylanmalı.
+     .jg-pressable-firm — daha "sert" basma (birincil/dolgu düğme), tek
+     başına da kullanılabilir, .jg-pressable ile birlikte de.
+     NOT: .jg-tactile ile BİRLİKTE kullanma — ikisi de transform yazar,
+     sonuncusu kazanır. Kutu yüzeyi = .jg-tactile, kontrol = .jg-pressable. */
+  .jg-pressable,
+  .jg-pressable-firm {
+    transition: transform var(--motion-press-out) var(--ease-press-out);
+  }
+  .jg-pressable:active {
+    transform: scale(0.992);
+    transition-duration: var(--motion-press-in);
+    transition-timing-function: linear;
+  }
+  .jg-pressable-firm:active {
+    transform: scale(0.985);
+    transition-duration: var(--motion-press-in);
+    transition-timing-function: linear;
+  }
+
+  /* .jg-tactile — TIKLANABİLİR KUTU YÜZEYİ sözleşmesi (kart, satır, panel,
+     seçilebilir kutu). Hover'da yüzey parmağa doğru kalkar (ışık uzar →
+     gölge büyür), basışta yüzeye OTURUR (gölge kontağa iner). Gölge yalnız
+     durum geçişiyle değişir, keyframe YOK.
+     İHTİYAT (demir kural 2): .nm-* sınıflı yüzeylerde gölge yazmaz —
+     nöromorfik kabartmayı silmemek için :not([class*="nm-"]) ile korunur;
+     o yüzeylerde .nm-interactive kendi hover gölgesini zaten verir. */
+  .jg-tactile {
+    cursor: pointer;
+    transition:
+      transform var(--motion-press-out) var(--ease-press-out),
+      box-shadow var(--motion-hover) var(--ease-quiet);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .jg-tactile:hover {
+      transform: translateY(-2px);
+    }
+    .jg-tactile:not([class*="nm-"]):hover {
+      box-shadow: var(--lift-natural-lg);
+    }
+  }
+  .jg-tactile:active {
+    transform: translateY(0) scale(0.995);
+    transition-duration: var(--motion-press-in);
+    transition-timing-function: linear;
+  }
+  .jg-tactile:not([class*="nm-"]):active {
+    box-shadow: var(--lift-natural-sm);
+  }
+  .jg-tactile:not([class*="nm-"]):focus-visible,
+  .jg-tactile:not([class*="nm-"]):focus-within {
+    box-shadow: var(--focus-ring), var(--lift-natural);
+  }
+  .jg-tactile:focus-visible {
+    outline: none;
+  }
+
+  /* .jg-focus — TEK odak dili (klavye). Gölge taşımayan düz yüzeylerde
+     kullanılır; box-shadow'u KOMPLE yazdığı için nm-/glass- yüzeylerinde
+     KULLANMA → onlarda .jg-focus-outline tercih edilir (outline gölgeyi
+     ezmez, border-radius'u takip eder). */
+  .jg-focus:focus-visible {
+    box-shadow: var(--focus-ring);
+    outline: none;
+  }
+  .jg-focus-outline:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--ring) 70%, transparent);
+    outline-offset: 2px;
+  }
+
+  /* ── A3 · TEMAS IŞIĞI (ink origin) ─────────────────────────────────────
+     Tıklamanın NEREDE olduğunu gösteren, parmağın altından açılan kısa
+     ömürlü hale. Konum --mx/--my custom property'lerinden okunur (mevcut
+     useCursorGlow hook'u bu iki değişkeni zaten yazıyor); yazılmazsa merkez.
+     UYARI (C kulvarı için): YALNIZ `overflow-hidden` taşıyan DOLGU
+     varyantlarında kullanılabilir — ghost/link gibi zeminsiz varyantlarda
+     hale kutunun dışına taşar. Blur/filter YOK, yalnız transform+opacity.
+     Katman z-index:-1 → kabın kendi zemininin ÜSTÜNDE, metnin ALTINDA kalır
+     (Button'ın `isolate` + `before:-z-10` mürekkep dolgusuyla uyumlu). */
+  .jg-ink-origin {
+    position: relative;
+    isolation: isolate;
+  }
+  .jg-ink-origin::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(
+      circle at var(--mx, 50%) var(--my, 50%),
+      rgb(255 255 255 / 0.9),
+      transparent 62%
+    );
+    transform-origin: var(--mx, 50%) var(--my, 50%);
+    transform: scale(0.4);
+    opacity: 0;
+    transition:
+      opacity var(--motion-press-out) var(--ease-premium),
+      transform var(--motion-press-out) var(--ease-press-out);
+  }
+  .jg-ink-origin:active::after {
+    opacity: 0.35;
+    transform: scale(1);
+    transition-duration: var(--motion-press-in);
+  }
+  .dark .jg-ink-origin::after {
+    background: radial-gradient(
+      circle at var(--mx, 50%) var(--my, 50%),
+      rgb(205 214 255 / 0.7),
+      transparent 62%
+    );
+  }
+
+  /* ── A4 · İSKELET DİLİ ─────────────────────────────────────────────────
+     .jg-skel — Skeleton'ın oluk (kazınmış çukur) yüzeyi. Nabız YALNIZ
+     opacity anime eder. Köşe yarıçapı BİLEREK yazılmaz: tüketici (Skeleton
+     / loading.tsx) kendi rounded-* utility'sini verir.
+     KURAL (bütçe md.8): bir iskelet ekranında eşzamanlı nabız <=3 blok;
+     gerisi .jg-skel-ladder ile STATİK kalır. */
+  .jg-skel {
+    background-color: color-mix(in srgb, var(--accent) 60%, transparent);
+    box-shadow: var(--shadow-pressed);
+  }
+  .dark .jg-skel {
+    background-color: rgb(255 255 255 / 0.05);
+    box-shadow: var(--lume-pit);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .jg-skel {
+      animation: jg-skel-pulse var(--skel-pulse) var(--ease-premium) infinite;
+    }
+  }
+
+  /* .jg-skel-ladder — ÇOCUKLARINA azalan STATİK opaklık merdiveni uygular
+     (animasyon YOK). Uzun tablo/liste iskeletinde 25 satırın 25 ayrı nabız
+     hasarı yaratmasını engellerken, "aşağı doğru uzaklaşma" derinlik
+     okumasını sıfır kare maliyetiyle verir. Kaba uygula, satırlara değil. */
+  .jg-skel-ladder > * {
+    opacity: 1;
+  }
+  .jg-skel-ladder > *:nth-child(2) {
+    opacity: 0.95;
+  }
+  .jg-skel-ladder > *:nth-child(3) {
+    opacity: 0.9;
+  }
+  .jg-skel-ladder > *:nth-child(4) {
+    opacity: 0.85;
+  }
+  .jg-skel-ladder > *:nth-child(5) {
+    opacity: 0.8;
+  }
+  .jg-skel-ladder > *:nth-child(6) {
+    opacity: 0.75;
+  }
+  .jg-skel-ladder > *:nth-child(7) {
+    opacity: 0.7;
+  }
+  .jg-skel-ladder > *:nth-child(8) {
+    opacity: 0.66;
+  }
+  .jg-skel-ladder > *:nth-child(9) {
+    opacity: 0.62;
+  }
+  .jg-skel-ladder > *:nth-child(10) {
+    opacity: 0.58;
+  }
+  .jg-skel-ladder > *:nth-child(n + 11) {
+    opacity: 0.55;
+  }
+
+  /* ── A5 · DERİNLİK PRİMİTİFLERİ ────────────────────────────────────────
+     .jg-depth-scene — 3D SAHNE KABI. perspective YALNIZ burada yaşar (bütçe
+     md.6). `contain: paint` hem boya alanını kilitler hem de sahneyi kendi
+     kutusuna kırpar → sahnenin İÇİNDEKİ öğelerin dışa taşan gölgeleri
+     kırpılır; kabı gölge taşımayan bir sarmalayıcı olarak kur.
+     YASAK: kabın kendisi backdrop-filter TAŞIMAZ (bütçe md.4 — backdrop'lu
+     öğe döndürülemez/scale edilemez, altındaki katman da hareket edemez). */
+  .jg-depth-scene {
+    perspective: var(--depth-perspective);
+    contain: paint;
+  }
+
+  /* .jg-depth-back / .jg-depth-fore — KART İÇİ KATMAN AYRIŞMASI. Hover'da
+     arka katman geriye/aşağıya çekilir, ön katman öne gelir; göz iki
+     düzlemi ayırır (gerçek 3D dönme olmadan derinlik). Ölçüler bilerek
+     küçük — "kart açılıyor" değil "katmanlar ayrışıyor".
+     YASAK: cam plakaya (backdrop-filter TAŞIYAN katman) ASLA uygulanmaz —
+     her karede backdrop cache'ini çöpler (bütçe md.4). Fotoğraf, metin
+     bloğu, ikon rozetleri gibi düz katmanlarda kullan. */
+  .jg-depth-back,
+  .jg-depth-fore {
+    transition: transform var(--motion-hover) var(--ease-quiet);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .jg-depth-scene:hover .jg-depth-back,
+    .group:hover .jg-depth-back {
+      transform: translate3d(0, 3px, 0) scale(0.99);
+    }
+    .jg-depth-scene:hover .jg-depth-fore,
+    .group:hover .jg-depth-fore {
+      transform: translate3d(0, -2px, 0);
+    }
+  }
+
+  /* ── A6 · BEKLEME (pending) DİLİ ───────────────────────────────────────
+     .jg-pending-region — RSC turu / server action sürerken liste veya tablo
+     YERİNDE DURUR, yalnız yumuşakça söner. Layout kaymaz, nav canlı kalır,
+     "dondu" hissi oluşmaz (içerik hâlâ okunabilir).
+     Kullanım: <div class="jg-pending-region" data-pending={isPending ? "true" : "false"}> */
+  .jg-pending-region {
+    transition: opacity 200ms var(--ease-premium);
+  }
+  .jg-pending-region[data-pending="true"] {
+    opacity: 0.55;
+    cursor: progress;
+  }
+}
+
+/* İskelet nabzı — YALNIZ opacity (bütçe md.2). Merdiven (.jg-skel-ladder)
+   statiktir; nabız yalnız az sayıda kahraman blokta çalışır. */
+@keyframes jg-skel-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+/* .jg-busy — "ÇALIŞIYOR" dili. KATMANSIZ yazılmak ZORUNDA: Tailwind
+   utility'leri (@layer utilities) katmanlı kuralları ezer, dolayısıyla
+   Button'ın `disabled:opacity-50`'si burada kazanırdı ve gönderim sırasındaki
+   düğme "bozuldu/pasif" gibi okunurdu. Bekleyen düğme SOLMAZ; yalnız imleç
+   ilerlemeyi anlatır (görsel geri bildirim metinde/ikonda yaşar).
+   Kullanım: <Button className="jg-busy" aria-busy={isPending} disabled={isPending}> */
+.jg-busy[aria-busy="true"] {
+  opacity: 1;
+  cursor: progress;
+}
+
+/* JG primitiflerinin hareket sönümlemesi — GÖRÜNÜM (gölge/odak halkası)
+   BİLEREK bu sorgunun DIŞINDA bırakıldı: hareketi kısan kullanıcı geri
+   bildirimi değil, yalnız yer değiştirmeyi kaybeder (bütçe md.9). */
+@media (prefers-reduced-motion: reduce) {
+  .jg-pressable:active,
+  .jg-pressable-firm:active,
+  .jg-tactile:hover,
+  .jg-tactile:active,
+  .jg-depth-scene:hover .jg-depth-back,
+  .jg-depth-scene:hover .jg-depth-fore,
+  .group:hover .jg-depth-back,
+  .group:hover .jg-depth-fore {
+    transform: none;
+  }
+  .jg-ink-origin::after,
+  .jg-ink-origin:active::after {
+    opacity: 0;
+    transform: none;
+  }
+  .jg-skel {
+    animation: none;
   }
 }
 
@@ -1766,14 +2141,24 @@ html[data-brand="artifact"] .jg-dust {
   }
 }
 
-/* Glass cards: soft neu lift via shadow only — no scale, no pointer spotlight. */
-@media (prefers-reduced-motion: no-preference) {
-  main [data-slot="card"] {
+/* Glass cards: soft neu lift via shadow only — no scale, no pointer spotlight.
+   DÜZELTME (bütçe md.9): blok eskiden (a) KATMANSIZ yazılmıştı — katmansız CSS
+   tüm @layer'ları ezer, dolayısıyla .glass-board/.glass-iced gölgeleri sessizce
+   siliniyordu; (b) box-shadow DEĞERLERİ reduced-motion sorgusunun içindeydi —
+   hareketi kısan kullanıcı GÖRÜNÜMÜ (derinliği) de kaybediyordu. Artık:
+   gölge her koşulda uygulanır, yalnız GEÇİŞİ sorguya bağlıdır. Seçici :where()
+   ile 0 özgüllüğe indirildi ki .glass-* ve utility'ler üzerine yazabilsin. */
+@layer components {
+  main :where([data-slot="card"]) {
     box-shadow: var(--lift-natural), var(--glass-highlight);
-    transition: box-shadow 0.32s var(--ease-quiet);
   }
-  main [data-slot="card"]:hover {
+  main :where([data-slot="card"]):hover {
     box-shadow: var(--lift-natural-lg), var(--glass-highlight);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    main :where([data-slot="card"]) {
+      transition: box-shadow 0.32s var(--ease-quiet);
+    }
   }
 }
 
@@ -1845,8 +2230,10 @@ html[data-brand="artifact"] .jg-dust {
   background: color-mix(in srgb, var(--background) 72%, transparent);
   backdrop-filter: blur(14px) saturate(1.05);
   -webkit-backdrop-filter: blur(14px) saturate(1.05);
-  transition: opacity 0.55s var(--ease-premium),
-    backdrop-filter 0.55s var(--ease-premium);
+  /* PERF (bütçe md.2/3): backdrop-filter ARTIK ANİME EDİLMİYOR — tam-viewport
+     bir backdrop'un yarıçapını her karede değiştirmek tüm ekranı yeniden
+     rasterize ettiriyordu. Statik blur kalır, çözülme yalnız opacity ile. */
+  transition: opacity 0.55s var(--ease-premium);
 }
 .dark .frost-veil {
   background: color-mix(in srgb, var(--background) 78%, transparent);
@@ -1990,16 +2377,18 @@ html[data-brand="artifact"] .jg-dust {
     transform: scale(0.35);
     opacity: 0.55;
   }
+  /* PERF (bütçe md.1): scale(18) 4.5rem halkayı ~1300px'lik bir hasar
+     bölgesine şişiriyordu (üç halka üst üste = tam viewport). scale(6) ≈
+     430px — dalga okunur, hasar bölgesel kalır. */
   100% {
-    transform: scale(18);
+    transform: scale(6);
     opacity: 0;
   }
 }
+/* PERF (bütçe md.2): yalnız opacity — backdrop-filter keyframe'i kaldırıldı. */
 @keyframes frost-thaw {
   to {
     opacity: 0;
-    backdrop-filter: blur(0px);
-    -webkit-backdrop-filter: blur(0px);
   }
 }
 @keyframes frost-mark-out {
