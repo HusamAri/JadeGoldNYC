@@ -14,7 +14,7 @@
  *      korumaları), panel varyant fiyatını eşitle, audit_log'a kaydet.
  *
  * Kullanım:
- *   npx tsx scripts/eon-price-push-oneshot.ts --file docs/eon/pricing/2026-07-28-eon-etsy-giris-grid-spot4090-v2.xlsx
+ *   npx tsx scripts/eon-price-push-oneshot.ts --file docs/eon/pricing/2026-07-28-eon-etsy-giris-grid-spot4090-v3.xlsx
  *   npx tsx scripts/eon-price-push-oneshot.ts --file ... --interpolate-half   # yarım bedenleri komşu ortalamasıyla doldur
  *   npx tsx scripts/eon-price-push-oneshot.ts --file ... --interpolate-half --push
  *
@@ -49,7 +49,7 @@ function arg(name: string): string | undefined {
 }
 const FILE =
   arg("file") ??
-  "docs/eon/pricing/2026-07-28-eon-etsy-giris-grid-spot4090-v2.xlsx";
+  "docs/eon/pricing/2026-07-28-eon-etsy-giris-grid-spot4090-v3.xlsx";
 const ORG_SLUG = arg("org") ?? "eon-266055";
 const PUSH = args.includes("--push");
 const INTERPOLATE_HALF = args.includes("--interpolate-half");
