@@ -106,14 +106,50 @@ function cellNumberOrNull(c: ExcelJS.Cell): number | string | null {
   return null;
 }
 
-function readGrid(ws: ExcelJS.Worksheet): (string | number | null)[][] {
+function readGrid(
+  ws: ExcelJS.Worksheet,
+  cols = 10,
+): (string | number | null)[][] {
   const rows: (string | number | null)[][] = [];
   for (let r = 2; r <= ws.rowCount; r++) {
     const row: (string | number | null)[] = [];
-    for (let c = 1; c <= 10; c++) row.push(cellNumberOrNull(ws.getCell(r, c)));
+    for (let c = 1; c <= cols; c++) row.push(cellNumberOrNull(ws.getCell(r, c)));
     rows.push(row);
   }
   return rows;
+}
+
+/**
+ * Milgrain sayfaları: v3'te tek "MILGRAIN" sekmesi (başta Karat kolonu,
+ * 3 karat × 11 genişlik × 13 beden) — karat bazında bölünüp standart 10-kolon
+ * düzenine indirgenir; parse.ts yerleşimden habersiz kalır. v2 geriye-uyum:
+ * "MILGRAIN-14K" (yalnız 14K, kolonsuz).
+ */
+function milgrainSheets(wb: ExcelJS.Workbook): RawSheet[] {
+  const v3 = wb.getWorksheet("MILGRAIN");
+  if (v3) {
+    const byKarat = new Map<Karat, (string | number | null)[][]>();
+    for (const raw of readGrid(v3, 11)) {
+      if (raw[0] == null) continue;
+      const k = String(raw[0]).trim();
+      if (k !== "10K" && k !== "14K" && k !== "18K") {
+        throw new PricingImportError(`MILGRAIN: taninmayan karat '${k}'.`);
+      }
+      const arr = byKarat.get(k as Karat) ?? [];
+      arr.push(raw.slice(1));
+      byKarat.set(k as Karat, arr);
+    }
+    return [...byKarat.entries()].map(([karat, rows]) => ({
+      karat,
+      profile: "milgrain" as const,
+      rows,
+    }));
+  }
+  const legacy = wb.getWorksheet("MILGRAIN-14K");
+  if (!legacy) {
+    throw new PricingImportError("MILGRAIN / MILGRAIN-14K sayfasi yok.");
+  }
+  return [{ karat: "14K", profile: "milgrain", rows: readGrid(legacy) }];
 }
 
 async function main() {
@@ -155,7 +191,7 @@ async function main() {
     { karat: "10K", profile: "standard", rows: readGrid(need("10K")) },
     { karat: "14K", profile: "standard", rows: readGrid(need("14K")) },
     { karat: "18K", profile: "standard", rows: readGrid(need("18K")) },
-    { karat: "14K", profile: "milgrain", rows: readGrid(need("MILGRAIN-14K")) },
+    ...milgrainSheets(wb),
   ];
 
   const snapshot = parsePricingSnapshot(assumptions, sheets);
