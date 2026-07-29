@@ -34,6 +34,13 @@ export const maxDuration = 300;
 const ORG_SLUG = "eon-266055";
 const CONFIRM_TTL_MS = 30 * 60 * 1000;
 
+/** Onaylı grid'in sha256'sı — gömülü grid bundan saparsa koşum REDDEDİLİR
+ *  (yanlış dosyadan üretilmiş modülle fiyat basılmasın). `string` olarak
+ *  genişletilir; literal kalırsa TS eşit-literal karşılaştırmayı never'a
+ *  daraltıp kilidi ölü koda çevirirdi. */
+const EXPECTED_GRID_SHA256: string =
+  "7245e98006a2c0c8aee477a9046e14944ab06fa1fcdded81cfe716f071b4d4b6";
+
 type OpsState = {
   done?: boolean;
   pushedAt?: string;
@@ -229,6 +236,15 @@ export async function GET(request: Request) {
   if (!tokenOk(request)) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
+  if (GRID_V3_SHA256 !== EXPECTED_GRID_SHA256) {
+    return page(
+      "Grid sha uyuşmazlığı",
+      `<h1>Grid sha uyuşmazlığı — koşum reddedildi (500)</h1>
+       <p>Gömülü grid <code>${esc(GRID_V3_SHA256.slice(0, 16))}…</code>, onaylı grid
+       <code>${esc(EXPECTED_GRID_SHA256.slice(0, 16))}…</code>. Hiçbir şey yazılmadı.</p>`,
+      500,
+    );
+  }
   const org = await loadOrg();
   if (!org) {
     return NextResponse.json({ error: "org yok" }, { status: 500 });
@@ -270,6 +286,15 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   if (!tokenOk(request)) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  }
+  if (GRID_V3_SHA256 !== EXPECTED_GRID_SHA256) {
+    return page(
+      "Grid sha uyuşmazlığı",
+      `<h1>Grid sha uyuşmazlığı — koşum reddedildi (500)</h1>
+       <p>Gömülü grid <code>${esc(GRID_V3_SHA256.slice(0, 16))}…</code>, onaylı grid
+       <code>${esc(EXPECTED_GRID_SHA256.slice(0, 16))}…</code>. Hiçbir şey yazılmadı.</p>`,
+      500,
+    );
   }
   const org = await loadOrg();
   if (!org) {
