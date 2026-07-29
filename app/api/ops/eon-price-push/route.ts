@@ -102,12 +102,26 @@ function gonePage(state: OpsState): NextResponse {
   );
 }
 
-/** Katman 1: URL token'ı === CRON_SECRET (tanımsızsa fail-closed). */
+/** Katman 1: URL token'ı === CRON_SECRET (tanımsızsa fail-closed).
+ *  `searchParams.get` form-decode uygular (`+` → boşluk) — secret `+` içeriyorsa
+ *  eşleşme sessizce kırılır; bu yüzden ham query'den `+` korunarak da denenir.
+ *  Teşhis için eşleşmeme nedeni (değersiz) fonksiyon loguna yazılır. */
 function tokenOk(request: Request): boolean {
   const secret = process.env.CRON_SECRET;
-  if (!secret) return false;
+  if (!secret) {
+    console.warn("eon-price-push: CRON_SECRET tanımsız — rota fail-closed.");
+    return false;
+  }
   const url = new URL(request.url);
-  return url.searchParams.get("token") === secret;
+  const decoded = url.searchParams.get("token");
+  if (decoded === secret) return true;
+  const rawMatch = /[?&]token=([^&]*)/.exec(url.search);
+  const raw = rawMatch ? decodeURIComponent(rawMatch[1]) : null;
+  if (raw === secret) return true;
+  console.warn(
+    `eon-price-push: token uyuşmadı (token ${decoded == null ? "yok" : "var"}, uzunluk ${decoded?.length ?? 0}/${secret.length}).`,
+  );
+  return false;
 }
 
 /** Katman 2: açık panel oturumu + EON'da owner/admin üyelik. */
