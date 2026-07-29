@@ -45,14 +45,16 @@ spot $4.090, çarpan 1,55) — 858 grid hücresi + 792 enterpolasyon.
 
 Örnek — 14K milgrain 7mm US10 (v3'ün kapattığı eski GAP): eski $1125 → yeni $1775.
 
-## Uygulama (senin makinende)
+## Uygulama (telefondan — geçici korumalı rota)
 
-```bash
-# 1) Otoriter dry-run (canlı DB + .env.local):
-npx tsx scripts/eon-price-push-oneshot.ts --interpolate-half
-# 2) Raporu onayladıktan sonra TEK SEFER:
-npx tsx scripts/eon-price-push-oneshot.ts --interpolate-half --push
-```
+1. Panele admin hesabınla giriş yap (aynı tarayıcı/telefon).
+2. `https://<panel-domain>/api/ops/eon-price-push?token=<CRON_SECRET>` aç —
+   otoriter dry-run diff'i tablo halinde gelir (yarım-beden enterpolasyonu AÇIK).
+3. Tabloyu onaylıyorsan **PUSH** butonuna bas — tek kullanımlık 30 dk onay
+   token'ıyla POST eder; yalnız o POST yazar.
+4. Başarılı push sonrası rota kendini kapatır (410) ve `audit_log`'a
+   `etsy.reprice` düşer; kısmi hatada rota açık kalır, sayfayı yeniden açıp
+   kalanlar için tekrar push edilebilir (idempotent).
 
 Güvenceler: `pushListingPrices` (2025 envanter sözleşmesi, fiyat-sıfır korumaları,
 idempotent); haritada olmayan SKU'nun canlı fiyatı korunur; push sonrası panel
