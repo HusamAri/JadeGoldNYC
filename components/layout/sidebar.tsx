@@ -108,7 +108,19 @@ export function Sidebar({
                   href={item.href}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "relative isolate flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-[box-shadow,transform,color] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]",
+                    // Hareket dili: geçiş listesinde BOŞTA duran `transform`
+                    // artık kullanılıyor — hover'da çip raydan bir tık öne
+                    // sıyrılır, basışta ray zeminine OTURUR (nm-pressed dili:
+                    // konkav zemin + çukur gölge). Basış hızlı ve lineer,
+                    // bırakış 300ms --ease-premium (asimetrik fizik).
+                    "relative isolate flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-[box-shadow,transform,color,background-image] duration-300 ease-[var(--ease-premium)]",
+                    "hover:-translate-x-0.5 active:translate-x-0 active:[background-image:var(--nm-convex-press)] active:[box-shadow:var(--shadow-pressed)] active:[transition-duration:var(--motion-press-in)] active:[transition-timing-function:linear]",
+                    // Klavye odağı: panelin ANA navigasyonunda hiçbir sinyal
+                    // yoktu. `jg-focus` yerine `jg-focus-outline` — bu öğe
+                    // box-shadow UTILITY'si taşıyor (utilities, components
+                    // katmanını ezer) → gölge tabanlı halka ya hiç görünmez
+                    // ya da kabarık çipi silerdi. Outline gölgeyle yarışmaz.
+                    "jg-focus-outline",
                     active
                       ? /* Aktif = rayın içinde KABARIK çip (ref: .tabbar .t.on —
                            neu-bg + neu-raised-sm + fg-1 mürekkep). */

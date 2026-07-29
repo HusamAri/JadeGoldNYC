@@ -616,7 +616,7 @@ function BandOrb({
       ref={ref}
       title={title}
       aria-hidden
-      className="absolute z-[5] inline-block shrink-0 rounded-full transition-[transform,opacity] duration-500 ease-[var(--ease-premium)] hover:scale-125"
+      className="absolute z-[5] inline-block shrink-0 rounded-full transition-[translate,scale,opacity] duration-500 ease-[var(--ease-premium)] hover:scale-125"
       style={{
         left: `${left}px`,
         top: `${top}px`,
@@ -756,7 +756,7 @@ function BandTask({
       >
         <div
           className={
-            "relative overflow-hidden rounded-xl border border-l-[3px] border-[color:var(--glass-border)] px-2.5 py-1.5 transition-[transform,scale,box-shadow] duration-300 ease-[var(--ease-premium)] group-hover:-translate-y-0.5 group-hover:shadow-[var(--lift),0_0_18px_var(--task-glow)] " +
+            "relative overflow-hidden rounded-xl border border-l-[3px] border-[color:var(--glass-border)] px-2.5 py-1.5 transition-[translate,scale,box-shadow] duration-300 ease-[var(--ease-premium)] group-hover:-translate-y-0.5 group-hover:shadow-[var(--lift),0_0_18px_var(--task-glow)] " +
             "[background-color:var(--glass-strong)] [background-image:var(--glass-sheen)] dark:border-[color:oklch(1_0_0/0.08)] dark:[background-image:none] " +
             (front
               ? "shadow-[var(--lift-sm)] "

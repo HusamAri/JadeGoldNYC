@@ -36,10 +36,18 @@ function SelectTrigger({
       data-size={size}
       className={cn(
         // Inset oluk hap (Input dili) — odakta çukura vuran holo ışık (pit-glow).
-        "nm-pressed bg-background data-[placeholder]:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground flex w-fit items-center justify-between gap-2 rounded-full px-4 py-2 text-sm whitespace-nowrap transition-[color,box-shadow] duration-300 ease-[var(--ease-premium)] outline-none disabled:cursor-not-allowed disabled:opacity-50 data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        // `group/select-trigger`: chevron açık durumu buradan okur.
+        // Basma fiziği Button ile aynı: hızlı in (--motion-press-in), yaylanan
+        // out (--motion-press-out / --ease-press-out) → süre+easing per-property.
+        "group/select-trigger nm-pressed bg-background data-[placeholder]:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground flex w-fit cursor-pointer items-center justify-between gap-2 rounded-full px-4 py-2 text-sm whitespace-nowrap transition-[color,background-color,box-shadow,transform] [transition-duration:300ms,300ms,300ms,var(--motion-press-out)] [transition-timing-function:var(--ease-premium),var(--ease-premium),var(--ease-premium),var(--ease-press-out)] outline-none disabled:cursor-not-allowed disabled:opacity-50 data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        // Hover: oluk zemini bir tık koyulaşır (çukur korunur, gölge YAZILMAZ —
+        // nm-pressed kabartısını silmemek için, demir kural 2).
+        "hover:bg-accent/40 dark:hover:[background-color:oklch(0_0_0/0.45)]",
+        // Basış: hap parmağın altında hafifçe küçülür.
+        "active:scale-[0.98] active:[transition-duration:var(--motion-press-in)]",
         // Koyu: lume çukur kuyu — oklch(0 0 0/0.35) zemin + var(--lume-pit).
         "dark:[background-image:none] dark:[background-color:oklch(0_0_0/0.35)] dark:shadow-[var(--lume-pit)]",
-        "focus-visible:ring-ring/60 focus-visible:ring-2 focus-visible:shadow-[var(--shadow-pressed),inset_6px_-6px_14px_-4px_var(--pit-glow),inset_11px_-11px_28px_-10px_var(--pit-glow)]",
+        "focus-visible:ring-ring/60 focus-visible:ring-[3px] focus-visible:shadow-[var(--shadow-pressed),inset_6px_-6px_14px_-4px_var(--pit-glow),inset_11px_-11px_28px_-10px_var(--pit-glow)]",
         "dark:focus-visible:shadow-[var(--lume-pit),inset_6px_-6px_14px_-4px_var(--pit-glow)]",
         "aria-invalid:ring-2 aria-invalid:ring-destructive/30",
         className,
@@ -48,7 +56,9 @@ function SelectTrigger({
     >
       {children}
       <SelectPrimitive.Icon asChild>
-        <ChevronDownIcon className="size-4 opacity-50" />
+        {/* Açık listede chevron ters döner — panelin nereden geldiğini anlatan
+            yön işareti (yalnız transform, layout yok). */}
+        <ChevronDownIcon className="size-4 opacity-50 transition-transform duration-300 ease-[var(--ease-premium)] group-data-[state=open]/select-trigger:rotate-180" />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
   );
@@ -120,7 +130,9 @@ function SelectItem({
       data-slot="select-item"
       className={cn(
         // Hap (pill) vurgusu — cam panel içinde yumuşak accent yıkamalı seçim.
-        "focus:bg-accent focus:text-accent-foreground [&_svg:not([class*='text-'])]:text-muted-foreground relative flex w-full cursor-default items-center gap-2 rounded-full py-1.5 pr-8 pl-3 text-sm transition-colors duration-200 outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
+        // `cursor-pointer`: seçenek tıklanabilir bir hedeftir, metin değil.
+        // Basışta hap hafifçe oturur — seçim "kabul edildi" hissi verir.
+        "focus:bg-accent focus:text-accent-foreground [&_svg:not([class*='text-'])]:text-muted-foreground relative flex w-full cursor-pointer items-center gap-2 rounded-full py-1.5 pr-8 pl-3 text-sm transition-[color,background-color,translate,scale] [transition-duration:200ms,200ms,var(--motion-press-out),var(--motion-press-out)] [transition-timing-function:var(--ease-premium),var(--ease-premium),var(--ease-press-out),var(--ease-press-out)] outline-hidden select-none active:scale-[0.98] active:[transition-duration:var(--motion-press-in)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
         className,
       )}
       {...props}

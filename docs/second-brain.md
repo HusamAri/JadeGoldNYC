@@ -137,6 +137,23 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
 - **Marka görselleri org'a aittir (2026-07):** Ortak UI'daki ürün görselleri ve
   marka imzaları ("Jade Gold · NYC" kuyruğu, cutout seti) hardcode edilemez —
   aktif org'dan çözülür (OrgMark, BRAND_KIND çevirisi); yeni org nötr düşer.
+- **Tailwind v4'te translate/scale AYRI CSS özelliğidir — elle yazılan
+  `transition-[...]` listesinde `transform` demek hareketi ÖLDÜRÜR (2026-07):**
+  v4, `hover:-translate-y-0.5`i `translate`, `active:scale-[0.97]`yi `scale`
+  özelliğine basar (v3'teki tek `transform` matrisi DEĞİL). Geçiş listesi
+  `transition-[...,transform]` derse bu ikisi geçişe hiç girmez → kalkma/basma
+  anında sıçrar, özenle yazılmış süre/easing token'ları ölü kod olur. Vaka: tüm
+  "asimetrik basma fiziği" turu (buton + 8 bileşen daha, 9 çağrı yeri) fiilen
+  çalışmıyordu; typecheck/lint/build ÜÇÜ de temiz geçti, tasarım review'ü de
+  görmedi — yalnız canlı `getComputedStyle` yakaladı. Kural: (1) elle
+  `transition-[...]` yazarken translate/scale/rotate'i AYRI AYRI listele
+  (Tailwind'in kendi `transition-transform` utility'si zaten
+  `transform,translate,scale,rotate`a açılır, onu kullanmak daha güvenli);
+  (2) süre/easing listelerinin öğe sayısı özellik sayısıyla eşleşmeli;
+  (3) doğrulama = basış anında ARA değer görmek (`translate: -0.518px`,
+  `scale: 0.9778`) — son değeri görmek geçişin ÇALIŞMADIĞI anlamına gelir.
+  Tarama: `grep "transition-\[" | grep transform` + aynı satırda durum-önekli
+  (hover:/active:/group-hover:) translate|scale ara.
 - **Tailwind v4: utility, @layer components'ı ezer — "kozmetik" shadow-none gölgeyi siler (2026-07):**
   `.nm-pressed` gibi bileşen sınıfının yanına yazılan `shadow-none` utility'si
   KAZANIR ve bileşenin box-shadow'unu tamamen siler (iki yerde nm-* yüzeyi düz

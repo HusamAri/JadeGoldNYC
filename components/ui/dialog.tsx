@@ -57,7 +57,10 @@ function DialogContent({
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-[26px] border p-6 duration-200 sm:max-w-lg",
+          // Açılış "gelir" (320ms, hafif yaylanan liquid-pop), kapanış "gider"
+          // (180ms, hızlanan exit) — çıkış HER ZAMAN girişten hızlıdır; aksi
+          // halde kapatma tıklaması gecikmiş gibi hissedilir.
+          "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=open]:duration-[320ms] data-[state=closed]:duration-[180ms] data-[state=open]:ease-[var(--ease-liquid-pop)] data-[state=closed]:ease-[var(--ease-exit)] fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-[26px] border p-6 sm:max-w-lg",
           // Açık: cam panel — glass zemin + sheen + blur + hairline + lift + pah.
           "[background-color:var(--glass)] [background-image:var(--glass-sheen)] [border-color:var(--glass-border)] [backdrop-filter:var(--glass-filter)] shadow-[var(--lift-lg),var(--glass-highlight)]",
           // Koyu: lume panel — opak #262935 hücre, 1px beyaz-%5 kenar, derin gölge.
@@ -70,7 +73,11 @@ function DialogContent({
         {showCloseButton && (
           <DialogPrimitive.Close
             data-slot="dialog-close"
-            className="ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 rounded-full p-1 opacity-70 transition-opacity hover:opacity-100 hover:bg-foreground/5 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
+            // `focus:` → `focus-visible:` (fareyle kapatınca halka çakmasın)
+            // ve halka sistem diline hizalandı (3px / ring/60, Button ile aynı).
+            // Basışta düğme belirgin şekilde oturur — kapatma en sık yapılan
+            // tıklamadır, karşılığı da en net olanı olmalı.
+            className="ring-offset-background focus-visible:ring-ring/60 data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 cursor-pointer rounded-full p-1 opacity-70 transition-[opacity,background-color,translate,scale] duration-200 ease-[var(--ease-premium)] hover:opacity-100 hover:bg-foreground/5 active:scale-90 active:[transition-duration:var(--motion-press-in)] focus-visible:ring-[3px] focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
           >
             <XIcon />
             <span className="sr-only">Kapat</span>

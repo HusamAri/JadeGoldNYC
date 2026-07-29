@@ -552,7 +552,7 @@ function TaskRow({
         ref={ref}
         onPointerMove={onPointerMove}
         className={
-          "cursor-glow relative min-w-0 flex-1 overflow-hidden rounded-2xl border border-l-[3px] border-[color:var(--glass-border)] py-2 pr-3 pl-3 shadow-[var(--lift-sm)] transition-[transform,box-shadow] duration-300 ease-[var(--ease-premium)] group-hover:-translate-y-0.5 group-hover:shadow-[var(--lift),0_0_20px_var(--task-glow)] " +
+          "cursor-glow relative min-w-0 flex-1 overflow-hidden rounded-2xl border border-l-[3px] border-[color:var(--glass-border)] py-2 pr-3 pl-3 shadow-[var(--lift-sm)] transition-[translate,scale,box-shadow] duration-300 ease-[var(--ease-premium)] group-hover:-translate-y-0.5 group-hover:shadow-[var(--lift),0_0_20px_var(--task-glow)] " +
           "[background-color:var(--glass)] [background-image:var(--glass-sheen)] dark:border-[color:oklch(1_0_0/0.06)] dark:[background-color:var(--lume-glass)] dark:[background-image:none] " +
           (overdue ? "tl-overdue-neon " : "") +
           (done ? "opacity-65 " : "")

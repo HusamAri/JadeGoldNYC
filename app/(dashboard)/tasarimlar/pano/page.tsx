@@ -106,7 +106,14 @@ export default async function TasarimPanosuPage() {
                 {g.designs.map((d) => {
                   const thumb = thumbs.get(d.id);
                   return (
-                    <Card key={d.id} className="gap-0 overflow-hidden p-0">
+                    /* interactive: kartın tamamı tasarımın düzenleme sayfasına
+                       giden link — tıklanabilir yüzey, jg-tactile sözleşmesi
+                       (hover'da kalkma, basışta oturma) burada doğru. */
+                    <Card
+                      key={d.id}
+                      interactive
+                      className="gap-0 overflow-hidden p-0"
+                    >
                       <Link
                         href={`/tasarimlar/${d.id}/duzenle`}
                         className="bg-muted block aspect-video w-full overflow-hidden"
