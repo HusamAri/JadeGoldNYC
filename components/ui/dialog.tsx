@@ -77,7 +77,7 @@ function DialogContent({
             // ve halka sistem diline hizalandı (3px / ring/60, Button ile aynı).
             // Basışta düğme belirgin şekilde oturur — kapatma en sık yapılan
             // tıklamadır, karşılığı da en net olanı olmalı.
-            className="ring-offset-background focus-visible:ring-ring/60 data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 cursor-pointer rounded-full p-1 opacity-70 transition-[opacity,background-color,transform] duration-200 ease-[var(--ease-premium)] hover:opacity-100 hover:bg-foreground/5 active:scale-90 active:[transition-duration:var(--motion-press-in)] focus-visible:ring-[3px] focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
+            className="ring-offset-background focus-visible:ring-ring/60 data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 cursor-pointer rounded-full p-1 opacity-70 transition-[opacity,background-color,translate,scale] duration-200 ease-[var(--ease-premium)] hover:opacity-100 hover:bg-foreground/5 active:scale-90 active:[transition-duration:var(--motion-press-in)] focus-visible:ring-[3px] focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
           >
             <XIcon />
             <span className="sr-only">Kapat</span>

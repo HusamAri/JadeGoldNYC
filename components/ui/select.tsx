@@ -132,7 +132,7 @@ function SelectItem({
         // Hap (pill) vurgusu — cam panel içinde yumuşak accent yıkamalı seçim.
         // `cursor-pointer`: seçenek tıklanabilir bir hedeftir, metin değil.
         // Basışta hap hafifçe oturur — seçim "kabul edildi" hissi verir.
-        "focus:bg-accent focus:text-accent-foreground [&_svg:not([class*='text-'])]:text-muted-foreground relative flex w-full cursor-pointer items-center gap-2 rounded-full py-1.5 pr-8 pl-3 text-sm transition-[color,background-color,transform] [transition-duration:200ms,200ms,var(--motion-press-out)] [transition-timing-function:var(--ease-premium),var(--ease-premium),var(--ease-press-out)] outline-hidden select-none active:scale-[0.98] active:[transition-duration:var(--motion-press-in)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
+        "focus:bg-accent focus:text-accent-foreground [&_svg:not([class*='text-'])]:text-muted-foreground relative flex w-full cursor-pointer items-center gap-2 rounded-full py-1.5 pr-8 pl-3 text-sm transition-[color,background-color,translate,scale] [transition-duration:200ms,200ms,var(--motion-press-out),var(--motion-press-out)] [transition-timing-function:var(--ease-premium),var(--ease-premium),var(--ease-press-out),var(--ease-press-out)] outline-hidden select-none active:scale-[0.98] active:[transition-duration:var(--motion-press-in)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
         className,
       )}
       {...props}

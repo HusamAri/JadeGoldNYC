@@ -8,8 +8,17 @@ const buttonVariants = cva(
   // lbtn formu (Liquid/04) — pill, index yüzü (mono 12px, .1em tracking,
   // uppercase); dolgu varyantlarında hover'da ::before katmanı ALTTAN yükselir
   // (translateY(100%)→0, .5s ease-premium); ghost/link'te alt çizgi scaleX(0→1).
-  // ASİMETRİK BASMA FİZİĞİ: transform hızlı iner (--motion-press-in, :active),
+  // ASİMETRİK BASMA FİZİĞİ: hareket hızlı iner (--motion-press-in, :active),
   // yavaş + hafif yaylanarak kalkar (--motion-press-out / --ease-press-out).
+  //
+  // GEÇİŞ LİSTESİNDE `transform` DEĞİL `translate,scale` YAZAR — Tailwind v4
+  // `-translate-y-0.5`i `translate`, `scale-[0.97]`yi `scale` ÖZELLİĞİ olarak
+  // basar (v3'teki tek `transform` matrisi değil). Liste `transform` derse bu
+  // ikisi geçişe hiç girmez ve kalkma/basma ANINDA sıçrar — fizik tamamen ölü
+  // olur. Canlı getComputedStyle ölçümüyle yakalandı (typecheck/lint görmez).
+  // NOT: `::before` mürekkep dolgusu Tailwind'in kendi `transition-transform`
+  // utility'sini kullanıyor; o v4'te zaten `transform,translate,scale,rotate`a
+  // açıldığı için doğru çalışıyor — elle yazılan listelerde tuzak var.
   // Renk/gölge kendi (daha uzun) sürelerinde kalır — bu yüzden süre ve easing
   // per-property listelenir. :active'te de TAM liste yazılır: tek değer
   // (`[transition-duration:var(--motion-press-in)]`) yazılsaydı basış anında
@@ -18,7 +27,7 @@ const buttonVariants = cva(
   // dil): iniş yaylanmaz, yaylanma yalnız kalkışta olur.
   // `will-change` KALICI değil: yalnız hover'da
   // katman terfisi (109 düğmeyi sürekli kompozitöre almak bütçe md.7 ihlali).
-  "relative isolate inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-mono text-xs font-medium tracking-[0.1em] uppercase transition-[color,background-color,border-color,box-shadow,transform] [transition-duration:450ms,450ms,450ms,300ms,var(--motion-press-out)] [transition-timing-function:var(--ease-premium),var(--ease-premium),var(--ease-premium),var(--ease-premium),var(--ease-press-out)] active:[transition-duration:450ms,450ms,450ms,300ms,var(--motion-press-in)] active:[transition-timing-function:var(--ease-premium),var(--ease-premium),var(--ease-premium),var(--ease-premium),linear] hover:will-change-transform disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-ring/60 focus-visible:ring-[3px] focus-visible:ring-offset-2 focus-visible:ring-offset-background aria-invalid:ring-destructive/30 cursor-pointer",
+  "relative isolate inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-mono text-xs font-medium tracking-[0.1em] uppercase transition-[color,background-color,border-color,box-shadow,translate,scale] [transition-duration:450ms,450ms,450ms,300ms,var(--motion-press-out),var(--motion-press-out)] [transition-timing-function:var(--ease-premium),var(--ease-premium),var(--ease-premium),var(--ease-premium),var(--ease-press-out),var(--ease-press-out)] active:[transition-duration:450ms,450ms,450ms,300ms,var(--motion-press-in),var(--motion-press-in)] active:[transition-timing-function:var(--ease-premium),var(--ease-premium),var(--ease-premium),var(--ease-premium),linear,linear] hover:will-change-transform disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-ring/60 focus-visible:ring-[3px] focus-visible:ring-offset-2 focus-visible:ring-offset-background aria-invalid:ring-destructive/30 cursor-pointer",
   {
     variants: {
       variant: {

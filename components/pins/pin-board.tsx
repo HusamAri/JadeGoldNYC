@@ -193,7 +193,7 @@ export function PinBoard({
                               if (r.error) toast.error(r.error);
                             })
                           }
-                          className="hover:bg-secondary/60 flex aspect-square cursor-pointer items-center justify-center rounded-lg border-0 bg-transparent p-1.5 transition-[background-color,transform] duration-200 hover:scale-105 disabled:opacity-50"
+                          className="hover:bg-secondary/60 flex aspect-square cursor-pointer items-center justify-center rounded-lg border-0 bg-transparent p-1.5 transition-[background-color,translate,scale] duration-200 hover:scale-105 disabled:opacity-50"
                         >
                           <img
                             src={st.src}
