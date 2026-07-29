@@ -137,6 +137,21 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
 - **Marka görselleri org'a aittir (2026-07):** Ortak UI'daki ürün görselleri ve
   marka imzaları ("Jade Gold · NYC" kuyruğu, cutout seti) hardcode edilemez —
   aktif org'dan çözülür (OrgMark, BRAND_KIND çevirisi); yeni org nötr düşer.
+- **3D'yi malzemeye göre yerleştir: cam eğilmez, ÜRÜN eğilir (2026-07):**
+  "Siteye 3D derinlik kat" istendiğinde refleks KPI/kart eğmektir; ölçüm bunun
+  yanlış olduğunu söylüyor — o yüzeyler `backdrop-filter` taşır, döndürmek
+  bulanık zemini her karede yeniden rasterize eder (bu repoda FPS'i 4'e düşüren
+  mekanizma) ve `perspective` için gereken `contain:paint` camın arkadaki
+  ambiyansı örneklemesini kesip kartı DÜZLEŞTİRİR. Doğru hedef: cam olmayan,
+  düz `<img>` taşıyan ÜRÜN yüzeyleri (listing ızgarası, tasarım panosu, üretilen
+  görsel galerisi). Mücevher panelinde bu üstelik marka-doğru: altın açıyla ışık
+  yakar, yüzük fotoğrafının imlece göre <=5deg eğilip üzerinde speküler ışık
+  gezmesi süs değil, ürünün "elde çevrilen nesne" gibi davranmasıdır. Mimari:
+  bileşenler sunucu tarafında kalsın diye TEK delege rAF-kısıtlı `pointermove`
+  dinleyicisi yalnız `--tx/--ty/--gx/--gy` custom property'si yazar, dönüşü CSS
+  yapar (InkOriginListener ile aynı desen). Doğrulama = `matrix3d(...)` görmek +
+  imleç karşı köşeye gidince işaretin TERSİNE dönmesi + sahneden çıkınca
+  `matrix(1,0,0,1,0,0)`'a sıfırlanması; reduced-motion'da `transform:none`.
 - **Tailwind v4'te translate/scale AYRI CSS özelliğidir — elle yazılan
   `transition-[...]` listesinde `transform` demek hareketi ÖLDÜRÜR (2026-07):**
   v4, `hover:-translate-y-0.5`i `translate`, `active:scale-[0.97]`yi `scale`

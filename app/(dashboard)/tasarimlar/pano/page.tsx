@@ -116,15 +116,21 @@ export default async function TasarimPanosuPage() {
                     >
                       <Link
                         href={`/tasarimlar/${d.id}/duzenle`}
-                        className="bg-muted block aspect-video w-full overflow-hidden"
+                        /* jg-tilt-scene: tasarım görseli imlece göre eğilir
+                           (globals A5b) — pano fiziksel bir maket panosu gibi
+                           okunur. Düz <img>, cam yok, bütçe içinde. */
+                        className="jg-tilt-scene bg-muted relative block aspect-video w-full overflow-hidden"
                       >
                         {thumb ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
-                            src={thumb}
-                            alt={d.name}
-                            className="h-full w-full object-cover"
-                          />
+                          <>
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={thumb}
+                              alt={d.name}
+                              className="jg-tilt h-full w-full object-cover"
+                            />
+                            <span aria-hidden className="jg-tilt-gloss" />
+                          </>
                         ) : (
                           <span className="text-muted-foreground/50 flex h-full items-center justify-center">
                             <ImageOff className="size-6" />

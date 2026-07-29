@@ -1453,6 +1453,81 @@
     }
   }
 
+  /* ── A5b · ÜRÜN EĞİMİ (gerçek 3D) ──────────────────────────────────────
+     .jg-tilt-scene / .jg-tilt / .jg-tilt-gloss
+
+     NEREDE: yalnız ÜRÜN FOTOĞRAFI yüzeylerinde (listing ızgarası, tasarım
+     panosu, üretilen görsel galerisi). Bu bir mücevher paneli: bir yüzük
+     fotoğrafının imlece göre eğilmesi ve üzerinde ışığın gezinmesi SÜS
+     DEĞİL — ürünün elde çevrilen fiziksel bir nesne gibi davranmasıdır.
+     Altın, açıyla ışık yakalar; ekranda bunu anlatan tek şey budur.
+
+     NEDEN BURADA GÜVENLİ (KPI/Card'da değil): fotoğraf katmanı düz bir
+     `<img>`; ne kendisi backdrop-filter taşır ne de altında cam vardır.
+     Bütçe md.4'ün yasakladığı şey backdrop'lu yüzeyin döndürülmesiydi.
+     Sahne `contain: paint` alır (md.6) — burada zararsız, çünkü kırpılacak
+     dışa taşan gölge yok: kontak gölgesi (.thumb-lift) sahnenin DIŞINDA,
+     kartın kendisinde yaşar.
+
+     BÜTÇE: genlik <=6deg (md.6), yalnız transform+opacity (md.2), yalnız
+     (hover:fine) + hover, aynı anda tek hedef (imleç tektir). Açıyı JS
+     yazmaz — tek delege rAF-kısıtlı dinleyici --tx/--ty custom property'si
+     yazar (bkz. components/ui/tilt-listener.tsx), CSS geri kalanını yapar.
+     Dinleyici mount edilmezse eğim 0'da kalır, yalnız gloss sabit durur. */
+  .jg-tilt-scene {
+    perspective: var(--depth-perspective);
+    contain: paint;
+    /* Varsayılan: düz. Dinleyici imleç girince bu ikisini yazar. */
+    --tx: 0deg;
+    --ty: 0deg;
+  }
+  .jg-tilt {
+    /* translateZ(0): eğim sırasında dokunun yeniden örneklenmemesi için
+       katman terfisi — will-change KALICI verilmez (bütçe md.7). */
+    transform: rotateX(var(--tx)) rotateY(var(--ty)) translateZ(0);
+    transition: transform var(--motion-press-out) var(--ease-quiet);
+  }
+  /* Speküler ışık — metalin açıyla yakaladığı parlama. Konumu imlece bağlı
+     (--gx/--gy); yalnız opacity ile açılır, radial-gradient KEYFRAME DEĞİL. */
+  .jg-tilt-gloss {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--motion-hover) var(--ease-quiet);
+    background: radial-gradient(
+      120px circle at var(--gx, 50%) var(--gy, 50%),
+      oklch(1 0 0 / 0.28),
+      oklch(1 0 0 / 0.06) 45%,
+      transparent 70%
+    );
+    mix-blend-mode: soft-light;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .jg-tilt-scene:hover .jg-tilt-gloss {
+      opacity: 1;
+    }
+    .jg-tilt-scene:hover .jg-tilt {
+      will-change: transform;
+    }
+  }
+  /* Dokunmatik/kaba işaretçi: eğim YOK (parmak altında açı okunamaz, üstelik
+     dokunuşta gecikme hissi verir). Fotoğraf düz kalır. */
+  @media not all and (hover: hover) and (pointer: fine) {
+    .jg-tilt {
+      transform: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .jg-tilt {
+      transform: none;
+      transition: none;
+    }
+    .jg-tilt-gloss {
+      display: none;
+    }
+  }
+
   /* ── A6 · BEKLEME (pending) DİLİ ───────────────────────────────────────
      .jg-pending-region — RSC turu / server action sürerken liste veya tablo
      YERİNDE DURUR, yalnız yumuşakça söner. Layout kaymaz, nav canlı kalır,

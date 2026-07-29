@@ -13,6 +13,7 @@ import {
 } from "@/components/brand/org-emblem";
 import { ParallaxDrift } from "@/components/motion/parallax-drift";
 import { InkOriginListener } from "@/components/ui/ink-origin";
+import { TiltListener } from "@/components/ui/tilt-listener";
 
 export default async function DashboardLayout({
   children,
@@ -60,6 +61,10 @@ export default async function DashboardLayout({
           ALTINDAN açılsın (mount edilmezse hale merkezden açılır, yani bu satır
           özelliğin kendisi). Button sunucu bileşeni kalsın diye delege. */}
       <InkOriginListener />
+      {/* Ürün eğimi köprüsü — `.jg-tilt-scene` fotoğraf yüzeylerinde imleç
+          konumunu CSS'e yazar (rAF-kısıtlı, tek delege dinleyici). Dokunmatik
+          ve reduced-motion'da hiç bağlanmaz. */}
+      <TiltListener />
       {/* Org amblem katmanı — DEV filigran sağ-alt negatif alanda (her
           sayfada, içerik altında) + köşe imzası. Marka org'dan çözülür. */}
       <OrgEmblemBackdrop />
