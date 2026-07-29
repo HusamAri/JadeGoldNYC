@@ -195,6 +195,15 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
   hf-job-id`). Çıkış noktalarında (upload action + indirme proxy) chunk-bazlı
   strip; renk/derinlik chunk'ları korunur. UYARI: piksele gömülü SynthID
   filigranı meta veri DEĞİLDİR, sökülemez — "tamamen temiz" diye vaat etme.
+- **Türetilebilir alanı gönderme, anahtarı hiç gönderme, ağırlıklı checksum'la doğrula
+  (2026-07):** 858 satırlık ızgarayı MCP ile basarken tam metin ~130KB'dı. Üçlü kısaltma:
+  (1) veri tam KARTEZYEN ise (3 karat × 2 profil × 11 genişlik × 13 beden) anahtarları
+  `generate_series` + `row_number()` ile SQL'de üret — anahtar transkripsiyon riski SIFIR;
+  (2) formülü 858 satırda birebir doğrulanan kolonları (engine/list/sale) SQL'de türet,
+  yalnız doğrulanamayanları (floor/offsite: 7 ve 78 satırda kenar sapması) açık gönder;
+  → 22KB, 4 parça. (3) Doğrulama SADECE toplam olmasın: kolon toplamı satır KAYMASINI
+  yakalamaz — `sum(i * kolon)` konum-ağırlıklı checksum + kaynağın kendi altın satırları
+  şart. Parça byte uzunluğunu da karşılaştır (yazım hatasını anında yakalar).
 - **Büyük MCP SQL'i parça + yeniden-kurgu ile yaz (2026-07):** execute_sql metni
   elle üretildiğinden 37KB tek statement'ta transkripsiyon hatası (UUID'de boşluk)
   girdi. Çözüm: tekrarlı URL önekini SQL'de `||` ile yeniden kur, kısa token'ları

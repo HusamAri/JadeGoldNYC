@@ -30,9 +30,22 @@ rota kurulursa buton da submit'te disable edilmeli.
 
 ## Açık kalanlar
 
-- `0121_pricing_engine_seed_20260728.sql` canlıya uygulanacak (ayna 150 v2 satırında;
-  migration v2 kalıntısını temizleyip 858 v3 satırını kurar).
+- ~~`0121` canlıya uygulanacak~~ **TAMAM (2026-07-29):** v2 kalıntısı (150 satır) silindi,
+  v3 aynası MCP ile kuruldu — `pricing_engine_import` `c157eb8e…` + **858 satır**, 6 blok
+  (3 karat × standard/milgrain), hepsi KONTROL OK. `0121` migration'ı artık no-op
+  (NOT EXISTS korumalı) ve preview provizyonunun kaydı olarak duruyor.
 - Görev #30: listing metinleri 1.5mm → 2.0mm.
 - Görev #31: sıfır-varyant mutabakatı.
-- `organizations.feature_flags.opsEonPricePush` anahtarı temizlenebilir (rota silindi;
-  anahtar artık atıl).
+- ~~`opsEonPricePush` anahtarı temizlenecek~~ **TAMAM (2026-07-29):** silindi;
+  `feature_flags` yalnız `externalPricing/keywordResearch/buyerFollowup` taşıyor
+  (`externalPricing` AÇIK kalmaya devam ediyor).
+
+## Ayna doğrulaması (2026-07-29)
+
+MCP yazımında transkripsiyon riskini kesmek için: grid tam kartezyen olduğundan
+(3 karat × 2 profil × 11 genişlik × 13 beden = 858) **anahtarlar SQL'de üretildi**,
+yalnız sayılar taşındı (~22KB, 4 parça); `engine/list/sale` 858 satırda birebir
+doğrulanmış formüllerle SQL'de türetildi, `floor/offsite` açık gönderildi (7 ve 78
+satırda kenar sapması var, türetilemez). Doğrulama üç katmanlı ve hepsi tuttu:
+parça byte uzunlukları · 7 kolon toplamı · **konum-ağırlıklı** toplamlar (satır
+kaymasını yakalar) · altın satırlar (10K 5mm US7 = 580/775, 14K 6mm US7 = 1022/1365).
