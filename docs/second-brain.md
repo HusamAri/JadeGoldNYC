@@ -67,6 +67,16 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
   vermiyorsa (Etsy yorum yanıtı) o alanda panel tek doğruluk kaynağı İLAN edilir ve
   akış ona göre kurulur (0059 deseni) — "senkronlarız" diye söz verme; en yakın
   sinyalle (update_timestamp) telafi kur.
+- **OAuth token'ı client'ına bağlıdır; tek-seferlik ops işini panel rotası yap (2026-07):**
+  Etsy access/refresh token'ları üretildikleri app'in (client) bağlamına kilitlidir —
+  lokal env farklı keystring'le 401 invalid_token alır, yapısaldır, düzelmez. Çözüm:
+  işi production env'de koşan GEÇİCİ korumalı rotaya taşı (çift katman: CRON_SECRET
+  URL token'ı + admin oturumu; tek kullanımlık confirm; başarıda kalıcı 410 + audit;
+  sha kilidi yanlış grid'i reddeder). İki tuzak canlıda yakalandı: (1) `searchParams`
+  form-decode'u `+` içeren secret'ı sessizce kırar — ham query ile de karşılaştır;
+  (2) read-modify-write confirm tüketimi atomik değil — çift dokunma 3 eşzamanlı POST
+  koşturdu (idempotent hedefler kurtardı); tek-kullanımlık onay koşullu UPDATE
+  (compare-and-swap) ile tüketilmeli, buton submit'te disable edilmeli.
 
 ## Ürün/UX dersleri
 
