@@ -12,6 +12,7 @@ import {
   OrgEmblemSignature,
 } from "@/components/brand/org-emblem";
 import { ParallaxDrift } from "@/components/motion/parallax-drift";
+import { InkOriginListener } from "@/components/ui/ink-origin";
 
 export default async function DashboardLayout({
   children,
@@ -54,6 +55,11 @@ export default async function DashboardLayout({
       {/* Scroll-parallax: holo katmanları içerikten yavaş süzülür (derinlik).
           Idle'da sıfır iş; reduced-motion/dokunmatikte hiç bağlanmaz. */}
       <ParallaxDrift />
+      {/* Temas ışığı köprüsü — TEK passive pointerdown dinleyicisi; basışın
+          nerede olduğunu `.jg-ink-origin` yüzeylerine yazar ki hale parmağın
+          ALTINDAN açılsın (mount edilmezse hale merkezden açılır, yani bu satır
+          özelliğin kendisi). Button sunucu bileşeni kalsın diye delege. */}
+      <InkOriginListener />
       {/* Org amblem katmanı — DEV filigran sağ-alt negatif alanda (her
           sayfada, içerik altında) + köşe imzası. Marka org'dan çözülür. */}
       <OrgEmblemBackdrop />

@@ -11,9 +11,14 @@ const buttonVariants = cva(
   // ASİMETRİK BASMA FİZİĞİ: transform hızlı iner (--motion-press-in, :active),
   // yavaş + hafif yaylanarak kalkar (--motion-press-out / --ease-press-out).
   // Renk/gölge kendi (daha uzun) sürelerinde kalır — bu yüzden süre ve easing
-  // per-property listelenir. `will-change` KALICI değil: yalnız hover'da
+  // per-property listelenir. :active'te de TAM liste yazılır: tek değer
+  // (`[transition-duration:var(--motion-press-in)]`) yazılsaydı basış anında
+  // beş özelliğin HEPSİ 90ms'e iner, renk/gölge de sıçrardı — asimetri yalnız
+  // transform'a aittir. Basışta transform eğrisi `linear` (jg-tactile ile aynı
+  // dil): iniş yaylanmaz, yaylanma yalnız kalkışta olur.
+  // `will-change` KALICI değil: yalnız hover'da
   // katman terfisi (109 düğmeyi sürekli kompozitöre almak bütçe md.7 ihlali).
-  "relative isolate inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-mono text-xs font-medium tracking-[0.1em] uppercase transition-[color,background-color,border-color,box-shadow,transform] [transition-duration:450ms,450ms,450ms,300ms,var(--motion-press-out)] [transition-timing-function:var(--ease-premium),var(--ease-premium),var(--ease-premium),var(--ease-premium),var(--ease-press-out)] active:[transition-duration:var(--motion-press-in)] hover:will-change-transform disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-ring/60 focus-visible:ring-[3px] focus-visible:ring-offset-2 focus-visible:ring-offset-background aria-invalid:ring-destructive/30 cursor-pointer",
+  "relative isolate inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-mono text-xs font-medium tracking-[0.1em] uppercase transition-[color,background-color,border-color,box-shadow,transform] [transition-duration:450ms,450ms,450ms,300ms,var(--motion-press-out)] [transition-timing-function:var(--ease-premium),var(--ease-premium),var(--ease-premium),var(--ease-premium),var(--ease-press-out)] active:[transition-duration:450ms,450ms,450ms,300ms,var(--motion-press-in)] active:[transition-timing-function:var(--ease-premium),var(--ease-premium),var(--ease-premium),var(--ease-premium),linear] hover:will-change-transform disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-ring/60 focus-visible:ring-[3px] focus-visible:ring-offset-2 focus-visible:ring-offset-background aria-invalid:ring-destructive/30 cursor-pointer",
   {
     variants: {
       variant: {

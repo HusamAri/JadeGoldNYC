@@ -44,6 +44,18 @@ export function Pagination({
   const busyPrev = isPending && dir === "prev";
   const busyNext = isPending && dir === "next";
 
+  /**
+   * KLAVYE ODAĞI: bekleme sırasında düğme `disabled` YAPILMAZ. Klavyeyle
+   * "Sonraki"ye basan kullanıcının düğmesi anında disabled olsaydı tarayıcı
+   * odağı `<body>`'ye düşürürdü → sonraki Tab belgenin başından başlar, her
+   * sayfa değişiminde. Bunun yerine `aria-disabled` + tıklama muhafızı:
+   * odaklanabilir kalır, ikinci tetikleme yutulur. Sınır durumu (ilk/son
+   * sayfa) gerçek `disabled` olarak kalır — o kalıcı bir durum, bekleme değil.
+   */
+  const atStart = offset <= 0;
+  const atEnd = offset + limit >= count;
+  const guard = (fn: () => void) => (isPending ? undefined : fn());
+
   return (
     <div className="flex items-center justify-between gap-3 pt-3">
       {/* Sayaç bekleme boyunca BAYAT: yerinde durur ama söner — layout kaymaz,
@@ -61,8 +73,9 @@ export function Pagination({
           size="sm"
           className="jg-busy"
           aria-busy={busyPrev}
-          disabled={isPending || offset <= 0}
-          onClick={() => go(Math.max(0, offset - limit), "prev")}
+          disabled={atStart}
+          aria-disabled={isPending || undefined}
+          onClick={() => guard(() => go(Math.max(0, offset - limit), "prev"))}
         >
           {/* İkon YERİNE geçer (yan yana değil) → genişlik sabit, satır kaymaz.
               motion-reduce'da dönme durur ama ikon+disabled sinyali kalır. */}
@@ -78,8 +91,9 @@ export function Pagination({
           size="sm"
           className="jg-busy"
           aria-busy={busyNext}
-          disabled={isPending || offset + limit >= count}
-          onClick={() => go(offset + limit, "next")}
+          disabled={atEnd}
+          aria-disabled={isPending || undefined}
+          onClick={() => guard(() => go(offset + limit, "next"))}
         >
           Sonraki
           {busyNext ? (

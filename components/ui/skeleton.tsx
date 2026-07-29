@@ -44,8 +44,13 @@ function Skeleton({
       data-slot="skeleton"
       className={cn(
         // Oluk yüzeyi + koyu tema karşılığı tek yerde: .jg-skel (globals A4).
+        // Nabzı da .jg-skel'in KENDİSİ taşır (--skel-pulse + --ease-premium):
+        // burada `animate-pulse` yazılsaydı Tailwind'in 2s cubic-bezier'i
+        // (utility > components) kazanır, iskelet ritmi tema dilinin dışına
+        // düşerdi. `pulse=false` yalnız o zaman ezer — merdivenli kaplarda
+        // nabzı BİLEREK susturmak için (25 satır = 25 hasar bölgesi olmasın).
         "jg-skel rounded-lg",
-        pulse ? "motion-safe:animate-pulse" : "animate-none",
+        pulse ? null : "animate-none",
         className,
       )}
       {...props}

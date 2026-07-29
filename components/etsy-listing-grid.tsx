@@ -94,12 +94,18 @@ export function EtsyListingGrid({ listings }: { listings: ProductListing[] }) {
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {visible.map((p) => (
-            <Card key={p.id} className="overflow-hidden">
+            /* interactive: kartın TAMAMI tek bir listing'e giden link — kart
+               gerçekten tıklanabilir, dolayısıyla jg-tactile sözleşmesini
+               (hover'da kalkma, basışta oturma, cursor:pointer) hak ediyor.
+               Odak halkası da kartın kendisinde (focus-within outline): iç
+               bağlantıya konan halka `overflow-hidden` tarafından yanlardan
+               kırpılıyordu; outline kart sınırının DIŞINA çizildiği için
+               kırpılmaz ve iki tab durağı (görsel + başlık) tek, tutarlı
+               sinyal verir. */
+            <Card key={p.id} interactive className="overflow-hidden">
               <Link
                 href={`/analizler/urunler/liste/${p.id}`}
-                /* Klavye odağı: görsel bağlantısında hiçbir sinyal yoktu.
-                   Outline tabanlı halka gölgeyle yarışmaz (jg-focus-outline). */
-                className="jg-focus-outline group block"
+                className="group block outline-none"
                 title="Rakip & pazar analizini aç"
               >
                 {p.image_url ? (
@@ -127,7 +133,13 @@ export function EtsyListingGrid({ listings }: { listings: ProductListing[] }) {
                 )}
               </Link>
               <CardContent className="space-y-2 p-4">
-                <Link href={`/analizler/urunler/liste/${p.id}`}>
+                {/* Aynı hedefe ikinci tab durağı — odak sinyali kartın
+                    focus-within halkasından geliyor, burada ayrı halka
+                    çizmiyoruz (aynı hedef için çift sinyal gürültü olurdu). */}
+                <Link
+                  href={`/analizler/urunler/liste/${p.id}`}
+                  className="outline-none"
+                >
                   <h4 className="hover:text-primary line-clamp-2 text-sm font-medium leading-tight transition-colors">
                     {decodeEntities(p.title)}
                   </h4>
