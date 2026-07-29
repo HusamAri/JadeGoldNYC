@@ -113,18 +113,27 @@ export function EtsyListingGrid({ listings }: { listings: ProductListing[] }) {
                      değil, yüzeyde duran baskı (alt kenarında kontak gölgesi).
                      overflow-hidden: hover'da büyüyen görsel kendi çerçevesinde
                      kalır → alttaki metne taşmaz (vitrin camı). */
-                  <div className="thumb-lift bg-muted relative aspect-square overflow-hidden">
-                    <Image
-                      src={p.image_url}
-                      alt={decodeEntities(p.title)}
-                      fill
-                      /* Eski `group-hover:opacity-90` KALDIRILDI: tıklanabilir
-                         bir öğenin hover'da SÖNMESİ "pasif/devre dışı" sinyali
-                         veriyordu. Yerine camın ardındaki ürüne YAKLAŞMA. */
-                      className="object-cover transition-transform duration-500 ease-[var(--ease-premium)] group-hover:scale-[1.03] motion-reduce:group-hover:scale-100"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      unoptimized
-                    />
+                  /* jg-tilt-scene: ÜRÜN EĞİMİ (globals A5b). Yüzük fotoğrafı
+                     imlece göre <=5deg eğilir ve üzerinde speküler ışık gezer
+                     — altın açıyla ışık yakar; ekranda ürünü "elde çevrilen
+                     nesne" yapan tek şey bu. Burada güvenli çünkü katman düz
+                     bir <img>; ne kendisi backdrop-filter taşır ne altında cam
+                     var (bütçe md.4 ihlali yok). */
+                  <div className="jg-tilt-scene thumb-lift bg-muted relative aspect-square overflow-hidden">
+                    <div className="jg-tilt absolute inset-0">
+                      <Image
+                        src={p.image_url}
+                        alt={decodeEntities(p.title)}
+                        fill
+                        /* Eski `group-hover:opacity-90` KALDIRILDI: tıklanabilir
+                           bir öğenin hover'da SÖNMESİ "pasif/devre dışı" sinyali
+                           veriyordu. Yerine camın ardındaki ürüne YAKLAŞMA. */
+                        className="object-cover transition-transform duration-500 ease-[var(--ease-premium)] group-hover:scale-[1.03] motion-reduce:group-hover:scale-100"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        unoptimized
+                      />
+                    </div>
+                    <div aria-hidden className="jg-tilt-gloss" />
                   </div>
                 ) : (
                   <div className="nm-pressed flex aspect-square items-center justify-center">
