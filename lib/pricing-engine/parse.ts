@@ -21,7 +21,11 @@ export interface PricingAssumptions {
   laborMilgrainUsd: number;
   packagingUsd: number;
   shippingUsd: number;
+  /** Motor çarpanı, genişlik 2–7mm (v4 ASM "Carpan 2-7mm"; v2/v3'te tek "Carpan"). */
   multiplier: number;
+  /** Motor çarpanı, genişlik 8–12mm (v4 "Carpan 8-12mm", bilinçli mens-wide
+   *  primi). v4 öncesi dosyalarda çarpan tekti → multiplier ile aynı değer. */
+  multiplierWide: number;
   etsyFeeRate: number;
   offsiteRate: number;
   purity: Record<Karat, number>;
@@ -115,7 +119,10 @@ export function parsePricingSnapshot(
     throw new PricingImportError("Spot (ASM!B2) pozitif olmali.");
   }
   if (!(assumptions.multiplier > 0)) {
-    throw new PricingImportError("Carpan (ASM!B7) pozitif olmali.");
+    throw new PricingImportError("Carpan 2-7mm (ASM!B7) pozitif olmali.");
+  }
+  if (!(assumptions.multiplierWide > 0)) {
+    throw new PricingImportError("Carpan 8-12mm (ASM!B17) pozitif olmali.");
   }
   for (const k of ["10K", "14K", "18K"] as Karat[]) {
     if (!(assumptions.purity[k] > 0 && assumptions.purity[k] < 1)) {

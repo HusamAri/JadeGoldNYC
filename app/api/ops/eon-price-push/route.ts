@@ -31,8 +31,9 @@ export const maxDuration = 300;
  * yollarıyla aynı güç). `?token=`/`?sha=`/Bearer opsiyonel ikinci mühürdür:
  * sunulursa doğrulanır, sunulmazsa oturum yeter.
  * Başarılı push sonrası rota kendini kapatır (410) — durum
- * organizations.feature_flags.opsEonPricePush altında yaşar; rota emekliye
- * ayrılırken o anahtar da temizlenir.
+ * organizations.feature_flags.opsEonPricePushV4 altında yaşar; rota emekliye
+ * ayrılırken o anahtar da temizlenir. Onay tüketimi ATOMİKTİR (koşullu UPDATE
+ * / compare-and-swap): aynı confirm'le yarışan ikinci POST 409 alır.
  */
 
 const ORG_SLUG = "eon-266055";
@@ -43,7 +44,7 @@ const CONFIRM_TTL_MS = 30 * 60 * 1000;
  *  genişletilir; literal kalırsa TS eşit-literal karşılaştırmayı never'a
  *  daraltıp kilidi ölü koda çevirirdi. */
 const EXPECTED_GRID_SHA256: string =
-  "9864c2f9388632156b260f936229393532c3adfcacc230ae78b3b4256421795d";
+  "f198fc27de356ffbf2501bd61d75aba308d6d6c3bd78c7e9bccd13d307f6f3b8";
 
 type OpsState = {
   done?: boolean;
@@ -233,7 +234,7 @@ async function loadOrg(): Promise<OrgRow | null> {
 }
 
 function opsState(org: OrgRow): OpsState {
-  return ((org.feature_flags ?? {})["opsEonPricePush15"] ?? {}) as OpsState;
+  return ((org.feature_flags ?? {})["opsEonPricePushV4"] ?? {}) as OpsState;
 }
 
 async function saveOpsState(orgId: string, state: OpsState): Promise<void> {
@@ -245,7 +246,7 @@ async function saveOpsState(orgId: string, state: OpsState): Promise<void> {
     .single();
   const flags = ((data as { feature_flags: Record<string, unknown> | null })
     ?.feature_flags ?? {}) as Record<string, unknown>;
-  flags["opsEonPricePush15"] = state;
+  flags["opsEonPricePushV4"] = state;
   const { error } = await admin
     .from("organizations")
     .update({ feature_flags: flags })
@@ -353,7 +354,7 @@ export async function GET(request: Request) {
      spot $${GRID_15_SPOT_USD} · yarım-beden enterpolasyonu AÇIK · ${esc(auth.email)}</p>
      ${diffHtml(diff)}
      <form method="post" action="${esc(action)}"
-       onsubmit="return confirm('TEK SEFERLİK: ${diff.totals.changed} varyant fiyatı Etsy\\'ye yazılacak. Emin misin?')">
+       onsubmit="if(!confirm('TEK SEFERLİK: ${diff.totals.changed} varyant fiyatı Etsy\\'ye yazılacak. Emin misin?'))return false;var b=this.querySelector('button');b.disabled=true;b.textContent='İşleniyor… (sayfayı kapatma)';return true;">
        <input type="hidden" name="confirm" value="${confirm}">
        <button class="push" type="submit">PUSH — ${diff.totals.changed} varyantı Etsy'ye yaz</button>
      </form>
@@ -394,22 +395,49 @@ export async function POST(request: Request) {
 
   const form = await request.formData().catch(() => null);
   const confirm = String(form?.get("confirm") ?? "");
-  const valid =
-    confirm.length > 0 &&
-    confirm === state.confirm &&
-    (state.confirmExp ?? 0) > Date.now();
-  // Tek kullanımlık: geçerli olsun olmasın tüket — replay kapansın.
-  await saveOpsState(org.id, { ...state, confirm: null, confirmExp: null });
-  if (!valid) {
+  const suresiGecerli = (state.confirmExp ?? 0) > Date.now();
+  // TEK KULLANIMLIK TÜKETİM — ATOMİK (compare-and-swap). Önceki turda 3
+  // eşzamanlı POST yarıştı: read-modify-write tüketim atomik değildi, üç
+  // istek de aynı confirm'i "geçerli" görüp push'u paralel koşturdu (hedefler
+  // idempotent olduğu için sonuç bozulmadı ama bu şanstı). Şimdi tüketim,
+  // yalnız feature_flags'teki confirm HÂLÂ bu değere eşitse başarılı olan
+  // koşullu bir UPDATE: Postgres satır kilidi sayesinde eşzamanlı ikinci
+  // istek filtreye takılır (0 satır döner) ve 409 alır — yalnız BİR istek
+  // push'a ilerleyebilir.
+  const admin = createAdminClient();
+  let kazandi = false;
+  if (confirm.length > 0 && suresiGecerli) {
+    const { data: cas, error: casErr } = await admin
+      .from("organizations")
+      .update({
+        feature_flags: {
+          ...(org.feature_flags ?? {}),
+          opsEonPricePushV4: { ...state, confirm: null, confirmExp: null },
+        },
+      })
+      .eq("id", org.id)
+      .eq("feature_flags->opsEonPricePushV4->>confirm", confirm)
+      .select("id");
+    if (casErr) {
+      return page(
+        "Onay tüketilemedi",
+        `<h1>Onay tüketilemedi (500)</h1><p>${esc(casErr.message)} — hiçbir şey yazılmadı.</p>`,
+        500,
+      );
+    }
+    kazandi = (cas?.length ?? 0) === 1;
+  }
+  if (!kazandi) {
     return page(
       "Onay geçersiz",
-      `<h1>Onay geçersiz ya da süresi doldu (409)</h1>
-       <p>GET sayfasını yeniden aç; taze PUSH butonuyla tekrar dene. Hiçbir şey yazılmadı.</p>`,
+      `<h1>Onay geçersiz, süresi dolmuş ya da AYNI ANDA ikinci tıklama (409)</h1>
+       <p>Push zaten başka bir istekte koşuyor olabilir — sayfayı yenilemeden
+       önce bir dakika bekle. Gerekirse GET sayfasını yeniden aç; taze PUSH
+       butonuyla tekrar dene. Bu istek hiçbir şey yazmadı.</p>`,
       409,
     );
   }
 
-  const admin = createAdminClient();
   const diff = await buildPushDiff(admin, org.id);
   const client = await EtsyClient.forOrg(org.id);
 

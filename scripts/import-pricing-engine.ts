@@ -3,16 +3,16 @@
  *
  * Kullanım (repo kökünden; .env.local'daki service-role anahtarıyla yazar):
  *   npx tsx scripts/import-pricing-engine.ts \
- *     --file docs/eon/pricing/2026-07-28-eon-etsy-giris-grid-spot4090-v2.xlsx \
+ *     --file docs/eon/pricing/2026-07-29-eon-etsy-giris-grid-spot4090-v4.xlsx \
  *     --org eon-266055 [--dry-run]
  *
  * İlkeler (0120 başlık yorumuyla aynı):
  *  - AYNA elle düzenlenmez; kaynak değişince bu script yeniden koşulur.
  *  - Ayrıştırma + bütünlük `lib/pricing-engine/parse.ts`'te (saf, bağımsız
  *    test edilebilir). Buradaki iş yalnız: xlsx'i oku → doğrula → yaz.
- *  - Altın satırlar (GIRIS-SIRASI!A13) her koşuda yeniden doğrulanır:
- *    10K 5mm US7 motor 580 / liste 775 · 14K 6mm US7 motor 1022 / liste 1365.
- *    Dosyanın kendi beyanıyla uyuşmayan içe aktarım REDDEDİLİR.
+ *  - Altın satırlar (GIRIS-SIRASI'nın kendi beyanı) her koşuda yeniden
+ *    doğrulanır — v4: 10K 5mm US7 motor 449 / liste 600 · 10K 2mm US7
+ *    floor 170 / offsite 205. Uyuşmayan içe aktarım REDDEDİLİR.
  *  - Yazım: başlık + satırlar tek akışta; eski içe aktarımlar SİLİNMEZ
  *    (tarihçe kalır), tüketiciler `pricing_engine_current` görünümünü okur.
  */
@@ -60,29 +60,36 @@ loadEnvLocal();
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-// Altın satırlar — GIRIS-SIRASI!A13'ün beyanı. Motor USD, Liste USD.
+// Altın satırlar — GIRIS-SIRASI'nın kendi beyanı (v4 "Dogrulama" satırı).
+// Alanlar opsiyonel: beyan hangi kolonları veriyorsa onlar denetlenir.
 const GOLDEN: {
   karat: Karat;
   widthMm: number;
   sizeUs: number;
-  engineUsd: number;
-  listUsd: number;
+  engineUsd?: number;
+  listUsd?: number;
+  floorUsd?: number;
+  offsiteFloorUsd?: number;
 }[] = [
-  { karat: "10K", widthMm: 5, sizeUs: 7, engineUsd: 580, listUsd: 775 },
-  { karat: "14K", widthMm: 6, sizeUs: 7, engineUsd: 1022, listUsd: 1365 },
+  { karat: "10K", widthMm: 5, sizeUs: 7, engineUsd: 449, listUsd: 600 },
+  { karat: "10K", widthMm: 2, sizeUs: 7, floorUsd: 170, offsiteFloorUsd: 205 },
 ];
 
-function asmNumber(ws: ExcelJS.Worksheet, label: string): number {
-  for (let r = 1; r <= ws.rowCount; r++) {
-    if (String(ws.getCell(r, 1).value ?? "").trim() === label) {
-      const v = ws.getCell(r, 2);
-      const raw = (v.result ?? v.value) as unknown;
-      const n = typeof raw === "string" ? Number(raw.replace(",", ".")) : (raw as number);
-      if (typeof n === "number" && Number.isFinite(n)) return n;
-      throw new PricingImportError(`ASM '${label}': sayi okunamadi (${String(raw)}).`);
+/** İlk bulunan etiketi okur — sürümler arası ad değişikliği için sıralı
+ *  alternatif verilir (ör. v4 "Etsy kesinti" ← v2/v3 "Etsy kesinti orani"). */
+function asmNumber(ws: ExcelJS.Worksheet, ...labels: string[]): number {
+  for (const label of labels) {
+    for (let r = 1; r <= ws.rowCount; r++) {
+      if (String(ws.getCell(r, 1).value ?? "").trim() === label) {
+        const v = ws.getCell(r, 2);
+        const raw = (v.result ?? v.value) as unknown;
+        const n = typeof raw === "string" ? Number(raw.replace(",", ".")) : (raw as number);
+        if (typeof n === "number" && Number.isFinite(n)) return n;
+        throw new PricingImportError(`ASM '${label}': sayi okunamadi (${String(raw)}).`);
+      }
     }
   }
-  throw new PricingImportError(`ASM '${label}' satiri bulunamadi.`);
+  throw new PricingImportError(`ASM '${labels.join("' / '")}' satiri bulunamadi.`);
 }
 
 function asmText(ws: ExcelJS.Worksheet, label: string): string {
@@ -176,8 +183,9 @@ async function main() {
     laborMilgrainUsd: asmNumber(asm, "Iscilik Milgrain USD"),
     packagingUsd: asmNumber(asm, "Paket USD"),
     shippingUsd: asmNumber(asm, "Kargo USD"),
-    multiplier: asmNumber(asm, "Carpan"),
-    etsyFeeRate: asmNumber(asm, "Etsy kesinti orani"),
+    multiplier: asmNumber(asm, "Carpan 2-7mm", "Carpan"),
+    multiplierWide: asmNumber(asm, "Carpan 8-12mm", "Carpan"),
+    etsyFeeRate: asmNumber(asm, "Etsy kesinti", "Etsy kesinti orani"),
     offsiteRate: asmNumber(asm, "Offsite Ads"),
     purity: {
       "10K": asmNumber(asm, "Saflik 10K"),
@@ -210,18 +218,26 @@ async function main() {
         `Altin satir yok: ${g.karat} ${g.widthMm}mm US${g.sizeUs}.`,
       );
     }
-    if (row.engineCents !== g.engineUsd * 100 || row.listCents !== g.listUsd * 100) {
-      throw new PricingImportError(
-        `Altin satir tutmadi: ${g.karat} ${g.widthMm}mm US${g.sizeUs} — ` +
-          `beklenen motor ${g.engineUsd}/liste ${g.listUsd}, okunan ` +
-          `${row.engineCents / 100}/${row.listCents / 100}.`,
-      );
+    const checks: [string, number | undefined, number][] = [
+      ["motor", g.engineUsd, row.engineCents],
+      ["liste", g.listUsd, row.listCents],
+      ["floor", g.floorUsd, row.floorCents],
+      ["offsite", g.offsiteFloorUsd, row.offsiteFloorCents],
+    ];
+    for (const [label, wantUsd, gotCents] of checks) {
+      if (wantUsd != null && gotCents !== wantUsd * 100) {
+        throw new PricingImportError(
+          `Altin satir tutmadi: ${g.karat} ${g.widthMm}mm US${g.sizeUs} — ` +
+            `beklenen ${label} ${wantUsd}, okunan ${gotCents / 100}.`,
+        );
+      }
     }
   }
 
   console.log(
     `OK: ${snapshot.rows.length} satir dogrulandi ` +
-      `(spot $${assumptions.spotUsdPerOzt}, carpan ${assumptions.multiplier}, ` +
+      `(spot $${assumptions.spotUsdPerOzt}, carpan ${assumptions.multiplier}` +
+      `${assumptions.multiplierWide !== assumptions.multiplier ? `/${assumptions.multiplierWide}` : ""}, ` +
       `sha256 ${sha256.slice(0, 12)}…)`,
   );
   const bySheet = new Map<string, number>();
