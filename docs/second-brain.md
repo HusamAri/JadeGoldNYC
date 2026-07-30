@@ -77,6 +77,8 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
   (2) read-modify-write confirm tüketimi atomik değil — çift dokunma 3 eşzamanlı POST
   koşturdu (idempotent hedefler kurtardı); tek-kullanımlık onay koşullu UPDATE
   (compare-and-swap) ile tüketilmeli, buton submit'te disable edilmeli.
+  Doğrulama (2026-07-30, v4 turu): CAS + buton kilidi uygulandı → aynı akışta
+  audit'e TEK reprice satırı düştü; kilit canlıda kanıtlandı.
 
 ## Ürün/UX dersleri
 
