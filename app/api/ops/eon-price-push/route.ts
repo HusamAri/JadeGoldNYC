@@ -124,10 +124,14 @@ type TokenSonuc = { ok: true } | { ok: false; teshis: string };
  */
 function tokenOk(request: Request): TokenSonuc {
   const url = new URL(request.url);
-  const decoded = url.searchParams.get("token");
-  const sha = url.searchParams.get("sha");
-  const auth = request.headers.get("authorization");
-  const sunuldu = decoded != null || sha != null || auth != null;
+  // `|| null`: BOŞ değeri yok say. `?token=` (değersiz) yazıldığında
+  // `searchParams.get` null DEĞİL `""` döndürür; bu boş dizeyi "token sunuldu"
+  // saymak, token'ı URL'den çıkarmaya çalışan operatörü kilitliyordu
+  // (canlıda yaşandı: "gelen 0 karakter, sunucudaki 18").
+  const decoded = url.searchParams.get("token") || null;
+  const sha = url.searchParams.get("sha") || null;
+  const auth = request.headers.get("authorization") || null;
+  const sunuldu = decoded !== null || sha !== null || auth !== null;
 
   // Hiç sunulmadı → oturum kapısına devret.
   if (!sunuldu) return { ok: true };
