@@ -16,6 +16,25 @@ export const socialPostSchema = z.object({
   hashtags: z.string().optional(),
   tags_note: z.string().optional(),
   permalink: z.string().optional(),
+  /** Görsel/video linkleri — textarea, her satıra bir URL. */
+  media_urls: z.string().optional(),
 });
+
+/** Textarea satırları → geçerli http(s) URL dizisi (sıra korunur, ilk 12). */
+export function parseMediaUrls(s?: string): string[] {
+  if (!s?.trim()) return [];
+  const out: string[] = [];
+  for (const line of s.split(/\r?\n/)) {
+    const t = line.trim();
+    if (!t) continue;
+    try {
+      const u = new URL(t);
+      if (u.protocol === "http:" || u.protocol === "https:") out.push(t);
+    } catch {
+      // URL olmayan satır sessizce atlanır — not alanı değil, link alanı.
+    }
+  }
+  return [...new Set(out)].slice(0, 12);
+}
 
 export type SocialPostInput = z.infer<typeof socialPostSchema>;

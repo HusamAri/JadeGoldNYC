@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { requireMembership } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import {
+  parseMediaUrls,
   socialPostSchema,
   type SocialPostInput,
 } from "@/lib/validations/social";
@@ -41,6 +42,7 @@ function toRow(orgId: string, userId: string, input: SocialPostInput) {
     hashtags: input.hashtags?.trim() || null,
     tags_note: input.tags_note?.trim() || null,
     permalink: input.permalink?.trim() || null,
+    media_urls: parseMediaUrls(input.media_urls),
     created_by: userId,
     published_at:
       input.status === "published" ? new Date().toISOString() : null,
