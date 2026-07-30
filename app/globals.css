@@ -1661,6 +1661,61 @@
 .animate-rise {
   animation: rise 0.55s var(--ease-quiet) both;
 }
+
+/* ── Kahraman KPI: açılışta TEK SEFERLİK altın ışık süpürmesi ──
+   Kuyumcu imzası: en kritik rakamın üstünden, sayfa otururken bir kez altın
+   yansıması geçer (mücevherin vitrindeki ilk ışık yakalayışı). Cam güvenli:
+   yalnız transform+opacity animasyonlanır, backdrop-filter'a dokunulmaz;
+   tek elemanda, 1.4s, bir kez. Reduced-motion'da animasyon koşmaz →
+   opacity 0'da kalır, hiç görünmez. */
+.jg-gold-sheen {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    oklch(0.85 0.12 85 / 0.38) 46%,
+    oklch(0.93 0.08 92 / 0.5) 50%,
+    oklch(0.85 0.12 85 / 0.22) 54%,
+    transparent 70%
+  );
+  transform: translateX(-120%);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .jg-gold-sheen {
+    animation: jg-gold-sheen-once 1.4s cubic-bezier(0.33, 0, 0.2, 1) 0.55s 1 both;
+  }
+}
+@keyframes jg-gold-sheen-once {
+  0% {
+    opacity: 0;
+    transform: translateX(-120%);
+  }
+  12% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(120%);
+  }
+}
+.dark .jg-gold-sheen {
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    oklch(0.8 0.11 85 / 0.2) 46%,
+    oklch(0.9 0.08 92 / 0.3) 50%,
+    oklch(0.8 0.11 85 / 0.12) 54%,
+    transparent 70%
+  );
+}
 .stagger > * {
   animation: rise 0.5s var(--ease-quiet) both;
 }

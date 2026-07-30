@@ -413,7 +413,7 @@ export default async function PanelPage({
             />
           </CardContent>
         </Card>
-        <div className="grid content-start gap-4">
+        <div className="stagger grid content-start gap-4">
           <KpiCard
             label="Sipariş Sayısı"
             value={formatNumber(d.orderCount)}
@@ -453,7 +453,7 @@ export default async function PanelPage({
               </CardContent>
             </Card>
             {hasGold && (
-              <div className="grid grid-cols-2 content-start gap-4 lg:col-span-2">
+              <div className="stagger grid grid-cols-2 content-start gap-4 lg:col-span-2">
                 <KpiCard
                   label="Altın Malzeme"
                   cents={d.goldCosts.materialCents}
