@@ -27,6 +27,7 @@ export interface SocialPost {
   hashtags: string | null;
   tags_note: string | null;
   permalink: string | null;
+  media_urls: string[];
   sort_order: number;
   created_at: string;
   updated_at: string;
@@ -46,7 +47,7 @@ export async function listSocialPosts(orgId: string): Promise<SocialPost[]> {
   const { data, error } = await supabase
     .from("social_posts")
     .select(
-      "id, org_id, platform, format, status, week_number, week_theme, series, title, scheduled_at, published_at, asset_note, overlay, caption, hashtags, tags_note, permalink, sort_order, created_at, updated_at",
+      "id, org_id, platform, format, status, week_number, week_theme, series, title, scheduled_at, published_at, asset_note, overlay, caption, hashtags, tags_note, permalink, media_urls, sort_order, created_at, updated_at",
     )
     .eq("org_id", orgId)
     .order("scheduled_at", { ascending: true, nullsFirst: false })

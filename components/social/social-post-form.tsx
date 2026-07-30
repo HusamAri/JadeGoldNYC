@@ -6,6 +6,8 @@ import { toast } from "sonner";
 import { Loader2, Save, Trash2 } from "lucide-react";
 
 import type { SocialPost } from "@/lib/db/queries/social";
+import { MediaGallery } from "@/components/social/media-preview";
+import { parseMediaUrls } from "@/lib/validations/social";
 import {
   createSocialPost,
   deleteSocialPost,
@@ -48,6 +50,7 @@ export function SocialPostForm({
     hashtags: post?.hashtags ?? "",
     tags_note: post?.tags_note ?? "",
     permalink: post?.permalink ?? "",
+    media_urls: (post?.media_urls ?? []).join("\n"),
   });
 
   function set<K extends keyof SocialPostInput>(key: K, value: SocialPostInput[K]) {
@@ -205,6 +208,18 @@ export function SocialPostForm({
           onChange={(e) => set("hashtags", e.target.value)}
           rows={2}
         />
+      </Field>
+      <Field label="Medya linkleri (her satıra bir URL)">
+        <Textarea
+          value={form.media_urls ?? ""}
+          onChange={(e) => set("media_urls", e.target.value)}
+          rows={3}
+          placeholder={
+            "https://drive.google.com/file/d/…\nhttps://…/gorsel.jpg · https://…/video.mp4"
+          }
+        />
+        {/* Canlı önizleme: kaydetmeden linkin doğru olduğunu gör. */}
+        <MediaGallery urls={parseMediaUrls(form.media_urls)} />
       </Field>
       <Field label="Permalink (yayın sonrası)">
         <Input

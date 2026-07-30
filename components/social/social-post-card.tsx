@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { Check, Copy } from "lucide-react";
 
 import type { SocialPost } from "@/lib/db/queries/social";
+import { MediaCover } from "@/components/social/media-preview";
 import { setSocialPostStatus } from "@/app/(dashboard)/sosyal/actions";
 import { formatDateTime } from "@/lib/format";
 import { Badge } from "@/components/ui/badge";
@@ -71,6 +72,8 @@ export function SocialPostCard({ post }: { post: SocialPost }) {
           {post.scheduled_at ? formatDateTime(post.scheduled_at) : "tarihsiz"}
         </time>
       </header>
+
+      {post.media_urls.length > 0 && <MediaCover urls={post.media_urls} />}
 
       {post.caption && (
         <p className="text-muted-foreground line-clamp-3 whitespace-pre-wrap text-xs leading-relaxed">
