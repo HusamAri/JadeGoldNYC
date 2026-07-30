@@ -57,11 +57,28 @@ export function SocialPostForm({
     setForm((f) => ({ ...f, [key]: value }));
   }
 
+  // GEÇMİŞ TARİH + OLUŞTURMA = yayınlanmış arşiv postu hızlı ekleme:
+  // form linke indirgenir, durum otomatik "Yayında" gönderilir (sunucu da
+  // aynı kuralı bağlayıcı uygular). İleri tarih = tam planlama formu.
+  // "Şimdi" render'da değil mount'ta bir kez okunur (react-hooks/purity);
+  // sunucu kuralı zaten gerçek gönderim anına göre karar verir.
+  const [mountedAt] = useState(() => Date.now());
+  const schedTime = form.scheduled_at?.trim()
+    ? new Date(form.scheduled_at).getTime()
+    : NaN;
+  const quickPast = !post && Number.isFinite(schedTime) && schedTime < mountedAt;
+  const quickHasLink =
+    Boolean(form.permalink?.trim()) ||
+    parseMediaUrls(form.media_urls).length > 0;
+
   function submit() {
     start(async () => {
+      const payload: SocialPostInput = quickPast
+        ? { ...form, status: "published" }
+        : form;
       const r = post
-        ? await updateSocialPost(post.id, form)
-        : await createSocialPost(form);
+        ? await updateSocialPost(post.id, payload)
+        : await createSocialPost(payload);
       if (r.error) {
         toast.error(r.error);
         return;
@@ -124,55 +141,23 @@ export function SocialPostForm({
             <option value="post">Post</option>
           </select>
         </Field>
-        <Field label="Durum">
-          <select
-            className="border-input bg-background h-10 w-full rounded-md border px-3 text-sm"
-            value={form.status}
-            onChange={(e) =>
-              set("status", e.target.value as SocialPostInput["status"])
-            }
-          >
-            <option value="idea">Fikir</option>
-            <option value="planned">Planlı</option>
-            <option value="ready">Hazır</option>
-            <option value="published">Yayında</option>
-            <option value="skipped">Atlandı</option>
-          </select>
-        </Field>
-      </div>
-
-      <Field label="Başlık">
-        <Input
-          value={form.title}
-          onChange={(e) => set("title", e.target.value)}
-          required
-          maxLength={200}
-        />
-      </Field>
-
-      <div className="grid gap-4 sm:grid-cols-3">
-        <Field label="Hafta no">
-          <Input
-            inputMode="numeric"
-            value={form.week_number ?? ""}
-            onChange={(e) => set("week_number", e.target.value)}
-            placeholder="1"
-          />
-        </Field>
-        <Field label="Hafta teması">
-          <Input
-            value={form.week_theme ?? ""}
-            onChange={(e) => set("week_theme", e.target.value)}
-            placeholder="The Omen"
-          />
-        </Field>
-        <Field label="Seri">
-          <Input
-            value={form.series ?? ""}
-            onChange={(e) => set("series", e.target.value)}
-            placeholder="The Long Time"
-          />
-        </Field>
+        {!quickPast && (
+          <Field label="Durum">
+            <select
+              className="border-input bg-background h-10 w-full rounded-md border px-3 text-sm"
+              value={form.status}
+              onChange={(e) =>
+                set("status", e.target.value as SocialPostInput["status"])
+              }
+            >
+              <option value="idea">Fikir</option>
+              <option value="planned">Planlı</option>
+              <option value="ready">Hazır</option>
+              <option value="published">Yayında</option>
+              <option value="skipped">Atlandı</option>
+            </select>
+          </Field>
+        )}
       </div>
 
       <Field label="Planlanan zaman">
@@ -183,32 +168,79 @@ export function SocialPostForm({
         />
       </Field>
 
-      <Field label="Asset notu">
+      {quickPast && (
+        <p className="border-input bg-muted/40 text-muted-foreground rounded-lg border border-dashed px-3 py-2 text-xs leading-relaxed">
+          Geçmiş tarih seçtin — bu post <strong>otomatik “Yayında”</strong>{" "}
+          olarak eklenir. Link yeter (post linki ya da medya linki); başlık boş
+          kalırsa platform + tarihten üretilir.
+        </p>
+      )}
+
+      <Field label={quickPast ? "Başlık (boş = otomatik)" : "Başlık"}>
         <Input
-          value={form.asset_note ?? ""}
-          onChange={(e) => set("asset_note", e.target.value)}
+          value={form.title ?? ""}
+          onChange={(e) => set("title", e.target.value)}
+          required={!quickPast}
+          maxLength={200}
+          placeholder={quickPast ? "Instagram · 20 Tem 2026" : undefined}
         />
       </Field>
-      <Field label="On-screen overlay">
-        <Input
-          value={form.overlay ?? ""}
-          onChange={(e) => set("overlay", e.target.value)}
-        />
-      </Field>
-      <Field label="Caption">
-        <Textarea
-          value={form.caption ?? ""}
-          onChange={(e) => set("caption", e.target.value)}
-          rows={5}
-        />
-      </Field>
-      <Field label="Hashtags (ilk yorum)">
-        <Textarea
-          value={form.hashtags ?? ""}
-          onChange={(e) => set("hashtags", e.target.value)}
-          rows={2}
-        />
-      </Field>
+
+      {!quickPast && (
+        <>
+          <div className="grid gap-4 sm:grid-cols-3">
+            <Field label="Hafta no">
+              <Input
+                inputMode="numeric"
+                value={form.week_number ?? ""}
+                onChange={(e) => set("week_number", e.target.value)}
+                placeholder="1"
+              />
+            </Field>
+            <Field label="Hafta teması">
+              <Input
+                value={form.week_theme ?? ""}
+                onChange={(e) => set("week_theme", e.target.value)}
+                placeholder="The Omen"
+              />
+            </Field>
+            <Field label="Seri">
+              <Input
+                value={form.series ?? ""}
+                onChange={(e) => set("series", e.target.value)}
+                placeholder="The Long Time"
+              />
+            </Field>
+          </div>
+
+          <Field label="Asset notu">
+            <Input
+              value={form.asset_note ?? ""}
+              onChange={(e) => set("asset_note", e.target.value)}
+            />
+          </Field>
+          <Field label="On-screen overlay">
+            <Input
+              value={form.overlay ?? ""}
+              onChange={(e) => set("overlay", e.target.value)}
+            />
+          </Field>
+          <Field label="Caption">
+            <Textarea
+              value={form.caption ?? ""}
+              onChange={(e) => set("caption", e.target.value)}
+              rows={5}
+            />
+          </Field>
+          <Field label="Hashtags (ilk yorum)">
+            <Textarea
+              value={form.hashtags ?? ""}
+              onChange={(e) => set("hashtags", e.target.value)}
+              rows={2}
+            />
+          </Field>
+        </>
+      )}
       <Field label="Medya linkleri (her satıra bir URL)">
         <Textarea
           value={form.media_urls ?? ""}
@@ -221,7 +253,11 @@ export function SocialPostForm({
         {/* Canlı önizleme: kaydetmeden linkin doğru olduğunu gör. */}
         <MediaGallery urls={parseMediaUrls(form.media_urls)} />
       </Field>
-      <Field label="Permalink (yayın sonrası)">
+      <Field
+        label={
+          quickPast ? "Post linki (ya da yukarıya medya linki)" : "Permalink (yayın sonrası)"
+        }
+      >
         <Input
           value={form.permalink ?? ""}
           onChange={(e) => set("permalink", e.target.value)}
@@ -230,13 +266,13 @@ export function SocialPostForm({
       </Field>
 
       <div className="flex flex-wrap gap-2 pt-2">
-        <Button type="submit" disabled={pending}>
+        <Button type="submit" disabled={pending || (quickPast && !quickHasLink)}>
           {pending ? (
             <Loader2 className="size-4 animate-spin" />
           ) : (
             <Save className="size-4" />
           )}
-          Kaydet
+          {quickPast ? "Yayında olarak ekle" : "Kaydet"}
         </Button>
         {post && (
           <Button
