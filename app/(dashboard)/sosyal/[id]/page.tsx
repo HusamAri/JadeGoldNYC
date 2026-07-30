@@ -9,6 +9,7 @@ import { PageHeader } from "@/components/page-header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { SocialPostForm } from "@/components/social/social-post-form";
+import { PublishKit } from "@/components/social/publish-kit";
 
 export const metadata = { title: "Sosyal içerik" };
 
@@ -43,6 +44,8 @@ export default async function SosyalDetayPage({
           </Button>
         }
       />
+      {/* Günü gelince platforma aktarım: hazır kopyala-yapıştır blokları. */}
+      <PublishKit post={post} />
       <Card>
         <CardContent className="pt-6">
           <SocialPostForm post={post} />

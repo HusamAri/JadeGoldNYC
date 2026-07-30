@@ -8,6 +8,7 @@ import { Check, Copy } from "lucide-react";
 
 import type { SocialPost } from "@/lib/db/queries/social";
 import { MediaCover } from "@/components/social/media-preview";
+import { PublishKit } from "@/components/social/publish-kit";
 import { setSocialPostStatus } from "@/app/(dashboard)/sosyal/actions";
 import { formatDateTime } from "@/lib/format";
 import { Badge } from "@/components/ui/badge";
@@ -79,6 +80,20 @@ export function SocialPostCard({ post }: { post: SocialPost }) {
         <p className="text-muted-foreground line-clamp-3 whitespace-pre-wrap text-xs leading-relaxed">
           {post.caption}
         </p>
+      )}
+
+      {/* Günü gelen içerik takvim kartından aktarılır — paket kart içinde
+          açılır, detaya gitmeye gerek kalmaz. */}
+      {(post.caption || post.hashtags || post.overlay) && (
+        <details className="group">
+          <summary className="text-muted-foreground hover:text-foreground cursor-pointer list-none font-mono text-[10px] tracking-[0.12em] uppercase transition-colors">
+            <span className="group-open:hidden">▸ Paylaşım paketi</span>
+            <span className="hidden group-open:inline">▾ Paylaşım paketi</span>
+          </summary>
+          <div className="pt-2">
+            <PublishKit post={post} />
+          </div>
+        </details>
       )}
 
       <div className="mt-auto flex flex-wrap gap-1.5 pt-1">
