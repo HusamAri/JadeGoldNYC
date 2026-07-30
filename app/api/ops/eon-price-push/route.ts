@@ -1,3 +1,5 @@
+import { createHash } from "node:crypto";
+
 import { NextResponse } from "next/server";
 
 import { logAudit } from "@/lib/audit";
@@ -22,11 +24,12 @@ export const maxDuration = 300;
 /**
  * GEÇİCİ gözetimli EON fiyat itişi — telefondan koşum için.
  *
- *   GET  ?token=CRON_SECRET  → otoriter dry-run diff'i (HTML tablo) + PUSH formu
- *   POST ?token=CRON_SECRET  → yalnız formdaki TEK KULLANIMLIK confirm ile yazar
+ *   GET  → otoriter dry-run diff'i (HTML tablo) + PUSH formu
+ *   POST → yalnız formdaki TEK KULLANIMLIK confirm ile yazar
  *
- * Auth iki katman: URL token'ı (CRON_SECRET) VE panelde açık admin/owner
- * oturumu (EON üyeliği). Sabit token koda gömülmez (repair rotası kuralı).
+ * Auth: panelde açık EON owner/admin OTURUMU (asıl kapı — panelin bütün yazma
+ * yollarıyla aynı güç). `?token=`/`?sha=`/Bearer opsiyonel ikinci mühürdür:
+ * sunulursa doğrulanır, sunulmazsa oturum yeter.
  * Başarılı push sonrası rota kendini kapatır (410) — durum
  * organizations.feature_flags.opsEonPricePush altında yaşar; rota emekliye
  * ayrılırken o anahtar da temizlenir.
@@ -103,26 +106,75 @@ function gonePage(state: OpsState): NextResponse {
   );
 }
 
-/** Katman 1: URL token'ı === CRON_SECRET (tanımsızsa fail-closed).
- *  `searchParams.get` form-decode uygular (`+` → boşluk) — secret `+` içeriyorsa
- *  eşleşme sessizce kırılır; bu yüzden ham query'den `+` korunarak da denenir.
- *  Teşhis için eşleşmeme nedeni (değersiz) fonksiyon loguna yazılır. */
-function tokenOk(request: Request): boolean {
-  const secret = process.env.CRON_SECRET;
-  if (!secret) {
-    console.warn("eon-price-push: CRON_SECRET tanımsız — rota fail-closed.");
-    return false;
-  }
+type TokenSonuc = { ok: true } | { ok: false; teshis: string };
+
+/**
+ * İKİNCİ MÜHÜR (opsiyonel) — `?token=` / `?sha=` / `Authorization: Bearer`.
+ *
+ * NEDEN ZORUNLU DEĞİL: bu rotanın gerçek kapısı EON owner/admin OTURUMUDUR
+ * (aşağıdaki requireAdmin) — panelin bütün yazma yolları (server action'lar)
+ * tam olarak bu kapıyla korunuyor, dolayısıyla oturum-tek auth uygulamanın
+ * geri kalanıyla AYNI güçtedir. `CRON_SECRET`'ı ayrıca şart koşmak güvenliği
+ * artırmıyordu ama operatörü kilitliyordu: secret bir tarayıcı adres çubuğuna
+ * yapıştırılamayacak karakterler içerebiliyor (`&` parametreyi böler, `#`
+ * sunucuya hiç gitmez, `+` boşluğa döner) ve bu sessizce 401 üretiyordu.
+ *
+ * Token GÖNDERİLİRSE doğrulanır (yanlışsa reddedilir — yanlış sırla geçiş yok);
+ * gönderilmezse oturum kapısı tek başına yeterlidir.
+ */
+function tokenOk(request: Request): TokenSonuc {
   const url = new URL(request.url);
   const decoded = url.searchParams.get("token");
-  if (decoded === secret) return true;
+  const sha = url.searchParams.get("sha");
+  const auth = request.headers.get("authorization");
+  const sunuldu = decoded != null || sha != null || auth != null;
+
+  // Hiç sunulmadı → oturum kapısına devret.
+  if (!sunuldu) return { ok: true };
+
+  const secret = process.env.CRON_SECRET;
+  if (!secret) {
+    // Sır sunucuda yok ama istemci bir şey sundu: sessizce geçirmek yerine
+    // durumu söyle (yine oturum kapısı korur, ama operatör şaşırmasın).
+    return {
+      ok: false,
+      teshis:
+        "Bir token sundunuz ama sunucuda CRON_SECRET tanımlı değil. " +
+        "Token'ı URL'den TAMAMEN çıkarın — oturum kapısı yeterlidir.",
+    };
+  }
+
+  if (decoded === secret) return { ok: true };
   const rawMatch = /[?&]token=([^&]*)/.exec(url.search);
-  const raw = rawMatch ? decodeURIComponent(rawMatch[1]) : null;
-  if (raw === secret) return true;
+  if (rawMatch) {
+    try {
+      if (decodeURIComponent(rawMatch[1]) === secret) return { ok: true };
+    } catch {
+      /* bozuk yüzde-kodlaması: normal uyuşmazlık */
+    }
+  }
+  if (auth === `Bearer ${secret}`) return { ok: true };
+  if (sha && sha.length === 64) {
+    if (sha.toLowerCase() === createHash("sha256").update(secret).digest("hex"))
+      return { ok: true };
+  }
+
+  const ozel = ["&", "#", "+", "%", "?", " ", "/"].filter((c) => secret.includes(c));
   console.warn(
-    `eon-price-push: token uyuşmadı (token ${decoded == null ? "yok" : "var"}, uzunluk ${decoded?.length ?? 0}/${secret.length}).`,
+    `eon-price-push: sunulan token uyuşmadı (gelen ${decoded?.length ?? 0}/${secret.length}).`,
   );
-  return false;
+  return {
+    ok: false,
+    teshis:
+      `Sunduğunuz token uyuşmadı (gelen ${decoded?.length ?? 0} karakter, ` +
+      `sunucudaki ${secret.length}).` +
+      (ozel.length
+        ? ` Değerde URL'de özel anlam taşıyan karakter var (${ozel.join(" ")}) — ` +
+          `adres çubuğuna yapıştırmak bu değerde çalışmaz.`
+        : "") +
+      ` EN KOLAY ÇÖZÜM: token parametresini URL'den TAMAMEN ÇIKARIN. ` +
+      `Oturum kapısı (EON owner/admin) tek başına yeterlidir.`,
+  };
 }
 
 /** Katman 2: açık panel oturumu + EON'da owner/admin üyelik. */
@@ -248,8 +300,16 @@ function diffHtml(diff: PushDiff): string {
 }
 
 export async function GET(request: Request) {
-  if (!tokenOk(request)) {
-    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  const tok = tokenOk(request);
+  if (!tok.ok) {
+    return page(
+      "Yetkisiz",
+      `<h1>Yetkisiz (401)</h1>
+       <div class="warn">${esc(tok.teshis)}</div>
+       <p class="muted">Bu sayfa gizli değeri GÖSTERMEZ; yalnız uzunluk ve
+       karakter sınıfı bildirir ki doğru adresi kurabilesin.</p>`,
+      401,
+    );
   }
   if (GRID_15_SHA256 !== EXPECTED_GRID_SHA256) {
     return page(
@@ -299,8 +359,16 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  if (!tokenOk(request)) {
-    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  const tok = tokenOk(request);
+  if (!tok.ok) {
+    return page(
+      "Yetkisiz",
+      `<h1>Yetkisiz (401)</h1>
+       <div class="warn">${esc(tok.teshis)}</div>
+       <p class="muted">Bu sayfa gizli değeri GÖSTERMEZ; yalnız uzunluk ve
+       karakter sınıfı bildirir ki doğru adresi kurabilesin.</p>`,
+      401,
+    );
   }
   if (GRID_15_SHA256 !== EXPECTED_GRID_SHA256) {
     return page(
