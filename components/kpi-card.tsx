@@ -2,7 +2,7 @@ import type { ComponentType, SVGProps } from "react";
 
 import { cn } from "@/lib/utils";
 import { formatMoney } from "@/lib/money";
-import { Money } from "@/components/money";
+import { CountUpMoney, CountUpText } from "@/components/kpi-value";
 
 /** Hem Lucide hem markaya özel Lux ikonlarını kabul eden ikon tipi. */
 type IconType = ComponentType<SVGProps<SVGSVGElement>>;
@@ -173,6 +173,11 @@ export function KpiCard({
         aria-hidden
         className="glass-liquid absolute inset-0 z-[1] rounded-[18px] border border-[color:var(--glass-border)] [backdrop-filter:var(--glass-filter)] [background-color:var(--glass)] [box-shadow:var(--lift),var(--glass-highlight)] dark:rounded-[26px] dark:border-[color:oklch(1_0_0/0.05)] dark:[backdrop-filter:none] dark:[background-color:var(--lume-panel)] dark:[box-shadow:0_20px_50px_oklch(0_0_0/0.4),inset_0_1px_0_oklch(1_0_0/0.06)]"
       />
+      {/* Kahraman KPI: açılışta TEK SEFERLİK altın ışık süpürmesi — panelin
+          "değerli metal" imzası. Hover sheen'inden bağımsız gerçek bir span
+          (::after hover-sheen'e ayrılmış durumda); reduced-motion'da hiç
+          çizilmez (opacity 0'da başlar, animasyon koşmayınca görünmez). */}
+      {heroDepth && <span aria-hidden className="jg-gold-sheen" />}
       <div
         className={cn(
           "relative z-[2] flex h-full items-start justify-between gap-3",
@@ -222,10 +227,13 @@ export function KpiCard({
                 "text-[oklch(0.58_0.16_344)] dark:text-[oklch(0.74_0.12_344)]",
             )}
           >
+            {/* Sayaç animasyonu: rakam yüklenişte 0'dan değerine sayar
+                (client alt-bileşen; SSR nihai değeri basar, reduced-motion'da
+                animasyon hiç koşmaz). */}
             {isMoney ? (
-              <Money cents={cents} currency={currency} />
+              <CountUpMoney cents={cents} currency={currency} />
             ) : (
-              value
+              <CountUpText value={value ?? ""} />
             )}
           </p>
           {comparisons && comparisons.length > 0 && (
