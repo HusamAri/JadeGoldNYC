@@ -4,7 +4,8 @@ export const socialPostSchema = z.object({
   platform: z.enum(["instagram", "tiktok", "pinterest", "other"]),
   format: z.enum(["reel", "photo", "carousel", "story", "post"]),
   status: z.enum(["idea", "planned", "ready", "published", "skipped"]),
-  title: z.string().trim().min(1, "Başlık gerekli").max(200),
+  /** Boş bırakılabilir — geçmiş-tarihli hızlı eklemede sunucu otomatik türetir. */
+  title: z.string().trim().max(200).optional(),
   week_number: z.string().optional(),
   week_theme: z.string().optional(),
   series: z.string().optional(),
