@@ -1,8 +1,8 @@
 /**
  * EON 1.5mm fiyat DÜZELTMESİNİN paylaşılan çekirdeği — geçici
  * /api/ops/eon-price-push rotası kullanır; push tamamlanınca rota ile birlikte
- * emekliye ayrılır. Fiyat HESAPLAMAZ (externalPricing): gömülü v3 grid'inden
- * okur, canlı varyantlarla diff'ler.
+ * emekliye ayrılır. Fiyat HESAPLAMAZ (externalPricing): gömülü EON grid'inden
+ * (`grid-1_5mm.ts`, aktif sürüm v4) okur, canlı varyantlarla diff'ler.
  *
  * Yarım-beden kuralı (onaylı): komşu tam bedenlerin ortalaması, $5'e YUKARI
  * yuvarlı — gram tablosundaki yarım-beden orta-nokta kuralının fiyat karşılığı.
