@@ -124,6 +124,7 @@ export type AuditAction =
   | "etsy.image_upload"
   | "etsy.listing_create"
   | "etsy.reprice"
+  | "etsy.seo_push"
   | "listing.archive"
   | "listing.delete_etsy"
   | "report.export"

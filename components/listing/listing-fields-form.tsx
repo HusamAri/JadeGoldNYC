@@ -3,9 +3,10 @@
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Loader2, Save } from "lucide-react";
+import { Loader2, Save, UploadCloud } from "lucide-react";
 
 import {
+  pushListingSeoToEtsy,
   updateListingFields,
   type ListingFieldsInput,
 } from "@/app/(dashboard)/tasarimlar/listing/[id]/actions";
@@ -96,6 +97,7 @@ export function ListingFieldsForm({
   const mirrorPrice = hasVariations && variantPriceRange != null;
   const router = useRouter();
   const [saving, setSaving] = useState(false);
+  const [pushingSeo, setPushingSeo] = useState(false);
   const [fields, setFields] = useState<ListingFieldsInput>(() => ({
     title: initial.title,
     description: initial.description ?? "",
@@ -182,6 +184,29 @@ export function ListingFieldsForm({
         router.refresh();
       })
       .finally(() => setSaving(false));
+  }
+
+  /** Panelde duran başlık+tag'i canlı Etsy listing'ine yazar. Kaydedilmemiş
+   *  form değişikliği varsa önce kaydettirir — sunucu paneldeki hâli gönderir. */
+  function pushSeo() {
+    if (
+      fields.title.trim() !== initial.title.trim() ||
+      fields.tags.trim() !== listToCsv(initial.tags)
+    ) {
+      toast.error("Önce 'Künyeyi kaydet' — Etsy'ye paneldeki kayıtlı hâl gider.");
+      return;
+    }
+    setPushingSeo(true);
+    pushListingSeoToEtsy(productId)
+      .then((res) => {
+        if (res.error) {
+          toast.error(res.error);
+          return;
+        }
+        toast.success("Başlık + tag'ler Etsy'ye gönderildi.");
+        router.refresh();
+      })
+      .finally(() => setPushingSeo(false));
   }
 
   return (
@@ -365,6 +390,21 @@ export function ListingFieldsForm({
             {saving ? <Loader2 className="size-4 animate-spin" /> : <Save />}
             Künyeyi kaydet
           </Button>
+          {alreadyOnEtsy && (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={pushSeo}
+              disabled={pushingSeo || saving}
+            >
+              {pushingSeo ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                <UploadCloud />
+              )}
+              Başlık+tag&apos;i Etsy&apos;ye gönder
+            </Button>
+          )}
           {!alreadyOnEtsy && <SendToEtsyButton productId={productId} />}
         </div>
       </div>
