@@ -139,11 +139,19 @@ export async function syncListingVariants(
   const admin = createAdminClient();
   const client = await EtsyClient.forOrg(orgId);
 
+  // SATILAMAZ LİSTİNG SKU SAHİPLİĞİ ÇALAMAZ.
+  // Varyant satırı (org_id, sku) ile TEKİLDİR: aynı SKU iki listing'de varsa
+  // (çift listing) sahiplik her senkronda el değiştirir — panel "0 varyant"
+  // gösterir, fiyat itişi yanlış hedefe gider (canlı vaka: 14K Rose Dome).
+  // Pasif/süresi dolmuş listing satışta olmadığı için envanteri de karar
+  // taşımaz; taramanın dışında bırakılır ve SKU aktif/taslak listing'de kalır.
+  // (sold_out satılabilirliğini koruyor sayılır — kapsamda bırakıldı.)
   const { data: listingData } = await admin
     .from("products")
     .select("id, etsy_listing_id, title")
     .eq("org_id", orgId)
     .not("etsy_listing_id", "is", null)
+    .not("status", "in", "(inactive,expired)")
     .order("etsy_listing_id", { ascending: true })
     .limit(opts.limit ?? 1000);
 
