@@ -9,6 +9,7 @@ import { getEtsyWriteAccess } from "@/lib/db/queries/etsy";
 import { pricingWriteBlocked } from "@/lib/feature-flags";
 import { EtsyClient, EtsyNotConnectedError } from "@/lib/etsy/client";
 import { pushListingPrices } from "@/lib/etsy/inventory";
+import { logAudit } from "@/lib/audit";
 import {
   variantPropsForMatch,
   type RawVariantProperties,
@@ -103,6 +104,90 @@ export async function updateListingFields(
 
   revalidatePath(`/tasarimlar/listing/${id}`);
   revalidatePath("/tasarimlar");
+  return { ok: true };
+}
+
+/**
+ * BAŞLIK + TAG'İ ETSY'YE GÖNDER — canlı listing SEO itişi.
+ *
+ * Akış: paneldeki (güncellenmiş) title/tags, Etsy updateListing PATCH'iyle
+ * canlıya yazılır. Panel aynasının kaynağı Etsy olduğu için ("nihai kaynak
+ * Etsy" senkron kuralı) bu itiş yapılmadan panelde kalan düzenleme bir sonraki
+ * senkronda EZİLİR — düzenledin mi, gönder.
+ *
+ * Doğrulamalar Etsy'nin sert kuralları: başlık ≤140, tag ≤13 adet × ≤20
+ * karakter. updateListing form-encoded bekler (requestForm; envanter PUT'u
+ * istisnaydı). Yalnız owner/admin + Etsy yazma erişimi açık.
+ */
+export async function pushListingSeoToEtsy(
+  productId: string,
+): Promise<ListingActionResult> {
+  const m = await requireMembership();
+  if (!isManager(m.role)) return { error: MANAGER_ONLY_ERROR };
+
+  const { writeEnabled } = await getEtsyWriteAccess(m.org_id);
+  if (!writeEnabled) return { error: "Etsy yazma erişimi kapalı." };
+
+  const admin = createAdminClient();
+  const { data, error } = await admin
+    .from("products")
+    .select("etsy_listing_id, title, tags")
+    .eq("id", productId)
+    .eq("org_id", m.org_id)
+    .maybeSingle();
+  if (error) return { error: error.message };
+  const prod = data as {
+    etsy_listing_id: number | null;
+    title: string;
+    tags: string[] | null;
+  } | null;
+  if (!prod) return { error: "Listing bulunamadı." };
+  if (prod.etsy_listing_id == null) {
+    return { error: "Bu listing Etsy'e bağlı değil — önce 'Etsy'e gönder' ile taslak açın." };
+  }
+
+  const title = prod.title.trim();
+  if (!title) return { error: "Başlık boş olamaz." };
+  if (title.length > 140) {
+    return { error: `Başlık ${title.length} karakter — Etsy sınırı 140.` };
+  }
+  const tags = (prod.tags ?? []).map((t) => t.trim()).filter(Boolean);
+  if (tags.length > 13) return { error: `${tags.length} tag var — Etsy sınırı 13.` };
+  const uzun = tags.find((t) => t.length > 20);
+  if (uzun) return { error: `Tag ≤20 karakter olmalı: "${uzun}" (${uzun.length}).` };
+
+  try {
+    const client = await EtsyClient.forOrg(m.org_id);
+    const shopId = await client.requireShopId();
+    await client.requestForm(
+      "PATCH",
+      `/application/shops/${shopId}/listings/${prod.etsy_listing_id}`,
+      { title, tags: tags.join(",") },
+    );
+    await logAudit(admin, {
+      orgId: m.org_id,
+      action: "etsy.seo_push",
+      entityType: "product",
+      entityId: productId,
+      summary: `Listing ${prod.etsy_listing_id}: başlık (${title.length} kr) + ${tags.length} tag Etsy'ye gönderildi.`,
+      diff: { etsy_listing_id: prod.etsy_listing_id, title, tags },
+      source: "app",
+    });
+  } catch (e) {
+    if (e instanceof EtsyNotConnectedError) {
+      return { error: "Etsy bağlantısı yok — Ayarlar'dan bağlanın." };
+    }
+    const msg = e instanceof Error ? e.message : String(e);
+    if (msg.includes("403")) {
+      return {
+        error:
+          "Etsy yazma izni reddedildi (403) — listings_w kapsamı için yeniden bağlanmak gerekebilir.",
+      };
+    }
+    return { error: msg };
+  }
+
+  revalidatePath(`/tasarimlar/listing/${productId}`);
   return { ok: true };
 }
 
