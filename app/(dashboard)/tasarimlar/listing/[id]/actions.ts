@@ -222,10 +222,14 @@ export async function pushAllListingSeoToEtsy(): Promise<BulkSeoPushResult> {
   const admin = createAdminClient();
   const { data, error } = await admin
     .from("products")
-    .select("id, etsy_listing_id, title, tags")
+    .select("id, etsy_listing_id, title, tags, status")
     .eq("org_id", m.org_id)
     .not("etsy_listing_id", "is", null)
     .is("etsy_deleted_at", null)
+    // Etsy yalnız active/expired listing'in düzenlenmesine izin verir
+    // (canlı 403: "must be active or expired but is sold_out") — düzenlenemez
+    // durumları hiç deneme, hata gürültüsü üretme.
+    .in("status", ["active", "expired"])
     .order("title");
   if (error) return { error: error.message };
   const items = (data ?? []) as {
