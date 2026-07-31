@@ -8,6 +8,7 @@ import { parseMoneyToCents } from "@/lib/money";
 import { getEtsyWriteAccess } from "@/lib/db/queries/etsy";
 import { pricingWriteBlocked } from "@/lib/feature-flags";
 import { EtsyClient, EtsyNotConnectedError } from "@/lib/etsy/client";
+import { etsyPaths } from "@/lib/etsy/endpoints";
 import { pushListingPrices } from "@/lib/etsy/inventory";
 import { logAudit } from "@/lib/audit";
 import {
@@ -159,9 +160,12 @@ export async function pushListingSeoToEtsy(
   try {
     const client = await EtsyClient.forOrg(m.org_id);
     const shopId = await client.requireShopId();
+    // NOT: ETSY_API_BASE zaten ".../v3/application" — path'e ikinci bir
+    // "/application" yazmak URL'i çiftleyip 404 "Resource not found" üretir
+    // (canlıda yaşandı). Daima etsyPaths helper'ı kullanılır.
     await client.requestForm(
       "PATCH",
-      `/application/shops/${shopId}/listings/${prod.etsy_listing_id}`,
+      etsyPaths.shopListing(shopId, prod.etsy_listing_id),
       { title, tags: tags.join(",") },
     );
     await logAudit(admin, {
