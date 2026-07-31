@@ -37,6 +37,7 @@ import {
 } from "@/lib/db/queries/etsy-insights";
 import { ListingGapsCard } from "@/components/listing/listing-gaps-card";
 import { ListingFieldsForm } from "@/components/listing/listing-fields-form";
+import { ListingStateButton } from "@/components/listing/listing-state-button";
 import { EtsyCopyCard, type EtsyCopyField } from "@/components/listing/etsy-copy-card";
 import { SeoHelperConsole } from "@/components/seo/seo-helper-console";
 import { inferSeoInput } from "@/lib/seo/keyword-engine";
@@ -225,6 +226,12 @@ export default async function ListingDetayPage({
                   Etsy&apos;de aç
                 </a>
               </Button>
+            )}
+            {product.etsy_listing_id != null && (
+              <ListingStateButton
+                productId={product.id}
+                status={product.status}
+              />
             )}
           </>
         }

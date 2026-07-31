@@ -195,6 +195,97 @@ export async function pushListingSeoToEtsy(
   return { ok: true };
 }
 
+/**
+ * LISTING DURUMU (Etsy) — pasife al / yeniden yayına al.
+ *
+ * Neden panelde: aynı ürünün iki listing'i canlı kalınca (çift listing) hem
+ * Etsy'de kendi kendine rekabet doğar hem AYNI SKU'lar iki listing'e dağıldığı
+ * için panelin varyant sahipliği senkronla el değiştirir (fiyat itişi yanlış
+ * hedefe gidebilir). Pasife alma bunu keser ve GERİ ALINABİLİR — silme değil.
+ *
+ * Etsy `updateListing` state alanı yalnız 'active'/'inactive' kabul eder;
+ * sold_out/expired gibi durumlar düzenlenemez (canlı 403 kanıtı).
+ */
+export async function setListingStateOnEtsy(
+  productId: string,
+  state: "active" | "inactive",
+): Promise<ListingActionResult> {
+  const m = await requireMembership();
+  if (!isManager(m.role)) return { error: MANAGER_ONLY_ERROR };
+
+  const { writeEnabled } = await getEtsyWriteAccess(m.org_id);
+  if (!writeEnabled) return { error: "Etsy yazma erişimi kapalı." };
+
+  const admin = createAdminClient();
+  const { data, error } = await admin
+    .from("products")
+    .select("etsy_listing_id, title, status")
+    .eq("id", productId)
+    .eq("org_id", m.org_id)
+    .maybeSingle();
+  if (error) return { error: error.message };
+  const prod = data as {
+    etsy_listing_id: number | null;
+    title: string;
+    status: string | null;
+  } | null;
+  if (!prod) return { error: "Listing bulunamadı." };
+  if (prod.etsy_listing_id == null) {
+    return { error: "Bu listing Etsy'e bağlı değil." };
+  }
+  const mevcut = (prod.status ?? "").toLowerCase();
+  if (mevcut === state) {
+    return { error: `Listing zaten ${state === "active" ? "aktif" : "pasif"}.` };
+  }
+  if (mevcut !== "active" && mevcut !== "inactive" && mevcut !== "expired") {
+    return {
+      error: `Etsy '${mevcut}' durumundaki listing'i düzenlemeye izin vermiyor (yalnız aktif/pasif/süresi dolmuş).`,
+    };
+  }
+
+  try {
+    const client = await EtsyClient.forOrg(m.org_id);
+    const shopId = await client.requireShopId();
+    await client.requestForm(
+      "PATCH",
+      etsyPaths.shopListing(shopId, prod.etsy_listing_id),
+      { state },
+    );
+    // Panel aynasını hemen güncelle — bir sonraki senkronu bekleme (kullanıcı
+    // sonucu anında görsün; senkron zaten Etsy'yi nihai kaynak sayıp teyit eder).
+    await admin
+      .from("products")
+      .update({ status: state, updated_at: new Date().toISOString() })
+      .eq("id", productId)
+      .eq("org_id", m.org_id);
+    await logAudit(admin, {
+      orgId: m.org_id,
+      action: "etsy.listing_state",
+      entityType: "product",
+      entityId: productId,
+      summary: `Listing ${prod.etsy_listing_id} Etsy'de ${state === "inactive" ? "PASİFE alındı" : "yeniden YAYINA alındı"}: ${prod.title.slice(0, 60)}`,
+      diff: { etsy_listing_id: prod.etsy_listing_id, from: mevcut, to: state },
+      source: "app",
+    });
+  } catch (e) {
+    if (e instanceof EtsyNotConnectedError) {
+      return { error: "Etsy bağlantısı yok — Ayarlar'dan bağlanın." };
+    }
+    const msg = e instanceof Error ? e.message : String(e);
+    if (msg.includes("403")) {
+      return {
+        error:
+          "Etsy yazma izni reddedildi (403) — listings_w kapsamı için yeniden bağlanmak gerekebilir.",
+      };
+    }
+    return { error: msg };
+  }
+
+  revalidatePath(`/tasarimlar/listing/${productId}`);
+  revalidatePath("/tasarimlar");
+  return { ok: true };
+}
+
 export interface BulkSeoPushResult {
   ok?: boolean;
   error?: string;
