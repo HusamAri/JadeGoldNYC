@@ -195,6 +195,111 @@ export async function pushListingSeoToEtsy(
   return { ok: true };
 }
 
+export interface BulkSeoPushResult {
+  ok?: boolean;
+  error?: string;
+  /** Başarıyla gönderilen listing sayısı. */
+  sent?: number;
+  /** Gönderilemeyen listing'ler (id + neden) — kısmi başarı gizlenmez. */
+  failed?: { listingId: number; error: string }[];
+}
+
+/**
+ * TOPLU SEO GÖNDERİMİ — org'un TÜM canlı listing'lerinin paneldeki başlık +
+ * tag'ini tek tıkla Etsy'ye yazar. Tek-listing gönderiminin (yukarıda) toplu
+ * hâli; idempotent — değişmemiş listing'e aynı değerleri yazmak zararsızdır.
+ * Kural dışı kalan listing (başlık >140 vb.) TÜMÜ durdurmaz: atlanır ve
+ * sonuçta nedeniyle raporlanır. Etsy oran sınırına saygı: istekler sıralı +
+ * kısa aralıklı (requestForm zaten 429'da bir kez bekleyip yineler).
+ */
+export async function pushAllListingSeoToEtsy(): Promise<BulkSeoPushResult> {
+  const m = await requireMembership();
+  if (!isManager(m.role)) return { error: MANAGER_ONLY_ERROR };
+
+  const { writeEnabled } = await getEtsyWriteAccess(m.org_id);
+  if (!writeEnabled) return { error: "Etsy yazma erişimi kapalı." };
+
+  const admin = createAdminClient();
+  const { data, error } = await admin
+    .from("products")
+    .select("id, etsy_listing_id, title, tags")
+    .eq("org_id", m.org_id)
+    .not("etsy_listing_id", "is", null)
+    .is("etsy_deleted_at", null)
+    .order("title");
+  if (error) return { error: error.message };
+  const items = (data ?? []) as {
+    id: string;
+    etsy_listing_id: number;
+    title: string;
+    tags: string[] | null;
+  }[];
+  if (items.length === 0) return { error: "Canlı listing yok." };
+
+  let client: EtsyClient;
+  try {
+    client = await EtsyClient.forOrg(m.org_id);
+  } catch (e) {
+    return {
+      error:
+        e instanceof EtsyNotConnectedError
+          ? "Etsy bağlantısı yok — Ayarlar'dan bağlanın."
+          : e instanceof Error
+            ? e.message
+            : String(e),
+    };
+  }
+  const shopId = await client.requireShopId();
+
+  let sent = 0;
+  const failed: { listingId: number; error: string }[] = [];
+  for (const it of items) {
+    const title = it.title.trim();
+    const tags = (it.tags ?? []).map((t) => t.trim()).filter(Boolean);
+    const kural =
+      !title
+        ? "başlık boş"
+        : title.length > 140
+          ? `başlık ${title.length}/140`
+          : tags.length > 13
+            ? `${tags.length}/13 tag`
+            : tags.find((t) => t.length > 20)
+              ? `tag >20 karakter`
+              : null;
+    if (kural) {
+      failed.push({ listingId: it.etsy_listing_id, error: kural });
+      continue;
+    }
+    try {
+      await client.requestForm(
+        "PATCH",
+        etsyPaths.shopListing(shopId, it.etsy_listing_id),
+        { title, tags: tags.join(",") },
+      );
+      sent++;
+    } catch (e) {
+      failed.push({
+        listingId: it.etsy_listing_id,
+        error: e instanceof Error ? e.message.slice(0, 160) : String(e),
+      });
+    }
+    // Oran sınırı nezaketi — Etsy saniyede ~10 isteğe izin verir, aceleye gerek yok.
+    await new Promise((r) => setTimeout(r, 150));
+  }
+
+  await logAudit(admin, {
+    orgId: m.org_id,
+    action: "etsy.seo_push",
+    entityType: "shop",
+    summary: `Toplu SEO gönderimi: ${sent}/${items.length} listing'in başlık+tag'i Etsy'ye yazıldı${failed.length ? `, ${failed.length} hata` : ""}.`,
+    diff: { sent, failed },
+    source: "app",
+  });
+
+  revalidatePath("/tasarimlar");
+  return { ok: failed.length === 0, sent, failed };
+}
+
 /** Varyant satırı girdisi — inline editörden metin olarak gelir. */
 export interface VariantValuesInput {
   /** Para metni; boş = fiyat bilinmiyor (null). */

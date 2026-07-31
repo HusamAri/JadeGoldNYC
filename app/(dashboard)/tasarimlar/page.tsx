@@ -35,6 +35,7 @@ import { formatNumber } from "@/lib/format";
 import type { ListingIndexRow } from "@/lib/db/queries/listings";
 import { OrgMark } from "@/components/brand/org-mark";
 import { PageHeader } from "@/components/page-header";
+import { PushAllSeoButton } from "@/components/listing/push-all-seo-button";
 import { GoldStream } from "@/components/brand/gold-stream";
 import { CornerMarks } from "@/components/brand/corner-marks";
 import { EmptyState } from "@/components/empty-state";
@@ -54,6 +55,10 @@ import { SearchInput } from "@/components/data-table/search-input";
 import { FilterSelect } from "@/components/data-table/filter-select";
 
 export const metadata = { title: "Listeler" };
+// Toplu SEO gönderimi (PushAllSeoButton → server action) bu sayfanın
+// fonksiyonunda koşar: ~30 listing × PATCH + nezaket beklemesi ≈ 20-30 sn —
+// varsayılan süre sınırına takılmasın.
+export const maxDuration = 300;
 
 /** Etsy listing durumları (sync `l.state`den gelir) + Türkçe etiket/rozet. */
 const LISTING_STATUSES: {
@@ -174,6 +179,7 @@ export default async function ListelerPage({
         description={`${platform.label}'deki listing'lerin aynası — detaylar listing sayfasında; taslaklar ve arşiv Listing Önerileri'nde.`}
         action={
           <>
+            <PushAllSeoButton />
             <Button asChild variant="outline">
               <Link href="/tasarimlar/varyant-hesapla">
                 <Calculator />
