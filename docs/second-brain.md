@@ -4,6 +4,11 @@ Bu dosya CLAUDE.md üzerinden her oturumda yüklenir. **Protokol:** her uçtan u
 işin sonunda, o işte işe yaramış iyi uygulamayı/dersi buraya TEK satır-blok
 olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni sil.
 
+Protokolün repo-bağımsız (global) sürümü: `second-brain-lesson` skill'i
+(`.claude/skills/second-brain-lesson/SKILL.md`) — ne zaman yazılır, nereye
+yazılır, biçim, bakım ve anti-örnekler orada tanımlı. Bu dosya o skill'in bu
+repodaki hedefidir.
+
 ## Süreç dersleri
 
 - **Dış API migrasyonunu hata mesajından adım adım çöz, tek listing'de kanıtla
