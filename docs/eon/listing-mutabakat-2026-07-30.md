@@ -114,3 +114,33 @@ rose→yellow renk düzeltmesi kalıcı.
 **Başlık kuralı (kullanıcı, 2026-08-01):** Etsy başlık değişiminde sıralama
 düşme uyarısı verdiği için **başlıklara dokunulmuyor**; SEO çalışması yalnız
 tag üzerinden yürüyor.
+
+## Yeni ürünler ve fiyat bağı (2026-08-01)
+
+Panele iki yeni **10K · 2mm · yüksek işçilik** taslağı eklendi (Listing
+Önerileri): `GLD-R-1006` Basketweave (çapraz dokuma, elmas tıraş) ve
+`GLD-R-1007` Diagonal Ribbed (çapraz yiv, pahlı parlak kenar). Her biri
+**125 varyant** (6-10mm × US 4-16, yarım bedenler dahil), gramlar
+`docs/eon/eon-weight-tables.json` **10K / 2.0mm** tablosundan.
+
+**FİYAT BAĞI (kullanıcı kararı):** bu iki ürün **hammered milgrain
+(4543442596) ile AYNI satış fiyatından** satılır. 250/250 varyant genişlik+beden
+eşleşmesiyle birebir aynı: **$920-$2.855**.
+
+> ⚠️ Üçü tek ladder'a bağlı. Hammered'ın fiyatı değişirse `GLD-R-1006` ve
+> `GLD-R-1007` de AYNI turda güncellenmeli, yoksa bağ sessizce kopar.
+> Hammered'ın canlı fiyatı hâlâ `WHG-R-1402` (14K beyaz flat) grid'inden
+> geliyor (yukarıdaki Bulgu 2 kimlik karışıklığı) — o düzeltilirse üçü birden
+> düzeltilir.
+
+Maliyet referansı (v4 grid formülü 858 satırda doğrulandı: saflık `K/24`,
+`landed = gram × saflık × spot/g × 1,07 + işçilik + $8 + $22`,
+`engine = landed × çarpan` [≤7mm 1,55 · ≥8mm 2,00],
+`liste = ceil(engine×4/3 / 500)×500`, `satış = liste × 0,75` → 858/858 birebir):
+bu fiyatlarda landed üstü marj **%53-77**, efektif satış **$150-212/g**.
+Rakip bandı ("10k hammered milgrain", 2026-07-27, 10 sonuç):
+$71 / $98 / $126 per gram · melt $55/g — yani konum bandın üstünde.
+
+SKU beden biçimi katalog konvansiyonuna hizalandı (`-4.5`, noktalı). Eksik:
+her iki taslakta **fotoğraf yok**; panel-doğumlu taslakta görsel alanı
+bulunmadığı için fotoğraflar Etsy'ye gönderimden sonra Etsy'de eklenir.
