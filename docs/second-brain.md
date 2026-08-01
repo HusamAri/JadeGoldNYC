@@ -33,6 +33,18 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
   birebir, yıldız eski koşudandı → kanonik sürümle eşitlendi).
 
 
+- **"Aynı ürün" teşhisini ilan etmeden kullanıcıya doğrulat; geri-dönüşü zor
+  aksiyon önerisi kanıt ister (2026-08):** Panelde "0 varyant" görünen iki
+  listing'e bakıp "çift listing → eskisini kapat" teşhisi kurdum; kullanıcı
+  düzeltti: kopya, Etsy'de "copy listing" ile üretilmiş FARKLI renk (sarı vs
+  rose) — kök neden SKU tekilliğiydi (`product_variants (org_id, sku)`), kopya
+  kaynağın SKU'larını miras alınca sahiplik her senkronda el değiştiriyor ve
+  kopya listelerden gizleniyor. Yan hasar: ping-pong sırasında sahibi görünen
+  kopyaya toplu SEO push'unda YANLIŞ RENK başlığı yazıldı. Kural: (1) iki kaydın
+  aynı varlık olduğu iddiası DB deseninden DEĞİL kullanıcıdan/ürün kanıtından
+  doğrulanır; (2) kapatma/silme önerisi ancak bu doğrulamadan sonra verilir;
+  (3) çakışmanın kalıcı çözümü kaydı silmek değil kimliği ayırmak (SKU önek
+  değiştirme aracı) — dış sistemde de yaz, panel aynası kendiliğinden düzelir.
 - **Paralel iş kolu kontrolü (2026-07):** Bir özellik kurmadan ÖNCE `git fetch` +
   `origin/main`'i incele — aynı özellik paralel oturumda çoktan (hatta daha iyi)
   eklenmiş olabilir. Vaka: $/gram pazar motoru iki kez yazıldı; main'deki üstündü,

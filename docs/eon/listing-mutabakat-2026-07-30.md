@@ -1,29 +1,56 @@
 # EON listing mutabakatı — 3 "sıfır-varyant" listing'in gerçek hikâyesi (2026-07-30)
 
+> **DÜZELTME (2026-08-01):** Bu belgenin ilk sürümü Bulgu 1'i "çift listing"
+> olarak teşhis etmiş ve 4540106368'in KAPATILMASINI önermişti. **Bu teşhis
+> yanlıştı ve geri çekildi** — kullanıcı düzeltti: 4544441878, 4540106368'in
+> kopyası değil, ondan Etsy'de "copy listing" ile üretilmiş **AYRI bir ürün**
+> (14K SARI altın dome). Kapatma önerisi (eski Karar A) iptaldir. Gerçek kök
+> neden ve doğru çözüm aşağıda güncellendi.
+
 Görev #31 taraması. DB kanıtlarıyla (aile↔listing süpürmesi, 28 canlı aile
 listing'i + 3 anomali) durum sanılandan farklı çıktı: sorun "3 boş listing"
-değil, **1 çift listing + 1 aile karışması + 1 zararsız tekil**.
+değil, **1 SKU çakışması (kopyalanmış listing) + 1 aile karışması + 1 zararsız
+tekil**.
 
-## Bulgu 1 — ÇİFT LİSTİNG: 14K Rose Dome iki kez canlı (para kaçağı riski)
+## Bulgu 1 — SKU ÇAKIŞMASI: Etsy kopyası kaynağın SKU'larını miras aldı
 
-| Listing | Başlık | Durum |
+| Listing | Gerçek ürün | Durum |
 |---|---|---|
-| **4540106368** (eski, 17 Tem) | "14K Solid Rose Gold Dome Wedding Band, Comfort Fit, 2mm to 12mm" | Etsy'de canlı, `RSG-R-1401` envanterini taşıyor, fiyatlar **v2-dönemi: $260–$2.350** |
-| **4544441878** (yeni SEO, 24+ Tem) | "Solid 14K Rose Gold Dome … Free Engraving (2-12mm)" | Etsy'de canlı, sabahki v4 push'unu O aldı (**$390–$3.390 doğru fiyat**) |
+| **4540106368** (17 Tem) | 14K **Rose** Gold Dome — `RSG-R-1401` ailesinin asıl evi | Canlı; varyant sahipliği kendisinde. Ama v4 fiyat push'unu ve SEO güncellemesini ALMADI: hâlâ **v2 fiyatları ($260–$2.350)** ve eski 63 karakterlik başlık. |
+| **4544441878** (24+ Tem) | 14K **Yellow** Gold Dome — `GLD-R-1401` ailesi olmalı | Etsy'de canlı; kullanıcı bunu 4540106368'den **kopyalayarak** üretti, bu yüzden envanteri `RSG-R-1401-*` SKU'larını taşıyor. |
 
-- İki listing de Etsy'de AYNI `RSG-R-1401-*` SKU'larını taşıyor → panel
-  upsert'ü (org+sku tekil) varyant sahipliğini son senkron kimi çektiyse ona
-  atıyor. Sabah denetimde varyantlar 4544441878'de görünüyordu; akşam senkronu
-  4540106368'e taşıdı. "Sıfır-varyant" görüntüsü bu ping-pong'un anlık karesi.
-- **Risk:** eski listing v4'ün ~%30 ALTINDA fiyatla satışta (min $260;
-  v4 doğrusu $390). Floor ihlali yok ($260 > 14K 2mm floor $211) ama
-  hedeflenen marjın belirgin altında + çift listing Etsy politikası riski.
+**Kök neden.** Etsy'de bir listing kopyalanınca SKU'lar da kopyalanır. Panelde
+`product_variants` `(org_id, sku)` üzerinde TEKİL olduğu için aynı SKU iki
+listing'e birden bağlanamaz: sahiplik son senkron kimi çektiyse ona geçer,
+diğeri **"0 varyant"** görünür ve `listListingsIndex`'in "varyantsız listing
+yok" kuralıyla listelerden gizlenir. Sabah/akşam senkronlarında görülen
+ping-pong bunun anlık kareleriydi — çift listing değil, çakışan SKU.
 
-**Öneri:** 4540106368 KAPATILSIN (önce medya arşivi — panelin arşiv-önce
-kapılı silme akışı; `listing_media`'da 0 kayıt var, önce "medyayı arşivle").
-SEO listing'i 4544441878 tek başına kalır; varyant sahipliği kalıcı oturur.
+**İkincil hata (bizim tarafımız).** Bu ping-pong sırasında 4544441878 varyant
+sahibi göründüğü için 30 Tem toplu SEO push'unda ona **rose gold başlığı**
+yazıldı. Ürün sarı altın; panel başlığı/etiketleri 1 Ağu'da sarıya düzeltildi
+(123 karakter, 13 tag), Etsy'ye gönderimi kullanıcı yapar.
+
+**Çözüm (kalıcı).** `RSG-R-1401` → `GLD-R-1401` SKU önek değişimi. Bunun için
+listing sayfasına **"SKU önekini Etsy'de değiştir"** aracı eklendi
+(`lib/etsy/inventory.ts::renameListingSkuPrefix` + `renameListingSkusOnEtsy`
+server action + `components/listing/sku-rename-form.tsx`). Araç yalnız
+Etsy'ye bağlı ve panelde 0 varyantlı listing'de görünür; fiyat/adet/varyasyon
+değerlerine dokunmaz, hedef önek başka bir listing'de kullanılıyorsa reddeder.
+Önek değişince çakışma biter: sarı listing kendi ailesini alır, rose listing
+`RSG-R-1401`'i kalıcı olarak tutar.
+
+**Sıra (kullanıcı adımları):**
+1. 4544441878 → SKU önek aracı: `RSG-R-1401` → `GLD-R-1401`.
+2. Aynı sayfada "Başlık+tag'i Etsy'ye gönder" → düzeltilmiş SARI başlık yayına.
+3. 4540106368 (rose) → v4 fiyatları + yeni SEO başlığı/etiketleri gönderilir
+   (bu listing her iki turda da atlanmıştı; şu an v4'ün ~%30 altında satıyor —
+   floor ihlali yok, $260 > 14K 2mm floor $211, ama hedeflenen marjın altında).
 
 ## Bulgu 2 — AİLE KARIŞMASI: "10K Hammered Milgrain" başlığı ↔ 14K Flat envanteri
+
+Aynı kök neden (kopyalanmış listing + miras SKU) burada da geçerli olabilir;
+kimlik teyidi kullanıcıda.
 
 - **4543442596** başlık/etiket/foto: *"10K Solid Gold Hammered Wedding Band,
   Milgrain Comfort Fit"* — ama Etsy envanteri **`WHG-R-1402-*`** (14K BEYAZ
@@ -37,16 +64,18 @@ SEO listing'i 4544441878 tek başına kalır; varyant sahipliği kalıcı oturur
 
 **Öneri (Etsy panelinden teyitle):** 4543442596'nın gerçekte hangi ürün
 olduğu Etsy'de görülerek karar verilsin —
-(a) gerçekten 10K hammered ise: envanteri doğru aile SKU'larıyla yeniden
-kurulmalı (10K milgrain fiyat bandı) ve 1402 seti 4543427531'e taşınmalı;
-(b) aslında 14K flat ise: başlık/foto/etiket 14K flat'e düzeltilip
-4543427531 kapatılmalı.
+(a) gerçekten 10K hammered ise: SKU önek aracıyla kendi ailesine taşınır
+(10K milgrain aile kodu) ve `WHG-R-1402` seti 4543427531'e serbest kalır;
+(b) aslında 14K flat ise: başlık/foto/etiket 14K flat'e düzeltilir ve
+4543427531 için ayrı bir karar verilir.
 
 ## Bulgu 3 — Zararsız tekil: 4543000739
 
 "10K White Dome … matte brushed, 4mm, US size 9" — tek parçalık özel listing,
 `sold_out`, qty 0, 0 görüntülenme. Katalog ailesi değil; aksiyon gerekmiyor
-(istenirse panelde arşivlenir).
+(istenirse panelde arşivlenir). Not: `sold_out` olduğu için toplu SEO push'unda
+Etsy 403 verdi ("must be active or expired"); push artık `status in
+(active, expired)` filtresiyle bu tür listing'leri baştan atlıyor.
 
 ## Sağlıklı durum teyidi
 
@@ -57,6 +86,14 @@ fiyat bantları karat/profil v4 beklentisiyle örtüşüyor (10K std 295–2.195
 
 ## Sonraki adım
 
-Dış (Etsy) yazma gerektiren iki karar kullanıcıda:
-1. 4540106368 kapat (medya arşivi → panel silme akışı) — çift listing + düşük fiyat.
-2. 4543442596 kimlik teyidi → (a) veya (b) yolu.
+Panelden yapılacak (Etsy yazma gerektirir, kullanıcı tıklar):
+1. 4544441878: SKU öneki `RSG-R-1401` → `GLD-R-1401`, sonra sarı başlık push.
+2. 4540106368: v4 fiyat + SEO push (atlanmıştı).
+3. 4543442596 kimlik teyidi → (a) veya (b) yolu.
+
+## Ders (second-brain'e taşındı)
+
+Çift listing gibi görünen "0 varyant" durumunun kök nedeni SKU tekilliği
+olabilir. Teşhisi ilan etmeden önce **iki listing'in gerçekten aynı ürün olup
+olmadığını kullanıcıya doğrulat** — kopyalama, farklı renk/karat üretmenin
+meşru bir yoludur ve "kapat" önerisi geri dönüşü zor bir aksiyondur.
