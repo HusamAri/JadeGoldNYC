@@ -10,6 +10,7 @@ import { pricingWriteBlocked } from "@/lib/feature-flags";
 import { EtsyClient, EtsyNotConnectedError } from "@/lib/etsy/client";
 import { etsyPaths } from "@/lib/etsy/endpoints";
 import { pushListingPrices } from "@/lib/etsy/inventory";
+import { verifyListingSeo } from "@/lib/etsy/listing";
 import { logAudit } from "@/lib/audit";
 import {
   variantPropsForMatch,
@@ -168,15 +169,33 @@ export async function pushListingSeoToEtsy(
       etsyPaths.shopListing(shopId, prod.etsy_listing_id),
       { title, tags: tags.join(",") },
     );
+    // READ-BACK: "200 OK" teslim sayılmaz — yazdığımızı geri okuyup doğrula.
+    const dogrulama = await verifyListingSeo(client, prod.etsy_listing_id, {
+      title,
+      tags,
+    });
     await logAudit(admin, {
       orgId: m.org_id,
       action: "etsy.seo_push",
       entityType: "product",
       entityId: productId,
-      summary: `Listing ${prod.etsy_listing_id}: başlık (${title.length} kr) + ${tags.length} tag Etsy'ye gönderildi.`,
-      diff: { etsy_listing_id: prod.etsy_listing_id, title, tags },
+      summary: dogrulama.ok
+        ? `Listing ${prod.etsy_listing_id}: başlık (${title.length} kr) + ${tags.length} tag Etsy'ye yazıldı ve geri okunarak doğrulandı.`
+        : `Listing ${prod.etsy_listing_id}: gönderim yapıldı ama DOĞRULANAMADI (${dogrulama.detail}).`,
+      diff: {
+        etsy_listing_id: prod.etsy_listing_id,
+        title,
+        tags,
+        verified: dogrulama.ok,
+        ...(dogrulama.ok ? {} : { verify_detail: dogrulama.detail }),
+      },
       source: "app",
     });
+    if (!dogrulama.ok) {
+      return {
+        error: `Etsy 200 döndü ama yazma doğrulanamadı — ${dogrulama.detail}. Etsy editöründe bu listing açıksa kapatıp tekrar deneyin.`,
+      };
+    }
   } catch (e) {
     if (e instanceof EtsyNotConnectedError) {
       return { error: "Etsy bağlantısı yok — Ayarlar'dan bağlanın." };
@@ -464,7 +483,20 @@ export async function pushAllListingSeoToEtsy(): Promise<BulkSeoPushResult> {
         etsyPaths.shopListing(shopId, it.etsy_listing_id),
         { title, tags: tags.join(",") },
       );
-      sent++;
+      // READ-BACK: yazılan her listing geri okunur; doğrulanmayan "gönderildi"
+      // sayılmaz, sapma nedeniyle raporlanır (bkz. lib/etsy/listing.ts).
+      const dogrulama = await verifyListingSeo(client, it.etsy_listing_id, {
+        title,
+        tags,
+      });
+      if (dogrulama.ok) {
+        sent++;
+      } else {
+        failed.push({
+          listingId: it.etsy_listing_id,
+          error: `yazıldı ama doğrulanamadı: ${dogrulama.detail}`,
+        });
+      }
     } catch (e) {
       failed.push({
         listingId: it.etsy_listing_id,
