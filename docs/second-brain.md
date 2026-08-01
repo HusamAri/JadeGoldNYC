@@ -38,6 +38,23 @@ repodaki hedefidir.
   birebir, yıldız eski koşudandı → kanonik sürümle eşitlendi).
 
 
+- **Dış sisteme yazdığını AYNI turda geri okuyarak doğrula; tek yönlü ayna sessizce
+  geri alır (2026-08):** 30 EON listing'ine başlık+tag itildi (07-31 09:23), API
+  200 döndü, "gönderildi" denip kapatıldı. Ertesi sabahki senkrondan sonra 23
+  başlık eskiye dönmüştü. Teşhis, senkronun aynı satırda taşıdığı ÇELİŞKİDEN
+  çıktı: tag'ler YENİ, başlıklar ESKİ — ikisi de Etsy'den geldiğine göre itiş
+  çalışmış ama başlıklar sonradan geri alınmıştı. Kanıt: 3 taslakta Etsy
+  `last_modified` = tam 09:23 ve başlıklar 123-130 kr duruyor; ezilen 26'da
+  `last_modified` = 20:56-22:28 ve o pencerede panelden Etsy'ye HİÇ yazma yok
+  (audit_log boş) → değişiklik dış taraftan (kullanıcının Etsy editöründe geç
+  saatte çalışması). Yan hasar: "dış sistem tek doğruluk kaynağı" kuralıyla
+  çalışan senkron eski başlıkları panele de yazdı, panel önerilen başlıkları
+  KAYBETTİ; kurtaran tek şey metinlerin `docs/eon/seo/...` dosyasında yaşıyor
+  olmasıydı. Kural: (1) dış yazmadan sonra aynı turda read-back doğrulaması yap,
+  "200 OK" teslim sayılmaz; (2) panel-üretimi metin mutlaka repoda bir kaynak
+  dosyada yaşasın — ayna onu her an ezebilir; (3) itiş ile kullanıcının dış
+  sistemdeki elle düzenlemesi çakışırsa sıra kritik: önce elle düzenleme bitsin,
+  sonra push.
 - **"Aynı ürün" teşhisini ilan etmeden kullanıcıya doğrulat; geri-dönüşü zor
   aksiyon önerisi kanıt ister (2026-08):** Panelde "0 varyant" görünen iki
   listing'e bakıp "çift listing → eskisini kapat" teşhisi kurdum; kullanıcı
