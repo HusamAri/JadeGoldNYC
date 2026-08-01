@@ -457,3 +457,88 @@ export async function pushListingQuantity(
     };
   }
 }
+
+export type SkuRenameOutcome = {
+  listingId: number;
+  status: "updated" | "unchanged" | "error";
+  /** Yeniden adlandırılan ürün (SKU) sayısı. */
+  renamed: number;
+  /** Örnek dönüşüm (ilk üç) — kullanıcıya ne olduğunu göstermek için. */
+  sample: { from: string; to: string }[];
+  detail?: string;
+};
+
+/**
+ * SKU ÖNEK DEĞİŞTİRME — Etsy'de kopyalanan listing'in miras aldığı SKU'ları
+ * kendi ailesine taşır.
+ *
+ * NEDEN: Etsy'de "copy listing" SKU'ları da kopyalar. Panelde varyant satırı
+ * (org_id, sku) ile TEKİL olduğundan kopya kendi varyantlarını tutamaz —
+ * "0 varyant" görünür, Listeler'de gizlenir, fiyat/SEO itişi yanlış hedefe
+ * gidebilir. Kalıcı çözüm kopyanın SKU'larını değiştirmektir (canlı vaka:
+ * 4544441878 sarı dome, RSG-R-1401 önekiyle doğmuştu).
+ *
+ * GÜVENLİK: fiyat/adet/property/readiness AYNEN korunur (buildInventoryUpdate
+ * ile aynı ilke; okunamayan fiyat görülürse throw → PUT yapılmaz). Yalnız
+ * `sku` alanı yeniden yazılır. Öneki taşımayan ürün varsa işlem hiç yapılmaz
+ * (kısmi yeniden adlandırma bırakmayız).
+ */
+export async function renameListingSkuPrefix(
+  client: EtsyClient,
+  listingId: number,
+  fromPrefix: string,
+  toPrefix: string,
+): Promise<SkuRenameOutcome> {
+  try {
+    const inventory = await getListingInventory(client, listingId);
+    const live = (inventory.products ?? []).filter((p) => !p.is_deleted);
+    if (live.length === 0) {
+      return { listingId, status: "unchanged", renamed: 0, sample: [], detail: "Envanter boş" };
+    }
+    const yabanci = live.filter((p) => !(p.sku ?? "").startsWith(fromPrefix));
+    if (yabanci.length > 0) {
+      return {
+        listingId,
+        status: "error",
+        renamed: 0,
+        sample: [],
+        detail: `${yabanci.length} ürün '${fromPrefix}' önekini taşımıyor (ör. "${yabanci[0].sku ?? "—"}") — hiçbir şey yazılmadı.`,
+      };
+    }
+
+    const readinessStateId = await resolveReadinessStateId(client);
+    // Fiyat/adet/property'yi olduğu gibi koruyan taban payload (hiçbir offering
+    // hedeflenmiyor → adetler aynen geri yazılır).
+    const update = buildInventoryUpdate(inventory, () => false, 0, readinessStateId);
+
+    const sample: { from: string; to: string }[] = [];
+    let renamed = 0;
+    update.products = update.products.map((p, i) => {
+      const eski = p.sku ?? "";
+      const yeni = toPrefix + eski.slice(fromPrefix.length);
+      if (yeni !== eski) {
+        renamed++;
+        if (sample.length < 3) sample.push({ from: eski, to: yeni });
+      }
+      // Sıra korunur: buildInventoryUpdate canlı ürünleri aynı sırayla üretir.
+      void i;
+      return { ...p, sku: yeni };
+    });
+    if (renamed === 0) {
+      return { listingId, status: "unchanged", renamed: 0, sample: [] };
+    }
+
+    await putListingInventory(client, listingId, update, {
+      legacy: readinessStateId != null ? false : undefined,
+    });
+    return { listingId, status: "updated", renamed, sample };
+  } catch (e) {
+    return {
+      listingId,
+      status: "error",
+      renamed: 0,
+      sample: [],
+      detail: e instanceof Error ? e.message : "Bilinmeyen hata",
+    };
+  }
+}

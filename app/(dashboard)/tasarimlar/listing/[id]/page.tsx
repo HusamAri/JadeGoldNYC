@@ -38,6 +38,7 @@ import {
 import { ListingGapsCard } from "@/components/listing/listing-gaps-card";
 import { ListingFieldsForm } from "@/components/listing/listing-fields-form";
 import { ListingStateButton } from "@/components/listing/listing-state-button";
+import { SkuRenameForm } from "@/components/listing/sku-rename-form";
 import { EtsyCopyCard, type EtsyCopyField } from "@/components/listing/etsy-copy-card";
 import { SeoHelperConsole } from "@/components/seo/seo-helper-console";
 import { inferSeoInput } from "@/lib/seo/keyword-engine";
@@ -399,6 +400,18 @@ export default async function ListingDetayPage({
                 : undefined
         }
       >
+        {/* SKU çakışması onarımı — YALNIZ varyantsız Etsy listing'inde görünür:
+            bu, Etsy'de kopyalanıp kaynağın SKU'larını miras almış listing'in
+            imzasıdır (panelde 0 varyant + Listeler'de gizli). */}
+        {etsyListingId != null && variants.length === 0 && (
+          <div className="border-input mb-3 rounded-xl border border-dashed p-3">
+            <p className="mb-2 font-mono text-[10px] tracking-[0.12em] text-amber-600 uppercase dark:text-amber-400">
+              SKU çakışması · kopyalanmış listing
+            </p>
+            <SkuRenameForm productId={product.id} ornekSku={product.sku} />
+          </div>
+        )}
+
         {/* Kanarya: bu listing'in panel fiyatlarını Etsy'ye gönder — toplu
             itiş öncesi tek ilanda dene-doğrula; sonucu net raporlar. */}
         {etsyListingId != null && (

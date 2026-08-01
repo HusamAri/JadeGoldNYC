@@ -286,6 +286,99 @@ export async function setListingStateOnEtsy(
   return { ok: true };
 }
 
+/**
+ * SKU ÖNEKİ DEĞİŞTİR (Etsy) — kopyalanan listing'i kendi ailesine taşır.
+ *
+ * Vaka: Etsy'de listing kopyalayınca SKU'lar da kopyalanır; panelde SKU
+ * (org_id, sku) ile tekil olduğundan kopya "0 varyant" görünür ve Listeler'de
+ * gizlenir. Bu action kopyanın Etsy envanterindeki SKU önekini değiştirir,
+ * sonra panel varyantlarını yeniden senkronlar — çakışma kökten biter.
+ *
+ * Güvenlik: fiyat/adet/property korunur (lib/etsy/inventory kuralları); hedef
+ * önek org'da BAŞKA bir listing tarafından kullanılıyorsa reddedilir.
+ */
+export async function renameListingSkusOnEtsy(
+  productId: string,
+  fromPrefix: string,
+  toPrefix: string,
+): Promise<ListingActionResult & { renamed?: number; sample?: string[] }> {
+  const m = await requireMembership();
+  if (!isManager(m.role)) return { error: MANAGER_ONLY_ERROR };
+  const { writeEnabled } = await getEtsyWriteAccess(m.org_id);
+  if (!writeEnabled) return { error: "Etsy yazma erişimi kapalı." };
+
+  const from = fromPrefix.trim();
+  const to = toPrefix.trim();
+  if (!from || !to) return { error: "Eski ve yeni SKU öneki gerekli." };
+  if (from === to) return { error: "Önekler aynı — değişiklik yok." };
+
+  const admin = createAdminClient();
+  const { data, error } = await admin
+    .from("products")
+    .select("etsy_listing_id, title")
+    .eq("id", productId)
+    .eq("org_id", m.org_id)
+    .maybeSingle();
+  if (error) return { error: error.message };
+  const prod = data as { etsy_listing_id: number | null; title: string } | null;
+  if (!prod?.etsy_listing_id) return { error: "Listing Etsy'e bağlı değil." };
+
+  // Hedef önek başka bir listing'de yaşıyorsa yeni çakışma yaratma.
+  const { data: mevcut } = await admin
+    .from("product_variants")
+    .select("sku, product_id")
+    .eq("org_id", m.org_id)
+    .like("sku", `${to}%`)
+    .neq("product_id", productId)
+    .limit(1);
+  if ((mevcut ?? []).length > 0) {
+    const v = (mevcut ?? [])[0] as { sku: string };
+    return {
+      error: `'${to}' öneki zaten başka bir listing'de kullanılıyor (ör. ${v.sku}) — yeni çakışma yaratmamak için durduruldu.`,
+    };
+  }
+
+  try {
+    const client = await EtsyClient.forOrg(m.org_id);
+    const { renameListingSkuPrefix } = await import("@/lib/etsy/inventory");
+    const r = await renameListingSkuPrefix(
+      client,
+      prod.etsy_listing_id,
+      from,
+      to,
+    );
+    if (r.status === "error") return { error: r.detail ?? "SKU yazılamadı." };
+    if (r.status === "unchanged") {
+      return { error: "Değişecek SKU bulunamadı (önek eşleşmedi)." };
+    }
+    // Panel aynasını hemen tazele — varyantlar artık bu listing'e bağlanır.
+    const { syncOneListingVariants } = await import("@/lib/etsy/variants");
+    await syncOneListingVariants(m.org_id, productId);
+
+    await logAudit(admin, {
+      orgId: m.org_id,
+      action: "etsy.variant_sync",
+      entityType: "product",
+      entityId: productId,
+      summary: `Listing ${prod.etsy_listing_id}: ${r.renamed} SKU '${from}' → '${to}' olarak Etsy'de yeniden adlandırıldı.`,
+      diff: { etsy_listing_id: prod.etsy_listing_id, from, to, renamed: r.renamed, sample: r.sample },
+      source: "app",
+    });
+    revalidatePath(`/tasarimlar/listing/${productId}`);
+    revalidatePath("/tasarimlar");
+    return {
+      ok: true,
+      renamed: r.renamed,
+      sample: r.sample.map((s) => `${s.from} → ${s.to}`),
+    };
+  } catch (e) {
+    if (e instanceof EtsyNotConnectedError) {
+      return { error: "Etsy bağlantısı yok — Ayarlar'dan bağlanın." };
+    }
+    return { error: e instanceof Error ? e.message : String(e) };
+  }
+}
+
 export interface BulkSeoPushResult {
   ok?: boolean;
   error?: string;
