@@ -97,3 +97,20 @@ Panelden yapılacak (Etsy yazma gerektirir, kullanıcı tıklar):
 olabilir. Teşhisi ilan etmeden önce **iki listing'in gerçekten aynı ürün olup
 olmadığını kullanıcıya doğrulat** — kopyalama, farklı renk/karat üretmenin
 meşru bir yoludur ve "kapat" önerisi geri dönüşü zor bir aksiyondur.
+
+## Ürün spesifikasyonu teyidi (2026-08-01)
+
+Kullanıcı üreticiden teyit aldı: **klasik alyanslar 1.5mm** ve **iç yüzey
+yuvarlatılacak** — yani "comfort fit" ifadesi başlık, tag ve açıklamalarda
+GEÇERLİ, hiçbir yerden kaldırılmıyor. **Hammered milgrain** modeli ayrı:
+**1.9mm comfort fit** (bu bilgi 4543442596'nın açıklamasına eklendi).
+
+Ara adım kaydı: 1 Ağustos'ta "1.5mm comfort fit değil" bilgisiyle 30 listing'in
+başlık/tag'inden ve 7 açıklamadan comfort fit ifadesi çıkarılmıştı; üretici
+teyidi gelince tamamı geri alındı ve panel başlıkları canlı Etsy değerleriyle
+(06:06 senkronunun audit kaydından) birebir eşitlendi. Tek istisna 4544441878:
+rose→yellow renk düzeltmesi kalıcı.
+
+**Başlık kuralı (kullanıcı, 2026-08-01):** Etsy başlık değişiminde sıralama
+düşme uyarısı verdiği için **başlıklara dokunulmuyor**; SEO çalışması yalnız
+tag üzerinden yürüyor.
