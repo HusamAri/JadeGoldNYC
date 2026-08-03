@@ -31,16 +31,16 @@ TEXTS: dict[str, dict] = {
     "10K": {
         "title": (
             "10K Solid Gold Two Tone Wedding Band, Mens Diamond Cut Ring, "
-            "White and Yellow Gold Comfort Fit, 6mm to 10mm, Anniversary Gift for Him"
+            "White and Yellow Gold Comfort Fit, 2mm to 12mm, Anniversary Gift for Him"
         ),
         "research_keyword": "10k two tone diamond cut wedding band",
         "research_group": 40,
         "tags": [
-            "mens wedding band", "two tone gold ring", "diamond cut band",
-            "10k solid gold ring", "comfort fit band", "wide wedding band",
-            "engraved gold band", "anniversary ring", "gift for husband",
-            "unisex wedding band", "white gold inlay", "mens promise ring",
-            "gold band for men",
+            "two tone gold ring", "diamond cut band", "white gold inlay",
+            "10k solid gold ring", "10k wedding band", "mens wedding band",
+            "unisex wedding band", "womens gold ring", "thin gold band",
+            "wide gold ring", "comfort fit band", "engraved gold band",
+            "anniversary ring",
         ],
         "materials": ["Solid 10k gold", "Yellow gold", "White gold"],
         "slug": "ttg-r-1006",
@@ -67,16 +67,16 @@ TEXTS: dict[str, dict] = {
     "14K": {
         "title": (
             "14K Solid Gold Two Tone Wedding Band, Mens Diamond Cut Ring, "
-            "White and Yellow Gold Comfort Fit, 6mm to 10mm, Anniversary Gift for Him"
+            "White and Yellow Gold Comfort Fit, 2mm to 12mm, Anniversary Gift for Him"
         ),
         "research_keyword": "14k two tone diamond cut wedding band",
         "research_group": 42,
         "tags": [
-            "mens wedding band", "two tone gold ring", "diamond cut band",
-            "14k solid gold ring", "comfort fit band", "wide wedding band",
-            "engraved gold band", "anniversary ring", "gift for husband",
-            "unisex wedding band", "white gold inlay", "14k wedding band",
-            "gold band for men",
+            "two tone gold ring", "diamond cut band", "white gold inlay",
+            "14k solid gold ring", "14k wedding band", "mens wedding band",
+            "unisex wedding band", "womens gold ring", "thin gold band",
+            "wide gold ring", "comfort fit band", "engraved gold band",
+            "anniversary ring",
         ],
         "materials": ["Solid 14k gold", "Yellow gold", "White gold"],
         "slug": "ttg-r-1406",
@@ -92,16 +92,16 @@ TEXTS: dict[str, dict] = {
     "18K": {
         "title": (
             "18K Solid Gold Two Tone Wedding Band, Mens Diamond Cut Ring, "
-            "White and Yellow Gold Comfort Fit, 6mm to 10mm, Anniversary Gift for Him"
+            "White and Yellow Gold Comfort Fit, 2mm to 12mm, Anniversary Gift for Him"
         ),
         "research_keyword": "18k two tone diamond cut wedding band",
         "research_group": 41,
         "tags": [
-            "mens wedding band", "two tone gold ring", "diamond cut band",
-            "18k solid gold ring", "comfort fit band", "wide wedding band",
-            "engraved gold band", "anniversary ring", "gift for husband",
-            "unisex wedding band", "white gold inlay", "18k wedding band",
-            "gold band for men",
+            "two tone gold ring", "diamond cut band", "white gold inlay",
+            "18k solid gold ring", "18k wedding band", "mens wedding band",
+            "unisex wedding band", "womens gold ring", "thin gold band",
+            "wide gold ring", "comfort fit band", "engraved gold band",
+            "anniversary ring",
         ],
         "materials": ["Solid 18k gold", "Yellow gold", "White gold"],
         "slug": "ttg-r-1806",
@@ -172,7 +172,7 @@ Hallmark: Stamped {k} inside the band.
 {COLOR_PARAGRAPH[karat]}
 
 SIZE & WIDTH
-Two dropdowns build the ring. Pick a size, US 4 through 16 in whole and half sizes, in Ring Size. Pick your width, {WIDTHS[0]}mm through {WIDTHS[-1]}mm, in Width. A 6 to 7mm reads trim for a patterned band; 8mm is the width most men wear; 9 to 10mm sits wide and carries the lattice at full scale.
+Two dropdowns build the ring. Pick a size, US 4 through 16 in whole and half sizes, in Ring Size. Pick your width, {WIDTHS[0]}mm through {WIDTHS[-1]}mm, in Width. A 2 to 4mm reads slim and stacks well; 5 to 7mm is the everyday width; 8 to 12mm sits wide across the finger. The lattice scales with the band: the narrow widths carry a fine, close-set pattern, and the wider ones open it up.
 
 If you are between sizes or unsure, message us before you order.
 
@@ -234,9 +234,9 @@ def emit(karat: str) -> str:
 {t['sibling_note']}
 --
 -- Varyant ekseni: {len(WIDTHS)} genislik ({WIDTHS[0]}-{WIDTHS[-1]}mm) x {len(SIZES)} beden (US 4-16 tam+yarim) = {len(rows)}.
---   Neden 2-12mm DEGIL: elmas kesim kafes + cift ray dar bantta fiziksel
---   olarak okunmaz; pazar arastirmasi en cok satan erkek bandinin 6-8mm
---   oldugunu gosteriyor (2026 Etsy erkek aliansi taramasi).
+--   EV STANDARDI: 39 canli listing'in hepsi bu ekseni tasiyor
+--   (docs/eon/katalog-v3.md, eon-v3-catalog.json). Desen genislikle
+--   olceklenir: dar bantta ince/sik kafes, genis bantta acilir.
 --
 -- Gram tablosu: 0101'in {karat} satirlarindan BIREBIR (1.5mm kalinlik).
 --   VARSAYIM: basamakli iki-tonlu profil, ayni genislik/kalinlikta dome ile

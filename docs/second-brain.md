@@ -251,11 +251,22 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
   önce maliyet sabitinin tanımını dosyadan OKU; iki farklı birim (satış $/g vs
   alım $/g) aynı isimle anılabilir. Ek: marjı katmanlı raporla (metal üstü →
   Etsy ücreti sonrası → işçilik hariç), tek sayı söyleme.
-- **Yeni stilin varyant ekseni üründen türer, ev şablonundan değil (2026-08):**
-  EON'un 39 listing'i 2-12mm taşır; iki-tonlu elmas kesim kafes 2mm'de fiziksel
-  olarak okunmaz. Pazar taraması (2026 Etsy erkek alyansı: en çok satan 6-8mm)
-  + ürünün kendi geometrisi → 6-10mm. Kural: şablonu kopyalarken ekseni ürüne
-  sor; gerekçeyi migration yorumuna yaz ki sonraki oturum "eksik" sanmasın.
+- **Ev standardı eksenini "ürün gerekçesiyle" DARALTMA — kullanıcıya sor (2026-08):**
+  TTG'yi 6-10mm'e kestim ("kafes 2mm'de okunmaz" + pazar taraması 6-8mm).
+  Kullanıcı reddetti: "Neden 6? Daha ince mm de var… Listinglere daha iyi bak."
+  Haklıydı — 39 canlı listing'in HEPSİ 11 genişlik (2-12mm) × 25 beden = **275**
+  taşıyor (`docs/eon/eon-v3-catalog.json`, `katalog-v3.md`). Ders: pazar
+  araştırması bir ÖNERİdir, ev standardını tek taraflı daraltma gerekçesi
+  değildir; üretim kapasitesini kullanıcı bilir. Eksen daraltmak istiyorsan
+  ÖNCE sor. Ek: `docs/<işkolu>/` klasörünü işe başlamadan tara — kanonik eksen
+  oradaki JSON'da yazılıydı, ben yalnız migration'a bakıp varsayım kurmuştum.
+- **Gram tablosunu elle kopyalama, kanonik kaynaktan PARSE et (2026-08):**
+  İlk turda 0101'in gram satırlarını üreticiye elle yapıştırmıştım (5 genişlik).
+  Eksen 11'e çıkınca doğru çözüm 11 satırı daha yapıştırmak DEĞİL: üretici
+  artık `0101_eon_catalog_v3.sql`'i regex'le okuyup `_v3g` staging tablosunu
+  türetiyor. Kazanç: transkripsiyon riski sıfır + `cross_check_house()` ile
+  gramlar 39 canlı listing'in JSON'uyla 275/275 doğrulanıyor (üç ayarda da).
+  Kural: türetilmiş veri, kaynağından programla okunur; kopya = sessiz drift.
 - **Aynı ailenin ikinci üyesini eklerken tek-üye varsayımlarını ara (2026-08):**
   TTG 18K (0111) eklenirken 0110'daki çapa-fiyat UPDATE'i `where
   weight_source='catalog_ttg'` ile TÜM aileyi tarıyordu. `group by product_id`
