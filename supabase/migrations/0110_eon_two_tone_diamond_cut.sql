@@ -301,14 +301,17 @@ on conflict (org_id, sku) do update set
 
 drop table _ttg;
 
--- Capa fiyati = en ucuz varyant (0101 deseni).
+-- Capa fiyati = bu ailenin en ucuz varyanti (0101 deseni).
+-- NOT: ailenin KENDI varyantlariyla sinirli — 'catalog_ttg' kaynagini uc ayar
+-- da paylasiyor, product_id ile daraltilmazsa ayarlar birbirinin capasini ezer.
 update public.products p
 set price_cents = m.minp, updated_at = now()
 from (
-  select product_id, min(price_cents) as minp
-  from public.product_variants
-  where weight_source = 'catalog_ttg'
-  group by product_id
+  select v.product_id, min(v.price_cents) as minp
+  from public.product_variants v
+  join public.products pp on pp.id = v.product_id
+  where v.weight_source = 'catalog_ttg' and pp.sku = $ttg$TTG-R-1006$ttg$
+  group by v.product_id
 ) m
 where m.product_id = p.id;
 
@@ -321,7 +324,7 @@ delete from public.listing_images li
 using public.products p
 where li.product_id = p.id
   and p.sku = $ttg$TTG-R-1006$ttg$
-  and li.url like '/eon/ttg-r-1006/%';
+  and li.url like $ttg$/eon/ttg-r-1006/%$ttg$;
 
 insert into public.listing_images (org_id, product_id, url, source, alt, position)
 select p.org_id, p.id, v.url, 'url', v.alt, v.position

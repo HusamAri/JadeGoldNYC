@@ -256,3 +256,25 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
   olarak okunmaz. Pazar taraması (2026 Etsy erkek alyansı: en çok satan 6-8mm)
   + ürünün kendi geometrisi → 6-10mm. Kural: şablonu kopyalarken ekseni ürüne
   sor; gerekçeyi migration yorumuna yaz ki sonraki oturum "eksik" sanmasın.
+- **Aynı ailenin ikinci üyesini eklerken tek-üye varsayımlarını ara (2026-08):**
+  TTG 18K (0111) eklenirken 0110'daki çapa-fiyat UPDATE'i `where
+  weight_source='catalog_ttg'` ile TÜM aileyi tarıyordu. `group by product_id`
+  sayesinde veri doğruydu ama migration kardeş ürünün `updated_at`'ini de
+  bumpluyordu. Kural: bir migration'ın WHERE'i "o an tek kayıt var" varsayımına
+  yaslanıyorsa, ikinci kayıt gelince gözden geçir — daralt (`and pp.sku=<aile>`).
+  Üretilmiş migration'ı düzeltmenin doğru yolu dosyayı elle düzenlemek DEĞİL,
+  üreticiyi düzeltip yeniden basmak ve eski dosyayla diff'lemek (diff yalnız
+  amaçlanan satırları göstermeli — 15 satır çıktı, veri çıktısı aynı kaldı).
+- **Eksik varlıkla yarım listing basmayı ÜRETİCİDE engelle (2026-08):** 14K
+  metinleri hazırdı ama görselleri yoktu; `emit_ttg_migration.py --karat 14K`
+  `assert images` ile REDDEDIYOR ("gorsel yok — listing eksik kalir"). Kural:
+  "tüm parçaları doldur" işinde eksiklik çalışma zamanına bırakılmaz, üretici
+  kapıda durdurur; hazır olan kısım (metin/etiket/gram/fiyat) kodda bekler,
+  görsel gelince tek komut. Yarım listing DB'ye girmez.
+- **Kalıtsal marj farkını "yeni işin sorunu" sanma, oranı türet (2026-08):**
+  18K marjı (%33,3) 10K'dan (%39,6) düşük çıktı. Sebep yeni stil değil: ev ppg'si
+  / tedarik fiyatı oranı (10K 10730/6500 = %60,6 maliyet; 18K 19320/12900 = %66,8)
+  — 39 mevcut 18K listing'de de aynı. Kural: marj sapması görünce önce oranı iki
+  ayarda hesapla, kalıtsal mı yeni mi ayır; ayrıca 18K tedarik fiyatının kendisi
+  `gold-cost.ts`'te VARSAYIM olarak işaretli (14K'dan saflıkla türetilmiş) —
+  bu marjı sunarken varsayımı da söyle.
