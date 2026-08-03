@@ -230,3 +230,29 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
   Ayrıca dürüst ol: bu marj metal+kargo üstüdür, Etsy ücreti (~%9-10) + işçilik
   düşülmemiştir — "kârlı" derken kapsamı söyle. Vaka: min %24.9 (yıldız, dar genişlik),
   ort %35.7; 0 zararına.
+- **Migration'ı ELLE değil ÜRETİCİYLE yaz, gerçek Postgres'te koştur (2026-08):**
+  Yeni EON stili (TTG-R-1006, iki-tonlu elmas kesim) 125 varyant + 5 görsel +
+  tam künye ile eklendi. Kural üçlüsü: (1) saf üretici `gen_catalog_ttg.py`
+  (gram tablosu + ev formülü, iç assert: sayım/SKU tekilliği/genişlikle fiyat
+  monotonluğu/$5 yuvarlama); (2) migration'ı `emit_ttg_migration.py` BASAR —
+  elle yazılmaz, 125 satır transkripsiyon riski sıfırlanır (dosya başına
+  "ELLE DÜZENLEMEYİN" notu); (3) doğrulama Docker'sız gerçek Postgres'te:
+  `apt-get install postgresql` + auth/storage şeması ve anon/authenticated
+  rollerini elle kur, zinciri `ON_ERROR_STOP=0` ile uygula, YENİ migration'ı
+  `ON_ERROR_STOP=1` ile koş, sonra İKİ KEZ koşup sayımların değişmediğini
+  gör (idempotentlik kanıtı: INSERT 0 0 / upsert 125 / delete+insert 5).
+  Son adım üretici↔DB 125/125 birebir diff. Ders: Cursor Cloud'da Docker
+  rlimit'e takılıyorsa Supabase şart değil — bare Postgres migration SQL'ini
+  doğrulamaya yeter.
+- **Maliyet tabanını uydurma, panelin sabitinden oku (2026-08):** Marj hesabında
+  "ham altın = ppg × 0.90" varsaydım; ppg SATIŞ hedefi ($/g), maliyet değil —
+  marj %10 çıktı, gerçekte %39.6. Doğru taban `lib/gold-cost.ts`
+  `PURCHASE_PRICE_CENTS_PER_GRAM` (10K = $65/g). Kural: kâr iddiası kurmadan
+  önce maliyet sabitinin tanımını dosyadan OKU; iki farklı birim (satış $/g vs
+  alım $/g) aynı isimle anılabilir. Ek: marjı katmanlı raporla (metal üstü →
+  Etsy ücreti sonrası → işçilik hariç), tek sayı söyleme.
+- **Yeni stilin varyant ekseni üründen türer, ev şablonundan değil (2026-08):**
+  EON'un 39 listing'i 2-12mm taşır; iki-tonlu elmas kesim kafes 2mm'de fiziksel
+  olarak okunmaz. Pazar taraması (2026 Etsy erkek alyansı: en çok satan 6-8mm)
+  + ürünün kendi geometrisi → 6-10mm. Kural: şablonu kopyalarken ekseni ürüne
+  sor; gerekçeyi migration yorumuna yaz ki sonraki oturum "eksik" sanmasın.
