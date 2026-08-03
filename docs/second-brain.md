@@ -289,3 +289,27 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
   ayarda hesapla, kalıtsal mı yeni mi ayır; ayrıca 18K tedarik fiyatının kendisi
   `gold-cost.ts`'te VARSAYIM olarak işaretli (14K'dan saflıkla türetilmiş) —
   bu marjı sunarken varsayımı da söyle.
+- **Fiyat kuralını repo'dan değil, MOTORUN kaynağından türet (2026-08):**
+  TTG'yi v3 ppg formülüyle (`ceil(g*ppg/500)*500+1000`) fiyatlamıştım; o model
+  emekli olmuş. `origin/main`'de `externalPricing` (0119) açık — fiyat panel
+  DIŞINDA, EON'un xlsx motorunda belirleniyor (0120 ayna, 0121 seed). Doğru
+  yol: xlsx'i repo'ya al, sha256'sını kilitle, formülü ASM sayfasından çöz ve
+  858 hücrenin hepsinde sıfır sapmayla DOĞRULA — ancak ondan sonra grid'de
+  olmayan hücreyi (yarım beden) aynı formülle doldur. İki yuvarlama tuzağı:
+  motor HAM landed'den hesaplanır (görünen landed 2 haneye yuvarlı), floor ise
+  YUVARLANMIŞ landed'den; ikisini karıştırınca 429 satırda 8 hücre kayıyor.
+- **"X listingindeki gibi yap" = o listingin hangi KADEMEDE olduğunu bul (2026-08):**
+  Kullanıcı "işçilik hammered gibi olsun" dedi. Hammered ayrı bir formül değil,
+  motorun MILGRAIN profili; ASM sayfası kalemi zaten "Iscilik Milgrain USD = 40
+  — Hammered/milgrain istisnasi" diye adlandırıyor. Ders: referans gösterilen
+  listingi tek tek kopyalama, onu üreten SINIFLANDIRMAYI bul — sonra yeni ürünü
+  o sınıfa yerleştir. Panel tarafında karşılığı `products.listing_cost_cents`
+  (0109): dolu olduğunda altın auto-işçiliği yazılmaz, çift sayım kapanır.
+- **İş kolunu kurmadan ÖNCE origin/main'i tara — gecikmiş dal sessizce eskir (2026-08):**
+  Dalım main'den 188 commit gerideymiş; bu sürede fiyat motoru, `pins`,
+  `product_discount`, shopier gelmiş ve migration numaralarım (0110/0111)
+  çakışıyormuş. Ucuz kontrol: `git fetch origin main` + `git ls-tree` ile son
+  migration numarası + `git diff --name-only HEAD origin/main`. Merge 6 çakışma
+  verince (shopier/ads-ledger — benim dokunmadığım paralel iş) merge'ü ABORT
+  ettim: başkasının paralel işini tahminle çözmek yerine numaraları 0123/0124'e
+  taşıyıp odaklı işi teslim et, merge'ü sahibine bırak.

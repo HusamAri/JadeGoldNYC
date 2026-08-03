@@ -5,11 +5,11 @@ Elle yazim yerine uretim: 125 satirlik varyant govdesinde transkripsiyon
 riski sifirlanir (bkz. second-brain "buyuk MCP SQL'i parca + yeniden-kurgu").
 
     python3 scripts/emit_ttg_migration.py --karat 10K \
-        > supabase/migrations/0110_eon_two_tone_diamond_cut.sql
+        > supabase/migrations/0123_eon_two_tone_diamond_cut.sql
     python3 scripts/emit_ttg_migration.py --karat 18K \
-        > supabase/migrations/0111_eon_two_tone_diamond_cut_18k.sql
+        > supabase/migrations/0124_eon_two_tone_diamond_cut_18k.sql
 
-14K metinleri hazir; gorseller gelince IMAGES doldurulup 0112 basilir.
+14K metinleri hazir; gorseller gelince IMAGES doldurulup 0125 basilir.
 """
 
 import argparse
@@ -17,9 +17,10 @@ import sys
 
 sys.path.insert(0, "scripts")
 from gen_catalog_ttg import (  # noqa: E402
-    GRAMS_BY_KARAT, KARAT_SPECS, METAL_PROPERTY, QUANTITY_PER_VARIANT,
-    SIZES, WIDTHS, build, verify,
+    ENGINE, KARAT_SPECS, LABOR_CENTS, METAL_PROPERTY, QUANTITY_PER_VARIANT,
+    SIZES, TTG_PROFILE, WIDTHS, build, cross_check_grid, verify,
 )
+from eon_pricing_engine import XLSX, XLSX_SHA256  # noqa: E402
 
 Q = "$ttg$"
 
@@ -44,7 +45,7 @@ TEXTS: dict[str, dict] = {
         ],
         "materials": ["Solid 10k gold", "Yellow gold", "White gold"],
         "slug": "ttg-r-1006",
-        "migration_file": "0110_eon_two_tone_diamond_cut.sql",
+        "migration_file": "0123_eon_two_tone_diamond_cut.sql",
         "sibling_note": (
             "-- (Two-Tone Gold), profil 06. 14K/18K kardesleri TTG-R-1406 / TTG-R-1806\n"
             "-- olarak ayni desende acilir (gorseller gelince)."
@@ -80,10 +81,10 @@ TEXTS: dict[str, dict] = {
         ],
         "materials": ["Solid 14k gold", "Yellow gold", "White gold"],
         "slug": "ttg-r-1406",
-        "migration_file": "0112_eon_two_tone_diamond_cut_14k.sql",
+        "migration_file": "0125_eon_two_tone_diamond_cut_14k.sql",
         "sibling_note": (
-            "-- (Two-Tone Gold), profil 06. 10K/18K kardesleri TTG-R-1006 (0110) /\n"
-            "-- TTG-R-1806 (0111) ile ayni varyant ekseninde."
+            "-- (Two-Tone Gold), profil 06. 10K/18K kardesleri TTG-R-1006 (0123) /\n"
+            "-- TTG-R-1806 (0124) ile ayni varyant ekseninde."
         ),
         "eon_no": 42,
         "image_order_note": "01 hero, 02 elde (olcek), 03 uc-ceyrek, 04 makro, 05 kutu",
@@ -105,10 +106,10 @@ TEXTS: dict[str, dict] = {
         ],
         "materials": ["Solid 18k gold", "Yellow gold", "White gold"],
         "slug": "ttg-r-1806",
-        "migration_file": "0111_eon_two_tone_diamond_cut_18k.sql",
+        "migration_file": "0124_eon_two_tone_diamond_cut_18k.sql",
         "sibling_note": (
-            "-- (Two-Tone Gold), profil 06. 10K kardesi TTG-R-1006 (0110); 14K\n"
-            "-- TTG-R-1406 gorseller gelince 0112 ile acilir. Varyant ekseni UCUNDE DE AYNI."
+            "-- (Two-Tone Gold), profil 06. 10K kardesi TTG-R-1006 (0123); 14K\n"
+            "-- TTG-R-1406 gorseller gelince 0125 ile acilir. Varyant ekseni UCUNDE DE AYNI."
         ),
         "eon_no": 41,
         "image_order_note": "01 hero, 02 elde (olcek), 03 uc-ceyrek, 04 makro, 05 kutu",
@@ -203,14 +204,23 @@ def emit(karat: str) -> str:
     spec = KARAT_SPECS[karat]
     t = TEXTS[karat]
     family = spec["family"]
-    ppg = spec["ppg_cents"]
     desc = description(karat)
     images = t["images"]
 
     rows = build(karat)
     verify(rows, karat)
     prices = [r["price_cents"] for r in rows]
+    sales = [r["sale_cents"] for r in rows]
     anchor = min(prices)
+    grid_note = cross_check_grid(karat)
+    labor = LABOR_CENTS / 100
+    xlsx_name, xlsx_sha = XLSX.name, XLSX_SHA256
+    spot_ozt = ENGINE.spot_per_ozt
+    fire = ENGINE.fire * 100
+    pkg, ship = ENGINE.packaging, ENGINE.shipping
+    m27, m812 = ENGINE.mult_narrow, ENGINE.mult_wide
+    fee, off = ENGINE.etsy_fee * 100, ENGINE.offsite * 100
+    thick = ENGINE.thickness
 
     for tag in t["tags"]:
         assert len(tag) <= 20, f"tag 20 karakteri asiyor: {tag}"
@@ -238,17 +248,34 @@ def emit(karat: str) -> str:
 --   (docs/eon/katalog-v3.md, eon-v3-catalog.json). Desen genislikle
 --   olceklenir: dar bantta ince/sik kafes, genis bantta acilir.
 --
--- Gram tablosu: 0101'in {karat} satirlarindan BIREBIR (1.5mm kalinlik).
---   VARSAYIM: basamakli iki-tonlu profil, ayni genislik/kalinlikta dome ile
---   kutlece karsilastirilabilir (kenar basamaklari metal alir, duz merkez
---   ekler). Ilk uretimde tartip dogrulanmali.
+-- ISCILIK + FIYAT: HAMMERED LISTING ILE AYNI KADEME (kullanici direktifi).
+--   Hammered listing ("10K Solid Gold Hammered Wedding Band, Milgrain Comfort
+--   Fit") motorun MILGRAIN profilindedir; v4 ASM sayfasi bu kalemi acikca
+--   "Iscilik Milgrain USD = 40 — Hammered/milgrain istisnasi" diye tanimlar.
+--   TTG de elmas kesim + iki-tonlu birlestirme tasidigi icin ayni kademede:
+--     * iscilik = ${labor:.0f}/adet -> products.listing_cost_cents = {LABOR_CENTS}
+--       (0109: listing_cost > 0 iken altin auto-iscilik YAZILMAZ, yalniz
+--        malzeme; iscilik satiri 'listing_fixed' olur -> cift sayim yok)
+--     * fiyat   = v4 grid MILGRAIN profili, "ETSY LISTE" kolonu
+--     * gorunen = liste x 0.75 (kalici %25 indirim, AYRI mekanizma)
 --
--- Fiyat: ev formulu — ceil(gram * {ppg} / 500) * 500 + 1000
---   ($5 yukari yuvarla + $10 kargo payi fiyata gomulu; bkz. second-brain
---   "ucretsiz kargo = bedel fiyata gomulur"). Aralik ${anchor/100:.2f} - ${max(prices)/100:.2f}.
---   NOT: {karat} ev ppg'si ({ppg} c/g) duz profillerle AYNI birakildi —
---   elmas kesim + iki-tonlu birlestirme ekstra iscilik tasir; premium ppg
---   istenirse yalnizca bu dosyadaki PPG sabiti degisir.
+-- Fiyat panelde HESAPLANMAZ (0119 `externalPricing`) — motor disaridadir.
+--   Kaynak: {xlsx_name}
+--           sha256 {xlsx_sha}
+--   Varsayimlar: spot ${spot_ozt}/ozt · fire %{fire:.0f} · paket ${pkg:.0f} ·
+--   kargo ${ship:.0f} (landed'in ICINDE, ayri kargo payi EKLENMEZ) ·
+--   carpan 2-7mm {m27} / 8-12mm {m812} ("mens wide" primi) ·
+--   Etsy %{fee:.1f} · offsite %{off:.0f} · kalinlik {thick}.
+--   Formul: landed = gram*spot_g*saflik*(1+fire) + iscilik + paket + kargo;
+--           motor = ROUND(landed_ham * carpan); liste = CEILING(motor*4/15)*5.
+--   Uretici motoru YENIDEN URETMEZ, formulu birebir cozer: v4'un 858
+--   hucresi / 5148 kolon kontrolu SIFIR SAPMA ile dogrulandi.
+--
+-- Yarim bedenler: grid yalnizca 13 tam beden tasir. Yarim beden grami komsu
+--   tam bedenlerin dogrusal orta-noktasi (ev yontemi, katalog-v3), fiyat ayni
+--   motor formulunden. Tam bedenler grid'le BIREBIR ({grid_note}).
+--   Liste araligi ${anchor/100:,.2f} - ${max(prices)/100:,.2f} · gorunen
+--   ${min(sales)/100:,.2f} - ${max(sales)/100:,.2f}.
 --
 -- Uretici: scripts/gen_catalog_ttg.py (saf, ic assert'li)
 -- Bu dosya: scripts/emit_ttg_migration.py ciktisi — ELLE DUZENLEMEYIN.
@@ -257,8 +284,8 @@ def emit(karat: str) -> str:
 
 insert into public.products (
   org_id, sku, title, description, tags, materials, status, currency,
-  price_cents, quantity, has_variations, image_url, num_images,
-  research_keyword, research_group
+  price_cents, listing_cost_cents, quantity, has_variations, image_url,
+  num_images, research_keyword, research_group
 )
 select
   o.id,
@@ -270,6 +297,7 @@ select
   'draft',
   'USD',
   {anchor},
+  {LABOR_CENTS},
   {QUANTITY_PER_VARIANT},
   true,
   {lit(images[0][0])},
@@ -295,11 +323,13 @@ update public.products p set
   research_group = {t['research_group']},
   image_url = {lit(images[0][0])},
   num_images = {len(images)},
+  listing_cost_cents = {LABOR_CENTS},
   updated_at = now()
 from public.organizations o
 where p.org_id = o.id and o.name = 'EON' and p.sku = {lit(family)};
 
--- ==== Varyantlar: {len(GRAMS_BY_KARAT[karat])} genislik x {len(SIZES)} beden = {len(rows)} ====
+-- ==== Varyantlar: {len(WIDTHS)} genislik x {len(SIZES)} beden = {len(rows)} ====
+-- price_cents = ETSY LISTE (Etsy'ye girilen). Gorunen fiyat liste x 0.75.
 
 create temp table _ttg (sku text, width int, ring_size text, grams numeric, price_cents int);
 insert into _ttg (sku, width, ring_size, grams, price_cents) values""")
