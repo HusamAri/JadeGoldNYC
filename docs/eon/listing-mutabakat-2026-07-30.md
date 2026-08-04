@@ -119,13 +119,22 @@ tag üzerinden yürüyor.
 
 Panele iki yeni **10K · 2mm · yüksek işçilik** taslağı eklendi (Listing
 Önerileri): `GLD-R-1006` Basketweave (çapraz dokuma, elmas tıraş) ve
-`GLD-R-1007` Diagonal Ribbed (çapraz yiv, pahlı parlak kenar). Her biri
-**125 varyant** (6-10mm × US 4-16, yarım bedenler dahil), gramlar
-`docs/eon/eon-weight-tables.json` **10K / 2.0mm** tablosundan.
+`GLD-R-1007` Diagonal Ribbed (çapraz yiv, pahlı parlak kenar). Gramlar
+`docs/eon/eon-weight-tables.json` **10K / 2.0mm** tablosundan (yarım bedenler
+komşu tam bedenler arasında doğrusal interpolasyon).
+
+**Varyant matrisi hammered ile eşitlendi (2026-08-04, kullanıcı kararı:**
+"genişlik, size ve varyant olarak hammered ile aynı tutalım"**).** İlk hâl
+125 varyanttı (yalnız 6-10mm); eksik 6 genişlik (2, 3, 4, 5, 11, 12mm)
+eklendi → her iki taslak **275 varyant** (11 genişlik × 25 beden), hammered'ın
+şeklinin birebir aynısı. Migration: `supabase/migrations/0124`.
 
 **FİYAT BAĞI (kullanıcı kararı):** bu iki ürün **hammered milgrain
-(4543442596) ile AYNI satış fiyatından** satılır. 250/250 varyant genişlik+beden
-eşleşmesiyle birebir aynı: **$920-$2.855**.
+(4543442596) ile AYNI satış fiyatından** satılır. Genişletme sonrası
+**275/275 varyant** genişlik+beden eşleşmesiyle birebir aynı (0 sapma):
+**$390-$3.390** (önceki dar matriste $920-$2.855). Yeni satırların Etsy
+`properties` dizisi (513 Width / 514 Ring Size + `value_ids`) hammered
+satırlarından kopyalandı — uydurulan `value_id` envanter PUT'unu kırar.
 
 > ⚠️ Üçü tek ladder'a bağlı. Hammered'ın fiyatı değişirse `GLD-R-1006` ve
 > `GLD-R-1007` de AYNI turda güncellenmeli, yoksa bağ sessizce kopar.
@@ -140,6 +149,18 @@ Maliyet referansı (v4 grid formülü 858 satırda doğrulandı: saflık `K/24`,
 bu fiyatlarda landed üstü marj **%53-77**, efektif satış **$150-212/g**.
 Rakip bandı ("10k hammered milgrain", 2026-07-27, 10 sonuç):
 $71 / $98 / $126 per gram · melt $55/g — yani konum bandın üstünde.
+
+### ⚠️ Açık kalem: hammered'ın gramları 2mm tablosuyla uyuşmuyor
+
+Hammered 2mm ilan edildi ama `product_variants.weight_grams` hâlâ
+`weight_source = 'catalog_v3'` (1.5mm dönemi + milgrain zammı) taşıyor —
+2.0mm tablosunun **~%17 altında** (ör. 10mm/US 10: hammered 10,04g,
+2.0mm tablosu 12,05g; ölçülen oran 1,195-1,209). Yeni iki ürün 2.0mm
+tablosunu kullandığı için **aynı fiyatı taşıyan üç listing farklı gram
+anlatıyor**. Fiyat canlı ve kullanıcı onaylı olduğundan gramlar burada
+DEĞİŞTİRİLMEDİ; maliyet/marj raporunu etkilediği için ayrı karar olarak
+kullanıcıya bırakıldı (milgrain zammı 2.0mm tabanına mı taşınacak, yoksa
+2.0mm tablosu mu doğrudan yazılacak).
 
 SKU beden biçimi katalog konvansiyonuna hizalandı (`-4.5`, noktalı). Eksik:
 her iki taslakta **fotoğraf yok**; panel-doğumlu taslakta görsel alanı
