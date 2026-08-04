@@ -51,6 +51,11 @@ export const etsyPaths = {
   // `supports_multiple_personalization_questions=true` gerekir.
   listingPersonalization: (shopId: number | string, listingId: number | string) =>
     `/shops/${shopId}/listings/${listingId}/personalization`,
+  // Kişiselleştirme OKUMA — yazma ucunun (yukarıda) aksine shop_id ALMAZ ve
+  // yalnız GET tanımlar. Yazma ucuna GET atmak 404 üretir (aynı tuzak
+  // shopListing'de yaşandı, bkz. lib/etsy/listing.ts).
+  listingPersonalizationRead: (listingId: number | string) =>
+    `/listings/${listingId}/personalization`,
   // Mağaza bölümleri (başlık + aktif listing sayısı).
   shopSections: (shopId: number | string) => `/shops/${shopId}/sections`,
   // Kargo profilleri (işlem süresi, menşei).
