@@ -51,3 +51,33 @@ tüm profiller için geçerli; milgrain/hammered yalnız işçilikte ayrışır.
 `pricing_engine_current` SECURITY DEFINER düzeltmesi · CRON_SECRET kalıcı
 rotasyonu · trafik-kaynağı CSV içe aktarıcı (kaynak toplamı = ziyaret
 doğrulaması hâlâ tutmuyor: Temmuz 326'ya karşı 261).
+
+## Faz 1 doğrulaması (2026-08-04) — GEÇTİ
+
+`lib/pricing-engine/eon-cost.ts` bağımsız harness ile koşturuldu (workflow
+ajanının raporuna güvenilmedi, sayılar burada yeniden üretildi):
+
+| Kontrol | Sonuç |
+|---|---|
+| 10K 5mm US7 dome | engine **449**, list **600** ✓ (landed 289,9958 · 3,92 g) |
+| 10K 8mm US7 | engine **856**, list **1145** ✓ (landed 427,8760 · 6,27 g) |
+| 10K 5mm US7 milgrain | engine **465**, list **620** ✓ (landed 299,9958 · 3,92 g) |
+| Yuvarlama tuzağı | landed yuvarlanınca **450**, yuvarlanmayınca **449** — fark ÇIKTIYLA kanıtlandı |
+| Kombinatorik süpürme | **858 kombinasyon, 0 ihlal** (3 karat × 2 profil × 11 genişlik × 13 beden) |
+| Değişmezler | sale = list×0,75 · list 5'in katı · engine > landed · landed monoton |
+| 8mm çarpan sıçraması | 7mm ×1,55 (592) → 8mm ×2,00 (856) ✓ |
+
+### Canlı grid ile fark — AÇIKLANDI, düzeltilmedi
+
+Motor, `pricing_engine_current` v4 grid'iyle 10 örnek satırın **7'sinde birebir**;
+3'ünde motor $3,75–$7,50 YÜKSEK (4mm, 7mm, 12mm US7). Gramlar birebir aynı.
+
+Kök neden **saflık**: brief 10K için `0.417` kilitliyor, canlı grid `10/24 =
+0.416667` kullanmış. Fark 0,00033 → malzemede ~$0,15 → engine'de ~$0,23; bu da
+bazı satırlarda $5'lik liste basamağını aşırıp satışta $3,75 fark yaratıyor.
+
+**Karar: motor 0.417'de kalır.** Gerekçe: (1) brief bu sabiti kilitli ilan etti,
+(2) üç altın değer 0.417 ile TUTUYOR — 10/24 ile tutmazdı. Canlı fiyatlar zaten
+motordan gelmiyor (EON `externalPricing = true`, fiyat xlsx'ten); motorun işi
+**landed maliyet** üretmek, fiyat basmak değil. İki sayı farklı amaca hizmet
+ediyor ve fark belgelendi — sessiz sapma değil.
