@@ -9,7 +9,13 @@ export interface EtsyListingDetail {
   tags?: string[];
 }
 
-/** Tek listing'i (güncel açıklamasıyla) okur. */
+/**
+ * Tek listing'i (güncel başlık/açıklama/tag'iyle) okur — `GET /listings/{id}`.
+ *
+ * NOT: Etsy'de `/shops/{shop_id}/listings/{listing_id}` ucu YALNIZ PATCH tanımlar
+ * (resmi OpenAPI şemasında `get` yoktur) — okuma için oraya vurmak 404/405 verir.
+ * Tek listing okumasının gerçek ucu budur; satıcı bağlamı gerekmez.
+ */
 export async function getListing(
   client: EtsyClient,
   listingId: number,
@@ -36,17 +42,6 @@ export async function updateListingDescription(
   );
 }
 
-/** Tek listing'i SATICI olarak okur (taslak/pasif dahil — shop_id gerekir). */
-export async function getShopListing(
-  client: EtsyClient,
-  listingId: number,
-): Promise<EtsyListingDetail> {
-  const shopId = await client.requireShopId();
-  return client.get<EtsyListingDetail>(
-    etsyPaths.shopListing(shopId, listingId),
-  );
-}
-
 export interface SeoVerification {
   ok: boolean;
   /** Doğrulama neden başarısız — kullanıcıya gösterilecek tek cümle. */
@@ -67,17 +62,23 @@ export interface SeoVerification {
  * Etsy okuması yazmanın hemen ardından bir tık bayat gelebildiği için uyuşmazlık
  * bir kez daha (kısa beklemeyle) sınanır — tek seferlik gecikme yanlış alarm
  * üretmesin.
+ *
+ * `expected.title` OPSİYONELDİR: başlık kuralı (kullanıcı, 2026-08-01) gereği
+ * SEO gönderimi Etsy başlığına dokunmuyor. Yazmadığımız bir alanı beklenen
+ * değerle kıyaslamak, Etsy editöründe elle düzenlenmiş her başlığı "sapma"
+ * sayıp doğru gönderimleri hatalı gösterirdi. Başlık verilmediğinde tek (ve
+ * asıl) kanıt tag listesidir.
  */
 export async function verifyListingSeo(
   client: EtsyClient,
   listingId: number,
-  expected: { title: string; tags: string[] },
+  expected: { title?: string; tags: string[] },
   opts: { firstDelayMs?: number; retryDelayMs?: number } = {},
 ): Promise<SeoVerification> {
   const norm = (s: string) => decodeHtmlEntities(s).trim();
   const tagKey = (t: string[]) =>
     t.map((x) => x.trim().toLowerCase()).sort().join("|");
-  const beklenenTitle = expected.title.trim();
+  const beklenenTitle = expected.title?.trim();
   const beklenenTags = tagKey(expected.tags);
 
   for (const [i, bekle] of [
@@ -87,7 +88,11 @@ export async function verifyListingSeo(
     await new Promise((r) => setTimeout(r, bekle));
     let live: EtsyListingDetail;
     try {
-      live = await getShopListing(client, listingId);
+      // Okuma `GET /listings/{id}` ile yapılır: satıcıya özel
+      // `/shops/{shop_id}/listings/{listing_id}` ucunun GET'i YOKTUR (yalnız
+      // PATCH) — oraya vurmak her doğrulamayı 404'e düşürüp "yazma sonrası
+      // okuma başarısız" yanlış alarmına çeviriyordu.
+      live = await getListing(client, listingId);
     } catch (e) {
       // Okuma başarısızsa yazmayı doğrulayamadık — sessizce başarı sayma.
       if (i === 1) {
@@ -99,19 +104,24 @@ export async function verifyListingSeo(
       continue;
     }
     const liveTitle = norm(live.title ?? "");
-    // Tag karşılaştırması yalnız Etsy alanı GERÇEKTEN döndürdüğünde yapılır:
-    // alan hiç gelmezse (uç bunu içermiyorsa) "boş liste" sanıp her gönderimi
-    // yanlış alarma çevirmeyelim — başlık asıl kanıttır.
     const tagsGeldi = Array.isArray(live.tags);
-    const tagUyusuyor = !tagsGeldi || tagKey(live.tags ?? []) === beklenenTags;
-    if (liveTitle === beklenenTitle && tagUyusuyor) {
+    // Başlık beklentisi varsa (eski çağrı biçimi) tag alanının hiç gelmemesi
+    // hoş görülür — o senaryoda kanıt başlıktır. Başlık beklenmiyorsa gönderilen
+    // TEK alan tag'dir: alan yanıtta yoksa doğrulama SONUÇSUZDUR, "geldi varsayıp"
+    // başarı yazmak yanlış/boş yazımı görünmez yapardı.
+    const tagUyusuyor = tagsGeldi
+      ? tagKey(live.tags ?? []) === beklenenTags
+      : beklenenTitle != null;
+    const titleUyusuyor = beklenenTitle == null || liveTitle === beklenenTitle;
+    if (titleUyusuyor && tagUyusuyor) {
       return { ok: true, liveTitle };
     }
     if (i === 1) {
-      const sapma =
-        liveTitle !== beklenenTitle
-          ? `başlık Etsy'de "${liveTitle.slice(0, 60)}…" (${liveTitle.length} kr), beklenen ${beklenenTitle.length} kr`
-          : "tag listesi Etsy'de farklı";
+      const sapma = !tagsGeldi
+        ? "Etsy yanıtı tag alanı içermedi — yazma doğrulanamadı"
+        : !tagUyusuyor
+          ? "tag listesi Etsy'de farklı"
+          : `başlık Etsy'de "${liveTitle.slice(0, 60)}…" (${liveTitle.length} kr), beklenen ${beklenenTitle!.length} kr`;
       return { ok: false, detail: sapma, liveTitle };
     }
   }

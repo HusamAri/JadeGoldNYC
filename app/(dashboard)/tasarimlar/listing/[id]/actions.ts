@@ -110,16 +110,22 @@ export async function updateListingFields(
 }
 
 /**
- * BAŞLIK + TAG'İ ETSY'YE GÖNDER — canlı listing SEO itişi.
+ * TAG'İ ETSY'YE GÖNDER — canlı listing SEO itişi.
  *
- * Akış: paneldeki (güncellenmiş) title/tags, Etsy updateListing PATCH'iyle
- * canlıya yazılır. Panel aynasının kaynağı Etsy olduğu için ("nihai kaynak
- * Etsy" senkron kuralı) bu itiş yapılmadan panelde kalan düzenleme bir sonraki
+ * BAŞLIK GÖNDERİLMEZ (kullanıcı kuralı, 2026-08-01): Etsy başlık değişiminde
+ * sıralama düşme uyarısı verdiği için başlıklara dokunulmuyor, SEO çalışması
+ * yalnız tag üzerinden yürüyor (bkz. docs/eon/listing-mutabakat-2026-07-30.md).
+ * updateListing gövdesinde `title` opsiyoneldir — göndermeyince Etsy'deki
+ * başlık olduğu gibi korunur.
+ *
+ * Akış: paneldeki (güncellenmiş) tag'ler Etsy updateListing PATCH'iyle canlıya
+ * yazılır. Panel aynasının kaynağı Etsy olduğu için ("nihai kaynak Etsy"
+ * senkron kuralı) bu itiş yapılmadan panelde kalan düzenleme bir sonraki
  * senkronda EZİLİR — düzenledin mi, gönder.
  *
- * Doğrulamalar Etsy'nin sert kuralları: başlık ≤140, tag ≤13 adet × ≤20
- * karakter. updateListing form-encoded bekler (requestForm; envanter PUT'u
- * istisnaydı). Yalnız owner/admin + Etsy yazma erişimi açık.
+ * Doğrulamalar Etsy'nin sert kuralları: tag ≤13 adet × ≤20 karakter.
+ * updateListing form-encoded bekler (requestForm; envanter PUT'u istisnaydı).
+ * Yalnız owner/admin + Etsy yazma erişimi açık.
  */
 export async function pushListingSeoToEtsy(
   productId: string,
@@ -148,12 +154,17 @@ export async function pushListingSeoToEtsy(
     return { error: "Bu listing Etsy'e bağlı değil — önce 'Etsy'e gönder' ile taslak açın." };
   }
 
-  const title = prod.title.trim();
-  if (!title) return { error: "Başlık boş olamaz." };
-  if (title.length > 140) {
-    return { error: `Başlık ${title.length} karakter — Etsy sınırı 140.` };
-  }
   const tags = (prod.tags ?? []).map((t) => t.trim()).filter(Boolean);
+  // BOŞ TAG KORUMASI: Etsy'de `tags` yazılabilir/temizlenebilir bir alandır —
+  // boş liste gönderilirse canlı tag'ler SİLİNİR ve read-back bunu yakalayamaz
+  // (beklenen boş = canlı boş → "doğrulandı" der). Gönderilecek tag yoksa
+  // PATCH hiç atılmaz.
+  if (tags.length === 0) {
+    return {
+      error:
+        "Bu listing'in paneldeki tag listesi boş — gönderim Etsy'deki tag'leri siler, önce tag girin.",
+    };
+  }
   if (tags.length > 13) return { error: `${tags.length} tag var — Etsy sınırı 13.` };
   const uzun = tags.find((t) => t.length > 20);
   if (uzun) return { error: `Tag ≤20 karakter olmalı: "${uzun}" (${uzun.length}).` };
@@ -167,11 +178,14 @@ export async function pushListingSeoToEtsy(
     await client.requestForm(
       "PATCH",
       etsyPaths.shopListing(shopId, prod.etsy_listing_id),
-      { title, tags: tags.join(",") },
+      // Yalnız `tags` — gövdeye `title` KOYULMAZ (başlık kuralı, yukarıdaki
+      // doküman bloğu). Etsy gönderilmeyen alanı olduğu gibi bırakır.
+      { tags: tags.join(",") },
     );
     // READ-BACK: "200 OK" teslim sayılmaz — yazdığımızı geri okuyup doğrula.
+    // Beklenen başlık VERİLMEZ: başlığa dokunmadığımız için canlı başlık ne
+    // olursa olsun doğrudur; kanıt tag listesidir.
     const dogrulama = await verifyListingSeo(client, prod.etsy_listing_id, {
-      title,
       tags,
     });
     await logAudit(admin, {
@@ -180,11 +194,10 @@ export async function pushListingSeoToEtsy(
       entityType: "product",
       entityId: productId,
       summary: dogrulama.ok
-        ? `Listing ${prod.etsy_listing_id}: başlık (${title.length} kr) + ${tags.length} tag Etsy'ye yazıldı ve geri okunarak doğrulandı.`
-        : `Listing ${prod.etsy_listing_id}: gönderim yapıldı ama DOĞRULANAMADI (${dogrulama.detail}).`,
+        ? `Listing ${prod.etsy_listing_id} (${prod.title.slice(0, 40)}): ${tags.length} tag Etsy'ye yazıldı ve geri okunarak doğrulandı (başlığa dokunulmadı).`
+        : `Listing ${prod.etsy_listing_id}: tag gönderimi yapıldı ama DOĞRULANAMADI (${dogrulama.detail}).`,
       diff: {
         etsy_listing_id: prod.etsy_listing_id,
-        title,
         tags,
         verified: dogrulama.ok,
         ...(dogrulama.ok ? {} : { verify_detail: dogrulama.detail }),
@@ -357,6 +370,30 @@ export async function renameListingSkusOnEtsy(
     };
   }
 
+  // Eksen adları (Width / Ring Size) için değer→ad haritası. Etsy custom slot
+  // 513/514'te property_name'i null döndürür; 2025 envanter PUT'u ise string
+  // ister — harita verilmezse eksen adları payload'dan düşer ve PUT "Expected
+  // string value for 'property_name'" ile patlar (fiyat/adet itişi bunu zaten
+  // taşıyordu, rename yolu taşımıyordu).
+  //
+  // Ürün-id yerine ESKİ SKU ÖNEKİYLE çekilir: bu action'ın çözdüğü çakışmada
+  // varyant satırları çoğu zaman kopyaya değil KAYNAK listing'e bağlıdır
+  // (product_id filtresi boş küme döndürürdü). Anahtar da eski SKU olmalı —
+  // buildInventoryUpdate envanteri rename ÖNCESİ canlı SKU'yla okur.
+  const { data: vRows } = await admin
+    .from("product_variants")
+    .select("sku, properties")
+    .eq("org_id", m.org_id)
+    .like("sku", `${from}%`);
+  const propsBySku = new Map<string, { name: string; value: string }[]>();
+  for (const v of (vRows ?? []) as {
+    sku: string | null;
+    properties: RawVariantProperties;
+  }[]) {
+    const sku = (v.sku ?? "").trim();
+    if (sku) propsBySku.set(sku, variantPropsForMatch(v.properties));
+  }
+
   try {
     const client = await EtsyClient.forOrg(m.org_id);
     const { renameListingSkuPrefix } = await import("@/lib/etsy/inventory");
@@ -365,6 +402,7 @@ export async function renameListingSkusOnEtsy(
       prod.etsy_listing_id,
       from,
       to,
+      propsBySku,
     );
     if (r.status === "error") return { error: r.detail ?? "SKU yazılamadı." };
     if (r.status === "unchanged") {
@@ -401,21 +439,47 @@ export async function renameListingSkusOnEtsy(
 export interface BulkSeoPushResult {
   ok?: boolean;
   error?: string;
-  /** Başarıyla gönderilen listing sayısı. */
+  /** BU çağrıda başarıyla gönderilen listing sayısı. */
   sent?: number;
   /** Gönderilemeyen listing'ler (id + neden) — kısmi başarı gizlenmez. */
   failed?: { listingId: number; error: string }[];
+  /** Süre bütçesi doldu, iş yarım kaldı — çağıran taraf devam çağrısı yapmalı. */
+  devam?: boolean;
+  /** Devam çağrısının başlayacağı sıra (domino imleci). */
+  nextIndex?: number;
+  /** Bu çağrıda işlenmeden kalan listing sayısı. */
+  kalan?: number;
+  /** Kapsamdaki toplam listing (ilerleme göstergesi için). */
+  total?: number;
 }
 
+/** Tek çağrının süre bütçesi — sayfa maxDuration 300sn, ~60sn pay bırakılır. */
+const BULK_SEO_BUDGET_MS = 240_000;
+/** Kaç listing'de bir ARA audit kaydı düşülür (kısmi yazım iz bırakmalı). */
+const BULK_SEO_AUDIT_EVERY = 25;
+
 /**
- * TOPLU SEO GÖNDERİMİ — org'un TÜM canlı listing'lerinin paneldeki başlık +
- * tag'ini tek tıkla Etsy'ye yazar. Tek-listing gönderiminin (yukarıda) toplu
- * hâli; idempotent — değişmemiş listing'e aynı değerleri yazmak zararsızdır.
- * Kural dışı kalan listing (başlık >140 vb.) TÜMÜ durdurmaz: atlanır ve
+ * TOPLU SEO GÖNDERİMİ — org'un TÜM canlı listing'lerinin paneldeki TAG'ini
+ * tek tıkla Etsy'ye yazar. Tek-listing gönderiminin (yukarıda) toplu hâli;
+ * idempotent — değişmemiş listing'e aynı tag'leri yazmak zararsızdır. BAŞLIK
+ * GÖNDERİLMEZ (başlık kuralı, 2026-08-01 — bkz. pushListingSeoToEtsy).
+ * Kural dışı kalan listing (tag yok / >13 tag vb.) TÜMÜ durdurmaz: atlanır ve
  * sonuçta nedeniyle raporlanır. Etsy oran sınırına saygı: istekler sıralı +
  * kısa aralıklı (requestForm zaten 429'da bir kez bekleyip yineler).
+ *
+ * DOMINO (bkz. lib/etsy/sync.ts advanceEtsySync): listing başına ~1-1,5 sn
+ * (PATCH + read-back) harcandığından 100+ listing tek çağrıda fonksiyon süre
+ * sınırını aşar; aşınca YANIT DA AUDIT DE kaybolur, yani canlıya yazılmış
+ * tag'lerin hiçbir izi kalmazdı. Bu yüzden çağrı bir süre bütçesiyle koşar,
+ * bütçe dolunca imleçle (`nextIndex`) yarıda döner ve çağıran taraf kaldığı
+ * yerden devam eder; ilerleme ayrıca BULK_SEO_AUDIT_EVERY listing'de bir
+ * audit'e yazılır.
+ *
+ * @param startIndex Kaçıncı listing'den devam edileceği (0 = baştan).
  */
-export async function pushAllListingSeoToEtsy(): Promise<BulkSeoPushResult> {
+export async function pushAllListingSeoToEtsy(
+  startIndex = 0,
+): Promise<BulkSeoPushResult> {
   const m = await requireMembership();
   if (!isManager(m.role)) return { error: MANAGER_ONLY_ERROR };
 
@@ -433,7 +497,11 @@ export async function pushAllListingSeoToEtsy(): Promise<BulkSeoPushResult> {
     // (canlı 403: "must be active or expired but is sold_out") — düzenlenemez
     // durumları hiç deneme, hata gürültüsü üretme.
     .in("status", ["active", "expired"])
-    .order("title");
+    // Sıra TAM olmalı: domino imleci (startIndex) çağrılar arasında aynı
+    // diziye denk gelmezse bazı listing'ler atlanır/tekrarlanır. Aynı başlıklı
+    // kayıtlarda beraberliği id bozar.
+    .order("title")
+    .order("id");
   if (error) return { error: error.message };
   const items = (data ?? []) as {
     id: string;
@@ -442,6 +510,11 @@ export async function pushAllListingSeoToEtsy(): Promise<BulkSeoPushResult> {
     tags: string[] | null;
   }[];
   if (items.length === 0) return { error: "Canlı listing yok." };
+  const basla = Math.max(0, Math.min(Math.trunc(startIndex), items.length));
+  if (basla === items.length) {
+    // Devam çağrısı kapsamın sonuna denk geldi — yapacak iş yok.
+    return { ok: true, sent: 0, failed: [], total: items.length, kalan: 0 };
+  }
 
   let client: EtsyClient;
   try {
@@ -458,21 +531,53 @@ export async function pushAllListingSeoToEtsy(): Promise<BulkSeoPushResult> {
   }
   const shopId = await client.requireShopId();
 
+  const bitis = Date.now() + BULK_SEO_BUDGET_MS;
   let sent = 0;
   const failed: { listingId: number; error: string }[] = [];
-  for (const it of items) {
-    const title = it.title.trim();
+  let i = basla;
+  let sonKayit = basla;
+
+  /**
+   * İlerlemeyi audit'e yazar. `sonSira` = işlenen son kaydın sıra numarası
+   * (1-tabanlı) = bir sonraki çağrının başlayacağı indeks.
+   */
+  const yazAudit = async (sonSira: number, ara: boolean, yarim: boolean) =>
+    logAudit(admin, {
+      orgId: m.org_id,
+      action: "etsy.seo_push",
+      entityType: "shop",
+      summary:
+        `Toplu SEO gönderimi${ara ? " (ara kayıt)" : ""}: ${basla + 1}-${sonSira}. sıra, ` +
+        `${sent} listing'in tag'i Etsy'ye yazıldı (başlığa dokunulmadı)` +
+        `${failed.length ? `, ${failed.length} hata` : ""}` +
+        `${yarim ? `; süre bütçesi doldu, ${items.length - sonSira} listing bekliyor` : ""}.`,
+      diff: {
+        sent,
+        failed,
+        start: basla,
+        next: sonSira,
+        total: items.length,
+        devam: yarim,
+      },
+      source: "app",
+    });
+
+  for (; i < items.length; i++) {
+    // Süre bütçesi: fonksiyon sınırına dayanmadan dur — yarıda kesilen çağrı
+    // ne yanıt ne audit bırakır, yani yazılanlar görünmez olurdu.
+    if (Date.now() >= bitis) break;
+    const it = items[i];
     const tags = (it.tags ?? []).map((t) => t.trim()).filter(Boolean);
     const kural =
-      !title
-        ? "başlık boş"
-        : title.length > 140
-          ? `başlık ${title.length}/140`
-          : tags.length > 13
-            ? `${tags.length}/13 tag`
-            : tags.find((t) => t.length > 20)
-              ? `tag >20 karakter`
-              : null;
+      // BOŞ TAG KORUMASI: boş liste göndermek Etsy'deki tag'leri SİLER ve
+      // read-back bunu yakalayamaz (boş = boş → "doğrulandı"). Önce bu.
+      tags.length === 0
+        ? "tag yok — gönderim atlandı"
+        : tags.length > 13
+          ? `${tags.length}/13 tag`
+          : tags.find((t) => t.length > 20)
+            ? `tag >20 karakter`
+            : null;
     if (kural) {
       failed.push({ listingId: it.etsy_listing_id, error: kural });
       continue;
@@ -481,12 +586,13 @@ export async function pushAllListingSeoToEtsy(): Promise<BulkSeoPushResult> {
       await client.requestForm(
         "PATCH",
         etsyPaths.shopListing(shopId, it.etsy_listing_id),
-        { title, tags: tags.join(",") },
+        // Yalnız `tags` — başlık gövdeye KOYULMAZ (başlık kuralı).
+        { tags: tags.join(",") },
       );
       // READ-BACK: yazılan her listing geri okunur; doğrulanmayan "gönderildi"
       // sayılmaz, sapma nedeniyle raporlanır (bkz. lib/etsy/listing.ts).
+      // Beklenen başlık verilmez: başlığa dokunulmadı, kanıt tag listesidir.
       const dogrulama = await verifyListingSeo(client, it.etsy_listing_id, {
-        title,
         tags,
       });
       if (dogrulama.ok) {
@@ -505,19 +611,26 @@ export async function pushAllListingSeoToEtsy(): Promise<BulkSeoPushResult> {
     }
     // Oran sınırı nezaketi — Etsy saniyede ~10 isteğe izin verir, aceleye gerek yok.
     await new Promise((r) => setTimeout(r, 150));
+    // Ara kayıt: çağrı beklenmedik yerde ölse bile kısmi yazım audit'te durur.
+    if (i + 1 - sonKayit >= BULK_SEO_AUDIT_EVERY) {
+      sonKayit = i + 1;
+      await yazAudit(sonKayit, true, false);
+    }
   }
 
-  await logAudit(admin, {
-    orgId: m.org_id,
-    action: "etsy.seo_push",
-    entityType: "shop",
-    summary: `Toplu SEO gönderimi: ${sent}/${items.length} listing'in başlık+tag'i Etsy'ye yazıldı${failed.length ? `, ${failed.length} hata` : ""}.`,
-    diff: { sent, failed },
-    source: "app",
-  });
+  const devam = i < items.length;
+  await yazAudit(i, false, devam);
 
   revalidatePath("/tasarimlar");
-  return { ok: failed.length === 0, sent, failed };
+  return {
+    ok: failed.length === 0 && !devam,
+    sent,
+    failed,
+    devam,
+    nextIndex: i,
+    kalan: items.length - i,
+    total: items.length,
+  };
 }
 
 /** Varyant satırı girdisi — inline editörden metin olarak gelir. */

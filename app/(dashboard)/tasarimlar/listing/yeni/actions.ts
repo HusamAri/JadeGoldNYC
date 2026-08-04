@@ -26,6 +26,8 @@ export interface DraftVariantInput {
   weight: string;
   /** USD metni ("129,00"); boş = bilinmiyor (motor dağıtır). */
   price: string;
+  /** Bu satırın varyasyon ekseni değeri (ör. "US 7"); `axisName` ile eşleşir. */
+  axisValue?: string;
 }
 
 export interface DraftListingInput {
@@ -35,12 +37,25 @@ export interface DraftListingInput {
   tags: string;
   /** Virgüllü liste ("14k gold, solid gold"). */
   materials: string;
+  /**
+   * Kapak görseli URL'i (ops.) → `products.image_url`. PUBLIC olmalı: hem
+   * listelerdeki küçük görsel hem Etsy'ye taslak gönderiminde kapak yüklemesi
+   * (lib/etsy/create-listing.ts) baytı bu adresten çeker. Boş bırakılabilir.
+   */
+  imageUrl: string;
   /** Ayar (ör. "14") — fiyat dağıtım motoruna gider (tek fiyat noktası senaryosu). */
   karat: string;
   /** Altın gram fiyatı USD/g (ops.) — tek fiyat noktasından dağıtım için. */
   goldSpot: string;
   /** Melt çarpanı (işçilik/kâr), vars. 2.5. */
   markup: string;
+  /**
+   * Varyasyon ekseninin ADI (ör. "Ring Size" / "Width") — satır başına değerle
+   * birlikte `product_variants.properties`e yazılır. Etsy'ye gönderimde
+   * varyantları AYRI seçeneklere ayıran tek sinyal budur; boşsa N varyant
+   * Etsy'de tek offering'e düşerdi (bkz. lib/etsy/create-listing varyant kilidi).
+   */
+  axisName?: string;
   variants: DraftVariantInput[];
 }
 
@@ -92,6 +107,13 @@ export async function createDraftListing(
   const title = input.title.trim();
   if (!title) return { error: "Başlık boş olamaz." };
 
+  // Kapak görseli: yalnız http(s) kabul edilir — Etsy'ye gönderimde bu adres
+  // sunucudan fetch edilir (data:/dosya yolu oradan indirilemez).
+  const imageUrl = (input.imageUrl ?? "").trim();
+  if (imageUrl && !/^https?:\/\/\S+$/i.test(imageUrl)) {
+    return { error: "Kapak görseli http(s) ile başlayan bir URL olmalı." };
+  }
+
   // SKU'su dolu satırlar geçerli varyanttır; SKU'lar org içinde benzersiz.
   const rows = input.variants
     .map((r) => ({ ...r, sku: r.sku.trim() }))
@@ -107,6 +129,28 @@ export async function createDraftListing(
   const skuSet = new Set(rows.map((r) => r.sku));
   if (skuSet.size !== rows.length) {
     return { error: "Varyant SKU'ları benzersiz olmalı." };
+  }
+
+  // Varyasyon ekseni: ad verildiyse HER satır bir değer taşımalı. Yarım eksen,
+  // Etsy'de "değişmeyen property" sayılır → varyantlar tek offering'e düşer
+  // (sessiz kayıp); burada erken ve anlaşılır hata veriyoruz.
+  const axisName = (input.axisName ?? "").trim();
+  const axisBySku = new Map<string, string>();
+  if (axisName) {
+    for (const r of rows) {
+      const value = (r.axisValue ?? "").trim();
+      if (!value) {
+        return {
+          error: `"${axisName}" ekseni için ${r.sku} satırında değer yok — eksen verilen her varyantta dolu olmalı.`,
+        };
+      }
+      axisBySku.set(r.sku, value);
+    }
+    if (new Set(axisBySku.values()).size < 2 && rows.length > 1) {
+      return {
+        error: `"${axisName}" değerleri tüm satırlarda aynı — bu bir varyasyon ekseni değil, sabit özelliktir.`,
+      };
+    }
   }
 
   // Motor: önce eksik ağırlıklar bedenden, sonra eksik fiyatlar ağırlıktan.
@@ -154,6 +198,11 @@ export async function createDraftListing(
       description: input.description.trim() || null,
       tags: splitList(input.tags),
       materials: splitList(input.materials),
+      // Panelde ÜRETİLEN taslağın kapağı: bu alana yazan başka yol yok (Etsy
+      // senkronu yalnız canlı listing'in aynasını basar), yani burada
+      // yazılmazsa listing kapaksız kalır ve Etsy'ye gönderimde de kapak
+      // bulunamaz.
+      image_url: imageUrl || null,
       status: "draft",
       currency: "USD",
       price_cents: minPriceCents,
@@ -175,6 +224,11 @@ export async function createDraftListing(
         price_cents: v.price_cents,
         weight_grams: v.weight_grams,
         weight_source: v.weight_source,
+        // Panel-seed şekli (düz nesne) — lib/variant-properties bunu kanonik
+        // Etsy dizisine indirger. Eksen yoksa null (tek-varyant taslak).
+        properties: axisBySku.has(v.sku)
+          ? { [axisName]: axisBySku.get(v.sku)! }
+          : null,
         active: true,
       })),
     );

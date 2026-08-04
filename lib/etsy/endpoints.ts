@@ -9,6 +9,12 @@ export const etsyPaths = {
   // Tek sipariş (webhook resource_url'inden id çözülünce taze durum çekilir).
   receipt: (shopId: number | string, receiptId: number | string) =>
     `/shops/${shopId}/receipts/${receiptId}`,
+  // getShopPaymentByReceiptId — sipariş ↔ ödeme bağı. PAYMENT_PROCESSING_FEE
+  // ledger satırının reference_id'si `shop_payment_id`; siparişe bağlamanın
+  // RESMİ yolu bu uçtur (Payment.receipt_id + payment_id). Kapsam:
+  // transactions_r (zaten alınmış — yeni izin gerekmez).
+  receiptPayments: (shopId: number | string, receiptId: number | string) =>
+    `/shops/${shopId}/receipts/${receiptId}/payments`,
   receiptTransactions: (
     shopId: number | string,
     receiptId: number | string,

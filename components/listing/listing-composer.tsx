@@ -31,7 +31,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const EMPTY_ROW: DraftVariantInput = { sku: "", weight: "", price: "" };
+const EMPTY_ROW: DraftVariantInput = {
+  sku: "",
+  weight: "",
+  price: "",
+  axisValue: "",
+};
 
 const CONFIDENCE_TR: Record<string, string> = {
   high: "yüksek",
@@ -84,9 +89,11 @@ export function ListingComposer() {
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState("");
   const [materials, setMaterials] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
   const [karat, setKarat] = useState("14");
   const [goldSpot, setGoldSpot] = useState("");
   const [markup, setMarkup] = useState("2.5");
+  const [axisName, setAxisName] = useState("");
   const [rows, setRows] = useState<DraftVariantInput[]>([
     { ...EMPTY_ROW },
     { ...EMPTY_ROW },
@@ -154,9 +161,11 @@ export function ListingComposer() {
         description,
         tags,
         materials,
+        imageUrl,
         karat,
         goldSpot,
         markup,
+        axisName,
         variants: rows,
       });
       if (res.error || !res.id) {
@@ -217,6 +226,23 @@ export function ListingComposer() {
                 placeholder="14k solid gold"
               />
             </div>
+            <div className="space-y-1.5 sm:col-span-2">
+              <Label htmlFor="lc-image">Kapak görseli URL&apos;i</Label>
+              <Input
+                id="lc-image"
+                type="url"
+                inputMode="url"
+                value={imageUrl}
+                onChange={(e) => setImageUrl(e.target.value)}
+                placeholder="https://…/kapak.jpg"
+              />
+              <p className="text-muted-foreground text-xs">
+                Panelde üretilen taslağın kapağını yazabileceğin TEK yer burası
+                (Etsy senkronu yalnız canlı listing&apos;in görselini aynalar).
+                Adres herkese açık olmalı — &quot;Etsy&apos;e gönder&quot;
+                adımında kapak baytı buradan indirilir.
+              </p>
+            </div>
             <div className="space-y-1.5">
               <Label htmlFor="lc-karat">Ayar</Label>
               <Input
@@ -261,11 +287,27 @@ export function ListingComposer() {
                 placeholder="2.5"
               />
             </div>
+            <div className="space-y-1.5 sm:col-span-2">
+              <Label htmlFor="lc-axis">Varyasyon ekseni (Etsy seçenek adı)</Label>
+              <Input
+                id="lc-axis"
+                value={axisName}
+                onChange={(e) => setAxisName(e.target.value)}
+                placeholder="ör. Ring Size / Width"
+              />
+              <p className="text-muted-foreground text-xs">
+                Varyantları Etsy&apos;de AYRI seçenek olarak göstermenin tek
+                yolu budur. Boş bırakırsan taslak panele düşer ama
+                &quot;Etsy&apos;e gönder&quot; adımı durur — eksensiz varyantlar
+                Etsy&apos;de tek seçeneğe iner.
+              </p>
+            </div>
           </div>
 
           <div className="space-y-2">
-            <div className="text-muted-foreground grid grid-cols-[1fr_7rem_7rem_2.5rem] gap-2 font-mono text-[11px] tracking-wide uppercase">
+            <div className="text-muted-foreground grid grid-cols-[1fr_8rem_7rem_7rem_2.5rem] gap-2 font-mono text-[11px] tracking-wide uppercase">
               <span>SKU (beden gömülü)</span>
+              <span>{axisName.trim() || "Eksen değeri"}</span>
               <span>Ağırlık (g)</span>
               <span>Fiyat ($)</span>
               <span />
@@ -273,13 +315,19 @@ export function ListingComposer() {
             {rows.map((r, i) => (
               <div
                 key={i}
-                className="grid grid-cols-[1fr_7rem_7rem_2.5rem] items-center gap-2"
+                className="grid grid-cols-[1fr_8rem_7rem_7rem_2.5rem] items-center gap-2"
               >
                 <Input
                   value={r.sku}
                   onChange={(e) => setRow(i, "sku", e.target.value)}
                   placeholder="ör. C14-22"
                   className="font-mono"
+                />
+                <Input
+                  value={r.axisValue ?? ""}
+                  onChange={(e) => setRow(i, "axisValue", e.target.value)}
+                  placeholder={axisName.trim() ? "ör. US 7" : "—"}
+                  disabled={!axisName.trim()}
                 />
                 <Input
                   inputMode="decimal"

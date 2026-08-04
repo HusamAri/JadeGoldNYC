@@ -488,6 +488,13 @@ export async function renameListingSkuPrefix(
   listingId: number,
   fromPrefix: string,
   toPrefix: string,
+  /** ESKİ SKU → panel varyant property'leri ({name, value}). Fiyat/adet itişiyle
+   *  AYNI PUT sözleşmesi geçerli: Etsy GET custom slot 513/514'te property_name
+   *  null döndürür, 2025 PUT ise string ister ("Expected string value for
+   *  'property_name' (got NULL)"). Verilmezse EON eksen adları (Width/Ring Size)
+   *  payload'dan düşer. Anahtar ESKİ SKU'dur — envanter canlı (rename öncesi)
+   *  Etsy SKU'suyla okunur. */
+  propsBySku?: Map<string, { name: string; value: string }[]>,
 ): Promise<SkuRenameOutcome> {
   try {
     const inventory = await getListingInventory(client, listingId);
@@ -509,7 +516,13 @@ export async function renameListingSkuPrefix(
     const readinessStateId = await resolveReadinessStateId(client);
     // Fiyat/adet/property'yi olduğu gibi koruyan taban payload (hiçbir offering
     // hedeflenmiyor → adetler aynen geri yazılır).
-    const update = buildInventoryUpdate(inventory, () => false, 0, readinessStateId);
+    const update = buildInventoryUpdate(
+      inventory,
+      () => false,
+      0,
+      readinessStateId,
+      propsBySku,
+    );
 
     const sample: { from: string; to: string }[] = [];
     let renamed = 0;

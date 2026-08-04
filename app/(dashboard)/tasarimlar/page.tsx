@@ -56,8 +56,10 @@ import { FilterSelect } from "@/components/data-table/filter-select";
 
 export const metadata = { title: "Listeler" };
 // Toplu SEO gönderimi (PushAllSeoButton → server action) bu sayfanın
-// fonksiyonunda koşar: ~30 listing × PATCH + nezaket beklemesi ≈ 20-30 sn —
-// varsayılan süre sınırına takılmasın.
+// fonksiyonunda koşar: listing başına PATCH + read-back + nezaket beklemesi
+// ≈ 1-1,5 sn, yani 100+ listing tek çağrıya sığmaz. Action bu yüzden 240 sn'lik
+// bütçeyle koşup imleçle yarıda döner (domino) — buradaki 300 sn o bütçenin
+// üstüne yanıt/audit payı bırakır, sınır artık işin boyutuna bağlı değildir.
 export const maxDuration = 300;
 
 /** Etsy listing durumları (sync `l.state`den gelir) + Türkçe etiket/rozet. */
