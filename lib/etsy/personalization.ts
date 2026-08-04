@@ -1,4 +1,6 @@
-import { EtsyClient } from "@/lib/etsy/client";
+// Yalnız tip olarak kullanılıyor — `import type` ile sabitlerin (aşağıdaki
+// DEFAULT_PERSONALIZATION_QUESTIONS) istemci modülünü sürüklemesini önler.
+import type { EtsyClient } from "@/lib/etsy/client";
 import { etsyPaths } from "@/lib/etsy/endpoints";
 
 /**
@@ -57,6 +59,45 @@ interface PersonalizationResponse {
 /** Etsy sınırları — aşan içerik 400 döndürür, önden keseriz. */
 const MAX_QUESTION_TEXT = 45;
 const MAX_DROPDOWN_LABEL = 20;
+
+/**
+ * YENİ listing'in açılış kişiselleştirmesi — kullanıcının hammered
+ * listing'inde (4543442596) Etsy editöründen kurduğu iki sorunun aynısı
+ * (ekran görüntüsüyle teyit edildi, 2026-08-04):
+ *  1. iç gravür metni — opsiyonel, 30 karakter
+ *  2. "Engraving Style" — opsiyonel dropdown, 4 seçenek
+ *
+ * Bu sabit YALNIZ TOHUMDUR: yeni listing daha ilk anda iki soruyla açılsın
+ * diye var. MEVCUT listing'ler için doğruluk kaynağı burası DEĞİL, Etsy'deki
+ * referans listing'dir (copyPersonalizationToAllListings). Kullanıcı Etsy'de
+ * seçenekleri değiştirirse burası bayatlar — o yüzden hiçbir yerde mevcut
+ * listing'in üzerine bu sabit yazılmaz.
+ */
+const ENGRAVING_INSTRUCTIONS =
+  "Optional inside-band engraving, up to 30 characters. " +
+  "Script by default; type BLOCK for block letters. Blank = none.";
+
+export const DEFAULT_PERSONALIZATION_QUESTIONS: PersonalizationQuestion[] = [
+  {
+    question_type: "text_input",
+    question_text: "Inside band engraving (optional)",
+    instructions: ENGRAVING_INSTRUCTIONS,
+    required: false,
+    max_allowed_characters: 30,
+  },
+  {
+    question_type: "dropdown",
+    // `instructions` dropdown'da YASAK — bilerek yok.
+    question_text: "Engraving Style",
+    required: false,
+    options: [
+      { label: "The Signature" },
+      { label: "The Ornament" },
+      { label: "The Monument" },
+      { label: "The Editorial" },
+    ],
+  },
+];
 
 /** Tek listing'in canlı kişiselleştirmesini okur (shop_id gerekmez). */
 export async function getListingPersonalization(

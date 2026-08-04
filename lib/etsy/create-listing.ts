@@ -5,6 +5,7 @@ import { etsyPaths } from "@/lib/etsy/endpoints";
 import { asEtsyProperties, type RawVariantProperties } from "@/lib/variant-properties";
 import { stripImageMetadata } from "@/lib/photo-kit/strip-metadata";
 import { logAudit } from "@/lib/audit";
+import { DEFAULT_PERSONALIZATION_QUESTIONS } from "@/lib/etsy/personalization";
 
 /**
  * PANEL TASLAĞI → ETSY DRAFT LISTING.
@@ -51,14 +52,6 @@ import { logAudit } from "@/lib/audit";
  *     create HİÇ denenmez: Etsy fotoğrafsız listing'i yayınlatmaz, açılan
  *     taslak etsy_listing_id'yi kilitleyip yeniden denemeyi de engellerdi.
  */
-
-/**
- * Kişiselleştirme talimatı — iç gravür (script ile aynı metin, 30 char limit).
- * Etsy `instructions` alanı EN FAZLA 120 karakter (aşılırsa 400 too_long) — kısa tut.
- */
-const PERSONALIZATION_INSTRUCTIONS =
-  "Optional inside-band engraving, up to 30 characters. " +
-  "Script by default; type BLOCK for block letters. Blank = none.";
 
 /** Etsy custom variation slot id'leri (en fazla iki eksen). */
 const CUSTOM_SLOT_IDS = [513, 514] as const;
@@ -542,31 +535,24 @@ export async function createDraftListingFromProduct(
 
   const url = `https://www.etsy.com/listing/${listingId}`;
 
-  // ── 1b) Kişiselleştirme (iç gravür) — 2025 migrasyonu: legacy create alanları
-  // yerine ayrı uç. Tek metin sorusu (opsiyonel, 30 char). Başarısız olursa
-  // listing yaşar; uyarı eklenir (buton "gravür eklenemedi" der, elle eklenebilir).
+  // ── 1b) Kişiselleştirme — 2025 migrasyonu: legacy create alanları yerine
+  // ayrı uç. İKİ soru (gravür metni + Engraving Style dropdown), kataloğun
+  // geri kalanıyla aynı (bkz. DEFAULT_PERSONALIZATION_QUESTIONS). Başarısız
+  // olursa listing yaşar; uyarı eklenir, alanlar Etsy'de elle ya da listing
+  // sayfasındaki "Tüm listing'lere uygula" ile tamamlanır.
   try {
     await client.request(
       "POST",
       etsyPaths.listingPersonalization(shopId, listingId) +
         "?supports_multiple_personalization_questions=true",
-      {
-        personalization_questions: [
-          {
-            question_type: "text_input",
-            question_text: "Inside band engraving (optional)",
-            instructions: PERSONALIZATION_INSTRUCTIONS,
-            required: false,
-            max_allowed_characters: 30,
-          },
-        ],
-      },
+      { personalization_questions: DEFAULT_PERSONALIZATION_QUESTIONS },
     );
   } catch (e) {
     warnings.push(
-      `Kişiselleştirme (iç gravür) eklenemedi: ${
+      `Kişiselleştirme (gravür + yazı stili) eklenemedi: ${
         e instanceof Error ? e.message : String(e)
-      }. Listing açıldı; gravür alanını Etsy'de elle ekleyebilirsiniz.`,
+      }. Listing açıldı; alanları Etsy'de elle ekleyebilir veya listing ` +
+        `sayfasındaki kişiselleştirme kartından kopyalayabilirsiniz.`,
     );
   }
 
