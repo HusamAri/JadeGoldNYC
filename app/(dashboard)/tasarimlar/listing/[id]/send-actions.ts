@@ -51,7 +51,7 @@ export async function sendListingToEtsy(
     .maybeSingle();
   if (pErr) return { error: pErr.message };
   if (!pData) return { error: "Listing bulunamadı." };
-  const prod = pData as Omit<DraftProduct, "variants">;
+  const prod = pData as Omit<DraftProduct, "variants" | "galleryUrls">;
 
   if (prod.etsy_listing_id != null) {
     return {
@@ -78,6 +78,20 @@ export async function sendListingToEtsy(
   }
   const variants = sortVariantsByWidthThenSize(withSku);
 
+  // Panel galerisi (org kilidi, galeri sırasıyla). Görsel yöneticisi görselleri
+  // SADECE `listing_images`'a yazar, `products.image_url`'e hiç dokunmaz —
+  // burası okunmazsa panelde özenle kurulan galeri Etsy'ye hiç gitmezdi.
+  const { data: imgData, error: imgErr } = await admin
+    .from("listing_images")
+    .select("url")
+    .eq("org_id", m.org_id)
+    .eq("product_id", productId)
+    .order("position", { ascending: true });
+  if (imgErr) return { error: imgErr.message };
+  const galleryUrls = ((imgData ?? []) as { url: string | null }[])
+    .map((r) => (r.url ?? "").trim())
+    .filter(Boolean);
+
   let client: EtsyClient;
   let shopId: number;
   try {
@@ -89,6 +103,7 @@ export async function sendListingToEtsy(
 
   const result = await createDraftListingFromProduct(admin, client, m.org_id, shopId, {
     ...prod,
+    galleryUrls,
     variants,
   });
 
