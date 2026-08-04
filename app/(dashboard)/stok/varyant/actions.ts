@@ -7,7 +7,7 @@ import { createClient } from "@/lib/supabase/server";
 import { logAudit } from "@/lib/audit";
 import { getEtsyWriteAccess } from "@/lib/db/queries/etsy";
 import { EtsyClient, EtsyNotConnectedError } from "@/lib/etsy/client";
-import { pushListingQuantity } from "@/lib/etsy/inventory";
+import { pushListingQuantity, pushPanelVariantsToListing } from "@/lib/etsy/inventory";
 
 /** Bir varyantın (SKU) hedef adedini kaydeder — satır içi otomatik kayıt. */
 export async function saveVariantTarget(
@@ -166,4 +166,99 @@ export async function pushVariantStock(): Promise<VariantPushResult> {
   revalidatePath("/stok/varyant");
   revalidatePath("/stok");
   return { updated, unchanged, errors, remaining };
+}
+
+export interface PushPanelVariantsResult {
+  updated?: number;
+  missing?: string[];
+  error?: string;
+}
+
+/**
+ * Panel varyantlarının tamamını bir listing'e yazar: fiyatlar, property'ler
+ * (kişiselleştirme dahil), adetler. Etsy'de bulunmayan varyantlar `missing`'de
+ * raporlanır (elle oluşturulması gerekir). Kişiselleştirme vb. panel-eklenmiş
+ * property'lerin Etsy'ye dağıtılması bu akış ile gerçekleşir.
+ */
+export async function pushAllPanelVariantsToListing(
+  productId: string,
+): Promise<PushPanelVariantsResult> {
+  const m = await requireMembership();
+  if (!isManager(m.role)) return { error: MANAGER_ONLY_ERROR };
+
+  const { writeEnabled } = await getEtsyWriteAccess(m.org_id);
+  if (!writeEnabled) return { error: "Etsy yazma erişimi kapalı." };
+
+  const supabase = await createClient();
+  const { data: prodData, error: prodErr } = await supabase
+    .from("products")
+    .select("id, etsy_listing_id")
+    .eq("org_id", m.org_id)
+    .eq("id", productId)
+    .maybeSingle();
+  if (prodErr) return { error: prodErr.message };
+  const prod = prodData as { id: string; etsy_listing_id: number | null } | null;
+  if (!prod) return { error: "Ürün bulunamadı." };
+  if (!prod.etsy_listing_id) return { error: "Bu ürün Etsy'ye gönderilmemiş." };
+
+  // Panel varyantlarını oku.
+  const { data: varData, error: varErr } = await supabase
+    .from("product_variants")
+    .select("sku, price_cents, quantity, properties")
+    .eq("org_id", m.org_id)
+    .eq("product_id", productId);
+  if (varErr) return { error: varErr.message };
+  const variantsRaw = (varData ?? []) as unknown as Array<{
+    sku: string;
+    price_cents: number | null;
+    quantity: number;
+    properties: Array<{ name: string; values: string[] }> | null;
+  }>;
+
+  if (variantsRaw.length === 0) {
+    return { error: "Panelde varyant yok." };
+  }
+
+  // Varyantları camelCase'e dönüştür.
+  const variants = variantsRaw.map((v) => ({
+    sku: v.sku,
+    priceCents: v.price_cents,
+    quantity: v.quantity,
+    properties: v.properties,
+  }));
+
+  let client: EtsyClient;
+  try {
+    client = await EtsyClient.forOrg(m.org_id);
+  } catch (e) {
+    if (e instanceof EtsyNotConnectedError)
+      return { error: "Etsy bağlantısı yok — Ayarlar'dan bağlanın." };
+    return {
+      error: e instanceof Error ? e.message : "Etsy istemcisi kurulamadı.",
+    };
+  }
+
+  const outcome = await pushPanelVariantsToListing(
+    client,
+    prod.etsy_listing_id,
+    variants,
+  );
+
+  if (outcome.status === "updated" || outcome.missing.length === 0) {
+    if (outcome.updated > 0 || outcome.missing.length > 0) {
+      await logAudit(supabase, {
+        orgId: m.org_id,
+        action: "etsy.variant_sync",
+        entityType: "product_variants",
+        summary:
+          `Panel varyantları Etsy'ye yazıldı: ${outcome.updated} güncellendi` +
+          (outcome.missing.length ? `, ${outcome.missing.length} bulunamadı` : ""),
+        source: "etsy",
+      });
+    }
+  }
+
+  revalidatePath("/stok/varyant");
+  revalidatePath("/stok");
+  return outcome as PushPanelVariantsResult;
 }
