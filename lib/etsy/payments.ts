@@ -29,16 +29,28 @@ interface PaymentsResponse {
   results?: EtsyPayment[];
 }
 
-/** Tek siparişin ödeme kayıtlarını okur (transactions_r kapsamı). */
+/**
+ * Tek siparişin ödeme kayıtlarını okur (transactions_r kapsamı).
+ *
+ * Yanıt şekli: Etsy OpenAPI'sinde bu ucun 200 şeması `Payments`, yani
+ * `{count, results: [Payment]}` sarmalayıcısıdır — uç adı ("...ByReceiptId")
+ * ve açıklaması ("A single payment") tekil gibi okunsa da gövde listedir.
+ * Yine de tekil Payment gövdesi gelirse (açıklamanın doğru, şemanın bayat
+ * olduğu ihtimali) onu da kabul ediyoruz: yanlış şekil sessizce "ödeme yok"a
+ * dönüşürse eşleme hiç kurulmaz ve işleme ücreti sipariş bazına inmez.
+ */
 export async function getReceiptPayments(
   client: EtsyClient,
   shopId: number,
   receiptId: number,
 ): Promise<EtsyPayment[]> {
-  const res = await client.get<PaymentsResponse>(
+  const res = await client.get<PaymentsResponse | EtsyPayment>(
     etsyPaths.receiptPayments(shopId, receiptId),
   );
-  return res.results ?? [];
+  if (res == null) return [];
+  const liste = (res as PaymentsResponse).results;
+  if (Array.isArray(liste)) return liste;
+  return (res as EtsyPayment).payment_id != null ? [res as EtsyPayment] : [];
 }
 
 export interface PaymentSyncResult {
@@ -68,6 +80,7 @@ export async function syncReceiptPayments(
   opts: { budgetMs?: number; limit?: number } = {},
 ): Promise<PaymentSyncResult> {
   const deadline = Date.now() + (opts.budgetMs ?? 45_000);
+  const limit = opts.limit ?? 500;
   const admin = createAdminClient();
   const client = await EtsyClient.forOrg(orgId);
   const shopId = await client.requireShopId();
@@ -79,7 +92,7 @@ export async function syncReceiptPayments(
     .not("etsy_receipt_id", "is", null)
     .is("etsy_payment_id", null)
     .order("etsy_receipt_id", { ascending: false })
-    .limit(opts.limit ?? 500);
+    .limit(limit);
   if (error) throw new Error(`sales okuma: ${error.message}`);
 
   const rows = (data ?? []) as { id: string; etsy_receipt_id: number }[];
@@ -87,7 +100,11 @@ export async function syncReceiptPayments(
     matched: 0,
     empty: 0,
     errors: 0,
-    remaining: false,
+    // Sayfa DOLU geldiyse eşlenmemiş sipariş bu turda bitmemiş demektir:
+    // sorgu `limit` ile kesiliyor, geride kalanlar bir sonraki turda çekilir.
+    // Bunu işaretlemezsek bütçe dolmasa bile senkron "bitti" der ve kalan
+    // siparişler ödeme kimliği olmadan (ücreti eksik) kalır.
+    remaining: rows.length >= limit,
   };
 
   for (const [i, s] of rows.entries()) {

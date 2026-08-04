@@ -11,6 +11,13 @@ import { EtsyClient, EtsyNotConnectedError } from "@/lib/etsy/client";
 import { etsyPaths } from "@/lib/etsy/endpoints";
 import { pushListingPrices } from "@/lib/etsy/inventory";
 import { verifyListingSeo } from "@/lib/etsy/listing";
+import {
+  applyListingPersonalization,
+  getListingPersonalization,
+  personalizationKey,
+  personalizationSummary,
+  type PersonalizationQuestion,
+} from "@/lib/etsy/personalization";
 import { logAudit } from "@/lib/audit";
 import {
   variantPropsForMatch,
@@ -950,4 +957,249 @@ export async function pushListingPricesToEtsyAction(
     if (e instanceof EtsyNotConnectedError) return { needsReconnect: true };
     return { error: e instanceof Error ? e.message : "Etsy'ye gönderilemedi." };
   }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+ * KİŞİSELLEŞTİRME ("custom options") — referanstan kopyalama
+ * ────────────────────────────────────────────────────────────────────────── */
+
+/** Toplu kopyalamanın süre bütçesi (sayfa maxDuration 300sn, pay bırakılır). */
+const BULK_PERSONALIZATION_BUDGET_MS = 240_000;
+
+export interface PersonalizationReadResult {
+  error?: string;
+  listingId?: number;
+  questions?: PersonalizationQuestion[];
+  summary?: string;
+}
+
+/**
+ * Bir listing'in Etsy'deki CANLI kişiselleştirmesini okur (yazma yok).
+ *
+ * Panel bu alanı aynalamıyor — tek doğruluk kaynağı Etsy. Kullanıcı önce
+ * referans listing'de ne olduğunu GÖRÜR, sonra kopyalamaya karar verir.
+ */
+export async function readListingPersonalization(
+  productId: string,
+): Promise<PersonalizationReadResult> {
+  const m = await requireMembership();
+  const admin = createAdminClient();
+  const { data: prod } = await admin
+    .from("products")
+    .select("etsy_listing_id")
+    .eq("id", productId)
+    .eq("org_id", m.org_id)
+    .maybeSingle();
+  const listingId = (prod as { etsy_listing_id: number | null } | null)
+    ?.etsy_listing_id;
+  if (!listingId) return { error: "Bu kayıt Etsy'de yayında değil." };
+
+  try {
+    const client = await EtsyClient.forOrg(m.org_id);
+    const questions = await getListingPersonalization(client, listingId);
+    return {
+      listingId,
+      questions,
+      summary: personalizationSummary(questions),
+    };
+  } catch (e) {
+    return {
+      error:
+        e instanceof EtsyNotConnectedError
+          ? "Etsy bağlantısı yok — Ayarlar'dan bağlanın."
+          : e instanceof Error
+            ? e.message
+            : String(e),
+    };
+  }
+}
+
+export interface BulkPersonalizationResult {
+  ok?: boolean;
+  error?: string;
+  /** Bu turda yazılan ve read-back ile doğrulanan listing sayısı. */
+  applied?: number;
+  /** Zaten referansla aynı olduğu için dokunulmayan listing sayısı. */
+  skipped?: number;
+  failed?: { listingId: number; error: string }[];
+  total?: number;
+  kalan?: number;
+  devam?: boolean;
+  nextIndex?: number;
+  /** Referansta okunan soruların özeti — kullanıcıya ne yazıldığını gösterir. */
+  summary?: string;
+}
+
+/**
+ * REFERANS LISTING'İN KİŞİSELLEŞTİRMESİNİ TÜM CANLI LISTING'LERE KOPYALAR.
+ *
+ * Sorular referanstan OKUNUR (kodda sabit değildir — bkz. lib/etsy/personalization.ts),
+ * hedeflere yazılır ve her hedefte AYNI TURDA geri okunarak doğrulanır.
+ * Referansın kendisi atlanır. Zaten aynı olan hedef de atlanır: Etsy POST'u
+ * mevcut kişiselleştirmeyi tamamen değiştirdiği için gereksiz yazma, alıcı
+ * tarafında soru kimliklerini boşuna döndürür.
+ *
+ * DOMINO (bkz. pushAllListingSeoToEtsy): listing başına ~1,5-2 sn (okuma +
+ * POST + read-back) harcanır; 40+ listing tek çağrıya sığmaz. Bütçe dolunca
+ * imleçle (`nextIndex`) yarıda dönülür, çağıran kaldığı yerden devam eder.
+ */
+export async function copyPersonalizationToAllListings(
+  referenceProductId: string,
+  startIndex = 0,
+): Promise<BulkPersonalizationResult> {
+  const m = await requireMembership();
+  if (!isManager(m.role)) return { error: MANAGER_ONLY_ERROR };
+
+  const { writeEnabled } = await getEtsyWriteAccess(m.org_id);
+  if (!writeEnabled) return { error: "Etsy yazma erişimi kapalı." };
+
+  const admin = createAdminClient();
+  const { data: ref } = await admin
+    .from("products")
+    .select("etsy_listing_id, title")
+    .eq("id", referenceProductId)
+    .eq("org_id", m.org_id)
+    .maybeSingle();
+  const refListingId = (ref as { etsy_listing_id: number | null } | null)
+    ?.etsy_listing_id;
+  if (!refListingId) return { error: "Referans listing Etsy'de yayında değil." };
+
+  let client: EtsyClient;
+  try {
+    client = await EtsyClient.forOrg(m.org_id);
+  } catch (e) {
+    return {
+      error:
+        e instanceof EtsyNotConnectedError
+          ? "Etsy bağlantısı yok — Ayarlar'dan bağlanın."
+          : e instanceof Error
+            ? e.message
+            : String(e),
+    };
+  }
+  const shopId = await client.requireShopId();
+
+  let kaynak: PersonalizationQuestion[];
+  try {
+    kaynak = await getListingPersonalization(client, refListingId);
+  } catch (e) {
+    return {
+      error: `Referans kişiselleştirme okunamadı: ${
+        e instanceof Error ? e.message : String(e)
+      }`,
+    };
+  }
+  if (kaynak.length === 0) {
+    // Boş kaynağı yaymak hedeflerdeki soruları SİLERDİ — baştan reddet.
+    return {
+      error:
+        "Referans listing'de kişiselleştirme sorusu yok — kopyalamak diğer " +
+        "listing'lerin sorularını silerdi.",
+    };
+  }
+  const kaynakKey = personalizationKey(kaynak);
+  const ozet = personalizationSummary(kaynak);
+
+  const { data, error } = await admin
+    .from("products")
+    .select("id, etsy_listing_id, title, status")
+    .eq("org_id", m.org_id)
+    .not("etsy_listing_id", "is", null)
+    .is("etsy_deleted_at", null)
+    // TASLAK DA DAHİL. SEO gönderimi active/expired ile sınırlı çünkü
+    // updateListing PATCH taslakta 403 veriyor; kişiselleştirme AYRI bir uç ve
+    // taslak düzenlemeyi engellediğine dair kanıt yok. Taslakları baştan
+    // dışlamak, tam da yeni açılan (ve bu yüzden soruları eksik olan)
+    // listing'leri kapsam dışı bırakırdı. Etsy reddederse hata o listing için
+    // raporlanır — sessiz atlama olmaz.
+    .in("status", ["active", "expired", "draft"])
+    // Domino imleci çağrılar arasında AYNI diziye denk gelmeli.
+    .order("title")
+    .order("id");
+  if (error) return { error: error.message };
+
+  const items = (
+    (data ?? []) as { id: string; etsy_listing_id: number; title: string }[]
+  ).filter((p) => p.etsy_listing_id !== refListingId);
+  if (items.length === 0) return { error: "Kopyalanacak başka canlı listing yok." };
+
+  const basla = Math.max(0, Math.min(Math.trunc(startIndex), items.length));
+  if (basla === items.length) {
+    return { ok: true, applied: 0, skipped: 0, failed: [], total: items.length, kalan: 0, summary: ozet };
+  }
+
+  const bitis = Date.now() + BULK_PERSONALIZATION_BUDGET_MS;
+  let applied = 0;
+  let skipped = 0;
+  const failed: { listingId: number; error: string }[] = [];
+  let i = basla;
+
+  for (; i < items.length; i++) {
+    if (Date.now() > bitis) break;
+    const it = items[i];
+    try {
+      // Zaten aynıysa yazma: gereksiz POST soru kimliklerini değiştirir.
+      const mevcut = await getListingPersonalization(client, it.etsy_listing_id);
+      if (personalizationKey(mevcut) === kaynakKey) {
+        skipped++;
+        continue;
+      }
+      const sonuc = await applyListingPersonalization(
+        client,
+        shopId,
+        it.etsy_listing_id,
+        kaynak,
+      );
+      if (sonuc.ok) applied++;
+      else {
+        failed.push({
+          listingId: it.etsy_listing_id,
+          error: `yazıldı ama doğrulanamadı: ${sonuc.detail}`,
+        });
+      }
+    } catch (e) {
+      failed.push({
+        listingId: it.etsy_listing_id,
+        error: e instanceof Error ? e.message.slice(0, 140) : String(e),
+      });
+    }
+  }
+
+  const yarim = i < items.length;
+  await logAudit(admin, {
+    orgId: m.org_id,
+    action: "etsy.personalization_push",
+    entityType: "shop",
+    summary:
+      `Kişiselleştirme kopyalandı (referans ${refListingId}): ${basla + 1}-${i}. sıra, ` +
+      `${applied} listing'e yazıldı ve doğrulandı, ${skipped} zaten aynıydı` +
+      `${failed.length ? `, ${failed.length} hata` : ""}` +
+      `${yarim ? `; süre bütçesi doldu, ${items.length - i} listing bekliyor` : ""}. ` +
+      `Yazılan: ${ozet}`,
+    diff: {
+      reference_listing_id: refListingId,
+      questions: kaynak.length,
+      applied,
+      skipped,
+      failed,
+      start: basla,
+      next: i,
+      total: items.length,
+      devam: yarim,
+    },
+    source: "app",
+  });
+
+  revalidatePath("/tasarimlar");
+  return {
+    ok: true,
+    applied,
+    skipped,
+    failed,
+    total: items.length,
+    kalan: items.length - i,
+    devam: yarim,
+    nextIndex: i,
+    summary: ozet,
+  };
 }

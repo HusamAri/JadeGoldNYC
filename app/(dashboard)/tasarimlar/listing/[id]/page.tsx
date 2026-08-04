@@ -39,6 +39,7 @@ import { ListingGapsCard } from "@/components/listing/listing-gaps-card";
 import { ListingFieldsForm } from "@/components/listing/listing-fields-form";
 import { ListingStateButton } from "@/components/listing/listing-state-button";
 import { SkuRenameForm } from "@/components/listing/sku-rename-form";
+import { PersonalizationCard } from "@/components/listing/personalization-card";
 import { EtsyCopyCard, type EtsyCopyField } from "@/components/listing/etsy-copy-card";
 import { SeoHelperConsole } from "@/components/seo/seo-helper-console";
 import { inferSeoInput } from "@/lib/seo/keyword-engine";
@@ -409,6 +410,18 @@ export default async function ListingDetayPage({
               SKU çakışması · kopyalanmış listing
             </p>
             <SkuRenameForm productId={product.id} ornekSku={product.sku} />
+          </div>
+        )}
+
+        {/* Kişiselleştirme ("custom options") — panel bu alanı aynalamıyor,
+            canlı hâli Etsy'den okunur. Referans listing'de kurulan sorular
+            buradan tüm canlı listing'lere yayılır. */}
+        {etsyListingId != null && (
+          <div className="border-input mb-3 rounded-xl border border-dashed p-3">
+            <p className="text-muted-foreground mb-2 font-mono text-[10px] tracking-[0.12em] uppercase">
+              Kişiselleştirme · custom options
+            </p>
+            <PersonalizationCard productId={product.id} />
           </div>
         )}
 
