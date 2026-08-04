@@ -6,6 +6,7 @@ import { etsyPaths } from "@/lib/etsy/endpoints";
 import { decodeHtmlEntities } from "@/lib/etsy/text";
 import { logAudit } from "@/lib/audit";
 import { rebuildGoldCostsBulk } from "@/lib/gold-cost-entry";
+import { syncReceiptPayments } from "@/lib/etsy/payments";
 import {
   etsyMoneyToCents,
   type EtsyListResponse,
@@ -378,6 +379,17 @@ export async function advanceEtsySync(
       await admin.rpc("rebuild_etsy_ledger_costs", { p_org_id: orgId });
     } catch {
       // yok say
+    }
+
+    // ÖNCE sipariş↔ödeme eşlemesi: PAYMENT_PROCESSING_FEE ledger satırının
+    // reference_id'si shop_payment_id olduğu için, bu eşleme yazılmadan işleme
+    // ücreti sipariş bazına inemez ve ücret eksik kalır (EON'da ölçülen açık
+    // %33,6). Sırayı bozma: eşleme → ücret yeniden hesabı.
+    try {
+      await syncReceiptPayments(orgId, { budgetMs: 20_000 });
+    } catch {
+      // Eşleme başarısızsa ücret hesabı yine koşar; eksik kalan sipariş
+      // sales_etsy_fee_coverage'da "işleme ücreti bilinmiyor" olarak görünür.
     }
 
     // sales.etsy_fees_cents'i ledger'dan gerçek per-order ücretle doldur (idempotent).
