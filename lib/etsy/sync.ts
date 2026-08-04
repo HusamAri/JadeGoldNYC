@@ -28,6 +28,14 @@ const LEDGER_MIN_CREATED = 1420070400;
 const LEDGER_WINDOW_S = 2_592_000;
 // Artımlı turlarda en son kayıttan geriye örtüşme payı (7 gün) — kayıp olmasın.
 const LEDGER_OVERLAP_S = 604_800;
+// Döngü bittikten SONRA koşan küme-tabanlı RPC'ler (ücret/altın maliyeti/bağ
+// tamiri) + imleç ve audit yazımı için ayrılan pay. `payments` fazı bütçesini
+// buradan artakalan süreden alır; yoksa istek serverless tavanında ölür ve o
+// yazımların hiçbiri koşmaz.
+const TAIL_RESERVE_MS = 12_000;
+// Bundan kısa bir dilimde eşleme yapmak anlamsız (sipariş başına bir Etsy GET
+// + oran sınırı beklemesi ~1sn) — turu boşa harcamak yerine domino sürdürülür.
+const MIN_PAYMENT_SLICE_MS = 4_000;
 
 export interface SyncProgress {
   done: boolean;
@@ -39,6 +47,12 @@ export interface SyncProgress {
     | "reviews"
     | "ledger"
     | "extras"
+    // Sipariş ↔ ödeme eşlemesi. AYRI bir faz olmak zorunda: sipariş başına bir
+    // Etsy GET gerektiriyor, binlerce eşlenmemiş sipariş tek çağrıya sığmaz.
+    // Kuyruk fazı olarak (döngü dışında, bütçesiz) koşarsa iki şey birden
+    // bozulur — cron'un 60sn tavanını aşabilir ve "kalan var" bilgisi kaybolup
+    // senkron erkenden "bitti" der.
+    | "payments"
     | "done";
   sales: number;
   items: number;
@@ -362,13 +376,41 @@ export async function advanceEtsySync(
           }
           await persist({ sync_ledger_until: ledgerUntil });
         }
-      } else {
+      } else if (phase === "extras") {
         // extras — API'nin sunduğu kalan her şey, tek geçişte:
         // (1) getShop → günlük mağaza sağlık fotoğrafı,
         // (2) mağaza bölümleri, (3) kargo profilleri,
         // (4) listing views/favori GÜNLÜK fotoğrafı (tarihçeyi panel biriktirir).
         await syncShopExtras(admin, client, orgId, shopId);
-        phase = "done";
+        phase = "payments";
+        await persist();
+      } else {
+        // payments — sipariş ↔ ödeme eşlemesi (getShopPaymentByReceiptId).
+        // PAYMENT_PROCESSING_FEE ledger satırının reference_id'si shop_payment_id
+        // olduğu için bu eşleme yazılmadan işleme ücreti sipariş bazına inemez
+        // (EON'da ölçülen açık %33,6).
+        //
+        // Bütçe EBEVEYNDEN türetilir: kalan süreden kuyruktaki RPC'lere pay
+        // ayrılır. Sabit bir bütçe (ör. 20sn) ebeveynin 50sn'sinin ÜSTÜNE
+        // binerdi ve cron'un 60sn maxDuration'ında istek öldürülüp ücret
+        // yeniden hesabı ile imleç/audit yazımı hiç koşmayabilirdi.
+        const kalan = budgetMs - (Date.now() - startedAt) - TAIL_RESERVE_MS;
+        if (kalan < MIN_PAYMENT_SLICE_MS) {
+          // Bu turda anlamlı iş yapacak süre yok — imleci koru, domino sürsün.
+          await persist();
+          return { done: false, status: "running", phase, ...counts };
+        }
+        let devam = false;
+        try {
+          const r = await syncReceiptPayments(orgId, { budgetMs: kalan });
+          devam = r.remaining;
+        } catch {
+          // Eşleme başarısızsa fazı bitir: ücret hesabı yine koşar, eşleşmeyen
+          // sipariş sales_etsy_fee_coverage'da "işleme ücreti bilinmiyor"
+          // görünür. Sonsuz döngüye girmemek için tekrar denemiyoruz.
+          devam = false;
+        }
+        if (!devam) phase = "done";
         await persist();
       }
     }
@@ -381,18 +423,9 @@ export async function advanceEtsySync(
       // yok say
     }
 
-    // ÖNCE sipariş↔ödeme eşlemesi: PAYMENT_PROCESSING_FEE ledger satırının
-    // reference_id'si shop_payment_id olduğu için, bu eşleme yazılmadan işleme
-    // ücreti sipariş bazına inemez ve ücret eksik kalır (EON'da ölçülen açık
-    // %33,6). Sırayı bozma: eşleme → ücret yeniden hesabı.
-    try {
-      await syncReceiptPayments(orgId, { budgetMs: 20_000 });
-    } catch {
-      // Eşleme başarısızsa ücret hesabı yine koşar; eksik kalan sipariş
-      // sales_etsy_fee_coverage'da "işleme ücreti bilinmiyor" olarak görünür.
-    }
-
-    // sales.etsy_fees_cents'i ledger'dan gerçek per-order ücretle doldur (idempotent).
+    // sales.etsy_fees_cents'i ledger'dan gerçek per-order ücretle doldur
+    // (idempotent). Sipariş↔ödeme eşlemesi `payments` FAZINDA yazıldı; sıra
+    // kritik — eşleme olmadan işleme ücreti siparişe bağlanamaz.
     try {
       await admin.rpc("rebuild_sales_etsy_fees", { p_org_id: orgId });
     } catch {

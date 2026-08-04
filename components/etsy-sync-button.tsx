@@ -29,6 +29,7 @@ const PHASE_LABELS: Record<string, string> = {
   reviews: "Yorumlar",
   ledger: "Ücretler/Reklam",
   extras: "Mağaza verileri",
+  payments: "Ödeme eşlemesi",
   done: "Tamamlandı",
 };
 
