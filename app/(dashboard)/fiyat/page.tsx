@@ -6,6 +6,11 @@ import { PageHeader } from "@/components/page-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { PricingConsole } from "@/components/pricing/pricing-console";
 import { PricingConfigForm } from "@/components/pricing/pricing-config-form";
+import {
+  GoldIndexCard,
+  type GoldBasisRow,
+} from "@/components/pricing/gold-index-card";
+import { fetchLiveSpotUsd, type SpotQuote } from "@/lib/pricing/gold-index";
 import type { PricingRunRow } from "@/lib/pricing-engine/run";
 
 export const metadata = { title: "Fiyat" };
@@ -47,6 +52,37 @@ export default async function FiyatPage() {
   const bekleyen = runs.find((r) => r.status === "dry_run") ?? null;
   const gecmis = runs.filter((r) => r.status !== "dry_run").slice(0, 4);
 
+  // Altın endeksi: taban geçmişi + canlı spot (dış kaynak; sayfayı asla
+  // kilitlemesin — 5sn'de vazgeç, kart "alınamadı" gösterir).
+  const { data: basisRows } = await admin
+    .from("gold_reprice_basis")
+    .select("spot_per_ozt, source, note, created_at")
+    .eq("org_id", m.org_id)
+    .order("created_at", { ascending: false })
+    .limit(5);
+  const basisHistory: GoldBasisRow[] = (
+    (basisRows ?? []) as {
+      spot_per_ozt: string | number;
+      source: string;
+      note: string | null;
+      created_at: string;
+    }[]
+  ).map((r) => ({
+    spot: Number(r.spot_per_ozt),
+    date: r.created_at,
+    source: r.source,
+    note: r.note,
+  }));
+  let liveQuote: SpotQuote | null = null;
+  try {
+    liveQuote = await Promise.race([
+      fetchLiveSpotUsd(),
+      new Promise<null>((resolve) => setTimeout(() => resolve(null), 5000)),
+    ]);
+  } catch {
+    liveQuote = null; // kart "alınamadı" gösterir; koşuyu cron/manuel dener
+  }
+
   return (
     <div className="page-stack pb-32">
       <PageHeader
@@ -79,7 +115,19 @@ export default async function FiyatPage() {
       />
 
       <div aria-hidden className="idx -mb-3">
-        <span>Fiyat / 02 · Motor ayarları</span>
+        <span>Fiyat / 02 · Altın endeksi (otomatik)</span>
+        <span className="idx-bar" />
+      </div>
+
+      <GoldIndexCard
+        basis={basisHistory[0]?.spot ?? config.spotUsdPerOzt}
+        liveSpot={liveQuote?.spotPerOzt ?? null}
+        liveSources={(liveQuote?.sources ?? []).map((s) => s.name).join(" + ")}
+        history={basisHistory}
+      />
+
+      <div aria-hidden className="idx -mb-3">
+        <span>Fiyat / 03 · Motor ayarları</span>
         <span className="idx-bar" />
       </div>
 

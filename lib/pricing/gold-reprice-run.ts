@@ -431,6 +431,13 @@ export async function runGoldReprice(opts: {
           source: spotQuote.sources.map((s) => s.name).join("+"),
           note: `Δ%${res.stepPct} · ${scoped.length} varyant hedeflendi, ${dbUpdated} panelde güncellendi`,
         });
+        // /fiyat konsolunun spot'u da TEK kaynaktan ilerlesin: endeks
+        // uyguladıktan sonra elle kuru çalıştırma bayat spotla "geri al"
+        // önermesin (ayna çelişkisi). Tüm diğer kolonlar default'lu.
+        await admin.from("pricing_config").upsert(
+          { org_id: org.id, spot_usd_per_ozt: spot },
+          { onConflict: "org_id" },
+        );
       }
 
       await logAudit(admin, {
