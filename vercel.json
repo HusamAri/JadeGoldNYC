@@ -2,6 +2,10 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "crons": [
     {
+      "path": "/api/cron/gold-reprice",
+      "schedule": "30 4 * * *"
+    },
+    {
       "path": "/api/cron/etsy-sync",
       "schedule": "0 6 * * *"
     },
