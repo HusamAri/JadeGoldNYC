@@ -26,6 +26,32 @@ interface ListingRow {
   title: string | null;
 }
 
+/**
+ * Oluşturma-bekleyen panel varyantı mı? Etsy'de hiç görülmemiş
+ * (etsy_product_id null) ama create-only push'un Etsy'de offering olarak
+ * AÇABİLECEĞİ satır: geçerli fiyat + property_id'li Etsy-format property —
+ * createMissingListingOfferings'in oluşturma şartının birebir aynısı.
+ * Mutabakat bu satırları SİLMEZ; aksi halde "panele ekle → butonla Etsy'de
+ * oluştur" akışı senkronla yarışır ve senkron önce koşarsa adayları temizler
+ * (0124 vakası: butona basılmadan gece senkronu 200 yeni varyantı sildi).
+ * Oluşturma gerçekleşince ilk senkron upsert'i etsy_product_id'yi doldurur ve
+ * satır normal ayna kurallarına döner.
+ */
+function isPendingCreate(v: {
+  etsy_product_id: number | null;
+  price_cents: number | null;
+  properties: unknown;
+}): boolean {
+  if (v.etsy_product_id != null) return false;
+  if (v.price_cents == null || v.price_cents <= 0) return false;
+  return (
+    Array.isArray(v.properties) &&
+    v.properties.some(
+      (p) => !!(p as { property_id?: number | null })?.property_id,
+    )
+  );
+}
+
 /** property_values → okunur beden/renk etiketi (ör. "Length: 7 inches"). */
 function propsLabel(props?: EtsyPropertyValue[]): string | null {
   if (!props || props.length === 0) return null;
@@ -46,7 +72,14 @@ function toRows(
   // ne veriyorsa o. Mint (panel-üretimi yedek SKU) KALDIRILDI: Etsy'de SKU
   // yoksa panelde de varyant satırı oluşmaz. Yalnız SKU'lu offering'ler yazılır.
   return live
-    .filter((p) => (p.sku ?? "").trim() !== "")
+    .filter(
+      (p) =>
+        (p.sku ?? "").trim() !== "" &&
+        // Okunabilir (silinmemiş) offering yoksa YAZMA: aksi halde price_cents
+        // null + quantity 0 upsert'lenip paneldeki iyi fiyat/adedi EZER. Etsy'de
+        // offering yoksa yazacak bir şey de yok — mevcut satır korunur.
+        (p.offerings ?? []).some((o) => !o.is_deleted),
+    )
     .map((p) => {
       const offerings = (p.offerings ?? []).filter((o) => !o.is_deleted);
       const priceCents = offerings.length
@@ -132,11 +165,19 @@ export async function syncListingVariants(
   const admin = createAdminClient();
   const client = await EtsyClient.forOrg(orgId);
 
+  // SATILAMAZ LİSTİNG SKU SAHİPLİĞİ ÇALAMAZ.
+  // Varyant satırı (org_id, sku) ile TEKİLDİR: aynı SKU iki listing'de varsa
+  // (çift listing) sahiplik her senkronda el değiştirir — panel "0 varyant"
+  // gösterir, fiyat itişi yanlış hedefe gider (canlı vaka: 14K Rose Dome).
+  // Pasif/süresi dolmuş listing satışta olmadığı için envanteri de karar
+  // taşımaz; taramanın dışında bırakılır ve SKU aktif/taslak listing'de kalır.
+  // (sold_out satılabilirliğini koruyor sayılır — kapsamda bırakıldı.)
   const { data: listingData } = await admin
     .from("products")
     .select("id, etsy_listing_id, title")
     .eq("org_id", orgId)
     .not("etsy_listing_id", "is", null)
+    .not("status", "in", "(inactive,expired)")
     .order("etsy_listing_id", { ascending: true })
     .limit(opts.limit ?? 1000);
 
@@ -179,7 +220,7 @@ export async function syncListingVariants(
         const keepSkus = new Set(rows.map((r) => r.sku));
         const { data: existing, error: exErr } = await admin
           .from("product_variants")
-          .select("id, sku")
+          .select("id, sku, etsy_product_id, price_cents, properties")
           .eq("org_id", orgId)
           .eq("product_id", listing.id);
         if (exErr) {
@@ -190,6 +231,19 @@ export async function syncListingVariants(
         } else {
           const staleIds = (existing ?? [])
             .filter((v) => !keepSkus.has((v as { sku: string }).sku))
+            // Oluşturma-bekleyen varyantlar ayna kuralından muaf (bkz.
+            // isPendingCreate): silinirse create-only push'un iteceği aday
+            // kalmaz ve "panele ekle → Etsy'de oluştur" akışı hiç tamamlanamaz.
+            .filter(
+              (v) =>
+                !isPendingCreate(
+                  v as {
+                    etsy_product_id: number | null;
+                    price_cents: number | null;
+                    properties: unknown;
+                  },
+                ),
+            )
             .map((v) => (v as { id: string }).id);
           if (staleIds.length > 0) {
             const { error: delErr } = await admin

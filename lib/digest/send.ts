@@ -20,10 +20,15 @@ export type DigestSendSummary = {
 
 /**
  * Tüm (veya tek) org için günlük digest üretir ve üyelerine gönderir.
+ * `extraRecipients`: manuel “Şimdi gönder” için oturum e-postası yedeği.
  */
 export async function sendDailyDigests(
   admin: SupabaseClient,
-  opts: { orgId?: string; dryRun?: boolean } = {},
+  opts: {
+    orgId?: string;
+    dryRun?: boolean;
+    extraRecipients?: { email: string; name: string | null; role: string }[];
+  } = {},
 ): Promise<DigestSendSummary> {
   const summary: DigestSendSummary = {
     orgs: 0,
@@ -34,7 +39,9 @@ export async function sendDailyDigests(
   };
 
   if (!opts.dryRun && !isEmailConfigured()) {
-    summary.errors.push("RESEND_API_KEY tanımlı değil.");
+    summary.errors.push(
+      "E-posta yapılandırılmadı (SMTP_USER/SMTP_PASS veya RESEND_API_KEY).",
+    );
     return summary;
   }
 
@@ -55,7 +62,10 @@ export async function sendDailyDigests(
         continue;
       }
 
-      const recipients = await listDigestRecipients(admin, orgId);
+      let recipients = await listDigestRecipients(admin, orgId);
+      if (recipients.length === 0 && opts.extraRecipients?.length) {
+        recipients = opts.extraRecipients.filter((r) => r.email.trim());
+      }
       if (recipients.length === 0) {
         summary.skipped += 1;
         summary.results[orgId] = {

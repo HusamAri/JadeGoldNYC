@@ -1,9 +1,12 @@
+"use client";
+
 import Link from "next/link";
 import { TriangleAlert, ChevronRight, CircleCheck } from "lucide-react";
 
-import type { AlertCenter, AlertSeverity } from "@/lib/db/queries/alerts";
+import type { Alert, AlertCenter, AlertSeverity } from "@/lib/db/queries/alerts";
 import { formatMoney } from "@/lib/money";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useCursorGlow } from "@/components/motion/cursor-glow";
 import { cn } from "@/lib/utils";
 
 const SEVERITY_META: Record<
@@ -33,15 +36,15 @@ const SEVERITY_META: Record<
 const ORDER: AlertSeverity[] = ["kritik", "onemli", "bilgi"];
 
 /**
- * Uyarı Merkezi — sistemin her yerindeki aksiyon gerektiren sinyaller tek
- * yerde, 3 önem derecesine (kritik/önemli/bilgi) ayrılmış ve bedele göre
- * sıralı. "Neler yolunda gitmiyor?" için tek bakış noktası.
+ * Uyarı Merkezi (liste) — sistemin her yerindeki aksiyon gerektiren sinyaller
+ * tek yerde, 3 önem derecesine ayrılmış ve bedele göre sıralı. Board'un yanında
+ * "detay + aksiyon" yüzeyi: generous satır aralıkları, cursor-reactive ışık,
+ * sakin hover settle. "Neler yolunda gitmiyor?" için tek bakış noktası.
  */
 export function AlertCenterCard({ data }: { data: AlertCenter }) {
   const { alerts, counts, total, currency } = data;
   const topSeverity: AlertSeverity =
     counts.kritik > 0 ? "kritik" : counts.onemli > 0 ? "onemli" : "bilgi";
-  // Görünür önem grupları — başlık çipleri ve gövde aynı listeden beslenir.
   const visibleSeverities = ORDER.filter((s) => counts[s] > 0);
 
   return (
@@ -78,13 +81,13 @@ export function AlertCenterCard({ data }: { data: AlertCenter }) {
             Her şey yolunda — aksiyon bekleyen uyarı yok.
           </p>
         ) : (
-          <div className="space-y-5">
+          <div className="space-y-6">
             {visibleSeverities.map((severity) => {
               const meta = SEVERITY_META[severity];
               const items = alerts.filter((a) => a.severity === severity);
               return (
-                <div key={severity} className="space-y-1">
-                  <div className="flex items-center gap-2">
+                <div key={severity} className="space-y-1.5">
+                  <div className="flex items-center gap-2 px-1">
                     <span className={cn("size-2 rounded-full", meta.dot)} />
                     <span
                       className={cn(
@@ -98,40 +101,14 @@ export function AlertCenterCard({ data }: { data: AlertCenter }) {
                       {items.length}
                     </span>
                   </div>
-                  <ul className="divide-y">
+                  <ul className="space-y-1">
                     {items.map((a) => (
-                      <li key={a.key}>
-                        <Link
-                          href={a.href}
-                          className="group hover:bg-secondary/40 -mx-2 flex items-center gap-3 rounded-lg px-2 py-3 transition-colors"
-                        >
-                          <span className="min-w-0 flex-1">
-                            <span className="flex items-center gap-2">
-                              <span className="text-sm font-medium">
-                                {a.title}
-                              </span>
-                              {a.costCents != null && a.costCents > 0 && (
-                                <span
-                                  className={cn(
-                                    "rounded-full px-1.5 py-0.5 font-mono text-[10px] font-semibold tabular-nums",
-                                    meta.chip,
-                                  )}
-                                  title="Dondurulan potansiyel gelir"
-                                >
-                                  {formatMoney(a.costCents, currency)}
-                                </span>
-                              )}
-                            </span>
-                            <span className="text-muted-foreground mt-0.5 block text-xs">
-                              {a.hint}
-                            </span>
-                          </span>
-                          <span className="text-muted-foreground group-hover:text-foreground flex shrink-0 items-center gap-0.5 text-xs font-medium">
-                            {a.actionLabel}
-                            <ChevronRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
-                          </span>
-                        </Link>
-                      </li>
+                      <AlertRow
+                        key={a.key}
+                        alert={a}
+                        meta={meta}
+                        currency={currency}
+                      />
                     ))}
                   </ul>
                 </div>
@@ -141,5 +118,66 @@ export function AlertCenterCard({ data }: { data: AlertCenter }) {
         )}
       </CardContent>
     </Card>
+  );
+}
+
+/** Tek uyarı satırı — cursor-reactive ışık + sakin hover settle. */
+function AlertRow({
+  alert: a,
+  meta,
+  currency,
+}: {
+  alert: Alert;
+  meta: { label: string; dot: string; text: string; chip: string };
+  currency: string;
+}) {
+  const { ref, onPointerMove } = useCursorGlow<HTMLAnchorElement>();
+
+  return (
+    <li>
+      <Link
+        ref={ref}
+        onPointerMove={onPointerMove}
+        href={a.href}
+        className={cn(
+          "group cursor-glow hover:bg-secondary/40 focus-visible:ring-ring/60 focus-visible:ring-[3px] focus-visible:ring-offset-2 focus-visible:ring-offset-background flex items-center gap-3 rounded-xl px-3 py-3 outline-none",
+          // Tıklanabilir KUTU sözleşmesi: hover'da satır karttan kalkar,
+          // basışta yüzeye oturur (asimetrik fizik).
+          "jg-tactile",
+          // Geçişler BURADA per-property yazılmak zorunda: `transition-*`
+          // utility'si (utilities katmanı) jg-tactile'ın transition'ını
+          // KOMPLE ezer — sadece `transition-colors` yazsaydık transform
+          // geçiş listesinden düşer, basma fiziği tamamen kaybolurdu.
+          // Sıra: background-color / box-shadow / transform.
+          "transition-[background-color,box-shadow,transform] [transition-duration:300ms,var(--motion-hover),var(--motion-press-out)] [transition-timing-function:var(--ease-premium),var(--ease-quiet),var(--ease-press-out)]",
+          // Basış hızlı ve lineer; bırakış yukarıdaki yaylanan eğriye döner.
+          "active:[transition-duration:var(--motion-press-in)] active:[transition-timing-function:linear]",
+        )}
+      >
+        <span className="min-w-0 flex-1">
+          <span className="flex items-center gap-2">
+            <span className="text-sm font-medium">{a.title}</span>
+            {a.costCents != null && a.costCents > 0 && (
+              <span
+                className={cn(
+                  "rounded-full px-1.5 py-0.5 font-mono text-[10px] font-semibold tabular-nums",
+                  meta.chip,
+                )}
+                title="Dondurulan potansiyel gelir"
+              >
+                {formatMoney(a.costCents, currency)}
+              </span>
+            )}
+          </span>
+          <span className="text-muted-foreground mt-0.5 block text-xs">
+            {a.hint}
+          </span>
+        </span>
+        <span className="text-muted-foreground group-hover:text-foreground flex shrink-0 items-center gap-0.5 text-xs font-medium transition-colors">
+          {a.actionLabel}
+          <ChevronRight className="size-3.5 transition-transform duration-300 ease-[var(--ease-premium)] group-hover:translate-x-0.5" />
+        </span>
+      </Link>
+    </li>
   );
 }

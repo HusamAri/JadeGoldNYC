@@ -16,6 +16,8 @@ import {
   YAxis,
 } from "recharts";
 
+import { useChartAnimation } from "@/lib/motion";
+
 /**
  * Grafik mürekkep değişkenleri — Spatial (açık) / Lume (koyu) kayıtları.
  * Açık: Spatial mor oklch ailesi (0.54/0.66 0.20 278–286), negatif 0.58 0.16 344.
@@ -363,6 +365,7 @@ export function TrendChart({
   /** Verilirse `prevRevenue` kesikli/soluk ikinci gelir çizgisi olarak çizilir. */
   compareLabel?: string;
 }) {
+  const anim = useChartAnimation();
   return (
     <div className={CHART_INK}>
       <ResponsiveContainer width="100%" height={260}>
@@ -409,6 +412,7 @@ export function TrendChart({
               fill: "var(--jg-ink-1)",
               filter: "url(#trend-dotglow)",
             }}
+            {...anim}
           />
           <Area
             type="monotone"
@@ -419,6 +423,7 @@ export function TrendChart({
             strokeWidth={2}
             strokeDasharray="4 3"
             dot={false}
+            {...anim}
           />
         </AreaChart>
       </ResponsiveContainer>
@@ -441,6 +446,7 @@ export function OrdersBarChart({
   /** Verilirse `prevOrders` soluk ikinci bar serisi olarak çizilir. */
   compareLabel?: string;
 }) {
+  const anim = useChartAnimation();
   const total = data.reduce((a, d) => a + (d.orders ?? 0), 0);
   if (total === 0) {
     return (
@@ -487,7 +493,7 @@ export function OrdersBarChart({
             name="Sipariş"
             shape={<BarNeo defsId="orders" accentIndex={accentIdx} />}
             background={<GrooveTrack defsId="orders" />}
-            isAnimationActive={false}
+            {...anim}
           />
           {/* Karşılaştırma dönemi — aynı cam dilin soluk hâli (dim dolgu),
               oyuk ray yok: asıl seriden görsel olarak geride durur. */}
@@ -499,7 +505,7 @@ export function OrdersBarChart({
               stroke="var(--jg-bar-edge-dim)"
               strokeWidth={1}
               radius={[4, 4, 0, 0]}
-              isAnimationActive={false}
+              {...anim}
             />
           )}
         </BarChart>
@@ -522,6 +528,7 @@ export function RevenueAreaChart({
   /** Verilirse `compareRevenue` kesikli/soluk ikinci çizgi olarak çizilir. */
   compareLabel?: string;
 }) {
+  const anim = useChartAnimation();
   return (
     <div className={CHART_INK}>
       <ResponsiveContainer width="100%" height={230}>
@@ -585,6 +592,7 @@ export function RevenueAreaChart({
               fill: "var(--jg-ink-2)",
               filter: "url(#rev-dotglow)",
             }}
+            {...anim}
           />
         </AreaChart>
       </ResponsiveContainer>
@@ -597,6 +605,7 @@ export function CategoryPie({
 }: {
   data: { name: string; value: number }[];
 }) {
+  const anim = useChartAnimation();
   if (data.length === 0) {
     return (
       <div className="text-muted-foreground flex h-[260px] items-center justify-center text-sm">
@@ -637,6 +646,7 @@ export function CategoryPie({
             stroke="var(--jg-slice-edge)"
             strokeWidth={1.5}
             filter="url(#pie-float)"
+            {...anim}
           >
             {data.map((_, i) => (
               <Cell key={i} fill={COLORS[i % COLORS.length]} />

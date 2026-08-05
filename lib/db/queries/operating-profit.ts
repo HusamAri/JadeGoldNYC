@@ -27,8 +27,12 @@ export interface OperatingMonth {
 
 export interface OperatingProfitSeries {
   months: OperatingMonth[];
+  /** Org varsayılanı dışı satış kaydı (toplama girmez). */
   salesNonUsd: number;
+  /** Org varsayılanı dışı maliyet kaydı (toplama girmez). */
   costsNonUsd: number;
+  /** Toplamların para birimi — organizations.default_currency. */
+  currency: string;
   /** RPC henüz kurulu değilse (migration 0097 uygulanmamış) false döner. */
   available: boolean;
 }
@@ -54,12 +58,13 @@ export async function getOperatingProfitSeries(
   if (error || !data) {
     // Migration 0097 uygulanmadıysa kart boş durumda kalır; hata yutulmaz.
     if (error) console.error("operating_profit_monthly:", error.message);
-    return { months: [], salesNonUsd: 0, costsNonUsd: 0, available: false };
+    return { months: [], salesNonUsd: 0, costsNonUsd: 0, currency: "USD", available: false };
   }
   const payload = data as {
     months: RpcMonth[] | null;
     sales_non_usd: number;
     costs_non_usd: number;
+    currency?: string;
   };
   const rows = (payload.months ?? []).map((m) => {
     const contribution = m.revenue_cents - m.variable_cents;
@@ -79,6 +84,7 @@ export async function getOperatingProfitSeries(
     months: rows,
     salesNonUsd: payload.sales_non_usd ?? 0,
     costsNonUsd: payload.costs_non_usd ?? 0,
+    currency: payload.currency ?? "USD",
     available: true,
   };
 }

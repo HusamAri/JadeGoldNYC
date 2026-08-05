@@ -4,6 +4,7 @@ import { Lightbulb, Archive, Plus, ExternalLink, ImageOff } from "lucide-react";
 import { requireMembership } from "@/lib/auth";
 import { listListingsIndex } from "@/lib/db/queries/listings";
 import { formatMoney } from "@/lib/money";
+import { discountedCents } from "@/lib/discount";
 import { OrgMark } from "@/components/brand/org-mark";
 import { PageHeader } from "@/components/page-header";
 import { GoldStream } from "@/components/brand/gold-stream";
@@ -152,7 +153,7 @@ function LifecycleTable({
                 <img
                   src={r.image_url}
                   alt=""
-                  className="size-10 rounded-md object-cover"
+                  className="thumb-lift border-border size-10 rounded-md border object-cover"
                 />
               ) : (
                 <div className="bg-muted text-muted-foreground flex size-10 items-center justify-center rounded-md">
@@ -170,13 +171,34 @@ function LifecycleTable({
                 </span>
               </Link>
               <div className="text-muted-foreground mt-0.5 font-mono text-[11px] tracking-wide">
-                {r.sku}
+                {r.sku ?? "—"}
               </div>
             </TableCell>
             <TableCell className="text-right whitespace-nowrap tabular-nums">
-              {r.price_cents != null
-                ? formatMoney(r.price_cents, r.currency)
-                : "—"}
+              {r.price_cents == null ? (
+                "—"
+              ) : r.discount_pct > 0 ? (
+                // Sessiz vurgu: tek renkli fiyat + üstü çizili taban yeter;
+                // kutu rozet ayrı bir yarışan vurgu olurdu. Yüzde, sakin
+                // mono-muted metin olarak fiyatın önünde durur.
+                <span className="inline-flex items-baseline gap-1.5">
+                  <span className="text-muted-foreground font-mono text-[10px]">
+                    −%{r.discount_pct}
+                  </span>
+                  <span className="text-[color:var(--tl-doing)] font-medium">
+                    {formatMoney(
+                      discountedCents(r.price_cents, r.discount_pct) ??
+                        r.price_cents,
+                      r.currency,
+                    )}
+                  </span>
+                  <span className="text-muted-foreground/70 text-xs line-through">
+                    {formatMoney(r.price_cents, r.currency)}
+                  </span>
+                </span>
+              ) : (
+                formatMoney(r.price_cents, r.currency)
+              )}
             </TableCell>
             <TableCell className="text-right tabular-nums">
               {r.variant_count > 0 ? (

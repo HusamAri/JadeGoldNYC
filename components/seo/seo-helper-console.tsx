@@ -106,16 +106,31 @@ async function copy(text: string, what: string) {
  * Listing SEO Yardımcısı konsolu — ürün özelliklerini gir, anlık olarak
  * Etsy'ye uygun başlık + 13 etiket + açıklama + SEO skoru üret. Üretim saf
  * (lib/seo/keyword-engine); değişiklikte useMemo ile yeniden hesaplar.
+ *
+ * `initial` verilirse (listing detay gömmesi — inferSeoInput çıktısı)
+ * seçiciler o değerlerle açılır; verilmezse genel varsayılanlar.
  */
-export function SeoHelperConsole() {
-  const [productType, setProductType] = useState<ProductType>("necklace");
-  const [chainStyle, setChainStyle] = useState<ChainStyle>("herringbone");
-  const [material, setMaterial] = useState<Material>("10k-solid");
-  const [focus, setFocus] = useState<Focus>("dainty");
-  const [market, setMarket] = useState<Market>("US");
-  const [audience, setAudience] = useState<Audience>("women");
-  const [widthMm, setWidthMm] = useState("");
-  const [occasion, setOccasion] = useState("");
+export function SeoHelperConsole({
+  initial,
+}: {
+  initial?: Partial<SeoInput>;
+} = {}) {
+  const [productType, setProductType] = useState<ProductType>(
+    initial?.productType ?? "necklace",
+  );
+  const [chainStyle, setChainStyle] = useState<ChainStyle>(
+    initial?.chainStyle ?? "herringbone",
+  );
+  const [material, setMaterial] = useState<Material>(
+    initial?.material ?? "10k-solid",
+  );
+  const [focus, setFocus] = useState<Focus>(initial?.focus ?? "dainty");
+  const [market, setMarket] = useState<Market>(initial?.market ?? "US");
+  const [audience, setAudience] = useState<Audience>(
+    initial?.audience ?? "women",
+  );
+  const [widthMm, setWidthMm] = useState(initial?.widthMm ?? "");
+  const [occasion, setOccasion] = useState(initial?.occasion ?? "");
 
   const input: SeoInput = useMemo(
     () => ({

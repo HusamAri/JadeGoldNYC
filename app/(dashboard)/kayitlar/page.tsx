@@ -1,6 +1,9 @@
 import { ScrollText, Download } from "lucide-react";
 
 import { listAudit } from "@/lib/db/queries/audit";
+import { getMembership, getUser } from "@/lib/auth";
+import { getPinLibrary, getPinsForTargets } from "@/lib/db/queries/pins";
+import { PinBoard } from "@/components/pins/pin-board";
 import { strParam, numParam, type RawSearchParams } from "@/lib/searchparams";
 import { auditSummary } from "@/lib/audit-format";
 import {
@@ -69,6 +72,16 @@ export default async function KayitlarPage({
     limit,
     offset,
   });
+
+  // Pinler: kullanıcı aksiyonları da iğnelenebilir yüzey (kullanıcı kararı).
+  // Liste TEK toplu sorguyla çekilir; kullanıcının seti tepsiye iner.
+  const [m, user] = await Promise.all([getMembership(), getUser()]);
+  const [pinMap, myStickers] = await Promise.all([
+    m
+      ? getPinsForTargets(m.org_id, "audit", rows.map((r) => String(r.id)))
+      : Promise.resolve(new Map()),
+    getPinLibrary(),
+  ]);
 
   const exportQs = new URLSearchParams();
   if (entityType) exportQs.set("entity", entityType);
@@ -148,7 +161,19 @@ export default async function KayitlarPage({
                         {AUDIT_ACTION_LABELS[a.action] ?? a.action}
                       </Badge>
                     </TableCell>
-                    <TableCell>{auditSummary(a)}</TableCell>
+                    <TableCell>
+                      <span className="flex items-center gap-2">
+                        {auditSummary(a)}
+                        <PinBoard
+                          targetType="audit"
+                          targetId={String(a.id)}
+                          pins={pinMap.get(String(a.id)) ?? []}
+                          myStickers={myStickers}
+                          meId={user?.id}
+                          size="sm"
+                        />
+                      </span>
+                    </TableCell>
                     <TableCell>
                       <Badge variant="outline">
                         {AUDIT_SOURCE_LABELS[a.source] ?? a.source}

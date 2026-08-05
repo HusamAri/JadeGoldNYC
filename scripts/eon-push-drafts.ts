@@ -31,7 +31,7 @@ import { createClient } from "@supabase/supabase-js";
 
 import { EtsyClient } from "../lib/etsy/client";
 import { etsyPaths } from "../lib/etsy/endpoints";
-import { applyEonPersonalization } from "../lib/etsy/personalization";
+import { DEFAULT_PERSONALIZATION_QUESTIONS } from "../lib/etsy/personalization";
 
 // ── .env.local (Next dışı bağlam) ─────────────────────────────────────────
 for (const line of readFileSync(".env.local", "utf8").split("\n")) {
@@ -88,6 +88,7 @@ function findTaxonomy(nodes: TaxNode[], name: string): TaxNode | null {
   }
   return null;
 }
+
 
 async function main() {
   const gate = JSON.parse(readFileSync(GATE, "utf8")) as { listings: GateRow[] };
@@ -241,10 +242,16 @@ async function main() {
     );
     console.log(`✓ ${g.no}: taslak açıldı #${listing.listing_id} (state=${listing.state})`);
 
-    // 1b) Kişiselleştirme — iç gravür (30) + engraving style dropdown.
+    // 1b) Kişiselleştirme — ayrı uç (2025 migrasyonu). İki soru (gravür metni +
+    // Engraving Style dropdown), uygulamayla TEK kaynaktan gelir.
     try {
-      await applyEonPersonalization(client, shopId, listing.listing_id);
-      console.log(`  kişiselleştirme (gravür + style) eklendi`);
+      await client.request(
+        "POST",
+        etsyPaths.listingPersonalization(shopId, listing.listing_id) +
+          "?supports_multiple_personalization_questions=true",
+        { personalization_questions: DEFAULT_PERSONALIZATION_QUESTIONS },
+      );
+      console.log(`  kişiselleştirme (${DEFAULT_PERSONALIZATION_QUESTIONS.length} soru) eklendi`);
     } catch (e) {
       console.warn(`  kişiselleştirme eklenemedi: ${e instanceof Error ? e.message : String(e)}`);
     }

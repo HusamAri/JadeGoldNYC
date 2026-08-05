@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import {
   CalendarClock,
@@ -15,7 +15,14 @@ import type {
   TimelineEvent,
   TimelineTask,
 } from "@/lib/db/queries/timeline";
+import {
+  eventPinTargetId,
+  type PinSticker,
+  type TargetPin,
+} from "@/lib/pins/meta";
+import { PinBoard } from "@/components/pins/pin-board";
 import { TASK_COLOR_BY_KEY, taskIconUrl } from "@/lib/task-style";
+import { useCursorGlow } from "@/components/motion/cursor-glow";
 import {
   HorizontalTimelineBand,
   type HTask,
@@ -84,17 +91,38 @@ interface DayBucket {
  * Observer ile bir kez belirir (reveal); idle'da animasyon/backdrop churn YOK
  * (perf dersi). prefers-reduced-motion global kuralıyla tüm geçişler durur.
  */
+/** Görev/olay pinleri + kullanıcının seti — sunucudan toplu iner (Map değil
+    düz obje: RSC→client sınırında serileşebilir olmalı). */
+export interface TimelinePinCtx {
+  taskPins: Record<string, TargetPin[]>;
+  eventPins: Record<string, TargetPin[]>;
+  myStickers: PinSticker[];
+  meId?: string;
+}
+
 export function PanelTimeline({
   data,
   serverToday,
+  pinCtx,
 }: {
   data: TimelineData;
   serverToday: string;
+  pinCtx?: TimelinePinCtx;
 }) {
   const today = serverToday;
   const scrollRef = useRef<HTMLDivElement>(null);
   const todayRef = useRef<HTMLDivElement>(null);
   const [todayOffscreen, setTodayOffscreen] = useState(false);
+  // Omurga ışığı — scroll kabındaki pointer'ı --mx/--my'ye yazar; omurga
+  // cursor'a yakın noktada yumuşakça parlar (pencere ışığı dili).
+  const { ref: glowRef, onPointerMove } = useCursorGlow<HTMLDivElement>();
+  const setScrollRefs = useCallback(
+    (el: HTMLDivElement | null) => {
+      scrollRef.current = el;
+      glowRef.current = el;
+    },
+    [glowRef],
+  );
 
   // Görev + olayları GÜNE göre grupla; günleri kronolojik sırala.
   const { past, todayBucket, future, counts } = useMemo(() => {
@@ -241,21 +269,33 @@ export function PanelTimeline({
         </span>
       </div>
 
-      {/* Dikey çizelge — yukarı geçmiş, aşağı gelecek; BUGÜN çıpası ortada */}
-      <div className="relative mt-3">
+      {/* Dikey çizelge — yukarı geçmiş, aşağı gelecek; BUGÜN çıpası ortada.
+          Cursor-reactive: pointer omurganın yanında gezerken ışık ona süzülür. */}
+      <div className="group/tl relative mt-4">
         <div
-          ref={scrollRef}
-          className="relative max-h-[64vh] overflow-x-hidden overflow-y-auto rounded-2xl px-1 py-2 [mask-image:linear-gradient(to_bottom,transparent,#000_22px,#000_calc(100%-22px),transparent)] [perspective:1400px] [perspective-origin:0%_50%]"
+          ref={setScrollRefs}
+          onPointerMove={onPointerMove}
+          className="relative max-h-[64vh] overflow-x-hidden overflow-y-auto rounded-2xl px-2 py-4 [mask-image:linear-gradient(to_bottom,transparent,#000_22px,#000_calc(100%-22px),transparent)] [perspective:1400px] [perspective-origin:0%_50%]"
         >
           {/* Omurga — ışıyan hacimli ray (derinlik hissi) */}
           <div
             aria-hidden
-            className="pointer-events-none absolute top-0 bottom-0 left-[8px] w-[3px] rounded-full"
+            className="pointer-events-none absolute top-0 bottom-0 left-[9px] w-[3px] rounded-full"
             style={{
               background:
                 "linear-gradient(to bottom, transparent, var(--gold, oklch(0.62 0.20 278)) 6%, var(--gold, oklch(0.62 0.20 278)) 94%, transparent)",
               boxShadow:
                 "0 0 10px color-mix(in oklch, var(--gold, oklch(0.62 0.20 278)) 45%, transparent)",
+            }}
+          />
+          {/* Omurga ışığı — cursor'un dikey konumuna süzülen yumuşak hale;
+              kabın üstünde gezince belirir, ayrılınca sakin söner. */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute top-0 bottom-0 left-[10.5px] w-[90px] -translate-x-1/2 opacity-0 transition-opacity duration-500 ease-[var(--ease-premium)] group-hover/tl:opacity-100"
+            style={{
+              background:
+                "radial-gradient(46px 150px at 50% var(--my, 50%), color-mix(in oklch, var(--gold, oklch(0.62 0.20 278)) 22%, transparent), transparent 72%)",
             }}
           />
 
@@ -275,7 +315,7 @@ export function PanelTimeline({
                 </p>
               )}
               {past.map((b) => (
-                <DayBlock key={b.day} bucket={b} today={today} />
+                <DayBlock key={b.day} bucket={b} today={today} pinCtx={pinCtx} />
               ))}
 
               {/* BUGÜN çıpası */}
@@ -296,7 +336,12 @@ export function PanelTimeline({
                 </div>
               </div>
               {todayBucket ? (
-                <DayBlock bucket={todayBucket} today={today} noLabel />
+                <DayBlock
+                  bucket={todayBucket}
+                  today={today}
+                  noLabel
+                  pinCtx={pinCtx}
+                />
               ) : (
                 <p className="text-muted-foreground/60 relative mb-2 pl-9 text-xs">
                   Bugüne planlı görev yok.
@@ -304,7 +349,7 @@ export function PanelTimeline({
               )}
 
               {future.map((b) => (
-                <DayBlock key={b.day} bucket={b} today={today} />
+                <DayBlock key={b.day} bucket={b} today={today} pinCtx={pinCtx} />
               ))}
               {future.length === 0 && (
                 <p className="text-muted-foreground/60 relative mt-1 pl-9 text-xs italic">
@@ -337,10 +382,12 @@ function DayBlock({
   bucket,
   today,
   noLabel,
+  pinCtx,
 }: {
   bucket: DayBucket;
   today: string;
   noLabel?: boolean;
+  pinCtx?: TimelinePinCtx;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(false);
@@ -375,7 +422,7 @@ function DayBlock({
       }
     >
       {!noLabel && (
-        <div className="relative mt-3 mb-1 flex items-center gap-2 pl-9">
+        <div className="relative mt-7 mb-2 flex items-center gap-2 pl-9 first:mt-2">
           <span className="text-muted-foreground/70 text-[0.7rem] font-medium tracking-wide uppercase">
             {labelDay(bucket.day)}
           </span>
@@ -427,6 +474,18 @@ function DayBlock({
                     {e.title}
                   </span>
                 </span>
+                {/* Olay pinleri — olay türetilmiş satır: bileşik hedef anahtarı. */}
+                {pinCtx && (
+                  <PinBoard
+                    targetType="event"
+                    targetId={eventPinTargetId(e)}
+                    pins={pinCtx.eventPins[eventPinTargetId(e)] ?? []}
+                    myStickers={pinCtx.myStickers}
+                    meId={pinCtx.meId}
+                    size="sm"
+                    quietReveal="group-hover/orb:opacity-100"
+                  />
+                )}
               </span>
             );
           })}
@@ -434,14 +493,24 @@ function DayBlock({
       )}
 
       {bucket.tasks.map((t) => (
-        <TaskRow key={t.id} task={t} today={today} />
+        <TaskRow key={t.id} task={t} today={today} pinCtx={pinCtx} />
       ))}
     </div>
   );
 }
 
-/** Tek görev satırı — omurga düğümü (renk) + ikon + başlık + durum/ilerleme. */
-function TaskRow({ task: t, today }: { task: TimelineTask; today: string }) {
+/** Tek görev satırı — omurga düğümü (renk) + ikon + başlık + durum/ilerleme.
+    Pinler kartın sağ üst köşesine İĞNELENİR: Link'in kardeşi (iç içe
+    interaktif eleman olmasın), mutlak konum; tık yayılımı PinBoard'da kesilir. */
+function TaskRow({
+  task: t,
+  today,
+  pinCtx,
+}: {
+  task: TimelineTask;
+  today: string;
+  pinCtx?: TimelinePinCtx;
+}) {
   const done = t.status === "done";
   const overdue = !done && !!t.dueDate && t.dueDate < today;
   const taskColor = t.color ? TASK_COLOR_BY_KEY.get(t.color) : null;
@@ -459,11 +528,13 @@ function TaskRow({ task: t, today }: { task: TimelineTask; today: string }) {
   const late = overdue ? dayDiff(t.dueDate as string, today) : 0;
 
   const ink = taskColor ? taskColor.ink : nodeColor;
+  const { ref, onPointerMove } = useCursorGlow<HTMLDivElement>();
 
   return (
+    <div className="group/tlrow relative">
     <Link
       href={`/gorevler/${t.id}`}
-      className="group relative flex items-start gap-3 py-1 pl-1 [transform-style:preserve-3d]"
+      className="group relative flex items-start gap-3 py-2 pl-1 [transform-style:preserve-3d]"
     >
       {/* Omurga düğümü — ışıyan 3B boncuk (radial highlight + renkli hale). */}
       <span
@@ -476,11 +547,12 @@ function TaskRow({ task: t, today }: { task: TimelineTask; today: string }) {
       />
 
       {/* Kart — derinlikli cam: renkli sol aksan + görev rengine göre ışıma;
-          hover'da hafifçe öne kalkar (translateY + gölge büyür + renkli hale
-          = derinlik). Glow rengi CSS değişkeninden gelir (görev rengi). */}
+          hover'da hafifçe öne kalkar + cursor-reactive ışık yüzeyde gezir. */}
       <div
+        ref={ref}
+        onPointerMove={onPointerMove}
         className={
-          "relative min-w-0 flex-1 overflow-hidden rounded-2xl border border-l-[3px] border-[color:var(--glass-border)] py-2 pr-3 pl-3 shadow-[var(--lift-sm)] transition-[transform,box-shadow] duration-300 ease-[var(--ease-premium)] group-hover:-translate-y-0.5 group-hover:shadow-[var(--lift),0_0_20px_var(--task-glow)] " +
+          "cursor-glow relative min-w-0 flex-1 overflow-hidden rounded-2xl border border-l-[3px] border-[color:var(--glass-border)] py-2 pr-3 pl-3 shadow-[var(--lift-sm)] transition-[translate,scale,box-shadow] duration-300 ease-[var(--ease-premium)] group-hover:-translate-y-0.5 group-hover:shadow-[var(--lift),0_0_20px_var(--task-glow)] " +
           "[background-color:var(--glass)] [background-image:var(--glass-sheen)] dark:border-[color:oklch(1_0_0/0.06)] dark:[background-color:var(--lume-glass)] dark:[background-image:none] " +
           (overdue ? "tl-overdue-neon " : "") +
           (done ? "opacity-65 " : "")
@@ -490,7 +562,15 @@ function TaskRow({ task: t, today }: { task: TimelineTask; today: string }) {
           ["--task-glow" as string]: `color-mix(in oklch, ${ink} 26%, transparent)`,
         }}
       >
-        <div className="flex items-center gap-2">
+        {/* Pinler kartın sağ-üst köşesine iliştirilir (absolute, scrapbook);
+            pin varsa başlık satırına sağ dolgu ayrılır ki %ilerleme rozeti ve
+            başlık sonu pin kümesinin ALTINDA kaybolmasın (veri değeri örtülmez). */}
+        <div
+          className={
+            "flex items-center gap-2" +
+            ((pinCtx?.taskPins?.[t.id]?.length ?? 0) > 0 ? " pr-12" : "")
+          }
+        >
           {/* İkon — skala mürekkebiyle boyanır (CSS mask) */}
           {t.icon ? (
             <span
@@ -557,6 +637,19 @@ function TaskRow({ task: t, today }: { task: TimelineTask; today: string }) {
         )}
       </div>
     </Link>
+      {pinCtx && (
+        <PinBoard
+          targetType="task"
+          targetId={t.id}
+          pins={pinCtx.taskPins[t.id] ?? []}
+          myStickers={pinCtx.myStickers}
+          meId={pinCtx.meId}
+          size="sm"
+          quietReveal="group-hover/tlrow:opacity-100"
+          className="absolute top-0.5 right-2 z-10"
+        />
+      )}
+    </div>
   );
 }
 

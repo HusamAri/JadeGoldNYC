@@ -9,6 +9,10 @@ import { getEtsyWriteAccess } from "@/lib/db/queries/etsy";
 import { EtsyClient, EtsyNotConnectedError } from "@/lib/etsy/client";
 import { pushListingQuantity, type PushOutcome } from "@/lib/etsy/inventory";
 import { syncListingVariants } from "@/lib/etsy/variants";
+import {
+  variantPropsForMatch,
+  type RawVariantProperties,
+} from "@/lib/variant-properties";
 
 export interface StockChange {
   id: string;
@@ -125,6 +129,30 @@ export async function applyStockSyncBatch(
     target_quantity: number | null;
   }[];
 
+  // 2025 envanter PUT'u property_name ister (Etsy GET null döndürebilir) →
+  // varyant property'lerini önden çek, ürün başına {name,value} haritası kur.
+  const { data: vData } = await supabase
+    .from("product_variants")
+    .select("product_id, sku, properties")
+    .eq("org_id", m.org_id)
+    .in("product_id", ids);
+  const propsByProduct = new Map<
+    string,
+    Map<string, { name: string; value: string }[]>
+  >();
+  for (const v of (vData ?? []) as {
+    product_id: string | null;
+    sku: string | null;
+    properties: RawVariantProperties;
+  }[]) {
+    const pid = v.product_id;
+    const sku = (v.sku ?? "").trim();
+    if (!pid || !sku) continue;
+    const m2 = propsByProduct.get(pid) ?? new Map();
+    m2.set(sku, variantPropsForMatch(v.properties));
+    propsByProduct.set(pid, m2);
+  }
+
   let client: EtsyClient;
   try {
     client = await EtsyClient.forOrg(m.org_id);
@@ -160,6 +188,7 @@ export async function applyStockSyncBatch(
       r.sku,
       r.target_quantity,
       applyToAll,
+      propsByProduct.get(r.id),
     );
     outcomes.push(outcome);
 

@@ -4,17 +4,40 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-function Table({ className, ...props }: React.ComponentProps<"table">) {
+function Table({
+  className,
+  containerClassName,
+  stickyHeader = false,
+  ...props
+}: React.ComponentProps<"table"> & {
+  /** Kaydırma kabının sınıfı — dikey sınır vermek için (örn. `max-h-[70vh]`). */
+  containerClassName?: string;
+  /**
+   * Başlık satırı, kabın üstüne yapışsın mı? SESSİZCE ETKİSİZ OLMASIN diye
+   * opt-in: `position:sticky` en yakın SCROLLPORT'a göre yapışır ve bu kap
+   * `overflow-x:auto` taşıdığı için scrollport KABIN KENDİSİDİR (viewport
+   * değil). Yani yapışmanın bir anlamı olması için kaba dikey bir sınır
+   * (`containerClassName="max-h-…"`) verilmelidir; bu bayrak ikisini birlikte
+   * açar. Varsayılan `false` → mevcut ~40 tablo bit-bit aynı kalır.
+   */
+  stickyHeader?: boolean;
+}) {
   // Kaydırma affordance'ı: içerik sağa taşıyorsa kabın sağ kenarı zemine
   // doğru solar (fade maskesi) — kullanıcı tablonun kaydırılabilir olduğunu
   // görür; sona kaydırınca maske kalkar. Salt görsel, davranış değişmez.
+  // AYNI dinleyici dikey kaydırmayı da okur (yeni listener AÇILMAZ): başlık
+  // ancak içerik altına kaydığında gölge basar — gölge KEYFRAME değil,
+  // durum geçişidir.
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [fadeRight, setFadeRight] = React.useState(false);
+  const [scrolled, setScrolled] = React.useState(false);
   React.useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-    const update = () =>
+    const update = () => {
       setFadeRight(el.scrollWidth - el.clientWidth - el.scrollLeft > 4);
+      setScrolled(el.scrollTop > 0);
+    };
     update();
     el.addEventListener("scroll", update, { passive: true });
     const ro = new ResizeObserver(update);
@@ -28,10 +51,14 @@ function Table({ className, ...props }: React.ComponentProps<"table">) {
     <div
       ref={containerRef}
       data-slot="table-container"
+      data-sticky-head={stickyHeader ? "true" : undefined}
+      data-scrolled={scrolled ? "true" : undefined}
       className={cn(
         "relative w-full overflow-x-auto",
+        stickyHeader && "overflow-y-auto",
         fadeRight &&
           "[mask-image:linear-gradient(90deg,#000_calc(100%-28px),transparent)]",
+        containerClassName,
       )}
     >
       <table
@@ -83,7 +110,23 @@ function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
       className={cn(
         // Hairline satır (açık: var(--border), koyu: beyaz %7 — lume kuralı);
         // hover: açıkta hafif accent yıkaması, koyuda beyaz ışık banyosu.
-        "hover:bg-accent/30 data-[state=selected]:bg-accent/50 dark:hover:bg-white/[0.04] dark:data-[state=selected]:bg-white/[0.07] border-b transition-colors duration-300",
+        // Süre 300ms → 150ms: vurgu imlece YETİŞSİN (300ms'de satırlar arası
+        // gezinirken vurgu geride kalıyordu).
+        "border-b transition-[color,background-color,box-shadow] duration-150 ease-[var(--ease-quiet)]",
+        // Klavye eşitliği: satır içindeki bir öğe odaklandığında satır da
+        // hover'daki gibi aydınlanır — fare kullanmayan aynı bilgiyi görür.
+        "hover:bg-accent/30 focus-within:bg-accent/30 data-[state=selected]:bg-accent/50",
+        "dark:hover:bg-white/[0.04] dark:focus-within:bg-white/[0.04] dark:data-[state=selected]:bg-white/[0.07]",
+        // Kontak gölgesi: satır zeminden 1px kopar (A kulvarı --row-contact).
+        // NOT: preflight `border-collapse: collapse` uygularken bazı tarayıcılar
+        // <tr> box-shadow'unu boyamaz — o durumda sessizce no-op'tur, asıl
+        // geri bildirim zemin renginde yaşar.
+        "hover:shadow-[var(--row-contact)] focus-within:shadow-[var(--row-contact)]",
+        // Tıklanabilir satır (`data-clickable`): imleç + basma karşılığı.
+        // Satır ÖLÇEKLENMEZ/EĞİLMEZ — tabular hizayı ve tıklama hedefini
+        // bozmamak için basış zemin koyulaşması + kontağın düzleşmesiyle
+        // anlatılır (transform yok, layout yok).
+        "data-[clickable]:cursor-pointer data-[clickable]:active:bg-accent/55 data-[clickable]:active:shadow-none dark:data-[clickable]:active:bg-white/[0.09]",
         className,
       )}
       {...props}
@@ -98,6 +141,12 @@ function TableHead({ className, ...props }: React.ComponentProps<"th">) {
       className={cn(
         // Editorial başlık (.idx dili) — mono, uppercase, geniş letterspacing.
         "text-muted-foreground h-10 px-2 text-left align-middle font-mono text-[11px] font-medium tracking-[0.16em] uppercase whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+        // Yapışkan başlık — YALNIZ kap `stickyHeader` ile açtığında (bkz. Table).
+        // Opak `bg-card` şart: yarı saydam kalsa altından kayan satırlar
+        // başlığın içinden geçerdi. Gölge yalnız içerik altına kaydığında
+        // biner (data-scrolled) — hiyerarşi ancak ayrışma varsa anlatılır.
+        "[[data-sticky-head]_&]:bg-card [[data-sticky-head]_&]:sticky [[data-sticky-head]_&]:top-0 [[data-sticky-head]_&]:z-10 [[data-sticky-head]_&]:transition-shadow [[data-sticky-head]_&]:duration-200 [[data-sticky-head]_&]:ease-[var(--ease-quiet)]",
+        "[[data-sticky-head][data-scrolled=true]_&]:shadow-[var(--sticky-head-shadow)]",
         className,
       )}
       {...props}

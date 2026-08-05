@@ -8,10 +8,11 @@ export type ProductMetricListRow = ProductMetric & {
 
 export async function listProductPeriods(): Promise<string[]> {
   const supabase = await createClient();
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("product_metrics")
     .select("period_label")
     .order("period_label", { ascending: false });
+  if (error) console.error("[metrics] listProductPeriods:", error.message);
   const seen = new Set<string>();
   for (const r of (data ?? []) as { period_label: string }[]) seen.add(r.period_label);
   return [...seen];
@@ -28,7 +29,8 @@ export async function listProductMetrics(
   query = query
     .order("revenue_cents", { ascending: false, nullsFirst: false })
     .order("views", { ascending: false, nullsFirst: false });
-  const { data } = await query;
+  const { data, error } = await query;
+  if (error) console.error("[metrics] listProductMetrics:", error.message);
   return (data ?? []) as ProductMetricListRow[];
 }
 

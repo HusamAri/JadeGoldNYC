@@ -1,3 +1,4 @@
+import { getActivePlatform } from "@/lib/platform";
 import Link from "next/link";
 import { Plus, Upload, Eye, Pencil } from "lucide-react";
 import {
@@ -7,6 +8,7 @@ import {
   Receipt,
   Percent,
   Users,
+  Wallet,
 } from "@/components/icons/lux-art";
 
 import { requireMembership } from "@/lib/auth";
@@ -60,6 +62,9 @@ import { FilterSelect } from "@/components/data-table/filter-select";
 import { Pagination } from "@/components/data-table/pagination";
 import { DeleteButton } from "@/components/data-table/delete-button";
 import { SaleStatusBadge } from "@/components/sale-status-badge";
+import { getUser } from "@/lib/auth";
+import { getPinLibrary, getPinsForTargets } from "@/lib/db/queries/pins";
+import { PinBoard } from "@/components/pins/pin-board";
 import { deleteSale } from "./actions";
 
 export default async function SatislarPage({
@@ -67,6 +72,8 @@ export default async function SatislarPage({
 }: {
   searchParams: Promise<RawSearchParams>;
 }) {
+  // Platform dili hardcode edilmez — bağlı platformun adı (Etsy/Shopify/Shopier).
+  const platform = await getActivePlatform();
   const sp = await searchParams;
   const search = strParam(sp.search);
   const status = strParam(sp.status);
@@ -82,10 +89,20 @@ export default async function SatislarPage({
     getMonthlySalesSeries(m.org_id, { months: 24, search, status }),
   ]);
 
+  // Pinler: satışlar iğnelenebilir yüzey — liste tek toplu sorguyla.
+  // getUser bağımsız → pin sorgularıyla aynı turda (bir tur tasarrufu).
+  const [user, pinMap, myStickers] = await Promise.all([
+    getUser(),
+    getPinsForTargets(m.org_id, "sale", rows.map((r) => r.id)),
+    getPinLibrary(),
+  ]);
+
   const t = analytics.totals;
   const netCents = t.gross_cents - t.fees_cents;
   const avgCents = t.orders > 0 ? Math.round(t.gross_cents / t.orders) : 0;
   const feePct = t.gross_cents > 0 ? t.fees_cents / t.gross_cents : 0;
+  const discountPct =
+    t.gross_cents > 0 ? (t.discount_cents / t.gross_cents) * 100 : 0;
 
   // ── MoM / YoY karşılaştırmaları (bu ay vs geçen ay · vs geçen yıl aynı ay) ──
   const byYm = new Map(monthly24.map((x) => [x.ym, x]));
@@ -152,7 +169,7 @@ export default async function SatislarPage({
       <GoldStream motif="gift" />
       <PageHeader
         title="Satışlar"
-        description="Manuel, CSV ve Etsy siparişleri"
+        description={`Manuel, CSV ve ${platform.label} siparişleri`}
         action={
           <>
             <Button asChild variant="outline">
@@ -201,7 +218,7 @@ export default async function SatislarPage({
             currency={cur}
             icon={TrendingUp}
             accent="positive"
-            hint="Etsy kesintisi düşülmüş"
+            hint={`${platform.label} kesintisi düşülmüş`}
           />
           <KpiCard
             label="Sipariş"
@@ -217,12 +234,26 @@ export default async function SatislarPage({
             comparisons={monthlyComparisons(monthlyAov)}
           />
           <KpiCard
-            label="Etsy Kesintisi"
+            label={`${platform.label} Kesintisi`}
             cents={t.fees_cents}
             currency={cur}
             icon={Percent}
             hint={`Cironun %${(feePct * 100).toFixed(1)}'i`}
           />
+          {/* İndirim — kupon/sipariş indirimleri (Etsy discount_amt senkrondan;
+              manuel/CSV girişlerinde de). Ciro zaten indirimli tutardır; kart
+              verilen indirim toplamını görünür kılar. YALNIZ indirim varken
+              render edilir: $0 kartı bilgi taşımaz ve 3'lü ızgarayı tek öksüz
+              satıra bölerdi (sessiz-lüks: sıfır-değerli vurgu gösterme). */}
+          {t.discount_cents > 0 && (
+            <KpiCard
+              label="İndirim"
+              cents={t.discount_cents}
+              currency={cur}
+              icon={Wallet}
+              hint={`Cironun %${discountPct.toFixed(1)}'i · kupon/sipariş indirimi`}
+            />
+          )}
           <KpiCard
             label="Alıcı"
             value={formatNumber(t.buyers)}
@@ -336,7 +367,7 @@ export default async function SatislarPage({
               <EmptyState
                 icon={ShoppingBag}
                 title="Satış kaydı yok"
-                description="Henüz satış yok. Yeni satış ekleyin veya Etsy CSV dosyanızı içe aktarın."
+                description={`Henüz satış yok. Yeni satış ekleyin veya ${platform.label} CSV dosyanızı içe aktarın.`}
               />
             )
           ) : (
@@ -358,7 +389,19 @@ export default async function SatislarPage({
                     <TableCell className="font-medium">
                       {s.order_no ?? "—"}
                     </TableCell>
-                    <TableCell>{s.buyer_name ?? "—"}</TableCell>
+                    <TableCell>
+                      <span className="flex items-center gap-2">
+                        {s.buyer_name ?? "—"}
+                        <PinBoard
+                          targetType="sale"
+                          targetId={s.id}
+                          pins={pinMap.get(s.id) ?? []}
+                          myStickers={myStickers}
+                          meId={user?.id}
+                          size="sm"
+                        />
+                      </span>
+                    </TableCell>
                     <TableCell>
                       <SaleStatusBadge status={s.status} />
                     </TableCell>

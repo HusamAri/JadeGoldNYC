@@ -140,7 +140,8 @@ export function compareSkuAsc(a: string, b: string): number {
 
 /**
  * Listing sırası: büyük/yeni SKU üstte, küçük altta.
- * SKU zorunlu — boş/null satırlar listeye girmez (`hasProductSku`).
+ * Boş SKU'lu satırlar varsayılan olarak elenir; `keepMissingSku` ile sonda
+ * tutulur (Etsy Listeler — ürün SKU'su null, varyantta SKU olanlar).
  */
 export function compareListingSkuDesc(a: string, b: string): number {
   return b.localeCompare(a, undefined, {
@@ -149,7 +150,7 @@ export function compareListingSkuDesc(a: string, b: string): number {
   });
 }
 
-/** Ürün-seviye SKU dolu mu (Etsy aynası; boş SKU panelde yok sayılır). */
+/** Ürün-seviye SKU dolu mu. */
 export function hasProductSku(sku: string | null | undefined): boolean {
   return (sku ?? "").trim().length > 0;
 }
@@ -162,8 +163,19 @@ export function sortVariantsByWidthThenSize<T extends VariantSortable>(
 
 export function sortListingsBySkuDesc<T extends { sku?: string | null }>(
   rows: T[],
+  opts?: { keepMissingSku?: boolean },
 ): T[] {
-  return rows
-    .filter((r) => hasProductSku(r.sku))
-    .sort((a, b) => compareListingSkuDesc(a.sku!.trim(), b.sku!.trim()));
+  const list = opts?.keepMissingSku
+    ? [...rows]
+    : rows.filter((r) => hasProductSku(r.sku));
+  return list.sort((a, b) => {
+    const aOk = hasProductSku(a.sku);
+    const bOk = hasProductSku(b.sku);
+    if (aOk && bOk) {
+      return compareListingSkuDesc(a.sku!.trim(), b.sku!.trim());
+    }
+    if (aOk) return -1;
+    if (bOk) return 1;
+    return 0;
+  });
 }

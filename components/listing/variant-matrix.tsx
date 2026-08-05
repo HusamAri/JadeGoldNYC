@@ -3,6 +3,7 @@ import {
   type VariantMatrixCell,
 } from "@/lib/db/queries/variants";
 import { formatMoney } from "@/lib/money";
+import { clampDiscountPct, discountedCents } from "@/lib/discount";
 import { Card, CardContent } from "@/components/ui/card";
 
 /**
@@ -35,9 +36,12 @@ function formatGrams(g: number): string {
 function Cell({
   cell,
   overlay,
+  discountPct,
 }: {
   cell: VariantMatrixCell | null;
   overlay: VariantCompetitorCell | null;
+  /** Aktif indirim (0..90). >0 ise hücrede indirimli fiyat gösterilir. */
+  discountPct: number;
 }) {
   if (!cell || cell.price_cents == null) {
     return <span className="text-muted-foreground/50">—</span>;
@@ -46,11 +50,26 @@ function Cell({
     overlay && overlay.currency === cell.currency && cell.price_cents != null
       ? cell.price_cents - overlay.price_cents
       : null;
+  // İndirimli fiyat (yalnız panelde; taban Etsy fiyatı değişmez).
+  const disc =
+    discountPct > 0 ? discountedCents(cell.price_cents, discountPct) : null;
+  const discounted = disc != null && disc !== cell.price_cents;
   return (
     <div className="space-y-0.5">
-      <p className="font-mono text-sm font-semibold tabular-nums">
-        {formatMoney(cell.price_cents, cell.currency)}
-      </p>
+      {discounted ? (
+        <>
+          <p className="font-mono text-sm font-semibold tabular-nums text-[color:var(--tl-doing)]">
+            {formatMoney(disc as number, cell.currency)}
+          </p>
+          <p className="text-muted-foreground/80 font-mono text-[10px] tabular-nums line-through">
+            {formatMoney(cell.price_cents, cell.currency)}
+          </p>
+        </>
+      ) : (
+        <p className="font-mono text-sm font-semibold tabular-nums">
+          {formatMoney(cell.price_cents, cell.currency)}
+        </p>
+      )}
       {cell.weight_grams != null && cell.weight_grams > 0 && (
         <p className="text-muted-foreground font-mono text-[11px] tabular-nums">
           {formatGrams(cell.weight_grams)} g
@@ -87,13 +106,17 @@ function Cell({
 export async function VariantMatrix({
   productId,
   competitors,
+  discountPct = 0,
 }: {
   productId: string;
   /** İsteğe bağlı varyant-seviyesi rakip örtüsü (şu an veri yok → temiz matris). */
   competitors?: VariantCompetitorCell[];
+  /** Manuel indirim yüzdesi (products.discount_pct). >0 → indirimli fiyat. */
+  discountPct?: number;
 }) {
   const matrix = await getProductVariantMatrix(productId);
   if (matrix.rows.length === 0) return null;
+  const pct = clampDiscountPct(discountPct);
 
   // (width|band) → rakip örtüsü; verilmezse boş harita (hücreler temiz kalır).
   const overlayByCell = new Map<string, VariantCompetitorCell>();
@@ -115,6 +138,16 @@ export async function VariantMatrix({
         <p className="text-muted-foreground text-sm">
           Her hücrede üstte fiyat, altında gram. Genişlik sütunu yatay
           kaydırmada sabit kalır.
+          {pct > 0 && (
+            <>
+              {" "}
+              <span className="text-[color:var(--tl-doing)] font-medium">
+                %{pct} indirim uygulandı
+              </span>{" "}
+              — indirimli fiyat üstte, üstü çizili taban altında (yalnız panel;
+              Etsy fiyatı değişmez).
+            </>
+          )}
         </p>
 
         <div className="overflow-x-auto">
@@ -147,6 +180,7 @@ export async function VariantMatrix({
                     >
                       <Cell
                         cell={cell}
+                        discountPct={pct}
                         overlay={
                           overlayByCell.get(
                             `${row.width}|${matrix.bands[i]}`,

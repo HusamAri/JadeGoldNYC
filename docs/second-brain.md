@@ -4,6 +4,11 @@ Bu dosya CLAUDE.md üzerinden her oturumda yüklenir. **Protokol:** her uçtan u
 işin sonunda, o işte işe yaramış iyi uygulamayı/dersi buraya TEK satır-blok
 olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni sil.
 
+Protokolün repo-bağımsız (global) sürümü: `second-brain-lesson` skill'i
+(`.claude/skills/second-brain-lesson/SKILL.md`) — ne zaman yazılır, nereye
+yazılır, biçim, bakım ve anti-örnekler orada tanımlı. Bu dosya o skill'in bu
+repodaki hedefidir.
+
 ## Süreç dersleri
 
 - **Dış API migrasyonunu hata mesajından adım adım çöz, tek listing'de kanıtla
@@ -33,6 +38,35 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
   birebir, yıldız eski koşudandı → kanonik sürümle eşitlendi).
 
 
+- **Dış sisteme yazdığını AYNI turda geri okuyarak doğrula; tek yönlü ayna sessizce
+  geri alır (2026-08):** 30 EON listing'ine başlık+tag itildi (07-31 09:23), API
+  200 döndü, "gönderildi" denip kapatıldı. Ertesi sabahki senkrondan sonra 23
+  başlık eskiye dönmüştü. Teşhis, senkronun aynı satırda taşıdığı ÇELİŞKİDEN
+  çıktı: tag'ler YENİ, başlıklar ESKİ — ikisi de Etsy'den geldiğine göre itiş
+  çalışmış ama başlıklar sonradan geri alınmıştı. Kanıt: 3 taslakta Etsy
+  `last_modified` = tam 09:23 ve başlıklar 123-130 kr duruyor; ezilen 26'da
+  `last_modified` = 20:56-22:28 ve o pencerede panelden Etsy'ye HİÇ yazma yok
+  (audit_log boş) → değişiklik dış taraftan (kullanıcının Etsy editöründe geç
+  saatte çalışması). Yan hasar: "dış sistem tek doğruluk kaynağı" kuralıyla
+  çalışan senkron eski başlıkları panele de yazdı, panel önerilen başlıkları
+  KAYBETTİ; kurtaran tek şey metinlerin `docs/eon/seo/...` dosyasında yaşıyor
+  olmasıydı. Kural: (1) dış yazmadan sonra aynı turda read-back doğrulaması yap,
+  "200 OK" teslim sayılmaz; (2) panel-üretimi metin mutlaka repoda bir kaynak
+  dosyada yaşasın — ayna onu her an ezebilir; (3) itiş ile kullanıcının dış
+  sistemdeki elle düzenlemesi çakışırsa sıra kritik: önce elle düzenleme bitsin,
+  sonra push.
+- **"Aynı ürün" teşhisini ilan etmeden kullanıcıya doğrulat; geri-dönüşü zor
+  aksiyon önerisi kanıt ister (2026-08):** Panelde "0 varyant" görünen iki
+  listing'e bakıp "çift listing → eskisini kapat" teşhisi kurdum; kullanıcı
+  düzeltti: kopya, Etsy'de "copy listing" ile üretilmiş FARKLI renk (sarı vs
+  rose) — kök neden SKU tekilliğiydi (`product_variants (org_id, sku)`), kopya
+  kaynağın SKU'larını miras alınca sahiplik her senkronda el değiştiriyor ve
+  kopya listelerden gizleniyor. Yan hasar: ping-pong sırasında sahibi görünen
+  kopyaya toplu SEO push'unda YANLIŞ RENK başlığı yazıldı. Kural: (1) iki kaydın
+  aynı varlık olduğu iddiası DB deseninden DEĞİL kullanıcıdan/ürün kanıtından
+  doğrulanır; (2) kapatma/silme önerisi ancak bu doğrulamadan sonra verilir;
+  (3) çakışmanın kalıcı çözümü kaydı silmek değil kimliği ayırmak (SKU önek
+  değiştirme aracı) — dış sistemde de yaz, panel aynası kendiliğinden düzelir.
 - **Paralel iş kolu kontrolü (2026-07):** Bir özellik kurmadan ÖNCE `git fetch` +
   `origin/main`'i incele — aynı özellik paralel oturumda çoktan (hatta daha iyi)
   eklenmiş olabilir. Vaka: $/gram pazar motoru iki kez yazıldı; main'deki üstündü,
@@ -40,6 +74,10 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
   Güçlendirme (2026-07): kural VERİ müdahaleleri için de geçerli — kullanıcı "başka
   oturumda ilerliyorum" dediği anda o iş koluna ait geri-dönüşü zor DB operasyonları
   (SKU yeniden adlandırma, silindi-işaretleme) durdurulur; yalnız kendi dalının işi yapılır.
+  Güçlendirme-2 (2026-07): "X'i geri getir/kur" istenince de önce main taranır —
+  "Shopify bağlantısını getir" istendi; lib/shopify + lib/shopier + migration'lar
+  paralel oturumda ÇOKTAN inmişti; eksik olan yalnız uyarlama katmanıydı
+  (getActivePlatform + yetenek-bazlı nav/caption). Sıfırdan kurmak çift iş olurdu.
 - **Kanıtla, varsayma (2026-07):** "İzin kapalı", "veri yok" gibi durum iddialarını
   DB'den SQL ile doğrula. Vaka: Etsy yazma izni "kapalı" sanılıyordu; `etsy_write_enabled`
   sorgusu `true` döndü — bir adım boşa planlanmıştı.
@@ -63,6 +101,18 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
   vermiyorsa (Etsy yorum yanıtı) o alanda panel tek doğruluk kaynağı İLAN edilir ve
   akış ona göre kurulur (0059 deseni) — "senkronlarız" diye söz verme; en yakın
   sinyalle (update_timestamp) telafi kur.
+- **OAuth token'ı client'ına bağlıdır; tek-seferlik ops işini panel rotası yap (2026-07):**
+  Etsy access/refresh token'ları üretildikleri app'in (client) bağlamına kilitlidir —
+  lokal env farklı keystring'le 401 invalid_token alır, yapısaldır, düzelmez. Çözüm:
+  işi production env'de koşan GEÇİCİ korumalı rotaya taşı (çift katman: CRON_SECRET
+  URL token'ı + admin oturumu; tek kullanımlık confirm; başarıda kalıcı 410 + audit;
+  sha kilidi yanlış grid'i reddeder). İki tuzak canlıda yakalandı: (1) `searchParams`
+  form-decode'u `+` içeren secret'ı sessizce kırar — ham query ile de karşılaştır;
+  (2) read-modify-write confirm tüketimi atomik değil — çift dokunma 3 eşzamanlı POST
+  koşturdu (idempotent hedefler kurtardı); tek-kullanımlık onay koşullu UPDATE
+  (compare-and-swap) ile tüketilmeli, buton submit'te disable edilmeli.
+  Doğrulama (2026-07-30, v4 turu): CAS + buton kilidi uygulandı → aynı akışta
+  audit'e TEK reprice satırı düştü; kilit canlıda kanıtlandı.
 
 ## Ürün/UX dersleri
 
@@ -117,7 +167,13 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
   test harness ekleyerek `tsc`+`node` ile birkaç senaryoda çalıştır. Vaka: SEO üreticide
   "silver silver ring" (metal ikilenmesi), zincirsiz+unisex'te 13'e ulaşmama ve yüzükte
   "real gold **chain**" — üçü de yalnız gerçek çıktı görülünce yakalandı, tsc/lint bunları
-  görmez.
+  görmez. Güçlendirme (2026-07): görev-yayma motorunda canlı test, ileri-gün
+  taşmasının BUGÜNE çekildiğini gösterdi (kullanıcının verdiği ileri tarih öne
+  alınmaz — yalnız ileri itilir); kural assert'te değil ÇIKTIDA görünür oldu.
+  Güçlendirme-2 (2026-07): girdi uzayı küçükse nokta senaryosu yerine TAM
+  KOMBİNATORİK süpürme koş (SEO motoru: 2520 kombinasyon × 5 invariant) —
+  "13'e ulaşmama" bug'ı yalnız dar bir kombinasyonda (zincirsiz+kaplama+classic)
+  çıkıyordu; el senaryoları o hücreye denk gelmemişti, süpürme geldi.
 - **İsim yanıltır, kaynağı oku (2026-07):** Yeni "keyword/SEO" modülü kurmadan önce
   mevcut `keyword-research.ts`'i açtım — adı "keyword" ama işi RAKİP FİYAT araştırması.
   Çakışma sandığım şey tamamlayıcı çıktı. Kural: sembol adına göre "var/yok" deme, dosyayı aç.
@@ -127,6 +183,54 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
 - **Marka görselleri org'a aittir (2026-07):** Ortak UI'daki ürün görselleri ve
   marka imzaları ("Jade Gold · NYC" kuyruğu, cutout seti) hardcode edilemez —
   aktif org'dan çözülür (OrgMark, BRAND_KIND çevirisi); yeni org nötr düşer.
+- **Fiyat girdisi ile ürün spesifikasyonu çelişiyorsa itiş BLOKE, takip işi değil
+  (2026-07):** EON grid'i `Kalinlik = 2.0mm` ilan ederken listing metinleri 1.5mm
+  anlatıyordu; bu çelişki "ayrı iş kalemi" diye ertelendi ve fiyat 26 listing /
+  7.150 varyantta CANLIYA basıldı. Sonra nihai karar 1.5mm çıktı → 1.5mm yüzük
+  2.0mm'nin %72'si ağırlığında, yani canlı fiyatlar ort **%25 yüksek**
+  (min %15, max %37). Kural: fiyatın girdi varsayımı (kalınlık/gram tablosu) ile
+  ürünün ilan edilen spesifikasyonu AYNI turda uzlaştırılmadan itiş yapılmaz.
+  Ek ders: etki hesaplarken önce FORMÜLÜ kanıtla — ilk denemede landed(USD) ile
+  engine(cent) birimlerini karıştırıp "$10'luk altın yüzük" üretmiştim; 822/822
+  sapma bunu ele verdi. Delta bildirmeden önce formülün canlı veriyi SIFIR
+  sapmayla ürettiğini doğrula.
+- **3D'yi malzemeye göre yerleştir: cam eğilmez, ÜRÜN eğilir (2026-07):**
+  "Siteye 3D derinlik kat" istendiğinde refleks KPI/kart eğmektir; ölçüm bunun
+  yanlış olduğunu söylüyor — o yüzeyler `backdrop-filter` taşır, döndürmek
+  bulanık zemini her karede yeniden rasterize eder (bu repoda FPS'i 4'e düşüren
+  mekanizma) ve `perspective` için gereken `contain:paint` camın arkadaki
+  ambiyansı örneklemesini kesip kartı DÜZLEŞTİRİR. Doğru hedef: cam olmayan,
+  düz `<img>` taşıyan ÜRÜN yüzeyleri (listing ızgarası, tasarım panosu, üretilen
+  görsel galerisi). Mücevher panelinde bu üstelik marka-doğru: altın açıyla ışık
+  yakar, yüzük fotoğrafının imlece göre <=5deg eğilip üzerinde speküler ışık
+  gezmesi süs değil, ürünün "elde çevrilen nesne" gibi davranmasıdır. Mimari:
+  bileşenler sunucu tarafında kalsın diye TEK delege rAF-kısıtlı `pointermove`
+  dinleyicisi yalnız `--tx/--ty/--gx/--gy` custom property'si yazar, dönüşü CSS
+  yapar (InkOriginListener ile aynı desen). Doğrulama = `matrix3d(...)` görmek +
+  imleç karşı köşeye gidince işaretin TERSİNE dönmesi + sahneden çıkınca
+  `matrix(1,0,0,1,0,0)`'a sıfırlanması; reduced-motion'da `transform:none`.
+- **Tailwind v4'te translate/scale AYRI CSS özelliğidir — elle yazılan
+  `transition-[...]` listesinde `transform` demek hareketi ÖLDÜRÜR (2026-07):**
+  v4, `hover:-translate-y-0.5`i `translate`, `active:scale-[0.97]`yi `scale`
+  özelliğine basar (v3'teki tek `transform` matrisi DEĞİL). Geçiş listesi
+  `transition-[...,transform]` derse bu ikisi geçişe hiç girmez → kalkma/basma
+  anında sıçrar, özenle yazılmış süre/easing token'ları ölü kod olur. Vaka: tüm
+  "asimetrik basma fiziği" turu (buton + 8 bileşen daha, 9 çağrı yeri) fiilen
+  çalışmıyordu; typecheck/lint/build ÜÇÜ de temiz geçti, tasarım review'ü de
+  görmedi — yalnız canlı `getComputedStyle` yakaladı. Kural: (1) elle
+  `transition-[...]` yazarken translate/scale/rotate'i AYRI AYRI listele
+  (Tailwind'in kendi `transition-transform` utility'si zaten
+  `transform,translate,scale,rotate`a açılır, onu kullanmak daha güvenli);
+  (2) süre/easing listelerinin öğe sayısı özellik sayısıyla eşleşmeli;
+  (3) doğrulama = basış anında ARA değer görmek (`translate: -0.518px`,
+  `scale: 0.9778`) — son değeri görmek geçişin ÇALIŞMADIĞI anlamına gelir.
+  Tarama: `grep "transition-\[" | grep transform` + aynı satırda durum-önekli
+  (hover:/active:/group-hover:) translate|scale ara.
+- **Tailwind v4: utility, @layer components'ı ezer — "kozmetik" shadow-none gölgeyi siler (2026-07):**
+  `.nm-pressed` gibi bileşen sınıfının yanına yazılan `shadow-none` utility'si
+  KAZANIR ve bileşenin box-shadow'unu tamamen siler (iki yerde nm-* yüzeyi düz
+  karta dönmüştü). Kural: bileşen-sınıflı öğeye aynı özelliği ezen utility ekleme;
+  eklenmişse muhtemelen yanlışlıkladır, kaldır ve görsel farkı kontrol et.
 - **Negatif z-index kabından çocuk öne çıkamaz (2026-07):** `-z-*` konumlu kap
   stacking context'tir; "önde duracak" öğe için KARDEŞ pozitif-z kap gerekir.
 - **Metadata rotaları auth'tan muaf (2026-07):** proxy/middleware matcher'ı
@@ -180,6 +284,15 @@ olarak ekle (tarih + ders + neden). Tekrarı olan dersi güçlendir, çürüyeni
   hf-job-id`). Çıkış noktalarında (upload action + indirme proxy) chunk-bazlı
   strip; renk/derinlik chunk'ları korunur. UYARI: piksele gömülü SynthID
   filigranı meta veri DEĞİLDİR, sökülemez — "tamamen temiz" diye vaat etme.
+- **Türetilebilir alanı gönderme, anahtarı hiç gönderme, ağırlıklı checksum'la doğrula
+  (2026-07):** 858 satırlık ızgarayı MCP ile basarken tam metin ~130KB'dı. Üçlü kısaltma:
+  (1) veri tam KARTEZYEN ise (3 karat × 2 profil × 11 genişlik × 13 beden) anahtarları
+  `generate_series` + `row_number()` ile SQL'de üret — anahtar transkripsiyon riski SIFIR;
+  (2) formülü 858 satırda birebir doğrulanan kolonları (engine/list/sale) SQL'de türet,
+  yalnız doğrulanamayanları (floor/offsite: 7 ve 78 satırda kenar sapması) açık gönder;
+  → 22KB, 4 parça. (3) Doğrulama SADECE toplam olmasın: kolon toplamı satır KAYMASINI
+  yakalamaz — `sum(i * kolon)` konum-ağırlıklı checksum + kaynağın kendi altın satırları
+  şart. Parça byte uzunluğunu da karşılaştır (yazım hatasını anında yakalar).
 - **Büyük MCP SQL'i parça + yeniden-kurgu ile yaz (2026-07):** execute_sql metni
   elle üretildiğinden 37KB tek statement'ta transkripsiyon hatası (UUID'de boşluk)
   girdi. Çözüm: tekrarlı URL önekini SQL'de `||` ile yeniden kur, kısa token'ları

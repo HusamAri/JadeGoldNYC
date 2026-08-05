@@ -40,10 +40,13 @@ export function MarketPositionCard({
   currency: string;
 }) {
   const meta = POSITION_META[position.price_position];
+  // deviation_pct ORAN olarak saklanır (0.18 = %18) — kardeş tüketiciler
+  // (market-price-alerts-card, digest/lenses) ×100 yapar; burada da 100 ile
+  // çarp yoksa %18'lik sapma "+0.2%" görünürdü.
   const dev = position.deviation_pct;
   const devLabel =
     dev != null
-      ? `${dev > 0 ? "+" : ""}${dev.toFixed(1)}% ${
+      ? `${dev > 0 ? "+" : ""}${(dev * 100).toFixed(1)}% ${
           dev > 0 ? "bant ortalamasının üstünde" : "bant ortalamasının altında"
         }`
       : null;

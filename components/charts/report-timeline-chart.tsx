@@ -16,6 +16,7 @@ import {
 import type { ReportTimelinePoint } from "@/lib/types";
 import { formatDate } from "@/lib/format";
 
+import { useChartAnimation } from "@/lib/motion";
 import {
   BarNeo,
   CHART_INK,
@@ -40,6 +41,7 @@ export function ReportTimelineChart({
   cutoffDate: string;
   cutoffLabel: string;
 }) {
+  const anim = useChartAnimation();
   const data = points.map((p) => ({ ...p, label: formatDate(p.date) }));
   const accentIdx = data.reduce(
     (best, d, i) => ((d.orders ?? 0) > (data[best]?.orders ?? 0) ? i : best),
@@ -99,6 +101,7 @@ export function ReportTimelineChart({
                   fill: "var(--jg-ink-2)",
                   filter: "url(#rtl-disc-dotglow)",
                 }}
+                {...anim}
               />
             </AreaChart>
           </ResponsiveContainer>
@@ -146,7 +149,7 @@ export function ReportTimelineChart({
               <Bar
                 dataKey="orders"
                 shape={<BarNeo defsId="rtl-ord" accentIndex={accentIdx} />}
-                isAnimationActive={false}
+                {...anim}
               />
             </BarChart>
           </ResponsiveContainer>

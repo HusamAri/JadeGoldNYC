@@ -9,7 +9,10 @@ function initials(name?: string | null, email?: string | null) {
   return txt.toUpperCase();
 }
 
-/** Kullanıcı avatarı — görsel varsa, yoksa baş harf rozeti (kabarık). */
+/** Kullanıcı avatarı — görsel varsa, yoksa baş harf rozeti (kabarık).
+    Kişi-pin modu: avatar bir pin cutout'u ise (/pins/, kullanıcı kararı:
+    "portre pinleri profil fotoğrafı, BÜYÜK olsun") daire kırpması ve halka
+    YOK — cutout tam boy, hafif taşkın ve kaldırma gölgeli çizilir. */
 export function UserAvatar({
   src,
   name,
@@ -22,6 +25,20 @@ export function UserAvatar({
   className?: string;
 }) {
   const ring = "shadow-[var(--shadow-raised-sm)]";
+  if (src && src.startsWith("/pins/")) {
+    return (
+      <img
+        src={src}
+        alt={name || email || "Avatar"}
+        className={cn(
+          // size-8 çağıranlar için taban; scale ile "büyük" durur, satır
+          // yüksekliğini bozmaz. object-contain: portre oranı korunur.
+          "size-8 scale-[1.3] object-contain [filter:drop-shadow(0_2px_3px_rgb(48_42_60/0.3))_drop-shadow(0_6px_9px_rgb(48_42_60/0.2))] dark:[filter:drop-shadow(0_2px_4px_rgb(0_0_0/0.55))]",
+          className,
+        )}
+      />
+    );
+  }
   if (src) {
     return (
       <img

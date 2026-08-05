@@ -17,6 +17,10 @@ import {
   TROY_OUNCE_GRAMS,
 } from "@/lib/gold-cost";
 import { getFreshCompetitorSetPrices } from "@/lib/etsy/competitor-watch";
+import {
+  asEtsyProperties,
+  type RawVariantProperties,
+} from "@/lib/variant-properties";
 
 /**
  * Rekabet fiyat araştırması motoru.
@@ -177,7 +181,12 @@ export async function fetchCompetitorOfferings(
 export interface OurVariant {
   sku: string;
   name: string | null;
-  properties: EtsyPropertyValue[] | null;
+  // NOT: DB'de `product_variants.properties` iki şekilde saklanır — Etsy dizisi
+  // (Jade Gold) ya da düz nesne (EON seed). Tip önceden yalnız diziyi ilan
+  // ediyordu; EON nesnesi geldiğinde `.flatMap`/tokenize ÇÖKÜYORDU
+  // ("(a ?? []).flatMap is not a function"). Ham tip + asEtsyProperties ile
+  // her iki şekil de güvenle normalize edilir.
+  properties: RawVariantProperties;
   price_cents: number | null;
   weight_grams: number | null;
 }
@@ -203,11 +212,12 @@ export function buildVariantComparison(
   manualMatches: VariantMatchOverride[] = [],
 ): VariantComparison[] {
   return ourVariants.map((v) => {
-    const vt = tokenize(v.properties);
+    // Her iki property şeklini (Etsy dizisi / EON düz nesne) kanonik diziye
+    // indirge — aksi halde EON nesnesinde tokenize/`.flatMap` çöker.
+    const props = asEtsyProperties(v.properties);
+    const vt = tokenize(props);
     const label =
-      (v.properties ?? [])
-        .flatMap((p) => p.values ?? [])
-        .join(" · ") || v.name || v.sku;
+      props.flatMap((p) => p.values ?? []).join(" · ") || v.name || v.sku;
     const manuals = manualMatches.filter((m) => m.our_sku === v.sku);
     const manualListingIds = new Set(
       manuals.map((m) => m.competitor_listing_id),
@@ -251,6 +261,118 @@ export function buildVariantComparison(
       basis: "variant",
     };
   });
+}
+
+/** Otomatik eşleştirme önerisi — bizim SKU ↔ rakip teklif (tek kesin eşleşme). */
+export interface AutoMatchProposal {
+  our_sku: string;
+  competitor_product_id: number | null;
+  competitor_label: string;
+  competitor_size: string | null;
+  competitor_karat: string | null;
+  price_cents: number;
+}
+
+/**
+ * Varyant boyutları — otomatik eşleştirmeye ÖZEL, çok-eksenli ayrıştırıcı.
+ *
+ * Ortak `tokenize` yüzükte genişlik (mm) ile beden (US) sayılarını TEK "size"
+ * alanına indirger; "2mm · 5" gibi iki eksenli varyantta genişliği bedene
+ * karıştırır → ya yanlış eşleşir ya da belirsiz kalır. Burada dört ekseni AYRI
+ * çözeriz: genişlik (mm), beden (US, bağımsız sayı / "US"/"size" önekli),
+ * uzunluk (in/cm — kolye/bileklik) ve ayar (k). Metin küçük harfe indirilir;
+ * mm/in/k eşleşmeleri bedeni ararken metinden çıkarılır ki genişlik/uzunluk
+ * sayısı beden sanılmasın.
+ */
+interface VariantDims {
+  karat: string | null; // "10k"
+  length: string | null; // "18in"
+  width: string | null; // "2mm"
+  size: string | null; // ring size "5" / "6.5"
+}
+
+function parseVariantDims(text: string): VariantDims {
+  const t = (text ?? "").toLowerCase();
+  let karat: string | null = null;
+  let length: string | null = null;
+  let width: string | null = null;
+  let size: string | null = null;
+  const k = t.match(/\b(\d{1,2})\s*k(?:t|arat)?\b/) || t.match(/\b(\d{1,2})\s*ayar\b/);
+  if (k) karat = k[1] + "k";
+  const len = t.match(/(\d+(?:\.\d+)?)\s*(?:inches|inch|in|cm|"|”)(?![a-z])/);
+  if (len) length = len[1].replace(/\.0$/, "") + "in";
+  const w = t.match(/(\d+(?:\.\d+)?)\s*mm\b/);
+  if (w) width = w[1].replace(/\.0$/, "") + "mm";
+  // Beden için: genişlik/uzunluk/ayar eşleşmelerini metinden çıkar, kalan
+  // bağımsız sayıyı (opsiyonel "US"/"size"/"beden" öneki) beden say.
+  let res = t;
+  if (k) res = res.replace(k[0], " ");
+  if (len) res = res.replace(len[0], " ");
+  if (w) res = res.replace(w[0], " ");
+  const sz =
+    res.match(/(?:us|size|beden|no)\s*#?\s*(\d{1,2}(?:\.\d)?)/) ||
+    res.match(/\b(\d{1,2}(?:\.\d)?)\b/);
+  if (sz) size = sz[1].replace(/\.0$/, "");
+  return { karat, length, width, size };
+}
+
+const DIM_KEYS: (keyof VariantDims)[] = ["width", "size", "length", "karat"];
+
+/**
+ * "Aynı varyant" mı? Bizim varyantın ÇÖZÜLEN her ekseni rakipte de aynı
+ * değerde olmalı (yön: bizden rakibe). Böylece "2mm · 5 ↔ 2mm · 5" eşleşir,
+ * "2mm · 5 ↔ 2mm · 6" ve "2mm · 5 ↔ 3mm · 5" eşleşmez; bedenli varyant,
+ * bedensiz (yalnız genişlikli) teklife bağlanmaz. En az bir eksen çözülmeli.
+ */
+function dimsMatch(our: VariantDims, comp: VariantDims): boolean {
+  const ourHas = DIM_KEYS.filter((d) => our[d] != null);
+  if (ourHas.length === 0) return false;
+  return ourHas.every((d) => comp[d] === our[d]);
+}
+
+function joinPropertyText(properties: RawVariantProperties): string {
+  return asEtsyProperties(properties)
+    .flatMap((p) => p.values ?? [])
+    .join(" ");
+}
+
+/**
+ * Rakip sete bir listing eklenince "aynı varyant"ları otomatik eşler. Aynılık,
+ * çok-eksenli boyut eşlemesinden gelir (genişlik + beden + uzunluk + ayar).
+ * Yanlış eşleşmeyi önlemek için YALNIZ tek-kesin eşleşme kabul edilir: bir
+ * varyantımıza rakipte birden çok offering uyuyorsa (belirsiz) ATLANIR ve
+ * manuel EŞLEŞTİR'e bırakılır; hiç boyut çözülemeyen varyant da atlanır.
+ * Böylece "aynı ise otomatik, şüpheliyse elle" kuralı korunur.
+ */
+export function proposeAutoMatches(
+  ourVariants: { sku: string; properties: RawVariantProperties }[],
+  offerings: CompetitorOffering[],
+): AutoMatchProposal[] {
+  const offerDims = offerings.map((o) => ({
+    o,
+    dims: parseVariantDims(o.label),
+  }));
+  const out: AutoMatchProposal[] = [];
+  for (const v of ourVariants) {
+    const sku = (v.sku ?? "").trim();
+    if (!sku) continue;
+    const ourDims = parseVariantDims(joinPropertyText(v.properties));
+    if (DIM_KEYS.every((d) => ourDims[d] == null)) continue; // çözülen boyut yok
+    const hits = offerDims.filter(
+      (od) => od.o.price_cents > 0 && dimsMatch(ourDims, od.dims),
+    );
+    if (hits.length !== 1) continue; // belirsiz (0 veya >1) → manuele bırak
+    const { o, dims } = hits[0];
+    out.push({
+      our_sku: sku,
+      competitor_product_id: o.product_id,
+      competitor_label: o.label,
+      competitor_size: dims.size ?? dims.length ?? dims.width ?? o.tokens.size,
+      competitor_karat: dims.karat ?? o.tokens.karat,
+      price_cents: o.price_cents,
+    });
+  }
+  return out;
 }
 
 export interface CompetitorRow {

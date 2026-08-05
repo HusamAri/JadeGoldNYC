@@ -50,3 +50,19 @@ export function variantPropertyParts(
     .map((p) => (p.values ?? []).join(", "))
     .filter(Boolean);
 }
+
+/**
+ * {name, value} çiftleri — Etsy 2025 envanter PUT'unda property_name'i (Etsy
+ * GET null döndürünce) değer eşleşmesiyle doldurmak için. Her property'nin ilk
+ * değeri alınır (ör. [{name:"Width", value:"2mm"}, {name:"Ring Size", value:"5"}]).
+ */
+export function variantPropsForMatch(
+  properties: RawVariantProperties,
+): { name: string; value: string }[] {
+  return asEtsyProperties(properties)
+    .map((p) => ({
+      name: p.property_name ?? "",
+      value: (p.values ?? [])[0] ?? "",
+    }))
+    .filter((p) => p.name && p.value);
+}

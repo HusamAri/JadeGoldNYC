@@ -33,6 +33,7 @@ import {
   type HTask,
   type HFloatTask,
 } from "@/components/timeline/horizontal-band";
+import { useCursorGlow } from "@/components/motion/cursor-glow";
 import { UserAvatar } from "@/components/user-avatar";
 import { SlideButton } from "@/components/tasks/motion";
 import { LiquidTabs } from "@/components/tasks/liquid-tabs";
@@ -86,6 +87,16 @@ export function TaskTimeline({
   const scrollRef = useRef<HTMLDivElement>(null);
   const todayRef = useRef<HTMLDivElement>(null);
   const [todayOffscreen, setTodayOffscreen] = useState(false);
+  // Omurga ışığı — scroll kabındaki pointer'ı --my'ye yazar; omurga cursor'a
+  // yakın noktada yumuşakça parlar (panel çizelgesiyle aynı dil).
+  const { ref: glowRef, onPointerMove } = useCursorGlow<HTMLDivElement>();
+  const setScrollRefs = useCallback(
+    (el: HTMLDivElement | null) => {
+      scrollRef.current = el;
+      glowRef.current = el;
+    },
+    [glowRef],
+  );
 
   const filtered = useMemo(
     () =>
@@ -263,9 +274,10 @@ export function TaskTimeline({
       />
 
       {/* ── Zaman çizelgesi (BUGÜN odaklı, geçmiş yukarı geriler) ─────── */}
-      <div className="relative">
+      <div className="group/tl relative">
         <div
-          ref={scrollRef}
+          ref={setScrollRefs}
+          onPointerMove={onPointerMove}
           className="bg-secondary/30 relative max-h-[68vh] overflow-x-hidden overflow-y-auto rounded-[1.75rem] border px-4 py-6 sm:px-6 dark:border-[color:oklch(1_0_0/0.05)] dark:bg-[color:var(--lume-panel)] dark:shadow-[inset_0_1px_0_oklch(1_0_0/0.06)]"
         >
           {/* Omurga — marka vurgu token'ı (v3: --gold mor aileye eşlendi) */}
@@ -275,6 +287,15 @@ export function TaskTimeline({
             style={{
               background:
                 "linear-gradient(to bottom, transparent, var(--gold) 8%, var(--gold) 92%, transparent)",
+            }}
+          />
+          {/* Omurga ışığı — cursor'un dikey konumuna süzülen yumuşak hale. */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute top-0 bottom-0 left-[calc(1.25rem+8px)] w-[90px] -translate-x-1/2 opacity-0 transition-opacity duration-500 ease-[var(--ease-premium)] group-hover/tl:opacity-100 sm:left-[calc(1.75rem+8px)]"
+            style={{
+              background:
+                "radial-gradient(46px 150px at 50% var(--my, 50%), color-mix(in oklch, var(--gold) 22%, transparent), transparent 72%)",
             }}
           />
           {/* Geçmişe karışan üst tül */}
@@ -311,7 +332,9 @@ export function TaskTimeline({
               Bugüne planlı görev yok.
             </p>
           ) : (
-            <div className="mb-3">{todayList.map((t) => card(t, "today"))}</div>
+            <div className="mb-3">
+              <CappedTasks tasks={todayList} section="today" card={card} />
+            </div>
           )}
 
           {renderWithDayLabels(futureList, today, "future", card)}
@@ -342,13 +365,23 @@ export function TaskTimeline({
         </AnimatePresence>
       </div>
 
-      {/* ── Alt bölümler: Geciken + Kapsam ───────────────────────────── */}
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+      {/* ── Alt bölümler: Geciken + Kapsam — uyuyan-kutu kuralı: boş bölüm
+          çizilmez (özet satırı sayıları zaten taşıyor), tek doluysa tam
+          genişlik alır. ─────────────────────────────────────────────── */}
+      {(overdue.length > 0 || undated.length > 0) && (
+      <div
+        className={
+          overdue.length > 0 && undated.length > 0
+            ? "grid grid-cols-1 gap-4 lg:grid-cols-2"
+            : "grid grid-cols-1 gap-4"
+        }
+      >
+        {overdue.length > 0 && (
         <Section
           icon={Flame}
           title="Geciken Görevler"
           count={overdue.length}
-          tone={overdue.length > 0 ? "danger" : "muted"}
+          tone="danger"
           empty="Geciken görev yok — güncelsin."
         >
           {overdue.map((t) => (
@@ -361,7 +394,9 @@ export function TaskTimeline({
             />
           ))}
         </Section>
+        )}
 
+        {undated.length > 0 && (
         <Section
           icon={Layers}
           title="Kapsam (tarihsiz)"
@@ -378,7 +413,9 @@ export function TaskTimeline({
             />
           ))}
         </Section>
+        )}
       </div>
+      )}
 
       <p className="text-muted-foreground/70 text-center text-xs">
         {doneCount} tamamlandı · {overdue.length} gecikme · {todayList.length} bugün ·{" "}
@@ -388,43 +425,121 @@ export function TaskTimeline({
   );
 }
 
-/** Gün değiştikçe küçük tarih etiketi ekleyerek listeyi çizer. */
+/** Günde görünür kart tavanı — fazlası "+N daha" ile katlanır (yoğun günler
+    çizelgeyi boğmasın; "Planı Yay" zaten günde ≤5 açık görev hedefler). */
+const DAY_VISIBLE_CAP = 5;
+
+/** Gün değiştikçe grup başlığı + sayaç; 5'ten kalabalık günler katlanır. */
 function renderWithDayLabels(
   list: TaskWithAssignee[],
   today: string,
   section: Section,
   card: (t: TaskWithAssignee, s: Section) => React.ReactNode,
 ) {
-  const out: React.ReactNode[] = [];
-  let last: string | null = null;
+  // Ardışık aynı-gün görevleri grupla (liste zaten tarihe sıralı gelir).
+  const groups: { day: string; tasks: TaskWithAssignee[] }[] = [];
   for (const t of list) {
-    if (t.due_date !== last) {
-      last = t.due_date as string;
-      const diff = dayDiff(last, today);
-      out.push(
-        <div
-          key={`day-${last}`}
-          className="relative mt-3 mb-1.5 flex items-center gap-2 pl-9"
-        >
-          <span className="text-muted-foreground/70 text-[0.7rem] font-medium tracking-wide uppercase">
-            {labelDay(last)}
-          </span>
-          {section === "past" && diff > 0 && (
-            <span className="text-[0.7rem] font-medium text-[oklch(0.58_0.16_344)]/70 dark:text-[oklch(0.74_0.12_344)]/70">
-              · {diff} gün önce
-            </span>
-          )}
-          {section === "future" && diff < 0 && (
-            <span className="text-muted-foreground/50 text-[0.7rem]">
-              · {-diff} gün sonra
-            </span>
-          )}
-        </div>,
-      );
-    }
-    out.push(card(t, section));
+    const day = t.due_date as string;
+    const g = groups[groups.length - 1];
+    if (g && g.day === day) g.tasks.push(t);
+    else groups.push({ day, tasks: [t] });
   }
-  return out;
+  return groups.map((g) => (
+    <DayGroup key={`day-${g.day}`} group={g} today={today} section={section} card={card} />
+  ));
+}
+
+function DayGroup({
+  group: g,
+  today,
+  section,
+  card,
+}: {
+  group: { day: string; tasks: TaskWithAssignee[] };
+  today: string;
+  section: Section;
+  card: (t: TaskWithAssignee, s: Section) => React.ReactNode;
+}) {
+  const diff = dayDiff(g.day, today);
+  const openCount = g.tasks.filter((t) => t.status !== "done").length;
+  const crowded = openCount > DAY_VISIBLE_CAP;
+
+  return (
+    <div className="relative">
+      {/* Gün başlığı — tarih çipi + sayaç + sağa uzayan ince ayraç. */}
+      <div className="relative mt-6 mb-2 flex items-center gap-2 pl-9 first:mt-2">
+        <span className="text-muted-foreground/80 rounded-full border border-[color:var(--glass-border)] px-2 py-0.5 text-[0.68rem] font-medium tracking-wide uppercase [background-color:var(--glass)] dark:border-[color:oklch(1_0_0/0.08)] dark:[background-color:oklch(1_0_0/0.04)]">
+          {labelDay(g.day)}
+        </span>
+        <span className="text-muted-foreground/60 text-[0.68rem] tabular-nums">
+          {g.tasks.length} görev
+        </span>
+        {section === "past" && diff > 0 && (
+          <span className="text-[0.7rem] font-medium text-[oklch(0.58_0.16_344)]/70 dark:text-[oklch(0.74_0.12_344)]/70">
+            · {diff} gün önce
+          </span>
+        )}
+        {section === "future" && diff < 0 && (
+          <span className="text-muted-foreground/50 text-[0.7rem]">
+            · {-diff} gün sonra
+          </span>
+        )}
+        {crowded && (
+          <span
+            className="rounded-full border border-[oklch(0.76_0.13_75/0.5)] px-1.5 py-px text-[0.62rem] font-semibold text-amber-700 dark:text-amber-300"
+            title={`Bu günde ${openCount} açık görev var — 'Planı Yay' günde 5'e dengeler.`}
+          >
+            yoğun
+          </span>
+        )}
+        <span
+          aria-hidden
+          className="ml-1 h-px flex-1 bg-gradient-to-r from-[color:var(--glass-border)] to-transparent"
+        />
+      </div>
+
+      <CappedTasks tasks={g.tasks} section={section} card={card} />
+    </div>
+  );
+}
+
+/** 5-üstü görev listesini katlar — "+N daha" / "daralt". Gün grubu ve BUGÜN
+    bölümü aynı davranışı paylaşır (yoğun gün çizelgeyi boğmaz). */
+function CappedTasks({
+  tasks,
+  section,
+  card,
+}: {
+  tasks: TaskWithAssignee[];
+  section: Section;
+  card: (t: TaskWithAssignee, s: Section) => React.ReactNode;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const visible = expanded ? tasks : tasks.slice(0, DAY_VISIBLE_CAP);
+  const hidden = tasks.length - visible.length;
+  return (
+    <>
+      {visible.map((t) => card(t, section))}
+      {hidden > 0 && (
+        <button
+          type="button"
+          onClick={() => setExpanded(true)}
+          className="text-muted-foreground hover:text-foreground relative mt-1 mb-2 ml-9 rounded-full border border-dashed border-[color:var(--glass-border)] px-3 py-1 text-[0.7rem] font-medium transition-colors"
+        >
+          +{hidden} görev daha göster
+        </button>
+      )}
+      {expanded && tasks.length > DAY_VISIBLE_CAP && (
+        <button
+          type="button"
+          onClick={() => setExpanded(false)}
+          className="text-muted-foreground/70 hover:text-foreground relative mt-1 mb-2 ml-9 text-[0.68rem] transition-colors"
+        >
+          daralt
+        </button>
+      )}
+    </>
+  );
 }
 
 function TimelineCard({
@@ -451,6 +566,7 @@ function TimelineCard({
     t.status === "doing" && t.progress != null
       ? Math.max(0, Math.min(100, t.progress))
       : null;
+  const { ref: glowRef, onPointerMove } = useCursorGlow<HTMLDivElement>();
 
   return (
     <motion.div
@@ -489,6 +605,8 @@ function TimelineCard({
       </span>
 
       <div
+        ref={glowRef}
+        onPointerMove={onPointerMove}
         role="button"
         tabIndex={0}
         onClick={onOpen}
@@ -499,7 +617,7 @@ function TimelineCard({
           }
         }}
         className={cn(
-          "nm-raised-sm focus-visible:ring-ring/60 min-w-0 flex-1 cursor-pointer rounded-2xl p-3 outline-none transition-shadow duration-300 hover:shadow-[var(--shadow-hover)] focus-visible:ring-2",
+          "nm-raised-sm cursor-glow focus-visible:ring-ring/60 min-w-0 flex-1 cursor-pointer overflow-hidden rounded-2xl p-3 outline-none transition-shadow duration-300 hover:shadow-[var(--shadow-hover)] focus-visible:ring-2",
           overdue && "tl-overdue-neon",
           section === "past" && !overdue && "opacity-70",
           done && "opacity-60",

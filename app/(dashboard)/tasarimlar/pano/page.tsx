@@ -106,18 +106,31 @@ export default async function TasarimPanosuPage() {
                 {g.designs.map((d) => {
                   const thumb = thumbs.get(d.id);
                   return (
-                    <Card key={d.id} className="gap-0 overflow-hidden p-0">
+                    /* interactive: kartın tamamı tasarımın düzenleme sayfasına
+                       giden link — tıklanabilir yüzey, jg-tactile sözleşmesi
+                       (hover'da kalkma, basışta oturma) burada doğru. */
+                    <Card
+                      key={d.id}
+                      interactive
+                      className="gap-0 overflow-hidden p-0"
+                    >
                       <Link
                         href={`/tasarimlar/${d.id}/duzenle`}
-                        className="bg-muted block aspect-video w-full overflow-hidden"
+                        /* jg-tilt-scene: tasarım görseli imlece göre eğilir
+                           (globals A5b) — pano fiziksel bir maket panosu gibi
+                           okunur. Düz <img>, cam yok, bütçe içinde. */
+                        className="jg-tilt-scene bg-muted relative block aspect-video w-full overflow-hidden"
                       >
                         {thumb ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
-                            src={thumb}
-                            alt={d.name}
-                            className="h-full w-full object-cover"
-                          />
+                          <>
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={thumb}
+                              alt={d.name}
+                              className="jg-tilt h-full w-full object-cover"
+                            />
+                            <span aria-hidden className="jg-tilt-gloss" />
+                          </>
                         ) : (
                           <span className="text-muted-foreground/50 flex h-full items-center justify-center">
                             <ImageOff className="size-6" />

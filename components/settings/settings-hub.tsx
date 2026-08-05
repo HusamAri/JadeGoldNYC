@@ -73,7 +73,17 @@ export function SettingsHub(props: SettingsHubProps) {
       featured: true,
       status: {
         live: props.shipStationConfigured,
-        label: props.shipStationConfigured ? "Hazır" : "Bekliyor",
+        label: props.shipStationConfigured ? "Bağlı" : "Bağlı değil",
+      },
+    },
+    {
+      href: "/ayarlar/shopier",
+      title: "Shopier",
+      description: "Türkiye kanalı — sipariş senkronu (PAT API)",
+      icon: ShoppingCart,
+      status: {
+        live: props.shopierConnected,
+        label: props.shopierConnected ? "Bağlı" : "Bağlı değil",
       },
     },
     {
@@ -167,7 +177,7 @@ export function SettingsHub(props: SettingsHubProps) {
           <div className="flex flex-wrap items-center gap-2">
             <PulseChip
               live={liveCount > 0}
-              label={`${liveCount}/2 bağlantı aktif`}
+              label={`${liveCount}/3 bağlantı aktif`}
             />
             <span className="text-muted-foreground font-mono text-[10px] tracking-[0.18em] uppercase">
               {props.role}
@@ -216,7 +226,7 @@ export function SettingsHub(props: SettingsHubProps) {
 
               <Link
                 href="/ayarlar/profil"
-                className="group relative flex items-center gap-4 rounded-[1.4rem] border border-white/40 bg-white/35 p-4 shadow-[var(--shadow-raised-sm)] transition-[transform,box-shadow] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-hover)] active:scale-[0.99] dark:border-white/10 dark:bg-white/[0.06] dark:shadow-[var(--lume-hi),0_16px_40px_rgb(0_0_0/0.35)]"
+                className="group relative flex items-center gap-4 rounded-[1.4rem] border border-white/40 bg-white/35 p-4 shadow-[var(--shadow-raised-sm)] transition-[translate,scale,box-shadow] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-hover)] active:scale-[0.99] dark:border-white/10 dark:bg-white/[0.06] dark:shadow-[var(--lume-hi),0_16px_40px_rgb(0_0_0/0.35)]"
               >
                 <div className="relative">
                   <UserAvatar
@@ -338,7 +348,7 @@ function SettingsTile({
       <Link
         href={tile.href}
         className={cn(
-          "group relative block rounded-[1.75rem] border border-black/[0.06] bg-[linear-gradient(145deg,rgb(255_255_255/0.5),rgb(163_177_198/0.16))] p-1.5 transition-[transform,box-shadow] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-1 hover:shadow-[var(--shadow-hover)] active:scale-[0.985] dark:border-white/5 dark:bg-white/[0.03]",
+          "group relative block rounded-[1.75rem] border border-black/[0.06] bg-[linear-gradient(145deg,rgb(255_255_255/0.5),rgb(163_177_198/0.16))] p-1.5 transition-[translate,scale,box-shadow] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-1 hover:shadow-[var(--shadow-hover)] active:scale-[0.985] dark:border-white/5 dark:bg-white/[0.03]",
           large && "min-h-[168px]",
           live &&
             "shadow-[0_0_0_1px_rgb(52_211_153/0.25),0_0_28px_rgb(52_211_153/0.18)] dark:shadow-[0_0_0_1px_rgb(52_211_153/0.35),0_0_36px_rgb(52_211_153/0.28)]",

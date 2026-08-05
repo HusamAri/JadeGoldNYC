@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none" role="img" aria-label="EON mark">
+  <!-- EON işareti (kullanıcı tarifi): "| ||" — tek çubuk + sıkı çift çubuk;
+       grup arası geniş, çift arası dar. Mürekkep #1C1C1C; koyu temada
+       dark:invert ile döner (org-emblem.tsx). -->
+  <g fill="#1C1C1C">
+    <rect x="36" y="28" width="9" height="64" rx="1.5" />
+    <rect x="60" y="28" width="9" height="64" rx="1.5" />
+    <rect x="75" y="28" width="9" height="64" rx="1.5" />
+  </g>
+</svg>

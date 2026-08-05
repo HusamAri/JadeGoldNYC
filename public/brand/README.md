@@ -91,3 +91,20 @@ yerlerde kullanıldı.
 
 Uygulama dağıtıldığında pano `/(…)/brand/jade-gold-nyc-guidelines.html` yolundan
 servis edilir; dosya kendi içinde bütün olduğu için tarayıcıda da doğrudan açılır.
+
+---
+
+## EON Fine Jewelry — `brand/eon/`
+
+EON org aktifken `/marka-kilavuzu` bu sistemi gösterir.
+
+| Dosya | Rol |
+|---|---|
+| `eon/eon-guidelines.html` | 1728×1152 tek-tuval pano (Cormorant Garamond + DM Sans) |
+| `eon/logo/logo-primary.svg` | EON + FINE JEWELRY kilit |
+| `eon/logo/logo-wordmark.svg` | Kelime markası |
+| `eon/logo/logo-monogram.svg` | Amblem |
+| `cutout/eon-rings.png` | Ürün cutout (fotoğraf bandı) |
+
+**Palet:** Ink `#1C1C1C` · Paper `#F5F3EF` · Muted `#6B6B6B` · Card `#F0EEE9` · Mist `#C8C4BC` · Night `#121212`.  
+**Ses:** silent luxury · Meaning Designed To Last · koleksiyonlar Meridian / Obelisk / Testament / Keystone / Cornice.

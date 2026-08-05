@@ -2,9 +2,10 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 
 import type { EtsyClient } from "@/lib/etsy/client";
 import { etsyPaths } from "@/lib/etsy/endpoints";
-import { applyEonPersonalization } from "@/lib/etsy/personalization";
 import { asEtsyProperties, type RawVariantProperties } from "@/lib/variant-properties";
+import { stripImageMetadata } from "@/lib/photo-kit/strip-metadata";
 import { logAudit } from "@/lib/audit";
+import { DEFAULT_PERSONALIZATION_QUESTIONS } from "@/lib/etsy/personalization";
 
 /**
  * PANEL TASLAĞI → ETSY DRAFT LISTING.
@@ -13,12 +14,12 @@ import { logAudit } from "@/lib/audit";
  * kullanıcı listing'i "tailor" ettikten sonra tek tuşla Etsy'de TASLAK (draft —
  * yayınlanmaz) listing açılır. Akış:
  *   1. createListing (POST, form-encoded): başlık, temiz açıklama, tag/materyal,
- *      çapa fiyat (en düşük varyant); sonra personalization: 30 char iç gravür
- *      + Engraving style dropdown (Script|Block).
+ *      çapa fiyat (en düşük varyant), kişiselleştirme AÇIK (30 char iç gravür).
  *   2. Envanter PUT: DEĞİŞEN property'ler custom slot 513/514'e; her iki eksen de
  *      fiyat taşır (price_on_property = kullanılan slotlar); fiyat/adet/sku per
  *      offering panel varyantlarından. Sabit property'ler açıklamada kalır.
- *   3. (opsiyonel) products.image_url PUBLIC ise baytı çekip multipart kapak yükle.
+ *   3. Görseller: kapak (products.image_url) + panel galerisi (listing_images)
+ *      sırayla çekilip meta verisi sökülerek multipart yüklenir (rank 1..N).
  *   4. products.etsy_listing_id + url yaz (vekil taze). İDEMPOTENT: etsy_listing_id
  *      doluysa hiç dokunulmaz.
  *
@@ -33,8 +34,9 @@ import { logAudit } from "@/lib/audit";
  *  B. taxonomy_id: "Wedding Bands" düğümü ağaçtan çözülür (yoksa "Rings").
  *     Canlıda taksonomi adı değişmişse veya ağaç şekli farklıysa çözüm boş
  *     dönebilir → o durumda create adımı "Etsy kategorisi çözülemedi" ile durur.
- *  C. Kişiselleştirme: text_input iç gravür (ops, max=30) + dropdown
- *     "Engraving style" (Script|Block). lib/etsy/personalization.ts kanonu.
+ *  C. Kişiselleştirme: is_personalizable=true, required=false, max=30 char.
+ *     Bant alyanslarında bu iç gravür talimatıdır; Etsy 30 char'ı aşan talebi
+ *     reddeder.
  *  D. Varyasyon eşleme: Etsy en fazla 2 custom variation ekseni kabul eder →
  *     DEĞİŞEN ilk 2 property slot 513/514'e; 2'den fazla değişen varsa (nadir)
  *     kalanı açıklamaya not düşülür (canlıda uyarı olarak döneriz).
@@ -44,9 +46,11 @@ import { logAudit } from "@/lib/audit";
  *     property'ler bilerek slota konmaz.
  *  F. Tag kuralı: her tag ≤20 karakter, en çok 13 tag (Etsy sınırı) — aşanlar
  *     elenir/kırpılır. Materyal: en çok 13, her biri ≤45 char.
- *  G. Kapak görseli: image_url PUBLIC erişilebilir olmalı (Supabase Storage
- *     public bucket). İmzalı/özel URL ise fetch 400/403 döner → görsel adımı
- *     hata verir ama listing ve envanter KORUNUR (kısmi başarı).
+ *  G. Görseller: her URL PUBLIC erişilebilir olmalı (Supabase Storage public
+ *     bucket). İmzalı/özel URL ise fetch 400/403 döner → o görsel için uyarı
+ *     düşer ama listing ve envanter KORUNUR (kısmi başarı). Hiç görsel yoksa
+ *     create HİÇ denenmez: Etsy fotoğrafsız listing'i yayınlatmaz, açılan
+ *     taslak etsy_listing_id'yi kilitleyip yeniden denemeyi de engellerdi.
  */
 
 /** Etsy custom variation slot id'leri (en fazla iki eksen). */
@@ -240,8 +244,15 @@ export interface DraftProduct {
   price_cents: number | null;
   quantity: number | null;
   image_url: string | null;
+  /** Panel galerisi (`listing_images`, position sırasında). Görsel yöneticisi
+   *  SADECE bu tabloya yazar — `image_url`'e hiç dokunmaz; birleştirilmezse
+   *  listing tek/hiç görselle açılırdı. */
+  galleryUrls: string[];
   variants: DraftVariant[];
 }
+
+/** Etsy listing başına kabul ettiği en fazla fotoğraf sayısı. */
+const MAX_LISTING_IMAGES = 10;
 
 export interface CreateDraftResult {
   ok: boolean;
@@ -373,9 +384,51 @@ export async function createDraftListingFromProduct(
 
   // Varyasyon planı (değişen → slot, sabit → açıklama).
   const plan = buildVariationPlan(variants);
+  // VARYANT KAYBI KİLİDİ — hiçbir şey yazmadan durur.
+  // Envanter PUT'u yalnız "değişen property" varsa çalışır; plan SADECE
+  // `product_variants.properties`ten kurulur. Panel composer'ından doğan
+  // taslakta bu kolon hiç yazılmadığı için plan boş kalıyor, PUT sessizce
+  // atlanıyor ve N varyantın hepsi Etsy'ye TEK offering olarak gidiyordu —
+  // üstelik akış ok:true dönüp etsy_listing_id yazdığı için idempotens kilidi
+  // devreye giriyor ve hata bir daha görünmüyordu.
+  if (variants.length > 1 && plan.varyingNames.length === 0) {
+    return {
+      ok: false,
+      step: "create",
+      error:
+        `${variants.length} varyant var ama varyasyon ekseni (ör. Ring Size / Width) tanımlı değil — ` +
+        "hepsi Etsy'de tek seçeneğe düşerdi. Varyant satırlarına eksen adı + değer girip tekrar deneyin.",
+    };
+  }
   if (plan.overflowNames.length > 0) {
     warnings.push(
       `Etsy en fazla 2 varyasyon ekseni kabul eder; şu property'ler açıklamaya taşındı: ${plan.overflowNames.join(", ")}.`,
+    );
+  }
+
+  // Yüklenecek görseller: kapak (products.image_url) + panel galerisi
+  // (listing_images). Tekilleştirilir — aynı URL hem kapak hem galeri satırı
+  // olabilir; Etsy'ye iki kez yüklenmesi çift fotoğraf üretirdi.
+  const gallery = [
+    ...new Set(
+      [product.image_url, ...(product.galleryUrls ?? [])]
+        .map((u) => (u ?? "").trim())
+        .filter(Boolean),
+    ),
+  ];
+  // Fotoğrafsız listing Etsy'de YAYINLANAMAZ. Bunu create'ten sonra fark etmek
+  // yayınlanamayan bir taslak + kilitli etsy_listing_id bırakır; önceden dur.
+  if (gallery.length === 0) {
+    return {
+      ok: false,
+      step: "create",
+      error:
+        "Görsel yok — Etsy fotoğrafsız listing'i yayınlatmaz. Listing'e en az bir görsel ekleyip tekrar deneyin.",
+    };
+  }
+  if (gallery.length > MAX_LISTING_IMAGES) {
+    warnings.push(
+      `${gallery.length} görsel var; Etsy sınırı ${MAX_LISTING_IMAGES} — ilk ${MAX_LISTING_IMAGES} yüklendi.`,
     );
   }
 
@@ -482,16 +535,24 @@ export async function createDraftListingFromProduct(
 
   const url = `https://www.etsy.com/listing/${listingId}`;
 
-  // ── 1b) Kişiselleştirme — iç gravür (30 char) + engraving style dropdown.
-  // 2025 migrasyonu: ayrı uç; POST replace semantics. Başarısız olursa listing
-  // yaşar; uyarı eklenir (elle / sync script ile tamamlanır).
+  // ── 1b) Kişiselleştirme — 2025 migrasyonu: legacy create alanları yerine
+  // ayrı uç. İKİ soru (gravür metni + Engraving Style dropdown), kataloğun
+  // geri kalanıyla aynı (bkz. DEFAULT_PERSONALIZATION_QUESTIONS). Başarısız
+  // olursa listing yaşar; uyarı eklenir, alanlar Etsy'de elle ya da listing
+  // sayfasındaki "Tüm listing'lere uygula" ile tamamlanır.
   try {
-    await applyEonPersonalization(client, shopId, listingId);
+    await client.request(
+      "POST",
+      etsyPaths.listingPersonalization(shopId, listingId) +
+        "?supports_multiple_personalization_questions=true",
+      { personalization_questions: DEFAULT_PERSONALIZATION_QUESTIONS },
+    );
   } catch (e) {
     warnings.push(
-      `Kişiselleştirme (gravür + style) eklenemedi: ${
+      `Kişiselleştirme (gravür + yazı stili) eklenemedi: ${
         e instanceof Error ? e.message : String(e)
-      }. Listing açıldı; scripts/eon-sync-personalization.ts ile tamamlayabilirsiniz.`,
+      }. Listing açıldı; alanları Etsy'de elle ekleyebilir veya listing ` +
+        `sayfasındaki kişiselleştirme kartından kopyalayabilirsiniz.`,
     );
   }
 
@@ -554,30 +615,49 @@ export async function createDraftListingFromProduct(
     }
   }
 
-  // ── 3) Kapak görseli (opsiyonel; image_url PUBLIC olmalı). ────────────────
-  if (product.image_url) {
+  // ── 3) Görseller: kapak + panel galerisi (URL'ler PUBLIC olmalı). ─────────
+  // Sıra paneldeki sıradır (kapak önce, sonra listing_images.position) → Etsy
+  // rank 1..N. Her görsel BAĞIMSIZ yüklenir: biri patlarsa listing ve diğer
+  // görseller yaşar, yalnız o görsel için uyarı düşer.
+  for (const [i, imageUrl] of gallery.slice(0, MAX_LISTING_IMAGES).entries()) {
+    const sira = i + 1;
     try {
-      const res = await fetch(product.image_url);
+      const res = await fetch(imageUrl);
       if (!res.ok) {
         warnings.push(
-          `Kapak görseli indirilemedi (HTTP ${res.status}) — listing görselsiz açıldı.`,
+          `Görsel ${sira} indirilemedi (HTTP ${res.status}) — Etsy'ye yüklenmedi.`,
         );
-      } else {
-        const buf = await res.arrayBuffer();
-        const contentType = res.headers.get("content-type") ?? "image/jpeg";
-        const fd = new FormData();
-        fd.append("image", new Blob([buf], { type: contentType }), "cover.jpg");
-        fd.append("rank", "1");
-        await client.requestMultipart(
-          "POST",
-          etsyPaths.listingImages(shopId, listingId),
-          fd,
-        );
+        continue;
       }
+      const buf = await res.arrayBuffer();
+      const contentType = res.headers.get("content-type") ?? "image/jpeg";
+      // Üreteç/köken meta verisini sök (ör. Higgsfield `hf-job-id`) — mağazaya
+      // çıkan ürün fotoğrafı kaynağını ele veren etiketler taşımasın; galeri
+      // yükleme yolu (gorsel-uretim/galeri) ve indirme proxy'si ile aynı kural.
+      // (Piksele gömülü SynthID filigranı meta veri DEĞİLDİR, sökülemez.)
+      const clean = stripImageMetadata(new Uint8Array(buf));
+      const ext = contentType.includes("png")
+        ? "png"
+        : contentType.includes("webp")
+          ? "webp"
+          : "jpg";
+      const fd = new FormData();
+      fd.append(
+        "image",
+        new Blob([clean], { type: contentType }),
+        `listing-${sira}.${ext}`,
+      );
+      fd.append("rank", String(sira));
+      fd.append("alt_text", product.title.slice(0, 250));
+      await client.requestMultipart(
+        "POST",
+        etsyPaths.listingImages(shopId, listingId),
+        fd,
+      );
     } catch (e) {
       // Görsel kritik değil — listing korunur, uyarı olarak dön.
       warnings.push(
-        `Kapak görseli yüklenemedi: ${e instanceof Error ? e.message : String(e)}`,
+        `Görsel ${sira} yüklenemedi: ${e instanceof Error ? e.message : String(e)}`,
       );
     }
   }

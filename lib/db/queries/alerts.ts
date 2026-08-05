@@ -7,6 +7,7 @@ import { getEtsyStatus } from "@/lib/db/queries/etsy";
 import { getMarketAlertCounts } from "@/lib/db/queries/market-alerts";
 import { getListingAuditSummary } from "@/lib/db/queries/listing-audit";
 import { computeAdsSignals } from "@/lib/db/queries/ads-actions";
+import { clampDiscountPct } from "@/lib/discount";
 
 /**
  * UYARI MERKEZİ — sistemin HER yerindeki aksiyon gerektiren sinyalleri tek
@@ -106,6 +107,7 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
     meltRows,
     lastShopSnapshot,
     lastManualMetric,
+    productDiscounts,
   ] = await Promise.all([
       getDataGaps(orgId),
       getEtsyStatus(orgId),
@@ -123,10 +125,11 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
         .eq("id", orgId)
         .maybeSingle(),
       // Stoğu biten/süresi dolan listingler — TEK sorgudan hem sayı hem
-      // dondurulan potansiyel gelir (bedele göre sıralama için).
+      // dondurulan potansiyel gelir (bedele göre sıralama için). id + quantity
+      // de çekilir: "sold_out" state'i panel stoğuyla çapraz-doğrulanır (aşağı).
       supabase
         .from("products")
-        .select("status, price_cents, currency")
+        .select("id, status, price_cents, currency, quantity")
         .eq("org_id", orgId)
         .is("archived_at", null)
         .in("status", PRODUCT_STATUS_ALERTS.map((s) => s.status)),
@@ -200,6 +203,15 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
         .order("created_at", { ascending: false })
         .limit(1)
         .maybeSingle(),
+      // İndirimli fiyat eritme-altı kontrolü için aktif indirimli ürünler
+      // (discount_pct > 0). İndirim Etsy'den çekilemez, panelde manuel (0115);
+      // indirim tabanı eritmenin altına düşürüyorsa her satış garantili zarar.
+      supabase
+        .from("products")
+        .select("id, discount_pct")
+        .eq("org_id", orgId)
+        .is("archived_at", null)
+        .gt("discount_pct", 0),
     ]);
 
   // Sorgu hataları sessizce "her şey yolunda"ya dönüşmesin — logla.
@@ -212,6 +224,7 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
     ["sales", recentSales],
     ["metrics", son30Metrics],
     ["melt", meltRows],
+    ["productDiscounts", productDiscounts],
     ["snapshot", lastShopSnapshot],
     ["manualMetric", lastManualMetric],
   ] as const) {
@@ -222,14 +235,55 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
     (orgRow.data as { default_currency: string | null } | null)?.default_currency ??
     "USD";
 
-  // Durum başına sayı + dondurulan gelir (yalnız org para birimindeki fiyatlar
-  // toplanır — farklı kurları tek sayıya karıştırmak yanıltıcı olur).
-  const byStatus: Record<string, { count: number; sumCents: number }> = {};
-  for (const p of (statusProducts.data ?? []) as {
+  const statusRows = (statusProducts.data ?? []) as {
+    id: string;
     status: string;
     price_cents: number | null;
     currency: string | null;
-  }[]) {
+    quantity: number | null;
+  }[];
+
+  // "Tükendi" doğrulaması (kullanıcı vakası: "sold_out diyor ama stok var").
+  // products.status Etsy listing state'inin BİREBİR aynası (sync.ts) ve Etsy'de
+  // "sold_out" KALICIDIR — yeniden stoklama/yenileme sonrası bile günlük senkron
+  // gelene dek bayat kalır (senkron günlerce kırık kalabildi). Bu yüzden state'i
+  // tek başına doğruluk kaynağı sayma: panelin KENDİ bildiği stok (ürün adedi ya
+  // da varyant adedi > 0) varsa ürün gerçekten tükenmemiştir → "tükendi" alarmı
+  // yanlış olur, sayma. (Yalnız sold_out'a uygulanır; "expired" stoktan bağımsız
+  // olarak listing süresinin dolmasıdır.) Bütünlük: adet varyantlı listing'de
+  // varyantta, tek-parçada products.quantity'de yaşar — ikisi de kontrol edilir.
+  const soldOutIds = statusRows
+    .filter((p) => p.status === "sold_out")
+    .map((p) => p.id);
+  const variantStockByProduct = new Map<string, number>();
+  if (soldOutIds.length > 0) {
+    const { data: vq, error: vqErr } = await supabase
+      .from("product_variants")
+      .select("product_id, quantity")
+      .eq("org_id", orgId)
+      .in("product_id", soldOutIds);
+    if (vqErr)
+      console.error("[alert-center] sold_out varyant stok sorgusu:", vqErr.message);
+    for (const v of (vq ?? []) as {
+      product_id: string | null;
+      quantity: number | null;
+    }[]) {
+      if (!v.product_id) continue;
+      variantStockByProduct.set(
+        v.product_id,
+        (variantStockByProduct.get(v.product_id) ?? 0) + (v.quantity ?? 0),
+      );
+    }
+  }
+  const hasKnownStock = (p: { id: string; quantity: number | null }) =>
+    (p.quantity ?? 0) > 0 || (variantStockByProduct.get(p.id) ?? 0) > 0;
+
+  // Durum başına sayı + dondurulan gelir (yalnız org para birimindeki fiyatlar
+  // toplanır — farklı kurları tek sayıya karıştırmak yanıltıcı olur).
+  const byStatus: Record<string, { count: number; sumCents: number }> = {};
+  for (const p of statusRows) {
+    // Çelişkili state: stok varken "sold_out" → bayat/yanlış, sayma.
+    if (p.status === "sold_out" && hasKnownStock(p)) continue;
     const b = (byStatus[p.status] ??= { count: 0, sumCents: 0 });
     b.count += 1;
     if ((p.currency ?? currency) === currency) b.sumCents += p.price_cents ?? 0;
@@ -464,17 +518,34 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
   }
 
   // 9) Eritme-altı fiyat → hurda değerinin altında satış = garanti zarar (KRİTİK).
-  const meltBelow = (
-    (meltRows.data ?? []) as {
-      our_per_gram_cents: number | null;
-      melt_per_gram_cents: number | null;
-    }[]
-  ).filter(
-    (r) =>
-      r.our_per_gram_cents != null &&
-      r.melt_per_gram_cents != null &&
-      r.our_per_gram_cents < r.melt_per_gram_cents,
-  ).length;
+  // İki ayrı sinyal: (9a) TABAN fiyat zaten eritme-altı; (9c) taban üstteyken
+  // manuel İNDİRİM (0115) fiyatı eritme-altına düşürüyor. İndirim Etsy'den
+  // çekilemediğinden panelde tek doğruluk kaynağı; her indirimli satış zarar.
+  const discByProduct = new Map<string, number>();
+  for (const p of (productDiscounts.data ?? []) as {
+    id: string;
+    discount_pct: number | null;
+  }[]) {
+    discByProduct.set(p.id, clampDiscountPct(p.discount_pct));
+  }
+  let meltBelow = 0;
+  let discountMeltBelow = 0;
+  for (const r of (meltRows.data ?? []) as {
+    product_id: string | null;
+    our_per_gram_cents: number | null;
+    melt_per_gram_cents: number | null;
+  }[]) {
+    const our = r.our_per_gram_cents;
+    const melt = r.melt_per_gram_cents;
+    if (our == null || melt == null) continue;
+    if (our < melt) {
+      // Taban zaten eritme-altı → below_melt sayar; indirim mükerrer sayılmasın.
+      meltBelow += 1;
+      continue;
+    }
+    const pct = r.product_id ? (discByProduct.get(r.product_id) ?? 0) : 0;
+    if (pct > 0 && (our * (100 - pct)) / 100 < melt) discountMeltBelow += 1;
+  }
   if (meltBelow > 0) {
     alerts.push({
       key: "below_melt",
@@ -484,6 +555,19 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
       count: meltBelow,
       href: "/analizler/urunler",
       actionLabel: "Fiyatları düzelt",
+      costCents: null,
+    });
+  }
+  // 9c) İndirim, tabanı eritme-altına düşürüyor → indirimli satış = zarar.
+  if (discountMeltBelow > 0) {
+    alerts.push({
+      key: "discount_below_melt",
+      severity: "kritik",
+      title: `${discountMeltBelow} listing İNDİRİMLİ fiyatı eritme değerinin altında`,
+      hint: "Taban fiyat eritmenin üstünde ama uyguladığın indirim gram fiyatını altının hurda değerinin altına indiriyor — indirimli her satış garantili zarar. İndirimi azalt ya da bu listingleri Sale'den çıkar.",
+      count: discountMeltBelow,
+      href: "/analizler/urunler",
+      actionLabel: "İndirimi gözden geçir",
       costCents: null,
     });
   }

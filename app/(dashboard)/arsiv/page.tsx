@@ -11,7 +11,7 @@ export default async function ArsivPage() {
   const canArchive = isManager(m.role);
 
   return (
-    <div className="space-y-6">
+    <div className="page-stack">
       <PageHeader
         title="Listing Arşivi"
         description="Etsy listinglerinin görsel ve videolarını panele kalıcı çeker. Etsy'den listing silinse bile medya burada kalır — geriye dönük arşiv. Listing metni zaten panelde saklıdır."

@@ -2,7 +2,7 @@ import type { ComponentType, SVGProps } from "react";
 
 import { cn } from "@/lib/utils";
 import { formatMoney } from "@/lib/money";
-import { Money } from "@/components/money";
+import { CountUpMoney, CountUpText } from "@/components/kpi-value";
 
 /** Hem Lucide hem markaya özel Lux ikonlarını kabul eden ikon tipi. */
 type IconType = ComponentType<SVGProps<SVGSVGElement>>;
@@ -96,6 +96,27 @@ export function KpiCard({
   const displayString = isMoney ? formatMoney(cents, currency) : (value ?? "");
   const valueLen = displayString.length;
 
+  // DERİNLİK (A5) — yalnız görünümün KAHRAMAN KPI'ında. `holo`/`splitTone`
+  // zaten "görünüm başına tek kart" sözleşmesini taşıyor, o yüzden derinlik
+  // de onlara bağlanır: 10 kartın hepsinde ayrışma olsaydı hiyerarşi
+  // kaybolurdu (ve eşzamanlı hasar bölgesi süperadditif olurdu).
+  //
+  // NEDEN SADECE `jg-depth-fore` (kart EĞİLMİYOR, filigran ikon OYNAMIYOR):
+  //  · Kartın kendisi rotateX/rotateY ile eğilemez — cam plaka
+  //    backdrop-filter taşır, eğilen backdrop her karede yeniden rasterize
+  //    olur (bu panelde FPS'i 4'e düşüren mekanizmanın ta kendisi).
+  //  · Filigran ikon AÇIK temada cam plakanın ALTINDA (z-0). Bütçe md.4
+  //    ALTIN KURAL: backdrop-filter yüzeyinin altındaki katman anime
+  //    EDİLEMEZ. Bu yüzden ikona `jg-depth-back` verilmedi.
+  //  · İçerik katmanı camın ÜSTÜNDE (z-2) → orada transform serbest.
+  //    Sabit duran filigran + camın üstünde 2px öne gelen içerik zaten
+  //    paralaks üretir: cam gerçek kalınlık kazanır, okuma sırası netleşir.
+  //  · `jg-depth-scene` (perspective + contain:paint) BİLEREK kullanılmadı:
+  //    (a) katman ayrışması saf translate/scale, perspektif gerektirmiyor;
+  //    (b) contain:paint bir "backdrop root" kurar → cam plaka artık
+  //    arkadaki holo ambiyansı örnekleyemez, kart düzleşirdi.
+  const heroDepth = holo || splitTone;
+
   // Her kutu FARKLI süzülür: etiketten türeyen deterministik faz/yön/süre.
   // PERF: süzülme yalnız HOVER'da — 10 ikonun camın altında sürekli kıpırdaması
   // 10 backdrop'un her karede yeniden örneklenmesi demekti (eşzamanlılık
@@ -122,6 +143,14 @@ export function KpiCard({
     <div
       className={cn(
         "sheen-sweep relative flex h-full min-w-0 flex-col overflow-hidden rounded-[18px] px-6 py-6 transition-transform duration-300 ease-[var(--ease-premium)] hover:-translate-y-0.5 dark:rounded-[26px]",
+        // `group`: kart-içi katman ayrışmasının tetikleyicisi (.jg-depth-fore
+        // hem .jg-depth-scene:hover hem .group:hover ile açılır).
+        // YAN ETKİ (bilinçli): globals'taki `.group:hover > .glass-liquid::before`
+        // caustic ışık gezintisi de bu tek kartta artık ÇALIŞIR (şimdiye kadar
+        // hiçbir kartta `group` olmadığı için ölü kuraldı ve caustic yalnız
+        // padding halkasına gelindiğinde tetikleniyordu — tutarsızdı). Hover
+        // kapılı, transform-only, 5.5s, görünüm başına 1 kart.
+        heroDepth && "group",
         className,
       )}
     >
@@ -144,7 +173,17 @@ export function KpiCard({
         aria-hidden
         className="glass-liquid absolute inset-0 z-[1] rounded-[18px] border border-[color:var(--glass-border)] [backdrop-filter:var(--glass-filter)] [background-color:var(--glass)] [box-shadow:var(--lift),var(--glass-highlight)] dark:rounded-[26px] dark:border-[color:oklch(1_0_0/0.05)] dark:[backdrop-filter:none] dark:[background-color:var(--lume-panel)] dark:[box-shadow:0_20px_50px_oklch(0_0_0/0.4),inset_0_1px_0_oklch(1_0_0/0.06)]"
       />
-      <div className="relative z-[2] flex h-full items-start justify-between gap-3">
+      {/* Kahraman KPI: açılışta TEK SEFERLİK altın ışık süpürmesi — panelin
+          "değerli metal" imzası. Hover sheen'inden bağımsız gerçek bir span
+          (::after hover-sheen'e ayrılmış durumda); reduced-motion'da hiç
+          çizilmez (opacity 0'da başlar, animasyon koşmayınca görünmez). */}
+      {heroDepth && <span aria-hidden className="jg-gold-sheen" />}
+      <div
+        className={cn(
+          "relative z-[2] flex h-full items-start justify-between gap-3",
+          heroDepth && "jg-depth-fore",
+        )}
+      >
         <div className="flex min-w-0 flex-col">
           {/* Etiket — editorial .idx dili: mono, uppercase, geniş tracking. */}
           <p className="text-muted-foreground line-clamp-2 min-h-[2.5rem] font-mono text-[11px] leading-[1.5] tracking-[0.16em] uppercase">
@@ -188,10 +227,13 @@ export function KpiCard({
                 "text-[oklch(0.58_0.16_344)] dark:text-[oklch(0.74_0.12_344)]",
             )}
           >
+            {/* Sayaç animasyonu: rakam yüklenişte 0'dan değerine sayar
+                (client alt-bileşen; SSR nihai değeri basar, reduced-motion'da
+                animasyon hiç koşmaz). */}
             {isMoney ? (
-              <Money cents={cents} currency={currency} />
+              <CountUpMoney cents={cents} currency={currency} />
             ) : (
-              value
+              <CountUpText value={value ?? ""} />
             )}
           </p>
           {comparisons && comparisons.length > 0 && (

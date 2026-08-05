@@ -3,9 +3,10 @@
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Loader2, Save } from "lucide-react";
+import { Loader2, Save, UploadCloud } from "lucide-react";
 
 import {
+  pushListingSeoToEtsy,
   updateListingFields,
   type ListingFieldsInput,
 } from "@/app/(dashboard)/tasarimlar/listing/[id]/actions";
@@ -37,13 +38,19 @@ export const LISTING_FIELD_IDS = {
 export interface ListingFieldsInitial {
   title: string;
   description: string | null;
-  tags: string[] | null;
-  materials: string[] | null;
+  tags: string[] | string | null;
+  materials: string[] | string | null;
   price_cents: number | null;
   /** Sabit birim maliyet (cent); null = yok. */
   listing_cost_cents: number | null;
   quantity: number | null;
   research_keyword: string | null;
+}
+
+function listToCsv(v: string[] | string | null | undefined): string {
+  if (v == null) return "";
+  if (typeof v === "string") return v.trim();
+  return v.join(", ");
 }
 
 /** Boş alan etiketi — amber "eksik" vurgusu (Amuletta data-gaps çip dili). */
@@ -67,28 +74,38 @@ export function ListingFieldsForm({
   productId,
   initial,
   alreadyOnEtsy = false,
+  hasVariations = false,
   weightGrams = null,
   purchasePrice14kCents,
   purchasePrice10kCents,
   currency = "USD",
+  variantPriceRange = null,
 }: {
   productId: string;
   initial: ListingFieldsInitial;
   /** Listing zaten Etsy'de mi? "Etsy'e gönder" yalnız taslakta görünür. */
   alreadyOnEtsy?: boolean;
+  /** Varyantlı listingde ürün fiyat/adet Etsy'de genelde boş — eksik sayma. */
+  hasVariations?: boolean;
   /** Tek-SKU / ürün seviye gram — maliyet tahmini için. */
   weightGrams?: number | null;
   purchasePrice14kCents?: number;
   purchasePrice10kCents?: number;
   currency?: string;
+  /** Varyant fiyat aralığı (min–max cent). Varyantlı listingde künye fiyatı
+   *  bunun SALT-OKUNUR aynasıdır; gerçek fiyat varyant satırlarında düzenlenir. */
+  variantPriceRange?: { minCents: number; maxCents: number } | null;
 }) {
+  // Varyantlı listingde künye fiyatı düzenlenmez → aynası varyantlardan gelir.
+  const mirrorPrice = hasVariations && variantPriceRange != null;
   const router = useRouter();
   const [saving, setSaving] = useState(false);
+  const [pushingSeo, setPushingSeo] = useState(false);
   const [fields, setFields] = useState<ListingFieldsInput>(() => ({
     title: initial.title,
     description: initial.description ?? "",
-    tags: (initial.tags ?? []).join(", "),
-    materials: (initial.materials ?? []).join(", "),
+    tags: listToCsv(initial.tags),
+    materials: listToCsv(initial.materials),
     price:
       initial.price_cents != null
         ? centsToDecimal(initial.price_cents).toFixed(2)
@@ -101,8 +118,8 @@ export function ListingFieldsForm({
     research_keyword: initial.research_keyword ?? "",
   }));
 
-  const missing = useMemo(
-    () => ({
+  const missing = useMemo(() => {
+    const base = {
       title: !fields.title.trim(),
       description: !fields.description.trim(),
       tags: !fields.tags.trim(),
@@ -110,9 +127,16 @@ export function ListingFieldsForm({
       price: !fields.price.trim(),
       quantity: !fields.quantity.trim(),
       research_keyword: !fields.research_keyword.trim(),
-    }),
-    [fields],
-  );
+    };
+    // Varyantlı ürünlerde fiyat/adet varyant satırında yaşar — künyede "eksik" yanıltır.
+    if (hasVariations) {
+      base.price = false;
+      base.quantity = false;
+    }
+    return base;
+  }, [fields, hasVariations]);
+
+  const anyMissing = Object.values(missing).some(Boolean);
 
   const priceCost = useMemo(() => {
     const tags = fields.tags
@@ -167,6 +191,29 @@ export function ListingFieldsForm({
         router.refresh();
       })
       .finally(() => setSaving(false));
+  }
+
+  /** Panelde duran başlık+tag'i canlı Etsy listing'ine yazar. Kaydedilmemiş
+   *  form değişikliği varsa önce kaydettirir — sunucu paneldeki hâli gönderir. */
+  function pushSeo() {
+    if (
+      fields.title.trim() !== initial.title.trim() ||
+      fields.tags.trim() !== listToCsv(initial.tags)
+    ) {
+      toast.error("Önce 'Künyeyi kaydet' — Etsy'ye paneldeki kayıtlı hâl gider.");
+      return;
+    }
+    setPushingSeo(true);
+    pushListingSeoToEtsy(productId)
+      .then((res) => {
+        if (res.error) {
+          toast.error(res.error);
+          return;
+        }
+        toast.success("Başlık + tag'ler Etsy'ye gönderildi.");
+        router.refresh();
+      })
+      .finally(() => setPushingSeo(false));
   }
 
   return (
@@ -233,43 +280,69 @@ export function ListingFieldsForm({
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="space-y-1.5">
           <div className="flex items-center gap-2">
-            <Label htmlFor={LISTING_FIELD_IDS.price}>Satış fiyatı ($)</Label>
-            {missing.price && <MissingChip />}
+            <Label htmlFor={LISTING_FIELD_IDS.price}>
+              Satış fiyatı ($)
+              {mirrorPrice ? (
+                <span className="text-muted-foreground font-normal">
+                  {" "}
+                  · varyantlardan
+                </span>
+              ) : null}
+            </Label>
+            {missing.price && !mirrorPrice && <MissingChip />}
           </div>
-          <Input
-            id={LISTING_FIELD_IDS.price}
-            inputMode="decimal"
-            value={fields.price}
-            onChange={(e) => set("price", e.target.value)}
-            placeholder="129,00"
-            className={cn("tabular-nums", missing.price && MISSING_RING)}
-          />
-          {priceCost.costCents != null ? (
-            <p className="text-muted-foreground text-xs tabular-nums">
-              Altın alım tahmini: {formatMoney(priceCost.costCents, currency)}
-              {priceCost.karat ? ` · ${priceCost.karat}` : ""}
-              {weightGrams != null ? ` · ${weightGrams} g` : ""}
-              {saleCents > 0 && (
-                <>
-                  {" · "}
-                  <span
-                    className={
-                      saleCents >= priceCost.costCents
-                        ? "text-emerald-700 dark:text-emerald-400"
-                        : "text-rose-700 dark:text-rose-400"
-                    }
-                  >
-                    {saleCents >= priceCost.costCents ? "+" : ""}
-                    {formatMoney(saleCents - priceCost.costCents, currency)}
-                  </span>
-                </>
-              )}
-            </p>
+          {mirrorPrice ? (
+            // Salt-okunur ayna: aralık varyant satırlarından gelir; künyeden
+            // düzenlenmez (yoksa aşağıdaki gerçek varyant fiyatlarıyla ayrışır).
+            <>
+              <div className="border-input bg-muted/40 text-muted-foreground flex h-9 items-center rounded-md border px-3 text-sm tabular-nums">
+                {variantPriceRange!.minCents === variantPriceRange!.maxCents
+                  ? formatMoney(variantPriceRange!.minCents, currency)
+                  : `${formatMoney(variantPriceRange!.minCents, currency)} – ${formatMoney(variantPriceRange!.maxCents, currency)}`}
+              </div>
+              <p className="text-muted-foreground text-xs">
+                Fiyatlar aşağıda varyant satırlarında düzenlenir; künye onun
+                aynasıdır. Maliyet/marj varyant matrisinde.
+              </p>
+            </>
           ) : (
-            <p className="text-muted-foreground text-xs">
-              Altın tahmini için ayar (10K/14K) ve gram gerekir
-              {weightGrams == null ? " — varyant/ürün gramı eksik" : ""}.
-            </p>
+            <>
+              <Input
+                id={LISTING_FIELD_IDS.price}
+                inputMode="decimal"
+                value={fields.price}
+                onChange={(e) => set("price", e.target.value)}
+                placeholder="129,00"
+                className={cn("tabular-nums", missing.price && MISSING_RING)}
+              />
+              {priceCost.costCents != null ? (
+                <p className="text-muted-foreground text-xs tabular-nums">
+                  Alım maliyeti: {formatMoney(priceCost.costCents, currency)}
+                  {priceCost.karat ? ` · ${priceCost.karat}` : ""}
+                  {weightGrams != null ? ` · ${weightGrams} g` : ""}
+                  {saleCents > 0 && (
+                    <>
+                      {" · "}
+                      <span
+                        className={
+                          saleCents >= priceCost.costCents
+                            ? "text-emerald-700 dark:text-emerald-400"
+                            : "text-rose-700 dark:text-rose-400"
+                        }
+                      >
+                        {saleCents >= priceCost.costCents ? "+" : ""}
+                        {formatMoney(saleCents - priceCost.costCents, currency)}
+                      </span>
+                    </>
+                  )}
+                </p>
+              ) : (
+                <p className="text-muted-foreground text-xs">
+                  Maliyet için ayar (10K/14K) ve gram gerekir
+                  {weightGrams == null ? " — varyant/ürün gramı eksik" : ""}.
+                </p>
+              )}
+            </>
           )}
         </div>
         <div className="space-y-1.5">
@@ -291,7 +364,15 @@ export function ListingFieldsForm({
         </div>
         <div className="space-y-1.5">
           <div className="flex items-center gap-2">
-            <Label htmlFor={LISTING_FIELD_IDS.quantity}>Adet</Label>
+            <Label htmlFor={LISTING_FIELD_IDS.quantity}>
+              Adet
+              {hasVariations ? (
+                <span className="text-muted-foreground font-normal">
+                  {" "}
+                  · varyantlarda
+                </span>
+              ) : null}
+            </Label>
             {missing.quantity && <MissingChip />}
           </div>
           <Input
@@ -322,13 +403,32 @@ export function ListingFieldsForm({
 
       <div className="flex items-center justify-between gap-3">
         <p className="text-muted-foreground text-xs">
-          Amber işaretli alanlar eksik — doldurup kaydedin.
+          {anyMissing
+            ? "Amber işaretli alanlar eksik — doldurup kaydedin."
+            : hasVariations
+              ? "Künye dolu. Fiyat ve adet varyant satırlarında."
+              : "Künye dolu."}
         </p>
         <div className="flex items-center gap-2">
           <Button type="button" onClick={save} disabled={saving}>
             {saving ? <Loader2 className="size-4 animate-spin" /> : <Save />}
             Künyeyi kaydet
           </Button>
+          {alreadyOnEtsy && (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={pushSeo}
+              disabled={pushingSeo || saving}
+            >
+              {pushingSeo ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                <UploadCloud />
+              )}
+              Başlık+tag&apos;i Etsy&apos;ye gönder
+            </Button>
+          )}
           {!alreadyOnEtsy && <SendToEtsyButton productId={productId} />}
         </div>
       </div>

@@ -1,5 +1,11 @@
 import { createClient } from "@/lib/supabase/server";
 import { fetchAllPages } from "@/lib/db/queries/listings";
+import {
+  ADS_PERIOD_MATCH,
+  type AdsActionKind,
+  type AdsActionStatus,
+  type AdsSignalInput,
+} from "@/lib/ads/meta";
 
 /**
  * REKLAM KARAR MOTORU — Etsy Open API v3 reklam (Etsy Ads) kontrolü/verisi
@@ -15,147 +21,25 @@ import { fetchAllPages } from "@/lib/db/queries/listings";
  *  - her toplamın veri penceresi (kayıt tarihi aralığı) ekranda yazılır
  */
 
-/** Metriklerin dönem filtresi — pencere etiketi UI'da aynen gösterilir. */
-export const ADS_PERIOD_LABEL = "son 30";
-const ADS_PERIOD_MATCH = "%son 30%";
-
-// ── Aksiyon türleri + meta — META KAYNAĞINDA TAŞINIR (dışarıda string-key
-// eşleme haritası kurulmaz; yeni tür = yalnız burası). ──────────────────────
-
-export const ADS_ACTION_KINDS = ["kapat", "azalt", "artir", "incele"] as const;
-export type AdsActionKind = (typeof ADS_ACTION_KINDS)[number];
-
-export const ADS_ACTION_KIND_META: Record<AdsActionKind, { label: string }> = {
-  kapat: { label: "Reklamı kapat" },
-  azalt: { label: "Bütçeyi azalt" },
-  artir: { label: "Bütçeyi artır" },
-  incele: { label: "İncele" },
-};
-
-export type AdsActionStatus = "beklemede" | "yapildi" | "yok_sayildi";
-
-export const ADS_ACTION_STATUS_META: Record<
-  AdsActionStatus,
-  { label: string; badgeVariant: "outline" | "success" | "secondary" }
-> = {
-  beklemede: { label: "Beklemede", badgeVariant: "outline" },
-  yapildi: { label: "Yapıldı", badgeVariant: "success" },
-  yok_sayildi: { label: "Yok sayıldı", badgeVariant: "secondary" },
-};
-
-// ── Sinyal eşikleri — TEK sabit blok; sayfa VE alerts.ts buradan okur,
-// eşik sapması yaşanmaz. ────────────────────────────────────────────────────
-
-export const ADS_THRESHOLDS = {
-  /** BÜTÇE YİYEN: tek ürünün toplam harcamadaki payı bu orana ulaşır… */
-  BUDGET_EATER_MIN_SHARE: 0.35,
-  /** …VE ROAS bunun altında kalırsa (getiri harcamayı karşılamıyor). */
-  BUDGET_EATER_MAX_ROAS: 1.5,
-  /** FIRSAT: ROAS en az bu değer… */
-  OPPORTUNITY_MIN_ROAS: 3,
-  /** …ama harcama payı hâlâ bunun altındaysa (büyütme alanı var). */
-  OPPORTUNITY_MAX_SHARE: 0.15,
-} as const;
-
-export type AdsSignalKind = "bosa" | "butce_yiyen" | "firsat";
-
-/** Sinyal meta'sı da kaynakta: başlık, insancıl anlatım (ne oldu → bedel →
- *  ne yap) ve önerilen aksiyon türleri. */
-export const ADS_SIGNAL_META: Record<
-  AdsSignalKind,
-  {
-    title: string;
-    hint: string;
-    suggestedKinds: AdsActionKind[];
-    badgeVariant: "destructive" | "warning" | "success";
-  }
-> = {
-  bosa: {
-    title: "Boşa harcama",
-    hint: "Son 30 günde reklama para gitti ama tek kuruş getiri yok — bütçe her gün eriyor. Reklamı Etsy panosunda kapat ya da listing'i (görsel/fiyat/başlık) düzeltip yeniden dene.",
-    suggestedKinds: ["kapat"],
-    badgeVariant: "destructive",
-  },
-  butce_yiyen: {
-    title: "Bütçe yiyen",
-    hint: "Bu ürün reklam bütçesinin büyük payını tek başına çekiyor ama getirisi harcamayı karşılamıyor — diğer ürünler görünmüyor, para verimsiz akıyor. Bütçesini azalt ya da listing'i inceleyip sorunu bul.",
-    suggestedKinds: ["azalt", "incele"],
-    badgeVariant: "warning",
-  },
-  firsat: {
-    title: "Fırsat",
-    hint: "Getirisi güçlü (ROAS yüksek) ama bütçeden aldığı pay küçük — büyütme alanı var. Etsy panosunda bütçesini artır, kazanan ürüne yatırım yap.",
-    suggestedKinds: ["artir"],
-    badgeVariant: "success",
-  },
-};
-
-// ── SAF sinyal üretimi — DB'siz, yan etkisiz; sayfa ve Uyarı Merkezi aynı
-// fonksiyonu kullanır. ──────────────────────────────────────────────────────
-
-export interface AdsSignalInput {
-  productId: string;
-  spendCents: number;
-  adsRevenueCents: number;
-}
-
-export interface AdsSignal<T extends AdsSignalInput = AdsSignalInput> {
-  row: T;
-  signal: AdsSignalKind;
-  /** ads_revenue / spend — spend>0 olan satırlarda tanımlı. */
-  roas: number;
-  /** Ürünün toplam reklam harcamasındaki payı (0..1). */
-  share: number;
-  totalSpendCents: number;
-}
-
-/**
- * Kurallar birbirini DIŞLAR (öncelik sırasıyla):
- *  (a) BOŞA:        spend>0 && getiri==0                        → kapat
- *  (b) BÜTÇE YİYEN: pay ≥ %35 && ROAS < 1,5                     → azalt/incele
- *  (c) FIRSAT:      ROAS ≥ 3 && pay < %15                       → artır
- * Sıralama: sorunlar önce (harcamaya göre), fırsatlar sonra.
- */
-export function computeAdsSignals<T extends AdsSignalInput>(
-  rows: T[],
-): AdsSignal<T>[] {
-  const total = rows.reduce((s, r) => s + Math.max(0, r.spendCents), 0);
-  const out: AdsSignal<T>[] = [];
-  for (const r of rows) {
-    if (r.spendCents <= 0) continue;
-    const roas = r.adsRevenueCents / r.spendCents;
-    const share = total > 0 ? r.spendCents / total : 0;
-    let signal: AdsSignalKind | null = null;
-    if (r.adsRevenueCents === 0) {
-      signal = "bosa";
-    } else if (
-      share >= ADS_THRESHOLDS.BUDGET_EATER_MIN_SHARE &&
-      roas < ADS_THRESHOLDS.BUDGET_EATER_MAX_ROAS
-    ) {
-      signal = "butce_yiyen";
-    } else if (
-      roas >= ADS_THRESHOLDS.OPPORTUNITY_MIN_ROAS &&
-      share < ADS_THRESHOLDS.OPPORTUNITY_MAX_SHARE
-    ) {
-      signal = "firsat";
-    }
-    if (signal) out.push({ row: r, signal, roas, share, totalSpendCents: total });
-  }
-  const rank: Record<AdsSignalKind, number> = { bosa: 0, butce_yiyen: 0, firsat: 1 };
-  out.sort(
-    (a, b) => rank[a.signal] - rank[b.signal] || b.row.spendCents - a.row.spendCents,
-  );
-  return out;
-}
+// ── Saf meta + motor İSTEMCİ-GÜVENLİ modüle taşındı (lib/ads/meta.ts) —
+// "use client" bileşenler oradan import eder; sunucu tüketicileri için
+// buradan aynen re-export edilir (geriye uyum, import yolları değişmez).
+export * from "@/lib/ads/meta";
 
 // ── Genel bakış ─────────────────────────────────────────────────────────────
 
 export interface AdsOverviewRow extends AdsSignalInput {
   title: string;
+  /** products.image_url — Etsy senkronundan; yoksa null */
+  imageUrl: string | null;
   createdAt: string;
   views: number;
   orders: number;
   adsClicks: number;
+  /** Karar bağlamı: canlı ürün alanları (products join'inden). */
+  etsyListingId: number | null;
+  priceCents: number | null;
+  quantity: number | null;
 }
 
 export interface AdsOverview {
@@ -187,7 +71,7 @@ export async function getAdsOverview(orgId: string): Promise<AdsOverview> {
       supabase
         .from("product_metrics")
         .select(
-          "product_id, product_title, created_at, views, orders, ads_clicks, ads_spend_cents, ads_revenue_cents, products!inner(status)",
+          "product_id, product_title, created_at, views, orders, ads_clicks, ads_spend_cents, ads_revenue_cents, products!inner(status, title, image_url, etsy_listing_id, price_cents, quantity)",
         )
         .eq("org_id", orgId)
         .eq("products.status", "active")
@@ -214,6 +98,25 @@ export async function getAdsOverview(orgId: string): Promise<AdsOverview> {
     (orgRes.data as { default_currency: string | null } | null)
       ?.default_currency ?? "USD";
 
+  type ProductJoin =
+    | {
+        status: string;
+        title: string | null;
+        image_url: string | null;
+        etsy_listing_id: number | null;
+        price_cents: number | null;
+        quantity: number | null;
+      }
+    | {
+        status: string;
+        title: string | null;
+        image_url: string | null;
+        etsy_listing_id: number | null;
+        price_cents: number | null;
+        quantity: number | null;
+      }[]
+    | null;
+
   type MetricRow = {
     product_id: string | null;
     product_title: string;
@@ -223,6 +126,7 @@ export async function getAdsOverview(orgId: string): Promise<AdsOverview> {
     ads_clicks: number | null;
     ads_spend_cents: number | null;
     ads_revenue_cents: number | null;
+    products: ProductJoin;
   };
   // Aynı dönem etiketi birden çok anlık görüntü taşıyabilir — ürün başına
   // EN GÜNCEL kayıt seçilir (snapshot dedupe dersi; çift sayım yok).
@@ -235,16 +139,24 @@ export async function getAdsOverview(orgId: string): Promise<AdsOverview> {
   }
 
   const rows: AdsOverviewRow[] = [...latestByProduct.entries()]
-    .map(([productId, m]) => ({
-      productId,
-      title: m.product_title,
-      createdAt: m.created_at,
-      views: m.views ?? 0,
-      orders: m.orders ?? 0,
-      adsClicks: m.ads_clicks ?? 0,
-      spendCents: m.ads_spend_cents ?? 0,
-      adsRevenueCents: m.ads_revenue_cents ?? 0,
-    }))
+    .map(([productId, m]) => {
+      const prod = Array.isArray(m.products) ? m.products[0] : m.products;
+      const liveTitle = prod?.title?.trim();
+      return {
+        productId,
+        title: liveTitle || m.product_title || "Listing",
+        imageUrl: prod?.image_url?.trim() || null,
+        createdAt: m.created_at,
+        views: m.views ?? 0,
+        orders: m.orders ?? 0,
+        adsClicks: m.ads_clicks ?? 0,
+        spendCents: m.ads_spend_cents ?? 0,
+        adsRevenueCents: m.ads_revenue_cents ?? 0,
+        etsyListingId: prod?.etsy_listing_id ?? null,
+        priceCents: prod?.price_cents ?? null,
+        quantity: prod?.quantity ?? null,
+      };
+    })
     .sort((a, b) => b.spendCents - a.spendCents);
 
   let spendCents = 0;
@@ -286,6 +198,12 @@ export interface AdsMetricSnapshot {
   share?: number;
   /** Fotoğrafın veri penceresi (metrik kaydının created_at'i). */
   window_to?: string | null;
+  /** Karar anındaki organik bağlam (fotoğraf farkı serisi) — önce/sonra
+   *  kıyası reklam metriğiyle sınırlı kalmasın. */
+  organic_views_delta?: number | null;
+  organic_conversion?: number | null;
+  price_cents?: number | null;
+  quantity?: number | null;
 }
 
 export interface AdsActionRow {
@@ -297,7 +215,7 @@ export interface AdsActionRow {
   status: AdsActionStatus;
   decided_at: string | null;
   created_at: string;
-  product: { title: string } | null;
+  product: { title: string; image_url: string | null } | null;
 }
 
 export async function listAdsActions(orgId: string): Promise<AdsActionRow[]> {
@@ -305,7 +223,7 @@ export async function listAdsActions(orgId: string): Promise<AdsActionRow[]> {
   const { data, error } = await supabase
     .from("ads_actions")
     .select(
-      "id, product_id, kind, reason, metric_snapshot, status, decided_at, created_at, product:products(title)",
+      "id, product_id, kind, reason, metric_snapshot, status, decided_at, created_at, product:products(title, image_url)",
     )
     .eq("org_id", orgId)
     .order("created_at", { ascending: false });

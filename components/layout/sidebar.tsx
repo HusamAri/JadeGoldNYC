@@ -16,11 +16,28 @@ export function Sidebar({
   memberships,
   activeOrgId,
   showJadeGoldNav,
+  showBrandBookNav,
+  platformCapabilities,
+  emblem,
 }: {
   memberships: MembershipWithOrg[];
   activeOrgId: string;
-  /** Aktif şirket Jade Gold ise marka-özel sekmeler (Marka Kılavuzu, Görsel Üretim) görünür. */
+  /** Aktif şirket Jade Gold ise marka-özel sekmeler (Görsel Üretim) görünür. */
   showJadeGoldNav: boolean;
+  /** Jade Gold veya EON — Marka Kılavuzu. */
+  showBrandBookNav: boolean;
+  /**
+   * Aktif platformun yetenek bayrakları (lib/platform.ts) — `capability`
+   * işaretli sekmeler (Yıldız Satıcı, Reklamlar, SEO Etiketleri) yalnız
+   * ilgili yetenek açıkken görünür (Etsy dışı org'da Etsy motorları gizlenir).
+   */
+  platformCapabilities: Record<string, boolean>;
+  /**
+   * Aktif org'un LUME işareti (holo gradient + ışıma) — sunucuda render
+   * edilip prop olarak iner (bu bileşen client; async org çözümü yapamaz).
+   * Başlıktaki "panel" etiketinin yanında durur.
+   */
+  emblem?: React.ReactNode;
 }) {
   const pathname = usePathname();
   const navRef = useRef<HTMLElement>(null);
@@ -43,7 +60,10 @@ export function Sidebar({
         <span className="text-foreground text-xl leading-none font-medium tracking-tight [font-family:var(--font-display)]">
           Amuletta<em className="text-primary not-italic">.</em>
         </span>
-        <span className="idx ml-auto !gap-0 text-[9px]">panel</span>
+        <span className="idx ml-auto !gap-1.5 text-[9px]">
+          {emblem}
+          panel
+        </span>
       </div>
       {/* Marka kutusu — kiracı (şirket) kimliği yalnız bu SINIRLI kutuda:
           kazınmış oyuk içinde logo + şirket seçici. Arayüzün kalanı Amuletta. */}
@@ -77,6 +97,9 @@ export function Sidebar({
             </p>
             {group.items.map((item) => {
               if (item.jadeGoldOnly && !showJadeGoldNav) return null;
+              if (item.brandBook && !showBrandBookNav) return null;
+              if (item.capability && !platformCapabilities[item.capability])
+                return null;
               const active = item.href === activeHref;
               const Icon = item.icon;
               return (
@@ -85,7 +108,19 @@ export function Sidebar({
                   href={item.href}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "relative isolate flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-[box-shadow,transform,color] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]",
+                    // Hareket dili: geçiş listesinde BOŞTA duran `transform`
+                    // artık kullanılıyor — hover'da çip raydan bir tık öne
+                    // sıyrılır, basışta ray zeminine OTURUR (nm-pressed dili:
+                    // konkav zemin + çukur gölge). Basış hızlı ve lineer,
+                    // bırakış 300ms --ease-premium (asimetrik fizik).
+                    "relative isolate flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-[box-shadow,transform,color,background-image] duration-300 ease-[var(--ease-premium)]",
+                    "hover:-translate-x-0.5 active:translate-x-0 active:[background-image:var(--nm-convex-press)] active:[box-shadow:var(--shadow-pressed)] active:[transition-duration:var(--motion-press-in)] active:[transition-timing-function:linear]",
+                    // Klavye odağı: panelin ANA navigasyonunda hiçbir sinyal
+                    // yoktu. `jg-focus` yerine `jg-focus-outline` — bu öğe
+                    // box-shadow UTILITY'si taşıyor (utilities, components
+                    // katmanını ezer) → gölge tabanlı halka ya hiç görünmez
+                    // ya da kabarık çipi silerdi. Outline gölgeyle yarışmaz.
+                    "jg-focus-outline",
                     active
                       ? /* Aktif = rayın içinde KABARIK çip (ref: .tabbar .t.on —
                            neu-bg + neu-raised-sm + fg-1 mürekkep). */

@@ -13,8 +13,13 @@ export const KARAT_PURITY: Record<KaratType, number> = {
 };
 
 /** Tedarikçi alım fiyatı (USD cent / gram).
- *  18K: gerçek tedarik verisi yok — 14K'dan saflık oranıyla türetilmiş
- *  VARSAYIM (101 × 0.75/0.585 ≈ 129). Tedarikçi fiyatı gelince güncellenir. */
+ *  18K: gerçek tedarik verisi yok — bu statik değer yalnız canlı spot
+ *  OLMADIĞINDA kullanılan kaba yedektir. Spot varken 18K alımı
+ *  `derivePurchase18kCentsPerGram` ile türetilir (aşağıda): metal payı
+ *  saflıkla ölçeklenir, işçilik payı sabit kalır. Eski ×(0.75/0.585)
+ *  ölçeklemesi işçiliği de büyüttüğünden 18K'yı ~$6-7/g ŞİŞİRİYORDU.
+ *  Gerçek tedarikçi fiyatı gelince gold_settings.purchase_price_18k_cents
+ *  girilir ve her türlü türetimi ezer. */
 export const PURCHASE_PRICE_CENTS_PER_GRAM: Record<KaratType, number> = {
   "10K": 65_00,
   "14K": 101_00,
@@ -97,6 +102,31 @@ export interface GoldCostBreakdown {
   totalPurchaseCostCents: number;
 }
 
+/**
+ * 18K alım fiyatı türetimi (cent/gram) — gerçek tedarik verisi yalnız 14K'da
+ * olduğundan 18K, canlı spot + 14K'nın GÖZLENEN işçilik primiyle kurulur:
+ *
+ *   işçilik/g  = 14K alım − 14K melt(spot)     (tedarikçinin gerçek primi)
+ *   18K alım/g = 18K melt(spot) + işçilik/g    (metal saflıkla ölçeklenir,
+ *                                               işçilik ölçeklenMEZ)
+ *
+ * Spot geçersizse (≤0) statik yedek döner. Gerçek 18K tedarik fiyatı
+ * (gold_settings) her zaman bu türetimi ezer — çağıran taraf halleder.
+ */
+export function derivePurchase18kCentsPerGram(
+  goldPricePerOunceUsd: number,
+  purchase14kCentsPerGram: number = PURCHASE_PRICE_CENTS_PER_GRAM["14K"],
+): number {
+  if (!(goldPricePerOunceUsd > 0)) return PURCHASE_PRICE_CENTS_PER_GRAM["18K"];
+  const pureCentsPerGram = (goldPricePerOunceUsd * 100) / TROY_OUNCE_GRAMS;
+  const melt14 = pureCentsPerGram * KARAT_PURITY["14K"];
+  const melt18 = pureCentsPerGram * KARAT_PURITY["18K"];
+  // Kriz senaryosu: spot, 14K alımını aşarsa prim negatife düşer — işçilik
+  // tabanı 0'da tutulur (negatif işçilik anlamsız; calculateGoldCost ile aynı kural).
+  const laborPremium = Math.max(0, purchase14kCentsPerGram - melt14);
+  return Math.round(melt18 + laborPremium);
+}
+
 export function calculateGoldCost(
   goldPricePerOunceUsd: number,
   karat: KaratType,
@@ -107,8 +137,16 @@ export function calculateGoldCost(
   const purity = KARAT_PURITY[karat];
   const karatGoldPerGramUsd = pureGoldPerGramUsd * purity;
 
+  // 18K: org özel fiyat girmediyse statik varsayım yerine canlı türetim —
+  // metal payı spottan, işçilik payı 14K'nın gözlenen priminden.
   const purchaseCentsPerGram =
-    customPurchasePrices?.[karat] ?? PURCHASE_PRICE_CENTS_PER_GRAM[karat];
+    customPurchasePrices?.[karat] ??
+    (karat === "18K"
+      ? derivePurchase18kCentsPerGram(
+          goldPricePerOunceUsd,
+          customPurchasePrices?.["14K"],
+        )
+      : PURCHASE_PRICE_CENTS_PER_GRAM[karat]);
   const purchasePerGramUsd = purchaseCentsPerGram / 100;
 
   // Altın ons fiyatı tedarik alım fiyatını aşarsa işçilik negatife düşebilir

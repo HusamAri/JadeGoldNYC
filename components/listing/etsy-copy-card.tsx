@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import { Check, Copy } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -25,7 +26,13 @@ export interface EtsyCopyField {
 function CopyFieldRow({ field }: { field: EtsyCopyField }) {
   const [copied, setCopied] = useState(false);
   const copy = async () => {
-    await navigator.clipboard.writeText(field.value);
+    try {
+      await navigator.clipboard.writeText(field.value);
+    } catch {
+      // Güvensiz bağlam / izin reddi: sessiz unhandled-rejection yerine söyle.
+      toast.error("Panoya kopyalanamadı — metni elle seçip kopyalayın.");
+      return;
+    }
     setCopied(true);
     setTimeout(() => setCopied(false), 1600);
   };

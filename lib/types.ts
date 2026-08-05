@@ -124,6 +124,9 @@ export type AuditAction =
   | "etsy.image_upload"
   | "etsy.listing_create"
   | "etsy.reprice"
+  | "etsy.seo_push"
+  | "etsy.personalization_push"
+  | "etsy.listing_state"
   | "listing.archive"
   | "listing.delete_etsy"
   | "report.export"
@@ -172,9 +175,17 @@ export interface Product {
   num_favorers: number | null;
   /**
    * Sabit birim maliyet (cent). Tüm varyantlara uygulanır; satışta
-   * source='listing_fixed' olarak işlenir. null = yok.
+   * source='listing_fixed' olarak işlenir. null = yok. (serene-knuth)
    */
   listing_cost_cents?: number | null;
+  /** Manuel girilen aktif indirim yüzdesi (0..90; 0 = indirim yok). Etsy API
+   *  aktif Sale/kupon vermediğinden satıcı kendi girer; indirimli fiyat panelde
+   *  türetilir (lib/discount.ts), Etsy'ye yazılmaz. Migration 0115. */
+  discount_pct: number;
+  /** İndirim tarih aralığı + minimum sepet eşiği (panel planlaması, 0118). */
+  discount_start_at: string | null;
+  discount_end_at: string | null;
+  discount_min_order_cents: number | null;
   /** Panel arşiv damgası — dolu = listelerden gizli (Arşiv filtresi hariç). */
   archived_at: string | null;
   created_at: string;

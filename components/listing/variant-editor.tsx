@@ -37,6 +37,7 @@ import {
   type DistVariant,
 } from "@/lib/etsy/distribute";
 import type { ListingVariantRow } from "@/lib/db/queries/listings";
+import type { CompetitorGramProjection } from "@/lib/etsy/competitor-gram-price";
 import {
   detectKarat,
   purchaseCostCentsForGrams,
@@ -96,6 +97,10 @@ function initialRows(variants: ListingVariantRow[]): Record<string, RowState> {
 const SUGGESTED_CLASS =
   "text-primary ring-1 ring-primary/50 dark:ring-primary/40";
 
+/** Rakip eşlemesinden yansıtılan fiyat — liste fiyatından ayrı renk. */
+const RIVAL_PROJECT_CLASS =
+  "font-mono text-[11px] tabular-nums text-amber-700 dark:text-amber-300";
+
 const WEIGHT_SOURCE_LABELS: Record<string, string> = {
   manual: "elle",
   inferred: "çıkarım",
@@ -120,6 +125,7 @@ export function VariantEditor({
   productMaterials,
   purchasePrice14kCents,
   purchasePrice10kCents,
+  rivalProjection = null,
 }: {
   productId: string;
   variants: ListingVariantRow[];
@@ -131,6 +137,11 @@ export function VariantEditor({
   productMaterials?: string[] | null;
   purchasePrice14kCents?: number;
   purchasePrice10kCents?: number;
+  /**
+   * Rakip varyant eşlemesinden $/g × gram yansıması.
+   * Liste fiyatını ezmez; Satış sütununda amber renkle gösterilir.
+   */
+  rivalProjection?: CompetitorGramProjection | null;
 }) {
   const router = useRouter();
   const [rows, setRows] = useState<Record<string, RowState>>(() =>
@@ -674,6 +685,82 @@ export function VariantEditor({
         </div>
       )}
 
+      {rivalProjection && (
+        <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-amber-500/25 bg-amber-500/8 px-3 py-2.5 text-sm">
+          <div className="min-w-0 space-y-0.5">
+            <p className="font-mono text-[10px] tracking-[0.14em] text-amber-800 uppercase dark:text-amber-200">
+              Rakip eşlemesi · gram fiyat yansıması
+            </p>
+            <p className="text-muted-foreground text-xs">
+              Çapa{" "}
+              <span className="text-foreground font-mono">
+                {rivalProjection.basisSku}
+              </span>
+              {rivalProjection.competitorLabel
+                ? ` ← ${rivalProjection.competitorLabel}`
+                : ""}{" "}
+              · {(rivalProjection.unitCentsPerGram / 100).toFixed(2)} $/g ×
+              gram. Amber rakamlar liste fiyatını değiştirmez.
+            </p>
+          </div>
+          <Button
+            type="button"
+            size="sm"
+            variant="outline"
+            className="border-amber-600/40 text-amber-900 dark:text-amber-100"
+            onClick={() => {
+              const nextRows = { ...rowsRef.current };
+              const nextSuggested: Record<string, Suggestion> = {
+                ...suggested,
+              };
+              let n = 0;
+              for (const [sku, cents] of Object.entries(
+                rivalProjection.projectedCentsBySku,
+              )) {
+                const row = nextRows[sku];
+                if (!row) continue;
+                const nextPrice = (cents / 100).toFixed(2);
+                if (row.price === nextPrice) continue;
+                nextRows[sku] = { ...row, price: nextPrice };
+                nextSuggested[sku] = { ...nextSuggested[sku], price: true };
+                n += 1;
+              }
+              if (n === 0) {
+                toast.info("Yansıtılacak fark yok — taslak zaten aynı.");
+                return;
+              }
+              setRows(nextRows);
+              rowsRef.current = nextRows;
+              setSuggested(nextSuggested);
+              setAnchorSku(rivalProjection.basisSku);
+              // Toplu fiyat kutusunu da eşitle: kutu min-gram varyantın satış
+              // fiyatıdır; en hafif varyantın yansıtılan fiyatını yaz ki
+              // "→ $/g × gram" ipucu rakip birim fiyatını göstersin (drift yok).
+              let lightest: { sku: string; grams: number } | null = null;
+              for (const v of variants) {
+                const g =
+                  toGram(nextRows[v.sku]?.weight ?? "") ?? v.weight_grams;
+                if (g == null || !(g > 0)) continue;
+                if (!lightest || g < lightest.grams)
+                  lightest = { sku: v.sku, grams: g };
+              }
+              const minProjected =
+                lightest != null
+                  ? rivalProjection.projectedCentsBySku[lightest.sku]
+                  : undefined;
+              if (minProjected != null) {
+                setBulkMinPrice((minProjected / 100).toFixed(2));
+              }
+              toast.success(
+                `${n} varyant taslağa yazıldı (amber) — Önizle ve uygula ile onayla.`,
+              );
+            }}
+          >
+            Taslağa yaz
+          </Button>
+        </div>
+      )}
+
       {/* Birincil yol: min-gram fiyatı → birim $/g × tüm gramlar */}
       <div className="nm-pressed space-y-3 rounded-[1.25rem] p-4">
         <div className="flex flex-wrap items-end justify-between gap-3">
@@ -856,17 +943,33 @@ export function VariantEditor({
                     )}
                   </TableCell>
                   <TableCell className="text-right">
-                    <Input
-                      inputMode="decimal"
-                      value={r?.price ?? ""}
-                      onChange={(e) => setRow(v.sku, "price", e.target.value)}
-                      placeholder="—"
-                      title={sg.price ? "Öneri — kaydetmeden yazılmaz" : undefined}
-                      className={cn(
-                        "ml-auto h-9 w-24 text-right tabular-nums",
-                        sg.price && SUGGESTED_CLASS,
+                    <div className="ml-auto flex w-28 flex-col items-end gap-0.5">
+                      <Input
+                        inputMode="decimal"
+                        value={r?.price ?? ""}
+                        onChange={(e) => setRow(v.sku, "price", e.target.value)}
+                        placeholder="—"
+                        title={
+                          sg.price ? "Öneri — kaydetmeden yazılmaz" : undefined
+                        }
+                        className={cn(
+                          "h-9 w-24 text-right tabular-nums",
+                          sg.price && SUGGESTED_CLASS,
+                        )}
+                      />
+                      {rivalProjection?.projectedCentsBySku[v.sku] != null && (
+                        <span
+                          className={RIVAL_PROJECT_CLASS}
+                          title={`Rakip $/g × ${grams ?? v.weight_grams ?? "?"}g — liste fiyatından ayrı`}
+                        >
+                          Rakip{" "}
+                          {formatMoney(
+                            rivalProjection.projectedCentsBySku[v.sku]!,
+                            currency,
+                          )}
+                        </span>
                       )}
-                    />
+                    </div>
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="text-muted-foreground ml-auto space-y-0.5 text-xs tabular-nums">

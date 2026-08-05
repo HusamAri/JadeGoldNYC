@@ -1,5 +1,6 @@
 "use client";
 
+import { useTransition } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 import {
@@ -9,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 
 export function FilterSelect({
   paramKey,
@@ -26,6 +28,9 @@ export function FilterSelect({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  // Filtre değişimi de bir RSC turu: transition içinde koşar, `isPending`
+  // yeni yük gelene kadar true kalır (Pagination/SearchInput ile aynı dil).
+  const [isPending, startTransition] = useTransition();
   const value = searchParams.get(paramKey) ?? "__all";
 
   function onValueChange(next: string) {
@@ -33,12 +38,21 @@ export function FilterSelect({
     if (next && next !== "__all") params.set(paramKey, next);
     else params.delete(paramKey);
     params.delete("offset");
-    router.replace(`${pathname}?${params.toString()}`);
+    startTransition(() => {
+      router.replace(`${pathname}?${params.toString()}`);
+    });
   }
 
   return (
     <Select value={value} onValueChange={onValueChange}>
-      <SelectTrigger className={className} size="sm">
+      {/* jg-busy: bekleyen tetikleyici SOLMAZ (soluklaştırma "bozuk/pasif"
+          okunur) — yalnız imleç ilerlemeyi anlatır + aria-busy ekran
+          okuyucuya bildirir. Seçilen değer anında görünür kalır. */}
+      <SelectTrigger
+        className={cn("jg-busy", className)}
+        size="sm"
+        aria-busy={isPending}
+      >
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>

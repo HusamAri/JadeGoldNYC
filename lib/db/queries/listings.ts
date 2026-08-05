@@ -4,6 +4,7 @@ import {
   type RawVariantProperties,
 } from "@/lib/variant-properties";
 import {
+  compareListingSkuDesc,
   sortListingsBySkuDesc,
   sortVariantsByWidthThenSize,
 } from "@/lib/variant-sort";
@@ -20,15 +21,25 @@ import {
 export interface ListingIndexRow {
   id: string;
   etsy_listing_id: number | null;
-  /** Ürün-seviye (aile) SKU — Etsy aynası; boş olmaz. */
-  sku: string;
+  /**
+   * Liste etiketi: products.sku varsa o; yoksa SKU'lu varyantlardan biri.
+   * Listing-seviye SKU zorunlu değil; yaşam koşulu en az bir SKU'lu varyant.
+   */
+  sku: string | null;
   title: string;
   status: string | null; // 'active' | 'draft' | ...
   image_url: string | null;
   price_cents: number | null;
+  /** SKU'lu varyantların satış fiyatı aralığı (varsa) — liste "Fiyat" sütunu
+   *  tek taban fiyatı değil GERÇEK aralığı gösterir. Tek varyant/eşit fiyatta
+   *  min == max. Hiç fiyatlı varyant yoksa null (products.price_cents'e düşer). */
+  min_variant_price_cents: number | null;
+  max_variant_price_cents: number | null;
   currency: string;
   quantity: number | null;
   num_images: number | null;
+  /** Manuel indirim yüzdesi (0..90; 0 = indirim yok). Migration 0115. */
+  discount_pct: number;
   variant_count: number;
   missing_weight_count: number; // weight_grams null olan varyant sayısı
   research_keyword: string | null;
@@ -119,6 +130,12 @@ export interface ListingDetail {
     weight_grams: number | null;
     /** Sabit birim maliyet (cent); null = yok. Tüm varyantlara uygulanır. */
     listing_cost_cents: number | null;
+    /** Manuel indirim yüzdesi (0..90; migration 0115). */
+    discount_pct: number;
+    /** İndirim penceresi + minimum sepet eşiği (0118). */
+    discount_start_at: string | null;
+    discount_end_at: string | null;
+    discount_min_order_cents: number | null;
   };
   variants: ListingVariantRow[];
   ads: ListingAds;
@@ -201,15 +218,19 @@ interface ProductIndexDbRow {
   quantity: number | null;
   num_images: number | null;
   research_keyword: string | null;
+  discount_pct: number | null;
 }
 
 interface VariantAggDbRow {
   product_id: string | null;
   weight_grams: number | null;
+  price_cents: number | null;
+  sku: string | null;
 }
 
 interface Ads30DbRow {
   product_id: string | null;
+  created_at: string;
   ads_spend_cents: number | null;
   orders: number | null;
 }
@@ -255,6 +276,9 @@ interface SaleItemDbRow {
  * `search` başlık/SKU ilike; `status` eq. Panel arşivi (products.archived_at)
  * varsayılan olarak HARİÇTİR; `status === "arsiv"` özel değeriyle yalnız
  * arşivdekiler listelenir (Etsy durumu değil, panel yaşam-döngüsü filtresi).
+ *
+ * Yaşam kuralı: listing-seviye SKU opsiyonel; en az bir SKU'lu varyant zorunlu
+ * (varyantsız / SKU'suz-varyantlı listing indeksde yaşamaz).
  */
 export async function listListingsIndex(opts?: {
   search?: string;
@@ -301,7 +325,7 @@ export async function listListingsIndex(opts?: {
     let q = supabase
       .from("products")
       .select(
-        "id, etsy_listing_id, sku, title, status, image_url, price_cents, currency, quantity, num_images, research_keyword",
+        "id, etsy_listing_id, sku, title, status, image_url, price_cents, currency, quantity, num_images, research_keyword, discount_pct",
       );
     if (scope === "archived") {
       q = q.not("archived_at", "is", null);
@@ -313,95 +337,170 @@ export async function listListingsIndex(opts?: {
           ? q.not("etsy_listing_id", "is", null)
           : q.is("etsy_listing_id", null);
     }
-    if (status) q = q.eq("status", status);
-    // SKU zorunlu — Etsy aynası; boş SKU panel listesine girmez.
-    q = q.not("sku", "is", null).neq("sku", "");
+    // Etsy state genelde küçük harf; ilike ile büyük/küçük duyarsız eşle.
+    if (status) q = q.ilike("status", status);
+    // products.sku burada FİLTRELENMEZ — listing-seviye SKU opsiyonel.
+    // Yaşam kapısı aşağıda: en az bir SKU'lu product_variants satırı.
     if (search) {
       const clauses = [`title.ilike.%${search}%`, `sku.ilike.%${search}%`];
       if (variantSkuIds.length) clauses.push(`id.in.(${variantSkuIds.join(",")})`);
       q = q.or(clauses.join(","));
     }
     return q
-      .order("sku", { ascending: false })
+      .order("sku", { ascending: false, nullsFirst: false })
       .order("id", { ascending: false })
       .range(from, to);
   });
   if (products.length === 0) return [];
 
   const ids = new Set(products.map((p) => p.id));
+  const idList = [...ids];
 
-  // Toplu yan veriler — RLS org'a kısıtlar; ürün filtresi Map aşamasında.
+  // Yan verileri EKRANDAKİ ürünlere daralt: eskiden bu üç fetch org'un TÜM
+  // product_variants / "son 30" product_metrics / keyword_research tablosunu
+  // sayfa sayfa çekip JS'te `ids.has()` ile eliyordu — ~10k+ varyantlı org'da
+  // (EON) her Listeler yüklemesinde bütün tablo taranıyordu. Artık `product_id`
+  // IN (ekrandaki ürünler) ile filtreleniyor; büyük id listesi PostgREST URL
+  // sınırına takılmasın diye ~300'lük parçalara bölünür (chunk'lar sıralı,
+  // üç tablo birbirine paralel).
+  const ID_CHUNK = 300;
+  const fetchForIds = async <T>(
+    build: (
+      chunk: string[],
+      from: number,
+      to: number,
+    ) => Parameters<typeof fetchAllPages<T>>[0] extends (
+      from: number,
+      to: number,
+    ) => infer R
+      ? R
+      : never,
+  ): Promise<T[]> => {
+    const out: T[] = [];
+    for (let i = 0; i < idList.length; i += ID_CHUNK) {
+      const chunk = idList.slice(i, i + ID_CHUNK);
+      const rows = await fetchAllPages<T>((from, to) => build(chunk, from, to));
+      out.push(...rows);
+    }
+    return out;
+  };
+
+  // Toplu yan veriler — org + EKRANDAKİ ürünlerle kısıtlı.
   const [variants, adsRows, researchRows] = await Promise.all([
-    fetchAllPages<VariantAggDbRow>((from, to) =>
+    fetchForIds<VariantAggDbRow>((chunk, from, to) =>
       supabase
         .from("product_variants")
-        .select("product_id, weight_grams")
-        .not("product_id", "is", null)
+        .select("product_id, weight_grams, price_cents, sku")
+        .in("product_id", chunk)
         .order("id", { ascending: true })
         .range(from, to),
     ),
-    fetchAllPages<Ads30DbRow>((from, to) =>
+    fetchForIds<Ads30DbRow>((chunk, from, to) =>
       supabase
         .from("product_metrics")
-        .select("product_id, ads_spend_cents, orders")
+        .select("product_id, created_at, ads_spend_cents, orders")
         .ilike("period_label", "%son 30%")
-        .not("product_id", "is", null)
+        .in("product_id", chunk)
         .order("id", { ascending: true })
         .range(from, to),
     ),
-    fetchAllPages<ResearchDbRow>((from, to) =>
+    fetchForIds<ResearchDbRow>((chunk, from, to) =>
       supabase
         .from("keyword_research")
         .select("product_id")
+        .in("product_id", chunk)
         .order("id", { ascending: true })
         .range(from, to),
     ),
   ]);
 
-  const variantAgg = new Map<string, { total: number; missing: number }>();
+  // Yaşam kuralı: listing SKU opsiyonel; varyant SKU zorunlu; varyantsız listing yok.
+  // (Etsy sync de yalnız SKU'lu offering yazar — boş SKU varyant panelde oluşmaz.)
+  const variantAgg = new Map<
+    string,
+    {
+      total: number;
+      missing: number;
+      labelSku: string;
+      minPrice: number | null;
+      maxPrice: number | null;
+    }
+  >();
   for (const v of variants) {
     if (!v.product_id || !ids.has(v.product_id)) continue;
-    const agg = variantAgg.get(v.product_id) ?? { total: 0, missing: 0 };
+    const vSku = (v.sku ?? "").trim();
+    if (!vSku) continue;
+    const agg = variantAgg.get(v.product_id) ?? {
+      total: 0,
+      missing: 0,
+      labelSku: vSku,
+      minPrice: null,
+      maxPrice: null,
+    };
     agg.total += 1;
     if (v.weight_grams == null) agg.missing += 1;
+    // Fiyat aralığı: SKU'lu varyantların satış fiyatından min/max (275 varyantlı
+    // alyansta liste "Fiyat" sütunu tek taban değil gerçek aralığı göstersin).
+    if (v.price_cents != null && v.price_cents > 0) {
+      agg.minPrice =
+        agg.minPrice == null ? v.price_cents : Math.min(agg.minPrice, v.price_cents);
+      agg.maxPrice =
+        agg.maxPrice == null ? v.price_cents : Math.max(agg.maxPrice, v.price_cents);
+    }
+    // Sıra/etiket için en "büyük" varyant SKU (listing SKU boşken).
+    if (compareListingSkuDesc(vSku, agg.labelSku) < 0) agg.labelSku = vSku;
     variantAgg.set(v.product_id, agg);
   }
 
-  const adsAgg = new Map<string, { spend: number; orders: number }>();
+  // Aynı "son 30" etiketine ürün başına BİRDEN ÇOK anlık görüntü birikir
+  // (ads CSV import upsert değil, her ay yeni satır ekler; 0016'da unique yok)
+  // → toplamak çift/üç sayar. Ürün başına EN GÜNCEL snapshot'ı seç (created_at
+  // desc), tıpkı getListingDetail / ads-actions / alerts'in yaptığı gibi.
+  const adsLatest = new Map<string, Ads30DbRow>();
   for (const m of adsRows) {
     if (!m.product_id || !ids.has(m.product_id)) continue;
-    const agg = adsAgg.get(m.product_id) ?? { spend: 0, orders: 0 };
-    agg.spend += m.ads_spend_cents ?? 0;
-    agg.orders += m.orders ?? 0;
-    adsAgg.set(m.product_id, agg);
+    const prev = adsLatest.get(m.product_id);
+    if (!prev || m.created_at > prev.created_at) adsLatest.set(m.product_id, m);
+  }
+  const adsAgg = new Map<string, { spend: number; orders: number }>();
+  for (const [pid, m] of adsLatest) {
+    adsAgg.set(pid, {
+      spend: m.ads_spend_cents ?? 0,
+      orders: m.orders ?? 0,
+    });
   }
 
   const researched = new Set(researchRows.map((r) => r.product_id));
 
   const mapped = products
-    .filter((p) => (p.sku ?? "").trim().length > 0)
+    .filter((p) => (variantAgg.get(p.id)?.total ?? 0) > 0)
     .map((p) => {
-    const va = variantAgg.get(p.id);
-    const ads = adsAgg.get(p.id);
-    return {
-      id: p.id,
-      etsy_listing_id: p.etsy_listing_id,
-      sku: (p.sku as string).trim(),
-      title: p.title,
-      status: p.status,
-      image_url: p.image_url,
-      price_cents: p.price_cents,
-      currency: p.currency ?? "USD",
-      quantity: p.quantity,
-      num_images: p.num_images,
-      variant_count: va?.total ?? 0,
-      missing_weight_count: va?.missing ?? 0,
-      research_keyword: p.research_keyword,
-      has_research: researched.has(p.id),
-      ads30_spend_cents: ads ? ads.spend : null,
-      ads30_orders: ads ? ads.orders : null,
-    };
-  });
+      const va = variantAgg.get(p.id)!;
+      const ads = adsAgg.get(p.id);
+      const productSku = (p.sku ?? "").trim();
+      return {
+        id: p.id,
+        etsy_listing_id: p.etsy_listing_id,
+        // Listing SKU varsa o; yoksa mevcut varyant SKU'su (uydurma değil).
+        sku: productSku || va.labelSku,
+        title: p.title,
+        status: p.status,
+        image_url: p.image_url,
+        price_cents: p.price_cents,
+        min_variant_price_cents: va.minPrice,
+        max_variant_price_cents: va.maxPrice,
+        currency: p.currency ?? "USD",
+        quantity: p.quantity,
+        num_images: p.num_images,
+        discount_pct: Number(p.discount_pct ?? 0),
+        variant_count: va.total,
+        missing_weight_count: va.missing,
+        research_keyword: p.research_keyword,
+        has_research: researched.has(p.id),
+        ads30_spend_cents: ads ? ads.spend : null,
+        ads30_orders: ads ? ads.orders : null,
+      };
+    });
   // Küçük SKU altta, büyük/yeni üstte (doğal sayı: 0009 < 0010).
   return sortListingsBySkuDesc(mapped);
 }
@@ -413,24 +512,80 @@ export async function getListingDetail(
 ): Promise<ListingDetail | null> {
   const supabase = await createClient();
 
+  // Taban kolonlar HER ZAMAN vardır; indirim-penceresi kolonları (0118) DB'de
+  // henüz olmayabilir (migration gecikmesi). Bunları ayrı, HATA-TOLERANSLI bir
+  // seçimle çek: yoksa detay sayfası 500 olmasın (additive kolon eksikliği
+  // sayfayı düşürmemeli — pencere null düşer, migration uygulanınca dolar).
+  const BASE_COLS =
+    "id, etsy_listing_id, title, status, description, tags, materials, price_cents, currency, quantity, url, image_url, num_images, research_keyword, sku, weight_grams, discount_pct";
   const { data: pData, error: pError } = await supabase
     .from("products")
-    .select(
-      "id, etsy_listing_id, title, status, description, tags, materials, price_cents, currency, quantity, url, image_url, num_images, research_keyword, sku, weight_grams, listing_cost_cents",
-    )
+    .select(BASE_COLS)
     .eq("id", id)
     .maybeSingle();
   if (pError) throw new Error(pError.message);
   if (!pData) return null;
-  const raw = pData as ListingDetail["product"] & {
-    weight_grams: unknown;
-    listing_cost_cents: unknown;
+
+  // İndirim penceresi kolonları — ayrı ve toleranslı (kolon yoksa null).
+  let discountWindow: {
+    discount_start_at: string | null;
+    discount_end_at: string | null;
+    discount_min_order_cents: number | null;
+  } = {
+    discount_start_at: null,
+    discount_end_at: null,
+    discount_min_order_cents: null,
   };
+  {
+    const { data: dw, error: dwErr } = await supabase
+      .from("products")
+      .select("discount_start_at, discount_end_at, discount_min_order_cents")
+      .eq("id", id)
+      .maybeSingle();
+    if (dwErr) {
+      // Büyük olasılıkla 0118 migration'ı henüz uygulanmadı — sessiz geç.
+      console.error(
+        "[listing-detail] indirim penceresi kolonları okunamadı (0118?):",
+        dwErr.message,
+      );
+    } else if (dw) {
+      const w = dw as {
+        discount_start_at: string | null;
+        discount_end_at: string | null;
+        discount_min_order_cents: number | string | null;
+      };
+      discountWindow = {
+        discount_start_at: w.discount_start_at ?? null,
+        discount_end_at: w.discount_end_at ?? null,
+        discount_min_order_cents:
+          w.discount_min_order_cents == null
+            ? null
+            : Number(w.discount_min_order_cents),
+      };
+    }
+  }
+  // Sabit birim maliyet (serene-knuth) — kolon henüz DB'de olmayabilir; ayrı
+  // ve toleranslı oku (discountWindow ile aynı desen; yoksa null düşer).
+  let listingCostCents: number | null = null;
+  {
+    const { data: lc, error: lcErr } = await supabase
+      .from("products")
+      .select("listing_cost_cents")
+      .eq("id", id)
+      .maybeSingle();
+    if (!lcErr && lc) {
+      const v = (lc as { listing_cost_cents: number | string | null })
+        .listing_cost_cents;
+      listingCostCents = v == null ? null : Number(v);
+    }
+  }
+  const raw = pData as ListingDetail["product"] & { weight_grams: unknown };
   const product: ListingDetail["product"] = {
     ...raw,
     weight_grams: raw.weight_grams == null ? null : Number(raw.weight_grams),
-    listing_cost_cents:
-      raw.listing_cost_cents == null ? null : Number(raw.listing_cost_cents),
+    discount_pct: Number(raw.discount_pct ?? 0),
+    ...discountWindow,
+    listing_cost_cents: listingCostCents,
   };
 
   const [variantRows, metricRows, saleItemRows] = await Promise.all([

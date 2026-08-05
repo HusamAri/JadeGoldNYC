@@ -4,6 +4,8 @@ import { FileText } from "lucide-react";
 import { resolvePeriod, previousPeriod, samePeriodLastYear } from "@/lib/period";
 import { getDashboard } from "@/lib/db/queries/dashboard";
 import { listReports } from "@/lib/db/queries/reports";
+import { requireMembership } from "@/lib/auth";
+import { SleepingNote } from "@/components/sleeping-boxes";
 import { strParam, type RawSearchParams } from "@/lib/searchparams";
 import { formatMoney, formatPercent } from "@/lib/money";
 import { formatNumber, formatDate } from "@/lib/format";
@@ -40,10 +42,11 @@ export default async function RaporlarPage({
   const period = resolvePeriod(strParam(sp.period));
   const prev = previousPeriod(period);
   const lastYear = samePeriodLastYear(period);
+  const m = await requireMembership();
   const [d, prevData, lastYearData, savedReports] = await Promise.all([
-    getDashboard(period),
-    prev ? getDashboard(prev) : Promise.resolve(null),
-    lastYear ? getDashboard(lastYear) : Promise.resolve(null),
+    getDashboard(period, m.org_id),
+    prev ? getDashboard(prev, m.org_id) : Promise.resolve(null),
+    lastYear ? getDashboard(lastYear, m.org_id) : Promise.resolve(null),
     listReports(),
   ]);
   const cur = d.currency;
@@ -186,17 +189,22 @@ export default async function RaporlarPage({
         </CardContent>
       </Card>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      {/* Uyuyan-kutu kuralı: verisi olmayan tablo çizilmez; boş kalan yerde
+          ince not durur (rapor dönemi seçime bağlı — kısıt görünür kalsın). */}
+      {(d.trend.length > 0 || d.costByCategory.length > 0) && (
+      <div
+        className={
+          d.trend.length > 0 && d.costByCategory.length > 0
+            ? "grid gap-6 lg:grid-cols-2"
+            : "grid gap-6"
+        }
+      >
+        {d.trend.length > 0 && (
         <Card className="glass-fluted">
           <CardHeader>
             <CardTitle>Günlük Gelir / Maliyet</CardTitle>
           </CardHeader>
           <CardContent>
-            {d.trend.length === 0 ? (
-              <p className="text-muted-foreground text-sm">
-                Bu dönemde veri yok.
-              </p>
-            ) : (
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -219,20 +227,16 @@ export default async function RaporlarPage({
                   ))}
                 </TableBody>
               </Table>
-            )}
           </CardContent>
         </Card>
+        )}
 
+        {d.costByCategory.length > 0 && (
         <Card className="glass-fluted">
           <CardHeader>
             <CardTitle>Maliyet Kategorileri</CardTitle>
           </CardHeader>
           <CardContent>
-            {d.costByCategory.length === 0 ? (
-              <p className="text-muted-foreground text-sm">
-                Bu dönemde maliyet yok.
-              </p>
-            ) : (
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -251,10 +255,24 @@ export default async function RaporlarPage({
                   ))}
                 </TableBody>
               </Table>
-            )}
           </CardContent>
         </Card>
+        )}
       </div>
+      )}
+
+      {(d.trend.length === 0 || d.costByCategory.length === 0) && (
+        <SleepingNote
+          name={
+            d.trend.length === 0 && d.costByCategory.length === 0
+              ? "Günlük Gelir/Maliyet & Maliyet Kategorileri"
+              : d.trend.length === 0
+                ? "Günlük Gelir / Maliyet"
+                : "Maliyet Kategorileri"
+          }
+          hint="bu dönemde kayıt oluşunca kendiliğinden açılır"
+        />
+      )}
     </div>
   );
 }

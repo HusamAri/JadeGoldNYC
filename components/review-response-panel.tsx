@@ -81,6 +81,11 @@ export function ReviewResponsePanel({
     } catch {
       copied = false;
     }
+    // Sekmeyi KULLANICI JESTİ penceresi içinde (await'ten ÖNCE) aç — await
+    // sonrası window.open popup engelleyicilere takılır ve toast "açıldı"
+    // derken hiçbir şey açılmamış olurdu. Kayıt başarısız olursa sekme yine
+    // doğru hedefe (Etsy yorumlar) açılmıştır; zarar yok.
+    const win = window.open(ETSY_REVIEWS_URL, "_blank", "noopener,noreferrer");
     startTransition(async () => {
       const res = await saveReviewResponse(reviewId, t, true);
       if (res?.error) {
@@ -92,7 +97,11 @@ export function ReviewResponsePanel({
           ? "Yanıt panoya kopyalandı — Etsy'de yorumun altına yapıştırın."
           : "Yanıtlandı olarak işaretlendi. Metni kopyalayıp Etsy'de yapıştırın.",
       );
-      window.open(ETSY_REVIEWS_URL, "_blank", "noopener,noreferrer");
+      if (!win) {
+        toast.warning(
+          "Etsy sekmesi açılamadı (açılır pencere engellendi) — yorumlar sayfasını elle açın.",
+        );
+      }
       router.refresh();
     });
   }

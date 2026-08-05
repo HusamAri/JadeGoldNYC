@@ -50,9 +50,18 @@ const round2 = (n: number) => Math.round(n * 100) / 100;
 
 export async function getDashboard(
   period: ResolvedPeriod,
-  currency = "USD",
+  orgId: string,
 ): Promise<DashboardData> {
   const supabase = await createClient();
+  const { data: orgRow, error: orgErr } = await supabase
+    .from("organizations")
+    .select("default_currency")
+    .eq("id", orgId)
+    .maybeSingle();
+  if (orgErr) console.error("getDashboard org sorgusu:", orgErr.message);
+  const currency =
+    (orgRow as { default_currency: string | null } | null)?.default_currency ??
+    "USD";
   // cost_date TARİH-only kolon: pencere ISO'ları NY takvim gününe çevrilir.
   // toIso NY gün-sonu ANI olduğundan UTC'de ertesi takvim gününe düşer —
   // slice(0,10) üst sınırı 1 gün taşırıp (ör. geçen ay penceresine 1 Temmuz
@@ -77,6 +86,7 @@ export async function getDashboard(
       .select(
         "grand_total_cents, item_total_cents, order_date, buyer_name, source",
       )
+      .eq("currency", currency)
       .neq("status", "cancelled")
       .lte("order_date", period.toIso)
       .order("id", { ascending: true })
@@ -100,6 +110,7 @@ export async function getDashboard(
     let q = supabase
       .from("costs")
       .select("amount_cents, cost_date, category:cost_categories(label_tr)")
+      .eq("currency", currency)
       .lte("cost_date", toDate)
       .order("id", { ascending: true })
       .range(from, to);
@@ -130,7 +141,8 @@ export async function getDashboard(
   }>((from, to) => {
     let q = supabase
       .from("sale_items")
-      .select("title, sku, quantity, line_total_cents, sales!inner(order_date, status)")
+      .select("title, sku, quantity, line_total_cents, sales!inner(order_date, status, currency)")
+      .eq("sales.currency", currency)
       .neq("sales.status", "cancelled")
       .lte("sales.order_date", period.toIso)
       .order("id", { ascending: true })
@@ -236,6 +248,7 @@ export async function getDashboard(
     .from("costs")
     .select("amount_cents, category:cost_categories(key)")
     .eq("source", "gold_auto")
+    .eq("currency", currency)
     .lte("cost_date", toDate);
   if (fromDate) goldCostQuery = goldCostQuery.gte("cost_date", fromDate);
   const [{ data: goldCostRows, error: goldErr }, recent] = await Promise.all([
@@ -276,6 +289,7 @@ export async function getDashboard(
     etsy: "Etsy",
     manual: "Manuel",
     csv: "CSV Aktarım",
+    shopier: "Shopier",
   };
   const chanMap = new Map<string, { orderCount: number; revenueCents: number }>();
   for (const s of sales) {

@@ -12,6 +12,7 @@ import {
 
 import type { ViewsSeriesPoint } from "@/lib/db/queries/etsy-insights";
 
+import { useChartAnimation } from "@/lib/motion";
 import { CHART_INK, ChartDefs, GLASS_TOOLTIP, GlowDot } from "./dashboard-charts";
 
 /**
@@ -20,6 +21,7 @@ import { CHART_INK, ChartDefs, GLASS_TOOLTIP, GlowDot } from "./dashboard-charts
  * sönen beyaz + çift ışıma) + parlayan uç nokta; cam tooltip ve mono eksen.
  */
 export function EtsyViewsChart({ data }: { data: ViewsSeriesPoint[] }) {
+  const anim = useChartAnimation();
   return (
     <div className={CHART_INK}>
       <ResponsiveContainer width="100%" height={220}>
@@ -69,6 +71,7 @@ export function EtsyViewsChart({ data }: { data: ViewsSeriesPoint[] }) {
               fill: "var(--jg-ink-2)",
               filter: "url(#etsy-dotglow)",
             }}
+            {...anim}
           />
         </AreaChart>
       </ResponsiveContainer>

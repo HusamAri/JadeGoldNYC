@@ -17,6 +17,8 @@ import { TaskStatusBadge } from "@/components/task-status-badge";
 import { TaskPanel } from "@/components/tasks/task-panel";
 import { DeleteButton } from "@/components/data-table/delete-button";
 import { UserAvatar } from "@/components/user-avatar";
+import { PinDock } from "@/components/pins/pin-dock";
+import { PersonPinEdge } from "@/components/pins/person-pin-edge";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -60,6 +62,13 @@ export default async function GorevDetayPage({
 
   const jewel = task.color ? TASK_COLOR_BY_KEY.get(task.color) : null;
   const ink = jewel?.ink ?? "var(--gold-deep)";
+  // Atananın portre pini varsa küçük avatar yerine karta kenardan iliştirilen
+  // BÜYÜK scrapbook cutout'u kullanılır (kullanıcı kararı).
+  const assigneeEdgePin =
+    task.assignee?.avatar_url?.startsWith("/pins/") &&
+    task.assignee.avatar_url.endsWith("/person.png")
+      ? task.assignee.avatar_url
+      : null;
   const progress =
     typeof task.progress === "number"
       ? Math.max(0, Math.min(100, task.progress))
@@ -90,9 +99,22 @@ export default async function GorevDetayPage({
         }
       />
 
+      {/* relative sarmalayıcı: kenar cutout'u kartın DIŞINA taşar, kart
+          kırpmaz; metin çakışmasın diye içerik koşullu sol dolgu alır. */}
+      <div className="relative">
+      {assigneeEdgePin && (
+        <PersonPinEdge src={assigneeEdgePin} alt={assigneeName} />
+      )}
       <Card>
-        <CardContent className="space-y-4">
+        <CardContent className={assigneeEdgePin ? "space-y-4 pl-24" : "space-y-4"}>
           <div className="flex items-start gap-3">
+            {/* Pinler — göreve iğnelenen setler (herkesinki görünür). */}
+            <PinDock
+              targetType="task"
+              targetId={task.id}
+              size="lg"
+              className="order-last ml-auto"
+            />
             {/* Görevin kendi mücevher ikonu + rengi (maske ile boyanır). */}
             {task.icon && (
               <span
@@ -142,7 +164,9 @@ export default async function GorevDetayPage({
           <div className="grid grid-cols-2 gap-5 text-sm sm:grid-cols-3">
             <Meta label="Atanan">
               <span className="flex items-center gap-2">
-                {task.assignee && (
+                {/* Portre pini olan kişi zaten kenar cutout'uyla görünür —
+                    küçük avatar tekrarına gerek yok (minimalizm). */}
+                {task.assignee && !assigneeEdgePin && (
                   <UserAvatar
                     src={task.assignee.avatar_url}
                     name={task.assignee.full_name}
@@ -168,6 +192,7 @@ export default async function GorevDetayPage({
           )}
         </CardContent>
       </Card>
+      </div>
 
       <TaskPanel task={task} notes={notes} members={members} />
     </div>

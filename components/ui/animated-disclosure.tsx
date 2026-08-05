@@ -28,7 +28,7 @@ export function AnimatedDisclosure({
   className,
   summaryClassName,
   panelClassName,
-  hintClosed = true,
+  hintClosed = false,
   motion: motionMode = "height",
 }: AnimatedDisclosureProps) {
   const [open, setOpen] = useState(defaultOpen);
@@ -39,7 +39,10 @@ export function AnimatedDisclosure({
   return (
     <div
       className={cn(
-        "overflow-hidden rounded-[1.35rem] border border-[color-mix(in_oklab,var(--border)_72%,transparent)] bg-[color-mix(in_oklab,var(--surface)_88%,transparent)] shadow-[0_10px_28px_-20px_rgba(28,25,23,0.45)] transition-[border-color,box-shadow] duration-300",
+        "overflow-hidden rounded-[1.35rem] transition-[border-color,box-shadow] duration-300",
+        // Default soft surface; callers may pass nm-raised / nm-raised-sm.
+        !className?.includes("nm-raised") &&
+          "border border-[color-mix(in_oklab,var(--border)_72%,transparent)] bg-[color-mix(in_oklab,var(--surface)_88%,transparent)] shadow-[0_10px_28px_-20px_rgba(28,25,23,0.45)]",
         open
           ? "border-[color-mix(in_oklab,var(--brand)_28%,var(--border))] shadow-[0_16px_36px_-22px_rgba(28,25,23,0.42)]"
           : hintClosed

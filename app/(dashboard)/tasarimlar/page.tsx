@@ -1,3 +1,4 @@
+import { getActivePlatform } from "@/lib/platform";
 import Link from "next/link";
 import {
   Plus,
@@ -19,11 +20,22 @@ import {
 
 import { requireMembership } from "@/lib/auth";
 import { listListingsIndex } from "@/lib/db/queries/listings";
+import {
+  deriveKarat,
+  deriveColor,
+  deriveGroup,
+  KARAT_OPTIONS,
+  COLOR_OPTIONS,
+  GROUP_OPTIONS,
+} from "@/lib/listing-facets";
 import { strParam, type RawSearchParams } from "@/lib/searchparams";
 import { formatMoney } from "@/lib/money";
+import { clampDiscountPct, discountedCents } from "@/lib/discount";
 import { formatNumber } from "@/lib/format";
+import type { ListingIndexRow } from "@/lib/db/queries/listings";
 import { OrgMark } from "@/components/brand/org-mark";
 import { PageHeader } from "@/components/page-header";
+import { PushAllSeoButton } from "@/components/listing/push-all-seo-button";
 import { GoldStream } from "@/components/brand/gold-stream";
 import { CornerMarks } from "@/components/brand/corner-marks";
 import { EmptyState } from "@/components/empty-state";
@@ -43,6 +55,12 @@ import { SearchInput } from "@/components/data-table/search-input";
 import { FilterSelect } from "@/components/data-table/filter-select";
 
 export const metadata = { title: "Listeler" };
+// Toplu SEO gönderimi (PushAllSeoButton → server action) bu sayfanın
+// fonksiyonunda koşar: listing başına PATCH + read-back + nezaket beklemesi
+// ≈ 1-1,5 sn, yani 100+ listing tek çağrıya sığmaz. Action bu yüzden 240 sn'lik
+// bütçeyle koşup imleçle yarıda döner (domino) — buradaki 300 sn o bütçenin
+// üstüne yanıt/audit payı bırakır, sınır artık işin boyutuna bağlı değildir.
+export const maxDuration = 300;
 
 /** Etsy listing durumları (sync `l.state`den gelir) + Türkçe etiket/rozet. */
 const LISTING_STATUSES: {
@@ -58,9 +76,55 @@ const LISTING_STATUSES: {
   { value: "expired", label: "Süresi doldu", variant: "destructive" },
 ];
 
+/** min/max cent → "min" ya da "min – max" (eşitse tek). */
+function formatRange(
+  minC: number | null,
+  maxC: number | null,
+  currency: string,
+): string {
+  if (minC == null) return "—";
+  const lo = formatMoney(minC, currency);
+  if (maxC == null || maxC === minC) return lo;
+  return `${lo} – ${formatMoney(maxC, currency)}`;
+}
+
+/**
+ * Liste "Fiyat" hücresi — tek taban fiyatı değil, SKU'lu varyantların GERÇEK
+ * satış aralığını (min–max) gösterir; manuel indirim (discount_pct) varsa
+ * indirimli aralığı öne çıkarır, taban aralığı üstü çizili + "-%X" rozetiyle
+ * verir (indirim yalnız panelde; Etsy tabanı değişmez — 0115 kuralı).
+ */
+function PriceCell({ r }: { r: ListingIndexRow }) {
+  const min = r.min_variant_price_cents ?? r.price_cents;
+  const max = r.max_variant_price_cents ?? r.price_cents;
+  if (min == null) return <span className="text-muted-foreground">—</span>;
+  const pct = clampDiscountPct(r.discount_pct);
+  if (pct > 0) {
+    const dMin = discountedCents(min, pct);
+    const dMax = discountedCents(max ?? min, pct);
+    return (
+      <div className="flex flex-col items-end gap-0.5">
+        <span className="font-medium text-emerald-700 dark:text-emerald-400">
+          {formatRange(dMin, dMax, r.currency)}
+        </span>
+        <span className="text-muted-foreground text-[11px]">
+          <span className="line-through">
+            {formatRange(min, max, r.currency)}
+          </span>
+          <span className="ml-1 rounded bg-emerald-500/15 px-1 font-mono text-[10px] font-semibold text-emerald-700 dark:text-emerald-300">
+            -%{pct}
+          </span>
+        </span>
+      </div>
+    );
+  }
+  return <span>{formatRange(min, max, r.currency)}</span>;
+}
+
 function statusMeta(status: string | null) {
+  const key = (status ?? "").toLowerCase();
   return (
-    LISTING_STATUSES.find((s) => s.value === status) ?? {
+    LISTING_STATUSES.find((s) => s.value === key) ?? {
       value: status ?? "",
       label: status ?? "—",
       variant: "outline" as const,
@@ -76,26 +140,48 @@ export default async function ListelerPage({
   const sp = await searchParams;
   const search = strParam(sp.search);
   const status = strParam(sp.status);
+  const karat = strParam(sp.karat);
+  const renk = strParam(sp.renk);
+  const grup = strParam(sp.grup);
 
-  await requireMembership();
-  const rows = await listListingsIndex({ search, status });
+  // Platform durumu (3 RPC), auth kapısı ve listing çekimi birbirinden
+  // bağımsız — eskiden sırayla await ediliyordu, artık tek turda paralel.
+  const [platform, , fetched] = await Promise.all([
+    getActivePlatform(),
+    requireMembership(),
+    listListingsIndex({ search, status }),
+  ]);
+
+  // Facet filtreleri (ayar/renk/grup) başlık+SKU'dan türetilir — Etsy shop
+  // section senkronda yok; tüm satırlar zaten tek sayfada geldiğinden filtre
+  // burada uygulanır (lib/listing-facets.ts, gerçek katalogla test edildi).
+  const rows = fetched.filter((r) => {
+    if (karat && deriveKarat(r.title, r.sku) !== karat) return false;
+    if (renk && deriveColor(r.title, r.sku) !== renk) return false;
+    if (grup && deriveGroup(r.title) !== grup) return false;
+    return true;
+  });
 
   const total = rows.length;
-  const active = rows.filter((r) => r.status === "active").length;
+  // Etsy `state` sync'te olduğu gibi gelir (küçük harf); KPI büyük/küçük duyarsız.
+  const active = rows.filter(
+    (r) => (r.status ?? "").toLowerCase() === "active",
+  ).length;
   const missingWeight = rows.filter((r) => r.missing_weight_count > 0).length;
   const noKeyword = rows.filter(
     (r) => !(r.research_keyword ?? "").trim(),
   ).length;
-  const filtered = Boolean(search || status);
+  const filtered = Boolean(search || status || karat || renk || grup);
 
   return (
     <div className="page-stack relative z-0 pb-32">
       <GoldStream motif="ring" />
       <PageHeader
         title="Listeler"
-        description="Etsy'de var olan listing'ler (Etsy'nin aynası) — varyantlar, rakip fiyatlar, reklam performansı ve eksik alanlar listing detayında. Panel taslakları ve arşiv: Listing Önerileri."
+        description={`${platform.label}'deki listing'lerin aynası — detaylar listing sayfasında; taslaklar ve arşiv Listing Önerileri'nde.`}
         action={
           <>
+            <PushAllSeoButton />
             <Button asChild variant="outline">
               <Link href="/tasarimlar/varyant-hesapla">
                 <Calculator />
@@ -183,7 +269,7 @@ export default async function ListelerPage({
       </div>
       <Card>
         <CardContent className="space-y-4">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
             <SearchInput placeholder="Başlık veya SKU…" />
             <FilterSelect
               paramKey="status"
@@ -192,6 +278,26 @@ export default async function ListelerPage({
                 value: s.value,
                 label: s.label,
               }))}
+            />
+            {/* Facet filtreleri — başlık/SKU'dan türetilir (shop-section verisi
+                senkronda yok; pratik karşılığı bu üçlü). */}
+            <FilterSelect
+              paramKey="karat"
+              placeholder="Ayar"
+              options={KARAT_OPTIONS}
+              className="w-[110px]"
+            />
+            <FilterSelect
+              paramKey="renk"
+              placeholder="Renk"
+              options={COLOR_OPTIONS}
+              className="w-[140px]"
+            />
+            <FilterSelect
+              paramKey="grup"
+              placeholder="Grup"
+              options={GROUP_OPTIONS}
+              className="w-[150px]"
             />
           </div>
 
@@ -279,7 +385,7 @@ export default async function ListelerPage({
                           {r.title}
                         </Link>
                         <div className="text-muted-foreground mt-0.5 flex flex-wrap items-center gap-x-2 font-mono text-[11px] tracking-wide">
-                          <span>{r.sku}</span>
+                          <span>{r.sku ?? "—"}</span>
                           {r.etsy_listing_id != null ? (
                             <span className="tabular-nums">#{r.etsy_listing_id}</span>
                           ) : null}
@@ -289,9 +395,7 @@ export default async function ListelerPage({
                         <Badge variant={sm.variant}>{sm.label}</Badge>
                       </TableCell>
                       <TableCell className="text-right tabular-nums">
-                        {r.price_cents != null
-                          ? formatMoney(r.price_cents, r.currency)
-                          : "—"}
+                        <PriceCell r={r} />
                       </TableCell>
                       <TableCell className="text-right">
                         <span className="tabular-nums">{r.variant_count}</span>
@@ -351,8 +455,7 @@ export default async function ListelerPage({
           )}
 
           <p className="text-muted-foreground text-xs">
-            {formatNumber(total)} listing gösteriliyor — tümü tek sayfada,
-            sayfalama yok.
+            {formatNumber(total)} listing — tümü listelendi.
           </p>
         </CardContent>
       </Card>

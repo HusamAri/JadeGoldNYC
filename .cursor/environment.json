@@ -1,0 +1,23 @@
+{
+  "$schema": "https://cursor.com/schemas/environment.schema.json",
+  "name": "Jade Gold NYC",
+  "user": "ubuntu",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "."
+  },
+  "install": "npm install",
+  "start": "sudo dockerd >/tmp/dockerd.log 2>&1 & sleep 2 && sudo chmod 666 /var/run/docker.sock 2>/dev/null || true",
+  "ports": [
+    { "name": "Next.js dev server", "port": 3000 },
+    { "name": "Supabase API", "port": 54321 },
+    { "name": "Supabase Studio", "port": 54323 }
+  ],
+  "terminals": [
+    {
+      "name": "dev server",
+      "command": "bash scripts/dev-supabase-setup.sh && npm run dev",
+      "description": "Provision local Supabase + start Next.js on :3000"
+    }
+  ]
+}

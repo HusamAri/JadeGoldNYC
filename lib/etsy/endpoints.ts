@@ -9,6 +9,12 @@ export const etsyPaths = {
   // Tek sipariş (webhook resource_url'inden id çözülünce taze durum çekilir).
   receipt: (shopId: number | string, receiptId: number | string) =>
     `/shops/${shopId}/receipts/${receiptId}`,
+  // getShopPaymentByReceiptId — sipariş ↔ ödeme bağı. PAYMENT_PROCESSING_FEE
+  // ledger satırının reference_id'si `shop_payment_id`; siparişe bağlamanın
+  // RESMİ yolu bu uçtur (Payment.receipt_id + payment_id). Kapsam:
+  // transactions_r (zaten alınmış — yeni izin gerekmez).
+  receiptPayments: (shopId: number | string, receiptId: number | string) =>
+    `/shops/${shopId}/receipts/${receiptId}/payments`,
   receiptTransactions: (
     shopId: number | string,
     receiptId: number | string,
@@ -45,10 +51,16 @@ export const etsyPaths = {
   // `supports_multiple_personalization_questions=true` gerekir.
   listingPersonalization: (shopId: number | string, listingId: number | string) =>
     `/shops/${shopId}/listings/${listingId}/personalization`,
-  // GET — shop_id gerekmez; mevcut soruları okur (audit / sync).
+  // Kişiselleştirme OKUMA — yazma ucunun (yukarıda) aksine shop_id ALMAZ ve
+  // yalnız GET tanımlar. Yazma ucuna GET atmak 404 üretir (aynı tuzak
+  // shopListing'de yaşandı, bkz. lib/etsy/listing.ts).
+  listingPersonalizationRead: (listingId: number | string) =>
+    `/listings/${listingId}/personalization`,
+  // Eski ad (serene-knuth iş kolu) — aynı okuma ucu; sync script/iyileştir
+  // aksiyonu bu adı kullanır.
   listingPersonalizationByListing: (listingId: number | string) =>
     `/listings/${listingId}/personalization`,
-  // Tek listing görseli silme (rank/replace için).
+  // Tek listing görseli silme (rank/replace için) — listings_w gerekir.
   listingImage: (
     shopId: number | string,
     listingId: number | string,

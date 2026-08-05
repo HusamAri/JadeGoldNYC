@@ -32,7 +32,7 @@ export async function getMarketPriceAlerts(
   limit = 8,
 ): Promise<MarketPriceAlert[]> {
   const supabase = await createClient();
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("market_price_alerts")
     .select(
       "product_id, etsy_listing_id, title, researched_at, keyword, result_count, our_per_gram_cents, market_low_per_gram_cents, market_avg_per_gram_cents, market_high_per_gram_cents, price_position, deviation_pct, confidence, recommendation",
@@ -42,6 +42,8 @@ export async function getMarketPriceAlerts(
     .in("price_position", ["pahali", "ucuz"])
     .order("deviation_pct", { ascending: false })
     .limit(limit + 20); // karar verilmişleri eleyeceğiz — biraz fazla çek
+  // Hata sessizce "uyarı yok"a (yanlış tüm-temiz) dönüşmesin.
+  if (error) console.error("[market-alerts] getMarketPriceAlerts:", error.message);
   const alerts = (data as (MarketPriceAlert & { researched_at: string })[] | null) ?? [];
   if (alerts.length === 0) return [];
 

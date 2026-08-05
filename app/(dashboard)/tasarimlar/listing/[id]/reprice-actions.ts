@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 
 import { requireMembership } from "@/lib/auth";
+import { pricingWriteBlocked } from "@/lib/feature-flags";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getEtsyWriteAccess } from "@/lib/db/queries/etsy";
 import { parseMoneyToCents } from "@/lib/money";
@@ -130,6 +131,10 @@ export async function saveRepriceRule(
   input: RepriceRuleInput,
 ): Promise<{ ok?: boolean; error?: string }> {
   const m = await requireMembership();
+  // Fiyat panel dışında belirleniyorsa (EON) reprice kuralı KURULAMAZ —
+  // motor kaldırıldı, kural kaydetmek yanlış beklenti yaratır.
+  const pricingBlocked = await pricingWriteBlocked(m.org_id);
+  if (pricingBlocked) return { error: pricingBlocked };
 
   if (!MODES.includes(input.mode as RepriceMode)) {
     return { error: "Geçersiz mod." };
@@ -212,5 +217,73 @@ export async function saveRepriceRule(
   if (error) return { error: error.message };
 
   revalidatePath(`/tasarimlar/listing/${productId}`);
+  return { ok: true };
+}
+
+/**
+ * Listing indirim yüzdesini (0..90 tam sayı) kaydeder — MANUEL giriş.
+ * Etsy Open API v3 aktif Sale/promosyon ya da kupon kodunu okutmuyor (0115),
+ * bu yüzden satıcı Etsy'de yürüttüğü indirimi buraya girer; indirimli fiyat
+ * panelde türetilir (lib/discount.ts) ve Etsy'ye YAZILMAZ (taban fiyat
+ * değişmez). Üyelik yeterli — künye düzenlemesi gibi (owner/admin şart değil).
+ */
+export interface DiscountInput {
+  pct: number;
+  /** 'YYYY-MM-DD' ya da null (aralıksız = her zaman aktif). */
+  startAt?: string | null;
+  endAt?: string | null;
+  /** Minimum SEPET toplamı (cent) ya da null. */
+  minOrderCents?: number | null;
+}
+
+export async function setListingDiscount(
+  productId: string,
+  input: DiscountInput,
+): Promise<{ ok?: boolean; error?: string }> {
+  const m = await requireMembership();
+  const n = Math.round(Number(input.pct));
+  if (!Number.isFinite(n) || n < 0 || n > 90) {
+    return { error: "İndirim %0–90 arası olmalı." };
+  }
+  const startAt = input.startAt?.trim() || null;
+  const endAt = input.endAt?.trim() || null;
+  const isoDate = /^\d{4}-\d{2}-\d{2}$/;
+  if (startAt && !isoDate.test(startAt))
+    return { error: "Başlangıç tarihi geçersiz." };
+  if (endAt && !isoDate.test(endAt))
+    return { error: "Bitiş tarihi geçersiz." };
+  if (startAt && endAt && endAt < startAt)
+    return { error: "Bitiş tarihi başlangıçtan önce olamaz." };
+  const minOrderCents =
+    input.minOrderCents != null && input.minOrderCents > 0
+      ? Math.round(input.minOrderCents)
+      : null;
+
+  const admin = createAdminClient();
+  // Ürün bu org'a mı ait? (yabancı product_id'ye yazılmasın — multi-tenant kilidi)
+  const { data: product, error: prodErr } = await admin
+    .from("products")
+    .select("id")
+    .eq("id", productId)
+    .eq("org_id", m.org_id)
+    .maybeSingle();
+  if (prodErr) return { error: prodErr.message };
+  if (!product) return { error: "Ürün bulunamadı." };
+
+  const { error } = await admin
+    .from("products")
+    .update({
+      discount_pct: n,
+      // İndirim yoksa pencere/eşik da temizlenir (kalıntı kalmasın).
+      discount_start_at: n > 0 ? startAt : null,
+      discount_end_at: n > 0 ? endAt : null,
+      discount_min_order_cents: n > 0 ? minOrderCents : null,
+    })
+    .eq("id", productId)
+    .eq("org_id", m.org_id);
+  if (error) return { error: error.message };
+
+  revalidatePath(`/tasarimlar/listing/${productId}`);
+  revalidatePath("/indirimler");
   return { ok: true };
 }

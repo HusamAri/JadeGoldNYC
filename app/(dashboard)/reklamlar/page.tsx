@@ -1,18 +1,23 @@
+import { notFound } from "next/navigation";
+
+import { getActivePlatform } from "@/lib/platform";
 import {
   CalendarDays,
   CheckCircle2,
+  Eye,
   ExternalLink,
   Flag,
   Globe,
-  ListChecks,
+  ImageOff,
   Megaphone,
   MousePointerClick,
-  Satellite,
   ShoppingBag,
   Target,
   TrendingUp,
+  Upload,
   Wallet,
 } from "lucide-react";
+import Link from "next/link";
 
 import { requireMembership } from "@/lib/auth";
 import {
@@ -20,6 +25,7 @@ import {
   ADS_ACTION_STATUS_META,
   ADS_PERIOD_LABEL,
   ADS_SIGNAL_META,
+  ADS_TRIAGE,
   computeAdsSignals,
   getAdsOverview,
   listAdsActions,
@@ -31,14 +37,19 @@ import {
   ADS_LEDGER_WINDOW_DAYS,
   getAdsLedgerOverview,
 } from "@/lib/db/queries/ads-ledger";
+import { getAdDailyOverview } from "@/lib/db/queries/ads-daily";
+import {
+  getListingViewsTrends,
+  type ListingViewsTrend,
+} from "@/lib/db/queries/etsy-insights";
 import { formatMoney, formatPercent } from "@/lib/money";
 import { formatDate, formatNumber } from "@/lib/format";
 import { OrgMark } from "@/components/brand/org-mark";
 import { PageHeader } from "@/components/page-header";
-import { EmptyState } from "@/components/empty-state";
 import { KpiCard } from "@/components/kpi-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Table,
@@ -49,6 +60,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { createAdsAction, markAdsAction } from "./actions";
+import { AdsTriageDialog } from "@/components/ads/ads-triage-dialog";
+import {
+  SleepingBoxes,
+  type SleepingBox,
+} from "@/components/sleeping-boxes";
 
 export const metadata = { title: "Reklamlar" };
 
@@ -66,13 +82,23 @@ const fmtRoas = (r: number | null) =>
   r == null ? "—" : `${formatNumber(r, 2)}×`;
 
 export default async function ReklamlarPage() {
+  // Reklam sinyalleri Etsy Ads verisine bağlı — yetenek kapalıysa derin link koruması.
+  const platform = await getActivePlatform();
+  if (!platform.capabilities.adsSignals) notFound();
   const m = await requireMembership();
-  const [overview, actions, ledger] = await Promise.all([
+  const [overview, actions, ledger, daily] = await Promise.all([
     getAdsOverview(m.org_id),
     listAdsActions(m.org_id),
     getAdsLedgerOverview(m.org_id),
+    getAdDailyOverview(m.org_id),
   ]);
   const { rows, totals, window, currency } = overview;
+  const hasDailyAds = daily.days.length > 0;
+  // Günlük CSV serisinin kapsanan takvim aralığı — toplam kartlarında yazılır.
+  const dailyWindowLabel = daily.range
+    ? `${formatDate(daily.range.from)} – ${formatDate(daily.range.to)} · ${formatNumber(daily.days.length)} gün · Etsy Reklam (CSV)`
+    : "Etsy Reklam (CSV)";
+  const DAILY_TABLE_LIMIT = 31;
 
   // API penceresi etiketi — GERÇEK takvim aralığı (etiket eşleşmesi değil).
   const ledgerWindowLabel = `son ${ADS_LEDGER_WINDOW_DAYS} gün · ${formatDate(ledger.window.fromIso)} – ${formatDate(ledger.window.toIso)} · Etsy API (ledger)`;
@@ -81,6 +107,25 @@ export default async function ReklamlarPage() {
 
   const signals = computeAdsSignals(rows);
   const rowByProduct = new Map(rows.map((r) => [r.productId, r]));
+
+  // Sinyal kartlarının ORGANİK bağlamı — kapat/azalt/artır kararı elle girilen
+  // reklam metriğiyle sınırlı kalmasın: aynı listing'in fotoğraf-farkı
+  // görüntülenme trendi + aynı aralıktaki dönüşüm (sınırlı küme, sinyaller).
+  const signalListingIds = [
+    ...new Set(
+      signals
+        .map((s) => s.row.etsyListingId)
+        .filter((n): n is number => n != null),
+    ),
+  ];
+  const trendByListing: Map<number, ListingViewsTrend> =
+    signalListingIds.length > 0
+      ? await getListingViewsTrends(m.org_id, signalListingIds)
+      : new Map();
+  const trendFor = (r: AdsOverviewRow): ListingViewsTrend | null =>
+    r.etsyListingId != null
+      ? (trendByListing.get(r.etsyListingId) ?? null)
+      : null;
   // Aynı ürün+tür beklemedeyken kartta ikinci kez "Aksiyona al" gösterilmez.
   const pendingKeys = new Set(
     actions
@@ -97,29 +142,81 @@ export default async function ReklamlarPage() {
   const reasonFor = (s: AdsSignal<AdsOverviewRow>) =>
     `${ADS_SIGNAL_META[s.signal].title}: ${formatMoney(s.row.spendCents, currency)} harcama, ${formatMoney(s.row.adsRevenueCents, currency)} getiri, ROAS ${fmtRoas(s.roas)}, bütçe payı ${formatPercent(s.share)} ("${ADS_PERIOD_LABEL}" · ${formatDate(s.row.createdAt)})`;
 
-  const snapshotFor = (s: AdsSignal<AdsOverviewRow>) =>
-    JSON.stringify({
+  const snapshotFor = (s: AdsSignal<AdsOverviewRow>) => {
+    const t = trendFor(s.row);
+    return JSON.stringify({
       spend_cents: s.row.spendCents,
       ads_revenue_cents: s.row.adsRevenueCents,
       roas: s.roas,
       share: s.share,
       window_to: s.row.createdAt,
+      // Karar anındaki organik bağlam da fotoğrafa girer (önce/sonra kıyası).
+      organic_views_delta: t?.viewsDelta ?? null,
+      organic_conversion: t?.conversion ?? null,
+      price_cents: s.row.priceCents,
+      quantity: s.row.quantity,
     } satisfies AdsMetricSnapshot);
+  };
 
   const spendingRows = rows.filter((r) => r.spendCents > 0);
+
+  // ── UYUYAN KUTULAR: verisi olmayan bölüm tam boy render edilmez; adı ve
+  // "nasıl uyanır" ipucu sayfa sonundaki ince listede anılır (panel deseni). ──
+  const hasManualMetrics = rows.length > 0;
+  const sleeping: SleepingBox[] = [];
+  if (!hasDailyAds)
+    sleeping.push({
+      name: "Etsy Reklam · günlük (CSV)",
+      hint: "Reklamlar → CSV İçe Aktar → Günlük sekmesinden yüklenince dolar",
+    });
+  if (!hasLedgerData)
+    sleeping.push({
+      name: "Etsy API (ledger)",
+      hint: ledger.connected
+        ? "son 30 günde reklam ücreti kesilince otomatik dolar"
+        : "Ayarlar → Etsy bağlanınca otomatik dolar",
+    });
+  if (!hasManualMetrics)
+    sleeping.push({
+      name: `"${ADS_PERIOD_LABEL}" metrikleri & harcama dağılımı`,
+      hint: "Analizler → Ürün performansına 'son 30' satırı girilince",
+    });
+  else if (spendingRows.length === 0)
+    sleeping.push({
+      name: "Harcama Dağılımı",
+      hint: "harcamalı ürün metriği girilince",
+    });
+  if (signals.length === 0)
+    sleeping.push({
+      name: "Aksiyon Önerileri",
+      hint: "sinyal üreten ürün çıkınca (şimdilik her şey yolunda)",
+    });
+  if (actions.length === 0)
+    sleeping.push({
+      name: "Aksiyon Kuyruğu",
+      hint: "önerilerden 'Aksiyona al' deyince dolar",
+    });
 
   return (
     <div className="page-stack relative z-0 pb-32">
       <PageHeader
         title="Reklamlar"
-        description="Etsy Ads harcamasını değerlendir, boşa gideni kapat, bütçe yiyeni dizginle, fırsatı büyüt — karar burada, uygulama Etsy'de"
+        description="Etsy Ads kararları — karar burada, uygulama Etsy'de"
         action={
-          <Button asChild variant="outline">
-            <a href={ETSY_ADS_URL} target="_blank" rel="noreferrer">
-              <ExternalLink />
-              Etsy Reklam panosu
-            </a>
-          </Button>
+          <>
+            <Button asChild variant="outline">
+              <Link href="/reklamlar/ice-aktar">
+                <Upload />
+                CSV İçe Aktar
+              </Link>
+            </Button>
+            <Button asChild variant="outline">
+              <a href={ETSY_ADS_URL} target="_blank" rel="noreferrer">
+                <ExternalLink />
+                Etsy Reklam panosu
+              </a>
+            </Button>
+          </>
         }
       />
 
@@ -162,38 +259,173 @@ export default async function ReklamlarPage() {
         </CardContent>
       </Card>
 
-      {/* Dekoratif indeks satırı (Spatial/Liquid .idx dili). */}
-      <div aria-hidden className="idx sm:-mb-4">
-        <span>Reklamlar / 01 · Etsy API (ledger) — otomatik</span>
-        <span className="idx-bar" />
-        <span className="idx-ln" />
-        <span><OrgMark /></span>
-      </div>
+      {/* GÜNLÜK CSV BÖLÜMÜ — mağaza geneli günlük reklam serisi (Etsy Reklam
+          panosunun "stats over time" dışa aktarımı). Listing kırılımı yok;
+          görüntülenme/tık/sipariş/ciro/ROAS + gün-sonu bütçe taşır. Veri
+          yoksa bölüm uyur (adı sayfa sonunda). */}
+      {hasDailyAds && (
+        <>
+          <div aria-hidden className="idx sm:-mb-4">
+            <span>Reklamlar / 01 · Etsy Reklam · günlük (CSV)</span>
+            <span className="idx-bar" />
+            <span className="idx-ln" />
+            <span><OrgMark /></span>
+          </div>
+
+          <div className="grid grid-cols-2 gap-5 lg:grid-cols-3 xl:grid-cols-6">
+            <KpiCard
+              label="Reklam Harcaması"
+              cents={daily.totals.spendCents}
+              currency={daily.currency}
+              icon={Wallet}
+              hint={dailyWindowLabel}
+            />
+            <KpiCard
+              label="Reklam Cirosu"
+              cents={daily.totals.revenueCents}
+              currency={daily.currency}
+              icon={TrendingUp}
+              accent={
+                daily.totals.roas == null
+                  ? "default"
+                  : daily.totals.roas >= 1
+                    ? "positive"
+                    : "negative"
+              }
+              hint={dailyWindowLabel}
+            />
+            <KpiCard
+              label="ROAS"
+              value={fmtRoas(daily.totals.roas)}
+              icon={Target}
+              accent={
+                daily.totals.roas == null
+                  ? "default"
+                  : daily.totals.roas >= 1
+                    ? "positive"
+                    : "negative"
+              }
+              hint={
+                daily.totals.roas == null
+                  ? `harcama var, ciro yok · ${dailyWindowLabel}`
+                  : `reklam cirosu / harcama · ${dailyWindowLabel}`
+              }
+            />
+            <KpiCard
+              label="Reklamdan Sipariş"
+              value={formatNumber(daily.totals.orders)}
+              icon={ShoppingBag}
+              accent={daily.totals.orders > 0 ? "positive" : "default"}
+              hint={dailyWindowLabel}
+            />
+            <KpiCard
+              label="Görüntülenme"
+              value={formatNumber(daily.totals.views)}
+              icon={Eye}
+              hint={
+                daily.totals.clickRate != null
+                  ? `tık oranı ${formatPercent(daily.totals.clickRate)} · ${dailyWindowLabel}`
+                  : dailyWindowLabel
+              }
+            />
+            <KpiCard
+              label="Tık"
+              value={formatNumber(daily.totals.clicks)}
+              icon={MousePointerClick}
+              hint={dailyWindowLabel}
+            />
+          </div>
+
+          <Card>
+            <CardContent className="space-y-3">
+              <div className="flex items-center gap-2">
+                <CalendarDays className="text-muted-foreground size-4" />
+                <p className="text-sm font-medium">Günlük reklam serisi</p>
+              </div>
+              <p className="text-muted-foreground text-xs">
+                {dailyWindowLabel} · en yeni{" "}
+                {formatNumber(Math.min(DAILY_TABLE_LIMIT, daily.days.length))}{" "}
+                gün — toplamlar tam kümeden hesaplanır. Mağaza geneli (listing
+                kırılımını Etsy vermez); gün-sonu bütçe artışı da izlenir.
+                {daily.otherCurrencyCount > 0 &&
+                  ` ${formatNumber(daily.otherCurrencyCount)} kayıt farklı kurda (toplam dışı).`}
+              </p>
+              <div className="scroll-x">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Gün</TableHead>
+                      <TableHead className="text-right">Görüntülenme</TableHead>
+                      <TableHead className="text-right">Tık</TableHead>
+                      <TableHead className="text-right">Sipariş</TableHead>
+                      <TableHead className="text-right">Ciro</TableHead>
+                      <TableHead className="text-right">Harcama</TableHead>
+                      <TableHead className="text-right">ROAS</TableHead>
+                      <TableHead className="text-right">Bütçe</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {daily.days.slice(0, DAILY_TABLE_LIMIT).map((d) => (
+                      <TableRow key={d.date}>
+                        <TableCell className="whitespace-nowrap">
+                          {formatDate(d.date)}
+                        </TableCell>
+                        <TableCell className="text-right tabular-nums">
+                          {formatNumber(d.views)}
+                        </TableCell>
+                        <TableCell className="text-right tabular-nums">
+                          {formatNumber(d.clicks)}
+                        </TableCell>
+                        <TableCell className="text-right tabular-nums">
+                          {d.orders > 0 ? (
+                            <span className="font-medium text-emerald-700 dark:text-emerald-400">
+                              {formatNumber(d.orders)}
+                            </span>
+                          ) : (
+                            formatNumber(d.orders)
+                          )}
+                        </TableCell>
+                        <TableCell className="text-right tabular-nums">
+                          {d.revenueCents > 0
+                            ? formatMoney(d.revenueCents, d.currency)
+                            : "—"}
+                        </TableCell>
+                        <TableCell className="text-right tabular-nums">
+                          {formatMoney(d.spendCents, d.currency)}
+                        </TableCell>
+                        <TableCell className="text-right tabular-nums">
+                          {fmtRoas(
+                            d.spendCents > 0
+                              ? d.revenueCents / d.spendCents
+                              : null,
+                          )}
+                        </TableCell>
+                        <TableCell className="text-muted-foreground text-right tabular-nums">
+                          {d.endingBudgetCents != null
+                            ? formatMoney(d.endingBudgetCents, d.currency)
+                            : "—"}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </CardContent>
+          </Card>
+        </>
+      )}
 
       {/* API-KAYNAKLI BÖLÜM — org-bağımsız: Etsy bağlanan her şirkette
-          (Jade, EON, sonrakiler) senkron ledger'ı bu bölümü otomatik doldurur. */}
-      {!ledger.connected && !hasLedgerData ? (
-        <Card>
-          <CardContent>
-            <EmptyState
-              icon={Satellite}
-              title="Etsy bağlı değil"
-              description="Ayarlar → Etsy'den bağlantı kurulunca senkron, reklam ücretlerini (Etsy Ads günlük harcaması + Offsite Ads sipariş ücretleri) ledger'dan otomatik çeker — CSV ya da elle giriş gerekmez."
-            />
-          </CardContent>
-        </Card>
-      ) : !hasLedgerData ? (
-        <Card>
-          <CardContent>
-            <EmptyState
-              icon={Satellite}
-              title="Son 30 günde reklam ücreti kaydı yok"
-              description={`Ledger senkronu bağlı ama ${ledgerWindowLabel} penceresinde prolist/offsite kaydı bulunamadı. Etsy Ads kapalıysa bu normaldir; senkron sonrası ücretler burada kendiliğinden görünür.`}
-            />
-          </CardContent>
-        </Card>
-      ) : (
+          (Jade, EON, sonrakiler) senkron ledger'ı bu bölümü otomatik doldurur.
+          Uyuyan-kutu kuralı: veri yoksa bölüm çizilmez (adı sayfa sonunda). */}
+      {hasLedgerData && (
         <>
+          <div aria-hidden className="idx sm:-mb-4">
+            <span>Reklamlar / 02 · Etsy API (ledger) — otomatik</span>
+            <span className="idx-bar" />
+            <span className="idx-ln" />
+            <span><OrgMark /></span>
+          </div>
           <div className="grid grid-cols-2 gap-5 lg:grid-cols-4">
             <KpiCard
               label="Etsy Ads Harcaması (Onsite)"
@@ -341,9 +573,12 @@ export default async function ReklamlarPage() {
         </>
       )}
 
-      {/* Dekoratif indeks satırı (Spatial/Liquid .idx dili). */}
+      {/* Elle girilen "son 30" katmanı — hiç metrik yoksa KPI/tablolar
+          çizilmez (uyuyan kutu; giriş yolu ipucu sayfa sonunda). */}
+      {hasManualMetrics && (
+      <>
       <div aria-hidden className="idx sm:-mb-4">
-        <span>Reklamlar / 02 · &quot;{ADS_PERIOD_LABEL}&quot; metrikleri — elle girilen</span>
+        <span>Reklamlar / 03 · &quot;{ADS_PERIOD_LABEL}&quot; metrikleri — elle girilen</span>
         <span className="idx-bar" />
         <span className="idx-ln" />
         <span><OrgMark /></span>
@@ -404,35 +639,55 @@ export default async function ReklamlarPage() {
           className="col-span-2 lg:col-span-1"
         />
       </div>
+      </>
+      )}
 
-      {/* Dekoratif indeks satırı (Spatial/Liquid .idx dili). */}
-      <div aria-hidden className="idx sm:-mb-4">
-        <span>Reklamlar / 03 · Aksiyon önerileri</span>
-        <span className="idx-bar" />
-        <span className="idx-ln" />
-        <span><OrgMark /></span>
-      </div>
-
-      {signals.length === 0 ? (
-        <Card>
-          <CardContent>
-            <EmptyState
-              icon={CheckCircle2}
-              title="Aksiyon sinyali yok"
-              description={`Boşa harcama, bütçe yiyen ya da büyütme fırsatı üreten ürün bulunmadı (${windowLabel}). Yeni "son 30" metrikleri girildikçe sinyaller burada belirir.`}
-            />
-          </CardContent>
-        </Card>
-      ) : (
+      {signals.length > 0 && (
+        <>
+        <div aria-hidden className="idx sm:-mb-4">
+          <span>Reklamlar / 04 · Aksiyon önerileri</span>
+          <span className="idx-bar" />
+          <span className="idx-ln" />
+          <span><OrgMark /></span>
+        </div>
         <div className="grid gap-5 md:grid-cols-2">
           {signals.map((s) => {
             const meta = ADS_SIGNAL_META[s.signal];
+            const t = trendFor(s.row);
             return (
               <Card key={`${s.row.productId}-${s.signal}`}>
                 <CardContent className="space-y-3">
                   <div className="flex items-start justify-between gap-3">
-                    <p className="font-medium">{s.row.title}</p>
-                    <Badge variant={meta.badgeVariant}>{meta.title}</Badge>
+                    <div className="flex min-w-0 items-start gap-3">
+                      <Link
+                        href={`/tasarimlar/listing/${s.row.productId}`}
+                        className="bg-muted relative block size-14 shrink-0 overflow-hidden rounded-xl"
+                      >
+                        {s.row.imageUrl ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={s.row.imageUrl}
+                            alt={s.row.title}
+                            className="h-full w-full object-cover"
+                          />
+                        ) : (
+                          <span className="text-muted-foreground/50 flex h-full items-center justify-center">
+                            <ImageOff className="size-5" />
+                          </span>
+                        )}
+                      </Link>
+                      <div className="min-w-0 space-y-1">
+                        <Link
+                          href={`/tasarimlar/listing/${s.row.productId}`}
+                          className="hover:text-primary line-clamp-2 font-medium transition-colors"
+                        >
+                          {s.row.title}
+                        </Link>
+                      </div>
+                    </div>
+                    <Badge variant={meta.badgeVariant} className="shrink-0">
+                      {meta.title}
+                    </Badge>
                   </div>
                   {/* Neden — sayılarla: harcama, getiri, ROAS, bütçe payı. */}
                   <p className="text-sm tabular-nums">
@@ -448,8 +703,66 @@ export default async function ReklamlarPage() {
                     · Bütçe payı{" "}
                     <span className="font-medium">{formatPercent(s.share)}</span>
                   </p>
+                  {/* Karar bağlamı — organik trend (API fotoğraf farkı,
+                      GERÇEK aralık) + canlı fiyat/stok. "son 30" etiketli
+                      reklam satırından ayrı pencere olduğu açıkça yazılır. */}
+                  <p className="text-muted-foreground text-sm tabular-nums">
+                    {t && t.statDays >= 2 && t.viewsDelta != null ? (
+                      <>
+                        Organik{" "}
+                        <span className="text-foreground font-medium">
+                          {formatNumber(t.viewsDelta)} görüntülenme
+                        </span>
+                        {t.favorersDelta != null && (
+                          <>
+                            {" "}
+                            · favori{" "}
+                            <span className="text-foreground font-medium">
+                              {t.favorersDelta > 0 ? "+" : ""}
+                              {formatNumber(t.favorersDelta)}
+                            </span>
+                          </>
+                        )}{" "}
+                        · dönüşüm{" "}
+                        <span className="text-foreground font-medium">
+                          {t.conversion != null
+                            ? formatPercent(t.conversion)
+                            : "—"}
+                        </span>{" "}
+                        <span className="text-xs">
+                          (fotoğraf farkı · {formatDate(t.coveredFrom!)} –{" "}
+                          {formatDate(t.coveredTo!)})
+                        </span>
+                      </>
+                    ) : (
+                      <>Organik seri olgunlaşıyor (günlük senkron biriktirir)</>
+                    )}
+                    {" "}· fiyat{" "}
+                    <span className="text-foreground font-medium">
+                      {s.row.priceCents != null
+                        ? formatMoney(s.row.priceCents, currency)
+                        : "—"}
+                    </span>{" "}
+                    · stok{" "}
+                    <span className="text-foreground font-medium">
+                      {s.row.quantity != null
+                        ? formatNumber(s.row.quantity)
+                        : "—"}
+                    </span>
+                  </p>
                   <p className="text-muted-foreground text-sm">{meta.hint}</p>
                   <div className="flex flex-wrap items-center gap-2">
+                    {/* KURAL: körlemesine kapat/azalt yok — önce arama terimi
+                        triyajı (karar ağacı kaynak modülde: ADS_TRIAGE). */}
+                    {ADS_TRIAGE.appliesTo.includes(s.signal) && (
+                      <AdsTriageDialog
+                        productId={s.row.productId}
+                        productTitle={s.row.title}
+                        reason={reasonFor(s)}
+                        snapshot={snapshotFor(s)}
+                        adsUrl={ETSY_ADS_URL}
+                      />
+                    )}
                     {meta.suggestedKinds.map((k) =>
                       pendingKeys.has(`${s.row.productId}:${k}`) ? (
                         <Badge key={k} variant="outline">
@@ -462,9 +775,9 @@ export default async function ReklamlarPage() {
                           <input type="hidden" name="kind" value={k} />
                           <input type="hidden" name="reason" value={reasonFor(s)} />
                           <input type="hidden" name="snapshot" value={snapshotFor(s)} />
-                          <Button type="submit" size="sm">
+                          <SubmitButton size="sm" variant="outline">
                             Aksiyona al · {ADS_ACTION_KIND_META[k].label}
-                          </Button>
+                          </SubmitButton>
                         </form>
                       ),
                     )}
@@ -475,36 +788,28 @@ export default async function ReklamlarPage() {
                       </a>
                     </Button>
                   </div>
-                  <p className="text-muted-foreground text-xs">
-                    Bu panel Etsy reklamını doğrudan değiştiremez (API
-                    sunmuyor) — karar burada, uygulama Etsy&apos;de.
-                  </p>
                 </CardContent>
               </Card>
             );
           })}
         </div>
+        </>
       )}
 
-      {/* Dekoratif indeks satırı (Spatial/Liquid .idx dili). */}
+      {/* Ölçüm döngüsü: beklemede → Etsy'de elle uygula → Yapıldı işaretle →
+          karar anı fotoğrafı vs güncel "son 30" metriği kıyası.
+          Kuyruk boşsa bölüm uyur (adı sayfa sonunda). */}
+      {actions.length > 0 && (
+      <>
       <div aria-hidden className="idx sm:-mb-4">
-        <span>Reklamlar / 04 · Aksiyon kuyruğu</span>
+        <span>Reklamlar / 05 · Aksiyon kuyruğu</span>
         <span className="idx-bar" />
         <span className="idx-ln" />
         <span><OrgMark /></span>
       </div>
 
-      {/* Ölçüm döngüsü: beklemede → Etsy'de elle uygula → Yapıldı işaretle →
-          karar anı fotoğrafı vs güncel "son 30" metriği kıyası. */}
       <Card className="glass-fluted">
         <CardContent className="space-y-4">
-          {actions.length === 0 ? (
-            <EmptyState
-              icon={ListChecks}
-              title="Kuyrukta aksiyon yok"
-              description="Yukarıdaki önerilerden 'Aksiyona al' dediğinizde karar buraya düşer; Etsy panosunda uyguladıktan sonra 'Yapıldı' işaretleyin ki öncesi/sonrası ölçülsün."
-            />
-          ) : (
             <Table>
               <TableHeader>
                 <TableRow>
@@ -528,8 +833,28 @@ export default async function ReklamlarPage() {
                         {formatDate(a.created_at)}
                       </TableCell>
                       <TableCell className="font-medium">
-                        <div className="scroll-x max-w-[220px]" title={a.product?.title}>
-                          {a.product?.title ?? "—"}
+                        <div className="flex max-w-[260px] items-center gap-2.5">
+                          <span className="bg-muted relative block size-9 shrink-0 overflow-hidden rounded-lg">
+                            {a.product?.image_url ? (
+                              // eslint-disable-next-line @next/next/no-img-element
+                              <img
+                                src={a.product.image_url}
+                                alt=""
+                                className="h-full w-full object-cover"
+                              />
+                            ) : (
+                              <span className="text-muted-foreground/40 flex h-full items-center justify-center">
+                                <ImageOff className="size-3.5" />
+                              </span>
+                            )}
+                          </span>
+                          <Link
+                            href={`/tasarimlar/listing/${a.product_id}`}
+                            className="scroll-x hover:text-primary min-w-0 truncate transition-colors"
+                            title={a.product?.title ?? undefined}
+                          >
+                            {a.product?.title ?? "—"}
+                          </Link>
                         </div>
                       </TableCell>
                       <TableCell>
@@ -578,16 +903,16 @@ export default async function ReklamlarPage() {
                             <form action={markAdsAction}>
                               <input type="hidden" name="id" value={a.id} />
                               <input type="hidden" name="status" value="yapildi" />
-                              <Button type="submit" size="sm" variant="outline">
+                              <SubmitButton size="sm" variant="outline">
                                 Yapıldı
-                              </Button>
+                              </SubmitButton>
                             </form>
                             <form action={markAdsAction}>
                               <input type="hidden" name="id" value={a.id} />
                               <input type="hidden" name="status" value="yok_sayildi" />
-                              <Button type="submit" size="sm" variant="ghost">
+                              <SubmitButton size="sm" variant="ghost">
                                 Yok say
-                              </Button>
+                              </SubmitButton>
                             </form>
                           </div>
                         ) : (
@@ -601,13 +926,16 @@ export default async function ReklamlarPage() {
                 })}
               </TableBody>
             </Table>
-          )}
         </CardContent>
       </Card>
+      </>
+      )}
 
-      {/* Dekoratif indeks satırı (Spatial/Liquid .idx dili). */}
+      {/* Harcama dağılımı — harcamalı ürün yoksa uyur (adı sayfa sonunda). */}
+      {spendingRows.length > 0 && (
+      <>
       <div aria-hidden className="idx sm:-mb-4">
-        <span>Reklamlar / 05 · Harcama dağılımı</span>
+        <span>Reklamlar / 06 · Harcama dağılımı</span>
         <span className="idx-bar" />
         <span className="idx-ln" />
         <span><OrgMark /></span>
@@ -620,13 +948,6 @@ export default async function ReklamlarPage() {
             üründen en yüksek {formatNumber(Math.min(SPEND_TABLE_LIMIT, spendingRows.length))}{" "}
             tanesi gösteriliyor — toplamlar tam kümeden hesaplanır.
           </p>
-          {spendingRows.length === 0 ? (
-            <EmptyState
-              icon={Megaphone}
-              title="Reklam harcaması yok"
-              description={`"${ADS_PERIOD_LABEL}" penceresinde reklam harcaması kaydı bulunamadı. Analizler'den ürün metriklerini (Etsy Ads sütunlarıyla) girin.`}
-            />
-          ) : (
             <Table>
               <TableHeader>
                 <TableRow>
@@ -643,8 +964,31 @@ export default async function ReklamlarPage() {
                 {spendingRows.slice(0, SPEND_TABLE_LIMIT).map((r) => (
                   <TableRow key={r.productId}>
                     <TableCell className="font-medium">
-                      <div className="scroll-x max-w-[280px]" title={r.title}>
-                        {r.title}
+                      <div className="flex max-w-[300px] items-center gap-2.5">
+                        <Link
+                          href={`/tasarimlar/listing/${r.productId}`}
+                          className="bg-muted relative block size-9 shrink-0 overflow-hidden rounded-lg"
+                        >
+                          {r.imageUrl ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img
+                              src={r.imageUrl}
+                              alt=""
+                              className="h-full w-full object-cover"
+                            />
+                          ) : (
+                            <span className="text-muted-foreground/40 flex h-full items-center justify-center">
+                              <ImageOff className="size-3.5" />
+                            </span>
+                          )}
+                        </Link>
+                        <Link
+                          href={`/tasarimlar/listing/${r.productId}`}
+                          className="scroll-x hover:text-primary min-w-0 truncate transition-colors"
+                          title={r.title}
+                        >
+                          {r.title}
+                        </Link>
                       </div>
                     </TableCell>
                     <TableCell className="text-right tabular-nums">
@@ -671,9 +1015,13 @@ export default async function ReklamlarPage() {
                 ))}
               </TableBody>
             </Table>
-          )}
         </CardContent>
       </Card>
+      </>
+      )}
+
+      {/* Uyuyan kutular — verisi olmadığı için bu sayfada gizlenen bölümler. */}
+      <SleepingBoxes items={sleeping} />
     </div>
   );
 }

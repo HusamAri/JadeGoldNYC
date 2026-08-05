@@ -288,7 +288,7 @@ export function DesignForm({
                 <img
                   src={preview}
                   alt="Seçilen görsel önizleme"
-                  className="size-20 rounded-lg border object-cover"
+                  className="thumb-lift size-20 rounded-lg border object-cover"
                 />
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-medium">{photo?.name}</p>

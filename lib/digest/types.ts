@@ -1,17 +1,43 @@
+import type { DigestContentPrefs } from "@/lib/digest/preferences";
+
 export type DigestBrandId = "jade-gold" | "amuletta" | "eon";
 
 export interface DigestBrandTheme {
   id: DigestBrandId;
   brandName: string;
+  wordmark: string;
   accent: string;
   ink: string;
   muted: string;
   paper: string;
   surface: string;
+  /** KPI / chip yüzey — panel card hissi */
+  card: string;
   danger: string;
   warn: string;
   ok: string;
-  wordmark: string;
+  headerBg: string;
+  headerInk: string;
+  headerMuted: string;
+  border: string;
+  /** Panel holo-drift hissi — public path */
+  bgImage: string;
+  dark: {
+    accent: string;
+    ink: string;
+    muted: string;
+    paper: string;
+    surface: string;
+    card: string;
+    danger: string;
+    warn: string;
+    ok: string;
+    headerBg: string;
+    headerInk: string;
+    headerMuted: string;
+    border: string;
+    bgImage: string;
+  };
 }
 
 export interface DigestKpi {
@@ -33,6 +59,8 @@ export interface DigestActivityItem {
   whenLabel: string;
   summary: string;
   source?: string | null;
+  /** Kim yaptı — insan aktivitesinde dolu. */
+  actor?: string | null;
 }
 
 export interface DigestSuggestion {
@@ -47,6 +75,33 @@ export interface DigestDayPoint {
   orders: number;
 }
 
+export interface DigestPriceTip {
+  title: string;
+  position: "pahali" | "ucuz";
+  body: string;
+  href: string;
+}
+
+export interface DigestEngagementMover {
+  title: string;
+  deltaViews: number;
+  deltaFavorers: number;
+  score: number;
+}
+
+export interface DigestEngagement {
+  shopScore: number;
+  shopLabel: string;
+  windowLabel: string;
+  movers: DigestEngagementMover[];
+}
+
+export interface DigestPresenceRow {
+  name: string;
+  minutesLabel: string;
+  events: number;
+}
+
 export interface OrgDigest {
   orgId: string;
   orgName: string;
@@ -56,12 +111,23 @@ export interface OrgDigest {
   /** Örn. 18 Temmuz 2026 · son 24 saat (NY) */
   windowLabel: string;
   generatedAtLabel: string;
+  /** İçerik tercihleri — render hangi blokları basacağını buradan okur. */
+  prefs: DigestContentPrefs;
   kpis: DigestKpi[];
+  /** Reklam (son 30 metrik anlığı) */
+  adsKpis: DigestKpi[];
   weekTrend: DigestDayPoint[];
   actions: DigestActionItem[];
+  /** Son 24s kapanan uyarılar (Çözüldü görevleri + reklam aksiyonları). */
+  closedAlerts: DigestActivityItem[];
+  priceTips: DigestPriceTip[];
+  engagement: DigestEngagement | null;
+  teamPresence: DigestPresenceRow[];
   happened: DigestActivityItem[];
   finished: DigestActivityItem[];
   suggestions: DigestSuggestion[];
   panelUrl: string;
   alertsHref: string;
+  adsHref: string;
+  settingsHref: string;
 }

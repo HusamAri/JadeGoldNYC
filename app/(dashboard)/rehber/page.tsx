@@ -126,6 +126,7 @@ const GROUPS: GuideGroup[] = [
           "Etsy Ads harcamasını değerlendirir ve karar verir. Uygulama Etsy'de yapılır (API reklam yönetimine izin vermez); burası bir karar günlüğüdür.",
         steps: [
           "Otomatik sinyalleri oku: israf / bütçe yiyen / fırsat — her biri sayısal gerekçesiyle.",
+          "Bütçe yiyen/boşa sinyalinde ‘Triyaj başlat’: Etsy'de arama terimleri raporuna bak — hedefte+sipariş yoksa sorun LISTING'de (reklama dokunma), hedef dışıysa daralt (etiket/negatif kelime), veri 3 günlükse bekle; kapatma yalnız trafik hiç dönüşmeyecekse.",
           "‘Aksiyona al’ ile kararı kuyruğa ekle; kararı Etsy'de uygula.",
           "Uygulayınca ‘Yapıldı’ işaretle — panel karar anındaki metrikle şimdikini karşılaştırır.",
         ],

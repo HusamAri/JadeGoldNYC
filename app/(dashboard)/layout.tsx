@@ -1,11 +1,19 @@
 import { requireMembership, getUser, listMemberships } from "@/lib/auth";
-import { getBrandScope } from "@/lib/brand";
+import { getBrandScope, isEonActive } from "@/lib/brand";
+import { getActivePlatform } from "@/lib/platform";
 import { createClient } from "@/lib/supabase/server";
 import { getProfile } from "@/lib/db/queries/profile";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Topbar } from "@/components/layout/topbar";
 import { PageTransition } from "@/components/layout/page-transition";
+import {
+  OrgEmblemBackdrop,
+  OrgEmblemLume,
+  OrgEmblemSignature,
+} from "@/components/brand/org-emblem";
 import { ParallaxDrift } from "@/components/motion/parallax-drift";
+import { InkOriginListener } from "@/components/ui/ink-origin";
+import { TiltListener } from "@/components/ui/tilt-listener";
 
 export default async function DashboardLayout({
   children,
@@ -15,14 +23,21 @@ export default async function DashboardLayout({
   // Asıl kimlik kapısı (middleware hızlı yol, bu katman yetkili kontrol).
   // Üyeliği olmayan kullanıcı /kurulum sihirbazına yönlendirilir.
   const m = await requireMembership();
-  const [user, memberships, brand] = await Promise.all([
+  const [user, memberships, brand, eon, platform] = await Promise.all([
     getUser(),
     listMemberships(),
     getBrandScope(),
+    isEonActive(),
+    getActivePlatform(),
   ]);
   const supabase = await createClient();
   const profile = user ? await getProfile(supabase, user.id) : null;
   const showJadeGoldNav = brand === "jade-gold";
+  const showBrandBookNav = showJadeGoldNav || eon;
+  // Platform-yetenek bayrakları nav'a düz obje olarak iner (client bileşen).
+  const platformCapabilities: Record<string, boolean> = {
+    ...platform.capabilities,
+  };
 
   return (
     /* `isolate`: arka plan katmanları (negatif z) bu bağlamda hapsolur —
@@ -41,10 +56,26 @@ export default async function DashboardLayout({
       {/* Scroll-parallax: holo katmanları içerikten yavaş süzülür (derinlik).
           Idle'da sıfır iş; reduced-motion/dokunmatikte hiç bağlanmaz. */}
       <ParallaxDrift />
+      {/* Temas ışığı köprüsü — TEK passive pointerdown dinleyicisi; basışın
+          nerede olduğunu `.jg-ink-origin` yüzeylerine yazar ki hale parmağın
+          ALTINDAN açılsın (mount edilmezse hale merkezden açılır, yani bu satır
+          özelliğin kendisi). Button sunucu bileşeni kalsın diye delege. */}
+      <InkOriginListener />
+      {/* Ürün eğimi köprüsü — `.jg-tilt-scene` fotoğraf yüzeylerinde imleç
+          konumunu CSS'e yazar (rAF-kısıtlı, tek delege dinleyici). Dokunmatik
+          ve reduced-motion'da hiç bağlanmaz. */}
+      <TiltListener />
+      {/* Org amblem katmanı — DEV filigran sağ-alt negatif alanda (her
+          sayfada, içerik altında) + köşe imzası. Marka org'dan çözülür. */}
+      <OrgEmblemBackdrop />
+      <OrgEmblemSignature />
       <Sidebar
         memberships={memberships}
         activeOrgId={m.org_id}
         showJadeGoldNav={showJadeGoldNav}
+        showBrandBookNav={showBrandBookNav}
+        platformCapabilities={platformCapabilities}
+        emblem={<OrgEmblemLume className="h-[13px]" />}
       />
       <div className="flex min-w-0 flex-1 flex-col">
         <Topbar
@@ -54,6 +85,9 @@ export default async function DashboardLayout({
           memberships={memberships}
           activeOrgId={m.org_id}
           showJadeGoldNav={showJadeGoldNav}
+          showBrandBookNav={showBrandBookNav}
+          platformCapabilities={platformCapabilities}
+          emblem={<OrgEmblemLume className="h-[30px]" />}
         />
         {/* Generous padding — glass needs air; dense dashboards feel cheap. */}
         <main className="flex-1 px-5 py-8 sm:px-8 sm:py-10 lg:px-12 lg:py-12">

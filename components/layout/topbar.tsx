@@ -10,8 +10,8 @@ import { signOut, switchOrganization } from "@/lib/actions/session";
 import type { MembershipWithOrg } from "@/lib/auth";
 import { NAV_ITEMS, NAV_GROUPS } from "@/components/layout/nav-items";
 import { matchNavItem } from "@/lib/nav";
-import { Logo } from "@/components/layout/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { NotificationBell } from "@/components/notifications/notification-bell";
 import { GoldPriceTicker } from "@/components/gold-price-ticker";
 import { UserAvatar } from "@/components/user-avatar";
 import { Button } from "@/components/ui/button";
@@ -31,6 +31,9 @@ export function Topbar({
   memberships,
   activeOrgId,
   showJadeGoldNav,
+  showBrandBookNav,
+  platformCapabilities,
+  emblem,
 }: {
   email: string;
   name?: string | null;
@@ -39,6 +42,12 @@ export function Topbar({
   activeOrgId: string;
   /** Aktif şirket Jade Gold ise marka-özel sekmeler mobil menüde de görünür. */
   showJadeGoldNav: boolean;
+  /** Jade Gold veya EON — Marka Kılavuzu. */
+  showBrandBookNav: boolean;
+  /** Aktif platform yetenekleri — `capability` işaretli sekmeler filtrelenir. */
+  platformCapabilities: Record<string, boolean>;
+  /** Aktif org'un LUME işareti (sunucuda render edilir; mobil başlıkta). */
+  emblem?: React.ReactNode;
 }) {
   const pathname = usePathname();
   const [switchPending, startSwitch] = useTransition();
@@ -60,8 +69,15 @@ export function Topbar({
   // Geri butonu yalnız alt/detay sayfalarında (bölüm ana sayfası veya Panel değil).
   const isSubPage = pathname !== "/panel" && (!current || pathname !== current.href);
   // Bir üst seviyeye git (segment kırp) — tarayıcı geçmişine güvenmez, uygulama
-  // dışına çıkmaz. Ör. /satislar/123/duzenle → /satislar/123 → /satislar.
-  const parentHref = pathname.split("/").slice(0, -1).join("/") || "/panel";
+  // dışına çıkmaz. Düzenleme sayfalarında ('.../[id]/duzenle') üst '[id]' detay
+  // sayfası çoğu modülde YOK (maliyetler, analizler[/urunler], sepet-kurtarma,
+  // tasarimlar, yorumlar) → tek segment kırpmak 404 üretir. Bu yüzden 'duzenle'
+  // sayfasında iki segment kırpıp modül listesine dön (her modülde liste var);
+  // diğer alt sayfalarda tek segment. Ör. /maliyetler/123/duzenle → /maliyetler.
+  const segments = pathname.split("/").filter(Boolean);
+  const upTo = segments[segments.length - 1] === "duzenle" ? -2 : -1;
+  const up = segments.slice(0, upTo);
+  const parentHref = up.length ? `/${up.join("/")}` : "/panel";
 
   return (
     /* Spatial navglass pill — yüzen 999px cam şerit (ref: .navglass):
@@ -106,6 +122,9 @@ export function Topbar({
                 </p>
                 {g.items.map((i) => {
                   if (i.jadeGoldOnly && !showJadeGoldNav) return null;
+                  if (i.brandBook && !showBrandBookNav) return null;
+                  if (i.capability && !platformCapabilities[i.capability])
+                    return null;
                   const Icon = i.icon;
                   return (
                     <DropdownMenuItem key={i.href} asChild>
@@ -121,7 +140,16 @@ export function Topbar({
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <Logo className="md:hidden" />
+        {/* Aktif ŞİRKETİN işareti app ikonunun yerinde — büyük, lume/holo
+            gradient (kullanıcı kararı: Amuletta logosu + başlık yanı küçük
+            işaret kaldırıldı; marka kimliği tek ve büyük burada yaşar). */}
+        {emblem}
+        {/* Bildirim zili — sol üst (kullanıcı kararı): uyarı sinyalleri
+            dropdown listede; ilk bildirim sağdan kayan cam kartla duyurulur.
+            key + orgId: şirket değiştirilince zil YENİDEN MONTE olur ve aktif
+            org için tazeler — yoksa istemci zil mount'taki eski şirketin
+            uyarılarını tutup farklı şirketlerin alertlerini karıştırıyordu. */}
+        <NotificationBell key={activeOrgId} orgId={activeOrgId} />
         {/* Editorial vurgu çizgisi (.idx-bar dili) — başlığın önünde kısa
             primary hairline; yalnız masaüstünde. */}
         <span aria-hidden className="hidden h-px w-6 shrink-0 bg-primary/70 md:block" />
@@ -180,13 +208,15 @@ export function Topbar({
           <DropdownMenuSeparator />
           <div className="p-1">
             <form action={signOut}>
-              <button
+              <Button
                 type="submit"
-                className="text-destructive hover:bg-accent flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-sm transition-colors duration-150 active:bg-accent/70"
+                variant="ghost"
+                size="sm"
+                className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10"
               >
                 <LogOut className="size-4" />
                 Çıkış yap
-              </button>
+              </Button>
             </form>
           </div>
         </DropdownMenuContent>

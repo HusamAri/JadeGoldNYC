@@ -144,7 +144,9 @@ export function SeoTagBoard({
         <div className="flex flex-wrap items-center gap-3">
           <div className="min-w-0 flex-1">
             <p className="font-semibold">
-              En yüksek getirili: 14 leak + 5 bestseller
+              {/* Sabit sayı YAZMA — öneriler işlendikçe bayatlar; canlı sayımdan türet. */}
+              En yüksek getirili: {summary.byArchetype.leak} leak +{" "}
+              {summary.byArchetype.bestseller} bestseller
             </p>
             <p className="text-muted-foreground text-sm">
               Değer-öncelikli ilk grup. Tek tıkla hepsini Etsy&apos;ye gönder —

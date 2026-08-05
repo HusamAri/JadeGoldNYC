@@ -10,6 +10,8 @@ import { logAudit } from "@/lib/audit";
 
 const PAGE_SIZE = 50;
 const DEFAULT_BUDGET_MS = 40_000;
+/** Eşzamanlı sekme/tetikleyici çakışmasında bayat kilit eşiği. */
+const SYNC_STALE_MS = 15 * 60_000;
 // Artımlı turda son senkrondan geriye örtüşme payı (7 gün) — kayıp olmasın.
 const OVERLAP_MS = 7 * 86_400_000;
 
@@ -29,6 +31,7 @@ interface StateRow {
   sync_date_start: string | null;
   last_sync_at: string | null;
   sync_started_at: string | null;
+  sync_updated_at: string | null;
 }
 
 /**
@@ -69,7 +72,7 @@ export async function advanceShopierSync(
   const { data } = await admin
     .from("shopier_connection")
     .select(
-      "sync_status, sync_page, sync_orders, sync_items, sync_date_start, last_sync_at, sync_started_at",
+      "sync_status, sync_page, sync_orders, sync_items, sync_date_start, last_sync_at, sync_started_at, sync_updated_at",
     )
     .eq("org_id", orgId)
     .maybeSingle();
@@ -107,15 +110,49 @@ export async function advanceShopierSync(
       .eq("org_id", orgId);
 
   if (!resuming) {
-    await persist({
+    const nowIso = new Date().toISOString();
+    const staleBefore = new Date(Date.now() - SYNC_STALE_MS).toISOString();
+    const startPayload = {
       sync_status: "running",
       sync_page: 1,
       sync_orders: 0,
       sync_items: 0,
       sync_date_start: dateStart ?? null,
       sync_error: null,
-      sync_started_at: new Date().toISOString(),
-    });
+      sync_started_at: nowIso,
+      sync_updated_at: nowIso,
+    };
+
+    // Atomik kilitleme: başka sekme aktif senkron çalıştırıyorsa sale_items
+    // sil+yaz yarışına girilmesin (Codex P2).
+    const { data: claimed } = await admin
+      .from("shopier_connection")
+      .update(startPayload)
+      .eq("org_id", orgId)
+      .neq("sync_status", "running")
+      .select("org_id")
+      .maybeSingle();
+
+    if (!claimed) {
+      const { data: takeover } = await admin
+        .from("shopier_connection")
+        .update(startPayload)
+        .eq("org_id", orgId)
+        .eq("sync_status", "running")
+        .lt("sync_updated_at", staleBefore)
+        .select("org_id")
+        .maybeSingle();
+
+      if (!takeover) {
+        const prog = await getShopierProgress(orgId);
+        return {
+          done: false,
+          status: "running",
+          orders: prog.orders,
+          items: prog.items,
+        };
+      }
+    }
   }
 
   try {

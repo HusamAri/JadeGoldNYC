@@ -50,7 +50,11 @@ function TabsTrigger({
       className={cn(
         // Aktif sekme: konveks kabartı hap (raised-sm + text-primary) — çukur
         // rayın içinde yükselir. Yazı index dilinde (mono, uppercase, tracking).
-        "text-muted-foreground hover:text-foreground data-[state=active]:text-primary data-[state=active]:[background-image:var(--nm-convex)] data-[state=active]:shadow-[var(--shadow-raised-sm)] focus-visible:ring-ring/50 relative inline-flex h-full flex-1 items-center justify-center gap-1.5 rounded-full px-3.5 py-1 font-mono text-xs font-medium tracking-[0.06em] uppercase whitespace-nowrap transition-[color,box-shadow] duration-300 ease-[var(--ease-premium)] outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        // Basma fiziği (Button ile aynı dil): transform hızlı iner, yaylanarak
+        // kalkar → süre ve easing per-property listelenir. Sekme, dolgu
+        // düğmeden daha ince bir kontrol olduğu için genlik biraz daha derin
+        // (0.96) ama gölge/lamp katmanına DOKUNULMAZ.
+        "text-muted-foreground hover:text-foreground data-[state=active]:text-primary data-[state=active]:[background-image:var(--nm-convex)] data-[state=active]:shadow-[var(--shadow-raised-sm)] focus-visible:ring-ring/50 relative inline-flex h-full flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-full px-3.5 py-1 font-mono text-xs font-medium tracking-[0.06em] uppercase whitespace-nowrap transition-[color,box-shadow,translate,scale] [transition-duration:300ms,300ms,var(--motion-press-out),var(--motion-press-out)] [transition-timing-function:var(--ease-premium),var(--ease-premium),var(--ease-press-out),var(--ease-press-out)] active:scale-[0.96] active:[transition-duration:var(--motion-press-in)] outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         // Lamp — aktifin altında blur(7px) indigo radyal (Spatial .tabbar .lamp
         // birebir: oklch(0.72 0.13 280/.38) → .10 %55 → transparent %75).
         "after:absolute after:-inset-x-1.5 after:-inset-y-1 after:-z-10 after:rounded-full after:opacity-0 after:blur-[7px] after:transition-opacity after:duration-500 after:ease-[var(--ease-premium)] after:[background:radial-gradient(62%_58%_at_50%_32%,oklch(0.72_0.13_280/0.38),oklch(0.72_0.13_280/0.10)_55%,transparent_75%)] data-[state=active]:after:opacity-100",

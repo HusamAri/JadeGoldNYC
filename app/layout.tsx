@@ -3,6 +3,7 @@ import { Sora, JetBrains_Mono, Cormorant_Garamond } from "next/font/google";
 import localFont from "next/font/local";
 import { Toaster } from "@/components/ui/sonner";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { FrostProvider } from "@/components/layout/frost-provider";
 import { getBrandScope } from "@/lib/brand";
 import "./globals.css";
 
@@ -99,7 +100,11 @@ export default async function RootLayout({
             __html: `(function(){try{var t=localStorage.getItem('theme')||'system';var d=t==='dark'||(t==='system'&&matchMedia('(prefers-color-scheme:dark)').matches);document.documentElement.classList.toggle('dark',d);}catch(e){}})();`,
           }}
         />
-        {children}
+        <FrostProvider>
+          {children}
+          <Toaster richColors position="top-right" />
+          <SpeedInsights />
+        </FrostProvider>
         {/* Cam refraction filtreleri (DS fx-glass BİREBİR) — .glass-liquid
             arkasındaki holo objeleri büker. Gizli, tek sefer; url(#liquid)
             desteklemeyen tarayıcıda göz ardı edilir (progressive enhancement). */}
@@ -144,8 +149,6 @@ export default async function RootLayout({
             />
           </filter>
         </svg>
-        <Toaster richColors position="top-right" />
-        <SpeedInsights />
       </body>
     </html>
   );

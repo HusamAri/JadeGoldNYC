@@ -22,6 +22,7 @@ import {
   Compass,
   Stethoscope,
   Share2,
+  Percent,
   type LucideIcon,
 } from "lucide-react";
 
@@ -31,6 +32,14 @@ export interface NavItem {
   icon: LucideIcon;
   /** Yalnız Jade Gold organizasyonu aktifken görünür (marka-özel içerik). */
   jadeGoldOnly?: boolean;
+  /** Jade Gold veya EON aktifken görünür (Marka Kılavuzu vb.). */
+  brandBook?: boolean;
+  /**
+   * Bu sekme yalnız aktif platformun ilgili yeteneği açıksa görünür
+   * (lib/platform.ts). Ör. Star Seller Etsy'ye özel bir programdır —
+   * Shopify/Shopier bağlı org'da sekme gizlenir, yeniden etiketlenmez.
+   */
+  capability?: "starSeller" | "adsSignals" | "seoTagPush";
 }
 
 export interface NavGroup {
@@ -57,7 +66,8 @@ export const NAV_GROUPS: NavGroup[] = [
     items: [
       { href: "/satislar", label: "Satışlar", icon: ShoppingBag },
       { href: "/maliyetler", label: "Maliyetler", icon: Wallet },
-      { href: "/reklamlar", label: "Reklamlar", icon: Megaphone },
+      { href: "/reklamlar", label: "Reklamlar", icon: Megaphone, capability: "adsSignals" },
+      { href: "/indirimler", label: "İndirimler", icon: Percent },
       { href: "/raporlar", label: "Raporlar", icon: FileBarChart },
     ],
   },
@@ -68,7 +78,7 @@ export const NAV_GROUPS: NavGroup[] = [
       // ayrı rota (prefix çakışması lib/nav matchNavItem ile çözülür).
       { href: "/analizler/tani", label: "Aylık Tanı", icon: Stethoscope },
       { href: "/analizler", label: "Performans", icon: BarChart3 },
-      { href: "/yildiz-satici", label: "Yıldız Satıcı", icon: Star },
+      { href: "/yildiz-satici", label: "Yıldız Satıcı", icon: Star, capability: "starSeller" },
       { href: "/sepet-kurtarma", label: "Geri Kazanım", icon: UserRoundCheck },
     ],
   },
@@ -79,7 +89,7 @@ export const NAV_GROUPS: NavGroup[] = [
       { href: "/listing-onerileri", label: "Listing Önerileri", icon: Lightbulb },
       { href: "/anahtar-kelime", label: "Anahtar Kelime", icon: TextSearch },
       { href: "/seo-yardimcisi", label: "SEO Yardımcısı", icon: TextSearch },
-      { href: "/seo-etiketleri", label: "SEO Etiketleri", icon: Tags },
+      { href: "/seo-etiketleri", label: "SEO Etiketleri", icon: Tags, capability: "seoTagPush" },
       // Prompt kiti Jade Gold listinglerine özel statik içerik — diğer
       // şirketlerde gizli (kendi kitleri üretilince ayrı açılır).
       { href: "/gorsel-uretim", label: "Görsel Üretim", icon: Sparkles, jadeGoldOnly: true },
@@ -103,7 +113,7 @@ export const NAV_GROUPS: NavGroup[] = [
   {
     label: "Sistem",
     items: [
-      { href: "/marka-kilavuzu", label: "Marka Kılavuzu", icon: BookOpen, jadeGoldOnly: true },
+      { href: "/marka-kilavuzu", label: "Marka Kılavuzu", icon: BookOpen, brandBook: true },
       { href: "/kayitlar", label: "Kayıtlar", icon: ScrollText },
       { href: "/ayarlar", label: "Ayarlar", icon: Settings },
     ],

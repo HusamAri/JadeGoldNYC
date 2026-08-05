@@ -9,6 +9,7 @@ import type { ListingWeightPreview } from "@/lib/db/queries/variant-weights";
 import {
   pushWeightForListing,
   pushAllWeights,
+  stripAllWeightBlocks,
 } from "@/app/(dashboard)/tasarimlar/etsy-agirlik/actions";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -51,6 +52,27 @@ export function EtsyWeightPush({
       }
       toast.success(
         `Bitti: ${r.updated} güncellendi · ${r.unchanged} değişmedi · ${r.errors} hata`,
+      );
+      router.refresh();
+    });
+  }
+
+  function stripAll() {
+    if (
+      !confirm(
+        "Tüm listing açıklamalarındaki beden→gram blokları Etsy + panelden silinsin mi?",
+      )
+    ) {
+      return;
+    }
+    startAll(async () => {
+      const r = await stripAllWeightBlocks();
+      if (r.error) {
+        toast.error(r.error);
+        return;
+      }
+      toast.success(
+        `Bloklar söküldü: ${r.updated} güncellendi · ${r.unchanged} değişmedi · ${r.errors} hata (taranan ${r.scanned})`,
       );
       router.refresh();
     });
@@ -158,12 +180,23 @@ export function EtsyWeightPush({
             </>
           )}
         </p>
-        {pending.length > 0 && (
-          <Button onClick={pushAll} disabled={!writeEnabled || pendingAll}>
-            {pendingAll ? <Loader2 className="animate-spin" /> : <Send />}
-            Bekleyenleri Gönder ({pending.length})
+        <div className="flex flex-wrap gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={stripAll}
+            disabled={!writeEnabled || pendingAll}
+          >
+            {pendingAll ? <Loader2 className="animate-spin" /> : null}
+            Gram bloklarını sök
           </Button>
-        )}
+          {pending.length > 0 && (
+            <Button onClick={pushAll} disabled={!writeEnabled || pendingAll}>
+              {pendingAll ? <Loader2 className="animate-spin" /> : <Send />}
+              Bekleyenleri Gönder ({pending.length})
+            </Button>
+          )}
+        </div>
       </div>
 
       {!writeEnabled && (

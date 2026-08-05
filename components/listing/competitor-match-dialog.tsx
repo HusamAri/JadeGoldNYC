@@ -2,10 +2,11 @@
 
 import { useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Link2, Loader2 } from "lucide-react";
+import { Link2, Loader2, Wand2 } from "lucide-react";
 import { toast } from "sonner";
 
 import {
+  autoMatchCompetitor,
   listCompetitorOfferingsForMatch,
   removeCompetitorVariantMatch,
   saveCompetitorVariantMatch,
@@ -46,7 +47,7 @@ export function CompetitorMatchDialog({
   competitorListingId: number;
   competitorTitle?: string | null;
   currency?: string;
-  ourVariants: { sku: string; label: string }[];
+  ourVariants: { sku: string; label: string; weight_grams?: number | null }[];
   existingMatches: CompetitorVariantMatchItem[];
 }) {
   const [open, setOpen] = useState(false);
@@ -74,8 +75,8 @@ export function CompetitorMatchDialog({
     const gen = ++loadGen.current;
     setLoadingOffs(true);
     setLoadError(null);
-    void listCompetitorOfferingsForMatch(competitorListingId, currency).then(
-      (r) => {
+    void listCompetitorOfferingsForMatch(competitorListingId, currency)
+      .then((r) => {
         if (gen !== loadGen.current) return;
         setLoadingOffs(false);
         if (r.error) {
@@ -84,8 +85,14 @@ export function CompetitorMatchDialog({
           return;
         }
         setOfferings(r.offerings ?? []);
-      },
-    );
+      })
+      .catch((e: unknown) => {
+        // Reject (ağ kopması) catch'siz kalırsa yükleyici sonsuza dek döner.
+        if (gen !== loadGen.current) return;
+        setLoadingOffs(false);
+        setLoadError(e instanceof Error ? e.message : "Varyantlar yüklenemedi.");
+        setOfferings([]);
+      });
   }
 
   function handleOpenChange(next: boolean) {
@@ -144,6 +151,22 @@ export function CompetitorMatchDialog({
     });
   }
 
+  function autoMatch() {
+    start(async () => {
+      const r = await autoMatchCompetitor(productId, competitorListingId, currency);
+      if (r.error) toast.error(r.error);
+      else if (r.matched && r.matched > 0) {
+        toast.success(`${r.matched} aynı varyant otomatik eşleşti`);
+        setOpen(false);
+        router.refresh();
+      } else {
+        toast.info(
+          "Otomatik eşlenecek kesin varyant yok — beden/ayar belirsiz, elle eşleştir.",
+        );
+      }
+    });
+  }
+
   if (ourVariants.length === 0) return null;
 
   return (
@@ -165,12 +188,31 @@ export function CompetitorMatchDialog({
           <DialogTitle>Varyant eşleştir</DialogTitle>
           <DialogDescription>
             {competitorTitle
-              ? `"${competitorTitle}" teklifini bizim Etsy SKU’muzla bağla. Otomatik beden/ayar eşlemesini ezer. SKU değiştirilmez — yalnız eşleşme kaydı yazılır.`
-              : "Rakip teklifi bizim Etsy SKU’muzla bağla. SKU kaynağı Etsy senkronu; ürün SKU’su değiştirilmez."}
+              ? `"${competitorTitle}" teklifini bizim Etsy SKU’muzla bağla. Gramı olan varyantı seç — kayıt sonrası Satış sütununda rakip $/g × gram yansıması görünür.`
+              : "Rakip teklifi bizim Etsy SKU’muzla bağla. Gramı olan çapadan tüm varyantlara fiyat yansır."}
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-3">
+          {/* Aynı varyantları (beden/ayar) tek tıkla otomatik eşle — belirsizler
+              elle bırakılır. Ekleme anında da otomatik çalışır; bu buton sonradan
+              yeniden denemek / zaten eklenmiş rakip için. */}
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="w-full"
+            disabled={pending}
+            onClick={autoMatch}
+          >
+            {pending ? (
+              <Loader2 className="size-3.5 animate-spin" />
+            ) : (
+              <Wand2 className="size-3.5" />
+            )}
+            Aynı varyantları otomatik eşleştir
+          </Button>
+
           <div className="space-y-1.5">
             <p className="text-muted-foreground font-mono text-[10px] tracking-[0.14em] uppercase">
               Bizim varyant

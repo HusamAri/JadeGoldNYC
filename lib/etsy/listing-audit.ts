@@ -26,6 +26,7 @@ export type AuditCheckKey =
   | "tags_single_word"
   | "title_repeat"
   | "title_rules"
+  | "title_short"
   | "title_long"
   | "description_missing"
   | "description_copies_title"
@@ -79,6 +80,8 @@ export function findTitleRepeats(title: string): string[] {
 }
 
 export const ETSY_TAG_LIMIT = 13;
+/** Başlık arama bütçesi hedefi: 110-140 bandı (kural 4 — kısa başlık = kayıp). */
+export const TITLE_MIN_LENGTH = 110;
 /** Etsy 10 foto slotu verir; 5'in altı belirgin eksik kullanım sayılır. */
 export const LOW_IMAGE_THRESHOLD = 5;
 
@@ -132,6 +135,16 @@ export const AUDIT_CHECKS: AuditCheckDef[] = [
     fixLabel: "Başlığı düzenle",
     sourceLabel: "Etsy Help — Using Listing Titles to Get Found in Search",
     sourceUrl: "https://help.etsy.com/hc/en-us/articles/360000337827",
+  },
+  {
+    key: "title_short",
+    severity: "onemli",
+    title: (n) => `${n} listing başlığı 110 karakterin altında (bütçe boşa gidiyor)`,
+    hint: "Etsy 140 karakterlik başlık bütçesi verir; ilk kelimeler en güçlü arama sinyalidir ama kısa başlık kalan bütçedeki long-tail eşleşmeleri hiç kullanmaz — o aramalarda görünmezsin. Başlığı 110-140 bandına, alıcının gerçekten yazdığı ifadelerle (karat + renk + profil + kullanım) tamamla.",
+    fixHref: (id) => `/tasarimlar/listing/${id}`,
+    fixLabel: "Başlığı düzenle",
+    sourceLabel: "Etsy Seller Handbook — Keywords 101 (titles)",
+    sourceUrl: "https://www.etsy.com/seller-handbook/article/keywords-101-everything-you-need-to-know/382774281517",
   },
   {
     key: "title_long",
@@ -200,6 +213,7 @@ export const AUDIT_CATEGORY_BY_KEY: Record<AuditCheckKey, AuditCategory> = {
   tags_single_word: "tags",
   title_repeat: "title",
   title_rules: "title",
+  title_short: "title",
   title_long: "title",
   title_entities: "title",
   description_missing: "description",
@@ -214,6 +228,7 @@ const SCORE_PENALTY: Record<AuditCheckKey, number> = {
   tags_single_word: 5,
   title_rules: 15,
   title_repeat: 5,
+  title_short: 5,
   title_long: 5,
   title_entities: 3,
   description_missing: 15,
@@ -309,6 +324,16 @@ export function auditProduct(p: AuditProductInput): AuditFinding[] {
   }
   if (ruleHits.length > 0) {
     out.push({ key: "title_rules", detail: ruleHits.join(" · ") });
+  }
+
+  // Yön hatası düzeltmesi: motor yalnız "çok uzun"u (>140) yakalıyordu;
+  // 60 karakterlik başlık sessizce geçiyordu. Kural 4: <110 karakter =
+  // kullanılmayan arama bütçesi — asıl yaygın kayıp bu yöndeydi.
+  if (p.title.length < TITLE_MIN_LENGTH) {
+    out.push({
+      key: "title_short",
+      detail: `${p.title.length}/140 karakter (hedef ≥ ${TITLE_MIN_LENGTH})`,
+    });
   }
 
   const wordCount = p.title.split(/\s+/).filter(Boolean).length;

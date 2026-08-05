@@ -232,12 +232,19 @@ export function GeneratedGallery({
     if (!confirm("Bu görseli panelden kaldır?")) return;
     setItems((prev) => prev.filter((i) => i.id !== img.id));
     if (lightboxId === img.id) setLightboxId(null);
-    deleteGeneratedImage(img.id).then((r) => {
-      if (r.error) {
-        toast.error(r.error);
+    deleteGeneratedImage(img.id)
+      .then((r) => {
+        if (r.error) {
+          toast.error(r.error);
+          setItems((prev) => [img, ...prev]);
+        }
+      })
+      .catch((e: unknown) => {
+        // Reject'te geri-alma dalı hiç koşmazdı: görsel UI'dan kaybolur ama
+        // DB'de kalırdı — optimistic kaldırmayı geri sar.
+        toast.error(e instanceof Error ? e.message : "Görsel silinemedi.");
         setItems((prev) => [img, ...prev]);
-      }
-    });
+      });
   }
 
   return (
@@ -360,7 +367,11 @@ export function GeneratedGallery({
               <button
                 type="button"
                 onClick={() => setLightboxId(img.id)}
-                className="group/zoom block size-full cursor-zoom-in overflow-hidden"
+                /* jg-tilt-scene: üretilen ürün görseli imlece göre eğilir ve
+                   üzerinde speküler ışık gezer (globals A5b) — AI görselleri
+                   seçerken "hangisi gerçek bir fotoğraf gibi duruyor"u
+                   anlamak kolaylaşır. Düz <img>, cam yok, bütçe içinde. */
+                className="group/zoom jg-tilt-scene relative block size-full cursor-zoom-in overflow-hidden"
                 aria-label={`Büyüt: ${img.title || "üretilen görsel"}`}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -381,8 +392,9 @@ export function GeneratedGallery({
                       return n;
                     })
                   }
-                  className="size-full object-cover transition-[scale,filter] duration-500 ease-[var(--ease-premium)] group-hover/zoom:scale-105 group-hover/zoom:brightness-105 group-active/zoom:scale-100"
+                  className="jg-tilt size-full object-cover transition-[scale,filter] duration-500 ease-[var(--ease-premium)] group-hover/zoom:scale-105 group-hover/zoom:brightness-105 group-active/zoom:scale-100"
                 />
+                <span aria-hidden className="jg-tilt-gloss" />
               </button>
               {/* rozetler — altın zeminde koyu metin (AA); yüklendi jade+beyaz */}
               <span className="absolute top-2 left-2 flex flex-col items-start gap-1">

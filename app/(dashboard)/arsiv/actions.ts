@@ -239,11 +239,17 @@ export async function deleteEtsyListing(
   }
 
   // Panelde izi kalsın: satır SİLİNMEZ, yalnız işaretlenir.
-  await supabase
+  const { error: markErr } = await supabase
     .from("products")
     .update({ etsy_deleted_at: new Date().toISOString() })
     .eq("org_id", m.org_id)
     .eq("etsy_listing_id", etsyListingId);
+  // Etsy'de silme başarılıydı ama panel işareti tutmadıysa yüzeye çıkar:
+  // yoksa ürün "silindi" sanılır ama panelde aktif kalıp yanıltır.
+  if (markErr) {
+    console.error("[arsiv] etsy_deleted_at işaretlenemedi:", markErr.message);
+    return { error: `Etsy'de silindi ama panel işareti tutmadı: ${markErr.message}` };
+  }
 
   await logAudit(supabase, {
     orgId: m.org_id,

@@ -87,7 +87,11 @@ export function AddCompetitorToSetButton({
           const r = await addCompetitorToSet(productId, competitor);
           if (r.error) toast.error(r.error);
           else {
-            toast.success("Rakip setine eklendi — fiyatı günlük takip edilecek");
+            toast.success(
+              r.matched
+                ? `Rakip setine eklendi — ${r.matched} aynı varyant otomatik eşleşti`
+                : "Rakip setine eklendi — fiyatı günlük takip edilecek",
+            );
             router.refresh();
           }
         })
@@ -142,7 +146,7 @@ export function CompetitorWatchList({
 }: {
   productId: string;
   items: CompetitorWatchItem[];
-  ourVariants?: { sku: string; label: string }[];
+  ourVariants?: { sku: string; label: string; weight_grams?: number | null }[];
   matches?: CompetitorVariantMatchItem[];
   currency?: string;
 }) {
@@ -258,7 +262,11 @@ export function AddCompetitorLinkForm({
       const r = await addCompetitorToSet(productId, { url: trimmed });
       if (r.error) toast.error(r.error);
       else {
-        toast.success("Rakip setine eklendi — fiyatı günlük takip edilecek");
+        toast.success(
+          r.matched
+            ? `Rakip setine eklendi — ${r.matched} aynı varyant otomatik eşleşti`
+            : "Rakip setine eklendi — fiyatı günlük takip edilecek",
+        );
         setUrl("");
         router.refresh();
       }

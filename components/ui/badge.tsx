@@ -14,7 +14,7 @@ const badgeVariants = cva(
         /** Vurgu rozeti — açıkta accent-soft leylak hap; koyuda lume çip:
             oklch(1 0 0/0.12) + lume-hi + lume-glow, beyaz ışımalı metin. */
         default:
-          "border-transparent bg-accent text-accent-foreground [a&]:hover:bg-accent/80 dark:[background-color:oklch(1_0_0/0.12)] dark:text-white dark:shadow-[var(--lume-hi),var(--lume-glow)] dark:[text-shadow:0_0_10px_rgb(255_255_255/0.4)]",
+          "border-transparent bg-accent text-accent-foreground shadow-[inset_0_1px_0_rgb(255_255_255/0.35),0_1px_1.5px_rgb(48_42_60/0.14)] [a&]:hover:bg-accent/80 dark:[background-color:oklch(1_0_0/0.12)] dark:text-white dark:shadow-[var(--lume-hi),var(--lume-glow)] dark:[text-shadow:0_0_10px_rgb(255_255_255/0.4)]",
         /** Nötr kabartı hap — konveks yüzey + raised-sm gölge; koyuda sakin lume çip. */
         secondary:
           "border-transparent bg-secondary [background-image:var(--nm-convex)] text-secondary-foreground shadow-[var(--shadow-raised-sm)] [a&]:hover:bg-secondary/90 dark:[background-image:none] dark:[background-color:oklch(1_0_0/0.07)] dark:shadow-[var(--lume-hi)]",
@@ -24,9 +24,9 @@ const badgeVariants = cva(
         outline:
           "border-[color:var(--glass-border)] [background-color:var(--glass)] [background-image:var(--glass-sheen)] [backdrop-filter:var(--glass-filter-sm)] shadow-[var(--lift-sm)] text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground dark:[background-image:none] dark:[background-color:oklch(0_0_0/0.4)] dark:[border-color:oklch(1_0_0/0.1)] dark:shadow-[var(--lume-hi)]",
         success:
-          "border-transparent bg-primary/15 text-primary [a&]:hover:bg-primary/25 dark:shadow-[0_0_12px_rgb(169_155_255/0.25)]",
+          "border-transparent bg-primary/15 text-primary shadow-[inset_0_1px_0_rgb(255_255_255/0.35),0_1px_1.5px_rgb(48_42_60/0.14)] [a&]:hover:bg-primary/25 dark:shadow-[0_0_12px_rgb(169_155_255/0.25)]",
         warning:
-          "border-transparent bg-accent text-accent-foreground [a&]:hover:bg-accent/80",
+          "border-transparent bg-accent text-accent-foreground shadow-[inset_0_1px_0_rgb(255_255_255/0.35),0_1px_1.5px_rgb(48_42_60/0.14)] dark:shadow-[inset_0_1px_0_rgb(255_255_255/0.06),0_1px_2px_rgb(0_0_0/0.4)] [a&]:hover:bg-accent/80",
       },
     },
     defaultVariants: { variant: "default" },

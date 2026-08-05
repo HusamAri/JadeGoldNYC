@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { requireMembership } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import {
+  parseMediaUrls,
   socialPostSchema,
   type SocialPostInput,
 } from "@/lib/validations/social";
@@ -24,26 +25,58 @@ function parseSchedule(s?: string): string | null {
   return d.toISOString();
 }
 
+const PLATFORM_TITLE: Record<SocialPostInput["platform"], string> = {
+  instagram: "Instagram",
+  tiktok: "TikTok",
+  pinterest: "Pinterest",
+  other: "Post",
+};
+
+/** Başlık boş bırakıldıysa platform + tarihten türet (hızlı geçmiş ekleme). */
+function autoTitle(input: SocialPostInput, scheduledAt: string | null): string {
+  const day = scheduledAt
+    ? new Date(scheduledAt).toLocaleDateString("tr-TR", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      })
+    : null;
+  return `${PLATFORM_TITLE[input.platform]}${day ? ` · ${day}` : ""}`;
+}
+
+/** Tarih geçmişte mi — geçmiş tarihli kayıt yayınlanmış arşiv postudur. */
+function isPastSchedule(scheduledAt: string | null): boolean {
+  return scheduledAt != null && new Date(scheduledAt).getTime() < Date.now();
+}
+
 function toRow(orgId: string, userId: string, input: SocialPostInput) {
+  const scheduledAt = parseSchedule(input.scheduled_at);
   return {
     org_id: orgId,
     platform: input.platform,
     format: input.format,
     status: input.status,
-    title: input.title.trim(),
+    title: input.title?.trim() || autoTitle(input, scheduledAt),
     week_number: parseWeek(input.week_number),
     week_theme: input.week_theme?.trim() || null,
     series: input.series?.trim() || null,
-    scheduled_at: parseSchedule(input.scheduled_at),
+    scheduled_at: scheduledAt,
     asset_note: input.asset_note?.trim() || null,
     overlay: input.overlay?.trim() || null,
     caption: input.caption?.trim() || null,
     hashtags: input.hashtags?.trim() || null,
     tags_note: input.tags_note?.trim() || null,
     permalink: input.permalink?.trim() || null,
+    media_urls: parseMediaUrls(input.media_urls),
     created_by: userId,
+    // Geçmiş tarihli yayın: yayın anı = planlanan an (şimdi değil) —
+    // takvim/istatistik gerçek yayın gününü göstersin.
     published_at:
-      input.status === "published" ? new Date().toISOString() : null,
+      input.status === "published"
+        ? isPastSchedule(scheduledAt)
+          ? scheduledAt
+          : new Date().toISOString()
+        : null,
   };
 }
 
@@ -54,11 +87,29 @@ export async function createSocialPost(
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Geçersiz form." };
   }
+  const input = { ...parsed.data };
+  // Geçmiş tarihli EKLEME = yayınlanmış arşiv postu: durum otomatik
+  // "Yayında" ve en az bir link (permalink ya da medya) şart — form da bunu
+  // uygular ama kural sunucuda bağlayıcıdır.
+  if (isPastSchedule(parseSchedule(input.scheduled_at))) {
+    input.status = "published";
+    const hasLink =
+      Boolean(input.permalink?.trim()) ||
+      parseMediaUrls(input.media_urls).length > 0;
+    if (!hasLink) {
+      return {
+        error:
+          "Geçmiş tarihli post için link gerekli — post linki ya da medya linki ekleyin.",
+      };
+    }
+  } else if (!input.title?.trim()) {
+    return { error: "Başlık gerekli." };
+  }
   const m = await requireMembership();
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("social_posts")
-    .insert(toRow(m.org_id, m.user_id, parsed.data))
+    .insert(toRow(m.org_id, m.user_id, input))
     .select("id")
     .single();
   if (error) return { error: error.message };

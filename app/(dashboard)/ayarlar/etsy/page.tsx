@@ -1,11 +1,12 @@
 import { ExternalLink, CheckCircle2, XCircle } from "lucide-react";
 
 import { requireMembership } from "@/lib/auth";
-import { getEtsyStatus } from "@/lib/db/queries/etsy";
+import { getEtsyStatus, getEtsyWriteAccess } from "@/lib/db/queries/etsy";
 import { getLastSyncSummary } from "@/lib/etsy/sync";
 import { formatDateTime } from "@/lib/format";
 import { PageHeader } from "@/components/page-header";
 import { EtsySyncButton } from "@/components/etsy-sync-button";
+import { EtsyPushButton } from "@/components/etsy-push-button";
 import {
   ApiCredentialGuide,
   ETSY_WRITE_GUIDE,
@@ -28,9 +29,10 @@ export const maxDuration = 60;
 
 export default async function EtsyAyarlarPage() {
   const m = await requireMembership();
-  const [status, summary] = await Promise.all([
+  const [status, summary, writeAccess] = await Promise.all([
     getEtsyStatus(m.org_id),
     getLastSyncSummary(m.org_id),
+    getEtsyWriteAccess(m.org_id),
   ]);
   const connected = status.status === "connected";
   // Etsy v3 her API çağrısında keystring + shared secret ister; ikisi de yoksa
@@ -93,6 +95,20 @@ export default async function EtsyAyarlarPage() {
               )}
               <EtsySyncButton disabled={!connected} initialSummary={summary} />
             </div>
+
+            {/* Simetrik itiş: panel varyant fiyatlarını Etsy'ye gönder (çekmenin
+                tersi). Canlı mağazaya yazar → iki adımlı onay + owner/admin +
+                listings_w. */}
+            <EtsyPushButton
+              disabled={!connected}
+              writeEnabled={writeAccess.writeEnabled}
+            />
+            {connected && !writeAccess.writeEnabled && (
+              <p className="text-muted-foreground text-xs">
+                Fiyat göndermek için Etsy yazma izni (listings_w) gerekir —
+                &quot;Yeniden Bağlan&quot; ile yazma iznini onaylayın.
+              </p>
+            )}
             {!configured && (
               <div className="space-y-2">
                 <p className="text-destructive text-sm">

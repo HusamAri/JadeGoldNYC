@@ -6,6 +6,7 @@ import { etsyPaths } from "@/lib/etsy/endpoints";
 import { decodeHtmlEntities } from "@/lib/etsy/text";
 import { logAudit } from "@/lib/audit";
 import { rebuildGoldCostsBulk } from "@/lib/gold-cost-entry";
+import { syncReceiptPayments } from "@/lib/etsy/payments";
 import {
   etsyMoneyToCents,
   type EtsyListResponse,
@@ -27,6 +28,14 @@ const LEDGER_MIN_CREATED = 1420070400;
 const LEDGER_WINDOW_S = 2_592_000;
 // Artımlı turlarda en son kayıttan geriye örtüşme payı (7 gün) — kayıp olmasın.
 const LEDGER_OVERLAP_S = 604_800;
+// Döngü bittikten SONRA koşan küme-tabanlı RPC'ler (ücret/altın maliyeti/bağ
+// tamiri) + imleç ve audit yazımı için ayrılan pay. `payments` fazı bütçesini
+// buradan artakalan süreden alır; yoksa istek serverless tavanında ölür ve o
+// yazımların hiçbiri koşmaz.
+const TAIL_RESERVE_MS = 12_000;
+// Bundan kısa bir dilimde eşleme yapmak anlamsız (sipariş başına bir Etsy GET
+// + oran sınırı beklemesi ~1sn) — turu boşa harcamak yerine domino sürdürülür.
+const MIN_PAYMENT_SLICE_MS = 4_000;
 
 export interface SyncProgress {
   done: boolean;
@@ -38,6 +47,12 @@ export interface SyncProgress {
     | "reviews"
     | "ledger"
     | "extras"
+    // Sipariş ↔ ödeme eşlemesi. AYRI bir faz olmak zorunda: sipariş başına bir
+    // Etsy GET gerektiriyor, binlerce eşlenmemiş sipariş tek çağrıya sığmaz.
+    // Kuyruk fazı olarak (döngü dışında, bütçesiz) koşarsa iki şey birden
+    // bozulur — cron'un 60sn tavanını aşabilir ve "kalan var" bilgisi kaybolup
+    // senkron erkenden "bitti" der.
+    | "payments"
     | "done";
   sales: number;
   items: number;
@@ -211,6 +226,27 @@ export async function advanceEtsySync(
           await upsertListingsPage(admin, orgId, active);
           counts.products += active.length;
         }
+        // VERİ KAYBI GUARD'ı: "edit" (Etsy'de düzenlenmekte) gibi geçici
+        // durumdaki satırlar aktif yazımdan ELENİR ama Etsy'de CANLIDIR. Yazılıp
+        // upsert'lenmezlerse updated_at bayat kalır ve mutabakat (reconcile) bu
+        // canlı listing'i + varyant SKU'larını SİLER. Bu yüzden taramada
+        // görülen aktif-olmayan satırların updated_at'ini "görüldü" olarak
+        // tazele (statülerine dokunma) → reconcile onları silmez.
+        const seenTransientIds = results
+          .filter((l) => l.state !== "active" && l.listing_id != null)
+          .map((l) => l.listing_id as number);
+        if (seenTransientIds.length > 0) {
+          const { error: touchErr } = await admin
+            .from("products")
+            .update({ updated_at: new Date().toISOString() })
+            .eq("org_id", orgId)
+            .in("etsy_listing_id", seenTransientIds);
+          if (touchErr)
+            console.error(
+              "[etsy-sync] geçici durum tazeleme:",
+              touchErr.message,
+            );
+        }
         if (results.length < PAGE) {
           // Aktif listeler bitti → diğer durumları da çek (tam envanter).
           phase = "listings_all";
@@ -340,13 +376,41 @@ export async function advanceEtsySync(
           }
           await persist({ sync_ledger_until: ledgerUntil });
         }
-      } else {
+      } else if (phase === "extras") {
         // extras — API'nin sunduğu kalan her şey, tek geçişte:
         // (1) getShop → günlük mağaza sağlık fotoğrafı,
         // (2) mağaza bölümleri, (3) kargo profilleri,
         // (4) listing views/favori GÜNLÜK fotoğrafı (tarihçeyi panel biriktirir).
         await syncShopExtras(admin, client, orgId, shopId);
-        phase = "done";
+        phase = "payments";
+        await persist();
+      } else {
+        // payments — sipariş ↔ ödeme eşlemesi (getShopPaymentByReceiptId).
+        // PAYMENT_PROCESSING_FEE ledger satırının reference_id'si shop_payment_id
+        // olduğu için bu eşleme yazılmadan işleme ücreti sipariş bazına inemez
+        // (EON'da ölçülen açık %33,6).
+        //
+        // Bütçe EBEVEYNDEN türetilir: kalan süreden kuyruktaki RPC'lere pay
+        // ayrılır. Sabit bir bütçe (ör. 20sn) ebeveynin 50sn'sinin ÜSTÜNE
+        // binerdi ve cron'un 60sn maxDuration'ında istek öldürülüp ücret
+        // yeniden hesabı ile imleç/audit yazımı hiç koşmayabilirdi.
+        const kalan = budgetMs - (Date.now() - startedAt) - TAIL_RESERVE_MS;
+        if (kalan < MIN_PAYMENT_SLICE_MS) {
+          // Bu turda anlamlı iş yapacak süre yok — imleci koru, domino sürsün.
+          await persist();
+          return { done: false, status: "running", phase, ...counts };
+        }
+        let devam = false;
+        try {
+          const r = await syncReceiptPayments(orgId, { budgetMs: kalan });
+          devam = r.remaining;
+        } catch {
+          // Eşleme başarısızsa fazı bitir: ücret hesabı yine koşar, eşleşmeyen
+          // sipariş sales_etsy_fee_coverage'da "işleme ücreti bilinmiyor"
+          // görünür. Sonsuz döngüye girmemek için tekrar denemiyoruz.
+          devam = false;
+        }
+        if (!devam) phase = "done";
         await persist();
       }
     }
@@ -359,7 +423,9 @@ export async function advanceEtsySync(
       // yok say
     }
 
-    // sales.etsy_fees_cents'i ledger'dan gerçek per-order ücretle doldur (idempotent).
+    // sales.etsy_fees_cents'i ledger'dan gerçek per-order ücretle doldur
+    // (idempotent). Sipariş↔ödeme eşlemesi `payments` FAZINDA yazıldı; sıra
+    // kritik — eşleme olmadan işleme ücreti siparişe bağlanamaz.
     try {
       await admin.rpc("rebuild_sales_etsy_fees", { p_org_id: orgId });
     } catch {
@@ -423,9 +489,13 @@ export function mapReceiptStatus(r: EtsyReceipt): string {
       return "refunded";
     case "partially refunded":
       return "partially_refunded";
-    default:
-      // Bilinmeyen/boş durum: eski davranışla uyumlu güvenli varsayılan.
-      return "completed";
+    default: {
+      // Statü ASLA hardcode edilmez (second-brain 0080): bilinmeyen/yeni Etsy
+      // değerini "completed" saymak geliri şişirir + iadeyi/iptali maskeler.
+      // Ham değeri (boşlukları alt-çizgiyle) OLDUĞU GİBİ taşı; boşsa "open".
+      const raw = (r.status ?? "").toLowerCase().trim().replace(/\s+/g, "_");
+      return raw || "open";
+    }
   }
 }
 

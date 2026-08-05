@@ -154,10 +154,22 @@ export interface EtsyOfferingUpdate {
   price: number; // float (amount/divisor)
   quantity: number;
   is_enabled: boolean;
+  /**
+   * Etsy 2025 envanter modeli: `?legacy=false` ile PUT edilen fiziksel
+   * listing'lerde HER offering'in işlem profili (readiness state) olmalı
+   * ("All offerings need readiness state"). Legacy (eski) PUT'ta gönderilmez.
+   */
+  readiness_state_id?: number;
 }
 
 export interface EtsyPropertyValueUpdate {
   property_id: number;
+  /**
+   * 2025 envanter PUT'u (`?legacy=false`) property_name'i STRING olarak ister
+   * ("Expected string value for 'property_name' (got NULL)"). GET envanterinden
+   * korunur; legacy PUT'ta gönderilmese de zararsızdır.
+   */
+  property_name?: string;
   value_ids: number[];
   values: string[];
   scale_id?: number;
@@ -174,6 +186,8 @@ export interface EtsyInventoryUpdate {
   price_on_property?: number[];
   quantity_on_property?: number[];
   sku_on_property?: number[];
+  /** 2025 modeli: işlem profili hiçbir property'ye göre değişmiyorsa []. */
+  readiness_state_on_property?: number[];
 }
 
 /** Etsy para nesnesini float birime çevirir (PUT offering.price için). */

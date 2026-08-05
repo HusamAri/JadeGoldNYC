@@ -69,7 +69,9 @@ export async function listGeneratedImages(
 
   if (opts.onlySelected) query = query.eq("is_selected", true);
 
-  const { data } = await query;
+  const { data, error } = await query;
+  if (error)
+    console.error("[gorsel-uretim] generated_images sorgusu:", error.message);
   return ((data ?? []) as unknown as Row[]).map(map);
 }
 
