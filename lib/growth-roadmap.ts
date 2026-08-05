@@ -31,12 +31,12 @@ export interface GrowthPhase {
 export const GROWTH_IMMEDIATE: GrowthActionItem[] = [
   {
     id: "title-audit",
-    title: "Başlıkları denetle: Malzeme + Ürün Tipi + Stil + Vesile",
-    body: "Her başlık ilk 40 karakterde ana anahtar kelimeyi önde taşımalı ve 140 karakterin tamamını kullanmalı. Formül: [Ana Anahtar Kelime] — [Malzeme] [Ürün Tipi] | [Stil] | [Vesile/Kitle]. Örn: “Natural Jade Pendant — 14k Gold Setting | Minimalist Everyday Necklace | Quiet Luxury Gift for Her”.",
+    title: "Başlıkları denetle: kısa, okunur, ana kelime önde",
+    body: "Etsy Ağustos 2025'te uzun anahtar-kelime yığınından KISA ve insan-okunur başlığa döndü: 15 kelimeden az (pratikte 60-90 karakter), ana kelime ilk 3-5 kelimede, hiçbir kelime tekrarlanmadan. Alıcı/vesile terimleri (\"gift for her\", \"his and hers\", \"mens\") ve promosyon dili (\"free shipping\") başlıktan çıkıp 13 ETİKETE taşınır — Etsy arama zaten başlık+etiket+nitelik+açıklamayı birlikte okuyor. Formül: [Malzeme/Ayar] [Stil Özelliği] [Ürün Adı], [İkincil Özellik]. Örn: “14K Solid Gold Milgrain Wedding Band, Comfort Fit Beaded Edge”. NOT: 140 karakteri doldurmak ARTIK tavsiye edilmiyor; Etsy eski başlıkları cezalandırmadığını da doğruladı, yani yeniden yazım acil değil — yeni listing'lerde bu formülü kullan.",
     task: {
-      title: "Tüm liste başlıklarını malzeme+tip+stil+vesile formülüne göre denetle",
+      title: "Aktif başlıkları 15 kelime / okunurluk ölçütüne göre gözden geçir",
       description:
-        "Her aktif listede başlığın ilk 40 karakterinde ana anahtar kelime var mı, 140 karakterin tamamı kullanılıyor mu kontrol et; eksikse yeniden yaz.",
+        "Her aktif listede: 15 kelimeden az mı, ana anahtar kelime ilk 3-5 kelimede mi, tekrar eden kelime var mı, alıcı/vesile terimi başlıkta mı? Alıcı/vesile terimlerini etiketlere taşı. Başlığı uzatmak için anahtar kelime YIĞMA.",
       priority: "P0",
       lane: "A",
       effort: "1 hafta",

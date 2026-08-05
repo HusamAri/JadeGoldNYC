@@ -81,6 +81,19 @@ repodaki hedefidir.
 - **Kanıtla, varsayma (2026-07):** "İzin kapalı", "veri yok" gibi durum iddialarını
   DB'den SQL ile doğrula. Vaka: Etsy yazma izni "kapalı" sanılıyordu; `etsy_write_enabled`
   sorgusu `true` döndü — bir adım boşa planlanmıştı.
+  Güçlendirme (2026-08): kural KULLANICININ teşhisi için de geçerli — "başlıklar
+  artık Etsy'de kabul görmüyor" denince kaynağa gidildi (canlı OpenAPI spec +
+  Seller Handbook + changelog): reddeden yeni kural YOK, repodaki 104 başlıkta
+  0 sert-kural ihlali. Gerçek olay farklıydı: (a) Etsy'nin Ağu-2025 TAVSİYESİ
+  kısaldı (zorunluluk değil; eski başlıklar cezalandırılmıyor), (b) alıcı
+  uygulaması başlığı ~70 kr'a AI ile kısaltıp GÖSTERİYOR — başlık değişmiyor.
+  Şikâyeti olduğu gibi kabul edip 104 başlığı yeniden yazmak boşa iş olurdu.
+  Asıl bulgu araştırma sırasında çıktı: PANELİN KENDİ denetim kuralı dış
+  platformun eski rehberliğini donduruyordu (`TITLE_MIN_LENGTH=110` "bütçeyi
+  doldur" derken aynı dosyadaki `title_long` >15 kelimeyi kusur sayıyordu —
+  ikisi aynı anda sağlanamaz). Kural: dış platformun rehberliğini kodlayan
+  eşik/metin bir TARİH taşımalı; platform kuralı değiştiğinde panel sessizce
+  ters sinyal üretmeye devam eder ve kimse fark etmez.
 - **Gerçek render ile doğrula (2026-07):** UI değişikliği "kod doğru görünüyor" ile
   bitmez — Playwright screenshot + `getComputedStyle` ile canlı doğrula. Vaka: dark-mode
   motion "bozuk" sanılıyordu; ölçüm hepsinin `running` olduğunu gösterdi, asıl iş başkaydı.
@@ -164,6 +177,14 @@ repodaki hedefidir.
   KOMBİNATORİK süpürme koş (SEO motoru: 2520 kombinasyon × 5 invariant) —
   "13'e ulaşmama" bug'ı yalnız dar bir kombinasyonda (zincirsiz+kaplama+classic)
   çıkıyordu; el senaryoları o hücreye denk gelmemişti, süpürme geldi.
+  Güçlendirme-3 (2026-08): **süpürme YEŞİL + çıktı BOZUK aynı anda olabilir** —
+  invariant yalnız aklına geleni ölçer. Başlıktan kelime-tekrarını silmek için
+  öbek içinden kelime söken dedup yazdım; "kelime tekrarı yok" testi 8.505
+  kombinasyonda temiz geçti ama gerçek çıktı `Real Layering` gibi anlamsız
+  parçalardı (ifadenin ortasından kelime çıkınca gramer ölüyor). Kural: her
+  süpürme koşusunda invariant sayacının YANINDA birkaç ham çıktı satırı bas ve
+  GÖZLE oku; "0 fail" tek başına teslim değil. İkinci tur aynı desenle gerçek
+  bir tekrarı da yakaladı (stil "snake" iken ikincil isim de "snake chain").
 - **İsim yanıltır, kaynağı oku (2026-07):** Yeni "keyword/SEO" modülü kurmadan önce
   mevcut `keyword-research.ts`'i açtım — adı "keyword" ama işi RAKİP FİYAT araştırması.
   Çakışma sandığım şey tamamlayıcı çıktı. Kural: sembol adına göre "var/yok" deme, dosyayı aç.
