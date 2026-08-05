@@ -458,11 +458,9 @@ export async function pushListingQuantity(
   }
 }
 
-export type PushPanelVariantsOutcome = {
+export type CreateMissingOfferingsOutcome = {
   listingId: number;
-  status: "updated" | "error";
-  /** Panel varyantlarından kaç tanesinin özelliği Etsy'de yazıldı. */
-  updated: number;
+  status: "created" | "unchanged" | "error";
   /** Bu PUT ile Etsy'de YENİ oluşturulan offering (SKU) sayısı. */
   created: number;
   /** Etsy'de olmayan ve oluşturulamayan (fiyatsız/property'siz) panel SKU'ları. */
@@ -581,19 +579,22 @@ export type PanelVariantProperty = {
 };
 
 /**
- * Panel varyantlarını Etsy listing'ine yazar: her panel varyantın fiyatı,
- * property'leri (kişiselleştirme dahil) ve adedi Etsy'nin konu offering'ine
- * yazılır. Etsy'de OLMAYAN panel SKU'ları, property'leri Etsy formatında
- * (property_id + value_ids) taşıyorsa aynı PUT içinde YENİ offering olarak
- * OLUŞTURULUR (envanter PUT tüm matrisi değiştirir). Oluşturulamayanlar
- * (fiyatsız/property'siz) `missing`te raporlanır.
+ * Panel'de olup Etsy'de OLMAYAN varyantları listing'e YENİ offering olarak
+ * ekler (envanter PUT tüm matrisi değiştirir; eksikler aynı PUT'ta açılır).
  *
- * GÜVENLİK: fiyat okunamazsa (0/eksik) — tüm PUT iptal edilir (buildInventoryUpdate
- * ile aynı ilke). Property yerleri (slot 513/514) sunucu tarafından çözer.
+ * FİYAT OTORİTESİ: mevcut offering'lerin fiyatı/adedi/property'si Etsy'deki
+ * CANLI değerleriyle AYNEN geri yazılır — panel mevcut fiyatlara DOKUNMAZ
+ * (externalPricing kuralı; fiyat dış motorda belirlenir). Yalnız YENİ açılan
+ * offering, DB'deki motor-kaynaklı fiyatla doğar — Etsy fiyatsız offering
+ * kabul etmez. Oluşturulabilmesi için panel satırı Etsy formatında property
+ * (property_id + value_ids) taşımalı; taşımayanlar `missing`te raporlanır.
+ *
+ * GÜVENLİK: herhangi bir canlı fiyat okunamazsa (0/eksik) tüm PUT iptal
+ * edilir (buildInventoryUpdate ilkesi). Eksik SKU yoksa PUT hiç yapılmaz.
  *
  * @param panelVariants Panel DB'sinden ({ sku, price_cents, properties, quantity })
  */
-export async function pushPanelVariantsToListing(
+export async function createMissingListingOfferings(
   client: EtsyClient,
   listingId: number,
   panelVariants: Array<{
@@ -602,7 +603,7 @@ export async function pushPanelVariantsToListing(
     quantity: number;
     properties?: PanelVariantProperty[] | null;
   }>,
-): Promise<PushPanelVariantsOutcome> {
+): Promise<CreateMissingOfferingsOutcome> {
   try {
     const inventory = await getListingInventory(client, listingId);
     const live = (inventory.products ?? []).filter((p) => !p.is_deleted);
@@ -610,16 +611,14 @@ export async function pushPanelVariantsToListing(
       return {
         listingId,
         status: "error",
-        updated: 0,
         created: 0,
         missing: panelVariants.map((v) => v.sku),
-        detail: "Etsy listing envanteri boş",
+        detail: "Etsy listing envanteri boş — sıfırdan kurulum bu akışın işi değil.",
       };
     }
 
-    // Panel varyantlarını SKU'ya göre map'le.
-    const panelBySku = new Map(panelVariants.map((v) => [v.sku, v]));
-    // Property'leri panel varyantlarından bir haritalama (isim çözümü için).
+    // Property'leri panel varyantlarından haritala (2025 PUT property_name
+    // null dönen custom slot 513/514 için isim çözümü — echo yolunda gerekir).
     const propsBySku = new Map<string, { name: string; value: string }[]>();
     for (const pv of panelVariants) {
       const props: { name: string; value: string }[] = [];
@@ -638,35 +637,30 @@ export async function pushPanelVariantsToListing(
     // Eksik varyantları tespit et: Etsy'de bulunmayan panel SKU'ları.
     const etsySkus = new Set(live.map((p) => (p.sku ?? "").trim()));
     const missingAll = panelVariants.filter((v) => !etsySkus.has(v.sku.trim()));
-
-    // Fiyat haritasını kur: panel SKU'ları → sent.
-    const priceBySkuCents = new Map<string, number>();
-    for (const [sku, pv] of panelBySku) {
-      if (pv.priceCents != null && pv.priceCents > 0) {
-        priceBySkuCents.set(sku, pv.priceCents);
-      }
+    if (missingAll.length === 0) {
+      return { listingId, status: "unchanged", created: 0, missing: [] };
     }
 
-    // Fiyat senkronizasyonunu yap (mevcut Etsy varyantlarının fiyatlarını ve
-    // property'lerini güncelle).
+    // Taban payload: hiçbir offering hedeflenmez → canlı fiyat/adet AYNEN
+    // geri yazılır (SKU-rename akışıyla aynı koruma; okunamayan fiyat throw).
     const readinessStateId = await resolveReadinessStateId(client);
-    const { update, changed } = buildPriceSyncUpdate(
+    const update = buildInventoryUpdate(
       inventory,
-      priceBySkuCents,
+      () => false,
+      0,
       readinessStateId,
       propsBySku,
     );
 
     // Etsy'de olmayan panel varyantlarını YENİ offering olarak kur. Şart:
     // geçerli fiyat + Etsy formatında property (property_id'li — 0124 deseni
-    // value_id'leri kardeş listing'den kopyalar; uydurma value_id PUT'u kırar).
+    // value_id'leri kardeş listing'den kopyalar; uydurma value_id PUT'u kırar.
+    // property_id 0 = EON düz-nesne dönüşümü, Etsy'de geçersiz → missing).
     const newProducts: EtsyProductUpdate[] = [];
     const missing: string[] = [];
     for (const pv of missingAll) {
       const cents = pv.priceCents;
-      const propVals = (pv.properties ?? []).filter(
-        (p) => p.property_id != null,
-      );
+      const propVals = (pv.properties ?? []).filter((p) => !!p.property_id);
       if (cents == null || cents <= 0 || propVals.length === 0) {
         missing.push(pv.sku);
         continue;
@@ -696,8 +690,15 @@ export async function pushPanelVariantsToListing(
       });
     }
 
-    if (changed === 0 && newProducts.length === 0) {
-      return { listingId, status: missing.length > 0 ? "error" : "updated", updated: 0, created: 0, missing };
+    if (newProducts.length === 0) {
+      // Eksikler var ama hiçbiri oluşturulabilir değil — PUT yapmaya gerek yok.
+      return {
+        listingId,
+        status: "error",
+        created: 0,
+        missing,
+        detail: `${missing.length} eksik SKU oluşturulamadı (fiyat/property eksik): ${missing.slice(0, 5).join(", ")}${missing.length > 5 ? "…" : ""}`,
+      };
     }
 
     update.products.push(...newProducts);
@@ -721,22 +722,18 @@ export async function pushPanelVariantsToListing(
 
     return {
       listingId,
-      status: missing.length > 0 ? "error" : "updated",
-      updated: changed,
+      status: "created",
       created: newProducts.length,
       missing,
       detail:
         missing.length > 0
-          ? `${changed} güncellendi, ${newProducts.length} oluşturuldu; ${missing.length} oluşturulamadı (fiyat/property eksik): ${missing.join(", ")}`
-          : newProducts.length > 0
-            ? `${changed} güncellendi, ${newProducts.length} yeni offering oluşturuldu`
-            : undefined,
+          ? `${newProducts.length} yeni offering oluşturuldu; ${missing.length} oluşturulamadı (fiyat/property eksik): ${missing.slice(0, 5).join(", ")}${missing.length > 5 ? "…" : ""}`
+          : `${newProducts.length} yeni offering oluşturuldu (mevcut fiyatlara dokunulmadı)`,
     };
   } catch (e) {
     return {
       listingId,
       status: "error",
-      updated: 0,
       created: 0,
       missing: [],
       detail: e instanceof Error ? e.message : "Bilinmeyen hata",
