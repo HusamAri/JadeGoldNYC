@@ -35,8 +35,12 @@ QUANTITY_PER_VARIANT = 20
 # US 4-16, tam + yarim = 25 beden (ev standardi)
 SIZES = [4 + 0.5 * i for i in range(25)]
 
-# Ev standardi genislik ekseni — 39 canli listing ile birebir.
-WIDTHS = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+# Fiyat motorunun gram tablosunun genislik ekseni (motor tablosu 2-12mm tasir).
+GRID_WIDTHS = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+
+# Katalogda satilan genislikler. 2-5mm dar bantlar 2026-08 kararyla kaldirildi:
+# bu ailede en dar genislik 6mm.
+WIDTHS = [6, 7, 8, 9, 10, 11, 12]
 
 ENGINE = PricingEngine()
 
@@ -61,7 +65,10 @@ def size_token(size: float) -> str:
 def build(karat: str = "10K") -> list[dict]:
     spec = KARAT_SPECS[karat]
     grams = ENGINE.grams_with_halves(karat, TTG_PROFILE)
-    assert sorted(grams) == WIDTHS, f"{karat}: grid genislik ekseni {sorted(grams)}"
+    assert sorted(grams) == GRID_WIDTHS, (
+        f"{karat}: grid genislik ekseni {sorted(grams)}"
+    )
+    assert set(WIDTHS) <= set(GRID_WIDTHS), "katalog genisligi grid disinda"
 
     rows = []
     for width in WIDTHS:
@@ -137,7 +144,9 @@ def cross_check_grid(karat: str) -> str:
         if abs(r["grams"] - cell["Gram 1.5mm"]) > 1e-9:
             bad.append((r["sku"], "gram", r["grams"], cell["Gram 1.5mm"]))
     assert not bad, f"{karat}: grid sapmasi {bad[:3]}"
-    assert n == len(grid) * 13, f"{karat}: {n} tam-beden hucresi"
+    # Katalog genisliklerinin tam bedenleri (grid 2-12mm tasir, katalog 6-12mm).
+    assert set(grid) == set(GRID_WIDTHS), f"{karat}: grid ekseni {sorted(grid)}"
+    assert n == len(WIDTHS) * 13, f"{karat}: {n} tam-beden hucresi"
     return f"{n}/{n} tam beden v4 MILGRAIN grid'iyle BIREBIR"
 
 

@@ -11,7 +11,7 @@
 -- (Two-Tone Gold), profil 06. 10K kardesi TTG-R-1006 (0127); 14K
 -- TTG-R-1406 0128 ile ayni desende acilir. Varyant ekseni UCUNDE DE AYNI.
 --
--- Varyant ekseni: 11 genislik (2-12mm) x 25 beden (US 4-16 tam+yarim) = 275.
+-- Varyant ekseni: 7 genislik (6-12mm) x 25 beden (US 4-16 tam+yarim) = 175.
 --   EV STANDARDI: 39 canli listing'in hepsi bu ekseni tasiyor
 --   (docs/eon/katalog-v3.md, eon-v3-catalog.json). Desen genislikle
 --   olceklenir: dar bantta ince/sik kafes, genis bantta acilir.
@@ -42,9 +42,9 @@
 --
 -- Yarim bedenler: grid yalnizca 13 tam beden tasir. Yarim beden grami komsu
 --   tam bedenlerin dogrusal orta-noktasi (ev yontemi, katalog-v3), fiyat ayni
---   motor formulunden. Tam bedenler grid'le BIREBIR (143/143 tam beden v4 MILGRAIN grid'iyle BIREBIR).
---   Liste araligi $590.00 - $4,925.00 · gorunen
---   $442.50 - $3,693.75.
+--   motor formulunden. Tam bedenler grid'le BIREBIR (91/91 tam beden v4 MILGRAIN grid'iyle BIREBIR).
+--   Liste araligi $1,325.00 - $4,925.00 · gorunen
+--   $993.75 - $3,693.75.
 --
 -- Uretici: scripts/gen_catalog_ttg.py (saf, ic assert'li)
 -- Bu dosya: scripts/emit_ttg_migration.py ciktisi — ELLE DUZENLEMEYIN.
@@ -59,7 +59,7 @@ insert into public.products (
 select
   o.id,
   $ttg$TTG-R-1806$ttg$,
-  $ttg$18K Solid Gold Two Tone Wedding Band, Mens Diamond Cut Ring, White and Yellow Gold Comfort Fit, 2mm to 12mm, Anniversary Gift for Him$ttg$,
+  $ttg$18K Solid Gold Two Tone Wedding Band, Mens Diamond Cut Ring, White and Yellow Gold Comfort Fit, 6mm to 12mm, Anniversary Gift for Him$ttg$,
   $ttg$A solid 18k gold two tone wedding band: yellow gold rails framing a white gold center cut with a diamond lattice. Made to order in your size and width, never plated, never filled, with free engraving inside the band.
 
 THE DETAILS
@@ -67,14 +67,14 @@ Metal: Solid 18k gold in two colors, yellow and white. Never plated, never fille
 Profile: Stepped yellow gold rails along both edges, raised white gold center.
 Pattern: Diamond-cut lattice worked over a florentine brushed ground.
 Fit: Comfort fit interior, rounded to clear the knuckle and sit without a hard edge.
-Widths: 2mm through 12mm, 1.5mm thick.
+Widths: 6mm through 12mm, 1.5mm thick.
 Sizes: US sizes 4 through 16, whole and half sizes.
 Hallmark: Stamped 18k inside the band.
 
 The two colors do the work here, and 18k pushes the contrast further. The yellow runs deep and warm against the pale white center, the color you picture when someone says gold. The center is brushed flat, then cut through, so every facet throws a hard point of light while the ground behind it stays quiet. Three finishes on one band, and the gold runs solid under all of them.
 
 SIZE & WIDTH
-Two dropdowns build the ring. Pick a size, US 4 through 16 in whole and half sizes, in Ring Size. Pick your width, 2mm through 12mm, in Width. A 2 to 4mm reads slim and stacks well; 5 to 7mm is the everyday width; 8 to 12mm sits wide across the finger. The lattice scales with the band: the narrow widths carry a fine, close-set pattern, and the wider ones open it up.
+Two dropdowns build the ring. Pick a size, US 4 through 16 in whole and half sizes, in Ring Size. Pick your width, 6mm through 12mm, in Width. A 6mm is the everyday width and the one most people wear daily; 7 to 8mm reads a little more present on the hand; 9 to 12mm sits wide and bold across the finger. The lattice scales with the band: 6mm carries a fine, close-set pattern, and the wider ones open it up.
 
 If you are between sizes or unsure, message us before you order.
 
@@ -89,12 +89,12 @@ WHY EON
 I cut and finish each band to order, in the size and width you choose. The diamond cuts are made after the two colors are joined, so the lattice runs true across the seam. Solid gold, all the way through.
 
 ---
-[EON 41 - TTG-R-1806 - Varyasyon: Ring Size 4-16 whole+half (25) x Width 11 (2-12mm, 1.5mm thick); fiyat+SKU iki eksende (property 513,514); adet 20/varyant; kisisellestirme max 30 karakter]$ttg$,
-  ARRAY[$ttg$two tone gold ring$ttg$,$ttg$diamond cut band$ttg$,$ttg$white gold inlay$ttg$,$ttg$18k solid gold ring$ttg$,$ttg$18k wedding band$ttg$,$ttg$mens wedding band$ttg$,$ttg$unisex wedding band$ttg$,$ttg$womens gold ring$ttg$,$ttg$thin gold band$ttg$,$ttg$wide gold ring$ttg$,$ttg$comfort fit band$ttg$,$ttg$engraved gold band$ttg$,$ttg$anniversary ring$ttg$]::text[],
+[EON 41 - TTG-R-1806 - Varyasyon: Ring Size 4-16 whole+half (25) x Width 7 (6-12mm, 1.5mm thick); fiyat+SKU iki eksende (property 513,514); adet 20/varyant; kisisellestirme max 30 karakter]$ttg$,
+  ARRAY[$ttg$two tone gold ring$ttg$,$ttg$diamond cut band$ttg$,$ttg$white gold inlay$ttg$,$ttg$18k solid gold ring$ttg$,$ttg$18k wedding band$ttg$,$ttg$mens wedding band$ttg$,$ttg$unisex wedding band$ttg$,$ttg$womens gold ring$ttg$,$ttg$wide wedding band$ttg$,$ttg$wide gold ring$ttg$,$ttg$comfort fit band$ttg$,$ttg$engraved gold band$ttg$,$ttg$anniversary ring$ttg$]::text[],
   ARRAY[$ttg$Solid 18k gold$ttg$,$ttg$Yellow gold$ttg$,$ttg$White gold$ttg$]::text[],
   'draft',
   'USD',
-  59000,
+  132500,
   20,
   true,
   $ttg$/eon/ttg-r-1806/01.jpg$ttg$,
@@ -112,7 +112,7 @@ where o.name = 'EON'
 -- (Etsy'ye gonderilmis kayitta etsy_listing_id dolu olur; yine de panel
 -- kunyesi tek kaynakta kalsin diye guncellenir).
 update public.products p set
-  title = $ttg$18K Solid Gold Two Tone Wedding Band, Mens Diamond Cut Ring, White and Yellow Gold Comfort Fit, 2mm to 12mm, Anniversary Gift for Him$ttg$,
+  title = $ttg$18K Solid Gold Two Tone Wedding Band, Mens Diamond Cut Ring, White and Yellow Gold Comfort Fit, 6mm to 12mm, Anniversary Gift for Him$ttg$,
   description = $ttg$A solid 18k gold two tone wedding band: yellow gold rails framing a white gold center cut with a diamond lattice. Made to order in your size and width, never plated, never filled, with free engraving inside the band.
 
 THE DETAILS
@@ -120,14 +120,14 @@ Metal: Solid 18k gold in two colors, yellow and white. Never plated, never fille
 Profile: Stepped yellow gold rails along both edges, raised white gold center.
 Pattern: Diamond-cut lattice worked over a florentine brushed ground.
 Fit: Comfort fit interior, rounded to clear the knuckle and sit without a hard edge.
-Widths: 2mm through 12mm, 1.5mm thick.
+Widths: 6mm through 12mm, 1.5mm thick.
 Sizes: US sizes 4 through 16, whole and half sizes.
 Hallmark: Stamped 18k inside the band.
 
 The two colors do the work here, and 18k pushes the contrast further. The yellow runs deep and warm against the pale white center, the color you picture when someone says gold. The center is brushed flat, then cut through, so every facet throws a hard point of light while the ground behind it stays quiet. Three finishes on one band, and the gold runs solid under all of them.
 
 SIZE & WIDTH
-Two dropdowns build the ring. Pick a size, US 4 through 16 in whole and half sizes, in Ring Size. Pick your width, 2mm through 12mm, in Width. A 2 to 4mm reads slim and stacks well; 5 to 7mm is the everyday width; 8 to 12mm sits wide across the finger. The lattice scales with the band: the narrow widths carry a fine, close-set pattern, and the wider ones open it up.
+Two dropdowns build the ring. Pick a size, US 4 through 16 in whole and half sizes, in Ring Size. Pick your width, 6mm through 12mm, in Width. A 6mm is the everyday width and the one most people wear daily; 7 to 8mm reads a little more present on the hand; 9 to 12mm sits wide and bold across the finger. The lattice scales with the band: 6mm carries a fine, close-set pattern, and the wider ones open it up.
 
 If you are between sizes or unsure, message us before you order.
 
@@ -142,8 +142,8 @@ WHY EON
 I cut and finish each band to order, in the size and width you choose. The diamond cuts are made after the two colors are joined, so the lattice runs true across the seam. Solid gold, all the way through.
 
 ---
-[EON 41 - TTG-R-1806 - Varyasyon: Ring Size 4-16 whole+half (25) x Width 11 (2-12mm, 1.5mm thick); fiyat+SKU iki eksende (property 513,514); adet 20/varyant; kisisellestirme max 30 karakter]$ttg$,
-  tags = ARRAY[$ttg$two tone gold ring$ttg$,$ttg$diamond cut band$ttg$,$ttg$white gold inlay$ttg$,$ttg$18k solid gold ring$ttg$,$ttg$18k wedding band$ttg$,$ttg$mens wedding band$ttg$,$ttg$unisex wedding band$ttg$,$ttg$womens gold ring$ttg$,$ttg$thin gold band$ttg$,$ttg$wide gold ring$ttg$,$ttg$comfort fit band$ttg$,$ttg$engraved gold band$ttg$,$ttg$anniversary ring$ttg$]::text[],
+[EON 41 - TTG-R-1806 - Varyasyon: Ring Size 4-16 whole+half (25) x Width 7 (6-12mm, 1.5mm thick); fiyat+SKU iki eksende (property 513,514); adet 20/varyant; kisisellestirme max 30 karakter]$ttg$,
+  tags = ARRAY[$ttg$two tone gold ring$ttg$,$ttg$diamond cut band$ttg$,$ttg$white gold inlay$ttg$,$ttg$18k solid gold ring$ttg$,$ttg$18k wedding band$ttg$,$ttg$mens wedding band$ttg$,$ttg$unisex wedding band$ttg$,$ttg$womens gold ring$ttg$,$ttg$wide wedding band$ttg$,$ttg$wide gold ring$ttg$,$ttg$comfort fit band$ttg$,$ttg$engraved gold band$ttg$,$ttg$anniversary ring$ttg$]::text[],
   materials = ARRAY[$ttg$Solid 18k gold$ttg$,$ttg$Yellow gold$ttg$,$ttg$White gold$ttg$]::text[],
   research_keyword = $ttg$18k two tone diamond cut wedding band$ttg$,
   research_group = 41,
@@ -153,111 +153,11 @@ I cut and finish each band to order, in the size and width you choose. The diamo
 from public.organizations o
 where p.org_id = o.id and o.name = 'EON' and p.sku = $ttg$TTG-R-1806$ttg$;
 
--- ==== Varyantlar: 11 genislik x 25 beden = 275 ====
+-- ==== Varyantlar: 7 genislik x 25 beden = 175 ====
 -- price_cents = ETSY LISTE (Etsy'ye girilen). Gorunen fiyat liste x 0.75.
 
 create temp table _ttg (sku text, width int, ring_size text, grams numeric, price_cents int);
 insert into _ttg (sku, width, ring_size, grams, price_cents) values
-  ($ttg$TTG-R-1806-2MM-4$ttg$, 2, $ttg$4$ttg$, 2.04, 59000),
-  ($ttg$TTG-R-1806-2MM-4.5$ttg$, 2, $ttg$4.5$ttg$, 2.095, 60500),
-  ($ttg$TTG-R-1806-2MM-5$ttg$, 2, $ttg$5$ttg$, 2.15, 61500),
-  ($ttg$TTG-R-1806-2MM-5.5$ttg$, 2, $ttg$5.5$ttg$, 2.205, 63000),
-  ($ttg$TTG-R-1806-2MM-6$ttg$, 2, $ttg$6$ttg$, 2.26, 64000),
-  ($ttg$TTG-R-1806-2MM-6.5$ttg$, 2, $ttg$6.5$ttg$, 2.31, 65000),
-  ($ttg$TTG-R-1806-2MM-7$ttg$, 2, $ttg$7$ttg$, 2.36, 66000),
-  ($ttg$TTG-R-1806-2MM-7.5$ttg$, 2, $ttg$7.5$ttg$, 2.415, 67500),
-  ($ttg$TTG-R-1806-2MM-8$ttg$, 2, $ttg$8$ttg$, 2.47, 68500),
-  ($ttg$TTG-R-1806-2MM-8.5$ttg$, 2, $ttg$8.5$ttg$, 2.52, 69500),
-  ($ttg$TTG-R-1806-2MM-9$ttg$, 2, $ttg$9$ttg$, 2.57, 71000),
-  ($ttg$TTG-R-1806-2MM-9.5$ttg$, 2, $ttg$9.5$ttg$, 2.625, 72000),
-  ($ttg$TTG-R-1806-2MM-10$ttg$, 2, $ttg$10$ttg$, 2.68, 73000),
-  ($ttg$TTG-R-1806-2MM-10.5$ttg$, 2, $ttg$10.5$ttg$, 2.73, 74000),
-  ($ttg$TTG-R-1806-2MM-11$ttg$, 2, $ttg$11$ttg$, 2.78, 75500),
-  ($ttg$TTG-R-1806-2MM-11.5$ttg$, 2, $ttg$11.5$ttg$, 2.835, 76500),
-  ($ttg$TTG-R-1806-2MM-12$ttg$, 2, $ttg$12$ttg$, 2.89, 77500),
-  ($ttg$TTG-R-1806-2MM-12.5$ttg$, 2, $ttg$12.5$ttg$, 2.945, 79000),
-  ($ttg$TTG-R-1806-2MM-13$ttg$, 2, $ttg$13$ttg$, 3, 80000),
-  ($ttg$TTG-R-1806-2MM-13.5$ttg$, 2, $ttg$13.5$ttg$, 3.065, 81500),
-  ($ttg$TTG-R-1806-2MM-14$ttg$, 2, $ttg$14$ttg$, 3.13, 83000),
-  ($ttg$TTG-R-1806-2MM-14.5$ttg$, 2, $ttg$14.5$ttg$, 3.195, 84500),
-  ($ttg$TTG-R-1806-2MM-15$ttg$, 2, $ttg$15$ttg$, 3.26, 86000),
-  ($ttg$TTG-R-1806-2MM-15.5$ttg$, 2, $ttg$15.5$ttg$, 3.305, 87000),
-  ($ttg$TTG-R-1806-2MM-16$ttg$, 2, $ttg$16$ttg$, 3.35, 87500),
-  ($ttg$TTG-R-1806-3MM-4$ttg$, 3, $ttg$4$ttg$, 2.64, 72000),
-  ($ttg$TTG-R-1806-3MM-4.5$ttg$, 3, $ttg$4.5$ttg$, 2.7, 73500),
-  ($ttg$TTG-R-1806-3MM-5$ttg$, 3, $ttg$5$ttg$, 2.76, 75000),
-  ($ttg$TTG-R-1806-3MM-5.5$ttg$, 3, $ttg$5.5$ttg$, 2.82, 76000),
-  ($ttg$TTG-R-1806-3MM-6$ttg$, 3, $ttg$6$ttg$, 2.88, 77500),
-  ($ttg$TTG-R-1806-3MM-6.5$ttg$, 3, $ttg$6.5$ttg$, 2.94, 79000),
-  ($ttg$TTG-R-1806-3MM-7$ttg$, 3, $ttg$7$ttg$, 3, 80000),
-  ($ttg$TTG-R-1806-3MM-7.5$ttg$, 3, $ttg$7.5$ttg$, 3.06, 81500),
-  ($ttg$TTG-R-1806-3MM-8$ttg$, 3, $ttg$8$ttg$, 3.12, 83000),
-  ($ttg$TTG-R-1806-3MM-8.5$ttg$, 3, $ttg$8.5$ttg$, 3.18, 84000),
-  ($ttg$TTG-R-1806-3MM-9$ttg$, 3, $ttg$9$ttg$, 3.24, 85500),
-  ($ttg$TTG-R-1806-3MM-9.5$ttg$, 3, $ttg$9.5$ttg$, 3.3, 86500),
-  ($ttg$TTG-R-1806-3MM-10$ttg$, 3, $ttg$10$ttg$, 3.36, 88000),
-  ($ttg$TTG-R-1806-3MM-10.5$ttg$, 3, $ttg$10.5$ttg$, 3.42, 89500),
-  ($ttg$TTG-R-1806-3MM-11$ttg$, 3, $ttg$11$ttg$, 3.48, 90500),
-  ($ttg$TTG-R-1806-3MM-11.5$ttg$, 3, $ttg$11.5$ttg$, 3.54, 92000),
-  ($ttg$TTG-R-1806-3MM-12$ttg$, 3, $ttg$12$ttg$, 3.6, 93000),
-  ($ttg$TTG-R-1806-3MM-12.5$ttg$, 3, $ttg$12.5$ttg$, 3.66, 94500),
-  ($ttg$TTG-R-1806-3MM-13$ttg$, 3, $ttg$13$ttg$, 3.72, 96000),
-  ($ttg$TTG-R-1806-3MM-13.5$ttg$, 3, $ttg$13.5$ttg$, 3.785, 97500),
-  ($ttg$TTG-R-1806-3MM-14$ttg$, 3, $ttg$14$ttg$, 3.85, 98500),
-  ($ttg$TTG-R-1806-3MM-14.5$ttg$, 3, $ttg$14.5$ttg$, 3.93, 100500),
-  ($ttg$TTG-R-1806-3MM-15$ttg$, 3, $ttg$15$ttg$, 4.01, 102000),
-  ($ttg$TTG-R-1806-3MM-15.5$ttg$, 3, $ttg$15.5$ttg$, 4.045, 103000),
-  ($ttg$TTG-R-1806-3MM-16$ttg$, 3, $ttg$16$ttg$, 4.08, 103500),
-  ($ttg$TTG-R-1806-4MM-4$ttg$, 4, $ttg$4$ttg$, 3.6, 93000),
-  ($ttg$TTG-R-1806-4MM-4.5$ttg$, 4, $ttg$4.5$ttg$, 3.67, 95000),
-  ($ttg$TTG-R-1806-4MM-5$ttg$, 4, $ttg$5$ttg$, 3.74, 96000),
-  ($ttg$TTG-R-1806-4MM-5.5$ttg$, 4, $ttg$5.5$ttg$, 3.815, 98000),
-  ($ttg$TTG-R-1806-4MM-6$ttg$, 4, $ttg$6$ttg$, 3.89, 99500),
-  ($ttg$TTG-R-1806-4MM-6.5$ttg$, 4, $ttg$6.5$ttg$, 3.965, 101000),
-  ($ttg$TTG-R-1806-4MM-7$ttg$, 4, $ttg$7$ttg$, 4.04, 103000),
-  ($ttg$TTG-R-1806-4MM-7.5$ttg$, 4, $ttg$7.5$ttg$, 4.115, 104500),
-  ($ttg$TTG-R-1806-4MM-8$ttg$, 4, $ttg$8$ttg$, 4.19, 106000),
-  ($ttg$TTG-R-1806-4MM-8.5$ttg$, 4, $ttg$8.5$ttg$, 4.26, 107500),
-  ($ttg$TTG-R-1806-4MM-9$ttg$, 4, $ttg$9$ttg$, 4.33, 109000),
-  ($ttg$TTG-R-1806-4MM-9.5$ttg$, 4, $ttg$9.5$ttg$, 4.405, 111000),
-  ($ttg$TTG-R-1806-4MM-10$ttg$, 4, $ttg$10$ttg$, 4.48, 112500),
-  ($ttg$TTG-R-1806-4MM-10.5$ttg$, 4, $ttg$10.5$ttg$, 4.555, 114000),
-  ($ttg$TTG-R-1806-4MM-11$ttg$, 4, $ttg$11$ttg$, 4.63, 115500),
-  ($ttg$TTG-R-1806-4MM-11.5$ttg$, 4, $ttg$11.5$ttg$, 4.705, 117500),
-  ($ttg$TTG-R-1806-4MM-12$ttg$, 4, $ttg$12$ttg$, 4.78, 119000),
-  ($ttg$TTG-R-1806-4MM-12.5$ttg$, 4, $ttg$12.5$ttg$, 4.85, 120500),
-  ($ttg$TTG-R-1806-4MM-13$ttg$, 4, $ttg$13$ttg$, 4.92, 122000),
-  ($ttg$TTG-R-1806-4MM-13.5$ttg$, 4, $ttg$13.5$ttg$, 4.98, 123500),
-  ($ttg$TTG-R-1806-4MM-14$ttg$, 4, $ttg$14$ttg$, 5.04, 124500),
-  ($ttg$TTG-R-1806-4MM-14.5$ttg$, 4, $ttg$14.5$ttg$, 5.105, 126000),
-  ($ttg$TTG-R-1806-4MM-15$ttg$, 4, $ttg$15$ttg$, 5.17, 127500),
-  ($ttg$TTG-R-1806-4MM-15.5$ttg$, 4, $ttg$15.5$ttg$, 5.275, 129500),
-  ($ttg$TTG-R-1806-4MM-16$ttg$, 4, $ttg$16$ttg$, 5.38, 132000),
-  ($ttg$TTG-R-1806-5MM-4$ttg$, 5, $ttg$4$ttg$, 4.56, 114000),
-  ($ttg$TTG-R-1806-5MM-4.5$ttg$, 5, $ttg$4.5$ttg$, 4.655, 116000),
-  ($ttg$TTG-R-1806-5MM-5$ttg$, 5, $ttg$5$ttg$, 4.75, 118000),
-  ($ttg$TTG-R-1806-5MM-5.5$ttg$, 5, $ttg$5.5$ttg$, 4.84, 120000),
-  ($ttg$TTG-R-1806-5MM-6$ttg$, 5, $ttg$6$ttg$, 4.93, 122000),
-  ($ttg$TTG-R-1806-5MM-6.5$ttg$, 5, $ttg$6.5$ttg$, 5.025, 124000),
-  ($ttg$TTG-R-1806-5MM-7$ttg$, 5, $ttg$7$ttg$, 5.12, 126500),
-  ($ttg$TTG-R-1806-5MM-7.5$ttg$, 5, $ttg$7.5$ttg$, 5.21, 128500),
-  ($ttg$TTG-R-1806-5MM-8$ttg$, 5, $ttg$8$ttg$, 5.3, 130000),
-  ($ttg$TTG-R-1806-5MM-8.5$ttg$, 5, $ttg$8.5$ttg$, 5.4, 132500),
-  ($ttg$TTG-R-1806-5MM-9$ttg$, 5, $ttg$9$ttg$, 5.5, 134500),
-  ($ttg$TTG-R-1806-5MM-9.5$ttg$, 5, $ttg$9.5$ttg$, 5.59, 136500),
-  ($ttg$TTG-R-1806-5MM-10$ttg$, 5, $ttg$10$ttg$, 5.68, 138500),
-  ($ttg$TTG-R-1806-5MM-10.5$ttg$, 5, $ttg$10.5$ttg$, 5.775, 140500),
-  ($ttg$TTG-R-1806-5MM-11$ttg$, 5, $ttg$11$ttg$, 5.87, 143000),
-  ($ttg$TTG-R-1806-5MM-11.5$ttg$, 5, $ttg$11.5$ttg$, 5.96, 144500),
-  ($ttg$TTG-R-1806-5MM-12$ttg$, 5, $ttg$12$ttg$, 6.05, 146500),
-  ($ttg$TTG-R-1806-5MM-12.5$ttg$, 5, $ttg$12.5$ttg$, 6.145, 149000),
-  ($ttg$TTG-R-1806-5MM-13$ttg$, 5, $ttg$13$ttg$, 6.24, 151000),
-  ($ttg$TTG-R-1806-5MM-13.5$ttg$, 5, $ttg$13.5$ttg$, 6.305, 152000),
-  ($ttg$TTG-R-1806-5MM-14$ttg$, 5, $ttg$14$ttg$, 6.37, 153500),
-  ($ttg$TTG-R-1806-5MM-14.5$ttg$, 5, $ttg$14.5$ttg$, 6.435, 155000),
-  ($ttg$TTG-R-1806-5MM-15$ttg$, 5, $ttg$15$ttg$, 6.5, 156500),
-  ($ttg$TTG-R-1806-5MM-15.5$ttg$, 5, $ttg$15.5$ttg$, 6.645, 159500),
-  ($ttg$TTG-R-1806-5MM-16$ttg$, 5, $ttg$16$ttg$, 6.79, 163000),
   ($ttg$TTG-R-1806-6MM-4$ttg$, 6, $ttg$4$ttg$, 5.4, 132500),
   ($ttg$TTG-R-1806-6MM-4.5$ttg$, 6, $ttg$4.5$ttg$, 5.515, 135000),
   ($ttg$TTG-R-1806-6MM-5$ttg$, 6, $ttg$5$ttg$, 5.63, 137500),

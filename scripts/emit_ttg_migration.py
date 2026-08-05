@@ -32,14 +32,14 @@ TEXTS: dict[str, dict] = {
     "10K": {
         "title": (
             "10K Solid Gold Two Tone Wedding Band, Mens Diamond Cut Ring, "
-            "White and Yellow Gold Comfort Fit, 2mm to 12mm, Anniversary Gift for Him"
+            "White and Yellow Gold Comfort Fit, 6mm to 12mm, Anniversary Gift for Him"
         ),
         "research_keyword": "10k two tone diamond cut wedding band",
         "research_group": 40,
         "tags": [
             "two tone gold ring", "diamond cut band", "white gold inlay",
             "10k solid gold ring", "10k wedding band", "mens wedding band",
-            "unisex wedding band", "womens gold ring", "thin gold band",
+            "unisex wedding band", "womens gold ring", "wide wedding band",
             "wide gold ring", "comfort fit band", "engraved gold band",
             "anniversary ring",
         ],
@@ -68,14 +68,14 @@ TEXTS: dict[str, dict] = {
     "14K": {
         "title": (
             "14K Solid Gold Two Tone Wedding Band, Mens Diamond Cut Ring, "
-            "White and Yellow Gold Comfort Fit, 2mm to 12mm, Anniversary Gift for Him"
+            "White and Yellow Gold Comfort Fit, 6mm to 12mm, Anniversary Gift for Him"
         ),
         "research_keyword": "14k two tone diamond cut wedding band",
         "research_group": 42,
         "tags": [
             "two tone gold ring", "diamond cut band", "white gold inlay",
             "14k solid gold ring", "14k wedding band", "mens wedding band",
-            "unisex wedding band", "womens gold ring", "thin gold band",
+            "unisex wedding band", "womens gold ring", "wide wedding band",
             "wide gold ring", "comfort fit band", "engraved gold band",
             "anniversary ring",
         ],
@@ -104,14 +104,14 @@ TEXTS: dict[str, dict] = {
     "18K": {
         "title": (
             "18K Solid Gold Two Tone Wedding Band, Mens Diamond Cut Ring, "
-            "White and Yellow Gold Comfort Fit, 2mm to 12mm, Anniversary Gift for Him"
+            "White and Yellow Gold Comfort Fit, 6mm to 12mm, Anniversary Gift for Him"
         ),
         "research_keyword": "18k two tone diamond cut wedding band",
         "research_group": 41,
         "tags": [
             "two tone gold ring", "diamond cut band", "white gold inlay",
             "18k solid gold ring", "18k wedding band", "mens wedding band",
-            "unisex wedding band", "womens gold ring", "thin gold band",
+            "unisex wedding band", "womens gold ring", "wide wedding band",
             "wide gold ring", "comfort fit band", "engraved gold band",
             "anniversary ring",
         ],
@@ -184,7 +184,7 @@ Hallmark: Stamped {k} inside the band.
 {COLOR_PARAGRAPH[karat]}
 
 SIZE & WIDTH
-Two dropdowns build the ring. Pick a size, US 4 through 16 in whole and half sizes, in Ring Size. Pick your width, {WIDTHS[0]}mm through {WIDTHS[-1]}mm, in Width. A 2 to 4mm reads slim and stacks well; 5 to 7mm is the everyday width; 8 to 12mm sits wide across the finger. The lattice scales with the band: the narrow widths carry a fine, close-set pattern, and the wider ones open it up.
+Two dropdowns build the ring. Pick a size, US 4 through 16 in whole and half sizes, in Ring Size. Pick your width, {WIDTHS[0]}mm through {WIDTHS[-1]}mm, in Width. A 6mm is the everyday width and the one most people wear daily; 7 to 8mm reads a little more present on the hand; 9 to 12mm sits wide and bold across the finger. The lattice scales with the band: 6mm carries a fine, close-set pattern, and the wider ones open it up.
 
 If you are between sizes or unsure, message us before you order.
 

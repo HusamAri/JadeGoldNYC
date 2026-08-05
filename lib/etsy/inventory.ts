@@ -351,6 +351,109 @@ export type PushOutcome = {
   detail?: string;
 };
 
+export type RemoveOfferingsOutcome = {
+  listingId: number;
+  status: "removed" | "unchanged" | "error";
+  removed: number;
+  remaining: number;
+  removedSkus: string[];
+  detail?: string;
+};
+
+/**
+ * Listing'den SKU'su `shouldRemove`'u karşılayan offering'leri KALDIRIR
+ * (`createMissingListingOfferings`'in simetriği). Etsy envanter PUT'u tam
+ * değiştirmedir: gönderilmeyen ürün silinir — bu yüzden kaldırma, kalanların
+ * TAMAMINI aynen geri yazmakla yapılır.
+ *
+ * GÜVENLİK:
+ *  - Kaldırılacaklar payload kurulmadan ÖNCE elenir; böylece silinecek bir
+ *    offering'in okunamayan fiyatı işlemi gereksiz yere iptal etmez.
+ *  - Kalanların fiyatı okunamazsa `buildInventoryUpdate` fırlatır → PUT yok
+ *    (fiyatı sıfıra çekme riski yok).
+ *  - Listing'i BOŞALTMAK yasak: kalan ürün yoksa hata döner (Etsy varyantsız
+ *    listing'e düşürmek geri dönüşü zor bir yapı değişikliğidir).
+ *  - Eşleşme yoksa PUT hiç yapılmaz (`unchanged`) — tekrar çalıştırma güvenli.
+ */
+export async function removeListingOfferings(
+  client: EtsyClient,
+  listingId: number,
+  shouldRemove: (sku: string) => boolean,
+  propsBySku?: Map<string, { name: string; value: string }[]>,
+): Promise<RemoveOfferingsOutcome> {
+  try {
+    const inventory = await getListingInventory(client, listingId);
+    const live = (inventory.products ?? []).filter((p) => !p.is_deleted);
+    if (live.length === 0) {
+      return {
+        listingId,
+        status: "error",
+        removed: 0,
+        remaining: 0,
+        removedSkus: [],
+        detail: "Etsy listing envanteri boş — kaldırılacak offering yok.",
+      };
+    }
+
+    const doomed = live.filter((p) => shouldRemove((p.sku ?? "").trim()));
+    const kept = live.filter((p) => !shouldRemove((p.sku ?? "").trim()));
+    if (doomed.length === 0) {
+      return {
+        listingId,
+        status: "unchanged",
+        removed: 0,
+        remaining: live.length,
+        removedSkus: [],
+      };
+    }
+    if (kept.length === 0) {
+      return {
+        listingId,
+        status: "error",
+        removed: 0,
+        remaining: live.length,
+        removedSkus: [],
+        detail:
+          "Tüm offering'ler kaldırılacaktı — listing boşaltılmaz, işlem iptal edildi.",
+      };
+    }
+
+    const readinessStateId = await resolveReadinessStateId(client);
+    // Yalnız KALANLARdan payload kur: hedeflenen offering yok (adet/fiyat
+    // aynen korunur), gönderilmeyen ürünler Etsy tarafında düşer.
+    const update = buildInventoryUpdate(
+      { ...inventory, products: kept },
+      () => false,
+      0,
+      readinessStateId,
+      propsBySku,
+    );
+
+    await putListingInventory(client, listingId, update, {
+      legacy: readinessStateId != null ? false : undefined,
+    });
+
+    const removedSkus = doomed.map((p) => (p.sku ?? "").trim());
+    return {
+      listingId,
+      status: "removed",
+      removed: doomed.length,
+      remaining: kept.length,
+      removedSkus,
+      detail: `${doomed.length} offering kaldırıldı, ${kept.length} kaldı (fiyat/adet korundu).`,
+    };
+  } catch (e) {
+    return {
+      listingId,
+      status: "error",
+      removed: 0,
+      remaining: 0,
+      removedSkus: [],
+      detail: e instanceof Error ? e.message : "Bilinmeyen hata",
+    };
+  }
+}
+
 /**
  * Tek bir liste için: envanteri oku → hedef offering(ler)i çöz → adeti değiştir
  * → geri yaz. `applyToAll` true ise (varyantlı listelerde "tüm bedenlere uygula"
