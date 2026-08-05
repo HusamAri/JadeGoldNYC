@@ -1,0 +1,243 @@
+import { NextResponse } from "next/server";
+
+import { createAdminClient } from "@/lib/supabase/admin";
+import { EtsyClient } from "@/lib/etsy/client";
+import {
+  getListingInventory,
+  removeListingOfferings,
+} from "@/lib/etsy/inventory";
+import { logAudit } from "@/lib/audit";
+
+export const maxDuration = 300;
+
+/**
+ * Dar genişlik bandı temizliği (gözetimli, tek seferlik / idempotent).
+ *
+ * 2026-08 katalog kararı:
+ *  - Milgrain ailesi (9 listing): 2mm kalkar → en dar 3mm.
+ *  - Hammered (1 listing): 2/3/4/5mm kalkar → en dar 6mm.
+ * (Yeni TTG ailesi Etsy'ye hiç gitmediği için panelde doğrudan temizlendi;
+ *  basketweave/ribbed zaten 6mm'den başlıyor.)
+ *
+ * Hedefler SKU önekiyle DEĞİL etsy_listing_id ile sabitlenir: SKU sahipliği
+ * kopya listing'lerde el değiştirebiliyor (second-brain "aynı ürün" dersi),
+ * listing kimliği ise sabittir.
+ *
+ * Auth: `Authorization: Bearer $CRON_SECRET` veya `?token=$PRUNE_ONE_SHOT_TOKEN`.
+ * Varsayılan KURU ÇALIŞMA — gerçek yazma için `?apply=1`.
+ */
+
+type Target = { listingId: number; widths: number[]; label: string };
+
+const TARGETS: Target[] = [
+  // ── Milgrain: yalnız 2mm ─────────────────────────────────────────────
+  { listingId: 4539517211, widths: [2], label: "10K Yellow Milgrain" },
+  { listingId: 4539506699, widths: [2], label: "10K White Milgrain" },
+  { listingId: 4539493533, widths: [2], label: "10K Rose Milgrain" },
+  { listingId: 4543953211, widths: [2], label: "14K Yellow Milgrain" },
+  { listingId: 4542485142, widths: [2], label: "14K White Milgrain" },
+  { listingId: 4540045731, widths: [2], label: "14K Rose Milgrain" },
+  { listingId: 4548748952, widths: [2], label: "18K Yellow Milgrain" },
+  { listingId: 4546520793, widths: [2], label: "18K White Milgrain" },
+  { listingId: 4548734437, widths: [2], label: "18K Rose Milgrain" },
+  // ── Hammered: 2/3/4/5mm ──────────────────────────────────────────────
+  { listingId: 4543442596, widths: [2, 3, 4, 5], label: "10K Hammered Milgrain" },
+];
+
+const ONE_SHOT = process.env.PRUNE_ONE_SHOT_TOKEN;
+
+/** SKU'nun genişlik alanı (`...-<N>MM-<beden>`). Desen tutmuyorsa null → asla
+ *  kaldırılmaz (tanımadığımız SKU şemasına dokunmayız). */
+function widthOf(sku: string): number | null {
+  const m = /-(\d+)MM-[0-9.]+$/.exec(sku.trim());
+  return m ? Number(m[1]) : null;
+}
+
+export async function GET(request: Request) {
+  const secret = process.env.CRON_SECRET;
+  const auth = request.headers.get("authorization");
+  const url = new URL(request.url);
+  const oneShot = url.searchParams.get("token");
+  const authorized =
+    (secret && auth === `Bearer ${secret}`) ||
+    (ONE_SHOT != null && ONE_SHOT.length > 0 && oneShot === ONE_SHOT);
+  if (!authorized) {
+    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  }
+
+  const apply = url.searchParams.get("apply") === "1";
+  const only = url.searchParams.get("listing");
+  const targets = only
+    ? TARGETS.filter((t) => String(t.listingId) === only)
+    : TARGETS;
+  if (targets.length === 0) {
+    return NextResponse.json({ error: "no matching target" }, { status: 400 });
+  }
+
+  const admin = createAdminClient();
+  const { data: org, error: orgErr } = await admin
+    .from("organizations")
+    .select("id, name")
+    .eq("name", "EON")
+    .maybeSingle();
+  if (orgErr || !org) {
+    return NextResponse.json(
+      { error: orgErr?.message ?? "EON org not found" },
+      { status: 500 },
+    );
+  }
+
+  let client: EtsyClient;
+  try {
+    client = await EtsyClient.forOrg(org.id);
+  } catch (e) {
+    return NextResponse.json(
+      {
+        error: "etsy not connected",
+        detail: e instanceof Error ? e.message : String(e),
+      },
+      { status: 503 },
+    );
+  }
+
+  const results: Record<string, unknown>[] = [];
+
+  for (const t of targets) {
+    const drop = new Set(t.widths);
+    const shouldRemove = (sku: string) => {
+      const w = widthOf(sku);
+      return w != null && drop.has(w);
+    };
+
+    const row: Record<string, unknown> = {
+      listingId: t.listingId,
+      label: t.label,
+      widths: t.widths,
+    };
+
+    try {
+      // 1) Etsy'de neyin hedeflendiğini önce SAY (kuru çalışmada tek iş bu).
+      const before = await getListingInventory(client, t.listingId);
+      const liveBefore = (before.products ?? []).filter((p) => !p.is_deleted);
+      const doomed = liveBefore
+        .map((p) => (p.sku ?? "").trim())
+        .filter((s) => shouldRemove(s));
+      row.etsyBefore = liveBefore.length;
+      row.wouldRemove = doomed.length;
+      row.sampleSkus = doomed.slice(0, 3);
+
+      if (!apply) {
+        results.push({ ...row, mode: "dry-run" });
+        continue;
+      }
+      if (doomed.length === 0) {
+        results.push({ ...row, status: "unchanged" });
+        continue;
+      }
+
+      // 2) Etsy'den kaldır.
+      const out = await removeListingOfferings(
+        client,
+        t.listingId,
+        shouldRemove,
+      );
+      row.status = out.status;
+      row.removed = out.removed;
+      if (out.detail) row.detail = out.detail;
+      if (out.status === "error") {
+        results.push(row);
+        continue;
+      }
+
+      // 3) READ-BACK: "200 OK" teslim sayılmaz (second-brain kuralı) — aynı
+      //    turda geri oku ve hedefin gerçekten gittiğini kanıtla.
+      const after = await getListingInventory(client, t.listingId);
+      const liveAfter = (after.products ?? []).filter((p) => !p.is_deleted);
+      const stillThere = liveAfter
+        .map((p) => (p.sku ?? "").trim())
+        .filter((s) => shouldRemove(s));
+      row.etsyAfter = liveAfter.length;
+      row.verified = stillThere.length === 0;
+      if (stillThere.length > 0) {
+        row.stillThere = stillThere.slice(0, 5);
+        results.push(row);
+        continue; // Etsy'de duruyorsa paneli DEĞİŞTİRME (ayna bozulmasın).
+      }
+
+      // 4) Panel aynasını eşitle: kaldırılan SKU'ları sil, çapa fiyatı tazele.
+      const { data: prod } = await admin
+        .from("products")
+        .select("id")
+        .eq("org_id", org.id)
+        .eq("etsy_listing_id", t.listingId)
+        .maybeSingle();
+      const productId = (prod as { id: string } | null)?.id ?? null;
+      row.productId = productId;
+
+      if (productId) {
+        const { data: vRows } = await admin
+          .from("product_variants")
+          .select("id, sku")
+          .eq("org_id", org.id)
+          .eq("product_id", productId);
+        const kill = ((vRows ?? []) as { id: string; sku: string | null }[])
+          .filter((v) => shouldRemove((v.sku ?? "").trim()))
+          .map((v) => v.id);
+        if (kill.length > 0) {
+          const { error: delErr } = await admin
+            .from("product_variants")
+            .delete()
+            .in("id", kill);
+          row.panelDeleted = delErr ? 0 : kill.length;
+          if (delErr) row.panelError = delErr.message;
+        } else {
+          row.panelDeleted = 0;
+        }
+
+        const { data: rest } = await admin
+          .from("product_variants")
+          .select("price_cents")
+          .eq("org_id", org.id)
+          .eq("product_id", productId)
+          .not("price_cents", "is", null)
+          .order("price_cents", { ascending: true })
+          .limit(1);
+        const anchor = (rest ?? [])[0]?.price_cents as number | undefined;
+        if (anchor != null) {
+          await admin
+            .from("products")
+            .update({ price_cents: anchor })
+            .eq("id", productId)
+            .eq("org_id", org.id);
+          row.newAnchorCents = anchor;
+        }
+
+        await logAudit(admin, {
+          orgId: org.id,
+          action: "etsy.variant_sync",
+          entityType: "products",
+          entityId: productId,
+          summary:
+            `Dar genişlik temizliği (listing ${t.listingId}): ` +
+            `${t.widths.join("/")}mm kaldırıldı — Etsy ${out.removed} offering, ` +
+            `panel ${row.panelDeleted ?? 0} varyant.`,
+          source: "etsy",
+        });
+      }
+    } catch (e) {
+      row.status = "error";
+      row.detail = e instanceof Error ? e.message : String(e);
+    }
+    results.push(row);
+  }
+
+  const errors = results.filter((r) => r.status === "error").length;
+  return NextResponse.json({
+    ok: errors === 0,
+    apply,
+    org: org.name,
+    targets: targets.length,
+    errors,
+    results,
+  });
+}
