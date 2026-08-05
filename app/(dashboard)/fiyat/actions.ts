@@ -20,6 +20,10 @@ import { buildPricingDiff, type PricingRunRow } from "@/lib/pricing-engine/run";
  *
  * Kalıcı kurallar (bayrak kalksa da geçerli):
  *   1. Etsy'ye programlı/gözetimsiz yazma YOK — onayı insan verir.
+ *      DEĞİŞİKLİK (2026-08-05, sahip kararı): TEK istisna altın endeksi —
+ *      spot değişimini kapılı (deadband %1 / max-step %10 / çift kaynak
+ *      doğrulama / read-back) otomasyonla uygular (lib/pricing/gold-reprice-run).
+ *      %10 üstü adım yine insan onayına düşer.
  *   2. Elle yazılan fiyat YOK — her fiyat motor fonksiyonundan türer.
  *   3. Her itişin ÖNÜNDE yetkili kuru-çalıştırma farkı durur.
  *   4. Her itiş audit_log'a yazılır.
@@ -432,4 +436,53 @@ export async function savePricingSpot(
   if (error) return { error: error.message };
   revalidatePath("/fiyat");
   return { ok: true };
+}
+
+// ── Altın endeksi (2026-08-05) ─────────────────────────────────────────────
+
+export interface GoldIndexApplyResult {
+  error?: string;
+  ok?: boolean;
+  result?: GoldIndexOrgResult;
+}
+
+export type GoldIndexOrgResult = import("@/lib/pricing/gold-reprice-run").OrgRunResult;
+
+/**
+ * Endeksi ŞİMDİ uygula — cron'un yaptığının paneldeki karşılığı, aktif org'a
+ * daraltılmış. Kapılar çekirdekte aynen geçerli: deadband %1 (force ile
+ * aşılır), max-step %10 (force insan onayı sayılır), çift kaynak spot
+ * doğrulaması, Etsy read-back'siz panel yazmama. İki kez tıklanırsa ikinci
+ * koşu Δ%0 gördüğü için doğal no-op'tur (deadband = doğal CAS).
+ */
+export async function applyGoldIndex(
+  force = false,
+): Promise<GoldIndexApplyResult> {
+  const m = await requireMembership();
+  if (!isManager(m.role)) return { error: MANAGER_ONLY_ERROR };
+
+  const admin = createAdminClient();
+  const { data: org } = await admin
+    .from("organizations")
+    .select("name")
+    .eq("id", m.org_id)
+    .maybeSingle();
+  const name = (org as { name: string } | null)?.name;
+  if (!name) return { error: "Organizasyon bulunamadı." };
+
+  try {
+    const { runGoldReprice } = await import("@/lib/pricing/gold-reprice-run");
+    const out = await runGoldReprice({ apply: true, force, orgFilter: name });
+    const r = out.orgs[0];
+    if (!r) {
+      return {
+        error:
+          "Bu organizasyon altın endeksi kapsamında değil (EON / Jade Gold NYC).",
+      };
+    }
+    revalidatePath("/fiyat");
+    return { ok: r.status === "applied", result: r };
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : String(e) };
+  }
 }
