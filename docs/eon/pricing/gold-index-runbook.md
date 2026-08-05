@@ -21,8 +21,11 @@ Spot altın değiştikçe fiyatları endeksleyen kalıcı mekanizma (PR #325):
 
 ## Güvenlik kapıları
 
-1. Spot iki bağımsız kaynaktan (gold-api.com + stooq) ≤%2 çapraz doğrulama;
-   $3.000–6.000 mantık aralığı. Doğrulanamazsa HİÇBİR ŞEY yazılmaz.
+1. Spot `gold-api.com`'dan çekilir; kotasyon 24 saatten bayatsa veya
+   $3.000–6.000 aralığının dışındaysa HİÇBİR ŞEY yazılmaz. (2026-08-05 sondajı:
+   ücretsiz/anahtarsız çalışan ikinci kaynak yok — stooq 404, goldprice.org 403,
+   frankfurter/exchangerate anahtar istiyor. İlk sürümdeki stooq kaynağı hiç
+   çalışmıyordu ve sessizce tek kaynağa düşüyordu; kaldırıldı.)
 2. `|Δ| < %1` → deadband, sessiz no-op (cron her gün koşabilir).
 3. `|Δ| > %10` → `blocked-max-step`; yalnız `force=1` ile (insan onayı) geçer.
 4. Etsy PUT → AYNI turda read-back → yalnız doğrulanan listing'in paneli

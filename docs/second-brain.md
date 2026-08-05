@@ -114,6 +114,21 @@ repodaki hedefidir.
   vermiyorsa (Etsy yorum yanıtı) o alanda panel tek doğruluk kaynağı İLAN edilir ve
   akış ona göre kurulur (0059 deseni) — "senkronlarız" diye söz verme; en yakın
   sinyalle (update_timestamp) telafi kur.
+- **Yeni dış uç ÇAĞRILMADAN yazılmaz; hayali yedeklilik güvenlikten kötüdür
+  (2026-08):** Altın spot çekicisini "iki bağımsız kaynak + ≤%2 çapraz
+  doğrulama" diye kurdum ve İKİSİNİ DE hiç çağırmadım. Kullanıcı "gösterge
+  çalışmıyor mu?" diye sorunca curl attım: stooq URL'i **404** (sembol yok),
+  yani o kaynak hiç çalışmamıştı; kod sessizce tek kaynağa düşüyordu ve
+  tsc/lint/build üçü de temiz geçiyordu çünkü bu bir ÇALIŞMA ZAMANI
+  sözleşmesi. Daha kötüsü: kod, kart metni ve runbook "çift kaynak doğrulanır"
+  diye YANLIŞ bir güvenlik vaadi yayıyordu. Sondaj sonucu ücretsiz/anahtarsız
+  ikinci kaynak yok (goldprice.org 403, frankfurter XAU yok, exchangerate
+  anahtar ister). Kural: (1) dış uç eklerken ÖNCE `curl` at, yanıt şeklini
+  gözle gör, çalışmayanı hiç yazma; (2) elenen adayları koda yorum olarak
+  yaz (aynı yol iki kez denenmesin); (3) kuramadığın güvenceyi İLAN ETME —
+  tek kaynak kaldıysa savunmayı gerçekten var olana kur (tazelik + mutlak
+  aralık + adım kapısı); (4) dış çağrı başarısızsa SEBEBİ yüzeye çıkar,
+  "alınamadı" demek kullanıcıyı da seni de kör bırakır.
 - **OAuth token'ı client'ına bağlıdır; tek-seferlik ops işini panel rotası yap (2026-07):**
   Etsy access/refresh token'ları üretildikleri app'in (client) bağlamına kilitlidir —
   lokal env farklı keystring'le 401 invalid_token alır, yapısaldır, düzelmez. Çözüm:

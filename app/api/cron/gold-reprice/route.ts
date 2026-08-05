@@ -10,8 +10,8 @@ export const maxDuration = 300;
  *
  * Kapılar çekirdekte: |Δ| < %1 → no-op (deadband), |Δ| > %10 → uygulamaz ve
  * `blocked-max-step` raporlar (insan ops rotasından force ile onaylar).
- * Spot iki bağımsız kaynaktan çapraz doğrulanır; doğrulanamazsa hiçbir şey
- * yazılmaz. Uyarı Merkezi sinyali audit log üzerinden okunur.
+ * Spot gold-api.com'dan çekilir ve tazelik (≤24sa) + mantık aralığı
+ * kapılarından geçer; geçemezse hiçbir şey yazılmaz. Uyarı Merkezi sinyali audit log üzerinden okunur.
  */
 export async function GET(request: Request) {
   const secret = process.env.CRON_SECRET;
