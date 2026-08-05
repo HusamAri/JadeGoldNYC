@@ -21,8 +21,8 @@ import { buildPricingDiff, type PricingRunRow } from "@/lib/pricing-engine/run";
  * Kalıcı kurallar (bayrak kalksa da geçerli):
  *   1. Etsy'ye programlı/gözetimsiz yazma YOK — onayı insan verir.
  *      DEĞİŞİKLİK (2026-08-05, sahip kararı): TEK istisna altın endeksi —
- *      spot değişimini kapılı (deadband %1 / max-step %10 / çift kaynak
- *      doğrulama / read-back) otomasyonla uygular (lib/pricing/gold-reprice-run).
+ *      spot değişimini kapılı (deadband %1 / max-step %10 / spot tazelik +
+ *      aralık / read-back) otomasyonla uygular (lib/pricing/gold-reprice-run).
  *      %10 üstü adım yine insan onayına düşer.
  *   2. Elle yazılan fiyat YOK — her fiyat motor fonksiyonundan türer.
  *   3. Her itişin ÖNÜNDE yetkili kuru-çalıştırma farkı durur.
@@ -451,7 +451,7 @@ export type GoldIndexOrgResult = import("@/lib/pricing/gold-reprice-run").OrgRun
 /**
  * Endeksi ŞİMDİ uygula — cron'un yaptığının paneldeki karşılığı, aktif org'a
  * daraltılmış. Kapılar çekirdekte aynen geçerli: deadband %1 (force ile
- * aşılır), max-step %10 (force insan onayı sayılır), çift kaynak spot
+ * aşılır), max-step %10 (force insan onayı sayılır), spot tazelik/aralık
  * doğrulaması, Etsy read-back'siz panel yazmama. İki kez tıklanırsa ikinci
  * koşu Δ%0 gördüğü için doğal no-op'tur (deadband = doğal CAS).
  */

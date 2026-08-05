@@ -74,13 +74,21 @@ export default async function FiyatPage() {
     note: r.note,
   }));
   let liveQuote: SpotQuote | null = null;
+  let liveError: string | null = null;
   try {
     liveQuote = await Promise.race([
       fetchLiveSpotUsd(),
-      new Promise<null>((resolve) => setTimeout(() => resolve(null), 5000)),
+      // Sayfa dış kaynak yüzünden kilitlenmesin. Süre 5sn'den 8sn'ye çekildi:
+      // soğuk başlangıçta 5sn sınırda kalıyordu ve kart sebepsiz "alınamadı"
+      // gösteriyordu (kullanıcı "API çalışmıyor mu?" diye sordu — sebebi
+      // görünmediği için teşhis edilemiyordu).
+      new Promise<null>((resolve) => setTimeout(() => resolve(null), 8000)),
     ]);
-  } catch {
-    liveQuote = null; // kart "alınamadı" gösterir; koşuyu cron/manuel dener
+    if (liveQuote == null) liveError = "kaynak 8 saniyede yanıt vermedi";
+  } catch (e) {
+    // SEBEBİ YUTMA: kart nedeni gösterir, yoksa arıza teşhis edilemez.
+    liveError = e instanceof Error ? e.message : String(e);
+    liveQuote = null;
   }
 
   return (
@@ -123,6 +131,7 @@ export default async function FiyatPage() {
         basis={basisHistory[0]?.spot ?? config.spotUsdPerOzt}
         liveSpot={liveQuote?.spotPerOzt ?? null}
         liveSources={(liveQuote?.sources ?? []).map((s) => s.name).join(" + ")}
+        liveError={liveError}
         history={basisHistory}
       />
 

@@ -22,6 +22,9 @@ interface Props {
   /** Canlı spot — sunucu tarafında çekildi; alınamadıysa null. */
   liveSpot: number | null;
   liveSources: string;
+  /** Spot alınamadıysa SEBEBİ — kullanıcı "API çalışmıyor mu?" diye
+   *  sormak zorunda kalmasın, arıza kartın üstünde yazsın. */
+  liveError?: string | null;
   history: GoldBasisRow[];
 }
 
@@ -35,7 +38,13 @@ const pct = (x: number) => `${x > 0 ? "+" : ""}${x.toFixed(2)}%`;
  * Cron her sabah 04:30 UTC'de aynı işi kendiliğinden yapar — bu kart, "şimdi
  * olsun" dendiğinde aynı kapılı koşuyu elle tetiklemek içindir.
  */
-export function GoldIndexCard({ basis, liveSpot, liveSources, history }: Props) {
+export function GoldIndexCard({
+  basis,
+  liveSpot,
+  liveSources,
+  liveError,
+  history,
+}: Props) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
 
@@ -93,9 +102,10 @@ export function GoldIndexCard({ basis, liveSpot, liveSources, history }: Props) 
               Altın endeksi — otomatik
             </h3>
             <p className="text-muted-foreground mt-1 text-xs leading-relaxed">
-              Her sabah 04:30 UTC&apos;de canlı spot çift kaynaktan doğrulanır;
-              tabana göre fark <strong>%1&apos;in altındaysa</strong> hiçbir şey
-              yapılmaz, <strong>%1–10 arasındaysa</strong> otomatik uygulanır,{" "}
+              Her sabah 04:30 UTC&apos;de canlı spot çekilir (tazelik + mantık
+              aralığı kapılarından geçer); tabana göre fark{" "}
+              <strong>%1&apos;in altındaysa</strong> hiçbir şey yapılmaz,{" "}
+              <strong>%1–10 arasındaysa</strong> otomatik uygulanır,{" "}
               <strong>%10&apos;un üstündeyse</strong> burada onayınızı bekler.
             </p>
           </div>
@@ -113,6 +123,11 @@ export function GoldIndexCard({ basis, liveSpot, liveSources, history }: Props) 
             <dd className="font-medium tabular-nums">
               {liveSpot != null ? `$${liveSpot.toFixed(0)}/ozt` : "alınamadı"}
             </dd>
+            {liveSpot == null && liveError && (
+              <dd className="text-destructive mt-0.5 text-xs leading-snug">
+                {liveError}
+              </dd>
+            )}
           </div>
           <div>
             <dt className="text-muted-foreground text-xs">Fark</dt>

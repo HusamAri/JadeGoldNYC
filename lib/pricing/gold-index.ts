@@ -112,48 +112,60 @@ export type SpotQuote = {
   sources: { name: string; value: number }[];
 };
 
-/** Canlı spotu iki bağımsız kaynaktan çeker ve çapraz doğrular (≤%2 sapma).
- *  Tek kaynak arızasında diğeriyle devam eder; ikisi de yoksa/uyuşmuyorsa
- *  throw — fiyat, doğrulanamayan veriyle ASLA oynatılmaz. */
+/** Canlı spotu çeker. Ücretsiz/anahtarsız çalışan tek kaynak var
+ *  (gold-api.com — elenenler gövdede listeli), bu yüzden güvenlik çapraz
+ *  doğrulama DEĞİL üç kapıdır: tazelik (≤24sa), mutlak aralık ve çağıran
+ *  taraftaki adım kapıları. Kapıdan geçemeyen veriyle fiyat ASLA oynatılmaz. */
 export async function fetchLiveSpotUsd(): Promise<SpotQuote> {
   const sources: { name: string; value: number }[] = [];
 
+  // 2026-08-05 canlı sondaj: ücretsiz ve anahtarsız çalışan TEK kaynak
+  // gold-api.com. Denenip ELENENLER — bir daha aynı yola girilmesin:
+  //   stooq.com/q/l/?s=xauusd  → 404 (sembol yok; ilk sürümde bu vardı ve
+  //                              hiç çalışmadı, sessizce tek kaynağa düşüyordu)
+  //   data-asg.goldprice.org   → 403 (bot koruması)
+  //   frankfurter.app / .dev   → XAU desteklenmiyor (301 / 404)
+  //   exchangerate.host        → API anahtarı şart
+  //   open.er-api.com          → unsupported-code
+  //
+  // Tek kaynak olduğu için güvenlik ÇAPRAZ DOĞRULAMAYA değil üç kapıya
+  // dayanır: (1) tazelik, (2) mutlak aralık, (3) çağıran taraftaki adım
+  // kapıları (deadband %1 / max-step %10 — bozuk bir kotasyon tabandan
+  // %10'dan fazla saparsa zaten uygulanmaz, insan onayına düşer).
+  let staleness: string | null = null;
   try {
     const r = await fetch("https://api.gold-api.com/price/XAU", {
       cache: "no-store",
     });
     if (r.ok) {
-      const j = (await r.json()) as { price?: number };
+      const j = (await r.json()) as { price?: number; updatedAt?: string };
       if (typeof j.price === "number" && j.price > 0) {
-        sources.push({ name: "gold-api.com", value: j.price });
+        // TAZELİK: donmuş bir kotasyonla fiyat oynatmak, piyasa hareket
+        // ederken katalogu yanlış tabana kilitler.
+        const ts = j.updatedAt ? Date.parse(j.updatedAt) : NaN;
+        const yasSaat = Number.isFinite(ts)
+          ? (Date.now() - ts) / 3_600_000
+          : null;
+        if (yasSaat != null && yasSaat > 24) {
+          staleness = `kotasyon ${Math.round(yasSaat)} saat bayat`;
+        } else {
+          sources.push({ name: "gold-api.com", value: j.price });
+        }
       }
+    } else {
+      staleness = `HTTP ${r.status}`;
     }
-  } catch {
-    // kaynak arızası: diğer kaynakla devam
-  }
-
-  try {
-    const r = await fetch(
-      "https://stooq.com/q/l/?s=xauusd&f=sd2t2ohlcv&h&e=csv",
-      { cache: "no-store" },
-    );
-    if (r.ok) {
-      const csv = await r.text();
-      // Symbol,Date,Time,Open,High,Low,Close,Volume — Close = 7. kolon
-      const cells = (csv.trim().split("\n")[1] ?? "").split(",");
-      const close = Number(cells[6]);
-      if (Number.isFinite(close) && close > 0) {
-        sources.push({ name: "stooq.com", value: close });
-      }
-    }
-  } catch {
-    // kaynak arızası: diğer kaynakla devam
+  } catch (e) {
+    staleness = e instanceof Error ? e.message : String(e);
   }
 
   if (sources.length === 0) {
-    throw new Error("Spot alınamadı: iki kaynak da yanıt vermedi.");
+    throw new Error(
+      `Spot alınamadı (gold-api.com${staleness ? `: ${staleness}` : ""}) — fiyat oynatılmadı.`,
+    );
   }
-  if (sources.length === 2) {
+  // İleride ikinci kaynak eklenirse çapraz doğrulama burada devreye girer.
+  if (sources.length > 1) {
     const [a, b] = sources;
     const diff = Math.abs(a.value - b.value) / Math.min(a.value, b.value);
     if (diff > 0.02) {
