@@ -80,8 +80,21 @@ export function findTitleRepeats(title: string): string[] {
 }
 
 export const ETSY_TAG_LIMIT = 13;
-/** Başlık arama bütçesi hedefi: 110-140 bandı (kural 4 — kısa başlık = kayıp). */
-export const TITLE_MIN_LENGTH = 110;
+/**
+ * Başlık alt sınırı — YALNIZ gerçekten cılız başlığı yakalar.
+ *
+ * 2026-08 düzeltmesi: burada 110 yazıyordu ("140 bütçesini doldur"). Etsy
+ * Ağustos 2025'te bunun TERSİNE döndü — Seller Handbook artık 15 kelimeden
+ * kısa, insan-okunur başlık öneriyor ve eRank'in aktardığına göre Etsy eski
+ * tarz uzun başlıkların cezalandırılmadığını açıkça doğruladı. 110 eşiği
+ * kullanıcıyı rehberliğin tersine (anahtar kelime yığmaya) itiyordu ve aynı
+ * dosyadaki `title_long` (>15 kelime) kuralıyla mantıksal olarak çelişiyordu:
+ * bu alanda 110 karakterlik bir alyans başlığı zaten ~18 kelimedir.
+ *
+ * Yeni eşik "kayıp bütçe" değil "eksik künye" ölçer: 40 karakterin altında
+ * karat + metal + profil + ürün adı aynı anda sığmaz.
+ */
+export const TITLE_MIN_LENGTH = 40;
 /** Etsy 10 foto slotu verir; 5'in altı belirgin eksik kullanım sayılır. */
 export const LOW_IMAGE_THRESHOLD = 5;
 
@@ -139,12 +152,12 @@ export const AUDIT_CHECKS: AuditCheckDef[] = [
   {
     key: "title_short",
     severity: "onemli",
-    title: (n) => `${n} listing başlığı 110 karakterin altında (bütçe boşa gidiyor)`,
-    hint: "Etsy 140 karakterlik başlık bütçesi verir; ilk kelimeler en güçlü arama sinyalidir ama kısa başlık kalan bütçedeki long-tail eşleşmeleri hiç kullanmaz — o aramalarda görünmezsin. Başlığı 110-140 bandına, alıcının gerçekten yazdığı ifadelerle (karat + renk + profil + kullanım) tamamla.",
+    title: (n) => `${n} listing başlığı ${TITLE_MIN_LENGTH} karakterin altında (künye eksik)`,
+    hint: "Bu kadar kısa bir başlığa karat + metal rengi + profil + ürün adı aynı anda sığmaz; alıcı listeye bakınca neyi satın aldığını anlayamaz. Uzatmak için anahtar kelime YIĞMA — Etsy'nin güncel rehberi 15 kelimenin altını öneriyor. Eksik olan künye parçasını ekle, orada bırak.",
     fixHref: (id) => `/tasarimlar/listing/${id}`,
     fixLabel: "Başlığı düzenle",
-    sourceLabel: "Etsy Seller Handbook — Keywords 101 (titles)",
-    sourceUrl: "https://www.etsy.com/seller-handbook/article/keywords-101-everything-you-need-to-know/382774281517",
+    sourceLabel: "Etsy Seller Handbook — New Guidance for Listing Titles (Ağu 2025)",
+    sourceUrl: "https://www.etsy.com/seller-handbook/article/1399426136697",
   },
   {
     key: "title_long",
@@ -253,13 +266,13 @@ export function auditProduct(p: AuditProductInput): AuditFinding[] {
     out.push({ key: "title_rules", detail: ruleHits.join(" · ") });
   }
 
-  // Yön hatası düzeltmesi: motor yalnız "çok uzun"u (>140) yakalıyordu;
-  // 60 karakterlik başlık sessizce geçiyordu. Kural 4: <110 karakter =
-  // kullanılmayan arama bütçesi — asıl yaygın kayıp bu yöndeydi.
+  // Cılız künye kontrolü. Eşiğin NEDEN 110'dan 40'a indiği TITLE_MIN_LENGTH
+  // tanımında: Etsy Ağu 2025'te kısa/okunur başlığa döndü, 110 hedefi hem
+  // rehberliğe hem aşağıdaki title_long kuralına ters düşüyordu.
   if (p.title.length < TITLE_MIN_LENGTH) {
     out.push({
       key: "title_short",
-      detail: `${p.title.length}/140 karakter (hedef ≥ ${TITLE_MIN_LENGTH})`,
+      detail: `${p.title.length} karakter (künye için en az ${TITLE_MIN_LENGTH})`,
     });
   }
 

@@ -402,28 +402,32 @@ function buildTitle(input: SeoInput): string {
 
   const parts: string[] = [lead];
 
-  // 2. öbek — odak + özellik.
-  if (style === "herringbone" || style === "snake") {
-    const desc = [focusAdj[0], focusAdj[1] ?? "", "snake chain"]
-      .filter(Boolean)
-      .join(" ");
-    parts.push(titleCasePhrase(desc));
-  } else if (input.focus !== "classic") {
-    parts.push(titleCasePhrase(`${focusAdj[0]} ${focusAdj[1] ?? ""} ${type}`.trim()));
-  }
+  // 2. öbek — odak sıfatları + İKİNCİL isim. Ürün ismi (type) burada TEKRAR
+  // EDİLMEZ: lead'de zaten geçti ve rehberlik kelime tekrarını istemiyor.
+  // Kolyede doğal eşanlamlı "chain" long-tail taşır ("layering chain");
+  // eşanlamlısı olmayan tiplerde ikincil isim yok, sıfatlar tek başına durur.
+  // Herringbone düz bir yılan zincirdir — "snake chain" eşanlamlısı gerçek bir
+  // long-tail kazancı. Ama stilin KENDİSİ "snake" ise aynı kelime lead'de zaten
+  // geçtiğinden tekrar olur (süpürme yakaladı); orada nötr eşanlamlıya düşülür.
+  const secondaryNoun =
+    input.productType === "necklace"
+      ? style === "herringbone"
+        ? "snake chain"
+        : "layering chain"
+      : "";
+  // Üç odak sıfatı: 15 kelime sınırının altında kalırken başlığa gerçek
+  // tanım katar (tek sıfat 35 karakterlik cılız künye üretiyordu).
+  const focusWords = focusAdj.slice(0, 3);
+  const second = [...focusWords, secondaryNoun].filter(Boolean).join(" ").trim();
+  if (second) parts.push(titleCasePhrase(second));
 
-  // 3. öbek — kitle / kullanım. Kolyede "Layering", diğerlerinde "Handmade".
-  const forAudience =
-    input.audience === "unisex" ? "" : ` for ${input.audience}`;
-  const realPrefix = mp.isSolid ? "Real Gold " : "";
-  const midWord = input.productType === "necklace" ? "Layering" : "Handmade";
-  parts.push(
-    `${realPrefix}${midWord} ${titleCase(type)}${titleCase(forAudience)}`.trim(),
-  );
-
-  // 4. öbek — stil + hediye.
-  const giftWho = input.audience === "men" ? "Him" : "Her";
-  parts.push(`Minimalist Gift for ${giftWho}`);
+  // 3. öbek — yapım + kategori. KİTLE ("for men/women") ve HEDİYE öbeği
+  // BİLEREK yok: Etsy Ağustos 2025 rehberi alıcı/vesile terimlerini başlıktan
+  // çıkarıp etiketlere taşımayı söylüyor (etiket havuzunda zaten üretiliyorlar).
+  // "Real Gold" da düştü — lead zaten "solid gold" diyor, tekrar olurdu.
+  // "Fine jewelry" YALNIZ som altında: kaplama/dolgu üründe kullanmak Etsy'nin
+  // malzeme doğruluğu politikasını (ve FTC Jewelry Guides'ı) ihlal ederdi.
+  parts.push(mp.isSolid ? "Handmade Fine Jewelry" : "Handmade Jewelry");
 
   let title = parts.filter(Boolean).join(", ");
   if (title.length > ETSY_TITLE_MAX) {
@@ -549,6 +553,12 @@ function buildChecks(input: SeoInput, title: string, tags: SeoTag[]): SeoCheck[]
       label: "Başlık ≤ 140 karakter",
       passed: title.length <= ETSY_TITLE_MAX,
       hint: "Başlık 140 karakteri aşıyor.",
+    },
+    {
+      key: "titlewords",
+      label: "Başlık 15 kelimeden kısa",
+      passed: title.split(/\s+/).filter(Boolean).length < 15,
+      hint: "Etsy'nin Ağustos 2025 rehberi 15 kelimenin altını öneriyor; kuyruktaki ikincil ifadeleri etiketlere taşı.",
     },
   ];
   return checks;
