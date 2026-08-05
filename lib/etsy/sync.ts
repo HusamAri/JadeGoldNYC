@@ -797,6 +797,24 @@ async function syncShopExtras(
       await admin
         .from("etsy_shop_sections")
         .upsert(rows, { onConflict: "org_id,section_id" });
+
+      // BUDAMA: Etsy'de silinen bölüm panelde HAYALET satır olarak kalıyordu
+      // (2026-08 vakası: 5 ölü metal bölümü Etsy'den kalkmıştı ama panelde
+      // haftalarca durdu). Bölüm listesi TAM bir cevaptır — Etsy'nin
+      // döndürmediği satır artık yoktur.
+      //
+      // Güvenlik: yalnız `rows.length > 0` dalında budanır. Boş cevap gelirse
+      // (geçici API arızası / yetki kaybı) HİÇBİR ŞEY silinmez — aksi halde
+      // tek başarısız çağrı tüm bölüm aynasını süpürürdü.
+      const live = rows.map((r) => r.section_id);
+      const { error: pruneErr } = await admin
+        .from("etsy_shop_sections")
+        .delete()
+        .eq("org_id", orgId)
+        .not("section_id", "in", `(${live.join(",")})`);
+      if (pruneErr) {
+        console.error("[etsy-sync] bölüm budama:", pruneErr.message);
+      }
     }
   } catch {
     // yut
