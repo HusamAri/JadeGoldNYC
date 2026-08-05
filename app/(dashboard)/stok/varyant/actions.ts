@@ -170,6 +170,7 @@ export async function pushVariantStock(): Promise<VariantPushResult> {
 
 export interface PushPanelVariantsResult {
   updated?: number;
+  created?: number;
   missing?: string[];
   error?: string;
 }
@@ -245,13 +246,14 @@ export async function pushAllPanelVariantsToListing(
   );
 
   if (outcome.status === "updated" || outcome.missing.length === 0) {
-    if (outcome.updated > 0 || outcome.missing.length > 0) {
+    if (outcome.updated > 0 || outcome.created > 0 || outcome.missing.length > 0) {
       await logAudit(supabase, {
         orgId: m.org_id,
         action: "etsy.variant_sync",
         entityType: "product_variants",
         summary:
           `Panel varyantları Etsy'ye yazıldı: ${outcome.updated} güncellendi` +
+          (outcome.created ? `, ${outcome.created} oluşturuldu` : "") +
           (outcome.missing.length ? `, ${outcome.missing.length} bulunamadı` : ""),
         source: "etsy",
       });
