@@ -458,6 +458,16 @@ export async function pushListingQuantity(
   }
 }
 
+export type PushPanelVariantsOutcome = {
+  listingId: number;
+  status: "updated" | "error";
+  /** Panel varyantlarından kaç tanesinin özelliği Etsy'de yazıldı. */
+  updated: number;
+  /** Etsy'de bulunamayan panel SKU'ları. */
+  missing: string[];
+  detail?: string;
+};
+
 export type SkuRenameOutcome = {
   listingId: number;
   status: "updated" | "unchanged" | "error";
@@ -551,6 +561,108 @@ export async function renameListingSkuPrefix(
       status: "error",
       renamed: 0,
       sample: [],
+      detail: e instanceof Error ? e.message : "Bilinmeyen hata",
+    };
+  }
+}
+
+/**
+ * Panel varyantlarını Etsy listing'ine yazar: her panel varyantın fiyatı,
+ * property'leri (kişiselleştirme dahil) ve adedi Etsy'nin konu offering'ine
+ * yazılır. Panel SKU'su Etsy'de bulunamamışsa `missing` listesine eklenir.
+ *
+ * GÜVENLİK: fiyat okunamazsa (0/eksik) — tüm PUT iptal edilir (buildInventoryUpdate
+ * ile aynı ilke). Property yerleri (slot 513/514) sunucu tarafından çözer.
+ *
+ * @param panelVariants Panel DB'sinden ({ sku, price_cents, properties, quantity })
+ */
+export async function pushPanelVariantsToListing(
+  client: EtsyClient,
+  listingId: number,
+  panelVariants: Array<{
+    sku: string;
+    priceCents: number | null;
+    quantity: number;
+    properties?: Array<{ name: string; values: string[] }> | null;
+  }>,
+): Promise<PushPanelVariantsOutcome> {
+  try {
+    const inventory = await getListingInventory(client, listingId);
+    const live = (inventory.products ?? []).filter((p) => !p.is_deleted);
+    if (live.length === 0) {
+      return {
+        listingId,
+        status: "error",
+        updated: 0,
+        missing: panelVariants.map((v) => v.sku),
+        detail: "Etsy listing envanteri boş",
+      };
+    }
+
+    // Panel varyantlarını SKU'ya göre map'le.
+    const panelBySku = new Map(panelVariants.map((v) => [v.sku, v]));
+    // Property'leri panel varyantlarından bir haritalama.
+    const propsBySku = new Map<string, { name: string; value: string }[]>();
+    for (const pv of panelVariants) {
+      const props: { name: string; value: string }[] = [];
+      if (pv.properties) {
+        for (const p of pv.properties) {
+          for (const val of p.values ?? []) {
+            props.push({ name: p.name, value: val });
+          }
+        }
+      }
+      if (props.length > 0) propsBySku.set(pv.sku, props);
+    }
+
+    // Eksik varyantları tespit et: Etsy'de bulunmayan panel SKU'ları.
+    const etsySkus = new Set(live.map((p) => (p.sku ?? "").trim()));
+    const missing = panelVariants.filter((v) => !etsySkus.has(v.sku.trim())).map((v) => v.sku);
+
+    // Fiyat haritasını kur: panel SKU'ları → sent.
+    const priceBySkuCents = new Map<string, number>();
+    for (const [sku, pv] of panelBySku) {
+      if (pv.priceCents != null && pv.priceCents > 0) {
+        priceBySkuCents.set(sku, pv.priceCents);
+      }
+    }
+
+    // Fiyat senkronizasyonunu yap (mevcut Etsy varyantlarının fiyatlarını ve
+    // property'lerini güncelle).
+    const readinessStateId = await resolveReadinessStateId(client);
+    const { update, changed } = buildPriceSyncUpdate(
+      inventory,
+      priceBySkuCents,
+      readinessStateId,
+      propsBySku,
+    );
+
+    if (changed === 0 && missing.length === 0) {
+      return { listingId, status: "updated", updated: 0, missing };
+    }
+
+    if (changed > 0) {
+      await putListingInventory(client, listingId, update, {
+        legacy: readinessStateId != null ? false : undefined,
+      });
+    }
+
+    return {
+      listingId,
+      status: missing.length > 0 ? "error" : "updated",
+      updated: changed,
+      missing,
+      detail:
+        missing.length > 0
+          ? `${changed} varyant güncellendi; ${missing.length} Etsy'de bulunamadı (elle oluşturulması gerekir): ${missing.join(", ")}`
+          : undefined,
+    };
+  } catch (e) {
+    return {
+      listingId,
+      status: "error",
+      updated: 0,
+      missing: [],
       detail: e instanceof Error ? e.message : "Bilinmeyen hata",
     };
   }

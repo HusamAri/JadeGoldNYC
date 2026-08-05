@@ -50,7 +50,11 @@ export type EonProfile =
   | "beveled"
   | "knife"
   | "milgrain"
-  | "hammered";
+  | "hammered"
+  // Elde bitirilen yeni desenler (2026-08): dokuma ve çapraz yiv. İşçilik
+  // sınıfı milgrain/hammered ile aynı — bu yüzden ayrı bir sabit YOK.
+  | "basketweave"
+  | "ribbed";
 
 /** 1 troy ons = 31.1035 gram (bkz. `lib/gold-cost.ts` TROY_OUNCE_GRAMS). */
 export const TROY_OUNCE_GRAMS = 31.1035;
@@ -77,6 +81,8 @@ export const EON_LABOR_HANDFINISHED_USD = 40;
 const HANDFINISHED_PROFILES: ReadonlySet<EonProfile> = new Set<EonProfile>([
   "milgrain",
   "hammered",
+  "basketweave",
+  "ribbed",
 ]);
 
 /** Paketleme ve kargo payı, USD. */
@@ -152,6 +158,59 @@ export const EON_GRAMS_1_5MM: Record<
   },
 };
 
+/**
+ * Motorun AYARLANABİLİR girdileri (Faz 5). Değerler `pricing_config`'ten
+ * gelir; verilmeyen alan yukarıdaki v4 sabitine düşer. Sabitler hâlâ tek
+ * referans noktasıdır: üç altın değeri ve canlı siparişi üreten varsayım seti.
+ *
+ * `spot` bilerek BURADA DEĞİL — o arayüzdeki tek koldur ve
+ * `EonCostInput.spotUsdPerOzt` ile taşınır.
+ */
+export interface EonPricingConfig {
+  fireFactor: number;
+  laborUsd: number;
+  laborHandfinishedUsd: number;
+  packagingUsd: number;
+  shippingUsd: number;
+  multiplierNarrow: number;
+  multiplierWide: number;
+  wideBandMinMm: number;
+  saleRate: number;
+}
+
+export const DEFAULT_EON_PRICING_CONFIG: EonPricingConfig = {
+  fireFactor: EON_FIRE_FACTOR,
+  laborUsd: EON_LABOR_USD,
+  laborHandfinishedUsd: EON_LABOR_HANDFINISHED_USD,
+  packagingUsd: EON_PACKAGING_USD,
+  shippingUsd: EON_SHIPPING_USD,
+  multiplierNarrow: EON_MULTIPLIER_NARROW,
+  multiplierWide: EON_MULTIPLIER_WIDE,
+  wideBandMinMm: WIDE_BAND_MIN_MM,
+  saleRate: EON_SALE_RATE,
+};
+
+/**
+ * ZEMİN (floor) — bu fiyatın ALTINDA satış zarardır.
+ *
+ * `round((landed + 0.45) / 0.895)` · offsite reklamlı satışta
+ * `round((landed + 0.45) / 0.745)`. 0,45 Etsy sabit işlem ücreti; bölen ise
+ * satıştan geriye kalan orandır (standart kesintiler → 0,895; offsite reklam
+ * komisyonu eklenince → 0,745). Formüller kullanıcı tarafından verildi ve
+ * BİREBİR uygulanır — türetilmez, yaklaşık hesaplanmaz.
+ */
+export const ETSY_FIXED_FEE_USD = 0.45;
+export const FLOOR_NET_RATE = 0.895;
+export const FLOOR_NET_RATE_OFFSITE = 0.745;
+
+export function floorUsd(landedUsd: number): number {
+  return Math.round((landedUsd + ETSY_FIXED_FEE_USD) / FLOOR_NET_RATE);
+}
+
+export function offsiteFloorUsd(landedUsd: number): number {
+  return Math.round((landedUsd + ETSY_FIXED_FEE_USD) / FLOOR_NET_RATE_OFFSITE);
+}
+
 export class EonCostError extends Error {}
 
 /** Motor girdisi. `grams` verilirse tablo atlanır (dış gram doğrulaması için). */
@@ -166,6 +225,8 @@ export interface EonCostInput {
   grams?: number;
   /** Spot USD/ozt override (senaryo analizi). Varsayılan 4090. */
   spotUsdPerOzt?: number;
+  /** Ayar seti (pricing_config). Verilmezse v4 sabitleri kullanılır. */
+  config?: Partial<EonPricingConfig>;
 }
 
 /**
@@ -196,6 +257,10 @@ export interface EonCostBreakdown {
   shippingUsd: number;
   /** material + labor + packaging + shipping — YUVARLANMAZ. */
   landedUsd: number;
+  /** Zarar sınırı: round((landed + 0,45) / 0,895). Altına inilmez. */
+  floorUsd: number;
+  /** Offsite reklamlı satışta zarar sınırı: round((landed + 0,45) / 0,745). */
+  offsiteFloorUsd: number;
 
   multiplier: number;
   /** round(landedUsd × multiplier) — tam sayı USD. */
@@ -218,17 +283,23 @@ export function gramPriceUsd(spotUsdPerOzt: number): number {
 }
 
 /** Profil → işçilik USD. */
-export function laborUsdFor(profile: EonProfile): number {
+export function laborUsdFor(
+  profile: EonProfile,
+  config: EonPricingConfig = DEFAULT_EON_PRICING_CONFIG,
+): number {
   return HANDFINISHED_PROFILES.has(profile)
-    ? EON_LABOR_HANDFINISHED_USD
-    : EON_LABOR_USD;
+    ? config.laborHandfinishedUsd
+    : config.laborUsd;
 }
 
 /** Genişlik → motor çarpanı. 8mm ve üstü geniş bant. */
-export function multiplierFor(widthMm: number): number {
-  return widthMm >= WIDE_BAND_MIN_MM
-    ? EON_MULTIPLIER_WIDE
-    : EON_MULTIPLIER_NARROW;
+export function multiplierFor(
+  widthMm: number,
+  config: EonPricingConfig = DEFAULT_EON_PRICING_CONFIG,
+): number {
+  return widthMm >= config.wideBandMinMm
+    ? config.multiplierWide
+    : config.multiplierNarrow;
 }
 
 /**
@@ -267,6 +338,10 @@ export function lookupGrams1_5mm(
  */
 export function computeEonCost(input: EonCostInput): EonCostBreakdown {
   const { karat, widthMm, profile } = input;
+  const cfg: EonPricingConfig = {
+    ...DEFAULT_EON_PRICING_CONFIG,
+    ...(input.config ?? {}),
+  };
 
   if (!(karat in EON_PURITY)) {
     throw new EonCostError(`Bilinmeyen karat: ${karat}`);
@@ -308,12 +383,11 @@ export function computeEonCost(input: EonCostInput): EonCostBreakdown {
   const purity = EON_PURITY[karat];
   const gPrice = gramPriceUsd(spot);
 
-  const materialUsd = grams * gPrice * purity * EON_FIRE_FACTOR;
-  const laborUsd = laborUsdFor(profile);
-  const landedUsd =
-    materialUsd + laborUsd + EON_PACKAGING_USD + EON_SHIPPING_USD;
+  const materialUsd = grams * gPrice * purity * cfg.fireFactor;
+  const laborUsd = laborUsdFor(profile, cfg);
+  const landedUsd = materialUsd + laborUsd + cfg.packagingUsd + cfg.shippingUsd;
 
-  const multiplier = multiplierFor(widthMm);
+  const multiplier = multiplierFor(widthMm, cfg);
   // KRİTİK: yuvarlanmamış landed. Bkz. yukarıdaki yuvarlama sözleşmesi.
   const engineUsd = Math.round(landedUsd * multiplier);
 
@@ -335,13 +409,16 @@ export function computeEonCost(input: EonCostInput): EonCostBreakdown {
     spotUsdPerOzt: spot,
     gramPriceUsd: gPrice,
     purity,
-    fireFactor: EON_FIRE_FACTOR,
+    fireFactor: cfg.fireFactor,
 
     materialUsd,
     laborUsd,
-    packagingUsd: EON_PACKAGING_USD,
-    shippingUsd: EON_SHIPPING_USD,
+    packagingUsd: cfg.packagingUsd,
+    shippingUsd: cfg.shippingUsd,
     landedUsd,
+
+    floorUsd: floorUsd(landedUsd),
+    offsiteFloorUsd: offsiteFloorUsd(landedUsd),
 
     multiplier,
     engineUsd,
