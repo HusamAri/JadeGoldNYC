@@ -26,6 +26,32 @@ interface ListingRow {
   title: string | null;
 }
 
+/**
+ * Oluşturma-bekleyen panel varyantı mı? Etsy'de hiç görülmemiş
+ * (etsy_product_id null) ama create-only push'un Etsy'de offering olarak
+ * AÇABİLECEĞİ satır: geçerli fiyat + property_id'li Etsy-format property —
+ * createMissingListingOfferings'in oluşturma şartının birebir aynısı.
+ * Mutabakat bu satırları SİLMEZ; aksi halde "panele ekle → butonla Etsy'de
+ * oluştur" akışı senkronla yarışır ve senkron önce koşarsa adayları temizler
+ * (0124 vakası: butona basılmadan gece senkronu 200 yeni varyantı sildi).
+ * Oluşturma gerçekleşince ilk senkron upsert'i etsy_product_id'yi doldurur ve
+ * satır normal ayna kurallarına döner.
+ */
+function isPendingCreate(v: {
+  etsy_product_id: number | null;
+  price_cents: number | null;
+  properties: unknown;
+}): boolean {
+  if (v.etsy_product_id != null) return false;
+  if (v.price_cents == null || v.price_cents <= 0) return false;
+  return (
+    Array.isArray(v.properties) &&
+    v.properties.some(
+      (p) => !!(p as { property_id?: number | null })?.property_id,
+    )
+  );
+}
+
 /** property_values → okunur beden/renk etiketi (ör. "Length: 7 inches"). */
 function propsLabel(props?: EtsyPropertyValue[]): string | null {
   if (!props || props.length === 0) return null;
@@ -194,7 +220,7 @@ export async function syncListingVariants(
         const keepSkus = new Set(rows.map((r) => r.sku));
         const { data: existing, error: exErr } = await admin
           .from("product_variants")
-          .select("id, sku")
+          .select("id, sku, etsy_product_id, price_cents, properties")
           .eq("org_id", orgId)
           .eq("product_id", listing.id);
         if (exErr) {
@@ -205,6 +231,19 @@ export async function syncListingVariants(
         } else {
           const staleIds = (existing ?? [])
             .filter((v) => !keepSkus.has((v as { sku: string }).sku))
+            // Oluşturma-bekleyen varyantlar ayna kuralından muaf (bkz.
+            // isPendingCreate): silinirse create-only push'un iteceği aday
+            // kalmaz ve "panele ekle → Etsy'de oluştur" akışı hiç tamamlanamaz.
+            .filter(
+              (v) =>
+                !isPendingCreate(
+                  v as {
+                    etsy_product_id: number | null;
+                    price_cents: number | null;
+                    properties: unknown;
+                  },
+                ),
+            )
             .map((v) => (v as { id: string }).id);
           if (staleIds.length > 0) {
             const { error: delErr } = await admin
