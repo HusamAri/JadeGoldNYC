@@ -9,7 +9,10 @@ import { getEtsyWriteAccess } from "@/lib/db/queries/etsy";
 import { pricingWriteBlocked } from "@/lib/feature-flags";
 import { EtsyClient, EtsyNotConnectedError } from "@/lib/etsy/client";
 import { etsyPaths } from "@/lib/etsy/endpoints";
-import { pushListingPrices } from "@/lib/etsy/inventory";
+import {
+  createMissingListingOfferings,
+  pushListingPrices,
+} from "@/lib/etsy/inventory";
 import { verifyListingSeo } from "@/lib/etsy/listing";
 import {
   applyListingPersonalization,
@@ -20,6 +23,7 @@ import {
 } from "@/lib/etsy/personalization";
 import { logAudit } from "@/lib/audit";
 import {
+  asEtsyProperties,
   variantPropsForMatch,
   type RawVariantProperties,
 } from "@/lib/variant-properties";
@@ -952,6 +956,108 @@ export async function pushListingPricesToEtsyAction(
       updated: r.status === "updated",
       changed: r.changed,
       unchanged: r.status === "unchanged",
+    };
+  } catch (e) {
+    if (e instanceof EtsyNotConnectedError) return { needsReconnect: true };
+    return { error: e instanceof Error ? e.message : "Etsy'ye gönderilemedi." };
+  }
+}
+
+export interface CreateMissingVariantsResult {
+  ok?: boolean;
+  /** Etsy'de yeni oluşturulan offering (SKU) sayısı. */
+  created?: number;
+  /** Tüm panel varyantları zaten Etsy'deydi — hiçbir şey yazılmadı. */
+  unchanged?: boolean;
+  /** Oluşturulamayan panel SKU'ları (fiyat/property eksik). */
+  missing?: string[];
+  needsReconnect?: boolean;
+  error?: string;
+}
+
+/**
+ * Panel'de olup Etsy'de OLMAYAN varyantları listing'e YENİ offering olarak
+ * ekler (vaka: 0124 — basketweave/ribbed'e 2-5mm genişlikler panelde eklendi
+ * ama Etsy'de yoktu; kullanıcı fiyat butonuna basınca externalPricing kapısına
+ * takıldı ve eksikler hiç açılamadı).
+ *
+ * externalPricing kapısına BİLEREK takılmaz: mevcut offering'lerin fiyatı
+ * Etsy'deki canlı değeriyle AYNEN geri yazılır (panel fiyat DEĞİŞTİRMEZ);
+ * yalnız yeni açılan offering, DB'deki motor-kaynaklı fiyatla doğar — Etsy
+ * fiyatsız offering kabul etmediği için bu zorunludur.
+ */
+export async function createMissingEtsyVariantsAction(
+  productId: string,
+): Promise<CreateMissingVariantsResult> {
+  const m = await requireMembership();
+  if (!isManager(m.role)) return { error: MANAGER_ONLY_ERROR };
+  const { writeEnabled } = await getEtsyWriteAccess(m.org_id);
+  if (!writeEnabled)
+    return {
+      error:
+        "Etsy yazma izni (listings_w) kapalı — Ayarlar → Etsy'de 'Yeniden Bağlan' ile yazma iznini onaylayın.",
+    };
+
+  const admin = createAdminClient();
+  const { data: prod, error: prodErr } = await admin
+    .from("products")
+    .select("etsy_listing_id")
+    .eq("org_id", m.org_id)
+    .eq("id", productId)
+    .maybeSingle();
+  if (prodErr) return { error: prodErr.message };
+  const etsyId = (prod as { etsy_listing_id: number | null } | null)
+    ?.etsy_listing_id;
+  if (etsyId == null) return { error: "Bu listing Etsy'e bağlı değil." };
+
+  const { data: vRows, error: vErr } = await admin
+    .from("product_variants")
+    .select("sku, price_cents, quantity, properties")
+    .eq("org_id", m.org_id)
+    .eq("product_id", productId);
+  if (vErr) return { error: vErr.message };
+  const variants = ((vRows ?? []) as {
+    sku: string | null;
+    price_cents: number | null;
+    quantity: number | null;
+    properties: RawVariantProperties;
+  }[])
+    .filter((v) => (v.sku ?? "").trim())
+    .map((v) => ({
+      sku: (v.sku ?? "").trim(),
+      priceCents: v.price_cents,
+      quantity: v.quantity ?? 0,
+      // Her iki DB şeklini de kanonik Etsy dizisine indirger; EON düz-nesne
+      // şekli property_id 0 alır → create yolu onları "missing" diye raporlar.
+      properties: asEtsyProperties(v.properties),
+    }));
+  if (variants.length === 0) return { error: "Panelde varyant yok." };
+
+  try {
+    const client = await EtsyClient.forOrg(m.org_id);
+    const r = await createMissingListingOfferings(client, etsyId, variants);
+    if (r.status === "error")
+      return { error: r.detail ?? "Etsy'ye gönderilemedi.", missing: r.missing };
+    if (r.created > 0 || r.missing.length > 0) {
+      await logAudit(admin, {
+        orgId: m.org_id,
+        action: "etsy.variant_sync",
+        entityType: "products",
+        entityId: productId,
+        summary:
+          `Eksik varyantlar Etsy'de oluşturuldu (listing ${etsyId}): ${r.created} yeni offering` +
+          (r.missing.length ? `, ${r.missing.length} oluşturulamadı` : "") +
+          " — mevcut fiyatlara dokunulmadı.",
+        source: "etsy",
+      });
+    }
+    revalidatePath(`/tasarimlar/listing/${productId}`);
+    revalidatePath("/stok/varyant");
+    return {
+      ok: true,
+      created: r.created,
+      unchanged: r.status === "unchanged",
+      missing: r.missing,
     };
   } catch (e) {
     if (e instanceof EtsyNotConnectedError) return { needsReconnect: true };

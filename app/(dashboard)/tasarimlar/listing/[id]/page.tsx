@@ -25,6 +25,7 @@ import { KeywordResearchPanel } from "@/components/keyword-research-panel";
 import { ImageStrip } from "@/components/listing/image-strip";
 import { VariantEditor } from "@/components/listing/variant-editor";
 import { EtsyPricePushButton } from "@/components/listing/etsy-price-push-button";
+import { EtsyVariantCreateButton } from "@/components/listing/etsy-variant-create-button";
 import { MarketPositionCard } from "@/components/listing/market-position-card";
 import { VariantMatrix } from "@/components/listing/variant-matrix";
 import { DiscountControl } from "@/components/listing/discount-control";
@@ -434,6 +435,24 @@ export default async function ListingDetayPage({
               (yalnız farklı olanlar yazılır; fiyat sıfırlanmaz).
             </p>
             <EtsyPricePushButton
+              productId={product.id}
+              writeEnabled={writeAccess.writeEnabled}
+              hasEtsyListing={etsyListingId != null}
+            />
+          </div>
+        )}
+
+        {/* Eksik varyant oluşturma — panele sonradan eklenen varyantlar (ör.
+            yeni genişlikler) Etsy'de yoksa burada açılır. Fiyat itişinden ayrı:
+            mevcut offering fiyatlarına dokunulmaz (externalPricing uyumlu). */}
+        {etsyListingId != null && variants.length > 0 && (
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-xl border px-3 py-2">
+            <p className="text-muted-foreground text-xs">
+              Panel&apos;de olup Etsy&apos;de olmayan varyantları Etsy&apos;de
+              oluştur (mevcut fiyat/adetlere dokunulmaz; yeni varyant panel
+              fiyatıyla açılır).
+            </p>
+            <EtsyVariantCreateButton
               productId={product.id}
               writeEnabled={writeAccess.writeEnabled}
               hasEtsyListing={etsyListingId != null}
