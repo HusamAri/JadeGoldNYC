@@ -463,7 +463,9 @@ export type PushPanelVariantsOutcome = {
   status: "updated" | "error";
   /** Panel varyantlarından kaç tanesinin özelliği Etsy'de yazıldı. */
   updated: number;
-  /** Etsy'de bulunamayan panel SKU'ları. */
+  /** Bu PUT ile Etsy'de YENİ oluşturulan offering (SKU) sayısı. */
+  created: number;
+  /** Etsy'de olmayan ve oluşturulamayan (fiyatsız/property'siz) panel SKU'ları. */
   missing: string[];
   detail?: string;
 };
@@ -566,10 +568,25 @@ export async function renameListingSkuPrefix(
   }
 }
 
+/** Panel varyant property girdisi — DB `properties` sütunu Etsy GET'in ham
+ *  property_values dizisini taşır (property_id/value_ids dahil). Eski
+ *  {name, values} biçimi de kabul edilir (yalnız isim eşlemesi için). */
+export type PanelVariantProperty = {
+  property_id?: number | null;
+  property_name?: string | null;
+  name?: string;
+  values?: string[];
+  value_ids?: number[] | null;
+  scale_id?: number | null;
+};
+
 /**
  * Panel varyantlarını Etsy listing'ine yazar: her panel varyantın fiyatı,
  * property'leri (kişiselleştirme dahil) ve adedi Etsy'nin konu offering'ine
- * yazılır. Panel SKU'su Etsy'de bulunamamışsa `missing` listesine eklenir.
+ * yazılır. Etsy'de OLMAYAN panel SKU'ları, property'leri Etsy formatında
+ * (property_id + value_ids) taşıyorsa aynı PUT içinde YENİ offering olarak
+ * OLUŞTURULUR (envanter PUT tüm matrisi değiştirir). Oluşturulamayanlar
+ * (fiyatsız/property'siz) `missing`te raporlanır.
  *
  * GÜVENLİK: fiyat okunamazsa (0/eksik) — tüm PUT iptal edilir (buildInventoryUpdate
  * ile aynı ilke). Property yerleri (slot 513/514) sunucu tarafından çözer.
@@ -583,7 +600,7 @@ export async function pushPanelVariantsToListing(
     sku: string;
     priceCents: number | null;
     quantity: number;
-    properties?: Array<{ name: string; values: string[] }> | null;
+    properties?: PanelVariantProperty[] | null;
   }>,
 ): Promise<PushPanelVariantsOutcome> {
   try {
@@ -594,6 +611,7 @@ export async function pushPanelVariantsToListing(
         listingId,
         status: "error",
         updated: 0,
+        created: 0,
         missing: panelVariants.map((v) => v.sku),
         detail: "Etsy listing envanteri boş",
       };
@@ -601,14 +619,16 @@ export async function pushPanelVariantsToListing(
 
     // Panel varyantlarını SKU'ya göre map'le.
     const panelBySku = new Map(panelVariants.map((v) => [v.sku, v]));
-    // Property'leri panel varyantlarından bir haritalama.
+    // Property'leri panel varyantlarından bir haritalama (isim çözümü için).
     const propsBySku = new Map<string, { name: string; value: string }[]>();
     for (const pv of panelVariants) {
       const props: { name: string; value: string }[] = [];
       if (pv.properties) {
         for (const p of pv.properties) {
+          const pname = p.property_name ?? p.name;
+          if (!pname) continue;
           for (const val of p.values ?? []) {
-            props.push({ name: p.name, value: val });
+            props.push({ name: pname, value: val });
           }
         }
       }
@@ -617,7 +637,7 @@ export async function pushPanelVariantsToListing(
 
     // Eksik varyantları tespit et: Etsy'de bulunmayan panel SKU'ları.
     const etsySkus = new Set(live.map((p) => (p.sku ?? "").trim()));
-    const missing = panelVariants.filter((v) => !etsySkus.has(v.sku.trim())).map((v) => v.sku);
+    const missingAll = panelVariants.filter((v) => !etsySkus.has(v.sku.trim()));
 
     // Fiyat haritasını kur: panel SKU'ları → sent.
     const priceBySkuCents = new Map<string, number>();
@@ -637,31 +657,87 @@ export async function pushPanelVariantsToListing(
       propsBySku,
     );
 
-    if (changed === 0 && missing.length === 0) {
-      return { listingId, status: "updated", updated: 0, missing };
-    }
-
-    if (changed > 0) {
-      await putListingInventory(client, listingId, update, {
-        legacy: readinessStateId != null ? false : undefined,
+    // Etsy'de olmayan panel varyantlarını YENİ offering olarak kur. Şart:
+    // geçerli fiyat + Etsy formatında property (property_id'li — 0124 deseni
+    // value_id'leri kardeş listing'den kopyalar; uydurma value_id PUT'u kırar).
+    const newProducts: EtsyProductUpdate[] = [];
+    const missing: string[] = [];
+    for (const pv of missingAll) {
+      const cents = pv.priceCents;
+      const propVals = (pv.properties ?? []).filter(
+        (p) => p.property_id != null,
+      );
+      if (cents == null || cents <= 0 || propVals.length === 0) {
+        missing.push(pv.sku);
+        continue;
+      }
+      newProducts.push({
+        sku: pv.sku,
+        property_values: propVals.map((p) => {
+          const pname = p.property_name ?? p.name;
+          return {
+            property_id: p.property_id as number,
+            ...(pname != null ? { property_name: pname } : {}),
+            value_ids: p.value_ids ?? [],
+            values: p.values ?? [],
+            ...(p.scale_id != null ? { scale_id: p.scale_id } : {}),
+          };
+        }),
+        offerings: [
+          {
+            price: cents / 100,
+            quantity: pv.quantity ?? 0,
+            is_enabled: true,
+            ...(readinessStateId != null
+              ? { readiness_state_id: readinessStateId }
+              : {}),
+          },
+        ],
       });
     }
+
+    if (changed === 0 && newProducts.length === 0) {
+      return { listingId, status: missing.length > 0 ? "error" : "updated", updated: 0, created: 0, missing };
+    }
+
+    update.products.push(...newProducts);
+    // Genişlik→beden sırası: tüm SKU'lar <...>-<N>MM-<beden> desenindeyse
+    // ürünleri sayısal sıraya koy — Etsy açılır menüsü ilk-görünüm sırasını izler.
+    const parsed = update.products.map((p) => {
+      const m = /-(\d+)MM-([0-9.]+)$/.exec(p.sku);
+      return m ? { w: Number(m[1]), s: Number(m[2]) } : null;
+    });
+    if (parsed.every((x) => x != null)) {
+      const order = update.products
+        .map((p, i) => ({ p, k: parsed[i] as { w: number; s: number } }))
+        .sort((a, b) => a.k.w - b.k.w || a.k.s - b.k.s)
+        .map((x) => x.p);
+      update.products = order;
+    }
+
+    await putListingInventory(client, listingId, update, {
+      legacy: readinessStateId != null ? false : undefined,
+    });
 
     return {
       listingId,
       status: missing.length > 0 ? "error" : "updated",
       updated: changed,
+      created: newProducts.length,
       missing,
       detail:
         missing.length > 0
-          ? `${changed} varyant güncellendi; ${missing.length} Etsy'de bulunamadı (elle oluşturulması gerekir): ${missing.join(", ")}`
-          : undefined,
+          ? `${changed} güncellendi, ${newProducts.length} oluşturuldu; ${missing.length} oluşturulamadı (fiyat/property eksik): ${missing.join(", ")}`
+          : newProducts.length > 0
+            ? `${changed} güncellendi, ${newProducts.length} yeni offering oluşturuldu`
+            : undefined,
     };
   } catch (e) {
     return {
       listingId,
       status: "error",
       updated: 0,
+      created: 0,
       missing: [],
       detail: e instanceof Error ? e.message : "Bilinmeyen hata",
     };
