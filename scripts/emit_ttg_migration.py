@@ -31,8 +31,8 @@ Q = "$ttg$"
 TEXTS: dict[str, dict] = {
     "10K": {
         "title": (
-            "10K Solid Gold Two Tone Wedding Band, Mens Diamond Cut Ring, "
-            "White and Yellow Gold Comfort Fit, 6mm to 12mm, Anniversary Gift for Him"
+            "10K Two Tone Wedding Band, Solid Yellow and White Gold, "
+            "Diamond Cut Comfort Fit"
         ),
         "research_keyword": "10k two tone diamond cut wedding band",
         "research_group": 40,
@@ -67,8 +67,8 @@ TEXTS: dict[str, dict] = {
     },
     "14K": {
         "title": (
-            "14K Solid Gold Two Tone Wedding Band, Mens Diamond Cut Ring, "
-            "White and Yellow Gold Comfort Fit, 6mm to 12mm, Anniversary Gift for Him"
+            "14K Two Tone Wedding Band, Solid Yellow and White Gold, "
+            "Diamond Cut Comfort Fit"
         ),
         "research_keyword": "14k two tone diamond cut wedding band",
         "research_group": 42,
@@ -103,8 +103,8 @@ TEXTS: dict[str, dict] = {
     },
     "18K": {
         "title": (
-            "18K Solid Gold Two Tone Wedding Band, Mens Diamond Cut Ring, "
-            "White and Yellow Gold Comfort Fit, 6mm to 12mm, Anniversary Gift for Him"
+            "18K Two Tone Wedding Band, Solid Yellow and White Gold, "
+            "Diamond Cut Comfort Fit"
         ),
         "research_keyword": "18k two tone diamond cut wedding band",
         "research_group": 41,
