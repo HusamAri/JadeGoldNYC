@@ -4,6 +4,7 @@ import {
   type AlertSeverity,
 } from "@/lib/db/queries/data-gaps";
 import { getEtsyStatus } from "@/lib/db/queries/etsy";
+import { getUncostedSales } from "@/lib/db/queries/uncosted-sales";
 import { getMarketAlertCounts } from "@/lib/db/queries/market-alerts";
 import { getListingAuditSummary } from "@/lib/db/queries/listing-audit";
 import { computeAdsSignals } from "@/lib/db/queries/ads-actions";
@@ -108,6 +109,7 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
     lastShopSnapshot,
     lastManualMetric,
     productDiscounts,
+    uncosted,
   ] = await Promise.all([
       getDataGaps(orgId),
       getEtsyStatus(orgId),
@@ -212,6 +214,19 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
         .eq("org_id", orgId)
         .is("archived_at", null)
         .gt("discount_pct", 0),
+      // Maliyeti hiç düşmemiş satışlar (gram yok / SKU eşleşmiyor) — marj
+      // raporu bu satışlarda %100 kâr gösterir. Hata olursa uyarı merkezi
+      // düşmesin, boş özet dönsün.
+      getUncostedSales(orgId).catch((e) => {
+        console.error("[alert-center] uncosted-sales:", e);
+        return {
+          items: 0,
+          revenueCents: 0,
+          gramsiz: 0,
+          eslesmeyen: 0,
+          samples: [],
+        };
+      }),
     ]);
 
   // Sorgu hataları sessizce "her şey yolunda"ya dönüşmesin — logla.
@@ -356,6 +371,35 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
       href: "/analizler/urunler",
       actionLabel: "Fiyatları gözden geçir",
       costCents: null,
+    });
+  }
+
+  // 4b) MALİYETSİZ SATIŞ → kâr olduğundan yüksek görünüyor (KRİTİK).
+  // Diğer uyarılardan farkı: burada kaybedilen para değil, YANLIŞ BİLGİ var —
+  // marj raporuna bakıp fiyat/indirim kararı veriyorsan taban kayıyor.
+  if (uncosted.items > 0) {
+    const parcalar = [
+      uncosted.gramsiz > 0 ? `${uncosted.gramsiz} tanesinde varyant gramı yok` : null,
+      uncosted.eslesmeyen > 0
+        ? `${uncosted.eslesmeyen} tanesinde satılan SKU katalogda yok`
+        : null,
+    ].filter(Boolean);
+    const ornek = uncosted.samples[0];
+    alerts.push({
+      key: "uncosted_sales",
+      severity: "kritik",
+      title: `${uncosted.items} satışın maliyeti hiç düşmedi (son 90 gün)`,
+      hint:
+        `Altın maliyet motoru gram olmadan hesap yapamadığı için bu kalemleri ATLADI — ` +
+        `${parcalar.join(", ")}. Sonuç: bu cirodan %100 kâr ediyormuş gibi görünüyorsun, ` +
+        `marj raporu şişik. Gram eksikse varyanta gramı gir (maliyet geriye dönük üretilir); ` +
+        `SKU eşleşmiyorsa varyant silinmiş/yeniden adlandırılmış demektir, kimliğini düzelt.` +
+        (ornek ? ` En büyüğü: ${ornek.sku}.` : ""),
+      count: uncosted.items,
+      href: "/tasarimlar",
+      actionLabel: "Eksik gramları tamamla",
+      // Bedel = maliyeti bilinmeyen ciro. Kayıp değil, YANLIŞ RAPORLANAN tutar.
+      costCents: uncosted.revenueCents,
     });
   }
 
