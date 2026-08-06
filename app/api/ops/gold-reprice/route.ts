@@ -32,12 +32,14 @@ export async function GET(request: Request) {
   const orgFilter = url.searchParams.get("org") ?? undefined;
   const listingRaw = url.searchParams.get("listing");
   const spotRaw = url.searchParams.get("spot");
+  const startRaw = url.searchParams.get("start");
 
   try {
     const out = await runGoldReprice({
       apply,
       force,
       orgFilter,
+      startIndex: startRaw ? Number(startRaw) : undefined,
       listingFilter: listingRaw ? Number(listingRaw) : undefined,
       spotOverride: spotRaw ? Number(spotRaw) : undefined,
     });

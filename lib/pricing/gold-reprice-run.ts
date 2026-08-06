@@ -58,10 +58,16 @@ export type OrgRunResult = {
   status:
     | "dry-run"
     | "applied"
+    /** Süre bütçesi doldu; `nextIndex` ile devam edilmeli. */
+    | "partial"
     | "deadband"
     | "blocked-max-step"
     | "etsy-disconnected"
     | "error";
+  /** Bir sonraki çağrının başlayacağı listing indeksi (devam ettirme). */
+  nextIndex?: number;
+  remainingListings?: number;
+  totalListings?: number;
   variants: number;
   repriced: number;
   unchanged: number;
@@ -153,13 +159,27 @@ function computeTargets(
       // İşçilik kademesi kendini doğrular: eski tabanla hangi kademe mevcut
       // fiyatı birebir üretiyorsa o kademe geçerlidir. İkisi de üretmiyorsa
       // fiyat elle/farklı kurulmuş demektir — DOKUNULMAZ, raporlanır.
-      const labor = [V4.laborMilgrainUsd, V4.laborStandardUsd].find(
+      const kademeler = [V4.laborMilgrainUsd, V4.laborStandardUsd];
+      const labor = kademeler.find(
         (l) =>
           eonListCents(parsed.karat, parsed.widthMm, grams, l, basis) ===
           oldCents,
       );
       if (labor == null) {
-        skip("taban-uyumsuz", sku);
+        // İDEMPOTANSLIK: yarım kalmış bir koşu bu varyantı zaten YENİ spota
+        // çekmiş olabilir. O durumda fiyat eski tabanla eşleşmez ama hedefle
+        // birebir eşleşir — "uyumsuz" deyip atlamak yanlış olurdu (varyant
+        // sonsuza dek atlanır ve taban ilerleyince farkı bir daha yakalayamaz).
+        const zatenUygulanmis = kademeler.some(
+          (l) =>
+            eonListCents(parsed.karat, parsed.widthMm, grams, l, spot) ===
+            oldCents,
+        );
+        if (zatenUygulanmis) {
+          unchanged += 1;
+        } else {
+          skip("taban-uyumsuz", sku);
+        }
         continue;
       }
       newCents = eonListCents(parsed.karat, parsed.widthMm, grams, labor, spot);
@@ -200,10 +220,20 @@ function computeTargets(
   return { targets, unchanged, skipped, skippedSamples };
 }
 
+/**
+ * Bir çağrının Etsy itişine ayırdığı süre. Vercel fonksiyon limitinin altında
+ * kalır ki koşu kesilmek yerine DÜZGÜN durup `nextIndex` döndürsün.
+ * (EON'da 43 listing × ~3 Etsy çağrısı tek isteğe sığmıyordu — koşu ortada
+ * ölünce Etsy yazılmış, panel yazılmamış oluyordu.)
+ */
+const PUSH_BUDGET_MS = 200_000;
+
 export async function runGoldReprice(opts: {
   apply: boolean;
   spotOverride?: number;
   orgFilter?: string;
+  /** Kaçıncı listing'den devam edilecek (parçalı koşu). */
+  startIndex?: number;
   listingFilter?: number;
   force?: boolean;
 }): Promise<{ ok: boolean; spot?: SpotQuote; orgs: OrgRunResult[] }> {
@@ -350,9 +380,44 @@ export async function runGoldReprice(opts: {
       }
 
       const listingReports: Record<string, unknown>[] = [];
-      const verifiedVariantIds: string[] = [];
+      let dbUpdated = 0;
 
-      for (const [listingId, list] of byListing) {
+      /** Doğrulanan varyantları HEMEN panele yazar (parça parça kalıcılık). */
+      const panelEsitle = async (list: Target[]): Promise<number> => {
+        const pairs = list.map((t) => ({ id: t.variantId, cents: t.newCents }));
+        let n = 0;
+        for (let i = 0; i < pairs.length; i += 1000) {
+          const { data, error } = await admin.rpc("gold_reprice_apply", {
+            p_org: org.id,
+            p_pairs: pairs.slice(i, i + 1000),
+          });
+          if (error) throw new Error(`DB uygulaması: ${error.message}`);
+          n += (data as number) ?? 0;
+        }
+        return n;
+      };
+
+      // SIRA DETERMİNİSTİK olmalı: startIndex çağrılar arasında aynı diziye
+      // denk gelmezse bazı listing'ler atlanır/tekrarlanır (aynı tuzak
+      // approvePricingRun'da yaşandı — orada da `.order()` ile çözülmüştü).
+      const listingIds = [...byListing.keys()].sort((a, b) => a - b);
+      const basla = Math.max(
+        0,
+        Math.min(Math.trunc(opts.startIndex ?? 0), listingIds.length),
+      );
+      const bitis = Date.now() + PUSH_BUDGET_MS;
+      let sonIslenen = basla;
+      let sureDoldu = false;
+
+      for (let i = basla; i < listingIds.length; i++) {
+        // Süre bütçesi: bir sonraki listing'e başlamadan önce bak. Yarım
+        // kalan bir PUT'tan iyi olur — kalanı çağıran devam ettirir.
+        if (Date.now() > bitis) {
+          sureDoldu = true;
+          break;
+        }
+        const listingId = listingIds[i];
+        const list = byListing.get(listingId)!;
         const priceBySku = new Map(list.map((t) => [t.sku, t.newCents]));
         const out = await pushListingPrices(client!, listingId, priceBySku);
         const report: Record<string, unknown> = {
@@ -364,6 +429,7 @@ export async function runGoldReprice(opts: {
 
         if (out.status === "error") {
           listingReports.push(report);
+          sonIslenen = i + 1;
           continue; // Etsy'ye yazılamadıysa panel de DEĞİŞMEZ.
         }
 
@@ -386,45 +452,44 @@ export async function runGoldReprice(opts: {
               .slice(0, 3)
               .map((t) => `${t.sku}: hedef ${t.newCents}, canlı ${liveBySku.get(t.sku)}`);
           } else {
-            verifiedVariantIds.push(...list.map((t) => t.variantId));
+            // PARÇA PARÇA KALICILIK: bu listing doğrulandı — panelini HEMEN
+            // eşitle. Koşu sonraki listing'de ölse bile Etsy ile panel bu
+            // listing için tutarlı kalır (eskiden tüm yazma en sondaydı; süre
+            // dolunca Etsy yazılmış, panel yazılmamış oluyordu).
+            const n = await panelEsitle(list);
+            dbUpdated += n;
+            report.panelUpdated = n;
           }
         } catch (e) {
           report.verified = false;
           report.mismatch = [e instanceof Error ? e.message : String(e)];
         }
         listingReports.push(report);
+        sonIslenen = i + 1;
       }
       res.listings = listingReports;
 
-      // ── Panel aynası: yalnız doğrulanan + Etsy-dışı hedefler ───────────
-      const applyIds = new Set([
-        ...verifiedVariantIds,
-        ...offEtsy.map((t) => t.variantId),
-      ]);
-      const pairs = scoped
-        .filter((t) => applyIds.has(t.variantId))
-        .map((t) => ({ id: t.variantId, cents: t.newCents }));
-
-      let dbUpdated = 0;
-      for (let i = 0; i < pairs.length; i += 1000) {
-        const chunk = pairs.slice(i, i + 1000);
-        const { data: n, error } = await admin.rpc("gold_reprice_apply", {
-          p_org: org.id,
-          p_pairs: chunk,
-        });
-        if (error) throw new Error(`DB uygulaması: ${error.message}`);
-        dbUpdated += (n as number) ?? 0;
+      // Etsy'ye bağlı olmayan (taslak) hedefler — tek seferde, süreden bağımsız.
+      if (offEtsy.length > 0 && basla === 0) {
+        dbUpdated += await panelEsitle(offEtsy);
       }
       res.dbUpdated = dbUpdated;
+
+      const kalan = listingIds.length - sonIslenen;
+      res.nextIndex = sonIslenen;
+      res.remainingListings = kalan;
+      res.totalListings = listingIds.length;
 
       const { data: anchors } = await admin.rpc("gold_reprice_refresh_anchors", {
         p_org: org.id,
       });
       res.anchorsUpdated = (anchors as number) ?? 0;
 
-      // Yeni taban yalnız TAM kapsamlı koşuda ilerletilir — tek-listing
-      // denemesi tabanı kaydırırsa kalan katalog o farkı sonsuza dek kaçırır.
-      if (!opts.listingFilter) {
+      // Yeni taban yalnız TAM kapsamlı ve TAMAMLANMIŞ koşuda ilerletilir:
+      //  - tek-listing denemesi tabanı kaydırırsa kalan katalog farkı kaçırır,
+      //  - yarım kalan koşuda taban ilerlerse kalan listing'ler bir daha
+      //    hedeflenmez (fark sonsuza dek kaybolur).
+      if (!opts.listingFilter && kalan === 0) {
         await admin.from("gold_reprice_basis").insert({
           org_id: org.id,
           spot_per_ozt: spot,
@@ -447,12 +512,16 @@ export async function runGoldReprice(opts: {
         entityId: org.id,
         summary:
           `Altın endeksi: taban $${basis} → $${spot}/ozt (Δ%${res.stepPct}). ` +
-          `${scoped.length} varyant hedeflendi; Etsy'de doğrulanan + taslak ${pairs.length}, ` +
-          `panelde ${dbUpdated} güncellendi.`,
+          `${scoped.length} varyant hedeflendi; ${listingIds.length} listing'in ` +
+          `${sonIslenen}'i işlendi, panelde ${dbUpdated} varyant güncellendi` +
+          `${kalan > 0 ? `; süre bütçesi doldu, ${kalan} listing bekliyor (devam: start=${sonIslenen})` : ""}.`,
         source: "system",
       });
 
-      res.status = "applied";
+      res.status = sureDoldu || kalan > 0 ? "partial" : "applied";
+      if (res.status === "partial") {
+        res.detail = `Süre bütçesi doldu — ${kalan} listing bekliyor. Devam için start=${sonIslenen}.`;
+      }
     } catch (e) {
       res.status = "error";
       res.detail = e instanceof Error ? e.message : String(e);
@@ -460,8 +529,11 @@ export async function runGoldReprice(opts: {
   }
 
   return {
+    // `partial` HATA DEĞİL: iş düzgün ilerledi, yalnız süre bütçesi doldu.
+    // Çağıran `nextIndex` ile devam eder; taban ilerlemediği için bir sonraki
+    // koşu (elle ya da cron) kalanı yakalar.
     ok: results.every((r) =>
-      ["applied", "dry-run", "deadband"].includes(r.status),
+      ["applied", "partial", "dry-run", "deadband"].includes(r.status),
     ),
     spot: spotQuote,
     orgs: results,
