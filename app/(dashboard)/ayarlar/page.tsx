@@ -3,6 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getEtsyStatus } from "@/lib/db/queries/etsy";
 import { getShopierStatus } from "@/lib/db/queries/shopier";
+import { getShopifyStatus } from "@/lib/db/queries/shopify";
+import { getPinterestStatus } from "@/lib/db/queries/pinterest";
 import { getProfile } from "@/lib/db/queries/profile";
 import { ShipStationClient } from "@/lib/shipstation/client";
 import { formatDateTime } from "@/lib/format";
@@ -24,9 +26,12 @@ export default async function AyarlarPage() {
     .select("name, default_currency")
     .eq("id", m.org_id)
     .maybeSingle();
-  const [status, shopier, profile, shipStationConfigured] = await Promise.all([
+  const [status, shopier, shopify, pinterest, profile, shipStationConfigured] =
+    await Promise.all([
     getEtsyStatus(m.org_id),
     getShopierStatus(m.org_id),
+    getShopifyStatus(m.org_id),
+    getPinterestStatus(m.org_id),
     user ? getProfile(supabase, user.id) : Promise.resolve(null),
     // Org'a özel: global env anahtarı başka şirkete ait olabilir —
     // hub neon'u yalnız BU org için kimlik bilgisi varken yanar.
@@ -49,6 +54,8 @@ export default async function AyarlarPage() {
       }
       shipStationConfigured={shipStationConfigured}
       shopierConnected={shopier.status === "connected"}
+      shopifyConnected={shopify.status === "connected"}
+      pinterestConnected={pinterest.status === "connected"}
       profileName={profile?.full_name ?? null}
       profileEmail={user?.email ?? null}
       avatarUrl={profile?.avatar_url ?? null}
