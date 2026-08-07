@@ -12,6 +12,7 @@ import {
   ShoppingCart,
   Sparkles,
   Rocket,
+  Pin,
   ArrowUpRight,
   Mail,
   type LucideIcon,
@@ -29,6 +30,8 @@ export type SettingsHubProps = {
   etsyLastSync: string | null;
   shipStationConfigured: boolean;
   shopierConnected: boolean;
+  shopifyConnected: boolean;
+  pinterestConnected: boolean;
   profileName: string | null;
   profileEmail: string | null;
   avatarUrl: string | null;
@@ -50,7 +53,9 @@ export function SettingsHub(props: SettingsHubProps) {
   const liveCount =
     (props.etsyConnected ? 1 : 0) +
     (props.shipStationConfigured ? 1 : 0) +
-    (props.shopierConnected ? 1 : 0);
+    (props.shopierConnected ? 1 : 0) +
+    (props.shopifyConnected ? 1 : 0) +
+    (props.pinterestConnected ? 1 : 0);
 
   const connections: Tile[] = [
     {
@@ -84,6 +89,26 @@ export function SettingsHub(props: SettingsHubProps) {
       status: {
         live: props.shopierConnected,
         label: props.shopierConnected ? "Bağlı" : "Bağlı değil",
+      },
+    },
+    {
+      href: "/ayarlar/shopify",
+      title: "Shopify",
+      description: "İkinci satış kanalı — mağaza OAuth bağlantısı",
+      icon: Store,
+      status: {
+        live: props.shopifyConnected,
+        label: props.shopifyConnected ? "Bağlı" : "Bağlı değil",
+      },
+    },
+    {
+      href: "/ayarlar/pinterest",
+      title: "Pinterest",
+      description: "Trafik kanalı — pin oluşturma ve pano/analiz erişimi",
+      icon: Pin,
+      status: {
+        live: props.pinterestConnected,
+        label: props.pinterestConnected ? "Bağlı" : "Bağlı değil",
       },
     },
   ];

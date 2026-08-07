@@ -157,6 +157,24 @@ repodaki hedefidir.
 
 ## Teknik desenler
 
+- **Kendi ürettiğin metni ezmeden önce CANLI hâlini oku; senkronun yönü "repo → DB"
+  diye varsayılmaz (2026-08):** TTG başlıklarını Etsy rehberliğine uydurmak için
+  üretici + migration'ı yeni metne çevirdim. DB'ye yazmadan önce canlı satırı
+  sorguladım: üç listing paralel bir oturumda Etsy'ye ÇIKMIŞ (4550516268 /
+  4550506421 / 4550506827, 175'er varyant) ve başlıkları ZATEN kısa forma
+  çevrilmişti — üstelik canlı metin benimkinden İYİYDİ (iki rengi de adlandırıyor:
+  "Solid Yellow and White Gold"; benimki yalnız "Solid Gold" diyordu). Yazsaydım
+  iyiyi kötüyle değiştirirdim; UPDATE'in 0 satır etkilemesi tasarım değil ŞANStı
+  (`products.sku` NULL, eşleşme varyant SKU'sunda). İkinci kat: paralel oturum
+  panelin denetim eşiğini de (`TITLE_MIN_LENGTH` 110→40) düzeltmişti ama ÜRETİLMİŞ
+  metni (generator + `0127-0129` migration) eski uzun başlıkla bırakmıştı — yani
+  kuralı düzeltmek üretilmiş çıktıyı düzeltmez, ikisi ayrı iştir. Kural: (1) repo⇄DB
+  metin senkronunda önce canlıyı OKU, iyi olanı kaynak say, repoyu ona eşitle;
+  (2) bir politika/eşik değiştiğinde o politikayla üretilmiş ARTEFAKTLARI ayrıca tara;
+  (3) eşitleme sonrası diff'in yalnız hedef satırlara dokunduğunu kanıtla
+  (`git diff -U0 -- <yol> | grep -E "^[+-][^+-]" | grep -vc "<hedef>"` = 0).
+
+
 - **Bütünlük bayrağı tüm veri şekillerini kapsar (2026-07):** "Künye tam" gibi
   eksiksizlik sinyali, alanın yalnız BİR taşıyıcısını sayarsa diğer şekli sessizce
   boş geçer. Vaka: gram bütünlüğü SADECE varyant-başına ölçülüyordu; varyantsız

@@ -39,6 +39,7 @@ export async function logAudit(
       | "shipstation.credentials"
       | "shopier.credentials"
       | "shopier.sync"
+      | "pinterest.connect"
     >;
     entityType: string;
     summary: string;

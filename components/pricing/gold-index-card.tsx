@@ -34,9 +34,14 @@ const pct = (x: number) => `${x > 0 ? "+" : ""}${x.toFixed(2)}%`;
  * ALTIN ENDEKSİ — otomatik kolun panel yüzü.
  *
  * Konsoldan (elle spot + kuru çalıştırma + onay) farkı: burada spot GİRİLMEZ;
- * canlı piyasadan çift kaynakla çekilir ve fark kapılardan geçerse uygulanır.
- * Cron her sabah 04:30 UTC'de aynı işi kendiliğinden yapar — bu kart, "şimdi
- * olsun" dendiğinde aynı kapılı koşuyu elle tetiklemek içindir.
+ * canlı piyasadan çekilir (tazelik + aralık kapıları) ve fark adım kapısından
+ * geçerse uygulanır. Cron her sabah 04:30 UTC'de aynı işi kendiliğinden yapar
+ * — bu kart, "şimdi olsun" dendiğinde aynı kapılı koşuyu elle tetiklemek için.
+ *
+ * Koşu PARÇALIDIR: bir istekte tüm katalog Etsy'ye itilemiyor (43+ listing ×
+ * 3 çağrı). Süre bütçesi dolunca çekirdek `partial` + `nextIndex` döner ve
+ * burada AYNI turda kaldığı yerden devam edilir. Taban ancak tüm listing'ler
+ * bittiğinde ilerlediği için bu döngü idempotenttir.
  */
 export function GoldIndexCard({
   basis,
@@ -58,16 +63,27 @@ export function GoldIndexCard({
           ? "onay-gerekli"
           : "otomatik";
 
-  async function run(force: boolean) {
+  async function run(force: boolean, startIndex = 0) {
     setBusy(true);
     try {
-      const out = await applyGoldIndex(force);
+      const out = await applyGoldIndex(force, startIndex);
       if (out.error) {
         toast.error(out.error);
         return;
       }
       const r = out.result;
       if (!r) return;
+      if (r.status === "partial") {
+        // Süre bütçesi doldu — kalan listing'ler için AYNI turda devam et.
+        // Taban ilerlemediği için bu güvenli ve idempotenttir.
+        toast.info(
+          `${r.totalListings ?? 0} listing'in ${r.nextIndex ?? 0}'i işlendi, ` +
+            `${r.remainingListings ?? 0} kaldı — devam ediliyor…`,
+        );
+        router.refresh();
+        await run(force, r.nextIndex ?? 0);
+        return;
+      }
       if (r.status === "applied") {
         toast.success(
           `Endeks uygulandı: taban $${r.basisPerOzt} → $${r.spotPerOzt} ` +

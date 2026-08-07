@@ -30,8 +30,16 @@ Spot altın değiştikçe fiyatları endeksleyen kalıcı mekanizma (PR #325):
 3. `|Δ| > %10` → `blocked-max-step`; yalnız `force=1` ile (insan onayı) geçer.
 4. Etsy PUT → AYNI turda read-back → yalnız doğrulanan listing'in paneli
    eşitlenir (ayna asla tek yönlü bozulmaz).
-5. Taban yalnız TAM kapsamlı `apply` koşusunda ilerletilir; `listing=` kanıt
-   koşusu tabanı kaydırmaz.
+5. Taban yalnız TAM kapsamlı VE TAMAMLANMIŞ `apply` koşusunda ilerletilir;
+   `listing=` kanıt koşusu ve yarım kalan (`partial`) koşu tabanı kaydırmaz —
+   yoksa kalan listing'ler farkı bir daha yakalayamazdı.
+6. Koşu PARÇALIDIR: tek istekte 43+ listing × 3 Etsy çağrısı sığmaz. Süre
+   bütçesi (200sn) dolunca koşu düzgün durur, `partial` + `nextIndex` döner ve
+   `?start=<nextIndex>` ile devam edilir. Panel HER listing doğrulandıktan
+   sonra eşitlenir (eskiden tüm yazma en sondaydı; süre dolunca Etsy yazılmış
+   panel yazılmamış kalıyordu). Panel kartı bu döngüyü kendi sürdürür.
+7. İDEMPOTANSLIK: zaten yeni spota çekilmiş varyant "taban-uyumsuz" sayılmaz,
+   `unchanged` sayılır — yarım koşu tekrar çalıştırıldığında ilerleyebilsin.
 
 ## Koşu sırası (prod'da, deploy sonrası)
 

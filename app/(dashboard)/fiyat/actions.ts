@@ -457,6 +457,7 @@ export type GoldIndexOrgResult = import("@/lib/pricing/gold-reprice-run").OrgRun
  */
 export async function applyGoldIndex(
   force = false,
+  startIndex = 0,
 ): Promise<GoldIndexApplyResult> {
   const m = await requireMembership();
   if (!isManager(m.role)) return { error: MANAGER_ONLY_ERROR };
@@ -472,7 +473,12 @@ export async function applyGoldIndex(
 
   try {
     const { runGoldReprice } = await import("@/lib/pricing/gold-reprice-run");
-    const out = await runGoldReprice({ apply: true, force, orgFilter: name });
+    const out = await runGoldReprice({
+      apply: true,
+      force,
+      orgFilter: name,
+      startIndex,
+    });
     const r = out.orgs[0];
     if (!r) {
       return {

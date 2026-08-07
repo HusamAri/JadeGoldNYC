@@ -59,7 +59,7 @@ insert into public.products (
 select
   o.id,
   $ttg$TTG-R-1806$ttg$,
-  $ttg$18K Solid Gold Two Tone Wedding Band, Mens Diamond Cut Ring, White and Yellow Gold Comfort Fit, 6mm to 12mm, Anniversary Gift for Him$ttg$,
+  $ttg$18K Two Tone Wedding Band, Solid Yellow and White Gold, Diamond Cut Comfort Fit$ttg$,
   $ttg$A solid 18k gold two tone wedding band: yellow gold rails framing a white gold center cut with a diamond lattice. Made to order in your size and width, never plated, never filled, with free engraving inside the band.
 
 THE DETAILS
@@ -112,7 +112,7 @@ where o.name = 'EON'
 -- (Etsy'ye gonderilmis kayitta etsy_listing_id dolu olur; yine de panel
 -- kunyesi tek kaynakta kalsin diye guncellenir).
 update public.products p set
-  title = $ttg$18K Solid Gold Two Tone Wedding Band, Mens Diamond Cut Ring, White and Yellow Gold Comfort Fit, 6mm to 12mm, Anniversary Gift for Him$ttg$,
+  title = $ttg$18K Two Tone Wedding Band, Solid Yellow and White Gold, Diamond Cut Comfort Fit$ttg$,
   description = $ttg$A solid 18k gold two tone wedding band: yellow gold rails framing a white gold center cut with a diamond lattice. Made to order in your size and width, never plated, never filled, with free engraving inside the band.
 
 THE DETAILS

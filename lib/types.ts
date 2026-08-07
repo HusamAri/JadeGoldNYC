@@ -134,6 +134,7 @@ export type AuditAction =
   | "org.created"
   | "shipstation.credentials"
   | "shopier.credentials"
+  | "pinterest.connect"
   | "shopier.sync";
 
 export interface Profile {
