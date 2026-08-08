@@ -13,9 +13,11 @@ export const maxDuration = 300;
 /**
  * Dar genişlik bandı temizliği (gözetimli, tek seferlik / idempotent).
  *
- * 2026-08 katalog kararı:
- *  - Milgrain ailesi (9 listing): 2mm kalkar → en dar 3mm.
- *  - Hammered (1 listing): 2/3/4/5mm kalkar → en dar 6mm.
+ * 2026-08 katalog kararı (revize):
+ *  - Milgrain ailesi: DOKUNULMAZ — 2mm satılabilir bant, en dar 2mm kalır.
+ *    (İlk turda "2mm kalksın" planlanmıştı; karar geri alındı.)
+ *  - Hammered (1 listing): 2/3mm kalkar → en dar 4mm.
+ *    (İlk turda 2/3/4/5 planlanmıştı; 4mm ve 5mm kalıyor.)
  * (Yeni TTG ailesi Etsy'ye hiç gitmediği için panelde doğrudan temizlendi;
  *  basketweave/ribbed zaten 6mm'den başlıyor.)
  *
@@ -30,18 +32,9 @@ export const maxDuration = 300;
 type Target = { listingId: number; widths: number[]; label: string };
 
 const TARGETS: Target[] = [
-  // ── Milgrain: yalnız 2mm ─────────────────────────────────────────────
-  { listingId: 4539517211, widths: [2], label: "10K Yellow Milgrain" },
-  { listingId: 4539506699, widths: [2], label: "10K White Milgrain" },
-  { listingId: 4539493533, widths: [2], label: "10K Rose Milgrain" },
-  { listingId: 4543953211, widths: [2], label: "14K Yellow Milgrain" },
-  { listingId: 4542485142, widths: [2], label: "14K White Milgrain" },
-  { listingId: 4540045731, widths: [2], label: "14K Rose Milgrain" },
-  { listingId: 4548748952, widths: [2], label: "18K Yellow Milgrain" },
-  { listingId: 4546520793, widths: [2], label: "18K White Milgrain" },
-  { listingId: 4548734437, widths: [2], label: "18K Rose Milgrain" },
-  // ── Hammered: 2/3/4/5mm ──────────────────────────────────────────────
-  { listingId: 4543442596, widths: [2, 3, 4, 5], label: "10K Hammered Milgrain" },
+  // ── Hammered: yalnız 2/3mm — 4mm ve üstü SATILMAYA DEVAM EDER ────────
+  { listingId: 4543442596, widths: [2, 3], label: "10K Hammered Milgrain" },
+  // ── Milgrain ailesi bilerek YOK: 2mm dahil tüm bant korunuyor. ───────
 ];
 
 const ONE_SHOT = process.env.PRUNE_ONE_SHOT_TOKEN;
