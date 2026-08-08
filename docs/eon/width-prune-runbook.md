@@ -2,23 +2,30 @@
 
 ## Karar
 
-EON alyans kataloğunda dar genişlik bantları satılmıyor. İki ayrı kural:
+Dar genişlik bandı her ailede aynı değil — profil ne kadar dar dokuya izin
+veriyorsa en dar beden o. Aile başına ayrı kural:
 
 | Aile | Kalkan genişlikler | Kalan en dar |
 | --- | --- | --- |
-| Milgrain (9 listing) | 2mm | **3mm** |
-| Hammered (1 listing) | 2, 3, 4, 5mm | **6mm** |
-| TTG iki-ton (3 taslak) | 2, 3, 4, 5mm | **6mm** |
+| **Milgrain (9 listing)** | **— (dokunulmuyor)** | **2mm** |
+| Hammered (1 listing) | 2, 3mm | **4mm** |
+| TTG iki-ton (3 listing) | 2, 3, 4, 5mm | **6mm** |
 | Basketweave / ribbed | — (zaten 6mm'den başlıyordu) | 6mm |
+
+> **Karar geçmişi (2026-08).** İlk turda "milgrain 2mm kalksın, hammered 6mm'den
+> başlasın" planlanmıştı; ikisi de revize edildi. Milgrain'de 2mm satılabilir bant
+> olarak KALIYOR, hammered'da yalnız 2 ve 3mm kalkıyor — 4mm ve 5mm satışta.
+> Rota hiç uygulanmadan revize edildiği için canlıda geri alınacak bir şey yok.
 
 ## Durum
 
-- **TTG (TTG-R-1006/1406/1806):** tamamlandı. Etsy'ye hiç gitmemişlerdi, panelde
-  doğrudan temizlendi (300 varyant silindi, 275 → 175/ayar). Repo tarafında
-  `scripts/gen_catalog_ttg.py` katalog eksenini 6–12mm'ye çekti ve
-  `supabase/migrations/0127–0129` yeniden üretildi; canlı DB üretici çıktısıyla
-  birebir doğrulandı.
-- **Milgrain + hammered (10 canlı listing):** Etsy'de canlı. Panelden tek başına
+- **TTG (TTG-R-1006/1406/1806):** tamamlandı. Panelde doğrudan temizlendi
+  (300 varyant silindi, 275 → 175/ayar); `scripts/gen_catalog_ttg.py` katalog
+  eksenini 6–12mm'ye çekti, `supabase/migrations/0127–0129` yeniden üretildi.
+  Üçü de sonradan Etsy'ye çıktı (4550516268 / 4550506421 / 4550506827).
+- **Milgrain (9 listing):** iş kalmadı — 2mm dahil tüm bant korunuyor.
+- **Hammered (4543442596):** Etsy'de canlı, 2mm + 3mm = **50 varyant** kalkacak
+  (11 genişlik × 25 beden; kalan 9 genişlik = 225 varyant). Panelden tek başına
   silmek işe YARAMAZ — gece senkronu Etsy'yi doğruluk kaynağı sayar ve satırları
   geri getirir. Bu yüzden önce Etsy envanterinden düşürülmeleri gerekir:
   `/api/ops/prune-widths` rotası bunun içindir ve **production'da** tetiklenmelidir
@@ -71,26 +78,28 @@ tetiklenebilir. Token tanımlı değilse o yol kapalıdır (fail-closed).
 
 | Listing | Aile | Önce | Sonra | Yeni çapa |
 | --- | --- | --- | --- | --- |
-| 4539517211 | 10K Yellow Milgrain | 275 | 250 | 3mm fiyatı |
-| 4539506699 | 10K White Milgrain | 275 | 250 | 3mm fiyatı |
-| 4539493533 | 10K Rose Milgrain | 275 | 250 | 3mm fiyatı |
-| 4543953211 | 14K Yellow Milgrain | 275 | 250 | 3mm fiyatı |
-| 4542485142 | 14K White Milgrain | 275 | 250 | 3mm fiyatı |
-| 4540045731 | 14K Rose Milgrain | 275 | 250 | 3mm fiyatı |
-| 4548748952 | 18K Yellow Milgrain | 275 | 250 | 3mm fiyatı |
-| 4546520793 | 18K White Milgrain | 275 | 250 | 3mm fiyatı |
-| 4548734437 | 18K Rose Milgrain | 275 | 250 | 3mm fiyatı |
-| 4543442596 | 10K Hammered | 275 | 175 | 6mm fiyatı |
+| 4543442596 | 10K Hammered | 275 | 225 | 4mm fiyatı |
 
-Toplam: Etsy'den 325 offering (9×25 + 100) düşer.
+Toplam: Etsy'den **50 offering** (2×25) düşer. Milgrain listing'lerine
+dokunulmadığı için onlar 275 varyantta kalır.
+
+> ⚠️ **Vitrin fiyatı sıçrar.** Çapa `products.price_cents` kalanların en
+> düşüğüne çekilir: **$410 → $670** (2mm yerine 4mm taban). Etsy'de listing'in
+> "from" fiyatı bu — yani arama sonucunda görünen rakam %63 artar. Beklenen ve
+> doğru davranış (ucuz bant satıştan kalkıyor), ama sürpriz olmasın diye burada.
 
 ## Sonrasında yapılacak (ayrı adım)
 
-Genişlik aralığını anlatan **metinler** bu rotanın işi değil; envanterle birlikte
-değişmezler:
+Yok. Genişlik aralığını anlatan metinler normalde envanterle birlikte değişmez
+ve ayrı bir tur gerektirir — ama bu listing'de gerek kalmadı, DB'den doğrulandı:
 
-- Üç 18K milgrain taslağının başlığında `2mm to 12mm` geçiyor → `3mm to 12mm`.
-- Sekiz listing'in açıklamasında 2mm'ye atıf var → genişlik rehberliği
-  yeniden yazılmalı (regex ile değil; prose yeniden yazılır — second-brain kuralı).
+```sql
+-- title ilike '%2mm%' → false · description ilike '%2mm%' → false
+select title ilike '%2mm%', description ilike '%2mm%'
+from products where etsy_listing_id = 4543442596;
+```
 
-Bu metin turu, Etsy başlık kuralları araştırmasıyla birlikte tek seferde yapılır.
+Başlık (`10K Solid Gold Hammered Wedding Band, Milgrain Comfort Fit Ring`) ve
+açıklama genişlik aralığı vaat etmiyor, dolayısıyla rota koştuktan sonra metin
+tarafında tutarsızlık oluşmaz. Milgrain kararı geri alındığı için o ailede de
+metin işi yok.
