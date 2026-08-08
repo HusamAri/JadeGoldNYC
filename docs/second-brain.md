@@ -157,6 +157,21 @@ repodaki hedefidir.
 
 ## Teknik desenler
 
+- **Maliyet modeli gerçek faturayla kalibre edilir ve kalibrasyon TEDARİKÇİNİN
+  org'una kilitlenir (2026-08):** Dört gerçek Tamsan faturası (9 satır, $2.040)
+  panelin otomatik maliyetiyle karşılaştırıldı: model toplamda %13,5, küçük
+  yüzükte %38'e kadar EKSİKTİ. Kök neden yapısal: işçilik GRAMA oranlıydı
+  (~$10/g) ama üretici PARÇA başına alıyor ($54 düz / $74 süslü) — gram azalınca
+  model çöküyor. Kalibrasyon medyan-uyumla yapıldı (toplam sapma −%2,2; satır
+  ±%15 — fatura fiyatlaması birebir formül değil, bunu vaat etme). İki kural:
+  (1) satır-satır eşleştir ve geçmişi GERÇEK değere çek (source='invoice';
+  otomatik tahmin fatura kaydının üstüne yazamaz), toplamların birebir tuttuğunu
+  SQL ile göster; (2) kalibrasyon O TEDARİKÇİYLE çalışan org'a bayrakla kilitlenir
+  (gold_settings.labor_model) — ilk uygulamada globaldi, kullanıcı yakaladı:
+  Tamsan EON'un üreticisi, Jade'in değil; farklı tedarikçili org'a başka orgun
+  fatura verisiyle kalibre model uygulamak yeni bir yanlışlık üretir.
+
+
 - **Dış API kotası körlemesine harcanmaz: sağlayıcı bütçeyi her cevapta söylüyorsa
   KAYDET ve işleri rezervle KAPILA (2026-08):** Etsy günlük kotası doldu (429
   "Exceeded daily rate limit") ve üç iş aynı gün çarpıştı: altın endeksi (136
