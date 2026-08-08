@@ -18,6 +18,8 @@ import {
   detectKarat,
   extractWeightGrams,
   calculateGoldCost,
+  detectLaborClass,
+  SUPPLIER_LABOR_PER_PIECE_CENTS,
   type GoldCostBreakdown,
   type KaratType,
 } from "@/lib/gold-cost";
@@ -57,7 +59,9 @@ export async function createGoldCostForSale(
     .from("costs")
     .select("sale_item_id")
     .eq("sale_id", saleId)
-    .eq("source", "gold_auto");
+    // 'invoice' = Tamsan faturasından girilmiş GERÇEK maliyet; üstüne
+    // otomatik tahmin yazılmaz (2026-08 kalibrasyon geri-doldurması).
+    .in("source", ["gold_auto", "invoice"]);
   const costedItemIds = new Set(
     ((existing ?? []) as { sale_item_id: string | null }[])
       .map((r) => r.sale_item_id)
@@ -235,7 +239,13 @@ export async function createGoldCostForSale(
 
     const qty = item.quantity || 1;
     const goldCents = cost.totalGoldCostCents * qty;
-    const laborCents = cost.totalLaborCostCents * qty;
+    // İşçilik: gram-başına DEĞİL parça-başına (Tamsan kalibrasyonu, 2026-08).
+    // Eski model (alım $/g − eritme $/g) küçük yüzükleri %38'e kadar eksik
+    // maliyetliyordu; gerçek faturalar sabit parça işçiliği gösteriyor.
+    const laborClass = detectLaborClass(
+      `${combinedTitle} ${variant?.name ?? ""} ${item.sku ?? ""}`,
+    );
+    const laborCents = SUPPLIER_LABOR_PER_PIECE_CENTS[laborClass] * qty;
 
     result.goldCostCents += goldCents;
     result.laborCostCents += laborCents;
@@ -251,7 +261,7 @@ export async function createGoldCostForSale(
       amount_cents: goldCents,
       currency: "USD",
       cost_date: orderDate,
-      vendor: "Altin Tedarik",
+      vendor: "Creations By Tamsan",
       sale_id: saleId,
       sale_item_id: item.id,
       source: "gold_auto",
@@ -266,11 +276,11 @@ export async function createGoldCostForSale(
       amount_cents: laborCents,
       currency: "USD",
       cost_date: orderDate,
-      vendor: "Altin Tedarik",
+      vendor: "Creations By Tamsan",
       sale_id: saleId,
       sale_item_id: item.id,
       source: "gold_auto",
-      notes: `Iscilik orani: %${(cost.laborMarkup * 100).toFixed(1)}`,
+      notes: `Iscilik sinifi: ${laborClass} (parça başına, Tamsan kalibrasyonu 2026-08)`,
     });
   }
 
