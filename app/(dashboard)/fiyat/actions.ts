@@ -492,3 +492,171 @@ export async function applyGoldIndex(
     return { error: e instanceof Error ? e.message : String(e) };
   }
 }
+
+export interface PanelPushResult {
+  ok?: boolean;
+  error?: string;
+  /** Tüm hedefler bitti mi; bitmedıyse istemci nextIndex ile devam eder. */
+  done?: boolean;
+  nextIndex?: number;
+  totalTargets?: number;
+  listings?: number;
+  updated?: number;
+  unchanged?: number;
+  errors?: number;
+  flatFixed?: number;
+  hatalar?: { listingId: number; error: string }[];
+}
+
+/**
+ * TEK TUŞ — panel fiyatlarını OLDUĞU GİBİ Etsy'ye yazar.
+ *
+ * Konsol akışından (kuru çalıştırma → onay) farkı: hedef fiyat motordan
+ * yeniden HESAPLANMAZ, paneldeki varyant fiyatı (DB) otoritedir. Kullanım
+ * senaryosu: katalog genel denetimi panel DB'sini kanonik hâle getirdi
+ * (2026-08-08 normalizasyonu) ve kullanıcı yalnız panelden işlem yapabiliyor —
+ * düzeltmelerin tamamı tek butonla canlıya iner.
+ *
+ * Ev kurallarıyla ilişkisi: DB fiyatları motor türevi kanoniktir (elle fiyat
+ * girilmez, kural 2 sağlanır); insan onayı butonun kendisidir (kural 1);
+ * `pushListingPrices` listing başına Etsy'yi OKUYUP yalnız farkı yazar —
+ * fark yoksa PUT atılmaz, akış idempotenttir (kural 3'ün oku-karşılaştır
+ * özü korunur). Her parça audit_log'a düşer (kural 4).
+ *
+ * Zaman bütçesi: altın endeksi dersi — tüm katalog tek istekte bitmeyebilir.
+ * Deterministik sırada (etsy_listing_id ASC) `startIndex`ten koşar, bütçe
+ * dolunca `done:false + nextIndex` döner; istemci aynı turda devam eder.
+ * Sıfır-varyant istisnaları (FLAT_FIX_TARGETS) İLK parçada, listelerden
+ * önce koşar — zararına satış riski taşıyan kanama önce durdurulur.
+ */
+export async function panelPushAll(
+  startIndex: number,
+): Promise<PanelPushResult> {
+  const m = await requireMembership();
+  if (!isManager(m.role)) return { error: MANAGER_ONLY_ERROR };
+
+  const write = await getEtsyWriteAccess(m.org_id);
+  if (!write.writeEnabled) {
+    return { error: "Etsy yazma erişimi kapalı — itiş yapılamaz." };
+  }
+
+  const admin = createAdminClient();
+
+  let client: EtsyClient;
+  try {
+    client = await EtsyClient.forOrg(m.org_id);
+  } catch (e) {
+    return {
+      error:
+        e instanceof EtsyNotConnectedError
+          ? "Etsy bağlantısı yok — Ayarlar'dan bağlanın."
+          : e instanceof Error
+            ? e.message
+            : String(e),
+    };
+  }
+
+  // Hedef listing'ler: Etsy'de var + panelde varyantı var. Sıra deterministik
+  // (startIndex kayması olmasın — approvePricingRun/altın endeksi dersi).
+  const { data: prods, error: prodErr } = await admin
+    .from("products")
+    .select("id, etsy_listing_id")
+    .eq("org_id", m.org_id)
+    .not("etsy_listing_id", "is", null)
+    .is("etsy_deleted_at", null)
+    .order("etsy_listing_id", { ascending: true });
+  if (prodErr) return { error: prodErr.message };
+  const products = (prods ?? []) as { id: string; etsy_listing_id: number }[];
+
+  const deadline = Date.now() + PUSH_BUDGET_MS;
+  let updated = 0;
+  let unchanged = 0;
+  let errors = 0;
+  let listings = 0;
+  let flatFixed = 0;
+  const hatalar: { listingId: number; error: string }[] = [];
+
+  // ── 0. parça: sıfır-varyant zarar vakaları önce ──────────────────────
+  if (startIndex === 0) {
+    const { FLAT_FIX_TARGETS, runFlatFix } = await import(
+      "@/lib/etsy/underpriced"
+    );
+    for (const t of FLAT_FIX_TARGETS) {
+      const row = await runFlatFix(client, admin, m.org_id, t, {
+        apply: true,
+        mode: "floor",
+      });
+      if (row.status === "updated") flatFixed += 1;
+      else if (row.status === "error" || row.status === "unverified") {
+        errors += 1;
+        hatalar.push({
+          listingId: t.listingId,
+          error: String(row.detail ?? row.status),
+        });
+      }
+      // "unchanged"/"refused"/"skipped" sessizce geçilir — idempotent.
+    }
+  }
+
+  // ── Varyantlı listing'ler: DB fiyatlarını aynen yaz ──────────────────
+  let i = startIndex;
+  for (; i < products.length; i++) {
+    if (Date.now() > deadline) break;
+    const p = products[i];
+    const { data: vars, error: varErr } = await admin
+      .from("product_variants")
+      .select("sku, price_cents")
+      .eq("product_id", p.id);
+    if (varErr) {
+      errors += 1;
+      hatalar.push({ listingId: p.etsy_listing_id, error: varErr.message });
+      continue;
+    }
+    const priceBySku = new Map<string, number>();
+    for (const v of (vars ?? []) as { sku: string; price_cents: number }[]) {
+      if (v.sku && v.price_cents > 0) priceBySku.set(v.sku, v.price_cents);
+    }
+    if (priceBySku.size === 0) continue; // sıfır-varyant: flat-fix kapsıyor
+
+    const out = await pushListingPrices(client, p.etsy_listing_id, priceBySku);
+    listings += 1;
+    if (out.status === "updated") updated += out.changed;
+    else if (out.status === "unchanged") unchanged += 1;
+    else {
+      errors += 1;
+      hatalar.push({
+        listingId: p.etsy_listing_id,
+        error: out.detail ?? "bilinmeyen hata",
+      });
+    }
+  }
+
+  const done = i >= products.length;
+
+  await logAudit(admin, {
+    orgId: m.org_id,
+    action: "etsy.reprice",
+    entityType: "shop",
+    entityId: `panel-push-${startIndex}`,
+    summary:
+      `Tek tuş panel→Etsy fiyat itişi (parça ${startIndex}-${i}/${products.length}): ` +
+      `${listings} listing okundu · ${updated} varyant güncellendi · ` +
+      `${unchanged} zaten aynı${flatFixed ? ` · ${flatFixed} sıfır-varyant düzeltildi` : ""}` +
+      `${errors ? ` · ${errors} hata` : ""}${done ? " · TAMAMLANDI" : " · devam edecek"}.`,
+    source: "etsy",
+  });
+
+  revalidatePath("/fiyat");
+  return {
+    ok: true,
+    done,
+    nextIndex: done ? undefined : i,
+    totalTargets: products.length,
+    listings,
+    updated,
+    unchanged,
+    errors,
+    flatFixed,
+    hatalar: hatalar.slice(0, 10),
+  };
+}

@@ -5,6 +5,7 @@ import { getEtsyWriteAccess } from "@/lib/db/queries/etsy";
 import { PageHeader } from "@/components/page-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { PricingConsole } from "@/components/pricing/pricing-console";
+import { PanelPushCard } from "@/components/pricing/panel-push-card";
 import { PricingConfigForm } from "@/components/pricing/pricing-config-form";
 import {
   GoldIndexCard,
@@ -121,6 +122,13 @@ export default async function FiyatPage() {
             : null
         }
       />
+
+      <div aria-hidden className="idx -mb-3">
+        <span>Fiyat / 01b · Tek tuş: panel → Etsy</span>
+        <span className="idx-bar" />
+      </div>
+
+      <PanelPushCard writeEnabled={writeAccess.writeEnabled} />
 
       <div aria-hidden className="idx -mb-3">
         <span>Fiyat / 02 · Altın endeksi (otomatik)</span>
