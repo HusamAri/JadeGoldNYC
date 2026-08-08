@@ -45,6 +45,17 @@ export function PanelPushCard({ writeEnabled }: { writeEnabled: boolean }) {
         toplamAyni += res.unchanged ?? 0;
         toplamHata += res.errors ?? 0;
         flat += res.flatFixed ?? 0;
+        if (res.rateLimited) {
+          toast.warning(
+            "Etsy günlük API kotası doldu — bugün başka yazım yapılamaz. " +
+              "Kota 00:00 UTC'de (Türkiye 03:00) sıfırlanır; yarın butona " +
+              "tekrar basın, kaldığı yerden sürer." +
+              (toplamGuncel ? ` Bugün ${toplamGuncel} varyant yazılabildi.` : ""),
+            { duration: 15000 },
+          );
+          setProgress(null);
+          return;
+        }
         for (const h of res.hatalar ?? []) {
           toast.error(`Listing ${h.listingId}: ${h.error}`, { duration: 9000 });
         }

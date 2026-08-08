@@ -505,7 +505,14 @@ export interface PanelPushResult {
   unchanged?: number;
   errors?: number;
   flatFixed?: number;
+  /** Etsy GÜNLÜK kotası doldu — devam etmek anlamsız, yarın sürdürülür. */
+  rateLimited?: boolean;
   hatalar?: { listingId: number; error: string }[];
+}
+
+/** Etsy 429 günlük kota hatası mı? (saniyelik 429'dan farklı: beklemek çözmez.) */
+function isDailyRateLimit(detail: string | undefined): boolean {
+  return /daily rate limit|exceeded daily/i.test(detail ?? "");
 }
 
 /**
@@ -593,6 +600,23 @@ export async function panelPushAll(
           listingId: t.listingId,
           error: String(row.detail ?? row.status),
         });
+        // Günlük kota dolduysa kalan HER çağrı da 429 alır — kotayı boşa
+        // yakmadan anında dur; buton yarın kaldığı yerden sürer.
+        if (isDailyRateLimit(String(row.detail ?? ""))) {
+          return {
+            ok: true,
+            done: false,
+            nextIndex: startIndex,
+            rateLimited: true,
+            totalTargets: 0,
+            listings,
+            updated,
+            unchanged,
+            errors,
+            flatFixed,
+            hatalar: hatalar.slice(0, 10),
+          };
+        }
       }
       // "unchanged"/"refused"/"skipped" sessizce geçilir — idempotent.
     }
@@ -628,6 +652,23 @@ export async function panelPushAll(
         listingId: p.etsy_listing_id,
         error: out.detail ?? "bilinmeyen hata",
       });
+      if (isDailyRateLimit(out.detail)) {
+        // Devre kesici: günlük kota bitti, kalan listing'leri denemek yalnız
+        // 429 zinciri üretir. nextIndex = bu listing — yarın buradan sürer.
+        return {
+          ok: true,
+          done: false,
+          nextIndex: i,
+          rateLimited: true,
+          totalTargets: products.length,
+          listings,
+          updated,
+          unchanged,
+          errors,
+          flatFixed,
+          hatalar: hatalar.slice(0, 10),
+        };
+      }
     }
   }
 
@@ -637,7 +678,9 @@ export async function panelPushAll(
     orgId: m.org_id,
     action: "etsy.reprice",
     entityType: "shop",
-    entityId: `panel-push-${startIndex}`,
+    // entity_id kolonu UUID'dir; metin kimlik geçirilirse log_audit SESSIZCE
+    // düşer (ilk koşuda yaşandı) — kimlik summary'de taşınır.
+    entityId: null,
     summary:
       `Tek tuş panel→Etsy fiyat itişi (parça ${startIndex}-${i}/${products.length}): ` +
       `${listings} listing okundu · ${updated} varyant güncellendi · ` +
