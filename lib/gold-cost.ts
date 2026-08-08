@@ -29,6 +29,36 @@ export const PURCHASE_PRICE_CENTS_PER_GRAM: Record<KaratType, number> = {
 /** 1 troy ons = 31.1035 gram. */
 export const TROY_OUNCE_GRAMS = 31.1035;
 
+// ── Tedarikçi işçilik kalibrasyonu (Creations By Tamsan) ──────────────
+//
+// Kaynak: 4 gerçek fatura / 9 satır (no. 17794, 17834, 17863, 17953;
+// 2026-07-22 → 2026-08-08, hepsi Gold $4372.40/ozt damgalı). Gerçek yapı
+// "metal (spot × ayar) + PARÇA BAŞINA işçilik"dir — eski gram-başına model
+// küçük yüzükleri %38'e kadar eksik maliyetliyordu (2mm 1.34g: pane $97.50,
+// fatura $148.00). Kalibrasyon medyan-uyum: düz profiller (dome/flat/beveled/
+// knife) ≈ $54/parça; süslü profiller (milgrain, hammered, diamond cut,
+// basketweave, ribbed, two-tone; kazıma dahil) ≈ $74/parça. 9 satırda toplam
+// sapma −%2.2; satır bazında ±%15 (fatura fiyatlaması birebir formül değil).
+export const SUPPLIER_LABOR_PER_PIECE_CENTS: Record<
+  "standard" | "decorated",
+  number
+> = {
+  standard: 5400,
+  decorated: 7400,
+};
+
+/**
+ * İşçilik sınıfı tespiti: süslü yüzeyler (elmas kesim ailesi) Tamsan'da
+ * belirgin daha pahalı. Metin başlık + varyant adı + SKU birleşimidir.
+ */
+export function detectLaborClass(text: string): "standard" | "decorated" {
+  return /milgrain|hammered|diamond\s*cut|basketweave|ribbed|two[\s-]*tone|beaded|-R-\d\d0[467]-|TTG-/i.test(
+    text,
+  )
+    ? "decorated"
+    : "standard";
+}
+
 export type KaratType = "10K" | "14K" | "18K";
 
 // ── Ayar tespiti ──────────────────────────────────────────────────────
