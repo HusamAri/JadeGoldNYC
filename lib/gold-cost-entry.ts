@@ -168,7 +168,12 @@ export async function createGoldCostForSale(
     .select("gold_settings")
     .eq("id", orgId)
     .maybeSingle();
-  const gs = (orgData as { gold_settings?: { purchase_price_14k_cents?: number; purchase_price_10k_cents?: number; purchase_price_18k_cents?: number } } | null)?.gold_settings;
+  const gs = (orgData as { gold_settings?: { purchase_price_14k_cents?: number; purchase_price_10k_cents?: number; purchase_price_18k_cents?: number; labor_model?: string } } | null)?.gold_settings;
+  // İşçilik modeli ORG-BAZLI seçilir: Tamsan kalibrasyonu (parça başına)
+  // yalnız üreticisi Tamsan olan org'da geçerlidir (EON — gold_settings'te
+  // labor_model='per_piece'). Jade ve diğerleri eski gram-başına modelde
+  // kalır; tedarikçileri farklı, o veriye kalibre edilmedi.
+  const perPieceLabor = gs?.labor_model === "per_piece";
   // YALNIZ org'un girdiği fiyatlar (Partial) — 18K boşsa calculateGoldCost
   // canlı spottan türetir (melt18 + 14K işçilik primi); malzeme/işçilik maliyet
   // satırları da böylece 18K için dürüst kırılımla yazılır.
@@ -239,13 +244,15 @@ export async function createGoldCostForSale(
 
     const qty = item.quantity || 1;
     const goldCents = cost.totalGoldCostCents * qty;
-    // İşçilik: gram-başına DEĞİL parça-başına (Tamsan kalibrasyonu, 2026-08).
-    // Eski model (alım $/g − eritme $/g) küçük yüzükleri %38'e kadar eksik
-    // maliyetliyordu; gerçek faturalar sabit parça işçiliği gösteriyor.
+    // İşçilik: Tamsan org'unda parça-başına (2026-08 kalibrasyonu — eski
+    // gram-başına model küçük yüzükleri %38'e kadar eksik maliyetliyordu);
+    // diğer org'larda eski model (alım $/g − eritme $/g) aynen sürer.
     const laborClass = detectLaborClass(
       `${combinedTitle} ${variant?.name ?? ""} ${item.sku ?? ""}`,
     );
-    const laborCents = SUPPLIER_LABOR_PER_PIECE_CENTS[laborClass] * qty;
+    const laborCents = perPieceLabor
+      ? SUPPLIER_LABOR_PER_PIECE_CENTS[laborClass] * qty
+      : cost.totalLaborCostCents * qty;
 
     result.goldCostCents += goldCents;
     result.laborCostCents += laborCents;
@@ -261,7 +268,7 @@ export async function createGoldCostForSale(
       amount_cents: goldCents,
       currency: "USD",
       cost_date: orderDate,
-      vendor: "Creations By Tamsan",
+      vendor: perPieceLabor ? "Creations By Tamsan" : "Altin Tedarik",
       sale_id: saleId,
       sale_item_id: item.id,
       source: "gold_auto",
@@ -276,11 +283,13 @@ export async function createGoldCostForSale(
       amount_cents: laborCents,
       currency: "USD",
       cost_date: orderDate,
-      vendor: "Creations By Tamsan",
+      vendor: perPieceLabor ? "Creations By Tamsan" : "Altin Tedarik",
       sale_id: saleId,
       sale_item_id: item.id,
       source: "gold_auto",
-      notes: `Iscilik sinifi: ${laborClass} (parça başına, Tamsan kalibrasyonu 2026-08)`,
+      notes: perPieceLabor
+        ? `Iscilik sinifi: ${laborClass} (parça başına, Tamsan kalibrasyonu 2026-08)`
+        : `Iscilik orani: %${(cost.laborMarkup * 100).toFixed(1)}`,
     });
   }
 

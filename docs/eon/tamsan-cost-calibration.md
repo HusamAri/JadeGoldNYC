@@ -49,6 +49,14 @@ süslü 2mm rose: −%38).
 malzeme = fatura gramı × $4372.40 eritme değeri, işçilik = kalan.
 Maliyet üreticisi `invoice` kaydı olan kalemi atlar (çift yazım yok).
 
+## Kapsam: yalnız EON
+
+Tamsan **EON'un** üreticisidir; kalibrasyon Jade Gold NYC'ye ya da başka
+org'a UYGULANMAZ. Seçim org-bazlı: `organizations.gold_settings.labor_model
+= 'per_piece'` yalnız EON'da set edildi (canlı, 2026-08-08). Bayrağı olmayan
+org'lar eski gram-başına alım modelinde kalır. Geçmiş düzeltmesindeki 9 kalem
+de tamamı EON satışıydı — Jade verisine dokunulmadı.
+
 ## Bakım
 
 - Yeni fatura geldiğinde: kalemleri satışla eşleştirip `source='invoice'`
