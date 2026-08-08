@@ -36,6 +36,18 @@ export default async function FiyatPage() {
   const m = await requireMembership();
   const admin = createAdminClient();
 
+  // Etsy günlük kota telemetrisi (0134) — istemci her cevaptan kaydediyor.
+  const { data: quotaRow } = await admin
+    .from("etsy_connection")
+    .select("quota_remaining, quota_limit_daily, quota_observed_at")
+    .eq("org_id", m.org_id)
+    .maybeSingle();
+  const quota = (quotaRow ?? null) as {
+    quota_remaining: number | null;
+    quota_limit_daily: number | null;
+    quota_observed_at: string | null;
+  } | null;
+
   const [config, writeAccess, runsRes] = await Promise.all([
     getPricingConfig(m.org_id),
     getEtsyWriteAccess(m.org_id),
@@ -128,7 +140,7 @@ export default async function FiyatPage() {
         <span className="idx-bar" />
       </div>
 
-      <PanelPushCard writeEnabled={writeAccess.writeEnabled} />
+      <PanelPushCard writeEnabled={writeAccess.writeEnabled} quota={quota} />
 
       <div aria-hidden className="idx -mb-3">
         <span>Fiyat / 02 · Altın endeksi (otomatik)</span>
