@@ -261,7 +261,9 @@ export async function runFlatFix(
     orgId,
     action: "etsy.reprice",
     entityType: "products",
-    entityId: String(t.listingId),
+    // entity_id UUID'dir; listing numarası metin olduğu için geçirilmez
+    // (log_audit sessizce düşer) — kimlik summary'de.
+    entityId: null,
     summary:
       `Zararına fiyat düzeltmesi (${t.label}, listing ${t.listingId}): ` +
       `${changed} offering ${mode} modunda ${(targetCents / 100).toFixed(0)}$ ` +

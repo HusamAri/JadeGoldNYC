@@ -61,6 +61,8 @@ export type OrgRunResult = {
     /** Süre bütçesi doldu; `nextIndex` ile devam edilmeli. */
     | "partial"
     | "deadband"
+    /** Etsy günlük API kotası rezervin altında — koşu yarına ertelendi. */
+    | "quota-deferred"
     | "blocked-max-step"
     | "etsy-disconnected"
     | "error";
@@ -309,6 +311,37 @@ export async function runGoldReprice(opts: {
 
       if (Math.abs(step) < DEADBAND_PCT && !opts.force) {
         res.status = "deadband";
+        continue;
+      }
+
+      // Kota rezervi kapısı (0134): tam koşu ~3 istek/listing tüketir ve
+      // interaktif işlerle (panel itişi, senkron) AYNI günlük kotayı paylaşır.
+      // Son 20 saat içinde gözlenen kalan kota rezervin altındaysa koşu
+      // YARINA ertelenir — spot farkı kaybolmaz, taban ilerlemediği için
+      // sonraki koşu aynı deltayı görür. `force` insan kararıyla aşar.
+      const { data: quotaRow } = await admin
+        .from("etsy_connection")
+        .select("quota_remaining, quota_observed_at")
+        .eq("org_id", org.id)
+        .maybeSingle();
+      const q = quotaRow as {
+        quota_remaining: number | null;
+        quota_observed_at: string | null;
+      } | null;
+      const QUOTA_RESERVE = 1500;
+      const quotaFresh =
+        q?.quota_observed_at != null &&
+        Date.now() - new Date(q.quota_observed_at).getTime() < 20 * 3600_000;
+      if (
+        !opts.force &&
+        quotaFresh &&
+        q?.quota_remaining != null &&
+        q.quota_remaining < QUOTA_RESERVE
+      ) {
+        res.status = "quota-deferred";
+        res.skippedSamples.push(
+          `Etsy günlük kotası ${q.quota_remaining} kaldı (< rezerv ${QUOTA_RESERVE}) — yarın denenecek`,
+        );
         continue;
       }
       if (Math.abs(step) > MAX_STEP_PCT && !opts.force) {

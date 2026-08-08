@@ -18,7 +18,18 @@ import { panelPushAll } from "@/app/(dashboard)/fiyat/actions";
  * (`done:false + nextIndex`); kart bitene kadar aynı turda kendi kendine devam
  * eder — kullanıcı tek buton görür, parçalama görünmezdir.
  */
-export function PanelPushCard({ writeEnabled }: { writeEnabled: boolean }) {
+export function PanelPushCard({
+  writeEnabled,
+  quota,
+}: {
+  writeEnabled: boolean;
+  /** Etsy günlük kota telemetrisi (son API cevabından; 0134). */
+  quota?: {
+    quota_remaining: number | null;
+    quota_limit_daily: number | null;
+    quota_observed_at: string | null;
+  } | null;
+}) {
   const router = useRouter();
   const [armed, setArmed] = useState(false);
   const [running, setRunning] = useState(false);
@@ -45,6 +56,17 @@ export function PanelPushCard({ writeEnabled }: { writeEnabled: boolean }) {
         toplamAyni += res.unchanged ?? 0;
         toplamHata += res.errors ?? 0;
         flat += res.flatFixed ?? 0;
+        if (res.rateLimited) {
+          toast.warning(
+            "Etsy günlük API kotası doldu — bugün başka yazım yapılamaz. " +
+              "Kota 00:00 UTC'de (Türkiye 03:00) sıfırlanır; yarın butona " +
+              "tekrar basın, kaldığı yerden sürer." +
+              (toplamGuncel ? ` Bugün ${toplamGuncel} varyant yazılabildi.` : ""),
+            { duration: 15000 },
+          );
+          setProgress(null);
+          return;
+        }
         for (const h of res.hatalar ?? []) {
           toast.error(`Listing ${h.listingId}: ${h.error}`, { duration: 9000 });
         }
@@ -85,6 +107,17 @@ export function PanelPushCard({ writeEnabled }: { writeEnabled: boolean }) {
               düzeltilir. Uzun katalogda parça parça ilerler; buton bitene
               kadar kendi devam eder.
             </p>
+            {quota?.quota_remaining != null && (
+              <p className="text-muted-foreground mt-1 text-xs">
+                Bugün kalan Etsy kotası: ~{quota.quota_remaining}
+                {quota.quota_limit_daily ? ` / ${quota.quota_limit_daily}` : ""}
+                {quota.quota_observed_at
+                  ? ` (${new Date(quota.quota_observed_at).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" })} itibarıyla)`
+                  : ""}
+                {quota.quota_remaining < 500 &&
+                  " — kota azaldı; büyük itişi kota sıfırlanınca (TR 03:00) yapın."}
+              </p>
+            )}
             {progress && (
               <p className="mt-2 text-sm font-medium text-amber-600 dark:text-amber-400">
                 {progress}

@@ -34,6 +34,58 @@ export class EtsyClient {
     private readonly admin: SupabaseClient,
   ) {}
 
+  /** Kota yazımını sıkıştırmak için son DB yazım anı (ms). */
+  private lastQuotaWriteMs = 0;
+
+  /**
+   * Etsy her cevapta günlük kotayı bildirir (x-limit-per-day /
+   * x-remaining-today). Fire-and-forget kaydeder ki altın endeksi gibi toplu
+   * işler koşmadan ÖNCE "bütçe var mı?" diye bakabilsin (0134). En fazla
+   * 10 sn'de bir yazılır; kota 500'ün altındaysa her cevapta tazelenir.
+   */
+  private recordQuota(res: Response): void {
+    const remaining = Number(res.headers.get("x-remaining-today"));
+    const limit = Number(res.headers.get("x-limit-per-day"));
+    if (!Number.isFinite(remaining) || !Number.isFinite(limit)) return;
+    const now = Date.now();
+    if (remaining >= 500 && now - this.lastQuotaWriteMs < 10_000) return;
+    this.lastQuotaWriteMs = now;
+    void this.admin
+      .from("etsy_connection")
+      .update({
+        quota_limit_daily: limit,
+        quota_remaining: remaining,
+        quota_observed_at: new Date(now).toISOString(),
+      })
+      .eq("id", this.conn.id)
+      .then(({ error }) => {
+        if (error) console.error("Etsy kota kaydı:", error.message);
+      });
+  }
+
+  /**
+   * 429 triyajı: SANİYELİK limitte kısa bekleme işe yarar, GÜNLÜK limitte
+   * yaramaz — beklemek yalnız kotasız istek zinciri üretir (2026-08-08
+   * vakası). Günlükse kota 0 olarak kaydedilir ve hata ANINDA fırlatılır.
+   */
+  private async triage429(res: Response, label: string): Promise<string> {
+    const text = await res.text();
+    if (/daily/i.test(text)) {
+      void this.admin
+        .from("etsy_connection")
+        .update({
+          quota_remaining: 0,
+          quota_observed_at: new Date().toISOString(),
+        })
+        .eq("id", this.conn.id)
+        .then(({ error }) => {
+          if (error) console.error("Etsy kota kaydı:", error.message);
+        });
+      throw new Error(`Etsy API hatası (429) ${label}: ${text}`);
+    }
+    return text;
+  }
+
   // Etsy v3 API çağrıları x-api-key'de "keystring:shared_secret" bekler.
   // apiSecret forOrg()'ta zorunlu kılınır; yalnız keystring'e düşmeyiz
   // (Etsy bunu 403 ile reddeder), bunun yerine net bir config hatası veririz.
@@ -142,7 +194,9 @@ export class EtsyClient {
       },
     });
 
+    this.recordQuota(res);
     if (res.status === 429 && retry > 0) {
+      await this.triage429(res, path); // günlükse fırlatır
       await new Promise((r) => setTimeout(r, 1200));
       return this.get<T>(path, query, retry - 1);
     }
@@ -176,7 +230,9 @@ export class EtsyClient {
       body: body == null ? undefined : JSON.stringify(body),
     });
 
+    this.recordQuota(res);
     if (res.status === 429 && retry > 0) {
+      await this.triage429(res, `${method} ${path}`);
       await new Promise((r) => setTimeout(r, 1200));
       return this.request<T>(method, path, body, retry - 1);
     }
@@ -215,7 +271,9 @@ export class EtsyClient {
       body,
     });
 
+    this.recordQuota(res);
     if (res.status === 429 && retry > 0) {
+      await this.triage429(res, `${method} ${path}`);
       await new Promise((r) => setTimeout(r, 1200));
       return this.requestForm<T>(method, path, form, retry - 1);
     }
@@ -249,7 +307,9 @@ export class EtsyClient {
       body: form,
     });
 
+    this.recordQuota(res);
     if (res.status === 429 && retry > 0) {
+      await this.triage429(res, `${method} ${path}`);
       await new Promise((r) => setTimeout(r, 1200));
       return this.requestMultipart<T>(method, path, form, retry - 1);
     }
