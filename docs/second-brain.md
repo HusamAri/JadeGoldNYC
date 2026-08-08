@@ -157,6 +157,31 @@ repodaki hedefidir.
 
 ## Teknik desenler
 
+- **Dış API kotası körlemesine harcanmaz: sağlayıcı bütçeyi her cevapta söylüyorsa
+  KAYDET ve işleri rezervle KAPILA (2026-08):** Etsy günlük kotası doldu (429
+  "Exceeded daily rate limit") ve üç iş aynı gün çarpıştı: altın endeksi (136
+  listing, sabah), toplu SEO (56 hata) ve kullanıcının panel itişi (0 yazım).
+  Üç kusur birden görünür oldu: (1) Etsy her cevapta kalan kotayı header'da
+  bildiriyordu (x-limit-per-day / x-remaining-today) ama kimse OKUMUYORDU;
+  (2) 429'da kör 1,2sn bekle-yeniden-dene vardı — SANİYELİK limitte doğru,
+  GÜNLÜK limitte yalnız kotasız istek zinciri üretir (ikisi gövde metninden
+  ayrılır: "daily"); (3) toplu akışlar ilk günlük-429'dan sonra kalan hedefleri
+  denemeye devam ediyordu. Çözüm üç katman (0134): istemci her cevaptan kotayı
+  DB'ye yazar (10sn sıkıştırma; kota <500 ise her cevapta) → zamanlanmış büyük
+  tüketici (altın endeksi) koşmadan ÖNCE rezerv kontrolü yapar (<1500 →
+  "quota-deferred", taban ilerlemediği için delta kaybolmaz; force insan aşar)
+  → interaktif akış ilk günlük-429'da devre keser (nextIndex korunur, kullanıcıya
+  "kota 00:00 UTC'de sıfırlanır" denir). Kural: paylaşılan-kotalı dış API'de
+  her tüketici işin başında "bütçem var mı?" diye bakmalı; kota sinyali zaten
+  gelen cevapların içindeyse telemetri BEDAVADIR, kurmamak tercihtir.
+- **audit_log.entity_id UUID'dir ve logAudit hatayı bilerek yutar — metin kimlik
+  SESSİZCE kaybolur (2026-08):** "panel-push-0" ve Etsy listing numarası gibi
+  metinler log_audit RPC'sinde düştü; iş başarılı görünürken şirket hafızasına
+  hiç iz kalmadı. Kural: UUID olmayan kimlik entityId'ye geçirilmez (null +
+  kimlik summary metninde); "log yazıldı" varsayımı da denetime dahil —
+  ilk koşudan sonra audit satırını SQL'le bir kez gör.
+
+
 - **Kendi ürettiğin metni ezmeden önce CANLI hâlini oku; senkronun yönü "repo → DB"
   diye varsayılmaz (2026-08):** TTG başlıklarını Etsy rehberliğine uydurmak için
   üretici + migration'ı yeni metne çevirdim. DB'ye yazmadan önce canlı satırı
