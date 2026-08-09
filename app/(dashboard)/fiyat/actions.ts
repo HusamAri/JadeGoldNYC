@@ -603,6 +603,18 @@ export async function panelPushAll(
         // Günlük kota dolduysa kalan HER çağrı da 429 alır — kotayı boşa
         // yakmadan anında dur; buton yarın kaldığı yerden sürer.
         if (isDailyRateLimit(String(row.detail ?? ""))) {
+          // İz bırakmadan dönme (2026-08-09 vakası): gece koşusu kota
+          // kesicisine takıldı ve audit'siz döndüğü için teşhis kör kaldı.
+          await logAudit(admin, {
+            orgId: m.org_id,
+            action: "etsy.reprice",
+            entityType: "shop",
+            entityId: null,
+            summary:
+              "Tek tuş panel→Etsy itişi Etsy GÜNLÜK kotasına takıldı (sıfır-varyant " +
+              "düzeltmesi aşamasında) — hiçbir yazım yapılmadı, kota açılınca tekrar denenecek.",
+            source: "etsy",
+          });
           return {
             ok: true,
             done: false,
@@ -655,6 +667,16 @@ export async function panelPushAll(
       if (isDailyRateLimit(out.detail)) {
         // Devre kesici: günlük kota bitti, kalan listing'leri denemek yalnız
         // 429 zinciri üretir. nextIndex = bu listing — yarın buradan sürer.
+        await logAudit(admin, {
+          orgId: m.org_id,
+          action: "etsy.reprice",
+          entityType: "shop",
+          entityId: null,
+          summary:
+            `Tek tuş panel→Etsy itişi Etsy GÜNLÜK kotasına takıldı (listing ${i}/${products.length}, ` +
+            `${updated} varyant yazılabildi) — kota açılınca ${i}. listing'den sürecek.`,
+          source: "etsy",
+        });
         return {
           ok: true,
           done: false,
