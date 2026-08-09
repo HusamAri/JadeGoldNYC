@@ -58,9 +58,9 @@ export function PanelPushCard({
         flat += res.flatFixed ?? 0;
         if (res.rateLimited) {
           toast.warning(
-            "Etsy günlük API kotası doldu — bugün başka yazım yapılamaz. " +
-              "Kota 00:00 UTC'de (Türkiye 03:00) sıfırlanır; yarın butona " +
-              "tekrar basın, kaldığı yerden sürer." +
+            "Etsy günlük API kotası doldu — şimdilik yazım yapılamıyor. " +
+              "Kotanın ne zaman açıldığını bu karttaki 'kalan kota' satırından " +
+              "izleyin (sayı yükselince basın); akış kaldığı yerden sürer." +
               (toplamGuncel ? ` Bugün ${toplamGuncel} varyant yazılabildi.` : ""),
             { duration: 15000 },
           );
@@ -115,7 +115,7 @@ export function PanelPushCard({
                   ? ` (${new Date(quota.quota_observed_at).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" })} itibarıyla)`
                   : ""}
                 {quota.quota_remaining < 500 &&
-                  " — kota azaldı; büyük itişi kota sıfırlanınca (TR 03:00) yapın."}
+                  " — kota azaldı; büyük itişi bu sayı yükselince yapın."}
               </p>
             )}
             {progress && (
