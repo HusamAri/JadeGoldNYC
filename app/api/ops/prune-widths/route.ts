@@ -1,3 +1,5 @@
+import { createHash } from "node:crypto";
+
 import { NextResponse } from "next/server";
 
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -25,7 +27,12 @@ export const maxDuration = 300;
  * kopya listing'lerde el değiştirebiliyor (second-brain "aynı ürün" dersi),
  * listing kimliği ise sabittir.
  *
- * Auth: `Authorization: Bearer $CRON_SECRET` veya `?token=$PRUNE_ONE_SHOT_TOKEN`.
+ * Auth (üç yol, sku-untangle ile aynı desen):
+ *  1. `Authorization: Bearer $CRON_SECRET`
+ *  2. `?token=$PRUNE_ONE_SHOT_TOKEN` (env tanımlıysa)
+ *  3. `?token=` → `ops_tokens` (0136): SHA-256 hash CAS tüketimi —
+ *     tek kullanımlık, süreli, çift kullanım imkânsız. CRON_SECRET
+ *     env'i boş/silinmiş olsa da servis rolü token üretip koşabilir.
  * Varsayılan KURU ÇALIŞMA — gerçek yazma için `?apply=1`.
  */
 
@@ -46,18 +53,39 @@ function widthOf(sku: string): number | null {
   return m ? Number(m[1]) : null;
 }
 
-export async function GET(request: Request) {
+async function authorize(request: Request): Promise<boolean> {
   const secret = process.env.CRON_SECRET;
   const auth = request.headers.get("authorization");
+  if (secret && auth === `Bearer ${secret}`) return true;
+
   const url = new URL(request.url);
-  const oneShot = url.searchParams.get("token");
-  const authorized =
-    (secret && auth === `Bearer ${secret}`) ||
-    (ONE_SHOT != null && ONE_SHOT.length > 0 && oneShot === ONE_SHOT);
-  if (!authorized) {
+  const token = url.searchParams.get("token");
+  if (!token) return false;
+  if (ONE_SHOT != null && ONE_SHOT.length > 0 && token === ONE_SHOT) {
+    return true;
+  }
+
+  // ops_tokens (0136) — CAS tüketimi: koşullu UPDATE yalnız bir çağrıda
+  // satır döndürür, aynı token ikinci kez asla geçmez.
+  const hash = createHash("sha256").update(token).digest("hex");
+  const admin = createAdminClient();
+  const { data } = await admin
+    .from("ops_tokens")
+    .update({ used_at: new Date().toISOString() })
+    .eq("purpose", "prune-widths")
+    .eq("token_hash", hash)
+    .is("used_at", null)
+    .gt("expires_at", new Date().toISOString())
+    .select("id");
+  return (data ?? []).length > 0;
+}
+
+export async function GET(request: Request) {
+  if (!(await authorize(request))) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 
+  const url = new URL(request.url);
   const apply = url.searchParams.get("apply") === "1";
   const only = url.searchParams.get("listing");
   const targets = only
