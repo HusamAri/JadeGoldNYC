@@ -71,6 +71,16 @@ const PROFILE_PATTERNS: { re: RegExp; profile: EonProfile }[] = [
   { re: /\bhammered\b/i, profile: "hammered" },
   { re: /\bbasket\s*weave\b/i, profile: "basketweave" },
   { re: /\bribbed\b|\bfluted\b/i, profile: "ribbed" },
+  // TTG iki-ton (profil 06, hammered kademesi işçilik). "Diamond Cut" tek
+  // başına AYIRT EDİCİ DEĞİL — basketweave/ribbed başlıkları da taşıyor;
+  // bu yüzden desen "two tone"a anahtarlı ve elde-bitirilenlerle birlikte
+  // ÖNCE aranıyor.
+  { re: /\btwo[\s-]?tone\b/i, profile: "twotone" },
+  // The Lintel (profil 08, STANDART işçilik): "Wide Satin Center". 2026-08-11
+  // dry run'ında bu iki aile null profil yüzünden 350 satır "unknown" düştü
+  // ve fiyatları sessizce eski kalacaktı — bkz. video-qa ile aynı günkü
+  // fiyat denetimi raporu.
+  { re: /\bsatin\b/i, profile: "satin" },
   { re: /\bdome[d]?\b/i, profile: "dome" },
   { re: /\bbevel(?:ed)?\b/i, profile: "beveled" },
   { re: /\bknife\b/i, profile: "knife" },

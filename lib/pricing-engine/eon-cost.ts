@@ -54,7 +54,16 @@ export type EonProfile =
   // Elde bitirilen yeni desenler (2026-08): dokuma ve çapraz yiv. İşçilik
   // sınıfı milgrain/hammered ile aynı — bu yüzden ayrı bir sabit YOK.
   | "basketweave"
-  | "ribbed";
+  | "ribbed"
+  // İki-ton elmas kesim (TTG, profil 06): iki rengin birleştirilmesi + elmas
+  // kesim kafes elde bitirilir — hammered kademesi (bkz. 0127 migration
+  // başlığı: "iscilik = $40 — hammered/milgrain istisnasi").
+  | "twotone"
+  // The Lintel (profil 08): geniş satine merkez + parlak ray. STANDART
+  // işçilik sınıfı (lintel-launch-runbook kararı: "Lintel standart işçilik
+  // sınıfı, profil yalnızca işçiliği değiştirir ve standart profiller aynı
+  // fiyattadır") — bu yüzden HANDFINISHED setine GİRMEZ.
+  | "satin";
 
 /** 1 troy ons = 31.1035 gram (bkz. `lib/gold-cost.ts` TROY_OUNCE_GRAMS). */
 export const TROY_OUNCE_GRAMS = 31.1035;
@@ -83,6 +92,7 @@ const HANDFINISHED_PROFILES: ReadonlySet<EonProfile> = new Set<EonProfile>([
   "hammered",
   "basketweave",
   "ribbed",
+  "twotone",
 ]);
 
 /** Paketleme ve kargo payı, USD. */
