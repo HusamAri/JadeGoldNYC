@@ -157,9 +157,22 @@ export async function GET(request: Request) {
       .eq("org_id", org.id)
       .eq("product_id", prod.id)
       .order("position", { ascending: true });
+    // Panel galerisi göreli yol saklar (/eon/...); create-listing bunları
+    // `fetch(url)` ile indirir ve Node fetch GÖRELİ URL'i parse EDEMEZ —
+    // görseller sessizce atlanır, Etsy'de fotoğrafsız taslak kalırdı.
+    // Rota prod'da koştuğu için kendi origin'i public /eon/* dosyalarını
+    // birebir servis eder; burada mutlaklaştır. Kapak da aynı dertte:
+    // create-listing products.image_url'i galeriye kendisi ekler, o yüzden
+    // prod nesnesindeki alanı da mutlaklaştırıyoruz.
+    const base =
+      process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, "") || url.origin;
+    const absolutize = (u: string) =>
+      u.startsWith("http") ? u : `${base}${u.startsWith("/") ? u : `/${u}`}`;
+    prod.image_url = prod.image_url ? absolutize(prod.image_url.trim()) : prod.image_url;
     const galleryUrls = ((imgData ?? []) as { url: string | null }[])
       .map((r) => (r.url ?? "").trim())
-      .filter(Boolean);
+      .filter(Boolean)
+      .map(absolutize);
 
     row.variants = withSku.length;
     row.images = galleryUrls.length;
