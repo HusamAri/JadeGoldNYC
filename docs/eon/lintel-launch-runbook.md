@@ -44,15 +44,25 @@ raporu `00-package-overview/VALIDATION-REPORT.md`).
 
 ## Uygulama akışı
 
-1. [ ] Paket metinlerini indir (başlık/açıklama/tag/alt-text), [[CONFIRM]]
-   temizliği + Etsy sert kural denetimi (140 kr, 13 tag ≤20 kr — VALIDATION
-   raporu geçti diyor, yine de programatik doğrula)
-2. [ ] Panelde 9 ürün + 2.025 varyant oluştur (products + product_variants,
-   status=draft, research_group ata; MCP SQL ile idempotent)
-3. [ ] Görselleri Dropbox'tan indirip panel storage'a / Etsy'ye taşı
-4. [ ] Etsy taslak oluşturma döngüsü (mevcut task #10 altyapısı:
-   listing-onerileri → createListing akışı) — prod'da koşar;
-   sku-untangle rotasındaki DB-token deseniyle tetiklenebilir
+1. [x] Paket metinleri indirildi (2026-08-11) → `docs/eon/lintel/<NN>/`
+   (repoda yaşar; ayna ezerse kanonik kaynak burası). Placeholder çözümü +
+   Etsy sert kural denetimi `scripts/gen_lintel_catalog.py` iç assert'lerinde;
+   ek olarak token OLMAYAN iç-QA dili de taranıyor ("must be confirmed",
+   "confirmed alloy" — beyaz altın paragraflarında düz metin olarak sızmıştı,
+   gözle yakalandı, üreticiye kalıcı denetim eklendi).
+2. [x] Panelde 9 ürün + 2.025 varyant oluşturuldu (2026-08-11). Üretici çıktısı
+   `0137_eon_lintel_family.sql`; canlıya MCP ile aile-aile basıldı. Doğrulama:
+   - 9/9 metin uzunluğu üretici çıktısıyla birebir
+   - ayar başına konum-ağırlıklı fiyat checksum'u ikiz dome ailesiyle birebir
+     (10K 251.225.000 · 14K 382.915.000 · 18K 539.669.000; 0 fiyatsız, 0 gramsız)
+   - fiyat aralığı: 10K $470–$2.350 · 14K $670–$3.635 · 18K $970–$5.255
+3. [x] 90 görsel Dropbox'tan `public/eon/<sku>/NN.jpg`'ye indirildi (90/90 JPEG
+   imza doğrulaması), `listing_images`'a alt-text'lerle basıldı (90 satır,
+   17.408 kr alt toplamı kaynak CSV'lerle birebir).
+4. [ ] Etsy taslak oluşturma: `/api/ops/lintel-drafts` — prod'da tetiklenir
+   (önce dry-run, sonra `?sku=GLD-R-1008&apply=1` ile TEK listing kanıtı,
+   sonra kalanlar). NOT: rotadaki göreli-görsel-URL hatası düzeltildi
+   (Node fetch göreli yolu çözemiyordu → origin ile mutlaklaştırma).
 5. [ ] Read-back doğrulaması + panel ayna eşitlemesi
 6. [ ] Aktivasyon (kullanıcı kuralı: önce taslak testi, sonra aktive)
 
