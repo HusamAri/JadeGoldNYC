@@ -11,7 +11,16 @@ repodaki hedefidir.
 
 ## Süreç dersleri
 
-- **Dış API migrasyonunu hata mesajından adım adım çöz, tek listing'de kanıtla
+- **Dış araçtan gelen tam-repo kopyasını "Only in" listesiyle DEĞİL git-geçmişi
+  triyajıyla ayıkla (2026-08):** AI Studio'da geliştirilen zip eski main'den
+  çatallanmıştı; düz `diff -rq` "Only in zip" listesi yeni işi eski-taban
+  artıklarıyla (silinen alert-board-3d, taşınan 0108 migration) karıştırıyordu.
+  Yöntem: şüpheli her dosya için `git log --all -- <dosya>` — geçmişte İZİ OLAN
+  dosya eski-taban kalıntısıdır, alınmaz; izi olmayan gerçekten yeni iştir.
+  Ayrıca dış üreticinin kendi build logunu oku (build_final.log kırıktı → "çalışan
+  kod taşıyorum" varsayma) ve auth'suz gelen API rotasına üyelik kapısı ekle
+  (AI Studio tek kullanıcılı düşünür, panel çok kiracılı — ücretli Gemini ucu
+  anonim çağrıya açık kalıyordu). Sonuç: 18 "yeni" dosyadan 8'i alındı, PR #341.
   (2026-07):** Etsy 2025 listing-create sözleşmesi 5 yerde değişti; her düzeltme
   bir sonraki 400'ü açtı — (1) create'te `readiness_state_id` ZORUNLU, (2) hesaplı
   kargo profili `item_weight`+boyut ister → sabit/manuel profil TERCİH + paket
