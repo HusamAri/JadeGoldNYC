@@ -56,6 +56,30 @@ raporu `00-package-overview/VALIDATION-REPORT.md`).
 5. [ ] Read-back doğrulaması + panel ayna eşitlemesi
 6. [ ] Aktivasyon (kullanıcı kuralı: önce taslak testi, sonra aktive)
 
+## Placeholder çözüm haritası (aktivasyon öncesi zorunlu)
+
+Açıklamalardaki canlı placeholder'lar ev gerçekleriyle değiştirilir — uydurma
+YOK; kaynak canlı dome listing açıklamaları (ör. WHG-R-1401) + kullanıcı kuralları:
+
+| Token | Değer kaynağı |
+| --- | --- |
+| [[WIDTH_MM]] / [[SIZE_RANGE]] | "4mm to 12mm" / "US 4-16, full and half sizes" (kullanıcı kuralı + matris) |
+| [[THICKNESS_MM]] | 1.5mm (EON nihai kalınlık kararı, docs/eon/pricing) |
+| [[HALLMARK]] | ayar damgası (10K/14K/18K stamped) — canlı dome metnindeki cümle |
+| [[ALLOY_COMPOSITION]] / [[NICKEL_DISCLOSURE]] / [[PLATING_STATUS]] | canlı dome açıklamasındaki solid/kaplama-değil/nikel cümleleri birebir |
+| [[MAKER_OR_PRODUCTION_PARTNER]] / [[MADE_IN_LOCATION]] | canlı listing'lerdeki üretim ifadesi (Etsy production partner kaydıyla tutarlı) |
+| [[CONFIRM]] içeren cümleler | ev standardı yoksa cümle ÇIKARILIR (placeholder asla yayına sızmaz) |
+
+Doğrulama: yayın öncesi SQL leak sayacı `description like '%[[%'` = 0.
+Pakete gömülü "gerçek fotoğraf çekilmeli" uyarısı (PUBLISH-HOLD-SUMMARY,
+görsel 01/05/08) kullanıcının aktivasyon talimatıyla geçersiz kılındı — nota
+düşüldü, görseller paket hâliyle kullanılacak.
+
 ## Durum notları
 
 - (başlangıç) Paket yapısı doğrulandı, fiyat/SKU kararları verildi.
+- 2026-08-11: 233/233 dosya alt-ajanla indirildi (scratchpad/lintel/, OZET.json +
+  SORUNLAR.md). Başlık/tag sert kuralları 9/9 temiz. Açıklamalar placeholder'lı —
+  yukarıdaki haritayla çözülecek. Sıradaki: DB'de 9 taslak + 2.025 varyant
+  (ikiz-aile fiyat kopyası, INSERT..SELECT suffix join) + görsellerin repo
+  public/eon/ altına alınması + Etsy taslak akışı.
