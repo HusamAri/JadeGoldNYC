@@ -1,20 +1,8 @@
 "use client";
 
-import { useTransition } from "react";
-import Link from "next/link";
-import { toast } from "sonner";
-
-import { moveTask } from "@/app/(dashboard)/gorevler/actions";
-import { TASK_STATUSES } from "@/lib/constants";
 import { formatMoney } from "@/lib/money";
+import { TASK_STATUSES } from "@/lib/constants";
 import { TaskPriorityBadge } from "@/components/task-priority-badge";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   Table,
   TableBody,
@@ -104,37 +92,22 @@ export function ReportTierTable({
   );
 }
 
+/**
+ * Kademe satırının durum hücresi — SALT OKUNUR.
+ *
+ * Sadeleştirme (2026-08-11): Görevler modülü kaldırıldı, dolayısıyla burada
+ * durum DEĞİŞTİRİLEMEZ ve görev detayına link verilemez. Bilgi korunur
+ * (öncelik + durum etiketi), etkileşim düşer — "konsolidasyon bilgi kaybı
+ * değildir" ilkesi.
+ */
 function TaskStatusCell({ task }: { task: TaskWithAssignee }) {
-  const [pending, startTransition] = useTransition();
-
-  function onChange(status: string) {
-    startTransition(async () => {
-      const res = await moveTask(task.id, status);
-      if (res?.error) toast.error(res.error);
-    });
-  }
+  const label =
+    TASK_STATUSES.find((s) => s.value === task.status)?.label ?? task.status;
 
   return (
     <div className="flex items-center gap-2">
       <TaskPriorityBadge priority={task.priority} />
-      <Select value={task.status} onValueChange={onChange} disabled={pending}>
-        <SelectTrigger size="sm" className="h-7 w-[128px] text-xs">
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
-          {TASK_STATUSES.map((s) => (
-            <SelectItem key={s.value} value={s.value}>
-              {s.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-      <Link
-        href={`/gorevler/${task.id}`}
-        className="text-muted-foreground hover:text-foreground text-xs underline underline-offset-2"
-      >
-        görev
-      </Link>
+      <span className="text-muted-foreground text-xs">{label}</span>
     </div>
   );
 }

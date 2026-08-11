@@ -76,8 +76,23 @@ turda read-back ile doğrulanır; hiçbir yazma zamanlanmış/gözetimsiz olamaz
 
 - **Faz 0 — Nav sadeleştirme (geri dönüşü kolay):** kaldırılacak sayfalar
   nav'dan çıkar, rotalara 410/yönlendirme; kullanıcı yeni yüzeyi hemen görür.
-- **Faz 1 — Kod sökümü:** rotalar + cron'lar + lib ölü kodu silinir;
-  typecheck/lint/build yeşil.
+- **Faz 1 — Kod sökümü: YAPILDI (2026-08-11).** 102 dosya / 19.682 satır
+  silindi; typecheck 0 hata, lint temiz, build 78 sayfa yeşil.
+  - Rotalar: reklamlar · anahtar-kelime · seo-yardimcisi · seo-etiketleri ·
+    ai-istihbarat · analizler(+tani/urunler/aksiyon-plani) · yildiz-satici ·
+    sepet-kurtarma · gorevler · yenilikler · marka-kilavuzu
+  - Cron: `keyword-research` + `daily-digest` (vercel.json + rotalar)
+  - Bileşen: action-plan/ ads/ keywords/ seo/ tasks/ + 13 tekil bileşen
+  - Lib: 10 sorgu modülü, keywords/ seo/ metrics-playbook/, 3 validation,
+    product-performance, ai-cost-catalog (her biri TEK TEK yetim doğrulandı —
+    `lib/supabase/client` ve `pricing-engine/parse` göreli import taşıdığı
+    için ilk taramada YANLIŞ yetim göründü, silinmedi)
+  - **Kurtarılan:** `VariantMatrix` silinen "Rakip & benzerler" panelinin
+    İÇİNDEYDİ; çekirdek olduğu için Varyantlar paneline taşındı (katlı).
+    `MarketPositionCard` + `RepriceRuleCard` bilinçli düştü (rakip araştırma /
+    emekli reprice). `report-tier-table` salt-okunur duruma indi.
+  - Tartışmalı üçe (stok · indirimler · gorsel-uretim/yorumlar/sosyal)
+    DOKUNULMADI — onay bekliyor.
 - **Faz 2 — Çekirdek sayfaların sadeleştirilmesi:** panel/maliyet/kâr
   yüzeyleri "özet + detay" desenine indirgenir; rehber yeniden yazılır.
 - **Faz 3 — DB temizliği (ayrı karar):** kullanılmayan tablolar için
