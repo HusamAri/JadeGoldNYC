@@ -87,6 +87,20 @@ repodaki hedefidir.
   "Shopify bağlantısını getir" istendi; lib/shopify + lib/shopier + migration'lar
   paralel oturumda ÇOKTAN inmişti; eksik olan yalnız uyarlama katmanıydı
   (getActivePlatform + yetenek-bazlı nav/caption). Sıfırdan kurmak çift iş olurdu.
+  Güçlendirme-3 (2026-08): fetch YALNIZ main'e değil KENDİ DALINA da yapılır, ve
+  turun BAŞINDA. Vaka: uzun turda yerel dal bayatladı; `origin/<dal>` 40+ commit
+  ileri gitmişti ve tam yapmak üzere olduğum iki iş (bayat 140-karakter başlık
+  hedefinin güncel rehberlikle değişimi `a210272`, TTG başlıklarının canlı Etsy
+  metniyle eşitlenmesi `78e693b`) ÇOKTAN merge edilmişti — bir web araştırması +
+  bir workflow boşa koştu. Daha kötüsü: karar da revize edilmişti (`94124b8`
+  "milgrain dokunulmaz, hammered 4mm'den başlar"), yani bayat daldan okuduğum
+  runbook'a dayanıp kullanıcıya YANLIŞ durum raporladım. Belirti: push
+  "fetch first" ile reddedilirse dal bayat demektir — o an kod yazmayı bırak,
+  `git log HEAD..origin/<dal>` ile neyin değiştiğini oku. Kural: (1) tur başında
+  ve her uzun beklemeden sonra kendi dalını fetch'le; (2) "şu işi yapacağım"
+  demeden önce o işin sembolünü/commit mesajını uzak dalda ara; (3) kullanıcının
+  sözlü kararı ile repodaki revize karar çelişirse SEÇME — çelişkiyi göster ve
+  sor (geri-dönüşü zor dış-sistem işinde bu şart).
 - **Kanıtla, varsayma (2026-07):** "İzin kapalı", "veri yok" gibi durum iddialarını
   DB'den SQL ile doğrula. Vaka: Etsy yazma izni "kapalı" sanılıyordu; `etsy_write_enabled`
   sorgusu `true` döndü — bir adım boşa planlanmıştı.
