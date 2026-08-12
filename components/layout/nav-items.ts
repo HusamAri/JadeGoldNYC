@@ -11,6 +11,7 @@ import {
   Tags,
   Boxes,
   MessageSquareText,
+  Megaphone,
   type LucideIcon,
 } from "lucide-react";
 
@@ -75,6 +76,7 @@ export const NAV_GROUPS: NavGroup[] = [
       { href: "/satislar", label: "Satışlar", icon: ShoppingBag },
       { href: "/maliyetler", label: "Maliyetler", icon: Wallet },
       { href: "/raporlar", label: "Kâr Raporu", icon: FileBarChart },
+      { href: "/reklamlar/ice-aktar", label: "Reklam Verisi", icon: Megaphone, capability: "adsSignals" },
     ],
   },
   {
