@@ -31,16 +31,53 @@ export function deriveKarat(
   return null;
 }
 
+/**
+ * SKU'nun ilk üç harfi saf RENK değil, bir KİMLİK yuvasıdır. Ailelerin
+ * çoğunda metal rengini taşır; iki üründe ürünün kendi kimliğini taşır:
+ *   TTG  two-tone (iki renk birden — tek bir renge indirgenemez)
+ *   HMW  hammered (renk KODLAMAZ; renk başlıktan çözülür)
+ *
+ * Kullanıcı kararı 2026-08-12: bu kabul edilir, önek listesi buna uyarlanır.
+ * Etsy tarafında da aynı önekler duruyor (TTG `4550506421`, HMW `4543442596`
+ * canlı editörde teyit edildi), yani panel aynası doğru.
+ *
+ * `null` = önek tanınır ama renk taşımaz → başlığa düşülür.
+ */
+const SKU_IDENTITY_PREFIX: Record<string, FacetColor | null> = {
+  GLD: "yellow",
+  WHG: "white",
+  RSG: "rose",
+  TTG: "two_tone",
+  HMW: null,
+};
+
+/**
+ * Renk çözümü. Sıra ÖNEMLİ: önce başlık, sonra SKU öneki.
+ *
+ * SKU denetimi (docs/eon/strategy, APPENDIX A) 42 canlı listing'in 41'inde
+ * ikisinin uyuştuğunu, uyuşmayan tek satırda ise BAŞLIĞIN doğru olduğunu
+ * gösterdi — o yüzden başlık önce gelir. Önek yalnız başlık renk kelimesi
+ * taşımadığında konuşur.
+ */
 export function deriveColor(
   title: string,
   sku?: string | null,
 ): FacetColor | null {
   const t = title.toLowerCase();
-  const s = (sku ?? "").toUpperCase();
   if (/two.?tone/.test(t)) return "two_tone";
-  if (/rose\s*gold/.test(t) || s.startsWith("RSG-")) return "rose";
-  if (/white\s*gold/.test(t) || s.startsWith("WHG-")) return "white";
-  if (/\bgold\b/.test(t) || s.startsWith("GLD-")) return "yellow";
+  if (/rose\s*gold/.test(t)) return "rose";
+  if (/white\s*gold/.test(t)) return "white";
+  if (/yellow\s*gold/.test(t)) return "yellow";
+
+  const prefix = (sku ?? "").toUpperCase().slice(0, 3);
+  if (prefix in SKU_IDENTITY_PREFIX) {
+    const c = SKU_IDENTITY_PREFIX[prefix];
+    if (c) return c;
+  }
+
+  // Son çare: renk sıfatı olmadan "gold" geçen başlık (ör. "Solid 10K Gold
+  // Basketweave"). Bu bir ÇIKARIM, ilan edilmiş bir ürün özelliği değil.
+  if (/\bgold\b/.test(t)) return "yellow";
   return null;
 }
 

@@ -773,3 +773,56 @@ bound to the production app.
 | 8 item 5 | delete `opsEonPricePush15` | already deleted 2026-08-12, `externalPricing` left true |
 | 9, reversal 7 | unproven pending audit | proven, patterned is winning August |
 | 12 | the sale ends 28 August, renewal reminder 26 August | flagged as an internal inconsistency in this file, not verified against Etsy |
+
+### Addendum, 2026-08-12 evening. Etsy side read back, and the prefix decision.
+
+Husam checked the live Etsy listing editor. Both non colour prefixes exist on
+Etsy itself, not only in the panel mirror:
+
+- `4543442596` hammered carries `HMW` on Etsy.
+- `4550506421` two tone carries `TTG` on Etsy.
+
+Two consequences.
+
+**First, there is no drift.** The panel and Etsy agree on both. The rename that
+produced `HMW` was applied on both sides, so the one sided rename risk described
+in the recommended sequence above does not currently apply. The 7 August order
+carried `WHG-R-1402-5MM-7` because at order time Etsy still held the inherited
+prefix; the rename landed on 11 August, after the sale.
+
+**Second, the metal slot is not a metal slot.** Husam's decision: `TTG` is
+accepted as correct, and the system adapts to it rather than the reverse. The
+first three characters are therefore an **identity** slot. It usually carries the
+metal colour and sometimes carries the product identity.
+
+| Prefix | Meaning | Carries a colour |
+|---|---|---|
+| GLD | yellow | yes |
+| WHG | white | yes |
+| RSG | rose | yes |
+| TTG | two tone | yes, both colours at once |
+| HMW | hammered | no, colour comes from the title |
+
+`lib/listing-facets.ts` was adapted to this. Two changes:
+
+1. A documented prefix registry replaces the hard coded three colour checks, so
+   `TTG` now resolves to two tone from the SKU alone and `HMW` correctly declines
+   to claim a colour.
+2. **Order was inverted so the title is consulted first.** Previously the checks
+   ran rose, then white, then yellow, each testing the title and the prefix on the
+   same line, which meant a listing whose title said white and whose prefix said
+   rose returned rose purely because the rose line came first. The audit verdict
+   is that the title wins, so the title now wins here too. The prefix speaks only
+   when the title carries no colour word.
+
+Verified on ten real cases including both `TTG` karats, `HMW`, and a colourless
+title, ten of ten as expected.
+
+**Still open on `HMW`, and unchanged by this decision.** Accepting the prefix does
+not make the rest of that code right. The digits still read `14` and `02`, while
+the listing's own description and materials array both say 10K, and the profile is
+hammered with milgrain edges. Profile codes 01 through 08 are all in use, so
+hammered has no code yet. The listing's colour is genuinely unstated: the title,
+the description, the tags and the materials array name no colour at all, so the
+panel currently infers yellow from the bare word "gold". That inference is not a
+verified product fact and is flagged here rather than written into the SKU.
