@@ -1,7 +1,7 @@
 import { getActivePlatform } from "@/lib/platform";
 import { Suspense } from "react";
 import Link from "next/link";
-import { Store } from "lucide-react";
+import { Store, Palette } from "lucide-react";
 import {
   DollarSign,
   Wallet,
@@ -23,16 +23,9 @@ import { getDashboard, type DashboardData } from "@/lib/db/queries/dashboard";
 import { getAlertCenter } from "@/lib/db/queries/alerts";
 import { getEtsyStatus } from "@/lib/db/queries/etsy";
 import { getLastSyncSummary } from "@/lib/etsy/sync";
-import { getSalesDiagnostics } from "@/lib/db/queries/diagnostics";
+import { getListingLoopStatus } from "@/lib/db/queries/listings";
 import { PanelSyncPrompt } from "@/components/panel/panel-sync-prompt";
-import { PanelDiagnosticCard } from "@/components/panel/panel-diagnostic-card";
-import { getTimelineData } from "@/lib/db/queries/timeline";
-import {
-  eventPinTargetId,
-  getPinLibrary,
-  getPinsForTargets,
-} from "@/lib/db/queries/pins";
-import { requireMembership, getUser } from "@/lib/auth";
+import { requireMembership } from "@/lib/auth";
 import { getGoldPricePerOunce } from "@/lib/gold-price";
 import { TROY_OUNCE_GRAMS, KARAT_PURITY } from "@/lib/gold-cost";
 import { strParam, type RawSearchParams } from "@/lib/searchparams";
@@ -41,7 +34,6 @@ import { formatNumber, formatDateTime } from "@/lib/format";
 import { auditSummary } from "@/lib/audit-format";
 import { OrgMark } from "@/components/brand/org-mark";
 import { PageHeader } from "@/components/page-header";
-import { PanelTimeline } from "@/components/panel/panel-timeline";
 import { GoldStream } from "@/components/brand/gold-stream";
 import { CornerMarks } from "@/components/brand/corner-marks";
 import { EditorialCard } from "@/components/brand/editorial-card";
@@ -244,11 +236,18 @@ export default async function PanelPage({
         <SyncPromptSection orgId={m.org_id} />
       </Suspense>
 
-      {/* Aylık Tanı özeti — panelin üstünde; tam teşhis /analizler/tani. */}
-      <Suspense
-        fallback={<SectionSkeleton h="h-[140px]" label="Aylık tanı…" />}
-      >
-        <DiagnosticSection orgId={m.org_id} />
+      {/* İKİ DÖNGÜ — panelin var olma sebebi (docs/panel-sadelestirme-plani.md).
+          Listing döngüsü sayıları ayrı sorgudan akar; kâr döngüsü aşağıdaki
+          `d` (getDashboard) verisinden gelir, ekstra sorgu YOK. */}
+      <Suspense fallback={<SectionSkeleton h="h-[104px]" label="Döngüler…" />}>
+        <LoopStatusSection
+          orgId={m.org_id}
+          revenueCents={d.revenueCents}
+          costCents={d.costCents}
+          profitCents={d.profitCents}
+          currency={cur}
+          periodLabel={period.label}
+        />
       </Suspense>
 
       {/* Uyarı Board'u + Merkezi — en ağır veri dalı (tüm listing denetimi);
@@ -261,11 +260,6 @@ export default async function PanelPage({
           listing-başına sapma + karar linki verir (merkez satırı buraya işaret eder). */}
       <Suspense fallback={<SectionSkeleton h="h-[180px]" label="Pazar uyarıları…" />}>
         <MarketAlertsSection orgId={m.org_id} />
-      </Suspense>
-
-      {/* Görev yol haritası + satış bağlamı — geniş; kaydırıcıyla geçmiş↔gelecek */}
-      <Suspense fallback={<SectionSkeleton h="h-[260px]" label="Zaman çizelgesi…" />}>
-        <TimelineSection orgId={m.org_id} />
       </Suspense>
 
       {/* ── Güncel Altın Fiyatı — öne çıkan yüzen cam şerit ───────────────
@@ -622,14 +616,6 @@ export default async function PanelPage({
                   ))}
                 </TableBody>
               </Table>
-            <div className="mt-4">
-              <Link
-                href="/sepet-kurtarma"
-                className="text-primary text-sm font-medium hover:underline"
-              >
-                Müşteri geri kazanımı →
-              </Link>
-            </div>
           </CardContent>
         </Card>
         )}
@@ -763,52 +749,139 @@ async function SyncPromptSection({ orgId }: { orgId: string }) {
   );
 }
 
-/** Panel üstü Aylık Tanı özeti — stream edilir, tam sayfa /analizler/tani. */
-async function DiagnosticSection({ orgId }: { orgId: string }) {
-  const data = await getSalesDiagnostics(orgId);
-  return <PanelDiagnosticCard data={data} />;
-}
+/**
+ * İKİ DÖNGÜ ŞERİDİ — panelin üstünde, tek bakışta "sırada ne var".
+ *
+ * Sadeleştirme Faz 2 (2026-08-12): panel iki uçtan uca döngüye indirgendi ve
+ * ana sayfa artık ÖNCE bu ikisini anlatır:
+ *   LİSTİNG : bekleyen (panelde hazır) → gönderilen (Etsy taslağı) → yayında
+ *   KÂR     : dönem satışı − maliyet = kâr
+ * Her sayı kendi döngüsünün bir sonraki adımına link verir; sayı 0 ise link
+ * yine durur (boş durum da bilgidir — "yapacak iş yok" demektir).
+ */
+async function LoopStatusSection({
+  orgId,
+  revenueCents,
+  costCents,
+  profitCents,
+  currency,
+  periodLabel,
+}: {
+  orgId: string;
+  revenueCents: number;
+  costCents: number;
+  profitCents: number;
+  currency: string;
+  periodLabel: string;
+}) {
+  const loop = await getListingLoopStatus(orgId);
+  const margin =
+    revenueCents > 0 ? profitCents / revenueCents : null;
 
-async function TimelineSection({ orgId }: { orgId: string }) {
-  const timeline = await getTimelineData(orgId);
-  // "Bugün" mağaza saat diliminde (NYC) — due_date'ler o takvimde tutulur;
-  // sunucuda hesaplanır ki SSR/hydration ve gün ayrımı tutarlı olsun.
-  const serverToday = new Date().toLocaleDateString("en-CA", {
-    timeZone: "America/New_York",
-  });
-  const hasTimeline =
-    timeline.tasks.some((t) => t.dueDate) || timeline.events.length > 0;
-  if (!hasTimeline)
-    return (
-      <SleepingNote
-        name="Görev Zaman Çizelgesi"
-        hint="tarihli görev ya da olay eklenince uyanır (Görevler → yeni)"
-      />
-    );
-  // Pinler: görev kartları + olay küreleri iğnelenebilir yüzey. Toplu çekim;
-  // Map → düz obje (RSC-client sınırında serileşme).
-  const user = await getUser();
-  const [taskPins, eventPins, myStickers] = await Promise.all([
-    getPinsForTargets(orgId, "task", timeline.tasks.map((t) => t.id)),
-    getPinsForTargets(orgId, "event", timeline.events.map(eventPinTargetId)),
-    getPinLibrary(),
-  ]);
   return (
-    <PanelTimeline
-      data={timeline}
-      serverToday={serverToday}
-      pinCtx={{
-        taskPins: Object.fromEntries(taskPins),
-        eventPins: Object.fromEntries(eventPins),
-        myStickers,
-        meId: user?.id,
-      }}
-    />
+    <div className="grid gap-4 lg:grid-cols-2">
+      <Card>
+        <CardHeader className="pb-2">
+          <CardTitle className="flex items-center gap-2 text-sm">
+            <Palette aria-hidden className="size-4" />
+            Listing döngüsü
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-3 gap-3">
+            <LoopStat
+              label="Bekleyen"
+              value={formatNumber(loop.pending)}
+              hint="panelde hazır, Etsy'ye gitmemiş"
+              href="/listing-onerileri"
+            />
+            <LoopStat
+              label="Gönderilen"
+              value={formatNumber(loop.sent)}
+              hint="Etsy'de taslak, aktivasyon bekliyor"
+              href="/tasarimlar"
+            />
+            <LoopStat
+              label="Yayında"
+              value={formatNumber(loop.live)}
+              hint="aktif listing"
+              href="/tasarimlar"
+            />
+          </div>
+          <p className="text-muted-foreground mt-3 text-xs">
+            {loop.lastSyncAt
+              ? `Son senkron: ${formatDateTime(loop.lastSyncAt)}`
+              : "Henüz senkron yapılmadı — Ayarlar'dan Etsy'ye bağlanın."}
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className="pb-2">
+          <CardTitle className="flex items-center gap-2 text-sm">
+            <Wallet aria-hidden className="size-4" />
+            Kâr döngüsü
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-3 gap-3">
+            <LoopStat
+              label="Satış"
+              value={formatMoney(revenueCents, currency)}
+              hint={periodLabel}
+              href="/satislar"
+            />
+            <LoopStat
+              label="Maliyet"
+              value={formatMoney(costCents, currency)}
+              hint="girilen giderler"
+              href="/maliyetler"
+            />
+            <LoopStat
+              label="Kâr"
+              value={formatMoney(profitCents, currency)}
+              hint={margin != null ? `marj ${formatPercent(margin)}` : "—"}
+              href="/raporlar"
+            />
+          </div>
+          <p className="text-muted-foreground mt-3 text-xs">
+            Maliyet yalnız PANELE GİRİLEN giderleri sayar; eksik gider kârı
+            olduğundan yüksek gösterir.
+          </p>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
 
-/** Akış beklenirken sakin cam iskelet — yükseklik gerçek bölüme yakın tutulur
-    (layout kayması olmasın). */
+/** Döngü şeridinin tek hücresi — sayı + ne demek olduğu + sonraki adım. */
+function LoopStat({
+  label,
+  value,
+  hint,
+  href,
+}: {
+  label: string;
+  value: string;
+  hint: string;
+  href: string;
+}) {
+  return (
+    <Link
+      href={href}
+      className="hover:bg-muted/40 -m-1 block rounded-lg p-1 transition-colors"
+    >
+      <div className="text-muted-foreground text-[11px] font-medium tracking-wide uppercase">
+        {label}
+      </div>
+      <div className="mt-0.5 text-xl font-semibold tabular-nums">{value}</div>
+      <div className="text-muted-foreground mt-0.5 text-[11px] leading-tight">
+        {hint}
+      </div>
+    </Link>
+  );
+}
+
 function SectionSkeleton({ h, label }: { h: string; label: string }) {
   return (
     <div
