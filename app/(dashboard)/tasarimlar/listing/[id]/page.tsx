@@ -5,10 +5,7 @@ import { ArrowLeft, ExternalLink } from "lucide-react";
 import { requireMembership } from "@/lib/auth";
 import { isEonActive } from "@/lib/brand";
 import { createClient } from "@/lib/supabase/server";
-import {
-  getListingDetail,
-  getListingMarketPosition,
-} from "@/lib/db/queries/listings";
+import { getListingDetail } from "@/lib/db/queries/listings";
 import { getGoldSettings } from "@/lib/db/queries/gold-settings";
 import { getGoldPricePerOunce } from "@/lib/gold-price";
 import { detectKarat, derivePurchase18kCentsPerGram } from "@/lib/gold-cost";
@@ -21,16 +18,12 @@ import type { ListingImage as ManagedListingImage } from "@/lib/types";
 import { ListingImageManager } from "@/components/listing/listing-image-manager";
 import { formatMoney } from "@/lib/money";
 import { PageHeader } from "@/components/page-header";
-import { KeywordResearchPanel } from "@/components/keyword-research-panel";
 import { ImageStrip } from "@/components/listing/image-strip";
 import { VariantEditor } from "@/components/listing/variant-editor";
 import { EtsyPricePushButton } from "@/components/listing/etsy-price-push-button";
 import { EtsyVariantCreateButton } from "@/components/listing/etsy-variant-create-button";
-import { MarketPositionCard } from "@/components/listing/market-position-card";
 import { VariantMatrix } from "@/components/listing/variant-matrix";
 import { DiscountControl } from "@/components/listing/discount-control";
-import { RepriceRuleCard } from "@/components/listing/reprice-rule-card";
-import { AdsSummaryCard } from "@/components/listing/ads-summary-card";
 import { ViewsTrendCard } from "@/components/listing/views-trend-card";
 import {
   getListingViewsTrends,
@@ -42,8 +35,6 @@ import { ListingStateButton } from "@/components/listing/listing-state-button";
 import { SkuRenameForm } from "@/components/listing/sku-rename-form";
 import { PersonalizationCard } from "@/components/listing/personalization-card";
 import { EtsyCopyCard, type EtsyCopyField } from "@/components/listing/etsy-copy-card";
-import { SeoHelperConsole } from "@/components/seo/seo-helper-console";
-import { inferSeoInput } from "@/lib/seo/keyword-engine";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ListingPanel } from "@/components/listing/listing-panel";
@@ -92,9 +83,14 @@ const STATUS_LABELS: Record<
 
 /**
  * Listing Komuta Merkezi — tek listing'in tüm detayları tek sayfada.
- * Uzun bölümler ListingPanel ile katlanır (nm-raised + motion);
- * varsayılan açık: Künye, Varyantlar, Rakip. Kapalı: Görseller, Kopyala, Reklam.
- * künye + varyant toplu fiyat + rakip benzerler. Geri kalan scroll yükü değil.
+ *
+ * Sadeleştirme sonrası (2026-08-11) yalnız LİSTİNG DÖNGÜSÜ'nün adımlarını
+ * taşır: görseller · künye & boşluklar · indirim · Etsy'ye kopyala ·
+ * varyantlar (+ katlı varyant matrisi) · görüntülenme trendi. Rakip/anahtar
+ * kelime, reklam ve SEO yardımcısı panelleri kaldırıldı — o yüzeyler panelden
+ * tamamen çıktı.
+ *
+ * Uzun bölümler ListingPanel ile katlanır; varsayılan açık: Künye, Varyantlar.
  */
 export default async function ListingDetayPage({
   params,
@@ -105,7 +101,7 @@ export default async function ListingDetayPage({
   const m = await requireMembership();
   const detail = await getListingDetail(id);
   if (!detail) notFound();
-  const { product, variants, ads, lifetimeSales, gaps } = detail;
+  const { product, variants, gaps } = detail;
   // Ayar SENKRON tespit edilir (detectKarat await'siz) → 18K spot fetch'i de
   // aşağıdaki tek Promise.all'a girebilir. `detail` bilindikten sonra bu yedi
   // veri birbirinden BAĞIMSIZ; eskiden sırayla await ediliyordu (~6 tur), artık
@@ -117,7 +113,6 @@ export default async function ListingDetayPage({
     rivalMatches,
     goldOunce,
     images,
-    marketPosition,
     viewsTrendMap,
     eon,
     writeAccess,
@@ -129,8 +124,6 @@ export default async function ListingDetayPage({
     etsyListingId != null
       ? getListingImages(m.org_id, etsyListingId)
       : Promise.resolve<ListingImage[]>([]),
-    // Pazar konumu ($/gram) — günlük rutin doldurunca dolu, yoksa null.
-    getListingMarketPosition(product.id),
     // Görüntülenme trendi — günlük Etsy fotoğraf birikiminden.
     etsyListingId != null
       ? getListingViewsTrends(m.org_id, [etsyListingId])
@@ -471,64 +464,28 @@ export default async function ListingDetayPage({
           purchasePrice10kCents={goldSettings.purchase_price_10k_cents}
           rivalProjection={rivalProjection}
         />
-      </ListingPanel>
-
-      {/* 05 · Rakip — benzer listingler birincil; matris/reprice katlı. */}
-      <ListingPanel
-        id="rakip"
-        n="05"
-        name="Rakip & benzerler"
-        defaultOpen
-        tail="benzer kartlar · elle link"
-      >
-        <div className="space-y-4">
-          {marketPosition && (
-            <MarketPositionCard
-              position={marketPosition}
-              currency={product.currency}
-            />
-          )}
-          <KeywordResearchPanel productId={product.id} bare />
-          <AnimatedDisclosure
-            defaultOpen={false}
-            className="nm-raised-sm border-0"
-            summaryClassName="px-4 py-3"
-            panelClassName="space-y-4 px-4 py-4"
-            summary={
-              <span className="font-mono text-[11px] font-medium tracking-[0.16em] uppercase">
-                Varyant matrisi &amp; otomatik fiyat
-              </span>
-            }
-          >
-            <VariantMatrix
-              productId={product.id}
-              discountPct={product.discount_pct}
-            />
-            <RepriceRuleCard
-              productId={product.id}
-              currency={product.currency}
-              hasVariations={variants.length > 1}
-            />
-          </AnimatedDisclosure>
-        </div>
-      </ListingPanel>
-
-      <ListingPanel
-        id="reklam"
-        n="06"
-        name="Reklam & performans"
-        defaultOpen={false}
-        tail={
-          ads.periods.length > 0
-            ? `${ads.periods.length} dönem kaydı`
-            : undefined
-        }
-      >
-        <AdsSummaryCard
-          ads={ads}
-          lifetimeSales={lifetimeSales}
-          currency={product.currency}
-        />
+        {/*
+          Varyant matrisi sadeleştirmede (2026-08-11) kaldırılan "Rakip &
+          benzerler" panelinden BURAYA taşındı — doğal yeri zaten burası;
+          rakip/anahtar-kelime yüzeyleriyle aynı panelde durması eski
+          gruplamanın kalıntısıydı. Katlı kalır (varsayılan kapalı).
+        */}
+        <AnimatedDisclosure
+          defaultOpen={false}
+          className="nm-raised-sm border-0"
+          summaryClassName="px-4 py-3"
+          panelClassName="space-y-4 px-4 py-4"
+          summary={
+            <span className="font-mono text-[11px] font-medium tracking-[0.16em] uppercase">
+              Varyant matrisi
+            </span>
+          }
+        >
+          <VariantMatrix
+            productId={product.id}
+            discountPct={product.discount_pct}
+          />
+        </AnimatedDisclosure>
       </ListingPanel>
 
       {product.etsy_listing_id != null && (
@@ -550,21 +507,6 @@ export default async function ListingDetayPage({
       {/* 08 · SEO Yardımcısı — künyeden çıkarımla önceden dolu üretici konsol.
           Çıktılar kopyalanır; yazma sahipleri değişmez (künye formu = elle
           kaydet, /seo-etiketleri = onaylı canlı Etsy tag push). */}
-      <ListingPanel
-        id="seo-yardimcisi"
-        n="08"
-        name="SEO Yardımcısı"
-        defaultOpen={false}
-        tail="başlık + 13 etiket üretici · künyeden çıkarım"
-      >
-        <SeoHelperConsole
-          initial={inferSeoInput(
-            decodeEntities(product.title),
-            product.tags,
-            product.materials,
-          )}
-        />
-      </ListingPanel>
     </div>
   );
 }

@@ -2,7 +2,6 @@ import { Sparkles, Clock, XCircle, AlertTriangle } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 import { PageHeader } from "@/components/page-header";
-import { AddTaskButton } from "@/components/etsy-updates/add-task-button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -69,7 +68,6 @@ export default function EtsyGuncellemeleriPage() {
                   </p>
                   {item.task && (
                     <div className="mt-3">
-                      <AddTaskButton task={item.task} />
                     </div>
                   )}
                 </div>

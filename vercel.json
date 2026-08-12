@@ -12,14 +12,6 @@
     {
       "path": "/api/cron/etsy-variants",
       "schedule": "0 8 * * *"
-    },
-    {
-      "path": "/api/cron/keyword-research",
-      "schedule": "0 9 * * *"
-    },
-    {
-      "path": "/api/cron/daily-digest",
-      "schedule": "0 11 * * *"
     }
   ]
 }

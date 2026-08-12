@@ -450,3 +450,30 @@ repodaki hedefidir.
   Ayrıca dürüst ol: bu marj metal+kargo üstüdür, Etsy ücreti (~%9-10) + işçilik
   düşülmemiştir — "kârlı" derken kapsamı söyle. Vaka: min %24.9 (yıldız, dar genişlik),
   ort %35.7; 0 zararına.
+- **Yüzey silerken kabın İÇİNDEKİ çekirdeği kaybetme; yetim taraması import
+  biçimine kör olmasın (2026-08):** Panel sadeleştirmesinde 11 rota + 2 cron +
+  yetim kod söküldü (-19.7k satır). İki tuzak çıktı. (1) "Rakip & benzerler"
+  panelini bütün olarak silince İÇİNDEKİ `VariantMatrix` de gitti — o çekirdek
+  bir bileşendi, rakip yüzeyiyle aynı panelde durması eski gruplamanın
+  kalıntısıydı. Tek sinyal lint'in "kullanılmayan import" uyarısıydı;
+  typecheck ve build TEMİZ geçiyordu çünkü silinen JSX kimseyi kırmıyor.
+  Kural: bir kabı silmeden önce içindekileri TEK TEK sınıflandır (kalacak /
+  gidecek / taşınacak); silme sonrası lint'in unused-import listesi kayıp
+  çekirdek için erken uyarıdır, sıfırlanana kadar bitmiş sayma. (2) Yetim
+  modül taraması `@/lib/<yol>` desenine bakınca `lib/supabase/client` ve
+  `pricing-engine/parse` YETİM göründü — ikisi de göreli import (`./parse`)
+  ile çağrılıyordu; silinseydi prod kırılırdı. Kural: yetim iddiası için
+  arama deseni tüm import biçimlerini kapsamalı (mutlak + göreli + dizin
+  index'i), ve her aday tek tek doğrulanmalı — toplu silme yok.
+- **Aynı commit iki projede farklı sonuç veriyorsa hata kodda DEĞİLDİR
+  (2026-08):** PR CI'ında `handover-atlas` FAILED, `jade-gold-nyc` SUCCESS —
+  aynı sha. Log: `next/font/google` build sırasında fonts.gstatic.com'dan
+  woff2 çekiyor ve 404 aldı. İlk teşhisim "bayat build cache rotasyona uğramış
+  URL taşıyor" idi; başarılı build'in logunu okuyunca ÇÜRÜDÜ — o da cache geri
+  yüklemişti. Gerçek sebep: 45 sn arayla koşan iki build'den biri geçici CDN
+  hatası yedi. Kural: (a) çok-projeli repoda tek proje kırmızıysa önce AYNI
+  commit'in diğer projedeki sonucuna bak — ayrışma varsa kodu suçlama;
+  (b) teşhisi ilan etmeden önce KARŞI örneğin logunu da oku (başarılı koşu
+  teoriyi çürütebilir); (c) çare yeniden deneme. Yapısal çözüm istenirse
+  build-time font indirmeyi kaldır (self-host) — ağ bağımlılığı olan her
+  build adımı er geç kırmızı verir.

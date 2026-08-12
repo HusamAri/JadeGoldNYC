@@ -1,28 +1,13 @@
 import {
   LayoutDashboard,
   ShoppingBag,
-  UserRoundCheck,
   Wallet,
-  BarChart3,
   Palette,
-  Sparkles,
-  BookOpen,
-  MessageSquareText,
   ScrollText,
   FileBarChart,
-  ListChecks,
-  Megaphone,
-  Boxes,
-  Star,
   Settings,
-  TextSearch,
-  Tags,
   Archive,
   Lightbulb,
-  Compass,
-  Stethoscope,
-  Share2,
-  Percent,
   type LucideIcon,
 } from "lucide-react";
 
@@ -48,73 +33,47 @@ export interface NavGroup {
 }
 
 /**
- * Panel 2.0 sekme sistemi — düz liste yerine iş akışına göre gruplar:
- * yönet → sat → analiz et → üret → dinle → sistem. Sidebar grupları
- * başlıklarıyla çizer; topbar (mobil) aynı kaynaktan beslenir.
+ * SADELEŞTİRİLMİŞ nav (Faz 0, 2026-08-11 — docs/panel-sadelestirme-plani.md).
+ *
+ * Panel iki uçtan uca döngüye indirgendi; nav bu iki döngüyü ve sistemi
+ * anlatır, başka hiçbir şeyi değil:
+ *
+ *   LİSTİNG DÖNGÜSÜ : oluştur → Etsy'ye taslak gönder → senkron doğrula → arşiv
+ *   KÂR DÖNGÜSÜ     : satış aynası → maliyet girişi → listing-başına kâr →
+ *                     (gerekirse) gözetimli fiyat itişi
+ *
+ * Kaldırılan sekmeler (reklam/SEO/anahtar kelime/analiz/sosyal/yorum/görev/
+ * stok/indirim/AI hub/yıldız satıcı/sepet kurtarma/marka kılavuzu/görsel
+ * üretim/rehber) Faz 0'da YALNIZ nav'dan çıkarıldı — rotaları hâlâ yaşıyor,
+ * doğrudan URL ile erişilebilir; kod sökümü Faz 1'in işi. Geri almak = bu
+ * dosyada satırı geri eklemek.
  */
 export const NAV_GROUPS: NavGroup[] = [
   {
     label: "Genel",
     items: [
       { href: "/panel", label: "Panel", icon: LayoutDashboard },
-      { href: "/gorevler", label: "Görevler", icon: ListChecks },
-      { href: "/rehber", label: "Kullanım Rehberi", icon: Compass },
     ],
   },
   {
-    label: "Satış & Finans",
-    items: [
-      { href: "/satislar", label: "Satışlar", icon: ShoppingBag },
-      { href: "/maliyetler", label: "Maliyetler", icon: Wallet },
-      { href: "/reklamlar", label: "Reklamlar", icon: Megaphone, capability: "adsSignals" },
-      { href: "/indirimler", label: "İndirimler", icon: Percent },
-      { href: "/raporlar", label: "Raporlar", icon: FileBarChart },
-    ],
-  },
-  {
-    label: "Analiz",
-    items: [
-      // Aylık Tanı üstte — Ocak→bugün ay ay değerlendirme; Performans'tan
-      // ayrı rota (prefix çakışması lib/nav matchNavItem ile çözülür).
-      { href: "/analizler/tani", label: "Aylık Tanı", icon: Stethoscope },
-      { href: "/ai-istihbarat", label: "Gemini AI Hub", icon: Sparkles },
-      { href: "/analizler", label: "Performans", icon: BarChart3 },
-      { href: "/yildiz-satici", label: "Yıldız Satıcı", icon: Star, capability: "starSeller" },
-      { href: "/sepet-kurtarma", label: "Geri Kazanım", icon: UserRoundCheck },
-    ],
-  },
-  {
-    label: "Ürün & Stüdyo",
+    label: "Listeler",
     items: [
       { href: "/tasarimlar", label: "Listeler", icon: Palette },
       { href: "/listing-onerileri", label: "Listing Önerileri", icon: Lightbulb },
-      { href: "/anahtar-kelime", label: "Anahtar Kelime", icon: TextSearch },
-      { href: "/seo-yardimcisi", label: "SEO Yardımcısı", icon: TextSearch },
-      { href: "/seo-etiketleri", label: "SEO Etiketleri", icon: Tags, capability: "seoTagPush" },
-      // Prompt kiti Jade Gold listinglerine özel statik içerik — diğer
-      // şirketlerde gizli (kendi kitleri üretilince ayrı açılır).
-      { href: "/gorsel-uretim", label: "Görsel Üretim", icon: Sparkles, jadeGoldOnly: true },
       { href: "/arsiv", label: "Listing Arşivi", icon: Archive },
-      { href: "/stok", label: "Stok", icon: Boxes },
     ],
   },
   {
-    label: "Pazarlama",
+    label: "Maliyet & Kâr",
     items: [
-      // Tüm şirketlerde aynı özellik; içerik org'a özel (EON seed / Jade boş).
-      { href: "/sosyal", label: "Sosyal Medya", icon: Share2 },
-    ],
-  },
-  {
-    label: "Müşteri",
-    items: [
-      { href: "/yorumlar", label: "Yorumlar", icon: MessageSquareText },
+      { href: "/satislar", label: "Satışlar", icon: ShoppingBag },
+      { href: "/maliyetler", label: "Maliyetler", icon: Wallet },
+      { href: "/raporlar", label: "Kâr Raporu", icon: FileBarChart },
     ],
   },
   {
     label: "Sistem",
     items: [
-      { href: "/marka-kilavuzu", label: "Marka Kılavuzu", icon: BookOpen, brandBook: true },
       { href: "/kayitlar", label: "Kayıtlar", icon: ScrollText },
       { href: "/ayarlar", label: "Ayarlar", icon: Settings },
     ],

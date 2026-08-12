@@ -1,7 +1,6 @@
 import { Rocket, CalendarClock, Target } from "lucide-react";
 
 import { PageHeader } from "@/components/page-header";
-import { AddTaskButton } from "@/components/etsy-updates/add-task-button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import {
   GROWTH_IMMEDIATE,
@@ -36,7 +35,6 @@ export default function BuyumeStratejisiPage() {
               <p className="text-muted-foreground mt-1 text-sm">{item.body}</p>
               {item.task && (
                 <div className="mt-3">
-                  <AddTaskButton task={item.task} />
                 </div>
               )}
             </div>
@@ -60,7 +58,6 @@ export default function BuyumeStratejisiPage() {
                 <p className="text-muted-foreground mt-1 text-sm">{item.body}</p>
                 {item.task && (
                   <div className="mt-3">
-                    <AddTaskButton task={item.task} />
                   </div>
                 )}
               </div>
