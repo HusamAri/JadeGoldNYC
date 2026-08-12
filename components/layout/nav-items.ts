@@ -8,6 +8,9 @@ import {
   Settings,
   Archive,
   Lightbulb,
+  Tags,
+  Boxes,
+  MessageSquareText,
   type LucideIcon,
 } from "lucide-react";
 
@@ -33,20 +36,21 @@ export interface NavGroup {
 }
 
 /**
- * SADELEŞTİRİLMİŞ nav (Faz 0, 2026-08-11 — docs/panel-sadelestirme-plani.md).
+ * SADELEŞTİRİLMİŞ nav (2026-08-12 — docs/panel-sadelestirme-plani.md).
  *
- * Panel iki uçtan uca döngüye indirgendi; nav bu iki döngüyü ve sistemi
- * anlatır, başka hiçbir şeyi değil:
+ * Panel iki uçtan uca döngüyü taşır; nav onları ve destek yüzeylerini anlatır:
  *
- *   LİSTİNG DÖNGÜSÜ : oluştur → Etsy'ye taslak gönder → senkron doğrula → arşiv
- *   KÂR DÖNGÜSÜ     : satış aynası → maliyet girişi → listing-başına kâr →
- *                     (gerekirse) gözetimli fiyat itişi
+ *   LİSTİNG DÖNGÜSÜ : öneri → oluştur → Etsy'ye taslak gönder → senkron
+ *                     doğrula → yayın → arşiv
+ *   KÂR DÖNGÜSÜ     : satış aynası → maliyet girişi → listing-başına kâr
  *
- * Kaldırılan sekmeler (reklam/SEO/anahtar kelime/analiz/sosyal/yorum/görev/
- * stok/indirim/AI hub/yıldız satıcı/sepet kurtarma/marka kılavuzu/görsel
- * üretim/rehber) Faz 0'da YALNIZ nav'dan çıkarıldı — rotaları hâlâ yaşıyor,
- * doğrudan URL ile erişilebilir; kod sökümü Faz 1'in işi. Geri almak = bu
- * dosyada satırı geri eklemek.
+ * Kullanıcı kararıyla KALAN yüzeyler (2026-08-12): stok · varyant fiyat
+ * dağıtma (listing detayındaki matris) · SEO takip · aksiyon geçmişi
+ * (Kayıtlar) · listing önerileri · yorum yanıtı üretimi (Gemini).
+ *
+ * Kaldırılanlar Faz 1'de KODUYLA birlikte silindi (reklam, analiz, anahtar
+ * kelime, görev, AI hub, yıldız satıcı, sepet kurtarma, marka kılavuzu,
+ * yenilikler) — geri getirmek git geçmişinden dosya almayı gerektirir.
  */
 export const NAV_GROUPS: NavGroup[] = [
   {
@@ -60,6 +64,8 @@ export const NAV_GROUPS: NavGroup[] = [
     items: [
       { href: "/tasarimlar", label: "Listeler", icon: Palette },
       { href: "/listing-onerileri", label: "Listing Önerileri", icon: Lightbulb },
+      { href: "/seo-etiketleri", label: "SEO Takip", icon: Tags, capability: "seoTagPush" },
+      { href: "/stok", label: "Stok", icon: Boxes },
       { href: "/arsiv", label: "Listing Arşivi", icon: Archive },
     ],
   },
@@ -69,6 +75,12 @@ export const NAV_GROUPS: NavGroup[] = [
       { href: "/satislar", label: "Satışlar", icon: ShoppingBag },
       { href: "/maliyetler", label: "Maliyetler", icon: Wallet },
       { href: "/raporlar", label: "Kâr Raporu", icon: FileBarChart },
+    ],
+  },
+  {
+    label: "Müşteri",
+    items: [
+      { href: "/yorumlar", label: "Yorumlar", icon: MessageSquareText },
     ],
   },
   {
