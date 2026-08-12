@@ -87,6 +87,21 @@ const PROFILE_PATTERNS: { re: RegExp; profile: EonProfile }[] = [
   { re: /\bflat\b/i, profile: "flat" },
 ];
 
+/**
+ * Etsy hatasını satır notuna sığacak tek satıra indirger. `client.get`
+ * `Etsy API hatası (403) /listings/…: {"error":"…"}` biçiminde fırlatır;
+ * buradan durum kodu + gövdenin başı alınır (tam gövde notu şişirir).
+ */
+export function etsyHataOzeti(e: unknown): string {
+  const raw = e instanceof Error ? e.message : String(e);
+  const m = raw.match(/Etsy API hatası \((\d{3})\)[^:]*:\s*([\s\S]*)/);
+  if (m) {
+    const govde = m[2].replace(/\s+/g, " ").trim().slice(0, 120);
+    return govde ? `HTTP ${m[1]} — ${govde}` : `HTTP ${m[1]}`;
+  }
+  return raw.replace(/\s+/g, " ").trim().slice(0, 140);
+}
+
 /** Başlıktan işçilik sınıfını çözer. Bulunamazsa null — VARSAYILANA DÜŞMEZ. */
 export function detectProfile(title: string): EonProfile | null {
   for (const { re, profile } of PROFILE_PATTERNS) {
@@ -155,6 +170,7 @@ export async function buildPricingDiff(
     // "yetkili" olması bu okumaya bağlı.
     const liveBySku = new Map<string, number>();
     let liveOkundu = true;
+    let liveHata: string | null = null;
     try {
       const inv = await getListingInventory(client, p.etsy_listing_id);
       for (const prod of inv.products ?? []) {
@@ -170,8 +186,17 @@ export async function buildPricingDiff(
             : Math.round((price.amount / price.divisor) * 100);
         liveBySku.set(sku, cents);
       }
-    } catch {
+    } catch (e) {
       liveOkundu = false;
+      // Sebebi YUTMA. Bu blok yalnız "okunamadı" derse koşu teşhis edilemez
+      // hale gelir: 08-08/08-09 kuru koşularında 29 listing'in 29'u burada
+      // düştü ve raporda hangi hatanın (401/403/404/429/ağ) olduğu HİÇ
+      // görünmedi. Mesajı satır notuna taşı — ilk bakışta kök neden çıksın.
+      liveHata = etsyHataOzeti(e);
+      console.error(
+        `pricing dry-run: envanter okunamadı listing=${p.etsy_listing_id}`,
+        e,
+      );
     }
 
     const { data: varData, error: varErr } = await admin
@@ -217,7 +242,13 @@ export async function buildPricingDiff(
       if (profile == null) eksik.push("işçilik sınıfı başlıktan çözülemedi");
       if (axes == null) eksik.push("SKU genişlik/beden taşımıyor");
       if (grams == null) eksik.push("gram bilinmiyor");
-      if (!liveOkundu) eksik.push("Etsy envanteri okunamadı");
+      if (!liveOkundu) {
+        eksik.push(
+          liveHata
+            ? `Etsy envanteri okunamadı (${liveHata})`
+            : "Etsy envanteri okunamadı",
+        );
+      }
       else if (live == null) eksik.push("Etsy'de bu SKU yok");
       if (eksik.length > 0) {
         rows.push({ ...temel, note: eksik.join(" · ") });
