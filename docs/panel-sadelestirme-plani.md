@@ -93,8 +93,21 @@ turda read-back ile doğrulanır; hiçbir yazma zamanlanmış/gözetimsiz olamaz
     emekli reprice). `report-tier-table` salt-okunur duruma indi.
   - Tartışmalı üçe (stok · indirimler · gorsel-uretim/yorumlar/sosyal)
     DOKUNULMADI — onay bekliyor.
-- **Faz 2 — Çekirdek sayfaların sadeleştirilmesi:** panel/maliyet/kâr
-  yüzeyleri "özet + detay" desenine indirgenir; rehber yeniden yazılır.
+- **Faz 2 — Çekirdek sayfaların sadeleştirilmesi. KISMEN YAPILDI (2026-08-12).**
+  Karardan BAĞIMSIZ kısmı uygulandı:
+  - `/panel` en üstte **iki döngü şeridi** kazandı. Listing döngüsü:
+    bekleyen (panelde hazır, Etsy'ye gitmemiş) · gönderilen (Etsy taslağı) ·
+    yayında + son senkron zamanı. Kâr döngüsü: satış · maliyet · kâr (+marj).
+    Her hücre sonraki adıma link. Kâr tarafı ekstra sorgu AÇMAZ — mevcut
+    `getDashboard` verisini kullanır; listing tarafı tek dar sorgu
+    (`getListingLoopStatus`, 2 kolon).
+  - Panelden çıkarılanlar: **Aylık Tanı özeti** (tam sayfası Faz 1'de silindi)
+    ve **Görev Zaman Çizelgesi** (Görevler modülü silindi) + `/sepet-kurtarma`
+    ölü linki. İlgili 6 import temizlendi.
+  - Dürüstlük notu eklendi: "maliyet yalnız panele GİRİLEN gideri sayar" —
+    eksik gider kârı yüksek gösterir.
+  - **Kalan (karara bağlı):** rehber sayfasının yeniden yazımı, `/fiyat`
+    yüzeyinin küçültülmesi, üç tartışmalı sayfanın kaderi.
 - **Faz 3 — DB temizliği (ayrı karar):** kullanılmayan tablolar için
   arşiv/drop migration — ancak Faz 1-2 canlıda bir süre sorunsuz yaşadıktan
   sonra.

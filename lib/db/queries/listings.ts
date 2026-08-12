@@ -736,3 +736,73 @@ export async function getListingMarketPosition(
   if (!row || !row.price_position) return null;
   return row;
 }
+
+// ── Listing döngüsü göstergesi (sadeleştirme Faz 2, 2026-08-12) ──────────
+//
+// Panelin var olma sebebi iki döngü; bu, birincisinin tek satırlık sağlık
+// özeti: docs/panel-sadelestirme-plani.md.
+//
+//   oluştur → Etsy'ye taslak gönder → senkron read-back doğrular → aktivasyon
+//
+// Üç sayı üç ADIMA karşılık gelir; her biri "sırada ne var"ı söyler:
+//   pending  — panelde hazır, Etsy'ye HİÇ gitmemiş (etsy_listing_id null)
+//   sent     — Etsy'de taslak duruyor, aktivasyon bekliyor
+//   live     — yayında
+// Arşivlenmiş/silinmiş kayıtlar üçünde de HARİÇ (panel yaşam-döngüsü kuralı).
+
+export interface ListingLoopStatus {
+  pending: number;
+  sent: number;
+  live: number;
+  /** Son başarılı Etsy senkronu (ISO) — ayna tazeliği. */
+  lastSyncAt: string | null;
+}
+
+export async function getListingLoopStatus(
+  orgId: string,
+): Promise<ListingLoopStatus> {
+  const supabase = await createClient();
+
+  // Tek çekim, üç sayaç: durum+etsy_listing_id ikilisi ayrımı belirler.
+  // Dar kolon seçimi (2 alan) — sayaç için satır gövdesi taşımaya gerek yok.
+  const { data, error } = await supabase
+    .from("products")
+    .select("status, etsy_listing_id")
+    .eq("org_id", orgId)
+    .is("archived_at", null)
+    .is("etsy_deleted_at", null);
+
+  if (error) {
+    // Sorgu hatası "her şey sıfır"a dönüşmesin — yüzeye çıkar (second-brain).
+    console.error("getListingLoopStatus:", error.message);
+  }
+
+  const rows = (data ?? []) as {
+    status: string | null;
+    etsy_listing_id: number | null;
+  }[];
+
+  let pending = 0;
+  let sent = 0;
+  let live = 0;
+  for (const r of rows) {
+    if (r.status === "active") live += 1;
+    else if (r.status === "draft") {
+      if (r.etsy_listing_id == null) pending += 1;
+      else sent += 1;
+    }
+  }
+
+  const { data: conn } = await supabase
+    .from("etsy_connection")
+    .select("last_sync_at")
+    .eq("org_id", orgId)
+    .maybeSingle();
+
+  return {
+    pending,
+    sent,
+    live,
+    lastSyncAt: (conn as { last_sync_at: string | null } | null)?.last_sync_at ?? null,
+  };
+}
