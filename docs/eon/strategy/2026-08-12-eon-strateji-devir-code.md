@@ -826,3 +826,53 @@ hammered has no code yet. The listing's colour is genuinely unstated: the title,
 the description, the tags and the materials array name no colour at all, so the
 panel currently infers yellow from the bare word "gold". That inference is not a
 verified product fact and is flagged here rather than written into the SKU.
+
+### Addendum 2, 2026-08-13. Hammered colour confirmed.
+
+Husam: hammered exists in yellow gold only, no other colour.
+
+Live data agrees. Exactly two records mention hammered in the whole EON
+catalogue:
+
+| Listing | Status | Family | Variants |
+|---|---|---|---|
+| `4543442596` "10K Solid Gold Hammered Wedding Band, Milgrain Comfort Fit Ring" | active | `HMW-R-1402` | 225 |
+| "14k Solid Gold Hammered Wedding Band with Milgrain Edge, Rustic Texture" | archived, never on Etsy | none | 0 |
+
+So the live hammered product is one listing, 10K, yellow. The colour gap flagged
+in Addendum 1 is now closed and it is a verified fact, not an inference.
+
+**The remaining defect is the four digits.** `1402` reads 14K flat. The listing
+is 10K hammered. Profile codes 01 through 08 are occupied, so hammered has no
+code and needs one. `09` is free.
+
+**Recommendation: `GLD-R-1009`.**
+
+Reasoning, in order of weight:
+
+1. The colour is known now, so there is no reason to hide it in the SKU. `HMW`
+   was only defensible while the colour was unstated.
+2. It leaves the scheme with exactly one legitimate exception, `TTG`, instead of
+   two. Two tone genuinely cannot be reduced to one colour. Hammered can, it is
+   yellow.
+3. `09` fills the code book gap without colliding, and it makes the hammered
+   labour class addressable by code rather than by prefix.
+4. It reads correctly at a glance in any report, which is the whole point of a
+   SKU.
+
+The alternative, keeping the prefix and fixing only the digits to `HMW-R-1009`,
+is internally consistent but says hammered twice and says yellow nowhere.
+
+**Cost of applying it.** 225 variant SKUs, and it must land on Etsy and the panel
+in the same pass or the next sync reverts it. This container cannot write to Etsy
+because the OAuth token is bound to the production app, so it needs a panel route
+with a human approval tap, consistent with hard rule 1. SKU is not a search field
+on Etsy, so a rename carries no ranking risk and does not restart the 7 to 14 day
+settle period. That distinction matters: renaming is safe on a listing that is
+selling, changing its price is not.
+
+**Recorded but deliberately not acted on.** The title leads with karat and names
+two profiles at once, which sits against the section 7 title formula, and section
+7 also measured hammered at zero volume in Alura. This is the best selling listing
+in the shop, and section 7's own rule is not to modify listings that are selling
+well. Left alone on purpose, noted here so it is not rediscovered as new.
