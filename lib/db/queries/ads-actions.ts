@@ -291,3 +291,60 @@ export async function updateAdsActionStatus(input: {
   if (error) return { error: error.message };
   return {};
 }
+
+// ── Reklam verisinin tazeliği ───────────────────────────────────────────────
+
+export interface AdsFreshness {
+  /** `ad_daily_stats` içindeki en güncel gün (YYYY-MM-DD) — hiç yoksa null. */
+  lastDailyDate: string | null;
+  /** Bugüne göre kaç gün geride (lastDailyDate yoksa null). */
+  staleDays: number | null;
+  /** Listing kırılımlı en güncel snapshot zamanı — hiç yoksa null. */
+  lastListingSnapshotAt: string | null;
+}
+
+/**
+ * Reklam verisi ELLE yüklenir (Etsy Open API v3 reklam verisi sunmaz), o
+ * yüzden sessizce bayatlar. İçe aktarım sayfası bu şeridi gösterir ki
+ * "kaç gün geride" kararın önünde dursun — aksiyon sinyali gömülü kalmaz.
+ */
+export async function getAdsFreshness(orgId: string): Promise<AdsFreshness> {
+  const supabase = await createClient();
+
+  const [daily, listing] = await Promise.all([
+    supabase
+      .from("ad_daily_stats")
+      .select("stat_date")
+      .eq("org_id", orgId)
+      .order("stat_date", { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+    supabase
+      .from("product_metrics")
+      .select("created_at")
+      .eq("org_id", orgId)
+      .ilike("period_label", ADS_PERIOD_MATCH)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+  ]);
+
+  // Hata yutulmaz — boş sonuç "her şey yolunda" gibi görünmesin.
+  if (daily.error) console.error("getAdsFreshness/daily", daily.error);
+  if (listing.error) console.error("getAdsFreshness/listing", listing.error);
+
+  const lastDailyDate = (daily.data as { stat_date: string } | null)?.stat_date ?? null;
+  let staleDays: number | null = null;
+  if (lastDailyDate) {
+    const last = Date.parse(`${lastDailyDate}T00:00:00Z`);
+    const today = Date.parse(`${new Date().toISOString().slice(0, 10)}T00:00:00Z`);
+    staleDays = Math.max(0, Math.round((today - last) / 86_400_000));
+  }
+
+  return {
+    lastDailyDate,
+    staleDays,
+    lastListingSnapshotAt:
+      (listing.data as { created_at: string } | null)?.created_at ?? null,
+  };
+}

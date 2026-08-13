@@ -477,3 +477,18 @@ repodaki hedefidir.
   teoriyi çürütebilir); (c) çare yeniden deneme. Yapısal çözüm istenirse
   build-time font indirmeyi kaldır (self-host) — ağ bağımlılığı olan her
   build adımı er geç kırmızı verir.
+- **Konteyner geri düşerse "kodu okudum" kanıt değildir — iddiadan önce dosyanın
+  HANGİ commit'te olduğunu doğrula (2026-08):** Fiyat motorunun profil
+  desenlerini `grep`le okuyup "satin ve two-tone yok, 11 canlı listing
+  fiyatlanamıyor" diye rapor edecektim; ayrıca o listeyi kopyalayıp node ile
+  koşturup `null` çıktısını "kanıt" saydım. Gerçekte konteyner o an eski bir
+  ağaca (ae42d5e) geri düşmüştü; güncel `main`'de iki desen de VARDI ve 42
+  canlı başlığın 42'si profil çözüyordu. Yani hem okuma hem "bağımsız test"
+  aynı bayat kaynaktan besleniyordu — test doğrulamıyor, yanılgıyı
+  pekiştiriyordu. Kural: (1) bu repoda her tur `git fetch` + `git rev-parse
+  HEAD` ile origin'i karşılaştır, eşit değilse ÖNCE reset et, sonra oku;
+  (2) "X yok" gibi eksiklik iddiaları en kırılgan iddialardır — dosyayı
+  reset SONRASI yeniden aç; (3) kaynaktan kopyalanan harness testi, kaynak
+  bayatsa bağımsız değildir; testin girdisini üreten dosyanın sürümünü de
+  doğrula. Yakalayan şey: aynı bloğu Edit ile değiştirmeye çalışınca
+  "String to replace not found" alması oldu.
