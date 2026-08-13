@@ -750,6 +750,58 @@ async function upsertReviewsPage(
  * düşürmesin diye her parça kendi içinde yutulur (bir sonraki turda tekrar
  * denenir — upsert'ler idempotent).
  */
+/**
+ * YALNIZ mağaza bölümlerini tazeler — tek Etsy çağrısı.
+ *
+ * Neden ayrı: bölümler `syncShopExtras` içinde, o da senkronun "extras"
+ * FAZINDA koşuyor. Kullanıcı Etsy'de yeni bölüm açtığında (vitrin
+ * düzenlemesi tekrar eden bir iş) faz döngüsünün oraya gelmesini beklemek
+ * gerekiyordu — canlı vakada bölüm listesi 8 gün bayat kaldı ve bölüm-gönderim
+ * akışı "Etsy'de bulunamayan bölüm" diyerek kilitlendi. Bu fonksiyon o
+ * beklemeyi kaldırır: panelden tek tıkla bölümler iner.
+ *
+ * Budama `syncShopExtras` ile aynı kuralda: yalnız dolu cevapta budanır —
+ * boş/hatalı cevap tüm bölüm aynasını süpüremez.
+ */
+export async function syncShopSectionsOnly(
+  admin: SupabaseClient,
+  client: EtsyClient,
+  orgId: string,
+): Promise<{ count: number }> {
+  const shopId = await client.resolveShopId();
+  if (!shopId) throw new Error("Etsy shop_id çözülemedi.");
+
+  const page = await client.get<EtsyListResponse<EtsyShopSection>>(
+    etsyPaths.shopSections(shopId),
+  );
+  const rows = (page.results ?? [])
+    .filter((x) => x.shop_section_id != null)
+    .map((x) => ({
+      org_id: orgId,
+      section_id: x.shop_section_id!,
+      title: x.title ?? null,
+      rank: x.rank ?? null,
+      active_listing_count: x.active_listing_count ?? null,
+      updated_at: new Date().toISOString(),
+    }));
+
+  if (rows.length === 0) return { count: 0 };
+
+  const { error } = await admin
+    .from("etsy_shop_sections")
+    .upsert(rows, { onConflict: "org_id,section_id" });
+  if (error) throw new Error(`bölüm upsert: ${error.message}`);
+
+  const live = rows.map((r) => r.section_id);
+  await admin
+    .from("etsy_shop_sections")
+    .delete()
+    .eq("org_id", orgId)
+    .not("section_id", "in", `(${live.join(",")})`);
+
+  return { count: rows.length };
+}
+
 async function syncShopExtras(
   admin: SupabaseClient,
   client: EtsyClient,

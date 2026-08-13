@@ -3,13 +3,23 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Loader2, Send, AlertTriangle, Check, Store } from "lucide-react";
+import {
+  Loader2,
+  Send,
+  AlertTriangle,
+  Check,
+  Store,
+  RefreshCw,
+} from "lucide-react";
 
 import type {
   SectionPlan,
   SectionPlanRow,
 } from "@/app/(dashboard)/tasarimlar/bolumler/section-actions";
-import { pushSections } from "@/app/(dashboard)/tasarimlar/bolumler/section-actions";
+import {
+  pushSections,
+  refreshShopSections,
+} from "@/app/(dashboard)/tasarimlar/bolumler/section-actions";
 import { CHAPTERS } from "@/lib/collections/chapters";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -33,6 +43,18 @@ export function SectionPushCard({ plan }: { plan: SectionPlan }) {
 
   const blocked = plan.missingSections.length > 0;
   const groups = groupByTarget(plan.rows);
+
+  function refresh() {
+    startTransition(async () => {
+      const res = await refreshShopSections();
+      if (res.error) {
+        toast.error(res.error);
+        return;
+      }
+      toast.success(`${res.count} bölüm Etsy'den alındı.`);
+      router.refresh();
+    });
+  }
 
   function run(limit?: number) {
     startTransition(async () => {
@@ -92,9 +114,11 @@ export function SectionPushCard({ plan }: { plan: SectionPlan }) {
                   Etsy&apos;de bulunamayan bölüm:{" "}
                   {plan.missingSections.join(", ")}.
                 </strong>{" "}
-                Bu bölüme düşecek listingler gönderilmez — önce Etsy&apos;de
-                bölümü aç, sonra panelden Etsy senkronunu çalıştır ki bölüm
-                kimliği panele insin. Panelde kayıtlı bölüm listesi{" "}
+                Bu bölüme düşecek listingler gönderilmez. Bölümleri
+                Etsy&apos;de açtıysan{" "}
+                <strong>&quot;Bölümleri Etsy&apos;den tazele&quot;</strong>{" "}
+                düğmesine bas — kimlikleri hemen iner (tam senkronu beklemeye
+                gerek yok). Panelde kayıtlı liste{" "}
                 {plan.sectionsUpdatedAt
                   ? new Date(plan.sectionsUpdatedAt).toLocaleDateString("tr-TR")
                   : "bilinmiyor"}{" "}
@@ -105,6 +129,19 @@ export function SectionPushCard({ plan }: { plan: SectionPlan }) {
         ) : null}
 
         <div className="flex flex-wrap items-center gap-2">
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={refresh}
+            disabled={pending}
+          >
+            {pending ? (
+              <Loader2 className="size-4 animate-spin" />
+            ) : (
+              <RefreshCw className="size-4" />
+            )}
+            Bölümleri Etsy&apos;den tazele
+          </Button>
           <Button
             size="sm"
             variant="outline"
