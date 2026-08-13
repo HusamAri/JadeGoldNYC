@@ -9,15 +9,18 @@ import {
 import { PageHeader } from "@/components/page-header";
 import { ChapterBoard } from "@/components/chapters/chapter-board";
 import { ShopSectionsCard } from "@/components/chapters/shop-sections-card";
+import { SectionPushCard } from "@/components/chapters/section-push-card";
+import { getSectionPlan } from "./section-actions";
 
 export const metadata = { title: "Anlam Bölümleri" };
 
 export default async function BolumlerPage() {
   const m = await requireMembership();
-  const [board, unclassified, sections] = await Promise.all([
+  const [board, unclassified, sections, plan] = await Promise.all([
     getChapterBoard(m.org_id),
     listUnclassified(m.org_id),
     getShopSections(m.org_id),
+    getSectionPlan(),
   ]);
 
   const withRedesign = board.chapters.reduce(
@@ -44,6 +47,8 @@ export default async function BolumlerPage() {
         unclassified={unclassified}
         unclassifiedCount={board.unclassified}
       />
+
+      <SectionPushCard plan={plan} />
 
       <ShopSectionsCard filled={sections.filled} empty={sections.empty} />
 
