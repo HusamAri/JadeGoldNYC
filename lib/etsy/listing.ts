@@ -7,6 +7,8 @@ export interface EtsyListingDetail {
   title?: string;
   description?: string;
   tags?: string[];
+  /** Bulunduğu mağaza bölümü (vitrin yerleşimi). */
+  shop_section_id?: number | null;
 }
 
 /**
@@ -40,6 +42,48 @@ export async function updateListingDescription(
     etsyPaths.shopListing(shopId, listingId),
     { description },
   );
+}
+
+/**
+ * Listing'in mağaza bölümünü (vitrin yerleşimi) değiştirir + GERİ OKUR.
+ *
+ * Read-back zorunlu: "200 OK" teslim sayılmaz (2026-07-31 vakası — PATCH 200
+ * döndü ama yazma oturmadı). Aynı turda geri okunup istenen bölüme düştüğü
+ * doğrulanır; düşmediyse hata döner ve satır `failed` işaretlenir.
+ *
+ * Not: bu uç yalnız `shop_section_id` alanına dokunur — başlık, açıklama, tag
+ * ve fiyat Etsy tarafında olduğu gibi kalır.
+ */
+export async function updateListingSection(
+  client: EtsyClient,
+  listingId: number,
+  sectionId: number,
+): Promise<{ ok: boolean; detail?: string; liveSectionId?: number | null }> {
+  const shopId = await client.resolveShopId();
+  if (!shopId) throw new Error("Etsy shop_id çözülemedi.");
+
+  await client.requestForm<unknown>(
+    "PATCH",
+    etsyPaths.shopListing(shopId, listingId),
+    { shop_section_id: String(sectionId) },
+  );
+
+  try {
+    const live = await getListing(client, listingId);
+    const got = live.shop_section_id ?? null;
+    if (got !== sectionId) {
+      return {
+        ok: false,
+        liveSectionId: got,
+        detail: `Etsy yazmayı kabul etmedi: bölüm ${got ?? "boş"} kaldı (istenen ${sectionId}).`,
+      };
+    }
+    return { ok: true, liveSectionId: got };
+  } catch (e) {
+    // Geri okuma başarısızsa yazma "doğrulanmadı" sayılır — sessizce başarı deme.
+    const msg = e instanceof Error ? e.message : "bilinmiyor";
+    return { ok: false, detail: `Yazma sonrası doğrulama okunamadı: ${msg}` };
+  }
 }
 
 export interface SeoVerification {

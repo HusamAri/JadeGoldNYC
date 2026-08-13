@@ -44,6 +44,8 @@ export interface ListingIndexRow {
   missing_weight_count: number; // weight_grams null olan varyant sayısı
   research_keyword: string | null;
   has_research: boolean; // keyword_research kaydı var mı
+  /** Anlam bölümü (0138). Panel alanı — senkron yazmaz; sınıflanmamışsa null. */
+  chapter: string | null;
   ads30_spend_cents: number | null; // period_label ilike '%son 30%' toplamı
   ads30_orders: number | null;
 }
@@ -217,6 +219,7 @@ interface ProductIndexDbRow {
   num_images: number | null;
   research_keyword: string | null;
   discount_pct: number | null;
+  chapter: string | null;
 }
 
 interface VariantAggDbRow {
@@ -323,7 +326,7 @@ export async function listListingsIndex(opts?: {
     let q = supabase
       .from("products")
       .select(
-        "id, etsy_listing_id, sku, title, status, image_url, price_cents, currency, quantity, num_images, research_keyword, discount_pct",
+        "id, etsy_listing_id, sku, title, status, image_url, price_cents, currency, quantity, num_images, research_keyword, discount_pct, chapter",
       );
     if (scope === "archived") {
       q = q.not("archived_at", "is", null);
@@ -495,6 +498,7 @@ export async function listListingsIndex(opts?: {
         missing_weight_count: va.missing,
         research_keyword: p.research_keyword,
         has_research: researched.has(p.id),
+        chapter: p.chapter,
         ads30_spend_cents: ads ? ads.spend : null,
         ads30_orders: ads ? ads.orders : null,
       };

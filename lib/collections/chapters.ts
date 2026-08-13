@@ -97,6 +97,37 @@ export const CHAPTERS: Record<Chapter, ChapterMeta> = {
   },
 };
 
+/**
+ * Anlam bölümü → Etsy vitrin bölümü (mağaza kararı, 2026-08-13).
+ *
+ * Etsy'de beş section var: Protection · Faith · Love · Legacy · Everyday.
+ * Sembolik olmayan katalog (günlük zincir, küpe, yüzük) tek vitrinde toplanır:
+ * alıcı için "gündelik altın" tek bir raf, anlam taşıyanlar ayrı raflar.
+ *
+ * Not: `ChapterMeta.section` alanı ESKİ öneri adlarını taşır (Protection & Luck
+ * gibi) ve canlı karşılığı yoktur — eşleşme bu harita üzerinden yapılır.
+ */
+export const CHAPTER_TO_SECTION: Record<Chapter, string> = {
+  protection: "Protection",
+  faith: "Faith",
+  love: "Love",
+  legacy: "Legacy",
+  chains: "Everyday",
+  earrings: "Everyday",
+  rings: "Everyday",
+};
+
+/**
+ * Etsy section başlığını eşleştirme anahtarına indirger.
+ *
+ * Kullanıcı bölümü "Protection" ya da "Protection & Luck" diye adlandırabilir;
+ * ikisi de aynı rafı kasteder. İlk kelime alınır, küçük harfe indirilir.
+ * Tam eşleşme aramak, adı bir kelime uzayınca gönderimi sessizce durdururdu.
+ */
+export function sectionKey(title: string): string {
+  return (title.trim().split(/[\s&·|/-]+/)[0] ?? "").toLowerCase();
+}
+
 export const CHAPTER_ORDER: Chapter[] = (
   Object.values(CHAPTERS) as ChapterMeta[]
 )

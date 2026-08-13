@@ -53,6 +53,8 @@ export interface EtsyListing {
   views?: number;
   num_favorers?: number;
   last_modified_timestamp?: number;
+  /** Listing'in bulunduğu mağaza bölümü (vitrin yerleşimi). */
+  shop_section_id?: number;
   images?: { listing_image_id?: number; url_570xN?: string }[];
 }
 

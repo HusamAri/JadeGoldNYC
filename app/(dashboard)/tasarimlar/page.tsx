@@ -10,6 +10,7 @@ import {
   Package,
   SearchX,
   Wand2,
+  BookOpen,
   Lightbulb,
 } from "lucide-react";
 import {
@@ -28,6 +29,7 @@ import {
   COLOR_OPTIONS,
   GROUP_OPTIONS,
 } from "@/lib/listing-facets";
+import { CHAPTER_OPTIONS } from "@/lib/collections/chapters";
 import { strParam, type RawSearchParams } from "@/lib/searchparams";
 import { formatMoney } from "@/lib/money";
 import { clampDiscountPct, discountedCents } from "@/lib/discount";
@@ -143,6 +145,7 @@ export default async function ListelerPage({
   const karat = strParam(sp.karat);
   const renk = strParam(sp.renk);
   const grup = strParam(sp.grup);
+  const chapter = strParam(sp.chapter);
 
   // Platform durumu (3 RPC), auth kapısı ve listing çekimi birbirinden
   // bağımsız — eskiden sırayla await ediliyordu, artık tek turda paralel.
@@ -159,6 +162,8 @@ export default async function ListelerPage({
     if (karat && deriveKarat(r.title, r.sku) !== karat) return false;
     if (renk && deriveColor(r.title, r.sku) !== renk) return false;
     if (grup && deriveGroup(r.title) !== grup) return false;
+    // Bölüm DB'de saklanır (0138) — türetilmez, çünkü elle sabitlenebilir.
+    if (chapter && r.chapter !== chapter) return false;
     return true;
   });
 
@@ -171,7 +176,7 @@ export default async function ListelerPage({
   const noKeyword = rows.filter(
     (r) => !(r.research_keyword ?? "").trim(),
   ).length;
-  const filtered = Boolean(search || status || karat || renk || grup);
+  const filtered = Boolean(search || status || karat || renk || grup || chapter);
 
   return (
     <div className="page-stack relative z-0 pb-32">
@@ -204,6 +209,12 @@ export default async function ListelerPage({
               <Link href="/tasarimlar/iyilestir">
                 <Wand2 />
                 İyileştir
+              </Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link href="/tasarimlar/bolumler">
+                <BookOpen />
+                Bölümler
               </Link>
             </Button>
             <Button asChild>
@@ -298,6 +309,14 @@ export default async function ListelerPage({
               placeholder="Grup"
               options={GROUP_OPTIONS}
               className="w-[150px]"
+            />
+            {/* Anlam bölümü — facet'lerden farklı olarak DB'de saklanır (0138),
+                elle sabitlenebilir ve bölüm bazlı çalışmanın eksenidir. */}
+            <FilterSelect
+              paramKey="chapter"
+              placeholder="Bölüm"
+              options={CHAPTER_OPTIONS}
+              className="w-[170px]"
             />
           </div>
 
