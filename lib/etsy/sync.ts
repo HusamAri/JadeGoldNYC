@@ -613,6 +613,10 @@ async function upsertListingsPage(
     featured_rank: l.featured_rank ?? null,
     views: l.views ?? null,
     num_favorers: l.num_favorers ?? null,
+    // Etsy mağaza bölümü (canlı vitrin yerleşimi). Bölüm adları
+    // `etsy_shop_sections`'ta; burada yalnız bağ tutulur. Panel bu sayede
+    // "bu listing vitrinde nerede duruyor" sorusunu cevaplayabilir.
+    etsy_section_id: l.shop_section_id ?? null,
     last_modified_ts: l.last_modified_timestamp ?? null,
   }));
   const { error } = await admin
