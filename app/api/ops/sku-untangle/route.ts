@@ -59,6 +59,39 @@ const HAMMER = {
   to: "HMW-R-1402-",
   label: "Hammered",
 };
+/**
+ * `step=hammer-recode` (2026-08-13) — 08-11'de bilinçli ERTELENEN yarım iş.
+ *
+ * O gün `WHG-R-1402` → `HMW-R-1402` yapılırken `1402` rakamları "karat/fiyat
+ * davranışı değişmesin" diye korunmuştu. Ama ürün 10K hammered, `1402` ise
+ * 14K flat okuyor. SKU denetimi (docs/eon/strategy, APPENDIX A) bunu 42 canlı
+ * listing içindeki TEK gerçek çelişki olarak saptadı.
+ *
+ * Renk artık doğrulanmış bilgi: hammered yalnız sarı üretiliyor (kullanıcı
+ * teyidi + katalogda hammered geçen tek canlı listing bu). Bu yüzden kimlik
+ * yuvası `GLD` olur ve şemada tek meşru istisna `TTG` kalır.
+ *
+ * `09` yeni profil kodudur: 01-08 dolu, hammered'ın kodu hiç yoktu.
+ *
+ * DAVRANIŞ ETKİSİ, bilerek göze alınıyor: `parseEonSku`
+ * (`lib/pricing/gold-index.ts`) karatı SKU rakamlarından okur, yani bugün bu
+ * listing'i 14K sanıyor. Yeniden adlandırmadan sonra 10K okuyacak, ki doğrusu
+ * budur. Sonuç, fiyat motorunun bu listing'i belirgin PAHALI göstermesi olur
+ * (canlı merdiven 14K white flat'ten kopyalanmıştı, APPENDIX A/B3). Hiçbir
+ * fiyat yazılmaz: externalPricing açık, itiş insan onayına bağlı, karar
+ * 1 Eylül işçilik gözden geçirmesinde.
+ *
+ * `detectLaborClass` (`lib/gold-cost.ts`) başlıktaki "hammered"/"milgrain"
+ * kelimelerinden eşleştiği için işçilik sınıfı ETKİLENMEZ.
+ */
+const HAMMER_RECODE = {
+  listingId: 4543442596,
+  from: "HMW-R-1402-",
+  to: "GLD-R-1009-",
+  expected: 225,
+  label: "10K Yellow Hammered Milgrain",
+};
+
 const FREED = [
   {
     listingId: 4540106368,
@@ -240,6 +273,120 @@ export async function GET(request: Request) {
       if (s.error) row.detail = s.error;
       results.push(row);
     }
+  } else if (step === "hammer-recode") {
+    const { syncOneListingVariants } = await import("@/lib/etsy/variants");
+    const t = HAMMER_RECODE;
+    const row: Row = { step: "hammer-recode", listing: t.listingId, label: t.label };
+
+    const prod = await productIdByListing(t.listingId);
+    if (!prod) {
+      row.status = "error";
+      row.detail = "panelde ürün yok";
+      results.push(row);
+      return NextResponse.json({ ok: true, apply, step, results });
+    }
+
+    // İdempotentlik: hedef önek bu üründe zaten varsa iş bitmiştir.
+    const { count: done } = await admin
+      .from("product_variants")
+      .select("id", { count: "exact", head: true })
+      .eq("org_id", orgId)
+      .eq("product_id", prod.id)
+      .like("sku", `${t.to}%`);
+    if ((done ?? 0) > 0) {
+      row.status = "already-done";
+      row.panel_rows = done;
+      results.push(row);
+      return NextResponse.json({ ok: true, apply, step, results });
+    }
+
+    // Çakışma kapısı: hedef aile org'da BAŞKA bir ürüne bağlıysa yazma.
+    const { count: clash } = await admin
+      .from("product_variants")
+      .select("id", { count: "exact", head: true })
+      .eq("org_id", orgId)
+      .like("sku", `${t.to}%`);
+    if ((clash ?? 0) > 0) {
+      row.status = "error";
+      row.detail = `${clash} satır zaten '${t.to}' taşıyor — hiçbir şey yazılmadı.`;
+      results.push(row);
+      return NextResponse.json({ ok: true, apply, step, results });
+    }
+
+    if (!apply) {
+      const inv = await getListingInventory(client, t.listingId);
+      const skus = (inv.products ?? [])
+        .filter((p) => !p.is_deleted)
+        .map((p) => p.sku ?? "");
+      row.status = "would-rename";
+      row.etsy_skus = skus.length;
+      row.matching = skus.filter((s) => s.startsWith(t.from)).length;
+      row.sample = skus.slice(0, 3);
+      results.push(row);
+      return NextResponse.json({ ok: true, apply, step, results });
+    }
+
+    const { data: vRows } = await admin
+      .from("product_variants")
+      .select("sku, properties")
+      .eq("org_id", orgId)
+      .like("sku", `${t.from}%`);
+    const propsBySku = new Map<string, { name: string; value: string }[]>();
+    for (const v of (vRows ?? []) as {
+      sku: string | null;
+      properties: RawVariantProperties;
+    }[]) {
+      const sku = (v.sku ?? "").trim();
+      if (sku) propsBySku.set(sku, variantPropsForMatch(v.properties));
+    }
+
+    const r = await renameListingSkuPrefix(
+      client,
+      t.listingId,
+      t.from,
+      t.to,
+      propsBySku,
+    );
+    row.status = r.status;
+    row.renamed = r.renamed;
+    if (r.detail) row.detail = r.detail;
+
+    if (r.status !== "error") {
+      const s = await syncOneListingVariants(orgId, prod.id);
+      row.mirror = s.error ?? `${s.variants} varyant`;
+
+      // GERİ OKUMA DOĞRULAMASI (second-brain: "200 OK teslim sayılmaz").
+      // Senkron Etsy'den okuyup panele yazar; panelde yeni önekten kaç satır
+      // oluştuğunu sayıp beklenenle karşılaştırıyoruz.
+      const { count: after } = await admin
+        .from("product_variants")
+        .select("id", { count: "exact", head: true })
+        .eq("org_id", orgId)
+        .eq("product_id", prod.id)
+        .like("sku", `${t.to}%`);
+      const { count: leftover } = await admin
+        .from("product_variants")
+        .select("id", { count: "exact", head: true })
+        .eq("org_id", orgId)
+        .like("sku", `${t.from}%`);
+      row.verified_rows = after ?? 0;
+      row.leftover_old_prefix = leftover ?? 0;
+      row.verified =
+        (after ?? 0) === t.expected && (leftover ?? 0) === 0 ? "ok" : "MISMATCH";
+
+      await logAudit(admin, {
+        orgId,
+        action: "etsy.variant_sync",
+        entityType: "product",
+        entityId: prod.id,
+        summary:
+          `Hammered SKU yeniden kodlama (ops): listing ${t.listingId} — ` +
+          `${r.renamed} SKU '${t.from}' → '${t.to}'; geri okuma ` +
+          `${after ?? 0}/${t.expected}, kalan eski önek ${leftover ?? 0}.`,
+        source: "app",
+      });
+    }
+    results.push(row);
   } else if (step === "publish") {
     for (const f of FREED) {
       const row: Row = { step: "publish", listing: f.listingId, label: f.label };
