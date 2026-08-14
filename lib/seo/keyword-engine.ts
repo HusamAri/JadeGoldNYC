@@ -327,7 +327,7 @@ function tagCandidates(input: SeoInput): Record<Bucket, string[]> {
 }
 
 /** Aday geçerli mi? — çok kelimeli, ≤20 kr, boş değil. */
-function validTag(t: string): boolean {
+export function validTag(t: string): boolean {
   const n = norm(t);
   return n.length > 0 && n.length <= ETSY_TAG_MAX && n.includes(" ");
 }
@@ -336,7 +336,7 @@ const BUCKET_ORDER: Bucket[] = ["ne", "nasil", "stil", "kim", "neden"];
 
 /** Kova adaylarından tam 13 etiket seç: önce her kovadan 1 (kapsama), sonra
  *  round-robin ile dengeli doldur. Tekrar (case-insensitive) ve >20 kr elenir. */
-function selectTags(cands: Record<Bucket, string[]>): SeoTag[] {
+export function selectTags(cands: Record<Bucket, string[]>): SeoTag[] {
   // Kova başına geçerli + benzersiz aday kuyrukları.
   const queues: Record<Bucket, string[]> = {
     ne: [],

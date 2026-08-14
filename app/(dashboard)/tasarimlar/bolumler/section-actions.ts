@@ -8,6 +8,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { getEtsyWriteAccess } from "@/lib/db/queries/etsy";
 import { EtsyClient } from "@/lib/etsy/client";
 import { updateListingSection } from "@/lib/etsy/listing";
+import { syncShopSectionsOnly } from "@/lib/etsy/sync";
 import { logAudit } from "@/lib/audit";
 import {
   CHAPTER_TO_SECTION,
@@ -125,6 +126,34 @@ export async function getSectionPlan(): Promise<SectionPlan> {
     toMove: rows.filter((r) => !r.alreadyThere && r.targetSectionId != null)
       .length,
   };
+}
+
+/**
+ * Etsy'deki bölüm listesini panele indirir (tek çağrı).
+ *
+ * Senkronun "extras" fazını beklemeden çalışır — Etsy'de yeni bölüm açan
+ * kullanıcı bunu tıklar ve bölüm kimlikleri hemen iner.
+ */
+export async function refreshShopSections(): Promise<{
+  error?: string;
+  count?: number;
+}> {
+  const m = await requireMembership();
+  if (!isManager(m.role)) return { error: MANAGER_ONLY_ERROR };
+  const { connected } = await getEtsyWriteAccess(m.org_id);
+  if (!connected) return { error: "Etsy bağlantısı yok." };
+
+  try {
+    const client = await EtsyClient.forOrg(m.org_id);
+    const admin = createAdminClient();
+    const { count } = await syncShopSectionsOnly(admin, client, m.org_id);
+    revalidatePath("/tasarimlar/bolumler");
+    return { count };
+  } catch (e) {
+    return {
+      error: e instanceof Error ? e.message : "Bölümler alınamadı.",
+    };
+  }
 }
 
 export interface SectionPushResult {
