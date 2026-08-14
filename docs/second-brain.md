@@ -11,6 +11,29 @@ repodaki hedefidir.
 
 ## Süreç dersleri
 
+- **Parça-içi tutarlılık isteyen talimat SADECE parça-içi tutarlılık üretir;
+  küme-geneli değişmezler workflow BİTTİKTEN sonra tüm sette KODLA ölçülür
+  (2026-08):** 13 listing'lik İspanyolca metin üretimi 4 aileye bölünüp her
+  aileye "aynı ailedeki listing'ler birbirinden ayrışsın" dendi. Adversarial
+  denetçi katmanı gerçekten güçlü çalıştı — canlı kaynaktan kaybolan 86 satırlık
+  gram tablosunu, iki beyaz dome başlığının ilk 49 karakterinin aynı olduğunu,
+  beden tavsiyesi cümlesindeki anlam bozan çeviri hatasını (`Los anchos calzan`
+  vs `Los anillos más anchos calzan`) ve elmas iması taşıyan terminolojiyi
+  yakaladı. Ama HİÇBİRİ tek bir şeyi görmedi: 13 metnin 10'u `tú`, 2'si `usted`
+  yazılmıştı. Her metin KENDİ İÇİNDE tutarlıydı, her aile kendi içinde
+  tutarlıydı, biçim kapısı (uzunluk/emoji/entity/tekrar) tertemiz geçti — çünkü
+  hitap ne bir aile içi ne de biçimsel bir özellik; MAĞAZA GENELİ bir marka
+  niteliği ve hiçbir ajanın görüş alanında değildi. Bulan tek şey, workflow
+  sonrası tüm sette koştuğum 10 satırlık regex sayacı oldu. Kural: (1) çok
+  ajanlı üretimde "her ajan kendi partisinde tutarlı olsun" demek yetmez —
+  kümenin TAMAMINA uygulanan değişmezleri (hitap, kuyruk bloğu metni,
+  terminoloji, ölçü birimi biçimi) ayrı bir kod geçişinde say; (2) bu sayaç
+  ajanın raporuna değil ham metne bakmalı — ajanlar kendi çıktılarını "ayrıştı"
+  diye onaylamıştı ve bu iddia iki listing için YANLIŞTI; (3) "0 biçim ihlali"
+  teslim değildir, yalnız aklına gelen ihlallerin yokluğudur. Yan ders: büyük
+  metni MCP SQL'iyle elle taşırken satır başına `length()` checksum'ı koş —
+  14 açıklamada 14/14 birebir tuttu, tek karakterlik sapma anında görünürdü.
+
 - **Dış araçtan gelen tam-repo kopyasını "Only in" listesiyle DEĞİL git-geçmişi
   triyajıyla ayıkla (2026-08):** AI Studio'da geliştirilen zip eski main'den
   çatallanmıştı; düz `diff -rq` "Only in zip" listesi yeni işi eski-taban
