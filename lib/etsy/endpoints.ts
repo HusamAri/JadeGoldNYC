@@ -71,4 +71,12 @@ export const etsyPaths = {
     `/shops/${shopId}/readiness-state-definitions`,
   // Satıcı taksonomisi (kategori ağacı) — taxonomy_id çözümü için.
   sellerTaxonomyNodes: () => `/seller-taxonomy/nodes`,
+  // Listing çeviri katmanı (get/create/updateListingTranslation) — dil başına
+  // title + description + tags taşır. `lang` IETF kodu ('es'). listings_w
+  // gerekir; mağazanın dil listesinde o dil EKLİ olmalıdır.
+  listingTranslation: (
+    shopId: number | string,
+    listingId: number | string,
+    lang: string,
+  ) => `/shops/${shopId}/listings/${listingId}/translations/${lang}`,
 };

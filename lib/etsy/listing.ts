@@ -191,3 +191,89 @@ export async function updateListingTags(
     { tags: tags.join(",") },
   );
 }
+
+/**
+ * Listing başlığını günceller (updateListing PATCH, form-encoded). Yalnız
+ * `title` alanına dokunur. Doğrulama çağıran tarafta: `verifyListingSeo`
+ * aynı turda geri okur ("200 OK teslim sayılmaz").
+ */
+export async function updateListingTitle(
+  client: EtsyClient,
+  listingId: number,
+  title: string,
+): Promise<void> {
+  const shopId = await client.requireShopId();
+  await client.requestForm<unknown>(
+    "PATCH",
+    etsyPaths.shopListing(shopId, listingId),
+    { title },
+  );
+}
+
+// ── Çeviri katmanı (getListingTranslation / update / create) ────────────────
+//
+// SÖZLEŞME UYARISI: bu üç fonksiyon Etsy v3 dokümantasyonunun eğitim
+// verisindeki halinden yazıldı ve HİÇ canlı çağrılmadı. Alan adları (title /
+// description / tags), tags'in form-encoding biçimi (virgüllü tek string mi,
+// tekrar eden alan mı) ve create/update ayrımı CANARY push'ta canlı yanıtla
+// doğrulanmadan batch koşulmaz (second-brain: dış API'yi canlı hata metniyle
+// sür; ilk canlı gönderimi TEK listing'de dene).
+
+export interface EtsyListingTranslation {
+  listing_id?: number;
+  language?: string;
+  title?: string;
+  description?: string;
+  tags?: string[];
+}
+
+/** Listing'in bir dildeki çevirisini okur. Çeviri hiç girilmemişse Etsy 404
+ *  döndürür — çağıran null olarak görür, hata saymaz. */
+export async function getListingTranslation(
+  client: EtsyClient,
+  listingId: number,
+  lang: string,
+): Promise<EtsyListingTranslation | null> {
+  const shopId = await client.requireShopId();
+  try {
+    return await client.get<EtsyListingTranslation>(
+      etsyPaths.listingTranslation(shopId, listingId, lang),
+    );
+  } catch (e) {
+    if (e instanceof Error && /\(404\)/.test(e.message)) return null;
+    throw e;
+  }
+}
+
+/**
+ * Listing çevirisini yazar: önce update (PUT), Etsy "çeviri yok" derse
+ * create (POST) ile yeniden dener. Alıcı mağaza dilini seçtiğinde Etsy'nin
+ * makine çevirisi yerine BU metin görünür; İspanyolca keyword kontrolünün
+ * tek yolu budur (tag'ler dil başına ayrı taşınır).
+ */
+export async function putListingTranslation(
+  client: EtsyClient,
+  listingId: number,
+  lang: string,
+  t: { title: string; description: string; tags?: string[] },
+): Promise<void> {
+  const shopId = await client.requireShopId();
+  const form: Record<string, string | undefined> = {
+    title: t.title,
+    description: t.description,
+    // updateListing ile aynı biçim varsayımı: virgülle ayrılmış tek string.
+    // Canary read-back'i tag SAYISINI doğrular; biçim tutmazsa burada düzelt.
+    tags: t.tags && t.tags.length > 0 ? t.tags.join(",") : undefined,
+  };
+  const path = etsyPaths.listingTranslation(shopId, listingId, lang);
+  try {
+    await client.requestForm<unknown>("PUT", path, form);
+  } catch (e) {
+    // Çeviri kaydı hiç yoksa update 404 verir → create.
+    if (e instanceof Error && /\(404\)/.test(e.message)) {
+      await client.requestForm<unknown>("POST", path, form);
+      return;
+    }
+    throw e;
+  }
+}
