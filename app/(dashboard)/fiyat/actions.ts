@@ -588,7 +588,15 @@ export async function panelPushAll(
     const { FLAT_FIX_TARGETS, runFlatFix } = await import(
       "@/lib/etsy/underpriced"
     );
-    for (const t of FLAT_FIX_TARGETS) {
+    // FLAT_FIX_TARGETS listing'leri EON'a ait. Org süzgeci olmadan bu döngü
+    // Jade oturumunda da koşuyor ve Jade'in token'ıyla başka org'un
+    // listing'ini yazmaya çalışıyordu: iki başarısız çağrı + boşa yanan
+    // günlük Etsy kotası. Hedef, AKTİF org'un kataloğunda yoksa atlanır.
+    const oturumdakiListingler = new Set(products.map((p) => p.etsy_listing_id));
+    const hedefler = FLAT_FIX_TARGETS.filter((t) =>
+      oturumdakiListingler.has(t.listingId),
+    );
+    for (const t of hedefler) {
       const row = await runFlatFix(client, admin, m.org_id, t, {
         apply: true,
         mode: "floor",
