@@ -8,9 +8,11 @@ import {
   getListing,
   getListingTranslation,
   putListingTranslation,
+  updateListingDescription,
   updateListingTags,
   updateListingTitle,
 } from "@/lib/etsy/listing";
+import { decodeHtmlEntities } from "@/lib/etsy/text";
 import { logAudit } from "@/lib/audit";
 
 export const maxDuration = 300;
@@ -89,10 +91,20 @@ function formatGate(row: TransRow): string[] {
   if (row.lang === LANG && (!row.title || !row.description)) {
     errs.push("es satırında başlık ve açıklama zorunlu");
   }
+  // İngilizce satırda açıklama OPSİYONELDİR (çoğu listing yalnız başlık
+  // revizyonu alır), ama alan varsa boş olamaz — boş bir description PATCH'i
+  // canlı açıklamayı SİLER.
+  if (row.lang === "en" && row.description != null && row.description.trim() === "") {
+    errs.push("en satırında açıklama boş olamaz (canlı metni silerdi)");
+  }
   return errs;
 }
 
-const norm = (s: string) => s.replace(/\s+/g, " ").trim();
+// Etsy okumayı kendi biçiminde döndürür: HTML entity'leri (`&amp;`, `&quot;`)
+// ve satır sonlarını normalize etmeden karşılaştırmak, doğru yazılmış bir
+// alanı "canlıda farklı" diye işaretler — özellikle "SIZE & WIDTH" gibi
+// ampersand taşıyan açıklamalarda.
+const norm = (s: string) => decodeHtmlEntities(s).replace(/\s+/g, " ").trim();
 const tagKey = (tags: string[]) =>
   tags.map((t) => t.toLowerCase().trim()).sort().join("|");
 
@@ -200,6 +212,9 @@ export async function GET(request: Request) {
       if (g.en?.title) await updateListingTitle(client!, listingId, g.en.title);
       if (g.en?.tags && g.en.tags.length > 0)
         await updateListingTags(client!, listingId, g.en.tags);
+      if (g.en?.description) {
+        await updateListingDescription(client!, listingId, g.en.description);
+      }
 
       // 2) İspanyolca çeviri (varsa).
       if (g.es) {
@@ -212,7 +227,11 @@ export async function GET(request: Request) {
 
       // 3) READ-BACK — "200 OK teslim sayılmaz".
       const sapmalar: string[] = [];
-      if (g.en?.title || (g.en?.tags && g.en.tags.length > 0)) {
+      if (
+        g.en?.title ||
+        g.en?.description ||
+        (g.en?.tags && g.en.tags.length > 0)
+      ) {
         const live = await getListing(client!, listingId);
         if (g.en.title && norm(live.title ?? "") !== norm(g.en.title))
           sapmalar.push("EN başlık canlıda farklı");
@@ -220,6 +239,12 @@ export async function GET(request: Request) {
           if (!Array.isArray(live.tags)) sapmalar.push("EN tag alanı yanıtta yok");
           else if (tagKey(live.tags) !== tagKey(g.en.tags))
             sapmalar.push("EN tag seti canlıda farklı");
+        }
+        if (g.en.description) {
+          // Açıklama uzun; tam eşitlik yerine normalize edilmiş karşılaştırma
+          // (Etsy satır sonlarını ve entity'leri kendi biçimine çevirebilir).
+          if (norm(live.description ?? "") !== norm(g.en.description))
+            sapmalar.push("EN açıklama canlıda farklı");
         }
       }
       if (g.es) {
@@ -253,10 +278,18 @@ export async function GET(request: Request) {
         .from("product_translations")
         .update({ status: "pushed", pushed_at: new Date().toISOString(), note: null })
         .in("id", ids);
-      if (g.en?.title || (g.en?.tags && g.en.tags.length > 0)) {
+      if (
+        g.en?.title ||
+        g.en?.description ||
+        (g.en?.tags && g.en.tags.length > 0)
+      ) {
         const mirror: Record<string, unknown> = {};
         if (g.en.title) mirror.title = g.en.title;
         if (g.en.tags && g.en.tags.length > 0) mirror.tags = g.en.tags;
+        // Açıklama aynası ŞART: panelin "Etsy güncel mi" kıyası
+        // `products.description`'a bakıyor; yazıp aynayı güncellememek
+        // listing'i sonsuza dek "bekliyor" listesinde bırakır.
+        if (g.en.description) mirror.description = g.en.description;
         await admin.from("products").update(mirror).eq("id", g.productId);
       }
       await logAudit(admin, {
