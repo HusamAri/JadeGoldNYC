@@ -20,17 +20,33 @@ Anlık veri: `katalog-anlik-2026-08-15.json` (1.944 varyant / 113 listing).
 Sarı **GRAM** hücresine gram yazılır; maliyet, breakeven, hedef fiyat, marj ve
 durum **anında** hesaplanır. Başka hiçbir sütuna dokunulmaz (hepsi formül).
 
-Altın fiyatı değişirse `Ayarlar!B2` güncellenir — 1.944 satır yeniden hesaplanır.
+Altın fiyatı değişirse `Ayarlar!B3` güncellenir — 1.944 satır yeniden hesaplanır.
+(Ayarlar sekmesinde 1. satır başlık bandı olduğu için değerler **B3–B9**'dadır;
+formüller oraya bağlı, bu satırlar kaydırılmamalı.)
 
 ## Durum sütunu
 
-| Değer | Anlamı |
-|---|---|
-| `GRAM EKSİK` | Gram girilmemiş, hesap yapılamıyor |
-| `ZARARDA` | Marj negatif — her satışta para kaybı |
-| `RİSKLİ` | Fiyat breakeven'in altında |
-| `FİYAT ŞÜPHELİ` | Fiyat > $30.000 — placeholder değer, gerçek fiyat değil |
-| `ok` | Sağlıklı |
+Durum hücresi formülle hesaplanır ve rengini koşullu biçimden alır — ekip gram
+yazdığı anda renk kendiliğinden değişir, elle boyama yoktur.
+
+| Değer | Renk | Anlamı |
+|---|---|---|
+| `GRAM EKSİK` | bej | Gram girilmemiş, hesap yapılamıyor |
+| `ZARARDA` | kırmızı | Marj negatif — her satışta para kaybı |
+| `RİSKLİ` | amber | Fiyat breakeven'in altında |
+| `FİYAT ŞÜPHELİ` | kırmızı | Fiyat > $30.000 — placeholder değer, gerçek fiyat değil |
+| `ok` | jade | Sağlıklı |
+
+**Marj** sütunu ayrıca kırmızı → krem → jade renk skalasıyla boyanır; 1.944 satırı
+okumadan zayıf marjlar göze çarpar.
+
+## Renkler
+
+Marka paletinden: altın `#9A7A33` (başlık bantları, sekme sekmeleri), krem
+`#F2EFE6`/`#FBF9F4` (zebra), jade `#3F4A44` (sağlıklı), bej `#A39F94` (nötr),
+giriş sarısı `#FCEFC7` (doldurulacak hücreler). Kaynak:
+`public/brand/jade-gold-nyc-guidelines.html` — panelin `globals.css`'i değil,
+orası mor tonlu arayüz temasıdır, marka değil.
 
 ## Neden bu dosya gerekti
 
@@ -58,17 +74,21 @@ Marj        = (tahsilat − kesinti − maliyet) / tahsilat
 Hedef fiyat = YUKARIYUVARLA((maliyet + 0,25) / (0,85 × (0,905 − hedef marj)))
 ```
 
-`lib/jade/pricing.ts` ile **birebir aynı** — 10 gram değerinde çapraz doğrulandı,
-sıfır sapma. İkisi ayrı yerde yaşıyor: biri değişirse diğeri de değişmeli.
+`lib/jade/pricing.ts` ile **birebir aynı** — 16 varyantta (rastgele 12 + gram/fiyat
+uç değerleri) 4 metrik × 16 = **64 karşılaştırma, sıfır sapma**. İkisi ayrı yerde
+yaşıyor: biri değişirse diğeri de değişmeli.
 
 ## Doğrulama notu
 
 Dosya bu ortamda LibreOffice ile **açılarak** test edilemedi — LibreOffice
 kurulumu bozuk (java eksik), minimal bir XLSX'i bile açamıyor. Bunun yerine
 doğrulandı: ZIP bütünlüğü sağlam, 4 sekme ve satır sayıları doğru
-(121 / 1.944 / 113), formüller `openpyxl` ile geri okundu, sarı dolgu ve
-dondurulmuş başlık yerinde. Formül **aritmetiği** TS motoruyla karşılaştırıldı.
-Numbers'ta ilk açılışta hesapların döndüğü gözle teyit edilmeli.
+(121 / 1.944 / 113), formüller `openpyxl` ile geri okundu ve `Ayarlar!$B$3–$B$9`
+adreslerinin sekmedeki doğru değerlere (106 / 5 / 1,5 / %15 / %9,5 / 0,25 / %20)
+denk geldiği tek tek teyit edildi, giriş hücrelerinin sarı dolgusu ve koşullu
+biçim kuralları geri okundu. Formül **aritmetiği** TS motoruyla karşılaştırıldı.
+Numbers'ta ilk açılışta hesapların döndüğü ve renklerin taşındığı gözle teyit
+edilmeli — Numbers koşullu biçimi destekler ama render'ı Excel'den farklı olabilir.
 
 ## Geri dönüş akışı
 
