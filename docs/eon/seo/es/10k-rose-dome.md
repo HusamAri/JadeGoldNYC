@@ -20,9 +20,9 @@ Anillo de Boda de Oro Macizo 10K Rosa, Abombado, Grabado Personalizado Gratis, P
 ```
 Una fecha escrita por dentro, donde solo ustedes dos saben que está. Eso es lo que lleva un anillo grabado en oro macizo de 10k rosa: una línea privada de texto dentro de una argolla hecha para durar más que el momento que marca.
 
-El tono rosado es tibio y discreto, nada estridente: un color que se acomoda al uso diario y se hace más tuyo con los años. El perfil abombado, pulido, concentra la luz en un solo arco limpio sobre la curva. Es oro macizo de 10k rosa, nunca bañado y nunca laminado, sellado 10k por dentro y hecho por encargo en tu talla exacta.
+El tono rosado es tibio y discreto, nada estridente: un color que se acomoda al uso diario y se hace más tuyo con los años. El perfil abombado, pulido, concentra la luz en un solo arco limpio sobre la curva. Es oro macizo de 10k rosa, nunca bañado y nunca laminado, sellado 10K por dentro y hecho por encargo en tu talla exacta.
 
-- Metal: oro macizo de 10k rosa con acabado pulido y el sello 10k marcado en el interior.
+- Metal: oro macizo de 10k rosa con acabado pulido y el sello 10K marcado en el interior.
 - Perfil abombado e interior de ajuste confort, redondeado para que el anillo pase el nudillo y descanse sin presión todo el día.
 - Anchos de 2 mm a 12 mm con un espesor constante de 1.5 mm, elegidos entre once opciones en el menú de Ancho.
 - Tallas US 4 a la 16, enteras y medias. Si quedas entre dos tallas, o si eliges un ancho mayor, escríbenos antes de hacer tu pedido: mientras más ancho el anillo, más ajustado se siente.
@@ -33,19 +33,19 @@ Cada anillo de boda se hace por encargo, uno a la vez, y sale de nuestro taller 
 
 SOBRE EON
 
-EON hace oro macizo personalizado para quienes compran joyería como algo que se conserva y se hereda. Cada pieza se fabrica por encargo en nuestro taller, en oro macizo de 10k o 14k, nunca bañado y nunca laminado.
+EON hace oro macizo personalizado para quienes compran joyería como algo que se conserva y se hereda. Nuestro orfebre fabrica cada pieza por encargo, en oro macizo de 10k o 14k, nunca enchapado y nunca relleno.
 
 PERSONALIZACIÓN
 
-Agrega un grabado privado en el interior de la pieza: una fecha, unas coordenadas, iniciales, un nombre o unas pocas palabras. El grabado no tiene costo. En cada publicación se indican los estilos de letra disponibles y el límite de caracteres.
+Agrega un grabado privado en el interior de la pieza: una fecha, unas coordenadas, iniciales, un nombre o unas pocas palabras. El grabado no tiene costo. Los estilos de letra disponibles y el límite de caracteres se indican en cada publicación.
 
 MATERIAL Y OPCIONES
 
-Cada publicación indica el quilataje, el color del oro, el ancho, el perfil y las tallas disponibles. La disponibilidad de oro amarillo, blanco y rosa cambia según el diseño. El oro se cotiza al momento de tu pedido.
+Cada publicación indica el quilataje, el color del metal, el ancho, el perfil y las tallas disponibles. La disponibilidad de oro amarillo, blanco y rosa varía según el diseño. El oro se cotiza al momento de tu pedido.
 
 HECHO PARA UNA PERSONA
 
-Aquí nada sale de un inventario anónimo. Tu pieza se prepara con la talla, el metal y el grabado que elegiste. Cualquier duda sobre calce, materiales o personalización la resolvemos antes de empezar a producir.
+Nada se trata como inventario anónimo. Tu pieza se prepara con la talla, el metal y el grabado que elegiste. Las dudas sobre calce, materiales o personalización se responden antes de empezar la producción.
 
 EON
 

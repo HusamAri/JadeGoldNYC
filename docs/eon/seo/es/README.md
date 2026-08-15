@@ -3,6 +3,11 @@
 Bu klasör, panelde üretilen İngilizce başlık revizyonlarının ve İspanyolca
 çeviri katmanının **insan okunur kaynağıdır**. Her dosya bir listing'i anlatır.
 
+Metinlerin uyduğu kural: **`docs/eon/seo/es-ses-tonu.md`** (ses tonu, hitap,
+kanonik marka kuyruğu, biçim değişmezleri, yasak liste, doğrulama sayaçları).
+Bu dosyalardaki İspanyolca açıklama blokları canlı DB ile **MD5 düzeyinde
+eşittir**; birini değiştiren diğerini de değiştirmelidir.
+
 ## Neden repoda da duruyor
 
 Etsy senkronu tek yönlü bir aynadır: dış tarafta yapılan bir düzenleme panelin

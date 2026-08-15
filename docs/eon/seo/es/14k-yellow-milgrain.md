@@ -20,7 +20,7 @@ Anillo de Boda de Oro Amarillo Macizo 14K, Milgrain, Grabado Personalizado Grati
 ```
 Un anillo se entrega una sola vez y dura mucho más que el día que marca.
 
-Oro amarillo macizo de 14K con borde milgrain: una fila de granos diminutos de oro a lo largo de cada filo. La luz no se refleja en un plano, se recoge en puntos pequeños mientras la mano se mueve, y el amarillo toma temperatura contra la piel.
+Oro amarillo macizo de 14k con borde milgrain: una fila de granos diminutos de oro a lo largo de cada filo. La luz no se refleja en un plano, se recoge en puntos pequeños mientras la mano se mueve, y el amarillo toma temperatura contra la piel.
 
 Cada pieza se hace a pedido, en tu talla y en el ancho que elijas, y sale sellada 14K por dentro. Está pensada para usarse todos los días, para dormir con ella puesta y para pasar a otras manos cuando llegue el momento.
 
@@ -36,15 +36,15 @@ Copiamos el grabado tal cual, así que revisa la ortografía antes de enviarlo. 
 
 SOBRE EON
 
-EON hace oro macizo personalizado para quienes compran joyería como algo que se conserva y se hereda. Cada pieza la fabrica a pedido nuestro orfebre en oro macizo de 10K o 14K, nunca enchapado y nunca laminado.
+EON hace oro macizo personalizado para quienes compran joyería como algo que se conserva y se hereda. Nuestro orfebre fabrica cada pieza por encargo, en oro macizo de 10k o 14k, nunca enchapado y nunca relleno.
 
 PERSONALIZACIÓN
 
-Puedes agregar un grabado privado en el interior de la pieza: una fecha, unas coordenadas, iniciales, un nombre o unas pocas palabras. El grabado es de cortesía. Los estilos de letra y el límite de caracteres se indican en cada publicación.
+Agrega un grabado privado en el interior de la pieza: una fecha, unas coordenadas, iniciales, un nombre o unas pocas palabras. El grabado no tiene costo. Los estilos de letra disponibles y el límite de caracteres se indican en cada publicación.
 
 MATERIAL Y OPCIONES
 
-Cada publicación indica el quilataje, el color del oro, el ancho, el perfil y las tallas disponibles. La disponibilidad de oro amarillo, blanco y rosa varía según el diseño. El oro se cotiza al momento de tu pedido.
+Cada publicación indica el quilataje, el color del metal, el ancho, el perfil y las tallas disponibles. La disponibilidad de oro amarillo, blanco y rosa varía según el diseño. El oro se cotiza al momento de tu pedido.
 
 HECHO PARA UNA PERSONA
 
@@ -52,7 +52,7 @@ Nada se trata como inventario anónimo. Tu pieza se prepara con la talla, el met
 
 EON
 
-Sentido hecho para durar. Se usa hoy. Lo llevan las manos que siguen.
+Un significado hecho para durar. Se usa hoy. Lo llevan las manos que siguen.
 ```
 
 ## Tag

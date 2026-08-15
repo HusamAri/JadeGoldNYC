@@ -23,7 +23,7 @@ Hay cosas que terminan durando más que el motivo por el que se entregaron. Este
 La cara ancha recoge la luz de forma pareja, mientras el escalón inclinado de cada borde traza una línea firme, casi arquitectónica, alrededor del dedo. Lo trabaja nuestro orfebre y lo hacemos a tu medida, en oro macizo de principio a fin, nunca enchapado ni relleno: el color no vive en una capa exterior, es el mismo oro de lado a lado.
 
 - Oro amarillo macizo de 10k con pulido espejo sobre la cara superior y biseles simétricos a los lados, que le dan al perfil su carácter definido y moderno.
-- Once anchos, de 2 mm a 12 mm, ya sea que busques un anillo delgado para apilar o una banda ancha que se sostenga sola.
+- Once anchos, de 2 mm a 12 mm, ya sea que busques un anillo delgado para apilar o uno ancho que se sostenga solo.
 - Medidas US de la 4 a la 16, enteras y medias, con interior redondeado de ajuste confort para un calce parejo y sin filos.
 - Banda de 1.5 mm de espesor, cortada y formada según lo que elijas.
 - Grabado interior sin costo de hasta 30 caracteres: una fecha, unas coordenadas, iniciales o una frase corta que quede solo entre tú y el oro. La letra manuscrita viene por defecto; avísanos si prefieres letra de imprenta.
@@ -33,23 +33,23 @@ En la foto aparece el anillo en uno de sus anchos mayores: se distingue la cara 
 
 SOBRE EON
 
-EON crea oro macizo personalizado para quienes compran joyería pensando en lo que se hereda. Nuestro orfebre fabrica cada pieza por encargo, en oro macizo de 10k o 14k, nunca enchapado y nunca relleno.
+EON hace oro macizo personalizado para quienes compran joyería como algo que se conserva y se hereda. Nuestro orfebre fabrica cada pieza por encargo, en oro macizo de 10k o 14k, nunca enchapado y nunca relleno.
 
 PERSONALIZACIÓN
 
-Agrega un grabado privado en el interior de la pieza: una fecha, unas coordenadas, iniciales, un nombre o unas pocas palabras. El grabado no tiene costo adicional. Los estilos de letra disponibles y el límite de caracteres se indican en cada publicación.
+Agrega un grabado privado en el interior de la pieza: una fecha, unas coordenadas, iniciales, un nombre o unas pocas palabras. El grabado no tiene costo. Los estilos de letra disponibles y el límite de caracteres se indican en cada publicación.
 
 MATERIAL Y OPCIONES
 
-En cada publicación se detallan el quilataje, el color del metal, el ancho, el perfil y las medidas disponibles. La disponibilidad de oro amarillo, blanco y rosado varía según el diseño. El oro se cotiza al momento de tu pedido.
+Cada publicación indica el quilataje, el color del metal, el ancho, el perfil y las tallas disponibles. La disponibilidad de oro amarillo, blanco y rosa varía según el diseño. El oro se cotiza al momento de tu pedido.
 
 HECHO PARA UNA PERSONA
 
-Aquí nada se trata como mercancía anónima. Tu pieza se prepara con la medida, el metal y el grabado que elegiste. Respondemos cualquier duda sobre el calce, los materiales o la personalización antes de empezar la producción.
+Nada se trata como inventario anónimo. Tu pieza se prepara con la talla, el metal y el grabado que elegiste. Las dudas sobre calce, materiales o personalización se responden antes de empezar la producción.
 
 EON
 
-Un significado hecho para durar. Se usa hoy. Lo llevan las manos que vienen.
+Un significado hecho para durar. Se usa hoy. Lo llevan las manos que siguen.
 ```
 
 ## Tag

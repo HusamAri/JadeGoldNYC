@@ -20,7 +20,7 @@ Anillo de Boda de Oro Macizo 10K Amarillo, Plano, Grabado Personalizado Gratis, 
 ```
 Una fecha grabada por dentro y un ancho elegido para una sola mano: este anillo de oro macizo de 10k guarda lo importante sin anunciarlo. Oro amarillo macizo, perfil plano, hecho por encargo en tu medida exacta.
 
-- Oro amarillo macizo de 10k en toda la pieza, nunca enchapado ni relleno, con el sello 10k marcado en el interior.
+- Oro amarillo macizo de 10k en toda la pieza, nunca enchapado ni relleno, con el sello 10K marcado en el interior.
 - Perfil plano de cantos rectos y 1.5 mm de espesor. En la foto se ve con acabado pulido, que recoge la luz a lo largo de toda la cara del anillo.
 - Once anchos, de 2 mm a 12 mm: de 2 a 4 mm se ve delgado y se apila con facilidad, de 5 a 7 mm es el clásico anillo de boda liso, y de 8 a 12 mm se asienta ancho sobre el dedo.
 - Medidas US de la 4 a la 16, enteras y medias, con interior redondeado de ajuste confort: entra sin esfuerzo y no deja filos por dentro.
@@ -32,23 +32,23 @@ Es la clase de anillo de oro amarillo que te pones una vez y del que ya no te ac
 
 SOBRE EON
 
-EON crea oro macizo personalizado para quienes compran joyería pensando en lo que se hereda. Nuestro orfebre fabrica cada pieza por encargo, en oro macizo de 10k o 14k, nunca enchapado y nunca relleno.
+EON hace oro macizo personalizado para quienes compran joyería como algo que se conserva y se hereda. Nuestro orfebre fabrica cada pieza por encargo, en oro macizo de 10k o 14k, nunca enchapado y nunca relleno.
 
 PERSONALIZACIÓN
 
-Agrega un grabado privado en el interior de la pieza: una fecha, unas coordenadas, iniciales, un nombre o unas pocas palabras. El grabado no tiene costo adicional. Los estilos de letra disponibles y el límite de caracteres se indican en cada publicación.
+Agrega un grabado privado en el interior de la pieza: una fecha, unas coordenadas, iniciales, un nombre o unas pocas palabras. El grabado no tiene costo. Los estilos de letra disponibles y el límite de caracteres se indican en cada publicación.
 
 MATERIAL Y OPCIONES
 
-En cada publicación se detallan el quilataje, el color del metal, el ancho, el perfil y las medidas disponibles. La disponibilidad de oro amarillo, blanco y rosado varía según el diseño. El oro se cotiza al momento de tu pedido.
+Cada publicación indica el quilataje, el color del metal, el ancho, el perfil y las tallas disponibles. La disponibilidad de oro amarillo, blanco y rosa varía según el diseño. El oro se cotiza al momento de tu pedido.
 
 HECHO PARA UNA PERSONA
 
-Aquí nada se trata como mercancía anónima. Tu pieza se prepara con la medida, el metal y el grabado que elegiste. Respondemos cualquier duda sobre el calce, los materiales o la personalización antes de empezar la producción.
+Nada se trata como inventario anónimo. Tu pieza se prepara con la talla, el metal y el grabado que elegiste. Las dudas sobre calce, materiales o personalización se responden antes de empezar la producción.
 
 EON
 
-Un significado hecho para durar. Se usa hoy. Lo llevan las manos que vienen.
+Un significado hecho para durar. Se usa hoy. Lo llevan las manos que siguen.
 ```
 
 ## Tag

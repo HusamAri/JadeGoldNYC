@@ -52,19 +52,19 @@ Los pesos son aproximados y pueden variar un poco de una pieza a otra.
 
 SOBRE EON
 
-EON hace oro macizo personalizado para quienes compran joyería como algo que se conserva y se hereda. Cada pieza se fabrica por encargo en nuestro taller, en oro macizo de 10k o 14k, nunca bañado y nunca laminado.
+EON hace oro macizo personalizado para quienes compran joyería como algo que se conserva y se hereda. Nuestro orfebre fabrica cada pieza por encargo, en oro macizo de 10k o 14k, nunca enchapado y nunca relleno.
 
 PERSONALIZACIÓN
 
-Agrega un grabado privado en el interior de la pieza: una fecha, unas coordenadas, iniciales, un nombre o unas pocas palabras. El grabado no tiene costo. En cada publicación se indican los estilos de letra disponibles y el límite de caracteres.
+Agrega un grabado privado en el interior de la pieza: una fecha, unas coordenadas, iniciales, un nombre o unas pocas palabras. El grabado no tiene costo. Los estilos de letra disponibles y el límite de caracteres se indican en cada publicación.
 
 MATERIAL Y OPCIONES
 
-Cada publicación indica el quilataje, el color del oro, el ancho, el perfil y las tallas disponibles. La disponibilidad de oro amarillo, blanco y rosa cambia según el diseño. El oro se cotiza al momento de tu pedido.
+Cada publicación indica el quilataje, el color del metal, el ancho, el perfil y las tallas disponibles. La disponibilidad de oro amarillo, blanco y rosa varía según el diseño. El oro se cotiza al momento de tu pedido.
 
 HECHO PARA UNA PERSONA
 
-Aquí nada sale de un inventario anónimo. Tu pieza se prepara con la talla, el metal y el grabado que elegiste. Cualquier duda sobre calce, materiales o personalización la resolvemos antes de empezar a producir.
+Nada se trata como inventario anónimo. Tu pieza se prepara con la talla, el metal y el grabado que elegiste. Las dudas sobre calce, materiales o personalización se responden antes de empezar la producción.
 
 EON
 
