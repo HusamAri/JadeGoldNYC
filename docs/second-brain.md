@@ -11,6 +11,29 @@ repodaki hedefidir.
 
 ## Süreç dersleri
 
+- **Aynı gram çok varyanta yayılmışsa fiyatlamadan önce HANGİ örneğin ölçüldüğünü
+  bul; orta değerse "breakeven'e çektim, zarar bitti" YANLIŞTIR (2026-08):**
+  Love bölümünde `1739245557` (Heart Nugget Ring, 194 satış) 40 varyantının
+  40'ı zarardaydı ve yalnız 4 farklı gram taşıyordu — 10 beden (5–9.5) aynı
+  gramı ve aynı fiyatı paylaşıyordu. İlk refleks `1520386344` deseni sanıp
+  tamamen dışlamaktı; ikinci refleks düz breakeven uygulamaktı. İkisi de yanlış
+  olurdu. `weight_source`'a varyant varyant bakınca kritik ayrıntı çıktı: 40
+  varyanttan **tam biri** ölçülmüştü (`RHN2-7`, shipstation) ve o **beden 7**,
+  yani aralığın ORTASI. Demek ki ilan edilen gram ortalamayı temsil ediyor;
+  7.5–9.5 gerçekte daha ağır ve düz breakeven onları zararda BIRAKIRDI —
+  üstelik ekran "breakeven altı = 0" diye yeşil gösterirdi, çünkü sorgu da aynı
+  eksik gramı kullanıyor. Ölçüm kendi hatasını doğrulayamaz. Çözüm: yüzük
+  ağırlığı iç çevreyle ~lineer arttığı için beden 7 → 9.5 = 19,41/17,35 ≈ +%12
+  emniyet payı (gram × 1,12) ile breakeven; doğrulama sorgusu da emniyetli
+  varsayımla koşuldu (o varsayımla da 0). Kural: (1) bir listing'de gram sayısı
+  varyant sayısından azsa hangi eksenin modellenmediğini bul (beden? boy?);
+  (2) `weight_source`'a TOPLU değil VARYANT bazında bak — "description,shipstation"
+  karışık görünen listingde ölçülmüş olan tek satır hangi noktayı temsil ediyor,
+  cevap buradadır; (3) taban eksikse emniyet payı ekle ve payı gerekçesiyle yaz;
+  (4) doğrulama sorgusunu iyimser DEĞİL kötümser varsayımla koş; (5) tahminle
+  konulan fiyatı "geçici" diye işaretle ve gerçek ölçüm iste — yoksa geçici
+  fiyat kalıcı olur.
+
 - **Parça-içi tutarlılık isteyen talimat SADECE parça-içi tutarlılık üretir;
   küme-geneli değişmezler workflow BİTTİKTEN sonra tüm sette KODLA ölçülür
   (2026-08):** 13 listing'lik İspanyolca metin üretimi 4 aileye bölünüp her

@@ -142,9 +142,11 @@ def _durum(r, gram_h, fiyat_h, marj_h, breakeven_h):
     )
 
 
-def veri_sekmesi(wb, ad, rows, kaynak_sutunu):
+def veri_sekmesi(wb, ad, rows, kaynak_sutunu, neden_sutunu=False):
     ws = wb.create_sheet(ad)
     basliklar = ["Bölüm", "Listing", "Etsy ID", "SKU"]
+    if neden_sutunu:
+        basliklar.append("Neden")
     if kaynak_sutunu:
         basliklar.append("Gram Kaynağı")
     basliklar += ["Fiyat $", "GRAM", "Maliyet $", "Breakeven $",
@@ -164,6 +166,8 @@ def veri_sekmesi(wb, ad, rows, kaynak_sutunu):
 
     for i, r in enumerate(rows, start=2):
         satir = [r["ch"], r["title"], r["lid"], r["sku"]]
+        if neden_sutunu:
+            satir.append(r.get("rc") or "gram yok")
         if kaynak_sutunu:
             satir.append(r["ws"] or "—")
         satir += [
@@ -185,7 +189,10 @@ def veri_sekmesi(wb, ad, rows, kaynak_sutunu):
         for c in range(1, len(basliklar) + 1):
             ws.cell(i, c).font = GOVDE
             ws.cell(i, c).border = CERCEVE
-        if r["g"] is None:
+        # Sarı giriş alanı: gramı olmayan VE tartımı tartışmalı olanlar.
+        # rc = gramı var ama güvenilmiyor (bkz. 1739245557 beden sorunu) —
+        # mevcut değer görünür kalır ki ekip neyi düzelttiğini bilsin.
+        if r["g"] is None or r.get("rc"):
             ws[f"{G}{i}"].fill = F_GIRIS      # zebra'yı EZER: giriş alanı hep görünür
             ws[f"{G}{i}"].font = VURGU
         ws[f"{G}{i}"].alignment = Alignment(horizontal="center")
@@ -219,9 +226,9 @@ def veri_sekmesi(wb, ad, rows, kaynak_sutunu):
     )
 
     genislik = {"Bölüm": 12, "Listing": 46, "Etsy ID": 12, "SKU": 16,
-                "Gram Kaynağı": 14, "Fiyat $": 11, "GRAM": 9, "Maliyet $": 11,
-                "Breakeven $": 12, "Hedef Fiyat $": 13, "Marj": 9,
-                "Durum": 15, "Etsy Linki": 42}
+                "Neden": 26, "Gram Kaynağı": 14, "Fiyat $": 11, "GRAM": 9,
+                "Maliyet $": 11, "Breakeven $": 12, "Hedef Fiyat $": 13,
+                "Marj": 9, "Durum": 15, "Etsy Linki": 42}
     for h, harf in idx.items():
         ws.column_dimensions[harf].width = genislik.get(h, 12)
     ws.freeze_panes = "A2"
@@ -295,18 +302,21 @@ def ozet_sekmesi(wb, rows):
 def main():
     kaynak, cikti = sys.argv[1], sys.argv[2]
     rows = json.load(open(kaynak, encoding="utf-8"))
-    eksik = [r for r in rows if r["g"] is None]
+    # Ekip girişi iki sebeple istenir: gram HİÇ yok, ya da gram var ama
+    # güvenilmiyor (rc = recheck; 1739245557'de 10 beden tek gramı paylaşıyor).
+    giris = [r for r in rows if r["g"] is None or r.get("rc")]
 
     wb = Workbook()
     wb.remove(wb.active)
     ayarlar_sekmesi(wb)
-    veri_sekmesi(wb, "Eksik Gramlar", eksik, kaynak_sutunu=False)
+    veri_sekmesi(wb, "Gram Girişi", giris, kaynak_sutunu=False, neden_sutunu=True)
     veri_sekmesi(wb, "Tüm Varyantlar", rows, kaynak_sutunu=True)
     ozet_sekmesi(wb, rows)
     wb.save(cikti)
 
+    yok = sum(1 for r in giris if r["g"] is None)
     print(f"{cikti} yazıldı")
-    print(f"  Eksik Gramlar : {len(eksik)} satır")
+    print(f"  Gram Girişi   : {len(giris)} satır ({yok} gram yok, {len(giris)-yok} tartım gerekli)")
     print(f"  Tüm Varyantlar: {len(rows)} satır")
     print(f"  Listing Özeti : {len(set(r['lid'] for r in rows))} listing")
 
