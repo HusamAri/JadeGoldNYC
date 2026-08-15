@@ -20,9 +20,24 @@ python3 scripts/jade-gram-worksheet.py katalog-anlik-<tarih>.json cikti.xlsx
 | **Başlangıç** | — | Kapak, nasıl kullanılır, durum rengi lejantı |
 | **Ayarlar** | 7 | Fiyat sabitleri + açıklamaları |
 | **Formüller** | 6 + 5 | Her formülün düz anlatımı **ve** Numbers'a kopyala-yapıştır hazır sözdizimi |
-| **Eksik Gramlar** | 121 | Ekip burayı doldurur — sarı GRAM sütunu |
+| **Gram Girişi** | 161 | Ekip burayı doldurur — sarı GRAM sütunu |
 | **Tüm Varyantlar** | 1.944 | Katalog sağlığı + gram kaynağı |
 | **Listing Özeti** | 113 | Hangi listing'in tartımı acil |
+
+### «Gram Girişi» neden 161 satır
+
+İki ayrı durum var ve **Neden** sütunu bunları ayırır:
+
+| Neden | Satır | Anlamı |
+|---|---|---|
+| `gram yok` | 121 | Hiç ölçüm yok, hücre boş |
+| `beden bazlı tartım gerekli` | 40 | Yazılı bir gram **var** ama güvenilmiyor |
+
+İkinci grup tamamen `1739245557` (10K Heart Nugget Ring): 10 beden (5–9.5)
+**aynı gramı** paylaşıyor, yani beden ağırlığa hiç yansıtılmamış. 40 varyanttan
+yalnız biri gerçekten ölçülmüş (`RHN2-7`, beden 7 — aralığın ortası), kalanı
+açıklama metninden türetilmiş. Bu satırlarda mevcut gram **görünür bırakıldı**
+ki ekip neyi düzelttiğini bilsin. Ayrıntı: `docs/jade/fiyatlandirma.md` §4c.
 
 ### `.numbers`'ta hesap neden canlı değil
 

@@ -154,12 +154,15 @@ def kapak_sekmesi(doc, s, n_eksik, n_toplam, n_listing):
         ("", ""),
         ("Bu dosya ne işe yarar", "bolum"),
         (f"{n_toplam:,} varyantın gram ve fiyat sağlığı tek yerde. "
-         f"{n_eksik} varyantın gramı eksik — gram olmadan maliyet, dolayısıyla "
-         "marj hesaplanamıyor.", "govde"),
+         f"{n_eksik} varyant için sizden gram bekleniyor — gram olmadan maliyet, "
+         "dolayısıyla marj hesaplanamıyor.", "govde"),
         ("", ""),
         ("Nasıl kullanılır", "bolum"),
-        ("1 · «Eksik Gramlar» sekmesine gidin. Sarı GRAM sütunu sizin alanınız.", "govde"),
+        ("1 · «Gram Girişi» sekmesine gidin. Sarı GRAM sütunu sizin alanınız.", "govde"),
         ("2 · Her satırın gramını terazi ile ölçüp yazın. SKU sütunu takip içindir.", "govde"),
+        ("«Neden» sütunu iki durumu ayırır: «gram yok» = hiç ölçüm yok · "
+         "«beden bazlı tartım gerekli» = yazılı bir gram var ama tüm bedenler "
+         "aynı değeri paylaşıyor, her beden ayrı tartılmalı.", "govde"),
         ("3 · Dosyayı geri gönderin; fiyatlar yeniden hesaplanıp Etsy'ye işlenir.", "govde"),
         ("", ""),
         ("Hesaplanan sütunlar hakkında", "bolum"),
@@ -321,12 +324,14 @@ def formuller_sekmesi(doc, s):
     return t
 
 
-def veri_sekmesi(doc, s, ad, rows, kaynak_sutunu):
+def veri_sekmesi(doc, s, ad, rows, kaynak_sutunu, neden_sutunu=False):
     doc.add_sheet(ad)
     t = doc.sheets[ad].tables[0]
     t.name = ad
 
     basliklar = ["Bölüm", "Listing", "Etsy ID", "SKU"]
+    if neden_sutunu:
+        basliklar.append("Neden")
     if kaynak_sutunu:
         basliklar.append("Gram Kaynağı")
     basliklar += ["Fiyat", "GRAM", "Maliyet", "Breakeven",
@@ -352,15 +357,21 @@ def veri_sekmesi(doc, s, ad, rows, kaynak_sutunu):
         t.write(i, 2, str(r["lid"]), style=z)
         t.write(i, 3, r["sku"] or "—", style=z)
         c = 4
+        if neden_sutunu:
+            t.write(i, c, r.get("rc") or "gram yok", style=z)
+            c += 1
         if kaynak_sutunu:
             t.write(i, c, r["ws"] or "—", style=z)
             c += 1
         if fiyat is not None:
             t.write(i, c, float(fiyat), style=z)
         c += 1
-        # GRAM: boşsa yaz sarısı (giriş alanı), doluysa normal
+        # GRAM sarı = ekip girişi bekleniyor. İki durum: gram HİÇ yok, ya da
+        # gram var ama güvenilmiyor (rc) — ikincide mevcut değer görünür kalır.
         if g is None:
             t.write(i, c, "", style="giris")
+        elif r.get("rc"):
+            t.write(i, c, float(g), style="giris")
         else:
             t.write(i, c, float(g), style=z)
         c += 1
@@ -395,9 +406,9 @@ def veri_sekmesi(doc, s, ad, rows, kaynak_sutunu):
                                   currency_code="USD", decimal_places=2)
 
     genislik = {"Bölüm": 110, "Listing": 330, "Etsy ID": 105, "SKU": 130,
-                "Gram Kaynağı": 120, "Fiyat": 95, "GRAM": 80, "Maliyet": 95,
-                "Breakeven": 105, "Hedef Fiyat": 110, "Marj": 85,
-                "Durum": 130}
+                "Neden": 200, "Gram Kaynağı": 120, "Fiyat": 95, "GRAM": 80,
+                "Maliyet": 95, "Breakeven": 105, "Hedef Fiyat": 110,
+                "Marj": 85, "Durum": 130}
     for c, h in enumerate(basliklar):
         t.col_width(c, genislik.get(h, 110))
     return t
@@ -455,24 +466,27 @@ def ozet_sekmesi(doc, s, rows):
 def main():
     kaynak, cikti = sys.argv[1], sys.argv[2]
     rows = json.load(open(kaynak, encoding="utf-8"))
-    eksik = [r for r in rows if r["g"] is None]
+    # Ekip girişi iki sebeple istenir: gram HİÇ yok, ya da gram var ama
+    # güvenilmiyor (rc = recheck; 1739245557'de 10 beden tek gramı paylaşıyor).
+    giris = [r for r in rows if r["g"] is None or r.get("rc")]
     n_listing = len(set(r["lid"] for r in rows))
 
     doc = Document()
     s = stiller(doc)
-    kapak_sekmesi(doc, s, len(eksik), len(rows), n_listing)
+    kapak_sekmesi(doc, s, len(giris), len(rows), n_listing)
     ayarlar_sekmesi(doc, s)
     formuller_sekmesi(doc, s)
-    veri_sekmesi(doc, s, "Eksik Gramlar", eksik, kaynak_sutunu=False)
+    veri_sekmesi(doc, s, "Gram Girişi", giris, kaynak_sutunu=False, neden_sutunu=True)
     veri_sekmesi(doc, s, "Tüm Varyantlar", rows, kaynak_sutunu=True)
     ozet_sekmesi(doc, s, rows)
     doc.save(cikti)
 
+    yok = sum(1 for r in giris if r["g"] is None)
     print(f"{cikti} yazıldı")
     print(f"  Başlangıç      : kapak + nasıl kullanılır + lejant")
     print(f"  Ayarlar        : 7 sabit")
     print(f"  Formüller      : 6 açıklama + 5 kopyala-yapıştır formül")
-    print(f"  Eksik Gramlar  : {len(eksik)} satır")
+    print(f"  Gram Girişi    : {len(giris)} satır ({yok} gram yok, {len(giris)-yok} tartım gerekli)")
     print(f"  Tüm Varyantlar : {len(rows)} satır")
     print(f"  Listing Özeti  : {n_listing} listing")
 
