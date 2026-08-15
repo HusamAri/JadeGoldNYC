@@ -34,6 +34,21 @@ Jade Gold NYC Etsy mağazası için uçtan uca yönetim/raporlama paneli. Tüm s
 - Provizyon: `supabase/migrations/0001..0013` sırayla uygulanır (Supabase SQL/MCP).
   Ayrıntı: `README.md`.
 
+## Kredi harcayan dış araçlar (Higgsfield, Magnific vb.)
+- **Tek istek = tek üretim. `count` DAİMA 1.** Kullanıcı açıkça "N varyant üret"
+  demedikçe çoklu üretim YOK — varyant önerisi bile yapılmaz. Batch araçları
+  (`generate_image_batch` vb.) yalnız kullanıcının saydığı iş kalemleri için.
+- **Üretmeden önce prompt'u kullanıcıya göster, onay al.** Üretim geri alınamaz
+  ve krediyi anında yakar.
+- NEDEN: Higgsfield MCP'sinin ergonomisi çoklu üretime eğimli (sunucu talimatı
+  batch ile açılır; `jobs_wait`/`show_generation_by_ids` yalnız filo için vardır;
+  `generate_image` daha ikinci cümlesinde "count 2-4 for variants" der). Tek onay
+  kapısı `use_unlim`'dir ve o da SADECE ücretsiz deneme bakiyesini korur —
+  **ödenmiş kredi için hiçbir onay kapısı yoktur**. `count` varsayılanı 1'dir;
+  1'den yukarı çıkmak her zaman bilinçli bir karardır ve kullanıcıya aittir.
+- Vaka (2026-08-15): "evlenme duyurusu fotoğrafı" (TEK görsel) istendi; `count: 3`
+  iki kez gönderildi → 6 üretim, 12 kredi, 10'u fazladan.
+
 ## Notlar
 - Supabase istemcileri tipsiz; sorgular `lib/types.ts` alan tiplerine cast eder.
   Provizyon sonrası `supabase gen types` ile `types/database.types.ts` üretilebilir.
