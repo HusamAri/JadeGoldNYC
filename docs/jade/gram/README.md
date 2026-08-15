@@ -1,13 +1,42 @@
 # Gram & fiyat çalışma dosyası
 
-**`JadeGold-Gram-Fiyat.xlsx`** — ekibin gram girişi yapacağı, aynı anda tüm
-katalogun fiyat sağlığını gösteren dosya.
+İki sürüm var; ikisi de aynı veriden, aynı formülle üretiliyor.
 
-## Numbers'a çevirme (tek seferlik, ~10 saniye)
+| Dosya | Ne için | Renk | Formül |
+|---|---|---|---|
+| **`JadeGold-Gram-Fiyat.numbers`** | **Birincil.** Okuma, inceleme, gram girişi | Serin pastel (bebek mavisi / yaz sarısı / nane / mercan) | Hesaplar **değer** olarak dolu (1.823 varyant); canlı formül için «Formüller» sekmesinden yapıştırılır |
+| `JadeGold-Gram-Fiyat.xlsx` | Canlı hesap gerekiyorsa | Marka altını / krem | **Canlı** — gram yazılınca her şey anında hesaplanır |
 
-Hedef format **`.numbers`**. Dosya XLSX olarak üretiliyor çünkü **formüllü
-`.numbers` yalnız Numbers.app tarafından üretilebilir** — bu bir tercih değil,
-ölçülmüş bir kısıt:
+Üretim:
+```
+python3 scripts/jade-gram-numbers.py  katalog-anlik-<tarih>.json cikti.numbers
+python3 scripts/jade-gram-worksheet.py katalog-anlik-<tarih>.json cikti.xlsx
+```
+
+## `.numbers` sekmeleri
+
+| Sekme | Satır | Ne işe yarar |
+|---|---|---|
+| **Başlangıç** | — | Kapak, nasıl kullanılır, durum rengi lejantı |
+| **Ayarlar** | 7 | Fiyat sabitleri + açıklamaları |
+| **Formüller** | 6 + 5 | Her formülün düz anlatımı **ve** Numbers'a kopyala-yapıştır hazır sözdizimi |
+| **Eksik Gramlar** | 121 | Ekip burayı doldurur — sarı GRAM sütunu |
+| **Tüm Varyantlar** | 1.944 | Katalog sağlığı + gram kaynağı |
+| **Listing Özeti** | 113 | Hangi listing'in tartımı acil |
+
+### `.numbers`'ta hesap neden canlı değil
+
+`.numbers` dosyasına **formül yazılamıyor** (aşağıdaki kısıt tablosu). Bu yüzden
+hesaplanan sütunlar Python'da üretilip **değer** olarak yazıldı — gramı olan
+1.823 varyantta hesap dolu gelir. Yeni gram girilince sütun kendiliğinden
+güncellenmez; «Formüller» sekmesindeki hazır formül ilgili sütuna bir kez
+yapıştırılırsa sütun canlıya döner (Numbers aşağı doldurur).
+
+Canlı hesap şartsa XLSX sürümü kullanılır.
+
+## Kısıt: formüllü `.numbers` neden üretilemiyor
+
+Ölçülmüş, varsayım değil:
 
 | Yol | Sonuç |
 |---|---|
@@ -15,32 +44,23 @@ Hedef format **`.numbers`**. Dosya XLSX olarak üretiliyor çünkü **formüllü
 | Aspose.Cells | `.numbers`'ı **yalnız okur**. (Pazarlama sayfası "kaydet" diyor, kendi dokümanı *"does not support writing to them"* diyor — dokümana güvenin) |
 | Digits / apple-numbers-mcp | Formülü **gerçekten yazar**, çünkü AppleScript ile Numbers.app'i sürüyor → **macOS şart** |
 
-Mac'te: dosyayı **Numbers ile aç** → `Dosya > Farklı Kaydet` → `.numbers`.
-Numbers XLSX formüllerini native formüle çevirir; hesaplar canlı kalır.
-Formüller bilerek yalnız `IF` / `OR` / `ROUNDUP` ile yazıldı — üçü de Numbers'ın
-desteklediği ortak fonksiyonlar, Excel'e özgü fonksiyon yok.
+XLSX'i Mac'te Numbers ile açıp `Dosya > Farklı Kaydet` ile de `.numbers`'a
+çevirebilirsiniz — Numbers XLSX formüllerini native formüle çevirir, hesaplar
+canlı kalır. Formüller bilerek yalnız `IF` / `OR` / `ROUNDUP` ile yazıldı; üçü de
+Numbers'ın desteklediği ortak fonksiyonlar, Excel'e özgü fonksiyon yok.
 
 **Kalıcı çözüm:** Mac'e bir Numbers MCP sunucusu kurulursa (ör.
 [Digits](https://github.com/apeabody007/Digits) —
-`/plugin marketplace add apeabody007/digits`) panel doğrudan `.numbers`
-üretebilir, bu ara adım kalkar.
+`/plugin marketplace add apeabody007/digits`) formüller doğrudan `.numbers`'a
+yazılabilir ve bu ayrım tamamen kalkar.
 
-Üretim: `python3 scripts/jade-gram-worksheet.py katalog-anlik-<tarih>.json cikti.xlsx`
 Anlık veri: `katalog-anlik-2026-08-15.json` (1.944 varyant / 113 listing).
-
-## Sekmeler
-
-| Sekme | Satır | Ne işe yarar |
-|---|---|---|
-| **Ayarlar** | 7 sabit | Tüm formüllerin beslendiği tek kaynak |
-| **Eksik Gramlar** | 121 | **Ekip burayı doldurur** — sarı GRAM sütunu |
-| **Tüm Varyantlar** | 1.944 | Katalog sağlığı + gram kaynağı |
-| **Listing Özeti** | 113 | Hangi listing'in tartımı acil |
 
 ## Nasıl kullanılır
 
-Sarı **GRAM** hücresine gram yazılır; maliyet, breakeven, hedef fiyat, marj ve
-durum **anında** hesaplanır. Başka hiçbir sütuna dokunulmaz (hepsi formül).
+Sarı **GRAM** hücresine gram yazılır. XLSX'te maliyet, breakeven, hedef fiyat,
+marj ve durum **anında** hesaplanır; `.numbers`'ta hesap için «Formüller»
+sekmesindeki hazır formül bir kez yapıştırılır. Başka hiçbir sütuna dokunulmaz.
 
 Altın fiyatı değişirse `Ayarlar!B3` güncellenir — 1.944 satır yeniden hesaplanır.
 (Ayarlar sekmesinde 1. satır başlık bandı olduğu için değerler **B3–B9**'dadır;
@@ -59,16 +79,22 @@ yazdığı anda renk kendiliğinden değişir, elle boyama yoktur.
 | `FİYAT ŞÜPHELİ` | kırmızı | Fiyat > $30.000 — placeholder değer, gerçek fiyat değil |
 | `ok` | jade | Sağlıklı |
 
-**Marj** sütunu ayrıca kırmızı → krem → jade renk skalasıyla boyanır; 1.944 satırı
-okumadan zayıf marjlar göze çarpar.
+XLSX'te **Marj** sütunu ayrıca kırmızı → krem → jade renk skalasıyla boyanır;
+1.944 satırı okumadan zayıf marjlar göze çarpar.
 
 ## Renkler
 
-Marka paletinden: altın `#9A7A33` (başlık bantları, sekme sekmeleri), krem
-`#F2EFE6`/`#FBF9F4` (zebra), jade `#3F4A44` (sağlıklı), bej `#A39F94` (nötr),
-giriş sarısı `#FCEFC7` (doldurulacak hücreler). Kaynak:
-`public/brand/jade-gold-nyc-guidelines.html` — panelin `globals.css`'i değil,
-orası mor tonlu arayüz temasıdır, marka değil.
+İki dosya bilerek farklı palet kullanıyor.
+
+**`.numbers` — serin pastel** (kullanıcı tercihi: "kahve değil, cool pastel"):
+bebek mavisi `#5B9CC4` başlık / `#A8D5E5` vurgu / `#F0F8FB` zebra, yaz sarısı
+`#FFE38C` giriş hücreleri, nane `#B8E0D2` sağlıklı, mercan `#FFC2B8` zarar,
+lavanta `#CFC6EC` bekleyen, serin arduvaz `#2E4756` metin.
+
+**`.xlsx` — marka paleti:** altın `#9A7A33` başlık bantları ve sekme renkleri,
+krem `#F2EFE6`/`#FBF9F4` zebra, jade `#3F4A44` sağlıklı, bej `#A39F94` nötr,
+giriş sarısı `#FCEFC7`. Kaynak: `public/brand/jade-gold-nyc-guidelines.html` —
+panelin `globals.css`'i değil, orası mor tonlu arayüz temasıdır, marka değil.
 
 ## Neden bu dosya gerekti
 
@@ -96,21 +122,37 @@ Marj        = (tahsilat − kesinti − maliyet) / tahsilat
 Hedef fiyat = YUKARIYUVARLA((maliyet + 0,25) / (0,85 × (0,905 − hedef marj)))
 ```
 
-`lib/jade/pricing.ts` ile **birebir aynı** — 16 varyantta (rastgele 12 + gram/fiyat
-uç değerleri) 4 metrik × 16 = **64 karşılaştırma, sıfır sapma**. İkisi ayrı yerde
-yaşıyor: biri değişirse diğeri de değişmeli.
+`lib/jade/pricing.ts` ile **birebir aynı**, iki dosya da ayrı ayrı doğrulandı:
+
+- **XLSX formülleri** ↔ TS motoru: 16 varyant × 4 metrik = **64 karşılaştırma,
+  sıfır sapma**
+- **`.numbers` hesaplanmış değerleri** ↔ TS motoru: 20 varyant × 4 metrik =
+  **80 karşılaştırma, sıfır sapma**
+
+Üç yerde yaşıyor (TS motoru, XLSX formülü, .numbers üreteci): biri değişirse
+üçü de değişmeli.
 
 ## Doğrulama notu
 
-Dosya bu ortamda LibreOffice ile **açılarak** test edilemedi — LibreOffice
-kurulumu bozuk (java eksik), minimal bir XLSX'i bile açamıyor. Bunun yerine
-doğrulandı: ZIP bütünlüğü sağlam, 4 sekme ve satır sayıları doğru
-(121 / 1.944 / 113), formüller `openpyxl` ile geri okundu ve `Ayarlar!$B$3–$B$9`
-adreslerinin sekmedeki doğru değerlere (106 / 5 / 1,5 / %15 / %9,5 / 0,25 / %20)
-denk geldiği tek tek teyit edildi, giriş hücrelerinin sarı dolgusu ve koşullu
-biçim kuralları geri okundu. Formül **aritmetiği** TS motoruyla karşılaştırıldı.
-Numbers'ta ilk açılışta hesapların döndüğü ve renklerin taşındığı gözle teyit
-edilmeli — Numbers koşullu biçimi destekler ama render'ı Excel'den farklı olabilir.
+**Hiçbir dosya bu ortamda AÇILARAK test edilemedi** — Numbers yalnız macOS'ta
+çalışır, LibreOffice kurulumu da bozuk (java eksik, minimal bir XLSX'i bile
+açamıyor). Bunun yerine ikisi de programatik olarak geri okunup doğrulandı:
+
+**XLSX:** ZIP bütünlüğü sağlam, 4 sekme, satır sayıları doğru (121/1.944/113),
+formüller `openpyxl` ile geri okundu, `Ayarlar!$B$3–$B$9` adreslerinin doğru
+değerlere (106 / 5 / 1,5 / %15 / %9,5 / 0,25 / %20) denk geldiği tek tek teyit
+edildi, giriş hücrelerinin sarı dolgusu ve koşullu biçim kuralları okundu.
+
+**`.numbers`:** paket bütünlüğü sağlam (91 dosya, Index mevcut), 6 sekme, satır
+sayıları doğru (121/1.944/113), pastel renkler hücre hücre geri okundu
+(giriş `FFE38C`, sağlıklı `B8E0D2`, zarar `FFC2B8`), hesaplanmış değerler TS
+motoruyla karşılaştırıldı. Sayı biçimi doğrulandı: `numbers-parser` float
+round-trip'te hassasiyet kaybediyor (`41.61` → `41.61000000000001`), açık
+`number`/`currency`/`percentage` biçimi verilerek görünen değer düzeltildi —
+2 basamaktan uzun ondalık gösteren **sayısal hücre yok**.
+
+Yine de ilk açılışta gözle bakılmalı: renklerin ve hizalamanın beklendiği gibi
+düştüğü, «Formüller» sekmesindeki hazır formülün yapıştırıldığında çalıştığı.
 
 ## Geri dönüş akışı
 
