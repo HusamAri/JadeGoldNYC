@@ -34,6 +34,32 @@ repodaki hedefidir.
   metni MCP SQL'iyle elle taşırken satır başına `length()` checksum'ı koş —
   14 açıklamada 14/14 birebir tuttu, tek karakterlik sapma anında görünürdü.
 
+- **Teslimat FORMATI kullanıcının aracına göre seçilir; "açar" ≠ "istenen" ve
+  format kısıtı ilan edilmeden ARAÇLA sınanır (2026-08):** Kullanıcı "numbers
+  dosyası" istedi, ben XLSX ürettim; gerekçeyi (".numbers kapalı format,
+  üretilemiyor") yalnız PR gövdesine yazdım, KULLANICIYA söylemedim — üç tur
+  sonra "i asked a numbers file not excel" diye geri geldi. İki ayrı kusur:
+  (1) kısıtı varsayımla ilan ettim, denemedim; (2) denemiş olsam bile
+  söylemediğim gerekçe yok hükmünde. Sonradan gerçekten denendi ve kısıt
+  DOĞRULANDI ama artık kanıtla: `numbers-parser` 4.19 .numbers YAZAR (çok sekme,
+  stil, marka rengi, hücre biçimi) ama formül yazamaz — `=A2*106` düz TextCell
+  olarak iniyor (`is_formula: False`), kütüphanenin kendi README'si "Formulas
+  cannot be written to a document" diyor. **Elenen adaylar (aynı yol iki kez
+  denenmesin):** Aspose.Cells pazarlama sayfası ".numbers kaydet" diyor ama
+  kendi dokümanı "can read Numbers spreadsheets, but it does not support
+  writing to them" — pazarlama sayfasına güvenme, docs'a bak. GitHub'daki üç
+  Numbers aracı (Digits, apple-numbers-mcp, apple-numbers-automation) formülü
+  gerçekten yazar ÇÜNKÜ hepsi AppleScript/JXA ile Numbers.app'i sürüyor → macOS
+  şart, bu Linux konteynerde çalışmaz. Sonuç: **formüllü .numbers yalnız
+  Numbers.app üretebilir.** Pratik yol XLSX üret → kullanıcı Mac'te açıp
+  "Farklı Kaydet" ile .numbers'a çevirir (formüller native'e dönüşür), bu yüzden
+  formüller Numbers'ın da bildiği ortak fonksiyonlarla (`IF`/`OR`/`ROUNDUP`)
+  sınırlı tutulur — Excel'e özgü fonksiyon kullanılmaz. Kalıcı çözüm:
+  kullanıcının Mac'ine Numbers MCP sunucusu kurulur, o zaman formül doğrudan
+  yazılır. Kural: kullanıcı bir araç/format söylediyse o araç ANA hedeftir;
+  üretemiyorsan kısıtı KANITLA ve AYNI TURDA kullanıcıya söyle, sessizce
+  muadiline geçme.
+
 - **Dış araçtan gelen tam-repo kopyasını "Only in" listesiyle DEĞİL git-geçmişi
   triyajıyla ayıkla (2026-08):** AI Studio'da geliştirilen zip eski main'den
   çatallanmıştı; düz `diff -rq` "Only in zip" listesi yeni işi eski-taban

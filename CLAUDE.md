@@ -54,6 +54,15 @@ Jade Gold NYC Etsy mağazası için uçtan uca yönetim/raporlama paneli. Tüm s
   Provizyon sonrası `supabase gen types` ile `types/database.types.ts` üretilebilir.
 - Para alanları formlarda metin (örn. "12,34"); action'da `parseMoneyToCents`.
 - Dev tooling (superpowers/codegraph) için `docs/dev-tooling.md`.
+- **Tablo teslimatı = Apple Numbers, Excel DEĞİL** (kullanıcı talimatı 2026-08-15).
+  Kullanıcı Mac'te Numbers kullanıyor; çıktılar ona göre kurulur. Kısıt: formüllü
+  `.numbers` yalnız Numbers.app üretebilir (`numbers-parser` .numbers yazar ama
+  formül yazamaz; Aspose .numbers'ı yalnız okur; GitHub'daki Numbers MCP araçları
+  AppleScript ile Numbers.app sürer → macOS şart). Bu yüzden konteynerde XLSX
+  üretilir ve Mac'te "Farklı Kaydet" ile .numbers'a çevrilir — bu ARA ADIMdır,
+  kullanıcıya her seferinde söylenir. Formüller Numbers'ın da desteklediği ortak
+  fonksiyonlarla sınırlı tutulur (`IF`/`OR`/`ROUNDUP`); Excel'e özgü fonksiyon
+  kullanılmaz. Ayrıntı: `docs/second-brain.md` format dersi.
 
 @AGENTS.md
 @docs/second-brain.md

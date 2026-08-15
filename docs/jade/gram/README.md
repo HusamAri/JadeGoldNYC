@@ -1,7 +1,29 @@
 # Gram & fiyat çalışma dosyası
 
 **`JadeGold-Gram-Fiyat.xlsx`** — ekibin gram girişi yapacağı, aynı anda tüm
-katalogun fiyat sağlığını gösteren dosya. Numbers ve Excel açar.
+katalogun fiyat sağlığını gösteren dosya.
+
+## Numbers'a çevirme (tek seferlik, ~10 saniye)
+
+Hedef format **`.numbers`**. Dosya XLSX olarak üretiliyor çünkü **formüllü
+`.numbers` yalnız Numbers.app tarafından üretilebilir** — bu bir tercih değil,
+ölçülmüş bir kısıt:
+
+| Yol | Sonuç |
+|---|---|
+| `numbers-parser` 4.19 | `.numbers` **yazar** (çok sekme, stil, marka rengi) ama **formül yazamaz** — `=A2*106` düz metin olarak iniyor (`is_formula: False`). Kütüphanenin kendi README'si: *"Formulas cannot be written to a document"* |
+| Aspose.Cells | `.numbers`'ı **yalnız okur**. (Pazarlama sayfası "kaydet" diyor, kendi dokümanı *"does not support writing to them"* diyor — dokümana güvenin) |
+| Digits / apple-numbers-mcp | Formülü **gerçekten yazar**, çünkü AppleScript ile Numbers.app'i sürüyor → **macOS şart** |
+
+Mac'te: dosyayı **Numbers ile aç** → `Dosya > Farklı Kaydet` → `.numbers`.
+Numbers XLSX formüllerini native formüle çevirir; hesaplar canlı kalır.
+Formüller bilerek yalnız `IF` / `OR` / `ROUNDUP` ile yazıldı — üçü de Numbers'ın
+desteklediği ortak fonksiyonlar, Excel'e özgü fonksiyon yok.
+
+**Kalıcı çözüm:** Mac'e bir Numbers MCP sunucusu kurulursa (ör.
+[Digits](https://github.com/apeabody007/Digits) —
+`/plugin marketplace add apeabody007/digits`) panel doğrudan `.numbers`
+üretebilir, bu ara adım kalkar.
 
 Üretim: `python3 scripts/jade-gram-worksheet.py katalog-anlik-<tarih>.json cikti.xlsx`
 Anlık veri: `katalog-anlik-2026-08-15.json` (1.944 varyant / 113 listing).
