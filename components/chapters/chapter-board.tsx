@@ -133,13 +133,19 @@ export function ChapterBoard({
                 </dl>
 
                 <div className="flex flex-wrap items-center gap-2 pt-1">
+                  {/* Rozet artık içerik panosuna götürür — önce hiçbir yere
+                      bağlı değildi, sinyal görünüp aksiyonu görünmüyordu. */}
                   {bekleyen > 0 ? (
-                    <Badge>{bekleyen} içerik bekliyor</Badge>
+                    <Link href={`/tasarimlar/bolumler/${c.meta.key}/icerik`}>
+                      <Badge>{bekleyen} içerik bekliyor</Badge>
+                    </Link>
                   ) : null}
                   {c.redesign.pushed > 0 ? (
-                    <Badge variant="outline">
-                      {c.redesign.pushed} gönderildi
-                    </Badge>
+                    <Link href={`/tasarimlar/bolumler/${c.meta.key}/icerik`}>
+                      <Badge variant="outline">
+                        {c.redesign.pushed} gönderildi
+                      </Badge>
+                    </Link>
                   ) : null}
                   {c.locked > 0 ? (
                     <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
