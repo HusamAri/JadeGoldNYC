@@ -240,7 +240,7 @@ def title_for(karat: str, metal: str) -> str:
 def prompt_for(karat: str, metal: str, role: str) -> str:
     tone = METALS[metal]["tones"][karat]
     scene = SCENES[karat]
-    return f"""Create one square 1:1 photorealistic Etsy listing photograph for EON Fine Jewelry. No text, logo, border, watermark or packaging.
+    return f"""Create one square 1:1 photorealistic Etsy listing photograph for EON Fine Jewelry at 2048 by 2048 pixels or larger. No text, logo, border, watermark or packaging.
 
 REFERENCE ROLES
 References 1 and 2 are the absolute product geometry authority. Preserve one single solid-gold comfort-fit wedding band with a coherent continuous Greek key center, two fine milgrain borders directly framing the center and one braided rope rail on each outer side. Preserve crisp right-angle turns, recessed negative spaces, polished edge rails and a polished interior. References 3, 4 and 5 define only the bright product-photography language, physical glass, natural daylight and shadows. Do not copy their rings, colors, arches or exact compositions.
