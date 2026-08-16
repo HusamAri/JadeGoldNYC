@@ -60,3 +60,31 @@ test("Gold reprice formula matches the Frieze cost engine", () => {
     130_000,
   );
 });
+
+test("All 390 whole-size Frieze cells match both pricing engines", () => {
+  for (const karat of ["10K", "14K", "18K"] as const) {
+    for (let widthMm = 3; widthMm <= 12; widthMm += 1) {
+      for (let sizeUs = 4; sizeUs <= 16; sizeUs += 1) {
+        const result = computeEonCost({
+          karat,
+          widthMm,
+          sizeUs,
+          profile: "frieze",
+          spotUsdPerOzt: ACTIVE_BASIS,
+        });
+        assert.equal(
+          result.listCents,
+          eonListCents(
+            Number(karat.slice(0, -1)),
+            widthMm,
+            result.grams,
+            55,
+            ACTIVE_BASIS,
+            { narrow: 1.75 },
+          ),
+          `${karat} ${widthMm}mm US${sizeUs}`,
+        );
+      }
+    }
+  }
+});

@@ -58,8 +58,8 @@ export type EonProfile =
   /** Greek key, Maeander ve diamond-cut desenli Frieze bantları. */
   | "frieze";
 
-/** 1 troy ons = 31.1035 gram (bkz. `lib/gold-cost.ts` TROY_OUNCE_GRAMS). */
-export const TROY_OUNCE_GRAMS = 31.1035;
+/** 1 troy ons = 31.1034768 gram, fiyat ızgarasının tam hassasiyeti. */
+export const TROY_OUNCE_GRAMS = 31.1034768;
 
 /** Varsayılan spot altın fiyatı, USD/troy ons (v4 grid ASM!B2). */
 export const EON_SPOT_USD_PER_OZT = 4090;
