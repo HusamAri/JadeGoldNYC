@@ -20,8 +20,8 @@ FIRE_FACTOR = 1.07
 LABOR_USD = 55.0
 PACKAGING_USD = 8.0
 SHIPPING_USD = 22.0
-MULTIPLIER_NARROW = 1.75
-MULTIPLIER_WIDE = 2.0
+MULTIPLIER_NARROW = 2.05
+MULTIPLIER_WIDE = 2.2
 SALE_RATE = 0.75
 ETSY_FIXED_FEE_USD = 0.45
 STANDARD_NET_RATE = 0.895
@@ -184,8 +184,8 @@ def generate() -> tuple[list[dict], dict]:
             row["offsite_margin_pct"] for row in rows
         ),
     }
-    assert summary["minimum_standard_margin_pct"] >= 31.5
-    assert summary["minimum_offsite_margin_pct"] >= 16.5
+    assert summary["minimum_standard_margin_pct"] >= 40.0
+    assert summary["minimum_offsite_margin_pct"] >= 25.0
     return rows, summary
 
 
@@ -193,7 +193,9 @@ def main() -> None:
     rows, summary = generate()
     OUT.mkdir(parents=True, exist_ok=True)
     with (OUT / "price-matrix.csv").open("w", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
+        writer = csv.DictWriter(
+            handle, fieldnames=list(rows[0]), lineterminator="\n"
+        )
         writer.writeheader()
         writer.writerows(rows)
     (OUT / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")

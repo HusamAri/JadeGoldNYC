@@ -94,8 +94,9 @@ export const EON_SHIPPING_USD = 22;
 
 /** Motor çarpanı: dar bant 2-7mm, geniş bant 8-12mm (mens-wide primi). */
 export const EON_MULTIPLIER_NARROW = 1.55;
-/** Frieze & Textured 2-7mm: özel üretim ve offsite reklam güvenlik payı. */
-export const EON_MULTIPLIER_HANDFINISHED_NARROW = 1.75;
+/** Market-optimized Frieze and Textured multipliers. */
+export const EON_MULTIPLIER_HANDFINISHED_NARROW = 2.05;
+export const EON_MULTIPLIER_HANDFINISHED_WIDE = 2.2;
 export const EON_MULTIPLIER_WIDE = 2.0;
 const WIDE_BAND_MIN_MM = 8;
 
@@ -303,11 +304,16 @@ export function multiplierFor(
   config: EonPricingConfig = DEFAULT_EON_PRICING_CONFIG,
   profile?: EonProfile,
 ): number {
-  return widthMm >= config.wideBandMinMm
-    ? config.multiplierWide
-    : profile != null && HANDFINISHED_PROFILES.has(profile)
-      ? Math.max(config.multiplierNarrow, EON_MULTIPLIER_HANDFINISHED_NARROW)
-      : config.multiplierNarrow;
+  const handfinished =
+    profile != null && HANDFINISHED_PROFILES.has(profile);
+  if (widthMm >= config.wideBandMinMm) {
+    return handfinished
+      ? Math.max(config.multiplierWide, EON_MULTIPLIER_HANDFINISHED_WIDE)
+      : config.multiplierWide;
+  }
+  return handfinished
+    ? Math.max(config.multiplierNarrow, EON_MULTIPLIER_HANDFINISHED_NARROW)
+    : config.multiplierNarrow;
 }
 
 /**

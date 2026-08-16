@@ -6,17 +6,17 @@ Production package for nine Etsy listing suggestions built from one patterned so
 
 | SKU | Metal | Karat | List price range at $4,399.90/ozt |
 | --- | --- | --- | ---: |
-| GLD-R-1008 | Yellow Gold | 10K | $705 to $2,415 |
-| GLD-R-1408 | Yellow Gold | 14K | $1,000 to $3,700 |
-| GLD-R-1808 | Yellow Gold | 18K | $1,410 to $5,325 |
-| WHG-R-1008 | White Gold | 10K | $705 to $2,415 |
-| WHG-R-1408 | White Gold | 14K | $1,000 to $3,700 |
-| WHG-R-1808 | White Gold | 18K | $1,410 to $5,325 |
-| RSG-R-1008 | Rose Gold | 10K | $705 to $2,415 |
-| RSG-R-1408 | Rose Gold | 14K | $1,000 to $3,700 |
-| RSG-R-1808 | Rose Gold | 18K | $1,410 to $5,325 |
+| GLD-R-1008 | Yellow Gold | 10K | $825 to $2,655 |
+| GLD-R-1408 | Yellow Gold | 14K | $1,175 to $4,070 |
+| GLD-R-1808 | Yellow Gold | 18K | $1,650 to $5,855 |
+| WHG-R-1008 | White Gold | 10K | $825 to $2,655 |
+| WHG-R-1408 | White Gold | 14K | $1,175 to $4,070 |
+| WHG-R-1808 | White Gold | 18K | $1,650 to $5,855 |
+| RSG-R-1008 | Rose Gold | 10K | $825 to $2,655 |
+| RSG-R-1408 | Rose Gold | 14K | $1,175 to $4,070 |
+| RSG-R-1808 | Rose Gold | 18K | $1,650 to $5,855 |
 
-Panel prices use the latest EON `gold_reprice_basis`, then `pricing_config`, then $4,399.90/ozt only as the final fallback. Handfinished labor is $55. The multiplier is 1.75 from 5mm through 7mm and 2.00 from 8mm through 12mm.
+Panel prices use the latest EON `gold_reprice_basis`, then `pricing_config`, then $4,399.90/ozt only as the final fallback. Handfinished labor is $55. The market-optimized multiplier is 2.05 from 5mm through 7mm and 2.20 from 8mm through 12mm.
 
 ## Product configuration
 

@@ -133,7 +133,7 @@ def excel_round(value: float) -> int:
 def list_price_cents(karat: str, width: int, grams: float, spot: float = BASE_SPOT) -> int:
     raw = grams * (spot / TROY_OZ_GRAMS) * PURITY[karat] * (1 + FIRE)
     raw += LABOR + PACKAGING + SHIPPING
-    motor = excel_round(raw * (1.75 if width <= 7 else 2.0))
+    motor = excel_round(raw * (2.05 if width <= 7 else 2.2))
     return math.ceil((motor * 4) / 15) * 5 * 100
 
 
@@ -538,7 +538,7 @@ def emit_migration(catalog: dict) -> str:
             "  (ceil(round((",
             "    v.grams * (basis.spot_per_ozt / 31.1034768) * v.purity * 1.07",
             "    + 55 + 8 + 22",
-            "  ) * case when v.width_mm <= 7 then 1.75 else 2.0 end) * 4.0 / 15.0) * 5 * 100)::integer,",
+            "  ) * case when v.width_mm <= 7 then 2.05 else 2.2 end) * 4.0 / 15.0) * 5 * 100)::integer,",
             f"  {QUANTITY}, v.grams, 'catalog_maeander_1_5mm', true, 'USD'",
             "from _maeander_variants v",
             "join public.products p on p.sku = v.family",
