@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
@@ -86,5 +87,37 @@ test("All 390 whole-size Frieze cells match both pricing engines", () => {
         );
       }
     }
+  }
+});
+
+test("Generated 750-row matrix matches the TypeScript engine", () => {
+  const csv = readFileSync(
+    new URL(
+      "../docs/eon/pricing/frieze-textured-2026-08-16/price-matrix.csv",
+      import.meta.url,
+    ),
+    "utf8",
+  ).trim();
+  const [headerLine, ...lines] = csv.split("\n");
+  const headers = headerLine.split(",");
+  assert.equal(lines.length, 750);
+
+  for (const line of lines) {
+    const values = line.split(",");
+    const row = Object.fromEntries(
+      headers.map((header, index) => [header, values[index]]),
+    );
+    const result = computeEonCost({
+      karat: row.karat as "10K" | "14K" | "18K",
+      widthMm: Number(row.width_mm),
+      sizeUs: Number(row.size_us),
+      profile: "frieze",
+      grams: Number(row.grams),
+      spotUsdPerOzt: ACTIVE_BASIS,
+    });
+    assert.equal(result.listUsd, Number(row.list_price_usd));
+    assert.equal(result.saleUsd, Number(row.sale_price_usd));
+    assert.equal(result.laborUsd, Number(row.labor_usd));
+    assert.equal(result.multiplier, Number(row.multiplier));
   }
 });

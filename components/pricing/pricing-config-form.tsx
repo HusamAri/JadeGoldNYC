@@ -37,18 +37,23 @@ const ALANLAR: { key: keyof ConfigValues; etiket: string; ipucu: string }[] = [
   },
   { key: "packagingUsd", etiket: "Paketleme ($)", ipucu: "Kutu + koruyucu zarf." },
   { key: "shippingUsd", etiket: "Kargo payı ($)", ipucu: "Ücretsiz kargo fiyata gömülüdür." },
-  { key: "multiplierNarrow", etiket: "Dar bant çarpanı", ipucu: "Eşik altı genişlikler." },
+  {
+    key: "multiplierNarrow",
+    etiket: "Dar bant çarpanı",
+    ipucu:
+      "Standart profiller için eşik altı çarpan. Frieze & Textured en az 1,75 kullanır.",
+  },
   { key: "multiplierWide", etiket: "Geniş bant çarpanı", ipucu: "Eşik ve üstü (mens-wide primi)." },
   { key: "wideBandMinMm", etiket: "Geniş bant eşiği (mm)", ipucu: "Bu genişlikten itibaren geniş çarpan." },
   { key: "saleRate", etiket: "Vitrin indirimi oranı", ipucu: "Satış = liste × bu oran. 0,75 = %25 indirim." },
 ];
 
 /**
- * MOTOR AYARLARI (Faz 5a) — spot DIŞINDAKİ tüm girdiler burada, tek yerde.
+ * MOTOR AYARLARI (Faz 5a). Spot DIŞINDAKİ tüm girdiler burada, tek yerde.
  *
  * Bu ekran fiyat DEĞİL girdi değiştirir; çıktı her zaman motordan gelir.
  * Kaydetmek onay ister ve eski→yeni farkı audit_log'a düşer. Kaydetmek canlı
- * fiyatları DEĞİŞTİRMEZ — Etsy'ye yazmak ayrı bir kuru çalıştırma + onay ister.
+ * fiyatları DEĞİŞTİRMEZ. Etsy'ye yazmak ayrı bir kuru çalıştırma + onay ister.
  */
 export function PricingConfigForm({
   config,
@@ -98,7 +103,7 @@ export function PricingConfigForm({
             </span>
             <span className="text-muted-foreground">
               {" "}
-              — işçilik, paket, kargo, fire ve çarpanlar
+              : işçilik, paket, kargo, fire ve çarpanlar
             </span>
             {!stored && (
               <div className="text-muted-foreground mt-1 text-xs">
