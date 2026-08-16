@@ -29,7 +29,12 @@ interface ConfigValues {
 const ALANLAR: { key: keyof ConfigValues; etiket: string; ipucu: string }[] = [
   { key: "fireFactor", etiket: "Fire çarpanı", ipucu: "Döküm/işleme kaybı. 1,07 = %7." },
   { key: "laborUsd", etiket: "İşçilik ($)", ipucu: "Standart profiller (dome, flat, beveled, knife)." },
-  { key: "laborHandfinishedUsd", etiket: "El işçiliği ($)", ipucu: "Milgrain, hammered, basketweave, ribbed." },
+  {
+    key: "laborHandfinishedUsd",
+    etiket: "El işçiliği ($)",
+    ipucu:
+      "Frieze & Textured: milgrain, hammered, basketweave, ribbed, Greek key ve diamond-cut.",
+  },
   { key: "packagingUsd", etiket: "Paketleme ($)", ipucu: "Kutu + koruyucu zarf." },
   { key: "shippingUsd", etiket: "Kargo payı ($)", ipucu: "Ücretsiz kargo fiyata gömülüdür." },
   { key: "multiplierNarrow", etiket: "Dar bant çarpanı", ipucu: "Eşik altı genişlikler." },

@@ -67,6 +67,10 @@ export interface PricingRunDiff {
 
 /** Elde bitirilen desenler önce aranır: başlıkta ikisi birden geçebilir. */
 const PROFILE_PATTERNS: { re: RegExp; profile: EonProfile }[] = [
+  {
+    re: /\bgreek\s+key\b|\bma?eander\b|\bfrieze\b|\bdiamond[-\s]?cut\b/i,
+    profile: "frieze",
+  },
   { re: /\bmilgrain\b/i, profile: "milgrain" },
   { re: /\bhammered\b/i, profile: "hammered" },
   { re: /\bbasket\s*weave\b/i, profile: "basketweave" },
