@@ -1,7 +1,7 @@
 # EON Frieze & Textured Pricing, Market and Cost Analysis
 
-Date: 2026-08-16  
-Currency: USD  
+Date: 2026-08-16
+Currency: USD
 Recommended Etsy shop section: `Frieze & Textured Bands`
 
 ## Decision

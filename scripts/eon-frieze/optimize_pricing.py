@@ -188,7 +188,7 @@ def write_outputs(out_dir: Path, ranking: list[dict], decision: dict) -> None:
         "rejection_reasons",
     ]
     with (out_dir / "candidate-ranking.csv").open("w", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer = csv.DictWriter(handle, fieldnames=fieldnames, lineterminator="\n")
         writer.writeheader()
         for row in sorted(
             ranking,
