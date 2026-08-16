@@ -1,6 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 
-import type { EtsyClient } from "@/lib/etsy/client";
+import { EtsyRateLimitError, type EtsyClient } from "@/lib/etsy/client";
 import { etsyPaths } from "@/lib/etsy/endpoints";
 import { asEtsyProperties, type RawVariantProperties } from "@/lib/variant-properties";
 import { stripImageMetadata } from "@/lib/photo-kit/strip-metadata";
@@ -158,7 +158,8 @@ async function resolveReadinessStateId(
       },
     );
     return created.readiness_state_id ?? null;
-  } catch {
+  } catch (error) {
+    if (error instanceof EtsyRateLimitError) throw error;
     return null;
   }
 }
@@ -193,7 +194,8 @@ export async function resolveShopProfiles(
     const profiles = sp.results ?? [];
     const manual = profiles.find((p) => p.profile_type === "manual");
     shippingProfileId = (manual ?? profiles[0])?.shipping_profile_id ?? null;
-  } catch {
+  } catch (error) {
+    if (error instanceof EtsyRateLimitError) throw error;
     // Canlı okunamadı → panel tablosuna düş (tip bilgisi yok).
   }
   if (shippingProfileId == null) {
@@ -216,7 +218,8 @@ export async function resolveShopProfiles(
       etsyPaths.returnPolicies(shopId),
     );
     returnPolicyId = rp.results?.[0]?.return_policy_id ?? null;
-  } catch {
+  } catch (error) {
+    if (error instanceof EtsyRateLimitError) throw error;
     returnPolicyId = null;
   }
 
@@ -455,7 +458,10 @@ export async function createDraftListingFromProduct(
     return {
       ok: false,
       step: "create",
-      error: `Kargo/iade profili okunamadı: ${e instanceof Error ? e.message : String(e)}`,
+      error:
+        e instanceof EtsyRateLimitError
+          ? e.message
+          : `Kargo/iade profili okunamadı: ${e instanceof Error ? e.message : String(e)}`,
     };
   }
   if (profiles.shippingProfileId == null) {
