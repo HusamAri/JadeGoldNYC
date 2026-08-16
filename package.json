@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test:etsy-taxonomy": "tsx --test tests/etsy-taxonomy.test.ts",
-    "test:etsy-rate-limit": "tsx --test tests/etsy-rate-limit.test.ts"
+    "test:etsy-rate-limit": "tsx --test tests/etsy-rate-limit.test.ts",
+    "test:eon-frieze-pricing": "tsx --test tests/eon-frieze-pricing.test.ts"
   },
   "dependencies": {
     "@ai-sdk/google": "^2.0.78",

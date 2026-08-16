@@ -11,6 +11,7 @@ import {
   V4,
   eonListCents,
   fetchLiveSpotUsd,
+  isEonFriezeProduct,
   jadeAdjustedCents,
   parseEonSku,
   parseKaratPurity,
@@ -150,19 +151,36 @@ function computeTargets(
         skip("gramsiz", sku);
         continue;
       }
-      // İşçilik kademesi kendini doğrular: eski tabanla hangi kademe mevcut
-      // fiyatı birebir üretiyorsa o kademe geçerlidir. İkisi de üretmiyorsa
-      // fiyat elle/farklı kurulmuş demektir — DOKUNULMAZ, raporlanır.
-      const labor = [V4.laborMilgrainUsd, V4.laborStandardUsd].find(
-        (l) =>
-          eonListCents(parsed.karat, parsed.widthMm, grams, l, basis) ===
-          oldCents,
+      const frieze = isEonFriezeProduct(sku, v.products.title ?? "");
+      // Geçiş güvenliği: hem eski 40 USD / 1,55 tabanı hem yeni 55 USD / 1,75
+      // tabanı tanınır. Hammered kimlik düzeltmesi öncesi 30 USD taban da
+      // yalnız Frieze başlığı doğrulandıysa kabul edilir.
+      const currentCandidates = frieze
+        ? [
+            { labor: V4.laborMilgrainUsd, narrow: V4.multHandfinishedNarrow },
+            { labor: V4.laborMilgrainUsd, narrow: V4.multNarrow },
+            { labor: V4.laborMilgrainLegacyUsd, narrow: V4.multNarrow },
+            { labor: V4.laborStandardUsd, narrow: V4.multNarrow },
+          ]
+        : [{ labor: V4.laborStandardUsd, narrow: V4.multNarrow }];
+      const matched = currentCandidates.some(
+        ({ labor, narrow }) =>
+          eonListCents(parsed.karat, parsed.widthMm, grams, labor, basis, {
+            narrow,
+          }) === oldCents,
       );
-      if (labor == null) {
+      if (!matched) {
         skip("taban-uyumsuz", sku);
         continue;
       }
-      newCents = eonListCents(parsed.karat, parsed.widthMm, grams, labor, spot);
+      newCents = eonListCents(
+        parsed.karat,
+        parsed.widthMm,
+        grams,
+        frieze ? V4.laborMilgrainUsd : V4.laborStandardUsd,
+        spot,
+        { narrow: frieze ? V4.multHandfinishedNarrow : V4.multNarrow },
+      );
     } else {
       // Jade: formül dayatılmaz; yalnız ham metal bedeli farkı eklenir.
       if (!(grams > 0)) {

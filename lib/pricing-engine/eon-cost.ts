@@ -54,10 +54,12 @@ export type EonProfile =
   // Elde bitirilen yeni desenler (2026-08): dokuma ve çapraz yiv. İşçilik
   // sınıfı milgrain/hammered ile aynı — bu yüzden ayrı bir sabit YOK.
   | "basketweave"
-  | "ribbed";
+  | "ribbed"
+  /** Greek key, Maeander ve diamond-cut desenli Frieze bantları. */
+  | "frieze";
 
-/** 1 troy ons = 31.1035 gram (bkz. `lib/gold-cost.ts` TROY_OUNCE_GRAMS). */
-export const TROY_OUNCE_GRAMS = 31.1035;
+/** 1 troy ons = 31.1034768 gram, fiyat ızgarasının tam hassasiyeti. */
+export const TROY_OUNCE_GRAMS = 31.1034768;
 
 /** Varsayılan spot altın fiyatı, USD/troy ons (v4 grid ASM!B2). */
 export const EON_SPOT_USD_PER_OZT = 4090;
@@ -75,22 +77,25 @@ export const EON_PURITY: Record<EonKarat, number> = {
 /** Döküm/işleme fire payı: %7 → 1.07 çarpanı. */
 export const EON_FIRE_FACTOR = 1.07;
 
-/** İşçilik, USD. Milgrain ve hammered elde bitirilir → daha yüksek. */
+/** İşçilik, USD. Frieze & Textured ailesi elde bitirilir. */
 export const EON_LABOR_USD = 30;
-export const EON_LABOR_HANDFINISHED_USD = 40;
+export const EON_LABOR_HANDFINISHED_USD = 55;
 const HANDFINISHED_PROFILES: ReadonlySet<EonProfile> = new Set<EonProfile>([
   "milgrain",
   "hammered",
   "basketweave",
   "ribbed",
+  "frieze",
 ]);
 
 /** Paketleme ve kargo payı, USD. */
 export const EON_PACKAGING_USD = 8;
 export const EON_SHIPPING_USD = 22;
 
-/** Motor çarpanı: dar bant 2–7mm, geniş bant 8–12mm (mens-wide primi). */
+/** Motor çarpanı: dar bant 2-7mm, geniş bant 8-12mm (mens-wide primi). */
 export const EON_MULTIPLIER_NARROW = 1.55;
+/** Frieze & Textured 2-7mm: özel üretim ve offsite reklam güvenlik payı. */
+export const EON_MULTIPLIER_HANDFINISHED_NARROW = 1.75;
 export const EON_MULTIPLIER_WIDE = 2.0;
 const WIDE_BAND_MIN_MM = 8;
 
@@ -292,14 +297,17 @@ export function laborUsdFor(
     : config.laborUsd;
 }
 
-/** Genişlik → motor çarpanı. 8mm ve üstü geniş bant. */
+/** Genişlik ve profil → motor çarpanı. 8mm ve üstü geniş bant. */
 export function multiplierFor(
   widthMm: number,
   config: EonPricingConfig = DEFAULT_EON_PRICING_CONFIG,
+  profile?: EonProfile,
 ): number {
   return widthMm >= config.wideBandMinMm
     ? config.multiplierWide
-    : config.multiplierNarrow;
+    : profile != null && HANDFINISHED_PROFILES.has(profile)
+      ? Math.max(config.multiplierNarrow, EON_MULTIPLIER_HANDFINISHED_NARROW)
+      : config.multiplierNarrow;
 }
 
 /**
@@ -387,7 +395,7 @@ export function computeEonCost(input: EonCostInput): EonCostBreakdown {
   const laborUsd = laborUsdFor(profile, cfg);
   const landedUsd = materialUsd + laborUsd + cfg.packagingUsd + cfg.shippingUsd;
 
-  const multiplier = multiplierFor(widthMm, cfg);
+  const multiplier = multiplierFor(widthMm, cfg, profile);
   // KRİTİK: yuvarlanmamış landed. Bkz. yukarıdaki yuvarlama sözleşmesi.
   const engineUsd = Math.round(landedUsd * multiplier);
 

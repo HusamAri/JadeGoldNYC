@@ -5,8 +5,9 @@
  *  - EON: v4 grid formülünün birebir portu (scripts/eon_pricing_engine.py ile
  *    aynı; 5148 hücrede sıfır sapmayla doğrulanmış formül). Varyantın işçilik
  *    kademesi (standart 30 / milgrain-hammered 40) HARDCODE edilmez: mevcut
- *    DB fiyatı ESKİ tabanla hangi kademede birebir çıkıyorsa o kademe seçilir
- *    (kendi kendini doğrulayan eşleme — uymayan varyant atlanır ve raporlanır).
+ *    DB fiyatı ESKİ tabanla hangi kademede birebir çıkıyorsa sınıf doğrulanır.
+ *    Frieze & Textured sınıfı yeni fiyatı 55 USD işçilik ve 1,75 dar bant
+ *    çarpanıyla üretir. Uymayan varyant atlanır ve raporlanır.
  *  - Jade: katalog formülle üretilmediği için fiyat YENİDEN kurulmaz; yalnız
  *    artan/azalan HAM metal bedeli (gram × saflık × Δspot × 1+fire) mevcut
  *    fiyata eklenir. Marj yapısı değişmez.
@@ -20,10 +21,12 @@ export const TROY_OZ_GRAMS = 31.1034768;
 export const V4 = {
   fire: 0.07,
   laborStandardUsd: 30,
-  laborMilgrainUsd: 40,
+  laborMilgrainUsd: 55,
+  laborMilgrainLegacyUsd: 40,
   packagingUsd: 8,
   shippingUsd: 22,
   multNarrow: 1.55, // 2-7mm
+  multHandfinishedNarrow: 1.75, // Frieze & Textured 2-7mm
   multWide: 2.0, // 8-12mm ("mens wide" primi)
   purity: { 10: 0.417, 14: 0.583, 18: 0.75 } as Record<number, number>,
 } as const;
@@ -49,6 +52,7 @@ export function eonListCents(
   grams: number,
   laborUsd: number,
   spotPerOzt: number,
+  multipliers: { narrow?: number; wide?: number } = {},
 ): number {
   const purity = V4.purity[karat];
   if (!purity || !(grams > 0) || !(spotPerOzt > 0)) return 0;
@@ -57,7 +61,11 @@ export function eonListCents(
     laborUsd +
     V4.packagingUsd +
     V4.shippingUsd;
-  const motor = roundHalfUp(raw * (widthMm <= 7 ? V4.multNarrow : V4.multWide));
+  const multiplier =
+    widthMm <= 7
+      ? (multipliers.narrow ?? V4.multNarrow)
+      : (multipliers.wide ?? V4.multWide);
+  const motor = roundHalfUp(raw * multiplier);
   const liste = Math.ceil((motor * 4) / 15) * 5;
   return liste * 100;
 }
@@ -70,6 +78,22 @@ export function parseEonSku(
   const m = /-R-(10|14|18)\d{2}-(\d+(?:\.\d+)?)MM-[0-9.]+$/.exec(sku.trim());
   if (!m) return null;
   return { karat: Number(m[1]), widthMm: Number(m[2]) };
+}
+
+/** Frieze & Textured kapsamını SKU ve ürün başlığından güvenli biçimde çözer. */
+export function isEonFriezeProduct(sku: string, title: string): boolean {
+  const normalizedSku = sku.trim().toUpperCase();
+  if (/^(?:GLD|WHG|RSG)-R-(?:10|14|18)04(?:-|$)/.test(normalizedSku)) {
+    return true;
+  }
+  if (/^GLD-R-100[67](?:-|$)/.test(normalizedSku)) return true;
+  if (/^TTG-R-(?:10|14|18)06(?:-|$)/.test(normalizedSku)) return true;
+  if (/^(?:GLD|WHG|RSG)-R-(?:10|14|18)08(?:-|$)/.test(normalizedSku)) {
+    return true;
+  }
+  return /\bmilgrain\b|\bhammered\b|\bbasket\s*weave\b|\bbasketweave\b|\bribbed\b|\bfluted\b|\bgreek\s+key\b|\bma?eander\b|\bfrieze\b|\bdiamond[-\s]?cut\b/i.test(
+    title,
+  );
 }
 
 /** Serbest metinden (SKU + başlık + malzeme listesi) karat saflığı çözer.
