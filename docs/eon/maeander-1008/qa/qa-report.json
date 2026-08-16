@@ -1,6 +1,6 @@
 {
   "package": "EON Maeander 1008",
-  "generated_at": "2026-08-15T23:24:12.732710+00:00",
+  "generated_at": "2026-08-16T05:10:23.018246+00:00",
   "status": "pass",
   "summary": {
     "listings": 9,
@@ -1899,6 +1899,11 @@
       "name": "migration_live_pricing_basis",
       "status": "pass",
       "details": "latest gold_reprice_basis, pricing_config fallback, 4090 final fallback"
+    },
+    {
+      "name": "migration_v4_list_price_formula",
+      "status": "pass",
+      "details": "motor price grossed up for the 25 percent sale and rounded to the next 5 USD"
     }
   ],
   "manual_review": {

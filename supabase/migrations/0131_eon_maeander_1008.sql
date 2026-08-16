@@ -3126,10 +3126,10 @@ select
     'Karat', v.karat, 'Metal', v.metal,
     'Width', v.width_mm || 'mm', 'Ring Size', v.ring_size
   ),
-  (ceil((round((
+  (ceil(round((
     v.grams * (basis.spot_per_ozt / 31.1034768) * v.purity * 1.07
     + 40 + 8 + 22
-  ) * case when v.width_mm <= 7 then 1.55 else 2.0 end) * 4.0 / 15.0) / 5.0) * 5 * 100)::integer,
+  ) * case when v.width_mm <= 7 then 1.55 else 2.0 end) * 4.0 / 15.0) * 5 * 100)::integer,
   20, v.grams, 'catalog_maeander_1_5mm', true, 'USD'
 from _maeander_variants v
 join public.products p on p.sku = v.family

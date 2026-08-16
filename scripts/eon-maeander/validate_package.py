@@ -217,6 +217,12 @@ def main() -> None:
         "public.gold_reprice_basis" in migration and "public.pricing_config" in migration and re.search(r"\b4090(?:\.0)?\b", migration) is not None,
         "latest gold_reprice_basis, pricing_config fallback, 4090 final fallback",
     )
+    checks.check(
+        "migration_v4_list_price_formula",
+        "* 4.0 / 15.0) * 5 * 100" in migration
+        and "* 4.0 / 15.0) / 5.0" not in migration,
+        "motor price grossed up for the 25 percent sale and rounded to the next 5 USD",
+    )
 
     listing_sheets = [render_listing_sheet(listing) for listing in listings]
     master_sheet = render_master_sheet(listing_sheets)
