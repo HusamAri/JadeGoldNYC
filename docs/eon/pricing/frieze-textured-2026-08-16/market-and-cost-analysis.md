@@ -21,6 +21,8 @@ The approved production labor is 55 USD per ring. The optimal selling model is:
 - Etsy list price: ceiling of engine price divided by 0.75, rounded up to 5 USD
 - Visible Etsy sale: 25 percent below list price
 
+Maeander availability begins at 5mm. The 3mm and 4mm Maeander options are removed from all nine metal and karat listing families, reducing the panel matrix from 2,250 to 1,800 variants. Narrower widths remain available only where another Frieze & Textured product family explicitly supports them.
+
 The 1.75 narrow multiplier is required because labor 55 USD with the former 1.55 multiplier leaves only about 10 percent contribution margin on an offsite-ad sale. The new model lifts the minimum standard contribution margin to 32.21 percent and the minimum offsite-ad contribution margin to 17.21 percent.
 
 ## Gold basis
@@ -63,7 +65,7 @@ The market has two distinct tiers. Lightweight 3mm rings can sit near 350 USD. S
 
 ## Recommended visible Etsy sale prices
 
-US7 reference prices:
+US7 Frieze & Textured reference prices:
 
 | Width | 10K | 14K | 18K |
 |---:|---:|---:|---:|
@@ -78,13 +80,15 @@ US7 reference prices:
 | 11mm | 1,260.00 | 1,901.25 | 2,707.50 |
 | 12mm | 1,361.25 | 2,058.75 | 2,936.25 |
 
-Full US4 to US16 listing ranges:
+Maeander listings use only the 5mm through 12mm rows above.
+
+Full Maeander US4 to US16 listing ranges:
 
 | Karat | List price range | Visible sale range |
 |---|---:|---:|
-| 10K | 500.00 to 2,415.00 | 375.00 to 1,811.25 |
-| 14K | 680.00 to 3,700.00 | 510.00 to 2,775.00 |
-| 18K | 900.00 to 5,325.00 | 675.00 to 3,993.75 |
+| 10K | 705.00 to 2,415.00 | 528.75 to 1,811.25 |
+| 14K | 1,000.00 to 3,700.00 | 750.00 to 2,775.00 |
+| 18K | 1,410.00 to 5,325.00 | 1,057.50 to 3,993.75 |
 
 Yellow, white and rose gold use the same price within a karat because the production weight table and purity are shared. The nine Maeander listing families therefore use three price ladders, one per karat.
 
@@ -104,5 +108,6 @@ This places EON near the center of the substantial solid-gold patterned band mar
 - `price-matrix.csv`: all 750 karat, width and size combinations
 - `summary.json`: all Etsy listing ranges, assumptions and margin floors
 - `supabase/migrations/0132_eon_frieze_textured_pricing.sql`: panel repricing migration
+- `supabase/migrations/0133_eon_maeander_minimum_5mm.sql`: guarded deletion of the 450 Maeander variants below 5mm
 
 The migration updates Amuletta panel prices and the 55 USD configuration. It does not push prices to Etsy. Etsy publication remains a separate human-approved operation.

@@ -12,16 +12,16 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "docs" / "eon" / "maeander-1008"
 WEIGHTS_FILE = ROOT / "docs" / "eon" / "eon-weight-tables.json"
-MIGRATION_FILE = ROOT / "supabase" / "migrations" / "0131_eon_maeander_1008.sql"
+PANEL_REFRESH_FILE = OUT / "panel-refresh.sql"
 
-WIDTHS = list(range(3, 13))
+WIDTHS = list(range(5, 13))
 SIZES = [4 + i * 0.5 for i in range(25)]
 QUANTITY = 20
 THICKNESS_MM = 1.5
-BASE_SPOT = 4090.0
+BASE_SPOT = 4399.90
 TROY_OZ_GRAMS = 31.1034768
 FIRE = 0.07
-LABOR = 40.0
+LABOR = 55.0
 PACKAGING = 8.0
 SHIPPING = 22.0
 PURITY = {"10K": 0.417, "14K": 0.583, "18K": 0.75}
@@ -133,7 +133,7 @@ def excel_round(value: float) -> int:
 def list_price_cents(karat: str, width: int, grams: float, spot: float = BASE_SPOT) -> int:
     raw = grams * (spot / TROY_OZ_GRAMS) * PURITY[karat] * (1 + FIRE)
     raw += LABOR + PACKAGING + SHIPPING
-    motor = excel_round(raw * (1.55 if width <= 7 else 2.0))
+    motor = excel_round(raw * (1.75 if width <= 7 else 2.0))
     return math.ceil((motor * 4) / 15) * 5 * 100
 
 
@@ -201,7 +201,7 @@ Metal: Solid {k} {color}. Never plated, never filled.
 Pattern: Continuous Greek key center with recessed microtexture.
 Borders: Fine milgrain directly framing the center, with one braided rope rail on each outer side.
 Fit: Polished comfort-fit interior with smooth edges.
-Widths: 3mm through 12mm, in whole millimeters.
+Widths: 5mm through 12mm, in whole millimeters.
 Thickness: 1.5mm production specification.
 Sizes: US 4 through 16, whole and half sizes.
 Hallmark: Stamped {k} inside the band.
@@ -209,7 +209,7 @@ Hallmark: Stamped {k} inside the band.
 The meander turns through one unbroken line. The rope rails protect that rhythm at both edges while the recessed fields hold a softer surface. {tone_line}
 
 SIZE AND WIDTH
-Choose Ring Size from US 4 through 16, including half sizes. Choose Width from 3mm through 12mm. A 3mm to 5mm band reads restrained. A 6mm to 8mm band has a balanced presence. A 9mm to 12mm band sits broad across the finger. Wider bands can feel tighter than narrow bands, so message us before ordering if you are between sizes.
+Choose Ring Size from US 4 through 16, including half sizes. Choose Width from 5mm through 12mm. A 5mm band reads restrained. A 6mm to 8mm band has a balanced presence. A 9mm to 12mm band sits broad across the finger. Wider bands can feel tighter than narrow bands, so message us before ordering if you are between sizes.
 
 MAKE IT YOURS
 Add an inside engraving in the Personalization box or leave it blank. Engraving is included, up to 30 characters, and copied exactly as entered. Script is the default. Write block letters in your note if you prefer them.
@@ -224,13 +224,13 @@ WHY EON
 The pattern is old, but the object belongs to one life. The continuous line holds a private meaning: what is carried, kept and passed forward.
 
 ---
-[EON Maeander 1008 | {karat} {metal} | Width 3mm to 12mm | Ring Size US 4 to 16 whole and half | 1.5mm pricing and production specification | quantity {QUANTITY} per variant | personalization max 30 characters]"""
+[EON Maeander 1008 | {karat} {metal} | Width 5mm to 12mm | Ring Size US 4 to 16 whole and half | 1.5mm pricing and production specification | quantity {QUANTITY} per variant | personalization max 30 characters]"""
 
 
 def title_for(karat: str, metal: str) -> str:
     title = (
         f"{karat} Solid {metal} Greek Key Wedding Band, "
-        "Maeander Rope Edge Ring, 3mm to 12mm"
+        "Maeander Rope Edge Ring, 5mm to 12mm"
     )
     assert len(title) <= 140
     assert len(title.replace(",", "").split()) <= 15
@@ -265,7 +265,7 @@ def alt_texts(karat: str, metal: str) -> list[str]:
         f"Top view of the solid {k} {color} Maeander wedding band",
         f"{k} {color} Greek key wedding band worn on an adult hand",
         f"EON Maeander {k} {color} ring in Aegean Glass light and natural shadow",
-        "Ring size and width guide for US 4 to 16 and 3mm to 12mm",
+        "Ring size and width guide for US 4 to 16 and 5mm to 12mm",
         f"{karat} {metal} material and color guide",
         "Inside engraving and solid gold ring care guide",
         "Made-to-order processing and shipping expectations",
@@ -290,7 +290,7 @@ def build_catalog() -> dict:
                             "width_mm": width,
                             "ring_size_us": size_text(size),
                             "weight_grams": grams,
-                            "price_preview_cents_spot_4090": list_price_cents(
+                            "price_preview_cents_active_basis": list_price_cents(
                                 karat, width, grams
                             ),
                             "quantity": QUANTITY,
@@ -331,7 +331,7 @@ def build_catalog() -> dict:
                     "widths_mm": WIDTHS,
                     "ring_sizes_us": [size_text(s) for s in SIZES],
                     "pricing": {
-                        "migration_strategy": "latest gold_reprice_basis, fallback 4090 USD per troy ounce",
+                        "migration_strategy": "latest gold_reprice_basis, fallback 4399.90 USD per troy ounce",
                         "preview_spot_usd_per_ozt": BASE_SPOT,
                         "profile": "handfinished",
                         "labor_usd": LABOR,
@@ -381,7 +381,7 @@ def write_catalog(catalog: dict) -> None:
             "variant_count",
             "image_count",
         ]
-        writer = csv.DictWriter(handle, fieldnames=fields)
+        writer = csv.DictWriter(handle, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         for listing in catalog["listings"]:
             writer.writerow(
@@ -408,10 +408,10 @@ def write_catalog(catalog: dict) -> None:
             "width_mm",
             "ring_size_us",
             "weight_grams",
-            "price_preview_cents_spot_4090",
+            "price_preview_cents_active_basis",
             "quantity",
         ]
-        writer = csv.DictWriter(handle, fieldnames=fields)
+        writer = csv.DictWriter(handle, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         for listing in catalog["listings"]:
             for variant in listing["variants"]:
@@ -424,8 +424,8 @@ def write_catalog(catalog: dict) -> None:
                         "width_mm": variant["width_mm"],
                         "ring_size_us": variant["ring_size_us"],
                         "weight_grams": variant["weight_grams"],
-                        "price_preview_cents_spot_4090": variant[
-                            "price_preview_cents_spot_4090"
+                        "price_preview_cents_active_basis": variant[
+                            "price_preview_cents_active_basis"
                         ],
                         "quantity": variant["quantity"],
                     }
@@ -435,9 +435,9 @@ def write_catalog(catalog: dict) -> None:
 def emit_migration(catalog: dict) -> str:
     lines = [
         "-- Generated by scripts/eon-maeander/generate_catalog.py.",
-        "-- Creates nine EON Maeander 1008 listing suggestions.",
+        "-- Refreshes nine EON Maeander 1008 listing suggestions.",
         "-- Etsy remains untouched. Each row is a panel draft with etsy_listing_id null.",
-        "-- Prices use the latest EON gold_reprice_basis at migration time, with 4090 fallback.",
+        "-- Prices use the latest EON gold_reprice_basis at refresh time, with 4399.90 fallback.",
         "",
     ]
 
@@ -485,6 +485,14 @@ def emit_migration(catalog: dict) -> str:
 
     lines.extend(
         [
+            "delete from public.product_variants v",
+            "using public.products p, public.organizations o",
+            "where v.product_id = p.id",
+            "  and p.org_id = o.id",
+            "  and o.name = 'EON'",
+            "  and p.sku ~ '^(GLD|WHG|RSG)-R-(10|14|18)08$'",
+            "  and substring(v.sku from '-([0-9]+)MM-')::integer < 5;",
+            "",
             "create temp table _maeander_variants (",
             "  family text, karat text, metal text, purity numeric,",
             "  sku text, width_mm integer, ring_size text, grams numeric",
@@ -529,8 +537,8 @@ def emit_migration(catalog: dict) -> str:
             "  ),",
             "  (ceil(round((",
             "    v.grams * (basis.spot_per_ozt / 31.1034768) * v.purity * 1.07",
-            "    + 40 + 8 + 22",
-            "  ) * case when v.width_mm <= 7 then 1.55 else 2.0 end) * 4.0 / 15.0) * 5 * 100)::integer,",
+            "    + 55 + 8 + 22",
+            "  ) * case when v.width_mm <= 7 then 1.75 else 2.0 end) * 4.0 / 15.0) * 5 * 100)::integer,",
             f"  {QUANTITY}, v.grams, 'catalog_maeander_1_5mm', true, 'USD'",
             "from _maeander_variants v",
             "join public.products p on p.sku = v.family",
@@ -540,7 +548,7 @@ def emit_migration(catalog: dict) -> str:
             "    (select b.spot_per_ozt from public.gold_reprice_basis b",
             "     where b.org_id = o.id order by b.created_at desc limit 1),",
             "    (select c.spot_usd_per_ozt from public.pricing_config c where c.org_id = o.id),",
-            "    4090",
+            "    4399.90",
             "  )::numeric as spot_per_ozt",
             ") basis",
             "on conflict (org_id, sku) do update set",
@@ -605,8 +613,8 @@ def emit_migration(catalog: dict) -> str:
 
 def verify(catalog: dict) -> None:
     assert catalog["listing_count"] == 9
-    assert catalog["variants_per_listing"] == 250
-    assert catalog["total_variants"] == 2250
+    assert catalog["variants_per_listing"] == 200
+    assert catalog["total_variants"] == 1800
     families = {listing["family_sku"] for listing in catalog["listings"]}
     assert len(families) == 9
     skus = {
@@ -614,14 +622,14 @@ def verify(catalog: dict) -> None:
         for listing in catalog["listings"]
         for variant in listing["variants"]
     }
-    assert len(skus) == 2250
+    assert len(skus) == 1800
     for listing in catalog["listings"]:
         assert len(listing["title"]) <= 140
         assert len(listing["tags"]) == 13
         assert all(len(tag) <= 20 for tag in listing["tags"])
         assert len(listing["images"]) == 10
         assert len(listing["prompts"]) == 6
-        assert len(listing["variants"]) == 250
+        assert len(listing["variants"]) == 200
         assert listing["widths_mm"] == WIDTHS
         assert listing["ring_sizes_us"][0] == "4"
         assert listing["ring_sizes_us"][-1] == "16"
@@ -631,12 +639,12 @@ def main() -> None:
     catalog = build_catalog()
     verify(catalog)
     write_catalog(catalog)
-    MIGRATION_FILE.write_text(emit_migration(catalog))
+    PANEL_REFRESH_FILE.write_text(emit_migration(catalog))
     print(
         json.dumps(
             {
                 "catalog": str(OUT / "catalog.json"),
-                "migration": str(MIGRATION_FILE),
+                "panel_refresh": str(PANEL_REFRESH_FILE),
                 "listings": catalog["listing_count"],
                 "variants": catalog["total_variants"],
             },

@@ -116,7 +116,7 @@ def generate() -> tuple[list[dict], dict]:
     for metal, prefix in METALS:
         for karat in KARATS:
             code = karat.removesuffix("K")
-            low = by_key[(karat, 3, "4")]
+            low = by_key[(karat, 5, "4")]
             high = by_key[(karat, 12, "16")]
             listing_ranges.append(
                 {
@@ -172,6 +172,9 @@ def generate() -> tuple[list[dict], dict]:
             "widths_mm": list(WIDTHS),
             "sizes_us": [size_text(size) for size in SIZES],
         },
+        "maeander_minimum_width_mm": 5,
+        "maeander_removed_widths_mm": [3, 4],
+        "maeander_removed_variant_count": 450,
         "listing_ranges": listing_ranges,
         "width_ranges": width_ranges,
         "minimum_standard_margin_pct": min(

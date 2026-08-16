@@ -63,86 +63,92 @@
       "16"
     ]
   },
+  "maeander_minimum_width_mm": 5,
+  "maeander_removed_widths_mm": [
+    3,
+    4
+  ],
+  "maeander_removed_variant_count": 450,
   "listing_ranges": [
     {
       "metal": "Yellow Gold",
       "karat": "10K",
       "maeander_family": "GLD-R-1008",
-      "list_price_min_usd": 500,
+      "list_price_min_usd": 705,
       "list_price_max_usd": 2415,
-      "sale_price_min_usd": 375.0,
+      "sale_price_min_usd": 528.75,
       "sale_price_max_usd": 1811.25
     },
     {
       "metal": "Yellow Gold",
       "karat": "14K",
       "maeander_family": "GLD-R-1408",
-      "list_price_min_usd": 680,
+      "list_price_min_usd": 1000,
       "list_price_max_usd": 3700,
-      "sale_price_min_usd": 510.0,
+      "sale_price_min_usd": 750.0,
       "sale_price_max_usd": 2775.0
     },
     {
       "metal": "Yellow Gold",
       "karat": "18K",
       "maeander_family": "GLD-R-1808",
-      "list_price_min_usd": 900,
+      "list_price_min_usd": 1410,
       "list_price_max_usd": 5325,
-      "sale_price_min_usd": 675.0,
+      "sale_price_min_usd": 1057.5,
       "sale_price_max_usd": 3993.75
     },
     {
       "metal": "White Gold",
       "karat": "10K",
       "maeander_family": "WHG-R-1008",
-      "list_price_min_usd": 500,
+      "list_price_min_usd": 705,
       "list_price_max_usd": 2415,
-      "sale_price_min_usd": 375.0,
+      "sale_price_min_usd": 528.75,
       "sale_price_max_usd": 1811.25
     },
     {
       "metal": "White Gold",
       "karat": "14K",
       "maeander_family": "WHG-R-1408",
-      "list_price_min_usd": 680,
+      "list_price_min_usd": 1000,
       "list_price_max_usd": 3700,
-      "sale_price_min_usd": 510.0,
+      "sale_price_min_usd": 750.0,
       "sale_price_max_usd": 2775.0
     },
     {
       "metal": "White Gold",
       "karat": "18K",
       "maeander_family": "WHG-R-1808",
-      "list_price_min_usd": 900,
+      "list_price_min_usd": 1410,
       "list_price_max_usd": 5325,
-      "sale_price_min_usd": 675.0,
+      "sale_price_min_usd": 1057.5,
       "sale_price_max_usd": 3993.75
     },
     {
       "metal": "Rose Gold",
       "karat": "10K",
       "maeander_family": "RSG-R-1008",
-      "list_price_min_usd": 500,
+      "list_price_min_usd": 705,
       "list_price_max_usd": 2415,
-      "sale_price_min_usd": 375.0,
+      "sale_price_min_usd": 528.75,
       "sale_price_max_usd": 1811.25
     },
     {
       "metal": "Rose Gold",
       "karat": "14K",
       "maeander_family": "RSG-R-1408",
-      "list_price_min_usd": 680,
+      "list_price_min_usd": 1000,
       "list_price_max_usd": 3700,
-      "sale_price_min_usd": 510.0,
+      "sale_price_min_usd": 750.0,
       "sale_price_max_usd": 2775.0
     },
     {
       "metal": "Rose Gold",
       "karat": "18K",
       "maeander_family": "RSG-R-1808",
-      "list_price_min_usd": 900,
+      "list_price_min_usd": 1410,
       "list_price_max_usd": 5325,
-      "sale_price_min_usd": 675.0,
+      "sale_price_min_usd": 1057.5,
       "sale_price_max_usd": 3993.75
     }
   ],

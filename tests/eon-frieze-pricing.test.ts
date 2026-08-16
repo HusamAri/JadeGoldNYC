@@ -121,3 +121,69 @@ test("Generated 750-row matrix matches the TypeScript engine", () => {
     assert.equal(result.multiplier, Number(row.multiplier));
   }
 });
+
+test("Maeander listing package starts at 5mm and contains 1,800 variants", () => {
+  const catalog = JSON.parse(
+    readFileSync(
+      new URL("../docs/eon/maeander-1008/catalog.json", import.meta.url),
+      "utf8",
+    ),
+  ) as {
+    listing_count: number;
+    variants_per_listing: number;
+    total_variants: number;
+    listings: Array<{
+      karat: "10K" | "14K" | "18K";
+      title: string;
+      description: string;
+      widths_mm: number[];
+      variants: Array<{
+        width_mm: number;
+        weight_grams: number;
+        price_preview_cents_active_basis: number;
+      }>;
+    }>;
+  };
+
+  assert.equal(catalog.listing_count, 9);
+  assert.equal(catalog.variants_per_listing, 200);
+  assert.equal(catalog.total_variants, 1_800);
+  for (const listing of catalog.listings) {
+    assert.deepEqual(listing.widths_mm, [5, 6, 7, 8, 9, 10, 11, 12]);
+    assert.equal(listing.variants.length, 200);
+    assert.equal(listing.variants.every((variant) => variant.width_mm >= 5), true);
+    for (const variant of listing.variants) {
+      assert.equal(
+        variant.price_preview_cents_active_basis,
+        eonListCents(
+          Number(listing.karat.slice(0, -1)),
+          variant.width_mm,
+          variant.weight_grams,
+          55,
+          ACTIVE_BASIS,
+          { narrow: 1.75 },
+        ),
+      );
+    }
+    assert.match(listing.title, /5mm to 12mm/);
+    assert.match(listing.description, /Widths: 5mm through 12mm/);
+    assert.doesNotMatch(listing.description, /3mm/);
+  }
+});
+
+test("Maeander production migration removes exactly the 3mm and 4mm variants", () => {
+  const migration = readFileSync(
+    new URL(
+      "../supabase/migrations/0133_eon_maeander_minimum_5mm.sql",
+      import.meta.url,
+    ),
+    "utf8",
+  );
+
+  assert.match(migration, /narrow_variants <> 450/);
+  assert.match(migration, /remaining_variants <> 1800/);
+  assert.match(migration, /minimum_width <> 5/);
+  assert.match(migration, /remaining_narrow <> 0/);
+  assert.match(migration, /delete from public\.product_variants/);
+  assert.match(migration, /does not call Etsy/);
+});

@@ -1,15 +1,13 @@
 {
   "package": "EON Maeander 1008",
-  "generated_at": "2026-08-16T05:10:23.018246+00:00",
+  "generated_at": "2026-08-16T11:35:10.676817+00:00",
   "status": "pass",
   "summary": {
     "listings": 9,
-    "variants": 2250,
+    "variants": 1800,
     "images": 90,
     "tags": 117,
     "widths_mm": [
-      3,
-      4,
       5,
       6,
       7,
@@ -133,15 +131,15 @@
       "name": "unique_titles",
       "status": "pass",
       "details": [
-        "10K Solid Yellow Gold Greek Key Wedding Band, Maeander Rope Edge Ring, 3mm to 12mm",
-        "14K Solid Yellow Gold Greek Key Wedding Band, Maeander Rope Edge Ring, 3mm to 12mm",
-        "18K Solid Yellow Gold Greek Key Wedding Band, Maeander Rope Edge Ring, 3mm to 12mm",
-        "10K Solid White Gold Greek Key Wedding Band, Maeander Rope Edge Ring, 3mm to 12mm",
-        "14K Solid White Gold Greek Key Wedding Band, Maeander Rope Edge Ring, 3mm to 12mm",
-        "18K Solid White Gold Greek Key Wedding Band, Maeander Rope Edge Ring, 3mm to 12mm",
-        "10K Solid Rose Gold Greek Key Wedding Band, Maeander Rope Edge Ring, 3mm to 12mm",
-        "14K Solid Rose Gold Greek Key Wedding Band, Maeander Rope Edge Ring, 3mm to 12mm",
-        "18K Solid Rose Gold Greek Key Wedding Band, Maeander Rope Edge Ring, 3mm to 12mm"
+        "10K Solid Yellow Gold Greek Key Wedding Band, Maeander Rope Edge Ring, 5mm to 12mm",
+        "14K Solid Yellow Gold Greek Key Wedding Band, Maeander Rope Edge Ring, 5mm to 12mm",
+        "18K Solid Yellow Gold Greek Key Wedding Band, Maeander Rope Edge Ring, 5mm to 12mm",
+        "10K Solid White Gold Greek Key Wedding Band, Maeander Rope Edge Ring, 5mm to 12mm",
+        "14K Solid White Gold Greek Key Wedding Band, Maeander Rope Edge Ring, 5mm to 12mm",
+        "18K Solid White Gold Greek Key Wedding Band, Maeander Rope Edge Ring, 5mm to 12mm",
+        "10K Solid Rose Gold Greek Key Wedding Band, Maeander Rope Edge Ring, 5mm to 12mm",
+        "14K Solid Rose Gold Greek Key Wedding Band, Maeander Rope Edge Ring, 5mm to 12mm",
+        "18K Solid Rose Gold Greek Key Wedding Band, Maeander Rope Edge Ring, 5mm to 12mm"
       ]
     },
     {
@@ -354,26 +352,26 @@
       "name": "variants_per_listing",
       "status": "pass",
       "details": {
-        "GLD-R-1008": 250,
-        "GLD-R-1408": 250,
-        "GLD-R-1808": 250,
-        "WHG-R-1008": 250,
-        "WHG-R-1408": 250,
-        "WHG-R-1808": 250,
-        "RSG-R-1008": 250,
-        "RSG-R-1408": 250,
-        "RSG-R-1808": 250
+        "GLD-R-1008": 200,
+        "GLD-R-1408": 200,
+        "GLD-R-1808": 200,
+        "WHG-R-1008": 200,
+        "WHG-R-1408": 200,
+        "WHG-R-1808": 200,
+        "RSG-R-1008": 200,
+        "RSG-R-1408": 200,
+        "RSG-R-1808": 200
       }
     },
     {
       "name": "variant_total",
       "status": "pass",
-      "details": 2250
+      "details": 1800
     },
     {
       "name": "unique_variant_skus",
       "status": "pass",
-      "details": 2250
+      "details": 1800
     },
     {
       "name": "variant_dimensions",
@@ -381,8 +379,6 @@
       "details": {
         "GLD-R-1008": {
           "widths_mm": [
-            3,
-            4,
             5,
             6,
             7,
@@ -422,8 +418,6 @@
         },
         "GLD-R-1408": {
           "widths_mm": [
-            3,
-            4,
             5,
             6,
             7,
@@ -463,8 +457,6 @@
         },
         "GLD-R-1808": {
           "widths_mm": [
-            3,
-            4,
             5,
             6,
             7,
@@ -504,8 +496,6 @@
         },
         "WHG-R-1008": {
           "widths_mm": [
-            3,
-            4,
             5,
             6,
             7,
@@ -545,8 +535,6 @@
         },
         "WHG-R-1408": {
           "widths_mm": [
-            3,
-            4,
             5,
             6,
             7,
@@ -586,8 +574,6 @@
         },
         "WHG-R-1808": {
           "widths_mm": [
-            3,
-            4,
             5,
             6,
             7,
@@ -627,8 +613,6 @@
         },
         "RSG-R-1008": {
           "widths_mm": [
-            3,
-            4,
             5,
             6,
             7,
@@ -668,8 +652,6 @@
         },
         "RSG-R-1408": {
           "widths_mm": [
-            3,
-            4,
             5,
             6,
             7,
@@ -709,8 +691,6 @@
         },
         "RSG-R-1808": {
           "widths_mm": [
-            3,
-            4,
             5,
             6,
             7,
@@ -836,7 +816,7 @@
               2200,
               2200
             ],
-            "bytes": 377440,
+            "bytes": 377465,
             "valid": true
           },
           {
@@ -872,7 +852,7 @@
               2200,
               2200
             ],
-            "bytes": 365560,
+            "bytes": 365543,
             "valid": true
           }
         ],
@@ -958,7 +938,7 @@
               2200,
               2200
             ],
-            "bytes": 443647,
+            "bytes": 443623,
             "valid": true
           },
           {
@@ -994,7 +974,7 @@
               2200,
               2200
             ],
-            "bytes": 427704,
+            "bytes": 427685,
             "valid": true
           }
         ],
@@ -1080,7 +1060,7 @@
               2200,
               2200
             ],
-            "bytes": 429612,
+            "bytes": 429442,
             "valid": true
           },
           {
@@ -1116,7 +1096,7 @@
               2200,
               2200
             ],
-            "bytes": 415092,
+            "bytes": 415103,
             "valid": true
           }
         ],
@@ -1202,7 +1182,7 @@
               2200,
               2200
             ],
-            "bytes": 318144,
+            "bytes": 318026,
             "valid": true
           },
           {
@@ -1238,7 +1218,7 @@
               2200,
               2200
             ],
-            "bytes": 313955,
+            "bytes": 313895,
             "valid": true
           }
         ],
@@ -1324,7 +1304,7 @@
               2200,
               2200
             ],
-            "bytes": 372831,
+            "bytes": 372647,
             "valid": true
           },
           {
@@ -1360,7 +1340,7 @@
               2200,
               2200
             ],
-            "bytes": 365211,
+            "bytes": 365207,
             "valid": true
           }
         ],
@@ -1446,7 +1426,7 @@
               2200,
               2200
             ],
-            "bytes": 372678,
+            "bytes": 372388,
             "valid": true
           },
           {
@@ -1482,7 +1462,7 @@
               2200,
               2200
             ],
-            "bytes": 366730,
+            "bytes": 366708,
             "valid": true
           }
         ],
@@ -1568,7 +1548,7 @@
               2200,
               2200
             ],
-            "bytes": 364788,
+            "bytes": 364709,
             "valid": true
           },
           {
@@ -1604,7 +1584,7 @@
               2200,
               2200
             ],
-            "bytes": 352629,
+            "bytes": 352593,
             "valid": true
           }
         ],
@@ -1690,7 +1670,7 @@
               2200,
               2200
             ],
-            "bytes": 434832,
+            "bytes": 434679,
             "valid": true
           },
           {
@@ -1726,7 +1706,7 @@
               2200,
               2200
             ],
-            "bytes": 419934,
+            "bytes": 419920,
             "valid": true
           }
         ],
@@ -1812,7 +1792,7 @@
               2200,
               2200
             ],
-            "bytes": 412201,
+            "bytes": 412141,
             "valid": true
           },
           {
@@ -1848,7 +1828,7 @@
               2200,
               2200
             ],
-            "bytes": 398930,
+            "bytes": 398917,
             "valid": true
           }
         ]
@@ -1880,7 +1860,7 @@
     {
       "name": "migration_variant_skus",
       "status": "pass",
-      "details": 2250
+      "details": 1800
     },
     {
       "name": "migration_image_urls",
@@ -1898,7 +1878,7 @@
     {
       "name": "migration_live_pricing_basis",
       "status": "pass",
-      "details": "latest gold_reprice_basis, pricing_config fallback, 4090 final fallback"
+      "details": "latest gold_reprice_basis, pricing_config fallback, 4399.90 final fallback"
     },
     {
       "name": "migration_v4_list_price_formula",
@@ -1930,7 +1910,7 @@
   },
   "pricing_note": {
     "migration": "Uses the latest stored EON gold basis at migration time.",
-    "preview_spot_usd_per_ozt": 4090.0,
+    "preview_spot_usd_per_ozt": 4399.9,
     "external_crosscheck": "Stooq endpoint returned 404 during package production. The panel basis remains the migration authority."
   },
   "artifacts": {

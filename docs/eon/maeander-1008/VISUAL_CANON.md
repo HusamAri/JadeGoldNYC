@@ -7,7 +7,7 @@ Date: 2026-08-16
 - Collection name: Maeander
 - Etsy search name: Greek Key Wedding Band
 - Family number: 08
-- Width range: 3mm to 12mm, whole millimeters
+- Width range: 5mm to 12mm, whole millimeters
 - Ring size range: US 4 to US 16, whole and half sizes
 - Metal and karat listings: Yellow Gold, White Gold and Rose Gold in 10K, 14K and 18K
 

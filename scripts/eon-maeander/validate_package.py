@@ -14,7 +14,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parents[2]
 CATALOG_PATH = ROOT / "docs/eon/maeander-1008/catalog.json"
-MIGRATION_PATH = ROOT / "supabase/migrations/0131_eon_maeander_1008.sql"
+PANEL_REFRESH_PATH = ROOT / "docs/eon/maeander-1008/panel-refresh.sql"
 PUBLIC_ROOT = ROOT / "public/eon/maeander-1008"
 QA_ROOT = ROOT / "docs/eon/maeander-1008/qa"
 LISTING_QA_ROOT = QA_ROOT / "listings"
@@ -22,10 +22,10 @@ REPORT_PATH = QA_ROOT / "qa-report.json"
 
 EXPECTED_METALS = ("Yellow Gold", "White Gold", "Rose Gold")
 EXPECTED_KARATS = ("10K", "14K", "18K")
-EXPECTED_WIDTHS = list(range(3, 13))
+EXPECTED_WIDTHS = list(range(5, 13))
 EXPECTED_SIZES = [str(value / 2).removesuffix(".0") for value in range(8, 33)]
 FORBIDDEN_CHARS = {"\u2013": "en dash", "\u2014": "em dash", "\u00e2": "circumflex a"}
-SKU_PATTERN = re.compile(r"(?:GLD|WHG|RSG)-R-(?:10|14|18)08-(?:[3-9]|1[0-2])MM-(?:[4-9]|1[0-6])(?:\.5)?")
+SKU_PATTERN = re.compile(r"(?:GLD|WHG|RSG)-R-(?:10|14|18)08-(?:[5-9]|1[0-2])MM-(?:[4-9]|1[0-6])(?:\.5)?")
 URL_PATTERN = re.compile(r"https://amuletta\.artifactstudio\.info/eon/maeander-1008/[a-z0-9-]+/[a-z0-9-]+\.jpg")
 
 
@@ -99,7 +99,7 @@ def main() -> None:
     checks = Checks()
     catalog = json.loads(CATALOG_PATH.read_text())
     listings = catalog["listings"]
-    migration = MIGRATION_PATH.read_text()
+    panel_refresh = PANEL_REFRESH_PATH.read_text()
 
     checks.check("listing_count", len(listings) == 9, len(listings))
     matrix = {(listing["metal"], listing["karat"]) for listing in listings}
@@ -131,7 +131,7 @@ def main() -> None:
     )
 
     description_requirements = (
-        "3mm through 12mm",
+        "5mm through 12mm",
         "US 4 through 16",
         "whole and half sizes",
         "1.5mm production specification",
@@ -149,7 +149,7 @@ def main() -> None:
         descriptions_ok,
     )
 
-    all_copy = json.dumps(catalog, ensure_ascii=False) + migration
+    all_copy = json.dumps(catalog, ensure_ascii=False) + panel_refresh
     checks.check("forbidden_characters", not check_forbidden(all_copy), check_forbidden(all_copy))
 
     all_variant_skus: list[str] = []
@@ -162,9 +162,9 @@ def main() -> None:
         widths = sorted({variant["width_mm"] for variant in variants})
         sizes = sorted({variant["ring_size_us"] for variant in variants}, key=float)
         variant_dimensions[listing["family_sku"]] = {"widths_mm": widths, "ring_sizes_us": sizes}
-    checks.check("variants_per_listing", all(count == 250 for count in variant_counts.values()), variant_counts)
-    checks.check("variant_total", len(all_variant_skus) == 2250, len(all_variant_skus))
-    checks.check("unique_variant_skus", len(set(all_variant_skus)) == 2250, len(set(all_variant_skus)))
+    checks.check("variants_per_listing", all(count == 200 for count in variant_counts.values()), variant_counts)
+    checks.check("variant_total", len(all_variant_skus) == 1800, len(all_variant_skus))
+    checks.check("unique_variant_skus", len(set(all_variant_skus)) == 1800, len(set(all_variant_skus)))
     checks.check(
         "variant_dimensions",
         all(item["widths_mm"] == EXPECTED_WIDTHS and item["ring_sizes_us"] == EXPECTED_SIZES for item in variant_dimensions.values()),
@@ -202,25 +202,25 @@ def main() -> None:
     prompt_counts = {listing["family_sku"]: len(listing["prompts"]) for listing in listings}
     checks.check("photo_prompt_count", all(count == 6 for count in prompt_counts.values()), prompt_counts)
 
-    migration_skus = set(SKU_PATTERN.findall(migration))
-    migration_urls = set(URL_PATTERN.findall(migration))
+    migration_skus = set(SKU_PATTERN.findall(panel_refresh))
+    migration_urls = set(URL_PATTERN.findall(panel_refresh))
     checks.check("migration_variant_skus", migration_skus == set(all_variant_skus), len(migration_skus))
     expected_urls = {image["url"] for listing in listings for image in listing["images"]}
     checks.check("migration_image_urls", migration_urls == expected_urls, len(migration_urls))
     checks.check(
         "migration_panel_drafts",
-        migration.count("'draft', 'USD'") == 9 and "etsy_listing_id null" in migration,
-        {"draft_insertions": migration.count("'draft', 'USD'"), "etsy_listing_id_note": "etsy_listing_id null" in migration},
+        panel_refresh.count("'draft', 'USD'") == 9 and "etsy_listing_id null" in panel_refresh,
+        {"draft_insertions": panel_refresh.count("'draft', 'USD'"), "etsy_listing_id_note": "etsy_listing_id null" in panel_refresh},
     )
     checks.check(
         "migration_live_pricing_basis",
-        "public.gold_reprice_basis" in migration and "public.pricing_config" in migration and re.search(r"\b4090(?:\.0)?\b", migration) is not None,
-        "latest gold_reprice_basis, pricing_config fallback, 4090 final fallback",
+        "public.gold_reprice_basis" in panel_refresh and "public.pricing_config" in panel_refresh and "4399.90" in panel_refresh,
+        "latest gold_reprice_basis, pricing_config fallback, 4399.90 final fallback",
     )
     checks.check(
         "migration_v4_list_price_formula",
-        "* 4.0 / 15.0) * 5 * 100" in migration
-        and "* 4.0 / 15.0) / 5.0" not in migration,
+        "* 4.0 / 15.0) * 5 * 100" in panel_refresh
+        and "* 4.0 / 15.0) / 5.0" not in panel_refresh,
         "motor price grossed up for the 25 percent sale and rounded to the next 5 USD",
     )
 
