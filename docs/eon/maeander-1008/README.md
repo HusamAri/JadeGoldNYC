@@ -85,6 +85,6 @@ Expected package result:
 - 117 tags
 - 0 failed automated checks
 
-The migration was also parsed as 41 valid top-level PostgreSQL statements. A live database apply remains a deployment gate because the local Colima disk image was unavailable during production verification.
+The migration was parsed as 41 valid top-level PostgreSQL statements and applied to production on 2026-08-16. Live verification confirmed nine panel drafts, 2,250 active variants, 90 listing images, ten widths, 25 ring sizes and no Etsy listing IDs. At the active EON price basis of $4,399.90/ozt, the permanent 25 percent sale leaves at least $111.86 and 35.42 percent gross margin above landed production cost across the full matrix. Etsy remained untouched.
 
 See `qa/qa-report.json` for machine-readable results and `qa/00-master-listing-contact-sheet.jpg` for the complete visual review matrix.
