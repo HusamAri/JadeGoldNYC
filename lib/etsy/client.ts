@@ -11,6 +11,93 @@ export class EtsyNotConnectedError extends Error {
   }
 }
 
+const DEFAULT_SHORT_RATE_LIMIT_RETRY_MS = 1200;
+const MAX_INLINE_RATE_LIMIT_RETRY_SECONDS = 2;
+
+export interface EtsyRateLimitDetails {
+  retryAfterSeconds: number | null;
+  daily: boolean;
+}
+
+/** Parse Retry-After as either delta seconds or an HTTP date. */
+export function parseEtsyRetryAfter(
+  raw: string | null,
+  nowMs = Date.now(),
+): number | null {
+  if (raw == null || raw.trim() === "") return null;
+
+  const deltaSeconds = Number(raw);
+  if (Number.isFinite(deltaSeconds) && deltaSeconds >= 0) {
+    return Math.ceil(deltaSeconds);
+  }
+
+  const retryAtMs = Date.parse(raw);
+  if (Number.isNaN(retryAtMs)) return null;
+  return Math.max(0, Math.ceil((retryAtMs - nowMs) / 1000));
+}
+
+export function etsyRateLimitDetails(
+  body: string,
+  retryAfterHeader: string | null,
+): EtsyRateLimitDetails {
+  return {
+    retryAfterSeconds: parseEtsyRetryAfter(retryAfterHeader),
+    daily: /daily\s+rate\s+limit/i.test(body),
+  };
+}
+
+export function etsyRateLimitRetryDelayMs(
+  details: EtsyRateLimitDetails,
+  retriesRemaining: number,
+): number | null {
+  if (retriesRemaining <= 0 || details.daily) return null;
+  if (
+    details.retryAfterSeconds != null &&
+    details.retryAfterSeconds > MAX_INLINE_RATE_LIMIT_RETRY_SECONDS
+  ) {
+    return null;
+  }
+  return details.retryAfterSeconds == null
+    ? DEFAULT_SHORT_RATE_LIMIT_RETRY_MS
+    : Math.max(250, details.retryAfterSeconds * 1000);
+}
+
+function formatRetryAfter(seconds: number): string {
+  if (seconds < 60) return `${Math.max(1, seconds)} saniye`;
+  if (seconds < 3600) return `${Math.ceil(seconds / 60)} dakika`;
+  return `${Math.ceil(seconds / 3600)} saat`;
+}
+
+export class EtsyRateLimitError extends Error {
+  readonly retryAfterSeconds: number | null;
+  readonly daily: boolean;
+
+  constructor(details: EtsyRateLimitDetails) {
+    const wait =
+      details.retryAfterSeconds == null
+        ? null
+        : formatRetryAfter(details.retryAfterSeconds);
+    const message = details.daily
+      ? wait
+        ? `Etsy günlük API kotası dolu. Kota yaklaşık ${wait} sonra yeniden açılacak.`
+        : "Etsy günlük API kotası dolu. Kota Etsy'nin kayan 24 saatlik penceresi içinde yeniden açıldığında tekrar deneyin."
+      : wait
+        ? `Etsy API istek sınırına ulaşıldı. Yaklaşık ${wait} sonra tekrar deneyin.`
+        : "Etsy API istek sınırına ulaşıldı. Kısa bir süre sonra tekrar deneyin.";
+    super(message);
+    this.name = "EtsyRateLimitError";
+    this.retryAfterSeconds = details.retryAfterSeconds;
+    this.daily = details.daily;
+  }
+}
+
+async function readEtsyRateLimitDetails(
+  response: Response,
+): Promise<EtsyRateLimitDetails> {
+  const body = await response.text();
+  return etsyRateLimitDetails(body, response.headers.get("retry-after"));
+}
+
 interface ConnectionRow {
   id: string;
   org_id: string;
@@ -142,9 +229,14 @@ export class EtsyClient {
       },
     });
 
-    if (res.status === 429 && retry > 0) {
-      await new Promise((r) => setTimeout(r, 1200));
-      return this.get<T>(path, query, retry - 1);
+    if (res.status === 429) {
+      const details = await readEtsyRateLimitDetails(res);
+      const delayMs = etsyRateLimitRetryDelayMs(details, retry);
+      if (delayMs != null) {
+        await new Promise((r) => setTimeout(r, delayMs));
+        return this.get<T>(path, query, retry - 1);
+      }
+      throw new EtsyRateLimitError(details);
     }
     if (!res.ok) {
       throw new Error(
@@ -176,9 +268,14 @@ export class EtsyClient {
       body: body == null ? undefined : JSON.stringify(body),
     });
 
-    if (res.status === 429 && retry > 0) {
-      await new Promise((r) => setTimeout(r, 1200));
-      return this.request<T>(method, path, body, retry - 1);
+    if (res.status === 429) {
+      const details = await readEtsyRateLimitDetails(res);
+      const delayMs = etsyRateLimitRetryDelayMs(details, retry);
+      if (delayMs != null) {
+        await new Promise((r) => setTimeout(r, delayMs));
+        return this.request<T>(method, path, body, retry - 1);
+      }
+      throw new EtsyRateLimitError(details);
     }
     if (!res.ok) {
       throw new Error(
@@ -215,9 +312,14 @@ export class EtsyClient {
       body,
     });
 
-    if (res.status === 429 && retry > 0) {
-      await new Promise((r) => setTimeout(r, 1200));
-      return this.requestForm<T>(method, path, form, retry - 1);
+    if (res.status === 429) {
+      const details = await readEtsyRateLimitDetails(res);
+      const delayMs = etsyRateLimitRetryDelayMs(details, retry);
+      if (delayMs != null) {
+        await new Promise((r) => setTimeout(r, delayMs));
+        return this.requestForm<T>(method, path, form, retry - 1);
+      }
+      throw new EtsyRateLimitError(details);
     }
     if (!res.ok) {
       throw new Error(
@@ -249,9 +351,14 @@ export class EtsyClient {
       body: form,
     });
 
-    if (res.status === 429 && retry > 0) {
-      await new Promise((r) => setTimeout(r, 1200));
-      return this.requestMultipart<T>(method, path, form, retry - 1);
+    if (res.status === 429) {
+      const details = await readEtsyRateLimitDetails(res);
+      const delayMs = etsyRateLimitRetryDelayMs(details, retry);
+      if (delayMs != null) {
+        await new Promise((r) => setTimeout(r, delayMs));
+        return this.requestMultipart<T>(method, path, form, retry - 1);
+      }
+      throw new EtsyRateLimitError(details);
     }
     if (!res.ok) {
       throw new Error(
