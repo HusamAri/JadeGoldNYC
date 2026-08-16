@@ -527,7 +527,7 @@ def emit_migration(catalog: dict) -> str:
             "    'Karat', v.karat, 'Metal', v.metal,",
             "    'Width', v.width_mm || 'mm', 'Ring Size', v.ring_size",
             "  ),",
-            "  (ceil((round((",
+            "  (ceil(round((",
             "    v.grams * (basis.spot_per_ozt / 31.1034768) * v.purity * 1.07",
             "    + 40 + 8 + 22",
             "  ) * case when v.width_mm <= 7 then 1.55 else 2.0 end) * 4.0 / 15.0) * 5 * 100)::integer,",
