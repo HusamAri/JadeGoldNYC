@@ -31,9 +31,9 @@ import { DEFAULT_PERSONALIZATION_QUESTIONS } from "@/lib/etsy/personalization";
  *  A. Zorunlu alan sabitleri (kullanıcı onayı): who_made="i_did"
  *     (ortak Yasin mağaza üyesi), when_made="made_to_order", is_supply="false",
  *     type="physical", state="draft".
- *  B. taxonomy_id: "Wedding Bands" düğümü ağaçtan çözülür (yoksa "Rings").
- *     Canlıda taksonomi adı değişmişse veya ağaç şekli farklıysa çözüm boş
- *     dönebilir → o durumda create adımı "Etsy kategorisi çözülemedi" ile durur.
+ *  B. taxonomy_id: verified Wedding Bands node 1232 is used without fetching
+ *     the complete taxonomy tree. ETSY_WEDDING_BANDS_TAXONOMY_ID can override
+ *     the default if Etsy remaps the category later.
  *  C. Kişiselleştirme: is_personalizable=true, required=false, max=30 char.
  *     Bant alyanslarında bu iç gravür talimatıdır; Etsy 30 char'ı aşan talebi
  *     reddeder.
@@ -79,43 +79,44 @@ export function stripInternalTrailer(desc: string): string {
   return desc.replace(/\n*---\n\[EON [\s\S]*\]$/m, "").trimEnd();
 }
 
-interface TaxNode {
-  id: number;
-  name: string;
-  children?: TaxNode[];
-}
+/**
+ * Etsy's Jewelry > Rings > Bands seller-taxonomy node. The node id is stable,
+ * while its display name has changed to Wedding Bands over time.
+ */
+export const DEFAULT_WEDDING_BANDS_TAXONOMY_ID = 1232;
 
-/** Taksonomi ağacında ada göre BFS (en sığ eşleşme). */
-function findTaxonomyNode(nodes: TaxNode[], name: string): TaxNode | null {
-  const queue = [...nodes];
-  while (queue.length) {
-    const n = queue.shift()!;
-    if (n.name.toLowerCase() === name.toLowerCase()) return n;
-    if (n.children) queue.push(...n.children);
+/**
+ * Keep the production default deterministic so serverless cold starts do not
+ * download Etsy's entire taxonomy tree. The override provides a no-code escape
+ * hatch if Etsy ever remaps the node.
+ */
+export function configuredWeddingBandsTaxonomyId(
+  raw = process.env.ETSY_WEDDING_BANDS_TAXONOMY_ID,
+): number {
+  if (raw == null || raw.trim() === "") {
+    return DEFAULT_WEDDING_BANDS_TAXONOMY_ID;
   }
-  return null;
+
+  const parsed = Number(raw);
+  if (!Number.isSafeInteger(parsed) || parsed < 1) {
+    throw new Error(
+      "ETSY_WEDDING_BANDS_TAXONOMY_ID pozitif bir tam sayı olmalı.",
+    );
+  }
+  return parsed;
 }
 
-// Taksonomi id'si oturum içinde sabittir — modül-cache ile tekrar çözülmez.
+// Taxonomy id is constant within the process.
 let cachedWeddingBandTaxonomyId: number | null = null;
 
 /**
- * "Wedding Bands" taksonomi id'sini çözer (yoksa "Rings"). Modül-cache'li.
- * Bulunamazsa null döner (çağıran adımı anlaşılır hata ile durdurur).
+ * Resolve the configured Wedding Bands taxonomy id without spending an Etsy
+ * API request on every serverless cold start.
  */
-export async function resolveWeddingBandTaxonomyId(
-  client: EtsyClient,
-): Promise<number | null> {
+export async function resolveWeddingBandTaxonomyId(): Promise<number> {
   if (cachedWeddingBandTaxonomyId != null) return cachedWeddingBandTaxonomyId;
-  const tax = await client.get<{ results: TaxNode[] }>(
-    etsyPaths.sellerTaxonomyNodes(),
-  );
-  const nodes = tax.results ?? [];
-  const node =
-    findTaxonomyNode(nodes, "Wedding Bands") ?? findTaxonomyNode(nodes, "Rings");
-  if (!node) return null;
-  cachedWeddingBandTaxonomyId = node.id;
-  return node.id;
+  cachedWeddingBandTaxonomyId = configuredWeddingBandsTaxonomyId();
+  return cachedWeddingBandTaxonomyId;
 }
 
 export interface ShopProfiles {
@@ -436,9 +437,9 @@ export async function createDraftListingFromProduct(
   const finalDesc = appendConstantsToDescription(cleanDesc, plan);
 
   // Taksonomi çöz.
-  let taxonomyId: number | null;
+  let taxonomyId: number;
   try {
-    taxonomyId = await resolveWeddingBandTaxonomyId(client);
+    taxonomyId = await resolveWeddingBandTaxonomyId();
   } catch (e) {
     return {
       ok: false,
@@ -446,14 +447,6 @@ export async function createDraftListingFromProduct(
       error: `Etsy kategorisi okunamadı: ${e instanceof Error ? e.message : String(e)}`,
     };
   }
-  if (taxonomyId == null) {
-    return {
-      ok: false,
-      step: "create",
-      error: "Etsy kategorisi çözülemedi (Wedding Bands/Rings bulunamadı).",
-    };
-  }
-
   // Profiller (kargo + iade).
   let profiles: ShopProfiles;
   try {

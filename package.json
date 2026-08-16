@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:etsy-taxonomy": "tsx --test tests/etsy-taxonomy.test.ts"
   },
   "dependencies": {
     "@ai-sdk/google": "^2.0.78",
