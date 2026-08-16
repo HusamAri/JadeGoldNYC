@@ -1,0 +1,277 @@
+{
+  "as_of": "2026-08-16",
+  "selected": {
+    "narrow_multiplier": 2.05,
+    "wide_multiplier": 2.2,
+    "minimum_standard_margin_pct": 40.58,
+    "minimum_offsite_margin_pct": 25.58,
+    "us7_14k_sale_prices": {
+      "3": 660.0,
+      "4": 821.25,
+      "5": 982.5,
+      "6": 1140.0,
+      "7": 1301.25,
+      "8": 1571.25,
+      "9": 1747.5,
+      "10": 1920.0,
+      "11": 2092.5,
+      "12": 2265.0
+    },
+    "market_score": 0.011279656649714042,
+    "eligible": true,
+    "rejection_reasons": [],
+    "market_position": [
+      {
+        "comparable_id": "revolutionba-208112020",
+        "width_mm": 5,
+        "eon_sale_price_usd": 982.5,
+        "market_sale_price_usd": 1197.12,
+        "eon_to_market_ratio": 0.8207
+      },
+      {
+        "comparable_id": "rayarose-4478680144",
+        "width_mm": 5,
+        "eon_sale_price_usd": 982.5,
+        "market_sale_price_usd": 1025.0,
+        "eon_to_market_ratio": 0.9585
+      },
+      {
+        "comparable_id": "yourweddingbandshop-1365802901",
+        "width_mm": 6,
+        "eon_sale_price_usd": 1140.0,
+        "market_sale_price_usd": 1130.5,
+        "eon_to_market_ratio": 1.0084
+      },
+      {
+        "comparable_id": "foria-1905763733",
+        "width_mm": 6,
+        "eon_sale_price_usd": 1140.0,
+        "market_sale_price_usd": 1261.2,
+        "eon_to_market_ratio": 0.9039
+      },
+      {
+        "comparable_id": "diamondforlove-1723815903",
+        "width_mm": 6,
+        "eon_sale_price_usd": 1140.0,
+        "market_sale_price_usd": 1219.99,
+        "eon_to_market_ratio": 0.9344
+      },
+      {
+        "comparable_id": "kvs-4317473844",
+        "width_mm": 6,
+        "eon_sale_price_usd": 1140.0,
+        "market_sale_price_usd": 769.86,
+        "eon_to_market_ratio": 1.4808
+      },
+      {
+        "comparable_id": "trueluxe-1109847365",
+        "width_mm": 7,
+        "eon_sale_price_usd": 1301.25,
+        "market_sale_price_usd": 1412.1,
+        "eon_to_market_ratio": 0.9215
+      },
+      {
+        "comparable_id": "weddingringsdepot-690347859",
+        "width_mm": 8,
+        "eon_sale_price_usd": 1571.25,
+        "market_sale_price_usd": 1695.75,
+        "eon_to_market_ratio": 0.9266
+      }
+    ],
+    "price_change_vs_current_pct": {
+      "3": 17.33,
+      "4": 17.11,
+      "5": 17.49,
+      "6": 16.92,
+      "7": 16.84,
+      "8": 9.97,
+      "9": 10.17,
+      "10": 10.11,
+      "11": 10.06,
+      "12": 10.02
+    }
+  },
+  "current": {
+    "narrow_multiplier": 1.75,
+    "wide_multiplier": 2.0,
+    "minimum_standard_margin_pct": 32.21,
+    "minimum_offsite_margin_pct": 17.21,
+    "us7_14k_sale_prices": {
+      "3": 562.5,
+      "4": 701.25,
+      "5": 836.25,
+      "6": 975.0,
+      "7": 1113.75,
+      "8": 1428.75,
+      "9": 1586.25,
+      "10": 1743.75,
+      "11": 1901.25,
+      "12": 2058.75
+    }
+  },
+  "constraints": {
+    "target_market_ratio": 0.92,
+    "minimum_standard_margin_pct": 40.0,
+    "minimum_offsite_margin_pct": 25.0,
+    "maximum_narrow_increase_pct": 18.0,
+    "maximum_wide_increase_pct": 12.0
+  },
+  "eligible_candidate_count": 4,
+  "total_candidate_count": 99,
+  "top_eligible_candidates": [
+    {
+      "narrow_multiplier": 2.05,
+      "wide_multiplier": 2.2,
+      "minimum_standard_margin_pct": 40.58,
+      "minimum_offsite_margin_pct": 25.58,
+      "us7_14k_sale_prices": {
+        "3": 660.0,
+        "4": 821.25,
+        "5": 982.5,
+        "6": 1140.0,
+        "7": 1301.25,
+        "8": 1571.25,
+        "9": 1747.5,
+        "10": 1920.0,
+        "11": 2092.5,
+        "12": 2265.0
+      },
+      "market_score": 0.011279656649714042,
+      "eligible": true,
+      "rejection_reasons": [],
+      "market_position": [
+        {
+          "comparable_id": "revolutionba-208112020",
+          "width_mm": 5,
+          "eon_sale_price_usd": 982.5,
+          "market_sale_price_usd": 1197.12,
+          "eon_to_market_ratio": 0.8207
+        },
+        {
+          "comparable_id": "rayarose-4478680144",
+          "width_mm": 5,
+          "eon_sale_price_usd": 982.5,
+          "market_sale_price_usd": 1025.0,
+          "eon_to_market_ratio": 0.9585
+        },
+        {
+          "comparable_id": "yourweddingbandshop-1365802901",
+          "width_mm": 6,
+          "eon_sale_price_usd": 1140.0,
+          "market_sale_price_usd": 1130.5,
+          "eon_to_market_ratio": 1.0084
+        },
+        {
+          "comparable_id": "foria-1905763733",
+          "width_mm": 6,
+          "eon_sale_price_usd": 1140.0,
+          "market_sale_price_usd": 1261.2,
+          "eon_to_market_ratio": 0.9039
+        },
+        {
+          "comparable_id": "diamondforlove-1723815903",
+          "width_mm": 6,
+          "eon_sale_price_usd": 1140.0,
+          "market_sale_price_usd": 1219.99,
+          "eon_to_market_ratio": 0.9344
+        },
+        {
+          "comparable_id": "kvs-4317473844",
+          "width_mm": 6,
+          "eon_sale_price_usd": 1140.0,
+          "market_sale_price_usd": 769.86,
+          "eon_to_market_ratio": 1.4808
+        },
+        {
+          "comparable_id": "trueluxe-1109847365",
+          "width_mm": 7,
+          "eon_sale_price_usd": 1301.25,
+          "market_sale_price_usd": 1412.1,
+          "eon_to_market_ratio": 0.9215
+        },
+        {
+          "comparable_id": "weddingringsdepot-690347859",
+          "width_mm": 8,
+          "eon_sale_price_usd": 1571.25,
+          "market_sale_price_usd": 1695.75,
+          "eon_to_market_ratio": 0.9266
+        }
+      ],
+      "price_change_vs_current_pct": {
+        "3": 17.33,
+        "4": 17.11,
+        "5": 17.49,
+        "6": 16.92,
+        "7": 16.84,
+        "8": 9.97,
+        "9": 10.17,
+        "10": 10.11,
+        "11": 10.06,
+        "12": 10.02
+      }
+    },
+    {
+      "narrow_multiplier": 2.05,
+      "wide_multiplier": 2.15,
+      "minimum_standard_margin_pct": 40.58,
+      "minimum_offsite_margin_pct": 25.58,
+      "us7_14k_sale_prices": {
+        "3": 660.0,
+        "4": 821.25,
+        "5": 982.5,
+        "6": 1140.0,
+        "7": 1301.25,
+        "8": 1537.5,
+        "9": 1706.25,
+        "10": 1875.0,
+        "11": 2043.75,
+        "12": 2212.5
+      },
+      "market_score": 0.011302121948600525,
+      "eligible": true,
+      "rejection_reasons": []
+    },
+    {
+      "narrow_multiplier": 2.05,
+      "wide_multiplier": 2.1,
+      "minimum_standard_margin_pct": 40.58,
+      "minimum_offsite_margin_pct": 25.58,
+      "us7_14k_sale_prices": {
+        "3": 660.0,
+        "4": 821.25,
+        "5": 982.5,
+        "6": 1140.0,
+        "7": 1301.25,
+        "8": 1500.0,
+        "9": 1665.0,
+        "10": 1830.0,
+        "11": 1995.0,
+        "12": 2160.0
+      },
+      "market_score": 0.01148663723642139,
+      "eligible": true,
+      "rejection_reasons": []
+    },
+    {
+      "narrow_multiplier": 2.05,
+      "wide_multiplier": 2.05,
+      "minimum_standard_margin_pct": 40.58,
+      "minimum_offsite_margin_pct": 25.58,
+      "us7_14k_sale_prices": {
+        "3": 660.0,
+        "4": 821.25,
+        "5": 982.5,
+        "6": 1140.0,
+        "7": 1301.25,
+        "8": 1466.25,
+        "9": 1627.5,
+        "10": 1788.75,
+        "11": 1950.0,
+        "12": 2111.25
+      },
+      "market_score": 0.01180648880474999,
+      "eligible": true,
+      "rejection_reasons": []
+    }
+  ]
+}

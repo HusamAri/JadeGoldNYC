@@ -9,8 +9,8 @@
     "fire_factor": 1.07,
     "packaging_usd": 8.0,
     "shipping_usd": 22.0,
-    "narrow_multiplier_3_to_7mm": 1.75,
-    "wide_multiplier_8_to_12mm": 2.0,
+    "narrow_multiplier_3_to_7mm": 2.05,
+    "wide_multiplier_8_to_12mm": 2.2,
     "sale_rate": 0.75,
     "standard_net_rate": 0.895,
     "offsite_net_rate": 0.745,
@@ -63,331 +63,337 @@
       "16"
     ]
   },
+  "maeander_minimum_width_mm": 5,
+  "maeander_removed_widths_mm": [
+    3,
+    4
+  ],
+  "maeander_removed_variant_count": 450,
   "listing_ranges": [
     {
       "metal": "Yellow Gold",
       "karat": "10K",
       "maeander_family": "GLD-R-1008",
-      "list_price_min_usd": 500,
-      "list_price_max_usd": 2415,
-      "sale_price_min_usd": 375.0,
-      "sale_price_max_usd": 1811.25
+      "list_price_min_usd": 825,
+      "list_price_max_usd": 2655,
+      "sale_price_min_usd": 618.75,
+      "sale_price_max_usd": 1991.25
     },
     {
       "metal": "Yellow Gold",
       "karat": "14K",
       "maeander_family": "GLD-R-1408",
-      "list_price_min_usd": 680,
-      "list_price_max_usd": 3700,
-      "sale_price_min_usd": 510.0,
-      "sale_price_max_usd": 2775.0
+      "list_price_min_usd": 1175,
+      "list_price_max_usd": 4070,
+      "sale_price_min_usd": 881.25,
+      "sale_price_max_usd": 3052.5
     },
     {
       "metal": "Yellow Gold",
       "karat": "18K",
       "maeander_family": "GLD-R-1808",
-      "list_price_min_usd": 900,
-      "list_price_max_usd": 5325,
-      "sale_price_min_usd": 675.0,
-      "sale_price_max_usd": 3993.75
+      "list_price_min_usd": 1650,
+      "list_price_max_usd": 5855,
+      "sale_price_min_usd": 1237.5,
+      "sale_price_max_usd": 4391.25
     },
     {
       "metal": "White Gold",
       "karat": "10K",
       "maeander_family": "WHG-R-1008",
-      "list_price_min_usd": 500,
-      "list_price_max_usd": 2415,
-      "sale_price_min_usd": 375.0,
-      "sale_price_max_usd": 1811.25
+      "list_price_min_usd": 825,
+      "list_price_max_usd": 2655,
+      "sale_price_min_usd": 618.75,
+      "sale_price_max_usd": 1991.25
     },
     {
       "metal": "White Gold",
       "karat": "14K",
       "maeander_family": "WHG-R-1408",
-      "list_price_min_usd": 680,
-      "list_price_max_usd": 3700,
-      "sale_price_min_usd": 510.0,
-      "sale_price_max_usd": 2775.0
+      "list_price_min_usd": 1175,
+      "list_price_max_usd": 4070,
+      "sale_price_min_usd": 881.25,
+      "sale_price_max_usd": 3052.5
     },
     {
       "metal": "White Gold",
       "karat": "18K",
       "maeander_family": "WHG-R-1808",
-      "list_price_min_usd": 900,
-      "list_price_max_usd": 5325,
-      "sale_price_min_usd": 675.0,
-      "sale_price_max_usd": 3993.75
+      "list_price_min_usd": 1650,
+      "list_price_max_usd": 5855,
+      "sale_price_min_usd": 1237.5,
+      "sale_price_max_usd": 4391.25
     },
     {
       "metal": "Rose Gold",
       "karat": "10K",
       "maeander_family": "RSG-R-1008",
-      "list_price_min_usd": 500,
-      "list_price_max_usd": 2415,
-      "sale_price_min_usd": 375.0,
-      "sale_price_max_usd": 1811.25
+      "list_price_min_usd": 825,
+      "list_price_max_usd": 2655,
+      "sale_price_min_usd": 618.75,
+      "sale_price_max_usd": 1991.25
     },
     {
       "metal": "Rose Gold",
       "karat": "14K",
       "maeander_family": "RSG-R-1408",
-      "list_price_min_usd": 680,
-      "list_price_max_usd": 3700,
-      "sale_price_min_usd": 510.0,
-      "sale_price_max_usd": 2775.0
+      "list_price_min_usd": 1175,
+      "list_price_max_usd": 4070,
+      "sale_price_min_usd": 881.25,
+      "sale_price_max_usd": 3052.5
     },
     {
       "metal": "Rose Gold",
       "karat": "18K",
       "maeander_family": "RSG-R-1808",
-      "list_price_min_usd": 900,
-      "list_price_max_usd": 5325,
-      "sale_price_min_usd": 675.0,
-      "sale_price_max_usd": 3993.75
+      "list_price_min_usd": 1650,
+      "list_price_max_usd": 5855,
+      "sale_price_min_usd": 1237.5,
+      "sale_price_max_usd": 4391.25
     }
   ],
   "width_ranges": [
     {
       "karat": "10K",
       "width_mm": 3,
-      "list_price_min_usd": 500,
-      "list_price_max_usd": 680,
-      "sale_price_min_usd": 375.0,
-      "sale_price_max_usd": 510.0
+      "list_price_min_usd": 590,
+      "list_price_max_usd": 795,
+      "sale_price_min_usd": 442.5,
+      "sale_price_max_usd": 596.25
     },
     {
       "karat": "10K",
       "width_mm": 4,
-      "list_price_min_usd": 605,
-      "list_price_max_usd": 840,
-      "sale_price_min_usd": 453.75,
-      "sale_price_max_usd": 630.0
+      "list_price_min_usd": 710,
+      "list_price_max_usd": 980,
+      "sale_price_min_usd": 532.5,
+      "sale_price_max_usd": 735.0
     },
     {
       "karat": "10K",
       "width_mm": 5,
-      "list_price_min_usd": 705,
-      "list_price_max_usd": 1000,
-      "sale_price_min_usd": 528.75,
-      "sale_price_max_usd": 750.0
+      "list_price_min_usd": 825,
+      "list_price_max_usd": 1170,
+      "sale_price_min_usd": 618.75,
+      "sale_price_max_usd": 877.5
     },
     {
       "karat": "10K",
       "width_mm": 6,
-      "list_price_min_usd": 805,
-      "list_price_max_usd": 1155,
-      "sale_price_min_usd": 603.75,
-      "sale_price_max_usd": 866.25
+      "list_price_min_usd": 945,
+      "list_price_max_usd": 1355,
+      "sale_price_min_usd": 708.75,
+      "sale_price_max_usd": 1016.25
     },
     {
       "karat": "10K",
       "width_mm": 7,
-      "list_price_min_usd": 905,
-      "list_price_max_usd": 1315,
-      "sale_price_min_usd": 678.75,
-      "sale_price_max_usd": 986.25
+      "list_price_min_usd": 1060,
+      "list_price_max_usd": 1540,
+      "sale_price_min_usd": 795.0,
+      "sale_price_max_usd": 1155.0
     },
     {
       "karat": "10K",
       "width_mm": 8,
-      "list_price_min_usd": 1150,
-      "list_price_max_usd": 1685,
-      "sale_price_min_usd": 862.5,
-      "sale_price_max_usd": 1263.75
+      "list_price_min_usd": 1265,
+      "list_price_max_usd": 1855,
+      "sale_price_min_usd": 948.75,
+      "sale_price_max_usd": 1391.25
     },
     {
       "karat": "10K",
       "width_mm": 9,
-      "list_price_min_usd": 1265,
-      "list_price_max_usd": 1870,
-      "sale_price_min_usd": 948.75,
-      "sale_price_max_usd": 1402.5
+      "list_price_min_usd": 1390,
+      "list_price_max_usd": 2055,
+      "sale_price_min_usd": 1042.5,
+      "sale_price_max_usd": 1541.25
     },
     {
       "karat": "10K",
       "width_mm": 10,
-      "list_price_min_usd": 1380,
-      "list_price_max_usd": 2050,
-      "sale_price_min_usd": 1035.0,
-      "sale_price_max_usd": 1537.5
+      "list_price_min_usd": 1520,
+      "list_price_max_usd": 2255,
+      "sale_price_min_usd": 1140.0,
+      "sale_price_max_usd": 1691.25
     },
     {
       "karat": "10K",
       "width_mm": 11,
-      "list_price_min_usd": 1495,
-      "list_price_max_usd": 2235,
-      "sale_price_min_usd": 1121.25,
-      "sale_price_max_usd": 1676.25
+      "list_price_min_usd": 1645,
+      "list_price_max_usd": 2455,
+      "sale_price_min_usd": 1233.75,
+      "sale_price_max_usd": 1841.25
     },
     {
       "karat": "10K",
       "width_mm": 12,
-      "list_price_min_usd": 1610,
-      "list_price_max_usd": 2415,
-      "sale_price_min_usd": 1207.5,
-      "sale_price_max_usd": 1811.25
+      "list_price_min_usd": 1770,
+      "list_price_max_usd": 2655,
+      "sale_price_min_usd": 1327.5,
+      "sale_price_max_usd": 1991.25
     },
     {
       "karat": "14K",
       "width_mm": 3,
-      "list_price_min_usd": 680,
-      "list_price_max_usd": 960,
-      "sale_price_min_usd": 510.0,
-      "sale_price_max_usd": 720.0
+      "list_price_min_usd": 795,
+      "list_price_max_usd": 1125,
+      "sale_price_min_usd": 596.25,
+      "sale_price_max_usd": 843.75
     },
     {
       "karat": "14K",
       "width_mm": 4,
-      "list_price_min_usd": 840,
-      "list_price_max_usd": 1215,
-      "sale_price_min_usd": 630.0,
-      "sale_price_max_usd": 911.25
+      "list_price_min_usd": 985,
+      "list_price_max_usd": 1420,
+      "sale_price_min_usd": 738.75,
+      "sale_price_max_usd": 1065.0
     },
     {
       "karat": "14K",
       "width_mm": 5,
-      "list_price_min_usd": 1000,
-      "list_price_max_usd": 1465,
-      "sale_price_min_usd": 750.0,
-      "sale_price_max_usd": 1098.75
-    },
-    {
-      "karat": "14K",
-      "width_mm": 6,
-      "list_price_min_usd": 1160,
+      "list_price_min_usd": 1175,
       "list_price_max_usd": 1720,
-      "sale_price_min_usd": 870.0,
+      "sale_price_min_usd": 881.25,
       "sale_price_max_usd": 1290.0
     },
     {
       "karat": "14K",
+      "width_mm": 6,
+      "list_price_min_usd": 1360,
+      "list_price_max_usd": 2015,
+      "sale_price_min_usd": 1020.0,
+      "sale_price_max_usd": 1511.25
+    },
+    {
+      "karat": "14K",
       "width_mm": 7,
-      "list_price_min_usd": 1320,
-      "list_price_max_usd": 1975,
-      "sale_price_min_usd": 990.0,
-      "sale_price_max_usd": 1481.25
+      "list_price_min_usd": 1545,
+      "list_price_max_usd": 2310,
+      "sale_price_min_usd": 1158.75,
+      "sale_price_max_usd": 1732.5
     },
     {
       "karat": "14K",
       "width_mm": 8,
-      "list_price_min_usd": 1695,
-      "list_price_max_usd": 2545,
-      "sale_price_min_usd": 1271.25,
-      "sale_price_max_usd": 1908.75
+      "list_price_min_usd": 1860,
+      "list_price_max_usd": 2800,
+      "sale_price_min_usd": 1395.0,
+      "sale_price_max_usd": 2100.0
     },
     {
       "karat": "14K",
       "width_mm": 9,
-      "list_price_min_usd": 1875,
-      "list_price_max_usd": 2835,
-      "sale_price_min_usd": 1406.25,
-      "sale_price_max_usd": 2126.25
+      "list_price_min_usd": 2065,
+      "list_price_max_usd": 3115,
+      "sale_price_min_usd": 1548.75,
+      "sale_price_max_usd": 2336.25
     },
     {
       "karat": "14K",
       "width_mm": 10,
-      "list_price_min_usd": 2060,
-      "list_price_max_usd": 3125,
-      "sale_price_min_usd": 1545.0,
-      "sale_price_max_usd": 2343.75
+      "list_price_min_usd": 2265,
+      "list_price_max_usd": 3435,
+      "sale_price_min_usd": 1698.75,
+      "sale_price_max_usd": 2576.25
     },
     {
       "karat": "14K",
       "width_mm": 11,
-      "list_price_min_usd": 2240,
-      "list_price_max_usd": 3415,
-      "sale_price_min_usd": 1680.0,
-      "sale_price_max_usd": 2561.25
+      "list_price_min_usd": 2465,
+      "list_price_max_usd": 3755,
+      "sale_price_min_usd": 1848.75,
+      "sale_price_max_usd": 2816.25
     },
     {
       "karat": "14K",
       "width_mm": 12,
-      "list_price_min_usd": 2425,
-      "list_price_max_usd": 3700,
-      "sale_price_min_usd": 1818.75,
-      "sale_price_max_usd": 2775.0
+      "list_price_min_usd": 2665,
+      "list_price_max_usd": 4070,
+      "sale_price_min_usd": 1998.75,
+      "sale_price_max_usd": 3052.5
     },
     {
       "karat": "18K",
       "width_mm": 3,
-      "list_price_min_usd": 900,
-      "list_price_max_usd": 1280,
-      "sale_price_min_usd": 675.0,
-      "sale_price_max_usd": 960.0
+      "list_price_min_usd": 1055,
+      "list_price_max_usd": 1500,
+      "sale_price_min_usd": 791.25,
+      "sale_price_max_usd": 1125.0
     },
     {
       "karat": "18K",
       "width_mm": 4,
-      "list_price_min_usd": 1155,
-      "list_price_max_usd": 1630,
-      "sale_price_min_usd": 866.25,
-      "sale_price_max_usd": 1222.5
+      "list_price_min_usd": 1350,
+      "list_price_max_usd": 1910,
+      "sale_price_min_usd": 1012.5,
+      "sale_price_max_usd": 1432.5
     },
     {
       "karat": "18K",
       "width_mm": 5,
-      "list_price_min_usd": 1410,
-      "list_price_max_usd": 2055,
-      "sale_price_min_usd": 1057.5,
-      "sale_price_max_usd": 1541.25
+      "list_price_min_usd": 1650,
+      "list_price_max_usd": 2410,
+      "sale_price_min_usd": 1237.5,
+      "sale_price_max_usd": 1807.5
     },
     {
       "karat": "18K",
       "width_mm": 6,
-      "list_price_min_usd": 1630,
-      "list_price_max_usd": 2360,
-      "sale_price_min_usd": 1222.5,
-      "sale_price_max_usd": 1770.0
+      "list_price_min_usd": 1910,
+      "list_price_max_usd": 2765,
+      "sale_price_min_usd": 1432.5,
+      "sale_price_max_usd": 2073.75
     },
     {
       "karat": "18K",
       "width_mm": 7,
-      "list_price_min_usd": 1760,
-      "list_price_max_usd": 2615,
-      "sale_price_min_usd": 1320.0,
-      "sale_price_max_usd": 1961.25
+      "list_price_min_usd": 2060,
+      "list_price_max_usd": 3065,
+      "sale_price_min_usd": 1545.0,
+      "sale_price_max_usd": 2298.75
     },
     {
       "karat": "18K",
       "width_mm": 8,
-      "list_price_min_usd": 2190,
-      "list_price_max_usd": 3245,
-      "sale_price_min_usd": 1642.5,
-      "sale_price_max_usd": 2433.75
+      "list_price_min_usd": 2410,
+      "list_price_max_usd": 3570,
+      "sale_price_min_usd": 1807.5,
+      "sale_price_max_usd": 2677.5
     },
     {
       "karat": "18K",
       "width_mm": 9,
-      "list_price_min_usd": 2645,
-      "list_price_max_usd": 4050,
-      "sale_price_min_usd": 1983.75,
-      "sale_price_max_usd": 3037.5
+      "list_price_min_usd": 2910,
+      "list_price_max_usd": 4455,
+      "sale_price_min_usd": 2182.5,
+      "sale_price_max_usd": 3341.25
     },
     {
       "karat": "18K",
       "width_mm": 10,
-      "list_price_min_usd": 2910,
-      "list_price_max_usd": 4475,
-      "sale_price_min_usd": 2182.5,
-      "sale_price_max_usd": 3356.25
+      "list_price_min_usd": 3200,
+      "list_price_max_usd": 4920,
+      "sale_price_min_usd": 2400.0,
+      "sale_price_max_usd": 3690.0
     },
     {
       "karat": "18K",
       "width_mm": 11,
-      "list_price_min_usd": 3180,
-      "list_price_max_usd": 4895,
-      "sale_price_min_usd": 2385.0,
-      "sale_price_max_usd": 3671.25
+      "list_price_min_usd": 3500,
+      "list_price_max_usd": 5385,
+      "sale_price_min_usd": 2625.0,
+      "sale_price_max_usd": 4038.75
     },
     {
       "karat": "18K",
       "width_mm": 12,
-      "list_price_min_usd": 3450,
-      "list_price_max_usd": 5325,
-      "sale_price_min_usd": 2587.5,
-      "sale_price_max_usd": 3993.75
+      "list_price_min_usd": 3795,
+      "list_price_max_usd": 5855,
+      "sale_price_min_usd": 2846.25,
+      "sale_price_max_usd": 4391.25
     }
   ],
-  "minimum_standard_margin_pct": 32.21,
-  "minimum_offsite_margin_pct": 17.21
+  "minimum_standard_margin_pct": 40.58,
+  "minimum_offsite_margin_pct": 25.58
 }

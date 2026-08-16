@@ -221,9 +221,9 @@ def render_size_width(listing: dict) -> Image.Image:
     draw.text((170, 620), "proportion.", font=SERIF_164, fill=palette["ink"])
 
     draw.text((170, 940), "WIDTH", font=SANS_30, fill=palette["muted"])
-    draw.text((170, 1000), "3 to 12 mm", font=SANS_58, fill=palette["ink"])
+    draw.text((170, 1000), "5 to 12 mm", font=SANS_58, fill=palette["ink"])
     baseline = 1208
-    for index, width_mm in enumerate((3, 5, 7, 9, 12)):
+    for index, width_mm in enumerate((5, 6, 7, 9, 12)):
         x = 170 + index * 235
         bar_width = 22 + width_mm * 8
         draw.rounded_rectangle((x, baseline - bar_width, x + 150, baseline), radius=8, fill=accent)
@@ -309,7 +309,7 @@ def render_made_to_order(listing: dict) -> Image.Image:
 
     steps = [
         ("01", "Select size", "US 4 to 16, whole and half sizes"),
-        ("02", "Select width", "3 mm through 12 mm"),
+        ("02", "Select width", "5 mm through 12 mm"),
         ("03", "Hand finishing", "Greek key, milgrain and rope rails"),
         ("04", "Dispatch", "Shipping terms appear at checkout"),
     ]

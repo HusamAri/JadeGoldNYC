@@ -152,21 +152,47 @@ function computeTargets(
         continue;
       }
       const frieze = isEonFriezeProduct(sku, v.products.title ?? "");
-      // Geçiş güvenliği: hem eski 40 USD / 1,55 tabanı hem yeni 55 USD / 1,75
-      // tabanı tanınır. Hammered kimlik düzeltmesi öncesi 30 USD taban da
-      // yalnız Frieze başlığı doğrulandıysa kabul edilir.
+      // Transition safety recognizes both market-optimized and legacy bases.
       const currentCandidates = frieze
         ? [
-            { labor: V4.laborMilgrainUsd, narrow: V4.multHandfinishedNarrow },
-            { labor: V4.laborMilgrainUsd, narrow: V4.multNarrow },
-            { labor: V4.laborMilgrainLegacyUsd, narrow: V4.multNarrow },
-            { labor: V4.laborStandardUsd, narrow: V4.multNarrow },
+            {
+              labor: V4.laborMilgrainUsd,
+              narrow: V4.multHandfinishedNarrow,
+              wide: V4.multHandfinishedWide,
+            },
+            {
+              labor: V4.laborMilgrainUsd,
+              narrow: V4.multHandfinishedNarrowLegacy,
+              wide: V4.multHandfinishedWideLegacy,
+            },
+            {
+              labor: V4.laborMilgrainUsd,
+              narrow: V4.multNarrow,
+              wide: V4.multWide,
+            },
+            {
+              labor: V4.laborMilgrainLegacyUsd,
+              narrow: V4.multNarrow,
+              wide: V4.multWide,
+            },
+            {
+              labor: V4.laborStandardUsd,
+              narrow: V4.multNarrow,
+              wide: V4.multWide,
+            },
           ]
-        : [{ labor: V4.laborStandardUsd, narrow: V4.multNarrow }];
+        : [
+            {
+              labor: V4.laborStandardUsd,
+              narrow: V4.multNarrow,
+              wide: V4.multWide,
+            },
+          ];
       const matched = currentCandidates.some(
-        ({ labor, narrow }) =>
+        ({ labor, narrow, wide }) =>
           eonListCents(parsed.karat, parsed.widthMm, grams, labor, basis, {
             narrow,
+            wide,
           }) === oldCents,
       );
       if (!matched) {
@@ -179,7 +205,10 @@ function computeTargets(
         grams,
         frieze ? V4.laborMilgrainUsd : V4.laborStandardUsd,
         spot,
-        { narrow: frieze ? V4.multHandfinishedNarrow : V4.multNarrow },
+        {
+          narrow: frieze ? V4.multHandfinishedNarrow : V4.multNarrow,
+          wide: frieze ? V4.multHandfinishedWide : V4.multWide,
+        },
       );
     } else {
       // Jade: formül dayatılmaz; yalnız ham metal bedeli farkı eklenir.

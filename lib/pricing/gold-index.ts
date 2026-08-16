@@ -6,8 +6,8 @@
  *    aynı; 5148 hücrede sıfır sapmayla doğrulanmış formül). Varyantın işçilik
  *    kademesi (standart 30 / milgrain-hammered 40) HARDCODE edilmez: mevcut
  *    DB fiyatı ESKİ tabanla hangi kademede birebir çıkıyorsa sınıf doğrulanır.
- *    Frieze & Textured sınıfı yeni fiyatı 55 USD işçilik ve 1,75 dar bant
- *    çarpanıyla üretir. Uymayan varyant atlanır ve raporlanır.
+ *    Frieze and Textured prices use 55 USD labor plus the market-optimized
+ *    2.05 narrow and 2.20 wide multipliers.
  *  - Jade: katalog formülle üretilmediği için fiyat YENİDEN kurulmaz; yalnız
  *    artan/azalan HAM metal bedeli (gram × saflık × Δspot × 1+fire) mevcut
  *    fiyata eklenir. Marj yapısı değişmez.
@@ -26,7 +26,10 @@ export const V4 = {
   packagingUsd: 8,
   shippingUsd: 22,
   multNarrow: 1.55, // 2-7mm
-  multHandfinishedNarrow: 1.75, // Frieze & Textured 2-7mm
+  multHandfinishedNarrow: 2.05, // Frieze and Textured 2-7mm
+  multHandfinishedNarrowLegacy: 1.75,
+  multHandfinishedWide: 2.2, // Frieze and Textured 8-12mm
+  multHandfinishedWideLegacy: 2.0,
   multWide: 2.0, // 8-12mm ("mens wide" primi)
   purity: { 10: 0.417, 14: 0.583, 18: 0.75 } as Record<number, number>,
 } as const;
