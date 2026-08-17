@@ -20,7 +20,7 @@ Anillo de Boda de Oro Macizo 10K Amarillo, Abombado, Grabado Personalizado Grati
 ```
 Hay cosas que siguen aquí mucho después del día que marcan. Una argolla de matrimonio en oro macizo de 10k amarillo lleva esa fecha en metal de verdad: sobre la piel, no guardada en una caja ni anotada en un papel.
 
-El perfil abombado es el de siempre, media caña sin aristas, que recoge la luz en un arco tibio en lugar de partirla en planos. Por dentro va redondeado, con ajuste confort, para que entre sin esfuerzo y descanse sin filos. Cada anillo de boda se hace por encargo en nuestro taller, lleva el sello 10k en el interior y se termina en la talla y el ancho que elijas.
+El perfil abombado es el de siempre, media caña sin aristas, que recoge la luz en un arco tibio en lugar de partirla en planos. Por dentro va redondeado, con ajuste confort, para que entre sin esfuerzo y descanse sin filos. Cada anillo de boda se hace por encargo en nuestro taller, lleva el sello 10K en el interior y se termina en la talla y el ancho que elijas.
 
 - Once anchos, de 2 mm a 12 mm: entre 2 y 4 mm el anillo se ve fino y combina bien apilado; entre 5 y 7 mm está el ancho clásico de una argolla de oro amarillo; de 8 a 12 mm ocupa buena parte del dedo.
 - Tallas US 4 a la 16, enteras y medias. El espesor es parejo, 1.5 mm, y cada anillo se corta y se forma según tu medida.
@@ -33,19 +33,19 @@ Si estás entre dos tallas o tienes dudas, escríbenos antes de hacer tu pedido.
 
 SOBRE EON
 
-EON hace oro macizo personalizado para quienes compran joyería como algo que se conserva y se hereda. Cada pieza se fabrica por encargo en nuestro taller, en oro macizo de 10k o 14k, nunca bañado y nunca laminado.
+EON hace oro macizo personalizado para quienes compran joyería como algo que se conserva y se hereda. Nuestro orfebre fabrica cada pieza por encargo, en oro macizo de 10k o 14k, nunca enchapado y nunca relleno.
 
 PERSONALIZACIÓN
 
-Agrega un grabado privado en el interior de la pieza: una fecha, unas coordenadas, iniciales, un nombre o unas pocas palabras. El grabado no tiene costo. En cada publicación se indican los estilos de letra disponibles y el límite de caracteres.
+Agrega un grabado privado en el interior de la pieza: una fecha, unas coordenadas, iniciales, un nombre o unas pocas palabras. El grabado no tiene costo. Los estilos de letra disponibles y el límite de caracteres se indican en cada publicación.
 
 MATERIAL Y OPCIONES
 
-Cada publicación indica el quilataje, el color del oro, el ancho, el perfil y las tallas disponibles. La disponibilidad de oro amarillo, blanco y rosa cambia según el diseño. El oro se cotiza al momento de tu pedido.
+Cada publicación indica el quilataje, el color del metal, el ancho, el perfil y las tallas disponibles. La disponibilidad de oro amarillo, blanco y rosa varía según el diseño. El oro se cotiza al momento de tu pedido.
 
 HECHO PARA UNA PERSONA
 
-Aquí nada sale de un inventario anónimo. Tu pieza se prepara con la talla, el metal y el grabado que elegiste. Cualquier duda sobre calce, materiales o personalización la resolvemos antes de empezar a producir.
+Nada se trata como inventario anónimo. Tu pieza se prepara con la talla, el metal y el grabado que elegiste. Las dudas sobre calce, materiales o personalización se responden antes de empezar la producción.
 
 EON
 

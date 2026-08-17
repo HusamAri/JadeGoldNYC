@@ -48,35 +48,35 @@ Anillo de Boda Oro Macizo 10K, Tejido Canasta Facetado, Grabado Personalizado Gr
 ```
 El tejido cambia de dirección con cada movimiento de la mano.
 
-Un anillo de boda en oro macizo 10K amarillo, con tejido tipo canasta tallado a mano en chevrones. Las facetas se tallan sobre un fondo mate y cada corte se enciende contra esa superficie. Los bordes biselados y pulidos enmarcan el patrón.
+Un anillo de boda en oro macizo 10k amarillo, con tejido tipo canasta tallado a mano en chevrones. Las facetas se tallan sobre un fondo mate y cada corte se enciende contra esa superficie. Los bordes biselados y pulidos enmarcan el patrón.
 
-- Cinco anchos, de 6mm a 10mm: de 6 a 7mm queda equilibrado, de 8 a 10mm amplio.
-- Tallas US 4 a 16, enteras y medias, con 1.5mm de espesor. Los anillos más anchos calzan más ajustados: escríbenos si dudas entre dos.
+- Cinco anchos, de 6 mm a 10 mm: de 6 a 7 mm queda equilibrado, de 8 a 10 mm amplio.
+- Tallas US 4 a 16, enteras y medias, con 1.5 mm de espesor. Los anillos más anchos calzan más ajustados: escríbenos si dudas entre dos.
 - Interior de ajuste confort, redondeado, sin filo que raspe el nudillo.
 - Grabado interior gratis de hasta 30 caracteres, tal cual lo escribas: una fecha, iniciales, coordenadas o una frase corta. Letra manuscrita por defecto; pide letra de imprenta o déjalo en blanco si lo prefieres.
-- Oro macizo 10K, nunca enchapado, ni relleno, ni hueco; sello 10k por dentro.
+- Oro macizo 10k, nunca enchapado, ni relleno, ni hueco; sello 10K por dentro.
 
-Cada anillo se talla uno por uno, más despacio que una banda lisa. Se envía dentro de 1 a 2 días hábiles.
+Cada anillo se talla uno por uno, más despacio que un anillo liso. Se envía dentro de 1 a 2 días hábiles.
 
 SOBRE EON
 
-EON hace oro macizo personalizado para quien compra joyería pensando en lo que queda. Todo se fabrica por encargo en oro macizo de 10K o 14K, nunca enchapado y nunca relleno.
+EON hace oro macizo personalizado para quienes compran joyería como algo que se conserva y se hereda. Nuestro orfebre fabrica cada pieza por encargo, en oro macizo de 10k o 14k, nunca enchapado y nunca relleno.
 
 PERSONALIZACIÓN
 
-El grabado interior no tiene costo. Los estilos de letra y el límite de caracteres se indican en cada publicación.
+Agrega un grabado privado en el interior de la pieza: una fecha, unas coordenadas, iniciales, un nombre o unas pocas palabras. El grabado no tiene costo. Los estilos de letra disponibles y el límite de caracteres se indican en cada publicación.
 
 MATERIAL Y OPCIONES
 
-Cada publicación indica quilataje, color de oro, ancho, perfil y tallas. La disponibilidad de cada color cambia según el diseño, y el oro se cotiza al momento de tu pedido.
+Cada publicación indica el quilataje, el color del metal, el ancho, el perfil y las tallas disponibles. La disponibilidad de oro amarillo, blanco y rosa varía según el diseño. El oro se cotiza al momento de tu pedido.
 
 HECHO PARA UNA PERSONA
 
-Nada se trata como inventario anónimo. Tu pieza se prepara con la talla, el metal y el grabado que elegiste.
+Nada se trata como inventario anónimo. Tu pieza se prepara con la talla, el metal y el grabado que elegiste. Las dudas sobre calce, materiales o personalización se responden antes de empezar la producción.
 
 EON
 
-Significado hecho para durar. Se usa hoy. Lo llevan las manos que siguen.
+Un significado hecho para durar. Se usa hoy. Lo llevan las manos que siguen.
 ```
 
 ## Tag

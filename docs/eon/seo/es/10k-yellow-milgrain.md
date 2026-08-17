@@ -20,7 +20,7 @@ Anillo de Boda de Oro Amarillo Macizo 10K, Milgrain, Grabado Personalizado Grati
 ```
 Una boda, un aniversario, una promesa: la misma pieza sirve para las tres.
 
-Anillo de boda en oro amarillo macizo de 10K con borde milgrain, esa hilera fina de cuentas de oro labrada en los dos filos del aro. El detalle es pequeño y se aprecia de cerca: la luz se corta en una línea de puntos en lugar de correr lisa por el borde.
+Anillo de boda en oro amarillo macizo de 10k con borde milgrain, esa hilera fina de cuentas de oro labrada en los dos filos del aro. El detalle es pequeño y se aprecia de cerca: la luz se corta en una línea de puntos en lugar de correr lisa por el borde.
 
 Se fabrica a pedido en la talla y el ancho que pidas, y lleva el sello 10K en el interior. El color no es superficial, porque el oro es el mismo por dentro y por fuera.
 
@@ -29,21 +29,21 @@ Se fabrica a pedido en la talla y el ancho que pidas, y lleva el sello 10K en el
 - Tallas US 4 a 16, enteras y medias, para él y para ella.
 - Ajuste confort con interior redondeado: sube el nudillo sin raspar y se asienta plano durante el día.
 - Grabado interior sin cargo, hasta 30 caracteres, reproducido letra por letra como lo escribas: una fecha, dos iniciales, unas coordenadas o algo como A y J 15 de junio. La letra manuscrita viene por defecto; indícanos si la quieres en imprenta. Si lo dejas en blanco, el anillo sale liso por dentro.
-- Oro macizo de 10K: no es enchapado, no es laminado y no es hueco.
+- Oro macizo de 10k: no es enchapado, no es laminado y no es hueco.
 
 Lo grabamos exactamente como nos lo mandas, así que revisa la ortografía. Y si estás entre dos tallas, escríbenos antes de comprar y te ayudamos a medirla en casa. Cada anillo se despacha en 1 a 2 días hábiles.
 
 SOBRE EON
 
-EON hace oro macizo personalizado para quienes compran joyería como algo que se conserva y se hereda. Cada pieza la fabrica a pedido nuestro orfebre en oro macizo de 10K o 14K, nunca enchapado y nunca laminado.
+EON hace oro macizo personalizado para quienes compran joyería como algo que se conserva y se hereda. Nuestro orfebre fabrica cada pieza por encargo, en oro macizo de 10k o 14k, nunca enchapado y nunca relleno.
 
 PERSONALIZACIÓN
 
-Puedes agregar un grabado privado en el interior de la pieza: una fecha, unas coordenadas, iniciales, un nombre o unas pocas palabras. El grabado es de cortesía. Los estilos de letra y el límite de caracteres se indican en cada publicación.
+Agrega un grabado privado en el interior de la pieza: una fecha, unas coordenadas, iniciales, un nombre o unas pocas palabras. El grabado no tiene costo. Los estilos de letra disponibles y el límite de caracteres se indican en cada publicación.
 
 MATERIAL Y OPCIONES
 
-Cada publicación indica el quilataje, el color del oro, el ancho, el perfil y las tallas disponibles. La disponibilidad de oro amarillo, blanco y rosa varía según el diseño. El oro se cotiza al momento de tu pedido.
+Cada publicación indica el quilataje, el color del metal, el ancho, el perfil y las tallas disponibles. La disponibilidad de oro amarillo, blanco y rosa varía según el diseño. El oro se cotiza al momento de tu pedido.
 
 HECHO PARA UNA PERSONA
 
@@ -51,7 +51,7 @@ Nada se trata como inventario anónimo. Tu pieza se prepara con la talla, el met
 
 EON
 
-Sentido hecho para durar. Se usa hoy. Lo llevan las manos que siguen.
+Un significado hecho para durar. Se usa hoy. Lo llevan las manos que siguen.
 ```
 
 ## Tag

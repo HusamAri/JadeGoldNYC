@@ -31,6 +31,10 @@ Okuma: `argolla` konuşma dilinde yaygın ama **Etsy arama davranışı**
 hipotez, ölçülmeden karara dönüşmez — ama birincil kalıbı `anillos de boda`
 yapıp `argollas` ailesini ikincil tag olarak test etmek daha güvenli.
 
+> **Ses tonu ve terminoloji kilidi:** `docs/eon/seo/es-ses-tonu.md` (2026-08-15).
+> Bu matris arama terimlerini seçer; o belge metnin nasıl yazılacağını
+> bağlar. Terminoloji kararı ikisinde de değişmeli.
+
 ## Dil kararı: nötr Latin Amerika İspanyolcası
 
 Kullanıcı "castellano" dedi. Terim iki anlama gelebilir (dilin kendisi ya da

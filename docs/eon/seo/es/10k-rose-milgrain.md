@@ -20,7 +20,7 @@ Anillo de Boda de Oro Rosa Macizo 10K, Milgrain, Grabado Personalizado Gratis, I
 ```
 Los anillos viejos se reconocen por el borde.
 
-El milgrain es un trabajo de joyería antigua: una hilera de granos de oro corrida a lo largo de los dos filos del aro. Aquí va en oro rosa macizo de 10K, y el resultado es un tono cálido, rosado, con una línea fina de luz encendida en cada canto cuando la mano se mueve.
+El milgrain es un trabajo de joyería antigua: una hilera de granos de oro corrida a lo largo de los dos filos del aro. Aquí va en oro rosa macizo de 10k, y el resultado es un tono cálido, rosado, con una línea fina de luz encendida en cada canto cuando la mano se mueve.
 
 Nuestro orfebre lo hace a pedido, en tu talla y en el ancho que elijas. Es una pieza para usar a diario y para quedarse después en la familia. El sello de 10K queda grabado por dentro: no se ve con el anillo puesto, pero siempre se puede comprobar.
 
@@ -30,21 +30,21 @@ Nuestro orfebre lo hace a pedido, en tu talla y en el ancho que elijas. Es una p
 - Perfil milgrain en oro rosa, con el granulado trabajado en ambos bordes.
 - Interior redondeado de ajuste confort, sin canto vivo por dentro.
 - Grabado interior de cortesía, hasta 30 caracteres, copiado carácter por carácter: una fecha, iniciales, unas coordenadas o una frase corta. Manuscrita por defecto, imprenta si la pides. Si lo dejas en blanco, el anillo sale liso por dentro.
-- Oro macizo de 10K de lado a lado: no es enchapado, no es laminado y no es hueco.
+- Oro macizo de 10k de lado a lado: no es enchapado, no es laminado y no es hueco.
 
 El grabado se reproduce tal cual, así que revisa la ortografía antes de enviarlo. ¿No sabes tu talla? Escríbenos antes de ordenar y te explicamos cómo medirla en casa. Cada anillo se despacha en 1 a 2 días hábiles.
 
 SOBRE EON
 
-EON hace oro macizo personalizado para quienes compran joyería como algo que se conserva y se hereda. Cada pieza la fabrica a pedido nuestro orfebre en oro macizo de 10K o 14K, nunca enchapado y nunca laminado.
+EON hace oro macizo personalizado para quienes compran joyería como algo que se conserva y se hereda. Nuestro orfebre fabrica cada pieza por encargo, en oro macizo de 10k o 14k, nunca enchapado y nunca relleno.
 
 PERSONALIZACIÓN
 
-Puedes agregar un grabado privado en el interior de la pieza: una fecha, unas coordenadas, iniciales, un nombre o unas pocas palabras. El grabado es de cortesía. Los estilos de letra y el límite de caracteres se indican en cada publicación.
+Agrega un grabado privado en el interior de la pieza: una fecha, unas coordenadas, iniciales, un nombre o unas pocas palabras. El grabado no tiene costo. Los estilos de letra disponibles y el límite de caracteres se indican en cada publicación.
 
 MATERIAL Y OPCIONES
 
-Cada publicación indica el quilataje, el color del oro, el ancho, el perfil y las tallas disponibles. La disponibilidad de oro amarillo, blanco y rosa varía según el diseño. El oro se cotiza al momento de tu pedido.
+Cada publicación indica el quilataje, el color del metal, el ancho, el perfil y las tallas disponibles. La disponibilidad de oro amarillo, blanco y rosa varía según el diseño. El oro se cotiza al momento de tu pedido.
 
 HECHO PARA UNA PERSONA
 
@@ -52,7 +52,7 @@ Nada se trata como inventario anónimo. Tu pieza se prepara con la talla, el met
 
 EON
 
-Sentido hecho para durar. Se usa hoy. Lo llevan las manos que siguen.
+Un significado hecho para durar. Se usa hoy. Lo llevan las manos que siguen.
 ```
 
 ## Tag
