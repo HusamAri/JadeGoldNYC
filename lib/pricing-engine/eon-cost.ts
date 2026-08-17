@@ -59,6 +59,10 @@ export type EonProfile =
   // kesim kafes elde bitirilir — hammered kademesi (bkz. 0127 migration
   // başlığı: "iscilik = $40 — hammered/milgrain istisnasi").
   | "twotone"
+  // Greek Key / meander (aile 08, 2026-08): elde kesilen meander kafes + rope
+  // edge — el-işi kademesi. Profil, ilk fiyat basımında tanımsızdı ve aile
+  // genel el-işi sınıfına düşmüştü; 2026-08-17 vakasıyla açıkça eklendi.
+  | "greek"
   // The Lintel (profil 08): geniş satine merkez + parlak ray. STANDART
   // işçilik sınıfı (lintel-launch-runbook kararı: "Lintel standart işçilik
   // sınıfı, profil yalnızca işçiliği değiştirir ve standart profiller aynı
@@ -84,15 +88,21 @@ export const EON_PURITY: Record<EonKarat, number> = {
 /** Döküm/işleme fire payı: %7 → 1.07 çarpanı. */
 export const EON_FIRE_FACTOR = 1.07;
 
-/** İşçilik, USD. Milgrain ve hammered elde bitirilir → daha yüksek. */
+/** İşçilik, USD. El-işi profiller elde bitirilir → daha yüksek.
+ *  El-işi tabanı 2026-08-17'de 40 → 74: Tamsan fatura kalibrasyonu süslü
+ *  parçayı $74 gösteriyor (docs/eon/tamsan-cost-calibration.md); $40 gerçek
+ *  maliyetin yaklaşık yarısıydı (Greek Key vakasıyla yakalandı). Canlı
+ *  fiyatların $40-tabanlıdan $74-tabanlıya göçü gold-reprice koşusundadır
+ *  (lib/pricing/gold-reprice-run.ts `hedefKademe`). */
 export const EON_LABOR_USD = 30;
-export const EON_LABOR_HANDFINISHED_USD = 40;
+export const EON_LABOR_HANDFINISHED_USD = 74;
 const HANDFINISHED_PROFILES: ReadonlySet<EonProfile> = new Set<EonProfile>([
   "milgrain",
   "hammered",
   "basketweave",
   "ribbed",
   "twotone",
+  "greek",
 ]);
 
 /** Paketleme ve kargo payı, USD. */
