@@ -23,6 +23,14 @@ export const maxDuration = 300;
  * (Yeni TTG ailesi Etsy'ye hiç gitmediği için panelde doğrudan temizlendi;
  *  basketweave/ribbed zaten 6mm'den başlıyor.)
  *
+ * 2026-08-17 eki — Greek Key ailesi (aile 08, 9 draft listing): kullanıcı
+ * kararı "Greek 5mm'den başlamalı" — desenli-aile taban kuralının (hammered
+ * 4mm'den başlar) Greek uygulaması; meander kafes 3-4mm'de desen bütünlüğünü
+ * taşımıyor. 3mm + 4mm kalkar → listing başına 50, ailede 450 varyant.
+ * Listing'ler DRAFT olduğu için alıcı etkisi yok; envanter PUT draft'ta da
+ * çalışır (lintel-drafts akışıyla kanıtlı). Yeni vitrinler (5mm, $74 işçilik
+ * tabanı): 10K $665 · 14K $925 · 18K $1290.
+ *
  * Hedefler SKU önekiyle DEĞİL etsy_listing_id ile sabitlenir: SKU sahipliği
  * kopya listing'lerde el değiştirebiliyor (second-brain "aynı ürün" dersi),
  * listing kimliği ise sabittir.
@@ -42,6 +50,17 @@ const TARGETS: Target[] = [
   // ── Hammered: yalnız 2/3mm — 4mm ve üstü SATILMAYA DEVAM EDER ────────
   { listingId: 4543442596, widths: [2, 3], label: "10K Hammered Milgrain" },
   // ── Milgrain ailesi bilerek YOK: 2mm dahil tüm bant korunuyor. ───────
+  // ── Greek Key (aile 08, draft): 5mm'den başlar — 3/4mm kalkar ────────
+  //    (2026-08-17 kullanıcı kararı; hedefler listing kimliğiyle sabit).
+  { listingId: 4556710904, widths: [3, 4], label: "10K Yellow Greek Key" },
+  { listingId: 4556695311, widths: [3, 4], label: "10K Rose Greek Key" },
+  { listingId: 4556695233, widths: [3, 4], label: "10K White Greek Key" },
+  { listingId: 4556695533, widths: [3, 4], label: "14K Yellow Greek Key" },
+  { listingId: 4556695631, widths: [3, 4], label: "14K Rose Greek Key" },
+  { listingId: 4556711370, widths: [3, 4], label: "14K White Greek Key" },
+  { listingId: 4556711954, widths: [3, 4], label: "18K Yellow Greek Key" },
+  { listingId: 4556711842, widths: [3, 4], label: "18K Rose Greek Key" },
+  { listingId: 4556696295, widths: [3, 4], label: "18K White Greek Key" },
 ];
 
 const ONE_SHOT = process.env.PRUNE_ONE_SHOT_TOKEN;
