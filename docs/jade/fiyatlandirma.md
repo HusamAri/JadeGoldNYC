@@ -1,17 +1,19 @@
 # Jade Gold NYC — fiyatlandırma
 
 **Kapsam:** bölüm bölüm ilerleyen zarar düzeltmesi. Bölüm sırası içerik planıyla
-aynı: protection → faith → love.
+aynı: protection → faith → love → rings + earrings.
 
 | Bölüm | Tarih | Varyant | Katalog değeri | Kalan zarar |
 |---|---|---|---|---|
 | **Koruma & Şans** (protection) | 2026-08-14 | 218 düzeltildi / 326 | $357.919 → $485.061 | **0** |
 | **İnanç** (faith) | 2026-08-14 | 178 düzeltildi / 235 | $182.913 → $280.318 | 13 (bkz. §7) |
 | **Sevgi & Anlam** (love) | 2026-08-15 | 107 düzeltildi / 109 | $63.701 → $82.551 | **0** |
+| **Yüzükler** (rings) + **Küpeler** (earrings) | 2026-08-17 | 215 düzeltildi / 221 | $90.929 → $129.528 | **0** |
 
-Üç bölümde de **fiyatı düşen varyant 0** — yalnız-yukarı kuralı (§3).
-Sıradaki bölümler ve breakeven altı varyant sayıları: **chains 158**,
-**rings 140**, **legacy 110**.
+Tüm bölümlerde **fiyatı düşen varyant 0** — yalnız-yukarı kuralı (§3).
+Love fiyatları 2026-08-15'te Etsy'ye itildi ve ertesi sabahki senkron
+**geri okumada birebir doğrulandı** (fark 0 — tek yönlü ayna vakası tekrarlamadı).
+Sıradaki bölümler ve breakeven altı varyant sayıları: **chains 158**, **legacy 110**.
 
 ## 1. Girdiler (kullanıcı tarafından doğrulandı)
 
@@ -158,6 +160,66 @@ koşuldu: gram × 1,12 ile bile breakeven altı **0**.
   22" $820; uzun zincir daha ucuz). Yeni hesap monoton çıktı
   ($875 → $939 → $1.002), tutarsızlık kendiliğinden onarıldı. Kaynağı elle
   girilmiş fiyatlar.
+
+## 4d. Yüzükler + Küpeler (2026-08-17)
+
+**221 varyantın 169'u breakeven altındaydı** (rings 134/174, earrings 29/41 +
+6 gramsız). 215 varyant düzeltildi; earrings'in hacim lideri `1201031517`
+(156 satış) zaten sağlıklıydı, yalnız-yukarı kuralı onu korudu (+%4,5).
+
+| Ölçüt | Önce | Sonra |
+|---|---|---|
+| Breakeven altı | **169 / 221** | **0** |
+| Katalog değeri | $90.929 | **$129.528** (+%42,5) |
+| Fiyatı düşen | — | **0** |
+| Dokunulmayan | — | 6 (gramı NULL, earrings) |
+
+### Hero — `1219136707` (Men's Nugget Ring, 386 satış: mağazanın en çok satanı)
+
+60 varyantın 60'ı zarardaydı; en ucuz aile $147'de, breakeven'i $261. Love
+hero'suyla aynı beden tuzağı: 12 beden (7–12,5) aile başına tek gramı
+paylaşıyor. Ölçülen iki nokta (`R14-11` 2,29g, `R15-9` 2,88g) ilan edilen
+gramın orta bedeni temsil ettiğini doğruladı. **Emniyetli breakeven** (gram ×
+1,16; beden 9 → 12,5 çevre oranı) uygulandı:
+
+| Aile | Gram | Eski | Yeni |
+|---|---|---|---|
+| R49 | 1,83 | $147 | $302 |
+| R14 | 2,30 | $263 | $377 |
+| R15 | 3,12 | $366 | $508 |
+| R16 | 5,00 | $487–538 | $808 |
+| R50 | 5,59 | $645 | $903 |
+
+Hedef marj değil breakeven — 386 satışlık üründe tek seferlik %90 zam ivmeyi
+öldürür; kademeli plan hero istisnasıyla aynı (30 gün sonra ikinci adım).
+
+### `1743975353` — ölçüm ilan edilen gramı yalanladı
+
+42 varyant aile başına 3,56g ilan ediyor; ölçülen `RCZOV-10` **4,38g** (+%23).
+Yani OV ailesinde ilan edilen gram beden 10'un bile altında. REC/SQ aileleri
+hedef %20 ($641) aldı; **OV ailesine taban kondu**: beden 12,5'e ölçeklenmiş
+kötümser gram (4,38 × çevre oranı ≈ 4,84g) ile breakeven $676 > $641 →
+OV paylaşılan varyantlar **$676**, ölçülen `RCZOV-10` kendi gramıyla $787.
+
+### Diğerleri
+
+- `1865969006` (alyans, 30 varyant): hedef %20. Ölçümler ilan = orta beden
+  desenini doğruladı (`RWB5-10` 4,20g ≈ 3,82 × 1,116 tahmini); hedef %20,
+  ×1,12 kötümser breakeven'i her ailede aşıyor — ayrı taban gerekmedi.
+- `1743489483` (42 varyant): hedef %20. Ölçümler bedenle **monoton artmıyor**
+  (2,76g @ 10,5 < 3,38g @ 7) — ağırlık taş/kafa baskın, beden payı gerekmez.
+- Earrings 11 listing: hedef %20, gram varyant başına (beden tuzağı yok).
+
+### Altın olmayan kayıtlar (motor dışı)
+
+- **`1454572095`** (925 gümüş tenis bileziği): altın motoru $1.306 breakeven
+  biçiyordu, ürün $34–39 bandında satılıyor — gümüş ~$1/g, uygulanamaz.
+  Yanlış bölümdeydi (rings); **chains'e taşındı ve kilitlendi**. Chains
+  fiyatlanırken de DIŞLANMALI; istenirse ayrı gümüş maliyet modeli kurulur.
+- **`1593402358`** ("Shipping Upgrade", legacy): ürün değil kargo hizmeti.
+  Legacy fiyatlanırken dışlanmalı.
+- Bu ikisi dışında katalogdaki **tüm** listingler karat işareti taşıyor
+  (başlıkta 10K/14K/…) — karat taraması tüm bölümlerde koşuldu.
 
 ## 5. Yan düzeltmeler
 

@@ -33,6 +33,20 @@ repodaki hedefidir.
   (4) doğrulama sorgusunu iyimser DEĞİL kötümser varsayımla koş; (5) tahminle
   konulan fiyatı "geçici" diye işaretle ve gerçek ölçüm iste — yoksa geçici
   fiyat kalıcı olur.
+  **Güçlendirme (2026-08-17, rings turu) — desen tek seferlik değil, ölçüm
+  yönü de değişken:** aynı tuzak rings'te 3 listing'de daha çıktı ama ölçümler
+  ÜÇ FARKLI hikâye anlattı ve üçü farklı kural gerektirdi: (a) `1219136707`
+  (386 satış!) love ile aynı — ölçüm orta bedende, ilan=ortalama → emniyetli
+  breakeven ×1,16; (b) `1743975353`'te ölçüm ilan edilenin %23 ÜSTÜNDE
+  (`RCZOV-10` 4,38g vs ilan 3,56g) — burada emniyet payı bile yetmez, ölçülen
+  değerden beden-ölçekli TABAN kondu ($676 > hedef %20'nin $641'i); (c)
+  `1743489483`'te ölçümler bedenle monoton ARTMIYOR (2,76 @ 10,5 < 3,38 @ 7)
+  — ağırlık taş/kafa baskın, beden payı GEREKSİZ. Kural: paylaşılan-gram
+  listinginde ölçülmüş noktaları bulmak yetmez; ölçümlerin ilan edilenle
+  İLİŞKİSİNİ oku (altında mı, üstünde mi, bedenle korelasyonu var mı) ve
+  kuralı ona göre seç — tek şablon üç vakada da yanlış olurdu. Yan doğrulama:
+  aynı formülü SQL + TS + Python'da bağımsız uygulayıp üçünün aynı satır
+  kümesini üretmesi (215/215) transkripsiyon hatasını da sıfırlar.
 
 - **Parça-içi tutarlılık isteyen talimat SADECE parça-içi tutarlılık üretir;
   küme-geneli değişmezler workflow BİTTİKTEN sonra tüm sette KODLA ölçülür
