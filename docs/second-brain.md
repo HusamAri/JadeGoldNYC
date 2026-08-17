@@ -33,6 +33,37 @@ repodaki hedefidir.
   teslim değildir, yalnız aklına gelen ihlallerin yokluğudur. Yan ders: büyük
   metni MCP SQL'iyle elle taşırken satır başına `length()` checksum'ı koş —
   14 açıklamada 14/14 birebir tuttu, tek karakterlik sapma anında görünürdü.
+  **Güçlendirme (2026-08-15) — kök neden ölçüm eksikliği DEĞİL, BELGE eksikliği:**
+  aynı 13 metinde ikinci tur ölçüm koşuldu ve drift beklenenden genişti: marka
+  kuyruğunun **beş bölümü de** dörde ayrışmıştı, ölçü birimi ikiye (`2 mm` /
+  `2mm`), karat büyük/küçük harfi ikiye, üstelik `banda` anglisizmi kalmıştı
+  (İspanyolcada `banda ancha` = "geniş bant internet"). Sebep: repoda
+  **İngilizce** ses tonu belgeliydi ama **İspanyolca karşılığı hiç yazılmamıştı**
+  — yani her ajan her turda sesi yeniden icat ediyordu. Sayaç koşmak sapmayı
+  GÖRÜR ama ÜRETMESİNİ engellemez. Kural: çok ajanlı üretimden ÖNCE o dilin/
+  yüzeyin ses tonu belgesi yazılır (kanonik bloklar kelimesi kelimesine, biçim
+  değişmezleri, yasak liste, doğrulama sayaçları); belge yoksa ilk iş odur.
+  Kanonik metin tahminle ya da "çoğunluk kazansın" ile seçilmez — VAR OLAN
+  KAYNAKTAN türetilir (burada canlı İngilizce marka kuyruğu, 919 kr, bölüm
+  bölüm eşlendi; "çoğunluk" 1025'lik varyantı seçtirirdi ve yanlış olurdu).
+  **Güçlendirme-2 — sayacın girdisi ÜRÜNÜN KENDİSİ olmalı, dökümü değil:**
+  yasak-token taraması önce `docs/.../es/*.md` dosyalarında koşuldu,
+  `alianza` 6 / `diamant` 9 / `hipoalerg` 1 verdi — hepsi SAHTE, çünkü o
+  dosyalar denetçi notlarını da taşıyor ve denetçi notu birebir "yasak-token
+  taraması temiz (diamant/alianza/✓/•/hipoalerg/reciclad yok)" cümlesini
+  içeriyordu. Sayaç DB'nin `description` alanına taşınınca hepsi 0 çıktı.
+  Yorum/rapor/denetçi notu taşıyan hiçbir yüzey ölçüm yüzeyi değildir.
+  **Güçlendirme-3 — belgeyi korpusa uydur, korpusu belgeye değil:** ilk taslak
+  "gövdede `gratis` kullanma" diye kural yazmıştı; ölçüm 5 gövdenin `gratis`,
+  12'sinin `sin costo` kullandığını ve `grabado gratis`'in keyword matrisinde
+  tag adayı olduğunu gösterdi → kural revize edildi. Yazdığın her kuralı yazar
+  yazmaz korpusta SAY; uymuyorsa ya kural yanlıştır ya da borç yarattın, ikisini
+  de bilerek seç. Ayrıca iki dil BİLEREK ayrışabilir: ölçü birimi İngilizcede
+  bitişik (374 bitişik / 17 boşluklu ölçüldü), İspanyolcada boşluklu (RAE) —
+  bunu belgeye YAZ, yoksa biri "tutarsızlık" sanıp eşitler. Son ders: sayaç
+  yeşilken gözle okunan TEK metin iki gerçek kusuru daha yakaladı (`gratis`
+  çelişkisi + kalan `banda`); repo⇄DB eşitliği için `length()` değil **MD5**
+  kullan — büyük/küçük harf değişimi uzunluğu değiştirmez.
 
 - **Teslimat FORMATI kullanıcının aracına göre seçilir; "açar" ≠ "istenen" ve
   format kısıtı ilan edilmeden ARAÇLA sınanır (2026-08):** Kullanıcı "numbers
