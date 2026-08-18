@@ -234,6 +234,34 @@ repodaki hedefidir.
   ikisi aynı anda sağlanamaz). Kural: dış platformun rehberliğini kodlayan
   eşik/metin bir TARİH taşımalı; platform kuralı değiştiğinde panel sessizce
   ters sinyal üretmeye devam eder ve kimse fark etmez.
+  **Güçlendirme-2 (2026-08-17, Greek Key) — teşhis çürüse bile içindeki HAM
+  VERİYİ ayıkla:** "Greek fiyatları çok düşük, acil yükselt" dendi; ölçüm dört
+  yönden çürüttü ($/gram katalogdan +%1..%4,9 üstte, spot güncel, dış emsalin
+  üstünde, zarar yok). Şikâyeti kabul edip körlemesine zam yapmak yanlış olurdu
+  — ama teşhisi "çürüdü" deyip kapatmak DA yanlış olurdu: kullanıcıya "neye
+  baktın?" diye sorunca ham veri çıktı ("işçilik min $60") ve o veri GERÇEK
+  bir formül kusurunu açtı — config el-işi işçiliği $40 taşıyordu, Tamsan
+  fatura kalibrasyonu $74 diyordu; fiyatlar formüle göre doğru, formülün
+  GİRDİSİ gerçeğin yarısıydı. Kural: kullanıcı teşhisi ile getirdiği ham veri
+  ayrı ayrı sınanır; teşhis yanlışken veri doğru olabilir ve asıl iş oradadır.
+- **İki sistem aynı değeri üretmek zorundaysa formül "eşdeğer" değil BİREBİR
+  olmalı — ara yuvarlama dahil (2026-08-17):** Greek fiyatlarını SQL'de
+  `ceil(x/0.75/5)*5` ile bastım; motor `ceil(round(x)*4/15)*5` kullanıyor —
+  matematiksel olarak "aynı" görünen iki ifade (1/0.75 = 4/3) ara
+  `roundHalfUp` + troy sabiti farkı (31.1035 vs 31.1034768) yüzünden
+  **115/1750 satırda** 5$ hücre kaymasına düştü. Tehlike sessizdi: motor o
+  satırları sonsuza dek "taban-uyumsuz" diye atlayacaktı ve hiçbir test
+  kırmızı yanmayacaktı. Yakalatan şey, basmadan önce koşulan bit-uyum
+  sayacıydı (`formül(DB girdisi) == DB fiyatı` filtresi, 0 olmalı). Kural:
+  (1) bir değeri sonradan TANIYACAK sistemin formülü neyse üretimde o formül
+  kullanılır — kendi "eşdeğer" türevin değil; (2) basım sonrası bit-uyum
+  sayacı koş (0 sapan) ve formülü bağımsız dille (TS harness, 40/40) çapraz
+  doğrula; (3) yuvarlama basamağı olan her formülde ara yuvarlamaların yeri
+  sözleşmenin parçasıdır, dokümante et. Yan ders: motor "DB == hedef" satırı
+  basmaz — panel doğru/dış sistem eski kaldığında o uyumsuzluğu hiçbir akış
+  göremiyordu; doğruluk kaynağı DB olan durumlar için ayrı bir DB→Etsy
+  senkron rotası (ops price-sync: token CAS + listings zorunlu + kuru
+  varsayılan + aynı-tur read-back) eklendi.
 - **Gerçek render ile doğrula (2026-07):** UI değişikliği "kod doğru görünüyor" ile
   bitmez — Playwright screenshot + `getComputedStyle` ile canlı doğrula. Vaka: dark-mode
   motion "bozuk" sanılıyordu; ölçüm hepsinin `running` olduğunu gösterdi, asıl iş başkaydı.
