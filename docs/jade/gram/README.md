@@ -20,24 +20,25 @@ python3 scripts/jade-gram-worksheet.py katalog-anlik-<tarih>.json cikti.xlsx
 | **Başlangıç** | — | Kapak, nasıl kullanılır, durum rengi lejantı |
 | **Ayarlar** | 7 | Fiyat sabitleri + açıklamaları |
 | **Formüller** | 6 + 5 | Her formülün düz anlatımı **ve** Numbers'a kopyala-yapıştır hazır sözdizimi |
-| **Gram Girişi** | 161 | Ekip burayı doldurur — sarı GRAM sütunu |
-| **Tüm Varyantlar** | 1.944 | Katalog sağlığı + gram kaynağı |
-| **Listing Özeti** | 113 | Hangi listing'in tartımı acil |
+| **Gram Girişi** | 390 | Ekip burayı doldurur — sarı GRAM sütunu |
+| **Tüm Varyantlar** | 1.984 | Katalog sağlığı + gram kaynağı |
+| **Listing Özeti** | 114 | Hangi listing'in tartımı acil |
 
-### «Gram Girişi» neden 161 satır
+### «Gram Girişi» neden 390 satır
 
-İki ayrı durum var ve **Neden** sütunu bunları ayırır:
+Dört ayrı durum var ve **Neden** sütunu bunları ayırır:
 
 | Neden | Satır | Anlamı |
 |---|---|---|
 | `gram yok` | 121 | Hiç ölçüm yok, hücre boş |
-| `beden bazlı tartım gerekli` | 40 | Yazılı bir gram **var** ama güvenilmiyor |
+| `beden bazlı tartım gerekli` | 172 | Yüzük bedenleri tek gramı paylaşıyor (`1739245557`, `1219136707`, `1743975353`, `1865969006` vb.) |
+| `boy bazlı tartım gerekli` | 72 | Zincir/bilezik boyları tek gramı paylaşıyor (`4348066009`, `1355681376`, `1442796773`) |
+| `ölçüm ilandan +%18 ağır — tartım gerekli` | 25 | `1485089843`: tek ölçüm ilan merdivenini yalanladı |
 
-İkinci grup tamamen `1739245557` (10K Heart Nugget Ring): 10 beden (5–9.5)
-**aynı gramı** paylaşıyor, yani beden ağırlığa hiç yansıtılmamış. 40 varyanttan
-yalnız biri gerçekten ölçülmüş (`RHN2-7`, beden 7 — aralığın ortası), kalanı
-açıklama metninden türetilmiş. Bu satırlarda mevcut gram **görünür bırakıldı**
-ki ekip neyi düzelttiğini bilsin. Ayrıntı: `docs/jade/fiyatlandirma.md` §4c.
+Gramı yazılı olup güvenilmeyen satırlarda mevcut değer **görünür bırakıldı**
+ki ekip neyi düzelttiğini bilsin. Bu gruplardaki fiyatlar emniyet payıyla
+konmuş GEÇİCİ fiyatlardır; tartım gelince yeniden hesaplanır.
+Ayrıntı: `docs/jade/fiyatlandirma.md` §4c–§4e.
 
 ### `.numbers`'ta hesap neden canlı değil
 
@@ -69,7 +70,7 @@ Numbers'ın desteklediği ortak fonksiyonlar, Excel'e özgü fonksiyon yok.
 `/plugin marketplace add apeabody007/digits`) formüller doğrudan `.numbers`'a
 yazılabilir ve bu ayrım tamamen kalkar.
 
-Anlık veri: `katalog-anlik-2026-08-15.json` (1.944 varyant / 113 listing).
+Anlık veri: `katalog-anlik-2026-08-15.json` (1.984 varyant / 114 listing — anlık görüntü DB ile eşitlenerek büyüyor).
 
 ## Nasıl kullanılır
 
@@ -77,7 +78,7 @@ Sarı **GRAM** hücresine gram yazılır. XLSX'te maliyet, breakeven, hedef fiya
 marj ve durum **anında** hesaplanır; `.numbers`'ta hesap için «Formüller»
 sekmesindeki hazır formül bir kez yapıştırılır. Başka hiçbir sütuna dokunulmaz.
 
-Altın fiyatı değişirse `Ayarlar!B3` güncellenir — 1.944 satır yeniden hesaplanır.
+Altın fiyatı değişirse `Ayarlar!B3` güncellenir — 1.984 satır yeniden hesaplanır.
 (Ayarlar sekmesinde 1. satır başlık bandı olduğu için değerler **B3–B9**'dadır;
 formüller oraya bağlı, bu satırlar kaydırılmamalı.)
 
@@ -95,7 +96,7 @@ yazdığı anda renk kendiliğinden değişir, elle boyama yoktur.
 | `ok` | jade | Sağlıklı |
 
 XLSX'te **Marj** sütunu ayrıca kırmızı → krem → jade renk skalasıyla boyanır;
-1.944 satırı okumadan zayıf marjlar göze çarpar.
+1.984 satırı okumadan zayıf marjlar göze çarpar.
 
 ## Renkler
 
@@ -153,13 +154,13 @@ Hedef fiyat = YUKARIYUVARLA((maliyet + 0,25) / (0,85 × (0,905 − hedef marj)))
 çalışır, LibreOffice kurulumu da bozuk (java eksik, minimal bir XLSX'i bile
 açamıyor). Bunun yerine ikisi de programatik olarak geri okunup doğrulandı:
 
-**XLSX:** ZIP bütünlüğü sağlam, 4 sekme, satır sayıları doğru (121/1.944/113),
+**XLSX:** ZIP bütünlüğü sağlam, 4 sekme, satır sayıları doğru (390/1.984/114),
 formüller `openpyxl` ile geri okundu, `Ayarlar!$B$3–$B$9` adreslerinin doğru
 değerlere (106 / 5 / 1,5 / %15 / %9,5 / 0,25 / %20) denk geldiği tek tek teyit
 edildi, giriş hücrelerinin sarı dolgusu ve koşullu biçim kuralları okundu.
 
 **`.numbers`:** paket bütünlüğü sağlam (91 dosya, Index mevcut), 6 sekme, satır
-sayıları doğru (121/1.944/113), pastel renkler hücre hücre geri okundu
+sayıları doğru (390/1.984/114), pastel renkler hücre hücre geri okundu
 (giriş `FFE38C`, sağlıklı `B8E0D2`, zarar `FFC2B8`), hesaplanmış değerler TS
 motoruyla karşılaştırıldı. Sayı biçimi doğrulandı: `numbers-parser` float
 round-trip'te hassasiyet kaybediyor (`41.61` → `41.61000000000001`), açık
