@@ -159,9 +159,24 @@ function computeTargets(
         continue;
       }
       // İşçilik kademesi kendini doğrular: eski tabanla hangi kademe mevcut
-      // fiyatı birebir üretiyorsa o kademe geçerlidir. İkisi de üretmiyorsa
+      // fiyatı birebir üretiyorsa o kademe geçerlidir. Hiçbiri üretmiyorsa
       // fiyat elle/farklı kurulmuş demektir — DOKUNULMAZ, raporlanır.
-      const kademeler = [V4.laborMilgrainUsd, V4.laborStandardUsd];
+      //
+      // Kademe GÖÇÜ (2026-08-17): el-işi taban $40 → $74 (Tamsan süslü fatura
+      // kalibrasyonu; kullanıcı kararı, Greek Key vakası). $40 ile üretilmiş
+      // satır tanınır ama yeni fiyatı $74 ile üretilir — yani bu koşu hem spot
+      // güncellemesi hem işçilik göçüdür. $74 tanıma listesinde de durur ki
+      // göç tamamlanmış satır sonraki koşularda normal spot-takibine dönsün.
+      // Kademeler arası fiyat farkı 5$ yuvarlamanın çok üstünde olduğundan
+      // (dar bantta bile ≥ $20 × 1.55 / 0.75 ≈ $41) `find` yanlış kademeye
+      // eşleşemez.
+      const kademeler = [
+        V4.laborHandfinishedTargetUsd,
+        V4.laborMilgrainUsd,
+        V4.laborStandardUsd,
+      ];
+      const hedefKademe = (l: number) =>
+        l === V4.laborMilgrainUsd ? V4.laborHandfinishedTargetUsd : l;
       const labor = kademeler.find(
         (l) =>
           eonListCents(parsed.karat, parsed.widthMm, grams, l, basis) ===
@@ -174,8 +189,13 @@ function computeTargets(
         // sonsuza dek atlanır ve taban ilerleyince farkı bir daha yakalayamaz).
         const zatenUygulanmis = kademeler.some(
           (l) =>
-            eonListCents(parsed.karat, parsed.widthMm, grams, l, spot) ===
-            oldCents,
+            eonListCents(
+              parsed.karat,
+              parsed.widthMm,
+              grams,
+              hedefKademe(l),
+              spot,
+            ) === oldCents,
         );
         if (zatenUygulanmis) {
           unchanged += 1;
@@ -184,7 +204,13 @@ function computeTargets(
         }
         continue;
       }
-      newCents = eonListCents(parsed.karat, parsed.widthMm, grams, labor, spot);
+      newCents = eonListCents(
+        parsed.karat,
+        parsed.widthMm,
+        grams,
+        hedefKademe(labor),
+        spot,
+      );
     } else {
       // Jade: formül dayatılmaz; yalnız ham metal bedeli farkı eklenir.
       if (!(grams > 0)) {

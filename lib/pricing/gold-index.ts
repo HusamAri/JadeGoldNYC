@@ -16,11 +16,20 @@
 
 export const TROY_OZ_GRAMS = 31.1034768;
 
-/** v4 grid (spot4090) ASM sabitleri — kaynak: docs/eon/pricing/…-v4.xlsx. */
+/** v4 grid (spot4090) ASM sabitleri — kaynak: docs/eon/pricing/…-v4.xlsx.
+ *
+ *  İşçilik kademeleri (2026-08-17 revizyonu): Tamsan fatura kalibrasyonu
+ *  süslü parçayı $74 gösterdi (docs/eon/tamsan-cost-calibration.md; kullanıcı
+ *  kararı 2026-08-17, Greek Key vakası). `laborMilgrainUsd: 40` ESKİ el-işi
+ *  tabanıdır ve yalnız MEVCUT fiyatı tanımak için durur — reprice koşusu $40
+ *  ile üretilmiş bir satırı yakaladığında yeni fiyatı
+ *  `laborHandfinishedTargetUsd` ile üretir (bkz. gold-reprice-run.ts
+ *  `hedefKademe`). Yeni fiyat üretiminde 40 KULLANILMAZ. */
 export const V4 = {
   fire: 0.07,
   laborStandardUsd: 30,
   laborMilgrainUsd: 40,
+  laborHandfinishedTargetUsd: 74,
   packagingUsd: 8,
   shippingUsd: 22,
   multNarrow: 1.55, // 2-7mm
