@@ -1,7 +1,7 @@
 # Jade Gold NYC — fiyatlandırma
 
 **Kapsam:** bölüm bölüm ilerleyen zarar düzeltmesi. Bölüm sırası içerik planıyla
-aynı: protection → faith → love → rings + earrings.
+aynı: protection → faith → love → rings + earrings → chains + legacy.
 
 | Bölüm | Tarih | Varyant | Katalog değeri | Kalan zarar |
 |---|---|---|---|---|
@@ -9,11 +9,16 @@ aynı: protection → faith → love → rings + earrings.
 | **İnanç** (faith) | 2026-08-14 | 178 düzeltildi / 235 | $182.913 → $280.318 | 13 (bkz. §7) |
 | **Sevgi & Anlam** (love) | 2026-08-15 | 107 düzeltildi / 109 | $63.701 → $82.551 | **0** |
 | **Yüzükler** (rings) + **Küpeler** (earrings) | 2026-08-17 | 215 düzeltildi / 221 | $90.929 → $129.528 | **0** |
+| **Zincirler** (chains) + **Miras** (legacy) | 2026-08-17 | 658 düzeltildi / 975 | $1.919.235 → $2.195.369 | **0** |
 
 Tüm bölümlerde **fiyatı düşen varyant 0** — yalnız-yukarı kuralı (§3).
 Love fiyatları 2026-08-15'te Etsy'ye itildi ve ertesi sabahki senkron
-**geri okumada birebir doğrulandı** (fark 0 — tek yönlü ayna vakası tekrarlamadı).
-Sıradaki bölümler ve breakeven altı varyant sayıları: **chains 158**, **legacy 110**.
+**geri okumada birebir doğrulandı** (fark 0 — tek yönlü ayna vakası tekrarlamadı);
+rings+earrings itişi 2026-08-17 21:36 UTC'de aynı yolla doğrulandı.
+
+**Bölüm turu bitti.** Gramı olan tüm katalog fiyatlandı; kalan işler yalnız
+veri bekleyenler: gramsız 121 varyant (ekip dosyası), `1520386344` (bozuk gram)
+ve tartım işaretli listingler (§7).
 
 ## 1. Girdiler (kullanıcı tarafından doğrulandı)
 
@@ -210,6 +215,71 @@ OV paylaşılan varyantlar **$676**, ölçülen `RCZOV-10` kendi gramıyla $787.
   (2,76g @ 10,5 < 3,38g @ 7) — ağırlık taş/kafa baskın, beden payı gerekmez.
 - Earrings 11 listing: hedef %20, gram varyant başına (beden tuzağı yok).
 
+## 4e. Zincirler + Miras (2026-08-17)
+
+Katalogun en büyük dalgası: **47 listing, 975 gramlı varyant** (chains 27 +
+legacy 20; gümüş bilezik dışlandı). **273'ü breakeven altındaydı.**
+
+| Ölçüt | Önce | Sonra |
+|---|---|---|
+| Breakeven altı | **273 / 975** | **0** (kötümser gramla da 0) |
+| Katalog değeri | $1.919.235 | **$2.195.369** (+%14,4) |
+| Fiyatı düşen | — | **0** |
+| Zamlanan | — | 658 |
+| Dokunulmayan | — | 106 gramsız + gümüş 6 |
+
+Rings dersine uygun olarak tek şablon uygulanmadı; dört kural:
+
+| Kural | Kapsam | Sonuç |
+|---|---|---|
+| Hedef %20 | 42 listing / 853 varyant | +%14,7 |
+| Hero breakeven | `1195581074` (25) | +%10,5 |
+| Boy-ölçekli breakeven | `4348066009`, `1355681376`, `1442796773` (72) | +%5,6 |
+| ×1,18 + hedef %20 | `1485089843` (25) | +%28,1 |
+
+### Hero — `1195581074` (Miami Cuban Bracelet, 180 satış)
+
+25 gramlı varyantın 25'i zarardaydı. Beş ölçüm gram merdivenini **doğruladı**
+(`BMC1-7`=2g taban, boyla lineer) → emniyet payı gereksiz, düz **breakeven**.
+Kademeli plan diğer hero'larla aynı: hedef marj değil, önce zarar kapama.
+
+### Boy paylaşımı — üç listing (geçici fiyat, tartım işaretli)
+
+`4348066009` (Rolo, 21), `1355681376` (Valentino bilezik, 21), `1442796773`
+(Valentino kolye, 30): genişlik başına TEK gram, tüm boylar paylaşıyor —
+`1520386344` deseninin hafif hali. Fiyat boyla artıyor ama gram artmıyor;
+kolyede 16"→24" gerçek fark ~%50. Hiçbirinde ölçüm yok. Varsayım: **ilan
+edilen gram en kısa boyu temsil eder** (fiyat merdiveni boy oranıyla örtüşüyor);
+etkin gram = ilan × boy/en-kısa-boy ile **breakeven** kondu. Tahmin gram
+üstüne marj zammı bilerek YAPILMADI — bu üç listing hedef %20'ye ancak gerçek
+tartım gelince çekilecek.
+
+### `1485089843` (14K Beaded Ball) — ölçüm ilanı yalanladı, rings vakası (b)
+
+`CM42F-20` ölçümü **6,7g**; ilan merdiveni 20" için ~5,67g diyor (+%18) ve
+ölçüm 22" ilanından (6,23g) bile ağır. Tüm listing **gram × 1,18** ile hedef
+%20 aldı. Yan kazanç: `CM40F-22`'nin **$14'lık placeholder fiyatı** (2,11g
+zincir!) formülle $373'e oturdu — love turunda işaretlenen saçma fiyat
+kendiliğinden düzeldi.
+
+### En büyük düzeltmeler
+
+| Listing | Var. | Eski | Yeni | Artış |
+|---|---|---|---|---|
+| 1849001180 Figaro Chain 10K | 30 | $156–2.561 | $224–4.229 | +%52,8 |
+| 1764133503 Miami Cuban CZ | 15 | $2.980–7.235 | $3.994–10.749 | +%49,5 |
+| 1849022518 Rope Chain 10K | 25 | $1.575–5.075 | $2.626–7.910 | +%46,8 |
+| 4375720322 Rope Bracelet White | 28 | $421–4.694 | $590–6.640 | +%46,0 |
+| 1296858064 Bead Ball Chain | 20 | $626–4.331 | $887–6.014 | +%42,0 |
+| 1891642136 Franco Chain | 25 | $330–2.164 | $454–2.948 | +%33,9 |
+| 1906361879 Cuban Curb | 40 | $204–6.701 | $254–8.741 | +%32,6 |
+| 1283581532 Miami Cuban (98 satış) | 40 | $304–7.675 | $742–9.831 | +%21,6 |
+
+Yüksek satışlı sağlıklı listingler (`1199260535` 442, `1296896712` 383,
+`1336346678` 154, `1195517566` 152 satış) hedef %20 kuralına girdi ama zaten
+hedefe yakındılar: dördü toplam **+%1,3**, en büyük tekil zam +%26 (tek varyant).
+İvme riski yok.
+
 ### Altın olmayan kayıtlar (motor dışı)
 
 - **`1454572095`** (925 gümüş tenis bileziği): altın motoru $1.306 breakeven
@@ -247,6 +317,12 @@ OV paylaşılan varyantlar **$676**, ölçülen `RCZOV-10` kendi gramıyla $787.
   satır kaymasını yakalar, düz toplam yakalamaz.
 - **Geri alma güvencesi:** love UPDATE'i sonrası `audit_log`'da 107 satır,
   107 farklı varyant — before/after diff'i mevcut.
+- **Chains+legacy (975 satır):** SQL kümesi `json_agg` + **md5 mührü** ile tek
+  parçada dışa alındı (transkripsiyon riski sıfır), TS motoru 975 satırın
+  TAMAMINDA koşuldu — **0 sapma** (boy-ölçekleme ve ×1,18 dahil; SQL `numeric`
+  ↔ JS `double` yuvarlama kenarı çıkmadı). UPDATE sonrası: audit 658 satır
+  (= zam sayısı birebir), breakeven altı ilan gramıyla 0, kötümser gramla 0,
+  toplam cent önizlemeyle birebir.
 
 ## 7. Açık veri sorunları
 
@@ -263,6 +339,12 @@ OV paylaşılan varyantlar **$676**, ölçülen `RCZOV-10` kendi gramıyla $787.
   bildirdi ama DB'de yok → fiyatlanamadı. Girilirse hedef ~$147.
 - **Love'da gramı NULL 2 varyant** (`1230866961`, `1232906923`) — gram çalışma
   dosyasında ekip girişini bekliyor, fiyatlanmadı.
+- **Boy paylaşımlı üçlü** (`4348066009`, `1355681376`, `1442796773`): fiyatlar
+  boy-ölçekli TAHMİN gramla kondu, geçici. 72 varyant gram çalışma dosyasında
+  "boy bazlı tartım gerekli" işaretli.
+- **`1485089843`**: ×1,18 emniyet payı da tahmindir; 25 varyant tartım işaretli.
+  `CM40F-22` eski fiyatı $14'tı (placeholder) — kayıt olarak not edildi.
+- **Chains+legacy gramsız 106 varyant** — ekip dosyası dönene kadar fiyatsız.
 - **Satış senkronu 5 Ağustos'tan beri bayat** — ölçüm için tazelenmeli.
 
 ## 8. Sıradaki adım
