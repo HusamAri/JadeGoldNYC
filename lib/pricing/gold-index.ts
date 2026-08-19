@@ -18,16 +18,27 @@ export const TROY_OZ_GRAMS = 31.1034768;
 
 /** v4 grid (spot4090) ASM sabitleri — kaynak: docs/eon/pricing/…-v4.xlsx.
  *
- *  İşçilik kademeleri (2026-08-17 revizyonu): Tamsan fatura kalibrasyonu
- *  süslü parçayı $74 gösterdi (docs/eon/tamsan-cost-calibration.md; kullanıcı
- *  kararı 2026-08-17, Greek Key vakası). `laborMilgrainUsd: 40` ESKİ el-işi
- *  tabanıdır ve yalnız MEVCUT fiyatı tanımak için durur — reprice koşusu $40
- *  ile üretilmiş bir satırı yakaladığında yeni fiyatı
- *  `laborHandfinishedTargetUsd` ile üretir (bkz. gold-reprice-run.ts
- *  `hedefKademe`). Yeni fiyat üretiminde 40 KULLANILMAZ. */
+ *  İşçilik kademeleri — Tamsan fatura kalibrasyonu (docs/eon/tamsan-cost-
+ *  calibration.md). İKİ kademe de gerçek faturayla ölçüldü:
+ *    - süslü / el-işi (Diamond Cut): **$74** (2026-08-17, Greek Key vakası)
+ *    - düz (Dome & Flat):           **$38** (2026-08-18, 11 satır / 5 fatura;
+ *      6 düz satırın fire'lı zımni işçilik medyanı $38)
+ *
+ *  `laborStandardUsd: 30` ve `laborMilgrainUsd: 40` ESKİ tabanlardır ve yalnız
+ *  MEVCUT fiyatı TANIMAK için durur. Reprice koşusu eski tabanla üretilmiş bir
+ *  satırı yakaladığında yeni fiyatı hedef kademeyle üretir (30 → 38, 40 → 74;
+ *  bkz. gold-reprice-run.ts `hedefKademe`). Yeni fiyat üretiminde 30 ve 40
+ *  KULLANILMAZ.
+ *
+ *  Not: işçilik altın fiyatının yüzdesi DEĞİLDİR — faturalarda işçilik/melt
+ *  oranı %21-88 arasında savruluyor. Düzde parça başı sabit (işçilik-gram
+ *  korelasyonu r=0,23), süslüde boyutla artıyor (r=0,97) ama $74 sabiti
+ *  ölçülen aralıkta dengede kalıyor. Metal bileşeni ise spota birebir bağlı
+ *  ve tedarikçi de faturasına kendi altın tabanını basıyor. */
 export const V4 = {
   fire: 0.07,
   laborStandardUsd: 30,
+  laborStandardTargetUsd: 38,
   laborMilgrainUsd: 40,
   laborHandfinishedTargetUsd: 74,
   packagingUsd: 8,

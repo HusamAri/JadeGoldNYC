@@ -64,3 +64,65 @@ de tamamı EON satışıydı — Jade verisine dokunulmadı.
   sabitlerini yeniden medyanla ($54/$74 güncellenebilir).
 - Spot değiştiğinde malzeme payı kendiliğinden doğru — işçilik sabitleri
   spottan bağımsız.
+
+---
+
+# Ek: 5. fatura + FİYAT MOTORU kalibrasyonu (2026-08-18)
+
+Beşinci fatura geldi ve kapsam genişledi: bu tur yalnız COGS modelini değil,
+**satış fiyatı motorunu** da (`lib/pricing/gold-index.ts` `V4`) kalibre etti.
+
+| Fatura | Tarih | Kalem | Metal | Gram | Tutar | Altın tabanı |
+| --- | --- | --- | --- | --- | --- | --- |
+| 18063 | 08-18 | Diamond Cut 6mm sz8 +kazıma | 14K Y | 5.30 | $560.00 | **$4438.80** |
+| 18063 | 08-18 | Diamond Cut 5mm sz9.5 +kazıma | 14K Y | 4.94 | $513.00 | **$4438.80** |
+
+Toplam artık **11 satır / 5 fatura**.
+
+## ⚠️ İki ayrı "işçilik" sayısı var — karıştırma
+
+Aynı faturalardan İKİ farklı sabit türetilir çünkü iki model fire payını
+farklı yerde taşır:
+
+| | Formül | Düz | Süslü | Nerede |
+| --- | --- | --- | --- | --- |
+| **COGS modeli** | melt + işçilik | **$54** | **$74** | `lib/gold-cost.ts` |
+| **Fiyat motoru** | melt × 1,07 + işçilik | **$38** | **$74** | `gold-index.ts` `V4` |
+
+Fark fire payıdır: motor metali `×1,07` ile şişirdiği için işçilik kalemi
+o kadar küçülür (`işçilik_motor = tutar − melt×1,07`). İkisi aynı toplam
+maliyeti üretir; **biri diğerinin yerine yazılamaz.**
+
+## Ölçüm (11 satır, zımni işçilik = tutar − melt×1,07)
+
+| Sınıf | n | Medyan | Aralık | İşçilik/melt oranı | İşçilik-gram korelasyonu |
+| --- | --- | --- | --- | --- | --- |
+| Düz (Dome & Flat) | 6 | **$38** | $30–$103 | %21–88 | r = **0,23** |
+| Süslü (Diamond Cut) | 5 | **$73** | $50–$88 | %25–57 | r = **0,97** |
+
+## Bulgu 1: işçilik altın fiyatının yüzdesi DEĞİL
+
+İşçilik/melt oranı %21 ile %88 arasında savruluyor — yüzdelik bir bağ olsaydı
+dar bir bantta toplanırdı. Yapı şu: **metal spota birebir endeksli** (tedarikçi
+her faturaya kendi altın tabanını basıyor: 07-22…08-08 faturaları $4372,40,
+08-18 faturası $4438,80; ayrıca "metal artışı yansıtılır" şartı yazılı), ama
+**işçilik parça başına**. Düzde gerçekten sabit (r=0,23); süslüde boyutla
+artıyor (r=0,97) — yine de $74 sabiti ölçülen aralıkta dengede kalıyor
+(6mm'de ~$14 eksik, 2,5mm'de ~$24 fazla).
+
+## Bulgu 2: fiyat motorunun düz kademesi eksikti
+
+Motor düz işçiliği **$30** taşıyordu, ölçüm **$38** dedi. (Süslü kademe
+2026-08-17'de $40 → $74 çekilmişti; bu tur onu 5 DC satırıyla **doğruladı**,
+değişiklik gerekmedi.)
+
+**Uygulanan (kullanıcı onayı 2026-08-18):** `pricing_config.labor_usd` 30 → 38;
+$30-tabanlı **4.565 aktif varyant / 25 listing** motor formülüyle (bit-uyumlu)
+$38 tabanına çekildi ve `ops/price-sync` ile Etsy'ye basıldı — canary +
+2 parça, **25/25 listing synced, read-back kalan fark 0**. Vitrin etkisi
+varyant başına **+$15…+$25** (ortalama +$18,6). Zarar riski yoktu; bu bir
+maliyet-gerçeği düzeltmesidir, zam değil.
+
+`laborStandardUsd: 30` ve `laborMilgrainUsd: 40` kodda TANIMA kademesi olarak
+durur (bkz. `gold-reprice-run.ts` `hedefKademe`: 30 → 38, 40 → 74) — eski
+tabanla üretilmiş bir satır ileride yakalanırsa hedefe göçürülür.

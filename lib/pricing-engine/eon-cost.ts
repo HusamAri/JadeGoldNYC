@@ -22,6 +22,10 @@
  *   `docs/eon/pricing/1.5mm-karar-ve-fiyat-duzeltmesi-2026-07-29.md`
  *   ("Varsayımlar canlı grid'le AYNI (spot $4.090/ozt, çarpan 1,55, fire %7,
  *   işçilik 30 / milgrain 40, paket 8, kargo 22 …)").
+ *   GÜNCEL DEĞİL: işçilik kademeleri o tarihten sonra gerçek Tamsan
+ *   faturalarıyla kalibre edildi (düz 30 → 38, el-işi 40 → 74; bkz.
+ *   `docs/eon/tamsan-cost-calibration.md`). Yukarıdaki alıntı grid'in
+ *   TARİHSEL kaynağıdır, yürürlükteki değer aşağıdaki sabitlerdir.
  * - Geniş bandın (8–12mm) 2,00 çarpanı: v4 grid'i `ASM!B17 "Carpan 8-12mm"`
  *   → `parse.ts` `PricingAssumptions.multiplierWide` (bilinçli mens-wide primi).
  * - Kalınlık 1.5mm nihai kararı: aynı doküman ("Ürünün nihai kararı 1.5mm").
@@ -89,12 +93,14 @@ export const EON_PURITY: Record<EonKarat, number> = {
 export const EON_FIRE_FACTOR = 1.07;
 
 /** İşçilik, USD. El-işi profiller elde bitirilir → daha yüksek.
- *  El-işi tabanı 2026-08-17'de 40 → 74: Tamsan fatura kalibrasyonu süslü
- *  parçayı $74 gösteriyor (docs/eon/tamsan-cost-calibration.md); $40 gerçek
- *  maliyetin yaklaşık yarısıydı (Greek Key vakasıyla yakalandı). Canlı
- *  fiyatların $40-tabanlıdan $74-tabanlıya göçü gold-reprice koşusundadır
+ *  İKİ taban da Tamsan faturasıyla kalibre edildi
+ *  (docs/eon/tamsan-cost-calibration.md):
+ *    - el-işi 40 → **74** (2026-08-17, Greek Key vakası)
+ *    - düz    30 → **38** (2026-08-18, 11 satır / 5 fatura; 6 düz satırın
+ *      fire'lı zımni işçilik medyanı $38 — $30 gerçeğin altındaydı)
+ *  Canlı fiyatların eski tabandan yeni tabana göçü gold-reprice koşusundadır
  *  (lib/pricing/gold-reprice-run.ts `hedefKademe`). */
-export const EON_LABOR_USD = 30;
+export const EON_LABOR_USD = 38;
 export const EON_LABOR_HANDFINISHED_USD = 74;
 const HANDFINISHED_PROFILES: ReadonlySet<EonProfile> = new Set<EonProfile>([
   "milgrain",

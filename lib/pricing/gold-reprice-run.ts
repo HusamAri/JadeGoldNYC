@@ -162,21 +162,27 @@ function computeTargets(
       // fiyatı birebir üretiyorsa o kademe geçerlidir. Hiçbiri üretmiyorsa
       // fiyat elle/farklı kurulmuş demektir — DOKUNULMAZ, raporlanır.
       //
-      // Kademe GÖÇÜ (2026-08-17): el-işi taban $40 → $74 (Tamsan süslü fatura
-      // kalibrasyonu; kullanıcı kararı, Greek Key vakası). $40 ile üretilmiş
-      // satır tanınır ama yeni fiyatı $74 ile üretilir — yani bu koşu hem spot
-      // güncellemesi hem işçilik göçüdür. $74 tanıma listesinde de durur ki
-      // göç tamamlanmış satır sonraki koşularda normal spot-takibine dönsün.
-      // Kademeler arası fiyat farkı 5$ yuvarlamanın çok üstünde olduğundan
-      // (dar bantta bile ≥ $20 × 1.55 / 0.75 ≈ $41) `find` yanlış kademeye
-      // eşleşemez.
+      // Kademe GÖÇÜ — her iki taban da Tamsan faturasıyla kalibre edildi:
+      // el-işi $40 → $74 (2026-08-17, Greek Key vakası), düz $30 → $38
+      // (2026-08-18, 11 satır / 5 fatura). Eski tabanla üretilmiş satır TANINIR
+      // ama yeni fiyatı hedef kademeyle üretilir — yani bu koşu hem spot
+      // güncellemesi hem işçilik göçüdür. Hedef kademeler tanıma listesinde de
+      // durur ki göçü tamamlanmış satır sonraki koşularda normal spot-takibine
+      // dönsün. Kademeler arası fiyat farkı 5$ yuvarlamanın üstünde olduğundan
+      // (en dar aralık 30↔38 bile $8 × 1.55 / 0.75 ≈ $16) `find` yanlış
+      // kademeye eşleşemez.
       const kademeler = [
         V4.laborHandfinishedTargetUsd,
         V4.laborMilgrainUsd,
+        V4.laborStandardTargetUsd,
         V4.laborStandardUsd,
       ];
       const hedefKademe = (l: number) =>
-        l === V4.laborMilgrainUsd ? V4.laborHandfinishedTargetUsd : l;
+        l === V4.laborMilgrainUsd
+          ? V4.laborHandfinishedTargetUsd
+          : l === V4.laborStandardUsd
+            ? V4.laborStandardTargetUsd
+            : l;
       const labor = kademeler.find(
         (l) =>
           eonListCents(parsed.karat, parsed.widthMm, grams, l, basis) ===
