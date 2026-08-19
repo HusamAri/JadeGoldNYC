@@ -338,6 +338,23 @@ repodaki hedefidir.
   (gold_settings.labor_model) — ilk uygulamada globaldi, kullanıcı yakaladı:
   Tamsan EON'un üreticisi, Jade'in değil; farklı tedarikçili org'a başka orgun
   fatura verisiyle kalibre model uygulamak yeni bir yanlışlık üretir.
+  **Güçlendirme (2026-08-18) — AYNI fatura İKİ sabit üretir; biri diğerinin
+  yerine yazılamaz:** 5. fatura gelince kapsam COGS modelinden FİYAT motoruna
+  genişledi ve tuzak buradaydı. COGS modeli `melt + işçilik`, fiyat motoru
+  `melt×1,07 + işçilik` hesaplıyor — fire payı farklı yerde durduğu için aynı
+  11 satırdan düz işçilik COGS'ta **$54**, motorda **$38** çıkıyor. İkisi aynı
+  toplam maliyeti üretir ama sayı kopyalanırsa fiyat bozulur. Kural: bir
+  sabiti başka dosyaya taşımadan önce O DOSYANIN formülünü oku ve türetmeyi
+  onun fire/yuvarlama sözleşmesiyle yeniden yap; belgeye iki sütunu yan yana
+  yaz. **Yan bulgu — "yüzdelik bağ var mı?" sorusu korelasyonla cevaplanır:**
+  işçilik/melt oranı %21-88 arasında savruluyordu (yüzde olsaydı dar bantta
+  toplanırdı); işçilik-gram korelasyonu düzde r=0,23 (parça başı sabit),
+  süslüde r=0,97 (boyutla artıyor). Yani metal spota endeksli, işçilik değil —
+  ve bu ayrım tek bir medyana bakarak görülmezdi. **İkinci yan bulgu:** ölçüm
+  motorun düz kademesini $30 gösterdi ama gerçek $38'di; yani bir önceki tur
+  yalnız el-işi kademesini düzeltmiş, düz kademeyi hiç sınamamıştı — bir
+  parametreyi kalibre ederken AYNI ailenin diğer parametrelerini de aynı
+  veriyle sına, yoksa yarısı bayat kalır.
 
 
 - **Dış API kotası körlemesine harcanmaz: sağlayıcı bütçeyi her cevapta söylüyorsa
