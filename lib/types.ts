@@ -125,6 +125,7 @@ export type AuditAction =
   | "etsy.listing_create"
   | "etsy.reprice"
   | "etsy.seo_push"
+  | "etsy.translation_pull"
   | "etsy.redesign_push"
   | "etsy.personalization_push"
   | "etsy.listing_state"
