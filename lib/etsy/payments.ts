@@ -59,9 +59,18 @@ export interface PaymentSyncResult {
   /** Etsy ödeme kaydı döndürmeyen sipariş (ücret "bilinmiyor" kalır). */
   empty: number;
   errors: number;
-  /** Bütçe dolduğu için sıraya kalan sipariş var mı. */
+  /** Kuyrukta denenmeyi bekleyen sipariş var mı (bütçe/limit nedeniyle). */
   remaining: boolean;
+  /** "Denendi" damgası yazılamadıysa nedeni — ilerleme garantisi kalkar. */
+  stampError?: string;
 }
+
+/**
+ * Çözülemeyen satırın yeniden deneneceği pencere. Kalıcı dışlama YANLIŞ olurdu:
+ * yeni sipariş birkaç gün sonra ödeme kaydı oluşturabiliyor. Ama pencere de
+ * şart — yoksa kuyruk aynı satırlara sonsuza dek takılır (0147 gerekçesi).
+ */
+const RECHECK_AFTER_MS = 7 * 24 * 60 * 60 * 1000;
 
 /**
  * Ödeme kimliği eksik siparişleri gezip `sales.etsy_payment_id`'yi doldurur.
@@ -85,25 +94,33 @@ export async function syncReceiptPayments(
   const client = await EtsyClient.forOrg(orgId);
   const shopId = await client.requireShopId();
 
+  // İLERLEME GARANTİSİ (0147): kuyruk "hiç denenmemiş ya da tazelik penceresi
+  // dolmuş" satırları seçer. Eskiden yalnız `etsy_payment_id IS NULL` bakılıyordu
+  // ve Etsy ödeme döndürmeyen satır (empty/hata) sonsuza dek NULL kaldığı için
+  // AYNI 500 satır her turda yeniden seçiliyordu → faz ilerlemiyor, istemcinin
+  // domino döngüsü hiç bitmiyordu ("panel takılı kalıyor" vakası, 2026-08-20).
+  const esik = new Date(Date.now() - RECHECK_AFTER_MS).toISOString();
   const { data, error } = await admin
     .from("sales")
     .select("id, etsy_receipt_id")
     .eq("org_id", orgId)
     .not("etsy_receipt_id", "is", null)
     .is("etsy_payment_id", null)
-    .order("etsy_receipt_id", { ascending: false })
+    .or(`etsy_payment_checked_at.is.null,etsy_payment_checked_at.lt.${esik}`)
+    .order("etsy_payment_checked_at", { ascending: true, nullsFirst: true })
     .limit(limit);
   if (error) throw new Error(`sales okuma: ${error.message}`);
 
   const rows = (data ?? []) as { id: string; etsy_receipt_id: number }[];
+  // Denenen HER satır damgalanır (eşleşti / boş / hata fark etmez); damga
+  // toplu tek UPDATE ile yazılır — satır başına ikinci yazma bütçeyi yerdi.
+  const denenen: string[] = [];
   const result: PaymentSyncResult = {
     matched: 0,
     empty: 0,
     errors: 0,
-    // Sayfa DOLU geldiyse eşlenmemiş sipariş bu turda bitmemiş demektir:
-    // sorgu `limit` ile kesiliyor, geride kalanlar bir sonraki turda çekilir.
-    // Bunu işaretlemezsek bütçe dolmasa bile senkron "bitti" der ve kalan
-    // siparişler ödeme kimliği olmadan (ücreti eksik) kalır.
+    // Sayfa DOLU geldiyse kuyrukta daha var demektir: sorgu `limit` ile
+    // kesiliyor, geride kalanlar bir sonraki turda çekilir.
     remaining: rows.length >= limit,
   };
 
@@ -133,8 +150,25 @@ export async function syncReceiptPayments(
     } catch {
       result.errors++;
     }
+    denenen.push(s.id);
     // Oran sınırı nezaketi (Etsy ~10 istek/sn).
     await new Promise((r) => setTimeout(r, 120));
+  }
+
+  // Damgayı YAZ. Bu yazma atlanırsa faz ilerlemez ve panel takılır — bütçe
+  // dolup döngüden çıkılsa bile denenenler damgalanmalı.
+  if (denenen.length > 0) {
+    const { error: stampErr } = await admin
+      .from("sales")
+      .update({ etsy_payment_checked_at: new Date().toISOString() })
+      .in("id", denenen)
+      .eq("org_id", orgId);
+    // Damga yazılamadıysa ilerleme garantisi YOK: çağıranın sonsuz döngüye
+    // girmemesi için kuyruğu bitmiş say ve sorunu yüzeye çıkar.
+    if (stampErr) {
+      result.remaining = false;
+      result.stampError = stampErr.message;
+    }
   }
 
   return result;
