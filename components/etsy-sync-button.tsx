@@ -22,6 +22,13 @@ import { useFrost } from "@/components/layout/frost-provider";
 import { cn } from "@/lib/utils";
 import { formatNumber, formatDateTime } from "@/lib/format";
 
+/** Domino döngüsünün üst sınırları — panel hiçbir koşulda sonsuza dek dönmesin.
+ *  Dilim tavanı: normal tam senkron birkaç dilimde biter; 60 fazlasıyla yeter
+ *  ve ~40sn'lik dilimlerle en kötü ihtimalde makul bir tavan verir.
+ *  Durgun tavan: faz + tüm sayaçlar üst üste 3 turdur aynıysa iş ilerlemiyordur. */
+const MAX_DILIM = 60;
+const DURGUN_TAVAN = 2;
+
 const PHASE_LABELS: Record<string, string> = {
   sales: "Siparişler",
   listings: "Ürünler",
@@ -75,11 +82,38 @@ export function EtsySyncButton({
     frost.show("syncing", "Etsy senkronize ediliyor…");
     try {
       // "Domino": her dilim bittiğinde bir sonrakini tetikle.
+      //
+      // İLERLEME KORUMASI: bu döngü eskiden koşulsuz `for(;;)` idi. Sunucu
+      // ilerlemeyen bir faz döndürürse (2026-08-20: `payments` fazı aynı 500
+      // satırı çözemeden `remaining:true` döndürüyordu) döngü sonsuza dek
+      // dönüyor ve panel takılı kalıyordu. Artık iki kapı var: dilim tavanı ve
+      // "ilerleme yok" tespiti. Kök neden düzeltildi (bkz. 0147) ama koruma
+      // BU SINIFTAKİ her hataya karşı durur — bir sonraki ilerlemeyen faz
+      // paneli kilitlemesin.
+      let dilim = 0;
+      let oncekiIz = "";
+      let durgun = 0;
       for (;;) {
+        if (++dilim > MAX_DILIM) {
+          toast.warning("Senkron çok uzun sürdü, durduruldu.", {
+            description: `${MAX_DILIM} dilim işlendi. Kaldığı yerden devam etmek için tekrar tıklayın.`,
+          });
+          break;
+        }
         const r = await advanceEtsySyncAction();
         setProgress(r);
         if (r.status === "error") {
           toast.error(r.error ?? "Senkronizasyon hatası");
+          break;
+        }
+        // İz: faz + sayaçlar. Üst üste değişmiyorsa iş ilerlemiyor demektir.
+        const iz = `${r.phase}|${r.sales}|${r.items}|${r.products}|${r.reviews}|${r.ledger}`;
+        durgun = iz === oncekiIz ? durgun + 1 : 0;
+        oncekiIz = iz;
+        if (durgun >= DURGUN_TAVAN && !r.done) {
+          toast.error("Senkron ilerlemiyor, durduruldu.", {
+            description: `"${PHASE_LABELS[r.phase] ?? r.phase}" fazı ${DURGUN_TAVAN + 1} turdur aynı noktada. Bu bir hata — durum kaydedildi, tekrar tıklayabilirsiniz.`,
+          });
           break;
         }
         if (r.done) {

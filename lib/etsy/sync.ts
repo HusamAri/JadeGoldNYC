@@ -400,17 +400,24 @@ export async function advanceEtsySync(
           await persist();
           return { done: false, status: "running", phase, ...counts };
         }
-        let devam = false;
         try {
-          const r = await syncReceiptPayments(orgId, { budgetMs: kalan });
-          devam = r.remaining;
+          await syncReceiptPayments(orgId, { budgetMs: kalan });
         } catch {
           // Eşleme başarısızsa fazı bitir: ücret hesabı yine koşar, eşleşmeyen
           // sipariş sales_etsy_fee_coverage'da "işleme ücreti bilinmiyor"
-          // görünür. Sonsuz döngüye girmemek için tekrar denemiyoruz.
-          devam = false;
+          // görünür.
         }
-        if (!devam) phase = "done";
+        // Faz HER DURUMDA biter — `remaining` artık fazı uzatmıyor.
+        //
+        // Neden: bu bir BACKFILL kuyruğu ve on binlerce satır olabiliyor
+        // (Jade'de 10.474). Kuyruğu senkronun bitişine bağlamak "Etsy'den her
+        // şeyi çek"i saatlerce süren bir işe çeviriyordu: her dilim ~40sn ve
+        // istemci domino döngüsü faz bitene kadar dönüyor — kullanıcı için
+        // panel TAKILI görünüyor (2026-08-20 vakası). Kuyruk 0147'deki
+        // "denendi" damgasıyla zaten monoton ilerliyor; her senkron bir dilim
+        // işler ve backlog turlar arasında erir. Ücret hesabı (aşağıdaki
+        // rebuild_sales_etsy_fees) eşleşmiş siparişler için yine doğrudur.
+        phase = "done";
         await persist();
       }
     }
