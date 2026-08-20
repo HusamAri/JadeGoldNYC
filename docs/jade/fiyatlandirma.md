@@ -414,6 +414,30 @@ altında kalan 179 varyant, bilerek breakeven'de tutulan hero/emniyet satırlar�
 - Toplam cent önizlemeyle birebir; `audit_log`'da **1.988 satır** (tam geri alma).
 - Breakeven altı 0; ortalama marj %21,5 (indirim öncesi seviyeyle aynı).
 
+### ⚠️ Bu UPDATE bir daha koşulmaz — ön koşul mührü
+
+Taban kaydırma **idempotent değildir**: aynı `×1,1333` ikinci kez koşarsa sessizce
+bileşikleşir (×1,2844). Nitekim koştu — bağlam devrinden sonra UPDATE tekrar
+gönderildi, katalog $4.996.847'ye çıktı ve 1.988 varyant ~%13,3 fazla fiyatlandı.
+`audit_log`'un satır-satır `before` kaydından geri alındı; `ceil()` yuvarlaması
+yüzünden aritmetik geri alma (bölme) mümkün DEĞİLDİR, tek yol audit'tir. Etsy'ye
+itiş yapılmamıştı, hata panelden dışarı çıkmadı.
+
+Yeniden koşmadan önce **girdi durumunu** doğrula — canlı mühür aşağıdakine eşitse
+kaydırma zaten uygulanmıştır, **koşma**:
+
+```sql
+select md5(string_agg(v.id::text||':'||v.price_cents::text, ',' order by v.id))
+from products p join product_variants v on v.product_id=p.id and v.org_id=p.org_id
+where p.org_id='f155b853-dfaf-48fd-94c5-ddfcb856e07c'
+  and p.etsy_deleted_at is null and v.price_cents is not null;
+-- kaydırma SONRASI (mevcut, doğru durum): 8aa1b019932fd73da355cf88b6feaede
+-- toplam: 440820000 cent
+```
+
+Önce/sonra mührü tek başına yetmez: ikinci koşu da kendi mühür kontrolünden
+geçer, çünkü o mühür "yazmak istediğini yazdı mı?" der, "koşmalı mıydı?" demez.
+
 ### Açık risk — Offsite Ads
 
 Etsy Offsite Ads devredeyse kesinti %9,5 yerine ~%24,5 olur; **%25 indirim +

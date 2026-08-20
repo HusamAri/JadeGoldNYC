@@ -30,6 +30,31 @@ repodaki hedefidir.
   kaçı formülden, kaçı karardan geliyor?" diye sor; (3) oransal düzeltmeyi
   UPDATE öncesi md5 mührüyle hesapla, UPDATE sonrası aynı mührü canlıdan
   yeniden üret — eşitse satır kayması/kısmi yazma yok demektir.
+  **Güçlendirme (2026-08-20, aynı gün, aynı UPDATE) — oransal taban kaydırma
+  IDEMPOTENT DEĞİLDİR ve yukarıdaki mühür bunu YAKALAMAZ:** aynı `×1,1333`
+  UPDATE'i bağlam devrinden sonra ikinci kez gönderdim; iş ÇOKTAN bitmiş,
+  commit'lenmiş (`ea75ed5`) ve PR'a (#377) girmişti. Sonuç sessizce bileşikleşti
+  — ×1,2844, katalog $4.408.200 → $4.996.847, 1.988 varyantın hepsi ~%13,3
+  fazla. Kritik nokta: **ikinci koşu da kendi mühür kontrolünden GEÇERDİ.**
+  Önce/sonra mührü yalnız "bu koşu yazmak istediğini yazdı mı?" der; "bu koşu
+  HİÇ koşmalı mıydı?" diye sormaz. Onu ancak GİRDİ durumuna konan ön koşul
+  yakalar: koşmadan önce canlı mührü beklenen *kaydırma öncesi* mühürle
+  karşılaştır — canlı mühür zaten *kaydırma sonrası* mühre eşitse iş yapılmış
+  demektir, İPTAL et. Bu turda kurtaran şey tam olarak buydu: commit mesajına
+  yazılmış `8aa1b019…` mührü canlıdan yeniden üretilince tutmadı, ikinci koşu
+  ortaya çıktı. Geri alma da aritmetikle YAPILAMAZDI — `ceil(...)*100` yuvarlaması
+  dönüşü tek-yönlü kılar (bölmek eski değeri vermez); tek yol `audit_log`'un
+  satır-satır `diff->'before'->>'price_cents'` kaydıydı ve restore sonrası mühür
+  commit'teki mühürle birebir tuttu. Kural: (1) bileşikleşen (oransal/kümülatif)
+  bir veri operasyonunu koşmadan ÖNCE "bu zaten koşmuş olabilir mi?" diye sor —
+  cevabı `audit_log`'dan ve son commit'ten oku, hafızandan değil; (2) böyle bir
+  operasyonun mührünü commit mesajına YAZ (bu turda hayat kurtardı) — sonraki
+  oturumun ön koşul kontrolü odur; (3) yuvarlama içeren dönüşüm tersinmezdir,
+  yalnız satır-satır audit ile geri alınır → koşmadan önce audit trigger'ının o
+  tabloyu KAPSADIĞINI doğrula (`etsy_connection` gibi bilerek trigger'sız
+  tablolarda bu operasyon geri alınamaz); (4) bağlam devrinden/özetten sonra ilk
+  iş, elindeki "yapılacak" adımın uzak dalda ve DB'de çoktan yapılmış olup
+  olmadığını doğrulamaktır — devralınan niyet, yapılmamış iş demek değildir.
 
 - **Dilbilgisel özelliği ANAHTAR KELİMEYLE arama — çekimde saklıysa sayaç
   "temiz" der ve yanıltır (2026-08-20):** 40 İspanyolca çeviride hitap
