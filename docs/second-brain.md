@@ -11,6 +11,24 @@ repodaki hedefidir.
 
 ## Süreç dersleri
 
+- **Dilbilgisel özelliği ANAHTAR KELİMEYLE arama — çekimde saklıysa sayaç
+  "temiz" der ve yanıltır (2026-08-20):** 40 İspanyolca çeviride hitap
+  tutarlılığını ölçtüm; sayaç `\musted\M|\mustedes\M` arıyordu ve **"24 tú,
+  0 usted, tutarlı"** dedi. Yanlıştı. İspanyolca'da resmî hitap çoğu zaman
+  `usted` kelimesi geçmeden **fiil çekiminde** yaşar: `destaca`(tú) vs
+  `destaque`(usted), `elige/elija`, `disfruta/disfrute`, `limpia/limpie`.
+  Gerçeği marka kuyruğu varyantlarını GÖZLE okurken gördüm — aynı cümle iki
+  hâlde canlıdaydı. Fiil çiftleri sayılınca tablo tersine döndü: 22 `tú`,
+  **11 `usted`**, **6 listing kendi içinde karışık**. Kural: (1) bir dil
+  özelliğini ölçerken o özelliğin dildeki TÜM taşıyıcılarını listele —
+  hitap kelimede değil çekimde, cinsiyet sıfat ekinde, nezaket kipte olabilir;
+  (2) sayaç yeşil dediğinde birkaç ham metni gözle oku (bu turda dört gerçek
+  bulgunun ikisini göz yakaladı, sayaç değil); (3) "0 ihlal" değil "aradığım
+  ihlal yok" diye raporla. Yan bulgu, aynı turda ters yönde: sayaç 9 metinde
+  `diamante` bulup sahte elmas iddiası sanmıştı; metin okununca hepsinin
+  "Diamond Cut" karşılığı olduğu görüldü — **sayaç hem yanlış temiz hem
+  yanlış alarm verebilir, ikisinin panzehiri de aynı: ham metni oku.**
+
 - **Kullanıcıya vereceğin URL'i TAHMİN ETME — tek `curl` ile doğrula; yanlış
   adres kullanıcının zamanını yakar ve hatayı senin işine yıkar (2026-08-20):**
   Ops rotası için `https://jade-gold-nyc.vercel.app/api/ops/es-pull?...` linki
