@@ -30,20 +30,59 @@ METALS = base.METALS
 PURITY = base.PURITY
 
 SCENES = {
-    "10K": {
-        "glass": "pale celadon smoke glass",
-        "ground": "cool ivory limestone",
-        "light": "clear soft morning daylight",
+    ("Yellow Gold", "10K"): {
+        "glass": "a thin pale celadon smoke-glass fin",
+        "ground": "cool limewash clay",
+        "light": "hazy east-window morning light with one soft vertical beam",
+        "cue": "asymmetrical folded-paper spacing",
     },
-    "14K": {
-        "glass": "mineral jade green glass",
-        "ground": "pale bone limestone",
-        "light": "clean Mediterranean late-morning sunlight",
+    ("Yellow Gold", "14K"): {
+        "glass": "a small mineral-jade ribbed glass disc",
+        "ground": "pale bone plaster",
+        "light": "clean late-morning window light broken into two restrained bands",
+        "cue": "a low circular counterpoint to the ring",
     },
-    "18K": {
-        "glass": "deep petrol teal glass",
-        "ground": "warm ivory limestone",
-        "light": "restrained amber late-afternoon sunlight",
+    ("Yellow Gold", "18K"): {
+        "glass": "a smoke-olive hand-blown glass dome",
+        "ground": "warm wheat microcement",
+        "light": "low amber daylight with a soft elongated shadow",
+        "cue": "a quiet horizon composition with no plinth",
+    },
+    ("White Gold", "10K"): {
+        "glass": "a clear ice-blue hand-cut glass arch",
+        "ground": "chalk linen over a rigid board",
+        "light": "cool north-window dawn light with diffused edge falloff",
+        "cue": "open arch framing with imperfect linen texture",
+    },
+    ("White Gold", "14K"): {
+        "glass": "a desaturated seafoam glass tube",
+        "ground": "warm gray raw cotton paper",
+        "light": "overcast side daylight interrupted by one narrow clear beam",
+        "cue": "a diagonal balance between cylinder and ring",
+    },
+    ("White Gold", "18K"): {
+        "glass": "a deep petrol hand-cast glass slab",
+        "ground": "warm ivory mineral clay",
+        "light": "restrained late-day window light with a long soft-edged beam",
+        "cue": "low stepped geometry and generous upper negative space",
+    },
+    ("Rose Gold", "10K"): {
+        "glass": "a pale smoke-lilac glass ribbon",
+        "ground": "eggshell gypsum board",
+        "light": "neutral early-morning daylight with a faint curved caustic",
+        "cue": "a light ribbon gesture that never touches the ring",
+    },
+    ("Rose Gold", "14K"): {
+        "glass": "a handmade clear peach glass wedge",
+        "ground": "matte chalk-clay",
+        "light": "late-morning window daylight shaped by lightly ribbed glass",
+        "cue": "an off-center glass fold and calm open field",
+    },
+    ("Rose Gold", "18K"): {
+        "glass": "a deep garnet smoke-glass crescent",
+        "ground": "muted almond fiber paper",
+        "light": "warm low window daylight with one restrained edge caustic",
+        "cue": "a crescent shadow that leads toward the ring",
     },
 }
 
@@ -171,7 +210,7 @@ Kymation is built around the line where one surface becomes another. A soft cent
 
 def prompt_for(karat: str, metal: str, role: str) -> str:
     tone = METALS[metal]["tones"][karat]
-    scene = SCENES[karat]
+    scene = SCENES[(metal, karat)]
     return f"""Create one square 1:1 photorealistic Etsy listing photograph for EON Fine Jewelry at 2200 by 2200 pixels. No text, logo, border, watermark or packaging.
 
 REFERENCE AUTHORITY
@@ -181,10 +220,10 @@ PRODUCT LOCK
 Show one single solid-gold, stone-free, closed comfort-fit wedding band. Preserve this exact symmetrical order across the width: mirror-polished planar bevel, one extremely fine continuous milgrain line, broad satin center, one extremely fine continuous milgrain line, mirror-polished planar bevel. The satin center occupies about 68 percent of the width. Both milgrain lines together occupy about 5 percent. Both bevels together occupy about 27 percent. Bevels are crisp and faceted, never domed, rolled or rope-shaped. Interior is smooth and highly polished. No central groove, Greek key, hammering, diagonal ribs, stones, letters, engraving or extra jewelry.
 
 MATERIAL LOCK
-Render {karat} {metal} as {tone}. Geometry and finish placement must not change with metal or karat. Use a believable 7mm sample unless the shot is an extreme macro.
+Render {karat} {metal} as {tone}. Geometry and finish placement must not change with metal or karat. Show the 5mm photography sample at its believable real-world scale unless the shot is an extreme macro. The production thickness is 1.5mm.
 
 KYMATION GLASS SCENE
-Use {scene['glass']}, {scene['ground']} and {scene['light']}. Glass geometry is minimal and stepped, echoing the ring's transition from satin center to precise bevel without becoming a literal historical prop. Keep physically plausible refraction, restrained highlights and a natural contact shadow that connects the ring to its surface. Bright, calm, conversion-oriented product photography, never black museum lighting and never fantasy.
+Use {scene['glass']}, {scene['ground']}, {scene['light']} and {scene['cue']}. This listing must have its own composition and light behavior. Never reuse another metal or karat listing's scene as a recolor. The result should feel like inventive professional home-studio photography, not a generic luxury template. Keep physically plausible refraction, restrained highlights, natural micro-detail and a contact shadow that connects the ring to its surface. Use neutral color science and soft highlight rolloff. Reject artificial HDR, synthetic vibrancy, cinematic grading, plastic smoothing, excessive sharpening, fake sparkle, haze, glowing edges and impossible reflections.
 
 SHOT
 {role}. Use realistic macro jewelry optics, accurate materials, safe square thumbnail composition and natural depth of field. Reject any result whose ring differs from the supplied reference construction."""
