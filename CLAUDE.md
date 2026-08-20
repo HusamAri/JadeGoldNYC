@@ -50,6 +50,13 @@ Jade Gold NYC Etsy mağazası için uçtan uca yönetim/raporlama paneli. Tüm s
   iki kez gönderildi → 6 üretim, 12 kredi, 10'u fazladan.
 
 ## Notlar
+- **Prod adresi: `https://amuletta.artifactstudio.info`** (custom domain). Panel
+  linki verirken bunu kullan — `jade-gold-nyc.vercel.app` diye bir alias YOK,
+  uydurulmuş adres `DEPLOYMENT_NOT_FOUND` verir (vaka 2026-08-20). Vercel
+  alias'ları `jade-gold-nyc-husamaris-projects.vercel.app` ve
+  `...-git-main-...` biçimindedir; deployment-hash'li URL'ler kalıcı değildir.
+  Doğrulama: `curl -o /dev/null -w "%{http_code}" <url>/api/ops/es-pull` → 401
+  (rota var, token yok) beklenir; 404 gelirse adres yanlıştır.
 - Supabase istemcileri tipsiz; sorgular `lib/types.ts` alan tiplerine cast eder.
   Provizyon sonrası `supabase gen types` ile `types/database.types.ts` üretilebilir.
 - Para alanları formlarda metin (örn. "12,34"); action'da `parseMoneyToCents`.

@@ -11,6 +11,89 @@ repodaki hedefidir.
 
 ## Süreç dersleri
 
+- **Dış dünyanın girdisi değiştiğinde formülü yeniden koşma, TABANI kaydır —
+  yeniden koşmak bilerek verilmiş kararları siler (2026-08-20):** Mağaza geneli
+  indirim %15'ten %25'e çıktı; motorun `JADE_DISCOUNT_RATE` sabiti 0,15'te
+  kalmıştı, yani panel "hedef %20" derken fiilen **%12,3** marj üretiyordu ve
+  89 varyant breakeven'in ALTINA düşmüştü — kimse fark etmezdi, çünkü ekran
+  yeşildi (kendi eski varsayımına göre hesaplıyordu). İlk refleksim fiyat
+  formülünü %25'e göre yeniden koşmaktı; bu YANLIŞ olurdu: hero listinglerde
+  bilerek verilmiş **kademeli breakeven** kararları ve beden/boy **emniyet
+  payları** formülün üstüne elle konmuştu, yeniden koşmak hepsini silip o
+  ürünleri tek hamlede hedef marja fırlatırdı. Doğrusu tabanı kaydırmaktı:
+  her fiyata `× (1−eski_indirim)/(1−yeni_indirim)` = ×1,1333. Cebirsel gerekçe
+  `yeni × 0,75 == eski × 0,85` — net tahsilat birebir korunur, her varyantın
+  AMAÇLANAN marj konumu (hedefte mi, breakeven'de mi, emniyet paylı mı) aynen
+  kalır. Kural: (1) bir motor sabiti dış dünyayı temsil ediyorsa değişimi
+  sabitte yakala, çıktıyı yeniden üretme; (2) çıktının üstüne elle karar
+  konmuşsa yeniden üretim o kararları sessizce yok eder — önce "bu değerlerin
+  kaçı formülden, kaçı karardan geliyor?" diye sor; (3) oransal düzeltmeyi
+  UPDATE öncesi md5 mührüyle hesapla, UPDATE sonrası aynı mührü canlıdan
+  yeniden üret — eşitse satır kayması/kısmi yazma yok demektir.
+  **Güçlendirme (2026-08-20, aynı gün, aynı UPDATE) — oransal taban kaydırma
+  IDEMPOTENT DEĞİLDİR ve yukarıdaki mühür bunu YAKALAMAZ:** aynı `×1,1333`
+  UPDATE'i bağlam devrinden sonra ikinci kez gönderdim; iş ÇOKTAN bitmiş,
+  commit'lenmiş (`ea75ed5`) ve PR'a (#377) girmişti. Sonuç sessizce bileşikleşti
+  — ×1,2844, katalog $4.408.200 → $4.996.847, 1.988 varyantın hepsi ~%13,3
+  fazla. Kritik nokta: **ikinci koşu da kendi mühür kontrolünden GEÇERDİ.**
+  Önce/sonra mührü yalnız "bu koşu yazmak istediğini yazdı mı?" der; "bu koşu
+  HİÇ koşmalı mıydı?" diye sormaz. Onu ancak GİRDİ durumuna konan ön koşul
+  yakalar: koşmadan önce canlı mührü beklenen *kaydırma öncesi* mühürle
+  karşılaştır — canlı mühür zaten *kaydırma sonrası* mühre eşitse iş yapılmış
+  demektir, İPTAL et. Bu turda kurtaran şey tam olarak buydu: commit mesajına
+  yazılmış `8aa1b019…` mührü canlıdan yeniden üretilince tutmadı, ikinci koşu
+  ortaya çıktı. Geri alma da aritmetikle YAPILAMAZDI — `ceil(...)*100` yuvarlaması
+  dönüşü tek-yönlü kılar (bölmek eski değeri vermez); tek yol `audit_log`'un
+  satır-satır `diff->'before'->>'price_cents'` kaydıydı ve restore sonrası mühür
+  commit'teki mühürle birebir tuttu. Kural: (1) bileşikleşen (oransal/kümülatif)
+  bir veri operasyonunu koşmadan ÖNCE "bu zaten koşmuş olabilir mi?" diye sor —
+  cevabı `audit_log`'dan ve son commit'ten oku, hafızandan değil; (2) böyle bir
+  operasyonun mührünü commit mesajına YAZ (bu turda hayat kurtardı) — sonraki
+  oturumun ön koşul kontrolü odur; (3) yuvarlama içeren dönüşüm tersinmezdir,
+  yalnız satır-satır audit ile geri alınır → koşmadan önce audit trigger'ının o
+  tabloyu KAPSADIĞINI doğrula (`etsy_connection` gibi bilerek trigger'sız
+  tablolarda bu operasyon geri alınamaz); (4) bağlam devrinden/özetten sonra ilk
+  iş, elindeki "yapılacak" adımın uzak dalda ve DB'de çoktan yapılmış olup
+  olmadığını doğrulamaktır — devralınan niyet, yapılmamış iş demek değildir.
+
+- **Dilbilgisel özelliği ANAHTAR KELİMEYLE arama — çekimde saklıysa sayaç
+  "temiz" der ve yanıltır (2026-08-20):** 40 İspanyolca çeviride hitap
+  tutarlılığını ölçtüm; sayaç `\musted\M|\mustedes\M` arıyordu ve **"24 tú,
+  0 usted, tutarlı"** dedi. Yanlıştı. İspanyolca'da resmî hitap çoğu zaman
+  `usted` kelimesi geçmeden **fiil çekiminde** yaşar: `destaca`(tú) vs
+  `destaque`(usted), `elige/elija`, `disfruta/disfrute`, `limpia/limpie`.
+  Gerçeği marka kuyruğu varyantlarını GÖZLE okurken gördüm — aynı cümle iki
+  hâlde canlıdaydı. Fiil çiftleri sayılınca tablo tersine döndü: 22 `tú`,
+  **11 `usted`**, **6 listing kendi içinde karışık**. Kural: (1) bir dil
+  özelliğini ölçerken o özelliğin dildeki TÜM taşıyıcılarını listele —
+  hitap kelimede değil çekimde, cinsiyet sıfat ekinde, nezaket kipte olabilir;
+  (2) sayaç yeşil dediğinde birkaç ham metni gözle oku (bu turda dört gerçek
+  bulgunun ikisini göz yakaladı, sayaç değil); (3) "0 ihlal" değil "aradığım
+  ihlal yok" diye raporla. Yan bulgu, aynı turda ters yönde: sayaç 9 metinde
+  `diamante` bulup sahte elmas iddiası sanmıştı; metin okununca hepsinin
+  "Diamond Cut" karşılığı olduğu görüldü — **sayaç hem yanlış temiz hem
+  yanlış alarm verebilir, ikisinin panzehiri de aynı: ham metni oku.**
+
+- **Kullanıcıya vereceğin URL'i TAHMİN ETME — tek `curl` ile doğrula; yanlış
+  adres kullanıcının zamanını yakar ve hatayı senin işine yıkar (2026-08-20):**
+  Ops rotası için `https://jade-gold-nyc.vercel.app/api/ops/es-pull?...` linki
+  verdim; adres proje adından TÜRETİLMİŞ bir tahmindi, öyle bir alias hiç yoktu.
+  Kullanıcı iki linki de açtı, ikisi de `404 DEPLOYMENT_NOT_FOUND` verdi ve
+  kullanıcı haklı olarak "rota mı bozuk?" diye sordu — oysa rota sağlamdı,
+  yalnız adres uydurmaydı. Gerçek prod adresi custom domain'di
+  (`amuletta.artifactstudio.info`); Vercel alias'ı da tahminimden farklıydı
+  (`jade-gold-nyc-husamaris-projects.vercel.app`). Daha kötüsü: aynı yanlış
+  domaini bu oturumda `/fiyat` push linki olarak DEFALARCA verdim ve fark
+  etmedim — kullanıcı kendi yer imini kullandığı için sessizce kurtarıldık.
+  Kural: (1) kullanıcıya vereceğin her URL, göndermeden önce `curl -o /dev/null
+  -w "%{http_code}"` ile sınanır — auth'lu uçta **401 beklenir** (rota var,
+  token yok), 404 adres yanlış demektir; (2) domaini proje adından türetme,
+  sağlayıcıdan sor (Vercel MCP `get_project` → `domains[]`) ya da repodan oku;
+  (3) doğrulanan adresi repoya YAZ (CLAUDE.md) ki sonraki oturum yeniden
+  tahmin etmesin. Yan not: 404 Vercel kenarında oluştuğu için rota hiç
+  çalışmadı → tek-kullanımlık token'lar TÜKENMEDİ; token tükettiğini
+  varsaymadan önce `used_at`'e bak.
+
 - **Aynı gram çok varyanta yayılmışsa fiyatlamadan önce HANGİ örneğin ölçüldüğünü
   bul; orta değerse "breakeven'e çektim, zarar bitti" YANLIŞTIR (2026-08):**
   Love bölümünde `1739245557` (Heart Nugget Ring, 194 satış) 40 varyantının
