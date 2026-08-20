@@ -36,6 +36,27 @@ export const maxDuration = 300;
  *    'failed' işaretlenir ve NEDEN note alanına yazılır, otomatik retry yok.
  *  - Günlük 429'da devre kesilir, kalan hedefler raporlanır.
  * Hiçbir fiyat alanına dokunulmaz.
+ *
+ * ## `?verify=1` — salt okuma DRIFT kontrolü
+ *
+ * Push'tan gün(ler) sonra "gönderdiğimiz hâlâ orada mı" sorusunu canlı Etsy'den
+ * cevaplar. `status='pushed'` satırları okur (onay kuyruğu değil), her listing
+ * için canlı başlık/açıklama/tag ve İspanyolca çeviriyi çeker, DB ile
+ * karşılaştırır ve `ok` / `drift` döner. **Hiçbir yazma yapmaz** — `verify`
+ * parametresi `apply`'ı ezer, biçim kapısı atlanır, sapma bulunsa bile satır
+ * durumu DEĞİŞTİRİLMEZ. Otomatik düzeltme bilerek yoktur: dış tarafın ezmesi
+ * insan kararı ister (2026-07-31 vakası — 23 başlık gece senkronuyla geri
+ * alınmıştı).
+ *
+ * Karşılaştırma read-back ile AYNI fonksiyondur (`canliKarsilastir`); ayrı
+ * kodla yazılsaydı drift kontrolü, push'un doğruladığından başka bir şeyi
+ * doğrulamaya başlardı.
+ *
+ * NEDEN GEREKLİ: panel aynası (`products.title/description`) yalnız Etsy
+ * senkronu koştuğunda tazelenir. Ayna bayatken DB'yi DB ile karşılaştırmak
+ * "sapma yok" der ve bu YANLIŞ bir güvencedir (2026-08-19 drift turunda tam
+ * bu tuzağa düşüldü: 30 saattir senkron koşmamıştı). Fiyat tarafının canlı
+ * karşılığı `ops/price-sync?apply=0`.
  */
 
 const LANG = "es";
@@ -108,6 +129,68 @@ const norm = (s: string) => decodeHtmlEntities(s).replace(/\s+/g, " ").trim();
 const tagKey = (tags: string[]) =>
   tags.map((t) => t.toLowerCase().trim()).sort().join("|");
 
+/**
+ * CANLI ↔ DB karşılaştırması. İki yerden çağrılır ve BİLEREK tek kopyadır:
+ *  - `apply=1` sonrası read-back ("200 OK teslim sayılmaz"),
+ *  - `verify=1` salt-okuma drift kontrolü.
+ * İkisi ayrı kodla yazılsaydı zamanla ayrışır ve drift kontrolü push'un
+ * doğruladığından BAŞKA bir şeyi doğrulardı.
+ *
+ * Hiçbir yazma yapmaz; sapma listesi döner (boşsa canlı = DB).
+ */
+async function canliKarsilastir(
+  client: EtsyClient,
+  listingId: number,
+  g: { en?: TransRow; es?: TransRow },
+): Promise<string[]> {
+  const sapmalar: string[] = [];
+
+  if (g.en?.title || g.en?.description || (g.en?.tags && g.en.tags.length > 0)) {
+    const live = await getListing(client, listingId);
+    if (g.en.title && norm(live.title ?? "") !== norm(g.en.title))
+      sapmalar.push("EN başlık canlıda farklı");
+    if (g.en.tags && g.en.tags.length > 0) {
+      if (!Array.isArray(live.tags)) sapmalar.push("EN tag alanı yanıtta yok");
+      else if (tagKey(live.tags) !== tagKey(g.en.tags))
+        sapmalar.push("EN tag seti canlıda farklı");
+    }
+    if (g.en.description) {
+      // Açıklama uzun; tam eşitlik yerine normalize edilmiş karşılaştırma
+      // (Etsy satır sonlarını ve entity'leri kendi biçimine çevirebilir).
+      if (norm(live.description ?? "") !== norm(g.en.description))
+        sapmalar.push("EN açıklama canlıda farklı");
+    }
+  }
+
+  if (g.es) {
+    const liveT = await getListingTranslation(client, listingId, LANG);
+    if (!liveT) {
+      sapmalar.push("ES çeviri okunamadı (404)");
+    } else {
+      if (norm(liveT.title ?? "") !== norm(g.es.title!))
+        sapmalar.push("ES başlık canlıda farklı");
+      if (g.es.description && norm(liveT.description ?? "") !== norm(g.es.description))
+        sapmalar.push("ES açıklama canlıda farklı");
+      const beklenen = g.es.tags ?? [];
+      if (beklenen.length > 0) {
+        if (!Array.isArray(liveT.tags)) {
+          sapmalar.push("ES tag alanı yanıtta yok");
+        } else if (tagKey(liveT.tags) !== tagKey(beklenen)) {
+          // Sayı da farklıysa onu ayrıca söyle — "13 gönderdik, 8 durdu" gibi
+          // bir kayıp, sıralama/normalize farkından başka bir şeydir.
+          sapmalar.push(
+            liveT.tags.length !== beklenen.length
+              ? `ES tag sayısı ${liveT.tags.length}/${beklenen.length}`
+              : "ES tag seti canlıda farklı",
+          );
+        }
+      }
+    }
+  }
+
+  return sapmalar;
+}
+
 type Row = Record<string, unknown>;
 
 export async function GET(request: Request) {
@@ -116,7 +199,9 @@ export async function GET(request: Request) {
   }
 
   const url = new URL(request.url);
-  const apply = url.searchParams.get("apply") === "1";
+  const verify = url.searchParams.get("verify") === "1";
+  // verify, apply'ı EZER: drift kontrolü asla yazmaz.
+  const apply = !verify && url.searchParams.get("apply") === "1";
   const onlyListing = url.searchParams.get("listing");
 
   const admin = createAdminClient();
@@ -128,12 +213,14 @@ export async function GET(request: Request) {
   if (!org) return NextResponse.json({ error: "EON yok" }, { status: 500 });
   const orgId = (org as { id: string }).id;
 
-  // Onaylı satırlar + ürün bağı. Onaysız (draft/failed) satır kapıdan geçmez.
+  // Push yolunda ONAYLI satırlar okunur — onaysız (draft/failed) satır kapıdan
+  // geçmez. Verify yolunda ise PUSH EDİLMİŞ satırlar okunur: drift kontrolü
+  // "gönderdiğimiz hâlâ orada mı" sorusudur, onay kuyruğuyla ilgisi yoktur.
   const { data: transData, error: tErr } = await admin
     .from("product_translations")
     .select("id, product_id, lang, title, description, tags")
     .eq("org_id", orgId)
-    .eq("status", "approved");
+    .eq("status", verify ? "pushed" : "approved");
   if (tErr) return NextResponse.json({ error: tErr.message }, { status: 500 });
   const rows = (transData ?? []) as TransRow[];
 
@@ -186,6 +273,24 @@ export async function GET(request: Request) {
       continue;
     }
     const row: Row = { listing: listingId };
+
+    // VERIFY: salt okuma drift kontrolü. Biçim kapısı ATLANIR — kapı
+    // "göndermeye uygun mu" sorusudur; burada soru "gönderilen hâlâ orada mı".
+    // Hiçbir DB/Etsy yazması yok; sonuç yalnız raporlanır (otomatik düzeltme
+    // YOK — 2026-07-31 dersi: dış tarafın ezmesi insan kararı ister).
+    if (verify) {
+      try {
+        const sapmalar = await canliKarsilastir(client!, listingId, g);
+        row.status = sapmalar.length === 0 ? "ok" : "drift";
+        if (sapmalar.length > 0) row.detail = sapmalar.join(" · ");
+      } catch (e) {
+        row.status = "error";
+        row.detail = String(e);
+      }
+      results.push(row);
+      continue;
+    }
+
     const gateErrs = [
       ...(g.en ? formatGate(g.en) : []),
       ...(g.es ? formatGate(g.es) : []),
@@ -225,40 +330,8 @@ export async function GET(request: Request) {
         });
       }
 
-      // 3) READ-BACK — "200 OK teslim sayılmaz".
-      const sapmalar: string[] = [];
-      if (
-        g.en?.title ||
-        g.en?.description ||
-        (g.en?.tags && g.en.tags.length > 0)
-      ) {
-        const live = await getListing(client!, listingId);
-        if (g.en.title && norm(live.title ?? "") !== norm(g.en.title))
-          sapmalar.push("EN başlık canlıda farklı");
-        if (g.en.tags && g.en.tags.length > 0) {
-          if (!Array.isArray(live.tags)) sapmalar.push("EN tag alanı yanıtta yok");
-          else if (tagKey(live.tags) !== tagKey(g.en.tags))
-            sapmalar.push("EN tag seti canlıda farklı");
-        }
-        if (g.en.description) {
-          // Açıklama uzun; tam eşitlik yerine normalize edilmiş karşılaştırma
-          // (Etsy satır sonlarını ve entity'leri kendi biçimine çevirebilir).
-          if (norm(live.description ?? "") !== norm(g.en.description))
-            sapmalar.push("EN açıklama canlıda farklı");
-        }
-      }
-      if (g.es) {
-        const liveT = await getListingTranslation(client!, listingId, LANG);
-        if (!liveT) sapmalar.push("ES çeviri okunamadı (push sonrası 404)");
-        else {
-          if (norm(liveT.title ?? "") !== norm(g.es.title!))
-            sapmalar.push("ES başlık canlıda farklı");
-          const beklenen = (g.es.tags ?? []).length;
-          const gelen = Array.isArray(liveT.tags) ? liveT.tags.length : 0;
-          if (beklenen > 0 && gelen !== beklenen)
-            sapmalar.push(`ES tag sayısı ${gelen}/${beklenen} — form biçimi şüpheli`);
-        }
-      }
+      // 3) READ-BACK — "200 OK teslim sayılmaz". `verify=1` ile AYNI kod.
+      const sapmalar = await canliKarsilastir(client!, listingId, g);
 
       if (sapmalar.length > 0) {
         row.status = "verify-failed";
@@ -317,9 +390,13 @@ export async function GET(request: Request) {
 
   return NextResponse.json({
     ok: true,
+    mod: verify ? "verify" : apply ? "apply" : "dry-run",
     apply,
     lang: LANG,
     hedef: byListing.size,
+    ...(verify
+      ? { driftli: results.filter((r) => r.status === "drift").length }
+      : {}),
     devreKesildi,
     kalan,
     results,
