@@ -29,11 +29,17 @@ export const JADE_SHIPPING_CENTS = 5_00;
 export const JADE_PACKAGING_CENTS = 1_50;
 
 /**
- * Etsy'de KALICI %15 indirim açık → tahsilat her zaman liste × 0,85.
+ * Etsy'de KALICI mağaza indirimi → tahsilat her zaman liste × (1 − oran).
  * Etsy API aktif Sale'i vermiyor (bkz. migration 0115), bu yüzden oran elle
  * taşınır. İndirim kapanırsa burası 0 olmalı, yoksa fiyatlar şişer.
+ *
+ * 2026-08-20: %15 → **%25**. Mağaza geneli indirim 25'e çekildi (Etsy'de
+ * shop-wide asgarî 25 giriliyor) ve canlı siparişlerde SALE25 kuponu görüldü.
+ * Sabit 0,15'te kalsaydı motor "hedef %20" derken fiilen %12,3 marj üretirdi —
+ * 89 varyant da breakeven'in ALTINDA kalırdı. Girdi değişince sabit değişir;
+ * ayrıntı: `docs/jade/fiyatlandirma.md` §9.
  */
-export const JADE_DISCOUNT_RATE = 0.15;
+export const JADE_DISCOUNT_RATE = 0.25;
 
 /** Etsy oransal kesinti: %6,5 işlem + %3 ödeme işleme. */
 export const JADE_ETSY_RATE = 0.095;

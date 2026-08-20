@@ -355,3 +355,69 @@ paneldeki yeni fiyatların ÜSTÜNE yazar ve emek kaybolur — push gecikmemeli.
 
 Geri alma: `restoreVariantPricesFromAudit(productId)` (audit_log diff'inden)
 veya `restoreVariantPricesFromEtsy(productId)` (canlıdan yeniden senkron).
+
+## 9. İndirim yeniden kalibrasyonu — %15 → %25 (2026-08-20)
+
+**Girdi değişti, sabit değişti.** Mağaza geneli indirim %25'e çekildi (Etsy'de
+shop-wide asgarî 25 giriliyor); canlı siparişlerde SALE25 kuponu görüldü.
+`JADE_DISCOUNT_RATE` 0,15'te kalsaydı motor "hedef %20" derken fiilen **%12,3**
+marj üretirdi ve **89 varyant breakeven'in ALTINDA** kalırdı — panel sessizce
+yanlış marj gösteren duruma düşerdi (§1'deki uyarının tam karşılığı).
+
+### Neden düz oran, formül değil
+
+Eski fiyatlar `liste × 0,85` varsayımıyla kurulmuştu. Her fiyata
+**× (0,85 / 0,75) = ×1,1333** uygulandı (tam dolara yukarı yuvarlama, yalnız-yukarı):
+
+```
+yeni × 0,75  ==  eski × 0,85     →  net tahsilat BİREBİR korunur
+```
+
+Bu, formülü yeniden koşmaktan **daha doğru**: formül yeniden koşulsaydı hero
+listinglerinde bilerek verilen **kademeli breakeven kararları** ve beden/boy
+**emniyet payları** silinir, o ürünler tek hamlede hedef marja fırlardı. Düz
+oran her varyantın *amaçlanan* marj konumunu koruyup yalnız indirim tabanını
+yeniler.
+
+### Kapsam — bu kez istisnasız
+
+| Grup | Varyant | Kural |
+|---|---|---|
+| Gramlı (motor) | 1.835 | ×1,1333 |
+| **Gramsız** | **123** | ×1,1333 *(kullanıcı talimatı: aynı oranda)* |
+| Bozuk gram (`1520386344`) | 24 | ×1,1333 |
+| Gümüş (`1454572095`) | 6 | ×1,1333 |
+| **Toplam** | **1.988** | fiyatı düşen **0** |
+
+Gramsız/gümüş/bozuk-gram grubu altın motoruna giremez ama **indirim değişimi
+metalden bağımsızdır** — %25'e düşen taban her ürünü aynı oranda etkiler.
+
+### Sonuç
+
+| Ölçüt | Öncesi (%25 indirimde) | Sonrası |
+|---|---|---|
+| Ortalama marj | %12,3 | **%21,5** |
+| Breakeven altı | 89 | **0** |
+| Katalog listesi | $3.888.758 | **$4.408.200** (+%13,36) |
+| Fiyatı düşen | — | **0** |
+
+Alıcının gördüğü fiyat da ~%13 artar (indirim oransal olduğu için). Hedef marjın
+altında kalan 179 varyant, bilerek breakeven'de tutulan hero/emniyet satırlarıdır
+— kademeli plan korundu.
+
+### Doğrulama
+
+- TS motoru yeni sabitle (0,25) 36 varyantta marj karşılaştırması: **0 sapma**;
+  `jadeCostCents(3,73g)` = $401,88 (beklenen değer).
+- UPDATE öncesi hesaplanan **md5 mührü** ile UPDATE sonrası canlı fiyatların
+  mührü **birebir aynı** (`8aa1b019…`) — satır kayması/kısmi yazma yok.
+- Toplam cent önizlemeyle birebir; `audit_log`'da **1.988 satır** (tam geri alma).
+- Breakeven altı 0; ortalama marj %21,5 (indirim öncesi seviyeyle aynı).
+
+### Açık risk — Offsite Ads
+
+Etsy Offsite Ads devredeyse kesinti %9,5 yerine ~%24,5 olur; **%25 indirim +
+Offsite Ads** birleşiminde katalogun büyük kısmı zarara döner. Fiyatlama bunu
+tek başına çözemez. Reklam kaynaklı sipariş payı **ölçülemiyor**: satış senkronu
+5 Ağustos'tan beri bayat, Ağustos siparişlerinin hiçbiri panelde yok.
+Senkron tazelenmeden bu risk sayısallaştırılamaz.

@@ -11,6 +11,26 @@ repodaki hedefidir.
 
 ## Süreç dersleri
 
+- **Dış dünyanın girdisi değiştiğinde formülü yeniden koşma, TABANI kaydır —
+  yeniden koşmak bilerek verilmiş kararları siler (2026-08-20):** Mağaza geneli
+  indirim %15'ten %25'e çıktı; motorun `JADE_DISCOUNT_RATE` sabiti 0,15'te
+  kalmıştı, yani panel "hedef %20" derken fiilen **%12,3** marj üretiyordu ve
+  89 varyant breakeven'in ALTINA düşmüştü — kimse fark etmezdi, çünkü ekran
+  yeşildi (kendi eski varsayımına göre hesaplıyordu). İlk refleksim fiyat
+  formülünü %25'e göre yeniden koşmaktı; bu YANLIŞ olurdu: hero listinglerde
+  bilerek verilmiş **kademeli breakeven** kararları ve beden/boy **emniyet
+  payları** formülün üstüne elle konmuştu, yeniden koşmak hepsini silip o
+  ürünleri tek hamlede hedef marja fırlatırdı. Doğrusu tabanı kaydırmaktı:
+  her fiyata `× (1−eski_indirim)/(1−yeni_indirim)` = ×1,1333. Cebirsel gerekçe
+  `yeni × 0,75 == eski × 0,85` — net tahsilat birebir korunur, her varyantın
+  AMAÇLANAN marj konumu (hedefte mi, breakeven'de mi, emniyet paylı mı) aynen
+  kalır. Kural: (1) bir motor sabiti dış dünyayı temsil ediyorsa değişimi
+  sabitte yakala, çıktıyı yeniden üretme; (2) çıktının üstüne elle karar
+  konmuşsa yeniden üretim o kararları sessizce yok eder — önce "bu değerlerin
+  kaçı formülden, kaçı karardan geliyor?" diye sor; (3) oransal düzeltmeyi
+  UPDATE öncesi md5 mührüyle hesapla, UPDATE sonrası aynı mührü canlıdan
+  yeniden üret — eşitse satır kayması/kısmi yazma yok demektir.
+
 - **Dilbilgisel özelliği ANAHTAR KELİMEYLE arama — çekimde saklıysa sayaç
   "temiz" der ve yanıltır (2026-08-20):** 40 İspanyolca çeviride hitap
   tutarlılığını ölçtüm; sayaç `\musted\M|\mustedes\M` arıyordu ve **"24 tú,
