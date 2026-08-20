@@ -11,6 +11,26 @@ repodaki hedefidir.
 
 ## Süreç dersleri
 
+- **Kullanıcıya vereceğin URL'i TAHMİN ETME — tek `curl` ile doğrula; yanlış
+  adres kullanıcının zamanını yakar ve hatayı senin işine yıkar (2026-08-20):**
+  Ops rotası için `https://jade-gold-nyc.vercel.app/api/ops/es-pull?...` linki
+  verdim; adres proje adından TÜRETİLMİŞ bir tahmindi, öyle bir alias hiç yoktu.
+  Kullanıcı iki linki de açtı, ikisi de `404 DEPLOYMENT_NOT_FOUND` verdi ve
+  kullanıcı haklı olarak "rota mı bozuk?" diye sordu — oysa rota sağlamdı,
+  yalnız adres uydurmaydı. Gerçek prod adresi custom domain'di
+  (`amuletta.artifactstudio.info`); Vercel alias'ı da tahminimden farklıydı
+  (`jade-gold-nyc-husamaris-projects.vercel.app`). Daha kötüsü: aynı yanlış
+  domaini bu oturumda `/fiyat` push linki olarak DEFALARCA verdim ve fark
+  etmedim — kullanıcı kendi yer imini kullandığı için sessizce kurtarıldık.
+  Kural: (1) kullanıcıya vereceğin her URL, göndermeden önce `curl -o /dev/null
+  -w "%{http_code}"` ile sınanır — auth'lu uçta **401 beklenir** (rota var,
+  token yok), 404 adres yanlış demektir; (2) domaini proje adından türetme,
+  sağlayıcıdan sor (Vercel MCP `get_project` → `domains[]`) ya da repodan oku;
+  (3) doğrulanan adresi repoya YAZ (CLAUDE.md) ki sonraki oturum yeniden
+  tahmin etmesin. Yan not: 404 Vercel kenarında oluştuğu için rota hiç
+  çalışmadı → tek-kullanımlık token'lar TÜKENMEDİ; token tükettiğini
+  varsaymadan önce `used_at`'e bak.
+
 - **Aynı gram çok varyanta yayılmışsa fiyatlamadan önce HANGİ örneğin ölçüldüğünü
   bul; orta değerse "breakeven'e çektim, zarar bitti" YANLIŞTIR (2026-08):**
   Love bölümünde `1739245557` (Heart Nugget Ring, 194 satış) 40 varyantının
