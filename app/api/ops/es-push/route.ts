@@ -126,6 +126,13 @@ function formatGate(row: TransRow): string[] {
 // alanı "canlıda farklı" diye işaretler — özellikle "SIZE & WIDTH" gibi
 // ampersand taşıyan açıklamalarda.
 const norm = (s: string) => decodeHtmlEntities(s).replace(/\s+/g, " ").trim();
+/** Rapor için kısa alıntı. Drift raporu "farklı" demekle yetinemez — insanın
+ *  karar verebilmesi için FARKIN KENDİSİ görünmeli (canlı ne diyor, biz ne
+ *  gönderdik). Uzun metin yanıtı şişirmesin diye kırpılır. */
+const kes = (s: string | null | undefined, n = 70) => {
+  const t = norm(s ?? "");
+  return t.length > n ? `${t.slice(0, n)}…` : t;
+};
 const tagKey = (tags: string[]) =>
   tags.map((t) => t.toLowerCase().trim()).sort().join("|");
 
@@ -148,7 +155,9 @@ async function canliKarsilastir(
   if (g.en?.title || g.en?.description || (g.en?.tags && g.en.tags.length > 0)) {
     const live = await getListing(client, listingId);
     if (g.en.title && norm(live.title ?? "") !== norm(g.en.title))
-      sapmalar.push("EN başlık canlıda farklı");
+      sapmalar.push(
+        `EN başlık canlıda farklı — canlı: "${kes(live.title)}" / bizim: "${kes(g.en.title)}"`,
+      );
     if (g.en.tags && g.en.tags.length > 0) {
       if (!Array.isArray(live.tags)) sapmalar.push("EN tag alanı yanıtta yok");
       else if (tagKey(live.tags) !== tagKey(g.en.tags))
@@ -168,9 +177,13 @@ async function canliKarsilastir(
       sapmalar.push("ES çeviri okunamadı (404)");
     } else {
       if (norm(liveT.title ?? "") !== norm(g.es.title!))
-        sapmalar.push("ES başlık canlıda farklı");
+        sapmalar.push(
+          `ES başlık canlıda farklı — canlı: "${kes(liveT.title)}" / bizim: "${kes(g.es.title)}"`,
+        );
       if (g.es.description && norm(liveT.description ?? "") !== norm(g.es.description))
-        sapmalar.push("ES açıklama canlıda farklı");
+        sapmalar.push(
+          `ES açıklama canlıda farklı (canlı ${(liveT.description ?? "").length} kr / bizim ${g.es.description.length} kr) — canlı başlangıç: "${kes(liveT.description, 90)}"`,
+        );
       const beklenen = g.es.tags ?? [];
       if (beklenen.length > 0) {
         if (!Array.isArray(liveT.tags)) {
@@ -178,10 +191,16 @@ async function canliKarsilastir(
         } else if (tagKey(liveT.tags) !== tagKey(beklenen)) {
           // Sayı da farklıysa onu ayrıca söyle — "13 gönderdik, 8 durdu" gibi
           // bir kayıp, sıralama/normalize farkından başka bir şeydir.
+          // Hangi tag'lerin gidip hangilerinin geldiğini de yaz: insan kararı
+          // "farklı" bilgisiyle verilemez, FARKIN KENDİSİ gerekir.
+          const bizde = new Set(beklenen.map((t) => t.toLowerCase().trim()));
+          const canlida = new Set(liveT.tags.map((t) => t.toLowerCase().trim()));
+          const eksik = [...bizde].filter((t) => !canlida.has(t));
+          const fazla = [...canlida].filter((t) => !bizde.has(t));
           sapmalar.push(
-            liveT.tags.length !== beklenen.length
-              ? `ES tag sayısı ${liveT.tags.length}/${beklenen.length}`
-              : "ES tag seti canlıda farklı",
+            `ES tag seti canlıda farklı (${liveT.tags.length}/${beklenen.length})` +
+              (eksik.length ? ` · kayıp: ${eksik.slice(0, 5).join(", ")}` : "") +
+              (fazla.length ? ` · fazladan: ${fazla.slice(0, 5).join(", ")}` : ""),
           );
         }
       }
