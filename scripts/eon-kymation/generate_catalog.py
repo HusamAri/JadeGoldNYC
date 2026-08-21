@@ -393,6 +393,7 @@ def verify(catalog: dict, migration: str) -> None:
         assert listing["pricing"]["labor_usd"] == 55.0
     assert "catalog_kymation_1_5mm" in migration
     assert "::integer < 4;" in migration
+    assert "listing_cost_cents = 5500" in migration
     assert "etsy_listing_id null" in migration
 
 

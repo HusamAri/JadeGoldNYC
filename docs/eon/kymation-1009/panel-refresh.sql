@@ -5,7 +5,7 @@
 
 insert into public.products (
   org_id, sku, title, description, tags, materials, status, currency,
-  price_cents, quantity, has_variations, image_url, num_images,
+  price_cents, listing_cost_cents, quantity, has_variations, image_url, num_images,
   research_keyword, research_group
 )
 select
@@ -45,7 +45,7 @@ Kymation is built around the line where one surface becomes another. A soft cent
 [EON Kymation 1009 | 10K Yellow Gold | Width 4mm to 12mm | Ring Size US 4 to 16 whole and half | 1.5mm pricing and production specification | quantity 20 per variant | personalization max 30 characters]$kymation$,
   ARRAY[$kymation$beveled gold ring$kymation$,$kymation$milgrain band$kymation$,$kymation$satin wedding band$kymation$,$kymation$10k gold ring$kymation$,$kymation$10k wedding band$kymation$,$kymation$yellow gold band$kymation$,$kymation$mens wedding band$kymation$,$kymation$unisex gold ring$kymation$,$kymation$comfort fit ring$kymation$,$kymation$wide gold band$kymation$,$kymation$matte gold ring$kymation$,$kymation$anniversary band$kymation$,$kymation$heirloom gold ring$kymation$]::text[],
   ARRAY[$kymation$Solid 10k gold$kymation$,$kymation$Yellow Gold$kymation$]::text[],
-  'draft', 'USD', 1, 20, true,
+  'draft', 'USD', 1, 5500, 20, true,
   $kymation$https://amuletta.artifactstudio.info/eon/kymation-1009/gld-r-1009/01-hero.jpg$kymation$, 10,
   $kymation$10k yellow gold beveled milgrain wedding band$kymation$, 52
 from public.organizations o
@@ -95,6 +95,7 @@ Kymation is built around the line where one surface becomes another. A soft cent
   num_images = 10,
   research_keyword = $kymation$10k yellow gold beveled milgrain wedding band$kymation$,
   research_group = 52,
+  listing_cost_cents = 5500,
   has_variations = true,
   updated_at = now()
 from public.organizations o
@@ -102,7 +103,7 @@ where p.org_id = o.id and o.name = 'EON' and p.sku = $kymation$GLD-R-1009$kymati
 
 insert into public.products (
   org_id, sku, title, description, tags, materials, status, currency,
-  price_cents, quantity, has_variations, image_url, num_images,
+  price_cents, listing_cost_cents, quantity, has_variations, image_url, num_images,
   research_keyword, research_group
 )
 select
@@ -142,7 +143,7 @@ Kymation is built around the line where one surface becomes another. A soft cent
 [EON Kymation 1009 | 14K Yellow Gold | Width 4mm to 12mm | Ring Size US 4 to 16 whole and half | 1.5mm pricing and production specification | quantity 20 per variant | personalization max 30 characters]$kymation$,
   ARRAY[$kymation$beveled gold ring$kymation$,$kymation$milgrain band$kymation$,$kymation$satin wedding band$kymation$,$kymation$14k gold ring$kymation$,$kymation$14k wedding band$kymation$,$kymation$yellow gold band$kymation$,$kymation$mens wedding band$kymation$,$kymation$unisex gold ring$kymation$,$kymation$comfort fit ring$kymation$,$kymation$wide gold band$kymation$,$kymation$matte gold ring$kymation$,$kymation$anniversary band$kymation$,$kymation$heirloom gold ring$kymation$]::text[],
   ARRAY[$kymation$Solid 14k gold$kymation$,$kymation$Yellow Gold$kymation$]::text[],
-  'draft', 'USD', 1, 20, true,
+  'draft', 'USD', 1, 5500, 20, true,
   $kymation$https://amuletta.artifactstudio.info/eon/kymation-1009/gld-r-1409/01-hero.jpg$kymation$, 10,
   $kymation$14k yellow gold beveled milgrain wedding band$kymation$, 53
 from public.organizations o
@@ -192,6 +193,7 @@ Kymation is built around the line where one surface becomes another. A soft cent
   num_images = 10,
   research_keyword = $kymation$14k yellow gold beveled milgrain wedding band$kymation$,
   research_group = 53,
+  listing_cost_cents = 5500,
   has_variations = true,
   updated_at = now()
 from public.organizations o
@@ -199,7 +201,7 @@ where p.org_id = o.id and o.name = 'EON' and p.sku = $kymation$GLD-R-1409$kymati
 
 insert into public.products (
   org_id, sku, title, description, tags, materials, status, currency,
-  price_cents, quantity, has_variations, image_url, num_images,
+  price_cents, listing_cost_cents, quantity, has_variations, image_url, num_images,
   research_keyword, research_group
 )
 select
@@ -239,7 +241,7 @@ Kymation is built around the line where one surface becomes another. A soft cent
 [EON Kymation 1009 | 18K Yellow Gold | Width 4mm to 12mm | Ring Size US 4 to 16 whole and half | 1.5mm pricing and production specification | quantity 20 per variant | personalization max 30 characters]$kymation$,
   ARRAY[$kymation$beveled gold ring$kymation$,$kymation$milgrain band$kymation$,$kymation$satin wedding band$kymation$,$kymation$18k gold ring$kymation$,$kymation$18k wedding band$kymation$,$kymation$yellow gold band$kymation$,$kymation$mens wedding band$kymation$,$kymation$unisex gold ring$kymation$,$kymation$comfort fit ring$kymation$,$kymation$wide gold band$kymation$,$kymation$matte gold ring$kymation$,$kymation$anniversary band$kymation$,$kymation$heirloom gold ring$kymation$]::text[],
   ARRAY[$kymation$Solid 18k gold$kymation$,$kymation$Yellow Gold$kymation$]::text[],
-  'draft', 'USD', 1, 20, true,
+  'draft', 'USD', 1, 5500, 20, true,
   $kymation$https://amuletta.artifactstudio.info/eon/kymation-1009/gld-r-1809/01-hero.jpg$kymation$, 10,
   $kymation$18k yellow gold beveled milgrain wedding band$kymation$, 54
 from public.organizations o
@@ -289,6 +291,7 @@ Kymation is built around the line where one surface becomes another. A soft cent
   num_images = 10,
   research_keyword = $kymation$18k yellow gold beveled milgrain wedding band$kymation$,
   research_group = 54,
+  listing_cost_cents = 5500,
   has_variations = true,
   updated_at = now()
 from public.organizations o
@@ -296,7 +299,7 @@ where p.org_id = o.id and o.name = 'EON' and p.sku = $kymation$GLD-R-1809$kymati
 
 insert into public.products (
   org_id, sku, title, description, tags, materials, status, currency,
-  price_cents, quantity, has_variations, image_url, num_images,
+  price_cents, listing_cost_cents, quantity, has_variations, image_url, num_images,
   research_keyword, research_group
 )
 select
@@ -336,7 +339,7 @@ Kymation is built around the line where one surface becomes another. A soft cent
 [EON Kymation 1009 | 10K White Gold | Width 4mm to 12mm | Ring Size US 4 to 16 whole and half | 1.5mm pricing and production specification | quantity 20 per variant | personalization max 30 characters]$kymation$,
   ARRAY[$kymation$beveled gold ring$kymation$,$kymation$milgrain band$kymation$,$kymation$satin wedding band$kymation$,$kymation$10k gold ring$kymation$,$kymation$10k wedding band$kymation$,$kymation$white gold band$kymation$,$kymation$mens wedding band$kymation$,$kymation$unisex gold ring$kymation$,$kymation$comfort fit ring$kymation$,$kymation$wide gold band$kymation$,$kymation$matte gold ring$kymation$,$kymation$anniversary band$kymation$,$kymation$heirloom gold ring$kymation$]::text[],
   ARRAY[$kymation$Solid 10k gold$kymation$,$kymation$White Gold$kymation$]::text[],
-  'draft', 'USD', 1, 20, true,
+  'draft', 'USD', 1, 5500, 20, true,
   $kymation$https://amuletta.artifactstudio.info/eon/kymation-1009/whg-r-1009/01-hero.jpg$kymation$, 10,
   $kymation$10k white gold beveled milgrain wedding band$kymation$, 55
 from public.organizations o
@@ -386,6 +389,7 @@ Kymation is built around the line where one surface becomes another. A soft cent
   num_images = 10,
   research_keyword = $kymation$10k white gold beveled milgrain wedding band$kymation$,
   research_group = 55,
+  listing_cost_cents = 5500,
   has_variations = true,
   updated_at = now()
 from public.organizations o
@@ -393,7 +397,7 @@ where p.org_id = o.id and o.name = 'EON' and p.sku = $kymation$WHG-R-1009$kymati
 
 insert into public.products (
   org_id, sku, title, description, tags, materials, status, currency,
-  price_cents, quantity, has_variations, image_url, num_images,
+  price_cents, listing_cost_cents, quantity, has_variations, image_url, num_images,
   research_keyword, research_group
 )
 select
@@ -433,7 +437,7 @@ Kymation is built around the line where one surface becomes another. A soft cent
 [EON Kymation 1009 | 14K White Gold | Width 4mm to 12mm | Ring Size US 4 to 16 whole and half | 1.5mm pricing and production specification | quantity 20 per variant | personalization max 30 characters]$kymation$,
   ARRAY[$kymation$beveled gold ring$kymation$,$kymation$milgrain band$kymation$,$kymation$satin wedding band$kymation$,$kymation$14k gold ring$kymation$,$kymation$14k wedding band$kymation$,$kymation$white gold band$kymation$,$kymation$mens wedding band$kymation$,$kymation$unisex gold ring$kymation$,$kymation$comfort fit ring$kymation$,$kymation$wide gold band$kymation$,$kymation$matte gold ring$kymation$,$kymation$anniversary band$kymation$,$kymation$heirloom gold ring$kymation$]::text[],
   ARRAY[$kymation$Solid 14k gold$kymation$,$kymation$White Gold$kymation$]::text[],
-  'draft', 'USD', 1, 20, true,
+  'draft', 'USD', 1, 5500, 20, true,
   $kymation$https://amuletta.artifactstudio.info/eon/kymation-1009/whg-r-1409/01-hero.jpg$kymation$, 10,
   $kymation$14k white gold beveled milgrain wedding band$kymation$, 56
 from public.organizations o
@@ -483,6 +487,7 @@ Kymation is built around the line where one surface becomes another. A soft cent
   num_images = 10,
   research_keyword = $kymation$14k white gold beveled milgrain wedding band$kymation$,
   research_group = 56,
+  listing_cost_cents = 5500,
   has_variations = true,
   updated_at = now()
 from public.organizations o
@@ -490,7 +495,7 @@ where p.org_id = o.id and o.name = 'EON' and p.sku = $kymation$WHG-R-1409$kymati
 
 insert into public.products (
   org_id, sku, title, description, tags, materials, status, currency,
-  price_cents, quantity, has_variations, image_url, num_images,
+  price_cents, listing_cost_cents, quantity, has_variations, image_url, num_images,
   research_keyword, research_group
 )
 select
@@ -530,7 +535,7 @@ Kymation is built around the line where one surface becomes another. A soft cent
 [EON Kymation 1009 | 18K White Gold | Width 4mm to 12mm | Ring Size US 4 to 16 whole and half | 1.5mm pricing and production specification | quantity 20 per variant | personalization max 30 characters]$kymation$,
   ARRAY[$kymation$beveled gold ring$kymation$,$kymation$milgrain band$kymation$,$kymation$satin wedding band$kymation$,$kymation$18k gold ring$kymation$,$kymation$18k wedding band$kymation$,$kymation$white gold band$kymation$,$kymation$mens wedding band$kymation$,$kymation$unisex gold ring$kymation$,$kymation$comfort fit ring$kymation$,$kymation$wide gold band$kymation$,$kymation$matte gold ring$kymation$,$kymation$anniversary band$kymation$,$kymation$heirloom gold ring$kymation$]::text[],
   ARRAY[$kymation$Solid 18k gold$kymation$,$kymation$White Gold$kymation$]::text[],
-  'draft', 'USD', 1, 20, true,
+  'draft', 'USD', 1, 5500, 20, true,
   $kymation$https://amuletta.artifactstudio.info/eon/kymation-1009/whg-r-1809/01-hero.jpg$kymation$, 10,
   $kymation$18k white gold beveled milgrain wedding band$kymation$, 57
 from public.organizations o
@@ -580,6 +585,7 @@ Kymation is built around the line where one surface becomes another. A soft cent
   num_images = 10,
   research_keyword = $kymation$18k white gold beveled milgrain wedding band$kymation$,
   research_group = 57,
+  listing_cost_cents = 5500,
   has_variations = true,
   updated_at = now()
 from public.organizations o
@@ -587,7 +593,7 @@ where p.org_id = o.id and o.name = 'EON' and p.sku = $kymation$WHG-R-1809$kymati
 
 insert into public.products (
   org_id, sku, title, description, tags, materials, status, currency,
-  price_cents, quantity, has_variations, image_url, num_images,
+  price_cents, listing_cost_cents, quantity, has_variations, image_url, num_images,
   research_keyword, research_group
 )
 select
@@ -627,7 +633,7 @@ Kymation is built around the line where one surface becomes another. A soft cent
 [EON Kymation 1009 | 10K Rose Gold | Width 4mm to 12mm | Ring Size US 4 to 16 whole and half | 1.5mm pricing and production specification | quantity 20 per variant | personalization max 30 characters]$kymation$,
   ARRAY[$kymation$beveled gold ring$kymation$,$kymation$milgrain band$kymation$,$kymation$satin wedding band$kymation$,$kymation$10k gold ring$kymation$,$kymation$10k wedding band$kymation$,$kymation$rose gold band$kymation$,$kymation$mens wedding band$kymation$,$kymation$unisex gold ring$kymation$,$kymation$comfort fit ring$kymation$,$kymation$wide gold band$kymation$,$kymation$matte gold ring$kymation$,$kymation$anniversary band$kymation$,$kymation$heirloom gold ring$kymation$]::text[],
   ARRAY[$kymation$Solid 10k gold$kymation$,$kymation$Rose Gold$kymation$]::text[],
-  'draft', 'USD', 1, 20, true,
+  'draft', 'USD', 1, 5500, 20, true,
   $kymation$https://amuletta.artifactstudio.info/eon/kymation-1009/rsg-r-1009/01-hero.jpg$kymation$, 10,
   $kymation$10k rose gold beveled milgrain wedding band$kymation$, 58
 from public.organizations o
@@ -677,6 +683,7 @@ Kymation is built around the line where one surface becomes another. A soft cent
   num_images = 10,
   research_keyword = $kymation$10k rose gold beveled milgrain wedding band$kymation$,
   research_group = 58,
+  listing_cost_cents = 5500,
   has_variations = true,
   updated_at = now()
 from public.organizations o
@@ -684,7 +691,7 @@ where p.org_id = o.id and o.name = 'EON' and p.sku = $kymation$RSG-R-1009$kymati
 
 insert into public.products (
   org_id, sku, title, description, tags, materials, status, currency,
-  price_cents, quantity, has_variations, image_url, num_images,
+  price_cents, listing_cost_cents, quantity, has_variations, image_url, num_images,
   research_keyword, research_group
 )
 select
@@ -724,7 +731,7 @@ Kymation is built around the line where one surface becomes another. A soft cent
 [EON Kymation 1009 | 14K Rose Gold | Width 4mm to 12mm | Ring Size US 4 to 16 whole and half | 1.5mm pricing and production specification | quantity 20 per variant | personalization max 30 characters]$kymation$,
   ARRAY[$kymation$beveled gold ring$kymation$,$kymation$milgrain band$kymation$,$kymation$satin wedding band$kymation$,$kymation$14k gold ring$kymation$,$kymation$14k wedding band$kymation$,$kymation$rose gold band$kymation$,$kymation$mens wedding band$kymation$,$kymation$unisex gold ring$kymation$,$kymation$comfort fit ring$kymation$,$kymation$wide gold band$kymation$,$kymation$matte gold ring$kymation$,$kymation$anniversary band$kymation$,$kymation$heirloom gold ring$kymation$]::text[],
   ARRAY[$kymation$Solid 14k gold$kymation$,$kymation$Rose Gold$kymation$]::text[],
-  'draft', 'USD', 1, 20, true,
+  'draft', 'USD', 1, 5500, 20, true,
   $kymation$https://amuletta.artifactstudio.info/eon/kymation-1009/rsg-r-1409/01-hero.jpg$kymation$, 10,
   $kymation$14k rose gold beveled milgrain wedding band$kymation$, 59
 from public.organizations o
@@ -774,6 +781,7 @@ Kymation is built around the line where one surface becomes another. A soft cent
   num_images = 10,
   research_keyword = $kymation$14k rose gold beveled milgrain wedding band$kymation$,
   research_group = 59,
+  listing_cost_cents = 5500,
   has_variations = true,
   updated_at = now()
 from public.organizations o
@@ -781,7 +789,7 @@ where p.org_id = o.id and o.name = 'EON' and p.sku = $kymation$RSG-R-1409$kymati
 
 insert into public.products (
   org_id, sku, title, description, tags, materials, status, currency,
-  price_cents, quantity, has_variations, image_url, num_images,
+  price_cents, listing_cost_cents, quantity, has_variations, image_url, num_images,
   research_keyword, research_group
 )
 select
@@ -821,7 +829,7 @@ Kymation is built around the line where one surface becomes another. A soft cent
 [EON Kymation 1009 | 18K Rose Gold | Width 4mm to 12mm | Ring Size US 4 to 16 whole and half | 1.5mm pricing and production specification | quantity 20 per variant | personalization max 30 characters]$kymation$,
   ARRAY[$kymation$beveled gold ring$kymation$,$kymation$milgrain band$kymation$,$kymation$satin wedding band$kymation$,$kymation$18k gold ring$kymation$,$kymation$18k wedding band$kymation$,$kymation$rose gold band$kymation$,$kymation$mens wedding band$kymation$,$kymation$unisex gold ring$kymation$,$kymation$comfort fit ring$kymation$,$kymation$wide gold band$kymation$,$kymation$matte gold ring$kymation$,$kymation$anniversary band$kymation$,$kymation$heirloom gold ring$kymation$]::text[],
   ARRAY[$kymation$Solid 18k gold$kymation$,$kymation$Rose Gold$kymation$]::text[],
-  'draft', 'USD', 1, 20, true,
+  'draft', 'USD', 1, 5500, 20, true,
   $kymation$https://amuletta.artifactstudio.info/eon/kymation-1009/rsg-r-1809/01-hero.jpg$kymation$, 10,
   $kymation$18k rose gold beveled milgrain wedding band$kymation$, 60
 from public.organizations o
@@ -871,6 +879,7 @@ Kymation is built around the line where one surface becomes another. A soft cent
   num_images = 10,
   research_keyword = $kymation$18k rose gold beveled milgrain wedding band$kymation$,
   research_group = 60,
+  listing_cost_cents = 5500,
   has_variations = true,
   updated_at = now()
 from public.organizations o
