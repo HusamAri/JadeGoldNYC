@@ -1,0 +1,2021 @@
+{
+  "package": "EON Kymation 1009",
+  "generated_at": "2026-08-21T18:25:24.333105+00:00",
+  "status": "pass",
+  "summary": {
+    "listings": 9,
+    "variants": 2025,
+    "images": 90,
+    "tags": 117,
+    "widths_mm": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "ring_sizes_us": [
+      "4",
+      "4.5",
+      "5",
+      "5.5",
+      "6",
+      "6.5",
+      "7",
+      "7.5",
+      "8",
+      "8.5",
+      "9",
+      "9.5",
+      "10",
+      "10.5",
+      "11",
+      "11.5",
+      "12",
+      "12.5",
+      "13",
+      "13.5",
+      "14",
+      "14.5",
+      "15",
+      "15.5",
+      "16"
+    ],
+    "customization_axes": [
+      "Width",
+      "Ring Size"
+    ]
+  },
+  "automated_checks": [
+    {
+      "name": "listing_count",
+      "status": "pass",
+      "details": 9
+    },
+    {
+      "name": "metal_karat_matrix",
+      "status": "pass",
+      "details": [
+        [
+          "Rose Gold",
+          "10K"
+        ],
+        [
+          "Rose Gold",
+          "14K"
+        ],
+        [
+          "Rose Gold",
+          "18K"
+        ],
+        [
+          "White Gold",
+          "10K"
+        ],
+        [
+          "White Gold",
+          "14K"
+        ],
+        [
+          "White Gold",
+          "18K"
+        ],
+        [
+          "Yellow Gold",
+          "10K"
+        ],
+        [
+          "Yellow Gold",
+          "14K"
+        ],
+        [
+          "Yellow Gold",
+          "18K"
+        ]
+      ]
+    },
+    {
+      "name": "unique_family_skus",
+      "status": "pass",
+      "details": [
+        "GLD-R-1009",
+        "GLD-R-1409",
+        "GLD-R-1809",
+        "WHG-R-1009",
+        "WHG-R-1409",
+        "WHG-R-1809",
+        "RSG-R-1009",
+        "RSG-R-1409",
+        "RSG-R-1809"
+      ]
+    },
+    {
+      "name": "unique_slugs",
+      "status": "pass",
+      "details": [
+        "gld-r-1009",
+        "gld-r-1409",
+        "gld-r-1809",
+        "whg-r-1009",
+        "whg-r-1409",
+        "whg-r-1809",
+        "rsg-r-1009",
+        "rsg-r-1409",
+        "rsg-r-1809"
+      ]
+    },
+    {
+      "name": "unique_titles",
+      "status": "pass",
+      "details": [
+        "10K Solid Yellow Gold Beveled Milgrain Wedding Band, Satin Center Ring, 4mm to 12mm",
+        "14K Solid Yellow Gold Beveled Milgrain Wedding Band, Satin Center Ring, 4mm to 12mm",
+        "18K Solid Yellow Gold Beveled Milgrain Wedding Band, Satin Center Ring, 4mm to 12mm",
+        "10K Solid White Gold Beveled Milgrain Wedding Band, Satin Center Ring, 4mm to 12mm",
+        "14K Solid White Gold Beveled Milgrain Wedding Band, Satin Center Ring, 4mm to 12mm",
+        "18K Solid White Gold Beveled Milgrain Wedding Band, Satin Center Ring, 4mm to 12mm",
+        "10K Solid Rose Gold Beveled Milgrain Wedding Band, Satin Center Ring, 4mm to 12mm",
+        "14K Solid Rose Gold Beveled Milgrain Wedding Band, Satin Center Ring, 4mm to 12mm",
+        "18K Solid Rose Gold Beveled Milgrain Wedding Band, Satin Center Ring, 4mm to 12mm"
+      ]
+    },
+    {
+      "name": "title_character_limit",
+      "status": "pass",
+      "details": {
+        "GLD-R-1009": 83,
+        "GLD-R-1409": 83,
+        "GLD-R-1809": 83,
+        "WHG-R-1009": 82,
+        "WHG-R-1409": 82,
+        "WHG-R-1809": 82,
+        "RSG-R-1009": 81,
+        "RSG-R-1409": 81,
+        "RSG-R-1809": 81
+      }
+    },
+    {
+      "name": "title_word_target",
+      "status": "pass",
+      "details": {
+        "GLD-R-1009": 14,
+        "GLD-R-1409": 14,
+        "GLD-R-1809": 14,
+        "WHG-R-1009": 14,
+        "WHG-R-1409": 14,
+        "WHG-R-1809": 14,
+        "RSG-R-1009": 14,
+        "RSG-R-1409": 14,
+        "RSG-R-1809": 14
+      }
+    },
+    {
+      "name": "tag_count",
+      "status": "pass",
+      "details": {
+        "GLD-R-1009": 13,
+        "GLD-R-1409": 13,
+        "GLD-R-1809": 13,
+        "WHG-R-1009": 13,
+        "WHG-R-1409": 13,
+        "WHG-R-1809": 13,
+        "RSG-R-1009": 13,
+        "RSG-R-1409": 13,
+        "RSG-R-1809": 13
+      }
+    },
+    {
+      "name": "tag_character_limit",
+      "status": "pass",
+      "details": {
+        "GLD-R-1009": {
+          "beveled gold ring": 17,
+          "milgrain band": 13,
+          "satin wedding band": 18,
+          "10k gold ring": 13,
+          "10k wedding band": 16,
+          "yellow gold band": 16,
+          "mens wedding band": 17,
+          "unisex gold ring": 16,
+          "comfort fit ring": 16,
+          "wide gold band": 14,
+          "matte gold ring": 15,
+          "anniversary band": 16,
+          "heirloom gold ring": 18
+        },
+        "GLD-R-1409": {
+          "beveled gold ring": 17,
+          "milgrain band": 13,
+          "satin wedding band": 18,
+          "14k gold ring": 13,
+          "14k wedding band": 16,
+          "yellow gold band": 16,
+          "mens wedding band": 17,
+          "unisex gold ring": 16,
+          "comfort fit ring": 16,
+          "wide gold band": 14,
+          "matte gold ring": 15,
+          "anniversary band": 16,
+          "heirloom gold ring": 18
+        },
+        "GLD-R-1809": {
+          "beveled gold ring": 17,
+          "milgrain band": 13,
+          "satin wedding band": 18,
+          "18k gold ring": 13,
+          "18k wedding band": 16,
+          "yellow gold band": 16,
+          "mens wedding band": 17,
+          "unisex gold ring": 16,
+          "comfort fit ring": 16,
+          "wide gold band": 14,
+          "matte gold ring": 15,
+          "anniversary band": 16,
+          "heirloom gold ring": 18
+        },
+        "WHG-R-1009": {
+          "beveled gold ring": 17,
+          "milgrain band": 13,
+          "satin wedding band": 18,
+          "10k gold ring": 13,
+          "10k wedding band": 16,
+          "white gold band": 15,
+          "mens wedding band": 17,
+          "unisex gold ring": 16,
+          "comfort fit ring": 16,
+          "wide gold band": 14,
+          "matte gold ring": 15,
+          "anniversary band": 16,
+          "heirloom gold ring": 18
+        },
+        "WHG-R-1409": {
+          "beveled gold ring": 17,
+          "milgrain band": 13,
+          "satin wedding band": 18,
+          "14k gold ring": 13,
+          "14k wedding band": 16,
+          "white gold band": 15,
+          "mens wedding band": 17,
+          "unisex gold ring": 16,
+          "comfort fit ring": 16,
+          "wide gold band": 14,
+          "matte gold ring": 15,
+          "anniversary band": 16,
+          "heirloom gold ring": 18
+        },
+        "WHG-R-1809": {
+          "beveled gold ring": 17,
+          "milgrain band": 13,
+          "satin wedding band": 18,
+          "18k gold ring": 13,
+          "18k wedding band": 16,
+          "white gold band": 15,
+          "mens wedding band": 17,
+          "unisex gold ring": 16,
+          "comfort fit ring": 16,
+          "wide gold band": 14,
+          "matte gold ring": 15,
+          "anniversary band": 16,
+          "heirloom gold ring": 18
+        },
+        "RSG-R-1009": {
+          "beveled gold ring": 17,
+          "milgrain band": 13,
+          "satin wedding band": 18,
+          "10k gold ring": 13,
+          "10k wedding band": 16,
+          "rose gold band": 14,
+          "mens wedding band": 17,
+          "unisex gold ring": 16,
+          "comfort fit ring": 16,
+          "wide gold band": 14,
+          "matte gold ring": 15,
+          "anniversary band": 16,
+          "heirloom gold ring": 18
+        },
+        "RSG-R-1409": {
+          "beveled gold ring": 17,
+          "milgrain band": 13,
+          "satin wedding band": 18,
+          "14k gold ring": 13,
+          "14k wedding band": 16,
+          "rose gold band": 14,
+          "mens wedding band": 17,
+          "unisex gold ring": 16,
+          "comfort fit ring": 16,
+          "wide gold band": 14,
+          "matte gold ring": 15,
+          "anniversary band": 16,
+          "heirloom gold ring": 18
+        },
+        "RSG-R-1809": {
+          "beveled gold ring": 17,
+          "milgrain band": 13,
+          "satin wedding band": 18,
+          "18k gold ring": 13,
+          "18k wedding band": 16,
+          "rose gold band": 14,
+          "mens wedding band": 17,
+          "unisex gold ring": 16,
+          "comfort fit ring": 16,
+          "wide gold band": 14,
+          "matte gold ring": 15,
+          "anniversary band": 16,
+          "heirloom gold ring": 18
+        }
+      }
+    },
+    {
+      "name": "description_completeness",
+      "status": "pass",
+      "details": {
+        "GLD-R-1009": [],
+        "GLD-R-1409": [],
+        "GLD-R-1809": [],
+        "WHG-R-1009": [],
+        "WHG-R-1409": [],
+        "WHG-R-1809": [],
+        "RSG-R-1009": [],
+        "RSG-R-1409": [],
+        "RSG-R-1809": []
+      }
+    },
+    {
+      "name": "shop_section",
+      "status": "pass",
+      "details": {
+        "GLD-R-1009": "Frieze & Textured Bands",
+        "GLD-R-1409": "Frieze & Textured Bands",
+        "GLD-R-1809": "Frieze & Textured Bands",
+        "WHG-R-1009": "Frieze & Textured Bands",
+        "WHG-R-1409": "Frieze & Textured Bands",
+        "WHG-R-1809": "Frieze & Textured Bands",
+        "RSG-R-1009": "Frieze & Textured Bands",
+        "RSG-R-1409": "Frieze & Textured Bands",
+        "RSG-R-1809": "Frieze & Textured Bands"
+      }
+    },
+    {
+      "name": "labor_usd",
+      "status": "pass",
+      "details": {
+        "GLD-R-1009": 55.0,
+        "GLD-R-1409": 55.0,
+        "GLD-R-1809": 55.0,
+        "WHG-R-1009": 55.0,
+        "WHG-R-1409": 55.0,
+        "WHG-R-1809": 55.0,
+        "RSG-R-1009": 55.0,
+        "RSG-R-1409": 55.0,
+        "RSG-R-1809": 55.0
+      }
+    },
+    {
+      "name": "forbidden_characters",
+      "status": "pass",
+      "details": []
+    },
+    {
+      "name": "variants_per_listing",
+      "status": "pass",
+      "details": {
+        "GLD-R-1009": 225,
+        "GLD-R-1409": 225,
+        "GLD-R-1809": 225,
+        "WHG-R-1009": 225,
+        "WHG-R-1409": 225,
+        "WHG-R-1809": 225,
+        "RSG-R-1009": 225,
+        "RSG-R-1409": 225,
+        "RSG-R-1809": 225
+      }
+    },
+    {
+      "name": "variant_total",
+      "status": "pass",
+      "details": 2025
+    },
+    {
+      "name": "unique_variant_skus",
+      "status": "pass",
+      "details": 2025
+    },
+    {
+      "name": "variant_dimensions",
+      "status": "pass",
+      "details": {
+        "GLD-R-1009": {
+          "widths_mm": [
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "ring_sizes_us": [
+            "4",
+            "4.5",
+            "5",
+            "5.5",
+            "6",
+            "6.5",
+            "7",
+            "7.5",
+            "8",
+            "8.5",
+            "9",
+            "9.5",
+            "10",
+            "10.5",
+            "11",
+            "11.5",
+            "12",
+            "12.5",
+            "13",
+            "13.5",
+            "14",
+            "14.5",
+            "15",
+            "15.5",
+            "16"
+          ]
+        },
+        "GLD-R-1409": {
+          "widths_mm": [
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "ring_sizes_us": [
+            "4",
+            "4.5",
+            "5",
+            "5.5",
+            "6",
+            "6.5",
+            "7",
+            "7.5",
+            "8",
+            "8.5",
+            "9",
+            "9.5",
+            "10",
+            "10.5",
+            "11",
+            "11.5",
+            "12",
+            "12.5",
+            "13",
+            "13.5",
+            "14",
+            "14.5",
+            "15",
+            "15.5",
+            "16"
+          ]
+        },
+        "GLD-R-1809": {
+          "widths_mm": [
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "ring_sizes_us": [
+            "4",
+            "4.5",
+            "5",
+            "5.5",
+            "6",
+            "6.5",
+            "7",
+            "7.5",
+            "8",
+            "8.5",
+            "9",
+            "9.5",
+            "10",
+            "10.5",
+            "11",
+            "11.5",
+            "12",
+            "12.5",
+            "13",
+            "13.5",
+            "14",
+            "14.5",
+            "15",
+            "15.5",
+            "16"
+          ]
+        },
+        "WHG-R-1009": {
+          "widths_mm": [
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "ring_sizes_us": [
+            "4",
+            "4.5",
+            "5",
+            "5.5",
+            "6",
+            "6.5",
+            "7",
+            "7.5",
+            "8",
+            "8.5",
+            "9",
+            "9.5",
+            "10",
+            "10.5",
+            "11",
+            "11.5",
+            "12",
+            "12.5",
+            "13",
+            "13.5",
+            "14",
+            "14.5",
+            "15",
+            "15.5",
+            "16"
+          ]
+        },
+        "WHG-R-1409": {
+          "widths_mm": [
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "ring_sizes_us": [
+            "4",
+            "4.5",
+            "5",
+            "5.5",
+            "6",
+            "6.5",
+            "7",
+            "7.5",
+            "8",
+            "8.5",
+            "9",
+            "9.5",
+            "10",
+            "10.5",
+            "11",
+            "11.5",
+            "12",
+            "12.5",
+            "13",
+            "13.5",
+            "14",
+            "14.5",
+            "15",
+            "15.5",
+            "16"
+          ]
+        },
+        "WHG-R-1809": {
+          "widths_mm": [
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "ring_sizes_us": [
+            "4",
+            "4.5",
+            "5",
+            "5.5",
+            "6",
+            "6.5",
+            "7",
+            "7.5",
+            "8",
+            "8.5",
+            "9",
+            "9.5",
+            "10",
+            "10.5",
+            "11",
+            "11.5",
+            "12",
+            "12.5",
+            "13",
+            "13.5",
+            "14",
+            "14.5",
+            "15",
+            "15.5",
+            "16"
+          ]
+        },
+        "RSG-R-1009": {
+          "widths_mm": [
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "ring_sizes_us": [
+            "4",
+            "4.5",
+            "5",
+            "5.5",
+            "6",
+            "6.5",
+            "7",
+            "7.5",
+            "8",
+            "8.5",
+            "9",
+            "9.5",
+            "10",
+            "10.5",
+            "11",
+            "11.5",
+            "12",
+            "12.5",
+            "13",
+            "13.5",
+            "14",
+            "14.5",
+            "15",
+            "15.5",
+            "16"
+          ]
+        },
+        "RSG-R-1409": {
+          "widths_mm": [
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "ring_sizes_us": [
+            "4",
+            "4.5",
+            "5",
+            "5.5",
+            "6",
+            "6.5",
+            "7",
+            "7.5",
+            "8",
+            "8.5",
+            "9",
+            "9.5",
+            "10",
+            "10.5",
+            "11",
+            "11.5",
+            "12",
+            "12.5",
+            "13",
+            "13.5",
+            "14",
+            "14.5",
+            "15",
+            "15.5",
+            "16"
+          ]
+        },
+        "RSG-R-1809": {
+          "widths_mm": [
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "ring_sizes_us": [
+            "4",
+            "4.5",
+            "5",
+            "5.5",
+            "6",
+            "6.5",
+            "7",
+            "7.5",
+            "8",
+            "8.5",
+            "9",
+            "9.5",
+            "10",
+            "10.5",
+            "11",
+            "11.5",
+            "12",
+            "12.5",
+            "13",
+            "13.5",
+            "14",
+            "14.5",
+            "15",
+            "15.5",
+            "16"
+          ]
+        }
+      }
+    },
+    {
+      "name": "weight_table_parity",
+      "status": "pass",
+      "details": {
+        "mismatch_count": 0,
+        "examples": []
+      }
+    },
+    {
+      "name": "price_profile",
+      "status": "pass",
+      "details": {
+        "GLD-R-1009": {
+          "minimum_usd": 710.0,
+          "maximum_usd": 2655.0
+        },
+        "GLD-R-1409": {
+          "minimum_usd": 985.0,
+          "maximum_usd": 4070.0
+        },
+        "GLD-R-1809": {
+          "minimum_usd": 1350.0,
+          "maximum_usd": 5855.0
+        },
+        "WHG-R-1009": {
+          "minimum_usd": 710.0,
+          "maximum_usd": 2655.0
+        },
+        "WHG-R-1409": {
+          "minimum_usd": 985.0,
+          "maximum_usd": 4070.0
+        },
+        "WHG-R-1809": {
+          "minimum_usd": 1350.0,
+          "maximum_usd": 5855.0
+        },
+        "RSG-R-1009": {
+          "minimum_usd": 710.0,
+          "maximum_usd": 2655.0
+        },
+        "RSG-R-1409": {
+          "minimum_usd": 985.0,
+          "maximum_usd": 4070.0
+        },
+        "RSG-R-1809": {
+          "minimum_usd": 1350.0,
+          "maximum_usd": 5855.0
+        }
+      }
+    },
+    {
+      "name": "image_records",
+      "status": "pass",
+      "details": {
+        "GLD-R-1009": [
+          {
+            "filename": "01-hero.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 881931,
+            "valid": true
+          },
+          {
+            "filename": "02-macro.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 865916,
+            "valid": true
+          },
+          {
+            "filename": "03-side.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 687837,
+            "valid": true
+          },
+          {
+            "filename": "04-top.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 1271727,
+            "valid": true
+          },
+          {
+            "filename": "05-on-hand.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 940390,
+            "valid": true
+          },
+          {
+            "filename": "06-editorial.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 772349,
+            "valid": true
+          },
+          {
+            "filename": "07-size-width-guide.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 366920,
+            "valid": true
+          },
+          {
+            "filename": "08-metal-karat-guide.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 367242,
+            "valid": true
+          },
+          {
+            "filename": "09-personalization-care.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 320331,
+            "valid": true
+          },
+          {
+            "filename": "10-made-to-order.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 351937,
+            "valid": true
+          }
+        ],
+        "GLD-R-1409": [
+          {
+            "filename": "01-hero.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 708375,
+            "valid": true
+          },
+          {
+            "filename": "02-macro.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 904916,
+            "valid": true
+          },
+          {
+            "filename": "03-side.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 746152,
+            "valid": true
+          },
+          {
+            "filename": "04-top.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 1241546,
+            "valid": true
+          },
+          {
+            "filename": "05-on-hand.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 906461,
+            "valid": true
+          },
+          {
+            "filename": "06-editorial.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 908681,
+            "valid": true
+          },
+          {
+            "filename": "07-size-width-guide.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 366951,
+            "valid": true
+          },
+          {
+            "filename": "08-metal-karat-guide.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 367123,
+            "valid": true
+          },
+          {
+            "filename": "09-personalization-care.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 334012,
+            "valid": true
+          },
+          {
+            "filename": "10-made-to-order.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 350558,
+            "valid": true
+          }
+        ],
+        "GLD-R-1809": [
+          {
+            "filename": "01-hero.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 775529,
+            "valid": true
+          },
+          {
+            "filename": "02-macro.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 983645,
+            "valid": true
+          },
+          {
+            "filename": "03-side.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 783599,
+            "valid": true
+          },
+          {
+            "filename": "04-top.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 1098897,
+            "valid": true
+          },
+          {
+            "filename": "05-on-hand.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 1068213,
+            "valid": true
+          },
+          {
+            "filename": "06-editorial.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 799902,
+            "valid": true
+          },
+          {
+            "filename": "07-size-width-guide.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 390737,
+            "valid": true
+          },
+          {
+            "filename": "08-metal-karat-guide.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 392707,
+            "valid": true
+          },
+          {
+            "filename": "09-personalization-care.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 347945,
+            "valid": true
+          },
+          {
+            "filename": "10-made-to-order.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 375855,
+            "valid": true
+          }
+        ],
+        "WHG-R-1009": [
+          {
+            "filename": "01-hero.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 789149,
+            "valid": true
+          },
+          {
+            "filename": "02-macro.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 810135,
+            "valid": true
+          },
+          {
+            "filename": "03-side.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 868346,
+            "valid": true
+          },
+          {
+            "filename": "04-top.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 1631248,
+            "valid": true
+          },
+          {
+            "filename": "05-on-hand.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 1190477,
+            "valid": true
+          },
+          {
+            "filename": "06-editorial.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 1038239,
+            "valid": true
+          },
+          {
+            "filename": "07-size-width-guide.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 317022,
+            "valid": true
+          },
+          {
+            "filename": "08-metal-karat-guide.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 320269,
+            "valid": true
+          },
+          {
+            "filename": "09-personalization-care.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 284762,
+            "valid": true
+          },
+          {
+            "filename": "10-made-to-order.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 310876,
+            "valid": true
+          }
+        ],
+        "WHG-R-1409": [
+          {
+            "filename": "01-hero.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 849821,
+            "valid": true
+          },
+          {
+            "filename": "02-macro.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 926821,
+            "valid": true
+          },
+          {
+            "filename": "03-side.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 721292,
+            "valid": true
+          },
+          {
+            "filename": "04-top.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 1134637,
+            "valid": true
+          },
+          {
+            "filename": "05-on-hand.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 894280,
+            "valid": true
+          },
+          {
+            "filename": "06-editorial.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 908143,
+            "valid": true
+          },
+          {
+            "filename": "07-size-width-guide.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 329284,
+            "valid": true
+          },
+          {
+            "filename": "08-metal-karat-guide.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 330178,
+            "valid": true
+          },
+          {
+            "filename": "09-personalization-care.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 285843,
+            "valid": true
+          },
+          {
+            "filename": "10-made-to-order.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 321443,
+            "valid": true
+          }
+        ],
+        "WHG-R-1809": [
+          {
+            "filename": "01-hero.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 953819,
+            "valid": true
+          },
+          {
+            "filename": "02-macro.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 903841,
+            "valid": true
+          },
+          {
+            "filename": "03-side.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 795620,
+            "valid": true
+          },
+          {
+            "filename": "04-top.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 1015094,
+            "valid": true
+          },
+          {
+            "filename": "05-on-hand.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 1066939,
+            "valid": true
+          },
+          {
+            "filename": "06-editorial.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 1056480,
+            "valid": true
+          },
+          {
+            "filename": "07-size-width-guide.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 348738,
+            "valid": true
+          },
+          {
+            "filename": "08-metal-karat-guide.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 355038,
+            "valid": true
+          },
+          {
+            "filename": "09-personalization-care.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 299929,
+            "valid": true
+          },
+          {
+            "filename": "10-made-to-order.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 342926,
+            "valid": true
+          }
+        ],
+        "RSG-R-1009": [
+          {
+            "filename": "01-hero.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 753499,
+            "valid": true
+          },
+          {
+            "filename": "02-macro.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 825866,
+            "valid": true
+          },
+          {
+            "filename": "03-side.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 678307,
+            "valid": true
+          },
+          {
+            "filename": "04-top.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 1122879,
+            "valid": true
+          },
+          {
+            "filename": "05-on-hand.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 930557,
+            "valid": true
+          },
+          {
+            "filename": "06-editorial.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 665559,
+            "valid": true
+          },
+          {
+            "filename": "07-size-width-guide.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 339726,
+            "valid": true
+          },
+          {
+            "filename": "08-metal-karat-guide.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 333389,
+            "valid": true
+          },
+          {
+            "filename": "09-personalization-care.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 313556,
+            "valid": true
+          },
+          {
+            "filename": "10-made-to-order.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 325926,
+            "valid": true
+          }
+        ],
+        "RSG-R-1409": [
+          {
+            "filename": "01-hero.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 1017170,
+            "valid": true
+          },
+          {
+            "filename": "02-macro.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 1096769,
+            "valid": true
+          },
+          {
+            "filename": "03-side.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 657922,
+            "valid": true
+          },
+          {
+            "filename": "04-top.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 1388685,
+            "valid": true
+          },
+          {
+            "filename": "05-on-hand.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 1026729,
+            "valid": true
+          },
+          {
+            "filename": "06-editorial.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 829424,
+            "valid": true
+          },
+          {
+            "filename": "07-size-width-guide.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 379800,
+            "valid": true
+          },
+          {
+            "filename": "08-metal-karat-guide.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 381288,
+            "valid": true
+          },
+          {
+            "filename": "09-personalization-care.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 324598,
+            "valid": true
+          },
+          {
+            "filename": "10-made-to-order.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 362514,
+            "valid": true
+          }
+        ],
+        "RSG-R-1809": [
+          {
+            "filename": "01-hero.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 965826,
+            "valid": true
+          },
+          {
+            "filename": "02-macro.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 1063142,
+            "valid": true
+          },
+          {
+            "filename": "03-side.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 700987,
+            "valid": true
+          },
+          {
+            "filename": "04-top.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 1198823,
+            "valid": true
+          },
+          {
+            "filename": "05-on-hand.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 1162660,
+            "valid": true
+          },
+          {
+            "filename": "06-editorial.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 939244,
+            "valid": true
+          },
+          {
+            "filename": "07-size-width-guide.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 384433,
+            "valid": true
+          },
+          {
+            "filename": "08-metal-karat-guide.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 384721,
+            "valid": true
+          },
+          {
+            "filename": "09-personalization-care.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 337948,
+            "valid": true
+          },
+          {
+            "filename": "10-made-to-order.jpg",
+            "exists": true,
+            "format": "JPEG",
+            "mode": "RGB",
+            "size": [
+              2200,
+              2200
+            ],
+            "bytes": 370073,
+            "valid": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "unique_image_files",
+      "status": "pass",
+      "details": {
+        "total": 90,
+        "unique": 90
+      }
+    },
+    {
+      "name": "photo_prompt_count",
+      "status": "pass",
+      "details": {
+        "GLD-R-1009": 6,
+        "GLD-R-1409": 6,
+        "GLD-R-1809": 6,
+        "WHG-R-1009": 6,
+        "WHG-R-1409": 6,
+        "WHG-R-1809": 6,
+        "RSG-R-1009": 6,
+        "RSG-R-1409": 6,
+        "RSG-R-1809": 6
+      }
+    },
+    {
+      "name": "migration_variant_skus",
+      "status": "pass",
+      "details": 2025
+    },
+    {
+      "name": "migration_image_urls",
+      "status": "pass",
+      "details": 90
+    },
+    {
+      "name": "migration_panel_drafts",
+      "status": "pass",
+      "details": {
+        "draft_insertions": 9,
+        "etsy_listing_id_note": true
+      }
+    },
+    {
+      "name": "migration_live_pricing_basis",
+      "status": "pass",
+      "details": "latest gold_reprice_basis, pricing_config fallback, 4399.90 final fallback"
+    },
+    {
+      "name": "migration_v4_list_price_formula",
+      "status": "pass",
+      "details": "motor price grossed up for the 25 percent sale and rounded to the next 5 USD"
+    }
+  ],
+  "manual_review": {
+    "status": "pass",
+    "reviewed_matrices": [
+      "01 hero",
+      "02 macro",
+      "03 side",
+      "04 top",
+      "05 on hand",
+      "06 editorial",
+      "07 size and width card",
+      "08 metal and karat card",
+      "09 personalization and care card",
+      "10 made to order card"
+    ],
+    "gates": {
+      "product_geometry": "Broad fine satin center, twin short-tool-mark milgrain lines, planar mirror bevels and polished comfort-fit interior match the source ring.",
+      "profile": "Side-profile photographs expose the narrow 1.5 mm annular wall without making the band chunky.",
+      "karat_tone": "10K, 14K and 18K use distinct, credible metal tones and distinct scenes within each metal family.",
+      "natural_shadows": "Product photographs show believable contact shadows, restrained color and physically plausible glass refraction.",
+      "greek_roots": "Kymation references remain abstract through repeating line rhythm and geometric glass, without literal costume props.",
+      "cards": "Information cards are legible, SKU-specific and preserve all production facts."
+    }
+  },
+  "pricing_note": {
+    "migration": "Uses the latest stored EON gold basis at migration time.",
+    "preview_spot_usd_per_ozt": 4399.9,
+    "profile": "55 USD labor, fire allowance, packaging, shipping, width multiplier, sale gross-up and 5 USD rounding."
+  },
+  "artifacts": {
+    "master_contact_sheet": "docs/eon/kymation-1009/qa/00-master-listing-contact-sheet.jpg",
+    "listing_contact_sheets": [
+      "docs/eon/kymation-1009/qa/listings/gld-r-1009-listing-contact-sheet.jpg",
+      "docs/eon/kymation-1009/qa/listings/gld-r-1409-listing-contact-sheet.jpg",
+      "docs/eon/kymation-1009/qa/listings/gld-r-1809-listing-contact-sheet.jpg",
+      "docs/eon/kymation-1009/qa/listings/whg-r-1009-listing-contact-sheet.jpg",
+      "docs/eon/kymation-1009/qa/listings/whg-r-1409-listing-contact-sheet.jpg",
+      "docs/eon/kymation-1009/qa/listings/whg-r-1809-listing-contact-sheet.jpg",
+      "docs/eon/kymation-1009/qa/listings/rsg-r-1009-listing-contact-sheet.jpg",
+      "docs/eon/kymation-1009/qa/listings/rsg-r-1409-listing-contact-sheet.jpg",
+      "docs/eon/kymation-1009/qa/listings/rsg-r-1809-listing-contact-sheet.jpg"
+    ]
+  }
+}
