@@ -648,6 +648,9 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
   //
   // Bayat/uydurma spotla ASLA sapma hesaplanmaz: yanlış alarm, gerçek
   // alarmdan daha pahalıdır (insanı uyarı körlüğüne alıştırır).
+  // İki uyarı da `goldBasis` kapısının İÇİNDE, "spot alınamıyor" dahil: taban
+  // satırı olmayan org altın-endeksli fiyatlama YAPMIYOR demektir (ör. altın
+  // dışı bir mağaza), ona spot kaynağını dert ettirmek gürültüdür.
   if (spotQuote != null && goldBasis?.data != null) {
     const basis = Number(
       (goldBasis.data as { spot_per_ozt: string | number }).spot_per_ozt,
