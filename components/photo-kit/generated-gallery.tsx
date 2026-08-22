@@ -19,6 +19,7 @@ import type { GeneratedImage } from "@/lib/db/queries/generated-images";
 import { PHOTO_KIT } from "@/lib/photo-kit/types";
 import {
   addImagesFromUrls,
+  cleanListingImages,
   toggleImageSelected,
   deleteGeneratedImage,
   uploadImageToListing,
@@ -53,6 +54,7 @@ export function GeneratedGallery({
   const [lightboxId, setLightboxId] = useState<string | null>(null);
   const [uploading, setUploading] = useState<Set<string>>(new Set());
   const [bulkUploading, setBulkUploading] = useState(false);
+  const [cleaning, setCleaning] = useState(false);
   // Tahmini _min.webp thumb'ı 404 olursa tam görsele düşmek için
   const [thumbFailed, setThumbFailed] = useState<Set<string>>(new Set());
 
@@ -179,7 +181,7 @@ export function GeneratedGallery({
     const ok = confirm(
       `${pending.length} seçili görsel Etsy'ye ürün fotoğrafı olarak yüklenecek` +
         ` (her biri kendi bağlı listing'ine${listingId ? ", bağsızlar menüdeki listing'e" : ""}).` +
-        "\nNot: Etsy bir listing'de en fazla 10 fotoğrafa izin verir.\n\nDevam edilsin mi?",
+        "\nNot: Etsy bir listing'de en fazla 20 fotoğrafa izin verir.\n\nDevam edilsin mi?",
     );
     if (!ok) return;
     setBulkUploading(true);
@@ -209,6 +211,47 @@ export function GeneratedGallery({
       toast.success(`${done} görsel Etsy'ye yüklendi.`);
     else if (done > 0) toast.warning(`${done} yüklendi · ${totalFailed} hata.`);
     router.refresh();
+  }
+
+  async function cleanLiveImages() {
+    const target = Number(listingId);
+    const selected = items.filter((item) => item.isSelected);
+    if (!Number.isInteger(target) || target < 1) {
+      toast.error("Geçerli bir Etsy listing ID girin.");
+      return;
+    }
+    if (selected.length === 0) {
+      toast.error("Canlıda korunacak panel görsellerini önce seçin.");
+      return;
+    }
+    const ok = confirm(
+      `Etsy listing #${target} içinde seçili ${selected.length} panel görseli korunacak. ` +
+        "Canlı listing'deki diğer tüm görseller kalıcı olarak silinecek.\n\nDevam edilsin mi?",
+    );
+    if (!ok) return;
+
+    setCleaning(true);
+    try {
+      const result = await cleanListingImages(
+        target,
+        selected.map((item) => item.id),
+      );
+      if (result.needsReconnect) {
+        toast.error(
+          "Etsy yazma erişimi kapalı. Ayarlar → Etsy'den yeniden bağlanın.",
+        );
+        return;
+      }
+      if (result.error) {
+        toast.error(result.error);
+        return;
+      }
+      toast.success(
+        `${result.kept ?? 0} görsel korundu · ${result.deleted ?? 0} eski görsel silindi.`,
+      );
+    } finally {
+      setCleaning(false);
+    }
   }
 
   function toggle(img: GeneratedImage) {
@@ -283,6 +326,17 @@ export function GeneratedGallery({
               </option>
             ))}
           </select>
+          <input
+            type="number"
+            min={1}
+            inputMode="numeric"
+            value={listingId}
+            onChange={(event) => setListingId(event.target.value)}
+            placeholder="Etsy listing ID"
+            aria-label="Etsy listing ID"
+            className="bg-background h-10 w-44 rounded-lg border px-3 text-sm"
+            style={{ borderColor: LINE }}
+          />
           <Button type="button" onClick={add} disabled={adding}>
             {adding ? (
               <Loader2 className="size-4 animate-spin" />
@@ -324,21 +378,31 @@ export function GeneratedGallery({
           ))}
         </div>
         {canManage && (
-          <Button
-            type="button"
-            className="ml-auto"
-            onClick={uploadSelected}
-            disabled={bulkUploading || selectedCount === 0}
-          >
-            {bulkUploading ? (
-              <Loader2 className="size-4 animate-spin" />
-            ) : (
-              <UploadCloud className="size-4" />
-            )}
-            {bulkUploading
-              ? "Yükleniyor…"
-              : `Seçilenleri Etsy'ye Yükle (${items.filter((i) => i.isSelected && !i.etsyUploadedAt).length})`}
-          </Button>
+          <div className="ml-auto flex flex-wrap gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={cleanLiveImages}
+              disabled={cleaning || selectedCount === 0 || !listingId}
+            >
+              {cleaning && <Loader2 className="size-4 animate-spin" />}
+              {cleaning ? "Temizleniyor…" : "Eski Etsy Görsellerini Temizle"}
+            </Button>
+            <Button
+              type="button"
+              onClick={uploadSelected}
+              disabled={bulkUploading || selectedCount === 0}
+            >
+              {bulkUploading ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                <UploadCloud className="size-4" />
+              )}
+              {bulkUploading
+                ? "Yükleniyor…"
+                : `Seçilenleri Etsy'ye Yükle (${items.filter((i) => i.isSelected && !i.etsyUploadedAt).length})`}
+            </Button>
+          </div>
         )}
       </div>
 

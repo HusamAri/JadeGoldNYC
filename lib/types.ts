@@ -122,6 +122,7 @@ export type AuditAction =
   | "etsy.stock_push"
   | "etsy.variant_sync"
   | "etsy.image_upload"
+  | "etsy.image_delete"
   | "etsy.listing_create"
   | "etsy.reprice"
   | "etsy.seo_push"

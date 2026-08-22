@@ -81,6 +81,7 @@ export const AUDIT_ACTION_LABELS: Record<string, string> = {
   "etsy.stock_push": "Etsy stok gönderimi",
   "etsy.variant_sync": "Etsy varyant senkronu",
   "etsy.image_upload": "Etsy görsel yüklendi",
+  "etsy.image_delete": "Etsy görsel silindi",
   "etsy.seo_push": "Etsy SEO etiket gönderimi",
   "etsy.redesign_push": "Etsy listing yeniden tasarım gönderimi",
   "report.export": "Rapor dışa aktarıldı",

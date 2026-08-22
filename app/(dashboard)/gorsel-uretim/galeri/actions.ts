@@ -111,6 +111,115 @@ export interface UploadToListingResult {
   error?: string;
 }
 
+interface EtsyListingImage {
+  listing_image_id: number;
+  rank: number;
+}
+
+/**
+ * Keeps only panel-selected images with verified Etsy image IDs on the live
+ * listing. Refuses to delete anything when the protection set is incomplete.
+ */
+export async function cleanListingImages(
+  listingId: number,
+  selectedImageIds: string[],
+): Promise<{
+  deleted?: number;
+  kept?: number;
+  needsReconnect?: boolean;
+  error?: string;
+}> {
+  const m = await requireMembership();
+  if (!isManager(m.role)) return { error: MANAGER_ONLY_ERROR };
+  if (!Number.isInteger(listingId) || listingId < 1)
+    return { error: "Geçerli bir Etsy listing ID girin." };
+
+  const uniqueIds = Array.from(new Set(selectedImageIds)).slice(0, 20);
+  if (uniqueIds.length === 0)
+    return { error: "Korunacak en az bir panel görseli seçin." };
+
+  const { writeEnabled } = await getEtsyWriteAccess(m.org_id);
+  if (!writeEnabled) return { needsReconnect: true };
+
+  const supabase = await createClient();
+  const { data, error: rowError } = await supabase
+    .from("generated_images")
+    .select("id, etsy_image_id")
+    .eq("org_id", m.org_id)
+    .eq("etsy_listing_id", listingId)
+    .not("etsy_image_id", "is", null)
+    .in("id", uniqueIds);
+  if (rowError) return { error: rowError.message };
+
+  const rows = (data ?? []) as Array<{
+    id: string;
+    etsy_image_id: number | null;
+  }>;
+  if (rows.length !== uniqueIds.length)
+    return {
+      error:
+        "Seçilen görsellerin tümü bu listing için Etsy'ye yüklenmiş değil. Temizleme durduruldu.",
+    };
+
+  const keepIds = new Set(
+    rows
+      .map((row) => row.etsy_image_id)
+      .filter((id): id is number => id != null),
+  );
+  if (keepIds.size !== uniqueIds.length)
+    return { error: "Koruma setinde tekrar eden Etsy görsel kimliği var." };
+
+  let client: EtsyClient;
+  try {
+    client = await EtsyClient.forOrg(m.org_id);
+  } catch (e) {
+    if (e instanceof EtsyNotConnectedError) return { needsReconnect: true };
+    return {
+      error: e instanceof Error ? e.message : "Etsy istemcisi kurulamadı.",
+    };
+  }
+
+  try {
+    const shopId = await client.requireShopId();
+    const live = await client.get<{ results?: EtsyListingImage[] }>(
+      etsyPaths.listingImagesRead(listingId),
+    );
+    const liveImages = live.results ?? [];
+    const liveIds = new Set(liveImages.map((image) => image.listing_image_id));
+    const missing = [...keepIds].filter((id) => !liveIds.has(id));
+    if (missing.length > 0)
+      return {
+        error:
+          "Korunacak görsellerin bazıları canlı listing'de bulunamadı. Temizleme durduruldu.",
+      };
+
+    const removable = liveImages
+      .filter((image) => !keepIds.has(image.listing_image_id))
+      .sort((a, b) => b.rank - a.rank);
+    for (const image of removable) {
+      await client.request<void>(
+        "DELETE",
+        etsyPaths.listingImage(shopId, listingId, image.listing_image_id),
+      );
+    }
+
+    await logAudit(supabase, {
+      orgId: m.org_id,
+      action: "etsy.image_delete",
+      entityType: "products",
+      entityId: String(listingId),
+      summary: `Etsy listing #${listingId}: ${keepIds.size} seçili görsel korundu, ${removable.length} eski görsel silindi`,
+      source: "etsy",
+    });
+    revalidatePath("/gorsel-uretim/galeri");
+    return { deleted: removable.length, kept: keepIds.size };
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "Temizleme başarısız.";
+    if (msg.includes("(403)")) return { needsReconnect: true };
+    return { error: msg };
+  }
+}
+
 /**
  * Seçilen görseli Etsy listing'ine ürün fotoğrafı olarak yükler.
  * Akış: görsel Higgsfield CDN'inden sunucuda çekilir (host beyaz listesi) →
