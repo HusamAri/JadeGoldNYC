@@ -20,9 +20,13 @@ karşılaştırılabilen tek metriktir.
 ## 0) Gün başı: spot fiyat ve tabanlar
 
 1. **Spot altın fiyatı**: kanonik kaynak repodaki `lib/gold-price.ts` →
-   `getGoldPricePerOunce()` (metals.dev + goldapi.io + metals.live, 1 saat
-   önbellekli). ⚠️ `goldprice.org` KULLANILMAZ — JS ile render eder, sunucudan
-   boş döner. Çekim zaman damgası + kaynak loglanır.
+   `getGoldSpotQuote()` (1 saat önbellekli). Tek çekici `fetchLiveSpotUsd()`
+   (`lib/pricing/gold-index.ts`) → **gold-api.com**; elenen kaynaklar orada
+   tek tek yazılı. ⚠️ `goldprice.org` KULLANILMAZ (JS ile render eder,
+   sunucudan boş döner); `metals.dev` demo anahtarı **401**, `metals.live`
+   uç yok — 2026-08-22'de ölçüldü, ikisi de kaldırıldı.
+   **Sayıyı kullanmadan önce `stale` bayrağına bak:** true ise değer canlı
+   değildir, o spotla fiyat/marj kararı verilmez.
 2. **Melt (eritme) $/g:**
    ```
    melt $/g = (spot $/ozt ÷ 31,1035) × saflık      10K = 0,4167   14K = 0,585
