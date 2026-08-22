@@ -9,6 +9,7 @@ import { getMarketAlertCounts } from "@/lib/db/queries/market-alerts";
 import { getListingAuditSummary } from "@/lib/db/queries/listing-audit";
 import { computeAdsSignals } from "@/lib/db/queries/ads-actions";
 import { clampDiscountPct } from "@/lib/discount";
+import { getGoldSpotQuote } from "@/lib/gold-price";
 
 /**
  * UYARI MERKEZİ — sistemin HER yerindeki aksiyon gerektiren sinyalleri tek
@@ -110,6 +111,8 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
     lastManualMetric,
     productDiscounts,
     uncosted,
+    goldBasis,
+    spotQuote,
   ] = await Promise.all([
       getDataGaps(orgId),
       getEtsyStatus(orgId),
@@ -227,6 +230,21 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
           samples: [],
         };
       }),
+      // Fiyat tabanı: son uygulanan altın-endeks koşusunun spot'u. Canlı spot
+      // buradan uzaklaştıkça katalog gerçek metal bedelinden kopar.
+      supabase
+        .from("gold_reprice_basis")
+        .select("spot_per_ozt, created_at")
+        .eq("org_id", orgId)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle(),
+      // Canlı spot (1 saat önbellekli). Hata fırlatıp uyarı merkezini
+      // düşürmesin; `stale` bayrağıyla zaten kendi durumunu anlatıyor.
+      getGoldSpotQuote().catch((e) => {
+        console.error("[alert-center] gold-spot:", e);
+        return null;
+      }),
     ]);
 
   // Sorgu hataları sessizce "her şey yolunda"ya dönüşmesin — logla.
@@ -242,6 +260,7 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
     ["productDiscounts", productDiscounts],
     ["snapshot", lastShopSnapshot],
     ["manualMetric", lastManualMetric],
+    ["goldBasis", goldBasis],
   ] as const) {
     if (res.error) console.error(`[alert-center] ${name} sorgusu:`, res.error.message);
   }
@@ -614,6 +633,65 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
       actionLabel: "İndirimi gözden geçir",
       costCents: null,
     });
+  }
+
+  // 9d) ALTIN SPOT ↔ FİYAT TABANI SAPMASI — katalog metalden kopuyor mu?
+  //
+  // Kullanıcı "3 günde bir ons altın değerini kontrol eden rutin" istedi
+  // (2026-08-22). Zamanlanmış bir iş yerine BURAYA kondu, çünkü:
+  //   - Etsy'ye gözetimsiz yazan zamanlanmış altın işi zaten bir kez kuruldu
+  //     ve kaldırıldı (app/api/cron/gold-reprice 410) — kullanıcı kuralı NET:
+  //     "Etsy'ye zamanlanmış ya da gözetimsiz yazma ASLA". Bu sinyal SALT
+  //     OKURDUR: ölçer, söyler, fiyata DOKUNMAZ; itişi insan başlatır.
+  //   - Uyarı merkezi her panel açılışında taze okur, yani 3 günde bir değil
+  //     SÜREKLİ günceldir; "aksiyon sinyali ana sayfada flaglenir" kuralı.
+  //
+  // Bayat/uydurma spotla ASLA sapma hesaplanmaz: yanlış alarm, gerçek
+  // alarmdan daha pahalıdır (insanı uyarı körlüğüne alıştırır).
+  // İki uyarı da `goldBasis` kapısının İÇİNDE, "spot alınamıyor" dahil: taban
+  // satırı olmayan org altın-endeksli fiyatlama YAPMIYOR demektir (ör. altın
+  // dışı bir mağaza), ona spot kaynağını dert ettirmek gürültüdür.
+  if (spotQuote != null && goldBasis?.data != null) {
+    const basis = Number(
+      (goldBasis.data as { spot_per_ozt: string | number }).spot_per_ozt,
+    );
+    const basisDate = (goldBasis.data as { created_at: string }).created_at;
+    if (spotQuote.stale) {
+      alerts.push({
+        key: "gold_spot_unavailable",
+        severity: "onemli",
+        title: "Altın spot fiyatı canlı alınamıyor",
+        hint: `Fiyat kaynağı yanıt vermiyor (${spotQuote.error ?? "bilinmeyen hata"}), panel ${spotQuote.source} değerini gösteriyor. Altın maliyeti ve marj hesapları bu sayıya dayanıyor — kaynak düzelene kadar fiyat kararı verme.`,
+        count: 1,
+        href: "/fiyat",
+        actionLabel: "Fiyat konsolu",
+        costCents: null,
+      });
+    } else if (basis > 0) {
+      const sapmaPct = (spotQuote.pricePerOunceUsd / basis - 1) * 100;
+      const mutlak = Math.abs(sapmaPct);
+      // Bantlar: <%2 gürültü (deadband %1'in üstünde emniyet payı) · %2-5
+      // izleme · ≥%5 aksiyon. Yön önemli: altın YÜKSELDİYSE marj eriyor
+      // (asıl risk), DÜŞTÜYSE pazarda pahalı kalıyoruz.
+      if (mutlak >= 2) {
+        const yukseldi = sapmaPct > 0;
+        const gun = Math.floor(
+          (now - new Date(basisDate).getTime()) / 86_400_000,
+        );
+        alerts.push({
+          key: "gold_spot_drift",
+          severity: mutlak >= 5 ? "kritik" : "onemli",
+          title: `Altın spot fiyat tabanından %${mutlak.toFixed(1)} ${yukseldi ? "YUKARIDA" : "aşağıda"}`,
+          hint: yukseldi
+            ? `Taban $${basis.toFixed(0)}/ozt (${gun} gün önce), canlı $${spotQuote.pricePerOunceUsd.toFixed(0)}/ozt. Katalog altını olduğundan ucuza hesaplıyor — her satışta marj bu oranda eriyor. Fiyat konsolundan gözetimli reprice koş.`
+            : `Taban $${basis.toFixed(0)}/ozt (${gun} gün önce), canlı $${spotQuote.pricePerOunceUsd.toFixed(0)}/ozt. Altın düştü ama katalog eski yüksek tabanda — pazarda gereksiz pahalı kalıyorsun. Fiyat konsolundan gözden geçir.`,
+          count: 1,
+          href: "/fiyat",
+          actionLabel: "Fiyat konsoluna git",
+          costCents: null,
+        });
+      }
+    }
   }
 
   // 9b) Veri tazeliği bekçisi — güncellenmeyen veri sessiz kalmasın.

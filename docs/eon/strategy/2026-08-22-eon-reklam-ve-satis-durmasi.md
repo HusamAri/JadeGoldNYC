@@ -78,6 +78,13 @@ Hepsi aynı 7 günlük pencerede:
    **%33 sıçrar** — durgun bir mağazada bu ölümcül.
 5. **Ölçüm kör:** `ad_daily_stats` 5 Ağustos'ta duruyor; senkron 13-19 Ağustos
    arası takılıydı (bugün düzeltildi). Yani kritik pencerede veri yok.
+   **Güncelleme (22 Ağu, ölçüldü):** senkron artık sağlıklı —
+   `etsy_shop_snapshots` ve `etsy_ledger_entries` bugüne kadar dolu. Ama
+   `ad_daily_stats` hâlâ **5 Ağustos** (17 gün): Etsy'nin reklam verisi için
+   **API'si yok**, bu tablo yalnız elle CSV içe aktarımıyla doluyor
+   (`/reklamlar/ice-aktar`). Yani kendiliğinden GELMEYECEK. Harcama ledger'dan
+   akıyor, atfedilen ciro akmıyor → **ROAS hesaplanamıyor**. Bölüm C'deki
+   1 Eylül kararı, 31 Ağustos'a kadar CSV yüklenmezse ölçüsüz verilir.
 
 ---
 
@@ -188,6 +195,24 @@ pausing on it would kill a converting page.
 çekiyoruz.
 
 ---
+
+## 8. Plan aktife alındı — panel görev listesi
+
+Bu doküman artık yalnız doküman değil: aksiyonlar EON'un görev listesine
+yazıldı (22 Ağu). EON'da o ana kadar **hiç açık görev yoktu**, yani plan
+hiçbir yerde takip edilmiyordu. P0'lar uyarı merkezinde "kritik" olarak da
+görünür.
+
+| Öncelik | Tarih | Görev |
+|---|---|---|
+| **P0** | 23 Ağu | Reklamı $8/gün'e indir — yalnız 4 kanıtlı satan listing |
+| **P0** | **26 Ağu** | **%25 mağaza indirimini YENİLE** (kaçarsa +%33 fiyat şoku) |
+| P1 | 24 Ağu | `4542485142` metin kararını ver (EN başlık + İspanyolca) |
+| P1 | 29 Ağu | Yeni listing eklemeyi DURDUR |
+| P1 | 31 Ağu | Etsy Ads CSV'sini panele yükle (1 Eyl kararı için şart) |
+
+Hepsi kullanıcının Etsy panelinden ya da panelden yapacağı işler; hiçbiri
+otomatikleştirilmedi — Etsy'ye gözetimsiz yazma kuralı gereği.
 
 ## Kaynaklar
 

@@ -154,8 +154,14 @@ export async function fetchLiveSpotUsd(): Promise<SpotQuote> {
   // %10'dan fazla saparsa zaten uygulanmaz, insan onayına düşer).
   let staleness: string | null = null;
   try {
+    // ZAMAN AŞIMI ŞART: bu çekici artık yalnız reprice koşusunda değil, panel
+    // GÖSTERİM yolunda da çalışıyor (lib/gold-price.ts buraya delege ediyor,
+    // uyarı merkezi de onu çağırıyor). Zaman aşımsız bir fetch, kaynak asılı
+    // kaldığında tüm panel render'ını bekletir. 5sn: kotasyon ucu normalde
+    // ~200ms yanıtlıyor, bu tavan yalnız arıza hâlinde devreye girer.
     const r = await fetch("https://api.gold-api.com/price/XAU", {
       cache: "no-store",
+      signal: AbortSignal.timeout(5000),
     });
     if (r.ok) {
       const j = (await r.json()) as { price?: number; updatedAt?: string };
