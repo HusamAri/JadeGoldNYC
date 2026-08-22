@@ -16,7 +16,8 @@ import {
  *   - `goldapi.io`                            → `GOLD_API_KEY` şart, env'de yok.
  * Üçü de `null` dönünce fonksiyon `DEFAULT_GOLD_PRICE_PER_OUNCE = 4088`
  * sabitini döndürüyordu — hata YUTULARAK. Canlı spot o gün **$4.604** idi,
- * yani panel her yerde **%12,6 düşük** altın fiyatı gösteriyordu: ana panel
+ * yani panel her yerde canlının **%11,2 altında** altın fiyatı gösteriyordu
+ * (başka deyişle canlı, panelin gösterdiğinin %12,6 üstündeydi): ana panel
  * kartı, altın ayarları, altın maliyet sayfası, `gold-cost-entry` (GERÇEK
  * satılan-mal maliyeti) ve rakip fiyat araştırması. Hiçbir test/typecheck bunu
  * göremezdi — çalışma zamanı sözleşmesi, ve sahte değer "başarı" gibi dönüyordu.

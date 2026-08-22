@@ -388,7 +388,8 @@ repodaki hedefidir.
   Bu turda canlı `curl` attım: üç kaynağının ÜÇÜ DE ölüydü (`metals.dev`
   demo anahtarı **401**, `metals.live` uç yok, `goldapi.io` anahtar ister).
   Üçü `null` dönünce fonksiyon hatayı YUTUP sabit `4088` döndürüyordu; canlı
-  spot **$4.604** olduğu için panel **%12,6 düşük** altın fiyatı dağıtıyordu —
+  spot **$4.604** olduğu için panel canlının **%11,2 altında** altın fiyatı
+  dağıtıyordu (canlı, panelinkinin %12,6 üstünde) —
   ana panel kartı, altın ayarları, altın maliyet sayfası ve `gold-cost-entry`
   (GERÇEK satılan-mal maliyeti). Aylardır böyleydi ve kimse görmedi, çünkü
   **çalışmayan koddan daha tehlikelisi "başarı" dönen koddur**: `null` bir
