@@ -3,13 +3,21 @@
 import { useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { ArrowLeft, ArrowRight, Link2, Trash2, Upload } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  CloudUpload,
+  Link2,
+  Trash2,
+  Upload,
+} from "lucide-react";
 import { toast } from "sonner";
 
 import type { ListingImage } from "@/lib/types";
 import {
   addListingImageUpload,
   addListingImageUrl,
+  overwriteListingImageOnEtsy,
   removeListingImage,
   reorderListingImages,
   type ListingImageResult,
@@ -26,9 +34,11 @@ const SOURCE_LABEL: Record<ListingImage["source"], string> = {
 export function ListingImageManager({
   productId,
   images,
+  etsyLinked,
 }: {
   productId: string;
   images: ListingImage[];
+  etsyLinked: boolean;
 }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
@@ -44,6 +54,10 @@ export function ListingImageManager({
       const res = await fn();
       if (res?.error) {
         toast.error(res.error);
+        return;
+      }
+      if (res?.needsReconnect) {
+        toast.error("Etsy yazma bağlantısını yeniden kurun.");
         return;
       }
       toast.success(okMsg);
@@ -179,23 +193,49 @@ export function ListingImageManager({
                     <span className="sr-only">Geri al</span>
                   </Button>
                 </div>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  className="text-destructive size-7"
-                  disabled={pending}
-                  onClick={() =>
-                    run(
-                      () => removeListingImage(img.id, productId),
-                      "Görsel çıkarıldı",
-                    )
-                  }
-                  title="Çıkar"
-                >
-                  <Trash2 className="size-3.5" />
-                  <span className="sr-only">Çıkar</span>
-                </Button>
+                <div className="flex gap-0.5">
+                  {etsyLinked && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      className="size-7"
+                      disabled={pending}
+                      onClick={() =>
+                        run(
+                          () =>
+                            overwriteListingImageOnEtsy(
+                              productId,
+                              img.id,
+                              index + 1,
+                            ),
+                          `Etsy'de ${String(index + 1).padStart(2, "0")}. görsel güncellendi`,
+                        )
+                      }
+                      title="Etsy'ye gönder"
+                    >
+                      <CloudUpload className="size-3.5" />
+                      <span className="sr-only">Etsy&apos;ye gönder</span>
+                    </Button>
+                  )}
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    className="text-destructive size-7"
+                    disabled={pending}
+                    onClick={() =>
+                      run(
+                        () => removeListingImage(img.id, productId),
+                        "Görsel çıkarıldı",
+                      )
+                    }
+                    title="Çıkar"
+                  >
+                    <Trash2 className="size-3.5" />
+                    <span className="sr-only">Çıkar</span>
+                  </Button>
+                </div>
               </div>
             </div>
           ))}

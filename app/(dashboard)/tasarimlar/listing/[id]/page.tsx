@@ -276,6 +276,7 @@ export default async function ListingDetayPage({
           <ListingImageManager
             productId={product.id}
             images={managedImages}
+            etsyLinked={product.etsy_listing_id != null}
           />
         </ListingPanel>
       )}
