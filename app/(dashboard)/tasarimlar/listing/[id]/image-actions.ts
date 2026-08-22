@@ -2,8 +2,18 @@
 
 import { revalidatePath } from "next/cache";
 
-import { requireMembership, getUser } from "@/lib/auth";
+import {
+  requireMembership,
+  getUser,
+  isManager,
+  MANAGER_ONLY_ERROR,
+} from "@/lib/auth";
+import { logAudit } from "@/lib/audit";
 import { isEonActive } from "@/lib/brand";
+import { getEtsyWriteAccess } from "@/lib/db/queries/etsy";
+import { EtsyClient, EtsyNotConnectedError } from "@/lib/etsy/client";
+import { etsyPaths } from "@/lib/etsy/endpoints";
+import { stripImageMetadata } from "@/lib/photo-kit/strip-metadata";
 import { createClient } from "@/lib/supabase/server";
 import {
   listingImageReorderSchema,
@@ -12,7 +22,12 @@ import {
 
 export interface ListingImageResult {
   ok?: boolean;
+  needsReconnect?: boolean;
   error?: string;
+}
+
+export interface ListingImageEtsyResult extends ListingImageResult {
+  etsyImageId?: number;
 }
 
 const MAX_IMAGE_BYTES = 15 * 1024 * 1024; // 15 MB
@@ -22,11 +37,45 @@ const EON_ONLY_ERROR =
 
 const listingPath = (productId: string) => `/tasarimlar/listing/${productId}`;
 
+function isAllowedEtsyImageSource(input: {
+  url: string;
+  source: string;
+  storagePath: string | null;
+}): boolean {
+  try {
+    const url = new URL(input.url);
+    if (url.protocol !== "https:") return false;
+
+    if (input.source === "upload" && input.storagePath) {
+      return (
+        url.hostname.endsWith(".supabase.co") &&
+        url.pathname.includes("/storage/v1/object/public/listing-images/")
+      );
+    }
+
+    if (url.hostname === "amuletta.artifactstudio.info") {
+      return url.pathname.startsWith("/eon/");
+    }
+
+    if (url.hostname === "raw.githubusercontent.com") {
+      return /^\/HusamAri\/JadeGoldNYC\//i.test(url.pathname);
+    }
+
+    return false;
+  } catch {
+    return false;
+  }
+}
+
 /** EON geçidi + ürünün çağıranın org'unda olduğunu doğrular. */
 async function guard(
   productId: string,
 ): Promise<
-  | { ok: true; orgId: string; supabase: Awaited<ReturnType<typeof createClient>> }
+  | {
+      ok: true;
+      orgId: string;
+      supabase: Awaited<ReturnType<typeof createClient>>;
+    }
   | { ok: false; error: string }
 > {
   const m = await requireMembership();
@@ -190,4 +239,131 @@ export async function reorderListingImages(
   }
   revalidatePath(listingPath(parsed.data.productId));
   return { ok: true };
+}
+
+/** Replaces exactly one live Etsy image rank with a managed EON image. */
+export async function overwriteListingImageOnEtsy(
+  productId: string,
+  imageId: string,
+  rank: number,
+): Promise<ListingImageEtsyResult> {
+  const membership = await requireMembership();
+  if (!isManager(membership.role)) return { error: MANAGER_ONLY_ERROR };
+  if (!Number.isInteger(rank) || rank < 1 || rank > 20) {
+    return { error: "Etsy görsel sırası 1 ile 20 arasında olmalıdır." };
+  }
+
+  const g = await guard(productId);
+  if (!g.ok) return { error: g.error };
+
+  const { writeEnabled } = await getEtsyWriteAccess(g.orgId);
+  if (!writeEnabled) return { needsReconnect: true };
+
+  const { data: product } = await g.supabase
+    .from("products")
+    .select("etsy_listing_id, title")
+    .eq("id", productId)
+    .maybeSingle();
+  const etsyListingId = (product as { etsy_listing_id?: number | null } | null)
+    ?.etsy_listing_id;
+  if (!etsyListingId) return { error: "Bu listing Etsy'ye bağlı değil." };
+
+  const { data: imageRow } = await g.supabase
+    .from("listing_images")
+    .select("id, url, alt, source, storage_path")
+    .eq("id", imageId)
+    .eq("product_id", productId)
+    .maybeSingle();
+  const row = imageRow as {
+    id: string;
+    url: string;
+    alt: string | null;
+    source: string;
+    storage_path: string | null;
+  } | null;
+  if (!row) return { error: "Görsel bulunamadı." };
+  if (
+    !isAllowedEtsyImageSource({
+      url: row.url,
+      source: row.source,
+      storagePath: row.storage_path,
+    })
+  ) {
+    return { error: "Bu görsel kaynağı Etsy aktarımı için izinli değil." };
+  }
+
+  let upstream: Response;
+  try {
+    upstream = await fetch(row.url, {
+      redirect: "error",
+      signal: AbortSignal.timeout(20_000),
+    });
+  } catch {
+    return { error: "Görsel kaynağından alınamadı." };
+  }
+  if (!upstream.ok) {
+    return { error: `Görsel kaynağından alınamadı (${upstream.status}).` };
+  }
+  const type = upstream.headers.get("content-type") ?? "";
+  if (!type.startsWith("image/")) return { error: "Kaynak bir görsel değil." };
+  const buffer = await upstream.arrayBuffer();
+  if (buffer.byteLength > MAX_IMAGE_BYTES) {
+    return { error: "Görsel 15 MB'ı aşamaz." };
+  }
+  const clean = stripImageMetadata(new Uint8Array(buffer));
+
+  let client: EtsyClient;
+  try {
+    client = await EtsyClient.forOrg(g.orgId);
+  } catch (error) {
+    if (error instanceof EtsyNotConnectedError) return { needsReconnect: true };
+    return {
+      error:
+        error instanceof Error ? error.message : "Etsy istemcisi kurulamadı.",
+    };
+  }
+
+  try {
+    const shopId = await client.requireShopId();
+    const ext = type.includes("webp")
+      ? "webp"
+      : type.includes("png")
+        ? "png"
+        : "jpg";
+    const form = new FormData();
+    form.append(
+      "image",
+      new Blob([clean], { type }),
+      `eon-${productId.slice(0, 8)}-${rank}.${ext}`,
+    );
+    form.append("rank", String(rank));
+    form.append("overwrite", "true");
+    const title = (product as { title?: string | null } | null)?.title;
+    const altText = row.alt?.trim() || `${title ?? "EON ring"}, image ${rank}`;
+    form.append("alt_text", altText.slice(0, 500));
+
+    const response = await client.requestMultipart<{
+      listing_image_id?: number;
+    }>("POST", etsyPaths.listingImages(shopId, etsyListingId), form);
+
+    await logAudit(g.supabase, {
+      orgId: g.orgId,
+      action: "etsy.image_upload",
+      entityType: "listing_images",
+      entityId: imageId,
+      summary: `EON görsel Etsy listing #${etsyListingId} sıra ${rank} için yenilendi`,
+      source: "etsy",
+    });
+
+    revalidatePath(listingPath(productId));
+    return {
+      ok: true,
+      etsyImageId: response?.listing_image_id,
+    };
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : "Yükleme başarısız.";
+    if (message.includes("(403)")) return { needsReconnect: true };
+    return { error: message };
+  }
 }
