@@ -380,6 +380,42 @@ repodaki hedefidir.
   tek kaynak kaldıysa savunmayı gerçekten var olana kur (tazelik + mutlak
   aralık + adım kapısı); (4) dış çağrı başarısızsa SEBEBİ yüzeye çıkar,
   "alınamadı" demek kullanıcıyı da seni de kör bırakır.
+  **Güçlendirme (2026-08-22) — bir dersi TEK dosyada uygulamak, İKİZİNİ
+  düzeltmez; ders bir DESENE aitse repoda o desenin tüm örneklerini tara:**
+  yukarıdaki ders `lib/pricing/gold-index.ts`'te örnek şekilde uygulanmıştı
+  (elenenler yorumda, üç kapı, başarısızlıkta `throw`). Ama repoda İKİNCİ bir
+  spot çekicisi vardı — `lib/gold-price.ts` — ve ders oraya hiç uğramamıştı.
+  Bu turda canlı `curl` attım: üç kaynağının ÜÇÜ DE ölüydü (`metals.dev`
+  demo anahtarı **401**, `metals.live` uç yok, `goldapi.io` anahtar ister).
+  Üçü `null` dönünce fonksiyon hatayı YUTUP sabit `4088` döndürüyordu; canlı
+  spot **$4.604** olduğu için panel **%12,6 düşük** altın fiyatı dağıtıyordu —
+  ana panel kartı, altın ayarları, altın maliyet sayfası ve `gold-cost-entry`
+  (GERÇEK satılan-mal maliyeti). Aylardır böyleydi ve kimse görmedi, çünkü
+  **çalışmayan koddan daha tehlikelisi "başarı" dönen koddur**: `null` bir
+  yerde patlar, sahte sabit sessizce yayılır ve tsc/lint/build üçü de temiz
+  geçer. Kural: (1) bir dersi uygularken "bu işi yapan BAŞKA yer var mı?" diye
+  sembol taraması yap (burada: `fetch` + spot/price; iki çekici bulunurdu);
+  (2) tekrarlanan sorumluluğu ikinci kez YAZMA, tek kaynağa DELEGE et —
+  ikinci kopya dersi de kopyalamaz; (3) "son çare varsayılanı" kuruyorsan
+  değerin yanında `stale` bayrağı taşı ve çağıranın onu görmesini zorunlu kıl;
+  işaretsiz varsayılan, hatayı gizleyen bir yalandır. Yakalatan şey teşhis
+  değil merakti: fiyat sapması işi için kaynağa `curl` attım ve 401 gördüm.
+
+- **Teslim mekanizması onaya takıldığında isteği DÜŞÜRME, repo-yerlisi
+  karşılığını kur (2026-08-22):** Kullanıcı "3 günde bir ons altın değerini
+  kontrol eden rutin" istedi; `create_trigger` iki oturumda da "requires
+  approval" döndü ve kullanıcı uyuduğu için onay alınamıyordu. İstek iki tur
+  boyunca "bekliyor" diye taşındı — oysa panelin KENDİ uyarı merkezi aynı işi
+  onaysız yapabiliyordu. Sinyal oraya kondu ve çıkan şey istenenden İYİ oldu:
+  zamanlanmış iş 3 günde bir bakar, uyarı merkezi her panel açılışında taze
+  okur. Üstelik zamanlanmış altın işi bu repoda bir kez kurulup KALDIRILMIŞTI
+  (`cron/gold-reprice` → 410, gözetimsiz Etsy yazması yüzünden), yani mekanizma
+  zaten yasaklı listedeydi. Kural: (1) bir isteği teslim edemiyorsan önce
+  "mekanizma mı yasak, istek mi imkânsız?" diye ayır — yasak olan çoğu zaman
+  yalnız mekanizmadır; (2) repoda o isteği zaten karşılayan bir yüzey var mı
+  diye bak (burada uyarı merkezi); (3) sürekli okunan bir yüzey, periyodik
+  bir işten neredeyse her zaman üstündür — periyot isteyen kullanıcı aslında
+  "kaçırmak istemiyorum" diyordur.
 - **OAuth token'ı client'ına bağlıdır; tek-seferlik ops işini panel rotası yap (2026-07):**
   Etsy access/refresh token'ları üretildikleri app'in (client) bağlamına kilitlidir —
   lokal env farklı keystring'le 401 invalid_token alır, yapısaldır, düzelmez. Çözüm:
