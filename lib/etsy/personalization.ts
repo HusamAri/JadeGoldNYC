@@ -61,21 +61,16 @@ const MAX_QUESTION_TEXT = 45;
 const MAX_DROPDOWN_LABEL = 20;
 
 /**
- * YENİ listing'in açılış kişiselleştirmesi — kullanıcının hammered
- * listing'inde (4543442596) Etsy editöründen kurduğu iki sorunun aynısı
- * (ekran görüntüsüyle teyit edildi, 2026-08-04):
+ * YENİ listing'in açılış kişiselleştirmesi ve EON'un numaralı gravür kanonu:
  *  1. iç gravür metni — opsiyonel, 30 karakter
- *  2. "Engraving Style" — opsiyonel dropdown, 4 seçenek
+ *  2. "Engraving Font" — opsiyonel dropdown, blueprint ile eşleşen 4 seçenek
  *
- * Bu sabit YALNIZ TOHUMDUR: yeni listing daha ilk anda iki soruyla açılsın
- * diye var. MEVCUT listing'ler için doğruluk kaynağı burası DEĞİL, Etsy'deki
- * referans listing'dir (copyPersonalizationToAllListings). Kullanıcı Etsy'de
- * seçenekleri değiştirirse burası bayatlar — o yüzden hiçbir yerde mevcut
- * listing'in üzerine bu sabit yazılmaz.
+ * Etsy dropdown etiketi en fazla 20 karakterdir. Tam "Cinzel Decorative"
+ * adını korumak için sayı ile ayraç arasında boşluk kullanılmaz.
  */
 const ENGRAVING_INSTRUCTIONS =
   "Optional inside-band engraving, up to 30 characters. " +
-  "Script by default; type BLOCK for block letters. Blank = none.";
+  "Select the numbered font below. Blank means no engraving.";
 
 export const DEFAULT_PERSONALIZATION_QUESTIONS: PersonalizationQuestion[] = [
   {
@@ -88,13 +83,13 @@ export const DEFAULT_PERSONALIZATION_QUESTIONS: PersonalizationQuestion[] = [
   {
     question_type: "dropdown",
     // `instructions` dropdown'da YASAK — bilerek yok.
-    question_text: "Engraving Style",
+    question_text: "Engraving Font",
     required: false,
     options: [
-      { label: "The Signature" },
-      { label: "The Ornament" },
-      { label: "The Monument" },
-      { label: "The Editorial" },
+      { label: "1| Prata" },
+      { label: "2| Cinzel" },
+      { label: "3| Cinzel Decorative" },
+      { label: "4| Great Vibes" },
     ],
   },
 ];
