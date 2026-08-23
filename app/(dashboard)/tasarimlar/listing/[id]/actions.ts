@@ -11,7 +11,9 @@ import { EtsyClient, EtsyNotConnectedError } from "@/lib/etsy/client";
 import { etsyPaths } from "@/lib/etsy/endpoints";
 import {
   createMissingListingOfferings,
+  getListingInventory,
   pushListingPrices,
+  removeListingOfferings,
 } from "@/lib/etsy/inventory";
 import { verifyListingSeo } from "@/lib/etsy/listing";
 import {
@@ -38,6 +40,41 @@ import {
 export interface ListingActionResult {
   ok?: boolean;
   error?: string;
+}
+
+export interface KeepKymationFiveMmResult extends ListingActionResult {
+  removed?: number;
+  remaining?: number;
+  panelDeleted?: number;
+  unchanged?: boolean;
+  needsReconnect?: boolean;
+}
+
+type KymationSku = {
+  family: string;
+  width: number;
+  size: number;
+};
+
+function parseKymationSku(sku: string): KymationSku | null {
+  const match =
+    /^((?:WHG|GLD|RSG)-R-(?:10|14|18)09)-(\d+)MM-(\d+(?:\.\d+)?)$/.exec(
+      sku.trim(),
+    );
+  if (!match) return null;
+  return {
+    family: match[1],
+    width: Number(match[2]),
+    size: Number(match[3]),
+  };
+}
+
+const KYMATION_SIZES = Array.from({ length: 25 }, (_, index) => 4 + index / 2);
+
+function hasExactKymationSizes(rows: KymationSku[]): boolean {
+  if (rows.length !== KYMATION_SIZES.length) return false;
+  const sizes = rows.map((row) => row.size).sort((a, b) => a - b);
+  return sizes.every((size, index) => size === KYMATION_SIZES[index]);
 }
 
 /** Künye formu alanları — para/adet metin gelir, burada ayrıştırılır. */
@@ -1062,6 +1099,209 @@ export async function createMissingEtsyVariantsAction(
   } catch (e) {
     if (e instanceof EtsyNotConnectedError) return { needsReconnect: true };
     return { error: e instanceof Error ? e.message : "Etsy'ye gönderilemedi." };
+  }
+}
+
+/**
+ * Keeps only the 5 mm, US 4 to 16 half-size matrix for a Kymation family
+ * listing. Etsy is updated and read back before the panel mirror is changed.
+ */
+export async function keepKymationFiveMmAction(
+  productId: string,
+): Promise<KeepKymationFiveMmResult> {
+  const membership = await requireMembership();
+  if (!isManager(membership.role)) return { error: MANAGER_ONLY_ERROR };
+
+  const { writeEnabled } = await getEtsyWriteAccess(membership.org_id);
+  if (!writeEnabled) {
+    return {
+      error:
+        "Etsy yazma izni (listings_w) kapalı. Ayarlar sayfasından Etsy'yi yeniden bağlayın.",
+    };
+  }
+
+  const admin = createAdminClient();
+  const { data: product, error: productError } = await admin
+    .from("products")
+    .select("etsy_listing_id")
+    .eq("org_id", membership.org_id)
+    .eq("id", productId)
+    .maybeSingle();
+  if (productError) return { error: productError.message };
+  const listingId = (
+    product as { etsy_listing_id: number | null } | null
+  )?.etsy_listing_id;
+  if (listingId == null) return { error: "Bu listing Etsy'ye bağlı değil." };
+
+  const { data: variantRows, error: variantsError } = await admin
+    .from("product_variants")
+    .select("id, sku, price_cents, properties")
+    .eq("org_id", membership.org_id)
+    .eq("product_id", productId);
+  if (variantsError) return { error: variantsError.message };
+
+  const panelRows = (variantRows ?? []) as {
+    id: string;
+    sku: string | null;
+    price_cents: number | null;
+    properties: RawVariantProperties;
+  }[];
+  if (panelRows.length === 0) return { error: "Panelde varyant bulunamadı." };
+
+  const parsedPanel = panelRows.map((row) => ({
+    row,
+    parsed: parseKymationSku((row.sku ?? "").trim()),
+  }));
+  if (parsedPanel.some((entry) => entry.parsed == null)) {
+    return {
+      error:
+        "Varyant matrisi Kymation SKU şemasıyla tam eşleşmiyor. Hiçbir şey değiştirilmedi.",
+    };
+  }
+
+  const families = new Set(
+    parsedPanel.map((entry) => entry.parsed?.family).filter(Boolean),
+  );
+  if (families.size !== 1) {
+    return {
+      error:
+        "Varyantlarda birden fazla Kymation ailesi bulundu. Hiçbir şey değiştirilmedi.",
+    };
+  }
+  const family = [...families][0] as string;
+  const panelFiveMm = parsedPanel
+    .map((entry) => entry.parsed as KymationSku)
+    .filter((row) => row.width === 5);
+  if (!hasExactKymationSizes(panelFiveMm)) {
+    return {
+      error:
+        "5 mm panel matrisi US 4 ile 16 arasındaki 25 tam ve yarım bedeni eksiksiz içermiyor. İşlem durduruldu.",
+    };
+  }
+
+  const propsBySku = new Map<string, { name: string; value: string }[]>();
+  for (const { row } of parsedPanel) {
+    const sku = (row.sku ?? "").trim();
+    propsBySku.set(sku, variantPropsForMatch(row.properties));
+  }
+
+  try {
+    const client = await EtsyClient.forOrg(membership.org_id);
+    const before = await getListingInventory(client, listingId);
+    const liveBefore = (before.products ?? []).filter((row) => !row.is_deleted);
+    const parsedLiveBefore = liveBefore.map((row) =>
+      parseKymationSku((row.sku ?? "").trim()),
+    );
+    if (
+      parsedLiveBefore.some(
+        (row) => row == null || row.family !== family,
+      )
+    ) {
+      return {
+        error:
+          "Canlı Etsy envanterinde beklenmeyen bir SKU bulundu. Güvenlik nedeniyle hiçbir şey değiştirilmedi.",
+      };
+    }
+    const liveFiveMmBefore = parsedLiveBefore
+      .filter((row): row is KymationSku => row != null)
+      .filter((row) => row.width === 5);
+    if (!hasExactKymationSizes(liveFiveMmBefore)) {
+      return {
+        error:
+          "Canlı Etsy 5 mm matrisi US 4 ile 16 arasındaki 25 bedeni eksiksiz içermiyor. İşlem durduruldu.",
+      };
+    }
+
+    const outcome = await removeListingOfferings(
+      client,
+      listingId,
+      (sku) => parseKymationSku(sku)?.width !== 5,
+      propsBySku,
+    );
+    if (outcome.status === "error") {
+      return { error: outcome.detail ?? "Etsy varyantları güncellenemedi." };
+    }
+
+    const after = await getListingInventory(client, listingId);
+    const liveAfter = (after.products ?? []).filter((row) => !row.is_deleted);
+    const parsedLiveAfter = liveAfter
+      .map((row) => parseKymationSku((row.sku ?? "").trim()))
+      .filter((row): row is KymationSku => row != null);
+    if (
+      liveAfter.length !== 25 ||
+      parsedLiveAfter.length !== 25 ||
+      parsedLiveAfter.some(
+        (row) => row.family !== family || row.width !== 5,
+      ) ||
+      !hasExactKymationSizes(parsedLiveAfter)
+    ) {
+      return {
+        error:
+          "Etsy geri okuma kontrolü 25 adet 5 mm varyantı doğrulamadı. Panel aynası değiştirilmedi.",
+      };
+    }
+
+    const removeIds = parsedPanel
+      .filter((entry) => entry.parsed?.width !== 5)
+      .map((entry) => entry.row.id);
+    if (removeIds.length > 0) {
+      const { error: deleteError } = await admin
+        .from("product_variants")
+        .delete()
+        .in("id", removeIds)
+        .eq("org_id", membership.org_id)
+        .eq("product_id", productId);
+      if (deleteError) {
+        return {
+          error:
+            "Etsy doğrulandı ancak panel aynası güncellenemedi: " +
+            deleteError.message,
+        };
+      }
+    }
+
+    const fiveMmPrice = panelRows
+      .filter((row) => parseKymationSku((row.sku ?? "").trim())?.width === 5)
+      .map((row) => row.price_cents)
+      .filter((price): price is number => price != null && price > 0)
+      .sort((a, b) => a - b)[0];
+    if (fiveMmPrice != null) {
+      await admin
+        .from("products")
+        .update({ price_cents: fiveMmPrice, updated_at: new Date().toISOString() })
+        .eq("id", productId)
+        .eq("org_id", membership.org_id);
+    }
+
+    await logAudit(admin, {
+      orgId: membership.org_id,
+      action: "etsy.variant_sync",
+      entityType: "products",
+      entityId: productId,
+      summary:
+        `Kymation ${family}, yalnız 5 mm bırakıldı. ` +
+        `Etsy ${outcome.removed} offering ve panel ${removeIds.length} varyant kaldırıldı. ` +
+        "US 4 ile 16 arasındaki 25 beden geri okumayla doğrulandı.",
+      source: "etsy",
+    });
+
+    revalidatePath(`/tasarimlar/listing/${productId}`);
+    revalidatePath("/tasarimlar");
+    return {
+      ok: true,
+      removed: outcome.removed,
+      remaining: liveAfter.length,
+      panelDeleted: removeIds.length,
+      unchanged: outcome.status === "unchanged" && removeIds.length === 0,
+    };
+  } catch (error) {
+    if (error instanceof EtsyNotConnectedError) return { needsReconnect: true };
+    return {
+      error:
+        error instanceof Error
+          ? error.message
+          : "Kymation varyantları güncellenemedi.",
+    };
   }
 }
 

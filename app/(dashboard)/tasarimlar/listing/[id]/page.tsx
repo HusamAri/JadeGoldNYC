@@ -22,6 +22,7 @@ import { ImageStrip } from "@/components/listing/image-strip";
 import { VariantEditor } from "@/components/listing/variant-editor";
 import { EtsyPricePushButton } from "@/components/listing/etsy-price-push-button";
 import { EtsyVariantCreateButton } from "@/components/listing/etsy-variant-create-button";
+import { KymationFiveMmButton } from "@/components/listing/kymation-five-mm-button";
 import { VariantMatrix } from "@/components/listing/variant-matrix";
 import { DiscountControl } from "@/components/listing/discount-control";
 import { ViewsTrendCard } from "@/components/listing/views-trend-card";
@@ -452,6 +453,20 @@ export default async function ListingDetayPage({
             />
           </div>
         )}
+        {etsyListingId != null &&
+          /^(?:WHG|GLD|RSG)-R-(?:10|14|18)09-/.test(product.sku ?? "") && (
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-amber-500/40 px-3 py-2">
+              <p className="text-muted-foreground text-xs">
+                Kymation güvenlik akışı, Etsy ve panelde yalnız 5 mm genişlik
+                ile US 4-16 arasındaki 25 tam ve yarım bedeni bırakır. Etsy
+                geri okuması doğrulanmadan panel varyantları silinmez.
+              </p>
+              <KymationFiveMmButton
+                productId={product.id}
+                writeEnabled={writeAccess.writeEnabled}
+              />
+            </div>
+          )}
         <VariantEditor
           productId={product.id}
           variants={variants}
