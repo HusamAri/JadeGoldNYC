@@ -455,7 +455,7 @@ export default async function ListingDetayPage({
         )}
         {etsyListingId != null &&
           variants.some((variant) =>
-            /^(?:WHG|GLD|RSG)-R-(?:10|14|18)09-/.test(variant.sku),
+            /^(?:WHG|GLD|RSG)-R-(?:10|14|18)09-/.test(variant.sku.trim()),
           ) && (
             <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-amber-500/40 px-3 py-2">
               <p className="text-muted-foreground text-xs">
