@@ -10,6 +10,8 @@ import { getListingAuditSummary } from "@/lib/db/queries/listing-audit";
 import { computeAdsSignals } from "@/lib/db/queries/ads-actions";
 import { clampDiscountPct } from "@/lib/discount";
 import { getGoldSpotQuote } from "@/lib/gold-price";
+import { detectKarat, purchaseCostCentsForGrams } from "@/lib/gold-cost";
+import { costFloorCents } from "@/lib/pricing/stone-cost";
 
 /**
  * UYARI MERKEZİ — sistemin HER yerindeki aksiyon gerektiren sinyalleri tek
@@ -113,6 +115,7 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
     uncosted,
     goldBasis,
     spotQuote,
+    stoneRows,
   ] = await Promise.all([
       getDataGaps(orgId),
       getEtsyStatus(orgId),
@@ -245,6 +248,23 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
         console.error("[alert-center] gold-spot:", e);
         return null;
       }),
+      // Taşlı (pırlantalı) varyantlar. 0148 uygulanana kadar bu görünüm
+      // yoktur; hata uyarı merkezini düşürmesin, sinyal sessizce kapalı kalsın.
+      supabase
+        .from("variant_stone_cost")
+        .select(
+          "variant_id, product_id, sku, product_title, price_cents, weight_grams, stone_carat, stone_side_cost_cents, stone_cost_missing",
+        )
+        .eq("org_id", orgId)
+        .not("stone_carat", "is", null)
+        .then((r) => r)
+        .then(
+          (r) => (r.error ? null : r),
+          (e) => {
+            console.error("[alert-center] stone-cost:", e);
+            return null;
+          },
+        ),
     ]);
 
   // Sorgu hataları sessizce "her şey yolunda"ya dönüşmesin — logla.
@@ -738,6 +758,89 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
         href: "/analizler",
         actionLabel: "Yeni dönem gir",
         costCents: null,
+      });
+    }
+  }
+
+  // 9e) TAŞLI (PIRLANTALI) ÜRÜNLERDE MALİYET-ALTI FİYAT.
+  //
+  // Neden ayrı bir sinyal: 9a/9c'deki "eritme-altı" alarmı altının HURDA
+  // değerine bakar. Pırlantalı bir yüzük, taşın bedeli kadar eksik
+  // fiyatlanmış olsa bile altın-eritmenin rahatça ÜSTÜNDE kalır — yani o
+  // alarm yeşil yanar ve her satışta taşın parası verilir. Taşlı ürün
+  // yayınlanmadan ÖNCE bu kapının kurulmuş olması şart (0148).
+  //
+  // İki ayrı kusur var ve ikisi de kritik:
+  //   (1) taşlı ilan edilmiş ama taş maliyeti hiç girilmemiş → fiyat
+  //       DOĞRULANAMAZ (eksik veri "sorun yok" sayılmaz),
+  //   (2) taş dahil maliyetin altında fiyat → her satış zarar.
+  if (stoneRows?.data != null) {
+    type StoneRow = {
+      variant_id: string;
+      product_id: string;
+      sku: string | null;
+      product_title: string | null;
+      price_cents: number | null;
+      weight_grams: number | string | null;
+      stone_carat: number | string | null;
+      stone_side_cost_cents: number | null;
+      stone_cost_missing: boolean | null;
+    };
+    const rows = stoneRows.data as StoneRow[];
+    const eksik = rows.filter((r) => r.stone_cost_missing === true);
+    if (eksik.length > 0) {
+      alerts.push({
+        key: "stone_cost_missing",
+        severity: "kritik",
+        title: `${eksik.length} taşlı varyantın taş maliyeti girilmemiş`,
+        hint: "Bu varyantlar taşlı ilan edilmiş ama taşın maliyeti panele hiç girilmemiş — fiyatlarının kâr mı zarar mı olduğu HESAPLANAMIYOR. Eritme-altı alarmı bunları yakalayamaz (o yalnız altının hurda değerine bakar). Fiyat kitabından taş maliyetini gir.",
+        count: eksik.length,
+        href: "/fiyat",
+        actionLabel: "Taş maliyetini gir",
+        costCents: null,
+      });
+    }
+
+    // Taban hesabı: altın + taş tarafı, Etsy ücretleri ve uygulanan indirim
+    // dahil. Gram ya da ayar okunamıyorsa KARAR VERİLMEZ — o satırlar zaten
+    // "eksik gram" sinyaline düşer, burada sahte bir taban üretilmez.
+    const iskontoById = new Map(
+      (productDiscounts.data as { id: string; discount_pct: number | null }[] | null)
+        ?.map((d) => [d.id, clampDiscountPct(d.discount_pct ?? 0) / 100]) ?? [],
+    );
+    let tabanAlti = 0;
+    let riskCents = 0;
+    for (const r of rows) {
+      if (r.stone_cost_missing) continue;
+      const fiyat = r.price_cents ?? 0;
+      const gram = Number(r.weight_grams ?? 0);
+      if (!(fiyat > 0) || !(gram > 0)) continue;
+      const karat = detectKarat(`${r.product_title ?? ""} ${r.sku ?? ""}`);
+      if (karat == null) continue;
+      const altin = purchaseCostCentsForGrams(gram, karat);
+      if (altin == null) continue;
+      const taban = costFloorCents({
+        goldCostCents: altin,
+        stoneSideCostCents: r.stone_side_cost_cents ?? 0,
+        feeRate: 0.128,
+        fixedFeeCents: 45,
+        discountRate: iskontoById.get(r.product_id) ?? 0,
+      });
+      if (Number.isFinite(taban) && fiyat < taban) {
+        tabanAlti++;
+        riskCents += taban - fiyat;
+      }
+    }
+    if (tabanAlti > 0) {
+      alerts.push({
+        key: "stone_below_cost_floor",
+        severity: "kritik",
+        title: `${tabanAlti} taşlı varyant maliyetin ALTINDA fiyatlı`,
+        hint: "Fiyat; altın + taş + takma + döküm maliyetini, Etsy ücretlerini ve uygulanan indirimi karşılamıyor — bu varyantlardan yapılan her satış zarar yazar. Fiyatı yükselt ya da bu ürünleri indirim kapsamından çıkar.",
+        count: tabanAlti,
+        href: "/fiyat",
+        actionLabel: "Fiyatları düzelt",
+        costCents: riskCents,
       });
     }
   }

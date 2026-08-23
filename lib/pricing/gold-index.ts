@@ -182,6 +182,16 @@ export async function fetchLiveSpotUsd(): Promise<SpotQuote> {
       staleness = `HTTP ${r.status}`;
     }
   } catch (e) {
+    // Next'in KONTROL AKIŞI hatası yutulmaz. Statik üretim sırasında
+    // `no-store` bir fetch görüldüğünde Next `DynamicServerError` fırlatır;
+    // bu bir ARIZA değil, "bu rotayı dinamik yap" sinyalidir. Yutulursa iki
+    // zarar birden olur: (1) rota statik üretilirse son-çare sabiti sayfaya
+    // GÖMÜLÜR — tam da bu dosyanın düzelttiği sessiz-yanlış-değer hatası
+    // geri gelir, (2) build logu gerçek olmayan bir "spot alınamadı"
+    // uyarısıyla kirlenir. Olduğu gibi yukarı bırakıyoruz.
+    if ((e as { digest?: string } | null)?.digest === "DYNAMIC_SERVER_USAGE") {
+      throw e;
+    }
     staleness = e instanceof Error ? e.message : String(e);
   }
 

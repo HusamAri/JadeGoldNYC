@@ -82,6 +82,12 @@ export async function getGoldSpotQuote(): Promise<GoldSpotQuote> {
     cache = { quote };
     return quote;
   } catch (e) {
+    // Next'in "bu rotayı dinamik yap" sinyali arıza değildir — yutulursa
+    // rota statik üretilip son-çare sabiti sayfaya gömülebilir (bkz.
+    // fetchLiveSpotUsd içindeki aynı kapı). Olduğu gibi geçir.
+    if ((e as { digest?: string } | null)?.digest === "DYNAMIC_SERVER_USAGE") {
+      throw e;
+    }
     const error = e instanceof Error ? e.message : String(e);
     // Sebebi YÜZEYE ÇIKAR: "alınamadı" deyip susmak hem kullanıcıyı hem bizi
     // kör bırakıyordu (bkz. dosya başı vakası).
