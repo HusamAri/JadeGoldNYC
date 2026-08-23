@@ -454,7 +454,9 @@ export default async function ListingDetayPage({
           </div>
         )}
         {etsyListingId != null &&
-          /^(?:WHG|GLD|RSG)-R-(?:10|14|18)09-/.test(product.sku ?? "") && (
+          variants.some((variant) =>
+            /^(?:WHG|GLD|RSG)-R-(?:10|14|18)09-/.test(variant.sku),
+          ) && (
             <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-amber-500/40 px-3 py-2">
               <p className="text-muted-foreground text-xs">
                 Kymation güvenlik akışı, Etsy ve panelde yalnız 5 mm genişlik
