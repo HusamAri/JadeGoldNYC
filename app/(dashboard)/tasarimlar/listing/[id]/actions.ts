@@ -18,6 +18,7 @@ import {
 import { verifyListingSeo } from "@/lib/etsy/listing";
 import {
   applyListingPersonalization,
+  DEFAULT_PERSONALIZATION_QUESTIONS,
   getListingPersonalization,
   personalizationKey,
   personalizationSummary,
@@ -1374,6 +1375,151 @@ export interface BulkPersonalizationResult {
   nextIndex?: number;
   /** Referansta okunan soruların özeti — kullanıcıya ne yazıldığını gösterir. */
   summary?: string;
+}
+
+/**
+ * Etsy mağazasındaki tüm listing durumlarını EON'un blueprint ile eşleşen
+ * numaralı font kanonuna çeker. Panel kaydı olmayan Etsy listing'leri de
+ * kapsanır. Her yazım aynı turda geri okunarak doğrulanır.
+ */
+export async function applyNumberedEonPersonalizationToAllListings(
+  startIndex = 0,
+): Promise<BulkPersonalizationResult> {
+  const m = await requireMembership();
+  if (!isManager(m.role)) return { error: MANAGER_ONLY_ERROR };
+
+  const { writeEnabled } = await getEtsyWriteAccess(m.org_id);
+  if (!writeEnabled) return { error: "Etsy yazma erişimi kapalı." };
+
+  const admin = createAdminClient();
+  try {
+    const client = await EtsyClient.forOrg(m.org_id);
+    const shopId = await client.requireShopId();
+
+    const listingIds: number[] = [];
+    for (const state of [
+      "active",
+      "draft",
+      "expired",
+      "inactive",
+      "sold_out",
+    ] as const) {
+      let offset = 0;
+      const limit = 100;
+      for (;;) {
+        const response = await client.get<{
+          results?: { listing_id: number }[];
+        }>(etsyPaths.shopListings(shopId), { state, limit, offset });
+        const batch = response.results ?? [];
+        listingIds.push(...batch.map((item) => item.listing_id));
+        if (batch.length < limit) break;
+        offset += limit;
+        if (offset > 12_000) break;
+      }
+    }
+
+    const ids = [...new Set(listingIds)].sort((a, b) => a - b);
+    const begin = Math.max(0, Math.min(Math.trunc(startIndex), ids.length));
+    if (begin === ids.length) {
+      return {
+        ok: true,
+        applied: 0,
+        skipped: 0,
+        failed: [],
+        total: ids.length,
+        kalan: 0,
+        devam: false,
+        nextIndex: begin,
+        summary: personalizationSummary(DEFAULT_PERSONALIZATION_QUESTIONS),
+      };
+    }
+
+    const deadline = Date.now() + BULK_PERSONALIZATION_BUDGET_MS;
+    let applied = 0;
+    let skipped = 0;
+    const failed: { listingId: number; error: string }[] = [];
+    let index = begin;
+    const canonicalKey = personalizationKey(
+      DEFAULT_PERSONALIZATION_QUESTIONS,
+    );
+
+    for (; index < ids.length; index++) {
+      if (Date.now() > deadline) break;
+      const listingId = ids[index];
+      try {
+        const current = await getListingPersonalization(client, listingId);
+        if (personalizationKey(current) === canonicalKey) {
+          skipped += 1;
+          continue;
+        }
+        const result = await applyListingPersonalization(
+          client,
+          shopId,
+          listingId,
+          DEFAULT_PERSONALIZATION_QUESTIONS,
+        );
+        if (result.ok) applied += 1;
+        else {
+          failed.push({
+            listingId,
+            error: result.detail ?? "Kişiselleştirme doğrulanamadı.",
+          });
+        }
+      } catch (error) {
+        failed.push({
+          listingId,
+          error: error instanceof Error ? error.message.slice(0, 140) : String(error),
+        });
+      }
+    }
+
+    const devam = index < ids.length;
+    await logAudit(admin, {
+      orgId: m.org_id,
+      action: "etsy.personalization_push",
+      entityType: "shop",
+      summary:
+        `Numaralı EON gravür fontları ${begin + 1}-${index}. sıra için işlendi. ` +
+        `${applied} listing yazıldı ve doğrulandı, ${skipped} zaten aynıydı` +
+        `${failed.length ? `, ${failed.length} hata` : ""}.`,
+      diff: {
+        start: begin,
+        next: index,
+        total: ids.length,
+        applied,
+        skipped,
+        failed,
+        options: [
+          "1| Prata",
+          "2| Cinzel",
+          "3| Cinzel Decorative",
+          "4| Great Vibes",
+        ],
+      },
+      source: "app",
+    });
+    revalidatePath("/tasarimlar");
+    return {
+      ok: true,
+      applied,
+      skipped,
+      failed,
+      total: ids.length,
+      kalan: ids.length - index,
+      devam,
+      nextIndex: index,
+      summary: personalizationSummary(DEFAULT_PERSONALIZATION_QUESTIONS),
+    };
+  } catch (e) {
+    return {
+      error:
+        e instanceof EtsyNotConnectedError
+          ? "Etsy bağlantısı yok, Ayarlar'dan bağlanın."
+          : e instanceof Error
+            ? e.message
+            : String(e),
+    };
+  }
 }
 
 /**
