@@ -235,6 +235,52 @@ async function upsertListing(db, orgId, product, images, apply) {
   return productId;
 }
 
+async function verifyListing(db, orgId, product, productId) {
+  const { data: savedProduct, error: productError } = await db
+    .from("products")
+    .select("id, sku, status, etsy_listing_id, num_images")
+    .eq("id", productId)
+    .eq("org_id", orgId)
+    .single();
+  if (productError || !savedProduct) {
+    throw new Error(`${product.id}: product verification failed, ${productError?.message}`);
+  }
+
+  const { count: variantCount, error: variantError } = await db
+    .from("product_variants")
+    .select("id", { count: "exact", head: true })
+    .eq("org_id", orgId)
+    .eq("product_id", productId)
+    .eq("active", true);
+  if (variantError) {
+    throw new Error(`${product.id}: variant verification failed, ${variantError.message}`);
+  }
+
+  const { data: savedImages, error: imageError } = await db
+    .from("listing_images")
+    .select("position, url, storage_path")
+    .eq("org_id", orgId)
+    .eq("product_id", productId)
+    .order("position", { ascending: true });
+  if (imageError) {
+    throw new Error(`${product.id}: image verification failed, ${imageError.message}`);
+  }
+
+  assert(savedProduct.status === "draft", `${product.id}: saved product is not a draft.`);
+  assert(savedProduct.etsy_listing_id === null, `${product.id}: Etsy listing link must stay empty.`);
+  assert(savedProduct.num_images === 3, `${product.id}: product image count is not 3.`);
+  assert(variantCount === product.variantCount, `${product.id}: saved variant count mismatch.`);
+  assert(savedImages?.length === 3, `${product.id}: saved image record count mismatch.`);
+  assert(
+    savedImages.every((image, index) => image.position === index && image.url && image.storage_path),
+    `${product.id}: saved image order or URL is invalid.`,
+  );
+
+  console.log(
+    `verified ${product.id}: draft, Etsy unlinked, ${variantCount} variants, ${savedImages.length} images`,
+  );
+}
+
 async function main() {
   loadEnvFile();
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? process.env.SUPABASE_URL;
@@ -264,7 +310,8 @@ async function main() {
     const records = imageRecords(product, imageRoot);
     validateProduct(product, records);
     const uploaded = await uploadImages(db, org.id, product, records, apply);
-    await upsertListing(db, org.id, product, uploaded, apply);
+    const productId = await upsertListing(db, org.id, product, uploaded, apply);
+    if (apply) await verifyListing(db, org.id, product, productId);
   }
 }
 
