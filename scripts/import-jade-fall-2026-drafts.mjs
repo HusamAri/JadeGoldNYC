@@ -79,21 +79,32 @@ function validateManifest(manifest) {
   );
 }
 
-function validateProduct(product, images, pricing) {
+function validateProduct(product, images, pricing, variationRules) {
   assert(product.score === 10, `${product.id}: only approved 10/10 candidates may be imported.`);
   assert(product.fixedKarat === "14K", `${product.id}: karat must remain fixed at 14K.`);
-  assert(
-    product.upperBarMetal === "14K solid white gold",
-    `${product.id}: upper bar must remain 14K solid white gold.`,
-  );
-  assert(
-    product.lowerPendantMetal === "14K solid yellow gold",
-    `${product.id}: lower pendant must remain 14K solid yellow gold.`,
-  );
-  assert(
-    product.chainMetal === "14K solid yellow gold",
-    `${product.id}: chain must remain 14K solid yellow gold.`,
-  );
+  if (product.goldColorOptions) {
+    assert(product.goldColorOptions.length >= 2, `${product.id}: metal options are incomplete.`);
+    assert(
+      product.goldColorOptions.every(
+        (option) =>
+          option.name && option.pendantMetal?.startsWith("14K solid ") && option.finish,
+      ),
+      `${product.id}: each metal option requires a name, 14K pendant metal and finish.`,
+    );
+  } else {
+    assert(
+      product.upperBarMetal === "14K solid white gold",
+      `${product.id}: upper bar must remain 14K solid white gold.`,
+    );
+    assert(
+      product.lowerPendantMetal === "14K solid yellow gold",
+      `${product.id}: lower pendant must remain 14K solid yellow gold.`,
+    );
+    assert(
+      product.chainMetal === "14K solid yellow gold",
+      `${product.id}: chain must remain 14K solid yellow gold.`,
+    );
+  }
   assert(product.title.length <= 140, `${product.id}: title exceeds 140 characters.`);
   assert(product.tags.length === 13, `${product.id}: exactly 13 tags are required.`);
   assert(
@@ -103,13 +114,11 @@ function validateProduct(product, images, pricing) {
   assert(new Set(product.tags).size === 13, `${product.id}: tags must be unique.`);
   assert(product.madeToOrderBusinessDays === "3-5", `${product.id}: processing must be 3-5 days.`);
   assert(product.personalization === false, `${product.id}: personalization must stay disabled.`);
-  assert(product.pendantWeightGrams === 2.5, `${product.id}: supplier pendant weight must remain 2.5 g.`);
+  assert(product.pendantWeightGrams > 0, `${product.id}: supplier pendant weight is required.`);
   assert(product.variantCount === product.variants.length, `${product.id}: variant count mismatch.`);
-  assert(product.variantCount === 4, `${product.id}: four chain-length variants are required.`);
-  assert(images.length === 6, `${product.id}: five generated images plus the original are required.`);
   assert(
-    images.filter((image) => image.aiGenerated).length === 5,
-    `${product.id}: exactly five images must be marked AI-generated.`,
+    images.filter((image) => image.aiGenerated).length >= 5,
+    `${product.id}: at least five images must be marked AI-generated.`,
   );
   assert(
     images.filter((image) => !image.aiGenerated).length === 1,
@@ -126,11 +135,43 @@ function validateProduct(product, images, pricing) {
     );
   });
 
-  const expectedLengths = ["16 inches", "18 inches", "20 inches", "22 inches"];
-  const actualLengths = product.variants.map((variant) => variant.properties["Chain Length"]);
+  const expectedLengths = variationRules.values;
+  const actualLengths = [
+    ...new Set(product.variants.map((variant) => variant.properties["Chain Length"])),
+  ];
   assert(
     JSON.stringify(actualLengths) === JSON.stringify(expectedLengths),
     `${product.id}: chain-length architecture changed.`,
+  );
+
+  const expectedGoldColors = product.goldColorOptions?.map((option) => option.name) ?? [];
+  if (expectedGoldColors.length > 0) {
+    const actualGoldColors = [
+      ...new Set(product.variants.map((variant) => variant.properties["Gold Color"])),
+    ];
+    assert(
+      JSON.stringify(actualGoldColors) === JSON.stringify(expectedGoldColors),
+      `${product.id}: gold-color architecture changed.`,
+    );
+    assert(
+      product.variantCount === expectedLengths.length * expectedGoldColors.length,
+      `${product.id}: metal and length combinations are incomplete.`,
+    );
+  } else {
+    assert(
+      product.variantCount === expectedLengths.length,
+      `${product.id}: chain-length combinations are incomplete.`,
+    );
+    assert(
+      product.variants.every((variant) => variant.properties["Gold Color"] === undefined),
+      `${product.id}: fixed-metal product may not introduce a Gold Color variation.`,
+    );
+  }
+
+  const uniqueProperties = new Set(product.variants.map((variant) => propertyKey(variant.properties)));
+  assert(
+    uniqueProperties.size === product.variantCount,
+    `${product.id}: duplicate variant properties.`,
   );
 
   for (const variant of product.variants) {
@@ -182,18 +223,21 @@ async function upsertListing(
   apply,
   allowLinkedDraft,
 ) {
-  let existingQuery = db
+  const existingQuery = db
     .from("products")
     .select("id, status, etsy_listing_id")
     .eq("org_id", organizationId)
     .eq("sku", product.sku);
-  if (!allowLinkedDraft) existingQuery = existingQuery.is("etsy_listing_id", null);
   const { data: existing, error: existingError } = await existingQuery.maybeSingle();
   if (existingError) {
     throw new Error(`${product.id}: draft lookup failed, ${existingError.message}`);
   }
   if (existing?.etsy_listing_id != null) {
-    assert(allowLinkedDraft, `${product.id}: linked Etsy draft requires --allow-linked-draft.`);
+    assert(
+      allowLinkedDraft,
+      `${product.id}: listing is linked to Etsy #${existing.etsy_listing_id}; ` +
+        "use --allow-linked-draft only after an owner-approved Etsy readback.",
+    );
     assert(existing.status === "draft", `${product.id}: linked listing is not a panel draft.`);
   }
 
@@ -445,7 +489,7 @@ async function main() {
   );
   for (const product of products) {
     const records = imageRecords(product, imageRoot);
-    validateProduct(product, records, manifest.pricing);
+    validateProduct(product, records, manifest.pricing, manifest.variationRules);
     const uploaded = await uploadImages(db, organization.id, product, records, apply);
     const productId = await upsertListing(
       db,
