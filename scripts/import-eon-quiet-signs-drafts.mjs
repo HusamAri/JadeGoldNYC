@@ -50,6 +50,12 @@ function pngDimensions(filePath) {
   };
 }
 
+function propertyKey(properties) {
+  return JSON.stringify(
+    Object.entries(properties ?? {}).sort(([left], [right]) => left.localeCompare(right)),
+  );
+}
+
 function imageRecords(product, imageRoot) {
   const role = product.metalMode === "single" ? "metal-variations" : "stacking-synergy";
   return [
@@ -189,25 +195,44 @@ async function upsertListing(db, orgId, product, images, apply, allowLinkedDraft
     productId = data.id;
   }
 
-  const variantRows = product.variants.map((variant) => ({
-    org_id: orgId,
-    product_id: productId,
-    sku: variant.sku,
-    name:
-      product.metalMode === "single"
-        ? `${variant.metal} / US ${variant.ringSizeUs}`
-        : `US ${variant.ringSizeUs}`,
-    properties: variant.properties,
-    price_cents: variant.priceUsd * 100,
-    currency: "USD",
-    quantity: variant.quantity,
-    weight_grams: variant.estimatedWeightGrams,
-    weight_source: "manual",
-    active: true,
-  }));
+  const { data: savedVariants, error: savedVariantError } = await db
+    .from("product_variants")
+    .select("id, sku, properties")
+    .eq("org_id", orgId)
+    .eq("product_id", productId);
+  if (savedVariantError) {
+    throw new Error(`${product.id}: existing variant lookup failed, ${savedVariantError.message}`);
+  }
+  const savedVariantByProperties = new Map();
+  for (const savedVariant of savedVariants ?? []) {
+    const key = propertyKey(savedVariant.properties);
+    assert(!savedVariantByProperties.has(key), `${product.id}: duplicate saved variant properties.`);
+    savedVariantByProperties.set(key, savedVariant);
+  }
+
+  const variantRows = product.variants.map((variant) => {
+    const savedVariant = savedVariantByProperties.get(propertyKey(variant.properties));
+    return {
+      ...(savedVariant ? { id: savedVariant.id } : {}),
+      org_id: orgId,
+      product_id: productId,
+      sku: variant.sku,
+      name:
+        product.metalMode === "single"
+          ? `${variant.metal} / US ${variant.ringSizeUs}`
+          : `US ${variant.ringSizeUs}`,
+      properties: variant.properties,
+      price_cents: variant.priceUsd * 100,
+      currency: "USD",
+      quantity: variant.quantity,
+      weight_grams: variant.estimatedWeightGrams,
+      weight_source: "manual",
+      active: true,
+    };
+  });
   const { error: variantError } = await db
     .from("product_variants")
-    .upsert(variantRows, { onConflict: "org_id,sku" });
+    .upsert(variantRows, { onConflict: "id" });
   if (variantError) throw new Error(`${product.id}: variant upsert failed, ${variantError.message}`);
 
   const { data: existingImages, error: imageLookupError } = await db
