@@ -239,6 +239,7 @@ export interface EtsyListingProtocolMetadata {
   };
   approval: {
     ownerApprovalRequiredForEtsy: true;
+    priceReadyForEtsy: boolean;
     status?: string;
   };
 }
@@ -322,6 +323,12 @@ function parseListingProtocolMetadata(
   const approval = raw.approval;
   if (!isRecord(approval) || approval.ownerApprovalRequiredForEtsy !== true) {
     return { ok: false, error: "Etsy işlemi için owner onay kapısı eksik." };
+  }
+  if (approval.priceReadyForEtsy !== true) {
+    return {
+      ok: false,
+      error: "Fiyat için doğrulanmış COGS ve araştırma geri okuması eksik. Etsy işlemi engellendi.",
+    };
   }
 
   return {
