@@ -6,74 +6,21 @@ import { asEtsyProperties, type RawVariantProperties } from "@/lib/variant-prope
 import { logAudit } from "@/lib/audit";
 
 /**
- * PANEL TASLAĞI → ETSY DRAFT LISTING.
+ * PANEL DRAFT TO ETSY DRAFT LISTING.
  *
- * `scripts/eon-push-drafts.ts`'in canlı-kanıtlı mantığını uygulama içine taşır:
- * kullanıcı listing'i "tailor" ettikten sonra tek tuşla Etsy'de TASLAK (draft —
- * yayınlanmaz) listing açılır. Akış:
- *   1. createListing (POST, form-encoded): başlık, temiz açıklama, tag/materyal,
- *      çapa fiyat (en düşük varyant), uygun ürünlerde opsiyonel kişiselleştirme.
- *   2. Envanter PUT: DEĞİŞEN property'ler custom slot 513/514'e; her iki eksen de
- *      fiyat taşır (price_on_property = kullanılan slotlar); fiyat/adet/sku per
- *      offering panel varyantlarından. Sabit property'ler açıklamada kalır.
- *   3. (opsiyonel) products.image_url PUBLIC ise baytı çekip multipart kapak yükle.
- *   4. products.etsy_listing_id + url yaz (vekil taze). İDEMPOTENT: etsy_listing_id
- *      doluysa hiç dokunulmaz.
+ * The function requires a validated etsy-listing-v1 metadata record. Product
+ * type, exact live seller taxonomy path, production identity, parcel, processing
+ * time and personalization are listing data, never hardcoded defaults.
  *
- * TASARIM: hiçbir adım THROW ETMEZ — her adım try/catch ile { ok:false, step,
- * error } döner ki UI net bir mesaj gösterebilsin ve yarım kalan taslak (ör.
- * listing açıldı ama envanter yazılamadı) durumunu kullanıcı görsün.
- *
- * ── ETSY PAYLOAD VARSAYIMLARI (canlı doğrulamada bakılacaklar) ──────────────
- *  A. Zorunlu alan sabitleri (kullanıcı onayı): who_made="i_did"
- *     (ortak Yasin mağaza üyesi), when_made="made_to_order", is_supply="false",
- *     type="physical", state="draft".
- *  B. taxonomy_id: "Wedding Bands" düğümü ağaçtan çözülür (yoksa "Rings").
- *     Canlıda taksonomi adı değişmişse veya ağaç şekli farklıysa çözüm boş
- *     dönebilir → o durumda create adımı "Etsy kategorisi çözülemedi" ile durur.
- *  C. Kişiselleştirme: EON Quiet Signs SKU ailesinde kapalıdır. Diğer ürünlerde
- *     required=false ve max=30 char iç gravür olarak eklenir.
- *  D. Varyasyon eşleme: Etsy en fazla 2 custom variation ekseni kabul eder →
- *     DEĞİŞEN ilk 2 property slot 513/514'e; 2'den fazla değişen varsa (nadir)
- *     kalanı açıklamaya not düşülür (canlıda uyarı olarak döneriz).
- *  E. price_on_property: her tam kombinasyon benzersiz fiyat taşıdığından
- *     kullanılan TÜM variation slotları price_on_property'e girer (script deseni).
- *     Etsy, listelenen property'lerin gerçekten variation olmasını ister — sabit
- *     property'ler bilerek slota konmaz.
- *  F. Tag kuralı: her tag ≤20 karakter, en çok 13 tag (Etsy sınırı) — aşanlar
- *     elenir/kırpılır. Materyal: en çok 13, her biri ≤45 char.
- *  G. Kapak görseli: image_url PUBLIC erişilebilir olmalı (Supabase Storage
- *     public bucket). İmzalı/özel URL ise fetch 400/403 döner → görsel adımı
- *     hata verir ama listing ve envanter KORUNUR (kısmi başarı).
+ * The flow creates an unpublished Etsy draft, writes at most two inventory
+ * axes, uploads the public cover image when available, mirrors the Etsy id and
+ * records an audit event. A product with an existing Etsy id is never touched.
+ * Every step returns a structured result so partial external success stays
+ * visible and recoverable.
  */
-
-/**
- * Kişiselleştirme talimatı — iç gravür (script ile aynı metin, 30 char limit).
- * Etsy `instructions` alanı EN FAZLA 120 karakter (aşılırsa 400 too_long) — kısa tut.
- */
-const PERSONALIZATION_INSTRUCTIONS =
-  "Optional inside-band engraving, up to 30 characters. " +
-  "Script by default; type BLOCK for block letters. Blank = none.";
 
 /** Etsy custom variation slot id'leri (en fazla iki eksen). */
 const CUSTOM_SLOT_IDS = [513, 514] as const;
-
-/**
- * Kargo paketi ölçüleri — yüzük kutusu + koruyucu zarf (kullanıcı kararı).
- * Etsy hesaplı (calculated) kargo profili listing'de item_weight + boyut ŞART
- * koşar (yoksa create 400). Bu değerler listing'e yazılınca create her profil
- * tipiyle çalışır. Kargo bedeli fiyata gömülü (free shipping) olduğundan bu
- * ölçüler yalnız Etsy'nin zorunlu alanını doldurur; ABD ücretsiz kalır.
- * Tüm yüzükler için sabit: hafif altın yüzük + sunum kutusu + kabarcıklı zarf.
- */
-const PARCEL = {
-  weight: 3,
-  weight_unit: "oz",
-  length: 4,
-  width: 4,
-  height: 2,
-  dimensions_unit: "in",
-} as const;
 
 /** Açıklamanın sonundaki dahili not bloğunu söker: "\n\n---\n[EON NN · ...]".
  *  scripts/eon-push-drafts.ts stripInternalTrailer ile BİREBİR aynı desen. */
@@ -81,49 +28,72 @@ export function stripInternalTrailer(desc: string): string {
   return desc.replace(/\n*---\n\[EON [\s\S]*\]$/m, "").trimEnd();
 }
 
-interface TaxNode {
+export interface TaxNode {
   id: number;
   name: string;
   children?: TaxNode[];
 }
 
-/** Taksonomi ağacında ada göre BFS (en sığ eşleşme). */
-function findTaxonomyNode(nodes: TaxNode[], name: string): TaxNode | null {
-  const queue = [...nodes];
-  while (queue.length) {
-    const n = queue.shift()!;
-    if (n.name.toLowerCase() === name.toLowerCase()) return n;
-    if (n.children) queue.push(...n.children);
+function normalizedTaxonomyName(value: string): string {
+  return value.trim().toLocaleLowerCase("en-US");
+}
+
+function matchTaxonomyPath(
+  node: TaxNode,
+  path: string[],
+  pathIndex: number,
+): TaxNode | null {
+  if (normalizedTaxonomyName(node.name) !== normalizedTaxonomyName(path[pathIndex])) {
+    return null;
+  }
+  if (pathIndex === path.length - 1) return node;
+  for (const child of node.children ?? []) {
+    const match = matchTaxonomyPath(child, path, pathIndex + 1);
+    if (match) return match;
   }
   return null;
 }
 
-// Taksonomi id'si oturum içinde sabittir — modül-cache ile tekrar çözülmez.
-let cachedWeddingBandTaxonomyId: number | null = null;
+/** Finds an exact nested seller taxonomy path anywhere in the live tree. */
+export function findTaxonomyNodeByPath(
+  nodes: TaxNode[],
+  path: string[],
+): TaxNode | null {
+  if (path.length === 0) return null;
+  const queue = [...nodes];
+  while (queue.length > 0) {
+    const node = queue.shift()!;
+    const match = matchTaxonomyPath(node, path, 0);
+    if (match) return match;
+    queue.push(...(node.children ?? []));
+  }
+  return null;
+}
 
-/**
- * "Wedding Bands" taksonomi id'sini çözer (yoksa "Rings"). Modül-cache'li.
- * Bulunamazsa null döner (çağıran adımı anlaşılır hata ile durdurur).
- */
-export async function resolveWeddingBandTaxonomyId(
+const taxonomyIdCache = new Map<string, number>();
+
+/** Resolves only the manifest's verified path. There is no product fallback. */
+export async function resolveSellerTaxonomyId(
   client: EtsyClient,
+  sellerPath: string[],
 ): Promise<number | null> {
-  if (cachedWeddingBandTaxonomyId != null) return cachedWeddingBandTaxonomyId;
+  const key = sellerPath.map(normalizedTaxonomyName).join(" > ");
+  const cached = taxonomyIdCache.get(key);
+  if (cached != null) return cached;
   const tax = await client.get<{ results: TaxNode[] }>(
     etsyPaths.sellerTaxonomyNodes(),
   );
   const nodes = tax.results ?? [];
-  const node =
-    findTaxonomyNode(nodes, "Wedding Bands") ?? findTaxonomyNode(nodes, "Rings");
+  const node = findTaxonomyNodeByPath(nodes, sellerPath);
   if (!node) return null;
-  cachedWeddingBandTaxonomyId = node.id;
+  taxonomyIdCache.set(key, node.id);
   return node.id;
 }
 
 export interface ShopProfiles {
   shippingProfileId: number | null;
   returnPolicyId: number | null;
-  /** İşlem profili (readiness state) — Etsy fiziksel üründe zorunlu. */
+  /** İşlem profili (readiness state) - Etsy fiziksel üründe zorunlu. */
   readinessStateId: number | null;
 }
 
@@ -131,12 +101,13 @@ export interface ShopProfiles {
  * Bir işlem profili (readiness state) çözer; yoksa oluşturur. Etsy 2025
  * migrasyonundan beri fiziksel listing `readiness_state_id` ZORUNLU. Mevcut
  * tanımlardan `made_to_order` tercih edilir (listinglerimiz sipariş üzerine);
- * yoksa ilk tanım; hiç yoksa made-to-order 5–7 gün oluşturulur (kargo metniyle
+ * yoksa ilk tanım; hiç yoksa made-to-order 5-7 gün oluşturulur (kargo metniyle
  * tutarlı). Okunamaz/oluşturulamazsa null döner (create adımı net hata verir).
  */
 async function resolveReadinessStateId(
   client: EtsyClient,
   shopId: number,
+  processingDays: { min: number; max: number },
 ): Promise<number | null> {
   try {
     const rs = await client.get<{
@@ -147,15 +118,14 @@ async function resolveReadinessStateId(
       defs.find((d) => d.readiness_state === "made_to_order")
         ?.readiness_state_id ?? defs[0]?.readiness_state_id;
     if (found != null) return found;
-    // Hiç tanım yok → made-to-order 5–7 gün oluştur (idempotent değil ama yalnız
-    // tanım hiç yoksa çalışır; sonraki çağrılar mevcut tanımı bulur).
+    // Create the requested made-to-order profile only when none exists.
     const created = await client.requestForm<{ readiness_state_id: number }>(
       "POST",
       etsyPaths.readinessStateDefinitions(shopId),
       {
         readiness_state: "made_to_order",
-        min_processing_time: 5,
-        max_processing_time: 7,
+        min_processing_time: processingDays.min,
+        max_processing_time: processingDays.max,
       },
     );
     return created.readiness_state_id ?? null;
@@ -168,7 +138,7 @@ async function resolveReadinessStateId(
  * Kargo profili + iade politikası + işlem profili çözümü:
  *  - Kargo: önce panelin `etsy_shipping_profiles` tablosundan (org kilidi) İLK
  *    profil; yoksa canlı GET shippingProfiles ilk kayıt.
- *  - İade: canlı GET returnPolicies ilk kayıt (okunamzsa null — Etsy fiziksel
+ *  - İade: canlı GET returnPolicies ilk kayıt (okunamzsa null - Etsy fiziksel
  *    üründe iade politikası ister ama create adımı yine denenir).
  *  - İşlem profili: resolveReadinessStateId (mevcut made_to_order / ilk / oluştur).
  */
@@ -177,16 +147,17 @@ export async function resolveShopProfiles(
   client: EtsyClient,
   orgId: string,
   shopId: number,
+  processingDays: { min: number; max: number },
 ): Promise<ShopProfiles> {
   let shippingProfileId: number | null = null;
 
-  // Kargo profili — SABİT/manuel (profile_type="manual") TERCİH edilir.
+  // Kargo profili - SABİT/manuel (profile_type="manual") TERCİH edilir.
   // Neden: hesaplı (calculated) profil alıcıdan ağırlığa göre posta alır VE
   // listing'de item_weight/boyut şart koşar (yoksa create 400). Açıklamalar
   // "free shipping" vaat ettiğinden ve kargo bedeli fiyata gömüldüğünden
   // sabit/ücretsiz profil doğru olandır. Canlı GET profile_type taşır; manuel
   // yoksa panel-stored / ilk profile düşülür (o org'da calculated tek seçenekse
-  // create Etsy'nin net ağırlık hatasını döndürür — kullanıcı yönlendirilir).
+  // create Etsy'nin net ağırlık hatasını döndürür - kullanıcı yönlendirilir).
   try {
     const sp = await client.get<{
       results: { shipping_profile_id: number; profile_type?: string | null }[];
@@ -210,7 +181,7 @@ export async function resolveShopProfiles(
     if (storedId != null) shippingProfileId = Number(storedId);
   }
 
-  // İade politikası — okunamazsa null (yut, create yine denenir).
+  // İade politikası - okunamazsa null (yut, create yine denenir).
   let returnPolicyId: number | null = null;
   try {
     const rp = await client.get<{ results: { return_policy_id: number }[] }>(
@@ -221,7 +192,11 @@ export async function resolveShopProfiles(
     returnPolicyId = null;
   }
 
-  const readinessStateId = await resolveReadinessStateId(client, shopId);
+  const readinessStateId = await resolveReadinessStateId(
+    client,
+    shopId,
+    processingDays,
+  );
 
   return { shippingProfileId, returnPolicyId, readinessStateId };
 }
@@ -232,6 +207,127 @@ export interface DraftVariant {
   properties: RawVariantProperties;
   price_cents: number | null;
   quantity: number | null;
+}
+
+type EtsyWhoMade = "i_did" | "collective" | "someone_else";
+
+export interface EtsyListingProtocolMetadata {
+  protocolVersion: "etsy-listing-v1";
+  productType: string;
+  taxonomy: {
+    sellerPath: string[];
+  };
+  production: {
+    whoMade: EtsyWhoMade;
+    whenMade: "made_to_order";
+    processingDays: { min: number; max: number };
+    personalization: {
+      enabled: boolean;
+      question?: string;
+      instructions?: string;
+      required?: boolean;
+      maxAllowedCharacters?: number;
+    };
+    parcel: {
+      weight: number;
+      weightUnit: string;
+      length: number;
+      width: number;
+      height: number;
+      dimensionsUnit: string;
+    };
+  };
+  approval: {
+    ownerApprovalRequiredForEtsy: true;
+    status?: string;
+  };
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function parseListingProtocolMetadata(
+  productType: string | null,
+  raw: unknown,
+): { ok: true; value: EtsyListingProtocolMetadata } | { ok: false; error: string } {
+  if (!productType) {
+    return { ok: false, error: "Ürün tipi doğrulanmamış. Önce listing protokolünü tamamlayın." };
+  }
+  if (!isRecord(raw) || raw.protocolVersion !== "etsy-listing-v1") {
+    return { ok: false, error: "Global Etsy listing protokolü bu üründe kayıtlı değil." };
+  }
+  if (raw.productType !== productType) {
+    return { ok: false, error: "Ürün tipi ile listing protokolü birbiriyle eşleşmiyor." };
+  }
+
+  const taxonomy = raw.taxonomy;
+  if (
+    !isRecord(taxonomy) ||
+    !Array.isArray(taxonomy.sellerPath) ||
+    taxonomy.sellerPath.length < 2 ||
+    !taxonomy.sellerPath.every((part) => typeof part === "string" && part.trim())
+  ) {
+    return { ok: false, error: "Doğrulanmış Etsy seller taxonomy yolu eksik." };
+  }
+
+  const production = raw.production;
+  if (!isRecord(production)) {
+    return { ok: false, error: "Üretim ve paket bilgileri eksik." };
+  }
+  if (!new Set(["i_did", "collective", "someone_else"]).has(String(production.whoMade))) {
+    return { ok: false, error: "Etsy who_made değeri geçersiz." };
+  }
+  if (production.whenMade !== "made_to_order") {
+    return { ok: false, error: "when_made değeri made_to_order olmalı." };
+  }
+
+  const processingDays = production.processingDays;
+  if (
+    !isRecord(processingDays) ||
+    typeof processingDays.min !== "number" ||
+    typeof processingDays.max !== "number" ||
+    !Number.isInteger(processingDays.min) ||
+    !Number.isInteger(processingDays.max) ||
+    processingDays.min < 1 ||
+    processingDays.max < processingDays.min
+  ) {
+    return { ok: false, error: "Geçerli minimum ve maksimum üretim süresi eksik." };
+  }
+
+  const parcel = production.parcel;
+  if (
+    !isRecord(parcel) ||
+    !["weight", "length", "width", "height"].every(
+      (key) => Number(parcel[key]) > 0,
+    ) ||
+    typeof parcel.weightUnit !== "string" ||
+    typeof parcel.dimensionsUnit !== "string"
+  ) {
+    return { ok: false, error: "Ürün tipine uygun paket ağırlığı veya ölçüleri eksik." };
+  }
+
+  const personalization = production.personalization;
+  if (!isRecord(personalization) || typeof personalization.enabled !== "boolean") {
+    return { ok: false, error: "Kişiselleştirme açık veya kapalı olarak belirtilmeli." };
+  }
+  if (
+    personalization.enabled &&
+    (typeof personalization.question !== "string" ||
+      typeof personalization.instructions !== "string")
+  ) {
+    return { ok: false, error: "Kişiselleştirme sorusu ve talimatı eksik." };
+  }
+
+  const approval = raw.approval;
+  if (!isRecord(approval) || approval.ownerApprovalRequiredForEtsy !== true) {
+    return { ok: false, error: "Etsy işlemi için owner onay kapısı eksik." };
+  }
+
+  return {
+    ok: true,
+    value: raw as unknown as EtsyListingProtocolMetadata,
+  };
 }
 
 /** Create için gereken ürün + varyant kümesi. */
@@ -247,12 +343,14 @@ export interface DraftProduct {
   price_cents: number | null;
   quantity: number | null;
   image_url: string | null;
+  product_type: string | null;
+  listing_metadata: unknown;
   variants: DraftVariant[];
 }
 
 export interface CreateDraftResult {
   ok: boolean;
-  /** etsy_listing_id zaten dolu — hiçbir yazma yapılmadı. */
+  /** etsy_listing_id zaten dolu - hiçbir yazma yapılmadı. */
   skipped?: boolean;
   listingId?: number;
   url?: string;
@@ -296,7 +394,7 @@ function sanitizeMaterials(materials: string[] | null): string[] {
  * custom slot 513/514; hangileri SABİT → açıklamaya not.
  */
 interface VariationPlan {
-  /** Değişen property adları (en çok 2 — slot sırasıyla). */
+  /** Değişen property adları (en çok 2 - slot sırasıyla). */
   varyingNames: string[];
   /** Slota sığmayan fazladan değişen property adları (uyarı). */
   overflowNames: string[];
@@ -343,7 +441,7 @@ function appendConstantsToDescription(
 
 /**
  * Panel taslağını Etsy'de DRAFT listing olarak oluşturur. Ayrıntı ve varsayımlar
- * dosya başındaki blokta. Hiçbir adım throw etmez — sonuç nesnesi döner.
+ * dosya başındaki blokta. Hiçbir adım throw etmez - sonuç nesnesi döner.
  */
 export async function createDraftListingFromProduct(
   admin: SupabaseClient,
@@ -364,6 +462,14 @@ export async function createDraftListingFromProduct(
   }
 
   const warnings: string[] = [];
+  const protocolResult = parseListingProtocolMetadata(
+    product.product_type,
+    product.listing_metadata,
+  );
+  if (!protocolResult.ok) {
+    return { ok: false, step: "validation", error: protocolResult.error };
+  }
+  const protocol = protocolResult.value;
   const variants = product.variants ?? [];
   const overlongSku = variants.find((variant) => (variant.sku ?? "").length > 32);
   if (overlongSku) {
@@ -383,7 +489,7 @@ export async function createDraftListingFromProduct(
       ? Math.min(...variantPrices)
       : product.price_cents ?? 0;
   if (!(anchorCents > 0)) {
-    return { ok: false, step: "create", error: "Fiyat yok — çapa fiyat 0." };
+    return { ok: false, step: "create", error: "Fiyat yok - çapa fiyat 0." };
   }
 
   // Varyasyon planı (değişen → slot, sabit → açıklama).
@@ -400,7 +506,10 @@ export async function createDraftListingFromProduct(
   // Taksonomi çöz.
   let taxonomyId: number | null;
   try {
-    taxonomyId = await resolveWeddingBandTaxonomyId(client);
+    taxonomyId = await resolveSellerTaxonomyId(
+      client,
+      protocol.taxonomy.sellerPath,
+    );
   } catch (e) {
     return {
       ok: false,
@@ -412,14 +521,20 @@ export async function createDraftListingFromProduct(
     return {
       ok: false,
       step: "create",
-      error: "Etsy kategorisi çözülemedi (Wedding Bands/Rings bulunamadı).",
+      error: `Etsy kategorisi çözülemedi: ${protocol.taxonomy.sellerPath.join(" > ")}.`,
     };
   }
 
   // Profiller (kargo + iade).
   let profiles: ShopProfiles;
   try {
-    profiles = await resolveShopProfiles(admin, client, orgId, shopId);
+    profiles = await resolveShopProfiles(
+      admin,
+      client,
+      orgId,
+      shopId,
+      protocol.production.processingDays,
+    );
   } catch (e) {
     return {
       ok: false,
@@ -431,7 +546,7 @@ export async function createDraftListingFromProduct(
     return {
       ok: false,
       step: "create",
-      error: "Mağazada kargo profili bulunamadı — Etsy'de bir profil oluşturun.",
+      error: "Mağazada kargo profili bulunamadı - Etsy'de bir profil oluşturun.",
     };
   }
   if (profiles.readinessStateId == null) {
@@ -439,7 +554,7 @@ export async function createDraftListingFromProduct(
       ok: false,
       step: "create",
       error:
-        "Mağazada işlem profili (processing profile) yok ve oluşturulamadı — " +
+        "Mağazada işlem profili (processing profile) yok ve oluşturulamadı - " +
         "Etsy Shop Manager > Settings > Shipping'ten made-to-order bir işlem " +
         "süresi ekleyin, sonra tekrar deneyin.",
     };
@@ -448,6 +563,24 @@ export async function createDraftListingFromProduct(
   const tags = sanitizeTags(product.tags);
   const materials = sanitizeMaterials(product.materials);
   const listingQuantity = product.quantity ?? 1;
+  if (tags.length !== 13) {
+    return {
+      ok: false,
+      step: "validation",
+      error: "Etsy listingi tam 13 benzersiz ve 20 karakteri aşmayan tag içermeli.",
+    };
+  }
+  if (new Set(tags.map((tag) => tag.toLocaleLowerCase("en-US"))).size !== 13) {
+    return { ok: false, step: "validation", error: "Etsy tagleri benzersiz olmalı." };
+  }
+  if (materials.length === 0) {
+    return { ok: false, step: "validation", error: "Doğrulanmış materyal bilgisi eksik." };
+  }
+  if (!product.title.trim() || product.title.length > 140) {
+    return { ok: false, step: "validation", error: "Etsy başlığı boş veya 140 karakterden uzun." };
+  }
+
+  const parcel = protocol.production.parcel;
 
   // ── 1) DRAFT listing oluştur (form-encoded). ──────────────────────────────
   let listingId: number;
@@ -457,26 +590,24 @@ export async function createDraftListingFromProduct(
       title: product.title,
       description: finalDesc,
       price: anchorCents / 100,
-      who_made: "i_did",
-      when_made: "made_to_order",
+      who_made: protocol.production.whoMade,
+      when_made: protocol.production.whenMade,
       is_supply: "false",
       taxonomy_id: taxonomyId,
       shipping_profile_id: profiles.shippingProfileId,
       return_policy_id: profiles.returnPolicyId ?? undefined,
       // Etsy 2025 migrasyonu: fiziksel listing'de işlem profili ZORUNLU.
       readiness_state_id: profiles.readinessStateId,
-      // Paket ağırlık + boyut (yüzük kutusu) — hesaplı profil bunları şart
-      // koşar; free shipping'te fiyata gömülü olduğundan alıcıya yansımaz.
-      item_weight: PARCEL.weight,
-      item_weight_unit: PARCEL.weight_unit,
-      item_length: PARCEL.length,
-      item_width: PARCEL.width,
-      item_height: PARCEL.height,
-      item_dimensions_unit: PARCEL.dimensions_unit,
+      item_weight: parcel.weight,
+      item_weight_unit: parcel.weightUnit,
+      item_length: parcel.length,
+      item_width: parcel.width,
+      item_height: parcel.height,
+      item_dimensions_unit: parcel.dimensionsUnit,
       tags: tags.join(","),
       materials: materials.join(","),
       // NOT: legacy is_personalizable/personalization_* alanları Etsy 2025'te
-      // create'te DEPRECATED — create sonrası ayrı personalization ucundan yazılır.
+      // create'te DEPRECATED - create sonrası ayrı personalization ucundan yazılır.
       should_auto_renew: "false",
       state: "draft",
       type: "physical",
@@ -497,9 +628,8 @@ export async function createDraftListingFromProduct(
 
   const url = `https://www.etsy.com/listing/${listingId}`;
 
-  // Quiet Signs products are intentionally sold without engraving.
-  const personalizationEnabled = !product.sku?.startsWith("EON-QS26-");
-  if (personalizationEnabled) {
+  const personalization = protocol.production.personalization;
+  if (personalization.enabled) {
     try {
       await client.request(
         "POST",
@@ -509,17 +639,18 @@ export async function createDraftListingFromProduct(
           personalization_questions: [
             {
               question_type: "text_input",
-              question_text: "Inside band engraving (optional)",
-              instructions: PERSONALIZATION_INSTRUCTIONS,
-              required: false,
-              max_allowed_characters: 30,
+              question_text: personalization.question,
+              instructions: personalization.instructions,
+              required: personalization.required ?? false,
+              max_allowed_characters:
+                personalization.maxAllowedCharacters ?? 30,
             },
           ],
         },
       );
     } catch (e) {
       warnings.push(
-        `Kişiselleştirme (iç gravür) eklenemedi: ${
+        `Kişiselleştirme alanı eklenemedi: ${
           e instanceof Error ? e.message : String(e)
         }. Listing açıldı; gravür alanını Etsy'de elle ekleyebilirsiniz.`,
       );
@@ -528,7 +659,7 @@ export async function createDraftListingFromProduct(
 
   // ── 2) Envanter PUT (yalnız gerçek varyasyon varsa). ──────────────────────
   // Değişen property yoksa (tek fiyat/tek varyant) createListing'in otomatik
-  // ürün/offering'i yeterli — envanter PUT atlanır.
+  // ürün/offering'i yeterli - envanter PUT atlanır.
   if (plan.varyingNames.length > 0 && variants.length > 1) {
     try {
       const usedSlots = plan.varyingNames.map((_, i) => CUSTOM_SLOT_IDS[i]);
@@ -537,8 +668,8 @@ export async function createDraftListingFromProduct(
         const property_values = plan.varyingNames.map((name, i) => ({
           property_id: CUSTOM_SLOT_IDS[i],
           property_name: name,
-          // Değeri olmayan varyantta "—" placeholder (Etsy boş değer reddeder).
-          values: [pm.get(name) || "—"],
+          // Değeri olmayan varyantta "-" placeholder (Etsy boş değer reddeder).
+          values: [pm.get(name) || "-"],
         }));
         const offeringCents = v.price_cents ?? anchorCents;
         return {
@@ -550,13 +681,13 @@ export async function createDraftListingFromProduct(
               quantity: v.quantity ?? listingQuantity,
               is_enabled: true,
               // Etsy 2025: her offering'in de işlem profili olmalı ("All
-              // offerings need readiness state") — listing-düzeyi yetmiyor.
+              // offerings need readiness state") - listing-düzeyi yetmiyor.
               readiness_state_id: profiles.readinessStateId,
             },
           ],
         };
       });
-      // legacy=false: Etsy 2025 envanter modeli — offering-düzeyi
+      // legacy=false: Etsy 2025 envanter modeli - offering-düzeyi
       // readiness_state_id'yi yalnız bu modda kabul eder (yoksa "All offerings
       // need readiness state"). readiness_state_on_property=[] → işlem profili
       // hiçbir property'ye göre DEĞİŞMEZ (tüm offering'ler aynı made-to-order).
@@ -573,7 +704,7 @@ export async function createDraftListingFromProduct(
         },
       );
     } catch (e) {
-      // Listing açıldı ama envanter yazılamadı — KISMI başarı; kullanıcı düzeltsin.
+      // Listing açıldı ama envanter yazılamadı - KISMI başarı; kullanıcı düzeltsin.
       return {
         ok: false,
         listingId,
@@ -591,7 +722,7 @@ export async function createDraftListingFromProduct(
       const res = await fetch(product.image_url);
       if (!res.ok) {
         warnings.push(
-          `Kapak görseli indirilemedi (HTTP ${res.status}) — listing görselsiz açıldı.`,
+          `Kapak görseli indirilemedi (HTTP ${res.status}) - listing görselsiz açıldı.`,
         );
       } else {
         const buf = await res.arrayBuffer();
@@ -606,7 +737,7 @@ export async function createDraftListingFromProduct(
         );
       }
     } catch (e) {
-      // Görsel kritik değil — listing korunur, uyarı olarak dön.
+      // Görsel kritik değil - listing korunur, uyarı olarak dön.
       warnings.push(
         `Kapak görseli yüklenemedi: ${e instanceof Error ? e.message : String(e)}`,
       );
@@ -621,7 +752,7 @@ export async function createDraftListingFromProduct(
       .eq("id", product.id)
       .eq("org_id", orgId);
     if (error) {
-      // Etsy'de taslak AÇILDI ama panel bağlanamadı — tekrar denerse idempotens
+      // Etsy'de taslak AÇILDI ama panel bağlanamadı - tekrar denerse idempotens
       // çift açar. Kullanıcıya net söyle.
       return {
         ok: false,

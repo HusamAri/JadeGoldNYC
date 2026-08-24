@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 
-import { requireMembership, isManager, MANAGER_ONLY_ERROR } from "@/lib/auth";
+import { requireMembership } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { EtsyClient } from "@/lib/etsy/client";
 import { getEtsyWriteAccess } from "@/lib/db/queries/etsy";
@@ -14,8 +14,8 @@ import {
 import { sortVariantsByWidthThenSize } from "@/lib/variant-sort";
 
 /**
- * "Etsy'e gönder" — panel taslağını (etsy_listing_id boş) Etsy'de DRAFT listing
- * olarak açar. Yalnız owner/admin. Etsy yazma erişimi kapalıysa reddedilir.
+ * "Etsy'e gönder" - panel taslağını (etsy_listing_id boş) Etsy'de DRAFT listing
+ * olarak açar. Fiyat ve dış kanal değişikliği içerdiği için yalnız owner.
  * Ağır iş lib/etsy/create-listing.ts'te (throw etmez, adım-adım sonuç döner).
  */
 
@@ -33,18 +33,20 @@ export async function sendListingToEtsy(
   productId: string,
 ): Promise<SendListingResult> {
   const m = await requireMembership();
-  if (!isManager(m.role)) return { error: MANAGER_ONLY_ERROR };
+  if (m.role !== "owner") {
+    return { error: "Bu işlem için sahip (owner) rolü gerekir." };
+  }
 
   const { writeEnabled } = await getEtsyWriteAccess(m.org_id);
   if (!writeEnabled) return { error: "Etsy yazma erişimi kapalı." };
 
   const admin = createAdminClient();
 
-  // Ürün (org kilidi) — künye alanları + kapak görseli.
+  // Ürün (org kilidi) - künye alanları + kapak görseli.
   const { data: pData, error: pErr } = await admin
     .from("products")
     .select(
-      "id, org_id, etsy_listing_id, sku, title, description, tags, materials, price_cents, quantity, image_url",
+      "id, org_id, etsy_listing_id, sku, title, description, tags, materials, price_cents, quantity, image_url, product_type, listing_metadata",
     )
     .eq("id", productId)
     .eq("org_id", m.org_id)
@@ -74,7 +76,7 @@ export async function sendListingToEtsy(
     (v): v is DraftVariant & { sku: string } => (v.sku ?? "").trim().length > 0,
   );
   if (withSku.length === 0) {
-    return { error: "Listing SKU’suz varyant — Etsy senkronunu kontrol edin." };
+    return { error: "Listing SKU’suz varyant - Etsy senkronunu kontrol edin." };
   }
   const variants = sortVariantsByWidthThenSize(withSku);
   const overlongSku = variants.find((variant) => variant.sku.length > 32);
