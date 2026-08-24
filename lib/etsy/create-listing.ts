@@ -99,14 +99,15 @@ export interface ShopProfiles {
 
 /**
  * Bir işlem profili (readiness state) çözer; yoksa oluşturur. Etsy 2025
- * migrasyonundan beri fiziksel listing `readiness_state_id` ZORUNLU. Mevcut
- * tanımlardan `made_to_order` tercih edilir (listinglerimiz sipariş üzerine);
- * yoksa ilk tanım; hiç yoksa made-to-order 5-7 gün oluşturulur (kargo metniyle
- * tutarlı). Okunamaz/oluşturulamazsa null döner (create adımı net hata verir).
+ * migrasyonundan beri fiziksel listing `readiness_state_id` ZORUNLU. Protokolde
+ * istenen `ready_to_ship` veya `made_to_order` tanımı çözülür. Eşleşen tanım
+ * yoksa tam işlem aralığıyla oluşturulur. Okunamaz veya oluşturulamazsa null
+ * döner ve create adımı net hata verir.
  */
 async function resolveReadinessStateId(
   client: EtsyClient,
   shopId: number,
+  readinessState: EtsyReadinessState,
   processingDays: { min: number; max: number },
 ): Promise<number | null> {
   try {
@@ -114,16 +115,15 @@ async function resolveReadinessStateId(
       results?: { readiness_state_id: number; readiness_state: string }[];
     }>(etsyPaths.readinessStateDefinitions(shopId));
     const defs = rs.results ?? [];
-    const found =
-      defs.find((d) => d.readiness_state === "made_to_order")
-        ?.readiness_state_id ?? defs[0]?.readiness_state_id;
+    const found = defs.find((d) => d.readiness_state === readinessState)
+      ?.readiness_state_id;
     if (found != null) return found;
-    // Create the requested made-to-order profile only when none exists.
+    // Create the exact processing profile required by the listing protocol.
     const created = await client.requestForm<{ readiness_state_id: number }>(
       "POST",
       etsyPaths.readinessStateDefinitions(shopId),
       {
-        readiness_state: "made_to_order",
+        readiness_state: readinessState,
         min_processing_time: processingDays.min,
         max_processing_time: processingDays.max,
       },
@@ -140,13 +140,14 @@ async function resolveReadinessStateId(
  *    profil; yoksa canlı GET shippingProfiles ilk kayıt.
  *  - İade: canlı GET returnPolicies ilk kayıt (okunamzsa null - Etsy fiziksel
  *    üründe iade politikası ister ama create adımı yine denenir).
- *  - İşlem profili: resolveReadinessStateId (mevcut made_to_order / ilk / oluştur).
+ *  - İşlem profili: resolveReadinessStateId (tam hazırlık durumu / oluştur).
  */
 export async function resolveShopProfiles(
   admin: SupabaseClient,
   client: EtsyClient,
   orgId: string,
   shopId: number,
+  readinessState: EtsyReadinessState,
   processingDays: { min: number; max: number },
 ): Promise<ShopProfiles> {
   let shippingProfileId: number | null = null;
@@ -195,6 +196,7 @@ export async function resolveShopProfiles(
   const readinessStateId = await resolveReadinessStateId(
     client,
     shopId,
+    readinessState,
     processingDays,
   );
 
@@ -210,6 +212,8 @@ export interface DraftVariant {
 }
 
 type EtsyWhoMade = "i_did" | "collective" | "someone_else";
+type EtsyWhenMade = "made_to_order" | "2020_2026";
+export type EtsyReadinessState = "made_to_order" | "ready_to_ship";
 
 export interface EtsyListingProtocolMetadata {
   protocolVersion: "etsy-listing-v1";
@@ -219,7 +223,8 @@ export interface EtsyListingProtocolMetadata {
   };
   production: {
     whoMade: EtsyWhoMade;
-    whenMade: "made_to_order";
+    whenMade: EtsyWhenMade;
+    readinessState: EtsyReadinessState;
     processingDays: { min: number; max: number };
     personalization: {
       enabled: boolean;
@@ -279,8 +284,20 @@ function parseListingProtocolMetadata(
   if (!new Set(["i_did", "collective", "someone_else"]).has(String(production.whoMade))) {
     return { ok: false, error: "Etsy who_made değeri geçersiz." };
   }
-  if (production.whenMade !== "made_to_order") {
-    return { ok: false, error: "when_made değeri made_to_order olmalı." };
+  if (!["made_to_order", "2020_2026"].includes(String(production.whenMade))) {
+    return { ok: false, error: "Etsy when_made değeri geçersiz." };
+  }
+  const readinessState =
+    production.readinessState ??
+    (production.whenMade === "made_to_order" ? "made_to_order" : undefined);
+  if (!["made_to_order", "ready_to_ship"].includes(String(readinessState))) {
+    return { ok: false, error: "Etsy hazırlık durumu geçersiz." };
+  }
+  if (
+    production.whenMade === "made_to_order" &&
+    readinessState !== "made_to_order"
+  ) {
+    return { ok: false, error: "Sipariş üzerine ürün için hazırlık durumu made_to_order olmalı." };
   }
 
   const processingDays = production.processingDays;
@@ -333,7 +350,13 @@ function parseListingProtocolMetadata(
 
   return {
     ok: true,
-    value: raw as unknown as EtsyListingProtocolMetadata,
+    value: {
+      ...raw,
+      production: {
+        ...production,
+        readinessState,
+      },
+    } as unknown as EtsyListingProtocolMetadata,
   };
 }
 
@@ -540,6 +563,7 @@ export async function createDraftListingFromProduct(
       client,
       orgId,
       shopId,
+      protocol.production.readinessState,
       protocol.production.processingDays,
     );
   } catch (e) {
@@ -562,8 +586,8 @@ export async function createDraftListingFromProduct(
       step: "create",
       error:
         "Mağazada işlem profili (processing profile) yok ve oluşturulamadı - " +
-        "Etsy Shop Manager > Settings > Shipping'ten made-to-order bir işlem " +
-        "süresi ekleyin, sonra tekrar deneyin.",
+        "Etsy Shop Manager > Settings > Shipping bölümüne ürünün hazırlık " +
+        "durumuyla eşleşen bir işlem süresi ekleyin, sonra tekrar deneyin.",
     };
   }
 

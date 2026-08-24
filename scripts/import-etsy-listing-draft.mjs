@@ -81,7 +81,22 @@ function validateProduct(product, images) {
     `${product.id}: exact seller taxonomy path is required.`,
   );
   assert(product.production?.whoMade, `${product.id}: whoMade is required.`);
-  assert(product.production?.whenMade === "made_to_order", `${product.id}: whenMade is invalid.`);
+  assert(
+    ["made_to_order", "2020_2026"].includes(product.production?.whenMade),
+    `${product.id}: whenMade is invalid.`,
+  );
+  const readinessState =
+    product.production?.readinessState ??
+    (product.production?.whenMade === "made_to_order" ? "made_to_order" : null);
+  assert(
+    ["made_to_order", "ready_to_ship"].includes(readinessState),
+    `${product.id}: readinessState is invalid.`,
+  );
+  assert(
+    product.production.whenMade !== "made_to_order" ||
+      readinessState === "made_to_order",
+    `${product.id}: made_to_order production requires made_to_order readiness.`,
+  );
   assert(
     product.production?.processingDays?.min >= 1 &&
       product.production.processingDays.max >= product.production.processingDays.min,
