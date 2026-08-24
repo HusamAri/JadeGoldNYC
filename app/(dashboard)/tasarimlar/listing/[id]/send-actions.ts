@@ -44,7 +44,7 @@ export async function sendListingToEtsy(
   const { data: pData, error: pErr } = await admin
     .from("products")
     .select(
-      "id, org_id, etsy_listing_id, title, description, tags, materials, price_cents, quantity, image_url",
+      "id, org_id, etsy_listing_id, sku, title, description, tags, materials, price_cents, quantity, image_url",
     )
     .eq("id", productId)
     .eq("org_id", m.org_id)
@@ -77,6 +77,12 @@ export async function sendListingToEtsy(
     return { error: "Listing SKU’suz varyant — Etsy senkronunu kontrol edin." };
   }
   const variants = sortVariantsByWidthThenSize(withSku);
+  const overlongSku = variants.find((variant) => variant.sku.length > 32);
+  if (overlongSku) {
+    return {
+      error: `SKU 32 karakteri aşamaz: ${overlongSku.sku}`,
+    };
+  }
 
   let client: EtsyClient;
   let shopId: number;

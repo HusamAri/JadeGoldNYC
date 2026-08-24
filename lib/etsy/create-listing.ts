@@ -12,7 +12,7 @@ import { logAudit } from "@/lib/audit";
  * kullanıcı listing'i "tailor" ettikten sonra tek tuşla Etsy'de TASLAK (draft —
  * yayınlanmaz) listing açılır. Akış:
  *   1. createListing (POST, form-encoded): başlık, temiz açıklama, tag/materyal,
- *      çapa fiyat (en düşük varyant), kişiselleştirme AÇIK (30 char iç gravür).
+ *      çapa fiyat (en düşük varyant), uygun ürünlerde opsiyonel kişiselleştirme.
  *   2. Envanter PUT: DEĞİŞEN property'ler custom slot 513/514'e; her iki eksen de
  *      fiyat taşır (price_on_property = kullanılan slotlar); fiyat/adet/sku per
  *      offering panel varyantlarından. Sabit property'ler açıklamada kalır.
@@ -31,9 +31,8 @@ import { logAudit } from "@/lib/audit";
  *  B. taxonomy_id: "Wedding Bands" düğümü ağaçtan çözülür (yoksa "Rings").
  *     Canlıda taksonomi adı değişmişse veya ağaç şekli farklıysa çözüm boş
  *     dönebilir → o durumda create adımı "Etsy kategorisi çözülemedi" ile durur.
- *  C. Kişiselleştirme: is_personalizable=true, required=false, max=30 char.
- *     Bant alyanslarında bu iç gravür talimatıdır; Etsy 30 char'ı aşan talebi
- *     reddeder.
+ *  C. Kişiselleştirme: EON Quiet Signs SKU ailesinde kapalıdır. Diğer ürünlerde
+ *     required=false ve max=30 char iç gravür olarak eklenir.
  *  D. Varyasyon eşleme: Etsy en fazla 2 custom variation ekseni kabul eder →
  *     DEĞİŞEN ilk 2 property slot 513/514'e; 2'den fazla değişen varsa (nadir)
  *     kalanı açıklamaya not düşülür (canlıda uyarı olarak döneriz).
@@ -240,6 +239,7 @@ export interface DraftProduct {
   id: string;
   org_id: string;
   etsy_listing_id: number | null;
+  sku: string | null;
   title: string;
   description: string | null;
   tags: string[] | null;
@@ -365,6 +365,14 @@ export async function createDraftListingFromProduct(
 
   const warnings: string[] = [];
   const variants = product.variants ?? [];
+  const overlongSku = variants.find((variant) => (variant.sku ?? "").length > 32);
+  if (overlongSku) {
+    return {
+      ok: false,
+      step: "validation",
+      error: `SKU 32 karakteri aşamaz: ${overlongSku.sku}`,
+    };
+  }
 
   // Fiyat çapası: en düşük varyant fiyatı; varyant yoksa ürün fiyatı.
   const variantPrices = variants
@@ -489,32 +497,33 @@ export async function createDraftListingFromProduct(
 
   const url = `https://www.etsy.com/listing/${listingId}`;
 
-  // ── 1b) Kişiselleştirme (iç gravür) — 2025 migrasyonu: legacy create alanları
-  // yerine ayrı uç. Tek metin sorusu (opsiyonel, 30 char). Başarısız olursa
-  // listing yaşar; uyarı eklenir (buton "gravür eklenemedi" der, elle eklenebilir).
-  try {
-    await client.request(
-      "POST",
-      etsyPaths.listingPersonalization(shopId, listingId) +
-        "?supports_multiple_personalization_questions=true",
-      {
-        personalization_questions: [
-          {
-            question_type: "text_input",
-            question_text: "Inside band engraving (optional)",
-            instructions: PERSONALIZATION_INSTRUCTIONS,
-            required: false,
-            max_allowed_characters: 30,
-          },
-        ],
-      },
-    );
-  } catch (e) {
-    warnings.push(
-      `Kişiselleştirme (iç gravür) eklenemedi: ${
-        e instanceof Error ? e.message : String(e)
-      }. Listing açıldı; gravür alanını Etsy'de elle ekleyebilirsiniz.`,
-    );
+  // Quiet Signs products are intentionally sold without engraving.
+  const personalizationEnabled = !product.sku?.startsWith("EON-QS26-");
+  if (personalizationEnabled) {
+    try {
+      await client.request(
+        "POST",
+        etsyPaths.listingPersonalization(shopId, listingId) +
+          "?supports_multiple_personalization_questions=true",
+        {
+          personalization_questions: [
+            {
+              question_type: "text_input",
+              question_text: "Inside band engraving (optional)",
+              instructions: PERSONALIZATION_INSTRUCTIONS,
+              required: false,
+              max_allowed_characters: 30,
+            },
+          ],
+        },
+      );
+    } catch (e) {
+      warnings.push(
+        `Kişiselleştirme (iç gravür) eklenemedi: ${
+          e instanceof Error ? e.message : String(e)
+        }. Listing açıldı; gravür alanını Etsy'de elle ekleyebilirsiniz.`,
+      );
+    }
   }
 
   // ── 2) Envanter PUT (yalnız gerçek varyasyon varsa). ──────────────────────
