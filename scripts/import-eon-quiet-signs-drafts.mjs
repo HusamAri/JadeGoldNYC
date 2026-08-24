@@ -8,6 +8,7 @@
  * Usage:
  *   node scripts/import-eon-quiet-signs-drafts.mjs --product=G06
  *   node scripts/import-eon-quiet-signs-drafts.mjs --product=G06 --apply
+ *   node scripts/import-eon-quiet-signs-drafts.mjs --product=G06 --apply --allow-linked-draft
  */
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
@@ -115,17 +116,21 @@ async function uploadImages(db, orgId, product, images, apply) {
   return records;
 }
 
-async function upsertListing(db, orgId, product, images, apply) {
+async function upsertListing(db, orgId, product, images, apply, allowLinkedDraft) {
   const panelSku = `EON-QS26-${product.id}`;
   const minPriceCents = Math.min(...product.variants.map((variant) => variant.priceUsd * 100));
-  const { data: existing, error: existingError } = await db
+  let existingQuery = db
     .from("products")
     .select("id, title, status, etsy_listing_id")
     .eq("org_id", orgId)
-    .eq("sku", panelSku)
-    .is("etsy_listing_id", null)
-    .maybeSingle();
+    .eq("sku", panelSku);
+  if (!allowLinkedDraft) existingQuery = existingQuery.is("etsy_listing_id", null);
+  const { data: existing, error: existingError } = await existingQuery.maybeSingle();
   if (existingError) throw new Error(`${product.id}: draft lookup failed, ${existingError.message}`);
+  if (existing?.etsy_listing_id != null) {
+    assert(allowLinkedDraft, `${product.id}: linked Etsy draft requires --allow-linked-draft.`);
+    assert(existing.status === "draft", `${product.id}: linked listing is not a panel draft.`);
+  }
 
   const skus = product.variants.map((variant) => variant.sku);
   const { data: collisions, error: collisionError } = await db
@@ -170,12 +175,13 @@ async function upsertListing(db, orgId, product, images, apply) {
 
   let productId = existing?.id;
   if (productId) {
-    const { error } = await db
+    let updateQuery = db
       .from("products")
       .update(productPayload)
       .eq("id", productId)
-      .eq("org_id", orgId)
-      .is("etsy_listing_id", null);
+      .eq("org_id", orgId);
+    if (!allowLinkedDraft) updateQuery = updateQuery.is("etsy_listing_id", null);
+    const { error } = await updateQuery;
     if (error) throw new Error(`${product.id}: product update failed, ${error.message}`);
   } else {
     const { data, error } = await db.from("products").insert(productPayload).select("id").single();
@@ -235,7 +241,7 @@ async function upsertListing(db, orgId, product, images, apply) {
   return productId;
 }
 
-async function verifyListing(db, orgId, product, productId) {
+async function verifyListing(db, orgId, product, productId, allowLinkedDraft) {
   const { data: savedProduct, error: productError } = await db
     .from("products")
     .select("id, sku, status, etsy_listing_id, num_images")
@@ -267,7 +273,11 @@ async function verifyListing(db, orgId, product, productId) {
   }
 
   assert(savedProduct.status === "draft", `${product.id}: saved product is not a draft.`);
-  assert(savedProduct.etsy_listing_id === null, `${product.id}: Etsy listing link must stay empty.`);
+  if (allowLinkedDraft) {
+    assert(savedProduct.etsy_listing_id != null, `${product.id}: linked draft lost its Etsy ID.`);
+  } else {
+    assert(savedProduct.etsy_listing_id === null, `${product.id}: Etsy listing link must stay empty.`);
+  }
   assert(savedProduct.num_images === 3, `${product.id}: product image count is not 3.`);
   assert(variantCount === product.variantCount, `${product.id}: saved variant count mismatch.`);
   assert(savedImages?.length === 3, `${product.id}: saved image record count mismatch.`);
@@ -277,7 +287,8 @@ async function verifyListing(db, orgId, product, productId) {
   );
 
   console.log(
-    `verified ${product.id}: draft, Etsy unlinked, ${variantCount} variants, ${savedImages.length} images`,
+    `verified ${product.id}: draft, Etsy ${allowLinkedDraft ? "linked" : "unlinked"}, ` +
+      `${variantCount} variants, ${savedImages.length} images`,
   );
 }
 
@@ -288,6 +299,7 @@ async function main() {
   assert(url && key, "NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are required.");
 
   const apply = process.argv.includes("--apply");
+  const allowLinkedDraft = process.argv.includes("--allow-linked-draft");
   const selected = argumentValue("product")?.toUpperCase();
   const manifestPath = argumentValue("manifest") ?? DEFAULT_MANIFEST;
   const imageRoot = argumentValue("image-root") ?? DEFAULT_IMAGE_ROOT;
@@ -310,8 +322,15 @@ async function main() {
     const records = imageRecords(product, imageRoot);
     validateProduct(product, records);
     const uploaded = await uploadImages(db, org.id, product, records, apply);
-    const productId = await upsertListing(db, org.id, product, uploaded, apply);
-    if (apply) await verifyListing(db, org.id, product, productId);
+    const productId = await upsertListing(
+      db,
+      org.id,
+      product,
+      uploaded,
+      apply,
+      allowLinkedDraft,
+    );
+    if (apply) await verifyListing(db, org.id, product, productId, allowLinkedDraft);
   }
 }
 
