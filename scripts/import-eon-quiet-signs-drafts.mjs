@@ -58,7 +58,23 @@ function propertyKey(properties) {
 
 function imageRecords(product, imageRoot) {
   const role = product.metalMode === "single" ? "metal-variations" : "stacking-synergy";
-  return [
+  const productRoot = path.join(imageRoot, product.id);
+  const constructionFilename = [
+    "04-construction-view-v5.png",
+    "04-construction-view.png",
+  ].find((filename) => existsSync(path.join(productRoot, filename)));
+  const detailFilename = (
+    product.metalMode === "single"
+      ? ["05-metal-detail.png", "05-editorial-detail.png"]
+      : ["05-two-tone-detail.png", "05-editorial-detail.png"]
+  ).find((filename) => existsSync(path.join(productRoot, filename)));
+
+  assert(
+    Boolean(constructionFilename) === Boolean(detailFilename),
+    `${product.id}: image slots 4 and 5 must either both exist or both be absent.`,
+  );
+
+  const records = [
     {
       filename: "01-hero.png",
       alt: `${product.name} 14K solid gold ring, editorial hero view`,
@@ -74,7 +90,25 @@ function imageRecords(product, imageRoot) {
           ? `${product.name} in yellow, white and rose 14K gold`
           : `${product.name} two-tone 14K gold stacking view`,
     },
-  ].map((record, position) => ({
+  ];
+
+  if (constructionFilename && detailFilename) {
+    records.push(
+      {
+        filename: constructionFilename,
+        alt: `${product.name} low-profile comfort-fit construction view`,
+      },
+      {
+        filename: detailFilename,
+        alt:
+          product.metalMode === "single"
+            ? `${product.name} 14K solid gold finish detail`
+            : `${product.name} two-tone 14K gold metal detail`,
+      },
+    );
+  }
+
+  return records.map((record, position) => ({
     ...record,
     position,
     localPath: path.join(imageRoot, product.id, record.filename),
@@ -86,7 +120,8 @@ function validateProduct(product, images) {
   assert(product.title.length <= 140, `${product.id}: title exceeds 140 characters.`);
   assert(product.tags.length <= 13, `${product.id}: more than 13 tags.`);
   assert(product.tags.every((tag) => tag.length <= 20), `${product.id}: a tag exceeds 20 characters.`);
-  assert(product.imagePrompts.length === 3, `${product.id}: exactly 3 listing images are required.`);
+  assert(product.imagePrompts.length === 5, `${product.id}: exactly 5 image prompts are required.`);
+  assert([3, 5].includes(images.length), `${product.id}: listing image count must be 3 or 5.`);
   assert(product.personalization === false, `${product.id}: engraving or personalization must stay disabled.`);
   assert(product.madeToOrderBusinessDays === "4-5", `${product.id}: processing time must be 4-5 business days.`);
   assert(product.widthVariation === false, `${product.id}: width variation must stay disabled.`);
@@ -266,7 +301,7 @@ async function upsertListing(db, orgId, product, images, apply, allowLinkedDraft
   return productId;
 }
 
-async function verifyListing(db, orgId, product, productId, allowLinkedDraft) {
+async function verifyListing(db, orgId, product, productId, images, allowLinkedDraft) {
   const { data: savedProduct, error: productError } = await db
     .from("products")
     .select("id, sku, status, etsy_listing_id, num_images")
@@ -303,9 +338,12 @@ async function verifyListing(db, orgId, product, productId, allowLinkedDraft) {
   } else {
     assert(savedProduct.etsy_listing_id === null, `${product.id}: Etsy listing link must stay empty.`);
   }
-  assert(savedProduct.num_images === 3, `${product.id}: product image count is not 3.`);
+  assert(
+    savedProduct.num_images === images.length,
+    `${product.id}: product image count is not ${images.length}.`,
+  );
   assert(variantCount === product.variantCount, `${product.id}: saved variant count mismatch.`);
-  assert(savedImages?.length === 3, `${product.id}: saved image record count mismatch.`);
+  assert(savedImages?.length === images.length, `${product.id}: saved image record count mismatch.`);
   assert(
     savedImages.every((image, index) => image.position === index && image.url && image.storage_path),
     `${product.id}: saved image order or URL is invalid.`,
@@ -355,7 +393,9 @@ async function main() {
       apply,
       allowLinkedDraft,
     );
-    if (apply) await verifyListing(db, org.id, product, productId, allowLinkedDraft);
+    if (apply) {
+      await verifyListing(db, org.id, product, productId, uploaded, allowLinkedDraft);
+    }
   }
 }
 
