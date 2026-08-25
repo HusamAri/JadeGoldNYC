@@ -6,6 +6,7 @@
  * - Never calls Etsy.
  * - Never changes a product that already has an Etsy listing id.
  * - Never deletes stale variants, images or files.
+ * - Deactivates stale variants only on an Etsy-unlinked panel draft.
  *
  * Usage:
  *   node scripts/import-etsy-listing-draft.mjs --manifest=/absolute/path/listing-manifest.json
@@ -318,6 +319,23 @@ async function upsertPanelDraft(db, organizationId, manifest, product, images, a
   const savedByProperties = new Map(
     (savedVariants ?? []).map((variant) => [propertyKey(variant.properties), variant]),
   );
+  const incomingPropertyKeys = new Set(
+    product.variants.map((variant) => propertyKey(variant.properties)),
+  );
+  const staleVariantIds = (savedVariants ?? [])
+    .filter((variant) => !incomingPropertyKeys.has(propertyKey(variant.properties)))
+    .map((variant) => variant.id);
+  if (staleVariantIds.length > 0) {
+    const { error: staleVariantError } = await db
+      .from("product_variants")
+      .update({ active: false })
+      .eq("org_id", organizationId)
+      .eq("product_id", productId)
+      .in("id", staleVariantIds);
+    if (staleVariantError) {
+      throw new Error(`${product.id}: stale variant deactivation failed, ${staleVariantError.message}`);
+    }
+  }
   const variantRows = product.variants.map((variant) => {
     const saved = savedByProperties.get(propertyKey(variant.properties));
     return {
@@ -335,10 +353,24 @@ async function upsertPanelDraft(db, organizationId, manifest, product, images, a
       active: true,
     };
   });
-  const { error: variantError } = await db
-    .from("product_variants")
-    .upsert(variantRows, { onConflict: "id" });
-  if (variantError) throw new Error(`${product.id}: variant upsert failed, ${variantError.message}`);
+  const existingVariantRows = variantRows.filter((variant) => variant.id);
+  const newVariantRows = variantRows.filter((variant) => !variant.id);
+  if (existingVariantRows.length > 0) {
+    const { error: variantUpdateError } = await db
+      .from("product_variants")
+      .upsert(existingVariantRows, { onConflict: "id" });
+    if (variantUpdateError) {
+      throw new Error(`${product.id}: variant update failed, ${variantUpdateError.message}`);
+    }
+  }
+  if (newVariantRows.length > 0) {
+    const { error: variantInsertError } = await db
+      .from("product_variants")
+      .insert(newVariantRows);
+    if (variantInsertError) {
+      throw new Error(`${product.id}: variant insert failed, ${variantInsertError.message}`);
+    }
+  }
 
   const { data: savedImages, error: imageLookupError } = await db
     .from("listing_images")

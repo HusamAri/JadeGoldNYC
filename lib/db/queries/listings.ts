@@ -308,6 +308,7 @@ export async function listListingsIndex(opts?: {
         .from("product_variants")
         .select("product_id")
         .ilike("sku", `%${search}%`)
+        .or("active.eq.true,active.is.null")
         .not("product_id", "is", null)
         .order("id", { ascending: true })
         .range(from, to),
@@ -390,6 +391,7 @@ export async function listListingsIndex(opts?: {
         .from("product_variants")
         .select("product_id, weight_grams, price_cents, sku")
         .in("product_id", chunk)
+        .or("active.eq.true,active.is.null")
         .order("id", { ascending: true })
         .range(from, to),
     ),
