@@ -8,6 +8,7 @@
  *   node scripts/import-jade-fall-2026-drafts.mjs --product=THR01
  *   node scripts/import-jade-fall-2026-drafts.mjs --product=THR01 --apply
  *   node scripts/import-jade-fall-2026-drafts.mjs --product=THR01 --apply --allow-linked-draft
+ *   node scripts/import-jade-fall-2026-drafts.mjs --product=THR01 --apply --upload-limit=all
  */
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
@@ -20,9 +21,9 @@ const DEFAULT_MANIFEST = path.join(DEFAULT_PRODUCT_ROOT, "04-listing/listing-man
 const DEFAULT_IMAGE_ROOT = path.join(DEFAULT_PRODUCT_ROOT, "03-listing-images");
 const EXPECTED_ORGANIZATION_SLUG = "jade-gold-nyc";
 
-function loadEnvFile() {
-  if (!existsSync(".env.local")) return;
-  for (const line of readFileSync(".env.local", "utf8").split("\n")) {
+function loadEnvFile(envPath = ".env.local") {
+  if (!existsSync(envPath)) return;
+  for (const line of readFileSync(envPath, "utf8").split("\n")) {
     const match = line.match(/^([A-Z_]+)=(.*)$/);
     if (match && !process.env[match[1]]) {
       process.env[match[1]] = match[2].trim();
@@ -194,8 +195,7 @@ function validateProduct(product, images, pricing, variationRules) {
 }
 
 async function uploadImages(db, organizationId, product, images, apply) {
-  const records = [];
-  for (const image of images) {
+  return Promise.all(images.map(async (image) => {
     const storagePath =
       `${organizationId}/jade-fall-2026/${product.id}/${image.filename}`;
     const publicUrl =
@@ -210,9 +210,8 @@ async function uploadImages(db, organizationId, product, images, apply) {
       });
       if (error) throw new Error(`${product.id}: image upload failed, ${error.message}`);
     }
-    records.push({ ...image, storagePath, publicUrl });
-  }
-  return records;
+    return { ...image, storagePath, publicUrl };
+  }));
 }
 
 async function upsertListing(
@@ -353,8 +352,12 @@ async function upsertListing(
     throw new Error(`${product.id}: image lookup failed, ${imageLookupError.message}`);
   }
 
-  for (const image of images) {
-    const payload = {
+  const imageRows = images.map((image) => {
+    const existingImage = (existingImages ?? []).find(
+      (row) => row.storage_path === image.storagePath,
+    );
+    return {
+      ...(existingImage ? { id: existingImage.id } : {}),
       org_id: organizationId,
       product_id: productId,
       url: image.publicUrl,
@@ -363,14 +366,12 @@ async function upsertListing(
       alt: image.alt,
       position: image.position,
     };
-    const existingImage = (existingImages ?? []).find(
-      (row) => row.storage_path === image.storagePath,
-    );
-    const query = existingImage
-      ? db.from("listing_images").update(payload).eq("id", existingImage.id)
-      : db.from("listing_images").insert(payload);
-    const { error } = await query;
-    if (error) throw new Error(`${product.id}: image record failed, ${error.message}`);
+  });
+  const { error: imageRecordError } = await db
+    .from("listing_images")
+    .upsert(imageRows, { onConflict: "id" });
+  if (imageRecordError) {
+    throw new Error(`${product.id}: image record failed, ${imageRecordError.message}`);
   }
 
   console.log(`created panel draft ${product.id}: ${productId}`);
@@ -455,13 +456,22 @@ async function verifyListing(
 }
 
 async function main() {
-  loadEnvFile();
+  loadEnvFile(argumentValue("env-file") ?? ".env.local");
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? process.env.SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
   assert(url && key, "NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are required.");
 
   const apply = process.argv.includes("--apply");
   const allowLinkedDraft = process.argv.includes("--allow-linked-draft");
+  const uploadLimitArgument = argumentValue("upload-limit") ?? "1";
+  const uploadLimit = uploadLimitArgument === "all"
+    ? Number.POSITIVE_INFINITY
+    : Number(uploadLimitArgument);
+  assert(
+    uploadLimit === Number.POSITIVE_INFINITY ||
+      (Number.isInteger(uploadLimit) && uploadLimit >= 1 && uploadLimit <= 10),
+    "--upload-limit must be an integer from 1 to 10 or all.",
+  );
   const selected = argumentValue("product")?.toUpperCase();
   const manifestPath = argumentValue("manifest") ?? DEFAULT_MANIFEST;
   const imageRoot = argumentValue("image-root") ?? DEFAULT_IMAGE_ROOT;
@@ -485,12 +495,18 @@ async function main() {
 
   console.log(
     `${apply ? "APPLY" : "DRY RUN"}: ${products.length} product(s), ` +
-      `org ${organization.slug}`,
+      `org ${organization.slug}, upload limit ${uploadLimitArgument}`,
   );
   for (const product of products) {
     const records = imageRecords(product, imageRoot);
     validateProduct(product, records, manifest.pricing, manifest.variationRules);
-    const uploaded = await uploadImages(db, organization.id, product, records, apply);
+    const uploaded = await uploadImages(
+      db,
+      organization.id,
+      product,
+      records.slice(0, uploadLimit),
+      apply,
+    );
     const productId = await upsertListing(
       db,
       organization.id,
