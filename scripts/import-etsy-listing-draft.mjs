@@ -10,15 +10,16 @@
  * Usage:
  *   node scripts/import-etsy-listing-draft.mjs --manifest=/absolute/path/listing-manifest.json
  *   node scripts/import-etsy-listing-draft.mjs --manifest=/absolute/path/listing-manifest.json --apply
+ *   node scripts/import-etsy-listing-draft.mjs --manifest=/absolute/path/listing-manifest.json --apply --upload-limit=all
  */
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 
 import { createClient } from "@supabase/supabase-js";
 
-function loadEnvFile() {
-  if (!existsSync(".env.local")) return;
-  for (const line of readFileSync(".env.local", "utf8").split("\n")) {
+function loadEnvFile(envPath = ".env.local") {
+  if (!existsSync(envPath)) return;
+  for (const line of readFileSync(envPath, "utf8").split("\n")) {
     const match = line.match(/^([A-Z_]+)=(.*)$/);
     if (match && !process.env[match[1]]) process.env[match[1]] = match[2].trim();
   }
@@ -27,6 +28,21 @@ function loadEnvFile() {
 function argumentValue(name) {
   const prefix = `--${name}=`;
   return process.argv.find((argument) => argument.startsWith(prefix))?.slice(prefix.length);
+}
+
+async function runWithConcurrency(items, concurrency, worker) {
+  let nextIndex = 0;
+  const workers = Array.from(
+    { length: Math.min(concurrency, items.length) },
+    async () => {
+      while (nextIndex < items.length) {
+        const currentIndex = nextIndex;
+        nextIndex += 1;
+        await worker(items[currentIndex]);
+      }
+    },
+  );
+  await Promise.all(workers);
 }
 
 function assert(condition, message) {
@@ -199,8 +215,7 @@ function safeListingMetadata(manifest, product) {
 }
 
 async function uploadImages(db, organizationId, product, images, apply) {
-  const records = [];
-  for (const image of images) {
+  return Promise.all(images.map(async (image) => {
     const storagePath =
       `${organizationId}/etsy-listing-v1/${product.sku}/${image.filename}`;
     const publicUrl =
@@ -215,9 +230,8 @@ async function uploadImages(db, organizationId, product, images, apply) {
       });
       if (error) throw new Error(`${product.id}: image upload failed, ${error.message}`);
     }
-    records.push({ ...image, storagePath, publicUrl });
-  }
-  return records;
+    return { ...image, storagePath, publicUrl };
+  }));
 }
 
 async function findExistingProduct(db, organizationId, product) {
@@ -332,22 +346,26 @@ async function upsertPanelDraft(db, organizationId, manifest, product, images, a
     .eq("org_id", organizationId)
     .eq("product_id", productId);
   if (imageLookupError) throw new Error(`${product.id}: image lookup failed, ${imageLookupError.message}`);
-  for (const image of images) {
-    const imagePayload = {
+  const imageRows = images.map((image) => {
+    const saved = (savedImages ?? []).find((row) => row.storage_path === image.storagePath);
+    return {
+      ...(saved ? { id: saved.id } : {}),
       org_id: organizationId,
       product_id: productId,
       url: image.publicUrl,
       storage_path: image.storagePath,
-      source: image.provenance,
+      // `listing_images.source` is a storage transport field. Detailed image
+      // provenance remains in the secret-free `listing_metadata.imagePlan`.
+      source: "upload",
       alt: image.alt,
       position: image.position,
     };
-    const saved = (savedImages ?? []).find((row) => row.storage_path === image.storagePath);
-    const query = saved
-      ? db.from("listing_images").update(imagePayload).eq("id", saved.id)
-      : db.from("listing_images").insert(imagePayload);
-    const { error } = await query;
-    if (error) throw new Error(`${product.id}: image record failed, ${error.message}`);
+  });
+  const { error: imageRecordError } = await db
+    .from("listing_images")
+    .upsert(imageRows, { onConflict: "id" });
+  if (imageRecordError) {
+    throw new Error(`${product.id}: image record failed, ${imageRecordError.message}`);
   }
 
   return productId;
@@ -395,7 +413,7 @@ async function verifyPanelDraft(db, organizationId, product, productId, images) 
 }
 
 async function main() {
-  loadEnvFile();
+  loadEnvFile(argumentValue("env-file") ?? ".env.local");
   const manifestArgument = argumentValue("manifest");
   assert(manifestArgument, "--manifest=/absolute/path/listing-manifest.json is required.");
   const manifestPath = path.resolve(manifestArgument);
@@ -430,9 +448,34 @@ async function main() {
   }
 
   const apply = process.argv.includes("--apply");
-  console.log(`${apply ? "APPLY" : "DRY RUN"}: ${prepared.length} product(s), org ${organization.slug}`);
-  for (const { product, images } of prepared) {
-    const uploaded = await uploadImages(db, organization.id, product, images, apply);
+  const concurrency = Number(argumentValue("concurrency") ?? 3);
+  const uploadLimitArgument = argumentValue("upload-limit") ?? "1";
+  const uploadLimit = uploadLimitArgument === "all"
+    ? Number.POSITIVE_INFINITY
+    : Number(uploadLimitArgument);
+  assert(
+    Number.isInteger(concurrency) && concurrency >= 1 && concurrency <= 5,
+    "--concurrency must be an integer from 1 to 5.",
+  );
+  assert(
+    uploadLimit === Number.POSITIVE_INFINITY ||
+      (Number.isInteger(uploadLimit) && uploadLimit >= 1 && uploadLimit <= 10),
+    "--upload-limit must be an integer from 1 to 10 or all.",
+  );
+  console.log(
+    `${apply ? "APPLY" : "DRY RUN"}: ${prepared.length} product(s), ` +
+      `org ${organization.slug}, concurrency ${concurrency}, ` +
+      `upload limit ${uploadLimitArgument}`,
+  );
+  await runWithConcurrency(prepared, concurrency, async ({ product, images }) => {
+    const selectedImages = images.slice(0, uploadLimit);
+    const uploaded = await uploadImages(
+      db,
+      organization.id,
+      product,
+      selectedImages,
+      apply,
+    );
     const productId = await upsertPanelDraft(
       db,
       organization.id,
@@ -442,7 +485,7 @@ async function main() {
       apply,
     );
     if (apply) await verifyPanelDraft(db, organization.id, product, productId, uploaded);
-  }
+  });
 }
 
 main().catch((error) => {
