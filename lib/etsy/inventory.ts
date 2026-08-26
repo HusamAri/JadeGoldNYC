@@ -8,6 +8,153 @@ import {
   type EtsyOfferingUpdate,
   type EtsyProductUpdate,
 } from "@/lib/etsy/types";
+import {
+  asEtsyProperties,
+  type RawVariantProperties,
+} from "@/lib/variant-properties";
+
+const WEDDING_BAND_PROPERTY_IDS = {
+  Width: 513,
+  "Ring Size": 514,
+} as const;
+
+export interface WeddingBandMatrixVariant {
+  sku: string | null;
+  price_cents: number | null;
+  quantity: number | null;
+  properties: RawVariantProperties;
+}
+
+export interface WeddingBandMatrixValidation {
+  ok: boolean;
+  error?: string;
+  widthCount: number;
+  ringSizeCount: number;
+  variantCount: number;
+}
+
+function normalizedAxisName(value: string): string {
+  return value.trim().toLocaleLowerCase("en-US");
+}
+
+function matrixPropertyMap(
+  properties: RawVariantProperties,
+): Map<string, string> {
+  return new Map(
+    asEtsyProperties(properties).flatMap((property) => {
+      const name = normalizedAxisName(property.property_name ?? "");
+      const value = String(property.values?.[0] ?? "").trim();
+      return name && value ? [[name, value]] : [];
+    }),
+  );
+}
+
+export function validateWeddingBandMatrix(
+  variants: WeddingBandMatrixVariant[],
+): WeddingBandMatrixValidation {
+  const base = {
+    widthCount: 0,
+    ringSizeCount: 0,
+    variantCount: variants.length,
+  };
+  if (variants.length === 0) {
+    return { ...base, ok: false, error: "Aktif varyant bulunamadı." };
+  }
+  const widths = new Set<string>();
+  const sizes = new Set<string>();
+  const combinations = new Set<string>();
+  const skus = new Set<string>();
+  for (const variant of variants) {
+    const sku = (variant.sku ?? "").trim();
+    if (!sku || sku.length > 32) {
+      return { ...base, ok: false, error: "Her varyantta en fazla 32 karakterlik SKU olmalı." };
+    }
+    if (skus.has(sku)) {
+      return { ...base, ok: false, error: `Tekrarlanan SKU: ${sku}` };
+    }
+    skus.add(sku);
+    if (!(variant.price_cents != null && variant.price_cents > 0)) {
+      return { ...base, ok: false, error: `${sku}: geçerli fiyat yok.` };
+    }
+    const properties = matrixPropertyMap(variant.properties);
+    const width = properties.get("width");
+    const ringSize = properties.get("ring size");
+    if (!width || !ringSize) {
+      return { ...base, ok: false, error: `${sku}: Width veya Ring Size eksik.` };
+    }
+    widths.add(width);
+    sizes.add(ringSize);
+    const combination = `${width}|||${ringSize}`;
+    if (combinations.has(combination)) {
+      return { ...base, ok: false, error: `${sku}: tekrarlanan varyant kombinasyonu.` };
+    }
+    combinations.add(combination);
+  }
+  const counts = {
+    widthCount: widths.size,
+    ringSizeCount: sizes.size,
+    variantCount: variants.length,
+  };
+  if (widths.size < 2 || sizes.size < 2) {
+    return { ...counts, ok: false, error: "Width ve Ring Size gerçek varyasyon eksenleri olmalı." };
+  }
+  if (combinations.size !== widths.size * sizes.size) {
+    return {
+      ...counts,
+      ok: false,
+      error: `Varyant matrisi eksik: ${combinations.size}/${widths.size * sizes.size}.`,
+    };
+  }
+  return { ...counts, ok: true };
+}
+
+export function buildWeddingBandMatrixUpdate(
+  variants: WeddingBandMatrixVariant[],
+  readinessStateId: number,
+): EtsyInventoryUpdate {
+  const validation = validateWeddingBandMatrix(variants);
+  if (!validation.ok) throw new Error(validation.error);
+  return {
+    products: variants.map((variant) => {
+      const properties = matrixPropertyMap(variant.properties);
+      return {
+        sku: (variant.sku ?? "").trim(),
+        property_values: [
+          {
+            property_id: WEDDING_BAND_PROPERTY_IDS.Width,
+            property_name: "Width",
+            value_ids: [],
+            values: [properties.get("width")!],
+          },
+          {
+            property_id: WEDDING_BAND_PROPERTY_IDS["Ring Size"],
+            property_name: "Ring Size",
+            value_ids: [],
+            values: [properties.get("ring size")!],
+          },
+        ],
+        offerings: [
+          {
+            price: variant.price_cents! / 100,
+            quantity: Math.max(0, variant.quantity ?? 1),
+            is_enabled: true,
+            readiness_state_id: readinessStateId,
+          },
+        ],
+      };
+    }),
+    price_on_property: [
+      WEDDING_BAND_PROPERTY_IDS.Width,
+      WEDDING_BAND_PROPERTY_IDS["Ring Size"],
+    ],
+    quantity_on_property: [],
+    sku_on_property: [
+      WEDDING_BAND_PROPERTY_IDS.Width,
+      WEDDING_BAND_PROPERTY_IDS["Ring Size"],
+    ],
+    readiness_state_on_property: [],
+  };
+}
 
 /** Bir listenin tüm envanterini (products/offerings) okur. */
 export async function getListingInventory(
@@ -340,6 +487,72 @@ export async function putListingInventory(
       ? etsyPaths.listingInventory(listingId) + "?legacy=false"
       : etsyPaths.listingInventory(listingId);
   await client.request<unknown>("PUT", path, update);
+}
+
+export type WeddingBandMatrixPushOutcome = {
+  listingId: number;
+  status: "updated" | "error";
+  widthCount: number;
+  ringSizeCount: number;
+  variantCount: number;
+  detail?: string;
+};
+
+export async function pushWeddingBandMatrix(
+  client: EtsyClient,
+  listingId: number,
+  variants: WeddingBandMatrixVariant[],
+): Promise<WeddingBandMatrixPushOutcome> {
+  const validation = validateWeddingBandMatrix(variants);
+  if (!validation.ok) {
+    return { listingId, status: "error", ...validation, detail: validation.error };
+  }
+  try {
+    const readinessStateId = await resolveReadinessStateId(client);
+    if (readinessStateId == null) {
+      throw new Error("Made-to-order işlem profili çözülemedi.");
+    }
+    const update = buildWeddingBandMatrixUpdate(variants, readinessStateId);
+    await putListingInventory(client, listingId, update, { legacy: false });
+    const readback = await getListingInventory(client, listingId);
+    const live = (readback.products ?? []).filter((product) => !product.is_deleted);
+    const liveAxes = live.map((product) =>
+      new Map(
+        (product.property_values ?? []).flatMap((property) => {
+          const name = normalizedAxisName(property.property_name ?? "");
+          const value = String(property.values?.[0] ?? "").trim();
+          return name && value ? [[name, value]] : [];
+        }),
+      ),
+    );
+    const widths = new Set(liveAxes.map((map) => map.get("width")).filter(Boolean));
+    const sizes = new Set(liveAxes.map((map) => map.get("ring size")).filter(Boolean));
+    if (
+      live.length !== validation.variantCount ||
+      widths.size !== validation.widthCount ||
+      sizes.size !== validation.ringSizeCount
+    ) {
+      throw new Error(
+        `Canlı geri okuma eşleşmedi: ${live.length} varyant, ${widths.size} width, ${sizes.size} size.`,
+      );
+    }
+    return {
+      listingId,
+      status: "updated",
+      widthCount: widths.size,
+      ringSizeCount: sizes.size,
+      variantCount: live.length,
+    };
+  } catch (error) {
+    return {
+      listingId,
+      status: "error",
+      widthCount: validation.widthCount,
+      ringSizeCount: validation.ringSizeCount,
+      variantCount: validation.variantCount,
+      detail: error instanceof Error ? error.message : "Bilinmeyen hata",
+    };
+  }
 }
 
 export type PushOutcome = {

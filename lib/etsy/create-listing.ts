@@ -333,6 +333,46 @@ function buildVariationPlan(variants: DraftVariant[]): VariationPlan {
   };
 }
 
+function isWeddingBandTaxonomy(sellerPath: string[]): boolean {
+  return sellerPath.some(
+    (part) => normalizedTaxonomyName(part) === "wedding bands",
+  );
+}
+
+export function validateWeddingBandVariationAxes(
+  sellerPath: string[],
+  variants: DraftVariant[],
+): string | null {
+  if (!isWeddingBandTaxonomy(sellerPath)) return null;
+  if (variants.length === 0) {
+    return "Wedding band listinglerinde Width ve Ring Size varyantları zorunludur.";
+  }
+  const maps = variants.map(variantPropMap);
+  const requiredNames = ["width", "ring size"] as const;
+  const everyVariantHasBoth = maps.every((map) =>
+    requiredNames.every((name) =>
+      [...map.keys()].some((key) => normalizedTaxonomyName(key) === name),
+    ),
+  );
+  if (!everyVariantHasBoth) {
+    return "Wedding band listinglerinde her varyant Width ve Ring Size içermelidir.";
+  }
+  for (const requiredName of requiredNames) {
+    const values = new Set(
+      maps.flatMap((map) =>
+        [...map.entries()]
+          .filter(([name]) => normalizedTaxonomyName(name) === requiredName)
+          .map(([, value]) => value),
+      ),
+    );
+    if (values.size < 2) {
+      const label = requiredName === "width" ? "Width" : "Ring Size";
+      return `Wedding band listinglerinde ${label} gerçek bir varyasyon ekseni olmalıdır.`;
+    }
+  }
+  return null;
+}
+
 /** Sabit + overflow property'leri açıklama sonuna okunur not olarak ekler. */
 function appendConstantsToDescription(
   base: string,
@@ -369,6 +409,25 @@ export async function createDraftListingFromProduct(
 
   const warnings: string[] = [];
   const variants = product.variants ?? [];
+  const overlongSku = variants.find((variant) => (variant.sku ?? "").length > 32);
+  if (overlongSku) {
+    return {
+      ok: false,
+      step: "validation",
+      error: `SKU 32 karakteri aşamaz: ${overlongSku.sku}`,
+    };
+  }
+  const weddingBandVariationError = validateWeddingBandVariationAxes(
+    protocol.taxonomy.sellerPath,
+    variants,
+  );
+  if (weddingBandVariationError) {
+    return {
+      ok: false,
+      step: "validation",
+      error: weddingBandVariationError,
+    };
+  }
 
   // Fiyat çapası: en düşük varyant fiyatı; varyant yoksa ürün fiyatı.
   const variantPrices = variants
