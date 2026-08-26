@@ -13,7 +13,11 @@ import {
 import { syncListingVariants } from "@/lib/etsy/variants";
 import { getEtsyWriteAccess } from "@/lib/db/queries/etsy";
 import { pricingWriteBlocked } from "@/lib/feature-flags";
-import { pushListingPrices } from "@/lib/etsy/inventory";
+import {
+  pushListingPrices,
+  pushWeddingBandMatrix,
+  type WeddingBandMatrixVariant,
+} from "@/lib/etsy/inventory";
 import {
   variantPropsForMatch,
   type RawVariantProperties,
@@ -308,6 +312,160 @@ export async function pushAllPricesToEtsyAction(
     updated,
     unchanged,
     skipped,
+    errors,
+    sampleErrors,
+  };
+}
+
+export interface PushWeddingBandMatricesResult {
+  done: boolean;
+  total: number;
+  nextOffset: number;
+  updated: number;
+  errors: number;
+  sampleErrors: string[];
+  error?: string;
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function isReadyWeddingBandRepair(metadata: unknown): boolean {
+  if (!isRecord(metadata)) return false;
+  const taxonomy = metadata.taxonomy;
+  const repair = metadata.variationRepair;
+  if (!isRecord(taxonomy) || !isRecord(repair)) return false;
+  const sellerPath = taxonomy.sellerPath;
+  return (
+    Array.isArray(sellerPath) &&
+    sellerPath.some(
+      (part) =>
+        typeof part === "string" &&
+        part.trim().toLocaleLowerCase("en-US") === "wedding bands",
+    ) &&
+    repair.status === "ready"
+  );
+}
+
+export async function pushWeddingBandMatricesToEtsyAction(
+  offset = 0,
+): Promise<PushWeddingBandMatricesResult> {
+  const m = await requireMembership();
+  const base = (
+    over: Partial<PushWeddingBandMatricesResult> = {},
+  ): PushWeddingBandMatricesResult => ({
+    done: true,
+    total: 0,
+    nextOffset: offset,
+    updated: 0,
+    errors: 0,
+    sampleErrors: [],
+    ...over,
+  });
+  if (!isManager(m.role)) return base({ error: MANAGER_ONLY_ERROR });
+  const { writeEnabled } = await getEtsyWriteAccess(m.org_id);
+  if (!writeEnabled) {
+    return base({ error: "Etsy yazma erişimi kapalı (listings_w gerekli)." });
+  }
+
+  const admin = createAdminClient();
+  const { data, error: productError } = await admin
+    .from("products")
+    .select("id,etsy_listing_id,sku,title,listing_metadata")
+    .eq("org_id", m.org_id)
+    .is("archived_at", null)
+    .not("etsy_listing_id", "is", null)
+    .order("id", { ascending: true });
+  if (productError) return base({ error: productError.message });
+  const listings = (data ?? []).filter((row) =>
+    isReadyWeddingBandRepair(row.listing_metadata),
+  ) as {
+    id: string;
+    etsy_listing_id: number;
+    listing_metadata: Record<string, unknown>;
+  }[];
+  const total = listings.length;
+  if (total === 0) return base();
+
+  let client: EtsyClient;
+  try {
+    client = await EtsyClient.forOrg(m.org_id);
+  } catch (error) {
+    return base({
+      total,
+      error: error instanceof Error ? error.message : "Etsy bağlantısı kurulamadı.",
+    });
+  }
+
+  let updated = 0;
+  let errors = 0;
+  const sampleErrors: string[] = [];
+  const startedAt = Date.now();
+  let index = Math.max(0, offset);
+  for (; index < total; index += 1) {
+    if (Date.now() - startedAt > PUSH_BUDGET_MS) break;
+    const listing = listings[index];
+    const { data: variantRows, error: variantError } = await admin
+      .from("product_variants")
+      .select("sku,price_cents,quantity,properties")
+      .eq("org_id", m.org_id)
+      .eq("product_id", listing.id)
+      .eq("active", true);
+    if (variantError) {
+      errors += 1;
+      if (sampleErrors.length < 5) {
+        sampleErrors.push(`#${listing.etsy_listing_id}: ${variantError.message}`);
+      }
+      continue;
+    }
+    const outcome = await pushWeddingBandMatrix(
+      client,
+      listing.etsy_listing_id,
+      (variantRows ?? []) as WeddingBandMatrixVariant[],
+    );
+    if (outcome.status === "updated") {
+      updated += 1;
+      const repair = isRecord(listing.listing_metadata.variationRepair)
+        ? listing.listing_metadata.variationRepair
+        : {};
+      await admin
+        .from("products")
+        .update({
+          listing_metadata: {
+            ...listing.listing_metadata,
+            variationRepair: {
+              ...repair,
+              status: "verified",
+              pushedAt: new Date().toISOString(),
+              etsyVariantCount: outcome.variantCount,
+              widthCount: outcome.widthCount,
+              ringSizeCount: outcome.ringSizeCount,
+            },
+          },
+        })
+        .eq("id", listing.id)
+        .eq("org_id", m.org_id);
+      await new Promise((resolve) => setTimeout(resolve, 250));
+    } else {
+      errors += 1;
+      if (sampleErrors.length < 5) {
+        sampleErrors.push(
+          `#${listing.etsy_listing_id}: ${outcome.detail ?? "geri okuma hatası"}`,
+        );
+      }
+    }
+  }
+  const done = index >= total;
+  if (done) {
+    revalidatePath("/tasarimlar");
+    revalidatePath("/ayarlar/etsy");
+  }
+  return {
+    done,
+    total,
+    nextOffset: index,
+    updated,
     errors,
     sampleErrors,
   };
