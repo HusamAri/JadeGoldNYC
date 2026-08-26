@@ -20,6 +20,7 @@ import {
   applyListingPersonalization,
   DEFAULT_PERSONALIZATION_QUESTIONS,
   getListingPersonalization,
+  INTAGLIO_1010_PERSONALIZATION_QUESTIONS,
   personalizationKey,
   personalizationSummary,
   type PersonalizationQuestion,
@@ -1375,6 +1376,186 @@ export interface BulkPersonalizationResult {
   nextIndex?: number;
   /** Referansta okunan soruların özeti — kullanıcıya ne yazıldığını gösterir. */
   summary?: string;
+}
+
+const INTAGLIO_1010_SKUS = [
+  "GLD-R-1010",
+  "GLD-R-1410",
+  "GLD-R-1810",
+  "WHG-R-1010",
+  "WHG-R-1410",
+  "WHG-R-1810",
+  "RSG-R-1010",
+  "RSG-R-1410",
+  "RSG-R-1810",
+] as const;
+
+/**
+ * Applies the dedicated Top or Inside engraving contract only to the nine
+ * Intaglio 1010 listings. The source product gate prevents direct Server
+ * Function calls from widening the write scope to another product family.
+ */
+export async function applyIntaglio1010Personalization(
+  sourceProductId: string,
+  startIndex = 0,
+): Promise<BulkPersonalizationResult> {
+  const m = await requireMembership();
+  if (!isManager(m.role)) return { error: MANAGER_ONLY_ERROR };
+
+  const { writeEnabled } = await getEtsyWriteAccess(m.org_id);
+  if (!writeEnabled) return { error: "Etsy yazma erişimi kapalı." };
+
+  const admin = createAdminClient();
+  const { data: source, error: sourceError } = await admin
+    .from("products")
+    .select("sku")
+    .eq("id", sourceProductId)
+    .eq("org_id", m.org_id)
+    .maybeSingle();
+  if (sourceError) return { error: sourceError.message };
+  if (
+    !source ||
+    !INTAGLIO_1010_SKUS.includes(
+      (source as { sku: (typeof INTAGLIO_1010_SKUS)[number] }).sku,
+    )
+  ) {
+    return { error: "Bu işlem yalnız Intaglio 1010 listinglerinden başlatılabilir." };
+  }
+
+  const { data, error } = await admin
+    .from("products")
+    .select("sku, etsy_listing_id")
+    .eq("org_id", m.org_id)
+    .in("sku", [...INTAGLIO_1010_SKUS])
+    .is("etsy_deleted_at", null);
+  if (error) return { error: error.message };
+
+  const rows = (data ?? []) as {
+    sku: string;
+    etsy_listing_id: number | null;
+  }[];
+  const bySku = new Map(rows.map((row) => [row.sku, row]));
+  const missing = INTAGLIO_1010_SKUS.filter((sku) => !bySku.has(sku));
+  const unlinked = INTAGLIO_1010_SKUS.filter(
+    (sku) => !bySku.get(sku)?.etsy_listing_id,
+  );
+  if (missing.length > 0 || unlinked.length > 0) {
+    return {
+      error:
+        "Dokuz Intaglio listinginin tamamı hazır değil. " +
+        `${missing.length ? `Panelde eksik: ${missing.join(", ")}. ` : ""}` +
+        `${unlinked.length ? `Etsy bağlantısı eksik: ${unlinked.join(", ")}.` : ""}`,
+    };
+  }
+
+  const items = INTAGLIO_1010_SKUS.map((sku) => ({
+    sku,
+    listingId: bySku.get(sku)!.etsy_listing_id!,
+  }));
+  const begin = Math.max(0, Math.min(Math.trunc(startIndex), items.length));
+  if (begin === items.length) {
+    return {
+      ok: true,
+      applied: 0,
+      skipped: 0,
+      failed: [],
+      total: items.length,
+      kalan: 0,
+      devam: false,
+      nextIndex: begin,
+      summary: personalizationSummary(INTAGLIO_1010_PERSONALIZATION_QUESTIONS),
+    };
+  }
+
+  try {
+    const client = await EtsyClient.forOrg(m.org_id);
+    const shopId = await client.requireShopId();
+    const canonicalKey = personalizationKey(
+      INTAGLIO_1010_PERSONALIZATION_QUESTIONS,
+    );
+    const deadline = Date.now() + BULK_PERSONALIZATION_BUDGET_MS;
+    let applied = 0;
+    let skipped = 0;
+    const failed: { listingId: number; error: string }[] = [];
+    let index = begin;
+
+    for (; index < items.length; index++) {
+      if (Date.now() > deadline) break;
+      const item = items[index];
+      try {
+        const current = await getListingPersonalization(client, item.listingId);
+        if (personalizationKey(current) === canonicalKey) {
+          skipped += 1;
+          continue;
+        }
+        const result = await applyListingPersonalization(
+          client,
+          shopId,
+          item.listingId,
+          INTAGLIO_1010_PERSONALIZATION_QUESTIONS,
+        );
+        if (result.ok) applied += 1;
+        else {
+          failed.push({
+            listingId: item.listingId,
+            error: `${item.sku}: ${result.detail ?? "Kişiselleştirme doğrulanamadı."}`,
+          });
+        }
+      } catch (writeError) {
+        failed.push({
+          listingId: item.listingId,
+          error: `${item.sku}: ${
+            writeError instanceof Error
+              ? writeError.message.slice(0, 120)
+              : String(writeError)
+          }`,
+        });
+      }
+    }
+
+    const devam = index < items.length;
+    await logAudit(admin, {
+      orgId: m.org_id,
+      action: "etsy.personalization_push",
+      entityType: "shop",
+      summary:
+        `Intaglio 1010 engraving seçenekleri ${begin + 1}-${index}. sıra için işlendi. ` +
+        `${applied} listing yazıldı ve doğrulandı, ${skipped} zaten aynıydı` +
+        `${failed.length ? `, ${failed.length} hata` : ""}.`,
+      diff: {
+        start: begin,
+        next: index,
+        total: items.length,
+        applied,
+        skipped,
+        failed,
+        skus: [...INTAGLIO_1010_SKUS],
+        questions: INTAGLIO_1010_PERSONALIZATION_QUESTIONS,
+      },
+      source: "app",
+    });
+    revalidatePath("/tasarimlar");
+    return {
+      ok: true,
+      applied,
+      skipped,
+      failed,
+      total: items.length,
+      kalan: items.length - index,
+      devam,
+      nextIndex: index,
+      summary: personalizationSummary(INTAGLIO_1010_PERSONALIZATION_QUESTIONS),
+    };
+  } catch (e) {
+    return {
+      error:
+        e instanceof EtsyNotConnectedError
+          ? "Etsy bağlantısı yok, Ayarlar'dan bağlanın."
+          : e instanceof Error
+            ? e.message
+            : String(e),
+    };
+  }
 }
 
 /**

@@ -8,6 +8,7 @@ import { Loader2, PencilRuler, CopyCheck, ListOrdered } from "lucide-react";
 import {
   readListingPersonalization,
   copyPersonalizationToAllListings,
+  applyIntaglio1010Personalization,
   applyNumberedEonPersonalizationToAllListings,
 } from "@/app/(dashboard)/tasarimlar/listing/[id]/actions";
 import type { PersonalizationQuestion } from "@/lib/etsy/personalization";
@@ -28,14 +29,22 @@ const MAX_TUR = 20;
  * tipi seçimi). Soruları kodda sabitlemek onun düzenlemesini bir sonraki
  * gönderimde ezerdi.
  */
-export function PersonalizationCard({ productId }: { productId: string }) {
+export function PersonalizationCard({
+  productId,
+  sku,
+}: {
+  productId: string;
+  sku: string;
+}) {
   const router = useRouter();
   const [okuyor, setOkuyor] = useState(false);
   const [yaziyor, setYaziyor] = useState(false);
   const [standartliyor, setStandartliyor] = useState(false);
+  const [intaglioYaziyor, setIntaglioYaziyor] = useState(false);
   const [questions, setQuestions] = useState<PersonalizationQuestion[] | null>(
     null,
   );
+  const intaglio1010 = /^(GLD|WHG|RSG)-R-(10|14|18)10$/.test(sku);
 
   async function oku() {
     setOkuyor(true);
@@ -177,6 +186,74 @@ export function PersonalizationCard({ productId }: { productId: string }) {
     }
   }
 
+  async function intaglioEngravingUygula() {
+    if (
+      !confirm(
+        "Yalnız 9 Intaglio 1010 listingine Engraving Placement, Engraving Text ve numaralı Engraving Font alanları yazılacak. " +
+          "Mevcut kişiselleştirme soruları bu 9 listingde tamamen değiştirilecek. Devam?",
+      )
+    ) {
+      return;
+    }
+
+    setIntaglioYaziyor(true);
+    try {
+      let index = 0;
+      let applied = 0;
+      let skipped = 0;
+      let total = 9;
+      const failed: { listingId: number; error: string }[] = [];
+      for (let tur = 0; tur < MAX_TUR; tur++) {
+        const res = await applyIntaglio1010Personalization(productId, index);
+        if (res.error) {
+          toast.error(res.error);
+          return;
+        }
+        applied += res.applied ?? 0;
+        skipped += res.skipped ?? 0;
+        total = res.total ?? total;
+        failed.push(...(res.failed ?? []));
+        const ilerledi = (res.nextIndex ?? 0) > index;
+        if (!res.devam || !ilerledi) break;
+        index = res.nextIndex ?? index;
+        toast.info(
+          `${applied} Intaglio listingi doğrulandı · ${res.kalan} kaldı`,
+        );
+      }
+
+      const verified = applied + skipped;
+      const pending = Math.max(0, total - verified - failed.length);
+      if (failed.length > 0 || pending > 0) {
+        toast.warning(
+          `${applied} yazıldı · ${skipped} zaten aynıydı · ${failed.length} hata: ` +
+            failed
+              .slice(0, 3)
+              .map((item) => `${item.listingId} (${item.error})`)
+              .join(" · ") +
+            `${pending ? ` · ${pending} listing bekliyor` : ""}`,
+          { duration: 12000 },
+        );
+      } else {
+        toast.success(
+          `${verified} Intaglio listingi Etsy'den geri okunarak doğrulandı · ${applied} güncellendi · ${skipped} zaten aynıydı.`,
+          { duration: 10000 },
+        );
+      }
+      await oku();
+      router.refresh();
+    } catch (e) {
+      toast.error(
+        `Intaglio engraving senkronu yarıda kaldı: ${
+          e instanceof Error ? e.message : String(e)
+        }`,
+        { duration: 12000 },
+      );
+      router.refresh();
+    } finally {
+      setIntaglioYaziyor(false);
+    }
+  }
+
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap items-center gap-2">
@@ -185,7 +262,7 @@ export function PersonalizationCard({ productId }: { productId: string }) {
           variant="outline"
           size="sm"
           onClick={oku}
-          disabled={okuyor || yaziyor}
+          disabled={okuyor || yaziyor || standartliyor || intaglioYaziyor}
         >
           {okuyor ? (
             <Loader2 className="size-4 animate-spin" />
@@ -198,7 +275,7 @@ export function PersonalizationCard({ productId }: { productId: string }) {
           type="button"
           size="sm"
           onClick={numaraliFontlariYay}
-          disabled={okuyor || yaziyor || standartliyor}
+          disabled={okuyor || yaziyor || standartliyor || intaglioYaziyor}
         >
           {standartliyor ? (
             <Loader2 className="size-4 animate-spin" />
@@ -209,13 +286,30 @@ export function PersonalizationCard({ productId }: { productId: string }) {
             ? "Tüm listing'ler güncelleniyor…"
             : "Numaralı EON fontlarını tümüne uygula"}
         </Button>
+        {intaglio1010 ? (
+          <Button
+            type="button"
+            size="sm"
+            onClick={intaglioEngravingUygula}
+            disabled={okuyor || yaziyor || standartliyor || intaglioYaziyor}
+          >
+            {intaglioYaziyor ? (
+              <Loader2 className="size-4 animate-spin" />
+            ) : (
+              <PencilRuler className="size-4" />
+            )}
+            {intaglioYaziyor
+              ? "9 listing doğrulanıyor…"
+              : "Intaglio engraving'i 9 listinge uygula"}
+          </Button>
+        ) : null}
         {questions && questions.length > 0 ? (
           <Button
             type="button"
             variant="outline"
             size="sm"
             onClick={yay}
-            disabled={okuyor || yaziyor}
+            disabled={okuyor || yaziyor || standartliyor || intaglioYaziyor}
           >
             {yaziyor ? (
               <Loader2 className="size-4 animate-spin" />

@@ -416,7 +416,7 @@ export default async function ListingDetayPage({
             <p className="text-muted-foreground mb-2 font-mono text-[10px] tracking-[0.12em] uppercase">
               Kişiselleştirme · custom options
             </p>
-            <PersonalizationCard productId={product.id} />
+            <PersonalizationCard productId={product.id} sku={product.sku ?? ""} />
           </div>
         )}
 

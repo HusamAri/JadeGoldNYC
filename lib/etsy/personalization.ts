@@ -94,6 +94,40 @@ export const DEFAULT_PERSONALIZATION_QUESTIONS: PersonalizationQuestion[] = [
   },
 ];
 
+/**
+ * Personalization contract for the nine Intaglio 1010 recessed-channel bands.
+ * A single text field avoids conflicting top and inside engraving requests,
+ * while placement remains an explicit buyer choice.
+ */
+export const INTAGLIO_1010_PERSONALIZATION_QUESTIONS: PersonalizationQuestion[] = [
+  {
+    question_type: "dropdown",
+    question_text: "Engraving Placement",
+    required: false,
+    options: [{ label: "Top Engraving" }, { label: "Inside Engraving" }],
+  },
+  {
+    question_type: "text_input",
+    question_text: "Engraving Text (optional)",
+    instructions:
+      "Choose one placement above. Top engraving: up to 20 characters. " +
+      "Inside engraving: up to 30 characters. Blank means no engraving.",
+    required: false,
+    max_allowed_characters: 30,
+  },
+  {
+    question_type: "dropdown",
+    question_text: "Engraving Font",
+    required: false,
+    options: [
+      { label: "1| Prata" },
+      { label: "2| Cinzel" },
+      { label: "3| Cinzel Decorative" },
+      { label: "4| Great Vibes" },
+    ],
+  },
+];
+
 /** Tek listing'in canlı kişiselleştirmesini okur (shop_id gerekmez). */
 export async function getListingPersonalization(
   client: EtsyClient,
