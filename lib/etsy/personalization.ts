@@ -59,6 +59,7 @@ interface PersonalizationResponse {
 /** Etsy sınırları — aşan içerik 400 döndürür, önden keseriz. */
 const MAX_QUESTION_TEXT = 45;
 const MAX_DROPDOWN_LABEL = 20;
+const MAX_INSTRUCTIONS = 120;
 
 /**
  * YENİ listing'in açılış kişiselleştirmesi ve EON'un numaralı gravür kanonu:
@@ -159,7 +160,9 @@ export function normalizePersonalizationForWrite(
       required: q.required ?? false,
     };
     // `instructions` dropdown'da YASAK (Etsy 400) — yalnız diğer tiplerde.
-    if (!dropdown && q.instructions) out.instructions = q.instructions;
+    if (!dropdown && q.instructions) {
+      out.instructions = q.instructions.slice(0, MAX_INSTRUCTIONS);
+    }
     if (q.question_type === "text_input" && q.max_allowed_characters != null) {
       out.max_allowed_characters = q.max_allowed_characters;
     }
