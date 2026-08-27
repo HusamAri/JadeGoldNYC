@@ -7,6 +7,7 @@ import { formatDateTime } from "@/lib/format";
 import { PageHeader } from "@/components/page-header";
 import { EtsySyncButton } from "@/components/etsy-sync-button";
 import { EtsyPushButton } from "@/components/etsy-push-button";
+import { WeddingBandMatrixPushButton } from "@/components/wedding-band-matrix-push-button";
 import {
   ApiCredentialGuide,
   ETSY_WRITE_GUIDE,
@@ -100,6 +101,10 @@ export default async function EtsyAyarlarPage() {
                 tersi). Canlı mağazaya yazar → iki adımlı onay + owner/admin +
                 listings_w. */}
             <EtsyPushButton
+              disabled={!connected}
+              writeEnabled={writeAccess.writeEnabled}
+            />
+            <WeddingBandMatrixPushButton
               disabled={!connected}
               writeEnabled={writeAccess.writeEnabled}
             />
