@@ -78,13 +78,23 @@ export async function GET(request: Request) {
     );
   }
 
+  // Org, es-pull ile aynı desende parametreli. Varsayılan EON — bu rota EON
+  // için yazıldı ve mevcut çağrılar org'suz geliyor, kırılmasınlar.
+  // 2026-08-27: sabit "EON" idi ve rota adı genel olduğu için Jade fiyat
+  // itişinde sessizce YANLIŞ org'a bakıyordu; Jade listing'leri EON'un
+  // kataloğunda olmadığı için her satır "panelde-yok" dönerdi — yani hiç
+  // yazmadan "ok" raporlardı. panelPushAll'daki FLAT_FIX_TARGETS org süzgeci
+  // vakasının aynısı (bkz. o dosyadaki yorum).
+  const orgName = url.searchParams.get("org") ?? "EON";
   const admin = createAdminClient();
   const { data: org } = await admin
     .from("organizations")
     .select("id")
-    .eq("name", "EON")
+    .eq("name", orgName)
     .maybeSingle();
-  if (!org) return NextResponse.json({ error: "EON yok" }, { status: 500 });
+  if (!org) {
+    return NextResponse.json({ error: `org yok: ${orgName}` }, { status: 404 });
+  }
   const orgId = (org as { id: string }).id;
 
   let client: EtsyClient;

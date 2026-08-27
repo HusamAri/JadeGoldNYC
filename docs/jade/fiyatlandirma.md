@@ -27,8 +27,9 @@ ve tartım işaretli listingler (§7).
 | Tedarikçi maliyeti | **$106 / gram** | HER ŞEY DAHİL: ham altın + işçilik + taş/boncuk |
 | Kargo | **$5** | Ücretsiz kargo — bedeli satıcı karşılıyor |
 | Ambalaj | **$1,50** | |
-| İndirim | **%15, kalıcı** | Etsy'de açık; tahsilat = liste × 0,85 |
-| Etsy kesintisi | %6,5 işlem + %3 ödeme + $0,25 | |
+| İndirim | **1/3 (%33,3), kalıcı** | Etsy'de açık; tahsilat = liste × 0,667. Tarihçe: %15 (→08-20) → %25 (§9) → 1/3 (§10) |
+| Etsy kesintisi | %6,5 işlem + %3 ödeme + $0,25 | Ağustos siparişlerinde ölçüldü: %9,1–10,6 ✓ |
+| Hedef marj | **%25** | §10 kararı; önceki değer %20 |
 
 Bu değerler `lib/jade/pricing.ts` içinde sabit olarak yaşıyor ve tarih taşıyor.
 **Altın fiyatı, kargo tarifesi, Etsy komisyonu veya indirim oranı değişirse
@@ -50,9 +51,12 @@ oradaki sabitler elden geçirilmeli** — yoksa panel sessizce yanlış marj gö
 
 ```
 maliyet = gram × $106 + $5 (kargo) + $1,50 (ambalaj)
-liste   = (maliyet + $0,25) / (0,85 × (0,905 − hedef_marj))
+liste   = (maliyet + $0,25) / ((1 − indirim) × (0,905 − hedef_marj))
 ```
-Tam dolara yukarı yuvarlanır. Hedef marj **%20**.
+Tam dolara yukarı yuvarlanır. Güncel değerler: indirim **1/3**, hedef marj **%25**
+→ payda `0,667 × 0,655 = 0,436667`. (Bu satır 2026-08-27'de güncellendi; eskiden
+payda `0,85 × 0,705` idi ve indirim iki kez değiştiği için sabit kodlanmış `0,85`
+sessiz çürümenin kaynağıydı — §9, §10.)
 
 **Yalnız YUKARI:** hesaplanan hedef mevcut fiyatın altındaysa fiyat korunur.
 Gerekçe ticari: %70 marjla satan Italian Horn'u formüle çekmek ciroyu bedelsiz
@@ -431,17 +435,113 @@ select md5(string_agg(v.id::text||':'||v.price_cents::text, ',' order by v.id))
 from products p join product_variants v on v.product_id=p.id and v.org_id=p.org_id
 where p.org_id='f155b853-dfaf-48fd-94c5-ddfcb856e07c'
   and p.etsy_deleted_at is null and v.price_cents is not null;
--- kaydırma SONRASI (mevcut, doğru durum): 8aa1b019932fd73da355cf88b6feaede
--- toplam: 440820000 cent
+-- kaydırma SONRASI: 8aa1b019932fd73da355cf88b6feaede / toplam 440820000 cent
 ```
+
+> **ARTIK GEÇERSİZ (2026-08-27):** yukarıdaki mühür §10'daki ikinci kaydırmayla
+> aşıldı. Güncel ön koşul mührü §10'dadır; buradaki değer yalnız tarihsel kayıt.
 
 Önce/sonra mührü tek başına yetmez: ikinci koşu da kendi mühür kontrolünden
 geçer, çünkü o mühür "yazmak istediğini yazdı mı?" der, "koşmalı mıydı?" demez.
 
-### Açık risk — Offsite Ads
+### Offsite Ads — ÖLÇÜLDÜ (2026-08-27), risk küçük
 
-Etsy Offsite Ads devredeyse kesinti %9,5 yerine ~%24,5 olur; **%25 indirim +
-Offsite Ads** birleşiminde katalogun büyük kısmı zarara döner. Fiyatlama bunu
-tek başına çözemez. Reklam kaynaklı sipariş payı **ölçülemiyor**: satış senkronu
-5 Ağustos'tan beri bayat, Ağustos siparişlerinin hiçbiri panelde yok.
-Senkron tazelenmeden bu risk sayısallaştırılamaz.
+§9 yazıldığında bu risk "ölçülemiyor" diye açık bırakılmıştı (satış senkronu
+5 Ağustos'tan beri bayattı). Senkron 20 Ağustos'ta tazelendi ve ölçüm yapıldı:
+Ağustos siparişlerinde gerçek Etsy kesintisi **%9,1–10,6** — motorun
+`JADE_ETSY_RATE = 0.095` varsayımı doğru, korkulan ~%24,5'lik Offsite yaygınlığı
+**yok**. Kesinti oranı `etsy_fees_cents / (item_total − discount)` ile ölçülür;
+`sales.etsy_fees_cents` yalnız ödeme senkronu koştuğunda dolar (Ağustos'ta
+68 siparişin 52'sinde doluydu), o yüzden örneklem kısmidir.
+
+## 10. İndirim %25 → 1/3 + hedef marj %20 → %25 (2026-08-27)
+
+### Ne değişti (dış dünya)
+
+İndirim oranı bir hafta içinde **iki kez** değişti ve panel ikisini de görmedi.
+Sipariş verisinden ölçülen gerçek oran:
+
+| Dönem | İndirim |
+|---|---|
+| 1–9 Ağustos | %25 (SALE25) |
+| 10–18 Ağustos | %17,6 |
+| **20 Ağustos →** | **%33,3 = tam 1/3** (46836/140509 = 0,33333) |
+
+Kullanıcı 27 Ağustos'ta "kalıcı, mağaza geneli" diye doğruladı. Ayrıca 57 yeni
+ürün / 460 varyant panele eklendi ama `etsy_listing_id IS NULL` — Etsy'de
+yayınlanmamış, bu yüzden kaydırma kapsamı DIŞINDA tutuldu.
+
+### Çürüme (§9'un birebir tekrarı)
+
+Sabit 0,25'te kalınca motor "hedef %20" derken fiilen:
+
+| Mevcut fiyatlarla | Motorun sandığı (%25) | Gerçek (1/3) |
+|---|---|---|
+| Breakeven altı | 0 | **47 varyant** |
+| Ortalama marj | %21,95 | **%13,42** |
+
+### Karar ve oran
+
+İki değişiklik aynı UPDATE'te birleştirildi (kullanıcı kararı):
+indirim 0,25 → 1/3 **ve** hedef marj %20 → %25.
+
+Oran motorun kendi paydasından türetildi — `liste = (maliyet+sabit) / (NET × (0,905 − marj))`:
+
+```
+eski payda = 0,75      × (0,905 − 0,20) = 0,52875
+yeni payda = (1 − 1/3) × (0,905 − 0,25) = 0,436667
+oran = 0,52875 / 0,436667 = 1,21088
+```
+
+Formül YENİDEN KOŞULMADI, taban kaydırıldı (§9'daki gerekçe: yeniden üretim
+hero/emniyet kararlarını siler). Hedef marj yükseltmesinin gerekçesi indirim
+telafisinden ayrıdır: derin indirim hacim getirmiyor — %17,6 döneminde 9 günde
+~35 sipariş, %33,3 döneminde 7 günde ~14. **Elastikiyet ölçülmedi**; bu bir
+karardır, ölçüm değil.
+
+### Sonuç
+
+| | Önce | Sonra |
+|---|---|---|
+| Kapsam | — | 2.013 canlı varyant (149 gramsız dahil, taslak 460 hariç) |
+| Katalog | $4.456.522 | **$5.397.326** (+%21,11) |
+| Breakeven altı (1/3 ile) | 47 | **0** |
+| Ortalama marj (1/3 ile) | %13,42 | **%26,84** |
+| Fiyatı düşen | — | **0** |
+
+### Doğrulama
+
+- Ön koşul: UPDATE öncesi canlı mühür = beklenen kaydırma-öncesi mühür
+  (`5eedd8be3426ee3f1d666b99cd9bb36b`) → iş henüz koşmamıştı.
+- UPDATE sonrası canlı mühür = önizlemede hesaplanan hedef mühür, **birebir**.
+- TS motoru bağımsız koşuldu; oranı 1,21087786 üretti (SQL: 1,21087803).
+  Sapma 1,4e-7 → **2013/2013 satırda iki oran da aynı sonucu verdi**, yuvarlama
+  hiçbir satırı kaydırmadı.
+- Yayınlanmamış 460 taslak varyanta **0 dokunuş** (ayrı sorguyla doğrulandı).
+
+### ⚠️ Ön koşul mührü — bu UPDATE bir daha koşulmaz
+
+```sql
+select md5(string_agg(v.id::text||':'||v.price_cents::text, ',' order by v.id)),
+       sum(v.price_cents)
+from products p join product_variants v on v.product_id=p.id and v.org_id=p.org_id
+where p.org_id='f155b853-dfaf-48fd-94c5-ddfcb856e07c'
+  and p.etsy_deleted_at is null and p.etsy_listing_id is not null and v.price_cents > 0;
+-- kaydırma SONRASI (mevcut, doğru durum): 5eab3c6911ac756d6a150fed1c5ea94a
+-- toplam: 539732600 cent
+-- Canlı mühür buysa iş YAPILMIŞTIR — tekrar koşma, bileşikleşir.
+```
+
+### Açık kalemler
+
+1. **Etsy'ye itilmedi.** Fiyatlar DB'de güncel, Etsy'de eski — `/fiyat` →
+   `panelPushAll`. İtilmeden marj kazanımı gerçekleşmez.
+2. **4 varyantsız listing** (`1209955532`, `1806033692`, `4540886291` aktif;
+   `1593402358` sold-out) fiyatı `products.price_cents`'te taşıyor. Ne bu
+   kaydırmaya ne de §9'unkine girdiler; `panelPushAll` da onları sessizce
+   atlıyor (`priceBySku.size === 0 → continue`). Etsy'de elle düzeltilmeli.
+3. **Yeni koleksiyon (57 ürün / 460 varyant)** yayınlanmadan önce %33,3 + %25
+   hedefe göre fiyatlanmalı — bu turda kapsam dışıydı.
+4. **İndirim oranı düzenli ölçülmeli.** İki kez sessizce çürüdü. Ölçüm:
+   `sum(discount_cents)/sum(item_total_cents)` son 7 günde; sabitten saparsa
+   `JADE_DISCOUNT_RATE` güncellenir.
