@@ -78,6 +78,35 @@ repodaki hedefidir.
   varsayımı doğru) — bir kez satış senkronu tazelenince iki soru birden
   cevaplandı; "ölçülemiyor" çoğu zaman "veri bayat" demektir, kalıcı değil.
 
+- **Çok kiracılı sistemde "başarılı ama BOŞ" koşu, hatanın en sinsi hâlidir —
+  `{ok:true}` hiçbir şey yapmamayı da başarı diye raporlar (2026-08-27):**
+  Jade fiyatlarını Etsy'ye itmek için `app/api/ops/price-sync` rotasını
+  kullanacaktım. Rota adı ve dokümanı tamamen genel ("panel varyant fiyatlarını
+  Etsy envanterine basar") ama org sorgusu `eq("name","EON")` ile SABİTLENMİŞTİ.
+  Jade için çağırsaydım her listing `"panelde-yok"` döner, rota **hiçbir şey
+  yazmadan `{ok:true, results:[...]}`** raporlardı — ben de "122 listing
+  işlendi, başarılı" derdim. HTTP 200, hata yok, audit'te bile bir şey yok;
+  yalnız fiyatlar hiç değişmemiş olurdu. Yakalanma sebebi şans değildi:
+  koşmadan önce rotanın kaynağını AÇTIM (deseni `grep`leyip tüm ops rotalarını
+  taradım: 9 rotanın 6'sı EON'a sabitti, yalnız `es-pull` ve `gold-reprice`
+  `?org=` parametreliydi). Kural: (1) çok kiracılı bir sistemde başka org için
+  bir aracı ilk kez kullanmadan önce o aracın org'u NEREDEN çözdüğünü kaynaktan
+  oku — ad ve doküman genel olabilir, kod olmayabilir; (2) "eşleşme yok" ile
+  "iş yok" ayrı sonuçlardır ve bir araç ikisini aynı `ok` altında raporluyorsa
+  o araç sessiz yanlış üretir — hedef sayısı 0 ise bu bir UYARI olmalı;
+  (3) yazma öncesi KURU ÇALIŞMA bunu da test eder: kuru koşuda "N listing'de
+  fark var" görmek, aracın doğru katalogda olduğunun kanıtıdır, "0 fark"
+  görmek ise ya iş bitmiştir ya YANLIŞ YERE BAKIYORSUNDUR — ikisini ayırmadan
+  apply'a geçme. Aynı sınıf hata `panelPushAll`'da da kayıtlı (FLAT_FIX_TARGETS
+  org süzgeci: org'suz döngü Jade oturumunda EON listing'ine yazmaya çalışıp
+  kota yakıyordu) — yani bu repoda ikinci tekrar, desen olarak aranmalı.
+  Yan ders (uygulandı, işe yaradı): dış sisteme yazarken zincir **kuru çalışma
+  → apply → aynı turda read-back → AYRI kimlikle bağımsız geri okuma** olmalı.
+  Rotanın kendi read-back'i 122/122 "doğrulandı" dedi; buna rağmen yeni bir
+  token'la 13 listing'i sıfırdan okuttum ve 13/13 `unchanged` gördüm. Aracın
+  kendi raporu, aracın kendi hatasını doğrulayamaz (ölçüm kendi hatasını
+  doğrulayamaz dersinin dış-sistem hâli).
+
 - **Dilbilgisel özelliği ANAHTAR KELİMEYLE arama — çekimde saklıysa sayaç
   "temiz" der ve yanıltır (2026-08-20):** 40 İspanyolca çeviride hitap
   tutarlılığını ölçtüm; sayaç `\musted\M|\mustedes\M` arıyordu ve **"24 tú,

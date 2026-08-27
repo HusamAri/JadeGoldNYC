@@ -534,8 +534,13 @@ where p.org_id='f155b853-dfaf-48fd-94c5-ddfcb856e07c'
 
 ### Açık kalemler
 
-1. **Etsy'ye itilmedi.** Fiyatlar DB'de güncel, Etsy'de eski — `/fiyat` →
-   `panelPushAll`. İtilmeden marj kazanımı gerçekleşmez.
+1. ~~**Etsy'ye itilmedi.**~~ **İTİLDİ (2026-08-27 20:20-20:23 UTC).** Ops
+   `price-sync` rotasıyla, `?org=Jade Gold NYC`, 5 parça (122 listing):
+   **122/122 `synced`, 2.002 offering yazıldı, read-back kalan fark 0, 0 hata.**
+   `audit_log`'da 122 `etsy.reprice` satırı, 122'si "read-back doğrulandı".
+   Bağımsız teyit: yazımdan sonra ayrı token'la 13 listing (en çok satanlar +
+   gümüş + bozuk-gram) yeniden okundu → **13/13 `unchanged`, 0 fark**.
+   Etsy kotası 5.000'de 4.215 kaldı.
 2. **4 varyantsız listing** (`1209955532`, `1806033692`, `4540886291` aktif;
    `1593402358` sold-out) fiyatı `products.price_cents`'te taşıyor. Ne bu
    kaydırmaya ne de §9'unkine girdiler; `panelPushAll` da onları sessizce
