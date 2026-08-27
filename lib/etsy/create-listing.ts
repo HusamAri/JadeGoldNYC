@@ -85,6 +85,10 @@ interface TaxNode {
   children?: TaxNode[];
 }
 
+function normalizedTaxonomyName(value: string): string {
+  return value.trim().toLocaleLowerCase("en-US");
+}
+
 /** Taksonomi ağacında ada göre BFS (en sığ eşleşme). */
 function findTaxonomyNode(nodes: TaxNode[], name: string): TaxNode | null {
   const queue = [...nodes];
@@ -418,7 +422,7 @@ export async function createDraftListingFromProduct(
     };
   }
   const weddingBandVariationError = validateWeddingBandVariationAxes(
-    protocol.taxonomy.sellerPath,
+    ["Wedding Bands"],
     variants,
   );
   if (weddingBandVariationError) {
