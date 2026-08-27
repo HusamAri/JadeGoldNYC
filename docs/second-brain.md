@@ -55,6 +55,28 @@ repodaki hedefidir.
   tablolarda bu operasyon geri alınamaz); (4) bağlam devrinden/özetten sonra ilk
   iş, elindeki "yapılacak" adımın uzak dalda ve DB'de çoktan yapılmış olup
   olmadığını doğrulamaktır — devralınan niyet, yapılmamış iş demek değildir.
+  **Güçlendirme-2 (2026-08-27, bir hafta sonra) — dış dünyayı temsil eden sabit
+  BİR KEZ düzeltilmez; düzeltme değil ÖLÇÜM kur:** %15→%25 kalibrasyonundan
+  tam bir hafta sonra aynı çürüme tekrarladı. İndirim önce %17,6'ya inmiş,
+  20 Ağustos'ta **1/3'e (%33,3)** çıkmıştı; sabit 0,25'te kaldığı için panel
+  yine "hedef %20" derken fiilen **%13,4** üretiyordu ve 47 varyant breakeven
+  ALTINA düşmüştü. Ekran yine yeşildi — aynı mekanizma, aynı körlük, yedi gün.
+  Kritik nokta: oran zaten ÖLÇÜLEBİLİR veriydi. `sales.discount_cents /
+  item_total_cents` her siparişte duruyordu ve kimse bakmıyordu; bakılınca
+  oran tam 1/3 çıktı (46836/140509 = 0,33333 — "%33" değil, kesir). İlk turda
+  sabiti düzelttik ama "bir daha çürümesin" diye hiçbir şey kurmadık, o yüzden
+  ikinci çürüme kaçınılmazdı. Kural: (1) bir sabit dış dünyayı temsil ediyorsa
+  onu düzeltmek İŞİN YARISIDIR — diğer yarısı o değeri canlı veriden ölçen
+  sorguyu yazıp runbook'a koymaktır; (2) dış dünya haber vermeden değişir ve
+  panel kendi eski varsayımıyla yeşil gösterir, yani "kimse şikâyet etmedi"
+  sağlık kanıtı DEĞİLDİR; (3) ölçülen oranı kesir olarak sakla — 0.333 yazmak
+  yuvarlama artığı bırakır, `1/3` bırakmaz; (4) ölçüm sorgusunun girdisi
+  sipariş verisi olmalı (dış sistemin gerçekte tahsil ettiği), panelin kendi
+  ayarı değil — panel ayarı zaten şüphe altındaki taraftır. Yan bulgu: aynı
+  ölçüm, bir turdur "ölçülemiyor" diye açık bırakılan Offsite Ads riskini de
+  kapattı (`etsy_fees_cents/(item_total−discount)` = %9,1–10,6, motorun %9,5
+  varsayımı doğru) — bir kez satış senkronu tazelenince iki soru birden
+  cevaplandı; "ölçülemiyor" çoğu zaman "veri bayat" demektir, kalıcı değil.
 
 - **Dilbilgisel özelliği ANAHTAR KELİMEYLE arama — çekimde saklıysa sayaç
   "temiz" der ve yanıltır (2026-08-20):** 40 İspanyolca çeviride hitap

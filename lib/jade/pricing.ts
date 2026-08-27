@@ -38,8 +38,21 @@ export const JADE_PACKAGING_CENTS = 1_50;
  * Sabit 0,15'te kalsaydı motor "hedef %20" derken fiilen %12,3 marj üretirdi —
  * 89 varyant da breakeven'in ALTINDA kalırdı. Girdi değişince sabit değişir;
  * ayrıntı: `docs/jade/fiyatlandirma.md` §9.
+ *
+ * 2026-08-27: %25 → **1/3 (%33,3)**. Aynı çürüme bir hafta sonra tekrarladı:
+ * indirim 10-18 Ağustos'ta %17,6'ya inip 20 Ağustos'tan itibaren %33,3'e
+ * çıkmış, sabit 0,25'te kalmıştı → fiilî marj %13,4 ve 47 varyant breakeven
+ * ALTINDA. Oran canlı siparişlerden ölçüldü ve tam 1/3 çıktı
+ * (46836/140509 = 0,33333), o yüzden kesir olarak yazılıyor — 0.333 yazmak
+ * yuvarlama artığı bırakır. Kullanıcı 2026-08-27'de "kalıcı, mağaza geneli"
+ * diye doğruladı. Ayrıntı: `docs/jade/fiyatlandirma.md` §10.
+ *
+ * DERS: bu sabit dış dünyayı temsil ediyor ve dışarısı HABER VERMEDEN
+ * değişiyor. İki kez sessizce çürüdü çünkü panel kendi eski varsayımıyla
+ * hesaplayıp ekranı yeşil gösteriyor. §10'daki ölçüm sorgusu (siparişlerden
+ * gerçek indirim oranı) düzenli koşulmalı.
  */
-export const JADE_DISCOUNT_RATE = 0.25;
+export const JADE_DISCOUNT_RATE = 1 / 3;
 
 /** Etsy oransal kesinti: %6,5 işlem + %3 ödeme işleme. */
 export const JADE_ETSY_RATE = 0.095;
@@ -47,8 +60,18 @@ export const JADE_ETSY_RATE = 0.095;
 /** Etsy sabit kesinti (ödeme işleme sabiti). */
 export const JADE_ETSY_FIXED_CENTS = 25;
 
-/** Bölüm geneli hedef net marj. */
-export const JADE_TARGET_MARGIN = 0.2;
+/**
+ * Bölüm geneli hedef net marj.
+ *
+ * 2026-08-27: %20 → **%25** (kullanıcı kararı, kâr maksimizasyonu turu).
+ * Gerekçe indirim telafisinden AYRI: satış verisi derin indirimin talebi
+ * artırmadığını gösteriyor — %17,6 döneminde 9 günde ~35 sipariş, %33,3
+ * döneminde 7 günde ~14. Yani indirimi derinleştirmek hacim getirmiyor,
+ * yalnız marjı yiyor. UYARI: fiyat-talep elastikiyeti ÖLÇÜLMEDİ (A/B verisi
+ * yok); bu hedef bir karardır, ölçüm sonucu değildir. Hacim düşerse önce
+ * burası gözden geçirilir.
+ */
+export const JADE_TARGET_MARGIN = 0.25;
 
 /** Tahsilat oranı: indirimden sonra kasaya giren pay. */
 const NET_RATE = 1 - JADE_DISCOUNT_RATE;
