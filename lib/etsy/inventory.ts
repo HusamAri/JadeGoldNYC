@@ -7,6 +7,7 @@ import {
   type EtsyInventoryUpdate,
   type EtsyOfferingUpdate,
   type EtsyProductUpdate,
+  type EtsyPropertyValue,
 } from "@/lib/etsy/types";
 import {
   asEtsyProperties,
@@ -1055,4 +1056,158 @@ export async function createMissingListingOfferings(
       detail: e instanceof Error ? e.message : "Bilinmeyen hata",
     };
   }
+}
+
+/** SKU ATAMA — Etsy'de SKU'su OLMAYAN offering'lere kimlik yazar. */
+export type SkuAssignOutcome = {
+  listingId: number;
+  status: "planned" | "updated" | "unchanged" | "error";
+  /** Bu koşuda SKU verilen (ya da verilecek) offering sayısı. */
+  assigned: number;
+  /** Zaten SKU'su olduğu için DOKUNULMAYAN offering sayısı. */
+  skipped: number;
+  /** Ne yazılacağı/yazıldığı — kuru çalışmada tek çıktı budur. */
+  plan: { sku: string; label: string | null }[];
+  detail?: string;
+};
+
+/**
+ * Bir listing'in SKU'SUZ offering'lerine SKU yazar (varyantlı listing dahil).
+ *
+ * Neden gerekiyor: panel Etsy'yi birebir aynalar ve SKU'suz offering için
+ * varyant satırı ÜRETMEZ (`lib/etsy/variants.ts` → toRows). SKU yoksa panelde
+ * varyant, dolayısıyla offering-başına fiyat haritası da olmaz; fiyat itişi
+ * (`pushListingPrices`) sessizce no-op'a düşer. Kimlik verilmeden fiyat
+ * yönetilemez.
+ *
+ * GÜVENLİK KURALLARI
+ *  - MEVCUT SKU ASLA EZİLMEZ: dolu olan offering atlanır (idempotent — tekrar
+ *    koşmak güvenli; ikinci koşuda hepsi "skipped" olur).
+ *  - `sku_on_property` tanımlıysa SKU property seviyesinde yaşıyordur; ürün
+ *    seviyesine yazmak çakışır → hiçbir şey yazılmadan `error` döner.
+ *  - Üretilen SKU'lar listing içinde TEKİL ve <=32 karakter olmalı; değilse
+ *    hiçbir şey yazılmaz (yarım kimlik, kimliksizlikten kötüdür).
+ *  - Fiyat/adet/property AYNEN korunur: taban payload `buildInventoryUpdate`
+ *    ile kurulur; o da okunamayan fiyatta throw eder (fiyatı sıfırlama koruması).
+ *  - `apply` false ise PUT YAPILMAZ — yalnız plan döner.
+ *  - Yazımdan sonra envanter GERİ OKUNUR ve her SKU'nun Etsy'de göründüğü
+ *    doğrulanır; doğrulanamazsa `error` (200 OK teslim sayılmaz).
+ */
+export async function assignListingSkus(
+  client: EtsyClient,
+  listingId: number,
+  buildSku: (product: EtsyInventoryProduct, index: number) => string,
+  opts?: { apply?: boolean },
+): Promise<SkuAssignOutcome> {
+  const base: Omit<SkuAssignOutcome, "status"> = {
+    listingId,
+    assigned: 0,
+    skipped: 0,
+    plan: [],
+  };
+  try {
+    const inventory = await getListingInventory(client, listingId);
+    const live = (inventory.products ?? []).filter((p) => !p.is_deleted);
+    if (live.length === 0) {
+      return { ...base, status: "unchanged", detail: "Envanter boş" };
+    }
+    if (inventory.sku_on_property && inventory.sku_on_property.length > 0) {
+      return {
+        ...base,
+        status: "error",
+        detail:
+          "Listing SKU'yu property seviyesinde tutuyor (sku_on_property) — ürün seviyesine yazmak çakışır, hiçbir şey yazılmadı.",
+      };
+    }
+
+    // Hangi offering'e ne yazılacak? Dolu olanlar dokunulmadan atlanır.
+    const yeniSkuByIndex = new Map<number, string>();
+    const plan: { sku: string; label: string | null }[] = [];
+    let skipped = 0;
+    live.forEach((p, i) => {
+      if ((p.sku ?? "").trim() !== "") {
+        skipped += 1;
+        return;
+      }
+      const sku = buildSku(p, i).trim();
+      yeniSkuByIndex.set(i, sku);
+      plan.push({ sku, label: propertyLabel(p.property_values) });
+    });
+
+    if (yeniSkuByIndex.size === 0) {
+      return {
+        ...base,
+        status: "unchanged",
+        skipped,
+        detail: "Tüm offering'lerde SKU zaten var",
+      };
+    }
+
+    // Kimlik doğrulaması — bozuk/çakışan SKU üretildiyse HİÇBİR ŞEY yazma.
+    const uretilen = [...yeniSkuByIndex.values()];
+    const bosOlan = uretilen.filter((s) => s === "");
+    if (bosOlan.length > 0) {
+      return { ...base, status: "error", skipped, plan, detail: `${bosOlan.length} offering için boş SKU üretildi` };
+    }
+    const uzun = uretilen.filter((s) => s.length > 32);
+    if (uzun.length > 0) {
+      return { ...base, status: "error", skipped, plan, detail: `SKU 32 karakteri aşıyor (ör. "${uzun[0]}")` };
+    }
+    const mevcutlar = live.map((p) => (p.sku ?? "").trim()).filter(Boolean);
+    const hepsi = [...uretilen, ...mevcutlar];
+    if (new Set(hepsi).size !== hepsi.length) {
+      return { ...base, status: "error", skipped, plan, detail: "Üretilen SKU'lar listing içinde tekil değil" };
+    }
+
+    if (!opts?.apply) {
+      return { ...base, status: "planned", assigned: yeniSkuByIndex.size, skipped, plan };
+    }
+
+    const readinessStateId = await resolveReadinessStateId(client);
+    // Fiyat/adet/property'yi olduğu gibi koruyan taban payload.
+    const update = buildInventoryUpdate(inventory, () => false, 0, readinessStateId);
+    // Sıra korunur: buildInventoryUpdate canlı ürünleri aynı sırayla üretir.
+    update.products = update.products.map((p, i) => {
+      const yeni = yeniSkuByIndex.get(i);
+      return yeni ? { ...p, sku: yeni } : p;
+    });
+
+    await putListingInventory(client, listingId, update, {
+      legacy: readinessStateId != null ? false : undefined,
+    });
+
+    // GERİ OKUMA: "200 OK" teslim sayılmaz — Etsy'de gerçekten var mı?
+    const sonra = await getListingInventory(client, listingId);
+    const canliSkular = new Set(
+      (sonra.products ?? [])
+        .filter((p) => !p.is_deleted)
+        .map((p) => (p.sku ?? "").trim())
+        .filter(Boolean),
+    );
+    const eksik = uretilen.filter((s) => !canliSkular.has(s));
+    if (eksik.length > 0) {
+      return {
+        ...base,
+        status: "error",
+        assigned: 0,
+        skipped,
+        plan,
+        detail: `PUT geçti ama geri okumada ${eksik.length} SKU yok (ör. "${eksik[0]}") — yazma doğrulanamadı.`,
+      };
+    }
+    return { ...base, status: "updated", assigned: yeniSkuByIndex.size, skipped, plan };
+  } catch (e) {
+    return {
+      ...base,
+      status: "error",
+      detail: e instanceof Error ? e.message : "Bilinmeyen hata",
+    };
+  }
+}
+
+/** property_values → okunur etiket ("14K · Yellow Gold · 7"). */
+function propertyLabel(props?: EtsyPropertyValue[]): string | null {
+  if (!props || props.length === 0) return null;
+  const parts = props.map((p) => (p.values ?? []).join("/")).filter(Boolean);
+  return parts.length ? parts.join(" · ") : null;
 }
