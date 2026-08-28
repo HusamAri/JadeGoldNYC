@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:ophir-sku": "tsx --test tests/ophir-sku.test.ts"
   },
   "dependencies": {
     "@ai-sdk/google": "^2.0.78",

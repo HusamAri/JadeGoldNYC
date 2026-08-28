@@ -110,3 +110,60 @@ Doğrulama: 93 satır DB ile konum-ağırlıklı checksum'la karşılaştırıld
 LibreOffice bu konteynerde çalışmadığı için `recalc.py` KOŞULAMADI; formüller
 referans çözümleyip Python'da simüle edilerek doğrulandı (Excel dosyayı açarken
 zaten yeniden hesaplar).
+
+## SKU kimliği — fiyat yönetiminin ön koşulu (2026-08-28)
+
+**Kök bulgu:** Ophir'in Etsy offering'lerinde **SKU yok** (93/93 `products.sku`
+null; satılan 5 kalemde de `sku: ""`). Panel Etsy'yi birebir aynalar ve SKU'suz
+offering için varyant satırı ÜRETMEZ (`lib/etsy/variants.ts` → `toRows`,
+kod yorumunda "saf-Etsy kuralı (kullanıcı)"). Zincir bu yüzden kopuk:
+
+```
+SKU yok → panelde varyant yok (0) → offering-başına fiyat haritası yok
+        → pushListingPrices sessizce no-op → fiyat yönetilemiyor
+```
+
+`reprice.ts`'in tek-fiyat yolu da varyantlı listing'i açıkça reddediyor
+("otomatik fiyat yazma varyantsızlarla sınırlı"), ve 93/93 `has_variations`.
+
+### Ölçülen gerçek (fiyat çerçevesi düzeltmesi)
+
+`products.price_cents` = `etsyMoneyToCents(l.price)`, yani Etsy'nin **listing
+seviyesi** fiyatı — varyasyonlu listing'de bu **en ucuz offering** ("from")
+demektir, her varyantın fiyatı değil. Gerçek satışlar bunu doğruluyor: aynı
+listing (4543147022) hem **$512** hem **$737,90**'dan satmış; 4544906099 →
+**$463**. Yani "hepsi tek tip $366" okuması yanlıştı; $366 vitrin fiyatı.
+
+Tahmin gramla kurduğum liste fiyatları (10K $775 / $635) gerçek satışların
+**üstünde** kalıyor — bu da tahminle fiyat basmamak için ayrı bir sebep.
+
+> Not: 5 siparişin 5'i de iptal/iade (07-10 Ağustos). Sebebi bilinmiyor;
+> fiyat değiştirmeden önce anlaşılmalı.
+
+### Araç: `/api/ops/ophir-sku-assign`
+
+Kimliksiz offering'lere SKU yazar. Saf üreteç `lib/etsy/ophir-sku.ts`,
+Etsy yazma katmanı `assignListingSkus` (`lib/etsy/inventory.ts`).
+
+- **Şema:** `OPH-<listingId>-<KARAT><RENK>-<BEDEN>`, çözülemeyende
+  `OPH-<listingId>-<sıra>`. listingId'yi BİLEREK içerir — kopya-listing SKU'yu
+  miras alamaz, sahiplik senkronda el değiştiremez (second-brain 2026-08 vakası).
+- **Güvenlik:** mevcut SKU asla ezilmez (idempotent); `sku_on_property` varsa
+  reddeder; üretilen SKU'lar tekil ve <=32 karakter değilse hiçbir şey yazmaz;
+  fiyat/adet/property aynen korunur; yazımdan sonra **geri okuma** ile doğrular
+  (200 OK teslim sayılmaz).
+- **Akış:** varsayılan KURU ÇALIŞMA → `?listing=<id>` kanarya → `?apply=1`.
+  `?limit=N` (varsayılan 10).
+- **Auth:** `Bearer $CRON_SECRET` veya tek kullanımlık `?token=` (ops_tokens CAS).
+
+Testler: `npm run test:ophir-sku` — 3 karat × 3 renk × 25 beden tam
+kombinatorik süpürme (tekillik, uzunluk, desen) + ayrıştırma ve yedek yolu.
+
+### Sıra
+
+1. Kanarya: tek listing kuru çalışma → plan doğru mu?
+2. Kanarya apply → Etsy'de SKU'ları gör.
+3. Kalan listing'ler.
+4. `syncListingVariants` → varyantlar + GERÇEK offering fiyatları panele iner.
+5. Gram (üretici kitabından) varyant bazında girilir.
+6. Fiyat **ondan sonra** kurulur ve `pushListingPrices` ile itilir.
