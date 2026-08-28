@@ -27,7 +27,7 @@ ve tartım işaretli listingler (§7).
 | Tedarikçi maliyeti | **$106 / gram** | HER ŞEY DAHİL: ham altın + işçilik + taş/boncuk |
 | Kargo | **$5** | Ücretsiz kargo — bedeli satıcı karşılıyor |
 | Ambalaj | **$1,50** | |
-| İndirim | **1/3 (%33,3), kalıcı** | Etsy'de açık; tahsilat = liste × 0,667. Tarihçe: %15 (→08-20) → %25 (§9) → 1/3 (§10) |
+| İndirim | **%25, kalıcı** | Etsy'de açık; tahsilat = liste × 0,75. Tarihçe: %15 → **%25** (08-20, §9). §10'daki "1/3" ÖLÇÜM HATASIYDI, geri alındı (§11) |
 | Etsy kesintisi | %6,5 işlem + %3 ödeme + $0,25 | Ağustos siparişlerinde ölçüldü: %9,1–10,6 ✓ |
 | Hedef marj | **%25** | §10 kararı; önceki değer %20 |
 
@@ -53,10 +53,13 @@ oradaki sabitler elden geçirilmeli** — yoksa panel sessizce yanlış marj gö
 maliyet = gram × $106 + $5 (kargo) + $1,50 (ambalaj)
 liste   = (maliyet + $0,25) / ((1 − indirim) × (0,905 − hedef_marj))
 ```
-Tam dolara yukarı yuvarlanır. Güncel değerler: indirim **1/3**, hedef marj **%25**
-→ payda `0,667 × 0,655 = 0,436667`. (Bu satır 2026-08-27'de güncellendi; eskiden
-payda `0,85 × 0,705` idi ve indirim iki kez değiştiği için sabit kodlanmış `0,85`
-sessiz çürümenin kaynağıydı — §9, §10.)
+Tam dolara yukarı yuvarlanır. Güncel değerler: indirim **%25**, hedef marj **%25**
+→ payda `0,75 × 0,655 = 0,49125`.
+
+> **İndirim oranını ölçerken paydaya dikkat.** `sales.item_total_cents` indirim
+> SONRASI nettir; doğru oran `discount_cents / (item_total_cents + discount_cents)`.
+> `discount/item_total` kullanmak her oranı `x/(1−x)` olarak şişirir
+> (0,15→0,176 · 0,20→0,25 · 0,25→0,3333) ve 2026-08-27'de tam bu hata yapıldı — §11.
 
 **Yalnız YUKARI:** hesaplanan hedef mevcut fiyatın altındaysa fiyat korunur.
 Gerekçe ticari: %70 marjla satan Italian Horn'u formüle çekmek ciroyu bedelsiz
@@ -456,6 +459,13 @@ Ağustos siparişlerinde gerçek Etsy kesintisi **%9,1–10,6** — motorun
 
 ## 10. İndirim %25 → 1/3 + hedef marj %20 → %25 (2026-08-27)
 
+> ## ⛔ BU BÖLÜM KISMEN GEÇERSİZ — §11'i okumadan buradaki hiçbir sayıyı kullanma
+>
+> Bölümün **indirim** kısmı bir ölçüm hatasına dayanıyor: indirim hiç 1/3
+> olmadı, %25'ti. Dolayısıyla uygulanan **×1,21088 oranı yanlış**; doğrusu
+> yalnız marj bileşeni olan ×1,07634 idi. Hedef marjın %20→%25 çıkarılması
+> (kullanıcı kararı) GEÇERLİ. Düzeltme, etki ve geri alma: **§11**.
+
 ### Ne değişti (dış dünya)
 
 İndirim oranı bir hafta içinde **iki kez** değişti ve panel ikisini de görmedi.
@@ -545,8 +555,81 @@ where p.org_id='f155b853-dfaf-48fd-94c5-ddfcb856e07c'
    `1593402358` sold-out) fiyatı `products.price_cents`'te taşıyor. Ne bu
    kaydırmaya ne de §9'unkine girdiler; `panelPushAll` da onları sessizce
    atlıyor (`priceBySku.size === 0 → continue`). Etsy'de elle düzeltilmeli.
-3. **Yeni koleksiyon (57 ürün / 460 varyant)** yayınlanmadan önce %33,3 + %25
+3. **Yeni koleksiyon (57 ürün / 460 varyant)** yayınlanmadan önce %25 + %25
    hedefe göre fiyatlanmalı — bu turda kapsam dışıydı.
 4. **İndirim oranı düzenli ölçülmeli.** İki kez sessizce çürüdü. Ölçüm:
    `sum(discount_cents)/sum(item_total_cents)` son 7 günde; sabitten saparsa
    `JADE_DISCOUNT_RATE` güncellenir.
+
+## 11. §10'un indirim ölçümü YANLIŞTI — payda hatası (2026-08-27, aynı gün)
+
+### Hata
+
+§10, indirimin 1/3'e (%33,3) çıktığını "canlı siparişlerden ölçüldü" diyerek
+ilan etti. Ölçüm şuydu:
+
+```sql
+sum(discount_cents) / sum(item_total_cents)     -- YANLIŞ
+```
+
+`sales.item_total_cents` indirim **SONRASI nettir**. Doğrusu:
+
+```sql
+sum(discount_cents) / sum(item_total_cents + discount_cents)   -- DOĞRU
+```
+
+Kanıt (2026-07-01'den beri tüm siparişler):
+`sum(unit_price_cents × quantity) = item_total_cents + discount_cents` →
+**138/138 sipariş**, sapma yok. Yani `sale_items` liste fiyatını, `item_total`
+indirimli tutarı taşıyor.
+
+Hatalı payda her oranı `x/(1−x)` olarak şişirir:
+
+| Gerçek | Hatalı paydanın gösterdiği |
+|---|---|
+| 0,15 | 0,17647 |
+| 0,20 | 0,25 |
+| **0,25** | **0,33333** |
+
+Yani "%17,6 → %25 → 1/3" diye okunan tarihçe, gerçekte **%15 → %20 → %25**.
+İndirim 20 Ağustos'ta %25'e çıktı ve **o günden beri değişmedi** — §9 zaten
+doğruydu, §10'un tespit ettiği "ikinci çürüme" hiç yaşanmadı.
+
+Doğru sorguyla son hafta: **8/8 sipariş tam 0,25000**.
+
+### Etki
+
+§10 oranı iki bileşenden kurmuştu:
+
+```
+×1,21088 = ×1,125 (indirim 0,25→1/3, UYDURMA) × ×1,07634 (marj %20→%25, GEÇERLİ)
+```
+
+İndirim bileşeni düştüğü için doğru oran **×1,07634**'tür. Uygulanan fiyatlar
+**%12,498 fazla** (cebirsel olarak tam `0,75 / (2/3) = 1,125`).
+
+| | Değer |
+|---|---|
+| Uygulanan katalog | $5.397.326 |
+| Doğrusu | $4.797.701 |
+| Fazla fiyatlı varyant | **2.012 / 2.013** |
+| Gerçek ortalama marj (doğru %25 indirimle) | **%33,91** (hedef %25 idi) |
+| Breakeven altı | **0** — kayıp yok, yalnız hedefin üstünde fiyat |
+
+Fiyatlar 2026-08-27 20:20–20:23 UTC'de Etsy'ye itildi, yani hata **canlıya
+çıktı**. İtişten sonraki ilk saatte sipariş gelmedi (SQL ile doğrulandı).
+
+### Neden mühür bunu yakalamadı
+
+§9 ve §10'daki md5 mührü *"bu koşu yazmak istediğini yazdı mı?"* sorusunu
+cevaplar — yazılan değerin **doğru** olup olmadığını değil. Girdi yanlışsa
+mühür de yanlış değeri sadakatle mühürler. Aritmetik bütünlük ile anlamsal
+doğruluk ayrı denetimlerdir.
+
+### Kural
+
+Bir oranı veri kümesinden ölçerken **paydanın hangi kümeyi temsil ettiğini
+şemadan doğrula**. Buradaki sağlama basitti ve yapılmamıştı: ölçülen oran
+%100'ü aşamaz; hatalı payda bazı haftalarda **1,3256** ve **1,5000** üretiyordu
+(%132 ve %150 indirim) — tek bakışta imkânsız, ama kimse bakmadı çünkü haftalık
+tabloya değil tek bir "son 7 gün" rakamına bakılmıştı.
