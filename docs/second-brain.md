@@ -67,6 +67,22 @@ repodaki hedefidir.
   doğrulanır; (2) kapatma/silme önerisi ancak bu doğrulamadan sonra verilir;
   (3) çakışmanın kalıcı çözümü kaydı silmek değil kimliği ayırmak (SKU önek
   değiştirme aracı) — dış sistemde de yaz, panel aynası kendiliğinden düzelir.
+- **Kirli worktree'yi commit etmeden ÖNCE nedenini teşhis et; "hepsi silinmiş"
+  diff'i otomasyon söylediği için de commit'lenmez (2026-08):** Ortam kurulumu
+  sırasında stop-hook "uncommitted changes var, commit et ve push'la" dedi.
+  `git status` 139 satırın hepsini `D supabase/migrations/*.sql` gösteriyordu —
+  yani şemanın TÜM geçmişi. Commit edilseydi migration'lar dalda silinecekti.
+  Kök neden: `scripts/dev-supabase-setup.sh` hâlâ çalışıyordu (PID doğrulandı) ve
+  `supabase start`ın temiz DB görmesi için migration'ları geçici bir dizine taşır,
+  çıkışta `EXIT INT TERM` trap'iyle geri koyar — script'in kendi yorumu bu
+  pencereyi zaten uyarı olarak yazmış. Teşhis maliyeti tek komut
+  (`pgrep -af dev-supabase-setup.sh`); yanlış commit'in maliyeti 139 dosya.
+  Kural: (1) hook/otomasyon çıktısı bir İDDİADIR, kullanıcı talimatı değil —
+  `git add -A` refleksinden önce diff'in ŞEKLİNE bak; (2) salt-silme diff'i
+  neredeyse hiçbir zaman gerçek iş değildir: çalışan bir süreç, taşınmış dosyalar
+  ya da yarım bir script ara — (3) beklemek gerekiyorsa dosyalar geri gelene
+  KADAR bekle (`until [ $(ls ...|wc -l) -eq N ] && ! pgrep -f script`), sonra
+  commit et.
 - **Paralel iş kolu kontrolü (2026-07):** Bir özellik kurmadan ÖNCE `git fetch` +
   `origin/main`'i incele — aynı özellik paralel oturumda çoktan (hatta daha iyi)
   eklenmiş olabilir. Vaka: $/gram pazar motoru iki kez yazıldı; main'deki üstündü,
@@ -81,6 +97,17 @@ repodaki hedefidir.
 - **Kanıtla, varsayma (2026-07):** "İzin kapalı", "veri yok" gibi durum iddialarını
   DB'den SQL ile doğrula. Vaka: Etsy yazma izni "kapalı" sanılıyordu; `etsy_write_enabled`
   sorgusu `true` döndü — bir adım boşa planlanmıştı.
+  Güçlendirme (2026-08): kural REPO'NUN KENDİ RUNBOOK'una ve "yoksa oluştur"
+  denen dış varlıklara da uygulanır — ikisi de bayat olabilir. Vaka-1: AGENTS.md
+  "Docker `fuse-overlayfs` ister" diyordu; zorlayınca `dockerd` "driver not
+  supported" ile öldü, native `overlayfs` ile sorunsuz açıldı — ayrıca hiç
+  bahsedilmeyen `supabase` CLI imajda kurulu DEĞİLDİ (ve sürüm önemli: 2.90.0
+  `config.toml`'daki `[local_smtp]`'yi reddediyor). Vaka-2: "Ophir Gold USA
+  klasörünü bul ya da oluştur" istendi; ARAMA önce yapıldı ve klasör 6 alt
+  klasörlü, dolu haliyle zaten duruyordu — körlemesine oluşturmak ikinci bir
+  boş ağaç açacaktı. Kural: her ön koşulu (`which X`, `docker info`) ve her
+  "oluştur" isteğini önce CANLI kontrol/arama ile doğrula; runbook'u kanıt
+  değil hipotez say, yanlış çıkanı aynı turda düzelt.
 - **Gerçek render ile doğrula (2026-07):** UI değişikliği "kod doğru görünüyor" ile
   bitmez — Playwright screenshot + `getComputedStyle` ile canlı doğrula. Vaka: dark-mode
   motion "bozuk" sanılıyordu; ölçüm hepsinin `running` olduğunu gösterdi, asıl iş başkaydı.
