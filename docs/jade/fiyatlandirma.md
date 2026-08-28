@@ -633,3 +633,88 @@ Bir oranı veri kümesinden ölçerken **paydanın hangi kümeyi temsil ettiğin
 %100'ü aşamaz; hatalı payda bazı haftalarda **1,3256** ve **1,5000** üretiyordu
 (%132 ve %150 indirim) — tek bakışta imkânsız, ama kimse bakmadı çünkü haftalık
 tabloya değil tek bir "son 7 gün" rakamına bakılmıştı.
+
+## 12. Hata geri alma + kullanıcının %20 zammı (2026-08-28)
+
+§11'de tespit edilen %12,5 fazlalık geri alındı ve aynı turda kullanıcının
+zam planı uygulandı. Tek UPDATE, üç ayrı kural.
+
+### Kapsam — üç grup
+
+Kullanıcı 27 Ağustos'ta Etsy arayüzünden **sayfa 1'deki 20 ilana elle %20 zam**
+yapmıştı; panel onları eski haliyle biliyordu. Bu ilanların tam listesi yoktu
+(kullanıcı 8 örnek vermişti), o yüzden **Etsy'den okuyarak tespit edildi**:
+`price-sync?apply=0` ile 122 listing tarandı, panelle ayrışanlar bulundu.
+
+| Grup | Listing | Varyant | Kural |
+|---|---|---|---|
+| **ayrışmış** (Etsy'de kullanıcının zammı var) | 18 | 252 | **DOKUNMA** — ne DB ne Etsy |
+| **zamlı** (kullanıcının sayfa 2+3 listesi) | 44 | 669 | `p0 × 1,29161` (hata düzeltme × 1,20 zam) |
+| **düzelt** (kalan katalog) | 60 | 1.092 | `p0 × 1,07634` (yalnız hata düzeltme) |
+
+`p0` = 27 Ağustos push'undan ÖNCEKİ fiyat (`audit_log.diff->'before'`).
+Oranlar: `1,07634 = 0,52875/0,49125` (marj %20→%25), `1,29161 = 1,07634 × 1,20`.
+
+Tespitin doğruluğu kullanıcının verdiği 8 örnekle sınandı: Nazar `1203090834`,
+Rosary `1329785553`, Cornicello `1537611621`, Bamboo `1469384188`, Panther
+`1436080231`, Pharaoh `1735786221`, Stud `1710206336`, Kelebek `1448783390` —
+**8/8'i ayrışmış kümede çıktı**. 44 zamlı ilanla kesişim **0**.
+
+### Girdi doğrulaması (§11 dersinin uygulaması)
+
+Yazmadan önce indirim oranı **doğru paydayla** yeniden ölçüldü — mühür girdiyi
+sınamaz, bu ayrı bir kapıdır. İlk ölçüm 14 günlük pencereyle 0,18886 verdi ve
+bu SAPMA gibi göründü; günlük dağılım açıldığında sebep görüldü: pencere iki
+dönemi karıştırıyordu.
+
+| Gün | Oran |
+|---|---|
+| 20–26 Ağustos | **0,25000** (6/6 gün, istisnasız) |
+| 18 Ağustos ve öncesi | 0,15000 |
+
+İndirim 20 Ağustos'ta %15 → %25'e çıkmış ve orada sabit. Motor sabiti `0.25`
+**doğrulandı**. (Ders: tek bir toplam rakam iki rejimi gizler — günlük/haftalık
+dağılıma bak.)
+
+### Sonuç
+
+| | Değer |
+|---|---|
+| Katalog | $5.397.326 → **$5.026.288** |
+| Güncellenen varyant | **1.760** |
+| Breakeven altı | **0** |
+| Ortalama marj | **%31,34** (min %7,01) |
+
+Marjın hedef %25'in üstünde olması beklenen: 44 ilan bilinçli olarak %20 zamlı
+ve 18 ayrışmış listing hâlâ eski (fazla) fiyatında.
+
+### Etsy itişi
+
+104 listing (ayrışmış 18 hariç), 5 parça, `?org=Jade Gold NYC`:
+**104/104 `synced`, 1.750 offering yazıldı, read-back kalan fark 0, 0 hata.**
+`audit_log`'da 104 `etsy.reprice` satırı, 104'ü "read-back doğrulandı".
+
+**Bağımsız teyit** (ayrı token, yazımdan sonra): 6 zamlı listing `unchanged`
+(yazım tuttu) + 6 ayrışmış listing `would-sync` (dokunulmadı, kullanıcının
+zammı yerinde) → **12/12 beklendiği gibi**.
+
+Etsy kotası 5.000'de 3.659 kaldı. Üretilen 14 token'ın 11'i kullanıldı,
+kalan 3'ü süresi doldurularak iptal edildi.
+
+### ⚠️ Ön koşul mührü
+
+```sql
+select md5(string_agg(v.id::text||':'||v.price_cents::text, ',' order by v.id)),
+       sum(v.price_cents)
+from products p join product_variants v on v.product_id=p.id and v.org_id=p.org_id
+where p.org_id='f155b853-dfaf-48fd-94c5-ddfcb856e07c'
+  and p.etsy_deleted_at is null and p.etsy_listing_id is not null and v.price_cents > 0;
+-- kaydırma SONRASI toplam: 502628800 cent
+```
+
+### Açık kalem — 18 ayrışmış listing
+
+Bu 18'in **paneli bayat** (fiyatları hâlâ %12,5 fazla gösteriyor), Etsy'si
+doğru (kullanıcının zammı). Panel–Etsy eşitliği ilk Etsy senkronunda
+kendiliğinden kurulur; senkrona kadar bu listinglerin panel marjı yanlıştır.
+Senkron sonrası, istenirse aynı `p0 × 1,29161` kuralı onlara da uygulanabilir.
