@@ -358,6 +358,21 @@ repodaki hedefidir.
   doğrulanır; (2) kapatma/silme önerisi ancak bu doğrulamadan sonra verilir;
   (3) çakışmanın kalıcı çözümü kaydı silmek değil kimliği ayırmak (SKU önek
   değiştirme aracı) — dış sistemde de yaz, panel aynası kendiliğinden düzelir.
+- **Bir yeteneği vaat etmeden ÖNCE kimlik anahtarını zincirin sonuna kadar
+  izle; "sessiz no-op" en tehlikeli hata biçimidir (2026-08):** Kullanıcı
+  "tahmini fiyatları Etsy'ye pushla" dedi. Panelde `pushListingPrices` var, izin
+  (`listings_w`) da açıktı — "yapılabilir" demek kolaydı. Kodu okuyunca zincir
+  çıktı: fonksiyon `priceBySkuCents` ile SKU eşleştiriyor; eşleşme yoksa
+  `dbUnit=null` → `targetUnit=liveUnit` → `changed=0` → **PUT hiç yapılmıyor ve
+  "unchanged" dönüyor**. Yani hata değil, sessiz başarı taklidi. Kök neden bir
+  katman yukarıdaydı: Ophir'in Etsy offering'lerinde SKU YOK (93/93
+  `products.sku` null + satılan 5 kalemde `sku:""` — iki bağımsız kanıt), ve
+  `variants.ts` → `toRows` SKU'suz offering için varyant satırı üretmiyor
+  ("saf-Etsy kuralı", kullanıcının kendi kararı). Sorun fiyat değil KİMLİKTİ.
+  Kural: bir yazma yeteneği sorulduğunda (1) fonksiyonun eşleştirme anahtarını
+  bul, (2) o anahtarın veride DOLU olduğunu SQL'le doğrula, (3) anahtar boşken
+  fonksiyonun ne döndüğüne bak — "error" değil "unchanged" dönüyorsa yetenek
+  fiilen yoktur; "çalıştırdım, hata vermedi" bu durumda hiçbir şey kanıtlamaz.
 - **Kirli worktree'yi commit etmeden ÖNCE nedenini teşhis et; "hepsi silinmiş"
   diff'i otomasyon söylediği için de commit'lenmez (2026-08):** Ortam kurulumu
   sırasında stop-hook "uncommitted changes var, commit et ve push'la" dedi.
@@ -554,6 +569,23 @@ repodaki hedefidir.
   parayı kaybediyorsun → şunu yap".
 
 ## Teknik desenler
+
+- **Varyasyonlu listing'de `listing.price` "FROM" fiyatıdır — birim maliyetle
+  onu karşılaştırma (2026-08):** Ophir'de 93 ürünün hepsi `price_cents=36600`
+  görününce "hepsi tek tip 366$, tamamı maliyetin altında" teşhisi kurdum ve
+  93/93 için karşılaştırma tablosu ürettim. Yanlıştı. `sync.ts` şunu yazıyor:
+  `price_cents: etsyMoneyToCents(l.price)` — bu LİSTİNG seviyesi fiyattır ve
+  Etsy varyasyonlu listing'de oraya **en ucuz offering**'i koyar. Çürüten kanıt
+  ayna tablosunda değil İŞLEM tablosundaydı: aynı listing (4543147022) hem
+  \$512 hem \$737,90'dan satmış, bir diğeri \$463 — düz olsa tek fiyat olurdu.
+  Yani \$366 vitrin fiyatı, 93 kaydın aynı olması da bunun sabit bir "from"
+  değeri olmasından. Kural: (1) `has_variations` true iken listing fiyatını
+  birim fiyat sanma, offering bazına in; (2) gerçek fiyatı öğrenmek için
+  aynayı değil `sale_items`/ledger gibi İŞLEM kayıtlarını oku — ayna vitrini,
+  işlem gerçeği taşır; (3) bir katalog kolonunda TÜM satırların birebir aynı
+  olması normal veri değil, türetilmiş/vitrin alan sinyalidir — şemayı yazan
+  kodu aç. Yan bulgu: tahmin gramla kurduğum liste fiyatları (10K \$775/\$635)
+  gerçek satışların ÜSTÜNDE kaldı; tahminle fiyat basmamak için ayrı bir sebep.
 
 - **Maliyet modeli gerçek faturayla kalibre edilir ve kalibrasyon TEDARİKÇİNİN
   org'una kilitlenir (2026-08):** Dört gerçek Tamsan faturası (9 satır, $2.040)
