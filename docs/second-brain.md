@@ -78,6 +78,37 @@ repodaki hedefidir.
   varsayımı doğru) — bir kez satış senkronu tazelenince iki soru birden
   cevaplandı; "ölçülemiyor" çoğu zaman "veri bayat" demektir, kalıcı değil.
 
+- **Bir oranı ölçerken PAYDANIN hangi kümeyi temsil ettiğini şemadan doğrula;
+  mühür ve çapraz doğrulama yanlış girdiyi SADAKATLE mühürler (2026-08-27):**
+  Jade indiriminin 1/3'e çıktığını "canlı siparişlerden ölçtüm" diye ilan ettim,
+  sabiti değiştirdim, 2.013 varyantı ×1,21088 ile yeniden fiyatladım ve Etsy'ye
+  ittim. Ölçüm `sum(discount_cents)/sum(item_total_cents)` idi; oysa
+  `sales.item_total_cents` indirim **SONRASI** nettir — doğru payda
+  `discount/(item_total+discount)`. Kanıt tek sorguydu ve hiç koşulmamıştı:
+  `sum(unit_price×quantity) = item_total + discount`, 138/138 sipariş.
+  Hatalı payda her oranı `x/(1−x)` olarak şişiriyor (0,15→0,176 · 0,20→0,25 ·
+  0,25→**0,3333**), yani "1/3" diye gördüğüm şey %25'in ta kendisiydi; indirim
+  hiç değişmemişti ve bir hafta önceki karar zaten doğruydu. Sonuç: katalog
+  **%12,5 fazla** fiyatlandı ve canlıya çıktı (zarar yok — 0 breakeven altı —
+  ama kullanıcının seçtiği %25 hedef marj yerine %33,9). **En önemli kısım:
+  bu turda uyguladığım TÜM doğrulamalar geçti ve hiçbiri hatayı göremedi** —
+  ön koşul mührü tuttu, sonra mührü hedefle birebir eşleşti, TS motoru ile SQL
+  2013/2013 satırda uyuştu, kuru çalışma → apply → read-back → ayrı token'la
+  bağımsız okuma zinciri tamamlandı. Hepsi *aritmetik bütünlüğü* ölçüyordu;
+  hiçbiri *girdinin doğruluğunu* sormuyordu. Mühür "yazmak istediğini yazdı mı?"
+  der, "yazmak istediğin doğru muydu?" demez. Kural: (1) bir oranı veriden
+  ölçerken paydanın hangi kümeyi temsil ettiğini ŞEMADAN doğrula — alan adı
+  ("item_total") brüt mü net mi söylemez, ilişkiyi bir kimlikle sına
+  (`kalem toplamı = item_total + discount` gibi); (2) ölçülen orana **akıl
+  sağlığı sınırı** koy — indirim %100'ü aşamaz, ve hatalı paydam bazı
+  haftalarda 1,3256 ve 1,5000 üretiyordu, yani hata tek bakışta görülebilirdi
+  ama ben haftalık tabloya değil tek bir "son 7 gün" rakamına bakmıştım;
+  (3) bir sayı serisi yuvarlak mağaza değerlerine (0,10/0,15/0,20/0,25) DEĞİL
+  de tuhaf kesirlere (0,176/0,333) oturuyorsa dönüşüm hatası ara — dış sistem
+  yuvarlak sayı girer, garip olan senin hesabındır; (4) geri-dönüşü zor bir
+  dış-sistem yazımından önce "girdim doğru mu?" sorusu, "işlemim tutarlı mı?"
+  sorusundan AYRI ve ÖNCE sorulmalıdır.
+
 - **Çok kiracılı sistemde "başarılı ama BOŞ" koşu, hatanın en sinsi hâlidir —
   `{ok:true}` hiçbir şey yapmamayı da başarı diye raporlar (2026-08-27):**
   Jade fiyatlarını Etsy'ye itmek için `app/api/ops/price-sync` rotasını

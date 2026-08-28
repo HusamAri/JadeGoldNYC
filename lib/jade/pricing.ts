@@ -39,20 +39,18 @@ export const JADE_PACKAGING_CENTS = 1_50;
  * 89 varyant da breakeven'in ALTINDA kalırdı. Girdi değişince sabit değişir;
  * ayrıntı: `docs/jade/fiyatlandirma.md` §9.
  *
- * 2026-08-27: %25 → **1/3 (%33,3)**. Aynı çürüme bir hafta sonra tekrarladı:
- * indirim 10-18 Ağustos'ta %17,6'ya inip 20 Ağustos'tan itibaren %33,3'e
- * çıkmış, sabit 0,25'te kalmıştı → fiilî marj %13,4 ve 47 varyant breakeven
- * ALTINDA. Oran canlı siparişlerden ölçüldü ve tam 1/3 çıktı
- * (46836/140509 = 0,33333), o yüzden kesir olarak yazılıyor — 0.333 yazmak
- * yuvarlama artığı bırakır. Kullanıcı 2026-08-27'de "kalıcı, mağaza geneli"
- * diye doğruladı. Ayrıntı: `docs/jade/fiyatlandirma.md` §10.
- *
- * DERS: bu sabit dış dünyayı temsil ediyor ve dışarısı HABER VERMEDEN
- * değişiyor. İki kez sessizce çürüdü çünkü panel kendi eski varsayımıyla
- * hesaplayıp ekranı yeşil gösteriyor. §10'daki ölçüm sorgusu (siparişlerden
- * gerçek indirim oranı) düzenli koşulmalı.
+ * 2026-08-27: KISA SÜRE 1/3 YAZILDI, **GERİ ALINDI — değer %25'tir.**
+ * O gün "indirim 1/3'e çıkmış" diye ölçüldü ve sabit değiştirildi; ölçüm
+ * YANLIŞTI. Payda hatası: oran `discount/item_total` ile hesaplanmıştı, oysa
+ * `sales.item_total_cents` indirim SONRASI nettir — doğru payda
+ * `discount/(item_total+discount)`. 138/138 siparişte
+ * `sum(unit_price×qty) = item_total + discount` doğrulandı.
+ * Hatalı payda her oranı `x/(1−x)` olarak şişiriyordu: 0,15→0,176 ·
+ * 0,20→0,25 · **0,25→0,3333**. Yani "1/3" gördüğüm şey %25'in ta kendisiydi;
+ * indirim 20 Ağustos'tan beri hiç değişmedi ve §9 kararı zaten doğruydu.
+ * Ayrıntı ve etki: `docs/jade/fiyatlandirma.md` §11.
  */
-export const JADE_DISCOUNT_RATE = 1 / 3;
+export const JADE_DISCOUNT_RATE = 0.25;
 
 /** Etsy oransal kesinti: %6,5 işlem + %3 ödeme işleme. */
 export const JADE_ETSY_RATE = 0.095;
