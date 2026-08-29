@@ -12,7 +12,8 @@ dosyayla akışa devam edebilir.
 | Panel org kaydı | **Prod'da VAR** (`ophir-gold-usa`, 93 ürün) |
 | Etsy bağlantısı | **VAR** — `etsy_connection` shop 66983205, scope `listings_w` dahil |
 | SKU kimliği | 1/93 listing tamam (4558671043, 396 offering); 92 listing bekliyor |
-| Panel varyantları | Kanarya senkronu bekliyor (öncesi 0) |
+| Panel varyantları | 396 (yalnız kanarya listing'i); 92 listing bekliyor |
+| Fiyat bilgisi | Kanaryada GERÇEK matris elde (aşağıdaki DÜZELTME bölümü) |
 | Marka yönü | Onaylanmadı (Drive `START_HERE.md`) |
 
 > **Düzeltme:** önceki sürüm "Etsy bağlantısı YOK" diyordu; o okuma
@@ -81,7 +82,10 @@ Panelde Ophir org'u **prod'da mevcut** (`ophir-gold-usa`, 93 ürün, 0 varyant) 
 paralel bir oturumda açılmış. Durum: 92 `edit` (pasif) + 1 `active`, **hepsi tek
 tip 366,00 USD** fiyatta ve **hiçbirinde `weight_grams` yok**.
 
-### Bulgu: 93/93 listing maliyetin altında
+### ~~Bulgu: 93/93 listing maliyetin altında~~ — ÇÜRÜDÜ (2026-08-29)
+
+> Bu bölüm tarihsel kayıt olarak duruyor. Dayandığı okuma (`$366` = her varyantın
+> fiyatı) yanlıştı; gerçek matris için aşağıdaki **DÜZELTME** bölümüne bak.
 
 Açıklamalardan çıkarılan geometriyle (93/93 gerçek genişlik, 63'ünde yazılı
 kalınlık — tamamı 1,50-1,60 mm) ve kullanıcının verdiği **100 USD işçilik** ile
@@ -187,12 +191,53 @@ geri okuma doğruladı (`status: "updated"`). Örnek:
 
 1. ~~Kanarya kuru çalışma~~ ✔
 2. ~~Kanarya apply → 396 SKU canlıda~~ ✔
-3. **Kanarya senkronu** — `?listing=4558671043&mode=sync`: 396 varyant GERÇEK
-   offering fiyatlarıyla panele iner. Ophir için ilk olgusal fiyat verisi.
+3. ~~Kanarya senkronu — 396 varyant panele indi~~ ✔ (aşağıdaki bölüm)
 4. Kalan 92 listing — `?apply=1&limit=N` (senkron aynı turda otomatik koşar).
-   Kaba büyüklük: ~36.800 offering; Etsy günlük kotası gözetilerek parçalı.
+   Kaba büyüklük: ~36.800 offering; Etsy kotası 5.000/gün, ölçülen tüketim
+   listing başına ~3 çağrı → 92 listing ≈ 300 çağrı, kota sorun değil.
 5. Gram (üretici kitabından) varyant bazında girilir.
 6. Fiyat **ondan sonra** kurulur ve `pushListingPrices` ile itilir.
 
 > Fiyat kurulmadan önce hâlâ cevapsız: 5 siparişin 5'inin de iptal/iade olma
 > sebebi, ve 10K/14K/18K varyant mı yoksa tek karat mı satılacağı kararı.
+
+## DÜZELTME: "93/93 maliyetin altında" bulgusu ÇÜRÜDÜ (2026-08-29)
+
+Kanarya senkronu Ophir'in ilk olgusal fiyat verisini getirdi ve yukarıdaki
+"93/93 listing maliyetin altında" bulgusunu **çürüttü**. O bulgu `$366`'nın her
+varyantın fiyatı olduğu okumasına dayanıyordu; değilmiş.
+
+Listing **4558671043** (1 mm stacking band) canlı matrisi — 9 metal × 44 beden:
+
+| Beden | 10K | 14K | 18K |
+| --- | --- | --- | --- |
+| 3 | $366,00 | $484,56 | $638,79 |
+| 5 | $440,00 | $638,79 | $803,96 |
+| 7 | $473,00 | $688,35 | $969,16 |
+| 9 | $512,00 | $737,90 | $1.035,26 |
+| 11 | $545,00 | $792,94 | $1.101,31 |
+| 13,75 | $583,00 | $848,02 | $1.189,45 |
+
+396 varyant, 46 farklı fiyat, medyan $688,35, tavan $1.189,45. `$366` yalnız
+**12 varyantın** (üç 10K rengi × en küçük bedenler) fiyatı — yani vitrin
+("from") değeri, katalog fiyatı değil.
+
+**Bağımsız doğrulama (ayna değil, işlem tablosu):** daha önce `sale_items`'ta
+görülen iki gerçek satış — **$512,00** ve **$737,90** — bu matriste sırasıyla
+**10K beden 9** ve **14K beden 9** hücrelerine *kuruşu kuruşuna* oturuyor.
+Senkronun getirdiği veri, kendisinden bağımsız bir kaynakla tutuyor.
+
+### Fiyat yapısı gözlemi
+
+10K'da beden 3 → 13,75 fiyat oranı **×1,593**. Aynı aralıkta yüzük ağırlığının
+(orta çevre ile ~lineer) oranı **≈×1,60**. Yani fiyat neredeyse tam olarak
+metal ağırlığıyla ölçekleniyor: **işçilik parça başına sabit değil, grama
+oransal gömülü.** Bu, Tamsan fatura kalibrasyonunun tersi (orada işçilik parça
+başına sabitti, gram düştükçe oransal model çöküyordu) — küçük bedenlerde
+işçilik geri kazanımı düşük kalıyor.
+
+> Bu bir tek listing. Kalan 92 taslağın `price_cents`'i de 93/93 aynı `$366`
+> ("from") ve SKU'ları yok — gerçek matrisleri **bilinmiyor**. "Ophir fiyatları
+> düşük/yüksek" gibi katalog geneli bir iddia, 92 listing senkronlanmadan
+> kurulmamalı. Ders: bir kolonda tüm satırların birebir aynı olması türetilmiş/
+> vitrin alan sinyalidir (second-brain).
