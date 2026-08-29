@@ -114,9 +114,20 @@ export async function GET(request: Request) {
     );
   }
 
-  const writeEnabled = tokenAuthorized
-    ? (await admin.rpc("etsy_write_enabled", { p_org: orgId })).data === true
-    : (await getEtsyWriteAccess(orgId)).writeEnabled;
+  let writeEnabled: boolean;
+  if (tokenAuthorized) {
+    const { data: connection } = await admin
+      .from("etsy_connection")
+      .select("status, scope")
+      .eq("org_id", orgId)
+      .maybeSingle();
+    const row = connection as { status: string; scope: string | null } | null;
+    writeEnabled =
+      row?.status === "connected" &&
+      /(^|\s)listings_w(\s|$)/.test(row.scope ?? "");
+  } else {
+    writeEnabled = (await getEtsyWriteAccess(orgId)).writeEnabled;
+  }
   if (!writeEnabled) {
     return NextResponse.json({ error: "Etsy write access is disabled." }, { status: 403 });
   }
