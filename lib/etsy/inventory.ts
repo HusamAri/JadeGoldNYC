@@ -1058,6 +1058,33 @@ export async function createMissingListingOfferings(
   }
 }
 
+/**
+ * SKU'nun değiştiği property eksenleri (`sku_on_property` payload alanı).
+ *
+ * Etsy sözleşmesi: bu alan BOŞKEN tüm offering'ler AYNI SKU'yu taşımak
+ * zorundadır; farklı SKU gönderilirse PUT 400 "sku must be consistent across
+ * all products" ile reddedilir (2026-08-29 kanaryası). Her tam kombinasyona
+ * benzersiz SKU vermek için kullanılan TÜM property slotları bildirilir —
+ * `create-listing.ts` (`sku_on_property: usedSlots`) ve `eon-push-drafts.ts`
+ * (`[513, 514]`) ile aynı kural.
+ *
+ * Tek offering'de boş dizi döner: tek SKU zaten "tutarlı"dır, eksen gerekmez.
+ */
+export function skuVariationSlots(
+  products: { property_values?: EtsyPropertyValue[] | null }[],
+): number[] {
+  if (products.length <= 1) return [];
+  return [
+    ...new Set(
+      products.flatMap((p) =>
+        (p.property_values ?? [])
+          .map((pv) => pv.property_id)
+          .filter((id): id is number => typeof id === "number"),
+      ),
+    ),
+  ];
+}
+
 /** SKU ATAMA — Etsy'de SKU'su OLMAYAN offering'lere kimlik yazar. */
 export type SkuAssignOutcome = {
   listingId: number;
@@ -1083,8 +1110,12 @@ export type SkuAssignOutcome = {
  * GÜVENLİK KURALLARI
  *  - MEVCUT SKU ASLA EZİLMEZ: dolu olan offering atlanır (idempotent — tekrar
  *    koşmak güvenli; ikinci koşuda hepsi "skipped" olur).
- *  - `sku_on_property` tanımlıysa SKU property seviyesinde yaşıyordur; ürün
- *    seviyesine yazmak çakışır → hiçbir şey yazılmadan `error` döner.
+ *  - Offering başına AYRI SKU için `sku_on_property` ZORUNLUDUR: boşken Etsy
+ *    tek ortak SKU bekler ve farklı SKU'lara 400 "sku must be consistent
+ *    across all products" der. Payload'a kullanılan tüm property slotları
+ *    yazılır (create-listing.ts ile aynı kural).
+ *  - Karışık durumda (bir kısmı SKU'lu, bir kısmı boş) hiçbir şey yazılmaz:
+ *    sku_on_property override'ı mevcut sözleşmeyi değiştirebilir.
  *  - Üretilen SKU'lar listing içinde TEKİL ve <=32 karakter olmalı; değilse
  *    hiçbir şey yazılmaz (yarım kimlik, kimliksizlikten kötüdür).
  *  - Fiyat/adet/property AYNEN korunur: taban payload `buildInventoryUpdate`
@@ -1110,14 +1141,6 @@ export async function assignListingSkus(
     const live = (inventory.products ?? []).filter((p) => !p.is_deleted);
     if (live.length === 0) {
       return { ...base, status: "unchanged", detail: "Envanter boş" };
-    }
-    if (inventory.sku_on_property && inventory.sku_on_property.length > 0) {
-      return {
-        ...base,
-        status: "error",
-        detail:
-          "Listing SKU'yu property seviyesinde tutuyor (sku_on_property) — ürün seviyesine yazmak çakışır, hiçbir şey yazılmadı.",
-      };
     }
 
     // Hangi offering'e ne yazılacak? Dolu olanlar dokunulmadan atlanır.
@@ -1163,6 +1186,20 @@ export async function assignListingSkus(
       return { ...base, status: "planned", assigned: yeniSkuByIndex.size, skipped, plan };
     }
 
+    // KARIŞIK DURUM KORUMASI: bir kısmı SKU'lu bir kısmı boşsa, aşağıdaki
+    // sku_on_property override'ı mevcut SKU sözleşmesini değiştirebilir —
+    // insan kararı ister, dokunma.
+    if (skipped > 0) {
+      return {
+        ...base,
+        status: "error",
+        assigned: 0,
+        skipped,
+        plan,
+        detail: `Karışık durum: ${skipped} offering'de SKU var, ${yeniSkuByIndex.size} tanesinde yok. sku_on_property sözleşmesini değiştirmemek için hiçbir şey yazılmadı.`,
+      };
+    }
+
     const readinessStateId = await resolveReadinessStateId(client);
     // Fiyat/adet/property'yi olduğu gibi koruyan taban payload.
     const update = buildInventoryUpdate(inventory, () => false, 0, readinessStateId);
@@ -1171,6 +1208,28 @@ export async function assignListingSkus(
       const yeni = yeniSkuByIndex.get(i);
       return yeni ? { ...p, sku: yeni } : p;
     });
+
+    // SKU EKSENLERİ — offering başına AYRI SKU ancak bununla mümkün.
+    // `sku_on_property` boşken Etsy TEK ortak SKU bekler ve farklı SKU'lar
+    // gönderilince 400 "sku must be consistent across all products" döner
+    // (2026-08-29 kanaryası, listing 4558671043 / 396 offering).
+    // Tam kombinasyon benzersiz olduğundan KULLANILAN TÜM property slotları
+    // bildirilir — create-listing.ts ve eon-push-drafts.ts ile aynı kural.
+    if (live.length > 1) {
+      const slotlar = skuVariationSlots(live);
+      if (slotlar.length === 0) {
+        return {
+          ...base,
+          status: "error",
+          assigned: 0,
+          skipped,
+          plan,
+          detail:
+            "Birden çok offering var ama hiçbirinde property yok — SKU'yu hangi eksende değiştireceğimiz bildirilemez, hiçbir şey yazılmadı.",
+        };
+      }
+      update.sku_on_property = slotlar;
+    }
 
     await putListingInventory(client, listingId, update, {
       legacy: readinessStateId != null ? false : undefined,

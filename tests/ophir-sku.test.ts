@@ -116,3 +116,37 @@ test("en uzun gerçekçi SKU sınırın altında", () => {
   const sku = skuUret(9999999999, props("18K YELLOW", "13 3/4"), 0);
   assert.ok(sku.length <= SKU_MAX, `${sku} = ${sku.length} kr`);
 });
+
+/* --- sku_on_property eksenleri (Etsy sözleşmesi) --- */
+
+test("skuVariationSlots: kullanılan tüm property slotlarını döner", async () => {
+  const { skuVariationSlots } = await import("../lib/etsy/inventory");
+  const urunler = [
+    { property_values: [{ property_id: 200 }, { property_id: 100 }] },
+    { property_values: [{ property_id: 200 }, { property_id: 100 }] },
+  ];
+  assert.deepEqual(skuVariationSlots(urunler).sort(), [100, 200]);
+});
+
+test("skuVariationSlots: tek offering'de BOŞ (tek SKU zaten tutarlı)", async () => {
+  const { skuVariationSlots } = await import("../lib/etsy/inventory");
+  assert.deepEqual(
+    skuVariationSlots([{ property_values: [{ property_id: 100 }] }]),
+    [],
+  );
+  assert.deepEqual(skuVariationSlots([]), []);
+});
+
+test("skuVariationSlots: property'siz çoklu offering BOŞ döner (çağıran reddeder)", async () => {
+  const { skuVariationSlots } = await import("../lib/etsy/inventory");
+  assert.deepEqual(skuVariationSlots([{}, { property_values: null }]), []);
+});
+
+test("skuVariationSlots: gerçek Ophir matrisi iki eksen verir (metal + beden)", async () => {
+  const { skuVariationSlots } = await import("../lib/etsy/inventory");
+  // 9 metal × 44 beden: her offering iki property taşır.
+  const urunler = Array.from({ length: 396 }, () => ({
+    property_values: [{ property_id: 200 }, { property_id: 52047899002 }],
+  }));
+  assert.deepEqual(skuVariationSlots(urunler).sort((a, b) => a - b), [200, 52047899002]);
+});
