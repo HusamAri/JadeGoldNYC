@@ -4,15 +4,20 @@ Etsy mağazası **`ophirgoldusa`** panelde ikinci (üçüncü) kiracı olarak y�
 Konteyner/scratchpad geçicidir; kalıcı kayıt burasıdır. Herhangi bir oturum bu
 dosyayla akışa devam edebilir.
 
-## Durum (2026-08-28)
+## Durum (2026-08-29)
 
 | Konu | Durum |
 | --- | --- |
 | Drive çalışma alanı | **VAR** — yeniden kurma, aşağıdaki klasörü kullan |
-| Panel org kaydı | Lokal dev DB'de kuruldu (`ophir-gold-usa`); **prod'da HENÜZ YOK** |
-| Etsy bağlantısı | **YOK** — `organizations.etsy_shop_id` boş, OAuth yapılmadı |
+| Panel org kaydı | **Prod'da VAR** (`ophir-gold-usa`, 93 ürün) |
+| Etsy bağlantısı | **VAR** — `etsy_connection` shop 66983205, scope `listings_w` dahil |
+| SKU kimliği | 1/93 listing tamam (4558671043, 396 offering); 92 listing bekliyor |
+| Panel varyantları | Kanarya senkronu bekliyor (öncesi 0) |
 | Marka yönü | Onaylanmadı (Drive `START_HERE.md`) |
-| Etsy'ye yayın | Bu aşamada **yetkilendirilmedi** (Drive `START_HERE.md`) |
+
+> **Düzeltme:** önceki sürüm "Etsy bağlantısı YOK" diyordu; o okuma
+> `organizations.etsy_shop_id`'ye (boş) bakıyordu, oysa bağlantı
+> `etsy_connection` tablosunda duruyor. Bağlantı durumu **oradan** okunur.
 
 ## Drive çalışma alanı (tek kaynak)
 
@@ -148,22 +153,46 @@ Etsy yazma katmanı `assignListingSkus` (`lib/etsy/inventory.ts`).
 - **Şema:** `OPH-<listingId>-<KARAT><RENK>-<BEDEN>`, çözülemeyende
   `OPH-<listingId>-<sıra>`. listingId'yi BİLEREK içerir — kopya-listing SKU'yu
   miras alamaz, sahiplik senkronda el değiştiremez (second-brain 2026-08 vakası).
-- **Güvenlik:** mevcut SKU asla ezilmez (idempotent); `sku_on_property` varsa
-  reddeder; üretilen SKU'lar tekil ve <=32 karakter değilse hiçbir şey yazmaz;
-  fiyat/adet/property aynen korunur; yazımdan sonra **geri okuma** ile doğrular
-  (200 OK teslim sayılmaz).
+- **Güvenlik:** mevcut SKU asla ezilmez (idempotent); üretilen SKU'lar tekil ve
+  <=32 karakter değilse hiçbir şey yazmaz; karışık durum (`skipped > 0`)
+  reddedilir; fiyat/adet/property aynen korunur; yazımdan sonra **geri okuma**
+  ile doğrular (200 OK teslim sayılmaz).
+- **`sku_on_property` DOLDURULUR** — offering başına ayrı SKU'nun ön koşulu bu.
+  Boş bırakılırsa Etsy 400 verir: `sku must be consistent across all products`
+  (OpenAPI tanımı: "ürünün SKU'sunu değiştiren property'lerin id dizisi").
 - **Akış:** varsayılan KURU ÇALIŞMA → `?listing=<id>` kanarya → `?apply=1`.
-  `?limit=N` (varsayılan 10).
+  `?limit=N` (varsayılan 10). `?mode=sync` yalnız panele senkron eder
+  (Etsy salt-okunur).
 - **Auth:** `Bearer $CRON_SECRET` veya tek kullanımlık `?token=` (ops_tokens CAS).
 
-Testler: `npm run test:ophir-sku` — 3 karat × 3 renk × 25 beden tam
-kombinatorik süpürme (tekillik, uzunluk, desen) + ayrıştırma ve yedek yolu.
+Testler: `npm run test:ophir-sku` — üretimdeki **gerçek** 9 metal × 44 beden
+matrisi (kesirli bedenler dahil) + kanarya çakışma vakası regresyon olarak.
+
+### Kanarya sonucu (2026-08-29)
+
+Listing **4558671043** (`active`): **396 offering'e SKU yazıldı**, `skipped: 0`,
+geri okuma doğruladı (`status: "updated"`). Örnek:
+`OPH-4558671043-10W-3`, `OPH-4558671043-10W-3.25` ("3 1/4"),
+`OPH-4558671043-10W-3.5`.
+
+İlk iki canlı deneme **bloklandı ve Etsy'ye hiçbir şey yazılmadı**:
+
+1. Kesirli beden ("3 1/4") ayrıştırılamayıp sıra numarasına düşüyor, `-3`
+   gerçek "3" bedeniyle çarpışıyordu → tekillik kapısı durdurdu. Düzeltme:
+   kesir ayrıştırma + yedek yol için ayrı `x` ad alanı (`OPH-<id>-x<i+1>`).
+2. `sku_on_property` boş gönderilince Etsy 400 verdi → alan doldurularak
+   düzeltildi (repo bunu zaten üç yerde doğru yapıyordu).
 
 ### Sıra
 
-1. Kanarya: tek listing kuru çalışma → plan doğru mu?
-2. Kanarya apply → Etsy'de SKU'ları gör.
-3. Kalan listing'ler.
-4. `syncListingVariants` → varyantlar + GERÇEK offering fiyatları panele iner.
+1. ~~Kanarya kuru çalışma~~ ✔
+2. ~~Kanarya apply → 396 SKU canlıda~~ ✔
+3. **Kanarya senkronu** — `?listing=4558671043&mode=sync`: 396 varyant GERÇEK
+   offering fiyatlarıyla panele iner. Ophir için ilk olgusal fiyat verisi.
+4. Kalan 92 listing — `?apply=1&limit=N` (senkron aynı turda otomatik koşar).
+   Kaba büyüklük: ~36.800 offering; Etsy günlük kotası gözetilerek parçalı.
 5. Gram (üretici kitabından) varyant bazında girilir.
 6. Fiyat **ondan sonra** kurulur ve `pushListingPrices` ile itilir.
+
+> Fiyat kurulmadan önce hâlâ cevapsız: 5 siparişin 5'inin de iptal/iade olma
+> sebebi, ve 10K/14K/18K varyant mı yoksa tek karat mı satılacağı kararı.
