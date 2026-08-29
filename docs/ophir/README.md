@@ -222,10 +222,18 @@ Listing **4558671043** (1 mm stacking band) canlı matrisi — 9 metal × 44 bed
 **12 varyantın** (üç 10K rengi × en küçük bedenler) fiyatı — yani vitrin
 ("from") değeri, katalog fiyatı değil.
 
-**Bağımsız doğrulama (ayna değil, işlem tablosu):** daha önce `sale_items`'ta
-görülen iki gerçek satış — **$512,00** ve **$737,90** — bu matriste sırasıyla
-**10K beden 9** ve **14K beden 9** hücrelerine *kuruşu kuruşuna* oturuyor.
-Senkronun getirdiği veri, kendisinden bağımsız bir kaynakla tutuyor.
+**DİKKAT — bu bir doğrulama DEĞİL, bir bulgu.** İlk yazdığımda `sale_items`'taki
+**$512,00** ve **$737,90** satışlarını "matrisin 10K/14K beden 9 hücrelerine
+kuruşu kuruşuna oturuyor, demek ki senkron doğrulandı" diye okudum. YANLIŞ:
+o satışlar bu listing'e değil, **4543147022**'ye ("4mm Smooth Ring") ait.
+Farklı listing'in satışı bu listing'in verisini doğrulamaz.
+
+Ama sayılar gerçekten birebir tutuyor ve asıl soru bu: **1 mm bir band ile
+4 mm bir band aynı fiyat noktalarını nasıl paylaşıyor?** 4 mm yüzük ~4 kat
+ağır olmalı. Muhtemel açıklama, aynı fiyat ızgarasının genişlikten bağımsız
+olarak listing'lere kopyalanmış olması — yani fiyatın gerçek gramla ilişkisi
+olmaması. Doğrulaması tek senkron: `?listing=4543147022`. Kanıtlanana kadar
+**hipotez**.
 
 ### Fiyat yapısı gözlemi
 
@@ -241,3 +249,30 @@ işçilik geri kazanımı düşük kalıyor.
 > düşük/yüksek" gibi katalog geneli bir iddia, 92 listing senkronlanmadan
 > kurulmamalı. Ders: bir kolonda tüm satırların birebir aynı olması türetilmiş/
 > vitrin alan sinyalidir (second-brain).
+
+## 5 siparişin şekli (2026-08-29)
+
+Mağazanın TÜM sipariş geçmişi 5 kayıt, 7-10 Ağustos 2026, hepsi iptal/iade.
+
+| Tarih (UTC) | Receipt | Listing | Birim | Durum | Etsy ücreti |
+| --- | --- | --- | --- | --- | --- |
+| 08-07 03:03 | 4137652446 | 4544906099 (2,9 mm Beaded) | $463,00 | **refunded** | $15,08 |
+| 08-07 23:56 | 4138871541 | 4543147022 (4 mm Smooth) | $512,00 | cancelled | $0 |
+| 08-08 00:12 | 4138882177 | 4543147022 | $512,00 | cancelled | $0 |
+| 08-08 00:17 | 4138459606 | 4543147022 | $512,00 | cancelled | $0 |
+| 08-10 10:56 | 4140596382 | 4543147022 | $737,90 | cancelled | $0 |
+
+Okunabilen desen (teşhis değil, şekil):
+
+- **4/5 sipariş aynı listing'de** (4543147022), 3'ü **21 dakika içinde aynı
+  fiyattan** — tekrarlanan ödeme denemesi / kopya sipariş / şüpheli sipariş
+  desenine benziyor.
+- **Yalnız iade edilende Etsy ücreti tahakkuk etmiş** ($15,08); iptallerde $0.
+  Yani iade olan ödendi sonra geri verildi, iptaller ödeme öncesi/ödemesiz.
+- Son siparişte **%25 indirim** var: birim $737,90, `discount_cents` $184,48,
+  `item_total_cents` $553,42 — yani `item_total` indirim SONRASI net
+  (Jade'de payda hatasına yol açan aynı şema; oran hesabında payda
+  `item_total + discount` olmalı).
+
+**Panel iptal SEBEBİNİ göremiyor** — Etsy API'si `sales` şemasına böyle bir alan
+vermiyor. Sebep ancak Etsy sipariş ekranından (satıcı görüşü) öğrenilir.
