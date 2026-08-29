@@ -1,3 +1,5 @@
+import { createHash } from "crypto";
+
 import { NextResponse } from "next/server";
 
 import { logAudit } from "@/lib/audit";
@@ -57,11 +59,6 @@ async function sleep(ms: number): Promise<void> {
  * Existing inventory, prices, SKUs, images, copy and discounts are not written.
  */
 export async function GET(request: Request) {
-  const membership = await requireMembership();
-  if (!isManager(membership.role)) {
-    return NextResponse.json({ error: MANAGER_ONLY_ERROR }, { status: 403 });
-  }
-
   const url = new URL(request.url);
   if (url.searchParams.get("confirm") !== "PUBLISH_84") {
     return NextResponse.json(
@@ -71,10 +68,42 @@ export async function GET(request: Request) {
   }
 
   const admin = createAdminClient();
+  let orgId: string;
+  const token = url.searchParams.get("token");
+  if (token) {
+    const tokenHash = createHash("sha256").update(token).digest("hex");
+    const { data: consumed } = await admin
+      .from("ops_tokens")
+      .update({ used_at: new Date().toISOString() })
+      .eq("purpose", "ophir-publish-edit")
+      .eq("token_hash", tokenHash)
+      .is("used_at", null)
+      .gt("expires_at", new Date().toISOString())
+      .select("id");
+    if ((consumed ?? []).length !== 1) {
+      return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+    }
+    const { data: ophir } = await admin
+      .from("organizations")
+      .select("id")
+      .eq("slug", OPHIR_SLUG)
+      .maybeSingle();
+    if (!ophir) {
+      return NextResponse.json({ error: "Ophir Gold USA not found." }, { status: 404 });
+    }
+    orgId = ophir.id;
+  } else {
+    const membership = await requireMembership();
+    if (!isManager(membership.role)) {
+      return NextResponse.json({ error: MANAGER_ONLY_ERROR }, { status: 403 });
+    }
+    orgId = membership.org_id;
+  }
+
   const { data: org } = await admin
     .from("organizations")
     .select("id, name, slug")
-    .eq("id", membership.org_id)
+    .eq("id", orgId)
     .maybeSingle();
   if (!org || org.slug !== OPHIR_SLUG) {
     return NextResponse.json(
@@ -83,7 +112,7 @@ export async function GET(request: Request) {
     );
   }
 
-  const { writeEnabled } = await getEtsyWriteAccess(membership.org_id);
+  const { writeEnabled } = await getEtsyWriteAccess(orgId);
   if (!writeEnabled) {
     return NextResponse.json({ error: "Etsy write access is disabled." }, { status: 403 });
   }
@@ -93,7 +122,7 @@ export async function GET(request: Request) {
     .select(
       "id, etsy_listing_id, title, description, status, price_cents, quantity, num_images",
     )
-    .eq("org_id", membership.org_id)
+    .eq("org_id", orgId)
     .eq("status", "edit")
     .not("etsy_listing_id", "is", null)
     .order("etsy_listing_id", { ascending: true });
@@ -162,7 +191,7 @@ export async function GET(request: Request) {
     );
   }
 
-  const client = await EtsyClient.forOrg(membership.org_id);
+  const client = await EtsyClient.forOrg(orgId);
   const shopId = await client.requireShopId();
   const results: PublishResult[] = [];
 
@@ -217,7 +246,7 @@ export async function GET(request: Request) {
     const { error } = await admin
       .from("products")
       .update({ status: "active", updated_at: new Date().toISOString() })
-      .eq("org_id", membership.org_id)
+      .eq("org_id", orgId)
       .in(
         "id",
         published.map((result) => result.productId),
@@ -236,7 +265,7 @@ export async function GET(request: Request) {
   }
 
   await logAudit(admin, {
-    orgId: membership.org_id,
+    orgId,
     action: "etsy.listing_state",
     entityType: "products",
     summary: `Ophir bulk publish: ${published.length}/${products.length} active, ${failed.length} failed`,
