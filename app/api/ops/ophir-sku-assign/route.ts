@@ -7,6 +7,7 @@ import { EtsyClient } from "@/lib/etsy/client";
 import { assignListingSkus } from "@/lib/etsy/inventory";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { skuUret } from "@/lib/etsy/ophir-sku";
+import { syncOneListingVariants } from "@/lib/etsy/variants";
 
 export const maxDuration = 300;
 
@@ -35,7 +36,16 @@ export const maxDuration = 300;
  *    doğrulanır; doğrulanamayan listing `error` döner.
  *  - `?limit=N`: kaç listing işlenecek (varsayılan 10). Her listing bir Etsy
  *    envanter GET'i demek; 93'ün tamamı için `?limit=93` (maxDuration 300s).
+ *  - `?mode=sync`: SKU ataması YAPMAZ; yalnız `syncOneListingVariants` koşar
+ *    (Etsy'den okur, PANELE yazar). Etsy'ye tek bayt gitmez.
  * Mevcut SKU asla ezilmez — tekrar koşmak güvenlidir.
+ *
+ * ## Neden atamadan sonra senkron
+ * SKU atamak zincirin yalnız ilk halkası: kimlik Etsy'ye yazılsa da panel onu
+ * kendiliğinden görmez, `syncOneListingVariants` çekene kadar `product_variants`
+ * boş kalır ve fiyat yönetimi hâlâ imkânsızdır. Bu yüzden `apply=1` koşusunda
+ * `updated` dönen her listing AYNI TURDA panele senkronlanır — "yazdım, oldu
+ * sandım" boşluğu (second-brain: dış yazmayı aynı turda geri oku) kapanır.
  *
  * ## Auth
  * `Authorization: Bearer $CRON_SECRET` VEYA `?token=` (ops_tokens): SHA-256
@@ -73,6 +83,7 @@ export async function GET(request: Request) {
 
   const url = new URL(request.url);
   const apply = url.searchParams.get("apply") === "1";
+  const yalnizSenkron = url.searchParams.get("mode") === "sync";
   const tekListing = url.searchParams.get("listing");
   const limit = Number(url.searchParams.get("limit") ?? 10);
 
@@ -97,6 +108,7 @@ export async function GET(request: Request) {
   if (tekListing) q = q.eq("etsy_listing_id", Number(tekListing));
   const { data: rows } = await q;
   const listings = (rows ?? []) as {
+    id: string;
     etsy_listing_id: number;
     title: string | null;
     status: string | null;
@@ -109,7 +121,22 @@ export async function GET(request: Request) {
   const sonuc = [];
   let atanan = 0;
   let hata = 0;
+  let senkronVaryant = 0;
   for (const l of listings) {
+    if (yalnizSenkron) {
+      const s = await syncOneListingVariants(orgId, l.id);
+      if (s.error) hata += 1;
+      senkronVaryant += s.variants;
+      sonuc.push({
+        listing: l.etsy_listing_id,
+        baslik: (l.title ?? "").slice(0, 60),
+        durum: l.status,
+        panelVaryant: s.variants,
+        ...(s.error ? { senkronHata: s.error } : {}),
+      });
+      continue;
+    }
+
     const out = await assignListingSkus(
       client,
       l.etsy_listing_id,
@@ -118,6 +145,17 @@ export async function GET(request: Request) {
     );
     if (out.status === "error") hata += 1;
     if (out.status === "updated") atanan += out.assigned;
+
+    // Kimlik Etsy'ye YAZILDIYSA aynı turda panele indir: SKU'lu offering'ler
+    // artık `toRows` süzgecinden geçer, yani varyantlar GERÇEK offering
+    // fiyatlarıyla iner. Senkron hatası atamayı geçersiz kılmaz (SKU Etsy'de
+    // duruyor, `mode=sync` ile tekrar denenebilir) — ayrı alanda raporlanır.
+    let senkron: { variants: number; error?: string } | null = null;
+    if (apply && out.status === "updated") {
+      senkron = await syncOneListingVariants(orgId, l.id);
+      senkronVaryant += senkron.variants;
+    }
+
     sonuc.push({
       listing: l.etsy_listing_id,
       baslik: (l.title ?? "").slice(0, 60),
@@ -126,6 +164,12 @@ export async function GET(request: Request) {
       // Kuru çalışmada planın tamamı uzun olabilir — ilk 5 örnek yeter.
       plan: out.plan.slice(0, 5),
       planToplam: out.plan.length,
+      ...(senkron
+        ? {
+            panelVaryant: senkron.variants,
+            ...(senkron.error ? { senkronHata: senkron.error } : {}),
+          }
+        : {}),
     });
   }
 
@@ -134,15 +178,20 @@ export async function GET(request: Request) {
       orgId,
       action: "etsy.sku_assign",
       entityType: "products",
-      summary: `Ophir SKU atama: ${atanan} offering, ${listings.length} listing (hata: ${hata})`,
+      summary: `Ophir SKU atama: ${atanan} offering, ${listings.length} listing (hata: ${hata}); panele inen varyant: ${senkronVaryant}`,
     });
   }
 
   return NextResponse.json({
-    mod: apply ? "APPLY (canlı yazma)" : "kuru çalışma (Etsy'ye yazılmadı)",
+    mod: yalnizSenkron
+      ? "SENKRON (yalnız panele yazar, Etsy salt-okunur)"
+      : apply
+        ? "APPLY (canlı yazma)"
+        : "kuru çalışma (Etsy'ye yazılmadı)",
     org: ORG_SLUG,
     listingSayisi: listings.length,
     atananOffering: atanan,
+    panelVaryant: senkronVaryant,
     hataliListing: hata,
     sema: "OPH-<listingId>-<KARAT><RENK>-<BEDEN>",
     sonuc,

@@ -555,6 +555,44 @@ repodaki hedefidir.
   Doğrulama (2026-07-30, v4 turu): CAS + buton kilidi uygulandı → aynı akışta
   audit'e TEK reprice satırı düştü; kilit canlıda kanıtlandı.
 
+- **Dış sisteme YENİ bir yazma yolu açmadan önce, repoda o yazmayı ZATEN doğru
+  yapan örneği bul ve sözleşmesini kopyala — "mantıklı görünen" koruma canlıda
+  400 yer (2026-08-29):** Ophir'in 93 listing'inde Etsy tarafında SKU yoktu;
+  panel "saf-Etsy kuralı" gereği SKU'suz offering için varyant satırı üretmiyor,
+  dolayısıyla offering-başına fiyat haritası kurulamıyor ve `pushListingPrices`
+  sessizce `unchanged` dönüyordu — yani sorun fiyat değil KİMLİKti. SKU yazan
+  yeni bir ops rotası kurdum ve iki canlı denemem üst üste bloklandı:
+  (1) kanaryada üretilen SKU'lar ÇAKIŞTI — "3 1/4" gibi kesirli bedenler
+  ayrıştırıcıdan düşüp sıra numarasına (`-2`, `-3`) geriliyordu ve `-3` gerçek
+  "3" bedeniyle çarpıştı; tekillik kapısı yakaladı, Etsy'ye tek bayt gitmedi.
+  Kritik nokta: bunu bulmadan önce 225 kombinasyonluk bir süpürme koşmuştum ve
+  TEMİZ geçmişti — çünkü süpürmenin girdisi benim UYDURDUĞUM ondalık bedenlerdi
+  ("3.25"), üretimdeki gerçek etiket ise "3 1/4"tü. Süpürme kendi hayalini
+  doğruladı. (2) Düzeltmeden sonraki deneme Etsy 400 aldı:
+  `"sku must be consistent across all products"` — envanter PUT'unda
+  offering-başına SKU için `sku_on_property` DOLDURULMALIYDI, benim korumam ise
+  tam tersini yapıyor, doluysa REDDEDİYORDU. En can sıkıcı yanı: repo bu
+  sözleşmeyi zaten ÜÇ ayrı yerde doğru uyguluyordu; ben yeni yolu yazarken
+  onlara hiç bakmadım, Etsy'nin OpenAPI tanımını da yazımdan SONRA okudum
+  (tanım tek cümleyle söylüyor: "ürünün SKU'sunu değiştiren property'lerin
+  id dizisi"). Kural: (1) dış sisteme yeni bir yazma yolu açarken önce
+  `grep`le repodaki ÇALIŞAN örneği bul — sözleşmeyi yeniden türetme, kopyala;
+  (2) dış API'nin alan tanımını yazmadan ÖNCE oku, hata metninden sonra değil;
+  (3) kombinatorik süpürmenin girdi kümesi CANLI VERİDEN gelmeli — uydurulmuş
+  girdiyle koşan süpürme, kodu değil kendi varsayımını sınar (üretimdeki
+  gerçek 9 metal × 44 beden matrisi teste kondu, kanarya vakası regresyon
+  olarak birebir yazıldı); (4) buna karşılık koruma katmanları İŞE YARADI —
+  iki hatalı denemenin ikisinde de Etsy'ye hiçbir şey yazılmadı (tekillik +
+  32 karakter + karışık-durum kapısı + yazım sonrası geri okuma), yani
+  "önce doğrula, sonra yaz" kuru çalışması pahalı değil BEDAVA sigortadır.
+  Yan ders — **kimlik yazmak zincirin YARISIDIR:** 396 SKU Etsy'ye yazılıp
+  geri okumayla doğrulandıktan sonra bile panel `product_variants` = 0'dı;
+  ayna kendiliğinden dolmuyor, `syncOneListingVariants` çekene kadar fiyat
+  yönetimi hâlâ imkânsız. Bu yüzden atama rotası aynı turda panele senkron
+  edecek şekilde kapatıldı (`mode=sync` ile tek başına da koşar). Bir yazma
+  işinin "bitti" tanımı, dış sistemin 200 dönmesi değil, ZİNCİRİN SONUNDAKİ
+  tüketicinin veriyi görmesidir.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
