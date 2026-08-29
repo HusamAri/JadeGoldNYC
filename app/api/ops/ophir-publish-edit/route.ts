@@ -69,6 +69,7 @@ export async function GET(request: Request) {
 
   const admin = createAdminClient();
   let orgId: string;
+  let tokenAuthorized = false;
   const token = url.searchParams.get("token");
   if (token) {
     const tokenHash = createHash("sha256").update(token).digest("hex");
@@ -92,6 +93,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "Ophir Gold USA not found." }, { status: 404 });
     }
     orgId = ophir.id;
+    tokenAuthorized = true;
   } else {
     const membership = await requireMembership();
     if (!isManager(membership.role)) {
@@ -112,7 +114,9 @@ export async function GET(request: Request) {
     );
   }
 
-  const { writeEnabled } = await getEtsyWriteAccess(orgId);
+  const writeEnabled = tokenAuthorized
+    ? (await admin.rpc("etsy_write_enabled", { p_org: orgId })).data === true
+    : (await getEtsyWriteAccess(orgId)).writeEnabled;
   if (!writeEnabled) {
     return NextResponse.json({ error: "Etsy write access is disabled." }, { status: 403 });
   }
