@@ -2,6 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 
 import type { EtsyClient } from "@/lib/etsy/client";
 import { etsyPaths } from "@/lib/etsy/endpoints";
+import type { EtsyInventory } from "@/lib/etsy/types";
 import { asEtsyProperties, type RawVariantProperties } from "@/lib/variant-properties";
 import { logAudit } from "@/lib/audit";
 
@@ -497,6 +498,74 @@ export function validateWeddingBandVariationAxes(
   return null;
 }
 
+function samePropertyIds(actual: number[] | undefined, expected: number[]): boolean {
+  if ((actual?.length ?? 0) !== expected.length) return false;
+  const actualIds = new Set(actual ?? []);
+  return expected.every((propertyId) => actualIds.has(propertyId));
+}
+
+/**
+ * Etsy can accept an inventory request without preserving every intended axis.
+ * Treat the write as successful only when the response and a fresh readback
+ * contain the complete product matrix, the exact custom slots and every SKU.
+ */
+function assertInventoryRoundTrip(
+  inventory: EtsyInventory,
+  plan: VariationPlan,
+  expectedVariants: DraftVariant[],
+  usedSlots: number[],
+  stage: "write response" | "readback",
+): void {
+  const products = (inventory.products ?? []).filter((product) => !product.is_deleted);
+  if (products.length !== expectedVariants.length) {
+    throw new Error(
+      `${stage}: expected ${expectedVariants.length} products, received ${products.length}.`,
+    );
+  }
+
+  const expectedNames = new Set(plan.varyingNames);
+  for (const product of products) {
+    const properties = product.property_values ?? [];
+    const names = new Set(
+      properties
+        .map((property) => property.property_name?.trim())
+        .filter((name): name is string => Boolean(name)),
+    );
+    const ids = new Set(properties.map((property) => property.property_id));
+    if (
+      properties.length !== plan.varyingNames.length ||
+      [...expectedNames].some((name) => !names.has(name)) ||
+      usedSlots.some((propertyId) => !ids.has(propertyId))
+    ) {
+      throw new Error(
+        `${stage}: Etsy did not preserve all variation axes (${plan.varyingNames.join(", ")}).`,
+      );
+    }
+  }
+
+  const expectedSkus = new Set(
+    expectedVariants.map((variant) => variant.sku?.trim()).filter(Boolean),
+  );
+  const actualSkus = new Set(products.map((product) => product.sku?.trim()).filter(Boolean));
+  if (
+    expectedSkus.size !== expectedVariants.length ||
+    actualSkus.size !== expectedSkus.size ||
+    [...expectedSkus].some((sku) => !actualSkus.has(sku))
+  ) {
+    throw new Error(`${stage}: Etsy did not preserve the complete SKU matrix.`);
+  }
+
+  if (!samePropertyIds(inventory.price_on_property, usedSlots)) {
+    throw new Error(`${stage}: price_on_property does not include every variation axis.`);
+  }
+  if (!samePropertyIds(inventory.sku_on_property, usedSlots)) {
+    throw new Error(`${stage}: sku_on_property does not include every variation axis.`);
+  }
+  if ((inventory.quantity_on_property?.length ?? 0) !== 0) {
+    throw new Error(`${stage}: quantity unexpectedly varies by a property.`);
+  }
+}
+
 /** Sabit + overflow property'leri açıklama sonuna okunur not olarak ekler. */
 function appendConstantsToDescription(
   base: string,
@@ -761,8 +830,10 @@ export async function createDraftListingFromProduct(
         const property_values = plan.varyingNames.map((name, i) => ({
           property_id: CUSTOM_SLOT_IDS[i],
           property_name: name,
+          value_ids: [],
           // Değeri olmayan varyantta "-" placeholder (Etsy boş değer reddeder).
           values: [pm.get(name) || "-"],
+          scale_id: null,
         }));
         const offeringCents = v.price_cents ?? anchorCents;
         return {
@@ -784,7 +855,7 @@ export async function createDraftListingFromProduct(
       // readiness_state_id'yi yalnız bu modda kabul eder (yoksa "All offerings
       // need readiness state"). readiness_state_on_property=[] → işlem profili
       // hiçbir property'ye göre DEĞİŞMEZ (tüm offering'ler aynı made-to-order).
-      await client.request(
+      const writeResult = await client.request<EtsyInventory>(
         "PUT",
         etsyPaths.listingInventory(listingId) +
           "?legacy=false&max_variations_supported=3",
@@ -797,6 +868,18 @@ export async function createDraftListingFromProduct(
           readiness_state_on_property: [],
         },
       );
+      assertInventoryRoundTrip(
+        writeResult,
+        plan,
+        variants,
+        usedSlots,
+        "write response",
+      );
+
+      const readback = await client.get<EtsyInventory>(
+        etsyPaths.listingInventory(listingId),
+      );
+      assertInventoryRoundTrip(readback, plan, variants, usedSlots, "readback");
     } catch (e) {
       // Listing açıldı ama envanter yazılamadı - KISMI başarı; kullanıcı düzeltsin.
       return {
