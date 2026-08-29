@@ -356,7 +356,7 @@ export function buildPriceSyncUpdate(
         sku,
         property_values: (p.property_values ?? []).map((pv) => {
           // 2025 PUT property_name'i string ister. Etsy GET null döndürüyorsa
-          // (özellikle custom slot 513/514) DB değerinden ada eşle.
+          // (özellikle custom slot 513/514/516) DB değerinden ada eşle.
           const firstVal = (pv.values?.[0] ?? "").trim().toLowerCase();
           const resolvedName =
             pv.property_name ?? nameByValue.get(firstVal) ?? null;
@@ -472,9 +472,8 @@ export async function pushListingPrices(
 
 /**
  * Güncellenmiş envanteri Etsy'ye yazar (PUT). listings_w kapsamı gerektirir.
- * `legacy: false` → 2025 envanter modeli (`?legacy=false`): offering-düzeyi
- * readiness_state_id'yi yalnız bu mod kabul eder. Belirtilmezse eski (legacy)
- * yol korunur (reprice/stok gibi mevcut çağıranlar davranış değiştirmez).
+ * `legacy: false` 2025 envanter modelini kullanır. Her yazma çağrısı Etsy'nin
+ * üç varyasyon desteğine açıkça opt-in olur.
  */
 export async function putListingInventory(
   client: EtsyClient,
@@ -484,8 +483,10 @@ export async function putListingInventory(
 ): Promise<void> {
   const path =
     opts?.legacy === false
-      ? etsyPaths.listingInventory(listingId) + "?legacy=false"
-      : etsyPaths.listingInventory(listingId);
+      ? etsyPaths.listingInventory(listingId) +
+        "?legacy=false&max_variations_supported=3"
+      : etsyPaths.listingInventory(listingId) +
+        "?max_variations_supported=3";
   await client.request<unknown>("PUT", path, update);
 }
 

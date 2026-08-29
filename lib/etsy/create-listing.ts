@@ -12,15 +12,15 @@ import { logAudit } from "@/lib/audit";
  * type, exact live seller taxonomy path, production identity, parcel, processing
  * time and personalization are listing data, never hardcoded defaults.
  *
- * The flow creates an unpublished Etsy draft, writes at most two inventory
+ * The flow creates an unpublished Etsy draft, writes at most three inventory
  * axes, uploads the public cover image when available, mirrors the Etsy id and
  * records an audit event. A product with an existing Etsy id is never touched.
  * Every step returns a structured result so partial external success stays
  * visible and recoverable.
  */
 
-/** Etsy custom variation slot id'leri (en fazla iki eksen). */
-const CUSTOM_SLOT_IDS = [513, 514] as const;
+/** Etsy custom variation slot id'leri (en fazla üç eksen). */
+const CUSTOM_SLOT_IDS = [513, 514, 516] as const;
 
 /** Açıklamanın sonundaki dahili not bloğunu söker: "\n\n---\n[EON NN · ...]".
  *  scripts/eon-push-drafts.ts stripInternalTrailer ile BİREBİR aynı desen. */
@@ -421,10 +421,10 @@ function sanitizeMaterials(materials: string[] | null): string[] {
 
 /**
  * Varyasyon eşleme planı: hangi property'ler DEĞİŞİYOR (variation ekseni) →
- * custom slot 513/514; hangileri SABİT → açıklamaya not.
+ * custom slot 513/514/516; hangileri SABİT → açıklamaya not.
  */
 interface VariationPlan {
-  /** Değişen property adları (en çok 2 - slot sırasıyla). */
+  /** Değişen property adları (en çok 3 - slot sırasıyla). */
   varyingNames: string[];
   /** Slota sığmayan fazladan değişen property adları (uyarı). */
   overflowNames: string[];
@@ -576,9 +576,20 @@ export async function createDraftListingFromProduct(
   // Varyasyon planı (değişen → slot, sabit → açıklama).
   const plan = buildVariationPlan(variants);
   if (plan.overflowNames.length > 0) {
-    warnings.push(
-      `Etsy en fazla 2 varyasyon ekseni kabul eder; şu property'ler açıklamaya taşındı: ${plan.overflowNames.join(", ")}.`,
-    );
+    return {
+      ok: false,
+      step: "validation",
+      error: `Etsy en fazla 3 varyasyon ekseni kabul eder: ${plan.overflowNames.join(", ")}.`,
+    };
+  }
+  if (plan.varyingNames.length === 3 && variants.length > 400) {
+    return {
+      ok: false,
+      step: "validation",
+      error:
+        "Üç varyasyon ekseninde fiyat ve SKU tüm eksenlere göre değiştiğinde " +
+        "Etsy en fazla 400 ürün kombinasyonu kabul eder.",
+    };
   }
 
   const cleanDesc = stripInternalTrailer(product.description ?? "");
@@ -775,7 +786,8 @@ export async function createDraftListingFromProduct(
       // hiçbir property'ye göre DEĞİŞMEZ (tüm offering'ler aynı made-to-order).
       await client.request(
         "PUT",
-        etsyPaths.listingInventory(listingId) + "?legacy=false",
+        etsyPaths.listingInventory(listingId) +
+          "?legacy=false&max_variations_supported=3",
         {
           products: inventoryProducts,
           // Her tam kombinasyon benzersiz fiyat/sku taşır → kullanılan tüm slotlar.
