@@ -8,84 +8,111 @@ function props(...values: string[]) {
   return { property_values: values.map((v) => ({ values: [v] })) };
 }
 
-const KARATLAR = ["10K", "14K", "18K"];
-const RENKLER = ["Yellow Gold", "White Gold", "Rose Gold"];
-const BEDENLER = [
-  "4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9", "9.5",
-  "10", "10.5", "11", "11.5", "12", "12.5", "13", "13.5", "14", "14.5",
-  "15", "15.5", "16",
+/* CANLI VERİ ŞEKLİ — kanarya koşusundan (2026-08-28, listing 4558671043,
+ * 396 offering). Metal ve beden AYRI property; beden KESİRLİ yazılıyor
+ * ("3 1/4"), ondalık DEĞİL. Testler bu gerçek şekle göre kurulur — uydurma
+ * ondalık bedenle test etmek ilk turda hatayı kaçırmıştı. */
+const METALLER = [
+  "10K WHITE", "10K YELLOW", "10K ROSE",
+  "14K WHITE", "14K YELLOW", "14K ROSE",
+  "18K WHITE", "18K YELLOW", "18K ROSE",
 ];
+/** 3 → 13 3/4 arası çeyrek adım = 44 beden (9 × 44 = 396, kanaryayla birebir). */
+const BEDENLER: string[] = [];
+for (let tam = 3; tam <= 13; tam++) {
+  for (const kesir of ["", " 1/4", " 1/2", " 3/4"]) {
+    BEDENLER.push(`${tam}${kesir}`);
+  }
+}
 
-test("tam kombinatorik süpürme: 3 karat × 3 renk × 25 beden", () => {
-  const listingId = 4543147022;
+test("kanarya regresyonu: çakışan beş offering artık tekil", () => {
+  // Kuru koşuda ÇAKIŞAN tam girdi: "3" ile "3 1/2" aynı SKU'yu üretmişti.
+  const girdiler = ["3", "3 1/4", "3 1/2", "3 3/4", "4"];
+  const uretilen = girdiler.map((b, i) =>
+    skuUret(4558671043, props("10K WHITE", b), i),
+  );
+  assert.equal(new Set(uretilen).size, girdiler.length, `çakışma: ${uretilen}`);
+  assert.deepEqual(uretilen, [
+    "OPH-4558671043-10W-3",
+    "OPH-4558671043-10W-3.25",
+    "OPH-4558671043-10W-3.5",
+    "OPH-4558671043-10W-3.75",
+    "OPH-4558671043-10W-4",
+  ]);
+});
+
+test("gerçek matris: 9 metal × 44 beden = 396 offering, hepsi tekil", () => {
+  const listingId = 4558671043;
   const uretilen = new Set<string>();
   let i = 0;
-  for (const k of KARATLAR) {
-    for (const r of RENKLER) {
-      for (const b of BEDENLER) {
-        const sku = skuUret(listingId, props(k, r, b), i++);
-        // 1) tekil
-        assert.ok(!uretilen.has(sku), `çakışma: ${sku}`);
-        uretilen.add(sku);
-        // 2) uzunluk sınırı
-        assert.ok(sku.length <= SKU_MAX, `çok uzun (${sku.length}): ${sku}`);
-        // 3) beklenen desen
-        assert.match(sku, /^OPH-\d+-(10|14|18)[YWR]-\d{1,2}(\.\d)?$/);
-        // 4) hepsi çözülebilir olduğu için sıra-numarası yedeğine düşmemeli:
-        //    son parça beden, ondan önceki karat+renk olmalı (desen zaten
-        //    bunu doğruluyor; burada sıra numarasının beden yerine geçmediğini
-        //    ayrıca teyit ediyoruz).
-        assert.equal(sku.split("-").at(-1), b);
-      }
+  for (const m of METALLER) {
+    for (const b of BEDENLER) {
+      const sku = skuUret(listingId, props(m, b), i++);
+      assert.ok(!uretilen.has(sku), `çakışma: ${sku} (${m} · ${b})`);
+      uretilen.add(sku);
+      assert.ok(sku.length <= SKU_MAX, `çok uzun (${sku.length}): ${sku}`);
+      assert.match(sku, /^OPH-\d+-(10|14|18)[YWR]-\d{1,2}(\.\d{1,2})?$/);
+      // Sıra-numarası yedeğine DÜŞMEMELİ — hepsi çözülebilir.
+      assert.ok(!sku.includes("-x"), `yedeğe düştü: ${sku} (${m} · ${b})`);
     }
   }
-  assert.equal(uretilen.size, 3 * 3 * 25);
+  assert.equal(i, 396, "kanaryadaki offering sayısı");
+  assert.equal(uretilen.size, 396);
 });
 
-test("karat/renk/beden ayrıştırma", () => {
-  assert.deepEqual(skuParcalari(props("14K Yellow Gold", "7.5")), {
-    karat: "14",
-    renk: "Y",
-    beden: "7.5",
+test("kesirli beden ondalığa normalize edilir", () => {
+  assert.equal(skuParcalari(props("10K WHITE", "3 1/4")).beden, "3.25");
+  assert.equal(skuParcalari(props("10K WHITE", "7 1/2")).beden, "7.5");
+  assert.equal(skuParcalari(props("10K WHITE", "13 3/4")).beden, "13.75");
+  assert.equal(skuParcalari(props("10K WHITE", "9")).beden, "9");
+});
+
+test("ondalık ve US önekli biçimler de kabul edilir", () => {
+  assert.equal(skuParcalari(props("14K YELLOW", "7.5")).beden, "7.5");
+  assert.equal(skuParcalari(props("14K YELLOW", "US 9")).beden, "9");
+  assert.equal(skuParcalari(props("14K YELLOW", "7.50")).beden, "7.5");
+});
+
+test("karat ve renk canlı biçimden ayrıştırılır", () => {
+  assert.deepEqual(skuParcalari(props("10K WHITE", "3")), {
+    karat: "10", renk: "W", beden: "3",
   });
-  assert.deepEqual(skuParcalari(props("18k white gold", "US 9")), {
-    karat: "18",
-    renk: "W",
-    beden: "9",
+  assert.deepEqual(skuParcalari(props("18K ROSE", "9 1/2")), {
+    karat: "18", renk: "R", beden: "9.5",
   });
-  assert.deepEqual(skuParcalari(props("10K Rose Gold", "6")), {
-    karat: "10",
-    renk: "R",
-    beden: "6",
+  assert.deepEqual(skuParcalari(props("14K YELLOW", "7")), {
+    karat: "14", renk: "Y", beden: "7",
   });
 });
 
-test("çözülemeyen offering sıra numarasına düşer", () => {
-  assert.equal(skuUret(123, { property_values: [] }, 0), "OPH-123-1");
-  assert.equal(skuUret(123, {}, 4), "OPH-123-5");
-  // karat var, beden yok → sıra ile tamamlanır
-  assert.equal(skuUret(123, props("14K Yellow Gold"), 2), "OPH-123-14Y-3");
+test("yedek yol AYRI ad alanında — gerçek bedenle çakışamaz", () => {
+  // Beden çözülemeyen offering sıra numarası alır ama "x" önekiyle.
+  const yedek = skuUret(4558671043, props("10K WHITE", "Custom"), 2);
+  assert.equal(yedek, "OPH-4558671043-10W-x3");
+  const gercek = skuUret(4558671043, props("10K WHITE", "3"), 9);
+  assert.notEqual(yedek, gercek);
+  assert.equal(gercek, "OPH-4558671043-10W-3");
 });
 
-test("farklı listing aynı varyantta ÇAKIŞMAZ (kopya-listing koruması)", () => {
-  const a = skuUret(4543147022, props("14K Yellow Gold", "7"), 0);
-  const b = skuUret(4544906099, props("14K Yellow Gold", "7"), 0);
-  assert.notEqual(a, b);
+test("çözülemeyen offering ve boş/bozuk değerde patlamaz", () => {
+  assert.equal(skuUret(123, { property_values: [] }, 0), "OPH-123-x1");
+  assert.equal(skuUret(123, {}, 4), "OPH-123-x5");
+  assert.equal(skuUret(9, { property_values: [{ values: null }] }, 1), "OPH-9-x2");
+  assert.equal(skuUret(9, { property_values: null }, 2), "OPH-9-x3");
 });
 
-test("boş/bozuk değer sıra numarasına düşer, patlamaz", () => {
-  assert.equal(skuUret(9, { property_values: [{ values: [] }] }, 0), "OPH-9-1");
-  assert.equal(skuUret(9, { property_values: [{ values: null }] }, 1), "OPH-9-2");
-  assert.equal(skuUret(9, { property_values: null }, 2), "OPH-9-3");
-});
-
-test("beden yalnız sayı biçiminde kabul edilir (yanlış eşleşme yok)", () => {
-  // "1.5mm" bir ölçü, beden DEĞİL — beden alanına sızmamalı
+test("ölçüler beden alanına sızmaz", () => {
   assert.equal(skuParcalari(props("1.5mm")).beden, undefined);
   assert.equal(skuParcalari(props("Width 4mm")).beden, undefined);
 });
 
+test("farklı listing aynı varyantta ÇAKIŞMAZ (kopya-listing koruması)", () => {
+  const a = skuUret(4543147022, props("14K YELLOW", "7"), 0);
+  const b = skuUret(4544906099, props("14K YELLOW", "7"), 0);
+  assert.notEqual(a, b);
+});
+
 test("en uzun gerçekçi SKU sınırın altında", () => {
-  const sku = skuUret(9999999999, props("18K Yellow Gold", "15.5"), 0);
+  const sku = skuUret(9999999999, props("18K YELLOW", "13 3/4"), 0);
   assert.ok(sku.length <= SKU_MAX, `${sku} = ${sku.length} kr`);
 });
