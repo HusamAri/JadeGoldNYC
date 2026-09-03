@@ -36,6 +36,11 @@ export const etsyPaths = {
   // updateListing (açıklama yazma) — shop_id + listings_w gerekir.
   shopListing: (shopId: number | string, listingId: number | string) =>
     `/shops/${shopId}/listings/${listingId}`,
+  listingTranslation: (
+    shopId: number | string,
+    listingId: number | string,
+    language: string,
+  ) => `/shops/${shopId}/listings/${listingId}/translations/${language}`,
   // uploadListingImage (ürün fotoğrafı yükleme, multipart) — listings_w gerekir.
   listingImages: (shopId: number | string, listingId: number | string) =>
     `/shops/${shopId}/listings/${listingId}/images`,

@@ -24,6 +24,7 @@ import {
 } from "@/lib/variant-properties";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { EtsyClient, EtsyNotConnectedError } from "@/lib/etsy/client";
+import { pushAndVerifyListingContent } from "@/lib/etsy/listing";
 
 /**
  * Senkronu bir adım ("domino" dilimi) ilerletir. Çağıran taraf (buton döngüsü)
@@ -335,7 +336,17 @@ function isReadyWeddingBandRepair(metadata: unknown): boolean {
   if (!isRecord(metadata)) return false;
   const taxonomy = metadata.taxonomy;
   const repair = metadata.variationRepair;
-  if (!isRecord(taxonomy) || !isRecord(repair)) return false;
+  const translations = metadata.translations;
+  const spanish = isRecord(translations) ? translations.es : null;
+  if (
+    !isRecord(taxonomy) ||
+    !isRecord(repair) ||
+    !isRecord(spanish) ||
+    typeof spanish.title !== "string" ||
+    typeof spanish.description !== "string"
+  ) {
+    return false;
+  }
   const sellerPath = taxonomy.sellerPath;
   return (
     Array.isArray(sellerPath) &&
@@ -348,6 +359,11 @@ function isReadyWeddingBandRepair(metadata: unknown): boolean {
   );
 }
 
+/**
+ * Yalnız panelde `variationRepair.status=ready` olarak işaretlenmiş bağlı
+ * wedding band kayıtlarını canlı Etsy envanterine gönderir. Her listing için
+ * tam matris doğrulanır, inventory PUT yapılır ve Etsy geri okuması eşleştirilir.
+ */
 export async function pushWeddingBandMatricesToEtsyAction(
   offset = 0,
 ): Promise<PushWeddingBandMatricesResult> {
@@ -372,7 +388,7 @@ export async function pushWeddingBandMatricesToEtsyAction(
   const admin = createAdminClient();
   const { data, error: productError } = await admin
     .from("products")
-    .select("id,etsy_listing_id,sku,title,listing_metadata")
+    .select("id,etsy_listing_id,sku,title,description,listing_metadata")
     .eq("org_id", m.org_id)
     .is("archived_at", null)
     .not("etsy_listing_id", "is", null)
@@ -383,6 +399,9 @@ export async function pushWeddingBandMatricesToEtsyAction(
   ) as {
     id: string;
     etsy_listing_id: number;
+    sku: string | null;
+    title: string;
+    description: string | null;
     listing_metadata: Record<string, unknown>;
   }[];
   const total = listings.length;
@@ -419,13 +438,45 @@ export async function pushWeddingBandMatricesToEtsyAction(
       }
       continue;
     }
-    const outcome = await pushWeddingBandMatrix(
-      client,
-      listing.etsy_listing_id,
-      (variantRows ?? []) as WeddingBandMatrixVariant[],
-    );
-    if (outcome.status === "updated") {
-      updated += 1;
+
+    const translations = listing.listing_metadata.translations;
+    const spanish = isRecord(translations) ? translations.es : null;
+    if (
+      !isRecord(spanish) ||
+      typeof spanish.title !== "string" ||
+      typeof spanish.description !== "string" ||
+      !listing.description
+    ) {
+      errors += 1;
+      if (sampleErrors.length < 5) {
+        sampleErrors.push(
+          `#${listing.etsy_listing_id}: İngilizce veya İspanyolca listing metni eksik`,
+        );
+      }
+      continue;
+    }
+
+    try {
+      const outcome = await pushWeddingBandMatrix(
+        client,
+        listing.etsy_listing_id,
+        (variantRows ?? []) as WeddingBandMatrixVariant[],
+      );
+      if (outcome.status !== "updated") {
+        throw new Error(outcome.detail ?? "envanter geri okuma hatası");
+      }
+      await pushAndVerifyListingContent(client, listing.etsy_listing_id, {
+        english: {
+          title: listing.title,
+          description: listing.description,
+        },
+        translations: {
+          es: {
+            title: spanish.title,
+            description: spanish.description,
+          },
+        },
+      });
       const repair = isRecord(listing.listing_metadata.variationRepair)
         ? listing.listing_metadata.variationRepair
         : {};
@@ -446,16 +497,20 @@ export async function pushWeddingBandMatricesToEtsyAction(
         })
         .eq("id", listing.id)
         .eq("org_id", m.org_id);
+      updated += 1;
       await new Promise((resolve) => setTimeout(resolve, 250));
-    } else {
+    } catch (error) {
       errors += 1;
       if (sampleErrors.length < 5) {
         sampleErrors.push(
-          `#${listing.etsy_listing_id}: ${outcome.detail ?? "geri okuma hatası"}`,
+          `#${listing.etsy_listing_id}: ${
+            error instanceof Error ? error.message : "geri okuma hatası"
+          }`,
         );
       }
     }
   }
+
   const done = index >= total;
   if (done) {
     revalidatePath("/tasarimlar");
