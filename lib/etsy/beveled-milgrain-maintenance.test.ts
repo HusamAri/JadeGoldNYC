@@ -33,8 +33,8 @@ test("defines all nine fixed-karat and fixed-color family members", () => {
   );
 });
 
-test("locks the 4mm to 12mm width range and US 4 to US 16 sizes", () => {
-  assert.deepEqual(BEVELED_MILGRAIN_WIDTHS, [4, 5, 6, 7, 8, 9, 10, 11, 12]);
+test("locks the owner-approved 4mm to 8mm width range and US 4 to US 16 sizes", () => {
+  assert.deepEqual(BEVELED_MILGRAIN_WIDTHS, [4, 5, 6, 7, 8]);
   assert.equal(BEVELED_MILGRAIN_RING_SIZES.length, 25);
   assert.equal(BEVELED_MILGRAIN_RING_SIZES[0], 4);
   assert.equal(BEVELED_MILGRAIN_RING_SIZES.at(-1), 16);
@@ -45,9 +45,9 @@ test("builds complete English and Spanish listing content", () => {
 
   assert.equal(
     content.en.title,
-    "14K Solid Rose Gold Beveled Milgrain Wedding Band, Satin Center Ring, 4mm to 12mm",
+    "14K Solid Rose Gold Beveled Milgrain Wedding Band, Satin Center Ring, 4mm to 8mm",
   );
-  assert.match(content.en.description, /Widths: 4mm through 12mm/);
+  assert.match(content.en.description, /Widths: 4mm through 8mm/);
   assert.match(content.en.description, /Sizes: US 4 through 16/);
   assert.match(content.en.description, /Thickness: 1\.5mm/);
   assert.match(content.en.description, /Inside Engraving Text/);
@@ -55,16 +55,17 @@ test("builds complete English and Spanish listing content", () => {
 
   assert.equal(
     content.es.title,
-    "Alianza de Oro Rosa Macizo de 14K con Milgrain y Bordes Biselados, 4mm a 12mm",
+    "Alianza de Oro Rosa Macizo de 14K con Milgrain y Bordes Biselados, 4mm a 8mm",
   );
-  assert.match(content.es.description, /Anchos: 4mm a 12mm/);
+  assert.match(content.es.description, /Anchos: 4mm a 8mm/);
   assert.match(content.es.description, /Tallas: US 4 a US 16/);
   assert.match(content.es.description, /Grosor: 1\.5mm/);
   assert.match(content.es.description, /Texto de Grabado Interior/);
   assert.match(content.es.description, /Fuente de Grabado/);
+  assert.doesNotMatch(JSON.stringify(content), /\b(?:9|10|11|12)\s*mm\b/);
 });
 
-test("builds 225 variants from the target 5mm base and source width deltas", () => {
+test("builds 125 variants from the target 5mm base and source width deltas", () => {
   const targetRows = [];
   const sourceRows = [];
   for (let doubledSize = 8; doubledSize <= 32; doubledSize += 1) {
@@ -97,15 +98,15 @@ test("builds 225 variants from the target 5mm base and source width deltas", () 
     productId: "product",
   });
 
-  assert.equal(generated.length, 225);
-  assert.equal(new Set(generated.map((row) => row.sku)).size, 225);
+  assert.equal(generated.length, 125);
+  assert.equal(new Set(generated.map((row) => row.sku)).size, 125);
   assert.equal(
     generated.find((row) => row.sku === "MG14R-W4-S08")?.price_cents,
     targetRows[0].price_cents - 8_000,
   );
   assert.equal(
-    generated.find((row) => row.sku === "MG14R-W12-S32")?.price_cents,
-    targetRows.at(-1)!.price_cents + 56_000,
+    generated.find((row) => row.sku === "MG14R-W8-S32")?.price_cents,
+    targetRows.at(-1)!.price_cents + 24_000,
   );
   assert.deepEqual(generated[0].properties, {
     Width: "4mm",
@@ -113,9 +114,9 @@ test("builds 225 variants from the target 5mm base and source width deltas", () 
   });
 });
 
-test("selects only the canonical 225 prepared variants", () => {
+test("retains only the approved 125 variants from an existing 225-variant matrix", () => {
   const rows = [];
-  for (const width of BEVELED_MILGRAIN_WIDTHS) {
+  for (const width of [4, 5, 6, 7, 8, 9, 10, 11, 12]) {
     for (let doubledSize = 8; doubledSize <= 32; doubledSize += 1) {
       const size = doubledSize / 2;
       rows.push({
@@ -141,8 +142,15 @@ test("selects only the canonical 225 prepared variants", () => {
 
   const canonical = selectCanonicalBeveledMilgrainVariants(rows, "MG18W");
 
-  assert.equal(canonical.length, 225);
+  assert.equal(canonical.length, 125);
   assert.equal(canonical.some((row) => row.id === "legacy"), false);
+  assert.deepEqual(
+    [...new Set(canonical.map((row) => row.properties.Width))],
+    ["4mm", "5mm", "6mm", "7mm", "8mm"],
+  );
+  for (const row of canonical) {
+    assert.equal(row, rows.find((original) => original.id === row.id));
+  }
 });
 
 test("rejects an incomplete prepared matrix", () => {
@@ -161,6 +169,6 @@ test("rejects an incomplete prepared matrix", () => {
         ],
         "MG10Y",
       ),
-    /expected 225 prepared variants/i,
+    /expected 125 prepared variants/i,
   );
 });

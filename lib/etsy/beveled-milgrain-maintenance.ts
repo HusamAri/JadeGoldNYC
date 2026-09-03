@@ -1,6 +1,4 @@
-export const BEVELED_MILGRAIN_WIDTHS = [
-  4, 5, 6, 7, 8, 9, 10, 11, 12,
-] as const;
+export const BEVELED_MILGRAIN_WIDTHS = [4, 5, 6, 7, 8] as const;
 
 export const BEVELED_MILGRAIN_RING_SIZES = Array.from(
   { length: 25 },
@@ -136,7 +134,7 @@ export function buildBeveledMilgrainContent({
     en: {
       title:
         `${karat} Solid ${color} Gold Beveled Milgrain Wedding Band, ` +
-        "Satin Center Ring, 4mm to 12mm",
+        "Satin Center Ring, 4mm to 8mm",
       description: [
         `A solid ${lowerKarat} ${color.toLowerCase()} gold wedding band with a broad satin center, two fine milgrain borders and crisp mirror-polished beveled edges. Made to order in your size and width, never plated and never filled.`,
         "",
@@ -146,7 +144,7 @@ export function buildBeveledMilgrainContent({
         "Borders: One continuous fine milgrain line on each side of the center.",
         "Edges: Symmetrical mirror-polished planar bevels.",
         "Fit: Polished comfort-fit interior with smooth edges.",
-        "Widths: 4mm through 12mm, in whole millimeters.",
+        "Widths: 4mm through 8mm, in whole millimeters.",
         "Thickness: 1.5mm production specification.",
         "Sizes: US 4 through 16, whole and half sizes.",
         `Hallmark: Stamped ${lowerKarat} inside the band.`,
@@ -154,7 +152,7 @@ export function buildBeveledMilgrainContent({
         "The satin center holds the light softly. The milgrain lines define its boundaries and the polished bevels return a sharper reflection at each edge.",
         "",
         "SIZE AND WIDTH",
-        "Choose Ring Size from US 4 through 16, including half sizes. Choose Width from 4mm through 12mm. A 4mm to 5mm band reads restrained. A 6mm to 8mm band has a balanced presence. A 9mm to 12mm band sits broad across the finger. Wider bands can feel tighter than narrow bands, so message us before ordering if you are between sizes.",
+        "Choose Ring Size from US 4 through 16, including half sizes. Choose Width from 4mm through 8mm. A 4mm to 5mm band reads restrained. A 6mm to 8mm band has a balanced presence. Wider bands can feel tighter than narrow bands, so message us before ordering if you are between sizes.",
         "",
         "INSIDE ENGRAVING",
         "Inside Engraving Text: Enter the exact text, up to 30 characters including spaces. Leave blank for no engraving.",
@@ -176,7 +174,7 @@ export function buildBeveledMilgrainContent({
     es: {
       title:
         `Alianza de Oro ${spanishColor.title} Macizo de ${karat} con ` +
-        "Milgrain y Bordes Biselados, 4mm a 12mm",
+        "Milgrain y Bordes Biselados, 4mm a 8mm",
       description: [
         `Una alianza de oro ${spanishColor.sentence} macizo de ${karat} con un centro satinado amplio, dos bordes milgrain finos y bordes biselados pulidos a espejo. Se fabrica por encargo en la talla y el ancho que elijas, nunca chapada ni rellena.`,
         "",
@@ -186,7 +184,7 @@ export function buildBeveledMilgrainContent({
         "Contornos: Una línea milgrain fina y continua a cada lado del centro.",
         "Bordes: Biseles planos, simétricos y pulidos a espejo.",
         "Ajuste: Interior pulido de ajuste cómodo con bordes suaves.",
-        "Anchos: 4mm a 12mm, en milímetros enteros.",
+        "Anchos: 4mm a 8mm, en milímetros enteros.",
         "Grosor: 1.5mm según la especificación de producción.",
         "Tallas: US 4 a US 16, incluidas las medias tallas.",
         `Sello: Marcado ${lowerKarat} en el interior de la alianza.`,
@@ -194,7 +192,7 @@ export function buildBeveledMilgrainContent({
         "El centro satinado suaviza la luz. Las líneas milgrain definen sus límites y los biseles pulidos devuelven un reflejo más nítido en cada borde.",
         "",
         "TALLA Y ANCHO",
-        "Elige la talla US 4 a US 16, incluidas las medias tallas, y el ancho de 4mm a 12mm. Los anchos de 4mm a 5mm se ven discretos. Los de 6mm a 8mm ofrecen una presencia equilibrada. Los de 9mm a 12mm se ven amplios sobre el dedo. Las alianzas anchas pueden sentirse más ajustadas, por lo que recomendamos escribirnos antes de comprar si dudas entre dos tallas.",
+        "Elige la talla US 4 a US 16, incluidas las medias tallas, y el ancho de 4mm a 8mm. Los anchos de 4mm a 5mm se ven discretos. Los de 6mm a 8mm ofrecen una presencia equilibrada. Las alianzas anchas pueden sentirse más ajustadas, por lo que recomendamos escribirnos antes de comprar si dudas entre dos tallas.",
         "",
         "GRABADO INTERIOR",
         "Texto de Grabado Interior: Introduce el texto exacto, hasta 30 caracteres incluidos los espacios. Déjalo en blanco si no deseas grabado.",
