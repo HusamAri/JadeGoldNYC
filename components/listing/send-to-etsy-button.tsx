@@ -91,6 +91,7 @@ export function SendToEtsyButton({
 
   return (
     <Button
+      id="etsy-gallery-action"
       type="button"
       variant={armed ? "destructive" : "outline"}
       onClick={send}
