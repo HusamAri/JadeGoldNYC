@@ -35,8 +35,9 @@ export function SendToEtsyButton({
           ? "Bu işlem mevcut Etsy taslağının galerisini doğrular ve eksik görselleri ekler. Onaylamak için tekrar tıklayın."
           : "Bu işlem Etsy'de canlı taslak açar. Onaylamak için tekrar tıklayın.",
       );
-      // 4 sn sonra kendini disarm et (yanlışlıkla kalması önlensin).
-      setTimeout(() => setArmed(false), 4000);
+      // Heavy variation tables can delay the first click by several seconds.
+      // Keep the second-confirmation window safe but usable.
+      setTimeout(() => setArmed(false), 15_000);
       return;
     }
     setArmed(false);
