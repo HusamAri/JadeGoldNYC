@@ -37,7 +37,7 @@ export function SendToEtsyButton({
       );
       // Heavy variation tables can delay the first click by several seconds.
       // Keep the second-confirmation window safe but usable.
-      setTimeout(() => setArmed(false), 15_000);
+      setTimeout(() => setArmed(false), 60_000);
       return;
     }
     setArmed(false);
