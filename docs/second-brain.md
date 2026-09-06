@@ -373,6 +373,32 @@ repodaki hedefidir.
   bul, (2) o anahtarın veride DOLU olduğunu SQL'le doğrula, (3) anahtar boşken
   fonksiyonun ne döndüğüne bak — "error" değil "unchanged" dönüyorsa yetenek
   fiilen yoktur; "çalıştırdım, hata vermedi" bu durumda hiçbir şey kanıtlamaz.
+  **Güçlendirme (2026-09-06) — YANLIŞ kimlik, EKSİK kimlikten tehlikelidir;
+  ölçüt "anahtar dolu mu" değil "anahtar doğru satıra mı bağlı":** EON'un
+  Shopify mağazasında "panele göre fiyat düzelt" istendi. 110 üründen ~19'unda
+  SKU'lar DOLUydu ve panelde birebir karşılıkları vardı — yani yukarıdaki
+  "anahtar boş mu?" kontrolü TEMİZ geçerdi. Ama SKU'lar yanlış varyanta
+  bağlıydı: `US 3` etiketli varyant beden 13'ün SKU'sunu, `Rose Gold` etiketli
+  varyant sarı altının SKU'sunu taşıyordu. İçe aktarma, **ters sıralanmış bir
+  SKU listesini artan seçenek ızgarasına fermuarlamıştı** (SKU S130→S045
+  azalırken seçenek US 3→US 13 artıyor; renkte de YG/WG/RG ile Rose/White/
+  Yellow ters). SKU'ya güvenip fiyat yazsaydım her üründe 18-63 varyanta
+  sessizce yanlış fiyat yazardım ve hiçbir kapı kırmızı yanmazdı. Yakalatan
+  şey, fiyat yazmadan önce varyantın SEÇENEK BAŞLIĞINI SKU'nun panel
+  karşılığıyla karşılaştırmaktı. Aynı turda ikinci kanıt: bu ürünlerin fiyatı
+  ürün başına tek düz değerdi ve 9,65g 18K bir yüzük $920'ye fiyatlanmıştı —
+  içindeki saf altın $1.071, yani **eritme altında**; "tüm satırlar birebir
+  aynı" deseni (Ophir "from" fiyatı dersi) burada da türetilmiş/bozuk alan
+  sinyaliydi. Kural: (1) dış sistemde kimlik doğrulaması "anahtar var mı" ile
+  bitmez — anahtarın İŞARET ETTİĞİ kombinasyonu bağımsız bir alandan (seçenek
+  başlığı, varyant adı) teyit et; (2) eşleme aracını yazarken "şüphede üret"
+  yerine "şüphede REDDET" kur: aynı kombinasyona iki satır düşüyorsa, eksen
+  adları tutarsızsa dur — bu kapı bozuk mağazayı ilk denemede yakaladı;
+  (3) bir dış sistemin verisi "dolu" görünüyorsa hâlâ yanlış olabilir, ve
+  düzeltme yazmadan önce bir ürünü KANARYA olarak tam zincirle (hiza →
+  kuru hesap → yaz → bağımsız geri oku) geçir — bu turda kanarya 125/125
+  doğrulandı, kalan 109 ürünün yeniden kurulması gerektiği ancak o zaman
+  netleşti.
 - **Kirli worktree'yi commit etmeden ÖNCE nedenini teşhis et; "hepsi silinmiş"
   diff'i otomasyon söylediği için de commit'lenmez (2026-08):** Ortam kurulumu
   sırasında stop-hook "uncommitted changes var, commit et ve push'la" dedi.
