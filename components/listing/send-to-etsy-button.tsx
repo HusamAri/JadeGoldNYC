@@ -92,7 +92,11 @@ export function SendToEtsyButton({
   return (
     <Button
       id="etsy-gallery-action"
-      className="scroll-mt-28"
+      className={
+        repairExisting
+          ? "fixed right-6 bottom-6 z-50 scroll-mt-28 shadow-lg"
+          : "scroll-mt-28"
+      }
       type="button"
       variant={armed ? "destructive" : "outline"}
       onClick={send}
