@@ -27,6 +27,8 @@ export interface SendListingResult {
   error?: string;
   /** Kısmi başarı uyarıları (ör. görsel yüklenemedi ama taslak açıldı). */
   warnings?: string[];
+  imageCount?: number;
+  repaired?: boolean;
 }
 
 export async function sendListingToEtsy(
@@ -55,15 +57,6 @@ export async function sendListingToEtsy(
   if (!pData) return { error: "Listing bulunamadı." };
   const prod = pData as Omit<DraftProduct, "variants">;
 
-  if (prod.etsy_listing_id != null) {
-    return {
-      ok: true,
-      skipped: true,
-      listingId: prod.etsy_listing_id,
-      url: `https://www.etsy.com/listing/${prod.etsy_listing_id}`,
-    };
-  }
-
   // Aktif varyantlar (org kilidi).
   const { data: vData, error: vErr } = await admin
     .from("product_variants")
@@ -86,6 +79,22 @@ export async function sendListingToEtsy(
     };
   }
 
+  const { data: imageData, error: imageError } = await admin
+    .from("listing_images")
+    .select("url, position")
+    .eq("org_id", m.org_id)
+    .eq("product_id", productId)
+    .order("position", { ascending: true })
+    .limit(10);
+  if (imageError) return { error: imageError.message };
+
+  const listingImages = (imageData ?? [])
+    .map((image) => ({
+      url: typeof image.url === "string" ? image.url.trim() : "",
+      position: typeof image.position === "number" ? image.position : 0,
+    }))
+    .filter((image) => image.url.length > 0);
+
   let client: EtsyClient;
   let shopId: number;
   try {
@@ -98,6 +107,7 @@ export async function sendListingToEtsy(
   const result = await createDraftListingFromProduct(admin, client, m.org_id, shopId, {
     ...prod,
     variants,
+    listingImages,
   });
 
   revalidatePath(`/tasarimlar/listing/${productId}`);
@@ -109,6 +119,8 @@ export async function sendListingToEtsy(
       listingId: result.listingId,
       url: result.url,
       warnings: result.warnings,
+      imageCount: result.imageCount,
+      repaired: result.repaired,
     };
   }
   return {
@@ -117,5 +129,7 @@ export async function sendListingToEtsy(
     listingId: result.listingId,
     url: result.url,
     warnings: result.warnings,
+    imageCount: result.imageCount,
+    repaired: result.repaired,
   };
 }

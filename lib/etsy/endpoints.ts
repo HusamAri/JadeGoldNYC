@@ -44,6 +44,9 @@ export const etsyPaths = {
   // uploadListingImage (ürün fotoğrafı yükleme, multipart) — listings_w gerekir.
   listingImages: (shopId: number | string, listingId: number | string) =>
     `/shops/${shopId}/listings/${listingId}/images`,
+  // Listing görsellerini Etsy CDN rank sırasıyla geri okumak için.
+  listingImagesRead: (listingId: number | string) =>
+    `/listings/${listingId}/images`,
   // Kişiselleştirme (2025 migrasyonu): legacy is_personalizable/personalization_*
   // create alanları KALDIRILDI. Listing oluşturulduktan sonra bu uca JSON
   // `personalization_questions` dizisi POST edilir. Çoklu soru için query

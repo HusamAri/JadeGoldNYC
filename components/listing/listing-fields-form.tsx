@@ -70,6 +70,7 @@ export function ListingFieldsForm({
   productId,
   initial,
   alreadyOnEtsy = false,
+  isDraft = false,
   hasVariations = false,
   weightGrams = null,
   purchasePrice14kCents,
@@ -81,6 +82,8 @@ export function ListingFieldsForm({
   initial: ListingFieldsInitial;
   /** Listing zaten Etsy'de mi? "Etsy'e gönder" yalnız taslakta görünür. */
   alreadyOnEtsy?: boolean;
+  /** Panel taslağı Etsy'ye bağlıysa galeri doğrulama ve onarımını gösterir. */
+  isDraft?: boolean;
   /** Varyantlı listingde ürün fiyat/adet Etsy'de genelde boş — eksik sayma. */
   hasVariations?: boolean;
   /** Tek-SKU / ürün seviye gram — maliyet tahmini için. */
@@ -365,7 +368,12 @@ export function ListingFieldsForm({
             {saving ? <Loader2 className="size-4 animate-spin" /> : <Save />}
             Künyeyi kaydet
           </Button>
-          {!alreadyOnEtsy && <SendToEtsyButton productId={productId} />}
+          {(!alreadyOnEtsy || isDraft) && (
+            <SendToEtsyButton
+              productId={productId}
+              repairExisting={alreadyOnEtsy}
+            />
+          )}
         </div>
       </div>
     </div>

@@ -12,9 +12,16 @@ import { Button } from "@/components/ui/button";
  * "Etsy'e gönder" — panel taslağını Etsy'de DRAFT listing olarak açar.
  * İKİ ADIMLI onay: ilk tık silahlar (canlı Etsy'ye YAZAR uyarısı), ikinci tık
  * gönderir. Sonuç toast'ta Etsy linki ya da hata. Yalnız taslakta görünür
- * (alreadyOnEtsy=false); listing zaten Etsy'deyse buton hiç render edilmez.
+ * Bağlı panel taslağında aynı eylem uzak galeriyi doğrular ve eksik sıraları
+ * mevcut Etsy taslağına ekler.
  */
-export function SendToEtsyButton({ productId }: { productId: string }) {
+export function SendToEtsyButton({
+  productId,
+  repairExisting = false,
+}: {
+  productId: string;
+  repairExisting?: boolean;
+}) {
   const router = useRouter();
   const [sending, setSending] = useState(false);
   const [armed, setArmed] = useState(false);
@@ -23,7 +30,11 @@ export function SendToEtsyButton({ productId }: { productId: string }) {
     if (!armed) {
       // 1. tık: onayı silahla — bu buton CANLI Etsy'ye yazar.
       setArmed(true);
-      toast.warning("Bu işlem Etsy'de canlı taslak açar. Onaylamak için tekrar tıklayın.");
+      toast.warning(
+        repairExisting
+          ? "Bu işlem mevcut Etsy taslağının galerisini doğrular ve eksik görselleri ekler. Onaylamak için tekrar tıklayın."
+          : "Bu işlem Etsy'de canlı taslak açar. Onaylamak için tekrar tıklayın.",
+      );
       // 4 sn sonra kendini disarm et (yanlışlıkla kalması önlensin).
       setTimeout(() => setArmed(false), 4000);
       return;
@@ -41,13 +52,16 @@ export function SendToEtsyButton({ productId }: { productId: string }) {
                 }
               : undefined,
           });
+          if (res.listingId) router.refresh();
           return;
         }
         for (const w of res.warnings ?? []) toast.warning(w);
         toast.success(
-          res.skipped
-            ? "Bu listing zaten Etsy'de."
-            : `Etsy taslağı açıldı (#${res.listingId}).`,
+          res.repaired
+            ? `Etsy taslak galerisi tamamlandı (${res.imageCount} görsel).`
+            : res.skipped
+              ? `Etsy taslak galerisi doğrulandı (${res.imageCount} görsel).`
+              : `Etsy taslağı açıldı (#${res.listingId}, ${res.imageCount} görsel).`,
           {
             action: res.url
               ? {
@@ -80,7 +94,11 @@ export function SendToEtsyButton({ productId }: { productId: string }) {
       variant={armed ? "destructive" : "outline"}
       onClick={send}
       disabled={sending}
-      title="Panel taslağını Etsy'de DRAFT listing olarak açar"
+      title={
+        repairExisting
+          ? "Mevcut Etsy taslak galerisini doğrular ve tamamlar"
+          : "Panel taslağını Etsy'de DRAFT listing olarak açar"
+      }
     >
       {sending ? (
         <Loader2 className="size-4 animate-spin" />
@@ -89,7 +107,11 @@ export function SendToEtsyButton({ productId }: { productId: string }) {
       ) : (
         <Store />
       )}
-      {armed ? "Onayla — Etsy'e yaz" : "Etsy'e gönder"}
+      {armed
+        ? "Onayla, Etsy'e yaz"
+        : repairExisting
+          ? "Etsy galerisini doğrula"
+          : "Etsy'e gönder"}
     </Button>
   );
 }

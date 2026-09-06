@@ -2,6 +2,10 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 
 import type { EtsyClient } from "@/lib/etsy/client";
 import { etsyPaths } from "@/lib/etsy/endpoints";
+import {
+  syncEtsyListingGallery,
+  type OrderedListingImage,
+} from "@/lib/etsy/gallery-sync";
 import type { EtsyInventory } from "@/lib/etsy/types";
 import { asEtsyProperties, type RawVariantProperties } from "@/lib/variant-properties";
 import { logAudit } from "@/lib/audit";
@@ -377,6 +381,7 @@ export interface DraftProduct {
   product_type: string | null;
   listing_metadata: unknown;
   variants: DraftVariant[];
+  listingImages?: OrderedListingImage[];
 }
 
 export interface CreateDraftResult {
@@ -390,6 +395,14 @@ export interface CreateDraftResult {
   error?: string;
   /** Kısmi başarı uyarıları (ör. görsel yüklenemedi ama listing açıldı). */
   warnings?: string[];
+  imageCount?: number;
+  repaired?: boolean;
+}
+
+function productGallery(product: DraftProduct): OrderedListingImage[] {
+  const panelImages = product.listingImages ?? [];
+  if (panelImages.length > 0) return panelImages;
+  return product.image_url ? [{ url: product.image_url, position: 0 }] : [];
 }
 
 /** Bir varyantı property-adı → değer (string) haritasına indirger. */
@@ -591,13 +604,35 @@ export async function createDraftListingFromProduct(
 ): Promise<CreateDraftResult> {
   // ── 0) İdempotens: zaten Etsy'deyse hiç dokunma. ──────────────────────────
   if (product.etsy_listing_id != null) {
-    return {
-      ok: true,
-      skipped: true,
-      listingId: product.etsy_listing_id,
-      url: `https://www.etsy.com/listing/${product.etsy_listing_id}`,
-      step: "idempotency",
-    };
+    const listingId = product.etsy_listing_id;
+    const url = `https://www.etsy.com/listing/${listingId}`;
+    try {
+      const gallery = await syncEtsyListingGallery(
+        client,
+        shopId,
+        listingId,
+        productGallery(product),
+      );
+      return {
+        ok: true,
+        skipped: gallery.uploadedCount === 0,
+        repaired: gallery.uploadedCount > 0,
+        listingId,
+        url,
+        step: gallery.uploadedCount > 0 ? "image" : "idempotency",
+        imageCount: gallery.finalCount,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        listingId,
+        url,
+        step: "image",
+        error: `Mevcut Etsy taslak galerisi tamamlanamadı: ${
+          error instanceof Error ? error.message : String(error)
+        }`,
+      };
+    }
   }
 
   const warnings: string[] = [];
@@ -893,32 +928,37 @@ export async function createDraftListingFromProduct(
     }
   }
 
-  // ── 3) Kapak görseli (opsiyonel; image_url PUBLIC olmalı). ────────────────
-  if (product.image_url) {
-    try {
-      const res = await fetch(product.image_url);
-      if (!res.ok) {
-        warnings.push(
-          `Kapak görseli indirilemedi (HTTP ${res.status}) - listing görselsiz açıldı.`,
-        );
-      } else {
-        const buf = await res.arrayBuffer();
-        const contentType = res.headers.get("content-type") ?? "image/jpeg";
-        const fd = new FormData();
-        fd.append("image", new Blob([buf], { type: contentType }), "cover.jpg");
-        fd.append("rank", "1");
-        await client.requestMultipart(
-          "POST",
-          etsyPaths.listingImages(shopId, listingId),
-          fd,
-        );
-      }
-    } catch (e) {
-      // Görsel kritik değil - listing korunur, uyarı olarak dön.
-      warnings.push(
-        `Kapak görseli yüklenemedi: ${e instanceof Error ? e.message : String(e)}`,
-      );
-    }
+  // ── 3) Panel galerisi. Etsy geri okuması tamamlanmadan başarı verilmez. ──
+  let galleryImageCount = 0;
+  try {
+    const gallery = await syncEtsyListingGallery(
+      client,
+      shopId,
+      listingId,
+      productGallery(product),
+    );
+    galleryImageCount = gallery.finalCount;
+  } catch (e) {
+    // Listing ve envanter Etsy'de zaten oluştu. Kimliği şimdi panele bağlamak,
+    // sonraki tıklamanın yeni bir taslak açmak yerine eksik galeriden sürmesini
+    // sağlar.
+    const { error: mirrorError } = await admin
+      .from("products")
+      .update({ etsy_listing_id: listingId, url })
+      .eq("id", product.id)
+      .eq("org_id", orgId);
+    return {
+      ok: false,
+      listingId,
+      url,
+      step: "image",
+      error:
+        `Listing galerisi tamamlanamadı: ${e instanceof Error ? e.message : String(e)}` +
+        (mirrorError
+          ? ` Etsy listing kimliği panele de bağlanamadı: ${mirrorError.message}.`
+          : " Tekrar deneyin, eksik görseller aynı taslakta devam edecektir."),
+      warnings,
+    };
   }
 
   // ── 4) Paneli bağla (vekil taze) + denetim logu. ──────────────────────────
@@ -964,6 +1004,7 @@ export async function createDraftListingFromProduct(
     ok: true,
     listingId,
     url,
+    imageCount: galleryImageCount,
     warnings: warnings.length > 0 ? warnings : undefined,
   };
 }
