@@ -16,15 +16,15 @@ BORDER = Border(left=thin, right=thin, top=thin, bottom=thin)
 # (n, etsy_id, title, status, width, shank, thick, title_mm, stone, form, est_g14, url_slug)
 D = [
 (1,4556227760,"11mm Dome Band Ring | Chunky Minimalist Statement Ring, Stacking Jewelry","edit",11,3.5,1.5,11,"yok / none","dome",5.13,"4556227760/dome-band-ring-wide-dome-ring-chunky"),
-(2,4543752254,"1mm Thin Stacking Ring | Minimalist Dainty Band | Simple Everyday Gold Silver Jewelry","edit",1.5,None,1.5,1,"tekil/aksan tas","band",1.48,"4543752254/1mm-thin-stacking-ring-minimalist-dainty"),
+(2,4543752254,"1mm Thin Stacking Ring | Minimalist Dainty Band | Simple Everyday Gold Silver Jewelry","edit",1.0,None,1.5,1,"tekil/aksan tas","band",0.99,"4543752254/1mm-thin-stacking-ring-minimalist-dainty"),
 (3,4546852268,"2mm Smooth Gold Band Ring | Minimalist Wedding, Stacking, Promise Jewelry","edit",2,None,1.5,2,"tam eternity","band",1.98,"4546852268/2mm-smooth-gold-band-ring-minimalist"),
 (4,4549686009,"4mm Curved Wedding Band Ring | Minimalist Stacking Bridal Ring","edit",4,None,1.5,4,"yok / none","band",3.96,"4549686009/4mm-curved-wedding-band-ring-minimalist"),
 (5,4543147022,"4mm Smooth Band Ring | Minimalist Wedding Stacking Ring","edit",4,None,1.5,4,"yok / none","band",3.96,"4543147022/4mm-smooth-band-ring-minimalist-wedding"),
 (6,4547299090,"4mm Summit Band Ring | Minimalist Wedding, Stacking, Promise Band | Modern Comfort Fit","edit",4,4,1.5,4,"yok / none","band",3.96,"4547299090/4mm-summit-band-ring-minimalist-wedding"),
 (7,4543746594,"6mm Curved Band Ring | Minimalist Gold Silver Modern Stacking Jewelry","edit",6,None,1.5,6,"yok / none","band",5.93,"4543746594/6mm-curved-band-ring-minimalist-gold"),
-(8,4543233648,"6mm Smooth Wedding Band | Minimalist Comfort Fit Ring, Stackable Gift","edit",1.5,None,1.5,6,"yok / none","band",1.48,"4543233648/6mm-smooth-wedding-band-minimalist"),
+(8,4543233648,"6mm Smooth Wedding Band | Minimalist Comfort Fit Ring, Stackable Gift","edit",6.0,None,1.5,6,"yok / none","band",5.93,"4543233648/6mm-smooth-wedding-band-minimalist"),
 (9,4558001828,"7mm Pave Diamond Star Open Ring | Celestial Minimalist Jewelry","edit",7,None,1.5,7,"pave","band",6.92,"4558001828/7mm-pave-diamond-star-open-ring-o"),
-(10,4552138588,"Aurora Lab Grown Sapphire Eternity Ring | Blue Sapphire Band, 3.10mm Width","edit",1.5,None,1.5,3.10,"tam eternity","band",1.48,"4552138588/aurora-lab-grown-sapphire-eternity-ring"),
+(10,4552138588,"Aurora Lab Grown Sapphire Eternity Ring | Blue Sapphire Band, 3.10mm Width","edit",3.1,None,1.5,3.10,"tam eternity","band",3.06,"4552138588/aurora-lab-grown-sapphire-eternity-ring"),
 (11,4554955252,"Aurora Oval Eternity Ring | Minimalist Diamond Band, Stackable Wedding Ring","edit",2.5,2.5,1.5,None,"tam eternity","band",2.47,"4554955252/oval-eternity-ring-aurora-diamond-ring"),
 (12,4558666025,"Baguette Diamond Eternity Ring | Thin Stackable Wedding Band | Minimalist Bridal Jewelry","edit",1.95,None,1.5,None,"tam eternity (baget)","band",1.93,"4558666025/baguette-eternity-ring-diamond-wedding"),
 (13,4559889337,"Baguette Diamond Half Eternity Ring | 1.45mm Slim Stacking Wedding Band","edit",1.45,None,1.5,1.45,"yarim eternity (baget)","band",1.43,"4559889337/baguette-diamond-half-eternity-ring"),
@@ -35,7 +35,7 @@ D = [
 (18,4556240933,"Boa Gemstone Coil Ring | Serpent Inspired Wrap Statement Ring","edit",9.7,None,1.5,None,"tekil/aksan tas","band",9.59,"4556240933/boa-gemstone-coil-ring-serpent-inspired"),
 (19,4549692483,"Bold Diamond Eternity Band | 4mm Wedding Ring, Minimalist Bridal Stacking Band","edit",4,None,1.5,4,"tam eternity","band",3.96,"4549692483/bold-diamond-eternity-band-4mm-wedding"),
 (20,4544917788,"Bold Diamond Eternity Ring | 2.6mm Gold Wedding Band, Stacking Ring","edit",2.6,None,1.5,2.6,"tam eternity","band",2.57,"4544917788/bold-diamond-eternity-ring-26mm-gold"),
-(21,4552128868,"Bold Dot Ring | Minimalist Stacking Band | Modern Everyday Jewelry (3.6mm Wide)","edit",1.6,None,1.6,3.6,"yok / none","band",1.70,"4552128868/bold-dot-ring-minimalist-stacking-band"),
+(21,4552128868,"Bold Dot Ring | Minimalist Stacking Band | Modern Everyday Jewelry (3.6mm Wide)","edit",3.6,None,1.6,3.6,"yok / none","band",3.8,"4552128868/bold-dot-ring-minimalist-stacking-band"),
 (22,4545510477,"Bold Line Eternity Band Ring | 3mm Minimalist Stacking Wedding Anniversary Band","edit",3,None,1.5,3,"tam eternity","band",2.97,"4545510477/bold-line-eternity-band-ring-3mm"),
 (23,4550930017,"Bold Puzzle Stacking Ring | 3mm Gold Band, Modern Minimalist Statement Jewelry","edit",3,3,1.5,3,"yok / none","band",2.97,"4550930017/bold-puzzle-stacking-ring-3mm-gold-band"),
 (24,4551550234,"Bold Round Signet Ring | 13mm Top Width, 4mm Shank | Modern Statement Jewelry","edit",13,4,1.5,13,"yok / none","signet",7.07,"4551550234/bold-round-signet-ring-13mm-top-width"),
@@ -56,7 +56,7 @@ D = [
 (39,4545535248,"Diamond Cluster Engagement Ring | Elegant Statement Bridal Wedding Band","edit",7,2,1.5,None,"tekil/aksan tas","band",3.71,"4545535248/diamond-cluster-engagement-ring-elegant"),
 (40,4558673647,"Diamond Coil Ring | Modern Spiral Band, 9.8mm Width","edit",9.8,None,1.5,9.8,"tekil/aksan tas","band",9.69,"4558673647/diamond-coil-ring-modern-spiral-band"),
 (41,4557295667,"Diamond Eternity Band | Minimalist 2.8mm Wedding Ring for Women","edit",2.8,None,1.5,2.8,"tam eternity","band",2.77,"4557295667/diamond-eternity-band-dainty-diamond"),
-(42,4552114869,"Diamond Half Eternity Ring | 2.5mm Bold Wedding Band, Stackable Bridal Jewelry","edit",1.5,None,1.5,2.5,"yarim eternity","band",1.48,"4552114869/diamond-half-eternity-ring-25mm-bold"),
+(42,4552114869,"Diamond Half Eternity Ring | 2.5mm Bold Wedding Band, Stackable Bridal Jewelry","edit",2.5,None,1.5,2.5,"yarim eternity","band",2.47,"4552114869/diamond-half-eternity-ring-25mm-bold"),
 (43,4547301260,"Diamond Stacking Ring | Minimalist Wedding Band, Dainty Promise Ring, Everyday Wear","edit",1.6,1.6,1.5,None,"tekil/aksan tas","band",1.58,"4547301260/diamond-stacking-ring-minimalist-wedding"),
 (44,4552097960,"Dome Figure Balance Ring | Sculptural Minimalist Statement (3.4mm Wide)","edit",3.40,None,1.5,3.4,"yok / none","dome",2.85,"4552097960/dome-figure-balance-ring-o-sculptural"),
 (45,4544906099,"Duo Beaded Stacker Ring | Minimalist Gold Band, Everyday Jewelry (2.9mm Width)","edit",2.9,None,1.5,2.9,"yok / none","band",2.87,"4544906099/duo-beaded-stacker-ring-minimalist-gold"),
@@ -71,8 +71,8 @@ D = [
 (54,4554955373,"Heirloom Dome Ring | Modern Statement Wide Band, 8mm Top, Minimalist Everyday Jewelry","edit",8,2.5,1.5,8,"yok / none","band",4.38,"4554955373/heirloom-ring-dome-ring-modern-statement"),
 (55,4556245256,"Interconnected Wave Pave Diamond Ring | Modern Sculptural Statement Jewelry","edit",9.3,1.25,1.5,None,"pave","band",4.02,"4556245256/wave-pave-diamond-ring-o-interlocking"),
 (56,4546842479,"Lab Grown Diamond Eternity Band | 1.7mm Wedding Ring, Stackable Anniversary Gift","edit",1.7,1.7,1.5,1.7,"tam eternity","band",1.68,"4546842479/lab-grown-diamond-eternity-band-17mm"),
-(57,4552078311,"Lab Grown Diamond Eternity Band | 3.1mm Wedding Ring, Stackable Anniversary Gift","edit",1.5,None,1.5,3.1,"tam eternity","band",1.48,"4552078311/lab-grown-diamond-eternity-band-31mm"),
-(58,4552097077,"Lab Grown Diamond Line Ring | Minimalist Stacking Band (1.3mm Width)","edit",1.5,None,1.5,1.3,"tekil/aksan tas","band",1.48,"4552097077/lab-grown-diamond-line-ring-minimalist"),
+(57,4552078311,"Lab Grown Diamond Eternity Band | 3.1mm Wedding Ring, Stackable Anniversary Gift","edit",3.1,None,1.5,3.1,"tam eternity","band",3.06,"4552078311/lab-grown-diamond-eternity-band-31mm"),
+(58,4552097077,"Lab Grown Diamond Line Ring | Minimalist Stacking Band (1.3mm Width)","edit",1.3,None,1.5,1.3,"tekil/aksan tas","band",1.29,"4552097077/lab-grown-diamond-line-ring-minimalist"),
 (59,4553792547,"Lab Grown Sapphire Dome Ring | Pave Statement Band, 6.5mm Width","edit",6.5,None,1.5,6.5,"pave","dome",5.45,"4553792547/lab-grown-sapphire-dome-ring-o-pave"),
 (60,4557989576,"Lacey Lab Grown Diamond Band | Delicate Stacking Wedding Ring","edit",2.3,None,1.5,None,"tekil/aksan tas","band",2.27,"4557989576/lab-grown-diamond-ring-lacey-diamond"),
 (61,4553155082,"Lacey Lab Grown Sapphire Ring | Dainty Engagement Ring | Minimalist Gemstone Jewelry","edit",2.5,1.5,1.5,2.5,"tekil/aksan tas","band",1.83,"4553155082/lacey-lab-grown-sapphire-ring-dainty"),
@@ -102,7 +102,7 @@ D = [
 (85,4556239169,"Square Black Onyx Signet Ring | Minimalist Geometric Mens Jewelry","edit",8.7,2.5,1.5,None,"tekil/aksan tas","signet",4.62,"4556239169/black-onyx-square-signet-ring-mens"),
 (86,4543742514,"Square Signet Ring | 10mm Minimalist Gold Band | Unisex Pinky Ring","edit",10,2.5,1.5,10,"yok / none","signet",5.07,"4543742514/square-signet-ring-10mm-minimalist-gold"),
 (87,4550942827,"Stackable Gold Ring Set | Slim Charlotte Bands, Dainty Everyday Jewelry","edit",1.50,None,1.5,None,"yok / none","band",1.48,"4550942827/stackable-gold-ring-set-slim-charlotte"),
-(88,4538023253,"Stevie Ring | Bold 6.5mm Wide Band | Modern Minimalist Statement Jewelry","edit",1.5,None,1.5,6.5,"yok / none","band",1.48,"4538023253/stevie-ring-65mm-statement-ring-gold"),
+(88,4538023253,"Stevie Ring | Bold 6.5mm Wide Band | Modern Minimalist Statement Jewelry","edit",6.5,None,1.5,6.5,"yok / none","band",6.43,"4538023253/stevie-ring-65mm-statement-ring-gold"),
 (89,4547283007,"Thin Gold Dome Ring | Minimalist Wedding Band, Everyday Stacking Jewelry","edit",6.2,2,1.5,None,"yok / none","dome",2.91,"4547283007/thin-gold-dome-ring-minimalist-wedding"),
 (90,4543248600,"Twisted Duo Ring Set | Smooth and Twist Bands, Minimalist Wedding Jewelry","edit",1.5,None,1.5,None,"yok / none","band",1.48,"4543248600/twisted-duo-ring-set-smooth-and-twist"),
 (91,4546206240,"Twisted Rope Band Ring | Minimalist Stacking Ring, Everyday Jewelry","edit",1.5,None,1.5,None,"yok / none","band",1.48,"4546206240/twisted-rope-band-ring-minimalist"),
@@ -110,7 +110,11 @@ D = [
 (93,4558671043,"10K/14k Solid Gold Wishbone Ring, 1mm Stacking Band with Clear Stone Accents","active",1,1,1.5,None,"tekil/aksan tas","band",0.99,"4558671043/dainty-gold-wishbone-stacking-ring-thin"),
 ]
 
-CONFLICT = {4538023253,4543233648,4552128868,4552138588,4552078311,4553159638,4552114869,4543752254,4552097077}
+# 2026-09-08: eski 9 "KONTROL" satirinin HICBIRI gercek celiski degildi.
+# 8 satirda KALINLIK genislik sutununa yazilmisti (canli aciklama teyidi:
+# "6mm width and 1.5mm thickness" gibi); duzeltildi, est_g14 yeniden hesaplandi.
+# 9. satir (4553159638) yanlis alarmdi: basliktaki 1.75mm TAS olcusu, genislik 3.30mm dogru.
+CONFLICT = set()
 
 wb = Workbook()
 
@@ -178,7 +182,7 @@ ws.freeze_panes = "D2"
 ws.auto_filter.ref = f"A1:T{ws.max_row}"
 
 note = ws.max_row + 2
-ws.cell(row=note,column=3,value="SARI hucreler uretici tarafindan doldurulacak. KIRMIZI 'KONTROL' satirlarinda aciklama ile baslik farkli mm veriyor - genislik teyit edilmeli.").font = Font(name=FONT, bold=True, size=10, color="C00000")
+ws.cell(row=note,column=3,value="SARI hucreler uretici tarafindan doldurulacak. Genislikler canli Etsy aciklamalariyla teyit edildi (2026-09-08); acik celiski kalmadi.").font = Font(name=FONT, bold=True, size=10, color="C00000")
 ws.cell(row=note+1,column=3,value="Gram, 14K / US 7 referansinda istenir. Diger karat ve bedenler bu referanstan panelde olceklenir.").font = Font(name=FONT, italic=True, size=9)
 ws.cell(row=note+2,column=3,value="Kaynak: olculer Etsy urun aciklamalarindan otomatik cikarildi (Ophir Gold USA, panel DB, 93 kayit, 2026-08-28).").font = Font(name=FONT, italic=True, size=9)
 
@@ -220,7 +224,7 @@ guide = [
  ("Iscilik","Parca basi iscilik (USD). Tas mihlama HARIC - o ayri sutunda."),
  ("Tas + mihlama","Tas bedeli + mihlama iscilligi toplami (USD). Tas yoksa 0 yazin."),
  ("Dokum + diger","Dokum, cila, kaplama vb. varsa (USD). Yoksa 0."),
- ("KONTROL sutunu","Kirmizi isaretli 9 satirda urun aciklamasi ile baslik FARKLI mm veriyor. Bu satirlarda dogru genisligi teyit edip nota yazin."),
+ ("KONTROL sutunu","Bos. Onceki surumde 9 satir isaretliydi; 2026-09-08 denetiminde hepsi YANLIS ALARM cikti - 8 satirda kalinlik genislik sutununa yazilmisti (duzeltildi), 1 satirda basliktaki mm tas olcusuydu."),
  ("Hesaplanan sutunlar","'Metal maliyeti' ve 'TOPLAM MALIYET' otomatik hesaplanir - elle doldurmayin."),
  ("Bizim gram tahminimiz","Sadece BUYUKLUK FIKRI icin. Olcuden hesaplanan kaba tahmindir, dogrulanmis degildir - referans almayin."),
 ]
