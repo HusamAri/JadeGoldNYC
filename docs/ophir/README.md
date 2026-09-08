@@ -4,21 +4,35 @@ Etsy mağazası **`ophirgoldusa`** panelde ikinci (üçüncü) kiracı olarak y�
 Konteyner/scratchpad geçicidir; kalıcı kayıt burasıdır. Herhangi bir oturum bu
 dosyayla akışa devam edebilir.
 
-## Durum (2026-08-29)
+## Durum (2026-09-08)
 
 | Konu | Durum |
 | --- | --- |
 | Drive çalışma alanı | **VAR** — yeniden kurma, aşağıdaki klasörü kullan |
 | Panel org kaydı | **Prod'da VAR** (`ophir-gold-usa`, 93 ürün) |
 | Etsy bağlantısı | **VAR** — `etsy_connection` shop 66983205, scope `listings_w` dahil |
-| SKU kimliği | 1/93 listing tamam (4558671043, 396 offering); 92 listing bekliyor |
-| Panel varyantları | 396 (yalnız kanarya listing'i); 92 listing bekliyor |
-| Fiyat bilgisi | Kanaryada GERÇEK matris elde (aşağıdaki DÜZELTME bölümü) |
+| SKU kimliği | **93/93 tamam** — 36.784 offering |
+| Panel varyantları | **36.784** (93/93 listing) |
+| Listing durumu | **93/93 `active`** (84'ü 08-29 17:40 toplu yayınla) |
+| Fiyat | **CANLI** — %30 katkı marjı + pazar hizalaması (08-29 18:49-19:00) |
+| Gram (ağırlık) | **0/36.784 varyant, 0/93 ürün** — hâlâ TEK bir ölçüm yok |
 | Marka yönü | Onaylanmadı (Drive `START_HERE.md`) |
 
-> **Düzeltme:** önceki sürüm "Etsy bağlantısı YOK" diyordu; o okuma
+> **Düzeltme:** iki sürüm önce "Etsy bağlantısı YOK" diyordu; o okuma
 > `organizations.etsy_shop_id`'ye (boş) bakıyordu, oysa bağlantı
 > `etsy_connection` tablosunda duruyor. Bağlantı durumu **oradan** okunur.
+
+### AÇIK RİSK: fiyatlar canlı, gram yok
+
+93 listing'in tamamı `active` ve 36.784 varyantın fiyatı %30 katkı marjı
+modeliyle basıldı — ama `weight_grams` **0/36.784**. Yani modelin metal
+maliyeti girdisi ölçülmüş ağırlık DEĞİL. `ophir-maliyet-talebi.xlsx`'in var
+olma sebebi tam olarak buydu ve kitap hâlâ üreticiye gitmedi.
+
+Bu repo kendi dersini yazmış: *"tahminle konulan fiyatı 'geçici' diye işaretle
+ve gerçek ölçüm iste — yoksa geçici fiyat kalıcı olur"* (second-brain,
+paylaşılan-gram dersi). Şu an tam olarak o durumdayız, üstelik fiyatlar
+taslakta değil **canlıda**.
 
 ## Drive çalışma alanı (tek kaynak)
 
@@ -276,3 +290,46 @@ Okunabilen desen (teşhis değil, şekil):
 
 **Panel iptal SEBEBİNİ göremiyor** — Etsy API'si `sales` şemasına böyle bir alan
 vermiyor. Sebep ancak Etsy sipariş ekranından (satıcı görüşü) öğrenilir.
+
+## Zincirin tamamlanması ve ızgara hipotezinin sonucu (2026-09-08 tespiti)
+
+Bu oturum 08-29 07:52'de duraklamıştı. `audit_log`'a göre iş **paralel bir
+oturumda aynı gün tamamlanmış**; sıra kaydın kendisinden okundu:
+
+| Saat (UTC) | Olay |
+| --- | --- |
+| 13:59-14:10 | SKU atama kalan ~91 listing'e yayıldı (her biri 396, biri 352 offering) |
+| 16:12 | Panel→Etsy fiyat itişi: 93 listing, **36.621 varyant güncellendi** |
+| 17:40 | **Toplu yayın: 84/84 `active`** — 92 taslak canlıya çıktı |
+| 18:49-19:00 | **"%30 katkı marjı + pazar hizalaması"** — 93 listing, 8'erli 12 parti |
+
+### Izgara hipotezi ÇÜRÜDÜ
+
+Önceki bölümde "aynı fiyat ızgarası genişlikten bağımsız kopyalanmış olabilir"
+diye bir hipotez bırakılmıştı. Sınandı, **yanlış**:
+
+- 1 mm (`4558671043`) ile 4 mm (`4543147022`) listing'inin 396 hücresinden
+  **393'ü farklı**; fark −$10 ile +$260 arasında.
+- Katalog geneli: aynı referans hücrede (14K sarı, beden 7) fiyat **$395 →
+  $1.805**; başlıkta mm okunabilen 38 listing'de **genişlik↔fiyat korelasyonu
+  0,777**. Yani fiyat genişlikle ölçekleniyor, kopyalanmış ızgara değil.
+
+Hipotezin doğduğu gözlem (iki satışın kanarya matrisindeki hücrelere birebir
+oturması) o anki veriyle gerçekti, ama **08-29 akşamı yapılan yeniden
+fiyatlamadan ÖNCEKİ** fiyatlardı — bugün o hücreler $575 / $740, satışlar ise
+$512 / $737,90'dı. Ders: on gün önce okunan bir sayıyla bugün kurulan bir
+hipotez, arada bir yazma olduysa havada kalır; hipotezi sınamadan önce
+`updated_at`'e ve `audit_log`'a bak.
+
+### Fiyatın bugünkü şekli (36.784 varyant)
+
+| Metal | Varyant | Min | Ortalama | Maks |
+| --- | --- | --- | --- | --- |
+| 10K (3 renk) | 12.276 | $325 | $770,56 | $1.475 |
+| 14K (3 renk) | 12.232 | $395 | $987,87 | $2.200 |
+| 18K (3 renk) | 12.276 | $495 | $1.320,85 | $3.115 |
+
+Karat basamakları tutarlı. Ama tabanda oran dar: 14K/10K min oranı **1,215**,
+oysa saf altın içeriği oranı **1,398** — yani en küçük/en ince uçta 10K ile 14K
+arasındaki fark metal içeriğinin altında kalıyor. Sabit işçilik payı bunu bir
+miktar açıklar; kesin konuşmak için **gram** gerekir.
