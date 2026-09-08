@@ -619,6 +619,42 @@ repodaki hedefidir.
   işinin "bitti" tanımı, dış sistemin 200 dönmesi değil, ZİNCİRİN SONUNDAKİ
   tüketicinin veriyi görmesidir.
 
+- **Aracın kendi ürettiği "şüpheli" bayrağı, verinin değil ARACIN kusurunu
+  gösteriyor olabilir — bayrağı kaynağa karşı sına, yoksa kendi hatanı dış
+  dünyaya fatura edersin (2026-09-08):** Ophir maliyet talebi kitabında 9 satırı
+  `KONTROL` diye kırmızıya boyamıştım: "açıklamadaki mm ile başlıktaki mm
+  çelişiyor, genişlik üreticiye sorulmadan fiyat kurulmasın". Bu bayrak on gün
+  boyunca kitabın üreticiye gönderilmesini bloke eden gerekçe olarak taşındı ve
+  kullanıcıya da öyle raporlandı. Canlı Etsy açıklamaları OKUNUNCA çelişki diye
+  bir şey olmadığı çıktı: metinler *"a sleek 6mm width and 1.5mm thickness"*,
+  *"substantial 6.50 mm width and refined 1.5 mm thickness"* diyor — yani 1,5 mm
+  katalog boyunca **kalınlık**, genişlik başlıkta yazan değer ve doğru.
+  Gerçek hata kitabın kendisindeydi: **8 satırda kalınlık, genişlik sütununa
+  yazılmıştı** (6,5 mm band 1,5 mm genişlik olarak kayıtlı). 9. satır da yanlış
+  alarmdı (başlıktaki 1,75 mm taş ölçüsüydü). Yani "veriyi teyit et" diye
+  işaretlediğim satırlar, tam olarak kendi ayrıştırıcımın patladığı satırlardı —
+  bayrak doğru yeri gösteriyordu, ben yönünü ters okudum. Zarar sadece gecikme
+  değildi: referans gram sütunu genişlikten türediği için o 8 satır 6,43 g
+  yerine 1,48 g gösteriyordu; üreticinin akıl sağlığı kontrolü yapacağı kolon
+  buydu. **En can alıcı kısım: bu satırlar checksum'dan GEÇMİŞTİ.** İlk sürümde
+  93 satırı DB ile konum-ağırlıklı checksum'la karşılaştırmış (`sum(i*genislik)`
+  = 17838,15) ve "birebir" diye ilan etmiştim — çünkü checksum kitabı, kitabı
+  üreten AYNI hatalı çıkarımla karşılaştırıyordu. Aktarım sadakatini kanıtladı,
+  girdinin doğruluğunu değil (mühür dersinin bu repoda üçüncü tekrarı).
+  Kural: (1) bir araç "bu satır şüpheli" diyorsa ilk hipotez "veri bozuk" DEĞİL
+  "ayrıştırıcım bozuk" olmalı — şüpheli satırlar çoğunlukla aracın kör noktasının
+  haritasıdır; (2) bayrağı KAYNAĞA karşı sına (burada tek sorgu: açıklamadaki
+  "width"/"thickness" ifadelerini ham çek), aracın çıktısına karşı değil;
+  (3) aynı boyutun iki taşıyıcısı varsa (genişlik ve kalınlık, ikisi de "mm")
+  ayrıştırıcı hangisini yakaladığını İSPATLAMALI — regex'in ileri okuma penceresi
+  komşu ölçüyü sessizce yutar (`width[^0-9]{0,20}` ifadem "width and refined "
+  aralığını atlayıp kalınlığı aldı); (4) türetilmiş sütun (referans gram) hatalı
+  girdiyi büyüterek görünür kılar — teslimden önce türetilmiş kolonun birkaç
+  satırını FİZİKSEL akıl sağlığıyla oku ("6,5 mm band 1,48 g olabilir mi?"),
+  formülün tutması yetmez; (5) düzeltmeden sonra ÜRETİLEN dosyayı geri oku
+  (üretecin kendi raporunu değil) — burada .xlsx açılıp 93 satır, 0 KONTROL ve
+  8 düzeltilmiş satırın değerleri dosyadan teyit edildi.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması

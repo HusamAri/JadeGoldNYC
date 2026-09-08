@@ -124,12 +124,43 @@ tüm katalogda taban fiyatın altında. Örnek: 2 mm düz band, 14K → tahmini
   fire %7, referans beden US 7, referans kalınlık 1,5 mm.
 - **Sayfa 3 `Nasil Doldurulur`** — doldurma talimatı + örnek satır.
 
-**9 satır `KONTROL` işaretli:** açıklamadaki "width ... mm" ifadesi ile başlıktaki
-mm çelişiyor (ör. "6mm Smooth Wedding Band" açıklamada 1,5 mm veriyor). O
-satırlarda genişlik üreticiye sorulmadan fiyat kurulmamalı.
+**~~9 satır `KONTROL`~~ — 2026-09-08'de HEPSİ YANLIŞ ALARM çıktı, düzeltildi.**
+Kitap "açıklamadaki mm ile başlıktaki mm çelişiyor" diyordu. Canlı Etsy
+açıklamaları okununca çelişki diye bir şey olmadığı görüldü:
 
-Doğrulama: 93 satır DB ile konum-ağırlıklı checksum'la karşılaştırıldı
-(`sum(i*genislik)`=17838,15; `sum(i*gram)`=12859,67 — birebir), 93 tekil Etsy ID.
+- **8 satırda kitabın KENDİ hatası vardı** — kalınlık, genişlik sütununa
+  yazılmıştı. Açıklamalar net: *"a sleek 6mm width and 1.5mm thickness"*,
+  *"substantial 6.50 mm width and refined 1.5 mm thickness"*. Yani 1,5 mm
+  katalog boyunca **kalınlık**; genişlik başlıkta yazan değer ve doğru.
+- **1 satır (4553159638)** zaten doğruydu: başlıktaki 1,75 mm **taş ölçüsü**,
+  yüzük genişliği 3,30 mm ve kitapta öyle duruyordu.
+
+Düzeltilen genişlikler (canlı açıklamayla teyitli) ve yeniden hesaplanan
+referans gram:
+
+| Listing | Genişlik | Ref. gram (14K, US 7) |
+| --- | --- | --- |
+| 4538023253 | 1,5 → **6,5** | 1,48 → **6,43** |
+| 4543233648 | 1,5 → **6,0** | 1,48 → **5,93** |
+| 4552128868 | 1,6 → **3,6** | 1,70 → **3,80** |
+| 4552138588 | 1,5 → **3,1** | 1,48 → **3,06** |
+| 4552078311 | 1,5 → **3,1** | 1,48 → **3,06** |
+| 4552114869 | 1,5 → **2,5** | 1,48 → **2,47** |
+| 4552097077 | 1,5 → **1,3** | 1,48 → **1,29** |
+| 4543752254 | 1,5 → **1,0** | 1,48 → **0,99** |
+
+Referans gram formülü 69 band satırının tamamında birebir tutuyor:
+`est_g14 = 0,6591 × genişlik × kalınlık`. Düzeltme sonrası kitapta **0**
+`KONTROL` işareti kaldı ve genişlik/kalınlık karışması olan satır yok.
+
+> **Checksum'ın yakalayamadığı şey:** ilk sürümde 93 satır DB ile
+> konum-ağırlıklı checksum'la doğrulanmıştı (`sum(i*genislik)`=17838,15) ve
+> birebir tutmuştu. Ama checksum kitabı, kitabı üreten AYNI hatalı çıkarımla
+> karşılaştırıyordu — aktarım sadakatini kanıtladı, girdinin doğruluğunu değil.
+> 8 satırdaki kalınlık/genişlik karışması bu yüzden on gün fark edilmedi.
+
+Doğrulama (güncel): üretilen `.xlsx` geri okunarak 93 satır, 0 `KONTROL`,
+düzeltilen 8 satırın genişlik + referans gram değerleri dosyadan teyit edildi.
 LibreOffice bu konteynerde çalışmadığı için `recalc.py` KOŞULAMADI; formüller
 referans çözümleyip Python'da simüle edilerek doğrulandı (Excel dosyayı açarken
 zaten yeniden hesaplar).
