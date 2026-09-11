@@ -1016,3 +1016,31 @@ repodaki hedefidir.
   bayatsa bağımsız değildir; testin girdisini üreten dosyanın sürümünü de
   doğrula. Yakalayan şey: aynı bloğu Edit ile değiştirmeye çalışınca
   "String to replace not found" alması oldu.
+- **Ailenin canlı satırını REGRESYON FİKSTÜR'ü yap: yeni ürünün fiyat motoru
+  uydurulmaz, kanıtlanır (2026-09):** Meridian (iki tonlu, 4-7mm) için fiyat
+  yöntemi bir önceki ailenin (Flat Milgrain, 09-06) `pricingMethod` metnindeydi
+  ama METİN çalıştırılamaz. Yaptığım: yöntemi koda çevirdim ve aynı geometri
+  sınıfının CANLI panelde duran 252 satırına karşı koşturdum — 252/252 cent
+  birebir tutmazsa script hiçbir çıktı yazmıyor. Böylece "formülü doğru
+  kopyaladım" iddiası test edilebilir hale geldi (elle iki uçta doğrulamıştım,
+  ama asıl güveni 252'nin tamamı verdi). Kural: (1) yeni ürün mevcut bir aileden
+  türüyorsa o ailenin canlı fiyatları ÜCRETSİZ bir altın-standart test kümesidir
+  — kullan; (2) fikstür'ü üreten spot/tarih tabanını fikstür dosyasının İÇİNE
+  yaz, yoksa spot kayınca regresyon sessizce yalancı-kırmızı olur; (3) spot
+  tabanını tazelemeden önce drifti motorun kendi deadband/max-step kapılarıyla
+  karşılaştır — %1,64 drift tazeleme değil, aynı haftaki aileyle tutarlılık
+  sebebidir.
+- **252 satırı elle taşıma: türet + konum-ağırlıklı checksum'la mutabakat yap
+  (2026-09):** Panel varyantları kaynak ailenin satırlarından SQL içinde
+  türetildi (SKU `generate`+`lpad`, gram/fiyat select) — hiçbir sayı el
+  değmeden geçti. Doğrulama salt `sum()` DEĞİL: `sum(i * kolon)` konum-ağırlıklı
+  checksum + SKU min/max + distinct sayısı. Salt toplam satır KAYMASINI yakalamaz;
+  ağırlıklı toplam yakalar. Repo CSV'si ile DB beşi de birebir tuttu.
+- **Yeni listing'de kredi harcayan adımı KAPI olarak bırak, paketi eksiksiz
+  teslim et (2026-09):** 10 görselin üretimi Higgsfield kredisi harcar ve kural
+  "önce prompt onayı, count=1". Doğru davranış işi yarım bırakmak değil:
+  fiyat/varyant/metin/taksonomi/panel taslağı UÇTAN UCA bitti, yalnız görsel
+  adımı `visual-plan.json` içinde 10 sahnelik onaya-hazır prompt + QA kapısı
+  olarak duruyor ve `approval.blockers` panelde de görünüyor. Kural: onay
+  gerektiren adım, işin geri kalanını rehin almaz; blocker'ı VERİYE yaz
+  (blockers dizisi), sözlü nota bırakma.
