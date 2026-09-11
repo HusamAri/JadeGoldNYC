@@ -1044,3 +1044,34 @@ repodaki hedefidir.
   olarak duruyor ve `approval.blockers` panelde de görünüyor. Kural: onay
   gerektiren adım, işin geri kalanını rehin almaz; blocker'ı VERİYE yaz
   (blockers dizisi), sözlü nota bırakma.
+- **Yapı kararı tur içinde DEĞİŞİR; üreteci "yapı tek parametre" diye kur ve
+  dönüşün kayıpsız olduğunu AYNI checksum'la kanıtla (2026-09-11):** Meridian
+  aynı turda üç kez şekil değiştirdi — tek listing (Karat 3. eksen) → ayar başına
+  üç listing → tekrar tek listing. Her dönüşte panelde 252 varyantın ebeveyni,
+  `properties`'teki Karat ekseni, başlık ve metin değişti. Sağlam kılan iki şey
+  oldu: (1) fiyat motoru yapıdan BAĞIMSIZdı (gram → cent), o yüzden üç turda da
+  regresyon 252/252 birebir kaldı ve fiyat hiç riske girmedi; (2) dönüşün
+  kayıpsızlığı, ilk turda alınan konum-ağırlıklı checksum'ın son turda BİREBİR
+  geri gelmesiyle kanıtlandı (44.336.000 / 6.585.843.000 / 128.432 / 17.769.886).
+  Karat'ı geri koyarken de değer uydurulmadı, SKU'dan türetildi
+  (`split_part(sku,'-',4)||'K'`) — yani kimlik bilgisi veride zaten taşınıyordu.
+  Kural: (1) katalog üretecinde "kaç listing / hangi eksen" bir SABİT olmalı,
+  metne ve SKU'ya elle serpiştirilmemeli; (2) yapı değiştiğinde metni de assert'le
+  bağla (yabancı ayar başlıkta geçemez, varyant özelliğinde ölü eksen kalamaz,
+  açıklama var olmayan menü vaat edemez) — yoksa yapı döner, metin eski yapıyı
+  anlatmaya devam eder; (3) geri-dönüşlü veri operasyonunda ÖNCEKİ checksum'ı sakla:
+  dönüş sonrası aynı sayıyı görmek "kayıpsız" demenin tek kanıtıdır.
+- **Üretilen görselde otomatik kapıların hepsi yeşilken iş hâlâ YANLIŞ olabilir —
+  son hakem, kareyi GÖZLE görmektir (2026-09-11):** Meridian hero'sunun ilk
+  üretimi her ölçülebilir kapıyı geçti: 2048×2048 sRGB, tekil hash, iki yüzey
+  dokusu referansa birebir, tek parlak kanal, doğru renkler. Ama kare bir YÜZÜK
+  gibi okunmuyordu — model "dead-on" ifademi bandın dış yüzüne dik bakmak diye
+  yorumlayıp kapalı halkayı kadraj dışında bırakmıştı; kural dosyasının
+  `closedContinuousLoopRequired` şartı ihlaldi ve 170 px'lik Etsy ızgarasında
+  alyans değil altın-gümüş çubuk görünüyordu. Hiçbir sayaç bunu göremezdi, çünkü
+  ölçülebilir olan her şey doğruydu. Kural: (1) görsel çıktıda teknik QA (boyut,
+  hash, format) ile İŞLEVSEL QA (bu kare görevini yapıyor mu?) ayrı iki kapıdır,
+  ikincisi ancak bakılarak geçilir; (2) ilk kareyi üretip GÖR, sonra seriyi bas —
+  aynı prompt kusuru 10 karede tekrarlanmadan yakalanır (burada 1 kare israf oldu,
+  10 değil); (3) rakam/ölçü YAZAN görsel (spec kartı) modele bırakılmaz: yanlış
+  basılan ölçü yazım hatası değil YANLIŞ BEYANdır, metin elle dizilir.
