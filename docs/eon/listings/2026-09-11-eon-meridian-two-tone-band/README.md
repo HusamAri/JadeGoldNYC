@@ -1,32 +1,41 @@
 # EON Meridian — iki tonlu alyans (2026-09-11)
 
-Sahibin isteği: **4–7 mm genişlik, 1,5 mm kalınlık, US bedenler, tek yüzükte
-iki metal, metal varyasyonu YOK.** Bu paket o listing'in repo-yerli kaynağıdır.
+Sahibin isteği: **4–7 mm genişlik, 1,5 mm kalınlık, US bedenler (yarım dahil),
+tek yüzükte iki metal, metal varyasyonu YOK; ayar başına ayrı listing (10K /
+14K / 18K).** Bu paket o üç listing'in repo-yerli kaynağıdır.
 
-Panelde **taslak olarak duruyor** (`EON-MERID-TT`, `etsy_listing_id = NULL`).
-**Etsy'ye hiçbir şey yazılmadı** ve görsel üretilmedi — ikisi de aşağıdaki
-onay kapılarına bağlı.
+Panelde **üç taslak** olarak duruyor (`EON-MERID-TT-10/14/18`, hepsinde
+`etsy_listing_id = NULL`). **Etsy'ye hiçbir şey yazılmadı** — gönderim aşağıdaki
+onay kapısına bağlı.
 
-## Neden tek listing (üç değil)
+## Yapı: ayar başına bir listing (3 listing)
 
-Son eklenen aile (2026-09-06 Flat Milgrain) **üç** listing'di: sabit metal
-rengi başına bir tane (Y/W/R), eksenler `Width | Ring Size | Karat`.
+Sahibin 2026-09-11 talimatı: **10K, 14K ve 18K için ayrı listing**, her birinde
+genişlik ve US bedenler (yarım bedenler dahil).
 
 Yönetişim dosyası (`eon-etsy-listing-rules.v1.json`, Drive → *EON Etsy Listing
-Governance*) iki tonlu ürün için ayrı bir satır taşıyor:
+Governance*) bunu zaten taşıyor:
 
 ```
+"karatAtListingLevel": true                    // ayar listing seviyesinde
 "fixedTwoToneAxes": ["Width", "Ring Size"]     // Band color ekseni YOK
-"maximumAxes": 3
 ```
 
-İki tonlu üründe metal kombinasyonu **tek** olduğu için renk başına listing
-bölmenin karşılığı yok: Flat Milgrain'in üçe bölünmesi çöküyor ve Karat
-envanter ekseni olarak kalıyor. Sonuç: **1 listing × 3 eksen = 252 kombinasyon**
-(4 genişlik × 21 beden × 3 ayar), Etsy'nin 400 sınırının altında.
+İki tonlu üründe metal kombinasyonu **tek** olduğu için renk ekseni yok; ayar da
+listing seviyesinde sabitlenince her listing'de yalnız **iki** envanter ekseni
+kalıyor:
 
-Bu, sahibin "no different metal variations" cümlesinin birebir karşılığıdır:
-alıcı metal rengi seçmez, çünkü seçilecek bir şey yoktur.
+| listing | ayar | eksenler | kombinasyon |
+|---|---|---|---|
+| `EON-MERID-TT-10` | 10K | Width × Ring Size | 84 |
+| `EON-MERID-TT-14` | 14K | Width × Ring Size | 84 |
+| `EON-MERID-TT-18` | 18K | Width × Ring Size | 84 |
+
+4 genişlik × 21 beden = 84, Etsy'nin 400 sınırının çok altında; toplam 252 varyant.
+Alıcı ne metal rengi ne ayar seçer — ikisi de listing'in kimliğidir. Metin de buna
+göre kurulur: başlık ayarla açılır, açıklama "this listing is for 10K only" der ve
+"CHOOSE YOUR FIT" **iki** menü anlatır. Üreteç bunu assert'le zorlar (yabancı ayar
+başlıkta geçemez, varyant özelliğinde `Karat` kalamaz).
 
 ## Fiyat: uydurulmadı, kanıtlandı
 
@@ -47,10 +56,12 @@ sokuluyor (aynı geometri sınıfı, aynı 1,5 mm profil, aynı 55 USD kademe).
 
 ```
 $ node scripts/eon/gen_meridian_package.mjs
-{ "listings": 1, "variants": 252,
+{ "listings": 3,
+  "listingSkus": ["EON-MERID-TT-10","EON-MERID-TT-14","EON-MERID-TT-18"],
+  "variantsPerListing": [84, 84, 84], "variants": 252,
   "priceRegressionAgainstLiveFamily": "252/252 cent-exact",
   "minListUsd": 870, "maxListUsd": 3160,
-  "panelDraftOnly": true, "etsyWrites": false, "imagesGenerated": 0 }
+  "panelDraftOnly": true, "etsyWrites": false }
 ```
 
 ### Spot tabanı neden 09-06 (09-11 değil)
@@ -89,21 +100,24 @@ Varyantlar panele **SQL'de türetilerek** yazıldı (252 satır elle taşınmad�
 transkripsiyon riski sıfır). Doğrulama yalnız toplamla değil **konum-ağırlıklı
 checksum**'la yapıldı (salt toplam satır KAYMASINI yakalamaz):
 
-| ölçüm | panel (DB) | repo (price-table.csv) |
-|---|---|---|
-| satır | 252 | 252 |
-| `sum(price_cents)` | 44.336.000 | 44.336.000 |
-| `sum(i × price_cents)` | 6.585.843.000 | 6.585.843.000 |
-| `sum(gram×100)` | 128.432 | 128.432 |
-| `sum(i × gram×100)` | 17.769.886 | 17.769.886 |
-| SKU min / max | `…-10-04-030` / `…-18-07-130` | aynı |
-| tekil SKU | 252 | 252 |
+| listing | satır | `sum(price_cents)` | `sum(i × price_cents)` | `sum(gram×100)` | `sum(i × gram×100)` | tekil SKU |
+|---|---|---|---|---|---|---|
+| `…-TT-10` | 84 | 10.064.000 | 464.159.500 | 37.757 | 1.812.822 | 84 |
+| `…-TT-14` | 84 | 14.587.000 | 678.141.500 | 42.895 | 2.059.699 | 84 |
+| `…-TT-18` | 84 | 19.685.000 | 911.154.000 | 47.780 | 2.267.145 | 84 |
+
+Üç listing'de de panel (DB) ve repo (`price-table.csv`) **beş ölçümde de birebir**;
+hiçbir varyantta `Karat` ekseni kalmadı.
 
 ## Açık kapılar — iş BİTMEDİ
 
-1. **Görseller (10 adet) üretilmedi.** `visual-plan.json` 10 sahnenin prompt'unu
-   ve QA kapısını taşıyor. Kural: kredi harcayan üretimde **önce prompt onayı**,
-   `count` daima 1. Üç sahne (2, 6, 9) gerçek insan teni içermeli.
+1. **Görsel seti 9/10 üretildi, 07 eksik.** Higgsfield `nano_banana_2`, sahibin
+   5 referans fotoğrafı `image_references` olarak, 2048×2048 sRGB JPEG, 9 tekil
+   hash. Gün ışığı home-studio diline göre 01/03/05 yeniden çekildi.
+   **07 (spec kartı) BİLEREK üretilmedi:** üzerinde ölçü yazan bir kart, model
+   rakamı yanlış basarsa yazım hatası değil YANLIŞ BEYAN olur; metin elle
+   dizilmeli. **05 hedefini tutturamadı:** 1,5 mm et kalınlığını göstermesi
+   gerekirken üç-çeyrek açıda çıktı, yeniden çekilmeli.
 2. **Fiziksel gram ölçülmedi** (yukarı bakınız).
 3. **Etsy'ye gönderim yapılmadı.** `etsyPushRequiresExplicitOwnerInstruction:
    true` ve "Etsy'ye gözetimsiz yazma ASLA" kuralı geçerli. Panel taslağı Etsy
@@ -118,7 +132,7 @@ checksum**'la yapıldı (salt toplam satır KAYMASINI yakalamaz):
 | `pricing-readback.json` | fiyat tabanı, yöntem, spot drift kararı, checks |
 | `listing-manifest.json` | tam listing sözleşmesi (taksonomi, üretim, varyantlar) |
 | `listing-copy-en-es.md` | EN + ES başlık/açıklama/13 etiket |
-| `visual-plan.json` | 10 sahne prompt'u + QA kapısı (onay bekliyor) |
+| `visual-plan.json` | görsel dili (THE MERIDIAN), 10 sahne prompt'u, Etsy dil kontrolü + QA kapısı |
 | `validation-plan.json` | beklenen ↔ gerçek + açık blocker'lar |
 | `scripts/eon/gen_meridian_package.mjs` | üreteç (`--check` ile yalnız doğrular) |
 
