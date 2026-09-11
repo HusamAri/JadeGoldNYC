@@ -93,13 +93,14 @@
     "decision": "Reuse the 2026-09-06 basis. Drift is inside the engine deadband band and keeps Meridian price-coherent with the Flat Milgrain and Crossgrain families that went live the same week."
   },
   "variationStructure": {
-    "listingGrouping": "fixed_two_tone_fixed_karat",
-    "listingCount": 3,
+    "listingGrouping": "fixed_two_tone",
+    "listingCount": 1,
     "axes": [
       "Width",
-      "Ring Size"
+      "Ring Size",
+      "Karat"
     ],
-    "variantsPerListing": 84,
+    "variantsPerListing": 252,
     "totalVariants": 252,
     "quantityPerVariant": 20
   },
@@ -225,11 +226,10 @@
       "maximumSalePriceUsd": 2370
     }
   ],
-  "matrixSha256": "0feb92cac82ae8b9ef2a72aa2e6016452d3786dbc788e25dca253edf3c1c717c",
+  "matrixSha256": "99dc6aae8f719349ae0968ed995d00da6dc46b814f73db90799a416ba2992dd8",
   "checks": {
-    "threeListingsOnePerKarat": true,
-    "variantsPerListing84": true,
-    "totalVariants252": true,
+    "singleListing": true,
+    "variantsPerListing252": true,
     "belowEtsyCombinationLimit400": true,
     "uniqueVariantSkus": true,
     "positiveWeights": true,

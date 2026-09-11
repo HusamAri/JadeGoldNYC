@@ -190,10 +190,7 @@ for (const karat of MODEL.karats) {
 
 const sizeToken = (size) => String(Math.round(size * 10)).padStart(3, "0");
 const widthToken = (width) => String(width).padStart(2, "0");
-const stem = `${MODEL.skuStem}-${MODEL.metalCode}`;
-/** Ayar listing SEVIYESINDE sabit (sahibin 2026-09-11 talimati): ayar basina
- *  bir listing, her listing'in envanter ekseni yalniz Width + Ring Size. */
-const listingSkuFor = (karat) => `${stem}-${karat.replace("K", "")}`;
+const listingSku = `${MODEL.skuStem}-${MODEL.metalCode}`;
 
 const variants = rows
   .slice()
@@ -206,12 +203,12 @@ const variants = rows
   .map((row) => {
     const price = priceFor(row.karat, row.widthMm, row.grams);
     return {
-      listingSku: listingSkuFor(row.karat),
-      sku: `${listingSkuFor(row.karat)}-${widthToken(row.widthMm)}-${sizeToken(row.ringSizeUs)}`,
-      name: `${row.widthMm} mm / US ${row.ringSizeUs}`,
+      sku: `${listingSku}-${row.karat.replace("K", "")}-${widthToken(row.widthMm)}-${sizeToken(row.ringSizeUs)}`,
+      name: `${row.widthMm} mm / US ${row.ringSizeUs} / ${row.karat}`,
       properties: {
         Width: `${row.widthMm} mm`,
         "Ring Size": `US ${row.ringSizeUs}`,
+        Karat: row.karat,
       },
       priceUsd: price.listCents / 100,
       salePriceUsd: price.saleCents / 100,
@@ -238,46 +235,27 @@ const variants = rows
 
 assert.equal(variants.length, 252);
 assert.equal(new Set(variants.map((v) => v.sku)).size, 252, "SKU tekilligi bozuk");
+assert(variants.length <= 400, "Etsy kombinasyon limiti 400 asildi");
 assert(
   variants.every((v) => v.quantity === PRICING.quantityPerVariant),
   "her varyant quantity 20 olmali",
 );
-// Ayar basina 84 kombinasyon (4 genislik x 21 beden); Etsy siniri 400.
-for (const karat of MODEL.karats) {
-  const cell = variants.filter((v) => v.karat === karat);
-  assert.equal(cell.length, 84, `${karat}: 84 kombinasyon olmali, ${cell.length}`);
-  assert(cell.length <= 400, `${karat}: Etsy kombinasyon limiti 400 asildi`);
-  // Ayar listing seviyesinde sabit: varyant ozelliklerinde Karat BULUNMAMALI.
-  assert(
-    cell.every((v) => !("Karat" in v.properties)),
-    `${karat}: varyant ozelliginde Karat ekseni kalmis`,
-  );
-  assert.equal(
-    new Set(cell.map((v) => `${v.properties.Width}|${v.properties["Ring Size"]}`)).size,
-    84,
-    `${karat}: (genislik, beden) kombinasyonu tekil degil`,
-  );
-}
 
 /* -------------------------------------------------------------------- metin */
 
-const KARAT_ES = { "10K": "10K", "14K": "14K", "18K": "18K" };
-
-/** Ayar listing seviyesinde sabit oldugu icin metin de ayara gore kurulur:
- *  baslik ayarla acilir, "CHOOSE YOUR FIT" IKI menu anlatir (uc degil) ve
- *  aciklama o listing'in TEK ayari oldugunu acikca soyler. */
-const contentFor = (karat) => ({
-  title: `${karat} Two Tone Wedding Band, Solid Gold Brushed White and Sandblasted Yellow, Comfort Fit, 4mm to 7mm`,
-  description: `Two metals meet along a single polished line. The Meridian Band is built from solid ${karat} gold in two tones: one half finished in soft brushed white gold, the other in finely sandblasted yellow gold, divided by one narrow polished yellow groove that runs the full circumference. The polished interior is shaped for a comfortable fit. The ring reads as one continuous piece, not a plated or inlaid band, and the contrast comes entirely from surface finishing rather than from any coating.
+const CONTENT = {
+  title:
+    "Two Tone Wedding Band, Solid Gold Brushed White and Sandblasted Yellow, Comfort Fit, 10K 14K 18K, 4mm to 7mm",
+  description: `Two metals meet along a single polished line. The Meridian Band is built from solid gold in two tones: one half finished in soft brushed white gold, the other in finely sandblasted yellow gold, divided by one narrow polished yellow groove that runs the full circumference. The polished interior is shaped for a comfortable fit. The ring reads as one continuous piece, not a plated or inlaid band, and the contrast comes entirely from surface finishing rather than from any coating.
 
 YOUR RING
-Solid ${karat} gold in two tones. This listing is for ${karat} only; the same design is listed separately in the other karats. Both tones are solid ${karat} gold. There is no plating, no filled metal and no metal-color choice to make: every ring in this listing is the same two-tone yellow and white combination. The price is for one ring in your selected width and size, not a set. No gemstones. Each surface is finished by hand, so minute tool character may vary naturally from ring to ring while the brushed, sandblasted and polished zones stay in the same layout.
+Solid gold in two tones, available in 10K, 14K or 18K. Both tones are solid gold in your selected karat. There is no plating, no filled metal and no metal-color choice to make: every ring in this listing is the same two-tone yellow and white combination. The price is for one ring in your selected karat, width and size, not a set. No gemstones. Each surface is finished by hand, so minute tool character may vary naturally from ring to ring while the brushed, sandblasted and polished zones stay in the same layout.
 
 CHOOSE YOUR FIT
 Width: 4, 5, 6 or 7 mm.
 Thickness: approximately 1.5 mm.
 Ring size: US 3 to US 13, including half sizes.
-Choose Width and Ring Size from the two variation menus. Wider bands can feel more snug than narrow bands, so confirm your size at your preferred width.
+Choose Width, Ring Size and Karat from the three variation menus. Wider bands can feel more snug than narrow bands, so confirm your size at your preferred width.
 
 OPTIONAL INSIDE ENGRAVING
 Enter the exact text in Inside Engraving Text, up to 30 characters, and select Engraving Font: 1 | Prata, 2 | Cinzel, 3 | Cinzel Decorative or 4 | Great Vibes. Leave the text blank for no engraving. These fields do not change the inventory variations.
@@ -296,9 +274,9 @@ The gallery uses Higgsfield AI-assisted visualizations guided by photographs of 
     "two tone wedding",
     "mens gold band",
     "solid gold ring",
-    `${karat.toLowerCase()} wedding band`,
-    `${karat.toLowerCase()} gold ring`,
-    "two tone ring",
+    "10k wedding band",
+    "14k wedding band",
+    "18k wedding band",
     "comfort fit ring",
     "brushed gold band",
     "sandblasted band",
@@ -306,21 +284,26 @@ The gallery uses Higgsfield AI-assisted visualizations guided by photographs of 
     "custom width ring",
   ],
   materials: ["Yellow gold", "White gold"],
-  materialTags: [`Solid ${karat} yellow and white gold`],
+  materialTags: [
+    "Solid 10K yellow and white gold",
+    "Solid 14K yellow and white gold",
+    "Solid 18K yellow and white gold",
+  ],
   goldSolidity: "Solid gold",
   translations: {
     es: {
-      title: `Alianza bicolor de oro macizo ${KARAT_ES[karat]}, mitad satinada en blanco y mitad arenada en amarillo, ajuste cómodo, 4 a 7 mm`,
-      description: `Dos metales se encuentran a lo largo de una única línea pulida. La alianza Meridian está realizada en oro macizo de ${KARAT_ES[karat]} en dos tonos: una mitad con acabado satinado suave en oro blanco y la otra finamente arenada en oro amarillo, separadas por una estrecha ranura pulida de oro amarillo que recorre toda la circunferencia. El interior pulido está perfilado para un ajuste cómodo. El anillo se percibe como una sola pieza continua, no como un anillo chapado ni con incrustaciones, y el contraste proviene únicamente del acabado de la superficie, no de ningún recubrimiento.
+      title:
+        "Alianza bicolor de oro macizo, mitad satinada en oro blanco y mitad arenada en oro amarillo, ajuste cómodo, 10K 14K 18K, 4 a 7 mm",
+      description: `Dos metales se encuentran a lo largo de una única línea pulida. La alianza Meridian está realizada en oro macizo en dos tonos: una mitad con acabado satinado suave en oro blanco y la otra finamente arenada en oro amarillo, separadas por una estrecha ranura pulida de oro amarillo que recorre toda la circunferencia. El interior pulido está perfilado para un ajuste cómodo. El anillo se percibe como una sola pieza continua, no como un anillo chapado ni con incrustaciones, y el contraste proviene únicamente del acabado de la superficie, no de ningún recubrimiento.
 
 TU ANILLO
-Oro macizo de ${KARAT_ES[karat]} en dos tonos. Este anuncio corresponde únicamente a ${KARAT_ES[karat]}; el mismo diseño se publica por separado en los demás quilatajes. Ambos tonos son oro macizo de ${KARAT_ES[karat]}. Sin chapado, sin metal relleno y sin elección de color de metal: todos los anillos de este anuncio son la misma combinación bicolor de oro amarillo y blanco. El precio es por un anillo del ancho y la talla seleccionados, no por un conjunto. Sin piedras preciosas. Cada superficie se termina a mano, por lo que puede haber variaciones mínimas propias de la herramienta mientras las zonas satinada, arenada y pulida conservan la misma disposición.
+Oro macizo en dos tonos, disponible en 10K, 14K o 18K. Ambos tonos son oro macizo en el quilataje que elijas. Sin chapado, sin metal relleno y sin elección de color de metal: todos los anillos de este anuncio son la misma combinación bicolor de oro amarillo y blanco. El precio es por un anillo del quilataje, ancho y talla seleccionados, no por un conjunto. Sin piedras preciosas. Cada superficie se termina a mano, por lo que puede haber variaciones mínimas propias de la herramienta mientras las zonas satinada, arenada y pulida conservan la misma disposición.
 
 ELIGE TUS MEDIDAS
 Ancho: 4, 5, 6 o 7 mm.
 Grosor: aproximadamente 1,5 mm.
 Talla: US 3 a US 13, incluidas medias tallas.
-Selecciona Width y Ring Size en los dos menús de variación. Los anillos anchos pueden sentirse más ajustados que los estrechos, así que confirma la talla con el ancho que prefieras.
+Selecciona Width, Ring Size y Karat en los tres menús de variación. Los anillos anchos pueden sentirse más ajustados que los estrechos, así que confirma la talla con el ancho que prefieras.
 
 GRABADO INTERIOR OPCIONAL
 Introduce el texto exacto, hasta 30 caracteres, en Texto del grabado interior. Elige Fuente del grabado: 1 | Prata, 2 | Cinzel, 3 | Cinzel Decorative o 4 | Great Vibes. Deja el texto en blanco si no deseas grabado. Estos campos no modifican las variaciones de inventario.
@@ -338,9 +321,9 @@ La galería incluye visualizaciones asistidas por IA de Higgsfield basadas en fo
         "anillo dos oros",
         "alianza hombre",
         "oro macizo",
-        `anillo oro ${karat.toLowerCase()}`,
-        `alianza oro ${karat.toLowerCase()}`,
-        "anillo bicolor",
+        "anillo oro 10k",
+        "anillo oro 14k",
+        "anillo oro 18k",
         "ajuste comodo",
         "oro satinado",
         "oro arenado",
@@ -350,48 +333,23 @@ La galería incluye visualizaciones asistidas por IA de Higgsfield basadas en fo
       ],
     },
   },
-});
-
-const CONTENT_BY_KARAT = Object.fromEntries(
-  MODEL.karats.map((karat) => [karat, contentFor(karat)]),
-);
+};
 
 // Etsy sozlesmesi: 13 etiket, her biri <= 20 karakter; baslik <= 140.
-for (const karat of MODEL.karats) {
-  const content = CONTENT_BY_KARAT[karat];
-  for (const [lang, tags] of [
-    ["en", content.tags],
-    ["es", content.translations.es.tags],
-  ]) {
-    assert.equal(tags.length, 13, `${karat} ${lang}: 13 etiket olmali, ${tags.length}`);
-    assert.equal(new Set(tags).size, 13, `${karat} ${lang}: etiket tekrari var`);
-    const tooLong = tags.filter((t) => t.length > 20);
-    assert.equal(
-      tooLong.length,
-      0,
-      `${karat} ${lang}: 20 karakteri asan etiket ${tooLong}`,
-    );
-  }
-  for (const [lang, title] of [
-    ["en", content.title],
-    ["es", content.translations.es.title],
-  ]) {
-    assert(
-      title.length <= 140,
-      `${karat} ${lang}: baslik ${title.length} karakter (max 140)`,
-    );
-    assert(
-      title.includes(karat) || title.includes(KARAT_ES[karat]),
-      `${karat} ${lang}: baslik ayari anmiyor`,
-    );
-  }
-  // Ayar basina listing'de metin DIGER ayarlari satiyormus gibi konusmamali.
-  for (const other of MODEL.karats.filter((k) => k !== karat)) {
-    assert(
-      !new RegExp(`\\b${other}\\b`).test(content.title),
-      `${karat}: baslikta yabanci ayar ${other}`,
-    );
-  }
+for (const [lang, tags] of [
+  ["en", CONTENT.tags],
+  ["es", CONTENT.translations.es.tags],
+]) {
+  assert.equal(tags.length, 13, `${lang}: 13 etiket olmali, ${tags.length}`);
+  assert.equal(new Set(tags).size, 13, `${lang}: etiket tekrari var`);
+  const tooLong = tags.filter((t) => t.length > 20);
+  assert.equal(tooLong.length, 0, `${lang}: 20 karakteri asan etiket ${tooLong}`);
+}
+for (const [lang, title] of [
+  ["en", CONTENT.title],
+  ["es", CONTENT.translations.es.title],
+]) {
+  assert(title.length <= 140, `${lang}: baslik ${title.length} karakter (max 140)`);
 }
 /*
  * Iki-tonlu urunun metni OLMAYAN bir metal-renk secimi VAAT ETMEMELI.
@@ -405,54 +363,39 @@ const METAL_CHOICE_PROMISES = [
   /\bmetal\b[^.]{0,20}\b(?:menu|dropdown|option|variation)s?\b/i,
   /\bavailable in\b[^.]{0,40}\brose gold\b/i,
 ];
-for (const karat of MODEL.karats) {
-  const content = CONTENT_BY_KARAT[karat];
-  for (const [lang, text] of [
-    ["en", content.description],
-    ["es", content.translations.es.description],
-  ]) {
-    for (const pattern of METAL_CHOICE_PROMISES) {
-      assert(
-        !pattern.test(text),
-        `${karat} ${lang}: aciklama var olmayan metal-renk secimi vaat ediyor (${pattern})`,
-      );
-    }
-    // Ayar da artik bir menu DEGIL — "select your karat" demek yalan olurdu.
+for (const [lang, text] of [
+  ["en", CONTENT.description],
+  ["es", CONTENT.translations.es.description],
+]) {
+  for (const pattern of METAL_CHOICE_PROMISES) {
     assert(
-      !/\b(?:choose|select|pick)\b[^.]{0,30}\bkarat\b/i.test(text) &&
-        !/\bselecciona\b[^.]{0,30}\bquilataje\b/i.test(text),
-      `${karat} ${lang}: aciklama var olmayan ayar menusu vaat ediyor`,
+      !pattern.test(text),
+      `${lang}: aciklama var olmayan metal-renk secimi vaat ediyor (${pattern})`,
     );
-    // Var olan IKI menu adiyla anilmali (Etsy'de alici bunlari gorur).
-    for (const axis of ["Width", "Ring Size"]) {
-      assert(
-        text.includes(axis),
-        `${karat} ${lang}: aciklamada "${axis}" menusu anilmiyor`,
-      );
-    }
   }
-  // Buna karsilik metin, secimin OLMADIGINI acikca soylemeli.
-  assert(
-    /no metal-color choice/i.test(content.description),
-    `${karat} en: aciklama metal-renk secimi olmadigini acikca soylemeli`,
-  );
-  assert(
-    /sin elecci[oó]n de color de metal/i.test(content.translations.es.description),
-    `${karat} es: aciklama metal-renk secimi olmadigini acikca soylemeli`,
-  );
-  // Ve tek-ayar listing oldugunu soylemeli (alici yanlis ayar beklemesin).
-  assert(
-    new RegExp(`listing is for ${karat} only`, "i").test(content.description),
-    `${karat} en: aciklama tek-ayar listing oldugunu soylemeli`,
-  );
+}
+// Buna karsilik metin, secimin OLMADIGINI acikca soylemeli.
+assert(
+  /no metal-color choice/i.test(CONTENT.description),
+  "en: aciklama metal-renk secimi olmadigini acikca soylemeli",
+);
+assert(
+  /sin elecci[oó]n de color de metal/i.test(CONTENT.translations.es.description),
+  "es: aciklama metal-renk secimi olmadigini acikca soylemeli",
+);
+// Uc varyasyon menusu adiyla anilmali (Etsy'de alici bunlari gorur).
+for (const [lang, text] of [
+  ["en", CONTENT.description],
+  ["es", CONTENT.translations.es.description],
+]) {
+  for (const axis of ["Width", "Ring Size", "Karat"]) {
+    assert(text.includes(axis), `${lang}: aciklamada "${axis}" menusu anilmiyor`);
+  }
 }
 
 /* ----------------------------------------------------------------- taksonomi */
 
-/** Ayar basina listing oldugu icin "Gold purity" tek degere iner. */
-const GOLD_PURITY_VALUE_ID = { "10K": 5103, "14K": 5111, "18K": 5109 };
-
-const taxonomyFor = (karat) => ({
+const TAXONOMY = {
   sourceUrl: "https://openapi.etsy.com/v3/application/seller-taxonomy/nodes",
   sellerTaxonomyId: 1247,
   sellerPath: ["Jewelry", "Rings", "Wedding & Engagement", "Wedding Bands"],
@@ -464,7 +407,8 @@ const taxonomyFor = (karat) => ({
     checkedAt: "2026-09-04T06:50:22.397Z",
     note: "Material multi is the only attribute that differs from the single-metal family: Meridian carries BOTH Yellow gold (139) and White gold (285) because the physical ring contains both.",
   },
-  variationNote: `Two-tone listing: both the metal combination and the karat (${karat}) are fixed at listing level and have no variation axis. Inventory axes are Width and Ring Size only.`,
+  variationNote:
+    "Two-tone listing: metal combination is fixed at listing level and has no variation axis. Inventory axes are Width, Ring Size and Karat.",
   attributes: {
     style: "Minimalist",
     styleRationale:
@@ -493,8 +437,8 @@ const taxonomyFor = (karat) => ({
     {
       property_id: 570246213609,
       property_name: "Gold purity",
-      values: [karat.toLowerCase()],
-      value_ids: [GOLD_PURITY_VALUE_ID[karat]],
+      values: ["10k", "14k", "18k"],
+      value_ids: [5103, 5111, 5109],
     },
     {
       property_id: 570246213531,
@@ -521,7 +465,7 @@ const taxonomyFor = (karat) => ({
       value_ids: [2311, 2450, 2310],
     },
   ],
-});
+};
 
 const PRODUCTION = {
   whoMade: "i_did",
@@ -594,7 +538,7 @@ const priceCsv = [
   priceCsvHeader,
   ...variants.map((v) =>
     [
-      v.listingSku,
+      listingSku,
       v.sku,
       v.karat,
       v.properties.Width.replace(" mm", ""),
@@ -651,10 +595,10 @@ const pricingReadback = {
       "Reuse the 2026-09-06 basis. Drift is inside the engine deadband band and keeps Meridian price-coherent with the Flat Milgrain and Crossgrain families that went live the same week.",
   },
   variationStructure: {
-    listingGrouping: "fixed_two_tone_fixed_karat",
-    listingCount: 3,
-    axes: ["Width", "Ring Size"],
-    variantsPerListing: 84,
+    listingGrouping: "fixed_two_tone",
+    listingCount: 1,
+    axes: ["Width", "Ring Size", "Karat"],
+    variantsPerListing: variants.length,
     totalVariants: variants.length,
     quantityPerVariant: PRICING.quantityPerVariant,
   },
@@ -677,12 +621,9 @@ const pricingReadback = {
   ),
   matrixSha256,
   checks: {
-    threeListingsOnePerKarat: true,
-    variantsPerListing84: MODEL.karats.every(
-      (k) => variants.filter((v) => v.karat === k).length === 84,
-    ),
-    totalVariants252: variants.length === 252,
-    belowEtsyCombinationLimit400: true,
+    singleListing: true,
+    variantsPerListing252: variants.length === 252,
+    belowEtsyCombinationLimit400: variants.length <= 400,
     uniqueVariantSkus: new Set(variants.map((v) => v.sku)).size === variants.length,
     positiveWeights: variants.every((v) => v.estimatedTotalWeightGrams > 0),
     everyVariantQuantity20: variants.every((v) => v.quantity === 20),
@@ -691,10 +632,9 @@ const pricingReadback = {
   },
 };
 
-const productFor = (karat) => ({
-  id: listingSkuFor(karat),
-  sku: listingSkuFor(karat),
-  karat,
+const product = {
+  id: listingSku,
+  sku: listingSku,
   productType: "ring",
   listingProtocol: "wedding_band",
   section: "Wedding Bands",
@@ -714,10 +654,10 @@ const productFor = (karat) => ({
     widthsMm: MODEL.widthsMm,
     ringSizesUs: MODEL.ringSizesUs,
   },
-  variationAxes: ["Width", "Ring Size"],
+  variationAxes: ["Width", "Ring Size", "Karat"],
   production: PRODUCTION,
-  content: CONTENT_BY_KARAT[karat],
-  taxonomy: taxonomyFor(karat),
+  content: CONTENT,
+  taxonomy: TAXONOMY,
   pricing: {
     costConfidence: "owner_approved_profile_estimate",
     costSource: source.provenance.upstreamWeightFile,
@@ -738,7 +678,7 @@ const productFor = (karat) => ({
     inventoryQuantityPerVariant: PRICING.quantityPerVariant,
     priceStatus: "approved_for_panel_staging",
   },
-  variants: variants.filter((v) => v.karat === karat),
+  variants,
   images: [],
   approval: {
     ownerApprovalRequiredForEtsy: true,
@@ -755,24 +695,7 @@ const productFor = (karat) => ({
       "physical_weight_not_measured: grams are the verified 1.5 mm profile estimate, not a measurement of this model.",
     ],
   },
-});
-
-const products = MODEL.karats.map(productFor);
-assert.equal(products.length, 3, "ayar basina bir listing olmali");
-assert(
-  products.every((p) => p.variants.length === 84),
-  "her listing 84 varyant tasimali",
-);
-assert.equal(
-  products.flatMap((p) => p.variants).length,
-  252,
-  "toplam varyant 252 olmali",
-);
-assert.equal(
-  new Set(products.map((p) => p.sku)).size,
-  3,
-  "listing SKU'lari tekil olmali",
-);
+};
 
 const manifest = {
   protocolVersion: "etsy-listing-v1",
@@ -786,17 +709,16 @@ const manifest = {
   ownerOverrides: {
     scope: "Meridian Two-Tone Band only",
     authority:
-      "Owner requested on 2026-09-11: widths 4 mm through 7 mm, 1.5 mm thickness, US ring sizes including half sizes, two metals in one ring and no metal-color variations. Owner then specified THREE listings split by karat (10K, 14K, 18K), so karat is fixed at listing level — matching karatAtListingLevel in eon-etsy-listing-rules.v1 — and each listing carries only the Width and Ring Size axes.",
-    listingGrouping: "fixed_two_tone_fixed_karat",
-    listingCount: 3,
-    variationAxisCount: 2,
-    variationAxes: ["Width", "Ring Size"],
+      "Owner requested on 2026-09-11: widths 4 mm through 7 mm, 1.5 mm thickness, US ring sizes, two metals in one ring and no metal-color variations. Per eon-etsy-listing-rules.v1 a fixed two-tone product carries no Band color axis, so the Flat Milgrain three-listing metal split collapses to a single listing and Karat stays an inventory axis.",
+    listingGrouping: "fixed_two_tone",
+    listingCount: 1,
+    variationAxisCount: 3,
+    variationAxes: ["Width", "Ring Size", "Karat"],
     karats: [10, 14, 18],
     widthsMm: MODEL.widthsMm,
     ringSizesUs: "US 3 to US 13 including half sizes",
     etsyCombinationLimit: 400,
-    combinationsPerListing: 84,
-    totalCombinations: variants.length,
+    combinationsPerListing: variants.length,
     quantityPerActiveVariant: PRICING.quantityPerVariant,
     galleryCountPerListing: 10,
     allGalleryImagesPresent: false,
@@ -804,40 +726,34 @@ const manifest = {
     geometryRules:
       "Closed 360-degree loop, flat outer face, one half soft brushed white gold, the other half finely sandblasted yellow gold, a single narrow polished yellow gold groove on the boundary running the full circumference, polished comfort fit interior, slim 1.5 mm profile and no geometry-changing props.",
   },
-  products,
+  products: [product],
 };
 
-const copyDocument = products
-  .map(
-    (p) => `# ${p.sku}
+const copyDocument = `# ${product.sku}
 
 ## English
 
-${p.content.title}
+${CONTENT.title}
 
-${p.content.description}
+${CONTENT.description}
 
-Tags: ${p.content.tags.join(", ")}
+Tags: ${CONTENT.tags.join(", ")}
 
 ## Español
 
-${p.content.translations.es.title}
+${CONTENT.translations.es.title}
 
-${p.content.translations.es.description}
+${CONTENT.translations.es.description}
 
-Etiquetas: ${p.content.translations.es.tags.join(", ")}`,
-  )
-  .join("\n\n---\n\n")
-  .concat("\n");
+Etiquetas: ${CONTENT.translations.es.tags.join(", ")}
+`;
 
 const validationPlan = {
   expected: {
-    products: 3,
-    oneListingPerKarat: ["10K", "14K", "18K"],
-    variationAxesPerProduct: ["Width", "Ring Size"],
-    variantsPerProduct: 84,
+    products: 1,
+    variationAxesPerProduct: ["Width", "Ring Size", "Karat"],
+    variantsPerProduct: 252,
     maximumVariantsPerProduct: 400,
-    totalVariants: 252,
     quantityPerActiveVariant: 20,
     customFieldsPerProduct: 2,
     tagsPerLanguage: 13,
@@ -847,27 +763,21 @@ const validationPlan = {
     imagesPerProduct: 10,
   },
   actual: {
-    products: products.length,
-    oneListingPerKarat: products.map((p) => p.karat),
-    variationAxesPerProduct: products.map((p) => p.variationAxes),
-    variantsPerProduct: products.map((p) => p.variants.length),
-    totalVariants: products.flatMap((p) => p.variants).length,
+    products: manifest.products.length,
+    variationAxesPerProduct: product.variationAxes,
+    variantsPerProduct: variants.length,
     quantityPerActiveVariant: PRICING.quantityPerVariant,
-    customFieldsPerProduct: products.map(
-      (p) => p.production.personalization.questions.length,
-    ),
-    tagsPerLanguage: Object.fromEntries(
-      products.map((p) => [
-        p.karat,
-        { en: p.content.tags.length, es: p.content.translations.es.tags.length },
-      ]),
-    ),
+    customFieldsPerProduct: PRODUCTION.personalization.questions.length,
+    tagsPerLanguage: {
+      en: CONTENT.tags.length,
+      es: CONTENT.translations.es.tags.length,
+    },
     englishAndSpanish: true,
     panelDraftOnly: true,
     etsyListingIdNull: true,
-    imagesPerProduct: products.map((p) => p.images.length),
+    imagesPerProduct: product.images.length,
   },
-  openBlockers: products[0].approval.blockers,
+  openBlockers: product.approval.blockers,
 };
 
 if (checkOnly) {
@@ -875,8 +785,6 @@ if (checkOnly) {
     JSON.stringify(
       {
         mode: "check",
-        listings: products.length,
-        variantsPerListing: products.map((p) => p.variants.length),
         variants: variants.length,
         priceRegression: `${rows.length - mismatches.length}/${rows.length} cent-exact`,
         matrixSha256,
@@ -910,9 +818,7 @@ await Promise.all([
 console.log(
   JSON.stringify(
     {
-      listings: products.length,
-      listingSkus: products.map((p) => p.sku),
-      variantsPerListing: products.map((p) => p.variants.length),
+      listings: 1,
       variants: variants.length,
       priceRegressionAgainstLiveFamily: `${rows.length - mismatches.length}/${rows.length} cent-exact`,
       minListUsd: Math.min(...listPrices),

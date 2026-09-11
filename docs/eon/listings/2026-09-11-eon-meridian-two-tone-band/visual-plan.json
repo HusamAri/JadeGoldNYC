@@ -1,11 +1,12 @@
 {
   "schemaVersion": "eon-meridian-visual-plan-v2",
-  "status": "prompts_ready_awaiting_reference_upload",
-  "listings": ["EON-MERID-TT-10", "EON-MERID-TT-14", "EON-MERID-TT-18"],
+  "status": "9_of_10_generated",
+  "listings": [
+    "EON-MERID-TT"
+  ],
   "requiredCountPerListing": 10,
-  "generationOrder": "Generate the 14K set first as the hero family, review, then 10K and 18K. Never recolor one set into another — every scene is composed independently (rules file: sameSceneRecolorAllowed = false).",
+  "generationOrder": "Single listing carrying all three karats as a variation axis, so ONE gallery of 10 covers it. Scenes were generated against the owner's 5 reference photos; never recolor one scene into another (rules file: sameSceneRecolorAllowed = false).",
   "creditDiscipline": "One request = one generation, count always 1. No batch fan-out.",
-
   "conceptNote": {
     "name": "THE MERIDIAN",
     "idea": "The ring's whole identity is a single line where two materials meet. So the gallery is built on that line instead of on props: in every frame the composition contains one real boundary — a shadow edge, a horizon, a seam in stone, the fold of a sleeve, the lip of a table — and the ring's polished groove sits parallel to it or continues it. The ring stops being an object on a surface and becomes the punctuation of the frame.",
@@ -13,7 +14,6 @@
     "palette": "Warm neutral grounds (bone, sand, clay, graphite). One cool accent only where it separates the white-gold half. No pastel, no seasonal color, no gradient backdrops.",
     "light": "One dominant soft source plus one controlled specular. The polished groove must read as a single clean highlight — it is the hero detail and must never be blown out."
   },
-
   "etsyVisualLanguageCheck": {
     "thumbnailFirst": "Etsy's search grid renders the first image small. Image 01 is composed so the ring occupies a large share of the frame with a hard tonal split behind it — legible at 170 px.",
     "answerTheBuyingQuestions": "Positions 04 (width ladder), 05 (profile/thickness) and 07 (spec card) exist to answer width, thickness and fit before the buyer asks. These reduce pre-purchase messages and post-purchase returns.",
@@ -31,7 +31,6 @@
       "stacked flat-lay with eucalyptus sprigs"
     ]
   },
-
   "output": {
     "widthPx": 2048,
     "heightPx": 2048,
@@ -41,7 +40,6 @@
     "mechanicalUpscaleAllowed": false,
     "exportMethod": "Direct 2048 px square generation converted to 2048 px RGB JPEG at quality 92. No resizing."
   },
-
   "hardRules": {
     "minimumHumanSkinScenes": 3,
     "sameSceneRecolorAllowed": false,
@@ -66,12 +64,15 @@
       "rough_crystal",
       "stone_chip"
     ],
-    "allowedGlassProps": ["smooth_molded_glass", "cast_glass", "hand_blown_glass"],
+    "allowedGlassProps": [
+      "smooth_molded_glass",
+      "cast_glass",
+      "hand_blown_glass"
+    ],
     "metadataStrippedOnExport": "Higgsfield writes a tEXt hf-job-id chunk. Strip origin metadata at every outbound point (Etsy upload action and download proxy). Pixel-embedded SynthID is NOT metadata and cannot be removed — never promise a 'fully clean' file."
   },
-
   "geometryReference": {
-    "source": "Owner-supplied photographs of the physical sample (5 frames). Upload pending — generate only once these are confirmed media ids.",
+    "source": "Owner-supplied photographs of the physical sample (5 frames), uploaded to Higgsfield 2026-09-11 and passed as image_references on every generation.",
     "description": "Closed comfort-fit band, flat outer face, uniform 1.5 mm wall. The circumference is split lengthwise into two equal halves: one half soft brushed/satin white gold with fine parallel grain, the other half finely sandblasted matte yellow gold with an even micro-pitted texture. A single narrow polished yellow gold groove sits exactly on the boundary and runs the full 360 degrees. The interior is polished and domed for comfort fit. No stones, no inlay seam, no plating line.",
     "mustNotInvent": [
       "a second groove or any additional divider line",
@@ -81,16 +82,15 @@
       "a wider or domed profile; the wall stays a slim flat 1.5 mm"
     ]
   },
-
   "scenes": [
     {
       "position": 1,
-      "filename": "01-meridian-thumbnail-hero.jpg",
+      "filename": "01-meridian-hero-daylight.jpg",
       "role": "hero_thumbnail",
       "human": false,
       "widthMm": 6,
       "job": "Win the search grid at 170 px.",
-      "prompt": "Single two-tone gold wedding band standing upright and filling most of a square frame, photographed dead-on. The background is split into two flat tonal fields — warm bone above, deep graphite below — and the horizon between them passes exactly through the ring's polished groove so the divider line of the background and the divider line of the ring read as one continuous meridian. One soft key from the upper left puts a single clean specular highlight along the polished groove. The brushed white-gold half and the sandblasted matte yellow-gold half are both clearly legible. No props, no text, no reflection on the ground."
+      "prompt": "Photorealistic photograph of the EXACT two-tone gold wedding band shown in the reference images. It must read unmistakably as a complete closed 360-degree ring with its open center visible — never a cropped slab or straight segment. Slim flat outer face on a thin wall; the outer face split lengthwise into two equal halves, one soft brushed satin white gold with fine parallel grain, the other finely sandblasted matte yellow gold with even micro-pitted texture; exactly ONE narrow polished yellow-gold groove flush on the boundary running continuously around the circumference; polished comfort-fit interior. No stones, no milgrain, no hammering, no rose gold, no second groove, no stepped edge.\n\nComposition: the ring stands upright in three-quarter view, occupying roughly two thirds of a square frame, on a warm off-white plaster or raw limestone slab with visible fine grain, in front of a plain matte wall slightly out of focus.\n\nLIGHTING: a real home studio, not a CGI render. One large window is the only light source; soft directional daylight with a genuine soft-edged shadow and natural penumbra that spreads as it lengthens. The gold looks like real metal photographed in daylight, warm and slightly uneven. No seamless backdrop, no flat colour fields, no gradient sweep, no synthetic perfect lighting."
     },
     {
       "position": 2,
@@ -103,37 +103,46 @@
     },
     {
       "position": 3,
-      "filename": "03-meridian-macro-two-textures.jpg",
+      "filename": "03-meridian-macro-textures.jpg",
       "role": "differentiator_macro",
       "human": false,
       "widthMm": 6,
       "job": "Show the only thing the buyer is really choosing.",
-      "prompt": "Extreme macro across the boundary of a two-tone gold band, the surface filling the entire frame. On one side, fine parallel brushed grain in white gold catching light as soft directional streaks. On the other, evenly sandblasted matte yellow gold with dense micro-pitted texture that scatters light with no shine. Between them a narrow polished yellow-gold groove running edge to edge as a single mirror-bright hairline. Raking light from the left to maximise texture separation. Shallow depth of field falling off at the frame edges. No props, no hand, no background visible."
+      "prompt": "Photorealistic close macro of the EXACT two-tone gold wedding band shown in the reference images, shot on a real home studio table in window daylight. The band's CURVATURE must be visible: the surface sweeps across the frame as a broad arc so the viewer reads a round ring, never a straight bar. Fine parallel brushed grain in white gold on one side; evenly sandblasted matte yellow gold with dense micro-pitted texture on the other; between them exactly ONE narrow polished yellow-gold groove as a bright hairline that curves with the band and softly mirrors the window. Soft raking daylight from a single side window, faint window-frame reflection in the groove, natural shallow depth of field, a few microscopic dust specks. Not a light box, not a CGI render."
     },
     {
       "position": 4,
       "filename": "04-meridian-width-ladder.jpg",
       "role": "width_answer",
       "human": false,
-      "widthMm": [4, 5, 6, 7],
+      "widthMm": [
+        4,
+        5,
+        6,
+        7
+      ],
       "job": "Answer 'which width?' before it is asked.",
       "prompt": "Four identical two-tone gold wedding bands of increasing width — 4 mm, 5 mm, 6 mm and 7 mm — standing upright in a precise row on a bone-coloured stone ledge, photographed straight on at true relative proportion so the width difference is unmistakable. Each ring shows the brushed white-gold half, the sandblasted yellow-gold half and the single polished groove, and all four grooves align on one horizontal line running across the frame. Even soft light, one gentle shared shadow beneath. No text, no numbers, no props."
     },
     {
       "position": 5,
-      "filename": "05-meridian-profile-thickness.jpg",
+      "filename": "05-meridian-oak-profile.jpg",
       "role": "thickness_answer",
       "human": false,
       "widthMm": 6,
       "job": "Answer 'how chunky is it?'.",
-      "prompt": "Pure side profile of a two-tone gold wedding band lying on its edge on a dark graphite surface, lit from behind and slightly above so the slim 1.5 mm wall is silhouetted crisply against a lighter background gradient. The flat outer face is square to camera, the polished comfort-fit interior curve just catching a soft rim light. The polished groove reads as one crisp bright line running around the visible circumference. Minimal, architectural, no props."
+      "prompt": "Photorealistic photograph of the EXACT two-tone gold wedding band shown in the reference images. It must read unmistakably as a complete closed 360-degree ring with its open center visible — never a cropped slab or straight segment. Slim flat outer face on a thin wall; the outer face split lengthwise into two equal halves, one soft brushed satin white gold with fine parallel grain, the other finely sandblasted matte yellow gold with even micro-pitted texture; exactly ONE narrow polished yellow-gold groove flush on the boundary running continuously around the circumference; polished comfort-fit interior. No stones, no milgrain, no hammering, no rose gold, no second groove, no stepped edge.\n\nComposition: the ring stands upright on a raw oak tabletop and is turned NEARLY EDGE-ON to camera so the slim 1.5 mm wall thickness is the subject while the round silhouette still reads as a ring.\n\nLIGHTING: a real home studio, not a CGI render. One large window is the only light source; soft directional daylight with a genuine soft-edged shadow and natural penumbra that spreads as it lengthens. The gold looks like real metal photographed in daylight, warm and slightly uneven. No seamless backdrop, no flat colour fields, no gradient sweep, no synthetic perfect lighting.",
+      "reshootNeeded": "The generated frame came back in three-quarter view, duplicating the hero angle, so it does NOT show the 1.5 mm wall. Re-shoot with a stricter edge-on instruction before this slot is considered done."
     },
     {
       "position": 6,
       "filename": "06-meridian-two-hands-table-edge.jpg",
       "role": "worn_lifestyle",
       "human": true,
-      "widthMm": [5, 7],
+      "widthMm": [
+        5,
+        7
+      ],
       "job": "Couple context without the bridal cliché.",
       "prompt": "Two adult hands of different skin tones resting side by side on the edge of a raw oak table, each wearing a two-tone gold band at a different width, photographed from directly above. The straight edge of the table runs through the frame and both rings sit just above it so the table edge and the rings' polished grooves form parallel lines. Warm indirect daylight, relaxed unposed fingers, natural skin texture with visible hair and pores. No bouquet, no rings touching, no wedding styling."
     },
@@ -145,7 +154,9 @@
       "widthMm": 6,
       "job": "Etsy best practice: one designed information card, not clip-art.",
       "prompt": "Editorial specification card on a flat bone-coloured ground. A single two-tone gold band sits in the lower right, and thin precise hairlines extend from the ring to short typeset labels set in a restrained modern serif: 'WIDTH 4 / 5 / 6 / 7 mm', 'THICKNESS 1.5 mm', 'US 3 - 13 incl. half sizes', 'SOLID GOLD, TWO TONE', 'COMFORT FIT'. Typography is small, generous in spacing, dark warm grey, aligned to a strict left margin. No icons, no badges, no drop shadows, no coloured banners. The layout should feel like a design specimen sheet, not a sale graphic.",
-      "textAccuracyGate": "Every number in this frame must match the listing exactly. Re-read the rendered text before upload — a wrong width or size range here is a false claim, not a typo."
+      "textAccuracyGate": "Every number in this frame must match the listing exactly. Re-read the rendered text before upload — a wrong width or size range here is a false claim, not a typo.",
+      "generated": false,
+      "notGeneratedReason": "Deliberately not generated. A card that prints measurements is a FALSE CLAIM if the model renders a wrong number, not a typo. Typeset the text by hand over a clean generated plate."
     },
     {
       "position": 8,
@@ -175,7 +186,6 @@
       "prompt": "Quiet editorial still life: a two-tone gold band leaning upright against a smooth hand-blown amber glass form on a clay-coloured plaster surface, photographed in low raking afternoon light. The glass casts a long soft-edged shadow whose straight boundary runs across the frame and passes through the ring's polished groove. The glass is smooth and molded with no facets and no gem-like cuts. Restrained, architectural, generous negative space in the upper half. No flowers, no fabric, no additional objects."
     }
   ],
-
   "qaGate": {
     "beforeUpload": [
       "All 10 native 2048x2048, RGB JPEG, no mechanical upscale.",
@@ -189,5 +199,30 @@
       "Origin metadata stripped at the outbound point."
     ],
     "finalArbiter": "A real render viewed at full size. 'The prompt says so' is not evidence."
+  },
+  "generated": {
+    "model": "nano_banana_2 (Higgsfield)",
+    "referenceMediaCount": 5,
+    "output": "2048x2048 sRGB JPEG, 9 unique sha256",
+    "dir": "images/",
+    "lightingDirection": "Owner 2026-09-11: home-studio daylight, real window light with natural penumbra, honest metal — not flat studio CGI. Scenes 01/03/05 were re-shot to this direction; 02/04/06 were already daylight.",
+    "rejected": [
+      {
+        "scene": 1,
+        "reason": "First hero framed the band's outer face as a slab: the closed loop was not readable, violating closedContinuousLoopRequired, and at 170 px in the Etsy grid it did not read as a wedding band. Re-shot in three-quarter view."
+      }
+    ],
+    "openItems": [
+      {
+        "scene": 7,
+        "status": "deliberately_not_generated",
+        "reason": "A card that prints measurements is a FALSE CLAIM if the model renders a wrong number, not a typo. Typeset the text by hand."
+      },
+      {
+        "scene": 5,
+        "status": "missed_its_job",
+        "reason": "Had to show the 1.5 mm wall; came back in three-quarter view, duplicating the hero angle. Needs a re-shoot with a stricter edge-on instruction."
+      }
+    ]
   }
 }

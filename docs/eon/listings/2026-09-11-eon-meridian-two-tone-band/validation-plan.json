@@ -1,18 +1,13 @@
 {
   "expected": {
-    "products": 3,
-    "oneListingPerKarat": [
-      "10K",
-      "14K",
-      "18K"
-    ],
+    "products": 1,
     "variationAxesPerProduct": [
       "Width",
-      "Ring Size"
+      "Ring Size",
+      "Karat"
     ],
-    "variantsPerProduct": 84,
+    "variantsPerProduct": 252,
     "maximumVariantsPerProduct": 400,
-    "totalVariants": 252,
     "quantityPerActiveVariant": 20,
     "customFieldsPerProduct": 2,
     "tagsPerLanguage": 13,
@@ -22,60 +17,23 @@
     "imagesPerProduct": 10
   },
   "actual": {
-    "products": 3,
-    "oneListingPerKarat": [
-      "10K",
-      "14K",
-      "18K"
-    ],
+    "products": 1,
     "variationAxesPerProduct": [
-      [
-        "Width",
-        "Ring Size"
-      ],
-      [
-        "Width",
-        "Ring Size"
-      ],
-      [
-        "Width",
-        "Ring Size"
-      ]
+      "Width",
+      "Ring Size",
+      "Karat"
     ],
-    "variantsPerProduct": [
-      84,
-      84,
-      84
-    ],
-    "totalVariants": 252,
+    "variantsPerProduct": 252,
     "quantityPerActiveVariant": 20,
-    "customFieldsPerProduct": [
-      2,
-      2,
-      2
-    ],
+    "customFieldsPerProduct": 2,
     "tagsPerLanguage": {
-      "10K": {
-        "en": 13,
-        "es": 13
-      },
-      "14K": {
-        "en": 13,
-        "es": 13
-      },
-      "18K": {
-        "en": 13,
-        "es": 13
-      }
+      "en": 13,
+      "es": 13
     },
     "englishAndSpanish": true,
     "panelDraftOnly": true,
     "etsyListingIdNull": true,
-    "imagesPerProduct": [
-      0,
-      0,
-      0
-    ]
+    "imagesPerProduct": 0
   },
   "openBlockers": [
     "gallery_images_not_generated: 10 images required by the rules file; generation spends credits and every prompt needs owner approval first.",

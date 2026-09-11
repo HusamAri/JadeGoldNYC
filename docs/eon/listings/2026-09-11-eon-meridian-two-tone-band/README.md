@@ -1,41 +1,36 @@
 # EON Meridian — iki tonlu alyans (2026-09-11)
 
 Sahibin isteği: **4–7 mm genişlik, 1,5 mm kalınlık, US bedenler (yarım dahil),
-tek yüzükte iki metal, metal varyasyonu YOK; ayar başına ayrı listing (10K /
-14K / 18K).** Bu paket o üç listing'in repo-yerli kaynağıdır.
+tek yüzükte iki metal, metal varyasyonu YOK; üç ayar TEK listing'de varyant
+olarak.** Bu paket o listing'in repo-yerli kaynağıdır.
 
-Panelde **üç taslak** olarak duruyor (`EON-MERID-TT-10/14/18`, hepsinde
-`etsy_listing_id = NULL`). **Etsy'ye hiçbir şey yazılmadı** — gönderim aşağıdaki
-onay kapısına bağlı.
+Panelde **taslak olarak duruyor** (`EON-MERID-TT`, `etsy_listing_id = NULL`).
+**Etsy'ye hiçbir şey yazılmadı** — gönderim aşağıdaki onay kapısına bağlı.
 
-## Yapı: ayar başına bir listing (3 listing)
+## Yapı: tek listing, üç eksen
 
-Sahibin 2026-09-11 talimatı: **10K, 14K ve 18K için ayrı listing**, her birinde
-genişlik ve US bedenler (yarım bedenler dahil).
+| | |
+|---|---|
+| listing | `EON-MERID-TT` (1 adet) |
+| eksenler | `Width` × `Ring Size` × `Karat` |
+| genişlik | 4, 5, 6, 7 mm |
+| beden | US 3 – US 13, yarım bedenler dahil (21) |
+| ayar | 10K / 14K / 18K (varyant, ayrı listing değil) |
+| kombinasyon | 4 × 21 × 3 = **252** (Etsy sınırı 400) |
+| galeri | tek listing → **10 görsel yeter** |
 
 Yönetişim dosyası (`eon-etsy-listing-rules.v1.json`, Drive → *EON Etsy Listing
-Governance*) bunu zaten taşıyor:
+Governance*) iki tonlu ürün için ayrı bir satır taşıyor:
 
 ```
-"karatAtListingLevel": true                    // ayar listing seviyesinde
 "fixedTwoToneAxes": ["Width", "Ring Size"]     // Band color ekseni YOK
+"maximumAxes": 3
 ```
 
-İki tonlu üründe metal kombinasyonu **tek** olduğu için renk ekseni yok; ayar da
-listing seviyesinde sabitlenince her listing'de yalnız **iki** envanter ekseni
-kalıyor:
-
-| listing | ayar | eksenler | kombinasyon |
-|---|---|---|---|
-| `EON-MERID-TT-10` | 10K | Width × Ring Size | 84 |
-| `EON-MERID-TT-14` | 14K | Width × Ring Size | 84 |
-| `EON-MERID-TT-18` | 18K | Width × Ring Size | 84 |
-
-4 genişlik × 21 beden = 84, Etsy'nin 400 sınırının çok altında; toplam 252 varyant.
-Alıcı ne metal rengi ne ayar seçer — ikisi de listing'in kimliğidir. Metin de buna
-göre kurulur: başlık ayarla açılır, açıklama "this listing is for 10K only" der ve
-"CHOOSE YOUR FIT" **iki** menü anlatır. Üreteç bunu assert'le zorlar (yabancı ayar
-başlıkta geçemez, varyant özelliğinde `Karat` kalamaz).
+İki tonlu üründe metal kombinasyonu **tek** olduğu için renk ekseni yok —
+"no different metal variations" cümlesinin birebir karşılığı: alıcı metal
+rengi seçmez, çünkü seçilecek bir şey yoktur. Ayar ise üçüncü eksen olarak
+listing içinde kalır, yani tek ürün sayfası ve tek galeri.
 
 ## Fiyat: uydurulmadı, kanıtlandı
 
@@ -56,12 +51,10 @@ sokuluyor (aynı geometri sınıfı, aynı 1,5 mm profil, aynı 55 USD kademe).
 
 ```
 $ node scripts/eon/gen_meridian_package.mjs
-{ "listings": 3,
-  "listingSkus": ["EON-MERID-TT-10","EON-MERID-TT-14","EON-MERID-TT-18"],
-  "variantsPerListing": [84, 84, 84], "variants": 252,
+{ "listings": 1, "variants": 252,
   "priceRegressionAgainstLiveFamily": "252/252 cent-exact",
   "minListUsd": 870, "maxListUsd": 3160,
-  "panelDraftOnly": true, "etsyWrites": false }
+  "panelDraftOnly": true, "etsyWrites": false, "imagesGenerated": 0 }
 ```
 
 ### Spot tabanı neden 09-06 (09-11 değil)
@@ -100,24 +93,28 @@ Varyantlar panele **SQL'de türetilerek** yazıldı (252 satır elle taşınmad�
 transkripsiyon riski sıfır). Doğrulama yalnız toplamla değil **konum-ağırlıklı
 checksum**'la yapıldı (salt toplam satır KAYMASINI yakalamaz):
 
-| listing | satır | `sum(price_cents)` | `sum(i × price_cents)` | `sum(gram×100)` | `sum(i × gram×100)` | tekil SKU |
-|---|---|---|---|---|---|---|
-| `…-TT-10` | 84 | 10.064.000 | 464.159.500 | 37.757 | 1.812.822 | 84 |
-| `…-TT-14` | 84 | 14.587.000 | 678.141.500 | 42.895 | 2.059.699 | 84 |
-| `…-TT-18` | 84 | 19.685.000 | 911.154.000 | 47.780 | 2.267.145 | 84 |
-
-Üç listing'de de panel (DB) ve repo (`price-table.csv`) **beş ölçümde de birebir**;
-hiçbir varyantta `Karat` ekseni kalmadı.
+| ölçüm | panel (DB) | repo (price-table.csv) |
+|---|---|---|
+| satır | 252 | 252 |
+| `sum(price_cents)` | 44.336.000 | 44.336.000 |
+| `sum(i × price_cents)` | 6.585.843.000 | 6.585.843.000 |
+| `sum(gram×100)` | 128.432 | 128.432 |
+| `sum(i × gram×100)` | 17.769.886 | 17.769.886 |
+| SKU min / max | `…-10-04-030` / `…-18-07-130` | aynı |
+| tekil SKU | 252 | 252 |
 
 ## Açık kapılar — iş BİTMEDİ
 
-1. **Görsel seti 9/10 üretildi, 07 eksik.** Higgsfield `nano_banana_2`, sahibin
-   5 referans fotoğrafı `image_references` olarak, 2048×2048 sRGB JPEG, 9 tekil
-   hash. Gün ışığı home-studio diline göre 01/03/05 yeniden çekildi.
-   **07 (spec kartı) BİLEREK üretilmedi:** üzerinde ölçü yazan bir kart, model
-   rakamı yanlış basarsa yazım hatası değil YANLIŞ BEYAN olur; metin elle
-   dizilmeli. **05 hedefini tutturamadı:** 1,5 mm et kalınlığını göstermesi
-   gerekirken üç-çeyrek açıda çıktı, yeniden çekilmeli.
+1. **Görsel seti 9/10 hazır, `images/` altında.** Higgsfield `nano_banana_2`,
+   sahibin 5 referans fotoğrafı `image_references` olarak; 2048×2048 sRGB JPEG,
+   9 tekil hash. Görsel dili `visual-plan.json` → THE MERIDIAN.
+   - **07 (spec kartı) BİLEREK üretilmedi:** üzerinde ölçü yazan bir kart, model
+     rakamı yanlış basarsa yazım hatası değil YANLIŞ BEYAN olur; metin elle
+     dizilmeli.
+   - **05 hedefini tutturamadı:** 1,5 mm et kalınlığını göstermesi gerekirken
+     üç-çeyrek açıda çıktı (hero'yu tekrarlıyor), yeniden çekilmeli.
+   - İlk hero reddedildi: kapalı halka okunmuyordu (`closedContinuousLoopRequired`
+     ihlali) ve 170 px'lik Etsy ızgarasında alyans gibi görünmüyordu.
 2. **Fiziksel gram ölçülmedi** (yukarı bakınız).
 3. **Etsy'ye gönderim yapılmadı.** `etsyPushRequiresExplicitOwnerInstruction:
    true` ve "Etsy'ye gözetimsiz yazma ASLA" kuralı geçerli. Panel taslağı Etsy
@@ -133,6 +130,7 @@ hiçbir varyantta `Karat` ekseni kalmadı.
 | `listing-manifest.json` | tam listing sözleşmesi (taksonomi, üretim, varyantlar) |
 | `listing-copy-en-es.md` | EN + ES başlık/açıklama/13 etiket |
 | `visual-plan.json` | görsel dili (THE MERIDIAN), 10 sahne prompt'u, Etsy dil kontrolü + QA kapısı |
+| `images/` | üretilen 9 kare (2048×2048 sRGB JPEG) |
 | `validation-plan.json` | beklenen ↔ gerçek + açık blocker'lar |
 | `scripts/eon/gen_meridian_package.mjs` | üreteç (`--check` ile yalnız doğrular) |
 
