@@ -1,0 +1,42 @@
+{
+  "expected": {
+    "products": 1,
+    "variationAxesPerProduct": [
+      "Width",
+      "Ring Size",
+      "Karat"
+    ],
+    "variantsPerProduct": 252,
+    "maximumVariantsPerProduct": 400,
+    "quantityPerActiveVariant": 20,
+    "customFieldsPerProduct": 2,
+    "tagsPerLanguage": 13,
+    "englishAndSpanish": true,
+    "panelDraftOnly": true,
+    "etsyListingIdNull": true,
+    "imagesPerProduct": 10
+  },
+  "actual": {
+    "products": 1,
+    "variationAxesPerProduct": [
+      "Width",
+      "Ring Size",
+      "Karat"
+    ],
+    "variantsPerProduct": 252,
+    "quantityPerActiveVariant": 20,
+    "customFieldsPerProduct": 2,
+    "tagsPerLanguage": {
+      "en": 13,
+      "es": 13
+    },
+    "englishAndSpanish": true,
+    "panelDraftOnly": true,
+    "etsyListingIdNull": true,
+    "imagesPerProduct": 0
+  },
+  "openBlockers": [
+    "gallery_images_not_generated: 10 images required by the rules file; generation spends credits and every prompt needs owner approval first.",
+    "physical_weight_not_measured: grams are the verified 1.5 mm profile estimate, not a measurement of this model."
+  ]
+}
