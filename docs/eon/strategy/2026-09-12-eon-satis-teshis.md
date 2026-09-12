@@ -208,6 +208,65 @@ Bu hacimde hiçbir A/B sinyali istatistiksel değil. Sorun listing metni değil,
 
 ---
 
+## EK (aynı gün, teşhisten sonra) — kör noktanın kök nedeni bulundu
+
+Teşhis "cron `vercel.json`'da tanımlı, rota canlıda 401 dönüyor, yani senkron
+çalışabiliyor ama tetiklenmiyor" diyordu. Tetiklenmeme SEBEBİ şimdi ölçüldü ve
+**körlük 7 gün değil, bir ay**:
+
+```sql
+select snapshot_date, min(created_at) at time zone 'UTC'
+from etsy_shop_snapshots ... group by 1 order by 1 desc;
+```
+
+| gün | ilk yazım (UTC) | ne |
+|---|---|---|
+| 08-09 … 08-12 | 06:43 · 06:04 · 06:05 · **07:07** | `0 6 * * *` cron'u — düzenli |
+| 08-20 | 10:34 | elle |
+| 08-21 | 09:50 | elle |
+| 08-22 | 07:12 | elle |
+| 08-27 | 08:04 | elle |
+| 09-03 | 13:15 | elle |
+| 09-05 | 13:21 | elle |
+
+Cron **2026-08-12 07:07**'de son kez koştu. Sonraki her senkron rastgele bir
+saatte, yani insan eliyle. `vercel.json` tam o gün 6 → 3 cron'a indi
+(`f365631` gözetimsiz altın itişini kaldırdı, `fd3f76d` iki ölü cron'u sildi;
+PR #345 12 Ağustos'ta merge edildi). Hesap **Hobby** planında ve `vercel.json`
+hâlâ **3** cron ilan ediyor.
+
+**Kanıtlanan:** cron 08-12'de öldü; rota sağlam; kayıt duruyor.
+**Kanıtlanmayan:** Vercel'in kaydı hangi gerekçeyle düşürdüğü. Hobby'de çalışma
+zamanı log saklama **1 saat**, Vercel MCP'sinde cron durumu veren uç yok —
+yani buradan görülemiyor. **Bunu panelden değil Vercel arayüzünden doğrula:**
+proje → Settings → Cron Jobs.
+
+### Bu turda kapatılan asıl kusur
+
+Uyarı merkezi aslında **doğru çalışmıştı**: `sync_snapshot_stale` (kritik)
+08 Eylül'de yandı ve `alert_state`'te duruyor. Ama söylediği şey "senkron
+çalışmamış, elle tetikle"ydi — kullanıcı da tam olarak onu yaptı, bir ay
+boyunca. Semptom her seferinde geçici olarak kayboldu, **kök neden hiç
+görünmedi**. Panel ayrıca yalnız açıldığında ölçer: EON paneli en son
+**08 Eylül 11:45**'te açılmış.
+
+Eksik olan şey ölçümün kendisiydi — "cron koştu mu?" sorusunun panelde cevabı
+yoktu. `etsy_shop_snapshots` bunu yapamaz, çünkü *"cron koştu, yeni veri yoktu"*
+ile *"cron hiç koşmadı"* aynı görünür. Eklenenler:
+
+- `cron_run` nabız tablosu (`0149`): her koşu, sonucundan bağımsız bir satır
+  bırakır. "İş yok" ile "iş çalışmıyor" artık ayrı iki durum.
+- Üç cron rotası da hatayı yutmayı bıraktı: hedef patlarsa **veya hiç hedef
+  işlenmezse** `500` döner (eskiden her koşu `{ok:true}`, Vercel hep yeşil).
+- Yeni `cron_not_firing` uyarısı kök nedeni adlandırır ve aksiyonu doğru yere
+  yollar (Vercel cron kaydı). Yandığında `sync_snapshot_stale` **bastırılır** —
+  tek arızayı iki kritik satırla anlatmak uyarı körlüğü üretir.
+
+Nabız 36 saat sessiz kalırsa uyarı yanar; kurulum damgası sayesinde kurulumun
+hemen ardından yanlış alarm vermez.
+
+---
+
 ## Kaynaklar
 
 - [Etsy Seller Handbook — Making the Most of Seasonal Sales Patterns](https://www.etsy.com/sg-en/seller-handbook/article/making-the-most-of-seasonal-sales/45451604718)

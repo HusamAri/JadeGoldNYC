@@ -78,6 +78,40 @@ repodaki hedefidir.
   varsayımı doğru) — bir kez satış senkronu tazelenince iki soru birden
   cevaplandı; "ölçülemiyor" çoğu zaman "veri bayat" demektir, kalıcı değil.
 
+- **Bir uyarı "doğru" yanıp da YANLIŞ AKSİYONA yollayabilir — semptomu adlandıran
+  alarm, kök nedeni GİZLER; ayrıca panel yalnız AÇILDIĞINDA ölçer (2026-09-12):**
+  EON senkronu `/api/cron/etsy-sync` 2026-08-12 07:07'de son kez koştu ve **bir
+  ay** kimse görmedi. İlk refleksim uyarı merkezine bir "senkron bayat" sinyali
+  EKLEMEKti; koda bakınca o sinyal (`sync_snapshot_stale`, kritik) ZATEN vardı,
+  ZATEN doğru yanmıştı ve `alert_state`'te 08 Eylül damgasıyla duruyordu.
+  Yani duplikasyon yazmaktan beni yalnız "bu işi yapan başka yer var mı?"
+  taraması kurtardı. Asıl kusur başkaydı ve daha sinsiydi: uyarının metni
+  *"senkron çalışmamış, elle tetikle"* diyordu — kullanıcı da tam olarak onu
+  yaptı, bir ay boyunca. Her elle tetikleme semptomu geçici olarak sildi,
+  **kök nedeni hiç göstermedi**. Kök nedeni yakalatan şey tek bir sorgu oldu:
+  snapshot'ların yazım SAATİ. 12 Ağustos'a kadar hepsi 06:0x (yani `0 6 * * *`
+  cron'u), sonrasında 10:34 / 13:21 gibi rastgele saatler (yani insan eli).
+  Tarih `vercel.json`'ın 6 → 3 cron'a indiği güne birebir oturuyordu. Kritik
+  nokta: bu ayrımı yapacak ÖLÇÜM yoktu — `etsy_shop_snapshots` "cron koştu, yeni
+  veri yoktu" ile "cron hiç koşmadı"yı aynı gösteriyor, ve üç cron rotası da org
+  başına hatayı yutup her koşuda `{ok:true}` döndüğü için Vercel panosu koşu
+  patlasa bile yeşildi. Kural: (1) bir arıza uzun süre görülmediyse önce "uyarı
+  var mıydı?" diye BAK — vardıysa sorun sinyalin yokluğu değil, sinyalin yanlış
+  KATMANI adlandırmasıdır; semptomu söyleyen uyarı kullanıcıyı her gün semptomu
+  silmeye alıştırır; (2) zamanlanmış her iş, SONUCUNDAN BAĞIMSIZ bir nabız
+  satırı bırakmalı (`cron_run`) — "iş yok" ile "iş çalışmıyor" ayrı iki durum
+  olmadıkça hiçbir sorgu ikisini ayıramaz; (3) kök neden bilindiğinde semptom
+  uyarısı BASTIRILIR, iki kritik satır tek arızayı anlatmaz (uyarı körlüğü);
+  (4) sıfır hedef başarı değildir — hedef sayısı 0 ise koşu `500` dönmeli;
+  (5) uyarı merkezi yalnız panel AÇILDIĞINDA koşar: EON paneli 08 Eylül'den beri
+  hiç açılmamıştı, yani "panelde uyarı var" ile "kullanıcı uyarıyı gördü" ayrı
+  şeylerdir — arıza ne kadar kritikse teslim kanalı o kadar panel-dışı olmalı.
+  Yan ders: "planın cron limiti" gibi bir dış-sistem gerekçesini kanıtlayamıyorsan
+  İLAN ETME — Hobby'de çalışma zamanı logu 1 saat saklanıyor ve Vercel MCP'sinde
+  cron durumu veren uç yok; kanıtlanan (cron 08-12'de öldü) ile kanıtlanamayan
+  (Vercel neden düşürdü) ayrı ayrı yazıldı ve doğrulama kullanıcının Vercel
+  arayüzüne havale edildi.
+
 - **Bir oranı ölçerken PAYDANIN hangi kümeyi temsil ettiğini şemadan doğrula;
   mühür ve çapraz doğrulama yanlış girdiyi SADAKATLE mühürler (2026-08-27):**
   Jade indiriminin 1/3'e çıktığını "canlı siparişlerden ölçtüm" diye ilan ettim,

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { createAdminClient } from "@/lib/supabase/admin";
+import { recordCronRun } from "@/lib/cron-heartbeat";
 import { ShipStationClient } from "@/lib/shipstation/client";
 import { advanceShipStationSync } from "@/lib/shipstation/sync";
 
@@ -20,22 +21,37 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
   const admin = createAdminClient();
-  const { data: orgs } = await admin.from("organizations").select("id");
 
-  const results: Record<string, unknown> = {};
-  for (const o of (orgs ?? []) as { id: string }[]) {
-    // Platform: kimlik bilgisi org-bazlı (env yalnız geriye dönük uyumluluk).
-    // Yapılandırılmamış org sessizce atlanır — global skip yok.
-    if (!(await ShipStationClient.isConfiguredForOrg(admin, o.id))) {
-      results[o.id] = { skipped: "not configured" };
-      continue;
-    }
-    try {
-      results[o.id] = await advanceShipStationSync(o.id, 50_000);
-    } catch (e) {
-      results[o.id] = { error: e instanceof Error ? e.message : "error" };
-    }
-  }
+  const report = await recordCronRun(admin, "/api/cron/shipstation-sync", async () => {
+    const { data: orgs, error } = await admin.from("organizations").select("id");
+    if (error) throw new Error(`organizations sorgusu: ${error.message}`);
 
-  return NextResponse.json({ ok: true, results });
+    const results: Record<string, unknown> = {};
+    const failed: string[] = [];
+    // HEDEF = yapılandırılmış org. Yapılandırılmamışlar atlanır ve hedef
+    // SAYILMAZ: hepsi atlanırsa `targetCount` 0 olur ve koşu başarısız
+    // işaretlenir. Kasıtlı — vercel.json'da tanımlı ama her gün hiçbir şey
+    // yapmayan bir cron, sessiz bir kusurdur: ya yapılandırma kopmuştur ya da
+    // kaydın kaldırılması gerekir. İkisi de görünmeli.
+    let configured = 0;
+
+    for (const o of ((orgs ?? []) as { id: string }[])) {
+      // Platform: kimlik bilgisi org-bazlı (env yalnız geriye dönük uyumluluk).
+      if (!(await ShipStationClient.isConfiguredForOrg(admin, o.id))) {
+        results[o.id] = { skipped: "not configured" };
+        continue;
+      }
+      configured += 1;
+      try {
+        results[o.id] = await advanceShipStationSync(o.id, 50_000);
+      } catch (e) {
+        results[o.id] = { error: e instanceof Error ? e.message : "error" };
+        failed.push(o.id);
+      }
+    }
+
+    return { targetCount: configured, results, failed };
+  });
+
+  return NextResponse.json(report, { status: report.ok ? 200 : 500 });
 }

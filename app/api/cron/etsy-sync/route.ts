@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { createAdminClient } from "@/lib/supabase/admin";
+import { recordCronRun } from "@/lib/cron-heartbeat";
 import { advanceEtsySync } from "@/lib/etsy/sync";
 import { rebuildGoldCostsBulk } from "@/lib/gold-cost-entry";
 
@@ -21,30 +22,46 @@ export async function GET(request: Request) {
   }
 
   const admin = createAdminClient();
-  const { data: conns } = await admin
-    .from("etsy_connection")
-    .select("org_id")
-    .eq("status", "connected");
 
-  const results: Record<string, unknown> = {};
-  for (const c of (conns ?? []) as { org_id: string }[]) {
-    try {
-      results[c.org_id] = await advanceEtsySync(c.org_id, 50_000);
-    } catch (e) {
-      results[c.org_id] = {
-        error: e instanceof Error ? e.message : "error",
-      };
+  const report = await recordCronRun(admin, "/api/cron/etsy-sync", async () => {
+    // Bağlantı sorgusunun hatası YUTULMAZ: düşerse `conns` null gelir, döngü
+    // hiç dönmez ve iş "sorunsuz" görünürdü — tam olarak sessiz kusur.
+    const { data: conns, error } = await admin
+      .from("etsy_connection")
+      .select("org_id")
+      .eq("status", "connected");
+    if (error) throw new Error(`etsy_connection sorgusu: ${error.message}`);
+
+    const results: Record<string, unknown> = {};
+    const failed: string[] = [];
+    const rows = (conns ?? []) as { org_id: string }[];
+
+    for (const c of rows) {
+      try {
+        results[c.org_id] = await advanceEtsySync(c.org_id, 50_000);
+      } catch (e) {
+        results[c.org_id] = { error: e instanceof Error ? e.message : "error" };
+        failed.push(c.org_id);
+      }
+
+      // Altın maliyet kalemlerini eksik satışlar için oluştur (küme-tabanlı RPC,
+      // idempotent; SKU→varyant ağırlığı girildikçe kendiliğinden dolar).
+      // Senkronun yan işi: burada patlaması koşuyu başarısız SAYMAZ, ama artık
+      // sessizce yutulmuyor, sonuca yazılıyor.
+      try {
+        await rebuildGoldCostsBulk(admin, c.org_id);
+      } catch (e) {
+        results[`${c.org_id}:gold-cost`] = {
+          warning: e instanceof Error ? e.message : "error",
+        };
+      }
     }
 
-    // Altın maliyet kalemlerini eksik satışlar için oluştur (küme-tabanlı RPC,
-    // idempotent; SKU→varyant ağırlığı girildikçe kendiliğinden dolar).
-    try {
-      await rebuildGoldCostsBulk(admin, c.org_id);
-    } catch {
-      // yok say
-    }
-  }
+    return { targetCount: rows.length, results, failed };
+  });
 
-  return NextResponse.json({ ok: true, results });
+  // Başarısız koşu 5xx döner ki Vercel'in cron panosunda KIRMIZI görünsün.
+  // Eskiden her koşu `{ ok: true }` dönüyordu; koşu patlasa bile yeşildi.
+  return NextResponse.json(report, { status: report.ok ? 200 : 500 });
 }
 
