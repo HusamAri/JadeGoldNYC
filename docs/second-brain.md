@@ -1075,3 +1075,30 @@ repodaki hedefidir.
   aynı prompt kusuru 10 karede tekrarlanmadan yakalanır (burada 1 kare israf oldu,
   10 değil); (3) rakam/ölçü YAZAN görsel (spec kartı) modele bırakılmaz: yanlış
   basılan ölçü yazım hatası değil YANLIŞ BEYANdır, metin elle dizilir.
+- **"Satış yok" şikâyetinde ÖNCE veri tazeliğini doğrula — panel körse sıfır,
+  sıfır satış değil ÖLÇÜMSÜZLÜKtür (2026-09-12):** Kullanıcı "EON'da satış yok,
+  fiyat indirelim mi, indirimi artıralım mı" dedi. İlk sorgu satışa değil
+  SENKRONA gitti: EON'un bütün kaynakları (shop snapshot, listing stats, ledger)
+  5 Eylül'de, Jade 3 Eylül'de, Ophir 29 Ağustos'ta duruyordu — üç mağaza da,
+  7-14 gündür. Bağlantı bozuk değildi (`status=connected`, `sync_error` boş,
+  refresh token geçerli, kota 4.838); cron `vercel.json`'da tanımlıydı ve rota
+  canlıda 401 dönüyordu (yani sağlam) — sadece TETİKLENMİYORDU. Ölçülebilen
+  son iki hafta ise mağazanın EN İYİ iki haftasıydı ($3.008 ve $3.132, AOV
+  $214→$783) ve dönüşüm %0,27'den %0,40'a çıkmıştı. Yani şikâyetin dayandığı
+  "sıfır", panelin son 7 günü hiç çekmemesiydi. Fiyat indirilseydi rekor
+  kıran bir mağazada marj körlemesine yakılacaktı. Kural: (1) "X durdu/düştü"
+  tipi her şikâyette ilk sorgu metriğe değil o metriği besleyen senkronun
+  `last_sync_at`'ine gider; (2) `{ok:true}` dönen cron rotası sessiz başarı
+  üretir — org başına hatayı yutup 200 dönen rota, koşup patlasa bile Vercel'de
+  yeşil görünür, 5xx dönmeli; (3) geri-dönüşü zor bir aksiyon (fiyat kırımı)
+  ölçüm penceresi kapalıyken ASLA alınmaz, önce pencere açılır.
+- **Fiyat kırımını "ne kadar hacim gerekir" sorusuna çevir; yüzde konuşmak
+  aldatıcı, başa-baş çarpanı değil (2026-09-12):** "Fiyatları biraz düşürebilirsin"
+  istendi. %25→%35 indirim kulağa küçük gelir ama net tahsilat `0,75`ten `0,65`e
+  iner = **−%13,3 ciro**, ve maliyetlerin hiçbiri düşmez (ham altın, işçilik,
+  paket, kargo sabit; yalnız Etsy ücreti oranla düşer). Gerçek tabanda katkı
+  $2.648 → $1.463, yani **kârın %45'i**. Başa baş kalmak için sipariş **+%81**
+  artmalı. Bu tek cümle ("%13 fiyat kırımı, siparişi neredeyse ikiye katlamalı")
+  tartışmayı bitirdi. Kural: indirim/zam önerisini yüzdeyle değil, (a) katkı
+  marjına etkisi ve (b) başa-baş için gereken hacim çarpanıyla sun; marj
+  hesabına Etsy ücretini VARSAYIMLA değil ledger'dan ölç (burada %11,7).
