@@ -110,6 +110,7 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
     son30Metrics,
     meltRows,
     lastShopSnapshot,
+    cronRuns,
     lastManualMetric,
     productDiscounts,
     uncosted,
@@ -203,6 +204,23 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
         .order("snapshot_date", { ascending: false })
         .limit(1)
         .maybeSingle(),
+      // CRON NABZI (0149) — "veri bayat" ile "zamanlayıcı hiç tetiklenmedi"
+      // AYRI iki sorundur ve ikincisinin aksiyonu Etsy'de değil Vercel'dedir.
+      // Org'suz tablo: cron global koşar. 0149 uygulanmadan önce bu sorgu hata
+      // döner; sinyal o zaman sessizce kapalı kalır (stone-cost deseni).
+      supabase
+        .from("cron_run")
+        .select("job, started_at, ok, target_count")
+        .in("job", ["_install", "/api/cron/etsy-sync"])
+        .order("started_at", { ascending: false })
+        .limit(50)
+        .then(
+          (r) => (r.error ? null : r),
+          (e) => {
+            console.error("[alert-center] cron-run:", e);
+            return null;
+          },
+        ),
       // Manuel dönem metrikleri (analizler): en son kullanıcı girişi.
       supabase
         .from("shop_metrics")
@@ -714,11 +732,64 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
     }
   }
 
+  // 9b-öncesi) ZAMANLAYICI NABZI — "veri bayat" değil, "cron HİÇ tetiklenmedi".
+  //
+  // Vaka 2026-09-12: `/api/cron/etsy-sync` 2026-08-12 07:07'den beri hiç
+  // koşmadı ve bir ay kimse görmedi. Aşağıdaki 9b uyarısı o süre boyunca doğru
+  // şekilde yandı — ama söylediği şey "senkron çalışmamış, elle tetikle"ydi.
+  // Kullanıcı da tam olarak onu yaptı: bir ay boyunca elle tetikledi. Semptom
+  // her seferinde geçici olarak kayboldu, KÖK NEDEN hiç görünmedi. Bu blok o
+  // ayrımı yapar — aksiyonu farklı çünkü: burada düzeltilecek yer panel ya da
+  // Etsy bağlantısı değil, VERCEL'in cron kaydıdır.
+  let cronDeadDays: number | null = null;
+  if (cronRuns?.data != null) {
+    const runs = cronRuns.data as {
+      job: string;
+      started_at: string;
+      ok: boolean | null;
+      target_count: number | null;
+    }[];
+    const lastSync = runs.find((r) => r.job === "/api/cron/etsy-sync");
+    const installedAt = runs.find((r) => r.job === "_install")?.started_at;
+    // Referans nokta: son gerçek koşu, yoksa nabzın kurulduğu an. Kurulumdan
+    // hemen sonra "nabız yok" demek YANLIŞ ALARM olurdu (ilk cron henüz
+    // koşmamıştır) — yanlış alarm gerçek alarmdan pahalıdır.
+    const ref = lastSync?.started_at ?? installedAt;
+    if (ref) {
+      const yasSaat = (now - new Date(ref).getTime()) / 3_600_000;
+      // Günlük cron: 36 saat = bir kaçırılmış koşu + emniyet payı.
+      if (yasSaat >= 36) cronDeadDays = Math.floor(yasSaat / 24);
+    }
+  }
+  if (cronDeadDays != null) {
+    alerts.push({
+      key: "cron_not_firing",
+      severity: "kritik",
+      title: `Günlük senkron cron'u ${cronDeadDays} gündür hiç tetiklenmedi`,
+      hint:
+        "Bu, 'senkronda iş yoktu' DEĞİL: zamanlanmış iş hiç başlamadı, yani " +
+        "panel her gün bir önceki günün verisiyle açılıyor ve kaçan gün geriye " +
+        "dönük doldurulamıyor. Rota ve Etsy bağlantısı sağlam olabilir — elle " +
+        "tetiklemek veriyi tazeler ama SEBEBİ düzeltmez, ertesi gün yine durur. " +
+        "Vercel → proje → Settings → Cron Jobs'ta kaydın hâlâ kayıtlı ve etkin " +
+        "olduğunu doğrula (plan değişikliği ve vercel.json düzenlemeleri cron " +
+        "kayıtlarını düşürebilir).",
+      count: 1,
+      href: "/ayarlar/etsy",
+      actionLabel: "Senkronu elle tetikle",
+      costCents: null,
+    });
+  }
+
   // 9b) Veri tazeliği bekçisi — güncellenmeyen veri sessiz kalmasın.
   // Günlük senkron fotoğrafı 2+ gün eskiyse cron/senkron kırık demektir
   // (bağlantı sağlıklı görünse bile): grafikler ve karşılaştırmalar bayat
   // veriyle karar verdirir. Yalnız bağlı org'da anlamlı.
-  if (etsy.status === "connected") {
+  //
+  // Kök neden ZATEN biliniyorsa (cron hiç tetiklenmiyor) bu uyarı bastırılır:
+  // aynı arızayı iki kritik satırla anlatmak uyarı körlüğü üretir ve kullanıcı
+  // yanlış aksiyona (her gün elle tetikleme) yönlenir.
+  if (etsy.status === "connected" && cronDeadDays == null) {
     const snapDate = (lastShopSnapshot.data as { snapshot_date: string } | null)
       ?.snapshot_date;
     const snapAgeDays = snapDate

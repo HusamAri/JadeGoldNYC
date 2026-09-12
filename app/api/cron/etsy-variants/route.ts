@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { createAdminClient } from "@/lib/supabase/admin";
+import { recordCronRun } from "@/lib/cron-heartbeat";
 import { syncListingVariants } from "@/lib/etsy/variants";
 
 // Envanter gezme birden çok listing çağrısı yapar; süreyi uzat.
@@ -21,19 +22,29 @@ export async function GET(request: Request) {
   }
 
   const admin = createAdminClient();
-  const { data: conns } = await admin
-    .from("etsy_connection")
-    .select("org_id")
-    .eq("status", "connected");
 
-  const results: Record<string, unknown> = {};
-  for (const c of (conns ?? []) as { org_id: string }[]) {
-    try {
-      results[c.org_id] = await syncListingVariants(c.org_id, { budgetMs: 50_000 });
-    } catch (e) {
-      results[c.org_id] = { error: e instanceof Error ? e.message : "error" };
+  const report = await recordCronRun(admin, "/api/cron/etsy-variants", async () => {
+    const { data: conns, error } = await admin
+      .from("etsy_connection")
+      .select("org_id")
+      .eq("status", "connected");
+    if (error) throw new Error(`etsy_connection sorgusu: ${error.message}`);
+
+    const results: Record<string, unknown> = {};
+    const failed: string[] = [];
+    const rows = (conns ?? []) as { org_id: string }[];
+
+    for (const c of rows) {
+      try {
+        results[c.org_id] = await syncListingVariants(c.org_id, { budgetMs: 50_000 });
+      } catch (e) {
+        results[c.org_id] = { error: e instanceof Error ? e.message : "error" };
+        failed.push(c.org_id);
+      }
     }
-  }
 
-  return NextResponse.json({ ok: true, results });
+    return { targetCount: rows.length, results, failed };
+  });
+
+  return NextResponse.json(report, { status: report.ok ? 200 : 500 });
 }
