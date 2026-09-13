@@ -144,6 +144,29 @@ repodaki hedefidir.
   saatte bir satırla sınırla; (5) BAŞARISIZ son koşu, nabzın tazeliğini
   "sağlıklı" saydırmamalı — `ok=false` satırı yazılır yazılmaz alarmın susması,
   sessiz kusurun ta kendisi olurdu.
+  **Güçlendirme-2 (2026-09-13, aynı gün, ÜÇÜNCÜ tekrar) — SONA yazan bir ölçüm
+  kendi ölümünü kaydedemez:** `CRON_SECRET` eklendi, cron elle tetiklendi, auth
+  kapısı geçildi… ve tablo YİNE boş kaldı. Üçüncü kör nokta: nabız satırı
+  `await fn()` DÖNDÜKTEN sonra yazılıyordu, fonksiyon ise 60 sn'lik Vercel
+  limitinde `504 Task timed out` ile ÖLDÜRÜLDÜ — insert satırına hiç sıra gelmedi.
+  Yani "hiç tetiklenmedi" ile "tetiklendi ve yarıda kesildi" üçüncü kez aynı
+  göründü. Çözüm: koşu BAŞLARKEN `finished_at = NULL` satırı yaz, bitişte onu
+  UPDATE et; `finished_at IS NULL` + eski `started_at` = "başladı, bitmedi".
+  Kural: bir ölçüm noktasını yerleştirirken "işlem buraya VARAMADAN ölürse geriye
+  ne kalır?" diye sor — tek yazım anı sondaysa cevap "hiçbir şey"dir; başlangıç
+  ve kapanış AYRI iki yazım olmalı. **Timeout'un sebebi ise bütçe aritmetiğiydi:**
+  rota her org'a `50_000 ms` veriyordu ama `maxDuration` fonksiyonun TAMAMI için
+  60 sn — üç bağlı org varken ilki bütçeyi tek başına yiyor, ikincisi yarıda
+  kesiliyor, üçüncüsüne (Ophir) HİÇ sıra gelmiyordu; sıra sabit olduğu için de
+  hep AYNI org aç kalıyordu. Kural: (a) çok hedefli zamanlanmış işte bütçe hedef
+  başına değil KOŞU başına verilir, kalan süre paylaştırılır; (b) kalan süre bir
+  hedefe yetmiyorsa yeni iş BAŞLATILMAZ (yarıda kesilen çağrı 504 üretir ve
+  kapanış kaydını da götürür), ertelenir; (c) sıra en bayat hedeften başlar
+  (`last_sync_at` artan) — erteleme adil olur, kalıcı açlık imkânsızlaşır;
+  (d) `targetCount` ERTELENENLERİ saymaz, yoksa "sıfır hedef" kapısı ertelemeyi
+  iş sanıp yeşil gösterir. Yan not: 504 "hiçbir şey olmadı" DEMEK DEĞİL — devam
+  ettirilebilir senkron olduğu için o koşuda Jade 3 Eylül'den 13 Eylül'e atlamıştı;
+  kısmi ilerlemeyi hata koduna bakarak değil VERİDEN doğrula.
 
 - **Bir oranı ölçerken PAYDANIN hangi kümeyi temsil ettiğini şemadan doğrula;
   mühür ve çapraz doğrulama yanlış girdiyi SADAKATLE mühürler (2026-08-27):**

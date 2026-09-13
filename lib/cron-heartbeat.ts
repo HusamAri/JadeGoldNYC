@@ -98,6 +98,30 @@ export interface CronRunReport extends CronRunOutcome {
 }
 
 /**
+ * PAYLAŞIMLI SÜRE BÜTÇESİ — org başına sabit bütçe, çok org'da fonksiyonu öldürür.
+ *
+ * Vaka (2026-09-13): rotalar her org için `advanceEtsySync(org, 50_000)` çağırıyordu
+ * ama `maxDuration` fonksiyonun TAMAMI için 60 sn. Üç bağlı org varken ilk org tek
+ * başına 50 sn yiyebiliyor, ikincisi başlıyor ve Vercel 60. saniyede işi 504 ile
+ * öldürüyor — üçüncü org'a hiç sıra gelmiyor. Sıra sabit olduğu için de hep AYNI
+ * org aç kalır (burada Ophir).
+ *
+ * İki kural birlikte çözer:
+ *   1. bütçe org başına değil KOŞU başına verilir ve kalan süre paylaştırılır,
+ *   2. sıra en BAYAT org'dan başlar (`last_sync_at` artan) — böylece aç kalan org
+ *      bir sonraki koşuda başa geçer, kalıcı açlık imkânsız olur.
+ */
+export function createBudget(totalMs: number) {
+  const deadline = Date.now() + totalMs;
+  return {
+    /** Kalan süre (ms); asla negatif dönmez. */
+    remainingMs: () => Math.max(0, deadline - Date.now()),
+    /** Yeni bir hedefe başlamak anlamlı mı? Kırıntı süreyle iş başlatma. */
+    hasRoomFor: (minMs: number) => deadline - Date.now() >= minMs,
+  };
+}
+
+/**
  * `fn`'i koşturur, sonucu `cron_run`'a yazar ve koşunun BAŞARILI SAYILIP
  * SAYILMADIĞINA karar verir.
  *
@@ -120,6 +144,25 @@ export async function recordCronRun(
 ): Promise<CronRunReport> {
   const startedAt = new Date().toISOString();
 
+  // BAŞLANGIÇ satırı — koşu bitmeden yazılır ve `finished_at` NULL bırakılır.
+  //
+  // Neden (vaka 2026-09-13, aynı kör noktanın ÜÇÜNCÜ tekrarı): nabzın ilk iki
+  // sürümü de satırı yalnız işin SONUNDA yazıyordu. `CRON_SECRET` düzelip
+  // senkron gerçekten koşunca fonksiyon 60 sn'lik Vercel limitine takıldı ve
+  // 504 ile ÖLDÜRÜLDÜ — yani `await fn()` hiç dönmedi, insert satırına sıra
+  // gelmedi ve tablo yine bomboş kaldı. "Hiç tetiklenmedi" ile "tetiklendi ve
+  // yarıda kesildi" bir kez daha aynı görünüyordu. Sona yazan bir ölçüm,
+  // kendi ölümünü kaydedemez.
+  //
+  // `finished_at IS NULL` + eski `started_at` = koşu başladı, bitmedi.
+  const { data: startRow, error: startErr } = await admin
+    .from("cron_run")
+    .insert({ job, started_at: startedAt, finished_at: null, ok: null })
+    .select("id")
+    .maybeSingle();
+  if (startErr) console.error(`[cron ${job}] başlangıç nabzı yazılamadı:`, startErr.message);
+  const runId = (startRow as { id: string } | null)?.id ?? null;
+
   let outcome: CronRunOutcome;
   let thrown: unknown = null;
   try {
@@ -138,14 +181,19 @@ export async function recordCronRun(
         : null;
   const ok = reason === null;
 
-  const { error } = await admin.from("cron_run").insert({
-    job,
-    started_at: startedAt,
+  const finish = {
     finished_at: new Date().toISOString(),
     ok,
     target_count: outcome.targetCount,
     detail: { results: outcome.results, reason },
-  });
+  };
+  // Başlangıç satırı yazılabildiyse onu KAPAT; yazılamadıysa tam satırı ekle
+  // (nabız hiç kaybolmasın).
+  const { error } = runId
+    ? await admin.from("cron_run").update(finish).eq("id", runId)
+    : await admin
+        .from("cron_run")
+        .insert({ job, started_at: startedAt, ...finish });
   // Nabız yazılamadıysa iş yine de raporlanır; yalnız ölçüm kaybolur.
   if (error) console.error(`[cron ${job}] nabız yazılamadı:`, error.message);
 
