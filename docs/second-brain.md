@@ -161,8 +161,20 @@ repodaki hedefidir.
   hep AYNI org aç kalıyordu. Kural: (a) çok hedefli zamanlanmış işte bütçe hedef
   başına değil KOŞU başına verilir, kalan süre paylaştırılır; (b) kalan süre bir
   hedefe yetmiyorsa yeni iş BAŞLATILMAZ (yarıda kesilen çağrı 504 üretir ve
-  kapanış kaydını da götürür), ertelenir; (c) sıra en bayat hedeften başlar
-  (`last_sync_at` artan) — erteleme adil olur, kalıcı açlık imkânsızlaşır;
+  kapanış kaydını da götürür), ertelenir; (c) sıra en bayat hedeften başlar —
+  ama BAYATLIK ANAHTARINI ŞEMADAN SEÇ: ilk denememde `last_sync_at` kullandım ve
+  düzeltme İŞE YARAMADI. O alan koşunun BAŞLADIĞI anı damgalıyor, verinin
+  tazeliğini değil; 504 ile ölen koşu sıra kendisine gelmeden Ophir'in damgasını
+  ilerletmişti, yani verisi 29 Ağustos'ta kalmış org "az önce senkronlandı"
+  görünüp yine sona düştü ve açlık sürdü. Doğru sinyal İŞ DURUMUydu: devam
+  ettirilebilir senkron yarıda kesilince org `sync_status='running'` kalır
+  (Ophir: phase `listings_all`) — yarım iş ÖNCE bitirilir, sonra en bayat
+  ilerleme (`sync_updated_at`). Genel kural: "en bayat" sıralaması kurarken
+  alanın ADINA güvenme, NE ZAMAN yazıldığını koddan/veriden doğrula — `last_*`
+  alanları çoğu zaman "denendi" demektir, "başarıldı" değil. Yakalatan şey yeni
+  nabzın kendisiydi: koşu `1 işlendi, 2 ertelendi` diye raporladı ve işlenenin
+  Ophir değil Jade olduğu oradan görüldü — ölçüm kurmanın ilk getirisi, kendi
+  düzeltmenin yanlış olduğunu göstermesidir;
   (d) `targetCount` ERTELENENLERİ saymaz, yoksa "sıfır hedef" kapısı ertelemeyi
   iş sanıp yeşil gösterir. Yan not: 504 "hiçbir şey olmadı" DEMEK DEĞİL — devam
   ettirilebilir senkron olduğu için o koşuda Jade 3 Eylül'den 13 Eylül'e atlamıştı;
