@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 
 import { requireMembership } from "@/lib/auth";
-import { isEonActive } from "@/lib/brand";
 import { createClient } from "@/lib/supabase/server";
 import { getListingDetail } from "@/lib/db/queries/listings";
 import { getGoldSettings } from "@/lib/db/queries/gold-settings";
@@ -106,7 +105,7 @@ export default async function ListingDetayPage({
   // Ayar SENKRON tespit edilir (detectKarat await'siz) → 18K spot fetch'i de
   // aşağıdaki tek Promise.all'a girebilir. `detail` bilindikten sonra bu yedi
   // veri birbirinden BAĞIMSIZ; eskiden sırayla await ediliyordu (~6 tur), artık
-  // tek turda paralel. Yalnız managedImages `eon` sonucuna bağlı (EON-only 2. tur).
+  // tek turda paralel.
   const simKarat = detectKarat(product.title, product.tags, product.materials);
   const etsyListingId = product.etsy_listing_id;
   const [
@@ -115,7 +114,6 @@ export default async function ListingDetayPage({
     goldOunce,
     images,
     viewsTrendMap,
-    eon,
     writeAccess,
   ] = await Promise.all([
     getGoldSettings(),
@@ -129,8 +127,6 @@ export default async function ListingDetayPage({
     etsyListingId != null
       ? getListingViewsTrends(m.org_id, [etsyListingId])
       : Promise.resolve(new Map<number, ListingViewsTrend>()),
-    // EON'a özel: panelden yönetilen çoklu görsel galerisi.
-    isEonActive(),
     // Fiyat itiş butonu için Etsy yazma izni.
     getEtsyWriteAccess(m.org_id),
   ]);
@@ -173,11 +169,15 @@ export default async function ListingDetayPage({
   const viewsTrend =
     etsyListingId != null ? (viewsTrendMap.get(etsyListingId) ?? null) : null;
 
-  let managedImages: ManagedListingImage[] = [];
-  if (eon) {
-    const supabase = await createClient();
-    managedImages = await listListingImages(supabase, product.id);
-  }
+  // Panelden yönetilen galeri. Eskiden bu blok `isEonActive()` kapısının
+  // arkasındaydı ve diğer markalarda galeri hiç görünmüyordu; Etsy fotoğrafsız
+  // listing yayınlatmadığı için o org'larda push da yapılamıyordu. Sahiplik
+  // RLS ile zaten sağlanıyor.
+  const supabase = await createClient();
+  const managedImages: ManagedListingImage[] = await listListingImages(
+    supabase,
+    product.id,
+  );
 
   const status = product.status
     ? (STATUS_LABELS[product.status] ?? {
@@ -255,7 +255,7 @@ export default async function ListingDetayPage({
         />
       </ListingPanel>
 
-      {eon && (
+      {(
         <ListingPanel
           id="gorsel-yonetimi"
           n="01B"
@@ -263,8 +263,8 @@ export default async function ListingDetayPage({
           defaultOpen={false}
           tail={
             managedImages.length > 0
-              ? `EON · ${managedImages.length} görsel`
-              : "EON · Drive/yükleme"
+              ? `${managedImages.length} görsel`
+              : "Drive/yükleme"
           }
         >
           <ListingImageManager

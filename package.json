@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test:ophir-sku": "tsx --test tests/ophir-sku.test.ts"
+    "test:ophir-sku": "tsx --test tests/ophir-sku.test.ts",
+    "test:listing-protocol": "tsx --test tests/listing-protocol.test.ts"
   },
   "dependencies": {
     "@ai-sdk/google": "^2.0.78",

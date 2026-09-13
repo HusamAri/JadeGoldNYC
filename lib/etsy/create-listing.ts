@@ -5,7 +5,11 @@ import { etsyPaths } from "@/lib/etsy/endpoints";
 import { asEtsyProperties, type RawVariantProperties } from "@/lib/variant-properties";
 import { stripImageMetadata } from "@/lib/photo-kit/strip-metadata";
 import { logAudit } from "@/lib/audit";
-import { DEFAULT_PERSONALIZATION_QUESTIONS } from "@/lib/etsy/personalization";
+import {
+  resolveListingProtocol,
+  unknownProtocolError,
+  type ListingProtocolSpec,
+} from "@/lib/etsy/listing-protocol";
 
 /**
  * PANEL TASLAĞI → ETSY DRAFT LISTING.
@@ -31,12 +35,15 @@ import { DEFAULT_PERSONALIZATION_QUESTIONS } from "@/lib/etsy/personalization";
  *  A. Zorunlu alan sabitleri (kullanıcı onayı): who_made="i_did"
  *     (ortak Yasin mağaza üyesi), when_made="made_to_order", is_supply="false",
  *     type="physical", state="draft".
- *  B. taxonomy_id: "Wedding Bands" düğümü ağaçtan çözülür (yoksa "Rings").
- *     Canlıda taksonomi adı değişmişse veya ağaç şekli farklıysa çözüm boş
- *     dönebilir → o durumda create adımı "Etsy kategorisi çözülemedi" ile durur.
- *  C. Kişiselleştirme: is_personalizable=true, required=false, max=30 char.
- *     Bant alyanslarında bu iç gravür talimatıdır; Etsy 30 char'ı aşan talebi
- *     reddeder.
+ *  B. taxonomy_id, varyasyon eksenleri, kişiselleştirme ve koli ölçüleri
+ *     ARTIK SABİT DEĞİL: hepsi `lib/etsy/listing-protocol.ts` içindeki listing
+ *     protokolünden gelir ve protokol ürünün `product_type` / `listing_metadata
+ *     .listingProtocol` alanından çözülür. Bu dosya bir zamanlar akışın
+ *     tamamını alyans şekline sabitliyordu (taksonomi "Wedding Bands", eksen
+ *     doğrulayıcısına elle geçilen ["Wedding Bands"] yolu, koşulsuz gravür,
+ *     yüzük kutusu ölçüsü) — sonuç olarak yüzük olmayan HER taslak push'ta
+ *     "her varyant Width ve Ring Size içermelidir" hatasına çarpıyordu.
+ *     Tanınmayan ürün tipi sessizce yüzük sayılmaz, net hatayla durur.
  *  D. Varyasyon eşleme: Etsy en fazla 2 custom variation ekseni kabul eder →
  *     DEĞİŞEN ilk 2 property slot 513/514'e; 2'den fazla değişen varsa (nadir)
  *     kalanı açıklamaya not düşülür (canlıda uyarı olarak döneriz).
@@ -56,23 +63,6 @@ import { DEFAULT_PERSONALIZATION_QUESTIONS } from "@/lib/etsy/personalization";
 /** Etsy custom variation slot id'leri (en fazla iki eksen). */
 const CUSTOM_SLOT_IDS = [513, 514] as const;
 
-/**
- * Kargo paketi ölçüleri — yüzük kutusu + koruyucu zarf (kullanıcı kararı).
- * Etsy hesaplı (calculated) kargo profili listing'de item_weight + boyut ŞART
- * koşar (yoksa create 400). Bu değerler listing'e yazılınca create her profil
- * tipiyle çalışır. Kargo bedeli fiyata gömülü (free shipping) olduğundan bu
- * ölçüler yalnız Etsy'nin zorunlu alanını doldurur; ABD ücretsiz kalır.
- * Tüm yüzükler için sabit: hafif altın yüzük + sunum kutusu + kabarcıklı zarf.
- */
-const PARCEL = {
-  weight: 3,
-  weight_unit: "oz",
-  length: 4,
-  width: 4,
-  height: 2,
-  dimensions_unit: "in",
-} as const;
-
 /** Açıklamanın sonundaki dahili not bloğunu söker: "\n\n---\n[EON NN · ...]".
  *  scripts/eon-push-drafts.ts stripInternalTrailer ile BİREBİR aynı desen. */
 export function stripInternalTrailer(desc: string): string {
@@ -85,41 +75,85 @@ interface TaxNode {
   children?: TaxNode[];
 }
 
+/** Ağaçta ada göre TÜM eşleşmeler, her biri kök adıyla birlikte. */
+function findTaxonomyMatches(
+  nodes: TaxNode[],
+  name: string,
+): { node: TaxNode; root: string }[] {
+  const target = normalizedTaxonomyName(name);
+  const out: { node: TaxNode; root: string }[] = [];
+  const walk = (node: TaxNode, root: string) => {
+    if (normalizedTaxonomyName(node.name) === target) out.push({ node, root });
+    for (const child of node.children ?? []) walk(child, root);
+  };
+  for (const node of nodes) walk(node, node.name);
+  return out;
+}
+
 function normalizedTaxonomyName(value: string): string {
   return value.trim().toLocaleLowerCase("en-US");
 }
 
-/** Taksonomi ağacında ada göre BFS (en sığ eşleşme). */
-function findTaxonomyNode(nodes: TaxNode[], name: string): TaxNode | null {
-  const queue = [...nodes];
-  while (queue.length) {
-    const n = queue.shift()!;
-    if (n.name.toLowerCase() === name.toLowerCase()) return n;
-    if (n.children) queue.push(...n.children);
-  }
-  return null;
+// Taksonomi id'si oturum içinde sabittir — modül-cache.
+// Anahtar protokol id'si DEĞİL, çözümü belirleyen ALANLARIN tamamıdır: aynı id
+// altında kök iddiası veya aday listesi farklı bir spec, farklı bir düğüme
+// çözülür ve yalnız id ile anahtarlamak birinin sonucunu diğerine servis eder.
+const cachedTaxonomyIdBySpec = new Map<string, number>();
+
+function taxonomyCacheKey(spec: ListingProtocolSpec): string {
+  return `${spec.id}|${spec.taxonomyRoot ?? ""}|${spec.taxonomyNames.join(",")}`;
 }
 
-// Taksonomi id'si oturum içinde sabittir — modül-cache ile tekrar çözülmez.
-let cachedWeddingBandTaxonomyId: number | null = null;
+/** Çözüm sonucu: id, ya da NEDEN çözülemediğini söyleyen hata. */
+export type TaxonomyResolution =
+  | { ok: true; taxonomyId: number }
+  | { ok: false; error: string };
 
 /**
- * "Wedding Bands" taksonomi id'sini çözer (yoksa "Rings"). Modül-cache'li.
- * Bulunamazsa null döner (çağıran adımı anlaşılır hata ile durdurur).
+ * Protokolün taksonomi id'sini çözer. Adaylar tercih sırasında denenir.
+ *
+ * `taxonomyRoot` verilmişse eşleşmeler o köke filtrelenir ve geriye BİRDEN
+ * ÇOK aday kalırsa hata döner — sessizce ilkini seçmek, listing'i yanlış
+ * dikeye dosyalar ve kimse fark etmez ("Pendant Necklaces" Etsy ağacında hem
+ * `Jewelry > Necklaces` hem `Weddings > Jewelry` altında var).
  */
-export async function resolveWeddingBandTaxonomyId(
+export async function resolveTaxonomyIdForProtocol(
   client: EtsyClient,
-): Promise<number | null> {
-  if (cachedWeddingBandTaxonomyId != null) return cachedWeddingBandTaxonomyId;
+  spec: ListingProtocolSpec,
+): Promise<TaxonomyResolution> {
+  const cacheKey = taxonomyCacheKey(spec);
+  const cached = cachedTaxonomyIdBySpec.get(cacheKey);
+  if (cached != null) return { ok: true, taxonomyId: cached };
+
   const tax = await client.get<{ results: TaxNode[] }>(
     etsyPaths.sellerTaxonomyNodes(),
   );
   const nodes = tax.results ?? [];
-  const node =
-    findTaxonomyNode(nodes, "Wedding Bands") ?? findTaxonomyNode(nodes, "Rings");
-  if (!node) return null;
-  cachedWeddingBandTaxonomyId = node.id;
-  return node.id;
+
+  for (const name of spec.taxonomyNames) {
+    let matches = findTaxonomyMatches(nodes, name);
+    if (spec.taxonomyRoot) {
+      const root = normalizedTaxonomyName(spec.taxonomyRoot);
+      matches = matches.filter((m) => normalizedTaxonomyName(m.root) === root);
+    }
+    if (matches.length === 1) {
+      const id = matches[0].node.id;
+      cachedTaxonomyIdBySpec.set(cacheKey, id);
+      return { ok: true, taxonomyId: id };
+    }
+    if (matches.length > 1) {
+      const roots = [...new Set(matches.map((m) => m.root))].join(", ");
+      return {
+        ok: false,
+        error: `Etsy kategorisi belirsiz: "${name}" ağaçta ${matches.length} yerde bulundu (kökler: ${roots}). Yanlış dala dosyalamamak için işlem durduruldu.`,
+      };
+    }
+  }
+
+  return {
+    ok: false,
+    error: `Etsy kategorisi çözülemedi (${spec.label}: ${spec.taxonomyNames.join(" / ")}${spec.taxonomyRoot ? `, kök: ${spec.taxonomyRoot}` : ""} bulunamadı).`,
+  };
 }
 
 export interface ShopProfiles {
@@ -253,6 +287,12 @@ export interface DraftProduct {
    *  listing tek/hiç görselle açılırdı. */
   galleryUrls: string[];
   variants: DraftVariant[];
+  /** Listing protokolünü çözer (taksonomi, eksen, gravür, koli). NULL olan
+   *  eski kayıtlar bilinçli olarak eski alyans davranışına düşer —
+   *  bkz. lib/etsy/listing-protocol.ts karar 2. */
+  product_type?: string | null;
+  /** `listingProtocol` açık beyanı buradan okunur (product_type'ı ezer). */
+  listing_metadata?: { listingProtocol?: unknown } | null;
 }
 
 /** Etsy listing başına kabul ettiği en fazla fotoğraf sayısı. */
@@ -337,45 +377,51 @@ function buildVariationPlan(variants: DraftVariant[]): VariationPlan {
   };
 }
 
-function isWeddingBandTaxonomy(sellerPath: string[]): boolean {
-  return sellerPath.some(
-    (part) => normalizedTaxonomyName(part) === "wedding bands",
-  );
-}
-
-export function validateWeddingBandVariationAxes(
-  sellerPath: string[],
+/**
+ * Protokolün dayattığı varyasyon eksenlerini doğrular.
+ *
+ * ÖNCESİ: bu fonksiyon `validateWeddingBandVariationAxes(sellerPath, variants)`
+ * idi ve çağıran `sellerPath`'i `["Wedding Bands"]` diye ELLE geçiyordu — yani
+ * kapı ürün ne olursa olsun HER ZAMAN açılıyordu. Kolye, bileklik ve küpe
+ * taslakları bu yüzden "her varyant Width ve Ring Size içermelidir" hatasına
+ * çarpıyordu. Artık eksenler protokolden gelir ve eksen listesi boşsa kapı hiç
+ * çalışmaz.
+ */
+export function validateVariationAxes(
+  spec: ListingProtocolSpec,
   variants: DraftVariant[],
 ): string | null {
-  if (!isWeddingBandTaxonomy(sellerPath)) return null;
+  const required = spec.requiredVariationAxes;
+  if (required.length === 0) return null;
+  const normalizedRequired = required.map(normalizedTaxonomyName);
+
   if (variants.length === 0) {
-    return "Wedding band listinglerinde Width ve Ring Size varyantları zorunludur.";
+    return `${spec.label} listinglerinde ${required.join(" ve ")} varyantları zorunludur.`;
   }
   const maps = variants.map(variantPropMap);
-  const requiredNames = ["width", "ring size"] as const;
-  const everyVariantHasBoth = maps.every((map) =>
-    requiredNames.every((name) =>
+  const everyVariantHasAll = maps.every((map) =>
+    normalizedRequired.every((name) =>
       [...map.keys()].some((key) => normalizedTaxonomyName(key) === name),
     ),
   );
-  if (!everyVariantHasBoth) {
-    return "Wedding band listinglerinde her varyant Width ve Ring Size içermelidir.";
+  if (!everyVariantHasAll) {
+    return `${spec.label} listinglerinde her varyant ${required.join(" ve ")} içermelidir.`;
   }
-  for (const requiredName of requiredNames) {
+  for (let i = 0; i < required.length; i += 1) {
     const values = new Set(
       maps.flatMap((map) =>
         [...map.entries()]
-          .filter(([name]) => normalizedTaxonomyName(name) === requiredName)
+          .filter(([name]) => normalizedTaxonomyName(name) === normalizedRequired[i])
           .map(([, value]) => value),
       ),
     );
     if (values.size < 2) {
-      const label = requiredName === "width" ? "Width" : "Ring Size";
-      return `Wedding band listinglerinde ${label} gerçek bir varyasyon ekseni olmalıdır.`;
+      return `${spec.label} listinglerinde ${required[i]} gerçek bir varyasyon ekseni olmalıdır.`;
     }
   }
   return null;
 }
+
 
 /** Sabit + overflow property'leri açıklama sonuna okunur not olarak ekler. */
 function appendConstantsToDescription(
@@ -421,16 +467,15 @@ export async function createDraftListingFromProduct(
       error: `SKU 32 karakteri aşamaz: ${overlongSku.sku}`,
     };
   }
-  const weddingBandVariationError = validateWeddingBandVariationAxes(
-    ["Wedding Bands"],
-    variants,
-  );
-  if (weddingBandVariationError) {
-    return {
-      ok: false,
-      step: "validation",
-      error: weddingBandVariationError,
-    };
+  // ÜRÜN TİPİ KAPISI — akışın geri kalanı bu protokole göre kurulur.
+  // Tanınmayan tip sessizce yüzük sayılmaz; net hatayla durur.
+  const protocol = resolveListingProtocol(product);
+  if (!protocol) {
+    return { ok: false, step: "validation", error: unknownProtocolError(product) };
+  }
+  const variationError = validateVariationAxes(protocol, variants);
+  if (variationError) {
+    return { ok: false, step: "validation", error: variationError };
   }
 
   // Fiyat çapası: en düşük varyant fiyatı; varyant yoksa ürün fiyatı.
@@ -499,9 +544,13 @@ export async function createDraftListingFromProduct(
   const finalDesc = appendConstantsToDescription(cleanDesc, plan);
 
   // Taksonomi çöz.
-  let taxonomyId: number | null;
+  let taxonomyId: number;
   try {
-    taxonomyId = await resolveWeddingBandTaxonomyId(client);
+    const resolved = await resolveTaxonomyIdForProtocol(client, protocol);
+    if (!resolved.ok) {
+      return { ok: false, step: "create", error: resolved.error };
+    }
+    taxonomyId = resolved.taxonomyId;
   } catch (e) {
     return {
       ok: false,
@@ -509,14 +558,6 @@ export async function createDraftListingFromProduct(
       error: `Etsy kategorisi okunamadı: ${e instanceof Error ? e.message : String(e)}`,
     };
   }
-  if (taxonomyId == null) {
-    return {
-      ok: false,
-      step: "create",
-      error: "Etsy kategorisi çözülemedi (Wedding Bands/Rings bulunamadı).",
-    };
-  }
-
   // Profiller (kargo + iade).
   let profiles: ShopProfiles;
   try {
@@ -568,12 +609,12 @@ export async function createDraftListingFromProduct(
       readiness_state_id: profiles.readinessStateId,
       // Paket ağırlık + boyut (yüzük kutusu) — hesaplı profil bunları şart
       // koşar; free shipping'te fiyata gömülü olduğundan alıcıya yansımaz.
-      item_weight: PARCEL.weight,
-      item_weight_unit: PARCEL.weight_unit,
-      item_length: PARCEL.length,
-      item_width: PARCEL.width,
-      item_height: PARCEL.height,
-      item_dimensions_unit: PARCEL.dimensions_unit,
+      item_weight: protocol.parcel.weight,
+      item_weight_unit: protocol.parcel.weight_unit,
+      item_length: protocol.parcel.length,
+      item_width: protocol.parcel.width,
+      item_height: protocol.parcel.height,
+      item_dimensions_unit: protocol.parcel.dimensions_unit,
       tags: tags.join(","),
       materials: materials.join(","),
       // NOT: legacy is_personalizable/personalization_* alanları Etsy 2025'te
@@ -599,24 +640,26 @@ export async function createDraftListingFromProduct(
   const url = `https://www.etsy.com/listing/${listingId}`;
 
   // ── 1b) Kişiselleştirme — 2025 migrasyonu: legacy create alanları yerine
-  // ayrı uç. İKİ soru (gravür metni + Engraving Style dropdown), kataloğun
-  // geri kalanıyla aynı (bkz. DEFAULT_PERSONALIZATION_QUESTIONS). Başarısız
-  // olursa listing yaşar; uyarı eklenir, alanlar Etsy'de elle ya da listing
-  // sayfasındaki "Tüm listing'lere uygula" ile tamamlanır.
-  try {
-    await client.request(
-      "POST",
-      etsyPaths.listingPersonalization(shopId, listingId) +
-        "?supports_multiple_personalization_questions=true",
-      { personalization_questions: DEFAULT_PERSONALIZATION_QUESTIONS },
-    );
-  } catch (e) {
-    warnings.push(
-      `Kişiselleştirme (gravür + yazı stili) eklenemedi: ${
-        e instanceof Error ? e.message : String(e)
-      }. Listing açıldı; alanları Etsy'de elle ekleyebilir veya listing ` +
-        `sayfasındaki kişiselleştirme kartından kopyalayabilirsiniz.`,
-    );
+  // ayrı uç. PROTOKOLE BAĞLI: alyansta iki soru (iç gravür metni + yazı stili),
+  // kolyede kişiselleştirme YOK ve uç hiç çağrılmaz. Alyansın 30 karakterlik
+  // gravür sorusunu kolyeye taşımak, sunulmayan bir hizmeti vaat etmek olurdu.
+  // Başarısız olursa listing yaşar; uyarı eklenir.
+  if (protocol.personalization) {
+    try {
+      await client.request(
+        "POST",
+        etsyPaths.listingPersonalization(shopId, listingId) +
+          "?supports_multiple_personalization_questions=true",
+        { personalization_questions: protocol.personalization },
+      );
+    } catch (e) {
+      warnings.push(
+        `Kişiselleştirme (gravür + yazı stili) eklenemedi: ${
+          e instanceof Error ? e.message : String(e)
+        }. Listing açıldı; alanları Etsy'de elle ekleyebilir veya listing ` +
+          `sayfasındaki kişiselleştirme kartından kopyalayabilirsiniz.`,
+      );
+    }
   }
 
   // ── 2) Envanter PUT (yalnız gerçek varyasyon varsa). ──────────────────────

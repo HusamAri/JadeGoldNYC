@@ -3,7 +3,6 @@
 import { revalidatePath } from "next/cache";
 
 import { requireMembership, getUser } from "@/lib/auth";
-import { isEonActive } from "@/lib/brand";
 import { createClient } from "@/lib/supabase/server";
 import {
   listingImageReorderSchema,
@@ -17,12 +16,21 @@ export interface ListingImageResult {
 
 const MAX_IMAGE_BYTES = 15 * 1024 * 1024; // 15 MB
 const BUCKET = "listing-images";
-const EON_ONLY_ERROR =
-  "Görsel yönetimi yalnız EON markası aktifken kullanılabilir.";
 
 const listingPath = (productId: string) => `/tasarimlar/listing/${productId}`;
 
-/** EON geçidi + ürünün çağıranın org'unda olduğunu doğrular. */
+/**
+ * Ürünün çağıranın org'unda olduğunu doğrular.
+ *
+ * ÖNCESİ burada bir `isEonActive()` kapısı vardı ("Görsel yönetimi yalnız EON
+ * markası aktifken kullanılabilir"). Özellik EON için yazıldığı gün doğruydu,
+ * ama panel çok kiracılı hale geldiğinde marka adına sabitlenmiş bir kapı
+ * olarak kaldı ve diğer org'ların galerisini tamamen kilitledi — Etsy'ye
+ * fotoğrafsız listing gönderilemediği için push da imkânsız hale geliyordu.
+ * Vaka 2026-09-13: `by Artifact Studio Jewelry`. Sahiplik zaten RLS ile
+ * sağlanıyor (aşağıdaki SELECT yalnız kendi org'unun ürününü döndürür), yani
+ * marka kapısı güvenlik değil yalnız kısıt üretiyordu.
+ */
 async function guard(
   productId: string,
 ): Promise<
@@ -30,7 +38,6 @@ async function guard(
   | { ok: false; error: string }
 > {
   const m = await requireMembership();
-  if (!(await isEonActive())) return { ok: false, error: EON_ONLY_ERROR };
   const supabase = await createClient();
   // RLS SELECT yalnız kendi org'unu döndürür → sahiplik doğrulaması.
   const { data: product } = await supabase

@@ -125,7 +125,7 @@ export async function GET(request: Request) {
     const { data: pData, error: pErr } = await admin
       .from("products")
       .select(
-        "id, org_id, etsy_listing_id, title, description, tags, materials, price_cents, quantity, image_url",
+        "id, org_id, etsy_listing_id, title, description, tags, materials, price_cents, quantity, image_url, product_type, listing_metadata",
       )
       .eq("org_id", org.id)
       .eq("sku", sku)

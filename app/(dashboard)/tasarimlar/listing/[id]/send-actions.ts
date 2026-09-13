@@ -44,7 +44,7 @@ export async function sendListingToEtsy(
   const { data: pData, error: pErr } = await admin
     .from("products")
     .select(
-      "id, org_id, etsy_listing_id, title, description, tags, materials, price_cents, quantity, image_url",
+      "id, org_id, etsy_listing_id, title, description, tags, materials, price_cents, quantity, image_url, product_type, listing_metadata",
     )
     .eq("id", productId)
     .eq("org_id", m.org_id)
