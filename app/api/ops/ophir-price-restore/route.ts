@@ -14,6 +14,7 @@ import {
   type OphirRestorePreviewProof,
 } from "@/lib/ophir-price-restore-runtime";
 import { OPHIR_PRICE_RESTORE_WINDOW, type OphirPriceRestorePlan } from "@/lib/ophir-price-restore-plan";
+import { PinnedMemoryCache } from "@/lib/pinned-memory-cache";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -23,6 +24,17 @@ const PATH = "/api/ops/ophir-price-restore";
 const MAX_LISTINGS = 5;
 const MAX_BODY_BYTES = 32_000;
 const HASH = /^[0-9a-f]{64}$/;
+const CACHEABLE_PLAN_HASH = "97ff79e7959c85d19ac322962bc565b6f4304d84ff7b189aafa9994f372e1494";
+const historicalPlanCache = new PinnedMemoryCache<OphirPriceRestorePlan>({
+  ttlMs: 5 * 60_000, maxKeys: 2,
+  accept: (plan) => plan.manifestHash === CACHEABLE_PLAN_HASH && plan.manifest.length === 32_707 &&
+    plan.productAnchors.length === 81 && plan.listingGroups.length === 92,
+});
+function historicalPlan(client: SupabaseClient, orgId: string) {
+  // Only the already reviewed immutable August29 plan is cached; current prices are never cached.
+  if (EXPECTED_OPHIR_RESTORE_MANIFEST_HASH !== CACHEABLE_PLAN_HASH) return loadOphirRestorePlan(client, orgId);
+  return historicalPlanCache.get(orgId, () => loadOphirRestorePlan(client, orgId));
+}
 const HEADERS = {
   "Cache-Control": "private, no-store",
   Vary: "Cookie",
@@ -146,7 +158,7 @@ export async function GET(request: Request) {
   if ("error" in access) return respond(request, { error: access.error }, access.status);
   const { client, orgId } = access;
   try {
-    const plan = await loadOphirRestorePlan(client, orgId);
+    const plan = await historicalPlan(client, orgId);
     if (new URL(request.url).searchParams.get("format") === "plan-html") return completePlanHtml(request, plan);
     const selected = new URL(request.url).searchParams.get("listing_ids") ?? undefined;
     const selectedIds = selected ? listingIds(selected, plan) : undefined;
@@ -180,7 +192,7 @@ export async function POST(request: Request) {
     if (mode !== "dry-run" && mode !== "apply") throw new OphirRestoreError("Choose an explicit dry-run or apply operation.");
     if (typeof fields.listing_ids !== "string") throw new OphirRestoreError("Explicit listing IDs are required.");
     selected = fields.listing_ids;
-    plan = await loadOphirRestorePlan(client, orgId);
+    plan = await historicalPlan(client, orgId);
     if (!HASH.test(EXPECTED_OPHIR_RESTORE_MANIFEST_HASH) || plan.manifestHash !== EXPECTED_OPHIR_RESTORE_MANIFEST_HASH || fields.plan_hash !== plan.manifestHash) {
       throw new OphirRestoreError("The pinned audit plan does not match this request. Restoration is locked.");
     }
