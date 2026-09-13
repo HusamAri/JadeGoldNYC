@@ -512,6 +512,103 @@ kapanmayacak. Bu durumda:
 
 ---
 
+## EK-5 (2026-09-13) — reklam odak planı (Etsy panelinde elle uygulanır)
+
+### Önce kısıt: bu panel üzerinden YAPILAMAZ, kanıtı burada
+
+Etsy Open API v3 canlı spec'i çekildi
+(`https://www.etsy.com/openapi/generated/oas/3.0.0.json`, 896 KB):
+
+- **76 uç var, reklam/kampanya/bütçe ucu YOK** (`advert|campaign|promot|/ads|budget|marketing` taraması boş döndü).
+- OAuth kapsamları: `address_r, email_r, listings_d, listings_r, listings_w,
+  shops_r, shops_w, transactions_r, transactions_w` — reklamla ilgili kapsam yok.
+
+Yani Etsy Ads listing seçimi **yalnız satıcı panelinden** yapılır. Aşağıdaki
+liste, Etsy'de hangi listing'in açık/kapalı olacağını söyleyen karar tablosudur.
+
+### Karar ölçütü: "kaç tık'a kadar bu listing kârlı?"
+
+Reklam öncesi katkı **%27**, ölçülen tık başı maliyet **$0,97** (434 tık /
+$419,61). Bir siparişin karşılayabileceği tık sayısı:
+
+```
+tık bütçesi = (brüt × 0,75 × 0,27) / 0,97
+gereken dönüşüm = 1 / tık bütçesi
+```
+
+Mağazanın **ölçülen** tık→sipariş dönüşümü **%0,46** (2 sipariş / 434 tık),
+yani ~217 tık/sipariş. Bir listing ancak **217 tık'ı karşılayabiliyorsa** bugünkü
+dönüşümle kâr eder.
+
+| Listing | Sip. | Katkı/sipariş | Tık bütçesi | Gereken dönüşüm | Karar |
+|---|---|---|---|---|---|
+| `4565352791` 18K Satin Diamond Cut | 1 | **$803,93** | **831** | **%0,12** | **AÇ** |
+| `4556710904` Greek Key 10K YG | 1 | $219,71 | 227 | %0,44 | **AÇ** |
+| `4554025310` 14K Satin Center YG | 3 | $201,49 | 208 | %0,48 | **AÇ** (sınırda) |
+| `4543442596` Hammered 10K | 1 | $184,28 | 191 | %0,52 | sınırda |
+| `4542485142` 14K Milgrain WG | 2 | $180,23 | 186 | %0,54 | sınırda |
+| `4539666999` Dome 10K WG | 3 | $151,74 | 157 | %0,64 | KAPAT |
+| `4554014095` 10K Satin Center YG | 2 | $149,85 | 155 | %0,65 | KAPAT |
+| `4554024684` 10K Satin Rose | 1 | $147,83 | 153 | %0,65 | KAPAT |
+| `4539780408` Flat 10K WG | 2 | $110,87 | 115 | %0,87 | KAPAT |
+| `4539777986` Flat 10K YG | 4 | $109,10 | 113 | %0,89 | KAPAT |
+| `4539493533` Milgrain 10K Rose | 1 | $66,83 | 69 | %1,45 | KAPAT |
+| `4539764153` Dome 10K YG | 2 | $45,06 | 47 | **%2,15** | KAPAT |
+
+Alt sıradakiler mağazanın hiç göstermediği dönüşümleri gerektiriyor. En uçta
+Dome 10K YG: kârlı olması için **%2,15** tık dönüşümü gerekiyor, mağaza %0,46'da.
+
+> **`4539777986` neden kapatılıyor?** Sipariş sayısında birinci (4 sipariş) ve
+> bu ilk bakışta çelişkili görünür. Ama ortalama sipariş bedeli $539, yani
+> reklamla getirilen her sipariş ancak 113 tık'ı karşılıyor. **Reklamı kapatmak
+> organik trafiği kapatmaz** — o listing organik olarak satmaya devam eder;
+> yalnız *ödenmiş* tık almayı bırakır.
+
+### Ayrıca AÇ: yüksek bedelli, trafiği olan ama henüz satmamışlar
+
+Bunlar kanıtlanmamış, ama tık bütçeleri yüksek olduğu için hata payı geniş:
+
+| Listing | Vitrin fiyatı | 17 gün görüntülenme |
+|---|---|---|
+| `4548151075` Basketweave 10K | $920 | 70 |
+| `4550516268` Two Tone 10K | $755 | 42 |
+| `4560186803` Satin Beveled 10K | $700 | 88 |
+| `4554025048` 14K White Satin | $670 | 58 |
+
+### Üretim sorunu çözülünce geri aç
+
+| `4561855998` Kinetic Bead Ring | katkı/sipariş **$228,83** → 236 tık, gereken dönüşüm %0,41 |
+|---|---|
+| `4562238351` 3ct Oval Lab-Grown | vitrin $2.310, tık bütçesi en yüksek ikinci grup |
+
+Kinetic hem ölçütü geçiyor hem mağazanın en çok trafik alan listing'iydi —
+üretim düzelir düzelmez reklamda ilk sıraya girmeli.
+
+### Uygulama (Etsy'de)
+
+`Shop Manager → Marketing → Etsy Ads → Advertised listings`. Tablodaki **AÇ**
+satırlarını aç, **KAPAT** satırlarını kapat. Günlük bütçeye dokunma ($25 kalsın):
+liste daraldığı için harcama zaten kendiliğinden düşük seyredecek, Etsy yalnız
+harcayabildiğini faturalıyor.
+
+### Ne zaman bakılır, neye bakılır
+
+30 gün sonra CSV'yi yine yükle. Ölçüt ROAS **3,70**: üstündeyse odak işe yaradı,
+altındaysa reklam bu mağaza için yapısal olarak marjinal demektir ve bütçe
+sıfırlanmalı.
+
+> **Bu planın zayıf noktası, açıkça:** Etsy'nin günlük CSV'si mağaza geneli —
+> **listing kırılımı yok**, dolayısıyla listing başına reklam dönüşümü
+> ÖLÇÜLEMİYOR. Yukarıdaki tablo tık bütçesini (aritmetik, kesin) gerçek
+> dönüşümle değil **mağaza ortalamasıyla** karşılaştırıyor; ucuz bir yüzük
+> pahalıdan daha iyi dönüşebilir ve bu tablo bunu göremez. Yönü güvenilir
+> (tık bütçesi sipariş bedeliyle doğrusal artar, 18K'nın hata payı en ucuz
+> listing'in **17 katı**), ama tek tek satırlar kanıt değil hipotezdir.
+> Etsy'nin **listing bazlı** reklam raporu indirilebiliyorsa o yüklenmeli —
+> asıl ölçüm odur.
+
+---
+
 ## Kaynaklar
 
 - [Etsy Seller Handbook — Making the Most of Seasonal Sales Patterns](https://www.etsy.com/sg-en/seller-handbook/article/making-the-most-of-seasonal-sales/45451604718)
