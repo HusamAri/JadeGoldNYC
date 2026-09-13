@@ -133,9 +133,12 @@ repodaki hedefidir.
   bırakır; (2) "ölçüm yerindeydi ve boş döndü" bir NEGATİF kanıttır ve negatif
   kanıt, ölçümün kapsamı kadar geçerlidir — kapsamı yazmadan sonucu ilan etme;
   (3) dış sistemin KENDİ log'u (burada Vercel runtime logs) senin telemetrinden
-  önce sorulmalı: tek satır, bir günlük çıkarımı çürüttü — ve Hobby'de saklama
-  "1 saat" diye bilinse de sorgu 3 saat veri döndürdü, yani "log yok" varsayımı
-  da denenmeden kabul edilmemeli; (4) kimlik doğrulamasız uçta hata izi bırakmak
+  önce sorulmalı: tek satır, bir günlük çıkarımı çürüttü — ama o satır GEÇİCİDİR.
+  Aynı 401 kaydı olaydan 42 dk sonra görünüyordu, 95 dk sonra kaybolmuştu:
+  Hobby'de saklama ~1 saat ve sorgu penceresini 3 saate açmak veriyi geri
+  getirmiyor, yalnız hâlâ saklanan kısmı gösteriyor. Yani dış log bir KANIT
+  PENCERESİDİR: arıza saatini biliyorsan HEMEN bak, sonra "log yok" ile "olay
+  yok" ayırt edilemez hâle gelir; (4) kimlik doğrulamasız uçta hata izi bırakmak
   isterken tabloyu şişirme kapısı açma — yazımı dış sistemin kendi imzasıyla
   (`x-vercel-cron-schedule`, dokümandan doğrulandı, uydurulmadı) ve iş başına
   saatte bir satırla sınırla; (5) BAŞARISIZ son koşu, nabzın tazeliğini
