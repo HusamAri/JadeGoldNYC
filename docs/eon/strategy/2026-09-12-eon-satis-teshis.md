@@ -318,6 +318,97 @@ Production kapsamında tanımlı mı? Değilse tanımla, sonra yeniden dağıt. 
 
 ---
 
+## EK-3 (2026-09-13 öğlen) — pencere açıldı, ölçüm yapıldı: "satış yok" premisi YANLIŞ
+
+`CRON_SECRET` tanımlandı, senkron 11:21'de `ok=true` ile koştu. EON verisi artık
+**13 Eylül**'de (snapshot + listing stats). Kör dönem ilk kez okundu.
+
+### 1. Kör hafta mağazanın REKOR haftasıydı
+
+| Hafta | Sipariş | Ciro | AOV |
+|---|---|---|---|
+| 24 Ağu | 4 | $3.007,93 | $751,98 |
+| 31 Ağu | 4 | $3.131,55 | $782,89 |
+| **7 Eyl** | **3** | **$4.681,56** | **$1.560,52** |
+
+7 Eylül haftası ciroda ve AOV'da mağaza tarihinin en yükseği. İçinde tek kalemde
+**$3.970**'lik 18K satin band var (12 Eyl, `4565352791`). Yani "EON satmıyor"
+diye bakılan günlerde mağaza en iyi işini yapıyormuş; panel kör olduğu için
+görünmüyordu. Bu tabloda fiyat kırmak kârı doğrudan yakardı.
+
+### 2. Trafik de düşmedi
+
+Snapshot aralıkları eşit değil, o yüzden gün sayısına bölündü:
+
+| Pencere | Gün | Görüntülenme | Günlük |
+|---|---|---|---|
+| 22–27 Ağu | 5 | 878 | 176 |
+| 27 Ağu–3 Eyl | 7 | 1.149 | 164 |
+| 3–5 Eyl | 2 | 318 | 159 |
+| 5–12 Eyl | 7 | 907 | **130** |
+| 12–13 Eyl | 1 | 154 | 154 |
+
+Düz seyir, 5–12 Eylül'de %20'lik bir çukur. Çukurun sebebi aşağıdaki 3. madde.
+
+### 3. ASIL BULGU — en çok trafik alan listing 12 Eylül'de yayından düştü
+
+`audit_log`, iki listing'in aynı anda `active` → `edit`'e geçtiğini gösteriyor
+(12 Eyl 22:46 senkronunda gözlendi):
+
+| Listing | Ürün | Durum | Ağu 27 → Eyl 5 görüntülenme | Sipariş |
+|---|---|---|---|---|
+| `4561855998` | 14K Kinetic Bead Ring (Fidget) | **edit** | 56 → 229 (**19/gün**) | 1 · $1.130 |
+| `4562238351` | 14K 3ct Oval Lab-Grown Diamond | **edit** | 8 → 34 (3/gün) | 0 |
+
+Kinetic Bead Ring tek başına mağaza trafiğinin **~%13'ü**ydü (19 / 164) ve
+dönüşüm yapmıştı. 12 Eylül'den itibaren ikisinin de görüntülenmesi **0**.
+
+**Çapraz doğrulama (ayrı Etsy alanı):** `getShop`'tan gelen
+`listing_active_count` = **112** (12 ve 13 Eyl), panelde `status='active'` olan
+113. İki `edit` listing mağazanın kendi aktif sayımında **yok** — yani bu
+`getListingsByShop`'un bilinen geçici `edit` gürültüsü (bkz. `sync.ts:222`)
+değil. İki bağımsız alan, 11 saat arayla iki ayrı koşu, aynı şeyi söylüyor.
+
+> Kesin olmayan tek şey Etsy tarafındaki SEBEP (yarım kalmış düzenleme oturumu,
+> politika uyarısı, envanter hatası). Bu panelden görülmez; Etsy → Listings
+> ekranından bakılmalı.
+
+**Bedel:** kaybedilen ~22 görüntülenme/gün × 8 gün ≈ **175 görüntülenme**.
+Kinetic ring 229 görüntülenmede 1 sipariş ($847,50 net) yaptı — kaba oranla
+görüntülenme başına ~$3,70 net, yani sekiz günde **~$550 net ciro**. Tek
+siparişlik örneklem, bu yüzden sert sayı değil büyüklük mertebesi; kesin olan
+kısım trafik kaybı.
+
+### 4. İndirim yaşıyor — bir listing hariç
+
+Eylül siparişlerinin ikisi tam **0,2500** aldı (195/780 ve 992,50/3.970). Ama
+8 Eylül'deki `4554024684` (10K Rose Gold Satin Center) siparişi **indirimsiz**
+geçti — aynı ailenin kardeşleri (`4554014095`, `4554025310`) indirimi alıyor.
+Tek sipariş, ama kontrol edilmeli: mağaza geneli indirimde o listing seçili mi?
+(Not: indirimsiz haliyle 46 görüntülenmede satmış, yani dönüşümü kötü değil.)
+
+### 5. Aksiyonlar — güncel
+
+**P0 (bugün, Etsy'de, sahibi yapar):**
+1. `4561855998` ve `4562238351`'i yayına geri al. Mağazanın en hızlı büyüyen
+   listing'i sekiz gündür kapalı; bu, elde kalan tek net satış kaybı.
+2. `4554024684`'ün mağaza geneli indirime dahil olduğunu doğrula.
+
+**P1 (reklam — ölçüm hâlâ kapalı):**
+3. `ad_daily_stats` **22 Ağustos**'ta duruyor (senkron düzeldi ama bu tablo elle
+   CSV ile besleniyor). ROAS hâlâ hesaplanamıyor → `/reklamlar/ice-aktar`.
+4. Bütçe adayı, veriden: `4565352791` (18K satin, $3.970) **11 görüntülenmede
+   1 sipariş** yaptı — katalogdaki en yüksek bedelli kalem, neredeyse sıfır
+   trafikle sattı. n=1, kanıt değil sinyal; ama 18K kademesine trafik koymanın
+   gerekçesi bu.
+
+**P2 (değişmedi):**
+5. Fiyat indirme / indirimi artırma **yok** — Bölüm 3'teki aritmetik aynen
+   geçerli (kârın %45'i gider, başa baş için +%81 sipariş gerekir).
+6. 44 taslak birikmiş (15 Tem – 11 Eyl). Yeni listing eklemeyi durdur.
+
+---
+
 ## Kaynaklar
 
 - [Etsy Seller Handbook — Making the Most of Seasonal Sales Patterns](https://www.etsy.com/sg-en/seller-handbook/article/making-the-most-of-seasonal-sales/45451604718)
