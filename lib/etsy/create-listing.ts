@@ -295,8 +295,21 @@ export interface DraftProduct {
   listing_metadata?: { listingProtocol?: unknown } | null;
 }
 
-/** Etsy listing başına kabul ettiği en fazla fotoğraf sayısı. */
-const MAX_LISTING_IMAGES = 10;
+/**
+ * Etsy listing başına kabul ettiği en fazla fotoğraf sayısı.
+ *
+ * **20** — kaynak: Etsy Help Center "Photo and video requirements"
+ * (help.etsy.com/.../115015663347), CANLI okundu 2026-09-13. Aynı sayfa
+ * ayrıca 2000 px kenar önerir ve İLK fotoğrafın en az 635 × 635 olmasını
+ * şart koşar (altında kalan listing aramada geri düşer).
+ *
+ * Bu sabit uzun süre **10**'du ve artık doğru değildi: 15 görsellik bir galeri
+ * sessizce ilk 10'a kırpılıyordu. Second-brain dersi — dış platformun
+ * rehberliğini kodlayan her eşik bir TARİH ve KAYNAK taşımalı, yoksa platform
+ * kuralı değiştiğinde panel kendi eski varsayımıyla çalışmaya devam eder ve
+ * kimse fark etmez.
+ */
+const MAX_LISTING_IMAGES = 20;
 
 export interface CreateDraftResult {
   ok: boolean;
