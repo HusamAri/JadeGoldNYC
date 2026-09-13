@@ -21,7 +21,7 @@ import {
 
 export const OPHIR_RESTORE_SHOP_ID = 66_983_205;
 // Pin the hash recovered from the complete authenticated audit export before enabling POST.
-export const EXPECTED_OPHIR_RESTORE_MANIFEST_HASH = "PIN_EXACT_AUDIT_MANIFEST_HASH_BEFORE_ENABLING_RESTORE";
+export const EXPECTED_OPHIR_RESTORE_MANIFEST_HASH = "97ff79e7959c85d19ac322962bc565b6f4304d84ff7b189aafa9994f372e1494";
 const PAGE_SIZE = 1_000;
 const MAX_AUDIT_ROWS = 100_000;
 const MAX_CAS_PAIRS = 50;
