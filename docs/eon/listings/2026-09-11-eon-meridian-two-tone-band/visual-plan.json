@@ -130,9 +130,9 @@
       "role": "thickness_answer",
       "human": false,
       "widthMm": 6,
-      "job": "Answer 'how chunky is it?'.",
-      "prompt": "Photorealistic photograph of the EXACT two-tone gold wedding band shown in the reference images. It must read unmistakably as a complete closed 360-degree ring with its open center visible — never a cropped slab or straight segment. Slim flat outer face on a thin wall; the outer face split lengthwise into two equal halves, one soft brushed satin white gold with fine parallel grain, the other finely sandblasted matte yellow gold with even micro-pitted texture; exactly ONE narrow polished yellow-gold groove flush on the boundary running continuously around the circumference; polished comfort-fit interior. No stones, no milgrain, no hammering, no rose gold, no second groove, no stepped edge.\n\nComposition: the ring stands upright on a raw oak tabletop and is turned NEARLY EDGE-ON to camera so the slim 1.5 mm wall thickness is the subject while the round silhouette still reads as a ring.\n\nLIGHTING: a real home studio, not a CGI render. One large window is the only light source; soft directional daylight with a genuine soft-edged shadow and natural penumbra that spreads as it lengthens. The gold looks like real metal photographed in daylight, warm and slightly uneven. No seamless backdrop, no flat colour fields, no gradient sweep, no synthetic perfect lighting.",
-      "reshootNeeded": "The generated frame came back in three-quarter view, duplicating the hero angle, so it does NOT show the 1.5 mm wall. Re-shoot with a stricter edge-on instruction before this slot is considered done."
+      "job": "Answer 'how chunky is it?' — show the 1.5 mm wall, not the 6 mm width.",
+      "prompt": "Photorealistic macro photograph of the EXACT two-tone gold wedding band shown in the reference images. It is a closed, continuous 360-degree ring with no break anywhere.\n\nPROFILE: the outer face of the band is perfectly FLAT, like a short section cut from a straight pipe. It is a straight cylindrical wall. It does NOT bulge, dome, barrel or curve outward anywhere. The metal is thin and slim — a light, delicate band, never a heavy chunky ring.\n\nINTERIOR — important: the inside surface of the ring is polished WHITE gold, bright and mirror-like, cool silvery-white. The interior is NOT yellow and NOT gold-coloured. It is gently domed for comfort fit and has no engraving and no text.\n\nHOW THE TWO TONES DIVIDE: the split runs the LONG WAY around the band, parallel to its rim, and the two halves are EXACTLY EQUAL. One narrow polished yellow-gold groove sits precisely on the centre line of the flat face and circles the band a full 360 degrees. On one side of that groove: finely sandblasted matte yellow gold with an even micro-pitted texture. On the other side, the same width: soft brushed satin white gold with fine parallel grain. Both tones travel the ENTIRE circumference and are never interrupted. The band is NEVER divided into left and right arcs or pie segments. The two finishes meet flush at the groove — no step, no raised lip, no bevel between them.\n\nPOSITION — follow this literally: the ring is NOT standing upright and NOT leaning. It lies completely FLAT on a raw oak block, like a coin or a washer resting on a table, so its circular opening points straight up at the ceiling. The camera looks down at it from about 35 degrees above, close and macro.\n\nBecause the ring lies flat, its top RIM is visible as one continuous circle, and that rim is the subject of this photograph: it is the band's wall thickness, and it must read as a strikingly THIN, sharp, delicate strip — only about one quarter as wide as the flat face below it. The bright polished white-gold interior shows through the opening.\n\nNo stones, no gemstones, no milgrain, no hammering, no rose gold, no second groove, no stepped edge, no engraving, no text.\n\nLIGHTING: a real home studio, not a CGI render. One large window is the only light source; soft directional daylight with a genuine soft-edged shadow and natural penumbra that spreads as it lengthens across the oak. The gold looks like real metal photographed in daylight, warm and slightly uneven. No seamless backdrop, no flat colour fields, no gradient sweep, no synthetic perfect lighting.",
+      "whyThisFraming": "A ring photographed upright shows its 6 mm WIDTH, not its 1.5 mm wall. The wall is only readable when the rim — the cut edge — is in view, so the ring is laid flat like a coin and the rim becomes a continuous circle. 'Edge-on' as a phrase failed twice; describing the physical position instead of the photographic jargon worked first try."
     },
     {
       "position": 6,
@@ -203,7 +203,7 @@
   "generated": {
     "model": "nano_banana_2 (Higgsfield)",
     "referenceMediaCount": 5,
-    "output": "2048x2048 sRGB JPEG, 9 unique sha256",
+    "output": "2048x2048 sRGB JPEG, 9 unique sha256 (EXIF/ICC/XMP stripped on write)",
     "dir": "images/",
     "lightingDirection": "Owner 2026-09-11: home-studio daylight, real window light with natural penumbra, honest metal — not flat studio CGI. Scenes 01/03/05 were re-shot to this direction; 02/04/06 were already daylight.",
     "rejected": [
@@ -217,12 +217,30 @@
         "scene": 7,
         "status": "deliberately_not_generated",
         "reason": "A card that prints measurements is a FALSE CLAIM if the model renders a wrong number, not a typo. Typeset the text by hand."
-      },
+      }
+    ],
+    "reshot": [
       {
         "scene": 5,
-        "status": "missed_its_job",
-        "reason": "Had to show the 1.5 mm wall; came back in three-quarter view, duplicating the hero angle. Needs a re-shoot with a stricter edge-on instruction."
+        "date": "2026-09-13",
+        "resolvedBy": "Laid the ring flat on the oak like a coin so the rim reads as a continuous circle.",
+        "attemptsRejected": [
+          {
+            "attempt": 1,
+            "reason": "Two tones came back split into LEFT/RIGHT ARCS instead of lengthwise halves — a different product. Also 1024x1024: nano_banana_2 defaults to resolution '1k' and it had not been passed, so the frame failed the size gate before composition was even judged."
+          },
+          {
+            "attempt": 2,
+            "reason": "Outer face rendered DOMED/barrel-shaped, which mustNotInvent forbids and which actively works against this frame's job: it makes the band read chunkier than it is. Tone halves also unequal (~60/40)."
+          },
+          {
+            "attempt": 3,
+            "reason": "Profile and tones correct, but the INTERIOR came back bright yellow gold. The set's canonical interior is polished white gold — verified by opening 09-meridian-interior-engraving.jpg rather than assuming."
+          }
+        ],
+        "lesson": "Each rejection named one defect and the next prompt fixed exactly that one. The size failure was a parameter default, not a prompt problem — check the model's parameter defaults before blaming the prompt."
       }
-    ]
+    ],
+    "modelNote": "Requested model nano_banana_2; the backend reports the job as 'nano_banana_flash'. Resolution must be passed explicitly — the model's own default is '1k' and silently yields 1024x1024."
   }
 }

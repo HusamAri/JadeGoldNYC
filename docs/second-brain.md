@@ -1109,6 +1109,36 @@ repodaki hedefidir.
   aynı prompt kusuru 10 karede tekrarlanmadan yakalanır (burada 1 kare israf oldu,
   10 değil); (3) rakam/ölçü YAZAN görsel (spec kartı) modele bırakılmaz: yanlış
   basılan ölçü yazım hatası değil YANLIŞ BEYANdır, metin elle dizilir.
+- **Üretilen görsel görevini yapmıyorsa önce "hangi BOYUT görünüyor?" diye sor;
+  ve kareyi reddederken kusuru TEK TEK adlandır (2026-09-13):** Meridian'ın 05
+  karesi "1,5 mm et kalınlığını göster" diye kurulmuştu ve iki turdur
+  tutturamıyordu. Prompt "nearly edge-on" diyordu, model her seferinde üç-çeyrek
+  açı veriyordu. Asıl mesele fotoğraf jargonu değil GEOMETRİydi: ayakta duran bir
+  yüzük bandın **6 mm genişliğini** gösterir, 1,5 mm duvarı değil — duvar ancak
+  **jant** (kesit kenarı) kadrajdayken okunur. Çözüm açıyı zorlamak değil,
+  yüzüğü **madeni para gibi yatırmak** oldu: jant sürekli bir daire olur, kalınlık
+  doğrudan görünür ve kapalı halka şartı da kendiliğinden sağlanır. Fiziksel
+  konumu tarif etmek ("bir jeton gibi düz yatıyor, deliği tavana bakıyor") ilk
+  denemede tuttu; iki tur boyunca başarısız olan şey jargondu. İkinci ders
+  ayıklamada: dört üretimin üçü reddedildi ve her ret TEK bir kusur adlandırdı,
+  sonraki prompt yalnız onu düzeltti — (1) iki ton uzunlamasına değil YAY olarak
+  bölünmüştü (başka bir ürün), (2) dış yüz KUBBELİ geldi ki bu hem `mustNotInvent`
+  ihlali hem de tam bu karenin görevine ters çalışıyor (yüzüğü olduğundan kalın
+  gösteriyor), (3) iç yüzey SARI geldi. Üçüncüsünü "herhalde beyazdır" diye
+  geçmedim: setin kendi iç-yüzey karesini (09) AÇIP baktım, kanonik iç yüzey
+  parlak beyaz altındı. Kural: (1) bir görsel "işini yapmıyorsa" önce hangi
+  fiziksel boyutun kadrajda olduğunu sor — açı talimatını sertleştirmek yanlış
+  boyutu daha net göstermekten öteye gitmez; (2) modele fotoğrafçılık terimi
+  değil NESNENİN DURUŞU tarif edilir; (3) her rette tek kusur adlandır, yoksa
+  sonraki tur hangi düzeltmenin işe yaradığını bilemezsin; (4) setle tutarlılık
+  iddiasını hafızadan değil setin kendi karesinden doğrula. **Yan ders — kapı
+  düştüğünde suçu prompt'ta arama, önce PARAMETRE VARSAYILANINA bak:** ilk kare
+  1024×1024 geldi ve QA kapısı (2048 şart) daha kompozisyon yargılanmadan düştü;
+  sebep `nano_banana_2`'nin `resolution` varsayılanının `1k` olması ve benim onu
+  hiç geçmemiş olmamdı. `models_explore` ile parametreyi okumak tek çağrıydı ve
+  bir üretim ziyan olduktan SONRA yapıldı — dış aracın parametre varsayılanları
+  ilk çağrıdan ÖNCE okunur.
+
 - **"Satış yok" şikâyetinde ÖNCE veri tazeliğini doğrula — panel körse sıfır,
   sıfır satış değil ÖLÇÜMSÜZLÜKtür (2026-09-12):** Kullanıcı "EON'da satış yok,
   fiyat indirelim mi, indirimi artıralım mı" dedi. İlk sorgu satışa değil
