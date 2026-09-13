@@ -26,7 +26,7 @@ function sku(index: number) { return `OPH-${LISTING}-10R-${index + 3}`; }
 
 class Query implements PromiseLike<Result> {
   readonly spec: QuerySpec;
-  constructor(table: string, private readonly execute: (spec: QuerySpec) => Result) {
+  constructor(table: string, private readonly execute: (spec: QuerySpec) => Result | PromiseLike<Result>) {
     this.spec = { table, filters: [], single: false };
   }
   select(fields?: string, options?: { head?: boolean }) { this.spec.selection = fields; this.spec.head = options?.head; return this; }
@@ -60,21 +60,21 @@ function projectedAudit(row: Row): Row {
   return result;
 }
 
-function identityPairs(filter: string): { id: string; sku: string }[] {
-  const clauses = Array.from(filter.matchAll(/and\(id\.eq\.([0-9a-f-]+),sku\.eq\.("(?:[^"\\]|\\.)*")\)/g));
+function identityPairs(filter: string): { id: string; sku: string; afterCents: number }[] {
+  const clauses = Array.from(filter.matchAll(/and\(id\.eq\.([0-9a-f-]+),sku\.eq\.("(?:[^"\\]|\\.)*"),price_cents\.eq\.(\d+)\)/g));
   assert.equal(clauses.map((clause) => clause[0]).join(","), filter, "Every OR clause must bind one exact ID/SKU pair");
-  return clauses.map((clause) => ({ id: clause[1], sku: JSON.parse(clause[2]) as string }));
+  return clauses.map((clause) => ({ id: clause[1], sku: JSON.parse(clause[2]) as string, afterCents: Number(clause[3]) }));
 }
 
-function fixture(count = 1, skus?: string[]) {
+function fixture(count = 1, skus?: string[], pricePairs?: { beforeCents: number; afterCents: number }[]) {
   const variants: Row[] = Array.from({ length: count }, (_, index) => ({
     id: variantId(index), org_id: ORG, product_id: PRODUCT, etsy_listing_id: LISTING,
-    sku: skus?.[index] ?? sku(index), currency: "USD", price_cents: 200,
+    sku: skus?.[index] ?? sku(index), currency: "USD", price_cents: pricePairs?.[index].afterCents ?? 200,
   }));
   const product: Row = { id: PRODUCT, org_id: ORG, sku: null, etsy_listing_id: LISTING, currency: "USD", price_cents: 200 };
   const variantRecords = variants.map((row, index) => ({
     audit_id: auditId(index), created_at: "2026-08-29T18:59:00.000001Z", entity_id: row.id,
-    before: { ...row, price_cents: 100 }, after: { ...row },
+    before: { ...row, price_cents: pricePairs?.[index].beforeCents ?? 100 }, after: { ...row },
   }));
   const plan = buildOphirPriceRestorePlan({ variantRecords, productRecords: [{
     audit_id: "55555555-5555-4555-8555-555555555555", created_at: "2026-08-29T18:59:01.000001Z", entity_id: PRODUCT,
@@ -84,14 +84,16 @@ function fixture(count = 1, skus?: string[]) {
     inventory: {
       products: variants.map((row, index) => ({ sku: row.sku,
         property_values: [{ property_id: 100, property_name: "Gold and size", value_ids: [index + 1], values: [`10K size ${index + 3}`] }],
-        offerings: [{ price: { amount: 200, divisor: 100, currency_code: "USD" }, quantity: 9, is_enabled: true, readiness_state_id: 123 }],
+        offerings: [{ price: { amount: row.price_cents as number, divisor: 100, currency_code: "USD" }, quantity: 9, is_enabled: true, readiness_state_id: 123 }],
       })), price_on_property: [100], quantity_on_property: [] as number[], sku_on_property: [100], readiness_state_on_property: [] as number[],
     },
     variants, product, queries: [] as QuerySpec[], audits: [] as Row[], laterAudits: [] as Row[],
     inventoryReads: 0, etsyWrites: 0, uncertainWrite: false, badReadback: false, failVariantUpdateNumber: 0, variantUpdates: 0,
     swapSkusOnNextVariantUpdate: false,
+    variantUpdateHook: null as ((number: number, spec: QuerySpec) => Promise<void>) | null,
+    variantUpdateResponse: null as ((number: number, ids: Row[]) => Result) | null,
   };
-  const execute = (spec: QuerySpec): Result => {
+  const execute = async (spec: QuerySpec): Promise<Result> => {
     state.queries.push(structuredClone(spec));
     if (spec.table === "audit_log") {
       const entity = spec.filters.find((filter) => filter.key === "entity_type")?.value;
@@ -99,23 +101,29 @@ function fixture(count = 1, skus?: string[]) {
       return { data: state.laterAudits.filter((row) => row.entity_type === entity && ids.includes(row.entity_id as string)).map(projectedAudit), error: null };
     }
     const source = spec.table === "product_variants" ? variants : [product];
+    let updateNumber = 0;
+    if (spec.patch && spec.table === "product_variants") {
+      updateNumber = ++state.variantUpdates;
+      await state.variantUpdateHook?.(updateNumber, spec);
+    }
     if (spec.patch && spec.table === "product_variants" && state.swapSkusOnNextVariantUpdate) {
       [variants[0].sku, variants[1].sku] = [variants[1].sku, variants[0].sku];
       state.swapSkusOnNextVariantUpdate = false;
     }
     let matches = source.filter((row) => spec.filters.every((filter) => {
-      if (filter.method === "or") return identityPairs(filter.value as string).some((pair) => pair.id === row.id && pair.sku === row.sku);
+      if (filter.method === "or") return identityPairs(filter.value as string).some((pair) => pair.id === row.id && pair.sku === row.sku && pair.afterCents === row.price_cents);
       if (filter.method === "in") return (filter.value as unknown[]).includes(row[filter.key]);
       if (filter.method === "eq" || filter.method === "is") return row[filter.key] === filter.value;
       return true;
     }));
     if (spec.patch) {
       if (spec.table === "product_variants") {
-        state.variantUpdates++;
-        if (state.variantUpdates === state.failVariantUpdateNumber) matches = [];
+        if (updateNumber === state.failVariantUpdateNumber) matches = [];
       }
       for (const row of matches) Object.assign(row, spec.patch);
-      return { data: matches.map((row) => ({ id: row.id })), error: null };
+      const ids = matches.map((row) => ({ id: row.id }));
+      return spec.table === "product_variants" && state.variantUpdateResponse
+        ? state.variantUpdateResponse(updateNumber, ids) : { data: ids, error: null };
     }
     return { data: spec.single ? structuredClone(matches[0] ?? null) : structuredClone(matches), error: null };
   };
@@ -162,6 +170,157 @@ function fixture(count = 1, skus?: string[]) {
     return result.proof!;
   };
   return { state, input, preview };
+}
+
+async function nextTurn() { await new Promise<void>((resolve) => setImmediate(resolve)); }
+async function until(predicate: () => boolean) {
+  for (let attempt = 0; attempt < 100; attempt++) {
+    if (predicate()) return;
+    await nextTurn();
+  }
+  assert.fail("Expected asynchronous CAS progress did not arrive.");
+}
+function controlledUpdates(f: ReturnType<typeof fixture>, throwNumber = 0) {
+  const gates = new Map<number, () => void>();
+  const completed: number[] = [];
+  let active = 0;
+  let maximum = 0;
+  f.state.variantUpdateHook = async (number) => {
+    active++; maximum = Math.max(maximum, active);
+    await new Promise<void>((resolve) => gates.set(number, resolve));
+    active--; completed.push(number);
+    if (number === throwNumber) throw new Error("Uncertain transport response");
+  };
+  return { gates, completed, maximum: () => maximum };
+}
+
+test("four disjoint prior-price groups can finish out of order with exact per-record CAS predicates", async () => {
+  const pairs = Array.from({ length: 6 }, (_, index) => ({ beforeCents: 100 + index, afterCents: 200 + index }));
+  const f = fixture(6, undefined, pairs);
+  const proof = await f.preview();
+  const control = controlledUpdates(f);
+  const pending = processOphirRestoreListing({ ...f.input, mode: "apply", previewProof: proof });
+  await until(() => control.gates.size === 4);
+  assert.equal(f.state.audits.length, 0);
+  control.gates.get(3)!();
+  await until(() => control.gates.has(5));
+  control.gates.get(2)!();
+  await until(() => control.gates.has(6));
+  for (const number of [6, 5, 4, 1]) { control.gates.get(number)!(); await nextTurn(); }
+  const result = await pending;
+  assert.equal(result.status, "verified", result.error);
+  assert.equal(result.dbVariantsChanged, 6);
+  assert.equal(result.dbAnchorChanged, true);
+  assert.equal(control.maximum(), 4);
+  assert.deepEqual(control.completed, [3, 2, 6, 5, 4, 1]);
+  const writes = f.state.queries.filter((query) => query.table === "product_variants" && query.patch);
+  assert.equal(writes.length, 6);
+  for (const [index, write] of writes.entries()) {
+    assert.deepEqual(write.patch, { price_cents: pairs[index].beforeCents });
+    assert.deepEqual(identityPairs(write.filters.find((filter) => filter.method === "or")!.value as string),
+      [{ id: variantId(index), sku: sku(index), afterCents: pairs[index].afterCents }]);
+    for (const [key, value] of Object.entries({ org_id: ORG, product_id: PRODUCT, etsy_listing_id: LISTING, currency: "USD" })) {
+      assert.ok(write.filters.some((filter) => filter.method === "eq" && filter.key === key && filter.value === value));
+    }
+    assert.ok(!write.filters.some((filter) => filter.key === "price_cents"));
+  }
+  assert.equal(f.state.etsyWrites, 1);
+});
+
+for (const failure of ["empty-response", "thrown-transport"] as const) {
+  test(`${failure} drains successful in-flight groups before failure audit and resumes only remaining IDs`, async () => {
+    const pairs = Array.from({ length: 6 }, (_, index) => ({ beforeCents: 100 + index, afterCents: 200 + index }));
+    const f = fixture(6, undefined, pairs);
+    const proof = await f.preview();
+    if (failure === "empty-response") f.state.failVariantUpdateNumber = 2;
+    const control = controlledUpdates(f, failure === "thrown-transport" ? 2 : 0);
+    let returned = false;
+    const pending = processOphirRestoreListing({ ...f.input, mode: "apply", previewProof: proof }).then((result) => {
+      returned = true; return result;
+    });
+    await until(() => control.gates.size === 4);
+    control.gates.get(2)!(); await nextTurn();
+    assert.equal(control.gates.size, 4, "No fifth group may start after the failure is known");
+    for (const number of [3, 4]) { control.gates.get(number)!(); await nextTurn(); }
+    assert.equal(returned, false, "The first request is still in flight");
+    assert.equal(f.state.audits.length, 0, "Failure audit must wait for every in-flight result");
+    assert.equal(f.state.queries.filter((query) => query.table === "products" && query.patch).length, 0);
+    assert.equal(control.gates.size, 4);
+    control.gates.get(1)!();
+    const result = await pending;
+    assert.equal(result.status, "failed");
+    assert.equal(result.stage, "db-restore");
+    assert.equal(result.dbVariantsChanged, 3);
+    assert.equal(result.dbAnchorChanged, false);
+    assert.equal(f.state.variantUpdates, 4, "Uncertain writes must not be retried");
+    assert.equal(f.state.product.price_cents, 200);
+    assert.equal(f.state.audits.length, 1);
+    assert.equal((f.state.audits[0].p_diff as Row).db_variants_changed, 3);
+    assert.equal(control.maximum(), 4);
+    const remainingIds = f.state.variants.filter((row, index) => row.price_cents !== pairs[index].beforeCents).map((row) => row.id);
+    f.state.variantUpdateHook = null; f.state.failVariantUpdateNumber = 0;
+    const previousQueries = f.state.queries.length;
+    const resumedProof = await f.preview();
+    const resumed = await processOphirRestoreListing({ ...f.input, mode: "apply", previewProof: resumedProof });
+    assert.equal(resumed.status, "verified", resumed.error);
+    assert.equal(resumed.dbVariantsChanged, 3);
+    assert.equal(resumed.dbAnchorChanged, true);
+    assert.equal(f.state.etsyWrites, 1);
+    const resumedIds = f.state.queries.slice(previousQueries).filter((query) => query.table === "product_variants" && query.patch)
+      .flatMap((query) => identityPairs(query.filters.find((filter) => filter.method === "or")!.value as string).map((pair) => pair.id));
+    assert.deepEqual(resumedIds.sort(), remainingIds.sort());
+  });
+}
+
+test("same prior price combines heterogeneous audited after prices into one exact CAS batch", async () => {
+  const pairs = [{ beforeCents: 100, afterCents: 200 }, { beforeCents: 100, afterCents: 300 }];
+  const f = fixture(2, undefined, pairs);
+  const proof = await f.preview();
+  const result = await processOphirRestoreListing({ ...f.input, mode: "apply", previewProof: proof });
+  assert.equal(result.status, "verified", result.error);
+  assert.equal(result.dbVariantsChanged, 2);
+  const writes = f.state.queries.filter((query) => query.table === "product_variants" && query.patch);
+  assert.equal(writes.length, 1);
+  assert.deepEqual(writes[0].patch, { price_cents: 100 });
+  assert.deepEqual(identityPairs(writes[0].filters.find((filter) => filter.method === "or")!.value as string), [
+    { id: variantId(0), sku: sku(0), afterCents: 200 }, { id: variantId(1), sku: sku(1), afterCents: 300 },
+  ]);
+});
+
+test("an audited ID cannot borrow another target's after price between identity read and CAS", async () => {
+  const f = fixture(2, undefined, [{ beforeCents: 100, afterCents: 200 }, { beforeCents: 100, afterCents: 300 }]);
+  const proof = await f.preview();
+  f.state.variantUpdateHook = async () => { f.state.variants[0].price_cents = 300; };
+  const result = await processOphirRestoreListing({ ...f.input, mode: "apply", previewProof: proof });
+  assert.equal(result.status, "failed");
+  assert.equal(result.stage, "db-restore");
+  assert.equal(result.dbVariantsChanged, 1);
+  assert.deepEqual(f.state.variants.map((row) => row.price_cents), [300, 100]);
+  assert.equal(f.state.product.price_cents, 200);
+  assert.equal(f.state.queries.filter((query) => query.table === "products" && query.patch).length, 0);
+});
+
+test("foreign and duplicate returned IDs fail without inflating recognized partial counts", async () => {
+  const f = fixture(3);
+  const proof = await f.preview();
+  f.state.variantUpdateResponse = () => ({ data: [{ id: variantId(0) }, { id: variantId(0) }, { id: variantId(9) }], error: null });
+  const result = await processOphirRestoreListing({ ...f.input, mode: "apply", previewProof: proof });
+  assert.equal(result.status, "failed");
+  assert.equal(result.dbVariantsChanged, 1);
+  assert.equal(result.dbAnchorChanged, false);
+  assert.equal((f.state.audits[0].p_diff as Row).db_variants_changed, 1);
+});
+
+for (const field of ["variantId", "sku"] as const) {
+  test(`overlapping audited ${field} identities stop before any Etsy PUT or DB price update`, async () => {
+    const f = fixture(2);
+    f.input.listing.variants[1][field] = f.input.listing.variants[0][field];
+    const result = await processOphirRestoreListing({ ...f.input, mode: "apply", previewProof: {} as OphirRestorePreviewProof });
+    assert.equal(result.status, "failed");
+    assert.match(result.error!, /overlapping identities/);
+    assert.equal(f.state.etsyWrites, 0);
+    assert.equal(f.state.queries.filter((query) => query.patch).length, 0);
+  });
 }
 
 test("DB price conflict stops before Etsy PUT or DB update", async () => {
@@ -242,14 +401,14 @@ test("DB writes contain only the prior price patch and all scoped CAS identity p
   for (const write of writes) {
     assert.deepEqual(write.patch, { price_cents: 100 });
     assert.ok(write.filters.some((filter) => filter.method === "eq" && filter.key === "org_id" && filter.value === ORG));
-    assert.ok(write.filters.some((filter) => filter.method === "eq" && filter.key === "price_cents" && filter.value === 200));
+    if (write.table === "products") assert.ok(write.filters.some((filter) => filter.method === "eq" && filter.key === "price_cents" && filter.value === 200));
     assert.ok(write.filters.some((filter) => filter.method === "eq" && filter.key === "etsy_listing_id" && filter.value === LISTING));
     assert.ok(write.filters.some((filter) => filter.method === "eq" && filter.key === "currency" && filter.value === "USD"));
   }
   const variantWrite = writes.find((write) => write.table === "product_variants")!;
   assert.ok(variantWrite.filters.some((filter) => filter.key === "product_id" && filter.value === PRODUCT));
   const pairedFilter = variantWrite.filters.find((filter) => filter.method === "or")!;
-  assert.deepEqual(identityPairs(pairedFilter.value as string), [{ id: variantId(0), sku: sku(0) }]);
+  assert.deepEqual(identityPairs(pairedFilter.value as string), [{ id: variantId(0), sku: sku(0), afterCents: 200 }]);
   assert.ok(!variantWrite.filters.some((filter) => filter.method === "in" && ["id", "sku"].includes(filter.key)));
   assert.equal(f.state.inventory.products[0].offerings[0].quantity, 9);
   assert.equal(f.state.inventory.products[0].offerings[0].readiness_state_id, 123);
@@ -304,7 +463,7 @@ test("quoted SKU filter values preserve punctuation, quotes, and backslashes as 
   assert.equal(result.status, "verified", result.error);
   const write = f.state.queries.find((query) => query.table === "product_variants" && query.patch)!;
   const pairs = identityPairs(write.filters.find((filter) => filter.method === "or")!.value as string);
-  assert.deepEqual(pairs, [{ id: variantId(0), sku: exactSku }]);
+  assert.deepEqual(pairs, [{ id: variantId(0), sku: exactSku, afterCents: 200 }]);
   assert.equal(f.state.variants[0].price_cents, 100);
 });
 

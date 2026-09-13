@@ -177,7 +177,7 @@ function pairedIdentityFilter(targets: readonly OphirVariantRestoreTarget[]): st
     // PostgREST quoted filter values escape literal backslashes and quotes.
     if (/[\u0000-\u001f\u007f]/.test(target.sku)) fail("An audited SKU contains unsupported control characters.");
     const quotedSku = `"${target.sku.replaceAll("\\", "\\\\").replaceAll('"', '\\"')}"`;
-    return `and(id.eq.${target.variantId},sku.eq.${quotedSku})`;
+    return `and(id.eq.${target.variantId},sku.eq.${quotedSku},price_cents.eq.${target.afterCents})`;
   }).join(",");
 }
 
@@ -304,31 +304,52 @@ async function inventory(client: EtsyClient, listingId: number): Promise<unknown
   catch { fail(`Live Etsy inventory could not be read for listing ${listingId}.`); }
 }
 
+function dbPriceGroups(targets: readonly OphirVariantRestoreTarget[]) {
+  const ids = new Set<string>();
+  const skus = new Set<string>();
+  const groups = new Map<string, OphirVariantRestoreTarget[]>();
+  for (const target of targets) {
+    if (ids.has(target.variantId) || skus.has(target.sku)) fail("Audited DB price groups contain overlapping identities.");
+    ids.add(target.variantId); skus.add(target.sku);
+    const key = String(target.beforeCents);
+    const group = groups.get(key) ?? [];
+    group.push(target); groups.set(key, group);
+  }
+  return Array.from(groups.values());
+}
+
 async function restoreDbListing(client: SupabaseClient, orgId: string, listing: OphirRestoreListing, result: OphirRestoreListingResult) {
   const current = await readDbListing(client, orgId, listing);
   await ensureNoLaterPriceChange(client, orgId, listing);
-  const groups = new Map<string, OphirVariantRestoreTarget[]>();
-  for (const target of listing.variants) {
-    if (current.rows.get(target.variantId)!.price_cents === target.beforeCents) continue;
-    const key = `${target.beforeCents}:${target.afterCents}`;
-    groups.set(key, [...(groups.get(key) ?? []), target]);
-  }
-  let changed = 0;
-  for (const targets of groups.values()) {
-    for (let start = 0; start < targets.length; start += MAX_CAS_PAIRS) {
-      const batch = targets.slice(start, start + MAX_CAS_PAIRS);
-      const target = batch[0];
-      const ids = batch.map((v) => v.variantId);
-      const { data, error } = await client.from("product_variants").update({ price_cents: target.beforeCents })
-        .eq("org_id", orgId).eq("price_cents", target.afterCents).eq("product_id", listing.productId)
-        .eq("etsy_listing_id", listing.listingId).eq("currency", "USD")
-        .or(pairedIdentityFilter(batch)).select("id");
-      if (!error && data) result.dbVariantsChanged += data.length;
-      if (error || !data || data.length !== ids.length || new Set(data.map((row) => row.id)).size !== ids.length ||
-        data.some((row) => !ids.includes(row.id))) fail(`DB price comparison failed for listing ${listing.listingId}; inspect partial progress and preview again.`);
-      changed += data.length;
+  const groups = dbPriceGroups(listing.variants.filter((target) => current.rows.get(target.variantId)!.price_cents !== target.beforeCents));
+  let nextGroup = 0;
+  let failed = false;
+  const worker = async () => {
+    while (!failed && nextGroup < groups.length) {
+      const targets = groups[nextGroup++];
+      for (let start = 0; !failed && start < targets.length; start += MAX_CAS_PAIRS) {
+        const batch = targets.slice(start, start + MAX_CAS_PAIRS);
+        const target = batch[0];
+        const ids = new Set(batch.map((v) => v.variantId));
+        try {
+          const { data, error } = await client.from("product_variants").update({ price_cents: target.beforeCents })
+            .eq("org_id", orgId).eq("product_id", listing.productId)
+            .eq("etsy_listing_id", listing.listingId).eq("currency", "USD")
+            .or(pairedIdentityFilter(batch)).select("id");
+          const recognized = new Set<string>();
+          if (!error && data) for (const row of data) if (ids.has(row.id)) recognized.add(row.id);
+          result.dbVariantsChanged += recognized.size;
+          if (error || !data || data.length !== ids.size || recognized.size !== ids.size) failed = true;
+        } catch {
+          // An uncertain CAS response is never retried. Other in-flight groups must still settle.
+          failed = true;
+        }
+      }
     }
-  }
+  };
+  // Only disjoint price groups within this listing run concurrently; each group's batches stay serial.
+  await Promise.all(Array.from({ length: Math.min(4, groups.length) }, worker));
+  if (failed) fail(`DB price comparison failed for listing ${listing.listingId}; inspect partial progress and preview again.`);
   let anchorChanged = false;
   const anchor = listing.productAnchor;
   if (anchor && current.anchor.price_cents !== anchor.beforeCents) {
@@ -342,7 +363,7 @@ async function restoreDbListing(client: SupabaseClient, orgId: string, listing: 
     result.dbAnchorChanged = true;
   }
   await readDbListing(client, orgId, listing, true);
-  return { changed, anchorChanged };
+  return { changed: result.dbVariantsChanged, anchorChanged };
 }
 
 async function auditResult(client: SupabaseClient, orgId: string, plan: OphirPriceRestorePlan, listing: OphirRestoreListing, result: OphirRestoreListingResult) {
@@ -370,6 +391,8 @@ export async function processOphirRestoreListing(input: {
     etsyPricesChanged: 0, etsyAlreadyRestored: 0, dbVariantsChanged: 0, dbAnchorChanged: false,
     etsyWriteAttempted: false, nonPriceFieldsPreserved: false, auditWritten: false };
   try {
+    // Validate disjoint group identities before any Etsy PUT, even for targets already restored in DB.
+    dbPriceGroups(listing.variants);
     // Validate every quoted CAS literal before a live price write can be attempted.
     for (let start = 0; start < listing.variants.length; start += MAX_CAS_PAIRS) {
       pairedIdentityFilter(listing.variants.slice(start, start + MAX_CAS_PAIRS));
