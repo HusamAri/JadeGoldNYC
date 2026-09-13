@@ -409,6 +409,109 @@ Tek sipariş, ama kontrol edilmeli: mağaza geneli indirimde o listing seçili m
 
 ---
 
+## EK-4 (2026-09-13) — reklam verisi geldi: ROAS ilk kez hesaplandı
+
+Kullanıcı Etsy Reklam günlük CSV'sini (14 Ağu – 13 Eyl) verdi; `ad_daily_stats`'e
+yazıldı (`etsy_ads_csv`, 22 yeni gün). 14–22 Ağustos'taki eski 9 satır CSV ile
+**birebir** aynıydı — kaynak tutarlı.
+
+### Toplam (31 gün)
+
+| | |
+|---|---|
+| Harcama | **$419,61** ($13,54/gün) |
+| Gösterim | 21.144 |
+| Tıklama | 434 (**CTR %2,05**, tık başı **$0,97**) |
+| Atfedilen sipariş | **2** |
+| Atfedilen ciro (net) | $1.443,75 |
+| **ROAS** | **3,44** |
+| Sipariş başına maliyet | $209,81 |
+
+Aynı pencerede mağaza 14 sipariş ve **$12.250** net ürün cirosu yaptı — yani
+reklam cironun **%11,8**'ini açıklıyor, **%88'i organik**.
+
+### ROAS 3,44 iyi mi? Hayır, başa başın hemen ALTINDA
+
+Perakendede 3,44 kulağa iyi gelir ama ölçüt katkı marjıdır. Bölüm 3'teki
+maliyet yapısıyla (ham altın net cironun ~%49,4'ü, Etsy ücreti %11,7,
+işçilik/paket/kargo ~%11,9) **reklam öncesi katkı ≈ %27**, dolayısıyla:
+
+```
+başa baş ROAS = 1 / 0,27 ≈ 3,70
+```
+
+| | |
+|---|---|
+| Üretilen katkı ($1.443,75 × %27) | $389,81 |
+| Reklam harcaması | $419,61 |
+| **Net** | **−$29,80** |
+
+Yani 31 günde reklam kabaca **başa baş, hafif ekside**.
+
+> **Örneklem uyarısı — bu "reklam zarar ettiriyor" DEMEK DEĞİL.** Sonuç
+> **2 siparişe** dayanıyor. Tek bir $800'lük sipariş daha ROAS'ı 5,3'e çıkarır
+> ve tablo net kâra döner. Doğru okuma: reklam *aç/kapa* kararı verilecek
+> yerde değil, **tahsis** kararı verilecek yerde. %27 varsayımı ±1 puan
+> oynarsa başa baş ROAS 3,6–3,8 bandında gezer; 3,44 bu bandın içinde.
+
+### Asıl bulgu: 7 Eylül'de reklam envanteri çöktü
+
+| Pencere | Gün | Gösterim/gün | Tık/gün | CTR | Harcama/gün | Günlük bütçe |
+|---|---|---|---|---|---|---|
+| 14–22 Ağu | 9 | 1.027 | 22,9 | %2,23 | $22,61 | $25 |
+| 23–29 Ağu | 7 | 416 | 10,6 | %2,54 | $8,34 | **$8** |
+| 30 Ağu–6 Eyl | 8 | 812 | 14,6 | %1,80 | $15,03 | $15–25 |
+| **7–13 Eyl** | 7 | **356** | **5,3** | **%1,48** | **$5,35** | **$25** |
+
+Son satır anormal: bütçe $25 ama Etsy günde ancak **$5,35** harcayabiliyor.
+23–29 Ağustos'ta harcama düşüktü çünkü **bütçe** $8'di; 7–13 Eylül'de bütçe
+tam, harcanamıyor. Etsy gösterecek nitelikli yer bulamıyor.
+
+Kırılma **7 Eylül'de keskin**: 6 Eyl $12,16 / 13 tık → 7 Eyl **$2,04 / 3 tık**.
+
+Bu, EK-3'teki listing bulgusunu **bağımsız olarak üçgenliyor**. `4561855998`
+(Kinetic Bead Ring) en son 5 Eylül'de 229 görüntülenmedeydi, 12 Eylül'de 0;
+yani karartma 5–12 Eylül arasında bir yerde. Reklam gösterimi tam **7 Eylül'de**
+düştüğüne göre listing'ler 6–7 Eylül civarında reklam uygunluğundan çıkmış.
+Organik trafik aynı pencerede %21 düştü, reklam gösterimi **%56** — reklam çok
+daha sert düştü, ki bu belirli listing'lerin uygunluk dışı kalmasıyla uyumlu.
+
+> **Alternatif açıklama kayda geçiyor:** Etsy Ads gösterimi rekabet ve sezonla
+> da oynar, eylül yapısal olarak yavaş (Bölüm 4). Tek başına reklam verisi
+> listing'leri suçlayamaz; iki kanıtın ÇAKIŞMASI (aynı tarih penceresi + aktif
+> listing sayacı) teşhisi taşıyor.
+
+### Ne yapmalı
+
+Kullanıcı bildirdi: iki listing **üretim sorunu** yüzünden kapalı, çözülünce
+dönecekler. Yani EK-3'ün P0'ı beklemede ve trafik boşluğu kısa vadede
+kapanmayacak. Bu durumda:
+
+1. **Bütçeyi düşürme/kapatma gereği yok** — Etsy yalnız harcayabildiğini
+   fatura ediyor ($5,35/gün). Nominal $25 zarar üretmiyor.
+2. **Reklamı stokta olan ve dönüşen listing'lere odakla.** `4565352791`
+   (18K satin, $3.970) **11 görüntülenmede 1 sipariş** yaptı — katalogdaki en
+   yüksek bedelli kalem. Yüksek AOV, başa baş ROAS'ı aşmanın en kolay yolu:
+   aynı tık maliyetiyle sipariş başına ciro 4–5 kat.
+3. **İndirim artırmak bu tabloda başa baş ROAS'ı YÜKSELTİR.** Maliyetlerin çoğu
+   mutlak (altın, işçilik, paket); yalnız Etsy ücreti net ciroyla ölçekleniyor.
+   Liste 100 tabanında:
+
+   | | %25 indirim | %35 indirim |
+   |---|---|---|
+   | Net tahsilat | 75,00 | 65,00 |
+   | − ham altın (mutlak) | 37,05 | 37,05 |
+   | − Etsy ücreti (%11,7) | 8,78 | 7,61 |
+   | − işçilik/paket/kargo (mutlak) | 8,93 | 8,93 |
+   | **Katkı** | **20,25 (%27,0)** | **11,42 (%17,6)** |
+   | **Başa baş ROAS** | **3,70** | **5,69** |
+
+   Katkı **%43,6 düşer** ve reklamın geçmesi gereken çıta 3,70'ten **5,69**'a
+   çıkar. Bugün 3,44'te olan reklam o noktada net zarara geçer. Yani indirim
+   kararı reklam kararını da bozuyor; iki kaldıraç aynı anda çekilmemeli.
+
+---
+
 ## Kaynaklar
 
 - [Etsy Seller Handbook — Making the Most of Seasonal Sales Patterns](https://www.etsy.com/sg-en/seller-handbook/article/making-the-most-of-seasonal-sales/45451604718)
