@@ -107,12 +107,19 @@ checksum**'la yapıldı (salt toplam satır KAYMASINI yakalamaz):
 
 1. **Görsel seti 9/10 hazır, `images/` altında.** Higgsfield `nano_banana_2`,
    sahibin 5 referans fotoğrafı `image_references` olarak; 2048×2048 sRGB JPEG,
-   9 tekil hash. Görsel dili `visual-plan.json` → THE MERIDIAN.
+   9 tekil hash, EXIF/ICC/XMP sökülmüş. Görsel dili `visual-plan.json` →
+   THE MERIDIAN. **Tek açık kalem 07.**
    - **07 (spec kartı) BİLEREK üretilmedi:** üzerinde ölçü yazan bir kart, model
      rakamı yanlış basarsa yazım hatası değil YANLIŞ BEYAN olur; metin elle
      dizilmeli.
-   - **05 hedefini tutturamadı:** 1,5 mm et kalınlığını göstermesi gerekirken
-     üç-çeyrek açıda çıktı (hero'yu tekrarlıyor), yeniden çekilmeli.
+   - **05 yeniden çekildi (2026-09-13) ve artık görevini yapıyor.** Sorun şuydu:
+     ayakta duran yüzük bandın **6 mm genişliğini** gösterir, 1,5 mm duvarı
+     değil — duvar ancak **jant (kesit kenarı)** kadrajdayken okunur. Çözüm
+     yüzüğü madeni para gibi **yatırmak**: jant sürekli bir daire olur ve
+     kalınlık doğrudan görünür. "Edge-on" ifadesi iki kez başarısız oldu;
+     fotoğraf jargonu yerine fiziksel konumu tarif etmek ilk denemede tuttu.
+     Elenen üç deneme (yay-bölünme · kubbeli profil · sarı iç yüzey) gerekçeleriyle
+     `visual-plan.json` → `generated.reshot` içinde.
    - İlk hero reddedildi: kapalı halka okunmuyordu (`closedContinuousLoopRequired`
      ihlali) ve 170 px'lik Etsy ızgarasında alyans gibi görünmüyordu.
 2. **Fiziksel gram ölçülmedi** (yukarı bakınız).
