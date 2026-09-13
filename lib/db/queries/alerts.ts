@@ -210,7 +210,7 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
       // döner; sinyal o zaman sessizce kapalı kalır (stone-cost deseni).
       supabase
         .from("cron_run")
-        .select("job, started_at, ok, target_count")
+        .select("job, started_at, finished_at, ok, target_count")
         .in("job", ["_install", "/api/cron/etsy-sync"])
         .order("started_at", { ascending: false })
         .limit(50)
@@ -741,27 +741,85 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
   // her seferinde geçici olarak kayboldu, KÖK NEDEN hiç görünmedi. Bu blok o
   // ayrımı yapar — aksiyonu farklı çünkü: burada düzeltilecek yer panel ya da
   // Etsy bağlantısı değil, VERCEL'in cron kaydıdır.
+  // İki AYRI arıza var ve aksiyonları farklı yerde:
+  //   (a) zamanlayıcı hiç tetiklemiyor  → Vercel'de cron kaydı,
+  //   (b) tetikliyor ama rota 401 dönüyor → CRON_SECRET ortam değişkeni.
+  // Nabzın ilk sürümü yalnız (a)'yı görebiliyordu ve 2026-09-13'te (b) olan
+  // arıza (a) sanıldı; `recordCronAuthFailure` artık (b) için de satır bırakıyor.
   let cronDeadDays: number | null = null;
+  let cronAuthFailed = false;
+  let cronIncomplete = false;
   if (cronRuns?.data != null) {
     const runs = cronRuns.data as {
       job: string;
       started_at: string;
+      finished_at: string | null;
       ok: boolean | null;
       target_count: number | null;
     }[];
     const lastSync = runs.find((r) => r.job === "/api/cron/etsy-sync");
     const installedAt = runs.find((r) => r.job === "_install")?.started_at;
+    // Son koşu BAŞARISIZSA nabzın tazeliği teselli değildir: arıza sürüyor.
+    // (Aksi hâlde 401 satırı yazıldığı an alarm susardı — sessiz kusurun
+    // tam olarak kendisi.)
+    if (lastSync && lastSync.ok === false) cronAuthFailed = true;
+    // BAŞLADI AMA BİTMEDİ: başlangıç satırı yazıldı, kapanış hiç gelmedi —
+    // fonksiyon süre limitinde öldürülmüş demektir (2026-09-13'te 504 ile oldu).
+    // 5 dakika, en uzun koşunun (maxDuration 60 sn) rahatça üstünde.
+    if (
+      lastSync &&
+      lastSync.ok == null &&
+      lastSync.finished_at == null &&
+      now - new Date(lastSync.started_at).getTime() > 5 * 60_000
+    ) {
+      cronIncomplete = true;
+    }
     // Referans nokta: son gerçek koşu, yoksa nabzın kurulduğu an. Kurulumdan
     // hemen sonra "nabız yok" demek YANLIŞ ALARM olurdu (ilk cron henüz
     // koşmamıştır) — yanlış alarm gerçek alarmdan pahalıdır.
     const ref = lastSync?.started_at ?? installedAt;
-    if (ref) {
+    if (ref && !cronAuthFailed && !cronIncomplete) {
       const yasSaat = (now - new Date(ref).getTime()) / 3_600_000;
       // Günlük cron: 36 saat = bir kaçırılmış koşu + emniyet payı.
       if (yasSaat >= 36) cronDeadDays = Math.floor(yasSaat / 24);
     }
   }
-  if (cronDeadDays != null) {
+  if (cronAuthFailed) {
+    alerts.push({
+      key: "cron_auth_failed",
+      severity: "kritik",
+      title: "Günlük senkron tetikleniyor ama REDDEDİLİYOR (401)",
+      hint:
+        "Zamanlayıcı çalışıyor — istek uygulamaya ulaşıyor ama kimlik kapısından " +
+        "geçemiyor, yani senkron hiç başlamıyor ve panel her gün bayatlıyor. " +
+        "Sebep neredeyse her zaman tek şey: Vercel'deki `CRON_SECRET` ortam " +
+        "değişkeni eksik ya da uygulamanın beklediğiyle uyuşmuyor. Vercel → " +
+        "proje → Settings → Environment Variables'ta Production kapsamında " +
+        "tanımlı olduğunu doğrula, sonra yeniden dağıt. Elle tetiklemek veriyi " +
+        "tazeler ama sebebi düzeltmez.",
+      count: 1,
+      href: "/ayarlar/etsy",
+      actionLabel: "Senkronu elle tetikle",
+      costCents: null,
+    });
+  } else if (cronIncomplete) {
+    alerts.push({
+      key: "cron_incomplete",
+      severity: "kritik",
+      title: "Günlük senkron başladı ama bitiremedi",
+      hint:
+        "Koşu tetiklendi, kimlik kapısını geçti, sonra kapanış kaydı hiç gelmedi " +
+        "— fonksiyon süre limitinde (60 sn) öldürülmüş demektir. Senkron " +
+        "devam ettirilebilir olduğu için yapılan iş korunur, ama kalan org'lar o " +
+        "koşuda işlenmez ve veri eksik tazelenir. Etsy tarafında büyük bir " +
+        "birikim varsa arka arkaya birkaç koşu gerekir; birkaç günde kapanmıyorsa " +
+        "bütçe/sıralama ayarına bakılmalı.",
+      count: 1,
+      href: "/ayarlar/etsy",
+      actionLabel: "Senkronu elle tetikle",
+      costCents: null,
+    });
+  } else if (cronDeadDays != null) {
     alerts.push({
       key: "cron_not_firing",
       severity: "kritik",
@@ -789,7 +847,12 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
   // Kök neden ZATEN biliniyorsa (cron hiç tetiklenmiyor) bu uyarı bastırılır:
   // aynı arızayı iki kritik satırla anlatmak uyarı körlüğü üretir ve kullanıcı
   // yanlış aksiyona (her gün elle tetikleme) yönlenir.
-  if (etsy.status === "connected" && cronDeadDays == null) {
+  if (
+    etsy.status === "connected" &&
+    cronDeadDays == null &&
+    !cronAuthFailed &&
+    !cronIncomplete
+  ) {
     const snapDate = (lastShopSnapshot.data as { snapshot_date: string } | null)
       ?.snapshot_date;
     const snapAgeDays = snapDate

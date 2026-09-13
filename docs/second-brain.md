@@ -111,6 +111,62 @@ repodaki hedefidir.
   cron durumu veren uç yok; kanıtlanan (cron 08-12'de öldü) ile kanıtlanamayan
   (Vercel neden düşürdü) ayrı ayrı yazıldı ve doğrulama kullanıcının Vercel
   arayüzüne havale edildi.
+  **Güçlendirme (2026-09-13, ertesi sabah) — YENİ KURDUĞUM ÖLÇÜM DE aynı iki
+  durumu birbirine karıştırıyordu; nabzı KAPININ HANGİ TARAFINA koyduğun
+  ölçümün ne ölçtüğünü belirler:** nabız canlıya çıktı, ertesi sabah tablo yine
+  boştu ve ben bunu "cron gerçekten tetiklenmiyor, kanıtlandı" diye okudum —
+  üstelik dağıtımın cron saatinden 7 saat önce READY olduğunu doğrulayarak,
+  yani ölçümün yerinde olduğunu ispatlayarak. Kanıt sağlamdı, ÇIKARIM yanlıştı.
+  Kullanıcının Vercel ekran görüntüsü üç cron'un da **kayıtlı ve Enabled**
+  olduğunu gösterdi (bu arada "Hobby'de 2 cron limiti" ihtimalini de çürüttü —
+  iyi ki ilan etmemiştim; ayrıca "Hobby'de 1 saatlik esnek pencere" satırı
+  ağustostaki 06:04/06:43/07:07 yazımlarının neden hep o aralığa düştüğünü de
+  açıkladı). Gerçeği tek bir runtime log satırı söyledi:
+  `08:44 GET /api/cron/etsy-variants 401`. Cron TETİKLENİYORDU; rota onu auth
+  kapısında geri çeviriyordu (`CRON_SECRET` uyuşmazlığı). Nabız `recordCronRun`
+  içindeydi, yani auth kontrolünden SONRA — dolayısıyla "hiç tetiklenmedi" ile
+  "tetiklendi ve 401 yedi" benim yeni ölçümümde de AYNI görünüyordu, oysa
+  ikisinin aksiyonu bambaşka yerde (biri Vercel cron kaydı, diğeri ortam
+  değişkeni). Kural: (1) bir ölçüm aracı kurarken "bu araç hangi iki durumu
+  ayıramaz?" diye AÇIKÇA sor — nabzı auth/doğrulama kapısının arkasına koymak,
+  tam da en sık görülen arıza sınıfını (kimlik/konfigürasyon) ölçüm dışında
+  bırakır; (2) "ölçüm yerindeydi ve boş döndü" bir NEGATİF kanıttır ve negatif
+  kanıt, ölçümün kapsamı kadar geçerlidir — kapsamı yazmadan sonucu ilan etme;
+  (3) dış sistemin KENDİ log'u (burada Vercel runtime logs) senin telemetrinden
+  önce sorulmalı: tek satır, bir günlük çıkarımı çürüttü — ama o satır GEÇİCİDİR.
+  Aynı 401 kaydı olaydan 42 dk sonra görünüyordu, 95 dk sonra kaybolmuştu:
+  Hobby'de saklama ~1 saat ve sorgu penceresini 3 saate açmak veriyi geri
+  getirmiyor, yalnız hâlâ saklanan kısmı gösteriyor. Yani dış log bir KANIT
+  PENCERESİDİR: arıza saatini biliyorsan HEMEN bak, sonra "log yok" ile "olay
+  yok" ayırt edilemez hâle gelir; (4) kimlik doğrulamasız uçta hata izi bırakmak
+  isterken tabloyu şişirme kapısı açma — yazımı dış sistemin kendi imzasıyla
+  (`x-vercel-cron-schedule`, dokümandan doğrulandı, uydurulmadı) ve iş başına
+  saatte bir satırla sınırla; (5) BAŞARISIZ son koşu, nabzın tazeliğini
+  "sağlıklı" saydırmamalı — `ok=false` satırı yazılır yazılmaz alarmın susması,
+  sessiz kusurun ta kendisi olurdu.
+  **Güçlendirme-2 (2026-09-13, aynı gün, ÜÇÜNCÜ tekrar) — SONA yazan bir ölçüm
+  kendi ölümünü kaydedemez:** `CRON_SECRET` eklendi, cron elle tetiklendi, auth
+  kapısı geçildi… ve tablo YİNE boş kaldı. Üçüncü kör nokta: nabız satırı
+  `await fn()` DÖNDÜKTEN sonra yazılıyordu, fonksiyon ise 60 sn'lik Vercel
+  limitinde `504 Task timed out` ile ÖLDÜRÜLDÜ — insert satırına hiç sıra gelmedi.
+  Yani "hiç tetiklenmedi" ile "tetiklendi ve yarıda kesildi" üçüncü kez aynı
+  göründü. Çözüm: koşu BAŞLARKEN `finished_at = NULL` satırı yaz, bitişte onu
+  UPDATE et; `finished_at IS NULL` + eski `started_at` = "başladı, bitmedi".
+  Kural: bir ölçüm noktasını yerleştirirken "işlem buraya VARAMADAN ölürse geriye
+  ne kalır?" diye sor — tek yazım anı sondaysa cevap "hiçbir şey"dir; başlangıç
+  ve kapanış AYRI iki yazım olmalı. **Timeout'un sebebi ise bütçe aritmetiğiydi:**
+  rota her org'a `50_000 ms` veriyordu ama `maxDuration` fonksiyonun TAMAMI için
+  60 sn — üç bağlı org varken ilki bütçeyi tek başına yiyor, ikincisi yarıda
+  kesiliyor, üçüncüsüne (Ophir) HİÇ sıra gelmiyordu; sıra sabit olduğu için de
+  hep AYNI org aç kalıyordu. Kural: (a) çok hedefli zamanlanmış işte bütçe hedef
+  başına değil KOŞU başına verilir, kalan süre paylaştırılır; (b) kalan süre bir
+  hedefe yetmiyorsa yeni iş BAŞLATILMAZ (yarıda kesilen çağrı 504 üretir ve
+  kapanış kaydını da götürür), ertelenir; (c) sıra en bayat hedeften başlar
+  (`last_sync_at` artan) — erteleme adil olur, kalıcı açlık imkânsızlaşır;
+  (d) `targetCount` ERTELENENLERİ saymaz, yoksa "sıfır hedef" kapısı ertelemeyi
+  iş sanıp yeşil gösterir. Yan not: 504 "hiçbir şey olmadı" DEMEK DEĞİL — devam
+  ettirilebilir senkron olduğu için o koşuda Jade 3 Eylül'den 13 Eylül'e atlamıştı;
+  kısmi ilerlemeyi hata koduna bakarak değil VERİDEN doğrula.
 
 - **Bir oranı ölçerken PAYDANIN hangi kümeyi temsil ettiğini şemadan doğrula;
   mühür ve çapraz doğrulama yanlış girdiyi SADAKATLE mühürler (2026-08-27):**
