@@ -267,6 +267,57 @@ hemen ardından yanlış alarm vermez.
 
 ---
 
+## EK-2 (2026-09-13 sabahı) — KÖK NEDEN BULUNDU: cron tetikleniyor, rota reddediyor
+
+Yukarıdaki "cron tetiklenmiyor" teşhisi **yarı yanlıştı** ve düzeltiliyor.
+
+Ertesi sabah nabız tablosu yine boştu. Dağıtımın cron saatinden **7 saat önce**
+READY olduğu doğrulandı (`57e28ac`, 12 Eylül 22:51 UTC), yani ölçüm yerindeydi —
+ve ben bunu "cron gerçekten hiç tetiklenmiyor, kanıtlandı" diye okudum.
+**Kanıt sağlamdı, çıkarım yanlıştı.**
+
+Vercel → Settings → Cron Jobs ekranı üç cron'un da **kayıtlı ve Enabled**
+olduğunu gösterdi. (Aynı ekran iki şeyi daha söyledi: "Hobby'de 2 cron limiti"
+ihtimali çürüdü, ve *"Cron jobs on Hobby have a flexible time window of 1-hour"*
+satırı ağustostaki 06:04 / 06:43 / 07:07 yazımlarının neden hep o aralığa
+düştüğünü açıkladı — o kayıtların cron olduğu teşhisi doğruymuş.)
+
+Gerçeği tek bir runtime log satırı söyledi:
+
+```
+08:44:25  GET /api/cron/etsy-variants  401
+```
+
+`0 8 * * *` cron'u esnek penceresinde tetiklendi ve rota onu **auth kapısında**
+geri çevirdi. Sebep: production'daki `CRON_SECRET` eksik ya da Vercel'in
+gönderdiğiyle uyuşmuyor. Üç rotada kapı aynı olduğu için `etsy-sync` de her
+sabah aynı 401'i alıyor.
+
+### Ölçümün kendi kör noktası
+
+Nabız `recordCronRun` içindeydi — yani **auth kontrolünden SONRA**. Bu yüzden
+"hiç tetiklenmedi" ile "tetiklendi ve 401 yedi" yeni ölçümde de aynı görünüyordu,
+oysa aksiyonları bambaşka yerde: biri Vercel cron kaydı, diğeri ortam değişkeni.
+
+Düzeltildi:
+
+- `recordCronAuthFailure` — 401 yolunda da nabız satırı bırakır. Yazım iki
+  sınırla korunuyor (uç kimlik doğrulamasız çağrılabiliyor): yalnız Vercel'in
+  cron çağrılarında bulunan `x-vercel-cron-schedule` başlığı varsa, ve iş başına
+  saatte en fazla bir satır.
+- Yeni `cron_auth_failed` uyarısı aksiyonu doğru yere yollar (Environment
+  Variables), `cron_not_firing` ve `sync_snapshot_stale` bastırılır.
+- Son koşu `ok=false` ise nabzın **tazeliği artık sağlık sayılmıyor** — aksi
+  hâlde 401 satırı yazılır yazılmaz alarm susardı.
+
+### Sahibin yapacağı
+
+**Vercel → jade-gold-nyc → Settings → Environment Variables → `CRON_SECRET`**,
+Production kapsamında tanımlı mı? Değilse tanımla, sonra yeniden dağıt. Doğru
+çalıştığının kanıtı ertesi sabah `cron_run`'da `ok=true` bir satırdır.
+
+---
+
 ## Kaynaklar
 
 - [Etsy Seller Handbook — Making the Most of Seasonal Sales Patterns](https://www.etsy.com/sg-en/seller-handbook/article/making-the-most-of-seasonal-sales/45451604718)

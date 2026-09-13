@@ -26,6 +26,62 @@ export type CronJobPath =
   | "/api/cron/etsy-variants"
   | "/api/cron/shipstation-sync";
 
+/**
+ * AUTH KAPISINDA ÖLEN CRON'U KAYDET — nabzın ilk sürümündeki kör nokta.
+ *
+ * Vaka (2026-09-13): nabız kuruldu, ertesi sabah tablo yine boştu ve "cron hiç
+ * tetiklenmiyor" diye okundu. Yanlıştı. Vercel runtime log'u tek satırla gerçeği
+ * söyledi: `GET /api/cron/etsy-variants 401` — cron TETİKLENİYORDU, rota onu
+ * kapıda geri çeviriyordu (`CRON_SECRET` uyuşmazlığı). Nabız `recordCronRun`
+ * içinde, auth kontrolünden SONRA yazıldığı için bu durum hiç iz bırakmıyordu:
+ * "hiç koşmadı" ile "koştu ve 401 yedi" ölçümde AYNI görünüyordu — oysa ikisinin
+ * aksiyonu tamamen farklı (biri Vercel'de cron kaydı, diğeri ortam değişkeni).
+ *
+ * Güvenlik: bu uç kimlik doğrulamasız çağrılabildiği için her 401'i yazmak
+ * tabloyu şişirmeye açık bir kapı olurdu. İki sınır var:
+ *   1. yalnız Vercel'in cron çağrılarında bulunan `x-vercel-cron-schedule`
+ *      başlığı varsa yazılır (Vercel cron-jobs dokümanında tanımlı),
+ *   2. iş başına saatte EN FAZLA bir satır (aynı arıza günde bir kez anlatılır).
+ * Başlık taklit edilebilir ama (2) yazımı sınırladığı için etkisi yok.
+ */
+export async function recordCronAuthFailure(
+  admin: SupabaseClient,
+  job: CronJobPath,
+  headers: Headers,
+): Promise<void> {
+  const schedule = headers.get("x-vercel-cron-schedule");
+  // Zamanlayıcıdan gelmeyen istek (rastgele tarama) iz bırakmaz.
+  if (!schedule) return;
+
+  const oneHourAgo = new Date(Date.now() - 3_600_000).toISOString();
+  const { data: recent, error: readErr } = await admin
+    .from("cron_run")
+    .select("id")
+    .eq("job", job)
+    .gte("started_at", oneHourAgo)
+    .limit(1);
+  if (readErr) {
+    console.error(`[cron ${job}] nabız okunamadı:`, readErr.message);
+    return;
+  }
+  if ((recent ?? []).length > 0) return;
+
+  const now = new Date().toISOString();
+  const reason =
+    "zamanlayıcı tetikledi ama rota 401 döndü — CRON_SECRET ortam değişkeni " +
+    "eksik ya da Vercel'in gönderdiğiyle uyuşmuyor";
+  const { error } = await admin.from("cron_run").insert({
+    job,
+    started_at: now,
+    finished_at: now,
+    ok: false,
+    target_count: 0,
+    detail: { reason, authFailure: true, schedule },
+  });
+  if (error) console.error(`[cron ${job}] 401 nabzı yazılamadı:`, error.message);
+  console.error(`[cron ${job}] BAŞARISIZ — ${reason}`);
+}
+
 export interface CronRunOutcome {
   /** İşlenen hedef (org) sayısı. */
   targetCount: number;

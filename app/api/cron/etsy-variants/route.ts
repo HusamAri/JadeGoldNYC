@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { createAdminClient } from "@/lib/supabase/admin";
-import { recordCronRun } from "@/lib/cron-heartbeat";
+import { recordCronAuthFailure, recordCronRun } from "@/lib/cron-heartbeat";
 import { syncListingVariants } from "@/lib/etsy/variants";
 
 // Envanter gezme birden çok listing çağrısı yapar; süreyi uzat.
@@ -18,6 +18,10 @@ export async function GET(request: Request) {
   const secret = process.env.CRON_SECRET;
   const auth = request.headers.get("authorization");
   if (!secret || auth !== `Bearer ${secret}`) {
+    // Zamanlayıcı tetikleyip burada 401 yiyorsa bu SESSİZ kalmamalı: nabız
+    // aşağıda, auth'tan SONRA yazılıyor — yani "hiç koşmadı" ile "koştu ve
+    // reddedildi" aksi hâlde ayırt edilemez (2026-09-13 vakası).
+    await recordCronAuthFailure(createAdminClient(), "/api/cron/etsy-variants", request.headers);
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 
