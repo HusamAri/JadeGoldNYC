@@ -5,6 +5,7 @@ import type { EtsyClient } from "@/lib/etsy/client";
 import { buildOphirPriceRestorePlan } from "@/lib/ophir-price-restore-plan";
 import {
   OPHIR_RESTORE_SHOP_ID,
+  loadOphirRestorePlan,
   ophirRestoreGridSummary,
   ophirRestorePricesCsv,
   processOphirRestoreListing,
@@ -15,9 +16,9 @@ const ORG = "11111111-1111-4111-8111-111111111111";
 const PRODUCT = "22222222-2222-4222-8222-222222222222";
 const LISTING = 4_549_712_730;
 type Row = Record<string, unknown>;
-type Result = { data: Row[] | Row | null; error: null; count?: number };
+type Result = { data: Row[] | Row | null; error: { code?: string; message?: string } | null; count?: number | null; status?: number };
 type Filter = { method: string; key: string; value: unknown };
-type QuerySpec = { table: string; patch?: Row; filters: Filter[]; single: boolean };
+type QuerySpec = { table: string; patch?: Row; filters: Filter[]; single: boolean; selection?: string; head?: boolean; limit?: number };
 
 function variantId(index: number) { return `33333333-3333-4333-8333-${String(index + 1).padStart(12, "0")}`; }
 function auditId(index: number) { return `44444444-4444-4444-8444-${String(index + 1).padStart(12, "0")}`; }
@@ -28,14 +29,15 @@ class Query implements PromiseLike<Result> {
   constructor(table: string, private readonly execute: (spec: QuerySpec) => Result) {
     this.spec = { table, filters: [], single: false };
   }
-  select() { return this; }
+  select(fields?: string, options?: { head?: boolean }) { this.spec.selection = fields; this.spec.head = options?.head; return this; }
   order() { return this; }
-  limit() { return this; }
+  limit(value: number) { this.spec.limit = value; return this; }
   update(patch: Row) { this.spec.patch = patch; return this; }
   eq(key: string, value: unknown) { this.spec.filters.push({ method: "eq", key, value }); return this; }
   in(key: string, value: unknown[]) { this.spec.filters.push({ method: "in", key, value }); return this; }
   is(key: string, value: unknown) { this.spec.filters.push({ method: "is", key, value }); return this; }
   gte(key: string, value: unknown) { this.spec.filters.push({ method: "gte", key, value }); return this; }
+  lt(key: string, value: unknown) { this.spec.filters.push({ method: "lt", key, value }); return this; }
   gt(key: string, value: unknown) { this.spec.filters.push({ method: "gt", key, value }); return this; }
   or(value: string) { this.spec.filters.push({ method: "or", key: "paired_identity", value }); return this; }
   maybeSingle() { this.spec.single = true; return this; }
@@ -45,6 +47,17 @@ class Query implements PromiseLike<Result> {
   ): PromiseLike<TResult1 | TResult2> {
     return Promise.resolve(this.execute(this.spec)).then(onfulfilled, onrejected);
   }
+}
+
+function projectedAudit(row: Row): Row {
+  const result: Row = { id: row.id, created_at: row.created_at, entity_type: row.entity_type, entity_id: row.entity_id };
+  for (const side of ["before", "after"]) {
+    const identity = row[side] as Row;
+    for (const field of ["id", "sku", "product_id", "etsy_listing_id", "currency", "price_cents"]) {
+      result[`${side}_${field}`] = identity?.[field] ?? null;
+    }
+  }
+  return result;
 }
 
 function identityPairs(filter: string): { id: string; sku: string }[] {
@@ -83,7 +96,7 @@ function fixture(count = 1, skus?: string[]) {
     if (spec.table === "audit_log") {
       const entity = spec.filters.find((filter) => filter.key === "entity_type")?.value;
       const ids = spec.filters.find((filter) => filter.key === "entity_id")?.value as string[];
-      return { data: state.laterAudits.filter((row) => row.entity_type === entity && ids.includes(row.entity_id as string)), error: null };
+      return { data: state.laterAudits.filter((row) => row.entity_type === entity && ids.includes(row.entity_id as string)).map(projectedAudit), error: null };
     }
     const source = spec.table === "product_variants" ? variants : [product];
     if (spec.patch && spec.table === "product_variants" && state.swapSkusOnNextVariantUpdate) {
@@ -322,4 +335,80 @@ test("grid summary exposes exact per-color prior values behind a collapsed workb
   assert.equal(group.prior_max_cents, 55_000);
   assert.equal(group.last_change_min_cents, 74_000);
   assert.deepEqual(group.variants.map((variant) => variant.prior_cents), [54_500, 55_000, 55_000]);
+});
+
+function auditReadFixture(options: { transientPageFailures?: number; permanentCode?: string; missingCountRow?: boolean } = {}) {
+  const f = fixture();
+  const variant = f.state.variants[0];
+  const product = f.state.product;
+  const rows: Row[] = [{ id: auditId(0), created_at: "2026-08-29T18:59:00.000001Z", entity_type: "product_variants", entity_id: variant.id,
+    before: { ...variant, price_cents: 100, unrelated: "never projected" }, after: { ...variant } },
+  { id: "55555555-5555-4555-8555-555555555555", created_at: "2026-08-29T18:59:01.000001Z", entity_type: "products", entity_id: PRODUCT,
+    before: { ...product, price_cents: 100 }, after: { ...product } }];
+  const queries: QuerySpec[] = [];
+  let failures = options.transientPageFailures ?? 0;
+  const client = { from: (table: string) => new Query(table, (spec) => {
+    queries.push(structuredClone(spec));
+    assert.equal(spec.table, "audit_log");
+    assert.ok(!spec.patch, "Audit retries must remain reads");
+    if (spec.head) return { data: null, error: null, count: rows.length + (options.missingCountRow ? 1 : 0), status: 200 };
+    if (options.permanentCode) return { data: null, error: { code: options.permanentCode, message: "SQL, URL, or token must never escape" }, status: 403 };
+    if (failures > 0) { failures--; return { data: null, error: { code: "57014", message: "SQL, URL, or token must never escape" }, status: 500 }; }
+    const cursor = spec.filters.find((filter) => filter.method === "gt" && filter.key === "id")?.value as string | undefined;
+    return { data: rows.filter((row) => !cursor || (row.id as string) > cursor).slice(0, spec.limit).map(projectedAudit), error: null, status: 200 };
+  }) } as unknown as SupabaseClient;
+  return { client, queries, expectedPlan: f.input.plan };
+}
+
+test("audit SELECT projects only exact identity leaves and reconstructs the unchanged complete hash", async () => {
+  const f = auditReadFixture();
+  const plan = await loadOphirRestorePlan(f.client, ORG);
+  assert.equal(plan.manifestHash, f.expectedPlan.manifestHash);
+  assert.deepEqual(plan.manifest, f.expectedPlan.manifest);
+  assert.deepEqual(plan.productAnchors, f.expectedPlan.productAnchors);
+  assert.equal(plan.minAuditTimestamp, "2026-08-29T18:59:00.000001Z");
+  assert.equal(plan.productAnchors[0].sku, null);
+  for (const query of f.queries.filter((query) => !query.head)) {
+    const fields = query.selection!;
+    assert.ok(!fields.includes("before:diff->before") && !fields.includes("after:diff->after"));
+    for (const side of ["before", "after"]) {
+      for (const field of ["id", "sku", "product_id", "etsy_listing_id", "currency", "price_cents"]) {
+        assert.ok(fields.includes(`${side}_${field}:diff->${side}->${field}`));
+      }
+    }
+    assert.ok(!fields.includes("->>"), "JSON prices must retain their original leaf type");
+  }
+});
+
+test("a transient audit read retries the same keyset page twice then returns the same manifest hash", async () => {
+  const f = auditReadFixture({ transientPageFailures: 2 });
+  const plan = await loadOphirRestorePlan(f.client, ORG);
+  assert.equal(plan.manifestHash, f.expectedPlan.manifestHash);
+  const reads = f.queries.filter((query) => !query.head);
+  assert.equal(reads.length, 4, "Three attempts on the first page, then one terminal empty page");
+  assert.deepEqual(reads[0], reads[1]);
+  assert.deepEqual(reads[1], reads[2]);
+});
+
+test("persistent transient failures stop after three attempts with database-code-only diagnostics", async () => {
+  const f = auditReadFixture({ transientPageFailures: 3 });
+  await assert.rejects(loadOphirRestorePlan(f.client, ORG), (error: unknown) => {
+    assert.equal((error as Error).message, "The pinned pricing audit window could not be read. Database code: 57014.");
+    return true;
+  });
+  assert.equal(f.queries.filter((query) => !query.head).length, 3);
+});
+
+test("permanent audit failure is not retried and cannot return a partial plan or hash", async () => {
+  const f = auditReadFixture({ permanentCode: "42501" });
+  await assert.rejects(loadOphirRestorePlan(f.client, ORG), (error: unknown) => {
+    assert.equal((error as Error).message, "The pinned pricing audit window could not be read. Database code: 42501.");
+    return true;
+  });
+  assert.equal(f.queries.filter((query) => !query.head).length, 1);
+});
+
+test("audit page/count mismatch still fails instead of returning an incomplete manifest hash", async () => {
+  const f = auditReadFixture({ missingCountRow: true });
+  await assert.rejects(loadOphirRestorePlan(f.client, ORG), /audit window changed while it was being collected/);
 });

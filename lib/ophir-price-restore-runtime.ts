@@ -25,18 +25,24 @@ export const EXPECTED_OPHIR_RESTORE_MANIFEST_HASH = "97ff79e7959c85d19ac322962bc
 const PAGE_SIZE = 1_000;
 const MAX_AUDIT_ROWS = 100_000;
 const MAX_CAS_PAIRS = 50;
-const AUDIT_FIELDS = "id, created_at, entity_type, entity_id, before:diff->before, after:diff->after";
+const AUDIT_IDENTITY_FIELDS = ["id", "sku", "product_id", "etsy_listing_id", "currency", "price_cents"] as const;
+// JSON -> preserves numeric/null values; no unrelated full-row diff is transferred.
+const AUDIT_FIELDS = "id, created_at, entity_type, entity_id, " + ["before", "after"]
+  .flatMap((side) => AUDIT_IDENTITY_FIELDS.map((field) => `${side}_${field}:diff->${side}->${field}`)).join(", ");
+const READ_ATTEMPTS = 3;
+const TRANSIENT_DATABASE_CODES = new Set([
+  "40001", "40P01", "53300", "55P03", "57014", "57P01", "57P02", "57P03",
+  "PGRST001", "PGRST002", "PGRST003",
+]);
 const CURRENT_FIELDS = "id, sku, product_id, etsy_listing_id, currency, price_cents";
 
 type Entity = "product_variants" | "products";
 type Row = Record<string, unknown>;
-type AuditRow = {
+type AuditRow = Row & {
   id: string;
   created_at: string;
   entity_type: Entity;
   entity_id: string;
-  before: unknown;
-  after: unknown;
 };
 export type OphirRestoreListing = OphirPriceRestorePlan["listingGroups"][number];
 export interface OphirRestorePreviewProof {
@@ -128,11 +134,42 @@ function identity(value: Row): OphirPriceAuditIdentity {
   };
 }
 function priceChange(row: AuditRow): OphirPriceAuditRecord | null {
-  const before = object(row.before);
-  const after = object(row.after);
-  if (!before || !after || before.price_cents === after.price_cents) return null;
+  const projected = (side: string): Row => Object.fromEntries(AUDIT_IDENTITY_FIELDS.map((field) => [field, row[`${side}_${field}`]]));
+  const before = projected("before");
+  const after = projected("after");
+  if (before.price_cents === after.price_cents) return null;
   return { audit_id: row.id, created_at: row.created_at, entity_id: row.entity_id,
     before: identity(before), after: identity(after) };
+}
+function databaseCode(error: unknown): string {
+  const code = object(error)?.code;
+  return typeof code === "string" && /^(?:[0-9A-Z]{5}|PGRST\d{3})$/.test(code) ? code : "UNKNOWN";
+}
+function transientRead(error: unknown, status?: number): boolean {
+  const code = databaseCode(error);
+  if (code !== "UNKNOWN") return code.startsWith("08") || TRANSIENT_DATABASE_CODES.has(code);
+  return [0, 408, 429, 502, 503, 504].includes(status ?? -1);
+}
+function transientThrownRead(error: unknown): boolean {
+  const causeCode = object(object(error)?.cause)?.code;
+  return ["ECONNRESET", "ETIMEDOUT", "EAI_AGAIN", "UND_ERR_CONNECT_TIMEOUT", "UND_ERR_SOCKET"].includes(String(causeCode ?? "")) ||
+    (error instanceof TypeError && /^(?:fetch failed|Failed to fetch|Network request failed)$/i.test(error.message));
+}
+/** Each retry reconstructs only an audit SELECT; no write is ever retried here. */
+async function auditRead<T extends { error: unknown; status?: number }>(factory: () => PromiseLike<T>, message: string): Promise<T> {
+  for (let attempt = 0; attempt < READ_ATTEMPTS; attempt++) {
+    let result: T;
+    try { result = await factory(); }
+    catch (error) {
+      if (!transientThrownRead(error) || attempt === READ_ATTEMPTS - 1) fail(`${message} Database code: ${databaseCode(error)}.`);
+      await new Promise((resolve) => setTimeout(resolve, 150 * (attempt + 1)));
+      continue;
+    }
+    if (!result.error) return result;
+    if (!transientRead(result.error, result.status) || attempt === READ_ATTEMPTS - 1) fail(`${message} Database code: ${databaseCode(result.error)}.`);
+    await new Promise((resolve) => setTimeout(resolve, 150 * (attempt + 1)));
+  }
+  fail(`${message} Database code: UNKNOWN.`);
 }
 function hash(value: string): string { return createHash("sha256").update(value).digest("hex"); }
 function pairedIdentityFilter(targets: readonly OphirVariantRestoreTarget[]): string {
@@ -150,19 +187,20 @@ export async function loadOphirRestorePlan(client: SupabaseClient, orgId: string
   const base = () => client.from("audit_log").select(AUDIT_FIELDS)
     .eq("org_id", orgId).eq("action", "update").in("entity_type", ["product_variants", "products"])
     .gte("created_at", since).lt("created_at", until);
-  const { count, error: countError } = await client.from("audit_log").select("id", { count: "exact", head: true })
+  const { count } = await auditRead(() => client.from("audit_log").select("id", { count: "exact", head: true })
     .eq("org_id", orgId).eq("action", "update").in("entity_type", ["product_variants", "products"])
-    .gte("created_at", since).lt("created_at", until);
-  if (countError || count === null || count > MAX_AUDIT_ROWS) fail("The complete pinned audit window could not be verified within its safety bound.");
+    .gte("created_at", since).lt("created_at", until), "The pinned audit window count could not be read.");
+  if (count === null || count > MAX_AUDIT_ROWS) fail("The complete pinned audit window could not be verified within its safety bound.");
   const variantRecords: OphirPriceAuditRecord[] = [];
   const productRecords: OphirPriceAuditRecord[] = [];
   let cursor: string | null = null;
   let scanned = 0;
   while (true) {
-    let query = base().order("id", { ascending: true }).limit(PAGE_SIZE);
-    if (cursor) query = query.gt("id", cursor);
-    const { data, error } = await query;
-    if (error) fail("The pinned pricing audit window could not be read.");
+    const { data } = await auditRead(() => {
+      let query = base().order("id", { ascending: true }).limit(PAGE_SIZE);
+      if (cursor) query = query.gt("id", cursor);
+      return query;
+    }, "The pinned pricing audit window could not be read.");
     const rows = (data ?? []) as unknown as AuditRow[];
     if (!rows.length) break;
     scanned += rows.length;
@@ -230,12 +268,13 @@ async function ensureNoLaterPriceChange(client: SupabaseClient, orgId: string, l
       let cursor: string | null = null;
       let scanned = 0;
       while (true) {
-        let query = client.from("audit_log").select(AUDIT_FIELDS).eq("org_id", orgId)
-          .eq("entity_type", entity).eq("action", "update").gte("created_at", OPHIR_PRICE_RESTORE_WINDOW.until)
-          .in("entity_id", ids.slice(start, start + 100)).order("id", { ascending: true }).limit(PAGE_SIZE);
-        if (cursor) query = query.gt("id", cursor);
-        const { data, error } = await query;
-        if (error) fail(`Later price history could not be verified for listing ${listing.listingId}.`);
+        const { data } = await auditRead(() => {
+          let query = client.from("audit_log").select(AUDIT_FIELDS).eq("org_id", orgId)
+            .eq("entity_type", entity).eq("action", "update").gte("created_at", OPHIR_PRICE_RESTORE_WINDOW.until)
+            .in("entity_id", ids.slice(start, start + 100)).order("id", { ascending: true }).limit(PAGE_SIZE);
+          if (cursor) query = query.gt("id", cursor);
+          return query;
+        }, `Later price history could not be verified for listing ${listing.listingId}.`);
         const rows = (data ?? []) as unknown as AuditRow[];
         if (!rows.length) break;
         scanned += rows.length;
