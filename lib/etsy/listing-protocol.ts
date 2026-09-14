@@ -46,7 +46,10 @@ import {
  *    (`"Wedding Bands"` yoksa `"Rings"`) canlıda kanıtlı ve birebir korunuyor.
  */
 
-export type ListingProtocolId = "wedding_band" | "pendant_necklace";
+export type ListingProtocolId =
+  | "wedding_band"
+  | "pendant_necklace"
+  | "chain_bracelet";
 
 export interface ParcelSpec {
   weight: number;
@@ -97,12 +100,15 @@ const RING_PARCEL: ParcelSpec = {
 };
 
 /**
- * Kolye kutusu + koruyucu zarf. Yüzük kutusundan daha uzun ve daha yassı.
- * Bu ölçüler Etsy'nin zorunlu alanını doldurmak içindir; ABD'de kargo
- * ücretsizdir ve bedeli fiyata gömülüdür, yani ölçü alıcıya bir bedel
- * yansıtmaz. Gerçek kutu seçildiğinde GÜNCELLENMELİ.
+ * Zincirli takı kutusu + koruyucu zarf — kolye ve bileklik AYNI kutuya girer,
+ * o yüzden tek sabit. Yüzük kutusundan daha uzun ve daha yassı.
+ *
+ * Bu ölçüler Etsy'nin ZORUNLU alanını doldurmak içindir; ABD'de kargo ücretsiz
+ * ve bedeli fiyata gömülü, yani ölçü alıcıya bir bedel yansıtmaz. İKİSİ DE
+ * VARSAYIM: gerçek kutu seçildiğinde güncellenmeli. İkinci bir uydurma set
+ * yazmaktansa tek sabit paylaşılıyor — böylece düzeltme de tek yerde olur.
  */
-const NECKLACE_PARCEL: ParcelSpec = {
+const CHAIN_JEWELRY_PARCEL: ParcelSpec = {
   weight: 4,
   weight_unit: "oz",
   length: 7,
@@ -133,7 +139,24 @@ export const LISTING_PROTOCOLS: Record<ListingProtocolId, ListingProtocolSpec> =
     // Bu protokolde iç gravür yok. Alyansın 30 karakterlik gravür sorusunu
     // kolyeye taşımak, olmayan bir hizmeti vaat etmek olurdu.
     personalization: null,
-    parcel: NECKLACE_PARCEL,
+    parcel: CHAIN_JEWELRY_PARCEL,
+  },
+  chain_bracelet: {
+    id: "chain_bracelet",
+    label: "Chain bracelet",
+    // "Bracelets" da ağaçta birden çok dalda geçebilir; kök iddiası şart.
+    // UYARI: bu adlar CANLI taksonomiye karşı doğrulanmadı. Çözücü ada göre
+    // arar ve bulamazsa BAĞIRARAK durur, yani yanlış ad sessiz hata üretmez —
+    // ama ilk push'tan önce
+    // GET /v3/application/seller-taxonomy/nodes ile teyit edilmeli.
+    taxonomyNames: ["Chain & Link Bracelets", "Bracelets"],
+    taxonomyRoot: "Jewelry",
+    // Bileklik boyu bir varyasyon eksenidir ama ZORUNLU değil: tek bedenli
+    // bileklik de satılabilir. Eksen dayatmak, düzeltmeye çalıştığımız yanlış
+    // pozitifin aynısını üretirdi.
+    requiredVariationAxes: [],
+    personalization: null,
+    parcel: CHAIN_JEWELRY_PARCEL,
   },
 };
 
@@ -142,6 +165,7 @@ const PRODUCT_TYPE_PROTOCOL: Record<string, ListingProtocolId> = {
   ring: "wedding_band",
   necklace: "pendant_necklace",
   pendant: "pendant_necklace",
+  bracelet: "chain_bracelet",
 };
 
 /**

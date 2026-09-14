@@ -102,8 +102,26 @@ test("listing_metadata.listingProtocol product_type'ı ezer", () => {
   assert.equal(spec?.id, "pendant_necklace");
 });
 
-test("tanınmayan ürün tipi sessizce yüzük sayılmaz, null döner", () => {
-  for (const type of ["bracelet", "earrings", "anklet", "brooch", "other"]) {
+test("bileklik kendi protokolüne çözülür (2026-09-14'te eklendi)", () => {
+  const spec = resolveListingProtocol({ product_type: "bracelet" });
+  assert.equal(spec?.id, "chain_bracelet");
+  assert.equal(spec?.requiredVariationAxes.length, 0);
+  assert.equal(spec?.personalization, null);
+  // Kolye ile AYNI koli sabitini paylaşır — iki uydurma set yerine tek sabit.
+  assert.deepEqual(spec?.parcel, LISTING_PROTOCOLS.pendant_necklace.parcel);
+});
+
+test("bileklik taksonomisi Jewelry kökünden çözülür", async () => {
+  const r = await resolveTaxonomyIdForProtocol(
+    fakeClient(),
+    LISTING_PROTOCOLS.chain_bracelet,
+  );
+  // Sahte ağaçta "Chain & Link Bracelets" yok, "Bracelets" var → ikinci adaya düşer.
+  assert.deepEqual(r, { ok: true, taxonomyId: 40 });
+});
+
+test("hâlâ tanınmayan ürün tipi sessizce yüzük sayılmaz, null döner", () => {
+  for (const type of ["earrings", "anklet", "brooch", "other"]) {
     assert.equal(resolveListingProtocol({ product_type: type }), null, type);
     assert.match(unknownProtocolError({ product_type: type }), /protokolü tanımlı değil/);
   }
@@ -125,6 +143,7 @@ const FAKE_TREE = [
     children: [
       { id: 10, name: "Rings", children: [{ id: 11, name: "Wedding Bands" }] },
       { id: 20, name: "Necklaces", children: [{ id: 1229, name: "Pendant Necklaces" }] },
+      { id: 40, name: "Bracelets", children: [] },
     ],
   },
   {
