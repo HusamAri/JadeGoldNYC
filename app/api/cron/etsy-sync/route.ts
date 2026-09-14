@@ -38,18 +38,39 @@ export async function GET(request: Request) {
   const report = await recordCronRun(admin, "/api/cron/etsy-sync", async () => {
     // Bağlantı sorgusunun hatası YUTULMAZ: düşerse `conns` null gelir, döngü
     // hiç dönmez ve iş "sorunsuz" görünürdü — tam olarak sessiz kusur.
-    // Sıra EN BAYAT org'dan başlar: hiç senkronlanmamış (null) org başa geçer.
-    // Sabit sıra, son org'u kalıcı olarak aç bırakıyordu (bkz. createBudget).
     const { data: conns, error } = await admin
       .from("etsy_connection")
-      .select("org_id, last_sync_at")
-      .eq("status", "connected")
-      .order("last_sync_at", { ascending: true, nullsFirst: true });
+      .select("org_id, sync_status, sync_updated_at")
+      .eq("status", "connected");
     if (error) throw new Error(`etsy_connection sorgusu: ${error.message}`);
 
     const results: Record<string, unknown> = {};
     const failed: string[] = [];
-    const rows = (conns ?? []) as { org_id: string }[];
+    const rows = (conns ?? []) as {
+      org_id: string;
+      sync_status: string | null;
+      sync_updated_at: string | null;
+    }[];
+
+    // SIRA — iki kademeli, ve `last_sync_at` BİLEREK kullanılmıyor:
+    //
+    // İlk denemede sıralama `last_sync_at`e göreydi ve İŞE YARAMADI (2026-09-13):
+    // o alan koşunun BAŞLADIĞI anı damgalıyor, verinin tazeliğini değil. 504 ile
+    // ölen koşu sıra kendisine gelmeden Ophir'in damgasını ilerletmişti; sonuç:
+    // verisi 29 Ağustos'ta kalmış org "az önce senkronlandı" görünüp yine sona
+    // düştü — yani açlık sürüyordu.
+    //
+    // Doğru sinyal `sync_status`: senkron devam ettirilebilir olduğu için yarıda
+    // kesilen org `running` olarak kalır (Ophir: phase `listings_all`). Yarım iş
+    // ÖNCE bitirilir, sonra en bayat ilerleme (`sync_updated_at`) gelir.
+    rows.sort((a, b) => {
+      const aOpen = a.sync_status === "done" ? 1 : 0;
+      const bOpen = b.sync_status === "done" ? 1 : 0;
+      if (aOpen !== bOpen) return aOpen - bOpen;
+      const at = a.sync_updated_at ? Date.parse(a.sync_updated_at) : 0;
+      const bt = b.sync_updated_at ? Date.parse(b.sync_updated_at) : 0;
+      return at - bt;
+    });
 
     // Bütçe KOŞU başına; maxDuration 60 sn, 10 sn'i kapanış/nabız için ayrılıyor.
     const budget = createBudget(50_000);

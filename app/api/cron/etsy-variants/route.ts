@@ -33,11 +33,13 @@ export async function GET(request: Request) {
 
   const report = await recordCronRun(admin, "/api/cron/etsy-variants", async () => {
     // En bayat org başa (bkz. createBudget — sabit sıra son org'u aç bırakır).
+    // `last_sync_at` DEĞİL `sync_updated_at`: ilki koşunun başladığı anı damgalar,
+    // yani yarıda ölen bir koşu bile onu tazelemiş gösterir (2026-09-13 vakası).
     const { data: conns, error } = await admin
       .from("etsy_connection")
-      .select("org_id, last_sync_at")
+      .select("org_id, sync_updated_at")
       .eq("status", "connected")
-      .order("last_sync_at", { ascending: true, nullsFirst: true });
+      .order("sync_updated_at", { ascending: true, nullsFirst: true });
     if (error) throw new Error(`etsy_connection sorgusu: ${error.message}`);
 
     const results: Record<string, unknown> = {};

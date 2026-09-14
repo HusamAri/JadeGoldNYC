@@ -318,6 +318,297 @@ Production kapsamında tanımlı mı? Değilse tanımla, sonra yeniden dağıt. 
 
 ---
 
+## EK-3 (2026-09-13 öğlen) — pencere açıldı, ölçüm yapıldı: "satış yok" premisi YANLIŞ
+
+`CRON_SECRET` tanımlandı, senkron 11:21'de `ok=true` ile koştu. EON verisi artık
+**13 Eylül**'de (snapshot + listing stats). Kör dönem ilk kez okundu.
+
+### 1. Kör hafta mağazanın REKOR haftasıydı
+
+| Hafta | Sipariş | Ciro | AOV |
+|---|---|---|---|
+| 24 Ağu | 4 | $3.007,93 | $751,98 |
+| 31 Ağu | 4 | $3.131,55 | $782,89 |
+| **7 Eyl** | **3** | **$4.681,56** | **$1.560,52** |
+
+7 Eylül haftası ciroda ve AOV'da mağaza tarihinin en yükseği. İçinde tek kalemde
+**$3.970**'lik 18K satin band var (12 Eyl, `4565352791`). Yani "EON satmıyor"
+diye bakılan günlerde mağaza en iyi işini yapıyormuş; panel kör olduğu için
+görünmüyordu. Bu tabloda fiyat kırmak kârı doğrudan yakardı.
+
+### 2. Trafik de düşmedi
+
+Snapshot aralıkları eşit değil, o yüzden gün sayısına bölündü:
+
+| Pencere | Gün | Görüntülenme | Günlük |
+|---|---|---|---|
+| 22–27 Ağu | 5 | 878 | 176 |
+| 27 Ağu–3 Eyl | 7 | 1.149 | 164 |
+| 3–5 Eyl | 2 | 318 | 159 |
+| 5–12 Eyl | 7 | 907 | **130** |
+| 12–13 Eyl | 1 | 154 | 154 |
+
+Düz seyir, 5–12 Eylül'de %20'lik bir çukur. Çukurun sebebi aşağıdaki 3. madde.
+
+### 3. ASIL BULGU — en çok trafik alan listing 12 Eylül'de yayından düştü
+
+`audit_log`, iki listing'in aynı anda `active` → `edit`'e geçtiğini gösteriyor
+(12 Eyl 22:46 senkronunda gözlendi):
+
+| Listing | Ürün | Durum | Ağu 27 → Eyl 5 görüntülenme | Sipariş |
+|---|---|---|---|---|
+| `4561855998` | 14K Kinetic Bead Ring (Fidget) | **edit** | 56 → 229 (**19/gün**) | 1 · $1.130 |
+| `4562238351` | 14K 3ct Oval Lab-Grown Diamond | **edit** | 8 → 34 (3/gün) | 0 |
+
+Kinetic Bead Ring tek başına mağaza trafiğinin **~%13'ü**ydü (19 / 164) ve
+dönüşüm yapmıştı. 12 Eylül'den itibaren ikisinin de görüntülenmesi **0**.
+
+**Çapraz doğrulama (ayrı Etsy alanı):** `getShop`'tan gelen
+`listing_active_count` = **112** (12 ve 13 Eyl), panelde `status='active'` olan
+113. İki `edit` listing mağazanın kendi aktif sayımında **yok** — yani bu
+`getListingsByShop`'un bilinen geçici `edit` gürültüsü (bkz. `sync.ts:222`)
+değil. İki bağımsız alan, 11 saat arayla iki ayrı koşu, aynı şeyi söylüyor.
+
+> Kesin olmayan tek şey Etsy tarafındaki SEBEP (yarım kalmış düzenleme oturumu,
+> politika uyarısı, envanter hatası). Bu panelden görülmez; Etsy → Listings
+> ekranından bakılmalı.
+
+**Bedel:** kaybedilen ~22 görüntülenme/gün × 8 gün ≈ **175 görüntülenme**.
+Kinetic ring 229 görüntülenmede 1 sipariş ($847,50 net) yaptı — kaba oranla
+görüntülenme başına ~$3,70 net, yani sekiz günde **~$550 net ciro**. Tek
+siparişlik örneklem, bu yüzden sert sayı değil büyüklük mertebesi; kesin olan
+kısım trafik kaybı.
+
+### 4. İndirim yaşıyor — bir listing hariç
+
+Eylül siparişlerinin ikisi tam **0,2500** aldı (195/780 ve 992,50/3.970). Ama
+8 Eylül'deki `4554024684` (10K Rose Gold Satin Center) siparişi **indirimsiz**
+geçti — aynı ailenin kardeşleri (`4554014095`, `4554025310`) indirimi alıyor.
+Tek sipariş, ama kontrol edilmeli: mağaza geneli indirimde o listing seçili mi?
+(Not: indirimsiz haliyle 46 görüntülenmede satmış, yani dönüşümü kötü değil.)
+
+### 5. Aksiyonlar — güncel
+
+**P0 (bugün, Etsy'de, sahibi yapar):**
+1. `4561855998` ve `4562238351`'i yayına geri al. Mağazanın en hızlı büyüyen
+   listing'i sekiz gündür kapalı; bu, elde kalan tek net satış kaybı.
+2. `4554024684`'ün mağaza geneli indirime dahil olduğunu doğrula.
+
+**P1 (reklam — ölçüm hâlâ kapalı):**
+3. `ad_daily_stats` **22 Ağustos**'ta duruyor (senkron düzeldi ama bu tablo elle
+   CSV ile besleniyor). ROAS hâlâ hesaplanamıyor → `/reklamlar/ice-aktar`.
+4. Bütçe adayı, veriden: `4565352791` (18K satin, $3.970) **11 görüntülenmede
+   1 sipariş** yaptı — katalogdaki en yüksek bedelli kalem, neredeyse sıfır
+   trafikle sattı. n=1, kanıt değil sinyal; ama 18K kademesine trafik koymanın
+   gerekçesi bu.
+
+**P2 (değişmedi):**
+5. Fiyat indirme / indirimi artırma **yok** — Bölüm 3'teki aritmetik aynen
+   geçerli (kârın %45'i gider, başa baş için +%81 sipariş gerekir).
+6. 44 taslak birikmiş (15 Tem – 11 Eyl). Yeni listing eklemeyi durdur.
+
+---
+
+## EK-4 (2026-09-13) — reklam verisi geldi: ROAS ilk kez hesaplandı
+
+Kullanıcı Etsy Reklam günlük CSV'sini (14 Ağu – 13 Eyl) verdi; `ad_daily_stats`'e
+yazıldı (`etsy_ads_csv`, 22 yeni gün). 14–22 Ağustos'taki eski 9 satır CSV ile
+**birebir** aynıydı — kaynak tutarlı.
+
+### Toplam (31 gün)
+
+| | |
+|---|---|
+| Harcama | **$419,61** ($13,54/gün) |
+| Gösterim | 21.144 |
+| Tıklama | 434 (**CTR %2,05**, tık başı **$0,97**) |
+| Atfedilen sipariş | **2** |
+| Atfedilen ciro (net) | $1.443,75 |
+| **ROAS** | **3,44** |
+| Sipariş başına maliyet | $209,81 |
+
+Aynı pencerede mağaza 14 sipariş ve **$12.250** net ürün cirosu yaptı — yani
+reklam cironun **%11,8**'ini açıklıyor, **%88'i organik**.
+
+### ROAS 3,44 iyi mi? Hayır, başa başın hemen ALTINDA
+
+Perakendede 3,44 kulağa iyi gelir ama ölçüt katkı marjıdır. Bölüm 3'teki
+maliyet yapısıyla (ham altın net cironun ~%49,4'ü, Etsy ücreti %11,7,
+işçilik/paket/kargo ~%11,9) **reklam öncesi katkı ≈ %27**, dolayısıyla:
+
+```
+başa baş ROAS = 1 / 0,27 ≈ 3,70
+```
+
+| | |
+|---|---|
+| Üretilen katkı ($1.443,75 × %27) | $389,81 |
+| Reklam harcaması | $419,61 |
+| **Net** | **−$29,80** |
+
+Yani 31 günde reklam kabaca **başa baş, hafif ekside**.
+
+> **Örneklem uyarısı — bu "reklam zarar ettiriyor" DEMEK DEĞİL.** Sonuç
+> **2 siparişe** dayanıyor. Tek bir $800'lük sipariş daha ROAS'ı 5,3'e çıkarır
+> ve tablo net kâra döner. Doğru okuma: reklam *aç/kapa* kararı verilecek
+> yerde değil, **tahsis** kararı verilecek yerde. %27 varsayımı ±1 puan
+> oynarsa başa baş ROAS 3,6–3,8 bandında gezer; 3,44 bu bandın içinde.
+
+### Asıl bulgu: 7 Eylül'de reklam envanteri çöktü
+
+| Pencere | Gün | Gösterim/gün | Tık/gün | CTR | Harcama/gün | Günlük bütçe |
+|---|---|---|---|---|---|---|
+| 14–22 Ağu | 9 | 1.027 | 22,9 | %2,23 | $22,61 | $25 |
+| 23–29 Ağu | 7 | 416 | 10,6 | %2,54 | $8,34 | **$8** |
+| 30 Ağu–6 Eyl | 8 | 812 | 14,6 | %1,80 | $15,03 | $15–25 |
+| **7–13 Eyl** | 7 | **356** | **5,3** | **%1,48** | **$5,35** | **$25** |
+
+Son satır anormal: bütçe $25 ama Etsy günde ancak **$5,35** harcayabiliyor.
+23–29 Ağustos'ta harcama düşüktü çünkü **bütçe** $8'di; 7–13 Eylül'de bütçe
+tam, harcanamıyor. Etsy gösterecek nitelikli yer bulamıyor.
+
+Kırılma **7 Eylül'de keskin**: 6 Eyl $12,16 / 13 tık → 7 Eyl **$2,04 / 3 tık**.
+
+Bu, EK-3'teki listing bulgusunu **bağımsız olarak üçgenliyor**. `4561855998`
+(Kinetic Bead Ring) en son 5 Eylül'de 229 görüntülenmedeydi, 12 Eylül'de 0;
+yani karartma 5–12 Eylül arasında bir yerde. Reklam gösterimi tam **7 Eylül'de**
+düştüğüne göre listing'ler 6–7 Eylül civarında reklam uygunluğundan çıkmış.
+Organik trafik aynı pencerede %21 düştü, reklam gösterimi **%56** — reklam çok
+daha sert düştü, ki bu belirli listing'lerin uygunluk dışı kalmasıyla uyumlu.
+
+> **Alternatif açıklama kayda geçiyor:** Etsy Ads gösterimi rekabet ve sezonla
+> da oynar, eylül yapısal olarak yavaş (Bölüm 4). Tek başına reklam verisi
+> listing'leri suçlayamaz; iki kanıtın ÇAKIŞMASI (aynı tarih penceresi + aktif
+> listing sayacı) teşhisi taşıyor.
+
+### Ne yapmalı
+
+Kullanıcı bildirdi: iki listing **üretim sorunu** yüzünden kapalı, çözülünce
+dönecekler. Yani EK-3'ün P0'ı beklemede ve trafik boşluğu kısa vadede
+kapanmayacak. Bu durumda:
+
+1. **Bütçeyi düşürme/kapatma gereği yok** — Etsy yalnız harcayabildiğini
+   fatura ediyor ($5,35/gün). Nominal $25 zarar üretmiyor.
+2. **Reklamı stokta olan ve dönüşen listing'lere odakla.** `4565352791`
+   (18K satin, $3.970) **11 görüntülenmede 1 sipariş** yaptı — katalogdaki en
+   yüksek bedelli kalem. Yüksek AOV, başa baş ROAS'ı aşmanın en kolay yolu:
+   aynı tık maliyetiyle sipariş başına ciro 4–5 kat.
+3. **İndirim artırmak bu tabloda başa baş ROAS'ı YÜKSELTİR.** Maliyetlerin çoğu
+   mutlak (altın, işçilik, paket); yalnız Etsy ücreti net ciroyla ölçekleniyor.
+   Liste 100 tabanında:
+
+   | | %25 indirim | %35 indirim |
+   |---|---|---|
+   | Net tahsilat | 75,00 | 65,00 |
+   | − ham altın (mutlak) | 37,05 | 37,05 |
+   | − Etsy ücreti (%11,7) | 8,78 | 7,61 |
+   | − işçilik/paket/kargo (mutlak) | 8,93 | 8,93 |
+   | **Katkı** | **20,25 (%27,0)** | **11,42 (%17,6)** |
+   | **Başa baş ROAS** | **3,70** | **5,69** |
+
+   Katkı **%43,6 düşer** ve reklamın geçmesi gereken çıta 3,70'ten **5,69**'a
+   çıkar. Bugün 3,44'te olan reklam o noktada net zarara geçer. Yani indirim
+   kararı reklam kararını da bozuyor; iki kaldıraç aynı anda çekilmemeli.
+
+---
+
+## EK-5 (2026-09-13) — reklam odak planı (Etsy panelinde elle uygulanır)
+
+### Önce kısıt: bu panel üzerinden YAPILAMAZ, kanıtı burada
+
+Etsy Open API v3 canlı spec'i çekildi
+(`https://www.etsy.com/openapi/generated/oas/3.0.0.json`, 896 KB):
+
+- **76 uç var, reklam/kampanya/bütçe ucu YOK** (`advert|campaign|promot|/ads|budget|marketing` taraması boş döndü).
+- OAuth kapsamları: `address_r, email_r, listings_d, listings_r, listings_w,
+  shops_r, shops_w, transactions_r, transactions_w` — reklamla ilgili kapsam yok.
+
+Yani Etsy Ads listing seçimi **yalnız satıcı panelinden** yapılır. Aşağıdaki
+liste, Etsy'de hangi listing'in açık/kapalı olacağını söyleyen karar tablosudur.
+
+### Karar ölçütü: "kaç tık'a kadar bu listing kârlı?"
+
+Reklam öncesi katkı **%27**, ölçülen tık başı maliyet **$0,97** (434 tık /
+$419,61). Bir siparişin karşılayabileceği tık sayısı:
+
+```
+tık bütçesi = (brüt × 0,75 × 0,27) / 0,97
+gereken dönüşüm = 1 / tık bütçesi
+```
+
+Mağazanın **ölçülen** tık→sipariş dönüşümü **%0,46** (2 sipariş / 434 tık),
+yani ~217 tık/sipariş. Bir listing ancak **217 tık'ı karşılayabiliyorsa** bugünkü
+dönüşümle kâr eder.
+
+| Listing | Sip. | Katkı/sipariş | Tık bütçesi | Gereken dönüşüm | Karar |
+|---|---|---|---|---|---|
+| `4565352791` 18K Satin Diamond Cut | 1 | **$803,93** | **831** | **%0,12** | **AÇ** |
+| `4556710904` Greek Key 10K YG | 1 | $219,71 | 227 | %0,44 | **AÇ** |
+| `4554025310` 14K Satin Center YG | 3 | $201,49 | 208 | %0,48 | **AÇ** (sınırda) |
+| `4543442596` Hammered 10K | 1 | $184,28 | 191 | %0,52 | sınırda |
+| `4542485142` 14K Milgrain WG | 2 | $180,23 | 186 | %0,54 | sınırda |
+| `4539666999` Dome 10K WG | 3 | $151,74 | 157 | %0,64 | KAPAT |
+| `4554014095` 10K Satin Center YG | 2 | $149,85 | 155 | %0,65 | KAPAT |
+| `4554024684` 10K Satin Rose | 1 | $147,83 | 153 | %0,65 | KAPAT |
+| `4539780408` Flat 10K WG | 2 | $110,87 | 115 | %0,87 | KAPAT |
+| `4539777986` Flat 10K YG | 4 | $109,10 | 113 | %0,89 | KAPAT |
+| `4539493533` Milgrain 10K Rose | 1 | $66,83 | 69 | %1,45 | KAPAT |
+| `4539764153` Dome 10K YG | 2 | $45,06 | 47 | **%2,15** | KAPAT |
+
+Alt sıradakiler mağazanın hiç göstermediği dönüşümleri gerektiriyor. En uçta
+Dome 10K YG: kârlı olması için **%2,15** tık dönüşümü gerekiyor, mağaza %0,46'da.
+
+> **`4539777986` neden kapatılıyor?** Sipariş sayısında birinci (4 sipariş) ve
+> bu ilk bakışta çelişkili görünür. Ama ortalama sipariş bedeli $539, yani
+> reklamla getirilen her sipariş ancak 113 tık'ı karşılıyor. **Reklamı kapatmak
+> organik trafiği kapatmaz** — o listing organik olarak satmaya devam eder;
+> yalnız *ödenmiş* tık almayı bırakır.
+
+### Ayrıca AÇ: yüksek bedelli, trafiği olan ama henüz satmamışlar
+
+Bunlar kanıtlanmamış, ama tık bütçeleri yüksek olduğu için hata payı geniş:
+
+| Listing | Vitrin fiyatı | 17 gün görüntülenme |
+|---|---|---|
+| `4548151075` Basketweave 10K | $920 | 70 |
+| `4550516268` Two Tone 10K | $755 | 42 |
+| `4560186803` Satin Beveled 10K | $700 | 88 |
+| `4554025048` 14K White Satin | $670 | 58 |
+
+### Üretim sorunu çözülünce geri aç
+
+| `4561855998` Kinetic Bead Ring | katkı/sipariş **$228,83** → 236 tık, gereken dönüşüm %0,41 |
+|---|---|
+| `4562238351` 3ct Oval Lab-Grown | vitrin $2.310, tık bütçesi en yüksek ikinci grup |
+
+Kinetic hem ölçütü geçiyor hem mağazanın en çok trafik alan listing'iydi —
+üretim düzelir düzelmez reklamda ilk sıraya girmeli.
+
+### Uygulama (Etsy'de)
+
+`Shop Manager → Marketing → Etsy Ads → Advertised listings`. Tablodaki **AÇ**
+satırlarını aç, **KAPAT** satırlarını kapat. Günlük bütçeye dokunma ($25 kalsın):
+liste daraldığı için harcama zaten kendiliğinden düşük seyredecek, Etsy yalnız
+harcayabildiğini faturalıyor.
+
+### Ne zaman bakılır, neye bakılır
+
+30 gün sonra CSV'yi yine yükle. Ölçüt ROAS **3,70**: üstündeyse odak işe yaradı,
+altındaysa reklam bu mağaza için yapısal olarak marjinal demektir ve bütçe
+sıfırlanmalı.
+
+> **Bu planın zayıf noktası, açıkça:** Etsy'nin günlük CSV'si mağaza geneli —
+> **listing kırılımı yok**, dolayısıyla listing başına reklam dönüşümü
+> ÖLÇÜLEMİYOR. Yukarıdaki tablo tık bütçesini (aritmetik, kesin) gerçek
+> dönüşümle değil **mağaza ortalamasıyla** karşılaştırıyor; ucuz bir yüzük
+> pahalıdan daha iyi dönüşebilir ve bu tablo bunu göremez. Yönü güvenilir
+> (tık bütçesi sipariş bedeliyle doğrusal artar, 18K'nın hata payı en ucuz
+> listing'in **17 katı**), ama tek tek satırlar kanıt değil hipotezdir.
+> Etsy'nin **listing bazlı** reklam raporu indirilebiliyorsa o yüklenmeli —
+> asıl ölçüm odur.
+
+---
+
 ## Kaynaklar
 
 - [Etsy Seller Handbook — Making the Most of Seasonal Sales Patterns](https://www.etsy.com/sg-en/seller-handbook/article/making-the-most-of-seasonal-sales/45451604718)
