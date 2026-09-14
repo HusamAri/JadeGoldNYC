@@ -11,6 +11,29 @@ repodaki hedefidir.
 
 ## Süreç dersleri
 
+- **Bağımsız maliyet modelini teklif GELMEDEN kur — teklifi okuyan araç odur
+  (2026-09-14):** Tedarikçi faturası olmayan yeni bir org için kolye fiyatladım.
+  Maliyeti geometriden kurdum (şerit çevresi × kesit → pendant 1,60 g nominal /
+  1,80 g emniyetli; zincir link geometrisinden 0,0639 g/inç) ve işçiliği açıkça
+  `UNCALIBRATED_ASSUMPTION` diye işaretledim. Sonra gerçek teklif geldi:
+  "150 kolye ucu + 130 zincir + 30 işçilik". Kritik belirsizlik: bu rakamlar
+  altını İÇERİYOR mu, yoksa işçilik mi? Çatal sipariş başına **~$400**'dü —
+  işçilik-only okumasında canlı fiyatlar zarar sınırının **$130-160 ALTINDA**
+  kalıyordu, yani her sipariş para kaybettirecekti. Belirsizliği çözen şey
+  sormak değil, ZATEN VAR OLAN modeldi: 18 inç zincir için bağımsız tahminim
+  **$131**, teklif **$130**. Bir dolar. Bu eşleşme teklifin altını içerdiğini
+  tek başına kanıtladı; kullanıcı sonradan doğruladı. Aynı model pendant'ı da
+  sınadı: $150 altın, fire dahil 1,72 g demek, benim 1,80 g emniyetli değerim
+  cömert değil doğruymuş. Kural: (1) bir maliyet bilinmiyorsa BEKLEME — modeli
+  fizikten/geometriden kur ve her varsayımı kalibre-değil diye işaretle, çünkü
+  o model sonra teklifi OKUYAN alettir; (2) tedarikçi teklifi VERİdir, gerçek
+  değil — hangi maliyet katmanını kapsadığını kullanmadan önce sına ve iki
+  okumayı da SAYIYLA ortaya koy, sonra sor; (3) doğrulamayı iyimser değil
+  KÖTÜMSER okumayla koş: kullanıcı "130 en uzun zincir" (iyimser okuma) deyince
+  bile fiyat, üreticinin uzunluk gözetmediği düz-$130 senaryosuna karşı yeniden
+  sınandı ve $5'lık indirim o tabana göre onaylandı (en dar pozisyon 16 inç,
+  offsite siparişte %9,5 katkı, sınıra $67 pay).
+
 - **Dış dünyanın girdisi değiştiğinde formülü yeniden koşma, TABANI kaydır —
   yeniden koşmak bilerek verilmiş kararları siler (2026-08-20):** Mağaza geneli
   indirim %15'ten %25'e çıktı; motorun `JADE_DISCOUNT_RATE` sabiti 0,15'te
@@ -227,6 +250,26 @@ repodaki hedefidir.
   token'la 13 listing'i sıfırdan okuttum ve 13/13 `unchanged` gördüm. Aracın
   kendi raporu, aracın kendi hatasını doğrulayamaz (ölçüm kendi hatasını
   doğrulayamaz dersinin dış-sistem hâli).
+  **Güçlendirme (2026-09-14) — sabitlenmiş hedef ÜRÜN TİPİNDE de olur, o hâli
+  sessiz değil GÜRÜLTÜLÜDÜR, ve asıl tuzak kaç kaydı bloke ettiğini SAYMAMAKtır:**
+  `createDraftListingFromProduct` doğrulayıcıya taksonomi yolunu
+  `["Wedding Bands"]` diye ELLE geçiyordu, yani kapı ürün ne olursa olsun her
+  zaman açılıyordu; kolye push'u "her varyant Width ve Ring Size içermelidir"
+  ile patladı. Buradaki fark önceki vakanın tersi: hata bağırıyordu, o yüzden
+  refleks "şu listing'i geçir" olurdu. Tek SQL (`group by org, product_type
+  where etsy_listing_id is null`) tabloyu değiştirdi: aynı duvarın arkasında
+  Jade Gold NYC'nin **22 kolye + 21 bileklik + 8 küpe** taslağı bekliyordu,
+  yani 1 değil **51 kayıt**. Kural: (1) sabitlenmiş hedef bulunca düzeltmeden
+  ÖNCE kaç kaydı kilitlediğini SAY — sayı, işin yama mı protokol mü olduğuna
+  karar verir; (2) düzeltme tanınmayan tip için REDDETMELİ, asla sabit hedefe
+  geri düşmemeli, yoksa aynı hata yeni adla döner (`resolveListingProtocol`
+  bilinmeyen tipte `null` döner, `product_type` NULL olan 26 EON kaydı ise
+  bilerek eski davranışta bırakıldı — değişim yalnız bugün yanlış olan yerde);
+  (3) aynı sınıf bir kat AŞAĞIDA da vardı: "Pendant Necklaces" Etsy ağacında
+  İKİ kez geçiyor (`Jewelry > Necklaces` ve `Weddings > Jewelry`), ada göre ilk
+  eşleşmeyi almak yeni mağazanın ilk listing'ini sessizce gelinlik dikeyine
+  dosyalardı — **ad kimlik değildir, yolu iddia et** ve aday birden çoksa dur.
+  Testlerin yarısı düzeltmeyi değil ESKİ DAVRANIŞIN DEĞİŞMEDİĞİNİ kanıtlar.
 
 - **Dilbilgisel özelliği ANAHTAR KELİMEYLE arama — çekimde saklıysa sayaç
   "temiz" der ve yanıltır (2026-08-20):** 40 İspanyolca çeviride hitap
@@ -1165,6 +1208,17 @@ repodaki hedefidir.
   aynı prompt kusuru 10 karede tekrarlanmadan yakalanır (burada 1 kare israf oldu,
   10 değil); (3) rakam/ölçü YAZAN görsel (spec kartı) modele bırakılmaz: yanlış
   basılan ölçü yazım hatası değil YANLIŞ BEYANdır, metin elle dizilir.
+  **Güçlendirme (2026-09-14) — kusuru İNSAN bulduysa o kareyi düzeltip geçme,
+  TÜM seti o kusur SINIFI için yeniden tara:** 15 karelik kolye setinde
+  kullanıcı 03'te zincirin bail yerine pendant'ın lens açıklığından geçtiğini
+  gördü. Benim kapılarımın hepsi yeşildi (2048×2048, 15/15 tekil hash, doğru
+  alaşım, doğru siluet) çünkü hiçbiri "bu parça takılabilir mi?" diye sormuyordu.
+  Refleks o kareyi yeniden basmaktı; onun yerine on ürün karesinin üst yarısını
+  tek kontak baskısına dizip yalnız zincir güzergâhına baktım ve **13. karede
+  ikinci bir örnek** çıktı — kullanıcının görmediği. Kural: insanın bulduğu
+  kusur, benim kör noktamın HARİTASIDIR; işaretlenen kareyi düzelt, sonra aynı
+  sınıf için setin tamamını tara. Tarama maliyeti tek kontak baskısıydı, kaçan
+  kare ise canlıya gidecekti.
 - **Üretilen görsel görevini yapmıyorsa önce "hangi BOYUT görünüyor?" diye sor;
   ve kareyi reddederken kusuru TEK TEK adlandır (2026-09-13):** Meridian'ın 05
   karesi "1,5 mm et kalınlığını göster" diye kurulmuştu ve iki turdur
