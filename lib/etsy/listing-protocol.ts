@@ -176,7 +176,10 @@ const LEGACY_NULL_TYPE_PROTOCOL: ListingProtocolId = "wedding_band";
 
 export interface ProtocolSource {
   product_type?: string | null;
-  listing_metadata?: { listingProtocol?: unknown } | null;
+  listing_metadata?: {
+    listingProtocol?: unknown;
+    offersPersonalization?: unknown;
+  } | null;
 }
 
 function isProtocolId(value: unknown): value is ListingProtocolId {
@@ -197,6 +200,13 @@ function isProtocolId(value: unknown): value is ListingProtocolId {
 export function resolveListingProtocol(
   product: ProtocolSource,
 ): ListingProtocolSpec | null {
+  const spec = resolveBaseProtocol(product);
+  return spec ? applyPersonalizationOptOut(spec, product) : null;
+}
+
+function resolveBaseProtocol(
+  product: ProtocolSource,
+): ListingProtocolSpec | null {
   const declared = product.listing_metadata?.listingProtocol;
   if (isProtocolId(declared)) return LISTING_PROTOCOLS[declared];
 
@@ -205,6 +215,28 @@ export function resolveListingProtocol(
 
   const mapped = PRODUCT_TYPE_PROTOCOL[type];
   return mapped ? LISTING_PROTOCOLS[mapped] : null;
+}
+
+/**
+ * Ürün başına kişiselleştirme çıkışı.
+ *
+ * Protokolün kişiselleştirme sorusu ÜRÜN TİPİNİN sözleşmesidir, satıcının o
+ * ürünü nasıl sattığının değil: alyans protokolü gravürü yazar çünkü EON'un
+ * 59 yüzüğü gravür SUNAR. Gravür sunmayan bir alyans için doğru düzeltme
+ * varsayılanı çevirmek değil (o 59 üründen hizmeti sessizce kaldırırdı),
+ * o ürüne açık bir çıkış vermektir.
+ *
+ * Kapı SADECE `offersPersonalization === false` ile açılır. Alan yoksa, null
+ * ise, string ise ya da başka bir değerse protokol AYNEN korunur — eksik
+ * metadata sessizce hizmet kapatamaz.
+ */
+function applyPersonalizationOptOut(
+  spec: ListingProtocolSpec,
+  product: ProtocolSource,
+): ListingProtocolSpec {
+  if (spec.personalization === null) return spec;
+  if (product.listing_metadata?.offersPersonalization !== false) return spec;
+  return { ...spec, personalization: null };
 }
 
 /** Tanınmayan tip için kullanıcıya gösterilecek hata. */

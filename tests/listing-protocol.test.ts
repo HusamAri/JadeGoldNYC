@@ -132,6 +132,73 @@ test("kolye protokolünde gravür kişiselleştirmesi yok", () => {
   assert.ok(LISTING_PROTOCOLS.wedding_band.personalization);
 });
 
+// ── Ürün başına kişiselleştirme çıkışı ──────────────────────────────────────
+// Vaka 2026-09-15: BAS-B14 (by Artifact Studio Jewelry alyansı) gravür
+// SUNMUYOR, ama alyans protokolü gravür sorusunu her yüzüğe yazıyordu. Ölçüm:
+// 77 yüzük ürünü var, 59'u EON'un ve gravür SUNUYOR. Yani varsayılanı çevirmek
+// o 59 üründen hizmeti sessizce kaldırırdı. Çıkış ürün başına açılır.
+//
+// Bu testlerin de İKİ görevi var ve yine ikincisi daha önemli:
+//   1. Çıkış bayrağı gerçekten kişiselleştirmeyi kapatıyor mu,
+//   2. Bayrak YOKKEN alyans davranışı BİREBİR aynı mı.
+
+test("offersPersonalization false olan alyansta gravür yazılmaz", () => {
+  const spec = resolveListingProtocol({
+    product_type: "ring",
+    listing_metadata: { offersPersonalization: false },
+  });
+  assert.equal(spec?.id, "wedding_band");
+  assert.equal(spec?.personalization, null);
+  // Çıkış SADECE kişiselleştirmeyi kapatır; sözleşmenin geri kalanı durur.
+  assert.deepEqual(
+    spec?.requiredVariationAxes,
+    LISTING_PROTOCOLS.wedding_band.requiredVariationAxes,
+  );
+  assert.deepEqual(spec?.parcel, LISTING_PROTOCOLS.wedding_band.parcel);
+  assert.deepEqual(spec?.taxonomyNames, LISTING_PROTOCOLS.wedding_band.taxonomyNames);
+});
+
+test("bayrak yokken alyans gravürü AYNEN korunur (59 EON yüzüğü)", () => {
+  for (const meta of [
+    undefined,
+    null,
+    {},
+    { offersPersonalization: true },
+    // Eksik ya da yanlış tipli metadata sessizce hizmet kapatamaz.
+    { offersPersonalization: "false" },
+    { offersPersonalization: 0 },
+    { offersPersonalization: null },
+  ]) {
+    const spec = resolveListingProtocol({
+      product_type: "ring",
+      listing_metadata: meta as never,
+    });
+    assert.deepEqual(
+      spec?.personalization,
+      LISTING_PROTOCOLS.wedding_band.personalization,
+      JSON.stringify(meta),
+    );
+  }
+});
+
+test("çıkış bayrağı protokol sabitini MUTASYONA UĞRATMAZ", () => {
+  resolveListingProtocol({
+    product_type: "ring",
+    listing_metadata: { offersPersonalization: false },
+  });
+  assert.ok(LISTING_PROTOCOLS.wedding_band.personalization);
+});
+
+test("bayrak zaten kişiselleştirmesiz protokolde bir şey değiştirmez", () => {
+  for (const type of ["necklace", "bracelet"]) {
+    const spec = resolveListingProtocol({
+      product_type: type,
+      listing_metadata: { offersPersonalization: false },
+    });
+    assert.equal(spec?.personalization, null, type);
+  }
+});
+
 // ── Taksonomi çözümü ────────────────────────────────────────────────────────
 // Etsy ağacında "Pendant Necklaces" İKİ dalda var (Jewelry ve Weddings).
 // Ada göre ilk eşleşmeyi almak listing'i sessizce gelinlik dikeyine dosyalardı.
