@@ -145,6 +145,179 @@ export async function addListingImageUrl(
   return { ok: true };
 }
 
+/**
+ * Dış bir sunucuda duran galeri görsellerini kendi Storage'ımıza taşır.
+ *
+ * NEDEN: `source: "url"` satırının baytları bize ait değildir. Üretilen ürün
+ * kareleri üreticinin CDN'inde duruyor ve o adres bizim kontrolümüzde değil —
+ * süresi dolduğu ya da dosya silindiği gün galeri sessizce boşalır ve Etsy
+ * push'u fotoğrafsız listing yüzünden patlar. Bu eylem baytı bir kez çeker,
+ * kendi kovamıza yazar ve satırı kendi genel adresimize çevirir.
+ *
+ * SADECE mutlak http(s) adresleri taşınır. Panelde `/eon/...` gibi göreli
+ * yollarla duran 245 satır var; onlar dış bağımlılık değil, ellenmez.
+ * Zaten Storage'da olan satır da atlanır, yani eylem TEKRAR ÇALIŞTIRILABİLİR:
+ * yarısı taşınmış bir galeride ikinci koşu yalnız kalanları alır.
+ *
+ * Bir satırın taşınması diğerlerini durdurmaz — 15 karelik bir galeride tek
+ * bir 404 yüzünden hiçbir şey taşımamak, taşınabilecek 14 kareyi de dış
+ * bağımlılıkta bırakırdı. Sayılar geri döner, sessiz kısmi başarı yoktur.
+ *
+ * SÜRE BÜTÇESİ: bu bir server action, yani platformun fonksiyon limitinde
+ * koşar. 15 kare x ~7 MB indirip yüklemek o limiti aşabilir ve YARIDA KESİLEN
+ * bir koşu hiçbir şey raporlamadan ölür (bu repoda bir kez 504 olarak yaşandı,
+ * bkz. docs/second-brain.md nabız dersi). Bu yüzden kalan süre bir sonraki
+ * kareye yetmiyorsa YENİ İŞ BAŞLATILMAZ: o ana kadar taşınanlar raporlanır ve
+ * kullanıcı düğmeye tekrar basar. Eylem tekrar çalıştırılabilir olduğu için
+ * ikinci koşu kaldığı yerden devam eder, baştan başlamaz.
+ */
+export async function rehostListingImages(
+  productId: string,
+): Promise<
+  ListingImageResult & {
+    moved?: number;
+    skipped?: number;
+    deferred?: number;
+    failed?: string[];
+  }
+> {
+  const g = await guard(productId);
+  if (!g.ok) return { error: g.error };
+  const { supabase, orgId } = g;
+
+  const { data, error: selErr } = await supabase
+    .from("listing_images")
+    .select("id, url, storage_path")
+    .eq("product_id", productId)
+    .order("position", { ascending: true });
+  if (selErr) return { error: selErr.message };
+
+  const rows = (data ?? []) as {
+    id: string;
+    url: string;
+    storage_path: string | null;
+  }[];
+
+  let moved = 0;
+  let skipped = 0;
+  const failed: string[] = [];
+  let deferred = 0;
+
+  const started = Date.now();
+  // Ölçülen en yavaş kare ~6 sn; iki katını emniyet payı sayıp bütçenin son
+  // diliminde yeni indirme başlatmıyoruz.
+  const BUDGET_MS = 45_000;
+  const PER_IMAGE_RESERVE_MS = 12_000;
+
+  for (const row of rows) {
+    // Zaten bizde olan ya da göreli yolla duran satır dokunulmaz.
+    if (row.storage_path || !/^https?:\/\//i.test(row.url)) {
+      skipped++;
+      continue;
+    }
+
+    // Kalan süre bir kareye yetmiyorsa DURMA noktası burası. Yarıda kesilmiş
+    // bir yükleme yetim dosya bırakır ve sayılar hiç geri dönmez.
+    if (Date.now() - started > BUDGET_MS - PER_IMAGE_RESERVE_MS) {
+      deferred++;
+      continue;
+    }
+
+    let path: string | null = null;
+    try {
+      const upstream = await fetch(row.url);
+      if (!upstream.ok) {
+        failed.push(`${row.url.slice(0, 60)}: HTTP ${upstream.status}`);
+        continue;
+      }
+      const mime = upstream.headers.get("content-type") ?? "";
+      if (!mime.startsWith("image/")) {
+        failed.push(`${row.url.slice(0, 60)}: görsel değil (${mime || "tip yok"})`);
+        continue;
+      }
+      const buf = await upstream.arrayBuffer();
+      if (buf.byteLength === 0) {
+        failed.push(`${row.url.slice(0, 60)}: boş dosya`);
+        continue;
+      }
+      if (buf.byteLength > MAX_IMAGE_BYTES) {
+        failed.push(`${row.url.slice(0, 60)}: 15 MB'ı aşıyor`);
+        continue;
+      }
+
+      const ext = (mime.split("/")[1] || "png")
+        .split(";")[0]
+        .replace("jpeg", "jpg")
+        .replace("svg+xml", "svg");
+      path = `${orgId}/${productId}/${crypto.randomUUID()}.${ext}`;
+
+      const { error: upErr } = await supabase.storage
+        .from(BUCKET)
+        .upload(path, buf, { contentType: mime, upsert: false });
+      if (upErr) {
+        failed.push(`${row.url.slice(0, 60)}: ${upErr.message}`);
+        path = null;
+        continue;
+      }
+
+      const {
+        data: { publicUrl },
+      } = supabase.storage.from(BUCKET).getPublicUrl(path);
+
+      const { error: updErr } = await supabase
+        .from("listing_images")
+        .update({ url: publicUrl, storage_path: path, source: "upload" })
+        .eq("id", row.id)
+        .eq("product_id", productId);
+      if (updErr) {
+        // Satır güncellenemediyse yüklenen dosya YETİM kalır — geri al.
+        await supabase.storage.from(BUCKET).remove([path]);
+        path = null;
+        failed.push(`${row.url.slice(0, 60)}: ${updErr.message}`);
+        continue;
+      }
+      moved++;
+    } catch (e) {
+      if (path) await supabase.storage.from(BUCKET).remove([path]);
+      failed.push(
+        `${row.url.slice(0, 60)}: ${e instanceof Error ? e.message : "çekilemedi"}`,
+      );
+    }
+  }
+
+  // Kapak görseli galerinin ilk satırını gösteriyorsa o da yeni adrese çevrilir,
+  // yoksa galeri bizde, kapak hâlâ dış sunucuda kalırdı.
+  if (moved > 0) {
+    const first = rows[0];
+    if (first) {
+      const { data: fresh } = await supabase
+        .from("listing_images")
+        .select("url")
+        .eq("id", first.id)
+        .maybeSingle();
+      const freshUrl = (fresh as { url?: string } | null)?.url;
+      if (freshUrl) {
+        await supabase
+          .from("products")
+          .update({ image_url: freshUrl })
+          .eq("id", productId)
+          .eq("image_url", first.url);
+      }
+    }
+  }
+
+  revalidatePath(listingPath(productId));
+  if (failed.length > 0)
+    return {
+      error: `${moved} taşındı, ${failed.length} başarısız: ${failed.join(" · ")}`,
+      moved,
+      skipped,
+      deferred,
+      failed,
+    };
+  return { ok: true, moved, skipped, deferred, failed };
+}
+
 /** Galeriden bir görseli çıkarır (ve varsa Storage dosyasını siler). */
 export async function removeListingImage(
   id: string,

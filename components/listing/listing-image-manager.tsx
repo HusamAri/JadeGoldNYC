@@ -3,13 +3,21 @@
 import { useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { ArrowLeft, ArrowRight, Link2, Trash2, Upload } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  HardDriveDownload,
+  Link2,
+  Trash2,
+  Upload,
+} from "lucide-react";
 import { toast } from "sonner";
 
 import type { ListingImage } from "@/lib/types";
 import {
   addListingImageUpload,
   addListingImageUrl,
+  rehostListingImages,
   removeListingImage,
   reorderListingImages,
   type ListingImageResult,
@@ -48,6 +56,36 @@ export function ListingImageManager({
       }
       toast.success(okMsg);
       after?.();
+      router.refresh();
+    });
+  }
+
+  // Dış sunucuda duran (bize ait olmayan) kare sayısı. 0 ise taşınacak bir şey
+  // yok ve düğme gösterilmez — her galeriye sürekli duran ölü bir düğme koymak
+  // yerine yalnız gerçek bir bağımlılık varken çıkar.
+  const external = images.filter(
+    (i) => !i.storage_path && /^https?:\/\//i.test(i.url),
+  ).length;
+
+  function onRehost() {
+    startTransition(async () => {
+      const res = await rehostListingImages(productId);
+      if (res?.error) {
+        toast.error(res.error);
+        router.refresh();
+        return;
+      }
+      if (res.moved === 0) {
+        toast.success("Taşınacak dış görsel yok");
+      } else if (res.deferred && res.deferred > 0) {
+        // Süre bütçesi doldu. Sessizce "bitti" demek, kalan kareleri dış
+        // bağımlılıkta bırakıp kullanıcıyı yanıltırdı.
+        toast.success(
+          `${res.moved} görsel taşındı, ${res.deferred} kaldı. Devam etmek için tekrar basın.`,
+        );
+      } else {
+        toast.success(`${res.moved} görsel kendi depomuza taşındı`);
+      }
       router.refresh();
     });
   }
@@ -100,6 +138,18 @@ export function ListingImageManager({
           <Upload className="size-4" />
           Görsel yükle
         </Button>
+        {external > 0 && (
+          <Button
+            type="button"
+            variant="outline"
+            disabled={pending}
+            onClick={onRehost}
+            title="Bu kareler bize ait olmayan bir sunucuda duruyor. Adres bir gün ölürse galeri boşalır ve Etsy push'u fotoğrafsız listing yüzünden patlar."
+          >
+            <HardDriveDownload className="size-4" />
+            {external} görseli depoya taşı
+          </Button>
+        )}
         <div className="flex flex-1 items-center gap-2">
           <Input
             type="url"
