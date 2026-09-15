@@ -33,6 +33,21 @@ repodaki hedefidir.
   bile fiyat, üreticinin uzunluk gözetmediği düz-$130 senaryosuna karşı yeniden
   sınandı ve $5'lık indirim o tabana göre onaylandı (en dar pozisyon 16 inç,
   offsite siparişte %9,5 katkı, sınıra $67 pay).
+  **Güçlendirme (2026-09-15) — aynı soruyu üçüncü kez sorma: tedarikçinin
+  KONVANSİYONUNU öğren ve kalıcı yere yaz.** `by Artifact Studio Jewelry`
+  üreticisinin zincir teklifi her üründe aynı belirsizliği taşıyordu ("hangi
+  uzunluk için?") ve ben üç üründe üç kez sordum: I13'te "130 en uzunu"
+  cevabını aldım, E10'da orta bedeni varsaydım, P01'de yine sordum. Kullanıcı
+  haklı olarak durdurdu: **bu üretici zincir fiyatını DAİMA aralığın ORTA
+  uzunluğu için verir.** Kural: bir tedarikçiyle üçüncü kez aynı belirsizliğe
+  çarpıyorsan sorun o teklifte değil, senin o tedarikçinin konvansiyonunu hiç
+  kaydetmemiş olmandadır — cevabı tek seferlik bir yanıt gibi tüketme, KURAL
+  olarak hem repoya hem ürün metadata'sına yaz. Yan not: bu kural I13'teki
+  "130 en uzunu" beyanıyla çelişiyor; çelişkiyi sessizce çözmedim, etkisini
+  SAYIYLA sınadım — I13'ün 20 inç fiyatı $569, offsite zemini $490, yani
+  çapa orta uzunluk olsa bile (~$12 landed fark) zarar riski yok, o yüzden
+  fiyat yeniden koşulmadı. Tedarikçi konvansiyonu ile tek bir eski beyan
+  çeliştiğinde önce PARA ETKİSİNİ ölç; etki yoksa kaydı düzelt, fiyata dokunma.
 
 - **Dış dünyanın girdisi değiştiğinde formülü yeniden koşma, TABANI kaydır —
   yeniden koşmak bilerek verilmiş kararları siler (2026-08-20):** Mağaza geneli
