@@ -845,6 +845,45 @@ repodaki hedefidir.
   katsayı hatası her satırı aynı oranda kaydırır, eksik eksen hatası
   eksen boyunca BÜYÜR ve tek bir referans satırda bakıldığında görünmez.
 
+- **"Bilinmiyor, tedarikçiye sor" demeden önce elindeki veriyi SIK — cevap
+  çoğu zaman zaten içinde (2026-09-16):** 10K/18K gramı için "yoğunluk oranını
+  üreticiye sor, tahmin etme" diye kapattım; sahip durdurdu: *"neden sen
+  hesaplamıyorsun? web araştırması yap ve hepsini kendin bul."* Haklıydı, ve
+  asıl ders web'de değil masamdaydı: üreticinin 14K gram tablosu geometriyle
+  bölününce **yoğunluğu** veriyordu (150 hücre → 13,499 g/cm³, iki katsayı
+  %0,5 uyumlu); karışım kuralı aynı alaşım tabanından 10K/18K'yı türetti
+  (×0,892 / ×1,137); ve üreticinin 18K fiyat tablosunun tam **1,4000** çarpanı,
+  altın+işçilik ayrımıyla çözülünce aynı oranı %0,3 hatayla bağımsız doğruladı.
+  Üç yol, üç sayı, hepsi bir noktada. Sormak bir haftalık gecikme + tedarikçiye
+  "ne bilmiyorsun" sinyaliydi; hesaplamak iki saat sürdü ve kendi kanıtıyla
+  geldi. Yan bulgu — **ticari referans tablosu "doğru" olup yine oran için
+  YANLIŞ olabilir:** Stuller'ın 10K/14K/18K sarı yoğunlukları tek tek doğru,
+  ama 10K-14K aynı tabanı (≈saf bakır) paylaşırken 18K başka reçete (gümüşçe
+  zengin); oradan alınan 18K/14K oranı (1,192) iki farklı alaşımı bölüyordu ve
+  üreticinin verisiyle %5 çelişti. Kural: (1) bir büyüklük "verilmedi" diye
+  değil, "eldeki veriden TÜRETİLEMEZ" diye kanıtlanınca sorulur — önce formülü
+  ters çevir (gram/hacim = yoğunluk gibi); (2) fiyat tabloları fizik taşır:
+  ayarlar arası sabit çarpan, "yoğunluk × birim fiyat" olarak ayrışır ve modeli
+  sınar; (3) referans tablodan ORAN almadan önce tablonun ayarlar arası iç
+  tutarlılığını (ima ettiği taban alaşımı) hesapla — tutarsızsa oran alma;
+  (4) para ayrımı yaparken toplamsal/çarpımsal seçimini VARSAYMA, ayarlar arası
+  çarpanla sına (çarpımsal 1,462 derdi, gözlenen 1,400 → toplamsal). Aynı turda
+  yan-hasar da yakalandı: `saveGoldSettings` `gold_settings`'i ezip yazıyordu —
+  EON'un `labor_model: per_piece` anahtarı ilk kayıtta silinecekti; merge'e
+  çevrildi. Yeni yapı kurarken onu yazan mevcut yolun EZİP EZMEDİĞİNE bak.
+  **Güçlendirme (aynı gün) — ölçülmemiş iki varsayım arasında "daha ayrıntılı"
+  olan kazanmaz, sahibin SEÇTİĞİ kazanır:** signet/dome için üç bölgeli,
+  çevre-ağırlıklı bir taper modeli kurmuştum; sahip "üst + shank, ikiye böl"
+  dedi. Benimki daha "fizikselmiş" gibi duruyordu ama omuz uzunluğu gibi
+  hiç ölçülmemiş bir varsayıma yaslanıyordu; ortalama kural tek satır, herkes
+  kafadan doğrulayabiliyor ve maliyet tarafında muhafazakâr. Kural: modelin
+  girdisi ölçüm değil varsayımsa karmaşıklık kalite değil YÜKtür — basit,
+  denetlenebilir ve güvenli yöne hatalı olanı seç; ayrıntılı model ancak
+  gerçek tartım gelince kazanır. Uygulama tarafı: kural değişince
+  `weight_source` etiketini sürümle (gm2 → gm3), kuru koşuda "hangi satırlar
+  değişecek" kümesinin TAM beklenen küme olduğunu say (26.884 düz = 0 fark),
+  sonra yaz.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması

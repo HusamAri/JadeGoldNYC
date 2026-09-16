@@ -421,6 +421,11 @@ Katalog US 3-13,75 arasını kapsadığı için hata bedenle büyüyor.
 - **10K ve 18K** — hacim aynı, gram yoğunlukla ölçeklenir ama üretici yalnız
   14K tablosu verdi. Oranı üreticiye SOR, tahmin etme.
 
+> **Aynı gün, ikinci tur — üç madde de KAPANDI.** Sahip "yoğunluk oranını
+> neden sen hesaplamıyorsun, hepsini kendin bul" dedi; haklıydı. Bkz. bir
+> sonraki bölüm: yoğunluk üreticinin kendi tablosundan türetildi, signet/dome
+> için sivrilen-band modeli kuruldu, 93/93 listing × 9 ayar-renk gram aldı.
+
 ### Canlı fiyat kontrolü (55 düz band, 7.260 adet 14K varyant)
 
 - Metal maliyetine göre ortalama çarpan **2,94** — genel tablo sağlıklı.
@@ -434,3 +439,126 @@ Katalog US 3-13,75 arasını kapsadığı için hata bedenle büyüyor.
 > Şekil süzgeci kritikti: süzgeçsiz ilk tarama "2.586 varyant maliyet altında"
 > diyordu; düz olmayan formlar çıkarılınca gerçek sayı **117**. Alarmın %95'i
 > formülün geçersiz olduğu ürünlerden geliyordu.
+
+## Yoğunluk, tüm katalog gramı ve maliyet yapısı (2026-09-16, ikinci tur)
+
+Tek kaynak: `scripts/ophir/gram_model.py` (`python3 scripts/ophir/gram_model.py`
+kendi kendini sınar — 5 kontrol, hepsi yeşil). Tablolar:
+`docs/ophir/ophir-10k-18k-gram-maliyet.xlsx` (XLSX ara adımdır; Mac'te Numbers
+ile açılıp .numbers'a çevrilir).
+
+### Üreticinin GÜNCEL 14K maliyet tablosu: 100,00 USD/g
+
+Sahip yeni "14K MALİYET TABLOSU" gönderdi. 150 hücrenin tamamı gram × **100,00**
+(bir önceki tablo 80,00 idi). Panelde Ophir'in `gold_settings` değeri buna
+çekildi: `purchase_price_14k_cents = 10000`, `labor_model = per_gram`
+(tablo grama tam lineer; Tamsan gibi parça-başı DEĞİL). Jade'den kopyalanmış
+`10K = $65` anahtarı silindi — 10K artık spottan türetiliyor (aşağıda).
+
+### Yoğunluk — üreticiye sorulmadı, üreticinin verisinden çıktı
+
+1. **14K yoğunluğu tablonun içindeydi.** Düz band hacmi = genişlik × kalınlık ×
+   orta çevre (US beden → iç çevre 36,5 + 2,55·beden mm; orta çevre + π·1,5).
+   150 hücreden en küçük karelerle **13,499 g/cm³** (iki katsayı ayrı ayrı
+   13,51 / 13,45 — %0,5 uyum).
+2. **Karışım kuralı** (metal alaşımlarında hacim toplanabilir):
+   `1/ρ = w_Au/19,32 + (1−w_Au)/ρ_taban`. 14K'dan altın-dışı taban **9,494**
+   (Ag:Cu ≈ 1:1 sarı reçetesi — fiziksel olarak makul). Aynı tabanla
+   **10K = 12,047 · 18K = 15,349 g/cm³**.
+3. **Gram oranı = yoğunluk oranı** (geometri aynı): **10K × 0,89245 · 18K × 1,13703**.
+
+Üç bağımsız doğrulama:
+
+| Yol | 18K/14K | 10K/14K |
+| --- | --- | --- |
+| Bu model (üretici tablosuna kalibre) | 1,13703 | 0,89245 |
+| Klasik Au-Ag-Cu terneri (Ag:Cu 1:1) | 1,1332 (%0,34) | 0,8948 (%0,26) |
+| Üreticinin KENDİ 18K fiyat tablosu, işçilik ayrımıyla çözülünce | 1,3964–1,3938 vs **1,4000** (%0,26–0,44) | — |
+
+Ticari referans tablosu (Stuller: 10K sarı 11,57 / 14K sarı 13,07 / 18K sarı
+15,58) 18K için **1,192** verir — %5 yukarıda. Sebebi tablonun kendisinde:
+Stuller'ın 10K ve 14K sarısı aynı tabanı (8,99 ≈ saf bakır) paylaşırken 18K
+sarısı başka bir reçete (taban 9,86, gümüşçe zengin). Yani o tablodan ayarlar
+arası ORAN almak iki farklı alaşımı bölmektir; üreticinin kendi 1,4000 çarpanı
+bunu bağımsız olarak çürüttü. Ders: referans tablodan oran almadan önce
+tablonun ima ettiği taban alaşımının ayarlar arasında TUTARLI olduğunu sına.
+
+Renk: üretici gram ve maliyeti yalnız ayara göre veriyor, renge göre değil;
+panelde de öyle uygulandı (Y/W/R aynı gram). Beyaz altın (Ni/Pd tabanı) ve
+rose (bakır tabanı) gerçekte ±%2-4 sapar — üretici renk ayrımı yaparsa buraya.
+
+### Maliyet ayrımı: altın + işçilik (TOPLAMSAL)
+
+Canlı spot 2026-09-16 19:09 UTC: **$4.257,10/ozt** = $136,87/g.
+
+| Ayar | Altın (saflık × spot) | İşçilik | Üretici $/g | Kaynak |
+| --- | --- | --- | --- | --- |
+| 14K | 80,07 | **19,93** | **100,00** | üretici tablosu (150/150) |
+| 18K | 102,65 | 19,93 | 122,58 | türetim (panel canlı) |
+| 10K | 56,94 | 19,93 | 76,87 | türetim (panel canlı) — üreticide tablo YOK |
+
+İşçilik gram başına **sabit**, ayardan bağımsız; **çarpımsal olsaydı**
+(altın × sabit marj) 18K/14K = 1,2857 × 1,137 = **1,462** çıkardı, üretici
+**1,400** diyor → toplamsal model doğru. Spot değiştikçe altın payı değişir,
+işçilik payı sabit kalır; üretici tablosu yenilenince işçilik yeniden ölçülür.
+Saflık sabitleri panelinkiyle birebir (`KARAT_PURITY`: 0,416 / 0,585 / 0,75).
+
+Panel tarafı (`lib/gold-cost.ts`): `derivePurchase18kCentsPerGram` →
+`derivePurchaseCentsPerGram(karat, …)` genelleştirildi; 10K da 18K gibi
+"14K işçilik primi + 10K melt" ile türetiliyor. `getGoldSettings` 10K
+girilmemişse türetilmiş değeri `derived_10k=true` ile döner, ayar formu bunu
+söyler. `saveGoldSettings` artık `gold_settings`'i **ezmek yerine birleştiriyor**
+(eskiden EON'un `labor_model: per_piece` anahtarı bir kayıtta silinecekti).
+
+### 93/93 listing, 36.784 varyant — hepsine gram yazıldı
+
+Girdi: her listing'in canlı Etsy açıklamasındaki yapısal spec satırları
+(`Top Width / Shank Width / Band Width / Thickness`). Kalınlık katalog boyunca
+**1,5 mm** (tek istisna 4552128868: 1,6) — üreticinin tablo tabanıyla aynı.
+
+| Şekil | Listing | Model | `weight_source` |
+| --- | --- | --- | --- |
+| Düz band (tek en) | 68 | üretici formülü, en = yayınlanan en | `ophir-gm3:duz:*` |
+| Sivrilen (üst + shank) | 24 | en = **(üst + shank) / 2** | `ophir-gm3:ort:*` |
+| Tabla kalınlığı ayrı (4543742514, "Top height 2,8 mm") | 1 | en = ortalama, kalınlık = (1,5 + 2,8)/2 = 2,15 | `ophir-gm3:tabla:*` |
+
+**Sivrilen band kuralı — sahibin kararı (2026-09-16):** *"Top Width 13 / Shank
+Width 1.7 gibi tek değer yoksa ikisini topla ikiye böl."* Yani etkin en =
+**(üst + shank) / 2**; iki kalınlık yayınlanmışsa kalınlık da ortalaması.
+İlk sürümde çevre-ağırlıklı bir taper modeli kurmuştum
+(`w = shank + 2·üst·(üst−shank)/çevre`, tabla + omuz + shank bölgeleri);
+sahip basit ortalamayı seçti. İkisi de ölçülmemiş bir varsayımdır; ortalama
+kural daha muhafazakâr (gram ve maliyet tabanı yukarı), tek satır ve
+denetlenebilir. Örnekler (14K, US 7):
+
+| Listing | Üst / shank | Ortalama kural | Eski taper modeli | Düz-band (yanlış) |
+| --- | --- | --- | --- | --- |
+| 4551550234 Bold Round Signet | 13 / 4 | **10,17 g** | 9,52 g | 15,6 g |
+| 4552085145 Courage Signet | 13 / 1,7 | **8,79 g** | 7,99 g | 15,6 g |
+| 4553157256 Dôme Brioche | 6,3 / 2 | **4,97 g** | 3,49 g | 7,5 g |
+
+Kanıt zinciri: geometri blob'u md5 ile yapıştırma-doğrulandı
+(`0f82024624d53e468cfa529b266dde3c`, 1.983 bayt, 93 satır). İlk geçişte
+(gm2) önceki 7.260 satırın **6.732'si bit-birebir** yeniden üretildi, 528'i
+(4 sivrilen yarım-eternity/cluster) düzeldi. Ortalama kuralına geçişte (gm3)
+kuru koşu 26.884 düz satırı **0 fark**la, 9.504 sivrilen + 396 tabla satırını
+değişecek diye ayırdı — tam beklenen küme; UPDATE 36.784 satır döndü,
+DB↔Python 4 örnek SKU bit-birebir.
+
+Bilinen sınırlar (gram DEĞİL, geometri belirsizliği):
+- **Coil/wave/twist/braid/rope** (7 listing): yayınlanan en-kalınlık zarfı
+  DOLU sayıldı; örgü/burgu boşlukları yüzünden gerçek gram daha düşük → maliyet
+  tarafında emniyetli yön.
+- **Set listing'leri**: 4543248600 Twisted Duo iki band (1,5 + 2,1 = 3,6 mm)
+  olarak yazıldı — açıklamada ikisi de var. 4552133042 (Organic Dôme Nesting
+  Set) ve 4550953712 (Charlotte Stacker Set) tek en yayınlıyor; halka sayısı
+  yok → tek band gramı yazıldı, üreticiden set içeriği istenecek.
+- **Taş başı** (cluster/pave): prong/setting metali modelde yok; taş maliyeti
+  zaten ayrı alanda (`stone_cost_cents`).
+
+### Maliyet talebi kitabı da düzeltildi
+
+`ophir-maliyet-talebi.xlsx` "Bizim gram tahminimiz" kolonu artık aynı
+modelden (US 7, 14K). Eski `0,6591·w·t` bedensiz ve tabla-kör idi; kolon
+toplamı 274,63 → **374,17 g** (93 satır, 0 KONTROL).
+

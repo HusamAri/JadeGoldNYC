@@ -116,6 +116,20 @@ D = [
 # 9. satir (4553159638) yanlis alarmdi: basliktaki 1.75mm TAS olcusu, genislik 3.30mm dogru.
 CONFLICT = set()
 
+# 2026-09-16: est_g14 artik uretici gram tablosuna oturan modelden gelir (US 7 referansi).
+# Eski 0.6591*w*t tahmini bedeni hic hesaba katmiyordu (US 3 grami) ve signet/dome'da
+# tabla enini band eni sanip gram'i uce katliyordu. Tek kaynak: scripts/ophir/gram_model.py
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import gram_model as _gm
+_TABLA_H = {4543742514: 2.8}          # aciklamada "Top height: 2.8 mm" yazan tek listing
+_SET_W = {4543248600: 3.6}            # Twisted Duo: iki band (1.5 duz + 2.1 burgu) — toplam en
+def _est_g14(r):
+    eid, w, shank, t = r[1], _SET_W.get(r[1], r[4]), r[5], r[6]
+    return round(_gm.gram(14, 7, float(w), None if shank is None else float(shank), float(t), _TABLA_H.get(eid)), 2)
+D = [tuple(list(r[:10]) + [_est_g14(r)] + list(r[11:])) for r in D]
+
+
 wb = Workbook()
 
 # ---------------- Sheet 1: cost request ----------------

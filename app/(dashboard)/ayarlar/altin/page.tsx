@@ -59,8 +59,8 @@ export default async function AltinAyarlarPage() {
             Guncel Altin Piyasasi
           </CardTitle>
           <CardDescription>
-            Canli altin fiyati otomatik olarak API&apos;den cekilmektedir
-            (metals.dev / metals.live). Anahtar gerekmez.
+            Canli spot lib/pricing/gold-index uzerinden cekilir (tazelik ve
+            aralik kapili; bayatsa panel uyarir). Anahtar gerekmez.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -103,6 +103,7 @@ export default async function AltinAyarlarPage() {
           <GoldSettingsForm
             price14k={settings.purchase_price_14k_cents / 100}
             price10k={settings.purchase_price_10k_cents / 100}
+            derived10k={settings.derived_10k}
           />
         </CardContent>
       </Card>
@@ -121,7 +122,9 @@ export default async function AltinAyarlarPage() {
             <dd className="font-semibold tabular-nums">
               ${labor14k.toFixed(2)} (%{markup14k.toFixed(1)})
             </dd>
-            <dt className="text-muted-foreground">10K Iscilik (gram)</dt>
+            <dt className="text-muted-foreground">
+              10K Iscilik (gram){settings.derived_10k ? " — turetildi" : ""}
+            </dt>
             <dd className="font-semibold tabular-nums">
               ${labor10k.toFixed(2)} (%{markup10k.toFixed(1)})
             </dd>
