@@ -70,11 +70,26 @@ export async function sendListingToEtsy(
     .eq("product_id", productId)
     .eq("active", true);
   if (vErr) return { error: vErr.message };
-  const withSku = ((vData ?? []) as DraftVariant[]).filter(
+  // Bu kapı İKİ koşul arıyor (aktiflik ve SKU) ama eskiden ikisi için de TEK
+  // metin dönüyordu: "SKU'suz varyant". Vaka 2026-09-16: BAS-I10'un SKU'ları
+  // doluydu, eksik olan `active` idi (kolon varsayılansızdı, ham SQL ile
+  // yazılan satırlarda NULL kalmıştı, migration 0150 kapattı). Mesaj yanlış
+  // katmanı adlandırdığı için SKU arandı, saatler oraya gitti. Artık her koşul
+  // kendi adıyla rapor edilir — semptomu değil sebebi söyleyen sinyal.
+  const all = (vData ?? []) as DraftVariant[];
+  if (all.length === 0) {
+    return {
+      error:
+        "Bu listing'in aktif varyantı yok. Varyantlar pasifse ya da hiç oluşturulmadıysa Etsy'ye gönderilemez.",
+    };
+  }
+  const withSku = all.filter(
     (v): v is DraftVariant & { sku: string } => (v.sku ?? "").trim().length > 0,
   );
   if (withSku.length === 0) {
-    return { error: "Listing SKU’suz varyant — Etsy senkronunu kontrol edin." };
+    return {
+      error: `Aktif varyantların hiçbirinde SKU yok (${all.length} varyant). SKU tüm sistemlerin ortak anahtarıdır — Etsy senkronunu kontrol edin.`,
+    };
   }
   const variants = sortVariantsByWidthThenSize(withSku);
 
