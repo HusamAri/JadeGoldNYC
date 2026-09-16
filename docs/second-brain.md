@@ -815,6 +815,36 @@ repodaki hedefidir.
   (üretecin kendi raporunu değil) — burada .xlsx açılıp 93 satır, 0 KONTROL ve
   8 düzeltilmiş satırın değerleri dosyadan teyit edildi.
 
+- **Geometrik bir formülü katalog geneline uygulamadan önce, formülün GEÇERLİ
+  OLDUĞU şekle süz — süzgeçsiz koşu alarmın %95'ini uydurur (2026-09-16):**
+  Sahipten üreticinin gram tablosu geldi (beden × genişlik, 1,5 mm kalınlık).
+  Tablo tertemizdi: genişlikle tam orantılı, bedenle lineer, tek satıra indi
+  (`gram = genişlik × (0,836 + 0,0515 × beden) × kalınlık/1,5`, R² = 0,99996,
+  maks hücre hatası %0,95) ve maliyet bloğu 150/150 hücrede tam 80,00 USD/g
+  verdi. Formülü canlı fiyatlara uygulayınca ilk sonuç şuydu: **"2.586 varyant
+  metal maliyetinin altında, en kötüsü 0,445×"**. Panik verici ve YANLIŞ.
+  En kötü çıkanların hepsi *signet* ve *dome* idi: bir signet'te "13 mm" üst
+  tablanın ölçüsüdür, gövde 4 mm'dir — düz-band formülü o yüzüğün gramını üç
+  katına çıkarıyordu. Şekle göre süzülüp (9 signet + 15 dome + başlığında
+  dome/coil/wave/twist/braid/rope/puzzle/sculptural geçen 14 band daha çıkarıldı)
+  55 gerçek düz banda inilince sayı **117**'ye düştü ve en kötü çarpan 0,445
+  değil **0,956** oldu — yani gerçek risk "sınırda başabaş", "yarı fiyatına
+  satıyoruz" değil. Kural: (1) bir formülün girdisi geometriyse, katalogdaki
+  her satırın o geometriye UYDUĞUNU önce doğrula — "genişlik" kolonu her üründe
+  aynı şeyi ölçmez (band'de gövde, signet'te tabla, dome'da kubbe); (2) süzgeç
+  bir incelik değil ana adımdır: burada alarmın %95'i formülün geçersiz olduğu
+  ürünlerden geliyordu; (3) sonucu ilan etmeden önce EN KÖTÜ birkaç satırın
+  ürün adına bak — "Heirloom **Dome**", "Boa **Coil**", "Ziggy **Wave**" isimleri
+  teşhisi tek bakışta veriyordu, sayıya bakmak vermiyordu; (4) süzgeçlenen
+  satırlara tahmin YAZMA, boş bırak ve doğru geometriyi kaynaktan iste
+  (signet/dome gramı ve 10K/18K yoğunluk oranı üreticiye soruldu, uydurulmadı).
+  Yan ders: aynı tablo eski tahminimi de çürüttü — `0,6591 × genişlik × kalınlık`
+  formülümde BEDEN TERİMİ HİÇ YOKTU, yani ürettiğim sayı US 3'ün gramıydı ve
+  kitapta "US 7" diye etiketliydi (US 7'de %17,4, US 13,75'te %36 eksik).
+  Bir boyut eksenini modellemeyi unutmak, yanlış katsayıdan daha sinsidir:
+  katsayı hatası her satırı aynı oranda kaydırır, eksik eksen hatası
+  eksen boyunca BÜYÜR ve tek bir referans satırda bakıldığında görünmez.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması

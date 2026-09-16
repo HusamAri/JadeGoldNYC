@@ -4,7 +4,7 @@ Etsy mağazası **`ophirgoldusa`** panelde ikinci (üçüncü) kiracı olarak y�
 Konteyner/scratchpad geçicidir; kalıcı kayıt burasıdır. Herhangi bir oturum bu
 dosyayla akışa devam edebilir.
 
-## Durum (2026-09-08)
+## Durum (2026-09-16)
 
 | Konu | Durum |
 | --- | --- |
@@ -15,19 +15,21 @@ dosyayla akışa devam edebilir.
 | Panel varyantları | **36.784** (93/93 listing) |
 | Listing durumu | **93/93 `active`** (84'ü 08-29 17:40 toplu yayınla) |
 | Fiyat | **CANLI** — %30 katkı marjı + pazar hizalaması (08-29 18:49-19:00) |
-| Gram (ağırlık) | **0/36.784 varyant, 0/93 ürün** — hâlâ TEK bir ölçüm yok |
+| Gram (ağırlık) | **7.260/36.784** — üretici gram tablosundan (55 düz band × 14K); signet/dome ve 10K/18K bekliyor |
 | Marka yönü | Onaylanmadı (Drive `START_HERE.md`) |
 
 > **Düzeltme:** iki sürüm önce "Etsy bağlantısı YOK" diyordu; o okuma
 > `organizations.etsy_shop_id`'ye (boş) bakıyordu, oysa bağlantı
 > `etsy_connection` tablosunda duruyor. Bağlantı durumu **oradan** okunur.
 
-### AÇIK RİSK: fiyatlar canlı, gram yok
+### AÇIK RİSK: fiyatlar canlı, gram kısmen geldi
 
 93 listing'in tamamı `active` ve 36.784 varyantın fiyatı %30 katkı marjı
-modeliyle basıldı — ama `weight_grams` **0/36.784**. Yani modelin metal
-maliyeti girdisi ölçülmüş ağırlık DEĞİL. `ophir-maliyet-talebi.xlsx`'in var
-olma sebebi tam olarak buydu ve kitap hâlâ üreticiye gitmedi.
+modeliyle basıldı. 2026-09-16'da sahipten gelen **üretici gram tablosuyla**
+7.260 varyantın grami dolduruldu (aşağıdaki bölüm) ve o kesimde fiyatlar ilk kez
+gerçek metal maliyetine karşı denetlendi: ortalama 2,94× metal, **117 varyant
+sınırda maliyet altında**. Kalan 29.524 varyant (signet, dome, düz olmayan
+formlar, 10K/18K) hâlâ gramsız.
 
 Bu repo kendi dersini yazmış: *"tahminle konulan fiyatı 'geçici' diye işaretle
 ve gerçek ölçüm iste — yoksa geçici fiyat kalıcı olur"* (second-brain,
@@ -364,3 +366,71 @@ Karat basamakları tutarlı. Ama tabanda oran dar: 14K/10K min oranı **1,215**,
 oysa saf altın içeriği oranı **1,398** — yani en küçük/en ince uçta 10K ile 14K
 arasındaki fark metal içeriğinin altında kalıyor. Sabit işçilik payı bunu bir
 miktar açıklar; kesin konuşmak için **gram** gerekir.
+
+## Üretici gram + fiyat tablosu (2026-09-16)
+
+Kaynak: `docs/ophir/uretici-gram-fiyat-tablosu.xlsx` (sahipten geldi). İçinde
+dört blok var: **1,5 mm gram ağırlık** matrisi, **14K maliyet**, **14K / 18K /
+Platin planlanan satış fiyatı**. Hepsi beden (US 2-16) × genişlik (1-10 mm).
+
+### Çıkarılan formül
+
+Tablo iki yönde de temiz: genişlikle **tam orantılı** (150 hücrede maks sapma
+%0,85), bedenle **lineer** (R² = 0,99996). Tek satıra indi:
+
+```
+gram(beden, genişlik, kalınlık) = genişlik × (0,8360 + 0,0515 × beden) × (kalınlık / 1,5)
+```
+
+Tüm matriste maks hata **%0,95**. Maliyet bloğu da türetilmiş: 150 hücrenin
+150'sinde **tam 80,00 USD/gram** (14K).
+
+Planlanan satış fiyatı gram başına kademeli bir orandır (14K): US 2 ~$100/g,
+US 3-4 ~$124/g, US 5 ~$147/g, **US 6 ve üstü ~$163/g** — yani maliyetin
+~2 katında düzleşiyor.
+
+### DÜZELTME: eski gram tahminim bedeni hiç hesaba katmıyordu
+
+`ophir-maliyet-talebi.xlsx`'in referans gram kolonu `0,6591 × genişlik ×
+kalınlık` ile üretilmişti — **bedenden bağımsız tek bir sayı**. Üreticinin
+tablosuna göre bu **US 3'ün** gramı. Kitap "US 7" diyordu:
+
+| Beden | Üretici (g/mm) | Eski tahminim | Fark |
+| --- | --- | --- | --- |
+| US 3 | 0,990 | 0,989 | %0,2 |
+| US 7 | 1,196 | 0,989 | **%17,4 eksik** |
+| US 11 | 1,402 | 0,989 | **%29,5 eksik** |
+| US 13,75 | 1,544 | 0,989 | **%36,0 eksik** |
+
+Katalog US 3-13,75 arasını kapsadığı için hata bedenle büyüyor.
+
+### Panele yazılan gram
+
+`product_variants.weight_grams` **7.260 varyantta** dolduruldu
+(`weight_source = 'ophir-uretici-gram-tablosu-1_5mm'`): 55 listing × 3 renk 14K
+× 44 beden. Gram 0,99-14,67 g. Üretilen değer dosyadan geri okunarak doğrulandı.
+
+**Yazılmayanlar ve sebebi** — formül dikdörtgen kesitli DÜZ band için geçerli:
+
+- **9 signet + 15 dome** — "13 mm" üst tabla ölçüsü, gövde ince; düz-band
+  formülü gramı fena şişirir.
+- **14 düz-olmayan band** (dome/coil/wave/twist/braid/rope/puzzle/sculptural/
+  seismic): 4538876982, 4543248600, 4546206240, 4546827813, 4550306442,
+  4550930017, 4550936365, 4550939147, 4554953887, 4554955373, 4556240933,
+  4556245256, 4558664005, 4558673647.
+- **10K ve 18K** — hacim aynı, gram yoğunlukla ölçeklenir ama üretici yalnız
+  14K tablosu verdi. Oranı üreticiye SOR, tahmin etme.
+
+### Canlı fiyat kontrolü (55 düz band, 7.260 adet 14K varyant)
+
+- Metal maliyetine göre ortalama çarpan **2,94** — genel tablo sağlıklı.
+- **117 varyant metal maliyetinin altında** ve hepsi sınırda (en kötü 0,956×):
+  Charlotte Bold 9,35 mm (102 adet), Diamond X 9,5 mm (12), Stevie 6,5 mm (3).
+  Üçünde de yalnız en büyük bedenler.
+- Üreticinin planlanan fiyatına göre canlı fiyat **bedenle çok yavaş artıyor**:
+  US 3→13 arasında canlı +%26, metal +%52, üreticinin planı +%101. Sonuç: küçük
+  bedenler plana göre pahalı (US 3'te 1,95×), büyük bedenler ucuz (US 13'te 1,28×).
+
+> Şekil süzgeci kritikti: süzgeçsiz ilk tarama "2.586 varyant maliyet altında"
+> diyordu; düz olmayan formlar çıkarılınca gerçek sayı **117**. Alarmın %95'i
+> formülün geçersiz olduğu ürünlerden geliyordu.
