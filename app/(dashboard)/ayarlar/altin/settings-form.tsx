@@ -10,9 +10,11 @@ import { saveGoldSettings, type GoldSettingsResult } from "./actions";
 interface Props {
   price14k: number;
   price10k: number;
+  /** 10K org tarafından girilmedi; gösterilen değer spottan türetilmiş. */
+  derived10k: boolean;
 }
 
-export function GoldSettingsForm({ price14k, price10k }: Props) {
+export function GoldSettingsForm({ price14k, price10k, derived10k }: Props) {
   const [state, formAction, pending] = useActionState<
     GoldSettingsResult,
     FormData
@@ -41,9 +43,14 @@ export function GoldSettingsForm({ price14k, price10k }: Props) {
             type="number"
             step="0.01"
             min="0"
-            defaultValue={price10k}
-            placeholder="65.00"
+            defaultValue={derived10k ? "" : price10k}
+            placeholder={price10k.toFixed(2)}
           />
+          <p className="text-muted-foreground text-xs">
+            {derived10k
+              ? `Bos: canli spot + 14K iscilik priminden turetiliyor (su an $${price10k.toFixed(2)}). Tedarikci 10K teklifi gelince buraya yazin.`
+              : "Bos birakirsaniz spottan turetilir (14K iscilik primi + 10K altin degeri)."}
+          </p>
         </div>
       </div>
 

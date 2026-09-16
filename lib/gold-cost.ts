@@ -133,28 +133,47 @@ export interface GoldCostBreakdown {
 }
 
 /**
- * 18K alım fiyatı türetimi (cent/gram) — gerçek tedarik verisi yalnız 14K'da
- * olduğundan 18K, canlı spot + 14K'nın GÖZLENEN işçilik primiyle kurulur:
+ * Ayar alım fiyatı türetimi (cent/gram) — gerçek tedarik verisi çoğu org'da
+ * yalnız 14K'da olduğundan 10K ve 18K, canlı spot + 14K'nın GÖZLENEN
+ * işçilik primiyle kurulur:
  *
  *   işçilik/g  = 14K alım − 14K melt(spot)     (tedarikçinin gerçek primi)
- *   18K alım/g = 18K melt(spot) + işçilik/g    (metal saflıkla ölçeklenir,
+ *   K alım/g   = K melt(spot) + işçilik/g      (metal saflıkla ölçeklenir,
  *                                               işçilik ölçeklenMEZ)
  *
- * Spot geçersizse (≤0) statik yedek döner. Gerçek 18K tedarik fiyatı
+ * Yapı TOPLAMSAL, çarpımsal değil. Kanıt (Ophir, 2026-09-16): üreticinin
+ * kendi 18K fiyat tablosu 14K'nın tam 1,4000 katı; çarpımsal model
+ * (saflık oranı × yoğunluk oranı = 1,2857 × 1,137) 1,462 verirdi, toplamsal
+ * model 1,394-1,396 verdi. Eski ×(0.75/0.585) ölçeklemesi işçiliği de
+ * büyüttüğünden 18K'yı ~$6-7/g ŞİŞİRİYORDU; aynı hata 10K'da statik $65
+ * varsayımıyla ters yönde yaşıyordu (Jade'in eski sayısı her org'a
+ * kopyalanmıştı). Bkz. scripts/ophir/gram_model.py `maliyet_ayrimi`.
+ *
+ * Spot geçersizse (≤0) statik yedek döner. Gerçek tedarikçi fiyatı
  * (gold_settings) her zaman bu türetimi ezer — çağıran taraf halleder.
  */
+export function derivePurchaseCentsPerGram(
+  karat: KaratType,
+  goldPricePerOunceUsd: number,
+  purchase14kCentsPerGram: number = PURCHASE_PRICE_CENTS_PER_GRAM["14K"],
+): number {
+  if (karat === "14K") return purchase14kCentsPerGram;
+  if (!(goldPricePerOunceUsd > 0)) return PURCHASE_PRICE_CENTS_PER_GRAM[karat];
+  const pureCentsPerGram = (goldPricePerOunceUsd * 100) / TROY_OUNCE_GRAMS;
+  const melt14 = pureCentsPerGram * KARAT_PURITY["14K"];
+  const meltK = pureCentsPerGram * KARAT_PURITY[karat];
+  // Kriz senaryosu: spot, 14K alımını aşarsa prim negatife düşer — işçilik
+  // tabanı 0'da tutulur (negatif işçilik anlamsız; calculateGoldCost ile aynı kural).
+  const laborPremium = Math.max(0, purchase14kCentsPerGram - melt14);
+  return Math.round(meltK + laborPremium);
+}
+
+/** Geriye uyumlu sarmalayıcı — yeni kod `derivePurchaseCentsPerGram("18K", …)` kullansın. */
 export function derivePurchase18kCentsPerGram(
   goldPricePerOunceUsd: number,
   purchase14kCentsPerGram: number = PURCHASE_PRICE_CENTS_PER_GRAM["14K"],
 ): number {
-  if (!(goldPricePerOunceUsd > 0)) return PURCHASE_PRICE_CENTS_PER_GRAM["18K"];
-  const pureCentsPerGram = (goldPricePerOunceUsd * 100) / TROY_OUNCE_GRAMS;
-  const melt14 = pureCentsPerGram * KARAT_PURITY["14K"];
-  const melt18 = pureCentsPerGram * KARAT_PURITY["18K"];
-  // Kriz senaryosu: spot, 14K alımını aşarsa prim negatife düşer — işçilik
-  // tabanı 0'da tutulur (negatif işçilik anlamsız; calculateGoldCost ile aynı kural).
-  const laborPremium = Math.max(0, purchase14kCentsPerGram - melt14);
-  return Math.round(melt18 + laborPremium);
+  return derivePurchaseCentsPerGram("18K", goldPricePerOunceUsd, purchase14kCentsPerGram);
 }
 
 export function calculateGoldCost(
@@ -167,16 +186,16 @@ export function calculateGoldCost(
   const purity = KARAT_PURITY[karat];
   const karatGoldPerGramUsd = pureGoldPerGramUsd * purity;
 
-  // 18K: org özel fiyat girmediyse statik varsayım yerine canlı türetim —
-  // metal payı spottan, işçilik payı 14K'nın gözlenen priminden.
+  // 10K/18K: org özel fiyat girmediyse statik varsayım yerine canlı türetim —
+  // metal payı spottan, işçilik payı 14K'nın gözlenen priminden. 14K için
+  // türetim özdeşliktir (org fiyatı ya da statik varsayılan).
   const purchaseCentsPerGram =
     customPurchasePrices?.[karat] ??
-    (karat === "18K"
-      ? derivePurchase18kCentsPerGram(
-          goldPricePerOunceUsd,
-          customPurchasePrices?.["14K"],
-        )
-      : PURCHASE_PRICE_CENTS_PER_GRAM[karat]);
+    derivePurchaseCentsPerGram(
+      karat,
+      goldPricePerOunceUsd,
+      customPurchasePrices?.["14K"],
+    );
   const purchasePerGramUsd = purchaseCentsPerGram / 100;
 
   // Altın ons fiyatı tedarik alım fiyatını aşarsa işçilik negatife düşebilir
