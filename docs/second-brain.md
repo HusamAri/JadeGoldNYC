@@ -871,6 +871,18 @@ repodaki hedefidir.
   yan-hasar da yakalandı: `saveGoldSettings` `gold_settings`'i ezip yazıyordu —
   EON'un `labor_model: per_piece` anahtarı ilk kayıtta silinecekti; merge'e
   çevrildi. Yeni yapı kurarken onu yazan mevcut yolun EZİP EZMEDİĞİNE bak.
+  **Güçlendirme (aynı gün) — ölçülmemiş iki varsayım arasında "daha ayrıntılı"
+  olan kazanmaz, sahibin SEÇTİĞİ kazanır:** signet/dome için üç bölgeli,
+  çevre-ağırlıklı bir taper modeli kurmuştum; sahip "üst + shank, ikiye böl"
+  dedi. Benimki daha "fizikselmiş" gibi duruyordu ama omuz uzunluğu gibi
+  hiç ölçülmemiş bir varsayıma yaslanıyordu; ortalama kural tek satır, herkes
+  kafadan doğrulayabiliyor ve maliyet tarafında muhafazakâr. Kural: modelin
+  girdisi ölçüm değil varsayımsa karmaşıklık kalite değil YÜKtür — basit,
+  denetlenebilir ve güvenli yöne hatalı olanı seç; ayrıntılı model ancak
+  gerçek tartım gelince kazanır. Uygulama tarafı: kural değişince
+  `weight_source` etiketini sürümle (gm2 → gm3), kuru koşuda "hangi satırlar
+  değişecek" kümesinin TAM beklenen küme olduğunu say (26.884 düz = 0 fark),
+  sonra yaz.
 
 ## Ürün/UX dersleri
 

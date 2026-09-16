@@ -518,29 +518,32 @@ Girdi: her listing'in canlı Etsy açıklamasındaki yapısal spec satırları
 
 | Şekil | Listing | Model | `weight_source` |
 | --- | --- | --- | --- |
-| Düz band (tek en) | 68 | üretici formülü, en = yayınlanan en | `ophir-gm2:duz:*` |
-| Sivrilen (üst + shank) | 24 | çevre-ağırlıklı etkin en | `ophir-gm2:sivri:*` |
-| Tabla kalınlığı ayrı (4543742514, "Top height 2,8 mm") | 1 | sivri + tabla ek hacmi | `ophir-gm2:tabla:*` |
+| Düz band (tek en) | 68 | üretici formülü, en = yayınlanan en | `ophir-gm3:duz:*` |
+| Sivrilen (üst + shank) | 24 | en = **(üst + shank) / 2** | `ophir-gm3:ort:*` |
+| Tabla kalınlığı ayrı (4543742514, "Top height 2,8 mm") | 1 | en = ortalama, kalınlık = (1,5 + 2,8)/2 = 2,15 | `ophir-gm3:tabla:*` |
 
-**Sivrilen band modeli** — 13 mm tabla artık 13 mm band sayılmıyor. Çevre
-üzerinde üç bölge: tabla (uzunluk = tabla eni), iki omuz (her biri tabla eni
-kadar, en doğrusal iner), kalan shank. Kapalı form:
+**Sivrilen band kuralı — sahibin kararı (2026-09-16):** *"Top Width 13 / Shank
+Width 1.7 gibi tek değer yoksa ikisini topla ikiye böl."* Yani etkin en =
+**(üst + shank) / 2**; iki kalınlık yayınlanmışsa kalınlık da ortalaması.
+İlk sürümde çevre-ağırlıklı bir taper modeli kurmuştum
+(`w = shank + 2·üst·(üst−shank)/çevre`, tabla + omuz + shank bölgeleri);
+sahip basit ortalamayı seçti. İkisi de ölçülmemiş bir varsayımdır; ortalama
+kural daha muhafazakâr (gram ve maliyet tabanı yukarı), tek satır ve
+denetlenebilir. Örnekler (14K, US 7):
 
-```
-w_etkin = shank + 2 · üst · (üst − shank) / orta_çevre
-```
-
-Üst = shank ise düz banda indirgenir. Örnek: 13 mm tabla / 4 mm shank, US 7 →
-w_etkin 7,96 mm → 14K **9,52 g** (düz-band formülü 15,6 g derdi, eski kitap
-7,07 g diyordu). Signet 5,6–13 mm tabla için 14K 1,25–10,9 g bandı çıktı;
-piyasa signet'leriyle uyumlu.
+| Listing | Üst / shank | Ortalama kural | Eski taper modeli | Düz-band (yanlış) |
+| --- | --- | --- | --- | --- |
+| 4551550234 Bold Round Signet | 13 / 4 | **10,17 g** | 9,52 g | 15,6 g |
+| 4552085145 Courage Signet | 13 / 1,7 | **8,79 g** | 7,99 g | 15,6 g |
+| 4553157256 Dôme Brioche | 6,3 / 2 | **4,97 g** | 3,49 g | 7,5 g |
 
 Kanıt zinciri: geometri blob'u md5 ile yapıştırma-doğrulandı
-(`0f82024624d53e468cfa529b266dde3c`, 1.983 bayt, 93 satır); kuru koşuda
-önceki 7.260 satırın **6.732'si bit-birebir** yeniden üretildi, 528'i (4
-sivrilen yarım-eternity/cluster) düzeldi — örn. 4545535248 "7 mm" cluster
-başı band eni sanılmıştı: 6,9–10,8 g → 3,4–4,5 g. UPDATE 36.784 satır döndü;
-geri okuma 9 `weight_source` sınıfında 0,884–17,203 g, ortalama 4,28 g.
+(`0f82024624d53e468cfa529b266dde3c`, 1.983 bayt, 93 satır). İlk geçişte
+(gm2) önceki 7.260 satırın **6.732'si bit-birebir** yeniden üretildi, 528'i
+(4 sivrilen yarım-eternity/cluster) düzeldi. Ortalama kuralına geçişte (gm3)
+kuru koşu 26.884 düz satırı **0 fark**la, 9.504 sivrilen + 396 tabla satırını
+değişecek diye ayırdı — tam beklenen küme; UPDATE 36.784 satır döndü,
+DB↔Python 4 örnek SKU bit-birebir.
 
 Bilinen sınırlar (gram DEĞİL, geometri belirsizliği):
 - **Coil/wave/twist/braid/rope** (7 listing): yayınlanan en-kalınlık zarfı

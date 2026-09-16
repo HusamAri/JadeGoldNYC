@@ -131,39 +131,38 @@ def ayar_carpani(karat: int, ayrim) -> float:
 def etkin_genislik(beden: float, ust_mm: float, shank_mm: float | None,
                    kalinlik: float = KALINLIK_TABAN) -> float:
     """
-    Sivrilen (signet / dome / yarim-eternity) bandin cevre-agirlikli etkin eni.
+    Sivrilen (signet / dome / yarim-eternity) bandin etkin eni — SAHIBIN KURALI
+    (2026-09-16): "Top Width 13 / Shank Width 1.7 gibi tek deger yoksa ikisini
+    topla ikiye bol." Yani:
 
-    Uretici tablosu TEK bir genislik ister; ama bu yuzuklerde en, parmak
-    cevresi boyunca degisir: ustte `ust_mm`, altta `shank_mm`. Ust tablayi
-    13 mm sanip tabloya sokmak yuzugu uc katina cikarir (2026-09-16 dersi).
+        w_etkin = (ust + shank) / 2
 
-    Model — cevre uzerinde uc bolge:
-      * tabla   : uzunluk = ust_mm            (yuvarlak/kare tabla eni kadar uzundur)
-      * omuzlar : 2 x ust_mm, en dogrusal olarak ust -> shank iner
-      * shank   : kalan cevre, en = shank_mm
-    Integral kapali formda sadelesir:
-        w_etkin = shank + 2 * ust * (ust - shank) / cevre
-    Ust == shank ise duz banda indirgenir.
+    Ust == shank (ya da shank yok) ise duz band. Beden/kalinlik bu kurala
+    girmez (imza korundu; SQL ile ayni cagri sekli).
+
+    Not: onceki surum cevre-agirlikli bir taper modeli kullaniyordu
+    (w = shank + 2*ust*(ust-shank)/cevre). Sahip basit ortalamayi secti —
+    daha muhafazakar (gram ve dolayisiyla maliyet tabani yukari), tek kural,
+    uretici tablosuna dogrudan oturur.
     """
     if shank_mm is None or abs(shank_mm - ust_mm) < 1e-9:
         return ust_mm
-    C = orta_cevre(beden, kalinlik)
-    # tabla + omuzlar cevreyi asamaz; asarsa bolgeleri oransal kis
-    if 3.0 * ust_mm > C:
-        ust_mm = C / 3.0
-    return shank_mm + 2.0 * ust_mm * (ust_mm - shank_mm) / C
+    return (ust_mm + shank_mm) / 2.0
+
+
+def etkin_kalinlik(kalinlik: float, tabla_yukseklik_mm: float | None) -> float:
+    """Ayni kural kalinlik icin: band kalinligi + tabla yuksekligi yayinlanmissa ortalamasi."""
+    if tabla_yukseklik_mm is None:
+        return kalinlik
+    return (kalinlik + tabla_yukseklik_mm) / 2.0
 
 
 def gram(karat: int, beden: float, ust_mm: float, shank_mm: float | None,
          kalinlik: float = KALINLIK_TABAN, tabla_yukseklik_mm: float | None = None) -> float:
-    """Bir varyantin gramı. 14K uretici tablosu + sekil + yogunluk orani."""
+    """Bir varyantin grami. 14K uretici tablosu + ortalama en/kalinlik + yogunluk orani."""
     w = etkin_genislik(beden, ust_mm, shank_mm, kalinlik)
-    g = gram_14k(beden, w, kalinlik)
-    if tabla_yukseklik_mm and tabla_yukseklik_mm > kalinlik:
-        # signet tablasi banttan kalinsa: yalniz tabla arkinda ek hacim
-        ek_kalinlik = tabla_yukseklik_mm - kalinlik
-        g += gram_14k(beden, ust_mm, ek_kalinlik) * (ust_mm / orta_cevre(beden, kalinlik))
-    return g * GRAM_ORANI[karat]
+    t = etkin_kalinlik(kalinlik, tabla_yukseklik_mm)
+    return gram_14k(beden, w, t) * GRAM_ORANI[karat]
 
 
 # ------------------------------------------------------------- dogrulama
@@ -231,8 +230,10 @@ def self_test(spot_ozt: float = 4257.10) -> None:
     print("5) Sivrilen band modeli — duz banda indirgeniyor mu?")
     kontrol("ust==shank -> duz band", abs(etkin_genislik(7, 6, 6) - 6) < 1e-12)
     kontrol("shank None  -> duz band", abs(etkin_genislik(7, 6, None) - 6) < 1e-12)
-    kontrol("13mm tabla / 4mm shank, beden 7 -> %.2f mm (13 DEGIL)" % etkin_genislik(7, 13, 4),
-            4 < etkin_genislik(7, 13, 4) < 9)
+    kontrol("13mm tabla / 4mm shank -> %.2f mm = (13+4)/2, 13 DEGIL" % etkin_genislik(7, 13, 4),
+            abs(etkin_genislik(7, 13, 4) - 8.5) < 1e-12)
+    kontrol("kalinlik 1.5 + tabla 2.8 -> %.3f mm" % etkin_kalinlik(1.5, 2.8),
+            abs(etkin_kalinlik(1.5, 2.8) - 2.15) < 1e-12)
 
     print("\n" + ("TUM KONTROLLER GECTI" if ok else "!!! KONTROL BASARISIZ !!!"))
     sys.exit(0 if ok else 1)
