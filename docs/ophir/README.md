@@ -562,3 +562,92 @@ Bilinen sınırlar (gram DEĞİL, geometri belirsizliği):
 modelden (US 7, 14K). Eski `0,6591·w·t` bedensiz ve tabla-kör idi; kolon
 toplamı 274,63 → **374,17 g** (93 satır, 0 KONTROL).
 
+## Taban fiyat kurtarma (2026-09-17)
+
+Gram yazıldı ama **fiyata dokunulmamıştı**; sahip sorunca ölçüldü ve katalogun
+büyük kısmının maliyet altında olduğu çıktı. Bu bölüm o turu kaydeder.
+
+### Bulgu: 36.784 varyantın 15.329'u (%41,7) maliyet altında
+
+Bugünkü spot **$4.295,80/ozt** = 138,1132 USD/g. Üretici 14K **$100,00/g**
+(altın 80,80 + işçilik 19,20); türetilen 10K **$76,66/g**, 18K **$122,79/g**.
+
+| | 10K | 14K | 18K |
+| --- | ---: | ---: | ---: |
+| Aktif ort. fiyat | $443,64 | $572,44 | $789,14 |
+| Aktif ort. maliyet | $339,42 | $496,12 | $692,64 |
+| Etsy ücreti (~%15) sonrası | +$38 | **−$10** | **−$22** |
+
+Aktif 18 listing'de 7.128 varyantın **3.824'ü (%53,6)** maliyet altındaydı.
+
+### Kök neden: gram değil, ÜRETİCİNİN FİYAT ARTIŞI
+
+Aynı veri iki maliyet tabanıyla koşuldu — ayrım net:
+
+| Şekil | Eski tablo ($80/g) | Yeni tablo ($100/g) |
+| --- | ---: | ---: |
+| Düz band (gram üreticinin kendi tablosu) | 2.580 | **9.894** |
+| Sivrilen (ortalama kuralı) | 1.710 | 5.039 |
+| Tabla | 396 | 396 |
+
+Düz bantların gramı gm2→gm3 geçişinde **hiç değişmedi** (26.884 satır
+bit-birebir). Yani üçe katlanma benim gram modelimden değil, üreticinin
+$80 → $100/g (+%25) zammından ve katalogun hiç yeniden fiyatlanmamasından
+geliyor. En kötüler de düz bantlar: 6mm Smooth Wedding Band 0,84× ·
+Charlotte Bold 9,35mm 0,78× · Stevie 6,5mm 0,82×.
+
+### Uygulanan kural
+
+Sahip "zarar edenleri kurtar" dedi — kârlı satırlara dokunulmadı:
+
+```
+taban = ceil( gram × $/g(ayar) × (1 + 0,20) / (1 − 0,15) / 5 ) × 5
+yeni_fiyat = greatest(mevcut_fiyat, taban)
+```
+
+- **Hedef marj %20**, **Etsy ücreti %15**. Ücret varsayımı KÖTÜMSER seçildi:
+  EON'un 25 siparişinde ölçülen oran %11,2, Ophir'in tek (iptal) siparişi
+  ölçüme girmez. Marj duyarlılığı: %0 → ort. +%41,3 · %10 → +%54,1 ·
+  **%20 → +%66,6** · %30 → +%79,0.
+- `greatest()` olduğu için işlem **idempotent** — ikinci koşu aynı sonucu
+  verir (2026-08-20 bileşikleşen ×1,1333 vakasının tersi).
+- Ama `greatest()` tek yönlüdür: eski fiyat aritmetikle geri gelmez. Yazmadan
+  ÖNCE `product_variants` üzerinde `audit_trigger`'ın aktif olduğu doğrulandı;
+  20.944 satırın `diff->'before'->>'price_cents'` kaydı duruyor → geri dönüş
+  satır-satır mümkün.
+
+### Sonuç ve kanıt zinciri
+
+| | Önce | Sonra |
+| --- | ---: | ---: |
+| Katalog toplamı | $24.293.250 | $31.433.465 |
+| Mühür (md5, SKU sırasında) | `ec2ba6b9aa04471d1bef22a55d36bdc8` | `488e4a491fcd3ac6e4fee588dec809bd` |
+| Maliyet altı | 15.329 | **0** |
+| Etsy ücreti sonrası zararlı | ~17.400 | **0** |
+| En düşük çarpan | 0,488× | **1,412×** (taban birebir) |
+
+1. **Kuru çalışma** aktif 4.869 + pasif 16.075 = 20.944 satırın değişeceğini
+   söyledi; UPDATE **tam 20.944** döndü.
+2. **Etsy push** (`/api/ops/price-sync?org=Ophir Gold USA`): 93 listing,
+   yazılan offering **20.944**, hepsinde `kalanFark: 0`. Aktif 18 tek partide,
+   pasif 46 listing 12'lik dört partide (kota tablosu bu projede yok, 429'a
+   karşı bölündü).
+3. **"Unchanged" kontrolü:** kuru çalışmada 5 aktif listing `unchanged` döndü.
+   Sessiz no-op olabilirdi; DB'den bakıldı — panelde fiyatı hiç yükselmeyen
+   **tam olarak o 5 listing**. Doğru davranış.
+4. **Bağımsız geri okuma:** apply'dan SONRA ayrı token'la 7 listing taze
+   okundu → hepsi `unchanged`, `offeringFarki: 0`, `panelVaryant: 396`
+   (harita gerçekten kurulmuş; boş haritadan gelen sahte "unchanged" değil).
+5. 7 ops token'ının 7'si de tüketildi, açık geçerli token kalmadı.
+6. `audit_log` semantik satırı: `price.reprice` / `ddafe191-39c5-45ff-a0ca-17f849f816f3`.
+
+### Açık kalan
+
+- Fiyatlar üreticinin kendi planının (`2 × maliyet + 15`) hâlâ **altında** —
+  14K 4mm US 7: maliyet $479, bizim taban $680, üreticinin planı $972.
+  Pazarın ne kaldırdığı bilinmiyor (mağazanın satış geçmişi yok), bu yüzden
+  taban seçildi, plan değil.
+- **Spot her gün değişiyor.** Taban bugünün spotuna sabitlendi; altın yükselirse
+  %20 tampon erir. Bu kuralı düzenli koşan bir ölçüm YOK — kurulmalı
+  (2026-08-27 dersi: sabiti düzeltmek işin yarısı, diğer yarısı ölçümü kurmak).
+

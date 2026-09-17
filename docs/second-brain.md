@@ -884,6 +884,45 @@ repodaki hedefidir.
   değişecek" kümesinin TAM beklenen küme olduğunu say (26.884 düz = 0 fark),
   sonra yaz.
 
+- **Bir maliyet girdisini güncellemek İŞİN YARISIDIR — ona dayanan FİYAT ayrı
+  bir iştir ve kendiliğinden düzelmez (2026-09-17):** Bir gün önce 36.784
+  varyanta gram yazmış, maliyet yapısını panele bağlamış ve "bitti" demiştim.
+  Sahip ertesi sabah tek soru sordu: *"fiyatları yeni gramlara göre düzenledin
+  mi?"* Hayır — ve ölçünce katalogun **%41,7'si (15.329 varyant) maliyet
+  altındaydı**; aktif listing'lerde oran %53,6. Ortalama aktif 14K yüzük Etsy
+  ücretinden sonra **$10 ZARARLA** satılıyordu. Yani gram/maliyet işini
+  "tamamlandı" diye kapatmam, tam da o işin ortaya çıkardığı asıl riski
+  görünmez bırakmıştı. Kural: bir girdiyi (gram, maliyet tablosu, spot, ücret
+  oranı) güncelledikten sonra "bu girdiyi TÜKETEN karar hangisi?" diye sor ve
+  onu da aynı turda ÖLÇ — düzeltmesen bile ölç ve raporla; çünkü ölçülmemiş
+  tüketici, güncellenmiş girdinin yarattığı riski sessizce taşır.
+  **Kök nedeni ayırmak için aynı veriyi İKİ tabanla koş:** ilk refleks
+  "gram modelim mi şişirdi?" diye kendinden şüphelenmekti. Eski ($80/g) ve yeni
+  ($100/g) maliyet tablosuyla aynı sorguyu koşunca ayrım netleşti: 4.686 → 15.329.
+  Düz bantların gramı gm2→gm3 geçişinde bit-birebir aynıydı, yani üçe katlanma
+  üreticinin **+%25 zammından** geliyordu, benim modelimden değil. Tek ek sorgu,
+  suçu doğru yere koydu — ve en kötü satırların *düz bantlar* olması (gramı
+  üreticinin kendi tablosundan) bulguyu tartışılmaz yaptı.
+  **Geri-dönüşü zor dış-sistem yazımında işe yarayan zincir (aynen tekrar
+  edilebilir):** (1) politika seçimi KULLANICININ — dört marj seçeneğini etkisiyle
+  (ort. artış %, katalog toplamı) yan yana sunup sordum, kendi seçtiğim %20'yi
+  dayatmadım; (2) ücret varsayımını kötümser seç ve NEREDEN geldiğini yaz
+  (EON'da ölçülen %11,2 yerine %15 kullanıldı); (3) `greatest(fiyat, taban)`
+  kur — idempotenttir, ikinci koşu bileşikleşmez (2026-08-20 ×1,1333 vakasının
+  panzehiri); (4) ama tek yönlüdür, o yüzden YAZMADAN ÖNCE audit trigger'ının o
+  tabloyu kapsadığını `pg_trigger`'dan doğrula; (5) önce/sonra md5 mührü +
+  kuru koşunun saydığı satır sayısının UPDATE'in döndürdüğüyle birebir tutması
+  (20.944 = 20.944); (6) push sonrası AYRI token'la taze geri okuma.
+  **En değerli tek kontrol "unchanged" oldu:** kuru çalışmada 5 aktif listing
+  `unchanged` döndü. Bu, bu repoda daha önce sessiz no-op'un imzasıydı (SKU
+  eşleşmezse rota hiç yazmadan "ok" der). DB'den baktım: panelde fiyatı hiç
+  yükselmeyen **tam olarak o 5 listing**. Kural: "unchanged"i asla geçme —
+  "iş yoktu" ile "yanlış yere baktım" aynı görünür; farkı ancak bağımsız bir
+  sayım söyler. Bağımsız geri okumada `panelVaryant: 396` alanına da bakıldı:
+  boş harita da `offeringFarki: 0` üretirdi, dolu harita kanıtı o alandır.
+  Yan borç (bilerek bırakıldı, yazıldı): taban bugünün spotuna sabit; altın
+  yükselince %20 tampon erir ve bunu düzenli koşan bir ölçüm hâlâ YOK.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
