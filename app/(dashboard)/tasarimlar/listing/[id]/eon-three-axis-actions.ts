@@ -222,7 +222,13 @@ async function preflight(target: FlatMilgrainTarget): Promise<Preflight> {
     "EON panel mağaza kimliği beklenenden farklı",
   );
   const product = productResult.data as PanelProduct | null;
-  ensure(product?.id === target.productId && product.sku === target.skuPrefix, "panel ürün kimliği/SKU farklı");
+  // Listing-level SKU is optional in this panel; the exact 378 variant SKUs
+  // below are the authoritative matrix identity. Reject a conflicting value.
+  ensure(
+    product?.id === target.productId &&
+      (product.sku == null || product.sku === "" || product.sku === target.skuPrefix),
+    "panel ürün kimliği/SKU farklı",
+  );
   ensure(product.status === "draft" && product.etsy_listing_id === target.listingId, "panel kaydı beklenen Etsy taslağına bağlı değil");
   ensure(
     JSON.stringify(product.listing_metadata?.variationAxes) === JSON.stringify(["Width", "Ring Size", "Karat"]),
