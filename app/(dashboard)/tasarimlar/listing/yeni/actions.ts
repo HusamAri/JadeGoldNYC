@@ -6,6 +6,10 @@ import { requireMembership } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { parseMoneyToCents } from "@/lib/money";
 import {
+  LISTING_PROTOCOLS,
+  type ListingProtocolId,
+} from "@/lib/etsy/listing-protocol";
+import {
   inferWeightsBySize,
   distributePriceByWeight,
   type DistVariant,
@@ -31,6 +35,8 @@ export interface DraftVariantInput {
 }
 
 export interface DraftListingInput {
+  /** Explicit product contract; never infer a new draft to be a wedding band. */
+  listingProtocol: string;
   title: string;
   description: string;
   /** Virgüllü liste ("gold, chain, necklace"). */
@@ -107,6 +113,15 @@ export async function createDraftListing(
   const title = input.title.trim();
   if (!title) return { error: "Başlık boş olamaz." };
 
+  const listingProtocol = input.listingProtocol?.trim();
+  if (
+    !listingProtocol ||
+    !Object.prototype.hasOwnProperty.call(LISTING_PROTOCOLS, listingProtocol)
+  ) {
+    return { error: "Yeni taslak için ürün tipini açıkça seçin." };
+  }
+  const protocol = listingProtocol as ListingProtocolId;
+
   // Kapak görseli: yalnız http(s) kabul edilir — Etsy'ye gönderimde bu adres
   // sunucudan fetch edilir (data:/dosya yolu oradan indirilemez).
   const imageUrl = (input.imageUrl ?? "").trim();
@@ -135,6 +150,11 @@ export async function createDraftListing(
   // Etsy'de "değişmeyen property" sayılır → varyantlar tek offering'e düşer
   // (sessiz kayıp); burada erken ve anlaşılır hata veriyoruz.
   const axisName = (input.axisName ?? "").trim();
+  if (protocol === "signet_ring" && rows.length > 1 && axisName !== "Ring Size") {
+    return {
+      error: "Çok bedenli initial signet ring için varyasyon ekseni Ring Size olmalı.",
+    };
+  }
   const axisBySku = new Map<string, string>();
   if (axisName) {
     for (const r of rows) {
@@ -203,6 +223,13 @@ export async function createDraftListing(
       // yazılmazsa listing kapaksız kalır ve Etsy'ye gönderimde de kapak
       // bulunamaz.
       image_url: imageUrl || null,
+      product_type:
+        protocol === "wedding_band" || protocol === "signet_ring"
+          ? "ring"
+          : protocol === "pendant_necklace"
+            ? "necklace"
+            : "bracelet",
+      listing_metadata: { listingProtocol: protocol },
       status: "draft",
       currency: "USD",
       price_cents: minPriceCents,

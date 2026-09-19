@@ -95,6 +95,17 @@ export const DEFAULT_PERSONALIZATION_QUESTIONS: PersonalizationQuestion[] = [
   },
 ];
 
+/** A single customer-selected letter on the face of an initial signet ring. */
+export const SIGNET_INITIAL_PERSONALIZATION_QUESTIONS: PersonalizationQuestion[] = [
+  {
+    question_type: "text_input",
+    question_text: "Letter for the signet face",
+    instructions: "Enter one uppercase letter A-Z to stamp on the ring face.",
+    required: true,
+    max_allowed_characters: 1,
+  },
+];
+
 /**
  * Personalization contract for the nine Intaglio 1010 recessed-channel bands.
  * A single text field avoids conflicting top and inside engraving requests,
