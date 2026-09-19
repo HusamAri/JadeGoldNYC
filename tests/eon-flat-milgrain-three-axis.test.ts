@@ -150,6 +150,16 @@ test("exact 18-cell US 13 baseline is upgradeable, but only at matching panel pr
   const update = payload();
   const old = oldReadback();
   assert.equal(preflightFlatMilgrainInventory(target, old, update, readinessStateId), "upgrade");
+  // Legacy drafts can use different Etsy property IDs while retaining the
+  // exact Karat/Width values, SKU grid, prices and quantities.
+  const legacyIds = oldReadback();
+  for (const product of legacyIds.products) {
+    product.property_values[0].property_id = 777;
+    product.property_values[1].property_id = 888;
+  }
+  assert.equal(preflightFlatMilgrainInventory(target, legacyIds, update, readinessStateId), "upgrade");
+  legacyIds.products[0].property_values[1].property_id = 777;
+  assert.throws(() => preflightFlatMilgrainInventory(target, legacyIds, update, readinessStateId), /iki ayrı tek-değerli property/);
   old.products[0].offerings[0].price.amount += 100;
   assert.throws(() => preflightFlatMilgrainInventory(target, old, update, readinessStateId), /baseline fiyatı/);
   old.products[0].offerings[0].price.amount -= 100;
