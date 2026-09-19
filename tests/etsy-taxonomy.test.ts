@@ -2,28 +2,64 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
-  configuredWeddingBandsTaxonomyId,
-  DEFAULT_WEDDING_BANDS_TAXONOMY_ID,
+  inferEtsyListingKind,
+  prepareVariantsForEtsy,
+  taxonomyNamesForListing,
 } from "../lib/etsy/create-listing";
 
-test("uses the verified Wedding Bands taxonomy id by default", () => {
+test("routes a bracelet to the Bracelet taxonomy, never Wedding Bands", () => {
+  const kind = inferEtsyListingKind(
+    "14K Sunray Arc Bracelet, Solid Yellow Gold Adjustable Chain Bracelet",
+    ["14k bracelet", "gold bracelet"],
+  );
+  assert.equal(kind, "bracelet");
+  assert.deepEqual(taxonomyNamesForListing(kind), ["Bracelets", "Bracelet"]);
+});
+
+test("keeps Wedding Bands exclusive to explicit wedding-band wording", () => {
   assert.equal(
-    configuredWeddingBandsTaxonomyId(undefined),
-    DEFAULT_WEDDING_BANDS_TAXONOMY_ID,
+    inferEtsyListingKind("14K Gold Wedding Band Ring", ["wedding band"]),
+    "wedding_band",
+  );
+  assert.equal(
+    inferEtsyListingKind("14K Sunray Arc Bracelet", ["gold jewelry"]),
+    "bracelet",
   );
 });
 
-test("accepts a positive integer override", () => {
-  assert.equal(configuredWeddingBandsTaxonomyId("4321"), 4321);
-});
-
-test("rejects invalid overrides before any Etsy request", () => {
-  assert.throws(
-    () => configuredWeddingBandsTaxonomyId("invalid"),
-    /pozitif bir tam sayı/,
+test("turns named bracelet sizes into a Bracelet Length variation", () => {
+  const variants = prepareVariantsForEtsy(
+    [
+      {
+        sku: "BAS-F26-SUNRAY-14K-065",
+        name: "6.5 in",
+        properties: null,
+        price_cents: 39900,
+        quantity: 1,
+      },
+      {
+        sku: "BAS-F26-SUNRAY-14K-070",
+        name: "7 in",
+        properties: null,
+        price_cents: 42500,
+        quantity: 1,
+      },
+      {
+        sku: "BAS-F26-SUNRAY-14K-075",
+        name: "7.5 in",
+        properties: null,
+        price_cents: 44900,
+        quantity: 1,
+      },
+    ],
+    "bracelet",
   );
-  assert.throws(
-    () => configuredWeddingBandsTaxonomyId("0"),
-    /pozitif bir tam sayı/,
+  assert.deepEqual(
+    variants.map((variant) => variant.properties),
+    [
+      { "Bracelet Length": "6.5 in" },
+      { "Bracelet Length": "7 in" },
+      { "Bracelet Length": "7.5 in" },
+    ],
   );
 });
