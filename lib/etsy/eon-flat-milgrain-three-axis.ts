@@ -328,16 +328,29 @@ export function preflightFlatMilgrainInventory(
     const intended = expectedProducts.get(sku);
     invariant(intended, `${sku}: beklenen panel fiyatı bulunamadı`);
     invariant(product.property_values?.length === 2, `${sku}: Etsy baseline tam Karat + Width ekseninde değil`);
-    const oldProperties = new Map(product.property_values.map((property) => [property.property_id, property]));
-    invariant(oldProperties.size === 2 && oldProperties.has(516) && oldProperties.has(513), `${sku}: Etsy baseline Karat + Width ID'leri farklı`);
+    // Older drafts may use different Etsy property slots. The exact SKU grid,
+    // two single-valued axes, values, price and quantity establish identity;
+    // the replacement intentionally assigns the canonical three-axis slots.
+    const oldPropertyIds = new Set(product.property_values.map((property) => property.property_id));
     invariant(
-      oldProperties.get(516)?.values?.length === 1 &&
-        oldProperties.get(516)?.values?.[0] === intended.property_values[0].values[0],
+      oldPropertyIds.size === 2 &&
+        product.property_values.every((property) =>
+          Number.isSafeInteger(property.property_id) &&
+          property.property_id > 0 &&
+          property.values?.length === 1,
+        ),
+      `${sku}: Etsy baseline iki ayrı tek-değerli property içermiyor`,
+    );
+    invariant(
+      product.property_values.some((property) =>
+        property.values?.[0] === intended.property_values[0].values[0],
+      ),
       `${sku}: Etsy baseline Karat değeri farklı`,
     );
     invariant(
-      oldProperties.get(513)?.values?.length === 1 &&
-        oldProperties.get(513)?.values?.[0] === intended.property_values[1].values[0],
+      product.property_values.some((property) =>
+        property.values?.[0] === intended.property_values[1].values[0],
+      ),
       `${sku}: Etsy baseline Width değeri farklı`,
     );
     const offering = oneOffering(product, sku);
