@@ -1,5 +1,6 @@
 import {
   DEFAULT_PERSONALIZATION_QUESTIONS,
+  SIGNET_INITIAL_PERSONALIZATION_QUESTIONS,
   type PersonalizationQuestion,
 } from "@/lib/etsy/personalization";
 
@@ -48,6 +49,7 @@ import {
 
 export type ListingProtocolId =
   | "wedding_band"
+  | "signet_ring"
   | "pendant_necklace"
   | "chain_bracelet";
 
@@ -126,6 +128,17 @@ export const LISTING_PROTOCOLS: Record<ListingProtocolId, ListingProtocolSpec> =
     personalization: DEFAULT_PERSONALIZATION_QUESTIONS,
     parcel: RING_PARCEL,
   },
+  signet_ring: {
+    id: "signet_ring",
+    label: "Initial signet ring",
+    taxonomyNames: ["Signet Rings", "Rings"],
+    taxonomyRoot: "Jewelry",
+    // A single-size signet is valid; multi-size drafts still require a real
+    // variation axis through create-listing's general offering guard.
+    requiredVariationAxes: [],
+    personalization: SIGNET_INITIAL_PERSONALIZATION_QUESTIONS,
+    parcel: RING_PARCEL,
+  },
   pendant_necklace: {
     id: "pendant_necklace",
     label: "Pendant necklace",
@@ -163,6 +176,7 @@ export const LISTING_PROTOCOLS: Record<ListingProtocolId, ListingProtocolSpec> =
 /** `product_type` → protokol. Listelenmeyen tip BİLEREK eşlenmez. */
 const PRODUCT_TYPE_PROTOCOL: Record<string, ListingProtocolId> = {
   ring: "wedding_band",
+  signet_ring: "signet_ring",
   necklace: "pendant_necklace",
   pendant: "pendant_necklace",
   bracelet: "chain_bracelet",
