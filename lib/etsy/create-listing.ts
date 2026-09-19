@@ -265,6 +265,8 @@ export async function resolveShopProfiles(
 /** Panel varyantı (create için gereken alt küme). */
 export interface DraftVariant {
   sku: string | null;
+  /** Panelde görünen seçenek metni (ör. 6.5 in). */
+  name?: string | null;
   properties: RawVariantProperties;
   price_cents: number | null;
   quantity: number | null;
@@ -391,6 +393,34 @@ function buildVariationPlan(variants: DraftVariant[]): VariationPlan {
 }
 
 /**
+ * Eski elle açılmış bileklik taslaklarında seçenek metni `name` alanında
+ * (ör. "6.5 in", "7 in"), fakat `properties` boş kalmış olabilir. Bu durumda
+ * Etsy üç bedeni tek offering'e düşürürdü. Yalnız zincir bilekliklerde, zaten
+ * değişen bir property yoksa, bu açık değerlerden `Bracelet Length` eksenini
+ * türetiriz. Wedding band'lere Width veya Ring Size eklenmez.
+ */
+function prepareBraceletLengthVariants(
+  variants: DraftVariant[],
+  protocol: ListingProtocolSpec,
+): DraftVariant[] {
+  if (protocol.id !== "chain_bracelet" || variants.length < 2) return variants;
+  if (buildVariationPlan(variants).varyingNames.length > 0) return variants;
+
+  const lengths = variants.map((variant) => (variant.name ?? "").trim());
+  if (lengths.some((length) => !length) || new Set(lengths).size < 2) {
+    return variants;
+  }
+
+  return variants.map((variant, index) => ({
+    ...variant,
+    properties: {
+      ...Object.fromEntries(variantPropMap(variant)),
+      "Bracelet Length": lengths[index]!,
+    },
+  }));
+}
+
+/**
  * Protokolün dayattığı varyasyon eksenlerini doğrular.
  *
  * ÖNCESİ: bu fonksiyon `validateWeddingBandVariationAxes(sellerPath, variants)`
@@ -471,8 +501,8 @@ export async function createDraftListingFromProduct(
   }
 
   const warnings: string[] = [];
-  const variants = product.variants ?? [];
-  const overlongSku = variants.find((variant) => (variant.sku ?? "").length > 32);
+  const rawVariants = product.variants ?? [];
+  const overlongSku = rawVariants.find((variant) => (variant.sku ?? "").length > 32);
   if (overlongSku) {
     return {
       ok: false,
@@ -486,6 +516,7 @@ export async function createDraftListingFromProduct(
   if (!protocol) {
     return { ok: false, step: "validation", error: unknownProtocolError(product) };
   }
+  const variants = prepareBraceletLengthVariants(rawVariants, protocol);
   const variationError = validateVariationAxes(protocol, variants);
   if (variationError) {
     return { ok: false, step: "validation", error: variationError };
