@@ -23,6 +23,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Table,
   TableBody,
   TableCell,
@@ -86,11 +93,12 @@ export function ListingComposer() {
   const [pending, startTransition] = useTransition();
 
   const [title, setTitle] = useState("");
+  const [listingProtocol, setListingProtocol] = useState("");
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState("");
   const [materials, setMaterials] = useState("");
   const [imageUrl, setImageUrl] = useState("");
-  const [karat, setKarat] = useState("14");
+  const [karat, setKarat] = useState("");
   const [goldSpot, setGoldSpot] = useState("");
   const [markup, setMarkup] = useState("2.5");
   const [axisName, setAxisName] = useState("");
@@ -146,6 +154,10 @@ export function ListingComposer() {
   }
 
   function onSave() {
+    if (!listingProtocol) {
+      toast.error("Ürün tipini seçin; yeni taslaklar alyans varsayılmaz.");
+      return;
+    }
     if (!title.trim()) {
       toast.error("Başlık boş olamaz.");
       return;
@@ -157,6 +169,7 @@ export function ListingComposer() {
     }
     startTransition(async () => {
       const res = await createDraftListing({
+        listingProtocol,
         title,
         description,
         tags,
@@ -189,6 +202,34 @@ export function ListingComposer() {
             <span className="idx-ln" />
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-1.5 sm:col-span-2">
+              <Label htmlFor="lc-protocol">Ürün tipi *</Label>
+              <Select
+                value={listingProtocol}
+                onValueChange={(value) => {
+                  setListingProtocol(value);
+                  if (value === "signet_ring" && !axisName.trim()) {
+                    setAxisName("Ring Size");
+                  }
+                }}
+              >
+                <SelectTrigger id="lc-protocol" className="w-full">
+                  <SelectValue placeholder="Ürün tipini seçin" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="signet_ring">Initial signet ring · tek harf</SelectItem>
+                  <SelectItem value="wedding_band">Wedding band · alyans</SelectItem>
+                  <SelectItem value="pendant_necklace">Pendant necklace · kolye</SelectItem>
+                  <SelectItem value="chain_bracelet">Chain bracelet · bileklik</SelectItem>
+                </SelectContent>
+              </Select>
+              {listingProtocol === "signet_ring" && (
+                <p className="text-muted-foreground text-xs">
+                  Etsy kişiselleştirmesinde müşteri yüzüğün yüzüne basılacak tek bir A–Z harfi seçer.
+                  Çok bedenli taslaklarda eksen Ring Size olmalıdır.
+                </p>
+              )}
+            </div>
             <div className="space-y-1.5 sm:col-span-2">
               <Label htmlFor="lc-title">Başlık *</Label>
               <Input
@@ -250,7 +291,7 @@ export function ListingComposer() {
                 inputMode="numeric"
                 value={karat}
                 onChange={(e) => setKarat(e.target.value)}
-                placeholder="14"
+                placeholder="ör. 14 (doğrulandıysa)"
               />
             </div>
           </div>
