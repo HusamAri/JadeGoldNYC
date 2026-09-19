@@ -21,6 +21,8 @@ import { ImageStrip } from "@/components/listing/image-strip";
 import { VariantEditor } from "@/components/listing/variant-editor";
 import { EtsyPricePushButton } from "@/components/listing/etsy-price-push-button";
 import { EtsyVariantCreateButton } from "@/components/listing/etsy-variant-create-button";
+import { EonThreeAxisSyncButton } from "@/components/listing/eon-three-axis-sync-button";
+import { getFlatMilgrainTarget } from "@/lib/etsy/eon-flat-milgrain-three-axis";
 import { KymationFiveMmButton } from "@/components/listing/kymation-five-mm-button";
 import { VariantMatrix } from "@/components/listing/variant-matrix";
 import { DiscountControl } from "@/components/listing/discount-control";
@@ -102,6 +104,7 @@ export default async function ListingDetayPage({
   const detail = await getListingDetail(id);
   if (!detail) notFound();
   const { product, variants, gaps } = detail;
+  const flatMilgrainTarget = getFlatMilgrainTarget(product.id);
   // Ayar SENKRON tespit edilir (detectKarat await'siz) → 18K spot fetch'i de
   // aşağıdaki tek Promise.all'a girebilir. `detail` bilindikten sonra bu yedi
   // veri birbirinden BAĞIMSIZ; eskiden sırayla await ediliyordu (~6 tur), artık
@@ -420,9 +423,23 @@ export default async function ListingDetayPage({
           </div>
         )}
 
+        {etsyListingId != null && flatMilgrainTarget && (
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-amber-500/40 px-3 py-2">
+            <p className="text-muted-foreground text-xs">
+              EON Flat Milgrain: mevcut Etsy taslağında Karat, Width ve US Ring
+              Size matrisini (378 varyant) karşılaştırıp yalnız doğrulanan
+              taslağı güncelle. Yayınlama yapılmaz.
+            </p>
+            <EonThreeAxisSyncButton
+              productId={product.id}
+              writeEnabled={writeAccess.writeEnabled}
+            />
+          </div>
+        )}
+
         {/* Kanarya: bu listing'in panel fiyatlarını Etsy'ye gönder — toplu
             itiş öncesi tek ilanda dene-doğrula; sonucu net raporlar. */}
-        {etsyListingId != null && (
+        {etsyListingId != null && !flatMilgrainTarget && (
           <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-xl border px-3 py-2">
             <p className="text-muted-foreground text-xs">
               Panel varyant fiyatlarını bu listing için Etsy&apos;ye gönder
@@ -439,7 +456,7 @@ export default async function ListingDetayPage({
         {/* Eksik varyant oluşturma — panele sonradan eklenen varyantlar (ör.
             yeni genişlikler) Etsy'de yoksa burada açılır. Fiyat itişinden ayrı:
             mevcut offering fiyatlarına dokunulmaz (externalPricing uyumlu). */}
-        {etsyListingId != null && variants.length > 0 && (
+        {etsyListingId != null && variants.length > 0 && !flatMilgrainTarget && (
           <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-xl border px-3 py-2">
             <p className="text-muted-foreground text-xs">
               Panel&apos;de olup Etsy&apos;de olmayan varyantları Etsy&apos;de
