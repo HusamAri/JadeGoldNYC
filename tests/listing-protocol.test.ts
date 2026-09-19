@@ -67,6 +67,26 @@ test("alyans davranışı birebir korunur — geçerli ızgara geçer", () => {
   assert.equal(validateVariationAxes(spec, RING_VARIANTS), null);
 });
 
+test("initial signet ring alyans eksenlerine düşmez ve tek harf ister", () => {
+  const spec = resolveListingProtocol({
+    product_type: "ring",
+    listing_metadata: { listingProtocol: "signet_ring" },
+  });
+  assert.ok(spec);
+  assert.equal(spec.id, "signet_ring");
+  assert.deepEqual(spec.requiredVariationAxes, []);
+  assert.equal(spec.taxonomyRoot, "Jewelry");
+  assert.equal(spec.personalization?.length, 1);
+  assert.equal(spec.personalization?.[0].question_type, "text_input");
+  assert.equal(spec.personalization?.[0].required, true);
+  assert.equal(spec.personalization?.[0].max_allowed_characters, 1);
+  const sizes: DraftVariant[] = [
+    { sku: "BAS-INITIAL-06", properties: { "Ring Size": "US 6" }, price_cents: 80000, quantity: 1 },
+    { sku: "BAS-INITIAL-07", properties: { "Ring Size": "US 7" }, price_cents: 80000, quantity: 1 },
+  ];
+  assert.equal(validateVariationAxes(spec, sizes), null);
+});
+
 test("alyansta eksik eksen HÂLÂ reddedilir, mesaj aynı kalır", () => {
   const spec = LISTING_PROTOCOLS.wedding_band;
   const missingRingSize: DraftVariant[] = RING_VARIANTS.map((v) => ({
@@ -232,6 +252,14 @@ test("kolye taksonomisi Jewelry kökünden çözülür, Weddings ikizi seçilmez
     LISTING_PROTOCOLS.pendant_necklace,
   );
   assert.deepEqual(r, { ok: true, taxonomyId: 1229 });
+});
+
+test("signet taksonomisi Jewelry > Rings'e düşer, Wedding Bands'e değil", async () => {
+  const r = await resolveTaxonomyIdForProtocol(
+    fakeClient(),
+    LISTING_PROTOCOLS.signet_ring,
+  );
+  assert.deepEqual(r, { ok: true, taxonomyId: 10 });
 });
 
 test("kök iddiası olmadan çift eşleşme BAĞIRARAK durur, sessizce ilkini almaz", async () => {
