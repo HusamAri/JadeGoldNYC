@@ -176,10 +176,34 @@ const LEGACY_NULL_TYPE_PROTOCOL: ListingProtocolId = "wedding_band";
 
 export interface ProtocolSource {
   product_type?: string | null;
+  /** Legacy records may not have product_type; use their explicit selling copy
+   * only to avoid routing an obvious bracelet/necklace as a wedding band. */
+  title?: string | null;
+  tags?: string[] | null;
+  materials?: string[] | null;
   listing_metadata?: {
     listingProtocol?: unknown;
     offersPersonalization?: unknown;
   } | null;
+}
+
+/** Product records created before product_type existed retain the legacy ring
+ * fallback unless their own title, tags, or materials explicitly identify a
+ * chain product. This is deliberately narrow: ambiguous legacy records stay
+ * on the established wedding-band contract. */
+function resolveLegacyNullTypeProtocol(
+  product: ProtocolSource,
+): ListingProtocolSpec {
+  const text = [product.title ?? "", ...(product.tags ?? []), ...(product.materials ?? [])]
+    .join(" ")
+    .toLocaleLowerCase("en-US");
+  if (/\bbracelet\b|\banklet\b/.test(text)) {
+    return LISTING_PROTOCOLS.chain_bracelet;
+  }
+  if (/\bnecklace\b|\bpendant\b/.test(text)) {
+    return LISTING_PROTOCOLS.pendant_necklace;
+  }
+  return LISTING_PROTOCOLS[LEGACY_NULL_TYPE_PROTOCOL];
 }
 
 function isProtocolId(value: unknown): value is ListingProtocolId {
@@ -211,7 +235,7 @@ function resolveBaseProtocol(
   if (isProtocolId(declared)) return LISTING_PROTOCOLS[declared];
 
   const type = (product.product_type ?? "").trim().toLocaleLowerCase("en-US");
-  if (type === "") return LISTING_PROTOCOLS[LEGACY_NULL_TYPE_PROTOCOL];
+  if (type === "") return resolveLegacyNullTypeProtocol(product);
 
   const mapped = PRODUCT_TYPE_PROTOCOL[type];
   return mapped ? LISTING_PROTOCOLS[mapped] : null;
