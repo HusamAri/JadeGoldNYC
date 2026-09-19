@@ -65,7 +65,7 @@ export async function sendListingToEtsy(
   // Aktif varyantlar (org kilidi).
   const { data: vData, error: vErr } = await admin
     .from("product_variants")
-    .select("sku, properties, price_cents, quantity")
+    .select("sku, name, properties, price_cents, quantity")
     .eq("org_id", m.org_id)
     .eq("product_id", productId)
     .eq("active", true);
