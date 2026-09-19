@@ -14,8 +14,8 @@ import { DEFAULT_PERSONALIZATION_QUESTIONS } from "@/lib/etsy/personalization";
  * kullanıcı listing'i "tailor" ettikten sonra tek tuşla Etsy'de TASLAK (draft —
  * yayınlanmaz) listing açılır. Akış:
  *   1. createListing (POST, form-encoded): başlık, temiz açıklama, tag/materyal,
- *      çapa fiyat (en düşük varyant), kişiselleştirme AÇIK (30 char iç gravür).
- *   2. Envanter PUT: DEĞİŞEN property'ler custom slot 513/514'e; her iki eksen de
+ *      çapa fiyat (en düşük varyant), wedding band ise 30 karakterlik iç gravür.
+ *   2. Envanter PUT: DEĞİŞEN property'ler custom slot 513/514'e; kullanılan eksenler
  *      fiyat taşır (price_on_property = kullanılan slotlar); fiyat/adet/sku per
  *      offering panel varyantlarından. Sabit property'ler açıklamada kalır.
  *   3. Görseller: kapak (products.image_url) + panel galerisi (listing_images)
@@ -31,12 +31,10 @@ import { DEFAULT_PERSONALIZATION_QUESTIONS } from "@/lib/etsy/personalization";
  *  A. Zorunlu alan sabitleri (kullanıcı onayı): who_made="i_did"
  *     (ortak Yasin mağaza üyesi), when_made="made_to_order", is_supply="false",
  *     type="physical", state="draft".
- *  B. taxonomy_id: verified Wedding Bands node 1232 is used without fetching
- *     the complete taxonomy tree. ETSY_WEDDING_BANDS_TAXONOMY_ID can override
- *     the default if Etsy remaps the category later.
- *  C. Kişiselleştirme: is_personalizable=true, required=false, max=30 char.
- *     Bant alyanslarında bu iç gravür talimatıdır; Etsy 30 char'ı aşan talebi
- *     reddeder.
+ *  B. taxonomy_id: ürün başlığı/etiketlerinden türü çıkarılır ve mağazanın
+ *     güncel seller taxonomy ağacından doğru düğüm çözülür. Bir bileklik asla
+ *     Wedding Bands düğümüne gönderilmez.
+ *  C. Kişiselleştirme: yalnız wedding band'lerde iç gravür soruları eklenir.
  *  D. Varyasyon eşleme: Etsy en fazla 2 custom variation ekseni kabul eder →
  *     DEĞİŞEN ilk 2 property slot 513/514'e; 2'den fazla değişen varsa (nadir)
  *     kalanı açıklamaya not düşülür (canlıda uyarı olarak döneriz).
@@ -57,12 +55,12 @@ import { DEFAULT_PERSONALIZATION_QUESTIONS } from "@/lib/etsy/personalization";
 const CUSTOM_SLOT_IDS = [513, 514] as const;
 
 /**
- * Kargo paketi ölçüleri — yüzük kutusu + koruyucu zarf (kullanıcı kararı).
+ * Kargo paketi ölçüleri — küçük mücevher kutusu + koruyucu zarf.
  * Etsy hesaplı (calculated) kargo profili listing'de item_weight + boyut ŞART
  * koşar (yoksa create 400). Bu değerler listing'e yazılınca create her profil
  * tipiyle çalışır. Kargo bedeli fiyata gömülü (free shipping) olduğundan bu
  * ölçüler yalnız Etsy'nin zorunlu alanını doldurur; ABD ücretsiz kalır.
- * Tüm yüzükler için sabit: hafif altın yüzük + sunum kutusu + kabarcıklı zarf.
+ * Küçük, hafif takılar için güvenli varsayılan: sunum kutusu + kabarcıklı zarf.
  */
 const PARCEL = {
   weight: 3,
@@ -79,44 +77,97 @@ export function stripInternalTrailer(desc: string): string {
   return desc.replace(/\n*---\n\[EON [\s\S]*\]$/m, "").trimEnd();
 }
 
-/**
- * Etsy's Jewelry > Rings > Bands seller-taxonomy node. The node id is stable,
- * while its display name has changed to Wedding Bands over time.
- */
-export const DEFAULT_WEDDING_BANDS_TAXONOMY_ID = 1232;
+export type EtsyListingKind =
+  | "wedding_band"
+  | "ring"
+  | "bracelet"
+  | "necklace"
+  | "earrings"
+  | "pendant"
+  | "other";
 
-/**
- * Keep the production default deterministic so serverless cold starts do not
- * download Etsy's entire taxonomy tree. The override provides a no-code escape
- * hatch if Etsy ever remaps the node.
- */
-export function configuredWeddingBandsTaxonomyId(
-  raw = process.env.ETSY_WEDDING_BANDS_TAXONOMY_ID,
-): number {
-  if (raw == null || raw.trim() === "") {
-    return DEFAULT_WEDDING_BANDS_TAXONOMY_ID;
-  }
-
-  const parsed = Number(raw);
-  if (!Number.isSafeInteger(parsed) || parsed < 1) {
-    throw new Error(
-      "ETSY_WEDDING_BANDS_TAXONOMY_ID pozitif bir tam sayı olmalı.",
-    );
-  }
-  return parsed;
+interface TaxonomyNode {
+  id: number;
+  name: string;
+  children?: TaxonomyNode[];
 }
 
-// Taxonomy id is constant within the process.
-let cachedWeddingBandTaxonomyId: number | null = null;
-
 /**
- * Resolve the configured Wedding Bands taxonomy id without spending an Etsy
- * API request on every serverless cold start.
+ * Only explicit wedding-band wording opts a listing into the Wedding Bands
+ * taxonomy. This prevents a bracelet (or any other jewellery type) from
+ * inheriting ring-only variation rules.
  */
-export async function resolveWeddingBandTaxonomyId(): Promise<number> {
-  if (cachedWeddingBandTaxonomyId != null) return cachedWeddingBandTaxonomyId;
-  cachedWeddingBandTaxonomyId = configuredWeddingBandsTaxonomyId();
-  return cachedWeddingBandTaxonomyId;
+export function inferEtsyListingKind(
+  title: string,
+  tags: string[] | null = null,
+  materials: string[] | null = null,
+): EtsyListingKind {
+  const text = [title, ...(tags ?? []), ...(materials ?? [])]
+    .join(" ")
+    .toLowerCase();
+
+  if (/\bbracelet\b|\banklet\b/.test(text)) return "bracelet";
+  if (/\bearrings?\b|\bhoops?\b|\bstuds?\b/.test(text)) return "earrings";
+  if (/\bpendant\b|\bcharm\b|\bmedallion\b/.test(text)) return "pendant";
+  if (/\bnecklace\b|\bchain\b/.test(text)) return "necklace";
+  if (/\bwedding\s+(?:band|ring)\b|\bband\s+ring\b/.test(text)) {
+    return "wedding_band";
+  }
+  if (/\brings?\b|\bbands?\b/.test(text)) return "ring";
+  return "other";
+}
+
+const TAXONOMY_NAMES: Record<EtsyListingKind, string[]> = {
+  wedding_band: ["Wedding Bands"],
+  ring: ["Rings"],
+  bracelet: ["Bracelets", "Bracelet"],
+  necklace: ["Necklaces", "Necklace"],
+  earrings: ["Earrings", "Earring"],
+  pendant: ["Pendants", "Pendant"],
+  other: ["Jewelry", "Jewellery"],
+};
+
+/** Pure helper so category routing is covered without calling Etsy. */
+export function taxonomyNamesForListing(kind: EtsyListingKind): string[] {
+  return TAXONOMY_NAMES[kind];
+}
+
+function findTaxonomyNode(
+  nodes: TaxonomyNode[],
+  names: string[],
+): TaxonomyNode | null {
+  const normalizedNames = new Set(names.map((name) => name.toLowerCase()));
+  const queue = [...nodes];
+  while (queue.length > 0) {
+    const node = queue.shift()!;
+    if (normalizedNames.has(node.name.trim().toLowerCase())) return node;
+    if (node.children) queue.push(...node.children);
+  }
+  return null;
+}
+
+// Seller taxonomy is stable within a serverless process, but is resolved from
+// Etsy instead of assigning all products to the Wedding Bands node.
+const taxonomyCache = new Map<EtsyListingKind, number>();
+
+async function resolveListingTaxonomyId(
+  client: EtsyClient,
+  kind: EtsyListingKind,
+): Promise<number> {
+  const cached = taxonomyCache.get(kind);
+  if (cached != null) return cached;
+
+  const tree = await client.get<{ results?: TaxonomyNode[] }>(
+    etsyPaths.sellerTaxonomyNodes(),
+  );
+  const node = findTaxonomyNode(tree.results ?? [], taxonomyNamesForListing(kind));
+  if (!node) {
+    throw new Error(
+      `Etsy kategorisi bulunamadı: ${taxonomyNamesForListing(kind).join(" / ")}.`,
+    );
+  }
+  taxonomyCache.set(kind, node.id);
+  return node.id;
 }
 
 export interface ShopProfiles {
@@ -231,6 +282,8 @@ export async function resolveShopProfiles(
 /** Panel varyantı (create için gereken alt küme). */
 export interface DraftVariant {
   sku: string | null;
+  /** Panelde gösterilen seçenek metni (ör. "6.5 in"). */
+  name?: string | null;
   properties: RawVariantProperties;
   price_cents: number | null;
   quantity: number | null;
@@ -337,6 +390,40 @@ function buildVariationPlan(variants: DraftVariant[]): VariationPlan {
   };
 }
 
+/**
+ * Eski/elle açılmış bileklik taslaklarında seçenek metni `name` alanında
+ * ("6.5 in", "7 in" …), ancak `properties` boş kalmış olabilir. Etsy'de bu
+ * durum üç seçeneği tek offering'e düşürürdü. Yalnız BİLEKLİKlerde, mevcut
+ * değişen bir eksen yoksa, bu metinlerden güvenli bir "Bracelet Length"
+ * ekseni türetiriz. Wedding band'lere Ring Size ya da Width eklenmez.
+ */
+export function prepareVariantsForEtsy(
+  variants: DraftVariant[],
+  kind: EtsyListingKind,
+): DraftVariant[] {
+  if (kind !== "bracelet" || variants.length < 2) return variants;
+  if (buildVariationPlan(variants).varyingNames.length > 0) return variants;
+
+  const lengths = variants.map((variant) => (variant.name ?? "").trim());
+  if (lengths.some((length) => !length)) return variants;
+  if (new Set(lengths).size < 2) return variants;
+
+  return variants.map((variant, index) => ({
+    ...variant,
+    properties: {
+      ...Object.fromEntries(variantPropMap(variant)),
+      "Bracelet Length": lengths[index]!,
+    },
+  }));
+}
+
+function variationHintForListing(kind: EtsyListingKind): string {
+  if (kind === "wedding_band") return "Ring Size / Width";
+  if (kind === "bracelet") return "Bracelet Length";
+  if (kind === "ring") return "Ring Size";
+  return "Length / Metal";
+}
+
 /** Sabit + overflow property'leri açıklama sonuna okunur not olarak ekler. */
 function appendConstantsToDescription(
   base: string,
@@ -372,7 +459,12 @@ export async function createDraftListingFromProduct(
   }
 
   const warnings: string[] = [];
-  const variants = product.variants ?? [];
+  const listingKind = inferEtsyListingKind(
+    product.title,
+    product.tags,
+    product.materials,
+  );
+  const variants = prepareVariantsForEtsy(product.variants ?? [], listingKind);
 
   // Fiyat çapası: en düşük varyant fiyatı; varyant yoksa ürün fiyatı.
   const variantPrices = variants
@@ -400,7 +492,7 @@ export async function createDraftListingFromProduct(
       ok: false,
       step: "create",
       error:
-        `${variants.length} varyant var ama varyasyon ekseni (ör. Ring Size / Width) tanımlı değil — ` +
+        `${variants.length} varyant var ama varyasyon ekseni (ör. ${variationHintForListing(listingKind)}) tanımlı değil — ` +
         "hepsi Etsy'de tek seçeneğe düşerdi. Varyant satırlarına eksen adı + değer girip tekrar deneyin.",
     };
   }
@@ -442,7 +534,7 @@ export async function createDraftListingFromProduct(
   // Taksonomi çöz.
   let taxonomyId: number;
   try {
-    taxonomyId = await resolveWeddingBandTaxonomyId();
+    taxonomyId = await resolveListingTaxonomyId(client, listingKind);
   } catch (e) {
     return {
       ok: false,
@@ -502,7 +594,7 @@ export async function createDraftListingFromProduct(
       return_policy_id: profiles.returnPolicyId ?? undefined,
       // Etsy 2025 migrasyonu: fiziksel listing'de işlem profili ZORUNLU.
       readiness_state_id: profiles.readinessStateId,
-      // Paket ağırlık + boyut (yüzük kutusu) — hesaplı profil bunları şart
+      // Paket ağırlık + boyut (küçük mücevher kutusu) — hesaplı profil bunları şart
       // koşar; free shipping'te fiyata gömülü olduğundan alıcıya yansımaz.
       item_weight: PARCEL.weight,
       item_weight_unit: PARCEL.weight_unit,
@@ -534,25 +626,24 @@ export async function createDraftListingFromProduct(
 
   const url = `https://www.etsy.com/listing/${listingId}`;
 
-  // ── 1b) Kişiselleştirme — 2025 migrasyonu: legacy create alanları yerine
-  // ayrı uç. İKİ soru (gravür metni + Engraving Style dropdown), kataloğun
-  // geri kalanıyla aynı (bkz. DEFAULT_PERSONALIZATION_QUESTIONS). Başarısız
-  // olursa listing yaşar; uyarı eklenir, alanlar Etsy'de elle ya da listing
-  // sayfasındaki "Tüm listing'lere uygula" ile tamamlanır.
-  try {
-    await client.request(
-      "POST",
-      etsyPaths.listingPersonalization(shopId, listingId) +
-        "?supports_multiple_personalization_questions=true",
-      { personalization_questions: DEFAULT_PERSONALIZATION_QUESTIONS },
-    );
-  } catch (e) {
-    warnings.push(
-      `Kişiselleştirme (gravür + yazı stili) eklenemedi: ${
-        e instanceof Error ? e.message : String(e)
-      }. Listing açıldı; alanları Etsy'de elle ekleyebilir veya listing ` +
-        `sayfasındaki kişiselleştirme kartından kopyalayabilirsiniz.`,
-    );
+  // ── 1b) Kişiselleştirme — wedding band iç gravürü için. Bileklik gibi
+  // başka ürün türlerinde referansta olmayan bir gravür seçeneği eklenmez.
+  if (listingKind === "wedding_band") {
+    try {
+      await client.request(
+        "POST",
+        etsyPaths.listingPersonalization(shopId, listingId) +
+          "?supports_multiple_personalization_questions=true",
+        { personalization_questions: DEFAULT_PERSONALIZATION_QUESTIONS },
+      );
+    } catch (e) {
+      warnings.push(
+        `Kişiselleştirme (gravür + yazı stili) eklenemedi: ${
+          e instanceof Error ? e.message : String(e)
+        }. Listing açıldı; alanları Etsy'de elle ekleyebilir veya listing ` +
+          `sayfasındaki kişiselleştirme kartından kopyalayabilirsiniz.`,
+      );
+    }
   }
 
   // ── 2) Envanter PUT (yalnız gerçek varyasyon varsa). ──────────────────────
