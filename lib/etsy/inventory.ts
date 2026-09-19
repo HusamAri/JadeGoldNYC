@@ -1,6 +1,11 @@
 import type { EtsyClient } from "@/lib/etsy/client";
 import { etsyPaths } from "@/lib/etsy/endpoints";
 import {
+  buildFlatMilgrainThreeAxisInventory,
+  FLAT_MILGRAIN_TARGETS,
+  type FlatMilgrainPanelVariant,
+} from "@/lib/etsy/eon-flat-milgrain-three-axis";
+import {
   etsyMoneyToUnit,
   type EtsyInventory,
   type EtsyInventoryProduct,
@@ -481,12 +486,56 @@ export async function putListingInventory(
   client: EtsyClient,
   listingId: number,
   update: EtsyInventoryUpdate,
-  opts?: { legacy?: boolean },
+  opts?: { legacy?: boolean; eonVerified?: boolean },
 ): Promise<void> {
-  const path =
-    opts?.legacy === false
-      ? etsyPaths.listingInventory(listingId) + "?legacy=false"
-      : etsyPaths.listingInventory(listingId);
+  const propertyCounts = new Set(
+    update.products.map((product) => product.property_values.length),
+  );
+  const hasThreeVariations = propertyCounts.has(3);
+  if (hasThreeVariations && (propertyCounts.size !== 1 || opts?.legacy !== false)) {
+    throw new Error(
+      "Üç varyasyonlu envanter eksik veya legacy modunda — Etsy yazması iptal edildi.",
+    );
+  }
+  // Bu üç EON taslağında eksik eksenli tam-yerine-geçen PUT, Ring Size'ı
+  // silebilir. Sonraki fiyat/stok/SKU işlemleri de aynı korumadan geçer.
+  const eonTarget = FLAT_MILGRAIN_TARGETS.find((target) => target.listingId === listingId);
+  if (eonTarget) {
+    if (!opts?.eonVerified || opts.legacy !== false) {
+      throw new Error(
+        "EON Flat Milgrain envanteri yalnız doğrulanmış 378 satırlı üç eksen akışından yazılabilir.",
+      );
+    }
+    // The transport guard independently rebuilds the entire allowlisted grid.
+    // A caller cannot set eonVerified and send arbitrary 378-row inventory.
+    const readinessStateId = update.products[0]?.offerings[0]?.readiness_state_id;
+    const rows: FlatMilgrainPanelVariant[] = update.products.map((product) => {
+      const offering = product.offerings[0];
+      return {
+        sku: product.sku,
+        active: product.offerings.length === 1 && offering?.is_enabled === true,
+        properties: Object.fromEntries(
+          product.property_values.map((property) => [property.property_name, property.values[0]]),
+        ),
+        price_cents: offering ? offering.price * 100 : null,
+        quantity: offering?.quantity ?? null,
+      };
+    });
+    let rebuilt: EtsyInventoryUpdate;
+    try {
+      rebuilt = buildFlatMilgrainThreeAxisInventory(eonTarget, rows, readinessStateId ?? 0);
+    } catch {
+      throw new Error("EON Flat Milgrain envanter ızgarası/teklifleri geçersiz — Etsy yazması iptal edildi.");
+    }
+    if (JSON.stringify(rebuilt) !== JSON.stringify(update)) {
+      throw new Error("EON Flat Milgrain envanter yükü doğrulanan matristen farklı — Etsy yazması iptal edildi.");
+    }
+  }
+  const query = new URLSearchParams();
+  if (opts?.legacy === false) query.set("legacy", "false");
+  if (hasThreeVariations) query.set("max_variations_supported", "3");
+  const suffix = query.size > 0 ? `?${query.toString()}` : "";
+  const path = etsyPaths.listingInventory(listingId) + suffix;
   await client.request<unknown>("PUT", path, update);
 }
 
