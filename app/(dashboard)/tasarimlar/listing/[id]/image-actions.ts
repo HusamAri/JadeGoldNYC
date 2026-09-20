@@ -96,6 +96,7 @@ export async function addListingImageUpload(
     data: { publicUrl },
   } = supabase.storage.from(BUCKET).getPublicUrl(path);
 
+  const position = await nextPosition(supabase, productId);
   const user = await getUser();
   const { error } = await supabase.from("listing_images").insert({
     org_id: orgId,
@@ -103,12 +104,32 @@ export async function addListingImageUpload(
     url: publicUrl,
     storage_path: path,
     source: "upload",
-    position: await nextPosition(supabase, productId),
+    position,
     created_by: user?.id ?? null,
   });
   if (error) {
     await supabase.storage.from(BUCKET).remove([path]);
     return { error: error.message };
+  }
+  // A panel-created draft has no Etsy-synced cover. Its first uploaded gallery
+  // image should also appear in Listing Önerileri, without changing the cover
+  // of an existing Etsy-backed product.
+  if (position === 0) {
+    const { error: coverError } = await supabase
+      .from("products")
+      .update({ image_url: publicUrl })
+      .eq("id", productId)
+      .eq("org_id", orgId)
+      .is("image_url", null)
+      .is("etsy_listing_id", null);
+    if (coverError) {
+      revalidatePath(listingPath(productId));
+      return {
+        error: `Görsel galeriye eklendi, ancak kapak güncellenemedi: ${coverError.message}`,
+      };
+    }
+    revalidatePath("/listing-onerileri");
+    revalidatePath("/tasarimlar");
   }
   revalidatePath(listingPath(productId));
   return { ok: true };
