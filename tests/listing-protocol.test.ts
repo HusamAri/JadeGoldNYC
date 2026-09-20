@@ -87,6 +87,28 @@ test("initial signet ring alyans eksenlerine düşmez ve tek harf ister", () => 
   assert.equal(validateVariationAxes(spec, sizes), null);
 });
 
+test("sculptural ring iki renk-beden ekseniyle alyans veya signet sayılmaz", async () => {
+  const spec = resolveListingProtocol({
+    product_type: "ring",
+    listing_metadata: { listingProtocol: "sculptural_ring" },
+  });
+  assert.ok(spec);
+  assert.equal(spec.id, "sculptural_ring");
+  assert.deepEqual(spec.requiredVariationAxes, []);
+  assert.equal(spec.personalization, null);
+  assert.equal(spec.taxonomyRoot, "Jewelry");
+  const variants: DraftVariant[] = [
+    { sku: "BAS-ARC-YG-04", properties: { "Ring Size": "US 4", "Metal Color": "Yellow Gold" }, price_cents: 59900, quantity: 1 },
+    { sku: "BAS-ARC-YG-045", properties: { "Ring Size": "US 4.5", "Metal Color": "Yellow Gold" }, price_cents: 60900, quantity: 1 },
+    { sku: "BAS-ARC-WG-04", properties: { "Ring Size": "US 4", "Metal Color": "White Gold" }, price_cents: 59900, quantity: 1 },
+  ];
+  assert.equal(validateVariationAxes(spec, variants), null);
+  assert.deepEqual(
+    await resolveTaxonomyIdForProtocol(fakeClient(), spec),
+    { ok: true, taxonomyId: 10 },
+  );
+});
+
 test("alyansta eksik eksen HÂLÂ reddedilir, mesaj aynı kalır", () => {
   const spec = LISTING_PROTOCOLS.wedding_band;
   const missingRingSize: DraftVariant[] = RING_VARIANTS.map((v) => ({
