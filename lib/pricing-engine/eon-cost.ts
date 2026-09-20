@@ -39,7 +39,10 @@
  * gram ile hata fırlatır, tahmini bir değere düşmez.
  */
 
-import { expectedListUsd, expectedSaleCents } from "./parse";
+import {
+  calculateEonLaborReserve,
+  type EonLaborProcess,
+} from "./eon-labor-reserve";
 
 export type EonKarat = "10K" | "14K" | "18K";
 
@@ -122,6 +125,8 @@ const WIDE_BAND_MIN_MM = 8;
 
 /** Kalıcı vitrin indirimi: görünen sale = liste × 0,75. */
 export const EON_SALE_RATE = 0.75;
+/** Kullanıcı tarafından istenen model-net kâr tabanı (USD). */
+export const EON_MIN_PROFIT_USD = 50;
 
 /** Gram tablosundaki beden ekseni (US). */
 export const EON_SIZES_US: readonly number[] = [
@@ -291,10 +296,12 @@ export interface EonCostBreakdown {
   multiplier: number;
   /** round(landedUsd × multiplier) — tam sayı USD. */
   engineUsd: number;
-  /** ceiling(engine / 0.75, 5) — 5'in katı, tam sayı USD. */
+  /** ceiling(engine / saleRate, 5) — 5'in katı, tam sayı USD. */
   listUsd: number;
-  /** liste × 0,75. */
+  /** liste × saleRate. */
   saleUsd: number;
+  /** En kötü kabul edilen Offsite Ads senaryosunda model-net kârı. */
+  modeledProfitUsd: number;
 
   landedCents: number;
   engineCents: number;
@@ -308,14 +315,42 @@ export function gramPriceUsd(spotUsdPerOzt: number): number {
   return spotUsdPerOzt / TROY_OUNCE_GRAMS;
 }
 
-/** Profil → işçilik USD. */
+/**
+ * Yeni Alura kalibrasyonundaki süreç sınıfını profil adına indirger.
+ * Milgrain, Alura'da gözlenen diamond-cut/dekoratif sınıfa; hammered ve
+ * iki-tonlu/elde biten profiller el işçiliği sınıfına girer.
+ */
+function laborProcessForProfile(profile: EonProfile): EonLaborProcess {
+  if (profile === "hammered" || profile === "basketweave" || profile === "greek" || profile === "twotone") {
+    return "handmade";
+  }
+  if (profile === "milgrain" || profile === "ribbed") return "decorated";
+  return "standard";
+}
+
+/**
+ * Profil + gram → ileriye dönük işçilik rezervi (USD).
+ *
+ * `laborUsdFor` adı geriye dönük olarak panelin ayarını temsil etmeye devam
+ * eder; fakat canlı fiyat hesabı artık yalnız sabit bir işçilik kopyalamaz.
+ * Alura kalibrasyonunun $100 tabanı ve süreç/gram oranı, panel ayarıyla
+ * birlikte alt sınır olarak uygulanır.
+ */
 export function laborUsdFor(
   profile: EonProfile,
   config: EonPricingConfig = DEFAULT_EON_PRICING_CONFIG,
+  grams?: number,
 ): number {
-  return HANDFINISHED_PROFILES.has(profile)
+  const legacy = HANDFINISHED_PROFILES.has(profile)
     ? config.laborHandfinishedUsd
     : config.laborUsd;
+  if (grams == null) return legacy;
+  const reserve = calculateEonLaborReserve({
+    isGoldRing: true,
+    process: laborProcessForProfile(profile),
+    weightGrams: grams,
+  }).reserveCents / 100;
+  return Math.max(legacy, reserve);
 }
 
 /** Genişlik → motor çarpanı. 8mm ve üstü geniş bant. */
@@ -410,18 +445,32 @@ export function computeEonCost(input: EonCostInput): EonCostBreakdown {
   const gPrice = gramPriceUsd(spot);
 
   const materialUsd = grams * gPrice * purity * cfg.fireFactor;
-  const laborUsd = laborUsdFor(profile, cfg);
+  const laborUsd = laborUsdFor(profile, cfg, grams);
   const landedUsd = materialUsd + laborUsd + cfg.packagingUsd + cfg.shippingUsd;
+
+  if (!Number.isFinite(cfg.saleRate) || cfg.saleRate <= 0 || cfg.saleRate > 1) {
+    throw new EonCostError(`Vitrin indirim orani 0'dan buyuk ve 1'e esit veya kucuk olmali: ${cfg.saleRate}`);
+  }
 
   const multiplier = multiplierFor(widthMm, cfg);
   // KRİTİK: yuvarlanmamış landed. Bkz. yukarıdaki yuvarlama sözleşmesi.
   const engineUsd = Math.round(landedUsd * multiplier);
 
-  // Tam sayı aritmetiğiyle ceiling(engine/0.75, 5) ve liste×0,75
-  // (parse.ts ile TEK formül — ızgarayı okuyan ve türeten taraf ayrışmasın).
-  const listUsd = expectedListUsd(engineUsd);
+  // Liste fiyatı seçili kampanya oranını taşıyacak şekilde 5 USD'ye yukarı
+  // yuvarlanır. Varsayılan %25 indirimde bu, canonical parse.ts formülüyle
+  // birebir aynıdır; EON'un bir haftalık %30 kampanyasında oran 0,70 olur.
+  // Ardından en kötü kabul edilen Offsite Ads senaryosunda da model-net kârı
+  // $50'nin altına düşürmeyecek ilk 5 USD basamağı bulunur.
+  let listUsd = Math.ceil((engineUsd / cfg.saleRate - Number.EPSILON) / 5) * 5;
+  const modeledProfit = (candidateListUsd: number): number => {
+    const saleUsd = candidateListUsd * cfg.saleRate;
+    const proceeds = 0.905 * saleUsd - Math.min(0.15 * saleUsd, 100) - ETSY_FIXED_FEE_USD;
+    return proceeds - landedUsd;
+  };
+  while (modeledProfit(listUsd) < EON_MIN_PROFIT_USD) listUsd += 5;
   const listCents = listUsd * 100;
-  const saleCents = expectedSaleCents(listCents);
+  const saleCents = Math.round(listCents * cfg.saleRate);
+  const saleUsd = saleCents / 100;
 
   return {
     karat,
@@ -449,7 +498,8 @@ export function computeEonCost(input: EonCostInput): EonCostBreakdown {
     multiplier,
     engineUsd,
     listUsd,
-    saleUsd: saleCents / 100,
+    saleUsd,
+    modeledProfitUsd: 0.905 * saleUsd - Math.min(0.15 * saleUsd, 100) - ETSY_FIXED_FEE_USD - landedUsd,
 
     landedCents: Math.round(landedUsd * 100),
     engineCents: engineUsd * 100,
