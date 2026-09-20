@@ -50,6 +50,7 @@ import {
 export type ListingProtocolId =
   | "wedding_band"
   | "signet_ring"
+  | "sculptural_ring"
   | "pendant_necklace"
   | "chain_bracelet";
 
@@ -139,6 +140,15 @@ export const LISTING_PROTOCOLS: Record<ListingProtocolId, ListingProtocolSpec> =
     personalization: SIGNET_INITIAL_PERSONALIZATION_QUESTIONS,
     parcel: RING_PARCEL,
   },
+  sculptural_ring: {
+    id: "sculptural_ring",
+    label: "Sculptural ring",
+    taxonomyNames: ["Rings"],
+    taxonomyRoot: "Jewelry",
+    requiredVariationAxes: [],
+    personalization: null,
+    parcel: RING_PARCEL,
+  },
   pendant_necklace: {
     id: "pendant_necklace",
     label: "Pendant necklace",
@@ -177,6 +187,7 @@ export const LISTING_PROTOCOLS: Record<ListingProtocolId, ListingProtocolSpec> =
 const PRODUCT_TYPE_PROTOCOL: Record<string, ListingProtocolId> = {
   ring: "wedding_band",
   signet_ring: "signet_ring",
+  sculptural_ring: "sculptural_ring",
   necklace: "pendant_necklace",
   pendant: "pendant_necklace",
   bracelet: "chain_bracelet",

@@ -43,6 +43,7 @@ const EMPTY_ROW: DraftVariantInput = {
   weight: "",
   price: "",
   axisValue: "",
+  axisValue2: "",
 };
 
 const CONFIDENCE_TR: Record<string, string> = {
@@ -102,6 +103,8 @@ export function ListingComposer() {
   const [goldSpot, setGoldSpot] = useState("");
   const [markup, setMarkup] = useState("2.5");
   const [axisName, setAxisName] = useState("");
+  const [axisName2, setAxisName2] = useState("");
+  const [bulkText, setBulkText] = useState("");
   const [rows, setRows] = useState<DraftVariantInput[]>([
     { ...EMPTY_ROW },
     { ...EMPTY_ROW },
@@ -153,6 +156,20 @@ export function ListingComposer() {
     setRows((rs) => rs.map((r, j) => (j === i ? { ...r, [key]: value } : r)));
   }
 
+  function importBulkRows() {
+    const lines = bulkText.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
+    if (lines[0]?.toLowerCase().startsWith("sku")) lines.shift();
+    const parsed = lines.map((line) => line.split(line.includes("\t") ? "\t" : ",").map((value) => value.trim()));
+    if (parsed.length === 0 || parsed.some((columns) => columns.length !== 5 || !columns[0])) {
+      toast.error("Her satırda SKU, beden, metal rengi, gram ve fiyat olmak üzere 5 sütun olmalı.");
+      return;
+    }
+    setRows(parsed.map(([sku, axisValue, axisValue2, weight, price]) => ({
+      sku, axisValue, axisValue2, weight, price,
+    })));
+    toast.success(`${parsed.length} varyant satırı içe aktarıldı.`);
+  }
+
   function onSave() {
     if (!listingProtocol) {
       toast.error("Ürün tipini seçin; yeni taslaklar alyans varsayılmaz.");
@@ -179,6 +196,7 @@ export function ListingComposer() {
         goldSpot,
         markup,
         axisName,
+        axisName2,
         variants: rows,
       });
       if (res.error || !res.id) {
@@ -211,6 +229,10 @@ export function ListingComposer() {
                   if (value === "signet_ring" && !axisName.trim()) {
                     setAxisName("Ring Size");
                   }
+                  if (value === "sculptural_ring") {
+                    setAxisName("Ring Size");
+                    setAxisName2("Metal Color");
+                  }
                 }}
               >
                 <SelectTrigger id="lc-protocol" className="w-full">
@@ -218,6 +240,7 @@ export function ListingComposer() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="signet_ring">Initial signet ring · tek harf</SelectItem>
+                  <SelectItem value="sculptural_ring">Sculptural ring · açık işçilikli yüzük</SelectItem>
                   <SelectItem value="wedding_band">Wedding band · alyans</SelectItem>
                   <SelectItem value="pendant_necklace">Pendant necklace · kolye</SelectItem>
                   <SelectItem value="chain_bracelet">Chain bracelet · bileklik</SelectItem>
@@ -227,6 +250,11 @@ export function ListingComposer() {
                 <p className="text-muted-foreground text-xs">
                   Etsy kişiselleştirmesinde müşteri yüzüğün yüzüne basılacak tek bir A–Z harfi seçer.
                   Çok bedenli taslaklarda eksen Ring Size olmalıdır.
+                </p>
+              )}
+              {listingProtocol === "sculptural_ring" && (
+                <p className="text-muted-foreground text-xs">
+                  Alyans veya signet değildir; kişiselleştirme eklenmez. Çok varyantlı taslakta Ring Size ve Metal Color birlikte kaydedilir.
                 </p>
               )}
             </div>
@@ -343,12 +371,36 @@ export function ListingComposer() {
                 Etsy&apos;de tek seçeneğe iner.
               </p>
             </div>
+            <div className="space-y-1.5 sm:col-span-2">
+              <Label htmlFor="lc-axis2">İkinci varyasyon ekseni (Etsy seçenek adı)</Label>
+              <Input
+                id="lc-axis2"
+                value={axisName2}
+                onChange={(e) => setAxisName2(e.target.value)}
+                placeholder="ör. Metal Color"
+              />
+            </div>
           </div>
 
           <div className="space-y-2">
-            <div className="text-muted-foreground grid grid-cols-[1fr_8rem_7rem_7rem_2.5rem] gap-2 font-mono text-[11px] tracking-wide uppercase">
+            <Label htmlFor="lc-bulk">Toplu varyant girişi (TAB veya CSV)</Label>
+            <Textarea
+              id="lc-bulk"
+              rows={4}
+              value={bulkText}
+              onChange={(e) => setBulkText(e.target.value)}
+              placeholder="SKU, Ring Size, Metal Color, gram, fiyat"
+            />
+            <Button type="button" variant="outline" size="sm" onClick={importBulkRows}>
+              Toplu satırları içe aktar
+            </Button>
+          </div>
+
+          <div className="space-y-2">
+            <div className="text-muted-foreground grid min-w-[850px] grid-cols-[minmax(14rem,1fr)_8rem_8rem_7rem_7rem_2.5rem] gap-2 font-mono text-[11px] tracking-wide uppercase">
               <span>SKU (beden gömülü)</span>
               <span>{axisName.trim() || "Eksen değeri"}</span>
+              <span>{axisName2.trim() || "2. eksen"}</span>
               <span>Ağırlık (g)</span>
               <span>Fiyat ($)</span>
               <span />
@@ -356,7 +408,7 @@ export function ListingComposer() {
             {rows.map((r, i) => (
               <div
                 key={i}
-                className="grid grid-cols-[1fr_8rem_7rem_7rem_2.5rem] items-center gap-2"
+                className="grid min-w-[850px] grid-cols-[minmax(14rem,1fr)_8rem_8rem_7rem_7rem_2.5rem] items-center gap-2"
               >
                 <Input
                   value={r.sku}
@@ -369,6 +421,12 @@ export function ListingComposer() {
                   onChange={(e) => setRow(i, "axisValue", e.target.value)}
                   placeholder={axisName.trim() ? "ör. US 7" : "—"}
                   disabled={!axisName.trim()}
+                />
+                <Input
+                  value={r.axisValue2 ?? ""}
+                  onChange={(e) => setRow(i, "axisValue2", e.target.value)}
+                  placeholder={axisName2.trim() ? "ör. Yellow Gold" : "—"}
+                  disabled={!axisName2.trim()}
                 />
                 <Input
                   inputMode="decimal"

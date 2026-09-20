@@ -32,6 +32,8 @@ export interface DraftVariantInput {
   price: string;
   /** Bu satırın varyasyon ekseni değeri (ör. "US 7"); `axisName` ile eşleşir. */
   axisValue?: string;
+  /** İkinci varyasyon ekseninin satır değeri (ör. "Yellow Gold"). */
+  axisValue2?: string;
 }
 
 export interface DraftListingInput {
@@ -62,6 +64,8 @@ export interface DraftListingInput {
    * Etsy'de tek offering'e düşerdi (bkz. lib/etsy/create-listing varyant kilidi).
    */
   axisName?: string;
+  /** Etsy'nin ikinci ve son varyasyon ekseni. */
+  axisName2?: string;
   variants: DraftVariantInput[];
 }
 
@@ -150,12 +154,23 @@ export async function createDraftListing(
   // Etsy'de "değişmeyen property" sayılır → varyantlar tek offering'e düşer
   // (sessiz kayıp); burada erken ve anlaşılır hata veriyoruz.
   const axisName = (input.axisName ?? "").trim();
+  const axisName2 = (input.axisName2 ?? "").trim();
+  if (axisName2 && (!axisName || axisName2 === axisName)) {
+    return { error: "İkinci varyasyon ekseni birinciden farklı olmalı ve birinci eksen dolu olmalı." };
+  }
   if (protocol === "signet_ring" && rows.length > 1 && axisName !== "Ring Size") {
     return {
       error: "Çok bedenli initial signet ring için varyasyon ekseni Ring Size olmalı.",
     };
   }
-  const axisBySku = new Map<string, string>();
+  if (
+    protocol === "sculptural_ring" &&
+    rows.length > 1 &&
+    (axisName !== "Ring Size" || axisName2 !== "Metal Color")
+  ) {
+    return { error: "Çok varyantlı sculptural ring için Ring Size ve Metal Color eksenleri gerekli." };
+  }
+  const axisBySku = new Map<string, Record<string, string>>();
   if (axisName) {
     for (const r of rows) {
       const value = (r.axisValue ?? "").trim();
@@ -164,13 +179,28 @@ export async function createDraftListing(
           error: `"${axisName}" ekseni için ${r.sku} satırında değer yok — eksen verilen her varyantta dolu olmalı.`,
         };
       }
-      axisBySku.set(r.sku, value);
+      axisBySku.set(r.sku, { [axisName]: value });
     }
-    if (new Set(axisBySku.values()).size < 2 && rows.length > 1) {
+    if (new Set(rows.map((r) => (r.axisValue ?? "").trim())).size < 2 && rows.length > 1) {
       return {
         error: `"${axisName}" değerleri tüm satırlarda aynı — bu bir varyasyon ekseni değil, sabit özelliktir.`,
       };
     }
+  }
+  if (axisName2) {
+    for (const r of rows) {
+      const value = (r.axisValue2 ?? "").trim();
+      if (!value) {
+        return { error: `"${axisName2}" ekseni için ${r.sku} satırında değer yok.` };
+      }
+      axisBySku.set(r.sku, { ...axisBySku.get(r.sku), [axisName2]: value });
+    }
+    if (new Set(rows.map((r) => (r.axisValue2 ?? "").trim())).size < 2 && rows.length > 1) {
+      return { error: `"${axisName2}" değerleri değişmiyor — ikinci eksen gerçek varyasyon olmalı.` };
+    }
+  }
+  if (axisName && new Set(rows.map((r) => JSON.stringify(axisBySku.get(r.sku)))).size !== rows.length) {
+    return { error: "Aynı varyasyon kombinasyonu birden fazla SKU'da kullanılamaz." };
   }
 
   // Motor: önce eksik ağırlıklar bedenden, sonra eksik fiyatlar ağırlıktan.
@@ -224,7 +254,7 @@ export async function createDraftListing(
       // bulunamaz.
       image_url: imageUrl || null,
       product_type:
-        protocol === "wedding_band" || protocol === "signet_ring"
+        protocol === "wedding_band" || protocol === "signet_ring" || protocol === "sculptural_ring"
           ? "ring"
           : protocol === "pendant_necklace"
             ? "necklace"
@@ -253,9 +283,7 @@ export async function createDraftListing(
         weight_source: v.weight_source,
         // Panel-seed şekli (düz nesne) — lib/variant-properties bunu kanonik
         // Etsy dizisine indirger. Eksen yoksa null (tek-varyant taslak).
-        properties: axisBySku.has(v.sku)
-          ? { [axisName]: axisBySku.get(v.sku)! }
-          : null,
+        properties: axisBySku.get(v.sku) ?? null,
         active: true,
       })),
     );
