@@ -815,6 +815,114 @@ repodaki hedefidir.
   (üretecin kendi raporunu değil) — burada .xlsx açılıp 93 satır, 0 KONTROL ve
   8 düzeltilmiş satırın değerleri dosyadan teyit edildi.
 
+- **Geometrik bir formülü katalog geneline uygulamadan önce, formülün GEÇERLİ
+  OLDUĞU şekle süz — süzgeçsiz koşu alarmın %95'ini uydurur (2026-09-16):**
+  Sahipten üreticinin gram tablosu geldi (beden × genişlik, 1,5 mm kalınlık).
+  Tablo tertemizdi: genişlikle tam orantılı, bedenle lineer, tek satıra indi
+  (`gram = genişlik × (0,836 + 0,0515 × beden) × kalınlık/1,5`, R² = 0,99996,
+  maks hücre hatası %0,95) ve maliyet bloğu 150/150 hücrede tam 80,00 USD/g
+  verdi. Formülü canlı fiyatlara uygulayınca ilk sonuç şuydu: **"2.586 varyant
+  metal maliyetinin altında, en kötüsü 0,445×"**. Panik verici ve YANLIŞ.
+  En kötü çıkanların hepsi *signet* ve *dome* idi: bir signet'te "13 mm" üst
+  tablanın ölçüsüdür, gövde 4 mm'dir — düz-band formülü o yüzüğün gramını üç
+  katına çıkarıyordu. Şekle göre süzülüp (9 signet + 15 dome + başlığında
+  dome/coil/wave/twist/braid/rope/puzzle/sculptural geçen 14 band daha çıkarıldı)
+  55 gerçek düz banda inilince sayı **117**'ye düştü ve en kötü çarpan 0,445
+  değil **0,956** oldu — yani gerçek risk "sınırda başabaş", "yarı fiyatına
+  satıyoruz" değil. Kural: (1) bir formülün girdisi geometriyse, katalogdaki
+  her satırın o geometriye UYDUĞUNU önce doğrula — "genişlik" kolonu her üründe
+  aynı şeyi ölçmez (band'de gövde, signet'te tabla, dome'da kubbe); (2) süzgeç
+  bir incelik değil ana adımdır: burada alarmın %95'i formülün geçersiz olduğu
+  ürünlerden geliyordu; (3) sonucu ilan etmeden önce EN KÖTÜ birkaç satırın
+  ürün adına bak — "Heirloom **Dome**", "Boa **Coil**", "Ziggy **Wave**" isimleri
+  teşhisi tek bakışta veriyordu, sayıya bakmak vermiyordu; (4) süzgeçlenen
+  satırlara tahmin YAZMA, boş bırak ve doğru geometriyi kaynaktan iste
+  (signet/dome gramı ve 10K/18K yoğunluk oranı üreticiye soruldu, uydurulmadı).
+  Yan ders: aynı tablo eski tahminimi de çürüttü — `0,6591 × genişlik × kalınlık`
+  formülümde BEDEN TERİMİ HİÇ YOKTU, yani ürettiğim sayı US 3'ün gramıydı ve
+  kitapta "US 7" diye etiketliydi (US 7'de %17,4, US 13,75'te %36 eksik).
+  Bir boyut eksenini modellemeyi unutmak, yanlış katsayıdan daha sinsidir:
+  katsayı hatası her satırı aynı oranda kaydırır, eksik eksen hatası
+  eksen boyunca BÜYÜR ve tek bir referans satırda bakıldığında görünmez.
+
+- **"Bilinmiyor, tedarikçiye sor" demeden önce elindeki veriyi SIK — cevap
+  çoğu zaman zaten içinde (2026-09-16):** 10K/18K gramı için "yoğunluk oranını
+  üreticiye sor, tahmin etme" diye kapattım; sahip durdurdu: *"neden sen
+  hesaplamıyorsun? web araştırması yap ve hepsini kendin bul."* Haklıydı, ve
+  asıl ders web'de değil masamdaydı: üreticinin 14K gram tablosu geometriyle
+  bölününce **yoğunluğu** veriyordu (150 hücre → 13,499 g/cm³, iki katsayı
+  %0,5 uyumlu); karışım kuralı aynı alaşım tabanından 10K/18K'yı türetti
+  (×0,892 / ×1,137); ve üreticinin 18K fiyat tablosunun tam **1,4000** çarpanı,
+  altın+işçilik ayrımıyla çözülünce aynı oranı %0,3 hatayla bağımsız doğruladı.
+  Üç yol, üç sayı, hepsi bir noktada. Sormak bir haftalık gecikme + tedarikçiye
+  "ne bilmiyorsun" sinyaliydi; hesaplamak iki saat sürdü ve kendi kanıtıyla
+  geldi. Yan bulgu — **ticari referans tablosu "doğru" olup yine oran için
+  YANLIŞ olabilir:** Stuller'ın 10K/14K/18K sarı yoğunlukları tek tek doğru,
+  ama 10K-14K aynı tabanı (≈saf bakır) paylaşırken 18K başka reçete (gümüşçe
+  zengin); oradan alınan 18K/14K oranı (1,192) iki farklı alaşımı bölüyordu ve
+  üreticinin verisiyle %5 çelişti. Kural: (1) bir büyüklük "verilmedi" diye
+  değil, "eldeki veriden TÜRETİLEMEZ" diye kanıtlanınca sorulur — önce formülü
+  ters çevir (gram/hacim = yoğunluk gibi); (2) fiyat tabloları fizik taşır:
+  ayarlar arası sabit çarpan, "yoğunluk × birim fiyat" olarak ayrışır ve modeli
+  sınar; (3) referans tablodan ORAN almadan önce tablonun ayarlar arası iç
+  tutarlılığını (ima ettiği taban alaşımı) hesapla — tutarsızsa oran alma;
+  (4) para ayrımı yaparken toplamsal/çarpımsal seçimini VARSAYMA, ayarlar arası
+  çarpanla sına (çarpımsal 1,462 derdi, gözlenen 1,400 → toplamsal). Aynı turda
+  yan-hasar da yakalandı: `saveGoldSettings` `gold_settings`'i ezip yazıyordu —
+  EON'un `labor_model: per_piece` anahtarı ilk kayıtta silinecekti; merge'e
+  çevrildi. Yeni yapı kurarken onu yazan mevcut yolun EZİP EZMEDİĞİNE bak.
+  **Güçlendirme (aynı gün) — ölçülmemiş iki varsayım arasında "daha ayrıntılı"
+  olan kazanmaz, sahibin SEÇTİĞİ kazanır:** signet/dome için üç bölgeli,
+  çevre-ağırlıklı bir taper modeli kurmuştum; sahip "üst + shank, ikiye böl"
+  dedi. Benimki daha "fizikselmiş" gibi duruyordu ama omuz uzunluğu gibi
+  hiç ölçülmemiş bir varsayıma yaslanıyordu; ortalama kural tek satır, herkes
+  kafadan doğrulayabiliyor ve maliyet tarafında muhafazakâr. Kural: modelin
+  girdisi ölçüm değil varsayımsa karmaşıklık kalite değil YÜKtür — basit,
+  denetlenebilir ve güvenli yöne hatalı olanı seç; ayrıntılı model ancak
+  gerçek tartım gelince kazanır. Uygulama tarafı: kural değişince
+  `weight_source` etiketini sürümle (gm2 → gm3), kuru koşuda "hangi satırlar
+  değişecek" kümesinin TAM beklenen küme olduğunu say (26.884 düz = 0 fark),
+  sonra yaz.
+
+- **Bir maliyet girdisini güncellemek İŞİN YARISIDIR — ona dayanan FİYAT ayrı
+  bir iştir ve kendiliğinden düzelmez (2026-09-17):** Bir gün önce 36.784
+  varyanta gram yazmış, maliyet yapısını panele bağlamış ve "bitti" demiştim.
+  Sahip ertesi sabah tek soru sordu: *"fiyatları yeni gramlara göre düzenledin
+  mi?"* Hayır — ve ölçünce katalogun **%41,7'si (15.329 varyant) maliyet
+  altındaydı**; aktif listing'lerde oran %53,6. Ortalama aktif 14K yüzük Etsy
+  ücretinden sonra **$10 ZARARLA** satılıyordu. Yani gram/maliyet işini
+  "tamamlandı" diye kapatmam, tam da o işin ortaya çıkardığı asıl riski
+  görünmez bırakmıştı. Kural: bir girdiyi (gram, maliyet tablosu, spot, ücret
+  oranı) güncelledikten sonra "bu girdiyi TÜKETEN karar hangisi?" diye sor ve
+  onu da aynı turda ÖLÇ — düzeltmesen bile ölç ve raporla; çünkü ölçülmemiş
+  tüketici, güncellenmiş girdinin yarattığı riski sessizce taşır.
+  **Kök nedeni ayırmak için aynı veriyi İKİ tabanla koş:** ilk refleks
+  "gram modelim mi şişirdi?" diye kendinden şüphelenmekti. Eski ($80/g) ve yeni
+  ($100/g) maliyet tablosuyla aynı sorguyu koşunca ayrım netleşti: 4.686 → 15.329.
+  Düz bantların gramı gm2→gm3 geçişinde bit-birebir aynıydı, yani üçe katlanma
+  üreticinin **+%25 zammından** geliyordu, benim modelimden değil. Tek ek sorgu,
+  suçu doğru yere koydu — ve en kötü satırların *düz bantlar* olması (gramı
+  üreticinin kendi tablosundan) bulguyu tartışılmaz yaptı.
+  **Geri-dönüşü zor dış-sistem yazımında işe yarayan zincir (aynen tekrar
+  edilebilir):** (1) politika seçimi KULLANICININ — dört marj seçeneğini etkisiyle
+  (ort. artış %, katalog toplamı) yan yana sunup sordum, kendi seçtiğim %20'yi
+  dayatmadım; (2) ücret varsayımını kötümser seç ve NEREDEN geldiğini yaz
+  (EON'da ölçülen %11,2 yerine %15 kullanıldı); (3) `greatest(fiyat, taban)`
+  kur — idempotenttir, ikinci koşu bileşikleşmez (2026-08-20 ×1,1333 vakasının
+  panzehiri); (4) ama tek yönlüdür, o yüzden YAZMADAN ÖNCE audit trigger'ının o
+  tabloyu kapsadığını `pg_trigger`'dan doğrula; (5) önce/sonra md5 mührü +
+  kuru koşunun saydığı satır sayısının UPDATE'in döndürdüğüyle birebir tutması
+  (20.944 = 20.944); (6) push sonrası AYRI token'la taze geri okuma.
+  **En değerli tek kontrol "unchanged" oldu:** kuru çalışmada 5 aktif listing
+  `unchanged` döndü. Bu, bu repoda daha önce sessiz no-op'un imzasıydı (SKU
+  eşleşmezse rota hiç yazmadan "ok" der). DB'den baktım: panelde fiyatı hiç
+  yükselmeyen **tam olarak o 5 listing**. Kural: "unchanged"i asla geçme —
+  "iş yoktu" ile "yanlış yere baktım" aynı görünür; farkı ancak bağımsız bir
+  sayım söyler. Bağımsız geri okumada `panelVaryant: 396` alanına da bakıldı:
+  boş harita da `offeringFarki: 0` üretirdi, dolu harita kanıtı o alandır.
+  Yan borç (bilerek bırakıldı, yazıldı): taban bugünün spotuna sabit; altın
+  yükselince %20 tampon erir ve bunu düzenli koşan bir ölçüm hâlâ YOK.
+
 - **İndirim mimarisi kurulmadan etiket fiyatı KURULAMAZ; Etsy indirimleri üst
   üste binmez, o yüzden etiket EN DERİN teklife göre boyutlanır (2026-09-22):**
   "%25 indirimle kâr edecek fiyat" istendi. İlk ölçüm bugünkü etiketlerle %25'in
