@@ -952,6 +952,30 @@ repodaki hedefidir.
   (127$ gram-dışı) 8'i indirimde zarara düşüyor, o 10 fiyatlanmadan mağaza
   indirimi AÇILMAMALI.
 
+- **"unchanged" ÇIKTISI bir kez daha kimlik hatasıydı; bu kez EKSİK değil
+  YANLIŞ EKSEN — ve onu ancak aracın "neden" diyebilmesi yakaladı (2026-09-23):**
+  10 listing'lik fiyat itişinde 9'u yazdı, biri (E08 kolye) `unchanged` döndü.
+  Bu repoda `unchanged` üçüncü kez sessiz no-op imzası: 08-27'de yanlış org,
+  09-17'de eşleşmeyen 5 listing, bugün E08. Ama rota yalnız "0 fark" diyordu,
+  NEDEN demiyordu — panelde 3 SKU var, Etsy'de 3 SKU var, ikisi de dolu, yani
+  "anahtar boş mu?" kontrolü (2026-08 dersi) TEMİZ geçerdi. Kuru koşuya
+  `?detail=1` eklendi (Etsy offering SKU + canlı fiyat + panel karşılığı, salt
+  okuma); tek çağrı gerçeği söyledi: Etsy `16IN/18IN/20IN`, panel
+  `6_5IN/7IN/7_5IN`. Ürün KOLYE, panel varyantları BİLEKLİK uzunluğuyla
+  kaydedilmişti (adları da "6.5 inches"). Gramlar doğruydu (1,50/1,65/1,80,
+  2 inçte 0,15 g zincir metali), yalnız etiket yanlıştı → SKU/ad Etsy
+  kimliğine eşitlendi, sonra kuru 3 fark → apply 3/0 → taze token'la 3×eşit.
+  Kural: (1) bir araç sessiz no-op üretebiliyorsa "0 iş" cevabının yanında
+  "neyi neyle karşılaştırdım" dökümü de olmalı; tanı aracı olmadan sessiz
+  hatayı ancak şansla bulursun; (2) SKU'nun DOLU olması yetmez, EKSENİ de
+  ürün tipiyle tutarlı olmalı — kolye SKU'sunda bileklik boyu yaşayamaz;
+  (3) düzeltmeden önce yanlış etiketin arkasındaki VERİNİN doğru olup
+  olmadığını ayrı sına (gram adımı zincir fiziğiyle tutuyordu, o yüzden
+  yeniden hesaplanmadı, yalnız yeniden adlandırıldı). Yan not: 10 listing
+  üretici teklifi olmadan, sahibin talimatıyla gram + 100 USD işçilik
+  TAHMİNİYLE fiyatlandı ve `quoteStatus: ESTIMATE_LABOUR_100` diye
+  işaretlendi — gerçek teklif gelince önce bu etiket aranacak.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
