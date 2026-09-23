@@ -10,6 +10,7 @@ import {
   pushListingPrices,
 } from "@/lib/etsy/inventory";
 import { logAudit } from "@/lib/audit";
+import { etsyMoneyToUnit } from "@/lib/etsy/types";
 
 export const maxDuration = 300;
 
@@ -66,6 +67,7 @@ export async function GET(request: Request) {
 
   const url = new URL(request.url);
   const apply = url.searchParams.get("apply") === "1";
+  const detail = url.searchParams.get("detail") === "1";
   const listingsParam = url.searchParams.get("listings") ?? "";
   const listingIds = listingsParam
     .split(",")
@@ -143,12 +145,33 @@ export async function GET(request: Request) {
         // Kuru çalışma: Etsy'yi oku, farkı say, yazma.
         const inventory = await getListingInventory(client, listingId);
         const { changed } = buildPriceSyncUpdate(inventory, priceBySku);
-        results.push({
+        const row: Row = {
           listing: listingId,
           status: changed > 0 ? "would-sync" : "unchanged",
           offeringFarki: changed,
           panelVaryant: priceBySku.size,
-        });
+        };
+        // `?detail=1`: "unchanged" tek başına "iş yoktu" ile "SKU eşleşmedi"yi
+        // ayıramaz (second-brain 2026-08-27 sessiz no-op dersi). Ayrıntı modu
+        // Etsy'deki her offering için SKU, canlı fiyat ve panel karşılığını
+        // döker ki eşleşmeyen kimlik görünür olsun. Salt okuma, yazma yok.
+        if (detail) {
+          row.offerings = (inventory.products ?? [])
+            .filter((p) => !p.is_deleted)
+            .flatMap((p) =>
+              (p.offerings ?? [])
+                .filter((o) => !o.is_deleted)
+                .map((o) => ({
+                  sku: p.sku ?? "",
+                  etsy: etsyMoneyToUnit(o.price),
+                  panel: priceBySku.has(p.sku ?? "")
+                    ? (priceBySku.get(p.sku ?? "") as number) / 100
+                    : null,
+                })),
+            );
+          row.panelSkus = [...priceBySku.keys()];
+        }
+        results.push(row);
         continue;
       }
 
