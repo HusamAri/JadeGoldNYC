@@ -30,6 +30,7 @@ export async function logAudit(
       | "etsy.image_delete"
       | "etsy.listing_create"
       | "etsy.reprice"
+      | "etsy.relabel"
       | "etsy.seo_push"
       | "etsy.translation_pull"
       | "etsy.redesign_push"
