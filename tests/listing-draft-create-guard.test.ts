@@ -43,19 +43,18 @@ test("explicit panel-only approval blocks before any external access or create",
   assert.deepEqual(calls, []);
 });
 
-test("third varying axis fails closed even with valid prices, images and no approval flag", async () => {
+test("third varying axis (Karat) reaches the read-only taxonomy step", async () => {
   const product = fixture();
   product.variants = product.variants.map((variant, index) => ({
     ...variant, properties: { ...variant.properties, Karat: index ? "18K" : "14K" },
   }));
   const { result, calls } = await guardedCall(product);
-  assert.equal(result.ok, false);
-  assert.equal(result.step, "validation");
-  assert.match(result.error ?? "", /Karat.*üçüncü eksen/);
-  assert.deepEqual(calls, []);
+  assert.equal(result.step, "create");
+  assert.match(result.error ?? "", /read-only test sentinel/);
+  assert.deepEqual(calls, ["GET"]);
 });
 
-test("three-axis Etsy-array properties also fail before create", async () => {
+test("three-axis Etsy-array properties also reach the taxonomy step", async () => {
   const product = fixture();
   product.variants = product.variants.map((variant, index) => ({
     ...variant,
@@ -66,8 +65,33 @@ test("three-axis Etsy-array properties also fail before create", async () => {
     ],
   }));
   const { result, calls } = await guardedCall(product);
+  assert.match(result.error ?? "", /read-only test sentinel/);
+  assert.deepEqual(calls, ["GET"]);
+});
+
+test("three-axis grid over Etsy's 400-product cap fails before any call", async () => {
+  const product = fixture();
+  product.variants = [];
+  for (const k of ["10K", "14K", "18K"]) for (let w = 4; w <= 8; w++) for (let s = 0; s < 27; s++) {
+    product.variants.push({
+      sku: `T-${k}-${w}-${s}`, properties: { Karat: k, Width: `${w}mm`, "Ring Size": String(4 + s / 2) },
+      price_cents: 10000, quantity: 1,
+    });
+  }
+  const { result, calls } = await guardedCall(product);
   assert.equal(result.step, "validation");
-  assert.match(result.error ?? "", /üç-eksen senkronu/);
+  assert.match(result.error ?? "", /en çok 400 varyant/);
+  assert.deepEqual(calls, []);
+});
+
+test("a fourth varying axis fails closed before any call", async () => {
+  const product = fixture();
+  product.variants = product.variants.map((variant, index) => ({
+    ...variant, properties: { ...variant.properties, Karat: index ? "18K" : "14K", Color: index ? "Rose" : "Yellow" },
+  }));
+  const { result, calls } = await guardedCall(product);
+  assert.equal(result.step, "validation");
+  assert.match(result.error ?? "", /üç varyasyon eksenini/);
   assert.deepEqual(calls, []);
 });
 

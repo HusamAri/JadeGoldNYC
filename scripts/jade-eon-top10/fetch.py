@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Download finished Higgsfield jobs into docs/jade/eon-top10/images/<key>/<shot>.jpg.
+"""Download finished Higgsfield jobs into public/jade/eon-top10/<key>/<shot>.jpg.
 stdin: JSON list [{"index":102,"job_id":"...","result_url":"..."}]. JPEG re-encode drops
 PNG tEXt generator metadata (hf-job-id). Appends to jobs.json."""
 import io, json, sys, urllib.request
@@ -17,7 +17,7 @@ for j in [x for x in json.load(sys.stdin) if x.get("result_url")]:
     raw = urllib.request.urlopen(j["result_url"], timeout=120).read()
     im = Image.open(io.BytesIO(raw)).convert("RGB")
     assert im.size == (2048, 2048), (key, shot["shot"], im.size)
-    out = BASE / "images" / key / shot["file"]
+    out = ROOT / "public/jade/eon-top10" / key / shot["file"]
     out.parent.mkdir(parents=True, exist_ok=True)
     im.save(out, "JPEG", quality=88, optimize=True)
     log[f"{key}/{shot['file']}"] = j["job_id"]
