@@ -74,10 +74,10 @@ Model: `gpt_image_2_5`, 1:1, 2K, medium quality = 1 credit/image.
 ## Status
 - [x] Step 1 · matrix + pricing rule verified against live EON grids
 - [x] Step 2 · canon test, model 01 × 3 metals (`test/`)
-- [ ] Step 3 · 300 images (in progress)
+- [x] Step 3 · 300 images in `public/jade/eon-top10/` (open defect: 10-beveled-rose 04 + 07 read as signet, re-render pending approval)
 - [x] Step 4 · titles, descriptions, tags (`catalog.json`, generator `scripts/jade-eon-top10/catalog.py`)
 - [x] Step 5 · 30 panel drafts live in Listing Önerileri (migration `0151`)
-- [ ] Step 6 · Etsy canary with `max_variations_supported=3` (blocked: panel-only flag)
+- [ ] Step 6 · Etsy canary: flag set true 2026-09-24; generic create path supports 3 axes (this PR). Needs merge + deploy first
 
 ## Panel write record (2026-09-24)
 
@@ -85,4 +85,4 @@ Model: `gpt_image_2_5`, 1:1, 2K, medium quality = 1 credit/image.
 `/jade/eon-top10/<key>/<shot>.jpg`, served once images land in `public/`).
 Read-back: text md5 `c55846c132146340518175f053a81b5c` = `text-md5.txt`
 aggregate; variant price sum 1,678,096,500 cents; 0 duplicate combos, 0 SKU > 32,
-max 375 per listing, all `approval.etsyDraftCreationAuthorized=false`.
+max 375 per listing, `approval.etsyDraftCreationAuthorized` flipped to true on user request (2026-09-24).
