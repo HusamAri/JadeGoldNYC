@@ -10,7 +10,7 @@ BASE = ROOT / "docs/jade/eon-top10"
 D = json.loads((BASE / "prompts.json").read_text())
 keys = list(D)
 log_p = BASE / "jobs.json"
-log = json.loads(log_p.read_text()) if log_p.exists() else {}
+log = {}
 for j in [x for x in json.load(sys.stdin) if x.get("result_url")]:
     key = keys[j["index"] // 100 - 1]
     shot = next(r for r in D[key] if int(r["shot"][:2]) == j["index"] % 100)
@@ -22,4 +22,7 @@ for j in [x for x in json.load(sys.stdin) if x.get("result_url")]:
     im.save(out, "JPEG", quality=88, optimize=True)
     log[f"{key}/{shot['file']}"] = j["job_id"]
     print("ok", key, shot["file"])
-log_p.write_text(json.dumps(log, indent=1, sort_keys=True) + "\n")
+# merge at write time: parallel runners share this file
+merged = json.loads(log_p.read_text()) if log_p.exists() else {}
+merged.update(log)
+log_p.write_text(json.dumps(merged, indent=1, sort_keys=True) + "\n")
