@@ -12,6 +12,7 @@ import {
   type DistVariant,
 } from "@/lib/etsy/distribute";
 import { formatMoney, parseMoneyToCents } from "@/lib/money";
+import { parseBulkDraftVariants } from "@/lib/listing-draft-variants";
 import {
   createDraftListing,
   type DraftVariantInput,
@@ -44,6 +45,7 @@ const EMPTY_ROW: DraftVariantInput = {
   price: "",
   axisValue: "",
   axisValue2: "",
+  axisValue3: "",
 };
 
 const CONFIDENCE_TR: Record<string, string> = {
@@ -104,6 +106,8 @@ export function ListingComposer() {
   const [markup, setMarkup] = useState("2.5");
   const [axisName, setAxisName] = useState("");
   const [axisName2, setAxisName2] = useState("");
+  const [axisName3, setAxisName3] = useState("");
+  const [stagingJson, setStagingJson] = useState("");
   const [bulkText, setBulkText] = useState("");
   const [rows, setRows] = useState<DraftVariantInput[]>([
     { ...EMPTY_ROW },
@@ -156,18 +160,27 @@ export function ListingComposer() {
     setRows((rs) => rs.map((r, j) => (j === i ? { ...r, [key]: value } : r)));
   }
 
-  function importBulkRows() {
-    const lines = bulkText.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
-    if (lines[0]?.toLowerCase().startsWith("sku")) lines.shift();
-    const parsed = lines.map((line) => line.split(line.includes("\t") ? "\t" : ",").map((value) => value.trim()));
-    if (parsed.length === 0 || parsed.some((columns) => columns.length !== 5 || !columns[0])) {
-      toast.error("Her satırda SKU, beden, metal rengi, gram ve fiyat olmak üzere 5 sütun olmalı.");
+  async function importTextFile(file: File, maxBytes: number, update: (text: string) => void) {
+    if (file.size > maxBytes) {
+      toast.error(`Dosya ${maxBytes / 1024} KB'ı aşamaz.`);
       return;
     }
-    setRows(parsed.map(([sku, axisValue, axisValue2, weight, price]) => ({
-      sku, axisValue, axisValue2, weight, price,
-    })));
-    toast.success(`${parsed.length} varyant satırı içe aktarıldı.`);
+    try {
+      update(await file.text());
+      toast.success("Dosya forma alındı; henüz kaydedilmedi.");
+    } catch {
+      toast.error("Dosya okunamadı. Yeniden seçin veya metni alana yapıştırın.");
+    }
+  }
+
+  function importBulkRows() {
+    const parsed = parseBulkDraftVariants(bulkText);
+    if (parsed.error !== undefined) {
+      toast.error(parsed.error);
+      return;
+    }
+    setRows(parsed.rows);
+    toast.success(`${parsed.rows.length} varyant satırı içe aktarıldı.`);
   }
 
   function onSave() {
@@ -197,6 +210,8 @@ export function ListingComposer() {
         markup,
         axisName,
         axisName2,
+        axisName3,
+        stagingJson,
         variants: rows,
       });
       if (res.error || !res.id) {
@@ -322,6 +337,32 @@ export function ListingComposer() {
                 placeholder="ör. 14 (doğrulandıysa)"
               />
             </div>
+            <details className="space-y-2 sm:col-span-2">
+              <summary className="cursor-pointer text-sm">İsteğe bağlı yapılandırılmış taslak bilgileri</summary>
+              <Label htmlFor="lc-staging-file">Taslak JSON dosyası (en fazla 256 KB)</Label>
+              <Input
+                id="lc-staging-file"
+                type="file"
+                accept=".json,application/json,text/plain"
+                disabled={pending}
+                onChange={(event) => {
+                  const file = event.currentTarget.files?.[0];
+                  event.currentTarget.value = "";
+                  if (file) void importTextFile(file, 256 * 1024, setStagingJson);
+                }}
+              />
+              <Label htmlFor="lc-staging-json">Taslak JSON&apos;u</Label>
+              <Textarea
+                id="lc-staging-json"
+                rows={5}
+                value={stagingJson}
+                onChange={(e) => setStagingJson(e.target.value)}
+                placeholder={'{"sku":"MODEL-Y","quantity":20,"weightSource":"estimated","metadata":{}}'}
+              />
+              <p className="text-muted-foreground text-xs">
+                Üst SKU, adet, ağırlık kaynağı ve kaynak kayıtlarını korur. Çeviriler, ölçüler ve üretim bilgileri metadata içinde saklanır. Bilinmeyen fiyat/gram boş kalabilir. Yalnız yeni panel taslağı oluşturur; Etsy&apos;ye göndermez.
+              </p>
+            </details>
           </div>
         </CardContent>
       </Card>
@@ -380,16 +421,40 @@ export function ListingComposer() {
                 placeholder="ör. Metal Color"
               />
             </div>
+            <div className="space-y-1.5 sm:col-span-2">
+              <Label htmlFor="lc-axis3">Üçüncü varyasyon ekseni (panel taslağı)</Label>
+              <Input
+                id="lc-axis3"
+                value={axisName3}
+                onChange={(e) => setAxisName3(e.target.value)}
+                placeholder="ör. Karat"
+              />
+              <p className="text-muted-foreground text-xs">
+                Üç eksen panele kaydedilir. Etsy&apos;ye üç eksenli gönderim ayrı doğrulama gerektirir; bu kayıt Etsy&apos;ye göndermez.
+              </p>
+            </div>
           </div>
 
           <div className="space-y-2">
+            <Label htmlFor="lc-bulk-file">Varyant CSV/TSV dosyası (en fazla 1 MB)</Label>
+            <Input
+              id="lc-bulk-file"
+              type="file"
+              accept=".csv,.tsv,.txt,text/csv,text/tab-separated-values,text/plain"
+              disabled={pending}
+              onChange={(event) => {
+                const file = event.currentTarget.files?.[0];
+                event.currentTarget.value = "";
+                if (file) void importTextFile(file, 1024 * 1024, setBulkText);
+              }}
+            />
             <Label htmlFor="lc-bulk">Toplu varyant girişi (TAB veya CSV)</Label>
             <Textarea
               id="lc-bulk"
               rows={4}
               value={bulkText}
               onChange={(e) => setBulkText(e.target.value)}
-              placeholder="SKU, Ring Size, Metal Color, gram, fiyat"
+              placeholder={axisName3.trim() ? "SKU, 1. eksen, 2. eksen, 3. eksen, gram, fiyat" : "SKU, 1. eksen, 2. eksen, gram, fiyat"}
             />
             <Button type="button" variant="outline" size="sm" onClick={importBulkRows}>
               Toplu satırları içe aktar
@@ -397,10 +462,11 @@ export function ListingComposer() {
           </div>
 
           <div className="space-y-2">
-            <div className="text-muted-foreground grid min-w-[850px] grid-cols-[minmax(14rem,1fr)_8rem_8rem_7rem_7rem_2.5rem] gap-2 font-mono text-[11px] tracking-wide uppercase">
+            <div className="text-muted-foreground grid min-w-[980px] grid-cols-[minmax(14rem,1fr)_8rem_8rem_8rem_7rem_7rem_2.5rem] gap-2 font-mono text-[11px] tracking-wide uppercase">
               <span>SKU (beden gömülü)</span>
               <span>{axisName.trim() || "Eksen değeri"}</span>
               <span>{axisName2.trim() || "2. eksen"}</span>
+              <span>{axisName3.trim() || "3. eksen"}</span>
               <span>Ağırlık (g)</span>
               <span>Fiyat ($)</span>
               <span />
@@ -408,7 +474,7 @@ export function ListingComposer() {
             {rows.map((r, i) => (
               <div
                 key={i}
-                className="grid min-w-[850px] grid-cols-[minmax(14rem,1fr)_8rem_8rem_7rem_7rem_2.5rem] items-center gap-2"
+                className="grid min-w-[980px] grid-cols-[minmax(14rem,1fr)_8rem_8rem_8rem_7rem_7rem_2.5rem] items-center gap-2"
               >
                 <Input
                   value={r.sku}
@@ -427,6 +493,12 @@ export function ListingComposer() {
                   onChange={(e) => setRow(i, "axisValue2", e.target.value)}
                   placeholder={axisName2.trim() ? "ör. Yellow Gold" : "—"}
                   disabled={!axisName2.trim()}
+                />
+                <Input
+                  value={r.axisValue3 ?? ""}
+                  onChange={(e) => setRow(i, "axisValue3", e.target.value)}
+                  placeholder={axisName3.trim() ? "ör. 14K" : "—"}
+                  disabled={!axisName3.trim()}
                 />
                 <Input
                   inputMode="decimal"

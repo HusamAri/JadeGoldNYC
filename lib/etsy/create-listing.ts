@@ -44,9 +44,9 @@ import {
  *     yüzük kutusu ölçüsü) — sonuç olarak yüzük olmayan HER taslak push'ta
  *     "her varyant Width ve Ring Size içermelidir" hatasına çarpıyordu.
  *     Tanınmayan ürün tipi sessizce yüzük sayılmaz, net hatayla durur.
- *  D. Varyasyon eşleme: Etsy en fazla 2 custom variation ekseni kabul eder →
- *     DEĞİŞEN ilk 2 property slot 513/514'e; 2'den fazla değişen varsa (nadir)
- *     kalanı açıklamaya not düşülür (canlıda uyarı olarak döneriz).
+ *  D. Bu genel adaptör yalnız iki custom slot (513/514) kullanır. İkiden
+ *     fazla değişen eksen varsa HİÇBİR ETSY YAZMASINDAN ÖNCE durur; üçüncü
+ *     eksen, ayrı ve doğrulanmış üç-eksen senkron yolunu gerektirir.
  *  E. price_on_property: her tam kombinasyon benzersiz fiyat taşıdığından
  *     kullanılan TÜM variation slotları price_on_property'e girer (script deseni).
  *     Etsy, listelenen property'lerin gerçekten variation olmasını ister — sabit
@@ -293,8 +293,8 @@ export interface DraftProduct {
    *  eski kayıtlar bilinçli olarak eski alyans davranışına düşer —
    *  bkz. lib/etsy/listing-protocol.ts karar 2. */
   product_type?: string | null;
-  /** `listingProtocol` açık beyanı buradan okunur (product_type'ı ezer). */
-  listing_metadata?: { listingProtocol?: unknown } | null;
+  /** Protocol plus an optional explicit panel-only creation restriction. */
+  listing_metadata?: { listingProtocol?: unknown; approval?: unknown } | null;
 }
 
 /**
@@ -361,7 +361,7 @@ function sanitizeMaterials(materials: string[] | null): string[] {
 interface VariationPlan {
   /** Değişen property adları (en çok 2 — slot sırasıyla). */
   varyingNames: string[];
-  /** Slota sığmayan fazladan değişen property adları (uyarı). */
+  /** Slota sığmayan eksenler: genel create yolu yazmadan reddeder. */
   overflowNames: string[];
   /** Sabit property'ler: ad → tek değer (açıklama notu için). */
   constants: Map<string, string>;
@@ -466,14 +466,13 @@ export function validateVariationAxes(
 }
 
 
-/** Sabit + overflow property'leri açıklama sonuna okunur not olarak ekler. */
+/** Sabit property'leri açıklama sonuna okunur not olarak ekler. */
 function appendConstantsToDescription(
   base: string,
   plan: VariationPlan,
 ): string {
   const lines: string[] = [];
   for (const [name, value] of plan.constants) lines.push(`${name}: ${value}`);
-  for (const name of plan.overflowNames) lines.push(`${name}: varies`);
   if (lines.length === 0) return base;
   return `${base}\n\n${lines.join("\n")}`.trimEnd();
 }
@@ -500,6 +499,21 @@ export async function createDraftListingFromProduct(
     };
   }
 
+  // Explicit panel-only staging must not become Etsy authorization merely
+  // because the generic send button was clicked. Legacy absent flags keep
+  // their existing path; existing guarded three-axis sync is a separate flow.
+  const approval = product.listing_metadata?.approval;
+  if (
+    approval !== null && typeof approval === "object" && !Array.isArray(approval) &&
+    (approval as Record<string, unknown>).etsyDraftCreationAuthorized === false
+  ) {
+    return {
+      ok: false,
+      step: "validation",
+      error: "Bu ürün yalnız panel taslağı olarak işaretli; Etsy taslak oluşturma izni kapalı. Hiçbir Etsy yazması yapılmadı.",
+    };
+  }
+
   const warnings: string[] = [];
   const rawVariants = product.variants ?? [];
   const overlongSku = rawVariants.find((variant) => (variant.sku ?? "").length > 32);
@@ -522,6 +536,15 @@ export async function createDraftListingFromProduct(
     return { ok: false, step: "validation", error: variationError };
   }
 
+  const plan = buildVariationPlan(variants);
+  if (plan.overflowNames.length > 0) {
+    return {
+      ok: false,
+      step: "validation",
+      error: `Bu genel gönderim yolu yalnız iki varyasyon eksenini korur. ${plan.overflowNames.join(", ")} dahil üçüncü eksen için doğrulanmış üç-eksen senkronu gerekir. Hiçbir Etsy yazması yapılmadı.`,
+    };
+  }
+
   // Fiyat çapası: en düşük varyant fiyatı; varyant yoksa ürün fiyatı.
   const variantPrices = variants
     .map((v) => v.price_cents)
@@ -535,7 +558,6 @@ export async function createDraftListingFromProduct(
   }
 
   // Varyasyon planı (değişen → slot, sabit → açıklama).
-  const plan = buildVariationPlan(variants);
   // VARYANT KAYBI KİLİDİ — hiçbir şey yazmadan durur.
   // Envanter PUT'u yalnız "değişen property" varsa çalışır; plan SADECE
   // `product_variants.properties`ten kurulur. Panel composer'ından doğan
@@ -552,12 +574,6 @@ export async function createDraftListingFromProduct(
         "hepsi Etsy'de tek seçeneğe düşerdi. Varyant satırlarına eksen adı + değer girip tekrar deneyin.",
     };
   }
-  if (plan.overflowNames.length > 0) {
-    warnings.push(
-      `Etsy en fazla 2 varyasyon ekseni kabul eder; şu property'ler açıklamaya taşındı: ${plan.overflowNames.join(", ")}.`,
-    );
-  }
-
   // Yüklenecek görseller: kapak (products.image_url) + panel galerisi
   // (listing_images). Tekilleştirilir — aynı URL hem kapak hem galeri satırı
   // olabilir; Etsy'ye iki kez yüklenmesi çift fotoğraf üretirdi.

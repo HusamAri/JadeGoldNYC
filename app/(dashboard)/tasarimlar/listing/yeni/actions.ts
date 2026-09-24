@@ -5,6 +5,8 @@ import { revalidatePath } from "next/cache";
 import { requireMembership } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { parseMoneyToCents } from "@/lib/money";
+import { prepareDraftVariants, type DraftVariantInput } from "@/lib/listing-draft-variants";
+import { parseDraftStagingJson } from "@/lib/listing-draft-staging";
 import {
   LISTING_PROTOCOLS,
   type ListingProtocolId,
@@ -24,17 +26,7 @@ import {
  * Etsy'ye gönderim YOK — bağlantı salt-okunur; kayıt yalnız panele düşer.
  */
 
-export interface DraftVariantInput {
-  sku: string;
-  /** Gram metni ("2,4"); boş/anlamsız = bilinmiyor (motor çıkarır). */
-  weight: string;
-  /** USD metni ("129,00"); boş = bilinmiyor (motor dağıtır). */
-  price: string;
-  /** Bu satırın varyasyon ekseni değeri (ör. "US 7"); `axisName` ile eşleşir. */
-  axisValue?: string;
-  /** İkinci varyasyon ekseninin satır değeri (ör. "Yellow Gold"). */
-  axisValue2?: string;
-}
+export type { DraftVariantInput } from "@/lib/listing-draft-variants";
 
 export interface DraftListingInput {
   /** Explicit product contract; never infer a new draft to be a wedding band. */
@@ -64,8 +56,12 @@ export interface DraftListingInput {
    * Etsy'de tek offering'e düşerdi (bkz. lib/etsy/create-listing varyant kilidi).
    */
   axisName?: string;
-  /** Etsy'nin ikinci ve son varyasyon ekseni. */
+  /** Panel taslağının ikinci varyasyon ekseni. */
   axisName2?: string;
+  /** Panel taslağının üçüncü ekseni; Etsy gönderim desteği ayrı doğrulanır. */
+  axisName3?: string;
+  /** Optional bounded, allowlisted source metadata for this NEW panel draft. */
+  stagingJson?: string;
   variants: DraftVariantInput[];
 }
 
@@ -133,31 +129,10 @@ export async function createDraftListing(
     return { error: "Kapak görseli http(s) ile başlayan bir URL olmalı." };
   }
 
-  // SKU'su dolu satırlar geçerli varyanttır; SKU'lar org içinde benzersiz.
-  const rows = input.variants
-    .map((r) => ({ ...r, sku: r.sku.trim() }))
-    .filter((r) => r.sku);
-  // Platform kuralı: SKU'suz listing/varyant olamaz — tüm satırlar SKU'suzsa
-  // kayıt sessizce sıfır-varyantlı düşerdi (evrensel anahtar ihlali).
-  if (rows.length === 0) {
-    return {
-      error:
-        "En az bir varyantın SKU'su gerekli — SKU'suz listing oluşturulamaz (SKU tüm sistemlerin ortak anahtarıdır).",
-    };
-  }
-  const skuSet = new Set(rows.map((r) => r.sku));
-  if (skuSet.size !== rows.length) {
-    return { error: "Varyant SKU'ları benzersiz olmalı." };
-  }
-
-  // Varyasyon ekseni: ad verildiyse HER satır bir değer taşımalı. Yarım eksen,
-  // Etsy'de "değişmeyen property" sayılır → varyantlar tek offering'e düşer
-  // (sessiz kayıp); burada erken ve anlaşılır hata veriyoruz.
-  const axisName = (input.axisName ?? "").trim();
-  const axisName2 = (input.axisName2 ?? "").trim();
-  if (axisName2 && (!axisName || axisName2 === axisName)) {
-    return { error: "İkinci varyasyon ekseni birinciden farklı olmalı ve birinci eksen dolu olmalı." };
-  }
+  const prepared = prepareDraftVariants(input.variants, [input.axisName, input.axisName2, input.axisName3]);
+  if (prepared.error !== undefined) return { error: prepared.error };
+  const { rows, propertiesBySku: axisBySku, axisNames } = prepared;
+  const [axisName, axisName2] = axisNames;
   if (protocol === "signet_ring" && rows.length > 1 && axisName !== "Ring Size") {
     return {
       error: "Çok bedenli initial signet ring için varyasyon ekseni Ring Size olmalı.",
@@ -170,39 +145,14 @@ export async function createDraftListing(
   ) {
     return { error: "Çok varyantlı sculptural ring için Ring Size ve Metal Color eksenleri gerekli." };
   }
-  const axisBySku = new Map<string, Record<string, string>>();
-  if (axisName) {
-    for (const r of rows) {
-      const value = (r.axisValue ?? "").trim();
-      if (!value) {
-        return {
-          error: `"${axisName}" ekseni için ${r.sku} satırında değer yok — eksen verilen her varyantta dolu olmalı.`,
-        };
-      }
-      axisBySku.set(r.sku, { [axisName]: value });
-    }
-    if (new Set(rows.map((r) => (r.axisValue ?? "").trim())).size < 2 && rows.length > 1) {
-      return {
-        error: `"${axisName}" değerleri tüm satırlarda aynı — bu bir varyasyon ekseni değil, sabit özelliktir.`,
-      };
-    }
-  }
-  if (axisName2) {
-    for (const r of rows) {
-      const value = (r.axisValue2 ?? "").trim();
-      if (!value) {
-        return { error: `"${axisName2}" ekseni için ${r.sku} satırında değer yok.` };
-      }
-      axisBySku.set(r.sku, { ...axisBySku.get(r.sku), [axisName2]: value });
-    }
-    if (new Set(rows.map((r) => (r.axisValue2 ?? "").trim())).size < 2 && rows.length > 1) {
-      return { error: `"${axisName2}" değerleri değişmiyor — ikinci eksen gerçek varyasyon olmalı.` };
-    }
-  }
-  if (axisName && new Set(rows.map((r) => JSON.stringify(axisBySku.get(r.sku)))).size !== rows.length) {
-    return { error: "Aynı varyasyon kombinasyonu birden fazla SKU'da kullanılamaz." };
-  }
-
+  const productType =
+    protocol === "wedding_band" || protocol === "signet_ring" || protocol === "sculptural_ring"
+      ? "ring" : protocol === "pendant_necklace" ? "necklace" : "bracelet";
+  const staging = parseDraftStagingJson(input.stagingJson, {
+    listingProtocol: protocol, productType, variationAxes: axisNames,
+  });
+  if (staging.error !== undefined) return { error: staging.error };
+  const stagingData = staging.data;
   // Motor: önce eksik ağırlıklar bedenden, sonra eksik fiyatlar ağırlıktan.
   const base: DistVariant[] = rows.map((r) => ({
     sku: r.sku,
@@ -229,7 +179,7 @@ export async function createDraftListing(
       sku: v.sku,
       weight_grams: weight,
       weight_source:
-        v.weightGrams != null ? "manual" : inferred ? "inferred" : null,
+        v.weightGrams != null ? stagingData.weightSource ?? "manual" : inferred ? "inferred" : null,
       price_cents: v.priceCents ?? pPred.get(v.sku)?.priceCents ?? null,
     };
   });
@@ -240,10 +190,25 @@ export async function createDraftListing(
   const minPriceCents = prices.length > 0 ? Math.min(...prices) : null;
 
   const admin = createAdminClient();
+  if (stagingData.sku) {
+    const { data: existing, error: lookupError } = await admin
+      .from("products")
+      .select("id")
+      .eq("org_id", m.org_id)
+      .eq("sku", stagingData.sku)
+      .limit(1)
+      .maybeSingle();
+    if (lookupError) return { error: lookupError.message };
+    if (existing) {
+      return { error: `Bu üst SKU zaten kayıtlı (${existing.id}). Yeni kayıt oluşturulmadı; mevcut taslağı kontrol edin.` };
+    }
+  }
   const { data: product, error: productError } = await admin
     .from("products")
     .insert({
       org_id: m.org_id,
+      ...(stagingData.sku ? { sku: stagingData.sku } : {}),
+      ...(stagingData.quantity !== undefined ? { quantity: stagingData.quantity } : {}),
       title,
       description: input.description.trim() || null,
       tags: splitList(input.tags),
@@ -253,13 +218,8 @@ export async function createDraftListing(
       // yazılmazsa listing kapaksız kalır ve Etsy'ye gönderimde de kapak
       // bulunamaz.
       image_url: imageUrl || null,
-      product_type:
-        protocol === "wedding_band" || protocol === "signet_ring" || protocol === "sculptural_ring"
-          ? "ring"
-          : protocol === "pendant_necklace"
-            ? "necklace"
-            : "bracelet",
-      listing_metadata: { listingProtocol: protocol },
+      product_type: productType,
+      listing_metadata: { ...stagingData.metadata, listingProtocol: protocol, variationAxes: axisNames },
       status: "draft",
       currency: "USD",
       price_cents: minPriceCents,
@@ -277,6 +237,7 @@ export async function createDraftListing(
       finalVariants.map((v) => ({
         org_id: m.org_id,
         product_id: productId,
+        ...(stagingData.quantity !== undefined ? { quantity: stagingData.quantity } : {}),
         sku: v.sku,
         price_cents: v.price_cents,
         weight_grams: v.weight_grams,
