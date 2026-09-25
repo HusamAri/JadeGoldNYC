@@ -5,7 +5,7 @@ import json, sys
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 D = json.loads((ROOT / "docs/jade/eon-top10/prompts.json").read_text())
-IMG = ROOT / "docs/jade/eon-top10/images"
+IMG = ROOT / "public/jade/eon-top10"
 keys = list(D)
 reqs = []
 for arg in sys.argv[1:]:

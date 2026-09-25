@@ -36,9 +36,9 @@ MODELS = {
     "05": ("hammered", "Hammered", "about 8mm wide. HAMMERED center of irregular polished facets, framed on each side by a thin line of tiny milgrain beads, then a narrow high-polish stepped rail at each edge. Polished comfort-fit interior.", "the hammered facets, the milgrain line and the polished rail", (5, 8, 11)),
     "06": ("crosshatch", "Crosshatch", "about 6mm wide, flat top. Wide BRUSHED SATIN center; at each edge a bevelled band of fine DIAMOND-CUT CROSSHATCH knurling (tiny sharp pyramids). Polished comfort-fit interior.", "the diamond-cut crosshatch knurling beside the satin center", (4, 6, 8)),
     "07": ("kinetic", "Kinetic Bead", "a SLIM band about 2mm wide with a polished half-round profile, carrying ONE small polished gold bead that sits in a shallow channel on the band and glides freely around it. Only one bead. Comfort-fit interior.", "the single gliding bead in its channel", None),
-    "08": ("greekkey", "Greek Key", "about 8mm wide. Raised continuous GREEK KEY (meander) pattern in the center on a finely textured recessed ground, framed by a row of milgrain beads and a braided ROPE rail on each side, polished edges and polished comfort-fit interior. The key pattern must stay coherent, no broken turns.", "the Greek key turns, milgrain row and rope rail", (5, 8, 12)),
-    "09": ("twotone", "Two-Tone", "about 7mm wide, TWO-TONE: narrow high-polish stepped edge rails in {M}, and a center band in {A} with DIAMOND-CUT diagonal facets over a fine frosted texture. Polished comfort-fit interior in {M}.", "the diamond-cut facets of the center against the polished rails", (6, 8, 12)),
-    "10": ("beveled", "Beveled", "about 6mm wide, flat top. BRUSHED SATIN flat top with a HIGH-POLISH 45-degree BEVEL along each edge. Polished comfort-fit interior.", "the brushed top meeting the polished bevel", (3, 6, 10)),
+    "08": ("greekkey", "Greek Key", "about 8mm wide. Raised continuous GREEK KEY (meander) pattern in the center on a finely textured recessed ground, framed by a row of milgrain beads and a braided ROPE rail on each side, polished edges and polished comfort-fit interior. The key pattern must stay coherent, no broken turns.", "the Greek key turns, milgrain row and rope rail", (6, 8, 10)),
+    "09": ("twotone", "Two-Tone", "about 7mm wide, TWO-TONE: narrow high-polish stepped edge rails in {M}, and a center band in {A} with DIAMOND-CUT diagonal facets over a fine frosted texture. Polished comfort-fit interior in {M}.", "the diamond-cut facets of the center against the polished rails", (6, 8, 10)),
+    "10": ("beveled", "Beveled", "about 6mm wide, flat top. BRUSHED SATIN flat top with a HIGH-POLISH 45-degree BEVEL along each edge. Polished comfort-fit interior.", "the brushed top meeting the polished bevel", (4, 6, 8)),
 }
 
 METALS = {
@@ -64,6 +64,8 @@ CANON = "A thin out-of-focus sliver of verdigris-green patinated copper at one f
 def shots(mk: str, m: dict, detail: str, widths) -> list[tuple[str, str]]:
     kar = ("ALL THREE ARE WHITE GOLD and read clearly white, never yellow; the differences are very subtle: left 10K a cool silver white, center 14K neutral white, right 18K a faint warm champagne white"
            if m["name"] == "White Gold" else "left 10K paler, center 14K, right 18K richer and deeper")
+    if mk == "09":
+        kar = "each ring keeps its two tones exactly as described; left 10K the palest, center 14K, right 18K the richest in both golds"
     one = "One ring only."
     grid = "a crisp multi-pane loft window-grid shadow falling across the surface and partly across the ring"
     s = [

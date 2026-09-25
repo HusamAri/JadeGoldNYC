@@ -8,7 +8,7 @@ keys, out = sys.argv[1:-1], sys.argv[-1]
 T = 400
 W = Image.new("RGB", (T * 5, T * 2 * len(keys)), "white")
 for y, k in enumerate(keys):
-    for f in sorted((ROOT / "docs/jade/eon-top10/images" / k).glob("*.jpg")):
+    for f in sorted((ROOT / "public/jade/eon-top10" / k).glob("*.jpg")):
         n = int(f.name[:2]) - 1; x, yy = n % 5, y * 2 + n // 5
         im = Image.open(f); im.thumbnail((T, T)); W.paste(im, (x * T, yy * T))
         ImageDraw.Draw(W).text((x * T + 4, yy * T + 4), f"{k[:14]} {f.name[:2]}", fill="red")

@@ -44,9 +44,11 @@ import {
  *     yüzük kutusu ölçüsü) — sonuç olarak yüzük olmayan HER taslak push'ta
  *     "her varyant Width ve Ring Size içermelidir" hatasına çarpıyordu.
  *     Tanınmayan ürün tipi sessizce yüzük sayılmaz, net hatayla durur.
- *  D. Bu genel adaptör yalnız iki custom slot (513/514) kullanır. İkiden
- *     fazla değişen eksen varsa HİÇBİR ETSY YAZMASINDAN ÖNCE durur; üçüncü
- *     eksen, ayrı ve doğrulanmış üç-eksen senkron yolunu gerektirir.
+ *  D. İki değişen eksen → custom slot 513/514. Üç değişen eksen → Etsy'nin
+ *     üçüncü varyasyon desteği (`max_variations_supported=3`), slotlar canlı
+ *     EON Flat Milgrain ile aynı sırada 516/513/514. Üçten fazla eksen ya da
+ *     400'ü aşan üç-eksen ızgarası HİÇBİR ETSY YAZMASINDAN ÖNCE durur
+ *     (Etsy: fiyat/SKU tüm property'lere bağlıysa en çok 400 ürün).
  *  E. price_on_property: her tam kombinasyon benzersiz fiyat taşıdığından
  *     kullanılan TÜM variation slotları price_on_property'e girer (script deseni).
  *     Etsy, listelenen property'lerin gerçekten variation olmasını ister — sabit
@@ -60,8 +62,16 @@ import {
  *     taslak etsy_listing_id'yi kilitleyip yeniden denemeyi de engellerdi.
  */
 
-/** Etsy custom variation slot id'leri (en fazla iki eksen). */
+/** Etsy custom variation slot id'leri (iki eksen). */
 const CUSTOM_SLOT_IDS = [513, 514] as const;
+/** Üç eksen: canlı EON Flat Milgrain üç-eksen düzeniyle aynı (Karat 516 önde). */
+const THREE_AXIS_SLOT_IDS = [516, 513, 514] as const;
+/** Etsy: *_on_property tüm property'leri taşıyorsa üç-eksen listing en çok 400 ürün. */
+const MAX_THREE_AXIS_PRODUCTS = 400;
+
+function slotIdsFor(plan: VariationPlan): readonly number[] {
+  return plan.varyingNames.length === 3 ? THREE_AXIS_SLOT_IDS : CUSTOM_SLOT_IDS;
+}
 
 /** Açıklamanın sonundaki dahili not bloğunu söker: "\n\n---\n[EON NN · ...]".
  *  scripts/eon-push-drafts.ts stripInternalTrailer ile BİREBİR aynı desen. */
@@ -359,7 +369,7 @@ function sanitizeMaterials(materials: string[] | null): string[] {
  * custom slot 513/514; hangileri SABİT → açıklamaya not.
  */
 interface VariationPlan {
-  /** Değişen property adları (en çok 2 — slot sırasıyla). */
+  /** Değişen property adları (en çok 3 — slot sırasıyla). */
   varyingNames: string[];
   /** Slota sığmayan eksenler: genel create yolu yazmadan reddeder. */
   overflowNames: string[];
@@ -386,8 +396,8 @@ function buildVariationPlan(variants: DraftVariant[]): VariationPlan {
   }
 
   return {
-    varyingNames: varying.slice(0, CUSTOM_SLOT_IDS.length),
-    overflowNames: varying.slice(CUSTOM_SLOT_IDS.length),
+    varyingNames: varying.slice(0, THREE_AXIS_SLOT_IDS.length),
+    overflowNames: varying.slice(THREE_AXIS_SLOT_IDS.length),
     constants,
   };
 }
@@ -541,7 +551,14 @@ export async function createDraftListingFromProduct(
     return {
       ok: false,
       step: "validation",
-      error: `Bu genel gönderim yolu yalnız iki varyasyon eksenini korur. ${plan.overflowNames.join(", ")} dahil üçüncü eksen için doğrulanmış üç-eksen senkronu gerekir. Hiçbir Etsy yazması yapılmadı.`,
+      error: `Etsy en çok üç varyasyon eksenini kabul eder; fazladan değişen: ${plan.overflowNames.join(", ")}. Hiçbir Etsy yazması yapılmadı.`,
+    };
+  }
+  if (plan.varyingNames.length === 3 && variants.length > MAX_THREE_AXIS_PRODUCTS) {
+    return {
+      ok: false,
+      step: "validation",
+      error: `Üç eksenli listing en çok ${MAX_THREE_AXIS_PRODUCTS} varyant taşıyabilir (Etsy sınırı); bu taslakta ${variants.length} var. Hiçbir Etsy yazması yapılmadı.`,
     };
   }
 
@@ -727,11 +744,12 @@ export async function createDraftListingFromProduct(
   // ürün/offering'i yeterli — envanter PUT atlanır.
   if (plan.varyingNames.length > 0 && variants.length > 1) {
     try {
-      const usedSlots = plan.varyingNames.map((_, i) => CUSTOM_SLOT_IDS[i]);
+      const slotIds = slotIdsFor(plan);
+      const usedSlots = plan.varyingNames.map((_, i) => slotIds[i]);
       const inventoryProducts = variants.map((v) => {
         const pm = variantPropMap(v);
         const property_values = plan.varyingNames.map((name, i) => ({
-          property_id: CUSTOM_SLOT_IDS[i],
+          property_id: slotIds[i],
           property_name: name,
           // Değeri olmayan varyantta "—" placeholder (Etsy boş değer reddeder).
           values: [pm.get(name) || "—"],
@@ -758,7 +776,10 @@ export async function createDraftListingFromProduct(
       // hiçbir property'ye göre DEĞİŞMEZ (tüm offering'ler aynı made-to-order).
       await client.request(
         "PUT",
-        etsyPaths.listingInventory(listingId) + "?legacy=false",
+        etsyPaths.listingInventory(listingId) +
+          (plan.varyingNames.length === 3
+            ? "?legacy=false&max_variations_supported=3"
+            : "?legacy=false"),
         {
           products: inventoryProducts,
           // Her tam kombinasyon benzersiz fiyat/sku taşır → kullanılan tüm slotlar.
