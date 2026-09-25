@@ -303,7 +303,7 @@ export interface DraftProduct {
    *  eski kayıtlar bilinçli olarak eski alyans davranışına düşer —
    *  bkz. lib/etsy/listing-protocol.ts karar 2. */
   product_type?: string | null;
-  /** Protocol plus an optional explicit panel-only creation restriction. */
+  /** Protocol plus informational approval metadata (never blocks the Etsy draft path). */
   listing_metadata?: { listingProtocol?: unknown; approval?: unknown } | null;
 }
 
