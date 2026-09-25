@@ -980,6 +980,30 @@ repodaki hedefidir.
   sahibin talimatıyla gram + 100 USD işçilik TAHMİNİYLE fiyatlandı ve
   `quoteStatus: ESTIMATE_LABOUR_100` diye işaretlendi.
 
+- **Kullanıcı bir engeli bildirdiğinde ÖRNEĞİ değil SINIFI düzelt; kendi formunun
+  daima `false` yazdığı bir onay bayrağı, kapı değil KÖR DUVARDIR (2026-09-25):**
+  "Yalnız panel taslağı; Etsy taslak izni kapalı" hatası 30 Jade taslağında
+  çıktı. İlk düzeltmem o 30 satırın bayrağını DB'de `true` yapmaktı; iş
+  bitmiş gibi göründü ama sınıf açık kaldı. Ertesi gün sahip "EON ya da
+  herhangi bir mağaza, tüm shoplar için çöz" diye geri geldi. Kök neden:
+  listing-önerisi staging formu her taslağı `etsyDraftCreationAuthorized:false`
+  ile kaydediyor (doğrulayıcı `true`yu reddediyor), gönderim yolu ise aynı
+  bayrak `false` ise reddediyordu. İki kural birlikte "bu formdan gelen hiçbir
+  taslak Etsy'ye gidemez" demekti; buton zaten kullanıcının onayıydı ve Etsy
+  yalnız TASLAK alıyor (canlı değil), yani kapı hiçbir riski önlemiyordu.
+  Kapı kaldırıldı (#430), diğer korumalar (idempotens, SKU 32, 3 eksen 400
+  sınırı) kaldı. Kural: (1) bir hata mesajını düzeltirken önce "bu bayrağı
+  kim, hangi değerle yazıyor?" diye yazanı bul; üreten yol her zaman aynı
+  değeri basıyorsa kapı seçici değil, bloktur; (2) veriyi elle düzeltmek
+  (30 satır `true`) semptomu siler, bir sonraki taslakta hata döner; (3)
+  güvenlik kapısı kaldırmak sahibin açık onayını ister, onay gelince kapının
+  hâlâ ne koruduğunu (burada: hiçbir şey, çünkü hedef taslak) PR'a yaz.
+  Yan ders (aynı iş): merge sonrası ilk dakika canlı görsel URL'leri 404
+  verdi (`x-matched-path: /_not-found`), prod deploy henüz bitmemişti; Etsy'ye
+  o arada itilseydi taslaklar FOTOĞRAFSIZ açılırdı (create yolu görsel
+  hatasını yalnız uyarı sayar). Merge'den sonra dış sisteme yazmadan önce
+  bağımlı statik varlıkları canlıda TEK TEK doğrula (300/300 `200`).
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
