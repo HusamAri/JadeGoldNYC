@@ -509,20 +509,9 @@ export async function createDraftListingFromProduct(
     };
   }
 
-  // Explicit panel-only staging must not become Etsy authorization merely
-  // because the generic send button was clicked. Legacy absent flags keep
-  // their existing path; existing guarded three-axis sync is a separate flow.
-  const approval = product.listing_metadata?.approval;
-  if (
-    approval !== null && typeof approval === "object" && !Array.isArray(approval) &&
-    (approval as Record<string, unknown>).etsyDraftCreationAuthorized === false
-  ) {
-    return {
-      ok: false,
-      step: "validation",
-      error: "Bu ürün yalnız panel taslağı olarak işaretli; Etsy taslak oluşturma izni kapalı. Hiçbir Etsy yazması yapılmadı.",
-    };
-  }
+  // listing_metadata.approval flags are informational only (all orgs): the
+  // user's click on "Etsy'ye gönder" is the authorization. Etsy receives a
+  // draft, never a live listing, so no panel flag blocks this path.
 
   const warnings: string[] = [];
   const rawVariants = product.variants ?? [];

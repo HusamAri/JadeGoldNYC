@@ -31,16 +31,16 @@ async function guardedCall(product: DraftProduct) {
   return { result, calls };
 }
 
-test("explicit panel-only approval blocks before any external access or create", async () => {
+test("panel-only approval flags never block the Etsy draft path", async () => {
   const product = fixture();
   product.listing_metadata!.approval = {
     etsyDraftCreationAuthorized: false, livePublicationAuthorized: false, priceReadyForEtsy: false,
   };
   const { result, calls } = await guardedCall(product);
-  assert.equal(result.ok, false);
-  assert.equal(result.step, "validation");
-  assert.match(result.error ?? "", /yalnız panel taslağı/);
-  assert.deepEqual(calls, []);
+  assert.equal(result.step, "create");
+  assert.doesNotMatch(result.error ?? "", /yalnız panel taslağı/);
+  assert.match(result.error ?? "", /read-only test sentinel/);
+  assert.deepEqual(calls, ["GET"]);
 });
 
 test("third varying axis (Karat) reaches the read-only taxonomy step", async () => {
