@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "planned — no image generated yet",
+  "status": "complete — 30/30 (27 generated + 3 typeset spec cards), all accepted by eye",
   "listings": {
     "Y": "EON-WILLW-Y",
     "W": "EON-WILLW-W",
@@ -267,6 +267,73 @@
       "jobId": "c0503898-c318-4985-b813-80f5ed856835",
       "file": "images/rose/10-pair-editorial.jpg",
       "promptVersion": 2
+    },
+    "Y03": {
+      "status": "accepted",
+      "jobId": "09eae29f-4405-471f-8cc3-38801668a37b",
+      "file": "images/yellow/03-macro-leaves.jpg",
+      "promptVersion": 3
+    },
+    "Y05": {
+      "status": "accepted",
+      "jobId": "85b9690e-1354-4bfc-8757-45b0658a3c6d",
+      "file": "images/yellow/05-profile-flat.jpg",
+      "promptVersion": 3
+    },
+    "Y08": {
+      "status": "accepted",
+      "jobId": "c4142e66-f12d-41a5-b021-26f25d4806df",
+      "file": "images/yellow/08-scale-fingers.jpg",
+      "promptVersion": 3
+    },
+    "Y09": {
+      "status": "accepted",
+      "jobId": "4457d762-16b0-4636-82a7-9bd7aec34314",
+      "file": "images/yellow/09-interior.jpg",
+      "promptVersion": 3
+    },
+    "Y10": {
+      "status": "accepted",
+      "jobId": "15e38fc7-4c53-43a7-a4c4-a4aee43293dc",
+      "file": "images/yellow/10-pair-editorial.jpg",
+      "promptVersion": 3
+    },
+    "W02": {
+      "status": "accepted",
+      "jobId": "525ee6da-5723-4c57-ade7-7ef96e89b150",
+      "file": "images/white/02-worn-linen.jpg",
+      "promptVersion": 3
+    },
+    "W06": {
+      "status": "accepted",
+      "jobId": "800f9507-40e0-4829-a5a8-27ae3cf23b4c",
+      "file": "images/white/06-worn-coffee.jpg",
+      "promptVersion": 3
+    },
+    "W10": {
+      "status": "accepted",
+      "jobId": "8d2eb5f0-70f2-4520-8996-561f64d02e56",
+      "file": "images/white/10-pair-editorial.jpg",
+      "promptVersion": 3
+    },
+    "R05": {
+      "status": "accepted",
+      "jobId": "a6271d7f-53fe-47ac-936e-de1df67fe698",
+      "file": "images/rose/05-profile-flat.jpg",
+      "promptVersion": 3
+    },
+    "R09": {
+      "status": "accepted",
+      "jobId": "159f730d-48d5-41d6-968f-7b19af20eae7",
+      "file": "images/rose/09-interior.jpg",
+      "promptVersion": 3
+    },
+    "W03": {
+      "status": "accepted",
+      "jobId": "74e88484-bacf-45f0-828d-e9661604992f",
+      "file": "images/white/03-macro-leaves.jpg",
+      "promptVersion": 4,
+      "note": "Composition rewritten as a physical pose (lying flat, camera centimetres away) after the v3 frame copied the hero."
     }
   },
   "rejected": [
@@ -339,6 +406,11 @@
       "slot": "R09",
       "jobId": "327218e6-84a1-4a28-b4a8-cb2b616e7b2e",
       "defect": "Glove instead of the interior-on-stone scene."
+    },
+    {
+      "slot": "W03",
+      "jobId": "54c6f52b-1478-4e00-8399-215c95746812",
+      "defect": "Passed every per-frame check but is a near copy of the W01 hero (standing ring, same angle) instead of a macro of the outer face. Caught only by the set-level contact sheet; retaken with the pose described physically (ring lying flat like a coin, camera centimetres away)."
     }
   ],
   "promptVersion": 3,

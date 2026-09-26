@@ -36,7 +36,7 @@
 
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFile, writeFile } from "node:fs/promises";
+import { readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -310,8 +310,18 @@ const summary = {
   laborUsd: PRICING.laborUsd,
   panelDraftOnly: true,
   etsyWrites: false,
-  imagesGenerated: 0,
+  galleryImagesPerListing: {},
 };
+
+// Galeri sayisi diskten okunur, elle yazilmaz: bayat "0 gorsel" blokeri
+// bir kez manifest'te kalmisti. Her renk klasoru ya bos ya tam 10 olmali.
+for (const { code, color } of MODEL.metals) {
+  const dir = path.join(packageDir, "images", color.toLowerCase());
+  const files = (await readdir(dir).catch(() => [])).filter((f) => /^\d{2}-.+\.jpg$/.test(f));
+  assert(files.length === 0 || files.length === 10, `${color}: galeri ${files.length} gorsel, 10 olmali`);
+  summary.galleryImagesPerListing[`${MODEL.skuStem}-${code}`] = files.length;
+}
+const galleryComplete = Object.values(summary.galleryImagesPerListing).every((n) => n === 10);
 
 if (checkOnly) {
   console.log(JSON.stringify({ check: "ok", ...summary }, null, 2));
@@ -359,7 +369,7 @@ const manifest = {
   approval: {
     etsyPushRequiresExplicitOwnerInstruction: true,
     blockers: [
-      "30 gallery images (10 per metal) not generated yet — see visual-plan.json",
+      ...(galleryComplete ? [] : ["30 gallery images (10 per metal) not complete yet — see visual-plan.json"]),
       "Grams are estimated from the Laurel Cross family; physical sample (demo brass) was not weighed",
       "Store discount is 30% live vs 25% assumed by the engine (EK-6) — owner decision pending",
     ],

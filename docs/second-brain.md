@@ -1435,6 +1435,24 @@ repodaki hedefidir.
   kusur, benim kör noktamın HARİTASIDIR; işaretlenen kareyi düzelt, sonra aynı
   sınıf için setin tamamını tara. Tarama maliyeti tek kontak baskısıydı, kaçan
   kare ise canlıya gidecekti.
+  **Güçlendirme-2 (2026-09-26, Willow 30 kare) — kare-başı göz de yetmez; bir
+  sınıf kusur ancak SET yan yana dizilince görünür:** beyaz `03-macro-leaves`
+  dedektörü (0 blok), damga/taş zoom'unu ve tek kare gözünü geçti — kare
+  tek başına kusursuz bir yüzük fotoğrafıydı. Renk başına 10'luk kontak
+  baskısında ise 01 hero'nun neredeyse KOPYASI olduğu görüldü: model referans
+  olarak verilen hero'nun kompozisyonunu, prompt'taki "not its camera angle"
+  ve "close macro" ifadelerine rağmen taşımıştı. Aynı prompt sarıda doğru
+  makro üretmişti, yani kusur prompt'ta değil referansın baskınlığındaydı.
+  Düzeltme 09-13 dersinin aynısı oldu: jargon ("macro") yerine nesnenin DURUŞU
+  ("jeton gibi yatıyor, kamera birkaç santim ötede, bant kadrajı kenardan
+  kenara dolduruyor") → tek denemede tuttu. Kural: (1) karenin görevi setteki
+  diğer karelerden FARKLI bir şey göstermekse, o görev ancak set yan yana
+  bakılınca sınanır — kare-başı QA "bu kare iyi mi?" sorar, "bu kare
+  gerekli mi?" sormaz; (2) referans görsel kompozisyonu da sızdırır; referansla
+  üretilen kare, referansla aynı kadrajdaysa reddet. Yan ders: manifest'te
+  elle yazılmış `imagesGenerated: 0` ve "görseller üretilmedi" blokeri iş
+  bittiğinde bayat kalacaktı; sayı artık diskten okunuyor ve 0/10 dışı her
+  değer assert'le düşüyor — durum alanı elle değil kaynaktan türetilir.
 - **Üretilen görsel görevini yapmıyorsa önce "hangi BOYUT görünüyor?" diye sor;
   ve kareyi reddederken kusuru TEK TEK adlandır (2026-09-13):** Meridian'ın 05
   karesi "1,5 mm et kalınlığını göster" diye kurulmuştu ve iki turdur

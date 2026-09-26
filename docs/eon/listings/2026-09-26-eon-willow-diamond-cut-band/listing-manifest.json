@@ -76,7 +76,6 @@
   "approval": {
     "etsyPushRequiresExplicitOwnerInstruction": true,
     "blockers": [
-      "30 gallery images (10 per metal) not generated yet — see visual-plan.json",
       "Grams are estimated from the Laurel Cross family; physical sample (demo brass) was not weighed",
       "Store discount is 30% live vs 25% assumed by the engine (EK-6) — owner decision pending"
     ]
@@ -91,7 +90,11 @@
     "laborUsd": 130,
     "panelDraftOnly": true,
     "etsyWrites": false,
-    "imagesGenerated": 0
+    "galleryImagesPerListing": {
+      "EON-WILLW-Y": 10,
+      "EON-WILLW-W": 10,
+      "EON-WILLW-R": 10
+    }
   },
   "listings": [
     {
