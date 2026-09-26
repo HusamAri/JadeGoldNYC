@@ -609,6 +609,123 @@ sıfırlanmalı.
 
 ---
 
+## EK-6 (2026-09-26, iki hafta sonra) — indirim %30'a çıkmış, motorun sabiti %25'te kalmış
+
+### Önce kapanan işler
+
+- **Ophir açlığı bitti.** Verisi 29 Ağustos'ta donmuştu; bugün snapshot/stats
+  **26 Eylül**. Sıralama düzeltmesi (PR #416) işini yaptı — bu sabahki koşu dört
+  org'un **dördünü** işledi (`target_count: 4`, ertelenen yok). Birikim eridikçe
+  org başına süre düştü, kuyruk kendiliğinden açıldı.
+- **Cron istikrarlı.** 22–26 Eylül arası her gün üç iş de koştu, hepsi `ok=true`.
+- **Kinetic Bead Ring (`4561855998`) yeniden `active`**, görüntülenme 229 → **393**.
+  Üretim sorunu çözülmüş. (`4562238351` ise artık `inactive` — bilinçli kapatılmış
+  görünüyor.)
+
+### Bulgu: mağaza geneli indirim %25 → %30
+
+Sipariş verisinden ölçüldü (`discount/(item_total+discount)`):
+
+| Hafta | Sipariş | Ciro | AOV | Gerçek indirim |
+|---|---|---|---|---|
+| 24 Ağu | 4 | $3.007,93 | $751,98 | 0,2500 |
+| 31 Ağu | 4 | $3.131,55 | $782,89 | 0,2500 |
+| 7 Eyl | 4 | $5.381,81 | $1.345,45 | 0,2290 |
+| 14 Eyl | 3 | $2.446,26 | $815,42 | 0,2599 |
+| **21 Eyl** | 4 | **$2.547,41** | $636,85 | **0,3000** |
+
+Sipariş sipariş bakınca geçiş net: 18–19 Eylül hâlâ 0,2500; **20 Eylül'den
+sonraki beş siparişin beşi de tam 0,3000** (180/600 · 294/980 · 292,50/975 ·
+234/780 · 216/720). Yuvarlak ve istisnasız — yani kampanya değil, mağaza geneli
+indirim oranı değişmiş.
+
+### Bu, motorun sabitini bayatlattı
+
+`lib/pricing-engine/eon-cost.ts:127` (canlı `main`'den doğrulandı):
+
+```ts
+/** Kalıcı vitrin indirimi: görünen sale = liste × 0,75. */
+export const EON_SALE_RATE = 0.75;
+```
+
+Motor `liste = ceil(engine / 0,75)` kuruyor, yani alıcı `liste × 0,75 = engine`
+ödesin diye. Gerçekte `liste × 0,70` ödüyor:
+
+```
+gerçek net / hedeflenen net = 0,70 / 0,75 = 0,9333
+```
+
+**Her varyantta net tahsilat, motorun hedefinin %6,67 altında.** Panel bunu
+göremiyor: EON'un `products.discount_pct` alanı 169 üründen yalnız 3'ünde dolu,
+yani `discount_below_melt` uyarısı EON için **yapısal olarak hiç yanamaz**.
+
+### Bedeli
+
+Maliyetlerin çoğu mutlak (altın, işçilik, paket); yalnız Etsy ücreti net ile
+ölçekleniyor. Liste 100 tabanında:
+
+| | %25 (motorun varsayımı) | %30 (gerçek) |
+|---|---|---|
+| Net tahsilat | 75,00 | 70,00 |
+| − ham altın | 37,05 | 37,05 |
+| − Etsy ücreti (%11,7) | 8,78 | 8,19 |
+| − işçilik/paket/kargo | 8,93 | 8,93 |
+| **Katkı** | **20,25 (%27,0)** | **15,84 (%22,6)** |
+
+**Sipariş başına katkı −%21,8.** Başa baş ROAS 3,70 → **4,42**, yani ölçülen
+3,44'lük reklam artık net zararda (EK-4'te başa başın hemen altındaydı).
+
+20–25 Eylül'ün beş siparişinde (brüt $4.055): net $2.838,50 yerine %25 ile
+$3.041,25 olacaktı → **altı günde $202,75**, koşu hızıyla ~$237/hafta,
+~$12.300/yıl.
+
+### Ve karşılığında hacim gelmedi
+
+Sipariş sayısı **haftada 4** — %25 döneminde de 4. Ciro $3.132 → $2.547.
+EK-4'ün aritmetiği %30 için başa baş hacim artışını ~+%36 diye veriyordu;
+gerçekleşen **%0**. Yani indirim artışı marjı kesti, satışı açmadı.
+
+### Karar sende, iki seçenek
+
+1. **%25'e dön.** Veri bunu destekliyor: hacim artmadı, katkı %22 düştü.
+2. **%30'u koru ve tabanı kaydır** — her liste fiyatı `× 0,75/0,70 = ×1,07143`.
+   Net tahsilat birebir korunur, her varyantın amaçlanan marj konumu aynı kalır
+   (formülü YENİDEN KOŞMA — elle konmuş breakeven/emniyet kararlarını siler).
+   **Ama** bu, 13 Ağustos denetiminin "şişirilmiş taban + sürekli indirim =
+   marka vaadi ihlali" bulgusunu derinleştirir; taban zaten motorun 1,333 katı,
+   1,428 katına çıkar.
+
+Hangisi seçilirse `EON_SALE_RATE` de güncellenmeli — yoksa panel marjı olduğundan
+yüksek göstermeye devam eder.
+
+### Ölçüm (bir daha sessizce kaymasın)
+
+Sabiti düzeltmek işin yarısı; diğer yarısı onu canlı veriden ölçmek:
+
+```sql
+select date_trunc('week', order_date at time zone 'America/New_York')::date wk,
+       round(sum(discount_cents)::numeric
+             / nullif(sum(item_total_cents + discount_cents),0), 4) gercek_oran
+from sales where org_id = '<EON>' and order_date >= now() - interval '8 weeks'
+group by 1 order by 1;
+```
+
+Payda `item_total + discount` — `item_total` indirim SONRASI nettir
+(2026-08-27 dersi). Çıkan oran `EON_SALE_RATE`'in tümleyeniyle uyuşmuyorsa sabit
+bayattır. Bu, aynı çürümenin bu repoda **dördüncü** tekrarı.
+
+### Açık kalan ayrı kusur: ShipStation sessiz başarı
+
+`cron/shipstation-sync` Jade için her gün
+`ShipStation API hatası (401) /orders: 401 Unauthorized` dönüyor, ama koşu
+`ok=true` + `target_count=1` raporluyor. Sebep: `advanceShipStationSync` hata
+**fırlatmıyor**, `{status:'error'}` **döndürüyor**; rotanın `try/catch`'i bunu
+görmüyor, `failed[]` boş kalıyor. Yani cron sertleştirmesi yalnız FIRLATILAN
+hatayı yakalıyor — dönüş değerindeki hatayı değil. İki iş: (a) rota dönen
+`status:'error'`'ü de `failed`'a yazsın, (b) ShipStation anahtarı yenilensin.
+
+---
+
 ## Kaynaklar
 
 - [Etsy Seller Handbook — Making the Most of Seasonal Sales Patterns](https://www.etsy.com/sg-en/seller-handbook/article/making-the-most-of-seasonal-sales/45451604718)
