@@ -1465,6 +1465,25 @@ repodaki hedefidir.
   bir üretim ziyan olduktan SONRA yapıldı — dış aracın parametre varsayılanları
   ilk çağrıdan ÖNCE okunur.
 
+- **Model "hangi parmak" talimatını okur ama VARSAYILANINA döner; parmağı
+  adla değil ANATOMİYLE tarif et ve kontrolü parmak UZUNLUĞUNDAN yap
+  (2026-09-26):** Cartouche Signet serçe parmak yüzüğü; prompt'ta "pinky"
+  yazmasına rağmen ilk turda ele takılan 4 karenin 4'ü yüzük parmağında çıktı
+  (15'te ayrıca kadın elinde fazladan yüzük). Boyut, hash, renk kapıları yeşildi;
+  yakalayan tek şey karede parmak parmak bakmaktı. İşe yarayan düzeltme üç
+  parçaydı: (1) parmağı anatomiyle tanımla ("the smallest, outermost finger at
+  the edge of the hand, next to the ring finger"), (2) diğer parmakları AÇIKÇA
+  boşalt ("ring, middle and index fingers are completely bare"), (3) kadrajı
+  serçe parmak tarafından kur ki o parmak önde olsun; 4 karenin 3'ü geçti.
+  Kontrol kuralı: başparmak görünmüyorsa elin sağ mı sol mu olduğu okunamaz,
+  o yüzden yüzüklü parmağın EN KISA ve EN DIŞTAKİ parmak olduğunu doğrula;
+  komşusu kadar uzunsa serçe değildir (03 ikinci turda bu yüzden reddedildi).
+  Aynı turda ikinci sınıf: model boş bırakılan alanı "doldurur": düz yüzü
+  sedef/mine gibi beyaz, görülmeyen arkayı OYUK çizdi. Oyuk arka, dolu gövdeye
+  göre fiyatlanmış üründe yanlış beyandır; prompt'a "solid, flat and closed,
+  no hollow" yazılınca düzeldi. Ürün spesifikasyonu fiyatı taşıyorsa, görselin
+  o spesifikasyonu ÇİZMESİ de ayrıca doğrulanır.
+
 - **"Satış yok" şikâyetinde ÖNCE veri tazeliğini doğrula — panel körse sıfır,
   sıfır satış değil ÖLÇÜMSÜZLÜKtür (2026-09-12):** Kullanıcı "EON'da satış yok,
   fiyat indirelim mi, indirimi artıralım mı" dedi. İlk sorgu satışa değil
