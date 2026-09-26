@@ -1,0 +1,425 @@
+{
+  "schemaVersion": 1,
+  "status": "complete — 30/30 (27 generated + 3 typeset spec cards), all accepted by eye",
+  "listings": {
+    "Y": "EON-WILLW-Y",
+    "W": "EON-WILLW-W",
+    "R": "EON-WILLW-R"
+  },
+  "requiredCountPerListing": 10,
+  "generatedPerListing": 9,
+  "typesetPerListing": 1,
+  "totalGenerations": 27,
+  "generationOrder": "Yellow hero (01) FIRST, look at it at full size, only then the rest. A prompt defect caught on one frame costs one generation, not ten (2026-09-11 lesson).",
+  "creditDiscipline": "One request = one generation, count always 1. Batch only for the items the owner counted (10 per metal).",
+  "model": {
+    "name": "nano_banana_2",
+    "resolution": "2k",
+    "aspectRatio": "1:1",
+    "note": "resolution defaults to 1k — pass 2k explicitly (2026-09-13 lesson)."
+  },
+  "reference": {
+    "v1_v2": {
+      "file": "images/00-reference-demo-brass.jpg",
+      "what": "Owner's demo brass sample. Geometry and pattern are canonical; its brass tone, tarnish and spots are NOT."
+    },
+    "v3": "Each metal uses ITS OWN accepted hero as the reference (Y01 eb755a9d…, W01 a01a9b0b…, R01 782ce9c4…). Root cause of 11/24 rejects: with the demo brass photo as reference the model filled weakly-anchored scenes with that photo's white glove, grey backdrop and brass colour. The accepted hero carries the right design and the right metal and no glove."
+  },
+  "output": {
+    "widthPx": 2048,
+    "heightPx": 2048,
+    "format": "JPEG",
+    "quality": 92,
+    "colorSpace": "sRGB",
+    "mechanicalUpscaleAllowed": false,
+    "stripOriginMetadata": true
+  },
+  "geometryBlock": "Photorealistic photograph of the EXACT ring design shown in the reference image, remade in real solid {METAL_DESC}. It is a closed, continuous 360-degree wedding band — never a cropped slab, straight segment, open ring or C-shape. OUTER FACE: gently domed (a low, soft crown — not flat, not a tall half-round), finished in soft BRUSHED SATIN with fine parallel grain lines running around the circumference. PATTERN: two staggered rows of slim leaf-shaped DIAMOND-CUT facets run all the way around the band, like leaves on a stem. Leaves in one row slant one way, leaves in the other row slant the opposite way, and the two rows are offset so the leaves alternate side to side, forming a herringbone leaf sprig. The leaves are NEVER lined up in matching side-by-side pairs — every leaf sits beside a gap in the other row. They are shallow cuts in the surface, NOT holes or openings through the metal: the satin metal surface is continuous behind every leaf. Each leaf is a narrow pointed marquise about as long as half the band width, CUT INTO the metal as a bright mirror-polished bevel — recessed, never raised, never a separate applied piece. The facets flash bright against the matte satin. EDGES: a narrow, softly polished rim along both edges. INTERIOR: smooth polished comfort fit, no text. Clean new metal: no tarnish, no dark spots, no green or brass tone, no dust. NO GLOVES anywhere in the image. NO text, letters, numbers, karat stamps or hallmarks anywhere on the ring, inside or outside. The leaves are plain polished metal cuts: no stones, no pave, no sparkle set inside any leaf. Do NOT add: gemstones, diamonds, crystals, milgrain beads, hammering, rope, a continuous groove, raised leaves, engraving on the outside, or any second pattern.",
+  "lightingBlock": "LIGHTING: a real home studio, not a CGI render. One large window is the only light source; soft directional daylight with a genuine soft-edged shadow. The gold looks like real metal photographed in daylight. No seamless backdrop, no gradient sweep, no glitter, no lens flare, no sparkle overlays.",
+  "metals": {
+    "Y": {
+      "name": "Yellow",
+      "METAL_DESC": "14K yellow gold — warm, rich yellow, not orange, not brassy-green"
+    },
+    "W": {
+      "name": "White",
+      "METAL_DESC": "14K white gold — bright cool rhodium white, silvery, with no yellow cast"
+    },
+    "R": {
+      "name": "Rose",
+      "METAL_DESC": "14K rose gold — soft warm pink, not copper-orange, not red"
+    }
+  },
+  "promptAssembly": "geometryBlock (METAL_DESC filled per metal) + scene.composition + lightingBlock",
+  "hardRules": {
+    "closedContinuousLoopRequired": true,
+    "wornViewMustEncircleExactlyOneFinger": true,
+    "minimumHumanSkinScenes": 3,
+    "sameSceneRecolorAllowed": false,
+    "duplicateHashesAllowed": false,
+    "forbiddenProps": [
+      "cut_gemstone",
+      "faceted_jewel",
+      "crystal",
+      "ring_box_with_petals",
+      "eucalyptus_flatlay"
+    ],
+    "leavesAreRecessedCutsNeverRaised": true
+  },
+  "qaGate": [
+    "Native 2048x2048, sRGB JPEG, no upscale.",
+    "Distinct hashes across all 30 files.",
+    "Closed loop in every frame; worn views on exactly one finger.",
+    "Leaf pattern: two staggered rows, opposite slants, alternating; recessed mirror facets on brushed satin.",
+    "Outer face gently domed — not flat, not half-round.",
+    "Metal color matches the listing; no brass/green cast, no tarnish carried from the demo.",
+    "No gemstone, crystal or diamond anywhere ('diamond cut' is a technique).",
+    "Position 07 typeset: every number matches the listing exactly.",
+    "Origin metadata stripped on export."
+  ],
+  "finalArbiter": "The render viewed at full size. 'The prompt says so' is not evidence.",
+  "scenes": [
+    {
+      "position": 1,
+      "role": "hero_thumbnail",
+      "human": false,
+      "widthMm": 6,
+      "generated": true,
+      "job": "Win the search grid at 170 px: a complete ring, leaf pattern legible.",
+      "composition": "The ring stands upright in three-quarter view so both the domed outer face with its leaf facets AND the open center are visible, occupying about two thirds of a square frame, on a warm off-white raw limestone slab with fine grain, in front of a plain matte wall slightly out of focus."
+    },
+    {
+      "position": 2,
+      "role": "worn_trust",
+      "human": true,
+      "widthMm": 6,
+      "generated": true,
+      "job": "Trust: a real hand, real skin, the ring encircling exactly one finger.",
+      "composition": "Worn on the ring finger of a relaxed adult hand resting on a light linen cloth; the band fully encircles exactly ONE finger. Natural, unretouched skin with real texture, short clean unpolished nails. The leaf facets catch the window light."
+    },
+    {
+      "position": 3,
+      "role": "differentiator_macro",
+      "human": false,
+      "widthMm": 6,
+      "generated": true,
+      "job": "Show the one thing that makes this ring: bright diamond-cut leaves against satin.",
+      "composition": "Close macro of the outer face: the brushed satin grain and three or four leaf facets in sharp focus, each facet a crisp mirror bevel reflecting light; the rest of the closed ring curves away softly out of focus. Neutral warm stone surface."
+    },
+    {
+      "position": 4,
+      "role": "width_answer",
+      "human": false,
+      "widthMm": null,
+      "generated": true,
+      "job": "Answer 'which width?': the same design in narrow, medium and wide.",
+      "composition": "THREE rings of this exact design lying side by side on a light oak board, left to right: a narrow 3 mm band, a medium 5 mm band, a wide 8 mm band. Same metal, same satin finish, same leaf-sprig pattern scaled to each width. All three are closed complete rings. Top-down three-quarter angle, even daylight."
+    },
+    {
+      "position": 5,
+      "role": "profile_answer",
+      "human": false,
+      "widthMm": 6,
+      "generated": true,
+      "job": "Answer 'how does it sit?': show the soft dome and the rim, not just the face.",
+      "composition": "The ring lies FLAT on a raw oak block like a coin, its opening facing the ceiling, photographed from a low angle so the rim wall and the gentle dome of the outer face read clearly; leaf facets visible along the curve. Soft window light from one side."
+    },
+    {
+      "position": 6,
+      "role": "worn_lifestyle",
+      "human": true,
+      "widthMm": 6,
+      "generated": true,
+      "job": "Everyday wear: the ring in a natural moment.",
+      "composition": "A hand wearing the ring wraps around a plain matte ceramic coffee cup on a wooden table in morning window light; the band encircles exactly one finger. Natural skin, candid, no manicure, no bouquet, no petals."
+    },
+    {
+      "position": 7,
+      "role": "spec_card",
+      "human": false,
+      "widthMm": null,
+      "generated": false,
+      "job": "State the facts exactly: karats, widths, sizes, finish.",
+      "composition": "TYPESET BY HAND, not generated. A model-rendered number is a false statement, not a typo (2026-09-11 lesson). Built from the hero crop plus exact text: Solid gold 10K / 14K / 18K · Width 3–8 mm · US 3–13 incl. half sizes · Hand diamond-cut leaves on brushed satin · Comfort fit."
+    },
+    {
+      "position": 8,
+      "role": "scale_human",
+      "human": true,
+      "widthMm": 6,
+      "generated": true,
+      "job": "Scale: how big the ring is between real fingers.",
+      "composition": "The ring held upright between the thumb and index finger of an adult hand, against a soft neutral linen background; the full closed loop and the leaf pattern are visible. Natural skin texture, short clean nails."
+    },
+    {
+      "position": 9,
+      "role": "interior_detail",
+      "human": false,
+      "widthMm": 6,
+      "generated": true,
+      "job": "Show comfort fit and a clean interior (engraving is optional, text is NOT rendered).",
+      "composition": "The ring tilted so the smooth polished comfort-fit interior is the main subject, with part of the satin leaf-patterned outer face visible at the rim. No text or engraving inside. Warm stone surface, soft daylight."
+    },
+    {
+      "position": 10,
+      "role": "editorial_closer",
+      "human": false,
+      "widthMm": null,
+      "generated": true,
+      "job": "Close the gallery with a pair: a matching set in two widths.",
+      "composition": "Two rings of this exact design, one 4 mm and one 7 mm, resting together on undyed linen beside a small smooth cast-glass dish; both closed complete rings, same metal. Calm editorial daylight."
+    }
+  ],
+  "generated": {
+    "Y01": {
+      "status": "accepted",
+      "jobId": "eb755a9d-fb91-4103-a09e-1c2b196420c0",
+      "file": "images/yellow/01-hero-daylight.jpg",
+      "promptVersion": 1
+    },
+    "R01": {
+      "status": "accepted",
+      "jobId": "782ce9c4-ddbb-4a7a-8243-756fd1b50424",
+      "file": "images/rose/01-hero-daylight.jpg",
+      "promptVersion": 1
+    },
+    "W01": {
+      "status": "accepted",
+      "jobId": "a01a9b0b-949f-4ea9-83a4-f178a30104c9",
+      "file": "images/white/01-hero-daylight.jpg",
+      "promptVersion": 2,
+      "note": "Faint marks on the polished rim checked at 2x: reflection texture, no legible text or stamp."
+    },
+    "Y02": {
+      "status": "accepted",
+      "jobId": "4bf3982f-1f86-413e-9d7e-e6d9628a205b",
+      "file": "images/yellow/02-worn-linen.jpg",
+      "promptVersion": 2
+    },
+    "Y04": {
+      "status": "accepted",
+      "jobId": "6a44299c-acec-450f-9e90-fd971b175b5c",
+      "file": "images/yellow/04-width-ladder.jpg",
+      "promptVersion": 2
+    },
+    "Y06": {
+      "status": "accepted",
+      "jobId": "baa21ba5-7a5f-4383-a9fd-090886b844cd",
+      "file": "images/yellow/06-worn-coffee.jpg",
+      "promptVersion": 2
+    },
+    "W04": {
+      "status": "accepted",
+      "jobId": "df17f090-5402-4cef-b12b-67d765c4d803",
+      "file": "images/white/04-width-ladder.jpg",
+      "promptVersion": 2
+    },
+    "W05": {
+      "status": "accepted",
+      "jobId": "f5589b94-4ee6-410e-8cc9-45e4cae0297d",
+      "file": "images/white/05-profile-flat.jpg",
+      "promptVersion": 2
+    },
+    "W08": {
+      "status": "accepted",
+      "jobId": "affd9035-5dbd-4e7f-961d-7ef489f4043e",
+      "file": "images/white/08-scale-fingers.jpg",
+      "promptVersion": 2
+    },
+    "W09": {
+      "status": "accepted",
+      "jobId": "57007ae5-e366-416e-8c0a-06fecf74fb37",
+      "file": "images/white/09-interior.jpg",
+      "promptVersion": 2
+    },
+    "R02": {
+      "status": "accepted",
+      "jobId": "cca68d8c-3bf8-4502-862e-4ca4db025a05",
+      "file": "images/rose/02-worn-linen.jpg",
+      "promptVersion": 2
+    },
+    "R03": {
+      "status": "accepted",
+      "jobId": "76da4be7-c29f-4227-9085-439b2f497aca",
+      "file": "images/rose/03-macro-leaves.jpg",
+      "promptVersion": 2
+    },
+    "R04": {
+      "status": "accepted",
+      "jobId": "91d30a6d-a785-4e96-bf60-5171e76fce79",
+      "file": "images/rose/04-width-ladder.jpg",
+      "promptVersion": 2
+    },
+    "R06": {
+      "status": "accepted",
+      "jobId": "60746fe1-52db-4895-85c7-a4aa6374d3df",
+      "file": "images/rose/06-worn-coffee.jpg",
+      "promptVersion": 2
+    },
+    "R08": {
+      "status": "accepted",
+      "jobId": "4404072c-d7af-4b65-8e28-0dd1bef4526c",
+      "file": "images/rose/08-scale-fingers.jpg",
+      "promptVersion": 2
+    },
+    "R10": {
+      "status": "accepted",
+      "jobId": "c0503898-c318-4985-b813-80f5ed856835",
+      "file": "images/rose/10-pair-editorial.jpg",
+      "promptVersion": 2
+    },
+    "Y03": {
+      "status": "accepted",
+      "jobId": "09eae29f-4405-471f-8cc3-38801668a37b",
+      "file": "images/yellow/03-macro-leaves.jpg",
+      "promptVersion": 3
+    },
+    "Y05": {
+      "status": "accepted",
+      "jobId": "85b9690e-1354-4bfc-8757-45b0658a3c6d",
+      "file": "images/yellow/05-profile-flat.jpg",
+      "promptVersion": 3
+    },
+    "Y08": {
+      "status": "accepted",
+      "jobId": "c4142e66-f12d-41a5-b021-26f25d4806df",
+      "file": "images/yellow/08-scale-fingers.jpg",
+      "promptVersion": 3
+    },
+    "Y09": {
+      "status": "accepted",
+      "jobId": "4457d762-16b0-4636-82a7-9bd7aec34314",
+      "file": "images/yellow/09-interior.jpg",
+      "promptVersion": 3
+    },
+    "Y10": {
+      "status": "accepted",
+      "jobId": "15e38fc7-4c53-43a7-a4c4-a4aee43293dc",
+      "file": "images/yellow/10-pair-editorial.jpg",
+      "promptVersion": 3
+    },
+    "W02": {
+      "status": "accepted",
+      "jobId": "525ee6da-5723-4c57-ade7-7ef96e89b150",
+      "file": "images/white/02-worn-linen.jpg",
+      "promptVersion": 3
+    },
+    "W06": {
+      "status": "accepted",
+      "jobId": "800f9507-40e0-4829-a5a8-27ae3cf23b4c",
+      "file": "images/white/06-worn-coffee.jpg",
+      "promptVersion": 3
+    },
+    "W10": {
+      "status": "accepted",
+      "jobId": "8d2eb5f0-70f2-4520-8996-561f64d02e56",
+      "file": "images/white/10-pair-editorial.jpg",
+      "promptVersion": 3
+    },
+    "R05": {
+      "status": "accepted",
+      "jobId": "a6271d7f-53fe-47ac-936e-de1df67fe698",
+      "file": "images/rose/05-profile-flat.jpg",
+      "promptVersion": 3
+    },
+    "R09": {
+      "status": "accepted",
+      "jobId": "159f730d-48d5-41d6-968f-7b19af20eae7",
+      "file": "images/rose/09-interior.jpg",
+      "promptVersion": 3
+    },
+    "W03": {
+      "status": "accepted",
+      "jobId": "74e88484-bacf-45f0-828d-e9661604992f",
+      "file": "images/white/03-macro-leaves.jpg",
+      "promptVersion": 4,
+      "note": "Composition rewritten as a physical pose (lying flat, camera centimetres away) after the v3 frame copied the hero."
+    }
+  },
+  "rejected": [
+    {
+      "slot": "W01",
+      "jobId": "d45b89e3-944e-463e-b0aa-088044f02c25",
+      "defect": "32 px macroblock squares in the out-of-focus wall (visual ~20, detector flags). Pattern itself correct. Not retouched: ring top at y~432, a band blur would bleed ring colour into the wall."
+    },
+    {
+      "slot": "R01",
+      "jobId": "4f12d0f0-342c-49aa-8fec-3037fb2a5825",
+      "defect": "32 px macroblock squares at top-left of the wall (visual ~6, one at y~315 missed by the detector). Pattern and colour correct."
+    },
+    {
+      "slot": "W01",
+      "jobId": "feb9b0c5-dcbd-4c19-8ebc-90fa6e680269",
+      "defect": "Pattern drifted: leaves in aligned side-by-side pairs (not alternating) and dark enough to read as pierced openwork. Background clean. Fix: geometryBlock v2 adds 'never matching pairs' and 'shallow cuts, not holes'."
+    },
+    {
+      "slot": "Y03",
+      "jobId": "f066142c-3657-4ee2-a638-64b54eee8234",
+      "defect": "White knit glove and grey backdrop copied from the demo reference instead of the macro-on-stone scene; brass/olive tone carried over."
+    },
+    {
+      "slot": "Y05",
+      "jobId": "7b984c55-03d0-462b-a94a-37d8e16f3cc3",
+      "defect": "False hallmark: rendered text '14K HERITAGE GOLD 14K' on the rim; also glove, wrong scene."
+    },
+    {
+      "slot": "Y08",
+      "jobId": "3088bcc4-af4b-4029-afdb-d76e2814f4d1",
+      "defect": "Glove instead of bare fingers; brass tone."
+    },
+    {
+      "slot": "Y09",
+      "jobId": "07496d54-ed0a-4f69-ae25-dd3a2a05a65d",
+      "defect": "Glove, brass tone, interior not the subject."
+    },
+    {
+      "slot": "Y10",
+      "jobId": "3ad2fc27-e789-4795-b045-5dffdd6c76cf",
+      "defect": "Glove, single ring instead of a 4 mm + 7 mm pair."
+    },
+    {
+      "slot": "W02",
+      "jobId": "022cedfa-7ee4-44ce-a512-ef240604e37e",
+      "defect": "Ring rendered in BRASS colour, not white gold; glove instead of a worn hand."
+    },
+    {
+      "slot": "W03",
+      "jobId": "c97b2ef1-fc44-4549-91c2-8802bf206169",
+      "defect": "Pave stones set inside the leaves (gemstones forbidden); brass tone; glove."
+    },
+    {
+      "slot": "W06",
+      "jobId": "2998ee10-1e9a-4baa-8d8a-78c804396425",
+      "defect": "False hallmark '14K WG' inside + milgrain edge added; glove instead of hand-with-cup."
+    },
+    {
+      "slot": "W10",
+      "jobId": "e95bfefb-8238-4000-8c7a-48298407365d",
+      "defect": "Glove, single ring, dark backdrop."
+    },
+    {
+      "slot": "R05",
+      "jobId": "fd8cbbe4-45a2-4aa9-8cdf-6c54f58d90da",
+      "defect": "Small pave stones set inside one leaf (gemstones forbidden)."
+    },
+    {
+      "slot": "R09",
+      "jobId": "327218e6-84a1-4a28-b4a8-cb2b616e7b2e",
+      "defect": "Glove instead of the interior-on-stone scene."
+    },
+    {
+      "slot": "W03",
+      "jobId": "54c6f52b-1478-4e00-8399-215c95746812",
+      "defect": "Passed every per-frame check but is a near copy of the W01 hero (standing ring, same angle) instead of a macro of the outer face. Caught only by the set-level contact sheet; retaken with the pose described physically (ring lying flat like a coin, camera centimetres away)."
+    }
+  ],
+  "promptVersion": 3,
+  "qaTools": {
+    "blockArtifactDetector": "scripts/eon/detect_block_artifacts.mjs — image-level first flag (STEP 3, FLAT 2.5, >=2 strong edges). Calibrated: Y01 0 / W01 flagged / R01 flagged. minEdges=1 was rejected: it false-flags satin edges on the ring (Y01 576,800). It UNDER-counts; eyes stay the final arbiter."
+  },
+  "heroReferenceJobs": {
+    "Y": "eb755a9d-fb91-4103-a09e-1c2b196420c0",
+    "W": "a01a9b0b-949f-4ea9-83a4-f178a30104c9",
+    "R": "782ce9c4-ddbb-4a7a-8243-756fd1b50424"
+  }
+}
