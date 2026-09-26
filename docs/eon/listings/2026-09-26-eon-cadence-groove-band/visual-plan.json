@@ -1,0 +1,176 @@
+{
+  "schemaVersion": 1,
+  "status": "planned — no image generated yet; waiting for the owner's approval of the hero prompt",
+  "listings": [
+    "EON-CADNC-Y",
+    "EON-CADNC-W",
+    "EON-CADNC-R"
+  ],
+  "requiredCountPerListing": 10,
+  "generatedPerListing": 9,
+  "typesetPerListing": 1,
+  "totalGenerations": 27,
+  "generationOrder": "Yellow hero (01) FIRST with the demo photo as reference; look at it at full size. Then White and Rose heroes. Every other scene uses ITS OWN metal's accepted hero as reference (Willow v3 lesson: the demo photo as reference carried its glove, grey backdrop and brass tone into weakly anchored scenes; 11/24 rejects).",
+  "creditDiscipline": "One request = one generation, count always 1. Batch only for the items the owner counted (10 per metal).",
+  "model": {
+    "name": "nano_banana_2",
+    "resolution": "2k",
+    "aspectRatio": "1:1",
+    "note": "resolution defaults to 1k — pass 2k explicitly (2026-09-13 lesson)."
+  },
+  "reference": {
+    "file": "images/00-reference-demo.jpg",
+    "what": "Owner's demo sample photo (2026-09-26). Geometry and finishes are canonical; its brass/green tone, dust and grey backdrop are NOT."
+  },
+  "output": {
+    "widthPx": 2048,
+    "heightPx": 2048,
+    "format": "JPEG",
+    "quality": 92,
+    "colorSpace": "sRGB",
+    "mechanicalUpscaleAllowed": false,
+    "stripOriginMetadata": true
+  },
+  "geometryBlock": "Photorealistic photograph of the EXACT ring design shown in the reference image, remade in real solid {METAL_DESC}. It is a closed, continuous 360-degree wedding band — never a cropped slab, straight segment, open ring or C-shape. PROFILE: a FLAT-topped raised center band with straight side walls; on each side the band steps DOWN to a narrow, lower, mirror-polished rail that runs around both edges, so the cross-section is stepped, not domed. CENTER FINISH: a fine frosted SANDBLASTED matte texture — even, granular and non-reflective; not brushed lines, not hammered, not glossy. GROOVES: at regular intervals around the ring, PAIRS of narrow polished grooves are cut straight ACROSS the width of the center band, perpendicular to the ring's circumference. Each pair is two parallel rounded channels side by side, mirror-polished inside, and the pairs divide the frosted center into equal rectangular sections (roughly six to eight pairs around the whole ring, evenly spaced). The grooves are recessed channels cut into the metal, never raised bars and never holes through the band; each one runs from rail to rail and stops at the step. INTERIOR: smooth mirror-polished comfort fit, no text. Clean new metal: no tarnish, no dark spots, no green or brass tone, no dust. NO GLOVES anywhere in the image. NO text, letters, numbers, karat stamps or hallmarks anywhere on the ring, inside or outside. No stones, no pave, no sparkle set into the ring. Do NOT add: gemstones, diamonds, crystals, milgrain beads, hammering, rope, leaves, diagonal cuts, a continuous groove running around the ring, engraving on the outside, or any second pattern.",
+  "lightingBlock": "LIGHTING: a real home studio, not a CGI render. One large window is the only light source; soft directional daylight with a genuine soft-edged shadow. The gold looks like real metal photographed in daylight. No seamless backdrop, no gradient sweep, no glitter, no lens flare, no sparkle overlays.",
+  "metals": {
+    "Y": {
+      "name": "Yellow",
+      "METAL_DESC": "14K yellow gold — warm, rich yellow, not orange, not brassy-green"
+    },
+    "W": {
+      "name": "White",
+      "METAL_DESC": "14K white gold — bright cool rhodium white, silvery, with no yellow cast"
+    },
+    "R": {
+      "name": "Rose",
+      "METAL_DESC": "14K rose gold — soft warm pink, not copper-orange, not red"
+    }
+  },
+  "promptAssembly": "geometryBlock (METAL_DESC filled per metal) + scene.composition + lightingBlock",
+  "hardRules": {
+    "closedContinuousLoopRequired": true,
+    "wornViewMustEncircleExactlyOneFinger": true,
+    "minimumHumanSkinScenes": 3,
+    "sameSceneRecolorAllowed": false,
+    "duplicateHashesAllowed": false,
+    "forbiddenProps": [
+      "cut_gemstone",
+      "faceted_jewel",
+      "crystal",
+      "ring_box_with_petals",
+      "eucalyptus_flatlay"
+    ],
+    "groovesAreRecessedChannelsNeverRaised": true,
+    "steppedEdgeNotDomed": true
+  },
+  "qaGate": [
+    "Native 2048x2048, sRGB JPEG, no upscale.",
+    "Distinct hashes across all 30 files.",
+    "Closed loop in every frame; worn views on exactly one finger.",
+    "Groove pairs cut ACROSS the width, recessed and polished; frosted sandblasted center; stepped polished rails on both edges.",
+    "Metal color matches the listing; no brass/green cast, no tarnish carried from the demo.",
+    "No gemstone, crystal, text or hallmark anywhere.",
+    "Set-level contact sheet per metal: no frame duplicates another frame's job (Willow W03 lesson).",
+    "Position 07 typeset: every number matches the listing exactly.",
+    "Origin metadata stripped on export."
+  ],
+  "finalArbiter": "The render viewed at full size. 'The prompt says so' is not evidence.",
+  "scenes": [
+    {
+      "position": 1,
+      "role": "hero_thumbnail",
+      "human": false,
+      "widthMm": 7,
+      "generated": true,
+      "job": "Win the search grid at 170 px: a complete ring, stepped edges and groove pairs legible.",
+      "composition": "The ring stands upright in three-quarter view so the frosted center with two or three groove pairs, one stepped polished edge AND the open center are all visible, occupying about two thirds of a square frame, on a warm off-white raw limestone slab with fine grain, in front of a plain matte wall slightly out of focus."
+    },
+    {
+      "position": 2,
+      "role": "worn_trust",
+      "human": true,
+      "widthMm": 7,
+      "generated": true,
+      "job": "Trust: a real hand, real skin, the ring encircling exactly one finger.",
+      "composition": "Worn on the ring finger of a relaxed adult hand resting on a light linen cloth; the band fully encircles exactly ONE finger and every other finger is bare. Natural, unretouched skin with real texture, short clean unpolished nails. The polished grooves and rails catch the window light against the matte center."
+    },
+    {
+      "position": 3,
+      "role": "differentiator_macro",
+      "human": false,
+      "widthMm": 7,
+      "generated": true,
+      "job": "Show the one thing that makes this ring: polished groove pairs and stepped rails against sandblasted matte.",
+      "composition": "The ring LIES FLAT on its side on a warm stone slab, like a coin, its opening facing the ceiling. The camera is very close and low, only a few centimetres from the near side of the band, so the outer face fills most of the frame from left edge to right edge: one groove pair in razor-sharp focus in the middle, frosted matte sections on both sides of it, and both stepped polished rails visible along the top and bottom edges of the band. The far side of the closed ring falls softly out of focus. This is NOT a standing ring and NOT a full view of the ring: it is a detail study of the outer surface."
+    },
+    {
+      "position": 4,
+      "role": "width_answer",
+      "human": false,
+      "widthMm": null,
+      "generated": true,
+      "job": "Answer 'which width?': the same design in narrow, medium and wide.",
+      "composition": "THREE rings of this exact design lying side by side on a light oak board, left to right: a narrow 3 mm band, a medium 5 mm band, a wide 8 mm band. Same metal, same sandblasted center, same stepped polished rails and groove pairs scaled to each width. All three are closed complete rings. Top-down three-quarter angle, even daylight."
+    },
+    {
+      "position": 5,
+      "role": "profile_answer",
+      "human": false,
+      "widthMm": 7,
+      "generated": true,
+      "job": "Answer 'how does it sit?': show the stepped edge profile, not just the face.",
+      "composition": "The ring lies FLAT on a raw oak block like a coin, its opening facing the ceiling, photographed from a low angle close to the table so the side wall reads clearly as a STEP: the raised frosted center band and, below it on both edges, the narrower polished rails. Groove pairs visible along the curve. Soft window light from one side."
+    },
+    {
+      "position": 6,
+      "role": "worn_lifestyle",
+      "human": true,
+      "widthMm": 7,
+      "generated": true,
+      "job": "Everyday wear: the ring in a natural moment.",
+      "composition": "A hand wearing the ring wraps around a plain matte ceramic coffee cup on a wooden table in morning window light; the band encircles exactly one finger and every other finger is bare. Natural skin, candid, no manicure, no bouquet, no petals."
+    },
+    {
+      "position": 7,
+      "role": "spec_card",
+      "human": false,
+      "widthMm": null,
+      "generated": false,
+      "job": "State the facts exactly: karats, widths, sizes, finish.",
+      "composition": "TYPESET BY HAND, not generated (2026-09-11 lesson). Built from the accepted hero plus exact text read from listing-manifest.json: Solid gold 10K / 14K / 18K · Width 3–8 mm · US 3–13 incl. half sizes · Sandblasted center, polished grooves and stepped rails · Comfort fit."
+    },
+    {
+      "position": 8,
+      "role": "scale_human",
+      "human": true,
+      "widthMm": 7,
+      "generated": true,
+      "job": "Scale: how big the ring is between real fingers.",
+      "composition": "The ring held upright between the thumb and index finger of an adult hand, against a soft neutral linen background; the full closed loop, the groove pairs and one stepped rail are visible. Natural skin texture, short clean nails."
+    },
+    {
+      "position": 9,
+      "role": "interior_detail",
+      "human": false,
+      "widthMm": 7,
+      "generated": true,
+      "job": "Show comfort fit and a clean interior (engraving is optional, text is NOT rendered).",
+      "composition": "The ring tilted so the smooth mirror-polished comfort-fit interior is the main subject, with part of the frosted, grooved outer face and a stepped rail visible at the rim. No text or engraving inside. Warm stone surface, soft daylight."
+    },
+    {
+      "position": 10,
+      "role": "editorial_closer",
+      "human": false,
+      "widthMm": null,
+      "generated": true,
+      "job": "Close the gallery with a pair: a matching set in two widths.",
+      "composition": "Two rings of this exact design, one 4 mm and one 7 mm, resting together on undyed linen beside a small smooth cast-glass dish; both closed complete rings, same metal. Calm editorial daylight."
+    }
+  ],
+  "generated": {},
+  "rejected": [],
+  "qaTools": {
+    "blockArtifactDetector": "scripts/eon/detect_block_artifacts.mjs — image-level first flag (STEP 3, FLAT 2.5, >=2 strong edges). Calibrated: Y01 0 / W01 flagged / R01 flagged. minEdges=1 was rejected: it false-flags satin edges on the ring (Y01 576,800). It UNDER-counts; eyes stay the final arbiter."
+  }
+}
