@@ -31,6 +31,12 @@ assert len({r["image_url"] for r in rows}) == 60
 cols = ["image_url", "title", "description", "alt_text", "link", "board", "board_section", "priority", "aspect_ratio"]
 wb = openpyxl.load_workbook(tpl)
 ws = wb["Import Data"]
+# Satır 2 şablonun yönlendirme metni ("Enter image URL (required)" …). İçe
+# aktarma aracı onu da pin sanıp reddetti (hata raporu 2026-09-26: 60 OK, 1
+# ERROR = bu satır). Silinmez, boşaltılır: silmek J sütunundaki satır
+# referanslı STATUS formüllerini kaydırır; boş satırları araç zaten atlıyor.
+for c in range(1, ws.max_column + 1):
+    ws.cell(row=2, column=c).value = None  # cell(value=None) atamayı ATLAR
 for i, r in enumerate(rows):
     for j, c in enumerate(cols):
         ws.cell(row=3 + i, column=1 + j, value=r[c] or None)

@@ -1484,6 +1484,21 @@ repodaki hedefidir.
   no hollow" yazılınca düzeldi. Ürün spesifikasyonu fiyatı taşıyorsa, görselin
   o spesifikasyonu ÇİZMESİ de ayrıca doğrulanır.
 
+- **Dış aracın şablonunu doldururken şablonun KENDİ yönlendirme satırı da
+  veridir; ve "boşalttım" demeden önce dosyayı GERİ OKU (2026-09-26):**
+  Pinterest içe aktarma şablonunu 60 pinle doldurdum; araç 60/60 satırı OK
+  saydı ama raporda 1 ERROR vardı: şablonun 2. satırındaki "Enter image URL
+  (required)" yönlendirme metni. Ben o satırı "başlık açıklaması" sanıp
+  bırakmıştım, araç ise onu pin olarak okudu. Düzeltirken ikinci tuzak:
+  openpyxl'de `ws.cell(row, col, value=None)` değeri YAZMAZ (None verilince
+  atamayı atlar), satır dolu kaldı ve bunu yalnız dosyayı geri okumak gösterdi;
+  doğrusu `ws.cell(row, col).value = None`. Satır silinmedi, boşaltıldı:
+  silmek J sütunundaki satır referanslı durum formüllerini kaydırırdı. Kural:
+  (1) üçüncü taraf şablonda başlık dışındaki her dolu satırı veri say, hangisinin
+  içe aktarılacağını aracın kendi kuralından (boş satırı atlıyor mu?) öğren;
+  (2) bir dosya dönüşümünü teslim etmeden üretilen dosyayı aç ve hedef hücreleri
+  oku; kütüphane çağrısının "yaptım" demesi kanıt değildir.
+
 - **"Satış yok" şikâyetinde ÖNCE veri tazeliğini doğrula — panel körse sıfır,
   sıfır satış değil ÖLÇÜMSÜZLÜKtür (2026-09-12):** Kullanıcı "EON'da satış yok,
   fiyat indirelim mi, indirimi artıralım mı" dedi. İlk sorgu satışa değil
