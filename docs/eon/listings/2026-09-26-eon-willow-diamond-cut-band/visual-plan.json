@@ -1,0 +1,170 @@
+{
+  "schemaVersion": 1,
+  "status": "planned — no image generated yet",
+  "listings": {
+    "Y": "EON-WILLW-Y",
+    "W": "EON-WILLW-W",
+    "R": "EON-WILLW-R"
+  },
+  "requiredCountPerListing": 10,
+  "generatedPerListing": 9,
+  "typesetPerListing": 1,
+  "totalGenerations": 27,
+  "generationOrder": "Yellow hero (01) FIRST, look at it at full size, only then the rest. A prompt defect caught on one frame costs one generation, not ten (2026-09-11 lesson).",
+  "creditDiscipline": "One request = one generation, count always 1. Batch only for the items the owner counted (10 per metal).",
+  "model": {
+    "name": "nano_banana_2",
+    "resolution": "2k",
+    "aspectRatio": "1:1",
+    "note": "resolution defaults to 1k — pass 2k explicitly (2026-09-13 lesson)."
+  },
+  "reference": {
+    "file": "images/00-reference-demo-brass.jpg",
+    "what": "Owner's demo brass sample. Geometry and pattern are canonical; its brass tone, tarnish and spots are NOT."
+  },
+  "output": {
+    "widthPx": 2048,
+    "heightPx": 2048,
+    "format": "JPEG",
+    "quality": 92,
+    "colorSpace": "sRGB",
+    "mechanicalUpscaleAllowed": false,
+    "stripOriginMetadata": true
+  },
+  "geometryBlock": "Photorealistic photograph of the EXACT ring design shown in the reference image, remade in real solid {METAL_DESC}. It is a closed, continuous 360-degree wedding band — never a cropped slab, straight segment, open ring or C-shape. OUTER FACE: gently domed (a low, soft crown — not flat, not a tall half-round), finished in soft BRUSHED SATIN with fine parallel grain lines running around the circumference. PATTERN: two staggered rows of slim leaf-shaped DIAMOND-CUT facets run all the way around the band, like leaves on a stem. Leaves in one row slant one way, leaves in the other row slant the opposite way, and the two rows are offset so the leaves alternate side to side, forming a herringbone leaf sprig. Each leaf is a narrow pointed marquise about as long as half the band width, CUT INTO the metal as a bright mirror-polished bevel — recessed, never raised, never a separate applied piece. The facets flash bright against the matte satin. EDGES: a narrow, softly polished rim along both edges. INTERIOR: smooth polished comfort fit, no text. Clean new metal: no tarnish, no dark spots, no green or brass tone, no dust. Do NOT add: gemstones, diamonds, crystals, milgrain beads, hammering, rope, a continuous groove, raised leaves, engraving on the outside, or any second pattern.",
+  "lightingBlock": "LIGHTING: a real home studio, not a CGI render. One large window is the only light source; soft directional daylight with a genuine soft-edged shadow. The gold looks like real metal photographed in daylight. No seamless backdrop, no gradient sweep, no glitter, no lens flare, no sparkle overlays.",
+  "metals": {
+    "Y": {
+      "name": "Yellow",
+      "METAL_DESC": "14K yellow gold — warm, rich yellow, not orange, not brassy-green"
+    },
+    "W": {
+      "name": "White",
+      "METAL_DESC": "14K white gold — bright cool rhodium white, silvery, with no yellow cast"
+    },
+    "R": {
+      "name": "Rose",
+      "METAL_DESC": "14K rose gold — soft warm pink, not copper-orange, not red"
+    }
+  },
+  "promptAssembly": "geometryBlock (METAL_DESC filled per metal) + scene.composition + lightingBlock",
+  "hardRules": {
+    "closedContinuousLoopRequired": true,
+    "wornViewMustEncircleExactlyOneFinger": true,
+    "minimumHumanSkinScenes": 3,
+    "sameSceneRecolorAllowed": false,
+    "duplicateHashesAllowed": false,
+    "forbiddenProps": [
+      "cut_gemstone",
+      "faceted_jewel",
+      "crystal",
+      "ring_box_with_petals",
+      "eucalyptus_flatlay"
+    ],
+    "leavesAreRecessedCutsNeverRaised": true
+  },
+  "qaGate": [
+    "Native 2048x2048, sRGB JPEG, no upscale.",
+    "Distinct hashes across all 30 files.",
+    "Closed loop in every frame; worn views on exactly one finger.",
+    "Leaf pattern: two staggered rows, opposite slants, alternating; recessed mirror facets on brushed satin.",
+    "Outer face gently domed — not flat, not half-round.",
+    "Metal color matches the listing; no brass/green cast, no tarnish carried from the demo.",
+    "No gemstone, crystal or diamond anywhere ('diamond cut' is a technique).",
+    "Position 07 typeset: every number matches the listing exactly.",
+    "Origin metadata stripped on export."
+  ],
+  "finalArbiter": "The render viewed at full size. 'The prompt says so' is not evidence.",
+  "scenes": [
+    {
+      "position": 1,
+      "role": "hero_thumbnail",
+      "human": false,
+      "widthMm": 6,
+      "generated": true,
+      "job": "Win the search grid at 170 px: a complete ring, leaf pattern legible.",
+      "composition": "The ring stands upright in three-quarter view so both the domed outer face with its leaf facets AND the open center are visible, occupying about two thirds of a square frame, on a warm off-white raw limestone slab with fine grain, in front of a plain matte wall slightly out of focus."
+    },
+    {
+      "position": 2,
+      "role": "worn_trust",
+      "human": true,
+      "widthMm": 6,
+      "generated": true,
+      "job": "Trust: a real hand, real skin, the ring encircling exactly one finger.",
+      "composition": "Worn on the ring finger of a relaxed adult hand resting on a light linen cloth; the band fully encircles exactly ONE finger. Natural, unretouched skin with real texture, short clean unpolished nails. The leaf facets catch the window light."
+    },
+    {
+      "position": 3,
+      "role": "differentiator_macro",
+      "human": false,
+      "widthMm": 6,
+      "generated": true,
+      "job": "Show the one thing that makes this ring: bright diamond-cut leaves against satin.",
+      "composition": "Close macro of the outer face: the brushed satin grain and three or four leaf facets in sharp focus, each facet a crisp mirror bevel reflecting light; the rest of the closed ring curves away softly out of focus. Neutral warm stone surface."
+    },
+    {
+      "position": 4,
+      "role": "width_answer",
+      "human": false,
+      "widthMm": null,
+      "generated": true,
+      "job": "Answer 'which width?': the same design in narrow, medium and wide.",
+      "composition": "THREE rings of this exact design lying side by side on a light oak board, left to right: a narrow 3 mm band, a medium 5 mm band, a wide 8 mm band. Same metal, same satin finish, same leaf-sprig pattern scaled to each width. All three are closed complete rings. Top-down three-quarter angle, even daylight."
+    },
+    {
+      "position": 5,
+      "role": "profile_answer",
+      "human": false,
+      "widthMm": 6,
+      "generated": true,
+      "job": "Answer 'how does it sit?': show the soft dome and the rim, not just the face.",
+      "composition": "The ring lies FLAT on a raw oak block like a coin, its opening facing the ceiling, photographed from a low angle so the rim wall and the gentle dome of the outer face read clearly; leaf facets visible along the curve. Soft window light from one side."
+    },
+    {
+      "position": 6,
+      "role": "worn_lifestyle",
+      "human": true,
+      "widthMm": 6,
+      "generated": true,
+      "job": "Everyday wear: the ring in a natural moment.",
+      "composition": "A hand wearing the ring wraps around a plain matte ceramic coffee cup on a wooden table in morning window light; the band encircles exactly one finger. Natural skin, candid, no manicure, no bouquet, no petals."
+    },
+    {
+      "position": 7,
+      "role": "spec_card",
+      "human": false,
+      "widthMm": null,
+      "generated": false,
+      "job": "State the facts exactly: karats, widths, sizes, finish.",
+      "composition": "TYPESET BY HAND, not generated. A model-rendered number is a false statement, not a typo (2026-09-11 lesson). Built from the hero crop plus exact text: Solid gold 10K / 14K / 18K · Width 3–8 mm · US 3–13 incl. half sizes · Hand diamond-cut leaves on brushed satin · Comfort fit."
+    },
+    {
+      "position": 8,
+      "role": "scale_human",
+      "human": true,
+      "widthMm": 6,
+      "generated": true,
+      "job": "Scale: how big the ring is between real fingers.",
+      "composition": "The ring held upright between the thumb and index finger of an adult hand, against a soft neutral linen background; the full closed loop and the leaf pattern are visible. Natural skin texture, short clean nails."
+    },
+    {
+      "position": 9,
+      "role": "interior_detail",
+      "human": false,
+      "widthMm": 6,
+      "generated": true,
+      "job": "Show comfort fit and a clean interior (engraving is optional, text is NOT rendered).",
+      "composition": "The ring tilted so the smooth polished comfort-fit interior is the main subject, with part of the satin leaf-patterned outer face visible at the rim. No text or engraving inside. Warm stone surface, soft daylight."
+    },
+    {
+      "position": 10,
+      "role": "editorial_closer",
+      "human": false,
+      "widthMm": null,
+      "generated": true,
+      "job": "Close the gallery with a pair: a matching set in two widths.",
+      "composition": "Two rings of this exact design, one 4 mm and one 7 mm, resting together on undyed linen beside a small smooth cast-glass dish; both closed complete rings, same metal. Calm editorial daylight."
+    }
+  ]
+}
