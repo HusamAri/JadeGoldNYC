@@ -74,7 +74,7 @@ Model: `gpt_image_2_5`, 1:1, 2K, medium quality = 1 credit/image.
 ## Status
 - [x] Step 1 · matrix + pricing rule verified against live EON grids
 - [x] Step 2 · canon test, model 01 × 3 metals (`test/`)
-- [x] Step 3 · 300 images in `public/jade/eon-top10/` (open defect: 10-beveled-rose 04 + 07 read as signet, re-render pending approval)
+- [x] Step 3 · 300 images in `public/jade/eon-top10/` (10-beveled-rose 04 re-rendered 2026-09-25 with anti-signet lock; 07 still shows a thickened top, open)
 - [x] Step 4 · titles, descriptions, tags (`catalog.json`, generator `scripts/jade-eon-top10/catalog.py`)
 - [x] Step 5 · 30 panel drafts live in Listing Önerileri (migration `0151`)
 - [ ] Step 6 · Etsy canary: flag set true 2026-09-24; generic create path supports 3 axes (this PR). Needs merge + deploy first

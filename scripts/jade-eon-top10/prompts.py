@@ -38,7 +38,7 @@ MODELS = {
     "07": ("kinetic", "Kinetic Bead", "a SLIM band about 2mm wide with a polished half-round profile, carrying ONE small polished gold bead that sits in a shallow channel on the band and glides freely around it. Only one bead. Comfort-fit interior.", "the single gliding bead in its channel", None),
     "08": ("greekkey", "Greek Key", "about 8mm wide. Raised continuous GREEK KEY (meander) pattern in the center on a finely textured recessed ground, framed by a row of milgrain beads and a braided ROPE rail on each side, polished edges and polished comfort-fit interior. The key pattern must stay coherent, no broken turns.", "the Greek key turns, milgrain row and rope rail", (6, 8, 10)),
     "09": ("twotone", "Two-Tone", "about 7mm wide, TWO-TONE: narrow high-polish stepped edge rails in {M}, and a center band in {A} with DIAMOND-CUT diagonal facets over a fine frosted texture. Polished comfort-fit interior in {M}.", "the diamond-cut facets of the center against the polished rails", (6, 8, 10)),
-    "10": ("beveled", "Beveled", "about 6mm wide, flat top. BRUSHED SATIN flat top with a HIGH-POLISH 45-degree BEVEL along each edge. Polished comfort-fit interior.", "the brushed top meeting the polished bevel", (4, 6, 8)),
+    "10": ("beveled", "Beveled", "about 6mm wide, flat top. BRUSHED SATIN flat top with a HIGH-POLISH 45-degree BEVEL along each edge. Polished comfort-fit interior. A plain BAND of uniform width and thickness all the way around, a perfect circle, NOT a signet ring: no flat top plate, no raised face, no thicker section anywhere.", "the brushed top meeting the polished bevel", (4, 6, 8)),
 }
 
 METALS = {
