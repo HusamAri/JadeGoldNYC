@@ -238,7 +238,7 @@ Ring size: US 3 to US 13, including half sizes.
 Choose Karat, Width and Ring Size from the three variation menus. Wider bands can feel more snug than narrow bands, so confirm your size at your preferred width.
 
 OPTIONAL INSIDE ENGRAVING
-Enter the exact text in Inside Engraving Text, up to 30 characters, and select Engraving Font: 1 | Prata, 2 | Cinzel, 3 | Cinzel Decorative or 4 | Great Vibes. Leave the text blank for no engraving. These fields do not change the inventory variations.
+Enter the exact text in "Inside band engraving", up to 30 characters, and choose an Engraving Font: 1 Prata, 2 Cinzel, 3 Cinzel Decorative or 4 Great Vibes. Leave the text blank for no engraving. These fields do not change the inventory variations.
 
 MADE FOR YOU
 Made to order from raw precious-metal materials using hand-guided tools. Allow 4 to 5 business days for preparation before dispatch. Transit time is separate.
