@@ -241,7 +241,7 @@ export function ListingComposer() {
                 value={listingProtocol}
                 onValueChange={(value) => {
                   setListingProtocol(value);
-                  if (value === "signet_ring" && !axisName.trim()) {
+                  if ((value === "signet_ring" || value === "monogram_signet_ring") && !axisName.trim()) {
                     setAxisName("Ring Size");
                   }
                   if (value === "sculptural_ring") {
@@ -255,6 +255,7 @@ export function ListingComposer() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="signet_ring">Initial signet ring · tek harf</SelectItem>
+                  <SelectItem value="monogram_signet_ring">Monogram signet ring · opsiyonel 4 karakter gravür</SelectItem>
                   <SelectItem value="sculptural_ring">Sculptural ring · açık işçilikli yüzük</SelectItem>
                   <SelectItem value="wedding_band">Wedding band · alyans</SelectItem>
                   <SelectItem value="pendant_necklace">Pendant necklace · kolye</SelectItem>

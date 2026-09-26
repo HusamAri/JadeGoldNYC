@@ -327,3 +327,20 @@ test("alyans taksonomisi eski yolla çözülür", async () => {
   );
   assert.deepEqual(r, { ok: true, taxonomyId: 11 });
 });
+
+test("monogram signet opsiyonel 4 karakter gravür yazar; initial signet değişmez", () => {
+  const spec = resolveListingProtocol({
+    product_type: "ring",
+    listing_metadata: { listingProtocol: "monogram_signet_ring" },
+  });
+  assert.equal(spec?.id, "monogram_signet_ring");
+  assert.deepEqual(spec?.taxonomyNames, ["Signet Rings", "Rings"]);
+  assert.equal(spec?.personalization?.[0]?.max_allowed_characters, 4);
+  assert.equal(spec?.personalization?.[0]?.required, false);
+  // Tek harfli initial signet sözleşmesi DEĞİŞMEDİ.
+  const initial = resolveListingProtocol({ product_type: "signet_ring" });
+  assert.equal(initial?.personalization?.[0]?.max_allowed_characters, 1);
+  assert.equal(initial?.personalization?.[0]?.required, true);
+  // Metadatasız yüzük hâlâ alyans.
+  assert.equal(resolveListingProtocol({ product_type: "ring" })?.id, "wedding_band");
+});

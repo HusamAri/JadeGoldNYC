@@ -107,6 +107,24 @@ export const SIGNET_INITIAL_PERSONALIZATION_QUESTIONS: PersonalizationQuestion[]
 ];
 
 /**
+ * Plain engravable signet face (by Artifact Studio Jewelry, Cartouche Signet,
+ * 2026-09-26). An 11 x 9 mm oval pinky face stays legible at about four
+ * characters, so the limit is 4 until the maker confirms engraving depth;
+ * blank means an unengraved ring.
+ */
+export const MONOGRAM_SIGNET_PERSONALIZATION_QUESTIONS: PersonalizationQuestion[] = [
+  {
+    question_type: "text_input",
+    question_text: "Face engraving (optional)",
+    instructions:
+      "Initials or a monogram, up to 4 characters, engraved on the oval face. " +
+      "Blank means no engraving.",
+    required: false,
+    max_allowed_characters: 4,
+  },
+];
+
+/**
  * Open cuff with a hidden inside-face inscription (by Artifact Studio Jewelry,
  * Frieze Reeded Cuff, 2026-09-26). The inside face is a curved flat band, so
  * the character limit is deliberately short (10) until the maker confirms

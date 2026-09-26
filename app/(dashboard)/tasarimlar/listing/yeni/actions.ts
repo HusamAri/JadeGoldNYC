@@ -146,7 +146,8 @@ export async function createDraftListing(
     return { error: "Çok varyantlı sculptural ring için Ring Size ve Metal Color eksenleri gerekli." };
   }
   const productType =
-    protocol === "wedding_band" || protocol === "signet_ring" || protocol === "sculptural_ring"
+    protocol === "wedding_band" || protocol === "signet_ring" ||
+    protocol === "monogram_signet_ring" || protocol === "sculptural_ring"
       ? "ring" : protocol === "pendant_necklace" ? "necklace" : "bracelet";
   // cuff_bracelet de "bracelet" yazılır: products_product_type_check "cuff"
   // kabul etmez; protokol listing_metadata.listingProtocol üzerinden seçilir.

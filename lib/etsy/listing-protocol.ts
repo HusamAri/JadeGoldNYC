@@ -2,6 +2,7 @@ import {
   DEFAULT_PERSONALIZATION_QUESTIONS,
   SIGNET_INITIAL_PERSONALIZATION_QUESTIONS,
   CUFF_INSIDE_PERSONALIZATION_QUESTIONS,
+  MONOGRAM_SIGNET_PERSONALIZATION_QUESTIONS,
   type PersonalizationQuestion,
 } from "@/lib/etsy/personalization";
 
@@ -51,6 +52,7 @@ import {
 export type ListingProtocolId =
   | "wedding_band"
   | "signet_ring"
+  | "monogram_signet_ring"
   | "sculptural_ring"
   | "pendant_necklace"
   | "chain_bracelet"
@@ -142,6 +144,17 @@ export const LISTING_PROTOCOLS: Record<ListingProtocolId, ListingProtocolSpec> =
     personalization: SIGNET_INITIAL_PERSONALIZATION_QUESTIONS,
     parcel: RING_PARCEL,
   },
+  monogram_signet_ring: {
+    id: "monogram_signet_ring",
+    label: "Engravable monogram signet ring",
+    taxonomyNames: ["Signet Rings", "Rings"],
+    taxonomyRoot: "Jewelry",
+    // Plain engravable face: the monogram is optional (blank ring is a valid
+    // order), unlike signet_ring whose single stamped letter is the product.
+    requiredVariationAxes: [],
+    personalization: MONOGRAM_SIGNET_PERSONALIZATION_QUESTIONS,
+    parcel: RING_PARCEL,
+  },
   sculptural_ring: {
     id: "sculptural_ring",
     label: "Sculptural ring",
@@ -202,6 +215,7 @@ export const LISTING_PROTOCOLS: Record<ListingProtocolId, ListingProtocolSpec> =
 const PRODUCT_TYPE_PROTOCOL: Record<string, ListingProtocolId> = {
   ring: "wedding_band",
   signet_ring: "signet_ring",
+  monogram_signet_ring: "monogram_signet_ring",
   sculptural_ring: "sculptural_ring",
   necklace: "pendant_necklace",
   pendant: "pendant_necklace",
