@@ -107,6 +107,24 @@ export const SIGNET_INITIAL_PERSONALIZATION_QUESTIONS: PersonalizationQuestion[]
 ];
 
 /**
+ * Open cuff with a hidden inside-face inscription (by Artifact Studio Jewelry,
+ * Frieze Reeded Cuff, 2026-09-26). The inside face is a curved flat band, so
+ * the character limit is deliberately short (10) until the maker confirms
+ * depth and legibility on the curve; blank means no engraving.
+ */
+export const CUFF_INSIDE_PERSONALIZATION_QUESTIONS: PersonalizationQuestion[] = [
+  {
+    question_type: "text_input",
+    question_text: "Inside cuff engraving (optional)",
+    instructions:
+      "Initials, a date or a short word, up to 10 characters, " +
+      "engraved on the inside face. Blank means no engraving.",
+    required: false,
+    max_allowed_characters: 10,
+  },
+];
+
+/**
  * Personalization contract for the nine Intaglio 1010 recessed-channel bands.
  * A single text field avoids conflicting top and inside engraving requests,
  * while placement remains an explicit buyer choice.

@@ -162,6 +162,27 @@ test("bileklik taksonomisi Jewelry kökünden çözülür", async () => {
   assert.deepEqual(r, { ok: true, taxonomyId: 40 });
 });
 
+test("kelepçe kendi protokolüne çözülür, zincir bileklik dalına düşmez (2026-09-26)", () => {
+  for (const type of ["cuff", "cuff_bracelet"]) {
+    const spec = resolveListingProtocol({ product_type: type });
+    assert.equal(spec?.id, "cuff_bracelet", type);
+    assert.equal(spec?.taxonomyNames[0], "Cuff Bracelets");
+    assert.equal(spec?.taxonomyRoot, "Jewelry");
+    assert.equal(spec?.personalization?.[0]?.max_allowed_characters, 10);
+  }
+  // Zincir bileklik davranışı DEĞİŞMEDİ.
+  assert.equal(resolveListingProtocol({ product_type: "bracelet" })?.id, "chain_bracelet");
+});
+
+test("kelepçe gravürü sahibin opt-out'uyla kapatılabilir", () => {
+  const spec = resolveListingProtocol({
+    product_type: "cuff",
+    listing_metadata: { offersPersonalization: false },
+  });
+  assert.equal(spec?.id, "cuff_bracelet");
+  assert.equal(spec?.personalization, null);
+});
+
 test("hâlâ tanınmayan ürün tipi sessizce yüzük sayılmaz, null döner", () => {
   for (const type of ["earrings", "anklet", "brooch", "other"]) {
     assert.equal(resolveListingProtocol({ product_type: type }), null, type);

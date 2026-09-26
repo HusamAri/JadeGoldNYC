@@ -1,6 +1,7 @@
 import {
   DEFAULT_PERSONALIZATION_QUESTIONS,
   SIGNET_INITIAL_PERSONALIZATION_QUESTIONS,
+  CUFF_INSIDE_PERSONALIZATION_QUESTIONS,
   type PersonalizationQuestion,
 } from "@/lib/etsy/personalization";
 
@@ -52,7 +53,8 @@ export type ListingProtocolId =
   | "signet_ring"
   | "sculptural_ring"
   | "pendant_necklace"
-  | "chain_bracelet";
+  | "chain_bracelet"
+  | "cuff_bracelet";
 
 export interface ParcelSpec {
   weight: number;
@@ -181,6 +183,19 @@ export const LISTING_PROTOCOLS: Record<ListingProtocolId, ListingProtocolSpec> =
     personalization: null,
     parcel: CHAIN_JEWELRY_PARCEL,
   },
+  cuff_bracelet: {
+    id: "cuff_bracelet",
+    label: "Cuff bracelet",
+    // Açık kelepçe zincir değildir; "Chain & Link Bracelets" dalına dosyalamak
+    // ürünü yanlış kategoride listelerdi (2026-09-26, Frieze Reeded Cuff).
+    // Adlar CANLI taksonomiye karşı doğrulanmadı; çözücü bulamazsa durur.
+    taxonomyNames: ["Cuff Bracelets", "Bangles", "Bracelets"],
+    taxonomyRoot: "Jewelry",
+    requiredVariationAxes: [],
+    personalization: CUFF_INSIDE_PERSONALIZATION_QUESTIONS,
+    // Kelepçe yassı mücevher kutusuna yatar; zincirli takı kutusuyla aynı sabit.
+    parcel: CHAIN_JEWELRY_PARCEL,
+  },
 };
 
 /** `product_type` → protokol. Listelenmeyen tip BİLEREK eşlenmez. */
@@ -191,6 +206,8 @@ const PRODUCT_TYPE_PROTOCOL: Record<string, ListingProtocolId> = {
   necklace: "pendant_necklace",
   pendant: "pendant_necklace",
   bracelet: "chain_bracelet",
+  cuff: "cuff_bracelet",
+  cuff_bracelet: "cuff_bracelet",
 };
 
 /**

@@ -259,6 +259,7 @@ export function ListingComposer() {
                   <SelectItem value="wedding_band">Wedding band · alyans</SelectItem>
                   <SelectItem value="pendant_necklace">Pendant necklace · kolye</SelectItem>
                   <SelectItem value="chain_bracelet">Chain bracelet · bileklik</SelectItem>
+                  <SelectItem value="cuff_bracelet">Cuff bracelet · kelepçe</SelectItem>
                 </SelectContent>
               </Select>
               {listingProtocol === "signet_ring" && (
