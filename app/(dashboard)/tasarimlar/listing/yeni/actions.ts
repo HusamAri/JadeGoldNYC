@@ -147,8 +147,9 @@ export async function createDraftListing(
   }
   const productType =
     protocol === "wedding_band" || protocol === "signet_ring" || protocol === "sculptural_ring"
-      ? "ring" : protocol === "pendant_necklace" ? "necklace"
-      : protocol === "cuff_bracelet" ? "cuff" : "bracelet";
+      ? "ring" : protocol === "pendant_necklace" ? "necklace" : "bracelet";
+  // cuff_bracelet de "bracelet" yazılır: products_product_type_check "cuff"
+  // kabul etmez; protokol listing_metadata.listingProtocol üzerinden seçilir.
   const staging = parseDraftStagingJson(input.stagingJson, {
     listingProtocol: protocol, productType, variationAxes: axisNames,
   });

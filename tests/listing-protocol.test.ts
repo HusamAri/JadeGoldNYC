@@ -170,6 +170,14 @@ test("kelepçe kendi protokolüne çözülür, zincir bileklik dalına düşmez 
     assert.equal(spec?.taxonomyRoot, "Jewelry");
     assert.equal(spec?.personalization?.[0]?.max_allowed_characters, 10);
   }
+  // DB kısıtı product_type'a "cuff" yazdırmaz; gerçek kayıt bracelet + metadata.
+  assert.equal(
+    resolveListingProtocol({
+      product_type: "bracelet",
+      listing_metadata: { listingProtocol: "cuff_bracelet" },
+    })?.id,
+    "cuff_bracelet",
+  );
   // Zincir bileklik davranışı DEĞİŞMEDİ.
   assert.equal(resolveListingProtocol({ product_type: "bracelet" })?.id, "chain_bracelet");
 });
