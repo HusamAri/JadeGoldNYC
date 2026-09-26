@@ -61,6 +61,13 @@ Jade Gold NYC Etsy mağazası için uçtan uca yönetim/raporlama paneli. Tüm s
   Provizyon sonrası `supabase gen types` ile `types/database.types.ts` üretilebilir.
 - Para alanları formlarda metin (örn. "12,34"); action'da `parseMoneyToCents`.
 - Dev tooling (superpowers/codegraph) için `docs/dev-tooling.md`.
+- **by Artifact Studio Jewelry listing matrisi = 3 eksen, TAM ızgara** (kullanıcı
+  talimatı 2026-09-26): `Karat` (10K/14K/18K) × `Metal Color` (Yellow/White/Rose
+  Gold) × beden ekseni (yüzükte `Ring Size` US 3–16 tam + yarım). Hiçbir
+  karat/renk kombinasyonu atlanmaz (18K beyaz/rose dahil); yapı istisnası
+  ancak kullanıcı açıkça söylerse. 3 eksen Etsy'de en çok 400 ürün. Etsy'ye
+  çıkmış taslağın yapısı `app/api/ops/inventory-rebuild` ile panelden yeniden
+  kurulur (yalnız `draft`, kuru varsayılan, tam ızgara şartı).
 - **Tablo teslimatı = Apple Numbers, Excel DEĞİL** (kullanıcı talimatı 2026-08-15).
   Kullanıcı Mac'te Numbers kullanıyor; çıktılar ona göre kurulur. Kısıt: formüllü
   `.numbers` yalnız Numbers.app üretebilir (`numbers-parser` .numbers yazar ama

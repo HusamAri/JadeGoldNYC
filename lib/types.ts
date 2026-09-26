@@ -128,6 +128,7 @@ export type AuditAction =
   | "etsy.reprice"
   | "etsy.seo_push"
   | "etsy.relabel"
+  | "etsy.inventory_rebuild"
   | "etsy.translation_pull"
   | "etsy.redesign_push"
   | "etsy.personalization_push"

@@ -31,6 +31,7 @@ export async function logAudit(
       | "etsy.listing_create"
       | "etsy.reprice"
       | "etsy.relabel"
+  | "etsy.inventory_rebuild"
       | "etsy.seo_push"
       | "etsy.translation_pull"
       | "etsy.redesign_push"

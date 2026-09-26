@@ -7,6 +7,8 @@ export interface EtsyListingDetail {
   title?: string;
   description?: string;
   tags?: string[];
+  /** active | inactive | sold_out | draft | expired (Etsy ListingState). */
+  state?: string;
   /** Bulunduğu mağaza bölümü (vitrin yerleşimi). */
   shop_section_id?: number | null;
 }
