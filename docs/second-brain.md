@@ -1502,6 +1502,21 @@ repodaki hedefidir.
   no hollow" yazılınca düzeldi. Ürün spesifikasyonu fiyatı taşıyorsa, görselin
   o spesifikasyonu ÇİZMESİ de ayrıca doğrulanır.
 
+- **Referansın geometrisini ilk prompt'tan ÖNCE yakın kırpımlardan oku; sahibin
+  "tamam"ı sorduğun soruya aittir, sormadığın özelliğe değil (2026-09-26):**
+  Cadence demo fotoğrafını tek bakışta "yuvarlak bant + ince enine kanal çifti"
+  diye tarif ettim. Hero bu tarifle üretildi, sahibe yalnız FON sorusu soruldu
+  ("koyu fon kalsın mı?"), cevap "kabul" oldu ve ben bunu hero onayı sayıp
+  kalan 17 kareyi batch'le bastım. Sahip sonra "olmadı, referansa benzet" dedi:
+  referans aslında FASETLİ (düz kumlanmış paneller, her birleşimde geniş parlak
+  oyuk/basamak kesim). 20 üretim çöpe gitti ve batch gönderildiği için
+  17'si iptal edilemedi. Kural: (1) yeni bir modelin tarifini yazmadan önce
+  referansı 3-4 yakın kırpıma böl ve tarifi kırpımlardan kur. Tam kare
+  dokuyu gösterir, yüzey kırılımını göstermez; (2) hero'yu REFERANSLA YAN
+  YANA koyup "şekil aynı mı?" sorusunu ayrıca sor. Kullanıcı hangi soruyu
+  cevapladıysa onay o kadardır; (3) seri batch'i yalnız hero'nun ŞEKLİ
+  referansla eşleştikten sonra gönder. Gönderilen batch geri alınamaz.
+
 - **Dış aracın şablonunu doldururken şablonun KENDİ yönlendirme satırı da
   veridir; ve "boşalttım" demeden önce dosyayı GERİ OKU (2026-09-26):**
   Pinterest içe aktarma şablonunu 60 pinle doldurdum; araç 60/60 satırı OK
