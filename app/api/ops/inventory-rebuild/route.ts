@@ -30,8 +30,11 @@ export const maxDuration = 120;
  *
  * Sözleşme:
  *  - `?org=` ZORUNLU (varsayılan org YOK, 2026-08-27 yanlış-org dersi).
- *  - `?listing=` tek listing; Etsy'de state `draft` DEĞİLSE reddedilir.
- *    Aktif listing'in yapısını değiştirmek sepetleri ve favorileri kırar.
+ *  - `?listing=` tek listing; varsayılan yalnız Etsy state `draft`.
+ *    Aktif listing ancak `?active=1` ile ve sahibin açık talebiyle kurulur
+ *    (yapı değişimi sepetteki eski kombinasyonları düşürür; Cartouche
+ *    Signet 2026-09-26: yayında ama 0 satış, sahip tam matrisi istedi).
+ *    sold_out / inactive / expired her durumda reddedilir.
  *  - Eksen sırası `?axes=A,B,C` ya da `listing_metadata.variationAxes`.
  *    Her aktif panel varyantı her eksende değer taşımalı, kombinasyon ve SKU
  *    tekil olmalı; aksi hâlde HİÇBİR ŞEY yazılmaz.
@@ -125,8 +128,13 @@ export async function GET(request: Request) {
 
   try {
     const liveListing = await getListing(client, listingId);
-    if (liveListing.state !== "draft") {
-      throw new Error(`listing Etsy'de '${liveListing.state}', yalnız taslak yeniden kurulur`);
+    const allowActive = url.searchParams.get("active") === "1";
+    const stateOk =
+      liveListing.state === "draft" || (allowActive && liveListing.state === "active");
+    if (!stateOk) {
+      throw new Error(
+        `listing Etsy'de '${liveListing.state}'; yalnız taslak, ya da active=1 ile aktif listing yeniden kurulur`,
+      );
     }
     const readinessStateId = await resolveReadinessStateId(client);
     if (readinessStateId == null) throw new Error("Made-to-order işlem profili çözülemedi");
@@ -196,7 +204,7 @@ export async function GET(request: Request) {
       entityType: "product",
       entityId: product.id,
       summary:
-        `Listing ${listingId} taslak envanteri panelden yeniden kuruldu: ${axes.join(" × ")}, ` +
+        `Listing ${listingId} (${liveListing.state}) envanteri panelden yeniden kuruldu: ${axes.join(" × ")}, ` +
         `${beforeLive.length} → ${update.products.length} offering` +
         (withText ? ", başlık+açıklama+tag PATCH" : "") +
         `; read-back ${kalan.length === 0 ? "doğrulandı" : `BAŞARISIZ (${kalan.slice(0, 10).join(", ")})`}` +

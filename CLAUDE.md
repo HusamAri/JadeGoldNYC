@@ -67,7 +67,7 @@ Jade Gold NYC Etsy mağazası için uçtan uca yönetim/raporlama paneli. Tüm s
   karat/renk kombinasyonu atlanmaz (18K beyaz/rose dahil); yapı istisnası
   ancak kullanıcı açıkça söylerse. 3 eksen Etsy'de en çok 400 ürün. Etsy'ye
   çıkmış taslağın yapısı `app/api/ops/inventory-rebuild` ile panelden yeniden
-  kurulur (yalnız `draft`, kuru varsayılan, tam ızgara şartı).
+  kurulur (varsayılan yalnız `draft`; aktif listing `active=1` ve sahibin açık talebiyle; kuru varsayılan, tam ızgara şartı).
 - **Tablo teslimatı = Apple Numbers, Excel DEĞİL** (kullanıcı talimatı 2026-08-15).
   Kullanıcı Mac'te Numbers kullanıyor; çıktılar ona göre kurulur. Kısıt: formüllü
   `.numbers` yalnız Numbers.app üretebilir (`numbers-parser` .numbers yazar ama
