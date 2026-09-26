@@ -5,9 +5,8 @@ görselli listing oluştur. 3 varyantlı olmalı. her metal rengi için 10 görs
 + *"varyantlar size, 10 14 18k ve width 3mm den başlar 8mme kadar"*.
 Referans fotoğraf: `images/00-reference-demo-brass.jpg` (pirinç demo numune).
 
-Bu paket o üç listing'in repo-yerli kaynağıdır. **Etsy'ye hiçbir şey
-yazılmadı; panel taslağı da henüz açılmadı.** Gönderim sahibin açık
-talimatına bağlı (aşağıda onay kapısı).
+Bu paket o üç listing'in repo-yerli kaynağıdır. Sahip 2026-09-26'da Etsy'ye
+gönderimi istedi; akış aşağıda "Panel + Etsy gönderimi" bölümünde.
 
 ## Yapı: renk başına bir listing, üç eksen
 
@@ -101,10 +100,23 @@ Her renk: `01-hero-daylight` · `02-worn-linen` · `03-macro-leaves` ·
 4. **Ad.** "Willow" çalışma adı; başlık adı taşımıyor, yalnız spec kartında
    görünüyor.
 
+## Panel + Etsy gönderimi (2026-09-26, sahibin "push to etsy" talimatı)
+
+1. Görseller `public/eon/willow/<renk>/` altında, prod'dan servis edilir
+   (`https://amuletta.artifactstudio.info/eon/willow/...`). Etsy görseli bu
+   URL'den indirir; merge + deploy olmadan 404 döner ve taslak fotoğrafsız
+   açılır — o yüzden sıra: merge → 30/30 `200` kontrolü → DB → gönder.
+2. Panel taslakları `supabase/migrations/0152_eon_willow_family.sql`
+   (`scripts/eon/gen_willow_migration.mjs`): 3 ürün, 1.134 varyant, 30 görsel.
+   Mühür `68e58431ad16582033c6a3a4a55823d9` (sorgu migration başlığında).
+3. Etsy: panelde listing sayfası → "Etsy'ye gönder" (sahibin oturumu).
+   Etsy'de **DRAFT** açılır; aktivasyon ayrı ve sahibin kararı.
+
 ## Yeniden üretim
 
 ```
 node scripts/eon/gen_willow_package.mjs          # price-table.csv + listing-manifest.json
 node scripts/eon/typeset_willow_spec_card.mjs    # images/*/07-spec-card.jpg
+node scripts/eon/gen_willow_migration.mjs        # supabase/migrations/0152_eon_willow_family.sql
 node scripts/eon/detect_block_artifacts.mjs images/*/*.jpg
 ```
