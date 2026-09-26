@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "planned — no image generated yet; waiting for the owner's approval of the hero prompt",
+  "status": "complete — 30/30 (27 generated + 3 typeset), all checked by eye; set-level contact sheets per metal",
   "listings": [
     "EON-CADNC-Y",
     "EON-CADNC-W",
@@ -20,7 +20,13 @@
   },
   "reference": {
     "file": "images/00-reference-demo.jpg",
-    "what": "Owner's demo sample photo (2026-09-26). Geometry and finishes are canonical; its brass/green tone, dust and grey backdrop are NOT."
+    "what": "Owner's demo sample photo (2026-09-26). Geometry and finishes are canonical; its brass/green tone, dust and grey backdrop are NOT.",
+    "cadenceHeroReferenceJobs": {
+      "Y": "03cc5fe1-5b3e-46fa-9a6c-40a373536477",
+      "demoMediaId": "519ede67-e10f-4927-8c51-1fac9cc1feed",
+      "W": "2d07e728-454d-4778-aa07-2c40447f4733",
+      "R": "67a12d2d-ae5f-4787-9a26-a31b5c60bda2"
+    }
   },
   "output": {
     "widthPx": 2048,
@@ -31,7 +37,7 @@
     "mechanicalUpscaleAllowed": false,
     "stripOriginMetadata": true
   },
-  "geometryBlock": "Photorealistic photograph of the EXACT ring design shown in the reference image, remade in real solid {METAL_DESC}. It is a closed, continuous 360-degree wedding band — never a cropped slab, straight segment, open ring or C-shape. PROFILE: a FLAT-topped raised center band with straight side walls; on each side the band steps DOWN to a narrow, lower, mirror-polished rail that runs around both edges, so the cross-section is stepped, not domed. CENTER FINISH: a fine frosted SANDBLASTED matte texture — even, granular and non-reflective; not brushed lines, not hammered, not glossy. GROOVES: at regular intervals around the ring, PAIRS of narrow polished grooves are cut straight ACROSS the width of the center band, perpendicular to the ring's circumference. Each pair is two parallel rounded channels side by side, mirror-polished inside, and the pairs divide the frosted center into equal rectangular sections (roughly six to eight pairs around the whole ring, evenly spaced). The grooves are recessed channels cut into the metal, never raised bars and never holes through the band; each one runs from rail to rail and stops at the step. INTERIOR: smooth mirror-polished comfort fit, no text. Clean new metal: no tarnish, no dark spots, no green or brass tone, no dust. NO GLOVES anywhere in the image. NO text, letters, numbers, karat stamps or hallmarks anywhere on the ring, inside or outside. No stones, no pave, no sparkle set into the ring. Do NOT add: gemstones, diamonds, crystals, milgrain beads, hammering, rope, leaves, diagonal cuts, a continuous groove running around the ring, engraving on the outside, or any second pattern.",
+  "geometryBlock": "Photorealistic product photograph of the EXACT ring shown in the reference image (use it for the ring's shape, facets and cuts{METAL_NOTE}), remade in real solid {METAL_DESC}. It is one closed, continuous wedding band — never a cropped slab, open ring or C-shape. SHAPE: the outer surface is NOT a smooth round band. It is made of FLAT FACETS: about eight wide, flat rectangular panels going around the ring, like a polygon, each panel finished in a fine frosted sandblasted matte texture (even and granular, not brushed lines, not hammered). Where two flat panels meet, a broad POLISHED transverse cut runs straight across the full width of the band, from edge to edge: some joints are ONE wide, smooth, scooped channel (a glossy concave cove about a quarter of a panel wide); other joints are a small polished STAIRCASE of two bars side by side, one flat and one rounded. These polished cuts are broad, mirror-bright and sculptural, NOT thin engraved lines, NOT ribs, NOT reeding, NOT stripes. EDGES: along both edges of the band the facets step down to a narrow polished rail. INTERIOR: smooth polished comfort fit, no text. The whole ring is ONE metal colour. Clean new metal: no rust, no tarnish, no spots, no dust. NO text, letters, numbers, karat stamps or hallmarks anywhere. No stones, no pave, no milgrain beads, no leaves, no diagonal cuts. NO GLOVES.",
   "lightingBlock": "LIGHTING: a real home studio, not a CGI render. One large window is the only light source; soft directional daylight with a genuine soft-edged shadow. The gold looks like real metal photographed in daylight. No seamless backdrop, no gradient sweep, no glitter, no lens flare, no sparkle overlays.",
   "metals": {
     "Y": {
@@ -83,8 +89,8 @@
       "human": false,
       "widthMm": 7,
       "generated": true,
-      "job": "Win the search grid at 170 px: a complete ring, stepped edges and groove pairs legible.",
-      "composition": "The ring stands upright in three-quarter view so the frosted center with two or three groove pairs, one stepped polished edge AND the open center are all visible, occupying about two thirds of a square frame, on a warm off-white raw limestone slab with fine grain, in front of a plain matte wall slightly out of focus."
+      "job": "Win the search grid at 170 px: a complete ring, flat facets and polished cuts legible.",
+      "composition": "Like the reference photo: the ring stands on its edge, tilted and seen at three-quarters from slightly above, close up, so two or three flat frosted facets and the polished transverse cuts between them fill most of the frame, with the open center and the polished inner wall visible on one side. It rests on a dark charcoal-grey suede surface with a soft, even nap, the background falling off into the same dark grey."
     },
     {
       "position": 2,
@@ -93,7 +99,7 @@
       "widthMm": 7,
       "generated": true,
       "job": "Trust: a real hand, real skin, the ring encircling exactly one finger.",
-      "composition": "Worn on the ring finger of a relaxed adult hand resting on a light linen cloth; the band fully encircles exactly ONE finger and every other finger is bare. Natural, unretouched skin with real texture, short clean unpolished nails. The polished grooves and rails catch the window light against the matte center."
+      "composition": "Worn on the ring finger of a relaxed adult hand resting on a light linen cloth; the band fully encircles exactly ONE finger and every other finger is bare. Natural, unretouched skin with real texture, short clean unpolished nails. The polished cuts and rails catch the window light against the matte facets."
     },
     {
       "position": 3,
@@ -101,8 +107,8 @@
       "human": false,
       "widthMm": 7,
       "generated": true,
-      "job": "Show the one thing that makes this ring: polished groove pairs and stepped rails against sandblasted matte.",
-      "composition": "The ring LIES FLAT on its side on a warm stone slab, like a coin, its opening facing the ceiling. The camera is very close and low, only a few centimetres from the near side of the band, so the outer face fills most of the frame from left edge to right edge: one groove pair in razor-sharp focus in the middle, frosted matte sections on both sides of it, and both stepped polished rails visible along the top and bottom edges of the band. The far side of the closed ring falls softly out of focus. This is NOT a standing ring and NOT a full view of the ring: it is a detail study of the outer surface."
+      "job": "Show the one thing that makes this ring: broad polished cuts between flat sandblasted facets.",
+      "composition": "The ring LIES FLAT on its side like a coin, its opening facing the ceiling, on a dark charcoal-grey suede surface with a soft, even nap. The camera is very close and low, only a few centimetres from the near side of the band, so the outer face fills most of the frame from left edge to right edge: one polished transverse cut in razor-sharp focus in the middle, a flat frosted facet on each side of it, and the stepped polished rails visible along the top and bottom edges of the band. The far side of the closed ring falls softly out of focus. This is NOT a standing ring and NOT a full view of the ring: it is a detail study of the outer surface."
     },
     {
       "position": 4,
@@ -111,7 +117,7 @@
       "widthMm": null,
       "generated": true,
       "job": "Answer 'which width?': the same design in narrow, medium and wide.",
-      "composition": "THREE rings of this exact design lying side by side on a light oak board, left to right: a narrow 3 mm band, a medium 5 mm band, a wide 8 mm band. Same metal, same sandblasted center, same stepped polished rails and groove pairs scaled to each width. All three are closed complete rings. Top-down three-quarter angle, even daylight."
+      "composition": "THREE rings of this exact design lying side by side on a dark charcoal-grey suede surface with a soft, even nap, left to right: a narrow 3 mm band, a medium 5 mm band, a wide 8 mm band. Same metal, same flat frosted facets, same polished transverse cuts and stepped rails, scaled to each width. All three are closed complete rings. Top-down three-quarter angle, even daylight."
     },
     {
       "position": 5,
@@ -120,7 +126,7 @@
       "widthMm": 7,
       "generated": true,
       "job": "Answer 'how does it sit?': show the stepped edge profile, not just the face.",
-      "composition": "The ring lies FLAT on a raw oak block like a coin, its opening facing the ceiling, photographed from a low angle close to the table so the side wall reads clearly as a STEP: the raised frosted center band and, below it on both edges, the narrower polished rails. Groove pairs visible along the curve. Soft window light from one side."
+      "composition": "The ring lies FLAT like a coin, its opening facing the ceiling, on a low block wrapped in dark charcoal-grey suede, photographed from a low angle close to the surface so the outline reads as a POLYGON of flat facets and the side wall reads as a STEP down to the narrow polished rail. Soft window light from one side."
     },
     {
       "position": 6,
@@ -147,7 +153,7 @@
       "widthMm": 7,
       "generated": true,
       "job": "Scale: how big the ring is between real fingers.",
-      "composition": "The ring held upright between the thumb and index finger of an adult hand, against a soft neutral linen background; the full closed loop, the groove pairs and one stepped rail are visible. Natural skin texture, short clean nails."
+      "composition": "The ring held upright between the thumb and index finger of an adult hand, against a soft neutral linen background; the full closed loop, the flat facets, the polished cuts and one stepped rail are visible. Natural skin texture, short clean nails."
     },
     {
       "position": 9,
@@ -156,7 +162,7 @@
       "widthMm": 7,
       "generated": true,
       "job": "Show comfort fit and a clean interior (engraving is optional, text is NOT rendered).",
-      "composition": "The ring tilted so the smooth mirror-polished comfort-fit interior is the main subject, with part of the frosted, grooved outer face and a stepped rail visible at the rim. No text or engraving inside. Warm stone surface, soft daylight."
+      "composition": "The ring tilted so the smooth polished comfort-fit interior is the main subject, with part of the faceted frosted outer face and a stepped rail visible at the rim. No text or engraving inside. On a dark charcoal-grey suede surface with a soft, even nap; soft daylight."
     },
     {
       "position": 10,
@@ -165,12 +171,265 @@
       "widthMm": null,
       "generated": true,
       "job": "Close the gallery with a pair: a matching set in two widths.",
-      "composition": "Two rings of this exact design, one 4 mm and one 7 mm, resting together on undyed linen beside a small smooth cast-glass dish; both closed complete rings, same metal. Calm editorial daylight."
+      "composition": "Two rings of this exact design, one 4 mm and one 7 mm, resting together on a dark charcoal-grey suede surface with a soft, even nap, beside a small smooth cast-glass dish; both closed complete rings, same metal. Calm editorial daylight."
     }
   ],
-  "generated": {},
-  "rejected": [],
+  "generated": {
+    "Y01": {
+      "status": "accepted",
+      "jobId": "03cc5fe1-5b3e-46fa-9a6c-40a373536477",
+      "file": "images/yellow/01-hero.jpg",
+      "promptVersion": 2,
+      "note": "Owner confirmed it matches the reference."
+    },
+    "W01": {
+      "status": "accepted",
+      "jobId": "2d07e728-454d-4778-aa07-2c40447f4733",
+      "file": "images/white/01-hero.jpg",
+      "promptVersion": 2,
+      "note": "Shaded part of the polished rail reflects warm; the ring reads white gold at full and thumbnail size."
+    },
+    "R01": {
+      "status": "accepted",
+      "jobId": "67a12d2d-ae5f-4787-9a26-a31b5c60bda2",
+      "file": "images/rose/01-hero.jpg",
+      "promptVersion": 2,
+      "note": "Polished cuts lean champagne in daylight; frosted facets read rose."
+    },
+    "Y02": {
+      "status": "accepted",
+      "jobId": "ff8b95a9-c8a0-456c-9eee-b69d3d02a00a",
+      "file": "images/yellow/02-worn-linen.jpg",
+      "promptVersion": 2
+    },
+    "Y03": {
+      "status": "accepted",
+      "jobId": "ddb6a733-a09b-4489-97ee-fafe9098d25e",
+      "file": "images/yellow/03-macro.jpg",
+      "promptVersion": 3
+    },
+    "Y04": {
+      "status": "accepted",
+      "jobId": "d445c22e-56c0-4140-80b6-6b3ec173344f",
+      "file": "images/yellow/04-width-ladder.jpg",
+      "promptVersion": 2
+    },
+    "Y05": {
+      "status": "accepted",
+      "jobId": "9c668b35-65e5-447f-a566-c121cd92ea26",
+      "file": "images/yellow/05-profile.jpg",
+      "promptVersion": 2
+    },
+    "Y06": {
+      "status": "accepted",
+      "jobId": "481f00df-cfb9-42ee-8b2d-667ee9236687",
+      "file": "images/yellow/06-worn-coffee.jpg",
+      "promptVersion": 2
+    },
+    "Y08": {
+      "status": "accepted",
+      "jobId": "a3640192-03ef-4382-95c2-c80e4b0e4182",
+      "file": "images/yellow/08-scale-fingers.jpg",
+      "promptVersion": 2
+    },
+    "Y09": {
+      "status": "accepted",
+      "jobId": "04678950-cc0f-4a40-9315-7ece55695754",
+      "file": "images/yellow/09-interior.jpg",
+      "promptVersion": 2
+    },
+    "Y10": {
+      "status": "accepted",
+      "jobId": "102c64a6-07d7-463f-935c-5f8ca1832ce8",
+      "file": "images/yellow/10-pair.jpg",
+      "promptVersion": 2
+    },
+    "Y07": {
+      "status": "typeset",
+      "file": "images/yellow/07-spec-card.jpg",
+      "by": "scripts/eon/typeset_spec_card.mjs cadence"
+    },
+    "W02": {
+      "status": "accepted",
+      "jobId": "f09e48be-65f4-47b3-9bd1-2ffe841ea8a2",
+      "file": "images/white/02-worn-linen.jpg",
+      "promptVersion": 2
+    },
+    "W03": {
+      "status": "accepted",
+      "jobId": "ef639853-bea1-4d2c-bb3a-38a3545fc9bc",
+      "file": "images/white/03-macro.jpg",
+      "promptVersion": 2,
+      "note": "Front close view, not a true macro; accepted because it shows the polished cuts against the frosted facets clearly."
+    },
+    "W04": {
+      "status": "accepted",
+      "jobId": "b34c2f66-4907-49c3-b300-2110b80f573d",
+      "file": "images/white/04-width-ladder.jpg",
+      "promptVersion": 2
+    },
+    "W05": {
+      "status": "accepted",
+      "jobId": "a1fdb50e-273e-4a1c-b023-5a8112f360c6",
+      "file": "images/white/05-profile.jpg",
+      "promptVersion": 2
+    },
+    "W06": {
+      "status": "accepted",
+      "jobId": "e2aacb97-4b40-4c9a-92f3-0f7f35783a88",
+      "file": "images/white/06-worn-coffee.jpg",
+      "promptVersion": 2
+    },
+    "W08": {
+      "status": "accepted",
+      "jobId": "537849d1-9a4a-4d7c-84dd-b67d104e30ea",
+      "file": "images/white/08-scale-fingers.jpg",
+      "promptVersion": 2
+    },
+    "W09": {
+      "status": "accepted",
+      "jobId": "4f9088d4-8ac2-49e1-8f1d-c8406c2c86d0",
+      "file": "images/white/09-interior.jpg",
+      "promptVersion": 3
+    },
+    "W10": {
+      "status": "accepted",
+      "jobId": "dfe7eecf-ee91-4bd3-8877-a4d1223540b4",
+      "file": "images/white/10-pair.jpg",
+      "promptVersion": 2
+    },
+    "W07": {
+      "status": "typeset",
+      "file": "images/white/07-spec-card.jpg",
+      "by": "scripts/eon/typeset_spec_card.mjs cadence"
+    },
+    "R02": {
+      "status": "accepted",
+      "jobId": "8ff54288-0448-4373-a188-e5450f819037",
+      "file": "images/rose/02-worn-linen.jpg",
+      "promptVersion": 2
+    },
+    "R03": {
+      "status": "accepted",
+      "jobId": "e5c01f01-4d0b-4203-a386-0690889a862a",
+      "file": "images/rose/03-macro.jpg",
+      "promptVersion": 2,
+      "note": "Same as W03: front close view."
+    },
+    "R04": {
+      "status": "accepted",
+      "jobId": "4a1c338a-a13c-4f70-89fc-4c6b54f9c8da",
+      "file": "images/rose/04-width-ladder.jpg",
+      "promptVersion": 2
+    },
+    "R05": {
+      "status": "accepted",
+      "jobId": "45678313-fc13-4b0b-98bb-beca5b1f6138",
+      "file": "images/rose/05-profile.jpg",
+      "promptVersion": 2
+    },
+    "R06": {
+      "status": "accepted",
+      "jobId": "5cd934e1-7a0d-4b47-b9ec-62a2329f5180",
+      "file": "images/rose/06-worn-coffee.jpg",
+      "promptVersion": 2
+    },
+    "R08": {
+      "status": "accepted",
+      "jobId": "de09b64d-c8a8-4ff0-a738-0bdd998299db",
+      "file": "images/rose/08-scale-fingers.jpg",
+      "promptVersion": 2
+    },
+    "R09": {
+      "status": "accepted",
+      "jobId": "0c64466f-848f-4d30-91a9-15718660f26f",
+      "file": "images/rose/09-interior.jpg",
+      "promptVersion": 2
+    },
+    "R10": {
+      "status": "accepted",
+      "jobId": "493dc8d0-bf80-4b87-a8ba-6bd67b2964ea",
+      "file": "images/rose/10-pair.jpg",
+      "promptVersion": 2
+    },
+    "R07": {
+      "status": "typeset",
+      "file": "images/rose/07-spec-card.jpg",
+      "by": "scripts/eon/typeset_spec_card.mjs cadence"
+    }
+  },
+  "rejected": [
+    {
+      "slot": "Y01",
+      "jobId": "c8c651bd-e6f9-46eb-bc57-5ee1ee10b16b",
+      "defect": "Owner: 'olmadı, referansa benzet'. v1 geometry (round band + thin groove pairs) rendered reeded ribs; the reference is faceted with broad polished coves. First accepted for backdrop, then rejected for shape."
+    },
+    {
+      "slot": "W01",
+      "jobId": "b0da7179-e521-4814-83de-1cf40ec3919e",
+      "defect": "Rust/corrosion spots and brass-coloured rails carried from the demo photo."
+    },
+    {
+      "slot": "R01",
+      "jobId": "4d486b83-4f11-43f1-8b40-9e877c4aa43a",
+      "defect": "Clean, but v1 geometry (thin line grooves); superseded with the v1 description."
+    },
+    {
+      "slot": "v1-batch",
+      "jobIds": [
+        "25efcee2-a600-4e30-a004-d7575f68d7b2",
+        "fe01f7a4-ebfd-45e4-a250-cf23d8d083c8",
+        "ff7e8d51-a7ba-423a-8aba-7398a7c44fad",
+        "416f258a-6b31-44aa-b50e-44d07f6574c5",
+        "8206073b-263d-419d-a82c-4812e5805757",
+        "023001e0-0475-4e27-87e6-50505ad9cf87",
+        "5ce0c4a2-a57b-4e04-a075-235beed230eb",
+        "896eb011-5127-4d17-a74e-2dd897d1acc0",
+        "1d324b11-c545-4175-8177-2c86e188efc5",
+        "726f2746-de7d-48f7-a73e-67872c044699",
+        "cc83c59f-a24e-4315-ae52-7a66911df654",
+        "dcf96dcc-052d-4066-91b6-6abf751f8981",
+        "d196e3a3-cd0b-4873-ac05-70e3f83786e3",
+        "e2c91300-1090-4c3a-8a67-40044478c0e3",
+        "0863a34d-ce21-4575-b8e4-5e9656faf141",
+        "d44ca68f-4c6f-4d2c-b849-ee67513f756c",
+        "eb3b0490-b8d9-4a51-8ba9-2f2baa4c5305"
+      ],
+      "defect": "17 jobs submitted with the v1 geometry before the owner rejected it; could not be cancelled; discarded unseen as a class (wrong shape)."
+    },
+    {
+      "slot": "Y03",
+      "jobId": "ae0e44d8-7d49-4b27-b6d4-922d3c3d2b37",
+      "defect": "Not a macro: the whole ring standing upright, facing the camera. Retaken as an explicit extreme close-up of one section (v3)."
+    },
+    {
+      "slot": "W09",
+      "jobId": "a593f53b-b623-423d-8316-b73039ca2a01",
+      "defect": "Fake '14K' hallmark inside the band (the listing sells 10K/14K/18K)."
+    },
+    {
+      "slot": "W09",
+      "jobId": "50e84c76-4dee-4903-9e61-1aee344567b1",
+      "defect": "Blank interior but a near copy of the W01 hero composition; interior not the subject (Willow W03 lesson). Retaken looking down into the opening."
+    }
+  ],
   "qaTools": {
     "blockArtifactDetector": "scripts/eon/detect_block_artifacts.mjs — image-level first flag (STEP 3, FLAT 2.5, >=2 strong edges). Calibrated: Y01 0 / W01 flagged / R01 flagged. minEdges=1 was rejected: it false-flags satin edges on the ring (Y01 576,800). It UNDER-counts; eyes stay the final arbiter."
-  }
+  },
+  "backdropDecision": {
+    "decidedBy": "owner",
+    "at": "2026-09-26",
+    "choice": "Dark charcoal-grey suede for every product-only frame (the accepted yellow hero). The first hero leaked the grey velvet of the demo photo; the owner kept it over the planned limestone.",
+    "appliesTo": [
+      1,
+      3,
+      4,
+      5,
+      9,
+      10
+    ]
+  },
+  "geometryBlockV1_superseded": "Photorealistic photograph of the EXACT ring design shown in the reference image, remade in real solid {METAL_DESC}. It is a closed, continuous 360-degree wedding band — never a cropped slab, straight segment, open ring or C-shape. PROFILE: a FLAT-topped raised center band with straight side walls; on each side the band steps DOWN to a narrow, lower, mirror-polished rail that runs around both edges, so the cross-section is stepped, not domed. CENTER FINISH: a fine frosted SANDBLASTED matte texture — even, granular and non-reflective; not brushed lines, not hammered, not glossy. GROOVES: at regular intervals around the ring, PAIRS of narrow polished grooves are cut straight ACROSS the width of the center band, perpendicular to the ring's circumference. Each pair is two parallel rounded channels side by side, mirror-polished inside, and the pairs divide the frosted center into equal rectangular sections (roughly six to eight pairs around the whole ring, evenly spaced). The grooves are recessed channels cut into the metal, never raised bars and never holes through the band; each one runs from rail to rail and stops at the step. INTERIOR: smooth mirror-polished comfort fit, no text. Clean new metal: no tarnish, no dark spots, no green or brass tone, no dust. NO GLOVES anywhere in the image. NO text, letters, numbers, karat stamps or hallmarks anywhere on the ring, inside or outside. No stones, no pave, no sparkle set into the ring. Do NOT add: gemstones, diamonds, crystals, milgrain beads, hammering, rope, leaves, diagonal cuts, a continuous groove running around the ring, engraving on the outside, or any second pattern.",
+  "geometryNote": "v2 (2026-09-26, owner: 'olmadı, referansa benzet'): the ring is FACETED — flat frosted panels with broad polished coves/staircase cuts at each joint. v1 described a round band with thin groove pairs and produced reeded ribs.",
+  "setLevelNotes": "W03/W05 and R03/R05 are both front views of the ring; kept because each shows the stepped rails and polished cuts. Credits spent on v1 geometry: 20 generations discarded after the owner's 'referansa benzet'."
 }

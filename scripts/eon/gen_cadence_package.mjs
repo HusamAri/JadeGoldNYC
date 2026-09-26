@@ -2,10 +2,12 @@
 /**
  * EON "Cadence" groove band — listing paketi ureticisi.
  *
- * Referans: sahibin demo metal numunesi — yukseltilmis duz orta bant kumlanmis
- * (sandblasted) mat yuzeyli; bant araliklarla, genislik boyunca kesilmis cift
- * parlak kanalla bolumlere ayriliyor; iki kenar dar parlak raya basamakla
- * iniyor; ic yuzey parlak comfort fit.
+ * Referans: sahibin demo metal numunesi — dis yuzey DUZ FASETLERDEN olusur
+ * (cokgen gibi), her faset kumlanmis (sandblasted) mat; iki fasetin birlestigi
+ * yerde genislik boyunca genis parlak bir kesim var (oyuk kanal ya da iki
+ * basamakli bar); iki kenar dar parlak raya basamakla iniyor; ic yuzey parlak
+ * comfort fit. (Ilk tarif "yuvarlak bant + ince kanal cifti" idi; sahip
+ * "referansa benzet" dedi, 2026-09-26.)
  *
  * YAPI (sahibin talimati, 2026-09-26)
  * ----------------------------------
@@ -81,7 +83,7 @@ const PRICING = {
   castingLossGrams: 1,
   laborUsd: 110,
   laborAuthority:
-    "Ridge Wedding Band (4569517712) fixture: 378/378 cent-exact at USD 110 and the live DB seal reproduced exactly. Same step-edge + textured-center class. The transverse polished grooves are not on Ridge; the ornamental tier (USD 130, Willow/Laurel) is the owner's alternative.",
+    "Ridge Wedding Band (4569517712) fixture: 378/378 cent-exact at USD 110 and the live DB seal reproduced exactly. Same step-edge + textured-center class. The polished transverse cuts at the facet joints are not on Ridge; the ornamental tier (USD 130, Willow/Laurel) is the owner's alternative.",
   packingUsd: 8,
   shippingAllowanceUsd: 22,
   standardMultiplier: 2.05,
@@ -247,11 +249,11 @@ function contentFor(metal) {
   const c = metal.color;
   const lc = c.toLowerCase();
   return {
-    title: `Sandblasted Wedding Band, Solid ${c} Gold Step Edge Ring, Polished Groove Pattern, 10K 14K 18K, 3mm to 8mm`,
-    description: `A raised center band in frosted, sandblasted gold is divided into even sections by pairs of polished grooves cut across its width. On each side the band steps down to a narrow polished rail, so the matte center, the bright grooves and the clean edges read as three distinct finishes on one solid ring. The inside is polished smooth with a comfort fit.
+    title: `Sandblasted Wedding Band, Solid ${c} Gold Faceted Step Edge Ring, Polished Cuts, 10K 14K 18K, 3mm to 8mm`,
+    description: `Flat, frosted facets run around this solid gold band like the sides of a polygon, each one finished in a fine sandblasted matte. Where two facets meet, a broad polished cut crosses the full width of the band, either a smooth scooped channel or a small two-step bar, so bright sculpted joints alternate with quiet matte panels. Both edges step down to a narrow polished rail, and the inside is polished smooth with a comfort fit.
 
 YOUR RING
-Solid ${lc} gold, available in 10K, 14K or 18K. No plating and no filled metal. The price is for one ring in your selected karat, width and size, not a set. No gemstones. The sandblasted finish is applied by hand, so its fine grain varies slightly from ring to ring while the groove pattern stays the same.
+Solid ${lc} gold, available in 10K, 14K or 18K. No plating and no filled metal. The price is for one ring in your selected karat, width and size, not a set. No gemstones. The sandblasted finish is applied by hand, so its fine grain varies slightly from ring to ring while the facet pattern stays the same.
 
 CHOOSE YOUR FIT
 Width: 3, 4, 5, 6, 7 or 8 mm.
@@ -265,7 +267,7 @@ MADE FOR YOU
 Made to order from raw precious-metal materials using hand-guided tools. Allow 4 to 5 business days for preparation before dispatch. Transit time is separate.
 
 CARE
-Clean gently with mild soap, lukewarm water and a soft cloth. Avoid harsh chemicals and abrasive cleaners. The sandblasted center softens gradually with wear and can be refreshed by a jeweler; the polished grooves and rails can be re-polished.
+Clean gently with mild soap, lukewarm water and a soft cloth. Avoid harsh chemicals and abrasive cleaners. The sandblasted center softens gradually with wear and can be refreshed by a jeweler; the polished cuts and rails can be re-polished.
 
 ABOUT THE IMAGES
 The gallery uses Higgsfield AI-assisted visualizations guided by a photograph of the physical design. Every scene was created independently for this metal color, not recolored from another. Metal color and reflections vary with lighting and screens. Props are not included.`,
@@ -273,7 +275,7 @@ The gallery uses Higgsfield AI-assisted visualizations guided by a photograph of
       "sandblasted band",
       "matte wedding band",
       "step edge ring",
-      "grooved gold band",
+      "faceted gold band",
       "solid gold band",
       "10k wedding band",
       "14k wedding band",
@@ -392,7 +394,7 @@ const manifest = {
     blockers: [
       ...(galleryComplete ? [] : ["30 gallery images (10 per metal) not complete yet — see visual-plan.json"]),
       "Grams are estimated from the Ridge family (same table as Laurel Cross); the physical demo sample was not weighed",
-      "Labor tier: USD 110 (Ridge, step + texture) chosen; the ornamental tier USD 130 (Willow) is the owner's alternative for the transverse grooves",
+      "Labor tier: USD 110 (Ridge, step + texture) chosen; the ornamental tier USD 130 (Willow) is the owner's alternative for the polished facet cuts",
       "Store discount is 30% live vs 25% assumed by the engine (EK-6) — owner decision pending",
     ],
   },
