@@ -34,7 +34,7 @@ export async function appendArtifactGalleryImage(fd:FormData){
   const found=ordered.find(x=>x.alt_text?.includes(marker));
   if(saved.pending&&!found)throw new Error('Önceki yükleme sonucu belirsiz; çift görsel önlemek için Etsy kontrol edilmeli.');
   if(!found&&(ordered.length!==slot||slot!==Object.keys(saved.slots).length+1))throw new Error('Görseller 01–15 sırasıyla ve mevcut kapak korunarak yüklenmeli.');
-  if(!found){const lock=await db.from('products').update({listing_metadata:{...p.listing_metadata,homeGallery:{...saved,pending:sha}}}).eq('org_id',m.org_id).eq('id',p.id).is('listing_metadata->homeGallery->pending',null).select('id');if(lock.error||lock.data?.length!==1)throw new Error('Başka yükleme devam ediyor.');}
+  if(!found){const lock=await db.from('products').update({listing_metadata:{...p.listing_metadata,homeGallery:{...saved,pending:sha}}}).eq('org_id',m.org_id).eq('id',p.id).is('listing_metadata->homeGallery->>pending',null).select('id');if(lock.error||lock.data?.length!==1)throw new Error('Başka yükleme devam ediyor.');}
   const path=`${m.org_id}/${p.id}/artifact-home-${slot}-${sha}.png`;
   const imageKey=createHash('sha256').update(path).digest('hex');const panelId=`${imageKey.slice(0,8)}-${imageKey.slice(8,12)}-5${imageKey.slice(13,16)}-a${imageKey.slice(17,20)}-${imageKey.slice(20,32)}`;
   const oldRow=await db.from('listing_images').select('id').eq('org_id',m.org_id).eq('id',panelId).maybeSingle();if(oldRow.error)throw oldRow.error;
