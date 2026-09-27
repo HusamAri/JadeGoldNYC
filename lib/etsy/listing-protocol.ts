@@ -56,7 +56,8 @@ export type ListingProtocolId =
   | "sculptural_ring"
   | "pendant_necklace"
   | "chain_bracelet"
-  | "cuff_bracelet";
+  | "cuff_bracelet"
+  | "stud_earrings";
 
 export interface ParcelSpec {
   weight: number;
@@ -125,6 +126,9 @@ const CHAIN_JEWELRY_PARCEL: ParcelSpec = {
 };
 
 export const LISTING_PROTOCOLS: Record<ListingProtocolId, ListingProtocolSpec> = {
+  stud_earrings: {
+    id: "stud_earrings", label: "Stud earrings", taxonomyNames: ["Stud Earrings"], taxonomyRoot: "Jewelry", requiredVariationAxes: [], personalization: null, parcel: RING_PARCEL,
+  },
   wedding_band: {
     id: "wedding_band",
     label: "Wedding band",
@@ -213,6 +217,8 @@ export const LISTING_PROTOCOLS: Record<ListingProtocolId, ListingProtocolSpec> =
 
 /** `product_type` → protokol. Listelenmeyen tip BİLEREK eşlenmez. */
 const PRODUCT_TYPE_PROTOCOL: Record<string, ListingProtocolId> = {
+  earring: "stud_earrings",
+  stud_earrings: "stud_earrings",
   ring: "wedding_band",
   signet_ring: "signet_ring",
   monogram_signet_ring: "monogram_signet_ring",
