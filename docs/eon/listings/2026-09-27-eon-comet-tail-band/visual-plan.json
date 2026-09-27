@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "family": "Comet Tail Diagonal-Cut Band",
-  "status": "in progress: yellow hero accepted",
+  "status": "complete: 27 generated + 3 typeset, 30/30",
   "listings": [
     "EON-CTAIL-Y",
     "EON-CTAIL-W",
@@ -20,7 +20,10 @@
       "colourRefs": {
         "W": "101565d9-68ff-4dc8-a7b2-9a283ec741f2 (Willow white hero)",
         "R": "b3f76d3f-d0bd-42e3-b225-0fe7c4b2b186 (Willow rose hero)"
-      }
+      },
+      "swatchY": "9e09b5ef-6827-4845-a15a-657e661e5852",
+      "swatchW": "bba73388-ccd4-4cb0-acaa-78fc2374df7b",
+      "swatchR": "f4092ce3-66ef-421e-93a1-85e86359eb59"
     },
     "doNotUse": "fullPhotoA / fullPhotoB leak the grey velvet scene (hero v2); use only the crops"
   },
@@ -52,7 +55,7 @@
     "06-worn-glass": "worn, hand holding a glass of water",
     "07-spec-card": "typeset, not generated",
     "08-scale-fingers": "pinched between thumb and index finger at true scale (about 2 cm, about a fingertip wide)",
-    "09-interior": "interior view",
+    "09-interior": "lying flat on a clear glass slab, camera about 60 degrees above looking into the opening (NOT straight top-down)",
     "10-pair": "4 mm + 7 mm beside a hand-blown glass dish"
   },
   "generated": {
@@ -60,11 +63,289 @@
       "status": "accepted",
       "jobId": "aedf57ed-6aa1-4c17-95f4-9897f3f19bda",
       "file": "images/yellow/01-hero.jpg",
+      "round": 1,
       "promptVersion": 3,
       "references": [
         "wedgeCrop",
         "satinCrop"
       ]
+    },
+    "Y02": {
+      "status": "accepted",
+      "jobId": "b53d2392-fe3b-474d-a92e-ce918ab48a9c",
+      "file": "images/yellow/02-worn-linen.jpg",
+      "round": 1,
+      "references": [
+        "swatchY",
+        "wedgeCrop"
+      ]
+    },
+    "Y03": {
+      "status": "accepted",
+      "jobId": "0d549c89-d189-46a3-b6aa-61bd3425d1db",
+      "file": "images/yellow/03-macro.jpg",
+      "round": 1,
+      "references": [
+        "swatchY",
+        "wedgeCrop"
+      ]
+    },
+    "Y04": {
+      "status": "accepted",
+      "jobId": "c7cc4ebd-c0ac-4a67-a331-250cc869bb64",
+      "file": "images/yellow/04-width-ladder.jpg",
+      "round": 1,
+      "references": [
+        "swatchY",
+        "wedgeCrop"
+      ]
+    },
+    "Y05": {
+      "status": "accepted",
+      "jobId": "acc4f3ef-25f4-4e11-b2a3-87dbcf14bee9",
+      "file": "images/yellow/05-profile.jpg",
+      "round": 1,
+      "references": [
+        "swatchY",
+        "wedgeCrop"
+      ]
+    },
+    "Y06": {
+      "status": "accepted",
+      "jobId": "ad8e612e-1a0b-46c3-998f-e7ed8e57f8a5",
+      "file": "images/yellow/06-worn-glass.jpg",
+      "round": 1,
+      "references": [
+        "swatchY",
+        "wedgeCrop"
+      ]
+    },
+    "Y08": {
+      "status": "accepted",
+      "jobId": "5c178b1a-e315-491f-a1ac-2f10e4c494ff",
+      "file": "images/yellow/08-scale-fingers.jpg",
+      "round": 1,
+      "references": [
+        "swatchY",
+        "wedgeCrop"
+      ]
+    },
+    "Y09": {
+      "status": "accepted",
+      "jobId": "3ae02ef0-7ad1-4866-a58f-d20bbe3b88f7",
+      "file": "images/yellow/09-interior.jpg",
+      "round": 2,
+      "references": [
+        "swatchY",
+        "wedgeCrop"
+      ]
+    },
+    "Y10": {
+      "status": "accepted",
+      "jobId": "58508cb6-75bf-4c12-9c47-6c02fafe3eca",
+      "file": "images/yellow/10-pair.jpg",
+      "round": 1,
+      "references": [
+        "swatchY",
+        "wedgeCrop"
+      ]
+    },
+    "Y07": {
+      "status": "accepted",
+      "file": "images/yellow/07-spec-card.jpg",
+      "typeset": "node scripts/eon/typeset_spec_card.mjs comet-tail"
+    },
+    "W01": {
+      "status": "accepted",
+      "jobId": "0a3a1da5-c0e0-4929-af6d-345201fba291",
+      "file": "images/white/01-hero.jpg",
+      "round": 1,
+      "references": [
+        "W01 first take e28d85ca-ffb6-4d07-ac2d-278db6c73028",
+        "colourRefs.W"
+      ],
+      "method": "edit of the first white take: beads and rails recoloured to white gold"
+    },
+    "W02": {
+      "status": "accepted",
+      "jobId": "8d916044-f630-4c64-892f-0355aed9bf5a",
+      "file": "images/white/02-worn-linen.jpg",
+      "round": 1,
+      "references": [
+        "swatchW",
+        "wedgeCrop"
+      ]
+    },
+    "W03": {
+      "status": "accepted",
+      "jobId": "c2a0a0ec-845b-4256-896c-3944c47b375f",
+      "file": "images/white/03-macro.jpg",
+      "round": 1,
+      "references": [
+        "swatchW",
+        "wedgeCrop"
+      ]
+    },
+    "W04": {
+      "status": "accepted",
+      "jobId": "c8833b41-26fb-40fc-8ea5-95005be26534",
+      "file": "images/white/04-width-ladder.jpg",
+      "round": 1,
+      "references": [
+        "swatchW",
+        "wedgeCrop"
+      ]
+    },
+    "W05": {
+      "status": "accepted",
+      "jobId": "7dba8e91-487b-4d0f-b4bd-2da53aa6c5db",
+      "file": "images/white/05-profile.jpg",
+      "round": 1,
+      "references": [
+        "swatchW",
+        "wedgeCrop"
+      ]
+    },
+    "W06": {
+      "status": "accepted",
+      "jobId": "402b2434-f5a7-4e2e-b8c2-37ebe57fefd9",
+      "file": "images/white/06-worn-glass.jpg",
+      "round": 1,
+      "references": [
+        "swatchW",
+        "wedgeCrop"
+      ]
+    },
+    "W08": {
+      "status": "accepted",
+      "jobId": "75ddacef-b7e0-4ad0-a602-05af2774d7fc",
+      "file": "images/white/08-scale-fingers.jpg",
+      "round": 1,
+      "references": [
+        "swatchW",
+        "wedgeCrop"
+      ]
+    },
+    "W09": {
+      "status": "accepted",
+      "jobId": "53ac03d6-d967-4307-bcb5-4ea06d23dafd",
+      "file": "images/white/09-interior.jpg",
+      "round": 2,
+      "references": [
+        "swatchW",
+        "wedgeCrop"
+      ]
+    },
+    "W10": {
+      "status": "accepted",
+      "jobId": "8ebe6f5e-32bf-4d19-a1a9-16ccadf56230",
+      "file": "images/white/10-pair.jpg",
+      "round": 2,
+      "references": [
+        "swatchW",
+        "wedgeCrop"
+      ]
+    },
+    "W07": {
+      "status": "accepted",
+      "file": "images/white/07-spec-card.jpg",
+      "typeset": "node scripts/eon/typeset_spec_card.mjs comet-tail"
+    },
+    "R01": {
+      "status": "accepted",
+      "jobId": "c55ac28b-a07e-48af-ae97-0a4081aca5f1",
+      "file": "images/rose/01-hero.jpg",
+      "round": 1,
+      "references": [
+        "Y01 hero (composition)",
+        "colourRefs.R",
+        "wedgeCrop"
+      ]
+    },
+    "R02": {
+      "status": "accepted",
+      "jobId": "a3c68152-2f13-4fd2-8713-bca610a2d1b0",
+      "file": "images/rose/02-worn-linen.jpg",
+      "round": 1,
+      "references": [
+        "swatchR",
+        "wedgeCrop"
+      ]
+    },
+    "R03": {
+      "status": "accepted",
+      "jobId": "d5c25989-7f81-4397-bfb2-3a023646d55b",
+      "file": "images/rose/03-macro.jpg",
+      "round": 1,
+      "references": [
+        "swatchR",
+        "wedgeCrop"
+      ]
+    },
+    "R04": {
+      "status": "accepted",
+      "jobId": "0d4d9c79-a032-40f9-b4a0-4050d9703616",
+      "file": "images/rose/04-width-ladder.jpg",
+      "round": 1,
+      "references": [
+        "swatchR",
+        "wedgeCrop"
+      ]
+    },
+    "R05": {
+      "status": "accepted",
+      "jobId": "8bd0ddda-4c18-47d9-adcf-45046460def1",
+      "file": "images/rose/05-profile.jpg",
+      "round": 2,
+      "references": [
+        "swatchR",
+        "wedgeCrop"
+      ]
+    },
+    "R06": {
+      "status": "accepted",
+      "jobId": "b16ea36c-f1f7-4ff7-a103-9e91f88ed714",
+      "file": "images/rose/06-worn-glass.jpg",
+      "round": 1,
+      "references": [
+        "swatchR",
+        "wedgeCrop"
+      ]
+    },
+    "R08": {
+      "status": "accepted",
+      "jobId": "a27ce43b-7106-4da5-aa40-d217436c5e68",
+      "file": "images/rose/08-scale-fingers.jpg",
+      "round": 1,
+      "references": [
+        "swatchR",
+        "wedgeCrop"
+      ]
+    },
+    "R09": {
+      "status": "accepted",
+      "jobId": "3ce14030-5052-4f98-9c7f-f915e13211b3",
+      "file": "images/rose/09-interior.jpg",
+      "round": 2,
+      "references": [
+        "swatchR",
+        "wedgeCrop"
+      ]
+    },
+    "R10": {
+      "status": "accepted",
+      "jobId": "eada0c81-756a-435e-bca0-178961baf9ca",
+      "file": "images/rose/10-pair.jpg",
+      "round": 1,
+      "references": [
+        "swatchR",
+        "wedgeCrop"
+      ]
+    },
+    "R07": {
+      "status": "accepted",
+      "file": "images/rose/07-spec-card.jpg",
+      "typeset": "node scripts/eon/typeset_spec_card.mjs comet-tail"
     }
   },
   "rejected": [
@@ -79,13 +360,46 @@
       "jobId": "2566b6ba-d780-4a90-b288-d10e16be165e",
       "promptVersion": 2,
       "defect": "Full reference photos leaked the grey velvet scene; outer face mirror-polished instead of satin; a person reflected in the band."
+    },
+    {
+      "slot": "W01",
+      "jobId": "e28d85ca-ffb6-4d07-ac2d-278db6c73028",
+      "defect": "Milgrain beads and edge rail came out yellow gold (two-tone): the yellow hero given for composition leaked its colour. Fixed by an edit of this frame."
+    },
+    {
+      "slot": "Y09",
+      "jobId": "b19c0cee-70f5-4be6-925d-0bf656179167",
+      "defect": "Top-down view drew the patterned outer face as a flat washer/donut: physically impossible, ring reads far too thick, interior not seen."
+    },
+    {
+      "slot": "W09",
+      "jobId": "03332949-580b-4f38-a76d-6335eb5a49cf",
+      "defect": "Same washer/donut top view as Y09."
+    },
+    {
+      "slot": "R09",
+      "jobId": "38801fb8-68ab-4017-b1c1-6192f2b11f2d",
+      "defect": "Same washer/donut top view as Y09."
+    },
+    {
+      "slot": "W10",
+      "jobId": "3442d959-1107-42d6-a9e7-087e499bfbac",
+      "defect": "Rings cropped by the frame, pair not readable, no glass dish."
+    },
+    {
+      "slot": "R05",
+      "jobId": "21cc21ff-f992-47f3-a00f-0b0da2786ed0",
+      "defect": "Standing on fabric instead of the glass cube; invented engraving TRUE NORTH 14K inside."
     }
   ],
   "setLevelNotes": [
-    "Full photos of the demo as references carried their grey velvet background into the frame (v2). Tight crops of the metal surface only (v3) kept the pattern and let the prompt set the scene."
+    "Full photos of the demo as references carried their grey velvet background into the frame (v2). Tight crops of the metal surface only (v3) kept the pattern and let the prompt set the scene.",
+    "A yellow hero used as a composition reference for the white hero leaked yellow into the milgrain and rails (two-tone). An edit of the white frame with only a white colour reference fixed it; series frames used a swatch cut from each colour's own hero.",
+    "A straight top-down 09 made the model paint the patterned outer face on top of the ring like a washer (3/3). From above only the rail and the inner wall are visible; a 60-degree view into the opening fixed it 3/3.",
+    "Round 1: 19/24 series frames accepted; round 2: 5/5."
   ],
   "creditsSpent": {
-    "generations": 3,
-    "discarded": 2
+    "generations": 37,
+    "discarded": 8
   }
 }

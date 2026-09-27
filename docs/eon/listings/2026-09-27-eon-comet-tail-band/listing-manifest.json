@@ -76,7 +76,6 @@
   "approval": {
     "etsyPushRequiresExplicitOwnerInstruction": true,
     "blockers": [
-      "30 gallery images (10 per metal) not complete yet — see visual-plan.json",
       "Grams are estimated from the Laurel Cross family; physical sample (demo brass) was not weighed. Domed profile and two milgrain rails may weigh slightly more than a flat band",
       "Labor tier (USD 130, ornamental) is the owner's call",
       "Store discount is 30% live vs 25% assumed by the engine (EK-6) — owner decision pending"
@@ -93,9 +92,9 @@
     "panelDraftOnly": true,
     "etsyWrites": false,
     "galleryImagesPerListing": {
-      "EON-CTAIL-Y": 0,
-      "EON-CTAIL-W": 0,
-      "EON-CTAIL-R": 0
+      "EON-CTAIL-Y": 10,
+      "EON-CTAIL-W": 10,
+      "EON-CTAIL-R": 10
     }
   },
   "listings": [
