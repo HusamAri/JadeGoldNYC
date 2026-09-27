@@ -283,7 +283,7 @@ export default async function ListingDetayPage({
         </ListingPanel>
       )}
 
-      {quotedCostCents != null && <p className="rounded-xl border p-4 text-sm">Gramlar geometriden tahminidir; tartım değildir ve mineyi hariç tutar. Kolye/bileklikte zincir ve kapama, küpede çift ve arkalıklar dahildir. Maliyet {formatMoney(quotedCostCents, "USD")}: 27 Eylül 2026 kullanıcı tutarı, altın ve işçilik dahil; altın fiyatıyla veya bedenle otomatik değişmez. Yüzükler US 4–10, yarım beden dahil. Satış fiyatı ve üretim numunesi bekliyor.</p>}
+      {quotedCostCents != null && <p className="rounded-xl border p-4 text-sm">Gramlar geometriden tahminidir; tartım değildir ve mineyi hariç tutar. Kolye/bileklikte zincir ve kapama, küpede çift ve arkalıklar dahildir. Maliyet {formatMoney(quotedCostCents, "USD")}: 27 Eylül 2026 kullanıcı tutarı, altın ve işçilik dahil; altın fiyatıyla veya bedenle otomatik değişmez. Yüzükler US 4–10, yarım beden dahil. Üretim numunesi bekliyor; satış fiyatları aşağıdaki fiyat alanlarında gösterilir.</p>}
       {/* 02 · Künye — günlük giriş noktası, açık. */}
       <div id="kunye" className="grid gap-4 scroll-mt-24 lg:grid-cols-3">
         <div className="lg:col-span-2">
