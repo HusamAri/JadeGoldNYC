@@ -1453,6 +1453,23 @@ repodaki hedefidir.
   elle yazılmış `imagesGenerated: 0` ve "görseller üretilmedi" blokeri iş
   bittiğinde bayat kalacaktı; sayı artık diskten okunuyor ve 0/10 dışı her
   değer assert'le düşüyor — durum alanı elle değil kaynaktan türetilir.
+  **Güçlendirme-3 (2026-09-27, Comet 30 kare) — referans kompozisyon sızdırıyorsa
+  referansı KÜÇÜLT; ölçeği sayıyla söyle:** Hero'yu her renkte seri karelere
+  referans verdim. Beyaz ve rose'da 03/04/05/08/09 hero'nun kadrajına döndü
+  (04'te üç yüzük yerine tek yüzük, 08'de el yok). Sarıda 03/05/09 aynı yatık
+  yan görünüme yığıldı. Prompt'taki "not its composition" uyarısı işe yaramadı.
+  İşe yarayan şey şu oldu: hero'dan yalnız bant yüzeyini ve oluğu içeren sıkı
+  bir renk/doku kırpımı kestim ve onu referans verdim. Kırpımda kopyalanacak
+  bir kadraj yok. Duruşu da fiziksel yazdım (tam tepeden 90°, cam küpün üstünde
+  göz hizası, iki parmak arasında havada). 11 yeniden çekimin 11'i tuttu.
+  Ardından sahip, 08'de yüzüğü ele göre büyük buldu: yüzük parmak ucunun iki
+  katıydı. "Gerçek ölçek" demek yetmedi; "yaklaşık 2 cm, işaret parmağının ucu
+  kadar, asla iki katı değil" yazınca 3/3 düzeldi. Kural: (1) seri karelerde
+  referans görsel, kareye yalnız renk ve doku taşıyacak kadar kırpılır; tam
+  ürün fotoğrafı referans verilirse kadrajı da gelir; (2) elde, parmakta ya da
+  yan yana ölçek gösteren karelerde boyut, bilinen bir nesneye göre sayıyla
+  yazılır; (3) set ilk turdan sonra tek kontak baskısında yan yana okunur:
+  kadraj kopyaları ve ölçek hatası orada görünür, kare kare bakınca görünmez.
 - **Üretilen görsel görevini yapmıyorsa önce "hangi BOYUT görünüyor?" diye sor;
   ve kareyi reddederken kusuru TEK TEK adlandır (2026-09-13):** Meridian'ın 05
   karesi "1,5 mm et kalınlığını göster" diye kurulmuştu ve iki turdur
