@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "family": "Comet Tail Diagonal-Cut Band",
+  "status": "in progress: yellow hero accepted",
+  "listings": [
+    "EON-CTAIL-Y",
+    "EON-CTAIL-W",
+    "EON-CTAIL-R"
+  ],
+  "reference": {
+    "files": [
+      "images/00-reference-demo.jpg",
+      "images/00-reference-demo-2.jpg"
+    ],
+    "uploads": {
+      "fullPhotoA": "1049c842-a518-4682-b808-bc94cba0758d",
+      "fullPhotoB": "8adb9c8a-dd0e-4b1d-b854-bbb3f28c4803",
+      "wedgeCrop": "4b2f8e21-5ec2-4134-8cb8-bbd6da982a8a",
+      "satinCrop": "7b03bdc3-e776-4f36-9d06-de1a05ba2170",
+      "colourRefs": {
+        "W": "101565d9-68ff-4dc8-a7b2-9a283ec741f2 (Willow white hero)",
+        "R": "b3f76d3f-d0bd-42e3-b225-0fe7c4b2b186 (Willow rose hero)"
+      }
+    },
+    "doNotUse": "fullPhotoA / fullPhotoB leak the grey velvet scene (hero v2); use only the crops"
+  },
+  "geometryNote": "Read from close crops of two photos of the owner's demo sample: gently domed band, brushed satin face; evenly spaced diagonal cuts, ALL slanting the same way and parallel, each a long slender polished WEDGE that starts as a sharp point at one milgrain border and widens to about 1.5 mm at the other, at a shallow angle so each cut travels a long way around the ring; one row of milgrain beads along BOTH edges inside a slim polished rail; polished interior. No stones.",
+  "geometryCorrection": "First reading was 'continuous zigzag / chevron' and it was WRONG: the two edge lines of one wedge meeting at its point were read as a V between two cuts. Hero v1 exposed it; the owner confirmed the corrected reading.",
+  "model": {
+    "name": "nano_banana_2",
+    "resolution": "2k",
+    "aspectRatio": "1:1",
+    "count": 1
+  },
+  "visualLanguage": {
+    "ownerBrief": "home studio, natural shadows, glass reflections, EON visual language matching with ring style (same as Comet)",
+    "palette": "pale oak, linen, plaster white, clear glass",
+    "banned": [
+      "grey towel / grey velvet / grey fabric under or behind the ring (owner, 2026-09-27: 'gri havlu kullanma görsellerde')",
+      "mirror or symmetrical reflection",
+      "dark backdrop",
+      "glitter or sparkle overlays",
+      "mirror-polished outer face (the face is brushed satin)"
+    ]
+  },
+  "scenes": {
+    "01-hero": "standing 3/4 on a clear glass slab on pale oak",
+    "02-worn-linen": "worn, hand on linen beside a glass of water",
+    "03-macro": "one curved section fills the frame: wedge cuts + milgrain",
+    "04-width-ladder": "three rings 3/5/8 mm on a glass sheet",
+    "05-profile": "lying on a cast-glass cube, domed profile and milgrain edge",
+    "06-worn-glass": "worn, hand holding a glass of water",
+    "07-spec-card": "typeset, not generated",
+    "08-scale-fingers": "pinched between thumb and index finger at true scale (about 2 cm, about a fingertip wide)",
+    "09-interior": "interior view",
+    "10-pair": "4 mm + 7 mm beside a hand-blown glass dish"
+  },
+  "generated": {
+    "Y01": {
+      "status": "accepted",
+      "jobId": "aedf57ed-6aa1-4c17-95f4-9897f3f19bda",
+      "file": "images/yellow/01-hero.jpg",
+      "promptVersion": 3,
+      "references": [
+        "wedgeCrop",
+        "satinCrop"
+      ]
+    }
+  },
+  "rejected": [
+    {
+      "slot": "Y01",
+      "jobId": "caf1b32c-0c62-4db4-8498-df167d196efd",
+      "promptVersion": 1,
+      "defect": "Prompt asked for a zigzag (wrong reading); model drew thin, uniform, steep slashes; ring lying flat instead of standing."
+    },
+    {
+      "slot": "Y01",
+      "jobId": "2566b6ba-d780-4a90-b288-d10e16be165e",
+      "promptVersion": 2,
+      "defect": "Full reference photos leaked the grey velvet scene; outer face mirror-polished instead of satin; a person reflected in the band."
+    }
+  ],
+  "setLevelNotes": [
+    "Full photos of the demo as references carried their grey velvet background into the frame (v2). Tight crops of the metal surface only (v3) kept the pattern and let the prompt set the scene."
+  ],
+  "creditsSpent": {
+    "generations": 3,
+    "discarded": 2
+  }
+}
