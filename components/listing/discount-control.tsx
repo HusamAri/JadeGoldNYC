@@ -35,6 +35,7 @@ export function DiscountControl({
   basePriceCents,
   currency,
   costPerGramCents = null,
+  quotedCostCents = null,
   variants = [],
   initialStartAt = null,
   initialEndAt = null,
@@ -47,6 +48,7 @@ export function DiscountControl({
   currency: string;
   /** Ayar alım fiyatı (cent/gram) — maliyet tabanı. null → simülatör gizli. */
   costPerGramCents?: number | null;
+  quotedCostCents?: number | null;
   /** Varyantlar (fiyat + gram) — indirimli fiyatı maliyetle kıyaslamak için. */
   variants?: SimVariant[];
   /** İndirim tarih aralığı + minimum sepet eşiği (panel planlaması). */
@@ -86,13 +88,13 @@ export function DiscountControl({
   // alım fiyatı) altına düşen varyantları anında listeler. Yalnız gramı olan
   // varyantlar değerlendirilir (gramsızın maliyeti bilinemez → sessiz atlanır).
   const belowCost =
-    costPerGramCents == null || costPerGramCents <= 0
+    quotedCostCents == null && (costPerGramCents == null || costPerGramCents <= 0)
       ? null
       : variants
-          .filter((v) => v.weight_grams != null && v.weight_grams > 0)
+          .filter((v) => quotedCostCents != null || (v.weight_grams != null && v.weight_grams > 0))
           .map((v) => {
-            const costCents = Math.round(
-              costPerGramCents * (v.weight_grams as number),
+            const costCents = quotedCostCents ?? Math.round(
+              (costPerGramCents ?? 0) * (v.weight_grams as number),
             );
             const discounted =
               discountedCents(v.price_cents, pct) ?? v.price_cents;

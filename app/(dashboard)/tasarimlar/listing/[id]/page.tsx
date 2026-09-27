@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { weightPlan, artifactQuotedCost } from "@/lib/artifact-2027/weight-plan";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 
@@ -177,6 +178,11 @@ export default async function ListingDetayPage({
   // listing yayınlatmadığı için o org'larda push da yapılamıyordu. Sahiplik
   // RLS ile zaten sağlanıyor.
   const supabase = await createClient();
+  let quotedCostCents: number | null = null;
+  if (weightPlan.products.some(p => p.productId === product.id)) {
+    const {data} = await supabase.from("products").select("listing_metadata").eq("org_id",m.org_id).eq("id",product.id).maybeSingle();
+    quotedCostCents = artifactQuotedCost(data?.listing_metadata);
+  }
   const managedImages: ManagedListingImage[] = await listListingImages(
     supabase,
     product.id,
@@ -277,6 +283,7 @@ export default async function ListingDetayPage({
         </ListingPanel>
       )}
 
+      {quotedCostCents != null && <p className="rounded-xl border p-4 text-sm">Gramlar geometriden tahminidir; tartım değildir ve mineyi hariç tutar. Kolye/bileklikte zincir ve kapama, küpede çift ve arkalıklar dahildir. Maliyet {formatMoney(quotedCostCents, "USD")}: 27 Eylül 2026 kullanıcı tutarı, altın ve işçilik dahil; altın fiyatıyla veya bedenle otomatik değişmez. Yüzükler US 4–10, yarım beden dahil. Satış fiyatı ve üretim numunesi bekliyor.</p>}
       {/* 02 · Künye — günlük giriş noktası, açık. */}
       <div id="kunye" className="grid gap-4 scroll-mt-24 lg:grid-cols-3">
         <div className="lg:col-span-2">
@@ -294,6 +301,7 @@ export default async function ListingDetayPage({
                 quantity: product.quantity,
                 research_keyword: product.research_keyword,
               }}
+              quotedCostCents={quotedCostCents}
               weightGrams={kunyeWeightGrams}
               purchasePrice14kCents={goldSettings.purchase_price_14k_cents}
               purchasePrice10kCents={goldSettings.purchase_price_10k_cents}
@@ -333,6 +341,7 @@ export default async function ListingDetayPage({
           basePriceCents={product.price_cents}
           currency={product.currency}
           costPerGramCents={simCostPerGramCents}
+          quotedCostCents={quotedCostCents}
           initialStartAt={product.discount_start_at}
           initialEndAt={product.discount_end_at}
           initialMinOrderCents={product.discount_min_order_cents}
@@ -490,6 +499,7 @@ export default async function ListingDetayPage({
           productId={product.id}
           variants={variants}
           currency={product.currency}
+          quotedCostCents={quotedCostCents}
           productWeightGrams={product.weight_grams}
           productTitle={product.title}
           productTags={product.tags}

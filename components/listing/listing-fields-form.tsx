@@ -73,6 +73,7 @@ export function ListingFieldsForm({
   alreadyOnEtsy = false,
   hasVariations = false,
   weightGrams = null,
+  quotedCostCents = null,
   purchasePrice14kCents,
   purchasePrice10kCents,
   currency = "USD",
@@ -86,6 +87,7 @@ export function ListingFieldsForm({
   hasVariations?: boolean;
   /** Tek-SKU / ürün seviye gram — maliyet tahmini için. */
   weightGrams?: number | null;
+  quotedCostCents?: number | null;
   purchasePrice14kCents?: number;
   purchasePrice10kCents?: number;
   currency?: string;
@@ -145,6 +147,7 @@ export function ListingFieldsForm({
       tags,
       materials,
     );
+    if (quotedCostCents != null) return {karat, costCents: quotedCostCents};
     if (!karat || weightGrams == null || !(weightGrams > 0)) {
       return { karat, costCents: null as number | null };
     }
@@ -158,6 +161,7 @@ export function ListingFieldsForm({
     fields.tags,
     fields.materials,
     weightGrams,
+    quotedCostCents,
     purchasePrice14kCents,
     purchasePrice10kCents,
   ]);
@@ -310,7 +314,7 @@ export function ListingFieldsForm({
               />
               {priceCost.costCents != null ? (
                 <p className="text-muted-foreground text-xs tabular-nums">
-                  Alım maliyeti: {formatMoney(priceCost.costCents, currency)}
+                  {quotedCostCents != null ? "Altın + işçilik dahil maliyet" : "Alım maliyeti"}: {formatMoney(priceCost.costCents, currency)}
                   {priceCost.karat ? ` · ${priceCost.karat}` : ""}
                   {weightGrams != null ? ` · ${weightGrams} g` : ""}
                   {saleCents > 0 && (

@@ -126,12 +126,14 @@ export function VariantEditor({
   purchasePrice14kCents,
   purchasePrice10kCents,
   rivalProjection = null,
+  quotedCostCents = null,
 }: {
   productId: string;
   variants: ListingVariantRow[];
   currency: string;
   /** Varyantsız (tek-parça) listing'de künye gramajı — ürün seviyesinde tutulur. */
   productWeightGrams?: number | null;
+  quotedCostCents?: number | null;
   productTitle?: string;
   productTags?: string[] | null;
   productMaterials?: string[] | null;
@@ -232,6 +234,7 @@ export function VariantEditor({
   }, [bulkMinPrice, minGramInfo]);
 
   function costForGrams(grams: number | null): number | null {
+    if (quotedCostCents != null) return quotedCostCents;
     if (grams == null || !karat) return null;
     return purchaseCostCentsForGrams(grams, karat, purchasePrices);
   }
