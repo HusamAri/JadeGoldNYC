@@ -69,3 +69,23 @@ export async function uploadArtifact2k(fd:FormData){
   return {ok:true,message:`${code} sıra ${rank}: 2048 × 2048 · ${expectedCount} görsel · Etsy yayın durumu korunarak panel ve görseller doğrulandı.`,report:{code,slot,listingId,imageId,previousImageId:pending.oldId,count:expectedCount,width:2048,height:2048,state:afterListing.state,skipped:false}};
  }catch(e){return {ok:false,message:e instanceof Error?e.message:(e as {message?:string})?.message??String(e)};}
 }
+
+export async function auditArtifact2k(){
+ const m=await requireMembership();const org=await getActiveOrg();assertImportAccess(org?.name,m.role);
+ const db=createAdminClient(),client=await EtsyClient.forOrg(m.org_id),shopId=await client.requireShopId();
+ const [products,images]=await Promise.all([
+  db.from('products').select('id,etsy_listing_id,listing_metadata').eq('org_id',m.org_id).in('id',catalog.map(x=>x.productId)),
+  db.from('listing_images').select('product_id,position,url').eq('org_id',m.org_id).in('product_id',catalog.map(x=>x.productId))
+ ]);
+ if(products.error)throw products.error;if(images.error)throw images.error;
+ const report=[];
+ for(const d of catalog){
+  const p=products.data.find(x=>x.id===d.productId);if(!p?.etsy_listing_id){report.push({code:d.id,error:'No Etsy mapping'});continue;}
+  try{
+   const [listing,gallery]=await Promise.all([client.get<{state:string;shop_id:number}>(etsyPaths.listing(p.etsy_listing_id)),client.get<Gallery>(etsyPaths.listingImagesRead(p.etsy_listing_id))]);
+   const home=p.listing_metadata?.homeGallery;
+   report.push({code:d.id,listingId:p.etsy_listing_id,state:listing.state,shopMatches:listing.shop_id===shopId,panelCount:images.data.filter(x=>x.product_id===p.id).length,etsyCount:gallery.results.length,photos:gallery.results.map(x=>({id:x.listing_image_id,rank:x.rank,width:x.full_width,height:x.full_height,known:x.rank===1?x.listing_image_id===(home?.coverId??p.listing_metadata?.draftTransfer?.imageId):x.listing_image_id===home?.slots?.[x.rank-1]?.imageId})),pending:p.listing_metadata?.gallery2kPending??null});
+  }catch(e){report.push({code:d.id,error:e instanceof Error?e.message:String(e)});}
+ }
+ return report;
+}
