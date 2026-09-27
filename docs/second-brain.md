@@ -1545,6 +1545,27 @@ repodaki hedefidir.
   çekilince (03, 05) model iki denemede de 3 bara döndü; ayakta 3/4 açıda
   hiç dönmedi. Kural: bir detay belirli açıda tutmuyorsa o açıyı zorlama,
   detayın tuttuğu açıyı kullan ya da kusuru sahibe sayıyla göster.
+  **Güçlendirme-2 (2026-09-27, Comet Tail) — kırpımdan okumak da yanlış
+  okuyabilir; iki çizgi bir noktada buluşuyorsa "iki nesne mi, tek nesnenin
+  iki kenarı mı?" diye sor:** yeni numuneyi kırpımlardan "sürekli zikzak /
+  chevron" diye okudum, sahip de onayladı; paket, isim ("Sierra") ve metin
+  buna göre kuruldu. Hero v1 düz, paralel çizgiler çıkınca kırpımı yeniden
+  okudum: kesimler PARALELdi, her biri tek başına sivri uçlu bir KAMAydı ve
+  "V" sandığım şey bir kamanın iki kenar çizgisinin uçta buluşmasıydı. Yani
+  sahibin onayı benim yanlış tarifime verilmişti; yakalayan yine üretilen
+  kareyi numuneyle yan yana koymak oldu. Aynı turda iki referans dersi daha:
+  (a) numunenin TAM fotoğrafları referans verilince gri kadife sahne kareye
+  sızdı (sahip ayrıca "gri havlu kullanma" dedi); yalnız metal yüzeyinin fonsuz
+  kırpımları verilince sahne prompt'tan geldi; (b) beyaz hero'ya kadraj için
+  sarı hero verildi ve boncuklar sarı çıktı (iki ton): referans RENGİ de
+  taşır, renk değişen karede başka renkteki referans yalnız edit ile kullanılır.
+  Kural: (1) desen tarifinde her çizgi çiftinin neyi sınırladığını yaz (oluk
+  mu, kama mı, iki ayrı kesim mi); (2) sahibe tarif onaylatmak ilk üretimi
+  numuneyle yan yana göstermenin yerini tutmaz; (3) tarif değişince adı,
+  başlığı ve tag'leri de AYNI turda düzelt, yanlış tarifi taşıyan metin
+  yanlış beyandır. Yan ders: tam tepeden (90°) çekilen iç yüzey karesinde
+  model desenli dış yüzü pul gibi üste boyadı (3/3); tepeden yalnız ray ve iç
+  duvar görünür, 60° içeri bakan açı 3/3 düzeltti.
 
 - **Dış aracın şablonunu doldururken şablonun KENDİ yönlendirme satırı da
   veridir; ve "boşalttım" demeden önce dosyayı GERİ OKU (2026-09-26):**
