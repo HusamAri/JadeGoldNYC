@@ -1,18 +1,19 @@
 #!/usr/bin/env node
 /**
- * Willow 07 — spec karti. ELLE DIZILIR, model uretmez.
+ * EON listing paketleri icin 07 — spec karti. ELLE DIZILIR, model uretmez.
+ * Aile secimi: node scripts/eon/typeset_spec_card.mjs willow|cadence
  *
  * Neden: modelin gorsele yazdigi rakam yazim hatasi degil YANLIS BEYANdir
  * (2026-09-11 dersi). Bu seride model iki kez sahte ayar damgasi da basti
  * ("14K HERITAGE GOLD", "14K WG"). O yuzden karttaki her rakam listing'in
  * kendi manifest'inden okunur ve script, metinle manifest uyusmazsa yazmaz.
  *
- * Gorsel alan: her rengin kabul edilmis hero'su (01-hero-daylight.jpg).
+ * Gorsel alan: her rengin kabul edilmis hero'su (FAMILIES[..].hero).
  * Fontlar: Cinzel (baslik/etiket) + Prata (alt baslik) — aciklamada gravur
  * fontu olarak zaten vaat edilen iki font. Degerler Bitstream Charter: Prata'nin
  * eski-stil "1"i "l" gibi okundugu icin (ilk dizimde "lOK · l4K").
  *
- * Kullanim: node scripts/eon/typeset_willow_spec_card.mjs
+ * Kullanim: node scripts/eon/typeset_spec_card.mjs <willow|cadence>
  */
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
@@ -20,8 +21,28 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 
+// Aile basina yalniz metin ve kaynak dosya degisir; rakamlar her zaman manifest'ten.
+const FAMILIES = {
+  willow: {
+    pkg: "2026-09-26-eon-willow-diamond-cut-band",
+    hero: "01-hero-daylight.jpg",
+    name: "WILLOW",
+    subtitle: "Hand diamond-cut leaves on brushed satin",
+    footer: 'No gemstones  ·  "diamond-cut" is the faceting technique',
+  },
+  cadence: {
+    pkg: "2026-09-26-eon-cadence-groove-band",
+    hero: "01-hero.jpg",
+    name: "CADENCE",
+    subtitle: "Sandblasted facets with polished cuts",
+    footer: "Solid gold  ·  No gemstones",
+  },
+};
+const family = FAMILIES[process.argv[2] ?? "willow"];
+assert(family, `bilinmeyen aile: ${process.argv[2]} (willow|cadence)`);
+
 const here = path.dirname(fileURLToPath(import.meta.url));
-const pkg = path.resolve(here, "../../docs/eon/listings/2026-09-26-eon-willow-diamond-cut-band");
+const pkg = path.resolve(here, "../../docs/eon/listings", family.pkg);
 const manifest = JSON.parse(await readFile(path.join(pkg, "listing-manifest.json"), "utf8"));
 const { karats, widthsMm, ringSizesUs } = manifest.structure;
 
@@ -61,7 +82,7 @@ for (const listing of manifest.listings) {
   ];
 
   // Kare fotograf, kirpmasiz: yuzuk urun oldugu icin kesilmez.
-  const hero = await sharp(path.join(pkg, "images", dir, "01-hero-daylight.jpg"))
+  const hero = await sharp(path.join(pkg, "images", dir, family.hero))
     .resize(PHOTO, PHOTO)
     .toBuffer();
 
@@ -69,13 +90,13 @@ for (const listing of manifest.listings) {
   const top = PHOTO_Y + PHOTO + 130;
   const rowY = (i) => top + 215 + i * 88;
   const svg = `<svg width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg">
-  <text x="${W / 2}" y="${top}" text-anchor="middle" font-family="Cinzel" font-size="96" letter-spacing="18" fill="${ink}">WILLOW</text>
-  <text x="${W / 2}" y="${top + 80}" text-anchor="middle" font-family="Prata" font-size="46" fill="${muted}">Hand diamond-cut leaves on brushed satin  ·  ${esc(metalName)}</text>
+  <text x="${W / 2}" y="${top}" text-anchor="middle" font-family="Cinzel" font-size="96" letter-spacing="18" fill="${ink}">${family.name}</text>
+  <text x="${W / 2}" y="${top + 80}" text-anchor="middle" font-family="Prata" font-size="46" fill="${muted}">${esc(family.subtitle)}  ·  ${esc(metalName)}</text>
   <line x1="424" y1="${top + 140}" x2="${W - 424}" y2="${top + 140}" stroke="${rule}" stroke-width="3"/>
   ${rows.map(([k, v], i) => `
   <text x="760" y="${rowY(i)}" text-anchor="end" font-family="Cinzel" font-size="40" letter-spacing="6" fill="${muted}">${esc(k)}</text>
   <text x="820" y="${rowY(i)}" font-family="${VALUE_FONT}" font-size="50" fill="${ink}">${esc(v)}</text>`).join("")}
-  <text x="${W / 2}" y="${H - 55}" text-anchor="middle" font-family="Prata" font-size="36" fill="${muted}">No gemstones  ·  "diamond-cut" is the faceting technique</text>
+  <text x="${W / 2}" y="${H - 55}" text-anchor="middle" font-family="Prata" font-size="36" fill="${muted}">${esc(family.footer)}</text>
 </svg>`;
 
   const out = path.join(pkg, "images", dir, "07-spec-card.jpg");

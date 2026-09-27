@@ -70,7 +70,7 @@ Her renk: `01-hero-daylight` · `02-worn-linen` · `03-macro-leaves` ·
 
 - 27 kare Higgsfield `nano_banana_2` 2k ile, **her istek count 1**; her renk
   kendi kabul edilmiş hero'sunu referans alır (`heroReferenceJobs`).
-- `07-spec-card` modele **üretilmedi**, `scripts/eon/typeset_willow_spec_card.mjs`
+- `07-spec-card` modele **üretilmedi**, `scripts/eon/typeset_spec_card.mjs willow`
   ile dizildi: her rakam manifest'ten okunur ve açıklama metniyle uyuşmazsa
   script yazmaz (model bu seride iki kez sahte ayar damgası bastı).
 - Kalite kapısı: 2048² sRGB, 30/30 tekil md5, köken meta verisi yok,
@@ -116,7 +116,7 @@ Her renk: `01-hero-daylight` · `02-worn-linen` · `03-macro-leaves` ·
 
 ```
 node scripts/eon/gen_willow_package.mjs          # price-table.csv + listing-manifest.json
-node scripts/eon/typeset_willow_spec_card.mjs    # images/*/07-spec-card.jpg
+node scripts/eon/typeset_spec_card.mjs willow    # images/*/07-spec-card.jpg
 node scripts/eon/gen_willow_migration.mjs        # supabase/migrations/0152_eon_willow_family.sql
 node scripts/eon/detect_block_artifacts.mjs images/*/*.jpg
 ```
