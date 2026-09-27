@@ -49,7 +49,7 @@ export async function importArtifact2027() {
     if (imageError) throw imageError;
     const ids = catalog.map(d => d.productId);
     const [pr, vr, ir] = await Promise.all([
-      db.from("products").select("id,sku,title,status,etsy_listing_id,image_url,price_cents,weight_grams,num_images,tags,quantity,listing_metadata").eq("org_id", m.org_id).in("id", ids),
+      db.from("products").select("id,sku,title,status,product_type,etsy_listing_id,image_url,price_cents,weight_grams,num_images,tags,quantity,listing_metadata").eq("org_id", m.org_id).in("id", ids),
       db.from("product_variants").select("id,product_id,sku,price_cents,weight_grams,quantity").eq("org_id", m.org_id).in("product_id", ids),
       db.from("listing_images").select("id,product_id,url,position").eq("org_id", m.org_id).in("product_id", ids),
     ]);
@@ -59,7 +59,7 @@ export async function importArtifact2027() {
       const p = pr.data.find(p => p.id === d.productId);
       const variants = vr.data.filter(v => v.product_id === d.productId);
       const images = ir.data.filter(i => i.product_id === d.productId);
-      if (!p || p.title !== d.title || p.sku !== d.sku || p.status !== "draft" || p.etsy_listing_id !== null || p.image_url !== d.imageUrl || p.price_cents !== null || p.weight_grams !== null || p.quantity !== 0 || p.num_images !== 1 || JSON.stringify(p.tags) !== JSON.stringify(d.tags) || p.listing_metadata?.approval?.etsyDraftCreationAuthorized !== false || variants.length !== 1 || variants[0].sku !== d.sku || variants[0].price_cents !== null || variants[0].weight_grams !== null || variants[0].quantity !== 0 || images.length !== 1 || images[0].url !== d.imageUrl || images[0].position !== 0) {
+      if (!p || p.title !== d.title || p.sku !== d.sku || p.status !== "draft" || p.product_type !== (d.productType === "earring" ? null : d.productType) || p.listing_metadata?.productType !== d.productType || p.etsy_listing_id !== null || p.image_url !== d.imageUrl || p.price_cents !== null || p.weight_grams !== null || p.quantity !== 0 || p.num_images !== 1 || JSON.stringify(p.tags) !== JSON.stringify(d.tags) || p.listing_metadata?.approval?.etsyDraftCreationAuthorized !== false || variants.length !== 1 || variants[0].sku !== d.sku || variants[0].price_cents !== null || variants[0].weight_grams !== null || variants[0].quantity !== 0 || images.length !== 1 || images[0].url !== d.imageUrl || images[0].position !== 0) {
         throw new Error(`${d.id}: kayıt okuması paketle eşleşmiyor. Mevcut değerler değiştirilmedi.`);
       }
     }
