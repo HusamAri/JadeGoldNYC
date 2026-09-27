@@ -1,5 +1,5 @@
 {
-  "purpose": "Sierra gram tablosu ve fiyat regresyon fikstürü. Satırlar canlı EON Laurel Cross (listing 4569902988, beyaz) varyantlarından birebir alındı (Willow ile aynı fikstür).",
+  "purpose": "Comet Tail gram tablosu ve fiyat regresyon fikstürü. Satırlar canlı EON Laurel Cross (listing 4569902988, beyaz) varyantlarından birebir alındı (Willow ile aynı fikstür).",
   "provenance": "eon_laurel_cross_4569902988_live_panel_2026-09-27",
   "rowFormat": "karat|widthMm|ringSizeUs|grams|fixtureListCents",
   "fixtureListing": {
@@ -7,7 +7,7 @@
     "skuPrefix": "EON-LAURX-W",
     "title": "Laurel Cross Ring, Solid White Gold Band with Satin Milgrain Detail"
   },
-  "whyLaurel": "Yapısı birebir aynı: Karat 10/14/18K x Width 3-8 mm x US 3-13 yarım bedenler = 378. Aynı motor $130 işçilikle 378/378 cent-birebir üretiyor. Sierra iki kenarda milgrain + elle V-kesim zikzak taşıyor; Laurel (satin + milgrain) ve Willow (elmas kesim) ile aynı süslü kademe.",
+  "whyLaurel": "Yapısı birebir aynı: Karat 10/14/18K x Width 3-8 mm x US 3-13 yarım bedenler = 378. Aynı motor $130 işçilikle 378/378 cent-birebir üretiyor. Comet Tail iki kenarda milgrain + elle kama kesim taşıyor; Laurel (satin + milgrain) ve Willow (elmas kesim) ile aynı süslü kademe.",
   "integrity": {
     "rows": 378,
     "md5OfJoinedRowsInSkuOrder": "cc1d6ff449b1a4f2a72396bfba099059",

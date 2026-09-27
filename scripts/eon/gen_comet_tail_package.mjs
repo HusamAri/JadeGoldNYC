@@ -1,13 +1,15 @@
 #!/usr/bin/env node
 /**
- * EON "Sierra" milgrain chevron band — listing paketi ureticisi.
+ * EON "Comet Tail" diagonal-cut milgrain band — listing paketi ureticisi.
  *
- * Referans: sahibin demo metal (pirinc) numunesi (2026-09-27). Yakin
- * kirpimlardan okunan geometri: dusuk kubbeli bant, fircalanmis satin zemin;
- * zemini kenardan kenara kesen uzun, parlak, V-kesim capraz oluklar yon
- * degistirerek surekli bir zikzak (chevron) cizer, oluklar kenarda bulusur;
- * iki kenarda da milgrain boncuk sirasi ve onun disinda ince parlak ray;
- * ic yuzey parlak.
+ * Referans: sahibin demo metal (pirinc) numunesi, iki aci (2026-09-27).
+ * Yakin kirpimlardan okunan geometri: dusuk kubbeli bant, fircalanmis satin
+ * zemin; hepsi ayni yone yatik, paralel, uzun ve sig acili kama kesimler —
+ * her biri bir kenarda sivri uctan baslayip karsi kenara dogru ~1,5 mm'ye
+ * genisliyor (kuyruklu yildiz izi). Iki kenarda milgrain boncuk sirasi ve
+ * disinda ince parlak ray; ic yuzey parlak.
+ * DIKKAT: ilk okuma "zikzak/chevron" idi ve YANLISTI — kamanin iki kenar
+ * cizgisinin sivri uctaki bulusmasi V sanildi (hero v1 reddi, visual-plan).
  *
  * YAPI (sahibin talimati, 2026-09-26)
  * ----------------------------------
@@ -19,7 +21,7 @@
  * ------------------------------------
  * Fikstur Willow ile ayni: canli Laurel Cross (4569902988), $130 iscilik,
  * 378/378 cent birebir; tutmazsa script hata verir ve hicbir cikti yazmaz.
- * Laurel satin + milgrain, Willow elmas kesim; Sierra ikisini birden tasiyor,
+ * Laurel satin + milgrain, Willow elmas kesim; Comet Tail ikisini birden tasiyor,
  * yani susli kademenin altinda kurulamaz. Fikstur 2026-09-27'de canli DB'ye
  * karsi konum-agirlikli checksum'la yeniden dogrulandi.
  *
@@ -32,8 +34,8 @@
  * da tabani x1,07143 kaydirma) bu aile de katalogla birlikte kayar.
  *
  * Kullanim:
- *   node scripts/eon/gen_sierra_package.mjs          # dogrula + yaz
- *   node scripts/eon/gen_sierra_package.mjs --check  # yalniz dogrula
+ *   node scripts/eon/gen_comet_tail_package.mjs          # dogrula + yaz
+ *   node scripts/eon/gen_comet_tail_package.mjs --check  # yalniz dogrula
  */
 
 import assert from "node:assert/strict";
@@ -46,15 +48,15 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(here, "../..");
 const packageDir = path.join(
   repoRoot,
-  "docs/eon/listings/2026-09-27-eon-sierra-milgrain-chevron-band",
+  "docs/eon/listings/2026-09-27-eon-comet-tail-band",
 );
 const checkOnly = process.argv.includes("--check");
 
 /* ------------------------------------------------------------------ model */
 
 const MODEL = {
-  workingName: "Sierra Milgrain Chevron Band",
-  skuStem: "EON-SIERA",
+  workingName: "Comet Tail Diagonal-Cut Band",
+  skuStem: "EON-CTAIL",
   widthsMm: [3, 4, 5, 6, 7, 8],
   ringSizesUs: Array.from({ length: 21 }, (_, i) => 3 + i * 0.5),
   karats: ["10K", "14K", "18K"],
@@ -228,16 +230,16 @@ function contentFor(metal) {
   const c = metal.color;
   const lc = c.toLowerCase();
   return {
-    title: `Milgrain Wedding Band, Solid ${c} Gold Satin Chevron Ring, Diamond Cut Zigzag, 10K 14K 18K, 3mm to 8mm`,
-    description: `Long, bright cuts run across a softly brushed band and change direction at each edge, drawing a continuous zigzag all the way around the ring. A row of fine milgrain beads frames the pattern on both sides, finished by a thin polished rail. The profile is gently domed on the outside and polished smooth on the inside for a comfortable fit.
+    title: `Milgrain Wedding Band, Solid ${c} Gold Satin Diagonal Cut Ring, 10K 14K 18K, 3mm to 8mm`,
+    description: `Long, bright cuts sweep diagonally across a softly brushed band, all leaning the same way. Each cut starts as a fine point at one edge and widens toward the other, like the tail of a comet. A row of fine milgrain beads frames the pattern on both sides, finished by a thin polished rail. The profile is gently domed on the outside and polished smooth on the inside for a comfortable fit.
 
 YOUR RING
-Solid ${lc} gold, available in 10K, 14K or 18K. No plating and no filled metal. The price is for one ring in your selected karat, width and size, not a set. No gemstones: "diamond cut" is the jeweler's name for the faceting technique, not a stone. The cuts and the milgrain are finished by hand, so their spacing varies slightly from ring to ring while the chevron pattern stays the same.
+Solid ${lc} gold, available in 10K, 14K or 18K. No plating and no filled metal. The price is for one ring in your selected karat, width and size, not a set. No gemstones: "diamond cut" is the jeweler's name for the faceting technique, not a stone. The cuts and the milgrain are finished by hand, so their spacing varies slightly from ring to ring while the diagonal pattern stays the same.
 
 CHOOSE YOUR FIT
 Width: 3, 4, 5, 6, 7 or 8 mm.
 Ring size: US 3 to US 13, including half sizes.
-Choose Karat, Width and Ring Size from the three variation menus. Wider bands can feel more snug than narrow bands, so confirm your size at your preferred width. On narrow widths the zigzag sits tighter and reads finer.
+Choose Karat, Width and Ring Size from the three variation menus. Wider bands can feel more snug than narrow bands, so confirm your size at your preferred width. On narrow widths the cuts sit closer together and read finer.
 
 OPTIONAL INSIDE ENGRAVING
 Enter the exact text in "Inside band engraving", up to 30 characters, and choose an Engraving Font: 1 Prata, 2 Cinzel, 3 Cinzel Decorative or 4 Great Vibes. Leave the text blank for no engraving. These fields do not change the inventory variations.
@@ -252,8 +254,7 @@ ABOUT THE IMAGES
 The gallery uses Higgsfield AI-assisted visualizations guided by a photograph of the physical design. Every scene was created independently for this metal color, not recolored from another. Metal color and reflections vary with lighting and screens. Props are not included.`,
     tags: [
       "milgrain band",
-      "chevron wedding band",
-      "zigzag gold ring",
+      "diagonal cut band",
       "diamond cut band",
       "satin wedding band",
       "solid gold band",
@@ -263,6 +264,7 @@ The gallery uses Higgsfield AI-assisted visualizations guided by a photograph of
       "vintage wedding band",
       "mens wedding band",
       "womens gold band",
+      "comfort fit ring",
       `${lc} gold ring`,
     ],
     materials: [metal.material],
@@ -353,7 +355,7 @@ const csv = [
 ].join("\n");
 
 const manifest = {
-  generatedBy: "scripts/eon/gen_sierra_package.mjs",
+  generatedBy: "scripts/eon/gen_comet_tail_package.mjs",
   workingName: MODEL.workingName,
   organization: "EON",
   structure: {
