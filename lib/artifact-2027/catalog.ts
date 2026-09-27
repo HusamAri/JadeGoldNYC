@@ -28,7 +28,9 @@ export function productRow(d: CatalogItem, org: string) {
   return {
     id: d.productId, org_id: org, sku: d.sku, title: d.title,
     description: d.description, tags: d.tags, materials: d.materials,
-    product_type: d.productType, status: "draft", currency: "USD",
+    // Legacy products constraint has no earring category. Preserve the exact type
+    // in listing_metadata; leave the legacy classifier unset instead of mislabeling.
+    product_type: d.productType === "earring" ? null : d.productType, status: "draft", currency: "USD",
     price_cents: null, weight_grams: null, quantity: 0, has_variations: false,
     image_url: d.imageUrl, num_images: 1, research_keyword: d.tags[0],
     listing_metadata: {

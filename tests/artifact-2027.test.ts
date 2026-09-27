@@ -17,7 +17,11 @@ test("exact 5/5/5/5 scope, 20 distinct byte-verified single images", () => {
     assert.equal(p.listing_metadata.approval.etsyDraftCreationAuthorized,false);
     assert.equal(p.listing_metadata.approval.livePublicationAuthorized,false);
     if(d.id.startsWith("B")) assert.match(d.geometry,/Flexible chain bracelet/);
-    if(d.id.startsWith("E")) assert.equal(p.product_type,"earring");
+    if(d.id.startsWith("E")) {
+      assert.equal(p.product_type,null);
+      assert.equal(p.listing_metadata.productType,"earring");
+      assert.equal(p.listing_metadata.listingProtocol,"stud_earrings");
+    }
   }
 });
 test("brand and role are both required, and corrupt catalog fails closed", () => {
