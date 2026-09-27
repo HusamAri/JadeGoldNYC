@@ -1516,6 +1516,18 @@ repodaki hedefidir.
   YANA koyup "şekil aynı mı?" sorusunu ayrıca sor. Kullanıcı hangi soruyu
   cevapladıysa onay o kadardır; (3) seri batch'i yalnız hero'nun ŞEKLİ
   referansla eşleştikten sonra gönder. Gönderilen batch geri alınamaz.
+  **Güçlendirme (2026-09-27, ertesi gün):** set merge edilip panele
+  girdikten sonra sahip "rose gold hatalı" dedi. Bu sefer kırpımlar gerçekten
+  okundu ve iki şey çıktı: renk şeftali/şampanyaydı, eklem ise "iki düz bar +
+  aralarında gölgeli kanal" değil yuvarlak 3'lü nervürdü. Kırpımlar da ilk
+  okumada yetmedi: v3 hero'da barlar bitişikti, "ortada boşluk"u yine sahip
+  gördü. İşe yarayan iki şey oldu. (1) Kırpımları modele REFERANS olarak
+  yüklemek: tam kare yerine eklemin yakın çekimi verilince 2 bar tuttu.
+  (2) Rengi ayrı bir referansla sabitlemek: Willow rose hero'su yalnız renk
+  için verildi, şekli yok sayıldı. Kalan kör nokta açı: yüzük yatık ve yandan
+  çekilince (03, 05) model iki denemede de 3 bara döndü; ayakta 3/4 açıda
+  hiç dönmedi. Kural: bir detay belirli açıda tutmuyorsa o açıyı zorlama,
+  detayın tuttuğu açıyı kullan ya da kusuru sahibe sayıyla göster.
 
 - **Dış aracın şablonunu doldururken şablonun KENDİ yönlendirme satırı da
   veridir; ve "boşalttım" demeden önce dosyayı GERİ OKU (2026-09-26):**
