@@ -23,7 +23,7 @@ export default async function Artifact2027Page() {
   return <div className="space-y-6 p-6">
     <h1 className="text-3xl">Artifact Studio · 2027 Color &amp; Enamel</h1>
     <p>5 yüzük · 5 kolye · 5 zincirli bileklik · 5 çift küpe. 14 ayar sarı altın ve fırın minesi tasarım yönü.</p>
-    <p>Her modelde tek AI tasarım görseli (1254 × 1254). Üretim numunesi değildir. Gramaj tahminidir; üretim numunesi ve fırın uygunluğu teyit bekliyor.</p>
+    <p>Görseller AI tasarım görselleştirmeleridir. Yeni galeri hedefi: 2048 × 2048 piksel. Üretim numunesi değildir. Gramaj tahminidir; üretim numunesi ve fırın uygunluğu teyit bekliyor.</p>
     {!applied && <ImportButton />}
     <p>US 4–10 yarım bedenler: 65 yüzük + 15 diğer = 80 varyant. Gramlar tahmini net altındır; kolye/bileklikte zincir ve kapama, küpede çift ve arkalıklar dahil.</p>
     <p>Altın + işçilik dahil maliyet: küpe $350 · bileklik $375 · kolye $380 · yüzük $365. Kullanıcı maliyeti, 27 Eylül 2026; satış fiyatı değildir. Beden ve altın fiyatıyla otomatik değişmez.</p>
