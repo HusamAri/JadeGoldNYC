@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { requireMembership, getActiveOrg } from "@/lib/auth";
 import { catalog, assertImportAccess } from "@/lib/artifact-2027/catalog";
+import { GalleryUpload } from "./gallery-upload";
 import { PriceButton } from "./price-button";
 import { DraftBatchButton } from "./draft-batch-button";
 import { WeightButton } from "./weight-button";
@@ -30,6 +31,7 @@ export default async function Artifact2027Page() {
     <p>Onaylı satış fiyatları: küpe çifti $700 · yüzük $730 · zincirli bileklik $750 · kolye $760. İndirim yok. Tüm yüzük bedenleri aynı fiyat.</p>
     <PriceButton />
     <DraftBatchButton />
+    <GalleryUpload />
     <Link href="/listing-onerileri" className="underline">Listing önerilerine dön</Link>
     <div className="grid grid-cols-1 gap-5 md:grid-cols-3 xl:grid-cols-5">{catalog.map(d => <article key={d.id} className="rounded-xl border p-3">
       <Image unoptimized src={d.imageUrl} width={300} height={300} alt={d.alt} className="rounded-lg" />
