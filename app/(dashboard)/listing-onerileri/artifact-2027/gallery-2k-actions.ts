@@ -9,7 +9,7 @@ import {getEtsyWriteAccess} from '@/lib/db/queries/etsy';
 import {EtsyClient} from '@/lib/etsy/client';
 import {etsyPaths} from '@/lib/etsy/endpoints';
 import {logAudit} from '@/lib/audit';
-type Photo={listing_image_id:number;rank:number;alt_text?:string;full_width:number|null;full_height:number|null};
+type Photo={listing_image_id:number;rank:number;alt_text?:string;full_width:number|null;full_height:number|null;url_fullxfull?:string};
 type Gallery={results:Photo[]};
 type Entry={sha:string;imageId:number;panelId:string;url:string;name:string;width:number;height:number;previousImageId:number|null;previousUrl:string|null};
 type Pending={state:'draft'|'active';sha:string;slot:number;oldId:number|null;beforeIds:number[];beforeCount:number;panelId:string;previousUrl:string|null};
@@ -19,7 +19,8 @@ export async function uploadArtifact2k(fd:FormData){
   if(!(await getEtsyWriteAccess(m.org_id)).writeEnabled)throw new Error('Etsy yazma izni kapalı.');
   const file=fd.get('file');if(!(file instanceof File)||file.type!=='image/jpeg'||file.size<100||file.size>4*1024*1024)throw new Error('2048 × 2048 JPEG dosyası 4 MB altında olmalı.');
   const match=file.name.match(/^([RNBE]0[1-5])-(00|0[1-9]|1[0-5])-[a-z-]+\.jpg$/);if(!match)throw new Error('Koleksiyon dosya adı geçersiz.');
-  const code=match[1],slot=Number(match[2]),rank=slot+1,d=catalog.find(x=>x.id===code)!;
+  const code=match[1],slot=Number(match[2]),position=code==='E05'?slot+4:slot,rank=position+1,d=catalog.find(x=>x.id===code)!;
+  if(code==='E05'&&slot===0)throw new Error('E05 mevcut beş görseli korunur; yalnız yeni 01–15 görselleri eklenebilir.');
   const bytes=new Uint8Array(await file.arrayBuffer()),size=jpegSize(bytes);
   if(size.width!==2048||size.height!==2048)throw new Error('Gerçek dosya boyutu 2048 × 2048 olmalı.');
   const sha=createHash('sha256').update(bytes).digest('hex'),marker=`${code} home 2k ${slot} ${sha.slice(0,16)}`;
@@ -31,18 +32,38 @@ export async function uploadArtifact2k(fd:FormData){
   if(panelBefore.error)throw new Error(`Panel galeri sorgusu: ${panelBefore.error.message}`);
   if(listing.state!=='draft')throw new Error(`Aktif listeler kullanıcı isteğiyle kapsam dışı; Etsy durumu: ${listing.state}. Görsel değiştirilmedi.`);
   if(listing.shop_id!==shopId)throw new Error(`Etsy mağazası eşleşmiyor: listing ${listing.shop_id} (${typeof listing.shop_id}), connection ${shopId} (${typeof shopId}). Görsel değiştirilmedi.`);
+  if(code==='E05'){
+   const retainedIds=[8634903889,8634903283,8634903357,8634903433,8587066112];
+   const original=[...before.results].sort((a,b)=>a.rank-b.rank).slice(0,5);
+   if(listingId!==4583756145||original.length!==5||original.some((x,i)=>x.listing_image_id!==retainedIds[i]||x.rank!==i+1||x.full_width!==2048||x.full_height!==2048))throw new Error('E05 korunacak beş Etsy görseli değişmiş; yükleme durduruldu.');
+   if(!p.listing_metadata?.retainedGallery){
+    if(before.results.length!==5||p.listing_metadata?.gallery2kPending||Object.keys(p.listing_metadata?.gallery2k??{}).length)throw new Error('E05 başlangıç galerisi beklenen durumda değil.');
+    const checkpoint=p.listing_metadata?.retainedGalleryPending??{panel:panelBefore.data,previousCover:p.image_url};
+    if(checkpoint.panel?.length!==1||checkpoint.panel[0].position!==0||original.some(x=>!x.url_fullxfull))throw new Error('E05 panel yedeği veya Etsy görsel URL bilgisi eksik.');
+    const retainedRows=original.map((x,i)=>{const key=createHash('sha256').update(`${p.id}:retained:${x.listing_image_id}`).digest('hex');return {id:i===0?checkpoint.panel[0].id:`${key.slice(0,8)}-${key.slice(8,12)}-5${key.slice(13,16)}-a${key.slice(17,20)}-${key.slice(20,32)}`,org_id:m.org_id,product_id:p.id,position:i,url:x.url_fullxfull!,storage_path:null,source:'upload' as const};});
+    if(panelBefore.data.some(x=>!retainedRows.some(r=>r.id===x.id)))throw new Error('E05 panelinde beklenmeyen görsel var; koruma kontrolü gerekli.');
+    if(!p.listing_metadata?.retainedGalleryPending){const lock=await db.from('products').update({listing_metadata:{...p.listing_metadata,retainedGalleryPending:checkpoint}}).eq('org_id',m.org_id).eq('id',p.id).is('listing_metadata->>retainedGalleryPending',null).is('listing_metadata->>gallery2kPending',null).select('id');if(lock.error||lock.data?.length!==1)throw new Error('E05 galeri eşleştirmesi başka işlemde.');}
+    const adoption=await db.from('listing_images').upsert(retainedRows,{onConflict:'id'});if(adoption.error)throw adoption.error;
+    const [checkGallery,checkListing,checkPanel]=await Promise.all([client.get<Gallery>(etsyPaths.listingImagesRead(listingId)),client.get<{state:string;shop_id:number}>(etsyPaths.listing(listingId)),db.from('listing_images').select('id,position,url').eq('org_id',m.org_id).eq('product_id',p.id)]);
+    if(checkListing.state!=='draft'||checkListing.shop_id!==shopId||checkGallery.results.length!==5||checkGallery.results.some(x=>retainedIds[x.rank-1]!==x.listing_image_id)||checkPanel.error||checkPanel.data?.length!==5||retainedRows.some(r=>!checkPanel.data.some(x=>x.id===r.id&&x.position===r.position&&x.url===r.url)))throw new Error('E05 koruma geri okuması tamamlanamadı.');
+    const metadata={...p.listing_metadata,retainedGallery:{imageIds:retainedIds,panelBackup:checkpoint.panel,previousCover:checkpoint.previousCover,adoptedAt:new Date().toISOString()},retainedGalleryPending:null,homeGallery:{coverId:retainedIds[0],slots:Object.fromEntries(original.slice(1).map((x,i)=>[i+1,{imageId:x.listing_image_id,url:x.url_fullxfull}]))}};
+    const saved=await db.from('products').update({listing_metadata:metadata,num_images:5,image_url:retainedRows[0].url}).eq('org_id',m.org_id).eq('id',p.id).select('id');if(saved.error||saved.data?.length!==1)throw new Error('E05 korunan galeri kaydedilemedi.');
+    p.listing_metadata=metadata;panelBefore.data=checkPanel.data;
+    await logAudit(db,{orgId:m.org_id,action:'etsy.image_upload',entityType:'product',entityId:p.id,summary:'Artifact E05 retained five existing Etsy images; panel reconciled only',diff:{retainedIds,previousPanel:checkpoint.panel,etsyChanged:false},source:'app'});
+   }
+  }
   const ordered=[...before.results].sort((a,b)=>a.rank-b.rank),entries=(p.listing_metadata?.gallery2k??{}) as Record<string,Entry>,existing=entries[slot];
-  if(existing){const photo=ordered.find(x=>x.listing_image_id===existing.imageId&&x.rank===rank);const panel=panelBefore.data.find(x=>x.id===existing.panelId&&x.url===existing.url&&x.position===slot);if(existing.sha!==sha||!photo||!panel||photo.full_width!==2048||photo.full_height!==2048)throw new Error('2K kaydı, Etsy görseli veya panel uyuşmuyor.');return {ok:true,message:`${code} sıra ${rank}: 2048 × 2048 zaten doğrulanmış.`,report:{code,slot,listingId,imageId:photo.listing_image_id,count:ordered.length,width:2048,height:2048,state:listing.state,skipped:true}};}
+  if(existing){const photo=ordered.find(x=>x.listing_image_id===existing.imageId&&x.rank===rank);const panel=panelBefore.data.find(x=>x.id===existing.panelId&&x.url===existing.url&&x.position===position);if(existing.sha!==sha||!photo||!panel||photo.full_width!==2048||photo.full_height!==2048)throw new Error('2K kaydı, Etsy görseli veya panel uyuşmuyor.');return {ok:true,message:`${code} sıra ${rank}: 2048 × 2048 zaten doğrulanmış.`,report:{code,slot,listingId,imageId:photo.listing_image_id,count:ordered.length,width:2048,height:2048,state:listing.state,skipped:true}};}
   let pending=p.listing_metadata?.gallery2kPending as Pending|null|undefined;
   if(pending&&(pending.sha!==sha||pending.slot!==slot||pending.state!==listing.state))throw new Error('Başka 2K yükleme sonucu bekleniyor.');
   const found=ordered.find(x=>x.alt_text?.includes(marker));
   if(!pending){
    if(found)throw new Error('Kilit kaydı olmadan eşleşen görsel bulundu; manuel kontrol gerekli.');
    if(ordered.length!==panelBefore.data.length)throw new Error('Panel ve Etsy başlangıç sayıları farklı.');
-   const target=ordered.find(x=>x.rank===rank),panelRows=panelBefore.data.filter(x=>x.position===slot);
+   const target=ordered.find(x=>x.rank===rank),panelRows=panelBefore.data.filter(x=>x.position===position);
    if(target&&panelRows.length!==1)throw new Error('Yenilenecek panel sırası belirsiz.');
-   if(!target&&(slot===0||ordered.length!==slot||panelRows.length))throw new Error('Yeni görseller sıra atlamadan eklenmeli.');
-   const known=slot===0?(p.listing_metadata?.homeGallery?.coverId??ordered[0]?.listing_image_id):p.listing_metadata?.homeGallery?.slots?.[slot]?.imageId;
+   if(!target&&(slot===0||ordered.length!==position||panelRows.length))throw new Error('Yeni görseller sıra atlamadan eklenmeli.');
+   const known=slot===0?(p.listing_metadata?.homeGallery?.coverId??ordered[0]?.listing_image_id):p.listing_metadata?.homeGallery?.slots?.[position]?.imageId;
    if(target&&target.listing_image_id!==known)throw new Error('Yenilenecek görsel koleksiyon kaydıyla eşleşmiyor.');
    const key=createHash('sha256').update(`${p.id}:2k:${slot}`).digest('hex'),panelId=panelRows[0]?.id??`${key.slice(0,8)}-${key.slice(8,12)}-5${key.slice(13,16)}-a${key.slice(17,20)}-${key.slice(20,32)}`;
    pending={state:listing.state,sha,slot,oldId:target?.listing_image_id??null,beforeIds:ordered.map(x=>x.listing_image_id),beforeCount:ordered.length,panelId,previousUrl:panelRows[0]?.url??null};
@@ -57,13 +78,13 @@ export async function uploadArtifact2k(fd:FormData){
   const newPhoto=after.results.find(x=>x.listing_image_id===imageId&&x.rank===rank),expectedCount=pending.beforeCount+(pending.oldId?0:1);
   const afterListing=await client.get<{state:string;shop_id:number}>(etsyPaths.listing(listingId));
   if(afterListing.state!==pending.state||afterListing.shop_id!==shopId||after.results.length!==expectedCount||!newPhoto||newPhoto.full_width!==2048||newPhoto.full_height!==2048||pending.beforeIds.filter(id=>id!==pending.oldId).some(id=>!after.results.some(x=>x.listing_image_id===id))||(pending.oldId&&after.results.some(x=>x.listing_image_id===pending.oldId)))throw new Error('Etsy 2K boyut, sıra veya koruma kontrolü tamamlanmadı; tekrar gönderilmeden geri okunmalı.');
-  const values={url,storage_path:path,source:'upload' as const,position:slot};
+  const values={url,storage_path:path,source:'upload' as const,position};
   const panelWrite=pending.previousUrl?await db.from('listing_images').update(values).eq('org_id',m.org_id).eq('id',pending.panelId).eq('product_id',p.id).select('id'):await db.from('listing_images').upsert({id:pending.panelId,org_id:m.org_id,product_id:p.id,...values},{onConflict:'id'}).select('id');if(panelWrite.error||panelWrite.data?.length!==1)throw new Error('Etsy doğrulandı, panel görseli güncellenemedi.');
   const entry:Entry={sha,imageId:imageId!,panelId:pending.panelId,url,name:file.name,width:2048,height:2048,previousImageId:pending.oldId,previousUrl:pending.previousUrl};
   const home=p.listing_metadata?.homeGallery??{coverId:ordered[0]?.listing_image_id,slots:{}};
-  const newHome=slot===0?{...home,coverId:imageId}: {...home,slots:{...home.slots,[slot]:{sha,imageId,url,name:file.name}}};
+  const newHome=slot===0?{...home,coverId:imageId}: {...home,slots:{...home.slots,[position]:{sha,imageId,url,name:file.name}}};
   const update=await db.from('products').update({num_images:expectedCount,...(slot===0?{image_url:url}:{}),listing_metadata:{...p.listing_metadata,homeGallery:newHome,gallery2k:{...entries,[slot]:entry},gallery2kPending:null}}).eq('org_id',m.org_id).eq('id',p.id).eq('etsy_listing_id',listingId).select('id');if(update.error||update.data?.length!==1)throw new Error('2K doğrulaması panele kaydedilemedi.');
-  const readback=await db.from('listing_images').select('id,position,url').eq('org_id',m.org_id).eq('product_id',p.id);if(readback.error||readback.data.length!==expectedCount||!readback.data.some(x=>x.id===pending.panelId&&x.url===url&&x.position===slot))throw new Error('Panel 2K geri okuması uyuşmuyor.');
+  const readback=await db.from('listing_images').select('id,position,url').eq('org_id',m.org_id).eq('product_id',p.id);if(readback.error||readback.data.length!==expectedCount||!readback.data.some(x=>x.id===pending.panelId&&x.url===url&&x.position===position))throw new Error('Panel 2K geri okuması uyuşmuyor.');
   await logAudit(db,{orgId:m.org_id,action:'etsy.image_upload',entityType:'product',entityId:p.id,summary:`Artifact ${code} image ${rank} verified at 2048 square`,diff:{sha,imageId,previousImageId:pending.oldId,listingId,count:expectedCount,width:2048,height:2048},source:'app'});
   revalidatePath(`/tasarimlar/listing/${p.id}`);revalidatePath('/tasarimlar');
   return {ok:true,message:`${code} sıra ${rank}: 2048 × 2048 · ${expectedCount} görsel · Etsy yayın durumu korunarak panel ve görseller doğrulandı.`,report:{code,slot,listingId,imageId,previousImageId:pending.oldId,count:expectedCount,width:2048,height:2048,state:afterListing.state,skipped:false}};
