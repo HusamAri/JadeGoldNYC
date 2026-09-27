@@ -1,0 +1,7 @@
+"use client";
+import {useRef,useState,useTransition} from 'react';
+import {Button} from '@/components/ui/button';
+import {appendArtifactGalleryImage} from './gallery-actions';
+export function GalleryUpload(){const ref=useRef<HTMLInputElement>(null);const[pending,start]=useTransition();const[lines,setLines]=useState<string[]>([]);const[reports,setReports]=useState<unknown[]>([]);
+return <div className="space-y-3 rounded-xl border p-4"><h2>Ev stüdyosu görselleri</h2><p>Kontrol edilmiş 15 PNG seçin. Mevcut kapak korunur; yeni görseller sırayla panel ve Etsy taslağına eklenir. Her yükleme geri okunur.</p><input ref={ref} className="hidden" type="file" accept="image/png" multiple onChange={e=>{const files=Array.from(e.target.files??[]).sort((a,b)=>a.name.localeCompare(b.name));if(!files.length)return;start(async()=>{setLines([]);setReports([]);for(const file of files){setLines(prev=>[...prev,`${file.name} yükleniyor…`]);const fd=new FormData();fd.set('file',file);const r=await appendArtifactGalleryImage(fd);setLines(prev=>[...prev,r.message]);if(!r.ok)break;setReports(prev=>[...prev,r.report]);}if(ref.current)ref.current.value='';});}}/><Button disabled={pending} onClick={()=>ref.current?.click()}>{pending?'Galeri yükleniyor…':'Ev stüdyosu görsellerini seç ve taslağa ekle'}</Button><div role="status">{lines.map((l,i)=><p key={i}>{l}</p>)}</div><details><summary>Görsel aktarım raporu</summary><pre>{JSON.stringify(reports,null,2)}</pre></details></div>;
+}
