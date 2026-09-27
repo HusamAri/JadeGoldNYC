@@ -1,0 +1,1097 @@
+{
+  "version": "artifact-2027-weights-costs-v1",
+  "date": "2026-09-27",
+  "currency": "USD",
+  "costBasis": "User supplied total per finished item (earrings per pair), gold and labor included. Fixed quote snapshot; no automatic spot or size adjustment.",
+  "weightBasis": {
+    "ring": "Reference US 7, approximately 54 mm effective shank length, 1.8 x 1.45 mm rounded section, 0.85 section factor, 0.10 g shoulders; not a measured size.",
+    "necklace": "18 in / 45.7 cm 1.2 mm cable chain with clasp, 2.0 g proxy from RCJ 40545; pendant and bail additional.",
+    "bracelet": "17 cm nominal, 1.0 g chain/clasp/extender estimate plus plaque and 0.08 g side attachments.",
+    "earring": "Pair; two 0.8 x 10 mm posts plus 0.25 g total friction backs.",
+    "enamel": "Assumed 0.4 mm recess; illustrative 2.5 g/cm3 vitreous fill only, not alloy or firing qualification. Enamel excluded from gold costing weight.",
+    "uncertainty": "Rounded to 0.1 g; planning range -20%/+25% around geometry model, not statistical confidence interval.",
+    "manufacturing": "No weight reduction from hollowing assumed; mine floor remains 0.6–0.7 mm under 0.4 mm recess. Physical firing/strength remains unverified."
+  },
+  "products": [
+    {
+      "id": "R01",
+      "productId": "12abe323-136d-5b23-98fd-38b86fadf536",
+      "sku": "BAS-27-MINE-R01-14Y",
+      "baseVariantId": "6736abf9-c4ae-5d40-ba36-16b2e1370cc1",
+      "weightGrams": 2.2,
+      "weightRange": [
+        1.7,
+        2.8
+      ],
+      "costCents": 36500,
+      "variants": [
+        {
+          "id": "be3d82f4-2e9c-5b69-9b47-2ea088fad4fa",
+          "sku": "BAS-27-MINE-R01-14Y-US4",
+          "size": 4.0,
+          "weight_grams": 1.98,
+          "properties": {
+            "Ring Size": "4",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "f731b861-4add-57d4-af13-45c047ffe7bc",
+          "sku": "BAS-27-MINE-R01-14Y-US4.5",
+          "size": 4.5,
+          "weight_grams": 2.02,
+          "properties": {
+            "Ring Size": "4.5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "72f03562-650e-53be-9be9-161452082309",
+          "sku": "BAS-27-MINE-R01-14Y-US5",
+          "size": 5.0,
+          "weight_grams": 2.05,
+          "properties": {
+            "Ring Size": "5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "d3772aed-8f40-595e-b7d5-9193b05509b9",
+          "sku": "BAS-27-MINE-R01-14Y-US5.5",
+          "size": 5.5,
+          "weight_grams": 2.09,
+          "properties": {
+            "Ring Size": "5.5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "7b2db6ff-c18c-5d99-bbae-011665cce902",
+          "sku": "BAS-27-MINE-R01-14Y-US6",
+          "size": 6.0,
+          "weight_grams": 2.13,
+          "properties": {
+            "Ring Size": "6",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "b62b94f3-9597-5c73-969b-c406b190b4db",
+          "sku": "BAS-27-MINE-R01-14Y-US6.5",
+          "size": 6.5,
+          "weight_grams": 2.16,
+          "properties": {
+            "Ring Size": "6.5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "6736abf9-c4ae-5d40-ba36-16b2e1370cc1",
+          "sku": "BAS-27-MINE-R01-14Y-US7",
+          "size": 7.0,
+          "weight_grams": 2.2,
+          "properties": {
+            "Ring Size": "7",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "76276171-909d-5904-ab1f-4907a223b9a3",
+          "sku": "BAS-27-MINE-R01-14Y-US7.5",
+          "size": 7.5,
+          "weight_grams": 2.24,
+          "properties": {
+            "Ring Size": "7.5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "8df1f30b-2320-5fe4-97b3-1c6814f5e0c0",
+          "sku": "BAS-27-MINE-R01-14Y-US8",
+          "size": 8.0,
+          "weight_grams": 2.27,
+          "properties": {
+            "Ring Size": "8",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "49c0bf6c-1a8d-5e2b-b733-2e14421cf1d7",
+          "sku": "BAS-27-MINE-R01-14Y-US8.5",
+          "size": 8.5,
+          "weight_grams": 2.31,
+          "properties": {
+            "Ring Size": "8.5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "aa8d1cc1-0a0b-5335-99fd-a9316f7c4b3e",
+          "sku": "BAS-27-MINE-R01-14Y-US9",
+          "size": 9.0,
+          "weight_grams": 2.35,
+          "properties": {
+            "Ring Size": "9",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "8ce6d745-d1c1-5df9-a550-7a5d7acd6006",
+          "sku": "BAS-27-MINE-R01-14Y-US9.5",
+          "size": 9.5,
+          "weight_grams": 2.38,
+          "properties": {
+            "Ring Size": "9.5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "7e6a5b3c-c8e5-557b-85ef-454d6f445a01",
+          "sku": "BAS-27-MINE-R01-14Y-US10",
+          "size": 10.0,
+          "weight_grams": 2.42,
+          "properties": {
+            "Ring Size": "10",
+            "Metal Color": "Yellow Gold"
+          }
+        }
+      ]
+    },
+    {
+      "id": "R02",
+      "productId": "b5675b71-498d-50f2-a810-6078dc00fb11",
+      "sku": "BAS-27-MINE-R02-14Y",
+      "baseVariantId": "719d6edc-280b-530e-8a3d-dc4f74966a5b",
+      "weightGrams": 2.0,
+      "weightRange": [
+        1.6,
+        2.6
+      ],
+      "costCents": 36500,
+      "variants": [
+        {
+          "id": "11f21704-6196-5ea8-b41b-decee6648b24",
+          "sku": "BAS-27-MINE-R02-14Y-US4",
+          "size": 4.0,
+          "weight_grams": 1.78,
+          "properties": {
+            "Ring Size": "4",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "b0425e41-8af9-5eb1-9780-2a6a2dd1508e",
+          "sku": "BAS-27-MINE-R02-14Y-US4.5",
+          "size": 4.5,
+          "weight_grams": 1.82,
+          "properties": {
+            "Ring Size": "4.5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "f05f7b80-4f6d-5770-93d3-da1d5b57e5f4",
+          "sku": "BAS-27-MINE-R02-14Y-US5",
+          "size": 5.0,
+          "weight_grams": 1.85,
+          "properties": {
+            "Ring Size": "5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "58595ed2-c620-5bab-bb17-88af9c7e28b7",
+          "sku": "BAS-27-MINE-R02-14Y-US5.5",
+          "size": 5.5,
+          "weight_grams": 1.89,
+          "properties": {
+            "Ring Size": "5.5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "d57a9d9f-f963-5eec-920c-326bf5bb81d8",
+          "sku": "BAS-27-MINE-R02-14Y-US6",
+          "size": 6.0,
+          "weight_grams": 1.93,
+          "properties": {
+            "Ring Size": "6",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "01358b53-e1c6-575d-b5b8-e04819730339",
+          "sku": "BAS-27-MINE-R02-14Y-US6.5",
+          "size": 6.5,
+          "weight_grams": 1.96,
+          "properties": {
+            "Ring Size": "6.5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "719d6edc-280b-530e-8a3d-dc4f74966a5b",
+          "sku": "BAS-27-MINE-R02-14Y-US7",
+          "size": 7.0,
+          "weight_grams": 2.0,
+          "properties": {
+            "Ring Size": "7",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "710dedbc-2076-535d-9722-75e7acb9858e",
+          "sku": "BAS-27-MINE-R02-14Y-US7.5",
+          "size": 7.5,
+          "weight_grams": 2.04,
+          "properties": {
+            "Ring Size": "7.5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "7d91c2cf-6172-5180-954d-680253c7ceb2",
+          "sku": "BAS-27-MINE-R02-14Y-US8",
+          "size": 8.0,
+          "weight_grams": 2.07,
+          "properties": {
+            "Ring Size": "8",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "af640a63-8505-5d47-bc4a-698bb7cdb2b4",
+          "sku": "BAS-27-MINE-R02-14Y-US8.5",
+          "size": 8.5,
+          "weight_grams": 2.11,
+          "properties": {
+            "Ring Size": "8.5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "237574af-45ef-56a8-8c6c-efa5dbf02d1c",
+          "sku": "BAS-27-MINE-R02-14Y-US9",
+          "size": 9.0,
+          "weight_grams": 2.15,
+          "properties": {
+            "Ring Size": "9",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "c5dbea20-7ad1-59a2-a1ad-1f1937b7f7ab",
+          "sku": "BAS-27-MINE-R02-14Y-US9.5",
+          "size": 9.5,
+          "weight_grams": 2.18,
+          "properties": {
+            "Ring Size": "9.5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "bf85ab26-a5f6-5278-a42d-b791bbb9925a",
+          "sku": "BAS-27-MINE-R02-14Y-US10",
+          "size": 10.0,
+          "weight_grams": 2.22,
+          "properties": {
+            "Ring Size": "10",
+            "Metal Color": "Yellow Gold"
+          }
+        }
+      ]
+    },
+    {
+      "id": "R03",
+      "productId": "7a3b5c07-dfd7-5bc6-a767-87fa69f6ae5e",
+      "sku": "BAS-27-MINE-R03-14Y",
+      "baseVariantId": "8b3cc99c-541d-58b6-88ea-62d817d1f166",
+      "weightGrams": 1.9,
+      "weightRange": [
+        1.5,
+        2.4
+      ],
+      "costCents": 36500,
+      "variants": [
+        {
+          "id": "11bdd8ef-52ce-54e5-8f94-133cd6aa75e5",
+          "sku": "BAS-27-MINE-R03-14Y-US4",
+          "size": 4.0,
+          "weight_grams": 1.68,
+          "properties": {
+            "Ring Size": "4",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "49e22bd7-c5a9-57a5-8c5c-30f02db23055",
+          "sku": "BAS-27-MINE-R03-14Y-US4.5",
+          "size": 4.5,
+          "weight_grams": 1.72,
+          "properties": {
+            "Ring Size": "4.5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "3e50a3bd-80eb-53d5-b1b6-e94cecaa3736",
+          "sku": "BAS-27-MINE-R03-14Y-US5",
+          "size": 5.0,
+          "weight_grams": 1.75,
+          "properties": {
+            "Ring Size": "5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "6af58bbf-b2f8-5d51-8ee2-c8f6ae114b80",
+          "sku": "BAS-27-MINE-R03-14Y-US5.5",
+          "size": 5.5,
+          "weight_grams": 1.79,
+          "properties": {
+            "Ring Size": "5.5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "b375e595-0ad7-5f7b-b4e1-a5020f25b8b8",
+          "sku": "BAS-27-MINE-R03-14Y-US6",
+          "size": 6.0,
+          "weight_grams": 1.83,
+          "properties": {
+            "Ring Size": "6",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "0b4c5734-576c-5093-bc37-c6841442d59b",
+          "sku": "BAS-27-MINE-R03-14Y-US6.5",
+          "size": 6.5,
+          "weight_grams": 1.86,
+          "properties": {
+            "Ring Size": "6.5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "8b3cc99c-541d-58b6-88ea-62d817d1f166",
+          "sku": "BAS-27-MINE-R03-14Y-US7",
+          "size": 7.0,
+          "weight_grams": 1.9,
+          "properties": {
+            "Ring Size": "7",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "52670c44-7b50-5962-9a5d-12ac3f10daa6",
+          "sku": "BAS-27-MINE-R03-14Y-US7.5",
+          "size": 7.5,
+          "weight_grams": 1.94,
+          "properties": {
+            "Ring Size": "7.5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "caccfe0c-1c4e-57d3-b046-8880e27cf78b",
+          "sku": "BAS-27-MINE-R03-14Y-US8",
+          "size": 8.0,
+          "weight_grams": 1.97,
+          "properties": {
+            "Ring Size": "8",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "38b909b8-e6bd-5335-be2c-471467ff7cdf",
+          "sku": "BAS-27-MINE-R03-14Y-US8.5",
+          "size": 8.5,
+          "weight_grams": 2.01,
+          "properties": {
+            "Ring Size": "8.5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "02afcadd-cd7e-5d6e-860f-961c60971664",
+          "sku": "BAS-27-MINE-R03-14Y-US9",
+          "size": 9.0,
+          "weight_grams": 2.05,
+          "properties": {
+            "Ring Size": "9",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "82d7df73-db27-5951-830f-62c2c85e8c56",
+          "sku": "BAS-27-MINE-R03-14Y-US9.5",
+          "size": 9.5,
+          "weight_grams": 2.08,
+          "properties": {
+            "Ring Size": "9.5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "7adb03bc-a0d8-5188-ac33-28af44e7e620",
+          "sku": "BAS-27-MINE-R03-14Y-US10",
+          "size": 10.0,
+          "weight_grams": 2.12,
+          "properties": {
+            "Ring Size": "10",
+            "Metal Color": "Yellow Gold"
+          }
+        }
+      ]
+    },
+    {
+      "id": "R04",
+      "productId": "797bb862-43db-5992-a152-290f192518c4",
+      "sku": "BAS-27-MINE-R04-14Y",
+      "baseVariantId": "635b44a5-3b2b-5a3f-a213-d91edbb33e3b",
+      "weightGrams": 2.0,
+      "weightRange": [
+        1.5,
+        2.5
+      ],
+      "costCents": 36500,
+      "variants": [
+        {
+          "id": "4ff92094-a5cd-59a5-807d-4ec858cef843",
+          "sku": "BAS-27-MINE-R04-14Y-US4",
+          "size": 4.0,
+          "weight_grams": 1.78,
+          "properties": {
+            "Ring Size": "4",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "99ae35a0-6be7-57db-965f-85207a61f1b9",
+          "sku": "BAS-27-MINE-R04-14Y-US4.5",
+          "size": 4.5,
+          "weight_grams": 1.82,
+          "properties": {
+            "Ring Size": "4.5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "a2a0211a-63e1-5355-8965-df7ecb56aaef",
+          "sku": "BAS-27-MINE-R04-14Y-US5",
+          "size": 5.0,
+          "weight_grams": 1.85,
+          "properties": {
+            "Ring Size": "5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "2584f4df-6013-5efa-ad4a-95d4ed9fc901",
+          "sku": "BAS-27-MINE-R04-14Y-US5.5",
+          "size": 5.5,
+          "weight_grams": 1.89,
+          "properties": {
+            "Ring Size": "5.5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "29ba90fe-bdef-5949-81f1-eb3fbb5ce95c",
+          "sku": "BAS-27-MINE-R04-14Y-US6",
+          "size": 6.0,
+          "weight_grams": 1.93,
+          "properties": {
+            "Ring Size": "6",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "83aeee67-493b-5b9c-a858-e24650bb3ff3",
+          "sku": "BAS-27-MINE-R04-14Y-US6.5",
+          "size": 6.5,
+          "weight_grams": 1.96,
+          "properties": {
+            "Ring Size": "6.5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "635b44a5-3b2b-5a3f-a213-d91edbb33e3b",
+          "sku": "BAS-27-MINE-R04-14Y-US7",
+          "size": 7.0,
+          "weight_grams": 2.0,
+          "properties": {
+            "Ring Size": "7",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "49e33e0d-5505-5582-a2f6-3695657c618d",
+          "sku": "BAS-27-MINE-R04-14Y-US7.5",
+          "size": 7.5,
+          "weight_grams": 2.04,
+          "properties": {
+            "Ring Size": "7.5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "038f8e5c-882a-54a8-bfc1-baff008f15dd",
+          "sku": "BAS-27-MINE-R04-14Y-US8",
+          "size": 8.0,
+          "weight_grams": 2.07,
+          "properties": {
+            "Ring Size": "8",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "6238dc74-e755-5c9b-b377-e274ee11ca16",
+          "sku": "BAS-27-MINE-R04-14Y-US8.5",
+          "size": 8.5,
+          "weight_grams": 2.11,
+          "properties": {
+            "Ring Size": "8.5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "f19823cd-5987-54dc-a19b-a9a1e1b3c323",
+          "sku": "BAS-27-MINE-R04-14Y-US9",
+          "size": 9.0,
+          "weight_grams": 2.15,
+          "properties": {
+            "Ring Size": "9",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "5949d39b-b6f8-5c0f-b8d1-15dd636c8744",
+          "sku": "BAS-27-MINE-R04-14Y-US9.5",
+          "size": 9.5,
+          "weight_grams": 2.18,
+          "properties": {
+            "Ring Size": "9.5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "5b1e8aa3-12ef-5301-b879-34300281da80",
+          "sku": "BAS-27-MINE-R04-14Y-US10",
+          "size": 10.0,
+          "weight_grams": 2.22,
+          "properties": {
+            "Ring Size": "10",
+            "Metal Color": "Yellow Gold"
+          }
+        }
+      ]
+    },
+    {
+      "id": "R05",
+      "productId": "c3fd1722-5a10-5a5a-bd52-f664a6dc6460",
+      "sku": "BAS-27-MINE-R05-14Y",
+      "baseVariantId": "ee364a65-c15a-57e6-8b1c-e959d148fd8b",
+      "weightGrams": 2.1,
+      "weightRange": [
+        1.6,
+        2.6
+      ],
+      "costCents": 36500,
+      "variants": [
+        {
+          "id": "71fb6d8b-f5bd-544f-af50-dfc36f675c61",
+          "sku": "BAS-27-MINE-R05-14Y-US4",
+          "size": 4.0,
+          "weight_grams": 1.88,
+          "properties": {
+            "Ring Size": "4",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "4f4bc75f-fc7f-5efe-bcef-3f0c3b2632b4",
+          "sku": "BAS-27-MINE-R05-14Y-US4.5",
+          "size": 4.5,
+          "weight_grams": 1.92,
+          "properties": {
+            "Ring Size": "4.5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "ffe74e79-2393-5ef2-98fe-b8df9b60315e",
+          "sku": "BAS-27-MINE-R05-14Y-US5",
+          "size": 5.0,
+          "weight_grams": 1.95,
+          "properties": {
+            "Ring Size": "5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "c10f6d06-e622-5a45-adc8-f9b505e2ae0b",
+          "sku": "BAS-27-MINE-R05-14Y-US5.5",
+          "size": 5.5,
+          "weight_grams": 1.99,
+          "properties": {
+            "Ring Size": "5.5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "0bbf0b5b-d837-5ec3-b0c4-6661a3fa19ad",
+          "sku": "BAS-27-MINE-R05-14Y-US6",
+          "size": 6.0,
+          "weight_grams": 2.03,
+          "properties": {
+            "Ring Size": "6",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "95c155bd-a4f7-53c1-a333-a5bf59cb5f83",
+          "sku": "BAS-27-MINE-R05-14Y-US6.5",
+          "size": 6.5,
+          "weight_grams": 2.06,
+          "properties": {
+            "Ring Size": "6.5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "ee364a65-c15a-57e6-8b1c-e959d148fd8b",
+          "sku": "BAS-27-MINE-R05-14Y-US7",
+          "size": 7.0,
+          "weight_grams": 2.1,
+          "properties": {
+            "Ring Size": "7",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "85afff32-a0b9-5cb3-9f6a-db3233b3b68d",
+          "sku": "BAS-27-MINE-R05-14Y-US7.5",
+          "size": 7.5,
+          "weight_grams": 2.14,
+          "properties": {
+            "Ring Size": "7.5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "b4f15937-2563-554f-8ae0-a6ec77f59a3f",
+          "sku": "BAS-27-MINE-R05-14Y-US8",
+          "size": 8.0,
+          "weight_grams": 2.17,
+          "properties": {
+            "Ring Size": "8",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "60f2e625-b705-5a6f-b63c-6ddc743c1dce",
+          "sku": "BAS-27-MINE-R05-14Y-US8.5",
+          "size": 8.5,
+          "weight_grams": 2.21,
+          "properties": {
+            "Ring Size": "8.5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "d9277f53-6735-53f6-82c5-a302785a450d",
+          "sku": "BAS-27-MINE-R05-14Y-US9",
+          "size": 9.0,
+          "weight_grams": 2.25,
+          "properties": {
+            "Ring Size": "9",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "b404f57f-9020-5a6d-bd9d-260aaa79a61b",
+          "sku": "BAS-27-MINE-R05-14Y-US9.5",
+          "size": 9.5,
+          "weight_grams": 2.28,
+          "properties": {
+            "Ring Size": "9.5",
+            "Metal Color": "Yellow Gold"
+          }
+        },
+        {
+          "id": "915c0f35-4922-5524-863e-42ef0d7e52df",
+          "sku": "BAS-27-MINE-R05-14Y-US10",
+          "size": 10.0,
+          "weight_grams": 2.32,
+          "properties": {
+            "Ring Size": "10",
+            "Metal Color": "Yellow Gold"
+          }
+        }
+      ]
+    },
+    {
+      "id": "N01",
+      "productId": "ef175ba5-04a3-5104-be0e-1488a2ff3d7e",
+      "sku": "BAS-27-MINE-N01-14Y",
+      "baseVariantId": "73082d52-ce9a-5298-8d40-34e1bfcc086b",
+      "weightGrams": 3.4,
+      "weightRange": [
+        2.6,
+        4.2
+      ],
+      "costCents": 38000,
+      "variants": [
+        {
+          "id": "73082d52-ce9a-5298-8d40-34e1bfcc086b",
+          "sku": "BAS-27-MINE-N01-14Y",
+          "size": null,
+          "weight_grams": 3.4,
+          "properties": {
+            "Metal": "14K Yellow Gold",
+            "Development": "Sample required"
+          }
+        }
+      ]
+    },
+    {
+      "id": "N02",
+      "productId": "882fa64d-d1d0-5685-8e01-f6e3b11e6b54",
+      "sku": "BAS-27-MINE-N02-14Y",
+      "baseVariantId": "cc7044f5-2f83-5ba7-9e4a-efea146ffdfa",
+      "weightGrams": 3.0,
+      "weightRange": [
+        2.3,
+        3.8
+      ],
+      "costCents": 38000,
+      "variants": [
+        {
+          "id": "cc7044f5-2f83-5ba7-9e4a-efea146ffdfa",
+          "sku": "BAS-27-MINE-N02-14Y",
+          "size": null,
+          "weight_grams": 3.0,
+          "properties": {
+            "Metal": "14K Yellow Gold",
+            "Development": "Sample required"
+          }
+        }
+      ]
+    },
+    {
+      "id": "N03",
+      "productId": "fa68594b-425f-57fc-bd1d-ef79d59ebb32",
+      "sku": "BAS-27-MINE-N03-14Y",
+      "baseVariantId": "6b52303c-cc43-5c2c-af4b-74a2f71307c6",
+      "weightGrams": 2.7,
+      "weightRange": [
+        2.1,
+        3.5
+      ],
+      "costCents": 38000,
+      "variants": [
+        {
+          "id": "6b52303c-cc43-5c2c-af4b-74a2f71307c6",
+          "sku": "BAS-27-MINE-N03-14Y",
+          "size": null,
+          "weight_grams": 2.7,
+          "properties": {
+            "Metal": "14K Yellow Gold",
+            "Development": "Sample required"
+          }
+        }
+      ]
+    },
+    {
+      "id": "N04",
+      "productId": "c0b62c47-ebe7-5bff-85c8-05efc320bca7",
+      "sku": "BAS-27-MINE-N04-14Y",
+      "baseVariantId": "4c590045-81df-557b-a19d-8d6932f12bfb",
+      "weightGrams": 3.0,
+      "weightRange": [
+        2.4,
+        3.9
+      ],
+      "costCents": 38000,
+      "variants": [
+        {
+          "id": "4c590045-81df-557b-a19d-8d6932f12bfb",
+          "sku": "BAS-27-MINE-N04-14Y",
+          "size": null,
+          "weight_grams": 3.0,
+          "properties": {
+            "Metal": "14K Yellow Gold",
+            "Development": "Sample required"
+          }
+        }
+      ]
+    },
+    {
+      "id": "N05",
+      "productId": "f3ae5e17-9c34-56a2-a56f-5fc314c12294",
+      "sku": "BAS-27-MINE-N05-14Y",
+      "baseVariantId": "503e8722-d2fd-5b1f-948e-96ee7e0a85a3",
+      "weightGrams": 2.7,
+      "weightRange": [
+        2.1,
+        3.4
+      ],
+      "costCents": 38000,
+      "variants": [
+        {
+          "id": "503e8722-d2fd-5b1f-948e-96ee7e0a85a3",
+          "sku": "BAS-27-MINE-N05-14Y",
+          "size": null,
+          "weight_grams": 2.7,
+          "properties": {
+            "Metal": "14K Yellow Gold",
+            "Development": "Sample required"
+          }
+        }
+      ]
+    },
+    {
+      "id": "B01",
+      "productId": "cca6cb55-c4dd-5a3d-b7b8-f482f2956176",
+      "sku": "BAS-27-MINE-B01-14Y",
+      "baseVariantId": "316f1565-5234-59a0-b526-3d43620be359",
+      "weightGrams": 1.6,
+      "weightRange": [
+        1.3,
+        2.1
+      ],
+      "costCents": 37500,
+      "variants": [
+        {
+          "id": "316f1565-5234-59a0-b526-3d43620be359",
+          "sku": "BAS-27-MINE-B01-14Y",
+          "size": null,
+          "weight_grams": 1.6,
+          "properties": {
+            "Metal": "14K Yellow Gold",
+            "Development": "Sample required"
+          }
+        }
+      ]
+    },
+    {
+      "id": "B02",
+      "productId": "926ccd98-ff08-5cf3-8cab-dd253904520f",
+      "sku": "BAS-27-MINE-B02-14Y",
+      "baseVariantId": "4f3fe6c5-bfdd-5674-be05-705e0e1102a8",
+      "weightGrams": 1.4,
+      "weightRange": [
+        1.1,
+        1.8
+      ],
+      "costCents": 37500,
+      "variants": [
+        {
+          "id": "4f3fe6c5-bfdd-5674-be05-705e0e1102a8",
+          "sku": "BAS-27-MINE-B02-14Y",
+          "size": null,
+          "weight_grams": 1.4,
+          "properties": {
+            "Metal": "14K Yellow Gold",
+            "Development": "Sample required"
+          }
+        }
+      ]
+    },
+    {
+      "id": "B03",
+      "productId": "ec822cd9-d920-5451-8b23-7b7a78b43995",
+      "sku": "BAS-27-MINE-B03-14Y",
+      "baseVariantId": "b5ce2b12-e7bc-531a-9981-391519976e71",
+      "weightGrams": 1.3,
+      "weightRange": [
+        1.0,
+        1.7
+      ],
+      "costCents": 37500,
+      "variants": [
+        {
+          "id": "b5ce2b12-e7bc-531a-9981-391519976e71",
+          "sku": "BAS-27-MINE-B03-14Y",
+          "size": null,
+          "weight_grams": 1.3,
+          "properties": {
+            "Metal": "14K Yellow Gold",
+            "Development": "Sample required"
+          }
+        }
+      ]
+    },
+    {
+      "id": "B04",
+      "productId": "41a24020-efec-59d2-9aec-df616af7b176",
+      "sku": "BAS-27-MINE-B04-14Y",
+      "baseVariantId": "0b6ee0f3-f0df-5a6d-9e57-596d1945d99f",
+      "weightGrams": 1.6,
+      "weightRange": [
+        1.3,
+        2.1
+      ],
+      "costCents": 37500,
+      "variants": [
+        {
+          "id": "0b6ee0f3-f0df-5a6d-9e57-596d1945d99f",
+          "sku": "BAS-27-MINE-B04-14Y",
+          "size": null,
+          "weight_grams": 1.6,
+          "properties": {
+            "Metal": "14K Yellow Gold",
+            "Development": "Sample required"
+          }
+        }
+      ]
+    },
+    {
+      "id": "B05",
+      "productId": "a620a94f-4912-5ec1-82f2-f67e1e9b4a31",
+      "sku": "BAS-27-MINE-B05-14Y",
+      "baseVariantId": "72888ad5-532e-5bdb-b206-0f5dfea2c856",
+      "weightGrams": 1.5,
+      "weightRange": [
+        1.1,
+        1.9
+      ],
+      "costCents": 37500,
+      "variants": [
+        {
+          "id": "72888ad5-532e-5bdb-b206-0f5dfea2c856",
+          "sku": "BAS-27-MINE-B05-14Y",
+          "size": null,
+          "weight_grams": 1.5,
+          "properties": {
+            "Metal": "14K Yellow Gold",
+            "Development": "Sample required"
+          }
+        }
+      ]
+    },
+    {
+      "id": "E01",
+      "productId": "604846a9-a8f2-590d-997e-53c962eae3aa",
+      "sku": "BAS-27-MINE-E01-14Y",
+      "baseVariantId": "ff320b87-c095-55c6-b9c2-c4d87099f65f",
+      "weightGrams": 0.9,
+      "weightRange": [
+        0.7,
+        1.2
+      ],
+      "costCents": 35000,
+      "variants": [
+        {
+          "id": "ff320b87-c095-55c6-b9c2-c4d87099f65f",
+          "sku": "BAS-27-MINE-E01-14Y",
+          "size": null,
+          "weight_grams": 0.9,
+          "properties": {
+            "Metal": "14K Yellow Gold",
+            "Development": "Sample required"
+          }
+        }
+      ]
+    },
+    {
+      "id": "E02",
+      "productId": "420714a4-20e3-5f22-8c36-da50204ca569",
+      "sku": "BAS-27-MINE-E02-14Y",
+      "baseVariantId": "866256e8-fe88-50a2-8a81-293576a739ba",
+      "weightGrams": 0.8,
+      "weightRange": [
+        0.6,
+        1.0
+      ],
+      "costCents": 35000,
+      "variants": [
+        {
+          "id": "866256e8-fe88-50a2-8a81-293576a739ba",
+          "sku": "BAS-27-MINE-E02-14Y",
+          "size": null,
+          "weight_grams": 0.8,
+          "properties": {
+            "Metal": "14K Yellow Gold",
+            "Development": "Sample required"
+          }
+        }
+      ]
+    },
+    {
+      "id": "E03",
+      "productId": "1ba82022-162e-514c-86ac-7e445c0ed5b7",
+      "sku": "BAS-27-MINE-E03-14Y",
+      "baseVariantId": "6240b022-3106-5000-92b9-d93574069c39",
+      "weightGrams": 0.8,
+      "weightRange": [
+        0.6,
+        1.1
+      ],
+      "costCents": 35000,
+      "variants": [
+        {
+          "id": "6240b022-3106-5000-92b9-d93574069c39",
+          "sku": "BAS-27-MINE-E03-14Y",
+          "size": null,
+          "weight_grams": 0.8,
+          "properties": {
+            "Metal": "14K Yellow Gold",
+            "Development": "Sample required"
+          }
+        }
+      ]
+    },
+    {
+      "id": "E04",
+      "productId": "d1fc5a8b-1215-5768-bb45-6153827fe3aa",
+      "sku": "BAS-27-MINE-E04-14Y",
+      "baseVariantId": "0236a11f-bbeb-586d-92e9-038b247e26d6",
+      "weightGrams": 1.0,
+      "weightRange": [
+        0.7,
+        1.3
+      ],
+      "costCents": 35000,
+      "variants": [
+        {
+          "id": "0236a11f-bbeb-586d-92e9-038b247e26d6",
+          "sku": "BAS-27-MINE-E04-14Y",
+          "size": null,
+          "weight_grams": 1.0,
+          "properties": {
+            "Metal": "14K Yellow Gold",
+            "Development": "Sample required"
+          }
+        }
+      ]
+    },
+    {
+      "id": "E05",
+      "productId": "07fad6c9-f224-580d-a6b4-fe367e6a63e4",
+      "sku": "BAS-27-MINE-E05-14Y",
+      "baseVariantId": "421ec237-7449-5b7b-8095-19846612ea38",
+      "weightGrams": 0.9,
+      "weightRange": [
+        0.7,
+        1.2
+      ],
+      "costCents": 35000,
+      "variants": [
+        {
+          "id": "421ec237-7449-5b7b-8095-19846612ea38",
+          "sku": "BAS-27-MINE-E05-14Y",
+          "size": null,
+          "weight_grams": 0.9,
+          "properties": {
+            "Metal": "14K Yellow Gold",
+            "Development": "Sample required"
+          }
+        }
+      ]
+    }
+  ]
+}
