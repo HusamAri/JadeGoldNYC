@@ -1004,6 +1004,31 @@ repodaki hedefidir.
   hatasını yalnız uyarı sayar). Merge'den sonra dış sisteme yazmadan önce
   bağımlı statik varlıkları canlıda TEK TEK doğrula (300/300 `200`).
 
+- **"Değerlendirilemedi" kümesi bir artık değil, taramanın kör noktasıdır; ve
+  kötümser model yanlış alarm ÜRETİR (2026-09-27):** EON %30 indirimde "yalnız
+  zarar edenleri yükselt" istendi. İlk tarama 33.549 varyantı değerlendirdi,
+  Etsy'de yalnız **20** zararlı satır buldu ve 1.879 satırı "gram/ayar yok"
+  diye dışarıda bıraktı. Dışarıda kalanların 1.876'sı Etsy'deydi; sebepleri
+  sıradandı: başlıkta `10k` küçük harfti (desen `K` arıyordu) ve 1.525 satırın
+  gramı boştu. Ayar desenini büyük/küçük harfe duyarsız yapıp boş gramı motorun
+  kendi 1,5 mm tablosundan ×1,15 emniyet payıyla doldurunca Etsy'deki zararlı
+  satır **20'den 110'a** çıktı (21 listing). Yani "değerlendirilemedi" diye
+  raporlanan küme, asıl işin dörtte üçünü saklıyordu. Ters yönde de tuzak
+  vardı: her satıra kötümser $130 işçilik yazınca 4.900 satır "zarar" göründü;
+  v4 bantların gerçek maliyeti Tamsan faturasıyla $38–74 kalibreliydi ve
+  kalibre modelde bu sayı 20'ye düştü. Kötümserlik güvenli yönde hata
+  değildir: fiyatı gereksiz yükseltmek de sahibin "marj karşılasın" kararını
+  çiğner. Kural: (1) bir taramanın değerlendiremediği satırları SAY, listele ve
+  sebebine in; oran küçük değilse sonuç ilan edilmez; (2) maliyet modeli satır
+  sınıfına göre seçilir: kalibre veri varsa o, yoksa kötümser varsayım, ve hangi
+  sınıfın hangi modelle ölçüldüğü yazılır; (3) sahip politikayı tur ortasında
+  değiştirirse (katalog kaydırma → yalnız zarar edenler) o ana kadar yapılan
+  kod değişikliklerini yeni politikaya göre YENİDEN sına: `EON_SALE_RATE`'i
+  0,70'e çekmek altın endeksinin 10.937 satırı tanımasını bozacaktı ve geri
+  alındı. Yürütme zinciri yine aynı tuttu: kuru sayım mührü = yazım mührü
+  (328 satır), `greatest()` ile idempotent, audit'te 328 satır, Etsy kuru 110
+  fark → apply 0 kalan → ayrı token'la bağımsız geri okuma 0 fark.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması

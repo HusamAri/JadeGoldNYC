@@ -726,6 +726,55 @@ hatayı yakalıyor — dönüş değerindeki hatayı değil. İki iş: (a) rota 
 
 ---
 
+## EK-7 (2026-09-27) — karar: %30 kalıcı, marj karşılar; yalnız zarar edenler yükseltildi
+
+Sahip EK-6'daki iki seçeneğin ikisini de seçmedi, üçüncü yolu seçti:
+*"sadece zarar edenlerde fiyat yükselt yoksa marjdan yesin"*. Liste fiyatları
+olduğu gibi kaldı; %30 indirimli satışta Etsy ücreti sonrası maliyeti
+karşılamayan varyant, karşılayan ilk 5$ basamağına çekildi.
+
+**Zarar ölçütü** (canlı spot $4.286,20/ozt, 2026-09-27 11:33Z):
+
+- Taban liste = `ceil5( ((landed + 0,45) / 0,88) / 0,70 )`. 0,88 = 1 − %12 Etsy
+  ücreti (son 60 günde 27 siparişte ölçülen %11,45'in üstü, kötümser).
+- Yeni aileler (Willow, Comet, Laurel, Ridge …): kendi motorlarının maliyeti,
+  işçilik kötümser $130.
+- Diğer bütün bantlar: Tamsan fatura kalibreli v4 maliyeti, işçilik en yüksek
+  kademe $74.
+- Gramı boş 1.525 satır: motorun 1,5 mm gram tablosu × 1,15 emniyet payı.
+
+**Sonuç:** 35.424 varyanttan **328'i** zarardaydı; hepsi tabana çekildi.
+
+| | varyant | listing | artış |
+|---|---|---|---|
+| Etsy'de aktif | 110 | 21 | ort. %1–5, en fazla %8,2 |
+| Yalnız panel taslağı (hiç Etsy'ye çıkmamış) | 218 | 16 | %15–48 |
+
+- Yeni ailelerin hiçbiri $130 işçilikle bile zararda değil.
+- Etsy: `price-sync` kuru koşu 21/21 `would-sync`, 110 offering farkı (panel
+  sayımıyla birebir); apply 21/21 `synced`, `kalanFark: 0`; ayrı token'la
+  bağımsız geri okuma 21/21 `unchanged`, 0 fark.
+- DB: kuru sayım ve yazım aynı mührü verdi (`42c6da68a85d74a81355cc18e91d9ceb`,
+  328 satır). `greatest(fiyat, taban)` mantığı: ikinci koşu 0 satır değiştirir.
+  Audit'te 328 satır, tek işlem damgası (satır satır geri alınabilir).
+- Sorgu: `docs/eon/pricing/2026-09-27-discount30-loss-floor.sql`.
+
+**Bilerek değiştirilmeyenler:**
+
+- `EON_SALE_RATE` ve panel `pricing_config.sale_rate` 0,75'te kaldı. 0,70'e
+  çekmek iki şeyi bozardı: (1) altın endeksli yeniden fiyatlama 10.937 formül
+  satırını "taban uyumsuz" deyip atlardı, (2) panel motoru yeni fiyat kurarken
+  listeleri yükseltirdi — ikisi de "marj karşılasın" kararına ters. Bedeli:
+  panelin gösterdiği marj gerçekten ~%6,7 yüksek kalır.
+- Ring sizer ($10) takı değil, hariç.
+- 3 varyantlı Sunray bilezik taslağının gramı yok, değerlendirilemedi.
+
+**Açık borç:** taban bugünün spotuna sabit. Altın yükselirse zarar sınırı da
+yükselir; aynı sorgu yeni spotla yeniden koşulmalı (idempotent olduğu için
+güvenli).
+
+---
+
 ## Kaynaklar
 
 - [Etsy Seller Handbook — Making the Most of Seasonal Sales Patterns](https://www.etsy.com/sg-en/seller-handbook/article/making-the-most-of-seasonal-sales/45451604718)
