@@ -76,7 +76,6 @@
   "approval": {
     "etsyPushRequiresExplicitOwnerInstruction": true,
     "blockers": [
-      "30 gallery images (10 per metal) not complete yet — see visual-plan.json",
       "Grams are estimated from the Ridge family (same table as Laurel Cross); the physical demo sample was not weighed",
       "Labor tier: USD 110 (Ridge fixture) chosen; one groove on a sandblasted band is simpler than Ridge, so a lower tier is the owner's alternative",
       "Store discount is 30% live vs 25% assumed by the engine (EK-6) — owner decision pending"
@@ -93,9 +92,9 @@
     "panelDraftOnly": true,
     "etsyWrites": false,
     "galleryImagesPerListing": {
-      "EON-COMET-Y": 0,
-      "EON-COMET-W": 0,
-      "EON-COMET-R": 0
+      "EON-COMET-Y": 10,
+      "EON-COMET-W": 10,
+      "EON-COMET-R": 10
     }
   },
   "listings": [

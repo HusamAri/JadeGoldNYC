@@ -1,0 +1,316 @@
+{
+  "schemaVersion": 1,
+  "family": "Comet Stardust Band",
+  "status": "complete: 27 generated + 3 typeset, 30/30",
+  "listings": [
+    "EON-COMET-Y",
+    "EON-COMET-W",
+    "EON-COMET-R"
+  ],
+  "model": {
+    "name": "nano_banana_2",
+    "resolution": "2k",
+    "aspectRatio": "1:1",
+    "count": 1
+  },
+  "reference": {
+    "file": "images/00-reference-demo.jpg",
+    "uploads": {
+      "ringCrop": "6704a8a8-63e4-40ab-a07b-272b71a6df8e",
+      "grooveCrop": "35490ec7-27f4-47f3-a5ec-aed2c7c63285",
+      "colourRefs": {
+        "W": "101565d9-68ff-4dc8-a7b2-9a283ec741f2 (Willow white hero)",
+        "R": "b3f76d3f-d0bd-42e3-b225-0fe7c4b2b186 (Willow rose hero)"
+      },
+      "swatches": {
+        "Y": "0fea23cb-6c3d-4852-88a8-c89f9a7d1f23",
+        "W": "74dc32bc-150f-467e-bc2d-e3001784818d",
+        "R": "ba43706f-c1c4-49b4-8053-a949f3c04e2f"
+      }
+    }
+  },
+  "geometryNote": "Read from close crops of the owner's demo sample: flat band, coarse sparkling sandblast over the whole outer face, ONE continuous polished groove around the band set off-centre (about a third of the width from one edge; owner confirmed), square edges, mirror-polished interior. No stones.",
+  "visualLanguage": {
+    "ownerBrief": "görsel dili daha home studio natural shadows, glass reflections stilinde yap, EON visual language matching with ring style (2026-09-27)",
+    "idea": "A real home in morning window light. Clear glass (a thick slab, a cast-glass cube, a drinking glass of water, a hand-blown dish) carries soft offset reflections and refracted light; the ring's sparkle answers the light in the glass and the single groove reads as one bright line.",
+    "palette": "pale oak, linen, plaster white, clear glass",
+    "banned": [
+      "mirror or symmetrical reflection",
+      "dark backdrop",
+      "glitter or sparkle overlays",
+      "gradient sweep"
+    ]
+  },
+  "scenes": {
+    "01-hero": "standing 3/4 on a clear glass slab",
+    "02-worn-linen": "worn, hand on linen beside a glass of water",
+    "03-macro": "one curved section of the band fills the frame",
+    "04-width-ladder": "three rings 3/5/8 mm on a glass sheet",
+    "05-profile": "lying on a cast-glass cube, square edge and groove",
+    "06-worn-glass": "worn, hand holding a glass of water",
+    "07-spec-card": "typeset, not generated",
+    "08-scale-fingers": "pinched between thumb and index finger at true scale (about a fingertip wide)",
+    "09-interior": "interior view (top-down or through the opening)",
+    "10-pair": "4 mm + 7 mm beside a hand-blown glass dish"
+  },
+  "generated": {
+    "Y01": {
+      "status": "accepted",
+      "jobId": "af9cb24b-7ccb-4065-ac2a-ef77a96fe6b8",
+      "file": "images/yellow/01-hero.jpg",
+      "round": 1
+    },
+    "Y07": {
+      "status": "typeset",
+      "file": "images/yellow/07-spec-card.jpg",
+      "by": "node scripts/eon/typeset_spec_card.mjs comet"
+    },
+    "Y02": {
+      "status": "accepted",
+      "jobId": "b68fa904-4474-441d-8313-1767aee9d5b1",
+      "file": "images/yellow/02-worn-linen.jpg",
+      "round": 1
+    },
+    "Y03": {
+      "status": "accepted",
+      "jobId": "a1bb35fd-5fc2-47d4-833b-e50dfe129fca",
+      "file": "images/yellow/03-macro.jpg",
+      "round": 2
+    },
+    "Y04": {
+      "status": "accepted",
+      "jobId": "7013bb9e-8ad3-4816-8272-ad68437709d9",
+      "file": "images/yellow/04-width-ladder.jpg",
+      "round": 1
+    },
+    "Y05": {
+      "status": "accepted",
+      "jobId": "9ac70c7c-b76d-4b6c-a801-07e558167588",
+      "file": "images/yellow/05-profile.jpg",
+      "round": 1
+    },
+    "Y06": {
+      "status": "accepted",
+      "jobId": "acd4593c-727a-4db4-80d7-858236295de5",
+      "file": "images/yellow/06-worn-glass.jpg",
+      "round": 1
+    },
+    "Y08": {
+      "status": "accepted",
+      "jobId": "18d5036a-334e-411a-abc4-0e76fc6287fb",
+      "file": "images/yellow/08-scale-fingers.jpg",
+      "round": 3
+    },
+    "Y09": {
+      "status": "accepted",
+      "jobId": "d3e907d9-44f5-425e-bce5-7728e6306172",
+      "file": "images/yellow/09-interior.jpg",
+      "round": 2
+    },
+    "Y10": {
+      "status": "accepted",
+      "jobId": "da9e6ef6-5982-43a2-bf2f-e57a1fc48033",
+      "file": "images/yellow/10-pair.jpg",
+      "round": 1
+    },
+    "W01": {
+      "status": "accepted",
+      "jobId": "d7ba639c-5994-400d-b6cb-921cb3e278e6",
+      "file": "images/white/01-hero.jpg",
+      "round": 1
+    },
+    "W07": {
+      "status": "typeset",
+      "file": "images/white/07-spec-card.jpg",
+      "by": "node scripts/eon/typeset_spec_card.mjs comet"
+    },
+    "W02": {
+      "status": "accepted",
+      "jobId": "de6b3d08-21e1-44bc-980e-c38412d0065d",
+      "file": "images/white/02-worn-linen.jpg",
+      "round": 1
+    },
+    "W03": {
+      "status": "accepted",
+      "jobId": "7cad4033-9e16-4b29-a787-0ba703ba23e8",
+      "file": "images/white/03-macro.jpg",
+      "round": 2
+    },
+    "W04": {
+      "status": "accepted",
+      "jobId": "0a2ce456-0aa1-4c31-8e1a-a64220baf3e0",
+      "file": "images/white/04-width-ladder.jpg",
+      "round": 2
+    },
+    "W05": {
+      "status": "accepted",
+      "jobId": "d7c7c092-9c4a-4722-8ae4-64994a66de76",
+      "file": "images/white/05-profile.jpg",
+      "round": 2
+    },
+    "W06": {
+      "status": "accepted",
+      "jobId": "87ced558-93ad-4b6a-a4a1-b96446d00b4c",
+      "file": "images/white/06-worn-glass.jpg",
+      "round": 1
+    },
+    "W08": {
+      "status": "accepted",
+      "jobId": "86ee4150-2580-4d28-932f-20531eae0702",
+      "file": "images/white/08-scale-fingers.jpg",
+      "round": 3
+    },
+    "W09": {
+      "status": "accepted",
+      "jobId": "aa6f1bf3-9143-4926-aeee-26211210ba4e",
+      "file": "images/white/09-interior.jpg",
+      "round": 2
+    },
+    "W10": {
+      "status": "accepted",
+      "jobId": "01b313c1-2e7b-4ed0-8858-d5e4a4bf8c53",
+      "file": "images/white/10-pair.jpg",
+      "round": 1
+    },
+    "R01": {
+      "status": "accepted",
+      "jobId": "1db32b3a-89c8-4782-843c-a2146fb11eb9",
+      "file": "images/rose/01-hero.jpg",
+      "round": 1
+    },
+    "R07": {
+      "status": "typeset",
+      "file": "images/rose/07-spec-card.jpg",
+      "by": "node scripts/eon/typeset_spec_card.mjs comet"
+    },
+    "R02": {
+      "status": "accepted",
+      "jobId": "45117b9e-8cbc-4cf5-b3e7-f245669ba340",
+      "file": "images/rose/02-worn-linen.jpg",
+      "round": 1
+    },
+    "R03": {
+      "status": "accepted",
+      "jobId": "ebd9db90-b37c-4104-a724-8283c2335004",
+      "file": "images/rose/03-macro.jpg",
+      "round": 2
+    },
+    "R04": {
+      "status": "accepted",
+      "jobId": "d350f948-e7e8-4511-af6e-797c3f3f4f4f",
+      "file": "images/rose/04-width-ladder.jpg",
+      "round": 2
+    },
+    "R05": {
+      "status": "accepted",
+      "jobId": "a516c10a-3482-40a6-845f-f94c4cfb799f",
+      "file": "images/rose/05-profile.jpg",
+      "round": 2
+    },
+    "R06": {
+      "status": "accepted",
+      "jobId": "63df105c-0a19-4d98-a491-2ded3bcb31c4",
+      "file": "images/rose/06-worn-glass.jpg",
+      "round": 1
+    },
+    "R08": {
+      "status": "accepted",
+      "jobId": "9ad52726-a6b5-4622-9695-327f1a9f0fa5",
+      "file": "images/rose/08-scale-fingers.jpg",
+      "round": 3
+    },
+    "R09": {
+      "status": "accepted",
+      "jobId": "825232bb-01f7-4ff4-be89-af17bcc346e5",
+      "file": "images/rose/09-interior.jpg",
+      "round": 2
+    },
+    "R10": {
+      "status": "accepted",
+      "jobId": "4764621a-fc20-4411-b4c3-04d00c1d3e4d",
+      "file": "images/rose/10-pair.jpg",
+      "round": 1
+    }
+  },
+  "rejected": [
+    {
+      "slot": "Y03",
+      "jobId": "13c1e62b-83eb-4175-b796-cf87baa9fd81",
+      "defect": "Not a macro: a lying side view near-identical to 05/09 (or a hero copy)."
+    },
+    {
+      "slot": "Y09",
+      "jobId": "e7dddb5c-8966-49e7-985b-36cf3414a7a3",
+      "defect": "Not an interior view: same lying side view as 03/05, or a hero copy."
+    },
+    {
+      "slot": "W03",
+      "jobId": "9baf08ca-7b70-4e13-a241-d440e181f894",
+      "defect": "Not a macro: a lying side view near-identical to 05/09 (or a hero copy)."
+    },
+    {
+      "slot": "W04",
+      "jobId": "fb94e665-937f-4816-9888-12dcca5727be",
+      "defect": "Hero copy: one standing ring instead of three widths."
+    },
+    {
+      "slot": "W05",
+      "jobId": "3d5da56e-4ee8-41de-b3c1-454448d79f97",
+      "defect": "Hero copy: standing ring, no profile."
+    },
+    {
+      "slot": "W08",
+      "jobId": "21ae1241-7433-41d6-bbeb-2ba1ecd1c1ab",
+      "defect": "Hero copy, no hand (white); rough hammered texture (white)."
+    },
+    {
+      "slot": "W08",
+      "jobId": "dd8d0d1f-b0ce-49c2-b10c-a865eff9c8cd",
+      "defect": "Owner: ring too big for the hand ('yüzüğün elde tutulan ölçüsü büyük'); ring about twice a fingertip."
+    },
+    {
+      "slot": "W09",
+      "jobId": "427b3343-9fcc-4e08-b792-bf7ca5ed9857",
+      "defect": "Not an interior view: same lying side view as 03/05, or a hero copy."
+    },
+    {
+      "slot": "R03",
+      "jobId": "c55a1ef5-fb88-4a34-a5c9-52e132456c32",
+      "defect": "Not a macro: a lying side view near-identical to 05/09 (or a hero copy)."
+    },
+    {
+      "slot": "R04",
+      "jobId": "7d8c7c75-e9a7-4b69-9d43-aa7f3b30ac17",
+      "defect": "Hero copy: one standing ring instead of three widths."
+    },
+    {
+      "slot": "R05",
+      "jobId": "88dab8b8-802d-4491-b81b-80841a0d7d8f",
+      "defect": "Hero copy: standing ring, no profile."
+    },
+    {
+      "slot": "R09",
+      "jobId": "aff61c90-2ddd-443f-b797-dbc73b99f26a",
+      "defect": "Not an interior view: same lying side view as 03/05, or a hero copy."
+    },
+    {
+      "slot": "Y08",
+      "jobId": "ea95bf8e-cd63-4570-a312-4308ed5bf199",
+      "defect": "Owner: ring too big for the hand ('yüzüğün elde tutulan ölçüsü büyük'); ring about twice a fingertip."
+    },
+    {
+      "slot": "R08",
+      "jobId": "5ca3ab5a-3ead-4b85-a4eb-c9d5646eeedf",
+      "defect": "Owner: ring too big for the hand ('yüzüğün elde tutulan ölçüsü büyük'); ring about twice a fingertip."
+    }
+  ],
+  "setLevelNotes": [
+    "Round 1 used each colour's hero as the reference: white and rose copied the hero framing in 03/04/05/08/09 and yellow 03/05/09 converged on one lying side view. Round 2 replaced the hero with a tight colour/texture swatch cut from it (no composition to copy) plus a physical description of each pose; 11/11 did their job.",
+    "Round 3 (owner): the ring in 08 was about twice a fingertip wide. Stating true scale in physical terms (about 2 cm across, about a fingertip wide) fixed it 3/3.",
+    "The white hero's groove catches a warm reflection; the ring reads white gold at full and thumbnail size."
+  ],
+  "creditsSpent": {
+    "generations": 41,
+    "discarded": 14
+  }
+}
