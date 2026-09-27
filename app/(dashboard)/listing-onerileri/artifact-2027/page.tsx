@@ -1,0 +1,26 @@
+import Link from "next/link";
+import Image from "next/image";
+import { requireMembership, getActiveOrg } from "@/lib/auth";
+import { catalog, assertImportAccess } from "@/lib/artifact-2027/catalog";
+import { ImportButton } from "./import-button";
+export const metadata = { title: "Artifact Studio 2027 · 20 öneri" };
+export const maxDuration = 60;
+export default async function Artifact2027Page() {
+  const m = await requireMembership();
+  const org = await getActiveOrg();
+  try { assertImportAccess(org?.name, m.role); } catch {
+    return <p>Bu koleksiyon için by Artifact Studio Jewelry sahibi/yöneticisi olarak doğru markayı seçin.</p>;
+  }
+  return <div className="space-y-6 p-6">
+    <h1 className="text-3xl">Artifact Studio · 2027 Color &amp; Enamel</h1>
+    <p>5 yüzük · 5 kolye · 5 zincirli bileklik · 5 çift küpe. 14 ayar sarı altın ve fırın minesi tasarım yönü.</p>
+    <p>Her modelde tek AI tasarım görseli (1254 × 1254). Üretim numunesi değildir. Fiyat, gramaj, beden ve fırın uygunluğu teyit bekliyor.</p>
+    <ImportButton />
+    <Link href="/listing-onerileri" className="underline">Listing önerilerine dön</Link>
+    <div className="grid grid-cols-1 gap-5 md:grid-cols-3 xl:grid-cols-5">{catalog.map(d => <article key={d.id} className="rounded-xl border p-3">
+      <Image unoptimized src={d.imageUrl} width={300} height={300} alt={d.alt} className="rounded-lg" />
+      <h2 className="mt-3 font-semibold">{d.id} · {d.name}</h2><p>{d.tr}</p>
+      <p className="text-sm">{d.title}</p><Link className="text-sm underline" href={`/tasarimlar/listing/${d.productId}`}>Kayıtlı öneriyi aç</Link>
+    </article>)}</div>
+  </div>;
+}
