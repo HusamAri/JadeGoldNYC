@@ -191,10 +191,10 @@
     },
     "R01": {
       "status": "accepted",
-      "jobId": "67a12d2d-ae5f-4787-9a26-a31b5c60bda2",
+      "jobId": "798890a0-3dfa-4a43-a021-3fb1e49cdc10",
       "file": "images/rose/01-hero.jpg",
-      "promptVersion": 2,
-      "note": "Polished cuts lean champagne in daylight; frosted facets read rose."
+      "promptVersion": 4,
+      "note": "Owner approved (2026-09-27): true pink rose colour; each joint = two flat polished bars with a dark channel between them, as in the reference close-up."
     },
     "Y02": {
       "status": "accepted",
@@ -305,52 +305,53 @@
     },
     "R02": {
       "status": "accepted",
-      "jobId": "8ff54288-0448-4373-a188-e5450f819037",
+      "jobId": "d0151b60-cc7c-4341-a487-11cee62b1519",
       "file": "images/rose/02-worn-linen.jpg",
-      "promptVersion": 2
+      "promptVersion": 4
     },
     "R03": {
       "status": "accepted",
-      "jobId": "e5c01f01-4d0b-4203-a386-0690889a862a",
+      "jobId": "6bf539ae-de4f-4302-801b-e54552f34ceb",
       "file": "images/rose/03-macro.jpg",
-      "promptVersion": 2,
-      "note": "Same as W03: front close view."
+      "promptVersion": 4,
+      "note": "Retake still draws three bars per joint (lying-flat side view pushes the model to reeding); owner accepted as is (2026-09-27)."
     },
     "R04": {
       "status": "accepted",
-      "jobId": "4a1c338a-a13c-4f70-89fc-4c6b54f9c8da",
+      "jobId": "a79710b3-bbc1-4eb2-9587-8fa3e13f42c3",
       "file": "images/rose/04-width-ladder.jpg",
-      "promptVersion": 2
+      "promptVersion": 4
     },
     "R05": {
       "status": "accepted",
-      "jobId": "45678313-fc13-4b0b-98bb-beca5b1f6138",
+      "jobId": "738dca30-a35d-4730-af59-3163cce03fce",
       "file": "images/rose/05-profile.jpg",
-      "promptVersion": 2
+      "promptVersion": 4,
+      "note": "Retake still draws three bars per joint (lying-flat side view pushes the model to reeding); owner accepted as is (2026-09-27)."
     },
     "R06": {
       "status": "accepted",
-      "jobId": "5cd934e1-7a0d-4b47-b9ec-62a2329f5180",
+      "jobId": "2e39f8cf-de82-41cf-991f-3915f7f9c5e1",
       "file": "images/rose/06-worn-coffee.jpg",
-      "promptVersion": 2
+      "promptVersion": 4
     },
     "R08": {
       "status": "accepted",
-      "jobId": "de09b64d-c8a8-4ff0-a738-0bdd998299db",
+      "jobId": "1e855ae9-588d-4f23-a239-90e165daddb6",
       "file": "images/rose/08-scale-fingers.jpg",
-      "promptVersion": 2
+      "promptVersion": 4
     },
     "R09": {
       "status": "accepted",
-      "jobId": "0c64466f-848f-4d30-91a9-15718660f26f",
+      "jobId": "13579edc-9cd0-4f55-bdae-cc784fb15897",
       "file": "images/rose/09-interior.jpg",
-      "promptVersion": 2
+      "promptVersion": 4
     },
     "R10": {
       "status": "accepted",
-      "jobId": "493dc8d0-bf80-4b87-a8ba-6bd67b2964ea",
+      "jobId": "ff72da01-cb8f-4b7a-8f10-516b5325938d",
       "file": "images/rose/10-pair.jpg",
-      "promptVersion": 2
+      "promptVersion": 4
     },
     "R07": {
       "status": "typeset",
@@ -411,6 +412,66 @@
       "slot": "W09",
       "jobId": "50e84c76-4dee-4903-9e61-1aee344567b1",
       "defect": "Blank interior but a near copy of the W01 hero composition; interior not the subject (Willow W03 lesson). Retaken looking down into the opening."
+    },
+    {
+      "slot": "R01",
+      "jobId": "67a12d2d-ae5f-4787-9a26-a31b5c60bda2",
+      "defect": "Superseded 2026-09-27: owner flagged the rose set ('rose gold hatalı'). Colour read peach/champagne and joints were rounded triple ribs instead of two flat bars with a channel."
+    },
+    {
+      "slot": "R02",
+      "jobId": "8ff54288-0448-4373-a188-e5450f819037",
+      "defect": "Superseded 2026-09-27: owner flagged the rose set ('rose gold hatalı'). Colour read peach/champagne and joints were rounded triple ribs instead of two flat bars with a channel."
+    },
+    {
+      "slot": "R03",
+      "jobId": "e5c01f01-4d0b-4203-a386-0690889a862a",
+      "defect": "Superseded 2026-09-27: owner flagged the rose set ('rose gold hatalı'). Colour read peach/champagne and joints were rounded triple ribs instead of two flat bars with a channel."
+    },
+    {
+      "slot": "R04",
+      "jobId": "4a1c338a-a13c-4f70-89fc-4c6b54f9c8da",
+      "defect": "Superseded 2026-09-27: owner flagged the rose set ('rose gold hatalı'). Colour read peach/champagne and joints were rounded triple ribs instead of two flat bars with a channel."
+    },
+    {
+      "slot": "R05",
+      "jobId": "45678313-fc13-4b0b-98bb-beca5b1f6138",
+      "defect": "Superseded 2026-09-27: owner flagged the rose set ('rose gold hatalı'). Colour read peach/champagne and joints were rounded triple ribs instead of two flat bars with a channel."
+    },
+    {
+      "slot": "R06",
+      "jobId": "5cd934e1-7a0d-4b47-b9ec-62a2329f5180",
+      "defect": "Superseded 2026-09-27: owner flagged the rose set ('rose gold hatalı'). Colour read peach/champagne and joints were rounded triple ribs instead of two flat bars with a channel."
+    },
+    {
+      "slot": "R08",
+      "jobId": "de09b64d-c8a8-4ff0-a738-0bdd998299db",
+      "defect": "Superseded 2026-09-27: owner flagged the rose set ('rose gold hatalı'). Colour read peach/champagne and joints were rounded triple ribs instead of two flat bars with a channel."
+    },
+    {
+      "slot": "R09",
+      "jobId": "0c64466f-848f-4d30-91a9-15718660f26f",
+      "defect": "Superseded 2026-09-27: owner flagged the rose set ('rose gold hatalı'). Colour read peach/champagne and joints were rounded triple ribs instead of two flat bars with a channel."
+    },
+    {
+      "slot": "R10",
+      "jobId": "493dc8d0-bf80-4b87-a8ba-6bd67b2964ea",
+      "defect": "Superseded 2026-09-27: owner flagged the rose set ('rose gold hatalı'). Colour read peach/champagne and joints were rounded triple ribs instead of two flat bars with a channel."
+    },
+    {
+      "slot": "R01",
+      "jobId": "c30828c4-09c3-43aa-b0d6-29b755ef1487",
+      "defect": "Prompt v3: colour correct, but the two bars touched with no gap; owner: 'ortada da boşluk olmalı'."
+    },
+    {
+      "slot": "R03",
+      "jobId": "4378b187-fa48-4605-ae57-9556f9f982fc",
+      "defect": "Channel rendered as a solid black stripe that reads as enamel inlay."
+    },
+    {
+      "slot": "R05",
+      "jobId": "3521c3d7-d8c0-4c04-8c9a-34bb2b470f73",
+      "defect": "Joints drawn as bundles of three or four rounded bars."
     }
   ],
   "qaTools": {
@@ -431,5 +492,6 @@
   },
   "geometryBlockV1_superseded": "Photorealistic photograph of the EXACT ring design shown in the reference image, remade in real solid {METAL_DESC}. It is a closed, continuous 360-degree wedding band — never a cropped slab, straight segment, open ring or C-shape. PROFILE: a FLAT-topped raised center band with straight side walls; on each side the band steps DOWN to a narrow, lower, mirror-polished rail that runs around both edges, so the cross-section is stepped, not domed. CENTER FINISH: a fine frosted SANDBLASTED matte texture — even, granular and non-reflective; not brushed lines, not hammered, not glossy. GROOVES: at regular intervals around the ring, PAIRS of narrow polished grooves are cut straight ACROSS the width of the center band, perpendicular to the ring's circumference. Each pair is two parallel rounded channels side by side, mirror-polished inside, and the pairs divide the frosted center into equal rectangular sections (roughly six to eight pairs around the whole ring, evenly spaced). The grooves are recessed channels cut into the metal, never raised bars and never holes through the band; each one runs from rail to rail and stops at the step. INTERIOR: smooth mirror-polished comfort fit, no text. Clean new metal: no tarnish, no dark spots, no green or brass tone, no dust. NO GLOVES anywhere in the image. NO text, letters, numbers, karat stamps or hallmarks anywhere on the ring, inside or outside. No stones, no pave, no sparkle set into the ring. Do NOT add: gemstones, diamonds, crystals, milgrain beads, hammering, rope, leaves, diagonal cuts, a continuous groove running around the ring, engraving on the outside, or any second pattern.",
   "geometryNote": "v2 (2026-09-26, owner: 'olmadı, referansa benzet'): the ring is FACETED — flat frosted panels with broad polished coves/staircase cuts at each joint. v1 described a round band with thin groove pairs and produced reeded ribs.",
-  "setLevelNotes": "W03/W05 and R03/R05 are both front views of the ring; kept because each shows the stepped rails and polished cuts. Credits spent on v1 geometry: 20 generations discarded after the owner's 'referansa benzet'."
+  "setLevelNotes": "W03/W05 and R03/R05 are both front views of the ring; kept because each shows the stepped rails and polished cuts. Credits spent on v1 geometry: 20 generations discarded after the owner's 'referansa benzet'.",
+  "geometryNoteV4": "2026-09-27, rose only (owner chose rose-only; yellow and white kept as v2). Reference read from two close crops (uploaded as refs 089c929e… staircase, 1426de6b… cove): each joint is TWO flat mirror-polished bars separated by a narrow, deep, shaded metal channel (panel | bar | gap | bar | panel), below the panel surface; never raised rounded rods, never three bars, never a black stripe. Colour reference: Willow rose hero (b3f76d3f…). Rose frames 02–10 use the approved R01 job as reference. Lying-flat side views (03, 05) still drift to three bars."
 }

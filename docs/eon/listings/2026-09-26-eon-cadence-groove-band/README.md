@@ -46,6 +46,13 @@ Her renk: `01-hero` · `02-worn-linen` · `03-macro` · `04-width-ladder` ·
 - `07-spec-card` dizildi: `node scripts/eon/typeset_spec_card.mjs cadence`.
 - QA: 2048² sRGB, 30/30 tekil md5, makroblok 0, damga/taş için iç yüzey
   zoom'u, renk başına kontak baskısı. Retler ve gerekçeleri `visual-plan.json`.
+- **Rose yeniden (2026-09-27, sahip: "rose gold hatalı"):** eski rose seti
+  şeftali/şampanya tonundaydı ve eklemler yuvarlak 3'lü nervürdü. Referans
+  yakın kırpımlardan okundu: her eklem iki düz parlak bar ve aralarında dar,
+  gölgeli bir metal kanal. Rose 9 kare bu tarifle (prompt v4) yeniden üretildi;
+  hero sahip onaylı. 03 ve 05 yatık yan açıda hâlâ 3 bar çiziyor, sahip olduğu
+  gibi kabul etti. Sarı ve beyaz v2 olarak kaldı (sahibin kapsam kararı).
+  Ayrıntı: `visual-plan.json` → `geometryNoteV4`.
 
 ## Panel + Etsy (Willow akışı)
 
