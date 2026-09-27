@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * EON listing paketleri icin 07 — spec karti. ELLE DIZILIR, model uretmez.
- * Aile secimi: node scripts/eon/typeset_spec_card.mjs willow|cadence|comet|comet-tail
+ * Aile secimi: node scripts/eon/typeset_spec_card.mjs willow|cadence|comet|comet-tail|frostline
  *
  * Neden: modelin gorsele yazdigi rakam yazim hatasi degil YANLIS BEYANdir
  * (2026-09-11 dersi). Bu seride model iki kez sahte ayar damgasi da basti
@@ -13,7 +13,7 @@
  * fontu olarak zaten vaat edilen iki font. Degerler Bitstream Charter: Prata'nin
  * eski-stil "1"i "l" gibi okundugu icin (ilk dizimde "lOK · l4K").
  *
- * Kullanim: node scripts/eon/typeset_spec_card.mjs <willow|cadence|comet|comet-tail>
+ * Kullanim: node scripts/eon/typeset_spec_card.mjs <willow|cadence|comet|comet-tail|frostline>
  */
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
@@ -51,9 +51,18 @@ const FAMILIES = {
     subtitle: "Tapered diagonal cuts on brushed satin, milgrain edges",
     footer: 'No gemstones  ·  "diamond-cut" is the faceting technique',
   },
+  frostline: {
+    pkg: "2026-09-27-eon-frostline-band",
+    hero: "01-hero.jpg",
+    name: "FROSTLINE",
+    subtitle: "Brushed satin and florentine, one tilted polished groove",
+    footer: "Solid gold  ·  No gemstones",
+    // Sahip beyani (2026-09-27): 1,5 mm. Aciklamada da ayni sayi yazili olmali.
+    thicknessMm: 1.5,
+  },
 };
 const family = FAMILIES[process.argv[2] ?? "willow"];
-assert(family, `bilinmeyen aile: ${process.argv[2]} (willow|cadence|comet|comet-tail)`);
+assert(family, `bilinmeyen aile: ${process.argv[2]} (willow|cadence|comet|comet-tail|frostline)`);
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const pkg = path.resolve(here, "../../docs/eon/listings", family.pkg);
@@ -84,13 +93,18 @@ for (const listing of manifest.listings) {
   assert(desc.includes(`US ${sizeMin} to US ${sizeMax}, including half sizes`), `${dir}: beden metni kartla uyusmuyor`);
   assert(desc.includes("up to 30 characters"), `${dir}: gravur siniri kartla uyusmuyor`);
   assert(/No gemstones/.test(desc), `${dir}: 'No gemstones' aciklamada yok`);
-  assert(!/thick/i.test(desc), `${dir}: kaynaksiz kalinlik beyani`);
+  if (family.thicknessMm) {
+    assert(desc.includes(`${family.thicknessMm} mm thick`), `${dir}: kalinlik metni kartla uyusmuyor`);
+  } else {
+    assert(!/thick/i.test(desc), `${dir}: kaynaksiz kalinlik beyani`);
+  }
 
   const metalName = listing.metalColor.toUpperCase();
   const rows = [
     ["SOLID GOLD", karatLine],
     ["WIDTH", widthLine],
     ["RING SIZE", sizeLine],
+    ...(family.thicknessMm ? [["THICKNESS", `${family.thicknessMm} mm`]] : []),
     ["FIT", "Comfort fit, polished interior"],
     ["ENGRAVING", "Optional inside, up to 30 characters"],
   ];
@@ -102,7 +116,8 @@ for (const listing of manifest.listings) {
 
   const ink = "#2B2622", muted = "#7A6F66", rule = "#D8CFC4";
   const top = PHOTO_Y + PHOTO + 130;
-  const rowY = (i) => top + 215 + i * 88;
+  // 6 satirda (kalinlik) aralik daralir; footer'a en az bir satir bosluk kalir.
+  const rowY = (i) => top + 215 + i * (rows.length > 5 ? 76 : 88);
   const svg = `<svg width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg">
   <text x="${W / 2}" y="${top}" text-anchor="middle" font-family="Cinzel" font-size="96" letter-spacing="18" fill="${ink}">${family.name}</text>
   <text x="${W / 2}" y="${top + 80}" text-anchor="middle" font-family="Prata" font-size="46" fill="${muted}">${esc(family.subtitle)}  ·  ${esc(metalName)}</text>

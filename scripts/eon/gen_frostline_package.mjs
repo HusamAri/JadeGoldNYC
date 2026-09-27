@@ -264,7 +264,7 @@ CARE
 Clean gently with mild soap, lukewarm water and a soft cloth. Avoid harsh chemicals and abrasive cleaners. The satin and florentine finishes soften gradually with wear and can be refreshed by a jeweler; the polished groove can be re-polished.
 
 ABOUT THE IMAGES
-The gallery uses Higgsfield AI-assisted visualizations guided by photographs of the physical design. Every scene was created independently for this metal color, not recolored from another. Metal color and reflections vary with lighting and screens. Props are not included.`,
+The gallery uses AI-assisted visualizations guided by photographs of the physical design. ${metal.code === "W" ? "The main image was recolored from the visualization made for another metal color, so the shape matches it exactly." : "The main image was created for this metal color."} Metal color and reflections vary with lighting and screens. Props are not included.`,
     tags: [
       "florentine band",
       "ice finish ring",
@@ -372,15 +372,20 @@ const summary = {
   galleryImagesPerListing: {},
 };
 
-// Galeri sayisi diskten okunur, elle yazilmaz: bayat "0 gorsel" blokeri
-// bir kez manifest'te kalmisti. Her renk klasoru ya bos ya tam 10 olmali.
+// Galeri sayisi diskten okunur, elle yazilmaz. Ilk yayin renk basina 3 gorsel
+// (sahip karari 2026-09-27: Higgsfield kredisi bitti, "simdi 3'er gorselle
+// yayinla"): 01 hero, 03 yakin plan (hero'dan kirpma), 07 spec karti. Seri
+// kareler kredi gelince eklenir; ara sayi (4-9) yarim kalmis is demektir.
+const GALLERY_FIRST_RELEASE = ["01-hero.jpg", "03-closeup.jpg", "07-spec-card.jpg"];
 for (const { code, color } of MODEL.metals) {
   const dir = path.join(packageDir, "images", color.toLowerCase());
-  const files = (await readdir(dir).catch(() => [])).filter((f) => /^\d{2}-.+\.jpg$/.test(f));
-  assert(files.length === 0 || files.length === 10, `${color}: galeri ${files.length} gorsel, 10 olmali`);
+  const files = (await readdir(dir).catch(() => [])).filter((f) => /^\d{2}-.+\.jpg$/.test(f)).sort();
+  const firstRelease = JSON.stringify(files) === JSON.stringify(GALLERY_FIRST_RELEASE);
+  assert(files.length === 0 || firstRelease || files.length === 10, `${color}: galeri ${files.length} gorsel (${files.join(", ")})`);
   summary.galleryImagesPerListing[`${MODEL.skuStem}-${code}`] = files.length;
 }
 const galleryComplete = Object.values(summary.galleryImagesPerListing).every((n) => n === 10);
+const galleryFirstRelease = Object.values(summary.galleryImagesPerListing).every((n) => n === GALLERY_FIRST_RELEASE.length);
 
 if (checkOnly) {
   console.log(JSON.stringify({ check: "ok", ...summary }, null, 2));
@@ -428,7 +433,11 @@ const manifest = {
   approval: {
     etsyPushRequiresExplicitOwnerInstruction: true,
     blockers: [
-      ...(galleryComplete ? [] : ["30 gallery images (10 per metal) not complete yet — see visual-plan.json"]),
+      ...(galleryComplete
+        ? []
+        : galleryFirstRelease
+          ? ["First release: 3 images per metal (hero, close-up crop, spec card); the 7 remaining series frames per metal wait for image-generation credits — see visual-plan.json"]
+          : ["Gallery images not in place yet — see visual-plan.json"]),
       "Grams are estimated from the Ridge family (same table as Laurel Cross); the physical demo sample was not weighed",
       "Labor tier: USD 110 (Ridge fixture, same flat single-groove class as Comet; the tilted groove may take slightly more bench time)",
     ],
