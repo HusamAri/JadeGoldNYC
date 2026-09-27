@@ -28,7 +28,9 @@ export async function uploadArtifact2k(fd:FormData){
   if(p.listing_metadata?.homeGallery?.pending)throw new Error('Önceki galeri yüklemesi tamamlanmalı.');
   const client=await EtsyClient.forOrg(m.org_id),shopId=await client.requireShopId(),listingId=p.etsy_listing_id;
   const [listing,before,panelBefore]=await Promise.all([client.get<{state:string;shop_id:number}>(etsyPaths.listing(listingId)),client.get<Gallery>(etsyPaths.listingImagesRead(listingId)),db.from('listing_images').select('id,position,url').eq('org_id',m.org_id).eq('product_id',p.id)]);
-  if(listing.state!=='draft'||listing.shop_id!==shopId||panelBefore.error)throw new Error('Doğru mağazanın taslağı ve panel galerisi doğrulanamadı.');
+  if(panelBefore.error)throw new Error(`Panel galeri sorgusu: ${panelBefore.error.message}`);
+  if(listing.state!=='draft')throw new Error(`Etsy kaydı taslak değil: ${listing.state}. Görsel değiştirilmedi.`);
+  if(listing.shop_id!==shopId)throw new Error(`Etsy mağazası eşleşmiyor: listing ${listing.shop_id} (${typeof listing.shop_id}), connection ${shopId} (${typeof shopId}). Görsel değiştirilmedi.`);
   const ordered=[...before.results].sort((a,b)=>a.rank-b.rank),entries=(p.listing_metadata?.gallery2k??{}) as Record<string,Entry>,existing=entries[slot];
   if(existing){const photo=ordered.find(x=>x.listing_image_id===existing.imageId&&x.rank===rank);const panel=panelBefore.data.find(x=>x.id===existing.panelId&&x.url===existing.url&&x.position===slot);if(existing.sha!==sha||!photo||!panel||photo.full_width!==2048||photo.full_height!==2048)throw new Error('2K kaydı, Etsy görseli veya panel uyuşmuyor.');return {ok:true,message:`${code} sıra ${rank}: 2048 × 2048 zaten doğrulanmış.`,report:{code,slot,listingId,imageId:photo.listing_image_id,count:ordered.length,width:2048,height:2048,skipped:true}};}
   let pending=p.listing_metadata?.gallery2kPending as Pending|null|undefined;
