@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "family": "Frostline",
+  "status": "first release: 3 images per metal (hero, close-up crop, spec card); 7 series frames per metal pending credits",
+  "listings": [
+    "EON-FROST-Y",
+    "EON-FROST-W",
+    "EON-FROST-R"
+  ],
+  "reference": {
+    "files": [
+      "images/00-reference-demo.jpg",
+      "images/00-reference-demo-2.jpg",
+      "images/00-reference-demo-3.jpg"
+    ],
+    "uploads": {
+      "surfaceCropA": "11cc43e9-345b-4e2e-890d-599ac9b59858",
+      "surfaceCropB": "e208f56e-ea44-4e08-b751-67336cb830bf",
+      "samplePhoto8": "9d872696-eeb2-42ee-87a4-b5b1f8867617",
+      "samplePhoto7": "4983295b-2dd9-4530-aa49-fd7234e5b2b0",
+      "samplePhoto6": "6c0a8eeb-65c1-4e5a-8375-e49d802efc2f",
+      "colourRefs": {
+        "W": "101565d9-68ff-4dc8-a7b2-9a283ec741f2 (Willow white hero)",
+        "R": "b3f76d3f-d0bd-42e3-b225-0fe7c4b2b186 (Willow rose hero)"
+      }
+    },
+    "note": "Sample photos were tight-cropped around the ring and the prompt forbids copying their grey velvet scene."
+  },
+  "geometry": "Flat band, 1.5 mm thick (owner), square edges, polished interior. One polished groove on a tilted path splits the face into brushed satin and florentine (random crossing scratches). No stones, no milgrain.",
+  "rejects": [
+    {
+      "take": "Y01 v1",
+      "job": "f3342820-6add-4192-95e4-139ed394af81",
+      "why": "groove drawn straight and parallel to the edges (owner: 'çizgi düz değil')"
+    },
+    {
+      "take": "Y01 v2",
+      "job": "7ccf34e8-6eff-426a-8190-6e5090353c4a",
+      "why": "groove drawn as an S wave (owner: 'yine olmadı')"
+    },
+    {
+      "take": "Y01 v3",
+      "job": "99d5087c-9c23-469f-bfd7-a18aba505e1a",
+      "why": "tilted-plane text description; owner asked to use the reference photos instead"
+    },
+    {
+      "take": "W01 v1",
+      "job": "1cc4858c-6da8-4879-bd30-2dada6146235",
+      "why": "groove position drifted (satin zone too wide); owner: 'şekil yanlış'"
+    }
+  ],
+  "model": {
+    "name": "nano_banana_2",
+    "resolution": "2k",
+    "aspectRatio": "1:1",
+    "count": 1
+  },
+  "visualLanguage": {
+    "ownerBrief": "home studio, natural shadows, glass reflections",
+    "palette": "pale oak, plaster white, clear glass",
+    "banned": [
+      "grey towel / grey velvet / grey fabric (owner, 2026-09-27)",
+      "mirror or symmetrical reflection",
+      "dark backdrop",
+      "glitter overlays"
+    ]
+  },
+  "firstRelease": {
+    "01-hero": {
+      "Y": {
+        "job": "686c2e15-2982-43c8-9ffc-fee800389042 + edit c02a8a59-86db-4f79-947f-215fb097f154",
+        "method": "generated from the three sample photos; edit removed a background throw"
+      },
+      "W": {
+        "method": "local recolor of the accepted yellow hero (no generator; credits exhausted). Ring mask from measured sharp edges against the blurred background; glass reflection recolored too.",
+        "owner": "accepted"
+      },
+      "R": {
+        "job": "5a3a8461-ff35-4977-a6d0-ca3245fccdea",
+        "method": "generated from the three sample photos + Willow rose colour reference",
+        "owner": "'kalsın gayet güzel'"
+      }
+    },
+    "03-closeup": "crop of each metal's own hero, resized to 2048 (lanczos3)",
+    "07-spec-card": "typeset: node scripts/eon/typeset_spec_card.mjs frostline"
+  },
+  "pendingSeriesFrames": [
+    "02-worn-linen",
+    "04-width-ladder",
+    "05-profile",
+    "06-worn-glass",
+    "08-scale-fingers",
+    "09-interior",
+    "10-pair"
+  ],
+  "pendingReason": "Higgsfield 1 credit (2 per frame), Magnific 7 credits on 2026-09-27; owner chose to publish 3 images per metal now"
+}

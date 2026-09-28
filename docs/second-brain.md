@@ -1591,6 +1591,28 @@ repodaki hedefidir.
   yanlış beyandır. Yan ders: tam tepeden (90°) çekilen iç yüzey karesinde
   model desenli dış yüzü pul gibi üste boyadı (3/3); tepeden yalnız ray ve iç
   duvar görünür, 60° içeri bakan açı 3/3 düzeltti.
+  **Güçlendirme-3 (2026-09-27, Frostline) — geometriyi üç kez kelimeyle tarif
+  edip üçünde de ıskaladıysan dur, NUMUNENİN KENDİ FOTOĞRAFINI referans ver:**
+  oluğun yolunu önce "kenara paralel" (v1), sonra sahip "düz değil" deyince
+  "S dalgası" (v2), sonra "eğik düzlem" (v3) diye yazdım; sahip üçünü de
+  reddetti. Tutan v4'tü: tarifi bıraktım, numunenin üç fotoğrafını yüzüğün
+  çevresinden sıkı kırpıp verdim ve prompt'a yalnız "yüzüğü birebir kopyala,
+  oluğu düzeltme; gri kadifeyi, sahneyi, açıyı alma" yazdım. Kural: (1) bir
+  şekil özelliği kelimeyle iki turda tutmuyorsa sorun kelimede değil, modelin
+  tarifimi kendi kalıbına oturtmasındadır; üçüncü tarif denemesi yerine
+  numuneyi göster; (2) tam numune fotoğrafı sahne sızdırır (Comet Tail dersi),
+  panzehiri yüzüğe sıkı kırpım + "sahneyi alma" cümlesi; burada 3/3 temiz
+  çıktı. **Yan ders — kredi bitince renk kareleri yerelde üretilebilir, ama
+  maskeyi RENKTEN değil NETLİKTEN kur:** beyaz hero'yu sarıdan piksel
+  düzeyinde boyadım. Renk eşiği işe yaramadı: satin yüzün tonu (h 30, s 0,27)
+  arkadaki ahşapla (h 27–29, s 0,14–0,19) üst üste biniyordu; elle çizilen
+  poligon ise ya altın şerit bıraktı ya ahşapta gri hale yaptı. Tutan şey
+  halkanın kenarını ÖLÇMEKti: arka plan odak dışı (gradyan 1–3), halka keskin
+  (>9); satır satır ilk keskin pikseli bulup poligonu ondan kurdum, kenar
+  dışındaki bandı yalnız doygun altına (s>0,22, ahşap asla ulaşmıyor) açtım.
+  Boyanmış kareyi listing metninde AÇIKÇA söyle ("recolored from the
+  visualization made for another metal color"); eski "not recolored" cümlesi
+  artık yalan olurdu.
 
 - **Dış aracın şablonunu doldururken şablonun KENDİ yönlendirme satırı da
   veridir; ve "boşalttım" demeden önce dosyayı GERİ OKU (2026-09-26):**
