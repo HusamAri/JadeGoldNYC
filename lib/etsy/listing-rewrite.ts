@@ -9,6 +9,8 @@
  * olmayan nitelikler olduğu gibi kalır.
  */
 
+import { etsyMoneyToUnit, type EtsyInventory, type EtsyInventoryUpdate } from "@/lib/etsy/types";
+
 export interface TaxonomyPropertyValue {
   value_id: number;
   name: string;
@@ -197,12 +199,81 @@ export function parsePersonalization(field: string): PersonalizationQuestion | n
   return { question_type: "text_input", question_text: label, instructions, required, max_allowed_characters: max };
 }
 
-/** Etsy materials: yalnız harf, rakam, boşluk. Geçmeyen değer atlanır (kopya değiştirilmez). */
-export function splitMaterials(materials: string[]): { ok: string[]; rejected: string[] } {
+/**
+ * Etsy materials: yalnız harf, rakam, boşluk. Tire boşluğa çevrilir ("Lab-grown
+ * diamond" → "Lab grown diamond"; açıklama da "Lab grown" yazıyor) ve bu
+ * dönüşüm `normalized`da raporlanır. Başka karakter taşıyan değer atlanır.
+ */
+export function splitMaterials(materials: string[]): { ok: string[]; rejected: string[]; normalized: string[] } {
   const ok: string[] = [];
   const rejected: string[] = [];
-  for (const m of materials) (/^[\p{L}\p{N} ]+$/u.test(m) ? ok : rejected).push(m);
-  return { ok, rejected };
+  const normalized: string[] = [];
+  for (const m of materials) {
+    const v = m.replace(/-/g, " ").replace(/\s+/g, " ").trim();
+    if (!/^[\p{L}\p{N} ]+$/u.test(v)) rejected.push(m);
+    else {
+      ok.push(v);
+      if (v !== m) normalized.push(`${m} -> ${v}`);
+    }
+  }
+  return { ok, rejected, normalized };
+}
+
+/** Mağazanın zincir uzunluğu etiketi (Lion / Infinity Necklace ile aynı). */
+const CHAIN_LABEL: Record<string, string> = {
+  "16": "16 inches (40.6 cm)",
+  "18": "18 inches (45.7 cm)",
+  "20": "20 inches (50.8 cm)",
+};
+
+/**
+ * RUNBOOK: "adding a Chain Length 16 in / 18 in variation at one price" saf bir
+ * ayar değişikliğidir ve uygulanır. Yalnız koşulsuz not çözülür; "once the
+ * workshop confirms" gibi koşullu ekleme null döner.
+ */
+export function parseAddVariation(note: string): { name: string; values: string[] } | null {
+  const m = note.match(/\badd Chain Length variation (\d+) in and (\d+) in at one price\b/i);
+  if (!m || /once the workshop/i.test(note)) return null;
+  const values = [m[1], m[2]].map((n) => CHAIN_LABEL[n]);
+  return values.every(Boolean) ? { name: "Chain Length", values } : null;
+}
+
+/**
+ * Varyasyonsuz, tek ürünlü envantere tek eksenli varyasyon ekler. Fiyat, adet,
+ * is_enabled ve SKU mevcut tek offering'den AYNEN kopyalanır (fiyat okunamazsa
+ * throw: sıfır fiyat yazılmaz). Özel varyasyon slotu 513; fiyat/adet/SKU
+ * property'ye göre değişmez (hepsi []), yani iki uzunluk tek fiyatla satılır.
+ */
+export function buildAddVariationInventory(
+  inventory: EtsyInventory,
+  spec: { name: string; values: string[] },
+  readinessStateId: number | null,
+): EtsyInventoryUpdate {
+  const live = (inventory.products ?? []).filter((p) => !p.is_deleted);
+  if (live.length !== 1) throw new Error(`tek ürün bekleniyordu, ${live.length} var`);
+  const p = live[0];
+  if ((p.property_values ?? []).length) throw new Error("listing zaten varyasyonlu, eklenmedi");
+  const offs = (p.offerings ?? []).filter((o) => !o.is_deleted);
+  if (offs.length !== 1) throw new Error(`tek offering bekleniyordu, ${offs.length} var`);
+  const price = etsyMoneyToUnit(offs[0].price);
+  if (!(price > 0)) throw new Error("canlı fiyat okunamadı, sıfır fiyat yazılmaz");
+  const offering = {
+    price,
+    quantity: offs[0].quantity ?? 0,
+    is_enabled: offs[0].is_enabled ?? true,
+    ...(readinessStateId != null ? { readiness_state_id: readinessStateId } : {}),
+  };
+  return {
+    products: spec.values.map((v) => ({
+      sku: p.sku ?? "",
+      property_values: [{ property_id: 513, property_name: spec.name, value_ids: [], values: [v] }],
+      offerings: [{ ...offering }],
+    })),
+    price_on_property: [],
+    quantity_on_property: [],
+    sku_on_property: [],
+    ...(readinessStateId != null ? { readiness_state_on_property: [] } : {}),
+  };
 }
 
 /** "set quantity to 20 …" / "keep 20" / "keep quantity at 20" → 20. */

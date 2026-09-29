@@ -6,7 +6,14 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { EtsyClient } from "@/lib/etsy/client";
 import { etsyPaths } from "@/lib/etsy/endpoints";
 import { decodeHtmlEntities } from "@/lib/etsy/text";
-import { getListingInventory, currentQuantityOf, pushListingQuantity } from "@/lib/etsy/inventory";
+import {
+  getListingInventory,
+  currentQuantityOf,
+  pushListingQuantity,
+  putListingInventory,
+  resolveReadinessStateId,
+} from "@/lib/etsy/inventory";
+import { etsyMoneyToUnit } from "@/lib/etsy/types";
 import {
   getListingPersonalization,
   normalizePersonalizationForWrite,
@@ -20,6 +27,8 @@ import {
   parsePersonalization,
   splitMaterials,
   parseQuantity,
+  parseAddVariation,
+  buildAddVariationInventory,
   normText,
   type TaxonomyProperty,
   type ListingPropertyValue,
@@ -43,6 +52,10 @@ export const maxDuration = 120;
  *  - Varyasyon bölme / ekleme notları ve atölye bekleyen notlar UYGULANMAZ,
  *    `deferred` döner.
  *  - Apply sonrası AYNI turda her alan geri okunur; log satırı yanıtta döner.
+ *  - `addvar=1`: yalnız RUNBOOK'un "saf ayar" saydığı koşulsuz "add Chain Length
+ *    variation 16 in and 18 in at one price" notunu uygular (metne dokunmaz).
+ *    Fiyat, adet ve SKU tek offering'den aynen kopyalanır; yazımdan sonra
+ *    envanter geri okunur.
  */
 
 type Entry = (typeof rewrite.listings)[number];
@@ -158,6 +171,46 @@ export async function GET(request: Request) {
       return { listing, props: props.results ?? [], pers, qty };
     };
     const before = await read();
+
+    if (url.searchParams.get("addvar") === "1") {
+      const spec = parseAddVariation(entry.settings.variations);
+      if (!spec) throw new Error(`order ${order}: koşulsuz varyasyon ekleme notu yok: ${entry.settings.variations}`);
+      const inv = await getListingInventory(client, listingId);
+      const summarize = (i: typeof inv) =>
+        (i.products ?? []).filter((p) => !p.is_deleted).map((p) => ({
+          sku: p.sku,
+          values: (p.property_values ?? []).map((v) => `${v.property_name ?? v.property_id}: ${(v.values ?? []).join("/")}`),
+          offerings: (p.offerings ?? []).filter((o) => !o.is_deleted)
+            .map((o) => ({ price: etsyMoneyToUnit(o.price), quantity: o.quantity, enabled: o.is_enabled })),
+        }));
+      const current = summarize(inv);
+      const alreadyDone =
+        current.length === spec.values.length &&
+        current.every((p, k) => p.values.join() === `${spec.name}: ${spec.values[k]}`);
+      if (alreadyDone) {
+        return NextResponse.json({ ok: true, apply: false, order, id: entry.id, addvar: "already", current });
+      }
+      const readinessStateId = await resolveReadinessStateId(client);
+      const update = buildAddVariationInventory(inv, spec, readinessStateId);
+      if (!apply) {
+        return NextResponse.json({ ok: true, apply: false, order, id: entry.id, short_name: entry.short_name, spec, current, update });
+      }
+      await putListingInventory(client, listingId, update, { legacy: readinessStateId != null ? false : undefined });
+      const after = summarize(await getListingInventory(client, listingId));
+      const want = update.products.map((p) => ({ sku: p.sku, value: p.property_values[0].values[0], price: p.offerings[0].price, quantity: p.offerings[0].quantity }));
+      const got = after.map((p) => ({ sku: p.sku, value: (p.values[0] ?? "").replace(/^[^:]*: /, ""), price: p.offerings[0]?.price, quantity: p.offerings[0]?.quantity }));
+      const verified = JSON.stringify(got) === JSON.stringify(want);
+      await logAudit(admin, {
+        orgId,
+        action: "etsy.rewrite",
+        entityType: "product",
+        entityId: productId,
+        summary:
+          `Rewrite ${order}/41 ${entry.short_name} (listing ${listingId}): ${spec.name} varyasyonu eklendi ` +
+          `(${spec.values.join(", ")}; tek fiyat ${want[0]?.price}, SKU aynen); read-back ${verified ? "doğrulandı" : "BAŞARISIZ"}`,
+      });
+      return NextResponse.json({ ok: verified, apply: true, order, id: entry.id, spec, before: current, after, want });
+    }
 
     // Kategori, kargo profili, nitelik tanımları.
     const tax = await client.get<{ results: TaxNode[] }>(etsyPaths.sellerTaxonomyNodes());
@@ -325,6 +378,7 @@ export async function GET(request: Request) {
       deferred,
       skipped_attributes: attrs.skipped.map((s) => `${s.key}: ${s.reason}`),
       skipped_materials: mats.rejected,
+      ...(mats.normalized.length ? { normalized_materials: mats.normalized } : {}),
       attempt: 1,
       ts: new Date().toISOString(),
     };

@@ -7,6 +7,8 @@ import {
   parsePersonalization,
   splitMaterials,
   parseQuantity,
+  parseAddVariation,
+  buildAddVariationInventory,
   type TaxonomyProperty,
 } from "@/lib/etsy/listing-rewrite";
 
@@ -84,8 +86,10 @@ test("gerçek JSON: 41 kişiselleştirme alanı çözülür, materials kuralı y
   const parsed = L.map((l: { new: { personalization_field: string } }) => parsePersonalization(l.new.personalization_field));
   assert.equal(parsed.filter(Boolean).length, 8);
   for (const q of parsed.filter(Boolean)) assert.ok(q!.question_text.length > 0 && q!.max_allowed_characters <= 256);
-  const rejected = L.flatMap((l: { new: { materials_tags: string[] } }) => splitMaterials(l.new.materials_tags).rejected);
-  assert.deepEqual(rejected, ["Lab-grown diamond"]);
+  const split = L.map((l: { new: { materials_tags: string[] } }) => splitMaterials(l.new.materials_tags));
+  assert.deepEqual(split.flatMap((m: { rejected: string[] }) => m.rejected), []);
+  // Etsy materials yalnız harf/rakam/boşluk alır: tire boşluğa çevrilir, başka değişiklik yok.
+  assert.deepEqual(split.flatMap((m: { normalized: string[] }) => m.normalized), ["Lab-grown diamond -> Lab grown diamond"]);
   assert.deepEqual(L.map((l: { settings: { quantity: string } }) => parseQuantity(l.settings.quantity)).filter((q: number | null) => q !== 20), []);
 });
 
@@ -94,4 +98,50 @@ test("çok değerli nitelikte listede olmayan değer atlanır, eşleşenler yaz�
   assert.deepEqual(plan.set.map((s) => [s.key, s.value_ids]), [["Occasion", [20, 21]]]);
   const why = plan.skipped.map((s) => `${s.key}: ${s.reason}`);
   assert.deepEqual(why, ["Occasion: not in Etsy's list: Weekday", "Gold purity: not in Etsy's list: 15k"]);
+});
+
+test("varyasyon ekleme notu: yalnız 'add Chain Length variation X in and Y in at one price' çözülür", () => {
+  const L = JSON.parse(readFileSync("docs/artifact-studio/etsy-rewrite/listings_rewrite.json", "utf8")).listings;
+  const hits = L.filter((l: { settings: { variations: string } }) => parseAddVariation(l.settings.variations))
+    .map((l: { order: number }) => l.order);
+  assert.deepEqual(hits, [19, 20, 21, 22, 23]);
+  assert.deepEqual(parseAddVariation("add Chain Length variation 16 in and 18 in at one price (x)"), {
+    name: "Chain Length", values: ["16 inches (40.6 cm)", "18 inches (45.7 cm)"],
+  });
+  // "once the workshop confirms" koşullu not uygulanmaz.
+  assert.equal(parseAddVariation("no variation today; add Chain Length 16 in and 18 in once the workshop confirms"), null);
+});
+
+const ONE = {
+  products: [{
+    product_id: 1, sku: "BAS-27-MINE-N05-14Y", is_deleted: false, property_values: [],
+    offerings: [{ offering_id: 9, price: { amount: 76000, divisor: 100, currency_code: "USD" }, quantity: 20, is_enabled: true, is_deleted: false }],
+  }],
+  price_on_property: [], quantity_on_property: [], sku_on_property: [],
+};
+
+test("tek ürünlü envantere varyasyon: fiyat, adet ve SKU aynen iki ürüne kopyalanır", () => {
+  const u = buildAddVariationInventory(ONE as never, { name: "Chain Length", values: ["16 inches (40.6 cm)", "18 inches (45.7 cm)"] }, 77);
+  assert.equal(u.products.length, 2);
+  for (const p of u.products) {
+    assert.equal(p.sku, "BAS-27-MINE-N05-14Y");
+    assert.deepEqual(p.offerings, [{ price: 760, quantity: 20, is_enabled: true, readiness_state_id: 77 }]);
+    assert.equal(p.property_values[0].property_id, 513);
+    assert.equal(p.property_values[0].property_name, "Chain Length");
+  }
+  assert.deepEqual(u.products.map((p) => p.property_values[0].values[0]), ["16 inches (40.6 cm)", "18 inches (45.7 cm)"]);
+  assert.deepEqual([u.price_on_property, u.quantity_on_property, u.sku_on_property, u.readiness_state_on_property], [[], [], [], []]);
+});
+
+test("varyasyon ekleme reddeder: zaten varyasyonlu, çok ürünlü ya da fiyatı okunamayan envanter", () => {
+  const spec = { name: "Chain Length", values: ["16 inches (40.6 cm)", "18 inches (45.7 cm)"] };
+  const varied = structuredClone(ONE) as typeof ONE;
+  (varied.products[0].property_values as unknown[]).push({ property_id: 513, values: ["16 in"] });
+  assert.throws(() => buildAddVariationInventory(varied as never, spec, 1), /zaten varyasyon/);
+  const two = structuredClone(ONE);
+  two.products.push(structuredClone(ONE.products[0]));
+  assert.throws(() => buildAddVariationInventory(two as never, spec, 1), /tek ürün/);
+  const zero = structuredClone(ONE);
+  zero.products[0].offerings[0].price.amount = 0;
+  assert.throws(() => buildAddVariationInventory(zero as never, spec, 1), /fiyat/);
 });
