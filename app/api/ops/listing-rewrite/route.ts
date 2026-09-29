@@ -16,6 +16,7 @@ import {
 import { logAudit } from "@/lib/audit";
 import {
   planAttributes,
+  findProperty,
   parsePersonalization,
   splitMaterials,
   parseQuantity,
@@ -172,6 +173,20 @@ export async function GET(request: Request) {
     if (!freeProfile) throw new Error("'freee shipping' kargo profili bulunamadı");
 
     const attrs = planAttributes(n.attributes as unknown as Record<string, string>, taxProps.results ?? [], before.props);
+    // hold_for_workshop notunun açıkça "temizle" dediği nitelikler (kopyanın
+    // attributes listesinde yok): ?clear=Stone source. Sahibin onayladığı farkta
+    // görünür; yalnız şu an değeri olan nitelik boşaltılır.
+    for (const name of (url.searchParams.get("clear") ?? "").split(",").map((x) => x.trim()).filter(Boolean)) {
+      if (!(entry.hold_for_workshop ?? "").toLocaleLowerCase("en-US").includes(name.toLocaleLowerCase("en-US"))) {
+        throw new Error(`clear=${name}: hold_for_workshop notunda geçmiyor, temizlenmez`);
+      }
+      const prop = findProperty(name, taxProps.results ?? []);
+      if (!prop) throw new Error(`clear=${name}: bu kategoride böyle bir nitelik yok`);
+      const cur = before.props.find((p) => p.property_id === prop.property_id);
+      if (cur && ((cur.value_ids ?? []).length || (cur.values ?? []).length) && !attrs.clear.some((c) => c.property_id === prop.property_id)) {
+        attrs.clear.push({ key: `${name} (hold note; was ${(cur.values ?? []).join(", ")})`, property_id: prop.property_id });
+      }
+    }
     const mats = splitMaterials(n.materials_tags);
     const pq = parsePersonalization(n.personalization_field);
     const wantQty = parseQuantity(entry.settings.quantity);

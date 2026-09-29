@@ -48,7 +48,7 @@ export interface AttrPlan {
 
 const norm = (s: string) => s.trim().toLocaleLowerCase("en-US").replace(/\s+/g, " ");
 
-function findProperty(key: string, props: TaxonomyProperty[]): TaxonomyProperty | undefined {
+export function findProperty(key: string, props: TaxonomyProperty[]): TaxonomyProperty | undefined {
   const k = norm(key);
   const strip = (s: string) => s.replace(/s$/, "");
   return (
