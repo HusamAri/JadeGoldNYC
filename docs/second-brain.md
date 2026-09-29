@@ -1069,6 +1069,24 @@ repodaki hedefidir.
   deploy panelinden değil. Zincir yine tuttu: kuru, apply, aynı turda geri
   okuma, taze token'la bağımsız kuru; 41/41 ve audit 41 satır, 41 ürün.
 
+- **Yalnız panelde duran, onay bekleyen yapı değişikliği KALICI DEĞİLDİR;
+  ayna onu sessizce siler, kaynağı repoda tut ve itmeden önce yeniden mühürle
+  (2026-09-29):** Cartouche'un 243'lük ızgarası 26 Eylül'de panele yazıldı ama
+  Etsy'ye itmek sahibin onayını bekliyordu (Etsy'de 105). 27 Eylül 08:44'teki
+  varyant senkronu "Etsy tek doğruluk kaynağı" kuralıyla paneli 105'e geri
+  çekti; hiçbir uyarı yanmadı. Onay üç gün sonra geldiğinde rotanın kuru
+  çalışması "105 -> 105" diyecekti ve apply hiçbir şey kurmadan "ok"
+  dönecekti. Yakalayan şey kuru çalışmadan ÖNCE panel sayımına bakmaktı (105).
+  Kurtaran şey ızgaranın tek, idempotent bir SQL olarak oturum dökümünde
+  durmasıydı. Onu repoya aldım (`docs/artifact-studio/cartouche/grid243.sql`),
+  canlı 105 fiyatı aynı SKU'larla karşılaştırdım (105/105, 0 fark) ve yazımdan
+  önce ve sonra aynı mührü ürettim (243 / 46.670.700 / 6.535.064.400). Kural:
+  (1) dış sistemi aynalayan bir tabloya yazılmış ama dışarı itilmemiş değişiklik
+  bir sonraki senkrona kadar yaşar; onay bekleyecekse kaynağını repoya yaz;
+  (2) onay geldiğinde kuru çalışmadan önce panelin hâlâ beklenen durumda
+  olduğunu say; (3) yapı değişince o yapıyı anlatan metni AYNI turda düzelt
+  (burada "US 3 to 10" ve "18K yalnız sarı" satırları yanlış beyan olurdu).
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması

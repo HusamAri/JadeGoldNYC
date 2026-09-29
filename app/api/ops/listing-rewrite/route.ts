@@ -172,6 +172,37 @@ export async function GET(request: Request) {
     };
     const before = await read();
 
+    if (url.searchParams.get("desconly") === "1") {
+      // Yalnız açıklama: sahip başlığı/tag'leri editörde elle değiştirmişse
+      // onlara dokunmadan kopyadaki açıklamayı yazar ve geri okur.
+      const fromText = normText(decodeHtmlEntities(before.listing.description ?? ""));
+      const want = normText(n.description);
+      const summary = {
+        from: { len: fromText.length, h: hash8(fromText) },
+        to: { len: want.length, h: hash8(want) },
+        title_untouched: decodeHtmlEntities(before.listing.title ?? ""),
+      };
+      if (!apply || fromText === want) {
+        return NextResponse.json({ ok: true, apply: false, order, id: entry.id, desconly: summary, same: fromText === want });
+      }
+      const shopId = await client.requireShopId();
+      await client.requestForm("PATCH", etsyPaths.shopListing(shopId, listingId), { description: n.description });
+      const after = await client.get<LiveListing>(etsyPaths.listing(listingId));
+      const verified =
+        normText(decodeHtmlEntities(after.description ?? "")) === want &&
+        decodeHtmlEntities(after.title ?? "") === summary.title_untouched;
+      await logAudit(admin, {
+        orgId,
+        action: "etsy.rewrite",
+        entityType: "product",
+        entityId: productId,
+        summary:
+          `Rewrite ${order}/41 ${entry.short_name} (listing ${listingId}): yalnız açıklama yazıldı ` +
+          `(${summary.from.len} -> ${summary.to.len}, ${summary.to.h}); başlık aynen; read-back ${verified ? "doğrulandı" : "BAŞARISIZ"}`,
+      });
+      return NextResponse.json({ ok: verified, apply: true, order, id: entry.id, desconly: summary });
+    }
+
     if (url.searchParams.get("addvar") === "1") {
       const spec = parseAddVariation(entry.settings.variations);
       if (!spec) throw new Error(`order ${order}: koşulsuz varyasyon ekleme notu yok: ${entry.settings.variations}`);
