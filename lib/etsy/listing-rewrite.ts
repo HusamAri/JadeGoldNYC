@@ -123,7 +123,8 @@ export function planAttributes(
       if (missing.length) {
         // RUNBOOK: listede olmayan DEĞER atlanır, niteliğin tamamı değil. Çok
         // değerli nitelikte eşleşenler yazılır; tek değerlide yazılacak bir şey kalmaz.
-        plan.skipped.push({ key, value: raw, reason: `not in Etsy's list: ${missing.join(", ")}` });
+        const single = !prop.is_multivalued && tokens.length > 1 ? `; Etsy takes one value here, copy has ${tokens.length}` : "";
+        plan.skipped.push({ key, value: raw, reason: `not in Etsy's list: ${missing.join(", ")}${single}` });
         if (!prop.is_multivalued || ids.length === 0) continue;
       }
       const max = prop.is_multivalued ? prop.max_values_allowed ?? ids.length : 1;
