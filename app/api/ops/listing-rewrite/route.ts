@@ -187,6 +187,20 @@ export async function GET(request: Request) {
         attrs.clear.push({ key: `${name} (hold note; was ${(cur.values ?? []).join(", ")})`, property_id: prop.property_id });
       }
     }
+    // Hold notunun "olduğu gibi kalır" dediği, ama kopyanın attributes'ta yine
+    // de değer verdiği nitelik: ?hold=Materials. Yazılmaz, boşaltılmaz.
+    for (const name of (url.searchParams.get("hold") ?? "").split(",").map((x) => x.trim()).filter(Boolean)) {
+      if (!(entry.hold_for_workshop ?? "").toLocaleLowerCase("en-US").includes(name.toLocaleLowerCase("en-US"))) {
+        throw new Error(`hold=${name}: hold_for_workshop notunda geçmiyor`);
+      }
+      const prop = findProperty(name, taxProps.results ?? []);
+      if (!prop) throw new Error(`hold=${name}: bu kategoride böyle bir nitelik yok`);
+      attrs.set = attrs.set.filter((s) => s.property_id !== prop.property_id);
+      attrs.clear = attrs.clear.filter((c) => c.property_id !== prop.property_id);
+      attrs.unchanged = attrs.unchanged.filter((k) => findProperty(k, taxProps.results ?? [])?.property_id !== prop.property_id);
+      const cur = before.props.find((p) => p.property_id === prop.property_id);
+      attrs.skipped.push({ key: name, value: (cur?.values ?? []).join(", "), reason: "held by the hold note, left as is" });
+    }
     const mats = splitMaterials(n.materials_tags);
     const pq = parsePersonalization(n.personalization_field);
     const wantQty = parseQuantity(entry.settings.quantity);
