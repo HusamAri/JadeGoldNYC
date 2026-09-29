@@ -1047,6 +1047,20 @@ repodaki hedefidir.
   (3) sahibe sunduğun sayı yanlış çıktıysa kararı kendin yeniden yorumlama:
   kuralı (burada "kendi motoru, düşüş yok") düzeltilmiş sayılarla uygula ve
   hangi sayının yanlış olduğunu açıkça söyle.
+  **Güçlendirme (aynı gün, Etsy tarafı) — kuru koşuda "0" görünce DUR, ama
+  sebebini ETSY'NİN KENDİ SKU listesinden oku; panel sayısı Etsy'yi temsil
+  etmeyebilir:** `prune-widths` kuru koşusu TTG 100×3 ve Step Edge 21 dedi,
+  Brushed Center 10K/14K ise 0. Panelde ikisinde de 21'er adet 3 mm vardı, yani
+  beklenti 21'di. İki okuma aynı "0"ı üretirdi: desen SKU'yu okuyamıyor (sessiz
+  no-op) ya da Etsy'de 3 mm zaten yok. `price-sync ?detail=1` Etsy offering
+  SKU'larını döktü: 105 = 5 genişlik × 21 beden, hepsi `EON-R-1015-10-04-…`
+  biçiminde ve desenle okunuyor, 3 mm yok. Panelin 21'er 3 mm satırı Etsy'de hiç
+  olmayan HAYALET satırlardı (hepsi `etsy_product_id` boş, 08-30 üretim
+  artığı); 42 satır panelden silindi. Kural: "0" iki ayrı durumu anlatır; ayırt
+  eden tek kanıt dış sistemin ham listesidir, panelin kendi sayısı değil. Zincir
+  tuttu: Etsy 321 kaldırıldı + aynı turda geri okundu, fiyat kuru 75×3+10 →
+  apply 235 yazıldı 0 kaldı → taze token'la bağımsız `detail` okuma 6/6
+  `unchanged`, 570 offering'de 0 uyumsuzluk, genişlikler yalnız 4–8 (TTG 6–8).
 
 - **Serbest metinli "dokunma" notu, planlayıcının göremediği bir istisnadır;
   onu parametre yap ve notun kendisine karşı doğrula (2026-09-29):**
