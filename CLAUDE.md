@@ -68,6 +68,17 @@ Jade Gold NYC Etsy mağazası için uçtan uca yönetim/raporlama paneli. Tüm s
   ancak kullanıcı açıkça söylerse. 3 eksen Etsy'de en çok 400 ürün. Etsy'ye
   çıkmış taslağın yapısı `app/api/ops/inventory-rebuild` ile panelden yeniden
   kurulur (varsayılan yalnız `draft`; aktif listing `active=1` ve sahibin açık talebiyle; kuru varsayılan, tam ızgara şartı).
+- **EON iki tonlu (two-tone) yüzük = 1,6 mm kalınlık, yalnız 4–8 mm genişlik,
+  $250 işçilik** (sahip talimatı 2026-09-29). Üretici iki tonluyu bu aralığın
+  dışında yapamıyor: 4 mm altı ve 8 mm üstü genişlik iki tonlu listing'de
+  varyant olarak açılmaz. Gram 1,6 mm'ye göre kurulur (1,5 mm tablosu × 1,6/1,5;
+  panelde `weight_source` `+t1.6` etiketi = çarpım yapıldı, tekrar çarpma).
+  Fiyat ailenin KENDİ motoruyla $250 işçilikle kurulur, mevcut fiyat asla
+  düşürülmez (`greatest`). Altın endeksi $250 kademesini tanır
+  (`V4.laborTwoToneUsd`). İstisna: sabit genişlikli QS26 tasarım yüzükleri
+  (3.2 mm band, Twin Seeds, Star Band, Moon Slide) bu kuralın dışında.
+  Tek renkli bantlar 1,5 mm kalır. Ayrıntı:
+  `docs/eon/pricing/2026-09-29-two-tone-1_6mm-250.sql`.
 - **Tablo teslimatı = Apple Numbers, Excel DEĞİL** (kullanıcı talimatı 2026-08-15).
   Kullanıcı Mac'te Numbers kullanıyor; çıktılar ona göre kurulur. Kısıt: formüllü
   `.numbers` yalnız Numbers.app üretebilir (`numbers-parser` .numbers yazar ama

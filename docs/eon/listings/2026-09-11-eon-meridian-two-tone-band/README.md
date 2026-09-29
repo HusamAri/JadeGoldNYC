@@ -147,3 +147,12 @@ checksum**'la yapıldı (salt toplam satır KAYMASINI yakalamaz):
 node scripts/eon/gen_meridian_package.mjs --check   # yalnız doğrula
 node scripts/eon/gen_meridian_package.mjs           # doğrula + yaz
 ```
+
+## 2026-09-29 — iki tonlu kuralı (sahip kararı)
+
+İki tonlu yüzükler 1,6 mm kalınlıkta, yalnız 4–8 mm genişlikte üretilebiliyor ve
+işçiliği $250. Panelde Meridian'ın 252 varyantı bu kurala göre güncellendi: gram
+×1,6/1,5 (`weight_source` `+t1.6`), fiyat aynı motorla $250 işçilikle
+(ortalama +%38,2). Bu paketteki `gen_meridian_package.mjs` hâlâ $55 / 1,5 mm
+fikstürünü doğruluyor; panel artık onun çıktısı DEĞİL. Kaynak ve mühür:
+`docs/eon/pricing/2026-09-29-two-tone-1_6mm-250.sql`.

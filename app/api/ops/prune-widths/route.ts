@@ -9,6 +9,7 @@ import {
   removeListingOfferings,
 } from "@/lib/etsy/inventory";
 import { logAudit } from "@/lib/audit";
+import { widthOfSku } from "@/lib/etsy/sku-width";
 
 export const maxDuration = 300;
 
@@ -42,6 +43,10 @@ export const maxDuration = 300;
  *     tek kullanımlık, süreli, çift kullanım imkânsız. CRON_SECRET
  *     env'i boş/silinmiş olsa da servis rolü token üretip koşabilir.
  * Varsayılan KURU ÇALIŞMA — gerçek yazma için `?apply=1`.
+ *
+ * 2026-09-29 eki — iki tonlu yüzükler yalnız 4–8 mm genişlikte üretilebilir
+ * (sahip talimatı, CLAUDE.md). Aktif TTG ve EON-R listing'leri hedeflendi;
+ * sahip "kaldır" dedi.
  */
 
 type Target = { listingId: number; widths: number[]; label: string };
@@ -61,16 +66,22 @@ const TARGETS: Target[] = [
   { listingId: 4556711954, widths: [3, 4], label: "18K Yellow Greek Key" },
   { listingId: 4556711842, widths: [3, 4], label: "18K Rose Greek Key" },
   { listingId: 4556696295, widths: [3, 4], label: "18K White Greek Key" },
+  // ── İki tonlu (two-tone) yalnız 4–8 mm üretilebilir (sahip, 2026-09-29) ─
+  //    TTG 6–12 mm açılmıştı → 9–12 kalkar; EON-R 3–8 → 3 kalkar.
+  //    QS26 sabit genişlikli iki tonlular sahip kararıyla istisna.
+  { listingId: 4550516268, widths: [9, 10, 11, 12], label: "10K Two Tone TTG" },
+  { listingId: 4550506421, widths: [9, 10, 11, 12], label: "14K Two Tone TTG" },
+  { listingId: 4550506827, widths: [9, 10, 11, 12], label: "18K Two Tone TTG" },
+  { listingId: 4565472159, widths: [3], label: "18K Two Tone Step Edge" },
+  { listingId: 4565494144, widths: [3], label: "10K Two Tone Brushed Center" },
+  { listingId: 4565471789, widths: [3], label: "14K Two Tone Brushed Center" },
 ];
 
 const ONE_SHOT = process.env.PRUNE_ONE_SHOT_TOKEN;
 
-/** SKU'nun genişlik alanı (`...-<N>MM-<beden>`). Desen tutmuyorsa null → asla
- *  kaldırılmaz (tanımadığımız SKU şemasına dokunmayız). */
-function widthOf(sku: string): number | null {
-  const m = /-(\d+)MM-[0-9.]+$/.exec(sku.trim());
-  return m ? Number(m[1]) : null;
-}
+/** SKU'nun genişlik alanı; iki şema (`lib/etsy/sku-width.ts`). Desen
+ *  tutmuyorsa null → asla kaldırılmaz. */
+const widthOf = widthOfSku;
 
 async function authorize(request: Request): Promise<boolean> {
   const secret = process.env.CRON_SECRET;

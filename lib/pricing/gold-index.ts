@@ -41,6 +41,9 @@ export const V4 = {
   laborStandardTargetUsd: 38,
   laborMilgrainUsd: 40,
   laborHandfinishedTargetUsd: 74,
+  // İki tonlu (two-tone) bantlar: $250 işçilik (sahip kararı 2026-09-29).
+  // Tanıma listesinde durur ki bu satırlar spot takibinden düşmesin.
+  laborTwoToneUsd: 250,
   packagingUsd: 8,
   shippingUsd: 22,
   multNarrow: 1.55, // 2-7mm
