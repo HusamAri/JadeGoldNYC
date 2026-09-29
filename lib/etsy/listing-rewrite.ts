@@ -121,8 +121,10 @@ export function planAttributes(
         } else missing.push(t);
       }
       if (missing.length) {
+        // RUNBOOK: listede olmayan DEĞER atlanır, niteliğin tamamı değil. Çok
+        // değerli nitelikte eşleşenler yazılır; tek değerlide yazılacak bir şey kalmaz.
         plan.skipped.push({ key, value: raw, reason: `not in Etsy's list: ${missing.join(", ")}` });
-        continue;
+        if (!prop.is_multivalued || ids.length === 0) continue;
       }
       const max = prop.is_multivalued ? prop.max_values_allowed ?? ids.length : 1;
       if (ids.length > max) {

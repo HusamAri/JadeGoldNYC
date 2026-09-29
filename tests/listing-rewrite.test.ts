@@ -88,3 +88,10 @@ test("gerçek JSON: 41 kişiselleştirme alanı çözülür, materials kuralı y
   assert.deepEqual(rejected, ["Lab-grown diamond"]);
   assert.deepEqual(L.map((l: { settings: { quantity: string } }) => parseQuantity(l.settings.quantity)).filter((q: number | null) => q !== 20), []);
 });
+
+test("çok değerli nitelikte listede olmayan değer atlanır, eşleşenler yazılır", () => {
+  const plan = planAttributes({ Occasion: "Anniversary, Birthday, Weekday", "Gold purity": "15k" }, PROPS, []);
+  assert.deepEqual(plan.set.map((s) => [s.key, s.value_ids]), [["Occasion", [20, 21]]]);
+  const why = plan.skipped.map((s) => `${s.key}: ${s.reason}`);
+  assert.deepEqual(why, ["Occasion: not in Etsy's list: Weekday", "Gold purity: not in Etsy's list: 15k"]);
+});
