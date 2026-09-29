@@ -32,6 +32,7 @@ export async function logAudit(
       | "etsy.reprice"
       | "etsy.relabel"
   | "etsy.inventory_rebuild"
+  | "etsy.rewrite"
       | "etsy.seo_push"
       | "etsy.translation_pull"
       | "etsy.redesign_push"

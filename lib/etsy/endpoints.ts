@@ -80,6 +80,18 @@ export const etsyPaths = {
     `/shops/${shopId}/readiness-state-definitions`,
   // Satıcı taksonomisi (kategori ağacı) — taxonomy_id çözümü için.
   sellerTaxonomyNodes: () => `/seller-taxonomy/nodes`,
+  // Kategori niteliklerinin tanımı (property_id, olası değerler, ölçekler).
+  sellerTaxonomyNodeProperties: (taxonomyId: number | string) =>
+    `/seller-taxonomy/nodes/${taxonomyId}/properties`,
+  // Listing nitelikleri: GET liste; tek nitelik PUT (form: value_ids, values,
+  // scale_id) ve DELETE. listings_w kapsamı gerekir.
+  listingProperties: (shopId: number | string, listingId: number | string) =>
+    `/shops/${shopId}/listings/${listingId}/properties`,
+  listingProperty: (
+    shopId: number | string,
+    listingId: number | string,
+    propertyId: number | string,
+  ) => `/shops/${shopId}/listings/${listingId}/properties/${propertyId}`,
   // Listing çeviri katmanı (get/create/updateListingTranslation) — dil başına
   // title + description + tags taşır. `lang` IETF kodu ('es'). listings_w
   // gerekir; mağazanın dil listesinde o dil EKLİ olmalıdır.

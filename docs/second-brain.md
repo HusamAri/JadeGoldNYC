@@ -1048,6 +1048,27 @@ repodaki hedefidir.
   kuralı (burada "kendi motoru, düşüş yok") düzeltilmiş sayılarla uygula ve
   hangi sayının yanlış olduğunu açıkça söyle.
 
+- **Serbest metinli "dokunma" notu, planlayıcının göremediği bir istisnadır;
+  onu parametre yap ve notun kendisine karşı doğrula (2026-09-29):**
+  byArtifactStudio rewrite'ında 41 listing tek bir planlayıcıdan geçti ve
+  kopyanın `attributes` alanı her niteliği açıkça veriyordu. Ama 6'nın
+  `hold_for_workshop` notu "Materials editördeki gibi Rose/White/Yellow gold
+  kalır" diyordu, kopya ise "Gold" yazıyordu; 2, 4 ve 40'ın notları da kopyada
+  hiç geçmeyen nitelikleri (Stone source, Gem color, Cut type) temizlemeyi
+  istiyordu. Planlayıcı yalnız kopyayı okuduğu için 6'da korunması gereken
+  değeri ezer, diğerlerinde çelişen eski değeri bırakırdı; kuru çalışma yine
+  "temiz" görünürdü. Çözüm notu ayrıştırmaya çalışmak değil, iki dar parametre
+  oldu: `?clear=` ve `?hold=`. İkisi de verilen adın o listing'in hold notunda
+  GEÇTİĞİNİ kontrol eder, geçmiyorsa reddeder. Deploy'u da ayrı kanıtladım:
+  Vercel MCP düşmüştü, `hold=` etkisinin kuru çalışmanın `skipped` listesinde
+  görünmesi kodun canlıda olduğunun kanıtı sayıldı. Kural: (1) toplu yazımda
+  kaynak dosyanın serbest metin alanlarını (not, uyarı, hold) ayrı oku ve her
+  birinin yapısal alanla çelişip çelişmediğini listele; (2) istisnayı kod
+  içine gömme, çağrıda görünür bir parametre yap ve kaynak metne bağla;
+  (3) yeni parametrenin canlı olduğunu parametrenin kendi izinden doğrula,
+  deploy panelinden değil. Zincir yine tuttu: kuru, apply, aynı turda geri
+  okuma, taze token'la bağımsız kuru; 41/41 ve audit 41 satır, 41 ürün.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
