@@ -172,6 +172,7 @@ function computeTargets(
       // (en dar aralık 30↔38 bile $8 × 1.55 / 0.75 ≈ $16) `find` yanlış
       // kademeye eşleşemez.
       const kademeler = [
+        V4.laborTwoToneUsd,
         V4.laborHandfinishedTargetUsd,
         V4.laborMilgrainUsd,
         V4.laborStandardTargetUsd,

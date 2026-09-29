@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test:ophir-sku": "tsx --test tests/ophir-sku.test.ts",
-    "test:listing-protocol": "tsx --test tests/listing-protocol.test.ts"
+    "test:listing-protocol": "tsx --test tests/listing-protocol.test.ts",
+    "test:two-tone": "tsx --test tests/two-tone-rules.test.ts"
   },
   "dependencies": {
     "@ai-sdk/google": "^2.0.78",

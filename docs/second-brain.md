@@ -1029,6 +1029,25 @@ repodaki hedefidir.
   (328 satır), `greatest()` ile idempotent, audit'te 328 satır, Etsy kuru 110
   fark → apply 0 kalan → ayrı token'la bağımsız geri okuma 0 fark.
 
+- **SKU'dan alan okurken deseni HER aile şemasında sına; yanlış segment sessizce
+  yanlış rakam üretir ve o rakam sahibe karar sorusu olarak gider (2026-09-29):**
+  İki tonlu yüzükleri $250 işçilikle fiyatlarken ayarı `-R-(10|14|18)\d{2}-`
+  deseniyle okudum. TTG'de (`TTG-R-1406-…`) doğruydu, ama `EON-R-1015-18-…`
+  şemasında tasarım kodu `1015`'in ilk iki hanesini yakaladı ve üç listing'in
+  üçünü de 10K saydı. Sahibe motor seçimi için gösterdiğim tabloda Step Edge 18K
+  "v4 ile −%43" görünüyordu; gerçek ayarla fiyatı zaten motorun üstündeydi ve
+  hiç değişmedi. Yakalatan şey yazımdan önce koyduğum bit-uyum kapısıydı:
+  formül bugünkü fiyatı birebir üretmeli (TTG 225/225, Meridian 252/252); EON-R
+  hiçbir formülle eşleşmeyince ayarı ayrıca sorguladım. Aynı turda ikinci örnek:
+  `prune-widths` genişliği yalnız `-10MM-` deseninden okuyordu, EON-R'de "0
+  kaldırıldı" diyecekti. Kural: (1) bir SKU'dan ayar/genişlik okuyan her desen,
+  kapsamdaki HER şemanın birer örneğiyle test edilir (buraya
+  `tests/two-tone-rules.test.ts`); (2) grup başına min/max ayar gibi ucuz bir
+  akıl sağlığı sütunu (`kmin=kmax=listing'in ayarı`) hatayı tek bakışta gösterir;
+  (3) sahibe sunduğun sayı yanlış çıktıysa kararı kendin yeniden yorumlama:
+  kuralı (burada "kendi motoru, düşüş yok") düzeltilmiş sayılarla uygula ve
+  hangi sayının yanlış olduğunu açıkça söyle.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
