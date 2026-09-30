@@ -14,7 +14,6 @@ import {
 import { etsyPaths } from "@/lib/etsy/endpoints";
 import { resolveListingProtocol } from "@/lib/etsy/listing-protocol";
 import type { EtsyInventory } from "@/lib/etsy/types";
-import { getEtsyWriteAccess } from "@/lib/db/queries/etsy";
 import { sortVariantsByWidthThenSize } from "@/lib/variant-sort";
 
 export const maxDuration = 300;
@@ -112,7 +111,17 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: orgErr?.message ?? "org bulunamadı" }, { status: 404 });
   }
 
-  const { writeEnabled } = await getEtsyWriteAccess(org.id);
+  // getEtsyWriteAccess oturumun aktif org'una bakar (current_org_id); ops
+  // çağrısında oturum yok ve her zaman false döner. Token'la yetkilenen rota
+  // bağlantı kaydını doğrudan okur (ophir-publish-edit ile aynı kural).
+  const { data: connection } = await admin
+    .from("etsy_connection")
+    .select("status, scope")
+    .eq("org_id", org.id)
+    .maybeSingle();
+  const conn = connection as { status: string; scope: string | null } | null;
+  const writeEnabled =
+    conn?.status === "connected" && /(^|\s)listings_w(\s|$)/.test(conn.scope ?? "");
   if (apply && !writeEnabled) {
     return NextResponse.json({ error: "Etsy yazma erişimi kapalı." }, { status: 403 });
   }
