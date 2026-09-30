@@ -1130,6 +1130,27 @@ repodaki hedefidir.
   ilk parçayı canary say ve yalnız o tuttuğunda devam et; üretecin çıktısını
   `head`'e borulama (BrokenPipe sonraki parçaları sessizce ESKİ bırakır).
 
+- **Çok kategorili görsel şablonda her sahne cümlesi HER kategoride doğru olmalı;
+  yanlış cümle kusuru değil fazladan ÜRÜNÜ üretir (2026-09-30):** 40 listing × 9
+  satış karesi tek şablondan üretildi (404 üretim, 806 kredi). Kusurların çoğu
+  modelin değil ŞABLONUN çıktısıydı: (1) hero prompt'undan alınan şekil metni
+  "laid in a loose oval", "curves out of the top of the frame" gibi hero
+  kompozisyonu taşıyordu; takılı karede çelişirdi, regex ile ayıklanıp
+  assert'lendi; (2) "takılı" karesinin "resting on a warm linen tablecloth"
+  cümlesi yüzük ve bileklikte doğru, küpede ise masaya İKİNCİ bir çift koydurdu
+  (E07: kulakta bir, masada iki küpe). Kural: şablonu kategori başına birer
+  örnekle üretip okumadan seriye basma; bir sahne cümlesi bir kategoride anlamsızsa
+  model onu fazladan nesneyle "anlamlı" kılar. Parmak dersi ÜÇÜNCÜ kez doğrulandı:
+  kupa tutan elde yüzük üç denemede de orta parmağa gitti, anatomi cümlesi yetmedi;
+  pozu değiştirmek (el kupanın yanında düz duruyor) tek denemede tuttu. Bir detay
+  bir pozda üç kez tutmuyorsa cümleyi sertleştirme, pozu değiştir. Yürütme: aile
+  başına bir ajan üretti ve kendi kontak baskısında QA yaptı (33 yeniden çekim);
+  ardından 4 kategori sayfasında set düzeyinde bakınca ajanların geçirdiği bir
+  kolaj (E02 03) daha çıktı. Ajan QA'sı kare kare bakar; set sayfası tek bakışta
+  kolajı, dikiş izini, tekrar eden kompozisyonu gösterir. İkisi ayrı kapıdır.
+  Yan not: 360 kare q84'te bile 213 MB; ağır statik varlığı repoya koymadan önce
+  canlı deploy'da URL'lerin 200 döndüğünü tek tek doğrula.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
