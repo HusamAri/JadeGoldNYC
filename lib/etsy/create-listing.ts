@@ -304,7 +304,26 @@ export interface DraftProduct {
    *  bkz. lib/etsy/listing-protocol.ts karar 2. */
   product_type?: string | null;
   /** Protocol plus informational approval metadata (never blocks the Etsy draft path). */
-  listing_metadata?: { listingProtocol?: unknown; approval?: unknown } | null;
+  listing_metadata?: {
+    listingProtocol?: unknown;
+    approval?: unknown;
+    /** `false` = this listing offers no personalization, whatever its protocol allows. */
+    offersPersonalization?: unknown;
+  } | null;
+}
+
+/**
+ * Personalization questions to attach on Etsy. The protocol says what the
+ * product TYPE can carry; an explicit `offersPersonalization: false` on the
+ * listing wins, because opening an engraving field the copy never offers is a
+ * promise the workshop did not make (FW26/27 enamel cuff, 2026-09-30).
+ */
+export function personalizationFor(
+  protocol: ListingProtocolSpec,
+  product: Pick<DraftProduct, "listing_metadata">,
+): ListingProtocolSpec["personalization"] {
+  if (product.listing_metadata?.offersPersonalization === false) return null;
+  return protocol.personalization;
 }
 
 /**
@@ -710,13 +729,14 @@ export async function createDraftListingFromProduct(
   // kolyede kişiselleştirme YOK ve uç hiç çağrılmaz. Alyansın 30 karakterlik
   // gravür sorusunu kolyeye taşımak, sunulmayan bir hizmeti vaat etmek olurdu.
   // Başarısız olursa listing yaşar; uyarı eklenir.
-  if (protocol.personalization) {
+  const personalization = personalizationFor(protocol, product);
+  if (personalization) {
     try {
       await client.request(
         "POST",
         etsyPaths.listingPersonalization(shopId, listingId) +
           "?supports_multiple_personalization_questions=true",
-        { personalization_questions: protocol.personalization },
+        { personalization_questions: personalization },
       );
     } catch (e) {
       warnings.push(

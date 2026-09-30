@@ -124,3 +124,14 @@ test("existing Etsy identity remains idempotent without any writes", async () =>
   assert.equal(result.step, "idempotency");
   assert.deepEqual(calls, []);
 });
+
+test("offersPersonalization:false suppresses the protocol's personalization questions", async () => {
+  const { personalizationFor } = await import("@/lib/etsy/create-listing");
+  const { resolveListingProtocol } = await import("@/lib/etsy/listing-protocol");
+  const cuff = resolveListingProtocol({ product_type: "bracelet", listing_metadata: { listingProtocol: "cuff_bracelet" } });
+  assert.ok(cuff?.personalization, "cuff protocol carries inside-engraving questions");
+  assert.equal(personalizationFor(cuff!, { listing_metadata: { listingProtocol: "cuff_bracelet", offersPersonalization: false } }), null);
+  assert.equal(personalizationFor(cuff!, { listing_metadata: { listingProtocol: "cuff_bracelet" } }), cuff!.personalization);
+  const band = resolveListingProtocol({ product_type: "ring", listing_metadata: { listingProtocol: "wedding_band" } });
+  assert.equal(personalizationFor(band!, { listing_metadata: null }), band!.personalization);
+});
