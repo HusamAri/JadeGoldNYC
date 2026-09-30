@@ -57,7 +57,9 @@ export type ListingProtocolId =
   | "pendant_necklace"
   | "chain_bracelet"
   | "cuff_bracelet"
-  | "stud_earrings";
+  | "stud_earrings"
+  | "dangle_earrings"
+  | "hoop_earrings";
 
 export interface ParcelSpec {
   weight: number;
@@ -128,6 +130,15 @@ const CHAIN_JEWELRY_PARCEL: ParcelSpec = {
 export const LISTING_PROTOCOLS: Record<ListingProtocolId, ListingProtocolSpec> = {
   stud_earrings: {
     id: "stud_earrings", label: "Stud earrings", taxonomyNames: ["Stud Earrings"], taxonomyRoot: "Jewelry", requiredVariationAxes: [], personalization: null, parcel: RING_PARCEL,
+  },
+  // Sarkan ve halka küpe stud değildir; "Stud Earrings" dalına dosyalamak ürünü
+  // yanlış kategoride listelerdi (2026-09-30, FW26/27 enamel seti: 3 damla +
+  // 1 huggie). Adlar CANLI taksonomiye karşı doğrulanmadı; çözücü bulamazsa durur.
+  dangle_earrings: {
+    id: "dangle_earrings", label: "Dangle earrings", taxonomyNames: ["Dangle & Drop Earrings", "Earrings"], taxonomyRoot: "Jewelry", requiredVariationAxes: [], personalization: null, parcel: RING_PARCEL,
+  },
+  hoop_earrings: {
+    id: "hoop_earrings", label: "Hoop earrings", taxonomyNames: ["Hoop Earrings", "Earrings"], taxonomyRoot: "Jewelry", requiredVariationAxes: [], personalization: null, parcel: RING_PARCEL,
   },
   wedding_band: {
     id: "wedding_band",

@@ -53,12 +53,13 @@
     "Solid gold",
     "Vitreous enamel"
    ],
-   "description": "A small rounded signet in solid gold with a teal enamel keyhole at its centre.\n\nThe keyhole is the quiet door of a winter room: a circle over a tapered slot, filled flush with Transformative Teal and framed in polished gold. It sits flat and low, easy to wear every day and easy to stack.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose.\nEnamel: kiln-fired vitreous enamel in Transformative Teal, set flush in recessed cells with polished gold rims.\nSize: top 8 x 10 mm, keyhole cell 3.5 x 6 mm.\nRing size: US 3 to 16, whole and half sizes.\n\nEach piece is made to order and ships free within the United States from New Jersey. Add a gift message at checkout and it ships with the piece.\n\nCare: enamel is glass fused to gold. It keeps its colour, but it can chip on a hard knock, so take it off for the gym and the dishes and wipe it with a soft cloth.\n\nThe product image is a design visualization of the finished piece; the handmade piece may vary slightly.",
+   "description": "A small rounded signet in solid gold, its top filled with teal enamel and drawn through with a polished gold keyhole.\n\nThe keyhole is the quiet door of a winter room: a circle over a tapered slot, traced in polished gold across a flush field of Transformative Teal. It sits flat and low, easy to wear every day and easy to stack.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose.\nEnamel: kiln-fired vitreous enamel in Transformative Teal, set flush in recessed cells with polished gold rims.\nSize: top 8 x 10 mm, keyhole outline 3.5 x 6 mm.\nRing size: US 3 to 16, whole and half sizes.\n\nEach piece is made to order and ships free within the United States from New Jersey. Add a gift message at checkout and it ships with the piece.\n\nCare: enamel is glass fused to gold. It keeps its colour, but it can chip on a hard knock, so take it off for the gym and the dishes and wipe it with a soft cloth.\n\nThe product image is a design visualization of the finished piece; the handmade piece may vary slightly.",
    "enamel": [
     "Transformative Teal"
    ],
-   "dims": "top 8 x 10 mm, keyhole cell 3.5 x 6 mm",
-   "listingProtocol": "enamel_ring",
+   "dims": "top 8 x 10 mm, keyhole outline 3.5 x 6 mm",
+   "listingProtocol": "sculptural_ring",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color",
@@ -2498,8 +2499,10 @@
      "price_cents": 107000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a slim polished gold ring with a small rounded-rectangle signet top, 8 by 10 mm; in the centre of the flat top is a keyhole-shaped cell (a small circle above a tapered slot) filled with flat deep teal enamel, framed by a thin polished gold rim; round smooth shank. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: deep teal blue-green (#0F5C63). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: a slim polished gold ring with a small rounded-rectangle signet top, 8 by 10 mm; the whole flat top is filled with flat deep teal enamel inside a polished gold rim, and a thin polished gold keyhole outline (a small circle above a tapered slot) is drawn through the centre of the teal; round smooth shank. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: deep teal blue-green (#0F5C63). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "R01.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/R01.jpg",
+   "imageSha256": "444abdcadd1f8eb1e44833638ea859279d6aa0f2cec92fd6002547f06925ac16",
    "params": {
     "top_g": 0.9,
     "shank_g": 1.3
@@ -2537,7 +2540,8 @@
     "Transformative Teal"
    ],
    "dims": "pendant 9 x 14 mm",
-   "listingProtocol": "enamel_necklace",
+   "listingProtocol": "pendant_necklace",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color",
@@ -2819,6 +2823,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: a keyhole-shaped pendant 9 by 14 mm (a round top joined to a tapered lower slot) completely filled with flat deep teal enamel inside a thin polished gold rim, hanging from a small polished gold bail on a fine 1.2 mm gold cable chain; the chain passes through the bail and curves softly out of the top of the frame. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: deep teal blue-green (#0F5C63). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "N01.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/N01.jpg",
+   "imageSha256": "dbc0963aabba44f8532fe57f8f222f901a156877af0cc5eb1cadbfaacbf219e3",
    "params": {
     "piece_g": 0.9
    }
@@ -2850,12 +2856,13 @@
     "Solid gold",
     "Vitreous enamel"
    ],
-   "description": "Tiny keyhole studs in solid gold with flush teal enamel.\n\nThe smallest way into the Keyhole family: two little silhouettes of teal glass that read as colour from across a room and as a shape up close. Good for a first or second hole.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose.\nEnamel: kiln-fired vitreous enamel in Transformative Teal, set flush in recessed cells with polished gold rims.\nSize: each stud 4 x 6 mm.\nEarrings: solid gold posts with butterfly backs, sold as a pair.\n\nEach piece is made to order and ships free within the United States from New Jersey. Add a gift message at checkout and it ships with the piece.\n\nCare: enamel is glass fused to gold. It keeps its colour, but it can chip on a hard knock, so take it off for the gym and the dishes and wipe it with a soft cloth.\n\nThe product image is a design visualization of the finished piece; the handmade piece may vary slightly.",
+   "description": "Tiny keyhole studs in solid gold with flush teal enamel.\n\nThe smallest way into the Keyhole family: two little silhouettes of teal glass that read as colour from across a room and as a shape up close. Good for a first or second hole.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose.\nEnamel: kiln-fired vitreous enamel in Transformative Teal, set flush in recessed cells with polished gold rims.\nSize: each stud 4 x 6 mm.\nEarrings: solid gold posts with screw backs, sold as a pair.\n\nEach piece is made to order and ships free within the United States from New Jersey. Add a gift message at checkout and it ships with the piece.\n\nCare: enamel is glass fused to gold. It keeps its colour, but it can chip on a hard knock, so take it off for the gym and the dishes and wipe it with a soft cloth.\n\nThe product image is a design visualization of the finished piece; the handmade piece may vary slightly.",
    "enamel": [
     "Transformative Teal"
    ],
    "dims": "each stud 4 x 6 mm",
    "listingProtocol": "stud_earrings",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color"
@@ -2947,6 +2954,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: a pair of tiny keyhole-shaped stud earrings, each 4 by 6 mm, filled with flat deep teal enamel inside a thin polished gold rim, with gold posts; one earring lies flat, the other stands slightly angled to show the post. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: deep teal blue-green (#0F5C63). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "E01.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/E01.jpg",
+   "imageSha256": "6725a3fb7b583fc2c105fac6eb028026db6e3d8509b998e3f507ec6a7b240e70",
    "params": {
     "piece_g": 0.7
    }
@@ -2983,7 +2992,8 @@
     "Transformative Teal"
    ],
    "dims": "three keyhole stations, each 5 x 7 mm",
-   "listingProtocol": "enamel_bracelet",
+   "listingProtocol": "chain_bracelet",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color",
@@ -3265,6 +3275,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: a fine 1.1 mm gold cable chain bracelet laid in a loose oval, with three small keyhole-shaped stations 5 by 7 mm spaced evenly along the chain, each filled with flat deep teal enamel inside a thin polished gold rim; spring ring clasp. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: deep teal blue-green (#0F5C63). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "B01.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/B01.jpg",
+   "imageSha256": "6ff24871cfc5ed38bca68458044577c29e50e8f6e5d6b57d1c84a0566044a54d",
    "params": {
     "piece_g": 0.6
    }
@@ -3302,7 +3314,8 @@
     "Wax Paper cream"
    ],
    "dims": "tile 5 x 10 mm",
-   "listingProtocol": "enamel_ring",
+   "listingProtocol": "sculptural_ring",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color",
@@ -5744,6 +5757,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: a polished gold ring with a flat horizontal rectangular tile top 5 by 10 mm; a thin gold line divides the tile into two squares, the left square filled with flat glossy ink black enamel, the right square with flat warm cream enamel, each square carrying small round polished gold dots like domino pips; round smooth shank. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: glossy ink black, warm cream white (#EDE3C8). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "R02.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/R02.jpg",
+   "imageSha256": "2ded72e2ce1276e3f812e7ca39c8817f89e9518fe3c16af10630235ec048be54",
    "params": {
     "top_g": 0.9,
     "shank_g": 1.3
@@ -5782,7 +5797,8 @@
     "Wax Paper cream"
    ],
    "dims": "tile 7 x 14 mm",
-   "listingProtocol": "enamel_necklace",
+   "listingProtocol": "pendant_necklace",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color",
@@ -6064,6 +6080,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: a vertical rectangular domino tile pendant 7 by 14 mm with rounded corners, divided across the middle by a thin gold line; the upper half is flat glossy ink black enamel with three round polished gold pips, the lower half flat warm cream enamel with five round polished gold pips; hanging from a small gold bail on a fine 1.2 mm gold cable chain that passes through the bail and curves out of the top of the frame. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: glossy ink black, warm cream white (#EDE3C8). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "N02.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/N02.jpg",
+   "imageSha256": "8bf5182e907914a91fa3cbd61a5c2ed81928e02a03f2625548414a3ee753ff69",
    "params": {
     "piece_g": 1.0
    }
@@ -6102,6 +6120,7 @@
    ],
    "dims": "each stud 4 x 7 mm",
    "listingProtocol": "stud_earrings",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color"
@@ -6193,6 +6212,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: a mismatched pair of small rectangular domino stud earrings, each 4 by 7 mm with rounded corners; one stud is flat glossy ink black enamel with one round polished gold pip, the other is flat warm cream enamel with two round polished gold pips; both framed by thin polished gold rims, gold posts. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: glossy ink black, warm cream white (#EDE3C8). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "E02.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/E02.jpg",
+   "imageSha256": "9cd795e37a4b6da54acfbe89fbd84846fbb370210b4eeb951698b366f8bcc9b7",
    "params": {
     "piece_g": 0.8
    }
@@ -6230,7 +6251,8 @@
     "Wax Paper cream"
    ],
    "dims": "five tiles, each 4 x 6 mm",
-   "listingProtocol": "enamel_bracelet",
+   "listingProtocol": "chain_bracelet",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color",
@@ -6512,6 +6534,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: a bracelet of five small rectangular enamel tiles, each 4 by 6 mm with rounded corners, joined by short segments of fine 1.1 mm gold cable chain and laid in a loose curve; tiles alternate flat glossy ink black enamel and flat warm cream enamel, each with one to three tiny round polished gold pips and a thin polished gold rim; spring ring clasp. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: glossy ink black, warm cream white (#EDE3C8). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "B02.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/B02.jpg",
+   "imageSha256": "4af6cfd975eb0a6f27f603001f7d971cd76d0f9a3140561999440e9e44c19178",
    "params": {
     "piece_g": 1.3
    }
@@ -6548,7 +6572,8 @@
     "oxblood red"
    ],
    "dims": "two 4 mm cherries on a gold stem",
-   "listingProtocol": "enamel_ring",
+   "listingProtocol": "sculptural_ring",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color",
@@ -8990,6 +9015,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: a slim polished gold stacking ring whose top is a pair of two small round flat discs, each 4 mm, side by side and joined by a short curved polished gold stem with a tiny gold leaf; each disc is filled with flat deep oxblood red enamel inside a thin polished gold rim; thin round shank. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: deep oxblood red (#5E1A1D). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "R03.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/R03.jpg",
+   "imageSha256": "f9577cb4eab6c739a6e8acbbcd46912e04d8c90bfdcf7c8cef6c0318dc28c8b3",
    "params": {
     "top_g": 0.6,
     "shank_g": 1.1
@@ -9027,7 +9054,8 @@
     "oxblood red"
    ],
    "dims": "two 6 mm cherries",
-   "listingProtocol": "enamel_necklace",
+   "listingProtocol": "pendant_necklace",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color",
@@ -9309,6 +9337,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: a pendant of two round flat discs 6 mm each, filled with flat deep oxblood red enamel inside thin polished gold rims, hanging at slightly different heights from a forked polished gold stem that curls at the top into a loop; a fine 1.2 mm gold cable chain passes through the stem loop and curves out of the top of the frame. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: deep oxblood red (#5E1A1D). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "N03.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/N03.jpg",
+   "imageSha256": "c5896d81e4baecdb97b5f45675f19bcd93b6bcb477366b3570dbb6d8686491fd",
    "params": {
     "piece_g": 0.9
    }
@@ -9340,12 +9370,13 @@
     "Solid gold",
     "Vitreous enamel"
    ],
-   "description": "Small solid gold huggie hoops, each with a single oxblood enamel cherry charm.\n\nA clean 11 mm hoop that hugs the lobe and a single cherry that moves beneath it. Hinged, so they open and close without tools.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose.\nEnamel: kiln-fired vitreous enamel in oxblood red, set flush in recessed cells with polished gold rims.\nSize: 11 mm huggies with 5 mm cherry charms.\nEarrings: solid gold posts with butterfly backs, sold as a pair.\n\nEach piece is made to order and ships free within the United States from New Jersey. Add a gift message at checkout and it ships with the piece.\n\nCare: enamel is glass fused to gold. It keeps its colour, but it can chip on a hard knock, so take it off for the gym and the dishes and wipe it with a soft cloth.\n\nThe product image is a design visualization of the finished piece; the handmade piece may vary slightly.",
+   "description": "Small solid gold huggie hoops, each with a single oxblood enamel cherry charm.\n\nA clean 11 mm hoop that hugs the lobe and a single cherry that moves beneath it. Hinged, so they open and close without tools.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose.\nEnamel: kiln-fired vitreous enamel in oxblood red, set flush in recessed cells with polished gold rims.\nSize: 11 mm huggies with 5 mm cherry charms.\nEarrings: hinged solid gold huggie hoops with a click closure, sold as a pair.\n\nEach piece is made to order and ships free within the United States from New Jersey. Add a gift message at checkout and it ships with the piece.\n\nCare: enamel is glass fused to gold. It keeps its colour, but it can chip on a hard knock, so take it off for the gym and the dishes and wipe it with a soft cloth.\n\nThe product image is a design visualization of the finished piece; the handmade piece may vary slightly.",
    "enamel": [
     "oxblood red"
    ],
    "dims": "11 mm huggies with 5 mm cherry charms",
-   "listingProtocol": "stud_earrings",
+   "listingProtocol": "hoop_earrings",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color"
@@ -9437,6 +9468,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: a pair of small polished gold huggie hoop earrings 11 mm across, each with a single tiny cherry charm hanging from the bottom: a 5 mm round flat disc of deep oxblood red enamel in a thin polished gold rim with a short curved gold stem. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: deep oxblood red (#5E1A1D). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "E03.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/E03.jpg",
+   "imageSha256": "0b0f0ad072dfe33b40faabe4d1ddcf35202c825451f818a0f7f65b809edb4244",
    "params": {
     "piece_g": 1.6
    }
@@ -9473,7 +9506,8 @@
     "oxblood red"
    ],
    "dims": "five 3.5 mm enamel dots",
-   "listingProtocol": "enamel_bracelet",
+   "listingProtocol": "chain_bracelet",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color",
@@ -9755,6 +9789,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: a fine 1.1 mm gold cable chain bracelet laid in a loose oval, with five tiny round flat stations 3.5 mm each spaced along it, each filled with flat deep oxblood red enamel inside a thin polished gold rim; spring ring clasp. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: deep oxblood red (#5E1A1D). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "B03.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/B03.jpg",
+   "imageSha256": "6f07cf6d4f0766c1d32a0ec642763658549ce473912f9b5279047a17c9cafeab",
    "params": {
     "piece_g": 0.5
    }
@@ -9791,7 +9827,8 @@
     "Fresh Purple"
    ],
    "dims": "button 9 mm with four open holes",
-   "listingProtocol": "enamel_ring",
+   "listingProtocol": "sculptural_ring",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color",
@@ -12233,6 +12270,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: a polished gold ring with a round flat button top 9 mm across, filled with flat rich violet purple enamel, with a raised polished gold outer rim and four small open through-holes in the centre, each hole rimmed in polished gold, exactly like a sewing button; round smooth shank. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: rich violet purple (#6B3FA0). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "R04.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/R04.jpg",
+   "imageSha256": "6fa18af674cc6d6da916cccecc1b998bbaed4ceffdff7f48ad51fec128549cd7",
    "params": {
     "top_g": 0.9,
     "shank_g": 1.3
@@ -12270,7 +12309,8 @@
     "Fresh Purple"
    ],
    "dims": "button 12 mm",
-   "listingProtocol": "enamel_necklace",
+   "listingProtocol": "pendant_necklace",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color",
@@ -12552,6 +12592,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: a round flat button pendant 12 mm across with four small open through-holes rimmed in polished gold, filled with flat rich violet purple enamel inside a raised polished gold rim; a small gold jump ring passes through one of the holes so the button hangs slightly tilted from a fine 1.2 mm gold cable chain that curves out of the top of the frame. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: rich violet purple (#6B3FA0). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "N04.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/N04.jpg",
+   "imageSha256": "68b536126256034bfe1af5bc8a8f8e2387db4fa3720eca7863a86cf1615c6c82",
    "params": {
     "piece_g": 1.3
    }
@@ -12589,6 +12631,7 @@
    ],
    "dims": "each stud 6 mm",
    "listingProtocol": "stud_earrings",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color"
@@ -12680,6 +12723,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: a pair of tiny round button stud earrings 6 mm across, filled with flat rich violet purple enamel inside a raised polished gold rim, each with four tiny holes rimmed in polished gold, gold posts; one lies flat, one angled. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: rich violet purple (#6B3FA0). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "E04.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/E04.jpg",
+   "imageSha256": "5b79453078de7f07f0b4fdb85cc2b9535e4f11987cfc007adbe54202d8c03bcc",
    "params": {
     "piece_g": 0.8
    }
@@ -12716,7 +12761,8 @@
     "Fresh Purple"
    ],
    "dims": "button clasp 10 mm",
-   "listingProtocol": "enamel_bracelet",
+   "listingProtocol": "chain_bracelet",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color",
@@ -12998,6 +13044,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: a fine 1.1 mm gold cable chain bracelet laid in a loose curve, fastened at the front by a round flat button 10 mm across filled with flat rich violet purple enamel inside a raised polished gold rim with four small gold-rimmed holes, the button passing through a slim polished gold oval loop at the other end of the chain. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: rich violet purple (#6B3FA0). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "B04.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/B04.jpg",
+   "imageSha256": "d6663ad2782ea9ff3c6e839c94270935ff730653233a640ef46f64e280eededd",
    "params": {
     "piece_g": 1.0
    }
@@ -13034,7 +13082,8 @@
     "Cocoa Powder brown"
    ],
    "dims": "acorn 6 x 8 mm",
-   "listingProtocol": "enamel_ring",
+   "listingProtocol": "sculptural_ring",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color",
@@ -15476,6 +15525,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: a polished gold ring with a small upright acorn on top, 6 by 8 mm: the rounded acorn body is a flat cell of cocoa brown enamel inside a thin polished gold rim, the cap above it is solid gold with a fine engraved crosshatch texture and a tiny stem; round smooth shank. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: cocoa brown (#6B4A3A). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "R05.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/R05.jpg",
+   "imageSha256": "769f20104711f215e3b30449cc599fd409d7673f82d08b3a35243165ba0eb236",
    "params": {
     "top_g": 0.7,
     "shank_g": 1.2
@@ -15513,7 +15564,8 @@
     "Cocoa Powder brown"
    ],
    "dims": "acorn 8 x 12 mm",
-   "listingProtocol": "enamel_necklace",
+   "listingProtocol": "pendant_necklace",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color",
@@ -15795,6 +15847,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: an acorn pendant 8 by 12 mm: the rounded body is filled with flat cocoa brown enamel inside a thin polished gold rim, the cap is solid gold with a fine crosshatch texture and its stem curls into a loop; a fine 1.2 mm gold cable chain passes through the loop and curves out of the top of the frame. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: cocoa brown (#6B4A3A). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "N05.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/N05.jpg",
+   "imageSha256": "8983b5985d58ae8e4929033e329882da34474e97ec09880e3b0ee94fc9fd0772",
    "params": {
     "piece_g": 1.2
    }
@@ -15831,7 +15885,8 @@
     "Cocoa Powder brown"
    ],
    "dims": "acorns 5 x 7 mm, total drop 17 mm",
-   "listingProtocol": "stud_earrings",
+   "listingProtocol": "dangle_earrings",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color"
@@ -15923,6 +15978,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: a pair of short drop earrings: each has a tiny round polished gold stud and, hanging 10 mm below on a fine gold link, a small acorn 5 by 7 mm with a flat cocoa brown enamel body in a thin gold rim and a crosshatched solid gold cap. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: cocoa brown (#6B4A3A). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "E05.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/E05.jpg",
+   "imageSha256": "d6b9f1e0c40b6775be20e1b29df160a97ef1525c7edb01dfc8948b07e742c1cd",
    "params": {
     "piece_g": 1.0
    }
@@ -15959,7 +16016,8 @@
     "Cocoa Powder brown"
    ],
    "dims": "two acorns 5 x 7 mm",
-   "listingProtocol": "enamel_bracelet",
+   "listingProtocol": "chain_bracelet",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color",
@@ -16241,6 +16299,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: a fine 1.1 mm gold cable chain bracelet laid in a loose oval, with two small acorn charms 5 by 7 mm hanging together at the centre at slightly different heights; each acorn has a flat cocoa brown enamel body in a thin polished gold rim and a crosshatched solid gold cap; spring ring clasp. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: cocoa brown (#6B4A3A). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "B05.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/B05.jpg",
+   "imageSha256": "20c73c0550c0e6242a5c9a8a949be782f359d098d96cb2fd4b254a3319b98dc8",
    "params": {
     "piece_g": 0.8
    }
@@ -16278,7 +16338,8 @@
     "Wax Paper cream"
    ],
    "dims": "top 8 x 8 mm, 3 x 3 grid",
-   "listingProtocol": "enamel_ring",
+   "listingProtocol": "sculptural_ring",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color",
@@ -18720,6 +18781,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: a polished gold ring with a flat square signet top 8 by 8 mm divided by a fine polished gold grid into a 3 by 3 checkerboard; the cells alternate flat bright chartreuse yellow green enamel and flat warm cream enamel; round smooth shank. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: bright chartreuse yellow green (#C5D84A), warm cream white (#EDE3C8). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "R06.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/R06.jpg",
+   "imageSha256": "11d4fa42e28976a615bb7cfa061400e760b37607029b1c14914c9c18ddf4b6e6",
    "params": {
     "top_g": 1.0,
     "shank_g": 1.3
@@ -18752,13 +18815,14 @@
     "Solid gold",
     "Vitreous enamel"
    ],
-   "description": "A 10 mm square pendant hung on its point, with a 2 x 2 checker of chartreuse and cream enamel.\n\nTurned 45 degrees, the square becomes a diamond and the checker becomes a pinwheel of colour at the neckline.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose.\nEnamel: kiln-fired vitreous enamel in Green Glow chartreuse and Wax Paper cream, set flush in recessed cells with polished gold rims.\nSize: square 10 mm, hung on its point.\nChain: 1.2 mm solid gold cable chain with spring ring clasp; choose 16, 18 or 20 inches.\n\nEach piece is made to order and ships free within the United States from New Jersey. Add a gift message at checkout and it ships with the piece.\n\nCare: enamel is glass fused to gold. It keeps its colour, but it can chip on a hard knock, so take it off for the gym and the dishes and wipe it with a soft cloth.\n\nThe product image is a design visualization of the finished piece; the handmade piece may vary slightly.",
+   "description": "A 10 mm square pendant hung on its point, quartered corner to corner in gold into chartreuse and cream enamel triangles.\n\nTurned 45 degrees and crossed from point to point by a fine gold line, the square becomes a diamond of four alternating triangles, a pinwheel of colour at the neckline.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose.\nEnamel: kiln-fired vitreous enamel in Green Glow chartreuse and Wax Paper cream, set flush in recessed cells with polished gold rims.\nSize: square 10 mm, hung on its point.\nChain: 1.2 mm solid gold cable chain with spring ring clasp; choose 16, 18 or 20 inches.\n\nEach piece is made to order and ships free within the United States from New Jersey. Add a gift message at checkout and it ships with the piece.\n\nCare: enamel is glass fused to gold. It keeps its colour, but it can chip on a hard knock, so take it off for the gym and the dishes and wipe it with a soft cloth.\n\nThe product image is a design visualization of the finished piece; the handmade piece may vary slightly.",
    "enamel": [
     "Green Glow chartreuse",
     "Wax Paper cream"
    ],
    "dims": "square 10 mm, hung on its point",
-   "listingProtocol": "enamel_necklace",
+   "listingProtocol": "pendant_necklace",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color",
@@ -19038,8 +19102,10 @@
      "price_cents": 105000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a square pendant 10 mm turned 45 degrees so it hangs on one point, divided by a fine polished gold cross into a 2 by 2 checker of flat bright chartreuse yellow green enamel and flat warm cream enamel in alternating quarters, framed by a polished gold rim; a small gold bail at the top point on a fine 1.2 mm gold cable chain that passes through the bail and curves out of the top of the frame. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: bright chartreuse yellow green (#C5D84A), warm cream white (#EDE3C8). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: a square pendant 10 mm turned 45 degrees so it hangs on one point, divided corner to corner by a fine polished gold cross into four triangles alternating flat bright chartreuse yellow green enamel and flat warm cream enamel, framed by a polished gold rim; a small gold bail at the top point on a fine 1.2 mm gold cable chain that passes through the bail and curves out of the top of the frame. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: bright chartreuse yellow green (#C5D84A), warm cream white (#EDE3C8). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "N06.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/N06.jpg",
+   "imageSha256": "ad1eea5428cda403e0b35a501afb8b5c9ce774ff5bd2ca26d73d24e2e7d3377a",
    "params": {
     "piece_g": 1.0
    }
@@ -19078,6 +19144,7 @@
    ],
    "dims": "each stud 5 x 5 mm",
    "listingProtocol": "stud_earrings",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color"
@@ -19169,6 +19236,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: a pair of tiny square stud earrings 5 by 5 mm, each divided by a fine polished gold cross into a 2 by 2 checker of flat bright chartreuse yellow green enamel and flat warm cream enamel, framed by a polished gold rim, gold posts. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: bright chartreuse yellow green (#C5D84A), warm cream white (#EDE3C8). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "E06.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/E06.jpg",
+   "imageSha256": "6994bfbf2e8cd199f9f2b5a3c508d2ccd8bbb57d304910b2e5fb719274639e45",
    "params": {
     "piece_g": 0.7
    }
@@ -19206,7 +19275,8 @@
     "Wax Paper cream"
    ],
    "dims": "bar 4 x 16 mm, four cells",
-   "listingProtocol": "enamel_bracelet",
+   "listingProtocol": "chain_bracelet",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color",
@@ -19488,6 +19558,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: a fine 1.1 mm gold cable chain bracelet laid in a loose oval with a slim horizontal bar 4 by 16 mm at the centre, divided by fine polished gold lines into four square cells alternating flat bright chartreuse yellow green enamel and flat warm cream enamel, framed by a polished gold rim; spring ring clasp. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: bright chartreuse yellow green (#C5D84A), warm cream white (#EDE3C8). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "B06.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/B06.jpg",
+   "imageSha256": "d3e35a62aa929135723e45bb7f04bb6ebb6a2023c39abad223adcef1102f73c0",
    "params": {
     "piece_g": 0.8
    }
@@ -19524,7 +19596,8 @@
     "berry pink"
    ],
    "dims": "heart 6 mm",
-   "listingProtocol": "enamel_ring",
+   "listingProtocol": "sculptural_ring",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color",
@@ -21966,6 +22039,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: a thin polished gold stacking ring with a small slightly asymmetric hand-drawn heart 6 mm on top, filled with flat deep berry pink enamel inside a thin polished gold rim; very slim round shank. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: deep berry pink (#A3265B). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "R07.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/R07.jpg",
+   "imageSha256": "84e692fe37d04f2fe9bb0ce738a38a225549c917ca27334511a625f41b4093c0",
    "params": {
     "top_g": 0.4,
     "shank_g": 1.0
@@ -22003,7 +22078,8 @@
     "berry pink"
    ],
    "dims": "heart 10 mm",
-   "listingProtocol": "enamel_necklace",
+   "listingProtocol": "pendant_necklace",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color",
@@ -22285,6 +22361,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: a slightly asymmetric hand-drawn heart pendant 10 mm, filled with flat deep berry pink enamel inside a thin polished gold rim, hanging from a small gold bail on a fine 1.2 mm gold cable chain that passes through the bail and curves out of the top of the frame. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: deep berry pink (#A3265B). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "N07.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/N07.jpg",
+   "imageSha256": "faadcd71c9b67792b06fbe30cfafa5b905c01dd160b82a080d670afb0c3b7611",
    "params": {
     "piece_g": 1.0
    }
@@ -22321,7 +22399,8 @@
     "berry pink"
    ],
    "dims": "hearts 7 mm on a 15 mm chain drop",
-   "listingProtocol": "stud_earrings",
+   "listingProtocol": "dangle_earrings",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color"
@@ -22413,6 +22492,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: a pair of dangle earrings: a tiny round polished gold stud with a 15 mm length of fine gold chain below, ending in a small slightly asymmetric heart 7 mm filled with flat deep berry pink enamel inside a thin polished gold rim. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: deep berry pink (#A3265B). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "E07.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/E07.jpg",
+   "imageSha256": "ab6da40410d4409a12c6cac40b43b72764a897c4b9dcaa67ab87b41b87ce963f",
    "params": {
     "piece_g": 0.9
    }
@@ -22449,7 +22530,8 @@
     "berry pink"
    ],
    "dims": "open cuff 1.6 mm wide, heart 6 mm",
-   "listingProtocol": "enamel_bracelet",
+   "listingProtocol": "cuff_bracelet",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color",
@@ -22731,6 +22813,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: a slim open cuff bracelet made of a 1.6 mm wide polished solid gold band, shown standing on its edge in a three-quarter view, with one small slightly asymmetric heart 6 mm at the front centre filled with flat deep berry pink enamel inside a thin polished gold rim; smooth rounded open ends. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: deep berry pink (#A3265B). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "B07.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/B07.jpg",
+   "imageSha256": "be9b1ce817f7e48ff3b80087dc80c42a71aa40ef3ed2a76fb09a09ab12d8a965",
    "params": {
     "piece_g": 3.7,
     "cuff": true
@@ -22768,7 +22852,8 @@
     "ocean navy"
    ],
    "dims": "bow 10 x 6 mm",
-   "listingProtocol": "enamel_ring",
+   "listingProtocol": "sculptural_ring",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color",
@@ -25208,8 +25293,10 @@
      "price_cents": 104000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a polished gold ring with a flat ribbon bow on top, 10 by 6 mm: two loops and two short tails, the loops and tails filled with flat deep ocean navy blue enamel inside thin polished gold rims, the centre knot solid polished gold; round smooth shank. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: deep ocean navy blue (#1D2F5C). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: a polished gold ring with a ribbon bow on top, 10 by 6 mm, made as one flat solid plate like a cut-out silhouette, not a three-dimensional tied ribbon and with no open loops: two loop shapes and two short tails, each a flat cell of deep ocean navy blue enamel inside thin polished gold rims, the centre knot a small flat polished gold oval; round smooth shank. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: deep ocean navy blue (#1D2F5C). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "R08.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/R08.jpg",
+   "imageSha256": "db999e8295fe30a88e1052a2541f865ebda7ec4533dd892800c922b35da360a1",
    "params": {
     "top_g": 0.8,
     "shank_g": 1.3
@@ -25242,12 +25329,13 @@
     "Solid gold",
     "Vitreous enamel"
    ],
-   "description": "A flat ribbon bow pendant in solid gold with ocean navy enamel loops and tails.\n\nThe chain runs through the gold knot, so the bow sits straight at the collarbone like a gift that has just been tied.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose.\nEnamel: kiln-fired vitreous enamel in ocean navy, set flush in recessed cells with polished gold rims.\nSize: bow 12 x 9 mm.\nChain: 1.2 mm solid gold cable chain with spring ring clasp; choose 16, 18 or 20 inches.\n\nEach piece is made to order and ships free within the United States from New Jersey. Add a gift message at checkout and it ships with the piece.\n\nCare: enamel is glass fused to gold. It keeps its colour, but it can chip on a hard knock, so take it off for the gym and the dishes and wipe it with a soft cloth.\n\nThe product image is a design visualization of the finished piece; the handmade piece may vary slightly.",
+   "description": "A flat ribbon bow pendant in solid gold with ocean navy enamel loops and tails, the loop centres pierced open.\n\nThe chain runs through a hidden bail behind the gold knot, so the bow sits straight at the collarbone like a gift that has just been tied.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose.\nEnamel: kiln-fired vitreous enamel in ocean navy, set flush in recessed cells with polished gold rims.\nSize: bow 12 x 9 mm.\nChain: 1.2 mm solid gold cable chain with spring ring clasp; choose 16, 18 or 20 inches.\n\nEach piece is made to order and ships free within the United States from New Jersey. Add a gift message at checkout and it ships with the piece.\n\nCare: enamel is glass fused to gold. It keeps its colour, but it can chip on a hard knock, so take it off for the gym and the dishes and wipe it with a soft cloth.\n\nThe product image is a design visualization of the finished piece; the handmade piece may vary slightly.",
    "enamel": [
     "ocean navy"
    ],
    "dims": "bow 12 x 9 mm",
-   "listingProtocol": "enamel_necklace",
+   "listingProtocol": "pendant_necklace",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color",
@@ -25527,8 +25615,10 @@
      "price_cents": 110000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a flat ribbon bow pendant 12 by 9 mm with two loops and two longer tails filled with flat deep ocean navy blue enamel inside thin polished gold rims, the centre knot solid polished gold with a small bail behind it; a fine 1.2 mm gold cable chain passes through the bail and curves out of the top of the frame. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: deep ocean navy blue (#1D2F5C). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: a ribbon bow pendant 12 by 9 mm made as one flat solid plate like a cut-out silhouette, not a three-dimensional tied ribbon and with no open loops: two loop shapes and two longer tails, each a flat cell of deep ocean navy blue enamel inside thin polished gold rims, the centre knot a small flat polished gold oval with a small bail behind it; a fine 1.2 mm gold cable chain passes through the bail and curves out of the top of the frame. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: deep ocean navy blue (#1D2F5C). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "N08.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/N08.jpg",
+   "imageSha256": "c95b3e93c5ccb9593c2597bc3cd308e86c9f732b33b4b0c1e0a39709a89075d6",
    "params": {
     "piece_g": 1.2
    }
@@ -25566,6 +25656,7 @@
    ],
    "dims": "each bow 7 x 5 mm",
    "listingProtocol": "stud_earrings",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color"
@@ -25657,6 +25748,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: a pair of small flat ribbon bow stud earrings 7 by 5 mm, loops and tails filled with flat deep ocean navy blue enamel inside thin polished gold rims, solid polished gold centre knot, gold posts. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: deep ocean navy blue (#1D2F5C). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "E08.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/E08.jpg",
+   "imageSha256": "d5108e1b044252a87a1b4a037f4d8a8456029c910347ffde181109fd65554a85",
    "params": {
     "piece_g": 0.9
    }
@@ -25693,7 +25786,8 @@
     "ocean navy"
    ],
    "dims": "bow 6 x 4 mm",
-   "listingProtocol": "enamel_bracelet",
+   "listingProtocol": "chain_bracelet",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color",
@@ -25975,6 +26069,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: a fine 1.1 mm gold cable chain bracelet laid in a loose oval with a tiny flat ribbon bow 6 by 4 mm set at the centre, its loops filled with flat deep ocean navy blue enamel inside thin polished gold rims and a solid polished gold knot; spring ring clasp. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: deep ocean navy blue (#1D2F5C). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "B08.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/B08.jpg",
+   "imageSha256": "e6e4719b7c54e1b4e864977e79314fe976a36c6d94cd037765e2b80b198d1c3d",
    "params": {
     "piece_g": 0.5
    }
@@ -26011,7 +26107,8 @@
     "moss green"
    ],
    "dims": "leaf 8 mm, open ring",
-   "listingProtocol": "enamel_ring",
+   "listingProtocol": "sculptural_ring",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color",
@@ -28453,6 +28550,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: an open bypass ring in polished gold: one end finishes in a small fan-shaped ginkgo leaf 8 mm wide, the leaf split down the middle by a polished gold vein and filled with flat muted moss olive green enamel inside thin polished gold rims; the other end finishes in a small round polished gold bud; the two ends pass side by side. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: muted moss olive green (#5C6B3A). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "R09.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/R09.jpg",
+   "imageSha256": "e66bd1f62dfad6962f6b0120b609409bb9615aeb294359331890bc269a5ab648",
    "params": {
     "top_g": 0.7,
     "shank_g": 1.2
@@ -28490,7 +28589,8 @@
     "moss green"
    ],
    "dims": "leaf 10 mm on a 30 mm drop",
-   "listingProtocol": "enamel_necklace",
+   "listingProtocol": "pendant_necklace",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color",
@@ -28772,6 +28872,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: a Y-shaped lariat necklace in fine 1.2 mm gold cable chain: from the centre point a single 30 mm length of chain drops down and ends in a fan-shaped ginkgo leaf 10 mm wide, split by a polished gold vein and filled with flat muted moss olive green enamel inside thin polished gold rims; the chain curves out of the top of the frame. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: muted moss olive green (#5C6B3A). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "N09.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/N09.jpg",
+   "imageSha256": "5c048874f6aa90d749429333fbb9ff815f68ccaf1564ef8cf55b41114640be28",
    "params": {
     "piece_g": 1.3
    }
@@ -28808,7 +28910,8 @@
     "moss green"
    ],
    "dims": "leaves 9 mm",
-   "listingProtocol": "stud_earrings",
+   "listingProtocol": "dangle_earrings",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color"
@@ -28900,6 +29003,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: a pair of drop earrings: a tiny round polished gold stud, below it a short polished gold stem ending in a fan-shaped ginkgo leaf 9 mm wide, split by a polished gold vein and filled with flat muted moss olive green enamel inside thin polished gold rims. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: muted moss olive green (#5C6B3A). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "E09.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/E09.jpg",
+   "imageSha256": "d2dc442993065124aa1d0c9af6f8ae9223da6aba3876847dfef8bf817b3312f4",
    "params": {
     "piece_g": 1.1
    }
@@ -28936,7 +29041,8 @@
     "moss green"
    ],
    "dims": "three leaves 6 mm",
-   "listingProtocol": "enamel_bracelet",
+   "listingProtocol": "chain_bracelet",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color",
@@ -29218,6 +29324,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: a fine 1.1 mm gold cable chain bracelet laid in a loose oval with three small fan-shaped ginkgo leaf stations 6 mm wide spaced along it, each turned at a slightly different angle, split by a polished gold vein and filled with flat muted moss olive green enamel inside thin polished gold rims; spring ring clasp. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: muted moss olive green (#5C6B3A). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "B09.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/B09.jpg",
+   "imageSha256": "a0fac5f16c7f461d4e595ae05caa209bf3630076c65d0c38d48eaa6aff0ab407",
    "params": {
     "piece_g": 0.9
    }
@@ -29255,7 +29363,8 @@
     "amber"
    ],
    "dims": "candle 3 x 7 mm with 2 x 3 mm flame",
-   "listingProtocol": "enamel_ring",
+   "listingProtocol": "sculptural_ring",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color",
@@ -31697,6 +31806,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: a thin polished gold stacking ring with a tiny upright candle on top: a slim rectangular column 3 by 7 mm filled with flat warm cream white enamel, and above it a small teardrop flame 2 by 3 mm filled with flat warm honey amber enamel, both inside thin polished gold rims; very slim round shank. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: warm cream white (#EDE3C8), warm honey amber (#D98A1E). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "R10.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/R10.jpg",
+   "imageSha256": "b61a440732d240267f91c8f54f91daec67c3cab93924d4cc3ac38b414512d64d",
    "params": {
     "top_g": 0.4,
     "shank_g": 1.0
@@ -31735,7 +31846,8 @@
     "amber"
    ],
    "dims": "candle 3 x 14 mm with 3 x 5 mm flame",
-   "listingProtocol": "enamel_necklace",
+   "listingProtocol": "pendant_necklace",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color",
@@ -32017,6 +32129,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: a slim vertical candle pendant: a narrow rectangular column 3 by 14 mm filled with flat warm cream white enamel and above it a teardrop flame 3 by 5 mm filled with flat warm honey amber enamel, both inside thin polished gold rims, a tiny gold bail above the flame on a fine 1.2 mm gold cable chain that passes through the bail and curves out of the top of the frame. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: warm cream white (#EDE3C8), warm honey amber (#D98A1E). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "N10.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/N10.jpg",
+   "imageSha256": "318bcffa1c71cef13d11237b7f61d55d7a62ec1eefacbdb29dd53e7bc6009a98",
    "params": {
     "piece_g": 0.8
    }
@@ -32054,6 +32168,7 @@
    ],
    "dims": "each flame 4 x 6 mm",
    "listingProtocol": "stud_earrings",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color"
@@ -32145,6 +32260,8 @@
    ],
    "imagePrompt": "Studio product photograph of one fine jewelry piece: a pair of tiny teardrop flame stud earrings 4 by 6 mm, pointed tip up, filled with flat warm honey amber enamel inside a thin polished gold rim, gold posts. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: warm honey amber (#D98A1E). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "E10.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/E10.jpg",
+   "imageSha256": "3cb170f2d68bf025085836e443198dd7fb1d6118543b02c2343a43911d90d8aa",
    "params": {
     "piece_g": 0.6
    }
@@ -32176,20 +32293,21 @@
     "Solid gold",
     "Vitreous enamel"
    ],
-   "description": "Two small cream and amber enamel candles standing side by side on a fine solid gold chain.\n\nA pair of candles at the centre of the wrist, one a little taller than the other.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose.\nEnamel: kiln-fired vitreous enamel in Wax Paper cream and amber, set flush in recessed cells with polished gold rims.\nSize: two candles 2.5 x 10 mm.\nChain: 1.1 mm solid gold cable chain with spring ring clasp; choose 6.5, 7 or 7.5 inches.\n\nEach piece is made to order and ships free within the United States from New Jersey. Add a gift message at checkout and it ships with the piece.\n\nCare: enamel is glass fused to gold. It keeps its colour, but it can chip on a hard knock, so take it off for the gym and the dishes and wipe it with a soft cloth.\n\nThe product image is a design visualization of the finished piece; the handmade piece may vary slightly.",
+   "description": "Two small cream and amber enamel candles standing side by side on a slim gold base set into a fine solid gold chain.\n\nA pair of candles at the centre of the wrist, one a little taller than the other.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose.\nEnamel: kiln-fired vitreous enamel in Wax Paper cream and amber, set flush in recessed cells with polished gold rims.\nSize: two candles 2.5 x 10 mm on an 8 mm base bar.\nChain: 1.1 mm solid gold cable chain with spring ring clasp; choose 6.5, 7 or 7.5 inches.\n\nEach piece is made to order and ships free within the United States from New Jersey. Add a gift message at checkout and it ships with the piece.\n\nCare: enamel is glass fused to gold. It keeps its colour, but it can chip on a hard knock, so take it off for the gym and the dishes and wipe it with a soft cloth.\n\nThe product image is a design visualization of the finished piece; the handmade piece may vary slightly.",
    "enamel": [
     "Wax Paper cream",
     "amber"
    ],
-   "dims": "two candles 2.5 x 10 mm",
-   "listingProtocol": "enamel_bracelet",
+   "dims": "two candles 2.5 x 10 mm on an 8 mm base bar",
+   "listingProtocol": "chain_bracelet",
+   "offersPersonalization": false,
    "variationAxes": [
     "Karat",
     "Metal Color",
     "Bracelet Length"
    ],
-   "grams14Ref": 1.7,
-   "refPriceCents": 79000,
+   "grams14Ref": 1.8,
+   "refPriceCents": 81000,
    "variants": [
     {
      "sku": "BAS-FW-B10-10KY-6_5IN",
@@ -32198,8 +32316,8 @@
       "Metal Color": "Yellow Gold",
       "Bracelet Length": "6.5 inches"
      },
-     "grams": 1.46,
-     "price_cents": 68000
+     "grams": 1.55,
+     "price_cents": 69000
     },
     {
      "sku": "BAS-FW-B10-10KY-7IN",
@@ -32208,8 +32326,8 @@
       "Metal Color": "Yellow Gold",
       "Bracelet Length": "7 inches"
      },
-     "grams": 1.51,
-     "price_cents": 69000
+     "grams": 1.6,
+     "price_cents": 70000
     },
     {
      "sku": "BAS-FW-B10-10KY-7_5IN",
@@ -32218,8 +32336,8 @@
       "Metal Color": "Yellow Gold",
       "Bracelet Length": "7.5 inches"
      },
-     "grams": 1.57,
-     "price_cents": 69000
+     "grams": 1.65,
+     "price_cents": 70000
     },
     {
      "sku": "BAS-FW-B10-10KW-6_5IN",
@@ -32228,8 +32346,8 @@
       "Metal Color": "White Gold",
       "Bracelet Length": "6.5 inches"
      },
-     "grams": 1.46,
-     "price_cents": 68000
+     "grams": 1.55,
+     "price_cents": 69000
     },
     {
      "sku": "BAS-FW-B10-10KW-7IN",
@@ -32238,8 +32356,8 @@
       "Metal Color": "White Gold",
       "Bracelet Length": "7 inches"
      },
-     "grams": 1.51,
-     "price_cents": 69000
+     "grams": 1.6,
+     "price_cents": 70000
     },
     {
      "sku": "BAS-FW-B10-10KW-7_5IN",
@@ -32248,8 +32366,8 @@
       "Metal Color": "White Gold",
       "Bracelet Length": "7.5 inches"
      },
-     "grams": 1.57,
-     "price_cents": 69000
+     "grams": 1.65,
+     "price_cents": 70000
     },
     {
      "sku": "BAS-FW-B10-10KR-6_5IN",
@@ -32258,8 +32376,8 @@
       "Metal Color": "Rose Gold",
       "Bracelet Length": "6.5 inches"
      },
-     "grams": 1.46,
-     "price_cents": 68000
+     "grams": 1.55,
+     "price_cents": 69000
     },
     {
      "sku": "BAS-FW-B10-10KR-7IN",
@@ -32268,8 +32386,8 @@
       "Metal Color": "Rose Gold",
       "Bracelet Length": "7 inches"
      },
-     "grams": 1.51,
-     "price_cents": 69000
+     "grams": 1.6,
+     "price_cents": 70000
     },
     {
      "sku": "BAS-FW-B10-10KR-7_5IN",
@@ -32278,8 +32396,8 @@
       "Metal Color": "Rose Gold",
       "Bracelet Length": "7.5 inches"
      },
-     "grams": 1.57,
-     "price_cents": 69000
+     "grams": 1.65,
+     "price_cents": 70000
     },
     {
      "sku": "BAS-FW-B10-14KY-6_5IN",
@@ -32288,8 +32406,8 @@
       "Metal Color": "Yellow Gold",
       "Bracelet Length": "6.5 inches"
      },
-     "grams": 1.64,
-     "price_cents": 78000
+     "grams": 1.74,
+     "price_cents": 80000
     },
     {
      "sku": "BAS-FW-B10-14KY-7IN",
@@ -32298,8 +32416,8 @@
       "Metal Color": "Yellow Gold",
       "Bracelet Length": "7 inches"
      },
-     "grams": 1.7,
-     "price_cents": 79000
+     "grams": 1.8,
+     "price_cents": 81000
     },
     {
      "sku": "BAS-FW-B10-14KY-7_5IN",
@@ -32308,8 +32426,8 @@
       "Metal Color": "Yellow Gold",
       "Bracelet Length": "7.5 inches"
      },
-     "grams": 1.75,
-     "price_cents": 80000
+     "grams": 1.85,
+     "price_cents": 82000
     },
     {
      "sku": "BAS-FW-B10-14KW-6_5IN",
@@ -32318,8 +32436,8 @@
       "Metal Color": "White Gold",
       "Bracelet Length": "6.5 inches"
      },
-     "grams": 1.64,
-     "price_cents": 78000
+     "grams": 1.74,
+     "price_cents": 80000
     },
     {
      "sku": "BAS-FW-B10-14KW-7IN",
@@ -32328,8 +32446,8 @@
       "Metal Color": "White Gold",
       "Bracelet Length": "7 inches"
      },
-     "grams": 1.7,
-     "price_cents": 79000
+     "grams": 1.8,
+     "price_cents": 81000
     },
     {
      "sku": "BAS-FW-B10-14KW-7_5IN",
@@ -32338,8 +32456,8 @@
       "Metal Color": "White Gold",
       "Bracelet Length": "7.5 inches"
      },
-     "grams": 1.75,
-     "price_cents": 80000
+     "grams": 1.85,
+     "price_cents": 82000
     },
     {
      "sku": "BAS-FW-B10-14KR-6_5IN",
@@ -32348,8 +32466,8 @@
       "Metal Color": "Rose Gold",
       "Bracelet Length": "6.5 inches"
      },
-     "grams": 1.64,
-     "price_cents": 78000
+     "grams": 1.74,
+     "price_cents": 80000
     },
     {
      "sku": "BAS-FW-B10-14KR-7IN",
@@ -32358,8 +32476,8 @@
       "Metal Color": "Rose Gold",
       "Bracelet Length": "7 inches"
      },
-     "grams": 1.7,
-     "price_cents": 79000
+     "grams": 1.8,
+     "price_cents": 81000
     },
     {
      "sku": "BAS-FW-B10-14KR-7_5IN",
@@ -32368,8 +32486,8 @@
       "Metal Color": "Rose Gold",
       "Bracelet Length": "7.5 inches"
      },
-     "grams": 1.75,
-     "price_cents": 80000
+     "grams": 1.85,
+     "price_cents": 82000
     },
     {
      "sku": "BAS-FW-B10-18KY-6_5IN",
@@ -32378,8 +32496,8 @@
       "Metal Color": "Yellow Gold",
       "Bracelet Length": "6.5 inches"
      },
-     "grams": 1.87,
-     "price_cents": 91000
+     "grams": 1.98,
+     "price_cents": 93000
     },
     {
      "sku": "BAS-FW-B10-18KY-7IN",
@@ -32388,8 +32506,8 @@
       "Metal Color": "Yellow Gold",
       "Bracelet Length": "7 inches"
      },
-     "grams": 1.93,
-     "price_cents": 92000
+     "grams": 2.04,
+     "price_cents": 95000
     },
     {
      "sku": "BAS-FW-B10-18KY-7_5IN",
@@ -32398,8 +32516,8 @@
       "Metal Color": "Yellow Gold",
       "Bracelet Length": "7.5 inches"
      },
-     "grams": 2.0,
-     "price_cents": 94000
+     "grams": 2.11,
+     "price_cents": 96000
     },
     {
      "sku": "BAS-FW-B10-18KW-6_5IN",
@@ -32408,8 +32526,8 @@
       "Metal Color": "White Gold",
       "Bracelet Length": "6.5 inches"
      },
-     "grams": 1.87,
-     "price_cents": 91000
+     "grams": 1.98,
+     "price_cents": 93000
     },
     {
      "sku": "BAS-FW-B10-18KW-7IN",
@@ -32418,8 +32536,8 @@
       "Metal Color": "White Gold",
       "Bracelet Length": "7 inches"
      },
-     "grams": 1.93,
-     "price_cents": 92000
+     "grams": 2.04,
+     "price_cents": 95000
     },
     {
      "sku": "BAS-FW-B10-18KW-7_5IN",
@@ -32428,8 +32546,8 @@
       "Metal Color": "White Gold",
       "Bracelet Length": "7.5 inches"
      },
-     "grams": 2.0,
-     "price_cents": 94000
+     "grams": 2.11,
+     "price_cents": 96000
     },
     {
      "sku": "BAS-FW-B10-18KR-6_5IN",
@@ -32438,8 +32556,8 @@
       "Metal Color": "Rose Gold",
       "Bracelet Length": "6.5 inches"
      },
-     "grams": 1.87,
-     "price_cents": 91000
+     "grams": 1.98,
+     "price_cents": 93000
     },
     {
      "sku": "BAS-FW-B10-18KR-7IN",
@@ -32448,8 +32566,8 @@
       "Metal Color": "Rose Gold",
       "Bracelet Length": "7 inches"
      },
-     "grams": 1.93,
-     "price_cents": 92000
+     "grams": 2.04,
+     "price_cents": 95000
     },
     {
      "sku": "BAS-FW-B10-18KR-7_5IN",
@@ -32458,14 +32576,16 @@
       "Metal Color": "Rose Gold",
       "Bracelet Length": "7.5 inches"
      },
-     "grams": 2.0,
-     "price_cents": 94000
+     "grams": 2.11,
+     "price_cents": 96000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a fine 1.1 mm gold cable chain bracelet laid in a loose oval with two small slim candles standing side by side at the centre, 2.5 by 9 mm and 2.5 by 10 mm, each a cream white enamel column topped by a tiny warm honey amber enamel flame, all inside thin polished gold rims; spring ring clasp. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: warm cream white (#EDE3C8), warm honey amber (#D98A1E). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: a fine 1.1 mm gold cable chain bracelet laid in a loose oval; at the centre a slim flat polished gold base bar 8 mm long is part of the chain, the chain soldered to each end of the bar; on top of the bar two slim candles stand upright side by side and are joined to it, 2.5 by 9 mm and 2.5 by 10 mm, each a cream white enamel column topped by a tiny warm honey amber enamel flame, all inside thin polished gold rims; spring ring clasp. Solid polished 14K yellow gold with flat, glossy kiln-fired vitreous enamel set flush inside recessed cells, every cell framed by a thin polished gold rim; the enamel is perfectly flat and smooth, not domed, not cabochon, no gradient, no painted detail, no stones. Enamel colour: warm cream white (#EDE3C8), warm honey amber (#D98A1E). Resting on warm off-white textured paper, soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
    "imageFile": "B10.jpg",
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/fw2627-enamel/B10.jpg",
+   "imageSha256": "a5fd2c8baca54cbf21ab90d8be7b7ce1291af11e07781b2ae23b0eb8ef812efb",
    "params": {
-    "piece_g": 0.7
+    "piece_g": 0.8
    }
   }
  ]

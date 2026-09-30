@@ -344,3 +344,36 @@ test("monogram signet opsiyonel 4 karakter gravür yazar; initial signet değiş
   // Metadatasız yüzük hâlâ alyans.
   assert.equal(resolveListingProtocol({ product_type: "ring" })?.id, "wedding_band");
 });
+
+test("FW26/27 enamel seti: 40 önerinin hepsi TANIMLI protokole çözülür (2026-09-30)", async () => {
+  // Katalog ilk hâlinde "enamel_ring" gibi tanımsız id'ler taşıyordu; tanımsız
+  // id product_type'a düşer ve "ring" alyans kuralına (Width zorunlu) giderdi.
+  const { readFileSync } = await import("node:fs");
+  const raw = JSON.parse(
+    readFileSync("docs/artifact-studio/fw2627-enamel/catalog.json", "utf8"),
+  );
+  const items: Array<{ id: string; productType: string; listingProtocol: string; variants: DraftVariant[] }> =
+    raw.items ?? raw;
+  assert.equal(items.length, 40);
+  const dbType: Record<string, string> = { ring: "ring", necklace: "necklace", bracelet: "bracelet", earring: "earrings" };
+  for (const it of items) {
+    assert.ok(Object.prototype.hasOwnProperty.call(LISTING_PROTOCOLS, it.listingProtocol), it.id);
+    const spec = resolveListingProtocol({
+      product_type: dbType[it.productType],
+      listing_metadata: { listingProtocol: it.listingProtocol, offersPersonalization: false },
+    });
+    assert.equal(spec?.id, it.listingProtocol, it.id);
+    assert.equal(spec?.personalization, null, it.id);
+    assert.notEqual(spec?.id, "wedding_band", it.id);
+    const variants: DraftVariant[] = it.variants.map((v) => ({ ...v, quantity: 20 }));
+    assert.equal(validateVariationAxes(spec!, variants), null, it.id);
+  }
+  // Sarkan/halka küpeler stud dalına dosyalanmaz.
+  const byId = Object.fromEntries(items.map((i) => [i.id, i.listingProtocol]));
+  assert.equal(byId.E03, "hoop_earrings");
+  for (const id of ["E05", "E07", "E09"]) assert.equal(byId[id], "dangle_earrings");
+  assert.equal(byId.B07, "cuff_bracelet");
+  // product_type "earrings" BİLEREK eşlenmez (stud mu sarkan mı bilinmez);
+  // bu set her kayda açık listingProtocol yazar, çözüm oradan gelir.
+  assert.equal(resolveListingProtocol({ product_type: "earrings" }), null);
+});

@@ -4,7 +4,7 @@ Single source of truth for copy, sizes, estimated grams, prices and image prompt
 Run: python3 docs/artifact-studio/fw2627-enamel/catalog.py
 Writes catalog.json next to this file and fails loudly on any rule break.
 """
-import json, math, re, uuid, pathlib
+import json, math, os, re, uuid, pathlib
 
 HERE = pathlib.Path(__file__).parent
 ORG = "2c254edf-2119-4079-b09e-dc672e32c1f9"  # by Artifact Studio Jewelry
@@ -73,13 +73,13 @@ def add(**kw):
 
 # ============================================================ 1 KEYHOLE (teal)
 add(id="R01", fam="Keyhole", cat="ring", name="Keyhole Signet Ring", enamel=["teal"],
-    dims="top 8 x 10 mm, keyhole cell 3.5 x 6 mm", top_g=0.9, shank_g=1.3,
+    dims="top 8 x 10 mm, keyhole outline 3.5 x 6 mm", top_g=0.9, shank_g=1.3,
     title="Keyhole Signet Ring, Teal Enamel Signet in Solid Gold, Minimalist Everyday Enamel Ring",
     tags=["keyhole ring", "teal enamel ring", "enamel signet ring", "solid gold signet", "teal jewelry",
           "minimalist signet", "gold signet ring", "keyhole jewelry", "colorful ring", "14k enamel ring"],
-    lead="A small rounded signet in solid gold with a teal enamel keyhole at its centre.",
-    story="The keyhole is the quiet door of a winter room: a circle over a tapered slot, filled flush with Transformative Teal and framed in polished gold. It sits flat and low, easy to wear every day and easy to stack.",
-    shape="a slim polished gold ring with a small rounded-rectangle signet top, 8 by 10 mm; in the centre of the flat top is a keyhole-shaped cell (a small circle above a tapered slot) filled with flat deep teal enamel, framed by a thin polished gold rim; round smooth shank")
+    lead="A small rounded signet in solid gold, its top filled with teal enamel and drawn through with a polished gold keyhole.",
+    story="The keyhole is the quiet door of a winter room: a circle over a tapered slot, traced in polished gold across a flush field of Transformative Teal. It sits flat and low, easy to wear every day and easy to stack.",
+    shape="a slim polished gold ring with a small rounded-rectangle signet top, 8 by 10 mm; the whole flat top is filled with flat deep teal enamel inside a polished gold rim, and a thin polished gold keyhole outline (a small circle above a tapered slot) is drawn through the centre of the teal; round smooth shank")
 add(id="N01", fam="Keyhole", cat="necklace", name="Keyhole Pendant Necklace", enamel=["teal"],
     dims="pendant 9 x 14 mm", piece_g=0.9,
     title="Keyhole Pendant Necklace, Teal Enamel Keyhole Charm on Solid Gold Chain, Minimalist Layering Necklace",
@@ -93,7 +93,7 @@ add(id="E01", fam="Keyhole", cat="earring", name="Keyhole Stud Earrings", enamel
     title="Keyhole Stud Earrings, Tiny Teal Enamel Studs in Solid Gold, Minimalist Second Hole Earrings",
     tags=["keyhole earrings", "teal stud earrings", "enamel studs", "tiny gold studs", "teal jewelry",
           "second hole studs", "minimalist studs", "keyhole studs", "dainty earrings", "14k enamel studs"],
-    lead="Tiny keyhole studs in solid gold with flush teal enamel.",
+    lead="Tiny keyhole studs in solid gold with flush teal enamel.", backs="screw backs",
     story="The smallest way into the Keyhole family: two little silhouettes of teal glass that read as colour from across a room and as a shape up close. Good for a first or second hole.",
     shape="a pair of tiny keyhole-shaped stud earrings, each 4 by 6 mm, filled with flat deep teal enamel inside a thin polished gold rim, with gold posts; one earring lies flat, the other stands slightly angled to show the post")
 add(id="B01", fam="Keyhole", cat="bracelet", name="Keyhole Station Bracelet", enamel=["teal"],
@@ -156,7 +156,8 @@ add(id="N03", fam="Cherry", cat="necklace", name="Cherry Charm Necklace", enamel
     lead="A pair of oxblood enamel cherries hanging from a gold stem on a fine solid gold chain.",
     story="The stem forms the bail, so the two cherries swing a little as you move. Deep red glass, polished gold rims, nothing else.",
     shape="a pendant of two round flat discs 6 mm each, filled with flat deep oxblood red enamel inside thin polished gold rims, hanging at slightly different heights from a forked polished gold stem that curls at the top into a loop; a fine 1.2 mm gold cable chain passes through the stem loop and curves out of the top of the frame")
-add(id="E03", fam="Cherry", cat="earring", name="Cherry Huggie Earrings", enamel=["oxblood"],
+add(id="E03", fam="Cherry", cat="earring", name="Cherry Huggie Earrings", enamel=["oxblood"], protocol="hoop_earrings",
+    earline="Earrings: hinged solid gold huggie hoops with a click closure, sold as a pair.",
     dims="11 mm huggies with 5 mm cherry charms", piece_g=1.6,
     title="Cherry Huggie Earrings, Oxblood Enamel Cherry Charms on Solid Gold Huggie Hoops, Dainty Charm Hoops",
     tags=["cherry earrings", "huggie hoops", "charm huggies", "oxblood enamel", "red enamel charm",
@@ -224,7 +225,7 @@ add(id="N05", fam="Acorn", cat="necklace", name="Acorn Drop Necklace", enamel=["
     lead="An acorn pendant in solid gold with a cocoa enamel body and a textured gold cap.",
     story="The stem loops into its own bail, so the acorn hangs straight and turns a little. A small collectible for the season.",
     shape="an acorn pendant 8 by 12 mm: the rounded body is filled with flat cocoa brown enamel inside a thin polished gold rim, the cap is solid gold with a fine crosshatch texture and its stem curls into a loop; a fine 1.2 mm gold cable chain passes through the loop and curves out of the top of the frame")
-add(id="E05", fam="Acorn", cat="earring", name="Acorn Drop Earrings", enamel=["cocoa"],
+add(id="E05", fam="Acorn", cat="earring", name="Acorn Drop Earrings", enamel=["cocoa"], protocol="dangle_earrings",
     dims="acorns 5 x 7 mm, total drop 17 mm", piece_g=1.0,
     title="Acorn Drop Earrings, Cocoa Enamel Acorns in Solid Gold, Autumn Woodland Dangle Earrings",
     tags=["acorn earrings", "drop earrings", "autumn earrings", "woodland earrings", "cocoa brown",
@@ -255,9 +256,9 @@ add(id="N06", fam="Checker", cat="necklace", name="Checker Diamond Necklace", en
     title="Checkerboard Pendant Necklace, Chartreuse and Cream Enamel on Solid Gold Chain, Graphic Layering Necklace",
     tags=["checker necklace", "checkerboard pendant", "chartreuse pendant", "green enamel", "graphic necklace",
           "layering necklace", "gold square pendant", "colorful necklace", "y2k jewelry", "14k enamel pendant"],
-    lead="A 10 mm square pendant hung on its point, with a 2 x 2 checker of chartreuse and cream enamel.",
-    story="Turned 45 degrees, the square becomes a diamond and the checker becomes a pinwheel of colour at the neckline.",
-    shape="a square pendant 10 mm turned 45 degrees so it hangs on one point, divided by a fine polished gold cross into a 2 by 2 checker of flat bright chartreuse yellow green enamel and flat warm cream enamel in alternating quarters, framed by a polished gold rim; a small gold bail at the top point on a fine 1.2 mm gold cable chain that passes through the bail and curves out of the top of the frame")
+    lead="A 10 mm square pendant hung on its point, quartered corner to corner in gold into chartreuse and cream enamel triangles.",
+    story="Turned 45 degrees and crossed from point to point by a fine gold line, the square becomes a diamond of four alternating triangles, a pinwheel of colour at the neckline.",
+    shape="a square pendant 10 mm turned 45 degrees so it hangs on one point, divided corner to corner by a fine polished gold cross into four triangles alternating flat bright chartreuse yellow green enamel and flat warm cream enamel, framed by a polished gold rim; a small gold bail at the top point on a fine 1.2 mm gold cable chain that passes through the bail and curves out of the top of the frame")
 add(id="E06", fam="Checker", cat="earring", name="Checker Mini Studs", enamel=["chartreuse", "cream"],
     dims="each stud 5 x 5 mm", piece_g=0.7,
     title="Checker Stud Earrings, Tiny Chartreuse and Cream Enamel Squares in Solid Gold, Graphic Mini Studs",
@@ -292,7 +293,7 @@ add(id="N07", fam="Crush", cat="necklace", name="Crush Heart Necklace", enamel=[
     lead="A 10 mm lopsided heart pendant in solid gold, filled with berry pink enamel.",
     story="A heart with a little lean to it, deep berry glass in a polished rim. A winter gift that runs straight into Valentine's Day.",
     shape="a slightly asymmetric hand-drawn heart pendant 10 mm, filled with flat deep berry pink enamel inside a thin polished gold rim, hanging from a small gold bail on a fine 1.2 mm gold cable chain that passes through the bail and curves out of the top of the frame")
-add(id="E07", fam="Crush", cat="earring", name="Crush Heart Drop Earrings", enamel=["berry"],
+add(id="E07", fam="Crush", cat="earring", name="Crush Heart Drop Earrings", enamel=["berry"], protocol="dangle_earrings",
     dims="hearts 7 mm on a 15 mm chain drop", piece_g=0.9,
     title="Heart Drop Earrings, Berry Pink Enamel Hearts on Fine Solid Gold Chain, Dainty Dangle Earrings",
     tags=["heart earrings", "drop earrings", "pink heart earrings", "berry enamel", "chain drop earrings",
@@ -300,7 +301,7 @@ add(id="E07", fam="Crush", cat="earring", name="Crush Heart Drop Earrings", enam
     lead="Small berry enamel hearts on short fine chains below solid gold studs.",
     story="Each heart hangs on 15 mm of fine chain, so it moves and catches light with every turn of the head.",
     shape="a pair of dangle earrings: a tiny round polished gold stud with a 15 mm length of fine gold chain below, ending in a small slightly asymmetric heart 7 mm filled with flat deep berry pink enamel inside a thin polished gold rim")
-add(id="B07", fam="Crush", cat="bracelet", name="Crush Heart Cuff", enamel=["berry"],
+add(id="B07", fam="Crush", cat="bracelet", name="Crush Heart Cuff", enamel=["berry"], protocol="cuff_bracelet",
     dims="open cuff 1.6 mm wide, heart 6 mm", piece_g=3.7, cuff=True,
     title="Heart Cuff Bracelet, Berry Pink Enamel Heart on Slim Solid Gold Open Cuff, Dainty Stacking Cuff",
     tags=["heart cuff", "open cuff bracelet", "gold cuff", "berry enamel", "pink heart bracelet",
@@ -317,15 +318,15 @@ add(id="R08", fam="Bow", cat="ring", name="Bow Ring", enamel=["navy"],
           "navy jewelry", "coquette ring", "gift for her ring", "gold bow ring", "14k enamel ring"],
     lead="A flat ribbon bow in solid gold, its loops filled with ocean navy enamel.",
     story="The bow stays flat and graphic: two navy loops, a polished gold knot, short tails. It sits across the finger like a tied ribbon.",
-    shape="a polished gold ring with a flat ribbon bow on top, 10 by 6 mm: two loops and two short tails, the loops and tails filled with flat deep ocean navy blue enamel inside thin polished gold rims, the centre knot solid polished gold; round smooth shank")
+    shape="a polished gold ring with a ribbon bow on top, 10 by 6 mm, made as one flat solid plate like a cut-out silhouette, not a three-dimensional tied ribbon and with no open loops: two loop shapes and two short tails, each a flat cell of deep ocean navy blue enamel inside thin polished gold rims, the centre knot a small flat polished gold oval; round smooth shank")
 add(id="N08", fam="Bow", cat="necklace", name="Bow Pendant Necklace", enamel=["navy"],
     dims="bow 12 x 9 mm", piece_g=1.2,
     title="Bow Necklace, Navy Enamel Ribbon Bow Pendant on Solid Gold Chain, Minimalist Gift Necklace",
     tags=["bow necklace", "ribbon necklace", "navy necklace", "bow pendant", "blue enamel pendant",
           "coquette jewelry", "gift necklace", "gold bow pendant", "layering necklace", "14k enamel pendant"],
-    lead="A flat ribbon bow pendant in solid gold with ocean navy enamel loops and tails.",
-    story="The chain runs through the gold knot, so the bow sits straight at the collarbone like a gift that has just been tied.",
-    shape="a flat ribbon bow pendant 12 by 9 mm with two loops and two longer tails filled with flat deep ocean navy blue enamel inside thin polished gold rims, the centre knot solid polished gold with a small bail behind it; a fine 1.2 mm gold cable chain passes through the bail and curves out of the top of the frame")
+    lead="A flat ribbon bow pendant in solid gold with ocean navy enamel loops and tails, the loop centres pierced open.",
+    story="The chain runs through a hidden bail behind the gold knot, so the bow sits straight at the collarbone like a gift that has just been tied.",
+    shape="a ribbon bow pendant 12 by 9 mm made as one flat solid plate like a cut-out silhouette, not a three-dimensional tied ribbon and with no open loops: two loop shapes and two longer tails, each a flat cell of deep ocean navy blue enamel inside thin polished gold rims, the centre knot a small flat polished gold oval with a small bail behind it; a fine 1.2 mm gold cable chain passes through the bail and curves out of the top of the frame")
 add(id="E08", fam="Bow", cat="earring", name="Bow Stud Earrings", enamel=["navy"],
     dims="each bow 7 x 5 mm", piece_g=0.9,
     title="Bow Stud Earrings, Navy Enamel Ribbon Bows in Solid Gold, Dainty Minimalist Studs",
@@ -360,7 +361,7 @@ add(id="N09", fam="Ginkgo", cat="necklace", name="Ginkgo Lariat Necklace", ename
     lead="A Y-shaped lariat in solid gold with a moss green enamel ginkgo leaf at the end of a 30 mm drop.",
     story="The drop falls from the centre of the chain and the leaf turns at its end, so the necklace frames the neckline in a long line.",
     shape="a Y-shaped lariat necklace in fine 1.2 mm gold cable chain: from the centre point a single 30 mm length of chain drops down and ends in a fan-shaped ginkgo leaf 10 mm wide, split by a polished gold vein and filled with flat muted moss olive green enamel inside thin polished gold rims; the chain curves out of the top of the frame")
-add(id="E09", fam="Ginkgo", cat="earring", name="Ginkgo Leaf Drop Earrings", enamel=["moss"],
+add(id="E09", fam="Ginkgo", cat="earring", name="Ginkgo Leaf Drop Earrings", enamel=["moss"], protocol="dangle_earrings",
     dims="leaves 9 mm", piece_g=1.1,
     title="Ginkgo Leaf Earrings, Moss Green Enamel Leaf Drops in Solid Gold, Autumn Botanical Earrings",
     tags=["ginkgo earrings", "leaf earrings", "drop earrings", "moss green", "green enamel",
@@ -403,13 +404,13 @@ add(id="E10", fam="Wick", cat="earring", name="Flame Stud Earrings", enamel=["am
     story="Only the flame from the candle, 6 mm tall, warm against the lobe through the dark months.",
     shape="a pair of tiny teardrop flame stud earrings 4 by 6 mm, pointed tip up, filled with flat warm honey amber enamel inside a thin polished gold rim, gold posts")
 add(id="B10", fam="Wick", cat="bracelet", name="Twin Candle Bracelet", enamel=["cream", "amber"],
-    dims="two candles 2.5 x 10 mm", piece_g=0.7,
+    dims="two candles 2.5 x 10 mm on an 8 mm base bar", piece_g=0.8,
     title="Candle Bracelet, Two Cream and Amber Enamel Candles on Solid Gold Chain, Dainty Holiday Bracelet",
     tags=["candle bracelet", "flame bracelet", "holiday bracelet", "cream enamel", "amber enamel",
           "winter jewelry", "gold chain bracelet", "dainty bracelet", "stacking bracelet", "14k enamel bracelet"],
-    lead="Two small cream and amber enamel candles standing side by side on a fine solid gold chain.",
+    lead="Two small cream and amber enamel candles standing side by side on a slim gold base set into a fine solid gold chain.",
     story="A pair of candles at the centre of the wrist, one a little taller than the other.",
-    shape="a fine 1.1 mm gold cable chain bracelet laid in a loose oval with two small slim candles standing side by side at the centre, 2.5 by 9 mm and 2.5 by 10 mm, each a cream white enamel column topped by a tiny warm honey amber enamel flame, all inside thin polished gold rims; spring ring clasp")
+    shape="a fine 1.1 mm gold cable chain bracelet laid in a loose oval; at the centre a slim flat polished gold base bar 8 mm long is part of the chain, the chain soldered to each end of the bar; on top of the bar two slim candles stand upright side by side and are joined to it, 2.5 by 9 mm and 2.5 by 10 mm, each a cream white enamel column topped by a tiny warm honey amber enamel flame, all inside thin polished gold rims; spring ring clasp")
 
 # ---------------------------------------------------------------- assembly
 CAT_TAGS = {}
@@ -419,7 +420,10 @@ DETAIL = {
     "bracelet": "Chain: 1.1 mm solid gold cable chain with spring ring clasp; choose 6.5, 7 or 7.5 inches.",
     "earring": "Earrings: solid gold posts with butterfly backs, sold as a pair.",
 }
-PROTOCOL = {"ring": "enamel_ring", "necklace": "enamel_necklace", "bracelet": "enamel_bracelet", "earring": "stud_earrings"}
+# Must be ids from lib/etsy/listing-protocol.ts; an unknown id silently falls back to product_type
+# ("ring" -> wedding_band, which demands Width + Ring Size and would fail the Etsy push).
+PROTOCOL = {"ring": "sculptural_ring", "necklace": "pendant_necklace", "bracelet": "chain_bracelet", "earring": "stud_earrings"}
+KNOWN_PROTOCOLS = {"sculptural_ring", "pendant_necklace", "chain_bracelet", "cuff_bracelet", "stud_earrings", "dangle_earrings", "hoop_earrings"}
 AXES = {"ring": ["Karat", "Metal Color", "Ring Size"], "necklace": ["Karat", "Metal Color", "Chain Length"],
         "bracelet": ["Karat", "Metal Color", "Bracelet Length"], "earring": ["Karat", "Metal Color"]}
 
@@ -454,6 +458,10 @@ def size_code(cat, s):
         return (str(int(s)) if s == int(s) else str(s).replace(".", "_")) + "IN"
     return None
 
+IMG = {}
+if os.path.exists(os.path.join(os.path.dirname(os.path.abspath(__file__)), "images.json")):
+    IMG = {r["id"]: r for r in json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "images.json")))["images"]}
+
 BAN = ["—", "–", "â"]
 out = []
 seen_titles, seen_sku = set(), set()
@@ -475,7 +483,7 @@ for m in M:
             "Metal: solid 10K, 14K or 18K gold in yellow, white or rose.",
             f"Enamel: kiln-fired vitreous enamel in {' and '.join(colours)}, set flush in recessed cells with polished gold rims.",
             f"Size: {m['dims']}.",
-            DETAIL[cat] if not m.get("cuff") else "Cuff: open, 1.6 mm wide; choose 6.5, 7 or 7.5 inches inner circumference.",
+            m.get("earline", DETAIL[cat].replace("butterfly backs", m.get("backs", "butterfly backs"))) if not m.get("cuff") else "Cuff: open, 1.6 mm wide; choose 6.5, 7 or 7.5 inches inner circumference.",
         ]),
         "Each piece is made to order and ships free within the United States from New Jersey. Add a gift message at checkout and it ships with the piece.",
         "Care: enamel is glass fused to gold. It keeps its colour, but it can chip on a hard knock, so take it off for the gym and the dishes and wipe it with a soft cloth.",
@@ -503,16 +511,18 @@ for m in M:
     rs = ref_size(cat)
     ref = next(v for v in variants if v["properties"]["Karat"] == "14K" and v["properties"]["Metal Color"] == "Yellow Gold"
                and (rs is None or v["properties"].get(AXES[cat][2]) == size_label(cat, rs)))
+    assert m.get("protocol", PROTOCOL[cat]) in KNOWN_PROTOCOLS, m["id"]
     out.append({
         "id": m["id"], "family": m["fam"], "productType": cat, "name": m["name"],
         "productId": str(uuid.uuid5(NS, SOURCE + ":" + m["id"])), "sku": base_sku,
         "title": m["title"], "tags": tags, "materials": ["Solid gold", "Vitreous enamel"],
         "description": desc, "enamel": colours, "dims": m["dims"],
-        "listingProtocol": PROTOCOL[cat], "variationAxes": AXES[cat],
+        "listingProtocol": m.get("protocol", PROTOCOL[cat]), "offersPersonalization": False, "variationAxes": AXES[cat],
         "grams14Ref": round(grams14(m, rs if rs is not None else 0), 2),
         "refPriceCents": ref["price_cents"], "variants": variants,
         "imagePrompt": PROMPT.format(shape=m["shape"], colours=", ".join(EN[c][1] for c in m["enamel"])),
         "imageFile": f"{m['id']}.jpg",
+        "imageUrl": IMG.get(m["id"], {}).get("url"), "imageSha256": IMG.get(m["id"], {}).get("sha256"),
         "params": {k: m[k] for k in ("top_g", "shank_g", "piece_g", "cuff") if k in m},
     })
 
