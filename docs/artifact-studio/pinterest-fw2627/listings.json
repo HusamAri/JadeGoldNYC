@@ -1,0 +1,202 @@
+{
+ "B01": {
+  "listing_id": 4585869923,
+  "state": "active",
+  "status": "mismatch"
+ },
+ "B02": {
+  "listing_id": 4585874490,
+  "state": "draft",
+  "status": "verified"
+ },
+ "B03": {
+  "listing_id": 4585870241,
+  "state": "active",
+  "status": "mismatch"
+ },
+ "B04": {
+  "listing_id": 4585874858,
+  "state": "active",
+  "status": "mismatch"
+ },
+ "B05": {
+  "listing_id": 4585870567,
+  "state": "draft",
+  "status": "verified"
+ },
+ "B06": {
+  "listing_id": 4585875186,
+  "state": "active",
+  "status": "mismatch"
+ },
+ "B07": {
+  "listing_id": 4585875506,
+  "state": "active",
+  "status": "mismatch"
+ },
+ "B08": {
+  "listing_id": 4585875772,
+  "state": "active",
+  "status": "mismatch"
+ },
+ "B09": {
+  "listing_id": 4585862562,
+  "state": "active",
+  "status": "mismatch"
+ },
+ "B10": {
+  "listing_id": 4585876120,
+  "state": "draft",
+  "status": "verified"
+ },
+ "E01": {
+  "listing_id": 4585876382,
+  "state": "active",
+  "status": "mismatch"
+ },
+ "E02": {
+  "listing_id": 4585872073,
+  "state": "draft",
+  "status": "verified"
+ },
+ "E03": {
+  "listing_id": 4585872327,
+  "state": "active",
+  "status": "mismatch"
+ },
+ "E04": {
+  "listing_id": 4585872537,
+  "state": "active",
+  "status": "mismatch"
+ },
+ "E05": {
+  "listing_id": 4585877242,
+  "state": "draft",
+  "status": "verified"
+ },
+ "E06": {
+  "listing_id": 4585873037,
+  "state": "active",
+  "status": "mismatch"
+ },
+ "E07": {
+  "listing_id": 4585877582,
+  "state": "active",
+  "status": "mismatch"
+ },
+ "E08": {
+  "listing_id": 4585873519,
+  "state": "active",
+  "status": "mismatch"
+ },
+ "E09": {
+  "listing_id": 4585857227,
+  "state": "active",
+  "status": "mismatch"
+ },
+ "E10": {
+  "listing_id": 4585878002,
+  "state": "draft",
+  "status": "verified"
+ },
+ "N01": {
+  "listing_id": 4585878218,
+  "state": "active",
+  "status": "mismatch"
+ },
+ "N02": {
+  "listing_id": 4585874097,
+  "state": "draft",
+  "status": "verified"
+ },
+ "N03": {
+  "listing_id": 4585878522,
+  "state": "active",
+  "status": "mismatch"
+ },
+ "N04": {
+  "listing_id": 4585878694,
+  "state": "active",
+  "status": "mismatch"
+ },
+ "N05": {
+  "listing_id": 4585874535,
+  "state": "draft",
+  "status": "verified"
+ },
+ "N06": {
+  "listing_id": 4585878998,
+  "state": "active",
+  "status": "mismatch"
+ },
+ "N07": {
+  "listing_id": 4585879228,
+  "state": "active",
+  "status": "mismatch"
+ },
+ "N08": {
+  "listing_id": 4585879436,
+  "state": "active",
+  "status": "mismatch"
+ },
+ "N09": {
+  "listing_id": 4585856835,
+  "state": "active",
+  "status": "mismatch"
+ },
+ "N10": {
+  "listing_id": 4585875225,
+  "state": "draft",
+  "status": "verified"
+ },
+ "R01": {
+  "listing_id": 4585869551,
+  "state": "active",
+  "status": "mismatch"
+ },
+ "R02": {
+  "listing_id": 4585875423,
+  "state": "draft",
+  "status": "verified"
+ },
+ "R03": {
+  "listing_id": 4585880046,
+  "state": "active",
+  "status": "mismatch"
+ },
+ "R04": {
+  "listing_id": 4585880226,
+  "state": "active",
+  "status": "mismatch"
+ },
+ "R05": {
+  "listing_id": 4585880432,
+  "state": "draft",
+  "status": "verified"
+ },
+ "R06": {
+  "listing_id": 4585880602,
+  "state": "active",
+  "status": "mismatch"
+ },
+ "R07": {
+  "listing_id": 4585880790,
+  "state": "active",
+  "status": "mismatch"
+ },
+ "R08": {
+  "listing_id": 4585881020,
+  "state": "draft",
+  "status": "verified"
+ },
+ "R09": {
+  "listing_id": 4585856383,
+  "state": "active",
+  "status": "mismatch"
+ },
+ "R10": {
+  "listing_id": 4585876779,
+  "state": "draft",
+  "status": "verified"
+ }
+}
