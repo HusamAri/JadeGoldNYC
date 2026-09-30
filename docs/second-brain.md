@@ -1181,6 +1181,27 @@ repodaki hedefidir.
   `offersPersonalization:false` artık protokolün gravür sorusunu bastırıyor;
   enamel kelepçe aksi hâlde metnin vaat etmediği bir iç gravür alanı açacaktı.
 
+- **Dış kanala giden link, hedefin CANLI durumundan türetilir; aynı gün
+  "taslak" ile "yayında" arasında gidip gelen katalogda sabit link kırık
+  sayfa üretir (2026-09-30):** FW26/27 enamel için 80 Pinterest pini
+  hazırlarken 40 listing'in hepsi Etsy'deydi ama yalnız 27'si yayındaydı;
+  sahip gün içinde elle yayına alıyordu (bir saat önce 9, sonra 27).
+  Taslak listing ziyaretçiye açılmaz, yani pin'i ona bağlamak kuyruğa
+  kırık sayfa koymaktı. Link'i pin tanımına yazmadım: `pins.py` yalnız
+  katalog id'si taşır, `sheet.py` onu `listings.json`'daki CANLI duruma
+  (`ops/drafts-push?verify=1`) göre çevirir, `active` değilse mağaza
+  sayfasına düşürür ve kaç pinin düştüğünü sayar (20 pin, 13 listing).
+  Taslaklar yayına alınınca tek komutla yeniden üretilir. Aynı turda iki
+  küçük ders: (1) tam kadraj "word" şablonunda kare sabit dikey kırpılır,
+  takılı karede ürün alt yarıya düşerse büyük kelime ürünün ÜSTÜNE biner
+  (#28); kontak baskısı yakaladı, şablon değiştirildi; (2) yan açı (profil)
+  karesi tek başına ürünü anlatmıyorsa (kiraz ucu tek disk gibi, fiyonk
+  kenardan) pin'e hero girer: pin'in görevi ürünü tanıtmak, galeri karesinin
+  görevi detay göstermek. Görseller panelin kendi alan adından servis
+  edildi; deploy sonrası 80/80 adres 200 ve üç örnekte canlı bayt repoyla
+  birebir (`cmp`). Bir adres ilk taramada 000 döndü, yeniden denemede 200:
+  tek geçişlik tarama "yok" demez, başarısızı yeniden dene.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
