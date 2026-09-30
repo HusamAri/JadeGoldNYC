@@ -1151,6 +1151,36 @@ repodaki hedefidir.
   Yan not: 360 kare q84'te bile 213 MB; ağır statik varlığı repoya koymadan önce
   canlı deploy'da URL'lerin 200 döndüğünü tek tek doğrula.
 
+- **Oturumsuz ops rotasında oturuma bağlı izin RPC'si her zaman "kapalı" der;
+  ve geri okumada "beklenenden farklı" ile "benden sonra biri değiştirdi"
+  ayrı sonuçlardır (2026-09-30):** FW26/27 enamel setinin 36 taslağını yeni
+  `ops/drafts-push` rotasıyla (org + SKU öneki parametreli, `lintel-drafts`'ın
+  genel hâli) Etsy'ye ittim. Kuru koşu 36/36 hazır dedi ama `writeEnabled:false`
+  döndü; oysa sahip bir saat önce aynı mağazadan panelle 4 taslak açmıştı.
+  Sebep: `getEtsyWriteAccess` `etsy_write_enabled` RPC'sini çağırıyor, RPC
+  `current_org_id()` şartı taşıyor, token'la gelen ops çağrısında oturum yok →
+  her org için false. Yani `lintel-drafts` dahil bu kalıbı kullanan her ops
+  rotasının apply'ı yapısal olarak 403 verir. Düzeltme `ophir-publish-edit`'teki
+  gibi bağlantı satırının `scope`'unu admin istemcisiyle okumak oldu. Kural:
+  (1) ops rotasına panelden yardımcı fonksiyon taşırken fonksiyonun OTURUMA
+  bağlı olup olmadığına bak (`createClient` cookie'li mi, RPC `auth.uid()` /
+  `current_org_id()` kullanıyor mu); (2) kuru koşunun "izin kapalı" demesi
+  canlı bir kanıtla (az önce yapılmış bir yazım) çelişiyorsa ölçüm aracını
+  şüphele. İkinci ders geri okumadaydı: sahip panelden açtığı 4 taslağı ve
+  benim açtıklarımdan 5'ini ben gönderirken Etsy'de YAYINA aldı (R01 kanaryası
+  benim geri okumamda draft'tı, bağımsız okumada active). `draft` kontrolü
+  kırmızı yandı ama varyant/SKU/fiyat/görsel/taksonomi hepsinde birebirdi.
+  Kural: doğrulama raporu yalnız "tuttu/tutmadı" dememeli, uyuşmayan alanın
+  CANLI değerini de göstermeli (`state`, Etsy başlığı); öyle olunca "benim
+  yazımım yanlış" ile "sahip sonradan değiştirdi" tek bakışta ayrılır ve
+  sahibin bilinçli aksiyonu "düzeltilmez". Yürütme zinciri tuttu: sahiple
+  eşzamanlı gönderim önce konuşuldu (çift taslak riski), `draftTransfer` CAS
+  kilidi, kuru 36 → R01 kanarya + geri okuma → 8'li gruplar (35 created,
+  0 uyarı) → aile aile bağımsız geri okuma 40/40 varyant+görsel+fiyat birebir,
+  panel 40 bağlı / 40 tekil id / 40 audit satırı. Yan düzeltme aynı turda:
+  `offersPersonalization:false` artık protokolün gravür sorusunu bastırıyor;
+  enamel kelepçe aksi hâlde metnin vaat etmediği bir iç gravür alanı açacaktı.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
