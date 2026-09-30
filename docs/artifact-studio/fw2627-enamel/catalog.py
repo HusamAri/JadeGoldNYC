@@ -488,7 +488,7 @@ for m in M:
         ]),
         "Each piece is made to order and ships free within the United States from New Jersey. Add a gift message at checkout and it ships with the piece.",
         "Care: enamel is glass fused to gold. It keeps its colour, but it can chip on a hard knock, so take it off for the gym and the dishes and wipe it with a soft cloth.",
-        "The product image is a design visualization of the finished piece; the handmade piece may vary slightly.",
+        "The product images are design visualizations of the finished piece, and the three-metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
     ])
     for b in BAN:
         assert b not in desc + m["title"] + " ".join(tags), (m["id"], b)

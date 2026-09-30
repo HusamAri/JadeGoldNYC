@@ -26,7 +26,7 @@ TAIL = ("Each piece is made to order and ships free within the United States fro
         "Add a gift message at checkout and it ships with the piece.\n\n"
         "Care: enamel is glass fused to gold. It keeps its colour, but it can chip on a hard knock, "
         "so take it off for the gym and the dishes and wipe it with a soft cloth.\n\n"
-        "The product image is a design visualization of the finished piece; the handmade piece may vary slightly.")
+        "The product images are design visualizations of the finished piece, and the three-metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.")
 METAL = "Metal: solid 10K, 14K or 18K gold in yellow, white or rose."
 
 
@@ -97,7 +97,7 @@ SHARED_META = {
     "approval": {"blockers": [
         "Grams are geometry estimates; no sample has been cast or weighed.",
         "Labor per category is derived from the 2027 enamel quotes; the workshop has not quoted these 40 designs.",
-        "Hero image is a design visualization (Higgsfield), one image per listing; photograph the physical piece before or after the first sale.",
+        "Images are design visualizations (Higgsfield): hero plus 9 sales frames per listing, frame 09 is a metal colour visualization; photograph the physical piece before or after the first sale.",
         "Etsy taxonomy names for dangle and hoop earrings are not verified against the live tree; the push stops if they are missing."],
         "etsyDraftCreationAuthorized": True, "livePublicationAuthorized": False,
         "authority": "Owner instruction 2026-09-30: create listing-ready enamel proposals in the panel (listing onerileri), images included (\"Gorselleri de uret hepsini yurut\")."},
