@@ -11,10 +11,10 @@
 --     ||coalesce(v.properties->>'Ring Size', v.properties->>'Chain Length', v.properties->>'Bracelet Length', '')
 --     ||'|'||v.price_cents||'|'||to_char(v.weight_grams,'FM990.00'), E'\n' order by v.sku collate "C"))
 --   from product_variants v where v.org_id = '2c254edf-2119-4079-b09e-dc672e32c1f9' and v.sku like 'BAS-FW-%';
---   expected: 3060 / bfdad1da1f9f6c6a292f9211b3d5a945
+--   expected: 3060 / ece10365b9cce38c302015ca01ca4579
 --   select md5(string_agg(sku||'|'||md5(description), E'\n' order by sku collate "C")) from products
 --   where org_id = '2c254edf-2119-4079-b09e-dc672e32c1f9' and sku like 'BAS-FW-%';
---   expected: db2dcb7a55ba58d762d081ccf8f41d70
+--   expected: 88f19485f4a91b9aaa3660c80132060f
 
 begin;
 
@@ -285,7 +285,7 @@ insert into _fw values
  $fw$The button is the clasp: it passes through a polished gold loop, the way a coat fastens. Easy to do up with one hand.$fw$,
  $fw$kiln-fired vitreous enamel in Fresh Purple, set flush in recessed cells with polished gold rims.$fw$,
  $fw$button clasp 10 mm.$fw$,
- $fw$Chain: 1.1 mm solid gold cable chain with spring ring clasp; choose 6.5, 7 or 7.5 inches.$fw$,
+ $fw$Chain: 1.1 mm solid gold cable chain that closes at the front with the enamel button through a gold loop; choose 6.5, 7 or 7.5 inches.$fw$,
  ARRAY[$fw$button bracelet$fw$,$fw$toggle bracelet$fw$,$fw$purple bracelet$fw$,$fw$enamel clasp$fw$,$fw$purple jewelry$fw$,$fw$tailoring jewelry$fw$,$fw$gold chain bracelet$fw$,$fw$sewing gift$fw$,$fw$front clasp bracelet$fw$,$fw$14k enamel bracelet$fw$,$fw$enamel jewelry$fw$,$fw$fall jewelry$fw$,$fw$gift for her$fw$]::text[],
  $fw$Button Toggle Bracelet$fw$,
  $fw$Bracelet Length$fw$,
@@ -520,7 +520,7 @@ insert into _fw values
  $fw$necklace$fw$,
  $fw$Bow Necklace, Navy Enamel Ribbon Bow Pendant on Solid Gold Chain, Minimalist Gift Necklace$fw$,
  $fw$A flat ribbon bow pendant in solid gold with ocean navy enamel loops and tails, the loop centres pierced open.$fw$,
- $fw$The chain runs through a hidden bail behind the gold knot, so the bow sits straight at the collarbone like a gift that has just been tied.$fw$,
+ $fw$The chain runs through a small bail rising behind the gold knot, so the bow sits straight at the collarbone like a gift that has just been tied.$fw$,
  $fw$kiln-fired vitreous enamel in ocean navy, set flush in recessed cells with polished gold rims.$fw$,
  $fw$bow 12 x 9 mm.$fw$,
  $fw$Chain: 1.2 mm solid gold cable chain with spring ring clasp; choose 16, 18 or 20 inches.$fw$,
@@ -703,7 +703,7 @@ insert into _fw values
  $fw${"productType": "bracelet", "listingProtocol": "chain_bracelet", "protocolVersion": "etsy-listing-v1", "offersPersonalization": false, "family": "Wick", "modelId": "B10", "name": "Twin Candle Bracelet", "enamel": ["Wax Paper cream", "amber"], "dims": "two candles 2.5 x 10 mm on an 8 mm base bar", "variationAxes": ["Karat", "Metal Color", "Bracelet Length"], "sourcePackage": "2026-09-30-artifact-fw2627-enamel", "sourcePackagePath": "docs/artifact-studio/fw2627-enamel", "generatorScript": "docs/artifact-studio/fw2627-enamel/gen_migration.py", "imageSha256": "a5fd2c8baca54cbf21ab90d8be7b7ce1291af11e07781b2ae23b0eb8ef812efb", "grams14Ref": 1.8, "refPriceCents": 81000, "weightSource": "geometry_estimate"}$fw$::jsonb);
 
 create temporary table _fw_shared(meta jsonb, tail text, metal text) on commit drop;
-insert into _fw_shared values ($fw${"pricing": {"goldSpotUsdPerOzt": 4178.2, "goldQuoteSource": "gold-api.com", "goldQuoteTimestamp": "2026-09-30T11:21:00Z", "lossFactor": 1.07, "markup": 2.0, "methodology": "Estimated grams (14K geometry, density-scaled for 10K/18K) x spot per gram x karat fineness x 1.07, plus category labor derived from the owner's 2027 enamel quotes; list price = 2 x cost rounded up to USD 10."}, "approval": {"blockers": ["Grams are geometry estimates; no sample has been cast or weighed.", "Labor per category is derived from the 2027 enamel quotes; the workshop has not quoted these 40 designs.", "Hero image is a design visualization (Higgsfield), one image per listing; photograph the physical piece before or after the first sale.", "Etsy taxonomy names for dangle and hoop earrings are not verified against the live tree; the push stops if they are missing."], "etsyDraftCreationAuthorized": true, "livePublicationAuthorized": false, "authority": "Owner instruction 2026-09-30: create listing-ready enamel proposals in the panel (listing onerileri), images included (\"Gorselleri de uret hepsini yurut\")."}, "variantSeal": "bfdad1da1f9f6c6a292f9211b3d5a945"}$fw$::jsonb, $fw$Each piece is made to order and ships free within the United States from New Jersey. Add a gift message at checkout and it ships with the piece.
+insert into _fw_shared values ($fw${"pricing": {"goldSpotUsdPerOzt": 4178.2, "goldQuoteSource": "gold-api.com", "goldQuoteTimestamp": "2026-09-30T11:21:00Z", "lossFactor": 1.07, "markup": 2.0, "methodology": "Estimated grams (14K geometry, density-scaled for 10K/18K) x spot per gram x karat fineness x 1.07, plus category labor derived from the owner's 2027 enamel quotes; list price = 2 x cost rounded up to USD 10."}, "approval": {"blockers": ["Grams are geometry estimates; no sample has been cast or weighed.", "Labor per category is derived from the 2027 enamel quotes; the workshop has not quoted these 40 designs.", "Hero image is a design visualization (Higgsfield), one image per listing; photograph the physical piece before or after the first sale.", "Etsy taxonomy names for dangle and hoop earrings are not verified against the live tree; the push stops if they are missing."], "etsyDraftCreationAuthorized": true, "livePublicationAuthorized": false, "authority": "Owner instruction 2026-09-30: create listing-ready enamel proposals in the panel (listing onerileri), images included (\"Gorselleri de uret hepsini yurut\")."}, "variantSeal": "ece10365b9cce38c302015ca01ca4579"}$fw$::jsonb, $fw$Each piece is made to order and ships free within the United States from New Jersey. Add a gift message at checkout and it ships with the piece.
 
 Care: enamel is glass fused to gold. It keeps its colour, but it can chip on a hard knock, so take it off for the gym and the dishes and wipe it with a soft cloth.
 

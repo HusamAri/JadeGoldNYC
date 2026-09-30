@@ -1101,6 +1101,35 @@ repodaki hedefidir.
   olduğunu say; (3) yapı değişince o yapıyı anlatan metni AYNI turda düzelt
   (burada "US 3 to 10" ve "18K yalnız sarı" satırları yanlış beyan olurdu).
 
+- **Şablon satırı ürünü tanımaz; görsel QA'dan sonra metni SATIR SATIR görsele
+  ve ürüne karşı oku, ve mühürde sıralama anahtarını SQL'le birebir kur
+  (2026-09-30):** FW26/27 enamel setinde 40 listing tek şablondan üretildi.
+  Katalog assert'leri (13 tag, 20 karakter, tekil başlık, 3.060 SKU) tertemizdi,
+  ama DB'ye yazmadan önce her partın metnini gözle okuyunca şablonun ürünle
+  çeliştiği altı yer çıktı: huggie küpeye "posts with butterfly backs",
+  düğmesi kopça olan bilekliğe "spring ring clasp", görselde vidalı arkalı
+  stud'a "butterfly", görselde görünen bail'e "hidden bail", görselde altın
+  çizgi olan anahtar deliğine "teal keyhole", üçgen çeyreklere "2 x 2 checker".
+  Hiçbir sayaç bunları göremezdi, çünkü her satır kendi başına doğru bir
+  cümleydi; yanlış olan satırın O ÜRÜNE uygulanmasıydı. Aynı turda sessiz bir
+  kimlik hatası da yakalandı: katalog `listingProtocol: "enamel_ring"` gibi
+  TANIMSIZ id'ler taşıyordu; tanımsız id `product_type`'a düşer ve "ring"
+  alyans kuralına (Width zorunlu) gider, yani 10 yüzüğün Etsy push'u "Width
+  eksik" ile patlardı. Düzeltme: tanımlı id'ler + sarkan/halka küpe için iki
+  yeni protokol + kataloğun tamamını `resolveListingProtocol`'dan geçiren
+  regresyon testi. Üçüncü ders mühürdeydi: ilk canary'de ürün mührü tuttu,
+  varyant mührü TUTMADI. Veri doğruydu; Python satırın tamamını sıralıyordu,
+  SQL yalnız SKU'yu (`US10_5|` < `US10|` ama `US10` < `US10_5`). Kural:
+  (1) şablondan üretilen her detay satırını ürün tipine ve görsele karşı oku,
+  ayrık ürünlerde (huggie, toggle, cuff) şablon satırını override et;
+  (2) bir metadata alanı başka bir modülün kayıt defterine (protokol id'si)
+  işaret ediyorsa, üreteç assert'i o defterin listesine karşı koşsun, test de
+  gerçek çözücüden geçirsin; (3) iki dilde mühür üretirken `order by` anahtarını
+  birebir kopyala; eşleşmeyen mühürde önce veriyi değil mühür formülünü şüphele,
+  küçük bir alt kümede satır satır karşılaştır; (4) MCP'yle parça parça yazımda
+  ilk parçayı canary say ve yalnız o tuttuğunda devam et; üretecin çıktısını
+  `head`'e borulama (BrokenPipe sonraki parçaları sessizce ESKİ bırakır).
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması

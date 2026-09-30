@@ -200,6 +200,7 @@ add(id="E04", fam="Button", cat="earring", name="Button Stud Earrings", enamel=[
     story="The button at its smallest, 6 mm, flat to the lobe. A clear shot of colour with a tailored edge.",
     shape="a pair of tiny round button stud earrings 6 mm across, filled with flat rich violet purple enamel inside a raised polished gold rim, each with four tiny holes rimmed in polished gold, gold posts; one lies flat, one angled")
 add(id="B04", fam="Button", cat="bracelet", name="Button Toggle Bracelet", enamel=["purple"],
+    earline="Chain: 1.1 mm solid gold cable chain that closes at the front with the enamel button through a gold loop; choose 6.5, 7 or 7.5 inches.",
     dims="button clasp 10 mm", piece_g=1.0,
     title="Button Toggle Bracelet, Purple Enamel Button Clasp on Solid Gold Chain, Tailoring Inspired Bracelet",
     tags=["button bracelet", "toggle bracelet", "purple bracelet", "enamel clasp", "purple jewelry",
@@ -325,7 +326,7 @@ add(id="N08", fam="Bow", cat="necklace", name="Bow Pendant Necklace", enamel=["n
     tags=["bow necklace", "ribbon necklace", "navy necklace", "bow pendant", "blue enamel pendant",
           "coquette jewelry", "gift necklace", "gold bow pendant", "layering necklace", "14k enamel pendant"],
     lead="A flat ribbon bow pendant in solid gold with ocean navy enamel loops and tails, the loop centres pierced open.",
-    story="The chain runs through a hidden bail behind the gold knot, so the bow sits straight at the collarbone like a gift that has just been tied.",
+    story="The chain runs through a small bail rising behind the gold knot, so the bow sits straight at the collarbone like a gift that has just been tied.",
     shape="a ribbon bow pendant 12 by 9 mm made as one flat solid plate like a cut-out silhouette, not a three-dimensional tied ribbon and with no open loops: two loop shapes and two longer tails, each a flat cell of deep ocean navy blue enamel inside thin polished gold rims, the centre knot a small flat polished gold oval with a small bail behind it; a fine 1.2 mm gold cable chain passes through the bail and curves out of the top of the frame")
 add(id="E08", fam="Bow", cat="earring", name="Bow Stud Earrings", enamel=["navy"],
     dims="each bow 7 x 5 mm", piece_g=0.9,

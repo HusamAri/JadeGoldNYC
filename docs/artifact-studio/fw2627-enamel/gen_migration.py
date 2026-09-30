@@ -85,7 +85,7 @@ for it in items:
     rows.append(dict(it=it, lead=lead, story=story, enamel=enamel, size=size, detail=detail,
                      sizes=sizes, third=third, price=price, grams=grams, meta=meta))
 
-seal_lines.sort(key=lambda s: s.encode())  # collate "C"
+seal_lines.sort(key=lambda s: s.split("|")[0].encode())  # order by sku collate "C" (sku only, like the SQL)
 SEAL = hashlib.md5("\n".join(seal_lines).encode()).hexdigest()
 NV = len(seal_lines)
 assert NV == 3060
