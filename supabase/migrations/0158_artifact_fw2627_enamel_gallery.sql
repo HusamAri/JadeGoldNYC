@@ -20,15 +20,15 @@ select p.org_id, p.id,
   'https://amuletta.artifactstudio.info/artifact/fw2627-enamel/' || (p.listing_metadata->>'modelId') || '/' || lpad(g.s::text, 2, '0') || '.jpg',
   'url',
   case g.s
-      when 2 then m->>'name' || $gl$ $gl$ || w
-      when 3 then m->>'name' || $gl$ styled with autumn knitwear at home$gl$
-      when 4 then $gl$Close-up of the flat $gl$ || en || $gl$ enamel and polished gold rim of the $gl$ || m->>'name'
-      when 5 then $gl$Scale view of the $gl$ || m->>'name' || $gl$ in the hand, $gl$ || m->>'dims'
-      when 6 then $gl$Side and fitting view of the $gl$ || m->>'name'
-      when 7 then m->>'name' || $gl$ in a handmade ceramic dish$gl$
-      when 8 then m->>'name' || $gl$ in an open gift box$gl$
-      when 9 then m->>'name' || $gl$ shown in yellow, white and rose gold (colour visualization)$gl$
-      when 10 then m->>'name' || $gl$ with the matching $gl$ || m->>'family' || $gl$ pieces$gl$
+      when 2 then (m->>'name') || $gl$ $gl$ || w
+      when 3 then (m->>'name') || $gl$ styled with autumn knitwear at home$gl$
+      when 4 then $gl$Close-up of the flat $gl$ || en || $gl$ enamel and polished gold rim of the $gl$ || (m->>'name')
+      when 5 then $gl$Scale view of the $gl$ || (m->>'name') || $gl$ in the hand, $gl$ || (m->>'dims')
+      when 6 then $gl$Side and fitting view of the $gl$ || (m->>'name')
+      when 7 then (m->>'name') || $gl$ in a handmade ceramic dish$gl$
+      when 8 then (m->>'name') || $gl$ in an open gift box$gl$
+      when 9 then (m->>'name') || $gl$ shown in yellow, white and rose gold (colour visualization)$gl$
+      when 10 then (m->>'name') || $gl$ with the matching $gl$ || (m->>'family') || $gl$ pieces$gl$
   end,
   g.s - 1
 from public.products p

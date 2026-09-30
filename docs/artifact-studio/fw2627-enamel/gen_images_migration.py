@@ -53,7 +53,7 @@ assert all(NEW in it["description"] for it in items)
 
 case = "\n".join(
     f"      when {int(s)} then " + " || ".join(
-        {"{n}": "m->>'name'", "{en}": "en", "{d}": "m->>'dims'", "{f}": "m->>'family'", "{w}": "w"}.get(tok, f"$gl${tok}$gl$")
+        {"{n}": "(m->>'name')", "{en}": "en", "{d}": "(m->>'dims')", "{f}": "(m->>'family')", "{w}": "w"}.get(tok, f"$gl${tok}$gl$")
         for tok in __import__("re").split(r"(\{n\}|\{en\}|\{d\}|\{f\}|\{w\})", t) if tok)
     for s, t in ALT.items())
 
