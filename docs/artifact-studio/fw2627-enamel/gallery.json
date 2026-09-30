@@ -1,0 +1,2610 @@
+{
+ "generated": "2026-09-30",
+ "model": "nano_banana_2 (served as nano_banana_flash), 2k, 1:1, count 1",
+ "reference": "tight crop of each hero (piece only), plus the three family crops for slot 10",
+ "prompts": "shots.py -> shots.json",
+ "generations": 404,
+ "flagged": 0,
+ "listings": {
+  "N01": {
+   "02": {
+    "job_id": "df2c2bc4-fed4-480c-b4a2-8324dc244f7e",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pendant worn just below the collarbone and matches the hero (keyhole outline, flat teal enamel, thin gold rim). Chain passes through the bail, scale is small, face is out of frame.",
+    "sha256": "7a1124088cb06fd4e39f0e54ad19f60b22ccd3f2117cb8e92f54504eab11055b"
+   },
+   "03": {
+    "job_id": "344e8309-bcf6-4304-83fc-71421c607c71",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Oatmeal sweater and camel coat by a window. Pendant is small and true to scale with the chain through the bail. Chin and lips are partly in frame, which the checklist allows.",
+    "sha256": "8c1fe5ee29a32a6e2a338658d4c90fb9c660e9d9e54ce8bfa104ac9c41131ed5"
+   },
+   "04": {
+    "job_id": "f946044d-3348-4382-bbe6-e9d0def2ae58",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Macro on linen with no hands. Outline, rim and bail are correct. The gloss highlight gives a faint curve on the round top, but it reads as flat glossy enamel.",
+    "sha256": "6d4e6f439e72ed3921779d6c1b1cbb5500edf2b305c63ee1236c762ebcbe9a2a"
+   },
+   "05": {
+    "job_id": "0d84a327-86fb-4622-9747-a56e5747f939",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pendant on an open palm at believable small scale. Fingers look normal and the design matches the hero.",
+    "sha256": "dd6b296efa0d55a0c5bfb1b3aac483b24256c613f6ce318e4b39a32a3088d353"
+   },
+   "06": {
+    "job_id": "09ff996d-488c-445f-abf2-89ed22c22561",
+    "attempts": 2,
+    "qa": "pass",
+    "note": "First take was rejected: its edge-on view showed a deformed stepped block at the bottom of the pendant. The retake is a slight three-quarter view against plaster, with a thin flat plate, a readable keyhole outline and the chain through the bail. No people.",
+    "sha256": "ce4395bd8a237ac50c1ed42250d125b13d65b5deb96c1d2fa1b358d14a0a2da6"
+   },
+   "07": {
+    "job_id": "52db79ad-5e75-47c1-8bcb-06707b448c64",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Ceramic dish with eucalyptus and a linen napkin. Design matches the hero and there are no hands.",
+    "sha256": "ef3eb1211de3a3b01a874400e3d1bfcd6a169736aa1464aff83b6b5a1ced8cc5"
+   },
+   "08": {
+    "job_id": "1691e295-b2da-45ac-83c9-668c1626a010",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Open linen box with a cream ribbon. The box has no logo or text and the pendant matches the hero.",
+    "sha256": "a8a9d44408e787083c369c012ae3f7c05eff5571e89874287f4f9260d4716e5e"
+   },
+   "09": {
+    "job_id": "58344e68-8c2a-4fb9-99c7-a7101933ad2b",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Three pendants in yellow, white and rose gold, each with a matching chain and identical teal enamel. No hands.",
+    "sha256": "46b82bf23fd016c63aa5d93f8aa82dc01dc295bc4e58a6e3a8418371e4d760c3"
+   },
+   "10": {
+    "job_id": "8e75e772-6c42-4e7e-a1c7-c14e1feccd70",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "N01 pendant is sharp in front. Behind it are the R01 signet with the keyhole outline, the E01 studs and the B01 bracelet. No hands.",
+    "sha256": "fc4ed1af6598fe6cd4a55c0ecf8cbd202a2a4e31faac28c6132ffab0f215386d"
+   }
+  },
+  "E01": {
+   "02": {
+    "job_id": "d16fd3ec-cc63-4b6c-a5c5-b93293f4b4dc",
+    "attempts": 2,
+    "qa": "pass",
+    "note": "First take was rejected: it showed two extra loose studs on the pillow besides the worn one (three earrings in frame). The retake has a single stud worn through the lobe at small scale, matching the hero.",
+    "sha256": "eb3e422ebd7009c070720ac7af8f2d108259e2de063c9df1ffc58f4f253763ad"
+   },
+   "03": {
+    "job_id": "d7bcbd30-a9a2-4d73-b90d-2dfa61a31bff",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Stud worn in the lobe with a cream high-neck knit and a low bun. Scale is small and the design matches the hero.",
+    "sha256": "cb7054951b1d54302617cc3c9019f89da276889c20715dc6fc45a3cf869e1522"
+   },
+   "04": {
+    "job_id": "7ac9414d-cda1-43f0-adad-eb8821c9f765",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Macro of the pair on linen with no hands. Outline, flat enamel, rim and screw backs are correct.",
+    "sha256": "1f0a800b0a0f215495c017b4e34aefa5801430fb2868272acfc39a36b7950f66"
+   },
+   "05": {
+    "job_id": "3c2e80b0-c0c9-4be9-94fd-b4ca490bdce0",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "One stud on a fingertip and its mate worn on the ear, so the pair count is correct. Scale is believable and the fingers look normal.",
+    "sha256": "f2d8d5d4db56b8187916d0e41e76fa55cb3a7902d18803a60195db450742fa72"
+   },
+   "06": {
+    "job_id": "eac10694-f7a2-462a-bd4f-91fed5834dff",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Back and side view shows the gold posts and screw backs clearly. No hands.",
+    "sha256": "5f3e6b9e334599dc13055b683978ad4024f80e083708fbcf4d27aa3de5712869"
+   },
+   "07": {
+    "job_id": "c6dad0a2-de6f-4216-b1ea-b538de85e3b4",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pair in a ceramic dish with eucalyptus. Design matches the hero and there are no hands.",
+    "sha256": "888c68552fffeb4de9ba183086cf66526312aa7aed51c145907d6cdc1d2c243b"
+   },
+   "08": {
+    "job_id": "ebba9ff6-52a3-44d1-83fe-a4bdfd2dd72f",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Linen box with ribbon and a hand placing one stud (hands are allowed in slot 08). No logo, and the design matches the hero.",
+    "sha256": "951dbb70caa5a3eba59441ed1f83c67f68d1ef24647ad8677ddf353529341226"
+   },
+   "09": {
+    "job_id": "045f5236-d5c9-4ad6-a45e-2556c75ffb8b",
+    "attempts": 3,
+    "qa": "pass",
+    "note": "third take: each pair a single metal",
+    "sha256": "e1e5626e59e00aa3a8511617031ee9ec6919f8e9f936a4ea2bd0e7d5bdc04be4"
+   },
+   "10": {
+    "job_id": "661d38c2-1acd-43e8-a3a9-24c2d0eb879b",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "E01 stud is sharp in front, with the R01 signet, N01 pendant and B01 bracelet behind. No hands.",
+    "sha256": "f4312e593aa1b164b30ce6880e742eb64a0775525340fd5609638e0086905d08"
+   }
+  },
+  "B01": {
+   "02": {
+    "job_id": "d8ab0656-9c44-47c2-8f43-49a5aed28fc1",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Bracelet closed around the left wrist, palm down, with keyhole stations at small scale. Matches the hero.",
+    "sha256": "26dfe7a9042d0dea1a287b06f1c98bfe4322869a5e1138c0b32b725d9285f3b2"
+   },
+   "03": {
+    "job_id": "12eabd01-fc91-4e8b-99ee-2ecb8d57407e",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Wrist on an open book with a cable-knit sleeve pushed back. Bracelet is closed on the wrist and the stations are small.",
+    "sha256": "d81854ce3a84ea40ccc84cadbb6e62cbec600d27abd7a43710d684b62ea4cd7f"
+   },
+   "04": {
+    "job_id": "16d8b7d6-ad7d-4139-81f9-b29f6cca1b37",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Macro of the stations and spring ring clasp with no hands. Outline, flat enamel and rims match the hero.",
+    "sha256": "0c6fb209117aae76b5c8183c189f0a2f6aa45145506a2d2611ee322fb50b88d2"
+   },
+   "05": {
+    "job_id": "a7ddf3ea-2bca-47f4-bd0a-11e2af150ed9",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Bracelet draped over an open palm with three stations at believable scale. Fingers look normal.",
+    "sha256": "c4c2af564c14d86e6fe46cdd17900e7f1935cc2e5524df1b5d395132287e459f"
+   },
+   "06": {
+    "job_id": "aafca684-c48e-4995-a4dc-42efd4ff7e22",
+    "attempts": 2,
+    "qa": "pass",
+    "note": "First take was rejected: it showed two chains with two spring ring clasps. The retake shows a single bracelet with exactly one spring ring clasp and three stations. No hands.",
+    "sha256": "364863999030ee407fb3573c0261026472e7c66873cdfb27badeef4711ba1ccf"
+   },
+   "07": {
+    "job_id": "5f2cfe39-d1f6-41ee-929d-0a8806e82358",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Bracelet in a ceramic dish with eucalyptus and three stations. No hands.",
+    "sha256": "416ab5eb89a38b5b24a50065c4d38e526b2c4f9c348ef2c9d20dde3f2957ef6b"
+   },
+   "08": {
+    "job_id": "423384f5-920b-403c-b6fa-4b0496e52746",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Linen box with ribbon and no logo. Bracelet with three stations matches the hero.",
+    "sha256": "a5257b08b33389e3a20633f1731b957f4d1accecf59bb05dfe57b6555036b97f"
+   },
+   "09": {
+    "job_id": "fa9292ad-97af-405b-80db-c6c42b1a5d7f",
+    "attempts": 2,
+    "qa": "pass",
+    "note": "First take was rejected: the yellow and rose bracelets were merged into one two-tone chain. The retake has three separate bracelets, each fully one metal (yellow, white, rose), with identical enamel. Minor issue: the loops touch, and at the two crossing points a station overlaps a station of the neighbouring bracelet.",
+    "sha256": "d77f5303a3920d99ea93868757ec691f42e7ac863e0f041a63c3a4c835becb7a"
+   },
+   "10": {
+    "job_id": "b47f06d3-cfbe-4f36-85c4-377c4c7c1d8a",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "B01 bracelet is sharp in front, with the R01 signet, N01 pendant and E01 studs behind. No hands.",
+    "sha256": "42aa95e25d3aca236a4af7910fcb246569db82bf795918eec581baabcdd2f35a"
+   }
+  },
+  "R02": {
+   "02": {
+    "job_id": "5571769c-cce5-4564-b077-f130e8d2a11c",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Zoomed in: worn on the left ring finger with the little finger next to it, no other rings. Black 4 / cream 3 tile matches the hero; tile sits across the finger at fingernail scale.",
+    "sha256": "6e02796499a4bede1ec2a5d4dff8947a1aeefb51140935ae03fcdb32623fd97b"
+   },
+   "03": {
+    "job_id": "9ab3c1d7-d755-496b-9ea5-6fa4afc5b097",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Hand around a mug, ring on the ring finger (second from the bottom), tile across the finger, 4/3 pips, small scale, no other rings.",
+    "sha256": "92965660f6268cbf4f71b1fab665ada53856ab09c2141d51f7b70e42df79fe3b"
+   },
+   "04": {
+    "job_id": "e5166cb7-b5ab-4936-80cd-1f833f528a16",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Macro on linen, no hands. Black 4 / cream 3 diagonal as in the hero, flat enamel, thin gold rim.",
+    "sha256": "717b7977ef5d34606e03ffe9108597debbb119a61bad7bfc434b1c6311a98e0c"
+   },
+   "05": {
+    "job_id": "8246c858-78ed-42ba-942d-fb9a65974f3e",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Held between thumb and index finger; top is about fingernail width, design matches. A small AU750-like hallmark is visible inside the shank (it reads as a hallmark, not a logo).",
+    "sha256": "e546c95b241ebea246dafc4d43c8d68e23dffae1ebf51dccb2aabeaee2f6bee0"
+   },
+   "06": {
+    "job_id": "2e324bc8-6d44-425d-93d5-202e00c9f556",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "On travertine at a low three-quarter angle, solid top, no hands, matches the hero.",
+    "sha256": "47ed7cca5ead9b6f39f465e487faae5bf856d400ff07fd39d8e36ce80a18751c"
+   },
+   "07": {
+    "job_id": "3d968ef9-54f2-49ab-80d9-8c564ad26bf3",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Ceramic dish still life with eucalyptus, no hands, design correct.",
+    "sha256": "e6f88930b3460f4fa7b472e4718751eebdbc59bbaa09ea8e1d4346ee6dcaf176"
+   },
+   "08": {
+    "job_id": "45f548b4-ae1c-40c8-a62d-a3343e5ed800",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Open oak box lined with linen, ribbon, no logo or text, 4/3 tile correct.",
+    "sha256": "a67ffa452a71651798d3e0c5884f66df3563d8f7cdf3ece9e310ca5322dccc15"
+   },
+   "09": {
+    "job_id": "a5dc4fc9-609d-43e2-8598-5f1ac1419c4d",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Yellow, white and rose rings side by side with the same black/cream enamel and pip layout, no hands.",
+    "sha256": "490444e9d89bbf3c5351b3e38c2e105dd7aa8753c4bb86a8175cc79797215821"
+   },
+   "10": {
+    "job_id": "5b0490fd-2ae9-4be5-b532-f3f4461c22c0",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Ring in front with the pendant, studs and bracelet behind, one of each, no hands. The background pieces are only slightly soft.",
+    "sha256": "7d521b5b676b64a732bb425b7e07274213748f4f556896b6cf9d46f61375abc6"
+   }
+  },
+  "N02": {
+   "02": {
+    "job_id": "8112d84a-1fdd-4622-9d55-89d385bf8c9c",
+    "attempts": 2,
+    "qa": "pass",
+    "note": "Attempt 1 lay on draped linen and was not worn, so it was rejected. Retake is worn on bare skin below the collarbone, chain through the bail, black 3 / cream 5, small scale.",
+    "sha256": "9bcc47b817381707a892ae7cbe2e9397ffcb83c1a565ae4bafaa8097140bb53e"
+   },
+   "03": {
+    "job_id": "463655e4-e44a-4669-964d-09931284b11f",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Worn over an oatmeal sweater and camel coat, chain through the bail, 3/5 pips, true scale. Lips and chin are visible (the prompt asked for the face out of frame), which is minor.",
+    "sha256": "e2d2884f454c3c495066c9cc0d45b7bb76858585f7a7d19455688bfbc2bea90d"
+   },
+   "04": {
+    "job_id": "38519db6-5e26-4e4a-9369-1086c6ca2ab7",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Macro on linen, no hands. 3 diagonal / 5 pips, flat enamel, bail and chain correct.",
+    "sha256": "5801d0e3923392af396346c331b44c992f0be88f64da2e57722e0e6f9a2625c0"
+   },
+   "05": {
+    "job_id": "9b9f3ff9-c785-47c2-b163-6a0c76bf1a36",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pendant on the open palm with the chain through the bail; small against the hand.",
+    "sha256": "18dd64ae7679946560a175b186611e7c69d27f1550200ab4a66817a472b08e53"
+   },
+   "06": {
+    "job_id": "22a9b861-b3b3-43e8-bb59-50fde5adbb9c",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Side view against plaster, no hands, chain through the bail. The bail is a larger open loop than the hero's, the edge looks somewhat thick, and reflection makes the black enamel look greyish. Minor.",
+    "sha256": "99d41675a4a3c99a0bb65404adb3863f8e8bd4a8b002b7a45e5ead7e9735d8c9"
+   },
+   "07": {
+    "job_id": "15cc085c-f48a-42d0-9ac6-c7377560caa2",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Ceramic dish still life with eucalyptus, no hands, design correct.",
+    "sha256": "eca6210c3206a868718af77564d0e15265ea8e456a26d83e5811c303754c0996"
+   },
+   "08": {
+    "job_id": "a7ca8c21-72f4-4ba4-9358-c8e94d9172f5",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Displayed in an oak box with ribbon, no text or logo, design correct.",
+    "sha256": "1b238269f15acaa101fbe756ce1f1dace5c866d529386058e45c90c018228fdd"
+   },
+   "09": {
+    "job_id": "8d10b444-1882-4f3c-a394-1c573c98d35e",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Yellow, white and rose pendants with the same pip layout, no hands. The cream enamel takes a slight warm or pink cast from the rose metal, but the enamel colour is the same.",
+    "sha256": "3f0bb1b6bb46adebd0de383a03e8a0427e76b25ad841f65ced658896da64bbd1"
+   },
+   "10": {
+    "job_id": "db9f9348-58b9-40ee-b90a-0b9be3c7483b",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pendant sharp in front with the ring on a cone, studs and bracelet behind, one of each, no hands.",
+    "sha256": "cb46a50415e21d1635cb72243ab7ce1553f81c60d4b7c0c273913609c88d02c5"
+   }
+  },
+  "E02": {
+   "02": {
+    "job_id": "abb41ff2-7120-458b-9ee4-06dea5d189b0",
+    "attempts": 2,
+    "qa": "pass",
+    "note": "Attempt 1 had both studs side by side in the same lobe, so it was rejected. Retake has one black 1-pip stud through the lobe, small scale.",
+    "sha256": "14f291842544e59ce58c109e422bca686d40500ad280dade1f056d3bd51f15a7"
+   },
+   "03": {
+    "job_id": "a958d141-8ab1-4926-bf7c-405ca1e7056d",
+    "attempts": 3,
+    "qa": "pass",
+    "note": "second take after set review: first was a split-panel collage; now both mismatched studs worn in one ear",
+    "sha256": "14baa8b8165d6fa1c1e11ba564b218a9e5be6582e730000cf0dea6b74ef2e2e2"
+   },
+   "04": {
+    "job_id": "c2b5d685-d937-4f92-9432-8bab30c974bb",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Macro of the pair with 1 and 2 pips, flat enamel, gold rims, no hands.",
+    "sha256": "6a8188f23ef4ca1e1ca74c1593ccbedd5c62825566ebc59fb5a72692ade06fc8"
+   },
+   "05": {
+    "job_id": "d80175ba-a8f7-4cb8-a253-046daf78e7d5",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Both studs on the fingertips, small next to the finger, design correct. The prompt asked for one stud; this is minor.",
+    "sha256": "4e62b8a74bb714825e568f791e9085f9e16eeb24f88df7654e25291203cd7ded"
+   },
+   "06": {
+    "job_id": "e4edcd76-3022-4056-acf0-1bc6691a35a2",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Back view shows gold posts with butterfly backs, no hands. The enamel faces are not visible, as expected for this view.",
+    "sha256": "ef33f1eb2471a230574d5bcffc5236b84d3466fcc4f8e4f75ec71f6db23f5d5c"
+   },
+   "07": {
+    "job_id": "a9a98b1e-941f-468d-900f-ed3b558dc52b",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pair in a ceramic dish, black 1 / cream 2, no hands.",
+    "sha256": "0a95d1840ba2886f4f1d5b135b102fa2fb8bd4d58c96e632f39d7c2cb6ab0e0d"
+   },
+   "08": {
+    "job_id": "5ffa1b93-2c9c-40b7-811d-e0bbea6dc871",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "In a linen-lined box with ribbon, no text or logo, design correct.",
+    "sha256": "9d4e08df51ecb15a9fc54a4f9ec3925fcae252f9ce0503b59b980fee06228625"
+   },
+   "09": {
+    "job_id": "4185c1cd-adee-4edf-a317-60062e8fc686",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Three pairs in yellow, white and rose with the same black/cream enamel and pips, no hands.",
+    "sha256": "51f0b9eeb0bf7c6b7e1d9d0a94b64f5ee8c74a41a14f918f00a62f37c1fb3536"
+   },
+   "10": {
+    "job_id": "0831cd1f-6efe-4ebe-94bd-da1358574b40",
+    "attempts": 2,
+    "qa": "pass",
+    "note": "Attempt 1 showed the pendant twice, so it was rejected. Retake has the studs sharp in front with one ring, one pendant and one bracelet behind, no hands.",
+    "sha256": "db62bbffeecd5787535404a74e562b3a50b74bd4bd05b30b4fbac5abea39451f"
+   }
+  },
+  "B02": {
+   "02": {
+    "job_id": "c39652a4-7afb-4c8b-bbb9-5befb6e531f0",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Closed around the wrist with black and cream tiles alternating, small and delicate, design matches the hero.",
+    "sha256": "43c4e651cbdf432a2c0a19a50ba09eb1a9de18fe43c07879d4d6b96a90ad6e20"
+   },
+   "03": {
+    "job_id": "6fc3084b-5084-49cb-8c59-a54303787251",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Wrist on an open book with a cable-knit sleeve, bracelet closed, tiles small, design correct.",
+    "sha256": "e6442ef6acd2d9a115b5139daf1597199403435d618ba4e8f23e6e4ad6bf25cf"
+   },
+   "04": {
+    "job_id": "1cd92e8f-ce6c-4028-bbae-b1ed7232c020",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Macro of two tiles with chain links, no hands. The enamel is glossy and slightly pillowy, the same as the hero.",
+    "sha256": "654e59c1935681e695d5e6e22848d8b504378c4cba3b13272d0d76de24487a58"
+   },
+   "05": {
+    "job_id": "0fb6cb5c-54e1-47b5-887e-874f8b2eff16",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Draped over the open palm, tiles tiny next to the hand, five tiles alternating.",
+    "sha256": "3bba73ff5bbcf1ed0c6003951a5152c52c09f06d28cc60564bc1e4d9d16b348a"
+   },
+   "06": {
+    "job_id": "9759dd169cc3",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Clasp close-up with the spring ring clasp and cable chain in focus, no hands. Job id: 1b86638c-9a4d-4f8a-baca-0f333b8a6035.",
+    "sha256": "f592ada85b3ff8314fda00e6e67dc41cb1763130b8a94d6019edc4f9c9e62cf2"
+   },
+   "07": {
+    "job_id": "528741f2-9f39-40ef-928c-9dd932388f95",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "In a ceramic dish with eucalyptus, no hands, design correct.",
+    "sha256": "183aa4898edd6f68d10265245837c09572362dd52048615cb0726ed1a1df5629"
+   },
+   "08": {
+    "job_id": "d12e4786-0ad3-477a-aba6-0eba12f5a954",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "In an open walnut box lined with linen; a hand holds the box (hands are allowed in 08). No text or logo.",
+    "sha256": "4d2628f9b18cd71be209445326d426df562f6b5d93d6625a48da872a76f6f708"
+   },
+   "09": {
+    "job_id": "8fa10fe4-91ef-43a6-bc39-4c6b7165ee29",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Yellow, white and rose bracelets side by side with the same enamel and pips, no hands.",
+    "sha256": "16b3dee7a30e51e790efdd543bf630dd946d112726a32f8a9bd2242d729141be"
+   },
+   "10": {
+    "job_id": "63c9a84d-b4e9-4d53-87e3-f8edd00fb3d0",
+    "attempts": 2,
+    "qa": "pass",
+    "note": "Attempt 1 failed at the provider and produced no image. Retake has the bracelet sharp in front with one pendant, one ring and the studs behind (only slightly soft), no hands, no duplicates.",
+    "sha256": "db3a30349a221ff02a2986046421e0e278c75d29d7c02f6e081be9ea7b3564fd"
+   }
+  },
+  "R03": {
+   "02": {
+    "job_id": "ed3b6bbe-0001-4762-ba9d-265515ba9040",
+    "attempts": 2,
+    "qa": "pass",
+    "note": "Attempt 1 rejected: the ring was on the outermost (little) finger. The retake is a left hand with the tucked thumb at the top; the ring is on the 4th finger and the little finger is bare. Design matches the hero, scale about nail width.",
+    "sha256": "2ec48f4555c8934da9d19d316accd98d51824d9473fd14a144d053e2ba7fa4f8"
+   },
+   "03": {
+    "job_id": "cd43a32f-dea4-457b-8e50-55d4640dfc0f",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Hand around the mug, ring on the finger next to the little finger, no other rings. Same design, flat enamel, small scale. Minor: it reads as a right hand.",
+    "sha256": "375f79aba222be1fafcf34d945dd3bc027fb7e4fd3fe88a2229432299b87906d"
+   },
+   "04": {
+    "job_id": "58f511a5-ca99-4644-b0c6-371d9bad858a",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Macro shot, no hands. Flat oxblood enamel, thin rims, stem and leaf match the hero.",
+    "sha256": "666fdce593cebf08aff700a7bf4742633cb7fe27a3ae3adc7424098c0929a7ac"
+   },
+   "05": {
+    "job_id": "4526f638-e340-454c-8516-fad03342592a",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Held between thumb and index fingertip. Top about nail width, a believable scale.",
+    "sha256": "9bea41d28bc62c42129f447559ab8e50d6e00f9b2878bcdb50f60b91712662bc"
+   },
+   "06": {
+    "job_id": "8968cea9-47b1-4731-b714-3397f0feaff3",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "On its side on travertine, no hands. The back of the discs is solid gold, not hollow.",
+    "sha256": "8f017f4d7fd2de2d30b4e30c9bfba719554b8984f1623935a01cbeb35eb91bec"
+   },
+   "07": {
+    "job_id": "2b78555a-ee55-4417-99a8-74c9cec9af7e",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "In a ceramic dish, no hands. Correct design and scale.",
+    "sha256": "b8d779378fa0758f50c102bcaab046b949bc1606760dd3519c84e35706b59463"
+   },
+   "08": {
+    "job_id": "4e22a51e-2897-457d-8f06-539b2620be11",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "In an open linen box with ribbon, no logo or text. Correct design.",
+    "sha256": "2f1c6915363cc93433e1b667022d25f3f11dbc771ee52569ebb35e851d8a5f0f"
+   },
+   "09": {
+    "job_id": "2a2a8831-bf57-4591-bbfe-d8974c86c29e",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Three rings in yellow, white and rose gold with identical oxblood enamel, no hands.",
+    "sha256": "374c9a9603f375ddc2a25d9482a14c2e0accad9e3917cd7d2dec4dccbab4e1d8"
+   },
+   "10": {
+    "job_id": "e5efa316-01ba-430c-99bc-613a38994f84",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Ring sharp in front; necklace, huggies and bracelet behind. No hands.",
+    "sha256": "86777c844b1299861f6907ff796331490f0d8ddc4a65ca24dc31d93d84dc464b"
+   }
+  },
+  "N03": {
+   "02": {
+    "job_id": "c48fa17b-9ca0-4800-b52f-947d252a06f9",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Worn below the collarbone, only the chin visible. Zoom confirmed the chain passes through the stem loop. Two flat oxblood discs, small scale.",
+    "sha256": "2bd1cd979716b7caa41802a86abfa5200905610e1d0aef84d5b4d83ed9c73131"
+   },
+   "03": {
+    "job_id": "76ec9361-7add-4b39-a308-1847c73de213",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Worn with a camel coat, chain through the loop, small true scale. Minor: lips and nose are visible, so the face is only partly out of frame.",
+    "sha256": "64ba184d1b467e56802d298d24db1fc91f7d64a2964353c8ae31c0289aa5d6eb"
+   },
+   "04": {
+    "job_id": "28d1fb07-7fe1-45e0-b84c-91ae008bf6cd",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Macro shot, no hands. Chain through the loop, flat enamel, forked stem matches the hero.",
+    "sha256": "5e668a956abb9b0ef15bf5c86756e564f2957e5e5e7fb0a63be905832eca74a3"
+   },
+   "05": {
+    "job_id": "5198aba1-9299-4255-9e63-a05240c39a5d",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pendant on the open palm, chain through the loop, scale believable.",
+    "sha256": "69afff5059356e2bfbc73ff1d7d56705e5e99228246053902542acb457650c1f"
+   },
+   "06": {
+    "job_id": "bc2bdde0-fda0-4c62-9d5e-7ae67182a8bb",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Side profile against a wall, no hands. Zoom confirmed the chain passes through the loop; the discs are thin and flat.",
+    "sha256": "db86feb22784984cc4a83ed6a50a2c5af8cef65b32f2a074fff7dc64db3d02e6"
+   },
+   "07": {
+    "job_id": "716ce772-3769-4499-b0bc-3d1c31d5dd85",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "In a ceramic dish, no hands. Correct design.",
+    "sha256": "7dc59cc04da002fda6fa0e966a68e1d6b9dbba9ef019eb44f3371787f1770d13"
+   },
+   "08": {
+    "job_id": "31ba96e7-e373-4018-b249-e8ec96b0d736",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "In a linen box with ribbon, no logo or text. Correct design.",
+    "sha256": "f1e2e872558f6f14fbf2bc7e666389ec200e4cc9f70074e832429d9d6301eb0a"
+   },
+   "09": {
+    "job_id": "de95b9fa-add6-4d8c-9529-35eff893f3ac",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Three pendants in yellow, white and rose gold with identical enamel, no hands.",
+    "sha256": "e90bc2e525a411508d71cb4eadde6b1a04fdfa05cb09ab724d162bf41ef41f81"
+   },
+   "10": {
+    "job_id": "6d931bba-42b5-46c9-9e6f-87376d36f829",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Necklace sharp in front; ring, huggies and bracelet behind. No hands.",
+    "sha256": "d0daa380d212ed9caafea6d56ed7517925c40f7ee3f776c06372bf9ad33925de"
+   }
+  },
+  "E03": {
+   "02": {
+    "job_id": "3f9a8256-85f2-4eae-bd88-e028555ea514",
+    "attempts": 2,
+    "qa": "pass",
+    "note": "Attempt 1 rejected: collage with a picture-in-picture ear inset over loose earrings on linen. The retake is one continuous photo; the huggie passes through the lobe, the cherry charm is small, face mostly out of frame.",
+    "sha256": "5381eeef35b2c5d86275ffd12df91d2d5aaeab795b6638fe27911bea01eca7ab"
+   },
+   "03": {
+    "job_id": "75c0af43-d523-46c8-8306-370dbb41c276",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Zoom confirmed the huggie goes through the lobe. Charm stem, leaf and flat enamel match the hero, small scale.",
+    "sha256": "dfb3c4ed8c10a2655645b382a5af540ca032315afd5a4b16717548750c4f4dc5"
+   },
+   "04": {
+    "job_id": "af941dff-554d-4ab1-8f53-4ccfc8e37ca8",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Macro shot of the charm and hoop, no hands. Flat enamel in a thin rim.",
+    "sha256": "50447f873fee4b292960cdeb920c3fd05fb65d1cdb35c291f89f21bf47b8cffb"
+   },
+   "05": {
+    "job_id": "2fb957e7-b1c2-4900-806a-278e4504fdce",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "One earring on the index fingertip, the other on linen. Scale believable.",
+    "sha256": "085776be5a5b13d86f025eb4504e312e7f91fa7de9ac6bdf5b117e7c279436ea"
+   },
+   "06": {
+    "job_id": "7bf18d06-09b5-4568-a4fd-4d6426a2858e",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pair from the back and side, no hands. Hinged click closure visible; the charm backs are solid gold.",
+    "sha256": "f61d670d68ac01ac919639b65d4a8d1ce46fb99f1497f4bc67f3bcdf1eadf766"
+   },
+   "07": {
+    "job_id": "53ccdd4e-033f-4ea0-973c-447db1b88894",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pair in a ceramic dish, no hands. Correct design.",
+    "sha256": "6e105e22fa7cd51463b5f3391bbf6d0de42046a6a3fd9bd66cd4bf2b2576339f"
+   },
+   "08": {
+    "job_id": "1549f087-8da7-4a98-aeb9-9bc532d302b0",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pair in an oak and linen box with ribbon, no logo or text.",
+    "sha256": "09e1460c7eebc5814a3cdd8f7018af07c34d3be182d14a6d3a2ce5ef94da5196"
+   },
+   "09": {
+    "job_id": "a95b7478-8942-4654-9826-5467824415e0",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Three pairs in yellow, white and rose gold with identical enamel, no hands.",
+    "sha256": "f54b396d5e5dc563548a7936028bd602fbb54cb13462c4c85c2e6a8882b0fa75"
+   },
+   "10": {
+    "job_id": "c5160f90-b92f-4c0d-a252-0e8b28a41226",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Huggies sharp in front; ring, necklace and bracelet behind. Minor: the background is only lightly softened. No hands.",
+    "sha256": "d7e5f7154c6c3ce86afe428f959d4477e63ebeee05815dc533a4aa321edf24b9"
+   }
+  },
+  "B03": {
+   "02": {
+    "job_id": "073ef6d6-3ca0-4f86-a4b7-3e63bb33c232",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Closed around the wrist, flat oxblood stations, delicate scale. Minor: it reads as a right wrist.",
+    "sha256": "8d492e4fd71ab6a20b72feed6e344810de3e1680f311b28ce9ebc22c9e0f23d4"
+   },
+   "03": {
+    "job_id": "bb6fa474-7f97-4bc3-882b-adb92dc32a6e",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Worn on the wrist resting on a book, sweater cuff, closed chain, small stations.",
+    "sha256": "58ffab59ebf667cef7e964a370502b25773998f288f64f091030e34b75d92423"
+   },
+   "04": {
+    "job_id": "327a66d4-2af1-45de-8049-ba24a04df4e5",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Macro shot of one station and the clasp, no hands. Flat enamel in a thin rim.",
+    "sha256": "38b49d5d0d3e14367b2dca1c605cfa7427d277a7d257299b6e9577ccf729c4e1"
+   },
+   "05": {
+    "job_id": "39d9fadc-33e3-46cb-9b2e-910f03451fe0",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Draped on the palm. Five stations plus a spring ring, believable scale.",
+    "sha256": "38814a1d28c115f4a296b1d44c30d337be3f1437782e26790997b417c8cb3b8e"
+   },
+   "06": {
+    "job_id": "ddf14ddf-9d0d-44cb-88f7-3b193ff1d53e",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Spring ring clasp in sharp focus on linen, no hands.",
+    "sha256": "90b57b995b1e5555b4025ed2f7ce46df7e29eee39fbabe800b49f241992db8d9"
+   },
+   "07": {
+    "job_id": "b6842b0a-6416-4cb8-a709-e801950c97eb",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "In a ceramic dish, no hands. Zoom counted 5 stations and the clasp.",
+    "sha256": "9f368d1aca4b6ae49a980b8683ec97d85959958106c0113b31a3f5d57344b827"
+   },
+   "08": {
+    "job_id": "a8b0e6c4-ebcb-4cf1-97e8-ce6efe62a240",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "In an oak box with ribbon, no logo or text. Zoom counted 5 stations.",
+    "sha256": "d963622328e72fb18ad000b25124725e3862ff92b4eb6fc0ea38423539b8adf0"
+   },
+   "09": {
+    "job_id": "724ed2cf-dc3d-4d6a-8705-0b42f60b2c28",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Three bracelets in yellow, white and rose gold with identical enamel, draped over a linen roll, no hands.",
+    "sha256": "ec8a196c9ba5494878f57eafcfa1078628d48b342aef392d7a12952c9bc9aecc"
+   },
+   "10": {
+    "job_id": "8abc7b80-5415-4ce1-ad28-2246bd06a826",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Bracelet sharp in front; ring, necklace and huggies behind. No hands.",
+    "sha256": "602e90f5cfb404286148dd6d83c1aabf7220c01dbbf1d6c4a28e6f969db864da"
+   }
+  },
+  "R04": {
+   "02": {
+    "job_id": "aa393625-681f-43be-9b88-4b5b272ca3b4",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Left hand seen from the back. Zoomed and ranked finger lengths: the ring is on the 4th finger, next to the shortest (little) finger. No other rings. Button top is about fingernail size, violet enamel with 4 gold-rimmed holes, matches hero.",
+    "sha256": "cf2cb1f80f1b2e12272a3b6755185b18a94c1a8d05a8ce25bfc7766963e253dd"
+   },
+   "03": {
+    "job_id": "2055519d-54be-4e68-87f6-3c2d9cb8282b",
+    "attempts": 3,
+    "qa": "pass",
+    "note": "fourth take: pose changed from holding the mug (ring kept landing on the middle finger) to a hand resting beside it",
+    "sha256": "ec4d2db568492716c2028f2fb8769e1f929a16b3923602cd57e9e92160f4b87c"
+   },
+   "04": {
+    "job_id": "acd5a447-8974-4904-b16a-87fffd28f93c",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Flat violet enamel, 4 gold-rimmed holes, polished rim. No hands. Matches hero.",
+    "sha256": "a17dd407915d0bf672992b2d28bf3c0b46e7d4769e337d9f988deb20f3e63994"
+   },
+   "05": {
+    "job_id": "7b40afc4-6704-49b8-b354-8259c6ebb6e1",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Held between thumb and index. Top is about fingernail width. Design matches hero.",
+    "sha256": "4c38a8997dbb7b58805f9e75ee187969379ff90c979e15f011bff577bf73d2b3"
+   },
+   "06": {
+    "job_id": "6f219ce6-4408-453f-8c80-ebd9fcd6beb4",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Lies on its side on a travertine block. Round shank and top depth are visible, flat enamel. No hands.",
+    "sha256": "06c435932c50a8efe18b427f357f9c1a01827d18037d6345a2b5f29d83bccaea"
+   },
+   "07": {
+    "job_id": "6cb57ed3-20c5-49c1-a398-cb8c09401614",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "In a ceramic dish with eucalyptus and a linen napkin. No hands. Design correct.",
+    "sha256": "f5db3af4c27f13eccd4f5ff5ac16783174a05504043b7b2f3b3f1b7be6da468a"
+   },
+   "08": {
+    "job_id": "3db28c66-64f0-4d20-8d5b-64b1b69cc364",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Linen-lined box with ribbon. No logo or text. Design correct.",
+    "sha256": "04771879c4a16c0246d72a90debd851d42dd8939687559acebaba9f3ec92e959"
+   },
+   "09": {
+    "job_id": "66a4fe5a-2fa3-4e52-83a0-edd9e8c028b2",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Three rings in yellow, white and rose gold, left to right, with identical violet enamel and 4 holes. No hands.",
+    "sha256": "f7c11385a7ef86be1a28316e03eaf32b4f75b8211011d78ae4f540bf8cfcd4e2"
+   },
+   "10": {
+    "job_id": "019e3114-f777-4999-8403-5af55509cb9c",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Ring sharp in front. Pendant, studs and toggle bracelet sit behind, all in the same violet. No hands.",
+    "sha256": "b5cabe54adeeb665a0e8e5baa342ce84aeb54204bbecd57c06150fcb0ab3e562"
+   }
+  },
+  "N04": {
+   "02": {
+    "job_id": "d2f07dc9-ca4d-4c3c-9be7-f3e6b0f3806f",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Rests below the collarbone. Zoom confirms the jump ring passes through one hole to the chain, like the hero. Small, believable scale. Face out of frame.",
+    "sha256": "cf5775ea2ab1aa66c79952d5c3db281e20e96ef41ece081a4b4f972ab3b4a593"
+   },
+   "03": {
+    "job_id": "537bbad4-b9ff-4896-a1ae-68be09c14019",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Oatmeal knit with camel coat. Zoom confirms the jump ring through a hole and the chain attached. Pendant is small.",
+    "sha256": "a0eeca9e6d933809550bf5c9d4ee7a76870471bbf87f29d91eef67d4131b897a"
+   },
+   "04": {
+    "job_id": "85078642-6d38-4258-9d75-ca2d83d50d17",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Flat violet enamel, jump ring through the top-left hole, gold rim. No hands.",
+    "sha256": "e4300350ceae0903b0066ee3b3bb51dd44d8386dcdb07f22e71c4dadfe34789b"
+   },
+   "05": {
+    "job_id": "576643ef-f5ab-442e-a182-69b4e23ea49f",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pendant on an open palm, chain attached through the jump ring. Size believable against the palm.",
+    "sha256": "d94ccd3e344f264858aaea8cf3df222f51bd8885a3124fd68a69f4d3b3c0c4dd"
+   },
+   "06": {
+    "job_id": "d2b06bb0-fc52-4776-9768-81de448675a3",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Hangs against a plaster wall seen from the side. Jump ring through a hole, chain through the jump ring, flat enamel. No hands.",
+    "sha256": "b88e11d4379da1e928f42241537d3b24c533d564310b64065c0ce04b71c54735"
+   },
+   "07": {
+    "job_id": "7af9d312-7cc5-4983-81ef-af6c43bf0248",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "In a dish with eucalyptus. Jump ring through a hole, chain attached. No hands.",
+    "sha256": "3fb0f225f2992b4ba96e9aa55b22bb4c526f3a0e9423ffbf2d8be09aba6e4fc2"
+   },
+   "08": {
+    "job_id": "581af63d-6af8-4b14-ad02-e2cd9f5538c7",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Linen box with ribbon. Zoom confirms the jump ring through a hole and the chain attached. No text.",
+    "sha256": "7f0156659cd3b595dfda6d5e6aba1a9b65111fbe6f48fad58a6c4cbe270a42d4"
+   },
+   "09": {
+    "job_id": "e601eaa6-3941-4c42-967b-52835b414d4c",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Three pendants in yellow, white and rose gold with matching chains and identical violet enamel. No hands.",
+    "sha256": "4e2d394a6da807fcdc819e39384f3f5f34bc75a112b51b54a8623cf0ba91b833"
+   },
+   "10": {
+    "job_id": "0616fe7f-3a92-438c-9762-32c1b4d3b1d7",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pendant sharp in the foreground. Ring, studs and bracelet sit behind. The bracelet chain runs close to one stud, but no piece is merged or duplicated. No hands.",
+    "sha256": "8d76317e4df48d2d04199e1ea72c9d14ff1f5c19e58d5f6fac94efa402ff57a8"
+   }
+  },
+  "E04": {
+   "02": {
+    "job_id": "96947247-173c-44ee-b2bd-465661583c23",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Stud sits on the lobe, small relative to the ear. Design matches hero.",
+    "sha256": "8e0ea8caf64845f9737ea2d32a81e532eca2882deccb011222f6359c24a1d89e"
+   },
+   "03": {
+    "job_id": "94094e04-810d-4edc-b4e4-37afbd68e261",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Stud on the lobe, with a high-neck cream knit and a low bun. Small, believable scale.",
+    "sha256": "28a4e6dfc0249188050a7bb89a73bf0292ba2f758237015fdad5902a43063bca"
+   },
+   "04": {
+    "job_id": "b3895e81-1c22-47ca-b1d4-12d0690041bd",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pair shown close with flat violet enamel, 4 gold-rimmed holes and butterfly back. No hands.",
+    "sha256": "64208cd88d9bfc8192207a4103fe8581a89e6a876f0718c9253e2a144bd9f142"
+   },
+   "05": {
+    "job_id": "18bfd0da-cb63-4dc2-957f-cef6b0a7ccae",
+    "attempts": 3,
+    "qa": "pass",
+    "note": "third take: stud size stated against the fingertip",
+    "sha256": "be6b4454d38aa175b26541f963159acd44d919f5a9e437b3c64ddec307176abd"
+   },
+   "06": {
+    "job_id": "e7a4ede4-c02c-4157-bbd1-ffc8098d724b",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Back and side view: gold posts, butterfly backs and a solid disc back. Front enamel flat. No hands.",
+    "sha256": "82dc0b3da640df40232f6f9b0d4a0a93d4f476b9f8658862b71a9ee8d4e4d9c7"
+   },
+   "07": {
+    "job_id": "c4542002-d0b9-4e35-b4c1-df6edb5c0423",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pair in a ceramic dish with eucalyptus. No hands. Design correct.",
+    "sha256": "97d47b4e51fe8e42f692bc495929e75c41fa5f3d2ac4f2bd5182bbb500e22eda"
+   },
+   "08": {
+    "job_id": "dc887ff4-f715-4969-bd3e-f68106bcb893",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pair set in a linen box insert with ribbon. No text.",
+    "sha256": "85253851ce400c5a83d99b5e70b0096044be7103004705d7faa2c63fbb79194e"
+   },
+   "09": {
+    "job_id": "55eb8007-90c9-426d-a4aa-5b39f9773254",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Three pairs in yellow, white and rose gold. Enamel is identical across metals; the lighter/darker shade within each pair repeats the hero's lighting. No hands.",
+    "sha256": "fe3383f3b1b50569f748308883210ccef2222fa10c8fa5946c7697a7f7089ee6"
+   },
+   "10": {
+    "job_id": "fa93dab5-7222-4281-ae8c-6f60682085b0",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Studs sharp in front. Ring, pendant and bracelet sit behind in the same violet. No hands.",
+    "sha256": "916cc72cebea9c8e20ac22ccc4c14043899ad5896761625d41baed6aa32970b0"
+   }
+  },
+  "B04": {
+   "02": {
+    "job_id": "dbc35fe6-d688-4d43-a862-17dcbae3deac",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Closed around the left wrist. Button beside the gold loop, matches hero. Small, believable scale.",
+    "sha256": "0e08496a54e1e6af8bb1f7c021d42ee324605b933c26218f3cc2e80b25fe84a0"
+   },
+   "03": {
+    "job_id": "6f9ddce2-ec9d-4582-8bc8-e52af04ec87f",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Wrist on an open book with a cable-knit sleeve. Bracelet closed around the wrist, button and loop correct.",
+    "sha256": "b005b376e07c40825644d5325b01b37c2b0040df11c340d7c99addd4f7285f74"
+   },
+   "04": {
+    "job_id": "054ce3ad-4f10-4df0-a182-c582c297727e",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Flat violet enamel button with 4 gold-rimmed holes, oval/round loop and cable chain. No hands.",
+    "sha256": "1a5db7deca729832228d2ddcf2216c1cc19842796feeec5a73460ade792e9703"
+   },
+   "05": {
+    "job_id": "ed80d569-a4da-4cd7-b86f-a83fcfe0f98c",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Draped unfastened over the palm, so one chain end hangs off the hand. The button is small against the palm and the design matches.",
+    "sha256": "4e814c2872071dd728c4f0f6e90a73b0bb178e45c126a1d97cb8ee83c9e133af"
+   },
+   "06": {
+    "job_id": "44399d20-6bff-4853-937c-bd461626954e",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Fastening close-up: button and gold loop on the cable chain, flat enamel. No hands.",
+    "sha256": "7865a23c06edafb2ed9bad4ebee92ed357741be5280225e79636fc8a8a42926b"
+   },
+   "07": {
+    "job_id": "ef8045f1-d2f3-4542-8bc1-28c8f2db1f42",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "In a ceramic dish with eucalyptus. No hands. Design correct.",
+    "sha256": "33afd6e4d958735f5d4d8c3fb08ed1d458ae09924ca2cf143fbfa6ee988162c1"
+   },
+   "08": {
+    "job_id": "02993e3a-4b12-406b-8269-0599a9b85116",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Oak and linen box with ribbon. No text. Design correct.",
+    "sha256": "24c1077d37daed7c498a00fac96ad2ebdfd421ba45a941670c6140edd6870777"
+   },
+   "09": {
+    "job_id": "f7197c98-80be-4d66-93e9-8ef79fca530b",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Three bracelets in yellow, white and rose gold with identical violet button enamel. No hands.",
+    "sha256": "aa7afc4bb3842e27ede6c5fb3fd9ceccdbfbd61dbab951d9045e9975f47178d1"
+   },
+   "10": {
+    "job_id": "86c05d1b-89f8-462d-b3fb-308b7f1e5944",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Bracelet sharp in front. Ring, pendant and studs sit behind in the same violet. No hands.",
+    "sha256": "c9eae471f5eaea9d5cccb50fc6c1461d8910ed33940ba6003085632a2f646c18"
+   }
+  },
+  "R05": {
+   "02": {
+    "job_id": "55876fb5-8eec-4d24-8e99-d964ca9a1bde",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Left hand, palm down. The ring is on the 4th finger and the little finger is tucked beside it. No other rings. The acorn top is about fingernail size and matches the hero.",
+    "sha256": "a2a62b1d782a098ed69d1a28e05162161ad2f9e17896a5b69b7894fce0e02f1b"
+   },
+   "03": {
+    "job_id": "13936fc8-3c02-4dc4-ac70-665c94e96a14",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Hand around the mug. The ring is on the 3rd of 4 visible fingers, which is the ring finger. Small and to scale, no other rings.",
+    "sha256": "242b937188729882532bc0d0ddebf7c76f09d5cfa21d8999777c6f38a60635e0"
+   },
+   "04": {
+    "job_id": "37c7f109-739d-4ef1-86ef-f2c2ecb74cf1",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Macro with no hands. Crosshatch cap, stem and cocoa enamel in a thin rim match the hero. The enamel is glossy with a soft highlight but reads flush with the rim.",
+    "sha256": "5349836816a38d674f0637e0eb08699b56baa1550fbb847605361f830197c87a"
+   },
+   "05": {
+    "job_id": "5a9e3a7e-fd4a-428b-8010-b73bf5b9b9e8",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Held between thumb and index finger. The top is fingernail size and the design matches.",
+    "sha256": "58f1fd4b85a96d04d8e868c5364abce5650e277305d4244a521c48ea3dba882e"
+   },
+   "06": {
+    "job_id": "027393ef-f880-4c54-8ef2-bd92a103eac3",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Profile on travertine with no hands. The underside of the top is closed and solid gold, and the round band is visible.",
+    "sha256": "3014215984c83a62cad73dfca3ef088b00fc6ef524e53a20733cf4212abf4169"
+   },
+   "07": {
+    "job_id": "88a08cbb-1ace-463d-866f-25d251225998",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Ceramic dish, eucalyptus and napkin. No hands. Design matches.",
+    "sha256": "1cc8aac1d94b54ef730ca3229b8277e296c700e25187bc137257a6b6ad47311a"
+   },
+   "08": {
+    "job_id": "2cb75dab-5ab5-4253-bcad-ebcdfadfb72f",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Ring in a linen box with a ribbon. No logo or text.",
+    "sha256": "6ccc022acba191ef20c3187c7dc59249b5c06670312cab29b41d9f4013864f9a"
+   },
+   "09": {
+    "job_id": "fcd7a70d-5dfc-40b0-941d-2259096b5a50",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Three rings in yellow, white and rose gold with identical cocoa enamel. No hands.",
+    "sha256": "2080d4588c26ac78c37d07defd0e0b2ccb68939c5aa9096d0851d9508783dd08"
+   },
+   "10": {
+    "job_id": "7258776c-4556-420c-98cf-51c4cbd011a7",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Ring sharp in front, with the necklace, earrings and bracelet behind. No hands or text.",
+    "sha256": "a342fe01d23286c6563ebf3d51bc707b58c1899e4ee5f2540f1661e7c50a4d85"
+   }
+  },
+  "N05": {
+   "02": {
+    "job_id": "ef25424c-aee2-4123-ae6a-6acc032d75c4",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Worn below the collarbone with the chain through the curled-stem bail. Small scale, face out of frame.",
+    "sha256": "466ee4dc0ffbd518785e4984ecaded7b603bed0250cbdd061b00dd8d8ca8714a"
+   },
+   "03": {
+    "job_id": "24377f67-88a5-4dcd-96da-f75bc8f29fa6",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Oatmeal knit and camel coat. The pendant is small and hangs on the chain through the bail.",
+    "sha256": "2fc42597fa4e7bb2420f196013f12075a8c03bc4f60e0c2d70c2e9f1e49e82ff"
+   },
+   "04": {
+    "job_id": "015661b3-39ec-4265-b982-43045fbc3337",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Macro with no hands. Crosshatch cap, loop bail and cocoa enamel match the hero. The enamel is glossy but flush with the rim.",
+    "sha256": "b7c746d1b74649618dd556c53442e8fb40c7d2f2d0435503ddd001540487f2b2"
+   },
+   "05": {
+    "job_id": "ea7284bd-3560-4443-b1ea-ea122e202cfb",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "On the open palm with the chain trailing. Fingernail-scale pendant.",
+    "sha256": "b1a57e2b3edfda4afd3df72e8f2a426fbaf849ba9f792d635dcbb34a11a68c26"
+   },
+   "06": {
+    "job_id": "e93a0397-31e4-438e-9002-be9323a34a4a",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Side profile against plaster with no hands. The chain passes through the bail and the pendant body is thin.",
+    "sha256": "ac619b556fa994b24dccb7a9dbbbb78a8030a8d475d12adcebdf20e218ac8e8c"
+   },
+   "07": {
+    "job_id": "d8344d1b-c8fe-4408-937c-1d3c937b6588",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Ceramic dish still life. No hands. Design matches.",
+    "sha256": "4e1c3c1839b9877eb8e3725c2d050bbdbe4f012c38603fa0398e42d58589dca6"
+   },
+   "08": {
+    "job_id": "7efebb39-07a1-4a47-9bea-e8ea8e17e5a1",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Linen gift box with a ribbon. No logo.",
+    "sha256": "5f9f719e6c1910d080955e980f5dfc8002f3779bffa02607d6202a18aa3496cc"
+   },
+   "09": {
+    "job_id": "dfa17743-28d5-4ef6-812b-f67b57dfe135",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Three pendants in yellow, white and rose gold, each on a matching chain, with identical enamel.",
+    "sha256": "939e3e0457a855d68b337444071f17502de7166d4670948b9de03e6c9df0ca82"
+   },
+   "10": {
+    "job_id": "c9c445e8-dcda-40eb-9d1c-87c532789c99",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pendant sharp in front, with the ring, earrings and bracelet behind. No hands.",
+    "sha256": "ae7d100209b3f898997bf24152e14538b5e5666d543b1f3b6e7ce4543b07b3bd"
+   }
+  },
+  "E05": {
+   "02": {
+    "job_id": "b03b8b97-d7d2-4b37-abdd-23cc1d9b15af",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Worn through the lobe. Stud plus acorn drop matches the hero. Small scale.",
+    "sha256": "8d734260e417cad58bf6283c86008365c31de238dd8e6ba31c74649c458c9013"
+   },
+   "03": {
+    "job_id": "fc0b908c-b219-4738-b9a7-deddb15c4c32",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "High-neck cream knit. Worn through the lobe, small and true to scale.",
+    "sha256": "628ecbec6585abc677062daa1e98b516060a77ef460a0f84779e1e82a37b0fb3"
+   },
+   "04": {
+    "job_id": "b3cb6c20-f6d9-42d4-8904-f77c53dd77d7",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Macro of the pair with no hands. Ball stud, link, crosshatch cap and flat cocoa enamel match.",
+    "sha256": "0ffc31228321da559b5825debed702550574a2e25dc4fa3a2f09774a655cc40d"
+   },
+   "05": {
+    "job_id": "c276aadc-22f1-4b3a-816f-d219d3a0158c",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "One earring on an index fingertip with the other on linen. Scale is believable.",
+    "sha256": "2857f787eeb1de881edae8764cd21fbfd731389df381ed39a68bc7f9bd5f96dc"
+   },
+   "06": {
+    "job_id": "4c5dae76-8a85-4612-ac22-3e446f4cd1a7",
+    "attempts": 2,
+    "qa": "pass",
+    "note": "First take mounted the butterfly back on the back of the acorn. Retake puts the posts and butterflies behind the ball studs and the acorn back is smooth solid gold. No hands.",
+    "sha256": "dcd77aeb853521d4c53694f53620c1671bae732bf9b3dc9a2deebdc74d380715"
+   },
+   "07": {
+    "job_id": "50d96115-01ff-4844-a9f9-1507aecba647",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pair in a ceramic dish with eucalyptus. No hands.",
+    "sha256": "2f8fd794d85857958793ea2f90867b56e75659d287e5c7e519ed84237a3c6a42"
+   },
+   "08": {
+    "job_id": "ba7355d0-df05-4c3f-832f-ea8c8ebd56ce",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pair in a linen-lined box with a ribbon. No logo.",
+    "sha256": "105f52353052714900a27a1cab4ac77869ae1aba22bebc72f8853bb07d123142"
+   },
+   "09": {
+    "job_id": "14ad6a4a-37bc-40a7-8733-83f9a811395c",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Three pairs in yellow, white and rose gold with identical enamel.",
+    "sha256": "04c8ef348c8ea7175ff07efaff799c00db1979e6e09a4a22ca953cd7f6c5ba18"
+   },
+   "10": {
+    "job_id": "ae9e5450-3c6e-4953-893f-fa86c197d2a3",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Earrings sharp in front, with the ring, pendant and bracelet behind. No hands.",
+    "sha256": "c2afa2b5c12c30c62a7766d51f7f0eec316ef5b9b196399981b6d75980ca8323"
+   }
+  },
+  "B05": {
+   "02": {
+    "job_id": "0229db23-fbef-48ee-9698-b1a6ce40acf0",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Closed around the wrist with two acorn charms, small and delicate. The other hand is in the background with no rings.",
+    "sha256": "d7db7ec048e670932a13ce10a99f5c1747b727dd98cc8a0fc4443894b6b43205"
+   },
+   "03": {
+    "job_id": "e88ff566-43b7-4d8d-a00f-adb8488383b1",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Wrist on an open book with a knit sleeve. The bracelet is closed around the wrist and the charms match.",
+    "sha256": "8418953817763ea16b75c0f07f90bc1b4be708d646d456335c3b7c81bacd4bda"
+   },
+   "04": {
+    "job_id": "3efd9518-31ef-4cfa-bb1a-07a30d1e715a",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Macro of the two charms and a plain spring ring. No hands. Enamel is flat in a thin rim.",
+    "sha256": "5b0244d4a02151bb2b7f44c26bd1e2d2f51f109d014f231a024240abfe44b77a"
+   },
+   "05": {
+    "job_id": "1b727dbf-4531-4f65-8219-dd62b68c98f4",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Draped on the open palm. Small charms, true to scale.",
+    "sha256": "ff0e4e6a42db7c83959aeaab0cfe6e77512f5b108748e51a05d13adfce6b66ef"
+   },
+   "06": {
+    "job_id": "1f6b3e31-55e3-499a-8d51-f879170f24b9",
+    "attempts": 2,
+    "qa": "pass",
+    "note": "First take had an invented clasp with crosshatch acorn texture. Retake shows a plain polished spring ring on the cable chain with the charms beside it. No hands.",
+    "sha256": "6d716398e77427d7b453b1cf10d98f3e03ea8c8cac230ec33d935d436f8ce73b"
+   },
+   "07": {
+    "job_id": "e55da539-de9b-4d23-bc88-a36eb3a27e29",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Bracelet in a ceramic dish with eucalyptus. No hands.",
+    "sha256": "228749d9a7d6b75e6e2e27ccf7c6158ab10e94e9f48d6f3a0a61ad6b1fcedd9f"
+   },
+   "08": {
+    "job_id": "ef80582a-6375-4145-ace3-4fd285e053ae",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Bracelet in a linen box with a ribbon. No logo.",
+    "sha256": "ba8f58e38376c84103f2a450a1dba96a1b2cf5fe7fd2a0ba22d904580c064060"
+   },
+   "09": {
+    "job_id": "1b320702-03dc-490a-9cce-9fd1b8580e93",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Three bracelets in yellow, white and rose gold with identical enamel charms. No hands.",
+    "sha256": "db8e231f381970e4d0bc8454248ea2e02cbf58bb6961e61358b4451d1dab6764"
+   },
+   "10": {
+    "job_id": "89b471ba-acbb-4587-a749-731cd865d0db",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Bracelet sharp in front, with the ring, pendant and earrings behind. No hands.",
+    "sha256": "7206e4557a425e4f20a7e372d4b05559c447b7ad1e07ab09f15d93443ce72bda"
+   }
+  },
+  "R06": {
+   "02": {
+    "job_id": "bbedb1e7-d913-47da-b0fe-bd10393926e3",
+    "attempts": 3,
+    "qa": "pass",
+    "note": "third take: hand seen from the little-finger side",
+    "sha256": "31fcc055a780b503c4ccfd07df638f06e2b1c7639ef7ab5fbe7bef7f08db1f48"
+   },
+   "03": {
+    "job_id": "0fe38cb6-18e0-4ecf-88a9-f28c4d913177",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Hand around a mug with the thumb at the top. The ring is on the 3rd finger (ring finger) and no other rings are worn. Pattern matches the hero (5 green: corners and centre). Scale is plausible, top about finger width.",
+    "sha256": "602c38c6bffa8bfa69195cc621de78e20823f3263ecdce358e75bb6ba17168be"
+   },
+   "04": {
+    "job_id": "a1ffa7ac-9e1c-46aa-8dce-ab17dd72be5a",
+    "attempts": 2,
+    "qa": "pass",
+    "note": "The first take had cushioned, pillowy cells. The retake has flat, flush cells with the correct 3x3 layout and gold grid. No hands.",
+    "sha256": "d13ce3174aa69839f9033134a6e1186f491b393245632b3af81b664db9d4f82e"
+   },
+   "05": {
+    "job_id": "f6ed5811-a60d-4160-827b-74ec4899ca10",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Held between thumb and index fingertips, top about fingernail size, pattern correct.",
+    "sha256": "5b07689204ca1e8f0c4055548f65d3d2ea80822e8fcf94a347d367baf37127a1"
+   },
+   "06": {
+    "job_id": "d575015a-2e11-4913-b501-3ac40dcc85a7",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Ring lying on its side on travertine, showing the band and the depth of the top. Pattern correct, no hands.",
+    "sha256": "cec314cb5df83859ee89926712e997cb25c3afd99277ececb968d0d3aac230ce"
+   },
+   "07": {
+    "job_id": "88202212-d6d2-4416-8f28-b42afe633a30",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Ring in a ceramic dish with eucalyptus. Same design, no hands.",
+    "sha256": "370f18d0dc18edb64a9775d71ff56bce3a58b24d4592f7417bb6ebcebde30088"
+   },
+   "08": {
+    "job_id": "89ef66dd-7c05-469a-b80b-c1edb7001d19",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Oak box lined with linen, ribbon, no text or logo. Same design.",
+    "sha256": "227f770f216ad496d80d75e6f4da9b56c9ec6668606b084ec2f6e3c2e6429e2e"
+   },
+   "09": {
+    "job_id": "ccae89e2-811c-4387-bd15-fc2048043e16",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Three rings in yellow, white and rose gold with identical enamel and correct checker orientation. No hands.",
+    "sha256": "86835ec66ef86e98128b4b52f5f3e35ce1eadd836a48719fbe26c6b619426dc3"
+   },
+   "10": {
+    "job_id": "9fcb67ae-a3d8-4a6a-b1f1-6a81791643f3",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Ring sharp in front, with the pendant, studs and bar bracelet behind. All share the same enamel. No hands.",
+    "sha256": "5b6e379f668a0e91a425a6bf34e89208d9200f73c4c17cb62f126dda48dd04c3"
+   }
+  },
+  "N06": {
+   "02": {
+    "job_id": "4e7737c2-65a6-4aa4-8778-1cbacd24122b",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pendant just below the collarbone with the chain through the bail. Four-triangle pattern matches the hero (upper-left and lower-right green). Small, true scale.",
+    "sha256": "38d39c760c5703ae631c00c2d965575e7386825832dc2d76027aabb98b0ad688"
+   },
+   "03": {
+    "job_id": "f7ebbcd0-cafa-4ce9-8209-673b96890952",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Camel coat and oatmeal knit. Pendant small and hung on its point, chain through the bail, pattern correct.",
+    "sha256": "4d7c57ed7eadd29382295d6f49604cc73ba3cd554cabd8725a8eddb9c46b07fe"
+   },
+   "04": {
+    "job_id": "de895e78-1bcf-42d7-b96c-3af80202f7cf",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Flat enamel, gold cross and rim, bail on the chain. Pattern matches the hero. No hands.",
+    "sha256": "fd183a71a70d2dcf8e7201024fa9f6ddc52527a18421ee7aec53aa459bbfef2a"
+   },
+   "05": {
+    "job_id": "456ab3ea-0a97-4f52-bd9a-e165ee04bfad",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pendant on an open palm, about fingernail size, chain through the bail, pattern correct.",
+    "sha256": "a21f03390b65b2e485589c82663bb75ac52a66fd94db32f61a96cf809d8fb878"
+   },
+   "06": {
+    "job_id": "3c02c503-c4d2-44a4-9475-75b0c5be6267",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Shot at an oblique three-quarter angle, not strictly edge-on. The thin rim edge, the bail and the chain are visible and the pattern is correct. No hands.",
+    "sha256": "38760ee6371ea9b108539b7a53e8afe0a6abc1eb0cb46ea40dd8d690a8703c00"
+   },
+   "07": {
+    "job_id": "2ac80a57-9382-482d-b3c9-4f2e6b10e40b",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pendant in a dish, seen from above with the bail at the corner. The triangle colours match the hero rotated. No hands.",
+    "sha256": "ee198be8d0f09fa47fd3d9d967322fe5f324152f22aa3dab46c011e92099c188"
+   },
+   "08": {
+    "job_id": "c97ed0a3-efb0-49dd-a665-ab3088085c22",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Linen-lined box with ribbon, chain through the bail, pattern consistent, no text.",
+    "sha256": "c77c7c33a186537f46239e0918e60f53acaa8ba3869e95629b5ad01aafb5676f"
+   },
+   "09": {
+    "job_id": "e6e81171-e4a0-4ffc-ad58-95346bd15a3b",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Yellow, white and rose pendants on matching chains, identical enamel and orientation. No hands.",
+    "sha256": "2284e5803e35fb36610dbb7b8eec7ce5ffbffdeb666c85015f1bb9979fff9b9d"
+   },
+   "10": {
+    "job_id": "1024d684-c21d-43cb-a82c-1611afcccbe2",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pendant lying flat and sharp in front, with the ring, studs and bracelet behind. The triangle colours are consistent with the hero rotated to the bail corner. No hands.",
+    "sha256": "2463995567021613cea2159437adc460d0ec61246fc75aa388ef61c9fe1086d9"
+   }
+  },
+  "E06": {
+   "02": {
+    "job_id": "b23eb082-4230-4307-86e4-ce74c49a4ef3",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Stud worn through the lobe, 2x2 pattern correct (upper-left and lower-right green). On the large side at about 40% of lobe width, but smaller than the lobe. The second stud lies on the linen.",
+    "sha256": "d2ae5ddd1bda0c51450b0d63dc94a6388235fa4c72ea2e7378b87f0ce4944d71"
+   },
+   "03": {
+    "job_id": "59e2dd7f-0c62-43cf-b8cb-0114e39726c4",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Low bun and cream knit. Stud small and true to scale on the lobe, pattern correct.",
+    "sha256": "34ba18d033aac494bee138c198d7fde6a90781db50122c968696e82bf3d2887d"
+   },
+   "04": {
+    "job_id": "849069fa-941a-424a-9050-a9df88985bf3",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Flat enamel, gold cross and rim, pattern matches the hero. No hands.",
+    "sha256": "2f9ca00bf01fe1a8873850cd5cadacc3ea2d2369f8372f48f868ffc99f95a0b1"
+   },
+   "05": {
+    "job_id": "4ea3aaa9-f009-4507-9f0b-754e2a1ec139",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Stud on an index fingertip, about a third of the fingertip width, pattern correct.",
+    "sha256": "0b1a25ebc91ea1d06e7ada71935b7164e9f4b9b0afe924f9062302eefba22501"
+   },
+   "06": {
+    "job_id": "43cf785134c9",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Back and side views showing gold posts and butterfly backs. No hands. Job id: b02f8f84-adc6-4ef7-aaf0-e016818a30dd.",
+    "sha256": "f05917f19d7f3bdbec3dea89899771c7d9a842e91592354bddeb611added7893"
+   },
+   "07": {
+    "job_id": "070988ae-1619-4e41-aab1-14b0c00d54bf",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pair in a ceramic dish with eucalyptus, pattern correct on both. No hands.",
+    "sha256": "b6329cd01153c6fd65c2d30fe04719e702024ae62b461d4f61ff9fa45b7a6fb1"
+   },
+   "08": {
+    "job_id": "89211a37-2954-46f0-a1b3-06106e7fa647",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pair in a linen-lined oak box with ribbon, no text.",
+    "sha256": "01448256719770e6531ba4fef0fd3747c2d02f92b215be2ffa8240717d90735e"
+   },
+   "09": {
+    "job_id": "616c7f31-0018-48c2-a8e1-efbc7974ccb9",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Three pairs in yellow, white and rose gold, all six studs with the identical 2x2 orientation. No hands.",
+    "sha256": "29c3d6e3c21b054669edcd7d9e923566cd5b753a4ca7e84dcd36d9352973ca13"
+   },
+   "10": {
+    "job_id": "c8bb6cc4-123e-4a3d-8b57-126ce7157714",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Studs sharp in front, with the ring, pendant and bracelet behind. The butterfly backs carry a tiny '10' stamp, legible only when zoomed in; accepted, not a logo.",
+    "sha256": "5ca763c3194629337b32d538cc5cb9a84bbc8066f01d8aefd242abff1ca40693"
+   }
+  },
+  "B06": {
+   "02": {
+    "job_id": "f4d96c06-ae5e-4c90-8565-3459a04891a1",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Bracelet worn on the wrist with the chain looping around it. Bar has 4 alternating cells. Small and delicate.",
+    "sha256": "0a6d4665e697ce9a63dc57270098faaea480e60dc3edcb11f274db360d8476e7"
+   },
+   "03": {
+    "job_id": "7804cf49-1fce-4aea-978e-c46b59e2fe9d",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Wrist on an open book with a cable-knit sleeve, bar pattern correct. The book pages carry soft printed text; the approved prompt asked for the book, and there is no logo.",
+    "sha256": "54020753d253956fca39bc8b7d041a5a83e7034515b3d0aef346a9beb2be632d"
+   },
+   "04": {
+    "job_id": "8d8c85de-b732-4cd8-8afe-1dae9c1fc9a2",
+    "attempts": 2,
+    "qa": "pass",
+    "note": "The first take had cushioned cells. The retake is flatter and flush with the rim, green/cream/green/cream, clasp visible. No hands.",
+    "sha256": "4b74b319bca91fe9eb9e853bb29db51937e429be1153da511e806dcb23ef1165"
+   },
+   "05": {
+    "job_id": "dff93099-77d7-4454-9dee-5ec33719703c",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Bracelet draped on a palm, bar small, pattern correct.",
+    "sha256": "6fb34671b184216ba9a5f3caac7ed3bcb63ebd5de75f5df4aee5325f69b05e91"
+   },
+   "06": {
+    "job_id": "74a00eca-6173-45ae-a95f-13ba08aefe66",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Spring ring clasp in sharp focus, bar pattern correct. No hands.",
+    "sha256": "0ff83b891c7bebe72db027fc17203134b60af9b7a54e9c6c1575c7baebbb2aa2"
+   },
+   "07": {
+    "job_id": "49f5d8fe-2b99-4a5b-9c82-a8c7a99d97c3",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Bracelet in a ceramic dish with eucalyptus, same design. No hands.",
+    "sha256": "a43a3296820687eb2247e58293b2722b6978443b71b662d15148a4c0d8c5fdfb"
+   },
+   "08": {
+    "job_id": "81086cb4-552e-4d6f-ac30-870d33089aba",
+    "attempts": 2,
+    "qa": "pass",
+    "note": "The first take had people, a 'With Love' text tag, a duplicate bracelet in the box and a ring on another hand. The retake has only the single bracelet in a linen box with ribbon, and no people or text.",
+    "sha256": "add27a46aee9e662a3f1b3cab8e77256766a2bc0e1569db1f8ddfbdd1c06a362"
+   },
+   "09": {
+    "job_id": "3281bf0c-c4f2-4b82-b12a-a5b8126c6ee0",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Yellow, white and rose bars on matching chains, identical enamel sequence. No hands.",
+    "sha256": "5abff240141329b19d3b177b15354b0ee6c260e3cdbbc3b92bab5c7692864854"
+   },
+   "10": {
+    "job_id": "68833b2b-be65-4ffc-9100-cd4c1220933d",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Bracelet sharp in front, with the ring, pendant and studs behind. Same enamel. No hands.",
+    "sha256": "da2976abc40b639721552f33698e2d555e8175ba56e064a1e358f46a7dc32fb5"
+   }
+  },
+  "R07": {
+   "02": {
+    "job_id": "53f60ff8-78ee-4f67-b766-86eadcd513fa",
+    "attempts": 3,
+    "qa": "pass",
+    "note": "third take: hand seen from the little-finger side",
+    "sha256": "ed11308674d0aa1ed3547800703b3b68234c85665adc44b7eb0559763d17cfab"
+   },
+   "03": {
+    "job_id": "caa9fc13-066c-4ea0-810d-b2adf62af08d",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Hand around the mug. Four fingers visible and the ring is on the third from the index, which is the ring finger. The heart is fingernail size, flat berry enamel, no other rings.",
+    "sha256": "6a4d75b7a0fdf821a535dd8251d0568252b3c45e1332dcf5e2fa6f2cbfd585fc"
+   },
+   "04": {
+    "job_id": "6acf81eb-1286-4498-aa61-3f64b081e370",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Macro shot. Flat berry enamel with one planar window reflection, thin gold rim, same outline as the hero. No hands.",
+    "sha256": "cf84d211e40bfda0b3db1212614701f2e8ae939f635c2a4629eb7a165c8e5c05"
+   },
+   "05": {
+    "job_id": "a20fd27a-49dc-4020-8c0d-1a8a9d84eb78",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Held between thumb and index fingertips. The heart is smaller than the fingernail, so scale is believable.",
+    "sha256": "4ceb05bc341165d8756318b56e893b5ad1a6ba4042e80b36d0a31d6f385af3d2"
+   },
+   "06": {
+    "job_id": "f30997ab-86c9-40de-92e9-bc1345e0b6ca",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Ring on its side on travertine, seen from the back: the heart back is closed solid gold and the slim shank is correct. Enamel is not visible from this angle. No hands.",
+    "sha256": "4df0f64d54ff39b794ea573c2c21bac61f76cd724715cb3ea697b41cb98ea266"
+   },
+   "07": {
+    "job_id": "31f1acf1-8ab6-4907-b866-78f12db608fb",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Trinket dish with eucalyptus. Piece matches the hero. No hands.",
+    "sha256": "7591b50728125cc65bde94d76863ee83b9b18a5180659705ea38fa992e8b0550"
+   },
+   "08": {
+    "job_id": "1e841293-e4f2-47f4-9742-0ca8df921c52",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Open linen box with ribbon. No logo or text on the box. Piece matches the hero.",
+    "sha256": "0733987e7e1045f3462334da365a7b43cdb7419b8198b80317207371656e320c"
+   },
+   "09": {
+    "job_id": "0748436d-9713-423f-8aab-6ddd3da9e405",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Yellow, white and rose rings side by side at the same size, with identical berry enamel. No hands.",
+    "sha256": "d84cc30df29f57c3db1c1e87c06cf46976f40e62136a6ecb66cdf48aba954a77"
+   },
+   "10": {
+    "job_id": "d1057d6e-8055-443f-937d-5fcea1acd071",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Ring sharp in the foreground; necklace, earrings and cuff behind it with the same enamel. No hands. Background blur is mild.",
+    "sha256": "cf0002d2abf1c8f74d4b8504607f043b0a2130a030abb80de034e468253eb9b6"
+   }
+  },
+  "N07": {
+   "02": {
+    "job_id": "08f3eac4-5e83-45a5-897a-ec24725f4681",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Worn below the collarbone with the face out of frame. The chain runs through the bail and the pendant is small against the neck.",
+    "sha256": "b114024654b5eb240ac8678fa98bfcb84eb5851da06846209eebe5ec5c04da3b"
+   },
+   "03": {
+    "job_id": "da7b1561-562b-4727-8e67-70ad11fefe04",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Oatmeal knit with camel coat. Pendant is small and hangs on its bail. Matches the hero.",
+    "sha256": "1b4167e1801481e6292f4a8ca626ebc972abf96015e5b08c44e2797f523915b9"
+   },
+   "04": {
+    "job_id": "8fa75299-1802-4d93-95b9-5b12442c5f22",
+    "attempts": 3,
+    "qa": "pass",
+    "note": "third take: enamel flat, fine chain",
+    "sha256": "2308d4c7bf9978e6b6734e48c058583a192f6148810151c60b1ceb24668571b7"
+   },
+   "05": {
+    "job_id": "12d084d0-fe87-41f4-acf1-4a5f1d935e71",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pendant on an open palm, small and true to scale, chain through the bail.",
+    "sha256": "4b64f6736a7843c47b2d2f4ddeb24d408307ba73f487fb871eb7091f36f47a2f"
+   },
+   "06": {
+    "job_id": "14b0ad5d-89fd-4a95-9f81-a90007840b52",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Side profile: thin flat pendant, and the chain visibly passes through the oval bail. No hands. The rim edge shows a faint stamp-like texture but no readable text.",
+    "sha256": "1f2e48dcb4bbcd67a4720b8251cebbfbd6af14141c15f40e565284585bf1d898"
+   },
+   "07": {
+    "job_id": "326b0a30-0bd1-4c04-bbf9-449bf9f78a70",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Trinket dish still life. Pendant matches the hero. No hands.",
+    "sha256": "7dede19a14539625fa15de1c33f0515a688042c772cf4162639cca4683e9da5b"
+   },
+   "08": {
+    "job_id": "54597f72-608e-4864-9697-74311531f1d4",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Open box, no logo, pendant matches the hero. Minor: a hand wearing a plain gold band enters the lower right corner. Hands are allowed in slot 08.",
+    "sha256": "26d358cc4a51d5598b65662c30aba57537004d6b902c3a3deed7e966b7cfc665"
+   },
+   "09": {
+    "job_id": "7b6ca723-960e-4f1a-b20f-8a0f4bce93db",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Yellow, white and rose pendants with identical enamel. No hands.",
+    "sha256": "9e5c0e5fab50b8b52edea02661f96afd9a95072c3a1a5c4e6947b0e63fc4512c"
+   },
+   "10": {
+    "job_id": "2d1017da-56b7-4429-9d99-36b90237ff39",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pendant sharp in the front with the ring, earrings and cuff behind. Same enamel on all. No hands.",
+    "sha256": "92b911ec3bf27fa28cfb1194bc77ad3643c74077c5a60fedf30db8afc1e6ae0a"
+   }
+  },
+  "E07": {
+   "02": {
+    "job_id": "cedfdd35-8a68-46d5-ae0c-d93930c90f0e",
+    "attempts": 3,
+    "qa": "pass",
+    "note": "third take: template no longer puts a second pair on a tablecloth",
+    "sha256": "687b1768e2e570576da8f5f802f6f7c7bc07de7ad83d9f39539f4890ba21a39a"
+   },
+   "03": {
+    "job_id": "b0265d58-0b0b-4832-abbf-8a56d67b1c4e",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Worn through the lobe with the stud on the lobe and the chain drop. Small heart, cream knit, low bun.",
+    "sha256": "37b7abe30049e6c6fa700455c755d4ab36b3ff279d56e9b028a673aed05690c3"
+   },
+   "04": {
+    "job_id": "00ea2f6f-5963-4585-aa2a-144366e23df5",
+    "attempts": 2,
+    "qa": "pass",
+    "note": "Attempt 1 added chunky links and extra jump rings. The retake has a fine chain attached directly to the heart, ball studs with butterfly backs, and flat enamel. No hands.",
+    "sha256": "23a4dba3f15a03ccaad916c5a619358826aee9966f98b2ee60311ebb08371e53"
+   },
+   "05": {
+    "job_id": "110acd27-d06e-4861-985b-4a732f98a876",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pair resting on the fingers. The hearts are small relative to the fingertips.",
+    "sha256": "36d692044c84f2a5c040eaf0cc3044217488f068e06896c544e095ace3a40044"
+   },
+   "06": {
+    "job_id": "f995109d-c621-4440-bff6-404e083e5725",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Back and side view: posts and butterfly backs are clear and the enamel is flat. No hands.",
+    "sha256": "2d9f980b82b8e91069b488ccc1192380abfbf6f81bdb36e5c1e138dc1b365ccc"
+   },
+   "07": {
+    "job_id": "b3227d17-d918-4431-8449-a82089204516",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Ceramic dish still life. Pair matches the hero. No hands.",
+    "sha256": "ee3100d777518d96abb106db96a8912b299abc5ef746a1beec26a01dae3eee1f"
+   },
+   "08": {
+    "job_id": "cd2ed73b-1baa-41c7-947c-5e159451e057",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Linen box with ribbon. Box has no logo. Pair matches the hero.",
+    "sha256": "5fcbe69d38e4334f4103095e0b92249ab5a11267786b8812a2f4b86af8af7a00"
+   },
+   "09": {
+    "job_id": "b3a0c7ab-a6e0-4cf1-af53-eb0f21e14446",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Three pairs in yellow, white and rose with identical enamel. No hands.",
+    "sha256": "9d2af18f31c8b0b6f9bdf546abc79967a5465a41628ee68c11c7db0dc81bc9bb"
+   },
+   "10": {
+    "job_id": "8a226b36-bb07-4d0c-a166-13108ca00bea",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Earrings sharp in the front with the ring, cuff and necklace behind. Same enamel on all. No hands.",
+    "sha256": "a23b8459f7676d3cdd7d7dccddb422e88c012de0ee820e01e0171b0d8e607bc2"
+   }
+  },
+  "B07": {
+   "02": {
+    "job_id": "f342587b-655a-4bbc-b7ed-04fd555bcb27",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Slim cuff around the wrist, heart centred, small and delicate. No rings.",
+    "sha256": "f2cf14fe63663f465e8913f0296fe7ccc0ca3cf8f12e5d08c70891a075340da1"
+   },
+   "03": {
+    "job_id": "4240a8eb-8656-48c9-a6e9-d6301e341bcf",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Wrist on an open book with the cable-knit sleeve pushed back. Cuff sits around the wrist and matches the hero.",
+    "sha256": "9b332fcbaa3eb1c4d438638ec38cb9dc0db3dcd3ecedf4c43a53b0c79dcab5fa"
+   },
+   "04": {
+    "job_id": "ef8fff3f-18e3-4dab-910e-f6294cc1128a",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Macro shot: flat berry enamel, thin rim, slim band. No hands.",
+    "sha256": "b5dbf4e749ff554ab61dafb1e1114ebc4b4135fcffc07390b14c2201549f3e06"
+   },
+   "05": {
+    "job_id": "f47f959d-4144-4785-9ed3-d0ec7404c45e",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Cuff on an open palm. Scale is believable.",
+    "sha256": "f8b2f38544fd8fc31eb543d18faf91b6a6638e68b9468295fdcddac81ea4e5e3"
+   },
+   "06": {
+    "job_id": "bf27e0c9-5e0c-403e-8e2d-9968b1bc21fd",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Seen from above: rounded open ends and a slim band. No hands.",
+    "sha256": "c6fbc66e9654da28c921d717ca7e52f7333366fe2e2b3bda6135329b7216e4a1"
+   },
+   "07": {
+    "job_id": "da70602a-e5c8-41d9-b1aa-8751c1d41c6d",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Ceramic dish still life. Cuff matches the hero. No hands.",
+    "sha256": "25c390e783e7062d0a6cef683b16aa42371b3088fd86ec0c42fac81cb4a723fa"
+   },
+   "08": {
+    "job_id": "8899d346-c6e6-4157-b999-77e59855f0b1",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Linen box with ribbon. Box has no logo. Cuff matches the hero.",
+    "sha256": "d30ba1d851116291f64a767f22baad9543d4500845804cf66633a356446cdb4d"
+   },
+   "09": {
+    "job_id": "71190131-a8db-419a-9172-93c587ec36d1",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Yellow, white and rose cuffs on a linen roll with identical enamel. No hands.",
+    "sha256": "2c1341d64a2d77996593b90029e9f1212dba26ee6e0ead5602fb1e2cdfc8775e"
+   },
+   "10": {
+    "job_id": "3ada6fb2-c624-48fd-8cd0-7f3d712a6088",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Cuff sharp in the front with the ring, necklace and earrings behind. Same enamel on all. No hands.",
+    "sha256": "af7136d29499494e7fed826e49bf112437da975224ec26a87f4fb1ce6e4a80d8"
+   }
+  },
+  "R08": {
+   "02": {
+    "job_id": "0ae047fe-fbf7-44e0-9e62-fc130f045e3a",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Zoomed in and counted the digits: the bow ring is on the 4th finger of the left hand with the thumb tucked. No other rings. The top is about fingernail size and the navy enamel and gold rims match the hero.",
+    "sha256": "d5f5413b7f550affcae653e1abc22898d128feee3e6ef89dad06fc13a4c8450a"
+   },
+   "03": {
+    "job_id": "af0ea4d4-047f-40e1-ac44-38ce633559b0",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Hand around a mug. Zoom shows the ring on the 3rd of 4 stacked fingers (the ring finger, the shorter little finger below it). No other rings. Small and true to scale.",
+    "sha256": "7c348d03a76b35a90fec625e4a6022dca75d30e35a2531a1e28f1b2ec12b6c0e"
+   },
+   "04": {
+    "job_id": "421b8a18-a5de-4ea8-b448-f8050cbda135",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Macro on linen, no hands. Same bow outline, flat navy enamel, gold oval knot.",
+    "sha256": "8879cdce4f7084335983954dbe6d5e12f91fa0516b7878f9f8d04992f72dd753"
+   },
+   "05": {
+    "job_id": "726fd347-aa2e-4633-8a5c-dcfdb1d4f06d",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Held between thumb and index finger. The top is about fingernail width, so scale is believable.",
+    "sha256": "ed23db41871b914b0a49e620e4687bf90a64c85267417f26daae12d6d651e97d"
+   },
+   "06": {
+    "job_id": "1029bd7c-3cb9-42c0-acf4-34347a849180",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Lies on its side on travertine and shows the round shank and the top. No hands. Design matches the hero.",
+    "sha256": "af7f71bbc1d3fb19247b1d05b76f2863b34cc9f724ed21165c0116f48259f451"
+   },
+   "07": {
+    "job_id": "40baa59d-8c5c-4b39-94ab-2cab0c40f487",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Ceramic dish still life with eucalyptus. No hands, no text.",
+    "sha256": "b4be21928aeec6c760785c4566f9bad9ef872ef0f0e57dd1a429102929e11a4b"
+   },
+   "08": {
+    "job_id": "4ba6efd1-9b7b-4b40-9dd3-94b60f4d82fa",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Oak box with linen lining and a ribbon. No logo or text on the box.",
+    "sha256": "7eeb2324a831f23620fa7d6216b1419287650067c5fe6d46bd5f7f106df5f221"
+   },
+   "09": {
+    "job_id": "90786553-9bbb-4ea5-abe6-a72af2e42284",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Three rings clearly in yellow, white and rose gold with identical navy enamel. No hands.",
+    "sha256": "5c5e6881e42f263703175d9bcb55f87ddb02993bef2b524b250c2c3ad65e9a15"
+   },
+   "10": {
+    "job_id": "7423d21a-dfb1-4307-8b11-a90c95c507c6",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Ring sharp in the foreground with the pendant, studs and bracelet behind, all in the same navy. No hands.",
+    "sha256": "f3b78a78c3b24ebe880ff2a206857d8827bb9d91e5639c058ecb3f95b7882f77"
+   }
+  },
+  "N08": {
+   "02": {
+    "job_id": "6c4370e9-8eec-4ebb-b3ff-144863695dc7",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Worn just below the collarbone, face out of frame. Zoom shows the chain through the bail. Small, same bow as the hero.",
+    "sha256": "01a22266168c9782d162eebe7200bb72b9319062e4a364558cb9077b5576fe88"
+   },
+   "03": {
+    "job_id": "c45abbd4-2659-4f07-9da1-e81537574415",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Oatmeal sweater and camel coat by a window. Pendant small on the chain, design matches.",
+    "sha256": "6fbe413239fc531e92564efb185dc153d59c33393e5025251925fdf15dc25c54"
+   },
+   "04": {
+    "job_id": "604b654e-6615-414e-af55-1e5415d02cf8",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Macro on linen, no hands. Flat enamel, same loop cells and knot as the hero, chain through the bail.",
+    "sha256": "d81a336129b1a12673e7b8cd5ad0aa9bf423667fffeeefab808fba4858412ba4"
+   },
+   "05": {
+    "job_id": "902b102c-1d75-462f-81b1-96821a963d6e",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pendant in an open palm with the chain through the bail. Fingertip-sized, so scale is believable.",
+    "sha256": "875a1a42ed88f24b80b61e97d4853e678dfc0b9470526e24e60b7fbf8dfa172d"
+   },
+   "06": {
+    "job_id": "af7ad87f-69c2-4be4-96d9-0a1ab7bd4c3a",
+    "attempts": 2,
+    "qa": "pass",
+    "note": "Attempt 1 rejected: the side view showed a thick, doubled or twisted bow. Retake reads as one plate hanging on a plaster wall with the chain clearly through the bail, no hands. Its edges still look a little thick in the side view, but acceptable.",
+    "sha256": "f87a866f1da26dc74ad2ddba9c88cdc72e8edd775f7f7b2c6bb42ae02c837e0c"
+   },
+   "07": {
+    "job_id": "e4906bd7-b6a4-46ae-9cde-9fbc9bc05c8c",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Ceramic dish still life. Zoom shows the chain through the bail. No hands.",
+    "sha256": "079c2aee7c70106a156f2dee9b8a12ce510a8d5669b89d58424ee5f1dc6ed141"
+   },
+   "08": {
+    "job_id": "899b5729-ffaf-4d09-a651-aec01c27f9f9",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Linen box with a ribbon. No logo or text.",
+    "sha256": "0e43c0a04e5d6ac5641157589041aecaed9cc993ef2664cb658218369c1fa533"
+   },
+   "09": {
+    "job_id": "4b3b73ab-ab5d-4278-8a8d-b68a04d3f4a6",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Three pendants in yellow, white and rose gold with matching chains and identical navy enamel. No hands.",
+    "sha256": "8871fbb9ef96ab042d30f2720c9f21cc8af8c246b5eb19a07b5510abc69cfc4d"
+   },
+   "10": {
+    "job_id": "998c9f2a-c735-4e21-85ea-f74ab42e652c",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pendant sharp in front with the ring, studs and bracelet behind. No hands.",
+    "sha256": "8747f4e0d1267c33f931be5e83ae37686cf209ea4f950d972d4905fd1a5c4e8e"
+   }
+  },
+  "E08": {
+   "02": {
+    "job_id": "b84384f8-cd4c-4204-9b88-45fe4f74204d",
+    "attempts": 2,
+    "qa": "pass",
+    "note": "Attempt 1 rejected: split into two panels (ear plus a tabletop). Retake is one continuous close-up with the stud worn through the lobe. Small, same bow design.",
+    "sha256": "6e9c7ba038d637e6fedd38fdbab3edff6e4e88ca84809aa054b4f08459454a53"
+   },
+   "03": {
+    "job_id": "0f73c4a1-054c-4e70-8498-e22413ac12e4",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "High-neck cream knit with a low bun. Stud worn in the lobe, small and true to scale.",
+    "sha256": "e9f8e612bdd76760dd57ea1103de22a47cec9ed35b6cca4a547a79884031c365"
+   },
+   "04": {
+    "job_id": "53007c07-10aa-4400-8bf7-9200d0039f0b",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Tight macro of one loop and the knot, no hands. The enamel looks flat and glossy inside the gold rim. The knot is rounder than the hero's but acceptable.",
+    "sha256": "eeee2c15992b2294a8477daa808e437a957782276bbf7436410f8706c15b7b82"
+   },
+   "05": {
+    "job_id": "a8c20acd-3956-41fb-bdee-3bf85e973982",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "One stud on a fingertip and the other worn in the lobe. Both small, scale is believable.",
+    "sha256": "d68157dd5137df11306a5015c0d5f69220e83532f7302d87aedc44b2fa832727"
+   },
+   "06": {
+    "job_id": "fb2133565449",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Back and side view showing posts with butterfly backs. No hands.",
+    "sha256": "3ee5676461c0dfc6fe9a5c398e75843872334a778f77562ff594922232feaa93"
+   },
+   "07": {
+    "job_id": "86dc978a-5448-4b0f-940b-3be5ca199c79",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pair in a ceramic dish with eucalyptus. No hands.",
+    "sha256": "b675a4f71b4fc8d88c1ecaf2eb1f9dd4c0a74bfb3ec66ef781716d04f3548762"
+   },
+   "08": {
+    "job_id": "526aeb58-7e53-4f52-b29f-36fe44554883",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pair in a linen gift box with a ribbon. No logo or text.",
+    "sha256": "7e568758927275e3180872e23848628cb8b3d452f8a61aa9d551f8354f6fb476"
+   },
+   "09": {
+    "job_id": "b453cf91-5559-4a02-b440-981f6230702a",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Three studs, one each in yellow, white and rose gold, with identical navy enamel. No hands.",
+    "sha256": "32a5c8fc29752f39e1842fce8838a97def5c6931b071f02c3734d63dfa3a9534"
+   },
+   "10": {
+    "job_id": "ede6d7b6-3a65-4f0a-8ef2-5c97f785e098",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Stud pair sharp in front with the ring, pendant and bracelet behind. No hands.",
+    "sha256": "060d5796ff4488bd09ba1f18e80b02bbd1bead42cde07aa94cff847dec38ff26"
+   }
+  },
+  "B08": {
+   "02": {
+    "job_id": "a95943f7-4148-490b-abca-0ec0edb6a6c3",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Zoom shows the chain closed around the wrist with the spring ring hanging underneath. Tiny bow matches the hero's two-loop bow-tie shape.",
+    "sha256": "ac2d9e1ebe12bf718767ddfee77bcf6088cfe92e5deb9c2fe10187891acf7dcd"
+   },
+   "03": {
+    "job_id": "894b3489-d4ae-48c9-92b0-d910869942a0",
+    "attempts": 2,
+    "qa": "pass",
+    "note": "Attempt 1 rejected: legible garbled text on the book pages. Retake has blurred pages with no readable letters. Bracelet closed around the wrist with a cable-knit sleeve, bow small.",
+    "sha256": "a83d99a3e029a5ab45d9120a4375fecf97ec150f8dd6db6201515000b139b63e"
+   },
+   "04": {
+    "job_id": "1cedb137-a079-4455-9e72-b19b980a5ce9",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Macro of the bow and clasp on linen, no hands. Same loop cells and gold knot. The enamel is glossy and reads flat.",
+    "sha256": "d4cdf9a7154c57acdba2d4be5c899946650117da083090cc4f7d74e3ddf6faaa"
+   },
+   "05": {
+    "job_id": "05c51608-f4d8-4822-b7f5-20288f55ee35",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Bracelet draped over an open palm, bow small and delicate.",
+    "sha256": "029713d34ebed8f94eaa4beb4b5b546167a359e8d593038e6c4719752715d42e"
+   },
+   "06": {
+    "job_id": "b1ff0c99-0c46-46d5-a81f-3ad99f8aaac8",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Bow and spring ring clasp shown sharply on linen. No hands.",
+    "sha256": "8e703480b00736648d106ca9cee7c10dd507fa9bc1966816f6d08dfa4c87ab9a"
+   },
+   "07": {
+    "job_id": "ae6566e9-0f30-4621-9e17-69518a4c9d7c",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Ceramic dish still life with eucalyptus. No hands.",
+    "sha256": "813405e160cf24fda0638e90b9967d345828ff6c4b5c8f02fd5ad7ca4d026da2"
+   },
+   "08": {
+    "job_id": "bd7682b2-c04c-4e9f-bb6d-caf2ef1c65d2",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Linen box with a ribbon. No logo or text.",
+    "sha256": "7b506cea0623a6cc6e772c4e986306071807437c499a503ea2e4fc2b4da29cf3"
+   },
+   "09": {
+    "job_id": "b3834aa3-6186-427d-acde-800ea89d9b41",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Three bracelets in yellow, white and rose gold with identical navy bows. No hands.",
+    "sha256": "6db7bdcf7c6fde78c24c54a9ca89514ccc80f46d6ce33e0509e0304acf39de1c"
+   },
+   "10": {
+    "job_id": "dd3b2aaa-0189-40b9-988d-716cc8199ca8",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Bracelet sharp in front with the ring, pendant and studs behind. No hands.",
+    "sha256": "1926eec9239c9af13d3236d29267242fc3cbd3ff56db3344c453676a1a4b1f44"
+   }
+  },
+  "R09": {
+   "02": {
+    "job_id": "4c825496-d5f1-4409-ad8d-3dd96d214431",
+    "attempts": 2,
+    "qa": "pass",
+    "note": "Take 1 (1d7b2606) rejected: going by finger length, the ring was on the middle finger. Retake: left hand palm down, ring on the fourth finger next to the shortest (little) finger, other fingers bare, leaf about fingernail width, same leaf, bud and flat enamel as the hero.",
+    "sha256": "9e101544a0ec40fa05134ff000be0463890876e2874db191532e17191f636db4"
+   },
+   "03": {
+    "job_id": "b648eefe-9e6f-40b0-b3b9-c824a374e7a8",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Hand around mug; ring on the finger next to the shortest bottom finger (ring finger); no other rings; true to scale.",
+    "sha256": "957e813e1ddf2b33847063f12155cd358d1cd121e4352f17c8a6dd7cdd0dbe65"
+   },
+   "04": {
+    "job_id": "34cec1eb-3d06-455f-833c-48b0edcb789c",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Split leaf with gold vein, flat moss enamel, gold rims, round bud; no hands.",
+    "sha256": "d93e7b27cd39aeee246f6d21e7a2146640a888c361065ec6a2d56a1a6c69ceea"
+   },
+   "05": {
+    "job_id": "5e7dc2b8-0db3-41f1-b818-8cc56dda7897",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Held between thumb and index; leaf about fingertip width; same design.",
+    "sha256": "2aabbae7b23419d3ae640b5e7e7917a07c5981f9ff11ab06ee5b81f53c40df94"
+   },
+   "06": {
+    "job_id": "b8d27fec-b996-4cad-a663-158b062efb93",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Lying on travertine, back view shows solid gold leaf underside (not hollow) and bud; no hands.",
+    "sha256": "4dd965e43a59fd056637a8e6f610418e197d6bb9340bbaee86321fef6cb036ab"
+   },
+   "07": {
+    "job_id": "b7383d87-ea11-4596-9fa9-d4ad7cfe8d81",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Ceramic dish, eucalyptus, napkin; piece matches hero; no hands.",
+    "sha256": "d33d7e7114ea9fc33e1a60e8d0f8ac6dbfea19ff347446f9c0777810e37fbc15"
+   },
+   "08": {
+    "job_id": "ecd1b28e-e160-4d41-aed6-4fcad2b4bdb1",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Linen box, ribbon, no logo or text; ring matches hero.",
+    "sha256": "224e761197777b1f3a4bb7bd9a1903189840bbc68f2da0e1ac86f17b4baff3d9"
+   },
+   "09": {
+    "job_id": "7501083a-0685-4893-883a-1e533dd12f60",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Yellow, white and rose copies side by side with identical moss enamel; no hands.",
+    "sha256": "1f21f7a0aa66d8f448ff7756572bdb6875743a5d4ad467eb02871b797084228f"
+   },
+   "10": {
+    "job_id": "c86ade86-19b2-4f5b-896e-163008adfc9a",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Ring sharp in front; necklace, earrings and 3-leaf bracelet behind; background only mildly soft; no hands.",
+    "sha256": "2314521b35071feb4902a355e39fc06497f5ff190a9e9dd541ddab33180f99d4"
+   }
+  },
+  "N09": {
+   "02": {
+    "job_id": "69c60ea7-9166-485d-b76f-30684cc4cefb",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Y lariat with V junction and drop; leaf small below the collarbone; face out of frame.",
+    "sha256": "67d5f32443e9fae78dbacccd6425c82693fccc619cd609793c6de7a812340f2f"
+   },
+   "03": {
+    "job_id": "065a27c6-0816-4fbb-bd2b-2dcaadc73b23",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Oatmeal sweater and camel coat by window; lariat and leaf match hero; true scale.",
+    "sha256": "ba75307de7c58b4d99e57d8bb33305b0425e0dddaaf2c33e791c69e8f5e0b7f9"
+   },
+   "04": {
+    "job_id": "1eb2751f-a969-4903-bbeb-682abc7fb896",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Split leaf, flat enamel, gold rims, chain through bail at top; no hands.",
+    "sha256": "86ff30ca6bf003e64eb450575163d27f88536d3482f160f6b12da266e648600f"
+   },
+   "05": {
+    "job_id": "362d4ea7-153f-469a-8cb2-6c9d471ee8c9",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pendant on open palm, chain trailing; leaf about fingernail size.",
+    "sha256": "262e75b1d742062a96d98a42935bdec7338f74f07e8d4c0b080bba269f1684fd"
+   },
+   "06": {
+    "job_id": "172229f3-8bf3-4ca6-91e3-607efcd0940f",
+    "attempts": 2,
+    "qa": "pass",
+    "note": "Take 1 (14809c0d) rejected: the Y junction was drawn as an oval slider loop instead of the hero's V connector. Retake: V connector matches the hero, leaf hangs against plaster at an angle that shows its edge, chain through a small jump ring; no hands.",
+    "sha256": "8bb968e8574904455240f9d0cc11ac8ee72084351dacb2132dc1a8ad4f526c16"
+   },
+   "07": {
+    "job_id": "f69c6fbf-627f-4263-97bb-07239165b5ab",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Ceramic dish still life; lariat matches hero; no hands.",
+    "sha256": "d7134946641bf604dae870a6eedf5b792bb08657c45964123786cb9d8077b60e"
+   },
+   "08": {
+    "job_id": "bffcc7d4-d05e-4f19-83a3-bfdf0c78ce15",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Linen box with ribbon, no logo or text; lariat with V junction.",
+    "sha256": "158ba3a625df02ce779a779cb9d06a0c9f6263f6bff5cff4ed2532e51221932f"
+   },
+   "09": {
+    "job_id": "b44bc3b2-6089-4f0f-926a-6c5ecaf4739a",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Three lariats in yellow, white and rose with identical enamel; no hands.",
+    "sha256": "47f92bdc88c487fa1532e9fbf63a1cab05d604aa276d95202718eb4ee8c44672"
+   },
+   "10": {
+    "job_id": "b8946b75-32f1-4442-8639-eae641c17b61",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Lariat is the hero in front-right; ring, earrings and bracelet behind; background blur is light; no hands.",
+    "sha256": "ed53b10cd2f2a554234ed76bcd8dc516ff7294b2588fd81c8b8ee14589bab2d0"
+   }
+  },
+  "E09": {
+   "02": {
+    "job_id": "b9c7b054-ea2b-4f1c-9ee5-257053978ea2",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Stud through the lobe, leaf hangs below on its stem; smaller than the lobe.",
+    "sha256": "bc22d339a07a3b16187fd8be96b2e277b6489bc5b4fdba192e8e040acdc8a0da"
+   },
+   "03": {
+    "job_id": "1f5d1416-7eb4-4d96-a34d-bf9968bedbee",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Cream knit, low bun; earring worn through the lobe; true scale.",
+    "sha256": "0fddea9eb7ea59d5856bfd19b01740d08dcef7d0184ab2300be3e7a8503e05bd"
+   },
+   "04": {
+    "job_id": "e4cfb4fa-ca31-4357-8beb-934194011f31",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Split leaf, flat enamel with window reflection, gold rims; no hands.",
+    "sha256": "5f9b8d824eb96771822a3607fac6827e91be7f6ebee53e0fe75a1276d45b8b09"
+   },
+   "05": {
+    "job_id": "ee1f7f57-c0e7-4229-bc8c-3b1b20bc558e",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "The pair rests on an index finger (the prompt asked for one); small and true to scale; design matches.",
+    "sha256": "782678b1f45eaba7e07452ea981dcfc6a13f93adbd3bd9022ec5da6a47794b7d"
+   },
+   "06": {
+    "job_id": "f8d47939-1146-4676-9943-0a604b5d4c17",
+    "attempts": 2,
+    "qa": "pass",
+    "note": "Take 1 (1f799e82) rejected: the post came out of a hammered leaf back and the stud ball sat sideways (redesigned fitting). Retake: post behind the round stud, butterfly backs, smooth polished gold leaf backs hanging on stems; no hands.",
+    "sha256": "e96ff1feb09416bc465ad6700b22a146120c557b3df14433c0c125445b3af3b1"
+   },
+   "07": {
+    "job_id": "f4437b5e-fb09-47e1-ae16-b9e26ac2609a",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pair in ceramic dish; matches hero; no hands.",
+    "sha256": "34e8581208e4640aa9151a423365955b11388e860bcb90122bfd0d35befc69f4"
+   },
+   "08": {
+    "job_id": "ab753d22-a5c0-4bda-9e76-883fce1e51e1",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pair in linen box, no logo or text; one hand holds the box (allowed in slot 08).",
+    "sha256": "418a2090199181ffdea79c09cf807c8b406ccf41d4d4d91a8d5dcd46a1697b93"
+   },
+   "09": {
+    "job_id": "9cc0cfd2-6ef6-40d1-a871-ba81ccdd5d34",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Three pairs in yellow, white and rose with identical enamel; no hands.",
+    "sha256": "a1e89f746f45d73df46dd09a670ae5116983255570a4119433b6f23e79d0fcf9"
+   },
+   "10": {
+    "job_id": "f37b5665-8cb4-4606-9cb7-7689274b71a9",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Earrings sharp in front; ring, lariat and bracelet behind; no hands.",
+    "sha256": "6d4a505bb660cf6a3bf6490b05ff0d0a52b17eb06a09a0635175a1d979923b2a"
+   }
+  },
+  "B09": {
+   "02": {
+    "job_id": "bb001bd4-4e5c-402c-8d39-a378c22236d1",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Closed around the left wrist; three leaf stations on fine cable chain; small and delicate.",
+    "sha256": "bb2164062cc43b6a7da696948bc13d69f0a41052909db05f3ed508b52d65b23a"
+   },
+   "03": {
+    "job_id": "43c2a269-8c97-4ef9-80e9-8727e8b0254f",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Wrist on open book, cable-knit sleeve; bracelet closed around the wrist; true scale.",
+    "sha256": "1527ded592fb3ce529ab77b54353f73544a70f57a0ab90ce3db7506e0792387a"
+   },
+   "04": {
+    "job_id": "cb2c6c95-c526-457f-ba06-946bf46c033e",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Leaf station with vein, flat enamel, gold rims; spring ring clasp behind; no hands.",
+    "sha256": "76bea639b5ff6299fbde036d6002c46b1371ba3084ef13f5245f9cbcee3d11b7"
+   },
+   "05": {
+    "job_id": "f157878c-5d7d-40a5-8005-29b1f0f69b09",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Draped over open palm; three small leaves; true scale.",
+    "sha256": "1b6216af1843453847c1f7a69658a772b8d6bea4ca0a41ba1f13b4b54641783e"
+   },
+   "06": {
+    "job_id": "c989c4d4-c4ee-426c-b141-925a1fb1f896",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Laid out with the spring ring clasp in front; three leaves; no hands.",
+    "sha256": "a14ce7ff29b9f0b71b22ee9d2e5c00cfa4943c5b2adfb4859d579892a9d736b7"
+   },
+   "07": {
+    "job_id": "1c603940-93d2-4ff6-9440-d309884d8330",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "In ceramic dish with eucalyptus; three leaves; no hands.",
+    "sha256": "30eec9c6553e0176db15a2526dd15c149d36da50aec477873b0dd20ae5ded8bc"
+   },
+   "08": {
+    "job_id": "812ad641-c619-465c-b5ca-f8bb073f459d",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Oak and linen box, ribbon, no logo or text; three leaves.",
+    "sha256": "1238e81478673ec619699ab468539eea1b7674ab9bcf91486f21c383873b74cb"
+   },
+   "09": {
+    "job_id": "ae050be8-7e23-4d8a-a77b-60846e5a85e3",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Yellow, white and rose bracelets hang vertically, each with identical enamel; only one leaf station per bracelet is fully in frame; no hands.",
+    "sha256": "c45413e312bcfe61679f2436d80108ad103e92a9f41534917ccb5efe366d3a29"
+   },
+   "10": {
+    "job_id": "741d0673-d031-4bdb-9292-4fd857f324c1",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Bracelet in front; ring, lariat and earrings behind; no hands.",
+    "sha256": "d49d96cbe6c4c2122960e06fade15a355b65018ba7f892bd7405c4ed31413068"
+   }
+  },
+  "R10": {
+   "02": {
+    "job_id": "ad16418d-33f9-4b16-a941-8a3f3247dd55",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Candle ring matches hero (cream column, amber flame, gold rims, flat enamel). Worn on the left ring finger, next to the pinky (checked by finger order from the thumb side). No other rings, top about nail size.",
+    "sha256": "626e90bf20fb916930b6d5c0620f143cb84d7f804e6f538346439243e3305ecc"
+   },
+   "03": {
+    "job_id": "7763fbad-63cb-49ca-ba20-7f0043304518",
+    "attempts": 2,
+    "qa": "pass",
+    "note": "First take put the ring on the middle finger. Retake: ring is on the finger right next to the shortest bottom finger (pinky), other fingers bare, hand around the mug, design correct.",
+    "sha256": "737f9814b1876276a2496f2ab0b45352e7b68d08a42b4dfb7bb9e5a6172bd7cf"
+   },
+   "04": {
+    "job_id": "57c6a0f1-eb2c-4460-8a19-3e463ee96b25",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Macro matches hero outline and colours, enamel flat, no hands.",
+    "sha256": "4a90393f92e48de9d69e9b1fda5750906c7c33d56e7fec37dd29a0b164b1a862"
+   },
+   "05": {
+    "job_id": "78c713ee-ab01-467a-a13e-bf5252ea12e8",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Held between thumb and index. Candle runs along the ring axis as in the hero, small compared with the fingertip, fingers normal.",
+    "sha256": "506ad249b988799711af6a8a77eb3309978e6e5e235cb72d6025501aaa9d0bf0"
+   },
+   "06": {
+    "job_id": "b184fdb6-c571-4ca0-ba62-48a4cf31564c",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Ring on its side on travertine, top solid, design matches, no hands.",
+    "sha256": "af288dace3e7750d596f5c9f371615475156dc25964e132e14b20471e05a1411"
+   },
+   "07": {
+    "job_id": "ffbbc199-8f74-49de-97d3-9f4159ae1f49",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Ring in ceramic dish with eucalyptus, design correct, no hands.",
+    "sha256": "c5bd3937f41439c60eb0205b195e9fe0dad4619d83052dc20ff942032b5fe790"
+   },
+   "08": {
+    "job_id": "8b0335af-fb28-435c-b163-c7fdca2480cc",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Ring in a linen-lined box, no logo or text. A hand holding the lid at the edge of the frame is allowed for this slot.",
+    "sha256": "5a9a2d9a200dc6b26f71bf0849fafc8d75ae76d8ba5078ff5c77713123ff27a5"
+   },
+   "09": {
+    "job_id": "e4abd306-571e-481e-8170-98468e723c03",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Three rings in yellow, white and rose gold, same cream and amber enamel, same size and angle.",
+    "sha256": "8b9111dcef0e3b7c9af62f7ce1fb8e13fb6184cc64ce79974191def3a58a987c"
+   },
+   "10": {
+    "job_id": "319fed11-d9fc-46b8-947a-49cba5f513ab",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Ring sharp in front. Pendant, flame studs and twin-candle bracelet behind, no hands.",
+    "sha256": "ba79605ddf70389140fb145ba71db858d949440cc3ca218ed61a98d7e78a8bfb"
+   }
+  },
+  "N10": {
+   "02": {
+    "job_id": "76c613c6-1e87-40bc-ae85-830e7cbb5f3a",
+    "attempts": 2,
+    "qa": "pass",
+    "note": "First take was a split diptych with the pendant twice. Retake: one continuous photo, pendant just below the collarbone, chain through the bail, small scale, design matches.",
+    "sha256": "7f94aacecea2a31a9a8fc68d9e78b25986f92801b3528d1730d23e8db61cfab1"
+   },
+   "03": {
+    "job_id": "1f1c73d5-5c7f-44d1-b430-4d512dccbdf2",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Worn with oatmeal knit and camel coat, face cropped, pendant small, chain through the bail.",
+    "sha256": "5f2b25f9b5784a22b88d493b7464d301280be4b4dba985352e8261d0fd2d267a"
+   },
+   "04": {
+    "job_id": "6805500d-0d8f-487a-bce3-ee10782fc551",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Macro shows the bail with the cable chain through it, flat enamel, gold rims, no hands.",
+    "sha256": "492551556998bca20ef8f9ea09234c9f914facfd5b502a3a3d24b9d237107771"
+   },
+   "05": {
+    "job_id": "136d54b0-c56f-4d7a-87be-a1caf445c883",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pendant on an open palm, chain trailing, believable scale.",
+    "sha256": "a751a048fb2dd303f2c820a22c17f601a62dd309f4077798d263c81e09de1f50"
+   },
+   "06": {
+    "job_id": "4ce3fd9e-7c04-463f-8463-1aa95fe0b427",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Hanging against plaster, side view shows a thin flat profile, chain through the bail, no hands.",
+    "sha256": "a6c58996c8cec0b0fdcd904baf2129dfc3d61f16a1bdb5917d3d875bd01db7e1"
+   },
+   "07": {
+    "job_id": "3b07e1a4-9437-4904-9eee-f248a1d45b39",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "In ceramic dish with eucalyptus, design correct, no hands.",
+    "sha256": "28c3c8dfa983d3a856667c04f437768c73164bc25da020ad127c774e17d0af0e"
+   },
+   "08": {
+    "job_id": "1a311b78-8844-46ee-9129-363e309c0689",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "In a linen box with ribbon, no text or logo, chain through the bail.",
+    "sha256": "6dcb7c12edf22ae7b9cd220fea9f842301f0b92d73cd63ff90e199071143ff67"
+   },
+   "09": {
+    "job_id": "94e9de9c-1d51-447f-aa88-87bb202a444f",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Yellow, white and rose gold pendants with identical enamel, same size.",
+    "sha256": "93b0b9bde7f7d4cd5c9408fde26d809b82525e45e162fe1bc05c8089eab4d188"
+   },
+   "10": {
+    "job_id": "e8da48c5-7dcf-4d89-bb32-0f32ccb788fc",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pendant sharp in front. Ring, studs and bracelet behind, no hands.",
+    "sha256": "fbc6b1240c7f51356b2f63b94f0bc86c8617e220e66220a4f64b85f2e82e38e0"
+   }
+  },
+  "E10": {
+   "02": {
+    "job_id": "64b60b1f-8a62-42f6-8995-1b18721aa6f5",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "One amber teardrop stud through the lobe, small against the lobe, design matches hero.",
+    "sha256": "6588f9672bd166e023b999c5463be9de1528e19d1c7c96eaef1aeb34ba5a2085"
+   },
+   "03": {
+    "job_id": "a7678b52-e436-4cdb-9bba-1c2656354d78",
+    "attempts": 2,
+    "qa": "pass",
+    "note": "First take had two different-size studs in one ear. Retake: one stud in the centre of the lobe, cream knit and low bun, correct design and scale.",
+    "sha256": "13498d3b309a481ac8031e0e156c8bce53363d2435850f8086c3482136f72dba"
+   },
+   "04": {
+    "job_id": "d8bd33f5-59ba-4720-af0b-04ed22eae714",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pair shown close up, flat amber enamel, polished rims, posts visible, no hands.",
+    "sha256": "fc01213825261fe831b8c17ace6ede802495c53e681519c9634cd702c4ec97ef"
+   },
+   "05": {
+    "job_id": "4c1421e6-6dfe-4c64-adbf-0979834f04fa",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "One stud on an index fingertip, smaller than the fingertip, fingers normal.",
+    "sha256": "c755b7f9a76afa24ce6ea2a45188dc55898f3987e3f86257e9e09809ad441d4f"
+   },
+   "06": {
+    "job_id": "4b2f8a1f-b8cb-4569-9393-e73a429ac927",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Back and side view shows gold posts with butterfly backs, no hands. Tiny stamped marks on the backs are acceptable.",
+    "sha256": "8d89103a0ea50c71d3baed271a61c3b55f53d921d45416cf87c7c72ad9f24968"
+   },
+   "07": {
+    "job_id": "4032ac7e-8dca-4e4f-88e5-0d89304ee898",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pair in ceramic dish with eucalyptus, no hands.",
+    "sha256": "5a9dadaf0cd12234caa95fc4666cc431d6b79945554651aa3011cd50918f2807"
+   },
+   "08": {
+    "job_id": "317df6e0-62d1-4de0-a2c0-6eea068c6d11",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Pair in a linen box with ribbon and mug, no text or logo.",
+    "sha256": "bd223cfb632a224e7e3ddca3eb12ed1037289f59c1be89b0b0515216b52e7f92"
+   },
+   "09": {
+    "job_id": "63b7080f-b936-45e6-ac79-bf845e1e9e69",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Three pairs in yellow, white and rose gold, identical amber enamel.",
+    "sha256": "d47a009f2292aaeccf1757d9eba0624d30d9f4576469b406287095acecf7d166"
+   },
+   "10": {
+    "job_id": "17848122-dd89-490b-9c33-9cc010bea03b",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Studs sharp in front. Ring, pendant and bracelet behind, no hands.",
+    "sha256": "1fef8a9aa391cb5fa4d90bca4fc935ddf4632ef287366f7789dd773fbc98a095"
+   }
+  },
+  "B10": {
+   "02": {
+    "job_id": "c1fc0f4d-a398-4bd3-a55e-ce89e2722935",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Twin candles on the base bar, worn on the left wrist, chain wraps the wrist with the clasp hanging at the side. Design and scale match the hero.",
+    "sha256": "e9b1c0b35304efa941cdec773eb875128f47ed5734a0f999fb4b84f96d43401f"
+   },
+   "03": {
+    "job_id": "1a4105f4-340d-4ebe-8d91-38c0d98f6c47",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Wrist on an open book with a cable-knit cuff. Bracelet goes around the wrist, candles joined to the bar, correct colours.",
+    "sha256": "e91f0eb57e61c7506c97b3f5d1f89c90957be5067bd28c8d2fd190801e11fcee"
+   },
+   "04": {
+    "job_id": "591b8c75-7eb5-46e2-bbf2-042524c9af89",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Macro shows two candles of different heights on the bar with the chain soldered at the bar ends, flat enamel, no hands.",
+    "sha256": "d15d1d3f06e4ef24d6f68941ef43ceba8e0d3bf91f62b5a8dc44db7449404890"
+   },
+   "05": {
+    "job_id": "8c5012d0-67e5-4b3d-8ae6-44124f70e9b8",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Bracelet draped on an open palm, small and delicate.",
+    "sha256": "41c86efb0a020f22488a9bf074873a485935ca3712fa9cbc5b7ecc922598b899"
+   },
+   "06": {
+    "job_id": "7656f46e-50ee-450b-9425-59a0dbe5573e",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Close-up of the spring ring clasp on cable chain, no hands.",
+    "sha256": "505db6851666db85aa937452229f1acd5ee45ddba69d92e224fa17c870620e6f"
+   },
+   "07": {
+    "job_id": "078a0c3d-08d9-4a95-bdf1-2513a4eb22ad",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "In ceramic dish with eucalyptus, design correct, no hands.",
+    "sha256": "47dc6bb31ed8f2982789bc64552229ccf411759831d3eee5c06d855a60699a86"
+   },
+   "08": {
+    "job_id": "678cb7f9-c193-4f9b-bc72-cc1f9755a648",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "In a linen box with ribbon, no text or logo.",
+    "sha256": "1f8e7c8484752cc4f1fbf73d7200baa7a43d6c8a6d1a2ec92ae54ca7c666af68"
+   },
+   "09": {
+    "job_id": "5f592253-2a2b-49de-ac69-a9d626d990ce",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Yellow, white and rose gold bracelets, identical enamel candles, same size.",
+    "sha256": "4b9ba290ee2134f8ed8ee7d87b7771221af4586bed086dcd9ed2c90b3467dea2"
+   },
+   "10": {
+    "job_id": "6cabc1d8-16b8-42d2-b214-d408b00d81d7",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "Bracelet sharp in front. Studs, ring and pendant behind, no hands.",
+    "sha256": "1bb29af65f9208829e227c35dd84a02cebcccb39f618856d9b0881e214573765"
+   }
+  },
+  "R01": {
+   "02": {
+    "job_id": "24b1f986-961c-489e-824f-942a398d4f60",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "canary",
+    "sha256": "bad7d970460405d583700e24cafe5629de63847fdf133d3e2799ae3d5e20c368"
+   },
+   "03": {
+    "job_id": "104e08fa-bb78-4d05-ad2b-19a61bc35a15",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "canary",
+    "sha256": "23e6f7a640bed4077d0c9abbcefb3e721e80729639c685a354db403ceba78d66"
+   },
+   "04": {
+    "job_id": "ed7662a0-67d7-4cef-a8f1-70e42714ae6e",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "canary",
+    "sha256": "1ced00c4bab610db0677e5da8081631331ae4b73617e1b9c322c7ac3ec1bf43f"
+   },
+   "05": {
+    "job_id": "de5681b5-69b2-4d65-8b13-a920b40c0ad0",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "canary",
+    "sha256": "33f111b8047a5e95ff7e7c1b3e10e53388a23ac786d450d40f26769786c9baaa"
+   },
+   "06": {
+    "job_id": "25345c67-450c-47fc-b002-70273867caee",
+    "attempts": 2,
+    "qa": "pass",
+    "note": "canary; 06 re-shot lying on its side (upright read as a golf tee), 07 re-shot without a stray hand",
+    "sha256": "53e7f7f6939655c18fa5d37a0f1300171ce999e06801835230f326ebca619150"
+   },
+   "07": {
+    "job_id": "6129b664-4abb-4c63-8c52-d8d652f2d25f",
+    "attempts": 2,
+    "qa": "pass",
+    "note": "canary; 06 re-shot lying on its side (upright read as a golf tee), 07 re-shot without a stray hand",
+    "sha256": "ce1cd7dc6b1eb1ab48cf4f214b105e6c142d6562a2c515dd503190306c548697"
+   },
+   "08": {
+    "job_id": "347782a2-1a67-4f89-b326-2aa9181cde42",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "canary",
+    "sha256": "402629aa1a5163aeb9e37ee4d7da87b06b0b757e43fd6b7d154a63399b68d8cd"
+   },
+   "09": {
+    "job_id": "ce53201e-f399-4f65-ab48-cadd2872058c",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "canary",
+    "sha256": "f7452db17e92ddf4b2ee7d476c7df09690ed0eb2f6b7f27848ff6d0c2a03b45f"
+   },
+   "10": {
+    "job_id": "03619a9d-45eb-4d92-a77c-7ac42247337d",
+    "attempts": 1,
+    "qa": "pass",
+    "note": "canary",
+    "sha256": "40a54ff902e44e79ddd7c68b559cee804561502cb78ceb17298d1cca3e4787e4"
+   }
+  }
+ }
+}

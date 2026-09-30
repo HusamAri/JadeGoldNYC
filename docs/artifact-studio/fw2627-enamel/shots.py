@@ -106,7 +106,7 @@ def slots(it):
     }[c]
     many = "three pairs" if c == "earring" else "three"
     out = [
-        ("02-worn", f"This piece, {s}, {WORN[c]}; resting on a warm linen tablecloth by a window, close crop, the piece in sharp focus; {size_hint}."),
+        ("02-worn", f"This piece, {s}, {WORN[c]}; " + ("resting on a warm linen tablecloth by a window, " if c in ("ring", "bracelet") else "soft window light, ") + f"close crop, the piece in sharp focus; {size_hint}."),
         ("03-lifestyle", f"This piece, {s}, {WORN[c]}; {LIFE[c]}; an autumn morning at home, the piece catching the window light, small and true to scale ({dims})."),
         ("04-macro", f"Macro detail of this piece, {s}: it lies flat on warm off-white linen and the camera is a few centimetres above at a slight angle, so the {enamel} enamel and its thin polished gold rim fill most of the frame; the flat glass surface shows one soft window reflection."),
         ("05-scale", f"Scale shot: this piece, {s}, {hold}; {size_hint}; plain warm linen background."),
