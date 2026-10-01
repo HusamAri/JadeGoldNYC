@@ -192,7 +192,8 @@ test("kelepçe gravürü sahibin opt-out'uyla kapatılabilir", () => {
 });
 
 test("hâlâ tanınmayan ürün tipi sessizce yüzük sayılmaz, null döner", () => {
-  for (const type of ["earrings", "anklet", "brooch", "other"]) {
+  // "anklet" 2026-10-01'de tanımlı protokol oldu (SS27 seti); aşağıdaki test kapsar.
+  for (const type of ["earrings", "brooch", "other"]) {
     assert.equal(resolveListingProtocol({ product_type: type }), null, type);
     assert.match(unknownProtocolError({ product_type: type }), /protokolü tanımlı değil/);
   }
@@ -376,4 +377,26 @@ test("FW26/27 enamel seti: 40 önerinin hepsi TANIMLI protokole çözülür (202
   // product_type "earrings" BİLEREK eşlenmez (stud mu sarkan mı bilinmez);
   // bu set her kayda açık listingProtocol yazar, çözüm oradan gelir.
   assert.equal(resolveListingProtocol({ product_type: "earrings" }), null);
+});
+
+test("SS27 anklet seti: 40 önerinin hepsi anklet protokolüne çözülür, bileklik dalına düşmez (2026-10-01)", async () => {
+  const { readFileSync } = await import("node:fs");
+  const raw = JSON.parse(readFileSync("docs/artifact-studio/ss27-anklets/catalog.json", "utf8"));
+  const items: Array<{ id: string; listingProtocol: string; variants: DraftVariant[] }> = raw.items;
+  assert.equal(items.length, 40);
+  for (const it of items) {
+    const spec = resolveListingProtocol({
+      product_type: "anklet",
+      listing_metadata: { listingProtocol: it.listingProtocol, offersPersonalization: false },
+    });
+    assert.equal(spec?.id, "anklet", it.id);
+    assert.deepEqual(spec?.taxonomyNames, ["Anklets"], it.id);
+    assert.equal(spec?.taxonomyRoot, "Jewelry", it.id);
+    assert.equal(spec?.personalization, null, it.id);
+    assert.equal(it.variants.length, 27, it.id);
+    const variants: DraftVariant[] = it.variants.map((v) => ({ ...v, quantity: 20 }));
+    assert.equal(validateVariationAxes(spec!, variants), null, it.id);
+  }
+  // product_type "anklet" açık beyan olmadan da halhal protokolüne gider.
+  assert.equal(resolveListingProtocol({ product_type: "anklet" })?.id, "anklet");
 });

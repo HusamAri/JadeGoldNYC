@@ -59,7 +59,8 @@ export type ListingProtocolId =
   | "cuff_bracelet"
   | "stud_earrings"
   | "dangle_earrings"
-  | "hoop_earrings";
+  | "hoop_earrings"
+  | "anklet";
 
 export interface ParcelSpec {
   weight: number;
@@ -224,6 +225,19 @@ export const LISTING_PROTOCOLS: Record<ListingProtocolId, ListingProtocolSpec> =
     // Kelepçe yassı mücevher kutusuna yatar; zincirli takı kutusuyla aynı sabit.
     parcel: CHAIN_JEWELRY_PARCEL,
   },
+  // Halhal bileklik değildir; "Bracelets" dalına dosyalamak ürünü ayak bileği
+  // aramalarından düşürürdü (2026-10-01, SS27 anklet seti). Ad CANLI taksonomiye
+  // karşı doğrulanmadı; çözücü bulamazsa ya da birden çok dal bulursa durur.
+  anklet: {
+    id: "anklet",
+    label: "Anklet",
+    taxonomyNames: ["Anklets"],
+    taxonomyRoot: "Jewelry",
+    // Boy bir varyasyon eksenidir ama zorunlu değil (tek boylu halhal da olur).
+    requiredVariationAxes: [],
+    personalization: null,
+    parcel: CHAIN_JEWELRY_PARCEL,
+  },
 };
 
 /** `product_type` → protokol. Listelenmeyen tip BİLEREK eşlenmez. */
@@ -239,6 +253,7 @@ const PRODUCT_TYPE_PROTOCOL: Record<string, ListingProtocolId> = {
   bracelet: "chain_bracelet",
   cuff: "cuff_bracelet",
   cuff_bracelet: "cuff_bracelet",
+  anklet: "anklet",
 };
 
 /**

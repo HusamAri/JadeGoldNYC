@@ -64,7 +64,7 @@ Size is the charm's largest dimension. "Gold" = solid gold, no enamel.
 | A05 | Citrus | Orange Slice | Energy Orange | 7 mm | a round slice, segments in gold lines |
 | A06 | Citrus | Kumquat | Energy Orange + gold leaf | 7 mm | a tiny fruit with one gold leaf |
 | A07 | Citrus | Sun Disc | Energy Orange | 7 mm | an orange disc with short gold rays |
-| A08 | Citrus | Marigold | Energy Orange | 7 mm | a flat flower, petals in a gold grid |
+| A08 | Citrus | Marigold | Energy Orange | 8 mm | a flat flower, eight petals around a gold centre |
 | A09 | Sweet | Ice Pop | Pop Pink | 9 mm | a popsicle with a gold stick |
 | A10 | Sweet | Lollipop Swirl | Pop Pink + cream | 7 mm | a spiral of pink and cream |
 | A11 | Sweet | Kiss | Pop Pink | 7 mm | a lip print, the postcard signature |
@@ -77,7 +77,7 @@ Size is the charm's largest dimension. "Gold" = solid gold, no enamel.
 | A18 | Terra | Sand Dollar | Clay | 7 mm | the flat shell with a gold five-petal mark |
 | A19 | Terra | Cowrie | Clay | 7 mm | the shell once used as money |
 | A20 | Terra | Clay Pot | Clay + gold sprout | 7 mm | a small pot with one gold sprout |
-| A21 | Talisman | Evil Eye | Luminous Blue + white | 7 mm | the nazar, ring within ring (*) |
+| A21 | Talisman | Evil Eye | Luminous Blue + white | 8 mm | the nazar: blue ring, white centre, gold pupil (*) |
 | A22 | Talisman | Hamsa | Luminous Blue + white | 9 mm | the open hand with one eye |
 | A23 | Talisman | Horseshoe | Gold | 7 mm | open end up, to hold the luck |
 | A24 | Talisman | Shooting Star | Gold + Luminous Blue tail | 10 mm | a star with one enamel trail |
@@ -90,8 +90,8 @@ Size is the charm's largest dimension. "Gold" = solid gold, no enamel.
 | A31 | Orchard | Pear | Meadowland Green | 8 mm | a soft pear with a gold stem |
 | A32 | Orchard | Fig | Clay + Pop Pink | 7 mm | a half fig, the inside in pink |
 | A33 | Riviera | Parasol | Luminous Blue + white | 9 mm | a striped beach umbrella |
-| A34 | Riviera | Lifebuoy | Luminous Blue + white | 7 mm | a striped ring, the beach club sign |
-| A35 | Riviera | Sardine | Luminous Blue | 10 mm | the tinned fish everyone is wearing |
+| A34 | Riviera | Lifebuoy | Luminous Blue + white | 8 mm | a striped ring, the beach club sign |
+| A35 | Riviera | Sardine | Luminous Blue + gold tin | 10 mm | a sardine in an open gold tin, the tinned-fish trend |
 | A36 | Riviera | Amalfi Lemon | lemon yellow + gold leaf | 8 mm | a lemon with one gold leaf |
 | A37 | Garden | Honeybee | Gold + black stripes | 7 mm | a small bee, wings in polished gold |
 | A38 | Garden | Ladybird | Gold + red | 6 mm | a red back with gold dots |
@@ -101,6 +101,15 @@ Size is the charm's largest dimension. "Gold" = solid gold, no enamel.
 (*) The shop already has two evil-eye bracelets with stones; an enamel evil-eye
 anklet is a different product and category, so it stays. "Arch" was dropped for
 the same check (an Arch pendant exists). No other overlap found in current titles.
+
+## Changes after approval (step 3, 2026-10-01)
+
+Checked every drawing against the 1.5 mm minimum cell rule: A21 Evil Eye (7 mm,
+three rings, about 1 mm cells) became 8 mm with a blue ring, a white centre and a
+solid gold pupil; A34 Lifebuoy and A08 Marigold went to 8 mm (A08 with one ring of
+eight petals); A10 Lollipop uses a single-turn spiral; A05 has six segments, A02
+four ribs. A35 Sardine is drawn in an open gold tin so it does not repeat A04
+Little Fish. Lengths 9, 10, 11 in and provisional FW-rule pricing approved.
 
 ## Production rules (why it can be made)
 
