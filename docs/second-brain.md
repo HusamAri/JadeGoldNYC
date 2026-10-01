@@ -1202,6 +1202,24 @@ repodaki hedefidir.
   birebir (`cmp`). Bir adres ilk taramada 000 döndü, yeniden denemede 200:
   tek geçişlik tarama "yok" demez, başarısızı yeniden dene.
 
+- **Eksik girdi importu durdurmaz; onu VERİDE bayrak yap, girdi gelince aynı
+  üreteci koş ve DEĞİŞMEMESİ gereken mührün değişmediğini gör (2026-10-01):**
+  SS27 halhal setinde 40 hero'nun 2'si (A30, A31) yoktu. 40'ı bekletmek yerine
+  üreteç `has_img` bayrağı taşıdı: görselsiz satır `missingHero` + ayrı bir
+  blocker ile panele girecekti. Sahip eksikleri üretince yalnız `images.json`
+  değişti, üreteç yeniden koştu ve metin/varyant/tag mühürleri BİREBİR aynı
+  kaldı. Bu beklenen sonuçtu, çünkü görsel metne girmiyor; mührün kıpırdamaması
+  da bunun kanıtıydı. Yalnız iki satırın bayrağı `true` oldu. Uygulanmış ilk
+  parça (A01 to A10) yeniden yazılmadı; parçaların başlık ve kuyruğu birebir
+  aynı olduğu için (`diff` ile doğrulandı) yalnız veri satırları değişti.
+  Aday seçimi yine kataloga karşı okundu: A30'un bir adayı yarım ay dilimdi
+  (katalog "kavisli tabanlı kama" diyor), A31'in bir adayı belsiz damlaydı;
+  ikisi de gerekçesiyle `rejected` alanına yazıldı. Kural: (1) eksik dış girdi
+  bayrak + blocker olarak veriye yazılır, iş rehin alınmaz; (2) girdi gelince
+  "neyin değişmesi, neyin değişmemesi gerekir?" diye önceden söyle ve mühürle
+  sına; (3) üretilen görsel, sahibin ürettiği olsa da katalogdaki şekil
+  tanımına karşı seçilir.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
