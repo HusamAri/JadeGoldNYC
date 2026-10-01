@@ -1220,6 +1220,23 @@ repodaki hedefidir.
   sına; (3) üretilen görsel, sahibin ürettiği olsa da katalogdaki şekil
   tanımına karşı seçilir.
 
+- **Toplu döngü kendi çağrısının çıktısını okumalı; logda tekrar eden kimlik,
+  bayat okumanın imzasıdır (2026-10-01):** SS27 halhal setinin 34 taslağını
+  `ops/drafts-push` ile tek tek, A40'tan geriye gönderdim (sahip aynı anda
+  panelden A01'den ileri gidiyordu; ters yön çift taslak riskini kesti).
+  Döngü sonucu "en yeni `out-*.json`" dosyasından okuyordu. İki çağrı yanıt
+  yazamadan koptu ve döngü bir önceki dosyayı okuyup A20 ile A13'ü "created"
+  saydı. Yakalatan şey logda A21/A20 ve A14/A13'ün AYNI listing numarasını
+  taşımasıydı. DB iki şeyi gösterdi: ikisi de bağlanmamıştı ve `draftTransfer`
+  kilidi hiç alınmamıştı, yani Etsy'ye ulaşılmamıştı ve yetim taslak yoktu.
+  Tek tek yeniden gönderildiler; 40/40 bağımsız geri okumada varyant, SKU,
+  fiyat ve kategori birebir çıktı. Kural: (1) toplu döngüde her çağrının
+  sonucunu o çağrıya ait dosyadan oku, "en yeni dosya" okuması başarısız
+  çağrıyı önceki başarının kopyası yapar; (2) sonuç logunda kimliklerin
+  tekil olduğunu say, tekrar eden id bayat okuma demektir; (3) gönderim
+  kilidi dış çağrıdan ÖNCE alındığı için "kilit yok" = "dışarıya hiç
+  gidilmedi" kanıtıdır, yeniden deneme güvenlidir.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
