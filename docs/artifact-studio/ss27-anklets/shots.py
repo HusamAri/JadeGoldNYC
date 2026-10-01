@@ -12,6 +12,12 @@ single-colour backdrops, legs and feet posed like sculpture (legs raised and
 crossed, a foot rising from a plinth, legs over a rounded chair, a hand at
 the ankle), footwear tone-on-tone with the wall or one contrast accent (red
 toenails on violet). Every frame of one piece keeps the same colour tones.
+Second moodboard (same day, five images): product frames built as paper
+sculpture in tints and shades of one colour (a paper sheet curling over a
+paler floor, layered curved cut-outs like hills, a chain draped over a
+sweeping paper ribbon, a white folded card on a glossy coloured surface) and
+a standing leg pose with one knee raised and the foot against the other
+shin. Product frames 01, 06, 07, 08, 09 and pose 10 follow it.
 
 Colour rules (research 2026-10-01):
 1. Gold looks richest on deep jewel tones (burgundy, emerald, navy, plum,
@@ -116,15 +122,16 @@ def scale(it):
 
 def world(it, slot):
     bg, hx, shoe, polish, skin, _ = PAL[it["id"]]
-    base = f"Colour world, identical in every image of this listing: a seamless matte {bg} paper backdrop and floor ({hx})"
+    base = (f"Colour world, identical in every image of this listing: {bg} ({hx}) and its paler tints and deeper "
+            f"shades only, matte paper surfaces")
     if slot == "03-plinth":
         return f"{base}; the {polish} nail polish is the only accent; no shoes."
     if slot not in NO_PEOPLE:
         return f"{base}; the only accents are the {shoe} mules and the {polish} nail polish; nothing else adds colour."
-    if slot == "07-postcard":
-        return f"{base}; the props are the only other colour."
+    if slot == "07-drape":
+        return f"{base}; the small prop is the only other colour."
     if slot == "08-gift":
-        return f"{base}; the {polish} ribbon is the only accent."
+        return f"{base}, plus one glossy lacquered surface in {bg}; the white card and the {polish} ribbon are the only accents."
     return f"{base}; nothing but the anklet adds colour."
 
 
@@ -148,7 +155,7 @@ def worn(it):
             f"other jewelry; anatomically correct feet with five toes each")
 
 
-NO_PEOPLE = {"01-hero", "06-macro", "07-postcard", "08-gift", "09-metals"}
+NO_PEOPLE = {"01-hero", "06-macro", "07-drape", "08-gift", "09-metals"}
 
 
 def slots(it):
@@ -157,10 +164,11 @@ def slots(it):
     mule = f"{shoe} open-back mules with a low slim heel and no ankle strap"
     surface = "the polished and sculpted gold surface" if it["goldOnly"] else "the flat glossy enamel and its thin polished gold rim"
     out = [
-        ("01-hero", "Hero in the colour world",
-         f"Etsy thumbnail hero: this anklet with {c}, laid in a soft open curve directly on the seamless {bg} paper, "
-         f"seen from above at a slight angle; the charm sits in sharp focus at the centre of the frame with generous "
-         f"empty space all around, the spring ring clasp visible at one end, one clean soft shadow; no props."),
+        ("01-hero", "Hero on a paper wave",
+         f"Etsy thumbnail hero: a sheet of {bg} paper curls in one soft wave across the top of the frame over a floor of "
+         f"pale {bg} tint paper; this anklet (charm: {c}) lies in a soft open curve on the pale floor below the wave, seen "
+         f"from above at a slight angle; the charm sits in sharp focus at the centre of the frame with generous empty "
+         f"space around it, the spring ring clasp visible at one end, one clean soft shadow under the curl; no props."),
         ("02-legs-up", "Legs raised, crossed",
          f"Editorial leg shot after a fashion campaign: a woman lies back out of frame and raises both legs against the "
          f"{bg} wall, crossed at the shins, the left leg in front and closest to the camera, both feet pointed in "
@@ -179,32 +187,40 @@ def slots(it):
          f"foot in a {shoe} mule, and her left hand rests lightly on the ankle as if adjusting it, the fingertips beside "
          f"the charm but never covering it, so the charm can be compared with a fingernail; short natural nails painted "
          f"{polish}. {worn(it)}. Cropped from the knee to the toes; {scale(it)}."),
-        ("06-macro", "Macro detail",
-         f"Macro detail: this anklet with {c}, lying on the seamless {bg} paper; the camera is a few centimetres above "
-         f"at a slight angle so the charm and {surface} fill most of the frame, the jump ring and a few chain links "
-         f"leading out of focus; one crisp highlight on the surface."),
-        ("07-postcard", "Postcard still life",
-         f"Postcard still life: this anklet with {c}, laid in a soft open curve on the seamless {bg} paper, the charm "
-         f"in sharp focus; beside it {PROPS[it['family']]}; long clean shadows, seen from above at a slight angle; the "
-         f"anklet is the only piece of jewelry in the frame and the props stay smaller in importance than the charm."),
-        ("08-gift", "Gift moment",
-         f"Gift moment: this anklet with {c}, coiled inside an open small square jewelry box in a lighter shade of {bg}, "
-         f"lined with natural undyed linen, standing on the seamless {bg} paper, a thin silk ribbon in {polish} loose "
-         f"beside the box; the box has no logo and no text."),
+        ("06-macro", "Macro on paper hills",
+         f"Macro detail: this anklet (charm: {c}), the charm resting on the crest of layered curved paper cut-outs in "
+         f"graduated shades of {bg}, like soft rolling hills, the chain following the curve of the layer behind; the "
+         f"camera is a few centimetres away so the charm and {surface} fill most of the frame, the jump ring and a few "
+         f"chain links leading out of focus; one crisp highlight on the surface."),
+        ("07-drape", "Draped over a paper ribbon",
+         f"Paper sculpture still life: a wide ribbon of {bg} paper curls in one sweeping arc through the frame; this "
+         f"anklet (charm: {c}) is draped over its top edge so the chain hangs in a soft V and the charm hangs free at the "
+         f"lowest point, in sharp focus; below it, on the curved paper floor, {PROPS[it['family']]}, small and "
+         f"secondary; hard directional light casts one long curved shadow; the anklet is the only piece of jewelry in "
+         f"the frame."),
+        ("08-gift", "Card stand and gift box",
+         f"Gift and display: on a glossy lacquered {bg} surface that mirrors soft reflections, a small plain white "
+         f"folded card stand with this anklet (charm: {c}) draped over its ridge, the charm hanging at the front in sharp "
+         f"focus; beside it an open small square jewelry box lined with natural undyed linen and a thin silk ribbon in "
+         f"{polish}; the card and the box have no logo and no text."),
         ("09-metals", "Three gold colours",
-         f"Metal colour visualization: three identical copies of this exact anklet with {c}, laid side by side in three "
-         f"parallel soft curves on the seamless {bg} paper, same size and same angle: left in yellow gold, centre in "
+         f"Metal colour visualization: three identical copies of this exact anklet (charm: {c}), laid side by side in three "
+         f"parallel soft curves on pale {bg} tint paper, a {bg} paper curl at the top edge, same size and same angle: "
+         f"left in yellow gold, centre in "
          f"white gold (cool silvery white), right in rose gold (soft pink gold); "
          + ("the charm shape is identical in all three." if it["goldOnly"] else "the enamel colours are identical in all three.")),
-        ("10-in-step", "In step",
-         f"Movement: she walks across the {bg} studio floor in {mule}, seen from the side at ankle height, the back heel "
-         f"lifting mid-stride and the chain swinging slightly while the charm stays sharp; soft motion blur only on the "
-         f"trailing foot. {worn(it)}. Cropped from mid-calf to the floor; {scale(it)}."),
+        ("10-knee-up", "Standing, knee raised",
+         f"Standing leg pose after a shoe campaign: against the {bg} wall she stands on her right foot in a {shoe} mule "
+         f"and lifts her left leg with the knee bent, the left foot pointed in a {shoe} mule and resting lightly against "
+         f"the right shin, so the left ankle and its charm face the camera. {worn(it)}. Side view on the {bg} floor, "
+         f"cropped from just above the knees to the floor; {scale(it)}; both mules are open-back with no ankle strap."),
     ]
     rows = []
     for slot, title, text in out:
         if slot in NO_PEOPLE:
             text += " No people and no hands in the frame."
+        else:
+            text += f" The charm: {c}."
         prompt = f"{text} {style(it, slot)}"
         for bad in ("—", "–", "â", "linen throw", "loose curve on linen"):
             assert bad not in prompt, (it["id"], slot, bad)

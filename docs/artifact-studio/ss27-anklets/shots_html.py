@@ -24,16 +24,16 @@ if thumbs:
         im.save(thumbs / f"{it['id']}.jpg", "JPEG", quality=82, optimize=True)
 
 SLOTS = [  # Etsy photo order; all ten share the anklet's colour world
-    ("01", "Hero in the colour world", "New thumbnail on the coloured paper, charm centred with space around it. A coloured ground stands out in a search grid of white backgrounds."),
+    ("01", "Hero on a paper wave", "A sheet of the backdrop colour curls over a paler floor; the anklet lies below, charm centred. A coloured ground stands out in a search grid of white backgrounds."),
     ("02", "Legs raised, crossed", "The moodboard leg shot: legs in the air against the wall, left leg in front, cropped knee to toe so the charm stays readable."),
     ("03", "Foot on a plinth", "A bare foot rising from a plinth in the backdrop colour. The graphic, surreal frame that stops the scroll."),
     ("04", "Over a sculptural chair", "Legs over a rounded chair one shade darker than the wall, a mule hanging from the toes."),
     ("05", "Hand at the ankle, scale", "Fingertips beside the charm: the size comparison buyers need, inside the editorial look."),
-    ("06", "Macro detail", "Enamel and gold rims up close on the same paper: the quality proof for the price."),
-    ("07", "Postcard still life", "The family's own props (orange, sorbet, shells) on the coloured paper. Ties the piece to its story."),
-    ("08", "Gift moment", "Open box in a lighter shade of the backdrop, ribbon in the accent colour."),
-    ("09", "Three gold colours", "Yellow, white and rose side by side: the 27 options at a glance. Recolor visualization."),
-    ("10", "In step", "Walking across the studio floor, chain swinging, charm sharp."),
+    ("06", "Macro on paper hills", "The charm on the crest of layered paper cut-outs in shades of the backdrop: the quality proof for the price."),
+    ("07", "Draped over a paper ribbon", "The chain hangs in a V over a sweeping paper arc, the charm free at the lowest point; the family prop (orange, sorbet, shells) sits small below."),
+    ("08", "Card stand and gift box", "White folded card on a glossy surface in the backdrop colour, beside an open linen box and an accent ribbon."),
+    ("09", "Three gold colours", "Yellow, white and rose side by side below a paper curl: the 27 options at a glance. Recolor visualization."),
+    ("10", "Standing, knee raised", "The shoe-campaign pose: one knee bent, the foot resting on the other shin, the charm turned to the camera."),
 ]
 assert [s[0] for s in SLOTS] == [r["slot"][:2] for r in shots["A01"]["shots"]]
 
@@ -145,7 +145,7 @@ pre {{ margin: 0; white-space: pre-wrap; word-break: break-word; font: 12px/1.6 
 <div class="wrap">
   <p class="eyebrow">by Artifact Studio Jewelry · SS27 Anklets</p>
   <h1>Sales image prompts</h1>
-  <p class="lede">Ten prompts for each of the 40 anklets, in Etsy photo order, built from your moodboard: seamless single-colour studio, legs and feet posed like sculpture. Every anklet has its own colour world and all ten of its images stay inside it. Use the approved linen hero as the only reference image for all ten.</p>
+  <p class="lede">Ten prompts for each of the 40 anklets, in Etsy photo order, built from your two moodboards: single-colour studio, legs and feet posed like sculpture, and product frames as paper sculpture in tints and shades of one colour. Every anklet has its own colour world and all ten of its images stay inside it. Use the approved linen hero as the only reference image for all ten.</p>
   <ul class="facts">
     <li><b>Model</b> nano_banana_2</li><li><b>Resolution</b> 2k</li><li><b>Aspect</b> 1:1</li><li><b>Count</b> 1 per prompt</li>
     <li><b>Anklets</b> {len(items)}</li><li><b>Prompts</b> {sum(len(v["shots"]) for v in shots.values())}</li><li><b>Estimate</b> about 800 credits</li>
