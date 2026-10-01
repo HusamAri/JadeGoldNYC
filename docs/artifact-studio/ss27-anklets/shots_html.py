@@ -1,4 +1,4 @@
-"""shots.json -> sales-image-prompts.html (9 prompts per anklet, copy button each).
+"""shots.json -> sales-image-prompts.html (10 prompts per anklet in its colour world, copy button each).
 Run after shots.py:
   python3 docs/artifact-studio/ss27-anklets/shots_html.py <out.html> [<thumbs_dir>]
 Thumbnails (320 px crops of the approved heroes) are written to <thumbs_dir>
@@ -23,18 +23,19 @@ if thumbs:
         im.thumbnail((320, 320))
         im.save(thumbs / f"{it['id']}.jpg", "JPEG", quality=82, optimize=True)
 
-SLOTS = [  # Etsy photo order; slot 01 is the hero already on the listing
-    ("02", "On the ankle, studio", "The scale shot buyers look for first: one anklet, side view, charm against the ankle bone."),
-    ("03", "Scale in the hand", "Charm in the palm with its size in mm and a pencil or fingernail comparison, so nobody is surprised by how small it is."),
-    ("04", "Macro detail", "Kiln-fired enamel and gold rims up close: the quality proof for the price."),
-    ("05", "Pool edge, hard sun", "The summer picture. Hard midday sun and crisp shadows give the contemporary editorial look."),
-    ("06", "Year round, with flats", "Ballet flats and cropped linen trousers: anklets are now worn all year, not only at the beach."),
-    ("07", "Postcard still life", "A colour-blocked still life with the family's own props (orange, sorbet, shells). This is the frame that makes the listing stand out."),
-    ("08", "Gift moment", "Open linen box with a ribbon in the family colour. Gift buyers are a large share of jewelry sales on Etsy."),
-    ("09", "Three gold colours", "Yellow, white and rose side by side: makes the 27 options (karat x colour x length) easy to see. Recolor visualization."),
-    ("10", "In motion", "Walking up stone steps in sandals, chain swinging: movement makes a still listing feel alive."),
+SLOTS = [  # Etsy photo order; all ten share the anklet's colour world
+    ("01", "Hero in the colour world", "New thumbnail on the coloured paper, charm centred with space around it. A coloured ground stands out in a search grid of white backgrounds."),
+    ("02", "Legs raised, crossed", "The moodboard leg shot: legs in the air against the wall, left leg in front, cropped knee to toe so the charm stays readable."),
+    ("03", "Foot on a plinth", "A bare foot rising from a plinth in the backdrop colour. The graphic, surreal frame that stops the scroll."),
+    ("04", "Over a sculptural chair", "Legs over a rounded chair one shade darker than the wall, a mule hanging from the toes."),
+    ("05", "Hand at the ankle, scale", "Fingertips beside the charm: the size comparison buyers need, inside the editorial look."),
+    ("06", "Macro detail", "Enamel and gold rims up close on the same paper: the quality proof for the price."),
+    ("07", "Postcard still life", "The family's own props (orange, sorbet, shells) on the coloured paper. Ties the piece to its story."),
+    ("08", "Gift moment", "Open box in a lighter shade of the backdrop, ribbon in the accent colour."),
+    ("09", "Three gold colours", "Yellow, white and rose side by side: the 27 options at a glance. Recolor visualization."),
+    ("10", "In step", "Walking across the studio floor, chain swinging, charm sharp."),
 ]
-assert [s[0] for s in SLOTS] == [r["slot"][:2] for r in shots["A01"]]
+assert [s[0] for s in SLOTS] == [r["slot"][:2] for r in shots["A01"]["shots"]]
 
 fams = list(dict.fromkeys(i["family"] for i in items))
 slug = lambda f: f.lower().replace(" ", "-")
@@ -43,12 +44,13 @@ body = []
 for f in fams:
     rows = [i for i in items if i["family"] == f]
     body.append(f'<section class="fam" id="{slug(f)}"><header class="fam-h"><h2>{html.escape(f)}</h2>'
-                f'<p>{len(rows)} anklets · {len(rows) * 9} prompts</p></header>')
+                f'<p>{len(rows)} anklets · {len(rows) * 10} prompts</p></header>')
     for i in rows:
         kind = "Solid gold" if i["goldOnly"] else "Enamel · " + " + ".join(i["enamel"])
         pick = picks[i["id"]]
+        pal = shots[i["id"]]["palette"]
         lis = []
-        for r in shots[i["id"]]:
+        for r in shots[i["id"]]["shots"]:
             pid = f'p-{i["id"]}-{r["slot"][:2]}'
             lis.append(f'''<li class="shot">
       <div class="shot-h"><span class="slot">{r["slot"][:2]}</span><h4>{html.escape(r["title"])}</h4>
@@ -57,11 +59,17 @@ for f in fams:
     </li>''')
         body.append(f'''<details class="item" id="{i["id"]}">
   <summary>
-    <img src="thumbs/{i["id"]}.jpg" alt="{html.escape(i["name"])} hero" width="72" height="72" loading="lazy">
+    <span class="thumb" style="--c:{pal["hex"]}"><img src="thumbs/{i["id"]}.jpg" alt="{html.escape(i["name"])} hero" width="72" height="72" loading="lazy"></span>
     <span class="sum-t"><span class="code">{i["id"]}</span><span class="name">{html.escape(i["name"])}</span>
     <span class="spec">{html.escape(kind)} · {html.escape(i["dims"])} · reference: hero {pick["candidate"]}</span></span>
     <span class="chev" aria-hidden="true"></span>
   </summary>
+  <div class="pal">
+    <span class="chip" style="--c:{pal["hex"]}"></span>
+    <div class="pal-t"><b>{html.escape(pal["backdrop"])} <span class="hex">{pal["hex"]}</span></b>
+    <span>Mules: {html.escape(pal["mules"])} · Polish: {html.escape(pal["polish"])} · Skin: {html.escape(pal["skin"])}</span>
+    <span class="why">{html.escape(pal["why"])}</span></div>
+  </div>
   <ol class="shots">{"".join(lis)}</ol>
 </details>''')
     body.append("</section>")
@@ -109,7 +117,14 @@ nav a:hover, nav a:focus-visible {{ border-color: var(--gold); color: var(--gold
 .item summary {{ display: flex; align-items: center; gap: 14px; padding: 10px 14px; cursor: pointer; list-style: none; }}
 .item summary::-webkit-details-marker {{ display: none; }}
 .item summary:focus-visible {{ outline: 2px solid var(--gold); outline-offset: -2px; }}
-.item img {{ width: 72px; height: 72px; object-fit: cover; border-radius: 4px; flex: none; background: var(--bg); }}
+.thumb {{ flex: none; padding: 4px; border-radius: 6px; background: var(--c); }}
+.item img {{ width: 72px; height: 72px; object-fit: cover; border-radius: 3px; display: block; }}
+.pal {{ display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border-top: 1px solid var(--line); }}
+.chip {{ width: 44px; height: 44px; border-radius: 4px; background: var(--c); flex: none; border: 1px solid var(--line); }}
+.pal-t {{ display: grid; gap: 2px; min-width: 0; font-size: 13px; }}
+.pal-t b {{ font-weight: 600; font-size: 14px; text-transform: capitalize; }}
+.hex {{ font: 12px var(--mono); color: var(--muted); text-transform: uppercase; margin-left: 6px; }}
+.why {{ color: var(--muted); }}
 .sum-t {{ display: grid; gap: 1px; min-width: 0; flex: 1; }}
 .code {{ font: 500 12px var(--mono); color: var(--gold); letter-spacing: .08em; }}
 .name {{ font: 600 21px/1.15 var(--display); }}
@@ -130,13 +145,23 @@ pre {{ margin: 0; white-space: pre-wrap; word-break: break-word; font: 12px/1.6 
 <div class="wrap">
   <p class="eyebrow">by Artifact Studio Jewelry · SS27 Anklets</p>
   <h1>Sales image prompts</h1>
-  <p class="lede">Nine prompts for each of the 40 anklets, in Etsy photo order. Slot 01 stays the approved hero; these fill slots 02 to 10. Use that anklet's own hero as the only reference image for all nine.</p>
+  <p class="lede">Ten prompts for each of the 40 anklets, in Etsy photo order, built from your moodboard: seamless single-colour studio, legs and feet posed like sculpture. Every anklet has its own colour world and all ten of its images stay inside it. Use the approved linen hero as the only reference image for all ten.</p>
   <ul class="facts">
     <li><b>Model</b> nano_banana_2</li><li><b>Resolution</b> 2k</li><li><b>Aspect</b> 1:1</li><li><b>Count</b> 1 per prompt</li>
-    <li><b>Anklets</b> {len(items)}</li><li><b>Prompts</b> {sum(len(v) for v in shots.values())}</li><li><b>Estimate</b> about 720 credits</li>
+    <li><b>Anklets</b> {len(items)}</li><li><b>Prompts</b> {sum(len(v["shots"]) for v in shots.values())}</li><li><b>Estimate</b> about 800 credits</li>
   </ul>
   <div class="brief">
-    <section><h2>The nine frames</h2><ol class="plan">{slot_rows}</ol></section>
+    <section><h2>The ten frames</h2><ol class="plan">{slot_rows}</ol></section>
+    <section><h2>How each colour was chosen</h2>
+      <ol class="rules">
+        <li>Gold is richest on deep jewel tones (burgundy, emerald, navy, plum, charcoal) and on warm mid-tones (apricot, blush, caramel). White, cream and yellow grounds dull it, so none are used.</li>
+        <li>Enamel charms get the complementary or split-complementary colour of their main enamel: blue on apricot or coral, orange on periwinkle or aqua, green on blush, pink on mint or sage.</li>
+        <li>A same-hue ground is used only with a clear value gap of 20 to 30 per cent, as in the pink moodboard set (A10).</li>
+        <li>The seven solid gold charms get the deepest grounds for maximum contrast.</li>
+        <li>One accent ties the frame to the charm: mules and nail polish echo an enamel colour, or stay nude when the enamel has to stand alone.</li>
+        <li>All footwear is an open-back mule with no ankle strap, so nothing covers the anklet.</li>
+      </ol>
+    </section>
     <section><h2>Check before you keep a frame</h2>
       <ol class="rules">
         <li>The charm matches its hero: same outline, same enamel colours, gold rims, nothing added.</li>
@@ -144,9 +169,10 @@ pre {{ margin: 0; white-space: pre-wrap; word-break: break-word; font: 12px/1.6 
         <li>Five toes on each foot, a believable ankle bone.</li>
         <li>The charm stays small: 6 to 10 mm, never bigger than the ankle bone.</li>
         <li>No text, numbers or logos anywhere, including the gift box.</li>
-        <li>Lay the nine side by side before uploading: if two frames share the same framing, regenerate one.</li>
+        <li>The backdrop matches the swatch in every frame. A frame that drifts warmer or cooler breaks the set; regenerate it.</li>
+        <li>Lay the ten side by side before uploading: if two frames share the same framing, regenerate one.</li>
       </ol>
-      <p class="note">If the hero's linen framing leaks into frames 04, 07 or 09, crop the reference to the charm and a few links of chain and generate again.</p>
+      <p class="note">If the linen of the reference hero leaks into a frame (01, 06, 07, 09), crop the reference to the charm and a few links of chain and generate again. The new 01 replaces the linen hero as the thumbnail.</p>
     </section>
   </div>
   <nav aria-label="Families">{nav}</nav>
