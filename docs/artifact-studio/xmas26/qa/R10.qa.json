@@ -1,0 +1,59 @@
+{
+ "id": "R10",
+ "generations": 10,
+ "slots": {
+  "01": {
+   "job_id": "e2f2257f-2c84-4cac-a8fd-a8b07c92a114",
+   "attempts": 1,
+   "rejected": []
+  },
+  "02": {
+   "job_id": "6ca04a9a-687a-4849-a643-6db10a678699",
+   "attempts": 1,
+   "rejected": []
+  },
+  "03": {
+   "job_id": "7970ccd7-3e47-40d6-9fd2-45e72f1593d7",
+   "attempts": 1,
+   "rejected": []
+  },
+  "04": {
+   "job_id": "15ec006b-7eb1-4fd6-9c98-b8b5da939933",
+   "attempts": 1,
+   "rejected": []
+  },
+  "05": {
+   "job_id": "4197fb4a-8d7a-4930-8b49-0c4158c25fcd",
+   "attempts": 1,
+   "rejected": []
+  },
+  "06": {
+   "job_id": "8530dbc1-c68e-4c1a-b619-36a291ad3c04",
+   "attempts": 1,
+   "rejected": []
+  },
+  "07": {
+   "job_id": "bb59105a-bb0d-4b40-9f75-333dec8d1813",
+   "attempts": 1,
+   "rejected": []
+  },
+  "08": {
+   "job_id": "e21db3c5-101f-4940-8f5f-f5a67306e0cf",
+   "attempts": 1,
+   "rejected": []
+  },
+  "09": {
+   "job_id": "38129f91-73a2-4f8d-ad7b-1172e45e5907",
+   "attempts": 1,
+   "rejected": []
+  },
+  "10": {
+   "job_id": "af94eb83-dac6-4e17-95e1-b6e8f2605d11",
+   "attempts": 1,
+   "rejected": []
+  }
+ },
+ "open": [
+  "01 hero uses the same standing three-quarter pose as the reference (prompted that way), but smaller in frame on the sage paper set; accepted, not a copy of the reference crop."
+ ]
+}
