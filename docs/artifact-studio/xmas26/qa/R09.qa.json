@@ -65,5 +65,11 @@
  "open": [
   "06 macro: correct six-petal ring, but small square pixel-block artifacts in the out-of-focus background along the top edge (appeared in all three macro attempts); slot re-shoot budget spent - needs a background cleanup (inpaint/blur top ~15%) or lead decision",
   "Spec conflict: catalog shape/description say 'five pointed petals' / 'five-petal poinsettia', but the R09 reference hero shows six petals; frames were held to the reference (six). Lead must reconcile description vs hero."
+ ],
+ "leadQA": [
+  {
+   "slot": "06",
+   "reason": "pixel-block artifacts in the out-of-focus band above the flower blurred locally (rows above 469 px); piece untouched"
+  }
  ]
 }

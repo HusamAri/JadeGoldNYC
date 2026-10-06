@@ -242,8 +242,8 @@ add(id="B07", fam="Mistletoe", cat="bracelet", name="Mistletoe Sprig Bracelet", 
     tags=["mistletoe bracelet", "mistletoe sprig", "sage green", "white berries", "botanical bracelet",
           "holiday bracelet", "festive jewelry", "dainty bracelet", "gold chain bracelet", "14k enamel bracelet"],
     lead="A mistletoe sprig in sage green and white enamel, set at the centre of a fine solid gold chain.",
-    story="Two leaves and three white berries lying flat on the top of the wrist, the quietest piece in the family.",
-    shape="a fine 1.1 mm gold cable chain bracelet laid in a loose oval, with one flat mistletoe sprig station 10 by 6 mm at the centre: two oval leaves of flat soft mistletoe sage green enamel and three round 2 mm berries of flat soft snow white enamel, all inside thin polished gold rims on a short gold stem; spring ring clasp")
+    story="Three leaves and four white berries lying flat on the top of the wrist, the quietest piece in the family.",
+    shape="a fine 1.1 mm gold cable chain bracelet laid in a loose oval, with one flat mistletoe sprig station 10 by 6 mm at the centre: three oval leaves of flat soft mistletoe sage green enamel and four round 2 mm berries of flat soft snow white enamel, all inside thin polished gold rims on a short gold stem; spring ring clasp")
 add(id="N07", fam="Mistletoe", cat="necklace", name="Mistletoe Drop Necklace", enamel=["sage", "snow"],
     dims="sprig 9 x 14 mm", piece_g=1.0,
     title="Mistletoe Necklace, Sage Green and White Enamel Mistletoe Pendant on Solid Gold Chain, Christmas Gift",
@@ -285,9 +285,9 @@ add(id="R09", fam="Poinsettia", cat="ring", name="Poinsettia Ring", enamel=["sca
     title="Poinsettia Ring, Red Enamel Christmas Flower in Solid Gold, Holiday Flower Statement Ring",
     tags=["poinsettia ring", "christmas flower", "red flower ring", "red enamel ring", "flower ring",
           "holiday ring", "festive jewelry", "statement ring", "floral gold ring", "14k enamel ring"],
-    lead="A five-petal poinsettia in bright red enamel with a beaded gold centre, on a solid gold band.",
-    story="The Christmas flower drawn simply: five pointed petals, each with a gold vein, around a cluster of tiny gold beads.",
-    shape="a polished gold ring with a flat poinsettia flower on top, 9 mm across: five pointed petals, each split by a fine polished gold vein and filled with flat bright poinsettia red enamel inside thin polished gold rims, around a centre cluster of five tiny round polished gold beads; round smooth shank")
+    lead="A poinsettia in bright red enamel with a beaded gold centre, on a solid gold band.",
+    story="The Christmas flower drawn simply: pointed petals, each with a gold vein, around a cluster of tiny gold beads.",
+    shape="a polished gold ring with a flat poinsettia flower on top, 9 mm across: pointed petals, each split by a fine polished gold vein and filled with flat bright poinsettia red enamel inside thin polished gold rims, around a centre cluster of tiny round polished gold beads; round smooth shank")
 add(id="B09", fam="Poinsettia", cat="bracelet", name="Poinsettia Station Bracelet", enamel=["scarlet"],
     dims="three flowers, each 6 mm", piece_g=0.8,
     title="Poinsettia Bracelet, Three Red Enamel Christmas Flowers on Solid Gold Chain, Holiday Station Bracelet",
@@ -295,7 +295,7 @@ add(id="B09", fam="Poinsettia", cat="bracelet", name="Poinsettia Station Bracele
           "holiday bracelet", "festive jewelry", "dainty bracelet", "station bracelet", "14k enamel bracelet"],
     lead="Three small red enamel poinsettias with gold bead centres, set along a fine solid gold chain.",
     story="Bright red against gold, spaced around the wrist like flowers on a garland.",
-    shape="a fine 1.1 mm gold cable chain bracelet laid in a loose oval, with three small flat poinsettia stations 6 mm across spaced along it, each five pointed petals of flat bright poinsettia red enamel inside thin polished gold rims around a tiny cluster of round gold beads; spring ring clasp")
+    shape="a fine 1.1 mm gold cable chain bracelet laid in a loose oval, with three small flat poinsettia stations 6 mm across spaced along it, each of pointed petals of flat bright poinsettia red enamel inside thin polished gold rims around a tiny cluster of round gold beads; spring ring clasp")
 add(id="N09", fam="Poinsettia", cat="necklace", name="Poinsettia Necklace", enamel=["scarlet"],
     dims="flower 13 mm", piece_g=1.2,
     title="Poinsettia Necklace, Red Enamel Christmas Flower Pendant on Solid Gold Chain, Holiday Gift Necklace",
@@ -303,7 +303,7 @@ add(id="N09", fam="Poinsettia", cat="necklace", name="Poinsettia Necklace", enam
           "holiday necklace", "festive jewelry", "dainty necklace", "floral pendant", "14k enamel pendant"],
     lead="A 13 mm poinsettia pendant in bright red enamel with a beaded gold centre.",
     story="The flower faces forward on a hidden bail, so it sits flat at the neckline like a brooch on a coat.",
-    shape="a flat poinsettia flower pendant 13 mm across: five pointed petals, each split by a fine polished gold vein and filled with flat bright poinsettia red enamel inside thin polished gold rims, around a centre cluster of round polished gold beads, with a small bail hidden behind the top petal; a fine 1.2 mm gold cable chain passes through the bail and curves softly out of the top of the frame")
+    shape="a flat poinsettia flower pendant 13 mm across: pointed petals, each split by a fine polished gold vein and filled with flat bright poinsettia red enamel inside thin polished gold rims, around a centre cluster of round polished gold beads, with a small bail hidden behind the top petal; a fine 1.2 mm gold cable chain passes through the bail and curves softly out of the top of the frame")
 
 # ============================================================ 10 STOCKING (cranberry + snow)
 add(id="R10", fam="Stocking", cat="ring", name="Stocking Ring", enamel=["cranberry", "snow"],

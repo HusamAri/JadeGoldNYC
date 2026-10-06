@@ -1,6 +1,6 @@
 {
  "id": "N09",
- "generations": 16,
+ "generations": 17,
  "slots": {
   "01": {
    "job_id": "9345aae9-45a6-40ed-8114-5b426defe1b2",
@@ -66,5 +66,12 @@
  "open": [
   "02 and 10 (first attempts, kept): top edge shows the full lips plus a thin band of philtrum above the upper lip (~5-10% of frame height) - technically 'face above the lips'; budget spent on worse defects. Possible fix without credits: crop the top ~230 px and rescale to 2048 square.",
   "03 v2 (kept): chin-up pose, no lips; the ear lobe and jawline are visible at the top; background top is pale grey."
+ ],
+ "leadQA": [
+  {
+   "slot": "02",
+   "job_id": "ad86e9f1-ad4b-4a58-a73f-ac789428ae4e",
+   "reason": "set-level QA: grey-white wall broke the deep teal colour world; re-shot once by the lead"
+  }
  ]
 }

@@ -13,7 +13,7 @@
 --   from product_variants v where v.org_id = '2c254edf-2119-4079-b09e-dc672e32c1f9' and v.sku like 'BAS-XM-%';
 --   expected: 2970 / 6610bc62a901c8e2b794acc2c808d844
 --   select md5(string_agg(sku||'|'||md5(description), E'\n' order by sku collate "C")) from products
---   where org_id = '2c254edf-2119-4079-b09e-dc672e32c1f9' and sku like 'BAS-XM-%';                      expected: fdfffeb216682abb6b7eafa35ea7f47a
+--   where org_id = '2c254edf-2119-4079-b09e-dc672e32c1f9' and sku like 'BAS-XM-%';                      expected: e64e33ef02139bc1c667eb2bfc94a3e8
 --   select md5(string_agg(sku||'|'||array_to_string(tags, ','), E'\n' order by sku collate "C")) from products
 --   where org_id = '2c254edf-2119-4079-b09e-dc672e32c1f9' and sku like 'BAS-XM-%';                      expected: f620dd06bbc517abf14b4164bec614e5
 
@@ -370,7 +370,7 @@ insert into _xm values
  $xm$bracelet$xm$,
  $xm$Mistletoe Bracelet, Sage Green and White Enamel Sprig on Solid Gold Chain, Christmas Botanical Bracelet$xm$,
  $xm$A mistletoe sprig in sage green and white enamel, set at the centre of a fine solid gold chain.$xm$,
- $xm$Two leaves and three white berries lying flat on the top of the wrist, the quietest piece in the family.$xm$,
+ $xm$Three leaves and four white berries lying flat on the top of the wrist, the quietest piece in the family.$xm$,
  $xm$Enamel: kiln-fired vitreous enamel in mistletoe sage and snow white, set flush in recessed cells with polished gold rims.$xm$,
  $xm$sprig 10 x 6 mm.$xm$,
  $xm$Chain: 1.1 mm solid gold cable chain with spring ring clasp; choose 6.5, 7 or 7.5 inches.$xm$,
@@ -459,8 +459,8 @@ insert into _xm values
  $xm$BAS-XM-R09$xm$,
  $xm$ring$xm$,
  $xm$Poinsettia Ring, Red Enamel Christmas Flower in Solid Gold, Holiday Flower Statement Ring$xm$,
- $xm$A five-petal poinsettia in bright red enamel with a beaded gold centre, on a solid gold band.$xm$,
- $xm$The Christmas flower drawn simply: five pointed petals, each with a gold vein, around a cluster of tiny gold beads.$xm$,
+ $xm$A poinsettia in bright red enamel with a beaded gold centre, on a solid gold band.$xm$,
+ $xm$The Christmas flower drawn simply: pointed petals, each with a gold vein, around a cluster of tiny gold beads.$xm$,
  $xm$Enamel: kiln-fired vitreous enamel in poinsettia red, set flush in recessed cells with polished gold rims.$xm$,
  $xm$flower 9 mm.$xm$,
  $xm$Ring size: US 3 to 16, whole and half sizes.$xm$,

@@ -1,7 +1,7 @@
 {
  "variantSeal": "6610bc62a901c8e2b794acc2c808d844",
  "variants": 2970,
- "descSeal": "fdfffeb216682abb6b7eafa35ea7f47a",
+ "descSeal": "e64e33ef02139bc1c667eb2bfc94a3e8",
  "tagSeal": "f620dd06bbc517abf14b4164bec614e5",
  "descMd5": {
   "R01": "20e5223c9d871372bd9f38c29454155d",
@@ -23,12 +23,12 @@
   "B06": "d3360c071e57cb04f82d3ee5d1a8d5ac",
   "N06": "23eb03fc09183313f966c6f842075f21",
   "R07": "ff6eed4fddf27a53d4636627e0627e59",
-  "B07": "f4fc455e3b5c7ed1618d488c255c2288",
+  "B07": "3248d815f04a065ded6ca024e62eaf6c",
   "N07": "477696e198e7d1d9ec34cf630fdef56d",
   "R08": "db91857ff263065e5f8999064331257a",
   "B08": "721240251dbd15c857548df227a6d7a8",
   "N08": "a8bb155ae3ad28c53e061ac8a28a0bb9",
-  "R09": "377e0b2351b680501bc22c3e8f0fc001",
+  "R09": "a284f86c6f37532f0f500cc76bedb9fd",
   "B09": "16bb39f201e5d1698c4c7cd16560d072",
   "N09": "e2f7ff34c4f4f71c6be9a06ea1e7f871",
   "R10": "5ee0b27b29783f45eedb3097239ac9aa",
