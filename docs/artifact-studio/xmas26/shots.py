@@ -130,10 +130,13 @@ def worn(it):
     skin = PAL[it["id"]][3]
     t = it["productType"]
     if t == "ring":
-        return (f"Exactly one ring, worn on the ring finger of the left hand of a woman with {skin} skin: the fourth "
-                f"finger counting from the thumb, between the middle finger and the little finger; the thumb, index, "
-                f"middle and little fingers are completely bare; no other rings, no bracelet, no watch; anatomically "
-                f"correct hand with five fingers")
+        # R01 test 2026-10-06 (14 frames): the model puts the ring on whichever finger sits in the middle of
+        # the frame, whatever the prompt says, even with the digits named left to right. These motif rings make no
+        # finger claim (unlike the Cartouche pinky signet), so QA accepts the ring, middle or index finger and
+        # rejects only a second ring, a hand without five digits, wrong scale or a redesigned ring.
+        return (f"Exactly one ring, worn on the left hand of a woman with {skin} skin, on the ring finger or the "
+                f"middle finger; every other finger and the thumb are bare; no other rings, no bracelet, no watch; "
+                f"anatomically correct hand with exactly five digits, all five visible")
     if t == "bracelet":
         return (f"Exactly one bracelet, worn on the left wrist of a woman with {skin} skin, the charm or stations "
                 f"turned to face the camera; the right wrist is bare; no watch, no rings, no other jewelry; "
@@ -183,11 +186,11 @@ def worn_slots(it):
     gift = f"{box} tied with {ribbon(it)}"
     if t == "ring":
         return {
-            "02": ("Hand on a knit sleeve", f"Worn close-up: her left hand rests flat and relaxed on the sleeve of a chunky cable-knit sweater in a deeper shade of {bg}, back of the hand to the camera, fingers together and straight. {worn(it)}. Cropped tight on the hand; {sc}."),
-            "03": ("Hand on a wrapped gift", f"Christmas gift moment: her left hand lies flat on the lid of {gift}, back of the hand to the camera, fingers straight and slightly apart; nothing is held. {worn(it)}. Seen from above at a slight angle on the {bg} floor; {sc}."),
+            "02": ("Hand on a knit sleeve", f"Worn close-up: her left hand rests flat and relaxed on the sleeve of a chunky cable-knit sweater in a deeper shade of {bg}, back of the hand to the camera, the thumb visible. {worn(it)}. Cropped tight on the hand; {sc}."),
+            "03": ("Hand on a wrapped gift", f"Christmas gift moment: her left hand lies flat on the lid of {gift}, back of the hand to the camera, fingers straight and slightly apart pointing up in the frame, away from the camera; nothing is held. {worn(it)}. Seen from above on the {bg} floor; {sc}."),
             "04": ("Hand from a plinth", f"Surreal studio sculpture: a single left hand and forearm rising vertically out of a smooth cylindrical plinth painted the same {bg} as the backdrop, fingers together pointing up, back of the hand to the camera. {worn(it)}. Clean and graphic, nothing else in the frame; {sc}."),
-            "05": ("Fingertip scale", f"Scale shot: a macro of her left hand resting flat on {bg} velvet, the ringed finger in sharp focus in the centre so the ring can be compared with the fingernail beside it. {worn(it)}. Cropped from the knuckles to the fingertips; {sc}."),
-            "10": ("Hand at a velvet lapel", f"Editorial portrait detail: her left hand rests flat against the lapel of a velvet blazer in a deeper shade of {bg}, fingers together, back of the hand to the camera; a few soft out-of-focus warm gold fairy lights far behind. {worn(it)}. Cropped from the chin to the chest, face not shown; {sc}."),
+            "05": ("Fingertip scale", f"Scale shot: her left hand resting flat on {bg} velvet, fingers straight and slightly apart pointing up in the frame, the ringed finger in sharp focus so the ring can be compared with the fingernail beside it. {worn(it)}. Close crop from the wrist to the fingertips; {sc}."),
+            "10": ("Hand at a velvet lapel", f"Editorial portrait detail: her left hand rests flat on the chest against the lapel of a velvet blazer in a deeper shade of {bg}, back of the hand to the camera, the thumb visible; a few soft out-of-focus warm gold fairy lights far behind. {worn(it)}. Cropped from the chin to the chest, face not shown; {sc}."),
         }
     if t == "bracelet":
         return {
@@ -267,7 +270,7 @@ def slots(it):
             assert bad not in prompt, (it["id"], slot, bad)
         assert hx in prompt, (it["id"], slot)
         if t == "ring" and slot[:2] not in ("01", "06", "07", "08", "09"):
-            assert "fourth finger counting from the thumb" in prompt and "completely bare" in prompt, (it["id"], slot)
+            assert "all five visible" in prompt and "every other finger and the thumb are bare" in prompt, (it["id"], slot)
         rows.append({"slot": slot, "title": title, "prompt": prompt})
     assert len(rows) == 10 and len({r["slot"][:2] for r in rows}) == 10
     return rows
