@@ -1,0 +1,66 @@
+{
+ "id": "N06",
+ "generations": 14,
+ "slots": {
+  "01": {
+   "job_id": "1c6b9334-4724-4ea9-a0a8-f4041158685b",
+   "attempts": 3,
+   "rejected": [
+    "v1: chain lay doubled as two parallel strands around the pendant",
+    "v2: cream floor broke the plum colour world and the large angled pendant with chain to the upper right copied the reference framing"
+   ]
+  },
+  "02": {
+   "job_id": "c0d71950-f234-4528-a88f-b1ca9e070494",
+   "attempts": 1,
+   "rejected": []
+  },
+  "03": {
+   "job_id": "5ea5bf07-1f27-49c4-9a6e-1371b7bd2192",
+   "attempts": 1,
+   "rejected": []
+  },
+  "04": {
+   "job_id": "fc5806bb-42d8-4b66-861f-035c3eaeb414",
+   "attempts": 2,
+   "rejected": [
+    "v1: profile showed lips, cheek and ear above the lip line"
+   ]
+  },
+  "05": {
+   "job_id": "2ab0c75e-dea3-4882-bbca-665a80259879",
+   "attempts": 1,
+   "rejected": []
+  },
+  "06": {
+   "job_id": "0f81dbef-1fdc-4bd4-aa23-73332634f31a",
+   "attempts": 1,
+   "rejected": []
+  },
+  "07": {
+   "job_id": "e05af5e8-b318-48e0-b14d-56316d40b64e",
+   "attempts": 2,
+   "rejected": [
+    "v1: cream-white wall and curl interior broke the plum colour world"
+   ]
+  },
+  "08": {
+   "job_id": "5c36a594-aaaa-4649-b3c1-2d0d7bc0e6b4",
+   "attempts": 1,
+   "rejected": []
+  },
+  "09": {
+   "job_id": "8df1b37b-d7b7-44d6-af7f-357d2e83dbdf",
+   "attempts": 1,
+   "rejected": []
+  },
+  "10": {
+   "job_id": "c63e9d83-67f3-4ee0-a21d-053f5d579917",
+   "attempts": 1,
+   "rejected": []
+  }
+ },
+ "open": [
+  "02, 03, 05, 10 (worn, pendant square-on): tree drawn as a symmetric isosceles triangle with the star centred instead of the reference's lopsided tree with an upright right edge; two garland lines, three cells, star, bail and trunk are correct. Not re-shot (same pattern as R06, where only a three-quarter pose fixed it, and fixing four frames would have exceeded the budget)."
+ ]
+}

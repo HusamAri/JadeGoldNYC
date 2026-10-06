@@ -1,0 +1,77 @@
+{
+ "id": "R06",
+ "generations": 16,
+ "submitted_jobs": 17,
+ "slots": {
+  "01": {
+   "job_id": "1f91af5b-d366-4e6b-b4f1-1638cb2d5e43",
+   "attempts": 2,
+   "rejected": [
+    "v1 (d64f78ee-...): job failed server-side, no image; resubmitted unchanged"
+   ]
+  },
+  "02": {
+   "job_id": "cef58b70-eb05-4426-b238-e42fdd6425b9",
+   "attempts": 1,
+   "rejected": []
+  },
+  "03": {
+   "job_id": "a9269115-fcde-4556-84a9-7be308153bfb",
+   "attempts": 2,
+   "rejected": [
+    "v1: symmetric isosceles tree with the star centred instead of the reference's lopsided tree (upright left edge, star over the left corner)",
+    "v2: same defect after a shape correction; kept v1"
+   ]
+  },
+  "04": {
+   "job_id": "223b2192-25fa-4515-ade7-4e36020cd4a9",
+   "attempts": 2,
+   "rejected": [
+    "v1: symmetric isosceles tree with the star centred instead of the reference's lopsided tree (upright left edge, star over the left corner)",
+    "v2: same defect, plus forearm painted cranberry; kept v1"
+   ]
+  },
+  "05": {
+   "job_id": "e325f235-59fd-4694-9c8b-22251b9efafe",
+   "attempts": 3,
+   "rejected": [
+    "v1: symmetric isosceles tree with the star centred, and diagonal hand-on-fabric pose near-duplicate of 02",
+    "v3 (pose changed): tree mirrored (upright edge on the right) and again near-duplicate of 02",
+    "kept v2: fingers-up scale shot, distinct composition, only defect is the symmetric tree"
+   ]
+  },
+  "06": {
+   "job_id": "f4970832-7ba7-4fc3-86b3-e8a14f62e402",
+   "attempts": 1,
+   "rejected": []
+  },
+  "07": {
+   "job_id": "76166b1b-7992-4274-b47b-6c140b20b20d",
+   "attempts": 3,
+   "rejected": [
+    "v1: symmetric isosceles tree with the star centred instead of the reference's lopsided tree (upright left edge, star over the left corner)",
+    "v2: same defect after shape correction",
+    "v3: pose changed to a three-quarter turn -> correct lopsided tree, kept"
+   ]
+  },
+  "08": {
+   "job_id": "4894b3b0-502b-4f8d-93ac-0954f76a1939",
+   "attempts": 1,
+   "rejected": []
+  },
+  "09": {
+   "job_id": "6ed6c059-daaf-4c3d-913a-b407d2204795",
+   "attempts": 1,
+   "rejected": []
+  },
+  "10": {
+   "job_id": "7339e735-ea65-4d7f-939c-1c559125f468",
+   "attempts": 1,
+   "rejected": []
+  }
+ },
+ "open": [
+  "03, 04, 05 (worn, ring square-on to camera): tree rendered as a symmetric isosceles triangle with the star centred instead of the reference's lopsided tree; one garland line, two cells, star and trunk are correct. The shape sentence did not fix it; a three-quarter-angle pose did (07), but the budget ran out before applying it to 03-05.",
+  "09: the three rings stand upright with the tree lying on its side (star pointing left) instead of standing upright; colours and one-garland design are correct."
+ ]
+}
