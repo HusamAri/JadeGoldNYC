@@ -1,0 +1,61 @@
+{
+ "id": "B08",
+ "generations": 11,
+ "slots": {
+  "01": {
+   "job_id": "6f5eb0c9-c295-449a-a670-6228f8d22635",
+   "attempts": 1,
+   "rejected": []
+  },
+  "02": {
+   "job_id": "fff03d06-daba-4909-a78f-e4259c05d515",
+   "attempts": 1,
+   "rejected": []
+  },
+  "03": {
+   "job_id": "3fba5bc2-c2c6-4cca-afe4-7dc7c8c9c345",
+   "attempts": 1,
+   "rejected": []
+  },
+  "04": {
+   "job_id": "5a270c2c-294e-47be-a22a-180251f81b81",
+   "attempts": 2,
+   "rejected": [
+    "v1: three bells spread around the chain instead of two hanging together at the centre"
+   ]
+  },
+  "05": {
+   "job_id": "c0966e39-341c-44d8-bf1c-f9d470a6b0e4",
+   "attempts": 1,
+   "rejected": []
+  },
+  "06": {
+   "job_id": "2fb809ec-aac5-4356-8232-835d5104a795",
+   "attempts": 1,
+   "rejected": []
+  },
+  "07": {
+   "job_id": "b8965ca9-a6e2-40ee-b6d4-95c1867b50f1",
+   "attempts": 1,
+   "rejected": []
+  },
+  "08": {
+   "job_id": "01742a10-e640-428a-bee7-54cb8938760e",
+   "attempts": 1,
+   "rejected": []
+  },
+  "09": {
+   "job_id": "3d73bff9-6128-4838-a751-2573333c15a6",
+   "attempts": 1,
+   "rejected": []
+  },
+  "10": {
+   "job_id": "93736de5-f096-4e6d-a591-a29198cff090",
+   "attempts": 1,
+   "rejected": []
+  }
+ },
+ "open": [
+  "01 hero: the left bell carries two dark oval reflections that read slightly like a face at full size; invisible at thumbnail size, kept."
+ ]
+}
