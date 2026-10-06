@@ -400,3 +400,24 @@ test("SS27 anklet seti: 40 önerinin hepsi anklet protokolüne çözülür, bile
   // product_type "anklet" açık beyan olmadan da halhal protokolüne gider.
   assert.equal(resolveListingProtocol({ product_type: "anklet" })?.id, "anklet");
 });
+
+test("Christmas 2026 seti: 30 önerinin hepsi tanımlı protokole çözülür, yüzük alyans dalına düşmez (2026-10-06)", async () => {
+  const { readFileSync } = await import("node:fs");
+  const raw = JSON.parse(readFileSync("docs/artifact-studio/xmas26/catalog.json", "utf8"));
+  const items: Array<{ id: string; productType: string; listingProtocol: string; variants: DraftVariant[] }> = raw.items;
+  assert.equal(items.length, 30);
+  const want: Record<string, string> = { ring: "sculptural_ring", necklace: "pendant_necklace", bracelet: "chain_bracelet" };
+  const count: Record<string, number> = { ring: 243, necklace: 27, bracelet: 27 };
+  for (const it of items) {
+    const spec = resolveListingProtocol({
+      product_type: it.productType,
+      listing_metadata: { listingProtocol: it.listingProtocol, offersPersonalization: false },
+    });
+    assert.equal(spec?.id, want[it.productType], it.id);
+    assert.notEqual(spec?.id, "wedding_band", it.id);
+    assert.equal(spec?.personalization, null, it.id);
+    assert.equal(it.variants.length, count[it.productType], it.id);
+    const variants: DraftVariant[] = it.variants.map((v) => ({ ...v, quantity: 20 }));
+    assert.equal(validateVariationAxes(spec!, variants), null, it.id);
+  }
+});
