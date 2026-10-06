@@ -1,0 +1,57 @@
+{
+ "id": "R07",
+ "generations": 10,
+ "slots": {
+  "01": {
+   "job_id": "f3e7b257-f55c-4e00-aad0-f3f16a2f5b2f",
+   "attempts": 1,
+   "rejected": []
+  },
+  "02": {
+   "job_id": "9dde467b-fa03-469c-8989-bb0847056119",
+   "attempts": 1,
+   "rejected": []
+  },
+  "03": {
+   "job_id": "6db8aeb2-1c50-423d-9b7b-18f249692945",
+   "attempts": 1,
+   "rejected": []
+  },
+  "04": {
+   "job_id": "d8c6f360-6319-41c3-a01e-cf90c638ffc7",
+   "attempts": 1,
+   "rejected": []
+  },
+  "05": {
+   "job_id": "84ccbe00-4999-415f-9721-08ebbfc9faed",
+   "attempts": 1,
+   "rejected": []
+  },
+  "06": {
+   "job_id": "55da7a53-4b91-4b7f-991d-c508273211e2",
+   "attempts": 1,
+   "rejected": []
+  },
+  "07": {
+   "job_id": "d6432415-d460-407c-b5de-ad12257f16b6",
+   "attempts": 1,
+   "rejected": []
+  },
+  "08": {
+   "job_id": "16ad5591-f849-4b88-95fd-54d8088954bf",
+   "attempts": 1,
+   "rejected": []
+  },
+  "09": {
+   "job_id": "b7709b68-75c5-4df5-a1bb-2d2a8af13283",
+   "attempts": 1,
+   "rejected": []
+  },
+  "10": {
+   "job_id": "467d10c9-8801-4355-8b0e-76632cca6bc4",
+   "attempts": 1,
+   "rejected": []
+  }
+ },
+ "open": []
+}

@@ -1,0 +1,59 @@
+{
+ "id": "R04",
+ "generations": 11,
+ "slots": {
+  "01": {
+   "job_id": "140a0e91-d2ab-4678-aa62-26a310ec2b0d",
+   "attempts": 1,
+   "rejected": []
+  },
+  "02": {
+   "job_id": "17dd6d81-72db-445d-9bc2-7ef16e0d1fe5",
+   "attempts": 1,
+   "rejected": []
+  },
+  "03": {
+   "job_id": "fc05374f-15b5-4bfa-8e17-1339e00b8a19",
+   "attempts": 1,
+   "rejected": []
+  },
+  "04": {
+   "job_id": "d2a63092-54a7-4d5e-8456-5c1ec80ae1ac",
+   "attempts": 1,
+   "rejected": []
+  },
+  "05": {
+   "job_id": "c57cdf66-b6a9-486e-b104-6c5583759873",
+   "attempts": 1,
+   "rejected": []
+  },
+  "06": {
+   "job_id": "a1c138bf-aa02-4ddf-98fb-99ba391d1a21",
+   "attempts": 1,
+   "rejected": []
+  },
+  "07": {
+   "job_id": "db1a4d82-567b-4143-83fd-a2fe87ca9836",
+   "attempts": 1,
+   "rejected": []
+  },
+  "08": {
+   "job_id": "94131b4c-3729-4bad-96f4-ef576b859fd1",
+   "attempts": 2,
+   "rejected": [
+    "v1 (f864e0c7-2396-4dab-b774-c0fc756b979a): transparent ghost ring on the lacquer in front of the card"
+   ]
+  },
+  "09": {
+   "job_id": "7bd39a47-969c-4b48-8d13-107b28e71b3d",
+   "attempts": 1,
+   "rejected": []
+  },
+  "10": {
+   "job_id": "8326adc3-ec85-4fb2-b315-2cd6e06d7f9d",
+   "attempts": 1,
+   "rejected": []
+  }
+ },
+ "open": []
+}

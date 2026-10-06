@@ -1,0 +1,69 @@
+{
+ "id": "R09",
+ "generations": 15,
+ "slots": {
+  "01": {
+   "job_id": "d214ef1c-83e7-42ad-ab83-7a7194fbfaf8",
+   "attempts": 1,
+   "rejected": []
+  },
+  "02": {
+   "job_id": "9cf0b43b-c826-4d11-b72e-b34be21e46a1",
+   "attempts": 2,
+   "rejected": [
+    "v1: flower had eight petals, reference has six"
+   ]
+  },
+  "03": {
+   "job_id": "7b5f9d7e-19d4-4ec2-b30c-ac72c18ecc1d",
+   "attempts": 1,
+   "rejected": []
+  },
+  "04": {
+   "job_id": "9e931d97-45e9-491a-8d0a-f2db392b3164",
+   "attempts": 1,
+   "rejected": []
+  },
+  "05": {
+   "job_id": "f9e91619-6656-4b38-bba6-4da651ecc7c9",
+   "attempts": 2,
+   "rejected": [
+    "v1: flower had five petals, reference has six"
+   ]
+  },
+  "06": {
+   "job_id": "e3aaebfd-934e-4638-887a-469cc96a67ae",
+   "attempts": 3,
+   "rejected": [
+    "v1: flower had five petals, reference has six (also pixel-block artifacts)",
+    "v2: flower had seven/eight petals"
+   ]
+  },
+  "07": {
+   "job_id": "8f1730f2-867b-4319-8194-df562f53cd08",
+   "attempts": 1,
+   "rejected": []
+  },
+  "08": {
+   "job_id": "ee03f110-7cad-492a-be47-e21649adfe81",
+   "attempts": 1,
+   "rejected": []
+  },
+  "09": {
+   "job_id": "369ef36b-be7d-4c4c-b682-cf49afc8c66b",
+   "attempts": 1,
+   "rejected": []
+  },
+  "10": {
+   "job_id": "879073a3-b415-4735-a1ca-36261b0597e4",
+   "attempts": 2,
+   "rejected": [
+    "v1: flower had eight petals, reference has six"
+   ]
+  }
+ },
+ "open": [
+  "06 macro: correct six-petal ring, but small square pixel-block artifacts in the out-of-focus background along the top edge (appeared in all three macro attempts); slot re-shoot budget spent - needs a background cleanup (inpaint/blur top ~15%) or lead decision",
+  "Spec conflict: catalog shape/description say 'five pointed petals' / 'five-petal poinsettia', but the R09 reference hero shows six petals; frames were held to the reference (six). Lead must reconcile description vs hero."
+ ]
+}

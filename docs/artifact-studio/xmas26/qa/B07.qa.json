@@ -1,0 +1,61 @@
+{
+ "id": "B07",
+ "generations": 11,
+ "slots": {
+  "01": {
+   "job_id": "9140e786-1eff-4786-896a-e8f25e08e589",
+   "attempts": 1,
+   "rejected": []
+  },
+  "02": {
+   "job_id": "fe4a8823-acb6-4a03-ac3a-105cc540e515",
+   "attempts": 1,
+   "rejected": []
+  },
+  "03": {
+   "job_id": "7de1b50f-eac6-4e55-a93f-026dcb5ed102",
+   "attempts": 1,
+   "rejected": []
+  },
+  "04": {
+   "job_id": "c2adf927-7156-47ac-a706-f08ddd7ccad4",
+   "attempts": 1,
+   "rejected": []
+  },
+  "05": {
+   "job_id": "6f1a19a2-4408-46b5-a8e4-46c2b1c17178",
+   "attempts": 1,
+   "rejected": []
+  },
+  "06": {
+   "job_id": "90e9235c-4d85-4c3c-8f4b-507e209f31ed",
+   "attempts": 1,
+   "rejected": []
+  },
+  "07": {
+   "job_id": "e0b2d27e-ec21-43c8-903d-1b6476d16f19",
+   "attempts": 2,
+   "rejected": [
+    "v1: chain ran off the frame with a loose second strand and clasp hanging inside the arc, read as a long necklace"
+   ]
+  },
+  "08": {
+   "job_id": "79028942-d0ee-43b3-8172-57b9b9c9849b",
+   "attempts": 1,
+   "rejected": []
+  },
+  "09": {
+   "job_id": "cf5140ba-6273-4d4e-a7cb-9e2ef4de4c76",
+   "attempts": 1,
+   "rejected": []
+  },
+  "10": {
+   "job_id": "dfa78aaa-1750-4be8-baaf-e9dc09dbc97b",
+   "attempts": 1,
+   "rejected": []
+  }
+ },
+ "open": [
+  "Catalog text says 2 leaves + 3 berries; the reference hero (and all frames, matching it) show 3 leaves + 4 berries. Frames were judged against the reference; catalog/listing copy may need correcting."
+ ]
+}

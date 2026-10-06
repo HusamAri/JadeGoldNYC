@@ -1,0 +1,61 @@
+{
+ "id": "N01",
+ "generations": 11,
+ "slots": {
+  "01": {
+   "job_id": "5e4057b1-60ad-43d8-b7f0-55faf5a257b2",
+   "attempts": 1,
+   "rejected": []
+  },
+  "02": {
+   "job_id": "635e0677-cf4f-45ce-9731-c42ab97cd784",
+   "attempts": 1,
+   "rejected": []
+  },
+  "03": {
+   "job_id": "1eb11234-38c8-4395-89c7-9eb9d0b2528f",
+   "attempts": 1,
+   "rejected": []
+  },
+  "04": {
+   "job_id": "5bff6ff2-b7ca-4226-b038-9e8b32679b2b",
+   "attempts": 1,
+   "rejected": []
+  },
+  "05": {
+   "job_id": "68d41052-e2bd-457b-848d-622828cada5c",
+   "attempts": 2,
+   "rejected": [
+    "v1: near duplicate of 02 (straight-on collarbone crop, lips at the top, hand at lower right) and the fingertip was far from the pendant, so it gave no scale"
+   ]
+  },
+  "06": {
+   "job_id": "40051b57-2228-40bc-b9c3-c3d692686b81",
+   "attempts": 1,
+   "rejected": []
+  },
+  "07": {
+   "job_id": "aa2c6a88-3930-4e12-a46f-659e7313a763",
+   "attempts": 1,
+   "rejected": []
+  },
+  "08": {
+   "job_id": "e95f94ac-e258-48a6-86f7-92f7ac2d39c2",
+   "attempts": 1,
+   "rejected": []
+  },
+  "09": {
+   "job_id": "9af78f99-da29-4ebe-9724-8f70db8bbb32",
+   "attempts": 1,
+   "rejected": []
+  },
+  "10": {
+   "job_id": "777064fd-430b-428a-b9d6-5a5ea52b9529",
+   "attempts": 1,
+   "rejected": []
+  }
+ },
+ "open": [
+  "02, 03, 10: crop starts at the lips (lips and a sliver of skin under the nose visible, no nose or eyes). Kept: no facial features above the lips, so it passes the rule, but the prompt asked for a crop below the lips."
+ ]
+}

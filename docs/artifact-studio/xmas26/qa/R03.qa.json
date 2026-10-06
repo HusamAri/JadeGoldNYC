@@ -1,0 +1,60 @@
+{
+ "id": "R03",
+ "generations": 12,
+ "slots": {
+  "01": {
+   "job_id": "882f9d21-ac26-47f4-8dff-28f5a65bb08d",
+   "attempts": 1,
+   "rejected": []
+  },
+  "02": {
+   "job_id": "e449d19c-44cf-4d14-855e-316bf4080307",
+   "attempts": 1,
+   "rejected": []
+  },
+  "03": {
+   "job_id": "4a0e1077-094a-4c81-bdb9-3a331a7c061d",
+   "attempts": 1,
+   "rejected": []
+  },
+  "04": {
+   "job_id": "3ee100a0-f243-4068-b63f-526e55eda9b8",
+   "attempts": 1,
+   "rejected": []
+  },
+  "05": {
+   "job_id": "37a5449b-751a-467f-a4c8-92fb7a0b7345",
+   "attempts": 1,
+   "rejected": []
+  },
+  "06": {
+   "job_id": "a589813a-461f-4144-8c06-fd17181d22d0",
+   "attempts": 1,
+   "rejected": []
+  },
+  "07": {
+   "job_id": "5c36f65d-2a22-496b-a223-c1ff14e60f43",
+   "attempts": 1,
+   "rejected": []
+  },
+  "08": {
+   "job_id": "68686bfe-c19f-430e-9ae1-df0f74a1220c",
+   "attempts": 3,
+   "rejected": [
+    "v1 (7d97842b-a9e0-41e3-9b0d-4639f5d9f1be): a transparent ghost ring lies on the glossy surface in front of the card",
+    "v2 (69e072ab-a09c-4c0b-96ba-029792882c0c): a faint transparent ghost ring still lies on the surface in front of the card"
+   ]
+  },
+  "09": {
+   "job_id": "b4f4bec1-7a3b-4634-b448-b72b4f2d784e",
+   "attempts": 1,
+   "rejected": []
+  },
+  "10": {
+   "job_id": "eade2c7c-b237-4d27-b042-70f9cebe1b1f",
+   "attempts": 1,
+   "rejected": []
+  }
+ },
+ "open": []
+}

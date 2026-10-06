@@ -1,0 +1,62 @@
+{
+ "id": "N02",
+ "generations": 12,
+ "slots": {
+  "01": {
+   "job_id": "54182802-97f4-4660-a9e6-66386ef47f87",
+   "attempts": 3,
+   "rejected": [
+    "v1: chain coiled into two concentric rings, reads as a second strand",
+    "v2: still a second strand (inner V to the pendant plus an outer teardrop loop and a loose chain end)"
+   ]
+  },
+  "02": {
+   "job_id": "3fbb08f6-cace-4b01-93cd-1fb381eb2a68",
+   "attempts": 1,
+   "rejected": []
+  },
+  "03": {
+   "job_id": "1a6c2bf9-705b-4e12-ab6c-712397f61686",
+   "attempts": 1,
+   "rejected": []
+  },
+  "04": {
+   "job_id": "14a91851-490c-4eed-9765-54a6c521c132",
+   "attempts": 1,
+   "rejected": []
+  },
+  "05": {
+   "job_id": "90ac863d-1de6-42d3-896b-4337b0f23f1b",
+   "attempts": 1,
+   "rejected": []
+  },
+  "06": {
+   "job_id": "bd6743b3-dd94-49ef-9a94-5671803f28b5",
+   "attempts": 1,
+   "rejected": []
+  },
+  "07": {
+   "job_id": "b54f90f9-4deb-44a0-a96e-93f7acd743f9",
+   "attempts": 1,
+   "rejected": []
+  },
+  "08": {
+   "job_id": "425c956b-9955-44bb-90bd-7e15b520808e",
+   "attempts": 1,
+   "rejected": []
+  },
+  "09": {
+   "job_id": "f4b8cbb8-a8b0-4f88-a173-7e695e0bd011",
+   "attempts": 1,
+   "rejected": []
+  },
+  "10": {
+   "job_id": "22db862f-3019-4d6f-a92c-db1493023097",
+   "attempts": 1,
+   "rejected": []
+  }
+ },
+ "open": [
+  "02, 03, 05, 10: crop starts at the lips (lips and a sliver of skin under the nose visible, no nose or eyes). Kept: no facial features above the lips, but the prompt asked for a crop below the lips."
+ ]
+}

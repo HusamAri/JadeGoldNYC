@@ -1,0 +1,71 @@
+{
+ "id": "B09",
+ "generations": 16,
+ "slots": {
+  "01": {
+   "job_id": "efca7a39-b90e-4989-bd6c-52633eb02af9",
+   "attempts": 1,
+   "rejected": []
+  },
+  "02": {
+   "job_id": "69526085-bc1f-4404-8054-6643db6bc7b9",
+   "attempts": 1,
+   "rejected": []
+  },
+  "03": {
+   "job_id": "541ada72-67bf-43b0-81dc-d3e12aee1af1",
+   "attempts": 1,
+   "rejected": []
+  },
+  "04": {
+   "job_id": "ee09fb0f-d964-41fb-8cbe-0429206d9b17",
+   "attempts": 1,
+   "rejected": []
+  },
+  "05": {
+   "job_id": "c8ea7195-20de-4338-b773-1d6608c95691",
+   "attempts": 1,
+   "rejected": []
+  },
+  "06": {
+   "job_id": "b68a5dd4-2527-49f3-82a0-60b9d4134809",
+   "attempts": 3,
+   "rejected": [
+    "v1: five-petal flowers, reference has six",
+    "v2: four stations in frame, product has three"
+   ]
+  },
+  "07": {
+   "job_id": "1998e1c0-cc70-43ae-a3d1-5468a1d13c6b",
+   "attempts": 2,
+   "rejected": [
+    "v1: five-petal flowers, reference has six"
+   ]
+  },
+  "08": {
+   "job_id": "4ce0ed5e-6304-43ea-be68-d867cce2e4be",
+   "attempts": 2,
+   "rejected": [
+    "v1: five-petal flowers, reference has six"
+   ]
+  },
+  "09": {
+   "job_id": "474c01fd-6b20-4330-bb2f-65b1207752f1",
+   "attempts": 2,
+   "rejected": [
+    "v1: each bracelet had only two stations"
+   ]
+  },
+  "10": {
+   "job_id": "989ec11e-eae9-4cc7-a921-d1c1b74d029d",
+   "attempts": 2,
+   "rejected": [
+    "v1: five-petal flowers, reference has six"
+   ]
+  }
+ },
+ "open": [
+  "Spec conflict: catalog says 'five pointed petals', B09 reference hero shows six; frames held to the reference (six). N09 reference shows five, so the poinsettia family is inconsistent across heroes.",
+  "06 macro (v3) shows one station only, framed a bit wider than a true macro; accepted."
+ ]
+}

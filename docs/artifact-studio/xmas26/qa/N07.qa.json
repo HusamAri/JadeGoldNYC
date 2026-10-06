@@ -1,0 +1,64 @@
+{
+ "id": "N07",
+ "generations": 13,
+ "slots": {
+  "01": {
+   "job_id": "cb9ea9b2-3d07-4068-83e1-b59d0948eba7",
+   "attempts": 2,
+   "rejected": [
+    "v1: chain laid in two concentric loops around the pendant, read as a second strand"
+   ]
+  },
+  "02": {
+   "job_id": "8d657e4b-89c3-4cff-97e9-27126543f189",
+   "attempts": 1,
+   "rejected": []
+  },
+  "03": {
+   "job_id": "b832e9a4-9584-4ab7-8e69-a0111bf41f9b",
+   "attempts": 1,
+   "rejected": []
+  },
+  "04": {
+   "job_id": "0a1af2b4-c902-4db5-bccb-5ef1f1fc9631",
+   "attempts": 3,
+   "rejected": [
+    "v1: profile showed nose, ear and face above the lips",
+    "v2: still showed lips, nose tip and ear in profile"
+   ]
+  },
+  "05": {
+   "job_id": "3974f006-b505-406c-beb8-4aa961dd16c8",
+   "attempts": 1,
+   "rejected": []
+  },
+  "06": {
+   "job_id": "d1d3eb0a-e52b-4c5b-ad3a-be71e7beb034",
+   "attempts": 1,
+   "rejected": []
+  },
+  "07": {
+   "job_id": "d9e50e74-0622-4d5e-88a4-7ef924dc8c37",
+   "attempts": 1,
+   "rejected": []
+  },
+  "08": {
+   "job_id": "633e6f89-d7ff-4fa0-bbfe-cc8d6a977a17",
+   "attempts": 1,
+   "rejected": []
+  },
+  "09": {
+   "job_id": "5f0dd481-b3c1-469f-af70-068cde6d01ee",
+   "attempts": 1,
+   "rejected": []
+  },
+  "10": {
+   "job_id": "18d1e02f-c4b7-4490-a325-50f986791765",
+   "attempts": 1,
+   "rejected": []
+  }
+ },
+ "open": [
+  "04 (v3, final allowed attempt): head tipped back, no lips/nose/eyes, but the underside of the chin and both ears are at the top edge; the intended side-profile composition was lost, so 04 is now a straight-on neck crop close in feel to 02/03/05/10."
+ ]
+}

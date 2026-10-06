@@ -1,0 +1,61 @@
+{
+ "id": "N05",
+ "generations": 12,
+ "slots": {
+  "01": {
+   "job_id": "5b0682ac-336f-4a62-918e-865f4fcb14c7",
+   "attempts": 1,
+   "rejected": []
+  },
+  "02": {
+   "job_id": "0ef48f87-9521-44ef-9b34-41e6df9ff672",
+   "attempts": 1,
+   "rejected": []
+  },
+  "03": {
+   "job_id": "8fc3687e-d1fb-4ee8-9728-3c7b19a1ad1b",
+   "attempts": 1,
+   "rejected": []
+  },
+  "04": {
+   "job_id": "5cd50018-4b32-4108-907d-eb576628131c",
+   "attempts": 2,
+   "rejected": [
+    "v1: profile showed cheek, ear and hair above the lip line"
+   ]
+  },
+  "05": {
+   "job_id": "a27886c1-ca96-4cd9-80e9-90de2b5d9de8",
+   "attempts": 2,
+   "rejected": [
+    "v1: bright white wall behind the shoulders broke the charcoal blue colour world"
+   ]
+  },
+  "06": {
+   "job_id": "1404a0e1-724e-4134-96da-295bcfce2f56",
+   "attempts": 1,
+   "rejected": []
+  },
+  "07": {
+   "job_id": "99bd488d-07a5-47e6-9a82-966a3a575152",
+   "attempts": 1,
+   "rejected": []
+  },
+  "08": {
+   "job_id": "213b6c3c-98cb-4445-b719-4818cb11095e",
+   "attempts": 1,
+   "rejected": []
+  },
+  "09": {
+   "job_id": "ad57c8d6-4ebd-4672-b008-7c4027ff4dfc",
+   "attempts": 1,
+   "rejected": []
+  },
+  "10": {
+   "job_id": "93865891-8a03-4720-9e55-ea4aac88219f",
+   "attempts": 1,
+   "rejected": []
+  }
+ },
+ "open": []
+}

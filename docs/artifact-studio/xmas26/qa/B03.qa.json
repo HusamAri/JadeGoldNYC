@@ -1,0 +1,62 @@
+{
+ "id": "B03",
+ "generations": 13,
+ "slots": {
+  "01": {
+   "job_id": "58ef410f-b249-4c12-9130-900f5e93b23f",
+   "attempts": 1,
+   "rejected": []
+  },
+  "02": {
+   "job_id": "1192d879-42a5-4b25-b567-fbac378d61b2",
+   "attempts": 1,
+   "rejected": []
+  },
+  "03": {
+   "job_id": "ea207e40-b53f-47bc-9818-bb4582a4aa99",
+   "attempts": 1,
+   "rejected": []
+  },
+  "04": {
+   "job_id": "5d27a9c0-b4c7-448c-a3a6-f2edbfbdeea2",
+   "attempts": 1,
+   "rejected": []
+  },
+  "05": {
+   "job_id": "ec8a0867-2fe7-4908-b2bb-c51198fc373b",
+   "attempts": 1,
+   "rejected": []
+  },
+  "06": {
+   "job_id": "53ca18a8-0520-42e7-90db-d7667077e1bd",
+   "attempts": 1,
+   "rejected": []
+  },
+  "07": {
+   "job_id": "f4a1743a-84fa-4391-962a-18335555a994",
+   "attempts": 1,
+   "rejected": []
+  },
+  "08": {
+   "job_id": "67b21f2c-0616-47a6-9919-39e3d015f4fd",
+   "attempts": 1,
+   "rejected": []
+  },
+  "09": {
+   "job_id": "53e8f093-bba2-4aae-9201-8e9d6f2fb0c2",
+   "attempts": 3,
+   "rejected": [
+    "v1 (ed0d3987-b820-4a79-a9dc-d14565e0d7ee): each bracelet laid open with a spring ring clasp at both ends",
+    "v2 (3b32b46d-24af-4a10-b61c-66d161bc9de6): each closed loop shows only two hearts instead of three"
+   ]
+  },
+  "10": {
+   "job_id": "885604b0-d337-4f7d-90b3-1d5b90be6da5",
+   "attempts": 2,
+   "rejected": [
+    "v1 (957cc21a-33ac-41c6-b6fc-f9139a117ad0): middle heart hollow, no enamel"
+   ]
+  }
+ },
+ "open": []
+}

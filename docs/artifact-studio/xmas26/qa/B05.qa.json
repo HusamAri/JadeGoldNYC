@@ -1,0 +1,63 @@
+{
+ "id": "B05",
+ "generations": 13,
+ "slots": {
+  "01": {
+   "job_id": "8ab86408-5d58-470f-841f-8856935c229e",
+   "attempts": 2,
+   "rejected": [
+    "v1: closed oval with clasp at top and stations at 9/6/3 o'clock copied the reference hero's layout"
+   ]
+  },
+  "02": {
+   "job_id": "3b671520-be95-47f2-8973-f90c035f853f",
+   "attempts": 1,
+   "rejected": []
+  },
+  "03": {
+   "job_id": "2cad317b-0bbe-4948-b46d-9267d5a768b8",
+   "attempts": 1,
+   "rejected": []
+  },
+  "04": {
+   "job_id": "f304422e-ad33-4eb9-9223-3d96b5f4ea6c",
+   "attempts": 1,
+   "rejected": []
+  },
+  "05": {
+   "job_id": "fac3224d-a1d2-42e3-aaba-7e6db2c26ead",
+   "attempts": 2,
+   "rejected": [
+    "v1: right fingertip partly covered the third snowflake station"
+   ]
+  },
+  "06": {
+   "job_id": "99fcd5f7-c592-4972-b0d1-f4965cd5a9d0",
+   "attempts": 1,
+   "rejected": []
+  },
+  "07": {
+   "job_id": "b562d787-03c3-465a-a054-27d06b92de2b",
+   "attempts": 1,
+   "rejected": []
+  },
+  "08": {
+   "job_id": "850046b3-19d4-414c-9f1e-39dcf0ef8e42",
+   "attempts": 2,
+   "rejected": [
+    "v1: the three snowflakes bunched together touching instead of evenly spaced along the chain"
+   ]
+  },
+  "09": {
+   "job_id": "c55f4c8e-0988-4d7e-b2f9-a82454f0c1b5",
+   "attempts": 1,
+   "rejected": []
+  },
+  "10": {
+   "job_id": "70f6da51-3f28-4973-aa52-4d4d371cdded",
+   "attempts": 1,
+   "rejected": []
+  }
+ },
+ "open": []
+}
