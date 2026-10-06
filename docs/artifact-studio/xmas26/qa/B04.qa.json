@@ -1,0 +1,59 @@
+{
+ "id": "B04",
+ "generations": 11,
+ "slots": {
+  "01": {
+   "job_id": "7fca60c9-55b3-4e43-91ee-3715a82b2c73",
+   "attempts": 1,
+   "rejected": []
+  },
+  "02": {
+   "job_id": "04eeaab3-c783-49cd-8190-49ada0df5c64",
+   "attempts": 1,
+   "rejected": []
+  },
+  "03": {
+   "job_id": "1e504bb2-1a60-40cf-ab62-8b4a9ecd4605",
+   "attempts": 1,
+   "rejected": []
+  },
+  "04": {
+   "job_id": "7255c209-dceb-4fac-ba74-677cb5cd34b4",
+   "attempts": 1,
+   "rejected": []
+  },
+  "05": {
+   "job_id": "b4ce720b-8aca-4564-a46c-4efa04a36797",
+   "attempts": 1,
+   "rejected": []
+  },
+  "06": {
+   "job_id": "8deb70f3-729e-4b76-8338-7be82d174469",
+   "attempts": 1,
+   "rejected": []
+  },
+  "07": {
+   "job_id": "4a32dad1-40fd-4f1b-8e08-70e7f3a1ec8b",
+   "attempts": 1,
+   "rejected": []
+  },
+  "08": {
+   "job_id": "f5804d71-668a-4010-9fa0-9a8dfda22627",
+   "attempts": 1,
+   "rejected": []
+  },
+  "09": {
+   "job_id": "9ae742dd-742f-4e12-aca8-3d6c7b9d9645",
+   "attempts": 2,
+   "rejected": [
+    "v1 (8cdc1341-e463-4cf7-ac38-230d3f7033a3): each bracelet laid as half a chain with the charms at its end instead of at the centre"
+   ]
+  },
+  "10": {
+   "job_id": "bbe5f5cc-9be9-4c5a-8877-50cfecfa7fae",
+   "attempts": 1,
+   "rejected": []
+  }
+ },
+ "open": []
+}
