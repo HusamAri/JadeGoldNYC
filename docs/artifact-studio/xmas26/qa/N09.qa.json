@@ -1,0 +1,70 @@
+{
+ "id": "N09",
+ "generations": 16,
+ "slots": {
+  "01": {
+   "job_id": "9345aae9-45a6-40ed-8114-5b426defe1b2",
+   "attempts": 3,
+   "rejected": [
+    "v1: chain doubled into two concentric loops",
+    "v2: the two chain halves lie in two parallel loops, reads as two strands"
+   ]
+  },
+  "02": {
+   "job_id": "620fc8bd-e3ea-40aa-b695-d165884e8923",
+   "attempts": 1,
+   "rejected": []
+  },
+  "03": {
+   "job_id": "a149d19d-d8c3-4744-91cb-dafc38e3cde3",
+   "attempts": 2,
+   "rejected": [
+    "v1: lips, philtrum and nose base in frame (face above lips)"
+   ]
+  },
+  "04": {
+   "job_id": "66cb84bf-3ce3-4547-8919-32d428d6dcf0",
+   "attempts": 3,
+   "rejected": [
+    "v1: ear and cheek in frame (face above lips)",
+    "v2: lips, nose and cheek still in frame"
+   ]
+  },
+  "05": {
+   "job_id": "567a2505-09b3-4c41-8906-2f154c4ef36d",
+   "attempts": 1,
+   "rejected": []
+  },
+  "06": {
+   "job_id": "3e06acac-ac5a-4067-878f-82f379c8410c",
+   "attempts": 1,
+   "rejected": []
+  },
+  "07": {
+   "job_id": "73408976-fa56-4185-aa3a-f3a2fb78abd6",
+   "attempts": 1,
+   "rejected": []
+  },
+  "08": {
+   "job_id": "3096dc23-64de-4299-ac27-595d12ccb1c7",
+   "attempts": 1,
+   "rejected": []
+  },
+  "09": {
+   "job_id": "052afaab-a38d-49b4-bafb-f5ac6bac3ea7",
+   "attempts": 2,
+   "rejected": [
+    "v1: rose gold copy had pink enamel"
+   ]
+  },
+  "10": {
+   "job_id": "0a0c5ec5-deac-43d7-9c5f-86f658b0c4c5",
+   "attempts": 1,
+   "rejected": []
+  }
+ },
+ "open": [
+  "02 and 10 (first attempts, kept): top edge shows the full lips plus a thin band of philtrum above the upper lip (~5-10% of frame height) - technically 'face above the lips'; budget spent on worse defects. Possible fix without credits: crop the top ~230 px and rescale to 2048 square.",
+  "03 v2 (kept): chin-up pose, no lips; the ear lobe and jawline are visible at the top; background top is pale grey."
+ ]
+}

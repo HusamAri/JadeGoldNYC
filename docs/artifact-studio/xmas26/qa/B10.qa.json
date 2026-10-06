@@ -1,0 +1,61 @@
+{
+ "id": "B10",
+ "generations": 11,
+ "slots": {
+  "01": {
+   "job_id": "1b79c768-0ae7-41b8-ac80-f71df104e521",
+   "attempts": 2,
+   "rejected": [
+    "v1: fabric label with text '14K Gold Stocking Charm' (and a gold filigree pine cone) in frame"
+   ]
+  },
+  "02": {
+   "job_id": "a424849a-9fcc-4391-adfb-5ed978be9ef4",
+   "attempts": 1,
+   "rejected": []
+  },
+  "03": {
+   "job_id": "e2af0759-f132-4582-bc28-67237bb32f3d",
+   "attempts": 1,
+   "rejected": []
+  },
+  "04": {
+   "job_id": "514e932d-d938-4451-aab3-0810fe11b3ff",
+   "attempts": 1,
+   "rejected": []
+  },
+  "05": {
+   "job_id": "b016cb19-0e26-45b5-9951-a032297c0ef8",
+   "attempts": 1,
+   "rejected": []
+  },
+  "06": {
+   "job_id": "c5aa7b1c-475d-4fa4-a3cd-3d5af37b4818",
+   "attempts": 1,
+   "rejected": []
+  },
+  "07": {
+   "job_id": "19772ff6-9b52-4260-befa-0780fe7807d7",
+   "attempts": 1,
+   "rejected": []
+  },
+  "08": {
+   "job_id": "9c3a6958-303f-4883-9780-3f4a8b8f45ad",
+   "attempts": 1,
+   "rejected": []
+  },
+  "09": {
+   "job_id": "bbd0b72e-6fb2-4401-bc16-d58432ca7100",
+   "attempts": 1,
+   "rejected": []
+  },
+  "10": {
+   "job_id": "7e936a49-beea-4ec8-850a-bb7c39ac2c99",
+   "attempts": 1,
+   "rejected": []
+  }
+ },
+ "open": [
+  "02: thumb tucked out of view under the hand (four fingers visible); pose is natural, kept."
+ ]
+}

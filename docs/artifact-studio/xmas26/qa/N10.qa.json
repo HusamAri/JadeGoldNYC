@@ -1,0 +1,70 @@
+{
+ "id": "N10",
+ "generations": 16,
+ "slots": {
+  "01": {
+   "job_id": "14dda422-b0e7-40d3-8019-6e27f2686901",
+   "attempts": 1,
+   "rejected": []
+  },
+  "02": {
+   "job_id": "93ff5086-a468-41fa-962d-e768360175a0",
+   "attempts": 3,
+   "rejected": [
+    "v1: lips, philtrum and nose base in frame (face above lips)",
+    "v2: background a grey window with a houseplant (colour world drift), metal looked rose-tinted"
+   ]
+  },
+  "03": {
+   "job_id": "14c4c4b1-0ec8-41a4-9928-87ea0a73540d",
+   "attempts": 1,
+   "rejected": []
+  },
+  "04": {
+   "job_id": "cff661c9-c656-4fab-bd7f-62cede18cb1c",
+   "attempts": 2,
+   "rejected": [
+    "v1: profile showed lips and cheek (face above lips)"
+   ]
+  },
+  "05": {
+   "job_id": "d003ff4c-e49d-4f3f-b71e-939de822746b",
+   "attempts": 2,
+   "rejected": [
+    "v1: lips, philtrum and nose base in frame (face above lips)"
+   ]
+  },
+  "06": {
+   "job_id": "07706498-8e20-4f8c-ad8a-06d2cef405ca",
+   "attempts": 1,
+   "rejected": []
+  },
+  "07": {
+   "job_id": "a7f6532b-d331-4837-9bd6-b50d4aed940d",
+   "attempts": 1,
+   "rejected": []
+  },
+  "08": {
+   "job_id": "65e0dd3a-8a71-45a5-99e4-0467731ed4ef",
+   "attempts": 1,
+   "rejected": []
+  },
+  "09": {
+   "job_id": "ffdc79b2-d21e-4051-869a-a488591c3ee8",
+   "attempts": 2,
+   "rejected": [
+    "v1: photo rendered as an inset with a dark green border/mat"
+   ]
+  },
+  "10": {
+   "job_id": "8d8ba173-f960-4dce-b96a-96be5ed5bdeb",
+   "attempts": 2,
+   "rejected": [
+    "v1: lips and philtrum in frame (face above lips)"
+   ]
+  }
+ },
+ "open": [
+  "03 (first attempt, kept): the lower lip is just visible at the top edge; nothing above the lips is shown."
+ ]
+}
