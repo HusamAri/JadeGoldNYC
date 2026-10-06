@@ -1,0 +1,63 @@
+{
+ "id": "N04",
+ "generations": 13,
+ "slots": {
+  "01": {
+   "job_id": "4a6461e7-b688-4668-8e98-4e3889787b2c",
+   "attempts": 2,
+   "rejected": [
+    "v1 (a1b36d75-e578-4676-ad0f-9e37e904cfa2): chain coiled in two loops, reading as a second strand, on a near-white floor"
+   ]
+  },
+  "02": {
+   "job_id": "126ca41a-1e87-48c9-987f-11d7e585bf89",
+   "attempts": 2,
+   "rejected": [
+    "v1 (2b7db361-88c2-4793-bef8-fc7b46de65d7): white/grey wall behind her, colour world drifts from burgundy"
+   ]
+  },
+  "03": {
+   "job_id": "29e29f3e-a048-4551-a45e-424ffdec16ee",
+   "attempts": 2,
+   "rejected": [
+    "v1 (9be8412b-b502-4139-a77a-04d45c5198c5): white/grey wall behind her, colour world drifts from burgundy"
+   ]
+  },
+  "04": {
+   "job_id": "41e2a696-b30a-4593-aac8-4603ba03a70d",
+   "attempts": 1,
+   "rejected": []
+  },
+  "05": {
+   "job_id": "d5ca2542-8d8b-4190-b8c7-2777735407f5",
+   "attempts": 1,
+   "rejected": []
+  },
+  "06": {
+   "job_id": "62f9e00b-e948-4017-9e5a-d5cc377e0209",
+   "attempts": 1,
+   "rejected": []
+  },
+  "07": {
+   "job_id": "52b4651b-a1de-454f-a288-3e0c69ae5d0d",
+   "attempts": 1,
+   "rejected": []
+  },
+  "08": {
+   "job_id": "771863ed-d260-4704-a8fa-85d01abd0117",
+   "attempts": 1,
+   "rejected": []
+  },
+  "09": {
+   "job_id": "1cf9456e-d904-4a4c-b922-96266cc7cbbd",
+   "attempts": 1,
+   "rejected": []
+  },
+  "10": {
+   "job_id": "6019d52d-6525-43c3-89ae-be7991ec4e78",
+   "attempts": 1,
+   "rejected": []
+  }
+ },
+ "open": []
+}
