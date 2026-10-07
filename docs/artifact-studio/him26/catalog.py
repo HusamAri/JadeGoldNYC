@@ -120,7 +120,7 @@ add(id="R01", cat="ring", name="Brushed Flat Band", dims="band 4 mm wide, 1.4 mm
           "satin finish ring", "everyday ring", "plain gold band", "mens ring", "14k mens ring"],
     lead="A 4 mm flat band in solid gold with a brushed satin finish and softly eased edges.",
     story="Nothing on it but the grain of the brush. The satin surface hides the small scratches that daily wear puts on polished gold, so it looks the same in a year as it does today.",
-    shape="a plain flat band ring 4 mm wide and 1.4 mm thick with a fine brushed satin finish running around the band and softly eased edges, comfort fit inside, shown standing upright in a three-quarter view")
+    shape="a plain flat band ring 4 mm wide and 1.4 mm thick with a fine brushed satin finish whose brush lines run around the circumference of the band, parallel to its edges, and softly eased edges, comfort fit inside, shown standing upright in a three-quarter view")
 add(id="R02", cat="ring", name="Polished Dome Band", dims="band 3 mm wide, domed", top_g=0.0, shank_g=3.6,
     title="Mens Dome Band Ring, 3mm Polished Solid Gold Wedding Band, Classic Minimalist Ring for Him",
     tags=["mens dome ring", "dome band", "polished gold band", "mens wedding band", "3mm gold band",
@@ -148,7 +148,7 @@ add(id="R05", cat="ring", name="Knife Edge Band", dims="band 2.5 mm wide, knife 
           "minimalist band", "everyday ring", "mens wedding band", "mens ring", "14k mens ring"],
     lead="A slim 2.5 mm band whose outer surface rises to a single sharp ridge, in high polish solid gold.",
     story="Two flat planes meet at a line down the middle, so the light breaks along the ridge as the hand moves. Thin enough to wear next to anything.",
-    shape="a slim band ring 2.5 mm wide whose outer surface is two flat planes rising to a single sharp knife edge ridge running around the centre, mirror high polish, comfort fit inside, shown standing upright in a three-quarter view")
+    shape="a slim round band 2.5 mm wide whose outer surface is shaped like a roof: two narrow sloping sides meet in one sharp continuous ridge line along the middle, no flat top, no step, no groove, mirror high polish, comfort fit inside, shown standing upright in a three-quarter view")
 add(id="R06", cat="ring", name="Hammered Band", dims="band 4 mm wide", top_g=0.0, shank_g=band_g(4, 1.4),
     title="Mens Hammered Band Ring, 4mm Textured Solid Gold Wedding Band, Rustic Minimalist Ring for Him",
     tags=["hammered ring", "mens hammered band", "textured gold band", "mens wedding band", "4mm gold band",
@@ -162,14 +162,14 @@ add(id="R07", cat="ring", name="Centre Line Band", dims="band 5 mm wide, 0.5 mm 
           "modern gold band", "brushed gold ring", "wide gold band", "mens ring", "14k mens ring"],
     lead="A 5 mm flat band in brushed solid gold, cut once around the middle with a fine polished groove.",
     story="One line is all it carries. The groove is polished bright against the satin on either side, so it reads as a thin line of light.",
-    shape="a flat band ring 5 mm wide and 1.3 mm thick with a fine brushed satin finish, divided all the way around by a single narrow 0.5 mm groove cut down the centre and polished bright, square edges softly eased, comfort fit inside, shown standing upright in a three-quarter view")
+    shape="a flat band ring 5 mm wide and 1.3 mm thick with a fine brushed satin finish whose brush lines run around the circumference, parallel to the edges, divided all the way around by a single narrow 0.5 mm groove cut down the centre and polished bright, square edges softly eased, comfort fit inside, shown standing upright in a three-quarter view")
 add(id="R08", cat="ring", name="Square Wire Ring", dims="square profile 2 x 2 mm", top_g=0.0, shank_g=3.2,
     title="Mens Square Wire Ring, 2mm Square Profile Solid Gold Band, Minimalist Stacking Ring for Him",
     tags=["square wire ring", "square band ring", "mens thin ring", "stacking ring", "2mm gold ring",
           "geometric ring", "minimalist band", "everyday ring", "mens ring", "14k mens ring"],
     lead="A band with a square cross section, 2 by 2 mm, in solid gold with crisp polished corners.",
     story="Seen from the side it is a square, seen from the front a narrow bar. Heavier in the hand than a round band of the same width.",
-    shape="a slim ring formed from solid square gold wire with a 2 by 2 mm square cross section, flat polished faces and crisp corners on all four sides, shown standing upright in a three-quarter view so the square profile shows at the edge")
+    shape="a perfectly round ring made from solid square gold wire: the ring itself is a circle, only the wire's cross section is a 2 by 2 mm square, so the outer surface is flat and the edges are crisp right angles; flat polished faces, shown standing upright in a three-quarter view so the square profile shows at the edge")
 add(id="R09", cat="ring", name="Octagon Facet Band", dims="band 3.5 mm wide, eight flat facets", top_g=0.0, shank_g=band_g(3.5),
     title="Mens Faceted Band Ring, 3.5mm Octagon Solid Gold Ring, Geometric Minimalist Band for Him",
     tags=["faceted ring", "octagon ring", "geometric ring", "mens wedding band", "3.5mm gold band",
@@ -206,7 +206,7 @@ add(id="B03", cat="bracelet", name="ID Bar Bracelet", dims="bar 30 x 6 mm on 1.5
           "brushed gold bar", "everyday bracelet", "fine chain bracelet", "mens bracelet", "14k mens bracelet"],
     lead="A flat 30 by 6 mm bar in brushed solid gold, on a fine 1.5 mm cable chain.",
     story="The ID bracelet with the name left off. The bar is brushed so it reads as a plain field of gold against the skin, set between two lengths of chain.",
-    shape="a bracelet with a flat rectangular bar 30 by 6 mm and 1.2 mm thick in fine brushed satin gold with polished edges, joined at both ends to a fine 1.5 mm polished gold cable chain, laid in a loose open curve with the bar centred, gold lobster clasp", clasp="lobster")
+    shape="a bracelet with a flat rectangular bar 30 by 6 mm and 1.2 mm thick in fine brushed satin gold with the brush lines running along the length of the bar, and polished edges, joined at both ends to a fine 1.5 mm polished gold cable chain, laid in a loose open curve with the bar centred, gold lobster clasp", clasp="lobster")
 add(id="B04", cat="bracelet", name="Slim Open Cuff", dims="cuff 2.5 mm wide, 1.3 mm thick", piece_g=0.0, per_in=0.85,
     title="Mens Open Cuff Bracelet, 2.5mm Solid Gold Slim Cuff, Minimalist Gold Bangle for Him",
     tags=["mens cuff bracelet", "gold cuff", "open cuff", "slim gold cuff", "mens gold bracelet",
@@ -248,14 +248,14 @@ add(id="B09", cat="bracelet", name="Tube Station Bracelet", dims="three square t
           "geometric bracelet", "everyday bracelet", "box chain bracelet", "mens bracelet", "14k mens bracelet"],
     lead="Three square gold tubes, each 10 mm long, threaded along a fine 1.5 mm solid gold box chain.",
     story="Three short bars of gold spaced a finger's width apart, brushed so they look matte next to the polished chain.",
-    shape="a fine 1.5 mm polished gold box chain bracelet with three square tube stations, each 2 by 2 by 10 mm in brushed satin gold, spaced a little apart at the centre of the chain, laid in a loose open curve, gold lobster clasp", clasp="lobster")
+    shape="a fine 1.5 mm polished gold box chain bracelet with three square tube stations, each 2 by 2 by 10 mm in brushed satin gold with the brush lines running along the tube, spaced a little apart at the centre of the chain, laid in a loose open curve, gold lobster clasp", clasp="lobster")
 add(id="B10", cat="bracelet", name="Long Link Bracelet", dims="3 mm elongated cable links", piece_g=0.3, per_in=0.38,
     title="Mens Long Link Bracelet, 3mm Solid Gold Elongated Cable Chain, Modern Gold Bracelet for Him",
     tags=["long link bracelet", "mens link bracelet", "elongated chain", "3mm gold chain", "mens gold bracelet",
           "modern chain", "everyday bracelet", "cable chain", "mens bracelet", "14k mens bracelet"],
     lead="A 3 mm chain of long rounded links in solid gold, open and light on the wrist.",
-    story="Each link is stretched to three times its width, so the chain shows more air than metal. Modern, but not loud.",
-    shape="a solid gold chain bracelet of elongated rounded oval cable links 3 mm wide and about 9 mm long, made from round wire with a high polish, laid in a loose open curve, gold lobster clasp", clasp="lobster")
+    story="Each link is stretched to about twice its width, so the chain shows more air than metal. Modern, but not loud.",
+    shape="a solid gold chain bracelet of elongated rounded oval cable links 3 mm wide and about 6 mm long, made from round wire with a high polish, laid in a loose open curve, gold lobster clasp", clasp="lobster")
 
 # ============================================================ EARRINGS (sold single or pair)
 add(id="E01", cat="earring", name="Square Stud", proto="stud_earrings", dims="square face 4 x 4 mm", piece_g=0.35,
@@ -278,7 +278,7 @@ add(id="E03", cat="earring", name="Bar Stud", proto="stud_earrings", dims="bar 2
           "minimalist stud", "vertical bar stud", "mens earrings", "geometric stud", "14k mens stud"],
     lead="A short vertical bar of solid gold, 2 by 8 mm, on a post, sold as a single earring or a pair.",
     story="It follows the line of the earlobe instead of sitting on it like a dot. Polished on the edges, brushed on the face.",
-    shape="a pair of small vertical bar stud earrings, each a flat bar 2 by 8 mm with square ends, brushed satin face and polished edges, on gold posts with butterfly backs; one stud lies flat, the other stands slightly angled to show the post")
+    shape="a pair of small vertical bar stud earrings, each a flat bar 2 by 8 mm with square ends, brushed satin face with the brush lines running along the bar and polished edges, on gold posts with butterfly backs; one stud lies flat, the other stands slightly angled to show the post")
 add(id="E04", cat="earring", name="Hex Stud", proto="stud_earrings", dims="hexagon 5 mm", piece_g=0.4,
     title="Mens Hexagon Stud Earring, 5mm Brushed Solid Gold Hex Stud, Single or Pair Earring for Him",
     tags=["mens stud earring", "hexagon stud", "hex earring", "geometric stud", "single stud earring",
@@ -352,10 +352,10 @@ CARE = "Care: solid gold does not tarnish. Wipe it with a soft cloth; a brushed 
 IMAGES = ("The product images are design visualizations of the finished piece, and the three-metal image is a "
           "colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.")
 
-PROMPT = ("Studio product photograph of one fine jewelry piece: {shape}. Solid 14K yellow gold only, no stones, "
+PROMPT = ("Studio product photograph of fine jewelry: {shape}. Solid 14K yellow gold only, no stones, "
           "no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm "
-          "grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, shallow depth of "
-          "field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal "
+          "grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, the stone surface stays "
+          "in focus with a fine natural grain texture, no blur gradients, no compression artifacts, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal "
           "composition with generous negative space. No props, no hands, no text, no logo, no packaging. "
           "Photorealistic high-end commercial jewelry photography for men, square format.")
 

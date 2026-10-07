@@ -42,7 +42,7 @@
    ],
    "description": "A 4 mm flat band in solid gold with a brushed satin finish and softly eased edges.\n\nNothing on it but the grain of the brush. The satin surface hides the small scratches that daily wear puts on polished gold, so it looks the same in a year as it does today.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose.\nFinish: solid gold, no plating, no stones.\nSize: band 4 mm wide, 1.4 mm thick.\nRing size: US 3 to 16, whole and half sizes.\n\nEach piece is made to order and ships free within the United States from New Jersey. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Wipe it with a soft cloth; a brushed finish can be refreshed by a jeweller.\n\nThe product images are design visualizations of the finished piece, and the three-metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
    "dims": "band 4 mm wide, 1.4 mm thick",
-   "shape": "a plain flat band ring 4 mm wide and 1.4 mm thick with a fine brushed satin finish running around the band and softly eased edges, comfort fit inside, shown standing upright in a three-quarter view",
+   "shape": "a plain flat band ring 4 mm wide and 1.4 mm thick with a fine brushed satin finish whose brush lines run around the circumference of the band, parallel to its edges, and softly eased edges, comfort fit inside, shown standing upright in a three-quarter view",
    "listingProtocol": "sculptural_ring",
    "offersPersonalization": false,
    "variationAxes": [
@@ -2486,10 +2486,10 @@
      "price_cents": 173000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a plain flat band ring 4 mm wide and 1.4 mm thick with a fine brushed satin finish running around the band and softly eased edges, comfort fit inside, shown standing upright in a three-quarter view. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
+   "imagePrompt": "Studio product photograph of fine jewelry: a plain flat band ring 4 mm wide and 1.4 mm thick with a fine brushed satin finish whose brush lines run around the circumference of the band, parallel to its edges, and softly eased edges, comfort fit inside, shown standing upright in a three-quarter view. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, the stone surface stays in focus with a fine natural grain texture, no blur gradients, no compression artifacts, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
    "imageFile": "R01.jpg",
-   "imageUrl": null,
-   "imageSha256": null,
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/him26/R01.jpg",
+   "imageSha256": "1dcae6a25277811ca0153ff9ff9bee0207cb864040d4fd2dd24b477153709875",
    "params": {
     "top_g": 0.0,
     "shank_g": 4.47
@@ -4966,10 +4966,10 @@
      "price_cents": 139000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a plain half-round dome band ring 3 mm wide with a smoothly rounded outer surface in mirror high polish and a flat comfort fit inside, shown standing upright in a three-quarter view. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
+   "imagePrompt": "Studio product photograph of fine jewelry: a plain half-round dome band ring 3 mm wide with a smoothly rounded outer surface in mirror high polish and a flat comfort fit inside, shown standing upright in a three-quarter view. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, the stone surface stays in focus with a fine natural grain texture, no blur gradients, no compression artifacts, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
    "imageFile": "R02.jpg",
-   "imageUrl": null,
-   "imageSha256": null,
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/him26/R02.jpg",
+   "imageSha256": "5fe0c373b8bba0d56ce483a41c4710bbcecf21f1fa07f7406dcc03deebb71116",
    "params": {
     "top_g": 0.0,
     "shank_g": 3.6
@@ -7446,10 +7446,10 @@
      "price_cents": 277000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a square signet ring with a flat 9 by 9 mm face with slightly rounded corners in mirror high polish, solid and closed underneath, the shank tapering smoothly from the face to a 3 mm band at the back, shown in a three-quarter view from slightly above. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
+   "imagePrompt": "Studio product photograph of fine jewelry: a square signet ring with a flat 9 by 9 mm face with slightly rounded corners in mirror high polish, solid and closed underneath, the shank tapering smoothly from the face to a 3 mm band at the back, shown in a three-quarter view from slightly above. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, the stone surface stays in focus with a fine natural grain texture, no blur gradients, no compression artifacts, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
    "imageFile": "R03.jpg",
-   "imageUrl": null,
-   "imageSha256": null,
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/him26/R03.jpg",
+   "imageSha256": "266ae3330ad72038d95b8f94583c5dd5c498e66114f7ea2948e6bb7a1a1e12ce",
    "params": {
     "top_g": 2.0,
     "shank_g": 2.2
@@ -9926,10 +9926,10 @@
      "price_cents": 231000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a signet ring with a long flat rectangular face 12 by 4 mm laid across the finger, sharp clean edges, brushed satin top surface with polished bevelled sides, solid and closed underneath, on a 3 mm band, shown in a three-quarter view from slightly above. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
+   "imagePrompt": "Studio product photograph of fine jewelry: a signet ring with a long flat rectangular face 12 by 4 mm laid across the finger, sharp clean edges, brushed satin top surface with polished bevelled sides, solid and closed underneath, on a 3 mm band, shown in a three-quarter view from slightly above. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, the stone surface stays in focus with a fine natural grain texture, no blur gradients, no compression artifacts, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
    "imageFile": "R04.jpg",
-   "imageUrl": null,
-   "imageSha256": null,
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/him26/R04.jpg",
+   "imageSha256": "7676d2b080c174a66b71be6f4367d53ceecebfa53db051d3cba2b40c9901aad4",
    "params": {
     "top_g": 1.4,
     "shank_g": 2.2
@@ -9962,7 +9962,7 @@
    ],
    "description": "A slim 2.5 mm band whose outer surface rises to a single sharp ridge, in high polish solid gold.\n\nTwo flat planes meet at a line down the middle, so the light breaks along the ridge as the hand moves. Thin enough to wear next to anything.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose.\nFinish: solid gold, no plating, no stones.\nSize: band 2.5 mm wide, knife edge.\nRing size: US 3 to 16, whole and half sizes.\n\nEach piece is made to order and ships free within the United States from New Jersey. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Wipe it with a soft cloth; a brushed finish can be refreshed by a jeweller.\n\nThe product images are design visualizations of the finished piece, and the three-metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
    "dims": "band 2.5 mm wide, knife edge",
-   "shape": "a slim band ring 2.5 mm wide whose outer surface is two flat planes rising to a single sharp knife edge ridge running around the centre, mirror high polish, comfort fit inside, shown standing upright in a three-quarter view",
+   "shape": "a slim round band 2.5 mm wide whose outer surface is shaped like a roof: two narrow sloping sides meet in one sharp continuous ridge line along the middle, no flat top, no step, no groove, mirror high polish, comfort fit inside, shown standing upright in a three-quarter view",
    "listingProtocol": "sculptural_ring",
    "offersPersonalization": false,
    "variationAxes": [
@@ -12406,7 +12406,7 @@
      "price_cents": 139000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a slim band ring 2.5 mm wide whose outer surface is two flat planes rising to a single sharp knife edge ridge running around the centre, mirror high polish, comfort fit inside, shown standing upright in a three-quarter view. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
+   "imagePrompt": "Studio product photograph of fine jewelry: a slim round band 2.5 mm wide whose outer surface is shaped like a roof: two narrow sloping sides meet in one sharp continuous ridge line along the middle, no flat top, no step, no groove, mirror high polish, comfort fit inside, shown standing upright in a three-quarter view. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, the stone surface stays in focus with a fine natural grain texture, no blur gradients, no compression artifacts, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
    "imageFile": "R05.jpg",
    "imageUrl": null,
    "imageSha256": null,
@@ -14886,10 +14886,10 @@
      "price_cents": 173000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a flat band ring 4 mm wide whose whole outer surface is covered in small irregular hand-hammered facets, each facet polished bright, with smooth narrow edges and a comfort fit inside, shown standing upright in a three-quarter view. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
+   "imagePrompt": "Studio product photograph of fine jewelry: a flat band ring 4 mm wide whose whole outer surface is covered in small irregular hand-hammered facets, each facet polished bright, with smooth narrow edges and a comfort fit inside, shown standing upright in a three-quarter view. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, the stone surface stays in focus with a fine natural grain texture, no blur gradients, no compression artifacts, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
    "imageFile": "R06.jpg",
-   "imageUrl": null,
-   "imageSha256": null,
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/him26/R06.jpg",
+   "imageSha256": "e138d5e0cc9e2392b1279f0cb2f588b5b3dc8c12356314c85499c16e0b8c6c7c",
    "params": {
     "top_g": 0.0,
     "shank_g": 4.47
@@ -14922,7 +14922,7 @@
    ],
    "description": "A 5 mm flat band in brushed solid gold, cut once around the middle with a fine polished groove.\n\nOne line is all it carries. The groove is polished bright against the satin on either side, so it reads as a thin line of light.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose.\nFinish: solid gold, no plating, no stones.\nSize: band 5 mm wide, 0.5 mm centre groove.\nRing size: US 3 to 16, whole and half sizes.\n\nEach piece is made to order and ships free within the United States from New Jersey. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Wipe it with a soft cloth; a brushed finish can be refreshed by a jeweller.\n\nThe product images are design visualizations of the finished piece, and the three-metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
    "dims": "band 5 mm wide, 0.5 mm centre groove",
-   "shape": "a flat band ring 5 mm wide and 1.3 mm thick with a fine brushed satin finish, divided all the way around by a single narrow 0.5 mm groove cut down the centre and polished bright, square edges softly eased, comfort fit inside, shown standing upright in a three-quarter view",
+   "shape": "a flat band ring 5 mm wide and 1.3 mm thick with a fine brushed satin finish whose brush lines run around the circumference, parallel to the edges, divided all the way around by a single narrow 0.5 mm groove cut down the centre and polished bright, square edges softly eased, comfort fit inside, shown standing upright in a three-quarter view",
    "listingProtocol": "sculptural_ring",
    "offersPersonalization": false,
    "variationAxes": [
@@ -17366,10 +17366,10 @@
      "price_cents": 200000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a flat band ring 5 mm wide and 1.3 mm thick with a fine brushed satin finish, divided all the way around by a single narrow 0.5 mm groove cut down the centre and polished bright, square edges softly eased, comfort fit inside, shown standing upright in a three-quarter view. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
+   "imagePrompt": "Studio product photograph of fine jewelry: a flat band ring 5 mm wide and 1.3 mm thick with a fine brushed satin finish whose brush lines run around the circumference, parallel to the edges, divided all the way around by a single narrow 0.5 mm groove cut down the centre and polished bright, square edges softly eased, comfort fit inside, shown standing upright in a three-quarter view. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, the stone surface stays in focus with a fine natural grain texture, no blur gradients, no compression artifacts, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
    "imageFile": "R07.jpg",
-   "imageUrl": null,
-   "imageSha256": null,
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/him26/R07.jpg",
+   "imageSha256": "71bb0d143752cf61d22c14e90c6cc09e55e3525fd3f2c1c69c835fe5b597336c",
    "params": {
     "top_g": 0.0,
     "shank_g": 5.18
@@ -17402,7 +17402,7 @@
    ],
    "description": "A band with a square cross section, 2 by 2 mm, in solid gold with crisp polished corners.\n\nSeen from the side it is a square, seen from the front a narrow bar. Heavier in the hand than a round band of the same width.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose.\nFinish: solid gold, no plating, no stones.\nSize: square profile 2 x 2 mm.\nRing size: US 3 to 16, whole and half sizes.\n\nEach piece is made to order and ships free within the United States from New Jersey. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Wipe it with a soft cloth; a brushed finish can be refreshed by a jeweller.\n\nThe product images are design visualizations of the finished piece, and the three-metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
    "dims": "square profile 2 x 2 mm",
-   "shape": "a slim ring formed from solid square gold wire with a 2 by 2 mm square cross section, flat polished faces and crisp corners on all four sides, shown standing upright in a three-quarter view so the square profile shows at the edge",
+   "shape": "a perfectly round ring made from solid square gold wire: the ring itself is a circle, only the wire's cross section is a 2 by 2 mm square, so the outer surface is flat and the edges are crisp right angles; flat polished faces, shown standing upright in a three-quarter view so the square profile shows at the edge",
    "listingProtocol": "sculptural_ring",
    "offersPersonalization": false,
    "variationAxes": [
@@ -19846,10 +19846,10 @@
      "price_cents": 123000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a slim ring formed from solid square gold wire with a 2 by 2 mm square cross section, flat polished faces and crisp corners on all four sides, shown standing upright in a three-quarter view so the square profile shows at the edge. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
+   "imagePrompt": "Studio product photograph of fine jewelry: a perfectly round ring made from solid square gold wire: the ring itself is a circle, only the wire's cross section is a 2 by 2 mm square, so the outer surface is flat and the edges are crisp right angles; flat polished faces, shown standing upright in a three-quarter view so the square profile shows at the edge. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, the stone surface stays in focus with a fine natural grain texture, no blur gradients, no compression artifacts, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
    "imageFile": "R08.jpg",
-   "imageUrl": null,
-   "imageSha256": null,
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/him26/R08.jpg",
+   "imageSha256": "064c1ee26d0b468679d374c09114a59670a17767e4b709934934cf487bfdac5d",
    "params": {
     "top_g": 0.0,
     "shank_g": 3.2
@@ -22326,10 +22326,10 @@
      "price_cents": 162000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a band ring 3.5 mm wide whose outer surface is cut into eight equal flat facets forming a regular octagon around the finger, each facet mirror polished with crisp edges between them, round comfort fit inside, shown standing upright in a three-quarter view. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
+   "imagePrompt": "Studio product photograph of fine jewelry: a band ring 3.5 mm wide whose outer surface is cut into eight equal flat facets forming a regular octagon around the finger, each facet mirror polished with crisp edges between them, round comfort fit inside, shown standing upright in a three-quarter view. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, the stone surface stays in focus with a fine natural grain texture, no blur gradients, no compression artifacts, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
    "imageFile": "R09.jpg",
-   "imageUrl": null,
-   "imageSha256": null,
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/him26/R09.jpg",
+   "imageSha256": "fb1f97cf8057ab2bee247a18d8b2e5bf4f327af07bd5b8e65f9cf0dbb64303a1",
    "params": {
     "top_g": 0.0,
     "shank_g": 4.19
@@ -24806,10 +24806,10 @@
      "price_cents": 123000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: an open ring formed from solid 2 by 2 mm square gold wire whose two flat cut ends stop facing each other with a clean 4 mm gap on top of the ring, crisp corners and mirror polished faces, shown from slightly above so the gap is visible. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
+   "imagePrompt": "Studio product photograph of fine jewelry: an open ring formed from solid 2 by 2 mm square gold wire whose two flat cut ends stop facing each other with a clean 4 mm gap on top of the ring, crisp corners and mirror polished faces, shown from slightly above so the gap is visible. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, the stone surface stays in focus with a fine natural grain texture, no blur gradients, no compression artifacts, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
    "imageFile": "R10.jpg",
-   "imageUrl": null,
-   "imageSha256": null,
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/him26/R10.jpg",
+   "imageSha256": "7c65445f8ba714d189af03e9c3311777d7d952a8e0d9667b82a682ec06820900",
    "params": {
     "top_g": 0.0,
     "shank_g": 2.6
@@ -25126,10 +25126,10 @@
      "price_cents": 108000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a solid gold 2 mm box chain bracelet made of small square box links with crisp edges and a high polish, laid in a loose open curve, with a gold lobster clasp. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
+   "imagePrompt": "Studio product photograph of fine jewelry: a solid gold 2 mm box chain bracelet made of small square box links with crisp edges and a high polish, laid in a loose open curve, with a gold lobster clasp. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, the stone surface stays in focus with a fine natural grain texture, no blur gradients, no compression artifacts, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
    "imageFile": "B01.jpg",
-   "imageUrl": null,
-   "imageSha256": null,
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/him26/B01.jpg",
+   "imageSha256": "e1c54302ff3f2693aa9e2f59bba14acdac97ea953e1c2a386fcc7a655e259ece",
    "params": {
     "piece_g": 0.3,
     "per_in": 0.42
@@ -25446,10 +25446,10 @@
      "price_cents": 157000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a solid gold 3 mm flat curb chain bracelet of interlocking twisted links pressed flat with bright cut faces, laid in a loose open curve, with a gold lobster clasp. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
+   "imagePrompt": "Studio product photograph of fine jewelry: a solid gold 3 mm flat curb chain bracelet of interlocking twisted links pressed flat with bright cut faces, laid in a loose open curve, with a gold lobster clasp. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, the stone surface stays in focus with a fine natural grain texture, no blur gradients, no compression artifacts, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
    "imageFile": "B02.jpg",
-   "imageUrl": null,
-   "imageSha256": null,
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/him26/B02.jpg",
+   "imageSha256": "5ed5a02f55974da54e485e7d872c6b569b2a5295bff569305ab4512f85492ab1",
    "params": {
     "piece_g": 0.35,
     "per_in": 0.62
@@ -25482,7 +25482,7 @@
    ],
    "description": "A flat 30 by 6 mm bar in brushed solid gold, on a fine 1.5 mm cable chain.\n\nThe ID bracelet with the name left off. The bar is brushed so it reads as a plain field of gold against the skin, set between two lengths of chain.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose.\nFinish: solid gold, no plating, no stones.\nSize: bar 30 x 6 mm on 1.5 mm cable chain.\nChain: solid gold with a lobster clasp; choose 7.5, 8 or 8.5 inches (measure your wrist and add about half an inch).\n\nEach piece is made to order and ships free within the United States from New Jersey. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Wipe it with a soft cloth; a brushed finish can be refreshed by a jeweller.\n\nThe product images are design visualizations of the finished piece, and the three-metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
    "dims": "bar 30 x 6 mm on 1.5 mm cable chain",
-   "shape": "a bracelet with a flat rectangular bar 30 by 6 mm and 1.2 mm thick in fine brushed satin gold with polished edges, joined at both ends to a fine 1.5 mm polished gold cable chain, laid in a loose open curve with the bar centred, gold lobster clasp",
+   "shape": "a bracelet with a flat rectangular bar 30 by 6 mm and 1.2 mm thick in fine brushed satin gold with the brush lines running along the length of the bar, and polished edges, joined at both ends to a fine 1.5 mm polished gold cable chain, laid in a loose open curve with the bar centred, gold lobster clasp",
    "listingProtocol": "chain_bracelet",
    "offersPersonalization": false,
    "variationAxes": [
@@ -25766,10 +25766,10 @@
      "price_cents": 136000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a bracelet with a flat rectangular bar 30 by 6 mm and 1.2 mm thick in fine brushed satin gold with polished edges, joined at both ends to a fine 1.5 mm polished gold cable chain, laid in a loose open curve with the bar centred, gold lobster clasp. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
+   "imagePrompt": "Studio product photograph of fine jewelry: a bracelet with a flat rectangular bar 30 by 6 mm and 1.2 mm thick in fine brushed satin gold with the brush lines running along the length of the bar, and polished edges, joined at both ends to a fine 1.5 mm polished gold cable chain, laid in a loose open curve with the bar centred, gold lobster clasp. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, the stone surface stays in focus with a fine natural grain texture, no blur gradients, no compression artifacts, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
    "imageFile": "B03.jpg",
-   "imageUrl": null,
-   "imageSha256": null,
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/him26/B03.jpg",
+   "imageSha256": "d901d0ea97a73ce7141278f13abd8647e76b5a38468cef04f27e33efd75cdca2",
    "params": {
     "piece_g": 3.0,
     "per_in": 0.18
@@ -26086,10 +26086,10 @@
      "price_cents": 201000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a slim open cuff bracelet made of a flat solid gold band 2.5 mm wide and 1.3 mm thick, bent into an oval with an opening of about 25 mm at one side, flat squared ends, mirror high polish, shown lying at a slight angle so the opening is visible. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
+   "imagePrompt": "Studio product photograph of fine jewelry: a slim open cuff bracelet made of a flat solid gold band 2.5 mm wide and 1.3 mm thick, bent into an oval with an opening of about 25 mm at one side, flat squared ends, mirror high polish, shown lying at a slight angle so the opening is visible. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, the stone surface stays in focus with a fine natural grain texture, no blur gradients, no compression artifacts, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
    "imageFile": "B04.jpg",
-   "imageUrl": null,
-   "imageSha256": null,
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/him26/B04.jpg",
+   "imageSha256": "5972fad1b0760da8afc6b3c82049bea7abd70c3d399c410c0c743fb0960f05fd",
    "params": {
     "piece_g": 0.0,
     "per_in": 0.85
@@ -26406,10 +26406,10 @@
      "price_cents": 103000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a solid gold 2 mm rope chain bracelet of small links twisted into a tight continuous spiral with a high polish, laid in a loose open curve, gold lobster clasp. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
+   "imagePrompt": "Studio product photograph of fine jewelry: a solid gold 2 mm rope chain bracelet of small links twisted into a tight continuous spiral with a high polish, laid in a loose open curve, gold lobster clasp. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, the stone surface stays in focus with a fine natural grain texture, no blur gradients, no compression artifacts, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
    "imageFile": "B05.jpg",
-   "imageUrl": null,
-   "imageSha256": null,
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/him26/B05.jpg",
+   "imageSha256": "6cf61cf07ba33165c701bea14d9c7d61d0a4c7341b2c0e8511fe8ed7a2b4add1",
    "params": {
     "piece_g": 0.3,
     "per_in": 0.4
@@ -26726,10 +26726,10 @@
      "price_cents": 115000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a solid gold 2.5 mm Figaro chain bracelet with a repeating pattern of three short flat oval links and one long flat oval link, high polish, laid in a loose open curve, gold lobster clasp. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
+   "imagePrompt": "Studio product photograph of fine jewelry: a solid gold 2.5 mm Figaro chain bracelet with a repeating pattern of three short flat oval links and one long flat oval link, high polish, laid in a loose open curve, gold lobster clasp. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, the stone surface stays in focus with a fine natural grain texture, no blur gradients, no compression artifacts, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
    "imageFile": "B06.jpg",
-   "imageUrl": null,
-   "imageSha256": null,
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/him26/B06.jpg",
+   "imageSha256": "4cd409fce81e255012eabd0a9c052b305db5f1f2aa6933b29500879d663da866",
    "params": {
     "piece_g": 0.3,
     "per_in": 0.45
@@ -27046,10 +27046,10 @@
      "price_cents": 115000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a solid gold 2 mm wheat chain (spiga chain) bracelet of small oval links woven in a tight four-sided braid like an ear of wheat, high polish, laid in a loose open curve, gold lobster clasp. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
+   "imagePrompt": "Studio product photograph of fine jewelry: a solid gold 2 mm wheat chain (spiga chain) bracelet of small oval links woven in a tight four-sided braid like an ear of wheat, high polish, laid in a loose open curve, gold lobster clasp. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, the stone surface stays in focus with a fine natural grain texture, no blur gradients, no compression artifacts, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
    "imageFile": "B07.jpg",
-   "imageUrl": null,
-   "imageSha256": null,
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/him26/B07.jpg",
+   "imageSha256": "8a81b98cbb3ef2af5d5cf4c37ef735b64a9da752cf7ee4d6400f3a41b1bdca12",
    "params": {
     "piece_g": 0.3,
     "per_in": 0.45
@@ -27366,10 +27366,10 @@
      "price_cents": 128000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a solid gold 3 mm mariner chain (anchor chain) bracelet of flat oval links each crossed by a small straight bar across the middle, high polish, laid in a loose open curve, gold lobster clasp. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
+   "imagePrompt": "Studio product photograph of fine jewelry: a solid gold 3 mm mariner chain (anchor chain) bracelet of flat oval links each crossed by a small straight bar across the middle, high polish, laid in a loose open curve, gold lobster clasp. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, the stone surface stays in focus with a fine natural grain texture, no blur gradients, no compression artifacts, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
    "imageFile": "B08.jpg",
-   "imageUrl": null,
-   "imageSha256": null,
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/him26/B08.jpg",
+   "imageSha256": "ca4d49c5489ffb80e2dc3607dce5ed9a045a760cd187bbb68cbe5523cd98580c",
    "params": {
     "piece_g": 0.35,
     "per_in": 0.5
@@ -27402,7 +27402,7 @@
    ],
    "description": "Three square gold tubes, each 10 mm long, threaded along a fine 1.5 mm solid gold box chain.\n\nThree short bars of gold spaced a finger's width apart, brushed so they look matte next to the polished chain.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose.\nFinish: solid gold, no plating, no stones.\nSize: three square tubes 2 x 10 mm on 1.5 mm box chain.\nChain: solid gold with a lobster clasp; choose 7.5, 8 or 8.5 inches (measure your wrist and add about half an inch).\n\nEach piece is made to order and ships free within the United States from New Jersey. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Wipe it with a soft cloth; a brushed finish can be refreshed by a jeweller.\n\nThe product images are design visualizations of the finished piece, and the three-metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
    "dims": "three square tubes 2 x 10 mm on 1.5 mm box chain",
-   "shape": "a fine 1.5 mm polished gold box chain bracelet with three square tube stations, each 2 by 2 by 10 mm in brushed satin gold, spaced a little apart at the centre of the chain, laid in a loose open curve, gold lobster clasp",
+   "shape": "a fine 1.5 mm polished gold box chain bracelet with three square tube stations, each 2 by 2 by 10 mm in brushed satin gold with the brush lines running along the tube, spaced a little apart at the centre of the chain, laid in a loose open curve, gold lobster clasp",
    "listingProtocol": "chain_bracelet",
    "offersPersonalization": false,
    "variationAxes": [
@@ -27686,10 +27686,10 @@
      "price_cents": 103000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a fine 1.5 mm polished gold box chain bracelet with three square tube stations, each 2 by 2 by 10 mm in brushed satin gold, spaced a little apart at the centre of the chain, laid in a loose open curve, gold lobster clasp. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
+   "imagePrompt": "Studio product photograph of fine jewelry: a fine 1.5 mm polished gold box chain bracelet with three square tube stations, each 2 by 2 by 10 mm in brushed satin gold with the brush lines running along the tube, spaced a little apart at the centre of the chain, laid in a loose open curve, gold lobster clasp. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, the stone surface stays in focus with a fine natural grain texture, no blur gradients, no compression artifacts, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
    "imageFile": "B09.jpg",
-   "imageUrl": null,
-   "imageSha256": null,
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/him26/B09.jpg",
+   "imageSha256": "07eae332650baf4c38f43c5b20b7ca3743982ceff21b34291c4c2bae2c912afb",
    "params": {
     "piece_g": 1.2,
     "per_in": 0.25
@@ -27720,9 +27720,9 @@
    "materials": [
     "Solid gold"
    ],
-   "description": "A 3 mm chain of long rounded links in solid gold, open and light on the wrist.\n\nEach link is stretched to three times its width, so the chain shows more air than metal. Modern, but not loud.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose.\nFinish: solid gold, no plating, no stones.\nSize: 3 mm elongated cable links.\nChain: solid gold with a lobster clasp; choose 7.5, 8 or 8.5 inches (measure your wrist and add about half an inch).\n\nEach piece is made to order and ships free within the United States from New Jersey. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Wipe it with a soft cloth; a brushed finish can be refreshed by a jeweller.\n\nThe product images are design visualizations of the finished piece, and the three-metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
+   "description": "A 3 mm chain of long rounded links in solid gold, open and light on the wrist.\n\nEach link is stretched to about twice its width, so the chain shows more air than metal. Modern, but not loud.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose.\nFinish: solid gold, no plating, no stones.\nSize: 3 mm elongated cable links.\nChain: solid gold with a lobster clasp; choose 7.5, 8 or 8.5 inches (measure your wrist and add about half an inch).\n\nEach piece is made to order and ships free within the United States from New Jersey. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Wipe it with a soft cloth; a brushed finish can be refreshed by a jeweller.\n\nThe product images are design visualizations of the finished piece, and the three-metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
    "dims": "3 mm elongated cable links",
-   "shape": "a solid gold chain bracelet of elongated rounded oval cable links 3 mm wide and about 9 mm long, made from round wire with a high polish, laid in a loose open curve, gold lobster clasp",
+   "shape": "a solid gold chain bracelet of elongated rounded oval cable links 3 mm wide and about 6 mm long, made from round wire with a high polish, laid in a loose open curve, gold lobster clasp",
    "listingProtocol": "chain_bracelet",
    "offersPersonalization": false,
    "variationAxes": [
@@ -28006,10 +28006,10 @@
      "price_cents": 99000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a solid gold chain bracelet of elongated rounded oval cable links 3 mm wide and about 9 mm long, made from round wire with a high polish, laid in a loose open curve, gold lobster clasp. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
+   "imagePrompt": "Studio product photograph of fine jewelry: a solid gold chain bracelet of elongated rounded oval cable links 3 mm wide and about 6 mm long, made from round wire with a high polish, laid in a loose open curve, gold lobster clasp. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, the stone surface stays in focus with a fine natural grain texture, no blur gradients, no compression artifacts, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
    "imageFile": "B10.jpg",
-   "imageUrl": null,
-   "imageSha256": null,
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/him26/B10.jpg",
+   "imageSha256": "286d3db289d466ce8cd08af537b12e23aa184b4659bcd0ce5aa372d6bb975d80",
    "params": {
     "piece_g": 0.3,
     "per_in": 0.38
@@ -28236,10 +28236,10 @@
      "price_cents": 52000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a pair of small flat square stud earrings, each face 4 by 4 mm with crisp edges in fine brushed satin gold, on gold posts with butterfly backs; one stud lies flat, the other stands slightly angled to show the post. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
+   "imagePrompt": "Studio product photograph of fine jewelry: a pair of small flat square stud earrings, each face 4 by 4 mm with crisp edges in fine brushed satin gold, on gold posts with butterfly backs; one stud lies flat, the other stands slightly angled to show the post. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, the stone surface stays in focus with a fine natural grain texture, no blur gradients, no compression artifacts, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
    "imageFile": "E01.jpg",
-   "imageUrl": null,
-   "imageSha256": null,
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/him26/E01.jpg",
+   "imageSha256": "56a223f49cdbc4dc3c23b29b8626c67744f0d4ea78794cb5322c51e794f77db3",
    "params": {
     "piece_g": 0.35
    }
@@ -28465,10 +28465,10 @@
      "price_cents": 54000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a pair of small flat round disc stud earrings, each 5 mm across with a softly rounded edge and a mirror polished flat face, on gold posts with butterfly backs; one stud lies flat, the other stands slightly angled to show the post. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
+   "imagePrompt": "Studio product photograph of fine jewelry: a pair of small flat round disc stud earrings, each 5 mm across with a softly rounded edge and a mirror polished flat face, on gold posts with butterfly backs; one stud lies flat, the other stands slightly angled to show the post. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, the stone surface stays in focus with a fine natural grain texture, no blur gradients, no compression artifacts, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
    "imageFile": "E02.jpg",
-   "imageUrl": null,
-   "imageSha256": null,
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/him26/E02.jpg",
+   "imageSha256": "4d6fc2d3e6b515c6550d9ef7447aff30371fd8dd1607eadd1c47c0c1506121ee",
    "params": {
     "piece_g": 0.38
    }
@@ -28500,7 +28500,7 @@
    ],
    "description": "A short vertical bar of solid gold, 2 by 8 mm, on a post, sold as a single earring or a pair.\n\nIt follows the line of the earlobe instead of sitting on it like a dot. Polished on the edges, brushed on the face.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose.\nFinish: solid gold, no plating, no stones.\nSize: bar 2 x 8 mm.\nEarrings: solid gold posts with butterfly backs. Choose a single earring or a pair.\n\nEach piece is made to order and ships free within the United States from New Jersey. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Wipe it with a soft cloth; a brushed finish can be refreshed by a jeweller.\n\nThe product images are design visualizations of the finished piece, and the three-metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
    "dims": "bar 2 x 8 mm",
-   "shape": "a pair of small vertical bar stud earrings, each a flat bar 2 by 8 mm with square ends, brushed satin face and polished edges, on gold posts with butterfly backs; one stud lies flat, the other stands slightly angled to show the post",
+   "shape": "a pair of small vertical bar stud earrings, each a flat bar 2 by 8 mm with square ends, brushed satin face with the brush lines running along the bar and polished edges, on gold posts with butterfly backs; one stud lies flat, the other stands slightly angled to show the post",
    "listingProtocol": "stud_earrings",
    "offersPersonalization": false,
    "variationAxes": [
@@ -28694,10 +28694,10 @@
      "price_cents": 54000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a pair of small vertical bar stud earrings, each a flat bar 2 by 8 mm with square ends, brushed satin face and polished edges, on gold posts with butterfly backs; one stud lies flat, the other stands slightly angled to show the post. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
+   "imagePrompt": "Studio product photograph of fine jewelry: a pair of small vertical bar stud earrings, each a flat bar 2 by 8 mm with square ends, brushed satin face with the brush lines running along the bar and polished edges, on gold posts with butterfly backs; one stud lies flat, the other stands slightly angled to show the post. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, the stone surface stays in focus with a fine natural grain texture, no blur gradients, no compression artifacts, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
    "imageFile": "E03.jpg",
-   "imageUrl": null,
-   "imageSha256": null,
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/him26/E03.jpg",
+   "imageSha256": "7daeb37aa51ef42cdd69a9b83d1209ed2bf8b89080bbd205fe38bd91bb1fdfe5",
    "params": {
     "piece_g": 0.38
    }
@@ -28923,10 +28923,10 @@
      "price_cents": 55000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a pair of small flat hexagon stud earrings, each 5 mm across with crisp straight sides, brushed satin face and polished bevelled edges, on gold posts with butterfly backs; one stud lies flat, the other stands slightly angled to show the post. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
+   "imagePrompt": "Studio product photograph of fine jewelry: a pair of small flat hexagon stud earrings, each 5 mm across with crisp straight sides, brushed satin face and polished bevelled edges, on gold posts with butterfly backs; one stud lies flat, the other stands slightly angled to show the post. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, the stone surface stays in focus with a fine natural grain texture, no blur gradients, no compression artifacts, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
    "imageFile": "E04.jpg",
-   "imageUrl": null,
-   "imageSha256": null,
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/him26/E04.jpg",
+   "imageSha256": "c346663d2128f399f3db944c10f5d8663977d75de79801ea9869f16b475a9e4e",
    "params": {
     "piece_g": 0.4
    }
@@ -29152,10 +29152,10 @@
      "price_cents": 56000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a pair of small solid square pyramid stud earrings, each 4 by 4 mm at the base with four flat mirror polished facets meeting at a low point, on gold posts with butterfly backs; one stud lies flat, the other stands slightly angled to show the post. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
+   "imagePrompt": "Studio product photograph of fine jewelry: a pair of small solid square pyramid stud earrings, each 4 by 4 mm at the base with four flat mirror polished facets meeting at a low point, on gold posts with butterfly backs; one stud lies flat, the other stands slightly angled to show the post. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, the stone surface stays in focus with a fine natural grain texture, no blur gradients, no compression artifacts, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
    "imageFile": "E05.jpg",
-   "imageUrl": null,
-   "imageSha256": null,
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/him26/E05.jpg",
+   "imageSha256": "4c047e31ac59048ae3271ff34cf068738678c86756ec82f6dfe283121c5f30b5",
    "params": {
     "piece_g": 0.42
    }
@@ -29381,10 +29381,10 @@
      "price_cents": 72000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a pair of small round huggie hoop earrings 10 mm across made of a 2 mm thick solid gold round tube with a mirror high polish, each with a hinged click closure; one hoop lies flat, the other stands upright. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
+   "imagePrompt": "Studio product photograph of fine jewelry: a pair of small round huggie hoop earrings 10 mm across made of a 2 mm thick solid gold round tube with a mirror high polish, each with a hinged click closure; one hoop lies flat, the other stands upright. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, the stone surface stays in focus with a fine natural grain texture, no blur gradients, no compression artifacts, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
    "imageFile": "E06.jpg",
-   "imageUrl": null,
-   "imageSha256": null,
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/him26/E06.jpg",
+   "imageSha256": "0667adcabb9f71a8f4512e5425d379b8b3f7c245390b836d07221505e58e6500",
    "params": {
     "piece_g": 0.7
    }
@@ -29610,10 +29610,10 @@
      "price_cents": 80000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a pair of small round huggie hoop earrings 12 mm across and 2.5 mm wide, the outer surface cut with fine parallel ribs running across the hoop all the way around, high polish, hinged click closure; one hoop lies flat, the other stands upright. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
+   "imagePrompt": "Studio product photograph of fine jewelry: a pair of small round huggie hoop earrings 12 mm across and 2.5 mm wide, the outer surface cut with fine parallel ribs running across the hoop all the way around, high polish, hinged click closure; one hoop lies flat, the other stands upright. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, the stone surface stays in focus with a fine natural grain texture, no blur gradients, no compression artifacts, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
    "imageFile": "E07.jpg",
-   "imageUrl": null,
-   "imageSha256": null,
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/him26/E07.jpg",
+   "imageSha256": "429979c11b202b4248a80ef91d3a94d056b194823508d9034e6295b43e0c5757",
    "params": {
     "piece_g": 0.85
    }
@@ -29839,10 +29839,10 @@
      "price_cents": 83000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a pair of round hoop earrings 14 mm across made from solid square gold wire with a 1.8 by 1.8 mm square cross section, crisp polished corners, hinged click closure; one hoop lies flat, the other stands upright so the square profile shows. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
+   "imagePrompt": "Studio product photograph of fine jewelry: a pair of round hoop earrings 14 mm across made from solid square gold wire with a 1.8 by 1.8 mm square cross section, crisp polished corners, hinged click closure; one hoop lies flat, the other stands upright so the square profile shows. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, the stone surface stays in focus with a fine natural grain texture, no blur gradients, no compression artifacts, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
    "imageFile": "E08.jpg",
-   "imageUrl": null,
-   "imageSha256": null,
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/him26/E08.jpg",
+   "imageSha256": "83882a0e9205631ab6ff88810fa2061bac23632add365b9d678c3af660ef5912",
    "params": {
     "piece_g": 0.9
    }
@@ -30068,10 +30068,10 @@
      "price_cents": 61000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a pair of short drop earrings: each has a tiny 3 mm round polished gold stud and, hanging from it by a small gold jump ring, a slim round gold bar 1.5 mm thick and 12 mm long with a polished finish. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
+   "imagePrompt": "Studio product photograph of fine jewelry: a pair of short drop earrings: each has a tiny 3 mm round polished gold stud and, hanging from it by a small gold jump ring, a slim round gold bar 1.5 mm thick and 12 mm long with a polished finish. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, the stone surface stays in focus with a fine natural grain texture, no blur gradients, no compression artifacts, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
    "imageFile": "E09.jpg",
-   "imageUrl": null,
-   "imageSha256": null,
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/him26/E09.jpg",
+   "imageSha256": "374857eb3759f1da4ab493cd46c9e375492a75e6d9e36f10f2cd444a9f9c22d9",
    "params": {
     "piece_g": 0.5
    }
@@ -30297,10 +30297,10 @@
      "price_cents": 61000
     }
    ],
-   "imagePrompt": "Studio product photograph of one fine jewelry piece: a pair of small round signet face stud earrings, each a flat mirror polished 6 mm round top sitting on a bevelled solid gold collar that narrows toward the ear, on gold posts with butterfly backs; one stud lies flat, the other stands slightly angled to show the post. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
+   "imagePrompt": "Studio product photograph of fine jewelry: a pair of small round signet face stud earrings, each a flat mirror polished 6 mm round top sitting on a bevelled solid gold collar that narrows toward the ear, on gold posts with butterfly backs; one stud lies flat, the other stands slightly angled to show the post. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, the stone surface stays in focus with a fine natural grain texture, no blur gradients, no compression artifacts, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
    "imageFile": "E10.jpg",
-   "imageUrl": null,
-   "imageSha256": null,
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/him26/E10.jpg",
+   "imageSha256": "0adb39a03cbbf1991f327702f792a6943f80b0f2c826acef64cb614375545160",
    "params": {
     "piece_g": 0.5
    }
