@@ -210,6 +210,11 @@ def slots(idx, it):
          f"off and leaning beside it, lined with natural undyed linen; {obj} sits on the linen in sharp focus; the box "
          f"has no logo and no text."),
         ("09", "Three gold colours",
+         (f"Metal colour visualization on a pale {bg} tint stone surface: three separate bracelets of this exact chain lie "
+          f"in one horizontal row, each closed into its own round circle with its own clasp, with a wide strip of bare "
+          f"stone between the circles so no two bracelets touch: the left circle all yellow gold, the middle circle all "
+          f"white gold (cool silvery white), the right circle all rose gold (soft pink gold), every bracelet a single "
+          f"metal from end to end; same chain and finish in all three.") if t == "bracelet" else
          f"Metal colour visualization: {three}, on a pale {bg} tint stone surface: left in yellow gold, centre in white "
          f"gold (cool silvery white), right in rose gold (soft pink gold); the shape and finish are identical in all three."),
         ("10", *w["10"][0:2]),
