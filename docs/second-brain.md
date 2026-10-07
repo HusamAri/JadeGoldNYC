@@ -1237,6 +1237,26 @@ repodaki hedefidir.
   kilidi dış çağrıdan ÖNCE alındığı için "kilit yok" = "dışarıya hiç
   gidilmedi" kanıtıdır, yeniden deneme güvenlidir.
 
+- **Yutulan hata dış sistemin KISITINI "yetkisiz"e çevirir; kod değişmediyse önce platformun kendi logunu oku
+  (2026-10-07):** Noel setinin 30 taslağını Etsy'ye itmek için `ops/drafts-push` 401 döndü. Token canlıydı,
+  hash'i doğruydu ve aynı UPDATE service_role ile SQL'de satır buluyordu; 1 Ekim'den beri kodda değişiklik
+  yoktu. Rota Supabase hatasını yutup her durumda `unauthorized` diyordu. Hatayı loga yazan tek satırlık
+  değişiklik gerçeği gösterdi: Supabase projesi kota aşımıyla kısıtlanmıştı (`exceed_db_size_quota`,
+  `exceed_storage_size_quota`, HTTP 402). Aynı kısıt panel girişini de düşürüyordu, yani "Etsy itişi
+  bozuk" sanılan şey bütün panelin kapanmasıydı. MCP üzerinden SQL çalışmaya devam ettiği için bu da
+  görünmüyordu. Ölçüm: DB 1.184 MB (`audit_log` 981 MB), depolama 3,7 GB (`listing-images`). Sahibin
+  kararıyla 14 günden eski, `actor_id` boş 370 bin audit satırı silindi; ama Postgres silinen yeri dosya
+  yeniden yazılmadan geri vermiyor ve `VACUUM FULL` dolu diskte kopya yazamadı. Depolama tek başına
+  sınırın üstünde olduğu için kısıtı ancak plan yükseltmesi kaldırır. Kural: (1) "yetkisiz/boş" dönen bir
+  çağrıda önce yutulan hatayı yüzeye çıkar, sebebi tahmin etme; (2) kod değişmediği hâlde bozulan bir şey
+  varsa sebep çoğu zaman platformdadır (kota, plan, anahtar), oranın logunu oku; (3) disk kotasında satır
+  silmek dosyayı küçültmez, yer açmak için yeniden yazma alanı gerekir, bunu silmeden önce söyle.
+  Yan ders (aynı iş): model yüzüğü prompt ne derse desin kadrajın ortasındaki parmağa koydu (14 karede).
+  Ürün bir parmak vaat etmiyorsa bu kusur değil, editoryal takıştır; kusur sayılan şey ikinci yüzük,
+  beş parmaklı olmayan el, yanlış ölçek ve yeniden tasarlanmış ürün. Görselle metin çeliştiğinde ise
+  (B07 3 yaprak, poinsettia 5 ve 6 yaprak) metin görsele eşitlendi; sayı vaat etmeyen metin, her listing'in
+  kendi görseliyle tutarlı kalır.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
