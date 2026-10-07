@@ -1256,6 +1256,20 @@ repodaki hedefidir.
   beş parmaklı olmayan el, yanlış ölçek ve yeniden tasarlanmış ürün. Görselle metin çeliştiğinde ise
   (B07 3 yaprak, poinsettia 5 ve 6 yaprak) metin görsele eşitlendi; sayı vaat etmeyen metin, her listing'in
   kendi görseliyle tutarlı kalır.
+  **Güçlendirme (aynı gün) — dolu diskte tabloyu VACUUM FULL olmadan küçültmek: canlı satırları
+  sondan başa TAŞI, sonra VACUUM kuyruğu kessin.** `VACUUM FULL` kopya yazacak yer bulamadı, CHECKPOINT
+  yetkisi yoktu. Ölçüm şunu gösterdi: 981 MB'lık `audit_log` dosyasında canlı veri 166 MB'tı ve
+  hepsi dosyanın SONUNDAydı (silinen eski satırlar baştaydı). Düz `VACUUM` yalnız sondaki boş sayfaları
+  keser, o yüzden işe yaramıyordu. Çözüm: en yüksek `ctid`'li satırları partiler hâlinde
+  `delete ... returning *` + `insert` ile yeniden yaz (yeni sürüm FSM'den baştaki boş sayfaya düşer),
+  ardından `vacuum (index_cleanup on, truncate on)`. İki tuzak: (1) `update set id=id` İŞE YARAMADI,
+  çünkü vacuum sondaki sayfada yer açınca güncelleme HOT olup aynı sayfada kalıyor; (2) düz vacuum
+  az ölü satırda index temizliğini atlıyor, LP_DEAD kalan sayfa "boş" sayılmıyor ve kesilmiyor,
+  `index_cleanup on` şart. Yer açılınca `VACUUM FULL` da koştu: DB 1.184 → 394 MB, WAL 512 → 144 MB.
+  Veri kaybı olmadığını işlem ÖNCESİ alınan satır-hash toplamı kanıtladı (99.436 satır, birebir).
+  Kısıt kalkınca 30 taslak Etsy'ye gitti, 30/30 bağımsız geri okumada birebir. Kural: kotada "sil"
+  demek yetmez, dosyanın NERESİNİN dolu olduğunu ölç (`ctid` blok dağılımı); taşıma işlemini başlamadan
+  mühürle ve küçük partiyle WAL'ı izleyerek başla.
 
 ## Ürün/UX dersleri
 
