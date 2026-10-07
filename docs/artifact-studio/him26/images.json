@@ -374,5 +374,8 @@
    "cleaned": false,
    "selectedBy": "Claude QA against catalog shape text 2026-10-07"
   }
- ]
+ ],
+ "openDefects": {
+  "B05": "hero shows the rope chain in two pieces (two loose end caps besides the clasp end); missed at hero QA on the 300 px sheet, found by the bracelet agent; sales frames 02-10 show a normal closed chain; hero re-shoot pending owner approval"
+ }
 }
