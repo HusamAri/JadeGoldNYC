@@ -87,19 +87,10 @@ def maker_cost(m, k, size):
     return cost + (mk.ASSEMBLY if c == "bracelet" else 0)
 
 
-# Necklaces would DROP 30-50% under v2, but their chain is not quoted (130 USD is an estimate) and 9 of 10
-# pendant weights are own estimates. A price cut on estimates is not taken: they keep v1 until the maker
-# quotes the chain (owner informed 2026-10-07).
-HOLD_V1 = {"necklace"}
-
-
+# Necklaces (chain 130 USD and 9 pendant weights estimated) and nine bracelets (station grams estimated)
+# were first held at v1 / raise-only; owner decided 2026-10-07 ("tahmini fiyatla"): price on estimates too.
 def price_cents(m, k, size):
-    if m["cat"] in HOLD_V1:
-        return price_cents_v1(m, k, size)
-    v2 = mk.price_cents(maker_cost(m, k, size))
-    if m["cat"] == "bracelet" and m["id"] != "B09":   # station grams estimated: raise only, never cut
-        return max(v2, price_cents_v1(m, k, size))
-    return v2
+    return mk.price_cents(maker_cost(m, k, size))
 
 
 def variant_grams(m, k, size):
@@ -517,7 +508,7 @@ basis = {"rule": "price = ceil(2 x maker_cost / 10) x 10 (owner decision 2026-10
          "estimated": {"necklaceChain": "130 USD at 18 in (I13 quote, middle-length convention), scaled by length",
                        "braceletStations": "own v1 grams x 3.75 (the B09 quote ratio) for the other nine bracelets",
                        "pendantGrams": "own v1 grams; the quoted N02 matched the estimate (1.0 g)"},
-         "heldAtV1": "necklaces (chain not quoted; v2 would cut 30-50%)",
+         "estimateApproval": "owner 2026-10-07: price necklaces and bracelets on the estimates too",
          "supersedes": "v1: own estimate with quote-derived labor per category (price_cents_v1 kept per variant)"}
 json.dump({"source": SOURCE, "org": ORG, "pricingBasis": basis, "items": out},
           open(HERE / "catalog.json", "w"), ensure_ascii=False, indent=1)

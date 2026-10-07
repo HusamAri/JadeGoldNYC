@@ -1287,6 +1287,10 @@ repodaki hedefidir.
   koşullu DO bloğu, sonra mühür e8ed8f7b, 2.700 audit satırı, Etsy kuru 2.580 fark = katalogdaki
   değişen varyant sayısı, kanarya 234, apply 2.346, taze token'la bağımsız okuma 20/20 unchanged
   (`panelVaryant` 2.700, boş harita değil).
+  Devamı (aynı gün): sahip "tahmini fiyatla" dedi; tutulan kolyeler ve tahmini bileklikler 0164 ile
+  2 × maliyete çekildi (ön mühür e8ed8f7b, son mühür d0a71d43), Etsy kuru 315 fark = katalogdan beklenen
+  315, apply 315, bağımsız okuma 20/20 unchanged. Yani soru boşa değildi: indirim sahibin açık kararıyla
+  uygulandı, sessiz bir yan etki olarak değil.
 
 ## Ürün/UX dersleri
 
