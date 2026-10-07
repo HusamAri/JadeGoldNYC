@@ -6,12 +6,14 @@
   "R01-1": "block artifacts in the background, brush direction across the band",
   "R05-1": "flat-topped stepped band, catalog says a knife edge ridge",
   "R05-2": "concave channel band, catalog says a knife edge ridge",
-  "R08-1": "ring drawn as a square frame; catalog is a round ring of square wire"
+  "R08-1": "ring drawn as a square frame; catalog is a round ring of square wire",
+  "B05-1": "rope chain drawn in two pieces with two loose end caps (found by the bracelet agent after the sales frames)"
  },
  "notes": {
   "R01": "brush lines run across the band; copy does not promise a direction",
   "B10": "links about 2x their width; copy changed to match",
-  "R05": "third try with a new pose (lying flat like a coin) after two misses standing upright"
+  "R05": "third try with a new pose (lying flat like a coin) after two misses standing upright",
+  "B05": "hero re-shot on owner approval 2026-10-07; sales frames 02-10 were generated from the crop of the first hero and already show one closed chain"
  },
  "images": [
   {
@@ -184,15 +186,16 @@
   },
   {
    "id": "B05",
-   "job_id": "684042e4-f89a-43ac-9f2d-371484e263cf",
+   "job_id": "5ce8d00c-16b4-42f8-833a-77030ac92f1f",
    "model": "nano_banana_2",
    "resolution": "2k",
    "aspect": "1:1",
    "file": "B05.jpg",
    "url": "https://amuletta.artifactstudio.info/artifact/him26/B05.jpg",
-   "sha256": "6cf61cf07ba33165c701bea14d9c7d61d0a4c7341b2c0e8511fe8ed7a2b4add1",
+   "sha256": "d49f3d6b9f11aa8cc3afd4739ab4ea28ba382ef91a6c28a9d6d14e999afc6803",
    "cleaned": false,
-   "selectedBy": "Claude QA against catalog shape text 2026-10-07"
+   "selectedBy": "Claude QA against catalog shape text 2026-10-07",
+   "promptAddition": "The bracelet is one single continuous rope chain, closed into one oval: the lobster clasp at one end is hooked onto the small ring at the other end; no loose ends, no second piece."
   },
   {
    "id": "B06",
@@ -374,8 +377,5 @@
    "cleaned": false,
    "selectedBy": "Claude QA against catalog shape text 2026-10-07"
   }
- ],
- "openDefects": {
-  "B05": "hero shows the rope chain in two pieces (two loose end caps besides the clasp end); missed at hero QA on the 300 px sheet, found by the bracelet agent; sales frames 02-10 show a normal closed chain; hero re-shoot pending owner approval"
- }
+ ]
 }
