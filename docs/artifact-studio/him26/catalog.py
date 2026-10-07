@@ -6,7 +6,7 @@ Writes catalog.json next to this file and fails loudly on any rule break.
 Pricing rule is the Christmas 2026 / FW 26/27 one (docs/artifact-studio/xmas26/catalog.py).
 Solid gold only: no enamel, no stones. Earrings sell as a single piece or a pair (third axis "Pieces").
 """
-import json, math, re, uuid, pathlib
+import json, math, re, sys, uuid, pathlib
 
 HERE = pathlib.Path(__file__).parent
 ORG = "2c254edf-2119-4079-b09e-dc672e32c1f9"  # by Artifact Studio Jewelry
@@ -58,10 +58,50 @@ def labor(m, size):
     return LABOR[c]
 
 
-def price_cents(m, k, size):
+def price_cents_v1(m, k, size):
+    """Superseded 2026-10-07 before publication: own estimate with quote-derived labor."""
     g = grams14(m, size) * DENSITY[k]
     cost = g * PURE_G * PURITY[k] * LOSS + labor(m, size)
     return int(math.ceil(MARKUP * cost / 10) * 10 * 100)
+
+
+# ---------------------------------------------------------------- v2: 2 x maker cost (owner 2026-10-07)
+sys.path.insert(0, str(HERE.parent))
+import maker_cost as mk  # noqa: E402
+
+# Ring grams from the maker's band list: (equivalent width mm, wall mm). Plain bands use their own width;
+# signets follow the owner's rule "top + shank, halve it" (2026-09-16); the bar signet's face is 48 mm2
+# against the square signet's 81 mm2, so its equivalent width sits between shank and square: 5 mm.
+RING_LIST = {"R01": (4, 1.4), "R02": (3, 1.5), "R03": (6, 1.5), "R04": (5, 1.5), "R05": (2.5, 1.8),
+             "R06": (4, 1.4), "R07": (5, 1.3), "R08": (2, 2.0), "R09": (3.5, 1.5), "R10": (2, 2.0)}
+STATION_ASSEMBLY = {"B03", "B09"}      # bar / tubes joined to the chain: the quoted 50 USD assembly
+# Earrings: the 2027 enamel quote was 350 USD a pair at 0.88 g; less 2 x 50 enamel = 250; less its gold
+# (88 at 100/g) = 162 USD non-gold work per pair. Single = 60% of that (UNCALIBRATED).
+EAR_PAIR_WORK = 350 - 2 * mk.ENAMEL_PIECE - 0.88 * mk.MAKER_14K_USD_G
+
+
+def maker_g14(m, size):
+    c = m["cat"]
+    if c == "ring":
+        w, t = RING_LIST[m["id"]]
+        return mk.list_g14(w, size, t)
+    if c == "bracelet":
+        return m["piece_g"] + m["per_in"] * size
+    return m["piece_g"] * (2 if size == "Pair" else 1)
+
+
+def maker_cost(m, k, size):
+    c = m["cat"]
+    cost = mk.gold_cost(maker_g14(m, size), k)
+    if c == "bracelet":
+        return cost + (mk.ASSEMBLY if m["id"] in STATION_ASSEMBLY else 0)
+    if c == "earring":
+        return cost + EAR_PAIR_WORK * (1 if size == "Pair" else SINGLE_LABOR_SHARE)
+    return cost
+
+
+def price_cents(m, k, size):
+    return mk.price_cents(maker_cost(m, k, size))
 
 
 SHARED_TAGS = ["mens jewelry", "gift for him", "minimalist jewelry"]
@@ -396,7 +436,7 @@ for m in M:
                 seen_sku.add(sku)
                 variants.append({"sku": sku,
                                  "properties": {"Karat": k, "Metal Color": cn, AXES[cat][2]: size_label(cat, s)},
-                                 "grams": round(grams14(m, s) * DENSITY[k], 2),
+                                 "grams": round(maker_g14(m, s) * DENSITY[k], 2),
                                  "price_cents": price_cents(m, k, s)})
     assert len(variants) == {"ring": 243, "bracelet": 27, "earring": 18}[cat]
     if cat == "earring":   # a pair must cost more than a single and less than two singles
@@ -414,23 +454,24 @@ for m in M:
         "title": m["title"], "tags": tags, "materials": ["Solid gold"],
         "description": desc, "dims": m["dims"], "shape": m["shape"],
         "listingProtocol": proto, "offersPersonalization": False, "variationAxes": AXES[cat],
-        "grams14Ref": round(grams14(m, rs), 2), "refSize": size_label(cat, rs), "refPriceCents": ref["price_cents"],
+        "grams14Ref": round(maker_g14(m, rs), 2), "makerCost14KRefUsd": round(maker_cost(m, "14K", rs), 2), "refSize": size_label(cat, rs), "refPriceCents": ref["price_cents"],
         "variants": variants, "imagePrompt": PROMPT.format(shape=m["shape"]), "imageFile": f"{m['id']}.jpg",
         "imageUrl": IMG.get(m["id"], {}).get("url"), "imageSha256": IMG.get(m["id"], {}).get("sha256"),
         "params": {k: m[k] for k in ("top_g", "shank_g", "piece_g", "per_in") if k in m},
     })
 
-basis = {"spotUsdOzt": SPOT_USD_OZT, "spotSource": "gold-api.com 2026-09-30T11:21Z (same basis as the Christmas 2026 set)",
-         "loss": LOSS, "purity": PURITY, "densityVs14K": DENSITY, "laborUsd": LABOR, "markup": MARKUP,
-         "singleEarringLaborShare": SINGLE_LABOR_SHARE,
-         "rule": "price = ceil(2 x (grams_k x spot/31.1034768 x purity x 1.07 + labor) / 10) x 10; single earring labor = 0.6 x pair labor",
-         "laborSource": "owner 14K cost quotes for the 2027 enamel set minus their 14K gold at this spot",
-         "assumptions": ["single earring labor share 0.6 is UNCALIBRATED; ask the maker for a single-piece quote",
-                         "chain grams per inch are estimates for solid (not hollow) chain; confirm with the maker"]}
+basis = {"rule": "price = ceil(2 x maker_cost / 10) x 10 (owner decision 2026-10-07)",
+         "makerCost": "gold grams x density x (spot x purity + labor per gram) + quoted extras; see ../maker_cost.py",
+         "maker14KUsdPerGram": mk.MAKER_14K_USD_G, "spotUsdOzt": mk.SPOT_USD_OZT,
+         "ringGrams": "maker band list at the equivalent width and wall in RING_LIST",
+         "estimated": ["chain grams per inch (solid chain), priced at the list's 100 USD/g",
+                       "earring non-gold work 162 USD a pair (from the 2027 enamel quote); single = 0.6 x (UNCALIBRATED)",
+                       "signet equivalent widths (owner rule top + shank halved; bar signet 5 mm)"],
+         "modelFee": "25 USD once per design, not in unit price"}
 json.dump({"source": SOURCE, "org": ORG, "pricingBasis": basis, "items": out},
           open(HERE / "catalog.json", "w"), ensure_ascii=False, indent=1)
-print("items", len(out), "variants", sum(len(i["variants"]) for i in out), "labor", LABOR)
+print("items", len(out), "variants", sum(len(i["variants"]) for i in out))
 for i in out:
     ps = [v["price_cents"] for v in i["variants"]]
-    print(i["id"], f"{i['name']:<22}", i["listingProtocol"], "ref", i["refSize"], i["grams14Ref"], "g",
+    print(i["id"], f"{i['name']:<22}", i["listingProtocol"], "ref", i["refSize"], i["grams14Ref"], "g cost", round(i["makerCost14KRefUsd"]), "price",
           i["refPriceCents"] // 100, "USD  range", min(ps) // 100, max(ps) // 100)

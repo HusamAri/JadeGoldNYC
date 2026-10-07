@@ -5,7 +5,7 @@ Run: python3 docs/artifact-studio/xmas26/catalog.py
 Writes catalog.json next to this file and fails loudly on any rule break.
 Pricing and grid rules are the FW 26/27 enamel set's (docs/artifact-studio/fw2627-enamel/catalog.py).
 """
-import json, math, os, re, uuid, pathlib
+import json, math, os, re, sys, uuid, pathlib
 
 HERE = pathlib.Path(__file__).parent
 ORG = "2c254edf-2119-4079-b09e-dc672e32c1f9"  # by Artifact Studio Jewelry
@@ -44,10 +44,66 @@ def grams14(m, size):
     return m["piece_g"] + 0.2 + 0.114 * size
 
 
-def price_cents(m, k, size):
+def price_cents_v1(m, k, size):
+    """Superseded 2026-10-07: own estimate (quote-derived labor). Kept to report the change."""
     g = grams14(m, size) * DENSITY[k]
     cost = g * PURE_G * PURITY[k] * LOSS + LABOR[m["cat"]]
     return int(math.ceil(MARKUP * cost / 10) * 10 * 100)
+
+
+# ---------------------------------------------------------------- v2: 2 x maker cost (owner 2026-10-07)
+sys.path.insert(0, str(HERE.parent))
+import maker_cost as mk  # noqa: E402
+
+BRACELET_STATION_SCALE = 3.0 / 0.8     # maker counts 3 g for B09's stations where v1 estimated 0.8 g
+FULL_ENAMEL_BAND = {"R02"}             # quoted as a 4 mm band + 100 USD enamel
+
+
+def maker_g14(m, size):
+    """14K grams the maker charges for, chain excluded."""
+    c = m["cat"]
+    if c == "ring":
+        return mk.list_g14(4 if m["id"] in FULL_ENAMEL_BAND else 3, size)
+    if c == "necklace":
+        return m["piece_g"]
+    return m["piece_g"] * BRACELET_STATION_SCALE
+
+
+def chain_g14(m, size):
+    c = m["cat"]
+    if c == "necklace":
+        return mk.CHAIN_NECKLACE_18IN / mk.MAKER_14K_USD_G * size / 18
+    if c == "bracelet":
+        return mk.CHAIN_BRACELET_7IN / mk.MAKER_14K_USD_G * size / 7
+    return 0.0
+
+
+def maker_cost(m, k, size):
+    c = m["cat"]
+    cost = mk.gold_cost(maker_g14(m, size) + chain_g14(m, size), k)
+    if c == "ring":
+        return cost + (mk.ENAMEL_RING_BAND if m["id"] in FULL_ENAMEL_BAND else 0)
+    cost += mk.ENAMEL_PIECE if m["enamel"] else 0
+    return cost + (mk.ASSEMBLY if c == "bracelet" else 0)
+
+
+# Necklaces would DROP 30-50% under v2, but their chain is not quoted (130 USD is an estimate) and 9 of 10
+# pendant weights are own estimates. A price cut on estimates is not taken: they keep v1 until the maker
+# quotes the chain (owner informed 2026-10-07).
+HOLD_V1 = {"necklace"}
+
+
+def price_cents(m, k, size):
+    if m["cat"] in HOLD_V1:
+        return price_cents_v1(m, k, size)
+    v2 = mk.price_cents(maker_cost(m, k, size))
+    if m["cat"] == "bracelet" and m["id"] != "B09":   # station grams estimated: raise only, never cut
+        return max(v2, price_cents_v1(m, k, size))
+    return v2
+
+
+def variant_grams(m, k, size):
+    return round((maker_g14(m, size) + chain_g14(m, size)) * DENSITY[k], 2)
 
 
 # ---------------------------------------------------------------- Christmas enamel palette
@@ -430,8 +486,9 @@ for m in M:
                 seen_sku.add(sku)
                 variants.append({"sku": sku,
                                  "properties": {"Karat": k, "Metal Color": cn, AXES[cat][2]: size_label(cat, s)},
-                                 "grams": round(grams14(m, s) * DENSITY[k], 2),
-                                 "price_cents": price_cents(m, k, s)})
+                                 "grams": variant_grams(m, k, s),
+                                 "price_cents": price_cents(m, k, s),
+                                 "price_cents_v1": price_cents_v1(m, k, s)})
     assert len(variants) == {"ring": 243, "necklace": 27, "bracelet": 27}[cat]
     rs = ref_size(cat)
     ref = next(v for v in variants if v["properties"]["Karat"] == "14K" and v["properties"]["Metal Color"] == "Yellow Gold"
@@ -443,19 +500,30 @@ for m in M:
         "title": m["title"], "tags": tags, "materials": ["Solid gold"] if gold else ["Solid gold", "Vitreous enamel"],
         "description": desc, "enamel": colours, "goldOnly": gold, "dims": m["dims"], "shape": m["shape"],
         "listingProtocol": PROTOCOL[cat], "offersPersonalization": False, "variationAxes": AXES[cat],
-        "grams14Ref": round(grams14(m, rs), 2), "refPriceCents": ref["price_cents"], "variants": variants,
+        "grams14Ref": round(maker_g14(m, rs) + chain_g14(m, rs), 2),
+        "makerCost14KRefUsd": round(maker_cost(m, "14K", rs), 2), "refPriceCents": ref["price_cents"], "variants": variants,
         "imagePrompt": prompt, "imageFile": f"{m['id']}.jpg",
         "imageUrl": IMG.get(m["id"], {}).get("url"), "imageSha256": IMG.get(m["id"], {}).get("sha256"),
         "params": {k: m[k] for k in ("top_g", "shank_g", "piece_g") if k in m},
     })
 
-basis = {"spotUsdOzt": SPOT_USD_OZT, "spotSource": "gold-api.com 2026-09-30T11:21Z (FW basis; live 2026-10-06 4169.50)",
-         "loss": LOSS, "purity": PURITY, "densityVs14K": DENSITY, "laborUsd": LABOR, "markup": MARKUP,
-         "rule": "price = ceil(2 x (grams_k x spot/31.1034768 x purity x 1.07 + labor_category) / 10) x 10",
-         "laborSource": "owner 14K cost quotes for the 2027 enamel set minus their 14K gold at this spot"}
+basis = {"rule": "price = ceil(2 x maker_cost / 10) x 10 (owner decision 2026-10-07)",
+         "makerCost": "gold grams x density x (spot x purity + labor per gram) + quoted extras; see ../maker_cost.py",
+         "maker14KUsdPerGram": mk.MAKER_14K_USD_G, "laborUsdPerGram": round(mk.LABOR_USD_G, 2),
+         "spotUsdOzt": mk.SPOT_USD_OZT, "densityVs14K": mk.DENSITY, "purity": mk.PURITY,
+         "quoted": {"motifRing": "3 mm band from the maker list", "R02": "4 mm band + 100 enamel",
+                    "N02": "1 g + 50 enamel", "B09": "3 g + 50 enamel + 100 chain + 50 assembly",
+                    "modelFee": "25 USD once per design, not in unit price"},
+         "estimated": {"necklaceChain": "130 USD at 18 in (I13 quote, middle-length convention), scaled by length",
+                       "braceletStations": "own v1 grams x 3.75 (the B09 quote ratio) for the other nine bracelets",
+                       "pendantGrams": "own v1 grams; the quoted N02 matched the estimate (1.0 g)"},
+         "heldAtV1": "necklaces (chain not quoted; v2 would cut 30-50%)",
+         "supersedes": "v1: own estimate with quote-derived labor per category (price_cents_v1 kept per variant)"}
 json.dump({"source": SOURCE, "org": ORG, "pricingBasis": basis, "items": out},
           open(HERE / "catalog.json", "w"), ensure_ascii=False, indent=1)
-print("items", len(out), "variants", sum(len(i["variants"]) for i in out), "labor", LABOR)
+print("items", len(out), "variants", sum(len(i["variants"]) for i in out))
 for i in out:
     ps = [v["price_cents"] for v in i["variants"]]
-    print(i["id"], f"{i['name']:<28}", "ref", i["grams14Ref"], "g", i["refPriceCents"] // 100, "USD  range", min(ps) // 100, max(ps) // 100)
+    v1 = [v["price_cents_v1"] for v in i["variants"]]
+    print(i["id"], f"{i['name']:<28}", "ref", i["grams14Ref"], "g cost", round(i["makerCost14KRefUsd"]), "price", i["refPriceCents"] // 100,
+          " range", min(ps) // 100, max(ps) // 100, " v1 range", min(v1) // 100, max(v1) // 100, " up", sum(a > b for a, b in zip(ps, v1)), "down", sum(a < b for a, b in zip(ps, v1)))

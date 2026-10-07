@@ -1271,6 +1271,23 @@ repodaki hedefidir.
   demek yetmez, dosyanın NERESİNİN dolu olduğunu ölç (`ctid` blok dağılımı); taşıma işlemini başlamadan
   mühürle ve küçük partiyle WAL'ı izleyerek başla.
 
+- **Üretici teklifi geldiğinde kuralı tek yerde kur, ama tahmine dayanan İNDİRİMİ uygulama (2026-10-07):**
+  Noel setinin 6 parçasına üretici fiyat verdi (liste 14K 100 USD/g işçilik dahil, mine/zincir/montaj
+  ayrı kalem). Kendi tahminimle karşılaştırınca iki hata çıktı: candy cane yüzük %30 indirimde 71 USD
+  zarardaydı (tam mine bant 4 mm + 100 USD, ben 2,4 g sanmıştım) ve bileklik istasyonlarını üretici 3 g
+  sayıyordu, ben 0,8 g. Sahip "2 × üretici maliyeti" dedi. Kural tek dosyaya kondu
+  (`docs/artifact-studio/maker_cost.py`) ve iki katalog onu içe aktarıyor, böylece Noel ile erkek seti
+  ayrışamaz. Kritik ayrım: aynı kural kolyeleri %30-50 DÜŞÜRÜYORDU, ama o düşüş teklif edilmemiş bir
+  zincir fiyatına (130 USD, eski konvansiyon) ve 9 tahmini pandant gramına dayanıyordu; sahibe de
+  gösterilmemişti. Kolyeler eski fiyatta tutuldu, tahmini bileklikler yalnız yükselebilir, düşüş
+  yalnız teklifle kanıtlanan yerde (yüzük listesi) uygulandı. Kural: (1) yeni maliyet kuralı bir
+  fiyatı düşürüyorsa, düşüşün dayandığı her girdinin TEKLİF mi TAHMİN mi olduğunu ayır; tahmine dayalı
+  indirim yapılmaz, sahibe sorulur; (2) sahibe "şu yükselir" diye gösterdiğin kural, göstermediğin
+  bir düşüşü de içeriyorsa onay o düşüşü kapsamaz. Zincir yine tuttu: ön mühür 42e34c63 canlıda birebir,
+  koşullu DO bloğu, sonra mühür e8ed8f7b, 2.700 audit satırı, Etsy kuru 2.580 fark = katalogdaki
+  değişen varyant sayısı, kanarya 234, apply 2.346, taze token'la bağımsız okuma 20/20 unchanged
+  (`panelVaryant` 2.700, boş harita değil).
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
