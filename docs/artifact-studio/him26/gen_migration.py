@@ -139,10 +139,14 @@ SHARED_META = {
 }
 
 
+# products.product_type check allows the plural "earrings"; listing metadata keeps the catalog word.
+PRODUCT_TYPE = {"ring": "ring", "bracelet": "bracelet", "earring": "earrings"}
+
+
 def values(r):
     it = r["it"]
     return "(" + ",\n ".join([
-        q(it["id"]), q(it["productId"]), q(it["sku"]), q(it["productType"]), q(it["title"]),
+        q(it["id"]), q(it["productId"]), q(it["sku"]), q(PRODUCT_TYPE[it["productType"]]), q(it["title"]),
         q(r["lead"]), q(r["story"]), q(r["size"]), q(r["detail"]),
         "ARRAY[" + ",".join(q(t) for t in it["tags"]) + "]::text[]",
         q(it["name"]), q(r["third"]), "ARRAY[" + ",".join(q(s) for s in r["sizes"]) + "]::text[]",
