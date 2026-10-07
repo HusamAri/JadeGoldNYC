@@ -59,7 +59,7 @@ async function authorize(request: Request): Promise<boolean> {
 
   const hash = createHash("sha256").update(token).digest("hex");
   const admin = createAdminClient();
-  const { data } = await admin
+  const { data, error } = await admin
     .from("ops_tokens")
     .update({ used_at: new Date().toISOString() })
     .eq("purpose", PURPOSE)
@@ -67,6 +67,8 @@ async function authorize(request: Request): Promise<boolean> {
     .is("used_at", null)
     .gt("expires_at", new Date().toISOString())
     .select("id");
+  // Yutulan hata "token yok" ile "DB'ye ulaşılamadı"yı aynı 401'e çeviriyordu (2026-10-07).
+  if (error) console.error("drafts-push authorize: ops_tokens update failed", error.code, error.message);
   return (data ?? []).length > 0;
 }
 
