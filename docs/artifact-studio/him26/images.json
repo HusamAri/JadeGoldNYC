@@ -1,9 +1,7 @@
 {
  "generatedBy": "Claude in Higgsfield on owner approval 2026-10-07 (\"Onayla, 30'unu uret\"; prompt fix approved after R01 test)",
  "cleaning": "block artifacts in the defocused background above the product removed locally (Gaussian blur above a hand-checked product top, feathered); product pixels untouched",
- "missing": [
-  "R05"
- ],
+ "missing": [],
  "rejected": {
   "R01-1": "block artifacts in the background, brush direction across the band",
   "R05-1": "flat-topped stepped band, catalog says a knife edge ridge",
@@ -12,7 +10,8 @@
  },
  "notes": {
   "R01": "brush lines run across the band; copy does not promise a direction",
-  "B10": "links about 2x their width; copy changed to match"
+  "B10": "links about 2x their width; copy changed to match",
+  "R05": "third try with a new pose (lying flat like a coin) after two misses standing upright"
  },
  "images": [
   {
@@ -60,6 +59,18 @@
    "file": "R04.jpg",
    "url": "https://amuletta.artifactstudio.info/artifact/him26/R04.jpg",
    "sha256": "7676d2b080c174a66b71be6f4367d53ceecebfa53db051d3cba2b40c9901aad4",
+   "cleaned": false,
+   "selectedBy": "Claude QA against catalog shape text 2026-10-07"
+  },
+  {
+   "id": "R05",
+   "job_id": "b6ee9c1f-b565-430a-bf05-8c0e16f93ceb",
+   "model": "nano_banana_2",
+   "resolution": "2k",
+   "aspect": "1:1",
+   "file": "R05.jpg",
+   "url": "https://amuletta.artifactstudio.info/artifact/him26/R05.jpg",
+   "sha256": "3c7fe4c1eac06db96034954ccdd50b546868768377c2c17910b9438b7f9702aa",
    "cleaned": false,
    "selectedBy": "Claude QA against catalog shape text 2026-10-07"
   },

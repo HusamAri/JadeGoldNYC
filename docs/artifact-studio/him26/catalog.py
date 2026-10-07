@@ -148,7 +148,7 @@ add(id="R05", cat="ring", name="Knife Edge Band", dims="band 2.5 mm wide, knife 
           "minimalist band", "everyday ring", "mens wedding band", "mens ring", "14k mens ring"],
     lead="A slim 2.5 mm band whose outer surface rises to a single sharp ridge, in high polish solid gold.",
     story="Two flat planes meet at a line down the middle, so the light breaks along the ridge as the hand moves. Thin enough to wear next to anything.",
-    shape="a slim round band 2.5 mm wide whose outer surface is shaped like a roof: two narrow sloping sides meet in one sharp continuous ridge line along the middle, no flat top, no step, no groove, mirror high polish, comfort fit inside, shown standing upright in a three-quarter view")
+    shape="a slim round gold ring 2.5 mm wide lying flat on its side like a coin, its hole facing up; seen from slightly above, the outer surface of the band is shaped like a roof, two narrow sloping sides that meet in one sharp ridge line running all the way around the outside of the ring, like the edge of a knife, while the inside of the ring is flat and smooth; mirror high polish")
 add(id="R06", cat="ring", name="Hammered Band", dims="band 4 mm wide", top_g=0.0, shank_g=band_g(4, 1.4),
     title="Mens Hammered Band Ring, 4mm Textured Solid Gold Wedding Band, Rustic Minimalist Ring for Him",
     tags=["hammered ring", "mens hammered band", "textured gold band", "mens wedding band", "4mm gold band",

@@ -9962,7 +9962,7 @@
    ],
    "description": "A slim 2.5 mm band whose outer surface rises to a single sharp ridge, in high polish solid gold.\n\nTwo flat planes meet at a line down the middle, so the light breaks along the ridge as the hand moves. Thin enough to wear next to anything.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose.\nFinish: solid gold, no plating, no stones.\nSize: band 2.5 mm wide, knife edge.\nRing size: US 3 to 16, whole and half sizes.\n\nEach piece is made to order and ships free within the United States from New Jersey. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Wipe it with a soft cloth; a brushed finish can be refreshed by a jeweller.\n\nThe product images are design visualizations of the finished piece, and the three-metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
    "dims": "band 2.5 mm wide, knife edge",
-   "shape": "a slim round band 2.5 mm wide whose outer surface is shaped like a roof: two narrow sloping sides meet in one sharp continuous ridge line along the middle, no flat top, no step, no groove, mirror high polish, comfort fit inside, shown standing upright in a three-quarter view",
+   "shape": "a slim round gold ring 2.5 mm wide lying flat on its side like a coin, its hole facing up; seen from slightly above, the outer surface of the band is shaped like a roof, two narrow sloping sides that meet in one sharp ridge line running all the way around the outside of the ring, like the edge of a knife, while the inside of the ring is flat and smooth; mirror high polish",
    "listingProtocol": "sculptural_ring",
    "offersPersonalization": false,
    "variationAxes": [
@@ -12406,10 +12406,10 @@
      "price_cents": 139000
     }
    ],
-   "imagePrompt": "Studio product photograph of fine jewelry: a slim round band 2.5 mm wide whose outer surface is shaped like a roof: two narrow sloping sides meet in one sharp continuous ridge line along the middle, no flat top, no step, no groove, mirror high polish, comfort fit inside, shown standing upright in a three-quarter view. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, the stone surface stays in focus with a fine natural grain texture, no blur gradients, no compression artifacts, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
+   "imagePrompt": "Studio product photograph of fine jewelry: a slim round gold ring 2.5 mm wide lying flat on its side like a coin, its hole facing up; seen from slightly above, the outer surface of the band is shaped like a roof, two narrow sloping sides that meet in one sharp ridge line running all the way around the outside of the ring, like the edge of a knife, while the inside of the ring is flat and smooth; mirror high polish. Solid 14K yellow gold only, no stones, no enamel, no colour; real gold reflections, finishes exactly as described. Resting on a smooth matte warm grey stone surface, soft directional daylight from the upper left, a crisp natural shadow, the stone surface stays in focus with a fine natural grain texture, no blur gradients, no compression artifacts, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition with generous negative space. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography for men, square format.",
    "imageFile": "R05.jpg",
-   "imageUrl": null,
-   "imageSha256": null,
+   "imageUrl": "https://amuletta.artifactstudio.info/artifact/him26/R05.jpg",
+   "imageSha256": "3c7fe4c1eac06db96034954ccdd50b546868768377c2c17910b9438b7f9702aa",
    "params": {
     "top_g": 0.0,
     "shank_g": 2.6
