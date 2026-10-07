@@ -164,7 +164,7 @@ def worn_slots(it):
         }
     if t == "bracelet":
         return {
-            "02": ("Wrist below a rolled sleeve", f"Worn close-up: his left forearm rests on his knee, the sleeve of a linen shirt in a paler tint of {bg} rolled back, the bracelet on the bare wrist just below the cuff, hand relaxed. {worn(it)}. Cropped from the forearm to the fingertips; {sc}."),
+            "02": ("Wrist below a rolled sleeve", f"Worn close-up: his left forearm rests on his knee, the sleeve of a linen shirt in a paler tint of {bg} rolled back, the bracelet on the bare wrist just below the cuff, hand relaxed; behind the knee there is only a {bg} wool blanket, no floor and no wood visible. {worn(it)}. Cropped from the forearm to the fingertips; {sc}."),
             "03": ("Hand on a wooden table", f"Everyday moment: his left hand rests flat on the edge of a plain wooden table stained a deep shade of {bg}, the wrist forward and closest to the camera, the bracelet in sharp focus. {worn(it)}. Seen from slightly above; {sc}."),
             "04": ("Wrist from a plinth", f"Studio sculpture: a single left hand and forearm rising vertically out of a smooth square stone plinth the same {bg} as the backdrop, wrist turned so the bracelet faces the camera, fingers relaxed. {worn(it)}. Clean and graphic, nothing else in the frame; {sc}."),
             "05": ("Wrist scale", f"Scale shot: his left wrist rests on {bg} wool felt and the tip of his right index finger touches the wrist beside the bracelet without covering it, so the bracelet can be compared with a fingertip. {worn(it)}. Cropped tight on the wrist; {sc}."),
@@ -189,7 +189,7 @@ def slots(idx, it):
     stand = {"ring": "stands upright", "bracelet": "lies in a soft open curve, the clasp visible at one end",
              "earring": "lies side by side, one earring flat and one tilted to show the post or closure"}[t]
     three = {"ring": "three identical copies of this exact ring standing upright side by side, same size and same angle",
-             "bracelet": "three identical copies of this exact bracelet laid in three parallel soft curves, same size and same angle",
+             "bracelet": "three complete closed bracelets of this exact chain, each its own separate closed oval with its own clasp, lying side by side, same size and same angle, no loose chain pieces",
              "earring": "three identical single earrings of this exact design lying side by side, same size and same angle"}[t]
     rows = []
     w = worn_slots(it)
@@ -200,7 +200,7 @@ def slots(idx, it):
         ("06", "Macro on stone",
          f"Macro detail: {obj} on the flat edge of a block of matte {bg} stone; the camera is a few centimetres away so "
          f"the gold surface and its edges fill most of the frame, the rest falling out of focus; one crisp highlight on "
-         f"the gold, the surface finish clearly visible."),
+         f"the gold, the surface finish clearly visible; no leather, no wood, no fabric and no other objects, only the stone and the piece."),
         ("07", "Still life",
          f"Minimal still life: on a flat slab of matte {bg} stone, {obj} {stand}, in sharp focus; beside it, small and "
          f"secondary, {PROPS[idx % 10]}; hard directional light casts one long clean shadow; the {noun if t != 'earring' else 'pair of earrings'} "
