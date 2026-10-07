@@ -118,6 +118,10 @@ def worn(it):
         return (f"Exactly one ring, worn on the left hand of a man with {skin} skin, on one finger; every other finger "
                 f"and the thumb are bare; no other rings, no bracelet, no watch; a man's hand with natural knuckles, "
                 f"anatomically correct with exactly five digits, all five visible")
+    if t == "bracelet" and it["listingProtocol"] == "cuff_bracelet":
+        return (f"Exactly one open cuff, worn on the left wrist of a man with {skin} skin, the opening of the cuff "
+                f"turned under the wrist; no clasp and no chain; the right wrist is bare; no watch, no rings, no other "
+                f"jewelry; anatomically correct hands with five fingers")
     if t == "bracelet":
         return (f"Exactly one bracelet, worn on the left wrist of a man with {skin} skin, the clasp turned under the "
                 f"wrist; the right wrist is bare; no watch, no rings, no other jewelry; anatomically correct hands "
@@ -186,7 +190,8 @@ def slots(idx, it):
     t = it["productType"]
     noun = {"ring": "ring", "bracelet": "bracelet", "earring": "earring"}[t]
     obj = {"ring": f"this {noun} ({p})", "bracelet": f"this {noun} ({p})", "earring": f"this pair of earrings ({p})"}[t]
-    stand = {"ring": "stands upright", "bracelet": "lies in a soft open curve, the clasp visible at one end",
+    cuff = it["listingProtocol"] == "cuff_bracelet"
+    stand = {"ring": "stands upright", "bracelet": "lies on its side, the 25 mm opening visible" if cuff else "lies in a soft open curve, the clasp visible at one end",
              "earring": "lies side by side, one earring flat and one tilted to show the post or closure"}[t]
     three = {"ring": "three identical copies of this exact ring standing upright side by side, same size and same angle",
              "bracelet": "three complete closed bracelets of this exact chain, each its own separate closed oval with its own clasp, lying side by side, same size and same angle, no loose chain pieces",
@@ -210,6 +215,10 @@ def slots(idx, it):
          f"off and leaning beside it, lined with natural undyed linen; {obj} sits on the linen in sharp focus; the box "
          f"has no logo and no text."),
         ("09", "Three gold colours",
+         (f"Metal colour visualization on a pale {bg} tint stone surface: three separate open cuffs of this exact design lie "
+          f"in one horizontal row, each with its opening facing the camera, with a wide strip of bare stone between them "
+          f"so no two cuffs touch: the left cuff all yellow gold, the middle cuff all white gold (cool silvery white), "
+          f"the right cuff all rose gold (soft pink gold); no clasp, no chain; same shape and finish in all three.") if cuff else
          (f"Metal colour visualization on a pale {bg} tint stone surface: three separate bracelets of this exact chain lie "
           f"in one horizontal row, each closed into its own round circle with its own clasp, with a wide strip of bare "
           f"stone between the circles so no two bracelets touch: the left circle all yellow gold, the middle circle all "
