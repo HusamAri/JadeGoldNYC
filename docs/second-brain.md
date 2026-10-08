@@ -1292,6 +1292,28 @@ repodaki hedefidir.
   315, apply 315, bağımsız okuma 20/20 unchanged. Yani soru boşa değildi: indirim sahibin açık kararıyla
   uygulandı, sessiz bir yan etki olarak değil.
 
+- **Dış sistemin "sıra" alanı bir DEĞERDİR, dizi indeksi değil; belgesiz davranışı kanaryada ölç ve
+  hedef düzeni o değerlerle MUTLAK kur (2026-10-08):** SS27 anklet taslaklarına 10 satış karesi
+  eklerken (`ops/gallery-push`) sıralamayı "sona ekle, sonra keteni silip en sona yeniden bağla" diye
+  kurdum; iki bağımsız inceleme 18 kusur buldu ve hepsi Etsy'ye tek yazım gitmeden düzeltildi, ama
+  hiçbiri asıl varsayımı göremedi: `rank`'i dizi sırası sanmıştım. A24 kanaryası gerçeği gösterdi:
+  Etsy silmeden sonra sıraları SIKIŞTIRMIYOR (kareler 2..11'de kaldı, rank 1 boş) ve aynı rank'e iki
+  görsel koymaya izin veriyor (keten ile 10. kare ikisi de 11). Güvenlik katmanı yine işini yaptı:
+  son kontrol düzeni tutmayınca `needs_review` yazdı, paneli yazmadı, hiçbir görsel kaybolmadı. Çözüm
+  sıralamayı göreli değil MUTLAK kurmak oldu: her kare kendi slot numarasıyla yüklenir, kayan kare
+  silinip aynı id ve alt text'le tam rank'e yeniden bağlanır (kanaryada ölçüldü: yeniden bağlama
+  değeri birebir yazar, kaydırmaz). Belgesiz kalan tek davranış (dolu rank'e yükleme kaydırır mı,
+  eşitler mi) için kod iki sonuca da aynı düzene varacak şekilde kuruldu ve bağımsız simülasyonla
+  üç davranışta (eşit, kaydır, sona ekle) sınandı; A40 kanaryası eşit davranışı gösterdi. İkinci ders
+  aynı turda: düzeltme deploy olurken sahip A24'ü yarım düzenle YAYINA aldı. Rota canlı listing'e
+  yazmayı reddetti, ben de zorlamadım; kalan taslaklar sahibin A01'den ileri gidişine çarpmasın diye
+  A40'tan geriye işlendi. Kural: (1) dış API'de "position/rank/order" alanı gördüğünde ilk soru
+  "silince sıkışır mı, eşit değere izin verir mi?" olmalı, belge söylemiyorsa kanaryanın İLK hedefi
+  budur; (2) düzeni göreli adımlarla (sona ekle, öne al) değil hedef değerlerle kur, böylece her
+  yarım koşu aynı hedefe yakınsar; (3) belgesiz davranışa yaslanma, onun her olası sonucundan aynı
+  düzene varan bir akış yaz ve sonuçları simülasyonla say; (4) iki koşu arasında hedefin durumunu
+  (taslak mı yayında mı) yeniden oku, sahibin bilinçli aksiyonu düzeltilecek bir hata değildir.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
