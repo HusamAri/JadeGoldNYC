@@ -3,6 +3,7 @@ import test from "node:test";
 
 import {
   correctPrefix,
+  framesInOrder,
   galleryMarker,
   layoutOk,
   linenPending,
@@ -10,6 +11,7 @@ import {
   parseGalleryMarker,
   rerankPlan,
   planGallery,
+  relativeLayoutOk,
   type GalleryPhoto,
 } from "@/lib/etsy/gallery-push";
 import { decodeHtmlEntities } from "@/lib/etsy/text";
@@ -174,4 +176,35 @@ test("doğru önek: A39 ara durumu (01:1, keten:2, 02..08 3..9) ve eşit rank'li
   assert.equal(correctPrefix(tie, planGallery(tie, SET, MODEL, expected), SLOTS), 0);
   const fixed = [...SLOTS.map((s, i) => ours(s, i + 1)), { ...linen, rank: 11 }];
   assert.equal(correctPrefix(fixed, planGallery(fixed, SET, MODEL, expected), SLOTS), 10);
+});
+
+test("yayın modu: A24 (kareler 2..11, keten ile 10 ikisi 11'de) düzende değil; keten 12'ye gidince tamam", () => {
+  const now = [...SLOTS.map((s, i) => ours(s, i + 2)), { ...linen, rank: 11 }];
+  const pNow = planGallery(now, SET, MODEL, expected);
+  assert.deepEqual(framesInOrder(pNow, SLOTS), { ok: true, maxRank: 11, reason: null });
+  assert.equal(relativeLayoutOk(now, pNow, SLOTS).ok, false);
+  const fixed = [...SLOTS.map((s, i) => ours(s, i + 2)), { ...linen, rank: 12 }];
+  assert.deepEqual(relativeLayoutOk(fixed, planGallery(fixed, SET, MODEL, expected), SLOTS), { ok: true, maxRank: 11, reason: null });
+  // Katı ölçüt bilerek hâlâ "değil" der: değerler 1'den başlamıyor.
+  assert.equal(layoutOk(planGallery(fixed, SET, MODEL, expected), SLOTS).ok, false);
+});
+
+test("yayın modu: A39 (01..10 1..10, keten 10'da) keten 11'e gidince iki ölçüt de tamam", () => {
+  const now = [...SLOTS.map((s, i) => ours(s, i + 1)), { ...linen, rank: 10 }];
+  const pNow = planGallery(now, SET, MODEL, expected);
+  assert.equal(framesInOrder(pNow, SLOTS).maxRank, 10);
+  assert.equal(relativeLayoutOk(now, pNow, SLOTS).ok, false);
+  const fixed = [...SLOTS.map((s, i) => ours(s, i + 1)), { ...linen, rank: 11 }];
+  const pf = planGallery(fixed, SET, MODEL, expected);
+  assert.equal(relativeLayoutOk(fixed, pf, SLOTS).ok, true);
+  assert.equal(layoutOk(pf, SLOTS).ok, true);
+});
+
+test("yayın modu: kareler sırasızsa ya da eksikse keten taşınmaz", () => {
+  const swapped = SLOTS.map((s, i) => ours(s, i + 1));
+  swapped[1] = { ...swapped[1], rank: 3 };
+  swapped[2] = { ...swapped[2], rank: 2 };
+  assert.equal(framesInOrder(planGallery(swapped, SET, MODEL, expected), SLOTS).ok, false);
+  const missing = SLOTS.slice(0, 9).map((s, i) => ours(s, i + 1));
+  assert.equal(framesInOrder(planGallery(missing, SET, MODEL, expected), SLOTS).ok, false);
 });

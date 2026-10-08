@@ -174,3 +174,41 @@ export function correctPrefix(photos: GalleryPhoto[], plan: GalleryPlan, slots: 
   }
   return k;
 }
+
+/**
+ * Kareler slot sırasıyla kesin artan rank'te mi (değerden bağımsız). Yayındaki
+ * listing'de kareye dokunmadan yalnız keten taşınırken kullanılır (A24: kareler
+ * 2..11'de, sıra doğru, değerler bir kaymış).
+ */
+export function framesInOrder(plan: GalleryPlan, slots: string[]): { ok: boolean; maxRank: number; reason: string | null } {
+  if (plan.stale.length) return { ok: false, maxRank: 0, reason: `işaretli ama beklenmeyen ${plan.stale.length} görsel` };
+  if (plan.missing.length) return { ok: false, maxRank: 0, reason: `eksik slot: ${plan.missing.join(",")}` };
+  const sorted = [...slots].sort();
+  let last = 0;
+  for (const s of sorted) {
+    const r = plan.ours.get(s)!.rank;
+    if (r <= last) return { ok: false, maxRank: 0, reason: `${s} sırası (${r}) öncekinden büyük değil` };
+    last = r;
+  }
+  return { ok: true, maxRank: last, reason: null };
+}
+
+/**
+ * Yayın modu kabul ölçütü: kareler sıralı, hiçbir rank paylaşılmıyor,
+ * işaretsiz görsel tam son karenin ardında. Görünen sıra hedefle aynıdır;
+ * değerler 1'den başlamayabilir (bilerek: yayındaki karelere dokunulmaz).
+ */
+export function relativeLayoutOk(
+  photos: GalleryPhoto[],
+  plan: GalleryPlan,
+  slots: string[],
+): { ok: boolean; maxRank: number; reason: string | null } {
+  const fr = framesInOrder(plan, slots);
+  if (!fr.ok) return fr;
+  const ranks = photos.map((p) => p.rank);
+  if (new Set(ranks).size !== ranks.length) return { ok: false, maxRank: fr.maxRank, reason: "aynı rank'te iki görsel var" };
+  if (plan.foreign.some((f) => f.rank !== fr.maxRank + 1)) {
+    return { ok: false, maxRank: fr.maxRank, reason: `işaretsiz görsel son karenin hemen ardında (${fr.maxRank + 1}) değil` };
+  }
+  return { ok: true, maxRank: fr.maxRank, reason: null };
+}

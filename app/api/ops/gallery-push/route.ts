@@ -9,11 +9,13 @@ import { etsyPaths } from "@/lib/etsy/endpoints";
 import { decodeHtmlEntities } from "@/lib/etsy/text";
 import {
   correctPrefix,
+  framesInOrder,
   galleryMarker,
   layoutOk,
   linenPending as linenPendingFor,
   linenPlaced,
   planGallery,
+  relativeLayoutOk,
   rerankPlan,
   type GalleryPhoto,
 } from "@/lib/etsy/gallery-push";
@@ -53,7 +55,10 @@ export const maxDuration = 300;
  * Parametreler: `org`, `set` (ör. ss27-anklets), `model` (ör. A24),
  * `apply=1` (yoksa kuru çalışma), `verify=1` (salt okuma), `resume=1`
  * (yarım kalan gönderime devam), `restoreLinen=1` (yayına alınmış listing'de
- * askıda kalan keteni geri bağlamaya sahibin açık onayı).
+ * askıda kalan keteni geri bağlamaya sahibin açık onayı), `live=1` (yayındaki
+ * listing'de YALNIZ keten hero'yu son karenin hemen ardına taşır; karelere
+ * dokunmaz, eksik ya da sırasız karede reddeder; sahibin açık onayıyla,
+ * 2026-10-08 A24/A39).
  *
  * Taslak kapısı yalnız Etsy yazımı içindir; Etsy zaten doğruysa panel
  * kapanışı listing yayında olsa da yapılır ve sahibin yayına alması hata
@@ -125,6 +130,7 @@ export async function GET(request: Request) {
   const verify = url.searchParams.get("verify") === "1";
   const resume = url.searchParams.get("resume") === "1";
   const restoreLinen = url.searchParams.get("restoreLinen") === "1";
+  const live = url.searchParams.get("live") === "1";
   if (!orgName || !/^[a-z0-9][a-z0-9-]{2,40}$/.test(set) || !/^[A-Z]\d{2}$/.test(model)) {
     return NextResponse.json({ error: "org, set (a-z0-9-) ve model (ör. A24) zorunlu" }, { status: 400 });
   }
@@ -245,6 +251,7 @@ export async function GET(request: Request) {
       mode: "verify",
       reason,
       sizesOk,
+      relative: relativeLayoutOk(before, plan, SLOTS),
       previous: prev,
       ...summary,
     });
@@ -273,6 +280,10 @@ export async function GET(request: Request) {
   // Keten hero tam N+1'de olmalı (apply bunu kurar; A39'da sıkışma onu 10'a kaydırmıştı).
   const linenOff = plan.foreign.some((f) => f.rank !== SLOTS.length + 1);
   const etsyWrites = plan.missing.length > 0 || moves.length > 0 || linenOff || linenPending;
+  // Yayın modu: listing taslak değil, kareler tam ve sıralı, tek işaretsiz görsel
+  // var; yalnız o görsel son karenin ardına taşınır, karelere dokunulmaz.
+  const liveFix =
+    live && listing.state !== "draft" && plan.missing.length === 0 && plan.foreign.length === 1 && framesInOrder(plan, SLOTS).ok;
   if (!apply) {
     return NextResponse.json({
       ok: true,
@@ -282,6 +293,8 @@ export async function GET(request: Request) {
       toRerank: moves.map((m) => ({ id: m.photo.listing_image_id, from: m.photo.rank, to: m.rank })),
       linenPending,
       panelOnly: !etsyWrites,
+      liveFix,
+      relative: relativeLayoutOk(before, plan, SLOTS),
       ...summary,
     });
   }
@@ -290,13 +303,15 @@ export async function GET(request: Request) {
   if (etsyWrites && listing.state !== "draft") {
     const onlyRestore =
       linenPending && plan.missing.length === 0 && moves.length === 0 && !linenOff;
-    if (!(onlyRestore && restoreLinen)) {
+    if (!(onlyRestore && restoreLinen) && !liveFix) {
       return NextResponse.json(
         {
           ok: false,
           error: onlyRestore
             ? `listing ${listing.state}; keten hero (${prev!.linenImageId}) geri bağlanmadı, yalnız restoreLinen=1 ile`
-            : `yalnız taslak listing'e görsel yüklenir; Etsy durumu: ${listing.state}`,
+            : live
+              ? `live=1 yalnız keteni taşır: kareler tam ve sıralı, tek işaretsiz görsel olmalı (${framesInOrder(plan, SLOTS).reason ?? `işaretsiz ${plan.foreign.length}`})`
+              : `yalnız taslak listing'e görsel yüklenir; Etsy durumu: ${listing.state}`,
           linenImageId: prev?.linenImageId ?? null,
           linenAlt: prev?.linenAlt ?? null,
           ...summary,
@@ -425,7 +440,28 @@ export async function GET(request: Request) {
       if (has(after, id)) throw new Error(`${what} (${id}) silindi dendi ama listede duruyor`);
     };
     const prefix = (list: GalleryPhoto[]) => correctPrefix(list, planGallery(list, set, model, expected), SLOTS);
-    for (let pass = 0; pass < 4; pass++) {
+    // Yayın modu (live=1, sahibin açık onayı): karelere hiç yazılmaz; yalnız
+    // keten, eşitse ya da yerinde değilse alınıp son karenin hemen ardına
+    // bağlanır. Hedef silmeden SONRA okunur (silme sıraları sıkıştırabilir, A39);
+    // yalnız karelerin kaldığı galeride en büyük rank + 1 her zaman boştur.
+    if (liveFix) {
+      const ln = planGallery(after, set, model, expected).foreign[0];
+      const fr0 = framesInOrder(planGallery(after, set, model, expected), SLOTS);
+      const tied = ln != null && after.some((p) => p.listing_image_id !== ln.listing_image_id && p.rank === ln.rank);
+      if (ln && (!fr0.ok || ln.rank !== fr0.maxRank + 1 || tied)) {
+        linenImageId = ln.listing_image_id;
+        linenAlt = ln.alt_text ?? null;
+        await record("sending", { linenImageId, linenAlt, live: true });
+        await detach(ln.listing_image_id, "keten hero");
+        const end = Math.max(0, ...after.map((p) => p.rank)) + 1;
+        const newId = await reattach(linenImageId, end, linenAlt);
+        if (newId !== linenImageId) {
+          linenImageId = newId;
+          await record("sending", { linenImageId, linenAlt, live: true });
+        }
+      }
+    }
+    for (let pass = 0; !liveFix && pass < 4; pass++) {
       let cur = planGallery(after, set, model, expected);
       if (cur.missing.length || cur.stale.length) {
         throw new Error(`düzen turunda eksik/uyuşmaz: ${cur.missing.join(",") || "-"}; stale ${cur.stale.length}`);
@@ -474,8 +510,11 @@ export async function GET(request: Request) {
 
     // 3) Geri okuma: hedef düzen, keten 11. sırada ve alt text'iyle, durum, mağaza.
     p2 = planGallery(after, set, model, expected);
-    const fin = layoutOk(p2, SLOTS);
-    const linenRes = linenPlaced(after, linenImageId, linenAlt, SLOTS.length, altKey);
+    // Yayın modunda ölçüt görünen sıradır (kareler sıralı, rank paylaşılmıyor,
+    // keten son karenin ardında); taslakta tam değerler (1..N, keten N+1).
+    const rel = liveFix ? relativeLayoutOk(after, p2, SLOTS) : null;
+    const fin = rel ?? layoutOk(p2, SLOTS);
+    const linenRes = linenPlaced(after, linenImageId, linenAlt, rel ? rel.maxRank : SLOTS.length, altKey);
     const listingAfter = await readListing();
     // Sahibin bu arada yayına alması hata değildir: raporlanır, düzeltilmez.
     const ok = fin.ok && linenRes.ok && listingAfter.shop_id === shopId;
@@ -531,7 +570,7 @@ export async function GET(request: Request) {
       .eq("id", prod.id);
     if (prodUpd.error) throw new Error(`ürün kapağı: ${prodUpd.error.message}`);
 
-    await record("done", { finishedAt: new Date().toISOString(), images, linenImageId, linenAlt, count: after.length, reason: null, error: null, stateAfter: listingAfter.state });
+    await record("done", { finishedAt: new Date().toISOString(), images, linenImageId, linenAlt, count: after.length, reason: null, error: null, stateAfter: listingAfter.state, layout: liveFix ? "relative" : "exact" });
     await logAudit(admin, {
       orgId: org.id,
       action: "etsy.image_upload",
