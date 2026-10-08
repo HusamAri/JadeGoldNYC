@@ -241,13 +241,20 @@ export async function GET(request: Request) {
   const linenNow = linenPending
     ? { ok: false, reason: `keten hero (${prev!.linenImageId}) silinmiş, geri bağlanmamış` }
     : linenPlaced(before, prev?.linenImageId, prev?.linenAlt, SLOTS.length, altKey);
+  // Yayın modunda (live=1) kapanmış koşu görünen sıraya göre ölçülür; aksi
+  // hâlde verify sonsuza dek "değil" der, tekrar koşu da kaydı boşaltır.
+  const relDone = prev?.layout === "relative" ? relativeLayoutOk(before, plan, SLOTS) : null;
+  const relLinen = relDone ? linenPlaced(before, prev?.linenImageId, prev?.linenAlt, relDone.maxRank, altKey) : null;
+  const doneOk = relDone ? relDone.ok && relLinen!.ok : check.ok && linenNow.ok;
 
   if (verify) {
     const sizesOk = [...plan.ours.values()].every((p) => p.full_width == null || (p.full_width === 2048 && p.full_height === 2048));
     const reason =
-      check.reason ?? linenNow.reason ?? (runOpen ? `önceki koşu kapanmadı (${prev!.status}); apply&resume=1 tamamlar` : null);
+      (relDone ? relDone.reason ?? relLinen!.reason : check.reason ?? linenNow.reason) ??
+      (runOpen ? `önceki koşu kapanmadı (${prev!.status}); apply&resume=1 tamamlar` : null);
     return NextResponse.json({
-      ok: check.ok && linenNow.ok && !runOpen && sizesOk && summary.shopMatches,
+      ok: doneOk && !runOpen && sizesOk && summary.shopMatches,
+      layoutMode: relDone ? "relative" : "exact",
       mode: "verify",
       reason,
       sizesOk,
@@ -270,7 +277,7 @@ export async function GET(request: Request) {
   }
   // Salt okuma yanıtları taslak kapısından ÖNCE: durum ne olursa olsun raporlanır.
   // Tamam = Etsy düzeni doğru + keten hedefte + panel kapanışı yapılmış.
-  if (check.ok && linenNow.ok && prev?.status === "done") {
+  if (doneOk && prev?.status === "done") {
     return NextResponse.json({ ok: true, mode: apply ? "apply" : "dry-run", alreadyDone: true, previous: prev, ...summary });
   }
   // Etsy'ye YAZI gerekiyor mu: eksik kare, slotunda olmayan kare, öne düşmüş
@@ -283,7 +290,11 @@ export async function GET(request: Request) {
   // Yayın modu: listing taslak değil, kareler tam ve sıralı, tek işaretsiz görsel
   // var; yalnız o görsel son karenin ardına taşınır, karelere dokunulmaz.
   const liveFix =
-    live && listing.state !== "draft" && plan.missing.length === 0 && plan.foreign.length === 1 && framesInOrder(plan, SLOTS).ok;
+    live &&
+    listing.state !== "draft" &&
+    plan.missing.length === 0 &&
+    (plan.foreign.length === 1 || (plan.foreign.length === 0 && linenPending)) &&
+    framesInOrder(plan, SLOTS).ok;
   if (!apply) {
     return NextResponse.json({
       ok: true,
@@ -445,19 +456,51 @@ export async function GET(request: Request) {
     // bağlanır. Hedef silmeden SONRA okunur (silme sıraları sıkıştırabilir, A39);
     // yalnız karelerin kaldığı galeride en büyük rank + 1 her zaman boştur.
     if (liveFix) {
-      const ln = planGallery(after, set, model, expected).foreign[0];
-      const fr0 = framesInOrder(planGallery(after, set, model, expected), SLOTS);
+      const pl = planGallery(after, set, model, expected);
+      const fr0 = framesInOrder(pl, SLOTS);
+      // Kilitten sonra durum değişmişse (kare sırası, ikinci işaretsiz görsel)
+      // hiçbir şey yazmadan dur.
+      if (!fr0.ok || pl.foreign.length > 1) {
+        throw new Error(`yayın modu: yazmadan durdu (${fr0.reason ?? `işaretsiz görsel ${pl.foreign.length}`})`);
+      }
+      const ln = pl.foreign[0];
       const tied = ln != null && after.some((p) => p.listing_image_id !== ln.listing_image_id && p.rank === ln.rank);
-      if (ln && (!fr0.ok || ln.rank !== fr0.maxRank + 1 || tied)) {
+      if (ln && (ln.rank !== fr0.maxRank + 1 || tied)) {
         linenImageId = ln.listing_image_id;
         linenAlt = ln.alt_text ?? null;
         await record("sending", { linenImageId, linenAlt, live: true });
         await detach(ln.listing_image_id, "keten hero");
+      } else if (ln && linenImageId !== ln.listing_image_id) {
+        // Kayıtlı keten yerine yerinde duran başka bir işaretsiz görsel: benimse.
+        linenImageId = ln.listing_image_id;
+        linenAlt = ln.alt_text ?? null;
+        await record("sending", { linenImageId, linenAlt, linenAdopted: true, live: true });
+      }
+      if (linenImageId != null && !has(after, linenImageId)) {
         const end = Math.max(0, ...after.map((p) => p.rank)) + 1;
-        const newId = await reattach(linenImageId, end, linenAlt);
-        if (newId !== linenImageId) {
-          linenImageId = newId;
-          await record("sending", { linenImageId, linenAlt, live: true });
+        try {
+          const newId = await reattach(linenImageId, end, linenAlt);
+          if (newId !== linenImageId) {
+            linenImageId = newId;
+            await record("sending", { linenImageId, linenAlt, live: true });
+          }
+        } catch (e) {
+          // Keten yayındaki listing'de kaybolmasın: hâlâ yoksa Etsy'nin daha önce
+          // kabul ettiği sayı + 1 rank'ine geri bağla (eşitlik olabilir; koşu
+          // needs_review kapanır), sonra asıl hatayı ilet.
+          try {
+            const list = await readGallery();
+            if (!has(list, linenImageId)) {
+              const form = new FormData();
+              form.append("listing_image_id", String(linenImageId));
+              form.append("rank", String(list.length + 1));
+              if (linenAlt) form.append("alt_text", altKey(linenAlt).slice(0, 500));
+              await client.requestMultipart("POST", etsyPaths.listingImages(shopId, listingId), form);
+            }
+          } catch {
+            // Geri okuma da düşerse kör yazım yapılmaz; kayıtlı id ile resume=1&live=1 tamamlar.
+          }
+          throw e;
         }
       }
     }
