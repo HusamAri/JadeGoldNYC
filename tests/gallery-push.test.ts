@@ -7,6 +7,7 @@ import {
   linenPending,
   linenPlaced,
   parseGalleryMarker,
+  rerankPlan,
   planGallery,
   type GalleryPhoto,
 } from "@/lib/etsy/gallery-push";
@@ -125,4 +126,26 @@ test("keten yerinde: 11. sıra ve alt text; verify ile apply aynı kuralı kulla
   assert.equal(linenPlaced(frames, id, linen.alt_text, 10, altKey).ok, false);
   // Keten kaydı yoksa (listing'de hiç işaretsiz görsel yoktu) ölçüt yok.
   assert.equal(linenPlaced(frames, null, null, 10, altKey).ok, true);
+});
+
+test("sıra düzeltme planı: A24 kanaryasının gerçek durumu (kareler 2..11, keten ile 10 ikisi 11'de)", () => {
+  // Canlı geri okumadan (2026-10-08): 01..09 rank 2..10, keten 11, 10 da 11.
+  const photos = [...SLOTS.map((s, i) => ours(s, i + 2)), { ...linen, rank: 11 }];
+  const plan = planGallery(photos, SET, MODEL, expected);
+  assert.equal(layoutOk(plan, SLOTS).ok, false);
+  const moves = rerankPlan(plan, SLOTS);
+  assert.deepEqual(moves.map((m) => [m.photo.listing_image_id, m.rank]), SLOTS.map((s, i) => [9000 + Number(s), i + 1]));
+  // Planı uygulayınca düzen ve keten yerinde.
+  const fixed = [...SLOTS.map((s, i) => ours(s, i + 1)), { ...linen, rank: 11 }];
+  const altKey = (x: string | null | undefined) => (x ?? "").trim();
+  assert.equal(layoutOk(planGallery(fixed, SET, MODEL, expected), SLOTS).ok, true);
+  assert.equal(linenPlaced(fixed, linen.listing_image_id, linen.alt_text, 10, altKey).ok, true);
+  assert.deepEqual(rerankPlan(planGallery(fixed, SET, MODEL, expected), SLOTS), []);
+});
+
+test("sıra düzeltme planı: yerindeki kareye dokunmaz, yalnız kayanları taşır", () => {
+  const photos = SLOTS.map((s, i) => ours(s, i + 1));
+  photos[4] = { ...photos[4], rank: 12 };
+  const moves = rerankPlan(planGallery(photos, SET, MODEL, expected), SLOTS);
+  assert.deepEqual(moves.map((m) => [m.photo.listing_image_id, m.rank]), [[9005, 5]]);
 });

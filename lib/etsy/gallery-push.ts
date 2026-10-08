@@ -136,3 +136,18 @@ export function linenPlaced(
   if (linenAlt && altKey(p.alt_text) !== altKey(linenAlt)) return { ok: false, reason: "keten hero'nun alt text'i değişti" };
   return { ok: true, reason: null };
 }
+
+/**
+ * Sıra düzeltme planı: kendi slot numarasında (01 → rank 1 …) olmayan kareler.
+ * Vaka 2026-10-08, A24 kanaryası: Etsy keten hero silindikten sonra sıraları
+ * SIKIŞTIRMADI (kareler 2..11'de kaldı) ve aynı rank'e iki görsel koymaya izin
+ * verdi (keten ile 10. kare ikisi de 11). `rank` yalnız bir sıralama değeridir;
+ * düzeltme her kareyi silip aynı id ve alt text'le TAM rank'e yeniden bağlar
+ * (uploadListingImage listing_image_id; kanaryada değeri birebir yazdığı görüldü).
+ */
+export function rerankPlan(plan: GalleryPlan, slots: string[]): { photo: GalleryPhoto; rank: number }[] {
+  return [...slots]
+    .sort()
+    .map((slot, i) => ({ photo: plan.ours.get(slot), rank: i + 1 }))
+    .filter((x): x is { photo: GalleryPhoto; rank: number } => x.photo != null && x.photo.rank !== x.rank);
+}
