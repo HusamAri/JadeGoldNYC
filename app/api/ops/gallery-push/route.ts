@@ -8,6 +8,7 @@ import { EtsyClient } from "@/lib/etsy/client";
 import { etsyPaths } from "@/lib/etsy/endpoints";
 import { decodeHtmlEntities } from "@/lib/etsy/text";
 import {
+  correctPrefix,
   galleryMarker,
   layoutOk,
   linenPending as linenPendingFor,
@@ -111,8 +112,8 @@ function describe(photos: GalleryPhoto[]) {
 }
 
 export async function GET(request: Request) {
-  // Etsy yazımları bu süreden sonra durur; kalan iş resume=1 ile tamamlanır.
-  const deadline = Date.now() + 240_000;
+  // Bu süreden sonra yeni düzen turu başlamaz; kalan iş resume=1 ile tamamlanır.
+  const deadline = Date.now() + 150_000;
   if (!(await authorize(request))) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
@@ -385,14 +386,14 @@ export async function GET(request: Request) {
       throw new Error(`yükleme sonrası eksik/uyuşmaz: ${p2.missing.join(",") || "-"}; stale ${p2.stale.length}`);
     }
 
-    // 2) Düzen, yakınsayan döngüyle: her turda galeri yeniden okunur; kendi
-    //    slotunda olmayan kare silinip aynı id + alt text'le tam slot rank'ine,
-    //    11. sırada olmayan keten hero silinip rank N+1'e yeniden bağlanır.
-    //    Etsy'nin sıra davranışı tutarlı değil: A24'te silme sıraları
-    //    sıkıştırmadı, A39'da sıkıştırdı ve keten 11'den 10'a kaydı. Bu yüzden
-    //    tek seferlik adım değil, hedef tutana kadar (en çok 4 tur) oku-düzelt.
-    //    Keten id'si ve alt text'i silmeden ÖNCE yazılır; kare silme ile bağlama
-    //    arasında kalırsa resume=1'de kaynaktan yeniden yüklenir.
+    // 2) Düzen, yakınsayan döngüyle: her turda galeri yeniden okunur; düzen
+    //    tutmuyorsa keten hero ve doğru önekten sonraki kareler alınır, kareler
+    //    aynı id + alt text'le sırayla boş rank'lere, keten N+1'e yeniden
+    //    bağlanır. Etsy'nin sıra davranışı tutarlı değil: A24'te silme sıraları
+    //    sıkıştırmadı ve eşit rank'e izin verdi, A39'da sıkıştırdı ve keten
+    //    11'den 10'a kaydı. Keten id'si ve alt text'i silmeden ÖNCE yazılır;
+    //    silme ile bağlama arasında kalan kare resume=1'de kaynaktan yeniden
+    //    yüklenir.
     const target = SLOTS.length + 1;
     const pause = () => new Promise((r) => setTimeout(r, 1000));
     const readUntil = async (done: (list: GalleryPhoto[]) => boolean) => {
@@ -423,22 +424,44 @@ export async function GET(request: Request) {
       after = await readUntil((l) => !has(l, id));
       if (has(after, id)) throw new Error(`${what} (${id}) silindi dendi ama listede duruyor`);
     };
-    const placeLinen = async () => {
-      const ln = planGallery(after, set, model, expected).foreign[0];
-      if (ln && ln.rank !== target) {
+    const prefix = (list: GalleryPhoto[]) => correctPrefix(list, planGallery(list, set, model, expected), SLOTS);
+    for (let pass = 0; pass < 4; pass++) {
+      let cur = planGallery(after, set, model, expected);
+      if (cur.missing.length || cur.stale.length) {
+        throw new Error(`düzen turunda eksik/uyuşmaz: ${cur.missing.join(",") || "-"}; stale ${cur.stale.length}`);
+      }
+      const ln = cur.foreign[0];
+      // Askıdaki keten yerine işaretsiz bir görsel zaten varsa (sahip elle
+      // eklemiş) eski id yeniden bağlanmaz, o görsel benimsenir.
+      if (ln && linenImageId != null && !has(after, linenImageId)) {
+        linenImageId = ln.listing_image_id;
+        linenAlt = ln.alt_text ?? null;
+        await record("sending", { linenImageId, linenAlt, linenAdopted: true });
+      }
+      const linenOff = ln ? ln.rank !== target : linenImageId != null;
+      if (prefix(after) === SLOTS.length && !linenOff) break;
+      // Bir tur en çok ~22 Etsy yazımı; geç başlayan tur maxDuration'ı aşmasın.
+      if (Date.now() >= deadline) break;
+      // Keten her işte önce alınır: kare silmeleri sıraları sıkıştırıp onu
+      // karelerin arasına kaydırabilir (A39).
+      if (ln) {
         linenImageId = ln.listing_image_id;
         linenAlt = ln.alt_text ?? null;
         await record("sending", { linenImageId, linenAlt });
         await detach(ln.listing_image_id, "keten hero");
       }
-      // Askıdaki keten yerine karelerin ardında işaretsiz bir görsel zaten varsa
-      // (sahip elle eklemiş) eski id yeniden bağlanmaz, o görsel benimsenir.
-      const tail = planGallery(after, set, model, expected).foreign.find((f) => f.rank > SLOTS.length);
-      if (linenImageId != null && !has(after, linenImageId) && tail) {
-        linenImageId = tail.listing_image_id;
-        linenAlt = tail.alt_text ?? null;
-        await record("sending", { linenImageId, linenAlt, linenAdopted: true });
-        return;
+      // Doğru önekten sonraki kareler önce hepsi alınır, sonra sırayla HER ZAMAN
+      // boş olan bir sonraki rank'e bağlanır: eşit rank hiç oluşmaz, Etsy'nin
+      // eşitlik sırası ya da sıkıştırması sonucu değiştiremez (simülasyon:
+      // değerler, liste, sıkıştırma, eski/yeni önce; 2000 karışık deneme).
+      const k = prefix(after);
+      cur = planGallery(after, set, model, expected);
+      const rest = SLOTS.slice(k).map((slot) => ({ slot, id: cur.ours.get(slot)!.listing_image_id }));
+      for (const r of rest) await detach(r.id, `kare ${r.slot}`);
+      for (const [i, r] of rest.entries()) {
+        const newId = await reattach(r.id, k + i + 1, frameAlt(r.slot));
+        if (!has(after, newId)) throw new Error(`kare ${r.slot} (${newId}) yeniden bağlanamadı`);
+        reranked[r.slot] = k + i + 1;
       }
       if (linenImageId != null && !has(after, linenImageId)) {
         const newId = await reattach(linenImageId, target, linenAlt);
@@ -447,25 +470,6 @@ export async function GET(request: Request) {
           await record("sending", { linenImageId, linenAlt });
         }
       }
-    };
-    for (let pass = 0; pass < 4 && Date.now() < deadline; pass++) {
-      const cur = planGallery(after, set, model, expected);
-      if (cur.missing.length || cur.stale.length) {
-        throw new Error(`düzen turunda eksik/uyuşmaz: ${cur.missing.join(",") || "-"}; stale ${cur.stale.length}`);
-      }
-      const todo = rerankPlan(cur, SLOTS);
-      const ln = cur.foreign[0];
-      const linenOff = (ln != null && ln.rank !== target) || (linenImageId != null && !has(after, linenImageId));
-      if (!todo.length && !linenOff) break;
-      for (const { photo, rank } of todo) {
-        if (Date.now() >= deadline) break;
-        const slot = SLOTS[rank - 1];
-        await detach(photo.listing_image_id, `kare ${slot}`);
-        const newId = await reattach(photo.listing_image_id, rank, frameAlt(slot));
-        if (!has(after, newId)) throw new Error(`kare ${slot} (${newId}) yeniden bağlanamadı`);
-        reranked[slot] = rank;
-      }
-      if (Date.now() < deadline) await placeLinen();
     }
 
     // 3) Geri okuma: hedef düzen, keten 11. sırada ve alt text'iyle, durum, mağaza.

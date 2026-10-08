@@ -2,6 +2,7 @@ import { strict as assert } from "node:assert";
 import test from "node:test";
 
 import {
+  correctPrefix,
   galleryMarker,
   layoutOk,
   linenPending,
@@ -148,4 +149,29 @@ test("sıra düzeltme planı: yerindeki kareye dokunmaz, yalnız kayanları taş
   photos[4] = { ...photos[4], rank: 12 };
   const moves = rerankPlan(planGallery(photos, SET, MODEL, expected), SLOTS);
   assert.deepEqual(moves.map((m) => [m.photo.listing_image_id, m.rank]), [[9005, 5]]);
+});
+
+test("keten N+2'ye kaymışsa düzen tamam değil (id kaydı olmasa da)", () => {
+  const photos = [...SLOTS.map((s, i) => ours(s, i + 1)), { ...linen, rank: 12 }];
+  const r = layoutOk(planGallery(photos, SET, MODEL, expected), SLOTS);
+  assert.equal(r.ok, false);
+  assert.match(r.reason ?? "", /11/);
+});
+
+test("doğru önek: A39 gerçek durumu (01..09 1..9, keten ile 10 ikisi 10'da)", () => {
+  // Canlı geri okumadan (2026-10-08): keten alınınca önek 10 olur, yalnız keten taşınır.
+  const photos = [...SLOTS.slice(0, 9).map((s, i) => ours(s, i + 1)), { ...linen, rank: 10 }, ours("10", 10)];
+  assert.equal(correctPrefix(photos, planGallery(photos, SET, MODEL, expected), SLOTS), 9);
+  const noLinen = photos.filter((p) => p.listing_image_id !== linen.listing_image_id);
+  assert.equal(correctPrefix(noLinen, planGallery(noLinen, SET, MODEL, expected), SLOTS), 10);
+});
+
+test("doğru önek: A39 ara durumu (01:1, keten:2, 02..08 3..9) ve eşit rank'li ilk kare", () => {
+  const mid = [ours("01", 1), { ...linen, rank: 2 }, ...SLOTS.slice(1, 8).map((s, i) => ours(s, i + 3))];
+  assert.equal(correctPrefix(mid, planGallery(mid, SET, MODEL, expected), SLOTS), 1);
+  // Taze yükleme sonrası eşitlik: 01 ve keten ikisi de 1'de -> önek 0 (keten önce alınır).
+  const tie = [{ ...linen, rank: 1 }, ...SLOTS.map((s, i) => ours(s, i + 1))];
+  assert.equal(correctPrefix(tie, planGallery(tie, SET, MODEL, expected), SLOTS), 0);
+  const fixed = [...SLOTS.map((s, i) => ours(s, i + 1)), { ...linen, rank: 11 }];
+  assert.equal(correctPrefix(fixed, planGallery(fixed, SET, MODEL, expected), SLOTS), 10);
 });

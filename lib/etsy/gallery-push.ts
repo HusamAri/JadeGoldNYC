@@ -77,7 +77,7 @@ export function planGallery(
   return { ours, stale, foreign, missing };
 }
 
-/** Hedef düzen: slotlar 1..N sırasıyla rank 1..N, varsa işaretsizler sonra. */
+/** Hedef düzen: slotlar 1..N sırasıyla rank 1..N, varsa işaretsiz görsel tam N+1. */
 export function layoutOk(plan: GalleryPlan, slots: string[]): { ok: boolean; reason: string | null } {
   if (plan.stale.length) return { ok: false, reason: `işaretli ama beklenmeyen ${plan.stale.length} görsel` };
   if (plan.missing.length) return { ok: false, reason: `eksik slot: ${plan.missing.join(",")}` };
@@ -88,6 +88,12 @@ export function layoutOk(plan: GalleryPlan, slots: string[]): { ok: boolean; rea
   }
   if (plan.foreign.some((f) => f.rank <= sorted.length)) {
     return { ok: false, reason: "işaretsiz görsel yeni karelerin önünde" };
+  }
+  // İşaretsiz görsel tam N+1'de: id'si hiç kaydedilmemiş keten de (yerinden
+  // oynamadıysa) ölçülsün; aksi hâlde N+2'ye kaymış keten "tamam" sayılırdı
+  // (bağımsız simülasyon 2026-10-08).
+  if (plan.foreign.some((f) => f.rank !== sorted.length + 1)) {
+    return { ok: false, reason: `işaretsiz görsel ${sorted.length + 1}. sırada değil` };
   }
   return { ok: true, reason: null };
 }
@@ -150,4 +156,21 @@ export function rerankPlan(plan: GalleryPlan, slots: string[]): { photo: Gallery
     .sort()
     .map((slot, i) => ({ photo: plan.ours.get(slot), rank: i + 1 }))
     .filter((x): x is { photo: GalleryPhoto; rank: number } => x.photo != null && x.photo.rank !== x.rank);
+}
+
+/**
+ * Doğru önek uzunluğu: k. slot tam rank k'de ve rank <= k'de başka görsel yok.
+ * Rota düzeni bu önekten sonrasını yeniden kurarak yakınsatır.
+ */
+export function correctPrefix(photos: GalleryPhoto[], plan: GalleryPlan, slots: string[]): number {
+  const sorted = [...slots].sort();
+  let k = 0;
+  while (
+    k < sorted.length &&
+    plan.ours.get(sorted[k])?.rank === k + 1 &&
+    photos.filter((p) => p.rank <= k + 1).length === k + 1
+  ) {
+    k++;
+  }
+  return k;
 }
