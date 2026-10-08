@@ -36,17 +36,18 @@ export const maxDuration = 300;
  * alt_text işaretiyle idempotens, her adımdan sonra geri okuma, panel
  * galerisi, denetim kaydı.
  *
- * Sıralama: `rank` yalnız bir sıralama DEĞERİDİR. A24 kanaryasında
- * (2026-10-08) görüldü: Etsy silmeden sonra sıraları sıkıştırmaz, aynı rank'e
- * iki görsel koymaya izin verir ve silinmiş görseli `listing_image_id` ile
- * yeniden bağlamak verilen rank'i ve alt text'i BİREBİR yazar. Bu yüzden her
- * kare kendi slot numarasıyla yüklenir (01 → rank 1), işaretsiz keten hero
- * öndeyse silinip rank N+1'e yeniden bağlanır, kendi slotunda olmayan kare de
- * silinip tam slot rank'ine yeniden bağlanır. Dolu bir rank'a overwrite
- * olmadan yüklemenin davranışı belgede yok; sonraki iki adım her iki sonuçtan
- * da (kaydırma ya da eşit rank) aynı düzene varır. Silinen keten hero'nun id'si
- * silmeden ÖNCE metadata'ya yazılır, yeniden bağlama yarıda kalırsa `resume=1`
- * onu tamamlar; yarıda kalan kare kaynaktan yeniden yüklenir.
+ * Sıralama: `rank` yalnız bir sıralama DEĞERİDİR ve Etsy'nin onu nasıl
+ * güncellediği tutarlı değil (2026-10-08): A24'te silme sıraları sıkıştırmadı
+ * ve aynı rank'e iki görsel izin verildi, A39'da silme sıkıştırdı ve dolu
+ * rank'e yükleme görseli komşusunun ardına koydu. Silinmiş görseli
+ * `listing_image_id` ile yeniden bağlamak verilen rank'i ve alt text'i yazar.
+ * Bu yüzden düzen tek seferlik adımlarla değil, yakınsayan bir döngüyle kurulur:
+ * kareler kendi slot numarasıyla yüklenir (01 → rank 1), sonra her turda galeri
+ * yeniden okunur, kendi slotunda olmayan kare silinip tam slot rank'ine,
+ * N+1'de olmayan keten hero silinip N+1'e yeniden bağlanır; hedef tutunca döngü
+ * biter. Silinen keten hero'nun id'si silmeden ÖNCE metadata'ya yazılır,
+ * yeniden bağlama yarıda kalırsa `resume=1` onu tamamlar; yarıda kalan kare
+ * kaynaktan yeniden yüklenir.
  *
  * Parametreler: `org`, `set` (ör. ss27-anklets), `model` (ör. A24),
  * `apply=1` (yoksa kuru çalışma), `verify=1` (salt okuma), `resume=1`
@@ -110,6 +111,8 @@ function describe(photos: GalleryPhoto[]) {
 }
 
 export async function GET(request: Request) {
+  // Etsy yazımları bu süreden sonra durur; kalan iş resume=1 ile tamamlanır.
+  const deadline = Date.now() + 240_000;
   if (!(await authorize(request))) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
@@ -266,8 +269,9 @@ export async function GET(request: Request) {
   // işaretsiz görsel ya da askıdaki keten. Gerekmiyorsa (Etsy doğru, panel
   // yarım) yalnız panel yazılır ve bu, listing yayına alınmış olsa da güvenlidir.
   const moves = rerankPlan(plan, SLOTS);
-  const etsyWrites =
-    plan.missing.length > 0 || moves.length > 0 || plan.foreign.some((f) => f.rank <= SLOTS.length) || linenPending;
+  // Keten hero tam N+1'de olmalı (apply bunu kurar; A39'da sıkışma onu 10'a kaydırmıştı).
+  const linenOff = plan.foreign.some((f) => f.rank !== SLOTS.length + 1);
+  const etsyWrites = plan.missing.length > 0 || moves.length > 0 || linenOff || linenPending;
   if (!apply) {
     return NextResponse.json({
       ok: true,
@@ -284,7 +288,7 @@ export async function GET(request: Request) {
   // geri bağlamak bile sahibin açık onayını (restoreLinen=1) ister.
   if (etsyWrites && listing.state !== "draft") {
     const onlyRestore =
-      linenPending && plan.missing.length === 0 && moves.length === 0 && !plan.foreign.some((f) => f.rank <= SLOTS.length);
+      linenPending && plan.missing.length === 0 && moves.length === 0 && !linenOff;
     if (!(onlyRestore && restoreLinen)) {
       return NextResponse.json(
         {
@@ -381,94 +385,90 @@ export async function GET(request: Request) {
       throw new Error(`yükleme sonrası eksik/uyuşmaz: ${p2.missing.join(",") || "-"}; stale ${p2.stale.length}`);
     }
 
-    // 2) Düzen: işaretsiz görsel (keten hero) yeni karelerin önündeyse sil ve
-    //    aynı id ile en sona yeniden bağla. Id ve alt text silmeden ÖNCE yazılır.
-    const linen = p2.foreign[0];
-    if (linen && linen.rank <= SLOTS.length) {
-      linenImageId = linen.listing_image_id;
-      linenAlt = linen.alt_text ?? null;
-      await record("sending", { linenImageId, linenAlt });
-      await client.request("DELETE", etsyPaths.listingImage(shopId, listingId, linen.listing_image_id));
-      // Silme listeye bir an geç yansıyabilir: bayat okuma yeniden bağlamayı
-      // atlatmasın diye görsel düşene kadar (en çok 4 kez) yeniden oku.
-      after = await readGallery();
-      for (let i = 0; i < 3 && after.some((p) => p.listing_image_id === linenImageId); i++) {
-        await new Promise((r) => setTimeout(r, 1000));
-        after = await readGallery();
+    // 2) Düzen, yakınsayan döngüyle: her turda galeri yeniden okunur; kendi
+    //    slotunda olmayan kare silinip aynı id + alt text'le tam slot rank'ine,
+    //    11. sırada olmayan keten hero silinip rank N+1'e yeniden bağlanır.
+    //    Etsy'nin sıra davranışı tutarlı değil: A24'te silme sıraları
+    //    sıkıştırmadı, A39'da sıkıştırdı ve keten 11'den 10'a kaydı. Bu yüzden
+    //    tek seferlik adım değil, hedef tutana kadar (en çok 4 tur) oku-düzelt.
+    //    Keten id'si ve alt text'i silmeden ÖNCE yazılır; kare silme ile bağlama
+    //    arasında kalırsa resume=1'de kaynaktan yeniden yüklenir.
+    const target = SLOTS.length + 1;
+    const pause = () => new Promise((r) => setTimeout(r, 1000));
+    const readUntil = async (done: (list: GalleryPhoto[]) => boolean) => {
+      let list = await readGallery();
+      for (let i = 0; i < 3 && !done(list); i++) {
+        await pause();
+        list = await readGallery();
       }
-      if (after.some((p) => p.listing_image_id === linenImageId)) {
-        throw new Error(`keten hero (${linenImageId}) silindi dendi ama listede duruyor`);
-      }
-    }
-    // Askıdaki keten yerine karelerin ardında işaretsiz bir görsel zaten varsa
-    // (sahip elle eklemiş) eski id yeniden bağlanmaz, o görsel benimsenir.
-    const tail = planGallery(after, set, model, expected).foreign.find((f) => f.rank > SLOTS.length);
-    if (linenImageId != null && !after.some((p) => p.listing_image_id === linenImageId) && tail) {
-      linenImageId = tail.listing_image_id;
-      linenAlt = tail.alt_text ?? null;
-      await record("sending", { linenImageId, linenAlt, linenAdopted: true });
-    }
-    if (linenImageId != null && !after.some((p) => p.listing_image_id === linenImageId)) {
+      return list;
+    };
+    const has = (list: GalleryPhoto[], id: number) => list.some((p) => p.listing_image_id === id);
+    const at = (list: GalleryPhoto[], id: number, rank: number) => list.some((p) => p.listing_image_id === id && p.rank === rank);
+    const reattach = async (id: number, rank: number, alt: string | null) => {
       await readMeta();
       const form = new FormData();
-      form.append("listing_image_id", String(linenImageId));
-      form.append("rank", String(SLOTS.length + 1));
+      form.append("listing_image_id", String(id));
+      form.append("rank", String(rank));
       // Etsy alt'ı kaçışlı döndürebilir; çözülmüş hâli gönderilir (çift kaçış olmasın).
-      if (linenAlt) form.append("alt_text", altKey(linenAlt).slice(0, 500));
+      if (alt) form.append("alt_text", altKey(alt).slice(0, 500));
       const back = await client.requestMultipart<{ listing_image_id?: number }>("POST", etsyPaths.listingImages(shopId, listingId), form);
-      if (back?.listing_image_id && back.listing_image_id !== linenImageId) {
-        linenImageId = back.listing_image_id;
+      const newId = back?.listing_image_id ?? id;
+      after = await readUntil((l) => at(l, newId, rank));
+      return newId;
+    };
+    const detach = async (id: number, what: string) => {
+      await readMeta();
+      await client.request("DELETE", etsyPaths.listingImage(shopId, listingId, id));
+      after = await readUntil((l) => !has(l, id));
+      if (has(after, id)) throw new Error(`${what} (${id}) silindi dendi ama listede duruyor`);
+    };
+    const placeLinen = async () => {
+      const ln = planGallery(after, set, model, expected).foreign[0];
+      if (ln && ln.rank !== target) {
+        linenImageId = ln.listing_image_id;
+        linenAlt = ln.alt_text ?? null;
         await record("sending", { linenImageId, linenAlt });
+        await detach(ln.listing_image_id, "keten hero");
       }
-      // Yeniden bağlama da listeye geç yansıyabilir: keten N+1'de görünene
-      // kadar (en çok 4 kez) oku; doğru giden kanarya needs_review dönmesin.
-      const atEnd = (list: GalleryPhoto[]) => list.some((p) => p.listing_image_id === linenImageId && p.rank === SLOTS.length + 1);
-      after = await readGallery();
-      for (let i = 0; i < 3 && !atEnd(after); i++) {
-        await new Promise((r) => setTimeout(r, 1000));
-        after = await readGallery();
+      // Askıdaki keten yerine karelerin ardında işaretsiz bir görsel zaten varsa
+      // (sahip elle eklemiş) eski id yeniden bağlanmaz, o görsel benimsenir.
+      const tail = planGallery(after, set, model, expected).foreign.find((f) => f.rank > SLOTS.length);
+      if (linenImageId != null && !has(after, linenImageId) && tail) {
+        linenImageId = tail.listing_image_id;
+        linenAlt = tail.alt_text ?? null;
+        await record("sending", { linenImageId, linenAlt, linenAdopted: true });
+        return;
       }
-    }
-
-    // 3) Sıra düzeltme: kendi slotunda olmayan kareyi sil ve aynı id + aynı
-    //    alt text'le tam slot rank'ine yeniden bağla (Etsy rank'i birebir
-    //    yazar, kaydırmaz). Silme ile bağlama arasında kalırsa kare resume=1'de
-    //    kaynaktan yeniden yüklenir; kayıp olmaz.
-    for (let pass = 0; pass < 2; pass++) {
-      const todo = rerankPlan(planGallery(after, set, model, expected), SLOTS);
-      if (!todo.length) break;
+      if (linenImageId != null && !has(after, linenImageId)) {
+        const newId = await reattach(linenImageId, target, linenAlt);
+        if (newId !== linenImageId) {
+          linenImageId = newId;
+          await record("sending", { linenImageId, linenAlt });
+        }
+      }
+    };
+    for (let pass = 0; pass < 4 && Date.now() < deadline; pass++) {
+      const cur = planGallery(after, set, model, expected);
+      if (cur.missing.length || cur.stale.length) {
+        throw new Error(`düzen turunda eksik/uyuşmaz: ${cur.missing.join(",") || "-"}; stale ${cur.stale.length}`);
+      }
+      const todo = rerankPlan(cur, SLOTS);
+      const ln = cur.foreign[0];
+      const linenOff = (ln != null && ln.rank !== target) || (linenImageId != null && !has(after, linenImageId));
+      if (!todo.length && !linenOff) break;
       for (const { photo, rank } of todo) {
+        if (Date.now() >= deadline) break;
         const slot = SLOTS[rank - 1];
-        const id = photo.listing_image_id;
-        await readMeta();
-        await client.request("DELETE", etsyPaths.listingImage(shopId, listingId, id));
-        after = await readGallery();
-        for (let i = 0; i < 3 && after.some((p) => p.listing_image_id === id); i++) {
-          await new Promise((r) => setTimeout(r, 1000));
-          after = await readGallery();
-        }
-        if (after.some((p) => p.listing_image_id === id)) {
-          throw new Error(`kare ${slot} (${id}) silindi dendi ama listede duruyor`);
-        }
-        await readMeta();
-        const form = new FormData();
-        form.append("listing_image_id", String(id));
-        form.append("rank", String(rank));
-        form.append("alt_text", frameAlt(slot));
-        const back = await client.requestMultipart<{ listing_image_id?: number }>("POST", etsyPaths.listingImages(shopId, listingId), form);
-        const newId = back?.listing_image_id ?? id;
-        const placed = (list: GalleryPhoto[]) => list.some((p) => p.listing_image_id === newId && p.rank === rank);
-        after = await readGallery();
-        for (let i = 0; i < 3 && !placed(after); i++) {
-          await new Promise((r) => setTimeout(r, 1000));
-          after = await readGallery();
-        }
-        if (!placed(after)) throw new Error(`kare ${slot} (${newId}) rank ${rank}'e yeniden bağlanamadı`);
+        await detach(photo.listing_image_id, `kare ${slot}`);
+        const newId = await reattach(photo.listing_image_id, rank, frameAlt(slot));
+        if (!has(after, newId)) throw new Error(`kare ${slot} (${newId}) yeniden bağlanamadı`);
         reranked[slot] = rank;
       }
+      if (Date.now() < deadline) await placeLinen();
     }
 
-    // 4) Geri okuma: hedef düzen, keten 11. sırada ve alt text'iyle, durum, mağaza.
+    // 3) Geri okuma: hedef düzen, keten 11. sırada ve alt text'iyle, durum, mağaza.
     p2 = planGallery(after, set, model, expected);
     const fin = layoutOk(p2, SLOTS);
     const linenRes = linenPlaced(after, linenImageId, linenAlt, SLOTS.length, altKey);
@@ -492,7 +492,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ ok: false, mode: "apply", reason, uploaded, reranked, linenImageId, ...summary, stateAfter: listingAfter.state, countAfter: after.length, layoutAfter: describe(after) }, { status: 409 });
     }
 
-    // 5) Panel galerisi (yalnız Etsy doğrulandıktan sonra): 01..10 → 0..9, diğerleri sonra.
+    // 4) Panel galerisi (yalnız Etsy doğrulandıktan sonra): 01..10 → 0..9, diğerleri sonra.
     const ourIds = SLOTS.map((slot) => {
       const k = createHash("sha256").update(`${prod.id}:gallery-push:${set}:${slot}`).digest("hex");
       return `${k.slice(0, 8)}-${k.slice(8, 12)}-5${k.slice(13, 16)}-a${k.slice(17, 20)}-${k.slice(20, 32)}`;
