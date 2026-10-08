@@ -354,6 +354,9 @@ export interface CreateDraftResult {
   error?: string;
   /** Kısmi başarı uyarıları (ör. görsel yüklenemedi ama listing açıldı). */
   warnings?: string[];
+  /** Listing Etsy'de açıldıysa create'in GÖNDERDİĞİ tag ve açıklama. Panel
+   *  satırı senkronda Etsy'den ezildiği için verify bunu kanıt olarak saklar. */
+  sent?: { tags: string[]; description: string };
 }
 
 /** Bir varyantı property-adı → değer (string) haritasına indirger. */
@@ -388,26 +391,63 @@ export interface ListingTextCheck {
   descriptionDiff: { at: number; etsy: string; panel: string } | null;
 }
 
+/** verify'ın tag/açıklama kıyasında neyi kanıt aldığı. */
+export type TextBaseline =
+  | { source: "sent"; tags: string[]; description: string }
+  | { source: "panel"; tags: string[] | null; description: string | null }
+  | { source: "mirrored" };
+
+/**
+ * Kıyas tabanını seçer. Vaka 2026-10-08 (bağımsız inceleme): Etsy senkronu
+ * panel satırının tag/açıklamasını Etsy'den EZER (sync.ts upsertListingsPage),
+ * yani senkrondan sonra panele karşı kıyas Etsy'yi kendisiyle kıyaslar ve hep
+ * "geçti" der. Sıra: (1) create'in gönderdiği kayıt (`draftTransfer.sent`,
+ * senkron listing_metadata'ya dokunmaz); (2) satır hiç senkronlanmadıysa
+ * (`last_modified_ts` yalnız senkronda yazılır) panel; (3) aksi hâlde
+ * "mirrored": kıyas YAPILMAZ, sonuç null olur, asla true değil.
+ */
+export function textBaseline(product: {
+  tags: string[] | null;
+  description: string | null;
+  last_modified_ts?: number | string | null;
+  listing_metadata?: { draftTransfer?: unknown } | null;
+}): TextBaseline {
+  const sent = (product.listing_metadata?.draftTransfer as { sent?: unknown } | undefined)?.sent as
+    | { tags?: unknown; description?: unknown }
+    | undefined;
+  if (sent && Array.isArray(sent.tags) && typeof sent.description === "string") {
+    return { source: "sent", tags: sent.tags as string[], description: sent.description };
+  }
+  if (product.last_modified_ts == null) {
+    return { source: "panel", tags: product.tags, description: product.description };
+  }
+  return { source: "mirrored" };
+}
+
 /**
  * Etsy'nin döndürdüğü tag ve açıklamayı create'in GÖNDERDİĞİYLE kıyaslar
  * (drafts-push verify). Vaka 2026-10-07: verify başlık/varyant/SKU/fiyat/görsel
  * kıyaslıyordu ama tag'e bakmıyordu; o gün kırılan alan tam olarak tag'di
  * (Etsy "2.5mm" içindeki noktayı reddetti).
  *
- * Beklenen değer create yolunun kendi dönüşümüyle kurulur, panel ham değeriyle
- * değil: tag için `sanitizeTags`, açıklama için `stripInternalTrailer`. Tag
+ * Taban `textBaseline`'dan gelir. "sent" create'in gönderdiği metindir
+ * (sabit eksen satırları dahil): açıklama BİREBİR eşit olmalı. "panel"
+ * kayıttan önce açılmış, henüz senkronlanmamış satırdır: create'in dönüşümü
+ * burada yeniden kurulur (tag için `sanitizeTags`, açıklama için
+ * `stripInternalTrailer`) ve create sabit eksen satırlarını SONA
+ * ekleyebildiği için Etsy metni panel metnine eşit olmalı ya da onunla
+ * başlayıp boş satırla devam etmeli. "mirrored" kıyaslanmaz (null). Tag
  * kıyası `verifyListingSeo` ile aynı anahtardır (trim, küçük harf, sıra
- * bağımsız). Açıklamaya create sabit eksen satırlarını SONA ekleyebilir
- * (`appendConstantsToDescription`), o yüzden Etsy metni panel metnine eşit
- * olmalı ya da onunla başlayıp boş satırla devam etmeli. Etsy metni HTML
- * entity'leriyle döndürür; iki taraf da çözülerek kıyaslanır.
+ * bağımsız). Etsy metni HTML entity'leriyle döndürür; iki taraf da çözülür.
  */
 export function listingTextChecks(
   live: { tags?: string[] | null; description?: string | null },
-  product: { tags: string[] | null; description: string | null },
+  base: TextBaseline,
 ): ListingTextCheck {
+  const none: ListingTextCheck = { tags: null, description: null, missingTags: [], extraTags: [], descriptionDiff: null };
+  if (base.source === "mirrored") return none;
   const tagKey = (t: string) => decodeHtmlEntities(t).trim().toLowerCase();
-  const want = sanitizeTags(product.tags).map(tagKey);
+  const want = (base.source === "sent" ? base.tags : sanitizeTags(base.tags)).map(tagKey);
   let tags: boolean | null = null;
   let missingTags: string[] = [];
   let extraTags: string[] = [];
@@ -421,15 +461,17 @@ export function listingTextChecks(
   const norm = (s: string) => decodeHtmlEntities(s).replace(/\r\n?/g, "\n").trim();
   let description: boolean | null = null;
   let descriptionDiff: ListingTextCheck["descriptionDiff"] = null;
-  if (typeof live.description === "string") {
-    const want = norm(stripInternalTrailer(product.description ?? ""));
+  const wantDesc = norm(base.source === "sent" ? base.description : stripInternalTrailer(base.description ?? ""));
+  // Panel tabanında açıklama boşsa create yalnız sabit satırları göndermiş
+  // olabilir; bilinmeyen içeriği kıyaslamak yanlış alarm üretir.
+  if (typeof live.description === "string" && (base.source === "sent" || wantDesc.length > 0)) {
     const got = norm(live.description);
-    description = got === want || got.startsWith(`${want}\n\n`);
+    description = base.source === "sent" ? got === wantDesc : got === wantDesc || got.startsWith(`${wantDesc}\n\n`);
     if (!description) {
       let at = 0;
-      while (at < want.length && at < got.length && want[at] === got[at]) at++;
+      while (at < wantDesc.length && at < got.length && wantDesc[at] === got[at]) at++;
       const cut = (s: string) => s.slice(Math.max(0, at - 40), at + 80);
-      descriptionDiff = { at, etsy: cut(got), panel: cut(want) };
+      descriptionDiff = { at, etsy: cut(got), panel: cut(wantDesc) };
     }
   }
   return { tags, description, missingTags, extraTags, descriptionDiff };
@@ -733,6 +775,7 @@ export async function createDraftListingFromProduct(
   }
 
   const tags = sanitizeTags(product.tags);
+  const sent = { tags, description: finalDesc };
   const materials = sanitizeMaterials(product.materials);
   const listingQuantity = product.quantity ?? 1;
 
@@ -864,6 +907,7 @@ export async function createDraftListingFromProduct(
         ok: false,
         listingId,
         url,
+        sent,
         step: "inventory",
         error: e instanceof Error ? e.message : "Envanter yazılamadı.",
         warnings,
@@ -932,6 +976,7 @@ export async function createDraftListingFromProduct(
         ok: false,
         listingId,
         url,
+        sent,
         step: "mirror",
         error: `Taslak Etsy'de açıldı (#${listingId}) ama panele bağlanamadı: ${error.message}. Etsy listing id'sini elle girin.`,
         warnings,
@@ -942,6 +987,7 @@ export async function createDraftListingFromProduct(
       ok: false,
       listingId,
       url,
+      sent,
       step: "mirror",
       error: `Taslak açıldı (#${listingId}) ama panele bağlanamadı: ${e instanceof Error ? e.message : String(e)}.`,
       warnings,
@@ -961,6 +1007,7 @@ export async function createDraftListingFromProduct(
     ok: true,
     listingId,
     url,
+    sent,
     warnings: warnings.length > 0 ? warnings : undefined,
   };
 }

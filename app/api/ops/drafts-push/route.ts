@@ -8,6 +8,7 @@ import {
   createDraftListingFromProduct,
   listingTextChecks,
   personalizationFor,
+  textBaseline,
   resolveTaxonomyIdForProtocol,
   type DraftProduct,
   type DraftVariant,
@@ -76,11 +77,12 @@ async function authorize(request: Request): Promise<boolean> {
 
 type ProductRow = Omit<DraftProduct, "variants" | "galleryUrls"> & {
   sku: string;
+  last_modified_ts: number | string | null;
   listing_metadata: (DraftProduct["listing_metadata"] & { draftTransfer?: unknown }) | null;
 };
 
 const PRODUCT_COLUMNS =
-  "id, org_id, sku, etsy_listing_id, title, description, tags, materials, price_cents, quantity, image_url, product_type, listing_metadata";
+  "id, org_id, sku, etsy_listing_id, title, description, tags, materials, price_cents, quantity, image_url, product_type, listing_metadata, last_modified_ts";
 
 const INVENTORY_STATES = new Set(["draft", "active", "inactive", "expired", "sold_out"]);
 
@@ -240,21 +242,41 @@ export async function GET(request: Request) {
 
   // Hedefler: önek altındaki arşivlenmemiş panel taslakları. verify Etsy'ye
   // çıkmışları, gönderim çıkmamışları okur.
-  let q = admin
-    .from("products")
-    .select(PRODUCT_COLUMNS)
-    .eq("org_id", org.id)
-    .like("sku", `${prefix}%`)
-    .eq("status", "draft")
-    .is("archived_at", null)
-    .order("sku", { ascending: true });
-  q = verify ? q.not("etsy_listing_id", "is", null) : q.is("etsy_listing_id", null);
-  if (only) q = q.eq("sku", only);
-  const { data: rows, error: rowsErr } = await q;
-  if (rowsErr) {
-    return NextResponse.json({ error: rowsErr.message }, { status: 500 });
+  const base = () =>
+    admin.from("products").select(PRODUCT_COLUMNS).eq("org_id", org.id).is("archived_at", null);
+  let products: ProductRow[];
+  if (verify) {
+    // Etsy senkronu ürün SKU'sunu boşaltır (varyantlı listing'de SKU varyantta
+    // yaşar) ve durumu Etsy'ninkine çeker (sahip yayına alabilir). Bu yüzden
+    // verify hedefini gönderim anında draftTransfer'e yazılan SKU'dan da bulur
+    // ve durum süzmez: yayına alınmış listing de doğrulanır (2026-10-08).
+    const [bySku, byTransfer] = await Promise.all([
+      base().like("sku", `${prefix}%`).not("etsy_listing_id", "is", null),
+      base().like("listing_metadata->draftTransfer->>sku", `${prefix}%`).not("etsy_listing_id", "is", null),
+    ]);
+    const err = bySku.error ?? byTransfer.error;
+    if (err) return NextResponse.json({ error: err.message }, { status: 500 });
+    const merged = new Map<string, ProductRow>();
+    for (const r of [...(bySku.data ?? []), ...(byTransfer.data ?? [])] as ProductRow[]) {
+      const sentSku = (r.listing_metadata?.draftTransfer as { sku?: string } | undefined)?.sku;
+      merged.set(r.id, { ...r, sku: r.sku ?? sentSku ?? "" });
+    }
+    products = [...merged.values()]
+      .filter((r) => r.sku.startsWith(prefix) && (!only || r.sku === only))
+      .sort((a, b) => a.sku.localeCompare(b.sku));
+  } else {
+    let q = base()
+      .like("sku", `${prefix}%`)
+      .eq("status", "draft")
+      .is("etsy_listing_id", null)
+      .order("sku", { ascending: true });
+    if (only) q = q.eq("sku", only);
+    const { data: rows, error: rowsErr } = await q;
+    if (rowsErr) {
+      return NextResponse.json({ error: rowsErr.message }, { status: 500 });
+    }
+    products = (rows ?? []) as ProductRow[];
   }
-  const products = (rows ?? []) as ProductRow[];
   if (products.length === 0) {
     // "Eşleşme yok" ile "iş yok" aynı görünmesin: sıfır hedef ayrı bir sonuçtur.
     return NextResponse.json(
@@ -348,7 +370,8 @@ export async function GET(request: Request) {
           taxonomyPrimary = primary.ok ? primary.taxonomyId === listing.taxonomy_id : null;
         }
         const expectPersonal = protocol ? personalizationFor(protocol, product) != null : null;
-        const text = listingTextChecks(listing, product);
+        const baseline = textBaseline(product);
+        const text = listingTextChecks(listing, baseline);
         const checks = {
           draft: listing.state === "draft",
           shop: listing.shop_id === shopId,
@@ -372,6 +395,9 @@ export async function GET(request: Request) {
           state: listing.state,
           etsyTitle: checks.title ? undefined : listing.title,
           panelTitle: checks.title ? undefined : product.title,
+          // Tag/açıklama neye kıyaslandı: sent (gönderim kaydı), panel (senkronsuz
+          // satır) ya da mirrored (kıyaslanmadı, ikisi de null).
+          textSource: baseline.source,
           tagDiff: checks.tags === false ? { missing: text.missingTags, extra: text.extraTags } : undefined,
           descriptionDiff: text.descriptionDiff ?? undefined,
           taxonomyId: listing.taxonomy_id,
@@ -472,6 +498,10 @@ export async function GET(request: Request) {
             status: clean ? "created" : "needs_review",
             route: PURPOSE,
             listingId: result.listingId ?? null,
+            // Verify'ın kanıtı: senkron ürün SKU'sunu ve tag/açıklamayı
+            // Etsy'den ezer, listing_metadata'ya dokunmaz.
+            sku: prod.sku,
+            sent: result.sent ?? null,
             step: result.step ?? null,
             error: result.error ?? null,
             warnings: result.warnings ?? [],
