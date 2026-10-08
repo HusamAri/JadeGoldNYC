@@ -1,7 +1,7 @@
 import { strict as assert } from "node:assert";
 import test from "node:test";
 
-import { galleryMarker, layoutOk, parseGalleryMarker, planGallery, type GalleryPhoto } from "@/lib/etsy/gallery-push";
+import { galleryMarker, layoutOk, linenPending, parseGalleryMarker, planGallery, type GalleryPhoto } from "@/lib/etsy/gallery-push";
 
 /**
  * ops/gallery-push yardımcıları. Girdi canlı Etsy dökümünden: A24 taslağının
@@ -78,4 +78,18 @@ test("sıra kayması yakalanır: 02 ile 03 yer değiştirmiş", () => {
   const r = layoutOk(planGallery(photos, SET, MODEL, expected), SLOTS);
   assert.equal(r.ok, false);
   assert.match(r.reason ?? "", /02/);
+});
+
+test("keten askıda: kareler 1..10'da, keten yok, önceki koşu id kaydetmiş -> iş bitmemiş", () => {
+  const frames = SLOTS.map((s, i) => ours(s, i + 1));
+  // Düzen tek başına "tamam" der; bu yüzden ayrı bir kontrol şart.
+  assert.equal(layoutOk(planGallery(frames, SET, MODEL, expected), SLOTS).ok, true);
+  assert.equal(linenPending({ status: "needs_review", linenImageId: linen.listing_image_id }, frames), true);
+  assert.equal(linenPending({ status: "sending", linenImageId: linen.listing_image_id }, frames), true);
+  // Keten geri bağlanmışsa askıda değil.
+  assert.equal(linenPending({ status: "needs_review", linenImageId: linen.listing_image_id }, [...frames, { ...linen, rank: 11 }]), false);
+  // Bitmiş koşunun id'si sayılmaz (sahip sonradan silmiş olabilir); kayıt yoksa askı yok.
+  assert.equal(linenPending({ status: "done", linenImageId: linen.listing_image_id }, frames), false);
+  assert.equal(linenPending(null, frames), false);
+  assert.equal(linenPending({ status: "needs_review", linenImageId: null }, frames), false);
 });

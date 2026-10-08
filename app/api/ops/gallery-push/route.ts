@@ -10,6 +10,7 @@ import { decodeHtmlEntities } from "@/lib/etsy/text";
 import {
   galleryMarker,
   layoutOk,
+  linenPending as linenPendingFor,
   planGallery,
   type GalleryPhoto,
 } from "@/lib/etsy/gallery-push";
@@ -212,11 +213,7 @@ export async function GET(request: Request) {
   // yok) iş bitmiş SAYILMAZ; kareler 1..10'da "doğru" görünse bile (bağımsız
   // inceleme 2026-10-08, doğrulandı). Bitmiş (done) koşunun id'si ise yeni
   // koşuya taşınmaz: sahip sonradan silmiş olabilir.
-  const linenPending =
-    prev != null &&
-    prev.status !== "done" &&
-    prev.linenImageId != null &&
-    !before.some((p) => p.listing_image_id === prev.linenImageId);
+  const linenPending = linenPendingFor(prev, before);
   const check = layoutOk(plan, SLOTS);
 
   if (verify) {
@@ -350,7 +347,16 @@ export async function GET(request: Request) {
       linenAlt = linen.alt_text ?? null;
       await record("sending", { linenImageId, linenAlt });
       await client.request("DELETE", etsyPaths.listingImage(shopId, listingId, linen.listing_image_id));
+      // Silme listeye bir an geç yansıyabilir: bayat okuma yeniden bağlamayı
+      // atlatmasın diye görsel düşene kadar (en çok 4 kez) yeniden oku.
       after = await readGallery();
+      for (let i = 0; i < 3 && after.some((p) => p.listing_image_id === linenImageId); i++) {
+        await new Promise((r) => setTimeout(r, 1000));
+        after = await readGallery();
+      }
+      if (after.some((p) => p.listing_image_id === linenImageId)) {
+        throw new Error(`keten hero (${linenImageId}) silindi dendi ama listede duruyor`);
+      }
     }
     if (linenImageId != null && !after.some((p) => p.listing_image_id === linenImageId)) {
       await readMeta();

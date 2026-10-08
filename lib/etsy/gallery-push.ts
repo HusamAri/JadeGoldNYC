@@ -91,3 +91,21 @@ export function layoutOk(plan: GalleryPlan, slots: string[]): { ok: boolean; rea
   }
   return { ok: true, reason: null };
 }
+
+/**
+ * Önceki koşu keten hero'yu silip geri bağlayamadıysa (id kayıtlı, galeride
+ * yok) iş bitmemiştir; kareler 1..N'de "doğru" görünse bile. Bitmiş (done)
+ * koşunun id'si sayılmaz: sahip görseli sonradan bilerek silmiş olabilir
+ * (bağımsız inceleme 2026-10-08, doğrulandı).
+ */
+export function linenPending(
+  prev: { status?: string; linenImageId?: number | null } | null | undefined,
+  photos: GalleryPhoto[],
+): boolean {
+  return (
+    prev != null &&
+    prev.status !== "done" &&
+    prev.linenImageId != null &&
+    !photos.some((p) => p.listing_image_id === prev.linenImageId)
+  );
+}
