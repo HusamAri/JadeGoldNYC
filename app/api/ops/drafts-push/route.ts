@@ -6,6 +6,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { EtsyClient } from "@/lib/etsy/client";
 import {
   createDraftListingFromProduct,
+  listingTextChecks,
   personalizationFor,
   resolveTaxonomyIdForProtocol,
   type DraftProduct,
@@ -220,6 +221,8 @@ export async function GET(request: Request) {
           title: string;
           taxonomy_id: number;
           is_personalizable?: boolean;
+          tags?: string[];
+          description?: string;
         }>(etsyPaths.listing(listingId));
         const inv = await client.get<EtsyInventory>(
           etsyPaths.listingInventory(listingId) + "?legacy=false",
@@ -250,10 +253,13 @@ export async function GET(request: Request) {
           taxonomyPrimary = primary.ok ? primary.taxonomyId === listing.taxonomy_id : null;
         }
         const expectPersonal = protocol ? personalizationFor(protocol, product) != null : null;
+        const text = listingTextChecks(listing, product);
         const checks = {
           draft: listing.state === "draft",
           shop: listing.shop_id === shopId,
           title: listing.title === product.title,
+          tags: text.tags,
+          description: text.description,
           variants: live.length === product.variants.length,
           skus: missingSku === 0,
           prices: priceMismatch === 0,
@@ -271,6 +277,8 @@ export async function GET(request: Request) {
           state: listing.state,
           etsyTitle: checks.title ? undefined : listing.title,
           panelTitle: checks.title ? undefined : product.title,
+          tagDiff: checks.tags === false ? { missing: text.missingTags, extra: text.extraTags } : undefined,
+          descriptionDiff: text.descriptionDiff ?? undefined,
           taxonomyId: listing.taxonomy_id,
           etsyVariants: live.length,
           panelVariants: product.variants.length,

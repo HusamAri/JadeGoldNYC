@@ -5,6 +5,7 @@ import { etsyPaths } from "@/lib/etsy/endpoints";
 import { asEtsyProperties, type RawVariantProperties } from "@/lib/variant-properties";
 import { stripImageMetadata } from "@/lib/photo-kit/strip-metadata";
 import { logAudit } from "@/lib/audit";
+import { decodeHtmlEntities } from "@/lib/etsy/text";
 import {
   resolveListingProtocol,
   unknownProtocolError,
@@ -373,6 +374,65 @@ function sanitizeTags(tags: string[] | null): string[] {
     .map((t) => t.trim())
     .filter((t) => t.length > 0 && t.length <= 20)
     .slice(0, 13);
+}
+
+export interface ListingTextCheck {
+  /** null: Etsy cevabı alanı taşımıyor (kıyas yapılamadı). */
+  tags: boolean | null;
+  description: boolean | null;
+  missingTags: string[];
+  extraTags: string[];
+  /** Açıklama tutmadığında ilk farklı karakterin konumu ve iki tarafın o
+   *  noktadaki kesiti (normalize metinden; ham Etsy metninde entity'ler
+   *  konumu kaydırır). */
+  descriptionDiff: { at: number; etsy: string; panel: string } | null;
+}
+
+/**
+ * Etsy'nin döndürdüğü tag ve açıklamayı create'in GÖNDERDİĞİYLE kıyaslar
+ * (drafts-push verify). Vaka 2026-10-07: verify başlık/varyant/SKU/fiyat/görsel
+ * kıyaslıyordu ama tag'e bakmıyordu; o gün kırılan alan tam olarak tag'di
+ * (Etsy "2.5mm" içindeki noktayı reddetti).
+ *
+ * Beklenen değer create yolunun kendi dönüşümüyle kurulur, panel ham değeriyle
+ * değil: tag için `sanitizeTags`, açıklama için `stripInternalTrailer`. Tag
+ * kıyası `verifyListingSeo` ile aynı anahtardır (trim, küçük harf, sıra
+ * bağımsız). Açıklamaya create sabit eksen satırlarını SONA ekleyebilir
+ * (`appendConstantsToDescription`), o yüzden Etsy metni panel metnine eşit
+ * olmalı ya da onunla başlayıp boş satırla devam etmeli. Etsy metni HTML
+ * entity'leriyle döndürür; iki taraf da çözülerek kıyaslanır.
+ */
+export function listingTextChecks(
+  live: { tags?: string[] | null; description?: string | null },
+  product: { tags: string[] | null; description: string | null },
+): ListingTextCheck {
+  const tagKey = (t: string) => decodeHtmlEntities(t).trim().toLowerCase();
+  const want = sanitizeTags(product.tags).map(tagKey);
+  let tags: boolean | null = null;
+  let missingTags: string[] = [];
+  let extraTags: string[] = [];
+  if (Array.isArray(live.tags)) {
+    const got = live.tags.map(tagKey);
+    missingTags = want.filter((t) => !got.includes(t));
+    extraTags = got.filter((t) => !want.includes(t));
+    tags = missingTags.length === 0 && extraTags.length === 0 && got.length === want.length;
+  }
+
+  const norm = (s: string) => decodeHtmlEntities(s).replace(/\r\n?/g, "\n").trim();
+  let description: boolean | null = null;
+  let descriptionDiff: ListingTextCheck["descriptionDiff"] = null;
+  if (typeof live.description === "string") {
+    const want = norm(stripInternalTrailer(product.description ?? ""));
+    const got = norm(live.description);
+    description = got === want || got.startsWith(`${want}\n\n`);
+    if (!description) {
+      let at = 0;
+      while (at < want.length && at < got.length && want[at] === got[at]) at++;
+      const cut = (s: string) => s.slice(Math.max(0, at - 40), at + 80);
+      descriptionDiff = { at, etsy: cut(got), panel: cut(want) };
+    }
+  }
+  return { tags, description, missingTags, extraTags, descriptionDiff };
 }
 
 /** Materyalleri Etsy kurallarına uydurur: ≤45 char, en çok 13. */
