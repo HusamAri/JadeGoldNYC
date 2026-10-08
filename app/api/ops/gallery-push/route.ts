@@ -6,6 +6,7 @@ import { jpegSize } from "@/lib/artifact-2027/jpeg-size";
 import { logAudit } from "@/lib/audit";
 import { EtsyClient } from "@/lib/etsy/client";
 import { etsyPaths } from "@/lib/etsy/endpoints";
+import { decodeHtmlEntities } from "@/lib/etsy/text";
 import {
   galleryMarker,
   layoutOk,
@@ -50,6 +51,8 @@ export const maxDuration = 300;
 
 const PURPOSE = "gallery-push";
 const SLOTS = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10"];
+/** Yarım "sending" koşusu ancak maxDuration + pay dolunca devralınır. */
+const LEASE_MS = 330_000;
 
 async function authorize(request: Request): Promise<boolean> {
   const secret = process.env.CRON_SECRET;
@@ -78,7 +81,7 @@ type Gallery = { results: GalleryPhoto[] };
 type Meta = Record<string, unknown> & {
   modelId?: string;
   name?: string;
-  galleryPush?: { status?: string; startedAt?: string; linenImageId?: number | null } | null;
+  galleryPush?: (Record<string, unknown> & { status?: string; startedAt?: string; linenImageId?: number | null; linenAlt?: string | null }) | null;
 };
 
 function describe(photos: GalleryPhoto[]) {
@@ -204,10 +207,29 @@ export async function GET(request: Request) {
     layout: describe(before),
   };
 
+  const prev = meta.galleryPush ?? null;
+  // Önceki koşu keten hero'yu silip geri bağlayamadıysa (id kayıtlı, galeride
+  // yok) iş bitmiş SAYILMAZ; kareler 1..10'da "doğru" görünse bile (bağımsız
+  // inceleme 2026-10-08, doğrulandı). Bitmiş (done) koşunun id'si ise yeni
+  // koşuya taşınmaz: sahip sonradan silmiş olabilir.
+  const linenPending =
+    prev != null &&
+    prev.status !== "done" &&
+    prev.linenImageId != null &&
+    !before.some((p) => p.listing_image_id === prev.linenImageId);
+  const check = layoutOk(plan, SLOTS);
+
   if (verify) {
-    const check = layoutOk(plan, SLOTS);
     const sizesOk = [...plan.ours.values()].every((p) => p.full_width == null || (p.full_width === 2048 && p.full_height === 2048));
-    return NextResponse.json({ ok: check.ok && sizesOk && summary.shopMatches, mode: "verify", reason: check.reason, sizesOk, ...summary });
+    const reason = linenPending ? `keten hero (${prev!.linenImageId}) silinmiş, geri bağlanmamış` : check.reason;
+    return NextResponse.json({
+      ok: check.ok && !linenPending && sizesOk && summary.shopMatches,
+      mode: "verify",
+      reason,
+      sizesOk,
+      previous: prev,
+      ...summary,
+    });
   }
   if (!summary.shopMatches) {
     return NextResponse.json({ ok: false, error: "listing başka mağazada", ...summary }, { status: 409 });
@@ -224,21 +246,40 @@ export async function GET(request: Request) {
   if (before.length + plan.missing.length > 20) {
     return NextResponse.json({ ok: false, error: "Etsy en çok 20 görsel alır", ...summary }, { status: 409 });
   }
-  const prev = meta.galleryPush ?? null;
-  const already = layoutOk(plan, SLOTS);
-  if (already.ok) {
+  // Tamam = Etsy düzeni doğru + keten askıda değil + panel kapanışı yapılmış.
+  // Etsy doğru ama önceki koşu panelde yarım kaldıysa apply yalnız paneli tamamlar.
+  if (check.ok && !linenPending && prev?.status === "done") {
     return NextResponse.json({ ok: true, mode: apply ? "apply" : "dry-run", alreadyDone: true, previous: prev, ...summary });
   }
   if (!apply) {
-    return NextResponse.json({ ok: true, mode: "dry-run", previous: prev, toUpload: plan.missing, ...summary });
+    return NextResponse.json({
+      ok: true,
+      mode: "dry-run",
+      previous: prev,
+      toUpload: plan.missing,
+      linenPending,
+      panelOnly: check.ok && !linenPending,
+      ...summary,
+    });
   }
 
-  // Kilit: dış çağrıdan önce. Yarım kalmış gönderime yalnız resume=1 devam eder.
-  if (prev && prev.status !== "done" && !resume) {
-    return NextResponse.json({ ok: false, error: "önceki gönderim yarım; resume=1 ile devam edin", previous: prev, ...summary }, { status: 409 });
+  // Kilit: dış çağrıdan önce. Yarım koşuya yalnız resume=1 devam eder; hâlâ
+  // "sending" olan koşu ancak kira süresi (maxDuration + pay) dolunca
+  // devralınır, yoksa iki koşu aynı görselleri yükler.
+  if (prev && prev.status !== "done") {
+    if (!resume) {
+      return NextResponse.json({ ok: false, error: "önceki gönderim yarım; resume=1 ile devam edin", previous: prev, ...summary }, { status: 409 });
+    }
+    const age = Date.now() - Date.parse(prev.startedAt ?? "");
+    if (prev.status === "sending" && !(age > LEASE_MS)) {
+      const wait = Math.ceil((LEASE_MS - (Number.isFinite(age) ? age : 0)) / 1000);
+      return NextResponse.json({ ok: false, error: `gönderim hâlâ sürüyor olabilir; ${wait} sn sonra resume=1`, previous: prev, ...summary }, { status: 409 });
+    }
   }
   const startedAt = new Date().toISOString();
-  const lockMeta: Meta = { ...meta, galleryPush: { ...(prev ?? {}), status: "sending", startedAt } };
+  const carried =
+    prev && prev.status !== "done" ? { linenImageId: prev.linenImageId ?? null, linenAlt: prev.linenAlt ?? null } : {};
+  const lockMeta: Meta = { ...meta, galleryPush: { status: "sending", set, model, startedAt, ...carried } };
   let lockQ = admin.from("products").update({ listing_metadata: lockMeta }).eq("org_id", org.id).eq("id", prod.id);
   lockQ = prev?.startedAt
     ? lockQ.eq("listing_metadata->galleryPush->>startedAt", prev.startedAt)
@@ -248,22 +289,37 @@ export async function GET(request: Request) {
     return NextResponse.json({ ok: false, error: "kilit alınamadı (başka gönderim sürüyor olabilir)", ...summary }, { status: 409 });
   }
 
+  // Sahiplik: her Etsy yazımından önce kilidin hâlâ bu koşuda olduğu okunur;
+  // metadata yazımı da yalnız sahipken yapılır ve başarısızsa HATA fırlatır
+  // (silmeden önceki kontrol noktası yazılamazsa silme yapılmaz).
+  const readMeta = async (): Promise<Meta> => {
+    const { data, error } = await admin.from("products").select("listing_metadata").eq("org_id", org.id).eq("id", prod.id).maybeSingle();
+    if (error || !data) throw new Error(`metadata okunamadı: ${error?.message ?? "satır yok"}`);
+    const cur = ((data.listing_metadata as Meta | null) ?? {}) as Meta;
+    if (cur.galleryPush?.startedAt !== startedAt) throw new Error("kilit artık bu koşuda değil");
+    return cur;
+  };
   const record = async (status: string, extra: Record<string, unknown>) => {
-    const { data: fresh } = await admin.from("products").select("listing_metadata").eq("id", prod.id).maybeSingle();
-    const cur = ((fresh?.listing_metadata as Meta | null) ?? lockMeta) as Meta;
-    await admin
+    const cur = await readMeta();
+    const { data, error } = await admin
       .from("products")
-      .update({ listing_metadata: { ...cur, galleryPush: { ...(cur.galleryPush ?? {}), status, startedAt, ...extra } } })
+      .update({ listing_metadata: { ...cur, galleryPush: { ...(cur.galleryPush ?? {}), status, ...extra } } })
       .eq("org_id", org.id)
-      .eq("id", prod.id);
+      .eq("id", prod.id)
+      .eq("listing_metadata->galleryPush->>startedAt", startedAt)
+      .select("id");
+    if (error || (data ?? []).length !== 1) throw new Error(`metadata yazılamadı: ${error?.message ?? "0 satır"}`);
   };
 
   const uploaded: Record<string, number> = {};
-  let linenImageId: number | null = (prev?.linenImageId as number | null | undefined) ?? null;
+  let linenImageId: number | null = carried.linenImageId ?? null;
+  let linenAlt: string | null = carried.linenAlt ?? null;
+  const altKey = (s: string | null | undefined) => decodeHtmlEntities(s ?? "").trim();
   try {
     // 1) Eksik kareleri sona ekle (rank = mevcut sayı + 1).
     let count = before.length;
     for (const slot of plan.missing) {
+      await readMeta();
       const f = files[slot];
       const form = new FormData();
       form.append("image", new Blob([f.bytes], { type: "image/jpeg" }), `${set}-${model}-${slot}.jpg`);
@@ -274,42 +330,81 @@ export async function GET(request: Request) {
       count++;
     }
 
-    // 2) Düzen: işaretsiz görsel (keten hero) yeni karelerin önündeyse sil ve
-    //    aynı id ile en sona yeniden bağla. Id silmeden ÖNCE kaydedilir.
     let after = await readGallery();
     let p2 = planGallery(after, set, model, expected);
-    if (p2.missing.length || p2.stale.length) throw new Error(`yükleme sonrası eksik/uyuşmaz: ${p2.missing.join(",")} stale ${p2.stale.length}`);
+    if (p2.missing.length) {
+      // Yeni yüklenen görsel listede bir an gecikebilir; bir kez yeniden oku.
+      await new Promise((r) => setTimeout(r, 1500));
+      after = await readGallery();
+      p2 = planGallery(after, set, model, expected);
+    }
+    if (p2.missing.length || p2.stale.length) {
+      throw new Error(`yükleme sonrası eksik/uyuşmaz: ${p2.missing.join(",") || "-"}; stale ${p2.stale.length}`);
+    }
+
+    // 2) Düzen: işaretsiz görsel (keten hero) yeni karelerin önündeyse sil ve
+    //    aynı id ile en sona yeniden bağla. Id ve alt text silmeden ÖNCE yazılır.
     const linen = p2.foreign[0];
     if (linen && linen.rank <= SLOTS.length) {
       linenImageId = linen.listing_image_id;
-      await record("sending", { linenImageId, linenAlt: linen.alt_text ?? null });
+      linenAlt = linen.alt_text ?? null;
+      await record("sending", { linenImageId, linenAlt });
       await client.request("DELETE", etsyPaths.listingImage(shopId, listingId, linen.listing_image_id));
       after = await readGallery();
     }
-    if (linenImageId && !after.some((p) => p.listing_image_id === linenImageId)) {
+    if (linenImageId != null && !after.some((p) => p.listing_image_id === linenImageId)) {
+      await readMeta();
       const form = new FormData();
       form.append("listing_image_id", String(linenImageId));
       form.append("rank", String(after.length + 1));
-      await client.requestMultipart("POST", etsyPaths.listingImages(shopId, listingId), form);
+      if (linenAlt) form.append("alt_text", linenAlt.slice(0, 500));
+      const back = await client.requestMultipart<{ listing_image_id?: number }>("POST", etsyPaths.listingImages(shopId, listingId), form);
+      if (back?.listing_image_id && back.listing_image_id !== linenImageId) {
+        linenImageId = back.listing_image_id;
+        await record("sending", { linenImageId, linenAlt });
+      }
       after = await readGallery();
     }
 
-    // 3) Geri okuma: hedef düzen, durum ve mağaza.
+    // 3) Geri okuma: hedef düzen, keten 11. sırada ve alt text'iyle, durum, mağaza.
     p2 = planGallery(after, set, model, expected);
-    const check = layoutOk(p2, SLOTS);
+    const fin = layoutOk(p2, SLOTS);
+    const linenEntry = linenImageId != null ? after.find((p) => p.listing_image_id === linenImageId) : undefined;
+    const linenOk =
+      linenImageId == null ||
+      (linenEntry != null && linenEntry.rank === SLOTS.length + 1 && (!linenAlt || altKey(linenEntry.alt_text) === altKey(linenAlt)));
     const listingAfter = await readListing();
-    const linenBack = linenImageId == null || after.some((p) => p.listing_image_id === linenImageId);
-    const ok = check.ok && linenBack && listingAfter.state === "draft" && listingAfter.shop_id === shopId;
+    const ok = fin.ok && linenOk && listingAfter.state === "draft" && listingAfter.shop_id === shopId;
+    const images = Object.fromEntries(SLOTS.map((s) => [s, { imageId: p2.ours.get(s)?.listing_image_id ?? null, sha: files[s].sha }]));
+    if (!ok) {
+      const reason = fin.reason ?? (linenOk ? `Etsy durumu ${listingAfter.state}` : "keten hero 11. sırada değil ya da alt text'i değişti");
+      await record("needs_review", { finishedAt: new Date().toISOString(), images, linenImageId, linenAlt, count: after.length, reason });
+      await logAudit(admin, {
+        orgId: org.id,
+        action: "etsy.image_upload",
+        entityType: "product",
+        entityId: prod.id,
+        summary: `gallery-push ${set}/${model}: needs_review (${reason}), Etsy #${listingId} ${after.length} görsel`,
+        diff: { listingId, uploaded, linenImageId, layout: describe(after) },
+        source: "app",
+      });
+      // Panel yazılmaz: Etsy hedef düzende değilken panel bitmiş gibi görünmesin.
+      return NextResponse.json({ ok: false, mode: "apply", reason, uploaded, linenImageId, ...summary, countAfter: after.length, layoutAfter: describe(after) }, { status: 409 });
+    }
 
-    // 4) Panel galerisi: 01..10 → position 0..9, diğerleri sonra.
+    // 4) Panel galerisi (yalnız Etsy doğrulandıktan sonra): 01..10 → 0..9, diğerleri sonra.
     const ourIds = SLOTS.map((slot) => {
       const k = createHash("sha256").update(`${prod.id}:gallery-push:${set}:${slot}`).digest("hex");
       return `${k.slice(0, 8)}-${k.slice(8, 12)}-5${k.slice(13, 16)}-a${k.slice(17, 20)}-${k.slice(20, 32)}`;
     });
-    const { data: panelRows } = await admin.from("listing_images").select("id, position").eq("org_id", org.id).eq("product_id", prod.id);
-    const others = (panelRows ?? []).filter((r) => !ourIds.includes(r.id as string)).sort((a, b) => (a.position ?? 0) - (b.position ?? 0));
+    const panelRead = await admin.from("listing_images").select("id, position").eq("org_id", org.id).eq("product_id", prod.id);
+    if (panelRead.error) throw new Error(`panel galerisi okunamadı: ${panelRead.error.message}`);
+    const others = (panelRead.data ?? [])
+      .filter((r) => !ourIds.includes(r.id as string))
+      .sort((a, b) => ((a.position as number | null) ?? 0) - ((b.position as number | null) ?? 0));
     for (const [i, r] of others.entries()) {
-      await admin.from("listing_images").update({ position: SLOTS.length + i }).eq("org_id", org.id).eq("id", r.id);
+      const moved = await admin.from("listing_images").update({ position: SLOTS.length + i }).eq("org_id", org.id).eq("id", r.id);
+      if (moved.error) throw new Error(`panel sırası: ${moved.error.message}`);
     }
     const upsert = await admin.from("listing_images").upsert(
       SLOTS.map((slot, i) => ({
@@ -325,35 +420,45 @@ export async function GET(request: Request) {
       { onConflict: "id" },
     );
     if (upsert.error) throw new Error(`panel galerisi: ${upsert.error.message}`);
-    await admin
+    const prodUpd = await admin
       .from("products")
       .update({ image_url: files["01"].url, num_images: after.length })
       .eq("org_id", org.id)
       .eq("id", prod.id);
+    if (prodUpd.error) throw new Error(`ürün kapağı: ${prodUpd.error.message}`);
 
-    const images = Object.fromEntries(SLOTS.map((s) => [s, { imageId: p2.ours.get(s)?.listing_image_id ?? null, sha: files[s].sha }]));
-    await record(ok ? "done" : "needs_review", {
-      set,
-      model,
-      finishedAt: new Date().toISOString(),
-      images,
-      linenImageId,
-      count: after.length,
-      reason: check.reason,
-    });
+    await record("done", { finishedAt: new Date().toISOString(), images, linenImageId, linenAlt, count: after.length, reason: null, error: null });
     await logAudit(admin, {
       orgId: org.id,
       action: "etsy.image_upload",
       entityType: "product",
       entityId: prod.id,
-      summary: `gallery-push ${set}/${model}: ${Object.keys(uploaded).length} görsel yüklendi, Etsy #${listingId} ${after.length} görsel${ok ? "" : " (needs_review)"}`,
+      summary: `gallery-push ${set}/${model}: ${Object.keys(uploaded).length} görsel yüklendi, Etsy #${listingId} ${after.length} görsel, düzen doğrulandı`,
       diff: { listingId, uploaded, linenImageId, layout: describe(after) },
       source: "app",
     });
-    return NextResponse.json({ ok, mode: "apply", uploaded, reason: check.reason, linenImageId, ...summary, countAfter: after.length, layoutAfter: describe(after) });
+    return NextResponse.json({ ok: true, mode: "apply", uploaded, linenImageId, ...summary, countAfter: after.length, layoutAfter: describe(after) });
   } catch (e) {
     const error = e instanceof Error ? e.message : String(e);
-    await record("needs_review", { error, uploaded, linenImageId, failedAt: new Date().toISOString() });
-    return NextResponse.json({ ok: false, mode: "apply", error, uploaded, linenImageId, ...summary }, { status: 502 });
+    let recorded = true;
+    try {
+      await record("needs_review", { error, uploaded, linenImageId, linenAlt, failedAt: new Date().toISOString() });
+    } catch {
+      recorded = false;
+    }
+    try {
+      await logAudit(admin, {
+        orgId: org.id,
+        action: "etsy.image_upload",
+        entityType: "product",
+        entityId: prod.id,
+        summary: `gallery-push ${set}/${model}: hata (${error.slice(0, 160)}), yüklenen ${Object.keys(uploaded).length}, keten ${linenImageId ?? "-"}`,
+        diff: { listingId, uploaded, linenImageId, linenAlt, error },
+        source: "app",
+      });
+    } catch {
+      // logAudit hatayı zaten yutar; burada yalnız güvenlik.
+    }
+    return NextResponse.json({ ok: false, mode: "apply", error, recorded, uploaded, linenImageId, linenAlt, ...summary }, { status: 502 });
   }
 }
