@@ -15,7 +15,7 @@
 --   select md5(string_agg(sku||'|'||md5(description), E'\n' order by sku collate "C")) from products
 --   where org_id = '2c254edf-2119-4079-b09e-dc672e32c1f9' and sku like 'BAS-HM-%';                      expected: 256508c19157e74fbbb9907e0fd93873
 --   select md5(string_agg(sku||'|'||array_to_string(tags, ','), E'\n' order by sku collate "C")) from products
---   where org_id = '2c254edf-2119-4079-b09e-dc672e32c1f9' and sku like 'BAS-HM-%';                      expected: 4a79c39b21807298fdc9fa3d91373fc6
+--   where org_id = '2c254edf-2119-4079-b09e-dc672e32c1f9' and sku like 'BAS-HM-%';                      expected: 777177657f7cad8ea2b406db0b4ed0c4
 --   select count(*), md5(string_agg(p.sku||'|'||li.position||'|'||li.url||'|'||li.alt, E'\n'
 --     order by p.sku||'|'||li.position||'|'||li.url||'|'||li.alt collate "C"))
 --   from listing_images li join products p on p.id = li.product_id
@@ -99,7 +99,7 @@ insert into _hm values
  $hm$Two flat planes meet at a line down the middle, so the light breaks along the ridge as the hand moves. Thin enough to wear next to anything.$hm$,
  $hm$band 2.5 mm wide, knife edge.$hm$,
  $hm$Ring size: US 3 to 16, whole and half sizes.$hm$,
- ARRAY[$hm$knife edge ring$hm$,$hm$mens thin ring$hm$,$hm$polished gold band$hm$,$hm$stacking ring$hm$,$hm$2.5mm gold band$hm$,$hm$minimalist band$hm$,$hm$everyday ring$hm$,$hm$mens wedding band$hm$,$hm$mens ring$hm$,$hm$14k mens ring$hm$,$hm$mens jewelry$hm$,$hm$gift for him$hm$,$hm$minimalist jewelry$hm$]::text[],
+ ARRAY[$hm$knife edge ring$hm$,$hm$mens thin ring$hm$,$hm$polished gold band$hm$,$hm$stacking ring$hm$,$hm$slim gold band$hm$,$hm$minimalist band$hm$,$hm$everyday ring$hm$,$hm$mens wedding band$hm$,$hm$mens ring$hm$,$hm$14k mens ring$hm$,$hm$mens jewelry$hm$,$hm$gift for him$hm$,$hm$minimalist jewelry$hm$]::text[],
  $hm$Knife Edge Band$hm$,
  $hm$Ring Size$hm$,
  ARRAY[$hm$US 3$hm$,$hm$US 3.5$hm$,$hm$US 4$hm$,$hm$US 4.5$hm$,$hm$US 5$hm$,$hm$US 5.5$hm$,$hm$US 6$hm$,$hm$US 6.5$hm$,$hm$US 7$hm$,$hm$US 7.5$hm$,$hm$US 8$hm$,$hm$US 8.5$hm$,$hm$US 9$hm$,$hm$US 9.5$hm$,$hm$US 10$hm$,$hm$US 10.5$hm$,$hm$US 11$hm$,$hm$US 11.5$hm$,$hm$US 12$hm$,$hm$US 12.5$hm$,$hm$US 13$hm$,$hm$US 13.5$hm$,$hm$US 14$hm$,$hm$US 14.5$hm$,$hm$US 15$hm$,$hm$US 15.5$hm$,$hm$US 16$hm$]::text[],
@@ -163,7 +163,7 @@ insert into _hm values
  $hm$Eight planes instead of a curve. Each facet throws its own flash of light; inside, it is round and smooth.$hm$,
  $hm$band 3.5 mm wide, eight flat facets.$hm$,
  $hm$Ring size: US 3 to 16, whole and half sizes.$hm$,
- ARRAY[$hm$faceted ring$hm$,$hm$octagon ring$hm$,$hm$geometric ring$hm$,$hm$mens wedding band$hm$,$hm$3.5mm gold band$hm$,$hm$faceted gold band$hm$,$hm$modern gold band$hm$,$hm$polished gold band$hm$,$hm$mens ring$hm$,$hm$14k mens ring$hm$,$hm$mens jewelry$hm$,$hm$gift for him$hm$,$hm$minimalist jewelry$hm$]::text[],
+ ARRAY[$hm$faceted ring$hm$,$hm$octagon ring$hm$,$hm$geometric ring$hm$,$hm$mens wedding band$hm$,$hm$mens gold band$hm$,$hm$faceted gold band$hm$,$hm$modern gold band$hm$,$hm$polished gold band$hm$,$hm$mens ring$hm$,$hm$14k mens ring$hm$,$hm$mens jewelry$hm$,$hm$gift for him$hm$,$hm$minimalist jewelry$hm$]::text[],
  $hm$Octagon Facet Band$hm$,
  $hm$Ring Size$hm$,
  ARRAY[$hm$US 3$hm$,$hm$US 3.5$hm$,$hm$US 4$hm$,$hm$US 4.5$hm$,$hm$US 5$hm$,$hm$US 5.5$hm$,$hm$US 6$hm$,$hm$US 6.5$hm$,$hm$US 7$hm$,$hm$US 7.5$hm$,$hm$US 8$hm$,$hm$US 8.5$hm$,$hm$US 9$hm$,$hm$US 9.5$hm$,$hm$US 10$hm$,$hm$US 10.5$hm$,$hm$US 11$hm$,$hm$US 11.5$hm$,$hm$US 12$hm$,$hm$US 12.5$hm$,$hm$US 13$hm$,$hm$US 13.5$hm$,$hm$US 14$hm$,$hm$US 14.5$hm$,$hm$US 15$hm$,$hm$US 15.5$hm$,$hm$US 16$hm$]::text[],
@@ -275,7 +275,7 @@ insert into _hm values
  $hm$The rhythm of the Figaro is what makes it: short, short, short, long. Flat links, so it lies smooth on the wrist.$hm$,
  $hm$2.5 mm figaro chain.$hm$,
  $hm$Chain: solid gold with a lobster clasp; choose 7.5, 8 or 8.5 inches (measure your wrist and add about half an inch).$hm$,
- ARRAY[$hm$figaro bracelet$hm$,$hm$mens figaro chain$hm$,$hm$figaro link$hm$,$hm$2.5mm gold chain$hm$,$hm$mens gold bracelet$hm$,$hm$classic chain$hm$,$hm$everyday bracelet$hm$,$hm$gold link bracelet$hm$,$hm$mens bracelet$hm$,$hm$14k mens bracelet$hm$,$hm$mens jewelry$hm$,$hm$gift for him$hm$,$hm$minimalist jewelry$hm$]::text[],
+ ARRAY[$hm$figaro bracelet$hm$,$hm$mens figaro chain$hm$,$hm$figaro link$hm$,$hm$thin gold chain$hm$,$hm$mens gold bracelet$hm$,$hm$classic chain$hm$,$hm$everyday bracelet$hm$,$hm$gold link bracelet$hm$,$hm$mens bracelet$hm$,$hm$14k mens bracelet$hm$,$hm$mens jewelry$hm$,$hm$gift for him$hm$,$hm$minimalist jewelry$hm$]::text[],
  $hm$Figaro Chain Bracelet$hm$,
  $hm$Bracelet Length$hm$,
  ARRAY[$hm$7.5 inches$hm$,$hm$8 inches$hm$,$hm$8.5 inches$hm$]::text[],

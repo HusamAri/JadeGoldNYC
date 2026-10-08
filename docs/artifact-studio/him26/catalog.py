@@ -144,7 +144,7 @@ add(id="R04", cat="ring", name="Bar Signet Ring", dims="bar face 12 x 4 mm", top
     shape="a signet ring with a long flat rectangular face 12 by 4 mm laid across the finger, sharp clean edges, brushed satin top surface with polished bevelled sides, solid and closed underneath, on a 3 mm band, shown in a three-quarter view from slightly above")
 add(id="R05", cat="ring", name="Knife Edge Band", dims="band 2.5 mm wide, knife edge", top_g=0.0, shank_g=2.6,
     title="Mens Knife Edge Ring, 2.5mm Polished Solid Gold Band, Thin Minimalist Stacking Ring for Him",
-    tags=["knife edge ring", "mens thin ring", "polished gold band", "stacking ring", "2.5mm gold band",
+    tags=["knife edge ring", "mens thin ring", "polished gold band", "stacking ring", "slim gold band",
           "minimalist band", "everyday ring", "mens wedding band", "mens ring", "14k mens ring"],
     lead="A slim 2.5 mm band whose outer surface rises to a single sharp ridge, in high polish solid gold.",
     story="Two flat planes meet at a line down the middle, so the light breaks along the ridge as the hand moves. Thin enough to wear next to anything.",
@@ -172,7 +172,7 @@ add(id="R08", cat="ring", name="Square Wire Ring", dims="square profile 2 x 2 mm
     shape="a perfectly round ring made from solid square gold wire: the ring itself is a circle, only the wire's cross section is a 2 by 2 mm square, so the outer surface is flat and the edges are crisp right angles; flat polished faces, shown standing upright in a three-quarter view so the square profile shows at the edge")
 add(id="R09", cat="ring", name="Octagon Facet Band", dims="band 3.5 mm wide, eight flat facets", top_g=0.0, shank_g=band_g(3.5),
     title="Mens Faceted Band Ring, 3.5mm Octagon Solid Gold Ring, Geometric Minimalist Band for Him",
-    tags=["faceted ring", "octagon ring", "geometric ring", "mens wedding band", "3.5mm gold band",
+    tags=["faceted ring", "octagon ring", "geometric ring", "mens wedding band", "mens gold band",
           "faceted gold band", "modern gold band", "polished gold band", "mens ring", "14k mens ring"],
     lead="A 3.5 mm band whose outside is cut into eight flat polished facets, so it is an octagon round the finger.",
     story="Eight planes instead of a curve. Each facet throws its own flash of light; inside, it is round and smooth.",
@@ -223,7 +223,7 @@ add(id="B05", cat="bracelet", name="Rope Chain Bracelet", dims="2 mm rope chain"
     shape="a solid gold 2 mm rope chain bracelet of small links twisted into a tight continuous spiral with a high polish, laid in a loose open curve, gold lobster clasp", clasp="lobster")
 add(id="B06", cat="bracelet", name="Figaro Chain Bracelet", dims="2.5 mm figaro chain", piece_g=0.3, per_in=0.45,
     title="Mens Figaro Chain Bracelet, 2.5mm Solid Gold Figaro Link, Classic Gold Bracelet for Him",
-    tags=["figaro bracelet", "mens figaro chain", "figaro link", "2.5mm gold chain", "mens gold bracelet",
+    tags=["figaro bracelet", "mens figaro chain", "figaro link", "thin gold chain", "mens gold bracelet",
           "classic chain", "everyday bracelet", "gold link bracelet", "mens bracelet", "14k mens bracelet"],
     lead="A 2.5 mm Figaro chain in solid gold: three short links, then one long one, all the way round.",
     story="The rhythm of the Figaro is what makes it: short, short, short, long. Flat links, so it lies smooth on the wrist.",
@@ -408,7 +408,7 @@ for m in M:
     tags = m["tags"] + SHARED_TAGS
     assert len(tags) == 13 and len(set(tags)) == 13, (m["id"], len(set(tags)))
     for t in tags:
-        assert len(t) <= 20 and re.fullmatch(r"[a-z0-9 .]+", t), (m["id"], t)
+        assert len(t) <= 20 and re.fullmatch(r"[a-z0-9 ]+", t), (m["id"], t)
     assert len(m["title"]) <= 140 and m["title"] not in seen_titles, (m["id"], len(m["title"]))
     assert "Mens" in m["title"] and "for Him" in m["title"], m["id"]
     seen_titles.add(m["title"])
