@@ -1299,20 +1299,25 @@ repodaki hedefidir.
   hiçbiri asıl varsayımı göremedi: `rank`'i dizi sırası sanmıştım. A24 kanaryası gerçeği gösterdi:
   Etsy silmeden sonra sıraları SIKIŞTIRMIYOR (kareler 2..11'de kaldı, rank 1 boş) ve aynı rank'e iki
   görsel koymaya izin veriyor (keten ile 10. kare ikisi de 11). Güvenlik katmanı yine işini yaptı:
-  son kontrol düzeni tutmayınca `needs_review` yazdı, paneli yazmadı, hiçbir görsel kaybolmadı. Çözüm
-  sıralamayı göreli değil MUTLAK kurmak oldu: her kare kendi slot numarasıyla yüklenir, kayan kare
-  silinip aynı id ve alt text'le tam rank'e yeniden bağlanır (kanaryada ölçüldü: yeniden bağlama
-  değeri birebir yazar, kaydırmaz). Belgesiz kalan tek davranış (dolu rank'e yükleme kaydırır mı,
-  eşitler mi) için kod iki sonuca da aynı düzene varacak şekilde kuruldu ve bağımsız simülasyonla
-  üç davranışta (eşit, kaydır, sona ekle) sınandı; A40 kanaryası eşit davranışı gösterdi. İkinci ders
-  aynı turda: düzeltme deploy olurken sahip A24'ü yarım düzenle YAYINA aldı. Rota canlı listing'e
-  yazmayı reddetti, ben de zorlamadım; kalan taslaklar sahibin A01'den ileri gidişine çarpmasın diye
-  A40'tan geriye işlendi. Kural: (1) dış API'de "position/rank/order" alanı gördüğünde ilk soru
-  "silince sıkışır mı, eşit değere izin verir mi?" olmalı, belge söylemiyorsa kanaryanın İLK hedefi
-  budur; (2) düzeni göreli adımlarla (sona ekle, öne al) değil hedef değerlerle kur, böylece her
-  yarım koşu aynı hedefe yakınsar; (3) belgesiz davranışa yaslanma, onun her olası sonucundan aynı
-  düzene varan bir akış yaz ve sonuçları simülasyonla say; (4) iki koşu arasında hedefin durumunu
-  (taslak mı yayında mı) yeniden oku, sahibin bilinçli aksiyonu düzeltilecek bir hata değildir.
+  son kontrol düzeni tutmayınca `needs_review` yazdı, paneli yazmadı, hiçbir görsel kaybolmadı. İlk
+  düzeltmem (kayan kareyi silip tam rank'e yeniden bağlamak) A40'ta tuttu, A39'da TUTMADI: orada silme
+  sıraları sıkıştırdı, keten 11'den 10'a kaydı ve dolu rank'e yükleme görseli komşusunun ardına koydu.
+  Yani Etsy'nin sıra davranışı listing'den listing'e TUTARSIZ ve ben tek kanaryadan genelleme
+  yapmıştım. İkinci düzeltmeyi bağımsız bir sahte-Etsy simülasyonu belirledi: kareyi tek tek taşımak,
+  eşitlikte eskiyi öne alan davranışta yer değişimini her turda bir sıra aşağı itiyordu (9 tur). Tutan
+  çözüm EŞİTLİĞİ HİÇ OLUŞTURMAMAK oldu: her turda keten alınır, doğru önek korunur, sonraki kareler
+  hepsi alınıp sırayla daima BOŞ olan bir sonraki rank'e bağlanır, keten N+1'e. Simülasyon beş
+  davranışta ve 2000 karışık denemede ilk koşuda hedefe vardı, A38 canlıda birebir tuttu. Yan bulgu:
+  `layoutOk` yalnız "keten karelerin ardında" diyordu, N+2'ye kaymış keteni "tamam" sayıyordu; artık
+  tam N+1 şart. İkinci ders aynı turda: düzeltmeler deploy olurken sahip A24'ü ve A39'u yarım düzenle
+  YAYINA aldı. Rota canlı listing'e yazmayı reddetti, ben de zorlamadım; kalan taslaklar sahibin
+  A01'den ileri gidişine çarpmasın diye A40'tan geriye işlendi ve yayına alınanlar atlandı. Kural:
+  (1) dış API'de "position/rank/order" alanı gördüğünde ilk soru "silince sıkışır mı, eşit değere izin
+  verir mi?" olmalı, belge söylemiyorsa kanaryanın İLK hedefi budur; (2) TEK kanarya bir davranışı
+  kanıtlamaz, yalnız o listing'in davranışını gösterir; (3) belgesiz davranışa yaslanma, eşitlik ve
+  sıkıştırma gibi belirsizlikleri hiç tetiklemeyen bir akış yaz (boş rank'e yaz) ve olası tüm
+  davranışlarda simülasyonla say; (4) iki koşu arasında hedefin durumunu (taslak mı yayında mı)
+  yeniden oku, sahibin bilinçli aksiyonu düzeltilecek bir hata değildir.
 
 ## Ürün/UX dersleri
 
