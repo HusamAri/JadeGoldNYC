@@ -11,7 +11,8 @@
     "test:ophir-sku": "tsx --test tests/ophir-sku.test.ts",
     "test:listing-protocol": "tsx --test tests/listing-protocol.test.ts",
     "test:two-tone": "tsx --test tests/two-tone-rules.test.ts",
-    "test:listing-text": "tsx --test tests/listing-text-checks.test.ts"
+    "test:listing-text": "tsx --test tests/listing-text-checks.test.ts",
+    "test:gallery-push": "tsx --test tests/gallery-push.test.ts"
   },
   "dependencies": {
     "@ai-sdk/google": "^2.0.78",
