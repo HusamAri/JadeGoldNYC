@@ -1317,7 +1317,12 @@ repodaki hedefidir.
   kanıtlamaz, yalnız o listing'in davranışını gösterir; (3) belgesiz davranışa yaslanma, eşitlik ve
   sıkıştırma gibi belirsizlikleri hiç tetiklemeyen bir akış yaz (boş rank'e yaz) ve olası tüm
   davranışlarda simülasyonla say; (4) iki koşu arasında hedefin durumunu (taslak mı yayında mı)
-  yeniden oku, sahibin bilinçli aksiyonu düzeltilecek bir hata değildir.
+  yeniden oku, sahibin bilinçli aksiyonu düzeltilecek bir hata değildir. Ek (aynı gün, sahibin
+  onayıyla yayındaki A24/A39'da yalnız keten taşındı): A24'ün kendi geri okuması "tamam" dedi, birkaç
+  saniye sonraki bağımsız okumada Etsy kareleri 2..11'den 1..10'a KENDİLİĞİNDEN çekmiş, keteni 12'de
+  bırakmıştı. Yani sıkıştırma gecikmeli de olabilir; aynı turdaki geri okuma yetmez, bağımsız okuma
+  bir süre SONRA da koşulmalı. Keten bir kez daha (onaylı kapsamda) 11'e alındı, bir dakika sonraki
+  okumada ikisi de birebir 01..10 + keten.
 
 ## Ürün/UX dersleri
 
