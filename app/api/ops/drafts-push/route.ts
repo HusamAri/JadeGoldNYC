@@ -14,7 +14,8 @@ import {
 } from "@/lib/etsy/create-listing";
 import { etsyPaths } from "@/lib/etsy/endpoints";
 import { resolveListingProtocol } from "@/lib/etsy/listing-protocol";
-import type { EtsyInventory } from "@/lib/etsy/types";
+import { decodeHtmlEntities } from "@/lib/etsy/text";
+import type { EtsyInventory, EtsyListing, EtsyListResponse } from "@/lib/etsy/types";
 import { sortVariantsByWidthThenSize } from "@/lib/variant-sort";
 
 export const maxDuration = 300;
@@ -81,6 +82,78 @@ type ProductRow = Omit<DraftProduct, "variants" | "galleryUrls"> & {
 const PRODUCT_COLUMNS =
   "id, org_id, sku, etsy_listing_id, title, description, tags, materials, price_cents, quantity, image_url, product_type, listing_metadata";
 
+const INVENTORY_STATES = new Set(["draft", "active", "inactive", "expired", "sold_out"]);
+
+type InventoryImage = {
+  listing_image_id?: number;
+  rank?: number;
+  alt_text?: string | null;
+  full_width?: number | null;
+  full_height?: number | null;
+};
+
+type InventoryListing = Omit<EtsyListing, "images"> & { images?: InventoryImage[] };
+
+/** `?inventory=<state>`: Etsy'den canlı listing + fotoğraf dökümü, panel
+ *  karşılığıyla (etsy_listing_id → modelId/sourcePackage). Hiçbir şey yazmaz. */
+async function readInventory(
+  admin: ReturnType<typeof createAdminClient>,
+  org: { id: string; name: string },
+  state: string,
+  prefix: string,
+) {
+  const client = await EtsyClient.forOrg(org.id);
+  const shopId = await client.requireShopId();
+  const PAGE = 100;
+  const listings: (InventoryListing)[] = [];
+  for (let offset = 0; ; offset += PAGE) {
+    const page = await client.get<EtsyListResponse<InventoryListing>>(
+      etsyPaths.shopListings(shopId),
+      { limit: PAGE, offset, state, includes: "Images" },
+    );
+    const results = page.results ?? [];
+    listings.push(...results);
+    if (results.length < PAGE || offset + PAGE >= (page.count ?? 0)) break;
+  }
+  const ids = listings.map((l) => l.listing_id);
+  const { data: panelRows, error } = ids.length
+    ? await admin
+        .from("products")
+        .select("id, etsy_listing_id, sku, status, modelId:listing_metadata->>modelId, sourcePackage:listing_metadata->>sourcePackage")
+        .eq("org_id", org.id)
+        .in("etsy_listing_id", ids)
+    : { data: [], error: null };
+  if (error) throw new Error(`panel: ${error.message}`);
+  type PanelRow = { id: string; etsy_listing_id: number; sku: string | null; status: string | null; modelId: string | null; sourcePackage: string | null };
+  const byListing = new Map(((panelRows ?? []) as PanelRow[]).map((r) => [Number(r.etsy_listing_id), r]));
+  const rows = listings
+    .map((l) => {
+      const p = byListing.get(l.listing_id);
+      const images = [...(l.images ?? [])].sort((a, b) => (a.rank ?? 0) - (b.rank ?? 0));
+      return {
+        listingId: l.listing_id,
+        state: l.state ?? null,
+        title: l.title ? decodeHtmlEntities(l.title) : null,
+        images: images.length,
+        ranks: images.map((i) => ({
+          id: i.listing_image_id ?? null,
+          rank: i.rank ?? null,
+          size: i.full_width && i.full_height ? `${i.full_width}x${i.full_height}` : null,
+          alt: i.alt_text ? i.alt_text.slice(0, 80) : null,
+        })),
+        panelProductId: p?.id ?? null,
+        panelSku: p?.sku ?? null,
+        modelId: p?.modelId ?? null,
+        sourcePackage: p?.sourcePackage ?? null,
+      };
+    })
+    .filter((r) => !prefix || (r.modelId ?? "").startsWith(prefix) || (r.panelSku ?? "").startsWith(prefix))
+    .sort((a, b) => (a.sourcePackage ?? "").localeCompare(b.sourcePackage ?? "") || (a.modelId ?? "").localeCompare(b.modelId ?? ""));
+  const byCount: Record<string, number> = {};
+  for (const r of rows) byCount[r.images] = (byCount[r.images] ?? 0) + 1;
+  return { ok: true, mode: "inventory", org: org.name, state, etsyTotal: listings.length, listed: rows.length, byImageCount: byCount, results: rows };
+}
+
 export async function GET(request: Request) {
   const startedAt = Date.now();
   if (!(await authorize(request))) {
@@ -94,7 +167,18 @@ export async function GET(request: Request) {
   const apply = url.searchParams.get("apply") === "1";
   const verify = url.searchParams.get("verify") === "1";
   const limit = Math.min(Math.max(Number(url.searchParams.get("limit") ?? 1) || 1, 1), 10);
-  if (!orgName || prefix.length < 4) {
+  // Salt okuma: mağazadaki bir durumun (draft, active...) TÜM listing'leri ve
+  // fotoğraf sayıları, Etsy'den canlı. Panel aynası senkron kadar tazedir ve
+  // senkron ürün SKU'sunu boşaltır (saf-Etsy kuralı), yani "hangi taslakta tek
+  // fotoğraf var?" sorusunu yalnız bu okuma güvenle cevaplar (2026-10-08).
+  const inventory = url.searchParams.get("inventory");
+  if (inventory && !INVENTORY_STATES.has(inventory)) {
+    return NextResponse.json({ error: `inventory: ${[...INVENTORY_STATES].join(", ")}` }, { status: 400 });
+  }
+  if (inventory && (apply || verify)) {
+    return NextResponse.json({ error: "inventory salt okumadır; apply/verify ile verilmez" }, { status: 400 });
+  }
+  if (!orgName || (!inventory && prefix.length < 4)) {
     return NextResponse.json({ error: "org ve en az 4 karakterlik prefix zorunlu" }, { status: 400 });
   }
   if (only && !only.startsWith(prefix)) {
@@ -127,6 +211,17 @@ export async function GET(request: Request) {
     conn?.status === "connected" && /(^|\s)listings_w(\s|$)/.test(conn.scope ?? "");
   if (apply && !writeEnabled) {
     return NextResponse.json({ error: "Etsy yazma erişimi kapalı." }, { status: 403 });
+  }
+
+  if (inventory) {
+    try {
+      return NextResponse.json(await readInventory(admin, org, inventory, prefix));
+    } catch (e) {
+      return NextResponse.json(
+        { error: "inventory okunamadı", detail: e instanceof Error ? e.message : String(e) },
+        { status: 502 },
+      );
+    }
   }
 
   let client: EtsyClient | null = null;
