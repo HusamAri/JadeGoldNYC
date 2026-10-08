@@ -11,6 +11,7 @@ import {
   galleryMarker,
   layoutOk,
   linenPending as linenPendingFor,
+  linenPlaced,
   planGallery,
   type GalleryPhoto,
 } from "@/lib/etsy/gallery-push";
@@ -44,7 +45,12 @@ export const maxDuration = 300;
  *
  * Parametreler: `org`, `set` (ör. ss27-anklets), `model` (ör. A24),
  * `apply=1` (yoksa kuru çalışma), `verify=1` (salt okuma), `resume=1`
- * (yarım kalan gönderime devam).
+ * (yarım kalan gönderime devam), `restoreLinen=1` (yayına alınmış listing'de
+ * askıda kalan keteni geri bağlamaya sahibin açık onayı).
+ *
+ * Taslak kapısı yalnız Etsy yazımı içindir; Etsy zaten doğruysa panel
+ * kapanışı listing yayında olsa da yapılır ve sahibin yayına alması hata
+ * sayılmaz (ikinci bağımsız inceleme 2026-10-08).
  *
  * Auth: `Authorization: Bearer $CRON_SECRET` ya da `?token=` →
  * `ops_tokens` purpose='gallery-push' SHA-256 CAS tüketimi.
@@ -78,6 +84,8 @@ async function authorize(request: Request): Promise<boolean> {
   return (data ?? []).length > 0;
 }
 
+const altKey = (s: string | null | undefined) => decodeHtmlEntities(s ?? "").trim();
+
 type Gallery = { results: GalleryPhoto[] };
 type Meta = Record<string, unknown> & {
   modelId?: string;
@@ -107,6 +115,7 @@ export async function GET(request: Request) {
   const apply = url.searchParams.get("apply") === "1";
   const verify = url.searchParams.get("verify") === "1";
   const resume = url.searchParams.get("resume") === "1";
+  const restoreLinen = url.searchParams.get("restoreLinen") === "1";
   if (!orgName || !/^[a-z0-9][a-z0-9-]{2,40}$/.test(set) || !/^[A-Z]\d{2}$/.test(model)) {
     return NextResponse.json({ error: "org, set (a-z0-9-) ve model (ör. A24) zorunlu" }, { status: 400 });
   }
@@ -209,18 +218,21 @@ export async function GET(request: Request) {
   };
 
   const prev = meta.galleryPush ?? null;
-  // Önceki koşu keten hero'yu silip geri bağlayamadıysa (id kayıtlı, galeride
-  // yok) iş bitmiş SAYILMAZ; kareler 1..10'da "doğru" görünse bile (bağımsız
-  // inceleme 2026-10-08, doğrulandı). Bitmiş (done) koşunun id'si ise yeni
-  // koşuya taşınmaz: sahip sonradan silmiş olabilir.
-  const linenPending = linenPendingFor(prev, before);
+  // Keten askıda mı (önceki yarım koşu sildi, geri bağlayamadı): bkz. linenPending.
+  const linenPending = linenPendingFor(prev, before, plan);
   const check = layoutOk(plan, SLOTS);
+  const runOpen = prev != null && prev.status !== "done";
+  // Kayıtlı keten hedefte mi (rank N+1, alt text korunmuş); apply ile aynı kural.
+  const linenNow = linenPending
+    ? { ok: false, reason: `keten hero (${prev!.linenImageId}) silinmiş, geri bağlanmamış` }
+    : linenPlaced(before, prev?.linenImageId, prev?.linenAlt, SLOTS.length, altKey);
 
   if (verify) {
     const sizesOk = [...plan.ours.values()].every((p) => p.full_width == null || (p.full_width === 2048 && p.full_height === 2048));
-    const reason = linenPending ? `keten hero (${prev!.linenImageId}) silinmiş, geri bağlanmamış` : check.reason;
+    const reason =
+      check.reason ?? linenNow.reason ?? (runOpen ? `önceki koşu kapanmadı (${prev!.status}); apply&resume=1 tamamlar` : null);
     return NextResponse.json({
-      ok: check.ok && !linenPending && sizesOk && summary.shopMatches,
+      ok: check.ok && linenNow.ok && !runOpen && sizesOk && summary.shopMatches,
       mode: "verify",
       reason,
       sizesOk,
@@ -231,9 +243,6 @@ export async function GET(request: Request) {
   if (!summary.shopMatches) {
     return NextResponse.json({ ok: false, error: "listing başka mağazada", ...summary }, { status: 409 });
   }
-  if (listing.state !== "draft") {
-    return NextResponse.json({ ok: false, error: `yalnız taslak listing'e yazılır; Etsy durumu: ${listing.state}`, ...summary }, { status: 409 });
-  }
   if (plan.stale.length) {
     return NextResponse.json({ ok: false, error: "işaretli ama beklenmeyen görsel var; elle bakılmalı", ...summary }, { status: 409 });
   }
@@ -243,11 +252,15 @@ export async function GET(request: Request) {
   if (before.length + plan.missing.length > 20) {
     return NextResponse.json({ ok: false, error: "Etsy en çok 20 görsel alır", ...summary }, { status: 409 });
   }
-  // Tamam = Etsy düzeni doğru + keten askıda değil + panel kapanışı yapılmış.
-  // Etsy doğru ama önceki koşu panelde yarım kaldıysa apply yalnız paneli tamamlar.
-  if (check.ok && !linenPending && prev?.status === "done") {
+  // Salt okuma yanıtları taslak kapısından ÖNCE: durum ne olursa olsun raporlanır.
+  // Tamam = Etsy düzeni doğru + keten hedefte + panel kapanışı yapılmış.
+  if (check.ok && linenNow.ok && prev?.status === "done") {
     return NextResponse.json({ ok: true, mode: apply ? "apply" : "dry-run", alreadyDone: true, previous: prev, ...summary });
   }
+  // Etsy'ye YAZI gerekiyor mu: eksik kare, öne düşmüş işaretsiz görsel ya da
+  // askıdaki keten. Gerekmiyorsa (Etsy doğru, panel yarım) yalnız panel yazılır
+  // ve bu, listing yayına alınmış olsa da güvenlidir.
+  const etsyWrites = plan.missing.length > 0 || plan.foreign.some((f) => f.rank <= SLOTS.length) || linenPending;
   if (!apply) {
     return NextResponse.json({
       ok: true,
@@ -255,9 +268,28 @@ export async function GET(request: Request) {
       previous: prev,
       toUpload: plan.missing,
       linenPending,
-      panelOnly: check.ok && !linenPending,
+      panelOnly: !etsyWrites,
       ...summary,
     });
+  }
+  // Taslak kapısı yalnız Etsy yazımı için. Yayındaki listing'e askıdaki keteni
+  // geri bağlamak bile sahibin açık onayını (restoreLinen=1) ister.
+  if (etsyWrites && listing.state !== "draft") {
+    const onlyRestore = linenPending && plan.missing.length === 0 && !plan.foreign.some((f) => f.rank <= SLOTS.length);
+    if (!(onlyRestore && restoreLinen)) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: onlyRestore
+            ? `listing ${listing.state}; keten hero (${prev!.linenImageId}) geri bağlanmadı, yalnız restoreLinen=1 ile`
+            : `yalnız taslak listing'e görsel yüklenir; Etsy durumu: ${listing.state}`,
+          linenImageId: prev?.linenImageId ?? null,
+          linenAlt: prev?.linenAlt ?? null,
+          ...summary,
+        },
+        { status: 409 },
+      );
+    }
   }
 
   // Kilit: dış çağrıdan önce. Yarım koşuya yalnız resume=1 devam eder; hâlâ
@@ -311,7 +343,6 @@ export async function GET(request: Request) {
   const uploaded: Record<string, number> = {};
   let linenImageId: number | null = carried.linenImageId ?? null;
   let linenAlt: string | null = carried.linenAlt ?? null;
-  const altKey = (s: string | null | undefined) => decodeHtmlEntities(s ?? "").trim();
   try {
     // 1) Eksik kareleri sona ekle (rank = mevcut sayı + 1).
     let count = before.length;
@@ -358,6 +389,14 @@ export async function GET(request: Request) {
         throw new Error(`keten hero (${linenImageId}) silindi dendi ama listede duruyor`);
       }
     }
+    // Askıdaki keten yerine karelerin ardında işaretsiz bir görsel zaten varsa
+    // (sahip elle eklemiş) eski id yeniden bağlanmaz, o görsel benimsenir.
+    const tail = planGallery(after, set, model, expected).foreign.find((f) => f.rank > SLOTS.length);
+    if (linenImageId != null && !after.some((p) => p.listing_image_id === linenImageId) && tail) {
+      linenImageId = tail.listing_image_id;
+      linenAlt = tail.alt_text ?? null;
+      await record("sending", { linenImageId, linenAlt, linenAdopted: true });
+    }
     if (linenImageId != null && !after.some((p) => p.listing_image_id === linenImageId)) {
       await readMeta();
       const form = new FormData();
@@ -369,22 +408,27 @@ export async function GET(request: Request) {
         linenImageId = back.listing_image_id;
         await record("sending", { linenImageId, linenAlt });
       }
+      // Yeniden bağlama da listeye geç yansıyabilir: keten N+1'de görünene
+      // kadar (en çok 4 kez) oku; doğru giden kanarya needs_review dönmesin.
+      const atEnd = (list: GalleryPhoto[]) => list.some((p) => p.listing_image_id === linenImageId && p.rank === SLOTS.length + 1);
       after = await readGallery();
+      for (let i = 0; i < 3 && !atEnd(after); i++) {
+        await new Promise((r) => setTimeout(r, 1000));
+        after = await readGallery();
+      }
     }
 
     // 3) Geri okuma: hedef düzen, keten 11. sırada ve alt text'iyle, durum, mağaza.
     p2 = planGallery(after, set, model, expected);
     const fin = layoutOk(p2, SLOTS);
-    const linenEntry = linenImageId != null ? after.find((p) => p.listing_image_id === linenImageId) : undefined;
-    const linenOk =
-      linenImageId == null ||
-      (linenEntry != null && linenEntry.rank === SLOTS.length + 1 && (!linenAlt || altKey(linenEntry.alt_text) === altKey(linenAlt)));
+    const linenRes = linenPlaced(after, linenImageId, linenAlt, SLOTS.length, altKey);
     const listingAfter = await readListing();
-    const ok = fin.ok && linenOk && listingAfter.state === "draft" && listingAfter.shop_id === shopId;
+    // Sahibin bu arada yayına alması hata değildir: raporlanır, düzeltilmez.
+    const ok = fin.ok && linenRes.ok && listingAfter.shop_id === shopId;
     const images = Object.fromEntries(SLOTS.map((s) => [s, { imageId: p2.ours.get(s)?.listing_image_id ?? null, sha: files[s].sha }]));
     if (!ok) {
-      const reason = fin.reason ?? (linenOk ? `Etsy durumu ${listingAfter.state}` : "keten hero 11. sırada değil ya da alt text'i değişti");
-      await record("needs_review", { finishedAt: new Date().toISOString(), images, linenImageId, linenAlt, count: after.length, reason });
+      const reason = fin.reason ?? linenRes.reason ?? "listing başka mağazada";
+      await record("needs_review", { finishedAt: new Date().toISOString(), images, linenImageId, linenAlt, count: after.length, reason, stateAfter: listingAfter.state });
       await logAudit(admin, {
         orgId: org.id,
         action: "etsy.image_upload",
@@ -395,7 +439,7 @@ export async function GET(request: Request) {
         source: "app",
       });
       // Panel yazılmaz: Etsy hedef düzende değilken panel bitmiş gibi görünmesin.
-      return NextResponse.json({ ok: false, mode: "apply", reason, uploaded, linenImageId, ...summary, countAfter: after.length, layoutAfter: describe(after) }, { status: 409 });
+      return NextResponse.json({ ok: false, mode: "apply", reason, uploaded, linenImageId, ...summary, stateAfter: listingAfter.state, countAfter: after.length, layoutAfter: describe(after) }, { status: 409 });
     }
 
     // 4) Panel galerisi (yalnız Etsy doğrulandıktan sonra): 01..10 → 0..9, diğerleri sonra.
@@ -433,7 +477,7 @@ export async function GET(request: Request) {
       .eq("id", prod.id);
     if (prodUpd.error) throw new Error(`ürün kapağı: ${prodUpd.error.message}`);
 
-    await record("done", { finishedAt: new Date().toISOString(), images, linenImageId, linenAlt, count: after.length, reason: null, error: null });
+    await record("done", { finishedAt: new Date().toISOString(), images, linenImageId, linenAlt, count: after.length, reason: null, error: null, stateAfter: listingAfter.state });
     await logAudit(admin, {
       orgId: org.id,
       action: "etsy.image_upload",
@@ -443,7 +487,7 @@ export async function GET(request: Request) {
       diff: { listingId, uploaded, linenImageId, layout: describe(after) },
       source: "app",
     });
-    return NextResponse.json({ ok: true, mode: "apply", uploaded, linenImageId, ...summary, countAfter: after.length, layoutAfter: describe(after) });
+    return NextResponse.json({ ok: true, mode: "apply", uploaded, linenImageId, ...summary, stateAfter: listingAfter.state, countAfter: after.length, layoutAfter: describe(after) });
   } catch (e) {
     const error = e instanceof Error ? e.message : String(e);
     let recorded = true;

@@ -95,17 +95,44 @@ export function layoutOk(plan: GalleryPlan, slots: string[]): { ok: boolean; rea
 /**
  * Önceki koşu keten hero'yu silip geri bağlayamadıysa (id kayıtlı, galeride
  * yok) iş bitmemiştir; kareler 1..N'de "doğru" görünse bile. Bitmiş (done)
- * koşunun id'si sayılmaz: sahip görseli sonradan bilerek silmiş olabilir
- * (bağımsız inceleme 2026-10-08, doğrulandı).
+ * koşunun id'si sayılmaz: sahip görseli sonradan bilerek silmiş olabilir.
+ * Karelerin ardında işaretsiz bir görsel zaten duruyorsa (sahip elle eklemiş)
+ * eski id yeniden bağlanmaz, yoksa hero iki kez görünür ve listing kilitlenir
+ * (bağımsız inceleme 2026-10-08, iki tur, doğrulandı).
  */
 export function linenPending(
   prev: { status?: string; linenImageId?: number | null } | null | undefined,
   photos: GalleryPhoto[],
+  plan: Pick<GalleryPlan, "foreign">,
 ): boolean {
   return (
     prev != null &&
     prev.status !== "done" &&
     prev.linenImageId != null &&
+    plan.foreign.length === 0 &&
     !photos.some((p) => p.listing_image_id === prev.linenImageId)
   );
+}
+
+/** HTML entity'leri çözülmüş, kırpılmış alt text (Etsy alt'ı kaçışlı döndürebilir). */
+export type AltKey = (s: string | null | undefined) => string;
+
+/**
+ * Kayıtlı keten hero hedef yerinde mi: N kareden hemen sonra (rank N+1) ve
+ * alt text'i korunmuş. Apply'ın son kontrolü ile verify AYNI kuralı kullanır;
+ * ilk sürümde kural yalnız apply'daydı ve verify açık bir koşuyu "ok" sayıyordu.
+ */
+export function linenPlaced(
+  photos: GalleryPhoto[],
+  linenImageId: number | null | undefined,
+  linenAlt: string | null | undefined,
+  slotCount: number,
+  altKey: AltKey,
+): { ok: boolean; reason: string | null } {
+  if (linenImageId == null) return { ok: true, reason: null };
+  const p = photos.find((x) => x.listing_image_id === linenImageId);
+  if (!p) return { ok: false, reason: `keten hero (${linenImageId}) galeride yok` };
+  if (p.rank !== slotCount + 1) return { ok: false, reason: `keten hero ${slotCount + 1}. sırada değil (rank ${p.rank})` };
+  if (linenAlt && altKey(p.alt_text) !== altKey(linenAlt)) return { ok: false, reason: "keten hero'nun alt text'i değişti" };
+  return { ok: true, reason: null };
 }

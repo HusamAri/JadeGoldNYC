@@ -1,7 +1,16 @@
 import { strict as assert } from "node:assert";
 import test from "node:test";
 
-import { galleryMarker, layoutOk, linenPending, parseGalleryMarker, planGallery, type GalleryPhoto } from "@/lib/etsy/gallery-push";
+import {
+  galleryMarker,
+  layoutOk,
+  linenPending,
+  linenPlaced,
+  parseGalleryMarker,
+  planGallery,
+  type GalleryPhoto,
+} from "@/lib/etsy/gallery-push";
+import { decodeHtmlEntities } from "@/lib/etsy/text";
 
 /**
  * ops/gallery-push yardımcıları. Girdi canlı Etsy dökümünden: A24 taslağının
@@ -82,14 +91,38 @@ test("sıra kayması yakalanır: 02 ile 03 yer değiştirmiş", () => {
 
 test("keten askıda: kareler 1..10'da, keten yok, önceki koşu id kaydetmiş -> iş bitmemiş", () => {
   const frames = SLOTS.map((s, i) => ours(s, i + 1));
+  const plan = planGallery(frames, SET, MODEL, expected);
   // Düzen tek başına "tamam" der; bu yüzden ayrı bir kontrol şart.
-  assert.equal(layoutOk(planGallery(frames, SET, MODEL, expected), SLOTS).ok, true);
-  assert.equal(linenPending({ status: "needs_review", linenImageId: linen.listing_image_id }, frames), true);
-  assert.equal(linenPending({ status: "sending", linenImageId: linen.listing_image_id }, frames), true);
+  assert.equal(layoutOk(plan, SLOTS).ok, true);
+  assert.equal(linenPending({ status: "needs_review", linenImageId: linen.listing_image_id }, frames, plan), true);
+  assert.equal(linenPending({ status: "sending", linenImageId: linen.listing_image_id }, frames, plan), true);
   // Keten geri bağlanmışsa askıda değil.
-  assert.equal(linenPending({ status: "needs_review", linenImageId: linen.listing_image_id }, [...frames, { ...linen, rank: 11 }]), false);
+  const back = [...frames, { ...linen, rank: 11 }];
+  assert.equal(linenPending({ status: "needs_review", linenImageId: linen.listing_image_id }, back, planGallery(back, SET, MODEL, expected)), false);
   // Bitmiş koşunun id'si sayılmaz (sahip sonradan silmiş olabilir); kayıt yoksa askı yok.
-  assert.equal(linenPending({ status: "done", linenImageId: linen.listing_image_id }, frames), false);
-  assert.equal(linenPending(null, frames), false);
-  assert.equal(linenPending({ status: "needs_review", linenImageId: null }, frames), false);
+  assert.equal(linenPending({ status: "done", linenImageId: linen.listing_image_id }, frames, plan), false);
+  assert.equal(linenPending(null, frames, plan), false);
+  assert.equal(linenPending({ status: "needs_review", linenImageId: null }, frames, plan), false);
+});
+
+test("keten askıda ama sonda işaretsiz yeni bir görsel var -> eski id yeniden bağlanmaz", () => {
+  const replacement: GalleryPhoto = { listing_image_id: 123, rank: 11, alt_text: "owner upload" };
+  const photos = [...SLOTS.map((s, i) => ours(s, i + 1)), replacement];
+  const plan = planGallery(photos, SET, MODEL, expected);
+  assert.equal(linenPending({ status: "needs_review", linenImageId: linen.listing_image_id }, photos, plan), false);
+});
+
+test("keten yerinde: 11. sıra ve alt text; verify ile apply aynı kuralı kullanır", () => {
+  const altKey = (s: string | null | undefined) => decodeHtmlEntities(s ?? "").trim();
+  const frames = SLOTS.map((s, i) => ours(s, i + 1));
+  const id = linen.listing_image_id;
+  assert.deepEqual(linenPlaced([...frames, { ...linen, rank: 11 }], id, linen.alt_text, 10, altKey), { ok: true, reason: null });
+  // Etsy alt'ı entity kaçışıyla döndürse de aynı metin sayılır.
+  const escaped = { ...linen, rank: 11, alt_text: linen.alt_text!.replace("Anklet,", "Anklet&#44;") };
+  assert.equal(linenPlaced([...frames, escaped], id, linen.alt_text, 10, altKey).ok, true);
+  assert.equal(linenPlaced([...frames, { ...linen, rank: 11, alt_text: "" }], id, linen.alt_text, 10, altKey).ok, false);
+  assert.equal(linenPlaced([{ ...linen, rank: 1 }, ...frames.map((f) => ({ ...f, rank: f.rank + 1 }))], id, linen.alt_text, 10, altKey).ok, false);
+  assert.equal(linenPlaced(frames, id, linen.alt_text, 10, altKey).ok, false);
+  // Keten kaydı yoksa (listing'de hiç işaretsiz görsel yoktu) ölçüt yok.
+  assert.equal(linenPlaced(frames, null, null, 10, altKey).ok, true);
 });
