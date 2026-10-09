@@ -430,7 +430,8 @@ The axis keeps three values, so the grid stays full at 3 x 3 x size.
   on Etsy dropdown labels. Never "&": Etsy returns it HTML-encoded. Copy states "first
   metal = main metal". The label is proven on one canary draft before the batch.
 - **Pair labels change the colour values CLAUDE.md fixes for this shop,** so they need
-  the owner's yes (decision 1). Plain labels are never used on a two-metal piece: a
+  the owner's yes (decision 1, given 2026-10-09 and recorded in CLAUDE.md). Plain
+  labels are never used on a two-metal piece: a
   buyer who picks "White Gold" would receive yellow-gold parts. If the answer is no, the
   four families become single-metal pieces with the same structure (Twin Wire: two
   wires of one gold, a satin ring on a polished disc).
@@ -604,10 +605,10 @@ Per family:
 
 ## Open decisions for the owner
 
-1. **Two-tone labels.** Families 1, 6, 7 and 8 sell as "Yellow/White Gold", "White/Yellow
-   Gold" and "Rose/White Gold". CLAUDE.md lists plain colours for this shop, so this
-   needs an explicit yes. If the answer is no, those four families become single-metal
-   with the same structure; plain labels never go on a two-metal piece.
+1. **Two-tone labels. Answered 2026-10-09: yes.** Families 1, 6, 7 and 8 sell as
+   "Yellow/White Gold", "White/Yellow Gold" and "Rose/White Gold"; the exception is
+   recorded in CLAUDE.md next to the full-grid rule. Plain labels never go on a
+   two-metal piece.
 2. **Bracelet basis until the maker answers question 3.** (a) The 1 g per unit floor:
    14K bracelets 600 to 1,020; for three stations it is exactly the structure the maker
    quoted on Christmas B09. (b) The approved Christmas rule, geometry x 3.75: 1,000 to

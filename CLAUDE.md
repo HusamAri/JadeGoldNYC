@@ -68,6 +68,12 @@ Jade Gold NYC Etsy mağazası için uçtan uca yönetim/raporlama paneli. Tüm s
   ancak kullanıcı açıkça söylerse. 3 eksen Etsy'de en çok 400 ürün. Etsy'ye
   çıkmış taslağın yapısı `app/api/ops/inventory-rebuild` ile panelden yeniden
   kurulur (varsayılan yalnız `draft`; aktif listing `active=1` ve sahibin açık talebiyle; kuru varsayılan, tam ızgara şartı).
+  İstisna (sahip onayı 2026-10-09): iki tonlu (iki altın renkli) parçada
+  `Metal Color` değerleri gövde/aksan çiftidir: `Yellow/White Gold`,
+  `White/Yellow Gold`, `Rose/White Gold` (ilk metal = ana metal; `&` değil `/`,
+  Etsy `&`'yi kodlar). Eksen yine 3 değer, ızgara yine tam. Düz etiket
+  (`White Gold` vb.) iki metalli parçaya asla konmaz. Ayrıntı:
+  `docs/artifact-studio/evil-eye/01-design-direction.md` "Variant grid".
 - **EON iki tonlu (two-tone) yüzük = 1,6 mm kalınlık, yalnız 4–8 mm genişlik,
   $250 işçilik** (sahip talimatı 2026-09-29). Üretici iki tonluyu bu aralığın
   dışında yapamıyor: 4 mm altı ve 8 mm üstü genişlik iki tonlu listing'de
