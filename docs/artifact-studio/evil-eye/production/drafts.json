@@ -134,13 +134,13 @@
           "TWO-TONE UNQUOTED: the maker has not priced two-tone work; 50 USD per operation is an UNCALIBRATED_ASSUMPTION and no two-tone piece goes live before the quote.",
           "Alloy/enamel firing qualification: enamel on 10K, on white gold and on rose gold, each part one alloy fired alone, is not yet confirmed by the maker (maker question 2).",
           "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2).",
-          "No images yet: the reference hero and 10 sales frames are generated in Higgsfield after the owner approves the prompts."
+          "R01 v3 gallery generated: final owner review and macro surface-profile review remain pending."
         ],
         "etsyDraftCreationAuthorized": true,
         "livePublicationAuthorized": false,
         "authority": "Owner instruction 2026-10-09: an evil eye (nazar) model as 10 rings, 10 necklaces and 10 bracelets, enamel and two-tone gold allowed; step 1 decisions answered 2026-10-09 (two-tone pair labels, bracelet basis (a) with the (b) fallback, the ten families as written)."
       },
-      "missingHero": true,
+      "missingHero": false,
       "variants": [
         {
           "sku": "BAS-EE-R01-10KYW-US3",
@@ -2573,12 +2573,18 @@
           "price_cents": 149000
         }
       ],
-      "imageFile": "R01.jpg",
-      "imageUrl": null,
-      "imageSha256": null,
+      "imageFile": "R01/v3/01-hero.png",
+      "imageUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_162320_5609841e-406a-42d8-ac95-8c59eb95f054.png",
+      "imageSha256": "725ffe845c2334f52ba9713fd512cb3b4514832884fa288fde9b950e01d68328",
       "params": {
         "geo_g": 2.9,
         "ops": 1
+      },
+      "galleryReview": {
+        "status": "owner_review_pending",
+        "manifest": "R01/v3/gallery-manifest.json",
+        "selectedCount": 10,
+        "macroProfileReviewRequired": true
       }
     },
     {

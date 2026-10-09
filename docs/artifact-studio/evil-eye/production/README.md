@@ -1,3 +1,7 @@
+Current R01 revision: [ten-frame smaller-scale review set](R01/v3/README.md). All images are 2048 × 2048; owner review and macro surface-profile check are pending. See `R01/v3/gallery-manifest.json` for selected files, hashes, job URLs and QA. This revision: 11 single-image jobs, 22 estimated credits, approved hero reused. Panel and Etsy remain unsaved.
+
+---
+
 # Evil Eye production audit — 2026-10-09
 
 30 local draft records and 2,970 unique variants were prepared and validated. No panel or Etsy listing was created: Amuletta is at its login screen. Prices and maker qualification remain estimates/pending.
