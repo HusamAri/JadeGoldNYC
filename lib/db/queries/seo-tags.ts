@@ -87,11 +87,16 @@ export async function getSeoOptimizations(
     .map((r) => r.etsy_listing_id);
   const current = new Map<number, { views: number | null; favs: number | null }>();
   if (pushedIds.length > 0) {
-    const { data: prods } = await supabase
+    const { data: prods, error: prodsError } = await supabase
       .from("products")
       .select("etsy_listing_id, views, num_favorers")
       .eq("org_id", orgId)
       .in("etsy_listing_id", pushedIds);
+    // Measure loop baseline kıyası bu join'e bağlı — hata sessizce
+    // "etki yok" gibi görünmesin.
+    if (prodsError) {
+      console.error("getSeoOptimizations products:", prodsError.message);
+    }
     for (const p of (prods ?? []) as {
       etsy_listing_id: number;
       views: number | null;

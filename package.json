@@ -11,6 +11,7 @@
     "test:etsy-taxonomy": "tsx --test tests/etsy-taxonomy.test.ts",
     "test:etsy-rate-limit": "tsx --test tests/etsy-rate-limit.test.ts",
     "test:eon-frieze-pricing": "tsx --test tests/eon-frieze-pricing.test.ts",
+    "test:etsy-growth-math": "tsx --test tests/etsy-growth-math.test.ts",
     "optimize:eon-frieze-pricing": "python3 scripts/eon-frieze/optimize_pricing.py"
   },
   "dependencies": {
