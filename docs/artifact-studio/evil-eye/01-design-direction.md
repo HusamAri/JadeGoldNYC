@@ -4,6 +4,8 @@ Status: built 2026-10-09 on the owner's instruction: a new evil eye (nazar) mode
 10 rings, 10 necklaces and 10 bracelets, enamel allowed, two-tone gold allowed. This is
 step 1 only, the design direction. No images, no catalog, nothing in the panel or on
 Etsy yet. Step 2 (catalog) starts after the owner answers the three open decisions.
+All three were answered on 2026-10-09 (two-tone pair labels yes, bracelet basis (a)
+with the (b) fallback, the ten families approved).
 
 ## Brief
 
@@ -619,7 +621,7 @@ Per family:
    necklace. Recommended: (a), with question 3 sent now; if the maker has not answered
    by the listing date, the Christmas-wave bracelets go up on (b) and come down to the
    quote.
-3. **Line-up.** Approve the ten families as revised here, or swap one. Two points need
+3. **Line-up. Answered 2026-10-09: the ten families approved as written.** Two points needed
    the owner's eye: Sweetheart is now a polished gold heart with an inset red eye,
    listed beside the live Crush berry hearts; and family 8 is the closest idea to Jade's
    unpublished eye drafts (Iris Disc, Three Watchers, Two Tone Iris Signet). If those
