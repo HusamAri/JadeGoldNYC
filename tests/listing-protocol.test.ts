@@ -421,3 +421,64 @@ test("Christmas 2026 seti: 30 önerinin hepsi tanımlı protokole çözülür, y
     assert.equal(validateVariationAxes(spec!, variants), null, it.id);
   }
 });
+
+test("Evil eye seti: 30 önerinin hepsi tanımlı protokole çözülür, B08 kelepçe, iki tonlu Metal Color çiftleri tam ızgarada (2026-10-09)", async () => {
+  const { readFileSync } = await import("node:fs");
+  const raw = JSON.parse(readFileSync("docs/artifact-studio/evil-eye/catalog.json", "utf8"));
+  const items: Array<{
+    id: string;
+    productType: string;
+    listingProtocol: string;
+    offersPersonalization: boolean;
+    twoTone: boolean;
+    metalColors: string[];
+    variationAxes: string[];
+    variants: Array<{ sku: string; properties: Record<string, string>; price_cents: number }>;
+  }> = raw.items;
+  assert.equal(items.length, 30);
+  const want: Record<string, string> = { ring: "sculptural_ring", necklace: "pendant_necklace", bracelet: "chain_bracelet" };
+  const count: Record<string, number> = { ring: 243, necklace: 27, bracelet: 27 };
+  const single = ["Yellow Gold", "White Gold", "Rose Gold"];
+  // İki metalli parçada düz etiket yok: gövde/aksan çifti, "&" değil "/" (sahip onayı 2026-10-09).
+  const pair = ["Yellow/White Gold", "White/Yellow Gold", "Rose/White Gold"];
+  let total = 0;
+  for (const it of items) {
+    assert.ok(Object.prototype.hasOwnProperty.call(LISTING_PROTOCOLS, it.listingProtocol), it.id);
+    assert.equal(it.offersPersonalization, false, it.id);
+    const spec = resolveListingProtocol({
+      product_type: it.productType,
+      listing_metadata: { listingProtocol: it.listingProtocol, offersPersonalization: false },
+    });
+    assert.ok(spec, it.id);
+    assert.equal(spec.id, it.id === "B08" ? "cuff_bracelet" : want[it.productType], it.id);
+    assert.notEqual(spec.id, "wedding_band", it.id);
+    assert.equal(spec.personalization, null, it.id);
+    assert.equal(it.variants.length, count[it.productType], it.id);
+    // Protokolün zorunlu eksenleri ürünün eksenlerindedir; her varyant tam olarak bu eksenleri taşır.
+    for (const axis of spec.requiredVariationAxes) assert.ok(it.variationAxes.includes(axis), `${it.id} ${axis}`);
+    for (const v of it.variants) assert.deepEqual(Object.keys(v.properties), it.variationAxes, v.sku);
+    // Tam ızgara: Karat x Metal Color x beden, her eksen gerçekten değişir, Etsy'nin 400 sınırı altında.
+    const values = it.variationAxes.map((axis) => [...new Set(it.variants.map((v) => v.properties[axis]))]);
+    assert.deepEqual(values[0], ["10K", "14K", "18K"], it.id);
+    assert.deepEqual(values[1], it.twoTone ? pair : single, it.id);
+    assert.deepEqual(it.metalColors, values[1], it.id);
+    assert.ok(values[2].length > 1, it.id);
+    assert.equal(values[0].length * values[1].length * values[2].length, it.variants.length, it.id);
+    assert.ok(it.variants.length <= 400, it.id);
+    for (const v of it.variants) {
+      assert.match(v.sku, /^BAS-EE-[RNB](0[1-9]|10)-(10|14|18)K(Y|W|R|YW|WY|RW)-(US\d+(_5)?|\d+(_5)?IN)$/, v.sku);
+      assert.ok(v.sku.length <= 32 && v.price_cents > 0, v.sku);
+    }
+    const variants: DraftVariant[] = it.variants.map((v) => ({ ...v, quantity: 20 }));
+    assert.equal(validateVariationAxes(spec, variants), null, it.id);
+    total += it.variants.length;
+  }
+  assert.equal(total, 2970);
+  assert.equal(new Set(items.flatMap((i) => i.variants.map((v) => v.sku))).size, 2970);
+  assert.deepEqual(
+    items.filter((i) => i.twoTone).map((i) => i.id).sort(),
+    ["B01", "B06", "B07", "B08", "N01", "N06", "N07", "N08", "R01", "R06", "R07", "R08"],
+  );
+  // Açık beyan olmadan "bracelet" zincir bilekliktir; B08'in kelepçe oluşu metadata'dan gelir.
+  assert.equal(resolveListingProtocol({ product_type: "bracelet" })?.id, "chain_bracelet");
+});

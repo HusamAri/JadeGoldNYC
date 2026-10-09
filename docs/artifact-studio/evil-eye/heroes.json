@@ -1,0 +1,1112 @@
+{
+ "source": "evil-eye-heroes-v1",
+ "spec": "01-design-direction.md",
+ "params": {
+  "model": "nano_banana_2",
+  "resolution": "2k",
+  "aspect_ratio": "1:1",
+  "count": 1,
+  "reference": "none: heroes are generated from text only"
+ },
+ "heroValueTwoTone": "Yellow/White Gold",
+ "pairs": {
+  "Yellow/White Gold": [
+   "yellow",
+   "white"
+  ],
+  "White/Yellow Gold": [
+   "white",
+   "yellow"
+  ],
+  "Rose/White Gold": [
+   "rose",
+   "white"
+  ]
+ },
+ "items": [
+  {
+   "id": "R01",
+   "familyNo": 1,
+   "family": "Halka",
+   "name": "Two Tone Evil Eye Ring",
+   "productType": "ring",
+   "kind": "ring",
+   "twoTone": true,
+   "metals": {
+    "value": "Yellow/White Gold",
+    "body": "14K yellow gold",
+    "accent": "14K white gold, polished and unplated",
+    "bodyParts": "the band, the collar and the back",
+    "accentParts": "the flat ring between the two cobalt blue cells"
+   },
+   "enamel": [
+    {
+     "key": "cobalt",
+     "name": "cobalt blue",
+     "hex": "#17368C"
+    }
+   ],
+   "dims": "disc 8.4 mm, 1.8 mm high on a 2 x 1.4 mm band",
+   "motif": "the round disc",
+   "scale": "the disc is only 8.4 mm across, a little narrower than the index fingernail, never larger",
+   "wear": null,
+   "station": null,
+   "shape": "a ring with a flat round disc on top, 8.4 mm across, a little narrower than the index fingernail, never larger, framed by a thin raised yellow gold collar that holds it flush, not domed; the collar is 1.8 mm high and sits on a band 2 mm wide and 1.4 mm thick with a flat inner side. Each part is entirely one metal: the band, the thin raised collar around the disc and the closed back behind it are polished yellow gold; the disc inside the collar is polished unplated white gold, a soft warm grey metal with mirror reflections. The face of the disc shows four flat zones from the edge inward: the yellow gold collar, 0.8 mm wide; a ring of cobalt blue enamel (#17368C), 1.5 mm wide, that meets the collar directly with no other metal line between them; a flat ring of white gold, 0.9 mm wide; and a round centre dot of cobalt blue enamel, 2 mm across. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat yellow gold back",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: a ring with a flat round disc on top, 8.4 mm across, a little narrower than the index fingernail, never larger, framed by a thin raised yellow gold collar that holds it flush, not domed; the collar is 1.8 mm high and sits on a band 2 mm wide and 1.4 mm thick with a flat inner side. Each part is entirely one metal: the band, the thin raised collar around the disc and the closed back behind it are polished yellow gold; the disc inside the collar is polished unplated white gold, a soft warm grey metal with mirror reflections. The face of the disc shows four flat zones from the edge inward: the yellow gold collar, 0.8 mm wide; a ring of cobalt blue enamel (#17368C), 1.5 mm wide, that meets the collar directly with no other metal line between them; a flat ring of white gold, 0.9 mm wide; and a round centre dot of cobalt blue enamel, 2 mm across. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat yellow gold back. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C). No eyelashes, no eyelid line, no realistic iris. The ring stands upright with its top turned toward the camera, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "altHeroPrompts": {
+    "White/Yellow Gold": "Studio product photograph of one fine jewelry piece: a ring with a flat round disc on top, 8.4 mm across, a little narrower than the index fingernail, never larger, framed by a thin raised white gold collar that holds it flush, not domed; the collar is 1.8 mm high and sits on a band 2 mm wide and 1.4 mm thick with a flat inner side. Each part is entirely one metal: the band, the thin raised collar around the disc and the closed back behind it are polished unplated white gold, a soft warm grey metal with mirror reflections; the disc inside the collar is polished yellow gold. The face of the disc shows four flat zones from the edge inward: the white gold collar, 0.8 mm wide; a ring of cobalt blue enamel (#17368C), 1.5 mm wide, that meets the collar directly with no other metal line between them; a flat ring of yellow gold, 0.9 mm wide; and a round centre dot of cobalt blue enamel, 2 mm across. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat white gold back. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C). No eyelashes, no eyelid line, no realistic iris. The ring stands upright with its top turned toward the camera, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+    "Rose/White Gold": "Studio product photograph of one fine jewelry piece: a ring with a flat round disc on top, 8.4 mm across, a little narrower than the index fingernail, never larger, framed by a thin raised rose gold collar that holds it flush, not domed; the collar is 1.8 mm high and sits on a band 2 mm wide and 1.4 mm thick with a flat inner side. Each part is entirely one metal: the band, the thin raised collar around the disc and the closed back behind it are polished rose gold, a soft pink gold; the disc inside the collar is polished unplated white gold, a soft warm grey metal with mirror reflections. The face of the disc shows four flat zones from the edge inward: the rose gold collar, 0.8 mm wide; a ring of cobalt blue enamel (#17368C), 1.5 mm wide, that meets the collar directly with no other metal line between them; a flat ring of white gold, 0.9 mm wide; and a round centre dot of cobalt blue enamel, 2 mm across. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat rose gold back. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C). No eyelashes, no eyelid line, no realistic iris. The ring stands upright with its top turned toward the camera, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format."
+   },
+   "qa": [
+    "Four zones: yellow collar, cobalt ring, white gold ring, cobalt centre dot.",
+    "Each white zone is white gold metal, never white enamel.",
+    "No white line between the cobalt ring and the yellow gold collar.",
+    "Which part is which metal, and does it match Yellow/White Gold?"
+   ],
+   "imageFile": "R01.jpg"
+  },
+  {
+   "id": "N01",
+   "familyNo": 1,
+   "family": "Halka",
+   "name": "Two Tone Evil Eye Necklace",
+   "productType": "necklace",
+   "kind": "pendant",
+   "twoTone": true,
+   "metals": {
+    "value": "Yellow/White Gold",
+    "body": "14K yellow gold",
+    "accent": "14K white gold, polished and unplated",
+    "bodyParts": "the collar, the back and the chain",
+    "accentParts": "the flat ring between the cobalt blue and sky blue rings and the round centre dot"
+   },
+   "enamel": [
+    {
+     "key": "cobalt",
+     "name": "cobalt blue",
+     "hex": "#17368C"
+    },
+    {
+     "key": "sky",
+     "name": "sky blue",
+     "hex": "#8CC3E8"
+    }
+   ],
+   "dims": "disc 11.5 x 1.5 mm, hidden tube bail",
+   "motif": "the round disc",
+   "scale": "the disc is only 11.5 mm across, about as wide as the index fingernail, never larger",
+   "wear": "the disc at the centre just below the collarbones, facing the camera",
+   "station": null,
+   "shape": "a pendant: a flat round disc, 11.5 mm across, about as wide as the index fingernail, never larger, 1.5 mm thick, framed by a thin raised yellow gold collar that holds it flush, not domed. Each part is entirely one metal: the thin raised collar around the disc, the closed back behind it, a small tube hidden behind the top edge of the disc and the fine 1.2 mm cable chain are polished yellow gold; the disc inside the collar is polished unplated white gold, a soft warm grey metal with mirror reflections. The face of the disc shows five flat zones from the edge inward: the yellow gold collar, 0.8 mm wide; a ring of cobalt blue enamel (#17368C), 1.6 mm wide, that meets the collar directly with no other metal line between them; a flat ring of white gold, 0.9 mm wide; a ring of pale sky blue enamel (#8CC3E8), 1.6 mm wide; and a round white gold centre dot, 1.7 mm across. The fine 1.2 mm cable chain passes through the hidden tube, so it disappears behind the top edge of the disc and no loop shows above it. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat yellow gold back",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: a pendant: a flat round disc, 11.5 mm across, about as wide as the index fingernail, never larger, 1.5 mm thick, framed by a thin raised yellow gold collar that holds it flush, not domed. Each part is entirely one metal: the thin raised collar around the disc, the closed back behind it, a small tube hidden behind the top edge of the disc and the fine 1.2 mm cable chain are polished yellow gold; the disc inside the collar is polished unplated white gold, a soft warm grey metal with mirror reflections. The face of the disc shows five flat zones from the edge inward: the yellow gold collar, 0.8 mm wide; a ring of cobalt blue enamel (#17368C), 1.6 mm wide, that meets the collar directly with no other metal line between them; a flat ring of white gold, 0.9 mm wide; a ring of pale sky blue enamel (#8CC3E8), 1.6 mm wide; and a round white gold centre dot, 1.7 mm across. The fine 1.2 mm cable chain passes through the hidden tube, so it disappears behind the top edge of the disc and no loop shows above it. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat yellow gold back. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C), pale sky blue (#8CC3E8). No eyelashes, no eyelid line, no realistic iris. The pendant lies flat and face up, and the fine chain leaves it as one single strand whose two halves rise straight up and apart like the arms of a letter V and leave the image at the top edge; the chain is never doubled, never coiled and never forms a second loop, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "altHeroPrompts": {
+    "White/Yellow Gold": "Studio product photograph of one fine jewelry piece: a pendant: a flat round disc, 11.5 mm across, about as wide as the index fingernail, never larger, 1.5 mm thick, framed by a thin raised white gold collar that holds it flush, not domed. Each part is entirely one metal: the thin raised collar around the disc, the closed back behind it, a small tube hidden behind the top edge of the disc and the fine 1.2 mm cable chain are polished unplated white gold, a soft warm grey metal with mirror reflections; the disc inside the collar is polished yellow gold. The face of the disc shows five flat zones from the edge inward: the white gold collar, 0.8 mm wide; a ring of cobalt blue enamel (#17368C), 1.6 mm wide, that meets the collar directly with no other metal line between them; a flat ring of yellow gold, 0.9 mm wide; a ring of pale sky blue enamel (#8CC3E8), 1.6 mm wide; and a round yellow gold centre dot, 1.7 mm across. The fine 1.2 mm cable chain passes through the hidden tube, so it disappears behind the top edge of the disc and no loop shows above it. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat white gold back. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C), pale sky blue (#8CC3E8). No eyelashes, no eyelid line, no realistic iris. The pendant lies flat and face up, and the fine chain leaves it as one single strand whose two halves rise straight up and apart like the arms of a letter V and leave the image at the top edge; the chain is never doubled, never coiled and never forms a second loop, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+    "Rose/White Gold": "Studio product photograph of one fine jewelry piece: a pendant: a flat round disc, 11.5 mm across, about as wide as the index fingernail, never larger, 1.5 mm thick, framed by a thin raised rose gold collar that holds it flush, not domed. Each part is entirely one metal: the thin raised collar around the disc, the closed back behind it, a small tube hidden behind the top edge of the disc and the fine 1.2 mm cable chain are polished rose gold, a soft pink gold; the disc inside the collar is polished unplated white gold, a soft warm grey metal with mirror reflections. The face of the disc shows five flat zones from the edge inward: the rose gold collar, 0.8 mm wide; a ring of cobalt blue enamel (#17368C), 1.6 mm wide, that meets the collar directly with no other metal line between them; a flat ring of white gold, 0.9 mm wide; a ring of pale sky blue enamel (#8CC3E8), 1.6 mm wide; and a round white gold centre dot, 1.7 mm across. The fine 1.2 mm cable chain passes through the hidden tube, so it disappears behind the top edge of the disc and no loop shows above it. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat rose gold back. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C), pale sky blue (#8CC3E8). No eyelashes, no eyelid line, no realistic iris. The pendant lies flat and face up, and the fine chain leaves it as one single strand whose two halves rise straight up and apart like the arms of a letter V and leave the image at the top edge; the chain is never doubled, never coiled and never forms a second loop, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format."
+   },
+   "qa": [
+    "Five zones: yellow collar, cobalt ring, white gold ring, sky blue ring, white gold centre dot.",
+    "Each white zone is white gold metal, never white enamel.",
+    "No white line between the cobalt ring and the yellow gold collar.",
+    "Which part is which metal, and does it match Yellow/White Gold?"
+   ],
+   "imageFile": "N01.jpg"
+  },
+  {
+   "id": "B01",
+   "familyNo": 1,
+   "family": "Halka",
+   "name": "Two Tone Evil Eye Bracelet",
+   "productType": "bracelet",
+   "kind": "bracelet",
+   "twoTone": true,
+   "metals": {
+    "value": "Yellow/White Gold",
+    "body": "14K yellow gold",
+    "accent": "14K white gold, polished and unplated",
+    "bodyParts": "the chain, the collar and the back",
+    "accentParts": "the flat ring between the two cobalt blue cells"
+   },
+   "enamel": [
+    {
+     "key": "cobalt",
+     "name": "cobalt blue",
+     "hex": "#17368C"
+    }
+   ],
+   "dims": "disc 8.4 mm, inline",
+   "motif": "the round disc",
+   "scale": "the disc is only 8.4 mm across, a little narrower than the index fingernail, never larger",
+   "wear": null,
+   "station": null,
+   "shape": "a fine 1.1 mm yellow gold cable chain bracelet with one flat round disc, 8.4 mm across, a little narrower than the index fingernail, never larger, in the line of the chain at its centre, framed by a thin raised yellow gold collar that holds it flush, not domed; two small yellow gold loops on the sides of the collar, at 3 and 9 o'clock, join the chain, so the chain runs into the disc from both sides. Each part is entirely one metal: the chain, the two loops, the thin raised collar around the disc and the closed back behind it are polished yellow gold; the disc inside the collar is polished unplated white gold, a soft warm grey metal with mirror reflections. The face of the disc shows four flat zones from the edge inward: the yellow gold collar, 0.8 mm wide; a ring of cobalt blue enamel (#17368C), 1.5 mm wide, that meets the collar directly with no other metal line between them; a flat ring of white gold, 0.9 mm wide; and a round centre dot of cobalt blue enamel, 2 mm across. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat yellow gold back; spring ring clasp",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: a fine 1.1 mm yellow gold cable chain bracelet with one flat round disc, 8.4 mm across, a little narrower than the index fingernail, never larger, in the line of the chain at its centre, framed by a thin raised yellow gold collar that holds it flush, not domed; two small yellow gold loops on the sides of the collar, at 3 and 9 o'clock, join the chain, so the chain runs into the disc from both sides. Each part is entirely one metal: the chain, the two loops, the thin raised collar around the disc and the closed back behind it are polished yellow gold; the disc inside the collar is polished unplated white gold, a soft warm grey metal with mirror reflections. The face of the disc shows four flat zones from the edge inward: the yellow gold collar, 0.8 mm wide; a ring of cobalt blue enamel (#17368C), 1.5 mm wide, that meets the collar directly with no other metal line between them; a flat ring of white gold, 0.9 mm wide; and a round centre dot of cobalt blue enamel, 2 mm across. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat yellow gold back; spring ring clasp. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C). No eyelashes, no eyelid line, no realistic iris. The bracelet lies in one soft open curve, one continuous chain from end to end, with the round disc face up at the centre of the curve and the spring ring clasp at one end, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "altHeroPrompts": {
+    "White/Yellow Gold": "Studio product photograph of one fine jewelry piece: a fine 1.1 mm white gold cable chain bracelet with one flat round disc, 8.4 mm across, a little narrower than the index fingernail, never larger, in the line of the chain at its centre, framed by a thin raised white gold collar that holds it flush, not domed; two small white gold loops on the sides of the collar, at 3 and 9 o'clock, join the chain, so the chain runs into the disc from both sides. Each part is entirely one metal: the chain, the two loops, the thin raised collar around the disc and the closed back behind it are polished unplated white gold, a soft warm grey metal with mirror reflections; the disc inside the collar is polished yellow gold. The face of the disc shows four flat zones from the edge inward: the white gold collar, 0.8 mm wide; a ring of cobalt blue enamel (#17368C), 1.5 mm wide, that meets the collar directly with no other metal line between them; a flat ring of yellow gold, 0.9 mm wide; and a round centre dot of cobalt blue enamel, 2 mm across. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat white gold back; spring ring clasp. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C). No eyelashes, no eyelid line, no realistic iris. The bracelet lies in one soft open curve, one continuous chain from end to end, with the round disc face up at the centre of the curve and the spring ring clasp at one end, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+    "Rose/White Gold": "Studio product photograph of one fine jewelry piece: a fine 1.1 mm rose gold cable chain bracelet with one flat round disc, 8.4 mm across, a little narrower than the index fingernail, never larger, in the line of the chain at its centre, framed by a thin raised rose gold collar that holds it flush, not domed; two small rose gold loops on the sides of the collar, at 3 and 9 o'clock, join the chain, so the chain runs into the disc from both sides. Each part is entirely one metal: the chain, the two loops, the thin raised collar around the disc and the closed back behind it are polished rose gold, a soft pink gold; the disc inside the collar is polished unplated white gold, a soft warm grey metal with mirror reflections. The face of the disc shows four flat zones from the edge inward: the rose gold collar, 0.8 mm wide; a ring of cobalt blue enamel (#17368C), 1.5 mm wide, that meets the collar directly with no other metal line between them; a flat ring of white gold, 0.9 mm wide; and a round centre dot of cobalt blue enamel, 2 mm across. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat rose gold back; spring ring clasp. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C). No eyelashes, no eyelid line, no realistic iris. The bracelet lies in one soft open curve, one continuous chain from end to end, with the round disc face up at the centre of the curve and the spring ring clasp at one end, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format."
+   },
+   "qa": [
+    "Four zones: yellow collar, cobalt ring, white gold ring, cobalt centre dot.",
+    "Each white zone is white gold metal, never white enamel.",
+    "No white line between the cobalt ring and the yellow gold collar.",
+    "Which part is which metal, and does it match Yellow/White Gold?"
+   ],
+   "imageFile": "B01.jpg"
+  },
+  {
+   "id": "R02",
+   "familyNo": 2,
+   "family": "Damla",
+   "name": "Teardrop Evil Eye Ring",
+   "productType": "ring",
+   "kind": "ring",
+   "twoTone": false,
+   "metals": "14K yellow gold",
+   "enamel": [
+    {
+     "key": "cobalt",
+     "name": "cobalt blue",
+     "hex": "#17368C"
+    }
+   ],
+   "dims": "teardrop 6.0 x 7.2 x 1.1 mm on a 1.6 mm band",
+   "motif": "the teardrop",
+   "scale": "the teardrop is only 7.2 mm long and 6 mm wide, about as wide as a pencil is thick, never larger",
+   "wear": null,
+   "station": null,
+   "shape": "a slim ring in polished 14K yellow gold with a small flat teardrop on top, 7.2 mm long and 6 mm wide, about as wide as a pencil is thick, never larger, 1.1 mm thick, sitting low on a round band 1.6 mm thick, cast in one piece, the point of the teardrop toward the fingertip when worn. The teardrop is a circle 6 mm across with two straight sides that meet in a right-angled point. Inside a thin polished gold rim 0.4 mm wide, one band of cobalt blue enamel (#17368C), 1.5 mm wide, follows the outline at an even width around a round polished gold centre dot 2.2 mm across at the centre of the round end; the last 1.5 mm of the point is solid polished gold with no enamel. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold back",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: a slim ring in polished 14K yellow gold with a small flat teardrop on top, 7.2 mm long and 6 mm wide, about as wide as a pencil is thick, never larger, 1.1 mm thick, sitting low on a round band 1.6 mm thick, cast in one piece, the point of the teardrop toward the fingertip when worn. The teardrop is a circle 6 mm across with two straight sides that meet in a right-angled point. Inside a thin polished gold rim 0.4 mm wide, one band of cobalt blue enamel (#17368C), 1.5 mm wide, follows the outline at an even width around a round polished gold centre dot 2.2 mm across at the centre of the round end; the last 1.5 mm of the point is solid polished gold with no enamel. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold back. All metal is solid polished 14K yellow gold. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C). No eyelashes, no eyelid line, no realistic iris. The ring stands upright with its top turned toward the camera, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "altHeroPrompts": null,
+   "qa": [
+    "One cobalt band of even width, gold centre dot 2.2 mm.",
+    "The hero shows the solid gold point; in sales frames enamel running into the point is accepted.",
+    "Length to width within 10% of 7.2 / 6.0."
+   ],
+   "imageFile": "R02.jpg"
+  },
+  {
+   "id": "N02",
+   "familyNo": 2,
+   "family": "Damla",
+   "name": "Teardrop Evil Eye Necklace",
+   "productType": "necklace",
+   "kind": "pendant",
+   "twoTone": false,
+   "metals": "14K yellow gold",
+   "enamel": [
+    {
+     "key": "cobalt",
+     "name": "cobalt blue",
+     "hex": "#17368C"
+    },
+    {
+     "key": "white",
+     "name": "white",
+     "hex": "#F3F1EA"
+    }
+   ],
+   "dims": "teardrop 8.8 x 10.6 x 1.2 mm, point up",
+   "motif": "the teardrop",
+   "scale": "the teardrop is only 10.6 mm tall and 8.8 mm wide, about as wide as the index fingernail, never larger",
+   "wear": "the teardrop, point up, at the centre just below the collarbones, facing the camera",
+   "station": null,
+   "shape": "a flat teardrop pendant in polished 14K yellow gold, 10.6 mm tall and 8.8 mm wide, about as wide as the index fingernail, never larger, 1.2 mm thick, hanging point up: a small gold loop at the point carries a gold jump ring and the fine 1.2 mm cable chain. The teardrop is a circle 8.8 mm across with two straight sides that meet in a right-angled point, its height about one fifth more than its width. From the outline inward: a thin polished gold rim, 0.4 mm; a band of cobalt blue enamel (#17368C), 1.5 mm wide; a thin gold wall, 0.4 mm; a band of porcelain white enamel, flat, opaque and glossy (#F3F1EA), 1.5 mm wide; and a round polished gold centre dot, 1.2 mm across, at the centre of the round end. Both enamel bands are smaller teardrops of even width that follow the outline; the last 1.5 mm of the point is solid polished gold with no enamel. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold back",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: a flat teardrop pendant in polished 14K yellow gold, 10.6 mm tall and 8.8 mm wide, about as wide as the index fingernail, never larger, 1.2 mm thick, hanging point up: a small gold loop at the point carries a gold jump ring and the fine 1.2 mm cable chain. The teardrop is a circle 8.8 mm across with two straight sides that meet in a right-angled point, its height about one fifth more than its width. From the outline inward: a thin polished gold rim, 0.4 mm; a band of cobalt blue enamel (#17368C), 1.5 mm wide; a thin gold wall, 0.4 mm; a band of porcelain white enamel, flat, opaque and glossy (#F3F1EA), 1.5 mm wide; and a round polished gold centre dot, 1.2 mm across, at the centre of the round end. Both enamel bands are smaller teardrops of even width that follow the outline; the last 1.5 mm of the point is solid polished gold with no enamel. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold back. All metal is solid polished 14K yellow gold. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C), porcelain white (#F3F1EA). No eyelashes, no eyelid line, no realistic iris. The pendant lies flat and face up, and the fine chain leaves it as one single strand whose two halves rise straight up and apart like the arms of a letter V and leave the image at the top edge; the chain is never doubled, never coiled and never forms a second loop, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "altHeroPrompts": null,
+   "qa": [
+    "The inner bands are offset teardrops of even width.",
+    "The hero shows the solid gold point (the last 1.5 mm); in sales frames enamel running into the point is accepted (spec appendix).",
+    "Height to width within 10% of 10.6 / 8.8."
+   ],
+   "imageFile": "N02.jpg"
+  },
+  {
+   "id": "B02",
+   "familyNo": 2,
+   "family": "Damla",
+   "name": "Teardrop Evil Eye Charm Bracelet",
+   "productType": "bracelet",
+   "kind": "bracelet",
+   "twoTone": false,
+   "metals": "14K yellow gold",
+   "enamel": [
+    {
+     "key": "cobalt",
+     "name": "cobalt blue",
+     "hex": "#17368C"
+    },
+    {
+     "key": "white",
+     "name": "white",
+     "hex": "#F3F1EA"
+    }
+   ],
+   "dims": "teardrop 8.8 x 10.6 mm, hanging",
+   "motif": "the teardrop charm",
+   "scale": "the teardrop is only 10.6 mm tall and 8.8 mm wide, about as wide as the index fingernail, never larger",
+   "wear": null,
+   "station": null,
+   "shape": "a fine 1.1 mm cable chain bracelet in polished 14K yellow gold with one flat teardrop charm, 10.6 mm tall and 8.8 mm wide, about as wide as the index fingernail, never larger, 1.2 mm thick, that hangs free, point up, from a small gold jump ring at the centre of the chain, the jump ring through a small loop at the point. The teardrop is a circle 8.8 mm across with two straight sides that meet in a right-angled point, its height about one fifth more than its width. From the outline inward: a thin polished gold rim, 0.4 mm; a band of cobalt blue enamel (#17368C), 1.5 mm wide; a thin gold wall, 0.4 mm; a band of porcelain white enamel, flat, opaque and glossy (#F3F1EA), 1.5 mm wide; and a round polished gold centre dot, 1.2 mm across, at the centre of the round end. Both enamel bands are smaller teardrops of even width that follow the outline; the last 1.5 mm of the point is solid polished gold with no enamel. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold back; spring ring clasp",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: a fine 1.1 mm cable chain bracelet in polished 14K yellow gold with one flat teardrop charm, 10.6 mm tall and 8.8 mm wide, about as wide as the index fingernail, never larger, 1.2 mm thick, that hangs free, point up, from a small gold jump ring at the centre of the chain, the jump ring through a small loop at the point. The teardrop is a circle 8.8 mm across with two straight sides that meet in a right-angled point, its height about one fifth more than its width. From the outline inward: a thin polished gold rim, 0.4 mm; a band of cobalt blue enamel (#17368C), 1.5 mm wide; a thin gold wall, 0.4 mm; a band of porcelain white enamel, flat, opaque and glossy (#F3F1EA), 1.5 mm wide; and a round polished gold centre dot, 1.2 mm across, at the centre of the round end. Both enamel bands are smaller teardrops of even width that follow the outline; the last 1.5 mm of the point is solid polished gold with no enamel. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold back; spring ring clasp. All metal is solid polished 14K yellow gold. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C), porcelain white (#F3F1EA). No eyelashes, no eyelid line, no realistic iris. The bracelet lies in one soft open curve, one continuous chain from end to end, with the teardrop charm face up at the centre of the curve and the spring ring clasp at one end, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "altHeroPrompts": null,
+   "qa": [
+    "The inner bands are offset teardrops of even width.",
+    "The hero shows the solid gold point (the last 1.5 mm); in sales frames enamel running into the point is accepted (spec appendix).",
+    "Height to width within 10% of 10.6 / 8.8.",
+    "The set's only dangle: it hangs from one jump ring."
+   ],
+   "imageFile": "B02.jpg"
+  },
+  {
+   "id": "R03",
+   "familyNo": 3,
+   "family": "Mati",
+   "name": "White and Blue Almond Evil Eye Bypass Ring",
+   "productType": "ring",
+   "kind": "ring",
+   "twoTone": false,
+   "metals": "14K yellow gold",
+   "enamel": [
+    {
+     "key": "white",
+     "name": "white",
+     "hex": "#F3F1EA"
+    },
+    {
+     "key": "cobalt",
+     "name": "cobalt blue",
+     "hex": "#17368C"
+    }
+   ],
+   "dims": "almond 11.0 x 6.6 mm, bypass band 1.5 mm",
+   "motif": "the almond",
+   "scale": "the almond is only 11 mm long and 6.6 mm wide, about as wide as the index fingernail, never larger",
+   "wear": null,
+   "station": null,
+   "shape": "an open bypass ring in polished 14K yellow gold: a rigid round band 1.5 mm thick whose two ends pass each other side by side at the top of the ring. One end finishes in a flat almond-shaped plate, 11 mm long and 6.6 mm wide, about as wide as the index fingernail, never larger, 1.2 mm thick, its long axis following the band; the other end is a plain polished tapered end that stops 4 mm short of the almond. The almond is two shallow arcs that meet in two pointed tips, framed by a thin polished gold rim 0.4 mm wide. At its centre is a round island 5 mm across: a thin gold ring 0.4 mm wide, a ring of cobalt blue enamel (#17368C) 1.5 mm wide and a round polished gold centre dot 1.2 mm across, with 0.8 mm of plain gold above and below the island. On each side of the island is a cell of porcelain white enamel, flat, opaque and glossy (#F3F1EA), 1.6 mm long, tall next to the island and narrowing toward the tip; the last 1 mm of each tip is solid polished gold. The almond is a closed solid plate, never an open outline; no eyelashes, no eyelid line, no realistic iris. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold back",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: an open bypass ring in polished 14K yellow gold: a rigid round band 1.5 mm thick whose two ends pass each other side by side at the top of the ring. One end finishes in a flat almond-shaped plate, 11 mm long and 6.6 mm wide, about as wide as the index fingernail, never larger, 1.2 mm thick, its long axis following the band; the other end is a plain polished tapered end that stops 4 mm short of the almond. The almond is two shallow arcs that meet in two pointed tips, framed by a thin polished gold rim 0.4 mm wide. At its centre is a round island 5 mm across: a thin gold ring 0.4 mm wide, a ring of cobalt blue enamel (#17368C) 1.5 mm wide and a round polished gold centre dot 1.2 mm across, with 0.8 mm of plain gold above and below the island. On each side of the island is a cell of porcelain white enamel, flat, opaque and glossy (#F3F1EA), 1.6 mm long, tall next to the island and narrowing toward the tip; the last 1 mm of each tip is solid polished gold. The almond is a closed solid plate, never an open outline; no eyelashes, no eyelid line, no realistic iris. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold back. All metal is solid polished 14K yellow gold. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: porcelain white (#F3F1EA), cobalt blue (#17368C). The ring stands upright with its top turned toward the camera, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "altHeroPrompts": null,
+   "qa": [
+    "No eyelashes, no eyelid line, no realistic iris; a closed plate, never an open outline.",
+    "White cells either side of a ringed cobalt island; solid gold tips.",
+    "The almond's long axis follows the band; the plain tapered end stops short of it."
+   ],
+   "imageFile": "R03.jpg"
+  },
+  {
+   "id": "N03",
+   "familyNo": 3,
+   "family": "Mati",
+   "name": "Almond Evil Eye Lariat Necklace",
+   "productType": "necklace",
+   "kind": "lariat",
+   "twoTone": false,
+   "metals": "14K yellow gold",
+   "enamel": [
+    {
+     "key": "white",
+     "name": "white",
+     "hex": "#F3F1EA"
+    },
+    {
+     "key": "cobalt",
+     "name": "cobalt blue",
+     "hex": "#17368C"
+    }
+   ],
+   "dims": "almond 11.0 x 6.6 mm on a 40 mm drop",
+   "motif": "the almond",
+   "scale": "the almond is only 11 mm long and 6.6 mm wide, about as wide as the index fingernail, never larger",
+   "wear": "the small gold ball where the chain meets the drop at the centre just below the collarbones, the drop running straight down from it to the almond, which lies level, its long axis parallel to the collarbones",
+   "station": null,
+   "shape": "a Y-shaped lariat necklace in polished 14K yellow gold: the fine 1.2 mm cable chain meets at the front in a 3 mm solid polished gold ball, and from the ball a single 40 mm length of the same chain drops straight down to a flat almond-shaped plate, 11 mm long and 6.6 mm wide, about as wide as the index fingernail, never larger, 1.2 mm thick, which hangs level, its long axis horizontal, from a small loop hidden behind the middle of its top edge. The almond is two shallow arcs that meet in two pointed tips, framed by a thin polished gold rim 0.4 mm wide. At its centre is a round island 5 mm across: a thin gold ring 0.4 mm wide, a ring of cobalt blue enamel (#17368C) 1.5 mm wide and a round polished gold centre dot 1.2 mm across, with 0.8 mm of plain gold above and below the island. On each side of the island is a cell of porcelain white enamel, flat, opaque and glossy (#F3F1EA), 1.6 mm long, tall next to the island and narrowing toward the tip; the last 1 mm of each tip is solid polished gold. The almond is a closed solid plate, never an open outline; no eyelashes, no eyelid line, no realistic iris. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold back",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: a Y-shaped lariat necklace in polished 14K yellow gold: the fine 1.2 mm cable chain meets at the front in a 3 mm solid polished gold ball, and from the ball a single 40 mm length of the same chain drops straight down to a flat almond-shaped plate, 11 mm long and 6.6 mm wide, about as wide as the index fingernail, never larger, 1.2 mm thick, which hangs level, its long axis horizontal, from a small loop hidden behind the middle of its top edge. The almond is two shallow arcs that meet in two pointed tips, framed by a thin polished gold rim 0.4 mm wide. At its centre is a round island 5 mm across: a thin gold ring 0.4 mm wide, a ring of cobalt blue enamel (#17368C) 1.5 mm wide and a round polished gold centre dot 1.2 mm across, with 0.8 mm of plain gold above and below the island. On each side of the island is a cell of porcelain white enamel, flat, opaque and glossy (#F3F1EA), 1.6 mm long, tall next to the island and narrowing toward the tip; the last 1 mm of each tip is solid polished gold. The almond is a closed solid plate, never an open outline; no eyelashes, no eyelid line, no realistic iris. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold back. All metal is solid polished 14K yellow gold. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: porcelain white (#F3F1EA), cobalt blue (#17368C). The lariat lies face up: the drop runs straight down from the gold ball to the almond, and the two halves of the chain rise from the ball straight up and apart and leave the image at the top edge; the chain is never doubled, never coiled and never forms a second loop, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "altHeroPrompts": null,
+   "qa": [
+    "No eyelashes, no eyelid line, no realistic iris; a closed plate, never an open outline.",
+    "White cells either side of a ringed cobalt island; solid gold tips.",
+    "Hangs level, long axis parallel to the collarbone, from a small loop behind the middle of its top edge."
+   ],
+   "imageFile": "N03.jpg"
+  },
+  {
+   "id": "B03",
+   "familyNo": 3,
+   "family": "Mati",
+   "name": "Almond Evil Eye Bracelet",
+   "productType": "bracelet",
+   "kind": "bracelet",
+   "twoTone": false,
+   "metals": "14K yellow gold",
+   "enamel": [
+    {
+     "key": "white",
+     "name": "white",
+     "hex": "#F3F1EA"
+    },
+    {
+     "key": "cobalt",
+     "name": "cobalt blue",
+     "hex": "#17368C"
+    }
+   ],
+   "dims": "almond 11.0 x 6.6 mm, chain behind the top edge",
+   "motif": "the almond",
+   "scale": "the almond is only 11 mm long and 6.6 mm wide, about as wide as the index fingernail, never larger",
+   "wear": null,
+   "station": null,
+   "shape": "a fine 1.1 mm cable chain bracelet in polished 14K yellow gold with one flat almond-shaped plate, 11 mm long and 6.6 mm wide, about as wide as the index fingernail, never larger, 1.2 mm thick, at its centre, its long axis along the chain: the chain runs straight across just inside the top edge of the almond, passing behind it through two small loops hidden behind the upper edge about 2.5 mm in from each tip, so both pointed tips sit below the chain and touch nothing. The almond is two shallow arcs that meet in two pointed tips, framed by a thin polished gold rim 0.4 mm wide. At its centre is a round island 5 mm across: a thin gold ring 0.4 mm wide, a ring of cobalt blue enamel (#17368C) 1.5 mm wide and a round polished gold centre dot 1.2 mm across, with 0.8 mm of plain gold above and below the island. On each side of the island is a cell of porcelain white enamel, flat, opaque and glossy (#F3F1EA), 1.6 mm long, tall next to the island and narrowing toward the tip; the last 1 mm of each tip is solid polished gold. The almond is a closed solid plate, never an open outline; no eyelashes, no eyelid line, no realistic iris. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold back; spring ring clasp",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: a fine 1.1 mm cable chain bracelet in polished 14K yellow gold with one flat almond-shaped plate, 11 mm long and 6.6 mm wide, about as wide as the index fingernail, never larger, 1.2 mm thick, at its centre, its long axis along the chain: the chain runs straight across just inside the top edge of the almond, passing behind it through two small loops hidden behind the upper edge about 2.5 mm in from each tip, so both pointed tips sit below the chain and touch nothing. The almond is two shallow arcs that meet in two pointed tips, framed by a thin polished gold rim 0.4 mm wide. At its centre is a round island 5 mm across: a thin gold ring 0.4 mm wide, a ring of cobalt blue enamel (#17368C) 1.5 mm wide and a round polished gold centre dot 1.2 mm across, with 0.8 mm of plain gold above and below the island. On each side of the island is a cell of porcelain white enamel, flat, opaque and glossy (#F3F1EA), 1.6 mm long, tall next to the island and narrowing toward the tip; the last 1 mm of each tip is solid polished gold. The almond is a closed solid plate, never an open outline; no eyelashes, no eyelid line, no realistic iris. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold back; spring ring clasp. All metal is solid polished 14K yellow gold. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: porcelain white (#F3F1EA), cobalt blue (#17368C). The bracelet lies in one soft open curve, one continuous chain from end to end, with the almond face up at the centre of the curve and the spring ring clasp at one end, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "altHeroPrompts": null,
+   "qa": [
+    "No eyelashes, no eyelid line, no realistic iris; a closed plate, never an open outline.",
+    "White cells either side of a ringed cobalt island; solid gold tips.",
+    "The chain runs straight across just inside the top edge, behind it; both tips below the chain, touching nothing."
+   ],
+   "imageFile": "B03.jpg"
+  },
+  {
+   "id": "R04",
+   "familyNo": 4,
+   "family": "Bead String",
+   "name": "Beaded Evil Eye Stacking Ring",
+   "productType": "ring",
+   "kind": "ring",
+   "twoTone": false,
+   "metals": "14K yellow gold",
+   "enamel": [
+    {
+     "key": "cobalt",
+     "name": "cobalt blue",
+     "hex": "#17368C"
+    }
+   ],
+   "dims": "disc 6.0 mm on a band of 1.8 mm gold balls",
+   "motif": "the round disc",
+   "scale": "the disc is only 6 mm across, slightly thinner than a pencil, never larger",
+   "wear": null,
+   "station": null,
+   "shape": "a rigid closed ring band made of small solid polished 14K yellow gold balls, each 1.8 mm across, all the same size, in one single row, each fused to the next, with no thread, no elastic and no gaps, cast in one piece. On top of the band, on a low gold gallery 0.6 mm high, sits a flat round disc, 6 mm across, slightly thinner than a pencil, never larger: a polished gold rim 0.5 mm wide, a ring of cobalt blue enamel (#17368C) 1.7 mm wide and a round polished gold centre dot 1.6 mm across. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold back",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: a rigid closed ring band made of small solid polished 14K yellow gold balls, each 1.8 mm across, all the same size, in one single row, each fused to the next, with no thread, no elastic and no gaps, cast in one piece. On top of the band, on a low gold gallery 0.6 mm high, sits a flat round disc, 6 mm across, slightly thinner than a pencil, never larger: a polished gold rim 0.5 mm wide, a ring of cobalt blue enamel (#17368C) 1.7 mm wide and a round polished gold centre dot 1.6 mm across. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold back. All metal is solid polished 14K yellow gold. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C). No eyelashes, no eyelid line, no realistic iris. The ring stands upright with its top turned toward the camera, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "altHeroPrompts": null,
+   "qa": [
+    "A rigid closed band of equal gold balls in one row, no thread, no elastic, no gaps; the copy never counts them.",
+    "One flat cobalt disc on top, not domed."
+   ],
+   "imageFile": "R04.jpg"
+  },
+  {
+   "id": "N04",
+   "familyNo": 4,
+   "family": "Bead String",
+   "name": "Evil Eye Bead Station Necklace",
+   "productType": "necklace",
+   "kind": "inline",
+   "twoTone": false,
+   "metals": "14K yellow gold",
+   "enamel": [
+    {
+     "key": "cobalt",
+     "name": "cobalt blue",
+     "hex": "#17368C"
+    }
+   ],
+   "dims": "three 10 mm stations, 22 mm apart",
+   "motif": "the three stations",
+   "scale": "each station is only 10 mm long, about as wide as the index fingernail, never larger",
+   "wear": "the three stations resting at the centre front just below the collarbones, evenly spaced, facing the camera",
+   "station": "one rigid station: the flat cobalt blue disc with a 2 mm solid gold ball fused to each side and a tiny loop at each end",
+   "shape": "a fine 1.2 mm cable chain necklace in polished 14K yellow gold with three identical stations fixed at the front, 22 mm apart, the chain between them bare. Each station is one rigid piece, 10 mm long, about as wide as the index fingernail, never larger: a flat round disc 6 mm across, slightly thinner than a pencil, with one solid polished gold ball 2 mm across fused to its left edge and one fused to its right edge, and a tiny gold loop at each end where the chain is joined. The disc: a polished gold rim 0.5 mm wide, a ring of cobalt blue enamel (#17368C) 1.7 mm wide and a round polished gold centre dot 1.6 mm across. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold backs",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: a fine 1.2 mm cable chain necklace in polished 14K yellow gold with three identical stations fixed at the front, 22 mm apart, the chain between them bare. Each station is one rigid piece, 10 mm long, about as wide as the index fingernail, never larger: a flat round disc 6 mm across, slightly thinner than a pencil, with one solid polished gold ball 2 mm across fused to its left edge and one fused to its right edge, and a tiny gold loop at each end where the chain is joined. The disc: a polished gold rim 0.5 mm wide, a ring of cobalt blue enamel (#17368C) 1.7 mm wide and a round polished gold centre dot 1.6 mm across. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold backs. All metal is solid polished 14K yellow gold. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C). No eyelashes, no eyelid line, no realistic iris. The necklace lies with the three stations face up at the bottom of one smooth U-shaped curve of chain whose two halves rise straight up and apart and leave the image at the top edge; the chain is never doubled, never coiled and never forms a second loop, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "altHeroPrompts": null,
+   "qa": [
+    "Exactly three identical stations, each one rigid 10 mm piece: ball, disc, ball.",
+    "The chain between them is bare."
+   ],
+   "imageFile": "N04.jpg"
+  },
+  {
+   "id": "B04",
+   "familyNo": 4,
+   "family": "Bead String",
+   "name": "Evil Eye Bead Station Bracelet",
+   "productType": "bracelet",
+   "kind": "bracelet",
+   "twoTone": false,
+   "metals": "14K yellow gold",
+   "enamel": [
+    {
+     "key": "cobalt",
+     "name": "cobalt blue",
+     "hex": "#17368C"
+    }
+   ],
+   "dims": "three 10 mm stations, 18 mm apart",
+   "motif": "the three stations",
+   "scale": "each station is only 10 mm long, about as wide as the index fingernail, never larger",
+   "wear": null,
+   "station": "one rigid station: the flat cobalt blue disc with a 2 mm solid gold ball fused to each side and a tiny loop at each end",
+   "shape": "a fine 1.1 mm cable chain bracelet in polished 14K yellow gold with three identical stations fixed at its centre, 18 mm apart, the chain between them bare. Each station is one rigid piece, 10 mm long, about as wide as the index fingernail, never larger: a flat round disc 6 mm across, slightly thinner than a pencil, with one solid polished gold ball 2 mm across fused to its left edge and one fused to its right edge, and a tiny gold loop at each end where the chain is joined. The disc: a polished gold rim 0.5 mm wide, a ring of cobalt blue enamel (#17368C) 1.7 mm wide and a round polished gold centre dot 1.6 mm across. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold backs; spring ring clasp",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: a fine 1.1 mm cable chain bracelet in polished 14K yellow gold with three identical stations fixed at its centre, 18 mm apart, the chain between them bare. Each station is one rigid piece, 10 mm long, about as wide as the index fingernail, never larger: a flat round disc 6 mm across, slightly thinner than a pencil, with one solid polished gold ball 2 mm across fused to its left edge and one fused to its right edge, and a tiny gold loop at each end where the chain is joined. The disc: a polished gold rim 0.5 mm wide, a ring of cobalt blue enamel (#17368C) 1.7 mm wide and a round polished gold centre dot 1.6 mm across. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold backs; spring ring clasp. All metal is solid polished 14K yellow gold. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C). No eyelashes, no eyelid line, no realistic iris. The bracelet lies in one soft open curve, one continuous chain from end to end, with the three stations face up at the centre of the curve and the spring ring clasp at one end, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "altHeroPrompts": null,
+   "qa": [
+    "Exactly three identical stations, each one rigid 10 mm piece: ball, disc, ball.",
+    "The chain between them is bare."
+   ],
+   "imageFile": "B04.jpg"
+  },
+  {
+   "id": "R05",
+   "familyNo": 5,
+   "family": "Çini",
+   "name": "Hexagon Tile Evil Eye Ring",
+   "productType": "ring",
+   "kind": "ring",
+   "twoTone": false,
+   "metals": "14K yellow gold",
+   "enamel": [
+    {
+     "key": "cobalt",
+     "name": "cobalt blue",
+     "hex": "#17368C"
+    },
+    {
+     "key": "turquoise",
+     "name": "turquoise",
+     "hex": "#23A5B2"
+    }
+   ],
+   "dims": "hexagon 9.2 mm across the flats, 1.3 mm thick",
+   "motif": "the hexagon",
+   "scale": "the hexagon is only 9.2 mm across the flats, a little narrower than the index fingernail, never larger",
+   "wear": null,
+   "station": null,
+   "shape": "a ring with a flat hexagon on top, 9.2 mm across the flats, a little narrower than the index fingernail, never larger, 1.3 mm thick, sitting flat on a band of polished 14K yellow gold 2 mm wide and 1.4 mm thick with a flat inner side. The hexagon is regular, with six equal straight sides and crisp corners, framed by a thin polished gold rim 0.4 mm wide. Its field is cobalt blue enamel (#17368C), 1.6 mm wide at the middle of each side, around a round island 5.2 mm across at the centre: a thin gold ring 0.4 mm wide, a ring of turquoise enamel (#23A5B2) 1.5 mm wide and a round polished gold centre dot 1.4 mm across. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold back",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: a ring with a flat hexagon on top, 9.2 mm across the flats, a little narrower than the index fingernail, never larger, 1.3 mm thick, sitting flat on a band of polished 14K yellow gold 2 mm wide and 1.4 mm thick with a flat inner side. The hexagon is regular, with six equal straight sides and crisp corners, framed by a thin polished gold rim 0.4 mm wide. Its field is cobalt blue enamel (#17368C), 1.6 mm wide at the middle of each side, around a round island 5.2 mm across at the centre: a thin gold ring 0.4 mm wide, a ring of turquoise enamel (#23A5B2) 1.5 mm wide and a round polished gold centre dot 1.4 mm across. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold back. All metal is solid polished 14K yellow gold. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C), turquoise (#23A5B2). No eyelashes, no eyelid line, no realistic iris. The ring stands upright with its top turned toward the camera, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "altHeroPrompts": null,
+   "qa": [
+    "Six sides, sharp corners, one ringed island.",
+    "Cobalt outside, turquoise inside: dark outside, light inside."
+   ],
+   "imageFile": "R05.jpg"
+  },
+  {
+   "id": "N05",
+   "familyNo": 5,
+   "family": "Çini",
+   "name": "Hexagon Tile Evil Eye Necklace",
+   "productType": "necklace",
+   "kind": "pendant",
+   "twoTone": false,
+   "metals": "14K yellow gold",
+   "enamel": [
+    {
+     "key": "cobalt",
+     "name": "cobalt blue",
+     "hex": "#17368C"
+    },
+    {
+     "key": "turquoise",
+     "name": "turquoise",
+     "hex": "#23A5B2"
+    }
+   ],
+   "dims": "hexagon 10.0 mm across the flats, from a corner",
+   "motif": "the hexagon",
+   "scale": "the hexagon is only 10 mm across the flats, about as wide as the index fingernail, never larger",
+   "wear": "the hexagon, one corner up, at the centre just below the collarbones, facing the camera",
+   "station": null,
+   "shape": "a flat hexagon pendant in polished 14K yellow gold, 10 mm across the flats, about as wide as the index fingernail, never larger, 1.2 mm thick, hanging from its top corner by a small gold loop on the fine 1.2 mm cable chain. The hexagon is regular, with six equal straight sides and crisp corners, framed by a thin polished gold rim 0.4 mm wide. Its field is cobalt blue enamel (#17368C), 2 mm wide at the middle of each side, around a round island 5.2 mm across at the centre: a thin gold ring 0.4 mm wide, a ring of turquoise enamel (#23A5B2) 1.5 mm wide and a round polished gold centre dot 1.4 mm across. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold back",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: a flat hexagon pendant in polished 14K yellow gold, 10 mm across the flats, about as wide as the index fingernail, never larger, 1.2 mm thick, hanging from its top corner by a small gold loop on the fine 1.2 mm cable chain. The hexagon is regular, with six equal straight sides and crisp corners, framed by a thin polished gold rim 0.4 mm wide. Its field is cobalt blue enamel (#17368C), 2 mm wide at the middle of each side, around a round island 5.2 mm across at the centre: a thin gold ring 0.4 mm wide, a ring of turquoise enamel (#23A5B2) 1.5 mm wide and a round polished gold centre dot 1.4 mm across. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold back. All metal is solid polished 14K yellow gold. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C), turquoise (#23A5B2). No eyelashes, no eyelid line, no realistic iris. The pendant lies flat and face up, and the fine chain leaves it as one single strand whose two halves rise straight up and apart like the arms of a letter V and leave the image at the top edge; the chain is never doubled, never coiled and never forms a second loop, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "altHeroPrompts": null,
+   "qa": [
+    "Six sides, sharp corners, one ringed island.",
+    "Cobalt outside, turquoise inside: dark outside, light inside.",
+    "Hangs from a corner."
+   ],
+   "imageFile": "N05.jpg"
+  },
+  {
+   "id": "B05",
+   "familyNo": 5,
+   "family": "Çini",
+   "name": "Hexagon Tile Evil Eye Bracelet",
+   "productType": "bracelet",
+   "kind": "bracelet",
+   "twoTone": false,
+   "metals": "14K yellow gold",
+   "enamel": [
+    {
+     "key": "cobalt",
+     "name": "cobalt blue",
+     "hex": "#17368C"
+    },
+    {
+     "key": "turquoise",
+     "name": "turquoise",
+     "hex": "#23A5B2"
+    }
+   ],
+   "dims": "hexagons 5.0 + 9.2 + 5.0 mm, 5 mm apart",
+   "motif": "the three hexagons",
+   "scale": "the middle hexagon is only 9.2 mm across the flats, a little narrower than the index fingernail, never larger",
+   "wear": null,
+   "station": "one station: the middle hexagon with its cobalt blue field, turquoise ring and gold centre dot, and its two small side loops",
+   "shape": "a fine 1.1 mm cable chain bracelet in polished 14K yellow gold with three flat hexagons in a row at its centre, 5 mm apart, joined into the line of the chain by small gold loops at their side corners. The middle hexagon is 9.2 mm across the flats, a little narrower than the index fingernail, never larger, 1.3 mm thick. The hexagon is regular, with six equal straight sides and crisp corners, framed by a thin polished gold rim 0.4 mm wide. Its field is cobalt blue enamel (#17368C), 1.6 mm wide at the middle of each side, around a round island 5.2 mm across at the centre: a thin gold ring 0.4 mm wide, a ring of turquoise enamel (#23A5B2) 1.5 mm wide and a round polished gold centre dot 1.4 mm across. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold back. On each side of the middle hexagon is a small flat hexagon, 5 mm across the flats, slightly thinner than a pencil, never larger, filled with plain turquoise enamel inside a thin polished gold rim, with no centre dot and no ring, and a closed, solid, flat gold back. Every hexagon is regular, with six equal straight sides and crisp corners; spring ring clasp",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: a fine 1.1 mm cable chain bracelet in polished 14K yellow gold with three flat hexagons in a row at its centre, 5 mm apart, joined into the line of the chain by small gold loops at their side corners. The middle hexagon is 9.2 mm across the flats, a little narrower than the index fingernail, never larger, 1.3 mm thick. The hexagon is regular, with six equal straight sides and crisp corners, framed by a thin polished gold rim 0.4 mm wide. Its field is cobalt blue enamel (#17368C), 1.6 mm wide at the middle of each side, around a round island 5.2 mm across at the centre: a thin gold ring 0.4 mm wide, a ring of turquoise enamel (#23A5B2) 1.5 mm wide and a round polished gold centre dot 1.4 mm across. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold back. On each side of the middle hexagon is a small flat hexagon, 5 mm across the flats, slightly thinner than a pencil, never larger, filled with plain turquoise enamel inside a thin polished gold rim, with no centre dot and no ring, and a closed, solid, flat gold back. Every hexagon is regular, with six equal straight sides and crisp corners; spring ring clasp. All metal is solid polished 14K yellow gold. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C), turquoise (#23A5B2). No eyelashes, no eyelid line, no realistic iris. The bracelet lies in one soft open curve, one continuous chain from end to end, with the three hexagons face up at the centre of the curve and the spring ring clasp at one end, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "altHeroPrompts": null,
+   "qa": [
+    "Six sides, sharp corners, one ringed island.",
+    "Cobalt outside, turquoise inside: dark outside, light inside.",
+    "The two small hexagons are plain turquoise with no centre dot and no ring."
+   ],
+   "imageFile": "B05.jpg"
+  },
+  {
+   "id": "R06",
+   "familyNo": 6,
+   "family": "Mother and Child",
+   "name": "Mother and Child Evil Eye Ring, Two Tone",
+   "productType": "ring",
+   "kind": "ring",
+   "twoTone": true,
+   "metals": {
+    "value": "Yellow/White Gold",
+    "body": "14K yellow gold",
+    "accent": "14K white gold, polished and unplated",
+    "bodyParts": "the band, the large disc with its rims and centre dot, and the thin collar around the small disc",
+    "accentParts": "the small disc's rim and centre dot"
+   },
+   "enamel": [
+    {
+     "key": "cobalt",
+     "name": "cobalt blue",
+     "hex": "#17368C"
+    },
+    {
+     "key": "sky",
+     "name": "sky blue",
+     "hex": "#8CC3E8"
+    }
+   ],
+   "dims": "discs 9.0 + 6.0 mm, 13.5 mm overall",
+   "motif": "the two discs",
+   "scale": "the pair of discs is only 13.5 mm across, about as wide as a thumbnail, never wider than the finger, never larger",
+   "wear": null,
+   "station": null,
+   "shape": "a ring with two flat round discs joined rim to rim on top of a slim round band 1.8 mm thick, together 13.5 mm across, about as wide as a thumbnail, never wider than the finger, never larger: a large disc 9 mm across and, at its lower right at the 4 to 5 o'clock position, a small disc 6 mm across; the large disc is one and a half times the small one. Each part is entirely one metal: the band, the large disc with its rims and centre dot, and the thin raised collar around the small disc are polished yellow gold; the small disc inside that collar is polished unplated white gold, a soft warm grey metal with mirror reflections. The large disc, from the edge inward: a polished yellow gold rim 0.4 mm wide; a ring of cobalt blue enamel (#17368C) 1.5 mm wide; a thin yellow gold ring 0.4 mm wide; a ring of pale sky blue enamel (#8CC3E8) 1.5 mm wide; and a round yellow gold centre dot 1.4 mm across. The small disc, from the edge inward: a white gold rim 0.5 mm wide; a ring of cobalt blue enamel 1.5 mm wide; and a round white gold centre dot 2 mm across; it sits flush, not domed, in a thin raised yellow gold collar 0.4 mm wide that is joined to the large disc with at least 0.8 mm of gold at the joint. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat yellow gold backs",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: a ring with two flat round discs joined rim to rim on top of a slim round band 1.8 mm thick, together 13.5 mm across, about as wide as a thumbnail, never wider than the finger, never larger: a large disc 9 mm across and, at its lower right at the 4 to 5 o'clock position, a small disc 6 mm across; the large disc is one and a half times the small one. Each part is entirely one metal: the band, the large disc with its rims and centre dot, and the thin raised collar around the small disc are polished yellow gold; the small disc inside that collar is polished unplated white gold, a soft warm grey metal with mirror reflections. The large disc, from the edge inward: a polished yellow gold rim 0.4 mm wide; a ring of cobalt blue enamel (#17368C) 1.5 mm wide; a thin yellow gold ring 0.4 mm wide; a ring of pale sky blue enamel (#8CC3E8) 1.5 mm wide; and a round yellow gold centre dot 1.4 mm across. The small disc, from the edge inward: a white gold rim 0.5 mm wide; a ring of cobalt blue enamel 1.5 mm wide; and a round white gold centre dot 2 mm across; it sits flush, not domed, in a thin raised yellow gold collar 0.4 mm wide that is joined to the large disc with at least 0.8 mm of gold at the joint. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat yellow gold backs. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C), pale sky blue (#8CC3E8). No eyelashes, no eyelid line, no realistic iris. The ring stands upright with its top turned toward the camera, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "altHeroPrompts": {
+    "White/Yellow Gold": "Studio product photograph of one fine jewelry piece: a ring with two flat round discs joined rim to rim on top of a slim round band 1.8 mm thick, together 13.5 mm across, about as wide as a thumbnail, never wider than the finger, never larger: a large disc 9 mm across and, at its lower right at the 4 to 5 o'clock position, a small disc 6 mm across; the large disc is one and a half times the small one. Each part is entirely one metal: the band, the large disc with its rims and centre dot, and the thin raised collar around the small disc are polished unplated white gold, a soft warm grey metal with mirror reflections; the small disc inside that collar is polished yellow gold. The large disc, from the edge inward: a polished white gold rim 0.4 mm wide; a ring of cobalt blue enamel (#17368C) 1.5 mm wide; a thin white gold ring 0.4 mm wide; a ring of pale sky blue enamel (#8CC3E8) 1.5 mm wide; and a round white gold centre dot 1.4 mm across. The small disc, from the edge inward: a yellow gold rim 0.5 mm wide; a ring of cobalt blue enamel 1.5 mm wide; and a round yellow gold centre dot 2 mm across; it sits flush, not domed, in a thin raised white gold collar 0.4 mm wide that is joined to the large disc with at least 0.8 mm of gold at the joint. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat white gold backs. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C), pale sky blue (#8CC3E8). No eyelashes, no eyelid line, no realistic iris. The ring stands upright with its top turned toward the camera, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+    "Rose/White Gold": "Studio product photograph of one fine jewelry piece: a ring with two flat round discs joined rim to rim on top of a slim round band 1.8 mm thick, together 13.5 mm across, about as wide as a thumbnail, never wider than the finger, never larger: a large disc 9 mm across and, at its lower right at the 4 to 5 o'clock position, a small disc 6 mm across; the large disc is one and a half times the small one. Each part is entirely one metal: the band, the large disc with its rims and centre dot, and the thin raised collar around the small disc are polished rose gold, a soft pink gold; the small disc inside that collar is polished unplated white gold, a soft warm grey metal with mirror reflections. The large disc, from the edge inward: a polished rose gold rim 0.4 mm wide; a ring of cobalt blue enamel (#17368C) 1.5 mm wide; a thin rose gold ring 0.4 mm wide; a ring of pale sky blue enamel (#8CC3E8) 1.5 mm wide; and a round rose gold centre dot 1.4 mm across. The small disc, from the edge inward: a white gold rim 0.5 mm wide; a ring of cobalt blue enamel 1.5 mm wide; and a round white gold centre dot 2 mm across; it sits flush, not domed, in a thin raised rose gold collar 0.4 mm wide that is joined to the large disc with at least 0.8 mm of gold at the joint. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat rose gold backs. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C), pale sky blue (#8CC3E8). No eyelashes, no eyelid line, no realistic iris. The ring stands upright with its top turned toward the camera, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format."
+   },
+   "qa": [
+    "Metals part by part: the small disc's rim and centre dot white gold, its collar yellow gold.",
+    "The large disc is one and a half times the small one.",
+    "The small disc at the large disc's 4 to 5 o'clock (the mirror is accepted)."
+   ],
+   "imageFile": "R06.jpg"
+  },
+  {
+   "id": "N06",
+   "familyNo": 6,
+   "family": "Mother and Child",
+   "name": "Mother and Child Evil Eye Necklace, Two Tone",
+   "productType": "necklace",
+   "kind": "pendant",
+   "twoTone": true,
+   "metals": {
+    "value": "Yellow/White Gold",
+    "body": "14K yellow gold",
+    "accent": "14K white gold, polished and unplated",
+    "bodyParts": "the chain, the large disc with its rims and centre dot, and the thin collar around the small disc",
+    "accentParts": "the small disc's rim and centre dot"
+   },
+   "enamel": [
+    {
+     "key": "cobalt",
+     "name": "cobalt blue",
+     "hex": "#17368C"
+    },
+    {
+     "key": "sky",
+     "name": "sky blue",
+     "hex": "#8CC3E8"
+    }
+   ],
+   "dims": "discs 9.0 + 6.0 mm, 9.0 x 15.8 mm overall",
+   "motif": "the two discs",
+   "scale": "the pair of discs is only 15.8 mm tall, about the length of a thumbnail, never larger",
+   "wear": "the two discs at the centre just below the collarbones, the small disc straight below the large one, facing the camera",
+   "station": null,
+   "shape": "a pendant of two flat round discs joined rim to rim, one directly below the other, together 9 mm wide and 15.8 mm tall, about the length of a thumbnail, never larger: the large disc 9 mm across at the top and the small disc 6 mm across straight below it at 6 o'clock; the large disc is one and a half times the small one. The fine 1.2 mm cable chain passes through a small tube hidden behind the top of the large disc, so no loop shows above it and the small disc hangs straight below the large one. Each part is entirely one metal: the large disc with its rims and centre dot, the thin raised collar around the small disc, the hidden tube and the chain are polished yellow gold; the small disc inside the collar is polished unplated white gold, a soft warm grey metal with mirror reflections. The large disc, from the edge inward: a polished yellow gold rim 0.4 mm wide; a ring of cobalt blue enamel (#17368C) 1.5 mm wide; a thin yellow gold ring 0.4 mm wide; a ring of pale sky blue enamel (#8CC3E8) 1.5 mm wide; and a round yellow gold centre dot 1.4 mm across. The small disc, from the edge inward: a white gold rim 0.5 mm wide; a ring of cobalt blue enamel 1.5 mm wide; and a round white gold centre dot 2 mm across; it sits flush, not domed, in a thin raised yellow gold collar 0.4 mm wide that is joined to the large disc with at least 0.8 mm of gold at the joint. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat yellow gold backs",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: a pendant of two flat round discs joined rim to rim, one directly below the other, together 9 mm wide and 15.8 mm tall, about the length of a thumbnail, never larger: the large disc 9 mm across at the top and the small disc 6 mm across straight below it at 6 o'clock; the large disc is one and a half times the small one. The fine 1.2 mm cable chain passes through a small tube hidden behind the top of the large disc, so no loop shows above it and the small disc hangs straight below the large one. Each part is entirely one metal: the large disc with its rims and centre dot, the thin raised collar around the small disc, the hidden tube and the chain are polished yellow gold; the small disc inside the collar is polished unplated white gold, a soft warm grey metal with mirror reflections. The large disc, from the edge inward: a polished yellow gold rim 0.4 mm wide; a ring of cobalt blue enamel (#17368C) 1.5 mm wide; a thin yellow gold ring 0.4 mm wide; a ring of pale sky blue enamel (#8CC3E8) 1.5 mm wide; and a round yellow gold centre dot 1.4 mm across. The small disc, from the edge inward: a white gold rim 0.5 mm wide; a ring of cobalt blue enamel 1.5 mm wide; and a round white gold centre dot 2 mm across; it sits flush, not domed, in a thin raised yellow gold collar 0.4 mm wide that is joined to the large disc with at least 0.8 mm of gold at the joint. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat yellow gold backs. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C), pale sky blue (#8CC3E8). No eyelashes, no eyelid line, no realistic iris. The pendant lies flat and face up, and the fine chain leaves it as one single strand whose two halves rise straight up and apart like the arms of a letter V and leave the image at the top edge; the chain is never doubled, never coiled and never forms a second loop, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "altHeroPrompts": {
+    "White/Yellow Gold": "Studio product photograph of one fine jewelry piece: a pendant of two flat round discs joined rim to rim, one directly below the other, together 9 mm wide and 15.8 mm tall, about the length of a thumbnail, never larger: the large disc 9 mm across at the top and the small disc 6 mm across straight below it at 6 o'clock; the large disc is one and a half times the small one. The fine 1.2 mm cable chain passes through a small tube hidden behind the top of the large disc, so no loop shows above it and the small disc hangs straight below the large one. Each part is entirely one metal: the large disc with its rims and centre dot, the thin raised collar around the small disc, the hidden tube and the chain are polished unplated white gold, a soft warm grey metal with mirror reflections; the small disc inside the collar is polished yellow gold. The large disc, from the edge inward: a polished white gold rim 0.4 mm wide; a ring of cobalt blue enamel (#17368C) 1.5 mm wide; a thin white gold ring 0.4 mm wide; a ring of pale sky blue enamel (#8CC3E8) 1.5 mm wide; and a round white gold centre dot 1.4 mm across. The small disc, from the edge inward: a yellow gold rim 0.5 mm wide; a ring of cobalt blue enamel 1.5 mm wide; and a round yellow gold centre dot 2 mm across; it sits flush, not domed, in a thin raised white gold collar 0.4 mm wide that is joined to the large disc with at least 0.8 mm of gold at the joint. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat white gold backs. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C), pale sky blue (#8CC3E8). No eyelashes, no eyelid line, no realistic iris. The pendant lies flat and face up, and the fine chain leaves it as one single strand whose two halves rise straight up and apart like the arms of a letter V and leave the image at the top edge; the chain is never doubled, never coiled and never forms a second loop, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+    "Rose/White Gold": "Studio product photograph of one fine jewelry piece: a pendant of two flat round discs joined rim to rim, one directly below the other, together 9 mm wide and 15.8 mm tall, about the length of a thumbnail, never larger: the large disc 9 mm across at the top and the small disc 6 mm across straight below it at 6 o'clock; the large disc is one and a half times the small one. The fine 1.2 mm cable chain passes through a small tube hidden behind the top of the large disc, so no loop shows above it and the small disc hangs straight below the large one. Each part is entirely one metal: the large disc with its rims and centre dot, the thin raised collar around the small disc, the hidden tube and the chain are polished rose gold, a soft pink gold; the small disc inside the collar is polished unplated white gold, a soft warm grey metal with mirror reflections. The large disc, from the edge inward: a polished rose gold rim 0.4 mm wide; a ring of cobalt blue enamel (#17368C) 1.5 mm wide; a thin rose gold ring 0.4 mm wide; a ring of pale sky blue enamel (#8CC3E8) 1.5 mm wide; and a round rose gold centre dot 1.4 mm across. The small disc, from the edge inward: a white gold rim 0.5 mm wide; a ring of cobalt blue enamel 1.5 mm wide; and a round white gold centre dot 2 mm across; it sits flush, not domed, in a thin raised rose gold collar 0.4 mm wide that is joined to the large disc with at least 0.8 mm of gold at the joint. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat rose gold backs. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C), pale sky blue (#8CC3E8). No eyelashes, no eyelid line, no realistic iris. The pendant lies flat and face up, and the fine chain leaves it as one single strand whose two halves rise straight up and apart like the arms of a letter V and leave the image at the top edge; the chain is never doubled, never coiled and never forms a second loop, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format."
+   },
+   "qa": [
+    "Metals part by part: the small disc's rim and centre dot white gold, its collar yellow gold.",
+    "The large disc is one and a half times the small one.",
+    "The small disc straight below the large one."
+   ],
+   "imageFile": "N06.jpg"
+  },
+  {
+   "id": "B06",
+   "familyNo": 6,
+   "family": "Mother and Child",
+   "name": "Mother and Child Evil Eye Bracelet, Two Tone",
+   "productType": "bracelet",
+   "kind": "bracelet",
+   "twoTone": true,
+   "metals": {
+    "value": "Yellow/White Gold",
+    "body": "14K yellow gold",
+    "accent": "14K white gold, polished and unplated",
+    "bodyParts": "the large disc with its rims and centre dot, the jump ring and the thin collar around the small disc",
+    "accentParts": "the small disc's rim and centre dot"
+   },
+   "enamel": [
+    {
+     "key": "cobalt",
+     "name": "cobalt blue",
+     "hex": "#17368C"
+    },
+    {
+     "key": "sky",
+     "name": "sky blue",
+     "hex": "#8CC3E8"
+    }
+   ],
+   "dims": "discs 9.0 + 6.0 mm, joined by a jump ring",
+   "motif": "the two discs",
+   "scale": "the large disc is only 9 mm across, a little narrower than the index fingernail, never larger",
+   "wear": null,
+   "station": "one station: the large disc and the small disc joined by their jump ring",
+   "shape": "a fine 1.1 mm yellow gold cable chain bracelet with two flat round discs side by side at its centre, in the line of the chain and joined to each other by one small yellow gold jump ring: a large disc 9 mm across, a little narrower than the index fingernail, never larger, and a small disc 6 mm across, slightly thinner than a pencil, never larger; each disc has a small yellow gold loop on its outer side where the chain continues. Each part is entirely one metal: the chain, the jump ring, the loops, the large disc with its rims and centre dot, and the thin raised collar around the small disc are polished yellow gold; the small disc inside the collar is polished unplated white gold, a soft warm grey metal with mirror reflections. The large disc, from the edge inward: a polished yellow gold rim 0.4 mm wide; a ring of cobalt blue enamel (#17368C) 1.5 mm wide; a thin yellow gold ring 0.4 mm wide; a ring of pale sky blue enamel (#8CC3E8) 1.5 mm wide; and a round yellow gold centre dot 1.4 mm across. The small disc, from the edge inward: a white gold rim 0.5 mm wide; a ring of cobalt blue enamel 1.5 mm wide; and a round white gold centre dot 2 mm across; it sits flush, not domed, in a thin raised yellow gold collar 0.4 mm wide. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat yellow gold backs; spring ring clasp",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: a fine 1.1 mm yellow gold cable chain bracelet with two flat round discs side by side at its centre, in the line of the chain and joined to each other by one small yellow gold jump ring: a large disc 9 mm across, a little narrower than the index fingernail, never larger, and a small disc 6 mm across, slightly thinner than a pencil, never larger; each disc has a small yellow gold loop on its outer side where the chain continues. Each part is entirely one metal: the chain, the jump ring, the loops, the large disc with its rims and centre dot, and the thin raised collar around the small disc are polished yellow gold; the small disc inside the collar is polished unplated white gold, a soft warm grey metal with mirror reflections. The large disc, from the edge inward: a polished yellow gold rim 0.4 mm wide; a ring of cobalt blue enamel (#17368C) 1.5 mm wide; a thin yellow gold ring 0.4 mm wide; a ring of pale sky blue enamel (#8CC3E8) 1.5 mm wide; and a round yellow gold centre dot 1.4 mm across. The small disc, from the edge inward: a white gold rim 0.5 mm wide; a ring of cobalt blue enamel 1.5 mm wide; and a round white gold centre dot 2 mm across; it sits flush, not domed, in a thin raised yellow gold collar 0.4 mm wide. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat yellow gold backs; spring ring clasp. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C), pale sky blue (#8CC3E8). No eyelashes, no eyelid line, no realistic iris. The bracelet lies in one soft open curve, one continuous chain from end to end, with the two discs face up at the centre of the curve and the spring ring clasp at one end, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "altHeroPrompts": {
+    "White/Yellow Gold": "Studio product photograph of one fine jewelry piece: a fine 1.1 mm white gold cable chain bracelet with two flat round discs side by side at its centre, in the line of the chain and joined to each other by one small white gold jump ring: a large disc 9 mm across, a little narrower than the index fingernail, never larger, and a small disc 6 mm across, slightly thinner than a pencil, never larger; each disc has a small white gold loop on its outer side where the chain continues. Each part is entirely one metal: the chain, the jump ring, the loops, the large disc with its rims and centre dot, and the thin raised collar around the small disc are polished unplated white gold, a soft warm grey metal with mirror reflections; the small disc inside the collar is polished yellow gold. The large disc, from the edge inward: a polished white gold rim 0.4 mm wide; a ring of cobalt blue enamel (#17368C) 1.5 mm wide; a thin white gold ring 0.4 mm wide; a ring of pale sky blue enamel (#8CC3E8) 1.5 mm wide; and a round white gold centre dot 1.4 mm across. The small disc, from the edge inward: a yellow gold rim 0.5 mm wide; a ring of cobalt blue enamel 1.5 mm wide; and a round yellow gold centre dot 2 mm across; it sits flush, not domed, in a thin raised white gold collar 0.4 mm wide. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat white gold backs; spring ring clasp. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C), pale sky blue (#8CC3E8). No eyelashes, no eyelid line, no realistic iris. The bracelet lies in one soft open curve, one continuous chain from end to end, with the two discs face up at the centre of the curve and the spring ring clasp at one end, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+    "Rose/White Gold": "Studio product photograph of one fine jewelry piece: a fine 1.1 mm rose gold cable chain bracelet with two flat round discs side by side at its centre, in the line of the chain and joined to each other by one small rose gold jump ring: a large disc 9 mm across, a little narrower than the index fingernail, never larger, and a small disc 6 mm across, slightly thinner than a pencil, never larger; each disc has a small rose gold loop on its outer side where the chain continues. Each part is entirely one metal: the chain, the jump ring, the loops, the large disc with its rims and centre dot, and the thin raised collar around the small disc are polished rose gold, a soft pink gold; the small disc inside the collar is polished unplated white gold, a soft warm grey metal with mirror reflections. The large disc, from the edge inward: a polished rose gold rim 0.4 mm wide; a ring of cobalt blue enamel (#17368C) 1.5 mm wide; a thin rose gold ring 0.4 mm wide; a ring of pale sky blue enamel (#8CC3E8) 1.5 mm wide; and a round rose gold centre dot 1.4 mm across. The small disc, from the edge inward: a white gold rim 0.5 mm wide; a ring of cobalt blue enamel 1.5 mm wide; and a round white gold centre dot 2 mm across; it sits flush, not domed, in a thin raised rose gold collar 0.4 mm wide. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat rose gold backs; spring ring clasp. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C), pale sky blue (#8CC3E8). No eyelashes, no eyelid line, no realistic iris. The bracelet lies in one soft open curve, one continuous chain from end to end, with the two discs face up at the centre of the curve and the spring ring clasp at one end, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format."
+   },
+   "qa": [
+    "Metals part by part: the small disc's rim and centre dot white gold, its collar yellow gold.",
+    "The large disc is one and a half times the small one.",
+    "Two stations joined by one jump ring at the centre of the chain."
+   ],
+   "imageFile": "B06.jpg"
+  },
+  {
+   "id": "R07",
+   "familyNo": 7,
+   "family": "Medal",
+   "name": "Two Tone Evil Eye Coin Ring",
+   "productType": "ring",
+   "kind": "ring",
+   "twoTone": true,
+   "metals": {
+    "value": "Yellow/White Gold",
+    "body": "14K yellow gold",
+    "accent": "14K white gold, polished and unplated",
+    "bodyParts": "the round disc and the band",
+    "accentParts": "the raised almond and its rim"
+   },
+   "enamel": [
+    {
+     "key": "cobalt",
+     "name": "cobalt blue",
+     "hex": "#17368C"
+    }
+   ],
+   "dims": "disc 9.0 x 1.3 mm, almond 7.0 x 3.6 mm",
+   "motif": "the round top with its almond",
+   "scale": "the round top is only 9 mm across, a little narrower than the index fingernail, never larger",
+   "wear": null,
+   "station": null,
+   "shape": "a ring with a flat round top: a round disc 9 mm across, a little narrower than the index fingernail, never larger, 1.3 mm thick, with a plain satin-finished face, a polished border 0.6 mm wide and a polished bevelled edge, on a band 2 mm wide and 1.4 mm thick with a flat inner side; no engraving, no lettering, no numbers; nothing on the face but the raised almond. Each part is entirely one metal: the disc and the band are polished yellow gold; a small raised almond on the satin face is polished unplated white gold, a soft warm grey metal with mirror reflections. The almond is 7 mm long and 3.6 mm wide, 0.9 mm thick and polished, fixed flat on the centre of the satin face with its long axis across the finger; at its centre is one round cell of cobalt blue enamel (#17368C), 1.6 mm across, inside a thin white gold rim 0.4 mm wide. The satin face itself has no enamel; the almond is a closed solid plate; no eyelashes, no eyelid line, no realistic iris. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat yellow gold back",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: a ring with a flat round top: a round disc 9 mm across, a little narrower than the index fingernail, never larger, 1.3 mm thick, with a plain satin-finished face, a polished border 0.6 mm wide and a polished bevelled edge, on a band 2 mm wide and 1.4 mm thick with a flat inner side; no engraving, no lettering, no numbers; nothing on the face but the raised almond. Each part is entirely one metal: the disc and the band are polished yellow gold; a small raised almond on the satin face is polished unplated white gold, a soft warm grey metal with mirror reflections. The almond is 7 mm long and 3.6 mm wide, 0.9 mm thick and polished, fixed flat on the centre of the satin face with its long axis across the finger; at its centre is one round cell of cobalt blue enamel (#17368C), 1.6 mm across, inside a thin white gold rim 0.4 mm wide. The satin face itself has no enamel; the almond is a closed solid plate; no eyelashes, no eyelid line, no realistic iris. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat yellow gold back. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C). The ring stands upright with its top turned toward the camera, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "altHeroPrompts": {
+    "White/Yellow Gold": "Studio product photograph of one fine jewelry piece: a ring with a flat round top: a round disc 9 mm across, a little narrower than the index fingernail, never larger, 1.3 mm thick, with a plain satin-finished face, a polished border 0.6 mm wide and a polished bevelled edge, on a band 2 mm wide and 1.4 mm thick with a flat inner side; no engraving, no lettering, no numbers; nothing on the face but the raised almond. Each part is entirely one metal: the disc and the band are polished unplated white gold, a soft warm grey metal with mirror reflections; a small raised almond on the satin face is polished yellow gold. The almond is 7 mm long and 3.6 mm wide, 0.9 mm thick and polished, fixed flat on the centre of the satin face with its long axis across the finger; at its centre is one round cell of cobalt blue enamel (#17368C), 1.6 mm across, inside a thin yellow gold rim 0.4 mm wide. The satin face itself has no enamel; the almond is a closed solid plate; no eyelashes, no eyelid line, no realistic iris. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat white gold back. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C). The ring stands upright with its top turned toward the camera, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+    "Rose/White Gold": "Studio product photograph of one fine jewelry piece: a ring with a flat round top: a round disc 9 mm across, a little narrower than the index fingernail, never larger, 1.3 mm thick, with a plain satin-finished face, a polished border 0.6 mm wide and a polished bevelled edge, on a band 2 mm wide and 1.4 mm thick with a flat inner side; no engraving, no lettering, no numbers; nothing on the face but the raised almond. Each part is entirely one metal: the disc and the band are polished rose gold, a soft pink gold; a small raised almond on the satin face is polished unplated white gold, a soft warm grey metal with mirror reflections. The almond is 7 mm long and 3.6 mm wide, 0.9 mm thick and polished, fixed flat on the centre of the satin face with its long axis across the finger; at its centre is one round cell of cobalt blue enamel (#17368C), 1.6 mm across, inside a thin white gold rim 0.4 mm wide. The satin face itself has no enamel; the almond is a closed solid plate; no eyelashes, no eyelid line, no realistic iris. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat rose gold back. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C). The ring stands upright with its top turned toward the camera, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format."
+   },
+   "qa": [
+    "Plain satin face: no engraving, no lettering, no numbers, no enamel; only the raised almond, in white gold.",
+    "No eyelashes, no eyelid line, no realistic iris.",
+    "Fallback for frame 09: a local recolour of one hero with two masks (the Frostline method).",
+    "Bevelled edge, no ridges on the ring; the almond across the finger."
+   ],
+   "imageFile": "R07.jpg"
+  },
+  {
+   "id": "N07",
+   "familyNo": 7,
+   "family": "Medal",
+   "name": "Two Tone Evil Eye Coin Necklace",
+   "productType": "necklace",
+   "kind": "pendant",
+   "twoTone": true,
+   "metals": {
+    "value": "Yellow/White Gold",
+    "body": "14K yellow gold",
+    "accent": "14K white gold, polished and unplated",
+    "bodyParts": "the round disc and the chain",
+    "accentParts": "the raised almond and its rim"
+   },
+   "enamel": [
+    {
+     "key": "cobalt",
+     "name": "cobalt blue",
+     "hex": "#17368C"
+    }
+   ],
+   "dims": "disc 11.0 x 1.0 mm, almond 8.0 x 4.0 mm",
+   "motif": "the round disc",
+   "scale": "the disc is only 11 mm across, about as wide as the index fingernail, never larger",
+   "wear": "the round disc at the centre just below the collarbones, facing the camera",
+   "station": null,
+   "shape": "a round disc pendant, 11 mm across, about as wide as the index fingernail, never larger, 1 mm thick, with a plain satin-finished face, a polished border 0.6 mm wide and a finely ridged edge; no engraving, no lettering, no numbers; nothing on the face but the raised almond; it hangs from a small loop at the top through a jump ring on the fine 1.2 mm cable chain. Each part is entirely one metal: the disc, the loop, the jump ring and the chain are polished yellow gold; a small raised almond on the satin face is polished unplated white gold, a soft warm grey metal with mirror reflections. The almond is 8 mm long and 4 mm wide, 0.9 mm thick and polished, fixed flat at the centre of the satin face with its long axis horizontal; at its centre is one round cell of cobalt blue enamel (#17368C), 2 mm across, inside a thin white gold rim 0.4 mm wide. The satin face itself has no enamel; the almond is a closed solid plate; no eyelashes, no eyelid line, no realistic iris. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat yellow gold back",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: a round disc pendant, 11 mm across, about as wide as the index fingernail, never larger, 1 mm thick, with a plain satin-finished face, a polished border 0.6 mm wide and a finely ridged edge; no engraving, no lettering, no numbers; nothing on the face but the raised almond; it hangs from a small loop at the top through a jump ring on the fine 1.2 mm cable chain. Each part is entirely one metal: the disc, the loop, the jump ring and the chain are polished yellow gold; a small raised almond on the satin face is polished unplated white gold, a soft warm grey metal with mirror reflections. The almond is 8 mm long and 4 mm wide, 0.9 mm thick and polished, fixed flat at the centre of the satin face with its long axis horizontal; at its centre is one round cell of cobalt blue enamel (#17368C), 2 mm across, inside a thin white gold rim 0.4 mm wide. The satin face itself has no enamel; the almond is a closed solid plate; no eyelashes, no eyelid line, no realistic iris. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat yellow gold back. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C). The pendant lies flat and face up, and the fine chain leaves it as one single strand whose two halves rise straight up and apart like the arms of a letter V and leave the image at the top edge; the chain is never doubled, never coiled and never forms a second loop, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "altHeroPrompts": {
+    "White/Yellow Gold": "Studio product photograph of one fine jewelry piece: a round disc pendant, 11 mm across, about as wide as the index fingernail, never larger, 1 mm thick, with a plain satin-finished face, a polished border 0.6 mm wide and a finely ridged edge; no engraving, no lettering, no numbers; nothing on the face but the raised almond; it hangs from a small loop at the top through a jump ring on the fine 1.2 mm cable chain. Each part is entirely one metal: the disc, the loop, the jump ring and the chain are polished unplated white gold, a soft warm grey metal with mirror reflections; a small raised almond on the satin face is polished yellow gold. The almond is 8 mm long and 4 mm wide, 0.9 mm thick and polished, fixed flat at the centre of the satin face with its long axis horizontal; at its centre is one round cell of cobalt blue enamel (#17368C), 2 mm across, inside a thin yellow gold rim 0.4 mm wide. The satin face itself has no enamel; the almond is a closed solid plate; no eyelashes, no eyelid line, no realistic iris. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat white gold back. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C). The pendant lies flat and face up, and the fine chain leaves it as one single strand whose two halves rise straight up and apart like the arms of a letter V and leave the image at the top edge; the chain is never doubled, never coiled and never forms a second loop, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+    "Rose/White Gold": "Studio product photograph of one fine jewelry piece: a round disc pendant, 11 mm across, about as wide as the index fingernail, never larger, 1 mm thick, with a plain satin-finished face, a polished border 0.6 mm wide and a finely ridged edge; no engraving, no lettering, no numbers; nothing on the face but the raised almond; it hangs from a small loop at the top through a jump ring on the fine 1.2 mm cable chain. Each part is entirely one metal: the disc, the loop, the jump ring and the chain are polished rose gold, a soft pink gold; a small raised almond on the satin face is polished unplated white gold, a soft warm grey metal with mirror reflections. The almond is 8 mm long and 4 mm wide, 0.9 mm thick and polished, fixed flat at the centre of the satin face with its long axis horizontal; at its centre is one round cell of cobalt blue enamel (#17368C), 2 mm across, inside a thin white gold rim 0.4 mm wide. The satin face itself has no enamel; the almond is a closed solid plate; no eyelashes, no eyelid line, no realistic iris. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat rose gold back. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C). The pendant lies flat and face up, and the fine chain leaves it as one single strand whose two halves rise straight up and apart like the arms of a letter V and leave the image at the top edge; the chain is never doubled, never coiled and never forms a second loop, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format."
+   },
+   "qa": [
+    "Plain satin face: no engraving, no lettering, no numbers, no enamel; only the raised almond, in white gold.",
+    "No eyelashes, no eyelid line, no realistic iris.",
+    "Fallback for frame 09: a local recolour of one hero with two masks (the Frostline method)."
+   ],
+   "imageFile": "N07.jpg"
+  },
+  {
+   "id": "B07",
+   "familyNo": 7,
+   "family": "Medal",
+   "name": "Two Tone Evil Eye Coin Bracelet",
+   "productType": "bracelet",
+   "kind": "bracelet",
+   "twoTone": true,
+   "metals": {
+    "value": "Yellow/White Gold",
+    "body": "14K yellow gold",
+    "accent": "14K white gold, polished and unplated",
+    "bodyParts": "the round disc and the chain",
+    "accentParts": "the raised almond and its rim"
+   },
+   "enamel": [
+    {
+     "key": "cobalt",
+     "name": "cobalt blue",
+     "hex": "#17368C"
+    }
+   ],
+   "dims": "disc 8.5 x 0.9 mm, almond 6.4 x 3.2 mm, inline",
+   "motif": "the round disc",
+   "scale": "the disc is only 8.5 mm across, a little narrower than the index fingernail, never larger",
+   "wear": null,
+   "station": null,
+   "shape": "a fine 1.1 mm yellow gold cable chain bracelet with one round disc, 8.5 mm across, a little narrower than the index fingernail, never larger, 0.9 mm thick, in the line of the chain at its centre, joined by two small loops at 3 and 9 o'clock; the disc has a plain satin-finished face, a polished border 0.6 mm wide and a finely ridged edge; no engraving, no lettering, no numbers; nothing on the face but the raised almond. Each part is entirely one metal: the chain, the loops and the disc are polished yellow gold; a small raised almond on the satin face is polished unplated white gold, a soft warm grey metal with mirror reflections. The almond is 6.4 mm long and 3.2 mm wide, 0.9 mm thick and polished, fixed flat at the centre of the satin face inside the border, its long axis along the chain; at its centre is one round cell of cobalt blue enamel (#17368C), 1.5 mm across, inside a thin white gold rim 0.4 mm wide. The satin face itself has no enamel; the almond is a closed solid plate; no eyelashes, no eyelid line, no realistic iris. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat yellow gold back; spring ring clasp",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: a fine 1.1 mm yellow gold cable chain bracelet with one round disc, 8.5 mm across, a little narrower than the index fingernail, never larger, 0.9 mm thick, in the line of the chain at its centre, joined by two small loops at 3 and 9 o'clock; the disc has a plain satin-finished face, a polished border 0.6 mm wide and a finely ridged edge; no engraving, no lettering, no numbers; nothing on the face but the raised almond. Each part is entirely one metal: the chain, the loops and the disc are polished yellow gold; a small raised almond on the satin face is polished unplated white gold, a soft warm grey metal with mirror reflections. The almond is 6.4 mm long and 3.2 mm wide, 0.9 mm thick and polished, fixed flat at the centre of the satin face inside the border, its long axis along the chain; at its centre is one round cell of cobalt blue enamel (#17368C), 1.5 mm across, inside a thin white gold rim 0.4 mm wide. The satin face itself has no enamel; the almond is a closed solid plate; no eyelashes, no eyelid line, no realistic iris. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat yellow gold back; spring ring clasp. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C). The bracelet lies in one soft open curve, one continuous chain from end to end, with the round disc face up at the centre of the curve and the spring ring clasp at one end, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "altHeroPrompts": {
+    "White/Yellow Gold": "Studio product photograph of one fine jewelry piece: a fine 1.1 mm white gold cable chain bracelet with one round disc, 8.5 mm across, a little narrower than the index fingernail, never larger, 0.9 mm thick, in the line of the chain at its centre, joined by two small loops at 3 and 9 o'clock; the disc has a plain satin-finished face, a polished border 0.6 mm wide and a finely ridged edge; no engraving, no lettering, no numbers; nothing on the face but the raised almond. Each part is entirely one metal: the chain, the loops and the disc are polished unplated white gold, a soft warm grey metal with mirror reflections; a small raised almond on the satin face is polished yellow gold. The almond is 6.4 mm long and 3.2 mm wide, 0.9 mm thick and polished, fixed flat at the centre of the satin face inside the border, its long axis along the chain; at its centre is one round cell of cobalt blue enamel (#17368C), 1.5 mm across, inside a thin yellow gold rim 0.4 mm wide. The satin face itself has no enamel; the almond is a closed solid plate; no eyelashes, no eyelid line, no realistic iris. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat white gold back; spring ring clasp. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C). The bracelet lies in one soft open curve, one continuous chain from end to end, with the round disc face up at the centre of the curve and the spring ring clasp at one end, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+    "Rose/White Gold": "Studio product photograph of one fine jewelry piece: a fine 1.1 mm rose gold cable chain bracelet with one round disc, 8.5 mm across, a little narrower than the index fingernail, never larger, 0.9 mm thick, in the line of the chain at its centre, joined by two small loops at 3 and 9 o'clock; the disc has a plain satin-finished face, a polished border 0.6 mm wide and a finely ridged edge; no engraving, no lettering, no numbers; nothing on the face but the raised almond. Each part is entirely one metal: the chain, the loops and the disc are polished rose gold, a soft pink gold; a small raised almond on the satin face is polished unplated white gold, a soft warm grey metal with mirror reflections. The almond is 6.4 mm long and 3.2 mm wide, 0.9 mm thick and polished, fixed flat at the centre of the satin face inside the border, its long axis along the chain; at its centre is one round cell of cobalt blue enamel (#17368C), 1.5 mm across, inside a thin white gold rim 0.4 mm wide. The satin face itself has no enamel; the almond is a closed solid plate; no eyelashes, no eyelid line, no realistic iris. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat rose gold back; spring ring clasp. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: cobalt blue (#17368C). The bracelet lies in one soft open curve, one continuous chain from end to end, with the round disc face up at the centre of the curve and the spring ring clasp at one end, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format."
+   },
+   "qa": [
+    "Plain satin face: no engraving, no lettering, no numbers, no enamel; only the raised almond, in white gold.",
+    "No eyelashes, no eyelid line, no realistic iris.",
+    "Fallback for frame 09: a local recolour of one hero with two masks (the Frostline method)."
+   ],
+   "imageFile": "B07.jpg"
+  },
+  {
+   "id": "R08",
+   "familyNo": 8,
+   "family": "Twin Wire",
+   "name": "Two Tone Mixed Metal Evil Eye Ring",
+   "productType": "ring",
+   "kind": "ring",
+   "twoTone": true,
+   "metals": {
+    "value": "Yellow/White Gold",
+    "body": "14K yellow gold",
+    "accent": "14K white gold, polished and unplated",
+    "bodyParts": "the ring toward the fingertip, the outer rim and the raised centre dot",
+    "accentParts": "the ring toward the hand and the inlaid flat ring of the disc"
+   },
+   "enamel": [],
+   "dims": "disc 6.0 x 1.2 mm on two fused 1.3 mm rings",
+   "motif": "the round disc",
+   "scale": "the disc is only 6 mm across, slightly thinner than a pencil, never larger",
+   "wear": null,
+   "station": null,
+   "shape": "a ring of two thin round rings, each 1.3 mm thick, fused side by side like a stack of two rings, together 2.6 mm wide: one ring entirely polished yellow gold, on the side toward the fingertip when worn, and one ring entirely polished unplated white gold, a soft warm grey metal with mirror reflections, on the side toward the hand. On top, across both rings on a low yellow gold gallery 0.6 mm high, sits a flat round disc, 6 mm across, slightly thinner than a pencil, never larger, 1.2 mm thick, all metal with no enamel: a yellow gold outer rim 0.5 mm wide, a flat polished white gold ring 1.5 mm wide inlaid flush, and a yellow gold centre dot 2 mm across, slightly raised. Each part is entirely one metal; no eyelashes, no eyelid line, no realistic iris; closed, solid, flat yellow gold back",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: a ring of two thin round rings, each 1.3 mm thick, fused side by side like a stack of two rings, together 2.6 mm wide: one ring entirely polished yellow gold, on the side toward the fingertip when worn, and one ring entirely polished unplated white gold, a soft warm grey metal with mirror reflections, on the side toward the hand. On top, across both rings on a low yellow gold gallery 0.6 mm high, sits a flat round disc, 6 mm across, slightly thinner than a pencil, never larger, 1.2 mm thick, all metal with no enamel: a yellow gold outer rim 0.5 mm wide, a flat polished white gold ring 1.5 mm wide inlaid flush, and a yellow gold centre dot 2 mm across, slightly raised. Each part is entirely one metal; no eyelashes, no eyelid line, no realistic iris; closed, solid, flat yellow gold back. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. No enamel, no colour and no stones; real metal reflections. The ring stands upright with its top turned toward the camera, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "altHeroPrompts": {
+    "White/Yellow Gold": "Studio product photograph of one fine jewelry piece: a ring of two thin round rings, each 1.3 mm thick, fused side by side like a stack of two rings, together 2.6 mm wide: one ring entirely polished unplated white gold, a soft warm grey metal with mirror reflections, on the side toward the fingertip when worn, and one ring entirely polished yellow gold, on the side toward the hand. On top, across both rings on a low white gold gallery 0.6 mm high, sits a flat round disc, 6 mm across, slightly thinner than a pencil, never larger, 1.2 mm thick, all metal with no enamel: a white gold outer rim 0.5 mm wide, a flat polished yellow gold ring 1.5 mm wide inlaid flush, and a white gold centre dot 2 mm across, slightly raised. Each part is entirely one metal; no eyelashes, no eyelid line, no realistic iris; closed, solid, flat white gold back. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. No enamel, no colour and no stones; real metal reflections. The ring stands upright with its top turned toward the camera, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+    "Rose/White Gold": "Studio product photograph of one fine jewelry piece: a ring of two thin round rings, each 1.3 mm thick, fused side by side like a stack of two rings, together 2.6 mm wide: one ring entirely polished rose gold, a soft pink gold, on the side toward the fingertip when worn, and one ring entirely polished unplated white gold, a soft warm grey metal with mirror reflections, on the side toward the hand. On top, across both rings on a low rose gold gallery 0.6 mm high, sits a flat round disc, 6 mm across, slightly thinner than a pencil, never larger, 1.2 mm thick, all metal with no enamel: a rose gold outer rim 0.5 mm wide, a flat polished white gold ring 1.5 mm wide inlaid flush, and a rose gold centre dot 2 mm across, slightly raised. Each part is entirely one metal; no eyelashes, no eyelid line, no realistic iris; closed, solid, flat rose gold back. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. No enamel, no colour and no stones; real metal reflections. The ring stands upright with its top turned toward the camera, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format."
+   },
+   "qa": [
+    "Disc: yellow centre dot slightly raised, white gold ring, yellow outer rim; no enamel.",
+    "Two thin rings, one entirely yellow gold, one entirely white gold, fused side by side.",
+    "If two takes fail, R08 becomes a single yellow gold band with the disc on top: a product change, back to the owner before listing."
+   ],
+   "imageFile": "R08.jpg"
+  },
+  {
+   "id": "N08",
+   "familyNo": 8,
+   "family": "Twin Wire",
+   "name": "Two Tone Evil Eye Station Necklace",
+   "productType": "necklace",
+   "kind": "inline",
+   "twoTone": true,
+   "metals": {
+    "value": "Yellow/White Gold",
+    "body": "14K yellow gold",
+    "accent": "14K white gold, polished and unplated",
+    "bodyParts": "the chain, the outer rim and the raised centre dot",
+    "accentParts": "the inlaid flat ring"
+   },
+   "enamel": [],
+   "dims": "disc 6.0 x 1.0 mm, inline",
+   "motif": "the round disc",
+   "scale": "the disc is only 6 mm across, slightly thinner than a pencil, never larger",
+   "wear": "the disc in the line of the chain at the centre front just below the collarbones, facing the camera",
+   "station": null,
+   "shape": "a fine 1.2 mm yellow gold cable chain necklace with one flat round disc, 6 mm across, slightly thinner than a pencil, never larger, 1 mm thick, in the line of the chain at the centre front: two small yellow gold loops on the sides of the disc, at 3 and 9 o'clock, join the chain on both sides. Each part is entirely one metal: the chain, the two loops, the outer rim and the centre dot of the disc are polished yellow gold; the inlaid ring is polished unplated white gold, a soft warm grey metal with mirror reflections. The disc is all metal with no enamel: a yellow gold outer rim 0.5 mm wide, a flat polished white gold ring 1.5 mm wide inlaid flush, and a yellow gold centre dot 2 mm across, slightly raised; no eyelashes, no eyelid line, no realistic iris; closed, solid, flat yellow gold back",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: a fine 1.2 mm yellow gold cable chain necklace with one flat round disc, 6 mm across, slightly thinner than a pencil, never larger, 1 mm thick, in the line of the chain at the centre front: two small yellow gold loops on the sides of the disc, at 3 and 9 o'clock, join the chain on both sides. Each part is entirely one metal: the chain, the two loops, the outer rim and the centre dot of the disc are polished yellow gold; the inlaid ring is polished unplated white gold, a soft warm grey metal with mirror reflections. The disc is all metal with no enamel: a yellow gold outer rim 0.5 mm wide, a flat polished white gold ring 1.5 mm wide inlaid flush, and a yellow gold centre dot 2 mm across, slightly raised; no eyelashes, no eyelid line, no realistic iris; closed, solid, flat yellow gold back. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. No enamel, no colour and no stones; real metal reflections. The necklace lies with the round disc face up at the bottom of one smooth U-shaped curve of chain whose two halves rise straight up and apart and leave the image at the top edge; the chain is never doubled, never coiled and never forms a second loop, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "altHeroPrompts": {
+    "White/Yellow Gold": "Studio product photograph of one fine jewelry piece: a fine 1.2 mm white gold cable chain necklace with one flat round disc, 6 mm across, slightly thinner than a pencil, never larger, 1 mm thick, in the line of the chain at the centre front: two small white gold loops on the sides of the disc, at 3 and 9 o'clock, join the chain on both sides. Each part is entirely one metal: the chain, the two loops, the outer rim and the centre dot of the disc are polished unplated white gold, a soft warm grey metal with mirror reflections; the inlaid ring is polished yellow gold. The disc is all metal with no enamel: a white gold outer rim 0.5 mm wide, a flat polished yellow gold ring 1.5 mm wide inlaid flush, and a white gold centre dot 2 mm across, slightly raised; no eyelashes, no eyelid line, no realistic iris; closed, solid, flat white gold back. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. No enamel, no colour and no stones; real metal reflections. The necklace lies with the round disc face up at the bottom of one smooth U-shaped curve of chain whose two halves rise straight up and apart and leave the image at the top edge; the chain is never doubled, never coiled and never forms a second loop, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+    "Rose/White Gold": "Studio product photograph of one fine jewelry piece: a fine 1.2 mm rose gold cable chain necklace with one flat round disc, 6 mm across, slightly thinner than a pencil, never larger, 1 mm thick, in the line of the chain at the centre front: two small rose gold loops on the sides of the disc, at 3 and 9 o'clock, join the chain on both sides. Each part is entirely one metal: the chain, the two loops, the outer rim and the centre dot of the disc are polished rose gold, a soft pink gold; the inlaid ring is polished unplated white gold, a soft warm grey metal with mirror reflections. The disc is all metal with no enamel: a rose gold outer rim 0.5 mm wide, a flat polished white gold ring 1.5 mm wide inlaid flush, and a rose gold centre dot 2 mm across, slightly raised; no eyelashes, no eyelid line, no realistic iris; closed, solid, flat rose gold back. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. No enamel, no colour and no stones; real metal reflections. The necklace lies with the round disc face up at the bottom of one smooth U-shaped curve of chain whose two halves rise straight up and apart and leave the image at the top edge; the chain is never doubled, never coiled and never forms a second loop, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format."
+   },
+   "qa": [
+    "Disc: yellow centre dot slightly raised, white gold ring, yellow outer rim; no enamel.",
+    "The set's only inline necklace: the chain runs into the disc from both sides."
+   ],
+   "imageFile": "N08.jpg"
+  },
+  {
+   "id": "B08",
+   "familyNo": 8,
+   "family": "Twin Wire",
+   "name": "Two Tone Evil Eye Cuff Bracelet",
+   "productType": "bracelet",
+   "kind": "cuff",
+   "twoTone": true,
+   "metals": {
+    "value": "Yellow/White Gold",
+    "body": "14K yellow gold",
+    "accent": "14K white gold, polished and unplated",
+    "bodyParts": "one wire, the outer rim and the raised centre dot",
+    "accentParts": "the other wire and the inlaid flat ring"
+   },
+   "enamel": [],
+   "dims": "disc 6.0 mm on a 2 x 1 mm cuff of two wires",
+   "motif": "the round disc",
+   "scale": "the disc is only 6 mm across, slightly thinner than a pencil, never larger",
+   "wear": null,
+   "station": null,
+   "shape": "an open cuff bracelet of two round wires, each 1 mm thick, fused side by side, together 2 mm wide: one wire entirely polished yellow gold, and one wire entirely polished unplated white gold, a soft warm grey metal with mirror reflections; both wires end in plain polished ends at the opening. At the front, across both wires on a low yellow gold gallery, sits a flat round disc, 6 mm across, slightly thinner than a pencil, never larger, 1.2 mm thick, all metal with no enamel: a yellow gold outer rim 0.5 mm wide, a flat polished white gold ring 1.5 mm wide inlaid flush, and a yellow gold centre dot 2 mm across, slightly raised. Each part is entirely one metal; no eyelashes, no eyelid line, no realistic iris; closed, solid, flat yellow gold back",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: an open cuff bracelet of two round wires, each 1 mm thick, fused side by side, together 2 mm wide: one wire entirely polished yellow gold, and one wire entirely polished unplated white gold, a soft warm grey metal with mirror reflections; both wires end in plain polished ends at the opening. At the front, across both wires on a low yellow gold gallery, sits a flat round disc, 6 mm across, slightly thinner than a pencil, never larger, 1.2 mm thick, all metal with no enamel: a yellow gold outer rim 0.5 mm wide, a flat polished white gold ring 1.5 mm wide inlaid flush, and a yellow gold centre dot 2 mm across, slightly raised. Each part is entirely one metal; no eyelashes, no eyelid line, no realistic iris; closed, solid, flat yellow gold back. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. No enamel, no colour and no stones; real metal reflections. The cuff stands on its open back with the disc at the front facing the camera, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "altHeroPrompts": {
+    "White/Yellow Gold": "Studio product photograph of one fine jewelry piece: an open cuff bracelet of two round wires, each 1 mm thick, fused side by side, together 2 mm wide: one wire entirely polished unplated white gold, a soft warm grey metal with mirror reflections, and one wire entirely polished yellow gold; both wires end in plain polished ends at the opening. At the front, across both wires on a low white gold gallery, sits a flat round disc, 6 mm across, slightly thinner than a pencil, never larger, 1.2 mm thick, all metal with no enamel: a white gold outer rim 0.5 mm wide, a flat polished yellow gold ring 1.5 mm wide inlaid flush, and a white gold centre dot 2 mm across, slightly raised. Each part is entirely one metal; no eyelashes, no eyelid line, no realistic iris; closed, solid, flat white gold back. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. No enamel, no colour and no stones; real metal reflections. The cuff stands on its open back with the disc at the front facing the camera, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+    "Rose/White Gold": "Studio product photograph of one fine jewelry piece: an open cuff bracelet of two round wires, each 1 mm thick, fused side by side, together 2 mm wide: one wire entirely polished rose gold, a soft pink gold, and one wire entirely polished unplated white gold, a soft warm grey metal with mirror reflections; both wires end in plain polished ends at the opening. At the front, across both wires on a low rose gold gallery, sits a flat round disc, 6 mm across, slightly thinner than a pencil, never larger, 1.2 mm thick, all metal with no enamel: a rose gold outer rim 0.5 mm wide, a flat polished white gold ring 1.5 mm wide inlaid flush, and a rose gold centre dot 2 mm across, slightly raised. Each part is entirely one metal; no eyelashes, no eyelid line, no realistic iris; closed, solid, flat rose gold back. Every metal part is solid 14K gold in exactly the metal named for it above, and each part is one metal from edge to edge, with no plating and no colour wash between parts. No enamel, no colour and no stones; real metal reflections. The cuff stands on its open back with the disc at the front facing the camera, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format."
+   },
+   "qa": [
+    "Disc: yellow centre dot slightly raised, white gold ring, yellow outer rim; no enamel.",
+    "Two wires, one entirely yellow gold, one entirely white gold; an open cuff with no clasp."
+   ],
+   "imageFile": "B08.jpg"
+  },
+  {
+   "id": "R09",
+   "familyNo": 9,
+   "family": "Sweetheart",
+   "name": "Red Evil Eye Heart Ring",
+   "productType": "ring",
+   "kind": "ring",
+   "twoTone": false,
+   "metals": "14K yellow gold",
+   "enamel": [
+    {
+     "key": "red",
+     "name": "poppy red",
+     "hex": "#D7352B"
+    }
+   ],
+   "dims": "heart 9.6 x 9.2 x 1.1 mm, red ring 5.4 mm",
+   "motif": "the heart",
+   "scale": "the heart is only 9.6 mm wide and 9.2 mm tall, a little narrower than the index fingernail, never larger",
+   "wear": null,
+   "station": null,
+   "shape": "a slim ring in polished 14K yellow gold with a solid polished gold heart on top, 9.6 mm wide and 9.2 mm tall, a little narrower than the index fingernail, never larger, 1.1 mm thick, with full round lobes and straight sides that meet in a pointed tip, sitting low on a round band 1.5 mm thick, cast in one piece, the heart upright with its point toward the wrist when worn. Set flush into the heart, slightly above its middle, is a small round motif 5.4 mm across: a thin polished gold rim 0.4 mm wide, a ring of poppy red enamel (#D7352B) 1.5 mm wide and a round polished gold centre dot 1.6 mm across, with at least 0.45 mm of polished gold all around it to the edge of the heart. The rest of the heart is plain polished gold; no eyelashes, no eyelid line. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold back",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: a slim ring in polished 14K yellow gold with a solid polished gold heart on top, 9.6 mm wide and 9.2 mm tall, a little narrower than the index fingernail, never larger, 1.1 mm thick, with full round lobes and straight sides that meet in a pointed tip, sitting low on a round band 1.5 mm thick, cast in one piece, the heart upright with its point toward the wrist when worn. Set flush into the heart, slightly above its middle, is a small round motif 5.4 mm across: a thin polished gold rim 0.4 mm wide, a ring of poppy red enamel (#D7352B) 1.5 mm wide and a round polished gold centre dot 1.6 mm across, with at least 0.45 mm of polished gold all around it to the edge of the heart. The rest of the heart is plain polished gold; no eyelashes, no eyelid line. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold back. All metal is solid polished 14K yellow gold. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: poppy red (#D7352B). The ring stands upright with its top turned toward the camera, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "altHeroPrompts": null,
+   "qa": [
+    "A solid polished gold heart with full round lobes; a small round red ring and a gold centre dot set flush.",
+    "No eyelashes, no eyelid line.",
+    "The same poppy red on all three metals."
+   ],
+   "imageFile": "R09.jpg"
+  },
+  {
+   "id": "N09",
+   "familyNo": 9,
+   "family": "Sweetheart",
+   "name": "Red Evil Eye Heart Necklace",
+   "productType": "necklace",
+   "kind": "pendant",
+   "twoTone": false,
+   "metals": "14K yellow gold",
+   "enamel": [
+    {
+     "key": "red",
+     "name": "poppy red",
+     "hex": "#D7352B"
+    }
+   ],
+   "dims": "heart 11.0 x 10.5 x 1.2 mm, red ring 6.0 mm",
+   "motif": "the heart",
+   "scale": "the heart is only 11 mm wide and 10.5 mm tall, about as wide as the index fingernail, never larger",
+   "wear": "the heart, upright, at the centre just below the collarbones, facing the camera",
+   "station": null,
+   "shape": "a solid polished 14K yellow gold heart pendant, 11 mm wide and 10.5 mm tall, about as wide as the index fingernail, never larger, 1.2 mm thick, with full round lobes and straight sides that meet in a pointed tip; the fine 1.2 mm cable chain passes through a small tube hidden behind the cleft between the lobes, so no loop shows above the heart. Set flush into the heart, slightly above its middle, is a small round motif 6 mm across: a thin polished gold rim 0.5 mm wide, a ring of poppy red enamel (#D7352B) 1.7 mm wide and a round polished gold centre dot 1.6 mm across, with at least 0.6 mm of polished gold all around it to the edge of the heart. The rest of the heart is plain polished gold; no eyelashes, no eyelid line. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold back",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: a solid polished 14K yellow gold heart pendant, 11 mm wide and 10.5 mm tall, about as wide as the index fingernail, never larger, 1.2 mm thick, with full round lobes and straight sides that meet in a pointed tip; the fine 1.2 mm cable chain passes through a small tube hidden behind the cleft between the lobes, so no loop shows above the heart. Set flush into the heart, slightly above its middle, is a small round motif 6 mm across: a thin polished gold rim 0.5 mm wide, a ring of poppy red enamel (#D7352B) 1.7 mm wide and a round polished gold centre dot 1.6 mm across, with at least 0.6 mm of polished gold all around it to the edge of the heart. The rest of the heart is plain polished gold; no eyelashes, no eyelid line. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold back. All metal is solid polished 14K yellow gold. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: poppy red (#D7352B). The pendant lies flat and face up, and the fine chain leaves it as one single strand whose two halves rise straight up and apart like the arms of a letter V and leave the image at the top edge; the chain is never doubled, never coiled and never forms a second loop, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "altHeroPrompts": null,
+   "qa": [
+    "A solid polished gold heart with full round lobes; a small round red ring and a gold centre dot set flush.",
+    "No eyelashes, no eyelid line.",
+    "The same poppy red on all three metals."
+   ],
+   "imageFile": "N09.jpg"
+  },
+  {
+   "id": "B09",
+   "familyNo": 9,
+   "family": "Sweetheart",
+   "name": "Red Evil Eye Heart Bracelet",
+   "productType": "bracelet",
+   "kind": "bracelet",
+   "twoTone": false,
+   "metals": "14K yellow gold",
+   "enamel": [
+    {
+     "key": "red",
+     "name": "poppy red",
+     "hex": "#D7352B"
+    }
+   ],
+   "dims": "heart 9.6 x 9.2 mm, inline",
+   "motif": "the heart",
+   "scale": "the heart is only 9.6 mm wide and 9.2 mm tall, a little narrower than the index fingernail, never larger",
+   "wear": null,
+   "station": null,
+   "shape": "a fine 1.1 mm cable chain bracelet in polished 14K yellow gold with one solid polished gold heart, 9.6 mm wide and 9.2 mm tall, a little narrower than the index fingernail, never larger, 1.1 mm thick, in the line of the chain at its centre, joined by two small loops at the tops of its two lobes so the heart sits upright between them, with full round lobes and straight sides that meet in a pointed tip. Set flush into the heart, slightly above its middle, is a small round motif 5.4 mm across: a thin polished gold rim 0.4 mm wide, a ring of poppy red enamel (#D7352B) 1.5 mm wide and a round polished gold centre dot 1.6 mm across, with at least 0.45 mm of polished gold all around it to the edge of the heart. The rest of the heart is plain polished gold; no eyelashes, no eyelid line. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold back; spring ring clasp",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: a fine 1.1 mm cable chain bracelet in polished 14K yellow gold with one solid polished gold heart, 9.6 mm wide and 9.2 mm tall, a little narrower than the index fingernail, never larger, 1.1 mm thick, in the line of the chain at its centre, joined by two small loops at the tops of its two lobes so the heart sits upright between them, with full round lobes and straight sides that meet in a pointed tip. Set flush into the heart, slightly above its middle, is a small round motif 5.4 mm across: a thin polished gold rim 0.4 mm wide, a ring of poppy red enamel (#D7352B) 1.5 mm wide and a round polished gold centre dot 1.6 mm across, with at least 0.45 mm of polished gold all around it to the edge of the heart. The rest of the heart is plain polished gold; no eyelashes, no eyelid line. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold back; spring ring clasp. All metal is solid polished 14K yellow gold. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: poppy red (#D7352B). The bracelet lies in one soft open curve, one continuous chain from end to end, with the heart face up at the centre of the curve and the spring ring clasp at one end, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "altHeroPrompts": null,
+   "qa": [
+    "A solid polished gold heart with full round lobes; a small round red ring and a gold centre dot set flush.",
+    "No eyelashes, no eyelid line.",
+    "The same poppy red on all three metals."
+   ],
+   "imageFile": "B09.jpg"
+  },
+  {
+   "id": "R10",
+   "familyNo": 10,
+   "family": "Paperclip",
+   "name": "Pink Evil Eye Paperclip Ring",
+   "productType": "ring",
+   "kind": "ring",
+   "twoTone": false,
+   "metals": "14K yellow gold",
+   "enamel": [
+    {
+     "key": "pink",
+     "name": "petal pink",
+     "hex": "#EC9AB4"
+    }
+   ],
+   "dims": "disc 6.0 mm on a band of 7 x 2.4 mm links",
+   "motif": "the round disc",
+   "scale": "the disc is only 6 mm across, slightly thinner than a pencil, never larger",
+   "wear": null,
+   "station": null,
+   "shape": "a rigid ring band made of elongated oval links of polished 14K yellow gold, each 7 mm long and 2.4 mm wide in 0.8 mm wire, joined end to end in one single row and soldered stiff so the band keeps a round shape, all the links the same size. Fixed flat on top of the band is a flat round disc, 6 mm across, slightly thinner than a pencil, never larger: a thin polished gold rim 0.5 mm wide, a ring of petal pink enamel (#EC9AB4) 1.7 mm wide and a round polished gold centre dot 1.6 mm across. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold back",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: a rigid ring band made of elongated oval links of polished 14K yellow gold, each 7 mm long and 2.4 mm wide in 0.8 mm wire, joined end to end in one single row and soldered stiff so the band keeps a round shape, all the links the same size. Fixed flat on top of the band is a flat round disc, 6 mm across, slightly thinner than a pencil, never larger: a thin polished gold rim 0.5 mm wide, a ring of petal pink enamel (#EC9AB4) 1.7 mm wide and a round polished gold centre dot 1.6 mm across. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold back. All metal is solid polished 14K yellow gold. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: petal pink (#EC9AB4). No eyelashes, no eyelid line, no realistic iris. The ring stands upright with its top turned toward the camera, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "altHeroPrompts": null,
+   "qa": [
+    "A rigid band of equal links; the copy never counts them.",
+    "One flat pink disc on top, not domed."
+   ],
+   "imageFile": "R10.jpg"
+  },
+  {
+   "id": "N10",
+   "familyNo": 10,
+   "family": "Paperclip",
+   "name": "Pink Evil Eye Paperclip Necklace",
+   "productType": "necklace",
+   "kind": "inline",
+   "twoTone": false,
+   "metals": "14K yellow gold",
+   "enamel": [
+    {
+     "key": "pink",
+     "name": "petal pink",
+     "hex": "#EC9AB4"
+    },
+    {
+     "key": "white",
+     "name": "white",
+     "hex": "#F3F1EA"
+    }
+   ],
+   "dims": "connector 9.0 mm, two 7 x 2.4 mm links each side",
+   "motif": "the round connector and its links",
+   "scale": "the connector is only 9 mm across, a little narrower than the index fingernail, never larger",
+   "wear": "the connector and its links at the centre front just below the collarbones, facing the camera",
+   "station": "one station: the round connector with its two elongated oval links on each side",
+   "shape": "a necklace in polished 14K yellow gold with one flat round connector, 9 mm across, a little narrower than the index fingernail, never larger, at the centre front, held in the line of the chain by small loops at 3 and 9 o'clock: two elongated oval links on each side, then a fine round cable chain 1.2 mm thick; each link is 7 mm long and 2.4 mm wide in 0.8 mm wire. The connector, from the edge inward: a thin polished gold rim 0.4 mm wide; a ring of petal pink enamel (#EC9AB4) 1.5 mm wide; a thin gold ring 0.4 mm wide; a ring of porcelain white enamel, flat, opaque and glossy (#F3F1EA), 1.5 mm wide; and a round polished gold centre dot 1.4 mm across. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold back",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: a necklace in polished 14K yellow gold with one flat round connector, 9 mm across, a little narrower than the index fingernail, never larger, at the centre front, held in the line of the chain by small loops at 3 and 9 o'clock: two elongated oval links on each side, then a fine round cable chain 1.2 mm thick; each link is 7 mm long and 2.4 mm wide in 0.8 mm wire. The connector, from the edge inward: a thin polished gold rim 0.4 mm wide; a ring of petal pink enamel (#EC9AB4) 1.5 mm wide; a thin gold ring 0.4 mm wide; a ring of porcelain white enamel, flat, opaque and glossy (#F3F1EA), 1.5 mm wide; and a round polished gold centre dot 1.4 mm across. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold back. All metal is solid polished 14K yellow gold. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: petal pink (#EC9AB4), porcelain white (#F3F1EA). No eyelashes, no eyelid line, no realistic iris. The necklace lies with the round connector and its links face up at the bottom of one smooth U-shaped curve of chain whose two halves rise straight up and apart and leave the image at the top edge; the chain is never doubled, never coiled and never forms a second loop, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "altHeroPrompts": null,
+   "qa": [
+    "Count the links: two elongated oval links on each side, then the fine cable chain."
+   ],
+   "imageFile": "N10.jpg"
+  },
+  {
+   "id": "B10",
+   "familyNo": 10,
+   "family": "Paperclip",
+   "name": "Pink Evil Eye Paperclip Bracelet",
+   "productType": "bracelet",
+   "kind": "bracelet",
+   "twoTone": false,
+   "metals": "14K yellow gold",
+   "enamel": [
+    {
+     "key": "pink",
+     "name": "petal pink",
+     "hex": "#EC9AB4"
+    },
+    {
+     "key": "white",
+     "name": "white",
+     "hex": "#F3F1EA"
+    }
+   ],
+   "dims": "connector 9.0 mm, two 7 x 2.4 mm links each side",
+   "motif": "the round connector and its links",
+   "scale": "the connector is only 9 mm across, a little narrower than the index fingernail, never larger",
+   "wear": null,
+   "station": "one station: the round connector with its two elongated oval links on each side",
+   "shape": "a bracelet in polished 14K yellow gold with one flat round connector, 9 mm across, a little narrower than the index fingernail, never larger, at its centre, held in the line of the chain by small loops at 3 and 9 o'clock: two elongated oval links on each side, then a fine round cable chain 1.1 mm thick; each link is 7 mm long and 2.4 mm wide in 0.8 mm wire. The connector, from the edge inward: a thin polished gold rim 0.4 mm wide; a ring of petal pink enamel (#EC9AB4) 1.5 mm wide; a thin gold ring 0.4 mm wide; a ring of porcelain white enamel, flat, opaque and glossy (#F3F1EA), 1.5 mm wide; and a round polished gold centre dot 1.4 mm across. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold back; spring ring clasp",
+   "imagePrompt": "Studio product photograph of one fine jewelry piece: a bracelet in polished 14K yellow gold with one flat round connector, 9 mm across, a little narrower than the index fingernail, never larger, at its centre, held in the line of the chain by small loops at 3 and 9 o'clock: two elongated oval links on each side, then a fine round cable chain 1.1 mm thick; each link is 7 mm long and 2.4 mm wide in 0.8 mm wire. The connector, from the edge inward: a thin polished gold rim 0.4 mm wide; a ring of petal pink enamel (#EC9AB4) 1.5 mm wide; a thin gold ring 0.4 mm wide; a ring of porcelain white enamel, flat, opaque and glossy (#F3F1EA), 1.5 mm wide; and a round polished gold centre dot 1.4 mm across. The enamel is flush with the metal, flat and glossy, never domed; closed, solid, flat gold back; spring ring clasp. All metal is solid polished 14K yellow gold. Kiln-fired vitreous enamel is set flush inside recessed cells, every cell framed by a thin polished metal rim; the enamel is perfectly flat and smooth, not cabochon, no gradient, no shading, no streaks, no painted detail, no stones. Enamel colours: petal pink (#EC9AB4), porcelain white (#F3F1EA). No eyelashes, no eyelid line, no realistic iris. The bracelet lies in one soft open curve, one continuous chain from end to end, with the round connector and its links face up at the centre of the curve and the spring ring clasp at one end, on warm off-white textured paper. Soft diffused daylight from the upper left, a gentle natural shadow, shallow depth of field, true-to-life small scale, three-quarter front view from slightly above, centred, calm minimal composition. No props, no hands, no text, no logo, no packaging. Photorealistic high-end commercial jewelry photography, square format.",
+   "altHeroPrompts": null,
+   "qa": [
+    "Count the links: two elongated oval links on each side, then the fine cable chain."
+   ],
+   "imageFile": "B10.jpg"
+  }
+ ]
+}
