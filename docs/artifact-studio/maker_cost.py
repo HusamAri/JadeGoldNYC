@@ -51,7 +51,10 @@ def karat_ratio(karat):
 
 
 def price_cents(cost_usd):
-    return int(math.ceil(MARKUP * cost_usd / 10) * 10 * 100)
+    # round(.., 6) drops float noise before the ceiling: gold_cost(1.6 + 1.3, "14K") + 50 is
+    # 340.00000000000006, which would ceil 680.0000000000001 to 690 (evil eye N07, 2026-10-09).
+    # Proven to move no Christmas or For Him price (catalog.json and seal.json byte-identical).
+    return int(math.ceil(round(MARKUP * cost_usd, 6) / 10) * 10 * 100)
 
 
 assert abs(gold_cost(1, "14K") - 100.0) < 1e-9
