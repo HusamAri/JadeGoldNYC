@@ -7,14 +7,14 @@
     "rule": "price = ceil(round(2 x maker_cost, 6) / 10) x 10 (owner decision 2026-10-07; float-noise fix 2026-10-09)",
     "status": "ESTIMATE_MAKER_V2",
     "makerCost": "gold grams x density x (spot x purity + labor per gram) + quoted extras; see ../maker_cost.py",
-    "maker14KUsdPerGram": 100,
+    "maker14KUsdPerGram": 100.0,
     "laborUsdPerGram": 21.42,
     "spotUsdOzt": 4178.2,
     "goldQuoteSource": "gold-api.com",
     "goldQuoteTimestamp": "2026-09-30T11:21:00Z",
     "densityVs14K": {
       "10K": 0.892,
-      "14K": 1,
+      "14K": 1.0,
       "18K": 1.137
     },
     "purity": {
@@ -24,7 +24,7 @@
     },
     "karatRatioVs14K": {
       "10K": 0.691,
-      "14K": 1,
+      "14K": 1.0,
       "18K": 1.389
     },
     "karats": "10K and 18K through gold_cost on gold and chain; enamel, assembly and two-tone items stay fixed",
@@ -116,7 +116,7 @@
         "status": "ESTIMATE_MAKER_V2",
         "build14KRef": {
           "pieceGrams14": 3.5895,
-          "chainGrams14": 0,
+          "chainGrams14": 0.0,
           "goldAndChainUsd": 358.95,
           "enamelUsd": 0,
           "assemblyUsd": 0,
@@ -199,7 +199,7 @@
             "Metal Color": "Yellow/White Gold",
             "Ring Size": "US 5.5"
           },
-          "grams": 3,
+          "grams": 3.0,
           "price_cents": 57000
         },
         {
@@ -469,7 +469,7 @@
             "Metal Color": "White/Yellow Gold",
             "Ring Size": "US 5.5"
           },
-          "grams": 3,
+          "grams": 3.0,
           "price_cents": 57000
         },
         {
@@ -739,7 +739,7 @@
             "Metal Color": "Rose/White Gold",
             "Ring Size": "US 5.5"
           },
-          "grams": 3,
+          "grams": 3.0,
           "price_cents": 57000
         },
         {
@@ -2585,6 +2585,12 @@
         "manifest": "R01/v3/gallery-manifest.json",
         "selectedCount": 10,
         "macroProfileReviewRequired": true
+      },
+      "panelState": {
+        "saved": true,
+        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/a967293e-09e6-5d21-a7ba-cc7e9a0e98ba",
+        "etsyLinked": false
       }
     },
     {
@@ -2647,7 +2653,7 @@
       "motifUnits": 1,
       "twoToneOps": 1,
       "grams14Ref": 3.1,
-      "makerCost14KRefUsd": 410,
+      "makerCost14KRefUsd": 410.0,
       "refSize": "18 inches",
       "refPriceCents": 82000,
       "pricing": {
@@ -2655,7 +2661,7 @@
         "build14KRef": {
           "pieceGrams14": 1.8,
           "chainGrams14": 1.3,
-          "goldAndChainUsd": 310,
+          "goldAndChainUsd": 310.0,
           "enamelUsd": 50,
           "assemblyUsd": 0,
           "twoToneUsd": 50
@@ -2958,6 +2964,12 @@
         "geo_g": 1.8,
         "units": 1,
         "ops": 1
+      },
+      "panelState": {
+        "saved": true,
+        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/e52ee1db-714d-543d-9a3b-a84164bd4384",
+        "etsyLinked": false
       }
     },
     {
@@ -3014,20 +3026,20 @@
       "launchWave": "after-two-tone-quote",
       "sourcePackage": "2026-10-09-artifact-evil-eye",
       "sourcePackagePath": "docs/artifact-studio/evil-eye",
-      "geometryGrams14Ref": 1,
+      "geometryGrams14Ref": 1.0,
       "motifUnits": 1,
       "twoToneOps": 1,
-      "grams14Ref": 2,
-      "makerCost14KRefUsd": 350,
+      "grams14Ref": 2.0,
+      "makerCost14KRefUsd": 350.0,
       "refSize": "7 inches",
       "refPriceCents": 70000,
       "refPriceCentsBasisB": 125000,
       "pricing": {
         "status": "ESTIMATE_MAKER_V2",
         "build14KRef": {
-          "pieceGrams14": 1,
-          "chainGrams14": 1,
-          "goldAndChainUsd": 200,
+          "pieceGrams14": 1.0,
+          "chainGrams14": 1.0,
+          "goldAndChainUsd": 200.0,
           "enamelUsd": 50,
           "assemblyUsd": 50,
           "twoToneUsd": 50
@@ -3180,7 +3192,7 @@
             "Metal Color": "Yellow/White Gold",
             "Bracelet Length": "7 inches"
           },
-          "grams": 2,
+          "grams": 2.0,
           "price_cents": 70000,
           "price_cents_basis_b": 125000,
           "grams_basis_b": 4.75
@@ -3216,7 +3228,7 @@
             "Metal Color": "White/Yellow Gold",
             "Bracelet Length": "7 inches"
           },
-          "grams": 2,
+          "grams": 2.0,
           "price_cents": 70000,
           "price_cents_basis_b": 125000,
           "grams_basis_b": 4.75
@@ -3252,7 +3264,7 @@
             "Metal Color": "Rose/White Gold",
             "Bracelet Length": "7 inches"
           },
-          "grams": 2,
+          "grams": 2.0,
           "price_cents": 70000,
           "price_cents_basis_b": 125000,
           "grams_basis_b": 4.75
@@ -3382,9 +3394,15 @@
       "imageUrl": null,
       "imageSha256": null,
       "params": {
-        "geo_g": 1,
+        "geo_g": 1.0,
         "units": 1,
         "ops": 1
+      },
+      "panelState": {
+        "saved": true,
+        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/afc8fc5c-577c-592d-b256-8bb4579c969a",
+        "etsyLinked": false
       }
     },
     {
@@ -3441,7 +3459,7 @@
       "launchWave": "christmas-2026",
       "sourcePackage": "2026-10-09-artifact-evil-eye",
       "sourcePackagePath": "docs/artifact-studio/evil-eye",
-      "geometryGrams14Ref": 2,
+      "geometryGrams14Ref": 2.0,
       "motifUnits": null,
       "twoToneOps": 0,
       "grams14Ref": 3.59,
@@ -3452,7 +3470,7 @@
         "status": "ESTIMATE_MAKER_V2",
         "build14KRef": {
           "pieceGrams14": 3.5895,
-          "chainGrams14": 0,
+          "chainGrams14": 0.0,
           "goldAndChainUsd": 358.95,
           "enamelUsd": 0,
           "assemblyUsd": 0,
@@ -3532,7 +3550,7 @@
             "Metal Color": "Yellow Gold",
             "Ring Size": "US 5.5"
           },
-          "grams": 3,
+          "grams": 3.0,
           "price_cents": 47000
         },
         {
@@ -3802,7 +3820,7 @@
             "Metal Color": "White Gold",
             "Ring Size": "US 5.5"
           },
-          "grams": 3,
+          "grams": 3.0,
           "price_cents": 47000
         },
         {
@@ -4072,7 +4090,7 @@
             "Metal Color": "Rose Gold",
             "Ring Size": "US 5.5"
           },
-          "grams": 3,
+          "grams": 3.0,
           "price_cents": 47000
         },
         {
@@ -5910,8 +5928,14 @@
       "imageUrl": null,
       "imageSha256": null,
       "params": {
-        "geo_g": 2,
+        "geo_g": 2.0,
         "ops": 0
+      },
+      "panelState": {
+        "saved": true,
+        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/c359abad-d443-5276-bbea-92e4c7e0e5d1",
+        "etsyLinked": false
       }
     },
     {
@@ -5974,15 +5998,15 @@
       "motifUnits": 1,
       "twoToneOps": 0,
       "grams14Ref": 2.3,
-      "makerCost14KRefUsd": 280,
+      "makerCost14KRefUsd": 280.0,
       "refSize": "18 inches",
       "refPriceCents": 56000,
       "pricing": {
         "status": "ESTIMATE_MAKER_V2",
         "build14KRef": {
-          "pieceGrams14": 1,
+          "pieceGrams14": 1.0,
           "chainGrams14": 1.3,
-          "goldAndChainUsd": 230,
+          "goldAndChainUsd": 230.0,
           "enamelUsd": 50,
           "assemblyUsd": 0,
           "twoToneUsd": 0
@@ -6284,6 +6308,12 @@
         "geo_g": 0.8,
         "units": 1,
         "ops": 0
+      },
+      "panelState": {
+        "saved": true,
+        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/6d317f59-b6b7-5bed-820a-e17ad4ff26dd",
+        "etsyLinked": false
       }
     },
     {
@@ -6345,17 +6375,17 @@
       "geometryGrams14Ref": 0.8,
       "motifUnits": 1,
       "twoToneOps": 0,
-      "grams14Ref": 2,
-      "makerCost14KRefUsd": 300,
+      "grams14Ref": 2.0,
+      "makerCost14KRefUsd": 300.0,
       "refSize": "7 inches",
       "refPriceCents": 60000,
       "refPriceCentsBasisB": 100000,
       "pricing": {
         "status": "ESTIMATE_MAKER_V2",
         "build14KRef": {
-          "pieceGrams14": 1,
-          "chainGrams14": 1,
-          "goldAndChainUsd": 200,
+          "pieceGrams14": 1.0,
+          "chainGrams14": 1.0,
+          "goldAndChainUsd": 200.0,
           "enamelUsd": 50,
           "assemblyUsd": 50,
           "twoToneUsd": 0
@@ -6506,10 +6536,10 @@
             "Metal Color": "Yellow Gold",
             "Bracelet Length": "7 inches"
           },
-          "grams": 2,
+          "grams": 2.0,
           "price_cents": 60000,
           "price_cents_basis_b": 100000,
-          "grams_basis_b": 4
+          "grams_basis_b": 4.0
         },
         {
           "sku": "BAS-EE-B02-14KY-7_5IN",
@@ -6542,10 +6572,10 @@
             "Metal Color": "White Gold",
             "Bracelet Length": "7 inches"
           },
-          "grams": 2,
+          "grams": 2.0,
           "price_cents": 60000,
           "price_cents_basis_b": 100000,
-          "grams_basis_b": 4
+          "grams_basis_b": 4.0
         },
         {
           "sku": "BAS-EE-B02-14KW-7_5IN",
@@ -6578,10 +6608,10 @@
             "Metal Color": "Rose Gold",
             "Bracelet Length": "7 inches"
           },
-          "grams": 2,
+          "grams": 2.0,
           "price_cents": 60000,
           "price_cents_basis_b": 100000,
-          "grams_basis_b": 4
+          "grams_basis_b": 4.0
         },
         {
           "sku": "BAS-EE-B02-14KR-7_5IN",
@@ -6711,6 +6741,12 @@
         "geo_g": 0.8,
         "units": 1,
         "ops": 0
+      },
+      "panelState": {
+        "saved": true,
+        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/5b7da53b-411f-5c09-b04c-5f1065013247",
+        "etsyLinked": false
       }
     },
     {
@@ -6780,7 +6816,7 @@
         "status": "ESTIMATE_MAKER_V2",
         "build14KRef": {
           "pieceGrams14": 3.5895,
-          "chainGrams14": 0,
+          "chainGrams14": 0.0,
           "goldAndChainUsd": 358.95,
           "enamelUsd": 0,
           "assemblyUsd": 0,
@@ -6860,7 +6896,7 @@
             "Metal Color": "Yellow Gold",
             "Ring Size": "US 5.5"
           },
-          "grams": 3,
+          "grams": 3.0,
           "price_cents": 47000
         },
         {
@@ -7130,7 +7166,7 @@
             "Metal Color": "White Gold",
             "Ring Size": "US 5.5"
           },
-          "grams": 3,
+          "grams": 3.0,
           "price_cents": 47000
         },
         {
@@ -7400,7 +7436,7 @@
             "Metal Color": "Rose Gold",
             "Ring Size": "US 5.5"
           },
-          "grams": 3,
+          "grams": 3.0,
           "price_cents": 47000
         },
         {
@@ -9240,6 +9276,12 @@
       "params": {
         "geo_g": 2.3,
         "ops": 0
+      },
+      "panelState": {
+        "saved": true,
+        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/1c4d429f-d844-531e-90cb-39d493b98fc3",
+        "etsyLinked": false
       }
     },
     {
@@ -9298,19 +9340,19 @@
       "launchWave": "christmas-2026",
       "sourcePackage": "2026-10-09-artifact-evil-eye",
       "sourcePackagePath": "docs/artifact-studio/evil-eye",
-      "geometryGrams14Ref": 1,
+      "geometryGrams14Ref": 1.0,
       "motifUnits": 1,
       "twoToneOps": 0,
       "grams14Ref": 2.3,
-      "makerCost14KRefUsd": 280,
+      "makerCost14KRefUsd": 280.0,
       "refSize": "18 inches",
       "refPriceCents": 56000,
       "pricing": {
         "status": "ESTIMATE_MAKER_V2",
         "build14KRef": {
-          "pieceGrams14": 1,
+          "pieceGrams14": 1.0,
           "chainGrams14": 1.3,
-          "goldAndChainUsd": 230,
+          "goldAndChainUsd": 230.0,
           "enamelUsd": 50,
           "assemblyUsd": 0,
           "twoToneUsd": 0
@@ -9609,9 +9651,15 @@
       "imageUrl": null,
       "imageSha256": null,
       "params": {
-        "geo_g": 1,
+        "geo_g": 1.0,
         "units": 1,
         "ops": 0
+      },
+      "panelState": {
+        "saved": true,
+        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/47c84c53-94bd-5936-a3ad-5d4bad10af98",
+        "etsyLinked": false
       }
     },
     {
@@ -9673,17 +9721,17 @@
       "geometryGrams14Ref": 0.8,
       "motifUnits": 1,
       "twoToneOps": 0,
-      "grams14Ref": 2,
-      "makerCost14KRefUsd": 300,
+      "grams14Ref": 2.0,
+      "makerCost14KRefUsd": 300.0,
       "refSize": "7 inches",
       "refPriceCents": 60000,
       "refPriceCentsBasisB": 100000,
       "pricing": {
         "status": "ESTIMATE_MAKER_V2",
         "build14KRef": {
-          "pieceGrams14": 1,
-          "chainGrams14": 1,
-          "goldAndChainUsd": 200,
+          "pieceGrams14": 1.0,
+          "chainGrams14": 1.0,
+          "goldAndChainUsd": 200.0,
           "enamelUsd": 50,
           "assemblyUsd": 50,
           "twoToneUsd": 0
@@ -9834,10 +9882,10 @@
             "Metal Color": "Yellow Gold",
             "Bracelet Length": "7 inches"
           },
-          "grams": 2,
+          "grams": 2.0,
           "price_cents": 60000,
           "price_cents_basis_b": 100000,
-          "grams_basis_b": 4
+          "grams_basis_b": 4.0
         },
         {
           "sku": "BAS-EE-B03-14KY-7_5IN",
@@ -9870,10 +9918,10 @@
             "Metal Color": "White Gold",
             "Bracelet Length": "7 inches"
           },
-          "grams": 2,
+          "grams": 2.0,
           "price_cents": 60000,
           "price_cents_basis_b": 100000,
-          "grams_basis_b": 4
+          "grams_basis_b": 4.0
         },
         {
           "sku": "BAS-EE-B03-14KW-7_5IN",
@@ -9906,10 +9954,10 @@
             "Metal Color": "Rose Gold",
             "Bracelet Length": "7 inches"
           },
-          "grams": 2,
+          "grams": 2.0,
           "price_cents": 60000,
           "price_cents_basis_b": 100000,
-          "grams_basis_b": 4
+          "grams_basis_b": 4.0
         },
         {
           "sku": "BAS-EE-B03-14KR-7_5IN",
@@ -10039,6 +10087,12 @@
         "geo_g": 0.8,
         "units": 1,
         "ops": 0
+      },
+      "panelState": {
+        "saved": true,
+        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/a03cf6d5-973c-5048-bcae-213ca1e2cbd8",
+        "etsyLinked": false
       }
     },
     {
@@ -10106,7 +10160,7 @@
         "status": "ESTIMATE_MAKER_V2",
         "build14KRef": {
           "pieceGrams14": 3.5895,
-          "chainGrams14": 0,
+          "chainGrams14": 0.0,
           "goldAndChainUsd": 358.95,
           "enamelUsd": 0,
           "assemblyUsd": 0,
@@ -10186,7 +10240,7 @@
             "Metal Color": "Yellow Gold",
             "Ring Size": "US 5.5"
           },
-          "grams": 3,
+          "grams": 3.0,
           "price_cents": 47000
         },
         {
@@ -10456,7 +10510,7 @@
             "Metal Color": "White Gold",
             "Ring Size": "US 5.5"
           },
-          "grams": 3,
+          "grams": 3.0,
           "price_cents": 47000
         },
         {
@@ -10726,7 +10780,7 @@
             "Metal Color": "Rose Gold",
             "Ring Size": "US 5.5"
           },
-          "grams": 3,
+          "grams": 3.0,
           "price_cents": 47000
         },
         {
@@ -12566,6 +12620,12 @@
       "params": {
         "geo_g": 1.5,
         "ops": 0
+      },
+      "panelState": {
+        "saved": true,
+        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/2e63371c-92a7-5f9a-8dc3-1609ee936ba5",
+        "etsyLinked": false
       }
     },
     {
@@ -12626,15 +12686,15 @@
       "motifUnits": 3,
       "twoToneOps": 0,
       "grams14Ref": 4.3,
-      "makerCost14KRefUsd": 530,
+      "makerCost14KRefUsd": 530.0,
       "refSize": "18 inches",
       "refPriceCents": 106000,
       "pricing": {
         "status": "ESTIMATE_MAKER_V2",
         "build14KRef": {
-          "pieceGrams14": 3,
+          "pieceGrams14": 3.0,
           "chainGrams14": 1.3,
-          "goldAndChainUsd": 430,
+          "goldAndChainUsd": 430.0,
           "enamelUsd": 50,
           "assemblyUsd": 50,
           "twoToneUsd": 0
@@ -12937,6 +12997,12 @@
         "geo_g": 1.4,
         "units": 3,
         "ops": 0
+      },
+      "panelState": {
+        "saved": true,
+        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/dd3355b4-90c9-5058-bbe2-45985507a51c",
+        "etsyLinked": false
       }
     },
     {
@@ -12996,17 +13062,17 @@
       "geometryGrams14Ref": 1.4,
       "motifUnits": 3,
       "twoToneOps": 0,
-      "grams14Ref": 4,
-      "makerCost14KRefUsd": 500,
+      "grams14Ref": 4.0,
+      "makerCost14KRefUsd": 500.0,
       "refSize": "7 inches",
       "refPriceCents": 100000,
       "refPriceCentsBasisB": 145000,
       "pricing": {
         "status": "ESTIMATE_MAKER_V2",
         "build14KRef": {
-          "pieceGrams14": 3,
-          "chainGrams14": 1,
-          "goldAndChainUsd": 400,
+          "pieceGrams14": 3.0,
+          "chainGrams14": 1.0,
+          "goldAndChainUsd": 400.0,
           "enamelUsd": 50,
           "assemblyUsd": 50,
           "twoToneUsd": 0
@@ -13158,7 +13224,7 @@
             "Metal Color": "Yellow Gold",
             "Bracelet Length": "7 inches"
           },
-          "grams": 4,
+          "grams": 4.0,
           "price_cents": 100000,
           "price_cents_basis_b": 145000,
           "grams_basis_b": 6.25
@@ -13194,7 +13260,7 @@
             "Metal Color": "White Gold",
             "Bracelet Length": "7 inches"
           },
-          "grams": 4,
+          "grams": 4.0,
           "price_cents": 100000,
           "price_cents_basis_b": 145000,
           "grams_basis_b": 6.25
@@ -13230,7 +13296,7 @@
             "Metal Color": "Rose Gold",
             "Bracelet Length": "7 inches"
           },
-          "grams": 4,
+          "grams": 4.0,
           "price_cents": 100000,
           "price_cents_basis_b": 145000,
           "grams_basis_b": 6.25
@@ -13363,6 +13429,12 @@
         "geo_g": 1.4,
         "units": 3,
         "ops": 0
+      },
+      "panelState": {
+        "saved": true,
+        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/c5fad23b-aeae-5f5c-922d-596a13e0a322",
+        "etsyLinked": false
       }
     },
     {
@@ -13432,7 +13504,7 @@
         "status": "ESTIMATE_MAKER_V2",
         "build14KRef": {
           "pieceGrams14": 3.5895,
-          "chainGrams14": 0,
+          "chainGrams14": 0.0,
           "goldAndChainUsd": 358.95,
           "enamelUsd": 0,
           "assemblyUsd": 0,
@@ -13512,7 +13584,7 @@
             "Metal Color": "Yellow Gold",
             "Ring Size": "US 5.5"
           },
-          "grams": 3,
+          "grams": 3.0,
           "price_cents": 47000
         },
         {
@@ -13782,7 +13854,7 @@
             "Metal Color": "White Gold",
             "Ring Size": "US 5.5"
           },
-          "grams": 3,
+          "grams": 3.0,
           "price_cents": 47000
         },
         {
@@ -14052,7 +14124,7 @@
             "Metal Color": "Rose Gold",
             "Ring Size": "US 5.5"
           },
-          "grams": 3,
+          "grams": 3.0,
           "price_cents": 47000
         },
         {
@@ -15892,6 +15964,12 @@
       "params": {
         "geo_g": 2.6,
         "ops": 0
+      },
+      "panelState": {
+        "saved": true,
+        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/450acc67-d0ba-5a66-a4ed-e703811487d1",
+        "etsyLinked": false
       }
     },
     {
@@ -15954,7 +16032,7 @@
       "motifUnits": 1,
       "twoToneOps": 0,
       "grams14Ref": 2.4,
-      "makerCost14KRefUsd": 290,
+      "makerCost14KRefUsd": 290.0,
       "refSize": "18 inches",
       "refPriceCents": 58000,
       "pricing": {
@@ -15962,7 +16040,7 @@
         "build14KRef": {
           "pieceGrams14": 1.1,
           "chainGrams14": 1.3,
-          "goldAndChainUsd": 240,
+          "goldAndChainUsd": 240.0,
           "enamelUsd": 50,
           "assemblyUsd": 0,
           "twoToneUsd": 0
@@ -16262,6 +16340,12 @@
         "geo_g": 1.1,
         "units": 1,
         "ops": 0
+      },
+      "panelState": {
+        "saved": true,
+        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/1582ddae-efc2-5ad7-a973-c5a8b2f8fbd9",
+        "etsyLinked": false
       }
     },
     {
@@ -16323,17 +16407,17 @@
       "geometryGrams14Ref": 1.4,
       "motifUnits": 3,
       "twoToneOps": 0,
-      "grams14Ref": 4,
-      "makerCost14KRefUsd": 500,
+      "grams14Ref": 4.0,
+      "makerCost14KRefUsd": 500.0,
       "refSize": "7 inches",
       "refPriceCents": 100000,
       "refPriceCentsBasisB": 145000,
       "pricing": {
         "status": "ESTIMATE_MAKER_V2",
         "build14KRef": {
-          "pieceGrams14": 3,
-          "chainGrams14": 1,
-          "goldAndChainUsd": 400,
+          "pieceGrams14": 3.0,
+          "chainGrams14": 1.0,
+          "goldAndChainUsd": 400.0,
           "enamelUsd": 50,
           "assemblyUsd": 50,
           "twoToneUsd": 0
@@ -16484,7 +16568,7 @@
             "Metal Color": "Yellow Gold",
             "Bracelet Length": "7 inches"
           },
-          "grams": 4,
+          "grams": 4.0,
           "price_cents": 100000,
           "price_cents_basis_b": 145000,
           "grams_basis_b": 6.25
@@ -16520,7 +16604,7 @@
             "Metal Color": "White Gold",
             "Bracelet Length": "7 inches"
           },
-          "grams": 4,
+          "grams": 4.0,
           "price_cents": 100000,
           "price_cents_basis_b": 145000,
           "grams_basis_b": 6.25
@@ -16556,7 +16640,7 @@
             "Metal Color": "Rose Gold",
             "Bracelet Length": "7 inches"
           },
-          "grams": 4,
+          "grams": 4.0,
           "price_cents": 100000,
           "price_cents_basis_b": 145000,
           "grams_basis_b": 6.25
@@ -16689,6 +16773,12 @@
         "geo_g": 1.4,
         "units": 3,
         "ops": 0
+      },
+      "panelState": {
+        "saved": true,
+        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/089966be-9230-5c29-8565-476003cc2de5",
+        "etsyLinked": false
       }
     },
     {
@@ -16758,7 +16848,7 @@
         "status": "ESTIMATE_MAKER_V2",
         "build14KRef": {
           "pieceGrams14": 3.5895,
-          "chainGrams14": 0,
+          "chainGrams14": 0.0,
           "goldAndChainUsd": 358.95,
           "enamelUsd": 0,
           "assemblyUsd": 0,
@@ -16841,7 +16931,7 @@
             "Metal Color": "Yellow/White Gold",
             "Ring Size": "US 5.5"
           },
-          "grams": 3,
+          "grams": 3.0,
           "price_cents": 57000
         },
         {
@@ -17111,7 +17201,7 @@
             "Metal Color": "White/Yellow Gold",
             "Ring Size": "US 5.5"
           },
-          "grams": 3,
+          "grams": 3.0,
           "price_cents": 57000
         },
         {
@@ -17381,7 +17471,7 @@
             "Metal Color": "Rose/White Gold",
             "Ring Size": "US 5.5"
           },
-          "grams": 3,
+          "grams": 3.0,
           "price_cents": 57000
         },
         {
@@ -19221,6 +19311,12 @@
       "params": {
         "geo_g": 3.1,
         "ops": 1
+      },
+      "panelState": {
+        "saved": true,
+        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/f7bc4aac-8fa1-5fe9-adb7-e626c2ed9786",
+        "etsyLinked": false
       }
     },
     {
@@ -19283,7 +19379,7 @@
       "motifUnits": 1,
       "twoToneOps": 1,
       "grams14Ref": 2.8,
-      "makerCost14KRefUsd": 380,
+      "makerCost14KRefUsd": 380.0,
       "refSize": "18 inches",
       "refPriceCents": 76000,
       "pricing": {
@@ -19291,7 +19387,7 @@
         "build14KRef": {
           "pieceGrams14": 1.5,
           "chainGrams14": 1.3,
-          "goldAndChainUsd": 280,
+          "goldAndChainUsd": 280.0,
           "enamelUsd": 50,
           "assemblyUsd": 0,
           "twoToneUsd": 50
@@ -19594,6 +19690,12 @@
         "geo_g": 1.5,
         "units": 1,
         "ops": 1
+      },
+      "panelState": {
+        "saved": true,
+        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/98c91a01-2a77-51e8-a29a-c36edec93335",
+        "etsyLinked": false
       }
     },
     {
@@ -19655,17 +19757,17 @@
       "geometryGrams14Ref": 1.2,
       "motifUnits": 2,
       "twoToneOps": 1,
-      "grams14Ref": 3,
-      "makerCost14KRefUsd": 450,
+      "grams14Ref": 3.0,
+      "makerCost14KRefUsd": 450.0,
       "refSize": "7 inches",
       "refPriceCents": 90000,
       "refPriceCentsBasisB": 140000,
       "pricing": {
         "status": "ESTIMATE_MAKER_V2",
         "build14KRef": {
-          "pieceGrams14": 2,
-          "chainGrams14": 1,
-          "goldAndChainUsd": 300,
+          "pieceGrams14": 2.0,
+          "chainGrams14": 1.0,
+          "goldAndChainUsd": 300.0,
           "enamelUsd": 50,
           "assemblyUsd": 50,
           "twoToneUsd": 50
@@ -19818,7 +19920,7 @@
             "Metal Color": "Yellow/White Gold",
             "Bracelet Length": "7 inches"
           },
-          "grams": 3,
+          "grams": 3.0,
           "price_cents": 90000,
           "price_cents_basis_b": 140000,
           "grams_basis_b": 5.5
@@ -19854,7 +19956,7 @@
             "Metal Color": "White/Yellow Gold",
             "Bracelet Length": "7 inches"
           },
-          "grams": 3,
+          "grams": 3.0,
           "price_cents": 90000,
           "price_cents_basis_b": 140000,
           "grams_basis_b": 5.5
@@ -19890,7 +19992,7 @@
             "Metal Color": "Rose/White Gold",
             "Bracelet Length": "7 inches"
           },
-          "grams": 3,
+          "grams": 3.0,
           "price_cents": 90000,
           "price_cents_basis_b": 140000,
           "grams_basis_b": 5.5
@@ -20023,6 +20125,12 @@
         "geo_g": 1.2,
         "units": 2,
         "ops": 1
+      },
+      "panelState": {
+        "saved": true,
+        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/21591017-0219-54e5-96dd-fbc0ee521e69",
+        "etsyLinked": false
       }
     },
     {
@@ -20090,7 +20198,7 @@
         "status": "ESTIMATE_MAKER_V2",
         "build14KRef": {
           "pieceGrams14": 3.5895,
-          "chainGrams14": 0,
+          "chainGrams14": 0.0,
           "goldAndChainUsd": 358.95,
           "enamelUsd": 0,
           "assemblyUsd": 0,
@@ -20173,7 +20281,7 @@
             "Metal Color": "Yellow/White Gold",
             "Ring Size": "US 5.5"
           },
-          "grams": 3,
+          "grams": 3.0,
           "price_cents": 57000
         },
         {
@@ -20443,7 +20551,7 @@
             "Metal Color": "White/Yellow Gold",
             "Ring Size": "US 5.5"
           },
-          "grams": 3,
+          "grams": 3.0,
           "price_cents": 57000
         },
         {
@@ -20713,7 +20821,7 @@
             "Metal Color": "Rose/White Gold",
             "Ring Size": "US 5.5"
           },
-          "grams": 3,
+          "grams": 3.0,
           "price_cents": 57000
         },
         {
@@ -22553,6 +22661,12 @@
       "params": {
         "geo_g": 3.2,
         "ops": 1
+      },
+      "panelState": {
+        "saved": true,
+        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/1dcd9db5-88e0-5495-934c-6cf6a35dc1c6",
+        "etsyLinked": false
       }
     },
     {
@@ -22613,7 +22727,7 @@
       "motifUnits": 1,
       "twoToneOps": 1,
       "grams14Ref": 2.9,
-      "makerCost14KRefUsd": 390,
+      "makerCost14KRefUsd": 390.0,
       "refSize": "18 inches",
       "refPriceCents": 78000,
       "pricing": {
@@ -22621,7 +22735,7 @@
         "build14KRef": {
           "pieceGrams14": 1.6,
           "chainGrams14": 1.3,
-          "goldAndChainUsd": 290,
+          "goldAndChainUsd": 290.0,
           "enamelUsd": 50,
           "assemblyUsd": 0,
           "twoToneUsd": 50
@@ -22924,6 +23038,12 @@
         "geo_g": 1.6,
         "units": 1,
         "ops": 1
+      },
+      "panelState": {
+        "saved": true,
+        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/492dd8d0-15fe-547f-8fe7-8be88183b0b5",
+        "etsyLinked": false
       }
     },
     {
@@ -22983,17 +23103,17 @@
       "geometryGrams14Ref": 0.9,
       "motifUnits": 1,
       "twoToneOps": 1,
-      "grams14Ref": 2,
-      "makerCost14KRefUsd": 350,
+      "grams14Ref": 2.0,
+      "makerCost14KRefUsd": 350.0,
       "refSize": "7 inches",
       "refPriceCents": 70000,
       "refPriceCentsBasisB": 118000,
       "pricing": {
         "status": "ESTIMATE_MAKER_V2",
         "build14KRef": {
-          "pieceGrams14": 1,
-          "chainGrams14": 1,
-          "goldAndChainUsd": 200,
+          "pieceGrams14": 1.0,
+          "chainGrams14": 1.0,
+          "goldAndChainUsd": 200.0,
           "enamelUsd": 50,
           "assemblyUsd": 50,
           "twoToneUsd": 50
@@ -23146,7 +23266,7 @@
             "Metal Color": "Yellow/White Gold",
             "Bracelet Length": "7 inches"
           },
-          "grams": 2,
+          "grams": 2.0,
           "price_cents": 70000,
           "price_cents_basis_b": 118000,
           "grams_basis_b": 4.38
@@ -23182,7 +23302,7 @@
             "Metal Color": "White/Yellow Gold",
             "Bracelet Length": "7 inches"
           },
-          "grams": 2,
+          "grams": 2.0,
           "price_cents": 70000,
           "price_cents_basis_b": 118000,
           "grams_basis_b": 4.38
@@ -23218,7 +23338,7 @@
             "Metal Color": "Rose/White Gold",
             "Bracelet Length": "7 inches"
           },
-          "grams": 2,
+          "grams": 2.0,
           "price_cents": 70000,
           "price_cents_basis_b": 118000,
           "grams_basis_b": 4.38
@@ -23351,6 +23471,12 @@
         "geo_g": 0.9,
         "units": 1,
         "ops": 1
+      },
+      "panelState": {
+        "saved": true,
+        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/d7f7a42c-62b4-587c-b713-5e21df1f55ac",
+        "etsyLinked": false
       }
     },
     {
@@ -23413,7 +23539,7 @@
         "status": "ESTIMATE_MAKER_V2",
         "build14KRef": {
           "pieceGrams14": 3.5895,
-          "chainGrams14": 0,
+          "chainGrams14": 0.0,
           "goldAndChainUsd": 358.95,
           "enamelUsd": 0,
           "assemblyUsd": 0,
@@ -23495,7 +23621,7 @@
             "Metal Color": "Yellow/White Gold",
             "Ring Size": "US 5.5"
           },
-          "grams": 3,
+          "grams": 3.0,
           "price_cents": 67000
         },
         {
@@ -23765,7 +23891,7 @@
             "Metal Color": "White/Yellow Gold",
             "Ring Size": "US 5.5"
           },
-          "grams": 3,
+          "grams": 3.0,
           "price_cents": 67000
         },
         {
@@ -24035,7 +24161,7 @@
             "Metal Color": "Rose/White Gold",
             "Ring Size": "US 5.5"
           },
-          "grams": 3,
+          "grams": 3.0,
           "price_cents": 67000
         },
         {
@@ -25875,6 +26001,12 @@
       "params": {
         "geo_g": 2.6,
         "ops": 2
+      },
+      "panelState": {
+        "saved": true,
+        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/44c061db-f6fe-5d2f-a82d-0dcf90bac5db",
+        "etsyLinked": false
       }
     },
     {
@@ -25930,15 +26062,15 @@
       "motifUnits": 1,
       "twoToneOps": 1,
       "grams14Ref": 2.3,
-      "makerCost14KRefUsd": 330,
+      "makerCost14KRefUsd": 330.0,
       "refSize": "18 inches",
       "refPriceCents": 66000,
       "pricing": {
         "status": "ESTIMATE_MAKER_V2",
         "build14KRef": {
-          "pieceGrams14": 1,
+          "pieceGrams14": 1.0,
           "chainGrams14": 1.3,
-          "goldAndChainUsd": 230,
+          "goldAndChainUsd": 230.0,
           "enamelUsd": 0,
           "assemblyUsd": 50,
           "twoToneUsd": 50
@@ -26241,6 +26373,12 @@
         "geo_g": 0.4,
         "units": 1,
         "ops": 1
+      },
+      "panelState": {
+        "saved": true,
+        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/603813c5-3a1a-5530-af7c-57bdb3757ef8",
+        "etsyLinked": false
       }
     },
     {
@@ -26296,7 +26434,7 @@
       "motifUnits": null,
       "twoToneOps": 2,
       "grams14Ref": 3.6,
-      "makerCost14KRefUsd": 510,
+      "makerCost14KRefUsd": 510.0,
       "refSize": "7 inches",
       "refPriceCents": 102000,
       "refPriceCentsBasisB": 102000,
@@ -26304,8 +26442,8 @@
         "status": "ESTIMATE_MAKER_V2",
         "build14KRef": {
           "pieceGrams14": 3.6,
-          "chainGrams14": 0,
-          "goldAndChainUsd": 360,
+          "chainGrams14": 0.0,
+          "goldAndChainUsd": 360.0,
           "enamelUsd": 0,
           "assemblyUsd": 50,
           "twoToneUsd": 100
@@ -26661,6 +26799,12 @@
         "geo_g": 3.6,
         "ops": 2,
         "cuff": true
+      },
+      "panelState": {
+        "saved": true,
+        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/384c8b09-841d-5d95-b958-19accdc4e9b1",
+        "etsyLinked": false
       }
     },
     {
@@ -26717,7 +26861,7 @@
       "launchWave": "january-2027",
       "sourcePackage": "2026-10-09-artifact-evil-eye",
       "sourcePackagePath": "docs/artifact-studio/evil-eye",
-      "geometryGrams14Ref": 2,
+      "geometryGrams14Ref": 2.0,
       "motifUnits": null,
       "twoToneOps": 0,
       "grams14Ref": 3.59,
@@ -26728,7 +26872,7 @@
         "status": "ESTIMATE_MAKER_V2",
         "build14KRef": {
           "pieceGrams14": 3.5895,
-          "chainGrams14": 0,
+          "chainGrams14": 0.0,
           "goldAndChainUsd": 358.95,
           "enamelUsd": 0,
           "assemblyUsd": 0,
@@ -26808,7 +26952,7 @@
             "Metal Color": "Yellow Gold",
             "Ring Size": "US 5.5"
           },
-          "grams": 3,
+          "grams": 3.0,
           "price_cents": 47000
         },
         {
@@ -27078,7 +27222,7 @@
             "Metal Color": "White Gold",
             "Ring Size": "US 5.5"
           },
-          "grams": 3,
+          "grams": 3.0,
           "price_cents": 47000
         },
         {
@@ -27348,7 +27492,7 @@
             "Metal Color": "Rose Gold",
             "Ring Size": "US 5.5"
           },
-          "grams": 3,
+          "grams": 3.0,
           "price_cents": 47000
         },
         {
@@ -29186,8 +29330,14 @@
       "imageUrl": null,
       "imageSha256": null,
       "params": {
-        "geo_g": 2,
+        "geo_g": 2.0,
         "ops": 0
+      },
+      "panelState": {
+        "saved": true,
+        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/b48121fe-2904-5de0-8763-1e833bb08d9d",
+        "etsyLinked": false
       }
     },
     {
@@ -29248,7 +29398,7 @@
       "motifUnits": 1,
       "twoToneOps": 0,
       "grams14Ref": 2.5,
-      "makerCost14KRefUsd": 300,
+      "makerCost14KRefUsd": 300.0,
       "refSize": "18 inches",
       "refPriceCents": 60000,
       "pricing": {
@@ -29256,7 +29406,7 @@
         "build14KRef": {
           "pieceGrams14": 1.2,
           "chainGrams14": 1.3,
-          "goldAndChainUsd": 250,
+          "goldAndChainUsd": 250.0,
           "enamelUsd": 50,
           "assemblyUsd": 0,
           "twoToneUsd": 0
@@ -29556,6 +29706,12 @@
         "geo_g": 1.2,
         "units": 1,
         "ops": 0
+      },
+      "panelState": {
+        "saved": true,
+        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/b3f96af3-f455-57d0-8a8d-329682cf3ac2",
+        "etsyLinked": false
       }
     },
     {
@@ -29615,17 +29771,17 @@
       "geometryGrams14Ref": 0.8,
       "motifUnits": 1,
       "twoToneOps": 0,
-      "grams14Ref": 2,
-      "makerCost14KRefUsd": 300,
+      "grams14Ref": 2.0,
+      "makerCost14KRefUsd": 300.0,
       "refSize": "7 inches",
       "refPriceCents": 60000,
       "refPriceCentsBasisB": 100000,
       "pricing": {
         "status": "ESTIMATE_MAKER_V2",
         "build14KRef": {
-          "pieceGrams14": 1,
-          "chainGrams14": 1,
-          "goldAndChainUsd": 200,
+          "pieceGrams14": 1.0,
+          "chainGrams14": 1.0,
+          "goldAndChainUsd": 200.0,
           "enamelUsd": 50,
           "assemblyUsd": 50,
           "twoToneUsd": 0
@@ -29776,10 +29932,10 @@
             "Metal Color": "Yellow Gold",
             "Bracelet Length": "7 inches"
           },
-          "grams": 2,
+          "grams": 2.0,
           "price_cents": 60000,
           "price_cents_basis_b": 100000,
-          "grams_basis_b": 4
+          "grams_basis_b": 4.0
         },
         {
           "sku": "BAS-EE-B09-14KY-7_5IN",
@@ -29812,10 +29968,10 @@
             "Metal Color": "White Gold",
             "Bracelet Length": "7 inches"
           },
-          "grams": 2,
+          "grams": 2.0,
           "price_cents": 60000,
           "price_cents_basis_b": 100000,
-          "grams_basis_b": 4
+          "grams_basis_b": 4.0
         },
         {
           "sku": "BAS-EE-B09-14KW-7_5IN",
@@ -29848,10 +30004,10 @@
             "Metal Color": "Rose Gold",
             "Bracelet Length": "7 inches"
           },
-          "grams": 2,
+          "grams": 2.0,
           "price_cents": 60000,
           "price_cents_basis_b": 100000,
-          "grams_basis_b": 4
+          "grams_basis_b": 4.0
         },
         {
           "sku": "BAS-EE-B09-14KR-7_5IN",
@@ -29981,6 +30137,12 @@
         "geo_g": 0.8,
         "units": 1,
         "ops": 0
+      },
+      "panelState": {
+        "saved": true,
+        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/d35d8178-effb-5ae5-80b8-58bedbe48e0d",
+        "etsyLinked": false
       }
     },
     {
@@ -30048,7 +30210,7 @@
         "status": "ESTIMATE_MAKER_V2",
         "build14KRef": {
           "pieceGrams14": 3.5895,
-          "chainGrams14": 0,
+          "chainGrams14": 0.0,
           "goldAndChainUsd": 358.95,
           "enamelUsd": 0,
           "assemblyUsd": 0,
@@ -30130,7 +30292,7 @@
             "Metal Color": "Yellow Gold",
             "Ring Size": "US 5.5"
           },
-          "grams": 3,
+          "grams": 3.0,
           "price_cents": 47000
         },
         {
@@ -30400,7 +30562,7 @@
             "Metal Color": "White Gold",
             "Ring Size": "US 5.5"
           },
-          "grams": 3,
+          "grams": 3.0,
           "price_cents": 47000
         },
         {
@@ -30670,7 +30832,7 @@
             "Metal Color": "Rose Gold",
             "Ring Size": "US 5.5"
           },
-          "grams": 3,
+          "grams": 3.0,
           "price_cents": 47000
         },
         {
@@ -32510,6 +32672,12 @@
       "params": {
         "geo_g": 1.2,
         "ops": 0
+      },
+      "panelState": {
+        "saved": true,
+        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/538c4de0-c001-5d9b-9c40-080d652a08db",
+        "etsyLinked": false
       }
     },
     {
@@ -32572,7 +32740,7 @@
       "motifUnits": 1,
       "twoToneOps": 0,
       "grams14Ref": 2.5,
-      "makerCost14KRefUsd": 350,
+      "makerCost14KRefUsd": 350.0,
       "refSize": "18 inches",
       "refPriceCents": 70000,
       "pricing": {
@@ -32580,7 +32748,7 @@
         "build14KRef": {
           "pieceGrams14": 1.2,
           "chainGrams14": 1.3,
-          "goldAndChainUsd": 250,
+          "goldAndChainUsd": 250.0,
           "enamelUsd": 50,
           "assemblyUsd": 50,
           "twoToneUsd": 0
@@ -32882,6 +33050,12 @@
         "geo_g": 1.2,
         "units": 1,
         "ops": 0
+      },
+      "panelState": {
+        "saved": true,
+        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/a8455679-9e39-5fdd-b908-f2e3859aa0f3",
+        "etsyLinked": false
       }
     },
     {
@@ -32944,7 +33118,7 @@
       "motifUnits": 1,
       "twoToneOps": 0,
       "grams14Ref": 2.2,
-      "makerCost14KRefUsd": 320,
+      "makerCost14KRefUsd": 320.0,
       "refSize": "7 inches",
       "refPriceCents": 64000,
       "refPriceCentsBasisB": 130000,
@@ -32952,8 +33126,8 @@
         "status": "ESTIMATE_MAKER_V2",
         "build14KRef": {
           "pieceGrams14": 1.2,
-          "chainGrams14": 1,
-          "goldAndChainUsd": 220,
+          "chainGrams14": 1.0,
+          "goldAndChainUsd": 220.0,
           "enamelUsd": 50,
           "assemblyUsd": 50,
           "twoToneUsd": 0
@@ -33309,6 +33483,12 @@
         "geo_g": 1.2,
         "units": 1,
         "ops": 0
+      },
+      "panelState": {
+        "saved": true,
+        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/2cf81e25-903b-50b3-8844-3298e8a746cb",
+        "etsyLinked": false
       }
     }
   ]
