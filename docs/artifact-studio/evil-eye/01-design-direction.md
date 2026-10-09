@@ -609,7 +609,10 @@ Per family:
    "Yellow/White Gold", "White/Yellow Gold" and "Rose/White Gold"; the exception is
    recorded in CLAUDE.md next to the full-grid rule. Plain labels never go on a
    two-metal piece.
-2. **Bracelet basis until the maker answers question 3.** (a) The 1 g per unit floor:
+2. **Bracelet basis until the maker answers question 3. Answered 2026-10-09: (a), with
+   the fallback below** (question 3 goes to the maker now; if no answer by the listing
+   date, the Christmas-wave bracelets go up on (b) and come down to the quote).
+   (a) The 1 g per unit floor:
    14K bracelets 600 to 1,020; for three stations it is exactly the structure the maker
    quoted on Christmas B09. (b) The approved Christmas rule, geometry x 3.75: 1,000 to
    1,450, which prices a 0.8 g single charm at 1,000 against 560 for the same charm on a
