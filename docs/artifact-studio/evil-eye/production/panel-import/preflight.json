@@ -1,0 +1,10 @@
+{
+  "org_id": "2c254edf-2119-4079-b09e-dc672e32c1f9",
+  "models": 30,
+  "variants": 2970,
+  "r01_images": 10,
+  "payload_sha256": "4a3526b48c74ab5a9703a913be1aa18d0534069133406acfe8db7f9e29110fb9",
+  "duplicate_skus": 0,
+  "mode": "insert_only_panel_draft",
+  "etsy_mutations": false
+}
