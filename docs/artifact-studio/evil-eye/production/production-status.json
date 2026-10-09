@@ -1,0 +1,435 @@
+{
+  "repo": "HusamAri/JadeGoldNYC",
+  "source_ref": "main",
+  "source_commit": "a1f5d0a",
+  "models": 30,
+  "unique_variants": 2970,
+  "sales_prompts": 300,
+  "checks": "variant counts, complete unique property tuples, unique SKUs, SKU length, 13 tags, tag lengths, integer positive prices, 10 prompts per model passed",
+  "listings": [
+    {
+      "id": "R01",
+      "variant_count": 243,
+      "sales_prompts": 10,
+      "status": "prepared_local_draft",
+      "panel_saved": false,
+      "etsy_created": false
+    },
+    {
+      "id": "N01",
+      "variant_count": 27,
+      "sales_prompts": 10,
+      "status": "prepared_local_draft",
+      "panel_saved": false,
+      "etsy_created": false
+    },
+    {
+      "id": "B01",
+      "variant_count": 27,
+      "sales_prompts": 10,
+      "status": "prepared_local_draft",
+      "panel_saved": false,
+      "etsy_created": false
+    },
+    {
+      "id": "R02",
+      "variant_count": 243,
+      "sales_prompts": 10,
+      "status": "prepared_local_draft",
+      "panel_saved": false,
+      "etsy_created": false
+    },
+    {
+      "id": "N02",
+      "variant_count": 27,
+      "sales_prompts": 10,
+      "status": "prepared_local_draft",
+      "panel_saved": false,
+      "etsy_created": false
+    },
+    {
+      "id": "B02",
+      "variant_count": 27,
+      "sales_prompts": 10,
+      "status": "prepared_local_draft",
+      "panel_saved": false,
+      "etsy_created": false
+    },
+    {
+      "id": "R03",
+      "variant_count": 243,
+      "sales_prompts": 10,
+      "status": "prepared_local_draft",
+      "panel_saved": false,
+      "etsy_created": false
+    },
+    {
+      "id": "N03",
+      "variant_count": 27,
+      "sales_prompts": 10,
+      "status": "prepared_local_draft",
+      "panel_saved": false,
+      "etsy_created": false
+    },
+    {
+      "id": "B03",
+      "variant_count": 27,
+      "sales_prompts": 10,
+      "status": "prepared_local_draft",
+      "panel_saved": false,
+      "etsy_created": false
+    },
+    {
+      "id": "R04",
+      "variant_count": 243,
+      "sales_prompts": 10,
+      "status": "prepared_local_draft",
+      "panel_saved": false,
+      "etsy_created": false
+    },
+    {
+      "id": "N04",
+      "variant_count": 27,
+      "sales_prompts": 10,
+      "status": "prepared_local_draft",
+      "panel_saved": false,
+      "etsy_created": false
+    },
+    {
+      "id": "B04",
+      "variant_count": 27,
+      "sales_prompts": 10,
+      "status": "prepared_local_draft",
+      "panel_saved": false,
+      "etsy_created": false
+    },
+    {
+      "id": "R05",
+      "variant_count": 243,
+      "sales_prompts": 10,
+      "status": "prepared_local_draft",
+      "panel_saved": false,
+      "etsy_created": false
+    },
+    {
+      "id": "N05",
+      "variant_count": 27,
+      "sales_prompts": 10,
+      "status": "prepared_local_draft",
+      "panel_saved": false,
+      "etsy_created": false
+    },
+    {
+      "id": "B05",
+      "variant_count": 27,
+      "sales_prompts": 10,
+      "status": "prepared_local_draft",
+      "panel_saved": false,
+      "etsy_created": false
+    },
+    {
+      "id": "R06",
+      "variant_count": 243,
+      "sales_prompts": 10,
+      "status": "prepared_local_draft",
+      "panel_saved": false,
+      "etsy_created": false
+    },
+    {
+      "id": "N06",
+      "variant_count": 27,
+      "sales_prompts": 10,
+      "status": "prepared_local_draft",
+      "panel_saved": false,
+      "etsy_created": false
+    },
+    {
+      "id": "B06",
+      "variant_count": 27,
+      "sales_prompts": 10,
+      "status": "prepared_local_draft",
+      "panel_saved": false,
+      "etsy_created": false
+    },
+    {
+      "id": "R07",
+      "variant_count": 243,
+      "sales_prompts": 10,
+      "status": "prepared_local_draft",
+      "panel_saved": false,
+      "etsy_created": false
+    },
+    {
+      "id": "N07",
+      "variant_count": 27,
+      "sales_prompts": 10,
+      "status": "prepared_local_draft",
+      "panel_saved": false,
+      "etsy_created": false
+    },
+    {
+      "id": "B07",
+      "variant_count": 27,
+      "sales_prompts": 10,
+      "status": "prepared_local_draft",
+      "panel_saved": false,
+      "etsy_created": false
+    },
+    {
+      "id": "R08",
+      "variant_count": 243,
+      "sales_prompts": 10,
+      "status": "prepared_local_draft",
+      "panel_saved": false,
+      "etsy_created": false
+    },
+    {
+      "id": "N08",
+      "variant_count": 27,
+      "sales_prompts": 10,
+      "status": "prepared_local_draft",
+      "panel_saved": false,
+      "etsy_created": false
+    },
+    {
+      "id": "B08",
+      "variant_count": 27,
+      "sales_prompts": 10,
+      "status": "prepared_local_draft",
+      "panel_saved": false,
+      "etsy_created": false
+    },
+    {
+      "id": "R09",
+      "variant_count": 243,
+      "sales_prompts": 10,
+      "status": "prepared_local_draft",
+      "panel_saved": false,
+      "etsy_created": false
+    },
+    {
+      "id": "N09",
+      "variant_count": 27,
+      "sales_prompts": 10,
+      "status": "prepared_local_draft",
+      "panel_saved": false,
+      "etsy_created": false
+    },
+    {
+      "id": "B09",
+      "variant_count": 27,
+      "sales_prompts": 10,
+      "status": "prepared_local_draft",
+      "panel_saved": false,
+      "etsy_created": false
+    },
+    {
+      "id": "R10",
+      "variant_count": 243,
+      "sales_prompts": 10,
+      "status": "prepared_local_draft",
+      "panel_saved": false,
+      "etsy_created": false
+    },
+    {
+      "id": "N10",
+      "variant_count": 27,
+      "sales_prompts": 10,
+      "status": "prepared_local_draft",
+      "panel_saved": false,
+      "etsy_created": false
+    },
+    {
+      "id": "B10",
+      "variant_count": 27,
+      "sales_prompts": 10,
+      "status": "prepared_local_draft",
+      "panel_saved": false,
+      "etsy_created": false
+    }
+  ],
+  "generations": [
+    {
+      "job_id": "05c3c982-8e04-4e17-b4c7-c20b67a92fbe",
+      "model_requested": "nano_banana_2",
+      "model_returned": "nano_banana_flash",
+      "file": "R01/00-reference-hero.png",
+      "status": "rejected",
+      "reason": "white gold annulus reads as opaque white enamel",
+      "sha256": "90cfc55885358f543c322655207cb371a72d6134bcd1c5031babd6c193d3cfa0"
+    },
+    {
+      "job_id": "02d64c52-d2f2-4637-b52e-86120d138e48",
+      "model_requested": "nano_banana_2",
+      "model_returned": "nano_banana_flash",
+      "file": "R01/00-reference-hero-v2.png",
+      "status": "owner_review_pending",
+      "qa": "Metallic annulus now visible. Exact manufactured dimensions cannot be established from generated photo.",
+      "sha256": "ea292f05ee2685a4c782b5b2e6cb2247f9fdae58aef27691fcd2dd568ed68207"
+    }
+  ],
+  "sales_jobs": [
+    {
+      "slot": "01-hero",
+      "id": "35d48c02-3a04-4c85-864e-d08061760cb1",
+      "index": 0,
+      "job_id": "35d48c02-3a04-4c85-864e-d08061760cb1",
+      "status": "completed",
+      "type": "image",
+      "model": "nano_banana_flash",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_135511_35d48c02-3a04-4c85-864e-d08061760cb1.png",
+      "qa_status": "rejected",
+      "qa_reason": "White-gold annulus reads as opaque white enamel instead of polished metal.",
+      "file": "R01/01-hero.png",
+      "width": 2048,
+      "height": 2048,
+      "sha256": "0244ec9e7c72f3e60b870ea65e59c963d020a2177e4a9456eff7f9491d9c2925"
+    },
+    {
+      "slot": "02-hand-on-linen-trousers",
+      "id": "bed61581-8fcc-4400-b2df-1d2b811f0765",
+      "status": "completed",
+      "index": 1,
+      "job_id": "bed61581-8fcc-4400-b2df-1d2b811f0765",
+      "type": "image",
+      "model": "nano_banana_flash",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_135543_bed61581-8fcc-4400-b2df-1d2b811f0765.png",
+      "qa_status": "rejected",
+      "qa_reason": "White-gold annulus reads as opaque white enamel instead of polished metal. Ring is on the middle finger instead of the ring finger.",
+      "file": "R01/02-hand-on-linen-trousers.png",
+      "width": 2048,
+      "height": 2048,
+      "sha256": "ad405391fc9449fcf15df0a03b3a7c61335d256261c18495a9d78d98627d50f3"
+    },
+    {
+      "slot": "03-hand-on-a-wrapped-gift",
+      "id": "2b77a7d8-7e2d-4276-ac8c-0070d5e09549",
+      "status": "completed",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_135611_2b77a7d8-7e2d-4276-ac8c-0070d5e09549.png",
+      "qa_status": "rejected",
+      "qa_reason": "White-gold annulus reads as opaque white enamel instead of polished metal. Ring is on the middle finger instead of the ring finger.",
+      "file": "R01/03-hand-on-a-wrapped-gift.png",
+      "width": 2048,
+      "height": 2048,
+      "sha256": "2e5f023018af6ba6f8b68e0aa91aba4bd758bcc4b3683b7e7b855c0a18f27d25"
+    },
+    {
+      "slot": "04-hand-from-a-plinth",
+      "id": "201ded13-eb00-4b18-9c79-0aceb0e8eca1",
+      "status": "completed",
+      "index": 3,
+      "job_id": "201ded13-eb00-4b18-9c79-0aceb0e8eca1",
+      "type": "image",
+      "model": "nano_banana_flash",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_135716_201ded13-eb00-4b18-9c79-0aceb0e8eca1.png",
+      "qa_status": "rejected",
+      "qa_reason": "White-gold annulus reads as opaque white enamel instead of polished metal.",
+      "file": "R01/04-hand-from-a-plinth.png",
+      "width": 2048,
+      "height": 2048,
+      "sha256": "75c773d9cd8b3b09a999e0893755b0b6e8de71acc9db87c4788c6d22e258dbd1"
+    },
+    {
+      "slot": "05-scale",
+      "id": "e916713d-0c4e-42dc-9b8d-a62ce9d53ac7",
+      "status": "completed",
+      "index": 4,
+      "job_id": "e916713d-0c4e-42dc-9b8d-a62ce9d53ac7",
+      "type": "image",
+      "model": "nano_banana_flash",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_135758_e916713d-0c4e-42dc-9b8d-a62ce9d53ac7.png",
+      "qa_status": "rejected",
+      "qa_reason": "White-gold annulus reads as opaque white enamel instead of polished metal. Ring is on the middle finger instead of the ring finger. Hand appears right rather than specified left.",
+      "file": "R01/05-scale.png",
+      "width": 2048,
+      "height": 2048,
+      "sha256": "b3e753405659abd37a2f96488533a7c8a2d3e8a0929b07469507cdb1dad9d767"
+    },
+    {
+      "slot": "06-macro",
+      "id": "e38653cb-ac16-47cc-b3bd-fa018cd02b0e",
+      "status": "completed",
+      "index": 5,
+      "job_id": "e38653cb-ac16-47cc-b3bd-fa018cd02b0e",
+      "type": "image",
+      "model": "nano_banana_flash",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_135846_e38653cb-ac16-47cc-b3bd-fa018cd02b0e.png",
+      "qa_status": "rejected",
+      "qa_reason": "White-gold annulus reads as opaque white enamel instead of polished metal.",
+      "file": "R01/06-macro.png",
+      "width": 2048,
+      "height": 2048,
+      "sha256": "72b981eff7be52476f2528d636e5638a817e53e3f7f24d6987c992e872abad19"
+    },
+    {
+      "slot": "07-still",
+      "id": "054be0cb-8f7e-4351-b02b-dc6074a16940",
+      "status": "completed",
+      "index": 6,
+      "job_id": "054be0cb-8f7e-4351-b02b-dc6074a16940",
+      "type": "image",
+      "model": "nano_banana_flash",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_140042_054be0cb-8f7e-4351-b02b-dc6074a16940.png",
+      "qa_status": "rejected",
+      "qa_reason": "White-gold annulus reads as opaque white enamel instead of polished metal.",
+      "file": "R01/07-still.png",
+      "width": 2048,
+      "height": 2048,
+      "sha256": "d6bd620602c44922093ce5b3e86d89a92e0217e365c34f895380a1c29dde7599"
+    },
+    {
+      "slot": "08-gift",
+      "id": "a03c8c19-429c-44c2-a594-48c28b190df8",
+      "status": "completed",
+      "index": 7,
+      "job_id": "a03c8c19-429c-44c2-a594-48c28b190df8",
+      "type": "image",
+      "model": "nano_banana_flash",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_140117_a03c8c19-429c-44c2-a594-48c28b190df8.png",
+      "qa_status": "rejected",
+      "qa_reason": "White-gold annulus reads as opaque white enamel instead of polished metal.",
+      "file": "R01/08-gift.png",
+      "width": 2048,
+      "height": 2048,
+      "sha256": "f89ba9fccc667cccaa788c5ac7c1800b30bc8f32b0a50091604946ea67234a59"
+    },
+    {
+      "slot": "09-metals",
+      "id": "a9a76761-1bea-49c3-8f25-175fa1bf01fb",
+      "status": "completed",
+      "index": 8,
+      "job_id": "a9a76761-1bea-49c3-8f25-175fa1bf01fb",
+      "type": "image",
+      "model": "nano_banana_flash",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_140213_a9a76761-1bea-49c3-8f25-175fa1bf01fb.png",
+      "qa_status": "rejected",
+      "qa_reason": "White-gold annulus reads as opaque white enamel instead of polished metal.",
+      "file": "R01/09-metals.png",
+      "width": 2048,
+      "height": 2048,
+      "sha256": "d2ba9227b3a3885241ac2566bff2f5257a98c3152509bb3aee68b5ab882bc966"
+    },
+    {
+      "slot": "10-hand-at-a-silk-collar",
+      "id": "86f172a3-c4b6-4c5c-ad04-cdab783efb52",
+      "status": "completed",
+      "index": 9,
+      "job_id": "86f172a3-c4b6-4c5c-ad04-cdab783efb52",
+      "type": "image",
+      "model": "nano_banana_flash",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_140302_86f172a3-c4b6-4c5c-ad04-cdab783efb52.png",
+      "qa_status": "rejected",
+      "qa_reason": "White-gold annulus reads as opaque white enamel instead of polished metal.",
+      "file": "R01/10-hand-at-a-silk-collar.png",
+      "width": 2048,
+      "height": 2048,
+      "sha256": "6ef7a0edc7130a71cf5a88ee3188d8b25e0a20e60eb603dd3c940f5a3b393bac"
+    }
+  ],
+  "r01_reference_owner_approved": true,
+  "r01_sales_approved_scope": "10 first-pass generations, 20 credits preflight; retries excluded",
+  "r01_generated": 10,
+  "r01_accepted_sales_images": 0,
+  "r01_state": "first_pass_complete_qa_rejected",
+  "next_step": "Approve one corrected macro test (2 credits estimated), then inspect before approving remaining retries."
+}
