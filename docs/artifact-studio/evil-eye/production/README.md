@@ -1,14 +1,17 @@
-Current R01 revision: [ten-frame smaller-scale review set](R01/v3/README.md). All images are 2048 × 2048; owner review and macro surface-profile check are pending. See `R01/v3/gallery-manifest.json` for selected files, hashes, job URLs and QA. This revision: 11 single-image jobs, 22 estimated credits, approved hero reused. Panel and Etsy remain unsaved.
+# Evil Eye panel production — 2026-10-09
 
----
+All 30 models and 2,970 variants are saved as panel drafts for by Artifact Studio Jewelry. An independent Supabase readback confirmed 30 drafts and zero Etsy-linked listings. The import was previewed without writes, then applied atomically with product/SKU collision guards. See [verified import receipt](panel-import/verified-receipt.json).
 
-# Evil Eye production audit — 2026-10-09
+Three galleries are now saved, 10 images each:
+- [R01 ring](R01/v3/README.md): owner-accepted review set, 243 variants.
+- [N01 necklace](N01/v1/gallery-manifest.json): 10 images in panel, owner review pending, 27 variants. Corrected face proportions, macro chain route and metal pairing.
+- [B01 bracelet](B01/v1/gallery-manifest.json): 10 images in panel, owner review pending, 27 variants. Corrected metal pairing; small wrist scale retained.
 
-30 local draft records and 2,970 unique variants were prepared and validated. No panel or Etsy listing was created: Amuletta is at its login screen. Prices and maker qualification remain estimates/pending.
+All selected images are 2048 × 2048. Generated images are design visualizations; physical dimensions and manufacturing qualification remain unverified. N01/B01 surface-profile appearance requires owner review. Prices remain maker estimates. The remaining 27 models have saved text/variant drafts and await image production. No Etsy send or live publication occurred.
 
-R01 corrected reference was approved by the owner, followed by approval of ten first-pass sales prompts (20 credits estimated; retries excluded). All ten sales images completed and were saved at 2048 × 2048. The first-pass sales set failed material QA: the white-gold annulus reads as white enamel. Frames 02, 03 and 05 also put the ring on the middle finger; 05 appears to use the wrong hand. Zero sales images are accepted. Model requested: nano_banana_2; returned backend identifier: nano_banana_flash.
+[Gallery import receipt](panel-import/n01-b01-verified-receipt.json). N01: 15 single-image jobs including rejected references/corrections, estimated 30 credits. B01: 11 single-image jobs including one correction, estimated 22 credits.
 
-Correction prompts have been prepared but are not authorized or submitted. Next proposed action is a single corrected macro test (2 credits estimated), then review before further retries.
+## Historical first-pass audit (superseded)
 
 ## Completed first-pass results (QA rejected)
 

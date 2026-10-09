@@ -13,7 +13,9 @@
       "sales_prompts": 10,
       "status": "panel_draft_saved",
       "panel_saved": true,
-      "etsy_created": false
+      "etsy_created": false,
+      "gallery_count": 10,
+      "image_status": "owner_accepted_review_set"
     },
     {
       "id": "N01",
@@ -21,7 +23,9 @@
       "sales_prompts": 10,
       "status": "panel_draft_saved",
       "panel_saved": true,
-      "etsy_created": false
+      "etsy_created": false,
+      "gallery_count": 10,
+      "image_status": "owner_review_pending"
     },
     {
       "id": "B01",
@@ -29,7 +33,9 @@
       "sales_prompts": 10,
       "status": "panel_draft_saved",
       "panel_saved": true,
-      "etsy_created": false
+      "etsy_created": false,
+      "gallery_count": 10,
+      "image_status": "owner_review_pending"
     },
     {
       "id": "R02",
@@ -698,5 +704,12 @@
       "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/a967293e-09e6-5d21-a7ba-cc7e9a0e98ba"
     },
     "pending": "29 model galleries pending; N01 first two references rejected for geometry. Prices and manufactured dimensions remain unverified."
+  },
+  "gallerySummary": {
+    "R01": 10,
+    "N01": 10,
+    "B01": 10,
+    "remaining_models": 27,
+    "remaining_images": 270
   }
 }
