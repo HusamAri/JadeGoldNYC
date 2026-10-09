@@ -64,12 +64,14 @@ export async function updateCartRecovery(
   if (!parsed.success) {
     return { error: "Form geçersiz.", fieldErrors: parsed.error.flatten().fieldErrors };
   }
-  await requireMembership();
+  const m = await requireMembership();
   const supabase = await createClient();
+  // RLS zaten org kilidi uygular; org_id filtresi defense-in-depth.
   const { error } = await supabase
     .from("cart_recoveries")
     .update(toRow(parsed.data))
-    .eq("id", id);
+    .eq("id", id)
+    .eq("org_id", m.org_id);
   if (error) return { error: error.message };
   revalidatePath("/sepet-kurtarma");
   return { ok: true, id };
@@ -78,9 +80,13 @@ export async function updateCartRecovery(
 export async function deleteCartRecovery(
   id: string,
 ): Promise<{ error?: string }> {
-  await requireMembership();
+  const m = await requireMembership();
   const supabase = await createClient();
-  const { error } = await supabase.from("cart_recoveries").delete().eq("id", id);
+  const { error } = await supabase
+    .from("cart_recoveries")
+    .delete()
+    .eq("id", id)
+    .eq("org_id", m.org_id);
   if (error) return { error: error.message };
   revalidatePath("/sepet-kurtarma");
   return {};
