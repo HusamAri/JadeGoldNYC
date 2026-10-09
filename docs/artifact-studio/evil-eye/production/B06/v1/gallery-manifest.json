@@ -196,5 +196,9 @@
       "sha256": "98af6c847b2964489def8cff92f4284821a66ddab419122bfc7ab0aebeff8ed2",
       "qa_status": "review_draft"
     }
-  ]
+  ],
+  "panel_saved": true,
+  "panel_verified_at": "2026-10-09T20:19:43.854585+00:00",
+  "etsy_linked_at_readback": false,
+  "etsy_write_performed_this_batch": false
 }

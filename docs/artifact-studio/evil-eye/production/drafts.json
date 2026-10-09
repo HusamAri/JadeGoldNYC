@@ -2588,9 +2588,13 @@
       },
       "panelState": {
         "saved": true,
-        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "verifiedAt": "2026-10-09T20:19:43.854585+00:00",
         "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/a967293e-09e6-5d21-a7ba-cc7e9a0e98ba",
-        "etsyLinked": false
+        "etsyLinked": true,
+        "etsyListingId": 4592096604,
+        "galleryCount": 10,
+        "galleryReview": "owner_accepted_review_set",
+        "galleryManifest": "R01/v3/gallery-manifest.json"
       }
     },
     {
@@ -2677,8 +2681,7 @@
           "Grams are geometry estimates: no sample has been cast or weighed.",
           "TWO-TONE UNQUOTED: the maker has not priced two-tone work; 50 USD per operation is an UNCALIBRATED_ASSUMPTION and no two-tone piece goes live before the quote.",
           "Alloy/enamel firing qualification: enamel on 10K, on white gold and on rose gold, each part one alloy fired alone, is not yet confirmed by the maker (maker question 2).",
-          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2).",
-          "No images yet: the reference hero and 10 sales frames are generated in Higgsfield after the owner approves the prompts."
+          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2)."
         ],
         "etsyDraftCreationAuthorized": true,
         "livePublicationAuthorized": false,
@@ -2957,7 +2960,7 @@
           "price_cents": 111000
         }
       ],
-      "imageFile": "N01.jpg",
+      "imageFile": "N01/v1/01-hero-selected.png",
       "imageUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_184002_ef3fe4e1-853e-4ed5-971f-a09a17df5620.png",
       "imageSha256": "097ddfa826bcba3d2ba927a1bfcbdb490fb4dd7111c1b6897ffba60c6623699b",
       "params": {
@@ -2967,11 +2970,13 @@
       },
       "panelState": {
         "saved": true,
-        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "verifiedAt": "2026-10-09T20:19:43.854585+00:00",
         "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/e52ee1db-714d-543d-9a3b-a84164bd4384",
-        "etsyLinked": false,
+        "etsyLinked": true,
         "galleryCount": 10,
-        "galleryReview": "owner_review_pending"
+        "galleryReview": "owner_review_pending",
+        "etsyListingId": 4592082893,
+        "galleryManifest": "N01/v1/gallery-manifest.json"
       },
       "imageGallery": [
         {
@@ -3217,8 +3222,7 @@
           "Grams are geometry estimates: no sample has been cast or weighed.",
           "TWO-TONE UNQUOTED: the maker has not priced two-tone work; 50 USD per operation is an UNCALIBRATED_ASSUMPTION and no two-tone piece goes live before the quote.",
           "Alloy/enamel firing qualification: enamel on 10K, on white gold and on rose gold, each part one alloy fired alone, is not yet confirmed by the maker (maker question 2).",
-          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2).",
-          "No images yet: the reference hero and 10 sales frames are generated in Higgsfield after the owner approves the prompts."
+          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2)."
         ],
         "etsyDraftCreationAuthorized": true,
         "livePublicationAuthorized": false,
@@ -3551,7 +3555,7 @@
           "grams_basis_b": 5.48
         }
       ],
-      "imageFile": "B01.jpg",
+      "imageFile": "B01/v1/01-hero.png",
       "imageUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_184145_6c2abaf1-c733-4c3f-8d01-20e6b1d015ae.png",
       "imageSha256": "349789677f89d115294063215600a41b5fd67e3dad37a256e7e9c3f586dd8ad3",
       "params": {
@@ -3561,11 +3565,13 @@
       },
       "panelState": {
         "saved": true,
-        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "verifiedAt": "2026-10-09T20:19:43.854585+00:00",
         "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/afc8fc5c-577c-592d-b256-8bb4579c969a",
-        "etsyLinked": false,
+        "etsyLinked": true,
         "galleryCount": 10,
-        "galleryReview": "owner_review_pending"
+        "galleryReview": "owner_review_pending",
+        "etsyListingId": 4592082029,
+        "galleryManifest": "B01/v1/gallery-manifest.json"
       },
       "imageGallery": [
         {
@@ -3808,14 +3814,13 @@
           "ESTIMATED PRICE: 2 x maker cost on the Christmas 2026 terms (14K 100 USD/g with labour, enamel 50, chain 130 or 100, assembly 50); the maker has not quoted these 30 designs.",
           "Grams are geometry estimates: no sample has been cast or weighed.",
           "Alloy/enamel firing qualification: enamel on 10K, on white gold and on rose gold, each part one alloy fired alone, is not yet confirmed by the maker (maker question 2).",
-          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2).",
-          "No images yet: the reference hero and 10 sales frames are generated in Higgsfield after the owner approves the prompts."
+          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2)."
         ],
         "etsyDraftCreationAuthorized": true,
         "livePublicationAuthorized": false,
         "authority": "Owner instruction 2026-10-09: an evil eye (nazar) model as 10 rings, 10 necklaces and 10 bracelets, enamel and two-tone gold allowed; step 1 decisions answered 2026-10-09 (two-tone pair labels, bracelet basis (a) with the (b) fallback, the ten families as written)."
       },
-      "missingHero": true,
+      "missingHero": false,
       "variants": [
         {
           "sku": "BAS-EE-R02-10KY-US3",
@@ -6248,18 +6253,22 @@
           "price_cents": 139000
         }
       ],
-      "imageFile": "R02.jpg",
-      "imageUrl": null,
-      "imageSha256": null,
+      "imageFile": "R02/v1/01-hero.png",
+      "imageUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_193456_618b2c73-81e9-4ba1-b02e-6f457a56d240.png",
+      "imageSha256": "4a516a449b51a6f8f6f77af68cabd0d1d39138d29ecca472e10aabafa44ed3ba",
       "params": {
         "geo_g": 2.0,
         "ops": 0
       },
       "panelState": {
         "saved": true,
-        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "verifiedAt": "2026-10-09T20:19:43.854585+00:00",
         "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/c359abad-d443-5276-bbea-92e4c7e0e5d1",
-        "etsyLinked": false
+        "etsyLinked": false,
+        "etsyListingId": null,
+        "galleryCount": 10,
+        "galleryReview": "owner_review_pending",
+        "galleryManifest": "R02/v1/gallery-manifest.json"
       }
     },
     {
@@ -6345,14 +6354,13 @@
           "ESTIMATED PRICE: 2 x maker cost on the Christmas 2026 terms (14K 100 USD/g with labour, enamel 50, chain 130 or 100, assembly 50); the maker has not quoted these 30 designs.",
           "Grams are geometry estimates: no sample has been cast or weighed.",
           "Alloy/enamel firing qualification: enamel on 10K, on white gold and on rose gold, each part one alloy fired alone, is not yet confirmed by the maker (maker question 2).",
-          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2).",
-          "No images yet: the reference hero and 10 sales frames are generated in Higgsfield after the owner approves the prompts."
+          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2)."
         ],
         "etsyDraftCreationAuthorized": true,
         "livePublicationAuthorized": false,
         "authority": "Owner instruction 2026-10-09: an evil eye (nazar) model as 10 rings, 10 necklaces and 10 bracelets, enamel and two-tone gold allowed; step 1 decisions answered 2026-10-09 (two-tone pair labels, bracelet basis (a) with the (b) fallback, the ten families as written)."
       },
-      "missingHero": true,
+      "missingHero": false,
       "variants": [
         {
           "sku": "BAS-EE-N02-10KY-16IN",
@@ -6625,9 +6633,9 @@
           "price_cents": 78000
         }
       ],
-      "imageFile": "N02.jpg",
-      "imageUrl": null,
-      "imageSha256": null,
+      "imageFile": "N02/v1/01-hero.png",
+      "imageUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_193454_8da0be26-93d6-483a-bba4-42637b0881aa.png",
+      "imageSha256": "bdf7bb78d62b558eac9f8b5d438750624df610872a7fcf8f662d19ce20b87323",
       "params": {
         "geo_g": 0.8,
         "units": 1,
@@ -6635,9 +6643,13 @@
       },
       "panelState": {
         "saved": true,
-        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "verifiedAt": "2026-10-09T20:19:43.854585+00:00",
         "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/6d317f59-b6b7-5bed-820a-e17ad4ff26dd",
-        "etsyLinked": false
+        "etsyLinked": false,
+        "etsyListingId": null,
+        "galleryCount": 10,
+        "galleryReview": "owner_review_pending",
+        "galleryManifest": "N02/v1/gallery-manifest.json"
       }
     },
     {
@@ -6724,14 +6736,13 @@
           "ESTIMATED PRICE: 2 x maker cost on the Christmas 2026 terms (14K 100 USD/g with labour, enamel 50, chain 130 or 100, assembly 50); the maker has not quoted these 30 designs.",
           "Grams are geometry estimates: no sample has been cast or weighed.",
           "Alloy/enamel firing qualification: enamel on 10K, on white gold and on rose gold, each part one alloy fired alone, is not yet confirmed by the maker (maker question 2).",
-          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2).",
-          "No images yet: the reference hero and 10 sales frames are generated in Higgsfield after the owner approves the prompts."
+          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2)."
         ],
         "etsyDraftCreationAuthorized": true,
         "livePublicationAuthorized": false,
         "authority": "Owner instruction 2026-10-09: an evil eye (nazar) model as 10 rings, 10 necklaces and 10 bracelets, enamel and two-tone gold allowed; step 1 decisions answered 2026-10-09 (two-tone pair labels, bracelet basis (a) with the (b) fallback, the ten families as written)."
       },
-      "missingHero": true,
+      "missingHero": false,
       "variants": [
         {
           "sku": "BAS-EE-B02-10KY-6_5IN",
@@ -7058,9 +7069,9 @@
           "grams_basis_b": 4.63
         }
       ],
-      "imageFile": "B02.jpg",
-      "imageUrl": null,
-      "imageSha256": null,
+      "imageFile": "B02/v1/01-hero-corrected.png",
+      "imageUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_194039_b5a0c5d3-1580-41fd-ad3d-8fa8d09a151d.png",
+      "imageSha256": "6ebc4e5daaaad043b547d00f4e210a5db65f2c3dd7be1eaed8901be1e1111f65",
       "params": {
         "geo_g": 0.8,
         "units": 1,
@@ -7068,9 +7079,13 @@
       },
       "panelState": {
         "saved": true,
-        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "verifiedAt": "2026-10-09T20:19:43.854585+00:00",
         "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/5b7da53b-411f-5c09-b04c-5f1065013247",
-        "etsyLinked": false
+        "etsyLinked": false,
+        "etsyListingId": null,
+        "galleryCount": 10,
+        "galleryReview": "owner_review_pending",
+        "galleryManifest": "B02/v1/gallery-manifest.json"
       }
     },
     {
@@ -7154,14 +7169,13 @@
           "ESTIMATED PRICE: 2 x maker cost on the Christmas 2026 terms (14K 100 USD/g with labour, enamel 50, chain 130 or 100, assembly 50); the maker has not quoted these 30 designs.",
           "Grams are geometry estimates: no sample has been cast or weighed.",
           "Alloy/enamel firing qualification: enamel on 10K, on white gold and on rose gold, each part one alloy fired alone, is not yet confirmed by the maker (maker question 2).",
-          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2).",
-          "No images yet: the reference hero and 10 sales frames are generated in Higgsfield after the owner approves the prompts."
+          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2)."
         ],
         "etsyDraftCreationAuthorized": true,
         "livePublicationAuthorized": false,
         "authority": "Owner instruction 2026-10-09: an evil eye (nazar) model as 10 rings, 10 necklaces and 10 bracelets, enamel and two-tone gold allowed; step 1 decisions answered 2026-10-09 (two-tone pair labels, bracelet basis (a) with the (b) fallback, the ten families as written)."
       },
-      "missingHero": true,
+      "missingHero": false,
       "variants": [
         {
           "sku": "BAS-EE-R03-10KY-US3",
@@ -9594,18 +9608,22 @@
           "price_cents": 139000
         }
       ],
-      "imageFile": "R03.jpg",
-      "imageUrl": null,
-      "imageSha256": null,
+      "imageFile": "R03/v1/01-hero.png",
+      "imageUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_193455_fcafe63f-a64a-471a-ace2-469443133eee.png",
+      "imageSha256": "19c0c2003a4da728ea1b0ac245bf0eebe5460e7e0fb2e6092163d4723819f6d5",
       "params": {
         "geo_g": 2.3,
         "ops": 0
       },
       "panelState": {
         "saved": true,
-        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "verifiedAt": "2026-10-09T20:19:43.854585+00:00",
         "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/1c4d429f-d844-531e-90cb-39d493b98fc3",
-        "etsyLinked": false
+        "etsyLinked": false,
+        "etsyListingId": null,
+        "galleryCount": 10,
+        "galleryReview": "owner_review_pending",
+        "galleryManifest": "R03/v1/gallery-manifest.json"
       }
     },
     {
@@ -9691,14 +9709,13 @@
           "ESTIMATED PRICE: 2 x maker cost on the Christmas 2026 terms (14K 100 USD/g with labour, enamel 50, chain 130 or 100, assembly 50); the maker has not quoted these 30 designs.",
           "Grams are geometry estimates: no sample has been cast or weighed.",
           "Alloy/enamel firing qualification: enamel on 10K, on white gold and on rose gold, each part one alloy fired alone, is not yet confirmed by the maker (maker question 2).",
-          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2).",
-          "No images yet: the reference hero and 10 sales frames are generated in Higgsfield after the owner approves the prompts."
+          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2)."
         ],
         "etsyDraftCreationAuthorized": true,
         "livePublicationAuthorized": false,
         "authority": "Owner instruction 2026-10-09: an evil eye (nazar) model as 10 rings, 10 necklaces and 10 bracelets, enamel and two-tone gold allowed; step 1 decisions answered 2026-10-09 (two-tone pair labels, bracelet basis (a) with the (b) fallback, the ten families as written)."
       },
-      "missingHero": true,
+      "missingHero": false,
       "variants": [
         {
           "sku": "BAS-EE-N03-10KY-16IN",
@@ -9971,9 +9988,9 @@
           "price_cents": 78000
         }
       ],
-      "imageFile": "N03.jpg",
-      "imageUrl": null,
-      "imageSha256": null,
+      "imageFile": "N03/v1/01-hero.png",
+      "imageUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_193456_04128744-7296-4336-b7b7-271cca47930f.png",
+      "imageSha256": "019503242defc1c67cda02b33f97d9134f654df7e52741ab631a357072fef6c3",
       "params": {
         "geo_g": 1.0,
         "units": 1,
@@ -9981,9 +9998,13 @@
       },
       "panelState": {
         "saved": true,
-        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "verifiedAt": "2026-10-09T20:19:43.854585+00:00",
         "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/47c84c53-94bd-5936-a3ad-5d4bad10af98",
-        "etsyLinked": false
+        "etsyLinked": false,
+        "etsyListingId": null,
+        "galleryCount": 10,
+        "galleryReview": "owner_review_pending",
+        "galleryManifest": "N03/v1/gallery-manifest.json"
       }
     },
     {
@@ -10070,14 +10091,13 @@
           "ESTIMATED PRICE: 2 x maker cost on the Christmas 2026 terms (14K 100 USD/g with labour, enamel 50, chain 130 or 100, assembly 50); the maker has not quoted these 30 designs.",
           "Grams are geometry estimates: no sample has been cast or weighed.",
           "Alloy/enamel firing qualification: enamel on 10K, on white gold and on rose gold, each part one alloy fired alone, is not yet confirmed by the maker (maker question 2).",
-          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2).",
-          "No images yet: the reference hero and 10 sales frames are generated in Higgsfield after the owner approves the prompts."
+          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2)."
         ],
         "etsyDraftCreationAuthorized": true,
         "livePublicationAuthorized": false,
         "authority": "Owner instruction 2026-10-09: an evil eye (nazar) model as 10 rings, 10 necklaces and 10 bracelets, enamel and two-tone gold allowed; step 1 decisions answered 2026-10-09 (two-tone pair labels, bracelet basis (a) with the (b) fallback, the ten families as written)."
       },
-      "missingHero": true,
+      "missingHero": false,
       "variants": [
         {
           "sku": "BAS-EE-B03-10KY-6_5IN",
@@ -10404,9 +10424,9 @@
           "grams_basis_b": 4.63
         }
       ],
-      "imageFile": "B03.jpg",
-      "imageUrl": null,
-      "imageSha256": null,
+      "imageFile": "B03/v1/01-hero-corrected-2.png",
+      "imageUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_194654_26369509-32af-480a-8c1f-efbc7aaaad73.png",
+      "imageSha256": "da6e59afbe770303dccc979860b1fc4e41d75dd61368bbd3b0fc1186abd08bf7",
       "params": {
         "geo_g": 0.8,
         "units": 1,
@@ -10414,9 +10434,13 @@
       },
       "panelState": {
         "saved": true,
-        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "verifiedAt": "2026-10-09T20:19:43.854585+00:00",
         "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/a03cf6d5-973c-5048-bcae-213ca1e2cbd8",
-        "etsyLinked": false
+        "etsyLinked": false,
+        "etsyListingId": null,
+        "galleryCount": 10,
+        "galleryReview": "owner_review_pending",
+        "galleryManifest": "B03/v1/gallery-manifest.json"
       }
     },
     {
@@ -10498,14 +10522,13 @@
           "ESTIMATED PRICE: 2 x maker cost on the Christmas 2026 terms (14K 100 USD/g with labour, enamel 50, chain 130 or 100, assembly 50); the maker has not quoted these 30 designs.",
           "Grams are geometry estimates: no sample has been cast or weighed.",
           "Alloy/enamel firing qualification: enamel on 10K, on white gold and on rose gold, each part one alloy fired alone, is not yet confirmed by the maker (maker question 2).",
-          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2).",
-          "No images yet: the reference hero and 10 sales frames are generated in Higgsfield after the owner approves the prompts."
+          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2)."
         ],
         "etsyDraftCreationAuthorized": true,
         "livePublicationAuthorized": false,
         "authority": "Owner instruction 2026-10-09: an evil eye (nazar) model as 10 rings, 10 necklaces and 10 bracelets, enamel and two-tone gold allowed; step 1 decisions answered 2026-10-09 (two-tone pair labels, bracelet basis (a) with the (b) fallback, the ten families as written)."
       },
-      "missingHero": true,
+      "missingHero": false,
       "variants": [
         {
           "sku": "BAS-EE-R04-10KY-US3",
@@ -12938,18 +12961,22 @@
           "price_cents": 139000
         }
       ],
-      "imageFile": "R04.jpg",
-      "imageUrl": null,
-      "imageSha256": null,
+      "imageFile": "R04/v1/01-hero.png",
+      "imageUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_193459_41b2d1b5-1cd7-461b-aa1d-cdb81663af12.png",
+      "imageSha256": "c5ab2aa691606300135279e20071099490cc6af06453133f6844b3deca58f72c",
       "params": {
         "geo_g": 1.5,
         "ops": 0
       },
       "panelState": {
         "saved": true,
-        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "verifiedAt": "2026-10-09T20:19:43.854585+00:00",
         "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/2e63371c-92a7-5f9a-8dc3-1609ee936ba5",
-        "etsyLinked": false
+        "etsyLinked": false,
+        "etsyListingId": null,
+        "galleryCount": 10,
+        "galleryReview": "owner_review_pending",
+        "galleryManifest": "R04/v1/gallery-manifest.json"
       }
     },
     {
@@ -13034,14 +13061,13 @@
           "ESTIMATED PRICE: 2 x maker cost on the Christmas 2026 terms (14K 100 USD/g with labour, enamel 50, chain 130 or 100, assembly 50); the maker has not quoted these 30 designs.",
           "Grams are geometry estimates: no sample has been cast or weighed.",
           "Alloy/enamel firing qualification: enamel on 10K, on white gold and on rose gold, each part one alloy fired alone, is not yet confirmed by the maker (maker question 2).",
-          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2).",
-          "No images yet: the reference hero and 10 sales frames are generated in Higgsfield after the owner approves the prompts."
+          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2)."
         ],
         "etsyDraftCreationAuthorized": true,
         "livePublicationAuthorized": false,
         "authority": "Owner instruction 2026-10-09: an evil eye (nazar) model as 10 rings, 10 necklaces and 10 bracelets, enamel and two-tone gold allowed; step 1 decisions answered 2026-10-09 (two-tone pair labels, bracelet basis (a) with the (b) fallback, the ten families as written)."
       },
-      "missingHero": true,
+      "missingHero": false,
       "variants": [
         {
           "sku": "BAS-EE-N04-10KY-16IN",
@@ -13314,9 +13340,9 @@
           "price_cents": 144000
         }
       ],
-      "imageFile": "N04.jpg",
-      "imageUrl": null,
-      "imageSha256": null,
+      "imageFile": "N04/v1/01-hero.png",
+      "imageUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_193458_11441927-b989-40eb-9f33-feb706bed2de.png",
+      "imageSha256": "4b37d97d10ac63f25debcdc6a9fd4002d4a1145b6dd8b0a7bb0852bdb1179b33",
       "params": {
         "geo_g": 1.4,
         "units": 3,
@@ -13324,9 +13350,13 @@
       },
       "panelState": {
         "saved": true,
-        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "verifiedAt": "2026-10-09T20:19:43.854585+00:00",
         "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/dd3355b4-90c9-5058-bbe2-45985507a51c",
-        "etsyLinked": false
+        "etsyLinked": false,
+        "etsyListingId": null,
+        "galleryCount": 10,
+        "galleryReview": "owner_review_pending",
+        "galleryManifest": "N04/v1/gallery-manifest.json"
       }
     },
     {
@@ -13412,14 +13442,13 @@
           "ESTIMATED PRICE: 2 x maker cost on the Christmas 2026 terms (14K 100 USD/g with labour, enamel 50, chain 130 or 100, assembly 50); the maker has not quoted these 30 designs.",
           "Grams are geometry estimates: no sample has been cast or weighed.",
           "Alloy/enamel firing qualification: enamel on 10K, on white gold and on rose gold, each part one alloy fired alone, is not yet confirmed by the maker (maker question 2).",
-          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2).",
-          "No images yet: the reference hero and 10 sales frames are generated in Higgsfield after the owner approves the prompts."
+          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2)."
         ],
         "etsyDraftCreationAuthorized": true,
         "livePublicationAuthorized": false,
         "authority": "Owner instruction 2026-10-09: an evil eye (nazar) model as 10 rings, 10 necklaces and 10 bracelets, enamel and two-tone gold allowed; step 1 decisions answered 2026-10-09 (two-tone pair labels, bracelet basis (a) with the (b) fallback, the ten families as written)."
       },
-      "missingHero": true,
+      "missingHero": false,
       "variants": [
         {
           "sku": "BAS-EE-B04-10KY-6_5IN",
@@ -13746,9 +13775,9 @@
           "grams_basis_b": 7.19
         }
       ],
-      "imageFile": "B04.jpg",
-      "imageUrl": null,
-      "imageSha256": null,
+      "imageFile": "B04/v1/01-hero.png",
+      "imageUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_193459_b9061f31-2eda-4af6-85f8-daa037f3e099.png",
+      "imageSha256": "126cff777842ed60bcc6bf48aff3d23c88cce1d879d61b4868e8ee503c739ef1",
       "params": {
         "geo_g": 1.4,
         "units": 3,
@@ -13756,9 +13785,13 @@
       },
       "panelState": {
         "saved": true,
-        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "verifiedAt": "2026-10-09T20:19:43.854585+00:00",
         "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/c5fad23b-aeae-5f5c-922d-596a13e0a322",
-        "etsyLinked": false
+        "etsyLinked": false,
+        "etsyListingId": null,
+        "galleryCount": 10,
+        "galleryReview": "owner_review_pending",
+        "galleryManifest": "B04/v1/gallery-manifest.json"
       }
     },
     {
@@ -13842,14 +13875,13 @@
           "ESTIMATED PRICE: 2 x maker cost on the Christmas 2026 terms (14K 100 USD/g with labour, enamel 50, chain 130 or 100, assembly 50); the maker has not quoted these 30 designs.",
           "Grams are geometry estimates: no sample has been cast or weighed.",
           "Alloy/enamel firing qualification: enamel on 10K, on white gold and on rose gold, each part one alloy fired alone, is not yet confirmed by the maker (maker question 2).",
-          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2).",
-          "No images yet: the reference hero and 10 sales frames are generated in Higgsfield after the owner approves the prompts."
+          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2)."
         ],
         "etsyDraftCreationAuthorized": true,
         "livePublicationAuthorized": false,
         "authority": "Owner instruction 2026-10-09: an evil eye (nazar) model as 10 rings, 10 necklaces and 10 bracelets, enamel and two-tone gold allowed; step 1 decisions answered 2026-10-09 (two-tone pair labels, bracelet basis (a) with the (b) fallback, the ten families as written)."
       },
-      "missingHero": true,
+      "missingHero": false,
       "variants": [
         {
           "sku": "BAS-EE-R05-10KY-US3",
@@ -16282,18 +16314,22 @@
           "price_cents": 139000
         }
       ],
-      "imageFile": "R05.jpg",
-      "imageUrl": null,
-      "imageSha256": null,
+      "imageFile": "R05/v1/01-hero.png",
+      "imageUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_193458_6861860a-98cc-4db6-9a43-c4c5bf5454b2.png",
+      "imageSha256": "1c6dd12096a56899b6adb40cb91d91a132ee46a328c563facab14ef2eb33fd5f",
       "params": {
         "geo_g": 2.6,
         "ops": 0
       },
       "panelState": {
         "saved": true,
-        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "verifiedAt": "2026-10-09T20:19:43.854585+00:00",
         "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/450acc67-d0ba-5a66-a4ed-e703811487d1",
-        "etsyLinked": false
+        "etsyLinked": false,
+        "etsyListingId": null,
+        "galleryCount": 10,
+        "galleryReview": "owner_review_pending",
+        "galleryManifest": "R05/v1/gallery-manifest.json"
       }
     },
     {
@@ -16377,14 +16413,13 @@
           "ESTIMATED PRICE: 2 x maker cost on the Christmas 2026 terms (14K 100 USD/g with labour, enamel 50, chain 130 or 100, assembly 50); the maker has not quoted these 30 designs.",
           "Grams are geometry estimates: no sample has been cast or weighed.",
           "Alloy/enamel firing qualification: enamel on 10K, on white gold and on rose gold, each part one alloy fired alone, is not yet confirmed by the maker (maker question 2).",
-          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2).",
-          "No images yet: the reference hero and 10 sales frames are generated in Higgsfield after the owner approves the prompts."
+          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2)."
         ],
         "etsyDraftCreationAuthorized": true,
         "livePublicationAuthorized": false,
         "authority": "Owner instruction 2026-10-09: an evil eye (nazar) model as 10 rings, 10 necklaces and 10 bracelets, enamel and two-tone gold allowed; step 1 decisions answered 2026-10-09 (two-tone pair labels, bracelet basis (a) with the (b) fallback, the ten families as written)."
       },
-      "missingHero": true,
+      "missingHero": false,
       "variants": [
         {
           "sku": "BAS-EE-N05-10KY-16IN",
@@ -16657,9 +16692,9 @@
           "price_cents": 81000
         }
       ],
-      "imageFile": "N05.jpg",
-      "imageUrl": null,
-      "imageSha256": null,
+      "imageFile": "N05/v1/01-hero.png",
+      "imageUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_193459_5e865666-d4a0-4a8b-ae24-f4092c8e9fa7.png",
+      "imageSha256": "962aa793a218ada4b30dcb6c181c13921f5a5bcf7fe162710f50a99bfdee781f",
       "params": {
         "geo_g": 1.1,
         "units": 1,
@@ -16667,9 +16702,13 @@
       },
       "panelState": {
         "saved": true,
-        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "verifiedAt": "2026-10-09T20:19:43.854585+00:00",
         "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/1582ddae-efc2-5ad7-a973-c5a8b2f8fbd9",
-        "etsyLinked": false
+        "etsyLinked": false,
+        "etsyListingId": null,
+        "galleryCount": 10,
+        "galleryReview": "owner_review_pending",
+        "galleryManifest": "N05/v1/gallery-manifest.json"
       }
     },
     {
@@ -16756,14 +16795,13 @@
           "ESTIMATED PRICE: 2 x maker cost on the Christmas 2026 terms (14K 100 USD/g with labour, enamel 50, chain 130 or 100, assembly 50); the maker has not quoted these 30 designs.",
           "Grams are geometry estimates: no sample has been cast or weighed.",
           "Alloy/enamel firing qualification: enamel on 10K, on white gold and on rose gold, each part one alloy fired alone, is not yet confirmed by the maker (maker question 2).",
-          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2).",
-          "No images yet: the reference hero and 10 sales frames are generated in Higgsfield after the owner approves the prompts."
+          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2)."
         ],
         "etsyDraftCreationAuthorized": true,
         "livePublicationAuthorized": false,
         "authority": "Owner instruction 2026-10-09: an evil eye (nazar) model as 10 rings, 10 necklaces and 10 bracelets, enamel and two-tone gold allowed; step 1 decisions answered 2026-10-09 (two-tone pair labels, bracelet basis (a) with the (b) fallback, the ten families as written)."
       },
-      "missingHero": true,
+      "missingHero": false,
       "variants": [
         {
           "sku": "BAS-EE-B05-10KY-6_5IN",
@@ -17090,9 +17128,9 @@
           "grams_basis_b": 7.19
         }
       ],
-      "imageFile": "B05.jpg",
-      "imageUrl": null,
-      "imageSha256": null,
+      "imageFile": "B05/v1/01-hero.png",
+      "imageUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_193459_ea0c2f0a-6860-4c44-b265-783c91853b63.png",
+      "imageSha256": "707eec98a8bcae07d42271929724f70af8cb3dc08e45a14a8cc4b05c29be92cc",
       "params": {
         "geo_g": 1.4,
         "units": 3,
@@ -17100,9 +17138,13 @@
       },
       "panelState": {
         "saved": true,
-        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "verifiedAt": "2026-10-09T20:19:43.854585+00:00",
         "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/089966be-9230-5c29-8565-476003cc2de5",
-        "etsyLinked": false
+        "etsyLinked": false,
+        "etsyListingId": null,
+        "galleryCount": 10,
+        "galleryReview": "owner_review_pending",
+        "galleryManifest": "B05/v1/gallery-manifest.json"
       }
     },
     {
@@ -17189,14 +17231,13 @@
           "Grams are geometry estimates: no sample has been cast or weighed.",
           "TWO-TONE UNQUOTED: the maker has not priced two-tone work; 50 USD per operation is an UNCALIBRATED_ASSUMPTION and no two-tone piece goes live before the quote.",
           "Alloy/enamel firing qualification: enamel on 10K, on white gold and on rose gold, each part one alloy fired alone, is not yet confirmed by the maker (maker question 2).",
-          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2).",
-          "No images yet: the reference hero and 10 sales frames are generated in Higgsfield after the owner approves the prompts."
+          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2)."
         ],
         "etsyDraftCreationAuthorized": true,
         "livePublicationAuthorized": false,
         "authority": "Owner instruction 2026-10-09: an evil eye (nazar) model as 10 rings, 10 necklaces and 10 bracelets, enamel and two-tone gold allowed; step 1 decisions answered 2026-10-09 (two-tone pair labels, bracelet basis (a) with the (b) fallback, the ten families as written)."
       },
-      "missingHero": true,
+      "missingHero": false,
       "variants": [
         {
           "sku": "BAS-EE-R06-10KYW-US3",
@@ -19629,18 +19670,22 @@
           "price_cents": 149000
         }
       ],
-      "imageFile": "R06.jpg",
-      "imageUrl": null,
-      "imageSha256": null,
+      "imageFile": "R06/v1/01-hero.png",
+      "imageUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_193501_942965fa-ac24-485a-820f-8939e607b2be.png",
+      "imageSha256": "0a3748d3d6e893eaf074e6d450b777b57c40e4ad2469078fd3f163d573bb0a50",
       "params": {
         "geo_g": 3.1,
         "ops": 1
       },
       "panelState": {
         "saved": true,
-        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "verifiedAt": "2026-10-09T20:19:43.854585+00:00",
         "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/f7bc4aac-8fa1-5fe9-adb7-e626c2ed9786",
-        "etsyLinked": false
+        "etsyLinked": false,
+        "etsyListingId": null,
+        "galleryCount": 10,
+        "galleryReview": "owner_review_pending",
+        "galleryManifest": "R06/v1/gallery-manifest.json"
       }
     },
     {
@@ -19727,14 +19772,13 @@
           "Grams are geometry estimates: no sample has been cast or weighed.",
           "TWO-TONE UNQUOTED: the maker has not priced two-tone work; 50 USD per operation is an UNCALIBRATED_ASSUMPTION and no two-tone piece goes live before the quote.",
           "Alloy/enamel firing qualification: enamel on 10K, on white gold and on rose gold, each part one alloy fired alone, is not yet confirmed by the maker (maker question 2).",
-          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2).",
-          "No images yet: the reference hero and 10 sales frames are generated in Higgsfield after the owner approves the prompts."
+          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2)."
         ],
         "etsyDraftCreationAuthorized": true,
         "livePublicationAuthorized": false,
         "authority": "Owner instruction 2026-10-09: an evil eye (nazar) model as 10 rings, 10 necklaces and 10 bracelets, enamel and two-tone gold allowed; step 1 decisions answered 2026-10-09 (two-tone pair labels, bracelet basis (a) with the (b) fallback, the ten families as written)."
       },
-      "missingHero": true,
+      "missingHero": false,
       "variants": [
         {
           "sku": "BAS-EE-N06-10KYW-16IN",
@@ -20007,9 +20051,9 @@
           "price_cents": 102000
         }
       ],
-      "imageFile": "N06.jpg",
-      "imageUrl": null,
-      "imageSha256": null,
+      "imageFile": "N06/v1/01-hero.png",
+      "imageUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_193503_7e8b1896-e320-4d20-b56a-63c92142014b.png",
+      "imageSha256": "877b26b3a4877bf1454bf5b69cfe964b935c3d8337ab01452ef47adbfdb01d01",
       "params": {
         "geo_g": 1.5,
         "units": 1,
@@ -20017,9 +20061,13 @@
       },
       "panelState": {
         "saved": true,
-        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "verifiedAt": "2026-10-09T20:19:43.854585+00:00",
         "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/98c91a01-2a77-51e8-a29a-c36edec93335",
-        "etsyLinked": false
+        "etsyLinked": false,
+        "etsyListingId": null,
+        "galleryCount": 10,
+        "galleryReview": "owner_review_pending",
+        "galleryManifest": "N06/v1/gallery-manifest.json"
       }
     },
     {
@@ -20108,14 +20156,13 @@
           "Grams are geometry estimates: no sample has been cast or weighed.",
           "TWO-TONE UNQUOTED: the maker has not priced two-tone work; 50 USD per operation is an UNCALIBRATED_ASSUMPTION and no two-tone piece goes live before the quote.",
           "Alloy/enamel firing qualification: enamel on 10K, on white gold and on rose gold, each part one alloy fired alone, is not yet confirmed by the maker (maker question 2).",
-          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2).",
-          "No images yet: the reference hero and 10 sales frames are generated in Higgsfield after the owner approves the prompts."
+          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2)."
         ],
         "etsyDraftCreationAuthorized": true,
         "livePublicationAuthorized": false,
         "authority": "Owner instruction 2026-10-09: an evil eye (nazar) model as 10 rings, 10 necklaces and 10 bracelets, enamel and two-tone gold allowed; step 1 decisions answered 2026-10-09 (two-tone pair labels, bracelet basis (a) with the (b) fallback, the ten families as written)."
       },
-      "missingHero": true,
+      "missingHero": false,
       "variants": [
         {
           "sku": "BAS-EE-B06-10KYW-6_5IN",
@@ -20442,9 +20489,9 @@
           "grams_basis_b": 6.33
         }
       ],
-      "imageFile": "B06.jpg",
-      "imageUrl": null,
-      "imageSha256": null,
+      "imageFile": "B06/v1/01-hero.png",
+      "imageUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_193502_1382ae86-e95e-4275-9685-825c65cd0435.png",
+      "imageSha256": "da9ea0a863e1d071cf64568f0f05c3028b7f94f654f626bfdea0cf0a352c4497",
       "params": {
         "geo_g": 1.2,
         "units": 2,
@@ -20452,9 +20499,13 @@
       },
       "panelState": {
         "saved": true,
-        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "verifiedAt": "2026-10-09T20:19:43.854585+00:00",
         "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/21591017-0219-54e5-96dd-fbc0ee521e69",
-        "etsyLinked": false
+        "etsyLinked": false,
+        "etsyListingId": null,
+        "galleryCount": 10,
+        "galleryReview": "owner_review_pending",
+        "galleryManifest": "B06/v1/gallery-manifest.json"
       }
     },
     {
@@ -20539,14 +20590,13 @@
           "Grams are geometry estimates: no sample has been cast or weighed.",
           "TWO-TONE UNQUOTED: the maker has not priced two-tone work; 50 USD per operation is an UNCALIBRATED_ASSUMPTION and no two-tone piece goes live before the quote.",
           "Alloy/enamel firing qualification: enamel on 10K, on white gold and on rose gold, each part one alloy fired alone, is not yet confirmed by the maker (maker question 2).",
-          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2).",
-          "No images yet: the reference hero and 10 sales frames are generated in Higgsfield after the owner approves the prompts."
+          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2)."
         ],
         "etsyDraftCreationAuthorized": true,
         "livePublicationAuthorized": false,
         "authority": "Owner instruction 2026-10-09: an evil eye (nazar) model as 10 rings, 10 necklaces and 10 bracelets, enamel and two-tone gold allowed; step 1 decisions answered 2026-10-09 (two-tone pair labels, bracelet basis (a) with the (b) fallback, the ten families as written)."
       },
-      "missingHero": true,
+      "missingHero": false,
       "variants": [
         {
           "sku": "BAS-EE-R07-10KYW-US3",
@@ -22979,18 +23029,22 @@
           "price_cents": 149000
         }
       ],
-      "imageFile": "R07.jpg",
-      "imageUrl": null,
-      "imageSha256": null,
+      "imageFile": "R07/v1/01-hero.png",
+      "imageUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_193502_0a2da53e-86fe-4d79-8289-3b22d43144db.png",
+      "imageSha256": "ce8e1f49a9e3db18e16e5823d6f915ab13747c43f0433e7a9e484c30dd9584a9",
       "params": {
         "geo_g": 3.2,
         "ops": 1
       },
       "panelState": {
         "saved": true,
-        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "verifiedAt": "2026-10-09T20:19:43.854585+00:00",
         "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/1dcd9db5-88e0-5495-934c-6cf6a35dc1c6",
-        "etsyLinked": false
+        "etsyLinked": false,
+        "etsyListingId": null,
+        "galleryCount": 10,
+        "galleryReview": "owner_review_pending",
+        "galleryManifest": "R07/v1/gallery-manifest.json"
       }
     },
     {
@@ -23075,14 +23129,13 @@
           "Grams are geometry estimates: no sample has been cast or weighed.",
           "TWO-TONE UNQUOTED: the maker has not priced two-tone work; 50 USD per operation is an UNCALIBRATED_ASSUMPTION and no two-tone piece goes live before the quote.",
           "Alloy/enamel firing qualification: enamel on 10K, on white gold and on rose gold, each part one alloy fired alone, is not yet confirmed by the maker (maker question 2).",
-          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2).",
-          "No images yet: the reference hero and 10 sales frames are generated in Higgsfield after the owner approves the prompts."
+          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2)."
         ],
         "etsyDraftCreationAuthorized": true,
         "livePublicationAuthorized": false,
         "authority": "Owner instruction 2026-10-09: an evil eye (nazar) model as 10 rings, 10 necklaces and 10 bracelets, enamel and two-tone gold allowed; step 1 decisions answered 2026-10-09 (two-tone pair labels, bracelet basis (a) with the (b) fallback, the ten families as written)."
       },
-      "missingHero": true,
+      "missingHero": false,
       "variants": [
         {
           "sku": "BAS-EE-N07-10KYW-16IN",
@@ -23355,9 +23408,9 @@
           "price_cents": 105000
         }
       ],
-      "imageFile": "N07.jpg",
-      "imageUrl": null,
-      "imageSha256": null,
+      "imageFile": "N07/v1/01-hero.png",
+      "imageUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_193501_fe4eef71-dc5a-42ee-9658-75755747c229.png",
+      "imageSha256": "d58d0c443ce52a74f7b6f323b15a87525237a7e1ca50ce036bf14ad5a0f7dd93",
       "params": {
         "geo_g": 1.6,
         "units": 1,
@@ -23365,9 +23418,13 @@
       },
       "panelState": {
         "saved": true,
-        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "verifiedAt": "2026-10-09T20:19:43.854585+00:00",
         "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/492dd8d0-15fe-547f-8fe7-8be88183b0b5",
-        "etsyLinked": false
+        "etsyLinked": false,
+        "etsyListingId": null,
+        "galleryCount": 10,
+        "galleryReview": "owner_review_pending",
+        "galleryManifest": "N07/v1/gallery-manifest.json"
       }
     },
     {
@@ -23454,14 +23511,13 @@
           "Grams are geometry estimates: no sample has been cast or weighed.",
           "TWO-TONE UNQUOTED: the maker has not priced two-tone work; 50 USD per operation is an UNCALIBRATED_ASSUMPTION and no two-tone piece goes live before the quote.",
           "Alloy/enamel firing qualification: enamel on 10K, on white gold and on rose gold, each part one alloy fired alone, is not yet confirmed by the maker (maker question 2).",
-          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2).",
-          "No images yet: the reference hero and 10 sales frames are generated in Higgsfield after the owner approves the prompts."
+          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2)."
         ],
         "etsyDraftCreationAuthorized": true,
         "livePublicationAuthorized": false,
         "authority": "Owner instruction 2026-10-09: an evil eye (nazar) model as 10 rings, 10 necklaces and 10 bracelets, enamel and two-tone gold allowed; step 1 decisions answered 2026-10-09 (two-tone pair labels, bracelet basis (a) with the (b) fallback, the ten families as written)."
       },
-      "missingHero": true,
+      "missingHero": false,
       "variants": [
         {
           "sku": "BAS-EE-B07-10KYW-6_5IN",
@@ -23788,9 +23844,9 @@
           "grams_basis_b": 5.06
         }
       ],
-      "imageFile": "B07.jpg",
-      "imageUrl": null,
-      "imageSha256": null,
+      "imageFile": "B07/v1/01-hero.png",
+      "imageUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_193502_c768f799-69a5-4633-b009-5667f2f4d4c2.png",
+      "imageSha256": "6e29ab76e176e9d10c4023c09de9d32fc66be8bb677f1a30fec4de6cc23c4379",
       "params": {
         "geo_g": 0.9,
         "units": 1,
@@ -23798,9 +23854,13 @@
       },
       "panelState": {
         "saved": true,
-        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "verifiedAt": "2026-10-09T20:19:43.854585+00:00",
         "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/d7f7a42c-62b4-587c-b713-5e21df1f55ac",
-        "etsyLinked": false
+        "etsyLinked": false,
+        "etsyListingId": null,
+        "galleryCount": 10,
+        "galleryReview": "owner_review_pending",
+        "galleryManifest": "B07/v1/gallery-manifest.json"
       }
     },
     {
@@ -23879,14 +23939,13 @@
           "ESTIMATED PRICE: 2 x maker cost on the Christmas 2026 terms (14K 100 USD/g with labour, enamel 50, chain 130 or 100, assembly 50); the maker has not quoted these 30 designs.",
           "Grams are geometry estimates: no sample has been cast or weighed.",
           "TWO-TONE UNQUOTED: the maker has not priced two-tone work; 50 USD per operation is an UNCALIBRATED_ASSUMPTION and no two-tone piece goes live before the quote.",
-          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2).",
-          "No images yet: the reference hero and 10 sales frames are generated in Higgsfield after the owner approves the prompts."
+          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2)."
         ],
         "etsyDraftCreationAuthorized": true,
         "livePublicationAuthorized": false,
         "authority": "Owner instruction 2026-10-09: an evil eye (nazar) model as 10 rings, 10 necklaces and 10 bracelets, enamel and two-tone gold allowed; step 1 decisions answered 2026-10-09 (two-tone pair labels, bracelet basis (a) with the (b) fallback, the ten families as written)."
       },
-      "missingHero": true,
+      "missingHero": false,
       "variants": [
         {
           "sku": "BAS-EE-R08-10KYW-US3",
@@ -26319,18 +26378,22 @@
           "price_cents": 159000
         }
       ],
-      "imageFile": "R08.jpg",
-      "imageUrl": null,
-      "imageSha256": null,
+      "imageFile": "R08/v1/01-hero.png",
+      "imageUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_193504_530ce621-7017-4c71-9779-f61ef5bb85ba.png",
+      "imageSha256": "63efc67fec90c3238c9f6f522280add2945a211abdc107b4e147b06c796ae649",
       "params": {
         "geo_g": 2.6,
         "ops": 2
       },
       "panelState": {
         "saved": true,
-        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "verifiedAt": "2026-10-09T20:19:43.854585+00:00",
         "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/44c061db-f6fe-5d2f-a82d-0dcf90bac5db",
-        "etsyLinked": false
+        "etsyLinked": false,
+        "etsyListingId": null,
+        "galleryCount": 10,
+        "galleryReview": "owner_review_pending",
+        "galleryManifest": "R08/v1/gallery-manifest.json"
       }
     },
     {
@@ -26410,14 +26473,13 @@
           "ESTIMATED PRICE: 2 x maker cost on the Christmas 2026 terms (14K 100 USD/g with labour, enamel 50, chain 130 or 100, assembly 50); the maker has not quoted these 30 designs.",
           "Grams are geometry estimates: no sample has been cast or weighed.",
           "TWO-TONE UNQUOTED: the maker has not priced two-tone work; 50 USD per operation is an UNCALIBRATED_ASSUMPTION and no two-tone piece goes live before the quote.",
-          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2).",
-          "No images yet: the reference hero and 10 sales frames are generated in Higgsfield after the owner approves the prompts."
+          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2)."
         ],
         "etsyDraftCreationAuthorized": true,
         "livePublicationAuthorized": false,
         "authority": "Owner instruction 2026-10-09: an evil eye (nazar) model as 10 rings, 10 necklaces and 10 bracelets, enamel and two-tone gold allowed; step 1 decisions answered 2026-10-09 (two-tone pair labels, bracelet basis (a) with the (b) fallback, the ten families as written)."
       },
-      "missingHero": true,
+      "missingHero": false,
       "variants": [
         {
           "sku": "BAS-EE-N08-10KYW-16IN",
@@ -26690,9 +26752,9 @@
           "price_cents": 88000
         }
       ],
-      "imageFile": "N08.jpg",
-      "imageUrl": null,
-      "imageSha256": null,
+      "imageFile": "N08/v1/01-hero.png",
+      "imageUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_193505_f5bc2baa-4e35-4e7c-918f-0955cb89a12b.png",
+      "imageSha256": "fbb0823e10a9d7c67b38a4568f1bd2d102d9c9facd0523e2bc46626b342fca09",
       "params": {
         "geo_g": 0.4,
         "units": 1,
@@ -26700,9 +26762,13 @@
       },
       "panelState": {
         "saved": true,
-        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "verifiedAt": "2026-10-09T20:19:43.854585+00:00",
         "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/603813c5-3a1a-5530-af7c-57bdb3757ef8",
-        "etsyLinked": false
+        "etsyLinked": false,
+        "etsyListingId": null,
+        "galleryCount": 10,
+        "galleryReview": "owner_review_pending",
+        "galleryManifest": "N08/v1/gallery-manifest.json"
       }
     },
     {
@@ -26782,14 +26848,13 @@
           "ESTIMATED PRICE: 2 x maker cost on the Christmas 2026 terms (14K 100 USD/g with labour, enamel 50, chain 130 or 100, assembly 50); the maker has not quoted these 30 designs.",
           "Grams are geometry estimates: no sample has been cast or weighed.",
           "TWO-TONE UNQUOTED: the maker has not priced two-tone work; 50 USD per operation is an UNCALIBRATED_ASSUMPTION and no two-tone piece goes live before the quote.",
-          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2).",
-          "No images yet: the reference hero and 10 sales frames are generated in Higgsfield after the owner approves the prompts."
+          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2)."
         ],
         "etsyDraftCreationAuthorized": true,
         "livePublicationAuthorized": false,
         "authority": "Owner instruction 2026-10-09: an evil eye (nazar) model as 10 rings, 10 necklaces and 10 bracelets, enamel and two-tone gold allowed; step 1 decisions answered 2026-10-09 (two-tone pair labels, bracelet basis (a) with the (b) fallback, the ten families as written)."
       },
-      "missingHero": true,
+      "missingHero": false,
       "variants": [
         {
           "sku": "BAS-EE-B08-10KYW-6_5IN",
@@ -27116,9 +27181,9 @@
           "grams_basis_b": 4.39
         }
       ],
-      "imageFile": "B08.jpg",
-      "imageUrl": null,
-      "imageSha256": null,
+      "imageFile": "B08/v1/01-hero.png",
+      "imageUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_193505_09922336-242d-4d08-b307-6327dc435e96.png",
+      "imageSha256": "17d6e2ef5ebb1aceff599523b56b110726e4244981a30dab10505d674f0dfce3",
       "params": {
         "geo_g": 3.6,
         "ops": 2,
@@ -27126,9 +27191,13 @@
       },
       "panelState": {
         "saved": true,
-        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "verifiedAt": "2026-10-09T20:19:43.854585+00:00",
         "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/384c8b09-841d-5d95-b958-19accdc4e9b1",
-        "etsyLinked": false
+        "etsyLinked": false,
+        "etsyListingId": null,
+        "galleryCount": 10,
+        "galleryReview": "owner_review_pending",
+        "galleryManifest": "B08/v1/gallery-manifest.json"
       }
     },
     {
@@ -27210,14 +27279,13 @@
           "ESTIMATED PRICE: 2 x maker cost on the Christmas 2026 terms (14K 100 USD/g with labour, enamel 50, chain 130 or 100, assembly 50); the maker has not quoted these 30 designs.",
           "Grams are geometry estimates: no sample has been cast or weighed.",
           "Alloy/enamel firing qualification: enamel on 10K, on white gold and on rose gold, each part one alloy fired alone, is not yet confirmed by the maker (maker question 2).",
-          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2).",
-          "No images yet: the reference hero and 10 sales frames are generated in Higgsfield after the owner approves the prompts."
+          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2)."
         ],
         "etsyDraftCreationAuthorized": true,
         "livePublicationAuthorized": false,
         "authority": "Owner instruction 2026-10-09: an evil eye (nazar) model as 10 rings, 10 necklaces and 10 bracelets, enamel and two-tone gold allowed; step 1 decisions answered 2026-10-09 (two-tone pair labels, bracelet basis (a) with the (b) fallback, the ten families as written)."
       },
-      "missingHero": true,
+      "missingHero": false,
       "variants": [
         {
           "sku": "BAS-EE-R09-10KY-US3",
@@ -29650,18 +29718,22 @@
           "price_cents": 139000
         }
       ],
-      "imageFile": "R09.jpg",
-      "imageUrl": null,
-      "imageSha256": null,
+      "imageFile": "R09/v1/01-hero.png",
+      "imageUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_193505_f17339d5-989b-4cf5-96c6-6717ebd39999.png",
+      "imageSha256": "7cf6c98918a3fe76c1969f1a6aa59c4344d72f5efdc3056b8cf481a330d32fed",
       "params": {
         "geo_g": 2.0,
         "ops": 0
       },
       "panelState": {
         "saved": true,
-        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "verifiedAt": "2026-10-09T20:19:43.854585+00:00",
         "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/b48121fe-2904-5de0-8763-1e833bb08d9d",
-        "etsyLinked": false
+        "etsyLinked": false,
+        "etsyListingId": null,
+        "galleryCount": 10,
+        "galleryReview": "owner_review_pending",
+        "galleryManifest": "R09/v1/gallery-manifest.json"
       }
     },
     {
@@ -29743,14 +29815,13 @@
           "ESTIMATED PRICE: 2 x maker cost on the Christmas 2026 terms (14K 100 USD/g with labour, enamel 50, chain 130 or 100, assembly 50); the maker has not quoted these 30 designs.",
           "Grams are geometry estimates: no sample has been cast or weighed.",
           "Alloy/enamel firing qualification: enamel on 10K, on white gold and on rose gold, each part one alloy fired alone, is not yet confirmed by the maker (maker question 2).",
-          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2).",
-          "No images yet: the reference hero and 10 sales frames are generated in Higgsfield after the owner approves the prompts."
+          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2)."
         ],
         "etsyDraftCreationAuthorized": true,
         "livePublicationAuthorized": false,
         "authority": "Owner instruction 2026-10-09: an evil eye (nazar) model as 10 rings, 10 necklaces and 10 bracelets, enamel and two-tone gold allowed; step 1 decisions answered 2026-10-09 (two-tone pair labels, bracelet basis (a) with the (b) fallback, the ten families as written)."
       },
-      "missingHero": true,
+      "missingHero": false,
       "variants": [
         {
           "sku": "BAS-EE-N09-10KY-16IN",
@@ -30023,9 +30094,9 @@
           "price_cents": 84000
         }
       ],
-      "imageFile": "N09.jpg",
-      "imageUrl": null,
-      "imageSha256": null,
+      "imageFile": "N09/v1/01-hero.png",
+      "imageUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_193505_c67e623a-d21a-4336-9c64-25a7608d610f.png",
+      "imageSha256": "237e6208e55c397c327f35756e406ee560631fda8ad0ef63ccf842cc0045e16e",
       "params": {
         "geo_g": 1.2,
         "units": 1,
@@ -30033,9 +30104,13 @@
       },
       "panelState": {
         "saved": true,
-        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "verifiedAt": "2026-10-09T20:19:43.854585+00:00",
         "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/b3f96af3-f455-57d0-8a8d-329682cf3ac2",
-        "etsyLinked": false
+        "etsyLinked": false,
+        "etsyListingId": null,
+        "galleryCount": 10,
+        "galleryReview": "owner_review_pending",
+        "galleryManifest": "N09/v1/gallery-manifest.json"
       }
     },
     {
@@ -30120,14 +30195,13 @@
           "ESTIMATED PRICE: 2 x maker cost on the Christmas 2026 terms (14K 100 USD/g with labour, enamel 50, chain 130 or 100, assembly 50); the maker has not quoted these 30 designs.",
           "Grams are geometry estimates: no sample has been cast or weighed.",
           "Alloy/enamel firing qualification: enamel on 10K, on white gold and on rose gold, each part one alloy fired alone, is not yet confirmed by the maker (maker question 2).",
-          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2).",
-          "No images yet: the reference hero and 10 sales frames are generated in Higgsfield after the owner approves the prompts."
+          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2)."
         ],
         "etsyDraftCreationAuthorized": true,
         "livePublicationAuthorized": false,
         "authority": "Owner instruction 2026-10-09: an evil eye (nazar) model as 10 rings, 10 necklaces and 10 bracelets, enamel and two-tone gold allowed; step 1 decisions answered 2026-10-09 (two-tone pair labels, bracelet basis (a) with the (b) fallback, the ten families as written)."
       },
-      "missingHero": true,
+      "missingHero": false,
       "variants": [
         {
           "sku": "BAS-EE-B09-10KY-6_5IN",
@@ -30454,9 +30528,9 @@
           "grams_basis_b": 4.63
         }
       ],
-      "imageFile": "B09.jpg",
-      "imageUrl": null,
-      "imageSha256": null,
+      "imageFile": "B09/v1/01-hero.png",
+      "imageUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_193505_d3abc8bb-4c97-45c9-bb7c-905d1cecaf07.png",
+      "imageSha256": "d6bf18ee89b87ee6f515a27e9de0559976fba521483a03d2c4f9858e2a9e8e12",
       "params": {
         "geo_g": 0.8,
         "units": 1,
@@ -30464,9 +30538,13 @@
       },
       "panelState": {
         "saved": true,
-        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "verifiedAt": "2026-10-09T20:19:43.854585+00:00",
         "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/d35d8178-effb-5ae5-80b8-58bedbe48e0d",
-        "etsyLinked": false
+        "etsyLinked": false,
+        "etsyListingId": null,
+        "galleryCount": 10,
+        "galleryReview": "owner_review_pending",
+        "galleryManifest": "B09/v1/gallery-manifest.json"
       }
     },
     {
@@ -30550,14 +30628,13 @@
           "ESTIMATED PRICE: 2 x maker cost on the Christmas 2026 terms (14K 100 USD/g with labour, enamel 50, chain 130 or 100, assembly 50); the maker has not quoted these 30 designs.",
           "Grams are geometry estimates: no sample has been cast or weighed.",
           "Alloy/enamel firing qualification: enamel on 10K, on white gold and on rose gold, each part one alloy fired alone, is not yet confirmed by the maker (maker question 2).",
-          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2).",
-          "No images yet: the reference hero and 10 sales frames are generated in Higgsfield after the owner approves the prompts."
+          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2)."
         ],
         "etsyDraftCreationAuthorized": true,
         "livePublicationAuthorized": false,
         "authority": "Owner instruction 2026-10-09: an evil eye (nazar) model as 10 rings, 10 necklaces and 10 bracelets, enamel and two-tone gold allowed; step 1 decisions answered 2026-10-09 (two-tone pair labels, bracelet basis (a) with the (b) fallback, the ten families as written)."
       },
-      "missingHero": true,
+      "missingHero": false,
       "variants": [
         {
           "sku": "BAS-EE-R10-10KY-US3",
@@ -32990,18 +33067,22 @@
           "price_cents": 139000
         }
       ],
-      "imageFile": "R10.jpg",
-      "imageUrl": null,
-      "imageSha256": null,
+      "imageFile": "R10/v1/01-hero-corrected.png",
+      "imageUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_194039_361c615d-042d-4191-9617-b2dbc8d787b3.png",
+      "imageSha256": "09f527d7d235a32b1485c36d8f646d8c9af50fe4c4627616a27d7b3968f63529",
       "params": {
         "geo_g": 1.2,
         "ops": 0
       },
       "panelState": {
         "saved": true,
-        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "verifiedAt": "2026-10-09T20:19:43.854585+00:00",
         "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/538c4de0-c001-5d9b-9c40-080d652a08db",
-        "etsyLinked": false
+        "etsyLinked": false,
+        "etsyListingId": null,
+        "galleryCount": 10,
+        "galleryReview": "owner_review_pending",
+        "galleryManifest": "R10/v1/gallery-manifest.json"
       }
     },
     {
@@ -33087,14 +33168,13 @@
           "ESTIMATED PRICE: 2 x maker cost on the Christmas 2026 terms (14K 100 USD/g with labour, enamel 50, chain 130 or 100, assembly 50); the maker has not quoted these 30 designs.",
           "Grams are geometry estimates: no sample has been cast or weighed.",
           "Alloy/enamel firing qualification: enamel on 10K, on white gold and on rose gold, each part one alloy fired alone, is not yet confirmed by the maker (maker question 2).",
-          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2).",
-          "No images yet: the reference hero and 10 sales frames are generated in Higgsfield after the owner approves the prompts."
+          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2)."
         ],
         "etsyDraftCreationAuthorized": true,
         "livePublicationAuthorized": false,
         "authority": "Owner instruction 2026-10-09: an evil eye (nazar) model as 10 rings, 10 necklaces and 10 bracelets, enamel and two-tone gold allowed; step 1 decisions answered 2026-10-09 (two-tone pair labels, bracelet basis (a) with the (b) fallback, the ten families as written)."
       },
-      "missingHero": true,
+      "missingHero": false,
       "variants": [
         {
           "sku": "BAS-EE-N10-10KY-16IN",
@@ -33367,9 +33447,9 @@
           "price_cents": 94000
         }
       ],
-      "imageFile": "N10.jpg",
-      "imageUrl": null,
-      "imageSha256": null,
+      "imageFile": "N10/v1/01-hero-corrected-3.png",
+      "imageUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_195430_9bca0677-e95c-482a-a125-1e81c9e14fca.png",
+      "imageSha256": "e091dd71709167d0ba40c338c269b74f8fb922398f31ac887f343dd4f2081195",
       "params": {
         "geo_g": 1.2,
         "units": 1,
@@ -33377,9 +33457,13 @@
       },
       "panelState": {
         "saved": true,
-        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "verifiedAt": "2026-10-09T20:19:43.854585+00:00",
         "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/a8455679-9e39-5fdd-b908-f2e3859aa0f3",
-        "etsyLinked": false
+        "etsyLinked": false,
+        "etsyListingId": null,
+        "galleryCount": 10,
+        "galleryReview": "owner_review_pending",
+        "galleryManifest": "N10/v1/gallery-manifest.json"
       }
     },
     {
@@ -33466,14 +33550,13 @@
           "ESTIMATED PRICE: 2 x maker cost on the Christmas 2026 terms (14K 100 USD/g with labour, enamel 50, chain 130 or 100, assembly 50); the maker has not quoted these 30 designs.",
           "Grams are geometry estimates: no sample has been cast or weighed.",
           "Alloy/enamel firing qualification: enamel on 10K, on white gold and on rose gold, each part one alloy fired alone, is not yet confirmed by the maker (maker question 2).",
-          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2).",
-          "No images yet: the reference hero and 10 sales frames are generated in Higgsfield after the owner approves the prompts."
+          "White gold plating unconfirmed: the copy says white gold, not rhodium plated; the maker has not yet confirmed unplated palladium white for every white part (maker question 2)."
         ],
         "etsyDraftCreationAuthorized": true,
         "livePublicationAuthorized": false,
         "authority": "Owner instruction 2026-10-09: an evil eye (nazar) model as 10 rings, 10 necklaces and 10 bracelets, enamel and two-tone gold allowed; step 1 decisions answered 2026-10-09 (two-tone pair labels, bracelet basis (a) with the (b) fallback, the ten families as written)."
       },
-      "missingHero": true,
+      "missingHero": false,
       "variants": [
         {
           "sku": "BAS-EE-B10-10KY-6_5IN",
@@ -33800,9 +33883,9 @@
           "grams_basis_b": 6.33
         }
       ],
-      "imageFile": "B10.jpg",
-      "imageUrl": null,
-      "imageSha256": null,
+      "imageFile": "B10/v1/01-hero.png",
+      "imageUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_193508_953c0a18-c175-4f96-acf8-13b4dc9a1044.png",
+      "imageSha256": "33f56efa3e9713499a1a993f6e821f107b42656fe99f272ac2dd82406ce1e8b7",
       "params": {
         "geo_g": 1.2,
         "units": 1,
@@ -33810,9 +33893,13 @@
       },
       "panelState": {
         "saved": true,
-        "verifiedAt": "2026-10-09T18:37:55.982198+00:00",
+        "verifiedAt": "2026-10-09T20:19:43.854585+00:00",
         "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/2cf81e25-903b-50b3-8844-3298e8a746cb",
-        "etsyLinked": false
+        "etsyLinked": false,
+        "etsyListingId": null,
+        "galleryCount": 10,
+        "galleryReview": "owner_review_pending",
+        "galleryManifest": "B10/v1/gallery-manifest.json"
       }
     }
   ]
