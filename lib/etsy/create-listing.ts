@@ -15,7 +15,7 @@ import { DEFAULT_PERSONALIZATION_QUESTIONS } from "@/lib/etsy/personalization";
  * yayınlanmaz) listing açılır. Akış:
  *   1. createListing (POST, form-encoded): başlık, temiz açıklama, tag/materyal,
  *      çapa fiyat (en düşük varyant), wedding band ise 30 karakterlik iç gravür.
- *   2. Envanter PUT: DEĞİŞEN property'ler custom slot 513/514'e; kullanılan eksenler
+ *   2. Envanter PUT: DEĞİŞEN property'ler custom slot 513/514/516'e; kullanılan eksenler
  *      fiyat taşır (price_on_property = kullanılan slotlar); fiyat/adet/sku per
  *      offering panel varyantlarından. Sabit property'ler açıklamada kalır.
  *   3. Görseller: kapak (products.image_url) + panel galerisi (listing_images)
@@ -35,9 +35,8 @@ import { DEFAULT_PERSONALIZATION_QUESTIONS } from "@/lib/etsy/personalization";
  *     güncel seller taxonomy ağacından doğru düğüm çözülür. Bir bileklik asla
  *     Wedding Bands düğümüne gönderilmez.
  *  C. Kişiselleştirme: yalnız wedding band'lerde iç gravür soruları eklenir.
- *  D. Varyasyon eşleme: Etsy en fazla 2 custom variation ekseni kabul eder →
- *     DEĞİŞEN ilk 2 property slot 513/514'e; 2'den fazla değişen varsa (nadir)
- *     kalanı açıklamaya not düşülür (canlıda uyarı olarak döneriz).
+ *  D. Üç varyasyon ekseni 513/514/516 slotlarına eşlenir. Fazlası
+ *     seçenek kaybını önlemek için Etsy'ye yazmadan reddedilir.
  *  E. price_on_property: her tam kombinasyon benzersiz fiyat taşıdığından
  *     kullanılan TÜM variation slotları price_on_property'e girer (script deseni).
  *     Etsy, listelenen property'lerin gerçekten variation olmasını ister — sabit
@@ -51,8 +50,8 @@ import { DEFAULT_PERSONALIZATION_QUESTIONS } from "@/lib/etsy/personalization";
  *     taslak etsy_listing_id'yi kilitleyip yeniden denemeyi de engellerdi.
  */
 
-/** Etsy custom variation slot id'leri (en fazla iki eksen). */
-const CUSTOM_SLOT_IDS = [513, 514] as const;
+/** https://developers.etsy.com/documentation/tutorials/third-variation/ */
+const CUSTOM_SLOT_IDS = [513, 514, 516] as const;
 
 /**
  * Kargo paketi ölçüleri — küçük mücevher kutusu + koruyucu zarf.
@@ -354,10 +353,10 @@ function sanitizeMaterials(materials: string[] | null): string[] {
 
 /**
  * Varyasyon eşleme planı: hangi property'ler DEĞİŞİYOR (variation ekseni) →
- * custom slot 513/514; hangileri SABİT → açıklamaya not.
+ * custom slot 513/514/516; hangileri SABİT → açıklamaya not.
  */
 interface VariationPlan {
-  /** Değişen property adları (en çok 2 — slot sırasıyla). */
+  /** Değişen property adları (en çok 3 — slot sırasıyla). */
   varyingNames: string[];
   /** Slota sığmayan fazladan değişen property adları (uyarı). */
   overflowNames: string[];
@@ -365,7 +364,7 @@ interface VariationPlan {
   constants: Map<string, string>;
 }
 
-function buildVariationPlan(variants: DraftVariant[]): VariationPlan {
+export function buildVariationPlan(variants: DraftVariant[]): VariationPlan {
   const maps = variants.map(variantPropMap);
   // Tüm property adlarını topla.
   const names = new Set<string>();
@@ -417,6 +416,40 @@ export function prepareVariantsForEtsy(
   }));
 }
 
+/** Pure inventory mapping, shared with regression checks for all 225 ring options. */
+export function buildDraftInventoryProducts(
+  variants: DraftVariant[],
+  plan: VariationPlan,
+  anchorCents: number,
+  listingQuantity: number,
+  readinessStateId: number,
+) {
+  return variants.map((v) => {
+    const pm = variantPropMap(v);
+    const property_values = plan.varyingNames.map((name, i) => ({
+      property_id: CUSTOM_SLOT_IDS[i],
+      property_name: name,
+      // Değeri olmayan varyantta "—" placeholder (Etsy boş değer reddeder).
+      values: [pm.get(name) || "—"],
+    }));
+    const offeringCents = v.price_cents ?? anchorCents;
+    return {
+      sku: v.sku ?? "",
+      property_values,
+      offerings: [
+        {
+          price: offeringCents / 100,
+          quantity: v.quantity ?? listingQuantity,
+          is_enabled: true,
+          // Etsy 2025: her offering'in de işlem profili olmalı ("All
+          // offerings need readiness state") — listing-düzeyi yetmiyor.
+          readiness_state_id: readinessStateId,
+        },
+      ],
+    };
+  });
+}
+
 function variationHintForListing(kind: EtsyListingKind): string {
   if (kind === "wedding_band") return "Ring Size / Width";
   if (kind === "bracelet") return "Bracelet Length";
@@ -424,14 +457,13 @@ function variationHintForListing(kind: EtsyListingKind): string {
   return "Length / Metal";
 }
 
-/** Sabit + overflow property'leri açıklama sonuna okunur not olarak ekler. */
+/** Sabit property'leri açıklama sonuna okunur not olarak ekler. */
 function appendConstantsToDescription(
   base: string,
   plan: VariationPlan,
 ): string {
   const lines: string[] = [];
   for (const [name, value] of plan.constants) lines.push(`${name}: ${value}`);
-  for (const name of plan.overflowNames) lines.push(`${name}: varies`);
   if (lines.length === 0) return base;
   return `${base}\n\n${lines.join("\n")}`.trimEnd();
 }
@@ -497,9 +529,16 @@ export async function createDraftListingFromProduct(
     };
   }
   if (plan.overflowNames.length > 0) {
-    warnings.push(
-      `Etsy en fazla 2 varyasyon ekseni kabul eder; şu property'ler açıklamaya taşındı: ${plan.overflowNames.join(", ")}.`,
-    );
+    return {
+      ok: false,
+      step: "create",
+      error: `Etsy en fazla 3 varyasyon ekseni kabul eder. Fazladan eksenler: ${plan.overflowNames.join(", ")}. Seçenek kaybını önlemek için gönderim durduruldu.`,
+    };
+  }
+
+  // All axes control price/SKU, so Etsy's 400-product limit applies.
+  if (variants.length > 400) {
+    return { ok: false, step: "create", error: "Tüm eksenlere göre fiyat/SKU içeren Etsy envanteri en fazla 400 kombinasyon kabul eder." };
   }
 
   // Yüklenecek görseller: kapak (products.image_url) + panel galerisi
@@ -652,37 +691,16 @@ export async function createDraftListingFromProduct(
   if (plan.varyingNames.length > 0 && variants.length > 1) {
     try {
       const usedSlots = plan.varyingNames.map((_, i) => CUSTOM_SLOT_IDS[i]);
-      const inventoryProducts = variants.map((v) => {
-        const pm = variantPropMap(v);
-        const property_values = plan.varyingNames.map((name, i) => ({
-          property_id: CUSTOM_SLOT_IDS[i],
-          property_name: name,
-          // Değeri olmayan varyantta "—" placeholder (Etsy boş değer reddeder).
-          values: [pm.get(name) || "—"],
-        }));
-        const offeringCents = v.price_cents ?? anchorCents;
-        return {
-          sku: v.sku ?? "",
-          property_values,
-          offerings: [
-            {
-              price: offeringCents / 100,
-              quantity: v.quantity ?? listingQuantity,
-              is_enabled: true,
-              // Etsy 2025: her offering'in de işlem profili olmalı ("All
-              // offerings need readiness state") — listing-düzeyi yetmiyor.
-              readiness_state_id: profiles.readinessStateId,
-            },
-          ],
-        };
-      });
+      const inventoryProducts = buildDraftInventoryProducts(
+        variants, plan, anchorCents, listingQuantity, profiles.readinessStateId,
+      );
       // legacy=false: Etsy 2025 envanter modeli — offering-düzeyi
       // readiness_state_id'yi yalnız bu modda kabul eder (yoksa "All offerings
       // need readiness state"). readiness_state_on_property=[] → işlem profili
       // hiçbir property'ye göre DEĞİŞMEZ (tüm offering'ler aynı made-to-order).
       await client.request(
         "PUT",
-        etsyPaths.listingInventory(listingId) + "?legacy=false",
+        etsyPaths.listingInventory(listingId) + "?legacy=false&max_variations_supported=3",
         {
           products: inventoryProducts,
           // Her tam kombinasyon benzersiz fiyat/sku taşır → kullanılan tüm slotlar.
