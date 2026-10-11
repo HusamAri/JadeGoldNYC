@@ -503,3 +503,19 @@ test("Double Leaf stacking ring accepts karat, size and color without wedding-ba
   assert.match(validateVariationAxes(LISTING_PROTOCOLS.wedding_band, variants) ?? "", /Width ve Ring Size/);
   assert.equal(resolveListingProtocol({ product_type: "stacking_ring" })?.id, "stacking_ring");
 });
+
+
+test("fixed calendar date is required personalization, not a Width or rotating-ring option", () => {
+  const spec = resolveListingProtocol({ product_type: "ring", listing_metadata: { listingProtocol: "fixed_date_ring" } });
+  assert.ok(spec);
+  assert.equal(spec.id, "fixed_date_ring");
+  assert.equal(validateVariationAxes(spec, NECKLACE_VARIANTS), null);
+  assert.equal(spec.personalization?.length, 1);
+  const question = spec.personalization![0];
+  assert.equal(question.required, true);
+  assert.equal(question.question_type, "text_input");
+  assert.ok(question.question_text.length <= 45);
+  assert.ok((question.instructions ?? "").length <= 120);
+  assert.match(question.instructions ?? "", /fixed during production/);
+  assert.equal(spec.taxonomyRoot, "Jewelry");
+});

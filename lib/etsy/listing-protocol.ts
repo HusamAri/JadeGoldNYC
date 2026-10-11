@@ -55,6 +55,7 @@ export type ListingProtocolId =
   | "monogram_signet_ring"
   | "sculptural_ring"
   | "stacking_ring"
+  | "fixed_date_ring"
   | "pendant_necklace"
   | "chain_bracelet"
   | "cuff_bracelet"
@@ -172,6 +173,21 @@ export const LISTING_PROTOCOLS: Record<ListingProtocolId, ListingProtocolSpec> =
     personalization: MONOGRAM_SIGNET_PERSONALIZATION_QUESTIONS,
     parcel: RING_PARCEL,
   },
+  fixed_date_ring: {
+    id: "fixed_date_ring",
+    label: "Personalized calendar ring",
+    taxonomyNames: ["Statement Rings", "Rings"],
+    taxonomyRoot: "Jewelry",
+    requiredVariationAxes: [],
+    personalization: [{
+      question_type: "text_input",
+      question_text: "Which month and day should we mark?",
+      instructions: "Enter a valid month and day, e.g. July 06. The date is fixed during production. No year or inside engraving.",
+      required: true,
+      max_allowed_characters: 20,
+    }],
+    parcel: RING_PARCEL,
+  },
   stacking_ring: {
     id: "stacking_ring",
     label: "Stacking ring",
@@ -260,6 +276,7 @@ const PRODUCT_TYPE_PROTOCOL: Record<string, ListingProtocolId> = {
   monogram_signet_ring: "monogram_signet_ring",
   sculptural_ring: "sculptural_ring",
   stacking_ring: "stacking_ring",
+  fixed_date_ring: "fixed_date_ring",
   necklace: "pendant_necklace",
   pendant: "pendant_necklace",
   bracelet: "chain_bracelet",
