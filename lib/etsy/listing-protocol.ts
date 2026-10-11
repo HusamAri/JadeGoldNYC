@@ -54,6 +54,7 @@ export type ListingProtocolId =
   | "signet_ring"
   | "monogram_signet_ring"
   | "sculptural_ring"
+  | "stacking_ring"
   | "pendant_necklace"
   | "chain_bracelet"
   | "cuff_bracelet"
@@ -171,6 +172,16 @@ export const LISTING_PROTOCOLS: Record<ListingProtocolId, ListingProtocolSpec> =
     personalization: MONOGRAM_SIGNET_PERSONALIZATION_QUESTIONS,
     parcel: RING_PARCEL,
   },
+  stacking_ring: {
+    id: "stacking_ring",
+    label: "Stacking ring",
+    taxonomyNames: ["Stackable Rings", "Rings"],
+    taxonomyRoot: "Jewelry",
+    // A stackable ring need not offer multiple widths or engraving.
+    requiredVariationAxes: [],
+    personalization: null,
+    parcel: RING_PARCEL,
+  },
   sculptural_ring: {
     id: "sculptural_ring",
     label: "Sculptural ring",
@@ -248,6 +259,7 @@ const PRODUCT_TYPE_PROTOCOL: Record<string, ListingProtocolId> = {
   signet_ring: "signet_ring",
   monogram_signet_ring: "monogram_signet_ring",
   sculptural_ring: "sculptural_ring",
+  stacking_ring: "stacking_ring",
   necklace: "pendant_necklace",
   pendant: "pendant_necklace",
   bracelet: "chain_bracelet",

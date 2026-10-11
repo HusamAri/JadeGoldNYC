@@ -482,3 +482,24 @@ test("Evil eye seti: 30 önerinin hepsi tanımlı protokole çözülür, B08 kel
   // Açık beyan olmadan "bracelet" zincir bilekliktir; B08'in kelepçe oluşu metadata'dan gelir.
   assert.equal(resolveListingProtocol({ product_type: "bracelet" })?.id, "chain_bracelet");
 });
+
+
+test("Double Leaf stacking ring accepts karat, size and color without wedding-band width", () => {
+  const spec = resolveListingProtocol({
+    product_type: "ring",
+    listing_metadata: { listingProtocol: "stacking_ring" },
+  });
+  assert.ok(spec);
+  assert.equal(spec.id, "stacking_ring");
+  assert.equal(spec.personalization, null);
+  assert.equal(spec.taxonomyRoot, "Jewelry");
+  assert.deepEqual(spec.taxonomyNames, ["Stackable Rings", "Rings"]);
+  const variants: DraftVariant[] = [
+    { sku: "EON-DL-10K-YG-US030", properties: { "Gold Karat": "10K", "Ring Size": "US 3", "Gold Color": "Yellow Gold" }, price_cents: 95000, quantity: null },
+    { sku: "EON-DL-14K-WG-US070", properties: { "Gold Karat": "14K", "Ring Size": "US 7", "Gold Color": "White Gold" }, price_cents: 141500, quantity: null },
+    { sku: "EON-DL-18K-RG-US150", properties: { "Gold Karat": "18K", "Ring Size": "US 15", "Gold Color": "Rose Gold" }, price_cents: 217500, quantity: null },
+  ];
+  assert.equal(validateVariationAxes(spec, variants), null);
+  assert.match(validateVariationAxes(LISTING_PROTOCOLS.wedding_band, variants) ?? "", /Width ve Ring Size/);
+  assert.equal(resolveListingProtocol({ product_type: "stacking_ring" })?.id, "stacking_ring");
+});
