@@ -53,9 +53,12 @@ const LAPSE_DAYS = 90;
 const CANDIDATE_LIMIT = 500;
 const TIER_DISPLAY_LIMIT = 20;
 
+// Aralıklar [min, max) — etiketler exclusive üst sınırı yansıtır (180. gün
+// ikinci dilime düşer; 365. gün "365+" dilimine). Aksi halde "90-180" etiketi
+// 180. günü birinci dilimdeymiş gibi okunur (off-by-one).
 const WINBACK_TIERS: { label: string; min: number; max: number }[] = [
-  { label: "90-180 gün", min: 90, max: 180 },
-  { label: "180-365 gün", min: 180, max: 365 },
+  { label: "90–179 gün", min: 90, max: 180 },
+  { label: "180–364 gün", min: 180, max: 365 },
   { label: "365+ gün", min: 365, max: Infinity },
 ];
 
