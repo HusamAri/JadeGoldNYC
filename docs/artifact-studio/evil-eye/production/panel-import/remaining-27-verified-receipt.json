@@ -1,0 +1,79 @@
+{
+  "verified_at": "2026-10-09T20:19:43.854585+00:00",
+  "sourcePackage": "2026-10-09-artifact-evil-eye",
+  "org_id": "2c254edf-2119-4079-b09e-dc672e32c1f9",
+  "project": "sewbrqflcrlgczilrusw",
+  "sourceCommit": "d3ed7c1905dd841f979740ec1e44ab57885c5556",
+  "method": "Repository SQL file, Supabase SQL Editor, atomic insert-only transaction",
+  "preview": {
+    "target_models": 27,
+    "drafts": 27,
+    "etsy_linked": 0,
+    "existing_images": 0
+  },
+  "apply": {
+    "target_models": 27,
+    "drafts": 27,
+    "etsy_linked": 0,
+    "images": 270
+  },
+  "independentReadback": {
+    "models": 30,
+    "drafts": 30,
+    "images": 300,
+    "variants": 2970,
+    "etsy_linked": 3,
+    "allGalleryCounts": 10,
+    "allPositions": [
+      0,
+      9
+    ],
+    "allPositionsUnique": true,
+    "allCoversMatch": true
+  },
+  "targetGalleryHashes": {
+    "B02": "bce885e3605ddf8f1ece224a30dd4a09",
+    "B03": "6ce5bdf71e1882c03df00340b942886b",
+    "B04": "5b74f4e252d0eefe77bfa72ec86a2bc2",
+    "B05": "f11a20e59ad55f33b57bbe6fd3fc6e07",
+    "B06": "5850e2275d952924b25c12c61372c378",
+    "B07": "f1abe0a386e20a264450ac7e9907195b",
+    "B08": "aea79f8df7f4f742115541c16b3d0238",
+    "B09": "178b42bceb9f59f113e870a0163df122",
+    "B10": "0a971c4ba2fe0bafdfd5a27cc4d361ca",
+    "N02": "80890a00413ea3697c1c0fb9afcd05c3",
+    "N03": "6a726ce4ce6b7358761c3517c3d2a2c6",
+    "N04": "6d06cca8f590063cc9afd00448e05f0b",
+    "N05": "2e2a4d3882af0c5ea6ad5096b5d1a0b1",
+    "N06": "fe38ee65193ac05662b3d4e551386c9e",
+    "N07": "5c6581f564dcfe12484483b90e25a817",
+    "N08": "26187d3202ca6ad6aeacc7fae3d831d0",
+    "N09": "6b1cfd17a6f7b42978530897dc8249b9",
+    "N10": "9fe32bc7a6935624636e3d11d564aa6a",
+    "R02": "0a32497f8f0d46deffad9f0d8fdff1f0",
+    "R03": "3ad7cda4a888739c37c7cecabd54174b",
+    "R04": "abc73d6a380bbb7a0ee14224ed62eb27",
+    "R05": "ebd7ec8a163205bd462160ddbdcfd930",
+    "R06": "6871ef861d321b4ad9ad9815b8f8c346",
+    "R07": "314352ed5c2cceaf5e51efcb41c28d99",
+    "R08": "45e696c8e4e4cb6e624036e0010aac55",
+    "R09": "326382193511110bc48fdeaf819ad4c5",
+    "R10": "0e7585c0d98aff7a4eb55eed432cddb7"
+  },
+  "preExistingEtsyLinks": {
+    "B01": 4592082029,
+    "N01": 4592082893,
+    "R01": 4592096604
+  },
+  "etsyWritePerformed": false,
+  "livePublicationPerformed": false,
+  "panelVisualReadback": {
+    "model": "R02",
+    "sku": "BAS-EE-R02",
+    "draft": true,
+    "variants": 243,
+    "loadedImages": 10,
+    "naturalWidth": 2048,
+    "naturalHeight": 2048
+  }
+}

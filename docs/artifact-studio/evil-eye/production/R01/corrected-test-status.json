@@ -1,0 +1,13 @@
+{
+  "job_id": "3269ca51-84a4-4c6d-8ad5-1251f6313dc8",
+  "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261009_142208_3269ca51-84a4-4c6d-8ad5-1251f6313dc8.png",
+  "file": "R01/06-macro-corrected-test.png",
+  "dimensions": [
+    2048,
+    2048
+  ],
+  "sha256": "e80f91e03c1f525ac1918282ec95d78b943bc35b5128f71e24357de8534231c5",
+  "approval_scope": "Owner yes to one corrected macro test, 2 credits estimated",
+  "qa_status": "hold_for_owner_review",
+  "qa_note": "Metallic edge reflections improved. Broad annulus still reads pale/opaque compared with approved reference; not yet accepted as a sales image."
+}

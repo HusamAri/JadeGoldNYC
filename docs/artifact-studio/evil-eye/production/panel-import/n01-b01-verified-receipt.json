@@ -1,0 +1,20 @@
+{
+  "verified_at": "2026-10-09T18:51:40.720947+00:00",
+  "method": "atomic insert-only Supabase SQL transaction",
+  "rows": [
+    {
+      "sku": "BAS-EE-B01",
+      "status": "draft",
+      "etsy_listing_id": null,
+      "images": 10
+    },
+    {
+      "sku": "BAS-EE-N01",
+      "status": "draft",
+      "etsy_listing_id": null,
+      "images": 10
+    }
+  ],
+  "owner_approved": false,
+  "physical_dimensions_verified": false
+}

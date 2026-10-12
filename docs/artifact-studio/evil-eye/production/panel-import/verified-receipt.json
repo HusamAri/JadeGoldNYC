@@ -1,0 +1,36 @@
+{
+  "verified_at": "2026-10-09T18:37:55.982198+00:00",
+  "project": "sewbrqflcrlgczilrusw",
+  "org_id": "2c254edf-2119-4079-b09e-dc672e32c1f9",
+  "org_name": "by Artifact Studio Jewelry",
+  "source_package": "2026-10-09-artifact-evil-eye",
+  "method": "Supabase SQL Editor, atomic insert-only transaction",
+  "dry_run": {
+    "result": "DRY_RUN_NO_CHANGES",
+    "planned_models": 30,
+    "planned_variants": 2970,
+    "planned_images": 10,
+    "saved_models": 0,
+    "saved_variants": 0
+  },
+  "apply": {
+    "result": "APPLIED",
+    "saved_models": 30,
+    "saved_variants": 2970
+  },
+  "independent_readback": {
+    "models": 30,
+    "drafts": 30,
+    "etsy_linked": 0,
+    "variants": 2970,
+    "r01_images": 10
+  },
+  "panel_readback": {
+    "r01_sku": "BAS-EE-R01",
+    "status": "Taslak",
+    "variants": 243,
+    "gallery": 10,
+    "url": "https://amuletta.artifactstudio.info/tasarimlar/listing/a967293e-09e6-5d21-a7ba-cc7e9a0e98ba"
+  },
+  "pending": "29 model galleries pending; N01 first two references rejected for geometry. Prices and manufactured dimensions remain unverified."
+}
