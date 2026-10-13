@@ -1,0 +1,128 @@
+{
+ "ground": [
+  "dusk aubergine",
+  "#3B2433"
+ ],
+ "frames": [
+  {
+   "slot": "01",
+   "title": "Hero on a paper wave",
+   "model": "nano_banana_2",
+   "resolution": "2k",
+   "aspect_ratio": "1:1",
+   "count": 1,
+   "reference": null,
+   "prompt": "Etsy thumbnail hero: a sheet of dusk aubergine paper (#3B2433) curls in one soft wave across the top of the image over a floor of dusk aubergine paper one shade lighter; the necklace lies face up on the paper floor with the moth at the bottom and the chain leaving it as one single strand whose two halves run straight up and apart like the arms of a letter V and leave the image at the top edge, never doubled, never coiled; seen from slightly above, the moth in sharp focus at the centre with generous empty space around it, its open cells showing the paper through them, one clean soft shadow under the curl. The necklace: an openwork moth pendant 14 mm wide and 11 mm tall, seen from the front with its wings spread flat: the wings are drawn only as fine polished gold outlines 0.9 mm wide with open cells between a few thin gold veins, nothing filled in; the fore wings are broad with softly pointed tips, the hind wings smaller and rounded; a slim solid polished gold body runs down the centre; two short feathered antennae like tiny gold combs sweep back from the head, never thin stalks with round tips; a small smooth gold bail 3 mm tall is cast into the top of the head; the whole piece is flat and about 1 mm thick, with no stones and no enamel. No people and no hands in the image. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. The necklace must be an exact copy of the necklace in the reference image: same outline, same open cells and veins, same feathered antennae, same bail, same metal; do not redesign it, do not add stones, enamel, charms or a second pendant; take only the necklace from the reference, never its background, camera angle or framing. The chain is one single strand. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+  },
+  {
+   "slot": "02",
+   "title": "Open linen collar",
+   "model": "nano_banana_2",
+   "resolution": "2k",
+   "aspect_ratio": "1:1",
+   "count": 1,
+   "reference": "tight crop of the approved 01",
+   "prompt": "Worn portrait on a seamless dusk aubergine backdrop (#3B2433): she wears a loose linen shirt in a deeper shade of dusk aubergine, open at the neck. Exactly one necklace, worn by a woman with light warm skin, the moth resting flat on bare skin just below the collarbones; no earrings, no other necklace, no other jewelry; the top edge of the image cuts across the middle of the neck, so the chin, the lips and the face are outside the image. Straight-on; the pendant is 14 mm wide, about the width of a fingernail, never larger, on a fine 1.1 mm cable chain. The necklace: an openwork moth pendant 14 mm wide and 11 mm tall, seen from the front with its wings spread flat: the wings are drawn only as fine polished gold outlines 0.9 mm wide with open cells between a few thin gold veins, nothing filled in; the fore wings are broad with softly pointed tips, the hind wings smaller and rounded; a slim solid polished gold body runs down the centre; two short feathered antennae like tiny gold combs sweep back from the head, never thin stalks with round tips; a small smooth gold bail 3 mm tall is cast into the top of the head; the whole piece is flat and about 1 mm thick, with no stones and no enamel. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. Natural skin texture visible. The necklace must be an exact copy of the necklace in the reference image: same outline, same open cells and veins, same feathered antennae, same bail, same metal; do not redesign it, do not add stones, enamel, charms or a second pendant; take only the necklace from the reference, never its background, camera angle or framing. The chain is one single strand. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+  },
+  {
+   "slot": "03",
+   "title": "Silk neckline",
+   "model": "nano_banana_2",
+   "resolution": "2k",
+   "aspect_ratio": "1:1",
+   "count": 1,
+   "reference": "tight crop of the approved 01",
+   "prompt": "Evening look on a seamless dusk aubergine backdrop (#3B2433): a silk slip dress in dusk aubergine with a low square neckline. Exactly one necklace, worn by a woman with deep brown skin, the moth resting flat on bare skin above the neckline; no earrings, no other necklace, no other jewelry; the top edge of the image cuts across the middle of the neck, so the chin, the lips and the face are outside the image. Torso turned slightly to the left; the pendant is 14 mm wide, about the width of a fingernail, never larger, on a fine 1.1 mm cable chain. The necklace: an openwork moth pendant 14 mm wide and 11 mm tall, seen from the front with its wings spread flat: the wings are drawn only as fine polished gold outlines 0.9 mm wide with open cells between a few thin gold veins, nothing filled in; the fore wings are broad with softly pointed tips, the hind wings smaller and rounded; a slim solid polished gold body runs down the centre; two short feathered antennae like tiny gold combs sweep back from the head, never thin stalks with round tips; a small smooth gold bail 3 mm tall is cast into the top of the head; the whole piece is flat and about 1 mm thick, with no stones and no enamel. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. Natural skin texture visible. The necklace must be an exact copy of the necklace in the reference image: same outline, same open cells and veins, same feathered antennae, same bail, same metal; do not redesign it, do not add stones, enamel, charms or a second pendant; take only the necklace from the reference, never its background, camera angle or framing. The chain is one single strand. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+  },
+  {
+   "slot": "04",
+   "title": "Lying on linen",
+   "model": "nano_banana_2",
+   "resolution": "2k",
+   "aspect_ratio": "1:1",
+   "count": 1,
+   "reference": "tight crop of the approved 01",
+   "prompt": "Seen from directly above: she lies on her back on softly rumpled dusk aubergine linen (#3B2433), shoulders bare, arms relaxed at her sides. Exactly one necklace, worn by a woman with medium olive skin, the moth resting flat on her skin; no earrings, no other necklace, no other jewelry; the top edge of the image cuts across the middle of the neck, so the chin, the lips and the face are outside the image. The pendant is 14 mm wide, about the width of a fingernail, never larger, on a fine 1.1 mm cable chain. The necklace: an openwork moth pendant 14 mm wide and 11 mm tall, seen from the front with its wings spread flat: the wings are drawn only as fine polished gold outlines 0.9 mm wide with open cells between a few thin gold veins, nothing filled in; the fore wings are broad with softly pointed tips, the hind wings smaller and rounded; a slim solid polished gold body runs down the centre; two short feathered antennae like tiny gold combs sweep back from the head, never thin stalks with round tips; a small smooth gold bail 3 mm tall is cast into the top of the head; the whole piece is flat and about 1 mm thick, with no stones and no enamel. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. Natural skin texture visible. The necklace must be an exact copy of the necklace in the reference image: same outline, same open cells and veins, same feathered antennae, same bail, same metal; do not redesign it, do not add stones, enamel, charms or a second pendant; take only the necklace from the reference, never its background, camera angle or framing. The chain is one single strand. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+  },
+  {
+   "slot": "05",
+   "title": "Fingernail scale",
+   "model": "nano_banana_2",
+   "resolution": "2k",
+   "aspect_ratio": "1:1",
+   "count": 1,
+   "reference": "tight crop of the approved 01",
+   "prompt": "Scale shot on a seamless dusk aubergine backdrop (#3B2433): the tip of her right index finger rests on the collarbone a few millimetres from the moth, never covering it, so the moth can be compared with the fingernail; bare shoulders; closer than a portrait. Exactly one necklace, worn by a woman with fair skin, the moth resting flat on the collarbone; no earrings, no other necklace, no other jewelry; the top edge of the image cuts across the middle of the neck, so the chin, the lips and the face are outside the image. Close crop on the collarbones; the pendant is 14 mm wide, about the width of a fingernail, never larger, on a fine 1.1 mm cable chain. The necklace: an openwork moth pendant 14 mm wide and 11 mm tall, seen from the front with its wings spread flat: the wings are drawn only as fine polished gold outlines 0.9 mm wide with open cells between a few thin gold veins, nothing filled in; the fore wings are broad with softly pointed tips, the hind wings smaller and rounded; a slim solid polished gold body runs down the centre; two short feathered antennae like tiny gold combs sweep back from the head, never thin stalks with round tips; a small smooth gold bail 3 mm tall is cast into the top of the head; the whole piece is flat and about 1 mm thick, with no stones and no enamel. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. Natural skin texture visible. The necklace must be an exact copy of the necklace in the reference image: same outline, same open cells and veins, same feathered antennae, same bail, same metal; do not redesign it, do not add stones, enamel, charms or a second pendant; take only the necklace from the reference, never its background, camera angle or framing. The chain is one single strand. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+  },
+  {
+   "slot": "06",
+   "title": "Close detail on paper hills",
+   "model": "nano_banana_2",
+   "resolution": "2k",
+   "aspect_ratio": "1:1",
+   "count": 1,
+   "reference": "tight crop of the approved 01",
+   "prompt": "Close detail: the moth rests on the crest of layered curved paper cut-outs in graduated shades of dusk aubergine (#3B2433), like soft hills; the camera is only a few centimetres away, so the wing outlines, the open cells and the feathered antennae fill most of the image from edge to edge, the rest falling softly out of focus; one crisp highlight on the gold; no fabric, no wood, only the paper and the piece. The necklace: an openwork moth pendant 14 mm wide and 11 mm tall, seen from the front with its wings spread flat: the wings are drawn only as fine polished gold outlines 0.9 mm wide with open cells between a few thin gold veins, nothing filled in; the fore wings are broad with softly pointed tips, the hind wings smaller and rounded; a slim solid polished gold body runs down the centre; two short feathered antennae like tiny gold combs sweep back from the head, never thin stalks with round tips; a small smooth gold bail 3 mm tall is cast into the top of the head; the whole piece is flat and about 1 mm thick, with no stones and no enamel. No people and no hands in the image. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. The necklace must be an exact copy of the necklace in the reference image: same outline, same open cells and veins, same feathered antennae, same bail, same metal; do not redesign it, do not add stones, enamel, charms or a second pendant; take only the necklace from the reference, never its background, camera angle or framing. The chain is one single strand. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+  },
+  {
+   "slot": "07",
+   "title": "Dusk still life",
+   "model": "nano_banana_2",
+   "resolution": "2k",
+   "aspect_ratio": "1:1",
+   "count": 1,
+   "reference": "tight crop of the approved 01",
+   "prompt": "Paper sculpture still life: a wide ribbon of dusk aubergine paper (#3B2433) curls in one sweeping arc through the image; the necklace is draped over its crest so the chain hangs in a V and the moth hangs free at the lowest point, in sharp focus; below it on the curved paper floor, a short sprig of white night-blooming jasmine, small and secondary; hard directional light casts one long curved shadow; the necklace is the only jewelry in the image. The necklace: an openwork moth pendant 14 mm wide and 11 mm tall, seen from the front with its wings spread flat: the wings are drawn only as fine polished gold outlines 0.9 mm wide with open cells between a few thin gold veins, nothing filled in; the fore wings are broad with softly pointed tips, the hind wings smaller and rounded; a slim solid polished gold body runs down the centre; two short feathered antennae like tiny gold combs sweep back from the head, never thin stalks with round tips; a small smooth gold bail 3 mm tall is cast into the top of the head; the whole piece is flat and about 1 mm thick, with no stones and no enamel. No people and no hands in the image. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. The necklace must be an exact copy of the necklace in the reference image: same outline, same open cells and veins, same feathered antennae, same bail, same metal; do not redesign it, do not add stones, enamel, charms or a second pendant; take only the necklace from the reference, never its background, camera angle or framing. The chain is one single strand. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+  },
+  {
+   "slot": "08",
+   "title": "Gift box and card",
+   "model": "nano_banana_2",
+   "resolution": "2k",
+   "aspect_ratio": "1:1",
+   "count": 1,
+   "reference": "tight crop of the approved 01",
+   "prompt": "Gift and display: on a smooth semi-matte lacquered dusk aubergine surface (#3B2433) that shows no reflections, the necklace is draped over the ridge of a small plain white folded card, the moth hanging at the front; beside it a small square gift box wrapped in matte dusk aubergine paper, its lid off, lined with natural undyed linen, and a satin ribbon in a deeper shade of dusk aubergine curling loose across the surface; no logo and no text; the necklace appears only once. The necklace: an openwork moth pendant 14 mm wide and 11 mm tall, seen from the front with its wings spread flat: the wings are drawn only as fine polished gold outlines 0.9 mm wide with open cells between a few thin gold veins, nothing filled in; the fore wings are broad with softly pointed tips, the hind wings smaller and rounded; a slim solid polished gold body runs down the centre; two short feathered antennae like tiny gold combs sweep back from the head, never thin stalks with round tips; a small smooth gold bail 3 mm tall is cast into the top of the head; the whole piece is flat and about 1 mm thick, with no stones and no enamel. No people and no hands in the image. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. The necklace must be an exact copy of the necklace in the reference image: same outline, same open cells and veins, same feathered antennae, same bail, same metal; do not redesign it, do not add stones, enamel, charms or a second pendant; take only the necklace from the reference, never its background, camera angle or framing. The chain is one single strand. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+  },
+  {
+   "slot": "09",
+   "title": "Three gold colours",
+   "model": "nano_banana_2",
+   "resolution": "2k",
+   "aspect_ratio": "1:1",
+   "count": 1,
+   "reference": "tight crop of the approved 01",
+   "prompt": "Metal colour visualization on dusk aubergine paper (#3B2433) one shade lighter, a curl of dusk aubergine paper at the top edge: three identical copies of this exact necklace lie side by side, the moth of each at the bottom and its chain running straight up as one single strand, same size and same angle, with space between them so no two chains touch; the left copy in polished yellow gold, the centre copy in polished unplated white gold, a soft warm grey metal with mirror reflections, the right copy in polished rose gold, a soft pink gold; each copy is one single metal from end to end. A full-bleed photograph, no border, no inset. The necklace: an openwork moth pendant 14 mm wide and 11 mm tall, seen from the front with its wings spread flat: the wings are drawn only as fine polished gold outlines 0.9 mm wide with open cells between a few thin gold veins, nothing filled in; the fore wings are broad with softly pointed tips, the hind wings smaller and rounded; a slim solid polished gold body runs down the centre; two short feathered antennae like tiny gold combs sweep back from the head, never thin stalks with round tips; a small smooth gold bail 3 mm tall is cast into the top of the head; the whole piece is flat and about 1 mm thick, with no stones and no enamel. No people and no hands in the image. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. The necklace must be an exact copy of the necklace in the reference image: same outline, same open cells and veins, same feathered antennae, same bail, same metal; do not redesign it, do not add stones, enamel, charms or a second pendant; take only the necklace from the reference, never its background, camera angle or framing. The chain is one single strand. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+  },
+  {
+   "slot": "10",
+   "title": "Open blazer",
+   "model": "nano_banana_2",
+   "resolution": "2k",
+   "aspect_ratio": "1:1",
+   "count": 1,
+   "reference": "tight crop of the approved 01",
+   "prompt": "Evening detail on a seamless dusk aubergine backdrop (#3B2433): an open tailored blazer in a deeper shade of dusk aubergine over bare collarbones. Exactly one necklace, worn by a woman with warm tan skin, the moth resting flat at the centre of the open collar; no earrings, no other necklace, no other jewelry; the top edge of the image cuts across the middle of the neck, so the chin, the lips and the face are outside the image. The pendant is 14 mm wide, about the width of a fingernail, never larger, on a fine 1.1 mm cable chain. The necklace: an openwork moth pendant 14 mm wide and 11 mm tall, seen from the front with its wings spread flat: the wings are drawn only as fine polished gold outlines 0.9 mm wide with open cells between a few thin gold veins, nothing filled in; the fore wings are broad with softly pointed tips, the hind wings smaller and rounded; a slim solid polished gold body runs down the centre; two short feathered antennae like tiny gold combs sweep back from the head, never thin stalks with round tips; a small smooth gold bail 3 mm tall is cast into the top of the head; the whole piece is flat and about 1 mm thick, with no stones and no enamel. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. Natural skin texture visible. The necklace must be an exact copy of the necklace in the reference image: same outline, same open cells and veins, same feathered antennae, same bail, same metal; do not redesign it, do not add stones, enamel, charms or a second pendant; take only the necklace from the reference, never its background, camera angle or framing. The chain is one single strand. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+  },
+  {
+   "slot": "11",
+   "title": "Polished back",
+   "model": "nano_banana_2",
+   "resolution": "2k",
+   "aspect_ratio": "1:1",
+   "count": 1,
+   "reference": "tight crop of the approved 01",
+   "prompt": "Back view: the moth lies face down on dusk aubergine paper (#3B2433), showing its flat, plain, mirror-polished gold reverse with no engraving, no hallmark and no hollow, the open cells still open; the chain runs away from the bail as one single strand out of focus; the camera is close and slightly above; one crisp highlight across the flat back. The necklace: an openwork moth pendant 14 mm wide and 11 mm tall, seen from the front with its wings spread flat: the wings are drawn only as fine polished gold outlines 0.9 mm wide with open cells between a few thin gold veins, nothing filled in; the fore wings are broad with softly pointed tips, the hind wings smaller and rounded; a slim solid polished gold body runs down the centre; two short feathered antennae like tiny gold combs sweep back from the head, never thin stalks with round tips; a small smooth gold bail 3 mm tall is cast into the top of the head; the whole piece is flat and about 1 mm thick, with no stones and no enamel. No people and no hands in the image. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. The necklace must be an exact copy of the necklace in the reference image: same outline, same open cells and veins, same feathered antennae, same bail, same metal; do not redesign it, do not add stones, enamel, charms or a second pendant; take only the necklace from the reference, never its background, camera angle or framing. The chain is one single strand. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+  },
+  {
+   "slot": "12",
+   "title": "Evening window light",
+   "model": "nano_banana_2",
+   "resolution": "2k",
+   "aspect_ratio": "1:1",
+   "count": 1,
+   "reference": "tight crop of the approved 01",
+   "prompt": "Editorial worn frame: low warm evening sunlight falls through a window across her bare collarbones, a soft band of light and shade on a dusk aubergine wall (#3B2433) behind her, the moth catching the light. Exactly one necklace, worn by a woman with deep brown skin, the moth resting flat on bare skin below the collarbones; no earrings, no other necklace, no other jewelry; the top edge of the image cuts across the middle of the neck, so the chin, the lips and the face are outside the image. Straight-on; the pendant is 14 mm wide, about the width of a fingernail, never larger, on a fine 1.1 mm cable chain. The necklace: an openwork moth pendant 14 mm wide and 11 mm tall, seen from the front with its wings spread flat: the wings are drawn only as fine polished gold outlines 0.9 mm wide with open cells between a few thin gold veins, nothing filled in; the fore wings are broad with softly pointed tips, the hind wings smaller and rounded; a slim solid polished gold body runs down the centre; two short feathered antennae like tiny gold combs sweep back from the head, never thin stalks with round tips; a small smooth gold bail 3 mm tall is cast into the top of the head; the whole piece is flat and about 1 mm thick, with no stones and no enamel. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. Natural skin texture visible. The necklace must be an exact copy of the necklace in the reference image: same outline, same open cells and veins, same feathered antennae, same bail, same metal; do not redesign it, do not add stones, enamel, charms or a second pendant; take only the necklace from the reference, never its background, camera angle or framing. The chain is one single strand. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+  }
+ ]
+}

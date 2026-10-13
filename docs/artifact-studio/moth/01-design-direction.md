@@ -9,7 +9,7 @@ Shop: by Artifact Studio Jewelry (org 2c254edf-2119-4079-b09e-dc672e32c1f9).
 |---|----------|--------|
 | 1 | Metal grid | **Full grid** (2026-10-13): 10K/14K/18K x Yellow/White/Rose x 16/18/20 in = 27 variants. The brief's 4-metal set (10K yellow, 14K three colours, no 18K) is overruled. |
 | 2 | Lab diamond in the thorax | **No stone** (c, 2026-10-13). The body stays plain polished gold. |
-| 3 | Back engraving 1 to 4 characters | OPEN, see "Engraving" |
+| 3 | Back engraving 1 to 4 characters | **No engraving** (2026-10-13). No personalization field. |
 
 ## Product
 
@@ -39,11 +39,9 @@ These prices are estimates until the maker quotes the pendant grams.
 
 No stone (owner 2026-10-13, option c). The prices above already exclude it. No stone in copy, tags or images.
 
-## Engraving (open)
+## Engraving
 
-The back of the body is about 2 mm wide. Four characters at that width read at under 0.5 mm per letter,
-so the maker must confirm. Etsy personalization is free text with no separate charge.
-If the maker says yes, the engraving cost goes into the price.
+None (owner 2026-10-13). The back is plain polished gold; no personalization on the listing.
 
 ## Overlap
 
@@ -55,6 +53,7 @@ None. The shop has no butterfly, moth or dragonfly piece. Its only insect is the
 - It shows **clubbed antennae**, which read as a butterfly. A moth has feathered antennae.
   The title and tags say moth, so a buyer who knows the difference sees a mismatch. Fix: regenerate with feathered (comb) antennae, or call the piece a butterfly.
 - No stone, so the hero's plain thorax is correct.
+- 12 prompts: `prompts.py` -> `image-prompts.md` (ground dusk aubergine #3B2433, feathered antennae).
 - Regeneration follows the credit rule: prompt first, owner approval, count 1, 2k.
 
 ## Copy rules
