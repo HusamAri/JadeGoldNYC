@@ -8,7 +8,8 @@ Shop: by Artifact Studio Jewelry (org 2c254edf-2119-4079-b09e-dc672e32c1f9).
 | # | Decision | Answer |
 |---|----------|--------|
 | 1 | Variation axes | **(a)** (2026-10-13): white baroque pearl only, no lab diamond. One listing, Karat 10K/14K/18K x Metal Color Yellow/White/Rose x Bracelet Length 6.5/7/7.5 in = 27 variants (full grid). Silver-grey pearl and the diamond spur are dropped: Etsy allows 3 axes and all 3 are used. |
-| 2 | Engraved disc tag | OPEN |
+| 2 | Engraved disc tag | **No engraving** (2026-10-13). The disc tag and the 1 inch extender are dropped: the tag existed only to carry the engraving, and the length axis already covers fit. No personalization field. |
+| 3 | Pricing basis | Shop convention: the 1 g unit floor (maker count on Christmas B09), so 14K 7 in = $530 (estimate). |
 
 ## Pricing (2 x maker cost, `../maker_cost.py`), estimate
 
@@ -22,3 +23,7 @@ unit floor (1 g per motif station, maker count on Christmas B09) lifts that to 1
 | brief 0.63 g | $450 | $460 | $480 |
 
 The brief's band ($229 / $289 / $389) sits below 2 x maker cost: chain plus assembly alone cost the maker 150 USD.
+
+## Images
+
+12 prompts: `prompts.py` -> `image-prompts.md`. Ground winter slate blue #3F5A73, frost and bare twigs, white pearl. Hero first, then 11 frames from its crop. The brief's 13 Oct image is not used (1024 px, lobster clasp, disc tag).
