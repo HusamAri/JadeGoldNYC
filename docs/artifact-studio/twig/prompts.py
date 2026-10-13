@@ -40,7 +40,7 @@ def worn(skin, how):
 
 def style(people, n):
     who = " Natural skin texture visible." if people else ""
-    metal = ("same bail-free twig, cup and pearl; only the metal colour changes, exactly as named for each copy;"
+    metal = ("same twig, spurs, cup setting and pearl; only the metal colour changes, exactly as named for each copy;"
              if n == "09" else "same twig, spurs, cup setting, pearl and chain, same metal;")
     return (f"{CAMERA}{who} The bracelet must be an exact copy of the bracelet in the reference image: {metal} do "
             f"not redesign it, do not add a tag, charms, stones or a second pearl; take only the bracelet from the "
