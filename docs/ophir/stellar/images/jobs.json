@@ -1,0 +1,15 @@
+{
+ "model": "nano_banana_2",
+ "params": {"aspect_ratio": "1:1", "count": 1, "resolution": "2k"},
+ "note": "resolution MUST be passed explicitly: nano_banana_2 defaults to 1k (1024px), which is too small for an Etsy listing image and was already rejected once in the twig work. Verified 2048x2048 on the second run. The API reports the serving model as nano_banana_flash; the requested params still apply.",
+ "heroes": {
+  "E01-01": {"job": "66cf62a2-56ba-42ef-8a95-32d066750331", "w": 2048, "h": 2048, "qa": "pending-owner"},
+  "N01-01": {"job": "44c6a8d1-7400-431e-ade2-1723e965d631", "w": 2048, "h": 2048, "qa": "pending-owner"},
+  "R01-01": {"job": "98d44b52-1be3-4c4e-b43c-d1142518390e", "w": 2048, "h": 2048, "qa": "pending-owner"},
+  "R02-01": {"job": "a0a2df0e-c743-4e05-9b0b-e0c015676f4a", "w": 2048, "h": 2048, "qa": "pending-owner"},
+  "R03-01": {"job": "a79b3fc5-9b26-4f5e-b339-78650a342cb9", "w": 2048, "h": 2048, "qa": "pending-owner"}
+ },
+ "superseded_1k_run": ["34865c24-ea0f-40ca-83f9-56c543e6b057", "df9fe062-62d0-41a8-8d7d-2587a9697cef",
+                       "e3eee092-9cca-4f16-8e72-a13abdaaa1be", "99ca0d32-7f06-4cf0-b085-fea035c56648",
+                       "77772742-7170-444b-afb2-5debc63f0aae"]
+}
