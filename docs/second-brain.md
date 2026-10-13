@@ -1336,6 +1336,18 @@ repodaki hedefidir.
   (2) bir detay değişikliği seriye yayılacaksa önce tek karede düzenle, sonra kalanları kendi karelerinden
   düzenle; (3) düzenleme referansı da sızdırır, o yüzden ikinci referans yalnız değişen parçaya kırpılır.
 
+- **Sahip bir referans render verdiyse ilk prompt'tan itibaren onun SIKI KIRPIMINI referans ver; ve metni
+  son görsele karşı oku, brief'e karşı değil (2026-10-13, Twig bilezik):** Brief'te tasarım hem metin hem
+  render olarak geldi. Ben metinden yazdım ("bark texture", 6 mm barok inci); hero v1'de inci tam yuvarlak ve
+  yarı boyda çıktı, dal kabuk dokulu oldu. Sahip "ilk görseldeki referansı al" dedi; render'dan yalnız dal ve
+  inciyi kırpıp verince (etiket, ıstakoz kilit ve bej fon hariç) v2 tek denemede birebir tuttu. Ama açıklama
+  hâlâ brief metninden kalan "soft bark texture" cümlesini taşıyordu; migration'ı uygulamadan önce metni son
+  görsele karşı okuyunca yakalandı ve yasak listesine "bark" eklendi. Aynı turda 07 (dala asılı bilezik) iki
+  kez kolye boyunda iki iplik çıktı; cümleyi sertleştirmek yerine poz değişti (kapalı halka, dik dalın dibinde)
+  ve tek denemede tuttu. Kural: (1) render varsa tarif yazma, kırp ve ver, alınmayacak parçaları adıyla say;
+  (2) tasarım görsel yüzünden değiştiyse metin, tag ve alt metin aynı turda görsele eşitlenir;
+  (3) aynı kusur iki kez aynı kompozisyonla dönüyorsa üçüncü deneme pozu değiştirir.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
