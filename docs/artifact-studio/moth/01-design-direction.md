@@ -1,0 +1,67 @@
+# Openwork Moth Pendant Necklace: design direction (step 1)
+
+Owner brief: JSON spec `as-openwork-moth-pendant-necklace`, 2026-10-13, confirm with Hüsam.
+Shop: by Artifact Studio Jewelry (org 2c254edf-2119-4079-b09e-dc672e32c1f9).
+
+## Owner decisions
+
+| # | Decision | Answer |
+|---|----------|--------|
+| 1 | Metal grid | **Full grid** (2026-10-13): 10K/14K/18K x Yellow/White/Rose x 16/18/20 in = 27 variants. The brief's 4-metal set (10K yellow, 14K three colours, no 18K) is overruled. |
+| 2 | Lab diamond in the thorax | OPEN, see "Stone" |
+| 3 | Back engraving 1 to 4 characters | OPEN, see "Engraving" |
+
+## Product
+
+- Openwork moth pendant, wingspan 14 mm x 11 mm tall. Wing frames 0.9 mm with open cells; solid body; integral 3 mm bail.
+- Chain: 1.1 mm solid gold cable chain, spring ring clasp, 16, 18 or 20 in, in the pendant's karat and colour.
+- Protocol: `pendant_necklace`. Axes: Karat x Metal Color x Chain Length (3 axes, the Etsy maximum).
+- SKU: `BAS-MOTH-N01-{10K|14K|18K}{Y|W|R}-{16|18|20}IN`.
+
+## Pricing (2 x maker cost, `../maker_cost.py`)
+
+Pendant grams are an estimate (UNCALIBRATED_ASSUMPTION): about 90 mm of 0.9 x 0.8 mm wire
+across the frames and veins (65 mm3), body 23 mm3, bail 5 mm3, so 93 mm3 x 13.5 g/cm3 = 1.26 g.
+I use **1.3 g 14K**. The chain is the maker's convention: 130 USD at 18 in, scaled by length.
+
+| | 16 in | 18 in | 20 in |
+|---|---|---|---|
+| 10K | $340 | $360 | $380 |
+| 14K | $500 | $520 | $550 |
+| 18K | $690 | $730 | $770 |
+
+The brief's band ($249 / $349 / $489) is below cost: the 14K 18 in chain alone is 130 USD,
+so 2 x maker cost is $260 before the pendant. At $349, a 14K piece would carry about
+$89 over the maker cost, before Etsy fees and the 30% deepest offer. That is a loss.
+These prices are estimates until the maker quotes the pendant grams.
+
+## Stone (open)
+
+A 1.5 mm lab diamond set in the thorax. Etsy allows only 3 variation axes and all 3 are taken,
+so "with or without stone" cannot be a 4th axis. Options:
+- (a) Stone in every piece: one listing, about +40 USD maker cost (not quoted, UNCALIBRATED), so about +$80 per variant.
+- (b) Two listings, plain and with stone, each with 27 variants.
+- (c) No stone.
+
+## Engraving (open)
+
+The back of the body is about 2 mm wide. Four characters at that width read at under 0.5 mm per letter,
+so the maker must confirm. Etsy personalization is free text with no separate charge.
+If the maker says yes, the engraving cost goes into the price.
+
+## Overlap
+
+None. The shop has no butterfly, moth or dragonfly piece. Its only insect is the bee anklet (SS27).
+
+## Image notes
+
+- The 13 Oct hero (cloudfront `hf_20261013_054403...`) is **1024 x 1024**. Shop QA needs 2048, so this frame cannot go to Etsy as it is.
+- It shows **clubbed antennae**, which read as a butterfly. A moth has feathered antennae.
+  The title and tags say moth, so a buyer who knows the difference sees a mismatch. Fix: regenerate with feathered (comb) antennae, or call the piece a butterfly.
+- There is no stone in the thorax. If decision 2 is (a) or (b), the hero must show it.
+- Regeneration follows the credit rule: prompt first, owner approval, count 1, 2k.
+
+## Copy rules
+
+- The title names every metal ("Solid Gold"), never "14k Yellow Gold" alone, because the variants cover 3 karats and 3 colours.
+- Banned words: protect, ward, luck, healing, baby/kids, designer names.
