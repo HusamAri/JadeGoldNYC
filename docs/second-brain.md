@@ -1324,6 +1324,18 @@ repodaki hedefidir.
   bir süre SONRA da koşulmalı. Keten bir kez daha (onaylı kapsamda) 11'e alındı, bir dakika sonraki
   okumada ikisi de birebir 01..10 + keten.
 
+- **Sette tek bir detay değişince kareleri yeniden üretme, her kareyi KENDİSİNDEN düzenle; ve
+  "exact copy, same metal" cümlesi renk karesinde yanlış rengi kopyalatır (2026-10-13):** Moth kolyenin
+  12 karesi bitmişken sahip "antenler tüylü değil tek parça olsun" dedi. Sıfırdan üretim 12 kompozisyonu
+  da kaybettirirdi. Yöntem: önce yalnız hero'yu kendi görselinden düzenle ("yalnız antenleri değiştir"),
+  onaylanınca kalan 11 kareyi iki referansla gönder (kendi karesi + yeni hero'nun sıkı kırpımı, ikincisinden
+  "yalnız anten şeklini al"). 11/11 tuttu, kompozisyonlar birebir kaldı. Aynı turda 09 (üç altın rengi)
+  iki kez sarı ortalı çıktı. Sebep prompt'taki ortak "exact copy ... same metal" cümlesiydi: referans sarı
+  altın olduğu için model rengi de kopyaladı. 09'da bu ifade "yalnız metal rengi değişir" olunca beyaz
+  altın tuttu. Kural: (1) ortak stil bloğu her karede doğru olmalı, renk karesinde "same metal" çelişkidir;
+  (2) bir detay değişikliği seriye yayılacaksa önce tek karede düzenle, sonra kalanları kendi karelerinden
+  düzenle; (3) düzenleme referansı da sızdırır, o yüzden ikinci referans yalnız değişen parçaya kırpılır.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
