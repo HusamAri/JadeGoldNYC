@@ -16,3 +16,12 @@ Contact sheet read side by side. All 12 are 2048 x 2048 with 12 distinct hashes.
 | 10 | pass | chin edge in frame, no lips |
 | 11 | **reject** | the back is drawn as a solid filled body between the wings; the piece is openwork, the frame misstates it |
 | 12 | pass | chin edge in frame, no lips |
+
+## Reshoot 2026-10-13 (09 job 37f59f72, 11 job 907da2c7)
+
+- 09 v2: the centre chain is now white gold, but the centre pendant still reads pale yellow, and the left and centre wings touch. Still not a clean three-colour frame.
+- 11 v2: the cells are open now, but the model shot the front again (bail and antennae facing the camera). Usable as a second macro, not as a back view.
+
+## Owner change (2026-10-13): antennae must be one solid piece, not feathered
+
+Every frame shows feathered antennae, so all 12 need the change. Hold them all until it lands.

@@ -109,14 +109,17 @@ FRAMES = [
      f"Metal colour visualization on {PETALS}: three identical copies of this exact necklace lie side by side, the "
      f"moth of each at the bottom and its chain running straight up as one single strand, same size and same angle, "
      f"with space between them so no two chains touch; the left copy in polished yellow gold, the centre copy in "
-     f"{WG}, the right copy in polished rose gold, a soft pink gold; each copy is one single metal from end to end. "
+     f"polished unplated white gold, a pale silvery grey like platinum with no yellow tint at all, clearly a different colour from the "
+     f"yellow copy beside it, the right copy in polished rose gold, a soft pink gold; each copy is one single metal from end to end. "
      f"A full-bleed photograph, no border, no inset."),
     ("10", "Open blazer", True,
      f"Evening detail on a seamless {BG} backdrop ({HX}): an open tailored blazer in {DEEP} over bare collarbones. "
      f"{worn('warm tan', 'at the centre of the open collar')}. {SCALE[0].upper() + SCALE[1:]}."),
     ("11", "Polished back", False,
      f"Back view macro: the moth lies face down on {PETALS}, showing its flat, plain, mirror-polished gold reverse "
-     f"with no engraving, no hallmark and no hollow, the open cells still open; the chain runs away from the bail as "
+     f"with no engraving, no hallmark and no hollow; the back is the same openwork as the front, so every "
+     f"cell between the wings stays open and the petal shows through it; there is no solid body and no filled "
+     f"plate between the wings, only the thin centre vein; the chain runs away from the bail as "
      f"one single strand out of focus; {BLUR}; one crisp highlight across the flat back."),
     ("12", "Evening window light", True,
      f"Editorial worn frame: low warm evening sunlight falls through a window across her bare collarbones, a soft "
@@ -129,6 +132,12 @@ BANNED = [r"butterfly", r"clubbed", r"diamond", r"\bstones? set\b", r"â€”", r"â€
 rows = []
 for n, title, people, text in FRAMES:
     p = f"{text} The necklace: {SHAPE}. " + ("" if people else "No people and no hands in the image. ") + style(people)
+    if n == "09":
+        # QA 2026-10-13: v1 kept the centre copy yellow. The reference is yellow gold and "same metal" told the
+        # model to copy that colour onto all three, so frame 09 copies the shape only.
+        p = p.replace("same bail, same metal;", "same bail; only the metal colour changes, exactly as named for each copy;")
+        assert "same metal" not in p
+    # QA 2026-10-13: frame 11 v1 drew a solid body between the wings; the frame now states the open back.
     low = p.lower()
     for b in BANNED:
         assert not re.search(b, low), (n, b)
