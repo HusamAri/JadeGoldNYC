@@ -19,17 +19,23 @@ HERE = pathlib.Path(__file__).parent
 BG, HX = "burnt orange", "#C4521F"
 DEEP = "a deeper shade of burnt orange"
 PETALS = ("long velvety burnt orange gerbera petals (#C4521F) with fine lengthwise grooves, filling the whole image "
-          "edge to edge, seen as an extreme close macro so each petal is wider than the pendant")
+          "edge to edge, seen as an extreme close macro")
 BLUR = "one soft out-of-focus petal crosses a lower corner in the foreground"
 WG = "polished unplated white gold, a soft warm grey metal with mirror reflections"
 
-SHAPE = ("an openwork moth pendant 14 mm wide and 11 mm tall, seen from the front with its wings spread flat: "
-         "the wings are drawn only as fine polished gold outlines 0.9 mm wide with open cells between a few thin "
-         "gold veins, nothing filled in; the fore wings are broad with softly pointed tips, the hind wings smaller "
-         "and rounded; a slim solid polished gold body runs down the centre; two short feathered antennae like tiny "
-         "gold combs sweep back from the head, never thin stalks with round tips; a small smooth gold bail 3 mm "
-         "tall is cast into the top of the head; the whole piece is flat and about 1 mm thick, with no stones and "
-         "no enamel")
+# v2 (owner yes, 2026-10-13) after v1 QA: v1 came out 2.2x wider than tall, with a dozen hairline veins per
+# wing (not castable at 0.9 mm) and a separate bail hung on a jump ring. Proportion, vein count and the bail
+# are now stated as numbers and as what must NOT appear.
+SHAPE = ("an openwork moth pendant 14 mm wide and 11 mm tall, so it is only slightly wider than it is tall, a "
+         "compact rounded silhouette, never a wide flat bar: the wings rise at an angle from the body rather than "
+         "spreading out flat to the sides; each wing is a bold polished gold outline 0.9 mm wide, as thick as the "
+         "chain links, divided by only two or three equally thick gold veins into a few large open cells, never "
+         "fine hairline veins and never more than three veins in a wing; the fore wings are broad with softly "
+         "pointed tips, the hind wings smaller and rounded; a slim solid polished gold body runs down the centre; "
+         "two short feathered antennae like tiny gold combs sweep back from the head, never thin stalks with round "
+         "tips; a small smooth gold bail 3 mm tall is cast in one piece with the top of the head, joined directly "
+         "to it with no jump ring and no separate loop between them; the whole piece is flat and about 1 mm thick, "
+         "with no stones and no enamel")
 SCALE = "the pendant is 14 mm wide, about the width of a fingernail, never larger, on a fine 1.1 mm cable chain"
 CAMERA = ("Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with "
           "one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching.")
@@ -56,7 +62,8 @@ FRAMES = [
     ("01", "Hero on gerbera petals", False,
      f"Etsy thumbnail hero, macro still life in one colour: {PETALS}; the necklace lies across the petals with the "
      f"moth near the centre, slightly turned, and the chain leaving it as {SINGLE}; the moth in razor-sharp focus, "
-     f"its open cells showing the petal grooves through them; {BLUR}; warm directional light from the upper left "
+     f"its open cells showing the petal grooves through them; true scale: a gerbera petal is about 8 mm wide, so "
+     f"the 14 mm moth spans about two petals, never more; {BLUR}; warm directional light from the upper left "
      f"rakes across the petal grooves, one crisp highlight on the gold."),
     ("02", "Open linen collar", True,
      f"Worn portrait on a seamless {BG} backdrop ({HX}): she wears a loose linen shirt in {DEEP}, open at the neck; "
