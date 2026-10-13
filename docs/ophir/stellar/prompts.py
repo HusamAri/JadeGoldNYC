@@ -2,6 +2,8 @@
 
 Run: python3 docs/ophir/stellar/prompts.py  -> prompts.json + image-prompts.md
 Nothing here calls a model. Each prompt is one generation: nano_banana_2, resolution 2k, 1:1, count 1.
+resolution MUST be passed explicitly -- the model defaults to 1k (1024 px), too small for an Etsy image.
+See images/jobs.json for the exact params and the hero job ids.
 
 Frame 01 is the hero and is generated from the OWNER'S REFERENCE CROP (second-brain 2026-10-13: if the
 owner gave a render, crop it and feed it, never describe it); frames 02..10 take only a tight crop of the
@@ -114,6 +116,12 @@ def worn(p, n):
 
 def style(p, n, people):
     who = " Natural skin texture visible." if people else ""
+    if n == "01":
+        # Hero: no reference is attached yet, so it must NOT be told to copy one (twig does the same).
+        # When the owner's render arrives this frame is regenerated with the crop as the reference.
+        return (f"{CAMERA} The gold is polished 14K yellow gold and every stone is a white diamond. Do not add "
+                f"stones, charms or engraving; every star is four-pointed, never five-pointed. No text, no "
+                f"numbers, no logo, no watermark, no ruler. Square 1:1.")
     what = ("same form, same stones and same settings; only the metal colour changes, exactly as named for each "
             "copy;" if n == "06" else "same form, same stones, same settings, same metal;")
     return (f"{CAMERA}{who} The piece must be an exact copy of the piece in the reference image: {what} do not "
@@ -202,6 +210,8 @@ for k, v in out.items():
     t = v["prompt"]
     assert t.endswith("Square 1:1."), k
     assert "never five-pointed" in t, k
+    ref = "exact copy of the piece in the reference image" in t
+    assert ref == (v["frame"] != "01"), k          # hero carries no reference clause; 02-10 must
     assert "five-point star" not in t, k                      # the ban lives in the negative clause only
     assert not re.search(r"\. [a-z]", t), (k, re.search(r"\. [a-z].{0,40}", t).group(0))
     assert not re.search(r"; [A-Z]", t), (k, re.search(r"; [A-Z].{0,40}", t).group(0))
