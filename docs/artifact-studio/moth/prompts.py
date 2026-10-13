@@ -26,7 +26,7 @@ WG = "polished unplated white gold, a soft warm grey metal with mirror reflectio
 # v2 (owner yes, 2026-10-13) after v1 QA: v1 came out 2.2x wider than tall, with a dozen hairline veins per
 # wing (not castable at 0.9 mm) and a separate bail hung on a jump ring. Proportion, vein count and the bail
 # are now stated as numbers and as what must NOT appear.
-SHAPE = ("an openwork moth pendant 14 mm wide and 11 mm tall, so it is only slightly wider than it is tall, a "
+SHAPE_V2_HERO = ("an openwork moth pendant 14 mm wide and 11 mm tall, so it is only slightly wider than it is tall, a "
          "compact rounded silhouette, never a wide flat bar: the wings rise at an angle from the body rather than "
          "spreading out flat to the sides; each wing is a bold polished gold outline 0.9 mm wide, as thick as the "
          "chain links, divided by only two or three equally thick gold veins into a few large open cells, never "
@@ -36,6 +36,16 @@ SHAPE = ("an openwork moth pendant 14 mm wide and 11 mm tall, so it is only slig
          "tips; a small smooth gold bail 3 mm tall is cast in one piece with the top of the head, joined directly "
          "to it with no jump ring and no separate loop between them; the whole piece is flat and about 1 mm thick, "
          "with no stones and no enamel")
+# Owner accepted hero v2 (2026-10-13, "v2 kabul"). The spec now follows the v2 render, not the brief:
+# an open teardrop loop for the head, a centre vein in place of a solid body, the bail threaded through the
+# head loop. Frames 02..12 describe exactly that, so the copy and the maker brief match the photos.
+SHAPE = ("an openwork moth pendant 14 mm wide and 11 mm tall, a compact silhouette only slightly wider than tall: "
+         "the head is a small open teardrop loop of gold at the top centre; from it a single centre vein runs down "
+         "between the wings, with no solid body; each wing is a bold polished gold outline 0.9 mm wide divided by "
+         "two or three equally thick veins into a few large open cells, the fore wings broad with softly pointed "
+         "tips, the hind wings smaller and rounded; two short feathered antennae like tiny gold combs sweep out "
+         "from the head; a small smooth polished bail passes through the head loop; the whole piece is flat and "
+         "about 1 mm thick, with no stones and no enamel")
 SCALE = "the pendant is 14 mm wide, about the width of a fingernail, never larger, on a fine 1.1 mm cable chain"
 CAMERA = ("Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with "
           "one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching.")
