@@ -1348,6 +1348,27 @@ repodaki hedefidir.
   (2) tasarım görsel yüzünden değiştiyse metin, tag ve alt metin aynı turda görsele eşitlenir;
   (3) aynı kusur iki kez aynı kompozisyonla dönüyorsa üçüncü deneme pozu değiştirir.
 
+- **Bir ders REPODA YAZILI olması onu uyguladığın anlamına gelmez; tekrarlayan ders PROSE değil
+  VERİ olarak sabitlenir (2026-10-13, Ophir Stellar):** `nano_banana_2`'nin `resolution`
+  varsayılanının `1k` olduğu ve dış aracın parametre varsayılanlarının İLK çağrıdan önce
+  okunması gerektiği bu dosyada 2026-09-13'ten beri yazılı. Bugün aynı tuzağa yeniden düştüm:
+  5 hero 1024×1024 geldi, 5 üretim çöpe gitti, `resolution: "2k"` açıkça geçilince 2048×2048
+  doğrulandı. Üstelik 1024 px bu repoda Twig turunda zaten "çok küçük" diye reddedilmişti, yani
+  ders iki ayrı yerde duruyordu. Eksik olan bilgi değil, ÇAĞRI ANINDA erişimdi. Düzeltme prose'a
+  bir satır daha eklemek değil, parametreleri işin yanındaki veri dosyasına sabitlemek oldu
+  (`images/jobs.json`: model, aspect_ratio, resolution, count + neden açıkça geçilmesi gerektiği)
+  — sonraki çağrı türetmek yerine kopyalar. Kural: (1) aynı dersi ikinci kez ihlal ettiysen
+  çözüm yeni bir cümle değil, dersi kodun/verinin yoluna koyan bir ARTEFAKTtır (sabit dosyası,
+  assert, varsayılan); (2) prose dersler okunmak için bir tetikleyici ister, veri dosyası
+  istemez. Yan ders (aynı tur): PAYLAŞILAN stil bloğu, indiği HER kareye karşı sınanır —
+  "referans görseldeki parçanın birebir kopyası" cümlesi metinden üretilen hero'da (referans
+  YOKken) çelişkiydi; Twig bunu özel-durum yapmış, ben yapmamıştım, ve yalnız üretilen prompt'u
+  harcamadan ÖNCE okuyunca yakalandı (moth'un "same metal" vakasıyla aynı sınıf: ortak blok ilk
+  ve son karede farklı anlama gelir). Üçüncü ders: sohbete eklenen görsel bu konteynerde diske
+  İNMEZ (Higgsfield aracının kendi tanımı da "remote tools cannot read Claude chat attachments"
+  diyor) — "sahip referansı gönderdi" ile "referans elimde" ayrı şeylerdir; dosya yolunu ya da
+  Drive klasörünü AYNI turda iste, aramayı sahibin klasöründe canlı yap.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
