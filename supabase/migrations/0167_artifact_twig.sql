@@ -6,7 +6,7 @@
 -- images insert only under a product still unpublished (etsy_listing_id is null).
 -- Seals (run after apply):
 --   variants: 27 / 2d0a9ca905e7825b9c68334abec43966   (md5 of sku|Karat|Metal Color|Bracelet Length|price_cents|grams, order by sku collate "C")
---   md5(description) = e8aecbd6d395f5f1376ad2eef07b0e26
+--   md5(description) = 5c2db082abdd1d764187fe6a22cdc930
 --   md5(sku||'|'||array_to_string(tags, ',')) = 8381bedeeb5098bbf78eba7a7548dd96
 --   gallery: 12 / 8817c28461898f581d8243d91551dca3
 begin;
@@ -17,7 +17,7 @@ insert into public.products (
 )
 select $mo$8ba135ac-a75f-5329-ada2-2d54cbbae2d0$mo$::uuid, '2c254edf-2119-4079-b09e-dc672e32c1f9', $mo$BAS-TWIG-B01$mo$, $mo$Twig and Baroque Pearl Bracelet, Solid Gold Branch Station with a Freshwater Pearl, Dainty Cable Chain, Woodland Christmas Gift$mo$, $mo$One white baroque pearl held on a small solid gold twig, set at the centre of a fine gold cable chain.
 
-The twig is cast with a soft bark texture and two short spurs, like a branch in a winter garden, and the pearl sits in a small gold cup on top of it. Each baroque pearl has its own shape and lustre, so no two bracelets are quite alike. It is light enough to wear every day and to stack with other chains.
+The twig is cast smooth and highly polished, a gently waving branch with one spur rising and one bending down, like a branch in a winter garden, and the pearl sits in a small gold cup on top of it. Each baroque pearl has its own shape and lustre, so no two bracelets are quite alike. It is light enough to wear every day and to stack with other chains.
 
 Metal: solid 10K, 14K or 18K gold in yellow, white or rose. White gold, not rhodium plated: a soft warm grey, warmer at 10K.
 Pearl: one white baroque freshwater pearl, about 6 mm, set in a gold cup; each pearl is unique in shape.

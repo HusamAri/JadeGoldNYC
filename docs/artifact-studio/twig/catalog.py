@@ -29,8 +29,8 @@ TAGS = ["pearl bracelet", "baroque pearl", "solid gold bracelet", "twig bracelet
         "dainty bracelet", "pearl gold jewelry", "bridesmaid gift"]
 
 LEAD = "One white baroque pearl held on a small solid gold twig, set at the centre of a fine gold cable chain."
-STORY = ("The twig is cast with a soft bark texture and two short spurs, like a branch in a winter garden, and the "
-         "pearl sits in a small gold cup on top of it. Each baroque pearl has its own shape and lustre, so no two "
+STORY = ("The twig is cast smooth and highly polished, a gently waving branch with one spur rising and one bending "
+         "down, like a branch in a winter garden, and the pearl sits in a small gold cup on top of it. Each baroque pearl has its own shape and lustre, so no two "
          "bracelets are quite alike. It is light enough to wear every day and to stack with other chains.")
 METAL = ("Metal: solid 10K, 14K or 18K gold in yellow, white or rose. "
          "White gold, not rhodium plated: a soft warm grey, warmer at 10K.")
@@ -46,7 +46,7 @@ IMAGES = ("The product images are design visualizations of the finished piece, a
           "pearl may vary slightly.")
 DESCRIPTION = "\n\n".join([LEAD, STORY, "\n".join([METAL, PEARL, SIZE, CHAIN]), SHIP, CARE, IMAGES])
 
-BAN = ["protect", "ward", "luck", "healing", "baby", "kids", "diamond", "engrav", "personaliz", "initial",
+BAN = ["bark", "protect", "ward", "luck", "healing", "baby", "kids", "diamond", "engrav", "personaliz", "initial",
        "extender", "silver-grey", "grey pearl", "—", "–", "â"]
 
 
