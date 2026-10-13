@@ -8,7 +8,7 @@ Shop: by Artifact Studio Jewelry (org 2c254edf-2119-4079-b09e-dc672e32c1f9).
 | # | Decision | Answer |
 |---|----------|--------|
 | 1 | Metal grid | **Full grid** (2026-10-13): 10K/14K/18K x Yellow/White/Rose x 16/18/20 in = 27 variants. The brief's 4-metal set (10K yellow, 14K three colours, no 18K) is overruled. |
-| 2 | Lab diamond in the thorax | OPEN, see "Stone" |
+| 2 | Lab diamond in the thorax | **No stone** (c, 2026-10-13). The body stays plain polished gold. |
 | 3 | Back engraving 1 to 4 characters | OPEN, see "Engraving" |
 
 ## Product
@@ -35,13 +35,9 @@ so 2 x maker cost is $260 before the pendant. At $349, a 14K piece would carry a
 $89 over the maker cost, before Etsy fees and the 30% deepest offer. That is a loss.
 These prices are estimates until the maker quotes the pendant grams.
 
-## Stone (open)
+## Stone
 
-A 1.5 mm lab diamond set in the thorax. Etsy allows only 3 variation axes and all 3 are taken,
-so "with or without stone" cannot be a 4th axis. Options:
-- (a) Stone in every piece: one listing, about +40 USD maker cost (not quoted, UNCALIBRATED), so about +$80 per variant.
-- (b) Two listings, plain and with stone, each with 27 variants.
-- (c) No stone.
+No stone (owner 2026-10-13, option c). The prices above already exclude it. No stone in copy, tags or images.
 
 ## Engraving (open)
 
@@ -58,7 +54,7 @@ None. The shop has no butterfly, moth or dragonfly piece. Its only insect is the
 - The 13 Oct hero (cloudfront `hf_20261013_054403...`) is **1024 x 1024**. Shop QA needs 2048, so this frame cannot go to Etsy as it is.
 - It shows **clubbed antennae**, which read as a butterfly. A moth has feathered antennae.
   The title and tags say moth, so a buyer who knows the difference sees a mismatch. Fix: regenerate with feathered (comb) antennae, or call the piece a butterfly.
-- There is no stone in the thorax. If decision 2 is (a) or (b), the hero must show it.
+- No stone, so the hero's plain thorax is correct.
 - Regeneration follows the credit rule: prompt first, owner approval, count 1, 2k.
 
 ## Copy rules
