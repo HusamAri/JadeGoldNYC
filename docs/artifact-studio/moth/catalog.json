@@ -1,0 +1,348 @@
+{
+ "org": "2c254edf-2119-4079-b09e-dc672e32c1f9",
+ "source": "artifact-moth-v1",
+ "pricingBasis": {
+  "spotUsdOzt": 4178.2,
+  "rule": "price = ceil(2 x maker cost / 10) x 10",
+  "makerCost": "14K 100 USD/g with labour; chain 130 USD at 18 in scaled by length; 10K/18K by density and purity",
+  "estimated": [
+   "pendant 1.3 g 14K from geometry (UNCALIBRATED_ASSUMPTION)",
+   "chain at the maker's 18 in convention"
+  ]
+ },
+ "items": [
+  {
+   "id": "N01",
+   "productId": "fa342629-6a80-5a7a-b041-11716a41dcd4",
+   "sku": "BAS-MOTH-N01",
+   "productType": "necklace",
+   "listingProtocol": "pendant_necklace",
+   "name": "Openwork Moth Necklace",
+   "title": "Openwork Moth Necklace, Solid Gold Moth Pendant on a Dainty Cable Chain, Minimalist Gold Moth Charm, Gift for Her",
+   "tags": [
+    "moth necklace",
+    "moth pendant",
+    "gold moth necklace",
+    "moth jewelry",
+    "insect necklace",
+    "openwork pendant",
+    "solid gold pendant",
+    "14k gold necklace",
+    "dainty necklace",
+    "minimalist necklace",
+    "layering necklace",
+    "nature jewelry",
+    "gift for her"
+   ],
+   "description": "An openwork moth in solid gold, 14 mm across, hanging from a fine gold cable chain.\n\nThe wings are drawn as bold polished outlines around a few large open cells, so the skin shows through them, and two smooth antennae sweep out from the head. It is cast flat, about 1 mm thick, light enough to wear every day and to layer with other chains.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose. White gold, not rhodium plated: a soft warm grey, warmer at 10K.\nFinish: polished solid gold; no stones, no enamel.\nSize: moth 14 x 11 mm, about 1 mm thick, on a 3 mm bail.\nChain: 1.1 mm solid gold cable chain in the same gold, spring ring clasp; choose 16, 18 or 20 inches.\n\nEach piece is made to order and ships free within the United States from New Jersey. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Wipe it with a soft cloth to keep the polish.\n\nThe product images are design visualizations of the finished piece, and the three-metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
+   "dims": "moth 14 x 11 mm, 1 mm thick",
+   "variationAxes": [
+    "Karat",
+    "Metal Color",
+    "Chain Length"
+   ],
+   "variants": [
+    {
+     "sku": "BAS-MOTH-N01-10KY-16IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Chain Length": "16 inches"
+     },
+     "price_cents": 34000,
+     "grams": 2.19,
+     "makerCostUsd": 169.6
+    },
+    {
+     "sku": "BAS-MOTH-N01-10KY-18IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Chain Length": "18 inches"
+     },
+     "price_cents": 36000,
+     "grams": 2.32,
+     "makerCostUsd": 179.58
+    },
+    {
+     "sku": "BAS-MOTH-N01-10KY-20IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Chain Length": "20 inches"
+     },
+     "price_cents": 38000,
+     "grams": 2.45,
+     "makerCostUsd": 189.56
+    },
+    {
+     "sku": "BAS-MOTH-N01-10KW-16IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Chain Length": "16 inches"
+     },
+     "price_cents": 34000,
+     "grams": 2.19,
+     "makerCostUsd": 169.6
+    },
+    {
+     "sku": "BAS-MOTH-N01-10KW-18IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Chain Length": "18 inches"
+     },
+     "price_cents": 36000,
+     "grams": 2.32,
+     "makerCostUsd": 179.58
+    },
+    {
+     "sku": "BAS-MOTH-N01-10KW-20IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Chain Length": "20 inches"
+     },
+     "price_cents": 38000,
+     "grams": 2.45,
+     "makerCostUsd": 189.56
+    },
+    {
+     "sku": "BAS-MOTH-N01-10KR-16IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Chain Length": "16 inches"
+     },
+     "price_cents": 34000,
+     "grams": 2.19,
+     "makerCostUsd": 169.6
+    },
+    {
+     "sku": "BAS-MOTH-N01-10KR-18IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Chain Length": "18 inches"
+     },
+     "price_cents": 36000,
+     "grams": 2.32,
+     "makerCostUsd": 179.58
+    },
+    {
+     "sku": "BAS-MOTH-N01-10KR-20IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Chain Length": "20 inches"
+     },
+     "price_cents": 38000,
+     "grams": 2.45,
+     "makerCostUsd": 189.56
+    },
+    {
+     "sku": "BAS-MOTH-N01-14KY-16IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Chain Length": "16 inches"
+     },
+     "price_cents": 50000,
+     "grams": 2.46,
+     "makerCostUsd": 245.56
+    },
+    {
+     "sku": "BAS-MOTH-N01-14KY-18IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Chain Length": "18 inches"
+     },
+     "price_cents": 52000,
+     "grams": 2.6,
+     "makerCostUsd": 260.0
+    },
+    {
+     "sku": "BAS-MOTH-N01-14KY-20IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Chain Length": "20 inches"
+     },
+     "price_cents": 55000,
+     "grams": 2.74,
+     "makerCostUsd": 274.44
+    },
+    {
+     "sku": "BAS-MOTH-N01-14KW-16IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Chain Length": "16 inches"
+     },
+     "price_cents": 50000,
+     "grams": 2.46,
+     "makerCostUsd": 245.56
+    },
+    {
+     "sku": "BAS-MOTH-N01-14KW-18IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Chain Length": "18 inches"
+     },
+     "price_cents": 52000,
+     "grams": 2.6,
+     "makerCostUsd": 260.0
+    },
+    {
+     "sku": "BAS-MOTH-N01-14KW-20IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Chain Length": "20 inches"
+     },
+     "price_cents": 55000,
+     "grams": 2.74,
+     "makerCostUsd": 274.44
+    },
+    {
+     "sku": "BAS-MOTH-N01-14KR-16IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Chain Length": "16 inches"
+     },
+     "price_cents": 50000,
+     "grams": 2.46,
+     "makerCostUsd": 245.56
+    },
+    {
+     "sku": "BAS-MOTH-N01-14KR-18IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Chain Length": "18 inches"
+     },
+     "price_cents": 52000,
+     "grams": 2.6,
+     "makerCostUsd": 260.0
+    },
+    {
+     "sku": "BAS-MOTH-N01-14KR-20IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Chain Length": "20 inches"
+     },
+     "price_cents": 55000,
+     "grams": 2.74,
+     "makerCostUsd": 274.44
+    },
+    {
+     "sku": "BAS-MOTH-N01-18KY-16IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Chain Length": "16 inches"
+     },
+     "price_cents": 69000,
+     "grams": 2.79,
+     "makerCostUsd": 341.08
+    },
+    {
+     "sku": "BAS-MOTH-N01-18KY-18IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Chain Length": "18 inches"
+     },
+     "price_cents": 73000,
+     "grams": 2.96,
+     "makerCostUsd": 361.14
+    },
+    {
+     "sku": "BAS-MOTH-N01-18KY-20IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Chain Length": "20 inches"
+     },
+     "price_cents": 77000,
+     "grams": 3.12,
+     "makerCostUsd": 381.21
+    },
+    {
+     "sku": "BAS-MOTH-N01-18KW-16IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Chain Length": "16 inches"
+     },
+     "price_cents": 69000,
+     "grams": 2.79,
+     "makerCostUsd": 341.08
+    },
+    {
+     "sku": "BAS-MOTH-N01-18KW-18IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Chain Length": "18 inches"
+     },
+     "price_cents": 73000,
+     "grams": 2.96,
+     "makerCostUsd": 361.14
+    },
+    {
+     "sku": "BAS-MOTH-N01-18KW-20IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Chain Length": "20 inches"
+     },
+     "price_cents": 77000,
+     "grams": 3.12,
+     "makerCostUsd": 381.21
+    },
+    {
+     "sku": "BAS-MOTH-N01-18KR-16IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Chain Length": "16 inches"
+     },
+     "price_cents": 69000,
+     "grams": 2.79,
+     "makerCostUsd": 341.08
+    },
+    {
+     "sku": "BAS-MOTH-N01-18KR-18IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Chain Length": "18 inches"
+     },
+     "price_cents": 73000,
+     "grams": 2.96,
+     "makerCostUsd": 361.14
+    },
+    {
+     "sku": "BAS-MOTH-N01-18KR-20IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Chain Length": "20 inches"
+     },
+     "price_cents": 77000,
+     "grams": 3.12,
+     "makerCostUsd": 381.21
+    }
+   ],
+   "grams14Ref": 2.6,
+   "refPriceCents": 52000,
+   "makerCost14KRefUsd": 260.0
+  }
+ ]
+}
