@@ -25,3 +25,7 @@ Contact sheet read side by side. All 12 are 2048 x 2048 with 12 distinct hashes.
 ## Owner change (2026-10-13): antennae must be one solid piece, not feathered
 
 Every frame shows feathered antennae, so all 12 need the change. Hold them all until it lands.
+
+## 01 v3 (2026-10-13, job ba7281e5, edit of v2)
+
+Antennae are now smooth one-piece gold arcs with no feathers and no knobs. The scene, chain, bail and wings are unchanged. The antennae came out longer than in v2: the tips reach almost to the wing-tip line.
