@@ -124,7 +124,7 @@ def add(**kw):
 add(id="R01", fam=1, cat="ring", name="Two Tone Evil Eye Ring", enamel=["cobalt"], ops=1, geo_g=2.9,
     dims="eye 8.4 mm, set 1.8 mm high; band 2.0 mm wide, 1.4 mm thick",
     split="the collar, setting and band are in the main metal; the enamelled eye plate, which shows as the thin ring between the two blues, is in the second gold",
-    title="Two Tone Evil Eye Ring, Cobalt Blue Enamel Nazar Set in Two Colours of Solid Gold, Mixed Metal Ring",
+    title="Two Tone Evil Eye Ring, Cobalt Blue Enamel Nazar Set in Two Tones of Solid Gold, Mixed Metal Ring",
     tags=["two tone ring", "mixed metal ring", "evil eye ring", "nazar ring", "gold evil eye ring",
           "blue evil eye", "cobalt blue enamel", "14k evil eye ring", "enamel evil eye", "solid gold ring"],
     lead="A round evil eye in cobalt blue enamel, set in a solid gold collar on a slim band, with a ring of the second gold inside the blue.",
@@ -136,7 +136,7 @@ add(id="N01", fam=1, cat="necklace", name="Two Tone Evil Eye Necklace", enamel=[
     tags=["two tone necklace", "mixed metal necklace", "evil eye necklace", "evil eye pendant", "nazar necklace",
           "gold evil eye", "blue evil eye", "sky blue enamel", "14k evil eye", "layering necklace"],
     lead="An 11.5 mm evil eye pendant in cobalt blue and sky blue enamel, with the ring and the pupil of the nazar made in a second colour of gold.",
-    story="Read from the edge in: a collar of the main gold, a band of cobalt blue, a ring of the second gold, sky blue, then a gold pupil. The bail is hidden behind the top edge, so nothing shows above the eye, and the plate is fired on its own and set like a stone.")
+    story="Read from the edge in: a collar of the main gold, a band of cobalt blue, a ring of the second gold, sky blue, then a gold pupil. The bail is hidden behind the top edge, so no bail shows above the eye, and the plate is fired on its own and set like a stone.")
 add(id="B01", fam=1, cat="bracelet", name="Two Tone Evil Eye Bracelet", enamel=["cobalt"], ops=1, geo_g=1.0, units=1,
     dims="eye 8.4 mm",
     split="the collar, setting, loops and chain are in the main metal; the enamelled eye plate, which shows as the thin ring between the two blues, is in the second gold",
@@ -144,7 +144,7 @@ add(id="B01", fam=1, cat="bracelet", name="Two Tone Evil Eye Bracelet", enamel=[
     tags=["two tone bracelet", "mixed metal bracelet", "evil eye bracelet", "nazar bracelet", "gold evil eye",
           "blue evil eye", "cobalt blue enamel", "14k gold bracelet", "dainty bracelet", "stacking bracelet"],
     lead="A round cobalt blue enamel evil eye set inline in a fine solid gold chain, with a ring of the second gold inside the blue.",
-    story="The chain runs out of loops cast on each side of the setting, so the eye lies flat on top of the wrist. It is the same eye as the ring, enamelled and fired on its own, then set like a stone.")
+    story="The chain runs out of loops cast on each side of the setting, so the eye lies flat on top of the wrist. The eye plate is enamelled and fired on its own, then set like a stone.")
 
 # ============================================================ 2 DAMLA (cobalt + white)
 add(id="R02", fam=2, cat="ring", name="Teardrop Evil Eye Ring", enamel=["cobalt"], geo_g=2.0,
@@ -167,7 +167,7 @@ add(id="B02", fam=2, cat="bracelet", name="Teardrop Evil Eye Charm Bracelet", en
     tags=["teardrop bracelet", "teardrop evil eye", "evil eye bracelet", "nazar bracelet", "charm bracelet",
           "gold evil eye", "blue evil eye", "dainty bracelet", "new home gift", "14k gold bracelet"],
     lead="A teardrop evil eye charm in cobalt blue and white enamel, hanging free at the centre of a fine solid gold chain.",
-    story="The only charm in the collection that swings: it hangs from a jump ring and turns to show a solid, polished gold back. Cobalt blue outside, white inside, a gold pupil at the centre.")
+    story="It hangs free from a jump ring and turns to show a solid, polished gold back. Cobalt blue outside, white inside, a gold pupil at the centre.")
 
 # ============================================================ 3 MATI (white + cobalt)
 add(id="R03", fam=3, cat="ring", name="White and Blue Almond Evil Eye Bypass Ring", enamel=["white", "cobalt"], geo_g=2.3,
@@ -207,7 +207,7 @@ add(id="N04", fam=4, cat="necklace", name="Evil Eye Bead Station Necklace", enam
     tags=["evil eye necklace", "nazar necklace", "station necklace", "bead necklace", "gold evil eye",
           "blue evil eye", "dainty necklace", "layering necklace", "travel gift", "14k evil eye"],
     lead="Three stations set into a fine solid gold chain, each a 6 mm cobalt blue enamel evil eye between two solid gold beads.",
-    story="Each station is one cast bar 10 mm long, joined into the chain at both ends by laser weld, so the three stay 22 mm apart at the front of the neck. The blue eye and gold beads of a Turkish bead string, without glass or cord.")
+    story="Each station is one cast bar 10 mm long, joined into the chain at both ends by laser weld, so the three stay 22 mm apart at the front of the neck. The blue eye and gold beads of a Turkish bead string, without glass beads or cord.")
 add(id="B04", fam=4, cat="bracelet", name="Evil Eye Bead Station Bracelet", enamel=["cobalt"], geo_g=1.4, units=3,
     dims="three stations, each 10 mm long with a 6.0 mm eye between two 2.0 mm beads; 18 mm apart",
     title="Evil Eye Bead Station Bracelet, Three Cobalt Blue Enamel Nazars with Solid Gold Beads, Dainty Stacking Bracelet",
@@ -233,7 +233,7 @@ add(id="N05", fam=5, cat="necklace", name="Hexagon Tile Evil Eye Necklace", enam
     story="Inspired by Ottoman tilework from Iznik, in the colours of its first two glazes. It hangs from a loop cast into its top corner, with the cobalt blue enamel running out to a polished gold rim around a turquoise enamel eye.")
 add(id="B05", fam=5, cat="bracelet", name="Hexagon Tile Evil Eye Bracelet", enamel=["cobalt", "turquoise"], geo_g=1.4, units=3,
     dims="eye hexagon 9.2 mm, two side hexagons 5.0 mm, 5 mm apart",
-    title="Hexagon Tile Evil Eye Bracelet, Cobalt Blue and Turquoise Enamel Nazar Stations on Solid Gold Chain",
+    title="Hexagon Tile Evil Eye Bracelet, Cobalt Blue and Turquoise Enamel Nazar Between Two Hexagon Stations on Solid Gold Chain",
     tags=["hexagon bracelet", "tile bracelet", "evil eye bracelet", "nazar bracelet", "station bracelet",
           "turquoise enamel", "turkish jewelry", "ottoman jewelry", "travel gift", "14k gold bracelet"],
     lead="A cobalt blue and turquoise enamel hexagon evil eye between two small turquoise enamel hexagons, set into a fine solid gold chain.",
@@ -247,7 +247,7 @@ add(id="R06", fam=6, cat="ring", name="Mother and Child Evil Eye Ring, Two Tone"
     tags=["two tone ring", "mixed metal ring", "evil eye ring", "nazar ring", "new mom gift",
           "push present", "mothers day gift", "gift for mom", "toi et moi ring", "14k evil eye ring"],
     lead="Two evil eyes side by side on a solid gold band: a 9 mm eye in cobalt blue and sky blue enamel and a 6 mm cobalt blue enamel eye in the second gold.",
-    story="A gift for a new mother: the large eye and the small one, each enamelled and fired on its own, then joined rim to rim. The small eye sits low at one side of the large one, its pupil and a thin rim in the second gold: two eyes, two golds.")
+    story="A gift for a new mother: each eye is enamelled and fired on its own, then the small one is set into a gold setting cast rim to rim with the large one. It sits low at one side, its pupil and a thin rim in the second gold: two eyes, two golds.")
 add(id="N06", fam=6, cat="necklace", name="Mother and Child Evil Eye Necklace, Two Tone", enamel=["cobalt", "sky"], ops=1, geo_g=1.5, units=1,
     dims="9.0 mm eye above a 6.0 mm eye, 15.8 mm tall",
     split="the large eye, the setting of the small eye, the bail and the chain are in the main metal; the small eye's plate, which shows as its pupil and a thin rim, is in the second gold",
@@ -303,7 +303,7 @@ add(id="R08", fam=8, cat="ring", name="Two Tone Mixed Metal Evil Eye Ring", ops=
 add(id="N08", fam=8, cat="necklace", name="Two Tone Evil Eye Station Necklace", ops=1, geo_g=0.4, units=1,
     dims="eye 6.0 mm, 1.0 mm thick",
     split="the eye's disc, rim and pupil, its loops and the chain are in the main metal; the inlaid ring is in the second gold",
-    title="Two Tone Evil Eye Station Necklace, Inlaid Two Colour Gold Nazar on Fine Solid Gold Chain, Mixed Metal Necklace",
+    title="Two Tone Evil Eye Station Necklace, Inlaid Two Tone Gold Nazar on Fine Solid Gold Chain, Mixed Metal Necklace",
     tags=["two tone necklace", "mixed metal necklace", "evil eye necklace", "nazar necklace", "station necklace",
           "gold evil eye", "minimalist necklace", "dainty necklace", "layering necklace", "14k evil eye"],
     lead="A 6 mm evil eye drawn in two golds, set inline at the centre of a fine solid gold chain.",
@@ -316,26 +316,26 @@ add(id="B08", fam=8, cat="bracelet", name="Two Tone Evil Eye Cuff Bracelet", ops
     tags=["two tone bracelet", "mixed metal bracelet", "cuff bracelet", "open cuff", "evil eye bracelet",
           "nazar bracelet", "gold evil eye", "stacking cuff", "minimalist cuff", "14k gold cuff"],
     lead="An open cuff of two solid gold wires in two colours, side by side, with a metal evil eye set over both at the front.",
-    story="The same eye as the twin wire ring: a ring of the second gold inlaid flush into a disc of the main gold, around a slightly domed gold pupil. The cuff slips on from the side of the wrist.")
+    story="The eye is drawn in metal alone: a ring of the second gold inlaid flush into a disc of the main gold, around a slightly domed gold pupil. The cuff slips on from the side of the wrist.")
 
 # ============================================================ 9 SWEETHEART (red)
 add(id="R09", fam=9, cat="ring", name="Red Evil Eye Heart Ring", enamel=["red"], geo_g=2.0,
     dims="heart 9.6 x 9.2 mm, 1.1 mm thick; eye 5.4 mm; band 1.5 mm round",
-    title="Red Evil Eye Heart Ring, Polished Solid Gold Heart with a Red Enamel Nazar, Valentines Gift Ring",
+    title="Red Evil Eye Heart Ring, Polished Solid Gold Heart with a Red Enamel Nazar, Valentine Gift Ring",
     tags=["red evil eye", "heart ring", "evil eye ring", "nazar ring", "gold heart ring",
           "red enamel ring", "valentines gift", "anniversary gift", "gift for her", "14k evil eye ring"],
     lead="A polished solid gold heart with a small red enamel evil eye set flush at its centre, on a slim gold band.",
     story="The heart is plain gold with full round lobes, and the eye is one ring of red enamel around a gold pupil. It stands upright on the finger, point to the wrist, cast in one piece with the band.")
 add(id="N09", fam=9, cat="necklace", name="Red Evil Eye Heart Necklace", enamel=["red"], geo_g=1.2, units=1,
     dims="heart 11.0 x 10.5 mm, 1.2 mm thick; eye 6.0 mm",
-    title="Red Evil Eye Heart Necklace, Solid Gold Heart Evil Eye Pendant with Red Enamel Nazar, Valentines Gift",
+    title="Red Evil Eye Heart Necklace, Solid Gold Heart Evil Eye Pendant with Red Enamel Nazar, Valentine Gift",
     tags=["red evil eye", "heart necklace", "evil eye necklace", "evil eye pendant", "nazar necklace",
           "gold heart pendant", "valentines gift", "anniversary gift", "gift for her", "14k evil eye"],
     lead="An 11 mm polished solid gold heart pendant with a red enamel evil eye set flush at its centre.",
-    story="Plain gold with full round lobes and a ring of red enamel around a gold pupil. The bail is hidden behind the cleft, so the heart hangs upright with nothing above it.")
+    story="Plain gold with full round lobes and a ring of red enamel around a gold pupil. The bail is hidden behind the cleft, so the heart hangs upright with no bail showing above it.")
 add(id="B09", fam=9, cat="bracelet", name="Red Evil Eye Heart Bracelet", enamel=["red"], geo_g=0.8, units=1,
     dims="heart 9.6 x 9.2 mm, 1.1 mm thick; eye 5.4 mm",
-    title="Red Evil Eye Heart Bracelet, Polished Gold Heart with a Red Enamel Nazar on Solid Gold Chain, Valentines Gift",
+    title="Red Evil Eye Heart Bracelet, Polished Gold Heart with a Red Enamel Nazar on Solid Gold Chain, Valentine Gift",
     tags=["red evil eye", "heart bracelet", "evil eye bracelet", "nazar bracelet", "gold heart bracelet",
           "red enamel", "valentines gift", "anniversary gift", "gift for her", "14k gold bracelet"],
     lead="A polished solid gold heart with a red enamel evil eye, set at the centre of a fine gold chain.",
@@ -368,7 +368,7 @@ add(id="B10", fam=10, cat="bracelet", name="Pink Evil Eye Paperclip Bracelet", e
 METAL_SINGLE = ("Metal: solid 10K, 14K or 18K gold in yellow, white or rose. "
                 "White gold, not rhodium plated: a soft warm grey, warmer at 10K.")
 METAL_PAIR = ("Metal: solid 10K, 14K or 18K gold in two colours, Yellow/White, White/Yellow or Rose/White Gold; "
-              "the first metal is the main metal. White gold, not rhodium plated: a soft warm grey, warmer at 10K.")
+              "the first metal is the main metal. White gold, not rhodium plated: a soft warm grey, warmer at 10K, so at 10K the two golds sit closest in colour.")
 FINISH_METAL = "Finish: polished solid gold in two colours; no enamel, no stones."
 SYMBOL = "Symbol: the evil eye, or nazar, a traditional Turkish and Greek symbol."
 DETAIL = {

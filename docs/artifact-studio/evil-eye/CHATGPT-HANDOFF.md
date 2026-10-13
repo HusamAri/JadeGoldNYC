@@ -171,7 +171,7 @@ Per family:
 
 ### R01 · Two Tone Evil Eye Ring (family 1 Halka)
 
-- **Title:** Two Tone Evil Eye Ring, Cobalt Blue Enamel Nazar Set in Two Colours of Solid Gold, Mixed Metal Ring
+- **Title:** Two Tone Evil Eye Ring, Cobalt Blue Enamel Nazar Set in Two Tones of Solid Gold, Mixed Metal Ring
 - **Tags (13):** two tone ring, mixed metal ring, evil eye ring, nazar ring, gold evil eye ring, blue evil eye, cobalt blue enamel, 14k evil eye ring, enamel evil eye, solid gold ring, evil eye jewelry, evil eye gift, turkish evil eye
 - **Materials:** Solid gold, Vitreous enamel
 - **Dimensions:** eye 8.4 mm, set 1.8 mm high; band 2.0 mm wide, 1.4 mm thick
@@ -188,7 +188,7 @@ A round evil eye in cobalt blue enamel, set in a solid gold collar on a slim ban
 
 In the classic nazar a white ring sits inside the dark blue; here that ring is gold: white gold in Yellow/White and Rose/White, yellow gold in White/Yellow. The eye plate is enamelled and fired on its own, then set like a stone, so no heat reaches the enamel after the kiln.
 
-Metal: solid 10K, 14K or 18K gold in two colours, Yellow/White, White/Yellow or Rose/White Gold; the first metal is the main metal. White gold, not rhodium plated: a soft warm grey, warmer at 10K.
+Metal: solid 10K, 14K or 18K gold in two colours, Yellow/White, White/Yellow or Rose/White Gold; the first metal is the main metal. White gold, not rhodium plated: a soft warm grey, warmer at 10K, so at 10K the two golds sit closest in colour.
 Two tone: the collar, setting and band are in the main metal; the enamelled eye plate, which shows as the thin ring between the two blues, is in the second gold.
 Enamel: kiln-fired vitreous cobalt blue enamel, set flush in recessed cells with polished gold rims.
 Symbol: the evil eye, or nazar, a traditional Turkish and Greek symbol.
@@ -232,9 +232,9 @@ Full variant list with SKUs and prices: variants.csv (rows for R01).
 ```
 An 11.5 mm evil eye pendant in cobalt blue and sky blue enamel, with the ring and the pupil of the nazar made in a second colour of gold.
 
-Read from the edge in: a collar of the main gold, a band of cobalt blue, a ring of the second gold, sky blue, then a gold pupil. The bail is hidden behind the top edge, so nothing shows above the eye, and the plate is fired on its own and set like a stone.
+Read from the edge in: a collar of the main gold, a band of cobalt blue, a ring of the second gold, sky blue, then a gold pupil. The bail is hidden behind the top edge, so no bail shows above the eye, and the plate is fired on its own and set like a stone.
 
-Metal: solid 10K, 14K or 18K gold in two colours, Yellow/White, White/Yellow or Rose/White Gold; the first metal is the main metal. White gold, not rhodium plated: a soft warm grey, warmer at 10K.
+Metal: solid 10K, 14K or 18K gold in two colours, Yellow/White, White/Yellow or Rose/White Gold; the first metal is the main metal. White gold, not rhodium plated: a soft warm grey, warmer at 10K, so at 10K the two golds sit closest in colour.
 Two tone: the collar, setting, bail and chain are in the main metal; the enamelled eye plate, which shows as the ring between the blues and as the pupil, is in the second gold.
 Enamel: kiln-fired vitreous cobalt blue enamel and sky blue enamel, set flush in recessed cells with polished gold rims.
 Symbol: the evil eye, or nazar, a traditional Turkish and Greek symbol.
@@ -270,6 +270,7 @@ Full variant list with SKUs and prices: variants.csv (rows for N01).
 - **Metal Color values:** Yellow/White Gold, White/Yellow Gold, Rose/White Gold
 - **Variation axes:** Karat x Metal Color x Bracelet Length (27 variants)
 - **Price, 14K 7 inches:** $700 (estimate)
+- **(b) fallback, 14K 7 inches:** $1250; used only if the maker answers question 3 with (b). Per variant: price_usd_basis_b in variants.csv
 - **Price range by karat:** 10K $570 to $590; 14K $690 to $720; 18K $840 to $880
 - **Blockers:** ESTIMATED PRICE | Grams are geometry estimates | TWO-TONE UNQUOTED | Alloy/enamel firing qualification | White gold plating unconfirmed | No images yet
 
@@ -278,9 +279,9 @@ Full variant list with SKUs and prices: variants.csv (rows for N01).
 ```
 A round cobalt blue enamel evil eye set inline in a fine solid gold chain, with a ring of the second gold inside the blue.
 
-The chain runs out of loops cast on each side of the setting, so the eye lies flat on top of the wrist. It is the same eye as the ring, enamelled and fired on its own, then set like a stone.
+The chain runs out of loops cast on each side of the setting, so the eye lies flat on top of the wrist. The eye plate is enamelled and fired on its own, then set like a stone.
 
-Metal: solid 10K, 14K or 18K gold in two colours, Yellow/White, White/Yellow or Rose/White Gold; the first metal is the main metal. White gold, not rhodium plated: a soft warm grey, warmer at 10K.
+Metal: solid 10K, 14K or 18K gold in two colours, Yellow/White, White/Yellow or Rose/White Gold; the first metal is the main metal. White gold, not rhodium plated: a soft warm grey, warmer at 10K, so at 10K the two golds sit closest in colour.
 Two tone: the collar, setting, loops and chain are in the main metal; the enamelled eye plate, which shows as the thin ring between the two blues, is in the second gold.
 Enamel: kiln-fired vitreous cobalt blue enamel, set flush in recessed cells with polished gold rims.
 Symbol: the evil eye, or nazar, a traditional Turkish and Greek symbol.
@@ -406,6 +407,7 @@ Full variant list with SKUs and prices: variants.csv (rows for N02).
 - **Metal Color values:** Yellow Gold, White Gold, Rose Gold
 - **Variation axes:** Karat x Metal Color x Bracelet Length (27 variants)
 - **Price, 14K 7 inches:** $600 (estimate)
+- **(b) fallback, 14K 7 inches:** $1000; Christmas wave: use (b) if the maker has not answered question 3 by the listing date (decision 2). Per variant: price_usd_basis_b in variants.csv
 - **Price range by karat:** 10K $470 to $490; 14K $590 to $620; 18K $740 to $780
 - **Blockers:** ESTIMATED PRICE | Grams are geometry estimates | Alloy/enamel firing qualification | White gold plating unconfirmed | No images yet
 
@@ -414,7 +416,7 @@ Full variant list with SKUs and prices: variants.csv (rows for N02).
 ```
 A teardrop evil eye charm in cobalt blue and white enamel, hanging free at the centre of a fine solid gold chain.
 
-The only charm in the collection that swings: it hangs from a jump ring and turns to show a solid, polished gold back. Cobalt blue outside, white inside, a gold pupil at the centre.
+It hangs free from a jump ring and turns to show a solid, polished gold back. Cobalt blue outside, white inside, a gold pupil at the centre.
 
 Metal: solid 10K, 14K or 18K gold in yellow, white or rose. White gold, not rhodium plated: a soft warm grey, warmer at 10K.
 Enamel: kiln-fired vitreous cobalt blue enamel and white enamel, set flush in recessed cells with polished gold rims.
@@ -541,6 +543,7 @@ Full variant list with SKUs and prices: variants.csv (rows for N03).
 - **Metal Color values:** Yellow Gold, White Gold, Rose Gold
 - **Variation axes:** Karat x Metal Color x Bracelet Length (27 variants)
 - **Price, 14K 7 inches:** $600 (estimate)
+- **(b) fallback, 14K 7 inches:** $1000; Christmas wave: use (b) if the maker has not answered question 3 by the listing date (decision 2). Per variant: price_usd_basis_b in variants.csv
 - **Price range by karat:** 10K $470 to $490; 14K $590 to $620; 18K $740 to $780
 - **Blockers:** ESTIMATED PRICE | Grams are geometry estimates | Alloy/enamel firing qualification | White gold plating unconfirmed | No images yet
 
@@ -639,7 +642,7 @@ Full variant list with SKUs and prices: variants.csv (rows for R04).
 ```
 Three stations set into a fine solid gold chain, each a 6 mm cobalt blue enamel evil eye between two solid gold beads.
 
-Each station is one cast bar 10 mm long, joined into the chain at both ends by laser weld, so the three stay 22 mm apart at the front of the neck. The blue eye and gold beads of a Turkish bead string, without glass or cord.
+Each station is one cast bar 10 mm long, joined into the chain at both ends by laser weld, so the three stay 22 mm apart at the front of the neck. The blue eye and gold beads of a Turkish bead string, without glass beads or cord.
 
 Metal: solid 10K, 14K or 18K gold in yellow, white or rose. White gold, not rhodium plated: a soft warm grey, warmer at 10K.
 Enamel: kiln-fired vitreous cobalt blue enamel, set flush in recessed cells with polished gold rims.
@@ -676,6 +679,7 @@ Full variant list with SKUs and prices: variants.csv (rows for N04).
 - **Metal Color values:** Yellow Gold, White Gold, Rose Gold
 - **Variation axes:** Karat x Metal Color x Bracelet Length (27 variants)
 - **Price, 14K 7 inches:** $1000 (estimate)
+- **(b) fallback, 14K 7 inches:** $1450; Christmas wave: use (b) if the maker has not answered question 3 by the listing date (decision 2). Per variant: price_usd_basis_b in variants.csv
 - **Price range by karat:** 10K $750 to $770; 14K $990 to $1020; 18K $1300 to $1340
 - **Blockers:** ESTIMATED PRICE | Grams are geometry estimates | Alloy/enamel firing qualification | White gold plating unconfirmed | No images yet
 
@@ -804,13 +808,14 @@ Full variant list with SKUs and prices: variants.csv (rows for N05).
 
 ### B05 · Hexagon Tile Evil Eye Bracelet (family 5 Çini)
 
-- **Title:** Hexagon Tile Evil Eye Bracelet, Cobalt Blue and Turquoise Enamel Nazar Stations on Solid Gold Chain
+- **Title:** Hexagon Tile Evil Eye Bracelet, Cobalt Blue and Turquoise Enamel Nazar Between Two Hexagon Stations on Solid Gold Chain
 - **Tags (13):** hexagon bracelet, tile bracelet, evil eye bracelet, nazar bracelet, station bracelet, turquoise enamel, turkish jewelry, ottoman jewelry, travel gift, 14k gold bracelet, evil eye jewelry, evil eye gift, turkish evil eye
 - **Materials:** Solid gold, Vitreous enamel
 - **Dimensions:** eye hexagon 9.2 mm, two side hexagons 5.0 mm, 5 mm apart
 - **Metal Color values:** Yellow Gold, White Gold, Rose Gold
 - **Variation axes:** Karat x Metal Color x Bracelet Length (27 variants)
 - **Price, 14K 7 inches:** $1000 (estimate)
+- **(b) fallback, 14K 7 inches:** $1450; Christmas wave: use (b) if the maker has not answered question 3 by the listing date (decision 2). Per variant: price_usd_basis_b in variants.csv
 - **Price range by karat:** 10K $750 to $770; 14K $990 to $1020; 18K $1300 to $1340
 - **Blockers:** ESTIMATED PRICE | Grams are geometry estimates | Alloy/enamel firing qualification | White gold plating unconfirmed | No images yet
 
@@ -864,9 +869,9 @@ Full variant list with SKUs and prices: variants.csv (rows for B05).
 ```
 Two evil eyes side by side on a solid gold band: a 9 mm eye in cobalt blue and sky blue enamel and a 6 mm cobalt blue enamel eye in the second gold.
 
-A gift for a new mother: the large eye and the small one, each enamelled and fired on its own, then joined rim to rim. The small eye sits low at one side of the large one, its pupil and a thin rim in the second gold: two eyes, two golds.
+A gift for a new mother: each eye is enamelled and fired on its own, then the small one is set into a gold setting cast rim to rim with the large one. It sits low at one side, its pupil and a thin rim in the second gold: two eyes, two golds.
 
-Metal: solid 10K, 14K or 18K gold in two colours, Yellow/White, White/Yellow or Rose/White Gold; the first metal is the main metal. White gold, not rhodium plated: a soft warm grey, warmer at 10K.
+Metal: solid 10K, 14K or 18K gold in two colours, Yellow/White, White/Yellow or Rose/White Gold; the first metal is the main metal. White gold, not rhodium plated: a soft warm grey, warmer at 10K, so at 10K the two golds sit closest in colour.
 Two tone: the large eye, the setting of the small eye and the band are in the main metal; the small eye's plate, which shows as its pupil and a thin rim, is in the second gold.
 Enamel: kiln-fired vitreous cobalt blue enamel and sky blue enamel, set flush in recessed cells with polished gold rims.
 Symbol: the evil eye, or nazar, a traditional Turkish and Greek symbol.
@@ -912,7 +917,7 @@ A double evil eye pendant: a 9 mm eye in cobalt blue and sky blue enamel with a 
 
 Made as a gift for a mother, one eye for her and one for her child. The bail sits behind the top of the large eye, in line with the small one, so the pair hangs straight.
 
-Metal: solid 10K, 14K or 18K gold in two colours, Yellow/White, White/Yellow or Rose/White Gold; the first metal is the main metal. White gold, not rhodium plated: a soft warm grey, warmer at 10K.
+Metal: solid 10K, 14K or 18K gold in two colours, Yellow/White, White/Yellow or Rose/White Gold; the first metal is the main metal. White gold, not rhodium plated: a soft warm grey, warmer at 10K, so at 10K the two golds sit closest in colour.
 Two tone: the large eye, the setting of the small eye, the bail and the chain are in the main metal; the small eye's plate, which shows as its pupil and a thin rim, is in the second gold.
 Enamel: kiln-fired vitreous cobalt blue enamel and sky blue enamel, set flush in recessed cells with polished gold rims.
 Symbol: the evil eye, or nazar, a traditional Turkish and Greek symbol.
@@ -948,6 +953,7 @@ Full variant list with SKUs and prices: variants.csv (rows for N06).
 - **Metal Color values:** Yellow/White Gold, White/Yellow Gold, Rose/White Gold
 - **Variation axes:** Karat x Metal Color x Bracelet Length (27 variants)
 - **Price, 14K 7 inches:** $900 (estimate)
+- **(b) fallback, 14K 7 inches:** $1400; used only if the maker answers question 3 with (b). Per variant: price_usd_basis_b in variants.csv
 - **Price range by karat:** 10K $710 to $730; 14K $890 to $920; 18K $1120 to $1160
 - **Blockers:** ESTIMATED PRICE | Grams are geometry estimates | TWO-TONE UNQUOTED | Alloy/enamel firing qualification | White gold plating unconfirmed | No images yet
 
@@ -958,7 +964,7 @@ Two evil eyes at the centre of a fine solid gold chain: a 9 mm eye in cobalt blu
 
 Made as a gift for a mother. The two eyes are separate stations with their own cast loops, joined at the centre by one small jump ring closed by laser weld, so they sit side by side on the wrist.
 
-Metal: solid 10K, 14K or 18K gold in two colours, Yellow/White, White/Yellow or Rose/White Gold; the first metal is the main metal. White gold, not rhodium plated: a soft warm grey, warmer at 10K.
+Metal: solid 10K, 14K or 18K gold in two colours, Yellow/White, White/Yellow or Rose/White Gold; the first metal is the main metal. White gold, not rhodium plated: a soft warm grey, warmer at 10K, so at 10K the two golds sit closest in colour.
 Two tone: the large eye, the setting of the small eye, the jump ring and the chain are in the main metal; the small eye's plate, which shows as its pupil and a thin rim, is in the second gold.
 Enamel: kiln-fired vitreous cobalt blue enamel and sky blue enamel, set flush in recessed cells with polished gold rims.
 Symbol: the evil eye, or nazar, a traditional Turkish and Greek symbol.
@@ -1004,7 +1010,7 @@ A 9 mm solid gold disc on a slim band, its satin face carrying a polished almond
 
 A gold coin is the old gift for a milestone, made here in two golds. The almond is cast with its own pins, enamelled and fired alone, then pinned through the disc with no solder near the enamel. The face is plain: no lettering, only the almond.
 
-Metal: solid 10K, 14K or 18K gold in two colours, Yellow/White, White/Yellow or Rose/White Gold; the first metal is the main metal. White gold, not rhodium plated: a soft warm grey, warmer at 10K.
+Metal: solid 10K, 14K or 18K gold in two colours, Yellow/White, White/Yellow or Rose/White Gold; the first metal is the main metal. White gold, not rhodium plated: a soft warm grey, warmer at 10K, so at 10K the two golds sit closest in colour.
 Two tone: the disc and band are in the main metal; the polished almond with its cobalt blue enamel iris is in the second gold.
 Enamel: kiln-fired vitreous cobalt blue enamel, set flush in recessed cells with polished gold rims.
 Symbol: the evil eye, or nazar, a traditional Turkish and Greek symbol.
@@ -1050,7 +1056,7 @@ An 11 mm solid gold coin with a satin face, a reeded edge and a polished almond 
 
 Single sided and plain: no lettering, no rays, only the almond with its cobalt blue enamel iris. The almond is fired on its own and its cast pins are riveted flush at the back, so no heat reaches the enamel.
 
-Metal: solid 10K, 14K or 18K gold in two colours, Yellow/White, White/Yellow or Rose/White Gold; the first metal is the main metal. White gold, not rhodium plated: a soft warm grey, warmer at 10K.
+Metal: solid 10K, 14K or 18K gold in two colours, Yellow/White, White/Yellow or Rose/White Gold; the first metal is the main metal. White gold, not rhodium plated: a soft warm grey, warmer at 10K, so at 10K the two golds sit closest in colour.
 Two tone: the coin, loop and chain are in the main metal; the polished almond with its cobalt blue enamel iris is in the second gold.
 Enamel: kiln-fired vitreous cobalt blue enamel, set flush in recessed cells with polished gold rims.
 Symbol: the evil eye, or nazar, a traditional Turkish and Greek symbol.
@@ -1086,6 +1092,7 @@ Full variant list with SKUs and prices: variants.csv (rows for N07).
 - **Metal Color values:** Yellow/White Gold, White/Yellow Gold, Rose/White Gold
 - **Variation axes:** Karat x Metal Color x Bracelet Length (27 variants)
 - **Price, 14K 7 inches:** $700 (estimate)
+- **(b) fallback, 14K 7 inches:** $1180; used only if the maker answers question 3 with (b). Per variant: price_usd_basis_b in variants.csv
 - **Price range by karat:** 10K $570 to $590; 14K $690 to $720; 18K $840 to $880
 - **Blockers:** ESTIMATED PRICE | Grams are geometry estimates | TWO-TONE UNQUOTED | Alloy/enamel firing qualification | White gold plating unconfirmed | No images yet
 
@@ -1096,7 +1103,7 @@ An 8.5 mm solid gold coin set at the centre of a fine chain, with a polished alm
 
 The coin is a station with loops cast at each side, so it lies flat on the wrist. The almond and its cobalt blue enamel iris sit inside a polished border, with no lettering and nothing else on the face.
 
-Metal: solid 10K, 14K or 18K gold in two colours, Yellow/White, White/Yellow or Rose/White Gold; the first metal is the main metal. White gold, not rhodium plated: a soft warm grey, warmer at 10K.
+Metal: solid 10K, 14K or 18K gold in two colours, Yellow/White, White/Yellow or Rose/White Gold; the first metal is the main metal. White gold, not rhodium plated: a soft warm grey, warmer at 10K, so at 10K the two golds sit closest in colour.
 Two tone: the coin, loops and chain are in the main metal; the polished almond with its cobalt blue enamel iris is in the second gold.
 Enamel: kiln-fired vitreous cobalt blue enamel, set flush in recessed cells with polished gold rims.
 Symbol: the evil eye, or nazar, a traditional Turkish and Greek symbol.
@@ -1142,7 +1149,7 @@ Two round wires of solid gold in two colours, soldered side by side into one ban
 
 No enamel: the eye is drawn in metal alone, a ring of the second gold inlaid flush into a disc of the main gold around a slightly domed gold pupil. It wears like a stack of two thin rings that stay together.
 
-Metal: solid 10K, 14K or 18K gold in two colours, Yellow/White, White/Yellow or Rose/White Gold; the first metal is the main metal. White gold, not rhodium plated: a soft warm grey, warmer at 10K.
+Metal: solid 10K, 14K or 18K gold in two colours, Yellow/White, White/Yellow or Rose/White Gold; the first metal is the main metal. White gold, not rhodium plated: a soft warm grey, warmer at 10K, so at 10K the two golds sit closest in colour.
 Two tone: the wire nearer the fingertip, the eye's rim and its pupil are in the main metal; the other wire and the inlaid ring are in the second gold.
 Finish: polished solid gold in two colours; no enamel, no stones.
 Symbol: the evil eye, or nazar, a traditional Turkish and Greek symbol.
@@ -1171,7 +1178,7 @@ Full variant list with SKUs and prices: variants.csv (rows for R08).
 
 ### N08 · Two Tone Evil Eye Station Necklace (family 8 Twin Wire)
 
-- **Title:** Two Tone Evil Eye Station Necklace, Inlaid Two Colour Gold Nazar on Fine Solid Gold Chain, Mixed Metal Necklace
+- **Title:** Two Tone Evil Eye Station Necklace, Inlaid Two Tone Gold Nazar on Fine Solid Gold Chain, Mixed Metal Necklace
 - **Tags (13):** two tone necklace, mixed metal necklace, evil eye necklace, nazar necklace, station necklace, gold evil eye, minimalist necklace, dainty necklace, layering necklace, 14k evil eye, evil eye jewelry, evil eye gift, turkish evil eye
 - **Materials:** Solid gold
 - **Dimensions:** eye 6.0 mm, 1.0 mm thick
@@ -1188,7 +1195,7 @@ A 6 mm evil eye drawn in two golds, set inline at the centre of a fine solid gol
 
 No enamel and no stones: a ring of the second gold is inlaid flush into a disc of the main gold, around a slightly domed gold pupil. Loops cast at each side carry the chain, so the eye sits flat at the base of the neck.
 
-Metal: solid 10K, 14K or 18K gold in two colours, Yellow/White, White/Yellow or Rose/White Gold; the first metal is the main metal. White gold, not rhodium plated: a soft warm grey, warmer at 10K.
+Metal: solid 10K, 14K or 18K gold in two colours, Yellow/White, White/Yellow or Rose/White Gold; the first metal is the main metal. White gold, not rhodium plated: a soft warm grey, warmer at 10K, so at 10K the two golds sit closest in colour.
 Two tone: the eye's disc, rim and pupil, its loops and the chain are in the main metal; the inlaid ring is in the second gold.
 Finish: polished solid gold in two colours; no enamel, no stones.
 Symbol: the evil eye, or nazar, a traditional Turkish and Greek symbol.
@@ -1224,6 +1231,7 @@ Full variant list with SKUs and prices: variants.csv (rows for N08).
 - **Metal Color values:** Yellow/White Gold, White/Yellow Gold, Rose/White Gold
 - **Variation axes:** Karat x Metal Color x Bracelet Length (27 variants)
 - **Price, 14K 7 inches:** $1020 (estimate)
+- **(b) fallback, 14K 7 inches:** $1020; used only if the maker answers question 3 with (b). Per variant: price_usd_basis_b in variants.csv
 - **Price range by karat:** 10K $770 to $840; 14K $970 to $1080; 18K $1230 to $1380
 - **Blockers:** ESTIMATED PRICE | Grams are geometry estimates | TWO-TONE UNQUOTED | White gold plating unconfirmed | No images yet
 
@@ -1232,9 +1240,9 @@ Full variant list with SKUs and prices: variants.csv (rows for N08).
 ```
 An open cuff of two solid gold wires in two colours, side by side, with a metal evil eye set over both at the front.
 
-The same eye as the twin wire ring: a ring of the second gold inlaid flush into a disc of the main gold, around a slightly domed gold pupil. The cuff slips on from the side of the wrist.
+The eye is drawn in metal alone: a ring of the second gold inlaid flush into a disc of the main gold, around a slightly domed gold pupil. The cuff slips on from the side of the wrist.
 
-Metal: solid 10K, 14K or 18K gold in two colours, Yellow/White, White/Yellow or Rose/White Gold; the first metal is the main metal. White gold, not rhodium plated: a soft warm grey, warmer at 10K.
+Metal: solid 10K, 14K or 18K gold in two colours, Yellow/White, White/Yellow or Rose/White Gold; the first metal is the main metal. White gold, not rhodium plated: a soft warm grey, warmer at 10K, so at 10K the two golds sit closest in colour.
 Two tone: one wire, the eye's rim and its pupil are in the main metal; the other wire and the inlaid ring are in the second gold.
 Finish: polished solid gold in two colours; no enamel, no stones.
 Symbol: the evil eye, or nazar, a traditional Turkish and Greek symbol.
@@ -1263,7 +1271,7 @@ Full variant list with SKUs and prices: variants.csv (rows for B08).
 
 ### R09 · Red Evil Eye Heart Ring (family 9 Sweetheart)
 
-- **Title:** Red Evil Eye Heart Ring, Polished Solid Gold Heart with a Red Enamel Nazar, Valentines Gift Ring
+- **Title:** Red Evil Eye Heart Ring, Polished Solid Gold Heart with a Red Enamel Nazar, Valentine Gift Ring
 - **Tags (13):** red evil eye, heart ring, evil eye ring, nazar ring, gold heart ring, red enamel ring, valentines gift, anniversary gift, gift for her, 14k evil eye ring, evil eye jewelry, evil eye gift, turkish evil eye
 - **Materials:** Solid gold, Vitreous enamel
 - **Dimensions:** heart 9.6 x 9.2 mm, 1.1 mm thick; eye 5.4 mm; band 1.5 mm round
@@ -1308,7 +1316,7 @@ Full variant list with SKUs and prices: variants.csv (rows for R09).
 
 ### N09 · Red Evil Eye Heart Necklace (family 9 Sweetheart)
 
-- **Title:** Red Evil Eye Heart Necklace, Solid Gold Heart Evil Eye Pendant with Red Enamel Nazar, Valentines Gift
+- **Title:** Red Evil Eye Heart Necklace, Solid Gold Heart Evil Eye Pendant with Red Enamel Nazar, Valentine Gift
 - **Tags (13):** red evil eye, heart necklace, evil eye necklace, evil eye pendant, nazar necklace, gold heart pendant, valentines gift, anniversary gift, gift for her, 14k evil eye, evil eye jewelry, evil eye gift, turkish evil eye
 - **Materials:** Solid gold, Vitreous enamel
 - **Dimensions:** heart 11.0 x 10.5 mm, 1.2 mm thick; eye 6.0 mm
@@ -1323,7 +1331,7 @@ Full variant list with SKUs and prices: variants.csv (rows for R09).
 ```
 An 11 mm polished solid gold heart pendant with a red enamel evil eye set flush at its centre.
 
-Plain gold with full round lobes and a ring of red enamel around a gold pupil. The bail is hidden behind the cleft, so the heart hangs upright with nothing above it.
+Plain gold with full round lobes and a ring of red enamel around a gold pupil. The bail is hidden behind the cleft, so the heart hangs upright with no bail showing above it.
 
 Metal: solid 10K, 14K or 18K gold in yellow, white or rose. White gold, not rhodium plated: a soft warm grey, warmer at 10K.
 Enamel: kiln-fired vitreous red enamel, set flush in recessed cells with polished gold rims.
@@ -1353,13 +1361,14 @@ Full variant list with SKUs and prices: variants.csv (rows for N09).
 
 ### B09 · Red Evil Eye Heart Bracelet (family 9 Sweetheart)
 
-- **Title:** Red Evil Eye Heart Bracelet, Polished Gold Heart with a Red Enamel Nazar on Solid Gold Chain, Valentines Gift
+- **Title:** Red Evil Eye Heart Bracelet, Polished Gold Heart with a Red Enamel Nazar on Solid Gold Chain, Valentine Gift
 - **Tags (13):** red evil eye, heart bracelet, evil eye bracelet, nazar bracelet, gold heart bracelet, red enamel, valentines gift, anniversary gift, gift for her, 14k gold bracelet, evil eye jewelry, evil eye gift, turkish evil eye
 - **Materials:** Solid gold, Vitreous enamel
 - **Dimensions:** heart 9.6 x 9.2 mm, 1.1 mm thick; eye 5.4 mm
 - **Metal Color values:** Yellow Gold, White Gold, Rose Gold
 - **Variation axes:** Karat x Metal Color x Bracelet Length (27 variants)
 - **Price, 14K 7 inches:** $600 (estimate)
+- **(b) fallback, 14K 7 inches:** $1000; used only if the maker answers question 3 with (b). Per variant: price_usd_basis_b in variants.csv
 - **Price range by karat:** 10K $470 to $490; 14K $590 to $620; 18K $740 to $780
 - **Blockers:** ESTIMATED PRICE | Grams are geometry estimates | Alloy/enamel firing qualification | White gold plating unconfirmed | No images yet
 
@@ -1495,6 +1504,7 @@ Full variant list with SKUs and prices: variants.csv (rows for N10).
 - **Metal Color values:** Yellow Gold, White Gold, Rose Gold
 - **Variation axes:** Karat x Metal Color x Bracelet Length (27 variants)
 - **Price, 14K 7 inches:** $640 (estimate)
+- **(b) fallback, 14K 7 inches:** $1300; used only if the maker answers question 3 with (b). Per variant: price_usd_basis_b in variants.csv
 - **Price range by karat:** 10K $500 to $520; 14K $630 to $660; 18K $800 to $840
 - **Blockers:** ESTIMATED PRICE | Grams are geometry estimates | Alloy/enamel firing qualification | White gold plating unconfirmed | No images yet
 

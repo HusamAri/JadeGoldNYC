@@ -62,6 +62,11 @@ for it in items:
     w(f"- **Metal Color values:** {', '.join(it['metalColors'])}")
     w(f"- **Variation axes:** {' x '.join(it['variationAxes'])} ({len(it['variants'])} variants)")
     w(f"- **Price, 14K {it['refSize']}:** ${it['refPriceCents'] // 100} (estimate)")
+    if it.get("refPriceCentsBasisB") is not None:
+        rule = ("Christmas wave: use (b) if the maker has not answered question 3 by the listing date (decision 2)"
+                if i in ("B02", "B03", "B04", "B05") else "used only if the maker answers question 3 with (b)")
+        w(f"- **(b) fallback, 14K {it['refSize']}:** ${it['refPriceCentsBasisB'] // 100}; {rule}. "
+          "Per variant: price_usd_basis_b in variants.csv")
     prices = {}
     for v in it["variants"]:
         p = v["properties"]
@@ -85,7 +90,8 @@ for it in items:
             fr.append(f"### Frame {s['slot'][:2]} · {s['title']}\n\n```\n" + s["prompt"].strip() + "\n```\n")
     w(f"\nFull variant list with SKUs and prices: variants.csv (rows for {i}).\n")
     for v in it["variants"]:
-        rows.append([i, it["name"], v["sku"], *[f"{k}: {x}" for k, x in v["properties"].items()], f"{v['price_cents'] / 100:.2f}"])
+        rows.append([i, it["name"], v["sku"], *[f"{k}: {x}" for k, x in v["properties"].items()], f"{v['price_cents'] / 100:.2f}",
+                     f"{v['price_cents_basis_b'] / 100:.2f}" if v.get("price_cents_basis_b") is not None else ""])
 
 text = "\n".join(out)
 for ch in ("—", "–"):
@@ -98,7 +104,7 @@ for ch in ("\u2014", "\u2013"):
 import csv
 with open(H / "variants.csv", "w", newline="") as f:
     cw = csv.writer(f)
-    cw.writerow(["listing", "name", "sku", "option 1", "option 2", "option 3", "price_usd"])
+    cw.writerow(["listing", "name", "sku", "option 1", "option 2", "option 3", "price_usd", "price_usd_basis_b"])
     cw.writerows(rows)
 print("frames file", len(ftext), "chars;", len(rows), "variant rows")
 print(len(items), "listings,", len(text), "chars")
