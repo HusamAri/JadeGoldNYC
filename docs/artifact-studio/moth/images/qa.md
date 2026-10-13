@@ -29,3 +29,11 @@ Every frame shows feathered antennae, so all 12 need the change. Hold them all u
 ## 01 v3 (2026-10-13, job ba7281e5, edit of v2)
 
 Antennae are now smooth one-piece gold arcs with no feathers and no knobs. The scene, chain, bail and wings are unchanged. The antennae came out longer than in v2: the tips reach almost to the wing-tip line.
+
+## Final set (2026-10-13): hero v3 + 11 edits with smooth antennae
+
+Each frame was edited from its own previous version, with a crop of hero v3 as the antenna reference. All 12 now have smooth one-piece antennae; the compositions are unchanged.
+- 09: the centre copy is now clearly white gold. The left pendant's wing tip touches the left edge and sits close to the centre copy. Accepted.
+- 11: a second front macro on petals, close to 07 in composition. Accepted; there is no back-view frame.
+- The feathered versions are kept in v-feathered/.
+Total generations for this listing: 28.

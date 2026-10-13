@@ -43,7 +43,7 @@ SHAPE = ("an openwork moth pendant 14 mm wide and 11 mm tall, a compact silhouet
          "the head is a small open teardrop loop of gold at the top centre; from it a single centre vein runs down "
          "between the wings, with no solid body; each wing is a bold polished gold outline 0.9 mm wide divided by "
          "two or three equally thick veins into a few large open cells, the fore wings broad with softly pointed "
-         "tips, the hind wings smaller and rounded; two short feathered antennae like tiny gold combs sweep out "
+         "tips, the hind wings smaller and rounded; two smooth one-piece polished gold antennae, slim arcs with no feathers and no knobs, sweep out "
          "from the head; a small smooth polished bail passes through the head loop; the whole piece is flat and "
          "about 1 mm thick, with no stones and no enamel")
 SCALE = "the pendant is 14 mm wide, about the width of a fingernail, never larger, on a fine 1.1 mm cable chain"
@@ -62,7 +62,7 @@ def worn(skin, how):
 def style(people):
     who = " Natural skin texture visible." if people else ""
     return (f"{CAMERA}{who} The necklace must be an exact copy of the necklace in the reference image: same outline, "
-            f"same open cells and veins, same feathered antennae, same bail, same metal; do not redesign it, do not "
+            f"same open cells and veins, same smooth antennae, same bail, same metal; do not redesign it, do not "
             f"add stones, enamel, charms or a second pendant; take only the necklace from the reference, never its "
             f"background, camera angle or framing. The chain is one single strand. No text, no numbers, no logo, "
             f"no watermark, no ruler. Square 1:1.")

@@ -13,7 +13,7 @@ Shop: by Artifact Studio Jewelry (org 2c254edf-2119-4079-b09e-dc672e32c1f9).
 
 ## Product
 
-- Openwork moth pendant, wingspan 14 mm x 11 mm tall. Wing frames 0.9 mm with open cells; solid body; integral 3 mm bail.
+- Openwork moth pendant, wingspan 14 mm x 11 mm tall. Wing frames 0.9 mm, 2 to 3 veins per wing, open cells. Head is an open teardrop loop with a centre vein below it (no solid body). Two smooth one-piece antennae (owner 2026-10-13: not feathered). A 3 mm bail passes through the head loop. Geometry follows the accepted hero v3, not the brief.
 - Chain: 1.1 mm solid gold cable chain, spring ring clasp, 16, 18 or 20 in, in the pendant's karat and colour.
 - Protocol: `pendant_necklace`. Axes: Karat x Metal Color x Chain Length (3 axes, the Etsy maximum).
 - SKU: `BAS-MOTH-N01-{10K|14K|18K}{Y|W|R}-{16|18|20}IN`.
@@ -53,7 +53,7 @@ None. The shop has no butterfly, moth or dragonfly piece. Its only insect is the
 - It shows **clubbed antennae**, which read as a butterfly. A moth has feathered antennae.
   The title and tags say moth, so a buyer who knows the difference sees a mismatch. Fix: regenerate with feathered (comb) antennae, or call the piece a butterfly.
 - No stone, so the hero's plain thorax is correct.
-- 12 prompts: `prompts.py` -> `image-prompts.md` (ground burnt orange #C4521F, gerbera petal macro after the owner reference, feathered antennae).
+- 12 prompts: `prompts.py` -> `image-prompts.md` (ground burnt orange #C4521F, gerbera petal macro after the owner reference; final set = hero v3 plus 11 edits with smooth antennae, see images/qa.md).
 - Regeneration follows the credit rule: prompt first, owner approval, count 1, 2k.
 
 ## Copy rules
