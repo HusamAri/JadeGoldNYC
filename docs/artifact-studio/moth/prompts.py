@@ -8,15 +8,19 @@ Nothing here calls a model. Each prompt is one generation: nano_banana_2, resolu
 Visual system of the shop (evil-eye/shots.py, xmas26, SS27): one seamless single-colour ground per listing,
 paper-sculpture product frames in shades of that ground, editorial worn frames, a gift frame and a
 three-metal frame; Canon 50 mm, f/2.8, ISO 400, one clean shadow, 35 mm grain.
-Ground: dusk aubergine #3B2433. A moth flies at dusk; gold reads richest on a deep warm jewel tone,
-and the rule "no white, cream or yellow ground" holds.
+Ground: burnt orange #C4521F, owner reference 2026-10-13: a tonal macro on giant gerbera petals, one soft
+petal blurred in the foreground. The reference is used as text only; its piece (stones, ridged wings) is never
+passed to the model. Product frames sit on petals instead of paper; worn frames keep the seamless ground.
 The 13 Oct hero is not reused: 1024 px, clubbed (butterfly) antennae. Here the antennae are feathered.
 """
 import json, pathlib, re
 
 HERE = pathlib.Path(__file__).parent
-BG, HX = "dusk aubergine", "#3B2433"
-DEEP = "a deeper shade of dusk aubergine"
+BG, HX = "burnt orange", "#C4521F"
+DEEP = "a deeper shade of burnt orange"
+PETALS = ("long velvety burnt orange gerbera petals (#C4521F) with fine lengthwise grooves, filling the whole image "
+          "edge to edge, seen as an extreme close macro so each petal is wider than the pendant")
+BLUR = "one soft out-of-focus petal crosses a lower corner in the foreground"
 WG = "polished unplated white gold, a soft warm grey metal with mirror reflections"
 
 SHAPE = ("an openwork moth pendant 14 mm wide and 11 mm tall, seen from the front with its wings spread flat: "
@@ -49,60 +53,61 @@ def style(people):
 
 
 FRAMES = [
-    ("01", "Hero on a paper wave", False,
-     f"Etsy thumbnail hero: a sheet of {BG} paper ({HX}) curls in one soft wave across the top of the image over a "
-     f"floor of {BG} paper one shade lighter; the necklace lies face up on the paper floor with the moth at the "
-     f"bottom and the chain leaving it as {SINGLE}; seen from slightly above, the moth in sharp focus at the centre "
-     f"with generous empty space around it, its open cells showing the paper through them, one clean soft shadow "
-     f"under the curl."),
+    ("01", "Hero on gerbera petals", False,
+     f"Etsy thumbnail hero, macro still life in one colour: {PETALS}; the necklace lies across the petals with the "
+     f"moth near the centre, slightly turned, and the chain leaving it as {SINGLE}; the moth in razor-sharp focus, "
+     f"its open cells showing the petal grooves through them; {BLUR}; warm directional light from the upper left "
+     f"rakes across the petal grooves, one crisp highlight on the gold."),
     ("02", "Open linen collar", True,
-     f"Worn portrait on a seamless {BG} backdrop ({HX}): she wears a loose linen shirt in {DEEP}, open at the neck. "
-     f"{worn('light warm', 'on bare skin just below the collarbones')}. Straight-on; {SCALE}."),
+     f"Worn portrait on a seamless {BG} backdrop ({HX}): she wears a loose linen shirt in {DEEP}, open at the neck; "
+     f"{BLUR}. {worn('light warm', 'on bare skin just below the collarbones')}. Straight-on; {SCALE}."),
     ("03", "Silk neckline", True,
      f"Evening look on a seamless {BG} backdrop ({HX}): a silk slip dress in {BG} with a low square neckline. "
      f"{worn('deep brown', 'on bare skin above the neckline')}. Torso turned slightly to the left; {SCALE}."),
-    ("04", "Lying on linen", True,
-     f"Seen from directly above: she lies on her back on softly rumpled {BG} linen ({HX}), shoulders bare, arms "
-     f"relaxed at her sides. {worn('medium olive', 'on her skin')}. {SCALE[0].upper() + SCALE[1:]}."),
+    ("04", "Lying among petals", True,
+     f"Seen from directly above: she lies on her back on {BG} linen ({HX}) with a few loose burnt orange gerbera "
+     f"petals scattered beside her bare shoulders, arms relaxed at her sides. {worn('medium olive', 'on her skin')}. "
+     f"{SCALE[0].upper() + SCALE[1:]}."),
     ("05", "Fingernail scale", True,
      f"Scale shot on a seamless {BG} backdrop ({HX}): the tip of her right index finger rests on the collarbone a "
      f"few millimetres from the moth, never covering it, so the moth can be compared with the fingernail; bare "
      f"shoulders; closer than a portrait. {worn('fair', 'on the collarbone')}. Close crop on the collarbones; {SCALE}."),
-    ("06", "Close detail on paper hills", False,
-     f"Close detail: the moth rests on the crest of layered curved paper cut-outs in graduated shades of {BG} "
-     f"({HX}), like soft hills; the camera is only a few centimetres away, so the wing outlines, the open cells and "
-     f"the feathered antennae fill most of the image from edge to edge, the rest falling softly out of focus; one "
-     f"crisp highlight on the gold; no fabric, no wood, only the paper and the piece."),
-    ("07", "Dusk still life", False,
-     f"Paper sculpture still life: a wide ribbon of {BG} paper ({HX}) curls in one sweeping arc through the image; "
-     f"the necklace is draped over its crest so the chain hangs in a V and the moth hangs free at the lowest point, "
-     f"in sharp focus; below it on the curved paper floor, a short sprig of white night-blooming jasmine, small and "
-     f"secondary; hard directional light casts one long curved shadow; the necklace is the only jewelry in the image."),
-    ("08", "Gift box and card", False,
+    ("06", "Macro on a flower centre", False,
+     f"Extreme close detail: the moth rests at the edge of a burnt orange gerbera flower centre ({HX}), its tight "
+     f"ring of short inner petals rising around it; the camera is only a few centimetres away, so the wing outlines, "
+     f"the open cells and the feathered antennae fill most of the image, the rest falling softly out of focus; one "
+     f"crisp highlight on the gold; no fabric, no wood, only the flower and the piece."),
+    ("07", "Hanging from a petal", False,
+     f"Macro still life: a single long burnt orange gerbera petal ({HX}) arcs across the image against out-of-focus "
+     f"petals of the same colour; the necklace is draped over the petal so the chain hangs in a V and the moth hangs "
+     f"free at the lowest point, in sharp focus, as if it had just landed; hard warm light casts one soft shadow of "
+     f"the open wings onto the petal behind; the necklace is the only jewelry in the image."),
+    ("08", "Gift box and petals", False,
      f"Gift and display: on a smooth semi-matte lacquered {BG} surface ({HX}) that shows no reflections, the "
      f"necklace is draped over the ridge of a small plain white folded card, the moth hanging at the front; beside "
-     f"it a small square gift box wrapped in matte {BG} paper, its lid off, lined with natural undyed linen, and a "
-     f"satin ribbon in {DEEP} curling loose across the surface; no logo and no text; the necklace appears only once."),
+     f"it a small square gift box wrapped in matte {BG} paper, its lid off, lined with natural undyed linen, a satin "
+     f"ribbon in {DEEP} curling loose across the surface and a few loose burnt orange gerbera petals; no logo and no "
+     f"text; the necklace appears only once."),
     ("09", "Three gold colours", False,
-     f"Metal colour visualization on {BG} paper ({HX}) one shade lighter, a curl of {BG} paper at the top edge: three "
-     f"identical copies of this exact necklace lie side by side, the moth of each at the bottom and its chain "
-     f"running straight up as one single strand, same size and same angle, with space between them so no two chains "
-     f"touch; the left copy in polished yellow gold, the centre copy in {WG}, the right copy in polished rose gold, "
-     f"a soft pink gold; each copy is one single metal from end to end. A full-bleed photograph, no border, no inset."),
+     f"Metal colour visualization on {PETALS}: three identical copies of this exact necklace lie side by side, the "
+     f"moth of each at the bottom and its chain running straight up as one single strand, same size and same angle, "
+     f"with space between them so no two chains touch; the left copy in polished yellow gold, the centre copy in "
+     f"{WG}, the right copy in polished rose gold, a soft pink gold; each copy is one single metal from end to end. "
+     f"A full-bleed photograph, no border, no inset."),
     ("10", "Open blazer", True,
      f"Evening detail on a seamless {BG} backdrop ({HX}): an open tailored blazer in {DEEP} over bare collarbones. "
      f"{worn('warm tan', 'at the centre of the open collar')}. {SCALE[0].upper() + SCALE[1:]}."),
     ("11", "Polished back", False,
-     f"Back view: the moth lies face down on {BG} paper ({HX}), showing its flat, plain, mirror-polished gold reverse "
+     f"Back view macro: the moth lies face down on {PETALS}, showing its flat, plain, mirror-polished gold reverse "
      f"with no engraving, no hallmark and no hollow, the open cells still open; the chain runs away from the bail as "
-     f"one single strand out of focus; the camera is close and slightly above; one crisp highlight across the flat back."),
+     f"one single strand out of focus; {BLUR}; one crisp highlight across the flat back."),
     ("12", "Evening window light", True,
      f"Editorial worn frame: low warm evening sunlight falls through a window across her bare collarbones, a soft "
      f"band of light and shade on a {BG} wall ({HX}) behind her, the moth catching the light. "
      f"{worn('deep brown', 'on bare skin below the collarbones')}. Straight-on; {SCALE}."),
 ]
 
-BANNED = [r"butterfly", r"clubbed", r"diamond", r"\bstones? set\b", r"—", r"–", r"â", r"two[ -]tone",
+BANNED = [r"butterfly", r"clubbed", r"diamond", r"\bstones? set\b", r"—", r"–", r"â", r"two[ -]tone", r"crystal", r"rhinestone",
           r"engrav(?!ing, no hallmark)"]
 rows = []
 for n, title, people, text in FRAMES:

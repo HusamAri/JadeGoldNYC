@@ -53,7 +53,7 @@ None. The shop has no butterfly, moth or dragonfly piece. Its only insect is the
 - It shows **clubbed antennae**, which read as a butterfly. A moth has feathered antennae.
   The title and tags say moth, so a buyer who knows the difference sees a mismatch. Fix: regenerate with feathered (comb) antennae, or call the piece a butterfly.
 - No stone, so the hero's plain thorax is correct.
-- 12 prompts: `prompts.py` -> `image-prompts.md` (ground dusk aubergine #3B2433, feathered antennae).
+- 12 prompts: `prompts.py` -> `image-prompts.md` (ground burnt orange #C4521F, gerbera petal macro after the owner reference, feathered antennae).
 - Regeneration follows the credit rule: prompt first, owner approval, count 1, 2k.
 
 ## Copy rules
