@@ -1,0 +1,348 @@
+{
+ "org": "2c254edf-2119-4079-b09e-dc672e32c1f9",
+ "source": "artifact-twig-v1",
+ "pricingBasis": {
+  "spotUsdOzt": 4178.2,
+  "rule": "price = ceil(2 x maker cost / 10) x 10",
+  "makerCost": "14K 100 USD/g with labour; bracelet chain 100 USD at 7 in scaled by length; assembly 50 USD; 10K/18K by density and purity",
+  "estimated": [
+   "station at the 1 g unit floor (UNCALIBRATED_ASSUMPTION)",
+   "pearl 15 USD (UNCALIBRATED_ASSUMPTION)"
+  ]
+ },
+ "items": [
+  {
+   "id": "B01",
+   "productId": "8ba135ac-a75f-5329-ada2-2d54cbbae2d0",
+   "sku": "BAS-TWIG-B01",
+   "productType": "bracelet",
+   "listingProtocol": "chain_bracelet",
+   "name": "Twig and Baroque Pearl Bracelet",
+   "title": "Twig and Baroque Pearl Bracelet, Solid Gold Branch Station with a Freshwater Pearl, Dainty Cable Chain, Woodland Christmas Gift",
+   "tags": [
+    "pearl bracelet",
+    "baroque pearl",
+    "solid gold bracelet",
+    "twig bracelet",
+    "woodland jewelry",
+    "gold twig jewelry",
+    "christmas gift",
+    "gift for her",
+    "branch bracelet",
+    "14k gold bracelet",
+    "dainty bracelet",
+    "pearl gold jewelry",
+    "bridesmaid gift"
+   ],
+   "description": "One white baroque pearl held on a small solid gold twig, set at the centre of a fine gold cable chain.\n\nThe twig is cast with a soft bark texture and two short spurs, like a branch in a winter garden, and the pearl sits in a small gold cup on top of it. Each baroque pearl has its own shape and lustre, so no two bracelets are quite alike. It is light enough to wear every day and to stack with other chains.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose. White gold, not rhodium plated: a soft warm grey, warmer at 10K.\nPearl: one white baroque freshwater pearl, about 6 mm, set in a gold cup; each pearl is unique in shape.\nSize: twig 20 mm long, cup 4.6 mm across.\nChain: 1.1 mm solid gold cable chain in the same gold, spring ring clasp; choose 6.5, 7 or 7.5 inches.\n\nEach piece is made to order and ships free within the United States from New Jersey. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Pearls are soft, so put the bracelet on after perfume and lotion, keep it away from water and wipe it with a soft cloth.\n\nThe product images are design visualizations of the finished piece, and the three-metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece and its pearl may vary slightly.",
+   "dims": "twig 20 mm, 6 mm baroque pearl",
+   "variationAxes": [
+    "Karat",
+    "Metal Color",
+    "Bracelet Length"
+   ],
+   "variants": [
+    {
+     "sku": "BAS-TWIG-B01-10KY-6_5IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Bracelet Length": "6.5 inches"
+     },
+     "price_cents": 40000,
+     "grams": 1.72,
+     "makerCostUsd": 198.21
+    },
+    {
+     "sku": "BAS-TWIG-B01-10KY-7IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Bracelet Length": "7 inches"
+     },
+     "price_cents": 41000,
+     "grams": 1.78,
+     "makerCostUsd": 203.14
+    },
+    {
+     "sku": "BAS-TWIG-B01-10KY-7_5IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Bracelet Length": "7.5 inches"
+     },
+     "price_cents": 42000,
+     "grams": 1.85,
+     "makerCostUsd": 208.07
+    },
+    {
+     "sku": "BAS-TWIG-B01-10KW-6_5IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Bracelet Length": "6.5 inches"
+     },
+     "price_cents": 40000,
+     "grams": 1.72,
+     "makerCostUsd": 198.21
+    },
+    {
+     "sku": "BAS-TWIG-B01-10KW-7IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Bracelet Length": "7 inches"
+     },
+     "price_cents": 41000,
+     "grams": 1.78,
+     "makerCostUsd": 203.14
+    },
+    {
+     "sku": "BAS-TWIG-B01-10KW-7_5IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Bracelet Length": "7.5 inches"
+     },
+     "price_cents": 42000,
+     "grams": 1.85,
+     "makerCostUsd": 208.07
+    },
+    {
+     "sku": "BAS-TWIG-B01-10KR-6_5IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Bracelet Length": "6.5 inches"
+     },
+     "price_cents": 40000,
+     "grams": 1.72,
+     "makerCostUsd": 198.21
+    },
+    {
+     "sku": "BAS-TWIG-B01-10KR-7IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Bracelet Length": "7 inches"
+     },
+     "price_cents": 41000,
+     "grams": 1.78,
+     "makerCostUsd": 203.14
+    },
+    {
+     "sku": "BAS-TWIG-B01-10KR-7_5IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Bracelet Length": "7.5 inches"
+     },
+     "price_cents": 42000,
+     "grams": 1.85,
+     "makerCostUsd": 208.07
+    },
+    {
+     "sku": "BAS-TWIG-B01-14KY-6_5IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Bracelet Length": "6.5 inches"
+     },
+     "price_cents": 52000,
+     "grams": 1.93,
+     "makerCostUsd": 257.86
+    },
+    {
+     "sku": "BAS-TWIG-B01-14KY-7IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Bracelet Length": "7 inches"
+     },
+     "price_cents": 53000,
+     "grams": 2.0,
+     "makerCostUsd": 265.0
+    },
+    {
+     "sku": "BAS-TWIG-B01-14KY-7_5IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Bracelet Length": "7.5 inches"
+     },
+     "price_cents": 55000,
+     "grams": 2.07,
+     "makerCostUsd": 272.14
+    },
+    {
+     "sku": "BAS-TWIG-B01-14KW-6_5IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Bracelet Length": "6.5 inches"
+     },
+     "price_cents": 52000,
+     "grams": 1.93,
+     "makerCostUsd": 257.86
+    },
+    {
+     "sku": "BAS-TWIG-B01-14KW-7IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Bracelet Length": "7 inches"
+     },
+     "price_cents": 53000,
+     "grams": 2.0,
+     "makerCostUsd": 265.0
+    },
+    {
+     "sku": "BAS-TWIG-B01-14KW-7_5IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Bracelet Length": "7.5 inches"
+     },
+     "price_cents": 55000,
+     "grams": 2.07,
+     "makerCostUsd": 272.14
+    },
+    {
+     "sku": "BAS-TWIG-B01-14KR-6_5IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Bracelet Length": "6.5 inches"
+     },
+     "price_cents": 52000,
+     "grams": 1.93,
+     "makerCostUsd": 257.86
+    },
+    {
+     "sku": "BAS-TWIG-B01-14KR-7IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Bracelet Length": "7 inches"
+     },
+     "price_cents": 53000,
+     "grams": 2.0,
+     "makerCostUsd": 265.0
+    },
+    {
+     "sku": "BAS-TWIG-B01-14KR-7_5IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Bracelet Length": "7.5 inches"
+     },
+     "price_cents": 55000,
+     "grams": 2.07,
+     "makerCostUsd": 272.14
+    },
+    {
+     "sku": "BAS-TWIG-B01-18KY-6_5IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Bracelet Length": "6.5 inches"
+     },
+     "price_cents": 67000,
+     "grams": 2.19,
+     "makerCostUsd": 332.88
+    },
+    {
+     "sku": "BAS-TWIG-B01-18KY-7IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Bracelet Length": "7 inches"
+     },
+     "price_cents": 69000,
+     "grams": 2.27,
+     "makerCostUsd": 342.8
+    },
+    {
+     "sku": "BAS-TWIG-B01-18KY-7_5IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Bracelet Length": "7.5 inches"
+     },
+     "price_cents": 71000,
+     "grams": 2.36,
+     "makerCostUsd": 352.72
+    },
+    {
+     "sku": "BAS-TWIG-B01-18KW-6_5IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Bracelet Length": "6.5 inches"
+     },
+     "price_cents": 67000,
+     "grams": 2.19,
+     "makerCostUsd": 332.88
+    },
+    {
+     "sku": "BAS-TWIG-B01-18KW-7IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Bracelet Length": "7 inches"
+     },
+     "price_cents": 69000,
+     "grams": 2.27,
+     "makerCostUsd": 342.8
+    },
+    {
+     "sku": "BAS-TWIG-B01-18KW-7_5IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Bracelet Length": "7.5 inches"
+     },
+     "price_cents": 71000,
+     "grams": 2.36,
+     "makerCostUsd": 352.72
+    },
+    {
+     "sku": "BAS-TWIG-B01-18KR-6_5IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Bracelet Length": "6.5 inches"
+     },
+     "price_cents": 67000,
+     "grams": 2.19,
+     "makerCostUsd": 332.88
+    },
+    {
+     "sku": "BAS-TWIG-B01-18KR-7IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Bracelet Length": "7 inches"
+     },
+     "price_cents": 69000,
+     "grams": 2.27,
+     "makerCostUsd": 342.8
+    },
+    {
+     "sku": "BAS-TWIG-B01-18KR-7_5IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Bracelet Length": "7.5 inches"
+     },
+     "price_cents": 71000,
+     "grams": 2.36,
+     "makerCostUsd": 352.72
+    }
+   ],
+   "grams14Ref": 2.0,
+   "refPriceCents": 53000,
+   "makerCost14KRefUsd": 265.0
+  }
+ ]
+}

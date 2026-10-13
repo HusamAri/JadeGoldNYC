@@ -21,12 +21,15 @@ FROST = ("slate blue stone (#3F5A73) dusted with fine white hoarfrost crystals, 
 BLUR = "one frosted twig crosses a lower corner in the foreground, softly out of focus"
 WG = "polished unplated white gold, a pale silvery grey like platinum with no yellow tint at all"
 
-SHAPE = ("a fine solid gold chain bracelet with one station at the centre: a cast gold twig 20 mm long, a slim "
-         "half-round branch about 1.6 mm wide with a soft bark texture and two short side spurs; on the twig sits "
-         "a small round gold cup setting 4.6 mm across holding one single 6 mm white baroque freshwater pearl, "
-         "irregular in shape with a soft lustre; each end of the twig has a small cast loop joined to a fine "
-         "1.1 mm gold cable chain that closes with a small spring ring clasp; no disc tag, no extender chain, "
-         "no charms, no stones, no other pearls")
+# Owner 2026-10-13 ("ilk görseldeki referansı al"): the piece copies the brief render (images/brief-twig-crop.png):
+# a smooth, polished, gently wavy organic twig (not bark), one spur up and one down, the pearl in a cup right of centre.
+SHAPE = ("a fine solid gold chain bracelet with one station at the centre: a cast gold twig about 20 mm long, a slim, "
+         "smooth, highly polished organic branch that waves gently like molten gold, with one short spur rising up "
+         "and one short spur bending down; just right of the centre a small round gold cup setting about 4.6 mm "
+         "across holds one single 6 mm white baroque freshwater pearl, visibly irregular and slightly lumpy with a "
+         "soft lustre, the pearl as tall as the twig is thick several times over; each end of the twig has a small "
+         "cast loop joined to a fine 1.1 mm gold cable chain that closes with a small spring ring clasp; no disc "
+         "tag, no extender chain, no lobster clasp, no charms, no stones, no other pearls")
 SCALE = "the twig is 20 mm long and the pearl 6 mm, small against the wrist, never larger"
 CAMERA = ("Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with "
           "one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching.")
@@ -73,12 +76,14 @@ FRAMES = [
      f"{worn('fair', 'the twig and pearl on top of the wrist')}. Cropped tight on the wrist; {SCALE}."),
     ("06", "Pearl macro in frost", False,
      f"Extreme close detail: the gold twig and the baroque pearl rest on {FROST}; the camera is only a few "
-     f"centimetres away, so the bark texture, the spurs, the cup setting and the pearl's lustre fill most of the "
+     f"centimetres away, so the smooth polished branch, the spurs, the cup setting and the pearl's lustre fill most of the "
      f"image, the rest falling softly out of focus; one crisp highlight on the gold."),
-    ("07", "Draped on a frosted branch", False,
-     f"Macro still life: a single bare branch dusted with hoarfrost arcs across the image against an out-of-focus "
-     f"{BG} background ({HX}); the bracelet is draped over the branch so the chain hangs in a soft V with the gold "
-     f"twig and pearl at the lowest point, in sharp focus; the bracelet is the only jewelry in the image."),
+    ("07", "Around a frosted twig", False,
+     # QA 2026-10-13: draped over a branch, the chain twice came out as two long strands. Pose changed, not wording.
+     f"Macro still life: one small bare twig coated in hoarfrost stands upright out of {FROST}; the bracelet is "
+     f"closed and lies flat on the stone in one round circle around the foot of the twig, like a ring around it, the "
+     f"gold twig station and pearl at the front of the circle facing the camera, in sharp focus; seen from slightly "
+     f"above; the bracelet is the only jewelry in the image."),
     ("08", "Gift box and card", False,
      f"Gift and display: on a smooth semi-matte lacquered {BG} surface ({HX}) that shows no reflections, the "
      f"bracelet is draped over the ridge of a small plain white folded card, the twig and pearl at the front; beside "
@@ -94,8 +99,9 @@ FRAMES = [
      f"photograph, no border, no inset."),
     ("10", "Hand at a wool collar", True,
      f"Editorial detail on a seamless {BG} backdrop ({HX}): her left hand rests at the open collar of a wool coat in "
-     f"{DEEP}, the wrist turned to the camera. {worn('warm tan', 'the twig and pearl facing the camera')}. Cropped "
-     f"from the middle of the neck to the chest, so the chin, the lips and the face are outside the image; {SCALE}."),
+     f"{DEEP}, the wrist turned to the camera. {worn('warm tan', 'the twig and pearl facing the camera')}. Seen "
+     f"from the collarbones down: the top edge of the image cuts across the collarbones, so the neck, the chin, the "
+     f"lips and the face are all outside the image; {SCALE}."),
     ("11", "Twig in profile", False,
      f"Side view macro: the bracelet lies on {FROST}, seen low from the side so the half-round twig, its two spurs "
      f"and the cup rising under the pearl are shown in profile; the chain leaves the frame out of focus; {BLUR}; one "
