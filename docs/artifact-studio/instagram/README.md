@@ -2,11 +2,16 @@
 
 Kaynak dosya `posts.py`. `render.py` görselleri (`out/`), `captions.py` metni
 (`captions.md`), `video.py` reel kurgusunu (`out/P1|P5/reel.mp4`) üretir.
-Videolar sahibin onayıyla üretildi (2026-10-14, seedance_2_5, count 1, 2 × 80 kredi;
-`video/jobs.json`). Reel'ler sessiz: Instagram'da trend ses uygulama içinde eklenir.
+Reklam videoları sahibin onayıyla üretildi (2026-10-14, seedance_2_5 omni_reference, 12 sn,
+1080p, 9:16, count 1, 2 x 192 kredi; `video/jobs.json` "ads"). Sahne paleti onaydan sonra
+sahibin sessiz lüks talimatına göre fildişi/krem kağıda çekildi; sahneler aynı. Reel'ler sessiz:
+Instagram'da trend ses uygulama içinde eklenir. `video/qa.py` sahne karelerini çıkarır.
 
-QA: V1'de antenler tek parça, gövde halkası ve bail korunuyor; V2'de 5 yaprak,
-orta damarlar ve boncuklu göbek korunuyor (ilk ve son kare listing görseliyle karşılaştırıldı).
+QA (4 sahne x 2 video, gözle): AD1'de tek parça antenler, damla halka, bail ve kanat hücreleri
+dört sahnede de korunuyor, 4. sahnede üç renk ayrışıyor; tek sapma 3. sahnede dudakların kadraja
+girmesi (prompt "çeneden aşağı" diyordu). AD2'de 5 yaprak, orta damarlar ve boncuklu göbek
+korunuyor, 3. sahne çeneden aşağı, 4. sahnede çam dalı kenarda ve üç renk ayrışıyor.
+İlk turdaki 5 sn'lik V1/V2 (2 x 80 kredi) kaldırıldı; kaydı `video/jobs.json`'da durur.
 
 ## Üst yazı stili: sessiz lüks (2026-10-14)
 
@@ -57,11 +62,11 @@ Sınır: veriler çoğunlukla satıcı araştırması ve sektör geneli; mücevh
 
 | # | Gönderi | Format | Görev | Durum |
 |---|---|---|---|---|
-| 1 | P1 Openwork Moth | Reklam reel 12 sn (`out/P1/reel.mp4`) | Erişim | AD1 onayı bekliyor |
+| 1 | P1 Openwork Moth | Reklam reel 12 sn (`out/P1/reel.mp4`) | Erişim | Hazır |
 | 2 | P2 10K, 14K or 18K? | Carousel 6 | Kaydetme | Hazır |
 | 3 | P3 Twig and Baroque Pearl | Tek görsel | Grid'e nefes, kış rengi | Hazır |
 | 4 | P4 Pick a charm | Carousel 10 | Yorum | Hazır |
-| 5 | P5 Poinsettia Necklace | Reklam reel 12 sn (`out/P5/reel.mp4`) | Erişim + hediye sezonu | AD2 onayı bekliyor |
+| 5 | P5 Poinsettia Necklace | Reklam reel 12 sn (`out/P5/reel.mp4`) | Erişim + hediye sezonu | Hazır |
 
 Moth ve Twig yayında (sahip, 2026-10-14). Reel kuralı (sahip, 2026-10-14): reel YALNIZ
 video olur ve tek ürünü tanıtan reklam videosudur; durağan kare kurgusu kullanılmaz.
@@ -83,6 +88,7 @@ Teslim: `python3 docs/artifact-studio/instagram/package.py <zip>` paylaşım sı
 ```bash
 python3 docs/artifact-studio/instagram/render.py <font_dizin>   # repo kökünden
 python3 docs/artifact-studio/instagram/captions.py
-python3 docs/artifact-studio/instagram/video.py     # reel kurgusu, video/V1.mp4 + V2.mp4 gerekir
+python3 docs/artifact-studio/instagram/video.py     # reel, video/AD1.mp4 + AD2.mp4 gerekir
+python3 docs/artifact-studio/instagram/package.py artifact-studio-instagram.zip
 ```
 Font dizini Pinterest setiyle aynı (`cormorant.ttf`, `cormorant-italic.ttf`, `plexmono.ttf`).

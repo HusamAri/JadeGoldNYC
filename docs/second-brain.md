@@ -1386,6 +1386,24 @@ repodaki hedefidir.
   üretir; (3) prompt onayı istediğinde kredi maliyetini de aynı soruda söyle, maliyet sonradan
   öğrenilirse onay eksik kalır.
 
+- **Sessiz lüks üst yazı = fotoğrafı karartmadan metni BOŞ ALANA koymak; boş alanı olmayan kare
+  metinsiz kalır, ve gerekirse boş alanlı kare üretilir (2026-10-14, Artifact Studio Instagram):**
+  İlk render 104 px başlık, koyu degrade, siyah CTA kartı ve 2x2 ızgara kapakla e-ticaret dili
+  üretmişti; sahip "son derece sessiz lüks" dedi. Araştırma webden değil repodan çıktı: `.idx`
+  deseni (24 px altın çizgi + 19 px geniş aralıklı mono) ve Pinterest setinin Cormorant/ivory/
+  mürekkep üçlüsü zaten marka diliydi, eksik olan onu Instagram'a taşımaktı. Kurallar: metin 56 px
+  cümle düzeni, 108 px kenar, fotoğrafa gölge bandı yok, metin yalnız kağıt/taş zeminin boş
+  alanına; takılı karede boş alan yoksa metin YOK (ilk denemede "Yellow gold, 14K." tenin üstüne
+  bindi, hem okunmuyordu hem görselden okunamayan ayar iddiasıydı). Turuncu moth ve mavi twig
+  kareleri fildişi feed'den koptu; çözüm metni zorlamak değil, ürünün sıkı kırpımıyla fildişi
+  keten üstünde yeni kare üretmek oldu (2 kredi/kare, ikisi de ilk denemede tuttu, "sahneyi alma"
+  cümlesi + kırpım referansı). Reklam videosunda sahne paleti de aynı dünyaya çekildi; sahibin
+  onayladığı prompt'un yalnız paleti değişti, sahneler değil, ve bu açıkça söylendi. Kural: (1) bir
+  marka yüzeyi için stil ararken önce repodaki kendi dilini (CSS token'ları, önceki set) oku;
+  (2) üst yazı fotoğrafın boş alanını ister, boş alan yoksa kareyi değiştir ya da metni sil,
+  fotoğrafı karartma; (3) feed tek dünyada durmalı, listing dünyası feed dünyasıyla çelişiyorsa
+  listing karesini değil feed karesini üret.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
