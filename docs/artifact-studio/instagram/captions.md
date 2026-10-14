@@ -5,8 +5,7 @@ posts.py'den üretilir; elle düzenleme yapma, posts.py'yi değiştirip `python3
 ## 1. P1 · Reel · Openwork Moth, reveal
 
 - Neden: Erişim. Yeni hesapta keşfi Reels getirir; ilk saniyede ürün tam kadrajda.
-- Medya: video V1 + kurgu, kapak out/P1/cover.jpg
-- **Engel:** Listing Etsy'de TASLAK. Yayına alınmadan bu reel paylaşılmaz (bio linki boş sayfaya gider).
+- Medya: reklam videosu AD1 (out/P1/reel.mp4), kapak out/P1/cover.jpg
 
 ```
 It took one line of gold to draw this moth.
@@ -45,7 +44,6 @@ Which one are you: 10, 14 or 18?
 
 - Neden: Tek, sessiz ürün karesi. Grid'e nefes ve sezon (kış) rengi verir.
 - Medya: 1 kare (out/P3/01..01.jpg)
-- **Engel:** Listing Etsy'de TASLAK. Yayına alınmadan bu gönderi paylaşılmaz.
 
 ```
 A twig caught in frost, and one pearl that refused to be round.
@@ -78,31 +76,31 @@ Go: 01 to 08?
 #enameljewelry #charmring #solidgold
 ```
 
-## 5. P5 · Reel · Holiday charms
+## 5. P5 · Reel · Poinsettia Necklace
 
-- Neden: Erişim + sezon. Ekim ortası hediye aramasının başladığı an; tek video + hızlı kurgu.
-- Medya: video V2 + kurgu, kapak out/P5/cover.jpg
+- Neden: Erişim + sezon. Ekim ortası hediye aramasının başladığı an; tek ürünlü reklam videosu.
+- Medya: reklam videosu AD2 (out/P5/reel.mp4), kapak out/P5/cover.jpg
 
 ```
-Christmas, in solid gold, small enough to wear every day.
+One red flower, worn from December to forever.
 
-Poinsettia, candy cane, gingerbread, bauble, snowflake, stocking, bell, holly. Vitreous enamel, glass fused to solid gold, as rings, pendants and bracelets.
+The Poinsettia Necklace: a 13 mm flower in poinsettia red vitreous enamel, glass fused to solid gold, with a beaded gold centre. It faces forward on a hidden bail, so it sits flat at the neckline.
 
-Made to order, so order early for December.
+10K, 14K or 18K, in yellow, white or rose gold, on a 16, 18 or 20 in. chain. Made to order, so order early for December.
 
-Who on your list gets the gingerbread?
+Who on your list is getting this one?
 
 Link in bio.
 
 #christmasjewelry #enameljewelry #giftsforher
 ```
 
-## Video prompt'ları (onay bekliyor, count 1)
+## Reklam videosu prompt'ları (seedance_2_5, 12 sn, 9:16, count 1)
 
-### V1 · kaynak `moth/N01/01` · 9:16 · 5 sn
+### AD1 · referanslar moth/N01/06, moth/N01/12, moth/N01/09 · 12 sn
 
-Image to video. Keep the gold moth pendant exactly as in the image: open wire wings, smooth one-piece antennae, bail through the head loop. Do not redraw or add details. Very slow camera push-in toward the pendant over 5 seconds. The blurred orange petal in the foreground drifts slowly out of frame and the petals underneath barely sway as if in a light breeze. A single soft highlight travels across the gold wings from left to right. The pendant itself stays still. Warm natural light, shallow depth of field, no text, no hands, no extra jewelry.
+12-second vertical product ad for one piece of jewelry: the Openwork Moth pendant necklace in solid gold shown in the reference images. Keep the pendant exactly as in the references in every shot: open wire wings with outlined wing cells, a teardrop head loop, smooth one-piece curved antennae, a bail through the head loop, a fine cable chain. Never add stones, enamel, texture or extra parts. Four shots with hard cuts, burnt orange gerbera petal world, warm natural light, 35mm film grain. Shot 1 (0 to 3 s): extreme macro, the pendant lies on orange gerbera petals and a soft highlight sweeps across the gold wings. Shot 2 (3 to 6 s): slow orbit around the pendant hanging in the air on its chain, it turns slightly and catches the light. Shot 3 (6 to 9 s): the necklace worn on a woman's collarbone, rust linen shirt open at the neck, framed from the chin down, she breathes and the pendant moves gently. Shot 4 (9 to 12 s): three of the same pendant in yellow, white and rose gold side by side on the petals, slow push-in. No text, no logos, no hands touching the pendant, no extra jewelry.
 
-### V2 · kaynak `xmas26/N09` · 9:16 · 5 sn
+### AD2 · referanslar xmas26/N09/06, xmas26/N09/02, xmas26/N09/09 · 12 sn
 
-Image to video. Keep the gold poinsettia pendant with red enamel petals exactly as in the image, same petal count, same chain. Do not redraw or add details. The pendant swings very gently on its chain, a small pendulum motion that settles. Light glints off the gold edges once. Camera static, slight slow push-in. Cream textured paper background stays unchanged. No text, no hands, no extra objects.
+12-second vertical product ad for one piece of jewelry: the Poinsettia pendant necklace shown in the reference images, a 13 mm flower with five pointed petals in glossy red enamel, thin gold rims and a centre vein on each petal, a beaded gold centre, on a fine gold cable chain. Keep the pendant exactly as in the references in every shot: same petal count, same shape, same red. Never add stones, leaves, snow on the pendant or extra parts. Four shots with hard cuts, deep teal velvet and paper world with a few pine sprigs, warm soft light, 35mm film grain. Shot 1 (0 to 3 s): extreme macro, the pendant rests on teal velvet and light glints along the gold rims. Shot 2 (3 to 6 s): the pendant hangs on its chain and turns slowly, warm bokeh lights behind. Shot 3 (6 to 9 s): the necklace worn on a woman's collarbone above a teal cable-knit sweater, framed from the chin down, the flower sits flat at the neckline. Shot 4 (9 to 12 s): three of the same pendant in yellow, white and rose gold side by side on teal paper, slow push-in. No text, no logos, no extra jewelry.

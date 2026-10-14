@@ -25,14 +25,16 @@ Sınır: veriler çoğunlukla satıcı araştırması ve sektör geneli; mücevh
 
 | # | Gönderi | Format | Görev | Durum |
 |---|---|---|---|---|
-| 1 | P1 Openwork Moth | Reel 8,6 sn (`out/P1/reel.mp4`) | Erişim | Hazır; listing yayını bekliyor |
+| 1 | P1 Openwork Moth | Reklam reel 12 sn (`out/P1/reel.mp4`) | Erişim | AD1 onayı bekliyor |
 | 2 | P2 10K, 14K or 18K? | Carousel 6 | Kaydetme | Hazır |
-| 3 | P3 Twig and Baroque Pearl | Tek görsel | Grid'e nefes, kış rengi | Listing yayını bekliyor |
+| 3 | P3 Twig and Baroque Pearl | Tek görsel | Grid'e nefes, kış rengi | Hazır |
 | 4 | P4 Pick a charm | Carousel 10 | Yorum | Hazır |
-| 5 | P5 Holiday charms | Reel 12,2 sn (`out/P5/reel.mp4`) | Erişim + hediye sezonu | Hazır |
+| 5 | P5 Poinsettia Necklace | Reklam reel 12 sn (`out/P5/reel.mp4`) | Erişim + hediye sezonu | AD2 onayı bekliyor |
 
-Moth ve Twig Etsy'de TASLAK (4594329265, 4594365591). Bunlara bağlanan P1 ve P3,
-listing yayına alınmadan paylaşılmaz; aksi hâlde "Link in bio" boş sayfaya gider.
+Moth ve Twig yayında (sahip, 2026-10-14). Reel kuralı (sahip, 2026-10-14): reel YALNIZ
+video olur ve tek ürünü tanıtan reklam videosudur; durağan kare kurgusu kullanılmaz.
+İlk turdaki V1/V2 (5 sn) + kare kurgusu bu yüzden kaldırıldı; `video/jobs.json` kaydı durur.
+Teslim: `python3 docs/artifact-studio/instagram/package.py <zip>` paylaşım sırasıyla zip kurar.
 
 ## Doğrulanan iddialar
 

@@ -25,10 +25,8 @@ POSTS = [
         "why": "Erişim. Yeni hesapta keşfi Reels getirir; ilk saniyede ürün tam kadrajda.",
         "cover": {"src": "moth/N01/07", "fy": 0.5, "band": [92, 36, 18],
                   "kicker": "SOLID GOLD", "headline": "A moth, drawn\nin gold."},
-        "video": "V1",
-        "cut": ["V1", "moth/N01/07", "moth/N01/02", "moth/N01/12", "moth/N01/09"],
+        "video": "AD1",
         "listing": "4594329265",
-        "blocker": "Listing Etsy'de TASLAK. Yayına alınmadan bu reel paylaşılmaz (bio linki boş sayfaya gider).",
         "caption": [
             "It took one line of gold to draw this moth.",
             "",
@@ -88,7 +86,6 @@ POSTS = [
         "why": "Tek, sessiz ürün karesi. Grid'e nefes ve sezon (kış) rengi verir.",
         "slides": [{"t": "photo", "src": "twig/B01/06", "fy": 0.5}],
         "listing": "4594365591",
-        "blocker": "Listing Etsy'de TASLAK. Yayına alınmadan bu gönderi paylaşılmaz.",
         "caption": [
             "A twig caught in frost, and one pearl that refused to be round.",
             "",
@@ -139,22 +136,22 @@ POSTS = [
     {
         "id": "P5",
         "format": "reel",
-        "title": "Holiday charms",
-        "why": "Erişim + sezon. Ekim ortası hediye aramasının başladığı an; tek video + hızlı kurgu.",
+        "title": "Poinsettia Necklace",
+        "why": "Erişim + sezon. Ekim ortası hediye aramasının başladığı an; tek ürünlü reklam videosu.",
         "cover": {"src": "xmas26/N09", "fy": 0.5,
                   "kicker": "HOLIDAY 26", "headline": "Gifts that\nstay gold.", "band": [244, 239, 231]},
-        "video": "V2",
-        "cut": ["V2", "xmas26/R02", "xmas26/N03", "xmas26/R04", "xmas26/N02",
-                "xmas26/R05", "xmas26/N10", "xmas26/R08", "xmas26/B01"],
+        "video": "AD2",
         "caption": [
-            "Christmas, in solid gold, small enough to wear every day.",
+            "One red flower, worn from December to forever.",
             "",
-            "Poinsettia, candy cane, gingerbread, bauble, snowflake, stocking, bell, holly. "
-            "Vitreous enamel, glass fused to solid gold, as rings, pendants and bracelets.",
+            "The Poinsettia Necklace: a 13 mm flower in poinsettia red vitreous enamel, glass fused "
+            "to solid gold, with a beaded gold centre. It faces forward on a hidden bail, so it sits "
+            "flat at the neckline.",
             "",
+            "10K, 14K or 18K, in yellow, white or rose gold, on a 16, 18 or 20 in. chain. "
             "Made to order, so order early for December.",
             "",
-            "Who on your list gets the gingerbread?",
+            "Who on your list is getting this one?",
             "",
             "Link in bio.",
         ],
@@ -195,3 +192,46 @@ VIDEOS = {
         ),
     },
 }
+
+# Reel = tek ürünü tanıtan reklam videosu, yalnız video (sahip talimatı 2026-10-14).
+# Durağan kare kurgusu YOK. seedance_2_5 omni_reference, 12 sn, 1080p, 9:16,
+# sessiz, count 1; referanslar ürünün kendi listing kareleri. Kredi: 192 / video.
+ADS = {
+    "AD1": {
+        "refs": ["moth/N01/06", "moth/N01/12", "moth/N01/09"],
+        "seconds": 12,
+        "prompt": (
+            "12-second vertical product ad for one piece of jewelry: the Openwork Moth pendant necklace in "
+            "solid gold shown in the reference images. Keep the pendant exactly as in the references in every "
+            "shot: open wire wings with outlined wing cells, a teardrop head loop, smooth one-piece curved "
+            "antennae, a bail through the head loop, a fine cable chain. Never add stones, enamel, texture or "
+            "extra parts. Four shots with hard cuts, burnt orange gerbera petal world, warm natural light, "
+            "35mm film grain. Shot 1 (0 to 3 s): extreme macro, the pendant lies on orange gerbera petals and "
+            "a soft highlight sweeps across the gold wings. Shot 2 (3 to 6 s): slow orbit around the pendant "
+            "hanging in the air on its chain, it turns slightly and catches the light. Shot 3 (6 to 9 s): the "
+            "necklace worn on a woman's collarbone, rust linen shirt open at the neck, framed from the chin "
+            "down, she breathes and the pendant moves gently. Shot 4 (9 to 12 s): three of the same pendant in "
+            "yellow, white and rose gold side by side on the petals, slow push-in. No text, no logos, no hands "
+            "touching the pendant, no extra jewelry."
+        ),
+    },
+    "AD2": {
+        "refs": ["xmas26/N09/06", "xmas26/N09/02", "xmas26/N09/09"],
+        "seconds": 12,
+        "prompt": (
+            "12-second vertical product ad for one piece of jewelry: the Poinsettia pendant necklace shown in "
+            "the reference images, a 13 mm flower with five pointed petals in glossy red enamel, thin gold "
+            "rims and a centre vein on each petal, a beaded gold centre, on a fine gold cable chain. Keep the "
+            "pendant exactly as in the references in every shot: same petal count, same shape, same red. "
+            "Never add stones, leaves, snow on the pendant or extra parts. Four shots with hard cuts, deep teal "
+            "velvet and paper world with a few pine sprigs, warm soft light, 35mm film grain. Shot 1 (0 to 3 s): "
+            "extreme macro, the pendant rests on teal velvet and light glints along the gold rims. Shot 2 "
+            "(3 to 6 s): the pendant hangs on its chain and turns slowly, warm bokeh lights behind. Shot 3 "
+            "(6 to 9 s): the necklace worn on a woman's collarbone above a teal cable-knit sweater, framed from "
+            "the chin down, the flower sits flat at the neckline. Shot 4 (9 to 12 s): three of the same pendant "
+            "in yellow, white and rose gold side by side on teal paper, slow push-in. No text, no logos, no "
+            "extra jewelry."
+        ),
+    },
+}
+

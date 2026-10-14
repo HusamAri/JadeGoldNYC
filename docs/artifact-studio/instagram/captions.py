@@ -3,7 +3,7 @@
 import os, re, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from posts import POSTS, VIDEOS
+from posts import POSTS, ADS
 
 FMT = {"reel": "Reel", "carousel": "Carousel", "post": "Tek görsel"}
 out = ["# Artifact Studio Instagram, ilk 5 gönderi: caption'lar", "",
@@ -17,15 +17,15 @@ for i, p in enumerate(POSTS, 1):
     assert "?" in text, p["id"]  # her gönderi bir soruyla yorum ister
     n = len(p.get("slides", [])) or 1
     media = f"{n} kare (out/{p['id']}/01..{n:02d}.jpg)" if p["format"] != "reel" else \
-        f"video {p['video']} + kurgu, kapak out/{p['id']}/cover.jpg"
+        f"reklam videosu {p['video']} (out/{p['id']}/reel.mp4), kapak out/{p['id']}/cover.jpg"
     out += [f"## {i}. {p['id']} · {FMT[p['format']]} · {p['title']}", "",
             f"- Neden: {p['why']}", f"- Medya: {media}"]
     if p.get("blocker"):
         out.append(f"- **Engel:** {p['blocker']}")
     out += ["", "```", text, "```", ""]
-out += ["## Video prompt'ları (onay bekliyor, count 1)", ""]
-for k, v in VIDEOS.items():
-    out += [f"### {k} · kaynak `{v['src']}` · {v['aspect']} · {v['seconds']} sn", "", v["prompt"], ""]
+out += ["## Reklam videosu prompt'ları (seedance_2_5, 12 sn, 9:16, count 1)", ""]
+for k, v in ADS.items():
+    out += [f"### {k} · referanslar {', '.join(v['refs'])} · {v['seconds']} sn", "", v["prompt"], ""]
 dst = os.path.join(os.path.dirname(os.path.abspath(__file__)), "captions.md")
 open(dst, "w").write("\n".join(out))
 print("captions.md", len(POSTS), "posts")
