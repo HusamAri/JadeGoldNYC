@@ -233,3 +233,41 @@ ADS = {
     },
 }
 
+# Instagram'a özel fildişi zeminli kareler (sahip onayı 2026-10-14, "evet"): moth ve
+# twig'in listing dünyası (turuncu, buz mavisi) feed'in fildişi dilinden kopuyor.
+# nano_banana_2, 1:1, resolution 2k (varsayılan 1k, açıkça geçilir), count 1,
+# 2 kredi / kare. Referans: ürünün sıkı kırpımı (video/ref-*.jpg), sahne alınmaz.
+# Çıktı: public/artifact/<set>/<id>/ig-01.jpg, P1 kapağı ve P3 bu kareyi kullanır.
+STILLS = {
+    "moth": {
+        "ref": "video/ref-moth.jpg",
+        "out": "moth/N01/ig-01",
+        "prompt": (
+            "Product still photograph for a quiet luxury jewelry feed. Copy the gold openwork moth "
+            "pendant from the reference image exactly: open wire wings with outlined cells, teardrop "
+            "head loop, smooth one-piece curved antennae, polished bail, fine cable chain, warm yellow "
+            "gold. Do not take the orange flower, the background or the camera angle from the reference. "
+            "Scene: the pendant lies flat on heavy ivory linen paper with a soft visible weave, the chain "
+            "trailing in a loose curve out of the top of the frame. Camera straight above, slightly "
+            "tilted, the pendant in the lower two thirds of the square and plenty of empty paper above it. "
+            "Soft directional daylight from the upper left, one gentle shadow, true scale. No props, no "
+            "flowers, no text, no hands. 35mm film grain, muted, editorial."
+        ),
+    },
+    "twig": {
+        "ref": "video/ref-twig.jpg",
+        "out": "twig/B01/ig-01",
+        "prompt": (
+            "Product still photograph for a quiet luxury jewelry feed. Copy the gold twig bracelet from "
+            "the reference image exactly: a smooth polished wavy branch in warm yellow gold with one "
+            "short spur up and one down, a single white baroque pearl seated in a gold cup right of "
+            "centre, fine cable chain at both ends. Do not take the blue velvet, the frost, the branches "
+            "or the camera angle from the reference. Scene: the bracelet lies open in a soft arc on heavy "
+            "ivory linen paper with a visible weave, the pearl near the centre of the square, plenty of "
+            "empty paper above. Camera straight above, slightly tilted. Soft directional daylight from "
+            "the upper left, one gentle shadow, true scale. No props, no text, no hands. 35mm film "
+            "grain, muted, editorial."
+        ),
+    },
+}
+
