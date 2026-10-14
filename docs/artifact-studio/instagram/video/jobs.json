@@ -1,5 +1,32 @@
 {
-  "note": "Owner approved prompts 2026-10-14. seedance_2_5, omni_reference, 1080p, 5 s, 9:16, no audio, count 1. 80 credits each. Start frames = 9:16 centre crop of the listing image (V1-start.jpg, V2-start.jpg).",
-  "V1": {"src": "moth/N01/01", "media_id": "3a6925f2-0900-4262-aaa8-08e1d903ebec", "job_id": "4808577e-b9cc-46e8-8cc3-69b32fac9876"},
-  "V2": {"src": "xmas26/N09", "media_id": "5321dd7a-c5cf-4047-b6fa-86ad62341a0a", "job_id": "81c27ded-9292-43db-aec9-99d0b10e8e49"}
+ "note": "Owner approved prompts 2026-10-14. seedance_2_5, omni_reference, 1080p, 5 s, 9:16, no audio, count 1. 80 credits each. Start frames = 9:16 centre crop of the listing image (V1-start.jpg, V2-start.jpg).",
+ "V1": {
+  "src": "moth/N01/01",
+  "media_id": "3a6925f2-0900-4262-aaa8-08e1d903ebec",
+  "job_id": "4808577e-b9cc-46e8-8cc3-69b32fac9876"
+ },
+ "V2": {
+  "src": "xmas26/N09",
+  "media_id": "5321dd7a-c5cf-4047-b6fa-86ad62341a0a",
+  "job_id": "81c27ded-9292-43db-aec9-99d0b10e8e49"
+ },
+ "ads": {
+  "note": "Owner approved 2026-10-14. seedance_2_5 omni_reference, 12 s, 1080p, 9:16, no audio, count 1, 192 credits each. Scene palette moved to ivory/cream paper to match the quiet-luxury feed (owner's later instruction); shots unchanged.",
+  "AD1": {
+   "refs": [
+    "d8ccdb30-7cdc-447b-84d4-b4b90ad9915f",
+    "cbce5bf3-d011-4ff8-bfdb-7a85b3230ae3",
+    "62b0490c-c07e-4d15-ab56-7c0e5996735b"
+   ],
+   "job_id": "85aed00d-7841-4e90-9be0-38a39e3d346c"
+  },
+  "AD2": {
+   "refs": [
+    "ac639d62-3fd4-41ea-bea4-fc00b20491b2",
+    "1fa02ff2-4873-4872-9858-91f1c78541a8",
+    "f5189fa0-b74b-44c4-b884-0b2a5d0f31bd"
+   ],
+   "job_id": "13747211-514a-4d03-baad-3054abadc899"
+  }
+ }
 }
