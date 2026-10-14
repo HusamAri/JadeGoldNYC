@@ -1,0 +1,5 @@
+{
+  "note": "Owner approved prompts 2026-10-14. seedance_2_5, omni_reference, 1080p, 5 s, 9:16, no audio, count 1. 80 credits each. Start frames = 9:16 centre crop of the listing image (V1-start.jpg, V2-start.jpg).",
+  "V1": {"src": "moth/N01/01", "media_id": "3a6925f2-0900-4262-aaa8-08e1d903ebec", "job_id": "4808577e-b9cc-46e8-8cc3-69b32fac9876"},
+  "V2": {"src": "xmas26/N09", "media_id": "5321dd7a-c5cf-4047-b6fa-86ad62341a0a", "job_id": "81c27ded-9292-43db-aec9-99d0b10e8e49"}
+}
