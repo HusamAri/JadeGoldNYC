@@ -32,6 +32,14 @@ Uygulanan kurallar (`render.py`):
 - Karat rehberinin kapak ve renk kareleri `him26` düz bantla kuruldu: yalın, taş zemin,
   mine yok; moth'un turuncu dünyası bu kare için fazla yüksek sesliydi.
 
+Fildişi zeminli iki yeni kare (sahip onayı 2026-10-14, nano_banana_2 2k, count 1, 2 x 2 kredi):
+`public/artifact/moth/N01/ig-01.jpg` ve `public/artifact/twig/B01/ig-01.jpg`. Yalnız Instagram
+için; Etsy galerisine girmez. Referans ürünün sıkı kırpımıydı (`video/ref-*.jpg`), sahne
+prompt'ta reddedildi. QA: moth'ta tek parça antenler, damla baş halkası, bail ve açık kanat
+hücreleri; twig'de dalgalı dal, biri yukarı biri aşağı iki sürgün, ortanın sağında barok inci,
+iki uçta zincir; ikisi de referansla birebir. P1 kapağı ve P3 artık bu kareleri kullanır;
+P2/05 (takılı moth) turuncu dünyada kalır, çünkü onu değiştirmek modeli yeniden kurmak demek.
+
 ## Araştırmadan çıkan 5 kural
 
 | Bulgu | Kaynak | Bu sette nasıl uygulandı |

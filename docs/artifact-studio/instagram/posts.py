@@ -23,7 +23,7 @@ POSTS = [
         "format": "reel",
         "title": "Openwork Moth, reveal",
         "why": "Erişim. Yeni hesapta keşfi Reels getirir; ilk saniyede ürün tam kadrajda.",
-        "cover": {"src": "moth/N01/07", "fy": 0.5,
+        "cover": {"src": "moth/N01/ig-01", "fy": 0.62,
                   "kicker": "OPENWORK MOTH", "headline": "A moth, drawn in gold."},
         "video": "AD1",
         "listing": "4594329265",
@@ -83,7 +83,7 @@ POSTS = [
         "format": "post",
         "title": "Twig and Baroque Pearl",
         "why": "Tek, sessiz ürün karesi. Grid'e nefes ve sezon (kış) rengi verir.",
-        "slides": [{"t": "photo", "src": "twig/B01/06", "fy": 0.5}],
+        "slides": [{"t": "photo", "src": "twig/B01/ig-01", "fy": 0.5}],
         "listing": "4594365591",
         "caption": [
             "A twig caught in frost, and one pearl that refused to be round.",
