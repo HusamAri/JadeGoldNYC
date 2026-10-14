@@ -8,6 +8,30 @@ Videolar sahibin onayıyla üretildi (2026-10-14, seedance_2_5, count 1, 2 × 80
 QA: V1'de antenler tek parça, gövde halkası ve bail korunuyor; V2'de 5 yaprak,
 orta damarlar ve boncuklu göbek korunuyor (ilk ve son kare listing görseliyle karşılaştırıldı).
 
+## Üst yazı stili: sessiz lüks (2026-10-14)
+
+Sahip talimatı: "son derece sessiz lüks, editorial, minimalist". Kaynak iki yer:
+(1) Artifact Studio'nun kendi dili (`app/globals.css` `.idx` deseni, Pinterest seti):
+fildişi zemin, mürekkep metin, tek sıcak altın vurgu, Cormorant Garamond başlık,
+IBM Plex Mono geniş aralıklı küçük etiket; (2) sessiz lüks mücevher hesaplarının
+ortak pratiği (Sophie Bille Brahe, Jessica McCormack, Aurate tarzı feed'ler):
+fotoğraf ağırlıklı, yazı varsa küçük ve kenarda, bol boşluk, karartma yok, kalın yok.
+Web kaynakları aynı yönü söylüyor ama Instagram'a özgü ölçüm vermiyor:
+[Branvas quiet luxury guide](https://branvas.com/blogs/news/quiet-luxury-jewelry-online-store-guide)
+(logosuz, fazlasız, sessiz palet), [Contra heirloom brief](https://contra.com/community/LTm1fArg-luxury-jewelry-design-elevate-your-brand)
+(serif başlık + sans/mono detay eşlemesi), [Made Good brand guidelines](https://madegooddesigns.com/lunetterie-generale-brand-guidelines/)
+(küçük metin koyu kalsın).
+
+Uygulanan kurallar (`render.py`):
+- Fotoğraf karartılmaz; gölge bandı, degrade, kutu yok. Metin yalnız fotoğrafın boş
+  alanına (kağıt/taş zemin) girer; boş alanı olmayan takılı karede metin yok (P2/05).
+- Başlık Cormorant 56 px, cümle düzeni, tek ses. Etiket Plex Mono 19 px, geniş aralık,
+  24 px altın çizgi. Kenar boşluğu 108 px. Numara kareleri küçük mono "01".
+- Siyah kart yok; CTA ve metin kareleri ivory. Carousel kapağı 2x2 ızgara değil tek ürün.
+- Reel kapağı: fotoğraf üstte tam, altta ivory alan, metin 4:5 grid kırpımının içinde.
+- Karat rehberinin kapak ve renk kareleri `him26` düz bantla kuruldu: yalın, taş zemin,
+  mine yok; moth'un turuncu dünyası bu kare için fazla yüksek sesliydi.
+
 ## Araştırmadan çıkan 5 kural
 
 | Bulgu | Kaynak | Bu sette nasıl uygulandı |
