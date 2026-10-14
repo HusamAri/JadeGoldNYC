@@ -1,7 +1,12 @@
 # Artifact Studio Instagram: ilk 5 gönderi (2026-10-14)
 
 Kaynak dosya `posts.py`. `render.py` görselleri (`out/`), `captions.py` metni
-(`captions.md`) üretir. Videolar onay bekliyor (kredi kuralı, CLAUDE.md).
+(`captions.md`), `video.py` reel kurgusunu (`out/P1|P5/reel.mp4`) üretir.
+Videolar sahibin onayıyla üretildi (2026-10-14, seedance_2_5, count 1, 2 × 80 kredi;
+`video/jobs.json`). Reel'ler sessiz: Instagram'da trend ses uygulama içinde eklenir.
+
+QA: V1'de antenler tek parça, gövde halkası ve bail korunuyor; V2'de 5 yaprak,
+orta damarlar ve boncuklu göbek korunuyor (ilk ve son kare listing görseliyle karşılaştırıldı).
 
 ## Araştırmadan çıkan 5 kural
 
@@ -20,11 +25,11 @@ Sınır: veriler çoğunlukla satıcı araştırması ve sektör geneli; mücevh
 
 | # | Gönderi | Format | Görev | Durum |
 |---|---|---|---|---|
-| 1 | P1 Openwork Moth | Reel | Erişim | Video V1 onayı + listing yayını bekliyor |
+| 1 | P1 Openwork Moth | Reel 8,6 sn (`out/P1/reel.mp4`) | Erişim | Hazır; listing yayını bekliyor |
 | 2 | P2 10K, 14K or 18K? | Carousel 6 | Kaydetme | Hazır |
 | 3 | P3 Twig and Baroque Pearl | Tek görsel | Grid'e nefes, kış rengi | Listing yayını bekliyor |
 | 4 | P4 Pick a charm | Carousel 10 | Yorum | Hazır |
-| 5 | P5 Holiday charms | Reel | Erişim + hediye sezonu | Video V2 onayı bekliyor |
+| 5 | P5 Holiday charms | Reel 12,2 sn (`out/P5/reel.mp4`) | Erişim + hediye sezonu | Hazır |
 
 Moth ve Twig Etsy'de TASLAK (4594329265, 4594365591). Bunlara bağlanan P1 ve P3,
 listing yayına alınmadan paylaşılmaz; aksi hâlde "Link in bio" boş sayfaya gider.
@@ -44,5 +49,6 @@ listing yayına alınmadan paylaşılmaz; aksi hâlde "Link in bio" boş sayfaya
 ```bash
 python3 docs/artifact-studio/instagram/render.py <font_dizin>   # repo kökünden
 python3 docs/artifact-studio/instagram/captions.py
+python3 docs/artifact-studio/instagram/video.py     # reel kurgusu, video/V1.mp4 + V2.mp4 gerekir
 ```
 Font dizini Pinterest setiyle aynı (`cormorant.ttf`, `cormorant-italic.ttf`, `plexmono.ttf`).
