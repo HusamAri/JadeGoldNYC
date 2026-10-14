@@ -1369,6 +1369,23 @@ repodaki hedefidir.
   diyor) — "sahip referansı gönderdi" ile "referans elimde" ayrı şeylerdir; dosya yolunu ya da
   Drive klasörünü AYNI turda iste, aramayı sahibin klasöründe canlı yap.
 
+- **Kare listing görselinden dikey içerik kurarken önce KADRAJIN NEYİ KESECEĞİNE bak; ve "onaylandı"
+  sorusuna maliyeti de koy (2026-10-14, Artifact Studio Instagram):** 5 gönderilik set listing
+  karelerinden kuruldu. 2048 kare görsel 9:16'ya orta kırpılınca genişlik %56'ya iner: üç kolyeli
+  karede dıştaki iki kolye kesilir, makro moth karesinde kanat uçları gider. Video başlangıç karesi
+  bu yüzden ürünün kırpımda tam kaldığı kareden seçildi (moth 06 değil 01; kontak baskısında üç aday
+  yan yana kırpılıp bakıldı), kurgu karelerinde ise kare kırpılmadı, ortada tam genişlikte durup
+  üst/alt aynı görselin bulanık büyütmesiyle doldu. Reel kapağında metin 4:5 grid kırpımının içinde
+  kalmalı; ilk kapakta metin altın kanadın üstüne bindi, okunmuyordu, düz renk bant + bandın üstüne
+  sığdırılmış fotoğraf ikisini de çözdü. Metin tarafında caption'lar kataloga karşı okundu ve üç
+  iddia düştü ("her parça dokuz altında" 96 listing'de yanlış, "hand-filled" katalogda yok, iki motif
+  stud değil huggie/dangle). Higgsfield tarafında `get_cost` bile `preset_recommendation` döndürüp
+  maliyeti vermedi; `declined_preset_id` ile literal istek geçince 80 kredi göründü. Kural: (1) oran
+  değiştiren her dönüşümde (kare → 9:16, 9:16 → 4:5 grid) ürünün kadrajda kalıp kalmadığını kırpılmış
+  hâliyle GÖR; (2) sosyal metin de listing metni gibi kataloga karşı okunur, pazarlama dili iddia
+  üretir; (3) prompt onayı istediğinde kredi maliyetini de aynı soruda söyle, maliyet sonradan
+  öğrenilirse onay eksik kalır.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
