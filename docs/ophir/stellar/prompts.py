@@ -29,12 +29,14 @@ WG = "polished unplated white gold, a pale silvery grey like platinum with no ye
 # prompt said "four-point". Both causes were ours: "the classic sparkle shape" handed the model its own
 # many-rayed default, and the guard banned only the one wrong value we happened to think of. The count is
 # now carried as GEOMETRY (second-brain: describe the object, not the jargon) and the wrong CLASS is named.
-STAR_GEO = ("a four point star, exactly four slender tapering points on a cross, one up, one down, one left "
-            "and one right, the up and down points a little longer, with nothing in the gaps between them")
+STAR_GEO = ("a four point star shaped like a plus sign, exactly four identical tapering points at twelve, "
+            "three, six and nine o'clock, all four the same length as each other, with the gold between them "
+            "smooth and unbroken and no smaller rays in the diagonals")
 STAR_SET = f"{STAR_GEO}, holding one small round brilliant white diamond at its centre"
 STAR_PLAIN = f"{STAR_GEO}, solid plain polished gold with no diamond and no empty setting"
-STAR_RULE = ("every star in the image has exactly four points on a cross, two long and two short, never five "
-             "points and never a six or eight ray north star or compass rose")
+STAR_RULE = ("every star in the image has exactly four points of equal length on a plus shaped cross, with "
+             "empty smooth metal in the diagonals, never five points and never a six or eight ray north star "
+             "or compass rose")
 
 # ---------------------------------------------------------------- the five products
 P = [
@@ -243,6 +245,9 @@ for k, v in out.items():
     assert STAR_RULE in t, k                       # positive pin: four points on a cross, stated as geometry
     assert t.count("six or eight ray north star") == 1, k     # the ban has one home, the shared rule
     assert "classic sparkle shape" not in t, k     # the phrase that caused the 2026-10-15 reshoot
+    # the R01 canary proved these describe a north star; never reintroduce them (2026-10-15)
+    for cue in ("a little longer", "two long and two short", "longer than the side"):
+        assert cue not in t, (k, cue)
     assert "four-pointed" not in t, k              # jargon spelling; the geometry string is the only form
     # the star clause belongs to the products that actually have one, and only to them
     assert (STAR_GEO in t) == bool(prod["star"]), k

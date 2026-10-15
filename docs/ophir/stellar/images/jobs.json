@@ -55,6 +55,40 @@
   ],
   "if_the_worded_star_fails_again": "Do NOT harden the wording a third time. Second-brain 2026-10-15 (Tideline): a frame that misses twice is fixed by the set's already-correct sibling as a composition/shape reference, not by more description. The canary above exists so that sibling exists. If R01 itself misses twice, change the star's presentation (flat to camera, filling more of the frame) rather than the sentence.",
   "not_applicable_from_that_lesson": "Its colour rule (a separate listing per metal colour needs its own scene palette) does not apply here: Stellar carries Metal Color as a VARIATION AXIS inside one listing per product, and frame 06 is the single three-metal frame. Do not split palettes per colour.",
-  "credit_reporting": "Report credits from THESE job ids, never from the balance delta: other sessions spend against the same balance (Tideline measured 58 generations in the same minutes that were not its own)."
- }
+  "credit_reporting": "Report credits from THESE job ids, never from the balance delta: other sessions spend against the same balance (Tideline measured 58 generations in the same minutes that were not its own).",
+  "status": "R01 and N01 done. R03 still open: it has now missed twice, so per the plan the next attempt uses a tight crop of the APPROVED R01 star as the shape reference (that sibling now exists), and must also fix the flat-plate face. Do not re-word a third time."
+ },
+ "heroes_v2": {
+  "note": "2026-10-15 reshoot round, owner approved. 2 credits per generation, 4 generations, 8 credits. Counted from these job ids, not from the balance delta.",
+  "R01-01": {
+   "job": "a6dcdae2-7ae2-44c5-bc2d-0420e66652ba",
+   "w": 2048,
+   "h": 2048,
+   "qa": "PASS",
+   "note": "four points at 12/3/6/9, diagonals empty. Band, wave, pave row, single star diamond all on spec."
+  },
+  "N01-01": {
+   "job": "84901507-5967-4480-a1f1-5d6a5cef1089",
+   "w": 2048,
+   "h": 2048,
+   "qa": "PASS",
+   "note": "both stars four point AND plain polished gold - the invented-stones defect is gone. Loop, drop chain, larger second star and teardrop all on spec."
+  },
+  "R03-01": {
+   "job": "c56a5734-c11f-44f1-a740-f6513065398a",
+   "w": 2048,
+   "h": 2048,
+   "qa": "REJECT",
+   "defects": [
+    "star is an EIGHT ray north star: four long plus four diagonal minors, diagonals not empty",
+    "face rendered as a conventional flat oval signet plate, not the wide sculptural sweep that curves and folds into one poured molten form that the listing copy promises"
+   ]
+  },
+  "rejected_R01_v1": {
+   "job": "d44146b1-0ea0-445f-9d57-3458dafe75b8",
+   "qa": "REJECT",
+   "note": "north star again. Diagnosis: our own wording carried the cue - see root_cause."
+  }
+ },
+ "root_cause_of_the_star_misses": "Not model stubbornness. The geometry string said 'the up and down points a little longer' and the shared rule said 'two long and two short' - which is the construction of a north star (two long arms, two short, minor rays between). We were describing the banned shape while banning it, in all 50 prompts. Replaced with four points of EQUAL length on a plus, diagonals explicitly empty; R01 and N01 then passed from text alone, with no reference image. prompts.py asserts the cue phrases can never return."
 }
