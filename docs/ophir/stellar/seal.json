@@ -1,0 +1,36 @@
+{
+ "package": "2026-10-15-ophir-stellar",
+ "total": 495,
+ "items": {
+  "E01": {
+   "variants": 9,
+   "variantSeal": "2d5f0645629d9453739bb6d3133aeaf6",
+   "descMd5": "932bc3aaf4c9417ad373f20b5e44b48b",
+   "tagSeal": "85ab5f6a891938ef67d82f55d223df47"
+  },
+  "N01": {
+   "variants": 27,
+   "variantSeal": "a988f8ad2ae5be2ee0be2503d2e9e25f",
+   "descMd5": "df82334ef70db5fb53178322af81e526",
+   "tagSeal": "b33f7079f5a9de751f1ecdcd1e90491c"
+  },
+  "R01": {
+   "variants": 153,
+   "variantSeal": "86c114286d31b57b1d24164d85ba4a4a",
+   "descMd5": "650348b70b5f02a51871d8b4ff566e0b",
+   "tagSeal": "8d69c8123f2d0045f7be2b5a7cc7bb61"
+  },
+  "R02": {
+   "variants": 153,
+   "variantSeal": "3a352abd0dc461057d69190d17deb644",
+   "descMd5": "944a1fa8a43c94106e0fbf6d5901aa33",
+   "tagSeal": "c050f515764e0e1d0b9f136e2ab43c4f"
+  },
+  "R03": {
+   "variants": 153,
+   "variantSeal": "a40ff9ae294b46cd43654b79836a04d8",
+   "descMd5": "6b5458f7cdbe68d7e5f25c0276aa9516",
+   "tagSeal": "1c85704ba7b028ff74b076c48d488df8"
+  }
+ }
+}
