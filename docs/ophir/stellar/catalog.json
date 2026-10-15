@@ -1,0 +1,6131 @@
+{
+ "org": "b7658ac4-7fb4-4fcb-836f-401efc3d9e5b",
+ "source": "ophir-stellar-v1",
+ "pricingBasis": {
+  "spotUsdOzt": 4178.2,
+  "rule": "price = ceil(2 x maker cost / 10) x 10",
+  "makerCost": "14K 100 USD/g with labour (maker band list); 10K/18K by purity and density; necklace chain 130 USD at 18 in scaled by length and karat",
+  "estimated": [
+   "stone 5.00 USD each, set (UNCALIBRATED_ASSUMPTION: the maker table has no diamond line)",
+   "grams from geometry x 1.15 safety factor (UNCALIBRATED_ASSUMPTION: no sample weighed)",
+   "signet grams use the owner's (top + shank) / 2 averaging rule, not a measured section"
+  ]
+ },
+ "items": [
+  {
+   "id": "E01",
+   "productId": "1262ccdc-cb50-5110-b801-4c885f0a612d",
+   "sku": "OPH-STL-E01",
+   "productType": "earrings",
+   "listingProtocol": "dangle_earrings",
+   "name": "Stellar Curve Earrings",
+   "title": "Stellar Curve Earrings, Solid Gold Long Drop with a Pave Diamond Knot, Modern Sculptural Ear Jacket, Gift for Her",
+   "tags": [
+    "gold drop earrings",
+    "diamond earrings",
+    "pave earrings",
+    "solid gold earrings",
+    "modern earrings",
+    "statement earrings",
+    "sculptural jewelry",
+    "long drop earrings",
+    "14k gold earrings",
+    "gift for her",
+    "minimalist earrings",
+    "curved earrings",
+    "star jewelry"
+   ],
+   "description": "One long gold curve and a slimmer pave curve crossing it, tied in a small diamond knot.\n\nThe thick curve is drawn out to a fine point and sweeps down along the jaw, so the pair reads as one clean line from the front and a sculpture from the side. The second curve is set with a single row of small white diamonds and crosses the first where the two tie.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose. White gold is unplated, a soft silvery grey.\nSize: each earring is about 55 mm long and 9 mm across the knot.\nFitting: post and butterfly back, both in the same solid gold.\n\nEach piece is made to order and ships free within the United States. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Take it off before the gym, the pool and the shower, and wipe it with a soft cloth.\n\nThe product images are design visualizations of the finished piece, and the three metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
+   "dims": "55 mm drop, 9 mm across the knot",
+   "variationAxes": [
+    "Karat",
+    "Metal Color"
+   ],
+   "variants": [
+    {
+     "sku": "OPH-STL-E01-10KY",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold"
+     },
+     "price_cents": 168000,
+     "grams": 4.85,
+     "stones": 92,
+     "makerCostUsd": 835.77
+    },
+    {
+     "sku": "OPH-STL-E01-10KW",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold"
+     },
+     "price_cents": 168000,
+     "grams": 4.85,
+     "stones": 92,
+     "makerCostUsd": 835.77
+    },
+    {
+     "sku": "OPH-STL-E01-10KR",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold"
+     },
+     "price_cents": 168000,
+     "grams": 4.85,
+     "stones": 92,
+     "makerCostUsd": 835.77
+    },
+    {
+     "sku": "OPH-STL-E01-14KY",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold"
+     },
+     "price_cents": 201000,
+     "grams": 5.44,
+     "stones": 92,
+     "makerCostUsd": 1004.05
+    },
+    {
+     "sku": "OPH-STL-E01-14KW",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold"
+     },
+     "price_cents": 201000,
+     "grams": 5.44,
+     "stones": 92,
+     "makerCostUsd": 1004.05
+    },
+    {
+     "sku": "OPH-STL-E01-14KR",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold"
+     },
+     "price_cents": 201000,
+     "grams": 5.44,
+     "stones": 92,
+     "makerCostUsd": 1004.05
+    },
+    {
+     "sku": "OPH-STL-E01-18KY",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold"
+     },
+     "price_cents": 244000,
+     "grams": 6.19,
+     "stones": 92,
+     "makerCostUsd": 1215.69
+    },
+    {
+     "sku": "OPH-STL-E01-18KW",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold"
+     },
+     "price_cents": 244000,
+     "grams": 6.19,
+     "stones": 92,
+     "makerCostUsd": 1215.69
+    },
+    {
+     "sku": "OPH-STL-E01-18KR",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold"
+     },
+     "price_cents": 244000,
+     "grams": 6.19,
+     "stones": 92,
+     "makerCostUsd": 1215.69
+    }
+   ],
+   "grams14Ref": 5.44,
+   "stonesRef": 92,
+   "refPriceCents": 201000,
+   "makerCost14KRefUsd": 1004.05
+  },
+  {
+   "id": "N01",
+   "productId": "23b47166-0ac7-574d-a175-45533122498f",
+   "sku": "OPH-STL-N01",
+   "productType": "necklace",
+   "listingProtocol": "pendant_necklace",
+   "name": "Stellar Drop Necklace",
+   "title": "Stellar Drop Necklace, Solid Gold Lariat with a Four Point Star and Teardrop, Layering Chain, Gift for Her",
+   "tags": [
+    "gold lariat necklace",
+    "star necklace",
+    "solid gold necklace",
+    "layering necklace",
+    "celestial jewelry",
+    "drop necklace",
+    "y necklace",
+    "14k gold necklace",
+    "dainty necklace",
+    "gift for her",
+    "modern necklace",
+    "teardrop necklace",
+    "star pendant"
+   ],
+   "description": "A gold line that crosses the collarbone, turns back on itself and drops a star below.\n\nThe chain gives way to one smooth gold bar that sweeps across and loops, with a four point star sitting where the loop closes. From the bottom of the loop a short length of the same chain carries a second, larger star and ends in a small polished teardrop.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose. White gold is unplated, a soft silvery grey.\nSize: the centre bar spans about 60 mm and the drop falls about 45 mm below it.\nChain: 1.0 mm solid gold cable chain in the same gold, spring ring clasp.\n\nEach piece is made to order and ships free within the United States. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Take it off before the gym, the pool and the shower, and wipe it with a soft cloth.\n\nThe product images are design visualizations of the finished piece, and the three metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
+   "dims": "60 mm centre bar, 45 mm drop",
+   "variationAxes": [
+    "Karat",
+    "Metal Color",
+    "Chain Length"
+   ],
+   "variants": [
+    {
+     "sku": "OPH-STL-N01-10KY-16IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Chain Length": "16 inches"
+     },
+     "price_cents": 78000,
+     "grams": 3.99,
+     "stones": 0,
+     "makerCostUsd": 388.79
+    },
+    {
+     "sku": "OPH-STL-N01-10KY-18IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Chain Length": "18 inches"
+     },
+     "price_cents": 80000,
+     "grams": 3.99,
+     "stones": 0,
+     "makerCostUsd": 398.77
+    },
+    {
+     "sku": "OPH-STL-N01-10KY-20IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Chain Length": "20 inches"
+     },
+     "price_cents": 82000,
+     "grams": 3.99,
+     "stones": 0,
+     "makerCostUsd": 408.75
+    },
+    {
+     "sku": "OPH-STL-N01-10KW-16IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Chain Length": "16 inches"
+     },
+     "price_cents": 78000,
+     "grams": 3.99,
+     "stones": 0,
+     "makerCostUsd": 388.79
+    },
+    {
+     "sku": "OPH-STL-N01-10KW-18IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Chain Length": "18 inches"
+     },
+     "price_cents": 80000,
+     "grams": 3.99,
+     "stones": 0,
+     "makerCostUsd": 398.77
+    },
+    {
+     "sku": "OPH-STL-N01-10KW-20IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Chain Length": "20 inches"
+     },
+     "price_cents": 82000,
+     "grams": 3.99,
+     "stones": 0,
+     "makerCostUsd": 408.75
+    },
+    {
+     "sku": "OPH-STL-N01-10KR-16IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Chain Length": "16 inches"
+     },
+     "price_cents": 78000,
+     "grams": 3.99,
+     "stones": 0,
+     "makerCostUsd": 388.79
+    },
+    {
+     "sku": "OPH-STL-N01-10KR-18IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Chain Length": "18 inches"
+     },
+     "price_cents": 80000,
+     "grams": 3.99,
+     "stones": 0,
+     "makerCostUsd": 398.77
+    },
+    {
+     "sku": "OPH-STL-N01-10KR-20IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Chain Length": "20 inches"
+     },
+     "price_cents": 82000,
+     "grams": 3.99,
+     "stones": 0,
+     "makerCostUsd": 408.75
+    },
+    {
+     "sku": "OPH-STL-N01-14KY-16IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Chain Length": "16 inches"
+     },
+     "price_cents": 113000,
+     "grams": 4.47,
+     "stones": 0,
+     "makerCostUsd": 562.9
+    },
+    {
+     "sku": "OPH-STL-N01-14KY-18IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Chain Length": "18 inches"
+     },
+     "price_cents": 116000,
+     "grams": 4.47,
+     "stones": 0,
+     "makerCostUsd": 577.35
+    },
+    {
+     "sku": "OPH-STL-N01-14KY-20IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Chain Length": "20 inches"
+     },
+     "price_cents": 119000,
+     "grams": 4.47,
+     "stones": 0,
+     "makerCostUsd": 591.79
+    },
+    {
+     "sku": "OPH-STL-N01-14KW-16IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Chain Length": "16 inches"
+     },
+     "price_cents": 113000,
+     "grams": 4.47,
+     "stones": 0,
+     "makerCostUsd": 562.9
+    },
+    {
+     "sku": "OPH-STL-N01-14KW-18IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Chain Length": "18 inches"
+     },
+     "price_cents": 116000,
+     "grams": 4.47,
+     "stones": 0,
+     "makerCostUsd": 577.35
+    },
+    {
+     "sku": "OPH-STL-N01-14KW-20IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Chain Length": "20 inches"
+     },
+     "price_cents": 119000,
+     "grams": 4.47,
+     "stones": 0,
+     "makerCostUsd": 591.79
+    },
+    {
+     "sku": "OPH-STL-N01-14KR-16IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Chain Length": "16 inches"
+     },
+     "price_cents": 113000,
+     "grams": 4.47,
+     "stones": 0,
+     "makerCostUsd": 562.9
+    },
+    {
+     "sku": "OPH-STL-N01-14KR-18IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Chain Length": "18 inches"
+     },
+     "price_cents": 116000,
+     "grams": 4.47,
+     "stones": 0,
+     "makerCostUsd": 577.35
+    },
+    {
+     "sku": "OPH-STL-N01-14KR-20IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Chain Length": "20 inches"
+     },
+     "price_cents": 119000,
+     "grams": 4.47,
+     "stones": 0,
+     "makerCostUsd": 591.79
+    },
+    {
+     "sku": "OPH-STL-N01-18KY-16IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Chain Length": "16 inches"
+     },
+     "price_cents": 157000,
+     "grams": 5.09,
+     "stones": 0,
+     "makerCostUsd": 781.88
+    },
+    {
+     "sku": "OPH-STL-N01-18KY-18IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Chain Length": "18 inches"
+     },
+     "price_cents": 161000,
+     "grams": 5.09,
+     "stones": 0,
+     "makerCostUsd": 801.94
+    },
+    {
+     "sku": "OPH-STL-N01-18KY-20IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Chain Length": "20 inches"
+     },
+     "price_cents": 165000,
+     "grams": 5.09,
+     "stones": 0,
+     "makerCostUsd": 822.01
+    },
+    {
+     "sku": "OPH-STL-N01-18KW-16IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Chain Length": "16 inches"
+     },
+     "price_cents": 157000,
+     "grams": 5.09,
+     "stones": 0,
+     "makerCostUsd": 781.88
+    },
+    {
+     "sku": "OPH-STL-N01-18KW-18IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Chain Length": "18 inches"
+     },
+     "price_cents": 161000,
+     "grams": 5.09,
+     "stones": 0,
+     "makerCostUsd": 801.94
+    },
+    {
+     "sku": "OPH-STL-N01-18KW-20IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Chain Length": "20 inches"
+     },
+     "price_cents": 165000,
+     "grams": 5.09,
+     "stones": 0,
+     "makerCostUsd": 822.01
+    },
+    {
+     "sku": "OPH-STL-N01-18KR-16IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Chain Length": "16 inches"
+     },
+     "price_cents": 157000,
+     "grams": 5.09,
+     "stones": 0,
+     "makerCostUsd": 781.88
+    },
+    {
+     "sku": "OPH-STL-N01-18KR-18IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Chain Length": "18 inches"
+     },
+     "price_cents": 161000,
+     "grams": 5.09,
+     "stones": 0,
+     "makerCostUsd": 801.94
+    },
+    {
+     "sku": "OPH-STL-N01-18KR-20IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Chain Length": "20 inches"
+     },
+     "price_cents": 165000,
+     "grams": 5.09,
+     "stones": 0,
+     "makerCostUsd": 822.01
+    }
+   ],
+   "grams14Ref": 4.47,
+   "stonesRef": 0,
+   "refPriceCents": 116000,
+   "makerCost14KRefUsd": 577.35
+  },
+  {
+   "id": "R01",
+   "productId": "dc574ac5-87f0-583b-98a0-313665756746",
+   "sku": "OPH-STL-R01",
+   "productType": "ring",
+   "listingProtocol": "stacking_ring",
+   "name": "Stellar Band Ring",
+   "title": "Stellar Band Ring, Solid Gold Wave with a Diamond Star and Pave Shank, Stacking Ring, Gift for Her",
+   "tags": [
+    "gold stacking ring",
+    "diamond star ring",
+    "pave ring",
+    "solid gold ring",
+    "celestial ring",
+    "dainty ring",
+    "14k gold ring",
+    "star ring",
+    "stackable ring",
+    "gift for her",
+    "minimalist ring",
+    "wave ring",
+    "thin gold ring"
+   ],
+   "description": "A slim gold band that rises in one wave, with a diamond set star at the crest.\n\nThe band does not sit flat: it lifts over the top of the finger and a four point star is set at the high point, holding one small white diamond. A single row of diamonds runs down one side of the shank from the star, so the sparkle follows the curve instead of ringing the whole band. It stacks flush against a plain band.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose. White gold is unplated, a soft silvery grey.\nSize: the band is 1.8 mm wide and the star about 6 mm across.\nStones: one round brilliant white diamond in the star, with a bead set row down one shank.\n\nEach piece is made to order and ships free within the United States. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Take it off before the gym, the pool and the shower, and wipe it with a soft cloth.\n\nThe product images are design visualizations of the finished piece, and the three metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
+   "dims": "1.8 mm band, 6 mm star",
+   "variationAxes": [
+    "Karat",
+    "Metal Color",
+    "Ring Size"
+   ],
+   "variants": [
+    {
+     "sku": "OPH-STL-R01-10KY-US4",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 48000,
+     "grams": 1.97,
+     "stones": 17,
+     "makerCostUsd": 237.86
+    },
+    {
+     "sku": "OPH-STL-R01-10KY-US4_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 50000,
+     "grams": 2.02,
+     "stones": 18,
+     "makerCostUsd": 246.06
+    },
+    {
+     "sku": "OPH-STL-R01-10KY-US5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 50000,
+     "grams": 2.06,
+     "stones": 18,
+     "makerCostUsd": 249.26
+    },
+    {
+     "sku": "OPH-STL-R01-10KY-US5_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 51000,
+     "grams": 2.1,
+     "stones": 18,
+     "makerCostUsd": 252.46
+    },
+    {
+     "sku": "OPH-STL-R01-10KY-US6",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 53000,
+     "grams": 2.14,
+     "stones": 19,
+     "makerCostUsd": 260.66
+    },
+    {
+     "sku": "OPH-STL-R01-10KY-US6_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 53000,
+     "grams": 2.18,
+     "stones": 19,
+     "makerCostUsd": 263.86
+    },
+    {
+     "sku": "OPH-STL-R01-10KY-US7",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 55000,
+     "grams": 2.22,
+     "stones": 20,
+     "makerCostUsd": 272.06
+    },
+    {
+     "sku": "OPH-STL-R01-10KY-US7_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 56000,
+     "grams": 2.26,
+     "stones": 20,
+     "makerCostUsd": 275.27
+    },
+    {
+     "sku": "OPH-STL-R01-10KY-US8",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 57000,
+     "grams": 2.3,
+     "stones": 21,
+     "makerCostUsd": 283.47
+    },
+    {
+     "sku": "OPH-STL-R01-10KY-US8_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 58000,
+     "grams": 2.35,
+     "stones": 21,
+     "makerCostUsd": 286.67
+    },
+    {
+     "sku": "OPH-STL-R01-10KY-US9",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 59000,
+     "grams": 2.39,
+     "stones": 22,
+     "makerCostUsd": 294.87
+    },
+    {
+     "sku": "OPH-STL-R01-10KY-US9_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 60000,
+     "grams": 2.43,
+     "stones": 22,
+     "makerCostUsd": 298.07
+    },
+    {
+     "sku": "OPH-STL-R01-10KY-US10",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 61000,
+     "grams": 2.47,
+     "stones": 22,
+     "makerCostUsd": 301.27
+    },
+    {
+     "sku": "OPH-STL-R01-10KY-US10_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 62000,
+     "grams": 2.51,
+     "stones": 23,
+     "makerCostUsd": 309.47
+    },
+    {
+     "sku": "OPH-STL-R01-10KY-US11",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 63000,
+     "grams": 2.55,
+     "stones": 23,
+     "makerCostUsd": 312.68
+    },
+    {
+     "sku": "OPH-STL-R01-10KY-US11_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 65000,
+     "grams": 2.59,
+     "stones": 24,
+     "makerCostUsd": 320.88
+    },
+    {
+     "sku": "OPH-STL-R01-10KY-US12",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 65000,
+     "grams": 2.64,
+     "stones": 24,
+     "makerCostUsd": 324.08
+    },
+    {
+     "sku": "OPH-STL-R01-10KW-US4",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 48000,
+     "grams": 1.97,
+     "stones": 17,
+     "makerCostUsd": 237.86
+    },
+    {
+     "sku": "OPH-STL-R01-10KW-US4_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 50000,
+     "grams": 2.02,
+     "stones": 18,
+     "makerCostUsd": 246.06
+    },
+    {
+     "sku": "OPH-STL-R01-10KW-US5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 50000,
+     "grams": 2.06,
+     "stones": 18,
+     "makerCostUsd": 249.26
+    },
+    {
+     "sku": "OPH-STL-R01-10KW-US5_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 51000,
+     "grams": 2.1,
+     "stones": 18,
+     "makerCostUsd": 252.46
+    },
+    {
+     "sku": "OPH-STL-R01-10KW-US6",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 53000,
+     "grams": 2.14,
+     "stones": 19,
+     "makerCostUsd": 260.66
+    },
+    {
+     "sku": "OPH-STL-R01-10KW-US6_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 53000,
+     "grams": 2.18,
+     "stones": 19,
+     "makerCostUsd": 263.86
+    },
+    {
+     "sku": "OPH-STL-R01-10KW-US7",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 55000,
+     "grams": 2.22,
+     "stones": 20,
+     "makerCostUsd": 272.06
+    },
+    {
+     "sku": "OPH-STL-R01-10KW-US7_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 56000,
+     "grams": 2.26,
+     "stones": 20,
+     "makerCostUsd": 275.27
+    },
+    {
+     "sku": "OPH-STL-R01-10KW-US8",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 57000,
+     "grams": 2.3,
+     "stones": 21,
+     "makerCostUsd": 283.47
+    },
+    {
+     "sku": "OPH-STL-R01-10KW-US8_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 58000,
+     "grams": 2.35,
+     "stones": 21,
+     "makerCostUsd": 286.67
+    },
+    {
+     "sku": "OPH-STL-R01-10KW-US9",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 59000,
+     "grams": 2.39,
+     "stones": 22,
+     "makerCostUsd": 294.87
+    },
+    {
+     "sku": "OPH-STL-R01-10KW-US9_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 60000,
+     "grams": 2.43,
+     "stones": 22,
+     "makerCostUsd": 298.07
+    },
+    {
+     "sku": "OPH-STL-R01-10KW-US10",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 61000,
+     "grams": 2.47,
+     "stones": 22,
+     "makerCostUsd": 301.27
+    },
+    {
+     "sku": "OPH-STL-R01-10KW-US10_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 62000,
+     "grams": 2.51,
+     "stones": 23,
+     "makerCostUsd": 309.47
+    },
+    {
+     "sku": "OPH-STL-R01-10KW-US11",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 63000,
+     "grams": 2.55,
+     "stones": 23,
+     "makerCostUsd": 312.68
+    },
+    {
+     "sku": "OPH-STL-R01-10KW-US11_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 65000,
+     "grams": 2.59,
+     "stones": 24,
+     "makerCostUsd": 320.88
+    },
+    {
+     "sku": "OPH-STL-R01-10KW-US12",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 65000,
+     "grams": 2.64,
+     "stones": 24,
+     "makerCostUsd": 324.08
+    },
+    {
+     "sku": "OPH-STL-R01-10KR-US4",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 48000,
+     "grams": 1.97,
+     "stones": 17,
+     "makerCostUsd": 237.86
+    },
+    {
+     "sku": "OPH-STL-R01-10KR-US4_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 50000,
+     "grams": 2.02,
+     "stones": 18,
+     "makerCostUsd": 246.06
+    },
+    {
+     "sku": "OPH-STL-R01-10KR-US5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 50000,
+     "grams": 2.06,
+     "stones": 18,
+     "makerCostUsd": 249.26
+    },
+    {
+     "sku": "OPH-STL-R01-10KR-US5_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 51000,
+     "grams": 2.1,
+     "stones": 18,
+     "makerCostUsd": 252.46
+    },
+    {
+     "sku": "OPH-STL-R01-10KR-US6",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 53000,
+     "grams": 2.14,
+     "stones": 19,
+     "makerCostUsd": 260.66
+    },
+    {
+     "sku": "OPH-STL-R01-10KR-US6_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 53000,
+     "grams": 2.18,
+     "stones": 19,
+     "makerCostUsd": 263.86
+    },
+    {
+     "sku": "OPH-STL-R01-10KR-US7",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 55000,
+     "grams": 2.22,
+     "stones": 20,
+     "makerCostUsd": 272.06
+    },
+    {
+     "sku": "OPH-STL-R01-10KR-US7_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 56000,
+     "grams": 2.26,
+     "stones": 20,
+     "makerCostUsd": 275.27
+    },
+    {
+     "sku": "OPH-STL-R01-10KR-US8",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 57000,
+     "grams": 2.3,
+     "stones": 21,
+     "makerCostUsd": 283.47
+    },
+    {
+     "sku": "OPH-STL-R01-10KR-US8_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 58000,
+     "grams": 2.35,
+     "stones": 21,
+     "makerCostUsd": 286.67
+    },
+    {
+     "sku": "OPH-STL-R01-10KR-US9",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 59000,
+     "grams": 2.39,
+     "stones": 22,
+     "makerCostUsd": 294.87
+    },
+    {
+     "sku": "OPH-STL-R01-10KR-US9_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 60000,
+     "grams": 2.43,
+     "stones": 22,
+     "makerCostUsd": 298.07
+    },
+    {
+     "sku": "OPH-STL-R01-10KR-US10",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 61000,
+     "grams": 2.47,
+     "stones": 22,
+     "makerCostUsd": 301.27
+    },
+    {
+     "sku": "OPH-STL-R01-10KR-US10_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 62000,
+     "grams": 2.51,
+     "stones": 23,
+     "makerCostUsd": 309.47
+    },
+    {
+     "sku": "OPH-STL-R01-10KR-US11",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 63000,
+     "grams": 2.55,
+     "stones": 23,
+     "makerCostUsd": 312.68
+    },
+    {
+     "sku": "OPH-STL-R01-10KR-US11_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 65000,
+     "grams": 2.59,
+     "stones": 24,
+     "makerCostUsd": 320.88
+    },
+    {
+     "sku": "OPH-STL-R01-10KR-US12",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 65000,
+     "grams": 2.64,
+     "stones": 24,
+     "makerCostUsd": 324.08
+    },
+    {
+     "sku": "OPH-STL-R01-14KY-US4",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 62000,
+     "grams": 2.21,
+     "stones": 17,
+     "makerCostUsd": 306.31
+    },
+    {
+     "sku": "OPH-STL-R01-14KY-US4_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 64000,
+     "grams": 2.26,
+     "stones": 18,
+     "makerCostUsd": 315.94
+    },
+    {
+     "sku": "OPH-STL-R01-14KY-US5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 65000,
+     "grams": 2.31,
+     "stones": 18,
+     "makerCostUsd": 320.58
+    },
+    {
+     "sku": "OPH-STL-R01-14KY-US5_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 66000,
+     "grams": 2.35,
+     "stones": 18,
+     "makerCostUsd": 325.21
+    },
+    {
+     "sku": "OPH-STL-R01-14KY-US6",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 67000,
+     "grams": 2.4,
+     "stones": 19,
+     "makerCostUsd": 334.85
+    },
+    {
+     "sku": "OPH-STL-R01-14KY-US6_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 68000,
+     "grams": 2.44,
+     "stones": 19,
+     "makerCostUsd": 339.48
+    },
+    {
+     "sku": "OPH-STL-R01-14KY-US7",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 70000,
+     "grams": 2.49,
+     "stones": 20,
+     "makerCostUsd": 349.12
+    },
+    {
+     "sku": "OPH-STL-R01-14KY-US7_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 71000,
+     "grams": 2.54,
+     "stones": 20,
+     "makerCostUsd": 353.75
+    },
+    {
+     "sku": "OPH-STL-R01-14KY-US8",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 73000,
+     "grams": 2.58,
+     "stones": 21,
+     "makerCostUsd": 363.39
+    },
+    {
+     "sku": "OPH-STL-R01-14KY-US8_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 74000,
+     "grams": 2.63,
+     "stones": 21,
+     "makerCostUsd": 368.02
+    },
+    {
+     "sku": "OPH-STL-R01-14KY-US9",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 76000,
+     "grams": 2.68,
+     "stones": 22,
+     "makerCostUsd": 377.66
+    },
+    {
+     "sku": "OPH-STL-R01-14KY-US9_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 77000,
+     "grams": 2.72,
+     "stones": 22,
+     "makerCostUsd": 382.29
+    },
+    {
+     "sku": "OPH-STL-R01-14KY-US10",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 78000,
+     "grams": 2.77,
+     "stones": 22,
+     "makerCostUsd": 386.93
+    },
+    {
+     "sku": "OPH-STL-R01-14KY-US10_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 80000,
+     "grams": 2.82,
+     "stones": 23,
+     "makerCostUsd": 396.56
+    },
+    {
+     "sku": "OPH-STL-R01-14KY-US11",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 81000,
+     "grams": 2.86,
+     "stones": 23,
+     "makerCostUsd": 401.2
+    },
+    {
+     "sku": "OPH-STL-R01-14KY-US11_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 83000,
+     "grams": 2.91,
+     "stones": 24,
+     "makerCostUsd": 410.83
+    },
+    {
+     "sku": "OPH-STL-R01-14KY-US12",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 84000,
+     "grams": 2.95,
+     "stones": 24,
+     "makerCostUsd": 415.47
+    },
+    {
+     "sku": "OPH-STL-R01-14KW-US4",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 62000,
+     "grams": 2.21,
+     "stones": 17,
+     "makerCostUsd": 306.31
+    },
+    {
+     "sku": "OPH-STL-R01-14KW-US4_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 64000,
+     "grams": 2.26,
+     "stones": 18,
+     "makerCostUsd": 315.94
+    },
+    {
+     "sku": "OPH-STL-R01-14KW-US5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 65000,
+     "grams": 2.31,
+     "stones": 18,
+     "makerCostUsd": 320.58
+    },
+    {
+     "sku": "OPH-STL-R01-14KW-US5_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 66000,
+     "grams": 2.35,
+     "stones": 18,
+     "makerCostUsd": 325.21
+    },
+    {
+     "sku": "OPH-STL-R01-14KW-US6",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 67000,
+     "grams": 2.4,
+     "stones": 19,
+     "makerCostUsd": 334.85
+    },
+    {
+     "sku": "OPH-STL-R01-14KW-US6_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 68000,
+     "grams": 2.44,
+     "stones": 19,
+     "makerCostUsd": 339.48
+    },
+    {
+     "sku": "OPH-STL-R01-14KW-US7",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 70000,
+     "grams": 2.49,
+     "stones": 20,
+     "makerCostUsd": 349.12
+    },
+    {
+     "sku": "OPH-STL-R01-14KW-US7_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 71000,
+     "grams": 2.54,
+     "stones": 20,
+     "makerCostUsd": 353.75
+    },
+    {
+     "sku": "OPH-STL-R01-14KW-US8",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 73000,
+     "grams": 2.58,
+     "stones": 21,
+     "makerCostUsd": 363.39
+    },
+    {
+     "sku": "OPH-STL-R01-14KW-US8_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 74000,
+     "grams": 2.63,
+     "stones": 21,
+     "makerCostUsd": 368.02
+    },
+    {
+     "sku": "OPH-STL-R01-14KW-US9",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 76000,
+     "grams": 2.68,
+     "stones": 22,
+     "makerCostUsd": 377.66
+    },
+    {
+     "sku": "OPH-STL-R01-14KW-US9_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 77000,
+     "grams": 2.72,
+     "stones": 22,
+     "makerCostUsd": 382.29
+    },
+    {
+     "sku": "OPH-STL-R01-14KW-US10",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 78000,
+     "grams": 2.77,
+     "stones": 22,
+     "makerCostUsd": 386.93
+    },
+    {
+     "sku": "OPH-STL-R01-14KW-US10_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 80000,
+     "grams": 2.82,
+     "stones": 23,
+     "makerCostUsd": 396.56
+    },
+    {
+     "sku": "OPH-STL-R01-14KW-US11",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 81000,
+     "grams": 2.86,
+     "stones": 23,
+     "makerCostUsd": 401.2
+    },
+    {
+     "sku": "OPH-STL-R01-14KW-US11_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 83000,
+     "grams": 2.91,
+     "stones": 24,
+     "makerCostUsd": 410.83
+    },
+    {
+     "sku": "OPH-STL-R01-14KW-US12",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 84000,
+     "grams": 2.95,
+     "stones": 24,
+     "makerCostUsd": 415.47
+    },
+    {
+     "sku": "OPH-STL-R01-14KR-US4",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 62000,
+     "grams": 2.21,
+     "stones": 17,
+     "makerCostUsd": 306.31
+    },
+    {
+     "sku": "OPH-STL-R01-14KR-US4_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 64000,
+     "grams": 2.26,
+     "stones": 18,
+     "makerCostUsd": 315.94
+    },
+    {
+     "sku": "OPH-STL-R01-14KR-US5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 65000,
+     "grams": 2.31,
+     "stones": 18,
+     "makerCostUsd": 320.58
+    },
+    {
+     "sku": "OPH-STL-R01-14KR-US5_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 66000,
+     "grams": 2.35,
+     "stones": 18,
+     "makerCostUsd": 325.21
+    },
+    {
+     "sku": "OPH-STL-R01-14KR-US6",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 67000,
+     "grams": 2.4,
+     "stones": 19,
+     "makerCostUsd": 334.85
+    },
+    {
+     "sku": "OPH-STL-R01-14KR-US6_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 68000,
+     "grams": 2.44,
+     "stones": 19,
+     "makerCostUsd": 339.48
+    },
+    {
+     "sku": "OPH-STL-R01-14KR-US7",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 70000,
+     "grams": 2.49,
+     "stones": 20,
+     "makerCostUsd": 349.12
+    },
+    {
+     "sku": "OPH-STL-R01-14KR-US7_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 71000,
+     "grams": 2.54,
+     "stones": 20,
+     "makerCostUsd": 353.75
+    },
+    {
+     "sku": "OPH-STL-R01-14KR-US8",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 73000,
+     "grams": 2.58,
+     "stones": 21,
+     "makerCostUsd": 363.39
+    },
+    {
+     "sku": "OPH-STL-R01-14KR-US8_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 74000,
+     "grams": 2.63,
+     "stones": 21,
+     "makerCostUsd": 368.02
+    },
+    {
+     "sku": "OPH-STL-R01-14KR-US9",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 76000,
+     "grams": 2.68,
+     "stones": 22,
+     "makerCostUsd": 377.66
+    },
+    {
+     "sku": "OPH-STL-R01-14KR-US9_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 77000,
+     "grams": 2.72,
+     "stones": 22,
+     "makerCostUsd": 382.29
+    },
+    {
+     "sku": "OPH-STL-R01-14KR-US10",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 78000,
+     "grams": 2.77,
+     "stones": 22,
+     "makerCostUsd": 386.93
+    },
+    {
+     "sku": "OPH-STL-R01-14KR-US10_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 80000,
+     "grams": 2.82,
+     "stones": 23,
+     "makerCostUsd": 396.56
+    },
+    {
+     "sku": "OPH-STL-R01-14KR-US11",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 81000,
+     "grams": 2.86,
+     "stones": 23,
+     "makerCostUsd": 401.2
+    },
+    {
+     "sku": "OPH-STL-R01-14KR-US11_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 83000,
+     "grams": 2.91,
+     "stones": 24,
+     "makerCostUsd": 410.83
+    },
+    {
+     "sku": "OPH-STL-R01-14KR-US12",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 84000,
+     "grams": 2.95,
+     "stones": 24,
+     "makerCostUsd": 415.47
+    },
+    {
+     "sku": "OPH-STL-R01-18KY-US4",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 79000,
+     "grams": 2.52,
+     "stones": 17,
+     "makerCostUsd": 392.4
+    },
+    {
+     "sku": "OPH-STL-R01-18KY-US4_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 81000,
+     "grams": 2.57,
+     "stones": 18,
+     "makerCostUsd": 403.84
+    },
+    {
+     "sku": "OPH-STL-R01-18KY-US5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 83000,
+     "grams": 2.62,
+     "stones": 18,
+     "makerCostUsd": 410.28
+    },
+    {
+     "sku": "OPH-STL-R01-18KY-US5_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 84000,
+     "grams": 2.67,
+     "stones": 18,
+     "makerCostUsd": 416.71
+    },
+    {
+     "sku": "OPH-STL-R01-18KY-US6",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 86000,
+     "grams": 2.73,
+     "stones": 19,
+     "makerCostUsd": 428.15
+    },
+    {
+     "sku": "OPH-STL-R01-18KY-US6_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 87000,
+     "grams": 2.78,
+     "stones": 19,
+     "makerCostUsd": 434.59
+    },
+    {
+     "sku": "OPH-STL-R01-18KY-US7",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 90000,
+     "grams": 2.83,
+     "stones": 20,
+     "makerCostUsd": 446.03
+    },
+    {
+     "sku": "OPH-STL-R01-18KY-US7_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 91000,
+     "grams": 2.89,
+     "stones": 20,
+     "makerCostUsd": 452.47
+    },
+    {
+     "sku": "OPH-STL-R01-18KY-US8",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 93000,
+     "grams": 2.94,
+     "stones": 21,
+     "makerCostUsd": 463.9
+    },
+    {
+     "sku": "OPH-STL-R01-18KY-US8_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 95000,
+     "grams": 2.99,
+     "stones": 21,
+     "makerCostUsd": 470.34
+    },
+    {
+     "sku": "OPH-STL-R01-18KY-US9",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 97000,
+     "grams": 3.04,
+     "stones": 22,
+     "makerCostUsd": 481.78
+    },
+    {
+     "sku": "OPH-STL-R01-18KY-US9_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 98000,
+     "grams": 3.1,
+     "stones": 22,
+     "makerCostUsd": 488.22
+    },
+    {
+     "sku": "OPH-STL-R01-18KY-US10",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 99000,
+     "grams": 3.15,
+     "stones": 22,
+     "makerCostUsd": 494.66
+    },
+    {
+     "sku": "OPH-STL-R01-18KY-US10_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 102000,
+     "grams": 3.2,
+     "stones": 23,
+     "makerCostUsd": 506.09
+    },
+    {
+     "sku": "OPH-STL-R01-18KY-US11",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 103000,
+     "grams": 3.25,
+     "stones": 23,
+     "makerCostUsd": 512.53
+    },
+    {
+     "sku": "OPH-STL-R01-18KY-US11_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 105000,
+     "grams": 3.31,
+     "stones": 24,
+     "makerCostUsd": 523.97
+    },
+    {
+     "sku": "OPH-STL-R01-18KY-US12",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 107000,
+     "grams": 3.36,
+     "stones": 24,
+     "makerCostUsd": 530.41
+    },
+    {
+     "sku": "OPH-STL-R01-18KW-US4",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 79000,
+     "grams": 2.52,
+     "stones": 17,
+     "makerCostUsd": 392.4
+    },
+    {
+     "sku": "OPH-STL-R01-18KW-US4_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 81000,
+     "grams": 2.57,
+     "stones": 18,
+     "makerCostUsd": 403.84
+    },
+    {
+     "sku": "OPH-STL-R01-18KW-US5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 83000,
+     "grams": 2.62,
+     "stones": 18,
+     "makerCostUsd": 410.28
+    },
+    {
+     "sku": "OPH-STL-R01-18KW-US5_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 84000,
+     "grams": 2.67,
+     "stones": 18,
+     "makerCostUsd": 416.71
+    },
+    {
+     "sku": "OPH-STL-R01-18KW-US6",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 86000,
+     "grams": 2.73,
+     "stones": 19,
+     "makerCostUsd": 428.15
+    },
+    {
+     "sku": "OPH-STL-R01-18KW-US6_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 87000,
+     "grams": 2.78,
+     "stones": 19,
+     "makerCostUsd": 434.59
+    },
+    {
+     "sku": "OPH-STL-R01-18KW-US7",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 90000,
+     "grams": 2.83,
+     "stones": 20,
+     "makerCostUsd": 446.03
+    },
+    {
+     "sku": "OPH-STL-R01-18KW-US7_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 91000,
+     "grams": 2.89,
+     "stones": 20,
+     "makerCostUsd": 452.47
+    },
+    {
+     "sku": "OPH-STL-R01-18KW-US8",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 93000,
+     "grams": 2.94,
+     "stones": 21,
+     "makerCostUsd": 463.9
+    },
+    {
+     "sku": "OPH-STL-R01-18KW-US8_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 95000,
+     "grams": 2.99,
+     "stones": 21,
+     "makerCostUsd": 470.34
+    },
+    {
+     "sku": "OPH-STL-R01-18KW-US9",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 97000,
+     "grams": 3.04,
+     "stones": 22,
+     "makerCostUsd": 481.78
+    },
+    {
+     "sku": "OPH-STL-R01-18KW-US9_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 98000,
+     "grams": 3.1,
+     "stones": 22,
+     "makerCostUsd": 488.22
+    },
+    {
+     "sku": "OPH-STL-R01-18KW-US10",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 99000,
+     "grams": 3.15,
+     "stones": 22,
+     "makerCostUsd": 494.66
+    },
+    {
+     "sku": "OPH-STL-R01-18KW-US10_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 102000,
+     "grams": 3.2,
+     "stones": 23,
+     "makerCostUsd": 506.09
+    },
+    {
+     "sku": "OPH-STL-R01-18KW-US11",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 103000,
+     "grams": 3.25,
+     "stones": 23,
+     "makerCostUsd": 512.53
+    },
+    {
+     "sku": "OPH-STL-R01-18KW-US11_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 105000,
+     "grams": 3.31,
+     "stones": 24,
+     "makerCostUsd": 523.97
+    },
+    {
+     "sku": "OPH-STL-R01-18KW-US12",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 107000,
+     "grams": 3.36,
+     "stones": 24,
+     "makerCostUsd": 530.41
+    },
+    {
+     "sku": "OPH-STL-R01-18KR-US4",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 79000,
+     "grams": 2.52,
+     "stones": 17,
+     "makerCostUsd": 392.4
+    },
+    {
+     "sku": "OPH-STL-R01-18KR-US4_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 81000,
+     "grams": 2.57,
+     "stones": 18,
+     "makerCostUsd": 403.84
+    },
+    {
+     "sku": "OPH-STL-R01-18KR-US5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 83000,
+     "grams": 2.62,
+     "stones": 18,
+     "makerCostUsd": 410.28
+    },
+    {
+     "sku": "OPH-STL-R01-18KR-US5_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 84000,
+     "grams": 2.67,
+     "stones": 18,
+     "makerCostUsd": 416.71
+    },
+    {
+     "sku": "OPH-STL-R01-18KR-US6",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 86000,
+     "grams": 2.73,
+     "stones": 19,
+     "makerCostUsd": 428.15
+    },
+    {
+     "sku": "OPH-STL-R01-18KR-US6_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 87000,
+     "grams": 2.78,
+     "stones": 19,
+     "makerCostUsd": 434.59
+    },
+    {
+     "sku": "OPH-STL-R01-18KR-US7",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 90000,
+     "grams": 2.83,
+     "stones": 20,
+     "makerCostUsd": 446.03
+    },
+    {
+     "sku": "OPH-STL-R01-18KR-US7_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 91000,
+     "grams": 2.89,
+     "stones": 20,
+     "makerCostUsd": 452.47
+    },
+    {
+     "sku": "OPH-STL-R01-18KR-US8",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 93000,
+     "grams": 2.94,
+     "stones": 21,
+     "makerCostUsd": 463.9
+    },
+    {
+     "sku": "OPH-STL-R01-18KR-US8_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 95000,
+     "grams": 2.99,
+     "stones": 21,
+     "makerCostUsd": 470.34
+    },
+    {
+     "sku": "OPH-STL-R01-18KR-US9",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 97000,
+     "grams": 3.04,
+     "stones": 22,
+     "makerCostUsd": 481.78
+    },
+    {
+     "sku": "OPH-STL-R01-18KR-US9_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 98000,
+     "grams": 3.1,
+     "stones": 22,
+     "makerCostUsd": 488.22
+    },
+    {
+     "sku": "OPH-STL-R01-18KR-US10",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 99000,
+     "grams": 3.15,
+     "stones": 22,
+     "makerCostUsd": 494.66
+    },
+    {
+     "sku": "OPH-STL-R01-18KR-US10_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 102000,
+     "grams": 3.2,
+     "stones": 23,
+     "makerCostUsd": 506.09
+    },
+    {
+     "sku": "OPH-STL-R01-18KR-US11",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 103000,
+     "grams": 3.25,
+     "stones": 23,
+     "makerCostUsd": 512.53
+    },
+    {
+     "sku": "OPH-STL-R01-18KR-US11_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 105000,
+     "grams": 3.31,
+     "stones": 24,
+     "makerCostUsd": 523.97
+    },
+    {
+     "sku": "OPH-STL-R01-18KR-US12",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 107000,
+     "grams": 3.36,
+     "stones": 24,
+     "makerCostUsd": 530.41
+    }
+   ],
+   "grams14Ref": 2.49,
+   "stonesRef": 20,
+   "refPriceCents": 70000,
+   "makerCost14KRefUsd": 349.12
+  },
+  {
+   "id": "R02",
+   "productId": "6bb5bfcb-6da7-5517-b017-725e46691876",
+   "sku": "OPH-STL-R02",
+   "productType": "ring",
+   "listingProtocol": "sculptural_ring",
+   "name": "Stellar Knot Ring",
+   "title": "Stellar Knot Ring, Solid Gold Crossover with Two Pave Diamond Bands, Open Knot Statement Ring, Gift for Her",
+   "tags": [
+    "diamond knot ring",
+    "crossover ring",
+    "pave diamond ring",
+    "solid gold ring",
+    "statement ring",
+    "two band ring",
+    "14k gold ring",
+    "infinity ring",
+    "gift for her",
+    "modern ring",
+    "x ring",
+    "gold diamond ring",
+    "celestial ring"
+   ],
+   "description": "Two slim diamond bands crossing over the finger in one open knot.\n\nEach band sweeps round and passes over and under the other, so the knot stays open and you can see through it. Both are bead set along their whole length with small white diamonds, and the two join into a single shank under the finger, which keeps it comfortable to wear every day.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose. White gold is unplated, a soft silvery grey.\nSize: the knot stands about 11 mm across the top, each band 1.6 mm wide.\nStones: round brilliant white diamonds bead set along both bands.\n\nEach piece is made to order and ships free within the United States. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Take it off before the gym, the pool and the shower, and wipe it with a soft cloth.\n\nThe product images are design visualizations of the finished piece, and the three metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
+   "dims": "11 mm knot, two 1.6 mm bands",
+   "variationAxes": [
+    "Karat",
+    "Metal Color",
+    "Ring Size"
+   ],
+   "variants": [
+    {
+     "sku": "OPH-STL-R02-10KY-US4",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 118000,
+     "grams": 3.27,
+     "stones": 67,
+     "makerCostUsd": 588.34
+    },
+    {
+     "sku": "OPH-STL-R02-10KY-US4_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 121000,
+     "grams": 3.35,
+     "stones": 69,
+     "makerCostUsd": 604.6
+    },
+    {
+     "sku": "OPH-STL-R02-10KY-US5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 124000,
+     "grams": 3.43,
+     "stones": 70,
+     "makerCostUsd": 615.86
+    },
+    {
+     "sku": "OPH-STL-R02-10KY-US5_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 127000,
+     "grams": 3.51,
+     "stones": 72,
+     "makerCostUsd": 632.12
+    },
+    {
+     "sku": "OPH-STL-R02-10KY-US6",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 130000,
+     "grams": 3.6,
+     "stones": 74,
+     "makerCostUsd": 648.38
+    },
+    {
+     "sku": "OPH-STL-R02-10KY-US6_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 133000,
+     "grams": 3.68,
+     "stones": 76,
+     "makerCostUsd": 664.64
+    },
+    {
+     "sku": "OPH-STL-R02-10KY-US7",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 137000,
+     "grams": 3.76,
+     "stones": 78,
+     "makerCostUsd": 680.9
+    },
+    {
+     "sku": "OPH-STL-R02-10KY-US7_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 139000,
+     "grams": 3.84,
+     "stones": 79,
+     "makerCostUsd": 692.16
+    },
+    {
+     "sku": "OPH-STL-R02-10KY-US8",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 142000,
+     "grams": 3.92,
+     "stones": 81,
+     "makerCostUsd": 708.42
+    },
+    {
+     "sku": "OPH-STL-R02-10KY-US8_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 145000,
+     "grams": 4.0,
+     "stones": 83,
+     "makerCostUsd": 724.68
+    },
+    {
+     "sku": "OPH-STL-R02-10KY-US9",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 149000,
+     "grams": 4.08,
+     "stones": 85,
+     "makerCostUsd": 740.94
+    },
+    {
+     "sku": "OPH-STL-R02-10KY-US9_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 152000,
+     "grams": 4.16,
+     "stones": 87,
+     "makerCostUsd": 757.2
+    },
+    {
+     "sku": "OPH-STL-R02-10KY-US10",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 155000,
+     "grams": 4.24,
+     "stones": 89,
+     "makerCostUsd": 773.46
+    },
+    {
+     "sku": "OPH-STL-R02-10KY-US10_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 157000,
+     "grams": 4.32,
+     "stones": 90,
+     "makerCostUsd": 784.72
+    },
+    {
+     "sku": "OPH-STL-R02-10KY-US11",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 161000,
+     "grams": 4.4,
+     "stones": 92,
+     "makerCostUsd": 800.98
+    },
+    {
+     "sku": "OPH-STL-R02-10KY-US11_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 164000,
+     "grams": 4.48,
+     "stones": 94,
+     "makerCostUsd": 817.24
+    },
+    {
+     "sku": "OPH-STL-R02-10KY-US12",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 167000,
+     "grams": 4.57,
+     "stones": 96,
+     "makerCostUsd": 833.5
+    },
+    {
+     "sku": "OPH-STL-R02-10KW-US4",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 118000,
+     "grams": 3.27,
+     "stones": 67,
+     "makerCostUsd": 588.34
+    },
+    {
+     "sku": "OPH-STL-R02-10KW-US4_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 121000,
+     "grams": 3.35,
+     "stones": 69,
+     "makerCostUsd": 604.6
+    },
+    {
+     "sku": "OPH-STL-R02-10KW-US5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 124000,
+     "grams": 3.43,
+     "stones": 70,
+     "makerCostUsd": 615.86
+    },
+    {
+     "sku": "OPH-STL-R02-10KW-US5_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 127000,
+     "grams": 3.51,
+     "stones": 72,
+     "makerCostUsd": 632.12
+    },
+    {
+     "sku": "OPH-STL-R02-10KW-US6",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 130000,
+     "grams": 3.6,
+     "stones": 74,
+     "makerCostUsd": 648.38
+    },
+    {
+     "sku": "OPH-STL-R02-10KW-US6_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 133000,
+     "grams": 3.68,
+     "stones": 76,
+     "makerCostUsd": 664.64
+    },
+    {
+     "sku": "OPH-STL-R02-10KW-US7",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 137000,
+     "grams": 3.76,
+     "stones": 78,
+     "makerCostUsd": 680.9
+    },
+    {
+     "sku": "OPH-STL-R02-10KW-US7_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 139000,
+     "grams": 3.84,
+     "stones": 79,
+     "makerCostUsd": 692.16
+    },
+    {
+     "sku": "OPH-STL-R02-10KW-US8",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 142000,
+     "grams": 3.92,
+     "stones": 81,
+     "makerCostUsd": 708.42
+    },
+    {
+     "sku": "OPH-STL-R02-10KW-US8_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 145000,
+     "grams": 4.0,
+     "stones": 83,
+     "makerCostUsd": 724.68
+    },
+    {
+     "sku": "OPH-STL-R02-10KW-US9",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 149000,
+     "grams": 4.08,
+     "stones": 85,
+     "makerCostUsd": 740.94
+    },
+    {
+     "sku": "OPH-STL-R02-10KW-US9_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 152000,
+     "grams": 4.16,
+     "stones": 87,
+     "makerCostUsd": 757.2
+    },
+    {
+     "sku": "OPH-STL-R02-10KW-US10",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 155000,
+     "grams": 4.24,
+     "stones": 89,
+     "makerCostUsd": 773.46
+    },
+    {
+     "sku": "OPH-STL-R02-10KW-US10_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 157000,
+     "grams": 4.32,
+     "stones": 90,
+     "makerCostUsd": 784.72
+    },
+    {
+     "sku": "OPH-STL-R02-10KW-US11",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 161000,
+     "grams": 4.4,
+     "stones": 92,
+     "makerCostUsd": 800.98
+    },
+    {
+     "sku": "OPH-STL-R02-10KW-US11_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 164000,
+     "grams": 4.48,
+     "stones": 94,
+     "makerCostUsd": 817.24
+    },
+    {
+     "sku": "OPH-STL-R02-10KW-US12",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 167000,
+     "grams": 4.57,
+     "stones": 96,
+     "makerCostUsd": 833.5
+    },
+    {
+     "sku": "OPH-STL-R02-10KR-US4",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 118000,
+     "grams": 3.27,
+     "stones": 67,
+     "makerCostUsd": 588.34
+    },
+    {
+     "sku": "OPH-STL-R02-10KR-US4_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 121000,
+     "grams": 3.35,
+     "stones": 69,
+     "makerCostUsd": 604.6
+    },
+    {
+     "sku": "OPH-STL-R02-10KR-US5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 124000,
+     "grams": 3.43,
+     "stones": 70,
+     "makerCostUsd": 615.86
+    },
+    {
+     "sku": "OPH-STL-R02-10KR-US5_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 127000,
+     "grams": 3.51,
+     "stones": 72,
+     "makerCostUsd": 632.12
+    },
+    {
+     "sku": "OPH-STL-R02-10KR-US6",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 130000,
+     "grams": 3.6,
+     "stones": 74,
+     "makerCostUsd": 648.38
+    },
+    {
+     "sku": "OPH-STL-R02-10KR-US6_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 133000,
+     "grams": 3.68,
+     "stones": 76,
+     "makerCostUsd": 664.64
+    },
+    {
+     "sku": "OPH-STL-R02-10KR-US7",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 137000,
+     "grams": 3.76,
+     "stones": 78,
+     "makerCostUsd": 680.9
+    },
+    {
+     "sku": "OPH-STL-R02-10KR-US7_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 139000,
+     "grams": 3.84,
+     "stones": 79,
+     "makerCostUsd": 692.16
+    },
+    {
+     "sku": "OPH-STL-R02-10KR-US8",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 142000,
+     "grams": 3.92,
+     "stones": 81,
+     "makerCostUsd": 708.42
+    },
+    {
+     "sku": "OPH-STL-R02-10KR-US8_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 145000,
+     "grams": 4.0,
+     "stones": 83,
+     "makerCostUsd": 724.68
+    },
+    {
+     "sku": "OPH-STL-R02-10KR-US9",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 149000,
+     "grams": 4.08,
+     "stones": 85,
+     "makerCostUsd": 740.94
+    },
+    {
+     "sku": "OPH-STL-R02-10KR-US9_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 152000,
+     "grams": 4.16,
+     "stones": 87,
+     "makerCostUsd": 757.2
+    },
+    {
+     "sku": "OPH-STL-R02-10KR-US10",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 155000,
+     "grams": 4.24,
+     "stones": 89,
+     "makerCostUsd": 773.46
+    },
+    {
+     "sku": "OPH-STL-R02-10KR-US10_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 157000,
+     "grams": 4.32,
+     "stones": 90,
+     "makerCostUsd": 784.72
+    },
+    {
+     "sku": "OPH-STL-R02-10KR-US11",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 161000,
+     "grams": 4.4,
+     "stones": 92,
+     "makerCostUsd": 800.98
+    },
+    {
+     "sku": "OPH-STL-R02-10KR-US11_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 164000,
+     "grams": 4.48,
+     "stones": 94,
+     "makerCostUsd": 817.24
+    },
+    {
+     "sku": "OPH-STL-R02-10KR-US12",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 167000,
+     "grams": 4.57,
+     "stones": 96,
+     "makerCostUsd": 833.5
+    },
+    {
+     "sku": "OPH-STL-R02-14KY-US4",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 141000,
+     "grams": 3.67,
+     "stones": 67,
+     "makerCostUsd": 701.78
+    },
+    {
+     "sku": "OPH-STL-R02-14KY-US4_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 145000,
+     "grams": 3.76,
+     "stones": 69,
+     "makerCostUsd": 720.85
+    },
+    {
+     "sku": "OPH-STL-R02-14KY-US5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 147000,
+     "grams": 3.85,
+     "stones": 70,
+     "makerCostUsd": 734.91
+    },
+    {
+     "sku": "OPH-STL-R02-14KY-US5_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 151000,
+     "grams": 3.94,
+     "stones": 72,
+     "makerCostUsd": 753.98
+    },
+    {
+     "sku": "OPH-STL-R02-14KY-US6",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 155000,
+     "grams": 4.03,
+     "stones": 74,
+     "makerCostUsd": 773.04
+    },
+    {
+     "sku": "OPH-STL-R02-14KY-US6_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 159000,
+     "grams": 4.12,
+     "stones": 76,
+     "makerCostUsd": 792.1
+    },
+    {
+     "sku": "OPH-STL-R02-14KY-US7",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 163000,
+     "grams": 4.21,
+     "stones": 78,
+     "makerCostUsd": 811.17
+    },
+    {
+     "sku": "OPH-STL-R02-14KY-US7_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 166000,
+     "grams": 4.3,
+     "stones": 79,
+     "makerCostUsd": 825.23
+    },
+    {
+     "sku": "OPH-STL-R02-14KY-US8",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 169000,
+     "grams": 4.39,
+     "stones": 81,
+     "makerCostUsd": 844.3
+    },
+    {
+     "sku": "OPH-STL-R02-14KY-US8_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 173000,
+     "grams": 4.48,
+     "stones": 83,
+     "makerCostUsd": 863.36
+    },
+    {
+     "sku": "OPH-STL-R02-14KY-US9",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 177000,
+     "grams": 4.57,
+     "stones": 85,
+     "makerCostUsd": 882.42
+    },
+    {
+     "sku": "OPH-STL-R02-14KY-US9_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 181000,
+     "grams": 4.66,
+     "stones": 87,
+     "makerCostUsd": 901.49
+    },
+    {
+     "sku": "OPH-STL-R02-14KY-US10",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 185000,
+     "grams": 4.76,
+     "stones": 89,
+     "makerCostUsd": 920.55
+    },
+    {
+     "sku": "OPH-STL-R02-14KY-US10_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 187000,
+     "grams": 4.85,
+     "stones": 90,
+     "makerCostUsd": 934.62
+    },
+    {
+     "sku": "OPH-STL-R02-14KY-US11",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 191000,
+     "grams": 4.94,
+     "stones": 92,
+     "makerCostUsd": 953.68
+    },
+    {
+     "sku": "OPH-STL-R02-14KY-US11_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 195000,
+     "grams": 5.03,
+     "stones": 94,
+     "makerCostUsd": 972.74
+    },
+    {
+     "sku": "OPH-STL-R02-14KY-US12",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 199000,
+     "grams": 5.12,
+     "stones": 96,
+     "makerCostUsd": 991.81
+    },
+    {
+     "sku": "OPH-STL-R02-14KW-US4",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 141000,
+     "grams": 3.67,
+     "stones": 67,
+     "makerCostUsd": 701.78
+    },
+    {
+     "sku": "OPH-STL-R02-14KW-US4_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 145000,
+     "grams": 3.76,
+     "stones": 69,
+     "makerCostUsd": 720.85
+    },
+    {
+     "sku": "OPH-STL-R02-14KW-US5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 147000,
+     "grams": 3.85,
+     "stones": 70,
+     "makerCostUsd": 734.91
+    },
+    {
+     "sku": "OPH-STL-R02-14KW-US5_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 151000,
+     "grams": 3.94,
+     "stones": 72,
+     "makerCostUsd": 753.98
+    },
+    {
+     "sku": "OPH-STL-R02-14KW-US6",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 155000,
+     "grams": 4.03,
+     "stones": 74,
+     "makerCostUsd": 773.04
+    },
+    {
+     "sku": "OPH-STL-R02-14KW-US6_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 159000,
+     "grams": 4.12,
+     "stones": 76,
+     "makerCostUsd": 792.1
+    },
+    {
+     "sku": "OPH-STL-R02-14KW-US7",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 163000,
+     "grams": 4.21,
+     "stones": 78,
+     "makerCostUsd": 811.17
+    },
+    {
+     "sku": "OPH-STL-R02-14KW-US7_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 166000,
+     "grams": 4.3,
+     "stones": 79,
+     "makerCostUsd": 825.23
+    },
+    {
+     "sku": "OPH-STL-R02-14KW-US8",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 169000,
+     "grams": 4.39,
+     "stones": 81,
+     "makerCostUsd": 844.3
+    },
+    {
+     "sku": "OPH-STL-R02-14KW-US8_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 173000,
+     "grams": 4.48,
+     "stones": 83,
+     "makerCostUsd": 863.36
+    },
+    {
+     "sku": "OPH-STL-R02-14KW-US9",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 177000,
+     "grams": 4.57,
+     "stones": 85,
+     "makerCostUsd": 882.42
+    },
+    {
+     "sku": "OPH-STL-R02-14KW-US9_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 181000,
+     "grams": 4.66,
+     "stones": 87,
+     "makerCostUsd": 901.49
+    },
+    {
+     "sku": "OPH-STL-R02-14KW-US10",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 185000,
+     "grams": 4.76,
+     "stones": 89,
+     "makerCostUsd": 920.55
+    },
+    {
+     "sku": "OPH-STL-R02-14KW-US10_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 187000,
+     "grams": 4.85,
+     "stones": 90,
+     "makerCostUsd": 934.62
+    },
+    {
+     "sku": "OPH-STL-R02-14KW-US11",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 191000,
+     "grams": 4.94,
+     "stones": 92,
+     "makerCostUsd": 953.68
+    },
+    {
+     "sku": "OPH-STL-R02-14KW-US11_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 195000,
+     "grams": 5.03,
+     "stones": 94,
+     "makerCostUsd": 972.74
+    },
+    {
+     "sku": "OPH-STL-R02-14KW-US12",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 199000,
+     "grams": 5.12,
+     "stones": 96,
+     "makerCostUsd": 991.81
+    },
+    {
+     "sku": "OPH-STL-R02-14KR-US4",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 141000,
+     "grams": 3.67,
+     "stones": 67,
+     "makerCostUsd": 701.78
+    },
+    {
+     "sku": "OPH-STL-R02-14KR-US4_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 145000,
+     "grams": 3.76,
+     "stones": 69,
+     "makerCostUsd": 720.85
+    },
+    {
+     "sku": "OPH-STL-R02-14KR-US5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 147000,
+     "grams": 3.85,
+     "stones": 70,
+     "makerCostUsd": 734.91
+    },
+    {
+     "sku": "OPH-STL-R02-14KR-US5_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 151000,
+     "grams": 3.94,
+     "stones": 72,
+     "makerCostUsd": 753.98
+    },
+    {
+     "sku": "OPH-STL-R02-14KR-US6",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 155000,
+     "grams": 4.03,
+     "stones": 74,
+     "makerCostUsd": 773.04
+    },
+    {
+     "sku": "OPH-STL-R02-14KR-US6_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 159000,
+     "grams": 4.12,
+     "stones": 76,
+     "makerCostUsd": 792.1
+    },
+    {
+     "sku": "OPH-STL-R02-14KR-US7",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 163000,
+     "grams": 4.21,
+     "stones": 78,
+     "makerCostUsd": 811.17
+    },
+    {
+     "sku": "OPH-STL-R02-14KR-US7_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 166000,
+     "grams": 4.3,
+     "stones": 79,
+     "makerCostUsd": 825.23
+    },
+    {
+     "sku": "OPH-STL-R02-14KR-US8",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 169000,
+     "grams": 4.39,
+     "stones": 81,
+     "makerCostUsd": 844.3
+    },
+    {
+     "sku": "OPH-STL-R02-14KR-US8_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 173000,
+     "grams": 4.48,
+     "stones": 83,
+     "makerCostUsd": 863.36
+    },
+    {
+     "sku": "OPH-STL-R02-14KR-US9",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 177000,
+     "grams": 4.57,
+     "stones": 85,
+     "makerCostUsd": 882.42
+    },
+    {
+     "sku": "OPH-STL-R02-14KR-US9_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 181000,
+     "grams": 4.66,
+     "stones": 87,
+     "makerCostUsd": 901.49
+    },
+    {
+     "sku": "OPH-STL-R02-14KR-US10",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 185000,
+     "grams": 4.76,
+     "stones": 89,
+     "makerCostUsd": 920.55
+    },
+    {
+     "sku": "OPH-STL-R02-14KR-US10_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 187000,
+     "grams": 4.85,
+     "stones": 90,
+     "makerCostUsd": 934.62
+    },
+    {
+     "sku": "OPH-STL-R02-14KR-US11",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 191000,
+     "grams": 4.94,
+     "stones": 92,
+     "makerCostUsd": 953.68
+    },
+    {
+     "sku": "OPH-STL-R02-14KR-US11_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 195000,
+     "grams": 5.03,
+     "stones": 94,
+     "makerCostUsd": 972.74
+    },
+    {
+     "sku": "OPH-STL-R02-14KR-US12",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 199000,
+     "grams": 5.12,
+     "stones": 96,
+     "makerCostUsd": 991.81
+    },
+    {
+     "sku": "OPH-STL-R02-18KY-US4",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 169000,
+     "grams": 4.17,
+     "stones": 67,
+     "makerCostUsd": 844.47
+    },
+    {
+     "sku": "OPH-STL-R02-18KY-US4_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 174000,
+     "grams": 4.27,
+     "stones": 69,
+     "makerCostUsd": 867.06
+    },
+    {
+     "sku": "OPH-STL-R02-18KY-US5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 177000,
+     "grams": 4.38,
+     "stones": 70,
+     "makerCostUsd": 884.65
+    },
+    {
+     "sku": "OPH-STL-R02-18KY-US5_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 182000,
+     "grams": 4.48,
+     "stones": 72,
+     "makerCostUsd": 907.24
+    },
+    {
+     "sku": "OPH-STL-R02-18KY-US6",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 186000,
+     "grams": 4.58,
+     "stones": 74,
+     "makerCostUsd": 929.83
+    },
+    {
+     "sku": "OPH-STL-R02-18KY-US6_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 191000,
+     "grams": 4.69,
+     "stones": 76,
+     "makerCostUsd": 952.42
+    },
+    {
+     "sku": "OPH-STL-R02-18KY-US7",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 196000,
+     "grams": 4.79,
+     "stones": 78,
+     "makerCostUsd": 975.01
+    },
+    {
+     "sku": "OPH-STL-R02-18KY-US7_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 199000,
+     "grams": 4.89,
+     "stones": 79,
+     "makerCostUsd": 992.6
+    },
+    {
+     "sku": "OPH-STL-R02-18KY-US8",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 204000,
+     "grams": 4.99,
+     "stones": 81,
+     "makerCostUsd": 1015.19
+    },
+    {
+     "sku": "OPH-STL-R02-18KY-US8_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 208000,
+     "grams": 5.1,
+     "stones": 83,
+     "makerCostUsd": 1037.78
+    },
+    {
+     "sku": "OPH-STL-R02-18KY-US9",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 213000,
+     "grams": 5.2,
+     "stones": 85,
+     "makerCostUsd": 1060.37
+    },
+    {
+     "sku": "OPH-STL-R02-18KY-US9_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 217000,
+     "grams": 5.3,
+     "stones": 87,
+     "makerCostUsd": 1082.96
+    },
+    {
+     "sku": "OPH-STL-R02-18KY-US10",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 222000,
+     "grams": 5.41,
+     "stones": 89,
+     "makerCostUsd": 1105.55
+    },
+    {
+     "sku": "OPH-STL-R02-18KY-US10_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 225000,
+     "grams": 5.51,
+     "stones": 90,
+     "makerCostUsd": 1123.14
+    },
+    {
+     "sku": "OPH-STL-R02-18KY-US11",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 230000,
+     "grams": 5.61,
+     "stones": 92,
+     "makerCostUsd": 1145.73
+    },
+    {
+     "sku": "OPH-STL-R02-18KY-US11_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 234000,
+     "grams": 5.72,
+     "stones": 94,
+     "makerCostUsd": 1168.32
+    },
+    {
+     "sku": "OPH-STL-R02-18KY-US12",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 239000,
+     "grams": 5.82,
+     "stones": 96,
+     "makerCostUsd": 1190.91
+    },
+    {
+     "sku": "OPH-STL-R02-18KW-US4",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 169000,
+     "grams": 4.17,
+     "stones": 67,
+     "makerCostUsd": 844.47
+    },
+    {
+     "sku": "OPH-STL-R02-18KW-US4_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 174000,
+     "grams": 4.27,
+     "stones": 69,
+     "makerCostUsd": 867.06
+    },
+    {
+     "sku": "OPH-STL-R02-18KW-US5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 177000,
+     "grams": 4.38,
+     "stones": 70,
+     "makerCostUsd": 884.65
+    },
+    {
+     "sku": "OPH-STL-R02-18KW-US5_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 182000,
+     "grams": 4.48,
+     "stones": 72,
+     "makerCostUsd": 907.24
+    },
+    {
+     "sku": "OPH-STL-R02-18KW-US6",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 186000,
+     "grams": 4.58,
+     "stones": 74,
+     "makerCostUsd": 929.83
+    },
+    {
+     "sku": "OPH-STL-R02-18KW-US6_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 191000,
+     "grams": 4.69,
+     "stones": 76,
+     "makerCostUsd": 952.42
+    },
+    {
+     "sku": "OPH-STL-R02-18KW-US7",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 196000,
+     "grams": 4.79,
+     "stones": 78,
+     "makerCostUsd": 975.01
+    },
+    {
+     "sku": "OPH-STL-R02-18KW-US7_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 199000,
+     "grams": 4.89,
+     "stones": 79,
+     "makerCostUsd": 992.6
+    },
+    {
+     "sku": "OPH-STL-R02-18KW-US8",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 204000,
+     "grams": 4.99,
+     "stones": 81,
+     "makerCostUsd": 1015.19
+    },
+    {
+     "sku": "OPH-STL-R02-18KW-US8_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 208000,
+     "grams": 5.1,
+     "stones": 83,
+     "makerCostUsd": 1037.78
+    },
+    {
+     "sku": "OPH-STL-R02-18KW-US9",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 213000,
+     "grams": 5.2,
+     "stones": 85,
+     "makerCostUsd": 1060.37
+    },
+    {
+     "sku": "OPH-STL-R02-18KW-US9_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 217000,
+     "grams": 5.3,
+     "stones": 87,
+     "makerCostUsd": 1082.96
+    },
+    {
+     "sku": "OPH-STL-R02-18KW-US10",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 222000,
+     "grams": 5.41,
+     "stones": 89,
+     "makerCostUsd": 1105.55
+    },
+    {
+     "sku": "OPH-STL-R02-18KW-US10_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 225000,
+     "grams": 5.51,
+     "stones": 90,
+     "makerCostUsd": 1123.14
+    },
+    {
+     "sku": "OPH-STL-R02-18KW-US11",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 230000,
+     "grams": 5.61,
+     "stones": 92,
+     "makerCostUsd": 1145.73
+    },
+    {
+     "sku": "OPH-STL-R02-18KW-US11_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 234000,
+     "grams": 5.72,
+     "stones": 94,
+     "makerCostUsd": 1168.32
+    },
+    {
+     "sku": "OPH-STL-R02-18KW-US12",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 239000,
+     "grams": 5.82,
+     "stones": 96,
+     "makerCostUsd": 1190.91
+    },
+    {
+     "sku": "OPH-STL-R02-18KR-US4",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 169000,
+     "grams": 4.17,
+     "stones": 67,
+     "makerCostUsd": 844.47
+    },
+    {
+     "sku": "OPH-STL-R02-18KR-US4_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 174000,
+     "grams": 4.27,
+     "stones": 69,
+     "makerCostUsd": 867.06
+    },
+    {
+     "sku": "OPH-STL-R02-18KR-US5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 177000,
+     "grams": 4.38,
+     "stones": 70,
+     "makerCostUsd": 884.65
+    },
+    {
+     "sku": "OPH-STL-R02-18KR-US5_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 182000,
+     "grams": 4.48,
+     "stones": 72,
+     "makerCostUsd": 907.24
+    },
+    {
+     "sku": "OPH-STL-R02-18KR-US6",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 186000,
+     "grams": 4.58,
+     "stones": 74,
+     "makerCostUsd": 929.83
+    },
+    {
+     "sku": "OPH-STL-R02-18KR-US6_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 191000,
+     "grams": 4.69,
+     "stones": 76,
+     "makerCostUsd": 952.42
+    },
+    {
+     "sku": "OPH-STL-R02-18KR-US7",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 196000,
+     "grams": 4.79,
+     "stones": 78,
+     "makerCostUsd": 975.01
+    },
+    {
+     "sku": "OPH-STL-R02-18KR-US7_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 199000,
+     "grams": 4.89,
+     "stones": 79,
+     "makerCostUsd": 992.6
+    },
+    {
+     "sku": "OPH-STL-R02-18KR-US8",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 204000,
+     "grams": 4.99,
+     "stones": 81,
+     "makerCostUsd": 1015.19
+    },
+    {
+     "sku": "OPH-STL-R02-18KR-US8_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 208000,
+     "grams": 5.1,
+     "stones": 83,
+     "makerCostUsd": 1037.78
+    },
+    {
+     "sku": "OPH-STL-R02-18KR-US9",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 213000,
+     "grams": 5.2,
+     "stones": 85,
+     "makerCostUsd": 1060.37
+    },
+    {
+     "sku": "OPH-STL-R02-18KR-US9_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 217000,
+     "grams": 5.3,
+     "stones": 87,
+     "makerCostUsd": 1082.96
+    },
+    {
+     "sku": "OPH-STL-R02-18KR-US10",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 222000,
+     "grams": 5.41,
+     "stones": 89,
+     "makerCostUsd": 1105.55
+    },
+    {
+     "sku": "OPH-STL-R02-18KR-US10_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 225000,
+     "grams": 5.51,
+     "stones": 90,
+     "makerCostUsd": 1123.14
+    },
+    {
+     "sku": "OPH-STL-R02-18KR-US11",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 230000,
+     "grams": 5.61,
+     "stones": 92,
+     "makerCostUsd": 1145.73
+    },
+    {
+     "sku": "OPH-STL-R02-18KR-US11_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 234000,
+     "grams": 5.72,
+     "stones": 94,
+     "makerCostUsd": 1168.32
+    },
+    {
+     "sku": "OPH-STL-R02-18KR-US12",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 239000,
+     "grams": 5.82,
+     "stones": 96,
+     "makerCostUsd": 1190.91
+    }
+   ],
+   "grams14Ref": 4.21,
+   "stonesRef": 78,
+   "refPriceCents": 163000,
+   "makerCost14KRefUsd": 811.17
+  },
+  {
+   "id": "R03",
+   "productId": "43234d76-1e8e-5843-b574-17758a40e125",
+   "sku": "OPH-STL-R03",
+   "productType": "ring",
+   "listingProtocol": "sculptural_ring",
+   "name": "Stellar Signet Ring",
+   "title": "Stellar Signet Ring, Bold Solid Gold Sculptural Face with a Diamond Star, Wide Statement Signet, Gift for Her",
+   "tags": [
+    "gold signet ring",
+    "bold statement ring",
+    "sculptural ring",
+    "solid gold ring",
+    "wide signet ring",
+    "diamond signet",
+    "14k gold ring",
+    "chunky gold ring",
+    "star ring",
+    "gift for her",
+    "molten gold ring",
+    "modern signet",
+    "celestial ring"
+   ],
+   "description": "A bold signet whose face is a sweep of polished gold with one diamond star cut into it.\n\nThe face is not a flat plate. It curves and folds, rising out of a shank that narrows and widens again, so the whole ring reads as one poured form. A four point star is set into the sweep and holds a single white diamond. It is solid gold throughout, with no hollow back.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose. White gold is unplated, a soft silvery grey.\nSize: the face is about 16 mm across and the shank narrows to 2.5 mm.\nStones: one round brilliant white diamond set in the star.\n\nEach piece is made to order and ships free within the United States. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Take it off before the gym, the pool and the shower, and wipe it with a soft cloth.\n\nThe product images are design visualizations of the finished piece, and the three metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
+   "dims": "16 mm face, 2.5 mm shank",
+   "variationAxes": [
+    "Karat",
+    "Metal Color",
+    "Ring Size"
+   ],
+   "variants": [
+    {
+     "sku": "OPH-STL-R03-10KY-US4",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 179000,
+     "grams": 11.46,
+     "stones": 1,
+     "makerCostUsd": 892.64
+    },
+    {
+     "sku": "OPH-STL-R03-10KY-US4_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 183000,
+     "grams": 11.75,
+     "stones": 1,
+     "makerCostUsd": 914.57
+    },
+    {
+     "sku": "OPH-STL-R03-10KY-US5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 188000,
+     "grams": 12.03,
+     "stones": 1,
+     "makerCostUsd": 936.51
+    },
+    {
+     "sku": "OPH-STL-R03-10KY-US5_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 192000,
+     "grams": 12.31,
+     "stones": 1,
+     "makerCostUsd": 958.44
+    },
+    {
+     "sku": "OPH-STL-R03-10KY-US6",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 197000,
+     "grams": 12.6,
+     "stones": 1,
+     "makerCostUsd": 980.38
+    },
+    {
+     "sku": "OPH-STL-R03-10KY-US6_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 201000,
+     "grams": 12.88,
+     "stones": 1,
+     "makerCostUsd": 1002.31
+    },
+    {
+     "sku": "OPH-STL-R03-10KY-US7",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 205000,
+     "grams": 13.16,
+     "stones": 1,
+     "makerCostUsd": 1024.25
+    },
+    {
+     "sku": "OPH-STL-R03-10KY-US7_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 210000,
+     "grams": 13.45,
+     "stones": 1,
+     "makerCostUsd": 1046.18
+    },
+    {
+     "sku": "OPH-STL-R03-10KY-US8",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 214000,
+     "grams": 13.73,
+     "stones": 1,
+     "makerCostUsd": 1068.12
+    },
+    {
+     "sku": "OPH-STL-R03-10KY-US8_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 219000,
+     "grams": 14.01,
+     "stones": 1,
+     "makerCostUsd": 1090.05
+    },
+    {
+     "sku": "OPH-STL-R03-10KY-US9",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 223000,
+     "grams": 14.3,
+     "stones": 1,
+     "makerCostUsd": 1111.99
+    },
+    {
+     "sku": "OPH-STL-R03-10KY-US9_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 227000,
+     "grams": 14.58,
+     "stones": 1,
+     "makerCostUsd": 1133.92
+    },
+    {
+     "sku": "OPH-STL-R03-10KY-US10",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 232000,
+     "grams": 14.86,
+     "stones": 1,
+     "makerCostUsd": 1155.86
+    },
+    {
+     "sku": "OPH-STL-R03-10KY-US10_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 236000,
+     "grams": 15.15,
+     "stones": 1,
+     "makerCostUsd": 1177.79
+    },
+    {
+     "sku": "OPH-STL-R03-10KY-US11",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 240000,
+     "grams": 15.43,
+     "stones": 1,
+     "makerCostUsd": 1199.73
+    },
+    {
+     "sku": "OPH-STL-R03-10KY-US11_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 245000,
+     "grams": 15.71,
+     "stones": 1,
+     "makerCostUsd": 1221.67
+    },
+    {
+     "sku": "OPH-STL-R03-10KY-US12",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 249000,
+     "grams": 16.0,
+     "stones": 1,
+     "makerCostUsd": 1243.6
+    },
+    {
+     "sku": "OPH-STL-R03-10KW-US4",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 179000,
+     "grams": 11.46,
+     "stones": 1,
+     "makerCostUsd": 892.64
+    },
+    {
+     "sku": "OPH-STL-R03-10KW-US4_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 183000,
+     "grams": 11.75,
+     "stones": 1,
+     "makerCostUsd": 914.57
+    },
+    {
+     "sku": "OPH-STL-R03-10KW-US5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 188000,
+     "grams": 12.03,
+     "stones": 1,
+     "makerCostUsd": 936.51
+    },
+    {
+     "sku": "OPH-STL-R03-10KW-US5_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 192000,
+     "grams": 12.31,
+     "stones": 1,
+     "makerCostUsd": 958.44
+    },
+    {
+     "sku": "OPH-STL-R03-10KW-US6",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 197000,
+     "grams": 12.6,
+     "stones": 1,
+     "makerCostUsd": 980.38
+    },
+    {
+     "sku": "OPH-STL-R03-10KW-US6_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 201000,
+     "grams": 12.88,
+     "stones": 1,
+     "makerCostUsd": 1002.31
+    },
+    {
+     "sku": "OPH-STL-R03-10KW-US7",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 205000,
+     "grams": 13.16,
+     "stones": 1,
+     "makerCostUsd": 1024.25
+    },
+    {
+     "sku": "OPH-STL-R03-10KW-US7_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 210000,
+     "grams": 13.45,
+     "stones": 1,
+     "makerCostUsd": 1046.18
+    },
+    {
+     "sku": "OPH-STL-R03-10KW-US8",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 214000,
+     "grams": 13.73,
+     "stones": 1,
+     "makerCostUsd": 1068.12
+    },
+    {
+     "sku": "OPH-STL-R03-10KW-US8_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 219000,
+     "grams": 14.01,
+     "stones": 1,
+     "makerCostUsd": 1090.05
+    },
+    {
+     "sku": "OPH-STL-R03-10KW-US9",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 223000,
+     "grams": 14.3,
+     "stones": 1,
+     "makerCostUsd": 1111.99
+    },
+    {
+     "sku": "OPH-STL-R03-10KW-US9_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 227000,
+     "grams": 14.58,
+     "stones": 1,
+     "makerCostUsd": 1133.92
+    },
+    {
+     "sku": "OPH-STL-R03-10KW-US10",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 232000,
+     "grams": 14.86,
+     "stones": 1,
+     "makerCostUsd": 1155.86
+    },
+    {
+     "sku": "OPH-STL-R03-10KW-US10_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 236000,
+     "grams": 15.15,
+     "stones": 1,
+     "makerCostUsd": 1177.79
+    },
+    {
+     "sku": "OPH-STL-R03-10KW-US11",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 240000,
+     "grams": 15.43,
+     "stones": 1,
+     "makerCostUsd": 1199.73
+    },
+    {
+     "sku": "OPH-STL-R03-10KW-US11_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 245000,
+     "grams": 15.71,
+     "stones": 1,
+     "makerCostUsd": 1221.67
+    },
+    {
+     "sku": "OPH-STL-R03-10KW-US12",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 249000,
+     "grams": 16.0,
+     "stones": 1,
+     "makerCostUsd": 1243.6
+    },
+    {
+     "sku": "OPH-STL-R03-10KR-US4",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 179000,
+     "grams": 11.46,
+     "stones": 1,
+     "makerCostUsd": 892.64
+    },
+    {
+     "sku": "OPH-STL-R03-10KR-US4_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 183000,
+     "grams": 11.75,
+     "stones": 1,
+     "makerCostUsd": 914.57
+    },
+    {
+     "sku": "OPH-STL-R03-10KR-US5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 188000,
+     "grams": 12.03,
+     "stones": 1,
+     "makerCostUsd": 936.51
+    },
+    {
+     "sku": "OPH-STL-R03-10KR-US5_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 192000,
+     "grams": 12.31,
+     "stones": 1,
+     "makerCostUsd": 958.44
+    },
+    {
+     "sku": "OPH-STL-R03-10KR-US6",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 197000,
+     "grams": 12.6,
+     "stones": 1,
+     "makerCostUsd": 980.38
+    },
+    {
+     "sku": "OPH-STL-R03-10KR-US6_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 201000,
+     "grams": 12.88,
+     "stones": 1,
+     "makerCostUsd": 1002.31
+    },
+    {
+     "sku": "OPH-STL-R03-10KR-US7",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 205000,
+     "grams": 13.16,
+     "stones": 1,
+     "makerCostUsd": 1024.25
+    },
+    {
+     "sku": "OPH-STL-R03-10KR-US7_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 210000,
+     "grams": 13.45,
+     "stones": 1,
+     "makerCostUsd": 1046.18
+    },
+    {
+     "sku": "OPH-STL-R03-10KR-US8",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 214000,
+     "grams": 13.73,
+     "stones": 1,
+     "makerCostUsd": 1068.12
+    },
+    {
+     "sku": "OPH-STL-R03-10KR-US8_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 219000,
+     "grams": 14.01,
+     "stones": 1,
+     "makerCostUsd": 1090.05
+    },
+    {
+     "sku": "OPH-STL-R03-10KR-US9",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 223000,
+     "grams": 14.3,
+     "stones": 1,
+     "makerCostUsd": 1111.99
+    },
+    {
+     "sku": "OPH-STL-R03-10KR-US9_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 227000,
+     "grams": 14.58,
+     "stones": 1,
+     "makerCostUsd": 1133.92
+    },
+    {
+     "sku": "OPH-STL-R03-10KR-US10",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 232000,
+     "grams": 14.86,
+     "stones": 1,
+     "makerCostUsd": 1155.86
+    },
+    {
+     "sku": "OPH-STL-R03-10KR-US10_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 236000,
+     "grams": 15.15,
+     "stones": 1,
+     "makerCostUsd": 1177.79
+    },
+    {
+     "sku": "OPH-STL-R03-10KR-US11",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 240000,
+     "grams": 15.43,
+     "stones": 1,
+     "makerCostUsd": 1199.73
+    },
+    {
+     "sku": "OPH-STL-R03-10KR-US11_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 245000,
+     "grams": 15.71,
+     "stones": 1,
+     "makerCostUsd": 1221.67
+    },
+    {
+     "sku": "OPH-STL-R03-10KR-US12",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 249000,
+     "grams": 16.0,
+     "stones": 1,
+     "makerCostUsd": 1243.6
+    },
+    {
+     "sku": "OPH-STL-R03-14KY-US4",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 259000,
+     "grams": 12.85,
+     "stones": 1,
+     "makerCostUsd": 1290.13
+    },
+    {
+     "sku": "OPH-STL-R03-14KY-US4_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 265000,
+     "grams": 13.17,
+     "stones": 1,
+     "makerCostUsd": 1321.89
+    },
+    {
+     "sku": "OPH-STL-R03-14KY-US5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 271000,
+     "grams": 13.49,
+     "stones": 1,
+     "makerCostUsd": 1353.65
+    },
+    {
+     "sku": "OPH-STL-R03-14KY-US5_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 278000,
+     "grams": 13.8,
+     "stones": 1,
+     "makerCostUsd": 1385.41
+    },
+    {
+     "sku": "OPH-STL-R03-14KY-US6",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 284000,
+     "grams": 14.12,
+     "stones": 1,
+     "makerCostUsd": 1417.17
+    },
+    {
+     "sku": "OPH-STL-R03-14KY-US6_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 290000,
+     "grams": 14.44,
+     "stones": 1,
+     "makerCostUsd": 1448.92
+    },
+    {
+     "sku": "OPH-STL-R03-14KY-US7",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 297000,
+     "grams": 14.76,
+     "stones": 1,
+     "makerCostUsd": 1480.68
+    },
+    {
+     "sku": "OPH-STL-R03-14KY-US7_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 303000,
+     "grams": 15.07,
+     "stones": 1,
+     "makerCostUsd": 1512.44
+    },
+    {
+     "sku": "OPH-STL-R03-14KY-US8",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 309000,
+     "grams": 15.39,
+     "stones": 1,
+     "makerCostUsd": 1544.2
+    },
+    {
+     "sku": "OPH-STL-R03-14KY-US8_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 316000,
+     "grams": 15.71,
+     "stones": 1,
+     "makerCostUsd": 1575.96
+    },
+    {
+     "sku": "OPH-STL-R03-14KY-US9",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 322000,
+     "grams": 16.03,
+     "stones": 1,
+     "makerCostUsd": 1607.72
+    },
+    {
+     "sku": "OPH-STL-R03-14KY-US9_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 328000,
+     "grams": 16.34,
+     "stones": 1,
+     "makerCostUsd": 1639.48
+    },
+    {
+     "sku": "OPH-STL-R03-14KY-US10",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 335000,
+     "grams": 16.66,
+     "stones": 1,
+     "makerCostUsd": 1671.23
+    },
+    {
+     "sku": "OPH-STL-R03-14KY-US10_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 341000,
+     "grams": 16.98,
+     "stones": 1,
+     "makerCostUsd": 1702.99
+    },
+    {
+     "sku": "OPH-STL-R03-14KY-US11",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 347000,
+     "grams": 17.3,
+     "stones": 1,
+     "makerCostUsd": 1734.75
+    },
+    {
+     "sku": "OPH-STL-R03-14KY-US11_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 354000,
+     "grams": 17.62,
+     "stones": 1,
+     "makerCostUsd": 1766.51
+    },
+    {
+     "sku": "OPH-STL-R03-14KY-US12",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 360000,
+     "grams": 17.93,
+     "stones": 1,
+     "makerCostUsd": 1798.27
+    },
+    {
+     "sku": "OPH-STL-R03-14KW-US4",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 259000,
+     "grams": 12.85,
+     "stones": 1,
+     "makerCostUsd": 1290.13
+    },
+    {
+     "sku": "OPH-STL-R03-14KW-US4_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 265000,
+     "grams": 13.17,
+     "stones": 1,
+     "makerCostUsd": 1321.89
+    },
+    {
+     "sku": "OPH-STL-R03-14KW-US5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 271000,
+     "grams": 13.49,
+     "stones": 1,
+     "makerCostUsd": 1353.65
+    },
+    {
+     "sku": "OPH-STL-R03-14KW-US5_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 278000,
+     "grams": 13.8,
+     "stones": 1,
+     "makerCostUsd": 1385.41
+    },
+    {
+     "sku": "OPH-STL-R03-14KW-US6",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 284000,
+     "grams": 14.12,
+     "stones": 1,
+     "makerCostUsd": 1417.17
+    },
+    {
+     "sku": "OPH-STL-R03-14KW-US6_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 290000,
+     "grams": 14.44,
+     "stones": 1,
+     "makerCostUsd": 1448.92
+    },
+    {
+     "sku": "OPH-STL-R03-14KW-US7",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 297000,
+     "grams": 14.76,
+     "stones": 1,
+     "makerCostUsd": 1480.68
+    },
+    {
+     "sku": "OPH-STL-R03-14KW-US7_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 303000,
+     "grams": 15.07,
+     "stones": 1,
+     "makerCostUsd": 1512.44
+    },
+    {
+     "sku": "OPH-STL-R03-14KW-US8",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 309000,
+     "grams": 15.39,
+     "stones": 1,
+     "makerCostUsd": 1544.2
+    },
+    {
+     "sku": "OPH-STL-R03-14KW-US8_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 316000,
+     "grams": 15.71,
+     "stones": 1,
+     "makerCostUsd": 1575.96
+    },
+    {
+     "sku": "OPH-STL-R03-14KW-US9",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 322000,
+     "grams": 16.03,
+     "stones": 1,
+     "makerCostUsd": 1607.72
+    },
+    {
+     "sku": "OPH-STL-R03-14KW-US9_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 328000,
+     "grams": 16.34,
+     "stones": 1,
+     "makerCostUsd": 1639.48
+    },
+    {
+     "sku": "OPH-STL-R03-14KW-US10",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 335000,
+     "grams": 16.66,
+     "stones": 1,
+     "makerCostUsd": 1671.23
+    },
+    {
+     "sku": "OPH-STL-R03-14KW-US10_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 341000,
+     "grams": 16.98,
+     "stones": 1,
+     "makerCostUsd": 1702.99
+    },
+    {
+     "sku": "OPH-STL-R03-14KW-US11",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 347000,
+     "grams": 17.3,
+     "stones": 1,
+     "makerCostUsd": 1734.75
+    },
+    {
+     "sku": "OPH-STL-R03-14KW-US11_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 354000,
+     "grams": 17.62,
+     "stones": 1,
+     "makerCostUsd": 1766.51
+    },
+    {
+     "sku": "OPH-STL-R03-14KW-US12",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 360000,
+     "grams": 17.93,
+     "stones": 1,
+     "makerCostUsd": 1798.27
+    },
+    {
+     "sku": "OPH-STL-R03-14KR-US4",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 259000,
+     "grams": 12.85,
+     "stones": 1,
+     "makerCostUsd": 1290.13
+    },
+    {
+     "sku": "OPH-STL-R03-14KR-US4_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 265000,
+     "grams": 13.17,
+     "stones": 1,
+     "makerCostUsd": 1321.89
+    },
+    {
+     "sku": "OPH-STL-R03-14KR-US5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 271000,
+     "grams": 13.49,
+     "stones": 1,
+     "makerCostUsd": 1353.65
+    },
+    {
+     "sku": "OPH-STL-R03-14KR-US5_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 278000,
+     "grams": 13.8,
+     "stones": 1,
+     "makerCostUsd": 1385.41
+    },
+    {
+     "sku": "OPH-STL-R03-14KR-US6",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 284000,
+     "grams": 14.12,
+     "stones": 1,
+     "makerCostUsd": 1417.17
+    },
+    {
+     "sku": "OPH-STL-R03-14KR-US6_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 290000,
+     "grams": 14.44,
+     "stones": 1,
+     "makerCostUsd": 1448.92
+    },
+    {
+     "sku": "OPH-STL-R03-14KR-US7",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 297000,
+     "grams": 14.76,
+     "stones": 1,
+     "makerCostUsd": 1480.68
+    },
+    {
+     "sku": "OPH-STL-R03-14KR-US7_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 303000,
+     "grams": 15.07,
+     "stones": 1,
+     "makerCostUsd": 1512.44
+    },
+    {
+     "sku": "OPH-STL-R03-14KR-US8",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 309000,
+     "grams": 15.39,
+     "stones": 1,
+     "makerCostUsd": 1544.2
+    },
+    {
+     "sku": "OPH-STL-R03-14KR-US8_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 316000,
+     "grams": 15.71,
+     "stones": 1,
+     "makerCostUsd": 1575.96
+    },
+    {
+     "sku": "OPH-STL-R03-14KR-US9",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 322000,
+     "grams": 16.03,
+     "stones": 1,
+     "makerCostUsd": 1607.72
+    },
+    {
+     "sku": "OPH-STL-R03-14KR-US9_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 328000,
+     "grams": 16.34,
+     "stones": 1,
+     "makerCostUsd": 1639.48
+    },
+    {
+     "sku": "OPH-STL-R03-14KR-US10",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 335000,
+     "grams": 16.66,
+     "stones": 1,
+     "makerCostUsd": 1671.23
+    },
+    {
+     "sku": "OPH-STL-R03-14KR-US10_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 341000,
+     "grams": 16.98,
+     "stones": 1,
+     "makerCostUsd": 1702.99
+    },
+    {
+     "sku": "OPH-STL-R03-14KR-US11",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 347000,
+     "grams": 17.3,
+     "stones": 1,
+     "makerCostUsd": 1734.75
+    },
+    {
+     "sku": "OPH-STL-R03-14KR-US11_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 354000,
+     "grams": 17.62,
+     "stones": 1,
+     "makerCostUsd": 1766.51
+    },
+    {
+     "sku": "OPH-STL-R03-14KR-US12",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 360000,
+     "grams": 17.93,
+     "stones": 1,
+     "makerCostUsd": 1798.27
+    },
+    {
+     "sku": "OPH-STL-R03-18KY-US4",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 359000,
+     "grams": 14.61,
+     "stones": 1,
+     "makerCostUsd": 1790.07
+    },
+    {
+     "sku": "OPH-STL-R03-18KY-US4_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 367000,
+     "grams": 14.97,
+     "stones": 1,
+     "makerCostUsd": 1834.18
+    },
+    {
+     "sku": "OPH-STL-R03-18KY-US5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 376000,
+     "grams": 15.33,
+     "stones": 1,
+     "makerCostUsd": 1878.29
+    },
+    {
+     "sku": "OPH-STL-R03-18KY-US5_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 385000,
+     "grams": 15.7,
+     "stones": 1,
+     "makerCostUsd": 1922.41
+    },
+    {
+     "sku": "OPH-STL-R03-18KY-US6",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 394000,
+     "grams": 16.06,
+     "stones": 1,
+     "makerCostUsd": 1966.52
+    },
+    {
+     "sku": "OPH-STL-R03-18KY-US6_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 403000,
+     "grams": 16.42,
+     "stones": 1,
+     "makerCostUsd": 2010.63
+    },
+    {
+     "sku": "OPH-STL-R03-18KY-US7",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 411000,
+     "grams": 16.78,
+     "stones": 1,
+     "makerCostUsd": 2054.74
+    },
+    {
+     "sku": "OPH-STL-R03-18KY-US7_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 420000,
+     "grams": 17.14,
+     "stones": 1,
+     "makerCostUsd": 2098.86
+    },
+    {
+     "sku": "OPH-STL-R03-18KY-US8",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 429000,
+     "grams": 17.5,
+     "stones": 1,
+     "makerCostUsd": 2142.97
+    },
+    {
+     "sku": "OPH-STL-R03-18KY-US8_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 438000,
+     "grams": 17.86,
+     "stones": 1,
+     "makerCostUsd": 2187.08
+    },
+    {
+     "sku": "OPH-STL-R03-18KY-US9",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 447000,
+     "grams": 18.22,
+     "stones": 1,
+     "makerCostUsd": 2231.2
+    },
+    {
+     "sku": "OPH-STL-R03-18KY-US9_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 456000,
+     "grams": 18.58,
+     "stones": 1,
+     "makerCostUsd": 2275.31
+    },
+    {
+     "sku": "OPH-STL-R03-18KY-US10",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 464000,
+     "grams": 18.95,
+     "stones": 1,
+     "makerCostUsd": 2319.42
+    },
+    {
+     "sku": "OPH-STL-R03-18KY-US10_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 473000,
+     "grams": 19.31,
+     "stones": 1,
+     "makerCostUsd": 2363.53
+    },
+    {
+     "sku": "OPH-STL-R03-18KY-US11",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 482000,
+     "grams": 19.67,
+     "stones": 1,
+     "makerCostUsd": 2407.65
+    },
+    {
+     "sku": "OPH-STL-R03-18KY-US11_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 491000,
+     "grams": 20.03,
+     "stones": 1,
+     "makerCostUsd": 2451.76
+    },
+    {
+     "sku": "OPH-STL-R03-18KY-US12",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 500000,
+     "grams": 20.39,
+     "stones": 1,
+     "makerCostUsd": 2495.87
+    },
+    {
+     "sku": "OPH-STL-R03-18KW-US4",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 359000,
+     "grams": 14.61,
+     "stones": 1,
+     "makerCostUsd": 1790.07
+    },
+    {
+     "sku": "OPH-STL-R03-18KW-US4_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 367000,
+     "grams": 14.97,
+     "stones": 1,
+     "makerCostUsd": 1834.18
+    },
+    {
+     "sku": "OPH-STL-R03-18KW-US5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 376000,
+     "grams": 15.33,
+     "stones": 1,
+     "makerCostUsd": 1878.29
+    },
+    {
+     "sku": "OPH-STL-R03-18KW-US5_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 385000,
+     "grams": 15.7,
+     "stones": 1,
+     "makerCostUsd": 1922.41
+    },
+    {
+     "sku": "OPH-STL-R03-18KW-US6",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 394000,
+     "grams": 16.06,
+     "stones": 1,
+     "makerCostUsd": 1966.52
+    },
+    {
+     "sku": "OPH-STL-R03-18KW-US6_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 403000,
+     "grams": 16.42,
+     "stones": 1,
+     "makerCostUsd": 2010.63
+    },
+    {
+     "sku": "OPH-STL-R03-18KW-US7",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 411000,
+     "grams": 16.78,
+     "stones": 1,
+     "makerCostUsd": 2054.74
+    },
+    {
+     "sku": "OPH-STL-R03-18KW-US7_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 420000,
+     "grams": 17.14,
+     "stones": 1,
+     "makerCostUsd": 2098.86
+    },
+    {
+     "sku": "OPH-STL-R03-18KW-US8",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 429000,
+     "grams": 17.5,
+     "stones": 1,
+     "makerCostUsd": 2142.97
+    },
+    {
+     "sku": "OPH-STL-R03-18KW-US8_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 438000,
+     "grams": 17.86,
+     "stones": 1,
+     "makerCostUsd": 2187.08
+    },
+    {
+     "sku": "OPH-STL-R03-18KW-US9",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 447000,
+     "grams": 18.22,
+     "stones": 1,
+     "makerCostUsd": 2231.2
+    },
+    {
+     "sku": "OPH-STL-R03-18KW-US9_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 456000,
+     "grams": 18.58,
+     "stones": 1,
+     "makerCostUsd": 2275.31
+    },
+    {
+     "sku": "OPH-STL-R03-18KW-US10",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 464000,
+     "grams": 18.95,
+     "stones": 1,
+     "makerCostUsd": 2319.42
+    },
+    {
+     "sku": "OPH-STL-R03-18KW-US10_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 473000,
+     "grams": 19.31,
+     "stones": 1,
+     "makerCostUsd": 2363.53
+    },
+    {
+     "sku": "OPH-STL-R03-18KW-US11",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 482000,
+     "grams": 19.67,
+     "stones": 1,
+     "makerCostUsd": 2407.65
+    },
+    {
+     "sku": "OPH-STL-R03-18KW-US11_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 491000,
+     "grams": 20.03,
+     "stones": 1,
+     "makerCostUsd": 2451.76
+    },
+    {
+     "sku": "OPH-STL-R03-18KW-US12",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 500000,
+     "grams": 20.39,
+     "stones": 1,
+     "makerCostUsd": 2495.87
+    },
+    {
+     "sku": "OPH-STL-R03-18KR-US4",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 359000,
+     "grams": 14.61,
+     "stones": 1,
+     "makerCostUsd": 1790.07
+    },
+    {
+     "sku": "OPH-STL-R03-18KR-US4_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 367000,
+     "grams": 14.97,
+     "stones": 1,
+     "makerCostUsd": 1834.18
+    },
+    {
+     "sku": "OPH-STL-R03-18KR-US5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 376000,
+     "grams": 15.33,
+     "stones": 1,
+     "makerCostUsd": 1878.29
+    },
+    {
+     "sku": "OPH-STL-R03-18KR-US5_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 385000,
+     "grams": 15.7,
+     "stones": 1,
+     "makerCostUsd": 1922.41
+    },
+    {
+     "sku": "OPH-STL-R03-18KR-US6",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 394000,
+     "grams": 16.06,
+     "stones": 1,
+     "makerCostUsd": 1966.52
+    },
+    {
+     "sku": "OPH-STL-R03-18KR-US6_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 403000,
+     "grams": 16.42,
+     "stones": 1,
+     "makerCostUsd": 2010.63
+    },
+    {
+     "sku": "OPH-STL-R03-18KR-US7",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 411000,
+     "grams": 16.78,
+     "stones": 1,
+     "makerCostUsd": 2054.74
+    },
+    {
+     "sku": "OPH-STL-R03-18KR-US7_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 420000,
+     "grams": 17.14,
+     "stones": 1,
+     "makerCostUsd": 2098.86
+    },
+    {
+     "sku": "OPH-STL-R03-18KR-US8",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 429000,
+     "grams": 17.5,
+     "stones": 1,
+     "makerCostUsd": 2142.97
+    },
+    {
+     "sku": "OPH-STL-R03-18KR-US8_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 438000,
+     "grams": 17.86,
+     "stones": 1,
+     "makerCostUsd": 2187.08
+    },
+    {
+     "sku": "OPH-STL-R03-18KR-US9",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 447000,
+     "grams": 18.22,
+     "stones": 1,
+     "makerCostUsd": 2231.2
+    },
+    {
+     "sku": "OPH-STL-R03-18KR-US9_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 456000,
+     "grams": 18.58,
+     "stones": 1,
+     "makerCostUsd": 2275.31
+    },
+    {
+     "sku": "OPH-STL-R03-18KR-US10",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 464000,
+     "grams": 18.95,
+     "stones": 1,
+     "makerCostUsd": 2319.42
+    },
+    {
+     "sku": "OPH-STL-R03-18KR-US10_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 473000,
+     "grams": 19.31,
+     "stones": 1,
+     "makerCostUsd": 2363.53
+    },
+    {
+     "sku": "OPH-STL-R03-18KR-US11",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 482000,
+     "grams": 19.67,
+     "stones": 1,
+     "makerCostUsd": 2407.65
+    },
+    {
+     "sku": "OPH-STL-R03-18KR-US11_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 491000,
+     "grams": 20.03,
+     "stones": 1,
+     "makerCostUsd": 2451.76
+    },
+    {
+     "sku": "OPH-STL-R03-18KR-US12",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 500000,
+     "grams": 20.39,
+     "stones": 1,
+     "makerCostUsd": 2495.87
+    }
+   ],
+   "grams14Ref": 14.76,
+   "stonesRef": 1,
+   "refPriceCents": 297000,
+   "makerCost14KRefUsd": 1480.68
+  }
+ ]
+}
