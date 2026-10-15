@@ -1369,6 +1369,38 @@ repodaki hedefidir.
   diyor) — "sahip referansı gönderdi" ile "referans elimde" ayrı şeylerdir; dosya yolunu ya da
   Drive klasörünü AYNI turda iste, aramayı sahibin klasöründe canlı yap.
 
+- **Sahibe soru kurmadan önce ÜRETİLEN prompt'u oku: "sahip kararı" sandığım iki şeyin ikisi de
+  benim prompt'umun kusuruydu, ve yanlış soru bir günü yakar (2026-10-15, Ophir Stellar):**
+  Beş hero'yu ilk kez gözle inceleyince iki çelişki buldum ve Etsy push'unu durdurup sahibe tek
+  soru sordum: yıldız dört uçlu mu, render'ların verdiği sekiz uçlu kutup yıldızı mı; ve N01'in
+  iki taşı fiyata konsun mu (üç senaryoluk fiyat tablosuyla). İkisi de YANLIŞ soruydu. Üretilen
+  prompt metnini okumak ikisini de aynı turda kapattı: (a) yıldız şekli zaten KARARLIYDI — sahip
+  50 prompt'un hepsini onaylamıştı ve hepsi "four-point" diyordu, yani render onaylı spec'e
+  uymamıştı, üçüncü bir seçenek sunmuyordu; kusur benim cümlemdeydi, çünkü sayıdan hemen sonra
+  "**the classic sparkle shape**" yazarak modele kendi çok-ışınlı varsayılanını elime tutuşturmuş,
+  korumayı da "never five-pointed" diye kurmuşum — aklıma gelen TEK yanlış değeri yasaklamak altı
+  ve sekiz ucu serbest bırakır. (b) N01'in taşları fiyat boşluğu değil render kusuruydu: prompt
+  aynı cümlede hem "no stones" hem "every stone is a white diamond" diyordu (10 frame'in 10'unda),
+  model ikincisine inandı; tasarımda taş yok, yani fiyat doğru, GÖRSEL yanlış. Yazdığım üç
+  senaryoluk fiyat tablosu var olmayan bir soruyu cevaplıyordu. Kural: (1) sahibe soru kurmak da
+  bir teslimattır ve yanlış soru, kendi kusurumu onun kararı gibi gösterip işi rehin alır — soruyu
+  göndermeden önce "bu gerçekten onun seçimi mi, yoksa benim ürettiğim metnin hatası mı?" diye ÜRETİLEN
+  metne bak; (2) sahip bir prompt setini onayladıysa o spec KARARLIDIR, ona uymayan çıktı alternatif
+  değil kusurdur; (3) negatif koruma hiçbir zaman doğru cevabı sabitlemez — yanlış DEĞERİ değil
+  yanlış SINIFI yasakla ve doğruyu pozitif olarak (burada geometri: çarpı üzerinde dört uç) pinle.
+  Ortak stil bloğunun indiği kareye uymaması bu repoda ÜÇÜNCÜ tekrardı (moth "same metal", twig
+  "exact copy" referanssız hero'da), o yüzden düzeltme cümle değil ARTEFAKT oldu: taş cümlesi artık
+  `metal(p)` ile ürün başına türetiliyor ve guard'lar doğruyu pinliyor (STAR_RULE 50/50, yasak tam
+  bir kez, "classic sparkle" ve "four-pointed" jargonu sıfır, yıldız cümlesi yalnız yıldızı olan
+  üründe, taş cümlesi ürüne doğru). N01'de iki çelişkili iddiayı taşıyan frame 10/10'dan 0/10'a indi.
+  **Yan ders — düzeltmenin KENDİSİ de üretilen metinden doğrulanır:** ilk düzeltmemde yasağı
+  geometri dizesinin İÇİNE koydum; dize noktalı virgül ve bağımsız yüklem taşıdığı için gömüldüğü
+  cümlenin fiilini üç prompt'ta askıda bıraktı ("...at its centre **is set**"). Hiçbir assert
+  görmedi, çıktıyı okumak gördü ("Real Layering" dersinin aynısı). Gömülen dize artık assert'le
+  düz isim öbeği (noktalı virgül yok, çekimli fiil yok). En önemlisi: bütün bu tur katalog, fiyat,
+  başlık ve mühürlere HİÇ dokunmadı — değişen yalnız üreteç ve çıktıları; "sahip kararı bekliyor"
+  diye durdurulan işin aslında hiçbir karar beklemediği buradan görüldü.
+
 - **Kare listing görselinden dikey içerik kurarken önce KADRAJIN NEYİ KESECEĞİNE bak; ve "onaylandı"
   sorusuna maliyeti de koy (2026-10-14, Artifact Studio Instagram):** 5 gönderilik set listing
   karelerinden kuruldu. 2048 kare görsel 9:16'ya orta kırpılınca genişlik %56'ya iner: üç kolyeli

@@ -14,7 +14,9 @@ Shop visual system (moth, twig, evil-eye, xmas26): one single-colour world per l
 frames, editorial worn frames, a gift frame and a three-metal frame; Canon 50 mm, f/2.8, ISO 400, 35 mm grain.
 Ground: one warm travertine family for the line (the lookbook's world), a distinct tone per listing so the
 five thumbnails stay apart in Etsy search.
-Lookbook is the design of record: four-point stars (reference image 5 shows five points -- see decision 4).
+Star shape is SETTLED, not an open decision: the owner approved these 50 prompts on 2026-10-15 and they say
+four point. Reference image 5 draws five points and the first three heroes came back with a six/eight ray
+north star; both are deviations from the approved spec, not alternatives to it. See images/qa.md.
 """
 import json, pathlib, re
 
@@ -23,12 +25,21 @@ HERE = pathlib.Path(__file__).parent
 CAMERA = ("Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left "
           "with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching.")
 WG = "polished unplated white gold, a pale silvery grey like platinum with no yellow tint at all"
-STAR = "a four-point star with long slender points, the classic sparkle shape"
+# 2026-10-15 hero QA: N01, R01 and R03 came back with a six/eight ray north star although the approved
+# prompt said "four-point". Both causes were ours: "the classic sparkle shape" handed the model its own
+# many-rayed default, and the guard banned only the one wrong value we happened to think of. The count is
+# now carried as GEOMETRY (second-brain: describe the object, not the jargon) and the wrong CLASS is named.
+STAR_GEO = ("a four point star, exactly four slender tapering points on a cross, one up, one down, one left "
+            "and one right, the up and down points a little longer, with nothing in the gaps between them")
+STAR_SET = f"{STAR_GEO}, holding one small round brilliant white diamond at its centre"
+STAR_PLAIN = f"{STAR_GEO}, solid plain polished gold with no diamond and no empty setting"
+STAR_RULE = ("every star in the image has exactly four points on a cross, two long and two short, never five "
+             "points and never a six or eight ray north star or compass rose")
 
 # ---------------------------------------------------------------- the five products
 P = [
     dict(
-        key="E01", name="Stellar Curve Earrings", kind="earrings",
+        key="E01", name="Stellar Curve Earrings", kind="earrings", stones=True, star=False,
         ground="warm sand", hex="#C9A77C",
         shape=(f"a pair of solid gold drop earrings; each earring is one long smooth tapered gold curve about "
                f"55 mm long, round in section, thick at the top and drawn out to a fine point at the bottom, "
@@ -42,24 +53,26 @@ P = [
         pose="hanging from the lobe, the long gold point sweeping down and slightly forward along the jaw",
     ),
     dict(
-        key="N01", name="Stellar Drop Necklace", kind="necklace",
+        key="N01", name="Stellar Drop Necklace", kind="necklace", stones=False, star=True,
         ground="soft cream", hex="#EFE7DA",
         shape=(f"a solid gold lariat necklace on a fine 1.0 mm cable chain; at the centre the chain gives way to "
                f"one smooth round gold bar that sweeps across the collarbone and turns back on itself in one open "
-               f"teardrop loop; {STAR} sits on the line just where the loop closes; from the bottom of the loop a "
-               f"short length of the same fine chain drops, carrying a second, larger four-point star and ending "
+               f"teardrop loop; sitting on the line just where the loop closes is {STAR_PLAIN}; from the bottom of the "
+               f"loop "
+               f"a short length of the same fine chain drops, carrying a second, larger star of the same four "
+               f"point shape, also solid plain polished gold, and ending "
                f"in a small smooth polished gold teardrop; a spring ring clasp at the back; everything highly "
                f"polished; no pendant, no other charms, no stones"),
         scale="the centre bar spans about 60 mm, the drop falls about 45 mm below it, delicate against the neck",
-        detail="the four-point star where the loop closes and the smooth teardrop at the end of the drop",
+        detail="the plain gold four point star where the loop closes and the smooth teardrop at the end of the drop",
         pose="the loop resting just below the hollow of the throat, the drop falling straight down the sternum",
     ),
     dict(
-        key="R01", name="Stellar Band Ring", kind="ring",
+        key="R01", name="Stellar Band Ring", kind="ring", stones=True, star=True,
         ground="pale travertine", hex="#E3D9C6",
         shape=(f"a slim solid gold ring about 1.8 mm wide; the band does not sit flat, it rises in one gentle wave "
-               f"over the top of the finger; at the crest of the wave {STAR} is set, its centre holding one small "
-               f"round brilliant white diamond; along one side of the shank, running down from the star, a single "
+               f"over the top of the finger; at the crest of the wave sits {STAR_SET}; along one side of the shank, "
+               f"running down from the star, a single "
                f"row of small round brilliant white diamonds is bead set into the gold; the rest of the band is "
                f"smooth and highly polished; no other stones, no engraving, no second band"),
         scale="the band is 1.8 mm wide and the star about 6 mm across, small and fine on the finger",
@@ -67,7 +80,7 @@ P = [
         pose="on the ring finger, the star facing the camera at the top of the finger",
     ),
     dict(
-        key="R02", name="Stellar Knot Ring", kind="ring",
+        key="R02", name="Stellar Knot Ring", kind="ring", stones=True, star=False,
         ground="warm greige", hex="#D6C8B4",
         shape=("a solid gold ring made of two slim bands about 1.6 mm wide that cross over the top of the finger "
                "in one open knot, each band sweeping round and passing over and under the other so the knot is "
@@ -79,12 +92,12 @@ P = [
         pose="on the ring finger, the open knot facing the camera at the top of the finger",
     ),
     dict(
-        key="R03", name="Stellar Signet Ring", kind="ring",
+        key="R03", name="Stellar Signet Ring", kind="ring", stones=True, star=True,
         ground="deep camel", hex="#B08D62",
         shape=(f"a bold solid gold signet ring; the face is not flat but a wide sculptural sweep of polished gold "
                f"that curves and folds, rising from a shank that tapers down and widens again where it meets the "
-               f"face, so the whole ring reads as one poured, molten form; set into the face, {STAR} is cut into "
-               f"the gold and holds one single small white diamond at its centre; every surface is highly "
+               f"face, so the whole ring reads as one poured, molten form; cut into the face is {STAR_SET}; every "
+               f"surface is highly "
                f"polished, no texture, no engraving; no pavé, no other stones"),
         scale="the face is about 16 mm across and the shank narrows to 2.5 mm, a bold ring but still in proportion",
         detail="the single set star on the sculptural face and the fold of the polished gold around it",
@@ -114,18 +127,29 @@ def worn(p, n):
             f"fingers")
 
 
+def metal(p):
+    """The stone sentence of the shared block, derived from the product so it is never untrue of it.
+
+    N01 has no stones at all. Telling it "every stone is a white diamond" in the same breath as
+    "no stones" is what put a diamond in both of its stars on 2026-10-15.
+    """
+    if p["stones"]:
+        return "The gold is polished 14K yellow gold and every stone is a white diamond."
+    return ("The gold is polished 14K yellow gold and the piece carries no stones at all: every star and every "
+            "surface is solid plain polished gold, with no diamond, no gem and no empty setting.")
+
+
 def style(p, n, people):
     who = " Natural skin texture visible." if people else ""
     if n == "01":
         # Hero: no reference is attached yet, so it must NOT be told to copy one (twig does the same).
         # When the owner's render arrives this frame is regenerated with the crop as the reference.
-        return (f"{CAMERA} The gold is polished 14K yellow gold and every stone is a white diamond. Do not add "
-                f"stones, charms or engraving; every star is four-pointed, never five-pointed. No text, no "
+        return (f"{CAMERA} {metal(p)} Do not add stones, charms or engraving; {STAR_RULE}. No text, no "
                 f"numbers, no logo, no watermark, no ruler. Square 1:1.")
     what = ("same form, same stones and same settings; only the metal colour changes, exactly as named for each "
             "copy;" if n == "06" else "same form, same stones, same settings, same metal;")
-    return (f"{CAMERA}{who} The piece must be an exact copy of the piece in the reference image: {what} do not "
-            f"redesign it, do not add stones, charms or engraving; every star is four-pointed, never five-pointed; "
+    return (f"{CAMERA}{who} {metal(p)} The piece must be an exact copy of the piece in the reference image: "
+            f"{what} do not redesign it, do not add stones, charms or engraving; {STAR_RULE}; "
             f"take only the piece from the reference, never "
             f"its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. "
             f"Square 1:1.")
@@ -192,9 +216,12 @@ def frames(p):
 
 
 # ---------------------------------------------------------------- build
-out, md = {}, ["# The Stellar Line: 50 image prompts (awaiting owner approval)", "",
+BY_KEY = {p["key"]: p for p in P}
+out, md = {}, ["# The Stellar Line: 50 image prompts (owner approved 2026-10-15)", "",
                "One warm travertine world per listing. nano_banana_2, 2k, 1:1, count 1 each.",
-               "Frame 01 is generated from the owner's reference crop; 02-10 use a tight crop of the approved 01.", ""]
+               "Frame 01 is generated from the owner's reference crop; 02-10 use a tight crop of the approved 01.",
+               "Star shape is settled: four points on a cross. The first N01/R01/R03 heroes rendered a north",
+               "star and are being reshot; see images/qa.md.", ""]
 for p in P:
     md += [f"## {p['key']} · {p['name']}", "", f"Ground {p['ground']} {p['hex']}.", ""]
     for n, title, people, body in frames(p):
@@ -206,13 +233,28 @@ for p in P:
 json.dump(out, open(HERE / "prompts.json", "w"), indent=1, ensure_ascii=False)
 open(HERE / "image-prompts.md", "w").write("\n".join(md))
 assert len(out) == 50, len(out)
+# STAR_GEO is dropped inside other sentences, so it must stay a plain noun phrase: a semicolon or a
+# finite verb in it strands the verb of the host sentence (2026-10-15: "...at its centre is set").
+assert ";" not in STAR_GEO and "never" not in STAR_GEO and " is " not in STAR_GEO, STAR_GEO
 for k, v in out.items():
     t = v["prompt"]
     assert t.endswith("Square 1:1."), k
-    assert "never five-pointed" in t, k
+    prod = BY_KEY[k.split("-")[0]]
+    assert STAR_RULE in t, k                       # positive pin: four points on a cross, stated as geometry
+    assert t.count("six or eight ray north star") == 1, k     # the ban has one home, the shared rule
+    assert "classic sparkle shape" not in t, k     # the phrase that caused the 2026-10-15 reshoot
+    assert "four-pointed" not in t, k              # jargon spelling; the geometry string is the only form
+    # the star clause belongs to the products that actually have one, and only to them
+    assert (STAR_GEO in t) == bool(prod["star"]), k
+    if not prod["star"]:
+        assert "no star" in t, k
+    # the shared stone sentence must be TRUE of this product; never both claims in one prompt
+    assert ("every stone is a white diamond" in t) == bool(prod["stones"]), k
+    assert ("carries no stones at all" in t) != bool(prod["stones"]), k
+    if not prod["stones"]:
+        assert "white diamond" not in t.split("carries no stones at all")[0], k
     ref = "exact copy of the piece in the reference image" in t
     assert ref == (v["frame"] != "01"), k          # hero carries no reference clause; 02-10 must
-    assert "five-point star" not in t, k                      # the ban lives in the negative clause only
     assert not re.search(r"\. [a-z]", t), (k, re.search(r"\. [a-z].{0,40}", t).group(0))
     assert not re.search(r"; [A-Z]", t), (k, re.search(r"; [A-Z].{0,40}", t).group(0))
     assert "worn by a woman" not in t or ", worn on" not in t, k
