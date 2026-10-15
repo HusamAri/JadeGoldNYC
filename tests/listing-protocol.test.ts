@@ -289,8 +289,14 @@ const FAKE_TREE = [
     id: 2,
     name: "Weddings",
     children: [
-      { id: 30, name: "Jewelry", children: [{ id: 3092, name: "Pendant Necklaces" }] },
+      { id: 30, name: "Jewelry", children: [{ id: 3092, name: "Pendant Necklaces" }, { id: 1682, name: "Brooches" }] },
     ],
+  },
+  // Canlı ağaç (2026-10-15): broş "Jewelry" altında değil, Accessories altında.
+  {
+    id: 3,
+    name: "Accessories",
+    children: [{ id: 1200, name: "Pins & Clips", children: [{ id: 1201, name: "Brooches" }] }],
   },
 ];
 
@@ -525,7 +531,7 @@ test("broş kendi protokolüne çözülür, yüzük kuralına düşmez (2026-10-
   assert.equal(spec?.id, "brooch");
   assert.deepEqual(spec?.requiredVariationAxes, []);
   assert.equal(spec?.personalization, null);
-  assert.equal(spec?.taxonomyRoot, "Jewelry");
+  assert.equal(spec?.taxonomyRoot, "Accessories");
   assert.deepEqual(spec?.parcel, LISTING_PROTOCOLS.pendant_necklace.parcel);
   // Karat x Metal Color ızgarası (9 varyant, beden ekseni yok) geçer.
   const variants: DraftVariant[] = [
@@ -534,7 +540,12 @@ test("broş kendi protokolüne çözülür, yüzük kuralına düşmez (2026-10-
     { sku: "BAS-W05-14KW", properties: { Karat: "14K", "Metal Color": "White Gold" }, price_cents: 165000, quantity: 20 },
   ];
   assert.equal(validateVariationAxes(spec!, variants), null);
-  // Sahte ağaçta "Brooches" yok: çözücü sessizce başka dala düşmez, bağırarak durur.
+  // Canlı ağaçtaki gibi iki "Brooches" var (Accessories 1201, Weddings 1682); kök
+  // Accessories dalını seçer, gelinlik ikizi dışarıda kalır.
   const r = await resolveTaxonomyIdForProtocol(fakeClient(), LISTING_PROTOCOLS.brooch);
-  assert.equal(r.ok, false);
+  assert.equal(r.ok, true);
+  assert.equal(r.ok && r.taxonomyId, 1201);
+  // Kök "Jewelry" verilirse (ilk sürümün varsayımı) çözücü sessizce düşmez, durur.
+  const wrong = await resolveTaxonomyIdForProtocol(fakeClient(), { ...LISTING_PROTOCOLS.brooch, taxonomyRoot: "Jewelry" });
+  assert.equal(wrong.ok, false);
 });

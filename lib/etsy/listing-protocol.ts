@@ -268,13 +268,17 @@ export const LISTING_PROTOCOLS: Record<ListingProtocolId, ListingProtocolSpec> =
   },
   // Broş yüzük, kolye ya da bileklik değildir; tanımsız bırakmak çözücüyü
   // product_type'a düşürür ve "brooch" tipi null döner, push durur (2026-10-15,
-  // Winter 26/27 Pine Needle Brooch, mağazanın ilk broşu). Ad CANLI taksonomiye
-  // karşı doğrulanmadı; çözücü bulamazsa ya da birden çok dal bulursa durur.
+  // Winter 26/27 Pine Needle Brooch, mağazanın ilk broşu). Kök CANLI ağaçtan
+  // okundu (ops/drafts-push?taxonomy=brooch, 2026-10-15): "Jewelry" kökünde
+  // Brooches YOK; düğüm 1201 "Accessories > Pins & Clips > Brooches". Aynı ad
+  // 1682 "Weddings > Jewelry > Brooches" altında da var, kök onu dışarıda
+  // bırakır; 6769 "Craft Supplies ... Brooch & Pin" ad eşleşmez. İlk sürüm
+  // kökü "Jewelry" varsaymıştı ve kanarya çözücüde durdu (Etsy'ye yazılmadı).
   brooch: {
     id: "brooch",
     label: "Brooch",
     taxonomyNames: ["Brooches"],
-    taxonomyRoot: "Jewelry",
+    taxonomyRoot: "Accessories",
     // Broşta beden ekseni yok; Karat x Metal Color yeterli, zorunlu eksen dayatılmaz.
     requiredVariationAxes: [],
     personalization: null,
