@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Tideline → panel taslakları: supabase/migrations/0168_eon_tideline_family.sql
+ * Tideline → panel taslakları: supabase/migrations/0169_eon_tideline_family.sql
  *
  * Girdi YALNIZ listing-manifest.json (gen_tideline_package.mjs çıktısı). Fiyat ve
  * gram burada hesaplanmaz, manifest'ten taşınır. Üç renk aynı fiyat ve gramı
@@ -26,7 +26,7 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(here, "../..");
 const pkgRel = "docs/eon/listings/2026-10-15-eon-tideline-band";
 const manifest = JSON.parse(await readFile(path.join(repoRoot, pkgRel, "listing-manifest.json"), "utf8"));
-const outFile = path.join(repoRoot, "supabase/migrations/0168_eon_tideline_family.sql");
+const outFile = path.join(repoRoot, "supabase/migrations/0169_eon_tideline_family.sql");
 
 const EON_ORG = "9d0336c0-8772-456d-a80c-a5f2cfe7bbd0";
 const IMAGE_BASE = "https://amuletta.artifactstudio.info/eon/tideline";
@@ -144,7 +144,7 @@ const listingValues = manifest.listings
   })
   .join(",\n");
 
-const sql = `-- 0168_eon_tideline_family.sql
+const sql = `-- 0169_eon_tideline_family.sql
 -- EON Tideline: düz profilli, 1,5 mm, satin yüz; tek kenarda basamakla iki parlak rib
 -- ve aralarında ince oluk. Renk başına bir listing (EON-TIDE-Y/W/R), her biri
 -- Karat x Width (4-7 mm) x Ring Size = 252 varyant, 12 görsel.
