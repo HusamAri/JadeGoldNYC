@@ -174,13 +174,21 @@ export async function GET(request: Request) {
   // senkron ürün SKU'sunu boşaltır (saf-Etsy kuralı), yani "hangi taslakta tek
   // fotoğraf var?" sorusunu yalnız bu okuma güvenle cevaplar (2026-10-08).
   const inventory = url.searchParams.get("inventory");
+  // Salt okuma: `?taxonomy=<kelime>` Etsy satıcı taksonomisinde adı o kelimeyi
+  // içeren düğümleri tam yoluyla döker. Protokole yazılan kategori adı CANLI
+  // ağaca karşı doğrulanmadan önce buradan okunur (2026-10-15: "Brooches"
+  // bulunamadı, ağaçtaki gerçek ad bilinmiyordu).
+  const taxonomyTerm = url.searchParams.get("taxonomy");
+  if (taxonomyTerm && (apply || verify || inventory)) {
+    return NextResponse.json({ error: "taxonomy salt okumadır; apply/verify/inventory ile verilmez" }, { status: 400 });
+  }
   if (inventory && !INVENTORY_STATES.has(inventory)) {
     return NextResponse.json({ error: `inventory: ${[...INVENTORY_STATES].join(", ")}` }, { status: 400 });
   }
   if (inventory && (apply || verify)) {
     return NextResponse.json({ error: "inventory salt okumadır; apply/verify ile verilmez" }, { status: 400 });
   }
-  if (!orgName || (!inventory && prefix.length < 4)) {
+  if (!orgName || (!inventory && !taxonomyTerm && prefix.length < 4)) {
     return NextResponse.json({ error: "org ve en az 4 karakterlik prefix zorunlu" }, { status: 400 });
   }
   if (only && !only.startsWith(prefix)) {
@@ -213,6 +221,28 @@ export async function GET(request: Request) {
     conn?.status === "connected" && /(^|\s)listings_w(\s|$)/.test(conn.scope ?? "");
   if (apply && !writeEnabled) {
     return NextResponse.json({ error: "Etsy yazma erişimi kapalı." }, { status: 403 });
+  }
+
+  if (taxonomyTerm) {
+    try {
+      type Node = { id: number; name: string; children?: Node[] };
+      const client = await EtsyClient.forOrg(org.id);
+      const tax = await client.get<{ results: Node[] }>(etsyPaths.sellerTaxonomyNodes());
+      const term = taxonomyTerm.toLocaleLowerCase("en-US");
+      const hits: { id: number; name: string; path: string }[] = [];
+      const walk = (n: Node, path: string[]) => {
+        const here = [...path, n.name];
+        if (n.name.toLocaleLowerCase("en-US").includes(term)) hits.push({ id: n.id, name: n.name, path: here.join(" > ") });
+        for (const c of n.children ?? []) walk(c, here);
+      };
+      for (const n of tax.results ?? []) walk(n, []);
+      return NextResponse.json({ ok: true, term: taxonomyTerm, hits });
+    } catch (e) {
+      return NextResponse.json(
+        { error: "taxonomy okunamadı", detail: e instanceof Error ? e.message : String(e) },
+        { status: 502 },
+      );
+    }
   }
 
   if (inventory) {
