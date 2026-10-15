@@ -88,3 +88,50 @@ E01's halo-vs-knot drift is not blocking: either reword "knot" to "halo" or resh
 silhouette is right and it misstates nothing a buyer would be harmed by.
 
 Variant seals must come back identical after all of this. Only the gallery moves.
+
+---
+
+# Reshoot round (2026-10-15, owner approved)
+
+4 generations, 2 credits each, **8 credits**, counted from the job ids in `jobs.json` rather than
+from the balance delta. **2 of 3 heroes now pass; R03 is still open.**
+
+## The canary paid for itself on its first run
+
+R01 went first, alone. It came back with a **six ray north star** — the same defect as before, from
+the brand-new "geometry" wording. Because it ran alone, that cost 2 credits instead of 6, and N01 and
+R03 were never sent with the broken wording.
+
+And the crop showed *why*, which a third round of harder words would not have:
+
+> `STAR_GEO`: "the up and down points **a little longer**" · `STAR_RULE`: "**two long and two short**"
+
+Two long arms, two short, minor rays between them **is the construction of a north star**. The prompt
+was describing the banned shape while banning it — in all 50 prompts, since the cue sat in the shared
+rule. Replaced with **four points of equal length on a plus, diagonals explicitly empty**. `prompts.py`
+now asserts those cue phrases can never come back.
+
+With that one fix, **R01 and N01 both passed from text alone** — no reference image needed, which also
+keeps R01's composition from leaking into the others.
+
+## Verdicts
+
+| id | job | verdict |
+|----|-----|---------|
+| R01-01 | `a6dcdae2` | **pass** — four points at 12/3/6/9, diagonals empty; wave, pavé row, single star diamond on spec |
+| N01-01 | `84901507` | **pass** — both stars four point **and plain polished gold**; the invented-stones defect is gone, so the price stands and no repricing is needed |
+| R03-01 | `c56a5734` | **reject**, two defects |
+| R01-01 v1 | `d44146b1` | reject — the north star that exposed the cue |
+
+## R03, still open
+
+1. **Eight ray north star** — four long plus four diagonal minors, diagonals not empty. An engraved
+   star on a signet face is the strongest north-star prior in the catalogue, and it pulled the shape
+   back even with the corrected wording.
+2. **The face is wrong.** It rendered as a conventional flat oval signet plate. The listing copy
+   promises "a wide sculptural sweep of polished gold that curves and folds … one poured, molten
+   form". A flat plate is a different product from the one being sold.
+
+R03 has now missed twice, so the next attempt follows the plan's own fallback rather than re-wording a
+third time: **a tight crop of the approved R01 star as the shape reference** — that correct sibling
+now exists, which it did not when this round started — plus a presentation change for the face.
