@@ -1,4 +1,4 @@
--- 0168_eon_tideline_family.sql
+-- 0169_eon_tideline_family.sql
 -- EON Tideline: düz profilli, 1,5 mm, satin yüz; tek kenarda basamakla iki parlak rib
 -- ve aralarında ince oluk. Renk başına bir listing (EON-TIDE-Y/W/R), her biri
 -- Karat x Width (4-7 mm) x Ring Size = 252 varyant, 12 görsel.

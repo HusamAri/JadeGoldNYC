@@ -75,7 +75,7 @@ olmayan ~116 kredilik başka üretim de görüldü.
 
 ## Panel + Etsy
 
-- `supabase/migrations/0168_eon_tideline_family.sql` (üretici:
+- `supabase/migrations/0169_eon_tideline_family.sql` (üretici:
   `scripts/eon/gen_tideline_migration.mjs`, ELLE DÜZENLEMEYİN): 3 taslak ürün, 756
   varyant, 36 görsel satırı. Görseller `public/eon/tideline/<renk>/` altından prod
   domain'inden servis edilir, yani migration **merge ve prod deploy'dan sonra** uygulanır.
