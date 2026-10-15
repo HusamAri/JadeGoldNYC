@@ -1,4 +1,4 @@
-"""catalog.json -> supabase/migrations/0169_artifact_winter27.sql (+ seal.json).
+"""catalog.json -> supabase/migrations/0170_artifact_winter27.sql (+ seal.json).
 
 Panel drafts only (products.status='draft', etsy_listing_id null); nothing is written to Etsy.
 Same shape as twig/gen_migration.py, looped over the five pieces: one product each, its own variant grid
@@ -138,7 +138,7 @@ where not exists (select 1 from public.listing_images li where li.product_id = p
 """)
 
 SET_SEAL = hashlib.md5("\n".join(sorted(seal_rows, key=lambda s: s.encode())).encode()).hexdigest()
-sql = f"""-- 0169_artifact_winter27.sql
+sql = f"""-- 0170_artifact_winter27.sql
 -- by Artifact Studio Jewelry: Winter 26/27 set, 5 listings, 315 variants, 60 images. Panel drafts only;
 -- this migration does not write to Etsy. Source package: docs/artifact-studio/winter27/ (catalog.py).
 -- Generator: gen_migration.py. DO NOT EDIT BY HAND.
@@ -151,7 +151,7 @@ begin;
 {chr(10).join(blocks)}
 commit;
 """
-out = ROOT / "supabase/migrations/0169_artifact_winter27.sql"
+out = ROOT / "supabase/migrations/0170_artifact_winter27.sql"
 out.write_text(sql)
 json.dump({"setVariants": len(seal_rows), "setSeal": SET_SEAL, "items": seals}, open(HERE / "seal.json", "w"), indent=1)
 print(out.relative_to(ROOT), out.stat().st_size, len(seal_rows), SET_SEAL)

@@ -1,4 +1,4 @@
--- 0169_artifact_winter27.sql
+-- 0170_artifact_winter27.sql
 -- by Artifact Studio Jewelry: Winter 26/27 set, 5 listings, 315 variants, 60 images. Panel drafts only;
 -- this migration does not write to Etsy. Source package: docs/artifact-studio/winter27/ (catalog.py).
 -- Generator: gen_migration.py. DO NOT EDIT BY HAND.
