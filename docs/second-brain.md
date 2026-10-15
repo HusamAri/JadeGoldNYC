@@ -1989,6 +1989,25 @@ repodaki hedefidir.
   visualization made for another metal color"); eski "not recolored" cümlesi
   artık yalan olurdu.
 
+- **Renk listing'leri aynı sahnenin renk edit'i olamaz; ve başarısız kareyi
+  tarifle değil, setin BAŞARILI kardeş karesiyle düzelt (2026-10-15, Tideline):**
+  Beyaz ve rose hero'yu onaylı sarı hero'nun renk edit'i olarak ürettim: şekil
+  birebir korundu ve teknik olarak kusursuzdu. Sahip reddetti: *"görseller bire
+  bir aynı olmamalı"*, *"daha cool, farklı ortamlar, metale uyumlu tonlar"*. Üç
+  listing aynı mağazada yan yana durur; aynı kadrajın üç rengi alıcıya üç ürün
+  değil tek fotoğraf gibi görünür. Kural: (1) renk başına ayrı listing varsa her
+  rengin kendi sahne paleti olur (burada sarı traverten/amber, beyaz arduvaz/beton/
+  buzlu cam, rose mermer/toz pembe), görevler (hero, takılı, makro…) ortak kalır;
+  (2) renk edit'i yalnız şekil referansı üretmek için kullanılır, galeriye girmez.
+  İkinci ders ayıklamada: Y03 (makro) iki kez, R05 (profil) iki kez ıskaladı
+  (kesik bant, uydurma pavé taşı, ayakta duran yüzük). Üçüncü denemede tarifi
+  sertleştirmek yerine aynı görevi ZATEN doğru yapmış beyaz kareleri (W03, W05)
+  kompozisyon referansı verdim ve yalnız metali, yüzeyi ve ışığı değiştirttim:
+  ikisi de ilk seferde tuttu. Üçüncü ders kredide: bakiye 222 düştü, benim iş
+  listem 49 üretim = 98 kredi diyordu; `transactions` dökümü aynı dakikalarda
+  bu oturuma ait olmayan 58 üretim gösterdi. Kredi raporu bakiyeden değil kendi
+  iş kimliklerinden kurulur, fark ayrıca söylenir.
+
 - **Dış aracın şablonunu doldururken şablonun KENDİ yönlendirme satırı da
   veridir; ve "boşalttım" demeden önce dosyayı GERİ OKU (2026-09-26):**
   Pinterest içe aktarma şablonunu 60 pinle doldurdum; araç 60/60 satırı OK
