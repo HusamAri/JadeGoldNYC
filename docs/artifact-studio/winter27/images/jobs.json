@@ -1,7 +1,32 @@
-{"_params": {"model": "nano_banana_2", "served_as": "nano_banana_flash", "aspect_ratio": "1:1", "resolution": "2k", "count": 1,
-             "note": "resolution must be passed explicitly, default is 1k; 5 heroes 2026-10-15, owner-approved prompts, 2 credits each"},
- "W01": {"v1": "b39b5162-243f-4b90-a931-d5e353239792"},
- "W02": {"v1": "5bfec453-13b0-4f91-a66a-24b48dbe5c6c"},
- "W03": {"v1": "02d47ae9-55a9-4b79-920b-0d9691b244bd"},
- "W04": {"v1": "01da56bf-332d-4016-86ed-706dd9b6e87e"},
- "W05": {"v1": "608faf7c-0809-4c22-abbb-0bc5e630f958"}}
+{
+ "_params": {
+  "model": "nano_banana_2",
+  "served_as": "nano_banana_flash",
+  "aspect_ratio": "1:1",
+  "resolution": "2k",
+  "count": 1,
+  "note": "resolution must be passed explicitly, default is 1k; 5 heroes 2026-10-15, owner-approved prompts, 2 credits each"
+ },
+ "W01": {
+  "v1": "b39b5162-243f-4b90-a931-d5e353239792",
+  "approved": "v1"
+ },
+ "W02": {
+  "v1": "5bfec453-13b0-4f91-a66a-24b48dbe5c6c",
+  "approved": "v1"
+ },
+ "W03": {
+  "v1": "02d47ae9-55a9-4b79-920b-0d9691b244bd",
+  "approved": "v1"
+ },
+ "W04": {
+  "v1": "01da56bf-332d-4016-86ed-706dd9b6e87e",
+  "v2": "bbcf95f5-4e8e-46af-8395-1592527170cf",
+  "approved": "v2",
+  "v1_crop_media": "07ee6671-5a69-45dc-a856-81028b1eecfa"
+ },
+ "W05": {
+  "v1": "608faf7c-0809-4c22-abbb-0bc5e630f958",
+  "approved": "v1"
+ }
+}

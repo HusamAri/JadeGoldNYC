@@ -23,17 +23,19 @@ PIECES = {
   "W01 Thaw Cuff":       {"g14": {L: band_g(4, 1.3, mm) for L, mm in [("6.5", 123), ("7", 133), ("7.5", 143)]},
                           "extra": 0, "note": "two-tone: white gold tip is cast separately and soldered, +assembly"},
   # 2 Pinecone Signet: oval table 13 x 11 x 2.0 mm + 3 mm shank (list) at 1.8 mm; signet rule = top + shank.
-  "W02 Pinecone Signet": {"g14": {str(s): (math.pi / 4 * 13 * 11 * 2.0 * D) + mk.list_g14(3, s, 1.8) * 0.75
+  #   Hero v1 (owner accepted 2026-10-15) carries the scales down the shoulders, so the shank is counted in full.
+  "W02 Pinecone Signet": {"g14": {str(s): (math.pi / 4 * 13 * 11 * 2.0 * D) + mk.list_g14(3, s, 1.8) * 1.0
                                    for s in [3, 7, 10, 16]},
-                          "extra": mk.ENAMEL_PIECE, "note": "oxblood enamel in the scale recesses"},
-  # 3 Juniper Drop Earrings: per earring 3 spheres 4.5 mm + hook 0.30 g; pair.
-  "W03 Juniper Drops":   {"g14": {"pair": 2 * (3 * sphere_g(4.5) + 0.30)},
-                          "extra": mk.ENAMEL_PIECE, "note": "one dusty blue enamel berry per earring"},
+                          "extra": mk.ENAMEL_PIECE, "note": "oxblood enamel in the scale recesses, scales continue down the shoulders"},
+  # 3 Juniper Drop Earrings: per earring 4 spheres 4.5 mm (3 gold + 1 enamel, hero v1 accepted 2026-10-15)
+  #   + hook 0.30 g; pair.
+  "W03 Juniper Drops":   {"g14": {"pair": 2 * (4 * sphere_g(4.5) + 0.30)},
+                          "extra": mk.ENAMEL_PIECE, "note": "three gold spheres and one dusty blue enamel berry per earring"},
   # 4 Ember Lariat: molten teardrop 12 x 8 x 4 mm (ellipsoid ~ 0.52 fill) + slide ring 0.25 g;
   #   chain 18 in quote + 4 in drop at the same rate; enamel ember eye.
   "W04 Ember Lariat":    {"g14": {"drop": 0.52 * 12 * 8 * 4 * D + 0.25},
                           "extra": mk.ENAMEL_PIECE + mk.CHAIN_NECKLACE_18IN * 22 / 18 + mk.ASSEMBLY,
-                          "note": "chain 18 in quote scaled to 22 in developed length (Y + drop)"},
+                          "note": "both strands pass through the slide ring and drop together; chain 18 in quote scaled to 22 in"},
   # 5 Pine Needle Brooch: two bundles of 5 needles 45 mm x 1.2 mm wire + hub + pin 0.5 g.
   "W05 Pine Needle Brooch": {"g14": {"one": 10 * (math.pi / 4 * 1.2 ** 2 * 45 * D) + 0.35 + 0.5},
                           "extra": mk.ASSEMBLY, "note": "pin stem and catch in the same gold"},
