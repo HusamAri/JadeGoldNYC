@@ -64,9 +64,20 @@ claims went from **10/10 to 0/10**.
 
 ## What is left before the push
 
-1. **Three reshoots** — N01, R01, R03 heroes. `nano_banana_2`, 2k, 1:1, **count 1 each**, params
-   from `jobs.json`. The prompt text changed, so this sits behind the CLAUDE.md gate: the prompt is
-   shown and approved before any credit is spent.
+1. **Three reshoots** — N01, R01, R03 heroes. `nano_banana_2`, 2k, 1:1, **count 1 each**, params and
+   sequencing in `jobs.json`. The prompt text changed, so this sits behind the CLAUDE.md gate: the
+   prompt is shown and approved before any credit is spent.
+
+   **R01 goes first, alone, as the star canary.** One generation proves the four point geometry reads
+   correctly; only then do N01 and R03 run, with a tight crop of R01's approved star attached as the
+   shape reference. This follows the lesson the parallel Tideline set paid for on the same day: a frame
+   that misses twice is fixed by the set's already-correct sibling, not by a third round of harder
+   wording — and none of our five frames has a correct star yet, so the canary is what creates that
+   sibling. It also caps the exposure at one generation instead of three if the geometry still misses.
+
+   That lesson's other half does **not** transfer: its rule that each metal colour needs its own scene
+   palette is for a separate listing per colour. Stellar carries Metal Color as a variation axis inside
+   one listing per product, with a single three-metal frame (06), so the palettes stay shared.
 2. **Frames 02–10** for all five products (45 generations), each from a tight crop of its approved
    hero. Not started; held until the heroes pass, so a prompt defect cannot be paid for 45 times.
 3. **Gallery attach**, then `ops/drafts-push`. The route refuses a listing with zero uploaded
