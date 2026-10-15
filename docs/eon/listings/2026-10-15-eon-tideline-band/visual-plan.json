@@ -1,0 +1,328 @@
+{
+  "schemaVersion": 1,
+  "family": "Tideline",
+  "status": "complete: 30 generated + 6 typeset = 36/36 (12 per listing)",
+  "listings": [
+    "EON-TIDE-Y",
+    "EON-TIDE-W",
+    "EON-TIDE-R"
+  ],
+  "model": {
+    "name": "nano_banana_2",
+    "resolution": "2k",
+    "aspectRatio": "1:1",
+    "count": 1,
+    "creditsPerFrame": 2
+  },
+  "reference": {
+    "files": [
+      "images/00-reference-demo.jpg",
+      "images/00-reference-demo-2.jpg"
+    ],
+    "uploads": {
+      "ringCropA": "31033385-38e5-450b-8f63-c0ebdaa964e0",
+      "ringCropB": "bb56bdf9-e923-4817-a5f9-80188405c6f9",
+      "edgeCrop": "a673b195-8e1d-455f-bca7-c994a1feeff8",
+      "colourRefs": {
+        "W": "101565d9-68ff-4dc8-a7b2-9a283ec741f2 (Willow white hero, colour only)",
+        "R": "b3f76d3f-d0bd-42e3-b225-0fe7c4b2b186 (Willow rose hero, colour only)"
+      }
+    },
+    "note": "Crops are tight on the ring; the prompt forbids copying the grey velvet scene of the sample photos (owner: no grey towel/velvet)."
+  },
+  "geometry": "Read from close crops of the owner's sample: flat band, 1.5 mm thick (owner). The outer face is fine satin (lightly brushed, almost matte). Along ONE edge only the satin steps down to two slim, rounded, mirror-polished ribs with one fine groove between them; the ribs take about a quarter of the width and run all the way around. The opposite edge is square and satin. Interior mirror-polished comfort fit. No stones, no milgrain, no engraving.",
+  "visualLanguage": {
+    "etsyGuidance": "Seller Handbook (Nov 2025, quoted by eRank): first photo landscape or square, product centred with an even border so the thumbnail survives the 1:1, 4:3 and 3:4 crops; all photos the same shape; at least 2000 px.",
+    "eonHouseStyle": "home studio, morning window light, natural shadows, clear glass with soft offset reflections; pale oak, linen, plaster white (Comet/Frostline, owner 2026-09-27)",
+    "ringStyle": "Quiet satin face + one bright edge: light should run along the polished ribs while the satin stays soft. Frames are lit so the rib edge is the brightest line in the picture.",
+    "framing": "Square 2048 like every EON listing. The ring stays inside the central 70% so Etsy's 4:3 and 3:4 crops never cut it.",
+    "banned": [
+      "grey towel / grey velvet / grey fabric (owner)",
+      "mirror or symmetrical reflection",
+      "dark backdrop",
+      "glitter or sparkle overlays",
+      "text, numbers or hallmark stamps drawn by the model",
+      "flowers or props that hide the ring edge",
+      "colour-only recolours of another listing's frames (owner 2026-10-15)"
+    ],
+    "ownerDirection2026-10-15": [
+      "görseller bire bir aynı olmamalı (no colour-only copies across listings)",
+      "daha cool daha farklı ortamlar, yüzüklere metallere uyumlu tonlar, ürünü ortaya çıkaracak şekilde; metal yüzeyi doğal kontrollü yansımalar, doğal gölgeler"
+    ],
+    "perMetal": {
+      "Y": "warm travertine, sand raw linen, honey oak, olive sprig, amber glass; low warm sun",
+      "W": "blue-grey slate, brushed concrete, frosted glass, eucalyptus, water droplets; cool overcast daylight",
+      "R": "pink-beige marble, blush plaster, dusty-rose linen, matte pale ceramic, dried rose; soft late-afternoon light"
+    },
+    "lightingRule": "one large soft window light + white bounce card: smooth controlled gradient highlights, no blown specks, natural contact shadow; one prop at most, out of focus"
+  },
+  "frames": [
+    {
+      "slot": "01-hero",
+      "purpose": "Search thumbnail: the shape reads as a wedding band at 170 px; satin face and the bright double rib both visible.",
+      "source": "generated per metal"
+    },
+    {
+      "slot": "02-worn",
+      "purpose": "Shows the ring worn: proportion on a man's ring finger, satin against skin.",
+      "source": "generated per metal"
+    },
+    {
+      "slot": "03-edge-macro",
+      "purpose": "Craftsmanship: the step, the two polished ribs and the groove fill the frame.",
+      "source": "generated per metal"
+    },
+    {
+      "slot": "04-width-ladder",
+      "purpose": "Width choice: four rings 4, 5, 6, 7 mm side by side, narrowest to widest.",
+      "source": "generated per metal"
+    },
+    {
+      "slot": "05-profile",
+      "purpose": "Thickness and step profile: ring lying flat like a coin so the 1.5 mm rim and the stepped edge read.",
+      "source": "generated per metal"
+    },
+    {
+      "slot": "06-everyday",
+      "purpose": "Everyday wear: hand holding a glass of water at a table in morning light.",
+      "source": "generated per metal"
+    },
+    {
+      "slot": "07-spec-card",
+      "purpose": "Facts in one place: karat, widths, sizes, thickness, fit, engraving.",
+      "source": "typeset: node scripts/eon/typeset_spec_card.mjs tideline"
+    },
+    {
+      "slot": "08-true-scale",
+      "purpose": "True size: ring pinched between thumb and index finger, about a fingertip wide (about 2 cm across).",
+      "source": "generated per metal"
+    },
+    {
+      "slot": "09-interior",
+      "purpose": "Comfort fit and solid gold inside: view into the ring at about 60 degrees.",
+      "source": "generated per metal"
+    },
+    {
+      "slot": "10-pair",
+      "purpose": "Wedding pair: 4 mm and 7 mm together in a hand-blown glass dish.",
+      "source": "generated per metal"
+    },
+    {
+      "slot": "11-three-colors",
+      "purpose": "Color options: yellow, white and rose rings together (same file in all three listings; the description says the listing is for the color in its title).",
+      "source": "generated once"
+    },
+    {
+      "slot": "12-engraving-card",
+      "purpose": "Personalisation: the four engraving fonts set on the interior photo.",
+      "source": "typeset: node scripts/eon/typeset_engraving_card.mjs tideline"
+    }
+  ],
+  "promptCore": "Copy the ring exactly from the reference photos: a flat solid gold wedding band, 6 mm wide and 1.5 mm thick. The outer face is a fine satin finish (lightly brushed, almost matte). Along ONE edge only, the satin face steps down to two slim, rounded, mirror-polished ribs separated by one fine groove; together they take about a quarter of the band width and run unbroken all the way around. The opposite edge is square and satin. The inside is mirror-polished. No stones, no milgrain, no engraving, no stamps. Use the reference photos only for the ring's shape and finishes; do not copy their grey velvet, background, scene or camera angle.",
+  "heroPrompt": {
+    "Y": "Photorealistic product photograph of one 14K yellow gold wedding band. {promptCore} Scene: the ring stands upright at a three-quarter angle on a thick slab of clear glass resting on a pale oak table, soft morning window light from the left, a natural soft shadow and a faint offset reflection in the glass, plaster-white wall softly out of focus behind. The light runs along the polished ribs as one bright line while the satin face stays soft. The ring is centred and fills about half of the frame, with an even margin on every side. No text, no watermark."
+  },
+  "generated": {
+    "R01": {
+      "jobId": "1cc6f808-b55a-44b1-996e-75993c6a60a1",
+      "status": "accepted"
+    },
+    "R02": {
+      "jobId": "bf0b08dd-f632-421b-84c5-6deea5d31c65",
+      "status": "accepted"
+    },
+    "R03": {
+      "jobId": "5b4cbf02-2cf5-43b0-b0ef-3049af592884",
+      "status": "accepted"
+    },
+    "R04": {
+      "jobId": "4feeb2a8-4de2-4c7d-93de-81c0210127c7",
+      "status": "accepted"
+    },
+    "R05": {
+      "jobId": "5bae2d6f-75a8-4230-aa93-85c6739e9137",
+      "status": "accepted"
+    },
+    "R06": {
+      "jobId": "e8235804-83d2-4ffe-a471-ed04f9f86f36",
+      "status": "accepted"
+    },
+    "R08": {
+      "jobId": "2e7ff189-be72-413d-863b-b3c9b7060c9f",
+      "status": "accepted"
+    },
+    "R09": {
+      "jobId": "d426bbcf-22a8-478f-a433-42147a047001",
+      "status": "accepted"
+    },
+    "R10": {
+      "jobId": "8dd5d4ef-2d45-4609-8bc8-e4f371bf963d",
+      "status": "accepted"
+    },
+    "R11": {
+      "jobId": "9ae7bfc3-41fe-4c31-a6e8-41bb677fafe8",
+      "status": "accepted"
+    },
+    "W01": {
+      "jobId": "5bebd01d-bf5a-4406-8b9e-1c9ec1c764b0",
+      "status": "accepted"
+    },
+    "W02": {
+      "jobId": "0ac6921b-66d1-4f0d-b5f7-58478d7860b0",
+      "status": "accepted"
+    },
+    "W03": {
+      "jobId": "ac17e2ba-00f6-4ebb-bb2b-ccfd874ed6e6",
+      "status": "accepted"
+    },
+    "W04": {
+      "jobId": "3b065ec4-cee3-4faa-9771-73d96430c037",
+      "status": "accepted"
+    },
+    "W05": {
+      "jobId": "bd1455c8-9a8b-4d78-8957-3d6ed8191299",
+      "status": "accepted"
+    },
+    "W06": {
+      "jobId": "22b5b6d3-23b9-47b5-a0e4-4bc132b8c073",
+      "status": "accepted"
+    },
+    "W08": {
+      "jobId": "dec1abcd-05e0-4e02-bf83-ba2361fae9ff",
+      "status": "accepted"
+    },
+    "W09": {
+      "jobId": "6c24c933-4225-4970-8a68-a32a188b3d47",
+      "status": "accepted"
+    },
+    "W10": {
+      "jobId": "d9cebddb-98ee-4426-8033-e80f70dc2830",
+      "status": "accepted"
+    },
+    "W11": {
+      "jobId": "83155b22-695e-49d1-9e75-626e8e2148a3",
+      "status": "accepted"
+    },
+    "Y01": {
+      "jobId": "866836b7-636f-4293-87b5-cf31496a062a",
+      "status": "accepted"
+    },
+    "Y02": {
+      "jobId": "20de1113-16b0-4119-a22a-0dbb5afbbc47",
+      "status": "accepted"
+    },
+    "Y03": {
+      "jobId": "fabe5117-fbbe-4a1d-bfd1-9ba08b5a1ea7",
+      "status": "accepted"
+    },
+    "Y04": {
+      "jobId": "247f6595-4266-4584-9be5-987d450288a2",
+      "status": "accepted"
+    },
+    "Y05": {
+      "jobId": "24411a84-cb14-451e-8349-9a2f80d98455",
+      "status": "accepted"
+    },
+    "Y06": {
+      "jobId": "b3f3c902-a5b2-4bfb-af6a-638a7ded5b04",
+      "status": "accepted"
+    },
+    "Y08": {
+      "jobId": "ce1929fa-b868-4a91-a0e7-a9f504d635fa",
+      "status": "accepted"
+    },
+    "Y09": {
+      "jobId": "00e6054a-7ff0-443e-ad5f-01dd5433652a",
+      "status": "accepted"
+    },
+    "Y10": {
+      "jobId": "83393379-8979-4649-8fa7-983d2ab9c73b",
+      "status": "accepted"
+    },
+    "Y11": {
+      "jobId": "b3898893-a7f2-45e8-bb0a-a90e7ffb361e",
+      "status": "accepted"
+    },
+    "Y07": {
+      "status": "typeset",
+      "by": "node scripts/eon/typeset_spec_card.mjs tideline"
+    },
+    "Y12": {
+      "status": "typeset",
+      "by": "node scripts/eon/typeset_engraving_card.mjs tideline"
+    },
+    "W07": {
+      "status": "typeset",
+      "by": "node scripts/eon/typeset_spec_card.mjs tideline"
+    },
+    "W12": {
+      "status": "typeset",
+      "by": "node scripts/eon/typeset_engraving_card.mjs tideline"
+    },
+    "R07": {
+      "status": "typeset",
+      "by": "node scripts/eon/typeset_spec_card.mjs tideline"
+    },
+    "R12": {
+      "status": "typeset",
+      "by": "node scripts/eon/typeset_engraving_card.mjs tideline"
+    }
+  },
+  "rejected": [
+    {
+      "round": "v1 (pale oak + glass for all colours)",
+      "jobs": [
+        "a86f9fc0 Y01",
+        "8a2e0837..2ed0b908 Y02-Y11 (9)",
+        "5e0d154e W01 edit",
+        "36c5bde2 R01 edit",
+        "2be640e9 Y04 v2",
+        "c6bb84b3 Y05 v2"
+      ],
+      "why": "Owner: images must not be identical across listings; cooler, varied, metal-matched settings. Y04 v1 widths looked equal; Y05 v1 ring too small, rim unreadable (owner)."
+    },
+    {
+      "slot": "W01",
+      "jobId": "aa47b91f-9242-4943-b4dd-7a92b566cfcf",
+      "defect": "Copied the sample photo's grey velvet (banned), no slate, ring too large."
+    },
+    {
+      "slot": "Y03",
+      "jobId": "6408c0f1-8bdd-492c-823a-711ea153a357",
+      "defect": "Invented a cut-open band with cross ribs."
+    },
+    {
+      "slot": "Y03",
+      "jobId": "6e4d5cdc-1034-43ae-89ed-e9e81453c664",
+      "defect": "Whole lying ring, near-duplicate of Y05, not a macro."
+    },
+    {
+      "slot": "R05",
+      "jobId": "bd84166c-6707-4557-be97-c335357521c8",
+      "defect": "Invented a pave row of stones in the rim."
+    },
+    {
+      "slot": "R05",
+      "jobId": "ee6c4499-ea5f-4bb8-b8b0-6f649f236adb",
+      "defect": "Standing, not lying flat; rim thickness unreadable."
+    }
+  ],
+  "creditsSpent": {
+    "generations": 49,
+    "credits": 98,
+    "discarded": 19,
+    "note": "Higgsfield balance also fell by ~116 credits in the same window from 58 generations not submitted by this session (parallel use of the account)."
+  },
+  "references": {
+    "seriesSwatches": {
+      "Y": "2cacc03d-2d58-4ad9-9ae6-e9bc258a9848",
+      "W": "f85ee7a7-11ec-4cbf-8022-ee59a040f335",
+      "R": "430913cd-5163-4fb7-8223-b06d43276f4e"
+    },
+    "note": "Series frames used only a tight colour/texture swatch of the ring edge (no scene to copy). Heroes used the sample crops; the white hero used the white colour-edit (5e0d154e) instead because the sample crop leaked grey velvet."
+  },
+  "setLevelNotes": [
+    "Y03 and R05 third takes used the accepted white frames (W03, W05) as composition references with only metal, surface and light changed: both held first time.",
+    "All 04 ladders checked in a zoomed strip: widths step up visibly from 4 to 7 mm."
+  ]
+}

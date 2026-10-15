@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * EON listing paketleri icin 07 — spec karti. ELLE DIZILIR, model uretmez.
- * Aile secimi: node scripts/eon/typeset_spec_card.mjs willow|cadence|comet|comet-tail|frostline
+ * Aile secimi: node scripts/eon/typeset_spec_card.mjs willow|cadence|comet|comet-tail|frostline|tideline
  *
  * Neden: modelin gorsele yazdigi rakam yazim hatasi degil YANLIS BEYANdir
  * (2026-09-11 dersi). Bu seride model iki kez sahte ayar damgasi da basti
@@ -13,7 +13,7 @@
  * fontu olarak zaten vaat edilen iki font. Degerler Bitstream Charter: Prata'nin
  * eski-stil "1"i "l" gibi okundugu icin (ilk dizimde "lOK · l4K").
  *
- * Kullanim: node scripts/eon/typeset_spec_card.mjs <willow|cadence|comet|comet-tail|frostline>
+ * Kullanim: node scripts/eon/typeset_spec_card.mjs <willow|cadence|comet|comet-tail|frostline|tideline>
  */
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
@@ -60,9 +60,18 @@ const FAMILIES = {
     // Sahip beyani (2026-09-27): 1,5 mm. Aciklamada da ayni sayi yazili olmali.
     thicknessMm: 1.5,
   },
+  tideline: {
+    pkg: "2026-10-15-eon-tideline-band",
+    hero: "01-hero.jpg",
+    name: "TIDELINE",
+    subtitle: "Satin face, polished double rib on one edge",
+    footer: "Solid gold  ·  No gemstones",
+    // Sahip beyani (2026-10-15): 1,5 mm.
+    thicknessMm: 1.5,
+  },
 };
 const family = FAMILIES[process.argv[2] ?? "willow"];
-assert(family, `bilinmeyen aile: ${process.argv[2]} (willow|cadence|comet|comet-tail|frostline)`);
+assert(family, `bilinmeyen aile: ${process.argv[2]} (willow|cadence|comet|comet-tail|frostline|tideline)`);
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const pkg = path.resolve(here, "../../docs/eon/listings", family.pkg);
