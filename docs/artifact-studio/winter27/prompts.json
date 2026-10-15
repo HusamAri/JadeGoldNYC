@@ -1,0 +1,597 @@
+{
+ "W01": {
+  "name": "Thaw Cuff",
+  "ground": [
+   "pale ice blue",
+   "#B9C6CF"
+  ],
+  "frames": [
+   {
+    "slot": "02",
+    "title": "Wrist below a knit cuff",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Worn close-up on a seamless pale ice blue backdrop (#B9C6CF): her left forearm rests on her knee, the cuff of a chunky knit sweater in a deeper ice blue pushed back, the cuff bracelet on the bare wrist just below it. The cuff is worn on the left wrist of a woman, the gap turned to the inside of the wrist, the molten yellow gold on top and the white gold tip visible at one end; the right wrist is bare; no watch, no rings, no other jewelry. anatomically correct hands with five fingers, natural skin texture visible, short natural nails with sheer nude polish. Cropped from the forearm to the fingertips; the cuff band is 4 mm wide, about the width of a pencil, and sits close on the wrist. The piece: an open cuff bracelet, 4 mm wide and about 1.3 mm thick, its whole outer surface a molten, gently rippled high-polish texture like gold that has just stopped flowing; the last 12 mm of one end is white gold, joined to the yellow gold in a soft, slightly uneven melted seam; a smooth open C with a 25 mm gap and rounded ends, solid, no stones, no pattern, no inscription, no hinge. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. Natural skin texture visible. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "03",
+    "title": "Molten surface macro",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Extreme close detail: the cuff lies on a slab of frozen river ice, pale ice blue (#B9C6CF), with fine frost crystals and faint cracks inside the ice; the camera is only a few centimetres from the outer surface, so the molten ripples of the yellow gold fill most of the image with light pooling in each wave, the rest falling softly out of focus; one crisp highlight on the ridges. The piece: an open cuff bracelet, 4 mm wide and about 1.3 mm thick, its whole outer surface a molten, gently rippled high-polish texture like gold that has just stopped flowing; the last 12 mm of one end is white gold, joined to the yellow gold in a soft, slightly uneven melted seam; a smooth open C with a 25 mm gap and rounded ends, solid, no stones, no pattern, no inscription, no hinge. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. No people and no hands in the image. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "04",
+    "title": "The thaw seam",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Extreme close detail: the end of the cuff where the white gold tip meets the yellow gold rests on a slab of frozen river ice, pale ice blue (#B9C6CF), with fine frost crystals and faint cracks inside the ice; the camera is a few centimetres away, the slightly uneven melted seam between the two metals at the centre in razor-sharp focus, the white gold reading clearly cooler and greyer than the yellow. The piece: an open cuff bracelet, 4 mm wide and about 1.3 mm thick, its whole outer surface a molten, gently rippled high-polish texture like gold that has just stopped flowing; the last 12 mm of one end is white gold, joined to the yellow gold in a soft, slightly uneven melted seam; a smooth open C with a 25 mm gap and rounded ends, solid, no stones, no pattern, no inscription, no hinge. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. No people and no hands in the image. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "05",
+    "title": "Edge view, width and thickness",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Side view macro: the cuff stands on its edge on a slab of frozen river ice, pale ice blue (#B9C6CF), with fine frost crystals and faint cracks inside the ice, seen low from the side so the 4 mm width and the thin 1.3 mm wall read in profile, the open gap turned toward the camera; one crisp highlight along the top edge. The piece: an open cuff bracelet, 4 mm wide and about 1.3 mm thick, its whole outer surface a molten, gently rippled high-polish texture like gold that has just stopped flowing; the last 12 mm of one end is white gold, joined to the yellow gold in a soft, slightly uneven melted seam; a smooth open C with a 25 mm gap and rounded ends, solid, no stones, no pattern, no inscription, no hinge. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. No people and no hands in the image. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "06",
+    "title": "Hand beside a cup of tea",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Winter table moment on a pale ice blue linen cloth (#B9C6CF): her left hand rests flat on the cloth beside a small plain white porcelain cup of tea, not holding it, the cuff on the wrist. The cuff is worn on the left wrist of a woman, the gap turned to the inside of the wrist, the molten yellow gold on top and the white gold tip visible at one end; the right wrist is bare; no watch, no rings, no other jewelry. anatomically correct hands with five fingers, natural skin texture visible, short natural nails with sheer nude polish. Cropped tight on the wrist, hand and cup; the cuff band is 4 mm wide, about the width of a pencil, and sits close on the wrist. The piece: an open cuff bracelet, 4 mm wide and about 1.3 mm thick, its whole outer surface a molten, gently rippled high-polish texture like gold that has just stopped flowing; the last 12 mm of one end is white gold, joined to the yellow gold in a soft, slightly uneven melted seam; a smooth open C with a 25 mm gap and rounded ends, solid, no stones, no pattern, no inscription, no hinge. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. Natural skin texture visible. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "07",
+    "title": "Fingertip scale",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Scale shot on pale ice blue linen (#B9C6CF): her left wrist rests flat and the tip of her right index finger touches the cuff band, so the 4 mm band can be compared with the fingernail. The cuff is worn on the left wrist of a woman, the gap turned to the inside of the wrist, the molten yellow gold on top and the white gold tip visible at one end; the right wrist is bare; no watch, no rings, no other jewelry. anatomically correct hands with five fingers, natural skin texture visible, short natural nails with sheer nude polish. Cropped tight on the wrist; the cuff band is 4 mm wide, about the width of a pencil, and sits close on the wrist. The piece: an open cuff bracelet, 4 mm wide and about 1.3 mm thick, its whole outer surface a molten, gently rippled high-polish texture like gold that has just stopped flowing; the last 12 mm of one end is white gold, joined to the yellow gold in a soft, slightly uneven melted seam; a smooth open C with a 25 mm gap and rounded ends, solid, no stones, no pattern, no inscription, no hinge. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. Natural skin texture visible. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "08",
+    "title": "Gift box",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Gift and display: on a smooth semi-matte lacquered pale ice blue surface (#B9C6CF) that shows no reflections, the cuff stands on its edge, the molten surface and the white gold tip facing the camera; beside it a small square gift box wrapped in matte pale ice blue paper, its lid off, lined with natural undyed linen, a satin ribbon in a soft matching tone curling loose; no logo and no text; the piece appears only once. The piece: an open cuff bracelet, 4 mm wide and about 1.3 mm thick, its whole outer surface a molten, gently rippled high-polish texture like gold that has just stopped flowing; the last 12 mm of one end is white gold, joined to the yellow gold in a soft, slightly uneven melted seam; a smooth open C with a 25 mm gap and rounded ends, solid, no stones, no pattern, no inscription, no hinge. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. No people and no hands in the image. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "09",
+    "title": "Three two-tone colours",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Metal colour visualization on a slab of frozen river ice, pale ice blue (#B9C6CF), with fine frost crystals and faint cracks inside the ice: three separate copies of this exact cuff stand on their edges in one horizontal row with clear space between them so no two touch; the left cuff is polished yellow gold with its tip in polished unplated white gold, a pale silvery grey like platinum with no yellow tint; the centre cuff is polished unplated white gold, a pale silvery grey like platinum with no yellow tint with its tip in polished yellow gold, the colours reversed; the right cuff is polished rose gold, a soft warm pink gold with its tip in polished unplated white gold, a pale silvery grey like platinum with no yellow tint; each cuff keeps the same molten surface and the same melted seam. A full-bleed photograph, no border, no inset. The piece: an open cuff bracelet, 4 mm wide and about 1.3 mm thick, its whole outer surface a molten, gently rippled high-polish texture like gold that has just stopped flowing; the last 12 mm of one end is white gold, joined to the yellow gold in a soft, slightly uneven melted seam; a smooth open C with a 25 mm gap and rounded ends, solid, no stones, no pattern, no inscription, no hinge. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. No people and no hands in the image. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions; only the metal colour changes, exactly as named for each copy; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "10",
+    "title": "Hand at a wool collar",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Editorial detail on a seamless pale ice blue backdrop (#B9C6CF): her left hand rests at the open collar of a wool coat in a deeper ice blue, the wrist turned to the camera. The cuff is worn on the left wrist of a woman, the gap turned to the inside of the wrist, the molten yellow gold on top and the white gold tip visible at one end; the right wrist is bare; no watch, no rings, no other jewelry. anatomically correct hands with five fingers, natural skin texture visible, short natural nails with sheer nude polish. Seen from the collarbones down: the top edge of the image cuts across the collarbones, so the neck, the chin, the lips and the face are all outside the image; the cuff band is 4 mm wide, about the width of a pencil, and sits close on the wrist. The piece: an open cuff bracelet, 4 mm wide and about 1.3 mm thick, its whole outer surface a molten, gently rippled high-polish texture like gold that has just stopped flowing; the last 12 mm of one end is white gold, joined to the yellow gold in a soft, slightly uneven melted seam; a smooth open C with a 25 mm gap and rounded ends, solid, no stones, no pattern, no inscription, no hinge. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. Natural skin texture visible. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "11",
+    "title": "Open gap from above",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Macro still life seen from directly above: the cuff lies flat on a slab of frozen river ice, pale ice blue (#B9C6CF), with fine frost crystals and faint cracks inside the ice, the open C and its 25 mm gap reading clearly, the white gold tip at one end of the gap and the yellow gold end at the other, the molten surface catching soft light; the cuff is the only object in the image. The piece: an open cuff bracelet, 4 mm wide and about 1.3 mm thick, its whole outer surface a molten, gently rippled high-polish texture like gold that has just stopped flowing; the last 12 mm of one end is white gold, joined to the yellow gold in a soft, slightly uneven melted seam; a smooth open C with a 25 mm gap and rounded ends, solid, no stones, no pattern, no inscription, no hinge. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. No people and no hands in the image. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "12",
+    "title": "Window light in winter",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Editorial worn frame: soft cool winter daylight through a frosted window falls across her, a pale ice blue wall (#B9C6CF) behind. Her left wrist rests on a windowsill, the cuff worn on the left wrist of a woman, the gap turned to the inside of the wrist, the molten yellow gold on top and the white gold tip visible at one end; the right wrist is bare; no watch, no rings, no other jewelry. Cropped on the wrist and hand. anatomically correct hands with five fingers, natural skin texture visible, short natural nails with sheer nude polish; the cuff band is 4 mm wide, about the width of a pencil, and sits close on the wrist. The piece: an open cuff bracelet, 4 mm wide and about 1.3 mm thick, its whole outer surface a molten, gently rippled high-polish texture like gold that has just stopped flowing; the last 12 mm of one end is white gold, joined to the yellow gold in a soft, slightly uneven melted seam; a smooth open C with a 25 mm gap and rounded ends, solid, no stones, no pattern, no inscription, no hinge. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. Natural skin texture visible. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   }
+  ]
+ },
+ "W02": {
+  "name": "Pinecone Signet",
+  "ground": [
+   "oxblood, deep wine red",
+   "#4A1C22"
+  ],
+  "frames": [
+   {
+    "slot": "02",
+    "title": "On the ring finger",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Worn close-up on a seamless oxblood, deep wine red backdrop (#4A1C22): her left hand rests loosely on a fold of dark oxblood velvet, the ring worn on the ring finger of a woman's left hand (the fourth finger, between the middle finger and the little finger), the carved table facing the camera; the thumb, index, middle and little fingers are bare; no other jewelry. anatomically correct hands with five fingers, natural skin texture visible, short natural nails with sheer nude polish. Cropped tight on the hand; the oval table is 13 mm tall, about the size of a fingernail, never larger. The piece: a chunky oval signet ring: the 13 x 11 mm oval table and both shoulders are carved in deep relief with overlapping pointed pinecone scales rising in a spiral, the recesses between the scales filled flush with glossy oxblood vitreous enamel so the gold scale tips stand out against the dark red; a thin polished rim around the table; the lower shank 3 mm wide, smooth and polished; the table solid and closed underneath, no hollow back, no stones. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. Natural skin texture visible. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "03",
+    "title": "Scales and enamel macro",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Extreme close detail: the ring lies on a bed of real dry pinecone scales and smooth stone, everything in the same deep oxblood red (#4A1C22); the camera is only a few centimetres from the table, so the overlapping gold pinecone scales and the glossy oxblood enamel between them fill most of the image, the rest falling softly out of focus; one crisp highlight along the scale tips. The piece: a chunky oval signet ring: the 13 x 11 mm oval table and both shoulders are carved in deep relief with overlapping pointed pinecone scales rising in a spiral, the recesses between the scales filled flush with glossy oxblood vitreous enamel so the gold scale tips stand out against the dark red; a thin polished rim around the table; the lower shank 3 mm wide, smooth and polished; the table solid and closed underneath, no hollow back, no stones. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. No people and no hands in the image. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "04",
+    "title": "Shoulder relief in profile",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Side view macro: the ring stands upright on a bed of real dry pinecone scales and smooth stone, everything in the same deep oxblood red (#4A1C22), seen low from the side so the scales running down one shoulder into the smooth 3 mm shank read in profile, the table edge at the top; one crisp highlight along the shoulder. The piece: a chunky oval signet ring: the 13 x 11 mm oval table and both shoulders are carved in deep relief with overlapping pointed pinecone scales rising in a spiral, the recesses between the scales filled flush with glossy oxblood vitreous enamel so the gold scale tips stand out against the dark red; a thin polished rim around the table; the lower shank 3 mm wide, smooth and polished; the table solid and closed underneath, no hollow back, no stones. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. No people and no hands in the image. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "05",
+    "title": "Hand beside a cup of coffee",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Winter table moment on a oxblood, deep wine red linen cloth (#4A1C22): her left hand rests flat on the cloth beside a small handmade stoneware cup of coffee, not holding it, the ring worn on the ring finger of a woman's left hand (the fourth finger, between the middle finger and the little finger), the carved table facing the camera; the thumb, index, middle and little fingers are bare; no other jewelry. anatomically correct hands with five fingers, natural skin texture visible, short natural nails with sheer nude polish. Cropped tight on the hand and cup; the oval table is 13 mm tall, about the size of a fingernail, never larger. The piece: a chunky oval signet ring: the 13 x 11 mm oval table and both shoulders are carved in deep relief with overlapping pointed pinecone scales rising in a spiral, the recesses between the scales filled flush with glossy oxblood vitreous enamel so the gold scale tips stand out against the dark red; a thin polished rim around the table; the lower shank 3 mm wide, smooth and polished; the table solid and closed underneath, no hollow back, no stones. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. Natural skin texture visible. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "06",
+    "title": "Fingernail scale",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Scale shot on oxblood, deep wine red linen (#4A1C22): the ring worn on the ring finger of a woman's left hand (the fourth finger, between the middle finger and the little finger), the carved table facing the camera; the thumb, index, middle and little fingers are bare; no other jewelry, the fingers extended so the carved oval table can be compared directly with the fingernail beside it. anatomically correct hands with five fingers, natural skin texture visible, short natural nails with sheer nude polish. Cropped tight on the hand; the oval table is 13 mm tall, about the size of a fingernail, never larger. The piece: a chunky oval signet ring: the 13 x 11 mm oval table and both shoulders are carved in deep relief with overlapping pointed pinecone scales rising in a spiral, the recesses between the scales filled flush with glossy oxblood vitreous enamel so the gold scale tips stand out against the dark red; a thin polished rim around the table; the lower shank 3 mm wide, smooth and polished; the table solid and closed underneath, no hollow back, no stones. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. Natural skin texture visible. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "07",
+    "title": "Lying like a coin",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Macro still life: the ring lies flat on a bed of real dry pinecone scales and smooth stone, everything in the same deep oxblood red (#4A1C22) like a coin, the hole facing the ceiling, seen from slightly above so the full oval table and the thickness of the shank read; the ring is the only object in the image. The piece: a chunky oval signet ring: the 13 x 11 mm oval table and both shoulders are carved in deep relief with overlapping pointed pinecone scales rising in a spiral, the recesses between the scales filled flush with glossy oxblood vitreous enamel so the gold scale tips stand out against the dark red; a thin polished rim around the table; the lower shank 3 mm wide, smooth and polished; the table solid and closed underneath, no hollow back, no stones. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. No people and no hands in the image. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "08",
+    "title": "Gift box",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Gift and display: on a smooth semi-matte lacquered oxblood, deep wine red surface (#4A1C22) that shows no reflections, the ring stands upright in a slot of a small ring cushion in dark oxblood velvet, the table facing the camera; beside it a small square gift box wrapped in matte oxblood, deep wine red paper, its lid off, lined with natural undyed linen, a satin ribbon in a soft matching tone curling loose; no logo and no text; the piece appears only once. The piece: a chunky oval signet ring: the 13 x 11 mm oval table and both shoulders are carved in deep relief with overlapping pointed pinecone scales rising in a spiral, the recesses between the scales filled flush with glossy oxblood vitreous enamel so the gold scale tips stand out against the dark red; a thin polished rim around the table; the lower shank 3 mm wide, smooth and polished; the table solid and closed underneath, no hollow back, no stones. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. No people and no hands in the image. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "09",
+    "title": "Three gold colours",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Metal colour visualization on a bed of real dry pinecone scales and smooth stone, everything in the same deep oxblood red (#4A1C22): three separate copies of this exact design stand upright in one horizontal row, each with its carved table facing the camera, with clear space between them so no two touch; the left one in polished yellow gold, the centre one in polished unplated white gold, a pale silvery grey like platinum with no yellow tint, clearly a different colour from the yellow beside it, the right one in polished rose gold, a soft warm pink gold; every enamel colour stays the same. A full-bleed photograph, no border, no inset. The piece: a chunky oval signet ring: the 13 x 11 mm oval table and both shoulders are carved in deep relief with overlapping pointed pinecone scales rising in a spiral, the recesses between the scales filled flush with glossy oxblood vitreous enamel so the gold scale tips stand out against the dark red; a thin polished rim around the table; the lower shank 3 mm wide, smooth and polished; the table solid and closed underneath, no hollow back, no stones. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. No people and no hands in the image. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions; only the metal colour changes, exactly as named for each copy; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "10",
+    "title": "Hand at a wool collar",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Editorial detail on a seamless oxblood, deep wine red backdrop (#4A1C22): her left hand rests at the open collar of a wool coat in a deeper wine red, the ring worn on the ring finger of a woman's left hand (the fourth finger, between the middle finger and the little finger), the carved table facing the camera; the thumb, index, middle and little fingers are bare; no other jewelry. anatomically correct hands with five fingers, natural skin texture visible, short natural nails with sheer nude polish. Seen from the collarbones down: the top edge of the image cuts across the collarbones, so the neck, the chin, the lips and the face are all outside the image; the oval table is 13 mm tall, about the size of a fingernail, never larger. The piece: a chunky oval signet ring: the 13 x 11 mm oval table and both shoulders are carved in deep relief with overlapping pointed pinecone scales rising in a spiral, the recesses between the scales filled flush with glossy oxblood vitreous enamel so the gold scale tips stand out against the dark red; a thin polished rim around the table; the lower shank 3 mm wide, smooth and polished; the table solid and closed underneath, no hollow back, no stones. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. Natural skin texture visible. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "11",
+    "title": "Inside of the shank",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Macro still life: the ring stands upright on a bed of real dry pinecone scales and smooth stone, everything in the same deep oxblood red (#4A1C22) with the camera looking into the ring at about 60 degrees from above, so the smooth polished inner wall of the shank and the underside of the solid closed table are shown; the carved outside is seen only along the far rim; one crisp highlight on the inner wall. The piece: a chunky oval signet ring: the 13 x 11 mm oval table and both shoulders are carved in deep relief with overlapping pointed pinecone scales rising in a spiral, the recesses between the scales filled flush with glossy oxblood vitreous enamel so the gold scale tips stand out against the dark red; a thin polished rim around the table; the lower shank 3 mm wide, smooth and polished; the table solid and closed underneath, no hollow back, no stones. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. No people and no hands in the image. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "12",
+    "title": "Window light in winter",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Editorial worn frame: soft cool winter daylight through a frosted window falls across her, a oxblood, deep wine red wall (#4A1C22) behind. Her left hand rests on a windowsill, the ring worn on the ring finger of a woman's left hand (the fourth finger, between the middle finger and the little finger), the carved table facing the camera; the thumb, index, middle and little fingers are bare; no other jewelry. Cropped on the hand. anatomically correct hands with five fingers, natural skin texture visible, short natural nails with sheer nude polish; the oval table is 13 mm tall, about the size of a fingernail, never larger. The piece: a chunky oval signet ring: the 13 x 11 mm oval table and both shoulders are carved in deep relief with overlapping pointed pinecone scales rising in a spiral, the recesses between the scales filled flush with glossy oxblood vitreous enamel so the gold scale tips stand out against the dark red; a thin polished rim around the table; the lower shank 3 mm wide, smooth and polished; the table solid and closed underneath, no hollow back, no stones. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. Natural skin texture visible. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   }
+  ]
+ },
+ "W03": {
+  "name": "Juniper Drop Earrings",
+  "ground": [
+   "juniper green",
+   "#3E5A4C"
+  ],
+  "frames": [
+   {
+    "slot": "02",
+    "title": "On the ear",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Worn close-up on a seamless juniper green backdrop (#3E5A4C): close crop of a woman's ear and jawline, one earring worn on a woman's earlobe, hair tucked behind the ear, the cluster hanging just below the lobe with the blue sphere visible; no other earrings, no other jewelry; the face is mostly outside the image. Natural skin texture visible; each sphere is 4.5 mm, the whole cluster about 10 mm, the size of a small fingernail, never larger. The piece: a pair of drop earrings: each earring is a tight cluster of four 4.5 mm spheres touching like berries on a sprig, three of them bright polished gold and exactly one coated in dusty blue vitreous enamel, a soft powdery steel blue with a matte bloom like a ripe juniper berry; the cluster hangs from a slim French hook with a tiny ball at its tip; no stones, no other charms. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. Natural skin texture visible. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "03",
+    "title": "Cluster macro",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Extreme close detail: one earring lies on dark juniper green slate (#3E5A4C) with a few real juniper sprigs, their short needles and dusty blue berries; the camera is only a few centimetres away, so the four touching spheres fill most of the image, three bright polished gold and one matte dusty blue enamel, the rest falling softly out of focus; one warm highlight on each gold sphere. The piece: a pair of drop earrings: each earring is a tight cluster of four 4.5 mm spheres touching like berries on a sprig, three of them bright polished gold and exactly one coated in dusty blue vitreous enamel, a soft powdery steel blue with a matte bloom like a ripe juniper berry; the cluster hangs from a slim French hook with a tiny ball at its tip; no stones, no other charms. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. No people and no hands in the image. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "04",
+    "title": "Enamel berry macro",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Extreme close detail: the dusty blue enamel sphere of one earring rests against its two gold neighbours on dark juniper green slate (#3E5A4C) with a few real juniper sprigs, their short needles and dusty blue berries, the camera a few centimetres away so the matte powdery bloom of the enamel and the mirror polish of the gold beside it read together; beside the earring one real juniper berry of the same blue. The piece: a pair of drop earrings: each earring is a tight cluster of four 4.5 mm spheres touching like berries on a sprig, three of them bright polished gold and exactly one coated in dusty blue vitreous enamel, a soft powdery steel blue with a matte bloom like a ripe juniper berry; the cluster hangs from a slim French hook with a tiny ball at its tip; no stones, no other charms. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. No people and no hands in the image. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "05",
+    "title": "Hook in profile",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Side view macro: one earring hangs from a thin bare juniper twig held horizontally above dark juniper green slate (#3E5A4C) with a few real juniper sprigs, their short needles and dusty blue berries, seen from the side so the slim French hook, its tiny ball tip and the cluster hanging below it read in profile; the twig leaves the frame out of focus; one crisp highlight on the hook. The piece: a pair of drop earrings: each earring is a tight cluster of four 4.5 mm spheres touching like berries on a sprig, three of them bright polished gold and exactly one coated in dusty blue vitreous enamel, a soft powdery steel blue with a matte bloom like a ripe juniper berry; the cluster hangs from a slim French hook with a tiny ball at its tip; no stones, no other charms. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. No people and no hands in the image. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "06",
+    "title": "Held between two fingers",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Scale shot on juniper green linen (#3E5A4C): a woman's right hand holds one earring by the hook between thumb and index finger so the cluster hangs beside her fingertip and can be compared with the fingernail; the other earring lies on the linen below. anatomically correct hands with five fingers, natural skin texture visible, short natural nails with sheer nude polish. Cropped tight on the fingers; each sphere is 4.5 mm, the whole cluster about 10 mm, the size of a small fingernail, never larger. The piece: a pair of drop earrings: each earring is a tight cluster of four 4.5 mm spheres touching like berries on a sprig, three of them bright polished gold and exactly one coated in dusty blue vitreous enamel, a soft powdery steel blue with a matte bloom like a ripe juniper berry; the cluster hangs from a slim French hook with a tiny ball at its tip; no stones, no other charms. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. Natural skin texture visible. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "07",
+    "title": "Pair on a juniper sprig",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Macro still life: both earrings hang side by side by their hooks from one small juniper sprig lying across dark juniper green slate (#3E5A4C) with a few real juniper sprigs, their short needles and dusty blue berries, the two clusters resting on the slate below the sprig with their blue spheres facing the camera; the pair is the only jewelry in the image. The piece: a pair of drop earrings: each earring is a tight cluster of four 4.5 mm spheres touching like berries on a sprig, three of them bright polished gold and exactly one coated in dusty blue vitreous enamel, a soft powdery steel blue with a matte bloom like a ripe juniper berry; the cluster hangs from a slim French hook with a tiny ball at its tip; no stones, no other charms. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. No people and no hands in the image. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "08",
+    "title": "Gift box",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Gift and display: on a smooth semi-matte lacquered juniper green surface (#3E5A4C) that shows no reflections, the pair of earrings lies side by side, hooks up, clusters toward the camera; beside it a small square gift box wrapped in matte juniper green paper, its lid off, lined with natural undyed linen, a satin ribbon in a soft matching tone curling loose; no logo and no text; the piece appears only once. The piece: a pair of drop earrings: each earring is a tight cluster of four 4.5 mm spheres touching like berries on a sprig, three of them bright polished gold and exactly one coated in dusty blue vitreous enamel, a soft powdery steel blue with a matte bloom like a ripe juniper berry; the cluster hangs from a slim French hook with a tiny ball at its tip; no stones, no other charms. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. No people and no hands in the image. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "09",
+    "title": "Three gold colours",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Metal colour visualization on dark juniper green slate (#3E5A4C) with a few real juniper sprigs, their short needles and dusty blue berries: three separate copies of this exact design lie in one horizontal row, each a pair of earrings side by side with hooks up, the dusty blue enamel sphere on every earring staying the same blue, with clear space between them so no two touch; the left one in polished yellow gold, the centre one in polished unplated white gold, a pale silvery grey like platinum with no yellow tint, clearly a different colour from the yellow beside it, the right one in polished rose gold, a soft warm pink gold; every enamel colour stays the same. A full-bleed photograph, no border, no inset. The piece: a pair of drop earrings: each earring is a tight cluster of four 4.5 mm spheres touching like berries on a sprig, three of them bright polished gold and exactly one coated in dusty blue vitreous enamel, a soft powdery steel blue with a matte bloom like a ripe juniper berry; the cluster hangs from a slim French hook with a tiny ball at its tip; no stones, no other charms. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. No people and no hands in the image. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions; only the metal colour changes, exactly as named for each copy; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "10",
+    "title": "Hair in a low bun",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Editorial detail on a seamless juniper green backdrop (#3E5A4C): a woman in a high-neck knit in a deeper juniper green, hair in a loose low bun, turned three quarters away from the camera so one ear is shown with the earring worn on a woman's earlobe, hair tucked behind the ear, the cluster hanging just below the lobe with the blue sphere visible; no other earrings, no other jewelry; framed from the ear down to the shoulder, the face outside the image. Natural skin texture visible; each sphere is 4.5 mm, the whole cluster about 10 mm, the size of a small fingernail, never larger. The piece: a pair of drop earrings: each earring is a tight cluster of four 4.5 mm spheres touching like berries on a sprig, three of them bright polished gold and exactly one coated in dusty blue vitreous enamel, a soft powdery steel blue with a matte bloom like a ripe juniper berry; the cluster hangs from a slim French hook with a tiny ball at its tip; no stones, no other charms. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. Natural skin texture visible. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "11",
+    "title": "One earring standing",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Macro still life: one earring stands on dark juniper green slate (#3E5A4C) with a few real juniper sprigs, their short needles and dusty blue berries with its cluster on the slate and its hook rising upright, seen at eye level so the full drop reads; the other earring lies flat behind it out of focus. The piece: a pair of drop earrings: each earring is a tight cluster of four 4.5 mm spheres touching like berries on a sprig, three of them bright polished gold and exactly one coated in dusty blue vitreous enamel, a soft powdery steel blue with a matte bloom like a ripe juniper berry; the cluster hangs from a slim French hook with a tiny ball at its tip; no stones, no other charms. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. No people and no hands in the image. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "12",
+    "title": "Window light in winter",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Editorial worn frame: soft cool winter daylight through a frosted window falls across her, a juniper green wall (#3E5A4C) behind. Close crop of her ear and jawline, the earring worn on a woman's earlobe, hair tucked behind the ear, the cluster hanging just below the lobe with the blue sphere visible; no other earrings, no other jewelry, the face outside the image. anatomically correct hands with five fingers, natural skin texture visible, short natural nails with sheer nude polish; each sphere is 4.5 mm, the whole cluster about 10 mm, the size of a small fingernail, never larger. The piece: a pair of drop earrings: each earring is a tight cluster of four 4.5 mm spheres touching like berries on a sprig, three of them bright polished gold and exactly one coated in dusty blue vitreous enamel, a soft powdery steel blue with a matte bloom like a ripe juniper berry; the cluster hangs from a slim French hook with a tiny ball at its tip; no stones, no other charms. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. Natural skin texture visible. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   }
+  ]
+ },
+ "W04": {
+  "name": "Ember Lariat",
+  "ground": [
+   "ash grey",
+   "#3B3835"
+  ],
+  "frames": [
+   {
+    "slot": "02",
+    "title": "At the collarbone",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Worn close-up on a seamless ash grey backdrop (#3B3835): the necklace worn by a woman, the chain lying flat on bare skin, the slide ring at the base of the throat and the teardrop resting just below the collarbones, framed from the chin down to the upper chest so the face is outside the image; no other necklace, no earrings, she wears a wide-neck knit in a deeper ash grey. Natural skin texture visible; the teardrop is 12 mm tall, about the size of a fingernail, small against the collarbone, never larger. The piece: a Y lariat necklace: a fine 1.1 mm cable chain whose two strands pass together through a small smooth polished slide ring and drop together as a short double strand to a solid cast teardrop pendant 12 x 8 mm, the teardrop smooth and molten with a softly rippled polished surface like a drop of liquid gold, and in its wide end one small round domed eye of glowing ember orange vitreous enamel about 3 mm across in a thin polished bezel; no other stones, no second pendant. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. Natural skin texture visible. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "03",
+    "title": "Teardrop macro",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Extreme close detail: the teardrop pendant lies on cool ash grey slate (#3B3835) dusted with fine grey ash and a few charred twig fragments; the camera is only a few centimetres away, so the molten rippled gold and the domed ember orange enamel eye fill most of the image, the chain leaving the frame out of focus; one warm glow in the enamel, one crisp highlight on the gold. The piece: a Y lariat necklace: a fine 1.1 mm cable chain whose two strands pass together through a small smooth polished slide ring and drop together as a short double strand to a solid cast teardrop pendant 12 x 8 mm, the teardrop smooth and molten with a softly rippled polished surface like a drop of liquid gold, and in its wide end one small round domed eye of glowing ember orange vitreous enamel about 3 mm across in a thin polished bezel; no other stones, no second pendant. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. No people and no hands in the image. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "04",
+    "title": "Ember eye macro",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Extreme close detail: the domed ember orange enamel eye of the pendant at the very centre of the image on cool ash grey slate (#3B3835) dusted with fine grey ash and a few charred twig fragments, the camera a few centimetres away so the glassy glow of the enamel and its thin polished bezel read, the gold around it softly out of focus toward the edges. The piece: a Y lariat necklace: a fine 1.1 mm cable chain whose two strands pass together through a small smooth polished slide ring and drop together as a short double strand to a solid cast teardrop pendant 12 x 8 mm, the teardrop smooth and molten with a softly rippled polished surface like a drop of liquid gold, and in its wide end one small round domed eye of glowing ember orange vitreous enamel about 3 mm across in a thin polished bezel; no other stones, no second pendant. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. No people and no hands in the image. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "05",
+    "title": "Slide ring macro",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Extreme close detail: the small polished slide ring with the two chain strands passing through it lies on cool ash grey slate (#3B3835) dusted with fine grey ash and a few charred twig fragments, the camera a few centimetres away so the ring and the links read sharply; the double strand drops out of the frame toward the teardrop, softly out of focus. The piece: a Y lariat necklace: a fine 1.1 mm cable chain whose two strands pass together through a small smooth polished slide ring and drop together as a short double strand to a solid cast teardrop pendant 12 x 8 mm, the teardrop smooth and molten with a softly rippled polished surface like a drop of liquid gold, and in its wide end one small round domed eye of glowing ember orange vitreous enamel about 3 mm across in a thin polished bezel; no other stones, no second pendant. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. No people and no hands in the image. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "06",
+    "title": "Fingertip scale",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Scale shot on ash grey linen (#3B3835): the teardrop pendant lies on the linen and the tip of a woman's index finger touches the slate beside it, never covering it, so the teardrop can be compared with the fingernail; the chain curves away. anatomically correct hands with five fingers, natural skin texture visible, short natural nails with sheer nude polish. Cropped tight on the fingertip and pendant; the teardrop is 12 mm tall, about the size of a fingernail, small against the collarbone, never larger. The piece: a Y lariat necklace: a fine 1.1 mm cable chain whose two strands pass together through a small smooth polished slide ring and drop together as a short double strand to a solid cast teardrop pendant 12 x 8 mm, the teardrop smooth and molten with a softly rippled polished surface like a drop of liquid gold, and in its wide end one small round domed eye of glowing ember orange vitreous enamel about 3 mm across in a thin polished bezel; no other stones, no second pendant. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. Natural skin texture visible. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "07",
+    "title": "Coiled on slate",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Macro still life seen from slightly above: the necklace lies coiled in one loose spiral on cool ash grey slate (#3B3835) dusted with fine grey ash and a few charred twig fragments, the slide ring and the teardrop at the front of the coil facing the camera in sharp focus; the necklace is the only jewelry in the image. The piece: a Y lariat necklace: a fine 1.1 mm cable chain whose two strands pass together through a small smooth polished slide ring and drop together as a short double strand to a solid cast teardrop pendant 12 x 8 mm, the teardrop smooth and molten with a softly rippled polished surface like a drop of liquid gold, and in its wide end one small round domed eye of glowing ember orange vitreous enamel about 3 mm across in a thin polished bezel; no other stones, no second pendant. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. No people and no hands in the image. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "08",
+    "title": "Gift box",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Gift and display: on a smooth semi-matte lacquered ash grey surface (#3B3835) that shows no reflections, the necklace is draped over the ridge of a small plain white folded card, the slide ring and teardrop at the front; beside it a small square gift box wrapped in matte ash grey paper, its lid off, lined with natural undyed linen, a satin ribbon in a soft matching tone curling loose; no logo and no text; the piece appears only once. The piece: a Y lariat necklace: a fine 1.1 mm cable chain whose two strands pass together through a small smooth polished slide ring and drop together as a short double strand to a solid cast teardrop pendant 12 x 8 mm, the teardrop smooth and molten with a softly rippled polished surface like a drop of liquid gold, and in its wide end one small round domed eye of glowing ember orange vitreous enamel about 3 mm across in a thin polished bezel; no other stones, no second pendant. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. No people and no hands in the image. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "09",
+    "title": "Three gold colours",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Metal colour visualization on cool ash grey slate (#3B3835) dusted with fine grey ash and a few charred twig fragments: three separate copies of this exact design lie in one horizontal row, each necklace coiled with its teardrop at the front, the ember orange enamel eye staying the same on every copy, with clear space between them so no two touch; the left one in polished yellow gold, the centre one in polished unplated white gold, a pale silvery grey like platinum with no yellow tint, clearly a different colour from the yellow beside it, the right one in polished rose gold, a soft warm pink gold; every enamel colour stays the same. A full-bleed photograph, no border, no inset. The piece: a Y lariat necklace: a fine 1.1 mm cable chain whose two strands pass together through a small smooth polished slide ring and drop together as a short double strand to a solid cast teardrop pendant 12 x 8 mm, the teardrop smooth and molten with a softly rippled polished surface like a drop of liquid gold, and in its wide end one small round domed eye of glowing ember orange vitreous enamel about 3 mm across in a thin polished bezel; no other stones, no second pendant. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. No people and no hands in the image. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions; only the metal colour changes, exactly as named for each copy; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "10",
+    "title": "Wool coat at a window",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Editorial detail on a seamless ash grey backdrop (#3B3835): she wears a wide-neck oatmeal knit and a charcoal wool coat over the shoulders, the necklace worn by a woman, the chain lying flat on bare skin, the slide ring at the base of the throat and the teardrop resting just below the collarbones, framed from the chin down to the upper chest so the face is outside the image; no other necklace, no earrings. Natural skin texture visible; the teardrop is 12 mm tall, about the size of a fingernail, small against the collarbone, never larger. The piece: a Y lariat necklace: a fine 1.1 mm cable chain whose two strands pass together through a small smooth polished slide ring and drop together as a short double strand to a solid cast teardrop pendant 12 x 8 mm, the teardrop smooth and molten with a softly rippled polished surface like a drop of liquid gold, and in its wide end one small round domed eye of glowing ember orange vitreous enamel about 3 mm across in a thin polished bezel; no other stones, no second pendant. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. Natural skin texture visible. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "11",
+    "title": "Teardrop in profile",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Side view macro: the teardrop pendant stands on its wide end on cool ash grey slate (#3B3835) dusted with fine grey ash and a few charred twig fragments, seen low from the side so its depth and the molten ripples of the surface read in profile, the domed enamel eye just visible at the edge; the chain leaves the frame out of focus; one crisp highlight along the curve. The piece: a Y lariat necklace: a fine 1.1 mm cable chain whose two strands pass together through a small smooth polished slide ring and drop together as a short double strand to a solid cast teardrop pendant 12 x 8 mm, the teardrop smooth and molten with a softly rippled polished surface like a drop of liquid gold, and in its wide end one small round domed eye of glowing ember orange vitreous enamel about 3 mm across in a thin polished bezel; no other stones, no second pendant. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. No people and no hands in the image. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "12",
+    "title": "Window light in winter",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Editorial worn frame: soft cool winter daylight through a frosted window falls across her, a ash grey wall (#3B3835) behind. The necklace worn by a woman, the chain lying flat on bare skin, the slide ring at the base of the throat and the teardrop resting just below the collarbones, framed from the chin down to the upper chest so the face is outside the image; no other necklace, no earrings. anatomically correct hands with five fingers, natural skin texture visible, short natural nails with sheer nude polish; the teardrop is 12 mm tall, about the size of a fingernail, small against the collarbone, never larger. The piece: a Y lariat necklace: a fine 1.1 mm cable chain whose two strands pass together through a small smooth polished slide ring and drop together as a short double strand to a solid cast teardrop pendant 12 x 8 mm, the teardrop smooth and molten with a softly rippled polished surface like a drop of liquid gold, and in its wide end one small round domed eye of glowing ember orange vitreous enamel about 3 mm across in a thin polished bezel; no other stones, no second pendant. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. Natural skin texture visible. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   }
+  ]
+ },
+ "W05": {
+  "name": "Pine Needle Brooch",
+  "ground": [
+   "snow on dark bark, bark brown",
+   "#4A3A30"
+  ],
+  "frames": [
+   {
+    "slot": "02",
+    "title": "On a coat lapel",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Worn close-up on a seamless snow on dark bark, bark brown backdrop (#4A3A30): the brooch pinned on the left lapel of a woman's charcoal wool coat, the X of needles tilted a little, framed from the chin down to the chest so the face is outside the image; no other brooch, no necklace. Natural skin texture visible; the brooch is 45 mm across, about the length of a thumb, never larger. The piece: a brooch 45 mm across: two bundles of five slender gold pine needles, each a straight 1.2 mm round wire tapering to a soft point, the two bundles crossing at a small central hub in an X; the needle shafts high polish, the last 8 mm of every tip a fine matte brushed finish; a plain pin stem and a small revolver catch on the back in the same gold; no stones, no enamel, no other motif. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. Natural skin texture visible. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "03",
+    "title": "Matte tips macro",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Extreme close detail: the tips of three needles of the brooch rest on dark bark brown (#4A3A30) pine bark lightly dusted with fresh snow, a few real pine needles out of focus; the camera is only a few centimetres away, so the change from the mirror-polished shaft to the fine matte brushed tip fills most of the image, the rest falling softly out of focus; one crisp highlight along a polished shaft. The piece: a brooch 45 mm across: two bundles of five slender gold pine needles, each a straight 1.2 mm round wire tapering to a soft point, the two bundles crossing at a small central hub in an X; the needle shafts high polish, the last 8 mm of every tip a fine matte brushed finish; a plain pin stem and a small revolver catch on the back in the same gold; no stones, no enamel, no other motif. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. No people and no hands in the image. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "04",
+    "title": "The crossing hub",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Extreme close detail: the small central hub where the two needle bundles cross, on dark bark brown (#4A3A30) pine bark lightly dusted with fresh snow, a few real pine needles out of focus, the camera a few centimetres away so the ten shafts fanning out from the hub read sharply, the tips leaving the frame out of focus. The piece: a brooch 45 mm across: two bundles of five slender gold pine needles, each a straight 1.2 mm round wire tapering to a soft point, the two bundles crossing at a small central hub in an X; the needle shafts high polish, the last 8 mm of every tip a fine matte brushed finish; a plain pin stem and a small revolver catch on the back in the same gold; no stones, no enamel, no other motif. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. No people and no hands in the image. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "05",
+    "title": "The back with the pin",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Macro still life: the brooch lies face down on dark bark brown (#4A3A30) pine bark lightly dusted with fresh snow, a few real pine needles out of focus so its back is shown: the plain polished pin stem across the back and the small revolver catch, both in the same gold, the ten needles spreading out underneath; seen from slightly above; the brooch is the only object in the image. The piece: a brooch 45 mm across: two bundles of five slender gold pine needles, each a straight 1.2 mm round wire tapering to a soft point, the two bundles crossing at a small central hub in an X; the needle shafts high polish, the last 8 mm of every tip a fine matte brushed finish; a plain pin stem and a small revolver catch on the back in the same gold; no stones, no enamel, no other motif. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. No people and no hands in the image. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "06",
+    "title": "Held between two fingers",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Scale shot on snow on dark bark, bark brown linen (#4A3A30): a woman's right hand holds the brooch by one needle bundle between thumb and index finger, the X of needles beside her thumb so it can be compared with the thumb. anatomically correct hands with five fingers, natural skin texture visible, short natural nails with sheer nude polish. Cropped tight on the fingers; the brooch is 45 mm across, about the length of a thumb, never larger. The piece: a brooch 45 mm across: two bundles of five slender gold pine needles, each a straight 1.2 mm round wire tapering to a soft point, the two bundles crossing at a small central hub in an X; the needle shafts high polish, the last 8 mm of every tip a fine matte brushed finish; a plain pin stem and a small revolver catch on the back in the same gold; no stones, no enamel, no other motif. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. Natural skin texture visible. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "07",
+    "title": "On a knit scarf",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Winter still life: the brooch is pinned through the folds of a chunky knit scarf in a deeper bark brown lying on dark bark brown (#4A3A30) pine bark lightly dusted with fresh snow, a few real pine needles out of focus, the X of needles face up at the centre in sharp focus, the knit texture around it softly out of focus; the brooch is the only jewelry in the image. The piece: a brooch 45 mm across: two bundles of five slender gold pine needles, each a straight 1.2 mm round wire tapering to a soft point, the two bundles crossing at a small central hub in an X; the needle shafts high polish, the last 8 mm of every tip a fine matte brushed finish; a plain pin stem and a small revolver catch on the back in the same gold; no stones, no enamel, no other motif. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. No people and no hands in the image. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "08",
+    "title": "Gift box",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Gift and display: on a smooth semi-matte lacquered snow on dark bark, bark brown surface (#4A3A30) that shows no reflections, the brooch lies face up at the centre, the X of needles catching the light; beside it a small square gift box wrapped in matte snow on dark bark, bark brown paper, its lid off, lined with natural undyed linen, a satin ribbon in a soft matching tone curling loose; no logo and no text; the piece appears only once. The piece: a brooch 45 mm across: two bundles of five slender gold pine needles, each a straight 1.2 mm round wire tapering to a soft point, the two bundles crossing at a small central hub in an X; the needle shafts high polish, the last 8 mm of every tip a fine matte brushed finish; a plain pin stem and a small revolver catch on the back in the same gold; no stones, no enamel, no other motif. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. No people and no hands in the image. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "09",
+    "title": "Three gold colours",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Metal colour visualization on dark bark brown (#4A3A30) pine bark lightly dusted with fresh snow, a few real pine needles out of focus: three separate copies of this exact design lie face up in one horizontal row, each X of needles the same size, with clear space between them so no two touch; the left one in polished yellow gold, the centre one in polished unplated white gold, a pale silvery grey like platinum with no yellow tint, clearly a different colour from the yellow beside it, the right one in polished rose gold, a soft warm pink gold; every enamel colour stays the same. A full-bleed photograph, no border, no inset. The piece: a brooch 45 mm across: two bundles of five slender gold pine needles, each a straight 1.2 mm round wire tapering to a soft point, the two bundles crossing at a small central hub in an X; the needle shafts high polish, the last 8 mm of every tip a fine matte brushed finish; a plain pin stem and a small revolver catch on the back in the same gold; no stones, no enamel, no other motif. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. No people and no hands in the image. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions; only the metal colour changes, exactly as named for each copy; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "10",
+    "title": "On a sweater shoulder",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Editorial detail on a seamless snow on dark bark, bark brown backdrop (#4A3A30): a woman in a cream cable-knit sweater, the brooch pinned high on the left shoulder of the knit, framed from the chin down to the chest so the face is outside the image; no other jewelry. Natural skin texture visible; the brooch is 45 mm across, about the length of a thumb, never larger. The piece: a brooch 45 mm across: two bundles of five slender gold pine needles, each a straight 1.2 mm round wire tapering to a soft point, the two bundles crossing at a small central hub in an X; the needle shafts high polish, the last 8 mm of every tip a fine matte brushed finish; a plain pin stem and a small revolver catch on the back in the same gold; no stones, no enamel, no other motif. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. Natural skin texture visible. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "11",
+    "title": "Low angle across the needles",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Side view macro: the brooch lies face up on dark bark brown (#4A3A30) pine bark lightly dusted with fresh snow, a few real pine needles out of focus, seen very low across the surface so the nearest needles rise toward the camera and the far ones fall out of focus, the round 1.2 mm wire reading in profile; one crisp highlight along the nearest shaft. The piece: a brooch 45 mm across: two bundles of five slender gold pine needles, each a straight 1.2 mm round wire tapering to a soft point, the two bundles crossing at a small central hub in an X; the needle shafts high polish, the last 8 mm of every tip a fine matte brushed finish; a plain pin stem and a small revolver catch on the back in the same gold; no stones, no enamel, no other motif. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. No people and no hands in the image. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   },
+   {
+    "slot": "12",
+    "title": "Window light in winter",
+    "model": "nano_banana_2",
+    "resolution": "2k",
+    "aspect_ratio": "1:1",
+    "count": 1,
+    "reference": "tight crop of the approved 01",
+    "prompt": "Editorial worn frame: soft cool winter daylight through a frosted window falls across her, a snow on dark bark, bark brown wall (#4A3A30) behind. The brooch pinned on the left lapel of a woman's charcoal wool coat, the X of needles tilted a little, framed from the chin down to the chest so the face is outside the image; no other brooch, no necklace. anatomically correct hands with five fingers, natural skin texture visible, short natural nails with sheer nude polish; the brooch is 45 mm across, about the length of a thumb, never larger. The piece: a brooch 45 mm across: two bundles of five slender gold pine needles, each a straight 1.2 mm round wire tapering to a soft point, the two bundles crossing at a small central hub in an X; the needle shafts high polish, the last 8 mm of every tip a fine matte brushed finish; a plain pin stem and a small revolver catch on the back in the same gold; no stones, no enamel, no other motif. Shot on a Canon 50 mm lens at f/2.8, ISO 400, soft directional studio key light from the upper left with one clean defined shadow, fine 35 mm film grain, true colour, no heavy retouching. Natural skin texture visible. The jewelry must be an exact copy of the piece in the reference image: same shape, same surface, same proportions, same metal; do not redesign it, do not add stones, charms or a second piece; take only the piece from the reference, never its background, camera angle or framing. No text, no numbers, no logo, no watermark, no ruler. Square 1:1."
+   }
+  ]
+ }
+}
