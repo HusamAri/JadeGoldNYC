@@ -192,8 +192,8 @@ test("kelepçe gravürü sahibin opt-out'uyla kapatılabilir", () => {
 });
 
 test("hâlâ tanınmayan ürün tipi sessizce yüzük sayılmaz, null döner", () => {
-  // "anklet" 2026-10-01'de tanımlı protokol oldu (SS27 seti); aşağıdaki test kapsar.
-  for (const type of ["earrings", "brooch", "other"]) {
+  // "anklet" 2026-10-01'de, "brooch" 2026-10-15'te tanımlı protokol oldu.
+  for (const type of ["earrings", "other"]) {
     assert.equal(resolveListingProtocol({ product_type: type }), null, type);
     assert.match(unknownProtocolError({ product_type: type }), /protokolü tanımlı değil/);
   }
@@ -518,4 +518,23 @@ test("fixed calendar date is required personalization, not a Width or rotating-r
   assert.ok((question.instructions ?? "").length <= 120);
   assert.match(question.instructions ?? "", /fixed during production/);
   assert.equal(spec.taxonomyRoot, "Jewelry");
+});
+
+test("broş kendi protokolüne çözülür, yüzük kuralına düşmez (2026-10-15, Winter 26/27)", async () => {
+  const spec = resolveListingProtocol({ product_type: "brooch" });
+  assert.equal(spec?.id, "brooch");
+  assert.deepEqual(spec?.requiredVariationAxes, []);
+  assert.equal(spec?.personalization, null);
+  assert.equal(spec?.taxonomyRoot, "Jewelry");
+  assert.deepEqual(spec?.parcel, LISTING_PROTOCOLS.pendant_necklace.parcel);
+  // Karat x Metal Color ızgarası (9 varyant, beden ekseni yok) geçer.
+  const variants: DraftVariant[] = [
+    { sku: "BAS-W05-10KY", properties: { Karat: "10K", "Metal Color": "Yellow Gold" }, price_cents: 117000, quantity: 20 },
+    { sku: "BAS-W05-14KY", properties: { Karat: "14K", "Metal Color": "Yellow Gold" }, price_cents: 165000, quantity: 20 },
+    { sku: "BAS-W05-14KW", properties: { Karat: "14K", "Metal Color": "White Gold" }, price_cents: 165000, quantity: 20 },
+  ];
+  assert.equal(validateVariationAxes(spec!, variants), null);
+  // Sahte ağaçta "Brooches" yok: çözücü sessizce başka dala düşmez, bağırarak durur.
+  const r = await resolveTaxonomyIdForProtocol(fakeClient(), LISTING_PROTOCOLS.brooch);
+  assert.equal(r.ok, false);
 });

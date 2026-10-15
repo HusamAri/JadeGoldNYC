@@ -1,0 +1,3677 @@
+{
+ "org": "2c254edf-2119-4079-b09e-dc672e32c1f9",
+ "source": "artifact-winter27-v1",
+ "pricingBasis": {
+  "spotUsdOzt": 4178.2,
+  "rule": "price = ceil(2 x maker cost / 10) x 10",
+  "makerCost": "14K 100 USD/g with labour; enamel 50 USD per piece; necklace chain 130 USD at 18 in scaled by developed length; assembly 50 USD; 10K/18K by density and purity",
+  "estimated": [
+   "all grams from geometry (pricing.py), UNCALIBRATED_ASSUMPTION until the maker quotes",
+   "W02 shank counted in full because the accepted hero carries the scales down the shoulders",
+   "W03 four spheres per earring (accepted hero), spec was three"
+  ]
+ },
+ "items": [
+  {
+   "id": "W01",
+   "productId": "5c4142b8-386f-52d0-aba6-576928150740",
+   "sku": "BAS-W01",
+   "productType": "bracelet",
+   "metaProductType": "bracelet",
+   "listingProtocol": "cuff_bracelet",
+   "offersPersonalization": false,
+   "name": "Thaw Cuff",
+   "title": "Thaw Cuff, Solid Gold Molten Open Cuff Bracelet with a Contrasting Gold Tip, Two Tone Sculptural Bangle, Winter Gift",
+   "tags": [
+    "gold cuff bracelet",
+    "molten gold cuff",
+    "two tone cuff",
+    "open cuff bracelet",
+    "sculptural cuff",
+    "solid gold bangle",
+    "mixed metal cuff",
+    "statement cuff",
+    "winter jewelry",
+    "14k gold cuff",
+    "gift for her",
+    "organic gold cuff",
+    "modern gold cuff"
+   ],
+   "description": "An open cuff of solid gold with a molten, softly rippled surface and one white gold tip, as if the gold were thawing out of ice.\n\nThe band is 4 mm wide and cast with a flowing, gently rippled high-polish surface, so light pools in every wave. The last 12 mm of one end is a second gold colour, joined in a soft melted seam: a yellow body with a white tip, a white body with a yellow tip, or a rose body with a white tip. The cuff is a smooth open C with rounded ends and sits close on the wrist; it is the one piece you wear with a bare arm and a wool sleeve pushed back.\n\nMetal: solid 10K, 14K or 18K gold. Choose the body and the tip: yellow body with a white gold tip, white body with a yellow tip, or rose body with a white tip. White gold, not rhodium plated: a soft warm grey.\nFinish: molten rippled high polish on the body, polished tip, smooth polished inside.\nSize: band 4 mm wide, about 1.3 mm thick, 25 mm opening; choose a 6.5, 7 or 7.5 inch wrist.\nFit: the opening slips over the side of the wrist; a cuff is not meant to be bent to adjust.\n\nEach piece is made to order and ships free within the United States from New Jersey. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Wipe it with a soft cloth to keep the polish.\n\nThe product images are design visualizations of the finished piece, and the three-metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
+   "enamel": [],
+   "goldOnly": true,
+   "dims": "band 4 x 1.3 mm, 25 mm opening",
+   "variationAxes": [
+    "Karat",
+    "Metal Color",
+    "Bracelet Length"
+   ],
+   "variants": [
+    {
+     "sku": "BAS-W01-10KYW-6_5IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow/White Gold",
+      "Bracelet Length": "6.5 inches"
+     },
+     "price_cents": 130000,
+     "grams": 7.7,
+     "makerCostUsd": 646.39
+    },
+    {
+     "sku": "BAS-W01-10KYW-7IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow/White Gold",
+      "Bracelet Length": "7 inches"
+     },
+     "price_cents": 139000,
+     "grams": 8.33,
+     "makerCostUsd": 694.87
+    },
+    {
+     "sku": "BAS-W01-10KYW-7_5IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow/White Gold",
+      "Bracelet Length": "7.5 inches"
+     },
+     "price_cents": 149000,
+     "grams": 8.95,
+     "makerCostUsd": 743.36
+    },
+    {
+     "sku": "BAS-W01-10KWY-6_5IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White/Yellow Gold",
+      "Bracelet Length": "6.5 inches"
+     },
+     "price_cents": 130000,
+     "grams": 7.7,
+     "makerCostUsd": 646.39
+    },
+    {
+     "sku": "BAS-W01-10KWY-7IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White/Yellow Gold",
+      "Bracelet Length": "7 inches"
+     },
+     "price_cents": 139000,
+     "grams": 8.33,
+     "makerCostUsd": 694.87
+    },
+    {
+     "sku": "BAS-W01-10KWY-7_5IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White/Yellow Gold",
+      "Bracelet Length": "7.5 inches"
+     },
+     "price_cents": 149000,
+     "grams": 8.95,
+     "makerCostUsd": 743.36
+    },
+    {
+     "sku": "BAS-W01-10KRW-6_5IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose/White Gold",
+      "Bracelet Length": "6.5 inches"
+     },
+     "price_cents": 130000,
+     "grams": 7.7,
+     "makerCostUsd": 646.39
+    },
+    {
+     "sku": "BAS-W01-10KRW-7IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose/White Gold",
+      "Bracelet Length": "7 inches"
+     },
+     "price_cents": 139000,
+     "grams": 8.33,
+     "makerCostUsd": 694.87
+    },
+    {
+     "sku": "BAS-W01-10KRW-7_5IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose/White Gold",
+      "Bracelet Length": "7.5 inches"
+     },
+     "price_cents": 149000,
+     "grams": 8.95,
+     "makerCostUsd": 743.36
+    },
+    {
+     "sku": "BAS-W01-14KYW-6_5IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow/White Gold",
+      "Bracelet Length": "6.5 inches"
+     },
+     "price_cents": 183000,
+     "grams": 8.63,
+     "makerCostUsd": 913.46
+    },
+    {
+     "sku": "BAS-W01-14KYW-7IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow/White Gold",
+      "Bracelet Length": "7 inches"
+     },
+     "price_cents": 197000,
+     "grams": 9.34,
+     "makerCostUsd": 983.66
+    },
+    {
+     "sku": "BAS-W01-14KYW-7_5IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow/White Gold",
+      "Bracelet Length": "7.5 inches"
+     },
+     "price_cents": 211000,
+     "grams": 10.04,
+     "makerCostUsd": 1053.86
+    },
+    {
+     "sku": "BAS-W01-14KWY-6_5IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White/Yellow Gold",
+      "Bracelet Length": "6.5 inches"
+     },
+     "price_cents": 183000,
+     "grams": 8.63,
+     "makerCostUsd": 913.46
+    },
+    {
+     "sku": "BAS-W01-14KWY-7IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White/Yellow Gold",
+      "Bracelet Length": "7 inches"
+     },
+     "price_cents": 197000,
+     "grams": 9.34,
+     "makerCostUsd": 983.66
+    },
+    {
+     "sku": "BAS-W01-14KWY-7_5IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White/Yellow Gold",
+      "Bracelet Length": "7.5 inches"
+     },
+     "price_cents": 211000,
+     "grams": 10.04,
+     "makerCostUsd": 1053.86
+    },
+    {
+     "sku": "BAS-W01-14KRW-6_5IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose/White Gold",
+      "Bracelet Length": "6.5 inches"
+     },
+     "price_cents": 183000,
+     "grams": 8.63,
+     "makerCostUsd": 913.46
+    },
+    {
+     "sku": "BAS-W01-14KRW-7IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose/White Gold",
+      "Bracelet Length": "7 inches"
+     },
+     "price_cents": 197000,
+     "grams": 9.34,
+     "makerCostUsd": 983.66
+    },
+    {
+     "sku": "BAS-W01-14KRW-7_5IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose/White Gold",
+      "Bracelet Length": "7.5 inches"
+     },
+     "price_cents": 211000,
+     "grams": 10.04,
+     "makerCostUsd": 1053.86
+    },
+    {
+     "sku": "BAS-W01-18KYW-6_5IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow/White Gold",
+      "Bracelet Length": "6.5 inches"
+     },
+     "price_cents": 250000,
+     "grams": 9.82,
+     "makerCostUsd": 1249.36
+    },
+    {
+     "sku": "BAS-W01-18KYW-7IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow/White Gold",
+      "Bracelet Length": "7 inches"
+     },
+     "price_cents": 270000,
+     "grams": 10.62,
+     "makerCostUsd": 1346.87
+    },
+    {
+     "sku": "BAS-W01-18KYW-7_5IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow/White Gold",
+      "Bracelet Length": "7.5 inches"
+     },
+     "price_cents": 289000,
+     "grams": 11.41,
+     "makerCostUsd": 1444.38
+    },
+    {
+     "sku": "BAS-W01-18KWY-6_5IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White/Yellow Gold",
+      "Bracelet Length": "6.5 inches"
+     },
+     "price_cents": 250000,
+     "grams": 9.82,
+     "makerCostUsd": 1249.36
+    },
+    {
+     "sku": "BAS-W01-18KWY-7IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White/Yellow Gold",
+      "Bracelet Length": "7 inches"
+     },
+     "price_cents": 270000,
+     "grams": 10.62,
+     "makerCostUsd": 1346.87
+    },
+    {
+     "sku": "BAS-W01-18KWY-7_5IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White/Yellow Gold",
+      "Bracelet Length": "7.5 inches"
+     },
+     "price_cents": 289000,
+     "grams": 11.41,
+     "makerCostUsd": 1444.38
+    },
+    {
+     "sku": "BAS-W01-18KRW-6_5IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose/White Gold",
+      "Bracelet Length": "6.5 inches"
+     },
+     "price_cents": 250000,
+     "grams": 9.82,
+     "makerCostUsd": 1249.36
+    },
+    {
+     "sku": "BAS-W01-18KRW-7IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose/White Gold",
+      "Bracelet Length": "7 inches"
+     },
+     "price_cents": 270000,
+     "grams": 10.62,
+     "makerCostUsd": 1346.87
+    },
+    {
+     "sku": "BAS-W01-18KRW-7_5IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose/White Gold",
+      "Bracelet Length": "7.5 inches"
+     },
+     "price_cents": 289000,
+     "grams": 11.41,
+     "makerCostUsd": 1444.38
+    }
+   ],
+   "grams14Ref": 9.34,
+   "refPriceCents": 197000,
+   "makerCost14KRefUsd": 983.66,
+   "imageBase": "https://amuletta.artifactstudio.info/artifact/winter27/W01",
+   "group": "bracelet"
+  },
+  {
+   "id": "W02",
+   "productId": "08368a74-6ac9-55f2-977d-121128ecb110",
+   "sku": "BAS-W02",
+   "productType": "ring",
+   "metaProductType": "ring",
+   "listingProtocol": "signet_ring",
+   "offersPersonalization": false,
+   "name": "Pinecone Signet Ring",
+   "title": "Pinecone Signet Ring, Solid Gold Oval Signet with Carved Scales and Oxblood Enamel, Chunky Statement Ring, Winter Gift",
+   "tags": [
+    "pinecone ring",
+    "gold signet ring",
+    "oxblood enamel ring",
+    "chunky signet ring",
+    "oval signet ring",
+    "carved gold ring",
+    "enamel signet",
+    "statement signet",
+    "woodland ring",
+    "14k signet ring",
+    "unisex signet ring",
+    "winter jewelry",
+    "gift for him"
+   ],
+   "description": "A chunky oval signet carved with overlapping pinecone scales, the recesses between the scales filled with deep oxblood enamel.\n\nThe 13 x 11 mm oval table and both shoulders are cast in deep relief, each scale a small pointed shield rising in a spiral like a real pinecone, with glossy oxblood vitreous enamel set flush between them so the gold tips stand out against the dark red. A thin polished rim frames the table, the lower shank is smooth and polished, and the table is solid and closed underneath. It wears like a classic signet and reads like a piece of the winter forest.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose. White gold, not rhodium plated: a soft warm grey.\nEnamel: oxblood red vitreous enamel, glass fused to gold, set flush between the scales.\nSize: oval table 13 x 11 mm, about 2 mm deep; shank 3 mm wide; US 3 to 16 in whole and half sizes.\nFit: a signet sits best a little snug; if you are between sizes, choose the larger one.\n\nEach piece is made to order and ships free within the United States from New Jersey. Add a gift message at checkout and it ships with the piece.\n\nCare: enamel is glass fused to gold. It keeps its colour, but it can chip on a hard knock, so take it off for the gym and the dishes and wipe it with a soft cloth.\n\nThe product images are design visualizations of the finished piece, and the three-metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
+   "enamel": [
+    "oxblood red"
+   ],
+   "goldOnly": false,
+   "dims": "table 13 x 11 mm, shank 3 mm",
+   "variationAxes": [
+    "Karat",
+    "Metal Color",
+    "Ring Size"
+   ],
+   "variants": [
+    {
+     "sku": "BAS-W02-10KY-US3",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 3"
+     },
+     "price_cents": 102000,
+     "grams": 5.89,
+     "makerCostUsd": 505.74
+    },
+    {
+     "sku": "BAS-W02-10KY-US3_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 3.5"
+     },
+     "price_cents": 103000,
+     "grams": 5.97,
+     "makerCostUsd": 512.14
+    },
+    {
+     "sku": "BAS-W02-10KY-US4",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 104000,
+     "grams": 6.05,
+     "makerCostUsd": 518.54
+    },
+    {
+     "sku": "BAS-W02-10KY-US4_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 105000,
+     "grams": 6.13,
+     "makerCostUsd": 524.94
+    },
+    {
+     "sku": "BAS-W02-10KY-US5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 107000,
+     "grams": 6.22,
+     "makerCostUsd": 531.35
+    },
+    {
+     "sku": "BAS-W02-10KY-US5_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 108000,
+     "grams": 6.3,
+     "makerCostUsd": 537.75
+    },
+    {
+     "sku": "BAS-W02-10KY-US6",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 109000,
+     "grams": 6.38,
+     "makerCostUsd": 544.15
+    },
+    {
+     "sku": "BAS-W02-10KY-US6_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 111000,
+     "grams": 6.46,
+     "makerCostUsd": 550.56
+    },
+    {
+     "sku": "BAS-W02-10KY-US7",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 112000,
+     "grams": 6.55,
+     "makerCostUsd": 556.96
+    },
+    {
+     "sku": "BAS-W02-10KY-US7_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 113000,
+     "grams": 6.63,
+     "makerCostUsd": 563.36
+    },
+    {
+     "sku": "BAS-W02-10KY-US8",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 114000,
+     "grams": 6.71,
+     "makerCostUsd": 569.76
+    },
+    {
+     "sku": "BAS-W02-10KY-US8_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 116000,
+     "grams": 6.8,
+     "makerCostUsd": 576.17
+    },
+    {
+     "sku": "BAS-W02-10KY-US9",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 117000,
+     "grams": 6.88,
+     "makerCostUsd": 582.57
+    },
+    {
+     "sku": "BAS-W02-10KY-US9_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 118000,
+     "grams": 6.96,
+     "makerCostUsd": 588.97
+    },
+    {
+     "sku": "BAS-W02-10KY-US10",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 120000,
+     "grams": 7.04,
+     "makerCostUsd": 595.37
+    },
+    {
+     "sku": "BAS-W02-10KY-US10_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 121000,
+     "grams": 7.13,
+     "makerCostUsd": 601.78
+    },
+    {
+     "sku": "BAS-W02-10KY-US11",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 122000,
+     "grams": 7.21,
+     "makerCostUsd": 608.18
+    },
+    {
+     "sku": "BAS-W02-10KY-US11_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 123000,
+     "grams": 7.29,
+     "makerCostUsd": 614.58
+    },
+    {
+     "sku": "BAS-W02-10KY-US12",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 125000,
+     "grams": 7.37,
+     "makerCostUsd": 620.99
+    },
+    {
+     "sku": "BAS-W02-10KY-US12_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 12.5"
+     },
+     "price_cents": 126000,
+     "grams": 7.46,
+     "makerCostUsd": 627.39
+    },
+    {
+     "sku": "BAS-W02-10KY-US13",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 13"
+     },
+     "price_cents": 127000,
+     "grams": 7.54,
+     "makerCostUsd": 633.79
+    },
+    {
+     "sku": "BAS-W02-10KY-US13_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 13.5"
+     },
+     "price_cents": 129000,
+     "grams": 7.62,
+     "makerCostUsd": 640.19
+    },
+    {
+     "sku": "BAS-W02-10KY-US14",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 14"
+     },
+     "price_cents": 130000,
+     "grams": 7.7,
+     "makerCostUsd": 646.6
+    },
+    {
+     "sku": "BAS-W02-10KY-US14_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 14.5"
+     },
+     "price_cents": 131000,
+     "grams": 7.79,
+     "makerCostUsd": 653.0
+    },
+    {
+     "sku": "BAS-W02-10KY-US15",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 15"
+     },
+     "price_cents": 132000,
+     "grams": 7.87,
+     "makerCostUsd": 659.4
+    },
+    {
+     "sku": "BAS-W02-10KY-US15_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 15.5"
+     },
+     "price_cents": 134000,
+     "grams": 7.95,
+     "makerCostUsd": 665.8
+    },
+    {
+     "sku": "BAS-W02-10KY-US16",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 16"
+     },
+     "price_cents": 135000,
+     "grams": 8.04,
+     "makerCostUsd": 672.21
+    },
+    {
+     "sku": "BAS-W02-10KW-US3",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 3"
+     },
+     "price_cents": 102000,
+     "grams": 5.89,
+     "makerCostUsd": 505.74
+    },
+    {
+     "sku": "BAS-W02-10KW-US3_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 3.5"
+     },
+     "price_cents": 103000,
+     "grams": 5.97,
+     "makerCostUsd": 512.14
+    },
+    {
+     "sku": "BAS-W02-10KW-US4",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 104000,
+     "grams": 6.05,
+     "makerCostUsd": 518.54
+    },
+    {
+     "sku": "BAS-W02-10KW-US4_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 105000,
+     "grams": 6.13,
+     "makerCostUsd": 524.94
+    },
+    {
+     "sku": "BAS-W02-10KW-US5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 107000,
+     "grams": 6.22,
+     "makerCostUsd": 531.35
+    },
+    {
+     "sku": "BAS-W02-10KW-US5_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 108000,
+     "grams": 6.3,
+     "makerCostUsd": 537.75
+    },
+    {
+     "sku": "BAS-W02-10KW-US6",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 109000,
+     "grams": 6.38,
+     "makerCostUsd": 544.15
+    },
+    {
+     "sku": "BAS-W02-10KW-US6_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 111000,
+     "grams": 6.46,
+     "makerCostUsd": 550.56
+    },
+    {
+     "sku": "BAS-W02-10KW-US7",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 112000,
+     "grams": 6.55,
+     "makerCostUsd": 556.96
+    },
+    {
+     "sku": "BAS-W02-10KW-US7_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 113000,
+     "grams": 6.63,
+     "makerCostUsd": 563.36
+    },
+    {
+     "sku": "BAS-W02-10KW-US8",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 114000,
+     "grams": 6.71,
+     "makerCostUsd": 569.76
+    },
+    {
+     "sku": "BAS-W02-10KW-US8_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 116000,
+     "grams": 6.8,
+     "makerCostUsd": 576.17
+    },
+    {
+     "sku": "BAS-W02-10KW-US9",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 117000,
+     "grams": 6.88,
+     "makerCostUsd": 582.57
+    },
+    {
+     "sku": "BAS-W02-10KW-US9_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 118000,
+     "grams": 6.96,
+     "makerCostUsd": 588.97
+    },
+    {
+     "sku": "BAS-W02-10KW-US10",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 120000,
+     "grams": 7.04,
+     "makerCostUsd": 595.37
+    },
+    {
+     "sku": "BAS-W02-10KW-US10_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 121000,
+     "grams": 7.13,
+     "makerCostUsd": 601.78
+    },
+    {
+     "sku": "BAS-W02-10KW-US11",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 122000,
+     "grams": 7.21,
+     "makerCostUsd": 608.18
+    },
+    {
+     "sku": "BAS-W02-10KW-US11_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 123000,
+     "grams": 7.29,
+     "makerCostUsd": 614.58
+    },
+    {
+     "sku": "BAS-W02-10KW-US12",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 125000,
+     "grams": 7.37,
+     "makerCostUsd": 620.99
+    },
+    {
+     "sku": "BAS-W02-10KW-US12_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 12.5"
+     },
+     "price_cents": 126000,
+     "grams": 7.46,
+     "makerCostUsd": 627.39
+    },
+    {
+     "sku": "BAS-W02-10KW-US13",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 13"
+     },
+     "price_cents": 127000,
+     "grams": 7.54,
+     "makerCostUsd": 633.79
+    },
+    {
+     "sku": "BAS-W02-10KW-US13_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 13.5"
+     },
+     "price_cents": 129000,
+     "grams": 7.62,
+     "makerCostUsd": 640.19
+    },
+    {
+     "sku": "BAS-W02-10KW-US14",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 14"
+     },
+     "price_cents": 130000,
+     "grams": 7.7,
+     "makerCostUsd": 646.6
+    },
+    {
+     "sku": "BAS-W02-10KW-US14_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 14.5"
+     },
+     "price_cents": 131000,
+     "grams": 7.79,
+     "makerCostUsd": 653.0
+    },
+    {
+     "sku": "BAS-W02-10KW-US15",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 15"
+     },
+     "price_cents": 132000,
+     "grams": 7.87,
+     "makerCostUsd": 659.4
+    },
+    {
+     "sku": "BAS-W02-10KW-US15_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 15.5"
+     },
+     "price_cents": 134000,
+     "grams": 7.95,
+     "makerCostUsd": 665.8
+    },
+    {
+     "sku": "BAS-W02-10KW-US16",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 16"
+     },
+     "price_cents": 135000,
+     "grams": 8.04,
+     "makerCostUsd": 672.21
+    },
+    {
+     "sku": "BAS-W02-10KR-US3",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 3"
+     },
+     "price_cents": 102000,
+     "grams": 5.89,
+     "makerCostUsd": 505.74
+    },
+    {
+     "sku": "BAS-W02-10KR-US3_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 3.5"
+     },
+     "price_cents": 103000,
+     "grams": 5.97,
+     "makerCostUsd": 512.14
+    },
+    {
+     "sku": "BAS-W02-10KR-US4",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 104000,
+     "grams": 6.05,
+     "makerCostUsd": 518.54
+    },
+    {
+     "sku": "BAS-W02-10KR-US4_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 105000,
+     "grams": 6.13,
+     "makerCostUsd": 524.94
+    },
+    {
+     "sku": "BAS-W02-10KR-US5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 107000,
+     "grams": 6.22,
+     "makerCostUsd": 531.35
+    },
+    {
+     "sku": "BAS-W02-10KR-US5_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 108000,
+     "grams": 6.3,
+     "makerCostUsd": 537.75
+    },
+    {
+     "sku": "BAS-W02-10KR-US6",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 109000,
+     "grams": 6.38,
+     "makerCostUsd": 544.15
+    },
+    {
+     "sku": "BAS-W02-10KR-US6_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 111000,
+     "grams": 6.46,
+     "makerCostUsd": 550.56
+    },
+    {
+     "sku": "BAS-W02-10KR-US7",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 112000,
+     "grams": 6.55,
+     "makerCostUsd": 556.96
+    },
+    {
+     "sku": "BAS-W02-10KR-US7_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 113000,
+     "grams": 6.63,
+     "makerCostUsd": 563.36
+    },
+    {
+     "sku": "BAS-W02-10KR-US8",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 114000,
+     "grams": 6.71,
+     "makerCostUsd": 569.76
+    },
+    {
+     "sku": "BAS-W02-10KR-US8_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 116000,
+     "grams": 6.8,
+     "makerCostUsd": 576.17
+    },
+    {
+     "sku": "BAS-W02-10KR-US9",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 117000,
+     "grams": 6.88,
+     "makerCostUsd": 582.57
+    },
+    {
+     "sku": "BAS-W02-10KR-US9_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 118000,
+     "grams": 6.96,
+     "makerCostUsd": 588.97
+    },
+    {
+     "sku": "BAS-W02-10KR-US10",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 120000,
+     "grams": 7.04,
+     "makerCostUsd": 595.37
+    },
+    {
+     "sku": "BAS-W02-10KR-US10_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 121000,
+     "grams": 7.13,
+     "makerCostUsd": 601.78
+    },
+    {
+     "sku": "BAS-W02-10KR-US11",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 122000,
+     "grams": 7.21,
+     "makerCostUsd": 608.18
+    },
+    {
+     "sku": "BAS-W02-10KR-US11_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 123000,
+     "grams": 7.29,
+     "makerCostUsd": 614.58
+    },
+    {
+     "sku": "BAS-W02-10KR-US12",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 125000,
+     "grams": 7.37,
+     "makerCostUsd": 620.99
+    },
+    {
+     "sku": "BAS-W02-10KR-US12_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 12.5"
+     },
+     "price_cents": 126000,
+     "grams": 7.46,
+     "makerCostUsd": 627.39
+    },
+    {
+     "sku": "BAS-W02-10KR-US13",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 13"
+     },
+     "price_cents": 127000,
+     "grams": 7.54,
+     "makerCostUsd": 633.79
+    },
+    {
+     "sku": "BAS-W02-10KR-US13_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 13.5"
+     },
+     "price_cents": 129000,
+     "grams": 7.62,
+     "makerCostUsd": 640.19
+    },
+    {
+     "sku": "BAS-W02-10KR-US14",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 14"
+     },
+     "price_cents": 130000,
+     "grams": 7.7,
+     "makerCostUsd": 646.6
+    },
+    {
+     "sku": "BAS-W02-10KR-US14_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 14.5"
+     },
+     "price_cents": 131000,
+     "grams": 7.79,
+     "makerCostUsd": 653.0
+    },
+    {
+     "sku": "BAS-W02-10KR-US15",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 15"
+     },
+     "price_cents": 132000,
+     "grams": 7.87,
+     "makerCostUsd": 659.4
+    },
+    {
+     "sku": "BAS-W02-10KR-US15_5",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 15.5"
+     },
+     "price_cents": 134000,
+     "grams": 7.95,
+     "makerCostUsd": 665.8
+    },
+    {
+     "sku": "BAS-W02-10KR-US16",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 16"
+     },
+     "price_cents": 135000,
+     "grams": 8.04,
+     "makerCostUsd": 672.21
+    },
+    {
+     "sku": "BAS-W02-14KY-US3",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 3"
+     },
+     "price_cents": 142000,
+     "grams": 6.6,
+     "makerCostUsd": 709.82
+    },
+    {
+     "sku": "BAS-W02-14KY-US3_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 3.5"
+     },
+     "price_cents": 144000,
+     "grams": 6.69,
+     "makerCostUsd": 719.09
+    },
+    {
+     "sku": "BAS-W02-14KY-US4",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 146000,
+     "grams": 6.78,
+     "makerCostUsd": 728.36
+    },
+    {
+     "sku": "BAS-W02-14KY-US4_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 148000,
+     "grams": 6.88,
+     "makerCostUsd": 737.63
+    },
+    {
+     "sku": "BAS-W02-14KY-US5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 150000,
+     "grams": 6.97,
+     "makerCostUsd": 746.9
+    },
+    {
+     "sku": "BAS-W02-14KY-US5_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 152000,
+     "grams": 7.06,
+     "makerCostUsd": 756.17
+    },
+    {
+     "sku": "BAS-W02-14KY-US6",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 154000,
+     "grams": 7.15,
+     "makerCostUsd": 765.44
+    },
+    {
+     "sku": "BAS-W02-14KY-US6_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 155000,
+     "grams": 7.25,
+     "makerCostUsd": 774.71
+    },
+    {
+     "sku": "BAS-W02-14KY-US7",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 157000,
+     "grams": 7.34,
+     "makerCostUsd": 783.98
+    },
+    {
+     "sku": "BAS-W02-14KY-US7_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 159000,
+     "grams": 7.43,
+     "makerCostUsd": 793.25
+    },
+    {
+     "sku": "BAS-W02-14KY-US8",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 161000,
+     "grams": 7.53,
+     "makerCostUsd": 802.52
+    },
+    {
+     "sku": "BAS-W02-14KY-US8_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 163000,
+     "grams": 7.62,
+     "makerCostUsd": 811.79
+    },
+    {
+     "sku": "BAS-W02-14KY-US9",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 165000,
+     "grams": 7.71,
+     "makerCostUsd": 821.06
+    },
+    {
+     "sku": "BAS-W02-14KY-US9_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 167000,
+     "grams": 7.8,
+     "makerCostUsd": 830.33
+    },
+    {
+     "sku": "BAS-W02-14KY-US10",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 168000,
+     "grams": 7.9,
+     "makerCostUsd": 839.6
+    },
+    {
+     "sku": "BAS-W02-14KY-US10_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 170000,
+     "grams": 7.99,
+     "makerCostUsd": 848.87
+    },
+    {
+     "sku": "BAS-W02-14KY-US11",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 172000,
+     "grams": 8.08,
+     "makerCostUsd": 858.14
+    },
+    {
+     "sku": "BAS-W02-14KY-US11_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 174000,
+     "grams": 8.17,
+     "makerCostUsd": 867.41
+    },
+    {
+     "sku": "BAS-W02-14KY-US12",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 176000,
+     "grams": 8.27,
+     "makerCostUsd": 876.68
+    },
+    {
+     "sku": "BAS-W02-14KY-US12_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 12.5"
+     },
+     "price_cents": 178000,
+     "grams": 8.36,
+     "makerCostUsd": 885.95
+    },
+    {
+     "sku": "BAS-W02-14KY-US13",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 13"
+     },
+     "price_cents": 180000,
+     "grams": 8.45,
+     "makerCostUsd": 895.22
+    },
+    {
+     "sku": "BAS-W02-14KY-US13_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 13.5"
+     },
+     "price_cents": 181000,
+     "grams": 8.54,
+     "makerCostUsd": 904.49
+    },
+    {
+     "sku": "BAS-W02-14KY-US14",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 14"
+     },
+     "price_cents": 183000,
+     "grams": 8.64,
+     "makerCostUsd": 913.76
+    },
+    {
+     "sku": "BAS-W02-14KY-US14_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 14.5"
+     },
+     "price_cents": 185000,
+     "grams": 8.73,
+     "makerCostUsd": 923.03
+    },
+    {
+     "sku": "BAS-W02-14KY-US15",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 15"
+     },
+     "price_cents": 187000,
+     "grams": 8.82,
+     "makerCostUsd": 932.3
+    },
+    {
+     "sku": "BAS-W02-14KY-US15_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 15.5"
+     },
+     "price_cents": 189000,
+     "grams": 8.92,
+     "makerCostUsd": 941.57
+    },
+    {
+     "sku": "BAS-W02-14KY-US16",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 16"
+     },
+     "price_cents": 191000,
+     "grams": 9.01,
+     "makerCostUsd": 950.84
+    },
+    {
+     "sku": "BAS-W02-14KW-US3",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 3"
+     },
+     "price_cents": 142000,
+     "grams": 6.6,
+     "makerCostUsd": 709.82
+    },
+    {
+     "sku": "BAS-W02-14KW-US3_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 3.5"
+     },
+     "price_cents": 144000,
+     "grams": 6.69,
+     "makerCostUsd": 719.09
+    },
+    {
+     "sku": "BAS-W02-14KW-US4",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 146000,
+     "grams": 6.78,
+     "makerCostUsd": 728.36
+    },
+    {
+     "sku": "BAS-W02-14KW-US4_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 148000,
+     "grams": 6.88,
+     "makerCostUsd": 737.63
+    },
+    {
+     "sku": "BAS-W02-14KW-US5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 150000,
+     "grams": 6.97,
+     "makerCostUsd": 746.9
+    },
+    {
+     "sku": "BAS-W02-14KW-US5_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 152000,
+     "grams": 7.06,
+     "makerCostUsd": 756.17
+    },
+    {
+     "sku": "BAS-W02-14KW-US6",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 154000,
+     "grams": 7.15,
+     "makerCostUsd": 765.44
+    },
+    {
+     "sku": "BAS-W02-14KW-US6_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 155000,
+     "grams": 7.25,
+     "makerCostUsd": 774.71
+    },
+    {
+     "sku": "BAS-W02-14KW-US7",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 157000,
+     "grams": 7.34,
+     "makerCostUsd": 783.98
+    },
+    {
+     "sku": "BAS-W02-14KW-US7_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 159000,
+     "grams": 7.43,
+     "makerCostUsd": 793.25
+    },
+    {
+     "sku": "BAS-W02-14KW-US8",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 161000,
+     "grams": 7.53,
+     "makerCostUsd": 802.52
+    },
+    {
+     "sku": "BAS-W02-14KW-US8_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 163000,
+     "grams": 7.62,
+     "makerCostUsd": 811.79
+    },
+    {
+     "sku": "BAS-W02-14KW-US9",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 165000,
+     "grams": 7.71,
+     "makerCostUsd": 821.06
+    },
+    {
+     "sku": "BAS-W02-14KW-US9_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 167000,
+     "grams": 7.8,
+     "makerCostUsd": 830.33
+    },
+    {
+     "sku": "BAS-W02-14KW-US10",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 168000,
+     "grams": 7.9,
+     "makerCostUsd": 839.6
+    },
+    {
+     "sku": "BAS-W02-14KW-US10_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 170000,
+     "grams": 7.99,
+     "makerCostUsd": 848.87
+    },
+    {
+     "sku": "BAS-W02-14KW-US11",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 172000,
+     "grams": 8.08,
+     "makerCostUsd": 858.14
+    },
+    {
+     "sku": "BAS-W02-14KW-US11_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 174000,
+     "grams": 8.17,
+     "makerCostUsd": 867.41
+    },
+    {
+     "sku": "BAS-W02-14KW-US12",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 176000,
+     "grams": 8.27,
+     "makerCostUsd": 876.68
+    },
+    {
+     "sku": "BAS-W02-14KW-US12_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 12.5"
+     },
+     "price_cents": 178000,
+     "grams": 8.36,
+     "makerCostUsd": 885.95
+    },
+    {
+     "sku": "BAS-W02-14KW-US13",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 13"
+     },
+     "price_cents": 180000,
+     "grams": 8.45,
+     "makerCostUsd": 895.22
+    },
+    {
+     "sku": "BAS-W02-14KW-US13_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 13.5"
+     },
+     "price_cents": 181000,
+     "grams": 8.54,
+     "makerCostUsd": 904.49
+    },
+    {
+     "sku": "BAS-W02-14KW-US14",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 14"
+     },
+     "price_cents": 183000,
+     "grams": 8.64,
+     "makerCostUsd": 913.76
+    },
+    {
+     "sku": "BAS-W02-14KW-US14_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 14.5"
+     },
+     "price_cents": 185000,
+     "grams": 8.73,
+     "makerCostUsd": 923.03
+    },
+    {
+     "sku": "BAS-W02-14KW-US15",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 15"
+     },
+     "price_cents": 187000,
+     "grams": 8.82,
+     "makerCostUsd": 932.3
+    },
+    {
+     "sku": "BAS-W02-14KW-US15_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 15.5"
+     },
+     "price_cents": 189000,
+     "grams": 8.92,
+     "makerCostUsd": 941.57
+    },
+    {
+     "sku": "BAS-W02-14KW-US16",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 16"
+     },
+     "price_cents": 191000,
+     "grams": 9.01,
+     "makerCostUsd": 950.84
+    },
+    {
+     "sku": "BAS-W02-14KR-US3",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 3"
+     },
+     "price_cents": 142000,
+     "grams": 6.6,
+     "makerCostUsd": 709.82
+    },
+    {
+     "sku": "BAS-W02-14KR-US3_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 3.5"
+     },
+     "price_cents": 144000,
+     "grams": 6.69,
+     "makerCostUsd": 719.09
+    },
+    {
+     "sku": "BAS-W02-14KR-US4",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 146000,
+     "grams": 6.78,
+     "makerCostUsd": 728.36
+    },
+    {
+     "sku": "BAS-W02-14KR-US4_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 148000,
+     "grams": 6.88,
+     "makerCostUsd": 737.63
+    },
+    {
+     "sku": "BAS-W02-14KR-US5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 150000,
+     "grams": 6.97,
+     "makerCostUsd": 746.9
+    },
+    {
+     "sku": "BAS-W02-14KR-US5_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 152000,
+     "grams": 7.06,
+     "makerCostUsd": 756.17
+    },
+    {
+     "sku": "BAS-W02-14KR-US6",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 154000,
+     "grams": 7.15,
+     "makerCostUsd": 765.44
+    },
+    {
+     "sku": "BAS-W02-14KR-US6_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 155000,
+     "grams": 7.25,
+     "makerCostUsd": 774.71
+    },
+    {
+     "sku": "BAS-W02-14KR-US7",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 157000,
+     "grams": 7.34,
+     "makerCostUsd": 783.98
+    },
+    {
+     "sku": "BAS-W02-14KR-US7_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 159000,
+     "grams": 7.43,
+     "makerCostUsd": 793.25
+    },
+    {
+     "sku": "BAS-W02-14KR-US8",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 161000,
+     "grams": 7.53,
+     "makerCostUsd": 802.52
+    },
+    {
+     "sku": "BAS-W02-14KR-US8_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 163000,
+     "grams": 7.62,
+     "makerCostUsd": 811.79
+    },
+    {
+     "sku": "BAS-W02-14KR-US9",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 165000,
+     "grams": 7.71,
+     "makerCostUsd": 821.06
+    },
+    {
+     "sku": "BAS-W02-14KR-US9_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 167000,
+     "grams": 7.8,
+     "makerCostUsd": 830.33
+    },
+    {
+     "sku": "BAS-W02-14KR-US10",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 168000,
+     "grams": 7.9,
+     "makerCostUsd": 839.6
+    },
+    {
+     "sku": "BAS-W02-14KR-US10_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 170000,
+     "grams": 7.99,
+     "makerCostUsd": 848.87
+    },
+    {
+     "sku": "BAS-W02-14KR-US11",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 172000,
+     "grams": 8.08,
+     "makerCostUsd": 858.14
+    },
+    {
+     "sku": "BAS-W02-14KR-US11_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 174000,
+     "grams": 8.17,
+     "makerCostUsd": 867.41
+    },
+    {
+     "sku": "BAS-W02-14KR-US12",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 176000,
+     "grams": 8.27,
+     "makerCostUsd": 876.68
+    },
+    {
+     "sku": "BAS-W02-14KR-US12_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 12.5"
+     },
+     "price_cents": 178000,
+     "grams": 8.36,
+     "makerCostUsd": 885.95
+    },
+    {
+     "sku": "BAS-W02-14KR-US13",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 13"
+     },
+     "price_cents": 180000,
+     "grams": 8.45,
+     "makerCostUsd": 895.22
+    },
+    {
+     "sku": "BAS-W02-14KR-US13_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 13.5"
+     },
+     "price_cents": 181000,
+     "grams": 8.54,
+     "makerCostUsd": 904.49
+    },
+    {
+     "sku": "BAS-W02-14KR-US14",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 14"
+     },
+     "price_cents": 183000,
+     "grams": 8.64,
+     "makerCostUsd": 913.76
+    },
+    {
+     "sku": "BAS-W02-14KR-US14_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 14.5"
+     },
+     "price_cents": 185000,
+     "grams": 8.73,
+     "makerCostUsd": 923.03
+    },
+    {
+     "sku": "BAS-W02-14KR-US15",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 15"
+     },
+     "price_cents": 187000,
+     "grams": 8.82,
+     "makerCostUsd": 932.3
+    },
+    {
+     "sku": "BAS-W02-14KR-US15_5",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 15.5"
+     },
+     "price_cents": 189000,
+     "grams": 8.92,
+     "makerCostUsd": 941.57
+    },
+    {
+     "sku": "BAS-W02-14KR-US16",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 16"
+     },
+     "price_cents": 191000,
+     "grams": 9.01,
+     "makerCostUsd": 950.84
+    },
+    {
+     "sku": "BAS-W02-18KY-US3",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 3"
+     },
+     "price_cents": 194000,
+     "grams": 7.5,
+     "makerCostUsd": 966.5
+    },
+    {
+     "sku": "BAS-W02-18KY-US3_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 3.5"
+     },
+     "price_cents": 196000,
+     "grams": 7.61,
+     "makerCostUsd": 979.38
+    },
+    {
+     "sku": "BAS-W02-18KY-US4",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 199000,
+     "grams": 7.71,
+     "makerCostUsd": 992.25
+    },
+    {
+     "sku": "BAS-W02-18KY-US4_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 202000,
+     "grams": 7.82,
+     "makerCostUsd": 1005.13
+    },
+    {
+     "sku": "BAS-W02-18KY-US5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 204000,
+     "grams": 7.92,
+     "makerCostUsd": 1018.01
+    },
+    {
+     "sku": "BAS-W02-18KY-US5_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 207000,
+     "grams": 8.03,
+     "makerCostUsd": 1030.88
+    },
+    {
+     "sku": "BAS-W02-18KY-US6",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 209000,
+     "grams": 8.13,
+     "makerCostUsd": 1043.76
+    },
+    {
+     "sku": "BAS-W02-18KY-US6_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 212000,
+     "grams": 8.24,
+     "makerCostUsd": 1056.64
+    },
+    {
+     "sku": "BAS-W02-18KY-US7",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 214000,
+     "grams": 8.35,
+     "makerCostUsd": 1069.51
+    },
+    {
+     "sku": "BAS-W02-18KY-US7_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 217000,
+     "grams": 8.45,
+     "makerCostUsd": 1082.39
+    },
+    {
+     "sku": "BAS-W02-18KY-US8",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 220000,
+     "grams": 8.56,
+     "makerCostUsd": 1095.26
+    },
+    {
+     "sku": "BAS-W02-18KY-US8_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 222000,
+     "grams": 8.66,
+     "makerCostUsd": 1108.14
+    },
+    {
+     "sku": "BAS-W02-18KY-US9",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 225000,
+     "grams": 8.77,
+     "makerCostUsd": 1121.02
+    },
+    {
+     "sku": "BAS-W02-18KY-US9_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 227000,
+     "grams": 8.87,
+     "makerCostUsd": 1133.89
+    },
+    {
+     "sku": "BAS-W02-18KY-US10",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 230000,
+     "grams": 8.98,
+     "makerCostUsd": 1146.77
+    },
+    {
+     "sku": "BAS-W02-18KY-US10_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 232000,
+     "grams": 9.08,
+     "makerCostUsd": 1159.64
+    },
+    {
+     "sku": "BAS-W02-18KY-US11",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 235000,
+     "grams": 9.19,
+     "makerCostUsd": 1172.52
+    },
+    {
+     "sku": "BAS-W02-18KY-US11_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 238000,
+     "grams": 9.29,
+     "makerCostUsd": 1185.4
+    },
+    {
+     "sku": "BAS-W02-18KY-US12",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 240000,
+     "grams": 9.4,
+     "makerCostUsd": 1198.27
+    },
+    {
+     "sku": "BAS-W02-18KY-US12_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 12.5"
+     },
+     "price_cents": 243000,
+     "grams": 9.5,
+     "makerCostUsd": 1211.15
+    },
+    {
+     "sku": "BAS-W02-18KY-US13",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 13"
+     },
+     "price_cents": 245000,
+     "grams": 9.61,
+     "makerCostUsd": 1224.03
+    },
+    {
+     "sku": "BAS-W02-18KY-US13_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 13.5"
+     },
+     "price_cents": 248000,
+     "grams": 9.72,
+     "makerCostUsd": 1236.9
+    },
+    {
+     "sku": "BAS-W02-18KY-US14",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 14"
+     },
+     "price_cents": 250000,
+     "grams": 9.82,
+     "makerCostUsd": 1249.78
+    },
+    {
+     "sku": "BAS-W02-18KY-US14_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 14.5"
+     },
+     "price_cents": 253000,
+     "grams": 9.93,
+     "makerCostUsd": 1262.65
+    },
+    {
+     "sku": "BAS-W02-18KY-US15",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 15"
+     },
+     "price_cents": 256000,
+     "grams": 10.03,
+     "makerCostUsd": 1275.53
+    },
+    {
+     "sku": "BAS-W02-18KY-US15_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 15.5"
+     },
+     "price_cents": 258000,
+     "grams": 10.14,
+     "makerCostUsd": 1288.41
+    },
+    {
+     "sku": "BAS-W02-18KY-US16",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Ring Size": "US 16"
+     },
+     "price_cents": 261000,
+     "grams": 10.24,
+     "makerCostUsd": 1301.28
+    },
+    {
+     "sku": "BAS-W02-18KW-US3",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 3"
+     },
+     "price_cents": 194000,
+     "grams": 7.5,
+     "makerCostUsd": 966.5
+    },
+    {
+     "sku": "BAS-W02-18KW-US3_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 3.5"
+     },
+     "price_cents": 196000,
+     "grams": 7.61,
+     "makerCostUsd": 979.38
+    },
+    {
+     "sku": "BAS-W02-18KW-US4",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 199000,
+     "grams": 7.71,
+     "makerCostUsd": 992.25
+    },
+    {
+     "sku": "BAS-W02-18KW-US4_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 202000,
+     "grams": 7.82,
+     "makerCostUsd": 1005.13
+    },
+    {
+     "sku": "BAS-W02-18KW-US5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 204000,
+     "grams": 7.92,
+     "makerCostUsd": 1018.01
+    },
+    {
+     "sku": "BAS-W02-18KW-US5_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 207000,
+     "grams": 8.03,
+     "makerCostUsd": 1030.88
+    },
+    {
+     "sku": "BAS-W02-18KW-US6",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 209000,
+     "grams": 8.13,
+     "makerCostUsd": 1043.76
+    },
+    {
+     "sku": "BAS-W02-18KW-US6_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 212000,
+     "grams": 8.24,
+     "makerCostUsd": 1056.64
+    },
+    {
+     "sku": "BAS-W02-18KW-US7",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 214000,
+     "grams": 8.35,
+     "makerCostUsd": 1069.51
+    },
+    {
+     "sku": "BAS-W02-18KW-US7_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 217000,
+     "grams": 8.45,
+     "makerCostUsd": 1082.39
+    },
+    {
+     "sku": "BAS-W02-18KW-US8",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 220000,
+     "grams": 8.56,
+     "makerCostUsd": 1095.26
+    },
+    {
+     "sku": "BAS-W02-18KW-US8_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 222000,
+     "grams": 8.66,
+     "makerCostUsd": 1108.14
+    },
+    {
+     "sku": "BAS-W02-18KW-US9",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 225000,
+     "grams": 8.77,
+     "makerCostUsd": 1121.02
+    },
+    {
+     "sku": "BAS-W02-18KW-US9_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 227000,
+     "grams": 8.87,
+     "makerCostUsd": 1133.89
+    },
+    {
+     "sku": "BAS-W02-18KW-US10",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 230000,
+     "grams": 8.98,
+     "makerCostUsd": 1146.77
+    },
+    {
+     "sku": "BAS-W02-18KW-US10_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 232000,
+     "grams": 9.08,
+     "makerCostUsd": 1159.64
+    },
+    {
+     "sku": "BAS-W02-18KW-US11",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 235000,
+     "grams": 9.19,
+     "makerCostUsd": 1172.52
+    },
+    {
+     "sku": "BAS-W02-18KW-US11_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 238000,
+     "grams": 9.29,
+     "makerCostUsd": 1185.4
+    },
+    {
+     "sku": "BAS-W02-18KW-US12",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 240000,
+     "grams": 9.4,
+     "makerCostUsd": 1198.27
+    },
+    {
+     "sku": "BAS-W02-18KW-US12_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 12.5"
+     },
+     "price_cents": 243000,
+     "grams": 9.5,
+     "makerCostUsd": 1211.15
+    },
+    {
+     "sku": "BAS-W02-18KW-US13",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 13"
+     },
+     "price_cents": 245000,
+     "grams": 9.61,
+     "makerCostUsd": 1224.03
+    },
+    {
+     "sku": "BAS-W02-18KW-US13_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 13.5"
+     },
+     "price_cents": 248000,
+     "grams": 9.72,
+     "makerCostUsd": 1236.9
+    },
+    {
+     "sku": "BAS-W02-18KW-US14",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 14"
+     },
+     "price_cents": 250000,
+     "grams": 9.82,
+     "makerCostUsd": 1249.78
+    },
+    {
+     "sku": "BAS-W02-18KW-US14_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 14.5"
+     },
+     "price_cents": 253000,
+     "grams": 9.93,
+     "makerCostUsd": 1262.65
+    },
+    {
+     "sku": "BAS-W02-18KW-US15",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 15"
+     },
+     "price_cents": 256000,
+     "grams": 10.03,
+     "makerCostUsd": 1275.53
+    },
+    {
+     "sku": "BAS-W02-18KW-US15_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 15.5"
+     },
+     "price_cents": 258000,
+     "grams": 10.14,
+     "makerCostUsd": 1288.41
+    },
+    {
+     "sku": "BAS-W02-18KW-US16",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Ring Size": "US 16"
+     },
+     "price_cents": 261000,
+     "grams": 10.24,
+     "makerCostUsd": 1301.28
+    },
+    {
+     "sku": "BAS-W02-18KR-US3",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 3"
+     },
+     "price_cents": 194000,
+     "grams": 7.5,
+     "makerCostUsd": 966.5
+    },
+    {
+     "sku": "BAS-W02-18KR-US3_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 3.5"
+     },
+     "price_cents": 196000,
+     "grams": 7.61,
+     "makerCostUsd": 979.38
+    },
+    {
+     "sku": "BAS-W02-18KR-US4",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 4"
+     },
+     "price_cents": 199000,
+     "grams": 7.71,
+     "makerCostUsd": 992.25
+    },
+    {
+     "sku": "BAS-W02-18KR-US4_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 4.5"
+     },
+     "price_cents": 202000,
+     "grams": 7.82,
+     "makerCostUsd": 1005.13
+    },
+    {
+     "sku": "BAS-W02-18KR-US5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 5"
+     },
+     "price_cents": 204000,
+     "grams": 7.92,
+     "makerCostUsd": 1018.01
+    },
+    {
+     "sku": "BAS-W02-18KR-US5_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 5.5"
+     },
+     "price_cents": 207000,
+     "grams": 8.03,
+     "makerCostUsd": 1030.88
+    },
+    {
+     "sku": "BAS-W02-18KR-US6",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 6"
+     },
+     "price_cents": 209000,
+     "grams": 8.13,
+     "makerCostUsd": 1043.76
+    },
+    {
+     "sku": "BAS-W02-18KR-US6_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 6.5"
+     },
+     "price_cents": 212000,
+     "grams": 8.24,
+     "makerCostUsd": 1056.64
+    },
+    {
+     "sku": "BAS-W02-18KR-US7",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 7"
+     },
+     "price_cents": 214000,
+     "grams": 8.35,
+     "makerCostUsd": 1069.51
+    },
+    {
+     "sku": "BAS-W02-18KR-US7_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 7.5"
+     },
+     "price_cents": 217000,
+     "grams": 8.45,
+     "makerCostUsd": 1082.39
+    },
+    {
+     "sku": "BAS-W02-18KR-US8",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 8"
+     },
+     "price_cents": 220000,
+     "grams": 8.56,
+     "makerCostUsd": 1095.26
+    },
+    {
+     "sku": "BAS-W02-18KR-US8_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 8.5"
+     },
+     "price_cents": 222000,
+     "grams": 8.66,
+     "makerCostUsd": 1108.14
+    },
+    {
+     "sku": "BAS-W02-18KR-US9",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 9"
+     },
+     "price_cents": 225000,
+     "grams": 8.77,
+     "makerCostUsd": 1121.02
+    },
+    {
+     "sku": "BAS-W02-18KR-US9_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 9.5"
+     },
+     "price_cents": 227000,
+     "grams": 8.87,
+     "makerCostUsd": 1133.89
+    },
+    {
+     "sku": "BAS-W02-18KR-US10",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 10"
+     },
+     "price_cents": 230000,
+     "grams": 8.98,
+     "makerCostUsd": 1146.77
+    },
+    {
+     "sku": "BAS-W02-18KR-US10_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 10.5"
+     },
+     "price_cents": 232000,
+     "grams": 9.08,
+     "makerCostUsd": 1159.64
+    },
+    {
+     "sku": "BAS-W02-18KR-US11",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 11"
+     },
+     "price_cents": 235000,
+     "grams": 9.19,
+     "makerCostUsd": 1172.52
+    },
+    {
+     "sku": "BAS-W02-18KR-US11_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 11.5"
+     },
+     "price_cents": 238000,
+     "grams": 9.29,
+     "makerCostUsd": 1185.4
+    },
+    {
+     "sku": "BAS-W02-18KR-US12",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 12"
+     },
+     "price_cents": 240000,
+     "grams": 9.4,
+     "makerCostUsd": 1198.27
+    },
+    {
+     "sku": "BAS-W02-18KR-US12_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 12.5"
+     },
+     "price_cents": 243000,
+     "grams": 9.5,
+     "makerCostUsd": 1211.15
+    },
+    {
+     "sku": "BAS-W02-18KR-US13",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 13"
+     },
+     "price_cents": 245000,
+     "grams": 9.61,
+     "makerCostUsd": 1224.03
+    },
+    {
+     "sku": "BAS-W02-18KR-US13_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 13.5"
+     },
+     "price_cents": 248000,
+     "grams": 9.72,
+     "makerCostUsd": 1236.9
+    },
+    {
+     "sku": "BAS-W02-18KR-US14",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 14"
+     },
+     "price_cents": 250000,
+     "grams": 9.82,
+     "makerCostUsd": 1249.78
+    },
+    {
+     "sku": "BAS-W02-18KR-US14_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 14.5"
+     },
+     "price_cents": 253000,
+     "grams": 9.93,
+     "makerCostUsd": 1262.65
+    },
+    {
+     "sku": "BAS-W02-18KR-US15",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 15"
+     },
+     "price_cents": 256000,
+     "grams": 10.03,
+     "makerCostUsd": 1275.53
+    },
+    {
+     "sku": "BAS-W02-18KR-US15_5",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 15.5"
+     },
+     "price_cents": 258000,
+     "grams": 10.14,
+     "makerCostUsd": 1288.41
+    },
+    {
+     "sku": "BAS-W02-18KR-US16",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Ring Size": "US 16"
+     },
+     "price_cents": 261000,
+     "grams": 10.24,
+     "makerCostUsd": 1301.28
+    }
+   ],
+   "grams14Ref": 7.34,
+   "refPriceCents": 157000,
+   "makerCost14KRefUsd": 783.98,
+   "imageBase": "https://amuletta.artifactstudio.info/artifact/winter27/W02",
+   "group": "ring"
+  },
+  {
+   "id": "W03",
+   "productId": "50b7ab96-5a40-5a7c-8d93-6c0ed17b08ab",
+   "sku": "BAS-W03",
+   "productType": "earrings",
+   "metaProductType": "earring",
+   "listingProtocol": "dangle_earrings",
+   "offersPersonalization": false,
+   "name": "Juniper Drop Earrings",
+   "title": "Juniper Drop Earrings, Solid Gold Berry Cluster Dangles with One Dusty Blue Enamel Berry, French Hook, Winter Gift",
+   "tags": [
+    "juniper earrings",
+    "berry earrings",
+    "gold drop earrings",
+    "blue enamel earrings",
+    "cluster earrings",
+    "gold ball earrings",
+    "french hook earrings",
+    "winter earrings",
+    "botanical earrings",
+    "14k drop earrings",
+    "gift for her",
+    "dusty blue jewelry",
+    "solid gold dangles"
+   ],
+   "description": "A cluster of four small gold spheres on a French hook, three polished gold and one coated in dusty blue enamel, like berries on a juniper sprig.\n\nEach earring is four 4.5 mm spheres touching in a tight cluster: three bright mirror-polished gold and exactly one in a soft powdery steel blue vitreous enamel with a matte bloom, the colour of a ripe juniper berry. The cluster hangs from a slim French hook with a tiny ball at its tip, so it moves a little as you move. Light enough for every day, enough colour for a winter table.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose. White gold, not rhodium plated: a soft warm grey.\nEnamel: dusty blue vitreous enamel, glass fused to gold, matte finish on one sphere per earring.\nSize: each sphere 4.5 mm, cluster about 10 mm across, total drop about 25 mm with the hook; sold as a pair.\nClosure: French hook in the same gold.\n\nEach piece is made to order and ships free within the United States from New Jersey. Add a gift message at checkout and it ships with the piece.\n\nCare: enamel is glass fused to gold. It keeps its colour, but it can chip on a hard knock, so take it off for the gym and the dishes and wipe it with a soft cloth.\n\nThe product images are design visualizations of the finished piece, and the three-metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
+   "enamel": [
+    "dusty blue"
+   ],
+   "goldOnly": false,
+   "dims": "spheres 4.5 mm, cluster 10 mm",
+   "variationAxes": [
+    "Karat",
+    "Metal Color"
+   ],
+   "variants": [
+    {
+     "sku": "BAS-W03-10KY",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold"
+     },
+     "price_cents": 90000,
+     "grams": 5.13,
+     "makerCostUsd": 447.36
+    },
+    {
+     "sku": "BAS-W03-10KW",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold"
+     },
+     "price_cents": 90000,
+     "grams": 5.13,
+     "makerCostUsd": 447.36
+    },
+    {
+     "sku": "BAS-W03-10KR",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold"
+     },
+     "price_cents": 90000,
+     "grams": 5.13,
+     "makerCostUsd": 447.36
+    },
+    {
+     "sku": "BAS-W03-14KY",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold"
+     },
+     "price_cents": 126000,
+     "grams": 5.75,
+     "makerCostUsd": 625.3
+    },
+    {
+     "sku": "BAS-W03-14KW",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold"
+     },
+     "price_cents": 126000,
+     "grams": 5.75,
+     "makerCostUsd": 625.3
+    },
+    {
+     "sku": "BAS-W03-14KR",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold"
+     },
+     "price_cents": 126000,
+     "grams": 5.75,
+     "makerCostUsd": 625.3
+    },
+    {
+     "sku": "BAS-W03-18KY",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold"
+     },
+     "price_cents": 170000,
+     "grams": 6.54,
+     "makerCostUsd": 849.1
+    },
+    {
+     "sku": "BAS-W03-18KW",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold"
+     },
+     "price_cents": 170000,
+     "grams": 6.54,
+     "makerCostUsd": 849.1
+    },
+    {
+     "sku": "BAS-W03-18KR",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold"
+     },
+     "price_cents": 170000,
+     "grams": 6.54,
+     "makerCostUsd": 849.1
+    }
+   ],
+   "grams14Ref": 5.75,
+   "refPriceCents": 126000,
+   "makerCost14KRefUsd": 625.3,
+   "imageBase": "https://amuletta.artifactstudio.info/artifact/winter27/W03",
+   "group": "earrings"
+  },
+  {
+   "id": "W04",
+   "productId": "663a7d68-911c-50d5-8652-8e0f7d3aeb28",
+   "sku": "BAS-W04",
+   "productType": "necklace",
+   "metaProductType": "necklace",
+   "listingProtocol": "pendant_necklace",
+   "offersPersonalization": false,
+   "name": "Ember Lariat Necklace",
+   "title": "Ember Lariat Necklace, Solid Gold Y Necklace with a Molten Teardrop and an Orange Enamel Eye, Adjustable Y Lariat, Winter Gift",
+   "tags": [
+    "lariat necklace",
+    "gold y necklace",
+    "teardrop necklace",
+    "orange enamel charm",
+    "molten gold pendant",
+    "slide ring necklace",
+    "solid gold lariat",
+    "winter necklace",
+    "ember jewelry",
+    "14k lariat",
+    "gift for her",
+    "sculptural necklace",
+    "drop necklace"
+   ],
+   "description": "A Y lariat of solid gold: both strands of a fine cable chain pass through a small slide ring and drop together to a molten teardrop with a glowing ember orange enamel eye.\n\nThe teardrop is cast solid, 12 x 8 mm, with a softly rippled polished surface like a drop of liquid gold, and in its wide end sits one small domed eye of ember orange vitreous enamel in a thin polished bezel, like the last coal in the grate. The two chain strands pass together through a smooth slide ring and fall as a short double strand to the pendant, so the Y sits at the base of the throat and the teardrop just below the collarbones.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose. White gold, not rhodium plated: a soft warm grey.\nEnamel: ember orange vitreous enamel, glass fused to gold, domed, about 3 mm across.\nSize: teardrop 12 x 8 mm; choose a 16, 18 or 20 inch chain, measured as the closed length before the drop.\nChain: 1.1 mm solid gold cable chain in the same gold, spring ring clasp, slide ring in the same gold.\n\nEach piece is made to order and ships free within the United States from New Jersey. Add a gift message at checkout and it ships with the piece.\n\nCare: enamel is glass fused to gold. It keeps its colour, but it can chip on a hard knock, so take it off for the gym and the dishes and wipe it with a soft cloth.\n\nThe product images are design visualizations of the finished piece, and the three-metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
+   "enamel": [
+    "ember orange"
+   ],
+   "goldOnly": false,
+   "dims": "teardrop 12 x 8 mm, eye 3 mm",
+   "variationAxes": [
+    "Karat",
+    "Metal Color",
+    "Chain Length"
+   ],
+   "variants": [
+    {
+     "sku": "BAS-W04-10KY-16IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Chain Length": "16 inches"
+     },
+     "price_cents": 90000,
+     "grams": 2.63,
+     "makerCostUsd": 447.9
+    },
+    {
+     "sku": "BAS-W04-10KY-18IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Chain Length": "18 inches"
+     },
+     "price_cents": 93000,
+     "grams": 2.63,
+     "makerCostUsd": 462.35
+    },
+    {
+     "sku": "BAS-W04-10KY-20IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold",
+      "Chain Length": "20 inches"
+     },
+     "price_cents": 96000,
+     "grams": 2.63,
+     "makerCostUsd": 476.79
+    },
+    {
+     "sku": "BAS-W04-10KW-16IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Chain Length": "16 inches"
+     },
+     "price_cents": 90000,
+     "grams": 2.63,
+     "makerCostUsd": 447.9
+    },
+    {
+     "sku": "BAS-W04-10KW-18IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Chain Length": "18 inches"
+     },
+     "price_cents": 93000,
+     "grams": 2.63,
+     "makerCostUsd": 462.35
+    },
+    {
+     "sku": "BAS-W04-10KW-20IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold",
+      "Chain Length": "20 inches"
+     },
+     "price_cents": 96000,
+     "grams": 2.63,
+     "makerCostUsd": 476.79
+    },
+    {
+     "sku": "BAS-W04-10KR-16IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Chain Length": "16 inches"
+     },
+     "price_cents": 90000,
+     "grams": 2.63,
+     "makerCostUsd": 447.9
+    },
+    {
+     "sku": "BAS-W04-10KR-18IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Chain Length": "18 inches"
+     },
+     "price_cents": 93000,
+     "grams": 2.63,
+     "makerCostUsd": 462.35
+    },
+    {
+     "sku": "BAS-W04-10KR-20IN",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold",
+      "Chain Length": "20 inches"
+     },
+     "price_cents": 96000,
+     "grams": 2.63,
+     "makerCostUsd": 476.79
+    },
+    {
+     "sku": "BAS-W04-14KY-16IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Chain Length": "16 inches"
+     },
+     "price_cents": 108000,
+     "grams": 2.95,
+     "makerCostUsd": 539.01
+    },
+    {
+     "sku": "BAS-W04-14KY-18IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Chain Length": "18 inches"
+     },
+     "price_cents": 111000,
+     "grams": 2.95,
+     "makerCostUsd": 553.46
+    },
+    {
+     "sku": "BAS-W04-14KY-20IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold",
+      "Chain Length": "20 inches"
+     },
+     "price_cents": 114000,
+     "grams": 2.95,
+     "makerCostUsd": 567.9
+    },
+    {
+     "sku": "BAS-W04-14KW-16IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Chain Length": "16 inches"
+     },
+     "price_cents": 108000,
+     "grams": 2.95,
+     "makerCostUsd": 539.01
+    },
+    {
+     "sku": "BAS-W04-14KW-18IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Chain Length": "18 inches"
+     },
+     "price_cents": 111000,
+     "grams": 2.95,
+     "makerCostUsd": 553.46
+    },
+    {
+     "sku": "BAS-W04-14KW-20IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold",
+      "Chain Length": "20 inches"
+     },
+     "price_cents": 114000,
+     "grams": 2.95,
+     "makerCostUsd": 567.9
+    },
+    {
+     "sku": "BAS-W04-14KR-16IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Chain Length": "16 inches"
+     },
+     "price_cents": 108000,
+     "grams": 2.95,
+     "makerCostUsd": 539.01
+    },
+    {
+     "sku": "BAS-W04-14KR-18IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Chain Length": "18 inches"
+     },
+     "price_cents": 111000,
+     "grams": 2.95,
+     "makerCostUsd": 553.46
+    },
+    {
+     "sku": "BAS-W04-14KR-20IN",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold",
+      "Chain Length": "20 inches"
+     },
+     "price_cents": 114000,
+     "grams": 2.95,
+     "makerCostUsd": 567.9
+    },
+    {
+     "sku": "BAS-W04-18KY-16IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Chain Length": "16 inches"
+     },
+     "price_cents": 131000,
+     "grams": 3.35,
+     "makerCostUsd": 653.6
+    },
+    {
+     "sku": "BAS-W04-18KY-18IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Chain Length": "18 inches"
+     },
+     "price_cents": 134000,
+     "grams": 3.35,
+     "makerCostUsd": 668.05
+    },
+    {
+     "sku": "BAS-W04-18KY-20IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold",
+      "Chain Length": "20 inches"
+     },
+     "price_cents": 137000,
+     "grams": 3.35,
+     "makerCostUsd": 682.49
+    },
+    {
+     "sku": "BAS-W04-18KW-16IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Chain Length": "16 inches"
+     },
+     "price_cents": 131000,
+     "grams": 3.35,
+     "makerCostUsd": 653.6
+    },
+    {
+     "sku": "BAS-W04-18KW-18IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Chain Length": "18 inches"
+     },
+     "price_cents": 134000,
+     "grams": 3.35,
+     "makerCostUsd": 668.05
+    },
+    {
+     "sku": "BAS-W04-18KW-20IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold",
+      "Chain Length": "20 inches"
+     },
+     "price_cents": 137000,
+     "grams": 3.35,
+     "makerCostUsd": 682.49
+    },
+    {
+     "sku": "BAS-W04-18KR-16IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Chain Length": "16 inches"
+     },
+     "price_cents": 131000,
+     "grams": 3.35,
+     "makerCostUsd": 653.6
+    },
+    {
+     "sku": "BAS-W04-18KR-18IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Chain Length": "18 inches"
+     },
+     "price_cents": 134000,
+     "grams": 3.35,
+     "makerCostUsd": 668.05
+    },
+    {
+     "sku": "BAS-W04-18KR-20IN",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold",
+      "Chain Length": "20 inches"
+     },
+     "price_cents": 137000,
+     "grams": 3.35,
+     "makerCostUsd": 682.49
+    }
+   ],
+   "grams14Ref": 2.95,
+   "refPriceCents": 111000,
+   "makerCost14KRefUsd": 553.46,
+   "imageBase": "https://amuletta.artifactstudio.info/artifact/winter27/W04",
+   "group": "necklace"
+  },
+  {
+   "id": "W05",
+   "productId": "da916fdd-9673-58d5-bbfd-134b915bce77",
+   "sku": "BAS-W05",
+   "productType": "brooch",
+   "metaProductType": "brooch",
+   "listingProtocol": "brooch",
+   "offersPersonalization": false,
+   "name": "Pine Needle Brooch",
+   "title": "Pine Needle Brooch, Solid Gold Crossed Needle Bundles with Matte Tips, Sculptural Lapel Pin, Winter Coat Brooch, Gift",
+   "tags": [
+    "gold brooch",
+    "pine needle brooch",
+    "lapel pin brooch",
+    "sculptural brooch",
+    "solid gold pin",
+    "winter brooch",
+    "coat brooch",
+    "botanical brooch",
+    "modern gold brooch",
+    "14k gold brooch",
+    "gift for her",
+    "gift for him",
+    "scarf pin"
+   ],
+   "description": "Two bundles of five slender solid gold pine needles crossed in an X, polished shafts and matte brushed tips, with a pin stem and catch on the back.\n\nEach needle is a straight 1.2 mm round wire tapering to a soft point, 45 mm long; the ten needles cross at a small central hub, the shafts mirror polished and the last 8 mm of every tip brushed matte, so the piece catches light along its length and goes quiet at the points. A plain pin stem and a small revolver safety catch are soldered to the back in the same gold. Wear it on a coat lapel, a scarf, a knit shoulder or a hat band.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose. White gold, not rhodium plated: a soft warm grey.\nFinish: mirror polished shafts, matte brushed tips.\nSize: 45 mm across the X; needles 1.2 mm round wire.\nClosure: pin stem with a revolver safety catch, in the same gold.\n\nEach piece is made to order and ships free within the United States from New Jersey. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Wipe it with a soft cloth to keep the polish.\n\nThe product images are design visualizations of the finished piece, and the three-metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
+   "enamel": [],
+   "goldOnly": true,
+   "dims": "45 mm across, 1.2 mm wire",
+   "variationAxes": [
+    "Karat",
+    "Metal Color"
+   ],
+   "variants": [
+    {
+     "sku": "BAS-W05-10KY",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Yellow Gold"
+     },
+     "price_cents": 117000,
+     "grams": 6.89,
+     "makerCostUsd": 583.26
+    },
+    {
+     "sku": "BAS-W05-10KW",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "White Gold"
+     },
+     "price_cents": 117000,
+     "grams": 6.89,
+     "makerCostUsd": 583.26
+    },
+    {
+     "sku": "BAS-W05-10KR",
+     "properties": {
+      "Karat": "10K",
+      "Metal Color": "Rose Gold"
+     },
+     "price_cents": 117000,
+     "grams": 6.89,
+     "makerCostUsd": 583.26
+    },
+    {
+     "sku": "BAS-W05-14KY",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Yellow Gold"
+     },
+     "price_cents": 165000,
+     "grams": 7.72,
+     "makerCostUsd": 822.07
+    },
+    {
+     "sku": "BAS-W05-14KW",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "White Gold"
+     },
+     "price_cents": 165000,
+     "grams": 7.72,
+     "makerCostUsd": 822.07
+    },
+    {
+     "sku": "BAS-W05-14KR",
+     "properties": {
+      "Karat": "14K",
+      "Metal Color": "Rose Gold"
+     },
+     "price_cents": 165000,
+     "grams": 7.72,
+     "makerCostUsd": 822.07
+    },
+    {
+     "sku": "BAS-W05-18KY",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Yellow Gold"
+     },
+     "price_cents": 225000,
+     "grams": 8.78,
+     "makerCostUsd": 1122.41
+    },
+    {
+     "sku": "BAS-W05-18KW",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "White Gold"
+     },
+     "price_cents": 225000,
+     "grams": 8.78,
+     "makerCostUsd": 1122.41
+    },
+    {
+     "sku": "BAS-W05-18KR",
+     "properties": {
+      "Karat": "18K",
+      "Metal Color": "Rose Gold"
+     },
+     "price_cents": 225000,
+     "grams": 8.78,
+     "makerCostUsd": 1122.41
+    }
+   ],
+   "grams14Ref": 7.72,
+   "refPriceCents": 165000,
+   "makerCost14KRefUsd": 822.07,
+   "imageBase": "https://amuletta.artifactstudio.info/artifact/winter27/W05",
+   "group": "other"
+  }
+ ]
+}

@@ -1,0 +1,41 @@
+{
+ "setVariants": 315,
+ "setSeal": "02c411efebe4d7e5a492ec8ab94f2b50",
+ "items": {
+  "W01": {
+   "variants": 27,
+   "variantSeal": "9bb926dffaf8bf81272e99a31abcaed2",
+   "descMd5": "7ecbd3e67abde8c8840466b87f1474e9",
+   "tagSeal": "2f807b3e9b33149143cde89c768b3ea8",
+   "gallerySeal": "719fe6cbfab458c461e593294589eed5"
+  },
+  "W02": {
+   "variants": 243,
+   "variantSeal": "b4a5e63a4690254ca8246b3211d9ea74",
+   "descMd5": "6060a6e3050a9dc0904a50bdd2030d2c",
+   "tagSeal": "6b9e820ba942376b2195823328c4c3fc",
+   "gallerySeal": "caf56b19c39024ee10de197f99c86bd1"
+  },
+  "W03": {
+   "variants": 9,
+   "variantSeal": "c4c5f10066b2e975458eb39b58ddad15",
+   "descMd5": "abde2a0abe36bc9d766f724bcaab7522",
+   "tagSeal": "7472a639c9b8272505a8fa0b8664d64e",
+   "gallerySeal": "569bb7e77619258e949d3a2010de2154"
+  },
+  "W04": {
+   "variants": 27,
+   "variantSeal": "a0a4f86b388472be81a2c9de90f56ea9",
+   "descMd5": "75b4bf1c3025ae06083cc41bfa48deb6",
+   "tagSeal": "5a975ebf55324971be31e12860f4b6cf",
+   "gallerySeal": "be7a98dbbdeed10d0344b11a87cc5b93"
+  },
+  "W05": {
+   "variants": 9,
+   "variantSeal": "d1270f769d35c1848f14bf61539c8e40",
+   "descMd5": "afc932cc6295306290f3fe20cc36fe00",
+   "tagSeal": "560695d81b8dc07d7007920bd8979e7e",
+   "gallerySeal": "43444eb68712e3f7fa0fb8caca8936bc"
+  }
+ }
+}

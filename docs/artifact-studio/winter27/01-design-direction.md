@@ -93,5 +93,5 @@ the pendant, the enamel eye domed. Higgsfield records the model as `nano_banana_
 
 ## Status
 
-- 2026-10-15: concepts approved, cuff stays 4 mm, five heroes approved. Next: gallery prompts
-  (`prompts.py`) for owner approval, then 11 frames per piece.
+- 2026-10-15: concepts, cuff 4 mm, five heroes, 55 gallery prompts approved; 61 frames generated (6 QA reshoots),
+  catalog + migration 0168 generated (315 variants, 60 images), brooch protocol added. Next: apply, Etsy drafts.

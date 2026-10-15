@@ -62,7 +62,8 @@ export type ListingProtocolId =
   | "stud_earrings"
   | "dangle_earrings"
   | "hoop_earrings"
-  | "anklet";
+  | "anklet"
+  | "brooch";
 
 export interface ParcelSpec {
   weight: number;
@@ -265,6 +266,21 @@ export const LISTING_PROTOCOLS: Record<ListingProtocolId, ListingProtocolSpec> =
     personalization: null,
     parcel: CHAIN_JEWELRY_PARCEL,
   },
+  // Broş yüzük, kolye ya da bileklik değildir; tanımsız bırakmak çözücüyü
+  // product_type'a düşürür ve "brooch" tipi null döner, push durur (2026-10-15,
+  // Winter 26/27 Pine Needle Brooch, mağazanın ilk broşu). Ad CANLI taksonomiye
+  // karşı doğrulanmadı; çözücü bulamazsa ya da birden çok dal bulursa durur.
+  brooch: {
+    id: "brooch",
+    label: "Brooch",
+    taxonomyNames: ["Brooches"],
+    taxonomyRoot: "Jewelry",
+    // Broşta beden ekseni yok; Karat x Metal Color yeterli, zorunlu eksen dayatılmaz.
+    requiredVariationAxes: [],
+    personalization: null,
+    // Yassı mücevher kutusu; zincirli takı kutusuyla aynı sabit.
+    parcel: CHAIN_JEWELRY_PARCEL,
+  },
 };
 
 /** `product_type` → protokol. Listelenmeyen tip BİLEREK eşlenmez. */
@@ -283,6 +299,7 @@ const PRODUCT_TYPE_PROTOCOL: Record<string, ListingProtocolId> = {
   cuff: "cuff_bracelet",
   cuff_bracelet: "cuff_bracelet",
   anklet: "anklet",
+  brooch: "brooch",
 };
 
 /**
