@@ -83,5 +83,5 @@ after the five heroes are approved; frames are built from a tight crop of the ap
 
 ## Status
 
-- 2026-10-15: concepts approved, pricing estimated. Open: owner decision on the cuff width
-  (4 mm as briefed, or 3 mm) before the hero prompts.
+- 2026-10-15: concepts approved, pricing estimated; cuff stays 4 mm (owner). Hero prompts in `heroes.py`,
+  awaiting owner approval before generation.
