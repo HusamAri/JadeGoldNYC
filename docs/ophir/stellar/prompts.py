@@ -94,16 +94,17 @@ P = [
         pose="on the ring finger, the open knot facing the camera at the top of the finger",
     ),
     dict(
-        key="R03", name="Stellar Signet Ring", kind="ring", stones=True, star=True,
+        key="R03", name="Stellar Signet Ring", kind="ring", stones=True, star=True, hero_star_ref=True,
         ground="deep camel", hex="#B08D62",
-        shape=(f"a bold solid gold signet ring; the face is not flat but a wide sculptural sweep of polished gold "
-               f"that curves and folds, rising from a shank that tapers down and widens again where it meets the "
-               f"face, so the whole ring reads as one poured, molten form; cut into the face is {STAR_SET}; every "
-               f"surface is highly "
-               f"polished, no texture, no engraving; no pavé, no other stones"),
+        shape=(f"a bold solid gold ring whose whole top is one continuous sculpted mass of polished gold, "
+               f"swelling up out of the shank and folding over on itself like poured metal that set while it was "
+               f"still flowing, so the top is a curved rolling sweep with soft ridges and hollows, never a flat "
+               f"plate and never a round disc; the shank tapers down from it and widens again at the bottom; cut "
+               f"into the curved top is {STAR_SET}; every surface is highly polished, no texture, no engraving; "
+               f"no pavé, no other stones"),
         scale="the face is about 16 mm across and the shank narrows to 2.5 mm, a bold ring but still in proportion",
-        detail="the single set star on the sculptural face and the fold of the polished gold around it",
-        pose="on the index finger, the sculptural face turned to the camera",
+        detail="the single set star on the sculptural top and the fold of the poured gold around it",
+        pose="on the index finger, the sculptural top turned to the camera",
     ),
 ]
 
@@ -145,8 +146,13 @@ def style(p, n, people):
     who = " Natural skin texture visible." if people else ""
     if n == "01":
         # Hero: no reference is attached yet, so it must NOT be told to copy one (twig does the same).
-        # When the owner's render arrives this frame is regenerated with the crop as the reference.
-        return (f"{CAMERA} {metal(p)} Do not add stones, charms or engraving; {STAR_RULE}. No text, no "
+        # Exception: a product whose star missed twice gets the APPROVED star of a sibling frame as a
+        # SHAPE-only reference (2026-10-15, R03; second-brain Tideline rule).
+        ref = ("" if not p.get("hero_star_ref") else
+               " A reference image of the star is attached: copy ONLY the shape of that four point star, its "
+               "proportions and the empty smooth metal between its points; take nothing else from it, not its "
+               "background, not its lighting, not its camera angle, not its framing and not the ring it sits on.")
+        return (f"{CAMERA} {metal(p)}{ref} Do not add stones, charms or engraving; {STAR_RULE}. No text, no "
                 f"numbers, no logo, no watermark, no ruler. Square 1:1.")
     what = ("same form, same stones and same settings; only the metal colour changes, exactly as named for each "
             "copy;" if n == "06" else "same form, same stones, same settings, same metal;")
@@ -258,6 +264,11 @@ for k, v in out.items():
     assert ("carries no stones at all" in t) != bool(prod["stones"]), k
     if not prod["stones"]:
         assert "white diamond" not in t.split("carries no stones at all")[0], k
+    # the star reference belongs to exactly the products flagged for it, and only on frame 01
+    if v["frame"] == "01":
+        assert ("reference image of the star is attached" in t) == bool(prod.get("hero_star_ref")), k
+    else:
+        assert "reference image of the star is attached" not in t, k
     ref = "exact copy of the piece in the reference image" in t
     assert ref == (v["frame"] != "01"), k          # hero carries no reference clause; 02-10 must
     assert not re.search(r"\. [a-z]", t), (k, re.search(r"\. [a-z].{0,40}", t).group(0))
