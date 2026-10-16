@@ -12,6 +12,7 @@
     "test:etsy-rate-limit": "tsx --test tests/etsy-rate-limit.test.ts",
     "test:eon-frieze-pricing": "tsx --test tests/eon-frieze-pricing.test.ts",
     "test:eon-recovery": "tsx --test tests/eon-recovery.test.ts",
+    "test:eon-shop-prices": "tsx --test tests/eon-shop-price.test.ts",
     "test:etsy-growth-math": "tsx --test tests/etsy-growth-math.test.ts",
     "optimize:eon-frieze-pricing": "python3 scripts/eon-frieze/optimize_pricing.py"
   },

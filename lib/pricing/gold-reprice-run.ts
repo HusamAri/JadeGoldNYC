@@ -10,6 +10,7 @@ import {
   SPOT_SANITY_MIN,
   V4,
   eonListCents,
+  eonSaleCents,
   fetchLiveSpotUsd,
   isEonFriezeProduct,
   jadeAdjustedCents,
@@ -188,28 +189,44 @@ function computeTargets(
               wide: V4.multWide,
             },
           ];
-      const matched = currentCandidates.some(
-        ({ labor, narrow, wide }) =>
-          eonListCents(parsed.karat, parsed.widthMm, grams, labor, basis, {
-            narrow,
-            wide,
-          }) === oldCents,
+      const onBasis = (
+        kind: "list" | "sale",
+        labor: number,
+        narrow: number,
+        wide: number,
+      ) => {
+        const cents =
+          kind === "list"
+            ? eonListCents(parsed.karat, parsed.widthMm, grams, labor, basis, {
+                narrow,
+                wide,
+              })
+            : eonSaleCents(parsed.karat, parsed.widthMm, grams, labor, basis, {
+                narrow,
+                wide,
+              });
+        return cents === oldCents;
+      };
+      const matchedList = currentCandidates.some(({ labor, narrow, wide }) =>
+        onBasis("list", labor, narrow, wide),
       );
-      if (!matched) {
+      const matchedSale =
+        !matchedList &&
+        currentCandidates.some(({ labor, narrow, wide }) =>
+          onBasis("sale", labor, narrow, wide),
+        );
+      if (!matchedList && !matchedSale) {
         skip("taban-uyumsuz", sku);
         continue;
       }
-      newCents = eonListCents(
-        parsed.karat,
-        parsed.widthMm,
-        grams,
-        frieze ? V4.laborMilgrainUsd : V4.laborStandardUsd,
-        spot,
-        {
-          narrow: frieze ? V4.multHandfinishedNarrow : V4.multNarrow,
-          wide: frieze ? V4.multHandfinishedWide : V4.multWide,
-        },
-      );
+      const forward = {
+        narrow: frieze ? V4.multHandfinishedNarrow : V4.multNarrow,
+        wide: frieze ? V4.multHandfinishedWide : V4.multWide,
+      };
+      const labor = frieze ? V4.laborMilgrainUsd : V4.laborStandardUsd;
+      newCents = matchedSale
+        ? eonSaleCents(parsed.karat, parsed.widthMm, grams, labor, spot, forward)
+        : eonListCents(parsed.karat, parsed.widthMm, grams, labor, spot, forward);
     } else {
       // Jade: formül dayatılmaz; yalnız ham metal bedeli farkı eklenir.
       if (!(grams > 0)) {

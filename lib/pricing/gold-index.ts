@@ -73,6 +73,27 @@ export function eonListCents(
   return liste * 100;
 }
 
+/** Görünen satış = liste × 0,75. Vitrin fiyatı bu tutardır. */
+export function eonSaleCents(
+  karat: number,
+  widthMm: number,
+  grams: number,
+  laborUsd: number,
+  spotPerOzt: number,
+  multipliers: { narrow?: number; wide?: number } = {},
+): number {
+  const list = eonListCents(
+    karat,
+    widthMm,
+    grams,
+    laborUsd,
+    spotPerOzt,
+    multipliers,
+  );
+  if (!(list > 0)) return 0;
+  return Math.round((list * 3) / 4);
+}
+
 /** EON SKU'sundan karat + genişlik: `GLD-R-1404-6MM-7.5` → {14, 6}.
  *  Desen tutmuyorsa null — tanımadığımız SKU'ya fiyat YAZILMAZ. */
 export function parseEonSku(
