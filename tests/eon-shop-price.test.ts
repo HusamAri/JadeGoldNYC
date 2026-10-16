@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { eonSaleCents } from "@/lib/pricing/gold-index";
+import { eonListCents, eonSaleCents } from "@/lib/pricing/gold-index";
 import {
   capShopPrice,
   competitiveShopPrice,
@@ -11,7 +11,7 @@ import {
 const BASIS = 4399.9;
 const SPOT = 4198.4;
 
-test("a list price moves to the sale price and stays inside a 35 percent cut", () => {
+test("a list price follows the new gold list and stays inside a 35 percent cut", () => {
   const decision = competitiveShopPrice({
     sku: "GLD-R-1002-6MM-7",
     title: "Flat Wedding Band, Solid 10k Yellow Gold Comfort Fit",
@@ -22,13 +22,13 @@ test("a list price moves to the sale price and stays inside a 35 percent cut", (
   });
   assert.equal(decision.action, "reprice");
   if (decision.action !== "reprice") return;
-  const sale = eonSaleCents(10, 6, 4.7, 30, SPOT, { narrow: 1.55, wide: 2 });
-  assert.equal(decision.newCents, sale);
+  const list = eonListCents(10, 6, 4.7, 30, SPOT, { narrow: 1.55, wide: 2 });
+  assert.equal(decision.newCents, list);
   assert.equal(decision.matched, "list");
   assert.equal(decision.capped, false);
   assert.ok(decision.cutPct > 0);
+  assert.ok(decision.cutPct < 0.1);
   assert.ok(decision.cutPct <= MAX_SHOP_DISCOUNT + 1e-9);
-  assert.ok(decision.newCents >= Math.round(74745 * (1 - MAX_SHOP_DISCOUNT)));
 });
 
 test("a price already on the sale only follows the lower gold spot", () => {

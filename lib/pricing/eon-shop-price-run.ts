@@ -274,7 +274,7 @@ export async function runEonShopPrices(opts: {
       org_id: EON_ORG_ID,
       spot_per_ozt: spot.spotPerOzt,
       source: spot.sources.map((s) => s.name).join("+"),
-      note: `Vitrin satışı. ${verified.length} varyant, indirim tavanı %35.`,
+      note: `Altın listesi. ${verified.length} varyant. Kesinti tavanı %35; kasa indirimi ayrıca.`,
     });
   }
 
@@ -284,9 +284,9 @@ export async function runEonShopPrices(opts: {
     entityType: "organizations",
     entityId: EON_ORG_ID,
     summary:
-      `Eon vitrin fiyatı: ${targets.length} varyant hedeflendi, ` +
+      `Eon liste fiyatı yeni altına çekildi: ${targets.length} varyant hedeflendi, ` +
       `${verified.length} Etsy'de doğrulandı, panelde ${dbUpdated} güncellendi. ` +
-      `İndirim tavanı %35. Spot $${spot.spotPerOzt}/ozt.`,
+      `Kesinti tavanı %35. Spot $${spot.spotPerOzt}/ozt.`,
     source: "app",
   });
 

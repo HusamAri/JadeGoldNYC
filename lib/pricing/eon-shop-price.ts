@@ -11,10 +11,11 @@ import {
 /**
  * Eon vitrin fiyatı.
  *
- * Liste, motorun 0,75'e bölünmüş tavanıdır. Alıcının görmesi gereken
- * rekabetçi tutar listenin satış fiyatıdır (liste × 0,75). Mağaza indirimi
- * canlı fiyattan en fazla %35 iner; maliyet zemininin altına inmez ve
- * fiyat yükseltilmez.
+ * Etsy vitrin indirimi kasada ayrıca uygulanır (Ekim 2026: %30).
+ * Offering fiyatı bu yüzden liste olarak kalır; bir de listeyi satışa
+ * çekmek indirimi %35 tavanının üstüne taşır. Burada liste, yeni spotla
+ * yeniden kurulur. İndirim canlı fiyattan en fazla %35 iner, maliyet
+ * zemininin altına inmez ve fiyat yükseltilmez.
  */
 
 export const MAX_SHOP_DISCOUNT = 0.35;
@@ -160,14 +161,26 @@ export function competitiveShopPrice(input: ShopPriceInput): ShopPriceDecision {
     V4.packagingUsd +
     V4.shippingUsd;
   const floorCents = Math.round(floorUsd(landed) * 100);
-  const target = eonSaleCents(
-    parsed.karat,
-    parsed.widthMm,
-    input.grams,
-    best.tier.labor,
-    input.spotPerOzt,
-    best.tier,
-  );
+  // Liste eşleşmesi listede kalır. Satış eşleşmesi satışta kalır.
+  // Kasadaki mağaza indirimi bu fiyatın üstüne biner.
+  const target =
+    best.kind === "list"
+      ? eonListCents(
+          parsed.karat,
+          parsed.widthMm,
+          input.grams,
+          best.tier.labor,
+          input.spotPerOzt,
+          best.tier,
+        )
+      : eonSaleCents(
+          parsed.karat,
+          parsed.widthMm,
+          input.grams,
+          best.tier.labor,
+          input.spotPerOzt,
+          best.tier,
+        );
   const capped = capShopPrice(input.oldCents, target, floorCents);
   if (!capped) {
     return { action: "unchanged", reason: "hedef-yukari-veya-ayni" };

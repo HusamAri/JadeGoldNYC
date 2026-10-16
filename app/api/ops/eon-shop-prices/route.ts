@@ -8,7 +8,8 @@ export const maxDuration = 300;
  * Eon vitrin fiyatı. Varsayılan kuru çalışmadır.
  *
  * apply=1 yazar. listing=<id> tek listeyi dener ve altın tabanını ilerletmez.
- * İndirim canlı fiyattan en fazla %35'tir.
+ * Offering liste olarak kalır; kasadaki indirim ayrıca yürür.
+ * Tek seferlik kesinti canlı fiyattan en fazla %35'tir.
  *
  * Auth: Authorization: Bearer $REPAIR_ONE_SHOT_TOKEN veya $CRON_SECRET.
  */
