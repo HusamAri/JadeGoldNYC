@@ -113,6 +113,13 @@ repodaki hedefidir.
   (compare-and-swap) ile tüketilmeli, buton submit'te disable edilmeli.
   Doğrulama (2026-07-30, v4 turu): CAS + buton kilidi uygulandı → aynı akışta
   audit'e TEK reprice satırı düştü; kilit canlıda kanıtlandı.
+- **Etsy vitrin sırasını yazma; kişiselleştirmeyi boş diziyle silme (2026-10):**
+  `updateListing` `featured_rank` alanını 14 Ekim 2026'da kaldırdı. PATCH yine
+  200 döner ve read-back eski sırayı gösterir: EON `4554014095` rank 1 istendi,
+  8 kaldı. Vitrin sırasını Etsy editöründe değiştir. Kişiselleştirmeyi kapatmak
+  için `personalization_questions: []` 400 döner ("1 ile 5 eleman"). Doğru uç
+  `DELETE /shops/{shop_id}/listings/{listing_id}/personalization`. Kanıt:
+  Counterform `4561605534` boş POST 400, DELETE sonrası GET 0 soru.
 
 ## Ürün/UX dersleri
 

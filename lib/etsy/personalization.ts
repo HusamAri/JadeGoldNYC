@@ -58,14 +58,16 @@ interface PersonalizationResponse {
 
 /** Etsy sınırları — aşan içerik 400 döndürür, önden keseriz. */
 const MAX_QUESTION_TEXT = 45;
-const MAX_DROPDOWN_LABEL = 20;
+// Etsy's older 20-character note is stale: the live "3| Cinzel Decorative"
+// label is 21 characters and is already saved on Eon listings.
+const MAX_DROPDOWN_LABEL = 24;
 
 /**
  * YENİ listing'in açılış kişiselleştirmesi — kullanıcının hammered
- * listing'inde (4543442596) Etsy editöründen kurduğu iki sorunun aynısı
- * (ekran görüntüsüyle teyit edildi, 2026-08-04):
+ * listing'inde (4543442596) duran iki sorunun aynısı
+ * (canlı okuma, 16 Ekim 2026):
  *  1. iç gravür metni — opsiyonel, 30 karakter
- *  2. "Engraving Style" — opsiyonel dropdown, 4 seçenek
+ *  2. "Engraving Font" — 1| Prata, 2| Cinzel, 3| Cinzel Decorative, 4| Great Vibes
  *
  * Bu sabit YALNIZ TOHUMDUR: yeni listing daha ilk anda iki soruyla açılsın
  * diye var. MEVCUT listing'ler için doğruluk kaynağı burası DEĞİL, Etsy'deki
@@ -74,8 +76,8 @@ const MAX_DROPDOWN_LABEL = 20;
  * listing'in üzerine bu sabit yazılmaz.
  */
 const ENGRAVING_INSTRUCTIONS =
-  "Optional inside-band engraving, up to 30 characters. " +
-  "Script by default; type BLOCK for block letters. Blank = none.";
+  "Optional inside engraving, up to 30 characters. " +
+  "Choose your font from the Engraving Font menu. Leave blank for none.";
 
 export const DEFAULT_PERSONALIZATION_QUESTIONS: PersonalizationQuestion[] = [
   {
@@ -88,13 +90,14 @@ export const DEFAULT_PERSONALIZATION_QUESTIONS: PersonalizationQuestion[] = [
   {
     question_type: "dropdown",
     // `instructions` dropdown'da YASAK — bilerek yok.
-    question_text: "Engraving Style",
+    // Canlı menü, hammered listing 4543442596 (16 Ekim 2026): numaralı fontlar.
+    question_text: "Engraving Font",
     required: false,
     options: [
-      { label: "The Signature" },
-      { label: "The Ornament" },
-      { label: "The Monument" },
-      { label: "The Editorial" },
+      { label: "1| Prata" },
+      { label: "2| Cinzel" },
+      { label: "3| Cinzel Decorative" },
+      { label: "4| Great Vibes" },
     ],
   },
 ];
