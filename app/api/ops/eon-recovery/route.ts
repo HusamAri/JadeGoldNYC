@@ -39,6 +39,8 @@ export const maxDuration = 300;
  * Writes: pause unconfirmed Christmas listings, align engraving prose
  * to the live font menu, correct the 10K/14K-only brand sentence, the
  * laurel width comma, and the Counterform internal approval note.
+ * Counterform personalization is removed with DELETE. featured_rank is
+ * read and left alone: Etsy stopped applying that field on 2026-10-14.
  * Prices, tags, titles and processing profiles are not touched.
  */
 
@@ -118,6 +120,15 @@ export async function GET(request: Request) {
       if (open.has(listingId)) {
         log.push({ listingId, action: "pause", ok: false, detail: "open unshipped order, left active" });
         continue;
+      }
+      const featuredRank = (live as { featured_rank?: number }).featured_rank;
+      if (typeof featuredRank === "number") {
+        log.push({
+          listingId,
+          action: "feature-hold",
+          ok: true,
+          detail: `reports featured_rank ${featuredRank}`,
+        });
       }
       if (state === "inactive") {
         log.push({ listingId, action: "pause", ok: true, detail: "already inactive" });
@@ -277,11 +288,11 @@ export async function GET(request: Request) {
         });
       } else if (counterQuestions.length > 0) {
         try {
+          // POST requires 1 to 5 questions. Empty array is a 400.
+          // DELETE is deleteListingPersonalization and turns personalization off.
           await client.request(
-            "POST",
-            etsyPaths.listingPersonalization(shopId, COUNTERFORM_LISTING_ID) +
-              "?supports_multiple_personalization_questions=true",
-            { personalization_questions: [] },
+            "DELETE",
+            etsyPaths.listingPersonalization(shopId, COUNTERFORM_LISTING_ID),
           );
           await sleep(400);
           const left = await getListingPersonalization(client, COUNTERFORM_LISTING_ID);
@@ -309,39 +320,18 @@ export async function GET(request: Request) {
       }
     }
 
-    let featuredSupported: boolean | null = null;
+    // updateListing accepted featured_rank and returned 200 on 16 Oct 2026,
+    // then read back the old rank (4554014095 stayed 8 after a rank-1 write).
+    // Etsy removed the field on 14 Oct 2026. Do not send it again.
     for (const slot of FEATURED_REPLACEMENTS) {
-      if (!apply) {
-        log.push({ listingId: slot.listingId, action: "feature", ok: true, detail: `dry: rank ${slot.rank}` });
-        continue;
-      }
-      if (featuredSupported === false) {
-        log.push({ listingId: slot.listingId, action: "feature", ok: false, detail: "api rejected featured_rank" });
-        continue;
-      }
-      try {
-        await client.requestForm("PATCH", etsyPaths.shopListing(shopId, slot.listingId), {
-          featured_rank: slot.rank,
-        });
-        await sleep(300);
-        const back = await getListing(client, slot.listingId);
-        const rank = (back as { featured_rank?: number }).featured_rank;
-        featuredSupported = rank === slot.rank;
-        log.push({
-          listingId: slot.listingId,
-          action: "feature",
-          ok: featuredSupported,
-          detail: `read-back rank ${rank ?? "missing"}`,
-        });
-      } catch (e) {
-        featuredSupported = false;
-        log.push({
-          listingId: slot.listingId,
-          action: "feature",
-          ok: false,
-          detail: e instanceof Error ? e.message.slice(0, 180) : String(e),
-        });
-      }
+      const live = await getListing(client, slot.listingId);
+      const rank = (live as { featured_rank?: number }).featured_rank;
+      log.push({
+        listingId: slot.listingId,
+        action: "feature",
+        ok: false,
+        detail: `left at rank ${rank ?? "missing"} (wanted ${slot.rank}). Etsy no longer applies featured_rank writes.`,
+      });
     }
 
     const kinetic = await getListingPersonalization(client, KINETIC_LISTING_ID);
