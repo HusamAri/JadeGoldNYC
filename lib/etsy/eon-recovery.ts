@@ -54,6 +54,33 @@ export interface FontQuestion {
 }
 
 /** Dropdown question buyers actually use to pick a font, if one exists. */
+const STALE_FONT_INSTRUCTIONS =
+  /script by default|type block|block letters|block lettering/i;
+
+export const FONT_MENU_INSTRUCTIONS =
+  "Optional inside engraving, up to 30 characters. " +
+  "Choose your font from the Engraving Font menu. Leave blank for none.";
+
+/** 18K satin promises four numbered fonts but ships with a text field only. */
+export function shouldAttachFontMenu(input: {
+  listingId: number;
+  description: string;
+  fontMenu: string | null;
+}): boolean {
+  return (
+    input.listingId === SATIN_18K_LISTING_ID &&
+    input.fontMenu == null &&
+    /four numbered fonts/i.test(input.description)
+  );
+}
+
+export function repairFontInstructions(
+  instructions: string | null | undefined,
+): string | null {
+  if (!instructions || !STALE_FONT_INSTRUCTIONS.test(instructions)) return null;
+  return FONT_MENU_INSTRUCTIONS;
+}
+
 export function fontMenuLabel(questions: FontQuestion[]): string | null {
   const font = questions.find(
     (q) =>

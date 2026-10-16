@@ -92,12 +92,12 @@ export function EonPersonalizationSync({
             Kişiselleştirme · EON
           </p>
           <h2 className="text-sm font-semibold">
-            Gravür + Engraving style (canlı Etsy)
+            Gravür + Engraving Font (canlı Etsy)
           </h2>
           <p className="text-muted-foreground text-xs leading-relaxed">
             Alura listing helper gibi: önce tara, sapmaları gör, tek tuşla
-            kanonik sete çek. Text (30 karakter) + stil dropdown (The Signature /
-            Ornament / Monument / Editorial).
+            kanonik sete çek. Text (30 karakter) + Engraving Font (1| Prata,
+            2| Cinzel, 3| Cinzel Decorative, 4| Great Vibes).
           </p>
           {scanned > 0 && (
             <p className="font-mono text-[11px] tabular-nums">

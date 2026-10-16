@@ -6,6 +6,8 @@ import {
   fontMenuLabel,
   hasUnconfirmedHolidayDisclosure,
   repairCoreListingCopy,
+  repairFontInstructions,
+  shouldAttachFontMenu,
 } from "@/lib/etsy/eon-recovery";
 
 const DOME =
@@ -110,6 +112,38 @@ test("laurel width sentence drops the stray comma", () => {
   assert.equal(
     repaired.description,
     "Choose a width of 7 or 8 mm from the variation menu.",
+  );
+});
+
+test("18K satin gets a font menu only when the description promises numbered fonts", () => {
+  assert.equal(
+    shouldAttachFontMenu({
+      listingId: 4565352791,
+      description: "Optional inside engraving is available in four numbered fonts.",
+      fontMenu: null,
+    }),
+    true,
+  );
+  assert.equal(
+    shouldAttachFontMenu({
+      listingId: 4565352791,
+      description: "Optional inside engraving is available in four numbered fonts.",
+      fontMenu: "Engraving Font",
+    }),
+    false,
+  );
+});
+
+test("stale script instructions are replaced, current ones are kept", () => {
+  assert.match(
+    repairFontInstructions(
+      "Script by default; type BLOCK for block letters.",
+    ) ?? "",
+    /Engraving Font menu/,
+  );
+  assert.equal(
+    repairFontInstructions("Choose your font from the Engraving Font menu."),
+    null,
   );
 });
 

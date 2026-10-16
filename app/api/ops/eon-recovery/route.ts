@@ -17,10 +17,15 @@ import {
   KINETIC_LISTING_ID,
   LAUREL_LISTING_ID,
   repairCoreListingCopy,
-  type FontQuestion,
+  repairFontInstructions,
+  shouldAttachFontMenu,
 } from "@/lib/etsy/eon-recovery";
 import { getListing, updateListingDescription } from "@/lib/etsy/listing";
-import { getListingPersonalization } from "@/lib/etsy/personalization";
+import {
+  applyListingPersonalization,
+  getListingPersonalization,
+  type PersonalizationQuestion,
+} from "@/lib/etsy/personalization";
 import { decodeHtmlEntities } from "@/lib/etsy/text";
 
 export const maxDuration = 300;
@@ -154,15 +159,78 @@ export async function GET(request: Request) {
         COUNTERFORM_LISTING_ID,
       ]),
     ];
+    const referenceFont = reference.find((q) => q.question_type === "dropdown");
     for (const listingId of copyIds) {
-      const questions = (await getListingPersonalization(
+      let questions = (await getListingPersonalization(
         client,
         listingId,
-      )) as FontQuestion[];
-      const menu = fontMenuLabel(questions);
+      )) as PersonalizationQuestion[];
       const live = await getListing(client, listingId);
       const description = decodeHtmlEntities(live.description ?? "");
-      const repaired = repairCoreListingCopy({ listingId, description, fontMenu: menu });
+      let menu = fontMenuLabel(questions);
+      if (
+        shouldAttachFontMenu({ listingId, description, fontMenu: menu }) &&
+        referenceFont
+      ) {
+        const textQuestion = questions.find((q) => q.question_type === "text_input");
+        if (textQuestion && apply) {
+          const attached = await applyListingPersonalization(
+            client,
+            shopId,
+            listingId,
+            [textQuestion, referenceFont],
+          );
+          log.push({
+            listingId,
+            action: "attach-font-menu",
+            ok: attached.ok,
+            detail: attached.ok ? "Engraving Font added" : attached.detail,
+          });
+          if (attached.ok) {
+            questions = await getListingPersonalization(client, listingId);
+            menu = fontMenuLabel(questions);
+          }
+        } else if (!apply) {
+          log.push({
+            listingId,
+            action: "attach-font-menu",
+            ok: true,
+            detail: "dry: would add Engraving Font",
+          });
+          menu = referenceFont.question_text.trim();
+        }
+      }
+      const stale = questions
+        .map((q) => repairFontInstructions(q.instructions))
+        .find((next) => next != null);
+      if (stale && menu && listingId !== COUNTERFORM_LISTING_ID) {
+        if (!apply) {
+          log.push({ listingId, action: "font-instructions", ok: true, detail: "dry" });
+        } else {
+          const nextQuestions = questions.map((q) =>
+            q.question_type === "text_input" && repairFontInstructions(q.instructions)
+              ? { ...q, instructions: stale }
+              : q,
+          );
+          const written = await applyListingPersonalization(
+            client,
+            shopId,
+            listingId,
+            nextQuestions,
+          );
+          log.push({
+            listingId,
+            action: "font-instructions",
+            ok: written.ok,
+            detail: written.ok ? "updated" : written.detail,
+          });
+        }
+      }
+      const repaired = repairCoreListingCopy({
+        listingId,
+        description,
+        fontMenu: menu,
+      });
       const entry: Record<string, unknown> = {
         listingId,
         action: "copy",
@@ -170,6 +238,7 @@ export async function GET(request: Request) {
         questions: questions.map((q) => ({
           type: q.question_type,
           text: q.question_text,
+          instructions: q.instructions ?? null,
           options: (q.options ?? []).map((o) => o.label),
         })),
         changes: repaired.changes,
