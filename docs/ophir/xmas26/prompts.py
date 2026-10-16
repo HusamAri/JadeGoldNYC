@@ -32,7 +32,7 @@ GROUNDS = [
     ("warm sand", "#C9A77C"), ("soft cream", "#EFE7DA"), ("pale travertine", "#E3D9C6"),
     ("deep camel", "#B08D62"), ("warm greige", "#D6C8B4"), ("pale oat", "#E8DFCF"),
     ("dusty clay", "#C08E72"), ("cool chalk", "#E6E4DD"), ("warm taupe", "#CDBBA4"),
-    ("soft bisque", "#EAD9C4"), ("pale ash", "#DAD6CC"), ("honeyed amber", "#D8B98C"),
+    ("soft bisque", "#EAD9C4"), ("pale ash", "#DAD6CC"), ("cool putty", "#DDD5C6"),
     ("muted olive", "#BFBA9B"), ("blush clay", "#E2CDC2"), ("warm pebble", "#CFC3B2"),
     ("ivory chalk", "#F0EAE0"), ("toasted almond", "#C6A98A"), ("pale slate", "#D3D2CC"),
     ("soft fawn", "#D9C3A5"), ("deep oat", "#C9BBA3"),
@@ -47,38 +47,82 @@ def shape_of(it):
     Every sentence used here is asserted to appear verbatim in the description, so the picture and
     the listing text stay one source."""
     size = " ".join(s for s in it["description"].split("\n") if s.startswith("Size:"))
-    return " ".join(f"{it['lead']} {it['buildNote']} {size}".split())
+    # a simile in the lead is sales voice too: "like a string of lights" puts fairy lights in the
+    # scene, "like a garland" puts foliage on a twisted wire. The listing keeps it; the prompt drops it.
+    lead = re.sub(r",? like [^.]*", "", it["lead"])
+    assert lead.rstrip(".") in it["lead"], it["id"]
+    return " ".join(f"{lead} {it['buildNote']} {size}".split())
+
+
+def finish(it):
+    """R07 is the one frosted surface in the line; every shared "polished" claim is false on it."""
+    return "frosted" if "frost" in it["buildNote"].lower() else "polished"
+
+
+def stone_spec(it):
+    """The listing's own Stone(s) line(s), minus the label, so the prompt names exactly the stones
+    the buyer is sold: colour, count and setting. Never a class claim like "every other stone"."""
+    lines = [s for s in it["description"].split("\n") if s.startswith("Stone")]
+    return " ".join(l.split(":", 1)[1].strip().rstrip(".") for l in lines)
 
 
 def metal(it):
-    """True of THIS product: a ring with no stones must never be told every stone is a diamond."""
+    """True of THIS product. Three defects this sentence has already produced elsewhere: a stoneless
+    ring told every stone is a diamond (Stellar N01), a frosted dome told every surface is polished,
+    and a one-garnet ring told "every other stone is a white diamond" (which presupposes others)."""
     n = it["accentStonesRef"] + it["centreStonesRef"]
     if n == 0:
-        return ("The gold is polished 14K yellow gold and the ring carries no stones at all: every surface "
-                "is solid plain polished gold, with no diamond, no gem and no empty setting.")
-    if it["centreStonesRef"]:
-        return ("The gold is polished 14K yellow gold. The coloured stones are exactly as the description "
-                "names them and every other stone is a white diamond; add no stone the description "
-                "does not name.")
-    return ("The gold is polished 14K yellow gold and every stone is a small white diamond; add no stone "
-            "the description does not name.")
+        return ("The gold is 14K yellow gold and the ring carries no stones at all: no diamond, no gem "
+                "and no empty setting anywhere on it.")
+    spec = stone_spec(it)
+    assert spec, it["id"]
+    return (f"The gold is 14K yellow gold. The stones are exactly these and no others: {spec}. There is "
+            f"no other stone and no empty setting anywhere on the ring.")
+
+
+def finger(it):
+    """The worn frame puts the ring where the listing says it is worn. R06 is sold as a pinky ring;
+    the finger is named by anatomy, not only by name (Cartouche 2026-09-26)."""
+    if "little finger" in it["description"]:
+        return ("the little finger, the smallest and outermost finger at the edge of the hand next to "
+                "the ring finger")
+    return "the ring finger"
+
+
+def hero_pose(it):
+    """A signet's motif is in its face; the shared upright pose meets a cut-in face at a grazing
+    angle, so the signets are tipped back until the face addresses the camera."""
+    if "mound" in it["buildNote"]:
+        # R06: the whole design is the height difference across the top; square-on it reads as a
+        # plain plate (2026-10-16 render), so it is shown from three-quarter, slightly above
+        return ("the ring stands upright on the stone, turned about forty-five degrees to one side "
+                "and seen from slightly above, so the high side of the top and its slope down into "
+                "the band both read in profile, in razor-sharp focus at the centre of the frame")
+    if "Signet" in it["name"]:
+        return ("the ring rests on its shank on the stone, tipped back so the face of the signet is "
+                "turned up and squarely toward the camera, in razor-sharp focus at the centre of the "
+                "frame; seen from slightly above so the face reads whole")
+    return ("the ring stands upright on the stone, leaning very slightly back, in razor-sharp focus at "
+            "the centre of the frame; seen from slightly above, with the front of the ring turned to "
+            "the camera so its shape reads")
 
 
 def frames(it, ground, hexa):
     stone = (f"{ground} stone ({hexa}), a smooth honed slab with its fine natural pitting visible in "
              f"raking light")
+    highlight = ("one clean highlight running along the polished gold" if finish(it) == "polished"
+                 else "the frosted gold holding a soft even light and no mirror highlight")
     return [
         ("01", "Hero on stone", False,
-         f"Etsy thumbnail hero, macro still life in one colour on {stone}: the ring stands upright on the "
-         f"stone, leaning very slightly back, in razor-sharp focus at the centre of the frame; seen from "
-         f"slightly above, with the front of the ring turned to the camera so its shape reads; warm light "
-         f"from the upper left with one clean highlight running along the polished gold; the stone falls "
-         f"softly out of focus at the edges. No people and no hands in the image."),
+         f"Etsy thumbnail hero, product still life on a single-colour ground of {stone}: {hero_pose(it)}; "
+         f"warm light from the upper left with {highlight}; the stone falls softly out of focus at the "
+         f"edges. No people and no hands in the image."),
         ("02", "Worn on the hand", True,
-         f"Editorial close-up of a woman's hand with {SKIN['02']} skin, resting relaxed against {stone}: "
-         f"exactly one ring, worn on the ring finger, turned so the front of the ring faces the camera; "
-         f"the other fingers are completely bare and it is the only jewelry in the image, no watch and no "
-         f"second ring; anatomically correct hand with five fingers; short natural nails."),
+         f"Editorial close-up of a woman's left hand with {SKIN['02']} skin, resting flat and relaxed on "
+         f"{stone}, back of the hand to the camera, thumb visible, fingers straight and slightly apart: "
+         f"exactly one ring, worn on {finger(it)}, with the top of the ring facing the camera; the other "
+         f"fingers are completely bare and it is the only jewelry in the image, no watch and no second "
+         f"ring; anatomically correct hand with five fingers; short natural nails."),
         ("03", "Macro detail", False,
          f"Extreme close-up on {stone}: the ring lies flat like a coin with its front face turned up to "
          f"the camera, which sits a few centimetres away, so the worked detail fills the frame from edge "
@@ -136,7 +180,17 @@ for k, v in out.items():
     # the shared block must be TRUE of this product
     has_stones = it["accentStonesRef"] + it["centreStonesRef"] > 0
     assert ("carries no stones at all" in t) != has_stones, k
-    assert ("white diamond" in t) == has_stones, k
+    # the stone sentence is the listing's Stone line: present iff the ring has stones, and a white
+    # diamond is named iff the ring carries accent diamonds (never on the garnet/tourmaline rings)
+    assert ("The stones are exactly these and no others" in t) == has_stones, k
+    assert ("white diamond" in t) == (it["accentStonesRef"] > 0), k
+    assert "every other stone" not in t and "plain polished" not in t, k
+    # the finish is per product: the frosted dome is never told it is polished
+    if finish(it) == "frosted":
+        assert "polished" not in t.split("The piece:")[0] or v["frame"] == "05", k
+    # no simile survives in the shape clause ("lies flat like a coin" is a pose, outside it)
+    shape = t.split("The piece:")[1].split("Shot on a Canon")[0]
+    assert " like " not in shape, (k, shape)
     # the three-metal frame changes colour only; "same metal" there is the moth contradiction
     if v["frame"] == "05":
         assert "Only the metal colour changes" in t and "same metal" not in t, k
@@ -146,11 +200,17 @@ for k, v in out.items():
     assert "reference image" not in t, k
     # worn frame names the finger and empties the others; no other frame wears the ring
     if v["frame"] == "02":
-        assert "worn on the ring finger" in t and "other fingers are completely bare" in t, k
+        want = "worn on the little finger" if "little finger" in it["description"] else "worn on the ring finger"
+        assert want in t and "other fingers are completely bare" in t, (k, want)
+        assert "back of the hand to the camera" in t and "thumb visible" in t, k
     else:
-        # scoped to the POSING phrase: a product's own copy may legitimately say "worn on the
-        # finger" (R20 does), and a guard that scans the whole prompt trips on the listing text
-        assert "worn on the ring finger" not in t, k
+        assert "worn on the ring finger" not in t and "worn on the little finger" not in t, k
+    if v["frame"] == "01":
+        assert "in one colour" not in t and "single-colour ground" in t, k
+        if "Signet" in it["name"] and "mound" not in it["buildNote"]:
+            assert "face of the signet is turned up" in t, k
+        if "mound" in it["buildNote"]:
+            assert "both read in profile" in t and "flat" in t, k
     if v["frame"] == "04":
         assert "about 2 cm across" in t, k          # scale stated as a number, not as "real scale"
     # another shop's Christmas motifs must not leak into our pictures either

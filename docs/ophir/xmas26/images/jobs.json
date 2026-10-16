@@ -1,0 +1,217 @@
+{
+ "model": "nano_banana_2",
+ "params": {
+  "aspect_ratio": "1:1",
+  "count": 1,
+  "resolution": "2k",
+  "use_unlim": false
+ },
+ "note": "resolution MUST be passed explicitly (defaults to 1k). count is ALWAYS 1. Each prompt's md5 is checked against prompts.json before the call; the seal column records the md5 of the prompt that was sent.",
+ "approval": "owner 2026-10-16: '\u00fcretim onayl\u0131 hero g\u00f6rselleri \u00fcret' - the 20 hero frames (01) only; 40 credits. Frames 02-06 are not approved yet.",
+ "order": "R01 alone as the template canary; then R04 (signet pose), R07 (frosted finish), R11 (diamond line), R13 (garnet sentence), R17 (new icicle geometry) as branch canaries; then the remaining 14.",
+ "heroes": {
+  "R01-01": {
+   "job": "b72239d1-99eb-4d15-9ad5-2f4a0e531466",
+   "w": 2048,
+   "h": 2048,
+   "seal": "cc0f5fbe68b715a2dc59c90c26f1bf07",
+   "served_model": "nano_banana_flash",
+   "qa": "pass",
+   "note": "template canary: bow, loops proud, tails down the shank, polished, no stones; cosmetic hallmark-like marks inside the shank"
+  },
+  "R02-01": {
+   "job": "844d12ae-791c-4ace-852e-4b248980d813",
+   "w": 2048,
+   "h": 2048,
+   "seal": "15ca0419346bdd62bd8f868ba7c23f9a",
+   "served_model": "nano_banana_flash",
+   "qa": "pass",
+   "note": "doubled band in one rounded knot at the top, shadow where it tucks"
+  },
+  "R03-01": {
+   "job": "a276e3b1-7e24-49f9-a539-45b2d57d1581",
+   "w": 2048,
+   "h": 2048,
+   "seal": "553d0851de595d396ee0f79ffc096251",
+   "served_model": "nano_banana_flash",
+   "qa": "pass",
+   "note": "flat band, one standing curl at the top; curl is tighter than a wave but the rise and the flat section are on spec"
+  },
+  "R04-01": {
+   "job": "07a11553-98d2-4976-9ceb-d54c46e47e06",
+   "w": 2048,
+   "h": 2048,
+   "seal": "440f93747bad28cd7b0a3f87edb34028",
+   "served_model": "nano_banana_flash",
+   "qa": "pass",
+   "note": "signet pose canary: oval face turned to camera, one fir sprig cut into the face, shoulders swell into the face"
+  },
+  "R05-01": {
+   "job": "b92e6d56-d895-47a9-8c62-6cc384d90f4a",
+   "w": 2048,
+   "h": 2048,
+   "seal": "1093025a665b6faab2fc47263907c383",
+   "served_model": "nano_banana_flash",
+   "qa": "pass",
+   "note": "soft-cornered square face, interlaced knot cut into it, face to camera"
+  },
+  "R06-01": {
+   "job": "a172e165-fa96-40bf-bde5-67d93b924214",
+   "w": 2048,
+   "h": 2048,
+   "seal": "57258d3b2d90255b75ea9f9e3e3d5381",
+   "served_model": "nano_banana_flash",
+   "qa": "pass",
+   "note": "v2 after owner's 'try again': build rewritten as a solid mound (no 'face', no flat plate) and a three-quarter pose so the height difference reads; mound rises one side, slopes into the band. Ring sits small in the frame."
+  },
+  "R07-01": {
+   "job": "535c6cb3-57cf-4829-90d5-3762dc4d3f8f",
+   "w": 2048,
+   "h": 2048,
+   "seal": "54a649f3feaea78537efb45fd4ecf231",
+   "served_model": "nano_banana_flash",
+   "qa": "pass",
+   "note": "frost canary: whole dome frosted, soft even light, no mirror highlight, no stones"
+  },
+  "R08-01": {
+   "job": "4e6cdb5e-225e-49b9-9dd6-ab669b189d14",
+   "w": 2048,
+   "h": 2048,
+   "seal": "eab2da51ab7561a3483f7819333132e7",
+   "served_model": "nano_banana_flash",
+   "qa": "pass",
+   "note": "tall smooth mirror-polished dome, nothing on the surface"
+  },
+  "R09-01": {
+   "job": "ba93a993-d6ca-4bfb-9d1f-c52ec62f6282",
+   "w": 2048,
+   "h": 2048,
+   "seal": "15c339b98f814411b204bbab62d2ff52",
+   "served_model": "nano_banana_flash",
+   "qa": "pass",
+   "note": "dome tiled with overlapping pinecone scales, edges lifted"
+  },
+  "R10-01": {
+   "job": "0a192b69-c86c-475d-ab6c-da8f77d4ce42",
+   "w": 2048,
+   "h": 2048,
+   "seal": "a41a30c5fb8492b9bd485b12b0f670bd",
+   "served_model": "nano_banana_flash",
+   "qa": "pass",
+   "note": "five solid gold spheres close together over the top, rest of the thin band plain"
+  },
+  "R11-01": {
+   "job": "1813c7cd-3e92-4464-b86c-78804d6cb5a6",
+   "w": 2048,
+   "h": 2048,
+   "seal": "b2e71910fcdc69a2b05542eacd9be157",
+   "served_model": "nano_banana_flash",
+   "qa": "pass",
+   "note": "diamond line canary: small white stones in individual bezel collars at intervals, plain gold between; 5 visible on the front half"
+  },
+  "R12-01": {
+   "job": "b00845e1-5af0-4350-8bcf-3e0a4338cb78",
+   "w": 2048,
+   "h": 2048,
+   "seal": "c65f4a0205c49db5484c0f26c712901d",
+   "served_model": "nano_banana_flash",
+   "qa": "pass",
+   "note": "two wires twisted evenly the whole way round, groove between"
+  },
+  "R13-01": {
+   "job": "86b43e03-34f4-46da-a676-a05b7fe16c33",
+   "w": 2048,
+   "h": 2048,
+   "seal": "5564c7723eea3d04c6c817c7102c4350",
+   "served_model": "nano_banana_flash",
+   "qa": "pass",
+   "note": "coloured-stone sentence canary: one deep red round stone in a rub over bezel, plain band, no other stone"
+  },
+  "R14-01": {
+   "job": "96347b35-612c-420d-9072-e02622396db8",
+   "w": 2048,
+   "h": 2048,
+   "seal": "e282063f58e0f13eb1790f646b503ef2",
+   "served_model": "nano_banana_flash",
+   "qa": "pass",
+   "note": "one deep green round stone in a rub over bezel, plain band, no other stone"
+  },
+  "R15-01": {
+   "job": "5589cffa-61c8-42c8-a180-7b188a5adb61",
+   "w": 2048,
+   "h": 2048,
+   "seal": "2dbc3a10141342d04d80a98e567b5a12",
+   "served_model": "nano_banana_flash",
+   "qa": "pass",
+   "note": "garnet and tourmaline in rub over bezels shoulder to shoulder on a bypass shank; no other stone"
+  },
+  "R16-01": {
+   "job": "29c3cde5-f96c-4f38-99c0-30fc9b2b11a2",
+   "w": 2048,
+   "h": 2048,
+   "seal": "d5bf63831d6d50674abe4e1936bc593d",
+   "served_model": "nano_banana_flash",
+   "qa": "pass",
+   "note": "sculpted rose head, petals folded in, one small white stone at the centre"
+  },
+  "R17-01": {
+   "job": "459d5c30-6b93-4539-926f-932f4bcdda2c",
+   "w": 2048,
+   "h": 2048,
+   "seal": "0d55e0df074934830f711624fee36b32",
+   "served_model": "nano_banana_flash",
+   "qa": "pass",
+   "note": "new icicle geometry canary: five tapering points rising from the top of the band in the ring's plane, fine tips; counted 5 in the crop"
+  },
+  "R18-01": {
+   "job": "69ea7523-2f16-48ff-b387-ffb2349d40d7",
+   "w": 2048,
+   "h": 2048,
+   "seal": "50d334e018a4751f246397cbaa00c899",
+   "served_model": "nano_banana_flash",
+   "qa": "pass",
+   "note": "fir sprig along the band, needles raised both sides of a central stem"
+  },
+  "R19-01": {
+   "job": "7d6e2d3e-8e8c-4eb3-b9a2-ea36fab8ecdc",
+   "w": 2048,
+   "h": 2048,
+   "seal": "0dfc4ab2ee9f56fd70d03cf276de39a6",
+   "served_model": "nano_banana_flash",
+   "qa": "pass",
+   "note": "two forked antlers passing each other in a bypass with a visible gap"
+  },
+  "R20-01": {
+   "job": "76ac128e-5970-43e6-b57f-7661f3f438ad",
+   "w": 2048,
+   "h": 2048,
+   "seal": "fa04e4fb1d6439c872ef239f55ddefc7",
+   "served_model": "nano_banana_flash",
+   "qa": "pass",
+   "note": "overlapping leaves the whole way round, each lapping the last the same way"
+  }
+ },
+ "rejected_submissions": [
+  {
+   "id": "R15-01",
+   "when": "wave 4",
+   "error": "unknown model nano_banana_2 (transient catalogue error; six sibling calls seconds apart accepted the same model)",
+   "queued": false,
+   "credits": 0,
+   "retried_as": "5589cffa-61c8-42c8-a180-7b188a5adb61"
+  }
+ ],
+ "credits": {
+  "generations": 21,
+  "credits": 42,
+  "basis": "20 heroes + 1 owner-approved reshoot, counted from job ids, not from the balance delta"
+ },
+ "superseded": [
+  {
+   "id": "R06-01",
+   "job": "bcb5e63b-9f93-4984-8264-75698e8c3ce1",
+   "seal": "5c61a3b20efe6d6c719647c8368642d9",
+   "why": "face rendered as a plain flat oval signet; the listing sells a face that lifts on one side and falls away on the other (drifted curve). Ring also small in frame. Reshoot needs owner approval: a 21st generation beyond the approved 20, and a changed prompt."
+  }
+ ]
+}

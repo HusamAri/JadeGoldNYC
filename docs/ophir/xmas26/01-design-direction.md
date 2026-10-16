@@ -59,7 +59,7 @@ ring would compete with Ophir's own shelf.
 | R14 | Evergreen Bezel Ring | stone | one deep green round stone, rub-over bezel, plain band |
 | R15 | Toi et Moi Winter Ring | stone | red and green stones side by side on a bypass shank |
 | R16 | Winter Rose Ring | stone | a single sculpted rose head with a stone at its centre |
-| R17 | Icicle Point Ring | winter | tapering icicle points hanging from the band's lower edge |
+| R17 | Icicle Point Ring | winter | tapering icicle points rising from the top of the band, in the plane of the ring |
 | R18 | Fir Sprig Ring | winter | a fir sprig laid along the band, needles raised |
 | R19 | Reindeer Antler Ring | winter | two antler forks meeting in a bypass |
 | R20 | Wreath Ring | winter | a full circle of overlapping gold leaves |
