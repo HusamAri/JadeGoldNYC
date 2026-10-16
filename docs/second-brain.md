@@ -1436,6 +1436,29 @@ repodaki hedefidir.
   fotoğrafı karartma; (3) feed tek dünyada durmalı, listing dünyası feed dünyasıyla çelişiyorsa
   listing karesini değil feed karesini üret.
 
+- **Yeni bir Etsy protokolünün taksonomi adı ve KÖKÜ koda yazılmadan önce canlı ağaçtan okunur;
+  "mantıklı" kök yanlış köktür, ve bağlam devrinden sonra "yapılmadı" sandığın iş DB'de bitmiş
+  olabilir (2026-10-16, Winter 26/27):** Mağazanın ilk broşu için `brooch` protokolünü
+  `taxonomyNames: ["Brooches"], taxonomyRoot: "Jewelry"` diye yazdım ve kod yorumuna dürüstçe
+  "ad canlı taksonomiye karşı doğrulanmadı" koydum; test de sahte ağaçta "bulamazsa durur" diye
+  geçti. Kanarya tam o yerde durdu: Etsy'de Brooches `Jewelry` altında değil, `Accessories >
+  Pins & Clips > Brooches` (1201); ikiz `Weddings > Jewelry > Brooches` (1682) ve bir craft-supply
+  düğümü (6769) de var. Güvenlik katmanı doğru çalıştı (Etsy'ye tek bayt gitmedi, kilit elle
+  silindi) ama bir tur ve bir tek kullanımlık token yandı. Yakalatan araç, rotaya eklediğim
+  salt-okunur `?taxonomy=<terim>` dökümü oldu (id + ad + tam yol); bir sonraki yeni ürün tipinde
+  protokolü yazmadan ÖNCE koşulur. Kural: (1) "doğrulanmadı" diye yorum yazmak ölçüm değildir,
+  yazdığın anda ölç; dış sistemin ağacı sende bir kaynak dosya değil, canlı bir uç; (2) sahte
+  ağaçlı test ancak canlı ağaçtan kopyalanmış düğümlerle (iki Brooches, doğru kök 1201'i seçer,
+  yanlış kök durur) bir şey kanıtlar; (3) aynı ad birden çok kökte yaşıyorsa kök protokolün
+  parçasıdır, ad tek başına kimlik değildir (09-14 dersinin tekrarı). İkinci ders bağlam
+  devrinde: özet "0 listing açıldı" diyordu, DB ise W01-W04'ün bir gün önce `etsy.listing_create`
+  audit satırıyla açıldığını gösterdi; körlemesine yeniden itseydim `draftTransfer` kilidi ve
+  `etsy_listing_id` dolu kontrolü kurtarırdı ama ilk hareket SQL'le durumu okumak oldu (08-20
+  dersinin tekrarı: devralınan niyet, yapılmamış iş demek değildir). Üçüncü: tek kullanımlık
+  token'ların ömrü 4 saat, gece devrinde hepsi öldü; yeniden basıldı ve iş bitince kalan 10'u
+  `used_at` ile yakıldı, açık token bırakılmaz. Zincir tuttu: W05 apply → `verify=1` taze token
+  5/5 verified 0 mismatch → panel 5 bağlı, 5 tekil id, 5 audit satırı.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması

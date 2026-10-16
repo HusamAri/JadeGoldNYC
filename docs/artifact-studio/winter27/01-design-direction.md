@@ -68,8 +68,10 @@ W05 is the shop's first brooch. `lib/etsy/listing-protocol.ts` has no brooch pro
 (ids checked 2026-10-15: wedding_band, signet_ring, monogram_signet_ring, sculptural_ring,
 stacking_ring, fixed_date_ring, pendant_necklace, chain_bracelet, cuff_bracelet,
 stud_earrings, dangle_earrings, hoop_earrings, anklet). A `brooch` protocol is added with
-this set: taxonomy `Jewelry > Brooches`, no size axis, no personalization, ring parcel,
-plus a resolver test in `tests/listing-protocol.test.ts`. An undefined protocol id falls to
+this set: taxonomy `Accessories > Pins & Clips > Brooches` (node 1201, read from the live
+tree with `ops/drafts-push?taxonomy=brooch`; the Jewelry root has no Brooches and the first
+version of the protocol assumed it did), no size axis, no personalization, chain jewelry
+parcel, plus a resolver test in `tests/listing-protocol.test.ts`. An undefined protocol id falls to
 `product_type` and the wedding band rule (Width required), which is the FW26/27 failure
 class (second-brain 2026-09-30).
 
@@ -94,4 +96,7 @@ the pendant, the enamel eye domed. Higgsfield records the model as `nano_banana_
 ## Status
 
 - 2026-10-15: concepts, cuff 4 mm, five heroes, 55 gallery prompts approved; 61 frames generated (6 QA reshoots),
-  catalog + migration 0168 generated (315 variants, 60 images), brooch protocol added. Next: apply, Etsy drafts.
+  catalog + migration 0170 generated (315 variants, 60 images), brooch protocol added; migration applied,
+  seals match; W01 to W04 pushed to Etsy as drafts (W05 blocked on the brooch taxonomy root).
+- 2026-10-16: brooch root fixed (Accessories, node 1201), W05 pushed; 5/5 verified by independent
+  read-back, 0 mismatch. Listing ids and checks in `etsy.md`. All five are drafts; publication is the owner's.
