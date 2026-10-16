@@ -48,7 +48,7 @@ ring would compete with Ophir's own shelf.
 | R03 | Ribbon Wave Ring | bow | a flat band folded into one standing wave, like ribbon caught mid-curl |
 | R04 | Fir Crest Signet Ring | signet | an oval signet with a single fir sprig carved into the face |
 | R05 | Nordic Knot Signet Ring | signet | a squared signet with an interlaced Scandinavian knot |
-| R06 | Snowdrift Pinky Signet | signet | a small pinky signet whose face is a drifted, wind-shaped curve |
+| R06 | Snowdrift Pinky Signet | signet | a small pinky signet whose top is a drifted, wind-shaped mound instead of a flat face |
 | R07 | Frost Dome Ring | dome | a high dome worked all over with a fine frosted texture |
 | R08 | Snow Globe Dome Ring | dome | a tall smooth polished dome, nothing on it at all |
 | R09 | Pinecone Dome Ring | dome | a dome built from overlapping pinecone scales |

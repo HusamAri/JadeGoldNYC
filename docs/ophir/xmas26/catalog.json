@@ -21,7 +21,8 @@
    "listingProtocol": "sculptural_ring",
    "offersPersonalization": false,
    "name": "Ribbon Bow Ring",
-   "title": "Ribbon Bow Ring, Solid Gold Tied Bow Christmas Ring, Holiday Stacking Gift, Gift for Her",
+   "short": "Tied Bow",
+   "title": "Ribbon Bow Ring, Solid Gold Tied Bow Christmas Ring, Holiday Gift for Her",
    "tags": [
     "christmas ring",
     "bow ring",
@@ -2051,7 +2052,8 @@
    "listingProtocol": "sculptural_ring",
    "offersPersonalization": false,
    "name": "Velvet Knot Ring",
-   "title": "Velvet Knot Ring, Solid Gold Soft Knot Christmas Ring, Holiday Stacking Gift, Gift for Her",
+   "short": "Soft Knot",
+   "title": "Velvet Knot Ring, Solid Gold Soft Knot Christmas Ring, Holiday Gift for Her",
    "tags": [
     "christmas ring",
     "knot ring",
@@ -4081,7 +4083,8 @@
    "listingProtocol": "sculptural_ring",
    "offersPersonalization": false,
    "name": "Ribbon Wave Ring",
-   "title": "Ribbon Wave Ring, Solid Gold Standing Wave Christmas Ring, Holiday Stacking Gift, Gift for Her",
+   "short": "Standing Wave",
+   "title": "Ribbon Wave Ring, Solid Gold Standing Wave Christmas Ring, Holiday Gift for Her",
    "tags": [
     "christmas ring",
     "wave ring",
@@ -4097,9 +4100,9 @@
     "festive jewelry",
     "sculptural ring"
    ],
-   "description": "A flat band folded into one standing wave, like ribbon caught mid curl.\n\nThe band is flat and even the whole way round, then lifts into a single standing curl over the knuckle and settles again. The band stays flat and even the whole way round, then lifts into a single curl over the knuckle and settles again. Nothing is added to it: the whole design is one piece of gold persuaded into a curve.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose. White gold is unplated, a soft silvery grey.\nSize: the band is 2.6 mm wide and the wave rises about 6 mm.\n\nEach piece is made to order and ships free within the United States. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Take it off before the gym, the pool and the shower, and wipe it with a soft cloth.\n\nThe product images are design visualizations of the finished piece, and the three metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
+   "description": "A flat band folded into one standing wave, like ribbon caught mid curl.\n\nThe band is flat and even the whole way round, then lifts into a single standing curl at the top of the finger and settles again. The band stays flat and even the whole way round, then lifts into a single curl at the top of the finger and settles again. Nothing is added to it: the whole design is one piece of gold persuaded into a curve.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose. White gold is unplated, a soft silvery grey.\nSize: the band is 2.6 mm wide and the wave rises about 6 mm.\n\nEach piece is made to order and ships free within the United States. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Take it off before the gym, the pool and the shower, and wipe it with a soft cloth.\n\nThe product images are design visualizations of the finished piece, and the three metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
    "lead": "A flat band folded into one standing wave, like ribbon caught mid curl.",
-   "buildNote": "The band is flat and even the whole way round, then lifts into a single standing curl over the knuckle and settles again.",
+   "buildNote": "The band is flat and even the whole way round, then lifts into a single standing curl at the top of the finger and settles again.",
    "dims": "2.6 mm band, 6 mm rise",
    "variationAxes": [
     "Karat",
@@ -6111,7 +6114,8 @@
    "listingProtocol": "sculptural_ring",
    "offersPersonalization": false,
    "name": "Fir Crest Signet Ring",
-   "title": "Fir Crest Signet Ring, Solid Gold Fir Crest Christmas Ring, Holiday Stacking Gift, Gift for Her",
+   "short": "Fir Crest",
+   "title": "Fir Crest Signet Ring, Solid Gold Fir Crest Christmas Ring, Holiday Gift for Her",
    "tags": [
     "christmas ring",
     "gold signet ring",
@@ -8141,7 +8145,8 @@
    "listingProtocol": "sculptural_ring",
    "offersPersonalization": false,
    "name": "Nordic Knot Signet Ring",
-   "title": "Nordic Knot Signet Ring, Solid Gold Nordic Knot Christmas Ring, Holiday Stacking Gift, Gift for Her",
+   "short": "Nordic Knot",
+   "title": "Nordic Knot Signet Ring, Solid Gold Nordic Knot Christmas Ring, Holiday Gift for Her",
    "tags": [
     "christmas ring",
     "gold signet ring",
@@ -8152,7 +8157,7 @@
     "gift for her",
     "solid gold ring",
     "14k gold ring",
-    "celtic knot ring",
+    "knot signet ring",
     "winter jewelry",
     "festive jewelry",
     "unisex ring"
@@ -8175,10 +8180,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 4"
      },
-     "price_cents": 103000,
-     "grams": 6.61,
+     "price_cents": 105000,
+     "grams": 6.72,
      "stones": 0,
-     "makerCostUsd": 512.19
+     "makerCostUsd": 520.59
     },
     {
      "sku": "OPH-XMS-R05-10KY-US4_5",
@@ -8188,10 +8193,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 4.5"
      },
-     "price_cents": 105000,
-     "grams": 6.78,
+     "price_cents": 107000,
+     "grams": 6.89,
      "stones": 0,
-     "makerCostUsd": 524.85
+     "makerCostUsd": 533.45
     },
     {
      "sku": "OPH-XMS-R05-10KY-US5",
@@ -8201,10 +8206,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 5"
      },
-     "price_cents": 108000,
-     "grams": 6.94,
+     "price_cents": 110000,
+     "grams": 7.06,
      "stones": 0,
-     "makerCostUsd": 537.5
+     "makerCostUsd": 546.32
     },
     {
      "sku": "OPH-XMS-R05-10KY-US5_5",
@@ -8214,10 +8219,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 5.5"
      },
-     "price_cents": 111000,
-     "grams": 7.11,
+     "price_cents": 112000,
+     "grams": 7.22,
      "stones": 0,
-     "makerCostUsd": 550.16
+     "makerCostUsd": 559.18
     },
     {
      "sku": "OPH-XMS-R05-10KY-US6",
@@ -8227,10 +8232,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 6"
      },
-     "price_cents": 113000,
-     "grams": 7.27,
+     "price_cents": 115000,
+     "grams": 7.39,
      "stones": 0,
-     "makerCostUsd": 562.82
+     "makerCostUsd": 572.05
     },
     {
      "sku": "OPH-XMS-R05-10KY-US6_5",
@@ -8240,10 +8245,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 6.5"
      },
-     "price_cents": 116000,
-     "grams": 7.43,
+     "price_cents": 117000,
+     "grams": 7.55,
      "stones": 0,
-     "makerCostUsd": 575.48
+     "makerCostUsd": 584.91
     },
     {
      "sku": "OPH-XMS-R05-10KY-US7",
@@ -8253,10 +8258,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 7"
      },
-     "price_cents": 118000,
-     "grams": 7.6,
+     "price_cents": 120000,
+     "grams": 7.72,
      "stones": 0,
-     "makerCostUsd": 588.13
+     "makerCostUsd": 597.77
     },
     {
      "sku": "OPH-XMS-R05-10KY-US7_5",
@@ -8266,10 +8271,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 7.5"
      },
-     "price_cents": 121000,
-     "grams": 7.76,
+     "price_cents": 123000,
+     "grams": 7.89,
      "stones": 0,
-     "makerCostUsd": 600.79
+     "makerCostUsd": 610.64
     },
     {
      "sku": "OPH-XMS-R05-10KY-US8",
@@ -8279,10 +8284,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 8"
      },
-     "price_cents": 123000,
-     "grams": 7.92,
+     "price_cents": 125000,
+     "grams": 8.05,
      "stones": 0,
-     "makerCostUsd": 613.45
+     "makerCostUsd": 623.5
     },
     {
      "sku": "OPH-XMS-R05-10KY-US8_5",
@@ -8292,10 +8297,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 8.5"
      },
-     "price_cents": 126000,
-     "grams": 8.09,
+     "price_cents": 128000,
+     "grams": 8.22,
      "stones": 0,
-     "makerCostUsd": 626.11
+     "makerCostUsd": 636.37
     },
     {
      "sku": "OPH-XMS-R05-10KY-US9",
@@ -8305,10 +8310,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 9"
      },
-     "price_cents": 128000,
-     "grams": 8.25,
+     "price_cents": 130000,
+     "grams": 8.38,
      "stones": 0,
-     "makerCostUsd": 638.76
+     "makerCostUsd": 649.23
     },
     {
      "sku": "OPH-XMS-R05-10KY-US9_5",
@@ -8318,10 +8323,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 9.5"
      },
-     "price_cents": 131000,
-     "grams": 8.41,
+     "price_cents": 133000,
+     "grams": 8.55,
      "stones": 0,
-     "makerCostUsd": 651.42
+     "makerCostUsd": 662.1
     },
     {
      "sku": "OPH-XMS-R05-10KY-US10",
@@ -8331,10 +8336,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 10"
      },
-     "price_cents": 133000,
-     "grams": 8.58,
+     "price_cents": 135000,
+     "grams": 8.72,
      "stones": 0,
-     "makerCostUsd": 664.08
+     "makerCostUsd": 674.96
     },
     {
      "sku": "OPH-XMS-R05-10KY-US10_5",
@@ -8344,10 +8349,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 10.5"
      },
-     "price_cents": 136000,
-     "grams": 8.74,
+     "price_cents": 138000,
+     "grams": 8.88,
      "stones": 0,
-     "makerCostUsd": 676.73
+     "makerCostUsd": 687.83
     },
     {
      "sku": "OPH-XMS-R05-10KY-US11",
@@ -8357,10 +8362,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 11"
      },
-     "price_cents": 138000,
-     "grams": 8.9,
+     "price_cents": 141000,
+     "grams": 9.05,
      "stones": 0,
-     "makerCostUsd": 689.39
+     "makerCostUsd": 700.69
     },
     {
      "sku": "OPH-XMS-R05-10KY-US11_5",
@@ -8370,10 +8375,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 11.5"
      },
-     "price_cents": 141000,
-     "grams": 9.07,
+     "price_cents": 143000,
+     "grams": 9.22,
      "stones": 0,
-     "makerCostUsd": 702.05
+     "makerCostUsd": 713.56
     },
     {
      "sku": "OPH-XMS-R05-10KY-US12",
@@ -8383,10 +8388,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 12"
      },
-     "price_cents": 143000,
-     "grams": 9.23,
+     "price_cents": 146000,
+     "grams": 9.38,
      "stones": 0,
-     "makerCostUsd": 714.71
+     "makerCostUsd": 726.42
     },
     {
      "sku": "OPH-XMS-R05-10KW-US4",
@@ -8396,10 +8401,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 4"
      },
-     "price_cents": 103000,
-     "grams": 6.61,
+     "price_cents": 105000,
+     "grams": 6.72,
      "stones": 0,
-     "makerCostUsd": 512.19
+     "makerCostUsd": 520.59
     },
     {
      "sku": "OPH-XMS-R05-10KW-US4_5",
@@ -8409,10 +8414,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 4.5"
      },
-     "price_cents": 105000,
-     "grams": 6.78,
+     "price_cents": 107000,
+     "grams": 6.89,
      "stones": 0,
-     "makerCostUsd": 524.85
+     "makerCostUsd": 533.45
     },
     {
      "sku": "OPH-XMS-R05-10KW-US5",
@@ -8422,10 +8427,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 5"
      },
-     "price_cents": 108000,
-     "grams": 6.94,
+     "price_cents": 110000,
+     "grams": 7.06,
      "stones": 0,
-     "makerCostUsd": 537.5
+     "makerCostUsd": 546.32
     },
     {
      "sku": "OPH-XMS-R05-10KW-US5_5",
@@ -8435,10 +8440,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 5.5"
      },
-     "price_cents": 111000,
-     "grams": 7.11,
+     "price_cents": 112000,
+     "grams": 7.22,
      "stones": 0,
-     "makerCostUsd": 550.16
+     "makerCostUsd": 559.18
     },
     {
      "sku": "OPH-XMS-R05-10KW-US6",
@@ -8448,10 +8453,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 6"
      },
-     "price_cents": 113000,
-     "grams": 7.27,
+     "price_cents": 115000,
+     "grams": 7.39,
      "stones": 0,
-     "makerCostUsd": 562.82
+     "makerCostUsd": 572.05
     },
     {
      "sku": "OPH-XMS-R05-10KW-US6_5",
@@ -8461,10 +8466,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 6.5"
      },
-     "price_cents": 116000,
-     "grams": 7.43,
+     "price_cents": 117000,
+     "grams": 7.55,
      "stones": 0,
-     "makerCostUsd": 575.48
+     "makerCostUsd": 584.91
     },
     {
      "sku": "OPH-XMS-R05-10KW-US7",
@@ -8474,10 +8479,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 7"
      },
-     "price_cents": 118000,
-     "grams": 7.6,
+     "price_cents": 120000,
+     "grams": 7.72,
      "stones": 0,
-     "makerCostUsd": 588.13
+     "makerCostUsd": 597.77
     },
     {
      "sku": "OPH-XMS-R05-10KW-US7_5",
@@ -8487,10 +8492,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 7.5"
      },
-     "price_cents": 121000,
-     "grams": 7.76,
+     "price_cents": 123000,
+     "grams": 7.89,
      "stones": 0,
-     "makerCostUsd": 600.79
+     "makerCostUsd": 610.64
     },
     {
      "sku": "OPH-XMS-R05-10KW-US8",
@@ -8500,10 +8505,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 8"
      },
-     "price_cents": 123000,
-     "grams": 7.92,
+     "price_cents": 125000,
+     "grams": 8.05,
      "stones": 0,
-     "makerCostUsd": 613.45
+     "makerCostUsd": 623.5
     },
     {
      "sku": "OPH-XMS-R05-10KW-US8_5",
@@ -8513,10 +8518,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 8.5"
      },
-     "price_cents": 126000,
-     "grams": 8.09,
+     "price_cents": 128000,
+     "grams": 8.22,
      "stones": 0,
-     "makerCostUsd": 626.11
+     "makerCostUsd": 636.37
     },
     {
      "sku": "OPH-XMS-R05-10KW-US9",
@@ -8526,10 +8531,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 9"
      },
-     "price_cents": 128000,
-     "grams": 8.25,
+     "price_cents": 130000,
+     "grams": 8.38,
      "stones": 0,
-     "makerCostUsd": 638.76
+     "makerCostUsd": 649.23
     },
     {
      "sku": "OPH-XMS-R05-10KW-US9_5",
@@ -8539,10 +8544,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 9.5"
      },
-     "price_cents": 131000,
-     "grams": 8.41,
+     "price_cents": 133000,
+     "grams": 8.55,
      "stones": 0,
-     "makerCostUsd": 651.42
+     "makerCostUsd": 662.1
     },
     {
      "sku": "OPH-XMS-R05-10KW-US10",
@@ -8552,10 +8557,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 10"
      },
-     "price_cents": 133000,
-     "grams": 8.58,
+     "price_cents": 135000,
+     "grams": 8.72,
      "stones": 0,
-     "makerCostUsd": 664.08
+     "makerCostUsd": 674.96
     },
     {
      "sku": "OPH-XMS-R05-10KW-US10_5",
@@ -8565,10 +8570,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 10.5"
      },
-     "price_cents": 136000,
-     "grams": 8.74,
+     "price_cents": 138000,
+     "grams": 8.88,
      "stones": 0,
-     "makerCostUsd": 676.73
+     "makerCostUsd": 687.83
     },
     {
      "sku": "OPH-XMS-R05-10KW-US11",
@@ -8578,10 +8583,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 11"
      },
-     "price_cents": 138000,
-     "grams": 8.9,
+     "price_cents": 141000,
+     "grams": 9.05,
      "stones": 0,
-     "makerCostUsd": 689.39
+     "makerCostUsd": 700.69
     },
     {
      "sku": "OPH-XMS-R05-10KW-US11_5",
@@ -8591,10 +8596,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 11.5"
      },
-     "price_cents": 141000,
-     "grams": 9.07,
+     "price_cents": 143000,
+     "grams": 9.22,
      "stones": 0,
-     "makerCostUsd": 702.05
+     "makerCostUsd": 713.56
     },
     {
      "sku": "OPH-XMS-R05-10KW-US12",
@@ -8604,10 +8609,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 12"
      },
-     "price_cents": 143000,
-     "grams": 9.23,
+     "price_cents": 146000,
+     "grams": 9.38,
      "stones": 0,
-     "makerCostUsd": 714.71
+     "makerCostUsd": 726.42
     },
     {
      "sku": "OPH-XMS-R05-10KR-US4",
@@ -8617,10 +8622,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 4"
      },
-     "price_cents": 103000,
-     "grams": 6.61,
+     "price_cents": 105000,
+     "grams": 6.72,
      "stones": 0,
-     "makerCostUsd": 512.19
+     "makerCostUsd": 520.59
     },
     {
      "sku": "OPH-XMS-R05-10KR-US4_5",
@@ -8630,10 +8635,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 4.5"
      },
-     "price_cents": 105000,
-     "grams": 6.78,
+     "price_cents": 107000,
+     "grams": 6.89,
      "stones": 0,
-     "makerCostUsd": 524.85
+     "makerCostUsd": 533.45
     },
     {
      "sku": "OPH-XMS-R05-10KR-US5",
@@ -8643,10 +8648,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 5"
      },
-     "price_cents": 108000,
-     "grams": 6.94,
+     "price_cents": 110000,
+     "grams": 7.06,
      "stones": 0,
-     "makerCostUsd": 537.5
+     "makerCostUsd": 546.32
     },
     {
      "sku": "OPH-XMS-R05-10KR-US5_5",
@@ -8656,10 +8661,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 5.5"
      },
-     "price_cents": 111000,
-     "grams": 7.11,
+     "price_cents": 112000,
+     "grams": 7.22,
      "stones": 0,
-     "makerCostUsd": 550.16
+     "makerCostUsd": 559.18
     },
     {
      "sku": "OPH-XMS-R05-10KR-US6",
@@ -8669,10 +8674,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 6"
      },
-     "price_cents": 113000,
-     "grams": 7.27,
+     "price_cents": 115000,
+     "grams": 7.39,
      "stones": 0,
-     "makerCostUsd": 562.82
+     "makerCostUsd": 572.05
     },
     {
      "sku": "OPH-XMS-R05-10KR-US6_5",
@@ -8682,10 +8687,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 6.5"
      },
-     "price_cents": 116000,
-     "grams": 7.43,
+     "price_cents": 117000,
+     "grams": 7.55,
      "stones": 0,
-     "makerCostUsd": 575.48
+     "makerCostUsd": 584.91
     },
     {
      "sku": "OPH-XMS-R05-10KR-US7",
@@ -8695,10 +8700,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 7"
      },
-     "price_cents": 118000,
-     "grams": 7.6,
+     "price_cents": 120000,
+     "grams": 7.72,
      "stones": 0,
-     "makerCostUsd": 588.13
+     "makerCostUsd": 597.77
     },
     {
      "sku": "OPH-XMS-R05-10KR-US7_5",
@@ -8708,10 +8713,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 7.5"
      },
-     "price_cents": 121000,
-     "grams": 7.76,
+     "price_cents": 123000,
+     "grams": 7.89,
      "stones": 0,
-     "makerCostUsd": 600.79
+     "makerCostUsd": 610.64
     },
     {
      "sku": "OPH-XMS-R05-10KR-US8",
@@ -8721,10 +8726,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 8"
      },
-     "price_cents": 123000,
-     "grams": 7.92,
+     "price_cents": 125000,
+     "grams": 8.05,
      "stones": 0,
-     "makerCostUsd": 613.45
+     "makerCostUsd": 623.5
     },
     {
      "sku": "OPH-XMS-R05-10KR-US8_5",
@@ -8734,10 +8739,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 8.5"
      },
-     "price_cents": 126000,
-     "grams": 8.09,
+     "price_cents": 128000,
+     "grams": 8.22,
      "stones": 0,
-     "makerCostUsd": 626.11
+     "makerCostUsd": 636.37
     },
     {
      "sku": "OPH-XMS-R05-10KR-US9",
@@ -8747,10 +8752,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 9"
      },
-     "price_cents": 128000,
-     "grams": 8.25,
+     "price_cents": 130000,
+     "grams": 8.38,
      "stones": 0,
-     "makerCostUsd": 638.76
+     "makerCostUsd": 649.23
     },
     {
      "sku": "OPH-XMS-R05-10KR-US9_5",
@@ -8760,10 +8765,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 9.5"
      },
-     "price_cents": 131000,
-     "grams": 8.41,
+     "price_cents": 133000,
+     "grams": 8.55,
      "stones": 0,
-     "makerCostUsd": 651.42
+     "makerCostUsd": 662.1
     },
     {
      "sku": "OPH-XMS-R05-10KR-US10",
@@ -8773,10 +8778,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 10"
      },
-     "price_cents": 133000,
-     "grams": 8.58,
+     "price_cents": 135000,
+     "grams": 8.72,
      "stones": 0,
-     "makerCostUsd": 664.08
+     "makerCostUsd": 674.96
     },
     {
      "sku": "OPH-XMS-R05-10KR-US10_5",
@@ -8786,10 +8791,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 10.5"
      },
-     "price_cents": 136000,
-     "grams": 8.74,
+     "price_cents": 138000,
+     "grams": 8.88,
      "stones": 0,
-     "makerCostUsd": 676.73
+     "makerCostUsd": 687.83
     },
     {
      "sku": "OPH-XMS-R05-10KR-US11",
@@ -8799,10 +8804,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 11"
      },
-     "price_cents": 138000,
-     "grams": 8.9,
+     "price_cents": 141000,
+     "grams": 9.05,
      "stones": 0,
-     "makerCostUsd": 689.39
+     "makerCostUsd": 700.69
     },
     {
      "sku": "OPH-XMS-R05-10KR-US11_5",
@@ -8812,10 +8817,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 11.5"
      },
-     "price_cents": 141000,
-     "grams": 9.07,
+     "price_cents": 143000,
+     "grams": 9.22,
      "stones": 0,
-     "makerCostUsd": 702.05
+     "makerCostUsd": 713.56
     },
     {
      "sku": "OPH-XMS-R05-10KR-US12",
@@ -8825,10 +8830,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 12"
      },
-     "price_cents": 143000,
-     "grams": 9.23,
+     "price_cents": 146000,
+     "grams": 9.38,
      "stones": 0,
-     "makerCostUsd": 714.71
+     "makerCostUsd": 726.42
     },
     {
      "sku": "OPH-XMS-R05-14KY-US4",
@@ -8838,10 +8843,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 4"
      },
-     "price_cents": 149000,
-     "grams": 7.42,
+     "price_cents": 151000,
+     "grams": 7.54,
      "stones": 0,
-     "makerCostUsd": 741.56
+     "makerCostUsd": 753.71
     },
     {
      "sku": "OPH-XMS-R05-14KY-US4_5",
@@ -8851,10 +8856,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 4.5"
      },
-     "price_cents": 152000,
-     "grams": 7.6,
+     "price_cents": 155000,
+     "grams": 7.72,
      "stones": 0,
-     "makerCostUsd": 759.88
+     "makerCostUsd": 772.34
     },
     {
      "sku": "OPH-XMS-R05-14KY-US5",
@@ -8864,10 +8869,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 5"
      },
-     "price_cents": 156000,
-     "grams": 7.78,
+     "price_cents": 159000,
+     "grams": 7.91,
      "stones": 0,
-     "makerCostUsd": 778.21
+     "makerCostUsd": 790.97
     },
     {
      "sku": "OPH-XMS-R05-14KY-US5_5",
@@ -8877,10 +8882,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 5.5"
      },
-     "price_cents": 160000,
-     "grams": 7.97,
+     "price_cents": 162000,
+     "grams": 8.1,
      "stones": 0,
-     "makerCostUsd": 796.53
+     "makerCostUsd": 809.59
     },
     {
      "sku": "OPH-XMS-R05-14KY-US6",
@@ -8890,10 +8895,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 6"
      },
-     "price_cents": 163000,
-     "grams": 8.15,
+     "price_cents": 166000,
+     "grams": 8.28,
      "stones": 0,
-     "makerCostUsd": 814.86
+     "makerCostUsd": 828.22
     },
     {
      "sku": "OPH-XMS-R05-14KY-US6_5",
@@ -8903,10 +8908,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 6.5"
      },
-     "price_cents": 167000,
-     "grams": 8.33,
+     "price_cents": 170000,
+     "grams": 8.47,
      "stones": 0,
-     "makerCostUsd": 833.18
+     "makerCostUsd": 846.84
     },
     {
      "sku": "OPH-XMS-R05-14KY-US7",
@@ -8916,10 +8921,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 7"
      },
-     "price_cents": 171000,
-     "grams": 8.52,
+     "price_cents": 174000,
+     "grams": 8.65,
      "stones": 0,
-     "makerCostUsd": 851.51
+     "makerCostUsd": 865.47
     },
     {
      "sku": "OPH-XMS-R05-14KY-US7_5",
@@ -8929,10 +8934,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 7.5"
      },
-     "price_cents": 174000,
-     "grams": 8.7,
+     "price_cents": 177000,
+     "grams": 8.84,
      "stones": 0,
-     "makerCostUsd": 869.83
+     "makerCostUsd": 884.09
     },
     {
      "sku": "OPH-XMS-R05-14KY-US8",
@@ -8942,10 +8947,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 8"
      },
-     "price_cents": 178000,
-     "grams": 8.88,
+     "price_cents": 181000,
+     "grams": 9.03,
      "stones": 0,
-     "makerCostUsd": 888.16
+     "makerCostUsd": 902.72
     },
     {
      "sku": "OPH-XMS-R05-14KY-US8_5",
@@ -8955,10 +8960,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 8.5"
      },
-     "price_cents": 182000,
-     "grams": 9.06,
+     "price_cents": 185000,
+     "grams": 9.21,
      "stones": 0,
-     "makerCostUsd": 906.49
+     "makerCostUsd": 921.35
     },
     {
      "sku": "OPH-XMS-R05-14KY-US9",
@@ -8968,10 +8973,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 9"
      },
-     "price_cents": 185000,
-     "grams": 9.25,
+     "price_cents": 188000,
+     "grams": 9.4,
      "stones": 0,
-     "makerCostUsd": 924.81
+     "makerCostUsd": 939.97
     },
     {
      "sku": "OPH-XMS-R05-14KY-US9_5",
@@ -8981,10 +8986,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 9.5"
      },
-     "price_cents": 189000,
-     "grams": 9.43,
+     "price_cents": 192000,
+     "grams": 9.59,
      "stones": 0,
-     "makerCostUsd": 943.14
+     "makerCostUsd": 958.6
     },
     {
      "sku": "OPH-XMS-R05-14KY-US10",
@@ -8994,10 +8999,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 10"
      },
-     "price_cents": 193000,
-     "grams": 9.61,
+     "price_cents": 196000,
+     "grams": 9.77,
      "stones": 0,
-     "makerCostUsd": 961.46
+     "makerCostUsd": 977.22
     },
     {
      "sku": "OPH-XMS-R05-14KY-US10_5",
@@ -9007,10 +9012,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 10.5"
      },
-     "price_cents": 196000,
-     "grams": 9.8,
+     "price_cents": 200000,
+     "grams": 9.96,
      "stones": 0,
-     "makerCostUsd": 979.79
+     "makerCostUsd": 995.85
     },
     {
      "sku": "OPH-XMS-R05-14KY-US11",
@@ -9020,10 +9025,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 11"
      },
-     "price_cents": 200000,
-     "grams": 9.98,
+     "price_cents": 203000,
+     "grams": 10.14,
      "stones": 0,
-     "makerCostUsd": 998.11
+     "makerCostUsd": 1014.48
     },
     {
      "sku": "OPH-XMS-R05-14KY-US11_5",
@@ -9033,10 +9038,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 11.5"
      },
-     "price_cents": 204000,
-     "grams": 10.16,
+     "price_cents": 207000,
+     "grams": 10.33,
      "stones": 0,
-     "makerCostUsd": 1016.44
+     "makerCostUsd": 1033.1
     },
     {
      "sku": "OPH-XMS-R05-14KY-US12",
@@ -9046,10 +9051,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 12"
      },
-     "price_cents": 207000,
-     "grams": 10.35,
+     "price_cents": 211000,
+     "grams": 10.52,
      "stones": 0,
-     "makerCostUsd": 1034.76
+     "makerCostUsd": 1051.73
     },
     {
      "sku": "OPH-XMS-R05-14KW-US4",
@@ -9059,10 +9064,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 4"
      },
-     "price_cents": 149000,
-     "grams": 7.42,
+     "price_cents": 151000,
+     "grams": 7.54,
      "stones": 0,
-     "makerCostUsd": 741.56
+     "makerCostUsd": 753.71
     },
     {
      "sku": "OPH-XMS-R05-14KW-US4_5",
@@ -9072,10 +9077,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 4.5"
      },
-     "price_cents": 152000,
-     "grams": 7.6,
+     "price_cents": 155000,
+     "grams": 7.72,
      "stones": 0,
-     "makerCostUsd": 759.88
+     "makerCostUsd": 772.34
     },
     {
      "sku": "OPH-XMS-R05-14KW-US5",
@@ -9085,10 +9090,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 5"
      },
-     "price_cents": 156000,
-     "grams": 7.78,
+     "price_cents": 159000,
+     "grams": 7.91,
      "stones": 0,
-     "makerCostUsd": 778.21
+     "makerCostUsd": 790.97
     },
     {
      "sku": "OPH-XMS-R05-14KW-US5_5",
@@ -9098,10 +9103,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 5.5"
      },
-     "price_cents": 160000,
-     "grams": 7.97,
+     "price_cents": 162000,
+     "grams": 8.1,
      "stones": 0,
-     "makerCostUsd": 796.53
+     "makerCostUsd": 809.59
     },
     {
      "sku": "OPH-XMS-R05-14KW-US6",
@@ -9111,10 +9116,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 6"
      },
-     "price_cents": 163000,
-     "grams": 8.15,
+     "price_cents": 166000,
+     "grams": 8.28,
      "stones": 0,
-     "makerCostUsd": 814.86
+     "makerCostUsd": 828.22
     },
     {
      "sku": "OPH-XMS-R05-14KW-US6_5",
@@ -9124,10 +9129,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 6.5"
      },
-     "price_cents": 167000,
-     "grams": 8.33,
+     "price_cents": 170000,
+     "grams": 8.47,
      "stones": 0,
-     "makerCostUsd": 833.18
+     "makerCostUsd": 846.84
     },
     {
      "sku": "OPH-XMS-R05-14KW-US7",
@@ -9137,10 +9142,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 7"
      },
-     "price_cents": 171000,
-     "grams": 8.52,
+     "price_cents": 174000,
+     "grams": 8.65,
      "stones": 0,
-     "makerCostUsd": 851.51
+     "makerCostUsd": 865.47
     },
     {
      "sku": "OPH-XMS-R05-14KW-US7_5",
@@ -9150,10 +9155,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 7.5"
      },
-     "price_cents": 174000,
-     "grams": 8.7,
+     "price_cents": 177000,
+     "grams": 8.84,
      "stones": 0,
-     "makerCostUsd": 869.83
+     "makerCostUsd": 884.09
     },
     {
      "sku": "OPH-XMS-R05-14KW-US8",
@@ -9163,10 +9168,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 8"
      },
-     "price_cents": 178000,
-     "grams": 8.88,
+     "price_cents": 181000,
+     "grams": 9.03,
      "stones": 0,
-     "makerCostUsd": 888.16
+     "makerCostUsd": 902.72
     },
     {
      "sku": "OPH-XMS-R05-14KW-US8_5",
@@ -9176,10 +9181,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 8.5"
      },
-     "price_cents": 182000,
-     "grams": 9.06,
+     "price_cents": 185000,
+     "grams": 9.21,
      "stones": 0,
-     "makerCostUsd": 906.49
+     "makerCostUsd": 921.35
     },
     {
      "sku": "OPH-XMS-R05-14KW-US9",
@@ -9189,10 +9194,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 9"
      },
-     "price_cents": 185000,
-     "grams": 9.25,
+     "price_cents": 188000,
+     "grams": 9.4,
      "stones": 0,
-     "makerCostUsd": 924.81
+     "makerCostUsd": 939.97
     },
     {
      "sku": "OPH-XMS-R05-14KW-US9_5",
@@ -9202,10 +9207,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 9.5"
      },
-     "price_cents": 189000,
-     "grams": 9.43,
+     "price_cents": 192000,
+     "grams": 9.59,
      "stones": 0,
-     "makerCostUsd": 943.14
+     "makerCostUsd": 958.6
     },
     {
      "sku": "OPH-XMS-R05-14KW-US10",
@@ -9215,10 +9220,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 10"
      },
-     "price_cents": 193000,
-     "grams": 9.61,
+     "price_cents": 196000,
+     "grams": 9.77,
      "stones": 0,
-     "makerCostUsd": 961.46
+     "makerCostUsd": 977.22
     },
     {
      "sku": "OPH-XMS-R05-14KW-US10_5",
@@ -9228,10 +9233,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 10.5"
      },
-     "price_cents": 196000,
-     "grams": 9.8,
+     "price_cents": 200000,
+     "grams": 9.96,
      "stones": 0,
-     "makerCostUsd": 979.79
+     "makerCostUsd": 995.85
     },
     {
      "sku": "OPH-XMS-R05-14KW-US11",
@@ -9241,10 +9246,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 11"
      },
-     "price_cents": 200000,
-     "grams": 9.98,
+     "price_cents": 203000,
+     "grams": 10.14,
      "stones": 0,
-     "makerCostUsd": 998.11
+     "makerCostUsd": 1014.48
     },
     {
      "sku": "OPH-XMS-R05-14KW-US11_5",
@@ -9254,10 +9259,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 11.5"
      },
-     "price_cents": 204000,
-     "grams": 10.16,
+     "price_cents": 207000,
+     "grams": 10.33,
      "stones": 0,
-     "makerCostUsd": 1016.44
+     "makerCostUsd": 1033.1
     },
     {
      "sku": "OPH-XMS-R05-14KW-US12",
@@ -9267,10 +9272,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 12"
      },
-     "price_cents": 207000,
-     "grams": 10.35,
+     "price_cents": 211000,
+     "grams": 10.52,
      "stones": 0,
-     "makerCostUsd": 1034.76
+     "makerCostUsd": 1051.73
     },
     {
      "sku": "OPH-XMS-R05-14KR-US4",
@@ -9280,10 +9285,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 4"
      },
-     "price_cents": 149000,
-     "grams": 7.42,
+     "price_cents": 151000,
+     "grams": 7.54,
      "stones": 0,
-     "makerCostUsd": 741.56
+     "makerCostUsd": 753.71
     },
     {
      "sku": "OPH-XMS-R05-14KR-US4_5",
@@ -9293,10 +9298,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 4.5"
      },
-     "price_cents": 152000,
-     "grams": 7.6,
+     "price_cents": 155000,
+     "grams": 7.72,
      "stones": 0,
-     "makerCostUsd": 759.88
+     "makerCostUsd": 772.34
     },
     {
      "sku": "OPH-XMS-R05-14KR-US5",
@@ -9306,10 +9311,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 5"
      },
-     "price_cents": 156000,
-     "grams": 7.78,
+     "price_cents": 159000,
+     "grams": 7.91,
      "stones": 0,
-     "makerCostUsd": 778.21
+     "makerCostUsd": 790.97
     },
     {
      "sku": "OPH-XMS-R05-14KR-US5_5",
@@ -9319,10 +9324,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 5.5"
      },
-     "price_cents": 160000,
-     "grams": 7.97,
+     "price_cents": 162000,
+     "grams": 8.1,
      "stones": 0,
-     "makerCostUsd": 796.53
+     "makerCostUsd": 809.59
     },
     {
      "sku": "OPH-XMS-R05-14KR-US6",
@@ -9332,10 +9337,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 6"
      },
-     "price_cents": 163000,
-     "grams": 8.15,
+     "price_cents": 166000,
+     "grams": 8.28,
      "stones": 0,
-     "makerCostUsd": 814.86
+     "makerCostUsd": 828.22
     },
     {
      "sku": "OPH-XMS-R05-14KR-US6_5",
@@ -9345,10 +9350,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 6.5"
      },
-     "price_cents": 167000,
-     "grams": 8.33,
+     "price_cents": 170000,
+     "grams": 8.47,
      "stones": 0,
-     "makerCostUsd": 833.18
+     "makerCostUsd": 846.84
     },
     {
      "sku": "OPH-XMS-R05-14KR-US7",
@@ -9358,10 +9363,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 7"
      },
-     "price_cents": 171000,
-     "grams": 8.52,
+     "price_cents": 174000,
+     "grams": 8.65,
      "stones": 0,
-     "makerCostUsd": 851.51
+     "makerCostUsd": 865.47
     },
     {
      "sku": "OPH-XMS-R05-14KR-US7_5",
@@ -9371,10 +9376,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 7.5"
      },
-     "price_cents": 174000,
-     "grams": 8.7,
+     "price_cents": 177000,
+     "grams": 8.84,
      "stones": 0,
-     "makerCostUsd": 869.83
+     "makerCostUsd": 884.09
     },
     {
      "sku": "OPH-XMS-R05-14KR-US8",
@@ -9384,10 +9389,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 8"
      },
-     "price_cents": 178000,
-     "grams": 8.88,
+     "price_cents": 181000,
+     "grams": 9.03,
      "stones": 0,
-     "makerCostUsd": 888.16
+     "makerCostUsd": 902.72
     },
     {
      "sku": "OPH-XMS-R05-14KR-US8_5",
@@ -9397,10 +9402,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 8.5"
      },
-     "price_cents": 182000,
-     "grams": 9.06,
+     "price_cents": 185000,
+     "grams": 9.21,
      "stones": 0,
-     "makerCostUsd": 906.49
+     "makerCostUsd": 921.35
     },
     {
      "sku": "OPH-XMS-R05-14KR-US9",
@@ -9410,10 +9415,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 9"
      },
-     "price_cents": 185000,
-     "grams": 9.25,
+     "price_cents": 188000,
+     "grams": 9.4,
      "stones": 0,
-     "makerCostUsd": 924.81
+     "makerCostUsd": 939.97
     },
     {
      "sku": "OPH-XMS-R05-14KR-US9_5",
@@ -9423,10 +9428,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 9.5"
      },
-     "price_cents": 189000,
-     "grams": 9.43,
+     "price_cents": 192000,
+     "grams": 9.59,
      "stones": 0,
-     "makerCostUsd": 943.14
+     "makerCostUsd": 958.6
     },
     {
      "sku": "OPH-XMS-R05-14KR-US10",
@@ -9436,10 +9441,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 10"
      },
-     "price_cents": 193000,
-     "grams": 9.61,
+     "price_cents": 196000,
+     "grams": 9.77,
      "stones": 0,
-     "makerCostUsd": 961.46
+     "makerCostUsd": 977.22
     },
     {
      "sku": "OPH-XMS-R05-14KR-US10_5",
@@ -9449,10 +9454,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 10.5"
      },
-     "price_cents": 196000,
-     "grams": 9.8,
+     "price_cents": 200000,
+     "grams": 9.96,
      "stones": 0,
-     "makerCostUsd": 979.79
+     "makerCostUsd": 995.85
     },
     {
      "sku": "OPH-XMS-R05-14KR-US11",
@@ -9462,10 +9467,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 11"
      },
-     "price_cents": 200000,
-     "grams": 9.98,
+     "price_cents": 203000,
+     "grams": 10.14,
      "stones": 0,
-     "makerCostUsd": 998.11
+     "makerCostUsd": 1014.48
     },
     {
      "sku": "OPH-XMS-R05-14KR-US11_5",
@@ -9475,10 +9480,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 11.5"
      },
-     "price_cents": 204000,
-     "grams": 10.16,
+     "price_cents": 207000,
+     "grams": 10.33,
      "stones": 0,
-     "makerCostUsd": 1016.44
+     "makerCostUsd": 1033.1
     },
     {
      "sku": "OPH-XMS-R05-14KR-US12",
@@ -9488,10 +9493,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 12"
      },
-     "price_cents": 207000,
-     "grams": 10.35,
+     "price_cents": 211000,
+     "grams": 10.52,
      "stones": 0,
-     "makerCostUsd": 1034.76
+     "makerCostUsd": 1051.73
     },
     {
      "sku": "OPH-XMS-R05-18KY-US4",
@@ -9501,10 +9506,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 4"
      },
-     "price_cents": 207000,
-     "grams": 8.43,
+     "price_cents": 210000,
+     "grams": 8.57,
      "stones": 0,
-     "makerCostUsd": 1030.03
+     "makerCostUsd": 1046.92
     },
     {
      "sku": "OPH-XMS-R05-18KY-US4_5",
@@ -9514,10 +9519,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 4.5"
      },
-     "price_cents": 212000,
-     "grams": 8.64,
+     "price_cents": 215000,
+     "grams": 8.78,
      "stones": 0,
-     "makerCostUsd": 1055.49
+     "makerCostUsd": 1072.79
     },
     {
      "sku": "OPH-XMS-R05-18KY-US5",
@@ -9527,10 +9532,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 5"
      },
-     "price_cents": 217000,
-     "grams": 8.85,
+     "price_cents": 220000,
+     "grams": 8.99,
      "stones": 0,
-     "makerCostUsd": 1080.94
+     "makerCostUsd": 1098.66
     },
     {
      "sku": "OPH-XMS-R05-18KY-US5_5",
@@ -9540,10 +9545,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 5.5"
      },
-     "price_cents": 222000,
-     "grams": 9.06,
+     "price_cents": 225000,
+     "grams": 9.21,
      "stones": 0,
-     "makerCostUsd": 1106.4
+     "makerCostUsd": 1124.53
     },
     {
      "sku": "OPH-XMS-R05-18KY-US6",
@@ -9553,10 +9558,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 6"
      },
-     "price_cents": 227000,
-     "grams": 9.26,
+     "price_cents": 231000,
+     "grams": 9.42,
      "stones": 0,
-     "makerCostUsd": 1131.85
+     "makerCostUsd": 1150.4
     },
     {
      "sku": "OPH-XMS-R05-18KY-US6_5",
@@ -9566,10 +9571,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 6.5"
      },
-     "price_cents": 232000,
-     "grams": 9.47,
+     "price_cents": 236000,
+     "grams": 9.63,
      "stones": 0,
-     "makerCostUsd": 1157.3
+     "makerCostUsd": 1176.28
     },
     {
      "sku": "OPH-XMS-R05-18KY-US7",
@@ -9579,10 +9584,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 7"
      },
-     "price_cents": 237000,
-     "grams": 9.68,
+     "price_cents": 241000,
+     "grams": 9.84,
      "stones": 0,
-     "makerCostUsd": 1182.76
+     "makerCostUsd": 1202.15
     },
     {
      "sku": "OPH-XMS-R05-18KY-US7_5",
@@ -9592,10 +9597,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 7.5"
      },
-     "price_cents": 242000,
-     "grams": 9.89,
+     "price_cents": 246000,
+     "grams": 10.05,
      "stones": 0,
-     "makerCostUsd": 1208.21
+     "makerCostUsd": 1228.02
     },
     {
      "sku": "OPH-XMS-R05-18KY-US8",
@@ -9605,10 +9610,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 8"
      },
-     "price_cents": 247000,
-     "grams": 10.1,
+     "price_cents": 251000,
+     "grams": 10.26,
      "stones": 0,
-     "makerCostUsd": 1233.67
+     "makerCostUsd": 1253.89
     },
     {
      "sku": "OPH-XMS-R05-18KY-US8_5",
@@ -9618,10 +9623,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 8.5"
      },
-     "price_cents": 252000,
-     "grams": 10.31,
+     "price_cents": 256000,
+     "grams": 10.48,
      "stones": 0,
-     "makerCostUsd": 1259.12
+     "makerCostUsd": 1279.76
     },
     {
      "sku": "OPH-XMS-R05-18KY-US9",
@@ -9631,10 +9636,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 9"
      },
-     "price_cents": 257000,
-     "grams": 10.52,
+     "price_cents": 262000,
+     "grams": 10.69,
      "stones": 0,
-     "makerCostUsd": 1284.58
+     "makerCostUsd": 1305.63
     },
     {
      "sku": "OPH-XMS-R05-18KY-US9_5",
@@ -9644,10 +9649,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 9.5"
      },
-     "price_cents": 263000,
-     "grams": 10.72,
+     "price_cents": 267000,
+     "grams": 10.9,
      "stones": 0,
-     "makerCostUsd": 1310.03
+     "makerCostUsd": 1331.51
     },
     {
      "sku": "OPH-XMS-R05-18KY-US10",
@@ -9657,10 +9662,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 10"
      },
-     "price_cents": 268000,
-     "grams": 10.93,
+     "price_cents": 272000,
+     "grams": 11.11,
      "stones": 0,
-     "makerCostUsd": 1335.48
+     "makerCostUsd": 1357.38
     },
     {
      "sku": "OPH-XMS-R05-18KY-US10_5",
@@ -9670,10 +9675,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 10.5"
      },
-     "price_cents": 273000,
-     "grams": 11.14,
+     "price_cents": 277000,
+     "grams": 11.32,
      "stones": 0,
-     "makerCostUsd": 1360.94
+     "makerCostUsd": 1383.25
     },
     {
      "sku": "OPH-XMS-R05-18KY-US11",
@@ -9683,10 +9688,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 11"
      },
-     "price_cents": 278000,
-     "grams": 11.35,
+     "price_cents": 282000,
+     "grams": 11.53,
      "stones": 0,
-     "makerCostUsd": 1386.39
+     "makerCostUsd": 1409.12
     },
     {
      "sku": "OPH-XMS-R05-18KY-US11_5",
@@ -9696,10 +9701,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 11.5"
      },
-     "price_cents": 283000,
-     "grams": 11.56,
+     "price_cents": 287000,
+     "grams": 11.75,
      "stones": 0,
-     "makerCostUsd": 1411.85
+     "makerCostUsd": 1434.99
     },
     {
      "sku": "OPH-XMS-R05-18KY-US12",
@@ -9709,10 +9714,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 12"
      },
-     "price_cents": 288000,
-     "grams": 11.77,
+     "price_cents": 293000,
+     "grams": 11.96,
      "stones": 0,
-     "makerCostUsd": 1437.3
+     "makerCostUsd": 1460.86
     },
     {
      "sku": "OPH-XMS-R05-18KW-US4",
@@ -9722,10 +9727,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 4"
      },
-     "price_cents": 207000,
-     "grams": 8.43,
+     "price_cents": 210000,
+     "grams": 8.57,
      "stones": 0,
-     "makerCostUsd": 1030.03
+     "makerCostUsd": 1046.92
     },
     {
      "sku": "OPH-XMS-R05-18KW-US4_5",
@@ -9735,10 +9740,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 4.5"
      },
-     "price_cents": 212000,
-     "grams": 8.64,
+     "price_cents": 215000,
+     "grams": 8.78,
      "stones": 0,
-     "makerCostUsd": 1055.49
+     "makerCostUsd": 1072.79
     },
     {
      "sku": "OPH-XMS-R05-18KW-US5",
@@ -9748,10 +9753,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 5"
      },
-     "price_cents": 217000,
-     "grams": 8.85,
+     "price_cents": 220000,
+     "grams": 8.99,
      "stones": 0,
-     "makerCostUsd": 1080.94
+     "makerCostUsd": 1098.66
     },
     {
      "sku": "OPH-XMS-R05-18KW-US5_5",
@@ -9761,10 +9766,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 5.5"
      },
-     "price_cents": 222000,
-     "grams": 9.06,
+     "price_cents": 225000,
+     "grams": 9.21,
      "stones": 0,
-     "makerCostUsd": 1106.4
+     "makerCostUsd": 1124.53
     },
     {
      "sku": "OPH-XMS-R05-18KW-US6",
@@ -9774,10 +9779,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 6"
      },
-     "price_cents": 227000,
-     "grams": 9.26,
+     "price_cents": 231000,
+     "grams": 9.42,
      "stones": 0,
-     "makerCostUsd": 1131.85
+     "makerCostUsd": 1150.4
     },
     {
      "sku": "OPH-XMS-R05-18KW-US6_5",
@@ -9787,10 +9792,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 6.5"
      },
-     "price_cents": 232000,
-     "grams": 9.47,
+     "price_cents": 236000,
+     "grams": 9.63,
      "stones": 0,
-     "makerCostUsd": 1157.3
+     "makerCostUsd": 1176.28
     },
     {
      "sku": "OPH-XMS-R05-18KW-US7",
@@ -9800,10 +9805,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 7"
      },
-     "price_cents": 237000,
-     "grams": 9.68,
+     "price_cents": 241000,
+     "grams": 9.84,
      "stones": 0,
-     "makerCostUsd": 1182.76
+     "makerCostUsd": 1202.15
     },
     {
      "sku": "OPH-XMS-R05-18KW-US7_5",
@@ -9813,10 +9818,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 7.5"
      },
-     "price_cents": 242000,
-     "grams": 9.89,
+     "price_cents": 246000,
+     "grams": 10.05,
      "stones": 0,
-     "makerCostUsd": 1208.21
+     "makerCostUsd": 1228.02
     },
     {
      "sku": "OPH-XMS-R05-18KW-US8",
@@ -9826,10 +9831,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 8"
      },
-     "price_cents": 247000,
-     "grams": 10.1,
+     "price_cents": 251000,
+     "grams": 10.26,
      "stones": 0,
-     "makerCostUsd": 1233.67
+     "makerCostUsd": 1253.89
     },
     {
      "sku": "OPH-XMS-R05-18KW-US8_5",
@@ -9839,10 +9844,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 8.5"
      },
-     "price_cents": 252000,
-     "grams": 10.31,
+     "price_cents": 256000,
+     "grams": 10.48,
      "stones": 0,
-     "makerCostUsd": 1259.12
+     "makerCostUsd": 1279.76
     },
     {
      "sku": "OPH-XMS-R05-18KW-US9",
@@ -9852,10 +9857,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 9"
      },
-     "price_cents": 257000,
-     "grams": 10.52,
+     "price_cents": 262000,
+     "grams": 10.69,
      "stones": 0,
-     "makerCostUsd": 1284.58
+     "makerCostUsd": 1305.63
     },
     {
      "sku": "OPH-XMS-R05-18KW-US9_5",
@@ -9865,10 +9870,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 9.5"
      },
-     "price_cents": 263000,
-     "grams": 10.72,
+     "price_cents": 267000,
+     "grams": 10.9,
      "stones": 0,
-     "makerCostUsd": 1310.03
+     "makerCostUsd": 1331.51
     },
     {
      "sku": "OPH-XMS-R05-18KW-US10",
@@ -9878,10 +9883,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 10"
      },
-     "price_cents": 268000,
-     "grams": 10.93,
+     "price_cents": 272000,
+     "grams": 11.11,
      "stones": 0,
-     "makerCostUsd": 1335.48
+     "makerCostUsd": 1357.38
     },
     {
      "sku": "OPH-XMS-R05-18KW-US10_5",
@@ -9891,10 +9896,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 10.5"
      },
-     "price_cents": 273000,
-     "grams": 11.14,
+     "price_cents": 277000,
+     "grams": 11.32,
      "stones": 0,
-     "makerCostUsd": 1360.94
+     "makerCostUsd": 1383.25
     },
     {
      "sku": "OPH-XMS-R05-18KW-US11",
@@ -9904,10 +9909,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 11"
      },
-     "price_cents": 278000,
-     "grams": 11.35,
+     "price_cents": 282000,
+     "grams": 11.53,
      "stones": 0,
-     "makerCostUsd": 1386.39
+     "makerCostUsd": 1409.12
     },
     {
      "sku": "OPH-XMS-R05-18KW-US11_5",
@@ -9917,10 +9922,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 11.5"
      },
-     "price_cents": 283000,
-     "grams": 11.56,
+     "price_cents": 287000,
+     "grams": 11.75,
      "stones": 0,
-     "makerCostUsd": 1411.85
+     "makerCostUsd": 1434.99
     },
     {
      "sku": "OPH-XMS-R05-18KW-US12",
@@ -9930,10 +9935,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 12"
      },
-     "price_cents": 288000,
-     "grams": 11.77,
+     "price_cents": 293000,
+     "grams": 11.96,
      "stones": 0,
-     "makerCostUsd": 1437.3
+     "makerCostUsd": 1460.86
     },
     {
      "sku": "OPH-XMS-R05-18KR-US4",
@@ -9943,10 +9948,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 4"
      },
-     "price_cents": 207000,
-     "grams": 8.43,
+     "price_cents": 210000,
+     "grams": 8.57,
      "stones": 0,
-     "makerCostUsd": 1030.03
+     "makerCostUsd": 1046.92
     },
     {
      "sku": "OPH-XMS-R05-18KR-US4_5",
@@ -9956,10 +9961,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 4.5"
      },
-     "price_cents": 212000,
-     "grams": 8.64,
+     "price_cents": 215000,
+     "grams": 8.78,
      "stones": 0,
-     "makerCostUsd": 1055.49
+     "makerCostUsd": 1072.79
     },
     {
      "sku": "OPH-XMS-R05-18KR-US5",
@@ -9969,10 +9974,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 5"
      },
-     "price_cents": 217000,
-     "grams": 8.85,
+     "price_cents": 220000,
+     "grams": 8.99,
      "stones": 0,
-     "makerCostUsd": 1080.94
+     "makerCostUsd": 1098.66
     },
     {
      "sku": "OPH-XMS-R05-18KR-US5_5",
@@ -9982,10 +9987,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 5.5"
      },
-     "price_cents": 222000,
-     "grams": 9.06,
+     "price_cents": 225000,
+     "grams": 9.21,
      "stones": 0,
-     "makerCostUsd": 1106.4
+     "makerCostUsd": 1124.53
     },
     {
      "sku": "OPH-XMS-R05-18KR-US6",
@@ -9995,10 +10000,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 6"
      },
-     "price_cents": 227000,
-     "grams": 9.26,
+     "price_cents": 231000,
+     "grams": 9.42,
      "stones": 0,
-     "makerCostUsd": 1131.85
+     "makerCostUsd": 1150.4
     },
     {
      "sku": "OPH-XMS-R05-18KR-US6_5",
@@ -10008,10 +10013,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 6.5"
      },
-     "price_cents": 232000,
-     "grams": 9.47,
+     "price_cents": 236000,
+     "grams": 9.63,
      "stones": 0,
-     "makerCostUsd": 1157.3
+     "makerCostUsd": 1176.28
     },
     {
      "sku": "OPH-XMS-R05-18KR-US7",
@@ -10021,10 +10026,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 7"
      },
-     "price_cents": 237000,
-     "grams": 9.68,
+     "price_cents": 241000,
+     "grams": 9.84,
      "stones": 0,
-     "makerCostUsd": 1182.76
+     "makerCostUsd": 1202.15
     },
     {
      "sku": "OPH-XMS-R05-18KR-US7_5",
@@ -10034,10 +10039,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 7.5"
      },
-     "price_cents": 242000,
-     "grams": 9.89,
+     "price_cents": 246000,
+     "grams": 10.05,
      "stones": 0,
-     "makerCostUsd": 1208.21
+     "makerCostUsd": 1228.02
     },
     {
      "sku": "OPH-XMS-R05-18KR-US8",
@@ -10047,10 +10052,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 8"
      },
-     "price_cents": 247000,
-     "grams": 10.1,
+     "price_cents": 251000,
+     "grams": 10.26,
      "stones": 0,
-     "makerCostUsd": 1233.67
+     "makerCostUsd": 1253.89
     },
     {
      "sku": "OPH-XMS-R05-18KR-US8_5",
@@ -10060,10 +10065,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 8.5"
      },
-     "price_cents": 252000,
-     "grams": 10.31,
+     "price_cents": 256000,
+     "grams": 10.48,
      "stones": 0,
-     "makerCostUsd": 1259.12
+     "makerCostUsd": 1279.76
     },
     {
      "sku": "OPH-XMS-R05-18KR-US9",
@@ -10073,10 +10078,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 9"
      },
-     "price_cents": 257000,
-     "grams": 10.52,
+     "price_cents": 262000,
+     "grams": 10.69,
      "stones": 0,
-     "makerCostUsd": 1284.58
+     "makerCostUsd": 1305.63
     },
     {
      "sku": "OPH-XMS-R05-18KR-US9_5",
@@ -10086,10 +10091,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 9.5"
      },
-     "price_cents": 263000,
-     "grams": 10.72,
+     "price_cents": 267000,
+     "grams": 10.9,
      "stones": 0,
-     "makerCostUsd": 1310.03
+     "makerCostUsd": 1331.51
     },
     {
      "sku": "OPH-XMS-R05-18KR-US10",
@@ -10099,10 +10104,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 10"
      },
-     "price_cents": 268000,
-     "grams": 10.93,
+     "price_cents": 272000,
+     "grams": 11.11,
      "stones": 0,
-     "makerCostUsd": 1335.48
+     "makerCostUsd": 1357.38
     },
     {
      "sku": "OPH-XMS-R05-18KR-US10_5",
@@ -10112,10 +10117,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 10.5"
      },
-     "price_cents": 273000,
-     "grams": 11.14,
+     "price_cents": 277000,
+     "grams": 11.32,
      "stones": 0,
-     "makerCostUsd": 1360.94
+     "makerCostUsd": 1383.25
     },
     {
      "sku": "OPH-XMS-R05-18KR-US11",
@@ -10125,10 +10130,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 11"
      },
-     "price_cents": 278000,
-     "grams": 11.35,
+     "price_cents": 282000,
+     "grams": 11.53,
      "stones": 0,
-     "makerCostUsd": 1386.39
+     "makerCostUsd": 1409.12
     },
     {
      "sku": "OPH-XMS-R05-18KR-US11_5",
@@ -10138,10 +10143,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 11.5"
      },
-     "price_cents": 283000,
-     "grams": 11.56,
+     "price_cents": 287000,
+     "grams": 11.75,
      "stones": 0,
-     "makerCostUsd": 1411.85
+     "makerCostUsd": 1434.99
     },
     {
      "sku": "OPH-XMS-R05-18KR-US12",
@@ -10151,17 +10156,17 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 12"
      },
-     "price_cents": 288000,
-     "grams": 11.77,
+     "price_cents": 293000,
+     "grams": 11.96,
      "stones": 0,
-     "makerCostUsd": 1437.3
+     "makerCostUsd": 1460.86
     }
    ],
-   "grams14Ref": 8.52,
+   "grams14Ref": 8.65,
    "accentStonesRef": 0,
    "centreStonesRef": 0,
-   "refPriceCents": 171000,
-   "makerCost14KRefUsd": 851.51
+   "refPriceCents": 174000,
+   "makerCost14KRefUsd": 865.47
   },
   {
    "id": "R06",
@@ -10171,7 +10176,8 @@
    "listingProtocol": "sculptural_ring",
    "offersPersonalization": false,
    "name": "Snowdrift Pinky Signet",
-   "title": "Snowdrift Pinky Signet, Solid Gold Snowdrift Christmas Ring, Holiday Stacking Gift, Gift for Her",
+   "short": "Snowdrift",
+   "title": "Snowdrift Pinky Signet, Solid Gold Snowdrift Christmas Ring, Holiday Gift for Her",
    "tags": [
     "christmas ring",
     "pinky ring",
@@ -10187,7 +10193,7 @@
     "festive jewelry",
     "snow ring"
    ],
-   "description": "A small pinky signet whose top is a drifted, wind shaped mound instead of a flat face.\n\nThe top is a small solid mound of gold with no flat plate anywhere: it rises high on one side and slopes smoothly down into the band on the other, scaled small for the little finger. Where a signet would carry a flat plate this one carries a low drift of gold, the way snow banks against a wall. Scaled for the little finger, which is where a signet is worn now.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose. White gold is unplated, a soft silvery grey.\nSize: the face is about 8 mm across, cut for the little finger.\nFit: order one size down from your usual ring finger size for a pinky fit.\n\nEach piece is made to order and ships free within the United States. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Take it off before the gym, the pool and the shower, and wipe it with a soft cloth.\n\nThe product images are design visualizations of the finished piece, and the three metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
+   "description": "A small pinky signet whose top is a drifted, wind shaped mound instead of a flat face.\n\nThe top is a small solid mound of gold with no flat plate anywhere: it rises high on one side and slopes smoothly down into the band on the other, scaled small for the little finger. Where a signet would carry a flat plate this one carries a low drift of gold, the way snow banks against a wall. Scaled for the little finger, which is where a signet is worn now.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose. White gold is unplated, a soft silvery grey.\nSize: the top is about 8 mm across, cut for the little finger.\n\nEach piece is made to order and ships free within the United States. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Take it off before the gym, the pool and the shower, and wipe it with a soft cloth.\n\nThe product images are design visualizations of the finished piece, and the three metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
    "lead": "A small pinky signet whose top is a drifted, wind shaped mound instead of a flat face.",
    "buildNote": "The top is a small solid mound of gold with no flat plate anywhere: it rises high on one side and slopes smoothly down into the band on the other, scaled small for the little finger.",
    "dims": "8 mm face, pinky",
@@ -12201,7 +12207,8 @@
    "listingProtocol": "sculptural_ring",
    "offersPersonalization": false,
    "name": "Frost Dome Ring",
-   "title": "Frost Dome Ring, Solid Gold Frosted Dome Christmas Ring, Holiday Stacking Gift, Gift for Her",
+   "short": "Frosted Dome",
+   "title": "Frost Dome Ring, Solid Gold Frosted Dome Christmas Ring, Holiday Gift for Her",
    "tags": [
     "christmas ring",
     "dome ring",
@@ -14231,7 +14238,8 @@
    "listingProtocol": "sculptural_ring",
    "offersPersonalization": false,
    "name": "Snow Globe Dome Ring",
-   "title": "Snow Globe Dome Ring, Solid Gold Smooth Dome Christmas Ring, Holiday Stacking Gift, Gift for Her",
+   "short": "Smooth Dome",
+   "title": "Snow Globe Dome Ring, Solid Gold Smooth Dome Christmas Ring, Holiday Gift for Her",
    "tags": [
     "christmas ring",
     "dome ring",
@@ -16261,7 +16269,8 @@
    "listingProtocol": "sculptural_ring",
    "offersPersonalization": false,
    "name": "Pinecone Dome Ring",
-   "title": "Pinecone Dome Ring, Solid Gold Pinecone Christmas Ring, Holiday Stacking Gift, Gift for Her",
+   "short": "Pinecone",
+   "title": "Pinecone Dome Ring, Solid Gold Pinecone Christmas Ring, Holiday Gift for Her",
    "tags": [
     "christmas ring",
     "pinecone ring",
@@ -16277,9 +16286,9 @@
     "festive jewelry",
     "woodland ring"
    ],
-   "description": "A dome built from overlapping pinecone scales.\n\nThe dome is built from overlapping pinecone scales, each one cut and lifted so its edge stands away from the body. Each scale is cut and lifted separately so they tile around the dome and the edges stand away from the body. It is the most worked surface in the line and the one that reads as winter without naming Christmas.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose. White gold is unplated, a soft silvery grey.\nSize: the dome is about 9 mm across and stands 3.6 mm above the finger.\n\nEach piece is made to order and ships free within the United States. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Take it off before the gym, the pool and the shower, and wipe it with a soft cloth.\n\nThe product images are design visualizations of the finished piece, and the three metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
+   "description": "A dome built from overlapping pinecone scales.\n\nThe dome rises out of the band itself, the band widening into it, and is built from overlapping pinecone scales, each one cut and lifted so its edge stands away from the body. Each scale is cut and lifted separately so they tile around the dome and the edges stand away from the body. It is the most worked surface in the line and the one that reads as winter without naming Christmas.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose. White gold is unplated, a soft silvery grey.\nSize: the dome is about 9 mm across and stands 3.6 mm above the finger.\n\nEach piece is made to order and ships free within the United States. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Take it off before the gym, the pool and the shower, and wipe it with a soft cloth.\n\nThe product images are design visualizations of the finished piece, and the three metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
    "lead": "A dome built from overlapping pinecone scales.",
-   "buildNote": "The dome is built from overlapping pinecone scales, each one cut and lifted so its edge stands away from the body.",
+   "buildNote": "The dome rises out of the band itself, the band widening into it, and is built from overlapping pinecone scales, each one cut and lifted so its edge stands away from the body.",
    "dims": "9 mm dome, 3.6 mm high",
    "variationAxes": [
     "Karat",
@@ -18291,7 +18300,8 @@
    "listingProtocol": "stacking_ring",
    "offersPersonalization": false,
    "name": "Winterberry Stack Ring",
-   "title": "Winterberry Stack Ring, Solid Gold Berry Band Christmas Ring, Holiday Stacking Gift, Gift for Her",
+   "short": "Berry Band",
+   "title": "Winterberry Stack Ring, Solid Gold Berry Band Christmas Ring, Holiday Gift for Her",
    "tags": [
     "christmas ring",
     "stacking ring",
@@ -18307,7 +18317,7 @@
     "festive jewelry",
     "delicate ring"
    ],
-   "description": "A thin band carrying a short run of round gold berries.\n\nFive small solid gold spheres sit close together over the top of the finger and the rest of the thin band stays plain. Five small spheres sit close together over the top of the finger and the rest of the band stays plain, so it stacks flush against anything. The berries are solid gold, not set stones, which is what keeps it wearable every day.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose. White gold is unplated, a soft silvery grey.\nSize: the band is 1.5 mm wide and each berry is about 3 mm.\n\nEach piece is made to order and ships free within the United States. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Take it off before the gym, the pool and the shower, and wipe it with a soft cloth.\n\nThe product images are design visualizations of the finished piece, and the three metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
+   "description": "A thin band carrying a short run of round gold berries.\n\nFive small solid gold spheres sit close together over the top of the finger and the rest of the thin band stays plain. Five small spheres sit close together over the top of the finger and the rest of the band stays plain, so it stacks against a plain band. The berries are solid gold, not set stones, which is what keeps it wearable every day.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose. White gold is unplated, a soft silvery grey.\nSize: the band is 1.5 mm wide and each berry is about 3 mm.\n\nEach piece is made to order and ships free within the United States. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Take it off before the gym, the pool and the shower, and wipe it with a soft cloth.\n\nThe product images are design visualizations of the finished piece, and the three metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
    "lead": "A thin band carrying a short run of round gold berries.",
    "buildNote": "Five small solid gold spheres sit close together over the top of the finger and the rest of the thin band stays plain.",
    "dims": "1.5 mm band, 3 mm berries",
@@ -18325,10 +18335,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 4"
      },
-     "price_cents": 27000,
-     "grams": 1.72,
+     "price_cents": 36000,
+     "grams": 2.3,
      "stones": 0,
-     "makerCostUsd": 132.93
+     "makerCostUsd": 177.96
     },
     {
      "sku": "OPH-XMS-R10-10KY-US4_5",
@@ -18338,10 +18348,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 4.5"
      },
-     "price_cents": 28000,
-     "grams": 1.75,
+     "price_cents": 37000,
+     "grams": 2.33,
      "stones": 0,
-     "makerCostUsd": 135.42
+     "makerCostUsd": 180.45
     },
     {
      "sku": "OPH-XMS-R10-10KY-US5",
@@ -18351,10 +18361,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 5"
      },
-     "price_cents": 28000,
-     "grams": 1.78,
+     "price_cents": 37000,
+     "grams": 2.36,
      "stones": 0,
-     "makerCostUsd": 137.91
+     "makerCostUsd": 182.94
     },
     {
      "sku": "OPH-XMS-R10-10KY-US5_5",
@@ -18364,10 +18374,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 5.5"
      },
-     "price_cents": 29000,
-     "grams": 1.81,
+     "price_cents": 38000,
+     "grams": 2.39,
      "stones": 0,
-     "makerCostUsd": 140.4
+     "makerCostUsd": 185.43
     },
     {
      "sku": "OPH-XMS-R10-10KY-US6",
@@ -18377,10 +18387,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 6"
      },
-     "price_cents": 29000,
-     "grams": 1.85,
+     "price_cents": 38000,
+     "grams": 2.43,
      "stones": 0,
-     "makerCostUsd": 142.89
+     "makerCostUsd": 187.92
     },
     {
      "sku": "OPH-XMS-R10-10KY-US6_5",
@@ -18390,10 +18400,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 6.5"
      },
-     "price_cents": 30000,
-     "grams": 1.88,
+     "price_cents": 39000,
+     "grams": 2.46,
      "stones": 0,
-     "makerCostUsd": 145.38
+     "makerCostUsd": 190.41
     },
     {
      "sku": "OPH-XMS-R10-10KY-US7",
@@ -18403,10 +18413,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 7"
      },
-     "price_cents": 30000,
-     "grams": 1.91,
+     "price_cents": 39000,
+     "grams": 2.49,
      "stones": 0,
-     "makerCostUsd": 147.87
+     "makerCostUsd": 192.9
     },
     {
      "sku": "OPH-XMS-R10-10KY-US7_5",
@@ -18416,10 +18426,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 7.5"
      },
-     "price_cents": 31000,
-     "grams": 1.94,
+     "price_cents": 40000,
+     "grams": 2.52,
      "stones": 0,
-     "makerCostUsd": 150.36
+     "makerCostUsd": 195.39
     },
     {
      "sku": "OPH-XMS-R10-10KY-US8",
@@ -18429,10 +18439,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 8"
      },
-     "price_cents": 31000,
-     "grams": 1.97,
+     "price_cents": 40000,
+     "grams": 2.56,
      "stones": 0,
-     "makerCostUsd": 152.84
+     "makerCostUsd": 197.88
     },
     {
      "sku": "OPH-XMS-R10-10KY-US8_5",
@@ -18442,10 +18452,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 8.5"
      },
-     "price_cents": 32000,
-     "grams": 2.01,
+     "price_cents": 41000,
+     "grams": 2.59,
      "stones": 0,
-     "makerCostUsd": 155.33
+     "makerCostUsd": 200.37
     },
     {
      "sku": "OPH-XMS-R10-10KY-US9",
@@ -18455,10 +18465,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 9"
      },
-     "price_cents": 32000,
-     "grams": 2.04,
+     "price_cents": 41000,
+     "grams": 2.62,
      "stones": 0,
-     "makerCostUsd": 157.82
+     "makerCostUsd": 202.86
     },
     {
      "sku": "OPH-XMS-R10-10KY-US9_5",
@@ -18468,10 +18478,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 9.5"
      },
-     "price_cents": 33000,
-     "grams": 2.07,
+     "price_cents": 42000,
+     "grams": 2.65,
      "stones": 0,
-     "makerCostUsd": 160.31
+     "makerCostUsd": 205.35
     },
     {
      "sku": "OPH-XMS-R10-10KY-US10",
@@ -18481,10 +18491,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 10"
      },
-     "price_cents": 33000,
-     "grams": 2.1,
+     "price_cents": 42000,
+     "grams": 2.68,
      "stones": 0,
-     "makerCostUsd": 162.8
+     "makerCostUsd": 207.84
     },
     {
      "sku": "OPH-XMS-R10-10KY-US10_5",
@@ -18494,10 +18504,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 10.5"
      },
-     "price_cents": 34000,
-     "grams": 2.13,
+     "price_cents": 43000,
+     "grams": 2.72,
      "stones": 0,
-     "makerCostUsd": 165.29
+     "makerCostUsd": 210.33
     },
     {
      "sku": "OPH-XMS-R10-10KY-US11",
@@ -18507,10 +18517,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 11"
      },
-     "price_cents": 34000,
-     "grams": 2.17,
+     "price_cents": 43000,
+     "grams": 2.75,
      "stones": 0,
-     "makerCostUsd": 167.78
+     "makerCostUsd": 212.82
     },
     {
      "sku": "OPH-XMS-R10-10KY-US11_5",
@@ -18520,10 +18530,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 11.5"
      },
-     "price_cents": 35000,
-     "grams": 2.2,
+     "price_cents": 44000,
+     "grams": 2.78,
      "stones": 0,
-     "makerCostUsd": 170.27
+     "makerCostUsd": 215.31
     },
     {
      "sku": "OPH-XMS-R10-10KY-US12",
@@ -18533,10 +18543,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 12"
      },
-     "price_cents": 35000,
-     "grams": 2.23,
+     "price_cents": 44000,
+     "grams": 2.81,
      "stones": 0,
-     "makerCostUsd": 172.76
+     "makerCostUsd": 217.8
     },
     {
      "sku": "OPH-XMS-R10-10KW-US4",
@@ -18546,10 +18556,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 4"
      },
-     "price_cents": 27000,
-     "grams": 1.72,
+     "price_cents": 36000,
+     "grams": 2.3,
      "stones": 0,
-     "makerCostUsd": 132.93
+     "makerCostUsd": 177.96
     },
     {
      "sku": "OPH-XMS-R10-10KW-US4_5",
@@ -18559,10 +18569,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 4.5"
      },
-     "price_cents": 28000,
-     "grams": 1.75,
+     "price_cents": 37000,
+     "grams": 2.33,
      "stones": 0,
-     "makerCostUsd": 135.42
+     "makerCostUsd": 180.45
     },
     {
      "sku": "OPH-XMS-R10-10KW-US5",
@@ -18572,10 +18582,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 5"
      },
-     "price_cents": 28000,
-     "grams": 1.78,
+     "price_cents": 37000,
+     "grams": 2.36,
      "stones": 0,
-     "makerCostUsd": 137.91
+     "makerCostUsd": 182.94
     },
     {
      "sku": "OPH-XMS-R10-10KW-US5_5",
@@ -18585,10 +18595,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 5.5"
      },
-     "price_cents": 29000,
-     "grams": 1.81,
+     "price_cents": 38000,
+     "grams": 2.39,
      "stones": 0,
-     "makerCostUsd": 140.4
+     "makerCostUsd": 185.43
     },
     {
      "sku": "OPH-XMS-R10-10KW-US6",
@@ -18598,10 +18608,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 6"
      },
-     "price_cents": 29000,
-     "grams": 1.85,
+     "price_cents": 38000,
+     "grams": 2.43,
      "stones": 0,
-     "makerCostUsd": 142.89
+     "makerCostUsd": 187.92
     },
     {
      "sku": "OPH-XMS-R10-10KW-US6_5",
@@ -18611,10 +18621,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 6.5"
      },
-     "price_cents": 30000,
-     "grams": 1.88,
+     "price_cents": 39000,
+     "grams": 2.46,
      "stones": 0,
-     "makerCostUsd": 145.38
+     "makerCostUsd": 190.41
     },
     {
      "sku": "OPH-XMS-R10-10KW-US7",
@@ -18624,10 +18634,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 7"
      },
-     "price_cents": 30000,
-     "grams": 1.91,
+     "price_cents": 39000,
+     "grams": 2.49,
      "stones": 0,
-     "makerCostUsd": 147.87
+     "makerCostUsd": 192.9
     },
     {
      "sku": "OPH-XMS-R10-10KW-US7_5",
@@ -18637,10 +18647,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 7.5"
      },
-     "price_cents": 31000,
-     "grams": 1.94,
+     "price_cents": 40000,
+     "grams": 2.52,
      "stones": 0,
-     "makerCostUsd": 150.36
+     "makerCostUsd": 195.39
     },
     {
      "sku": "OPH-XMS-R10-10KW-US8",
@@ -18650,10 +18660,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 8"
      },
-     "price_cents": 31000,
-     "grams": 1.97,
+     "price_cents": 40000,
+     "grams": 2.56,
      "stones": 0,
-     "makerCostUsd": 152.84
+     "makerCostUsd": 197.88
     },
     {
      "sku": "OPH-XMS-R10-10KW-US8_5",
@@ -18663,10 +18673,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 8.5"
      },
-     "price_cents": 32000,
-     "grams": 2.01,
+     "price_cents": 41000,
+     "grams": 2.59,
      "stones": 0,
-     "makerCostUsd": 155.33
+     "makerCostUsd": 200.37
     },
     {
      "sku": "OPH-XMS-R10-10KW-US9",
@@ -18676,10 +18686,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 9"
      },
-     "price_cents": 32000,
-     "grams": 2.04,
+     "price_cents": 41000,
+     "grams": 2.62,
      "stones": 0,
-     "makerCostUsd": 157.82
+     "makerCostUsd": 202.86
     },
     {
      "sku": "OPH-XMS-R10-10KW-US9_5",
@@ -18689,10 +18699,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 9.5"
      },
-     "price_cents": 33000,
-     "grams": 2.07,
+     "price_cents": 42000,
+     "grams": 2.65,
      "stones": 0,
-     "makerCostUsd": 160.31
+     "makerCostUsd": 205.35
     },
     {
      "sku": "OPH-XMS-R10-10KW-US10",
@@ -18702,10 +18712,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 10"
      },
-     "price_cents": 33000,
-     "grams": 2.1,
+     "price_cents": 42000,
+     "grams": 2.68,
      "stones": 0,
-     "makerCostUsd": 162.8
+     "makerCostUsd": 207.84
     },
     {
      "sku": "OPH-XMS-R10-10KW-US10_5",
@@ -18715,10 +18725,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 10.5"
      },
-     "price_cents": 34000,
-     "grams": 2.13,
+     "price_cents": 43000,
+     "grams": 2.72,
      "stones": 0,
-     "makerCostUsd": 165.29
+     "makerCostUsd": 210.33
     },
     {
      "sku": "OPH-XMS-R10-10KW-US11",
@@ -18728,10 +18738,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 11"
      },
-     "price_cents": 34000,
-     "grams": 2.17,
+     "price_cents": 43000,
+     "grams": 2.75,
      "stones": 0,
-     "makerCostUsd": 167.78
+     "makerCostUsd": 212.82
     },
     {
      "sku": "OPH-XMS-R10-10KW-US11_5",
@@ -18741,10 +18751,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 11.5"
      },
-     "price_cents": 35000,
-     "grams": 2.2,
+     "price_cents": 44000,
+     "grams": 2.78,
      "stones": 0,
-     "makerCostUsd": 170.27
+     "makerCostUsd": 215.31
     },
     {
      "sku": "OPH-XMS-R10-10KW-US12",
@@ -18754,10 +18764,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 12"
      },
-     "price_cents": 35000,
-     "grams": 2.23,
+     "price_cents": 44000,
+     "grams": 2.81,
      "stones": 0,
-     "makerCostUsd": 172.76
+     "makerCostUsd": 217.8
     },
     {
      "sku": "OPH-XMS-R10-10KR-US4",
@@ -18767,10 +18777,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 4"
      },
-     "price_cents": 27000,
-     "grams": 1.72,
+     "price_cents": 36000,
+     "grams": 2.3,
      "stones": 0,
-     "makerCostUsd": 132.93
+     "makerCostUsd": 177.96
     },
     {
      "sku": "OPH-XMS-R10-10KR-US4_5",
@@ -18780,10 +18790,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 4.5"
      },
-     "price_cents": 28000,
-     "grams": 1.75,
+     "price_cents": 37000,
+     "grams": 2.33,
      "stones": 0,
-     "makerCostUsd": 135.42
+     "makerCostUsd": 180.45
     },
     {
      "sku": "OPH-XMS-R10-10KR-US5",
@@ -18793,10 +18803,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 5"
      },
-     "price_cents": 28000,
-     "grams": 1.78,
+     "price_cents": 37000,
+     "grams": 2.36,
      "stones": 0,
-     "makerCostUsd": 137.91
+     "makerCostUsd": 182.94
     },
     {
      "sku": "OPH-XMS-R10-10KR-US5_5",
@@ -18806,10 +18816,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 5.5"
      },
-     "price_cents": 29000,
-     "grams": 1.81,
+     "price_cents": 38000,
+     "grams": 2.39,
      "stones": 0,
-     "makerCostUsd": 140.4
+     "makerCostUsd": 185.43
     },
     {
      "sku": "OPH-XMS-R10-10KR-US6",
@@ -18819,10 +18829,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 6"
      },
-     "price_cents": 29000,
-     "grams": 1.85,
+     "price_cents": 38000,
+     "grams": 2.43,
      "stones": 0,
-     "makerCostUsd": 142.89
+     "makerCostUsd": 187.92
     },
     {
      "sku": "OPH-XMS-R10-10KR-US6_5",
@@ -18832,10 +18842,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 6.5"
      },
-     "price_cents": 30000,
-     "grams": 1.88,
+     "price_cents": 39000,
+     "grams": 2.46,
      "stones": 0,
-     "makerCostUsd": 145.38
+     "makerCostUsd": 190.41
     },
     {
      "sku": "OPH-XMS-R10-10KR-US7",
@@ -18845,10 +18855,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 7"
      },
-     "price_cents": 30000,
-     "grams": 1.91,
+     "price_cents": 39000,
+     "grams": 2.49,
      "stones": 0,
-     "makerCostUsd": 147.87
+     "makerCostUsd": 192.9
     },
     {
      "sku": "OPH-XMS-R10-10KR-US7_5",
@@ -18858,10 +18868,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 7.5"
      },
-     "price_cents": 31000,
-     "grams": 1.94,
+     "price_cents": 40000,
+     "grams": 2.52,
      "stones": 0,
-     "makerCostUsd": 150.36
+     "makerCostUsd": 195.39
     },
     {
      "sku": "OPH-XMS-R10-10KR-US8",
@@ -18871,10 +18881,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 8"
      },
-     "price_cents": 31000,
-     "grams": 1.97,
+     "price_cents": 40000,
+     "grams": 2.56,
      "stones": 0,
-     "makerCostUsd": 152.84
+     "makerCostUsd": 197.88
     },
     {
      "sku": "OPH-XMS-R10-10KR-US8_5",
@@ -18884,10 +18894,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 8.5"
      },
-     "price_cents": 32000,
-     "grams": 2.01,
+     "price_cents": 41000,
+     "grams": 2.59,
      "stones": 0,
-     "makerCostUsd": 155.33
+     "makerCostUsd": 200.37
     },
     {
      "sku": "OPH-XMS-R10-10KR-US9",
@@ -18897,10 +18907,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 9"
      },
-     "price_cents": 32000,
-     "grams": 2.04,
+     "price_cents": 41000,
+     "grams": 2.62,
      "stones": 0,
-     "makerCostUsd": 157.82
+     "makerCostUsd": 202.86
     },
     {
      "sku": "OPH-XMS-R10-10KR-US9_5",
@@ -18910,10 +18920,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 9.5"
      },
-     "price_cents": 33000,
-     "grams": 2.07,
+     "price_cents": 42000,
+     "grams": 2.65,
      "stones": 0,
-     "makerCostUsd": 160.31
+     "makerCostUsd": 205.35
     },
     {
      "sku": "OPH-XMS-R10-10KR-US10",
@@ -18923,10 +18933,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 10"
      },
-     "price_cents": 33000,
-     "grams": 2.1,
+     "price_cents": 42000,
+     "grams": 2.68,
      "stones": 0,
-     "makerCostUsd": 162.8
+     "makerCostUsd": 207.84
     },
     {
      "sku": "OPH-XMS-R10-10KR-US10_5",
@@ -18936,10 +18946,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 10.5"
      },
-     "price_cents": 34000,
-     "grams": 2.13,
+     "price_cents": 43000,
+     "grams": 2.72,
      "stones": 0,
-     "makerCostUsd": 165.29
+     "makerCostUsd": 210.33
     },
     {
      "sku": "OPH-XMS-R10-10KR-US11",
@@ -18949,10 +18959,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 11"
      },
-     "price_cents": 34000,
-     "grams": 2.17,
+     "price_cents": 43000,
+     "grams": 2.75,
      "stones": 0,
-     "makerCostUsd": 167.78
+     "makerCostUsd": 212.82
     },
     {
      "sku": "OPH-XMS-R10-10KR-US11_5",
@@ -18962,10 +18972,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 11.5"
      },
-     "price_cents": 35000,
-     "grams": 2.2,
+     "price_cents": 44000,
+     "grams": 2.78,
      "stones": 0,
-     "makerCostUsd": 170.27
+     "makerCostUsd": 215.31
     },
     {
      "sku": "OPH-XMS-R10-10KR-US12",
@@ -18975,10 +18985,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 12"
      },
-     "price_cents": 35000,
-     "grams": 2.23,
+     "price_cents": 44000,
+     "grams": 2.81,
      "stones": 0,
-     "makerCostUsd": 172.76
+     "makerCostUsd": 217.8
     },
     {
      "sku": "OPH-XMS-R10-14KY-US4",
@@ -18988,10 +18998,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 4"
      },
-     "price_cents": 39000,
-     "grams": 1.92,
+     "price_cents": 52000,
+     "grams": 2.58,
      "stones": 0,
-     "makerCostUsd": 192.45
+     "makerCostUsd": 257.65
     },
     {
      "sku": "OPH-XMS-R10-14KY-US4_5",
@@ -19001,10 +19011,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 4.5"
      },
-     "price_cents": 40000,
-     "grams": 1.96,
+     "price_cents": 53000,
+     "grams": 2.61,
      "stones": 0,
-     "makerCostUsd": 196.06
+     "makerCostUsd": 261.26
     },
     {
      "sku": "OPH-XMS-R10-14KY-US5",
@@ -19014,10 +19024,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 5"
      },
-     "price_cents": 40000,
-     "grams": 2.0,
+     "price_cents": 53000,
+     "grams": 2.65,
      "stones": 0,
-     "makerCostUsd": 199.66
+     "makerCostUsd": 264.86
     },
     {
      "sku": "OPH-XMS-R10-14KY-US5_5",
@@ -19027,10 +19037,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 5.5"
      },
-     "price_cents": 41000,
-     "grams": 2.03,
+     "price_cents": 54000,
+     "grams": 2.68,
      "stones": 0,
-     "makerCostUsd": 203.27
+     "makerCostUsd": 268.47
     },
     {
      "sku": "OPH-XMS-R10-14KY-US6",
@@ -19040,10 +19050,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 6"
      },
-     "price_cents": 42000,
-     "grams": 2.07,
+     "price_cents": 55000,
+     "grams": 2.72,
      "stones": 0,
-     "makerCostUsd": 206.87
+     "makerCostUsd": 272.07
     },
     {
      "sku": "OPH-XMS-R10-14KY-US6_5",
@@ -19053,10 +19063,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 6.5"
      },
-     "price_cents": 43000,
-     "grams": 2.1,
+     "price_cents": 56000,
+     "grams": 2.76,
      "stones": 0,
-     "makerCostUsd": 210.48
+     "makerCostUsd": 275.68
     },
     {
      "sku": "OPH-XMS-R10-14KY-US7",
@@ -19066,10 +19076,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 7"
      },
-     "price_cents": 43000,
-     "grams": 2.14,
+     "price_cents": 56000,
+     "grams": 2.79,
      "stones": 0,
-     "makerCostUsd": 214.08
+     "makerCostUsd": 279.28
     },
     {
      "sku": "OPH-XMS-R10-14KY-US7_5",
@@ -19079,10 +19089,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 7.5"
      },
-     "price_cents": 44000,
-     "grams": 2.18,
+     "price_cents": 57000,
+     "grams": 2.83,
      "stones": 0,
-     "makerCostUsd": 217.69
+     "makerCostUsd": 282.89
     },
     {
      "sku": "OPH-XMS-R10-14KY-US8",
@@ -19092,10 +19102,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 8"
      },
-     "price_cents": 45000,
-     "grams": 2.21,
+     "price_cents": 58000,
+     "grams": 2.86,
      "stones": 0,
-     "makerCostUsd": 221.29
+     "makerCostUsd": 286.49
     },
     {
      "sku": "OPH-XMS-R10-14KY-US8_5",
@@ -19105,10 +19115,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 8.5"
      },
-     "price_cents": 45000,
-     "grams": 2.25,
+     "price_cents": 59000,
+     "grams": 2.9,
      "stones": 0,
-     "makerCostUsd": 224.9
+     "makerCostUsd": 290.1
     },
     {
      "sku": "OPH-XMS-R10-14KY-US9",
@@ -19118,10 +19128,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 9"
      },
-     "price_cents": 46000,
-     "grams": 2.29,
+     "price_cents": 59000,
+     "grams": 2.94,
      "stones": 0,
-     "makerCostUsd": 228.5
+     "makerCostUsd": 293.7
     },
     {
      "sku": "OPH-XMS-R10-14KY-US9_5",
@@ -19131,10 +19141,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 9.5"
      },
-     "price_cents": 47000,
-     "grams": 2.32,
+     "price_cents": 60000,
+     "grams": 2.97,
      "stones": 0,
-     "makerCostUsd": 232.11
+     "makerCostUsd": 297.31
     },
     {
      "sku": "OPH-XMS-R10-14KY-US10",
@@ -19144,10 +19154,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 10"
      },
-     "price_cents": 48000,
-     "grams": 2.36,
+     "price_cents": 61000,
+     "grams": 3.01,
      "stones": 0,
-     "makerCostUsd": 235.71
+     "makerCostUsd": 300.91
     },
     {
      "sku": "OPH-XMS-R10-14KY-US10_5",
@@ -19157,10 +19167,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 10.5"
      },
-     "price_cents": 48000,
-     "grams": 2.39,
+     "price_cents": 61000,
+     "grams": 3.05,
      "stones": 0,
-     "makerCostUsd": 239.32
+     "makerCostUsd": 304.52
     },
     {
      "sku": "OPH-XMS-R10-14KY-US11",
@@ -19170,10 +19180,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 11"
      },
-     "price_cents": 49000,
-     "grams": 2.43,
+     "price_cents": 62000,
+     "grams": 3.08,
      "stones": 0,
-     "makerCostUsd": 242.92
+     "makerCostUsd": 308.12
     },
     {
      "sku": "OPH-XMS-R10-14KY-US11_5",
@@ -19183,10 +19193,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 11.5"
      },
-     "price_cents": 50000,
-     "grams": 2.47,
+     "price_cents": 63000,
+     "grams": 3.12,
      "stones": 0,
-     "makerCostUsd": 246.53
+     "makerCostUsd": 311.73
     },
     {
      "sku": "OPH-XMS-R10-14KY-US12",
@@ -19196,10 +19206,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 12"
      },
-     "price_cents": 51000,
-     "grams": 2.5,
+     "price_cents": 64000,
+     "grams": 3.15,
      "stones": 0,
-     "makerCostUsd": 250.13
+     "makerCostUsd": 315.33
     },
     {
      "sku": "OPH-XMS-R10-14KW-US4",
@@ -19209,10 +19219,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 4"
      },
-     "price_cents": 39000,
-     "grams": 1.92,
+     "price_cents": 52000,
+     "grams": 2.58,
      "stones": 0,
-     "makerCostUsd": 192.45
+     "makerCostUsd": 257.65
     },
     {
      "sku": "OPH-XMS-R10-14KW-US4_5",
@@ -19222,10 +19232,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 4.5"
      },
-     "price_cents": 40000,
-     "grams": 1.96,
+     "price_cents": 53000,
+     "grams": 2.61,
      "stones": 0,
-     "makerCostUsd": 196.06
+     "makerCostUsd": 261.26
     },
     {
      "sku": "OPH-XMS-R10-14KW-US5",
@@ -19235,10 +19245,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 5"
      },
-     "price_cents": 40000,
-     "grams": 2.0,
+     "price_cents": 53000,
+     "grams": 2.65,
      "stones": 0,
-     "makerCostUsd": 199.66
+     "makerCostUsd": 264.86
     },
     {
      "sku": "OPH-XMS-R10-14KW-US5_5",
@@ -19248,10 +19258,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 5.5"
      },
-     "price_cents": 41000,
-     "grams": 2.03,
+     "price_cents": 54000,
+     "grams": 2.68,
      "stones": 0,
-     "makerCostUsd": 203.27
+     "makerCostUsd": 268.47
     },
     {
      "sku": "OPH-XMS-R10-14KW-US6",
@@ -19261,10 +19271,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 6"
      },
-     "price_cents": 42000,
-     "grams": 2.07,
+     "price_cents": 55000,
+     "grams": 2.72,
      "stones": 0,
-     "makerCostUsd": 206.87
+     "makerCostUsd": 272.07
     },
     {
      "sku": "OPH-XMS-R10-14KW-US6_5",
@@ -19274,10 +19284,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 6.5"
      },
-     "price_cents": 43000,
-     "grams": 2.1,
+     "price_cents": 56000,
+     "grams": 2.76,
      "stones": 0,
-     "makerCostUsd": 210.48
+     "makerCostUsd": 275.68
     },
     {
      "sku": "OPH-XMS-R10-14KW-US7",
@@ -19287,10 +19297,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 7"
      },
-     "price_cents": 43000,
-     "grams": 2.14,
+     "price_cents": 56000,
+     "grams": 2.79,
      "stones": 0,
-     "makerCostUsd": 214.08
+     "makerCostUsd": 279.28
     },
     {
      "sku": "OPH-XMS-R10-14KW-US7_5",
@@ -19300,10 +19310,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 7.5"
      },
-     "price_cents": 44000,
-     "grams": 2.18,
+     "price_cents": 57000,
+     "grams": 2.83,
      "stones": 0,
-     "makerCostUsd": 217.69
+     "makerCostUsd": 282.89
     },
     {
      "sku": "OPH-XMS-R10-14KW-US8",
@@ -19313,10 +19323,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 8"
      },
-     "price_cents": 45000,
-     "grams": 2.21,
+     "price_cents": 58000,
+     "grams": 2.86,
      "stones": 0,
-     "makerCostUsd": 221.29
+     "makerCostUsd": 286.49
     },
     {
      "sku": "OPH-XMS-R10-14KW-US8_5",
@@ -19326,10 +19336,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 8.5"
      },
-     "price_cents": 45000,
-     "grams": 2.25,
+     "price_cents": 59000,
+     "grams": 2.9,
      "stones": 0,
-     "makerCostUsd": 224.9
+     "makerCostUsd": 290.1
     },
     {
      "sku": "OPH-XMS-R10-14KW-US9",
@@ -19339,10 +19349,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 9"
      },
-     "price_cents": 46000,
-     "grams": 2.29,
+     "price_cents": 59000,
+     "grams": 2.94,
      "stones": 0,
-     "makerCostUsd": 228.5
+     "makerCostUsd": 293.7
     },
     {
      "sku": "OPH-XMS-R10-14KW-US9_5",
@@ -19352,10 +19362,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 9.5"
      },
-     "price_cents": 47000,
-     "grams": 2.32,
+     "price_cents": 60000,
+     "grams": 2.97,
      "stones": 0,
-     "makerCostUsd": 232.11
+     "makerCostUsd": 297.31
     },
     {
      "sku": "OPH-XMS-R10-14KW-US10",
@@ -19365,10 +19375,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 10"
      },
-     "price_cents": 48000,
-     "grams": 2.36,
+     "price_cents": 61000,
+     "grams": 3.01,
      "stones": 0,
-     "makerCostUsd": 235.71
+     "makerCostUsd": 300.91
     },
     {
      "sku": "OPH-XMS-R10-14KW-US10_5",
@@ -19378,10 +19388,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 10.5"
      },
-     "price_cents": 48000,
-     "grams": 2.39,
+     "price_cents": 61000,
+     "grams": 3.05,
      "stones": 0,
-     "makerCostUsd": 239.32
+     "makerCostUsd": 304.52
     },
     {
      "sku": "OPH-XMS-R10-14KW-US11",
@@ -19391,10 +19401,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 11"
      },
-     "price_cents": 49000,
-     "grams": 2.43,
+     "price_cents": 62000,
+     "grams": 3.08,
      "stones": 0,
-     "makerCostUsd": 242.92
+     "makerCostUsd": 308.12
     },
     {
      "sku": "OPH-XMS-R10-14KW-US11_5",
@@ -19404,10 +19414,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 11.5"
      },
-     "price_cents": 50000,
-     "grams": 2.47,
+     "price_cents": 63000,
+     "grams": 3.12,
      "stones": 0,
-     "makerCostUsd": 246.53
+     "makerCostUsd": 311.73
     },
     {
      "sku": "OPH-XMS-R10-14KW-US12",
@@ -19417,10 +19427,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 12"
      },
-     "price_cents": 51000,
-     "grams": 2.5,
+     "price_cents": 64000,
+     "grams": 3.15,
      "stones": 0,
-     "makerCostUsd": 250.13
+     "makerCostUsd": 315.33
     },
     {
      "sku": "OPH-XMS-R10-14KR-US4",
@@ -19430,10 +19440,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 4"
      },
-     "price_cents": 39000,
-     "grams": 1.92,
+     "price_cents": 52000,
+     "grams": 2.58,
      "stones": 0,
-     "makerCostUsd": 192.45
+     "makerCostUsd": 257.65
     },
     {
      "sku": "OPH-XMS-R10-14KR-US4_5",
@@ -19443,10 +19453,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 4.5"
      },
-     "price_cents": 40000,
-     "grams": 1.96,
+     "price_cents": 53000,
+     "grams": 2.61,
      "stones": 0,
-     "makerCostUsd": 196.06
+     "makerCostUsd": 261.26
     },
     {
      "sku": "OPH-XMS-R10-14KR-US5",
@@ -19456,10 +19466,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 5"
      },
-     "price_cents": 40000,
-     "grams": 2.0,
+     "price_cents": 53000,
+     "grams": 2.65,
      "stones": 0,
-     "makerCostUsd": 199.66
+     "makerCostUsd": 264.86
     },
     {
      "sku": "OPH-XMS-R10-14KR-US5_5",
@@ -19469,10 +19479,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 5.5"
      },
-     "price_cents": 41000,
-     "grams": 2.03,
+     "price_cents": 54000,
+     "grams": 2.68,
      "stones": 0,
-     "makerCostUsd": 203.27
+     "makerCostUsd": 268.47
     },
     {
      "sku": "OPH-XMS-R10-14KR-US6",
@@ -19482,10 +19492,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 6"
      },
-     "price_cents": 42000,
-     "grams": 2.07,
+     "price_cents": 55000,
+     "grams": 2.72,
      "stones": 0,
-     "makerCostUsd": 206.87
+     "makerCostUsd": 272.07
     },
     {
      "sku": "OPH-XMS-R10-14KR-US6_5",
@@ -19495,10 +19505,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 6.5"
      },
-     "price_cents": 43000,
-     "grams": 2.1,
+     "price_cents": 56000,
+     "grams": 2.76,
      "stones": 0,
-     "makerCostUsd": 210.48
+     "makerCostUsd": 275.68
     },
     {
      "sku": "OPH-XMS-R10-14KR-US7",
@@ -19508,10 +19518,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 7"
      },
-     "price_cents": 43000,
-     "grams": 2.14,
+     "price_cents": 56000,
+     "grams": 2.79,
      "stones": 0,
-     "makerCostUsd": 214.08
+     "makerCostUsd": 279.28
     },
     {
      "sku": "OPH-XMS-R10-14KR-US7_5",
@@ -19521,10 +19531,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 7.5"
      },
-     "price_cents": 44000,
-     "grams": 2.18,
+     "price_cents": 57000,
+     "grams": 2.83,
      "stones": 0,
-     "makerCostUsd": 217.69
+     "makerCostUsd": 282.89
     },
     {
      "sku": "OPH-XMS-R10-14KR-US8",
@@ -19534,10 +19544,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 8"
      },
-     "price_cents": 45000,
-     "grams": 2.21,
+     "price_cents": 58000,
+     "grams": 2.86,
      "stones": 0,
-     "makerCostUsd": 221.29
+     "makerCostUsd": 286.49
     },
     {
      "sku": "OPH-XMS-R10-14KR-US8_5",
@@ -19547,10 +19557,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 8.5"
      },
-     "price_cents": 45000,
-     "grams": 2.25,
+     "price_cents": 59000,
+     "grams": 2.9,
      "stones": 0,
-     "makerCostUsd": 224.9
+     "makerCostUsd": 290.1
     },
     {
      "sku": "OPH-XMS-R10-14KR-US9",
@@ -19560,10 +19570,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 9"
      },
-     "price_cents": 46000,
-     "grams": 2.29,
+     "price_cents": 59000,
+     "grams": 2.94,
      "stones": 0,
-     "makerCostUsd": 228.5
+     "makerCostUsd": 293.7
     },
     {
      "sku": "OPH-XMS-R10-14KR-US9_5",
@@ -19573,10 +19583,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 9.5"
      },
-     "price_cents": 47000,
-     "grams": 2.32,
+     "price_cents": 60000,
+     "grams": 2.97,
      "stones": 0,
-     "makerCostUsd": 232.11
+     "makerCostUsd": 297.31
     },
     {
      "sku": "OPH-XMS-R10-14KR-US10",
@@ -19586,10 +19596,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 10"
      },
-     "price_cents": 48000,
-     "grams": 2.36,
+     "price_cents": 61000,
+     "grams": 3.01,
      "stones": 0,
-     "makerCostUsd": 235.71
+     "makerCostUsd": 300.91
     },
     {
      "sku": "OPH-XMS-R10-14KR-US10_5",
@@ -19599,10 +19609,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 10.5"
      },
-     "price_cents": 48000,
-     "grams": 2.39,
+     "price_cents": 61000,
+     "grams": 3.05,
      "stones": 0,
-     "makerCostUsd": 239.32
+     "makerCostUsd": 304.52
     },
     {
      "sku": "OPH-XMS-R10-14KR-US11",
@@ -19612,10 +19622,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 11"
      },
-     "price_cents": 49000,
-     "grams": 2.43,
+     "price_cents": 62000,
+     "grams": 3.08,
      "stones": 0,
-     "makerCostUsd": 242.92
+     "makerCostUsd": 308.12
     },
     {
      "sku": "OPH-XMS-R10-14KR-US11_5",
@@ -19625,10 +19635,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 11.5"
      },
-     "price_cents": 50000,
-     "grams": 2.47,
+     "price_cents": 63000,
+     "grams": 3.12,
      "stones": 0,
-     "makerCostUsd": 246.53
+     "makerCostUsd": 311.73
     },
     {
      "sku": "OPH-XMS-R10-14KR-US12",
@@ -19638,10 +19648,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 12"
      },
-     "price_cents": 51000,
-     "grams": 2.5,
+     "price_cents": 64000,
+     "grams": 3.15,
      "stones": 0,
-     "makerCostUsd": 250.13
+     "makerCostUsd": 315.33
     },
     {
      "sku": "OPH-XMS-R10-18KY-US4",
@@ -19651,10 +19661,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 4"
      },
-     "price_cents": 54000,
-     "grams": 2.19,
+     "price_cents": 72000,
+     "grams": 2.93,
      "stones": 0,
-     "makerCostUsd": 267.32
+     "makerCostUsd": 357.88
     },
     {
      "sku": "OPH-XMS-R10-18KY-US4_5",
@@ -19664,10 +19674,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 4.5"
      },
-     "price_cents": 55000,
-     "grams": 2.23,
+     "price_cents": 73000,
+     "grams": 2.97,
      "stones": 0,
-     "makerCostUsd": 272.33
+     "makerCostUsd": 362.89
     },
     {
      "sku": "OPH-XMS-R10-18KY-US5",
@@ -19677,10 +19687,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 5"
      },
-     "price_cents": 56000,
-     "grams": 2.27,
+     "price_cents": 74000,
+     "grams": 3.01,
      "stones": 0,
-     "makerCostUsd": 277.33
+     "makerCostUsd": 367.9
     },
     {
      "sku": "OPH-XMS-R10-18KY-US5_5",
@@ -19690,10 +19700,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 5.5"
      },
-     "price_cents": 57000,
-     "grams": 2.31,
+     "price_cents": 75000,
+     "grams": 3.05,
      "stones": 0,
-     "makerCostUsd": 282.34
+     "makerCostUsd": 372.9
     },
     {
      "sku": "OPH-XMS-R10-18KY-US6",
@@ -19703,10 +19713,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 6"
      },
-     "price_cents": 58000,
-     "grams": 2.35,
+     "price_cents": 76000,
+     "grams": 3.09,
      "stones": 0,
-     "makerCostUsd": 287.35
+     "makerCostUsd": 377.91
     },
     {
      "sku": "OPH-XMS-R10-18KY-US6_5",
@@ -19716,10 +19726,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 6.5"
      },
-     "price_cents": 59000,
-     "grams": 2.39,
+     "price_cents": 77000,
+     "grams": 3.13,
      "stones": 0,
-     "makerCostUsd": 292.35
+     "makerCostUsd": 382.92
     },
     {
      "sku": "OPH-XMS-R10-18KY-US7",
@@ -19729,10 +19739,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 7"
      },
-     "price_cents": 60000,
-     "grams": 2.43,
+     "price_cents": 78000,
+     "grams": 3.18,
      "stones": 0,
-     "makerCostUsd": 297.36
+     "makerCostUsd": 387.93
     },
     {
      "sku": "OPH-XMS-R10-18KY-US7_5",
@@ -19742,10 +19752,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 7.5"
      },
-     "price_cents": 61000,
-     "grams": 2.48,
+     "price_cents": 79000,
+     "grams": 3.22,
      "stones": 0,
-     "makerCostUsd": 302.37
+     "makerCostUsd": 392.93
     },
     {
      "sku": "OPH-XMS-R10-18KY-US8",
@@ -19755,10 +19765,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 8"
      },
-     "price_cents": 62000,
-     "grams": 2.52,
+     "price_cents": 80000,
+     "grams": 3.26,
      "stones": 0,
-     "makerCostUsd": 307.38
+     "makerCostUsd": 397.94
     },
     {
      "sku": "OPH-XMS-R10-18KY-US8_5",
@@ -19768,10 +19778,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 8.5"
      },
-     "price_cents": 63000,
-     "grams": 2.56,
+     "price_cents": 81000,
+     "grams": 3.3,
      "stones": 0,
-     "makerCostUsd": 312.38
+     "makerCostUsd": 402.95
     },
     {
      "sku": "OPH-XMS-R10-18KY-US9",
@@ -19781,10 +19791,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 9"
      },
-     "price_cents": 64000,
-     "grams": 2.6,
+     "price_cents": 82000,
+     "grams": 3.34,
      "stones": 0,
-     "makerCostUsd": 317.39
+     "makerCostUsd": 407.96
     },
     {
      "sku": "OPH-XMS-R10-18KY-US9_5",
@@ -19794,10 +19804,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 9.5"
      },
-     "price_cents": 65000,
-     "grams": 2.64,
+     "price_cents": 83000,
+     "grams": 3.38,
      "stones": 0,
-     "makerCostUsd": 322.4
+     "makerCostUsd": 412.96
     },
     {
      "sku": "OPH-XMS-R10-18KY-US10",
@@ -19807,10 +19817,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 10"
      },
-     "price_cents": 66000,
-     "grams": 2.68,
+     "price_cents": 84000,
+     "grams": 3.42,
      "stones": 0,
-     "makerCostUsd": 327.41
+     "makerCostUsd": 417.97
     },
     {
      "sku": "OPH-XMS-R10-18KY-US10_5",
@@ -19820,10 +19830,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 10.5"
      },
-     "price_cents": 67000,
-     "grams": 2.72,
+     "price_cents": 85000,
+     "grams": 3.46,
      "stones": 0,
-     "makerCostUsd": 332.41
+     "makerCostUsd": 422.98
     },
     {
      "sku": "OPH-XMS-R10-18KY-US11",
@@ -19833,10 +19843,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 11"
      },
-     "price_cents": 68000,
-     "grams": 2.76,
+     "price_cents": 86000,
+     "grams": 3.5,
      "stones": 0,
-     "makerCostUsd": 337.42
+     "makerCostUsd": 427.99
     },
     {
      "sku": "OPH-XMS-R10-18KY-US11_5",
@@ -19846,10 +19856,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 11.5"
      },
-     "price_cents": 69000,
-     "grams": 2.8,
+     "price_cents": 87000,
+     "grams": 3.54,
      "stones": 0,
-     "makerCostUsd": 342.43
+     "makerCostUsd": 432.99
     },
     {
      "sku": "OPH-XMS-R10-18KY-US12",
@@ -19859,10 +19869,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 12"
      },
-     "price_cents": 70000,
-     "grams": 2.84,
+     "price_cents": 88000,
+     "grams": 3.59,
      "stones": 0,
-     "makerCostUsd": 347.44
+     "makerCostUsd": 438.0
     },
     {
      "sku": "OPH-XMS-R10-18KW-US4",
@@ -19872,10 +19882,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 4"
      },
-     "price_cents": 54000,
-     "grams": 2.19,
+     "price_cents": 72000,
+     "grams": 2.93,
      "stones": 0,
-     "makerCostUsd": 267.32
+     "makerCostUsd": 357.88
     },
     {
      "sku": "OPH-XMS-R10-18KW-US4_5",
@@ -19885,10 +19895,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 4.5"
      },
-     "price_cents": 55000,
-     "grams": 2.23,
+     "price_cents": 73000,
+     "grams": 2.97,
      "stones": 0,
-     "makerCostUsd": 272.33
+     "makerCostUsd": 362.89
     },
     {
      "sku": "OPH-XMS-R10-18KW-US5",
@@ -19898,10 +19908,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 5"
      },
-     "price_cents": 56000,
-     "grams": 2.27,
+     "price_cents": 74000,
+     "grams": 3.01,
      "stones": 0,
-     "makerCostUsd": 277.33
+     "makerCostUsd": 367.9
     },
     {
      "sku": "OPH-XMS-R10-18KW-US5_5",
@@ -19911,10 +19921,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 5.5"
      },
-     "price_cents": 57000,
-     "grams": 2.31,
+     "price_cents": 75000,
+     "grams": 3.05,
      "stones": 0,
-     "makerCostUsd": 282.34
+     "makerCostUsd": 372.9
     },
     {
      "sku": "OPH-XMS-R10-18KW-US6",
@@ -19924,10 +19934,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 6"
      },
-     "price_cents": 58000,
-     "grams": 2.35,
+     "price_cents": 76000,
+     "grams": 3.09,
      "stones": 0,
-     "makerCostUsd": 287.35
+     "makerCostUsd": 377.91
     },
     {
      "sku": "OPH-XMS-R10-18KW-US6_5",
@@ -19937,10 +19947,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 6.5"
      },
-     "price_cents": 59000,
-     "grams": 2.39,
+     "price_cents": 77000,
+     "grams": 3.13,
      "stones": 0,
-     "makerCostUsd": 292.35
+     "makerCostUsd": 382.92
     },
     {
      "sku": "OPH-XMS-R10-18KW-US7",
@@ -19950,10 +19960,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 7"
      },
-     "price_cents": 60000,
-     "grams": 2.43,
+     "price_cents": 78000,
+     "grams": 3.18,
      "stones": 0,
-     "makerCostUsd": 297.36
+     "makerCostUsd": 387.93
     },
     {
      "sku": "OPH-XMS-R10-18KW-US7_5",
@@ -19963,10 +19973,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 7.5"
      },
-     "price_cents": 61000,
-     "grams": 2.48,
+     "price_cents": 79000,
+     "grams": 3.22,
      "stones": 0,
-     "makerCostUsd": 302.37
+     "makerCostUsd": 392.93
     },
     {
      "sku": "OPH-XMS-R10-18KW-US8",
@@ -19976,10 +19986,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 8"
      },
-     "price_cents": 62000,
-     "grams": 2.52,
+     "price_cents": 80000,
+     "grams": 3.26,
      "stones": 0,
-     "makerCostUsd": 307.38
+     "makerCostUsd": 397.94
     },
     {
      "sku": "OPH-XMS-R10-18KW-US8_5",
@@ -19989,10 +19999,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 8.5"
      },
-     "price_cents": 63000,
-     "grams": 2.56,
+     "price_cents": 81000,
+     "grams": 3.3,
      "stones": 0,
-     "makerCostUsd": 312.38
+     "makerCostUsd": 402.95
     },
     {
      "sku": "OPH-XMS-R10-18KW-US9",
@@ -20002,10 +20012,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 9"
      },
-     "price_cents": 64000,
-     "grams": 2.6,
+     "price_cents": 82000,
+     "grams": 3.34,
      "stones": 0,
-     "makerCostUsd": 317.39
+     "makerCostUsd": 407.96
     },
     {
      "sku": "OPH-XMS-R10-18KW-US9_5",
@@ -20015,10 +20025,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 9.5"
      },
-     "price_cents": 65000,
-     "grams": 2.64,
+     "price_cents": 83000,
+     "grams": 3.38,
      "stones": 0,
-     "makerCostUsd": 322.4
+     "makerCostUsd": 412.96
     },
     {
      "sku": "OPH-XMS-R10-18KW-US10",
@@ -20028,10 +20038,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 10"
      },
-     "price_cents": 66000,
-     "grams": 2.68,
+     "price_cents": 84000,
+     "grams": 3.42,
      "stones": 0,
-     "makerCostUsd": 327.41
+     "makerCostUsd": 417.97
     },
     {
      "sku": "OPH-XMS-R10-18KW-US10_5",
@@ -20041,10 +20051,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 10.5"
      },
-     "price_cents": 67000,
-     "grams": 2.72,
+     "price_cents": 85000,
+     "grams": 3.46,
      "stones": 0,
-     "makerCostUsd": 332.41
+     "makerCostUsd": 422.98
     },
     {
      "sku": "OPH-XMS-R10-18KW-US11",
@@ -20054,10 +20064,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 11"
      },
-     "price_cents": 68000,
-     "grams": 2.76,
+     "price_cents": 86000,
+     "grams": 3.5,
      "stones": 0,
-     "makerCostUsd": 337.42
+     "makerCostUsd": 427.99
     },
     {
      "sku": "OPH-XMS-R10-18KW-US11_5",
@@ -20067,10 +20077,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 11.5"
      },
-     "price_cents": 69000,
-     "grams": 2.8,
+     "price_cents": 87000,
+     "grams": 3.54,
      "stones": 0,
-     "makerCostUsd": 342.43
+     "makerCostUsd": 432.99
     },
     {
      "sku": "OPH-XMS-R10-18KW-US12",
@@ -20080,10 +20090,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 12"
      },
-     "price_cents": 70000,
-     "grams": 2.84,
+     "price_cents": 88000,
+     "grams": 3.59,
      "stones": 0,
-     "makerCostUsd": 347.44
+     "makerCostUsd": 438.0
     },
     {
      "sku": "OPH-XMS-R10-18KR-US4",
@@ -20093,10 +20103,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 4"
      },
-     "price_cents": 54000,
-     "grams": 2.19,
+     "price_cents": 72000,
+     "grams": 2.93,
      "stones": 0,
-     "makerCostUsd": 267.32
+     "makerCostUsd": 357.88
     },
     {
      "sku": "OPH-XMS-R10-18KR-US4_5",
@@ -20106,10 +20116,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 4.5"
      },
-     "price_cents": 55000,
-     "grams": 2.23,
+     "price_cents": 73000,
+     "grams": 2.97,
      "stones": 0,
-     "makerCostUsd": 272.33
+     "makerCostUsd": 362.89
     },
     {
      "sku": "OPH-XMS-R10-18KR-US5",
@@ -20119,10 +20129,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 5"
      },
-     "price_cents": 56000,
-     "grams": 2.27,
+     "price_cents": 74000,
+     "grams": 3.01,
      "stones": 0,
-     "makerCostUsd": 277.33
+     "makerCostUsd": 367.9
     },
     {
      "sku": "OPH-XMS-R10-18KR-US5_5",
@@ -20132,10 +20142,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 5.5"
      },
-     "price_cents": 57000,
-     "grams": 2.31,
+     "price_cents": 75000,
+     "grams": 3.05,
      "stones": 0,
-     "makerCostUsd": 282.34
+     "makerCostUsd": 372.9
     },
     {
      "sku": "OPH-XMS-R10-18KR-US6",
@@ -20145,10 +20155,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 6"
      },
-     "price_cents": 58000,
-     "grams": 2.35,
+     "price_cents": 76000,
+     "grams": 3.09,
      "stones": 0,
-     "makerCostUsd": 287.35
+     "makerCostUsd": 377.91
     },
     {
      "sku": "OPH-XMS-R10-18KR-US6_5",
@@ -20158,10 +20168,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 6.5"
      },
-     "price_cents": 59000,
-     "grams": 2.39,
+     "price_cents": 77000,
+     "grams": 3.13,
      "stones": 0,
-     "makerCostUsd": 292.35
+     "makerCostUsd": 382.92
     },
     {
      "sku": "OPH-XMS-R10-18KR-US7",
@@ -20171,10 +20181,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 7"
      },
-     "price_cents": 60000,
-     "grams": 2.43,
+     "price_cents": 78000,
+     "grams": 3.18,
      "stones": 0,
-     "makerCostUsd": 297.36
+     "makerCostUsd": 387.93
     },
     {
      "sku": "OPH-XMS-R10-18KR-US7_5",
@@ -20184,10 +20194,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 7.5"
      },
-     "price_cents": 61000,
-     "grams": 2.48,
+     "price_cents": 79000,
+     "grams": 3.22,
      "stones": 0,
-     "makerCostUsd": 302.37
+     "makerCostUsd": 392.93
     },
     {
      "sku": "OPH-XMS-R10-18KR-US8",
@@ -20197,10 +20207,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 8"
      },
-     "price_cents": 62000,
-     "grams": 2.52,
+     "price_cents": 80000,
+     "grams": 3.26,
      "stones": 0,
-     "makerCostUsd": 307.38
+     "makerCostUsd": 397.94
     },
     {
      "sku": "OPH-XMS-R10-18KR-US8_5",
@@ -20210,10 +20220,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 8.5"
      },
-     "price_cents": 63000,
-     "grams": 2.56,
+     "price_cents": 81000,
+     "grams": 3.3,
      "stones": 0,
-     "makerCostUsd": 312.38
+     "makerCostUsd": 402.95
     },
     {
      "sku": "OPH-XMS-R10-18KR-US9",
@@ -20223,10 +20233,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 9"
      },
-     "price_cents": 64000,
-     "grams": 2.6,
+     "price_cents": 82000,
+     "grams": 3.34,
      "stones": 0,
-     "makerCostUsd": 317.39
+     "makerCostUsd": 407.96
     },
     {
      "sku": "OPH-XMS-R10-18KR-US9_5",
@@ -20236,10 +20246,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 9.5"
      },
-     "price_cents": 65000,
-     "grams": 2.64,
+     "price_cents": 83000,
+     "grams": 3.38,
      "stones": 0,
-     "makerCostUsd": 322.4
+     "makerCostUsd": 412.96
     },
     {
      "sku": "OPH-XMS-R10-18KR-US10",
@@ -20249,10 +20259,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 10"
      },
-     "price_cents": 66000,
-     "grams": 2.68,
+     "price_cents": 84000,
+     "grams": 3.42,
      "stones": 0,
-     "makerCostUsd": 327.41
+     "makerCostUsd": 417.97
     },
     {
      "sku": "OPH-XMS-R10-18KR-US10_5",
@@ -20262,10 +20272,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 10.5"
      },
-     "price_cents": 67000,
-     "grams": 2.72,
+     "price_cents": 85000,
+     "grams": 3.46,
      "stones": 0,
-     "makerCostUsd": 332.41
+     "makerCostUsd": 422.98
     },
     {
      "sku": "OPH-XMS-R10-18KR-US11",
@@ -20275,10 +20285,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 11"
      },
-     "price_cents": 68000,
-     "grams": 2.76,
+     "price_cents": 86000,
+     "grams": 3.5,
      "stones": 0,
-     "makerCostUsd": 337.42
+     "makerCostUsd": 427.99
     },
     {
      "sku": "OPH-XMS-R10-18KR-US11_5",
@@ -20288,10 +20298,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 11.5"
      },
-     "price_cents": 69000,
-     "grams": 2.8,
+     "price_cents": 87000,
+     "grams": 3.54,
      "stones": 0,
-     "makerCostUsd": 342.43
+     "makerCostUsd": 432.99
     },
     {
      "sku": "OPH-XMS-R10-18KR-US12",
@@ -20301,17 +20311,17 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 12"
      },
-     "price_cents": 70000,
-     "grams": 2.84,
+     "price_cents": 88000,
+     "grams": 3.59,
      "stones": 0,
-     "makerCostUsd": 347.44
+     "makerCostUsd": 438.0
     }
    ],
-   "grams14Ref": 2.14,
+   "grams14Ref": 2.79,
    "accentStonesRef": 0,
    "centreStonesRef": 0,
-   "refPriceCents": 43000,
-   "makerCost14KRefUsd": 214.08
+   "refPriceCents": 56000,
+   "makerCost14KRefUsd": 279.28
   },
   {
    "id": "R11",
@@ -20321,7 +20331,8 @@
    "listingProtocol": "stacking_ring",
    "offersPersonalization": false,
    "name": "Fairy Light Stack Ring",
-   "title": "Fairy Light Stack Ring, Solid Gold String Lights Christmas Ring, Holiday Stacking Gift, Gift for Her",
+   "short": "String Lights",
+   "title": "Fairy Light Stack Ring, Solid Gold String Lights Christmas Ring, Holiday Gift for Her",
    "tags": [
     "christmas ring",
     "stacking ring",
@@ -20337,9 +20348,9 @@
     "festive jewelry",
     "delicate ring"
    ],
-   "description": "A thin band with small stones spaced along it like a string of lights.\n\nSeven small stones are bezel set at even intervals along a thin band, each in its own small collar of gold, with plain gold between them. Seven white diamonds are bezel set at even intervals, each one sitting in its own small collar of gold so the line reads as lights on a wire rather than as pave. The gaps are as much of the design as the stones.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose. White gold is unplated, a soft silvery grey.\nSize: the band is 1.6 mm wide and carries seven stones.\nStones: seven small round brilliant white diamonds, bezel set.\n\nEach piece is made to order and ships free within the United States. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Take it off before the gym, the pool and the shower, and wipe it with a soft cloth.\n\nThe product images are design visualizations of the finished piece, and the three metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
+   "description": "A thin band with small stones spaced along it like a string of lights.\n\nSeven small stones are bezel set at even intervals across the top half of a thin band, each in its own small collar of gold, with plain gold between them and the back half of the band plain. Seven white diamonds are bezel set at even intervals, each one sitting in its own small collar of gold so the line reads as lights on a wire rather than as pave. The gaps are as much of the design as the stones.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose. White gold is unplated, a soft silvery grey.\nSize: the band is 1.6 mm wide and carries seven stones.\nStones: seven small round brilliant white diamonds, bezel set.\n\nEach piece is made to order and ships free within the United States. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Take it off before the gym, the pool and the shower, and wipe it with a soft cloth.\n\nThe product images are design visualizations of the finished piece, and the three metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
    "lead": "A thin band with small stones spaced along it like a string of lights.",
-   "buildNote": "Seven small stones are bezel set at even intervals along a thin band, each in its own small collar of gold, with plain gold between them.",
+   "buildNote": "Seven small stones are bezel set at even intervals across the top half of a thin band, each in its own small collar of gold, with plain gold between them and the back half of the band plain.",
    "dims": "1.6 mm band, 7 stones",
    "variationAxes": [
     "Karat",
@@ -22351,7 +22362,8 @@
    "listingProtocol": "stacking_ring",
    "offersPersonalization": false,
    "name": "Garland Twist Ring",
-   "title": "Garland Twist Ring, Solid Gold Twisted Rope Christmas Ring, Holiday Stacking Gift, Gift for Her",
+   "short": "Twisted Rope",
+   "title": "Garland Twist Ring, Solid Gold Twisted Rope Christmas Ring, Holiday Gift for Her",
    "tags": [
     "christmas ring",
     "twist ring",
@@ -24381,7 +24393,8 @@
    "listingProtocol": "sculptural_ring",
    "offersPersonalization": false,
    "name": "Cranberry Bezel Ring",
-   "title": "Cranberry Bezel Ring, Solid Gold Red Bezel Christmas Ring, Holiday Stacking Gift, Gift for Her",
+   "short": "Red Bezel",
+   "title": "Cranberry Bezel Ring, Solid Gold Red Bezel Christmas Ring, Holiday Gift for Her",
    "tags": [
     "christmas ring",
     "garnet ring",
@@ -24391,8 +24404,8 @@
     "gift for her",
     "solid gold ring",
     "14k gold ring",
-    "birthstone ring",
-    "january ring",
+    "deep red ring",
+    "red garnet ring",
     "winter jewelry",
     "festive jewelry",
     "delicate ring"
@@ -26411,7 +26424,8 @@
    "listingProtocol": "sculptural_ring",
    "offersPersonalization": false,
    "name": "Evergreen Bezel Ring",
-   "title": "Evergreen Bezel Ring, Solid Gold Green Bezel Christmas Ring, Holiday Stacking Gift, Gift for Her",
+   "short": "Green Bezel",
+   "title": "Evergreen Bezel Ring, Solid Gold Green Bezel Christmas Ring, Holiday Gift for Her",
    "tags": [
     "christmas ring",
     "green stone ring",
@@ -26421,8 +26435,8 @@
     "gift for her",
     "solid gold ring",
     "14k gold ring",
-    "emerald green ring",
-    "october ring",
+    "forest green ring",
+    "dark green ring",
     "winter jewelry",
     "festive jewelry",
     "delicate ring"
@@ -28441,7 +28455,8 @@
    "listingProtocol": "sculptural_ring",
    "offersPersonalization": false,
    "name": "Toi et Moi Winter Ring",
-   "title": "Toi et Moi Winter Ring, Solid Gold Two Stone Christmas Ring, Holiday Stacking Gift, Gift for Her",
+   "short": "Two Stone",
+   "title": "Toi et Moi Winter Ring, Solid Gold Two Stone Christmas Ring, Holiday Gift",
    "tags": [
     "christmas ring",
     "toi et moi ring",
@@ -30471,7 +30486,8 @@
    "listingProtocol": "sculptural_ring",
    "offersPersonalization": false,
    "name": "Winter Rose Ring",
-   "title": "Winter Rose Ring, Solid Gold Rose Head Christmas Ring, Holiday Stacking Gift, Gift for Her",
+   "short": "Rose Head",
+   "title": "Winter Rose Ring, Solid Gold Rose Head Christmas Ring, Holiday Gift for Her",
    "tags": [
     "christmas ring",
     "rose ring",
@@ -30487,9 +30503,9 @@
     "festive jewelry",
     "sculptural ring"
    ],
-   "description": "A single sculpted rose head with one small white diamond at its centre.\n\nThe petals are cut separately and folded in towards the middle, tight at the heart and opening at the edge, with one small stone at the centre. The petals are cut separately and folded in towards the middle, tight at the heart and opening at the edge, with one stone where the bud has not yet opened. A winter rose rather than a summer one: heavy, closed and gold.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose. White gold is unplated, a soft silvery grey.\nSize: the rose head is about 10 mm across on a 2 mm band.\nStone: one small round brilliant white diamond at the centre.\n\nEach piece is made to order and ships free within the United States. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Take it off before the gym, the pool and the shower, and wipe it with a soft cloth.\n\nThe product images are design visualizations of the finished piece, and the three metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
+   "description": "A single sculpted rose head with one small white diamond at its centre.\n\nThe petals are cut separately and folded in towards the middle, tight at the heart and opening at the edge, with one small stone set in a tiny bezel at the centre. The petals are cut separately and folded in towards the middle, tight at the heart and opening at the edge, with one stone where the bud has not yet opened. A winter rose rather than a summer one: heavy, closed and gold.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose. White gold is unplated, a soft silvery grey.\nSize: the rose head is about 10 mm across on a 2 mm band.\nStone: one small round brilliant white diamond at the centre.\n\nEach piece is made to order and ships free within the United States. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Take it off before the gym, the pool and the shower, and wipe it with a soft cloth.\n\nThe product images are design visualizations of the finished piece, and the three metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
    "lead": "A single sculpted rose head with one small white diamond at its centre.",
-   "buildNote": "The petals are cut separately and folded in towards the middle, tight at the heart and opening at the edge, with one small stone at the centre.",
+   "buildNote": "The petals are cut separately and folded in towards the middle, tight at the heart and opening at the edge, with one small stone set in a tiny bezel at the centre.",
    "dims": "10 mm rose head",
    "variationAxes": [
     "Karat",
@@ -30505,10 +30521,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 4"
      },
-     "price_cents": 49000,
-     "grams": 3.04,
+     "price_cents": 58000,
+     "grams": 3.66,
      "stones": 1,
-     "makerCostUsd": 240.08
+     "makerCostUsd": 288.33
     },
     {
      "sku": "OPH-XMS-R16-10KY-US4_5",
@@ -30518,10 +30534,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 4.5"
      },
-     "price_cents": 49000,
-     "grams": 3.08,
+     "price_cents": 59000,
+     "grams": 3.71,
      "stones": 1,
-     "makerCostUsd": 243.64
+     "makerCostUsd": 291.89
     },
     {
      "sku": "OPH-XMS-R16-10KY-US5",
@@ -30531,10 +30547,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 5"
      },
-     "price_cents": 50000,
-     "grams": 3.13,
+     "price_cents": 60000,
+     "grams": 3.75,
      "stones": 1,
-     "makerCostUsd": 247.19
+     "makerCostUsd": 295.44
     },
     {
      "sku": "OPH-XMS-R16-10KY-US5_5",
@@ -30544,10 +30560,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 5.5"
      },
-     "price_cents": 51000,
-     "grams": 3.17,
+     "price_cents": 60000,
+     "grams": 3.8,
      "stones": 1,
-     "makerCostUsd": 250.75
+     "makerCostUsd": 299.0
     },
     {
      "sku": "OPH-XMS-R16-10KY-US6",
@@ -30557,10 +30573,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 6"
      },
-     "price_cents": 51000,
-     "grams": 3.22,
+     "price_cents": 61000,
+     "grams": 3.84,
      "stones": 1,
-     "makerCostUsd": 254.31
+     "makerCostUsd": 302.56
     },
     {
      "sku": "OPH-XMS-R16-10KY-US6_5",
@@ -30570,10 +30586,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 6.5"
      },
-     "price_cents": 52000,
-     "grams": 3.27,
+     "price_cents": 62000,
+     "grams": 3.89,
      "stones": 1,
-     "makerCostUsd": 257.87
+     "makerCostUsd": 306.12
     },
     {
      "sku": "OPH-XMS-R16-10KY-US7",
@@ -30583,10 +30599,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 7"
      },
-     "price_cents": 53000,
-     "grams": 3.31,
+     "price_cents": 62000,
+     "grams": 3.93,
      "stones": 1,
-     "makerCostUsd": 261.42
+     "makerCostUsd": 309.67
     },
     {
      "sku": "OPH-XMS-R16-10KY-US7_5",
@@ -30596,10 +30612,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 7.5"
      },
-     "price_cents": 53000,
-     "grams": 3.36,
+     "price_cents": 63000,
+     "grams": 3.98,
      "stones": 1,
-     "makerCostUsd": 264.98
+     "makerCostUsd": 313.23
     },
     {
      "sku": "OPH-XMS-R16-10KY-US8",
@@ -30609,10 +30625,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 8"
      },
-     "price_cents": 54000,
-     "grams": 3.4,
+     "price_cents": 64000,
+     "grams": 4.03,
      "stones": 1,
-     "makerCostUsd": 268.54
+     "makerCostUsd": 316.79
     },
     {
      "sku": "OPH-XMS-R16-10KY-US8_5",
@@ -30622,10 +30638,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 8.5"
      },
-     "price_cents": 55000,
-     "grams": 3.45,
+     "price_cents": 65000,
+     "grams": 4.07,
      "stones": 1,
-     "makerCostUsd": 272.09
+     "makerCostUsd": 320.34
     },
     {
      "sku": "OPH-XMS-R16-10KY-US9",
@@ -30635,10 +30651,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 9"
      },
-     "price_cents": 56000,
-     "grams": 3.5,
+     "price_cents": 65000,
+     "grams": 4.12,
      "stones": 1,
-     "makerCostUsd": 275.65
+     "makerCostUsd": 323.9
     },
     {
      "sku": "OPH-XMS-R16-10KY-US9_5",
@@ -30648,10 +30664,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 9.5"
      },
-     "price_cents": 56000,
-     "grams": 3.54,
+     "price_cents": 66000,
+     "grams": 4.16,
      "stones": 1,
-     "makerCostUsd": 279.21
+     "makerCostUsd": 327.46
     },
     {
      "sku": "OPH-XMS-R16-10KY-US10",
@@ -30661,10 +30677,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 10"
      },
-     "price_cents": 57000,
-     "grams": 3.59,
+     "price_cents": 67000,
+     "grams": 4.21,
      "stones": 1,
-     "makerCostUsd": 282.76
+     "makerCostUsd": 331.02
     },
     {
      "sku": "OPH-XMS-R16-10KY-US10_5",
@@ -30674,10 +30690,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 10.5"
      },
-     "price_cents": 58000,
-     "grams": 3.63,
+     "price_cents": 67000,
+     "grams": 4.26,
      "stones": 1,
-     "makerCostUsd": 286.32
+     "makerCostUsd": 334.57
     },
     {
      "sku": "OPH-XMS-R16-10KY-US11",
@@ -30687,10 +30703,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 11"
      },
-     "price_cents": 58000,
-     "grams": 3.68,
+     "price_cents": 68000,
+     "grams": 4.3,
      "stones": 1,
-     "makerCostUsd": 289.88
+     "makerCostUsd": 338.13
     },
     {
      "sku": "OPH-XMS-R16-10KY-US11_5",
@@ -30700,10 +30716,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 11.5"
      },
-     "price_cents": 59000,
-     "grams": 3.73,
+     "price_cents": 69000,
+     "grams": 4.35,
      "stones": 1,
-     "makerCostUsd": 293.44
+     "makerCostUsd": 341.69
     },
     {
      "sku": "OPH-XMS-R16-10KY-US12",
@@ -30713,10 +30729,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 12"
      },
-     "price_cents": 60000,
-     "grams": 3.77,
+     "price_cents": 70000,
+     "grams": 4.39,
      "stones": 1,
-     "makerCostUsd": 296.99
+     "makerCostUsd": 345.24
     },
     {
      "sku": "OPH-XMS-R16-10KW-US4",
@@ -30726,10 +30742,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 4"
      },
-     "price_cents": 49000,
-     "grams": 3.04,
+     "price_cents": 58000,
+     "grams": 3.66,
      "stones": 1,
-     "makerCostUsd": 240.08
+     "makerCostUsd": 288.33
     },
     {
      "sku": "OPH-XMS-R16-10KW-US4_5",
@@ -30739,10 +30755,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 4.5"
      },
-     "price_cents": 49000,
-     "grams": 3.08,
+     "price_cents": 59000,
+     "grams": 3.71,
      "stones": 1,
-     "makerCostUsd": 243.64
+     "makerCostUsd": 291.89
     },
     {
      "sku": "OPH-XMS-R16-10KW-US5",
@@ -30752,10 +30768,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 5"
      },
-     "price_cents": 50000,
-     "grams": 3.13,
+     "price_cents": 60000,
+     "grams": 3.75,
      "stones": 1,
-     "makerCostUsd": 247.19
+     "makerCostUsd": 295.44
     },
     {
      "sku": "OPH-XMS-R16-10KW-US5_5",
@@ -30765,10 +30781,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 5.5"
      },
-     "price_cents": 51000,
-     "grams": 3.17,
+     "price_cents": 60000,
+     "grams": 3.8,
      "stones": 1,
-     "makerCostUsd": 250.75
+     "makerCostUsd": 299.0
     },
     {
      "sku": "OPH-XMS-R16-10KW-US6",
@@ -30778,10 +30794,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 6"
      },
-     "price_cents": 51000,
-     "grams": 3.22,
+     "price_cents": 61000,
+     "grams": 3.84,
      "stones": 1,
-     "makerCostUsd": 254.31
+     "makerCostUsd": 302.56
     },
     {
      "sku": "OPH-XMS-R16-10KW-US6_5",
@@ -30791,10 +30807,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 6.5"
      },
-     "price_cents": 52000,
-     "grams": 3.27,
+     "price_cents": 62000,
+     "grams": 3.89,
      "stones": 1,
-     "makerCostUsd": 257.87
+     "makerCostUsd": 306.12
     },
     {
      "sku": "OPH-XMS-R16-10KW-US7",
@@ -30804,10 +30820,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 7"
      },
-     "price_cents": 53000,
-     "grams": 3.31,
+     "price_cents": 62000,
+     "grams": 3.93,
      "stones": 1,
-     "makerCostUsd": 261.42
+     "makerCostUsd": 309.67
     },
     {
      "sku": "OPH-XMS-R16-10KW-US7_5",
@@ -30817,10 +30833,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 7.5"
      },
-     "price_cents": 53000,
-     "grams": 3.36,
+     "price_cents": 63000,
+     "grams": 3.98,
      "stones": 1,
-     "makerCostUsd": 264.98
+     "makerCostUsd": 313.23
     },
     {
      "sku": "OPH-XMS-R16-10KW-US8",
@@ -30830,10 +30846,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 8"
      },
-     "price_cents": 54000,
-     "grams": 3.4,
+     "price_cents": 64000,
+     "grams": 4.03,
      "stones": 1,
-     "makerCostUsd": 268.54
+     "makerCostUsd": 316.79
     },
     {
      "sku": "OPH-XMS-R16-10KW-US8_5",
@@ -30843,10 +30859,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 8.5"
      },
-     "price_cents": 55000,
-     "grams": 3.45,
+     "price_cents": 65000,
+     "grams": 4.07,
      "stones": 1,
-     "makerCostUsd": 272.09
+     "makerCostUsd": 320.34
     },
     {
      "sku": "OPH-XMS-R16-10KW-US9",
@@ -30856,10 +30872,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 9"
      },
-     "price_cents": 56000,
-     "grams": 3.5,
+     "price_cents": 65000,
+     "grams": 4.12,
      "stones": 1,
-     "makerCostUsd": 275.65
+     "makerCostUsd": 323.9
     },
     {
      "sku": "OPH-XMS-R16-10KW-US9_5",
@@ -30869,10 +30885,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 9.5"
      },
-     "price_cents": 56000,
-     "grams": 3.54,
+     "price_cents": 66000,
+     "grams": 4.16,
      "stones": 1,
-     "makerCostUsd": 279.21
+     "makerCostUsd": 327.46
     },
     {
      "sku": "OPH-XMS-R16-10KW-US10",
@@ -30882,10 +30898,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 10"
      },
-     "price_cents": 57000,
-     "grams": 3.59,
+     "price_cents": 67000,
+     "grams": 4.21,
      "stones": 1,
-     "makerCostUsd": 282.76
+     "makerCostUsd": 331.02
     },
     {
      "sku": "OPH-XMS-R16-10KW-US10_5",
@@ -30895,10 +30911,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 10.5"
      },
-     "price_cents": 58000,
-     "grams": 3.63,
+     "price_cents": 67000,
+     "grams": 4.26,
      "stones": 1,
-     "makerCostUsd": 286.32
+     "makerCostUsd": 334.57
     },
     {
      "sku": "OPH-XMS-R16-10KW-US11",
@@ -30908,10 +30924,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 11"
      },
-     "price_cents": 58000,
-     "grams": 3.68,
+     "price_cents": 68000,
+     "grams": 4.3,
      "stones": 1,
-     "makerCostUsd": 289.88
+     "makerCostUsd": 338.13
     },
     {
      "sku": "OPH-XMS-R16-10KW-US11_5",
@@ -30921,10 +30937,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 11.5"
      },
-     "price_cents": 59000,
-     "grams": 3.73,
+     "price_cents": 69000,
+     "grams": 4.35,
      "stones": 1,
-     "makerCostUsd": 293.44
+     "makerCostUsd": 341.69
     },
     {
      "sku": "OPH-XMS-R16-10KW-US12",
@@ -30934,10 +30950,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 12"
      },
-     "price_cents": 60000,
-     "grams": 3.77,
+     "price_cents": 70000,
+     "grams": 4.39,
      "stones": 1,
-     "makerCostUsd": 296.99
+     "makerCostUsd": 345.24
     },
     {
      "sku": "OPH-XMS-R16-10KR-US4",
@@ -30947,10 +30963,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 4"
      },
-     "price_cents": 49000,
-     "grams": 3.04,
+     "price_cents": 58000,
+     "grams": 3.66,
      "stones": 1,
-     "makerCostUsd": 240.08
+     "makerCostUsd": 288.33
     },
     {
      "sku": "OPH-XMS-R16-10KR-US4_5",
@@ -30960,10 +30976,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 4.5"
      },
-     "price_cents": 49000,
-     "grams": 3.08,
+     "price_cents": 59000,
+     "grams": 3.71,
      "stones": 1,
-     "makerCostUsd": 243.64
+     "makerCostUsd": 291.89
     },
     {
      "sku": "OPH-XMS-R16-10KR-US5",
@@ -30973,10 +30989,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 5"
      },
-     "price_cents": 50000,
-     "grams": 3.13,
+     "price_cents": 60000,
+     "grams": 3.75,
      "stones": 1,
-     "makerCostUsd": 247.19
+     "makerCostUsd": 295.44
     },
     {
      "sku": "OPH-XMS-R16-10KR-US5_5",
@@ -30986,10 +31002,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 5.5"
      },
-     "price_cents": 51000,
-     "grams": 3.17,
+     "price_cents": 60000,
+     "grams": 3.8,
      "stones": 1,
-     "makerCostUsd": 250.75
+     "makerCostUsd": 299.0
     },
     {
      "sku": "OPH-XMS-R16-10KR-US6",
@@ -30999,10 +31015,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 6"
      },
-     "price_cents": 51000,
-     "grams": 3.22,
+     "price_cents": 61000,
+     "grams": 3.84,
      "stones": 1,
-     "makerCostUsd": 254.31
+     "makerCostUsd": 302.56
     },
     {
      "sku": "OPH-XMS-R16-10KR-US6_5",
@@ -31012,10 +31028,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 6.5"
      },
-     "price_cents": 52000,
-     "grams": 3.27,
+     "price_cents": 62000,
+     "grams": 3.89,
      "stones": 1,
-     "makerCostUsd": 257.87
+     "makerCostUsd": 306.12
     },
     {
      "sku": "OPH-XMS-R16-10KR-US7",
@@ -31025,10 +31041,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 7"
      },
-     "price_cents": 53000,
-     "grams": 3.31,
+     "price_cents": 62000,
+     "grams": 3.93,
      "stones": 1,
-     "makerCostUsd": 261.42
+     "makerCostUsd": 309.67
     },
     {
      "sku": "OPH-XMS-R16-10KR-US7_5",
@@ -31038,10 +31054,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 7.5"
      },
-     "price_cents": 53000,
-     "grams": 3.36,
+     "price_cents": 63000,
+     "grams": 3.98,
      "stones": 1,
-     "makerCostUsd": 264.98
+     "makerCostUsd": 313.23
     },
     {
      "sku": "OPH-XMS-R16-10KR-US8",
@@ -31051,10 +31067,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 8"
      },
-     "price_cents": 54000,
-     "grams": 3.4,
+     "price_cents": 64000,
+     "grams": 4.03,
      "stones": 1,
-     "makerCostUsd": 268.54
+     "makerCostUsd": 316.79
     },
     {
      "sku": "OPH-XMS-R16-10KR-US8_5",
@@ -31064,10 +31080,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 8.5"
      },
-     "price_cents": 55000,
-     "grams": 3.45,
+     "price_cents": 65000,
+     "grams": 4.07,
      "stones": 1,
-     "makerCostUsd": 272.09
+     "makerCostUsd": 320.34
     },
     {
      "sku": "OPH-XMS-R16-10KR-US9",
@@ -31077,10 +31093,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 9"
      },
-     "price_cents": 56000,
-     "grams": 3.5,
+     "price_cents": 65000,
+     "grams": 4.12,
      "stones": 1,
-     "makerCostUsd": 275.65
+     "makerCostUsd": 323.9
     },
     {
      "sku": "OPH-XMS-R16-10KR-US9_5",
@@ -31090,10 +31106,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 9.5"
      },
-     "price_cents": 56000,
-     "grams": 3.54,
+     "price_cents": 66000,
+     "grams": 4.16,
      "stones": 1,
-     "makerCostUsd": 279.21
+     "makerCostUsd": 327.46
     },
     {
      "sku": "OPH-XMS-R16-10KR-US10",
@@ -31103,10 +31119,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 10"
      },
-     "price_cents": 57000,
-     "grams": 3.59,
+     "price_cents": 67000,
+     "grams": 4.21,
      "stones": 1,
-     "makerCostUsd": 282.76
+     "makerCostUsd": 331.02
     },
     {
      "sku": "OPH-XMS-R16-10KR-US10_5",
@@ -31116,10 +31132,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 10.5"
      },
-     "price_cents": 58000,
-     "grams": 3.63,
+     "price_cents": 67000,
+     "grams": 4.26,
      "stones": 1,
-     "makerCostUsd": 286.32
+     "makerCostUsd": 334.57
     },
     {
      "sku": "OPH-XMS-R16-10KR-US11",
@@ -31129,10 +31145,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 11"
      },
-     "price_cents": 58000,
-     "grams": 3.68,
+     "price_cents": 68000,
+     "grams": 4.3,
      "stones": 1,
-     "makerCostUsd": 289.88
+     "makerCostUsd": 338.13
     },
     {
      "sku": "OPH-XMS-R16-10KR-US11_5",
@@ -31142,10 +31158,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 11.5"
      },
-     "price_cents": 59000,
-     "grams": 3.73,
+     "price_cents": 69000,
+     "grams": 4.35,
      "stones": 1,
-     "makerCostUsd": 293.44
+     "makerCostUsd": 341.69
     },
     {
      "sku": "OPH-XMS-R16-10KR-US12",
@@ -31155,10 +31171,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 12"
      },
-     "price_cents": 60000,
-     "grams": 3.77,
+     "price_cents": 70000,
+     "grams": 4.39,
      "stones": 1,
-     "makerCostUsd": 296.99
+     "makerCostUsd": 345.24
     },
     {
      "sku": "OPH-XMS-R16-14KY-US4",
@@ -31168,10 +31184,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 4"
      },
-     "price_cents": 70000,
-     "grams": 3.4,
+     "price_cents": 84000,
+     "grams": 4.1,
      "stones": 1,
-     "makerCostUsd": 345.35
+     "makerCostUsd": 415.21
     },
     {
      "sku": "OPH-XMS-R16-14KY-US4_5",
@@ -31181,10 +31197,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 4.5"
      },
-     "price_cents": 71000,
-     "grams": 3.46,
+     "price_cents": 85000,
+     "grams": 4.15,
      "stones": 1,
-     "makerCostUsd": 350.5
+     "makerCostUsd": 420.36
     },
     {
      "sku": "OPH-XMS-R16-14KY-US5",
@@ -31194,10 +31210,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 5"
      },
-     "price_cents": 72000,
-     "grams": 3.51,
+     "price_cents": 86000,
+     "grams": 4.21,
      "stones": 1,
-     "makerCostUsd": 355.65
+     "makerCostUsd": 425.51
     },
     {
      "sku": "OPH-XMS-R16-14KY-US5_5",
@@ -31207,10 +31223,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 5.5"
      },
-     "price_cents": 73000,
-     "grams": 3.56,
+     "price_cents": 87000,
+     "grams": 4.26,
      "stones": 1,
-     "makerCostUsd": 360.8
+     "makerCostUsd": 430.66
     },
     {
      "sku": "OPH-XMS-R16-14KY-US6",
@@ -31220,10 +31236,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 6"
      },
-     "price_cents": 74000,
-     "grams": 3.61,
+     "price_cents": 88000,
+     "grams": 4.31,
      "stones": 1,
-     "makerCostUsd": 365.95
+     "makerCostUsd": 435.81
     },
     {
      "sku": "OPH-XMS-R16-14KY-US6_5",
@@ -31233,10 +31249,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 6.5"
      },
-     "price_cents": 75000,
-     "grams": 3.66,
+     "price_cents": 89000,
+     "grams": 4.36,
      "stones": 1,
-     "makerCostUsd": 371.1
+     "makerCostUsd": 440.96
     },
     {
      "sku": "OPH-XMS-R16-14KY-US7",
@@ -31246,10 +31262,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 7"
      },
-     "price_cents": 76000,
-     "grams": 3.71,
+     "price_cents": 90000,
+     "grams": 4.41,
      "stones": 1,
-     "makerCostUsd": 376.25
+     "makerCostUsd": 446.11
     },
     {
      "sku": "OPH-XMS-R16-14KY-US7_5",
@@ -31259,10 +31275,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 7.5"
      },
-     "price_cents": 77000,
-     "grams": 3.76,
+     "price_cents": 91000,
+     "grams": 4.46,
      "stones": 1,
-     "makerCostUsd": 381.4
+     "makerCostUsd": 451.26
     },
     {
      "sku": "OPH-XMS-R16-14KY-US8",
@@ -31272,10 +31288,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 8"
      },
-     "price_cents": 78000,
-     "grams": 3.82,
+     "price_cents": 92000,
+     "grams": 4.51,
      "stones": 1,
-     "makerCostUsd": 386.55
+     "makerCostUsd": 456.41
     },
     {
      "sku": "OPH-XMS-R16-14KY-US8_5",
@@ -31285,10 +31301,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 8.5"
      },
-     "price_cents": 79000,
-     "grams": 3.87,
+     "price_cents": 93000,
+     "grams": 4.57,
      "stones": 1,
-     "makerCostUsd": 391.7
+     "makerCostUsd": 461.56
     },
     {
      "sku": "OPH-XMS-R16-14KY-US9",
@@ -31298,10 +31314,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 9"
      },
-     "price_cents": 80000,
-     "grams": 3.92,
+     "price_cents": 94000,
+     "grams": 4.62,
      "stones": 1,
-     "makerCostUsd": 396.85
+     "makerCostUsd": 466.71
     },
     {
      "sku": "OPH-XMS-R16-14KY-US9_5",
@@ -31311,10 +31327,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 9.5"
      },
-     "price_cents": 81000,
-     "grams": 3.97,
+     "price_cents": 95000,
+     "grams": 4.67,
      "stones": 1,
-     "makerCostUsd": 402.0
+     "makerCostUsd": 471.86
     },
     {
      "sku": "OPH-XMS-R16-14KY-US10",
@@ -31324,10 +31340,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 10"
      },
-     "price_cents": 82000,
-     "grams": 4.02,
+     "price_cents": 96000,
+     "grams": 4.72,
      "stones": 1,
-     "makerCostUsd": 407.15
+     "makerCostUsd": 477.01
     },
     {
      "sku": "OPH-XMS-R16-14KY-US10_5",
@@ -31337,10 +31353,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 10.5"
      },
-     "price_cents": 83000,
-     "grams": 4.07,
+     "price_cents": 97000,
+     "grams": 4.77,
      "stones": 1,
-     "makerCostUsd": 412.3
+     "makerCostUsd": 482.16
     },
     {
      "sku": "OPH-XMS-R16-14KY-US11",
@@ -31350,10 +31366,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 11"
      },
-     "price_cents": 84000,
-     "grams": 4.12,
+     "price_cents": 98000,
+     "grams": 4.82,
      "stones": 1,
-     "makerCostUsd": 417.45
+     "makerCostUsd": 487.31
     },
     {
      "sku": "OPH-XMS-R16-14KY-US11_5",
@@ -31363,10 +31379,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 11.5"
      },
-     "price_cents": 85000,
-     "grams": 4.18,
+     "price_cents": 99000,
+     "grams": 4.87,
      "stones": 1,
-     "makerCostUsd": 422.6
+     "makerCostUsd": 492.46
     },
     {
      "sku": "OPH-XMS-R16-14KY-US12",
@@ -31376,10 +31392,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 12"
      },
-     "price_cents": 86000,
-     "grams": 4.23,
+     "price_cents": 100000,
+     "grams": 4.93,
      "stones": 1,
-     "makerCostUsd": 427.75
+     "makerCostUsd": 497.61
     },
     {
      "sku": "OPH-XMS-R16-14KW-US4",
@@ -31389,10 +31405,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 4"
      },
-     "price_cents": 70000,
-     "grams": 3.4,
+     "price_cents": 84000,
+     "grams": 4.1,
      "stones": 1,
-     "makerCostUsd": 345.35
+     "makerCostUsd": 415.21
     },
     {
      "sku": "OPH-XMS-R16-14KW-US4_5",
@@ -31402,10 +31418,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 4.5"
      },
-     "price_cents": 71000,
-     "grams": 3.46,
+     "price_cents": 85000,
+     "grams": 4.15,
      "stones": 1,
-     "makerCostUsd": 350.5
+     "makerCostUsd": 420.36
     },
     {
      "sku": "OPH-XMS-R16-14KW-US5",
@@ -31415,10 +31431,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 5"
      },
-     "price_cents": 72000,
-     "grams": 3.51,
+     "price_cents": 86000,
+     "grams": 4.21,
      "stones": 1,
-     "makerCostUsd": 355.65
+     "makerCostUsd": 425.51
     },
     {
      "sku": "OPH-XMS-R16-14KW-US5_5",
@@ -31428,10 +31444,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 5.5"
      },
-     "price_cents": 73000,
-     "grams": 3.56,
+     "price_cents": 87000,
+     "grams": 4.26,
      "stones": 1,
-     "makerCostUsd": 360.8
+     "makerCostUsd": 430.66
     },
     {
      "sku": "OPH-XMS-R16-14KW-US6",
@@ -31441,10 +31457,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 6"
      },
-     "price_cents": 74000,
-     "grams": 3.61,
+     "price_cents": 88000,
+     "grams": 4.31,
      "stones": 1,
-     "makerCostUsd": 365.95
+     "makerCostUsd": 435.81
     },
     {
      "sku": "OPH-XMS-R16-14KW-US6_5",
@@ -31454,10 +31470,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 6.5"
      },
-     "price_cents": 75000,
-     "grams": 3.66,
+     "price_cents": 89000,
+     "grams": 4.36,
      "stones": 1,
-     "makerCostUsd": 371.1
+     "makerCostUsd": 440.96
     },
     {
      "sku": "OPH-XMS-R16-14KW-US7",
@@ -31467,10 +31483,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 7"
      },
-     "price_cents": 76000,
-     "grams": 3.71,
+     "price_cents": 90000,
+     "grams": 4.41,
      "stones": 1,
-     "makerCostUsd": 376.25
+     "makerCostUsd": 446.11
     },
     {
      "sku": "OPH-XMS-R16-14KW-US7_5",
@@ -31480,10 +31496,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 7.5"
      },
-     "price_cents": 77000,
-     "grams": 3.76,
+     "price_cents": 91000,
+     "grams": 4.46,
      "stones": 1,
-     "makerCostUsd": 381.4
+     "makerCostUsd": 451.26
     },
     {
      "sku": "OPH-XMS-R16-14KW-US8",
@@ -31493,10 +31509,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 8"
      },
-     "price_cents": 78000,
-     "grams": 3.82,
+     "price_cents": 92000,
+     "grams": 4.51,
      "stones": 1,
-     "makerCostUsd": 386.55
+     "makerCostUsd": 456.41
     },
     {
      "sku": "OPH-XMS-R16-14KW-US8_5",
@@ -31506,10 +31522,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 8.5"
      },
-     "price_cents": 79000,
-     "grams": 3.87,
+     "price_cents": 93000,
+     "grams": 4.57,
      "stones": 1,
-     "makerCostUsd": 391.7
+     "makerCostUsd": 461.56
     },
     {
      "sku": "OPH-XMS-R16-14KW-US9",
@@ -31519,10 +31535,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 9"
      },
-     "price_cents": 80000,
-     "grams": 3.92,
+     "price_cents": 94000,
+     "grams": 4.62,
      "stones": 1,
-     "makerCostUsd": 396.85
+     "makerCostUsd": 466.71
     },
     {
      "sku": "OPH-XMS-R16-14KW-US9_5",
@@ -31532,10 +31548,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 9.5"
      },
-     "price_cents": 81000,
-     "grams": 3.97,
+     "price_cents": 95000,
+     "grams": 4.67,
      "stones": 1,
-     "makerCostUsd": 402.0
+     "makerCostUsd": 471.86
     },
     {
      "sku": "OPH-XMS-R16-14KW-US10",
@@ -31545,10 +31561,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 10"
      },
-     "price_cents": 82000,
-     "grams": 4.02,
+     "price_cents": 96000,
+     "grams": 4.72,
      "stones": 1,
-     "makerCostUsd": 407.15
+     "makerCostUsd": 477.01
     },
     {
      "sku": "OPH-XMS-R16-14KW-US10_5",
@@ -31558,10 +31574,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 10.5"
      },
-     "price_cents": 83000,
-     "grams": 4.07,
+     "price_cents": 97000,
+     "grams": 4.77,
      "stones": 1,
-     "makerCostUsd": 412.3
+     "makerCostUsd": 482.16
     },
     {
      "sku": "OPH-XMS-R16-14KW-US11",
@@ -31571,10 +31587,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 11"
      },
-     "price_cents": 84000,
-     "grams": 4.12,
+     "price_cents": 98000,
+     "grams": 4.82,
      "stones": 1,
-     "makerCostUsd": 417.45
+     "makerCostUsd": 487.31
     },
     {
      "sku": "OPH-XMS-R16-14KW-US11_5",
@@ -31584,10 +31600,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 11.5"
      },
-     "price_cents": 85000,
-     "grams": 4.18,
+     "price_cents": 99000,
+     "grams": 4.87,
      "stones": 1,
-     "makerCostUsd": 422.6
+     "makerCostUsd": 492.46
     },
     {
      "sku": "OPH-XMS-R16-14KW-US12",
@@ -31597,10 +31613,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 12"
      },
-     "price_cents": 86000,
-     "grams": 4.23,
+     "price_cents": 100000,
+     "grams": 4.93,
      "stones": 1,
-     "makerCostUsd": 427.75
+     "makerCostUsd": 497.61
     },
     {
      "sku": "OPH-XMS-R16-14KR-US4",
@@ -31610,10 +31626,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 4"
      },
-     "price_cents": 70000,
-     "grams": 3.4,
+     "price_cents": 84000,
+     "grams": 4.1,
      "stones": 1,
-     "makerCostUsd": 345.35
+     "makerCostUsd": 415.21
     },
     {
      "sku": "OPH-XMS-R16-14KR-US4_5",
@@ -31623,10 +31639,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 4.5"
      },
-     "price_cents": 71000,
-     "grams": 3.46,
+     "price_cents": 85000,
+     "grams": 4.15,
      "stones": 1,
-     "makerCostUsd": 350.5
+     "makerCostUsd": 420.36
     },
     {
      "sku": "OPH-XMS-R16-14KR-US5",
@@ -31636,10 +31652,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 5"
      },
-     "price_cents": 72000,
-     "grams": 3.51,
+     "price_cents": 86000,
+     "grams": 4.21,
      "stones": 1,
-     "makerCostUsd": 355.65
+     "makerCostUsd": 425.51
     },
     {
      "sku": "OPH-XMS-R16-14KR-US5_5",
@@ -31649,10 +31665,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 5.5"
      },
-     "price_cents": 73000,
-     "grams": 3.56,
+     "price_cents": 87000,
+     "grams": 4.26,
      "stones": 1,
-     "makerCostUsd": 360.8
+     "makerCostUsd": 430.66
     },
     {
      "sku": "OPH-XMS-R16-14KR-US6",
@@ -31662,10 +31678,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 6"
      },
-     "price_cents": 74000,
-     "grams": 3.61,
+     "price_cents": 88000,
+     "grams": 4.31,
      "stones": 1,
-     "makerCostUsd": 365.95
+     "makerCostUsd": 435.81
     },
     {
      "sku": "OPH-XMS-R16-14KR-US6_5",
@@ -31675,10 +31691,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 6.5"
      },
-     "price_cents": 75000,
-     "grams": 3.66,
+     "price_cents": 89000,
+     "grams": 4.36,
      "stones": 1,
-     "makerCostUsd": 371.1
+     "makerCostUsd": 440.96
     },
     {
      "sku": "OPH-XMS-R16-14KR-US7",
@@ -31688,10 +31704,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 7"
      },
-     "price_cents": 76000,
-     "grams": 3.71,
+     "price_cents": 90000,
+     "grams": 4.41,
      "stones": 1,
-     "makerCostUsd": 376.25
+     "makerCostUsd": 446.11
     },
     {
      "sku": "OPH-XMS-R16-14KR-US7_5",
@@ -31701,10 +31717,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 7.5"
      },
-     "price_cents": 77000,
-     "grams": 3.76,
+     "price_cents": 91000,
+     "grams": 4.46,
      "stones": 1,
-     "makerCostUsd": 381.4
+     "makerCostUsd": 451.26
     },
     {
      "sku": "OPH-XMS-R16-14KR-US8",
@@ -31714,10 +31730,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 8"
      },
-     "price_cents": 78000,
-     "grams": 3.82,
+     "price_cents": 92000,
+     "grams": 4.51,
      "stones": 1,
-     "makerCostUsd": 386.55
+     "makerCostUsd": 456.41
     },
     {
      "sku": "OPH-XMS-R16-14KR-US8_5",
@@ -31727,10 +31743,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 8.5"
      },
-     "price_cents": 79000,
-     "grams": 3.87,
+     "price_cents": 93000,
+     "grams": 4.57,
      "stones": 1,
-     "makerCostUsd": 391.7
+     "makerCostUsd": 461.56
     },
     {
      "sku": "OPH-XMS-R16-14KR-US9",
@@ -31740,10 +31756,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 9"
      },
-     "price_cents": 80000,
-     "grams": 3.92,
+     "price_cents": 94000,
+     "grams": 4.62,
      "stones": 1,
-     "makerCostUsd": 396.85
+     "makerCostUsd": 466.71
     },
     {
      "sku": "OPH-XMS-R16-14KR-US9_5",
@@ -31753,10 +31769,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 9.5"
      },
-     "price_cents": 81000,
-     "grams": 3.97,
+     "price_cents": 95000,
+     "grams": 4.67,
      "stones": 1,
-     "makerCostUsd": 402.0
+     "makerCostUsd": 471.86
     },
     {
      "sku": "OPH-XMS-R16-14KR-US10",
@@ -31766,10 +31782,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 10"
      },
-     "price_cents": 82000,
-     "grams": 4.02,
+     "price_cents": 96000,
+     "grams": 4.72,
      "stones": 1,
-     "makerCostUsd": 407.15
+     "makerCostUsd": 477.01
     },
     {
      "sku": "OPH-XMS-R16-14KR-US10_5",
@@ -31779,10 +31795,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 10.5"
      },
-     "price_cents": 83000,
-     "grams": 4.07,
+     "price_cents": 97000,
+     "grams": 4.77,
      "stones": 1,
-     "makerCostUsd": 412.3
+     "makerCostUsd": 482.16
     },
     {
      "sku": "OPH-XMS-R16-14KR-US11",
@@ -31792,10 +31808,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 11"
      },
-     "price_cents": 84000,
-     "grams": 4.12,
+     "price_cents": 98000,
+     "grams": 4.82,
      "stones": 1,
-     "makerCostUsd": 417.45
+     "makerCostUsd": 487.31
     },
     {
      "sku": "OPH-XMS-R16-14KR-US11_5",
@@ -31805,10 +31821,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 11.5"
      },
-     "price_cents": 85000,
-     "grams": 4.18,
+     "price_cents": 99000,
+     "grams": 4.87,
      "stones": 1,
-     "makerCostUsd": 422.6
+     "makerCostUsd": 492.46
     },
     {
      "sku": "OPH-XMS-R16-14KR-US12",
@@ -31818,10 +31834,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 12"
      },
-     "price_cents": 86000,
-     "grams": 4.23,
+     "price_cents": 100000,
+     "grams": 4.93,
      "stones": 1,
-     "makerCostUsd": 427.75
+     "makerCostUsd": 497.61
     },
     {
      "sku": "OPH-XMS-R16-18KY-US4",
@@ -31831,10 +31847,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 4"
      },
-     "price_cents": 96000,
-     "grams": 3.87,
+     "price_cents": 115000,
+     "grams": 4.66,
      "stones": 1,
-     "makerCostUsd": 477.75
+     "makerCostUsd": 574.79
     },
     {
      "sku": "OPH-XMS-R16-18KY-US4_5",
@@ -31844,10 +31860,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 4.5"
      },
-     "price_cents": 97000,
-     "grams": 3.93,
+     "price_cents": 117000,
+     "grams": 4.72,
      "stones": 1,
-     "makerCostUsd": 484.91
+     "makerCostUsd": 581.94
     },
     {
      "sku": "OPH-XMS-R16-18KY-US5",
@@ -31857,10 +31873,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 5"
      },
-     "price_cents": 99000,
-     "grams": 3.99,
+     "price_cents": 118000,
+     "grams": 4.78,
      "stones": 1,
-     "makerCostUsd": 492.06
+     "makerCostUsd": 589.09
     },
     {
      "sku": "OPH-XMS-R16-18KY-US5_5",
@@ -31870,10 +31886,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 5.5"
      },
-     "price_cents": 100000,
-     "grams": 4.05,
+     "price_cents": 120000,
+     "grams": 4.84,
      "stones": 1,
-     "makerCostUsd": 499.21
+     "makerCostUsd": 596.25
     },
     {
      "sku": "OPH-XMS-R16-18KY-US6",
@@ -31883,10 +31899,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 6"
      },
-     "price_cents": 102000,
-     "grams": 4.1,
+     "price_cents": 121000,
+     "grams": 4.9,
      "stones": 1,
-     "makerCostUsd": 506.37
+     "makerCostUsd": 603.4
     },
     {
      "sku": "OPH-XMS-R16-18KY-US6_5",
@@ -31896,10 +31912,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 6.5"
      },
-     "price_cents": 103000,
-     "grams": 4.16,
+     "price_cents": 123000,
+     "grams": 4.96,
      "stones": 1,
-     "makerCostUsd": 513.52
+     "makerCostUsd": 610.55
     },
     {
      "sku": "OPH-XMS-R16-18KY-US7",
@@ -31909,10 +31925,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 7"
      },
-     "price_cents": 105000,
-     "grams": 4.22,
+     "price_cents": 124000,
+     "grams": 5.02,
      "stones": 1,
-     "makerCostUsd": 520.68
+     "makerCostUsd": 617.71
     },
     {
      "sku": "OPH-XMS-R16-18KY-US7_5",
@@ -31922,10 +31938,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 7.5"
      },
-     "price_cents": 106000,
-     "grams": 4.28,
+     "price_cents": 125000,
+     "grams": 5.07,
      "stones": 1,
-     "makerCostUsd": 527.83
+     "makerCostUsd": 624.86
     },
     {
      "sku": "OPH-XMS-R16-18KY-US8",
@@ -31935,10 +31951,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 8"
      },
-     "price_cents": 107000,
-     "grams": 4.34,
+     "price_cents": 127000,
+     "grams": 5.13,
      "stones": 1,
-     "makerCostUsd": 534.98
+     "makerCostUsd": 632.01
     },
     {
      "sku": "OPH-XMS-R16-18KY-US8_5",
@@ -31948,10 +31964,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 8.5"
      },
-     "price_cents": 109000,
-     "grams": 4.4,
+     "price_cents": 128000,
+     "grams": 5.19,
      "stones": 1,
-     "makerCostUsd": 542.14
+     "makerCostUsd": 639.17
     },
     {
      "sku": "OPH-XMS-R16-18KY-US9",
@@ -31961,10 +31977,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 9"
      },
-     "price_cents": 110000,
-     "grams": 4.46,
+     "price_cents": 130000,
+     "grams": 5.25,
      "stones": 1,
-     "makerCostUsd": 549.29
+     "makerCostUsd": 646.32
     },
     {
      "sku": "OPH-XMS-R16-18KY-US9_5",
@@ -31974,10 +31990,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 9.5"
      },
-     "price_cents": 112000,
-     "grams": 4.51,
+     "price_cents": 131000,
+     "grams": 5.31,
      "stones": 1,
-     "makerCostUsd": 556.44
+     "makerCostUsd": 653.48
     },
     {
      "sku": "OPH-XMS-R16-18KY-US10",
@@ -31987,10 +32003,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 10"
      },
-     "price_cents": 113000,
-     "grams": 4.57,
+     "price_cents": 133000,
+     "grams": 5.37,
      "stones": 1,
-     "makerCostUsd": 563.6
+     "makerCostUsd": 660.63
     },
     {
      "sku": "OPH-XMS-R16-18KY-US10_5",
@@ -32000,10 +32016,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 10.5"
      },
-     "price_cents": 115000,
-     "grams": 4.63,
+     "price_cents": 134000,
+     "grams": 5.43,
      "stones": 1,
-     "makerCostUsd": 570.75
+     "makerCostUsd": 667.78
     },
     {
      "sku": "OPH-XMS-R16-18KY-US11",
@@ -32013,10 +32029,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 11"
      },
-     "price_cents": 116000,
-     "grams": 4.69,
+     "price_cents": 135000,
+     "grams": 5.48,
      "stones": 1,
-     "makerCostUsd": 577.9
+     "makerCostUsd": 674.94
     },
     {
      "sku": "OPH-XMS-R16-18KY-US11_5",
@@ -32026,10 +32042,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 11.5"
      },
-     "price_cents": 118000,
-     "grams": 4.75,
+     "price_cents": 137000,
+     "grams": 5.54,
      "stones": 1,
-     "makerCostUsd": 585.06
+     "makerCostUsd": 682.09
     },
     {
      "sku": "OPH-XMS-R16-18KY-US12",
@@ -32039,10 +32055,10 @@
       "Metal Color": "Yellow Gold",
       "Ring Size": "US 12"
      },
-     "price_cents": 119000,
-     "grams": 4.81,
+     "price_cents": 138000,
+     "grams": 5.6,
      "stones": 1,
-     "makerCostUsd": 592.21
+     "makerCostUsd": 689.24
     },
     {
      "sku": "OPH-XMS-R16-18KW-US4",
@@ -32052,10 +32068,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 4"
      },
-     "price_cents": 96000,
-     "grams": 3.87,
+     "price_cents": 115000,
+     "grams": 4.66,
      "stones": 1,
-     "makerCostUsd": 477.75
+     "makerCostUsd": 574.79
     },
     {
      "sku": "OPH-XMS-R16-18KW-US4_5",
@@ -32065,10 +32081,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 4.5"
      },
-     "price_cents": 97000,
-     "grams": 3.93,
+     "price_cents": 117000,
+     "grams": 4.72,
      "stones": 1,
-     "makerCostUsd": 484.91
+     "makerCostUsd": 581.94
     },
     {
      "sku": "OPH-XMS-R16-18KW-US5",
@@ -32078,10 +32094,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 5"
      },
-     "price_cents": 99000,
-     "grams": 3.99,
+     "price_cents": 118000,
+     "grams": 4.78,
      "stones": 1,
-     "makerCostUsd": 492.06
+     "makerCostUsd": 589.09
     },
     {
      "sku": "OPH-XMS-R16-18KW-US5_5",
@@ -32091,10 +32107,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 5.5"
      },
-     "price_cents": 100000,
-     "grams": 4.05,
+     "price_cents": 120000,
+     "grams": 4.84,
      "stones": 1,
-     "makerCostUsd": 499.21
+     "makerCostUsd": 596.25
     },
     {
      "sku": "OPH-XMS-R16-18KW-US6",
@@ -32104,10 +32120,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 6"
      },
-     "price_cents": 102000,
-     "grams": 4.1,
+     "price_cents": 121000,
+     "grams": 4.9,
      "stones": 1,
-     "makerCostUsd": 506.37
+     "makerCostUsd": 603.4
     },
     {
      "sku": "OPH-XMS-R16-18KW-US6_5",
@@ -32117,10 +32133,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 6.5"
      },
-     "price_cents": 103000,
-     "grams": 4.16,
+     "price_cents": 123000,
+     "grams": 4.96,
      "stones": 1,
-     "makerCostUsd": 513.52
+     "makerCostUsd": 610.55
     },
     {
      "sku": "OPH-XMS-R16-18KW-US7",
@@ -32130,10 +32146,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 7"
      },
-     "price_cents": 105000,
-     "grams": 4.22,
+     "price_cents": 124000,
+     "grams": 5.02,
      "stones": 1,
-     "makerCostUsd": 520.68
+     "makerCostUsd": 617.71
     },
     {
      "sku": "OPH-XMS-R16-18KW-US7_5",
@@ -32143,10 +32159,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 7.5"
      },
-     "price_cents": 106000,
-     "grams": 4.28,
+     "price_cents": 125000,
+     "grams": 5.07,
      "stones": 1,
-     "makerCostUsd": 527.83
+     "makerCostUsd": 624.86
     },
     {
      "sku": "OPH-XMS-R16-18KW-US8",
@@ -32156,10 +32172,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 8"
      },
-     "price_cents": 107000,
-     "grams": 4.34,
+     "price_cents": 127000,
+     "grams": 5.13,
      "stones": 1,
-     "makerCostUsd": 534.98
+     "makerCostUsd": 632.01
     },
     {
      "sku": "OPH-XMS-R16-18KW-US8_5",
@@ -32169,10 +32185,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 8.5"
      },
-     "price_cents": 109000,
-     "grams": 4.4,
+     "price_cents": 128000,
+     "grams": 5.19,
      "stones": 1,
-     "makerCostUsd": 542.14
+     "makerCostUsd": 639.17
     },
     {
      "sku": "OPH-XMS-R16-18KW-US9",
@@ -32182,10 +32198,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 9"
      },
-     "price_cents": 110000,
-     "grams": 4.46,
+     "price_cents": 130000,
+     "grams": 5.25,
      "stones": 1,
-     "makerCostUsd": 549.29
+     "makerCostUsd": 646.32
     },
     {
      "sku": "OPH-XMS-R16-18KW-US9_5",
@@ -32195,10 +32211,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 9.5"
      },
-     "price_cents": 112000,
-     "grams": 4.51,
+     "price_cents": 131000,
+     "grams": 5.31,
      "stones": 1,
-     "makerCostUsd": 556.44
+     "makerCostUsd": 653.48
     },
     {
      "sku": "OPH-XMS-R16-18KW-US10",
@@ -32208,10 +32224,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 10"
      },
-     "price_cents": 113000,
-     "grams": 4.57,
+     "price_cents": 133000,
+     "grams": 5.37,
      "stones": 1,
-     "makerCostUsd": 563.6
+     "makerCostUsd": 660.63
     },
     {
      "sku": "OPH-XMS-R16-18KW-US10_5",
@@ -32221,10 +32237,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 10.5"
      },
-     "price_cents": 115000,
-     "grams": 4.63,
+     "price_cents": 134000,
+     "grams": 5.43,
      "stones": 1,
-     "makerCostUsd": 570.75
+     "makerCostUsd": 667.78
     },
     {
      "sku": "OPH-XMS-R16-18KW-US11",
@@ -32234,10 +32250,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 11"
      },
-     "price_cents": 116000,
-     "grams": 4.69,
+     "price_cents": 135000,
+     "grams": 5.48,
      "stones": 1,
-     "makerCostUsd": 577.9
+     "makerCostUsd": 674.94
     },
     {
      "sku": "OPH-XMS-R16-18KW-US11_5",
@@ -32247,10 +32263,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 11.5"
      },
-     "price_cents": 118000,
-     "grams": 4.75,
+     "price_cents": 137000,
+     "grams": 5.54,
      "stones": 1,
-     "makerCostUsd": 585.06
+     "makerCostUsd": 682.09
     },
     {
      "sku": "OPH-XMS-R16-18KW-US12",
@@ -32260,10 +32276,10 @@
       "Metal Color": "White Gold",
       "Ring Size": "US 12"
      },
-     "price_cents": 119000,
-     "grams": 4.81,
+     "price_cents": 138000,
+     "grams": 5.6,
      "stones": 1,
-     "makerCostUsd": 592.21
+     "makerCostUsd": 689.24
     },
     {
      "sku": "OPH-XMS-R16-18KR-US4",
@@ -32273,10 +32289,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 4"
      },
-     "price_cents": 96000,
-     "grams": 3.87,
+     "price_cents": 115000,
+     "grams": 4.66,
      "stones": 1,
-     "makerCostUsd": 477.75
+     "makerCostUsd": 574.79
     },
     {
      "sku": "OPH-XMS-R16-18KR-US4_5",
@@ -32286,10 +32302,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 4.5"
      },
-     "price_cents": 97000,
-     "grams": 3.93,
+     "price_cents": 117000,
+     "grams": 4.72,
      "stones": 1,
-     "makerCostUsd": 484.91
+     "makerCostUsd": 581.94
     },
     {
      "sku": "OPH-XMS-R16-18KR-US5",
@@ -32299,10 +32315,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 5"
      },
-     "price_cents": 99000,
-     "grams": 3.99,
+     "price_cents": 118000,
+     "grams": 4.78,
      "stones": 1,
-     "makerCostUsd": 492.06
+     "makerCostUsd": 589.09
     },
     {
      "sku": "OPH-XMS-R16-18KR-US5_5",
@@ -32312,10 +32328,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 5.5"
      },
-     "price_cents": 100000,
-     "grams": 4.05,
+     "price_cents": 120000,
+     "grams": 4.84,
      "stones": 1,
-     "makerCostUsd": 499.21
+     "makerCostUsd": 596.25
     },
     {
      "sku": "OPH-XMS-R16-18KR-US6",
@@ -32325,10 +32341,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 6"
      },
-     "price_cents": 102000,
-     "grams": 4.1,
+     "price_cents": 121000,
+     "grams": 4.9,
      "stones": 1,
-     "makerCostUsd": 506.37
+     "makerCostUsd": 603.4
     },
     {
      "sku": "OPH-XMS-R16-18KR-US6_5",
@@ -32338,10 +32354,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 6.5"
      },
-     "price_cents": 103000,
-     "grams": 4.16,
+     "price_cents": 123000,
+     "grams": 4.96,
      "stones": 1,
-     "makerCostUsd": 513.52
+     "makerCostUsd": 610.55
     },
     {
      "sku": "OPH-XMS-R16-18KR-US7",
@@ -32351,10 +32367,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 7"
      },
-     "price_cents": 105000,
-     "grams": 4.22,
+     "price_cents": 124000,
+     "grams": 5.02,
      "stones": 1,
-     "makerCostUsd": 520.68
+     "makerCostUsd": 617.71
     },
     {
      "sku": "OPH-XMS-R16-18KR-US7_5",
@@ -32364,10 +32380,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 7.5"
      },
-     "price_cents": 106000,
-     "grams": 4.28,
+     "price_cents": 125000,
+     "grams": 5.07,
      "stones": 1,
-     "makerCostUsd": 527.83
+     "makerCostUsd": 624.86
     },
     {
      "sku": "OPH-XMS-R16-18KR-US8",
@@ -32377,10 +32393,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 8"
      },
-     "price_cents": 107000,
-     "grams": 4.34,
+     "price_cents": 127000,
+     "grams": 5.13,
      "stones": 1,
-     "makerCostUsd": 534.98
+     "makerCostUsd": 632.01
     },
     {
      "sku": "OPH-XMS-R16-18KR-US8_5",
@@ -32390,10 +32406,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 8.5"
      },
-     "price_cents": 109000,
-     "grams": 4.4,
+     "price_cents": 128000,
+     "grams": 5.19,
      "stones": 1,
-     "makerCostUsd": 542.14
+     "makerCostUsd": 639.17
     },
     {
      "sku": "OPH-XMS-R16-18KR-US9",
@@ -32403,10 +32419,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 9"
      },
-     "price_cents": 110000,
-     "grams": 4.46,
+     "price_cents": 130000,
+     "grams": 5.25,
      "stones": 1,
-     "makerCostUsd": 549.29
+     "makerCostUsd": 646.32
     },
     {
      "sku": "OPH-XMS-R16-18KR-US9_5",
@@ -32416,10 +32432,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 9.5"
      },
-     "price_cents": 112000,
-     "grams": 4.51,
+     "price_cents": 131000,
+     "grams": 5.31,
      "stones": 1,
-     "makerCostUsd": 556.44
+     "makerCostUsd": 653.48
     },
     {
      "sku": "OPH-XMS-R16-18KR-US10",
@@ -32429,10 +32445,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 10"
      },
-     "price_cents": 113000,
-     "grams": 4.57,
+     "price_cents": 133000,
+     "grams": 5.37,
      "stones": 1,
-     "makerCostUsd": 563.6
+     "makerCostUsd": 660.63
     },
     {
      "sku": "OPH-XMS-R16-18KR-US10_5",
@@ -32442,10 +32458,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 10.5"
      },
-     "price_cents": 115000,
-     "grams": 4.63,
+     "price_cents": 134000,
+     "grams": 5.43,
      "stones": 1,
-     "makerCostUsd": 570.75
+     "makerCostUsd": 667.78
     },
     {
      "sku": "OPH-XMS-R16-18KR-US11",
@@ -32455,10 +32471,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 11"
      },
-     "price_cents": 116000,
-     "grams": 4.69,
+     "price_cents": 135000,
+     "grams": 5.48,
      "stones": 1,
-     "makerCostUsd": 577.9
+     "makerCostUsd": 674.94
     },
     {
      "sku": "OPH-XMS-R16-18KR-US11_5",
@@ -32468,10 +32484,10 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 11.5"
      },
-     "price_cents": 118000,
-     "grams": 4.75,
+     "price_cents": 137000,
+     "grams": 5.54,
      "stones": 1,
-     "makerCostUsd": 585.06
+     "makerCostUsd": 682.09
     },
     {
      "sku": "OPH-XMS-R16-18KR-US12",
@@ -32481,17 +32497,17 @@
       "Metal Color": "Rose Gold",
       "Ring Size": "US 12"
      },
-     "price_cents": 119000,
-     "grams": 4.81,
+     "price_cents": 138000,
+     "grams": 5.6,
      "stones": 1,
-     "makerCostUsd": 592.21
+     "makerCostUsd": 689.24
     }
    ],
-   "grams14Ref": 3.71,
+   "grams14Ref": 4.41,
    "accentStonesRef": 1,
    "centreStonesRef": 0,
-   "refPriceCents": 76000,
-   "makerCost14KRefUsd": 376.25
+   "refPriceCents": 90000,
+   "makerCost14KRefUsd": 446.11
   },
   {
    "id": "R17",
@@ -32501,7 +32517,8 @@
    "listingProtocol": "sculptural_ring",
    "offersPersonalization": false,
    "name": "Icicle Point Ring",
-   "title": "Icicle Point Ring, Solid Gold Icicles Christmas Ring, Holiday Stacking Gift, Gift for Her",
+   "short": "Icicles",
+   "title": "Icicle Point Ring, Solid Gold Icicles Christmas Ring, Holiday Gift for Her",
    "tags": [
     "christmas ring",
     "icicle ring",
@@ -34531,7 +34548,8 @@
    "listingProtocol": "sculptural_ring",
    "offersPersonalization": false,
    "name": "Fir Sprig Ring",
-   "title": "Fir Sprig Ring, Solid Gold Fir Sprig Christmas Ring, Holiday Stacking Gift, Gift for Her",
+   "short": "Fir Sprig",
+   "title": "Fir Sprig Ring, Solid Gold Fir Sprig Christmas Ring, Holiday Gift for Her",
    "tags": [
     "christmas ring",
     "fir ring",
@@ -36561,7 +36579,8 @@
    "listingProtocol": "sculptural_ring",
    "offersPersonalization": false,
    "name": "Reindeer Antler Ring",
-   "title": "Reindeer Antler Ring, Solid Gold Antlers Christmas Ring, Holiday Stacking Gift, Gift for Her",
+   "short": "Antlers",
+   "title": "Reindeer Antler Ring, Solid Gold Antlers Christmas Ring, Holiday Gift for Her",
    "tags": [
     "christmas ring",
     "antler ring",
@@ -36577,8 +36596,8 @@
     "festive jewelry",
     "unusual ring"
    ],
-   "description": "Two antler forks meeting in a bypass over the finger.\n\nEach end of the band grows into a forked antler and the two pass each other without touching, leaving a visible gap. Each end of the band grows into a forked antler and the two pass without touching, leaving a gap you can see through. The forks are rounded rather than sharp so they sit against the next finger comfortably.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose. White gold is unplated, a soft silvery grey.\nSize: the antlers span about 12 mm across a 2 mm bypass band.\n\nEach piece is made to order and ships free within the United States. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Take it off before the gym, the pool and the shower, and wipe it with a soft cloth.\n\nThe product images are design visualizations of the finished piece, and the three metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
-   "lead": "Two antler forks meeting in a bypass over the finger.",
+   "description": "Two antler forks crossing in a bypass over the finger.\n\nEach end of the band grows into a forked antler and the two pass each other without touching, leaving a visible gap. Each end of the band grows into a forked antler and the two pass without touching, leaving a gap you can see through. The forks are rounded rather than sharp so they sit against the next finger comfortably.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose. White gold is unplated, a soft silvery grey.\nSize: the antlers span about 12 mm across a 2 mm bypass band.\n\nEach piece is made to order and ships free within the United States. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Take it off before the gym, the pool and the shower, and wipe it with a soft cloth.\n\nThe product images are design visualizations of the finished piece, and the three metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
+   "lead": "Two antler forks crossing in a bypass over the finger.",
    "buildNote": "Each end of the band grows into a forked antler and the two pass each other without touching, leaving a visible gap.",
    "dims": "2 mm band, 12 mm antlers",
    "variationAxes": [
@@ -38591,7 +38610,8 @@
    "listingProtocol": "sculptural_ring",
    "offersPersonalization": false,
    "name": "Wreath Ring",
-   "title": "Wreath Ring, Solid Gold Full Wreath Christmas Ring, Holiday Stacking Gift, Gift for Her",
+   "short": "Full Wreath",
+   "title": "Wreath Ring, Solid Gold Full Wreath Christmas Ring, Holiday Gift for Her",
    "tags": [
     "christmas ring",
     "wreath ring",
@@ -38607,9 +38627,9 @@
     "festive jewelry",
     "garland ring"
    ],
-   "description": "A full circle of overlapping gold leaves, a wreath sized for the finger.\n\nOverlapping leaves run the whole way round with no plain section at the back, each one lapping the last in the same direction. The leaves run the whole way round with no plain section at the back, each one overlapping the last in the same direction so the ring turns like a wreath hung on a door. It is the only piece in the line with no beginning and no end.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose. White gold is unplated, a soft silvery grey.\nSize: the leaf band is about 2.4 mm wide the whole way round.\n\nEach piece is made to order and ships free within the United States. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Take it off before the gym, the pool and the shower, and wipe it with a soft cloth.\n\nThe product images are design visualizations of the finished piece, and the three metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
+   "description": "A full circle of overlapping gold leaves, a wreath sized for the finger.\n\nOverlapping leaves run the whole way round with no plain section at the back, each one lapping the last in the same direction and all of them staying inside the 2.4 mm width of the band. The leaves run the whole way round with no plain section at the back, each one overlapping the last in the same direction so the ring turns like a wreath hung on a door. It is the only piece in the line with no beginning and no end.\n\nMetal: solid 10K, 14K or 18K gold in yellow, white or rose. White gold is unplated, a soft silvery grey.\nSize: the leaf band is about 2.4 mm wide the whole way round.\n\nEach piece is made to order and ships free within the United States. Add a gift message at checkout and it ships with the piece.\n\nCare: solid gold does not tarnish. Take it off before the gym, the pool and the shower, and wipe it with a soft cloth.\n\nThe product images are design visualizations of the finished piece, and the three metal image is a colour visualization of the same design in yellow, white and rose gold; the handmade piece may vary slightly.",
    "lead": "A full circle of overlapping gold leaves, a wreath sized for the finger.",
-   "buildNote": "Overlapping leaves run the whole way round with no plain section at the back, each one lapping the last in the same direction.",
+   "buildNote": "Overlapping leaves run the whole way round with no plain section at the back, each one lapping the last in the same direction and all of them staying inside the 2.4 mm width of the band.",
    "dims": "full circle of leaves",
    "variationAxes": [
     "Karat",
