@@ -89,7 +89,7 @@ BUILD = {'R01': 'The band widens into a flat ribbon at the top, crosses itself o
     'R03': 'The band is flat and even the whole way round, then lifts into a single standing curl over the knuckle and settles again.',
     'R04': 'The face is a clean polished oval with a single fir sprig cut down into it, and the shoulders swell smoothly into the face.',
     'R05': 'The face is a soft cornered square carrying an interlaced knot that runs over and under itself, cut deep enough to hold a shadow.',
-    'R06': 'The face lifts on one side and falls away on the other in one wind shaped curve, scaled small for the little finger.',
+    'R06': 'The top is a small solid mound of gold with no flat plate anywhere: it rises high on one side and slopes smoothly down into the band on the other, scaled small for the little finger.',
     'R07': 'The dome is full and round and its whole surface is broken into a close fine frost texture.',
     'R08': 'The dome is tall, smooth and mirror polished, with nothing on its surface at all.',
     'R09': 'The dome is built from overlapping pinecone scales, each one cut and lifted so its edge stands away from the body.',
@@ -100,7 +100,7 @@ BUILD = {'R01': 'The band widens into a flat ribbon at the top, crosses itself o
     'R14': 'One round stone sits low in a smooth rub over bezel with no claws, on an otherwise plain band.',
     'R15': 'The band splits before the top and the two ends pass each other, each carrying one bezel set stone, so the two stones sit shoulder to shoulder rather than in a row.',
     'R16': 'The petals are cut separately and folded in towards the middle, tight at the heart and opening at the edge, with one small stone at the centre.',
-    'R17': 'Five tapering points of different lengths hang from the lower edge of the band and come to fine tips.',
+    'R17': 'Five tapering points of different lengths rise from the top of the band in the plane of the ring, standing close together and each ending in a fine tip, with the rest of the band plain.',
     'R18': 'A fir sprig lies along the curve of the band, needles raised away from the gold on both sides of a central stem.',
     'R19': 'Each end of the band grows into a forked antler and the two pass each other without touching, leaving a visible gap.',
     'R20': 'Overlapping leaves run the whole way round with no plain section at the back, each one lapping the last in the same direction.'}
@@ -170,8 +170,8 @@ P = [
        "winter jewelry", "festive jewelry", "unisex ring"]),
     R("R06", "Snowdrift Pinky Signet", "Snowdrift", "sculptural_ring", signet(8.0, 2.0, 1.8), fixed(0),
       "8 mm face, pinky",
-      "A small pinky signet whose face is a drifted, wind shaped curve.",
-      "Instead of a flat plate the face lifts on one side and falls away on the other, the way snow "
+      "A small pinky signet whose top is a drifted, wind shaped mound instead of a flat face.",
+      "Where a signet would carry a flat plate this one carries a low drift of gold, the way snow "
       "banks against a wall. Scaled for the little finger, which is where a signet is worn now.",
       ["Size: the face is about 8 mm across, cut for the little finger.",
        "Fit: order one size down from your usual ring finger size for a pinky fit."],
@@ -296,11 +296,11 @@ P = [
     # ---- winter nature
     R("R17", "Icicle Point Ring", "Icicles", "sculptural_ring", band(2.2, 1.4, 55), fixed(0),
       "2.2 mm band, 8 mm points",
-      "Tapering icicle points hanging from the lower edge of the band.",
-      "Five points of different lengths drop from the band and come to fine tips, so the ring has "
-      "a clean line above the finger and a broken one below it. They are solid gold and they move "
-      "with the hand.",
-      ["Size: the band is 2.2 mm wide and the longest point drops about 8 mm."],
+      "Tapering icicle points rising from the top of the band.",
+      "Icicles turned the right way up for a hand: the points stand off the top of the finger, so "
+      "the ring has a plain line below and a broken, frozen one above. They are solid gold, rounded "
+      "at the base so nothing catches, and fine only at the very tip.",
+      ["Size: the band is 2.2 mm wide and the tallest point rises about 8 mm."],
       ["christmas ring", "icicle ring", "winter jewelry", "statement ring", "holiday ring",
        "gift for her", "solid gold ring", "14k gold ring", "drop ring", "unusual ring",
        "festive jewelry", "snow ring", "sculptural ring"]),
@@ -326,7 +326,7 @@ P = [
        "winter jewelry", "festive jewelry", "unusual ring"]),
     R("R20", "Wreath Ring", "Full Wreath", "sculptural_ring", band(2.4, 1.4, 95), fixed(0),
       "full circle of leaves",
-      "A full circle of overlapping gold leaves, a wreath worn on the finger.",
+      "A full circle of overlapping gold leaves, a wreath sized for the finger.",
       "The leaves run the whole way round with no plain section at the back, each one overlapping "
       "the last in the same direction so the ring turns like a wreath hung on a door. It is the "
       "only piece in the line with no beginning and no end.",

@@ -1459,6 +1459,31 @@ repodaki hedefidir.
   `used_at` ile yakıldı, açık token bırakılmaz. Zincir tuttu: W05 apply → `verify=1` taze token
   5/5 verified 0 mismatch → panel 5 bağlı, 5 tekil id, 5 audit satırı.
 
+- **Kredi harcamadan ÖNCE prompt setini bağımsız gözlere oku: 20 hero'da 19 ilk denemede tuttu,
+  Stellar'da 5'te 3'ü yeniden çekilmişti (2026-10-16, Ophir Noel):** Sahip "hero'ları üret" demeden
+  önce 15 bulucu + çürütücülü bir inceleme akışı kurmuştum; yalnız 6'sı bitti (oturum limiti), ama
+  ilk biteni kare-01 bulucusuydu ve tam harcayacağım kareyi okuyordu. Bulguları dosyaya karşı kendim
+  doğrulayıp üreteçte düzelttim: paylaşılan taş cümlesi "every other stone is a white diamond"
+  (garnet yüzüğünde pavé daveti), "every surface is solid plain polished gold" (frost dome'da yalan,
+  signet oymasında inkâr), lead'deki benzetmeler ("like a string of lights" → sahneye ışık), "in
+  one colour" (tek renk zemin demek istiyor, monokrom okunur), R20 "worn on the finger" (el yasak
+  karede). Hepsi 09-13'ten beri yazılı derslerin TEKRARIydı ve ben yine yazmıştım; farkı yaratan
+  dersi hatırlamak değil, harcamadan önce üretilen metni başka bir gözün okumasıydı. Kural: (1)
+  seri üretimden önce ÜRETİLEN prompt'u (üreteci değil) bağımsız bir okumadan geçir, bulguyu
+  dosyaya karşı kendin doğrula, üreteçte düzelt ve diğer prompt'ların mührünün OYNAMADIĞINI say;
+  (2) inceleme akışında bulucuların sırası harcama sırasıdır: önce harcanacak karenin bulucusu
+  biter, limit yarıda keserse en azından o eldedir; (3) kanarya + dal kanaryası (signet pozu,
+  frost, elmas dizisi, renkli taş cümlesi, yeni geometri) ile dalgalar hâlinde üret, 20'yi tek
+  seferde basma. **Tek kaçan R06 ve sebebi bir GRUP kuralıydı:** signet'lere "yüz kameraya dönük"
+  pozu verdim; R06'nın tek tanımlayıcı özelliği yüzün bir yanda yüksek öbür yanda alçak olması ve
+  tam karşıdan bakınca o fark GÖRÜNMEZ, "signet face" de modeli düz plakaya çeker. Düzeltme: cümle
+  fiziksel ("flat plate yok, bir yanda yükselip öbür yanda banda inen dolu tümsek") + üç çeyrek poz;
+  tek denemede tuttu. Kural: poz ürün ailesine değil ürünün TANIMLAYICI BOYUTUNA göre seçilir
+  (09-13 "hangi boyut görünüyor?" dersinin poz hâli); grup kuralı o boyutu gizliyorsa ürün kuralı
+  grup kuralını ezer. Yan not: "Try again" gibi iki okumalı bir talimatta ücretsiz okumayı
+  (inceleme akışını yeniden başlatmak) ve istenen okumayı (2 kredilik yeniden çekim) birlikte yap,
+  sormak için durma.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
