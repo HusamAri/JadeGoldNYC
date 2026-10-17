@@ -298,6 +298,65 @@ LISTINGS = {
     "used": "the reference listing's own base steps: 10K +20 / +20, 14K +20 / +30, 18K +40 / +40 (same rule as L02, approved)",
     "evidence": "Panel prices of listing 4590337023 (Bauble) read 2026-10-17."}],
  },
+ "L06": {
+  "id": "L06", "slug": "wedge-cuneiform", "name": "Wedge",
+  "title": "Cuneiform Necklace Hand Stamped in Solid Gold, Personalized Bar Pendant with Engraved Initials, Sumerian Sign for Life, Heart, Home or Star",
+  "category": "Jewelry > Necklaces > Pendant Necklaces",
+  "taxonomy_id": 1229,
+  "section": "Necklaces",
+  "tags": ["cuneiform necklace", "cuneiform jewelry", "hand stamped pendant", "personalized bar", "engraved bar pendant",
+           "sumerian necklace", "mesopotamian jewelry", "gold bar necklace", "initial necklace", "handmade pendant",
+           "ancient script", "gift for her gold", "meaningful necklace"],
+  "materials": ["Solid gold", "14K gold", "10K gold", "18K gold"],
+  "attributes": {"Primary color": "Gold", "Secondary color": "none", "Holiday": "Christmas", "Occasion": "Graduation",
+                 "Recipient": "Unisex adults", "Style": "Historical"},
+  "variations": [{"property": "Karat", "values": ["10K", "14K", "18K"], "price_varies": True},
+                 {"property": "Chain Length", "values": ["16 inches", "18 inches", "20 inches"], "price_varies": True},
+                 {"property": "Sign", "values": ["TI (life)", "SHA (heart)", "E (home)", "AN (star, sky)"], "price_varies": False}],
+  "metal_color": "Yellow gold as standard; white or rose by message (brief)",
+  "personalization": {"enabled": True, "required": False, "max_chars": 8,
+                      "instructions": "Up to 8 characters engraved on the back: initials, a year or a short word, typed exactly as you want them cut. Leave blank for a plain back."},
+  "processing_days": "5 to 7 business days", "quantity": 20, "renewal": "automatic", "about": ABOUT,
+  "pricing_basis": {"grams14": 2.55, "pieces": 1, "adders": 55, "adders_detail": "hand stamping 30 + back engraving 25; 16 in chain included in the grams", "base14": 630},
+  "brief_prices": {"10K": (590.77, 413.54), "14K": (796.95, 557.87), "18K": (1044.00, 730.80)},
+  "chain": {"lengths": ["16 inches", "18 inches", "20 inches"], "addon_base14": 0,
+            "steps_base": {"10K": [20, 20], "14K": [20, 30], "18K": [40, 40]},
+            "steps_source": "16 in is the base price (the 2.55 g basis includes a 16 in chain); 18 and 20 in follow reference listing 4590337023 (Bauble) panel bases, read 2026-10-17: 10K 430/450/470, 14K 580/600/630, 18K 760/800/840"},
+  "description": """Some of the first writing in the world was made by pressing a reed into wet clay. The marks became wedges, and the wedges became cuneiform. The Wedge pendant is a small bar of solid gold struck by hand with the same wedge shapes, one sign at a time, so every stroke is slightly deeper or lighter than the next. You choose the sign; the back is engraved with your initials or a date.
+
+- The bar measures 16 x 5 mm and 1 mm thick, rolled from solid gold sheet, annealed and hand stamped with three sizes of wedge punch. The surface is brushed, the edges softly rounded.
+- Four Sumerian signs to choose from: TI (life), SHA (heart), E (home) and AN (star, sky). The listing photos show each sign next to its meaning.
+- Personalization: up to 8 characters engraved on the back, initials, a year or a short word, typed exactly as you want them cut.
+- Yellow gold as standard; message us for white or rose. Choose solid 10K, 14K or 18K with a 1.2 mm cable chain and spring ring clasp in 16, 18 or 20 inches.
+- Because each bar is struck by hand, spacing and depth vary a little from piece to piece. That variation is the point of the design, and it is why no two Wedges match.
+- Made to order at our bench in New Jersey in 5 to 7 business days, free US shipping, gift box included. Please check the spelling at checkout; engraved pieces are made specifically for you.
+- Gold does not tarnish; a soft cloth keeps the brushed finish even. A gift message can be added at checkout.""",
+  "trend": {"anchor": "Mark of the Maker (hand-stamped marks; hand painted items +280%)", "secondary": "Family Reimagined (personalized gifts +1,400%)"},
+  "trend_terms": ["hand stamped", "personalized", "handmade"],
+  "manufacturing_note": "Bar 16 x 5 x 1.0 mm cut from rolled 14K sheet, corners radiused 0.6 mm, edges rounded, annealed before stamping. Punch set to be made (hardened steel, three wedge sizes: 1.6, 2.4 and 3.2 mm heads) matching the cuneiform stroke shapes; strike on a steel block with a 200 g hammer, one stroke per wedge, then flatten the back lightly. Signs (Sumerian, Unicode reference for the sign drawings): TI U+122FE, SHA (SA3) U+122AE, E (E2) U+1208D, AN U+1202D; prepare a sign card with the four signs and their stroke order for the bench and for photo 3. Back: engraved up to 8 characters in a plain sans serif, 1.3 mm cap height. Bail: 1.5 mm ID loop soldered at the top short edge so the bar hangs vertically (or two end loops for a horizontal bar if Husam prefers; decide before the master). Finish: fine satin brush, edges bright. Hallmark on the back. Est. 14K weight 2.55 g with 16 in chain (bar 1.05, bail 0.1, chain 1.4).",
+  "photo_plan": [
+   "Hero macro on raw clay or unglazed stoneware, raking light so the wedge depth reads",
+   "The four signs side by side with their meanings printed small on a card (shoppers need this image)",
+   "Worn at 18 in on a dark turtleneck",
+   "Macro of two Wedges showing the hand variation in depth and spacing",
+   "Back view with a sample engraving",
+   "Layered with the Nar pendant",
+   "Scale shot in an open palm",
+   "Three karats on linen (color shift between 10K, 14K, 18K)",
+   "Gift box, open",
+   "Process: hand striking the punch on the bar, hammer mid-air (Mark of the Maker)"],
+  "video": "Video 8 to 12 s: three strikes, bar lifted and turned to the light",
+  "visualization_prompt": "Product photograph, small brushed solid gold bar pendant 16 mm hand-stamped with a cuneiform star sign of deep wedge impressions, lying on raw unglazed clay, raking warm light, extreme close-up, 35mm film grain, no retouching",
+  "deviations": [
+   {"field": "chain steps for 18 and 20 in",
+    "brief": "the shop's standard step, about 14 on the 10K base per 2 inches",
+    "used": "the reference listing's own base steps (same rule as L02 and L05, approved)",
+    "evidence": "Panel prices of listing 4590337023 (Bauble) read 2026-10-17."},
+   {"field": "grid rule (as the brief, same pattern as L04)",
+    "brief": "Karat x Chain Length x Sign, yellow gold; white or rose by message",
+    "used": "as the brief: 3 x 3 x 4 = 36 variants",
+    "evidence": "Sign takes Etsy's third variation axis, so Metal Color cannot be a variation; the brief routes white and rose through messages."}],
+ },
 }
 
 

@@ -37,16 +37,19 @@
       "approved": "2026-10-17, Husam: yes (size range kept as built, US 4 to 10)"
     },
     "05-nar-pomegranate": {
-      "status": "validated",
+      "status": "approved",
       "etsy_listing_id": null,
       "errors": [],
       "file": "listings/L05-nar-pomegranate.json",
-      "note": "27 variants; 18/20 in steps from the reference listing"
+      "note": "27 variants; 18/20 in steps from the reference listing",
+      "approved": "2026-10-17, Husam: yes"
     },
     "06-wedge-cuneiform": {
-      "status": "pending",
+      "status": "validated",
       "etsy_listing_id": null,
-      "errors": []
+      "errors": [],
+      "file": "listings/L06-wedge-cuneiform.json",
+      "note": "36 variants; yellow standard, white or rose by message (brief)"
     },
     "07-thaw-hoops": {
       "status": "pending",
