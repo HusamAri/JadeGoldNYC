@@ -1,0 +1,226 @@
+{
+  "id": "L02",
+  "slug": "ishtar-rosette",
+  "name": "Ishtar Rosette",
+  "title": "Rosette Brooch in Solid Gold with Garnet, Convertible Brooch and Pendant, Vintage Style Heirloom Jewelry, Opera Inspired Gift for Her",
+  "category": "Accessories > Pins & Clips > Brooches",
+  "taxonomy_id": 1201,
+  "section": "Brooches & Pins (new section)",
+  "tags": [
+    "gold brooch",
+    "solid gold brooch",
+    "garnet brooch",
+    "vintage style brooch",
+    "brooch pendant",
+    "convertible brooch",
+    "heirloom jewelry",
+    "opera inspired",
+    "rosette brooch",
+    "star of ishtar",
+    "mesopotamian jewelry",
+    "capelet brooch",
+    "gift for her gold"
+  ],
+  "materials": [
+    "Solid gold",
+    "Garnet",
+    "14K gold",
+    "10K gold",
+    "18K gold"
+  ],
+  "attributes": {
+    "Primary color": "Gold",
+    "Secondary color": "Red",
+    "Holiday": "Christmas",
+    "Occasion": "Anniversary",
+    "Recipient": "Women",
+    "Style": "Historical"
+  },
+  "variations": [
+    {
+      "property": "Karat",
+      "values": [
+        "10K",
+        "14K",
+        "18K"
+      ],
+      "price_varies": true
+    },
+    {
+      "property": "Metal Color",
+      "values": [
+        "Yellow Gold",
+        "White Gold",
+        "Rose Gold"
+      ],
+      "price_varies": false
+    },
+    {
+      "property": "Chain",
+      "values": [
+        "None",
+        "16 in",
+        "18 in",
+        "20 in"
+      ],
+      "price_varies": true,
+      "note": "chain is a 1.2 mm solid gold cable with spring ring"
+    }
+  ],
+  "personalization": {
+    "enabled": false
+  },
+  "processing_days": "3 to 5 business days",
+  "quantity": 20,
+  "renewal": "automatic",
+  "about": {
+    "who_made": "A member of my shop",
+    "what": "A finished product",
+    "when_made": "Made to order"
+  },
+  "pricing_basis": {
+    "grams14": 3.2,
+    "pieces": 1,
+    "adders": 130,
+    "adders_detail": "garnet and bezel 30 + brooch fittings 60 + openwork finishing 40; chain add-on priced separately",
+    "base14": 770
+  },
+  "chain": {
+    "none_label": "None",
+    "lengths": [
+      "16 in",
+      "18 in",
+      "20 in"
+    ],
+    "addon_base14": 150,
+    "brief_addon16_list": {
+      "10K": 140.66,
+      "14K": 189.75,
+      "18K": 248.57
+    },
+    "steps_base": {
+      "10K": [
+        20,
+        20
+      ],
+      "14K": [
+        20,
+        30
+      ],
+      "18K": [
+        40,
+        40
+      ]
+    },
+    "steps_source": "Reference listing 4590337023 (Bauble) panel bases, read 2026-10-17: 10K 430/450/470, 14K 580/600/630, 18K 760/800/840 at 16/18/20 in"
+  },
+  "description": "An eight-petal rosette, the star of Ishtar that appears on Mesopotamian seals and gates, carved as an openwork brooch in solid gold and set with a deep red garnet at its center. A hidden tube behind the top petal takes a chain, so the same piece pins to a velvet lapel or a capelet one night and hangs as a pendant the next.\n\n- The rosette measures 22 mm across and 1.2 mm thick, cast from our own hand-carved master and finished by hand so the edges stay crisp and the back is as clean as the front.\n- The garnet is a 5 mm cabochon in a closed bezel; under warm light its color sits between wine and ember.\n- Brooch fittings are solid gold: a pin stem, a joint and a safety catch that rolls over so the pin cannot open on its own.\n- Choose solid 10K, 14K or 18K gold in yellow, white or rose. Add a 1.2 mm cable chain in 16, 18 or 20 inches if you want to wear it as a pendant from day one.\n- It is made for the season of dressing up: a vintage style brooch for an evening coat, an opera night or a holiday table, and it stays in rotation long after.\n- Made to order at our bench in New Jersey in 3 to 5 business days, free US shipping, gift box included.\n- Garnet is hard enough for daily wear. Keep the piece away from knocks and clean it with a soft cloth. A gift message can be added at checkout.",
+  "trend": {
+    "anchor": "Operatic Drama (vintage jewelry +75%, ornate brooches)",
+    "secondary": "Merrymaxxing (gemstone)"
+  },
+  "trend_terms": [
+    "vintage style",
+    "heirloom jewelry",
+    "opera inspired"
+  ],
+  "manufacturing_note": "Rosette 22 mm diameter, 1.2 mm sheet thickness equivalent, eight pointed petals with pierced (open) spaces between the inner ring and the petal tips, cast from a hand-carved wax master; openwork cleaned with a saw and needle files, edges crisp, back flat and polished. Center: 5 mm round garnet cabochon in a closed-back bezel cup (0.4 mm wall) soldered to the rosette, bezel burnished over the stone. Brooch fittings in solid 14K: pin stem 0.8 mm hard wire, joint (hinge) and revolving safety catch, soldered on the back at 2 and 10 o'clock so the piece hangs level. Hidden bail: 2.0 mm OD gold tube, 6 mm long, soldered horizontally behind the top petal, sized to pass a 1.2 mm cable chain. Est. 14K weight 3.2 g (rosette 2.6, fittings and bezel 0.6). Chain add-on: 1.2 mm cable 16 in, est. 1.4 g, spring ring clasp.",
+  "photo_plan": [
+    "Hero on deep green velvet, warm side light, brooch pinned at a coat lapel, garnet catching light",
+    "Worn as a pendant on an 18 in chain against a dark knit",
+    "Macro of the garnet and bezel",
+    "Back view: pin, safety catch, hidden tube bail",
+    "On a capelet at the shoulder, atmospheric low light (Operatic Drama)",
+    "Three metal colors on dark jacquard fabric",
+    "In an open palm for scale",
+    "Gift box, open",
+    "Styled: brooch on a velvet evening bag beside opera glasses",
+    "Process: hands cleaning the openwork with a saw frame (Mark of the Maker)"
+  ],
+  "video": "Video 8 to 12 s: unpin from the lapel, thread the chain, lift as a pendant",
+  "visualization_prompt": "Product photograph, solid gold openwork eight-petal rosette brooch 22 mm with a deep red garnet cabochon center, pinned to dark green velvet, candlelit warm light, shallow depth of field, 35mm film grain, no retouching",
+  "deviations": [
+    {
+      "field": "category",
+      "brief": "Jewelry > Brooches, Pins & Clips > Brooches",
+      "used": "Accessories > Pins & Clips > Brooches (taxonomy 1201)",
+      "evidence": "Live Etsy seller taxonomy read 2026-10-15: the Jewelry root has no Brooches node; Brooches is 1201 under Accessories > Pins & Clips (the Weddings twin 1682 is excluded). Same node as the live W05 Pine Needle Brooch draft, which passed read-back."
+    },
+    {
+      "field": "chain steps for 18 and 20 in",
+      "brief": "the shop's standard step, each extra 2 inches adds about 14 to the 10K base",
+      "used": "the reference listing's own base steps: 10K +20 / +20, 14K +20 / +30, 18K +40 / +40",
+      "evidence": "Panel prices of listing 4590337023 (Bauble) read 2026-10-17: 10K 430 / 450 / 470, 14K 580 / 600 / 630, 18K 760 / 800 / 840 at 16 / 18 / 20 in. No step there is 14."
+    }
+  ],
+  "prices": {
+    "10K": {
+      "list": 722.05,
+      "sale": 505.43
+    },
+    "14K": {
+      "list": 974.05,
+      "sale": 681.83
+    },
+    "18K": {
+      "list": 1276.01,
+      "sale": 893.21
+    }
+  },
+  "variant_prices": {
+    "10K": {
+      "None": {
+        "list": 722.05,
+        "sale": 505.43
+      },
+      "16 in": {
+        "list": 862.71,
+        "sale": 603.9
+      },
+      "18 in": {
+        "list": 888.01,
+        "sale": 621.61
+      },
+      "20 in": {
+        "list": 913.31,
+        "sale": 639.32
+      }
+    },
+    "14K": {
+      "None": {
+        "list": 974.05,
+        "sale": 681.83
+      },
+      "16 in": {
+        "list": 1163.8,
+        "sale": 814.66
+      },
+      "18 in": {
+        "list": 1189.1,
+        "sale": 832.37
+      },
+      "20 in": {
+        "list": 1227.05,
+        "sale": 858.93
+      }
+    },
+    "18K": {
+      "None": {
+        "list": 1276.01,
+        "sale": 893.21
+      },
+      "16 in": {
+        "list": 1524.58,
+        "sale": 1067.21
+      },
+      "18 in": {
+        "list": 1575.18,
+        "sale": 1102.63
+      },
+      "20 in": {
+        "list": 1625.78,
+        "sale": 1138.05
+      }
+    }
+  }
+}
