@@ -19,8 +19,8 @@ Run everything from this folder: `python3 build_listings.py L0x` writes the JSON
 - [x] L01 Seal Pin: validated (first cycle), approved 2026-10-17. Category corrected to the live taxonomy.
 - [x] L02 Ishtar Rosette: validated (first cycle), approved 2026-10-17. 36 variants with a full chain price grid.
 - [x] L03 Fibula: validated (first cycle), approved 2026-10-17. Category Shawl Pins 6066.
-- [x] L04 Ur Band: validated (first cycle). Bands 1232 verified live. Waiting for approval and the size-range answer.
-- [ ] L05 Nar (Pomegranate)
+- [x] L04 Ur Band: validated (first cycle), approved 2026-10-17 with US 4 to 10. Bands 1232 verified live.
+- [x] L05 Nar (Pomegranate): validated (first cycle). 27 variants. Waiting for approval.
 - [ ] L06 Wedge
 - [ ] L07 Thaw Hoops
 - [ ] L08 Split Infinity

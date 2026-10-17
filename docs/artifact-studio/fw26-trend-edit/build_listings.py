@@ -245,6 +245,59 @@ LISTINGS = {
     "used": "category kept (node 1232 exists, read 2026-10-17)",
     "evidence": "lib/etsy/listing-protocol.ts has no protocol that resolves to Bands (wedding_band, stacking_ring, sculptural_ring resolve elsewhere); one has to be added before the push."}],
  },
+ "L05": {
+  "id": "L05", "slug": "nar-pomegranate", "name": "Nar (Pomegranate)",
+  "title": "Pomegranate Necklace in Solid Gold, Cranberry Enamel Pendant with Garnet Seeds, Bold Color Charm Necklace, Abundance Gift, Christmas Jewelry",
+  "category": "Jewelry > Necklaces > Pendant Necklaces",
+  "taxonomy_id": 1229,
+  "section": "Necklaces",
+  "tags": ["pomegranate necklace", "pomegranate jewelry", "garnet necklace gold", "enamel pendant gold", "bold color necklace",
+           "solid gold charm", "abundance gift", "hostess gift gold", "new home gift gold", "anatolian jewelry",
+           "whimsical necklace", "red enamel necklace", "christmas necklace"],
+  "materials": ["Solid gold", "Vitreous enamel", "Garnet", "14K gold", "10K gold", "18K gold"],
+  "attributes": {"Primary color": "Red", "Secondary color": "Gold", "Holiday": "Christmas", "Occasion": "Housewarming",
+                 "Recipient": "Women", "Style": "Whimsical"},
+  "variations": [{"property": "Karat", "values": ["10K", "14K", "18K"], "price_varies": True},
+                 {"property": "Metal Color", "values": ["Yellow Gold", "White Gold", "Rose Gold"], "price_varies": False},
+                 {"property": "Chain Length", "values": ["16 inches", "18 inches", "20 inches"], "price_varies": True}],
+  "personalization": {"enabled": False},
+  "processing_days": "3 to 5 business days", "quantity": 20, "renewal": "automatic", "about": ABOUT,
+  "pricing_basis": {"grams14": 3.0, "pieces": 1, "adders": 70, "adders_detail": "three garnets bead set 45 + enamel cell 25; 16 in chain included in the grams", "base14": 690},
+  "brief_prices": {"10K": (647.03, 452.92), "14K": (872.85, 611.00), "18K": (1143.43, 800.40)},
+  "chain": {"lengths": ["16 inches", "18 inches", "20 inches"], "addon_base14": 0,
+            "steps_base": {"10K": [20, 20], "14K": [20, 30], "18K": [40, 40]},
+            "steps_source": "16 in is the base price (the 3.0 g basis includes a 16 in chain); 18 and 20 in follow reference listing 4590337023 (Bauble) panel bases, read 2026-10-17: 10K 430/450/470, 14K 580/600/630, 18K 760/800/840"},
+  "description": """The pomegranate has meant abundance, luck and a full house from Mesopotamia to Anatolia for as long as people have been carving it. Ours is a 12 mm solid gold fruit with a crown, its skin in cranberry red kiln-fired enamel and a split that opens onto three garnets set as seeds. The word garnet comes from granatum, the Latin for pomegranate, so the gemstones are not decoration; they are the point.
+
+- The pendant measures 12 x 10 mm plus the crown, cast with an open back so it stays light on the chain, and hangs from a fixed loop that keeps it facing forward.
+- Three 1.3 mm garnets are bead set into the split by hand; the enamel is fired in a recessed cell with a polished gold rim.
+- Choose solid 10K, 14K or 18K gold in yellow, white or rose, and a 1.2 mm solid gold cable chain with spring ring clasp in 16, 18 or 20 inches.
+- It is a bold color piece that happens to be festive, which makes it an easy gift for a new home, a host, a friend who feeds everyone, or yourself, which is allowed.
+- Made to order at our bench in New Jersey in 3 to 5 business days, free US shipping, gift box included.
+- Enamel is glass fused to gold and can chip from a hard knock. Take it off for the gym, the pool and the sink, and wipe it with a soft cloth.
+- A gift message can be added at checkout.""",
+  "trend": {"anchor": "Merrymaxxing (gemstones, bold color, whimsy)", "secondary": "Family Reimagined (gift for a household, a host, a friend)"},
+  "trend_terms": ["bold color", "whimsical", "gemstone"],
+  "manufacturing_note": "Pomegranate body 12 x 10 mm, slightly flattened sphere, cast as an open-backed shell with 0.8 mm walls; six-point crown 2.5 mm tall cast integral; fixed bail loop 1.5 mm ID at the crown. Front: one recessed enamel cell following the body silhouette, 0.4 mm deep, with a 0.5 mm polished gold rim; a vertical split 5 x 1.8 mm left bare in the cell and drilled with three 1.3 mm seats for bead-set round garnets (or 1.3 mm cranberry-red garnets matched to the enamel). Enamel: opaque cranberry red, wet-packed, three fills, fired 780 to 820 C, stoned flush, flash fired; set the garnets after enameling. Chain 1.2 mm cable, spring ring. Est. 14K weight 3.0 g with a 16 in chain (pendant 1.5, chain 1.4, findings 0.1). For white and rose gold, confirm enamel adhesion on Efe's alloys; if not, offer yellow only.",
+  "photo_plan": [
+   "Hero macro: pendant against a split real pomegranate, seeds and garnets in one frame, warm light (Merrymaxxing texture and shine)",
+   "Worn at 18 in on skin above a cream knit collar",
+   "Macro of the three garnets inside the split, raking light",
+   "Layered with the Wedge pendant at 16 and 20 in",
+   "Three metal colors on dark linen",
+   "Scale shot in an open palm",
+   "Gift box, open, with a sprig of pine",
+   "Styled on a holiday table beside a glass of red wine (Family Reimagined moment)",
+   "Back view showing the open-back construction",
+   "Process: bead-setting a garnet under the microscope (Mark of the Maker)"],
+  "video": "Video 8 to 12 s: slow turn in candlelight, enamel gloss and garnet flash",
+  "visualization_prompt": "Product photograph, solid gold pomegranate pendant 12 mm with glossy cranberry red enamel skin and three tiny garnets visible in a split, resting on a split real pomegranate on dark linen, warm window light, 35mm film grain, no retouching",
+  "deviations": [
+   {"field": "chain steps for 18 and 20 in",
+    "brief": "the shop's standard step, about 14 on the 10K base per 2 inches",
+    "used": "the reference listing's own base steps: 10K +20 / +20, 14K +20 / +30, 18K +40 / +40 (same rule as L02, approved)",
+    "evidence": "Panel prices of listing 4590337023 (Bauble) read 2026-10-17."}],
+ },
 }
 
 
@@ -311,8 +364,9 @@ def build(key):
     if ch:
         grid = {}
         for k, f in (("10K", K10), ("14K", 1.0), ("18K", K18)):
-            assert round(ch["addon_base14"] * f * LIST, 2) == ch["brief_addon16_list"][k], (key, k, "chain add-on")
-            row = {ch["none_label"]: pr[k]}
+            if "brief_addon16_list" in ch:
+                assert round(ch["addon_base14"] * f * LIST, 2) == ch["brief_addon16_list"][k], (key, k, "chain add-on")
+            row = {ch["none_label"]: pr[k]} if ch.get("none_label") else {}
             for i, length in enumerate(ch["lengths"]):
                 base = pb["base14"] * f + ch["addon_base14"] * f + sum(ch["steps_base"][k][:i])
                 lst = round(base * LIST, 2)
