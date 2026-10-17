@@ -70,8 +70,11 @@
   "personalization": {
     "enabled": true,
     "required": true,
-    "max_chars": 16,
-    "instructions": "Pet name for the back (up to 10 characters) and DOG or CAT for the paw style. Example: BIBER / DOG. Add a year after the name if you are marking a life."
+    "max_chars": 24,
+    "question_text": "Pet name and paw style",
+    "instructions": "Pet name for the back (up to 10 characters), then dog or cat for the paw. Example: Biber / dog. A year may follow.",
+    "brief_instructions": "Pet name for the back (up to 10 characters) and DOG or CAT for the paw style. Example: BIBER / DOG. Add a year after the name if you are marking a life.",
+    "brief_max_chars": 16
   },
   "processing_days": "5 to 7 business days",
   "quantity": 20,
@@ -151,12 +154,14 @@
       "evidence": "Paw Finish takes Etsy's third variation axis, so Metal Color cannot be a variation."
     },
     {
-      "field": "personalization length",
-      "brief": "required, max 16 characters, name up to 10",
-      "used": "kept",
-      "evidence": "A 10-character name plus ' / DOG' is 16, and the instructions invite a year as well: BIBER 2026 / DOG is 16, a 10-letter name with a year is 21 and would be cut off. Raise to 24 if Husam wants the year to fit every name."
+      "field": "personalization instructions",
+      "brief": "Pet name for the back (up to 10 characters) and DOG or CAT for the paw style. Example: BIBER / DOG. Add a year after the name if you are marking a life. (max 16)",
+      "used": "Pet name for the back (up to 10 characters), then dog or cat for the paw. Example: Biber / dog. A year may follow. (max 24)",
+      "evidence": "Etsy rejects personalization instructions over 120 characters and with more than one word starting with three capitals (developers.etsy.com personalization-migration, read 2026-10-17); the brief's text is 152 characters. Same meaning, shortened. Max characters raised so a 10-letter name plus a year fits (proposed at L09, covered by 'yes to all')."
     }
   ],
+  "listing_protocol": "pendant_necklace",
+  "product_type": "necklace",
   "prices": {
     "10K": {
       "list": 604.84,

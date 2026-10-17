@@ -112,6 +112,8 @@
       "evidence": "(1.4/1.3)^2 = 1.16, so the 18K piece carries about 0.46 g more metal than the 2.9 g basis; in the brief's own model that is about +60 on the 18K base (+77 on the list price). The 18K sale price of 823.61 absorbs it; recompute when Efe weighs an 18K sample."
     }
   ],
+  "listing_protocol": "shawl_pin",
+  "product_type": "other",
   "prices": {
     "10K": {
       "list": 665.79,

@@ -141,6 +141,8 @@
       "evidence": "lib/etsy/listing-protocol.ts has no protocol that resolves to Bands (wedding_band, stacking_ring, sculptural_ring resolve elsewhere); one has to be added before the push."
     }
   ],
+  "listing_protocol": "ring_band",
+  "product_type": "ring",
   "prices": {
     "10K": {
       "list": 684.54,

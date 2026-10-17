@@ -1,0 +1,134 @@
+{
+ "_params": {
+  "model": "nano_banana_2",
+  "aspect_ratio": "1:1",
+  "resolution": "2k",
+  "count": 1,
+  "why": "resolution must be passed: the default is 1k (second-brain 2026-10-13). Reference role: image_references. Served as nano_banana_flash."
+ },
+ "_glyph_media": {
+  "AN": "4b58a45f-c6d5-47ba-af76-464baeb616d8",
+  "TI": "55e3b315-393b-42c4-b566-f430a6997a69",
+  "SHA": "a1f493ea-b475-475f-a56d-c87b33581d8f",
+  "E": "0c2a94b5-7ec9-4b17-a03d-a898f63c2cf0"
+ },
+ "L01": {
+  "hero_v1": "99a861fb-7dfb-4e2e-bd02-c228e078da04",
+  "hero_approved": "v1"
+ },
+ "L02": {
+  "hero_v1": "ca033047-624c-47dd-aabc-4842d8e0bc3d",
+  "hero_approved": "v1",
+  "hero_note": "outer ring around the rosette, not in the brief; accepted (openwork, description does not exclude it)"
+ },
+ "L03": {
+  "hero_v1": "c0333510-5a87-4243-842c-c69e22d382c7",
+  "hero_approved": "v1"
+ },
+ "L04": {
+  "hero_v1": "25746369-bc37-4a0a-ad35-b80dcd50da97",
+  "hero_approved": "v1"
+ },
+ "L05": {
+  "hero_v1": "ca03ed58-6bf2-47c0-a267-70598d146aec",
+  "hero_approved": "v1"
+ },
+ "L06": {
+  "hero_v1": "8971899c-815c-4ecc-a3f4-1ddffb360f46",
+  "hero_approved": "v1"
+ },
+ "L07": {
+  "hero_v1": "194d7b91-c71f-41aa-82c8-3a2e66559888",
+  "hero_v2": "08bb5700-df10-4acd-acdf-604339ffb3bf",
+  "hero_approved": "v2",
+  "hero_v1_rejected": "no white gold tips"
+ },
+ "L08": {
+  "hero_v1": "c1502469-2283-45e6-8831-5f01d690849f",
+  "hero_approved": "v1"
+ },
+ "L09": {
+  "hero_v1": "4ecc90d1-fdd8-40b9-a631-5d6bcbe5daae",
+  "hero_approved": "v1"
+ },
+ "L10": {
+  "hero_v1": "22f3e504-0b6c-4e6d-bda3-b8462e0e90a3",
+  "hero_v2": "c93fb79f-11ae-4aba-853e-0b7547274ae4",
+  "hero_approved": "v2",
+  "hero_v1_rejected": "black pupil and white ring added to the cobalt iris"
+ },
+ "_crop_media": {
+  "L01": "90425c7c-3fb6-4072-bdb3-4e0e6a765fa3",
+  "L02": "6cb7540a-c37e-4b2e-b1e0-f8a4775b3254",
+  "L03": "c6dca95f-6f2b-4471-b297-45f687274d09",
+  "L04": "d896d364-46d5-4473-86ba-6eb822a8c4eb",
+  "L05": "1b29401c-66a5-40c3-90c7-be5245747ba5",
+  "L06": "7fbd212e-eaea-4398-be1b-89f43b8a721f",
+  "L07": "711ef2bf-e6eb-4092-9143-e4d07af72f70",
+  "L08": "710d9ffb-975d-4889-8346-93b04f45c2d5",
+  "L09": "de6170a5-5082-4e1b-946d-9f4b3979b669",
+  "L10": "e400f7cc-744b-4849-93e4-4acbd14f6780"
+ },
+ "gallery_v1": {
+  "12": "26d9d691-de2a-42b2-ab90-bff21f975c41",
+  "13": "efe81938-ff6e-4a4b-8103-d36cea1567f0",
+  "14": "a6fbe026-9cf3-41e1-a59d-07245d6d50e2",
+  "15": "3dd800cc-fde4-4fbf-a3d6-0200e76bd4f6",
+  "22": "ce809a8b-fbcc-4146-aba0-e293f05bf309",
+  "23": "9f5cbbf3-025e-482e-ab49-a6969932fe46",
+  "24": "692f2e13-6a27-4a86-8c93-2820c0a83e95",
+  "25": "f29aec81-3892-489a-be35-850c595d685a",
+  "32": "addeba40-cece-4c9c-8568-09b960f7b071",
+  "33": "0564ec88-e5b4-403b-97e7-1067894c7dba",
+  "34": "9bed4849-3067-4a1d-822f-bb3292486468",
+  "35": "2833ad06-31ca-4026-8998-7163b0a4b62f",
+  "42": "f8d54872-40c9-47be-8db3-af64120be174",
+  "43": "4c581601-17bd-4ce6-ada2-c69ab85dfa1d",
+  "44": "fd1e15d5-f55a-4de3-87a0-dc267bb29afe",
+  "45": "ce6e6244-0535-4bb1-870b-df971ba19725",
+  "52": "59183515-bf33-49ad-8e45-229209d30625",
+  "53": "3fbb91fc-9018-450c-9568-aa4e5424dd77",
+  "54": "d64e2377-3a35-46bc-8b55-4aa80b8b9ce7",
+  "55": "dd86d80f-b5a1-4d5b-9894-ca6ae6c1bfd7",
+  "62": "5179a181-72db-4b0a-b685-3140daac1dc3",
+  "63": "4e1e53f1-d38a-4456-955d-3d91ef9adf07",
+  "64": "f1d816a4-6eea-4dbd-a3df-f5ad71c4c68e",
+  "65": "09eed324-5eb4-4f30-9a70-5b11242b38b9",
+  "72": "d288ac04-07fa-4414-8423-fe7515c35e96",
+  "73": "bc2a49a6-4726-4b2b-b224-ccf0883e5071",
+  "74": "f22c8b80-4472-41d9-b7c5-9921d19d2de0",
+  "75": "aeb52bbc-1b0a-48cd-b39b-ee25b5d0c090",
+  "82": "f9c8334e-fcaf-4c42-8c95-f8f8e994cb54",
+  "83": "61f42316-dffa-434c-92c7-adbc50e08cde",
+  "84": "e47c01a6-19d7-4ba9-81c5-c9db5625b4cd",
+  "85": "db22ad3c-89f7-49b6-945d-238bf0ef303a",
+  "92": "58a1bac9-feba-45fc-a813-99cddec068ef",
+  "93": "497a8147-ac26-4d68-928c-e37226a39767",
+  "94": "667f715a-8a50-4b92-99ea-43bdd7deb6b3",
+  "95": "0c1b2cfa-ccb3-4196-a950-a3203c1ef301",
+  "102": "827516cf-1def-4264-b5e0-a34437c1df16",
+  "103": "f6861755-c639-478a-a74d-ab07ee84d51f",
+  "104": "5ff0ecfd-8439-4dfb-bfb0-1f7bd0944c22",
+  "105": "6098ad65-118c-4d20-aa51-33c128af72e6"
+ },
+ "gallery_rejected": {
+  "L01-03 v1 efe81938": "radial flower pattern invented on the plain end cap",
+  "L04-04 v1 fd1e15d5": "cells rendered as flecked lapis stone, not enamel; scratched gold",
+  "L04-05 v1 ce6e6244": "band seen from above, enamel cells hidden",
+  "L06-02 v1 5179a181": "TI sign lost its vertical wedge (SHA, E, AN matched)",
+  "L08-03 v1 61f42316": "two chains but two seams (three pieces); the set of 2 needs one seam at the crossing",
+  "L08-03 v2 d9ccf609": "still two seams; pose changed to the three pieces pulled apart (v3)"
+ },
+ "L06_02_note": "glyph refs only (TI, SHA, E, AN in that order), no crop, so the four references are exactly the four signs",
+ "gallery_v2": {
+  "13": "28391656-eda7-476b-a036-b280f93b76fa",
+  "44": "157aa936-75ef-4099-9a6b-f504e3c86c9f",
+  "45": "31d11896-c6d9-447b-a0c9-6e0d8c8c31dc",
+  "62": "4184479f-d4f7-49e1-a194-c87f493d1c8b",
+  "83": "d9ccf609-7c81-4f89-8a26-cb35d6e41b3e"
+ },
+ "gallery_v3": {
+  "83": "527f5d68-922d-4b5a-b6ff-6677af2d5979"
+ },
+ "gallery_note": "L09-04 accepted: the cat paw reads close to the dog paw, as real prints do"
+}

@@ -106,7 +106,7 @@ Basis: est. 1.9 g in 14K, 2 make-floor, adders 75 (two make-floors + enamel cell
 On, optional, max 40 characters.
 
 ```text
-Two initials, almond bracelet first, then iris bracelet (example: H / C). Optional: a second length if the wrists differ (example: H 6.5 / C 7).
+Two initials, almond bracelet first, then iris (e.g. H / C). Add a second length if wrists differ (e.g. H 6.5 / C 7).
 ```
 
 ## Shipping profile
@@ -120,3 +120,4 @@ Shop default
 ## Deviations from the brief
 
 - category id: brief says "Jewelry > Bracelets > Chain & Link Bracelets", used kept; resolved at push by the repo's chain_bracelet protocol (root Jewelry), the protocol the shop's earlier bracelet drafts were pushed with. lib/etsy/listing-protocol.ts chain_bracelet: taxonomyNames Chain & Link Bracelets, Bracelets; taxonomyRoot Jewelry.
+- personalization instructions: brief says "Two initials, almond bracelet first, then iris bracelet (example: H / C). Optional: a second length if the wrists differ (example: H 6.5 / C 7).", used Two initials, almond bracelet first, then iris (e.g. H / C). Add a second length if wrists differ (e.g. H 6.5 / C 7).. Etsy rejects personalization instructions over 120 characters and with more than one word starting with three capitals (developers.etsy.com personalization-migration, read 2026-10-17); the brief's text is 144 characters. Same meaning, shortened.

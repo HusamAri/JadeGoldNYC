@@ -125,6 +125,8 @@
       "evidence": "The Thaw Cuff is an Etsy draft (4595934362), not yet published. Publish the cuff no later than the hoops so the line points to a listing a buyer can find."
     }
   ],
+  "listing_protocol": "hoop_earrings",
+  "product_type": "earrings",
   "prices": {
     "10K": {
       "list": 684.54,

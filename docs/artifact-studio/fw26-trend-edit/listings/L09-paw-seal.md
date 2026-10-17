@@ -113,10 +113,10 @@ Chain steps: 16 in is the base price (the 2.5 g basis includes a 16 in chain); 1
 
 ## Personalization
 
-On, required, max 16 characters.
+On, required, max 24 characters.
 
 ```text
-Pet name for the back (up to 10 characters) and DOG or CAT for the paw style. Example: BIBER / DOG. Add a year after the name if you are marking a life.
+Pet name for the back (up to 10 characters), then dog or cat for the paw. Example: Biber / dog. A year may follow.
 ```
 
 ## Shipping profile
@@ -131,4 +131,4 @@ Shop default
 
 - chain steps for 18 and 20 in: brief says "the shop's standard step, about 14 on the 10K base per 2 inches", used the reference listing's own base steps (same rule as L02, L05, L06). Panel prices of listing 4590337023 (Bauble) read 2026-10-17.
 - grid rule (as the brief, same pattern as L04 and L06): brief says "Karat x Chain Length x Paw Finish, yellow gold; white or rose by message", used as the brief: 3 x 3 x 4 = 36 variants. Paw Finish takes Etsy's third variation axis, so Metal Color cannot be a variation.
-- personalization length: brief says "required, max 16 characters, name up to 10", used kept. A 10-character name plus ' / DOG' is 16, and the instructions invite a year as well: BIBER 2026 / DOG is 16, a 10-letter name with a year is 21 and would be cut off. Raise to 24 if Husam wants the year to fit every name.
+- personalization instructions: brief says "Pet name for the back (up to 10 characters) and DOG or CAT for the paw style. Example: BIBER / DOG. Add a year after the name if you are marking a life. (max 16)", used Pet name for the back (up to 10 characters), then dog or cat for the paw. Example: Biber / dog. A year may follow. (max 24). Etsy rejects personalization instructions over 120 characters and with more than one word starting with three capitals (developers.etsy.com personalization-migration, read 2026-10-17); the brief's text is 152 characters. Same meaning, shortened. Max characters raised so a 10-letter name plus a year fits (proposed at L09, covered by 'yes to all').

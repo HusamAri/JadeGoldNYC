@@ -117,7 +117,7 @@ Price per variation (Metal Color does not change the price), original list / sho
 On, optional, max 40 characters.
 
 ```text
-One initial per pendant, in order left to right (example: H / E / C). Optional: chain length per pendant, 16, 18 or 20 inches (example: H 16 / E 18 / C 18).
+One initial per pendant, left to right (e.g. H / E / C). Add a chain length per pendant if needed (e.g. H 16 / E 18).
 ```
 
 ## Shipping profile
@@ -131,3 +131,4 @@ Shop default
 ## Deviations from the brief
 
 - overlap check: brief says "brand pillar: infinity", used kept. The shop already sells a Solid 14K Gold Infinity Necklace (4579027067, wide open pendant) and two infinity bracelets. The Split Infinity differs as a cut, multi-piece matching set, and its title leads with 'Friendship Necklace Set', so it does not compete for the same search.
+- personalization instructions: brief says "One initial per pendant, in order left to right (example: H / E / C). Optional: chain length per pendant, 16, 18 or 20 inches (example: H 16 / E 18 / C 18).", used One initial per pendant, left to right (e.g. H / E / C). Add a chain length per pendant if needed (e.g. H 16 / E 18).. Etsy rejects personalization instructions over 120 characters and with more than one word starting with three capitals (developers.etsy.com personalization-migration, read 2026-10-17); the brief's text is 156 characters. Same meaning, shortened.

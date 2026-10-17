@@ -70,7 +70,10 @@
     "enabled": true,
     "required": false,
     "max_chars": 8,
-    "instructions": "Up to 8 characters engraved on the back: initials, a year or a short word, typed exactly as you want them cut. Leave blank for a plain back."
+    "question_text": "Engraving on the back (optional)",
+    "instructions": "Up to 8 characters for the back: initials, a year or a short word, typed as you want them cut. Blank: plain back.",
+    "brief_instructions": "Up to 8 characters engraved on the back: initials, a year or a short word, typed exactly as you want them cut. Leave blank for a plain back.",
+    "brief_max_chars": 8
   },
   "processing_days": "5 to 7 business days",
   "quantity": 20,
@@ -147,8 +150,16 @@
       "brief": "Karat x Chain Length x Sign, yellow gold; white or rose by message",
       "used": "as the brief: 3 x 3 x 4 = 36 variants",
       "evidence": "Sign takes Etsy's third variation axis, so Metal Color cannot be a variation; the brief routes white and rose through messages."
+    },
+    {
+      "field": "personalization instructions",
+      "brief": "Up to 8 characters engraved on the back: initials, a year or a short word, typed exactly as you want them cut. Leave blank for a plain back.",
+      "used": "Up to 8 characters for the back: initials, a year or a short word, typed as you want them cut. Blank: plain back.",
+      "evidence": "Etsy rejects personalization instructions over 120 characters and with more than one word starting with three capitals (developers.etsy.com personalization-migration, read 2026-10-17); the brief's text is 140 characters. Same meaning, shortened."
     }
   ],
+  "listing_protocol": "pendant_necklace",
+  "product_type": "necklace",
   "prices": {
     "10K": {
       "list": 590.77,

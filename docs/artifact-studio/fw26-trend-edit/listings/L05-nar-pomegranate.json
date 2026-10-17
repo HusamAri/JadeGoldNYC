@@ -140,6 +140,8 @@
       "evidence": "Panel prices of listing 4590337023 (Bauble) read 2026-10-17."
     }
   ],
+  "listing_protocol": "pendant_necklace",
+  "product_type": "necklace",
   "prices": {
     "10K": {
       "list": 647.03,

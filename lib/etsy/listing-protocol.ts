@@ -63,7 +63,10 @@ export type ListingProtocolId =
   | "dangle_earrings"
   | "hoop_earrings"
   | "anklet"
-  | "brooch";
+  | "brooch"
+  | "stick_pin"
+  | "shawl_pin"
+  | "ring_band";
 
 export interface ParcelSpec {
   weight: number;
@@ -284,6 +287,44 @@ export const LISTING_PROTOCOLS: Record<ListingProtocolId, ListingProtocolSpec> =
     personalization: null,
     // Yassı mücevher kutusu; zincirli takı kutusuyla aynı sabit.
     parcel: CHAIN_JEWELRY_PARCEL,
+  },
+  // FW26 Trend Edit (by Artifact Studio Jewelry, 2026-10-17). Üç ad da CANLI
+  // ağaçtan okundu (ops/drafts-push?taxonomy=, 2026-10-17), tahmin değil:
+  //  - "Lapel Pins" diye bir düğüm YOK (lapel araması 0 sonuç); erkek yaka iğnesi
+  //    (sopa iğne + kilit) 11316 "Accessories > Pins & Clips > Hat Pins & Stick Pins".
+  //  - Şal iğnesi / fibula: 6066 "Accessories > Pins & Clips > Shawl Pins".
+  //  - Düz bant yüzük: 1232 "Jewelry > Rings > Bands". Mevcut yüzük protokolleri
+  //    (wedding_band, stacking_ring, sculptural_ring) başka düğüme çözülür.
+  // Hiçbirinde zorunlu eksen ya da sabit kişiselleştirme yok; gravür sunan
+  // listing kendi sorusunu listing_metadata.personalizationQuestions ile taşır.
+  stick_pin: {
+    id: "stick_pin",
+    label: "Stick pin",
+    taxonomyNames: ["Hat Pins & Stick Pins"],
+    taxonomyRoot: "Accessories",
+    requiredVariationAxes: [],
+    personalization: null,
+    parcel: CHAIN_JEWELRY_PARCEL,
+  },
+  shawl_pin: {
+    id: "shawl_pin",
+    label: "Shawl pin",
+    taxonomyNames: ["Shawl Pins"],
+    taxonomyRoot: "Accessories",
+    requiredVariationAxes: [],
+    personalization: null,
+    parcel: CHAIN_JEWELRY_PARCEL,
+  },
+  ring_band: {
+    id: "ring_band",
+    label: "Band ring",
+    taxonomyNames: ["Bands"],
+    taxonomyRoot: "Jewelry",
+    // Beden bir eksendir ama zorunlu kılınmaz (wedding_band'in Width x Ring Size
+    // şartı alyansa özgü; mine bant Karat x Ring Size x Palette satar).
+    requiredVariationAxes: [],
+    personalization: null,
+    parcel: RING_PARCEL,
   },
 };
 

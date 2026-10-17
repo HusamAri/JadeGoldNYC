@@ -6,7 +6,7 @@ Run from this folder: python3 build_listings.py [L01 ...]   (no argument = every
 
 Deviations from the brief are recorded per listing under "deviations" with the evidence.
 """
-import json, sys, pathlib
+import json, re, sys, pathlib
 
 HERE = pathlib.Path(__file__).parent
 FLOOR, PER_GRAM, K10, K18, LIST, SALE = 320, 100, 1/1.349, 1.31, 1.265, 0.70
@@ -38,8 +38,9 @@ LISTINGS = {
                  "Recipient": "Men", "Style": "Classic"},
   "variations": [{"property": "Karat", "values": ["10K", "14K", "18K"], "price_varies": True},
                  {"property": "Metal Color", "values": ["Yellow Gold", "White Gold", "Rose Gold"], "price_varies": False}],
-  "personalization": {"enabled": True, "required": False, "max_chars": 5,
-                      "instructions": "Up to 3 initials for the end cap, typed exactly as you want them cut (example: H.A. or HEA). Leave blank for no engraving."},
+  "personalization": {"enabled": True, "required": False, "max_chars": 5, "question_text": "End cap initials (optional)",
+                      "instructions": "Up to 3 initials for the end cap, typed exactly as you want them cut (e.g. H.A. or HEA). Blank means no engraving.",
+                      "brief_instructions": "Up to 3 initials for the end cap, typed exactly as you want them cut (example: H.A. or HEA). Leave blank for no engraving.", "brief_max_chars": 5},
   "processing_days": "5 to 7 business days", "quantity": 20, "renewal": "automatic", "about": ABOUT,
   "pricing_basis": {"grams14": 2.4, "pieces": 1, "adders": 65, "adders_detail": "engraving 25 + solid gold pin and clutch 40", "base14": 625},
   "brief_prices": {"10K": (586.08, 410.26), "14K": (790.62, 553.43), "18K": (1035.72, 725.00)},
@@ -314,8 +315,9 @@ LISTINGS = {
                  {"property": "Chain Length", "values": ["16 inches", "18 inches", "20 inches"], "price_varies": True},
                  {"property": "Sign", "values": ["TI (life)", "SHA (heart)", "E (home)", "AN (star, sky)"], "price_varies": False}],
   "metal_color": "Yellow gold as standard; white or rose by message (brief)",
-  "personalization": {"enabled": True, "required": False, "max_chars": 8,
-                      "instructions": "Up to 8 characters engraved on the back: initials, a year or a short word, typed exactly as you want them cut. Leave blank for a plain back."},
+  "personalization": {"enabled": True, "required": False, "max_chars": 8, "question_text": "Engraving on the back (optional)",
+                      "instructions": "Up to 8 characters for the back: initials, a year or a short word, typed as you want them cut. Blank: plain back.",
+                      "brief_instructions": "Up to 8 characters engraved on the back: initials, a year or a short word, typed exactly as you want them cut. Leave blank for a plain back.", "brief_max_chars": 8},
   "processing_days": "5 to 7 business days", "quantity": 20, "renewal": "automatic", "about": ABOUT,
   "pricing_basis": {"grams14": 2.55, "pieces": 1, "adders": 55, "adders_detail": "hand stamping 30 + back engraving 25; 16 in chain included in the grams", "base14": 630},
   "brief_prices": {"10K": (590.77, 413.54), "14K": (796.95, 557.87), "18K": (1044.00, 730.80)},
@@ -435,8 +437,9 @@ LISTINGS = {
                  {"property": "Karat", "values": ["10K", "14K", "18K"], "price_varies": True},
                  {"property": "Metal Color", "values": ["Yellow Gold", "White Gold", "Rose Gold"], "price_varies": False,
                   "note": "chains ship at 18 inches; 16 or 20 by note in the personalization field"}],
-  "personalization": {"enabled": True, "required": False, "max_chars": 40,
-                      "instructions": "One initial per pendant, in order left to right (example: H / E / C). Optional: chain length per pendant, 16, 18 or 20 inches (example: H 16 / E 18 / C 18)."},
+  "personalization": {"enabled": True, "required": False, "max_chars": 40, "question_text": "Initials, one per pendant (optional)",
+                      "instructions": "One initial per pendant, left to right (e.g. H / E / C). Add a chain length per pendant if needed (e.g. H 16 / E 18).",
+                      "brief_instructions": "One initial per pendant, in order left to right (example: H / E / C). Optional: chain length per pendant, 16, 18 or 20 inches (example: H 16 / E 18 / C 18).", "brief_max_chars": 40},
   "processing_days": "5 to 7 business days", "quantity": 20, "renewal": "automatic", "about": ABOUT,
   "pricing_basis": {"grams14": 4.0, "pieces": 2, "adders": 50, "adders_detail": "set of 2: two make-floors + two engravings 50", "base14": 1090},
   "brief_prices": {"10K": (1022.13, 715.49), "14K": (1378.85, 965.19), "18K": (1806.29, 1264.40)},
@@ -491,8 +494,9 @@ LISTINGS = {
                  {"property": "Chain Length", "values": ["16 inches", "18 inches", "20 inches"], "price_varies": True},
                  {"property": "Paw Finish", "values": ["Plain gold", "Cobalt enamel", "Cranberry enamel", "Black enamel"], "price_varies": False}],
   "metal_color": "Yellow gold as standard; white or rose by message (brief)",
-  "personalization": {"enabled": True, "required": True, "max_chars": 16,
-                      "instructions": "Pet name for the back (up to 10 characters) and DOG or CAT for the paw style. Example: BIBER / DOG. Add a year after the name if you are marking a life."},
+  "personalization": {"enabled": True, "required": True, "max_chars": 24, "question_text": "Pet name and paw style",
+                      "instructions": "Pet name for the back (up to 10 characters), then dog or cat for the paw. Example: Biber / dog. A year may follow.",
+                      "brief_instructions": "Pet name for the back (up to 10 characters) and DOG or CAT for the paw style. Example: BIBER / DOG. Add a year after the name if you are marking a life.", "brief_max_chars": 16},
   "processing_days": "5 to 7 business days", "quantity": 20, "renewal": "automatic", "about": ABOUT,
   "pricing_basis": {"grams14": 2.5, "pieces": 1, "adders": 75, "adders_detail": "intaglio hand engraving 50 + name engraving 25; enamel fill offered at the same price; 16 in chain included in the grams", "base14": 645},
   "brief_prices": {"10K": (604.84, 423.39), "14K": (815.92, 571.14), "18K": (1068.86, 748.20)},
@@ -532,11 +536,7 @@ LISTINGS = {
    {"field": "grid rule (as the brief, same pattern as L04 and L06)",
     "brief": "Karat x Chain Length x Paw Finish, yellow gold; white or rose by message",
     "used": "as the brief: 3 x 3 x 4 = 36 variants",
-    "evidence": "Paw Finish takes Etsy's third variation axis, so Metal Color cannot be a variation."},
-   {"field": "personalization length",
-    "brief": "required, max 16 characters, name up to 10",
-    "used": "kept",
-    "evidence": "A 10-character name plus ' / DOG' is 16, and the instructions invite a year as well: BIBER 2026 / DOG is 16, a 10-letter name with a year is 21 and would be cut off. Raise to 24 if Husam wants the year to fit every name."}],
+    "evidence": "Paw Finish takes Etsy's third variation axis, so Metal Color cannot be a variation."}],
  },
  "L10": {
   "id": "L10", "slug": "twin-eye", "name": "Twin Eye",
@@ -554,8 +554,9 @@ LISTINGS = {
                  {"property": "Metal Color", "values": ["Yellow Gold", "White Gold", "Rose Gold"], "price_varies": False},
                  {"property": "Length", "values": ["6.5 inches", "7 inches", "7.5 inches"], "price_varies": False,
                   "note": "length for the set; two different lengths by note in the personalization field"}],
-  "personalization": {"enabled": True, "required": False, "max_chars": 40,
-                      "instructions": "Two initials, almond bracelet first, then iris bracelet (example: H / C). Optional: a second length if the wrists differ (example: H 6.5 / C 7)."},
+  "personalization": {"enabled": True, "required": False, "max_chars": 40, "question_text": "Initials for the two tags (optional)",
+                      "instructions": "Two initials, almond bracelet first, then iris (e.g. H / C). Add a second length if wrists differ (e.g. H 6.5 / C 7).",
+                      "brief_instructions": "Two initials, almond bracelet first, then iris bracelet (example: H / C). Optional: a second length if the wrists differ (example: H 6.5 / C 7).", "brief_max_chars": 40},
   "processing_days": "5 to 7 business days", "quantity": 20, "renewal": "automatic", "about": ABOUT,
   "pricing_basis": {"grams14": 1.9, "pieces": 2, "adders": 75, "adders_detail": "two make-floors + enamel cell 25 + two tag engravings 50", "base14": 905},
   "brief_prices": {"10K": (848.65, 594.05), "14K": (1144.82, 801.37), "18K": (1499.72, 1049.80)},
@@ -647,8 +648,35 @@ def sheet(l):
     return "\n".join(out)
 
 
+# Etsy push contract per listing (lib/etsy/listing-protocol.ts ids; product_type is the panel's CHECK list).
+PROTOCOL = {"L01": ("stick_pin", "other"), "L02": ("brooch", "brooch"), "L03": ("shawl_pin", "other"),
+            "L04": ("ring_band", "ring"), "L05": ("pendant_necklace", "necklace"), "L06": ("pendant_necklace", "necklace"),
+            "L07": ("hoop_earrings", "earrings"), "L08": ("pendant_necklace", "necklace"), "L09": ("pendant_necklace", "necklace"),
+            "L10": ("chain_bracelet", "bracelet")}
+
+
+def etsy_question_ok(text, limit):
+    """Etsy personalization rules (developers.etsy.com personalization-migration, read 2026-10-17):
+    1 to limit characters, starts with a letter or number, at most one word starting with 3+ capitals."""
+    return (1 <= len(text) <= limit and text[0].isalnum()
+            and len(re.findall(r"\b[A-Z]{3,}", text)) <= 1)
+
+
 def build(key):
     src = dict(LISTINGS[key])
+    src["listing_protocol"], src["product_type"] = PROTOCOL[key]
+    p = src["personalization"]
+    if p["enabled"]:
+        assert etsy_question_ok(p["question_text"], 45), (key, "question_text")
+        assert etsy_question_ok(p["instructions"], 120), (key, "instructions", len(p["instructions"]))
+        assert 1 <= p["max_chars"] <= 1024, (key, "max_chars")
+        if p.get("brief_instructions") and p["brief_instructions"] != p["instructions"]:
+            src["deviations"] = src.get("deviations", []) + [{
+                "field": "personalization instructions",
+                "brief": p["brief_instructions"] + (f" (max {p['brief_max_chars']})" if p.get("brief_max_chars") != p["max_chars"] else ""),
+                "used": p["instructions"] + (f" (max {p['max_chars']})" if p.get("brief_max_chars") != p["max_chars"] else ""),
+                "evidence": f"Etsy rejects personalization instructions over 120 characters and with more than one word starting with three capitals (developers.etsy.com personalization-migration, read 2026-10-17); the brief's text is {len(p['brief_instructions'])} characters. Same meaning, shortened."
+                            + (" Max characters raised so a 10-letter name plus a year fits (proposed at L09, covered by 'yes to all')." if p.get("brief_max_chars") != p["max_chars"] else "")}]
     pb = src["pricing_basis"]
     pr = ladder(pb["grams14"], pb["pieces"], pb["adders"])
     assert FLOOR * pb["pieces"] + PER_GRAM * pb["grams14"] + pb["adders"] == pb["base14"], (key, "base14")

@@ -280,9 +280,11 @@ const FAKE_TREE = [
     id: 1,
     name: "Jewelry",
     children: [
-      { id: 10, name: "Rings", children: [{ id: 11, name: "Wedding Bands" }] },
+      { id: 10, name: "Rings", children: [{ id: 11, name: "Wedding Bands" }, { id: 1232, name: "Bands" }] },
       { id: 20, name: "Necklaces", children: [{ id: 1229, name: "Pendant Necklaces" }] },
       { id: 40, name: "Bracelets", children: [] },
+      // Canlı ağaçta benzer adlı ama farklı düğümler (2026-10-17): tam ad eşleşmez.
+      { id: 6077, name: "Watch Bands & Straps" },
     ],
   },
   {
@@ -292,11 +294,15 @@ const FAKE_TREE = [
       { id: 30, name: "Jewelry", children: [{ id: 3092, name: "Pendant Necklaces" }, { id: 1682, name: "Brooches" }] },
     ],
   },
-  // Canlı ağaç (2026-10-15): broş "Jewelry" altında değil, Accessories altında.
+  // Canlı ağaç (2026-10-15/17): broş ve iğneler "Jewelry" altında değil, Accessories altında.
   {
     id: 3,
     name: "Accessories",
-    children: [{ id: 1200, name: "Pins & Clips", children: [{ id: 1201, name: "Brooches" }] }],
+    children: [{ id: 1200, name: "Pins & Clips", children: [
+      { id: 1201, name: "Brooches" },
+      { id: 11316, name: "Hat Pins & Stick Pins" },
+      { id: 6066, name: "Shawl Pins" },
+    ] }],
   },
 ];
 
@@ -548,4 +554,23 @@ test("broş kendi protokolüne çözülür, yüzük kuralına düşmez (2026-10-
   // Kök "Jewelry" verilirse (ilk sürümün varsayımı) çözücü sessizce düşmez, durur.
   const wrong = await resolveTaxonomyIdForProtocol(fakeClient(), { ...LISTING_PROTOCOLS.brooch, taxonomyRoot: "Jewelry" });
   assert.equal(wrong.ok, false);
+});
+
+test("FW26 Trend Edit protocols resolve to the live nodes: stick pin 11316, shawl pin 6066, band 1232", async () => {
+  for (const [id, want] of [["stick_pin", 11316], ["shawl_pin", 6066], ["ring_band", 1232]] as const) {
+    const spec = resolveListingProtocol({ product_type: "other", listing_metadata: { listingProtocol: id } });
+    assert.equal(spec?.id, id);
+    assert.deepEqual(spec?.requiredVariationAxes, []);
+    assert.equal(spec?.personalization, null);
+    const r = await resolveTaxonomyIdForProtocol(fakeClient(), spec!);
+    assert.equal(r.ok, true, id);
+    assert.equal(r.ok && r.taxonomyId, want, id);
+  }
+  assert.deepEqual(LISTING_PROTOCOLS.ring_band.parcel, LISTING_PROTOCOLS.wedding_band.parcel);
+  // Ur Band grid: Karat x Ring Size x Palette, no Width; the band protocol must not demand one.
+  const ur: DraftVariant[] = [
+    { sku: "BAS-L04-14K-US7-UR", properties: { Karat: "14K", "Ring Size": "US 7", Palette: "Ur" }, price_cents: 92345, quantity: 20 },
+    { sku: "BAS-L04-14K-US7-FE", properties: { Karat: "14K", "Ring Size": "US 7", Palette: "Festival" }, price_cents: 92345, quantity: 20 },
+  ];
+  assert.equal(validateVariationAxes(LISTING_PROTOCOLS.ring_band, ur), null);
 });

@@ -6,6 +6,7 @@ import { asEtsyProperties, type RawVariantProperties } from "@/lib/variant-prope
 import { stripImageMetadata } from "@/lib/photo-kit/strip-metadata";
 import { logAudit } from "@/lib/audit";
 import { decodeHtmlEntities } from "@/lib/etsy/text";
+import type { PersonalizationQuestion } from "@/lib/etsy/personalization";
 import {
   resolveListingProtocol,
   unknownProtocolError,
@@ -310,6 +311,8 @@ export interface DraftProduct {
     approval?: unknown;
     /** `false` = this listing offers no personalization, whatever its protocol allows. */
     offersPersonalization?: unknown;
+    /** The listing's own questions; win over the protocol's (see personalizationFor). */
+    personalizationQuestions?: unknown;
   } | null;
 }
 
@@ -318,13 +321,35 @@ export interface DraftProduct {
  * product TYPE can carry; an explicit `offersPersonalization: false` on the
  * listing wins, because opening an engraving field the copy never offers is a
  * promise the workshop did not make (FW26/27 enamel cuff, 2026-09-30).
+ *
+ * A listing may carry its own questions in `listing_metadata.personalizationQuestions`
+ * (FW26 Trend Edit, 2026-10-17): a pendant protocol has no engraving question,
+ * but the Wedge, Paw Seal and Split Infinity pendants each engrave something
+ * different with a different character limit. Only well-formed text_input or
+ * dropdown questions are accepted; anything else falls back to the protocol, so
+ * malformed metadata can never invent a question.
  */
 export function personalizationFor(
   protocol: ListingProtocolSpec,
   product: Pick<DraftProduct, "listing_metadata">,
 ): ListingProtocolSpec["personalization"] {
   if (product.listing_metadata?.offersPersonalization === false) return null;
-  return protocol.personalization;
+  const own = listingPersonalizationQuestions(product.listing_metadata?.personalizationQuestions);
+  return own ?? protocol.personalization;
+}
+
+function listingPersonalizationQuestions(value: unknown): PersonalizationQuestion[] | null {
+  if (!Array.isArray(value) || value.length === 0) return null;
+  const ok = value.every((q) => {
+    if (q == null || typeof q !== "object") return false;
+    const r = q as Record<string, unknown>;
+    if (typeof r.question_text !== "string" || r.question_text.trim() === "") return false;
+    if (r.question_type === "text_input") {
+      return typeof r.max_allowed_characters === "number" && r.max_allowed_characters >= 1;
+    }
+    return r.question_type === "dropdown" && Array.isArray(r.options) && r.options.length > 0;
+  });
+  return ok ? (value as PersonalizationQuestion[]) : null;
 }
 
 /**

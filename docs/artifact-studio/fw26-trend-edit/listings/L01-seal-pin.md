@@ -105,7 +105,7 @@ Basis: est. 2.4 g in 14K, 1 make-floor, adders 65 (engraving 25 + solid gold pin
 On, optional, max 5 characters.
 
 ```text
-Up to 3 initials for the end cap, typed exactly as you want them cut (example: H.A. or HEA). Leave blank for no engraving.
+Up to 3 initials for the end cap, typed exactly as you want them cut (e.g. H.A. or HEA). Blank means no engraving.
 ```
 
 ## Shipping profile
@@ -119,3 +119,4 @@ Shop default
 ## Deviations from the brief
 
 - category: brief says "Jewelry > Brooches, Pins & Clips > Lapel Pins", used Accessories > Pins & Clips > Hat Pins & Stick Pins (taxonomy 11316). Live Etsy seller taxonomy read 2026-10-17 through ops/drafts-push?taxonomy=: no node contains 'lapel'; Pins & Clips sits under Accessories with children Hat Pins & Stick Pins (11316), Pins & Pinback Buttons (41), Shawl Pins (6066), Brooches (1201). A stick pin with a clutch is a stick pin.
+- personalization instructions: brief says "Up to 3 initials for the end cap, typed exactly as you want them cut (example: H.A. or HEA). Leave blank for no engraving.", used Up to 3 initials for the end cap, typed exactly as you want them cut (e.g. H.A. or HEA). Blank means no engraving.. Etsy rejects personalization instructions over 120 characters and with more than one word starting with three capitals (developers.etsy.com personalization-migration, read 2026-10-17); the brief's text is 122 characters. Same meaning, shortened.

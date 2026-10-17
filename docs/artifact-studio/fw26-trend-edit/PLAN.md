@@ -38,9 +38,13 @@ Checks to run before each listing, from the live taxonomy read on 2026-10-17:
 - [x] `exports/fw26-listings.xlsx` (Overview, L01 to L10, Tags, Pricing) and `exports/fw26-listings.csv`, from `make_exports.py`. Numbers: open the xlsx on the Mac and Save As .numbers.
 - [x] `production/manufacturing-brief-efe.md` (weights table, tools, five alloy and timing questions, ten notes)
 - [x] `photography/photo-plan.md` (spec, 100 stills and 10 videos in four setups, checklist)
+- [x] Design visualizations (owner 2026-10-17: "create 5 image per listing with higgsfield"): 10 heroes + 40 gallery
+      frames, `images/heroes.py` + `images/gallery.py`, ledger `images/jobs.json`, JPGs at `public/artifact/fw26/Lxx/01..05.jpg`.
+      Brief section 3 says visualizations are "internal mock only, never a listing image": NOT attached to the panel or
+      Etsy until the owner decides; if attached, every description gets the visualization disclosure line.
 
 ## Task 4: Etsy drafts (gated, drafts only)
-- [ ] Add a listing protocol that resolves to Jewelry > Rings > Bands (1232) for L04 before the push.
+- [x] Add a listing protocol that resolves to Jewelry > Rings > Bands (1232) for L04 before the push.
 - [ ] Mode: `api` through the panel's `ops/drafts-push` route (one-time tokens, dry run, canary, independent read-back), the route used for every earlier Artifact Studio capsule. Needs the listings in the panel first (migration), so this comes after approval.
 - [ ] `BUILD-REPORT.md`
 

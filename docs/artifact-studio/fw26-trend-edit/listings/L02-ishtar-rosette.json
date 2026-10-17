@@ -153,6 +153,8 @@
       "evidence": "Panel prices of listing 4590337023 (Bauble) read 2026-10-17: 10K 430 / 450 / 470, 14K 580 / 600 / 630, 18K 760 / 800 / 840 at 16 / 18 / 20 in. No step there is 14."
     }
   ],
+  "listing_protocol": "brooch",
+  "product_type": "brooch",
   "prices": {
     "10K": {
       "list": 722.05,

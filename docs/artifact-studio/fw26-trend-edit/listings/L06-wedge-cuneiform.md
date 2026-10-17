@@ -116,7 +116,7 @@ Chain steps: 16 in is the base price (the 2.55 g basis includes a 16 in chain); 
 On, optional, max 8 characters.
 
 ```text
-Up to 8 characters engraved on the back: initials, a year or a short word, typed exactly as you want them cut. Leave blank for a plain back.
+Up to 8 characters for the back: initials, a year or a short word, typed as you want them cut. Blank: plain back.
 ```
 
 ## Shipping profile
@@ -131,3 +131,4 @@ Shop default
 
 - chain steps for 18 and 20 in: brief says "the shop's standard step, about 14 on the 10K base per 2 inches", used the reference listing's own base steps (same rule as L02 and L05, approved). Panel prices of listing 4590337023 (Bauble) read 2026-10-17.
 - grid rule (as the brief, same pattern as L04): brief says "Karat x Chain Length x Sign, yellow gold; white or rose by message", used as the brief: 3 x 3 x 4 = 36 variants. Sign takes Etsy's third variation axis, so Metal Color cannot be a variation; the brief routes white and rose through messages.
+- personalization instructions: brief says "Up to 8 characters engraved on the back: initials, a year or a short word, typed exactly as you want them cut. Leave blank for a plain back.", used Up to 8 characters for the back: initials, a year or a short word, typed as you want them cut. Blank: plain back.. Etsy rejects personalization instructions over 120 characters and with more than one word starting with three capitals (developers.etsy.com personalization-migration, read 2026-10-17); the brief's text is 140 characters. Same meaning, shortened.

@@ -135,3 +135,20 @@ test("offersPersonalization:false suppresses the protocol's personalization ques
   const band = resolveListingProtocol({ product_type: "ring", listing_metadata: { listingProtocol: "wedding_band" } });
   assert.equal(personalizationFor(band!, { listing_metadata: null }), band!.personalization);
 });
+
+test("a listing's own personalization questions win over the protocol, opt-out still wins over both (FW26 Trend Edit)", async () => {
+  const { personalizationFor } = await import("@/lib/etsy/create-listing");
+  const { resolveListingProtocol } = await import("@/lib/etsy/listing-protocol");
+  const pendant = resolveListingProtocol({ product_type: "necklace", listing_metadata: { listingProtocol: "pendant_necklace" } });
+  assert.equal(pendant?.personalization, null, "pendant protocol has no engraving question");
+  const own = [{ question_type: "text_input", question_text: "Engraving on the back (optional)", instructions: "Up to 8 characters.", required: false, max_allowed_characters: 8 }];
+  assert.deepEqual(personalizationFor(pendant!, { listing_metadata: { listingProtocol: "pendant_necklace", personalizationQuestions: own } }), own);
+  // opt-out beats the listing's own questions
+  assert.equal(personalizationFor(pendant!, { listing_metadata: { offersPersonalization: false, personalizationQuestions: own } }), null);
+  // malformed own questions never invent a field: fall back to the protocol
+  for (const bad of [[], "x", [{ question_text: "No type" }], [{ question_type: "text_input", question_text: "No limit" }], [{ question_type: "dropdown", question_text: "No options", options: [] }]]) {
+    assert.equal(personalizationFor(pendant!, { listing_metadata: { personalizationQuestions: bad } }), null, JSON.stringify(bad));
+  }
+  const cuff = resolveListingProtocol({ product_type: "bracelet", listing_metadata: { listingProtocol: "cuff_bracelet" } });
+  assert.equal(personalizationFor(cuff!, { listing_metadata: { personalizationQuestions: [{ question_text: "x" }] } }), cuff!.personalization);
+});

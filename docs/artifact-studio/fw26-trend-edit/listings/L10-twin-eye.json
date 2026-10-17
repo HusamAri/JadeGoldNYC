@@ -70,7 +70,10 @@
     "enabled": true,
     "required": false,
     "max_chars": 40,
-    "instructions": "Two initials, almond bracelet first, then iris bracelet (example: H / C). Optional: a second length if the wrists differ (example: H 6.5 / C 7)."
+    "question_text": "Initials for the two tags (optional)",
+    "instructions": "Two initials, almond bracelet first, then iris (e.g. H / C). Add a second length if wrists differ (e.g. H 6.5 / C 7).",
+    "brief_instructions": "Two initials, almond bracelet first, then iris bracelet (example: H / C). Optional: a second length if the wrists differ (example: H 6.5 / C 7).",
+    "brief_max_chars": 40
   },
   "processing_days": "5 to 7 business days",
   "quantity": 20,
@@ -119,8 +122,16 @@
       "brief": "Jewelry > Bracelets > Chain & Link Bracelets",
       "used": "kept; resolved at push by the repo's chain_bracelet protocol (root Jewelry), the protocol the shop's earlier bracelet drafts were pushed with",
       "evidence": "lib/etsy/listing-protocol.ts chain_bracelet: taxonomyNames Chain & Link Bracelets, Bracelets; taxonomyRoot Jewelry."
+    },
+    {
+      "field": "personalization instructions",
+      "brief": "Two initials, almond bracelet first, then iris bracelet (example: H / C). Optional: a second length if the wrists differ (example: H 6.5 / C 7).",
+      "used": "Two initials, almond bracelet first, then iris (e.g. H / C). Add a second length if wrists differ (e.g. H 6.5 / C 7).",
+      "evidence": "Etsy rejects personalization instructions over 120 characters and with more than one word starting with three capitals (developers.etsy.com personalization-migration, read 2026-10-17); the brief's text is 144 characters. Same meaning, shortened."
     }
   ],
+  "listing_protocol": "chain_bracelet",
+  "product_type": "bracelet",
   "prices": {
     "10K": {
       "list": 848.65,
