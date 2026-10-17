@@ -1,0 +1,45 @@
+# FW26 Trend Edit: plan
+
+Source: `BRIEF.md` section 6. Status of each listing lives in `state.json`.
+
+Run everything from this folder: `python3 build_listings.py L0x` writes the JSON and MD
+(prices recomputed with the section 4 model and asserted against the brief's ladder),
+`python3 validate_listings.py` checks every file.
+
+## Task 0: project and folder
+- [x] Project located: the JadeGoldNYC repo already holds every Artifact Studio capsule under `docs/artifact-studio/`; this capsule lives at `docs/artifact-studio/fw26-trend-edit/` instead of `<project>/listings/fw26-trend-edit/`, to keep the repo convention.
+- [x] Subfolders `listings/`, `exports/`, `production/`, `photography/`.
+- [x] `BRIEF.md` saved verbatim (byte-identical to the uploaded file), `PLAN.md`, `state.json`.
+
+## Task 1: validator
+- [x] `validate_listings.py` written byte-identical to the brief's block.
+- [x] Run with no files: no output, exit 0.
+
+## Task 2: one listing at a time
+- [x] L01 Seal Pin: drafted, validated (first cycle). Category corrected to the live taxonomy (see the sheet's Deviations). Waiting for approval.
+- [ ] L02 Ishtar Rosette
+- [ ] L03 Fibula
+- [ ] L04 Ur Band
+- [ ] L05 Nar (Pomegranate)
+- [ ] L06 Wedge
+- [ ] L07 Thaw Hoops
+- [ ] L08 Split Infinity
+- [ ] L09 Paw Seal
+- [ ] L10 Twin Eye
+
+Checks to run before each listing, from the live taxonomy read on 2026-10-17:
+- Brooches are `Accessories > Pins & Clips > Brooches` (1201), not under Jewelry (L02, L03).
+- Shawl Pins exist as their own node, `Accessories > Pins & Clips > Shawl Pins` (6066): candidate for L03 Fibula.
+- Repo rule (CLAUDE.md, 2026-09-26): by Artifact Studio grids are Karat x Metal Color x size, full grid, rings US 3 to 16 full and half. L04 (yellow only, US 4 to 10, Palette axis), L06 and L09 (yellow only) and L07 (Body Color yellow or rose) depart from it; confirm with Husam at that listing.
+
+## Task 3: exports and briefs (after all ten are approved or blocked)
+- [ ] `exports/fw26-listings.xlsx` and `exports/fw26-listings.csv`
+- [ ] `production/manufacturing-brief-efe.md`
+- [ ] `photography/photo-plan.md`
+
+## Task 4: Etsy drafts (gated, drafts only)
+- [ ] Mode: `api` through the panel's `ops/drafts-push` route (one-time tokens, dry run, canary, independent read-back), the route used for every earlier Artifact Studio capsule. Needs the listings in the panel first (migration), so this comes after approval.
+- [ ] `BUILD-REPORT.md`
+
+## Task 5: capture (gated)
+- [ ] Vault note, Apple Reminders: Mac-only, offered at the end.

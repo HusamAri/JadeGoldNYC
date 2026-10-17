@@ -1,0 +1,18 @@
+{
+  "capsule": "fw26-trend-edit",
+  "created": "2026-10-17",
+  "folder": "docs/artifact-studio/fw26-trend-edit (JadeGoldNYC repo, next to the other Artifact Studio capsules)",
+  "etsy_mode": null,
+  "listings": {
+    "01-seal-pin": {"status": "validated", "etsy_listing_id": null, "errors": [], "file": "listings/L01-seal-pin.json", "note": "category moved to Accessories > Pins & Clips > Hat Pins & Stick Pins (11316); brief path does not exist in the live taxonomy"},
+    "02-ishtar-rosette": {"status": "pending", "etsy_listing_id": null, "errors": []},
+    "03-fibula": {"status": "pending", "etsy_listing_id": null, "errors": []},
+    "04-ur-band": {"status": "pending", "etsy_listing_id": null, "errors": []},
+    "05-nar-pomegranate": {"status": "pending", "etsy_listing_id": null, "errors": []},
+    "06-wedge-cuneiform": {"status": "pending", "etsy_listing_id": null, "errors": []},
+    "07-thaw-hoops": {"status": "pending", "etsy_listing_id": null, "errors": []},
+    "08-split-infinity": {"status": "pending", "etsy_listing_id": null, "errors": []},
+    "09-paw-seal": {"status": "pending", "etsy_listing_id": null, "errors": []},
+    "10-twin-eye": {"status": "pending", "etsy_listing_id": null, "errors": []}
+  }
+}
