@@ -13,16 +13,19 @@
       "approved": "2026-10-17, Husam: yes"
     },
     "02-ishtar-rosette": {
-      "status": "validated",
+      "status": "approved",
       "etsy_listing_id": null,
       "errors": [],
       "file": "listings/L02-ishtar-rosette.json",
-      "note": "category Accessories > Pins & Clips > Brooches (1201); 18 and 20 in chain steps from the reference listing panel prices"
+      "note": "category Accessories > Pins & Clips > Brooches (1201); 18 and 20 in chain steps from the reference listing panel prices",
+      "approved": "2026-10-17, Husam: yes"
     },
     "03-fibula": {
-      "status": "pending",
+      "status": "validated",
       "etsy_listing_id": null,
-      "errors": []
+      "errors": [],
+      "file": "listings/L03-fibula.json",
+      "note": "category Shawl Pins 6066 (brief path does not exist; Brooches 1201 is the fallback)"
     },
     "04-ur-band": {
       "status": "pending",

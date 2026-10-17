@@ -1,0 +1,129 @@
+{
+  "id": "L03",
+  "slug": "fibula",
+  "name": "Fibula",
+  "title": "Solid Gold Shawl Pin, Hand Forged Fibula Cape Clasp for Capelets, Scarves and Cardigans, Ancient Style Heirloom Sweater Pin",
+  "category": "Accessories > Pins & Clips > Shawl Pins",
+  "taxonomy_id": 6066,
+  "section": "Brooches & Pins (new section)",
+  "tags": [
+    "shawl pin",
+    "gold shawl pin",
+    "cape clasp",
+    "capelet pin",
+    "fibula brooch",
+    "sweater pin",
+    "scarf pin gold",
+    "hand forged jewelry",
+    "heirloom jewelry",
+    "cloak pin",
+    "cardigan clip",
+    "opera inspired",
+    "solid gold brooch"
+  ],
+  "materials": [
+    "Solid gold",
+    "14K gold",
+    "10K gold",
+    "18K gold"
+  ],
+  "attributes": {
+    "Primary color": "Gold",
+    "Secondary color": "none",
+    "Holiday": "Christmas",
+    "Occasion": "Anniversary",
+    "Recipient": "Women",
+    "Style": "Historical"
+  },
+  "variations": [
+    {
+      "property": "Karat",
+      "values": [
+        "10K",
+        "14K",
+        "18K"
+      ],
+      "price_varies": true
+    },
+    {
+      "property": "Metal Color",
+      "values": [
+        "Yellow Gold",
+        "White Gold",
+        "Rose Gold"
+      ],
+      "price_varies": false
+    }
+  ],
+  "personalization": {
+    "enabled": false
+  },
+  "processing_days": "3 to 5 business days",
+  "quantity": 20,
+  "renewal": "automatic",
+  "about": {
+    "who_made": "A member of my shop",
+    "what": "A finished product",
+    "when_made": "Made to order"
+  },
+  "pricing_basis": {
+    "grams14": 2.9,
+    "pieces": 1,
+    "adders": 100,
+    "adders_detail": "forging and work-hardening 80 + catch forming 20",
+    "base14": 710
+  },
+  "description": "Before buttons, there was the fibula: one length of metal coiled into a spring, bent into a bow and finished with a catch. Ours is forged from a single piece of solid gold wire, so there is no solder joint to fail, and it closes a capelet, a shawl, a scarf or an open cardigan with a shape people have trusted for three thousand years.\n\n- The fibula measures 38 mm long with a 1.3 mm pin; the bow is hammered flat to 2.5 mm, and the double-coil spring keeps tension so the pin stays closed in knits and woven fabrics.\n- Forged and work-hardened by hand at our bench, which is why the surface carries soft hammer facets rather than a mirror polish. No two are identical.\n- Choose solid 10K, 14K or 18K gold in yellow, white or rose. Solid and stamped, nothing plated or filled.\n- Wear it high on a capelet for an evening out, through a scarf on a coat, or as a sweater pin at the collarbone. It does the work of a brooch without the weight of one, and it is opera inspired in the oldest sense: dressing with intent.\n- Made to order at our bench in New Jersey in 3 to 5 business days, free US shipping, gift box included.\n- Gold does not tarnish. If the pin tip ever dulls on heavy wool, a few strokes on a fine emery board restore it. Avoid very loose, open weaves, where any pin can slip.\n- A gift message can be added at checkout.",
+  "trend": {
+    "anchor": "Operatic Drama (capelets +47%)",
+    "secondary": "Mark of the Maker (hand forged)"
+  },
+  "trend_terms": [
+    "hand forged",
+    "heirloom jewelry",
+    "opera inspired"
+  ],
+  "manufacturing_note": "One piece of 1.3 mm round 14K wire, approx. 120 mm, annealed. Form: pin shank 38 mm; two full coils (spring) of 4 mm ID at the head; bow forged flat with a planishing hammer to 2.5 x 0.8 mm over 30 mm, leaving visible facets; foot bent into a rolled catch (hook) 3 mm deep that receives the pin tip. Work-harden the pin and spring after forming (planish, then twist-harden; do not anneal again). Pin tip ground to a blunt point and polished so it does not snag fibers. Hallmark stamped on the inside of the bow. Est. 14K weight 2.9 g. Note for Efe: 18K is softer; use 1.4 mm wire for the 18K version to keep spring tension.",
+  "photo_plan": [
+    "Hero: fibula closing a camel cashmere capelet at the shoulder, warm window light",
+    "Through a wool scarf on a dark coat, street light",
+    "Macro of hammer facets on the bow",
+    "Macro of the coil spring and the catch",
+    "Open and closed positions side by side on linen",
+    "Worn as a sweater pin at the collarbone of a fine knit",
+    "In an open palm for scale",
+    "Three metal colors on dark jacquard",
+    "Gift box, open",
+    "Process: hands forging the bow with a planishing hammer on a steel block (Mark of the Maker)"
+  ],
+  "video": "Video 8 to 12 s: pin slides through knit, catch closes, hand smooths the shawl",
+  "visualization_prompt": "Product photograph, hand forged solid gold fibula pin 38 mm with hammered flat bow and coiled spring, fastening a camel cashmere capelet at the shoulder, warm natural light, shallow depth of field, 35mm film grain, no retouching",
+  "deviations": [
+    {
+      "field": "category",
+      "brief": "Jewelry > Brooches, Pins & Clips > Brooches",
+      "used": "Accessories > Pins & Clips > Shawl Pins (taxonomy 6066)",
+      "evidence": "The brief's path does not exist (no Brooches under Jewelry, read 2026-10-15). Of the two real nodes, Brooches 1201 and Shawl Pins 6066, the title and the first two tags lead with 'shawl pin', so the category matches what the buyer types. Brooches 1201 stays the fallback if Husam prefers it."
+    },
+    {
+      "field": "18K wire (note, price not changed)",
+      "brief": "18K uses 1.4 mm wire instead of 1.3 mm (manufacturing note)",
+      "used": "price ladder unchanged",
+      "evidence": "(1.4/1.3)^2 = 1.16, so the 18K piece carries about 0.46 g more metal than the 2.9 g basis; in the brief's own model that is about +60 on the 18K base (+77 on the list price). The 18K sale price of 823.61 absorbs it; recompute when Efe weighs an 18K sample."
+    }
+  ],
+  "prices": {
+    "10K": {
+      "list": 665.79,
+      "sale": 466.05
+    },
+    "14K": {
+      "list": 898.15,
+      "sale": 628.7
+    },
+    "18K": {
+      "list": 1176.58,
+      "sale": 823.61
+    }
+  }
+}

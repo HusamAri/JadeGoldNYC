@@ -17,8 +17,8 @@ Run everything from this folder: `python3 build_listings.py L0x` writes the JSON
 
 ## Task 2: one listing at a time
 - [x] L01 Seal Pin: validated (first cycle), approved 2026-10-17. Category corrected to the live taxonomy.
-- [x] L02 Ishtar Rosette: validated (first cycle). 36 variants with a full chain price grid. Waiting for approval.
-- [ ] L03 Fibula
+- [x] L02 Ishtar Rosette: validated (first cycle), approved 2026-10-17. 36 variants with a full chain price grid.
+- [x] L03 Fibula: validated (first cycle). Category Shawl Pins 6066. Waiting for approval.
 - [ ] L04 Ur Band
 - [ ] L05 Nar (Pomegranate)
 - [ ] L06 Wedge
