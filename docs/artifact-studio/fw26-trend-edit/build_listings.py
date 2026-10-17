@@ -185,6 +185,66 @@ LISTINGS = {
     "used": "price ladder unchanged",
     "evidence": "(1.4/1.3)^2 = 1.16, so the 18K piece carries about 0.46 g more metal than the 2.9 g basis; in the brief's own model that is about +60 on the 18K base (+77 on the list price). The 18K sale price of 823.61 absorbs it; recompute when Efe weighs an 18K sample."}],
  },
+ "L04": {
+  "id": "L04", "slug": "ur-band", "name": "Ur Band",
+  "title": "Mosaic Enamel Ring in Solid Gold, Lapis Blue Red and White Kiln Fired Band, Bold Color Statement Ring, Maximalist Stacking Band",
+  "category": "Jewelry > Rings > Bands",
+  "taxonomy_id": 1232,
+  "section": "Rings",
+  "tags": ["enamel ring", "mosaic ring", "bold color ring", "maximalist ring", "statement ring gold", "stacking ring enamel",
+           "colorful gold ring", "kiln fired enamel", "solid gold band ring", "lapis blue ring", "whimsical ring",
+           "hand enameled ring", "sumerian jewelry"],
+  "materials": ["Solid gold", "Vitreous enamel", "14K gold", "10K gold", "18K gold"],
+  "attributes": {"Primary color": "Blue", "Secondary color": "Red", "Holiday": "Christmas", "Occasion": "Birthday",
+                 "Recipient": "Women", "Style": "Whimsical"},
+  "variations": [{"property": "Karat", "values": ["10K", "14K", "18K"], "price_varies": True},
+                 {"property": "Ring Size", "values": [f"US {s:g}" for s in [x / 2 for x in range(8, 21)]], "price_varies": False},
+                 {"property": "Palette", "values": ["Ur", "Festival"], "price_varies": False,
+                  "note": "Ur = lapis blue, cranberry red, shell white; Festival = cobalt, cranberry, emerald, saffron, pink (explained in the description)"}],
+  "metal_color": "Yellow gold only (brief: the warm walls are part of the palette, and the alloy must take enamel firing)",
+  "personalization": {"enabled": False},
+  "processing_days": "3 to 5 business days", "quantity": 20, "renewal": "automatic", "about": ABOUT,
+  "pricing_basis": {"grams14": 2.9, "pieces": 1, "adders": 120, "adders_detail": "12 cells, 3 to 5 colors, multiple firings and flush stoning", "base14": 730},
+  "brief_prices": {"10K": (684.54, 479.18), "14K": (923.45, 646.41), "18K": (1209.72, 846.80)},
+  "description": """The Standard of Ur, a 4,500-year-old box from a Sumerian tomb, is inlaid in exactly three materials: lapis lazuli, red limestone and white shell. The Ur Band borrows that palette and nothing else. Twelve cells run around a solid gold band, each filled by hand with kiln-fired vitreous enamel in lapis blue, cranberry red and shell white, then stoned flush and polished so the gold walls between them read as fine lines.
+
+- The band is 3.5 mm wide and 1.4 mm thick with a rounded comfort fit inside; the cells are 0.4 mm deep, so the enamel sits protected within the gold.
+- Enamel is glass fused to gold at around 800 C, fired cell by cell. Small variations in tone from one firing to the next are the mark of the hand, not a fault.
+- Yellow gold only, because the warm walls are part of the palette. Choose solid 10K, 14K or 18K and your US size from 4 to 10 in half sizes. Wider bands fit tighter, so if you sit between sizes, go up.
+- Palette: Ur (lapis, red, white) for the original, or Festival (cobalt, cranberry, emerald, saffron and pink) when you want the full maximalist stack.
+- One Ur Band is a quiet accent of bold color. Two or three stacked with plain gold bands is the mood of this season, and it still works in July.
+- Made to order at our bench in New Jersey in 3 to 5 business days, free US shipping, gift box included.
+- Enamel is glass fused to gold and can chip from a hard knock. Take it off for the gym, the pool and the sink, and wipe it with a soft cloth. A gift message can be added at checkout.""",
+  "trend": {"anchor": "Merrymaxxing (bold color, whimsy +110%)", "secondary": "Mark of the Maker (fired cell by cell by hand)"},
+  "trend_terms": ["bold color", "maximalist", "whimsical", "kiln fired", "hand enameled"],
+  "manufacturing_note": "Band 3.5 mm wide x 1.4 mm thick, comfort-fit inner profile, cast per size from a master ring (CAD or hand-carved) with twelve rectangular recessed cells 2.3 x 1.4 mm, 0.4 mm deep, separated by 0.5 mm gold walls; cells have a slightly undercut floor to key the enamel. Champleve process: degrease, counter-enamel not required at this depth, wet-pack lead-free vitreous enamel (opaque lapis blue, opaque cranberry red, opaque white; Festival adds opaque emerald, saffron and pink), fire at 780 to 820 C, two to three fills per cell, stone flush with alundum/diamond stick under water, flash fire for gloss, final polish on the gold only. Ur sequence: blue, red, white, repeated four times. Hallmark inside. Est. 14K weight 2.9 g at US 7. Yellow gold only (alloy must tolerate enamel firing; confirm Efe's 10K yellow alloy is enamel-safe, otherwise offer the Ur Band in 14K and 18K only).",
+  "photo_plan": [
+   "Hero macro: band on a matte cream surface, raking light so the enamel cells show their flush gloss (Merrymaxxing close-up)",
+   "On hand, stacked between two plain gold bands, saturated knit sleeve",
+   "Ur and Festival palettes side by side",
+   "360 detail: three cells filling the frame, gold walls crisp",
+   "Both palettes on fingers of two different hands (friend shot)",
+   "Scale shot beside a US quarter",
+   "Gift box, open",
+   "Reference flat lay: the ring beside lapis, red and white raw materials",
+   "Process: wet-packing enamel into cells with a fine brush (Mark of the Maker)",
+   "Process: kiln door open, ring glowing on a trivet"],
+  "video": "Video 8 to 12 s: slow rotation of the band in warm light, then the stack on a hand",
+  "visualization_prompt": "Product photograph, solid yellow gold ring band 3.5 mm with twelve flush enamel cells alternating lapis blue, red and white, on a matte cream linen surface, raking natural light, extreme close-up, 35mm film grain, no retouching",
+  "deviations": [
+   {"field": "Palette values",
+    "brief": "Ur (lapis, red, white) / Festival (cobalt, cranberry, emerald, saffron, pink)",
+    "used": "Ur / Festival, with the colors spelled out in the description",
+    "evidence": "Short variation values keep the checkout dropdown readable; the description already lists both palettes word for word."},
+   {"field": "grid rule (open, raised with Husam at approval)",
+    "brief": "Karat x Ring Size US 4 to 10 x Palette, yellow gold only",
+    "used": "as the brief: 3 x 13 x 2 = 78 variants",
+    "evidence": "CLAUDE.md (2026-09-26) asks for a full Karat x Metal Color x size grid with rings at US 3 to 16 full and half. Metal Color cannot be added here: Palette already takes the third axis and the brief keeps the band yellow for enamel. The size range can be widened: US 3 to 16 would be 3 x 27 x 2 = 162 variants, inside Etsy's 400. Price is flat across sizes (est. 2.9 g at US 7)."},
+   {"field": "Etsy push protocol (Task 4)",
+    "brief": "Jewelry > Rings > Bands",
+    "used": "category kept (node 1232 exists, read 2026-10-17)",
+    "evidence": "lib/etsy/listing-protocol.ts has no protocol that resolves to Bands (wedding_band, stacking_ring, sculptural_ring resolve elsewhere); one has to be added before the push."}],
+ },
 }
 
 

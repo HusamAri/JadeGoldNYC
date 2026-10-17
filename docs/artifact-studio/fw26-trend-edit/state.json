@@ -21,16 +21,19 @@
       "approved": "2026-10-17, Husam: yes"
     },
     "03-fibula": {
-      "status": "validated",
+      "status": "approved",
       "etsy_listing_id": null,
       "errors": [],
       "file": "listings/L03-fibula.json",
-      "note": "category Shawl Pins 6066 (brief path does not exist; Brooches 1201 is the fallback)"
+      "note": "category Shawl Pins 6066 (brief path does not exist; Brooches 1201 is the fallback)",
+      "approved": "2026-10-17, Husam: yes"
     },
     "04-ur-band": {
-      "status": "pending",
+      "status": "validated",
       "etsy_listing_id": null,
-      "errors": []
+      "errors": [],
+      "file": "listings/L04-ur-band.json",
+      "note": "Bands 1232 verified; open: size range US 4 to 10 (brief) or US 3 to 16 (repo rule); push protocol for Bands missing"
     },
     "05-nar-pomegranate": {
       "status": "pending",

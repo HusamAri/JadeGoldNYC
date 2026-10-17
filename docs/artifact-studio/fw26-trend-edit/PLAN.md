@@ -18,8 +18,8 @@ Run everything from this folder: `python3 build_listings.py L0x` writes the JSON
 ## Task 2: one listing at a time
 - [x] L01 Seal Pin: validated (first cycle), approved 2026-10-17. Category corrected to the live taxonomy.
 - [x] L02 Ishtar Rosette: validated (first cycle), approved 2026-10-17. 36 variants with a full chain price grid.
-- [x] L03 Fibula: validated (first cycle). Category Shawl Pins 6066. Waiting for approval.
-- [ ] L04 Ur Band
+- [x] L03 Fibula: validated (first cycle), approved 2026-10-17. Category Shawl Pins 6066.
+- [x] L04 Ur Band: validated (first cycle). Bands 1232 verified live. Waiting for approval and the size-range answer.
 - [ ] L05 Nar (Pomegranate)
 - [ ] L06 Wedge
 - [ ] L07 Thaw Hoops
@@ -38,6 +38,7 @@ Checks to run before each listing, from the live taxonomy read on 2026-10-17:
 - [ ] `photography/photo-plan.md`
 
 ## Task 4: Etsy drafts (gated, drafts only)
+- [ ] Add a listing protocol that resolves to Jewelry > Rings > Bands (1232) for L04 before the push.
 - [ ] Mode: `api` through the panel's `ops/drafts-push` route (one-time tokens, dry run, canary, independent read-back), the route used for every earlier Artifact Studio capsule. Needs the listings in the panel first (migration), so this comes after approval.
 - [ ] `BUILD-REPORT.md`
 
