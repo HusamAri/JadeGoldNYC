@@ -357,6 +357,239 @@ LISTINGS = {
     "used": "as the brief: 3 x 3 x 4 = 36 variants",
     "evidence": "Sign takes Etsy's third variation axis, so Metal Color cannot be a variation; the brief routes white and rose through messages."}],
  },
+ "L07": {
+  "id": "L07", "slug": "thaw-hoops", "name": "Thaw Hoops",
+  "title": "Molten Gold Hoop Earrings, Hand Textured Two Tone Solid Gold Hoops with White Gold Tip, Sculptural Huggie Hoops, Winter Gift for Her",
+  "category": "Jewelry > Earrings > Hoop Earrings",
+  "taxonomy_id": None,
+  "section": "Earrings",
+  "tags": ["molten gold hoops", "textured gold hoops", "two tone hoops", "solid gold hoops", "huggie hoop earrings",
+           "organic gold hoops", "sculptural earrings", "hand textured hoops", "small gold hoops", "white gold tip",
+           "handmade gold hoops", "gift for her gold", "winter earrings"],
+  "materials": ["Solid gold", "White gold", "14K gold", "10K gold", "18K gold"],
+  "attributes": {"Primary color": "Gold", "Secondary color": "Silver", "Holiday": "Christmas", "Occasion": "Birthday",
+                 "Recipient": "Women", "Style": "Minimalist"},
+  "variations": [{"property": "Karat", "values": ["10K", "14K", "18K"], "price_varies": True},
+                 {"property": "Metal Color", "values": ["Yellow/White Gold", "Rose/White Gold"], "price_varies": False,
+                  "note": "body/tip pair, tip always white gold (brief: Body Color Yellow / Rose)"}],
+  "personalization": {"enabled": False},
+  "processing_days": "3 to 5 business days", "quantity": 20, "renewal": "automatic", "about": ABOUT,
+  "pricing_basis": {"grams14": 2.5, "pieces": 1, "adders": 160, "adders_detail": "torch texturing 80 + two-tone tips 60 + posts and backs 20 (pair priced as one piece with heavier labor)", "base14": 730},
+  "brief_prices": {"10K": (684.54, 479.18), "14K": (923.45, 646.41), "18K": (1209.72, 846.80)},
+  "description": """The Thaw Hoops continue our Thaw cuff: solid gold taken to the edge of melting so the surface pools and ripples, then stopped, with one tip finished in contrasting white gold like the last ice on a river. They are small enough for every day and textured enough to catch candlelight across a table.
+
+- Each hoop measures 15 mm across in 1.6 mm wire, with a post and a solid gold butterfly back, so the pair sits lightly and stays put.
+- The molten surface is made by hand with a torch, one hoop at a time; then the white gold tip is soldered and polished. The pair is matched by eye, and the ripples differ slightly from left to right. That is the handmade part, and we would not sand it away.
+- Choose solid 10K, 14K or 18K gold; the body comes in yellow or rose, the tip in white. Everything is solid and stamped, nothing plated or filled.
+- Wear them alone, or as the second hoop in a stack. They sit well with velvet in December and with a T-shirt in June.
+- Made to order at our bench in New Jersey in 3 to 5 business days, free US shipping, gift box included.
+- Gold does not tarnish. Warm water with a drop of dish soap and a soft brush clears the texture of any residue.
+- A gift message can be added at checkout.""",
+  "trend": {"anchor": "Mark of the Maker (visible process, texture)", "secondary": "Operatic Drama (dressing up, candlelight)"},
+  "trend_terms": ["hand textured", "sculptural", "handmade"],
+  "manufacturing_note": "Pair of hoops, 15 mm outer diameter, 1.6 mm round wire (yellow or rose 14K), formed round, ends butted. Texture: reticulation by torch on a charcoal block, heating until the surface just flows, then quenched; repeat until the ripple reads at arm's length (reference the Thaw Cuff surface); alternatively cast from a torch-textured master if reticulation yield is poor on 10K. White gold tip: 3 mm cap of 14K white (palladium white preferred over nickel for skin), soldered to one end, polished bright; no rhodium. Post 0.8 mm hard wire soldered to the opposite end, 10 mm long, notched; solid 14K butterfly backs. Match left and right by eye for ripple density. Hallmark on the inside of the hoop near the post. Est. 14K weight 2.5 g per pair (hoops 2.2, posts and backs 0.3).",
+  "photo_plan": [
+   "Hero macro of one hoop: ripples and the bright white tip, raking warm light",
+   "On ear with hair tucked, side profile, soft daylight",
+   "Both hoops side by side showing the left and right difference",
+   "On ear in candlelight at a dinner table (Operatic Drama)",
+   "Stacked as the second hoop with a plain huggie",
+   "Yellow and rose body versions on dark linen",
+   "Scale shot beside a US dime",
+   "Back view: post and butterfly",
+   "Gift box, open",
+   "Process: torch flame on the hoop on a charcoal block, surface flowing (Mark of the Maker)"],
+  "video": "Video 8 to 12 s: torch moment, quench, finished pair turned in the hand",
+  "visualization_prompt": "Product photograph, pair of small solid yellow gold hoop earrings 15 mm with a molten rippled surface and one polished white gold tip, on dark linen beside a single candle, warm low light, extreme close-up, 35mm film grain, no retouching",
+  "deviations": [
+   {"field": "variation labels",
+    "brief": "Body Color: Yellow / Rose (tip is always white gold)",
+    "used": "Metal Color: Yellow/White Gold / Rose/White Gold",
+    "evidence": "CLAUDE.md two-tone exception (owner, 2026-10-09): on a two-metal piece Metal Color values are body/accent pairs with '/', and a flat label is never used. Same property name as the Thaw Cuff draft (W01), so the hoops and the cuff filter together."},
+   {"field": "third color (open, raised with Husam at approval)",
+    "brief": "two body colors",
+    "used": "two values, 3 x 2 = 6 variants",
+    "evidence": "The same CLAUDE.md rule keeps the two-tone axis at 3 values with the grid full, and the Thaw Cuff draft (4595934362) offers Yellow/White, White/Yellow and Rose/White. Adding White/Yellow Gold (white body, yellow tip) would make 9 variants and change one description line."},
+   {"field": "category id",
+    "brief": "Jewelry > Earrings > Hoop Earrings",
+    "used": "kept; resolved at push by the repo's hoop_earrings protocol (root Jewelry), already used for the FW26/27 enamel hoops",
+    "evidence": "lib/etsy/listing-protocol.ts hoop_earrings: taxonomyNames Hoop Earrings, Earrings; taxonomyRoot Jewelry."},
+   {"field": "copy reference to the Thaw cuff",
+    "brief": "'The Thaw Hoops continue our Thaw cuff'",
+    "used": "kept",
+    "evidence": "The Thaw Cuff is an Etsy draft (4595934362), not yet published. Publish the cuff no later than the hoops so the line points to a listing a buyer can find."}],
+ },
+ "L08": {
+  "id": "L08", "slug": "split-infinity", "name": "Split Infinity",
+  "title": "Friendship Necklace Set of 2 or 3 in Solid Gold, Split Infinity Matching Pendants with Engraved Initials, Best Friend Gift, Friendsmas Gift",
+  "category": "Jewelry > Necklaces > Pendant Necklaces",
+  "taxonomy_id": 1229,
+  "section": "Necklaces",
+  "tags": ["friendship necklace", "best friend necklace", "matching necklaces", "friend group gift", "friendsmas gift",
+           "set of 3 necklaces", "infinity necklace", "sister necklace set", "couples necklace set", "personalized gift",
+           "chosen family gift", "bff necklace gold", "initial necklace set"],
+  "materials": ["Solid gold", "14K gold", "10K gold", "18K gold"],
+  "attributes": {"Primary color": "Gold", "Secondary color": "none", "Holiday": "Christmas", "Occasion": "Birthday",
+                 "Recipient": "Women", "Style": "Minimalist"},
+  "variations": [{"property": "Set", "values": ["2 pendants", "3 pendants"], "price_varies": True},
+                 {"property": "Karat", "values": ["10K", "14K", "18K"], "price_varies": True},
+                 {"property": "Metal Color", "values": ["Yellow Gold", "White Gold", "Rose Gold"], "price_varies": False,
+                  "note": "chains ship at 18 inches; 16 or 20 by note in the personalization field"}],
+  "personalization": {"enabled": True, "required": False, "max_chars": 40,
+                      "instructions": "One initial per pendant, in order left to right (example: H / E / C). Optional: chain length per pendant, 16, 18 or 20 inches (example: H 16 / E 18 / C 18)."},
+  "processing_days": "5 to 7 business days", "quantity": 20, "renewal": "automatic", "about": ABOUT,
+  "pricing_basis": {"grams14": 4.0, "pieces": 2, "adders": 50, "adders_detail": "set of 2: two make-floors + two engravings 50", "base14": 1090},
+  "brief_prices": {"10K": (1022.13, 715.49), "14K": (1378.85, 965.19), "18K": (1806.29, 1264.40)},
+  "set_options": {
+   "2 pendants": {"grams14": 4.0, "pieces": 2, "adders": 50, "base14": 1090},
+   "3 pendants": {"grams14": 5.9, "pieces": 3, "adders": 75, "base14": 1625,
+                  "brief_prices": {"10K": (1523.81, 1066.67), "14K": (2055.62, 1438.93), "18K": (2692.87, 1885.01)}}},
+  "description": """One infinity loop, cut along a soft wave into two or three pieces, each on its own chain. Apart, each pendant is a small gold curve that reads as abstract. Side by side, they close back into the loop. It is a matching set for the people who are family by choice: best friends, sisters, a couple, a trio who has shared a group chat for a decade.
+
+- The complete infinity measures 16 x 8 mm in 1.3 mm solid gold; each piece has its own bail and hangs on a 1.2 mm cable chain with spring ring clasp.
+- Choose a set of 2 or 3. Each pendant can carry one engraved initial on the back, so write them in the order you want them matched to the pieces, left to right.
+- Choose solid 10K, 14K or 18K gold in yellow, white or rose. Chains ship at 18 inches; if your friends want 16 or 20, note it next to each initial in the personalization field and we will cut each chain accordingly.
+- The pieces are cast from one master and finished together as a set, so the break lines meet cleanly when the pendants are placed side by side.
+- Made to order at our bench in New Jersey in 5 to 7 business days, free US shipping. Each pendant arrives in its own gift box, so the set can be given in three places on the same night.
+- Please check the spelling at checkout; engraved pieces are made specifically for you.
+- Gold does not tarnish. A soft cloth keeps it bright. A gift message can be added at checkout.""",
+  "trend": {"anchor": "Family Reimagined (personalized friend gifts +1,400%, Friendsmas +37%)", "secondary": "brand pillar: infinity"},
+  "trend_terms": ["matching", "friend group gift", "friendsmas", "personalized"],
+  "manufacturing_note": "Master: infinity loop 16 x 8 mm in 1.3 mm round section, flattened slightly on the back (D profile) for comfort and engraving. Two cutting patterns on the same master: Set of 2 (one wave cut through the crossing, giving a left and right piece) and Set of 3 (two wave cuts giving left lobe, center crossing, right lobe). Cast each piece separately from piece-specific masters (do not cut finished castings; cut the wax, then cast, so the break faces are clean). Each piece: 1.5 mm ID bail soldered at its top point, back engraved with one initial 1.5 mm cap height. Chains 1.2 mm cable, 18 in standard, spring ring. Packaging: one box per pendant. Est. 14K weights: set of 2 approx. 4.0 g (pieces 1.2, chains 2.8); set of 3 approx. 5.9 g (pieces 1.5, chains 4.2 plus bails). Note: center piece of the set of 3 is the smallest; make sure it keeps enough face for the initial.",
+  "photo_plan": [
+   "Hero: three pendants placed together on linen closing the infinity, soft daylight",
+   "Three friends at a dinner table, each wearing one piece, candlelight (Family Reimagined moment)",
+   "Each piece alone on skin at 18 in, three frames in one image",
+   "Back view with sample initials",
+   "Set of 2 placed together",
+   "Two and three piece sets side by side",
+   "Three gift boxes open in a row",
+   "Macro of the wave break line meeting",
+   "Metal color options on dark linen",
+   "Process: hands cutting the wave in wax under a lamp (Mark of the Maker)"],
+  "video": "Video 8 to 12 s: three hands place the pieces together until the loop closes",
+  "visualization_prompt": "Product photograph, three small solid gold pendant pieces on separate fine chains placed together on cream linen so they form a single infinity loop with soft wave seams, soft window light, overhead, 35mm film grain, no retouching",
+  "deviations": [
+   {"field": "overlap check",
+    "brief": "brand pillar: infinity",
+    "used": "kept",
+    "evidence": "The shop already sells a Solid 14K Gold Infinity Necklace (4579027067, wide open pendant) and two infinity bracelets. The Split Infinity differs as a cut, multi-piece matching set, and its title leads with 'Friendship Necklace Set', so it does not compete for the same search."}],
+ },
+ "L09": {
+  "id": "L09", "slug": "paw-seal", "name": "Paw Seal",
+  "title": "Pet Paw Print Necklace in Solid Gold, Hand Engraved Paw Seal Pendant with Pet Name, Custom Dog Mom or Cat Mom Gift, Pet Memorial Jewelry",
+  "category": "Jewelry > Necklaces > Pendant Necklaces",
+  "taxonomy_id": 1229,
+  "section": "Necklaces",
+  "tags": ["paw print necklace", "dog mom necklace", "cat mom gift gold", "custom pet gift", "pet memorial jewelry",
+           "pet name necklace", "solid gold paw print", "dog lover gift gold", "cat lover necklace", "paw print jewelry",
+           "hand engraved charm", "dog dad gift", "signet style pendant"],
+  "materials": ["Solid gold", "Vitreous enamel", "14K gold", "10K gold", "18K gold"],
+  "attributes": {"Primary color": "Gold", "Secondary color": "Blue", "Holiday": "Christmas", "Occasion": "Birthday",
+                 "Recipient": "Women", "Style": "Minimalist"},
+  "variations": [{"property": "Karat", "values": ["10K", "14K", "18K"], "price_varies": True},
+                 {"property": "Chain Length", "values": ["16 inches", "18 inches", "20 inches"], "price_varies": True},
+                 {"property": "Paw Finish", "values": ["Plain gold", "Cobalt enamel", "Cranberry enamel", "Black enamel"], "price_varies": False}],
+  "metal_color": "Yellow gold as standard; white or rose by message (brief)",
+  "personalization": {"enabled": True, "required": True, "max_chars": 16,
+                      "instructions": "Pet name for the back (up to 10 characters) and DOG or CAT for the paw style. Example: BIBER / DOG. Add a year after the name if you are marking a life."},
+  "processing_days": "5 to 7 business days", "quantity": 20, "renewal": "automatic", "about": ABOUT,
+  "pricing_basis": {"grams14": 2.5, "pieces": 1, "adders": 75, "adders_detail": "intaglio hand engraving 50 + name engraving 25; enamel fill offered at the same price; 16 in chain included in the grams", "base14": 645},
+  "brief_prices": {"10K": (604.84, 423.39), "14K": (815.92, 571.14), "18K": (1068.86, 748.20)},
+  "chain": {"lengths": ["16 inches", "18 inches", "20 inches"], "addon_base14": 0,
+            "steps_base": {"10K": [20, 20], "14K": [20, 30], "18K": [40, 40]},
+            "steps_source": "16 in is the base price (the 2.5 g basis includes a 16 in chain); 18 and 20 in follow reference listing 4590337023 (Bauble) panel bases, read 2026-10-17: 10K 430/450/470, 14K 580/600/630, 18K 760/800/840"},
+  "description": """A seal is the mark a thing leaves behind. The Paw Seal is a 10 mm solid gold disc with a paw pressed into its face as an intaglio, cut by hand below the surface the way a signet is cut, so it catches shadow rather than shine. The back carries your pet's name. Choose a plain gold paw, or have the intaglio filled with kiln-fired enamel in cobalt, cranberry or black.
+
+- The disc measures 10 mm across and 1.2 mm thick with a fixed bail; the paw is engraved by hand, and the two styles, dog and cat, are shown in the listing photos.
+- Personalization: your pet's name on the back, up to 10 characters, and the choice of dog or cat paw. Add a year if you are marking a life.
+- Yellow gold as standard; message us for white or rose. Choose solid 10K, 14K or 18K with a 1.2 mm cable chain and spring ring clasp in 16, 18 or 20 inches. Message us for the bracelet version on a 6.5, 7 or 7.5 inch chain.
+- A personalized gift for a dog mom, a cat dad, a puppy's first Christmas, or in memory of a pet whose paw print is still on the car window.
+- Made to order at our bench in New Jersey in 5 to 7 business days, free US shipping, gift box included. Please check the spelling at checkout; engraved pieces are made specifically for you.
+- If you choose enamel, it is glass fused to gold and can chip from a hard knock; a soft cloth is all it needs. Gold itself does not tarnish.
+- A gift message can be added at checkout.""",
+  "trend": {"anchor": "Family Reimagined (pet gifting searches doubled; custom pet gift)", "secondary": "Mark of the Maker (hand engraved)"},
+  "trend_terms": ["custom pet gift", "hand engraved", "personalized", "kiln fired"],
+  "manufacturing_note": "Disc 10.0 mm diameter x 1.2 mm, cast or cut from sheet, edges slightly domed, fixed bail 1.5 mm ID soldered at 12 o'clock. Face: paw intaglio (central pad plus four toe pads, dog version rounder, cat version smaller and more oval) engraved by hand with gravers to 0.3 mm depth, floors matte, walls bright, like a signet; prepare two bench templates so the paws stay consistent. Optional fill: wet-pack opaque enamel (cobalt, cranberry or black) into the intaglio, fire 780 to 820 C, stone flush, flash fire. Back: pet name up to 10 characters, 1.3 mm cap height, centered, plus optional year below. Chain 1.2 mm cable, spring ring. Bracelet version on request: same disc as a connector on a 6.5 to 7.5 in chain. Hallmark on the back under the name. Est. 14K weight 2.5 g with 16 in chain (disc 1.1, bail 0.1, chain 1.4).",
+  "photo_plan": [
+   "Hero macro of the intaglio paw under raking light, plain gold version",
+   "Worn by a person with their dog in frame, daylight, shallow depth (Family Reimagined moment)",
+   "The three enamel fills and plain gold side by side",
+   "Dog and cat paw styles side by side with small labels",
+   "Back view with a sample name and year",
+   "Worn at 16 in over a knit, cat on the lap",
+   "Scale shot beside a US dime",
+   "Gift box, open, with a small paper tag",
+   "Styled: the pendant beside a worn leather collar tag",
+   "Process: graver cutting the pad under magnification (Mark of the Maker)"],
+  "video": "Video 8 to 12 s: engraving strokes, then the disc turned to show the name",
+  "visualization_prompt": "Product photograph, small solid gold disc pendant 10 mm with a recessed intaglio paw print catching shadow, on a worn leather dog collar on a wooden table, soft side light, extreme close-up, 35mm film grain, no retouching",
+  "deviations": [
+   {"field": "chain steps for 18 and 20 in",
+    "brief": "the shop's standard step, about 14 on the 10K base per 2 inches",
+    "used": "the reference listing's own base steps (same rule as L02, L05, L06)",
+    "evidence": "Panel prices of listing 4590337023 (Bauble) read 2026-10-17."},
+   {"field": "grid rule (as the brief, same pattern as L04 and L06)",
+    "brief": "Karat x Chain Length x Paw Finish, yellow gold; white or rose by message",
+    "used": "as the brief: 3 x 3 x 4 = 36 variants",
+    "evidence": "Paw Finish takes Etsy's third variation axis, so Metal Color cannot be a variation."},
+   {"field": "personalization length",
+    "brief": "required, max 16 characters, name up to 10",
+    "used": "kept",
+    "evidence": "A 10-character name plus ' / DOG' is 16, and the instructions invite a year as well: BIBER 2026 / DOG is 16, a 10-letter name with a year is 21 and would be cut off. Raise to 24 if Husam wants the year to fit every name."}],
+ },
+ "L10": {
+  "id": "L10", "slug": "twin-eye", "name": "Twin Eye",
+  "title": "Matching Evil Eye Bracelet Set of 2 in Solid Gold, Twin Eye Friendship Bracelets with Cobalt Enamel and Engraved Initials, Best Friend Gift",
+  "category": "Jewelry > Bracelets > Chain & Link Bracelets",
+  "taxonomy_id": None,
+  "section": "Bracelets (cross-link from Evil Eye via tags)",
+  "tags": ["evil eye bracelets", "matching bracelets", "friendship bracelets", "best friend bracelet", "sister bracelet set",
+           "couples bracelet set", "friend group gift", "friendsmas gift", "nazar bracelet gold", "cobalt enamel eye",
+           "solid gold evil eye", "set of 2 bracelets", "initial bracelet set"],
+  "materials": ["Solid gold", "Vitreous enamel", "14K gold", "10K gold", "18K gold"],
+  "attributes": {"Primary color": "Gold", "Secondary color": "Blue", "Holiday": "Christmas", "Occasion": "Birthday",
+                 "Recipient": "Women", "Style": "Minimalist"},
+  "variations": [{"property": "Karat", "values": ["10K", "14K", "18K"], "price_varies": True},
+                 {"property": "Metal Color", "values": ["Yellow Gold", "White Gold", "Rose Gold"], "price_varies": False},
+                 {"property": "Length", "values": ["6.5 inches", "7 inches", "7.5 inches"], "price_varies": False,
+                  "note": "length for the set; two different lengths by note in the personalization field"}],
+  "personalization": {"enabled": True, "required": False, "max_chars": 40,
+                      "instructions": "Two initials, almond bracelet first, then iris bracelet (example: H / C). Optional: a second length if the wrists differ (example: H 6.5 / C 7)."},
+  "processing_days": "5 to 7 business days", "quantity": 20, "renewal": "automatic", "about": ABOUT,
+  "pricing_basis": {"grams14": 1.9, "pieces": 2, "adders": 75, "adders_detail": "two make-floors + enamel cell 25 + two tag engravings 50", "base14": 905},
+  "brief_prices": {"10K": (848.65, 594.05), "14K": (1144.82, 801.37), "18K": (1499.72, 1049.80)},
+  "description": """Two bracelets that make one eye. The first carries the almond outline in open solid gold wire; the second carries the iris, a 4 mm gold dome with a cobalt blue kiln-fired enamel center. Each is a quiet bracelet alone. Held wrist to wrist, they complete the eye that has watched over this part of the world for five thousand years. One for you, one for the friend, sister or partner you would call first.
+
+- The almond measures 9 x 5 mm in 0.9 mm wire; the iris dome is 4 mm. Both sit as connectors in a 1.2 mm solid gold cable chain with spring ring clasp and a small gold tag at the clasp.
+- Personalization: one initial engraved on each tag, written in the order almond, then iris. Leave the field blank if you prefer them plain.
+- Choose solid 10K, 14K or 18K gold in yellow, white or rose, and a length of 6.5, 7 or 7.5 inches for the set. If you need two different lengths, write both in the personalization field.
+- The enamel is fired by hand in a recessed cell with a polished gold rim, in the same cobalt as our Evil Eye collection, so the set stacks with it.
+- Made to order at our bench in New Jersey in 5 to 7 business days, free US shipping. The two bracelets arrive in separate gift boxes.
+- Please check the spelling at checkout; engraved pieces are made specifically for you.
+- Enamel is glass fused to gold and can chip from a hard knock. Take it off for the gym, the pool and the sink, and wipe it with a soft cloth. A gift message can be added at checkout.""",
+  "trend": {"anchor": "Family Reimagined (friend gifts +1,400%, matching sets)", "secondary": "Merrymaxxing (cobalt enamel); brand pillar: the eye"},
+  "trend_terms": ["matching", "friend group gift", "friendsmas", "kiln fired"],
+  "manufacturing_note": "Bracelet A (almond): open almond outline 9 x 5 mm formed from 0.9 mm round wire, ends soldered, two 1.2 mm ID loops soldered at the points as chain connectors. Bracelet B (iris): 4 mm domed disc, 1.2 mm high, with a 2.6 mm recessed cell 0.4 mm deep for opaque cobalt enamel (same color code as the Evil Eye collection), polished rim, two connector loops at 3 and 9 o'clock on the back edge. Both on 1.2 mm cable chain, spring ring clasp, with a 4 x 6 mm oval tag at the clasp for the initial (1.3 mm cap height). Chain lengths 6.5, 7, 7.5 in; cut each bracelet to its own length when two are requested. Packaging: two boxes. Hallmark on the tags. Est. 14K weight 1.9 g per set (almond 0.15, iris 0.35, two chains 1.2, clasps and tags 0.2).",
+  "photo_plan": [
+   "Hero: two wrists side by side so almond and iris complete the eye, soft daylight (Family Reimagined moment)",
+   "Each bracelet alone on a wrist, two frames in one image",
+   "Macro of the cobalt iris dome, raking light",
+   "Macro of the almond wire and the clasp tag with an initial",
+   "Stacked with an existing Evil Eye bracelet from the shop",
+   "Two friends at a Friendsmas table, hands on the tablecloth, candles",
+   "Metal color options on dark linen",
+   "Two gift boxes open side by side",
+   "Flat lay forming the eye on cream linen, overhead",
+   "Process: wet-packing cobalt enamel into the iris cell (Mark of the Maker)"],
+  "video": "Video 8 to 12 s: two wrists move together until the eye closes",
+  "visualization_prompt": "Product photograph, two delicate solid gold chain bracelets on two wrists held side by side, one with a small open almond outline and the other with a tiny domed cobalt blue enamel iris, together forming an eye, soft daylight, 35mm film grain, no retouching",
+  "deviations": [
+   {"field": "category id",
+    "brief": "Jewelry > Bracelets > Chain & Link Bracelets",
+    "used": "kept; resolved at push by the repo's chain_bracelet protocol (root Jewelry), the protocol the shop's earlier bracelet drafts were pushed with",
+    "evidence": "lib/etsy/listing-protocol.ts chain_bracelet: taxonomyNames Chain & Link Bracelets, Bracelets; taxonomyRoot Jewelry."}],
+ },
 }
 
 
@@ -372,7 +605,7 @@ def sheet(l):
             "## Title", "", "```text", l["title"], "```", f"({len(l['title'])} characters)", "",
             "## About this listing", "", f"- Who made it: {l['about']['who_made']}",
             f"- What is it: {l['about']['what']}", f"- When was it made: {l['about']['when_made']}", "",
-            "## Category", "", f"{l['category']} (taxonomy id {l['taxonomy_id']})", "",
+            "## Category", "", f"{l['category']}" + (f" (taxonomy id {l['taxonomy_id']})" if l.get("taxonomy_id") else " (resolved at push by the listing protocol)"), "",
             "## Renewal", "", "Automatic", "",
             "## Type", "", "Physical item", "",
             "## Description", "", "```text", l["description"], "```", "",
@@ -393,7 +626,10 @@ def sheet(l):
                 "| Karat | " + " | ".join(cols) + " |", "|---" * (len(cols) + 1) + "|"]
         out += [f"| {k} | " + " | ".join(f"${row[c]['list']:,.2f} / ${row[c]['sale']:,.2f}" for c in cols) + " |"
                 for k, row in l["variant_prices"].items()]
-        out += ["", f"Chain steps: {l['chain']['steps_source']}.", ""]
+        out += [""] + ([f"Chain steps: {l['chain']['steps_source']}.", ""] if l.get("chain") else [])
+        if l.get("set_options"):
+            out += [f"- {o}: est. {b['grams14']} g in 14K, {b['pieces']} make-floors, adders {b['adders']}, 14K base {b['base14']}"
+                    for o, b in l["set_options"].items()] + [""]
     out += [
             "## Variations", ""]
     out += [f"- {v['property']}: {' / '.join(v['values'])}" + (" (price varies)" if v["price_varies"] else "") for v in l["variations"]]
@@ -433,6 +669,17 @@ def build(key):
             vals = [v["list"] for v in row.values()]
             assert vals == sorted(vals) and len(set(vals)) == len(vals), (key, k, "chain ladder not rising")
             grid[k] = row
+        src["variant_prices"] = grid
+    so = src.get("set_options")
+    if so:
+        grid = {k: {} for k in ("10K", "14K", "18K")}
+        for opt, b in so.items():
+            assert FLOOR * b["pieces"] + PER_GRAM * b["grams14"] + b["adders"] == b["base14"], (key, opt, "base14")
+            lad = ladder(b["grams14"], b["pieces"], b["adders"])
+            for k, (lst, sale) in b.get("brief_prices", {}).items():
+                assert (lad[k]["list"], lad[k]["sale"]) == (lst, sale), (key, opt, k, lad[k], lst, sale)
+            for k in grid:
+                grid[k][opt] = lad[k]
         src["variant_prices"] = grid
     stem = f"{src['id']}-{src['slug']}"
     (HERE / "listings" / f"{stem}.json").write_text(json.dumps(src, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

@@ -1,0 +1,142 @@
+{
+  "id": "L07",
+  "slug": "thaw-hoops",
+  "name": "Thaw Hoops",
+  "title": "Molten Gold Hoop Earrings, Hand Textured Two Tone Solid Gold Hoops with White Gold Tip, Sculptural Huggie Hoops, Winter Gift for Her",
+  "category": "Jewelry > Earrings > Hoop Earrings",
+  "taxonomy_id": null,
+  "section": "Earrings",
+  "tags": [
+    "molten gold hoops",
+    "textured gold hoops",
+    "two tone hoops",
+    "solid gold hoops",
+    "huggie hoop earrings",
+    "organic gold hoops",
+    "sculptural earrings",
+    "hand textured hoops",
+    "small gold hoops",
+    "white gold tip",
+    "handmade gold hoops",
+    "gift for her gold",
+    "winter earrings"
+  ],
+  "materials": [
+    "Solid gold",
+    "White gold",
+    "14K gold",
+    "10K gold",
+    "18K gold"
+  ],
+  "attributes": {
+    "Primary color": "Gold",
+    "Secondary color": "Silver",
+    "Holiday": "Christmas",
+    "Occasion": "Birthday",
+    "Recipient": "Women",
+    "Style": "Minimalist"
+  },
+  "variations": [
+    {
+      "property": "Karat",
+      "values": [
+        "10K",
+        "14K",
+        "18K"
+      ],
+      "price_varies": true
+    },
+    {
+      "property": "Metal Color",
+      "values": [
+        "Yellow/White Gold",
+        "Rose/White Gold"
+      ],
+      "price_varies": false,
+      "note": "body/tip pair, tip always white gold (brief: Body Color Yellow / Rose)"
+    }
+  ],
+  "personalization": {
+    "enabled": false
+  },
+  "processing_days": "3 to 5 business days",
+  "quantity": 20,
+  "renewal": "automatic",
+  "about": {
+    "who_made": "A member of my shop",
+    "what": "A finished product",
+    "when_made": "Made to order"
+  },
+  "pricing_basis": {
+    "grams14": 2.5,
+    "pieces": 1,
+    "adders": 160,
+    "adders_detail": "torch texturing 80 + two-tone tips 60 + posts and backs 20 (pair priced as one piece with heavier labor)",
+    "base14": 730
+  },
+  "description": "The Thaw Hoops continue our Thaw cuff: solid gold taken to the edge of melting so the surface pools and ripples, then stopped, with one tip finished in contrasting white gold like the last ice on a river. They are small enough for every day and textured enough to catch candlelight across a table.\n\n- Each hoop measures 15 mm across in 1.6 mm wire, with a post and a solid gold butterfly back, so the pair sits lightly and stays put.\n- The molten surface is made by hand with a torch, one hoop at a time; then the white gold tip is soldered and polished. The pair is matched by eye, and the ripples differ slightly from left to right. That is the handmade part, and we would not sand it away.\n- Choose solid 10K, 14K or 18K gold; the body comes in yellow or rose, the tip in white. Everything is solid and stamped, nothing plated or filled.\n- Wear them alone, or as the second hoop in a stack. They sit well with velvet in December and with a T-shirt in June.\n- Made to order at our bench in New Jersey in 3 to 5 business days, free US shipping, gift box included.\n- Gold does not tarnish. Warm water with a drop of dish soap and a soft brush clears the texture of any residue.\n- A gift message can be added at checkout.",
+  "trend": {
+    "anchor": "Mark of the Maker (visible process, texture)",
+    "secondary": "Operatic Drama (dressing up, candlelight)"
+  },
+  "trend_terms": [
+    "hand textured",
+    "sculptural",
+    "handmade"
+  ],
+  "manufacturing_note": "Pair of hoops, 15 mm outer diameter, 1.6 mm round wire (yellow or rose 14K), formed round, ends butted. Texture: reticulation by torch on a charcoal block, heating until the surface just flows, then quenched; repeat until the ripple reads at arm's length (reference the Thaw Cuff surface); alternatively cast from a torch-textured master if reticulation yield is poor on 10K. White gold tip: 3 mm cap of 14K white (palladium white preferred over nickel for skin), soldered to one end, polished bright; no rhodium. Post 0.8 mm hard wire soldered to the opposite end, 10 mm long, notched; solid 14K butterfly backs. Match left and right by eye for ripple density. Hallmark on the inside of the hoop near the post. Est. 14K weight 2.5 g per pair (hoops 2.2, posts and backs 0.3).",
+  "photo_plan": [
+    "Hero macro of one hoop: ripples and the bright white tip, raking warm light",
+    "On ear with hair tucked, side profile, soft daylight",
+    "Both hoops side by side showing the left and right difference",
+    "On ear in candlelight at a dinner table (Operatic Drama)",
+    "Stacked as the second hoop with a plain huggie",
+    "Yellow and rose body versions on dark linen",
+    "Scale shot beside a US dime",
+    "Back view: post and butterfly",
+    "Gift box, open",
+    "Process: torch flame on the hoop on a charcoal block, surface flowing (Mark of the Maker)"
+  ],
+  "video": "Video 8 to 12 s: torch moment, quench, finished pair turned in the hand",
+  "visualization_prompt": "Product photograph, pair of small solid yellow gold hoop earrings 15 mm with a molten rippled surface and one polished white gold tip, on dark linen beside a single candle, warm low light, extreme close-up, 35mm film grain, no retouching",
+  "deviations": [
+    {
+      "field": "variation labels",
+      "brief": "Body Color: Yellow / Rose (tip is always white gold)",
+      "used": "Metal Color: Yellow/White Gold / Rose/White Gold",
+      "evidence": "CLAUDE.md two-tone exception (owner, 2026-10-09): on a two-metal piece Metal Color values are body/accent pairs with '/', and a flat label is never used. Same property name as the Thaw Cuff draft (W01), so the hoops and the cuff filter together."
+    },
+    {
+      "field": "third color (open, raised with Husam at approval)",
+      "brief": "two body colors",
+      "used": "two values, 3 x 2 = 6 variants",
+      "evidence": "The same CLAUDE.md rule keeps the two-tone axis at 3 values with the grid full, and the Thaw Cuff draft (4595934362) offers Yellow/White, White/Yellow and Rose/White. Adding White/Yellow Gold (white body, yellow tip) would make 9 variants and change one description line."
+    },
+    {
+      "field": "category id",
+      "brief": "Jewelry > Earrings > Hoop Earrings",
+      "used": "kept; resolved at push by the repo's hoop_earrings protocol (root Jewelry), already used for the FW26/27 enamel hoops",
+      "evidence": "lib/etsy/listing-protocol.ts hoop_earrings: taxonomyNames Hoop Earrings, Earrings; taxonomyRoot Jewelry."
+    },
+    {
+      "field": "copy reference to the Thaw cuff",
+      "brief": "'The Thaw Hoops continue our Thaw cuff'",
+      "used": "kept",
+      "evidence": "The Thaw Cuff is an Etsy draft (4595934362), not yet published. Publish the cuff no later than the hoops so the line points to a listing a buyer can find."
+    }
+  ],
+  "prices": {
+    "10K": {
+      "list": 684.54,
+      "sale": 479.18
+    },
+    "14K": {
+      "list": 923.45,
+      "sale": 646.41
+    },
+    "18K": {
+      "list": 1209.72,
+      "sale": 846.8
+    }
+  }
+}

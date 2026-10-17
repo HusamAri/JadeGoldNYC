@@ -45,31 +45,41 @@
       "approved": "2026-10-17, Husam: yes"
     },
     "06-wedge-cuneiform": {
-      "status": "validated",
+      "status": "approved",
       "etsy_listing_id": null,
       "errors": [],
       "file": "listings/L06-wedge-cuneiform.json",
-      "note": "36 variants; yellow standard, white or rose by message (brief)"
+      "note": "36 variants; yellow standard, white or rose by message (brief)",
+      "approved": "2026-10-17, Husam: yes"
     },
     "07-thaw-hoops": {
-      "status": "pending",
+      "status": "approved",
       "etsy_listing_id": null,
-      "errors": []
+      "errors": [],
+      "approved": "2026-10-17, Husam: \"yes to all\", \"proceed all models\"",
+      "file": "listings/L07-thaw-hoops.json",
+      "note": "Metal Color as body/tip pairs (CLAUDE.md two-tone rule); kept at two values as the brief"
     },
     "08-split-infinity": {
-      "status": "pending",
+      "status": "approved",
       "etsy_listing_id": null,
-      "errors": []
+      "errors": [],
+      "approved": "2026-10-17, Husam: \"yes to all\", \"proceed all models\"",
+      "file": "listings/L08-split-infinity.json"
     },
     "09-paw-seal": {
-      "status": "pending",
+      "status": "approved",
       "etsy_listing_id": null,
-      "errors": []
+      "errors": [],
+      "approved": "2026-10-17, Husam: \"yes to all\", \"proceed all models\"",
+      "file": "listings/L09-paw-seal.json"
     },
     "10-twin-eye": {
-      "status": "pending",
+      "status": "approved",
       "etsy_listing_id": null,
-      "errors": []
+      "errors": [],
+      "approved": "2026-10-17, Husam: \"yes to all\", \"proceed all models\"",
+      "file": "listings/L10-twin-eye.json"
     }
   }
 }

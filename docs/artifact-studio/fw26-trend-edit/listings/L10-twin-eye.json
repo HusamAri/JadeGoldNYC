@@ -1,0 +1,138 @@
+{
+  "id": "L10",
+  "slug": "twin-eye",
+  "name": "Twin Eye",
+  "title": "Matching Evil Eye Bracelet Set of 2 in Solid Gold, Twin Eye Friendship Bracelets with Cobalt Enamel and Engraved Initials, Best Friend Gift",
+  "category": "Jewelry > Bracelets > Chain & Link Bracelets",
+  "taxonomy_id": null,
+  "section": "Bracelets (cross-link from Evil Eye via tags)",
+  "tags": [
+    "evil eye bracelets",
+    "matching bracelets",
+    "friendship bracelets",
+    "best friend bracelet",
+    "sister bracelet set",
+    "couples bracelet set",
+    "friend group gift",
+    "friendsmas gift",
+    "nazar bracelet gold",
+    "cobalt enamel eye",
+    "solid gold evil eye",
+    "set of 2 bracelets",
+    "initial bracelet set"
+  ],
+  "materials": [
+    "Solid gold",
+    "Vitreous enamel",
+    "14K gold",
+    "10K gold",
+    "18K gold"
+  ],
+  "attributes": {
+    "Primary color": "Gold",
+    "Secondary color": "Blue",
+    "Holiday": "Christmas",
+    "Occasion": "Birthday",
+    "Recipient": "Women",
+    "Style": "Minimalist"
+  },
+  "variations": [
+    {
+      "property": "Karat",
+      "values": [
+        "10K",
+        "14K",
+        "18K"
+      ],
+      "price_varies": true
+    },
+    {
+      "property": "Metal Color",
+      "values": [
+        "Yellow Gold",
+        "White Gold",
+        "Rose Gold"
+      ],
+      "price_varies": false
+    },
+    {
+      "property": "Length",
+      "values": [
+        "6.5 inches",
+        "7 inches",
+        "7.5 inches"
+      ],
+      "price_varies": false,
+      "note": "length for the set; two different lengths by note in the personalization field"
+    }
+  ],
+  "personalization": {
+    "enabled": true,
+    "required": false,
+    "max_chars": 40,
+    "instructions": "Two initials, almond bracelet first, then iris bracelet (example: H / C). Optional: a second length if the wrists differ (example: H 6.5 / C 7)."
+  },
+  "processing_days": "5 to 7 business days",
+  "quantity": 20,
+  "renewal": "automatic",
+  "about": {
+    "who_made": "A member of my shop",
+    "what": "A finished product",
+    "when_made": "Made to order"
+  },
+  "pricing_basis": {
+    "grams14": 1.9,
+    "pieces": 2,
+    "adders": 75,
+    "adders_detail": "two make-floors + enamel cell 25 + two tag engravings 50",
+    "base14": 905
+  },
+  "description": "Two bracelets that make one eye. The first carries the almond outline in open solid gold wire; the second carries the iris, a 4 mm gold dome with a cobalt blue kiln-fired enamel center. Each is a quiet bracelet alone. Held wrist to wrist, they complete the eye that has watched over this part of the world for five thousand years. One for you, one for the friend, sister or partner you would call first.\n\n- The almond measures 9 x 5 mm in 0.9 mm wire; the iris dome is 4 mm. Both sit as connectors in a 1.2 mm solid gold cable chain with spring ring clasp and a small gold tag at the clasp.\n- Personalization: one initial engraved on each tag, written in the order almond, then iris. Leave the field blank if you prefer them plain.\n- Choose solid 10K, 14K or 18K gold in yellow, white or rose, and a length of 6.5, 7 or 7.5 inches for the set. If you need two different lengths, write both in the personalization field.\n- The enamel is fired by hand in a recessed cell with a polished gold rim, in the same cobalt as our Evil Eye collection, so the set stacks with it.\n- Made to order at our bench in New Jersey in 5 to 7 business days, free US shipping. The two bracelets arrive in separate gift boxes.\n- Please check the spelling at checkout; engraved pieces are made specifically for you.\n- Enamel is glass fused to gold and can chip from a hard knock. Take it off for the gym, the pool and the sink, and wipe it with a soft cloth. A gift message can be added at checkout.",
+  "trend": {
+    "anchor": "Family Reimagined (friend gifts +1,400%, matching sets)",
+    "secondary": "Merrymaxxing (cobalt enamel); brand pillar: the eye"
+  },
+  "trend_terms": [
+    "matching",
+    "friend group gift",
+    "friendsmas",
+    "kiln fired"
+  ],
+  "manufacturing_note": "Bracelet A (almond): open almond outline 9 x 5 mm formed from 0.9 mm round wire, ends soldered, two 1.2 mm ID loops soldered at the points as chain connectors. Bracelet B (iris): 4 mm domed disc, 1.2 mm high, with a 2.6 mm recessed cell 0.4 mm deep for opaque cobalt enamel (same color code as the Evil Eye collection), polished rim, two connector loops at 3 and 9 o'clock on the back edge. Both on 1.2 mm cable chain, spring ring clasp, with a 4 x 6 mm oval tag at the clasp for the initial (1.3 mm cap height). Chain lengths 6.5, 7, 7.5 in; cut each bracelet to its own length when two are requested. Packaging: two boxes. Hallmark on the tags. Est. 14K weight 1.9 g per set (almond 0.15, iris 0.35, two chains 1.2, clasps and tags 0.2).",
+  "photo_plan": [
+    "Hero: two wrists side by side so almond and iris complete the eye, soft daylight (Family Reimagined moment)",
+    "Each bracelet alone on a wrist, two frames in one image",
+    "Macro of the cobalt iris dome, raking light",
+    "Macro of the almond wire and the clasp tag with an initial",
+    "Stacked with an existing Evil Eye bracelet from the shop",
+    "Two friends at a Friendsmas table, hands on the tablecloth, candles",
+    "Metal color options on dark linen",
+    "Two gift boxes open side by side",
+    "Flat lay forming the eye on cream linen, overhead",
+    "Process: wet-packing cobalt enamel into the iris cell (Mark of the Maker)"
+  ],
+  "video": "Video 8 to 12 s: two wrists move together until the eye closes",
+  "visualization_prompt": "Product photograph, two delicate solid gold chain bracelets on two wrists held side by side, one with a small open almond outline and the other with a tiny domed cobalt blue enamel iris, together forming an eye, soft daylight, 35mm film grain, no retouching",
+  "deviations": [
+    {
+      "field": "category id",
+      "brief": "Jewelry > Bracelets > Chain & Link Bracelets",
+      "used": "kept; resolved at push by the repo's chain_bracelet protocol (root Jewelry), the protocol the shop's earlier bracelet drafts were pushed with",
+      "evidence": "lib/etsy/listing-protocol.ts chain_bracelet: taxonomyNames Chain & Link Bracelets, Bracelets; taxonomyRoot Jewelry."
+    }
+  ],
+  "prices": {
+    "10K": {
+      "list": 848.65,
+      "sale": 594.05
+    },
+    "14K": {
+      "list": 1144.82,
+      "sale": 801.37
+    },
+    "18K": {
+      "list": 1499.72,
+      "sale": 1049.8
+    }
+  }
+}

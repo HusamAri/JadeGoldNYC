@@ -1,0 +1,196 @@
+{
+  "id": "L08",
+  "slug": "split-infinity",
+  "name": "Split Infinity",
+  "title": "Friendship Necklace Set of 2 or 3 in Solid Gold, Split Infinity Matching Pendants with Engraved Initials, Best Friend Gift, Friendsmas Gift",
+  "category": "Jewelry > Necklaces > Pendant Necklaces",
+  "taxonomy_id": 1229,
+  "section": "Necklaces",
+  "tags": [
+    "friendship necklace",
+    "best friend necklace",
+    "matching necklaces",
+    "friend group gift",
+    "friendsmas gift",
+    "set of 3 necklaces",
+    "infinity necklace",
+    "sister necklace set",
+    "couples necklace set",
+    "personalized gift",
+    "chosen family gift",
+    "bff necklace gold",
+    "initial necklace set"
+  ],
+  "materials": [
+    "Solid gold",
+    "14K gold",
+    "10K gold",
+    "18K gold"
+  ],
+  "attributes": {
+    "Primary color": "Gold",
+    "Secondary color": "none",
+    "Holiday": "Christmas",
+    "Occasion": "Birthday",
+    "Recipient": "Women",
+    "Style": "Minimalist"
+  },
+  "variations": [
+    {
+      "property": "Set",
+      "values": [
+        "2 pendants",
+        "3 pendants"
+      ],
+      "price_varies": true
+    },
+    {
+      "property": "Karat",
+      "values": [
+        "10K",
+        "14K",
+        "18K"
+      ],
+      "price_varies": true
+    },
+    {
+      "property": "Metal Color",
+      "values": [
+        "Yellow Gold",
+        "White Gold",
+        "Rose Gold"
+      ],
+      "price_varies": false,
+      "note": "chains ship at 18 inches; 16 or 20 by note in the personalization field"
+    }
+  ],
+  "personalization": {
+    "enabled": true,
+    "required": false,
+    "max_chars": 40,
+    "instructions": "One initial per pendant, in order left to right (example: H / E / C). Optional: chain length per pendant, 16, 18 or 20 inches (example: H 16 / E 18 / C 18)."
+  },
+  "processing_days": "5 to 7 business days",
+  "quantity": 20,
+  "renewal": "automatic",
+  "about": {
+    "who_made": "A member of my shop",
+    "what": "A finished product",
+    "when_made": "Made to order"
+  },
+  "pricing_basis": {
+    "grams14": 4.0,
+    "pieces": 2,
+    "adders": 50,
+    "adders_detail": "set of 2: two make-floors + two engravings 50",
+    "base14": 1090
+  },
+  "set_options": {
+    "2 pendants": {
+      "grams14": 4.0,
+      "pieces": 2,
+      "adders": 50,
+      "base14": 1090
+    },
+    "3 pendants": {
+      "grams14": 5.9,
+      "pieces": 3,
+      "adders": 75,
+      "base14": 1625,
+      "brief_prices": {
+        "10K": [
+          1523.81,
+          1066.67
+        ],
+        "14K": [
+          2055.62,
+          1438.93
+        ],
+        "18K": [
+          2692.87,
+          1885.01
+        ]
+      }
+    }
+  },
+  "description": "One infinity loop, cut along a soft wave into two or three pieces, each on its own chain. Apart, each pendant is a small gold curve that reads as abstract. Side by side, they close back into the loop. It is a matching set for the people who are family by choice: best friends, sisters, a couple, a trio who has shared a group chat for a decade.\n\n- The complete infinity measures 16 x 8 mm in 1.3 mm solid gold; each piece has its own bail and hangs on a 1.2 mm cable chain with spring ring clasp.\n- Choose a set of 2 or 3. Each pendant can carry one engraved initial on the back, so write them in the order you want them matched to the pieces, left to right.\n- Choose solid 10K, 14K or 18K gold in yellow, white or rose. Chains ship at 18 inches; if your friends want 16 or 20, note it next to each initial in the personalization field and we will cut each chain accordingly.\n- The pieces are cast from one master and finished together as a set, so the break lines meet cleanly when the pendants are placed side by side.\n- Made to order at our bench in New Jersey in 5 to 7 business days, free US shipping. Each pendant arrives in its own gift box, so the set can be given in three places on the same night.\n- Please check the spelling at checkout; engraved pieces are made specifically for you.\n- Gold does not tarnish. A soft cloth keeps it bright. A gift message can be added at checkout.",
+  "trend": {
+    "anchor": "Family Reimagined (personalized friend gifts +1,400%, Friendsmas +37%)",
+    "secondary": "brand pillar: infinity"
+  },
+  "trend_terms": [
+    "matching",
+    "friend group gift",
+    "friendsmas",
+    "personalized"
+  ],
+  "manufacturing_note": "Master: infinity loop 16 x 8 mm in 1.3 mm round section, flattened slightly on the back (D profile) for comfort and engraving. Two cutting patterns on the same master: Set of 2 (one wave cut through the crossing, giving a left and right piece) and Set of 3 (two wave cuts giving left lobe, center crossing, right lobe). Cast each piece separately from piece-specific masters (do not cut finished castings; cut the wax, then cast, so the break faces are clean). Each piece: 1.5 mm ID bail soldered at its top point, back engraved with one initial 1.5 mm cap height. Chains 1.2 mm cable, 18 in standard, spring ring. Packaging: one box per pendant. Est. 14K weights: set of 2 approx. 4.0 g (pieces 1.2, chains 2.8); set of 3 approx. 5.9 g (pieces 1.5, chains 4.2 plus bails). Note: center piece of the set of 3 is the smallest; make sure it keeps enough face for the initial.",
+  "photo_plan": [
+    "Hero: three pendants placed together on linen closing the infinity, soft daylight",
+    "Three friends at a dinner table, each wearing one piece, candlelight (Family Reimagined moment)",
+    "Each piece alone on skin at 18 in, three frames in one image",
+    "Back view with sample initials",
+    "Set of 2 placed together",
+    "Two and three piece sets side by side",
+    "Three gift boxes open in a row",
+    "Macro of the wave break line meeting",
+    "Metal color options on dark linen",
+    "Process: hands cutting the wave in wax under a lamp (Mark of the Maker)"
+  ],
+  "video": "Video 8 to 12 s: three hands place the pieces together until the loop closes",
+  "visualization_prompt": "Product photograph, three small solid gold pendant pieces on separate fine chains placed together on cream linen so they form a single infinity loop with soft wave seams, soft window light, overhead, 35mm film grain, no retouching",
+  "deviations": [
+    {
+      "field": "overlap check",
+      "brief": "brand pillar: infinity",
+      "used": "kept",
+      "evidence": "The shop already sells a Solid 14K Gold Infinity Necklace (4579027067, wide open pendant) and two infinity bracelets. The Split Infinity differs as a cut, multi-piece matching set, and its title leads with 'Friendship Necklace Set', so it does not compete for the same search."
+    }
+  ],
+  "prices": {
+    "10K": {
+      "list": 1022.13,
+      "sale": 715.49
+    },
+    "14K": {
+      "list": 1378.85,
+      "sale": 965.19
+    },
+    "18K": {
+      "list": 1806.29,
+      "sale": 1264.4
+    }
+  },
+  "variant_prices": {
+    "10K": {
+      "2 pendants": {
+        "list": 1022.13,
+        "sale": 715.49
+      },
+      "3 pendants": {
+        "list": 1523.81,
+        "sale": 1066.67
+      }
+    },
+    "14K": {
+      "2 pendants": {
+        "list": 1378.85,
+        "sale": 965.19
+      },
+      "3 pendants": {
+        "list": 2055.62,
+        "sale": 1438.93
+      }
+    },
+    "18K": {
+      "2 pendants": {
+        "list": 1806.29,
+        "sale": 1264.4
+      },
+      "3 pendants": {
+        "list": 2692.87,
+        "sale": 1885.01
+      }
+    }
+  }
+}
