@@ -1,0 +1,207 @@
+{
+ "B1": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "B2": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "B3": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "B4": {
+  "status": "ok",
+  "reason": "İlk karede 8 ışın disk düzleminde yassı üçgen yerine uçları toplu yuvarlak pim olarak çizildi; parça gemi dümeni gibi okunuyor.",
+  "note": "Yeniden çekim: ışınlar aynı düzlemde, pusula gülü gibi.",
+  "prompt": "Quiet luxury editorial still-life product photography. Warm ivory linen ground, honed grey stone slab, a sliver of deep jade-green matte card. Soft directional window light from upper left, long soft shadow, shallow depth of field. Solid yellow gold with warm antique tone. Restrained heirloom mood. No text, no logo, no glitter, no Christmas decoration. The piece: 14K yellow gold bracelet on a 1.0 mm box chain, 16.5 cm long, 2.0 cm extender. One flat round gold station 11.8 mm wide with exactly 8 short flat triangular gold rays around its edge, 15.0 mm across: the rays are cut from the same flat sheet as the disc and lie in its plane, like the points of a compass rose, each 1.6 mm long and tapering to a small rounded point; the rays are not pins, not balls, not spokes, not beads and not handles. Flat concentric enamel bands from the outside inward: a 0.7 mm ring of opaque navy-blue enamel (a deep dark blue), a 0.8 mm ring of opaque white enamel, a 0.7 mm ring of opaque ice-blue enamel (a soft pale powder blue with a grey cast), and a 1.8 mm centre dot of opaque navy-blue enamel, separated by 0.7 mm polished gold walls inside a 0.7 mm gold border. The outline of the whole station is one flat disc with eight small triangular points, all in a single plane. 9 mm lobster clasp. The piece carries no gemstones at all and no empty settings. The only colour on the piece is opaque enamel in four concentric cells, from the outside inward: a navy-blue ring, a white ring, an ice-blue ring and a navy-blue centre dot; every other surface is yellow gold. The decorated centre of the bracelet lies face up at the centre of the honed grey stone slab, close to the camera; the chain runs away from it on both sides in a soft curve and leaves the frame at the left and right edges; the clasp is out of frame. Seen from about 30 degrees above with a 100 mm macro lens, the decorated part in razor-sharp focus, filling about a third of the frame width, with the chain softly out of focus toward the frame edges. No people and no hands."
+ },
+ "B5": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "B6": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "B7": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "B8": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "B9": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "B10": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "N1": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "N2": {
+  "status": "ok",
+  "reason": "",
+  "note": "Zincir figaro, spec ile uyumlu."
+ },
+ "N3": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "N4": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "N5": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "N6": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "N7": {
+  "status": "check",
+  "reason": "Uçuş tüyleri 5 yerine 6 okunuyor ve uçlar kapalı alt kenarla birleşmek yerine ayrı duruyor. Kare kullanılabilir; açıklama 'beş tüy' diyor, istersen yeniden üret.",
+  "note": "Tüy sayısı açıklamadan farklı.",
+  "prompt": "Quiet luxury editorial still-life product photography. Warm ivory linen ground, honed grey stone slab, a sliver of deep jade-green matte card. Soft directional window light from upper left, long soft shadow, shallow depth of field. Solid yellow gold with warm antique tone. Restrained heirloom mood. No text, no logo, no glitter, no Christmas decoration. The piece: Single angel wing pendant in 14K yellow gold, 9 mm wide and 14.5 mm tall, 0.9 mm thick, hanging upright from a bail at the top centre of the wing. The upper part is a band of rounded covert feathers with a scalloped lower edge; below it exactly five long flight feathers, 1.3 mm wide, are separated by four narrow pierced slits that stop short of the bottom, so the five rounded tips are joined to each other along one continuous closed lower edge; five feathers, not six. One 1.5 mm lab grown white sapphire is flush-set at the inner upper corner of the wing. Feather faces diamond-cut, edges polished. 1.0 mm 14K diamond-cut rope chain, 16 inch plus 2 inch extender. The stones are exactly these and no others: one 1.5 mm round lab-grown white sapphire flush-set at the inner upper corner of the wing. No other stone and no empty setting anywhere on the piece. The piece has no enamel and no colour: every surface is yellow gold. The pendant lies flat and face up on the honed grey stone slab, the chain running in a soft loose curve up and out of the top edge of the frame. Seen from about 30 degrees above with a 100 mm macro lens, the decorated part in razor-sharp focus, filling about a third of the frame width, with the chain softly out of focus toward the frame edges. No people and no hands."
+ },
+ "N8": {
+  "status": "ok",
+  "reason": "",
+  "note": "Halka taşları tepede değil dış yanlarda; küçük sapma."
+ },
+ "N9": {
+  "status": "check",
+  "reason": "Mine hücreleri açık adaçayı yeşili çıktı; spec koyu jade-green (koyu şişe yeşili). Kare kullanılabilir ama renk açıklamayla çelişiyor; istersen düzeltilmiş promptla yeniden üret.",
+  "note": "Renk açıklamadan açık.",
+  "prompt": "Quiet luxury editorial still-life product photography. Warm ivory linen ground, honed grey stone slab, a sliver of deep jade-green matte card. Soft directional window light from upper left, long soft shadow, shallow depth of field. Solid yellow gold with warm antique tone. Restrained heirloom mood. No text, no logo, no glitter, no Christmas decoration. The piece: Stirrup pendant in 14K yellow gold, 13 mm wide and 16 mm tall, open in the middle. A 1.6 mm wide rail forms an arched D shape rising from a flat 12 mm base bar. The base bar carries a row of five small cells of opaque deep jade-green enamel (a dark bottle green with a grey cast, clearly darker than the grey stone slab, never pale, never mint, never sage) separated by four 0.7 mm gold ribs, framed by gold edges that stand slightly above the enamel. A flat top bar with a 4.0 x 1.6 mm slot takes the chain, so the pendant slides on it without a bail. High-polish gold. 1.2 mm 14K cable chain, 16 inch plus 2 inch extender. The piece carries no gemstones at all and no empty settings. The only colour on the piece is opaque deep jade-green enamel, dark bottle green, filling five small cells in a row along the base bar; every other surface is yellow gold. The pendant lies flat and face up on the honed grey stone slab, the chain running in a soft loose curve up and out of the top edge of the frame. Seen from about 30 degrees above with a 100 mm macro lens, the decorated part in razor-sharp focus, filling about a third of the frame width, with the chain softly out of focus toward the frame edges. No people and no hands."
+ },
+ "N10": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "E1": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "E2": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "E3": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "E4": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "E5": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "E6": {
+  "status": "ok",
+  "reason": "",
+  "note": "Mine çok açık ton; kabul edildi."
+ },
+ "E7": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "E8": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "E9": {
+  "status": "redo",
+  "reason": "Model kuşa tasarımda olmayan iki ayak ekledi (her küpenin altında pençeler). Tasarımda gövde doğrudan kuyruğa iner, ayak yok.",
+  "note": "Düzeltilmiş prompt aşağıda.",
+  "prompt": "Quiet luxury editorial still-life product photography. Warm ivory linen ground, honed grey stone slab, a sliver of deep jade-green matte card. Soft directional window light from upper left, long soft shadow, shallow depth of field. Solid yellow gold with warm antique tone. Restrained heirloom mood. No text, no logo, no glitter, no Christmas decoration. The piece: Pair of 14K yellow gold stud earrings shaped as a cardinal bird in side profile with its body pointing upward, 5.8 mm wide and 11.5 mm tall. The head, a peaked crest with a rounded tip, a short cone beak with a rounded tip and the tail are polished gold; the eye is a small round polished recess 0.9 mm across. The breast and body hold one oval field of smooth opaque deep berry (dark raspberry-purple) enamel, 3.2 mm wide and 3.7 mm tall, level with a gold border at least 0.7 mm wide. The tail has three bright crosswise grooves. Straight post behind the head. The bird has no legs and no feet: below the enamel body the outline runs straight into the tail, the tail tip is the lowest point of the earring and nothing else touches the slab. The piece carries no gemstones at all and no empty settings. The only colour on the piece is opaque deep berry enamel (a dark wine red, not bright red) filling the single oval cell on the breast and body; every other surface is yellow gold. The pair lies side by side on the honed grey stone slab, both fronts facing the camera, about 15 mm apart, posts hidden underneath; exactly two earrings. Seen from about 30 degrees above with a 100 mm macro lens, the piece in razor-sharp focus, filling about 45 percent of the frame width, centred with generous empty margin on all four sides. No people and no hands."
+ },
+ "E10": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "P1": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "P2": {
+  "status": "redo",
+  "reason": "Kuyrukta 2 yerine 3 çapraz çubuk/pad çizildi, yani toplam 4 taş (spec 3); üst şeridin yüzeyi diamond-cut değil kareli kordon gibi işlenmiş.",
+  "note": "Düzeltilmiş prompt aşağıda.",
+  "prompt": "Quiet luxury editorial still-life product photography. Warm ivory linen ground, honed grey stone slab, a sliver of deep jade-green matte card. Soft directional window light from upper left, long soft shadow, shallow depth of field. Solid yellow gold with warm antique tone. Restrained heirloom mood. No text, no logo, no glitter, no Christmas decoration. The piece: Brooch in 14K yellow gold, 42 mm long and 14 mm tall, shaped as a comet lying almost horizontal: the head at the right end, the tail trailing to the left and slightly downward. Head: an 11 mm open gold ring with three short spokes holding a central collet set with one 1.8 mm lab grown white sapphire. Tail: three separate tapered gold ribbons, 31, 25 and 19 mm long, with rounded tips and open gaps between them. Exactly two small gold cross-bars bridge the ribbons, one near the head and one halfway along the tail; each of the two bars carries one raised 2.8 mm square pad set with one 1.8 mm lab grown white sapphire, flush-set; there is no third bar and no third pad. Ribbon tops are bright diamond-cut (fine bright facets, not a knurled or checkered pattern), side faces honed matte. Back: two 14K white gold pin stems with rotating safety catches. The stones are exactly these and no others: three 1.8 mm round lab-grown white sapphires: one in the central collet of the head ring and one flush-set in the raised square pad on each of the two cross-bars. No other stone and no empty setting anywhere on the piece. The piece has no enamel and no colour: every surface is yellow gold. The brooch lies face up, centred on the honed grey stone slab, pin hidden behind it; exactly one brooch. Seen from about 30 degrees above with a 100 mm macro lens, the piece in razor-sharp focus, filling about 45 percent of the frame width, centred with generous empty margin on all four sides. No people and no hands."
+ },
+ "P3": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "P4": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "P5": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "P6": {
+  "status": "ok",
+  "reason": "",
+  "note": "Açık ortadan iğne gövdesi görünüyor (gerçekçi), sarı tonda okunuyor; spec beyaz altın."
+ },
+ "P7": {
+  "status": "ok",
+  "reason": "",
+  "note": "Işınlar yaprak damarı gibi faset işlemeli; diamond-cut okuması olarak kabul edildi."
+ },
+ "P8": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "P9": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "P10": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ }
+}

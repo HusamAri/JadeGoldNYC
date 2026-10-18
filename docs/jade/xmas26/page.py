@@ -27,17 +27,29 @@ def copy_block(text, label, cls="mono"):
             f'<button type="button" class="cp" aria-label="{e(label)} kopyala">Kopyala</button></div>')
 
 
+# status.json: ok = upload as is; check = usable, read the note first; redo = wrong, generate again
+# with the corrected prompt carried in status.json ("prompt"), the render stays visible so the fault is seen.
+BADGE = {"ok": ("ok", "Hero hazır"), "check": ("check", "Kontrol et"), "redo": ("flag", "Yeniden üret")}
+
+
 def hero_figure(p):
     st = STATUS[p["id"]]
-    if st["status"] == "ok":
+    cls, label = BADGE[st["status"]]
+    if (HERE / "web" / f"{p['id']}.jpg").exists():
         img = (f'<img src="web/{p["id"]}.jpg" alt="{e(PROMPTS[p["id"]][0]["alt"])}" loading="lazy" '
                f'width="1600" height="1200">')
-        badge = '<span class="pill ok">Hero hazır</span>'
     else:
-        img = (f'<div class="noimg"><span>Hero üretilmedi</span><small>{e(st["reason"])}</small></div>')
-        badge = '<span class="pill flag">Kendin üret</span>'
-    note = f'<figcaption>{badge}<span class="fn">{e(st.get("note", ""))}</span></figcaption>'
-    return f'<figure class="hero">{img}{note}</figure>'
+        img = f'<div class="noimg"><span>Hero üretilmedi</span><small>{e(st.get("reason", ""))}</small></div>'
+    note = (f'<figcaption><span class="pill {cls}">{label}</span>'
+            f'<span class="fn">{e(st.get("note", ""))}</span></figcaption>')
+    fix = ""
+    if st["status"] != "ok":
+        fix = f'<div class="fix"><p class="reason">{e(st["reason"])}</p>'
+        if st.get("prompt"):
+            fix += (f'<h4>Düzeltilmiş prompt (01 hero, referanssız)</h4>'
+                    f'{copy_block(st["prompt"], "Düzeltilmiş prompt")}')
+        fix += "</div>"
+    return f'<figure class="hero">{img}{note}{fix}</figure>'
 
 
 def chips(p):
@@ -110,7 +122,10 @@ def product(p):
 
 prods = CAT["products"]
 n_ok = sum(1 for p in prods if STATUS[p["id"]]["status"] == "ok")
-n_flag = len(prods) - n_ok
+n_check = sum(1 for p in prods if STATUS[p["id"]]["status"] == "check")
+n_redo = sum(1 for p in prods if STATUS[p["id"]]["status"] == "redo")
+n_flag = n_check + n_redo
+assert n_ok + n_flag == len(prods), "status.json carries a status outside ok/check/redo"
 frame_rows = "".join(f'<tr><td class="num">{it["code"]}</td><td>{e(it["purpose"])}</td></tr>'
                      for it in PROMPTS[prods[0]["id"]])
 params = JOBS["params"]
@@ -180,6 +195,10 @@ figcaption {{ display: flex; gap: 10px; align-items: center; flex-wrap: wrap; fo
 .pill {{ font-size: 11px; letter-spacing: .12em; text-transform: uppercase; border: 1px solid var(--line); border-radius: 999px; padding: 3px 9px; white-space: nowrap; }}
 .pill.ok {{ color: var(--ok); border-color: var(--ok); }}
 .pill.flag {{ color: var(--flag); border-color: var(--flag); }}
+.pill.check {{ color: var(--gold); border-color: var(--gold); }}
+.fix {{ display: grid; gap: 6px; font-size: 14px; }}
+.fix .reason {{ margin: 0; color: var(--flag); max-width: 70ch; }}
+.fix h4 {{ font: 500 12px/1.4 var(--f-body); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin: 6px 0 0; }}
 .pill.ref {{ color: var(--jade); border-color: var(--jade); }}
 .meta {{ display: grid; gap: 12px; min-width: 0; }}
 .eyebrow {{ margin: 0; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }}
@@ -226,7 +245,8 @@ details.sub p, details.sub ul, details.sub ol {{ max-width: 76ch; }}
   <dl class="stats">
     <div><dt>Parça</dt><dd class="num">{len(prods)}</dd></div>
     <div><dt>Hero hazır</dt><dd class="num">{n_ok}</dd></div>
-    <div><dt>Senin üreteceğin hero</dt><dd class="num">{n_flag}</dd></div>
+    <div><dt>Kontrol et</dt><dd class="num">{n_check}</dd></div>
+    <div><dt>Yeniden üret</dt><dd class="num">{n_redo}</dd></div>
     <div><dt>Prompt</dt><dd class="num">{sum(len(v) for v in PROMPTS.values())}</dd></div>
   </dl>
 </header>
@@ -252,7 +272,7 @@ details.sub p, details.sub ul, details.sub ol {{ max-width: 76ch; }}
   <button type="button" data-f="necklace" aria-pressed="false">Kolye</button>
   <button type="button" data-f="earrings" aria-pressed="false">Küpe</button>
   <button type="button" data-f="brooch" aria-pressed="false">Broş</button>
-  <button type="button" data-f="flag" aria-pressed="false">Kendin üret ({n_flag})</button>
+  <button type="button" data-f="flag" aria-pressed="false">İşaretli ({n_flag})</button>
   <input id="q" type="search" placeholder="Ara: kod, ad, başlık" aria-label="Ara">
 </nav>
 <main>
