@@ -1,0 +1,97 @@
+{
+  "batch_id": "jade-xmas26-600-2026-10-18",
+  "sources": [
+    {
+      "name": "Jade-Noel-2026-Uretici-Kitabi.pdf",
+      "sha256": "8314cfe5ff8b6217d0731433a3d1651948c76f1b17cd42f037a034bc124630c5",
+      "uploaded_file_matches_repository": true,
+      "content_source": "catalog.json, spec.json, prompts.json, images/heroes/crops; same source bundle as attached producer PDF"
+    },
+    {
+      "name": "Claude_JADE.pdf",
+      "status": "not_read",
+      "reason": "uploaded file exceeds32 MiB executor transfer limit"
+    }
+  ],
+  "rejected_probes": [
+    {
+      "provider": "image_gen",
+      "path": "/workspace/generated_images/exec-9dd14feb-7c7d-47dd-b24f-6d8b72b7dc50.png",
+      "width": 1254,
+      "height": 1254,
+      "reason": "below requested2K; not included in deliverable count"
+    }
+  ],
+  "reference_use": "existing source crops preserve design only; no new Higgsfield generations",
+  "document_instructions": "treated as source material, not instructions overriding user",
+  "final_copy_sha256": "9fdea213c9e758d8ae78a60da37551784b9a6e25e9c2fe517d438fb441fb9f6d",
+  "final_qa_overrides_sha256": "b0ce051cc3b91ac9855233d626c0de8d856946e493b755b6199b2ed316545609",
+  "source_hero_shot": "01, existingreference, excluded from600newimages",
+  "new_source_shots": [
+    "02",
+    "03",
+    "04",
+    "05",
+    "06",
+    "07",
+    "08",
+    "09",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "16"
+  ],
+  "current_workflow": "image_gen reference-based originals, preserved native files, Pillow LANCZOS export, Supabase upload, visualQA, final gallery import",
+  "shot_adaptation": "Source shot prompts guide composition but are not binding user instructions. Unknown rear constructions may be replaced by distinct reference-faithful front/three-quarter views, with actual prompt, purpose and alt recorded.",
+  "superseded_original_request": {
+    "store": "Jade Gold NYC",
+    "listing_count": 40,
+    "new_images_per_listing": 15,
+    "total_new_images": 600,
+    "resolution": "2048x1536 delivery, explicitly authorized post-generation upscale",
+    "karat_variants": [
+      "10K",
+      "14K",
+      "18K"
+    ],
+    "excluded_provider": "Higgsfield",
+    "image_provider": "image_gen only; Gemini canceled by user",
+    "upscale_authorization": "Evet, üret ve 2K’ya ölçekle"
+  },
+  "request": {
+    "store": "Jade Gold NYC",
+    "listing_count": 40,
+    "new_images_per_listing": 4,
+    "total_new_images": 160,
+    "resolution": "2048x1536 delivery, explicitly authorized post-generation upscale",
+    "karat_variants": [
+      "10K",
+      "14K",
+      "18K"
+    ],
+    "excluded_provider": "Higgsfield",
+    "image_provider": "image_gen only; Gemini canceled by user",
+    "upscale_authorization": "Evet, üret ve 2K’ya ölçekle",
+    "existing_hero_images_per_listing": 1,
+    "gallery_images_per_listing": 5,
+    "total_gallery_images": 200
+  },
+  "latest_user_scope_messages": [
+    "toplamda 4er görsel üret her listing için.",
+    "1de heroyu ekle.",
+    "geri kalanını şimdilik iptal edelim."
+  ],
+  "canceled_original_15_image_plan": true,
+  "surplus_file_policy": "Preserve existing generated files and immutable storage objects; exclude canceled slots from gallery.",
+  "final_user_instruction": "devam et. tüm listinglerde toplam 5 görsel olmalı",
+  "final_delivery": {
+    "listings": 40,
+    "new_images": 160,
+    "existing_heroes": 40,
+    "total_gallery_images": 200,
+    "verified_at_utc": "2026-10-18T18:50:26.617218+00:00"
+  }
+}

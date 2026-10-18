@@ -1,0 +1,74 @@
+{
+  "category": "P",
+  "reviewer": "/root",
+  "scope": "150 new images; source reference audit completed; generated files not yet reviewed",
+  "source_anchors": [
+    {
+      "code": "P1",
+      "reference_sha256": "7373db36a1293712b1edb0d96a74f58266476e89204433641545aec96eac805f",
+      "visually_inspected": true,
+      "notes": "Eight rays: four longer cardinal and four shorter diagonal rays; elongated bottom ray; matte central disc and polished gold dome; no gemstones."
+    },
+    {
+      "code": "P2",
+      "reference_sha256": "dad192168004b36e3217e8ccab626fbdf7269dbfdb90b42a645dcf6cf29df5a3",
+      "visually_inspected": true,
+      "notes": "Three open tail ribbons with patterned outer ribbons and a satin middle ribbon; circular head with three spokes; three white stones total; two pin assemblies in the reverse specification."
+    },
+    {
+      "code": "P3",
+      "reference_sha256": "631afa0f40746c483a18a23cc84f1f76dac427c86e544a79cb877b52fe8b2592",
+      "visually_inspected": true,
+      "notes": "Four ice-blue rectangular top cells; three white stones between them; three slotted hanging icicles, left longest and right shortest."
+    },
+    {
+      "code": "P4",
+      "reference_sha256": "aa2e5d7c0e986c0803d57f882ee2f3992fbabdc54fde3a00c7e6f985b8d7b39f",
+      "visually_inspected": true,
+      "notes": "Hexagonal face, three ice-blue fields and one pale blue center stone; upper rib meets the center of the top flat edge."
+    },
+    {
+      "code": "P5",
+      "reference_sha256": "c665888b86931f43db40b7c872bd29316285a1395218157e6378336e227a6083",
+      "visually_inspected": true,
+      "notes": "Two outward D-shaped rings with faceted curves; center bar with one horizontal slot and two end collars; no stones; two reverse pins in the specification."
+    },
+    {
+      "code": "P6",
+      "reference_sha256": "38ed7fe0f347aa34876c96593950eae3bc76564cb52b951bf426894ffbedf7da",
+      "visually_inspected": true,
+      "notes": "Stirrup arch, single jade-green tread cell, round top loop and one white gem below the loop; yellow pin visible in reference while workshop specification says white gold."
+    },
+    {
+      "code": "P7",
+      "reference_sha256": "a77474285f87b178bfa050b4bc19ac9edc662d84c4f36bdd478fcbf60e9f386d",
+      "visually_inspected": true,
+      "notes": "Eight textured rays; four white stones at diagonal ray bases; concentric ice-blue, white and navy enamel fields."
+    },
+    {
+      "code": "P8",
+      "reference_sha256": "6f948eb456ea9e3c67d8610f280f9d2088470222ee4918ef9447e6d810210fe3",
+      "visually_inspected": true,
+      "notes": "Left-facing robin standing on a straight perch; berry breast field, white gem eye, layered feather relief and slotted tail pointing down-right."
+    },
+    {
+      "code": "P9",
+      "reference_sha256": "b76d1a65898e373800f2ef82efe080dd62daab790276da581e90640c565f2f93",
+      "visually_inspected": true,
+      "notes": "Lantern with ice-blue triangular roof, top round loop and two rectangular open windows; continuous central rod from base to eave with one white gem midway."
+    },
+    {
+      "code": "P10",
+      "reference_sha256": "61be709372c4da52423957c31c043ced6e334cd4c74e9187f254e1020bf562e7",
+      "visually_inspected": true,
+      "notes": "Scarab with six legs, jade-green upper field and two ice-blue wing fields; central gold ridge; no stones."
+    }
+  ],
+  "images": [],
+  "counts": {
+    "reviewed": 0,
+    "passed": 0,
+    "rejected": 0,
+    "needs_detail": 0
+  }
+}

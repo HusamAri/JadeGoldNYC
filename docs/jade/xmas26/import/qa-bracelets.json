@@ -1,0 +1,64 @@
+{
+  "category": "bracelets",
+  "reviewer": "find_panel",
+  "status": "awaiting_generated_assets",
+  "expected_images": 150,
+  "reviewed_images": 0,
+  "accepted_images": 0,
+  "rejected_images": 0,
+  "needs_detail_images": 0,
+  "reference_reviewed_at": "2026-10-18T17:27:51.291927+00:00",
+  "reference_anchors": [
+    {
+      "product_code": "B1",
+      "reference_sha256": "2bd791dc67e23d8da5ddc71274c88c7c8973038e28d593fd5a7b35f68dbe9bf0",
+      "observations": "Eight pointed compass star, one clear center stone; accepted silhouette has four longer cardinal arms and four shorter diagonals. Preserve silhouette over equal-length source text."
+    },
+    {
+      "product_code": "B2",
+      "reference_sha256": "fb87b55a294daec9829f40586eacf89e86e3a50f3b62b14811fb6a8c011699b8",
+      "observations": "Exactly seven hanging icicles, shortest at ends and longest at center; shallow diagonal spiral grooves on upper portions. No gemstones or enamel."
+    },
+    {
+      "product_code": "B3",
+      "reference_sha256": "2e650307dd4359b5dacff2186cb559c6fe3b32e6646258b1747faf180789f018",
+      "observations": "One long comet station, two side-by-side clear stones at round head, one pale ice-blue tail inset, Cuban chain. Plain reverse with two stone apertures."
+    },
+    {
+      "product_code": "B4",
+      "reference_sha256": "0c4479f0460a949e698805e4e8f5df461a54db6b1bf5f1d0fa896e4844064201",
+      "observations": "Exactly eight gold rays in flat disc plane; outer navy, white, ice blue and center navy enamel rings separated by gold. No gemstones. Box chain."
+    },
+    {
+      "product_code": "B5",
+      "reference_sha256": "ef7ccf8fcbc15d2d4f30d90d22cd57eb55b58146d0a095d0b14f60bbf22376c6",
+      "observations": "Three upright fingers with middle tallest, two outward thumbs; one pale blue center stone inside raised gold eye outline. Franco chain connects at thumb tips."
+    },
+    {
+      "product_code": "B6",
+      "reference_sha256": "3969652ebeb5ee12a0ada984666609acfea75082597ce535c641292e4b610a9d",
+      "observations": "Two open D-shaped cheeks facing inward; slate-jade enamel on curved edges, two linked central loops, Cuban chain. No gemstones."
+    },
+    {
+      "product_code": "B7",
+      "reference_sha256": "f53edada236fae970bb73ad16416466770b73de960e81c39f65efbf3cf77493d",
+      "observations": "Exactly three open stirrups with larger center station, faceted arches, one clear stone in square pad on each base bar. Franco chain between base ends."
+    },
+    {
+      "product_code": "B8",
+      "reference_sha256": "07e693737ef5e55957a37e5df56e251cbf9677c53771191ec520c46f263b7f77",
+      "observations": "One side-profile cardinal, berry breast inset, one clear eye stone, raised tail and polished wing. Preserve visible open gap below tail and source outline."
+    },
+    {
+      "product_code": "B9",
+      "reference_sha256": "51fa19350a4b624f139064fd7276351ff10a9146b5d8c9799aa51b659f3bd9ef",
+      "observations": "One six-sided plate, continuous pale ice-blue hexagon band and small raised center hexagon with one clear stone. Source proportions override any impression of a full enamel center."
+    },
+    {
+      "product_code": "B10",
+      "reference_sha256": "d4b6e12f453fd1168d1b5547f5956d91db2b509a28dcca980e16a9d2bcc2a77e",
+      "observations": "One scarab with two slate-jade wing fields, central gold divider, five shield fan slits and source raised dot row (appears seven dots vs six in source text), six short legs. No stones; Cuban chain."
+    }
+  ],
+  "images": []
+}
