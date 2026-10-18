@@ -66,3 +66,5 @@ prices and manufacturing weights remain unconfirmed. No Etsy publication occurs.
 Live verification must confirm 40 products, 120 variants, 200 gallery images, exactly
 three karats and five images per product, and a4new+ 1 existinghero breakdown.
 `applied-status-2026-10-18.json` records the latest verified progress.
+
+Final delivery verified on 2026-10-18: all 40 batch listings have exactly five gallery images in positions 0–4, with the hero matching the cover. All 160 new JPEGs decode at 2048×1536; all 40 heroes retain native dimensions. All 120 variants remain 10K/14K/18K with unconfirmed prices and weights. `final-approved-assets.json` records exact generation prompts, original/delivery hashes and actual visual QA. `final-gallery-manifest.json` records the attached IDs, URLs and positions. All public bytes were reverified before completion.

@@ -85,5 +85,13 @@
     "geri kalanını şimdilik iptal edelim."
   ],
   "canceled_original_15_image_plan": true,
-  "surplus_file_policy": "Preserve existing generated files and immutable storage objects; exclude canceled slots from gallery."
+  "surplus_file_policy": "Preserve existing generated files and immutable storage objects; exclude canceled slots from gallery.",
+  "final_user_instruction": "devam et. tüm listinglerde toplam 5 görsel olmalı",
+  "final_delivery": {
+    "listings": 40,
+    "new_images": 160,
+    "existing_heroes": 40,
+    "total_gallery_images": 200,
+    "verified_at_utc": "2026-10-18T18:50:26.617218+00:00"
+  }
 }
