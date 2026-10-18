@@ -1537,6 +1537,29 @@ repodaki hedefidir.
   değiştirip gramı ve iddiayı bırakmak sessiz bir yanlış beyan olurdu — şekil değişince gram,
   arıza modu ve satış cümlesi birlikte yeniden türetilir.
 
+- **Panele giren taslağın EKSENİNİ fiyatlamadan önce DB'den oku; "sahip 14K istedi" ile "panelde
+  üç karat var" aynı şey değildir, ve eksik oranı uydurma, repodaki KURALI kullan (2026-10-18,
+  Noel 40 fiyat):** Sahip 40 taslağa "tahmini fiyat gir, mağazada %30 indirim" dedi. Katalog 40
+  parçayı yalnız 14K'da fiyatlıyordu; panel içe aktarımı ise her taslağa `Gold Karat` 10K/14K/18K
+  ekseni koymuştu (120 varyant, hepsi fiyatsız). 14K fiyatını ürüne yazıp bitirmek 80 varyantı
+  boş, Etsy push'unu kırık bırakırdı. Önce varyant tablosu okundu, sonra oran aranmadı,
+  BULUNDU: `lib/gold-cost.ts` `derivePurchaseCentsPerGram` (metal spotla saflıkla ölçeklenir,
+  işçilik primi sabit; Ophir'in 1,400 çarpanıyla kanıtlı) + yoğunluk oranları (×0,892 / ×1,137,
+  09-16 dersi). Türetilen 18K/14K 1,365, Jade'in canlı kataloğunun ölçülen ortalaması 1,366 —
+  kural kendini bağımsız veriyle sınadı. Dış tool'un F26 taslaklarındaki 1,30 tahmini ise
+  gramsızdı; onu kopyalamak "ayrıntılı görünen" ama ölçümsüz seçenek olurdu. İkinci ders
+  indirimde: sahip "%30 var" dedi, doğru paydayla günlük ölçüm 17 Ekim'e kadar tam 0,2500 — yani
+  beyan ile veri uyuşmuyordu. Doğru hareket ikisini de yazmak oldu: sabit sahibin beyanına göre
+  0,30 yapıldı (motorun sabiti dış dünyayı izler), ölçüm sonucu ve "canlı katalog hâlâ %25
+  tabanında, ×1,0714 kaydırma KOŞULMADI" notu tarihli olarak sabitin yanına ve §13'e kondu.
+  Üçüncü ders: `lib/jade/pricing.ts`'i hiçbir uygulama kodu import etmiyor; "motor" aslında
+  iki Python aynası (`catalog.py`, `scripts/jade-gram-numbers.py`) üzerinden yaşıyor ve ikincisi
+  0,15/0,20'de bayat kalmış — aynı formülü taşıyan her kopya sabit değişince taranmalı. Zincir
+  yine tuttu: TS motoru ile Python 40/40 + 3/3 birebir (`node --experimental-strip-types`),
+  ön koşul 40/120/0/0, apply 120+40, mühür beklenenle birebir, plan JSON ↔ varyant 120/120,
+  audit 120+40, komşu F26 taslaklarına 0 dokunuş; SQL'in ortak JSON'u tek `common` CTE'de,
+  satırlar yalnız sayı (46 KB → 8,6 KB, transkripsiyon yüzeyi küçüldü).
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması

@@ -27,7 +27,7 @@ ve tartım işaretli listingler (§7).
 | Tedarikçi maliyeti | **$106 / gram** | HER ŞEY DAHİL: ham altın + işçilik + taş/boncuk |
 | Kargo | **$5** | Ücretsiz kargo — bedeli satıcı karşılıyor |
 | Ambalaj | **$1,50** | |
-| İndirim | **%25, kalıcı** | Etsy'de açık; tahsilat = liste × 0,75. Tarihçe: %15 → **%25** (08-20, §9). §10'daki "1/3" ÖLÇÜM HATASIYDI, geri alındı (§11) |
+| İndirim | **%30, kalıcı** (sahibin beyanı 2026-10-18, §13) | Etsy'de açık; tahsilat = liste × 0,70. Tarihçe: %15 → %25 (08-20, §9) → **%30** (10-18, §13). §10'daki "1/3" ÖLÇÜM HATASIYDI, geri alındı (§11). Sipariş verisi 17 Ekim'e kadar hâlâ 0,2500 ölçüyor |
 | Etsy kesintisi | %6,5 işlem + %3 ödeme + $0,25 | Ağustos siparişlerinde ölçüldü: %9,1–10,6 ✓ |
 | Hedef marj | **%25** | §10 kararı; önceki değer %20 |
 
@@ -53,8 +53,9 @@ oradaki sabitler elden geçirilmeli** — yoksa panel sessizce yanlış marj gö
 maliyet = gram × $106 + $5 (kargo) + $1,50 (ambalaj)
 liste   = (maliyet + $0,25) / ((1 − indirim) × (0,905 − hedef_marj))
 ```
-Tam dolara yukarı yuvarlanır. Güncel değerler: indirim **%25**, hedef marj **%25**
-→ payda `0,75 × 0,655 = 0,49125`.
+Tam dolara yukarı yuvarlanır. Güncel değerler: indirim **%30**, hedef marj **%25**
+→ payda `0,70 × 0,655 = 0,4585` (§13; %25 indirimli eski payda 0,49125 — canlı
+katalog hâlâ o tabanla kurulu, bkz. §13 açık kalem).
 
 > **İndirim oranını ölçerken paydaya dikkat.** `sales.item_total_cents` indirim
 > SONRASI nettir; doğru oran `discount_cents / (item_total_cents + discount_cents)`.
@@ -718,3 +719,83 @@ Bu 18'in **paneli bayat** (fiyatları hâlâ %12,5 fazla gösteriyor), Etsy'si
 doğru (kullanıcının zammı). Panel–Etsy eşitliği ilk Etsy senkronunda
 kendiliğinden kurulur; senkrona kadar bu listinglerin panel marjı yanlıştır.
 Senkron sonrası, istenirse aynı `p0 × 1,29161` kuralı onlara da uygulanabilir.
+
+## 13. İndirim %25 → %30 + Noel 2026 taslaklarının tahmini fiyatı (2026-10-18)
+
+Sahip: *"panelde listing önerilerine yeni listingleri ekledim, tahmini fiyatları
+gir; mağazada %30 indirim var, bu hâlde bile kârlı olmalı."* İki iş: sabit
+değişimi ve 40 taslağın fiyatı.
+
+### Girdi doğrulaması (§11 dersi: paydaya dikkat)
+
+Doğru paydayla (`discount/(item_total+discount)`) günlük ölçüm, son 14 gün:
+
+| Gün (NY) | Oran | Sipariş |
+|---|---|---|
+| 06 / 10 / 12 / 15 / 17 Ekim | **0,2500** (hepsi) | 8 / 5 / 3 / 6 / 4 |
+
+Yani sipariş verisi 17 Ekim'e kadar **%25** gösteriyor; %30 sahibin bu tarihte
+açtığı ya da açacağı ayardır, veri henüz onu göstermiyor. Sabit sahibin beyanına
+göre 0,30 yapıldı (`lib/jade/pricing.ts`, tarihli not) — motorun dış dünyayı
+temsil eden sabiti dış dünyayı izler, panel ayarını değil (§9 dersi). Haftalık
+ölçüm sorgusu aynı; ilk %30'lu hafta göründüğünde bu bölüm doğrulanmış sayılır.
+
+### Noel 2026 taslakları — 40 ürün × 3 karat
+
+Panel içe aktarımı her taslağa `Gold Karat` 10K / 14K / 18K ekseni koydu
+(tasarım ve tedarikçi oranı yalnız 14K). Karat kuralı panelin kendi kuralı,
+`lib/gold-cost.ts` `derivePurchaseCentsPerGram` (toplamsal: metal payı spotla
+saflıkla ölçeklenir, işçilik primi sabit kalır; Ophir 2026-09-16 kanıtı
+1,400 ≈ 1,394):
+
+| Girdi | Değer |
+|---|---|
+| Spot | **$4.166,10 / ozt** (gold-api.com, 2026-10-18 18:58 UTC) |
+| 14K $/g | **$106,00** (her şey dahil fatura oranı) → melt $78,36 + prim **$27,64** |
+| 10K $/g | $55,72 + 27,64 = **$83,36** |
+| 18K $/g | $100,46 + 27,64 = **$128,10** |
+| Gram | 14K katalog gramı × yoğunluk: 10K **×0,892**, 18K **×1,137** (second-brain 2026-09-16; Jade canlı kataloğu 0,880 / 1,121 ölçüyor) |
+| Formül | `ceil((gram × $/g + 6,50 + 0,25) / 0,4585 / 100) × 100` (indirim %30, hedef marj %25) |
+
+Sonuç: 18K/14K ≈ 1,365 (Jade canlı kataloğunun ortalaması **1,366**), 10K/14K
+≈ 0,707 (canlı ortalama 0,68, aralık 0,57–0,86). 14K listeleri %25'li kataloğa
+göre ×1,0714 (ör. N7 $888 → $952). TS motoru ile Python aynası 40/40 fiyatta ve
+3/3 $/g'de birebir (`node --experimental-strip-types` ile çapraz koşuldu).
+
+| | 10K | 14K | 18K |
+|---|---|---|---|
+| Bileklik (B1–B10) | $548–613 | $776–868 | $1.060–1.189 |
+| Kolye (N1–N10) | $615–688 | $871–975 | $1.191–1.334 |
+| Küpe (E1–E10) | $248–290 | $346–406 | $471–552 |
+| Broş (P1–P10) | $555–681 | $785–963 | $1.074–1.317 |
+
+Her satırda %30 indirimde net marj %25,0–25,2 (Etsy %9,5 + $0,25 sonrası).
+
+### Yazım (panel)
+
+`docs/jade/xmas26/panel_prices.py` → `panel_prices.sql`; tek CTE'li UPDATE,
+kapsam: Jade org + `JGN-X26-<ID>` + `status='draft'` + `etsy_listing_id null`
++ `archived_at null`. Ön koşul **40 / 120 / 0 / 0** (ürün / varyant / fiyatlı
+varyant / fiyatlı ürün) tuttu, sonra apply: **120 varyant + 40 ürün**.
+Yazılanlar: varyant `price_cents` + `weight_grams` (karat gramı, `weight_source`
+"xmas26 estimate … not weighed"); ürün `price_cents` = en düşük varyant (10K, Etsy
+"from" kuralı); `listing_metadata.retailPricePlan` (`xmas26-v1-disc30`, status
+`ESTIMATE`, üç karatın gram/maliyet/liste/ödenen/marj dökümü, spot ve kaynaklar);
+`approval.priceReadyForEtsy=true`, `livePublicationAuthorized=false`.
+
+Geri okuma: mühür **`3326763ef5809c2ad0b7d502b60f0f43`** (sku-karat:liste:gram,
+beklenenle birebir), toplam 9.277.600 cent / 120 varyant, ürün fiyatı = min
+varyant 40/40, plan JSON ↔ varyant 120/120, 10K<14K<18K 40/40, F26 taslaklarına
+dokunulmadı (0), `audit_log` 120 varyant + 40 ürün satırı.
+
+### Açık kalemler
+
+- **Canlı katalog %25 tabanında.** İndirim gerçekten %30 ise net tahsilat
+  %6,7 düştü; §9'daki taban kaydırma deseni (`× 0,75/0,70 = 1,0714`, md5 ön
+  koşul mührüyle, idempotent DEĞİL) sahibin kararıyla ayrı turda koşulur.
+  Bu turda KOŞULMADI.
+- 10K/18K oranları türetim; Görkem'in gerçek 10K/18K $/g'si gelince
+  `catalog.py`'daki `rate_cents` yerine o yazılır ve `panel_prices.py` yeniden
+  koşulur (`retailPricePlan.version` yükseltilir).
+- Spot girdi olarak tarihli; yeniden fiyatlamadan önce tazelenir.
+- Açıklamalar 14K gramını söylüyor ("3.45 g"); 10K/18K gramı yalnız varyantta.

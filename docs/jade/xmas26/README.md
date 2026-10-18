@@ -24,15 +24,29 @@ Sahibe teslim yüzeyi **`image-book.html`** (Artifact olarak da yayınlandı). B
 | 8 | `review.py` → `images/heroes/status.json` | Her hero için `ok` / `check` / `redo` + sebep + düzeltilmiş prompt (saklanan prompt'tan assert'li `replace` ile türetilir). Kontak baskısına bakılarak `review.py` içinde elle yazılır. Sahibin kendi ürettiği hero `images/heroes/raw/<ID>.png` olarak konur, 7 yeniden koşulur. |
 | 9 | `page.py` | `catalog.json` + `prompts.json` + `status.json` + `jobs.json` → `image-book.html`. |
 | 10 | `maker_book.py` | `catalog.json` + `work/evidence_summary.json` + `status.json` → `Jade-Noel-2026-Uretici-Kitabi.pdf` (üreticiye giden teklif kitabı: perakende fiyat YOK; görsel notları; bundled Chromium ile basılır). |
+| 11 | `panel_prices.py` | `catalog.json` → `panel_prices.sql` (+ mühür): paneldeki 40 taslağın 3 karat varyantına tahmini fiyat/gram, `retailPricePlan`; ön koşul ve geri okuma sorguları dosyanın başında. Uygulandı 2026-10-18 (`fiyatlandirma.md` §13). |
+| 12 | `gorkem_sheet.py` | `catalog.json` + `images/heroes/<ID>.jpg` → `Jade-Noel-2026-Gorkem-Maliyet-Talebi.xlsx` (üreticinin dolduracağı maliyet tablosu: hero küçük görseli, ürün tipi, atölye ölçüleri, sarı maliyet hücreleri; perakende fiyat YOK). |
 
-Yeniden üretmek için 3 → 4 → 5 → 9 → 10 yeterlidir; 6–8 yalnız görsel değişince.
+Yeniden üretmek için 3 → 4 → 5 → 9 → 10 yeterlidir; 6–8 yalnız görsel değişince;
+11 yalnız fiyat girdisi (indirim, spot, $/g) değişince ve her seferinde yeni plan sürümüyle.
 
 ## Fiyat
 
 `lib/jade/pricing.ts` birebir aynalanır (`catalog.py` üstü): `cost = round(g × 10600) + 500 + 150`,
-`list = ceil((cost + 25) / (0.75 × (0.905 − 0.25)) / 100) × 100`, ödenen = list × 3/4. Yalnız
+`list = ceil((cost + 25) / (0.70 × (0.905 − 0.25)) / 100) × 100`, ödenen = list × 0,70
+(**mağaza indirimi %30**, sahibin beyanı 2026-10-18; `fiyatlandirma.md` §13). Yalnız
 **altın gramı** fiyatlanır; mine ve taş gram hesabına girmez. $106/g tedarikçinin her şey dahil
-14K oranı: ayrı işçilik satırı yok, doğrulanmış 18K oranı yok → 40 parçanın hepsi 14K.
+14K oranı: ayrı işçilik satırı yok, doğrulanmış 18K oranı yok → tasarımların hepsi 14K.
+
+**Karat varyantları (panel, 2026-10-18):** sahip taslakları panele `Gold Karat` 10K / 14K / 18K
+ekseniyle aktardı. 10K ve 18K TAHMİNdir ve panelin kendi kuralıyla kurulur
+(`lib/gold-cost.ts` `derivePurchaseCentsPerGram`): $/g'nin metal payı günün spotunda saflıkla
+ölçeklenir, tedarikçinin işçilik primi (14K oranı − 14K melt) sabit kalır; gram alaşım
+yoğunluğuyla ölçeklenir (10K ×0,892, 18K ×1,137). Spot ve oranlar `catalog.json → pricing`
+altında tarihli durur; yeniden fiyatlamadan önce spot tazelenir. `panel_prices.py`
+`catalog.json`'dan panel SQL'ini (`panel_prices.sql`) ve mührü üretir: ürün fiyatı = en düşük
+varyant (10K, Etsy "from" fiyatı), varyant fiyatı + gramı karat başına,
+`listing_metadata.retailPricePlan` üç karatın tam dökümünü taşır.
 
 ## Görsel kuralları
 

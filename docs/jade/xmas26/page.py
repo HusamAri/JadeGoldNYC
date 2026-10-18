@@ -114,7 +114,7 @@ def product(p):
             f'{" · erkek yaka iğnesi" if p.get("wearer") == "men" else ""}</p>'
             f'<h3>{e(p["name"])}</h3><p class="etitle">{e(p["title"])}</p>'
             f'<dl class="price"><div><dt>Liste</dt><dd class="num">{money(pr["list_cents"])}</dd></div>'
-            f'<div><dt>%25 indirimle ödenen</dt><dd class="num">{money(pr["paid_cents"])}</dd></div>'
+            f'<div><dt>%{round(pr.get("discount", 0.30) * 100)} indirimle ödenen</dt><dd class="num">{money(pr["paid_cents"])}</dd></div>'
             f'<div><dt>Marj</dt><dd class="num">%{pr["margin"] * 100:.1f}</dd></div></dl>'
             f'<div class="chips">{chips(p)}</div><p class="why">{e(p["season_proof"])}</p></div></div>'
             f'{listing(p)}{workshop(p)}{frames(p)}</section>')
