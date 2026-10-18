@@ -9,6 +9,7 @@ change is visible; a finding on a field this script does not know is NOT applied
 because silently dropping it would read as "covered" when it was not.
 """
 import json
+import os
 import pathlib
 import re
 
@@ -35,6 +36,9 @@ products, applied, skipped = [], [], []
 for cat in ORDER:
     f = WORK / f"copy_{cat}.json"
     if not f.exists():
+        if os.environ.get("PARTIAL"):
+            print(f"PARTIAL: {f.name} not there yet, skipped")
+            continue
         raise SystemExit(f"missing {f.name}")
     d = json.load(open(f))
     by_id = {p["id"]: dict(p) for p in d["copy"]["products"]}
