@@ -26,12 +26,15 @@ import pathlib
 
 HERE = pathlib.Path(__file__).parent
 ORG = "f155b853-dfaf-48fd-94c5-ddfcb856e07c"  # Jade Gold NYC
-PLAN_VERSION = "xmas26-v1-disc30"
+# v1 (2026-10-18 19:07 UTC): discount 30 %, margin 25 %. v2 (same day, owner: "kâr marjı %50"):
+# margin 50 %, same discount; re-priced in place, so the pre-check below gates on the v1 plan.
+PLAN_VERSION = "xmas26-v2-disc30-m50"
+PREVIOUS_PLAN_VERSION = "xmas26-v1-disc30"
 KARATS = ("10K", "14K", "18K")
 
 cat = json.load(open(HERE / "catalog.json"))
 pr = cat["pricing"]
-assert pr["discount"] == 0.30 and pr["target_margin"] == 0.25, pr
+assert pr["discount"] == 0.30 and pr["target_margin"] == 0.50, pr
 rows = []
 for p in cat["products"]:
     k = p["price"]["karats"]
@@ -60,7 +63,7 @@ common = {
     "costPerGram14kCents": pr["cost_per_gram_14k_cents"], "rateCentsPerGram": pr["rate_cents_per_gram"],
     "densityRatio": pr["density_ratio"],
     "authorizedOn": "2026-10-18",
-    "authorizedBy": "owner: 'tahmini fiyatları gir, mağazada %30 indirim var, bu halde bile kârlı olmalı'",
+    "authorizedBy": "owner 2026-10-18: 'tahmini fiyatları gir, mağazada %30 indirim var, bu halde bile kârlı olmalı' + 'fiyatların kar marjını %50 olarak belirle'",
 }
 values = []
 for pid, k in rows:
@@ -78,8 +81,10 @@ sql = f"""-- Jade Gold NYC · Noel 2026 · 40 taslağın tahmini fiyatları (pan
 -- spot {pr['spot_usd_per_ozt']} ({pr['spot_source']}) · $/g {pr['rate_cents_per_gram']}
 -- beklenen mühür (sku-karat:liste:gram, sku sırası): {seal} · liste toplamı {total} cent / 120 varyant
 --
--- ÖN KOŞUL (uygulamadan önce koş; 40 / 120 / 0 / 0 beklenir, aksi hâlde DUR):
---   select count(distinct p.id), count(v.id), count(v.price_cents), count(p.price_cents)
+-- ÖN KOŞUL (uygulamadan önce koş; 40 / 120 / 40 / 0 beklenir, aksi hâlde DUR — "zaten koşmuş mu?" kapısı):
+--   select count(distinct p.id), count(v.id),
+--          count(distinct p.id) filter (where p.listing_metadata->'retailPricePlan'->>'version' = '{PREVIOUS_PLAN_VERSION}'),
+--          count(distinct p.id) filter (where p.listing_metadata->'retailPricePlan'->>'version' = '{PLAN_VERSION}')
 --   from products p join product_variants v on v.product_id = p.id
 --   where p.org_id = '{ORG}' and p.sku like 'JGN-X26-%' and p.status = 'draft'
 --     and p.etsy_listing_id is null and p.archived_at is null

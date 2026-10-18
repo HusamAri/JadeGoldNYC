@@ -1559,6 +1559,21 @@ repodaki hedefidir.
   ön koşul 40/120/0/0, apply 120+40, mühür beklenenle birebir, plan JSON ↔ varyant 120/120,
   audit 120+40, komşu F26 taslaklarına 0 dokunuş; SQL'in ortak JSON'u tek `common` CTE'de,
   satırlar yalnız sayı (46 KB → 8,6 KB, transkripsiyon yüzeyi küçüldü).
+  **Devamı (aynı akşam, Etsy itişi) — dış sisteme yazmadan önce "hangi taslak HANGİ protokole
+  düşer?" sorusunu kodun GERÇEK çözücüsüyle sor; ve kodu olmayan hedefi kuyruktan çıkar, kodu
+  sonra gelir:** 40 taslağın `product_type`'ı NULL ve `listingProtocol`'u yoktu; çözücünün eski-kayıt
+  yolu başlıktan bileklik/kolyeyi tanıyor, küpe ve broşu ise sessizce ALYANS sayıyordu — kuru koşu
+  bunu "ready" diye gösterirdi, hata ancak envanter doğrulamasında (kilit alındıktan sonra) patlardı.
+  Çözüm veriye açık protokol yazmak oldu (küpe stud/sarkan/halka ayrımı kataloğun `noun`'undan,
+  "Lapel Pin for Men" broşları iğne + döner emniyet kilidi taşıdığı için Brooches 1201). E4 kulak
+  tırmanıcısı için defterde protokol yoktu; canlı ağaç `?taxonomy=ear` ile okundu (2901 "Ear
+  Climbers"), protokol KODA yazıldı (test 32/32) ama prod'da eski kod koştuğu için bilinmeyen id
+  `product_type`'a düşüp yine alyans olurdu — bu yüzden E4 `draftTransfer: hold` işaretiyle
+  kuyruktan çıkarıldı (rota "önceki aktarım kaydı var" diye atlar), deploy'dan sonra işaret silinip
+  tek başına itilir. Arada sahip marjı %25 → %50 yaptı; Etsy'ye tek bayt gitmeden fiyat panelde
+  yeniden kuruldu (plan v2, ön koşul "v1 planı 40 / v2 0 / canlı mühür = v1 mührü"). Zincir: kuru
+  39 + 1 blocked → kanarya P10 (yeni protokol ailesi + en riskli başlık) → verify 11/11 →
+  10/10/10/8 partiler, 0 uyarı → verify 39/39 (117 varyant, 195 görsel, 0 fiyat farkı).
 
 ## Ürün/UX dersleri
 

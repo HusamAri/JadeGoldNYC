@@ -62,6 +62,7 @@ export type ListingProtocolId =
   | "stud_earrings"
   | "dangle_earrings"
   | "hoop_earrings"
+  | "ear_climber_earrings"
   | "anklet"
   | "brooch"
   | "stick_pin"
@@ -146,6 +147,14 @@ export const LISTING_PROTOCOLS: Record<ListingProtocolId, ListingProtocolSpec> =
   },
   hoop_earrings: {
     id: "hoop_earrings", label: "Hoop earrings", taxonomyNames: ["Hoop Earrings", "Earrings"], taxonomyRoot: "Jewelry", requiredVariationAxes: [], personalization: null, parcel: RING_PARCEL,
+  },
+  // Kulak tırmanıcısı stud, sarkan ya da halka değildir. Düğüm CANLI ağaçtan
+  // okundu (ops/drafts-push?taxonomy=ear, 2026-10-18): 2901 "Jewelry > Earrings >
+  // Ear Jackets & Climbers > Ear Climbers" (ebeveyn 2900). İlk kullanım: Jade
+  // Noel 2026 E4 Comet Tail Climber; protokol eklenene kadar o taslak itişten
+  // tutuldu (listing_metadata.draftTransfer hold), diğer 39 gönderildi.
+  ear_climber_earrings: {
+    id: "ear_climber_earrings", label: "Ear climber earrings", taxonomyNames: ["Ear Climbers", "Ear Jackets & Climbers", "Earrings"], taxonomyRoot: "Jewelry", requiredVariationAxes: [], personalization: null, parcel: RING_PARCEL,
   },
   wedding_band: {
     id: "wedding_band",
@@ -332,6 +341,7 @@ export const LISTING_PROTOCOLS: Record<ListingProtocolId, ListingProtocolSpec> =
 const PRODUCT_TYPE_PROTOCOL: Record<string, ListingProtocolId> = {
   earring: "stud_earrings",
   stud_earrings: "stud_earrings",
+  ear_climber: "ear_climber_earrings",
   ring: "wedding_band",
   signet_ring: "signet_ring",
   monogram_signet_ring: "monogram_signet_ring",

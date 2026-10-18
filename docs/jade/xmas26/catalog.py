@@ -33,7 +33,11 @@ PACKAGING = 1_50
 DISCOUNT = 0.30             # 2026-10-18: %25 → %30, owner's instruction (pricing.ts, fiyatlandirma.md §13)
 ETSY_RATE = 0.095
 ETSY_FIXED = 25
-MARGIN = 0.25
+# 2026-10-18, owner: "fiyatların kar marjını %50 olarak belirle". Net margin on what the shop
+# receives (list × 0.70) after Etsy fees — the engine's own definition (jadeMarginAt). This is
+# the COLLECTION's target; the engine default JADE_TARGET_MARGIN (0.25, catalog-wide) is
+# unchanged and jadeTargetPriceCents takes the margin as a parameter.
+MARGIN = 0.50
 
 # lib/gold-cost.ts: derivePurchaseCentsPerGram + KARAT_PURITY. Spot is an INPUT, dated.
 SPOT_USD_PER_OZT = 4166.10  # gold-api.com, 2026-10-18 18:58 UTC

@@ -3,7 +3,7 @@
  "engine": "lib/jade/pricing.ts",
  "pricing": {
   "discount": 0.3,
-  "target_margin": 0.25,
+  "target_margin": 0.5,
   "cost_per_gram_14k_cents": 10600,
   "spot_usd_per_ozt": 4166.1,
   "spot_source": "gold-api.com 2026-10-18T18:58Z",
@@ -231,35 +231,35 @@
     "Franco 1.5 uc halkasi tel capi (<=0.8 mm varsayildi) tedarikciden yazili alinmali; kalinsa C-halka boslugu buyutulur."
    ],
    "price": {
-    "list_cents": 81300,
-    "paid_cents": 56910,
+    "list_cents": 131400,
+    "paid_cents": 91980,
     "cost_cents": 37220,
-    "margin": 0.2505,
+    "margin": 0.5001,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 3.08,
       "rate_cents_per_gram": 8336,
       "cost_cents": 26325,
-      "list_cents": 57500,
-      "paid_cents": 40250,
-      "margin": 0.2503
+      "list_cents": 93000,
+      "paid_cents": 65100,
+      "margin": 0.5002
      },
      "14K": {
       "grams": 3.45,
       "rate_cents_per_gram": 10600,
       "cost_cents": 37220,
-      "list_cents": 81300,
-      "paid_cents": 56910,
-      "margin": 0.2505
+      "list_cents": 131400,
+      "paid_cents": 91980,
+      "margin": 0.5001
      },
      "18K": {
       "grams": 3.92,
       "rate_cents_per_gram": 12810,
       "cost_cents": 50865,
-      "list_cents": 111000,
-      "paid_cents": 77700,
-      "margin": 0.25
+      "list_cents": 179600,
+      "paid_cents": 125720,
+      "margin": 0.5002
      }
     }
    }
@@ -452,35 +452,35 @@
     "Ilk test agacinda B1 ile birlikte dokulup 0.8 mm uclarin doldugu dogrulanmali."
    ],
    "price": {
-    "list_cents": 79400,
-    "paid_cents": 55580,
+    "list_cents": 128400,
+    "paid_cents": 89880,
     "cost_cents": 36372,
-    "margin": 0.2501,
+    "margin": 0.5,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 3.01,
       "rate_cents_per_gram": 8336,
       "cost_cents": 25741,
-      "list_cents": 56200,
-      "paid_cents": 39340,
-      "margin": 0.25
+      "list_cents": 90900,
+      "paid_cents": 63630,
+      "margin": 0.5001
      },
      "14K": {
       "grams": 3.37,
       "rate_cents_per_gram": 10600,
       "cost_cents": 36372,
-      "list_cents": 79400,
-      "paid_cents": 55580,
-      "margin": 0.2501
+      "list_cents": 128400,
+      "paid_cents": 89880,
+      "margin": 0.5
      },
      "18K": {
       "grams": 3.83,
       "rate_cents_per_gram": 12810,
       "cost_cents": 49712,
-      "list_cents": 108500,
-      "paid_cents": 75950,
-      "margin": 0.2501
+      "list_cents": 175500,
+      "paid_cents": 122850,
+      "margin": 0.5001
      }
     }
    }
@@ -753,35 +753,35 @@
     "Kupon testi gecmez ve soguk mineye (epoxy resin) dusulurse yalniz ENAMEL bolumu degil baslik, etiketler ('vitreous enamel', '... enamel') ve materials ('vitreous enamel' -> 'epoxy resin') da FTC 23.1 geregi degistirilmeli; cold_enamel_paragraph hazir."
    ],
    "price": {
-    "list_cents": 77600,
-    "paid_cents": 54320,
+    "list_cents": 125400,
+    "paid_cents": 87780,
     "cost_cents": 35524,
-    "margin": 0.2506,
+    "margin": 0.5,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 2.93,
       "rate_cents_per_gram": 8336,
       "cost_cents": 25074,
-      "list_cents": 54800,
-      "paid_cents": 38360,
-      "margin": 0.2507
+      "list_cents": 88600,
+      "paid_cents": 62020,
+      "margin": 0.5003
      },
      "14K": {
       "grams": 3.29,
       "rate_cents_per_gram": 10600,
       "cost_cents": 35524,
-      "list_cents": 77600,
-      "paid_cents": 54320,
-      "margin": 0.2506
+      "list_cents": 125400,
+      "paid_cents": 87780,
+      "margin": 0.5
      },
      "18K": {
       "grams": 3.74,
       "rate_cents_per_gram": 12810,
       "cost_cents": 48559,
-      "list_cents": 106000,
-      "paid_cents": 74200,
-      "margin": 0.2502
+      "list_cents": 171400,
+      "paid_cents": 119980,
+      "margin": 0.5001
      }
     }
    }
@@ -1031,35 +1031,35 @@
     "Kupon testi gecmez ve soguk mineye (epoxy resin) dusulurse yalniz ENAMEL bolumu degil baslik, etiketler ('vitreous enamel', '... enamel') ve materials ('vitreous enamel' -> 'epoxy resin') da FTC 23.1 geregi degistirilmeli; cold_enamel_paragraph hazir."
    ],
    "price": {
-    "list_cents": 86600,
-    "paid_cents": 60620,
+    "list_cents": 140000,
+    "paid_cents": 98000,
     "cost_cents": 39658,
-    "margin": 0.2504,
+    "margin": 0.5001,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 3.28,
       "rate_cents_per_gram": 8336,
       "cost_cents": 27992,
-      "list_cents": 61200,
-      "paid_cents": 42840,
-      "margin": 0.251
+      "list_cents": 98900,
+      "paid_cents": 69230,
+      "margin": 0.5003
      },
      "14K": {
       "grams": 3.68,
       "rate_cents_per_gram": 10600,
       "cost_cents": 39658,
-      "list_cents": 86600,
-      "paid_cents": 60620,
-      "margin": 0.2504
+      "list_cents": 140000,
+      "paid_cents": 98000,
+      "margin": 0.5001
      },
      "18K": {
       "grams": 4.18,
       "rate_cents_per_gram": 12810,
       "cost_cents": 54196,
-      "list_cents": 118300,
-      "paid_cents": 82810,
-      "margin": 0.2502
+      "list_cents": 191300,
+      "paid_cents": 133910,
+      "margin": 0.5001
      }
     }
    }
@@ -1264,35 +1264,35 @@
     "Lab mavi safirin buz mavisi (acik) tonu tedarikci partisinden renk numunesiyle secilmeli; koyu royal mavi markaya uymaz."
    ],
    "price": {
-    "list_cents": 83100,
-    "paid_cents": 58170,
+    "list_cents": 134400,
+    "paid_cents": 94080,
     "cost_cents": 38068,
-    "margin": 0.2501,
+    "margin": 0.5001,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 3.15,
       "rate_cents_per_gram": 8336,
       "cost_cents": 26908,
-      "list_cents": 58800,
-      "paid_cents": 41160,
-      "margin": 0.2507
+      "list_cents": 95100,
+      "paid_cents": 66570,
+      "margin": 0.5004
      },
      "14K": {
       "grams": 3.53,
       "rate_cents_per_gram": 10600,
       "cost_cents": 38068,
-      "list_cents": 83100,
-      "paid_cents": 58170,
-      "margin": 0.2501
+      "list_cents": 134400,
+      "paid_cents": 94080,
+      "margin": 0.5001
      },
      "18K": {
       "grams": 4.01,
       "rate_cents_per_gram": 12810,
       "cost_cents": 52018,
-      "list_cents": 113600,
-      "paid_cents": 79520,
-      "margin": 0.2505
+      "list_cents": 183600,
+      "paid_cents": 128520,
+      "margin": 0.5001
      }
     }
    }
@@ -1543,35 +1543,35 @@
     "Kupon testi gecmez ve soguk mineye (epoxy resin) dusulurse yalniz ENAMEL bolumu degil baslik, etiketler ('vitreous enamel', '... enamel') ve materials ('vitreous enamel' -> 'epoxy resin') da FTC 23.1 geregi degistirilmeli; cold_enamel_paragraph hazir."
    ],
    "price": {
-    "list_cents": 86800,
-    "paid_cents": 60760,
+    "list_cents": 140400,
+    "paid_cents": 98280,
     "cost_cents": 39764,
-    "margin": 0.2501,
+    "margin": 0.5001,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 3.29,
       "rate_cents_per_gram": 8336,
       "cost_cents": 28075,
-      "list_cents": 61300,
-      "paid_cents": 42910,
-      "margin": 0.2501
+      "list_cents": 99200,
+      "paid_cents": 69440,
+      "margin": 0.5003
      },
      "14K": {
       "grams": 3.69,
       "rate_cents_per_gram": 10600,
       "cost_cents": 39764,
-      "list_cents": 86800,
-      "paid_cents": 60760,
-      "margin": 0.2501
+      "list_cents": 140400,
+      "paid_cents": 98280,
+      "margin": 0.5001
      },
      "18K": {
       "grams": 4.2,
       "rate_cents_per_gram": 12810,
       "cost_cents": 54452,
-      "list_cents": 118900,
-      "paid_cents": 83230,
-      "margin": 0.2505
+      "list_cents": 192200,
+      "paid_cents": 134540,
+      "margin": 0.5001
      }
     }
    }
@@ -1777,35 +1777,35 @@
     "Iki equestrian SKU (B6/B7) birbirine yakin; L11 ailesi 2 ile sinirin icinde, karar kullanicinin."
    ],
    "price": {
-    "list_cents": 85700,
-    "paid_cents": 59990,
+    "list_cents": 138500,
+    "paid_cents": 96950,
     "cost_cents": 39234,
-    "margin": 0.2506,
+    "margin": 0.5001,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 3.25,
       "rate_cents_per_gram": 8336,
       "cost_cents": 27742,
-      "list_cents": 60600,
-      "paid_cents": 42420,
-      "margin": 0.2504
+      "list_cents": 98000,
+      "paid_cents": 68600,
+      "margin": 0.5002
      },
      "14K": {
       "grams": 3.64,
       "rate_cents_per_gram": 10600,
       "cost_cents": 39234,
-      "list_cents": 85700,
-      "paid_cents": 59990,
-      "margin": 0.2506
+      "list_cents": 138500,
+      "paid_cents": 96950,
+      "margin": 0.5001
      },
      "18K": {
       "grams": 4.14,
       "rate_cents_per_gram": 12810,
       "cost_cents": 53683,
-      "list_cents": 117200,
-      "paid_cents": 82040,
-      "margin": 0.2503
+      "list_cents": 189500,
+      "paid_cents": 132650,
+      "margin": 0.5001
      }
     }
    }
@@ -2056,35 +2056,35 @@
     "Kupon testi gecmez ve soguk mineye (epoxy resin) dusulurse yalniz ENAMEL bolumu degil baslik, etiketler ('vitreous enamel', '... enamel') ve materials ('vitreous enamel' -> 'epoxy resin') da FTC 23.1 geregi degistirilmeli; cold_enamel_paragraph hazir."
    ],
    "price": {
-    "list_cents": 82900,
-    "paid_cents": 58030,
+    "list_cents": 134000,
+    "paid_cents": 93800,
     "cost_cents": 37962,
-    "margin": 0.2504,
+    "margin": 0.5,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 3.14,
       "rate_cents_per_gram": 8336,
       "cost_cents": 26825,
-      "list_cents": 58600,
-      "paid_cents": 41020,
-      "margin": 0.2504
+      "list_cents": 94800,
+      "paid_cents": 66360,
+      "margin": 0.5004
      },
      "14K": {
       "grams": 3.52,
       "rate_cents_per_gram": 10600,
       "cost_cents": 37962,
-      "list_cents": 82900,
-      "paid_cents": 58030,
-      "margin": 0.2504
+      "list_cents": 134000,
+      "paid_cents": 93800,
+      "margin": 0.5
      },
      "18K": {
       "grams": 4.0,
       "rate_cents_per_gram": 12810,
       "cost_cents": 51890,
-      "list_cents": 113300,
-      "paid_cents": 79310,
-      "margin": 0.2504
+      "list_cents": 183200,
+      "paid_cents": 128240,
+      "margin": 0.5002
      }
     }
    }
@@ -2339,35 +2339,35 @@
     "Kupon testi gecmez ve soguk mineye (epoxy resin) dusulurse yalniz ENAMEL bolumu degil baslik, etiketler ('vitreous enamel', '... enamel') ve materials ('vitreous enamel' -> 'epoxy resin') da FTC 23.1 geregi degistirilmeli; cold_enamel_paragraph hazir."
    ],
    "price": {
-    "list_cents": 80100,
-    "paid_cents": 56070,
+    "list_cents": 129600,
+    "paid_cents": 90720,
     "cost_cents": 36690,
-    "margin": 0.2502,
+    "margin": 0.5003,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 3.03,
       "rate_cents_per_gram": 8336,
       "cost_cents": 25908,
-      "list_cents": 56600,
-      "paid_cents": 39620,
-      "margin": 0.2505
+      "list_cents": 91500,
+      "paid_cents": 64050,
+      "margin": 0.5001
      },
      "14K": {
       "grams": 3.4,
       "rate_cents_per_gram": 10600,
       "cost_cents": 36690,
-      "list_cents": 80100,
-      "paid_cents": 56070,
-      "margin": 0.2502
+      "list_cents": 129600,
+      "paid_cents": 90720,
+      "margin": 0.5003
      },
      "18K": {
       "grams": 3.87,
       "rate_cents_per_gram": 12810,
       "cost_cents": 50225,
-      "list_cents": 109600,
-      "paid_cents": 76720,
-      "margin": 0.25
+      "list_cents": 177300,
+      "paid_cents": 124110,
+      "margin": 0.5001
      }
     }
    }
@@ -2610,35 +2610,35 @@
     "Kupon testi gecmez ve soguk mineye (epoxy resin) dusulurse yalniz ENAMEL bolumu degil baslik, etiketler ('vitreous enamel', '... enamel') ve materials ('vitreous enamel' -> 'epoxy resin') da FTC 23.1 geregi degistirilmeli; cold_enamel_paragraph hazir."
    ],
    "price": {
-    "list_cents": 80400,
-    "paid_cents": 56280,
+    "list_cents": 129900,
+    "paid_cents": 90930,
     "cost_cents": 36796,
-    "margin": 0.2508,
+    "margin": 0.5001,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 3.04,
       "rate_cents_per_gram": 8336,
       "cost_cents": 25991,
-      "list_cents": 56800,
-      "paid_cents": 39760,
-      "margin": 0.2507
+      "list_cents": 91800,
+      "paid_cents": 64260,
+      "margin": 0.5001
      },
      "14K": {
       "grams": 3.41,
       "rate_cents_per_gram": 10600,
       "cost_cents": 36796,
-      "list_cents": 80400,
-      "paid_cents": 56280,
-      "margin": 0.2508
+      "list_cents": 129900,
+      "paid_cents": 90930,
+      "margin": 0.5001
      },
      "18K": {
       "grams": 3.88,
       "rate_cents_per_gram": 12810,
       "cost_cents": 50353,
-      "list_cents": 109900,
-      "paid_cents": 76930,
-      "margin": 0.2501
+      "list_cents": 177800,
+      "paid_cents": 124460,
+      "margin": 0.5002
      }
     }
    }
@@ -2806,35 +2806,35 @@
    "total_grams": 4.07,
    "description": "An eight-pointed star drawn in gold: an open rail, eight short spokes and a small round window at the centre, with the lower ray drawn longer. A quiet Christmas gift that keeps being worn long after.\n\nTHE PIECE\nThe star is 18 mm wide and 23 mm tall. Seven rays reach 9 mm from the centre and the lower ray 14 mm. The 1.0 mm rail is diamond-cut on its face; the centre disc is 4.5 mm across with a 2.0 mm hole. The ray tips are rounded. The bail is cast with the star.\n\nGOLD WEIGHT\n4.07 g of 14k gold, counting the chain, clasp and extender. On the scale the finished piece weighs 4.07 g in total with everything on it.\n\nLENGTH AND FIT\nA 1.0 mm 14k cable chain, 16 in with a 2 in extender, so it sits from 16 to 18 in. The chain is part of the design and its weight is counted in the gold weight above.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap and a soft brush. Take it off for swimming and cleaning. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout.",
    "price": {
-    "list_cents": 95600,
-    "paid_cents": 66920,
+    "list_cents": 154600,
+    "paid_cents": 108220,
     "cost_cents": 43792,
-    "margin": 0.2502,
+    "margin": 0.5001,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 3.63,
       "rate_cents_per_gram": 8336,
       "cost_cents": 30910,
-      "list_cents": 67500,
-      "paid_cents": 47250,
-      "margin": 0.2503
+      "list_cents": 109200,
+      "paid_cents": 76440,
+      "margin": 0.5003
      },
      "14K": {
       "grams": 4.07,
       "rate_cents_per_gram": 10600,
       "cost_cents": 43792,
-      "list_cents": 95600,
-      "paid_cents": 66920,
-      "margin": 0.2502
+      "list_cents": 154600,
+      "paid_cents": 108220,
+      "margin": 0.5001
      },
      "18K": {
       "grams": 4.63,
       "rate_cents_per_gram": 12810,
       "cost_cents": 59960,
-      "list_cents": 130900,
-      "paid_cents": 91630,
-      "margin": 0.2504
+      "list_cents": 211600,
+      "paid_cents": 148120,
+      "margin": 0.5
      }
     }
    }
@@ -3016,35 +3016,35 @@
    "total_grams": 4.12,
    "description": "A comet in gold: a domed head with a lab-grown white sapphire and two tail rails that sweep away from it, three more sapphires running down the main rail. A shooting-star wish for Christmas and every day after.\n\nTHE PIECE\nAbout 31 mm long. The domed head is 6.0 mm across; the main tail rail is 26 mm long and narrows from 1.6 mm to 1.0 mm, the second rail is 18 mm, joined by three short cross bars. Rail faces are diamond-cut, the head is polished, every tip is rounded. Because the head is the heaviest part, the pendant hangs with the tail turned about 20 degrees off vertical.\n\nGOLD WEIGHT\n4.10 g of 14k gold, counting the chain, clasp and extender. On the scale the finished piece weighs 4.12 g in total with the stones.\n\nSTONES\nFour round lab-grown white sapphires, all flush set: one 2.0 mm in the head, one 1.8 mm and two 1.5 mm along the main rail, 0.09 ct in total. Each sits level with the gold over a small hole that lets light and cleaning water through. Lab-grown sapphire has the hardness of mined sapphire (Mohs 9).\n\nLENGTH AND FIT\nA 1.5 mm 14k figaro chain, 16 in with a 2 in extender, so it sits from 16 to 18 in. The chain is part of the design and its weight is counted in the gold weight above.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece. The stones are set last, cold, after all firing and polishing.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap and a soft brush. Take it off for swimming and cleaning. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout.",
    "price": {
-    "list_cents": 96300,
-    "paid_cents": 67410,
+    "list_cents": 155700,
+    "paid_cents": 108990,
     "cost_cents": 44110,
-    "margin": 0.2503,
+    "margin": 0.5001,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 3.66,
       "rate_cents_per_gram": 8336,
       "cost_cents": 31160,
-      "list_cents": 68100,
-      "paid_cents": 47670,
-      "margin": 0.2508
+      "list_cents": 110100,
+      "paid_cents": 77070,
+      "margin": 0.5004
      },
      "14K": {
       "grams": 4.1,
       "rate_cents_per_gram": 10600,
       "cost_cents": 44110,
-      "list_cents": 96300,
-      "paid_cents": 67410,
-      "margin": 0.2503
+      "list_cents": 155700,
+      "paid_cents": 108990,
+      "margin": 0.5001
      },
      "18K": {
       "grams": 4.66,
       "rate_cents_per_gram": 12810,
       "cost_cents": 60345,
-      "list_cents": 131700,
-      "paid_cents": 92190,
-      "margin": 0.2502
+      "list_cents": 213000,
+      "paid_cents": 149100,
+      "margin": 0.5001
      }
     }
    }
@@ -3263,35 +3263,35 @@
    "total_grams": 4.06,
    "description": "An evil eye in navy and white glass enamel, held by a gold crescent that wraps its lower half, with a pale blue lab-grown sapphire at each tip. A protection gift for Christmas that is worn all year.\n\nTHE PIECE\n15.3 mm across the crescent tips and 11.6 mm tall. The eye disc is 9.2 mm across, the crescent is polished gold and joined to the disc along its inner edge. The bail is hidden behind the disc.\n\nGOLD WEIGHT\n4.01 g of 14k gold, counting the chain, clasp and extender. On the scale the finished piece weighs 4.06 g in total with the enamel and stones.\n\nENAMEL\nKiln-fired vitreous enamel (glass), opaque, in navy blue and white: three fields divided by 0.7 mm gold rings, level with the gold.\n\nSTONES\nTwo 1.5 mm round lab-grown sapphires in a pale ice blue, one in a round pad at each crescent tip, flush set after the last firing.\n\nLENGTH AND FIT\nA 1.0 mm 14k cable chain, 16 in with a 2 in extender, so it sits from 16 to 18 in. The chain is part of the design and its weight is counted in the gold weight above.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece, in a zinc-free gold alloy chosen for enamel. The enamel cells are cast into the gold, filled by hand and kiln-fired. Nothing is soldered after the first firing; any fitting added later is laser welded away from the enamel. The stones are set last, cold, after all firing and polishing.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap. Glass enamel is hard and does not fade, but it can chip if struck against stone or metal. Keep it away from ultrasonic cleaners. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout.",
    "price": {
-    "list_cents": 94200,
-    "paid_cents": 65940,
+    "list_cents": 152400,
+    "paid_cents": 106680,
     "cost_cents": 43156,
-    "margin": 0.2501,
+    "margin": 0.5002,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 3.58,
       "rate_cents_per_gram": 8336,
       "cost_cents": 30493,
-      "list_cents": 66600,
-      "paid_cents": 46620,
-      "margin": 0.2504
+      "list_cents": 107700,
+      "paid_cents": 75390,
+      "margin": 0.5002
      },
      "14K": {
       "grams": 4.01,
       "rate_cents_per_gram": 10600,
       "cost_cents": 43156,
-      "list_cents": 94200,
-      "paid_cents": 65940,
-      "margin": 0.2501
+      "list_cents": 152400,
+      "paid_cents": 106680,
+      "margin": 0.5002
      },
      "18K": {
       "grams": 4.56,
       "rate_cents_per_gram": 12810,
       "cost_cents": 59064,
-      "list_cents": 128900,
-      "paid_cents": 90230,
-      "margin": 0.2501
+      "list_cents": 208500,
+      "paid_cents": 145950,
+      "margin": 0.5001
      }
     }
    }
@@ -3466,35 +3466,35 @@
    "total_grams": 3.99,
    "description": "A hamsa drawn as an open gold frame, with an almond eye across the palm and a pale blue lab-grown sapphire as its pupil. A protection gift for Christmas and every day after.\n\nTHE PIECE\n14 mm wide and 18 mm tall. A 1.0 mm rail outlines three fingers and two outward-curving thumbs; the palm is a solid oval plate with an 8.0 by 4.4 mm eye opening crossed by a thin gold bar. The rail is diamond-cut, the palm polished. The bail sits behind the middle finger.\n\nGOLD WEIGHT\n3.98 g of 14k gold, counting the chain, clasp and extender. On the scale the finished piece weighs 3.99 g in total with the stones.\n\nSTONES\nThree 1.5 mm round lab-grown sapphires, flush set: a pale ice-blue sapphire as the pupil and a white sapphire in each thumb tip, 0.04 ct in total. Mohs 9.\n\nLENGTH AND FIT\nA 1.0 mm 14k cable chain, 16 in with a 2 in extender, so it sits from 16 to 18 in. The chain is part of the design and its weight is counted in the gold weight above.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece. The stones are set last, cold, after all firing and polishing.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap and a soft brush. Take it off for swimming and cleaning. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout.",
    "price": {
-    "list_cents": 93500,
-    "paid_cents": 65450,
+    "list_cents": 151200,
+    "paid_cents": 105840,
     "cost_cents": 42838,
-    "margin": 0.2501,
+    "margin": 0.5,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 3.55,
       "rate_cents_per_gram": 8336,
       "cost_cents": 30243,
-      "list_cents": 66100,
-      "paid_cents": 46270,
-      "margin": 0.2508
+      "list_cents": 106800,
+      "paid_cents": 74760,
+      "margin": 0.5001
      },
      "14K": {
       "grams": 3.98,
       "rate_cents_per_gram": 10600,
       "cost_cents": 42838,
-      "list_cents": 93500,
-      "paid_cents": 65450,
-      "margin": 0.2501
+      "list_cents": 151200,
+      "paid_cents": 105840,
+      "margin": 0.5
      },
      "18K": {
       "grams": 4.53,
       "rate_cents_per_gram": 12810,
       "cost_cents": 58679,
-      "list_cents": 128100,
-      "paid_cents": 89670,
-      "margin": 0.2503
+      "list_cents": 207100,
+      "paid_cents": 144970,
+      "margin": 0.5001
      }
     }
    }
@@ -3668,35 +3668,35 @@
    "total_grams": 4.15,
    "description": "An icicle in 14k gold, ribbed and tapering to a rounded tip, with a pale blue lab-grown sapphire under its faceted collar. A winter piece for Christmas that keeps going through January and beyond.\n\nTHE PIECE\n23 mm long, 4.6 mm across the faceted collar, narrowing to a rounded 0.8 mm tip. Four uneven ribs run down the upper half. The upper body is hollow-formed to keep the weight wearable, with two small drain holes on the back; the lower part is solid. The bail sits behind the collar.\n\nGOLD WEIGHT\n4.15 g of 14k gold, counting the chain, clasp and extender. On the scale the finished piece weighs 4.15 g in total with the stones.\n\nSTONES\nOne 1.5 mm round lab-grown sapphire in a pale ice blue, flush set in a small raised pad. Mohs 9.\n\nLENGTH AND FIT\nA 1.0 mm 14k cable chain, 16 in with a 2 in extender, so it sits from 16 to 18 in. The chain is part of the design and its weight is counted in the gold weight above.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece. The stones are set last, cold, after all firing and polishing.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap and a soft brush. Take it off for swimming and cleaning. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout.",
    "price": {
-    "list_cents": 97500,
-    "paid_cents": 68250,
+    "list_cents": 157600,
+    "paid_cents": 110320,
     "cost_cents": 44640,
-    "margin": 0.2506,
+    "margin": 0.5001,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 3.7,
       "rate_cents_per_gram": 8336,
       "cost_cents": 31493,
-      "list_cents": 68800,
-      "paid_cents": 48160,
-      "margin": 0.2506
+      "list_cents": 111200,
+      "paid_cents": 77840,
+      "margin": 0.5001
      },
      "14K": {
       "grams": 4.15,
       "rate_cents_per_gram": 10600,
       "cost_cents": 44640,
-      "list_cents": 97500,
-      "paid_cents": 68250,
-      "margin": 0.2506
+      "list_cents": 157600,
+      "paid_cents": 110320,
+      "margin": 0.5001
      },
      "18K": {
       "grams": 4.72,
       "rate_cents_per_gram": 12810,
       "cost_cents": 61113,
-      "list_cents": 133400,
-      "paid_cents": 93380,
-      "margin": 0.2503
+      "list_cents": 215700,
+      "paid_cents": 150990,
+      "margin": 0.5001
      }
     }
    }
@@ -3893,35 +3893,35 @@
    "total_grams": 4.08,
    "description": "A slim gold bar filled with ice-blue glass enamel and crossed by fine gold lines that branch the way frost grows on a window. A winter gift for Christmas with nothing seasonal to put away in January.\n\nTHE PIECE\n6.5 by 17 mm with rounded corners, 1.4 mm thick. Three gold lines run out from a small round node to the frame, with short side lines branching at 60 degrees, so the blue is split into three fields. A 0.7 mm gold border frames the bar. The bail sits at the top back.\n\nGOLD WEIGHT\n4.00 g of 14k gold, counting the chain, clasp and extender. On the scale the finished piece weighs 4.08 g in total with the enamel.\n\nENAMEL\nKiln-fired vitreous enamel (glass), opaque ice blue, level with the gold lines.\n\nLENGTH AND FIT\nA 1.0 mm 14k cable chain, 16 in with a 2 in extender, so it sits from 16 to 18 in. The chain is part of the design and its weight is counted in the gold weight above.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece, in a zinc-free gold alloy chosen for enamel. The enamel cells are cast into the gold, filled by hand and kiln-fired. Nothing is soldered after the first firing; any fitting added later is laser welded away from the enamel.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap. Glass enamel is hard and does not fade, but it can chip if struck against stone or metal. Keep it away from ultrasonic cleaners. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout.",
    "price": {
-    "list_cents": 94000,
-    "paid_cents": 65800,
+    "list_cents": 152000,
+    "paid_cents": 106400,
     "cost_cents": 43050,
-    "margin": 0.2504,
+    "margin": 0.5002,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 3.57,
       "rate_cents_per_gram": 8336,
       "cost_cents": 30410,
-      "list_cents": 66400,
-      "paid_cents": 46480,
-      "margin": 0.2502
+      "list_cents": 107400,
+      "paid_cents": 75180,
+      "margin": 0.5002
      },
      "14K": {
       "grams": 4.0,
       "rate_cents_per_gram": 10600,
       "cost_cents": 43050,
-      "list_cents": 94000,
-      "paid_cents": 65800,
-      "margin": 0.2504
+      "list_cents": 152000,
+      "paid_cents": 106400,
+      "margin": 0.5002
      },
      "18K": {
       "grams": 4.55,
       "rate_cents_per_gram": 12810,
       "cost_cents": 58936,
-      "list_cents": 128600,
-      "paid_cents": 90020,
-      "margin": 0.25
+      "list_cents": 208000,
+      "paid_cents": 145600,
+      "margin": 0.5
      }
     }
    }
@@ -4099,35 +4099,35 @@
    "total_grams": 4.05,
    "description": "A single angel wing in 14k gold, a row of rounded feathers above six long ones, with one lab-grown sapphire at the shoulder. A guardian-angel gift for Christmas, and a remembrance piece for any day.\n\nTHE PIECE\n9 mm wide and 14.5 mm tall, 0.9 mm thick. Six long feathers are separated by narrow pierced slits and end in free rounded tips, cut 0.9 mm thick so they hold their shape. Feather faces are diamond-cut. The bail sits at the top of the wing, toward the outer edge.\n\nGOLD WEIGHT\n4.05 g of 14k gold, counting the chain, clasp and extender. On the scale the finished piece weighs 4.05 g in total with the stones.\n\nSTONES\nOne 1.5 mm round lab-grown white sapphire, flush set at the inner upper corner. Mohs 9.\n\nLENGTH AND FIT\nA 1.0 mm 14k diamond-cut rope chain, 16 in with a 2 in extender, so it sits from 16 to 18 in. The chain is part of the design and its weight is counted in the gold weight above.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece. The stones are set last, cold, after all firing and polishing.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap and a soft brush. Take it off for swimming and cleaning. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout.",
    "price": {
-    "list_cents": 95200,
-    "paid_cents": 66640,
+    "list_cents": 153900,
+    "paid_cents": 107730,
     "cost_cents": 43580,
-    "margin": 0.2507,
+    "margin": 0.5002,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 3.61,
       "rate_cents_per_gram": 8336,
       "cost_cents": 30743,
-      "list_cents": 67200,
-      "paid_cents": 47040,
-      "margin": 0.2509
+      "list_cents": 108600,
+      "paid_cents": 76020,
+      "margin": 0.5003
      },
      "14K": {
       "grams": 4.05,
       "rate_cents_per_gram": 10600,
       "cost_cents": 43580,
-      "list_cents": 95200,
-      "paid_cents": 66640,
-      "margin": 0.2507
+      "list_cents": 153900,
+      "paid_cents": 107730,
+      "margin": 0.5002
      },
      "18K": {
       "grams": 4.6,
       "rate_cents_per_gram": 12810,
       "cost_cents": 59576,
-      "list_cents": 130000,
-      "paid_cents": 91000,
-      "margin": 0.25
+      "list_cents": 210300,
+      "paid_cents": 147210,
+      "margin": 0.5001
      }
     }
    }
@@ -4295,35 +4295,35 @@
    "total_grams": 3.71,
    "description": "A snaffle bit in 14k gold: two round rings joined by a jointed mouthpiece, worn across the front of the chain, with a lab-grown sapphire on each ring. An equestrian gift for Christmas and the riding season.\n\nTHE PIECE\nAbout 33 mm wide. Two 9.0 mm rings in 1.3 mm round wire are joined by a short jointed mouthpiece whose inner eyes interlock at the centre. The chain runs through both rings, so there is no bail.\n\nGOLD WEIGHT\n3.70 g of 14k gold, counting the chain, clasp and extender. On the scale the finished piece weighs 3.71 g in total with the stones.\n\nSTONES\nTwo 1.5 mm round lab-grown white sapphires, one flush set on the front of each ring. Mohs 9.\n\nLENGTH AND FIT\nA 1.0 mm 14k cable chain, 16 in with a 2 in extender, so it sits from 16 to 18 in. The chain is part of the design and its weight is counted in the gold weight above.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece. The stones are set last, cold, after all firing and polishing.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap and a soft brush. Take it off for swimming and cleaning. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout.",
    "price": {
-    "list_cents": 87100,
-    "paid_cents": 60970,
+    "list_cents": 140800,
+    "paid_cents": 98560,
     "cost_cents": 39870,
-    "margin": 0.2507,
+    "margin": 0.5002,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 3.3,
       "rate_cents_per_gram": 8336,
       "cost_cents": 28159,
-      "list_cents": 61500,
-      "paid_cents": 43050,
-      "margin": 0.2503
+      "list_cents": 99500,
+      "paid_cents": 69650,
+      "margin": 0.5003
      },
      "14K": {
       "grams": 3.7,
       "rate_cents_per_gram": 10600,
       "cost_cents": 39870,
-      "list_cents": 87100,
-      "paid_cents": 60970,
-      "margin": 0.2507
+      "list_cents": 140800,
+      "paid_cents": 98560,
+      "margin": 0.5002
      },
      "18K": {
       "grams": 4.21,
       "rate_cents_per_gram": 12810,
       "cost_cents": 54580,
-      "list_cents": 119100,
-      "paid_cents": 83370,
-      "margin": 0.25
+      "list_cents": 192700,
+      "paid_cents": 134890,
+      "margin": 0.5002
      }
     }
    }
@@ -4505,35 +4505,35 @@
    "total_grams": 3.9,
    "description": "A riding stirrup in 14k gold with a row of jade-green glass enamel along its tread. It slides on the chain with no bail. An equestrian gift for Christmas that belongs to every season.\n\nTHE PIECE\n13 mm wide and 16 mm tall. A 1.6 mm rail forms the arched stirrup over a flat 12 mm base bar; four small enamel cells sit in a row on the bar, divided by fine gold ribs. A slot in the top bar takes the chain.\n\nGOLD WEIGHT\n3.89 g of 14k gold, counting the chain, clasp and extender. On the scale the finished piece weighs 3.90 g in total with the enamel.\n\nENAMEL\nKiln-fired vitreous enamel (glass), opaque deep jade green, set just below the gold edges.\n\nLENGTH AND FIT\nA 1.2 mm 14k cable chain, 16 in with a 2 in extender, so it sits from 16 to 18 in. The chain is part of the design and its weight is counted in the gold weight above.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece, in a zinc-free gold alloy chosen for enamel. The enamel cells are cast into the gold, filled by hand and kiln-fired. Nothing is soldered after the first firing; any fitting added later is laser welded away from the enamel.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap. Glass enamel is hard and does not fade, but it can chip if struck against stone or metal. Keep it away from ultrasonic cleaners. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout.",
    "price": {
-    "list_cents": 91500,
-    "paid_cents": 64050,
+    "list_cents": 147900,
+    "paid_cents": 103530,
     "cost_cents": 41884,
-    "margin": 0.2507,
+    "margin": 0.5002,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 3.47,
       "rate_cents_per_gram": 8336,
       "cost_cents": 29576,
-      "list_cents": 64600,
-      "paid_cents": 45220,
-      "margin": 0.2504
+      "list_cents": 104500,
+      "paid_cents": 73150,
+      "margin": 0.5003
      },
      "14K": {
       "grams": 3.89,
       "rate_cents_per_gram": 10600,
       "cost_cents": 41884,
-      "list_cents": 91500,
-      "paid_cents": 64050,
-      "margin": 0.2507
+      "list_cents": 147900,
+      "paid_cents": 103530,
+      "margin": 0.5002
      },
      "18K": {
       "grams": 4.42,
       "rate_cents_per_gram": 12810,
       "cost_cents": 57270,
-      "list_cents": 125000,
-      "paid_cents": 87500,
-      "margin": 0.2502
+      "list_cents": 202100,
+      "paid_cents": 141470,
+      "margin": 0.5
      }
     }
    }
@@ -4728,35 +4728,35 @@
    "total_grams": 3.89,
    "description": "A cardinal in profile, its breast, wing and tail in deep berry glass enamel and its crest and face in polished gold. A keepsake many people give when they remember someone at Christmas.\n\nTHE PIECE\n11 mm wide and 15 mm tall, 1.35 mm thick. The enamel is a dark blackberry red, divided into three fields by fine gold lines that mark the wing and tail. The eye is a small round opening through the gold. The bail is hidden behind the back.\n\nGOLD WEIGHT\n3.82 g of 14k gold, counting the chain, clasp and extender. On the scale the finished piece weighs 3.89 g in total with the enamel.\n\nENAMEL\nKiln-fired vitreous enamel (glass), opaque deep berry, cadmium-free, level with the gold.\n\nLENGTH AND FIT\nA 1.0 mm 14k cable chain, 16 in with a 2 in extender, so it sits from 16 to 18 in. The chain is part of the design and its weight is counted in the gold weight above.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece, in a zinc-free gold alloy chosen for enamel. The enamel cells are cast into the gold, filled by hand and kiln-fired. Nothing is soldered after the first firing; any fitting added later is laser welded away from the enamel.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap. Glass enamel is hard and does not fade, but it can chip if struck against stone or metal. Keep it away from ultrasonic cleaners. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout.",
    "price": {
-    "list_cents": 89800,
-    "paid_cents": 62860,
+    "list_cents": 145300,
+    "paid_cents": 101710,
     "cost_cents": 41142,
-    "margin": 0.2501,
+    "margin": 0.5003,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 3.41,
       "rate_cents_per_gram": 8336,
       "cost_cents": 29076,
-      "list_cents": 63500,
-      "paid_cents": 44450,
-      "margin": 0.2503
+      "list_cents": 102700,
+      "paid_cents": 71890,
+      "margin": 0.5002
      },
      "14K": {
       "grams": 3.82,
       "rate_cents_per_gram": 10600,
       "cost_cents": 41142,
-      "list_cents": 89800,
-      "paid_cents": 62860,
-      "margin": 0.2501
+      "list_cents": 145300,
+      "paid_cents": 101710,
+      "margin": 0.5003
      },
      "18K": {
       "grams": 4.34,
       "rate_cents_per_gram": 12810,
       "cost_cents": 56245,
-      "list_cents": 122800,
-      "paid_cents": 85960,
-      "margin": 0.2504
+      "list_cents": 198500,
+      "paid_cents": 138950,
+      "margin": 0.5
      }
     }
    }
@@ -4930,35 +4930,35 @@
     "Kategori fiyat basamagi: E1 en hafif civili parca (1.55 g) - giris fiyati rolu bilincli mi?"
    ],
    "price": {
-    "list_cents": 37400,
-    "paid_cents": 26180,
+    "list_cents": 60400,
+    "paid_cents": 42280,
     "cost_cents": 17080,
-    "margin": 0.2516,
+    "margin": 0.5004,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 1.38,
       "rate_cents_per_gram": 8336,
       "cost_cents": 12154,
-      "list_cents": 26600,
-      "paid_cents": 18620,
-      "margin": 0.2509
+      "list_cents": 43000,
+      "paid_cents": 30100,
+      "margin": 0.5004
      },
      "14K": {
       "grams": 1.55,
       "rate_cents_per_gram": 10600,
       "cost_cents": 17080,
-      "list_cents": 37400,
-      "paid_cents": 26180,
-      "margin": 0.2516
+      "list_cents": 60400,
+      "paid_cents": 42280,
+      "margin": 0.5004
      },
      "18K": {
       "grams": 1.76,
       "rate_cents_per_gram": 12810,
       "cost_cents": 23196,
-      "list_cents": 50700,
-      "paid_cents": 35490,
-      "margin": 0.2507
+      "list_cents": 82000,
+      "paid_cents": 57400,
+      "margin": 0.5005
      }
     }
    }
@@ -5132,35 +5132,35 @@
     "1.0 mm sert cekme 14K sari tel (tapa) stokta mi; tapali C-halka icin 3 numunede 2 kg cekme testi."
    ],
    "price": {
-    "list_cents": 40400,
-    "paid_cents": 28280,
+    "list_cents": 65200,
+    "paid_cents": 45640,
     "cost_cents": 18458,
-    "margin": 0.2514,
+    "margin": 0.5,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 1.5,
       "rate_cents_per_gram": 8336,
       "cost_cents": 13154,
-      "list_cents": 28800,
-      "paid_cents": 20160,
-      "margin": 0.2513
+      "list_cents": 46500,
+      "paid_cents": 32550,
+      "margin": 0.5001
      },
      "14K": {
       "grams": 1.68,
       "rate_cents_per_gram": 10600,
       "cost_cents": 18458,
-      "list_cents": 40400,
-      "paid_cents": 28280,
-      "margin": 0.2514
+      "list_cents": 65200,
+      "paid_cents": 45640,
+      "margin": 0.5
      },
      "18K": {
       "grams": 1.91,
       "rate_cents_per_gram": 12810,
       "cost_cents": 25117,
-      "list_cents": 54900,
-      "paid_cents": 38430,
-      "margin": 0.2508
+      "list_cents": 88700,
+      "paid_cents": 62090,
+      "margin": 0.5001
      }
     }
    }
@@ -5355,35 +5355,35 @@
     "Cinkosuz 14K solidusu (DSC) - 780 C pay teyidi."
    ],
    "price": {
-    "list_cents": 40600,
-    "paid_cents": 28420,
+    "list_cents": 65600,
+    "paid_cents": 45920,
     "cost_cents": 18564,
-    "margin": 0.2509,
+    "margin": 0.5002,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 1.51,
       "rate_cents_per_gram": 8336,
       "cost_cents": 13237,
-      "list_cents": 29000,
-      "paid_cents": 20300,
-      "margin": 0.2517
+      "list_cents": 46800,
+      "paid_cents": 32760,
+      "margin": 0.5002
      },
      "14K": {
       "grams": 1.69,
       "rate_cents_per_gram": 10600,
       "cost_cents": 18564,
-      "list_cents": 40600,
-      "paid_cents": 28420,
-      "margin": 0.2509
+      "list_cents": 65600,
+      "paid_cents": 45920,
+      "margin": 0.5002
      },
      "18K": {
       "grams": 1.92,
       "rate_cents_per_gram": 12810,
       "cost_cents": 25245,
-      "list_cents": 55200,
-      "paid_cents": 38640,
-      "margin": 0.251
+      "list_cents": 89200,
+      "paid_cents": 62440,
+      "margin": 0.5003
      }
     }
    }
@@ -5554,35 +5554,35 @@
     "Lab mavi safir 2.0 mm acik buz mavisi ton numunesi onayi."
    ],
    "price": {
-    "list_cents": 38500,
-    "paid_cents": 26950,
+    "list_cents": 62300,
+    "paid_cents": 43610,
     "cost_cents": 17610,
-    "margin": 0.2506,
+    "margin": 0.5006,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 1.43,
       "rate_cents_per_gram": 8336,
       "cost_cents": 12570,
-      "list_cents": 27500,
-      "paid_cents": 19250,
-      "margin": 0.2507
+      "list_cents": 44500,
+      "paid_cents": 31150,
+      "margin": 0.5007
      },
      "14K": {
       "grams": 1.6,
       "rate_cents_per_gram": 10600,
       "cost_cents": 17610,
-      "list_cents": 38500,
-      "paid_cents": 26950,
-      "margin": 0.2506
+      "list_cents": 62300,
+      "paid_cents": 43610,
+      "margin": 0.5006
      },
      "18K": {
       "grams": 1.82,
       "rate_cents_per_gram": 12810,
       "cost_cents": 23964,
-      "list_cents": 52400,
-      "paid_cents": 36680,
-      "margin": 0.251
+      "list_cents": 84700,
+      "paid_cents": 59290,
+      "margin": 0.5004
      }
     }
    }
@@ -5741,35 +5741,35 @@
     "Kategori fiyat merdiveni: E5 artik 1.43 g ile en hafif parca; mentese/pim iscilugu fiyat motorunda yok."
    ],
    "price": {
-    "list_cents": 34600,
-    "paid_cents": 24220,
+    "list_cents": 55900,
+    "paid_cents": 39130,
     "cost_cents": 15808,
-    "margin": 0.2513,
+    "margin": 0.5004,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 1.28,
       "rate_cents_per_gram": 8336,
       "cost_cents": 11320,
-      "list_cents": 24800,
-      "paid_cents": 17360,
-      "margin": 0.2515
+      "list_cents": 40100,
+      "paid_cents": 28070,
+      "margin": 0.5008
      },
      "14K": {
       "grams": 1.43,
       "rate_cents_per_gram": 10600,
       "cost_cents": 15808,
-      "list_cents": 34600,
-      "paid_cents": 24220,
-      "margin": 0.2513
+      "list_cents": 55900,
+      "paid_cents": 39130,
+      "margin": 0.5004
      },
      "18K": {
       "grams": 1.63,
       "rate_cents_per_gram": 12810,
       "cost_cents": 21530,
-      "list_cents": 47100,
-      "paid_cents": 32970,
-      "margin": 0.2512
+      "list_cents": 76100,
+      "paid_cents": 53270,
+      "margin": 0.5004
      }
     }
    }
@@ -5949,35 +5949,35 @@
     "Buz mavisi opagin Zn-siz 14K uzerinde ton kaymasi (yesilimsi) kuponla."
    ],
    "price": {
-    "list_cents": 40600,
-    "paid_cents": 28420,
+    "list_cents": 65600,
+    "paid_cents": 45920,
     "cost_cents": 18564,
-    "margin": 0.2509,
+    "margin": 0.5002,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 1.51,
       "rate_cents_per_gram": 8336,
       "cost_cents": 13237,
-      "list_cents": 29000,
-      "paid_cents": 20300,
-      "margin": 0.2517
+      "list_cents": 46800,
+      "paid_cents": 32760,
+      "margin": 0.5002
      },
      "14K": {
       "grams": 1.69,
       "rate_cents_per_gram": 10600,
       "cost_cents": 18564,
-      "list_cents": 40600,
-      "paid_cents": 28420,
-      "margin": 0.2509
+      "list_cents": 65600,
+      "paid_cents": 45920,
+      "margin": 0.5002
      },
      "18K": {
       "grams": 1.92,
       "rate_cents_per_gram": 12810,
       "cost_cents": 25245,
-      "list_cents": 55200,
-      "paid_cents": 38640,
-      "margin": 0.251
+      "list_cents": 89200,
+      "paid_cents": 62440,
+      "margin": 0.5003
      }
     }
    }
@@ -6166,35 +6166,35 @@
     "Derin yesim yesili opagin 14K Zn-siz alasimda renk tutarliligi (parti kuponu)."
    ],
    "price": {
-    "list_cents": 40400,
-    "paid_cents": 28280,
+    "list_cents": 65200,
+    "paid_cents": 45640,
     "cost_cents": 18458,
-    "margin": 0.2514,
+    "margin": 0.5,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 1.5,
       "rate_cents_per_gram": 8336,
       "cost_cents": 13154,
-      "list_cents": 28800,
-      "paid_cents": 20160,
-      "margin": 0.2513
+      "list_cents": 46500,
+      "paid_cents": 32550,
+      "margin": 0.5001
      },
      "14K": {
       "grams": 1.68,
       "rate_cents_per_gram": 10600,
       "cost_cents": 18458,
-      "list_cents": 40400,
-      "paid_cents": 28280,
-      "margin": 0.2514
+      "list_cents": 65200,
+      "paid_cents": 45640,
+      "margin": 0.5
      },
      "18K": {
       "grams": 1.91,
       "rate_cents_per_gram": 12810,
       "cost_cents": 25117,
-      "list_cents": 54900,
-      "paid_cents": 38430,
-      "margin": 0.2508
+      "list_cents": 88700,
+      "paid_cents": 62090,
+      "margin": 0.5001
      }
     }
    }
@@ -6382,35 +6382,35 @@
     "Fener silueti 250 px'de okunuyor mu (tepe halkasi sarkit/kolye ucu gibi okunabilir)? CAD render ile onay."
    ],
    "price": {
-    "list_cents": 39700,
-    "paid_cents": 27790,
+    "list_cents": 64100,
+    "paid_cents": 44870,
     "cost_cents": 18140,
-    "margin": 0.2513,
+    "margin": 0.5002,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 1.47,
       "rate_cents_per_gram": 8336,
       "cost_cents": 12904,
-      "list_cents": 28200,
-      "paid_cents": 19740,
-      "margin": 0.25
+      "list_cents": 45700,
+      "paid_cents": 31990,
+      "margin": 0.5008
      },
      "14K": {
       "grams": 1.65,
       "rate_cents_per_gram": 10600,
       "cost_cents": 18140,
-      "list_cents": 39700,
-      "paid_cents": 27790,
-      "margin": 0.2513
+      "list_cents": 64100,
+      "paid_cents": 44870,
+      "margin": 0.5002
      },
      "18K": {
       "grams": 1.88,
       "rate_cents_per_gram": 12810,
       "cost_cents": 24733,
-      "list_cents": 54000,
-      "paid_cents": 37800,
-      "margin": 0.25
+      "list_cents": 87400,
+      "paid_cents": 61180,
+      "margin": 0.5003
      }
     }
    }
@@ -6590,35 +6590,35 @@
     "Yatay kusta civi konumu (gorsele esitlendi): boyun pedi kutle merkezinin ~1 mm onunde; pilot ciftte asili durus acisi olculur, sarkma varsa ped govde ortasina (hucreye >=1.5 mm) kaydirilir."
    ],
    "price": {
-    "list_cents": 38300,
-    "paid_cents": 26810,
+    "list_cents": 61900,
+    "paid_cents": 43330,
     "cost_cents": 17504,
-    "margin": 0.2512,
+    "margin": 0.5005,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 1.42,
       "rate_cents_per_gram": 8336,
       "cost_cents": 12487,
-      "list_cents": 27300,
-      "paid_cents": 19110,
-      "margin": 0.2503
+      "list_cents": 44200,
+      "paid_cents": 30940,
+      "margin": 0.5006
      },
      "14K": {
       "grams": 1.59,
       "rate_cents_per_gram": 10600,
       "cost_cents": 17504,
-      "list_cents": 38300,
-      "paid_cents": 26810,
-      "margin": 0.2512
+      "list_cents": 61900,
+      "paid_cents": 43330,
+      "margin": 0.5005
      },
      "18K": {
       "grams": 1.81,
       "rate_cents_per_gram": 12810,
       "cost_cents": 23836,
-      "list_cents": 52100,
-      "paid_cents": 36470,
-      "margin": 0.2507
+      "list_cents": 84200,
+      "paid_cents": 58940,
+      "margin": 0.5002
      }
     }
    }
@@ -6797,35 +6797,35 @@
     "Egri yuzeyde islak dolum kalinlik homojenligi - egri kupon numunesi."
    ],
    "price": {
-    "list_cents": 39900,
-    "paid_cents": 27930,
+    "list_cents": 64500,
+    "paid_cents": 45150,
     "cost_cents": 18246,
-    "margin": 0.2508,
+    "margin": 0.5003,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 1.48,
       "rate_cents_per_gram": 8336,
       "cost_cents": 12987,
-      "list_cents": 28400,
-      "paid_cents": 19880,
-      "margin": 0.2505
+      "list_cents": 45900,
+      "paid_cents": 32130,
+      "margin": 0.5
      },
      "14K": {
       "grams": 1.66,
       "rate_cents_per_gram": 10600,
       "cost_cents": 18246,
-      "list_cents": 39900,
-      "paid_cents": 27930,
-      "margin": 0.2508
+      "list_cents": 64500,
+      "paid_cents": 45150,
+      "margin": 0.5003
      },
      "18K": {
       "grams": 1.89,
       "rate_cents_per_gram": 12810,
       "cost_cents": 24861,
-      "list_cents": 54300,
-      "paid_cents": 38010,
-      "margin": 0.2503
+      "list_cents": 87800,
+      "paid_cents": 61460,
+      "margin": 0.5001
      }
     }
    }
@@ -7010,35 +7010,35 @@
    "total_grams": 3.33,
    "description": "An eight-pointed star for the lapel, four long rays and four short ones, each with a bright cut groove and a matte centre. A Christmas gift for him, and the pin he wears to every wedding after.\n\nTHE PIECE\n26 mm wide and 30 mm tall; the lower ray is drawn longest. Each ray is 1.3 mm thick with a flat top and one bright V groove that fades before the rounded tip. The 8 mm centre disc is honed matte with a small polished dome.\n\nGOLD WEIGHT\n3.33 g of 14k gold, counting the 14k white gold pin stem and the safety catch. On the scale the finished piece weighs 3.33 g in total with everything on it.\n\nHOW IT FASTENS\nOne pin stem of hardened 14k white gold with a rotating safety catch, the standard fine-jewellery fastening for a brooch worn every day.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap and a soft brush. Take it off for swimming and cleaning. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout.",
    "price": {
-    "list_cents": 78500,
-    "paid_cents": 54950,
+    "list_cents": 126900,
+    "paid_cents": 88830,
     "cost_cents": 35948,
-    "margin": 0.2504,
+    "margin": 0.5,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 2.97,
       "rate_cents_per_gram": 8336,
       "cost_cents": 25408,
-      "list_cents": 55500,
-      "paid_cents": 38850,
-      "margin": 0.2504
+      "list_cents": 89800,
+      "paid_cents": 62860,
+      "margin": 0.5004
      },
      "14K": {
       "grams": 3.33,
       "rate_cents_per_gram": 10600,
       "cost_cents": 35948,
-      "list_cents": 78500,
-      "paid_cents": 54950,
-      "margin": 0.2504
+      "list_cents": 126900,
+      "paid_cents": 88830,
+      "margin": 0.5
      },
      "18K": {
       "grams": 3.79,
       "rate_cents_per_gram": 12810,
       "cost_cents": 49200,
-      "list_cents": 107400,
-      "paid_cents": 75180,
-      "margin": 0.2502
+      "list_cents": 173700,
+      "paid_cents": 121590,
+      "margin": 0.5002
      }
     }
    }
@@ -7230,35 +7230,35 @@
    "total_grams": 3.93,
    "description": "A comet lying across the coat: an open gold ring for a head and three tapered gold ribbons trailing behind, with lab-grown white sapphires at the head and on the cross-bars. A celestial Christmas gift.\n\nTHE PIECE\n42 mm long and 14 mm tall. The 11 mm head ring holds a central collet on three short spokes; the three tail ribbons are 31, 25 and 19 mm long with rounded tips, bridged by two small cross-bars. The two outer ribbons are diamond-cut on top, the middle ribbon satin, the sides honed matte.\n\nGOLD WEIGHT\n3.92 g of 14k gold, counting the 14k white gold pin stem and the safety catch. On the scale the finished piece weighs 3.93 g in total with the stones.\n\nSTONES\nThree 1.8 mm round lab-grown white sapphires: one in the head collet and one flush set on each cross-bar pad, 0.07 ct in total. Mohs 9.\n\nHOW IT FASTENS\nTwo pin stems of hardened 14k white gold with a rotating safety catch, the standard fine-jewellery fastening for a brooch worn every day.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece. The stones are set last, cold, after all firing and polishing.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap and a soft brush. Take it off for swimming and cleaning. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout.",
    "price": {
-    "list_cents": 92100,
-    "paid_cents": 64470,
+    "list_cents": 149000,
+    "paid_cents": 104300,
     "cost_cents": 42202,
-    "margin": 0.25,
+    "margin": 0.5001,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 3.5,
       "rate_cents_per_gram": 8336,
       "cost_cents": 29826,
-      "list_cents": 65200,
-      "paid_cents": 45640,
-      "margin": 0.2509
+      "list_cents": 105300,
+      "paid_cents": 73710,
+      "margin": 0.5
      },
      "14K": {
       "grams": 3.92,
       "rate_cents_per_gram": 10600,
       "cost_cents": 42202,
-      "list_cents": 92100,
-      "paid_cents": 64470,
-      "margin": 0.25
+      "list_cents": 149000,
+      "paid_cents": 104300,
+      "margin": 0.5001
      },
      "18K": {
       "grams": 4.46,
       "rate_cents_per_gram": 12810,
       "cost_cents": 57783,
-      "list_cents": 126100,
-      "paid_cents": 88270,
-      "margin": 0.2501
+      "list_cents": 204000,
+      "paid_cents": 142800,
+      "margin": 0.5002
      }
     }
    }
@@ -7499,35 +7499,35 @@
    "total_grams": 3.78,
    "description": "A gold bar with four fields of ice-blue glass enamel and three lab-grown sapphires, and three icicles hanging below it. A winter brooch for Christmas that stays on the coat until spring.\n\nTHE PIECE\n28 mm wide and 26 mm tall. The bar is 3.9 mm tall; the icicles hang 22, 17 and 15 mm, each with a narrow open slit in its upper half and a rounded tip. Icicle faces are diamond-cut.\n\nGOLD WEIGHT\n3.71 g of 14k gold, counting the 14k white gold pin stem and the safety catch. On the scale the finished piece weighs 3.78 g in total with the enamel and stones.\n\nENAMEL\nKiln-fired vitreous enamel (glass), opaque ice blue, level with polished gold borders.\n\nSTONES\nThree 1.5 mm round lab-grown white sapphires, flush set between the enamel fields. Mohs 9.\n\nHOW IT FASTENS\nOne pin stem of hardened 14k white gold with a rotating safety catch, the standard fine-jewellery fastening for a brooch worn every day.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece, in a zinc-free gold alloy chosen for enamel. The enamel cells are cast into the gold, filled by hand and kiln-fired. Nothing is soldered after the first firing; any fitting added later is laser welded away from the enamel. The stones are set last, cold, after all firing and polishing.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap. Glass enamel is hard and does not fade, but it can chip if struck against stone or metal. Keep it away from ultrasonic cleaners. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout.",
    "price": {
-    "list_cents": 87300,
-    "paid_cents": 61110,
+    "list_cents": 141100,
+    "paid_cents": 98770,
     "cost_cents": 39976,
-    "margin": 0.2504,
+    "margin": 0.5,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 3.31,
       "rate_cents_per_gram": 8336,
       "cost_cents": 28242,
-      "list_cents": 61700,
-      "paid_cents": 43190,
-      "margin": 0.2505
+      "list_cents": 99800,
+      "paid_cents": 69860,
+      "margin": 0.5004
      },
      "14K": {
       "grams": 3.71,
       "rate_cents_per_gram": 10600,
       "cost_cents": 39976,
-      "list_cents": 87300,
-      "paid_cents": 61110,
-      "margin": 0.2504
+      "list_cents": 141100,
+      "paid_cents": 98770,
+      "margin": 0.5
      },
      "18K": {
       "grams": 4.22,
       "rate_cents_per_gram": 12810,
       "cost_cents": 54708,
-      "list_cents": 119400,
-      "paid_cents": 83580,
-      "margin": 0.2501
+      "list_cents": 193100,
+      "paid_cents": 135170,
+      "margin": 0.5001
      }
     }
    }
@@ -7759,35 +7759,35 @@
    "total_grams": 3.91,
    "description": "A gold hexagon split by three ribs into three fields of ice-blue glass enamel, with a pale blue lab-grown sapphire where the ribs meet. An ice crystal for the lapel, and a Christmas gift for him.\n\nTHE PIECE\n18 mm across the corners and 15.6 mm across the flats, 1.45 mm thick, with a 1.0 mm polished gold rim and rounded corners.\n\nGOLD WEIGHT\n3.70 g of 14k gold, counting the 14k white gold pin stem and the safety catch. On the scale the finished piece weighs 3.91 g in total with the enamel and stones.\n\nENAMEL\nKiln-fired vitreous enamel (glass), opaque ice blue, level with the gold ribs.\n\nSTONES\nOne 1.5 mm round lab-grown sapphire in a pale ice blue, flush set in the centre disc. Mohs 9.\n\nHOW IT FASTENS\nOne pin stem of hardened 14k white gold with a rotating safety catch, the standard fine-jewellery fastening for a brooch worn every day.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece, in a zinc-free gold alloy chosen for enamel. The enamel cells are cast into the gold, filled by hand and kiln-fired. Nothing is soldered after the first firing; any fitting added later is laser welded away from the enamel. The stones are set last, cold, after all firing and polishing.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap. Glass enamel is hard and does not fade, but it can chip if struck against stone or metal. Keep it away from ultrasonic cleaners. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout.",
    "price": {
-    "list_cents": 87100,
-    "paid_cents": 60970,
+    "list_cents": 140800,
+    "paid_cents": 98560,
     "cost_cents": 39870,
-    "margin": 0.2507,
+    "margin": 0.5002,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 3.3,
       "rate_cents_per_gram": 8336,
       "cost_cents": 28159,
-      "list_cents": 61500,
-      "paid_cents": 43050,
-      "margin": 0.2503
+      "list_cents": 99500,
+      "paid_cents": 69650,
+      "margin": 0.5003
      },
      "14K": {
       "grams": 3.7,
       "rate_cents_per_gram": 10600,
       "cost_cents": 39870,
-      "list_cents": 87100,
-      "paid_cents": 60970,
-      "margin": 0.2507
+      "list_cents": 140800,
+      "paid_cents": 98560,
+      "margin": 0.5002
      },
      "18K": {
       "grams": 4.21,
       "rate_cents_per_gram": 12810,
       "cost_cents": 54580,
-      "list_cents": 119100,
-      "paid_cents": 83370,
-      "margin": 0.25
+      "list_cents": 192700,
+      "paid_cents": 134890,
+      "margin": 0.5002
      }
     }
    }
@@ -7954,35 +7954,35 @@
    "total_grams": 4.1,
    "description": "A snaffle bit for the lapel: two open D-shaped rings with bright cut facets, joined by a honed gold bar. An equestrian Christmas gift for him that goes from the stable to the wedding.\n\nTHE PIECE\n30 mm wide and 13 mm tall. Each D ring is 13 mm tall with its straight side to the centre and six diamond-cut facets around its curve. The 3.0 mm bar has an open slot along its middle and a round collar at each end.\n\nGOLD WEIGHT\n4.10 g of 14k gold, counting the 14k white gold pin stem and the safety catch. On the scale the finished piece weighs 4.10 g in total with everything on it.\n\nHOW IT FASTENS\nTwo pin stems of hardened 14k white gold with a rotating safety catch, the standard fine-jewellery fastening for a brooch worn every day.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece. Two pins keep a 30 mm piece level on the lapel.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap and a soft brush. Take it off for swimming and cleaning. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout.",
    "price": {
-    "list_cents": 96300,
-    "paid_cents": 67410,
+    "list_cents": 155700,
+    "paid_cents": 108990,
     "cost_cents": 44110,
-    "margin": 0.2503,
+    "margin": 0.5001,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 3.66,
       "rate_cents_per_gram": 8336,
       "cost_cents": 31160,
-      "list_cents": 68100,
-      "paid_cents": 47670,
-      "margin": 0.2508
+      "list_cents": 110100,
+      "paid_cents": 77070,
+      "margin": 0.5004
      },
      "14K": {
       "grams": 4.1,
       "rate_cents_per_gram": 10600,
       "cost_cents": 44110,
-      "list_cents": 96300,
-      "paid_cents": 67410,
-      "margin": 0.2503
+      "list_cents": 155700,
+      "paid_cents": 108990,
+      "margin": 0.5001
      },
      "18K": {
       "grams": 4.66,
       "rate_cents_per_gram": 12810,
       "cost_cents": 60345,
-      "list_cents": 131700,
-      "paid_cents": 92190,
-      "margin": 0.2502
+      "list_cents": 213000,
+      "paid_cents": 149100,
+      "margin": 0.5001
      }
     }
    }
@@ -8211,35 +8211,35 @@
    "total_grams": 3.8,
    "description": "A riding stirrup in 14k gold, its tread lined with jade-green glass enamel and a lab-grown sapphire set below the strap loop. An equestrian Christmas gift that is worn all year.\n\nTHE PIECE\n26 mm tall and 22 mm wide. A polished 2.0 mm arch rises from an 18 by 4.4 mm tread to a small round strap loop; the enamel runs in one 14 mm channel along the tread.\n\nGOLD WEIGHT\n3.74 g of 14k gold, counting the 14k white gold pin stem and the safety catch. On the scale the finished piece weighs 3.80 g in total with the enamel and stones.\n\nENAMEL\nKiln-fired vitreous enamel (glass), opaque deep jade green, level with the gold.\n\nSTONES\nOne 2.0 mm round lab-grown white sapphire, flush set in a raised block on the arch. Mohs 9.\n\nHOW IT FASTENS\nOne pin stem of hardened 14k white gold with a rotating safety catch, the standard fine-jewellery fastening for a brooch worn every day.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece, in a zinc-free gold alloy chosen for enamel. The enamel cells are cast into the gold, filled by hand and kiln-fired. Nothing is soldered after the first firing; any fitting added later is laser welded away from the enamel. The stones are set last, cold, after all firing and polishing.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap. Glass enamel is hard and does not fade, but it can chip if struck against stone or metal. Keep it away from ultrasonic cleaners. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout.",
    "price": {
-    "list_cents": 88000,
-    "paid_cents": 61600,
+    "list_cents": 142300,
+    "paid_cents": 99610,
     "cost_cents": 40294,
-    "margin": 0.2505,
+    "margin": 0.5002,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 3.34,
       "rate_cents_per_gram": 8336,
       "cost_cents": 28492,
-      "list_cents": 62200,
-      "paid_cents": 43540,
-      "margin": 0.25
+      "list_cents": 100600,
+      "paid_cents": 70420,
+      "margin": 0.5
      },
      "14K": {
       "grams": 3.74,
       "rate_cents_per_gram": 10600,
       "cost_cents": 40294,
-      "list_cents": 88000,
-      "paid_cents": 61600,
-      "margin": 0.2505
+      "list_cents": 142300,
+      "paid_cents": 99610,
+      "margin": 0.5002
      },
      "18K": {
       "grams": 4.25,
       "rate_cents_per_gram": 12810,
       "cost_cents": 55092,
-      "list_cents": 120300,
-      "paid_cents": 84210,
-      "margin": 0.2505
+      "list_cents": 194500,
+      "paid_cents": 136150,
+      "margin": 0.5002
      }
     }
    }
@@ -8470,35 +8470,35 @@
    "total_grams": 3.73,
    "description": "An evil eye in ice-blue, white and navy glass enamel at the centre of eight gold rays, with a lab-grown sapphire at the base of each diagonal ray. A protection gift for Christmas and every day after.\n\nTHE PIECE\n23 mm across. The eye disc is 12 mm across; the eight rays are 5.5 mm long with rounded tips and bright diamond-cut faces.\n\nGOLD WEIGHT\n3.63 g of 14k gold, counting the 14k white gold pin stem and the safety catch. On the scale the finished piece weighs 3.73 g in total with the enamel and stones.\n\nENAMEL\nKiln-fired vitreous enamel (glass), opaque, in three rings divided by 0.7 mm gold walls: ice blue outside, then white, then a navy-blue centre.\n\nSTONES\nFour 1.5 mm round lab-grown white sapphires, flush set at the ray bases. Mohs 9.\n\nHOW IT FASTENS\nOne pin stem of hardened 14k white gold with a rotating safety catch, the standard fine-jewellery fastening for a brooch worn every day.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece, in a zinc-free gold alloy chosen for enamel. The enamel cells are cast into the gold, filled by hand and kiln-fired. Nothing is soldered after the first firing; any fitting added later is laser welded away from the enamel. The stones are set last, cold, after all firing and polishing.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap. Glass enamel is hard and does not fade, but it can chip if struck against stone or metal. Keep it away from ultrasonic cleaners. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout.",
    "price": {
-    "list_cents": 85400,
-    "paid_cents": 59780,
+    "list_cents": 138200,
+    "paid_cents": 96740,
     "cost_cents": 39128,
-    "margin": 0.25,
+    "margin": 0.5003,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 3.24,
       "rate_cents_per_gram": 8336,
       "cost_cents": 27659,
-      "list_cents": 60400,
-      "paid_cents": 42280,
-      "margin": 0.2502
+      "list_cents": 97700,
+      "paid_cents": 68390,
+      "margin": 0.5002
      },
      "14K": {
       "grams": 3.63,
       "rate_cents_per_gram": 10600,
       "cost_cents": 39128,
-      "list_cents": 85400,
-      "paid_cents": 59780,
-      "margin": 0.25
+      "list_cents": 138200,
+      "paid_cents": 96740,
+      "margin": 0.5003
      },
      "18K": {
       "grams": 4.13,
       "rate_cents_per_gram": 12810,
       "cost_cents": 53555,
-      "list_cents": 116900,
-      "paid_cents": 81830,
-      "margin": 0.2502
+      "list_cents": 189000,
+      "paid_cents": 132300,
+      "margin": 0.5
      }
     }
    }
@@ -8728,35 +8728,35 @@
    "total_grams": 3.58,
    "description": "A robin on a perch, its breast in deep berry glass enamel and its eye a lab-grown white sapphire. A winter bird for the lapel, and a Christmas gift for him.\n\nTHE PIECE\n24 mm long and 18 mm tall. The robin faces left on a 16 mm perch bar; four matte feather ridges cross its back and the 10 mm tail points down and back with two open slits. Beak, feet and perch are polished.\n\nGOLD WEIGHT\n3.53 g of 14k gold, counting the 14k white gold pin stem and the safety catch. On the scale the finished piece weighs 3.58 g in total with the enamel and stones.\n\nENAMEL\nKiln-fired vitreous enamel (glass), opaque deep berry, cadmium-free, level with the gold.\n\nSTONES\nOne 1.5 mm round lab-grown white sapphire, flush set as the eye. Mohs 9.\n\nHOW IT FASTENS\nOne pin stem of hardened 14k white gold with a rotating safety catch, the standard fine-jewellery fastening for a brooch worn every day.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece, in a zinc-free gold alloy chosen for enamel. The enamel cells are cast into the gold, filled by hand and kiln-fired. Nothing is soldered after the first firing; any fitting added later is laser welded away from the enamel. The stones are set last, cold, after all firing and polishing.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap. Glass enamel is hard and does not fade, but it can chip if struck against stone or metal. Keep it away from ultrasonic cleaners. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout.",
    "price": {
-    "list_cents": 83100,
-    "paid_cents": 58170,
+    "list_cents": 134400,
+    "paid_cents": 94080,
     "cost_cents": 38068,
-    "margin": 0.2501,
+    "margin": 0.5001,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 3.15,
       "rate_cents_per_gram": 8336,
       "cost_cents": 26908,
-      "list_cents": 58800,
-      "paid_cents": 41160,
-      "margin": 0.2507
+      "list_cents": 95100,
+      "paid_cents": 66570,
+      "margin": 0.5004
      },
      "14K": {
       "grams": 3.53,
       "rate_cents_per_gram": 10600,
       "cost_cents": 38068,
-      "list_cents": 83100,
-      "paid_cents": 58170,
-      "margin": 0.2501
+      "list_cents": 134400,
+      "paid_cents": 94080,
+      "margin": 0.5001
      },
      "18K": {
       "grams": 4.01,
       "rate_cents_per_gram": 12810,
       "cost_cents": 52018,
-      "list_cents": 113600,
-      "paid_cents": 79520,
-      "margin": 0.2505
+      "list_cents": 183600,
+      "paid_cents": 128520,
+      "margin": 0.5001
      }
     }
    }
@@ -8981,35 +8981,35 @@
    "total_grams": 3.39,
    "description": "A small lantern in 14k gold: an ice-blue glass enamel roof, an open window, and a lab-grown white sapphire standing in for the flame. A winter-evening brooch for Christmas and the months after.\n\nTHE PIECE\n25.6 mm tall and 15 mm wide. A round hanging ring sits on the triangular roof; two 1.4 mm posts frame an open window 11.2 by 12 mm, with a 1.0 mm gold rod rising to the stone at its centre.\n\nGOLD WEIGHT\n3.36 g of 14k gold, counting the 14k white gold pin stem and the safety catch. On the scale the finished piece weighs 3.39 g in total with the enamel and stones.\n\nENAMEL\nKiln-fired vitreous enamel (glass), opaque ice blue, level with the gold roof edges.\n\nSTONES\nOne 1.8 mm round lab-grown white sapphire in a round tube collet, open at the back. Mohs 9.\n\nHOW IT FASTENS\nOne pin stem of hardened 14k white gold with a rotating safety catch, the standard fine-jewellery fastening for a brooch worn every day.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece, in a zinc-free gold alloy chosen for enamel. The enamel cells are cast into the gold, filled by hand and kiln-fired. Nothing is soldered after the first firing; any fitting added later is laser welded away from the enamel. The stones are set last, cold, after all firing and polishing.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap. Glass enamel is hard and does not fade, but it can chip if struck against stone or metal. Keep it away from ultrasonic cleaners. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout.",
    "price": {
-    "list_cents": 79200,
-    "paid_cents": 55440,
+    "list_cents": 128100,
+    "paid_cents": 89670,
     "cost_cents": 36266,
-    "margin": 0.2504,
+    "margin": 0.5003,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 3.0,
       "rate_cents_per_gram": 8336,
       "cost_cents": 25658,
-      "list_cents": 56100,
-      "paid_cents": 39270,
-      "margin": 0.251
+      "list_cents": 90600,
+      "paid_cents": 63420,
+      "margin": 0.5
      },
      "14K": {
       "grams": 3.36,
       "rate_cents_per_gram": 10600,
       "cost_cents": 36266,
-      "list_cents": 79200,
-      "paid_cents": 55440,
-      "margin": 0.2504
+      "list_cents": 128100,
+      "paid_cents": 89670,
+      "margin": 0.5003
      },
      "18K": {
       "grams": 3.82,
       "rate_cents_per_gram": 12810,
       "cost_cents": 49584,
-      "list_cents": 108200,
-      "paid_cents": 75740,
-      "margin": 0.25
+      "list_cents": 175000,
+      "paid_cents": 122500,
+      "margin": 0.5
      }
     }
    }
@@ -9220,35 +9220,35 @@
    "total_grams": 4.0,
    "description": "A scarab for the lapel: a deep jade-green glass enamel shield, ice-blue enamel wing cases and six gold legs. The beetle of renewal and good luck, as a Christmas gift for him.\n\nTHE PIECE\n22 mm long and 21 mm wide including the legs. A polished 1.0 mm gold ridge runs between the wing cases; the six 1.0 mm legs angle outward with rounded ends.\n\nGOLD WEIGHT\n3.91 g of 14k gold, counting the 14k white gold pin stem and the safety catch. On the scale the finished piece weighs 4.00 g in total with the enamel.\n\nENAMEL\nKiln-fired vitreous enamel (glass), opaque: deep jade green on the front shield, ice blue on the wing cases, level with the gold.\n\nHOW IT FASTENS\nOne pin stem of hardened 14k white gold with a rotating safety catch, the standard fine-jewellery fastening for a brooch worn every day.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece, in a zinc-free gold alloy chosen for enamel. The enamel cells are cast into the gold, filled by hand and kiln-fired. Nothing is soldered after the first firing; any fitting added later is laser welded away from the enamel.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap. Glass enamel is hard and does not fade, but it can chip if struck against stone or metal. Keep it away from ultrasonic cleaners. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout.",
    "price": {
-    "list_cents": 91900,
-    "paid_cents": 64330,
+    "list_cents": 148600,
+    "paid_cents": 104020,
     "cost_cents": 42096,
-    "margin": 0.2502,
+    "margin": 0.5001,
     "discount": 0.3,
     "karats": {
      "10K": {
       "grams": 3.49,
       "rate_cents_per_gram": 8336,
       "cost_cents": 29743,
-      "list_cents": 65000,
-      "paid_cents": 45500,
-      "margin": 0.2508
+      "list_cents": 105100,
+      "paid_cents": 73570,
+      "margin": 0.5004
      },
      "14K": {
       "grams": 3.91,
       "rate_cents_per_gram": 10600,
       "cost_cents": 42096,
-      "list_cents": 91900,
-      "paid_cents": 64330,
-      "margin": 0.2502
+      "list_cents": 148600,
+      "paid_cents": 104020,
+      "margin": 0.5001
      },
      "18K": {
       "grams": 4.45,
       "rate_cents_per_gram": 12810,
       "cost_cents": 57654,
-      "list_cents": 125800,
-      "paid_cents": 88060,
-      "margin": 0.25
+      "list_cents": 203500,
+      "paid_cents": 142450,
+      "margin": 0.5001
      }
     }
    }

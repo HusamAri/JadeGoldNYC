@@ -33,8 +33,10 @@ Yeniden üretmek için 3 → 4 → 5 → 9 → 10 yeterlidir; 6–8 yalnız gör
 ## Fiyat
 
 `lib/jade/pricing.ts` birebir aynalanır (`catalog.py` üstü): `cost = round(g × 10600) + 500 + 150`,
-`list = ceil((cost + 25) / (0.70 × (0.905 − 0.25)) / 100) × 100`, ödenen = list × 0,70
-(**mağaza indirimi %30**, sahibin beyanı 2026-10-18; `fiyatlandirma.md` §13). Yalnız
+`list = ceil((cost + 25) / (0.70 × (0.905 − 0.50)) / 100) × 100`, ödenen = list × 0,70
+(**mağaza indirimi %30** ve **koleksiyon hedef marjı %50**, sahibin talimatları 2026-10-18;
+`fiyatlandirma.md` §13; motorun katalog geneli varsayılanı %25 değişmedi, marj
+`catalog.py`'da koleksiyona özel). Yalnız
 **altın gramı** fiyatlanır; mine ve taş gram hesabına girmez. $106/g tedarikçinin her şey dahil
 14K oranı: ayrı işçilik satırı yok, doğrulanmış 18K oranı yok → tasarımların hepsi 14K.
 

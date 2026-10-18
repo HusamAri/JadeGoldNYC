@@ -788,6 +788,27 @@ beklenenle birebir), toplam 9.277.600 cent / 120 varyant, ürün fiyatı = min
 varyant 40/40, plan JSON ↔ varyant 120/120, 10K<14K<18K 40/40, F26 taslaklarına
 dokunulmadı (0), `audit_log` 120 varyant + 40 ürün satırı.
 
+### v2 — hedef marj %25 → **%50** (aynı gün, sahip: "fiyatların kar marjını %50 olarak belirle")
+
+Etsy'ye hiçbir şey gitmeden önce yeniden kuruldu. Marj tanımı motorunki
+(`jadeMarginAt`: tahsilat = liste × 0,70; Etsy %9,5 + $0,25 düşülür; kalanın
+tahsilata oranı). Payda `0,70 × (0,905 − 0,50) = 0,2835`; liste v1'in
+**×1,617**'si. Motorun katalog geneli varsayılanı `JADE_TARGET_MARGIN = 0.25`
+DEĞİŞMEDİ; koleksiyon marjı `catalog.py` içinde ve `jadeTargetPriceCents`'e
+parametre olarak geçer (TS ↔ Python 40/40 birebir, margin 0,50 ile).
+
+| | 10K | 14K | 18K |
+|---|---|---|---|
+| Bileklik B1–B10 | $886–992 | $1.254–1.404 | $1.714–1.922 |
+| Kolye N1–N10 | $995–1.112 | $1.408–1.576 | $1.927–2.157 |
+| Küpe E1–E10 | $401–468 | $559–656 | $761–892 |
+| Broş P1–P10 | $898–1.101 | $1.269–1.557 | $1.737–2.130 |
+
+Yazım: plan `xmas26-v2-disc30-m50`, ön koşul **40 / 120 / v1 40 / v2 0** ve canlı
+mühür v1'in mührü (yani arada başka yazım yok), apply **120 + 40**, geri okuma
+mührü **`828475ae91f2b6fe2ee9b7497eac967c`**, toplam 15.001.300 cent / 120
+varyant, plan JSON ↔ varyant 120/120, audit 120 + 40, F26 0.
+
 ### Açık kalemler
 
 - **Canlı katalog %25 tabanında.** İndirim gerçekten %30 ise net tahsilat
