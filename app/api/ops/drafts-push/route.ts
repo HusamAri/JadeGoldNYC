@@ -405,7 +405,8 @@ export async function GET(request: Request) {
         const checks = {
           draft: listing.state === "draft",
           shop: listing.shop_id === shopId,
-          title: listing.title === product.title,
+          // Etsy returns titles HTML-encoded ("Men&#39;s"); compare what the buyer sees.
+          title: decodeHtmlEntities(listing.title ?? "") === product.title,
           tags: text.tags,
           description: text.description,
           variants: live.length === product.variants.length,
