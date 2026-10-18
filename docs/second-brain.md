@@ -1499,6 +1499,40 @@ repodaki hedefidir.
   koşma. Yan ders: 78 satırlık düzenli ızgarayı MCP'ye elle yapıştırmak yerine eksenlerden SQL'de ürettim
   (`cross join unnest`), mühür birebir tuttu; tekrar eden yapı transkripsiyonla değil üretimle taşınır.
 
+- **Sahip "bırak" deyince denetim YOK OLMAZ, en ucuz yüzeye TAŞINIR; ve kusur hep ŞEKİL/SAYIDADIR,
+  renkte ya da sahnede değil (2026-10-18, Noel 40):** 40 hero için 15 bulucu + çürütücülü bir
+  inceleme akışı kurmuştum; haftalık limit yaklaşınca sahip "bırak" dedi. Akış düştü, kontrol
+  düşmedi: kontak baskısı (kategori başına 8'li) + şüphelilerde 1100 px merkez kırpımı, hepsi
+  kredi harcamadan sonra ama Etsy'ye gitmeden önce. Sonuç 35/40 ilk denemede tuttu, 2 "kontrol"
+  (N9 mine açık, N7 tüy 6), 3 "yeniden" (B4 ışınlar pim olmuş, E9 ayak eklenmiş, P2 çubuk 3/taş 4);
+  41 üretim, 82 kredi. Beş kusurun beşi de geometri ya da adet; hiçbiri renk, ışık ya da sahne
+  değil — ortak stil bloğu ve sahne cümleleri 40 karede 40 kez tuttu. Yani okuma süresi ürün
+  cümlesine harcanır, sahne cümlesine değil. B4'ü tek kalan kredi payıyla yeniden çektim ve ilk
+  denemede tuttu; işe yarayan şey "kısa ışın" yerine fiziksel tarif ("aynı yassı sacdan kesilmiş,
+  diskin düzleminde, pusula gülü gibi") + yanlış SINIFI adlandırmak ("pim değil, top değil,
+  jant teli değil") oldu — 10-15 dersinin aynısı. Kural: (1) kredi harcayan seri işte sahip
+  denetimi kaldırırsa ajan değil, KENDİ gözün bakar ve bakış kontak baskısıyla tek seferde olur;
+  (2) düzeltilmiş prompt'u yeniden YAZMA, saklanan prompt'tan tek cümleyi assert'li `replace` ile
+  türet (`status.json` ok/check/redo + sebep + prompt taşır, sayfa görseli saklamaz, kusuru
+  gösterir); (3) 2k/4:3/seed `jobs.json`'da sabit olduğu için 40/40 kare 2400×1792 geldi, sıfır
+  çözünürlük israfı — 10-13 dersinin artefakt hâli çalıştı; (4) batch'te 7'den fazla eşzamanlı
+  gönderim `429` düşürür ama iş açılmaz, kredi yanmaz: küçük grupla yeniden gönder, tahminle
+  "yarıda kaldı" deme.
+
+  **Devamı (aynı gün) — sahip yeniden ürettiği üç kareyi beğenince karar GÖRSEL oldu ve METİN
+  görsele eşitlendi, görsel metne değil:** E9/N9/P2 için "kontrol" notu iki seçeneği (metni görsele
+  çek / yeniden üret) yan yana koymuştu; "bu versiyonları sevdim" tek cümlesi seçimi yaptı.
+  Değişiklik üretilmiş çıktıya değil KAYNAĞA yazıldı (`work/fixes.json`; `assemble.py` iç içe alan
+  ve liste ekleme öğrendi), assemble→catalog→prompts zinciri yeniden koştu: 25 düzeltme, 0 atlanan,
+  40/40 kapı, 640 prompt (N9'un 16 karesi "four cells"). İki tuzak: (1) doğrulayıcı geçmişi
+  "perched" kelimesini BİLEREK çıkarmıştı (tünek ima eder, model dal çizer) ve ben görsele
+  eşitlerken aynı kelimeyi geri koydum; yakalatan şey eski-beyan taramasının `verifier_fixes_applied`
+  satırına da bakmasıydı → "body horizontal, no legs and no branch". Kural: metni görsele eşitlerken
+  o parçanın düzeltme GEÇMİŞİNİ oku, bilerek çıkarılmış kelimeyi geri getirme; (2) şekil değişince
+  fiziksel sonuç da değişir: yatay stud'da civi "başın arkasında" olamaz (kuyruk sarkar) — boyun pedi
+  + pilot çiftte asılı durum ölçümü üreticiye soru olarak yazıldı; gram, siluet alanı aynı kaldığı
+  için değişmedi ve bu açıkça söylendi.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması

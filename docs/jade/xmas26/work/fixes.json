@@ -1,0 +1,220 @@
+[
+ {
+  "id": "*",
+  "field": "camera",
+  "find": ", small tag stamped 14K",
+  "replace": "",
+  "why": "a stamped tag invites rendered text; the listing text keeps the tag"
+ },
+ {
+  "id": "*",
+  "field": "camera",
+  "find": " small tag stamped 14K,",
+  "replace": "",
+  "why": "same, other word order"
+ },
+ {
+  "id": "B6",
+  "field": "title",
+  "set": "14K Gold Snaffle Bit Bracelet, Green Enamel, Miami Cuban Chain, Equestrian Gift for Her",
+  "why": "'Horsebit' is Gucci's trademarked design name"
+ },
+ {
+  "id": "B6",
+  "field": "tags",
+  "find": "horsebit bracelet",
+  "replace": "snaffle bracelet",
+  "why": "trademark term"
+ },
+ {
+  "id": "B6",
+  "field": "season_proof",
+  "find": "horsebit",
+  "replace": "snaffle bit",
+  "why": "trademark term"
+ },
+ {
+  "id": "B6",
+  "field": "camera",
+  "find": "One horse-bit (snaffle) station",
+  "replace": "One snaffle bit station",
+  "why": "trademark term out of the image text too"
+ },
+
+ {
+  "id": "N9",
+  "field": "camera",
+  "find": "a row of five small cells of opaque deep jade-green enamel separated by four 0.7 mm gold ribs",
+  "replace": "a row of four small cells of opaque deep jade-green enamel separated by three 0.7 mm gold ribs",
+  "why": "owner kept the regenerated hero (2026-10-18): four cells, three ribs; text follows the image"
+ },
+ {
+  "id": "N9",
+  "field": "macro",
+  "find": "its row of five opaque deep jade-green enamel cells",
+  "replace": "its row of four opaque deep jade-green enamel cells",
+  "why": "four cells (image kept)"
+ },
+ {
+  "id": "N9",
+  "field": "enamel_phrase",
+  "find": "filling five small cells in a row",
+  "replace": "filling four small cells in a row",
+  "why": "four cells (image kept)"
+ },
+ {
+  "id": "N9",
+  "field": "description",
+  "find": "five small enamel cells sit in a row on the bar",
+  "replace": "four small enamel cells sit in a row on the bar",
+  "why": "four cells (image kept)"
+ },
+ {
+  "id": "N9",
+  "field": "motif",
+  "find": "5 hucreli",
+  "replace": "4 hucreli",
+  "why": "four cells (image kept)"
+ },
+ {
+  "id": "N9",
+  "field": "workshop.dimensions",
+  "find": "5 hucre 1.56 x 1.2 x 0.55, 4 kaburga 0.7; taban 0.85.",
+  "replace": "4 hucre 2.12 x 1.2 x 0.55, 3 kaburga 0.7 (gorsele esitlendi 2026-10-18: bir kaburga eksik, altin -0.006 g, gram degismedi); taban 0.85.",
+  "why": "four cells on the same 10.6 mm panel: (10.6 - 3 x 0.7) / 4 = 2.12 mm each"
+ },
+
+ {
+  "id": "E9",
+  "field": "camera",
+  "find": "shaped as an upright cardinal bird in side profile, 5.8 mm wide and 11.5 mm tall.",
+  "replace": "shaped as a cardinal bird in side profile with its body horizontal and its tail trailing straight back, with no legs and no branch, 11.5 mm wide and 5.8 mm tall.",
+  "why": "owner kept the regenerated hero (2026-10-18): horizontal bird; text follows the image. Not 'perched': the verifier had removed that word because it invites a branch"
+ },
+ {
+  "id": "E9",
+  "field": "camera",
+  "find": "Straight post behind the head.",
+  "replace": "Straight post behind the neck, where the head meets the body.",
+  "why": "a horizontal stud needs its post near the centre of mass"
+ },
+ {
+  "id": "E9",
+  "field": "side",
+  "find": "11.5 mm tall.",
+  "replace": "11.5 mm long and 5.8 mm tall.",
+  "why": "horizontal bird"
+ },
+ {
+  "id": "E9",
+  "field": "back",
+  "find": "a small raised round pad behind the head holding the straight post",
+  "replace": "a small raised round pad behind the neck holding the straight post",
+  "why": "post moved to the neck"
+ },
+ {
+  "id": "E9",
+  "field": "alt_back",
+  "find": "the post behind the head",
+  "replace": "the post behind the neck",
+  "why": "post moved to the neck"
+ },
+ {
+  "id": "E9",
+  "field": "description",
+  "find": "A cardinal in 14k gold, upright in side profile,",
+  "replace": "A cardinal in 14k gold, in side profile with its tail trailing back,",
+  "why": "horizontal bird"
+ },
+ {
+  "id": "E9",
+  "field": "description",
+  "find": "Each stud is 5.8 mm wide and 11.5 mm tall.",
+  "replace": "Each stud is 11.5 mm wide and 5.8 mm tall, the bird in profile with its tail trailing back.",
+  "why": "horizontal bird"
+ },
+ {
+  "id": "E9",
+  "field": "description",
+  "find": "11.5 mm tall. The post sits behind the head, so the bird stays upright on the lobe.",
+  "replace": "11.5 mm wide. The post sits behind the neck, close to the bird's centre, so it hangs level on the lobe.",
+  "why": "horizontal bird, post at the neck"
+ },
+ {
+  "id": "E9",
+  "field": "workshop.dimensions",
+  "find": "5.8 x 11.45 mm.",
+  "replace": "11.45 x 5.8 mm (yatay durus, tunek/dal yok; gorsele esitlendi 2026-10-18; siluet alani ve gram degismedi).",
+  "why": "horizontal bird: same silhouette, rotated"
+ },
+ {
+  "id": "E9",
+  "field": "workshop.dimensions",
+  "find": "Civi pedi Ø2.2 (yerel 1.2) basin arkasinda; ped-hucre plan 1.62 mm.",
+  "replace": "Civi pedi Ø2.2 (yerel 1.2) boyun arkasinda (bas-govde birlesimi); ped-hucre plan 1.62 mm.",
+  "why": "post at the neck"
+ },
+ {
+  "id": "E9",
+  "field": "workshop.construction",
+  "find": "Kus dik durusta: bas ustte, civi basin arkasinda, kutle merkezinin ustunde.",
+  "replace": "Kus yatay durusta, tunek/dal yok (sahip karari 2026-10-18, gorsele esitlendi): bas onde, kuyruk geride; civi pedi boyun arkasinda, hucreden >=1.5 mm ve kutle merkezinin ~1 mm onunde; asili durus acisi pilot ciftte olculur.",
+  "why": "horizontal bird changes where the post must sit"
+ },
+ {
+  "id": "E9",
+  "field": "workshop.failure_modes",
+  "find": "Stud'in one devrilmesi",
+  "replace": "Stud'in donmesi / kuyrugun sarkmasi (yatay kus)",
+  "why": "the failure mode of a horizontal stud is rotation, not tipping"
+ },
+ {
+  "id": "E9",
+  "field": "workshop.failure_modes",
+  "find": "Civi basta, kutle merkezi civinin altinda.",
+  "replace": "Civi pedi boyunda, kutle merkezine yakin; friction arkalik tutar; pilotta asili durus acisi olculur, sarkma varsa ped govde ortasina kayar (hucreye >=1.5 mm sartiyla).",
+  "why": "prevention for the horizontal bird"
+ },
+ {
+  "id": "E9",
+  "field": "open_questions",
+  "append": "Yatay kusta civi konumu (gorsele esitlendi): boyun pedi kutle merkezinin ~1 mm onunde; pilot ciftte asili durus acisi olculur, sarkma varsa ped govde ortasina (hucreye >=1.5 mm) kaydirilir.",
+  "why": "the maker must confirm the hang of a horizontal stud on a pilot pair"
+ },
+
+ {
+  "id": "P2",
+  "field": "camera",
+  "find": "Ribbon tops are bright diamond-cut, side faces honed matte.",
+  "replace": "The two outer ribbon tops carry a bright diamond-cut checker pattern; the middle ribbon top is satin; side faces honed matte.",
+  "why": "owner kept the regenerated hero (2026-10-18): two patterned ribbons, one satin; text follows the image"
+ },
+ {
+  "id": "P2",
+  "field": "description",
+  "find": "Ribbon tops are diamond-cut, the sides honed matte.",
+  "replace": "The two outer ribbons are diamond-cut on top, the middle ribbon satin, the sides honed matte.",
+  "why": "ribbon finish follows the image"
+ },
+ {
+  "id": "P2",
+  "field": "workshop.dimensions",
+  "find": "sirtta 0.25 elmas tiras pahi.",
+  "replace": "dis iki seritte sirtta 0.25 derinlikte elmas tiras kare desen, orta serit satin (gorsele esitlendi 2026-10-18).",
+  "why": "ribbon finish follows the image"
+ },
+ {
+  "id": "P2",
+  "field": "workshop.bench_sequence",
+  "find": "serit sirti +0.1 (elmas tiras)",
+  "replace": "dis iki serit sirti +0.1 (elmas tiras)",
+  "why": "ribbon finish follows the image"
+ },
+ {
+  "id": "P2",
+  "field": "workshop.bench_sequence",
+  "find": "5. Elmas tiras: serit sirtlarinda 2 x 0.25 pah; yan yuzler honlu.",
+  "replace": "5. Elmas tiras: dis iki serit sirtinda 0.25 derinlikte kare desen; orta serit satin; yan yuzler honlu.",
+  "why": "ribbon finish follows the image"
+ }
+]

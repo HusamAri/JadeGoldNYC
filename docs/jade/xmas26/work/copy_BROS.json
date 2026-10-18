@@ -1,0 +1,2102 @@
+{
+ "category": "BROS",
+ "copy": {
+  "category": "BROS",
+  "products": [
+   {
+    "id": "P1",
+    "category": "brooch",
+    "karat": "14K",
+    "hollow": false,
+    "enamel": false,
+    "enamel_phrase": "",
+    "enamel_colours_tr": "",
+    "stones": 0,
+    "stone_phrase": "",
+    "stones_tr": "",
+    "cold_enamel_paragraph": "",
+    "workshop": {
+     "dimensions": "26.0 x 30.0 mm. Gobek D8.0 x 1.4 (deliksiz), merkez kubbe D2.6 h0.3. Kardinal isinlar (ust/sol/sag) gobek kenarindan 9.0 (R13), alt isin 13.0 (R17); plan 3.4 -> 0.8, uc r0.4, DIKDORTGEN kesit 1.3 sabit. Diyagonal isinlar 5.5 (R9.5), 2.6 -> 0.8, 1.2. On yuz V: 90 derece, 0.4 derin, 0.8 genis; isin 1.4 mm'ye daralinca (kardinal 6.9, alt 10.0, diyagonal 3.7 mm) 1.1 mm'de sifira sonumlenir; V altinda kalan ag 0.9. Model: bitmis + 0.2, elmas tirasli on yuzde +0.1 (isin modeli 1.6 kalin). Igne hatti yatay isinlar ekseninde (y=0), mafsal x=-6, kilit x=+6, igne 14.5 mm.",
+     "construction": "Tek parca 14K kayip-mum dokum: yildiz + mafsal kulaklari (sol yatay isin arkasi) ayni mumdan. Mine yok, tas yok, firina girmez. Emniyetli doner kilit dokulemez (doner kovan ayri parca) -> satin alma 14KY kilit, sag yatay isin arkasina (isin genisligi 2.8, kalinlik 1.3) lazerle kaynaklanir; parca hic firina girmedigi icin sert lehim de serbest ama lazer secildi (isil tav yok, renk dikisi yok). Igne 14K beyaz (nikelli), is-sertlestirilmis, kulaklara soguk percinlenir. Hollow yok.",
+     "bench_sequence": [
+      "1. CAD: bitmis olculer + 0.2 bitirme payi; on yuz +0.1 elmas tiras payi (isin modeli 1.6 kalin); V oluk modelde YOK (tezgahta kesilir), uc r0.4.",
+      "2. Recine baski (DLP 25-50 um), destekler arka yuzde; besleme gobek arkasindan + alt isin kokune yardimci kanal.",
+      "3. Yatirim, kademeli yakma (recine ~730 C'ye kadar); 14K standart alasim vakum dokum, metal ~1060-1080 C, flaska ~600 C.",
+      "4. Yolluk kesimi, tesviye (ege, 600-1200 zimpara); isin kalinligi kumpasla 1.30 +/- 0.05 (V oncesi 1.4).",
+      "5. Gobek honlama (3M radial 220), merkez kubbe parlatma.",
+      "6. Elmas tiras: on yuz V, 90 derece uc, 0.4 derin; V isin 1.4 genislige inince 1.1 mm'de sonumlenir; sonrasi ag kalinligi >=0.85 kontrol.",
+      "7. Kilit: sag yatay isin arkasi r=6 noktasina 14KY 460-12 kilit lazer kaynagi (0.2-0.3 mm noktalar, argon); kilit sabun+amonyakli suda kaynatilir (Otto Frei notu).",
+      "8. Igne: 14KW 0.86 mm, 14.5 mm'ye kes, ucu konik bile, cekerek 1/2 tur burgu ile sertlestir; 0.8 mm 14K percinle kulaklara tak; kilide 1 mm on gerilimle oturt.",
+      "9. Cila (yalniz kenar ve gobek kubbe), tambur YOK (V keskinligi korunur).",
+      "10. QC: tartim 3.31 g +/- %5, uc yaricaplari >=0.4 (parmak testi), kilit 20 ac-kapa, igne cekme testi 2 kg, kumastan gecirme."
+     ],
+     "bom": [
+      "Alasim: 14K sari standart dokum alasimi (minesiz parca; firina girmez), vakum dokum. Dokum govde (kulak/ped dahil) 2.940 g x 1.15 = 3.38 g dokum metali (yolluk/kayip payi).",
+      "Mine tozu: yok.",
+      "Tas: yok.",
+      "Bulgular (satin alma): 14K beyaz igne 0.86 mm (Otto Frei 601-14, 38.1 mm'den 14.5 mm'ye kesilir) 0.125 g; 14KY emniyetli doner kilit Otto Frei 460-12 0.22 g (tahmin); 14K percin teli 0.8 mm x 3.0 0.020 g. Toplam bulgu 0.365 g (altin grama dahil)."
+     ],
+     "failure_modes": [
+      {
+       "mode": "Elmas tiras V'sinin isin ucunu yarmasi (orijinalde 0.8 uc genisligine 0.8 genis V)",
+       "prevention": "V, isin 1.4 mm'ye daralinca 1.1 mm'de sifira sonumlenir; uc 0.8 genis tam kesit kalir."
+      },
+      {
+       "mode": "Iki yuzlu V ile agin 0.5 mm'ye inmesi ve isinin kirilmasi",
+       "prevention": "Yalniz on yuz V; ag 0.9 >= 0.8 yapisal."
+      },
+      {
+       "mode": "Iginin gobekteki acik delikten onden gorunmesi (orijinal D2.6 delik igne hattinin tam ustunde)",
+       "prevention": "Gobek deligi kaldirildi; gobek kati, merkez parlak kubbe."
+      },
+      {
+       "mode": "Parcanin yakada one devrilmesi",
+       "prevention": "Alt isin 13 mm (diger kardinal 9 mm) -> kutle merkezi y=-0.6, igne hatti y=0 ustte kalir."
+      },
+      {
+       "mode": "Dar isin tabaninda kilidin tasmasi",
+       "prevention": "Kilit r=6'da (isin 2.8 genis); kilit tabani 2.8'e egelenir."
+      }
+     ],
+     "tolerance_checks": [
+      {
+       "rule": "L1 karat 14K (KANIT karat_policy: 14K vitreous 'marginal', not_viable degil; 18K'ye gecilmez)",
+       "value": "14K sari",
+       "pass": true
+      },
+      {
+       "rule": "L2 mine",
+       "value": "mine yok - uygulanmaz",
+       "pass": true
+      },
+      {
+       "rule": "L3 birlestirme: mafsal topuzu tek dokum; pisirim sonrasi ek yalniz lazer",
+       "value": "mafsal kulaklari dokum; kilit lazer; lehim 0",
+       "pass": true
+      },
+      {
+       "rule": "L4 tas",
+       "value": "tas yok - uygulanmaz",
+       "pass": true
+      },
+      {
+       "rule": "L5 dekoratif >=0.6",
+       "value": "isin ucu 0.8, V alti ag 0.9",
+       "pass": true
+      },
+      {
+       "rule": "L5 yapisal >=0.8",
+       "value": "isin kalinligi 1.3 / 1.2, gobek 1.4",
+       "pass": true
+      },
+      {
+       "rule": "L5 mafsal kesiti >=1.0",
+       "value": "kulak 1.0 x 2.0 x 2.2",
+       "pass": true
+      },
+      {
+       "rule": "L5 aciklik >=0.6",
+       "value": "aciklik yok (gobek deligi kaldirildi)",
+       "pass": true
+      },
+      {
+       "rule": "L5 model +0.2 (+0.1 elmas tiras yuzu)",
+       "value": "isin modeli 1.6 (bitmis 1.3)",
+       "pass": true
+      },
+      {
+       "rule": "L5 giyilen uclar r>=0.4",
+       "value": "tum isin uclari r0.4",
+       "pass": true
+      },
+      {
+       "rule": "L6 hollow (yalniz kolye/bros, asla mineyle degil)",
+       "value": "kati govde, hollow yok; 'solid' basliga girebilir",
+       "pass": true
+      },
+      {
+       "rule": "L7 bros bandi 3.0-4.2 g altin (bulgu dahil)",
+       "value": "3.305 g (govde 2.940 + bulgu 0.365); tavana pay 0.89 g",
+       "pass": true
+      },
+      {
+       "rule": "L10 <=30 mm tek igne; mafsal ustte; doner emniyet kilidi; bulgu grama dahil",
+       "value": "26 x 30 mm, tek igne 14.5 mm; igne hatti kutle merkezinin 0.6 mm ustunde (alt isin uzun); 460-12 doner kilit; bulgu 0.365 g dahil",
+       "pass": true
+      },
+      {
+       "rule": "L11 8 kollu yildiz <=2 / motif ailesi <=3",
+       "value": "8 kollu yildiz: P1 + P7 = 2; goksel aile P1, P2, P7 = 3",
+       "pass": true
+      },
+      {
+       "rule": "L12 tek kahraman ozellik",
+       "value": "parlak elmas tirasli 8 isinli yildiz",
+       "pass": true
+      }
+     ]
+    },
+    "motif": "GOKSEL - Bethlehem yildizi: 8 isin (4 kardinal + 4 kisa diyagonal), alt isin uzun (kilavuz isin). Kategorideki 8 kollu yildiz #1 (P7 ile birlikte 2; L11 siniri 2).",
+    "verifier_fixes_applied": [],
+    "verifier_fixes_rejected": [],
+    "open_questions": [
+     "14KY 460-12 kilit gercek gramaji ve taban olcusu (0.22 g ve <=2.8 mm varsayildi); tedarikci numunesi tartilmali.",
+     "14.5 mm igne ile kumas tutusu kalin ceket yakasinda denenmeli (pilot).",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Mafsal kulaklarini 2.0 -> 2.5 genislige cikar (delik duvari 0.825). Delik merkezi arka yuzeyden >=0.85 olmali.",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Igne hattini en az +1.5 mm yukari al. Mafsal/kilit icin yatay isinlarin ust kenari ya da ust diyagonal isinlar kullanilabilir. Alternatif: devrilme testini pilotta olc ve sonucu kaydet."
+    ],
+    "name": "North Star Lapel Pin",
+    "wearer": "men",
+    "gold_grams": 3.33,
+    "camera": "Men's lapel pin in 14K yellow gold, 26 mm wide and 30 mm tall: an eight-pointed star with four long rays and four short diagonal rays. The top, left and right rays reach 13 mm from the centre; the lower ray reaches 17 mm. The diagonal rays reach 9.5 mm. Each ray is 1.3 mm thick with a flat top and one bright diamond-cut V groove along its centre that fades out before the rounded tip. The 8 mm centre disc is honed matte with a 2.6 mm polished dome. Back: 14K white gold pin stem with a rotating safety catch.",
+    "macro": "The centre disc with its honed matte finish and small polished dome, and the bright V groove running down each ray.",
+    "back": "The flat back of the star with the 14K white gold pin stem, the hinge and the rotating safety catch.",
+    "side": "A flat star 1.3 mm thick with the centre dome rising slightly above it.",
+    "max_mm": 30,
+    "bench_props": "a steel burnisher and a fine half-round file",
+    "noun": "lapel pin",
+    "alt_base": "14K gold eight-pointed star lapel pin for men",
+    "alt_macro": "the matte centre disc and the bright grooves on the rays",
+    "alt_back": "the pin stem and safety catch",
+    "title": "14K Gold Star Lapel Pin for Men, Eight Point North Star, Groomsman Gift",
+    "tags": [
+     "14k gold lapel pin",
+     "mens lapel pin",
+     "star lapel pin",
+     "north star pin",
+     "gold brooch for men",
+     "suit pin",
+     "groomsman gift",
+     "celestial jewelry",
+     "christmas gift",
+     "gift for him",
+     "solid gold pin",
+     "wedding lapel pin",
+     "mens jewelry"
+    ],
+    "materials": [
+     "14k yellow gold",
+     "14k white gold pin stem",
+     "14k gold safety catch"
+    ],
+    "season_proof": "Sekiz ışınlı yıldız yıl boyu satan bir form; başlık Ocak'ta değişmez.",
+    "total_grams": 3.33,
+    "description": "An eight-pointed star for the lapel, four long rays and four short ones, each with a bright cut groove and a matte centre. A Christmas gift for him, and the pin he wears to every wedding after.\n\nTHE PIECE\n26 mm wide and 30 mm tall; the lower ray is drawn longest. Each ray is 1.3 mm thick with a flat top and one bright V groove that fades before the rounded tip. The 8 mm centre disc is honed matte with a small polished dome.\n\nGOLD WEIGHT\n3.33 g of 14k gold, counting the 14k white gold pin stem and the safety catch. On the scale the finished piece weighs 3.33 g in total with everything on it.\n\nHOW IT FASTENS\nOne pin stem of hardened 14k white gold with a rotating safety catch, the standard fine-jewellery fastening for a brooch worn every day.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap and a soft brush. Take it off for swimming and cleaning. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout."
+   },
+   {
+    "id": "P2",
+    "category": "brooch",
+    "karat": "14K",
+    "hollow": false,
+    "enamel": false,
+    "enamel_phrase": "",
+    "enamel_colours_tr": "",
+    "stones": 3,
+    "stone_phrase": "three 1.8 mm round lab-grown white sapphires: one in the central collet of the head ring and one flush-set in the raised square pad on each of the two cross-bars",
+    "stones_tr": "3 x 1,8 mm lab beyaz safir",
+    "cold_enamel_paragraph": "",
+    "workshop": {
+     "dimensions": "42 x 14 mm. Bas halkasi OD11.0 / ID8.4, 1.8 kalin; 3 parmak 2.7 x 1.0 x 1.5; merkez kolet OD2.8 x 1.8. Seritler 31 / 25 / 19 boy, plan 2.4 -> 0.8 (uc r0.4), kalinlik 1.1 / 1.0 / 0.9; sirtta 0.25 elmas tiras pahi. Dugum 1: bastan 9 mm, uc seridi baglar (31'in 0.29'u, 19'un 0.47'si). Dugum 2: bastan 17 mm, 31 ve 25 seritlerini baglar (0.55 / 0.68). Dugum 2.8 x 2.8 x 1.8. Iki igne, her biri 14.5 mm, araliklari 18 mm, ust kenar seridinin arkasinda (ust ucte). Model +0.2, elmas tiras yuzu +0.1.",
+     "construction": "Tek parca 14K dokum (bas + parmaklar + kolet + 3 serit + 2 dugum + 2 cift mafsal kulagi). Mine yok, firina girmez. Taslar: kolet ve dugumlerde 1.8 mm lab beyaz safir, alttan D1.0 delikli flush. 2 kilit satin alma, lazerle; igneler 14KW soguk percin. Hollow yok.",
+     "bench_sequence": [
+      "1. CAD: bitmis + 0.2; serit sirti +0.1 (elmas tiras); tas yuvalari D1.0 pilot delik modelde (derinlik/cap 1.8), uc r0.4.",
+      "2. Recine baski; besleme bas halkasi arkasi + her serit kokune; ince 0.9 serit icin uc tarafina hava kanali.",
+      "3. Yatirim + yakma; 14K standart alasim vakum dokum.",
+      "4. Yolluk kesimi, tesviye; serit kalinliklari 1.1 / 1.0 / 0.9 +/- 0.05; dugum kalinligi 1.8.",
+      "5. Elmas tiras: serit sirtlarinda 2 x 0.25 pah; yan yuzler honlu.",
+      "6. Tas yuvasi: pilot D1.0 teyit, 1.8 mm yuva frezesi (90 derece hart bur), girdle oturma 0.02 bindirme.",
+      "7. Tas oturtma: 3 x 1.8 lab beyaz safir flush, burnisor ile; tas sonrasi delikten isik kontrolu.",
+      "8. 2 kilit lazer kaynak (ust kenar seridi arkasi), 2 igne 14.5 mm burgu-sertlestirme + percin.",
+      "9. Cila; QC: tartim 3.79 g +/- %5, tas sallanma testi (igne ucu), serit ucu egilme kontrolu, 2 kilit ac-kapa."
+     ],
+     "bom": [
+      "Alasim: 14K sari standart dokum alasimi (minesiz parca; firina girmez), vakum dokum. Dokum govde (kulak/ped dahil) 3.059 g x 1.15 = 3.52 g dokum metali (yolluk/kayip payi).",
+      "Mine tozu: yok.",
+      "Taslar: 3 x 1.8 mm lab grown white sapphire = 0.0740 ct.",
+      "Bulgular (satin alma): 2 x 14K beyaz igne 0.86 mm (Otto Frei 601-14, 38.1 mm'den 14.5 mm'ye kesilir) 0.125 g; 2 x 14KY emniyetli doner kilit Otto Frei 460-12 0.22 g (tahmin); 2 x 14K percin teli 0.8 mm x 3.0 0.020 g. Toplam bulgu 0.730 g (altin grama dahil)."
+     ],
+     "failure_modes": [
+      {
+       "mode": "Tas culet'inin brosun arkasindan cikmasi (orijinal 1.2 mm dugumde 1.22 mm yuva)",
+       "prevention": "Dugum ve kolet 1.8 kalin (KANIT 1.8 mm tas icin 1.7), alttan D1.0 delik."
+      },
+      {
+       "mode": "31 mm seridin son dugumden sonraki serbest ucunun takilip egilmesi",
+       "prevention": "Dugum 2 bastan 17 mm'de; serbest uc 14 mm, kesit 1.1 kalin, uc r0.4; parmak/kumas testi QC'de."
+      },
+      {
+       "mode": "Parmaklarin halka ile kolet arasina sigmamasi (orijinal 4.2 mm parmak, gercek bosluk 2.7)",
+       "prevention": "Parmak 2.7 mm, hacim cifte sayimi giderildi."
+      },
+      {
+       "mode": "Uzun brosun yakada donmesi",
+       "prevention": "Cift igne, 18 mm aralik, ust kenarda."
+      }
+     ],
+     "tolerance_checks": [
+      {
+       "rule": "L1 karat 14K (KANIT karat_policy: 14K vitreous 'marginal', not_viable degil; 18K'ye gecilmez)",
+       "value": "14K sari",
+       "pass": true
+      },
+      {
+       "rule": "L2 mine",
+       "value": "mine yok - uygulanmaz",
+       "pass": true
+      },
+      {
+       "rule": "L3 birlestirme",
+       "value": "mafsal kulaklari tek dokum; kilit lazer; lehim 0",
+       "pass": true
+      },
+      {
+       "rule": "L4 lab-grown yuvarlak 1.3-2.0, flush",
+       "value": "3 x 1.8 lab beyaz safir, flush",
+       "pass": true
+      },
+      {
+       "rule": "L4 ev sahibi kalinligi (KANIT 1.8 mm tas -> 1.7)",
+       "value": "1.8",
+       "pass": true
+      },
+      {
+       "rule": "L4 yanal duvar (KANIT 1.8-2.5 mm tas -> 0.45)",
+       "value": "0.50",
+       "pass": true
+      },
+      {
+       "rule": "L4 tas altinda delik",
+       "value": "D1.0, derinlik/cap 1.8 <= 2",
+       "pass": true
+      },
+      {
+       "rule": "L4 tas sayisi <=7, pave yok",
+       "value": "3",
+       "pass": true
+      },
+      {
+       "rule": "L5 dekoratif >=0.6",
+       "value": "serit ucu 0.8, parmak 1.0",
+       "pass": true
+      },
+      {
+       "rule": "L5 yapisal >=0.8",
+       "value": "serit 0.9-1.1, halka duvari 1.3 x 1.8",
+       "pass": true
+      },
+      {
+       "rule": "L5 mafsal kesiti >=1.0",
+       "value": "kulak 1.0 x 2.0 x 2.2 (x2)",
+       "pass": true
+      },
+      {
+       "rule": "L5 aciklik >=0.6",
+       "value": "seritler arasi en dar 1.2; halka ici 2.7",
+       "pass": true
+      },
+      {
+       "rule": "L5 model +0.2 / giyilen uc r>=0.4",
+       "value": "model +0.2 (+0.1 sirt); serit uclari r0.4",
+       "pass": true
+      },
+      {
+       "rule": "L6 hollow (yalniz kolye/bros, asla mineyle degil)",
+       "value": "kati govde, hollow yok; 'solid' basliga girebilir",
+       "pass": true
+      },
+      {
+       "rule": "L7 bros bandi 3.0-4.2 g altin (bulgu dahil)",
+       "value": "3.788 g (govde 3.059 + bulgu 0.730); tavana pay 0.41 g",
+       "pass": true
+      },
+      {
+       "rule": "L10 >30 mm cift igne; mafsal ustte; doner kilit; bulgu dahil",
+       "value": "42 mm -> 2 igne 18 mm aralik, ust kenarda; 2 x 460-12; bulgu 0.730 g dahil",
+       "pass": true
+      },
+      {
+       "rule": "L12 tek kahraman ozellik",
+       "value": "uc parlak serit + isikli bas: diyagonal komet siluet",
+       "pass": true
+      }
+     ]
+    },
+    "motif": "GOKSEL - kuyruklu yildiz (komet): acik halka bas + 3 daralan kuyruk seridi.",
+    "verifier_fixes_applied": [],
+    "verifier_fixes_rejected": [],
+    "open_questions": [
+     "Lab beyaz safir melee partisinin gercek toplam derinligi (%63'u asarsa 1.8 ev sahibi yetmez; kumpasla olc).",
+     "Iki 14.5 mm igne mi, tek 30 mm igne mi: yakada deneme (L10 cift igne secildi).",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Dugumleri yeniden tanimla: her dugum = orta seridin uzerinde 2.8 x 2.8 x 1.8 tas pedi + seritler arasi 1.2 x 1.5 x 1.0 kopruler (dugum 1'de 2, dugum 2'de 1). Bu hacmi gram_build'e ekle.",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Igne yerlesimini degistir: igne A bas halkasi arkasinda (mafsal ve kilit halka uzerinde), igne B dugum 1 ile dugum 2 arasinda (dugum pedlerinde). Kilit tabani hicbir yerde <2.6 mm genislikteki serit uzerine konmasin.",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Kulaklari 2.5 genislige cikar."
+    ],
+    "name": "Comet Brooch",
+    "wearer": "women",
+    "gold_grams": 3.92,
+    "camera": "Brooch in 14K yellow gold, 42 mm long and 14 mm tall, shaped as a comet lying almost horizontal: the head at the right end, the tail trailing to the left and slightly downward. Head: an 11 mm open gold ring with three short spokes holding a central collet set with one 1.8 mm lab grown white sapphire. Tail: three separate tapered gold ribbons, 31, 25 and 19 mm long, with rounded tips and open gaps between them. Two small gold cross-bars bridge the ribbons; each bar carries a raised 2.8 mm square pad set with one 1.8 mm lab grown white sapphire, flush-set. Ribbon tops are bright diamond-cut, side faces honed matte. Back: two 14K white gold pin stems with rotating safety catches.",
+    "macro": "The open head ring with its three spokes and the central collet holding a lab-grown white sapphire, and the start of the three tail ribbons.",
+    "back": "The back of the comet with two 14K white gold pin stems, their hinges and rotating safety catches.",
+    "side": "Flat tail ribbons 0.9 to 1.1 mm thick and a head ring 1.8 mm thick.",
+    "max_mm": 42,
+    "bench_props": "a steel burnisher, a fine half-round file and a pair of brass tweezers",
+    "noun": "brooch",
+    "alt_base": "14K gold comet brooch with three lab grown white sapphires",
+    "alt_macro": "the comet head ring and its lab-grown sapphire",
+    "alt_back": "the two pin stems and safety catches",
+    "title": "14K Gold Comet Brooch, Three Lab Grown Sapphires, Shooting Star Pin, Celestial Gift",
+    "tags": [
+     "14k gold brooch",
+     "comet brooch",
+     "shooting star pin",
+     "lab grown sapphire",
+     "celestial jewelry",
+     "star brooch",
+     "gold pin",
+     "coat brooch",
+     "christmas gift",
+     "gift for her",
+     "solid gold brooch",
+     "statement brooch",
+     "astronomy gift"
+    ],
+    "materials": [
+     "14k yellow gold",
+     "lab grown white sapphire",
+     "14k white gold pin stem",
+     "14k gold safety catch"
+    ],
+    "season_proof": "Kuyruklu yıldız yıl boyu 'celestial' talebinde yaşar; başlıkta Noel yok.",
+    "total_grams": 3.93,
+    "description": "A comet lying across the coat: an open gold ring for a head and three tapered gold ribbons trailing behind, with lab-grown white sapphires at the head and on the cross-bars. A celestial Christmas gift.\n\nTHE PIECE\n42 mm long and 14 mm tall. The 11 mm head ring holds a central collet on three short spokes; the three tail ribbons are 31, 25 and 19 mm long with rounded tips, bridged by two small cross-bars. Ribbon tops are diamond-cut, the sides honed matte.\n\nGOLD WEIGHT\n3.92 g of 14k gold, counting the 14k white gold pin stem and the safety catch. On the scale the finished piece weighs 3.93 g in total with the stones.\n\nSTONES\nThree 1.8 mm round lab-grown white sapphires: one in the head collet and one flush set on each cross-bar pad, 0.07 ct in total. Mohs 9.\n\nHOW IT FASTENS\nTwo pin stems of hardened 14k white gold with a rotating safety catch, the standard fine-jewellery fastening for a brooch worn every day.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece. The stones are set last, cold, after all firing and polishing.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap and a soft brush. Take it off for swimming and cleaning. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout."
+   },
+   {
+    "id": "P3",
+    "category": "brooch",
+    "karat": "14K",
+    "hollow": false,
+    "enamel": true,
+    "enamel_phrase": "opaque ice-blue enamel filling four rectangular fields on the face of the bar",
+    "enamel_colours_tr": "buz mavisi",
+    "stones": 3,
+    "stone_phrase": "three 1.5 mm round lab-grown white sapphires, flush-set between the four enamel fields of the bar",
+    "stones_tr": "3 x 1,5 mm lab beyaz safir",
+    "cold_enamel_paragraph": "ENAMEL\nThe colour is hand-applied cold enamel (coloured epoxy resin), not kiln-fired glass. It is set into cells cast into the gold, level with the surface. Resin can scratch with wear: avoid ultrasonic and steam cleaning, solvents and perfume on the coloured areas.",
+    "workshop": {
+     "dimensions": "28.0 x 25.9 mm. Bar 28.0 x 3.9 x 1.5. Hucreler 4 x (4.3 x 2.5 x 0.55); uc duvar 0.75, yan duvar 0.70, ayirici 3.1 (tas yuvasi). Sarkitlar x = -9 / 0 / +8 konumunda; 22 / 17 / 15 boy, plan 3.4 -> 0.8 (uc r0.4), kalinlik 1.1 / 1.0 / 1.0. Yarik 0.6 genis, bar altindan 3.6 mm'de baslar, sarkit 1.8 mm'ye daralinca biter (22: 3.6->13.5, 17: 3.6->10.5, 15: 3.6->9.2), uclari r0.3. Igne hatti bar altindan 2.1 mm (sarkit koklerinde), mafsal sol sarkit, kilit sag sarkit; igne 19.5 mm.",
+     "construction": "Tek parca 14K CINKOSUZ alasim dokum: bar + 4 hucre + 3 sarkit + mafsal kulaklari + kilit pedi. Lehim yok. Taban 1.5 - 0.55 = 0.95 (karsi-mine gerekmez). Kilit pedi sag sarkit kokunde, mine kenarina duzlemde 1.55 mm (KANIT >=1.5), pisirim sonrasi lazer. Taslar tum pisirimlerden sonra ayiricilarda, mine kenarina 0.8.",
+     "bench_sequence": [
+      "1. CAD: bitmis + 0.2; hucre tabani filetosu r0.15; tas pilot delikleri D0.9 modelde (derinlik/cap 1.67); yarik uclari r0.3.",
+      "2. Recine baski; besleme bar arkasi ortadan; sarkit uclarina hava kanali.",
+      "3. Yatirim + yakma; CINKOSUZ 14K, vakum dokum. Gozenek kontrolu (10x lup, hucre tabanlari); gozenekli parca hurda.",
+      "4. Tesviye; bar kalinligi 1.5, hucre derinligi 0.55 derinlik saatiyle; yariklar 0.6 pin-gauge.",
+      "5. Hucre temizligi (cam firca, doku yok), tas yuvalarinin on frezesi (mineden ONCE; pisirim sonrasi titresim mineye ulasmasin).",
+      "6. Yuzey zenginlestirme: 3-4 dongu ~593 C tav + %10 H2SO4; damitik su, yagsiz.",
+      "7. Karsi-mine: gerekmez (taban 0.95 >= 0.8).",
+      "8. Islak dolum opak buz mavisi; Pisirim 1: 780 C, 75 sn, kalibre pirometre, sehpada bar alttan destekli.",
+      "9. Pisirim 2: ikinci dolum, 780 C, 75 sn.",
+      "10. Tasla zimpara (alundum + su), mine altinla es seviye.",
+      "11. Pisirim 3: 770 C, 50 sn parlatma. Toplam 3.",
+      "12. Asit YOK; bikarbonat + su notr temizlik.",
+      "13. Sarkitlarda elmas tiras (mineye torna yaklasmaz; sarkitlar bar altinda).",
+      "14. Tas oturtma: 3 x 1.5 lab beyaz safir flush, burnisorle elle (cekic YOK, mine yaninda); mine Plasti-tac ile maskeli.",
+      "15. Pisirim sonrasi lazer: sag sarkit kok pedine 460-12 kilit; Plasti-tac + parlak gumus siper, dusuk guc, hava sogutma.",
+      "16. Igne 14KW 19.5 mm burgu-sertlestir, sol sarkit kulaklarina percin.",
+      "17. Cila (yalniz altin), QC: tartim 3.68 g +/- %5, mine pinhole/catlak 10x, tas testi, kilit 20 ac-kapa."
+     ],
+     "bom": [
+      "Alasim: 14K sari CINKOSUZ mine-uyumlu alasim (Otto Frei 846-180 'No Zinc' master alloy + 24K ile 14K; dokumhaneden yazili Zn=0 sertifikasi + solidus/DSC degeri), vakum/inert gaz dokum. Dokum govde (kulak/ped dahil) 3.273 g x 1.15 = 3.76 g dokum metali (yolluk/kayip payi).",
+      "Mine tozu: kursunsuz opak buz mavisi ~148 mg (pisirilmis 59 mg x 2.5 dolum/tas kaybi).",
+      "Taslar: 3 x 1.5 mm lab grown white sapphire = 0.0428 ct.",
+      "Bulgular (satin alma): 14K beyaz igne 0.86 mm (Otto Frei 601-14, 38.1 mm'den 19.5 mm'ye kesilir) 0.163 g; 14KY emniyetli doner kilit Otto Frei 460-12 0.22 g (tahmin); 14K percin teli 0.8 mm x 3.0 0.020 g. Toplam bulgu 0.403 g (altin grama dahil)."
+     ],
+     "failure_modes": [
+      {
+       "mode": "Bar uclarinda mine tutunmamasi (orijinalde uc duvar 0.00)",
+       "prevention": "Hucreler 4.3'e kisaldi; uc duvar 0.75, yan duvar 0.70."
+      },
+      {
+       "mode": "Yarigin sarkit ucunu ikiye ayirmasi",
+       "prevention": "Yarik sarkit 1.8 mm'ye daralinca biter; yan duvarlar >=0.6."
+      },
+      {
+       "mode": "Uzun mine sirasinda (17.2 mm) firinda bar egilmesi",
+       "prevention": "Bar 1.5 kalin, 780 C ust sinir, sehpada tam destek; pilot mine parcasi P6 (daha rijit)."
+      },
+      {
+       "mode": "Kilit kaynaginin mineyi yakmasi",
+       "prevention": "Ped sarkit kokunde, mine kenarina 1.55 mm; maske + siper + dusuk guc."
+      },
+      {
+       "mode": "Igne yarik icinden onden gorunmesi",
+       "prevention": "Yariklar igne hattinin (bar alti 2.1) 1.5 mm altinda baslar."
+      }
+     ],
+     "tolerance_checks": [
+      {
+       "rule": "L1 karat 14K (KANIT karat_policy: 14K vitreous 'marginal', not_viable degil; 18K'ye gecilmez)",
+       "value": "14K sari",
+       "pass": true
+      },
+      {
+       "rule": "L2 opak vitreous champleve, hucreler dokumde birakilir (oyma degil)",
+       "value": "opak, kursunsuz; hucreler mumda modelli",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre derinligi 0.5-0.6",
+       "value": "0.55",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre genisligi >=0.7 ve derinlik <=2x genislik",
+       "value": "min genislik 2.5; oran 0.22",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre tabani >=0.8 (karsi-mine gerekmez)",
+       "value": "0.95",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre arasi ve cevre altin duvar >=0.70",
+       "value": "0.7",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre icinde kabartma/doku yok",
+       "value": "duz, filetolu taban (r0.15)",
+       "pass": true
+      },
+      {
+       "rule": "L2 palet + renk sayisi",
+       "value": "1 renk: buz mavisi",
+       "pass": true
+      },
+      {
+       "rule": "L2 pisirim <=4 dongu, <=790 C (KANIT)",
+       "value": "3 pisirim, 770-780 C",
+       "pass": true
+      },
+      {
+       "rule": "L3 ilk pisirimden sonra hamlac lehimi yok",
+       "value": "lehim baglantisi 0; mafsal kulaklari govdeyle tek dokum; kilit pisirim sonrasi lazerle",
+       "pass": true
+      },
+      {
+       "rule": "L3 pisirim sonrasi ek yalniz lazer, ciplak ped, mine kenarina >=1.5",
+       "value": "kilit pedi mine kenarina 1.55 (duzlemde)",
+       "pass": true
+      },
+      {
+       "rule": "L4 lab-grown 1.3-2.0 flush, <=7 tas",
+       "value": "3 x 1.5 lab beyaz safir",
+       "pass": true
+      },
+      {
+       "rule": "L4 ev sahibi (KANIT 1.5 mm tas -> 1.5) + alttan delik",
+       "value": "1.5, D0.9 delik",
+       "pass": true
+      },
+      {
+       "rule": "L4 yanal duvar (KANIT <1.8 mm tas -> 0.35)",
+       "value": "1.2 (dikey), 0.8 (mineye)",
+       "pass": true
+      },
+      {
+       "rule": "L4 ciplak altinda, mine kenarina >=0.5, pisirimlerden sonra",
+       "value": "0.8; son pisirimden sonra",
+       "pass": true
+      },
+      {
+       "rule": "L5 dekoratif >=0.6",
+       "value": "sarkit ucu 0.8; yarik yan duvari >=0.6",
+       "pass": true
+      },
+      {
+       "rule": "L5 yapisal >=0.8",
+       "value": "bar 1.5, sarkit 1.0-1.1",
+       "pass": true
+      },
+      {
+       "rule": "L5 mafsal kesiti >=1.0",
+       "value": "kulak 1.0 x 2.0 x 2.2",
+       "pass": true
+      },
+      {
+       "rule": "L5 aciklik >=0.6 ve derinlik <=2x",
+       "value": "yarik 0.6, derinlik 1.0-1.1 -> oran 1.83",
+       "pass": true
+      },
+      {
+       "rule": "L5 model +0.2 / uc r>=0.4",
+       "value": "+0.2 (+0.1 sarkit yuzu); uclar r0.4",
+       "pass": true
+      },
+      {
+       "rule": "L6 hollow (yalniz kolye/bros, asla mineyle degil)",
+       "value": "kati govde, hollow yok; 'solid' basliga girebilir",
+       "pass": true
+      },
+      {
+       "rule": "L7 bros bandi 3.0-4.2 g altin (bulgu dahil)",
+       "value": "3.676 g (govde 3.273 + bulgu 0.403); tavana pay 0.52 g",
+       "pass": true
+      },
+      {
+       "rule": "L10 <=30 mm tek igne; mafsal ustte; doner kilit",
+       "value": "28 mm genis, en/boy 1.08 -> tek igne 19.5 mm; igne bar altinda (ust %22); 460-12",
+       "pass": true
+      },
+      {
+       "rule": "L12 tek kahraman ozellik",
+       "value": "buz mavisi bar + uc sarkit",
+       "pass": true
+      }
+     ]
+    },
+    "motif": "BUZ - bar uzerinde uc buz sarkiti (asimetrik 22 / 17 / 15).",
+    "verifier_fixes_applied": [],
+    "verifier_fixes_rejected": [],
+    "open_questions": [
+     "Cinkosuz 14K kupon pisiriminde buz mavisi opak renk ve 17 mm mine sirasinda egilme kontrolu.",
+     "460-12 kilit tabaninin sarkit kokune (3.2 genis) sigmasi.",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Kulaklari 2.5 genislige cikar.",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Yarigi sarkit 2.0 mm'ye daralinca bitir; boylece bitmis duvar 0.7 olur ve cila payi kalir.",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Kilit pedini 0.2 mm asagi kaydir (duzlem mesafesi >=1.7).",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Elmas tirasi zenginlestirmeden once yap ya da baglama yontemini belirt."
+    ],
+    "name": "Icicle Bar Brooch",
+    "wearer": "women",
+    "gold_grams": 3.71,
+    "camera": "Brooch in 14K yellow gold: a 28 mm horizontal bar, 3.9 mm tall, with three tapered icicles hanging below it, 22, 17 and 15 mm long; overall 28 mm wide and 26 mm tall. The bar face holds four rectangular fields of opaque ice-blue enamel, each 4.3 by 2.5 mm, level with the gold and framed by polished gold borders. Between the enamel fields sit three 1.5 mm lab grown white sapphires, flush-set. Each icicle has an open slit 0.6 mm wide in its upper half and a rounded tip; icicle faces are bright diamond-cut. Back: a 14K white gold pin stem runs behind the icicle roots, just below the bar, with a rotating safety catch.",
+    "macro": "The bar face with its four opaque ice-blue enamel fields and the flush-set lab-grown white sapphires between them.",
+    "back": "The back of the bar and icicles with the 14K white gold pin stem behind the icicle roots and the rotating safety catch.",
+    "side": "A flat bar 1.5 mm thick with icicles 1.0 to 1.1 mm thick.",
+    "max_mm": 28,
+    "bench_props": "a small porcelain dish of ice-blue enamel powder, a fine sable brush and a pair of brass tweezers",
+    "noun": "brooch",
+    "alt_base": "14K gold icicle bar brooch with ice blue enamel and lab grown sapphires",
+    "alt_macro": "the ice blue enamel bar and its lab-grown sapphires",
+    "alt_back": "the pin stem and safety catch",
+    "title": "14K Gold Icicle Brooch, Ice Blue Enamel Bar Pin, Lab Grown Sapphires, Winter Gift",
+    "tags": [
+     "14k gold brooch",
+     "icicle brooch",
+     "enamel brooch",
+     "ice blue enamel",
+     "vitreous enamel",
+     "winter jewelry",
+     "bar brooch",
+     "lab grown sapphire",
+     "christmas gift",
+     "gift for her",
+     "coat brooch",
+     "solid gold brooch",
+     "ice jewelry"
+    ],
+    "materials": [
+     "14k yellow gold",
+     "vitreous enamel",
+     "lab grown white sapphire",
+     "14k white gold pin stem",
+     "14k gold safety catch"
+    ],
+    "season_proof": "Buz sarkıtı kış sembolü; Ocak-Şubat 'winter icicle brooch' olarak satar.",
+    "total_grams": 3.78,
+    "description": "A gold bar with four fields of ice-blue glass enamel and three lab-grown sapphires, and three icicles hanging below it. A winter brooch for Christmas that stays on the coat until spring.\n\nTHE PIECE\n28 mm wide and 26 mm tall. The bar is 3.9 mm tall; the icicles hang 22, 17 and 15 mm, each with a narrow open slit in its upper half and a rounded tip. Icicle faces are diamond-cut.\n\nGOLD WEIGHT\n3.71 g of 14k gold, counting the 14k white gold pin stem and the safety catch. On the scale the finished piece weighs 3.78 g in total with the enamel and stones.\n\nENAMEL\nKiln-fired vitreous enamel (glass), opaque ice blue, level with polished gold borders.\n\nSTONES\nThree 1.5 mm round lab-grown white sapphires, flush set between the enamel fields. Mohs 9.\n\nHOW IT FASTENS\nOne pin stem of hardened 14k white gold with a rotating safety catch, the standard fine-jewellery fastening for a brooch worn every day.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece, in a zinc-free gold alloy chosen for enamel. The enamel cells are cast into the gold, filled by hand and kiln-fired. Nothing is soldered after the first firing; any fitting added later is laser welded away from the enamel. The stones are set last, cold, after all firing and polishing.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap. Glass enamel is hard and does not fade, but it can chip if struck against stone or metal. Keep it away from ultrasonic cleaners. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout."
+   },
+   {
+    "id": "P4",
+    "category": "brooch",
+    "karat": "14K",
+    "hollow": false,
+    "enamel": true,
+    "enamel_phrase": "opaque ice-blue enamel filling the three diamond-shaped fields of the hexagon",
+    "enamel_colours_tr": "buz mavisi",
+    "stones": 1,
+    "stone_phrase": "one 1.5 mm round pale ice-blue lab-grown sapphire flush-set in the centre disc",
+    "stones_tr": "1 x 1,5 mm açık buz mavisi lab safir",
+    "cold_enamel_paragraph": "ENAMEL\nThe colour is hand-applied cold enamel (coloured epoxy resin), not kiln-fired glass. It is set into cells cast into the gold, level with the surface. Resin can scratch with wear: avoid ultrasonic and steam cleaning, solvents and perfume on the coloured areas.",
+    "workshop": {
+     "dimensions": "Altigen R9.0 (kose-kose 18.0, kenar-kenar 15.6), plaka 1.45; cevre altin cerceve 1.0; 6 kaburga 0.8 genis, gobek D3.4 (arkadan +0.15 -> 1.6). 6 ucgen hucre, toplam 120.6 mm2 x 0.55 derin; hucre koseleri r0.4 (60 derece kose min 0.7 genislik). Kose r0.5. Igne hatti y=+2.0, mafsal x=-5.5, kilit kaidesi x=+5.5; igne 13.5 mm. Model +0.2.",
+     "construction": "Tek parca 14K CINKOSUZ dokum: altigen plaka + kaburgalar + gobek + yukseltilmis mafsal kulaklari + kilit kaynak kaidesi. Lehim yok. Taban 1.45 - 0.55 = 0.90 (karsi-mine yok). Tum yuz mineli oldugu icin kilit, D1.6 x 1.2 ayak + 2.6 x 2.6 x 0.8 pedli dokum kaideye lazerle: kaynak yuzu mineye 3D en az 0.90 + 1.2 + 0.8 = 2.9 mm (KANIT >=1.5). Lab mavi safir gobekte, tum pisirimlerden sonra.",
+     "bench_sequence": [
+      "1. CAD: bitmis + 0.2; hucre tabani r0.15 fileto, 60 derece hucre koseleri r0.4; gobek pilot delik D0.9; kaide ve uzun kulaklar arka yuzde.",
+      "2. Recine baski; besleme kilit kaidesinden degil, plaka kenarindan (kaide ayagi ince).",
+      "3. Yatirim + yakma; CINKOSUZ 14K vakum dokum; gozenek kontrolu (6 hucre tabani), gozenekli hurda.",
+      "4. Tesviye; plaka 1.45, hucre 0.55; kaburga 0.8 kumpas.",
+      "5. Hucre temizligi; gobek tas yuvasi on frezesi.",
+      "6. Yuzey zenginlestirme 3-4 dongu (~593 C + %10 H2SO4).",
+      "7. Karsi-mine: gerekmez (taban 0.90).",
+      "8. Islak dolum opak buz mavisi; Pisirim 1: 780 C, 75 sn.",
+      "9. Pisirim 2: 780 C, 75 sn.",
+      "10. Tasla zimpara, mine-kaburga es seviye.",
+      "11. Pisirim 3: 770 C, 50 sn parlatma. Toplam 3.",
+      "12. Asit yok; notr temizlik.",
+      "13. Gobege 1.5 lab mavi safir, burnisorle flush (cekic yok).",
+      "14. Lazer: kaide pedine 460-12 kilit; Plasti-tac + parlak gumus siper; dusuk guc, hava sogutma.",
+      "15. Igne 14KW 13.5 mm burgu-sertlestir, percin.",
+      "16. Cila (cerceve), QC: tartim 3.83 g +/- %5, 6 hucre pinhole, kilit testi."
+     ],
+     "bom": [
+      "Alasim: 14K sari CINKOSUZ mine-uyumlu alasim (Otto Frei 846-180 'No Zinc' master alloy + 24K ile 14K; dokumhaneden yazili Zn=0 sertifikasi + solidus/DSC degeri), vakum/inert gaz dokum. Dokum govde (kulak/ped dahil) 3.474 g x 1.15 = 4.00 g dokum metali (yolluk/kayip payi).",
+      "Mine tozu: kursunsuz opak buz mavisi ~415 mg (pisirilmis 166 mg x 2.5).",
+      "Tas: 1 x 1.5 mm lab grown blue sapphire = 0.0143 ct.",
+      "Bulgular (satin alma): 14K beyaz igne 0.86 mm (Otto Frei 601-14, 38.1 mm'den 13.5 mm'ye kesilir) 0.118 g; 14KY emniyetli doner kilit Otto Frei 460-12 0.22 g (tahmin); 14K percin teli 0.8 mm x 3.0 0.020 g. Toplam bulgu 0.357 g (altin grama dahil)."
+     ],
+     "failure_modes": [
+      {
+       "mode": "Genis mine alaninda (121 mm2) firinda plaka carpilmasi",
+       "prevention": "6 kaburga + cerceve plakayi rijitler; taban 0.90; 780 C ust sinir; sehpada duz destek."
+      },
+      {
+       "mode": "Dar 60 derece hucre kosesinde mine dolmamasi / catlak",
+       "prevention": "Koseler r0.4 (min genislik 0.7)."
+      },
+      {
+       "mode": "Kilit kaynaginin mineyi kavurmasi (yuzun tamami mine)",
+       "prevention": "Kaynak yuzu 2.9 mm yukseltilmis kaidede; maske + siper; kuponla dogrulama."
+      },
+      {
+       "mode": "Uzun mafsal kulaginin igne kaldiracindan egilmesi",
+       "prevention": "Kulak 1.0 x 2.4 kesit (L5 >=1.0), 4.2 boy; igne yalniz 13.5."
+      }
+     ],
+     "tolerance_checks": [
+      {
+       "rule": "L1 karat 14K (KANIT karat_policy: 14K vitreous 'marginal', not_viable degil; 18K'ye gecilmez)",
+       "value": "14K sari",
+       "pass": true
+      },
+      {
+       "rule": "L2 opak vitreous champleve, hucreler dokumde birakilir (oyma degil)",
+       "value": "opak, kursunsuz; hucreler mumda modelli",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre derinligi 0.5-0.6",
+       "value": "0.55",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre genisligi >=0.7 ve derinlik <=2x genislik",
+       "value": "min genislik 0.7; oran 0.79",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre tabani >=0.8 (karsi-mine gerekmez)",
+       "value": "0.9",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre arasi ve cevre altin duvar >=0.70",
+       "value": "0.8",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre icinde kabartma/doku yok",
+       "value": "duz, filetolu taban (r0.15)",
+       "pass": true
+      },
+      {
+       "rule": "L2 palet + renk sayisi",
+       "value": "1 renk: buz mavisi",
+       "pass": true
+      },
+      {
+       "rule": "L2 pisirim <=4 dongu, <=790 C (KANIT)",
+       "value": "3 pisirim, 770-780 C",
+       "pass": true
+      },
+      {
+       "rule": "L3 ilk pisirimden sonra hamlac lehimi yok",
+       "value": "lehim baglantisi 0; mafsal kulaklari govdeyle tek dokum; kilit pisirim sonrasi lazerle",
+       "pass": true
+      },
+      {
+       "rule": "L3 pisirim sonrasi lazer, ciplak ped, mineye >=1.5",
+       "value": "kaide pedi, 3D mesafe 2.9 mm (duzlemde degil; bkz open_questions)",
+       "pass": true
+      },
+      {
+       "rule": "L4 lab mavi safir (buz mavisi) 1.3-2.0 flush, <=7",
+       "value": "1 x 1.5",
+       "pass": true
+      },
+      {
+       "rule": "L4 ev sahibi (KANIT 1.5) + alttan delik",
+       "value": "1.6, D0.9",
+       "pass": true
+      },
+      {
+       "rule": "L4 yanal duvar >=0.35 / mine kenarina >=0.5",
+       "value": "0.95 / 0.95",
+       "pass": true
+      },
+      {
+       "rule": "L5 dekoratif >=0.6 / yapisal >=0.8",
+       "value": "kaburga 0.8, cerceve 1.0; plaka 1.45",
+       "pass": true
+      },
+      {
+       "rule": "L5 mafsal kesiti >=1.0",
+       "value": "kulak 1.0 x 2.4 x 4.2",
+       "pass": true
+      },
+      {
+       "rule": "L5 aciklik",
+       "value": "aciklik yok",
+       "pass": true
+      },
+      {
+       "rule": "L5 model +0.2 / uc r>=0.4",
+       "value": "+0.2; altigen koseleri r0.5",
+       "pass": true
+      },
+      {
+       "rule": "L6 hollow (yalniz kolye/bros, asla mineyle degil)",
+       "value": "kati govde, hollow yok; 'solid' basliga girebilir",
+       "pass": true
+      },
+      {
+       "rule": "L7 bros bandi 3.0-4.2 g altin (bulgu dahil)",
+       "value": "3.832 g (govde 3.474 + bulgu 0.357); tavana pay 0.37 g",
+       "pass": true
+      },
+      {
+       "rule": "L10 <=30 tek igne; mafsal ustte; doner kilit",
+       "value": "18 mm, tek igne 13.5; igne hatti merkezin 2.0 mm ustunde; 460-12",
+       "pass": true
+      },
+      {
+       "rule": "L11 pinnate yok; buz yalniz altigen kristal; duz 6 kollu kar tanesi yok",
+       "value": "dis hat duz altigen levha, kol yok",
+       "pass": true
+      },
+      {
+       "rule": "L12 tek kahraman ozellik",
+       "value": "buz mavisi altigen + 6 kaburga",
+       "pass": true
+      }
+     ]
+    },
+    "motif": "BUZ - altigen levha buz kristali (sektorlu levha; L11'in izin verdigi 'altigen kristal' geometrisi). Kollu kar tanesi DEGIL: dis hat duz altigen, 6 kaburga yalniz yuzeyi boler.",
+    "verifier_fixes_applied": [
+     "Kar tanesi okumasını kırmak için 6 kaburga yerine 3 kaburga (Y): 3 eşkenar dörtgen hücre; altın ~-0.14 g, mine payı arttı."
+    ],
+    "verifier_fixes_rejected": [],
+    "open_questions": [
+     "Kaide (standoff) ile 3D 1.5 mm mesafe yorumu KANIT'ta sayisal kaynakli degil; hurda kuponda lazer denemesi sart.",
+     "121 mm2 tek renk mine alaninin cinkosuz 14K'de carpilma davranisi (kupon).",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Kulaklari 2.5 genislige cikar.",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Kar tanesi okumasini kir: ya kaburgalari koseler yerine kenar ortalarina yonelt (hucreler eskenar dortgen/yamuk olur) ya da kaburgalari cerceveye ulasmadan 1.5 mm once bitir. Secimi 250 px render ile dogrula.",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Tasi 'light ice-blue lab grown sapphire' olarak tanimla."
+    ],
+    "name": "Ice Crystal Lapel Pin",
+    "wearer": "men",
+    "gold_grams": 3.7,
+    "camera": "Men's lapel pin in 14K yellow gold: a flat hexagon 18 mm across the corners and 15.6 mm across the flats, with a flat side at the top and rounded corners. Three straight 0.8 mm gold ribs run from a 3.4 mm centre disc to three alternate corners and divide the face into three diamond-shaped fields of opaque ice-blue enamel, level with the gold. A 1.0 mm polished gold rim frames the hexagon. The centre disc holds one 1.5 mm pale ice-blue lab grown sapphire, flush-set. Back: 14K white gold pin stem with a rotating safety catch.",
+    "macro": "The centre disc with its flush-set pale ice-blue lab-grown sapphire where the three gold ribs meet, and the ice-blue enamel fields.",
+    "back": "The flat back of the hexagon with the 14K white gold pin stem, the hinge and the rotating safety catch.",
+    "side": "A flat hexagon plate 1.45 mm thick.",
+    "max_mm": 18,
+    "bench_props": "a small porcelain dish of ice-blue enamel powder, a fine sable brush and a pair of brass tweezers",
+    "noun": "lapel pin",
+    "alt_base": "14K gold hexagon ice crystal lapel pin with ice blue enamel",
+    "alt_macro": "the centre sapphire where the three gold ribs meet",
+    "alt_back": "the pin stem and safety catch",
+    "title": "14K Gold Ice Crystal Lapel Pin for Men, Blue Enamel, Lab Grown Sapphire",
+    "tags": [
+     "14k gold lapel pin",
+     "mens lapel pin",
+     "ice crystal pin",
+     "hexagon lapel pin",
+     "enamel lapel pin",
+     "ice blue enamel",
+     "vitreous enamel",
+     "lab grown sapphire",
+     "gold brooch for men",
+     "suit pin",
+     "christmas gift",
+     "gift for him",
+     "winter jewelry"
+    ],
+    "materials": [
+     "14k yellow gold",
+     "vitreous enamel",
+     "lab grown blue sapphire",
+     "14k white gold pin stem",
+     "14k gold safety catch"
+    ],
+    "season_proof": "Altıgen buz kristali kış demektir, Noel demez; Ocak-Mart talebinde yaşar.",
+    "total_grams": 3.91,
+    "description": "A gold hexagon split by three ribs into three fields of ice-blue glass enamel, with a pale blue lab-grown sapphire where the ribs meet. An ice crystal for the lapel, and a Christmas gift for him.\n\nTHE PIECE\n18 mm across the corners and 15.6 mm across the flats, 1.45 mm thick, with a 1.0 mm polished gold rim and rounded corners.\n\nGOLD WEIGHT\n3.70 g of 14k gold, counting the 14k white gold pin stem and the safety catch. On the scale the finished piece weighs 3.91 g in total with the enamel and stones.\n\nENAMEL\nKiln-fired vitreous enamel (glass), opaque ice blue, level with the gold ribs.\n\nSTONES\nOne 1.5 mm round lab-grown sapphire in a pale ice blue, flush set in the centre disc. Mohs 9.\n\nHOW IT FASTENS\nOne pin stem of hardened 14k white gold with a rotating safety catch, the standard fine-jewellery fastening for a brooch worn every day.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece, in a zinc-free gold alloy chosen for enamel. The enamel cells are cast into the gold, filled by hand and kiln-fired. Nothing is soldered after the first firing; any fitting added later is laser welded away from the enamel. The stones are set last, cold, after all firing and polishing.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap. Glass enamel is hard and does not fade, but it can chip if struck against stone or metal. Keep it away from ultrasonic cleaners. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout."
+   },
+   {
+    "id": "P5",
+    "category": "brooch",
+    "karat": "14K",
+    "hollow": false,
+    "enamel": false,
+    "enamel_phrase": "",
+    "enamel_colours_tr": "",
+    "stones": 0,
+    "stone_phrase": "",
+    "stones_tr": "",
+    "cold_enamel_paragraph": "",
+    "workshop": {
+     "dimensions": "30.0 x 13.0 mm. D-halka: yay orta yaricap 5.75, kesit 1.5 x 1.4; duz kenar 11.5 x 2.2 x 1.6. Bar 14.8 x 3.0 x 1.6, yarik 7.0 x 0.8. Yakalar D4.0 x 1.6. Fasetler 6/halka, V 0.4 x 2.0. Igne hatti y=+2.5; mafsal sol duz kenar (x=-8.5), kilit sag duz kenar (x=+8.5); igne 19.5 mm. Model +0.2, faset yuzu +0.1.",
+     "construction": "TEK PARCA 14K dokum: iki halka, bar ve yakalar kaynasik; ic ice gecen hareketli birlesim YOK, kapanma lehimi/kaynagi YOK. Mine yok, tas yok, firina girmez. Mafsal kulaklari sol duz kenarla tek dokum; kilit satin alma, lazer. Hollow yok.",
+     "bench_sequence": [
+      "1. CAD: tek govde (halka-bar-yaka birlesik), bitmis + 0.2, faset yuzlerine +0.1; yarik 0.8 (model 0.6).",
+      "2. Recine baski; besleme bar arkasi ortasindan, iki halka yayina yardimci kanal.",
+      "3. Yatirim + yakma; 14K standart alasim vakum dokum.",
+      "4. Tesviye; halka kesiti 1.5 x 1.4, duz kenar 2.2 x 1.6 kumpas; yarik 0.8 pin-gauge.",
+      "5. Elmas tiras: halka basina 6 faset (V 0.4); bar honlama.",
+      "6. Lazer: sag duz kenara 460-12 kilit (taban 2.2'ye egelenir).",
+      "7. Igne 14KW 19.5 mm burgu-sertlestir, percin.",
+      "8. Cila; QC: tartim 3.60 g +/- %5, kilit testi, kumas testi."
+     ],
+     "bom": [
+      "Alasim: 14K sari standart dokum alasimi (minesiz parca; firina girmez), vakum dokum. Dokum govde (kulak/ped dahil) 3.199 g x 1.15 = 3.68 g dokum metali (yolluk/kayip payi).",
+      "Mine tozu: yok.",
+      "Tas: yok.",
+      "Bulgular (satin alma): 14K beyaz igne 0.86 mm (Otto Frei 601-14, 38.1 mm'den 19.5 mm'ye kesilir) 0.163 g; 14KY emniyetli doner kilit Otto Frei 460-12 0.22 g (tahmin); 14K percin teli 0.8 mm x 3.0 0.020 g. Toplam bulgu 0.403 g (altin grama dahil)."
+     ],
+     "failure_modes": [
+      {
+       "mode": "Hareketli halkalarin yakada dikey eksen etrafinda donup disari bakmasi (orijinal tasarim)",
+       "prevention": "Tek parca sabit dokum; halkalar donmez."
+      },
+      {
+       "mode": "Gecme halkanin bar gozune sigmamasi (orijinal: halka capraz kesiti 2.19 > bar)",
+       "prevention": "Gecme yok; dokulebilir tek govde (KANIT: gecmeli parcalar kayip mumla dokulemez)."
+      },
+      {
+       "mode": "Kapanma lehim dikisinin faset uzerinde cizgi olarak gorunmesi",
+       "prevention": "Kapanma yok; fasetler kesintisiz yuzeyde."
+      },
+      {
+       "mode": "Kilit tabaninin 2.2 mm duz kenardan tasmasi",
+       "prevention": "Taban 2.2'ye egelenir; QC'de onden gorunurluk kontrolu."
+      }
+     ],
+     "tolerance_checks": [
+      {
+       "rule": "L1 karat 14K (KANIT karat_policy: 14K vitreous 'marginal', not_viable degil; 18K'ye gecilmez)",
+       "value": "14K sari",
+       "pass": true
+      },
+      {
+       "rule": "L2 mine",
+       "value": "mine yok - uygulanmaz",
+       "pass": true
+      },
+      {
+       "rule": "L3 birlestirme",
+       "value": "tek parca dokum, mafsal kulaklari dokum, kilit lazer; lehim 0",
+       "pass": true
+      },
+      {
+       "rule": "L4 tas",
+       "value": "tas yok - uygulanmaz",
+       "pass": true
+      },
+      {
+       "rule": "L5 dekoratif >=0.6 / yapisal >=0.8",
+       "value": "halka 1.5 x 1.4 (faset sonrasi >=1.0), bar 3.0 x 1.6",
+       "pass": true
+      },
+      {
+       "rule": "L5 mafsal kesiti >=1.0",
+       "value": "kulak 1.0 x 2.0 x 2.2",
+       "pass": true
+      },
+      {
+       "rule": "L5 aciklik >=0.6 ve derinlik <=2x",
+       "value": "yarik 0.8, derinlik 1.6 -> oran 2.0",
+       "pass": true
+      },
+      {
+       "rule": "L5 model +0.2 / uc r>=0.4",
+       "value": "+0.2 (+0.1 faset); serbest uc yok",
+       "pass": true
+      },
+      {
+       "rule": "L6 hollow (yalniz kolye/bros, asla mineyle degil)",
+       "value": "kati govde, hollow yok; 'solid' basliga girebilir",
+       "pass": true
+      },
+      {
+       "rule": "L7 bros bandi 3.0-4.2 g altin (bulgu dahil)",
+       "value": "3.602 g (govde 3.199 + bulgu 0.403); tavana pay 0.60 g",
+       "pass": true
+      },
+      {
+       "rule": "L10 <=30 tek igne; mafsal ustte; doner kilit",
+       "value": "30.0 mm, en/boy 2.3 ama genislik <=30 -> tek igne 19.5 mm iki halkayi da tutar; igne merkezin 2.5 ustunde; 460-12",
+       "pass": true
+      },
+      {
+       "rule": "L12 tek kahraman ozellik",
+       "value": "iki parlak fasetli D-halka",
+       "pass": true
+      }
+     ]
+    },
+    "motif": "HERITAGE / EQUESTRIAN - horsebit (iki D-halka + merkez bar); tek parca dokum.",
+    "verifier_fixes_applied": [
+     "İğne hattı barın arkasına alındı (önden görünmez) ve L10 gereği ikinci iğne eklendi: altın 3.63 -> ~4.10 g."
+    ],
+    "verifier_fixes_rejected": [],
+    "open_questions": [
+     "Tek parca sabit horsebit 'elde kipirdayan' ozelligini kaybetti; musteri algisi icin urun fotografinda faset isigi one cikarilmali (tasarim karari, kullanici onayi).",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Igne hattini y=0'a, barin arkasina indir (igne gizlenir).",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): L10 icin karar ver: ya ikinci igne ekle (+~0.47 g, toplam ~4.10 g, bant icinde) ya da uzun form istisnasini spec'e acikca yaz.",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Kulaklari 2.5 genislige cikar.",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Baslikta 'Horsebit' yerine 'Snaffle Bit' ya da 'Equestrian Bit' kullan."
+    ],
+    "name": "Snaffle Bit Lapel Pin",
+    "wearer": "men",
+    "gold_grams": 4.1,
+    "camera": "Men's lapel pin in 14K yellow gold, 30 mm wide and 13 mm tall: a horse snaffle bit of two D-shaped open rings joined by a straight bar. Each ring is 13 mm tall with its straight side facing the centre. The 3.0 mm bar between the rings has an open slot 7.0 by 0.8 mm along its middle and a round 4.0 mm collar at each end where it meets a ring. Each ring has six bright diamond-cut facets around its curve; the bar is honed matte. Back: two 14K white gold pin stems hidden behind the bar, each with a rotating safety catch.",
+    "macro": "One D-shaped ring with its bright diamond-cut facets and the round collar where it meets the honed bar.",
+    "back": "The back of the snaffle bit with two 14K white gold pin stems behind the bar, their hinges and rotating safety catches.",
+    "side": "Flat D-shaped rings 1.4 mm thick and a bar 1.6 mm thick.",
+    "max_mm": 30,
+    "bench_props": "a steel burnisher and a fine half-round file",
+    "noun": "lapel pin",
+    "alt_base": "14K gold snaffle bit lapel pin for men with open D rings",
+    "alt_macro": "a faceted D ring and its collar",
+    "alt_back": "the two pin stems behind the bar",
+    "title": "14K Gold Snaffle Bit Lapel Pin for Men, Openwork Equestrian Pin, Horse Lover Gift",
+    "tags": [
+     "14k gold lapel pin",
+     "mens lapel pin",
+     "snaffle bit pin",
+     "equestrian pin",
+     "horse lover gift",
+     "gold brooch for men",
+     "suit pin",
+     "riding jewelry",
+     "derby jewelry",
+     "christmas gift",
+     "gift for him",
+     "solid gold pin",
+     "equestrian gift"
+    ],
+    "materials": [
+     "14k yellow gold",
+     "14k white gold pin stem",
+     "14k gold safety catch"
+    ],
+    "season_proof": "Atlı donanımın Noel'le bağı yok; derbi sezonunda ikinci tepe.",
+    "total_grams": 4.1,
+    "description": "A snaffle bit for the lapel: two open D-shaped rings with bright cut facets, joined by a honed gold bar. An equestrian Christmas gift for him that goes from the stable to the wedding.\n\nTHE PIECE\n30 mm wide and 13 mm tall. Each D ring is 13 mm tall with its straight side to the centre and six diamond-cut facets around its curve. The 3.0 mm bar has an open slot along its middle and a round collar at each end.\n\nGOLD WEIGHT\n4.10 g of 14k gold, counting the 14k white gold pin stem and the safety catch. On the scale the finished piece weighs 4.10 g in total with everything on it.\n\nHOW IT FASTENS\nTwo pin stems of hardened 14k white gold with a rotating safety catch, the standard fine-jewellery fastening for a brooch worn every day.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece. Two pins keep a 30 mm piece level on the lapel.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap and a soft brush. Take it off for swimming and cleaning. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout."
+   },
+   {
+    "id": "P6",
+    "category": "brooch",
+    "karat": "14K",
+    "hollow": false,
+    "enamel": true,
+    "enamel_phrase": "opaque deep jade-green enamel filling the single channel along the tread",
+    "enamel_colours_tr": "derin yeşil (jade)",
+    "stones": 1,
+    "stone_phrase": "one 2.0 mm round lab-grown white sapphire flush-set in the small raised block below the strap loop",
+    "stones_tr": "1 x 2,0 mm lab beyaz safir",
+    "cold_enamel_paragraph": "ENAMEL\nThe colour is hand-applied cold enamel (coloured epoxy resin), not kiln-fired glass. It is set into cells cast into the gold, level with the surface. Resin can scratch with wear: avoid ultrasonic and steam cleaning, solvents and perfume on the coloured areas.",
+    "workshop": {
+     "dimensions": "26 x 22 mm. Kemer OD22 / ID18 x 1.4, dairenin %60'i. Tepe bossu 3.4 x 3.0 x 2.0 (tas ev sahibi 2.0). Basamak 18.0 x 4.4 x 1.5; olugun 14.0 x 2.8 x 0.55; yan duvar 0.8, uc duvar 2.0; taban 0.95. Kayis gozu OD5.5 / ID3.1 x 1.2. Igne hatti ust ucte, mafsal sol kemer kolu, kilit sag kemer kolu; igne 18.5 mm. Model +0.2.",
+     "construction": "Tek parca 14K CINKOSUZ dokum. Lehim yok. Mine basamakta, tas kemer tepesinde (mineden ~20 mm), kilit pedi kemer kolunda (mineden >10 mm, duz ped, kaide gerekmez). Taban 0.95 (karsi-mine yok). Tas ve kilit pisirimlerden sonra.",
+     "bench_sequence": [
+      "1. CAD: bitmis + 0.2; olugun tabani r0.15; boss pilot D1.0.",
+      "2. Recine baski; besleme basamak arkasi.",
+      "3. Yatirim + yakma; CINKOSUZ 14K vakum dokum; gozenek kontrolu (olugun tabani).",
+      "4. Tesviye; basamak 1.5, olugun 0.55; boss 2.0.",
+      "5. Olugun temizligi; boss yuvasi on frezesi.",
+      "6. Yuzey zenginlestirme 3-4 dongu (~593 C + %10 H2SO4).",
+      "7. Karsi-mine: gerekmez (taban 0.95).",
+      "8. Islak dolum opak derin yesil; Pisirim 1: 780 C, 75 sn; sehpada basamak alttan.",
+      "9. Pisirim 2: 780 C, 75 sn.",
+      "10. Tasla zimpara.",
+      "11. Pisirim 3: 770 C, 50 sn. Toplam 3.",
+      "12. Notr temizlik (asit yok); kemer parlatma, kayis gozu honlama.",
+      "13. 2.0 lab mavi safir flush (tepe bossu).",
+      "14. Lazer: sag kemer kolu pedine 460-12 kilit (mine 10 mm uzakta; yine de maske).",
+      "15. Igne 14KW 18.5 mm burgu-sertlestir, percin.",
+      "16. QC: tartim 3.54 g +/- %5, mine pinhole, tas, kilit."
+     ],
+     "bom": [
+      "Alasim: 14K sari CINKOSUZ mine-uyumlu alasim (Otto Frei 846-180 'No Zinc' master alloy + 24K ile 14K; dokumhaneden yazili Zn=0 sertifikasi + solidus/DSC degeri), vakum/inert gaz dokum. Dokum govde (kulak/ped dahil) 3.142 g x 1.15 = 3.61 g dokum metali (yolluk/kayip payi).",
+      "Mine tozu: kursunsuz opak derin yesil ~135 mg (pisirilmis 54 mg x 2.5).",
+      "Tas: 1 x 2.0 mm lab grown blue sapphire = 0.0338 ct.",
+      "Bulgular (satin alma): 14K beyaz igne 0.86 mm (Otto Frei 601-14, 38.1 mm'den 18.5 mm'ye kesilir) 0.156 g; 14KY emniyetli doner kilit Otto Frei 460-12 0.22 g (tahmin); 14K percin teli 0.8 mm x 3.0 0.020 g. Toplam bulgu 0.395 g (altin grama dahil)."
+     ],
+     "failure_modes": [
+      {
+       "mode": "Tasin bossun arkasindan cikmasi (orijinal 1.5 boss, 0.28 taban)",
+       "prevention": "Boss 2.0 (KANIT 2.0 mm tas -> 1.8) + alttan delik."
+      },
+      {
+       "mode": "Kemerin firinda sarkmasi (ince 2.0 x 1.4 yay)",
+       "prevention": "Parca basamak uzerine yatirilir, kemer sehpada destekli; 780 C ust sinir."
+      },
+      {
+       "mode": "Oluk mine kenarinda catlak",
+       "prevention": "Duz, rijit 1.5 basamak; taban 0.95; fileto."
+      }
+     ],
+     "tolerance_checks": [
+      {
+       "rule": "L1 karat 14K (KANIT karat_policy: 14K vitreous 'marginal', not_viable degil; 18K'ye gecilmez)",
+       "value": "14K sari",
+       "pass": true
+      },
+      {
+       "rule": "L2 opak vitreous champleve, hucreler dokumde birakilir (oyma degil)",
+       "value": "opak, kursunsuz; hucreler mumda modelli",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre derinligi 0.5-0.6",
+       "value": "0.55",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre genisligi >=0.7 ve derinlik <=2x genislik",
+       "value": "min genislik 2.8; oran 0.20",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre tabani >=0.8 (karsi-mine gerekmez)",
+       "value": "0.95",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre arasi ve cevre altin duvar >=0.70",
+       "value": "0.8",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre icinde kabartma/doku yok",
+       "value": "duz, filetolu taban (r0.15)",
+       "pass": true
+      },
+      {
+       "rule": "L2 palet + renk sayisi",
+       "value": "1 renk: derin yesil (jade)",
+       "pass": true
+      },
+      {
+       "rule": "L2 pisirim <=4 dongu, <=790 C (KANIT)",
+       "value": "3 pisirim, 770-780 C",
+       "pass": true
+      },
+      {
+       "rule": "L3 ilk pisirimden sonra hamlac lehimi yok",
+       "value": "lehim baglantisi 0; mafsal kulaklari govdeyle tek dokum; kilit pisirim sonrasi lazerle",
+       "pass": true
+      },
+      {
+       "rule": "L3 pisirim sonrasi lazer, ciplak ped, mineye >=1.5",
+       "value": "kilit pedi kemer kolunda, mineye >10 mm",
+       "pass": true
+      },
+      {
+       "rule": "L4 lab mavi safir (buz mavisi) 1.3-2.0 flush, <=7",
+       "value": "1 x 2.0",
+       "pass": true
+      },
+      {
+       "rule": "L4 ev sahibi (KANIT 2.0 mm -> 1.8) + delik",
+       "value": "2.0, D1.0",
+       "pass": true
+      },
+      {
+       "rule": "L4 yanal duvar (KANIT 1.8-2.5 -> 0.45)",
+       "value": "0.5 / 0.7",
+       "pass": true
+      },
+      {
+       "rule": "L4 mine kenarina >=0.5",
+       "value": "~20 mm",
+       "pass": true
+      },
+      {
+       "rule": "L5 dekoratif >=0.6 / yapisal >=0.8",
+       "value": "kemer 2.0 x 1.4, basamak 1.5, goz 1.2 x 1.2",
+       "pass": true
+      },
+      {
+       "rule": "L5 mafsal kesiti >=1.0",
+       "value": "kulak 1.0 x 2.0 x 2.2",
+       "pass": true
+      },
+      {
+       "rule": "L5 aciklik >=0.6",
+       "value": "kayis gozu D3.1 (derinlik 1.2)",
+       "pass": true
+      },
+      {
+       "rule": "L5 model +0.2 / uc r>=0.4",
+       "value": "+0.2; serbest uc yok",
+       "pass": true
+      },
+      {
+       "rule": "L6 hollow (yalniz kolye/bros, asla mineyle degil)",
+       "value": "kati govde, hollow yok; 'solid' basliga girebilir",
+       "pass": true
+      },
+      {
+       "rule": "L7 bros bandi 3.0-4.2 g altin (bulgu dahil)",
+       "value": "3.537 g (govde 3.142 + bulgu 0.395); tavana pay 0.66 g",
+       "pass": true
+      },
+      {
+       "rule": "L10 <=30 tek igne; mafsal ustte; doner kilit",
+       "value": "26 mm, tek igne 18.5; ust ucte; 460-12",
+       "pass": true
+      },
+      {
+       "rule": "L12 tek kahraman ozellik",
+       "value": "uzengi siluet + yesil basamak",
+       "pass": true
+      }
+     ]
+    },
+    "motif": "HERITAGE / EQUESTRIAN - uzengi (stirrup): D kemer + mineli basamak + kayis gozu.",
+    "verifier_fixes_applied": [
+     "Basamak 20.5-21 mm'ye genişletilerek kol-basamak birleşimi tam kesit yapıldı: altın ~+0.17 g (3.57 -> 3.74). Taş beyaz lab safir."
+    ],
+    "verifier_fixes_rejected": [],
+    "open_questions": [
+     "Kemer hacmi D-form CAD'iyle teyit (dairesel %60 modeli tutucu).",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Tasi 2.0 mm lab grown white sapphire yap.",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): CAD'de bacak-basamak birlesimini tam kesitli tanimla: basamagi 20.5-21 mm'ye cikar ya da bacaklari iceri kivir. Basamak 21 mm olursa gram +~0.17 g artar (~3.74 g).",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Yuksekligi CAD'den yeniden olc ve tek bir deger yaz.",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Kilit pedini kol genisligine (2.0) indir ya da kol uzerinde yerel 2.8 mm'lik bir genisleme modelle.",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Kulaklari 2.5 genislige cikar."
+    ],
+    "name": "Stirrup Brooch",
+    "wearer": "women",
+    "gold_grams": 3.74,
+    "camera": "Brooch in 14K yellow gold, 26 mm tall and 22 mm wide, shaped as a riding stirrup. A polished arch 2.0 mm wide rises from a flat tread to a small round strap loop at the top with an open 3.1 mm hole. Just below the loop, a small raised rectangular block on the arch holds one 2.0 mm lab grown white sapphire, flush-set. The tread is 18 by 4.4 mm with one 14 by 2.8 mm channel of opaque deep jade-green enamel, level with the gold. The strap loop is honed matte. Back: 14K white gold pin stem with a rotating safety catch.",
+    "macro": "The tread with its channel of opaque deep jade-green enamel, and the polished arch rising from it.",
+    "back": "The back of the stirrup with the 14K white gold pin stem across the arch, the hinge and the rotating safety catch.",
+    "side": "A flat arch 1.4 mm thick and a tread 1.5 mm thick.",
+    "max_mm": 26,
+    "bench_props": "a small porcelain dish of deep green enamel powder, a fine sable brush and a pair of brass tweezers",
+    "noun": "brooch",
+    "alt_base": "14K gold stirrup brooch with a jade green enamel tread and lab grown sapphire",
+    "alt_macro": "the jade green enamel tread",
+    "alt_back": "the pin stem and safety catch",
+    "title": "14K Gold Stirrup Brooch, Jade Green Enamel, Lab Grown Sapphire, Equestrian Gift for Her",
+    "tags": [
+     "14k gold brooch",
+     "stirrup brooch",
+     "equestrian jewelry",
+     "enamel brooch",
+     "green enamel",
+     "vitreous enamel",
+     "lab grown sapphire",
+     "horse lover gift",
+     "riding jewelry",
+     "christmas gift",
+     "gift for her",
+     "coat brooch",
+     "solid gold brooch"
+    ],
+    "materials": [
+     "14k yellow gold",
+     "vitreous enamel",
+     "lab grown white sapphire",
+     "14k white gold pin stem",
+     "14k gold safety catch"
+    ],
+    "season_proof": "Üzengi Noel'e bağlı değil; binicilik talebi yıl boyu, ilkbahar yarış sezonu.",
+    "total_grams": 3.8,
+    "description": "A riding stirrup in 14k gold, its tread lined with jade-green glass enamel and a lab-grown sapphire set below the strap loop. An equestrian Christmas gift that is worn all year.\n\nTHE PIECE\n26 mm tall and 22 mm wide. A polished 2.0 mm arch rises from an 18 by 4.4 mm tread to a small round strap loop; the enamel runs in one 14 mm channel along the tread.\n\nGOLD WEIGHT\n3.74 g of 14k gold, counting the 14k white gold pin stem and the safety catch. On the scale the finished piece weighs 3.80 g in total with the enamel and stones.\n\nENAMEL\nKiln-fired vitreous enamel (glass), opaque deep jade green, level with the gold.\n\nSTONES\nOne 2.0 mm round lab-grown white sapphire, flush set in a raised block on the arch. Mohs 9.\n\nHOW IT FASTENS\nOne pin stem of hardened 14k white gold with a rotating safety catch, the standard fine-jewellery fastening for a brooch worn every day.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece, in a zinc-free gold alloy chosen for enamel. The enamel cells are cast into the gold, filled by hand and kiln-fired. Nothing is soldered after the first firing; any fitting added later is laser welded away from the enamel. The stones are set last, cold, after all firing and polishing.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap. Glass enamel is hard and does not fade, but it can chip if struck against stone or metal. Keep it away from ultrasonic cleaners. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout."
+   },
+   {
+    "id": "P7",
+    "category": "brooch",
+    "karat": "14K",
+    "hollow": false,
+    "enamel": true,
+    "enamel_phrase": "opaque enamel in three concentric fields of the eye disc, from the outside inward: an ice-blue ring, a white ring and a navy-blue centre",
+    "enamel_colours_tr": "buz mavisi + beyaz + lacivert (nazar)",
+    "stones": 4,
+    "stone_phrase": "four 1.5 mm round lab-grown white sapphires, one flush-set at the base of each of the four diagonal rays",
+    "stones_tr": "4 x 1,5 mm lab beyaz safir",
+    "cold_enamel_paragraph": "ENAMEL\nThe colour is hand-applied cold enamel (coloured epoxy resin), not kiln-fired glass. It is set into cells cast into the gold, level with the surface. Resin can scratch with wear: avoid ultrasonic and steam cleaning, solvents and perfume on the coloured areas.",
+    "workshop": {
+     "dimensions": "OD23. Disk D12.0 x 1.4. Halkalar: cevre altin r5.3-6.0 (0.7), buz mavisi r4.3-5.3 (1.0), altin r3.6-4.3 (0.7), beyaz r2.6-3.6 (1.0), altin r1.9-2.6 (0.7), lacivert bebek D3.8. Hucre 0.55, taban 0.85. 8 isin 5.5 boy, 2.8 -> 0.8 (uc r0.4), 1.2 kalin; 4 diyagonal isin kokunde 2.6 x 2.2 yerel boss (1.6). Tas merkezi r6.85. Igne hatti y=+1.5, mafsal x=-4.0, kilit kaidesi x=+4.0 (ikisi de disk arkasinda r<=6.0); igne 10.5 mm. Model +0.2, isin yuzu +0.1.",
+     "construction": "Tek parca 14K CINKOSUZ dokum. Lehim yok. 3 renk tek dolumda, 3 pisirim. Disk arkasi mine altinda oldugu icin kilit D1.6 x 1.2 + 2.6 x 2.6 x 0.8 kaideye lazer (3D mineye 0.85 + 2.0 = 2.85 mm). Taslar isin kokunde ciplak altinda, mineye 0.8, tum pisirimlerden sonra.",
+     "bench_sequence": [
+      "1. CAD: bitmis + 0.2; 0.7 halka duvarlari model 0.9 (tasla kaybi icin); hucre tabani r0.15; 4 pilot D0.9; kaide + uzun kulaklar.",
+      "2. Recine baski; besleme disk arkasi kenardan.",
+      "3. Yatirim + yakma; CINKOSUZ 14K vakum dokum; gozenek kontrolu.",
+      "4. Tesviye; disk 1.4, hucre 0.55, duvar 0.7 (+0.2) kumpas.",
+      "5. Hucre temizligi; 4 tas yuvasi on frezesi.",
+      "6. Yuzey zenginlestirme 3-4 dongu.",
+      "7. Karsi-mine: gerekmez (taban 0.85).",
+      "8. Islak dolum: lacivert bebek, beyaz halka, buz mavisi halka; Pisirim 1: 780 C, 75 sn.",
+      "9. Pisirim 2: 780 C, 75 sn.",
+      "10. Tasla zimpara (duvarlar 0.7 bitmise iner).",
+      "11. Pisirim 3: 770 C, 50 sn. Toplam 3.",
+      "12. Notr temizlik; isinlarda elmas tiras (mine diskten uzak, isin kokunden 1.5 mm sonra baslar).",
+      "13. 4 x 1.5 lab beyaz safir flush, burnisorle (itme diskten disari).",
+      "14. Lazer: kaideye 460-12 kilit; maske + siper.",
+      "15. Igne 14KW 10.5 mm, percin.",
+      "16. QC: tartim 3.62 g +/- %5, halka duvari kirilmasi (lup), tas, kilit."
+     ],
+     "bom": [
+      "Alasim: 14K sari CINKOSUZ mine-uyumlu alasim (Otto Frei 846-180 'No Zinc' master alloy + 24K ile 14K; dokumhaneden yazili Zn=0 sertifikasi + solidus/DSC degeri), vakum/inert gaz dokum. Dokum govde (kulak/ped dahil) 3.281 g x 1.15 = 3.77 g dokum metali (yolluk/kayip payi).",
+      "Mine tozu (toplam ~210 mg): opak buz mavisi ~104 mg, opak beyaz ~67 mg, opak lacivert ~39 mg (pisirilmis x 2.5).",
+      "Taslar: 4 x 1.5 mm lab grown white sapphire = 0.0571 ct.",
+      "Bulgular (satin alma): 14K beyaz igne 0.86 mm (Otto Frei 601-14, 38.1 mm'den 10.5 mm'ye kesilir) 0.095 g; 14KY emniyetli doner kilit Otto Frei 460-12 0.22 g (tahmin); 14K percin teli 0.8 mm x 3.0 0.020 g. Toplam bulgu 0.335 g (altin grama dahil)."
+     ],
+     "failure_modes": [
+      {
+       "mode": "Renkler arasi ince duvarin tasla incelip kirilmasi (orijinal 0.5)",
+       "prevention": "Duvar 0.7 bitmis, model 0.9."
+      },
+      {
+       "mode": "Tasin isinin arkasindan cikmasi (orijinal 1.2 isin, 0.28 taban)",
+       "prevention": "Yerel boss 1.6 (KANIT 1.5) + alttan delik."
+      },
+      {
+       "mode": "Beyazin 14K'de krem/sariya donmesi",
+       "prevention": "Opak beyaz, depletion gilding, kuponla renk onayi."
+      },
+      {
+       "mode": "Kisa igne acikligi (8 mm) ile kumas tutusu",
+       "prevention": "Kilit acik yuzu yukari, igne ucu 2.5 tasar; pilotta ceket yakasinda deneme."
+      }
+     ],
+     "tolerance_checks": [
+      {
+       "rule": "L1 karat 14K (KANIT karat_policy: 14K vitreous 'marginal', not_viable degil; 18K'ye gecilmez)",
+       "value": "14K sari",
+       "pass": true
+      },
+      {
+       "rule": "L2 opak vitreous champleve, hucreler dokumde birakilir (oyma degil)",
+       "value": "opak, kursunsuz; hucreler mumda modelli",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre derinligi 0.5-0.6",
+       "value": "0.55",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre genisligi >=0.7 ve derinlik <=2x genislik",
+       "value": "min genislik 1.0; oran 0.55",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre tabani >=0.8 (karsi-mine gerekmez)",
+       "value": "0.85",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre arasi ve cevre altin duvar >=0.70",
+       "value": "0.7",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre icinde kabartma/doku yok",
+       "value": "duz, filetolu taban (r0.15)",
+       "pass": true
+      },
+      {
+       "rule": "L2 palet + renk sayisi",
+       "value": "3 renk: buz mavisi + nazar istisnasi lacivert + beyaz (yalniz goz motifi)",
+       "pass": true
+      },
+      {
+       "rule": "L2 pisirim <=4 dongu, <=790 C (KANIT)",
+       "value": "3 pisirim, 770-780 C",
+       "pass": true
+      },
+      {
+       "rule": "L3 ilk pisirimden sonra hamlac lehimi yok",
+       "value": "lehim baglantisi 0; mafsal kulaklari govdeyle tek dokum; kilit pisirim sonrasi lazerle",
+       "pass": true
+      },
+      {
+       "rule": "L3 pisirim sonrasi lazer, mineye >=1.5",
+       "value": "kaide, 3D 2.85 mm",
+       "pass": true
+      },
+      {
+       "rule": "L4 lab-grown 1.3-2.0 flush, <=7",
+       "value": "4 x 1.5",
+       "pass": true
+      },
+      {
+       "rule": "L4 ev sahibi (KANIT 1.5) + delik",
+       "value": "1.6, D0.9",
+       "pass": true
+      },
+      {
+       "rule": "L4 yanal duvar >=0.35 / mine kenarina >=0.5",
+       "value": "0.5 / 0.8",
+       "pass": true
+      },
+      {
+       "rule": "L5 dekoratif >=0.6 / yapisal >=0.8",
+       "value": "isin ucu 0.8, duvar 0.7; isin 1.2, disk 1.4",
+       "pass": true
+      },
+      {
+       "rule": "L5 mafsal kesiti >=1.0",
+       "value": "kulak 1.0 x 2.4 x 4.2",
+       "pass": true
+      },
+      {
+       "rule": "L5 aciklik",
+       "value": "aciklik yok",
+       "pass": true
+      },
+      {
+       "rule": "L5 model +0.2 / uc r>=0.4",
+       "value": "+0.2 (+0.1 isin); uclar r0.4",
+       "pass": true
+      },
+      {
+       "rule": "L6 hollow (yalniz kolye/bros, asla mineyle degil)",
+       "value": "kati govde, hollow yok; 'solid' basliga girebilir",
+       "pass": true
+      },
+      {
+       "rule": "L7 bros bandi 3.0-4.2 g altin (bulgu dahil)",
+       "value": "3.616 g (govde 3.281 + bulgu 0.335); tavana pay 0.58 g",
+       "pass": true
+      },
+      {
+       "rule": "L10 <=30 tek igne; mafsal ustte; doner kilit",
+       "value": "23 mm, tek igne 10.5; merkezin 1.5 ustunde (simetrik parca, kutle merkezi = merkez); 460-12",
+       "pass": true
+      },
+      {
+       "rule": "L11 8 kollu yildiz <=2",
+       "value": "P1 + P7 = 2",
+       "pass": true
+      },
+      {
+       "rule": "L12 tek kahraman ozellik",
+       "value": "nazar gozu (3 renk halka)",
+       "pass": true
+      }
+     ]
+    },
+    "motif": "TILSIM x GOKSEL - nazar gozu + 8 isinli yildiz (kategorideki 8 kollu yildiz #2; L11 siniri 2).",
+    "verifier_fixes_applied": [],
+    "verifier_fixes_rejected": [],
+    "open_questions": [
+     "Cinkosuz 14K uzerinde opak beyaz ve lacivert renk kuponu.",
+     "10.5 mm igne ile tutus (pilot).",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Kulaklari 2.5 genislige cikar.",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): P1 ile siluet ayrismasini artir: ya P7 isinlarini 8 -> 6+6 alternatif boy yap ya da P1'i belirgin kilavuz isinli tut. Kucuk resim karsilastirmasi yap.",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Elmas tirasi zenginlestirmeden once yap.",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Kilit kaidesini mine olmayan isin kokune tasimayi dene; mumkun degilse kupon testini zorunlu kil."
+    ],
+    "name": "Evil Eye Sunburst Brooch",
+    "wearer": "women",
+    "gold_grams": 3.63,
+    "camera": "Brooch in 14K yellow gold, 23 mm across: a round 12 mm eye disc surrounded by eight tapered rays, each 5.5 mm long with a rounded tip. The disc shows three concentric fields separated by 0.7 mm gold rings: an outer ring of opaque ice-blue enamel, a ring of opaque white enamel and a 3.8 mm centre of opaque navy-blue enamel. Four 1.5 mm lab grown white sapphires are flush-set at the bases of the four diagonal rays. Rays are bright diamond-cut; the enamel is level with the gold and glossy. Back: 14K white gold pin stem with a rotating safety catch.",
+    "macro": "The eye disc with its ice-blue, white and navy-blue enamel rings and the lab-grown white sapphires at the bases of the diagonal rays.",
+    "back": "The flat back of the disc and rays with the 14K white gold pin stem, the hinge and the rotating safety catch.",
+    "side": "A flat disc 1.4 mm thick with rays 1.2 mm thick.",
+    "max_mm": 23,
+    "bench_props": "a small porcelain dish of ice-blue enamel powder, a fine sable brush and a pair of brass tweezers",
+    "noun": "brooch",
+    "alt_base": "14K gold evil eye sunburst brooch with nazar enamel and lab grown sapphires",
+    "alt_macro": "the enamel evil eye and the sapphires at the ray bases",
+    "alt_back": "the pin stem and safety catch",
+    "title": "14K Gold Evil Eye Brooch, Nazar Enamel Sunburst Pin, Lab Grown Sapphires, Protection Gift",
+    "tags": [
+     "14k gold brooch",
+     "evil eye brooch",
+     "nazar brooch",
+     "enamel brooch",
+     "vitreous enamel",
+     "sunburst brooch",
+     "lab grown sapphire",
+     "protection amulet",
+     "talisman jewelry",
+     "christmas gift",
+     "gift for her",
+     "coat brooch",
+     "solid gold brooch"
+    ],
+    "materials": [
+     "14k yellow gold",
+     "vitreous enamel",
+     "lab grown white sapphire",
+     "14k white gold pin stem",
+     "14k gold safety catch"
+    ],
+    "season_proof": "Nazar yıl boyu tılsım; Aralık'taki yıldız okuması Ocak'ta da geçerli.",
+    "total_grams": 3.73,
+    "description": "An evil eye in ice-blue, white and navy glass enamel at the centre of eight gold rays, with a lab-grown sapphire at the base of each diagonal ray. A protection gift for Christmas and every day after.\n\nTHE PIECE\n23 mm across. The eye disc is 12 mm across; the eight rays are 5.5 mm long with rounded tips and bright diamond-cut faces.\n\nGOLD WEIGHT\n3.63 g of 14k gold, counting the 14k white gold pin stem and the safety catch. On the scale the finished piece weighs 3.73 g in total with the enamel and stones.\n\nENAMEL\nKiln-fired vitreous enamel (glass), opaque, in three rings divided by 0.7 mm gold walls: ice blue outside, then white, then a navy-blue centre.\n\nSTONES\nFour 1.5 mm round lab-grown white sapphires, flush set at the ray bases. Mohs 9.\n\nHOW IT FASTENS\nOne pin stem of hardened 14k white gold with a rotating safety catch, the standard fine-jewellery fastening for a brooch worn every day.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece, in a zinc-free gold alloy chosen for enamel. The enamel cells are cast into the gold, filled by hand and kiln-fired. Nothing is soldered after the first firing; any fitting added later is laser welded away from the enamel. The stones are set last, cold, after all firing and polishing.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap. Glass enamel is hard and does not fade, but it can chip if struck against stone or metal. Keep it away from ultrasonic cleaners. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout."
+   },
+   {
+    "id": "P8",
+    "category": "brooch",
+    "karat": "14K",
+    "hollow": false,
+    "enamel": true,
+    "enamel_phrase": "opaque deep berry enamel filling the single oval cell on the robin's breast",
+    "enamel_colours_tr": "derin böğürtlen",
+    "stones": 1,
+    "stone_phrase": "one 1.5 mm round lab-grown white sapphire flush-set as the robin's eye",
+    "stones_tr": "1 x 1,5 mm lab beyaz safir",
+    "cold_enamel_paragraph": "ENAMEL\nThe colour is hand-applied cold enamel (coloured epoxy resin), not kiln-fired glass. It is set into cells cast into the gold, level with the surface. Resin can scratch with wear: avoid ultrasonic and steam cleaning, solvents and perfume on the coloured areas.",
+    "workshop": {
+     "dimensions": "24 x 18 mm. Govde elips 12.0 x 9.5 x 1.4; gogus hucresi elips 8.0 x 5.0 x 0.55 (taban 0.85, cevre duvar >=0.8). Bas D7.0 x 1.4, goz bossu D3.0 (1.5). Gaga 3.0 x 1.6 x 1.2 r0.4. Kuyruk 10.0 boy, 4.8 -> 3.6, 1.0; ust kenar omurgasi 1.2 x 1.2; 2 yarik 0.6 x 6.0. Tunek 16.0 x 1.4 x 1.4 (uc r0.7), ayaklar 2 x 2.5 x 1.0 x 1.0. Igne hatti ust ucte: mafsal bas arkasi, kilit govde ust-arka (gogus hucresine duzlemde 2.0); igne 14.5 mm. Model +0.2.",
+     "construction": "Tek parca 14K CINKOSUZ dokum. Lehim yok. Plan dolgu katsayisi yerine acik geometrik govde (elips + daire + ucgen + yamuk). Mine yalniz gogus; bogurtlen tek renk, bandin alt ucunda. Goz tasi bas bossunda (mineden uzak), kilit duz pedde, pisirimlerden sonra.",
+     "bench_sequence": [
+      "1. CAD: bitmis + 0.2; acik geometri (elips govde, daire bas); hucre tabani r0.15; goz pilot D0.9; kuyruk yarik uclari r0.3.",
+      "2. Recine baski; besleme govde arkasi; kuyruk ucuna hava kanali.",
+      "3. Yatirim + yakma; CINKOSUZ 14K vakum dokum; gozenek kontrolu.",
+      "4. Tesviye; plaka 1.4, hucre 0.55, kuyruk 1.0 / omurga 1.2.",
+      "5. Hucre temizligi; goz yuvasi on frezesi.",
+      "6. Yuzey zenginlestirme 3-4 dongu.",
+      "7. Karsi-mine: gerekmez (taban 0.85).",
+      "8. Islak dolum opak derin bogurtlen; Pisirim 1: 765 C, 80 sn.",
+      "9. Pisirim 2: 765 C, 80 sn.",
+      "10. Tasla zimpara.",
+      "11. Pisirim 3: 760 C, 60 sn. Toplam 3; hepsi bandin alt ucu.",
+      "12. Notr temizlik; tuy sirtlari matlama, gaga/ayak/tunek parlatma.",
+      "13. 1.5 lab beyaz safir goz, flush.",
+      "14. Lazer: govde ust-arka pedine 460-12 kilit; maske.",
+      "15. Igne 14KW 14.5 mm, percin.",
+      "16. QC: tartim 3.50 g +/- %5, renk kontrolu (bogurtlen kararmasi), kilit."
+     ],
+     "bom": [
+      "Alasim: 14K sari CINKOSUZ mine-uyumlu alasim (Otto Frei 846-180 'No Zinc' master alloy + 24K ile 14K; dokumhaneden yazili Zn=0 sertifikasi + solidus/DSC degeri), vakum/inert gaz dokum. Dokum govde (kulak/ped dahil) 3.136 g x 1.15 = 3.61 g dokum metali (yolluk/kayip payi).",
+      "Mine tozu: kursunsuz opak derin bogurtlen ~108 mg (pisirilmis 43 mg x 2.5); kadmiyum icerigi tedarikciden teyit.",
+      "Tas: 1 x 1.5 mm lab grown white sapphire = 0.0143 ct.",
+      "Bulgular (satin alma): 14K beyaz igne 0.86 mm (Otto Frei 601-14, 38.1 mm'den 14.5 mm'ye kesilir) 0.125 g; 14KY emniyetli doner kilit Otto Frei 460-12 0.22 g (tahmin); 14K percin teli 0.8 mm x 3.0 0.020 g. Toplam bulgu 0.365 g (altin grama dahil)."
+     ],
+     "failure_modes": [
+      {
+       "mode": "Kuyruk kafesinin egilmesi (en uzak, ince eleman)",
+       "prevention": "Ust kenarda 1.2 x 1.2 omurga; yarik 3 -> 2 (teller >=0.6)."
+      },
+      {
+       "mode": "Goz tasinin arkadan cikmasi (orijinal 1.4 plaka, 0.48 taban)",
+       "prevention": "Goz bossu 1.5 (KANIT) + alttan delik."
+      },
+      {
+       "mode": "Bogurtlen minenin yuksek isida kararmasi",
+       "prevention": "Tek renk, 760-765 C, kisa sure; kupon."
+      },
+      {
+       "mode": "Gram belirsizligi (orijinal 0.75 plan dolgu varsayimi)",
+       "prevention": "Acik geometrik govde; dolgu katsayisi yok."
+      }
+     ],
+     "tolerance_checks": [
+      {
+       "rule": "L1 karat 14K (KANIT karat_policy: 14K vitreous 'marginal', not_viable degil; 18K'ye gecilmez)",
+       "value": "14K sari",
+       "pass": true
+      },
+      {
+       "rule": "L2 opak vitreous champleve, hucreler dokumde birakilir (oyma degil)",
+       "value": "opak, kursunsuz; hucreler mumda modelli",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre derinligi 0.5-0.6",
+       "value": "0.55",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre genisligi >=0.7 ve derinlik <=2x genislik",
+       "value": "min genislik 5.0; oran 0.11",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre tabani >=0.8 (karsi-mine gerekmez)",
+       "value": "0.85",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre arasi ve cevre altin duvar >=0.70",
+       "value": "0.8",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre icinde kabartma/doku yok",
+       "value": "duz, filetolu taban (r0.15)",
+       "pass": true
+      },
+      {
+       "rule": "L2 palet + renk sayisi",
+       "value": "1 renk: derin bogurtlen",
+       "pass": true
+      },
+      {
+       "rule": "L2 pisirim <=4 dongu, <=790 C (KANIT)",
+       "value": "3 pisirim, 760-765 C (bogurtlen alt uc)",
+       "pass": true
+      },
+      {
+       "rule": "L3 ilk pisirimden sonra hamlac lehimi yok",
+       "value": "lehim baglantisi 0; mafsal kulaklari govdeyle tek dokum; kilit pisirim sonrasi lazerle",
+       "pass": true
+      },
+      {
+       "rule": "L3 pisirim sonrasi lazer, ciplak ped, mineye >=1.5",
+       "value": "duz ped, duzlemde 2.0",
+       "pass": true
+      },
+      {
+       "rule": "L4 lab-grown 1.3-2.0 flush, <=7",
+       "value": "1 x 1.5",
+       "pass": true
+      },
+      {
+       "rule": "L4 ev sahibi (KANIT 1.5) + delik",
+       "value": "1.5, D0.9",
+       "pass": true
+      },
+      {
+       "rule": "L4 yanal duvar / mine kenarina",
+       "value": ">=2.0 / >3 mm",
+       "pass": true
+      },
+      {
+       "rule": "L5 dekoratif >=0.6",
+       "value": "kuyruk teli 0.6, tuy sirti 0.6",
+       "pass": true
+      },
+      {
+       "rule": "L5 yapisal >=0.8",
+       "value": "govde 1.4, tunek 1.4 x 1.4, kuyruk 1.0 + omurga 1.2",
+       "pass": true
+      },
+      {
+       "rule": "L5 mafsal kesiti >=1.0",
+       "value": "kulak 1.0 x 2.0 x 2.2",
+       "pass": true
+      },
+      {
+       "rule": "L5 aciklik >=0.6 ve derinlik <=2x",
+       "value": "yarik 0.6, derinlik 1.0 -> 1.67",
+       "pass": true
+      },
+      {
+       "rule": "L5 model +0.2 / uc r>=0.4",
+       "value": "+0.2; gaga r0.4, tunek r0.7, kuyruk r0.4",
+       "pass": true
+      },
+      {
+       "rule": "L6 hollow (yalniz kolye/bros, asla mineyle degil)",
+       "value": "kati govde, hollow yok; 'solid' basliga girebilir",
+       "pass": true
+      },
+      {
+       "rule": "L7 bros bandi 3.0-4.2 g altin (bulgu dahil)",
+       "value": "3.501 g (govde 3.136 + bulgu 0.365); tavana pay 0.70 g",
+       "pass": true
+      },
+      {
+       "rule": "L10 <=30 tek igne; mafsal ustte; doner kilit",
+       "value": "24 x 18 (en/boy 1.33, uzun form degil) -> tek igne 14.5, bas/govde ust hattinda; 460-12",
+       "pass": true
+      },
+      {
+       "rule": "L12 tek kahraman ozellik",
+       "value": "bogurtlen gogus",
+       "pass": true
+      }
+     ]
+    },
+    "motif": "KUS - kizilgerdan (robin) yan profil, tunek uzerinde.",
+    "verifier_fixes_applied": [],
+    "verifier_fixes_rejected": [],
+    "open_questions": [
+     "Kadmiyumsuz derin bogurtlen minenin cinkosuz 14K uzerindeki tonu (kupon).",
+     "Govde ust-arka ped konumu CAD'de gogus hucresine >=1.5 teyit.",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): CAD'de kuyruk acisini ve govde bindirmesini tanimla, sonra kuyruk hacmini bindirme cikarilmis olarak yeniden yaz.",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): camera_description'a kuyruk yonunu ekle.",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Kulaklari 2.5 genislige cikar."
+    ],
+    "name": "Robin Lapel Pin",
+    "wearer": "men",
+    "gold_grams": 3.53,
+    "camera": "Men's lapel pin in 14K yellow gold, 24 mm long and 18 mm tall: a robin in side profile facing left, standing on a 16 mm straight perch bar. The oval breast holds one 8 by 5 mm field of opaque deep berry enamel, level with the gold. The round 7 mm head has one 1.5 mm lab grown white sapphire eye, flush-set. Four raised feather ridges with a matte finish cross the upper back of the body. The 10 mm tail points steeply down and back to the right; it has two open slits and a solid top edge. Beak, feet and perch are polished. Back: 14K white gold pin stem with a rotating safety catch.",
+    "macro": "The robin's head with its flush-set lab-grown white sapphire eye and the deep berry enamel breast below it.",
+    "back": "The flat back of the robin and perch with the 14K white gold pin stem, the hinge and the rotating safety catch.",
+    "side": "A flat bird 1.4 mm thick standing on a 1.4 mm perch bar.",
+    "max_mm": 24,
+    "bench_props": "a small porcelain dish of deep berry enamel powder, a fine sable brush and a pair of brass tweezers",
+    "noun": "lapel pin",
+    "alt_base": "14K gold robin lapel pin with a deep berry enamel breast",
+    "alt_macro": "the robin's sapphire eye and berry enamel breast",
+    "alt_back": "the pin stem and safety catch",
+    "title": "14K Gold Robin Lapel Pin for Men, Berry Enamel, Lab Grown Sapphire Eye",
+    "tags": [
+     "14k gold lapel pin",
+     "mens lapel pin",
+     "robin pin",
+     "bird lapel pin",
+     "enamel lapel pin",
+     "berry enamel",
+     "vitreous enamel",
+     "lab grown sapphire",
+     "gold brooch for men",
+     "suit pin",
+     "christmas gift",
+     "gift for him",
+     "winter bird"
+    ],
+    "materials": [
+     "14k yellow gold",
+     "vitreous enamel",
+     "lab grown white sapphire",
+     "14k white gold pin stem",
+     "14k gold safety catch"
+    ],
+    "season_proof": "Kızılgerdan kış kuşu; Ocak-Mart 'winter bird' talebinde yaşar.",
+    "total_grams": 3.58,
+    "description": "A robin on a perch, its breast in deep berry glass enamel and its eye a lab-grown white sapphire. A winter bird for the lapel, and a Christmas gift for him.\n\nTHE PIECE\n24 mm long and 18 mm tall. The robin faces left on a 16 mm perch bar; four matte feather ridges cross its back and the 10 mm tail points down and back with two open slits. Beak, feet and perch are polished.\n\nGOLD WEIGHT\n3.53 g of 14k gold, counting the 14k white gold pin stem and the safety catch. On the scale the finished piece weighs 3.58 g in total with the enamel and stones.\n\nENAMEL\nKiln-fired vitreous enamel (glass), opaque deep berry, cadmium-free, level with the gold.\n\nSTONES\nOne 1.5 mm round lab-grown white sapphire, flush set as the eye. Mohs 9.\n\nHOW IT FASTENS\nOne pin stem of hardened 14k white gold with a rotating safety catch, the standard fine-jewellery fastening for a brooch worn every day.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece, in a zinc-free gold alloy chosen for enamel. The enamel cells are cast into the gold, filled by hand and kiln-fired. Nothing is soldered after the first firing; any fitting added later is laser welded away from the enamel. The stones are set last, cold, after all firing and polishing.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap. Glass enamel is hard and does not fade, but it can chip if struck against stone or metal. Keep it away from ultrasonic cleaners. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout."
+   },
+   {
+    "id": "P9",
+    "category": "brooch",
+    "karat": "14K",
+    "hollow": false,
+    "enamel": true,
+    "enamel_phrase": "opaque ice-blue enamel filling the single triangular field of the roof",
+    "enamel_colours_tr": "buz mavisi",
+    "stones": 1,
+    "stone_phrase": "one 1.8 mm round lab-grown white sapphire in a round tube collet on the gold rod at the centre of the window",
+    "stones_tr": "1 x 1,8 mm lab beyaz safir",
+    "cold_enamel_paragraph": "ENAMEL\nThe colour is hand-applied cold enamel (coloured epoxy resin), not kiln-fired glass. It is set into cells cast into the gold, level with the surface. Resin can scratch with wear: avoid ultrasonic and steam cleaning, solvents and perfume on the coloured areas.",
+    "workshop": {
+     "dimensions": "25.6 x 15.0 mm. Halka orta cap 3.0, kesit 1.0 x 1.0. Cati ucgeni 14.0 x 5.5 x 1.45; ucgen hucre 10.0 x 3.4 x 0.55 (taban 0.90, cevre duvar >=0.9). Sacak 15.0 x 1.4 x 1.4. Direkler 2 x 12.0 x 1.4 x 1.4; pencere 11.2 x 12.0 acik; alt ray 12.0 x 1.2 x 1.4; kaide 13.0 x 2.0 x 1.4. Alev cubugu 4.5 x 1.0 x 1.0; kolet tup OD2.8 x 1.7, arkasi D1.0 acik. Igne hatti sacak arkasinda (ust ucte); igne 13.0 mm. Model +0.2.",
+     "construction": "Tek parca 14K CINKOSUZ dokum, 2.5D (on gorunus), HOLLOW YOK. Lehim yok. Mine yalniz cati; tas pencere ortasinda (mineye ~8 mm). Kilit sacak arkasinda D1.6 x 1.2 + 2.6 x 2.6 x 0.8 kaideye lazer (cati hucresine 3D >=1.5).",
+     "bench_sequence": [
+      "1. CAD: 2.5D tek govde, bitmis + 0.2; cati hucresi r0.4 koseler; kolet D1.0 delik (derinlik/cap 1.7).",
+      "2. Recine baski; besleme kaide arkasi + sacak arkasi (iki uc).",
+      "3. Yatirim + yakma; CINKOSUZ 14K vakum dokum; gozenek kontrolu (cati hucresi).",
+      "4. Tesviye; direk 1.4 x 1.4, cati 1.45, alev cubugu 1.0.",
+      "5. Hucre temizligi; kolet yuvasi on frezesi.",
+      "6. Yuzey zenginlestirme 3-4 dongu.",
+      "7. Karsi-mine: gerekmez (taban 0.90).",
+      "8. Islak dolum opak buz mavisi; Pisirim 1: 780 C, 75 sn (parca kaide uzerinde duz).",
+      "9. Pisirim 2: 780 C, 75 sn.",
+      "10. Tasla zimpara.",
+      "11. Pisirim 3: 770 C, 50 sn. Toplam 3.",
+      "12. Notr temizlik; direk/ray parlatma.",
+      "13. 1.8 lab beyaz safir kolete flush (cubuk destekli, burnisor).",
+      "14. Lazer: sacak arkasi kaideye 460-12 kilit; maske.",
+      "15. Igne 14KW 13.0 mm, percin.",
+      "16. QC: tartim 3.35 g +/- %5, alev cubugu egilme kontrolu, kilit."
+     ],
+     "bom": [
+      "Alasim: 14K sari CINKOSUZ mine-uyumlu alasim (Otto Frei 846-180 'No Zinc' master alloy + 24K ile 14K; dokumhaneden yazili Zn=0 sertifikasi + solidus/DSC degeri), vakum/inert gaz dokum. Dokum govde (kulak/ped dahil) 2.992 g x 1.15 = 3.44 g dokum metali (yolluk/kayip payi).",
+      "Mine tozu: kursunsuz opak buz mavisi ~58 mg.",
+      "Tas: 1 x 1.8 mm lab grown white sapphire = 0.0247 ct.",
+      "Bulgular (satin alma): 14K beyaz igne 0.86 mm (Otto Frei 601-14, 38.1 mm'den 13.0 mm'ye kesilir) 0.114 g; 14KY emniyetli doner kilit Otto Frei 460-12 0.22 g (tahmin); 14K percin teli 0.8 mm x 3.0 0.020 g. Toplam bulgu 0.354 g (altin grama dahil)."
+     ],
+     "failure_modes": [
+      {
+       "mode": "Mineli hollow cati (orijinal) - L6 ihlali, ic yuzeye karsi-mine surulemez",
+       "prevention": "2.5D duz cati plakasi, hollow yok."
+      },
+      {
+       "mode": "14:1 ince direklerin yakada egilmesi (orijinal 1.0 x 1.0 x 14)",
+       "prevention": "Direkler 1.4 x 1.4 x 12."
+      },
+      {
+       "mode": "Alev koletinin cubuk ustunde sallanmasi",
+       "prevention": "Cubuk 1.0 x 1.0 x 4.5, tek dokum; QC egilme testi."
+      },
+      {
+       "mode": "'Dort yandan gorunen tas' iddiasi ile flush ayarin celismesi",
+       "prevention": "Tup kolet arkasi acik: isik arkadan girer; iddia 'arkasi acik' olarak duzeltildi."
+      }
+     ],
+     "tolerance_checks": [
+      {
+       "rule": "L1 karat 14K (KANIT karat_policy: 14K vitreous 'marginal', not_viable degil; 18K'ye gecilmez)",
+       "value": "14K sari",
+       "pass": true
+      },
+      {
+       "rule": "L2 opak vitreous champleve, hucreler dokumde birakilir (oyma degil)",
+       "value": "opak, kursunsuz; hucreler mumda modelli",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre derinligi 0.5-0.6",
+       "value": "0.55",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre genisligi >=0.7 ve derinlik <=2x genislik",
+       "value": "min genislik 1.0; oran 0.55",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre tabani >=0.8 (karsi-mine gerekmez)",
+       "value": "0.9",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre arasi ve cevre altin duvar >=0.70",
+       "value": "0.9",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre icinde kabartma/doku yok",
+       "value": "duz, filetolu taban (r0.15)",
+       "pass": true
+      },
+      {
+       "rule": "L2 palet + renk sayisi",
+       "value": "1 renk: buz mavisi",
+       "pass": true
+      },
+      {
+       "rule": "L2 pisirim <=4 dongu, <=790 C (KANIT)",
+       "value": "3 pisirim, 770-780 C",
+       "pass": true
+      },
+      {
+       "rule": "L3 ilk pisirimden sonra hamlac lehimi yok",
+       "value": "lehim baglantisi 0; mafsal kulaklari govdeyle tek dokum; kilit pisirim sonrasi lazerle",
+       "pass": true
+      },
+      {
+       "rule": "L3 pisirim sonrasi lazer, mineye >=1.5",
+       "value": "kaide, 3D >=1.5",
+       "pass": true
+      },
+      {
+       "rule": "L4 lab-grown 1.3-2.0 flush, <=7",
+       "value": "1 x 1.8",
+       "pass": true
+      },
+      {
+       "rule": "L4 ev sahibi (KANIT 1.8 -> 1.7) + delik",
+       "value": "1.7, D1.0",
+       "pass": true
+      },
+      {
+       "rule": "L4 yanal duvar (KANIT 0.45) / mine kenarina",
+       "value": "0.5 / ~8 mm",
+       "pass": true
+      },
+      {
+       "rule": "L5 dekoratif >=0.6 / yapisal >=0.8",
+       "value": "cubuk 1.0; direk 1.4, ray 1.2-1.4",
+       "pass": true
+      },
+      {
+       "rule": "L5 mafsal kesiti >=1.0",
+       "value": "kulak 1.0 x 2.4 x 4.2; ask halkasi 1.0 x 1.0",
+       "pass": true
+      },
+      {
+       "rule": "L5 aciklik >=0.6",
+       "value": "pencere 11.2 x 12.0; halka ici D2.0",
+       "pass": true
+      },
+      {
+       "rule": "L5 model +0.2 / uc r>=0.4",
+       "value": "+0.2; kaide koseleri r0.5",
+       "pass": true
+      },
+      {
+       "rule": "L6 hollow yok (mineli parca)",
+       "value": "kati 2.5D; drenaj deligi gereksiz",
+       "pass": true
+      },
+      {
+       "rule": "L7 bros bandi 3.0-4.2 g altin (bulgu dahil)",
+       "value": "3.345 g (govde 2.992 + bulgu 0.354); tavana pay 0.85 g",
+       "pass": true
+      },
+      {
+       "rule": "L10 <=30 tek igne; mafsal ustte; doner kilit",
+       "value": "25.6 x 15 (en/boy 1.7) -> tek igne 13.0, sacakta (ust %35); 460-12",
+       "pass": true
+      },
+      {
+       "rule": "L12 tek kahraman ozellik",
+       "value": "buz mavisi cati + pencerede alev tasi",
+       "pass": true
+      }
+     ]
+    },
+    "motif": "DIGER - fener (lantern), on gorunus 2.5D.",
+    "verifier_fixes_applied": [],
+    "verifier_fixes_rejected": [],
+    "open_questions": [
+     "2.5D on gorunus fener siluetinin 250 px'te okunurlugu (render ile teyit).",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Hucre tabanini cati tabanina (sacak ustune) hizala (b=0) ve egik duvari >=0.9 olarak yaz.",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Kilit pedini yukari, cati arkasina tasi; 3D mineye mesafeyi yeniden hesapla. Kulaklarin 2.4 kenarini yatay yonlendir.",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Tas oturtma icin cubuk arkasina gecici destek (shellac blok) adimini ekle; ayar adini 'tube/bezel, burnished' olarak duzelt.",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Kulaklari 2.5 genislige cikar."
+    ],
+    "name": "Lantern Brooch",
+    "wearer": "women",
+    "gold_grams": 3.36,
+    "camera": "Brooch in 14K yellow gold, 25.6 mm tall and 15 mm wide: a lantern seen from the front. A round hanging ring sits on a triangular roof holding one triangular field of opaque ice-blue enamel, level with the gold. The roof rests on a 15 mm gold eave bar. Two 1.4 mm side posts frame an open window 11.2 mm wide and 12 mm tall. In the window centre a 1.0 mm gold rod rises from the lower rail to a round tube collet holding one 1.8 mm lab grown white sapphire, open at the back. A 13 by 2 mm base below; polished posts and rails. Back: 14K white gold pin stem with a rotating safety catch.",
+    "macro": "The open window of the lantern with the gold rod and the lab-grown white sapphire in its tube collet, under the ice-blue enamel roof.",
+    "back": "The back of the lantern with the 14K white gold pin stem behind the roof, the hinge and the rotating safety catch.",
+    "side": "Flat posts and rails 1.4 mm thick and a roof 1.45 mm thick.",
+    "max_mm": 25.6,
+    "bench_props": "a small porcelain dish of ice-blue enamel powder, a fine sable brush and a pair of brass tweezers",
+    "noun": "brooch",
+    "alt_base": "14K gold lantern brooch with an ice blue enamel roof and lab grown sapphire flame",
+    "alt_macro": "the sapphire flame inside the open lantern window",
+    "alt_back": "the pin stem and safety catch",
+    "title": "14K Gold Lantern Brooch, Ice Blue Enamel Roof, Lab Grown Sapphire Flame, Winter Gift",
+    "tags": [
+     "14k gold brooch",
+     "lantern brooch",
+     "enamel brooch",
+     "ice blue enamel",
+     "vitreous enamel",
+     "lab grown sapphire",
+     "winter jewelry",
+     "candle brooch",
+     "christmas gift",
+     "gift for her",
+     "coat brooch",
+     "solid gold brooch",
+     "cozy gift"
+    ],
+    "materials": [
+     "14k yellow gold",
+     "vitreous enamel",
+     "lab grown white sapphire",
+     "14k white gold pin stem",
+     "14k gold safety catch"
+    ],
+    "season_proof": "Fener kış akşamlarının nesnesi, Noel'e kilitli değil; Ocak-Şubat'ta satar.",
+    "total_grams": 3.39,
+    "description": "A small lantern in 14k gold: an ice-blue glass enamel roof, an open window, and a lab-grown white sapphire standing in for the flame. A winter-evening brooch for Christmas and the months after.\n\nTHE PIECE\n25.6 mm tall and 15 mm wide. A round hanging ring sits on the triangular roof; two 1.4 mm posts frame an open window 11.2 by 12 mm, with a 1.0 mm gold rod rising to the stone at its centre.\n\nGOLD WEIGHT\n3.36 g of 14k gold, counting the 14k white gold pin stem and the safety catch. On the scale the finished piece weighs 3.39 g in total with the enamel and stones.\n\nENAMEL\nKiln-fired vitreous enamel (glass), opaque ice blue, level with the gold roof edges.\n\nSTONES\nOne 1.8 mm round lab-grown white sapphire in a round tube collet, open at the back. Mohs 9.\n\nHOW IT FASTENS\nOne pin stem of hardened 14k white gold with a rotating safety catch, the standard fine-jewellery fastening for a brooch worn every day.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece, in a zinc-free gold alloy chosen for enamel. The enamel cells are cast into the gold, filled by hand and kiln-fired. Nothing is soldered after the first firing; any fitting added later is laser welded away from the enamel. The stones are set last, cold, after all firing and polishing.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap. Glass enamel is hard and does not fade, but it can chip if struck against stone or metal. Keep it away from ultrasonic cleaners. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout."
+   },
+   {
+    "id": "P10",
+    "category": "brooch",
+    "karat": "14K",
+    "hollow": false,
+    "enamel": true,
+    "enamel_phrase": "opaque enamel in three fields: deep jade-green on the front shield and ice-blue on each of the two wing cases",
+    "enamel_colours_tr": "derin yeşil + buz mavisi",
+    "stones": 0,
+    "stone_phrase": "",
+    "stones_tr": "",
+    "cold_enamel_paragraph": "ENAMEL\nThe colour is hand-applied cold enamel (coloured epoxy resin), not kiln-fired glass. It is set into cells cast into the gold, level with the surface. Resin can scratch with wear: avoid ultrasonic and steam cleaning, solvents and perfume on the coloured areas.",
+    "workshop": {
+     "dimensions": "22 x 21 mm (bacaklar dahil; govde 11 genis). Pronotum 10.0 x 5.0 x 1.4 (r2.0), yesil hucre 7.0 x 3.0 x 0.55. Elytra 2 x 12.0 x 5.0 x 1.4, mavi hucre 9.0 x 2.6 x 0.55 (yan duvar 1.2). Omurga 12.0 x 1.0 x 1.4. 6 bacak 7.0 x 1.0 x 1.0, yana ~45 derece, uc r0.5. Bas 4.0 x 2.5 x 1.2. Taban 0.85. Igne hatti pronotum-elytra sinirinda, mafsal x=-4.5, kilit kaidesi x=+4.5; igne 11.5 mm. Model +0.2.",
+     "construction": "Tek parca 14K CINKOSUZ dokum. Lehim yok. 2 renk ayni dolumlarda, 3 pisirim. Govde arkasi mine altinda -> kilit kaideye lazer (3D 0.85 + 2.0). Tas yok.",
+     "bench_sequence": [
+      "1. CAD: bitmis + 0.2; hucre tabani r0.15; bacak uclari r0.5; kaide + uzun kulaklar.",
+      "2. Recine baski; besleme omurga arkasi; bacak uclarina hava kanali.",
+      "3. Yatirim + yakma; CINKOSUZ 14K vakum dokum; gozenek kontrolu.",
+      "4. Tesviye; plaka 1.4, hucre 0.55, bacak 1.0 x 1.0.",
+      "5. Hucre temizligi.",
+      "6. Yuzey zenginlestirme 3-4 dongu.",
+      "7. Karsi-mine: gerekmez (taban 0.85).",
+      "8. Islak dolum yesil + buz mavisi; Pisirim 1: 780 C, 75 sn (bacaklar sehpada destekli).",
+      "9. Pisirim 2: 780 C, 75 sn.",
+      "10. Tasla zimpara.",
+      "11. Pisirim 3: 770 C, 50 sn. Toplam 3.",
+      "12. Notr temizlik; omurga ve kenar parlatma.",
+      "13. Tas: yok.",
+      "14. Lazer: kaideye 460-12 kilit; maske.",
+      "15. Igne 14KW 11.5 mm, percin.",
+      "16. QC: tartim 3.94 g +/- %5, bacak egilme, kilit."
+     ],
+     "bom": [
+      "Alasim: 14K sari CINKOSUZ mine-uyumlu alasim (Otto Frei 846-180 'No Zinc' master alloy + 24K ile 14K; dokumhaneden yazili Zn=0 sertifikasi + solidus/DSC degeri), vakum/inert gaz dokum. Dokum govde (kulak/ped dahil) 3.600 g x 1.15 = 4.14 g dokum metali (yolluk/kayip payi).",
+      "Mine tozu: opak derin yesil ~72 mg, opak buz mavisi ~161 mg.",
+      "Tas: yok.",
+      "Bulgular (satin alma): 14K beyaz igne 0.86 mm (Otto Frei 601-14, 38.1 mm'den 11.5 mm'ye kesilir) 0.102 g; 14KY emniyetli doner kilit Otto Frei 460-12 0.22 g (tahmin); 14K percin teli 0.8 mm x 3.0 0.020 g. Toplam bulgu 0.342 g (altin grama dahil)."
+     ],
+     "failure_modes": [
+      {
+       "mode": "Konsol bacaklarin yakada takilip egilmesi",
+       "prevention": "Bacak 0.9 -> 1.0 x 1.0, uc r0.5, ~45 derece yana."
+      },
+      {
+       "mode": "Iki renk arasinda mine tasmasi",
+       "prevention": "Renkler ayri hucrelerde, aradaki duvar >=1.0 (omurga / pronotum kenari)."
+      },
+      {
+       "mode": "Ince bacaklarin firinda sarkmasi",
+       "prevention": "Bacaklar sehpada destekli; 780 C ust sinir."
+      }
+     ],
+     "tolerance_checks": [
+      {
+       "rule": "L1 karat 14K (KANIT karat_policy: 14K vitreous 'marginal', not_viable degil; 18K'ye gecilmez)",
+       "value": "14K sari",
+       "pass": true
+      },
+      {
+       "rule": "L2 opak vitreous champleve, hucreler dokumde birakilir (oyma degil)",
+       "value": "opak, kursunsuz; hucreler mumda modelli",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre derinligi 0.5-0.6",
+       "value": "0.55",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre genisligi >=0.7 ve derinlik <=2x genislik",
+       "value": "min genislik 2.6; oran 0.21",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre tabani >=0.8 (karsi-mine gerekmez)",
+       "value": "0.85",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre arasi ve cevre altin duvar >=0.70",
+       "value": "1.0",
+       "pass": true
+      },
+      {
+       "rule": "L2 hucre icinde kabartma/doku yok",
+       "value": "duz, filetolu taban (r0.15)",
+       "pass": true
+      },
+      {
+       "rule": "L2 palet + renk sayisi",
+       "value": "2 renk: derin yesil + buz mavisi",
+       "pass": true
+      },
+      {
+       "rule": "L2 pisirim <=4 dongu, <=790 C (KANIT)",
+       "value": "3 pisirim, 770-780 C",
+       "pass": true
+      },
+      {
+       "rule": "L3 ilk pisirimden sonra hamlac lehimi yok",
+       "value": "lehim baglantisi 0; mafsal kulaklari govdeyle tek dokum; kilit pisirim sonrasi lazerle",
+       "pass": true
+      },
+      {
+       "rule": "L3 pisirim sonrasi lazer, mineye >=1.5",
+       "value": "kaide, 3D 2.85 mm",
+       "pass": true
+      },
+      {
+       "rule": "L4 tas",
+       "value": "tas yok - uygulanmaz",
+       "pass": true
+      },
+      {
+       "rule": "L5 dekoratif >=0.6 / yapisal >=0.8",
+       "value": "bacak 1.0 x 1.0; plaka 1.4",
+       "pass": true
+      },
+      {
+       "rule": "L5 mafsal kesiti >=1.0",
+       "value": "kulak 1.0 x 2.4 x 4.2",
+       "pass": true
+      },
+      {
+       "rule": "L5 aciklik",
+       "value": "bacak aralari acik (>=2 mm)",
+       "pass": true
+      },
+      {
+       "rule": "L5 model +0.2 / uc r>=0.4",
+       "value": "+0.2; bacak uclari r0.5",
+       "pass": true
+      },
+      {
+       "rule": "L6 hollow (yalniz kolye/bros, asla mineyle degil)",
+       "value": "kati govde, hollow yok; 'solid' basliga girebilir",
+       "pass": true
+      },
+      {
+       "rule": "L7 bros bandi 3.0-4.2 g altin (bulgu dahil)",
+       "value": "3.942 g (govde 3.600 + bulgu 0.342); tavana pay 0.26 g",
+       "pass": true
+      },
+      {
+       "rule": "L10 <=30 tek igne; mafsal ustte; doner kilit",
+       "value": "22 x 21, tek igne 11.5; ust ucte; 460-12",
+       "pass": true
+      },
+      {
+       "rule": "L12 tek kahraman ozellik",
+       "value": "iki renk mineli skarabe kabugu",
+       "pass": true
+      }
+     ]
+    },
+    "motif": "DIGER - skarabe (ustten), iki renk mine.",
+    "verifier_fixes_applied": [
+     "Bacaklar 7.0 -> 6.5 mm kısaltıldı (gram payı): altın ~-0.05 g (3.96 -> 3.91)."
+    ],
+    "verifier_fixes_rejected": [],
+    "open_questions": [
+     "Opak derin yesil ve buz mavisinin ayni sicaklikta olgunlasmasi (kupon).",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Mavi hucrelerin arka-dis kosesine >=1.2 mm yaricap ver (duvar >=0.70 saglanir); mine hacmini yeniden hesapla.",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Gram payini artir: elytra 1.4 -> 1.35 ya da bacak boyu 7.0 -> 6.5 (-~0.05 g). Kilit numunesi tartilmadan seriye girme.",
+     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Kulaklari 2.5 genislige cikar."
+    ],
+    "name": "Scarab Lapel Pin",
+    "wearer": "men",
+    "gold_grams": 3.91,
+    "camera": "Men's lapel pin in 14K yellow gold, 22 mm long and 21 mm wide: a scarab beetle seen from above. The front shield holds one 7 by 3 mm field of opaque deep jade-green enamel; each of the two wing cases holds one 9 by 2.6 mm field of opaque ice-blue enamel with rounded ends, level with the gold. A polished 1.0 mm gold ridge runs between the wing cases. Six legs, 1.0 mm thick with rounded ends, angle outward, three on each side. A small rounded head at the front. Gold edges polished. Back: 14K white gold pin stem with a rotating safety catch.",
+    "macro": "The scarab's ice-blue enamel wing cases either side of the polished gold ridge, and the deep jade-green enamel front shield.",
+    "back": "The flat back of the scarab with the 14K white gold pin stem, the hinge and the rotating safety catch.",
+    "side": "A flat beetle 1.4 mm thick with legs 1.0 mm thick.",
+    "max_mm": 22,
+    "bench_props": "a small porcelain dish of deep green enamel powder and a fine sable brush",
+    "noun": "lapel pin",
+    "alt_base": "14K gold scarab lapel pin with green and ice blue enamel",
+    "alt_macro": "the enamel wing cases and front shield",
+    "alt_back": "the pin stem and safety catch",
+    "title": "14K Gold Scarab Lapel Pin for Men, Green Blue Enamel Beetle, Good Luck Gift",
+    "tags": [
+     "14k gold lapel pin",
+     "mens lapel pin",
+     "scarab pin",
+     "beetle lapel pin",
+     "enamel lapel pin",
+     "vitreous enamel",
+     "scarab amulet",
+     "good luck gift",
+     "gold brooch for men",
+     "suit pin",
+     "christmas gift",
+     "gift for him",
+     "talisman jewelry"
+    ],
+    "materials": [
+     "14k yellow gold",
+     "vitreous enamel",
+     "14k white gold pin stem",
+     "14k gold safety catch"
+    ],
+    "season_proof": "Skarabe yıl boyu koruma tılsımı; Noel'e bağlı değil, başlık değişmez.",
+    "total_grams": 4.0,
+    "description": "A scarab for the lapel: a deep jade-green glass enamel shield, ice-blue enamel wing cases and six gold legs. The beetle of renewal and good luck, as a Christmas gift for him.\n\nTHE PIECE\n22 mm long and 21 mm wide including the legs. A polished 1.0 mm gold ridge runs between the wing cases; the six 1.0 mm legs angle outward with rounded ends.\n\nGOLD WEIGHT\n3.91 g of 14k gold, counting the 14k white gold pin stem and the safety catch. On the scale the finished piece weighs 4.00 g in total with the enamel.\n\nENAMEL\nKiln-fired vitreous enamel (glass), opaque: deep jade green on the front shield, ice blue on the wing cases, level with the gold.\n\nHOW IT FASTENS\nOne pin stem of hardened 14k white gold with a rotating safety catch, the standard fine-jewellery fastening for a brooch worn every day.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece, in a zinc-free gold alloy chosen for enamel. The enamel cells are cast into the gold, filled by hand and kiln-fired. Nothing is soldered after the first firing; any fitting added later is laser welded away from the enamel.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap. Glass enamel is hard and does not fade, but it can chip if struck against stone or metal. Keep it away from ultrasonic cleaners. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout."
+   }
+  ]
+ },
+ "read": null
+}

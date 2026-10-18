@@ -1,0 +1,200 @@
+{
+ "applied": [
+  {
+   "id": "B1",
+   "field": "camera",
+   "problem": "a stamped tag invites rendered text; the listing text keeps the tag"
+  },
+  {
+   "id": "B2",
+   "field": "camera",
+   "problem": "a stamped tag invites rendered text; the listing text keeps the tag"
+  },
+  {
+   "id": "B3",
+   "field": "camera",
+   "problem": "a stamped tag invites rendered text; the listing text keeps the tag"
+  },
+  {
+   "id": "B4",
+   "field": "camera",
+   "problem": "a stamped tag invites rendered text; the listing text keeps the tag"
+  },
+  {
+   "id": "B5",
+   "field": "camera",
+   "problem": "a stamped tag invites rendered text; the listing text keeps the tag"
+  },
+  {
+   "id": "B6",
+   "field": "camera",
+   "problem": "a stamped tag invites rendered text; the listing text keeps the tag"
+  },
+  {
+   "id": "B7",
+   "field": "camera",
+   "problem": "a stamped tag invites rendered text; the listing text keeps the tag"
+  },
+  {
+   "id": "B8",
+   "field": "camera",
+   "problem": "a stamped tag invites rendered text; the listing text keeps the tag"
+  },
+  {
+   "id": "B9",
+   "field": "camera",
+   "problem": "a stamped tag invites rendered text; the listing text keeps the tag"
+  },
+  {
+   "id": "B10",
+   "field": "camera",
+   "problem": "a stamped tag invites rendered text; the listing text keeps the tag"
+  },
+  {
+   "id": "B6",
+   "field": "title",
+   "problem": "'Horsebit' is Gucci's trademarked design name"
+  },
+  {
+   "id": "B6",
+   "field": "tags",
+   "problem": "trademark term"
+  },
+  {
+   "id": "B6",
+   "field": "season_proof",
+   "problem": "trademark term"
+  },
+  {
+   "id": "B6",
+   "field": "camera",
+   "problem": "trademark term out of the image text too"
+  },
+  {
+   "id": "N9",
+   "field": "camera",
+   "problem": "owner kept the regenerated hero (2026-10-18): four cells, three ribs; text follows the image"
+  },
+  {
+   "id": "N9",
+   "field": "macro",
+   "problem": "four cells (image kept)"
+  },
+  {
+   "id": "N9",
+   "field": "enamel_phrase",
+   "problem": "four cells (image kept)"
+  },
+  {
+   "id": "N9",
+   "field": "description",
+   "problem": "four cells (image kept)"
+  },
+  {
+   "id": "N9",
+   "field": "motif",
+   "problem": "four cells (image kept)"
+  },
+  {
+   "id": "N9",
+   "field": "workshop.dimensions",
+   "problem": "four cells on the same 10.6 mm panel: (10.6 - 3 x 0.7) / 4 = 2.12 mm each"
+  },
+  {
+   "id": "E9",
+   "field": "camera",
+   "problem": "owner kept the regenerated hero (2026-10-18): horizontal bird; text follows the image. Not 'perched': the verifier had removed that word because it invites a branch"
+  },
+  {
+   "id": "E9",
+   "field": "camera",
+   "problem": "a horizontal stud needs its post near the centre of mass"
+  },
+  {
+   "id": "E9",
+   "field": "side",
+   "problem": "horizontal bird"
+  },
+  {
+   "id": "E9",
+   "field": "back",
+   "problem": "post moved to the neck"
+  },
+  {
+   "id": "E9",
+   "field": "alt_back",
+   "problem": "post moved to the neck"
+  },
+  {
+   "id": "E9",
+   "field": "description",
+   "problem": "horizontal bird"
+  },
+  {
+   "id": "E9",
+   "field": "description",
+   "problem": "horizontal bird"
+  },
+  {
+   "id": "E9",
+   "field": "description",
+   "problem": "horizontal bird, post at the neck"
+  },
+  {
+   "id": "E9",
+   "field": "workshop.dimensions",
+   "problem": "horizontal bird: same silhouette, rotated"
+  },
+  {
+   "id": "E9",
+   "field": "workshop.dimensions",
+   "problem": "post at the neck"
+  },
+  {
+   "id": "E9",
+   "field": "workshop.construction",
+   "problem": "horizontal bird changes where the post must sit"
+  },
+  {
+   "id": "E9",
+   "field": "workshop.failure_modes",
+   "problem": "the failure mode of a horizontal stud is rotation, not tipping"
+  },
+  {
+   "id": "E9",
+   "field": "workshop.failure_modes",
+   "problem": "prevention for the horizontal bird"
+  },
+  {
+   "id": "E9",
+   "field": "open_questions",
+   "problem": "the maker must confirm the hang of a horizontal stud on a pilot pair"
+  },
+  {
+   "id": "P2",
+   "field": "camera",
+   "problem": "owner kept the regenerated hero (2026-10-18): two patterned ribbons, one satin; text follows the image"
+  },
+  {
+   "id": "P2",
+   "field": "description",
+   "problem": "ribbon finish follows the image"
+  },
+  {
+   "id": "P2",
+   "field": "workshop.dimensions",
+   "problem": "ribbon finish follows the image"
+  },
+  {
+   "id": "P2",
+   "field": "workshop.bench_sequence",
+   "problem": "ribbon finish follows the image"
+  },
+  {
+   "id": "P2",
+   "field": "workshop.bench_sequence",
+   "problem": "ribbon finish follows the image"
+  }
+ ],
+ "skipped": []
+}

@@ -1,0 +1,203 @@
+{
+ "B1": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "B2": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "B3": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "B4": {
+  "status": "ok",
+  "reason": "",
+  "note": "Yeniden çekim (ışınlar aynı düzlemde, pusula gülü gibi) kabul edildi."
+ },
+ "B5": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "B6": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "B7": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "B8": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "B9": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "B10": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "N1": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "N2": {
+  "status": "ok",
+  "reason": "",
+  "note": "Zincir figaro, spec ile uyumlu."
+ },
+ "N3": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "N4": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "N5": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "N6": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "N7": {
+  "status": "check",
+  "reason": "Uçuş tüyleri 5 yerine 6 okunuyor ve uçlar kapalı alt kenarla birleşmek yerine ayrı duruyor. Kare kullanılabilir; açıklama 'beş tüy' diyor, istersen yeniden üret.",
+  "note": "Tüy sayısı açıklamadan farklı.",
+  "prompt": "Quiet luxury editorial still-life product photography. Warm ivory linen ground, honed grey stone slab, a sliver of deep jade-green matte card. Soft directional window light from upper left, long soft shadow, shallow depth of field. Solid yellow gold with warm antique tone. Restrained heirloom mood. No text, no logo, no glitter, no Christmas decoration. The piece: Single angel wing pendant in 14K yellow gold, 9 mm wide and 14.5 mm tall, 0.9 mm thick, hanging upright from a bail at the top centre of the wing. The upper part is a band of rounded covert feathers with a scalloped lower edge; below it exactly five long flight feathers, 1.3 mm wide, are separated by four narrow pierced slits that stop short of the bottom, so the five rounded tips are joined to each other along one continuous closed lower edge; five feathers, not six. One 1.5 mm lab grown white sapphire is flush-set at the inner upper corner of the wing. Feather faces diamond-cut, edges polished. 1.0 mm 14K diamond-cut rope chain, 16 inch plus 2 inch extender. The stones are exactly these and no others: one 1.5 mm round lab-grown white sapphire flush-set at the inner upper corner of the wing. No other stone and no empty setting anywhere on the piece. The piece has no enamel and no colour: every surface is yellow gold. The pendant lies flat and face up on the honed grey stone slab, the chain running in a soft loose curve up and out of the top edge of the frame. Seen from about 30 degrees above with a 100 mm macro lens, the decorated part in razor-sharp focus, filling about a third of the frame width, with the chain softly out of focus toward the frame edges. No people and no hands."
+ },
+ "N8": {
+  "status": "ok",
+  "reason": "",
+  "note": "Halka taşları tepede değil dış yanlarda; küçük sapma."
+ },
+ "N9": {
+  "status": "ok",
+  "reason": "",
+  "note": "v2 sahip üretimi; tasarım görsele eşitlendi: 4 hücre / 3 çıta, koyu yeşil mine (2026-10-18)."
+ },
+ "N10": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "E1": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "E2": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "E3": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "E4": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "E5": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "E6": {
+  "status": "ok",
+  "reason": "",
+  "note": "Mine çok açık ton; kabul edildi."
+ },
+ "E7": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "E8": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "E9": {
+  "status": "ok",
+  "reason": "",
+  "note": "v2 sahip üretimi; tasarım görsele eşitlendi: yatay kardinal 11.5 × 5.8 mm, dal/tünek yok, civi boyunda (2026-10-18)."
+ },
+ "E10": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "P1": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "P2": {
+  "status": "ok",
+  "reason": "",
+  "note": "v2 sahip üretimi; tasarım görsele eşitlendi: dış iki şerit elmas tıraş desenli, orta şerit satin (2026-10-18)."
+ },
+ "P3": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "P4": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "P5": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "P6": {
+  "status": "ok",
+  "reason": "",
+  "note": "Açık ortadan iğne gövdesi görünüyor (gerçekçi), sarı tonda okunuyor; spec beyaz altın."
+ },
+ "P7": {
+  "status": "ok",
+  "reason": "",
+  "note": "Işınlar yaprak damarı gibi faset işlemeli; diamond-cut okuması olarak kabul edildi."
+ },
+ "P8": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "P9": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ },
+ "P10": {
+  "status": "ok",
+  "reason": "",
+  "note": ""
+ }
+}
