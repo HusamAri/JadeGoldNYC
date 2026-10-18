@@ -1,0 +1,96 @@
+{
+  "batch_id": "jade-xmas26-600-2026-10-18",
+  "requested_images": 600,
+  "generated_verified_images": 0,
+  "gallery_rows_written_by_worker": 0,
+  "new_provider_credentials_created": false,
+  "credits_purchased": false,
+  "probes": [
+    {
+      "provider": "google_gemini",
+      "operation": "models.list",
+      "status": 200,
+      "model": "gemini-nano-banana-2.1",
+      "model_available": true
+    },
+    {
+      "provider": "google_gemini",
+      "operation": "native_2k_reference_generation",
+      "product_code": "B1",
+      "position": 1,
+      "status": 400,
+      "error": "response_format.mime_type image/png unsupported; model accepts image/jpeg",
+      "resolution": "Worker corrected to accept native JPEG and verify decoded dimensions"
+    },
+    {
+      "provider": "google_gemini",
+      "operation": "native_2k_reference_generation",
+      "product_code": "B1",
+      "position": 1,
+      "status": 429,
+      "error": "Rate limit exceeded for model gemini-nano-banana-2.1 (limit: 0 input tokens per minute on Free Tier). Please upgrade your tier at https://ai.dev/rate-limit.",
+      "image_produced": false
+    },
+    {
+      "provider": "vercel_ai_gateway",
+      "operation": "credits",
+      "authentication": "Vercel runtime OIDC request header",
+      "status": 200,
+      "balance_usd": "0",
+      "total_used_usd": "0"
+    },
+    {
+      "provider": "vercel_ai_gateway",
+      "operation": "native_2k_reference_generation",
+      "product_code": "B1",
+      "position": 1,
+      "status": 403,
+      "error_type": "customer_verification_required",
+      "error": "AI Gateway requires a valid credit card on file to service requests.",
+      "action_url": "https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dadd-credit-card",
+      "image_produced": false
+    },
+    {
+      "provider": "google_gemini",
+      "operation": "post_user_activation_native_2k_reference_generation",
+      "product_code": "B1",
+      "position": 1,
+      "status": 429,
+      "error": "Rate limit exceeded for model gemini-nano-banana-2.1 (limit: 0 requests per day on Free Tier). Please upgrade your tier at https://ai.dev/rate-limit.",
+      "image_produced": false
+    },
+    {
+      "provider": "google_gemini",
+      "operation": "delayed_post_activation_native_2k_reference_generation",
+      "product_code": "B1",
+      "position": 1,
+      "status": 429,
+      "error": "Rate limit exceeded for model gemini-nano-banana-2.1 (limit: 0 requests per day on Free Tier). Please upgrade your tier at https://ai.dev/rate-limit.",
+      "provider_project_identifier_returned": false,
+      "image_produced": false
+    }
+  ],
+  "estimate": {
+    "source": "https://ai.google.dev/gemini-api/docs/pricing",
+    "model": "gemini-nano-banana-2.1",
+    "per_2k_output_image_usd": 0.0504,
+    "600_output_images_usd": 30.24,
+    "excludes": "Input/reference tokens, thinking, storage and any regeneration"
+  },
+  "latest_worker_preview": {
+    "id": "dpl_4KYJBbBLeyudJwAuqmV3aFFXuo2S",
+    "url": "https://jade-gold-5gmpxjayu-husamaris-projects.vercel.app/api/worker",
+    "aliases": [],
+    "requires_private_bearer_and_deployment_access": true,
+    "expires_at": "2026-10-21T00:00:00Z"
+  },
+  "production_verification": {
+    "deployment_id": "dpl_E8PnoaiyAGpXXwBrWVuAYW2WAfbH",
+    "custom_domain": "amuletta.artifactstudio.info",
+    "default_project_alias": "jade-gold-nyc-husamaris-projects.vercel.app",
+    "default_alias_restored_and_verified": true,
+    "custom_domain_never_reassigned": true,
+    "protection_settings_unchanged": true
+  },
+  "status": "awaiting_google_paid_tier_for_existing_vercel_key"
+}

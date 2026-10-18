@@ -1,0 +1,4024 @@
+{
+  "batch_id": "jade-xmas26-600-2026-10-18",
+  "organization_id": "f155b853-dfaf-48fd-94c5-ddfcb856e07c",
+  "supabase_project": "sewbrqflcrlgczilrusw",
+  "copy_sha256": "9fdea213c9e758d8ae78a60da37551784b9a6e25e9c2fe517d438fb441fb9f6d",
+  "products": [
+    {
+      "code": "B1",
+      "id": "3beb2f66-15f3-5155-a913-9db5cea767b0",
+      "sku": "JGN-X26-B1",
+      "variant_ids": {
+        "10K": "d3f6b464-a0a4-579b-a9a4-d896c948cdc5",
+        "14K": "40dc5347-8996-5f97-9f15-e1529ad69b8f",
+        "18K": "98451e0f-c937-5b0f-a7e1-ad45a6c758df"
+      }
+    },
+    {
+      "code": "B2",
+      "id": "bfefc4df-f1d1-5c07-a944-76c76d2b966e",
+      "sku": "JGN-X26-B2",
+      "variant_ids": {
+        "10K": "70e67816-76f8-5b31-ad06-ccb675162e19",
+        "14K": "e8b17aad-5ba4-5949-91df-50754acf0ac4",
+        "18K": "a3ea7e66-0e14-5e8f-a706-42931f08532a"
+      }
+    },
+    {
+      "code": "B3",
+      "id": "fc578335-1a14-593d-8b48-368cf575326d",
+      "sku": "JGN-X26-B3",
+      "variant_ids": {
+        "10K": "cb7dd477-d37f-5ea0-b5d7-e34784acf815",
+        "14K": "3b2bedf4-1755-58b6-9860-0c3e5f3ae34f",
+        "18K": "13b076e2-8db2-554e-9c68-6d89d8844d98"
+      }
+    },
+    {
+      "code": "B4",
+      "id": "07e53d51-e25c-5446-bedf-094bbfa63507",
+      "sku": "JGN-X26-B4",
+      "variant_ids": {
+        "10K": "9b075cc0-0034-5e13-b890-00416a490808",
+        "14K": "8e2064f2-0e63-5b92-84ec-1a46785d47d3",
+        "18K": "a0dd5f0c-1f12-53cc-a741-dd6dafb7506f"
+      }
+    },
+    {
+      "code": "B5",
+      "id": "c88c0412-194f-5b01-8a41-9f71c44ed383",
+      "sku": "JGN-X26-B5",
+      "variant_ids": {
+        "10K": "164e8063-4345-59a0-bca4-a0bd980faeb4",
+        "14K": "6fb0e6e6-bc02-56fa-94d5-19e838c0b34a",
+        "18K": "0fee15da-36c1-5b73-8f21-df48ba6307fe"
+      }
+    },
+    {
+      "code": "B6",
+      "id": "c5fd9ce9-5a72-564e-b15f-3bd6c4346277",
+      "sku": "JGN-X26-B6",
+      "variant_ids": {
+        "10K": "eff5badc-ebc4-55b7-a4fd-603d5fb0751e",
+        "14K": "030a2e8c-b19f-50c0-b290-35bb581157f6",
+        "18K": "c2b9f946-f749-5c55-b917-407f95b773e8"
+      }
+    },
+    {
+      "code": "B7",
+      "id": "5552d3bc-47c0-59c1-991c-c37d018cf7f0",
+      "sku": "JGN-X26-B7",
+      "variant_ids": {
+        "10K": "17d1a373-4809-5f33-8bbb-f5179cd07642",
+        "14K": "f9e383b8-9e8c-5f0d-af41-b483aad1a60c",
+        "18K": "835d2b66-6eb6-57c8-be2e-cde9490e44e6"
+      }
+    },
+    {
+      "code": "B8",
+      "id": "b500ffe4-c6c0-5e82-b4de-184e7edb688d",
+      "sku": "JGN-X26-B8",
+      "variant_ids": {
+        "10K": "7bae8d2b-2c49-5e90-9d20-6e7fff7a4229",
+        "14K": "6e590ebd-7b75-5347-9711-407ea7fa050c",
+        "18K": "df695e30-166c-5c35-beaf-12898c74e140"
+      }
+    },
+    {
+      "code": "B9",
+      "id": "2a60fc62-f494-5c84-8d7d-a0ba5a580966",
+      "sku": "JGN-X26-B9",
+      "variant_ids": {
+        "10K": "82520332-8821-55e4-a9f1-e3f00ec42dd9",
+        "14K": "cbec4fe4-37da-5e5e-8214-a9b8f386c3b6",
+        "18K": "d17b7103-5d83-5625-97fc-4b9e8ecd0cc9"
+      }
+    },
+    {
+      "code": "B10",
+      "id": "6bd391a7-c560-5089-b137-378857c72452",
+      "sku": "JGN-X26-B10",
+      "variant_ids": {
+        "10K": "d6746512-9e9b-50d3-9508-41588790b5bd",
+        "14K": "e2bbe7c5-97ee-549b-a606-77f6ad8f6dd1",
+        "18K": "3688f622-be8f-5847-8643-b2b86668be8d"
+      }
+    },
+    {
+      "code": "N1",
+      "id": "e1d0b358-36a2-5ccb-adfd-0b723405199a",
+      "sku": "JGN-X26-N1",
+      "variant_ids": {
+        "10K": "f882567a-8ac7-55b4-aee5-f6d171e0b718",
+        "14K": "40284f35-31a0-5a53-8d0b-8a7fc5b5ab63",
+        "18K": "53109f4a-8339-5d3d-b265-f6677153f27d"
+      }
+    },
+    {
+      "code": "N2",
+      "id": "2f160276-f7f7-5b0e-8010-0a233e558533",
+      "sku": "JGN-X26-N2",
+      "variant_ids": {
+        "10K": "d2205847-e704-5b56-ba13-47eba9db95b2",
+        "14K": "1dba3284-191b-5969-ae86-4ef2c99d1380",
+        "18K": "b5bb8c31-1360-5271-9360-24d8930bc56f"
+      }
+    },
+    {
+      "code": "N3",
+      "id": "6b3c308b-ce1a-59ce-a9d8-d14072f143d1",
+      "sku": "JGN-X26-N3",
+      "variant_ids": {
+        "10K": "d5f9ac29-9bec-5add-a80e-c62f8c7f1049",
+        "14K": "4043e052-4f19-53e5-a2fd-7ad41b3d5350",
+        "18K": "ef4b1739-cf93-5b68-b564-a259f5e422d8"
+      }
+    },
+    {
+      "code": "N4",
+      "id": "ff1bb99f-13e3-5af3-a3e4-ded7f92e4156",
+      "sku": "JGN-X26-N4",
+      "variant_ids": {
+        "10K": "afd073c0-2921-509f-8c84-04621be72f21",
+        "14K": "d3140029-2fcf-55cd-9076-1cb9f0db65f5",
+        "18K": "8b2e14c1-f6f4-55d6-9d64-e23f33103525"
+      }
+    },
+    {
+      "code": "N5",
+      "id": "260c5978-54bd-5a10-aead-71b24ce1b6c5",
+      "sku": "JGN-X26-N5",
+      "variant_ids": {
+        "10K": "7545dc3a-3960-5df7-8e69-2b30e83c2cdd",
+        "14K": "649cd78e-e053-59a9-b097-9c9c45016c73",
+        "18K": "3b520e7b-fee8-5cdb-a0ad-cb94a02873b3"
+      }
+    },
+    {
+      "code": "N6",
+      "id": "3614f41d-6a93-5eba-b3b0-6691aaa50823",
+      "sku": "JGN-X26-N6",
+      "variant_ids": {
+        "10K": "6dae8ebe-6e73-5f52-9b3b-90dbe23d1947",
+        "14K": "c55fa43d-4fbd-50b8-b424-9a16445d599f",
+        "18K": "fde7d81d-9849-5406-96b6-56ff0159413c"
+      }
+    },
+    {
+      "code": "N7",
+      "id": "c22025b7-32d2-5387-ac3e-2ad4bc96e9a6",
+      "sku": "JGN-X26-N7",
+      "variant_ids": {
+        "10K": "8d6abf8a-9cc9-57e0-8f12-010aea5ef6b7",
+        "14K": "d5b0a2e4-90fe-5ecd-a4ba-8cd72137919e",
+        "18K": "1ba5b471-a674-596f-b132-afe6a2e1e9ed"
+      }
+    },
+    {
+      "code": "N8",
+      "id": "98b9ef76-f1f6-587a-9c3e-86aeeeca82c6",
+      "sku": "JGN-X26-N8",
+      "variant_ids": {
+        "10K": "930ad695-515a-5061-9655-0c1cca1d2d27",
+        "14K": "4e3d2ae5-0293-520a-b4ed-f5b00f58de70",
+        "18K": "11d7b405-4037-526e-a201-652b82ae50cd"
+      }
+    },
+    {
+      "code": "N9",
+      "id": "a7015115-b203-5358-8cdc-3f0718d85390",
+      "sku": "JGN-X26-N9",
+      "variant_ids": {
+        "10K": "4f40df30-db1d-5ec4-b22d-191a4af6c492",
+        "14K": "55dd05d5-301a-51d8-91f2-3714fdcdb97f",
+        "18K": "9740b422-dbda-541a-89fc-5eb1c1736a49"
+      }
+    },
+    {
+      "code": "N10",
+      "id": "c5af5fb1-ba55-5306-bc62-2809b0a379b4",
+      "sku": "JGN-X26-N10",
+      "variant_ids": {
+        "10K": "13489f29-7a56-584b-b454-6930e67af54e",
+        "14K": "9e5d8720-6d8c-5e8f-8aa8-e98eed82c394",
+        "18K": "fd4632e4-b086-5836-bf49-e9602b21c785"
+      }
+    },
+    {
+      "code": "E1",
+      "id": "6cbca96e-8aa4-5a36-8c70-75944f67c708",
+      "sku": "JGN-X26-E1",
+      "variant_ids": {
+        "10K": "57ee7dc5-9457-5c52-a4c8-916c5ca82358",
+        "14K": "dd94f719-a803-5a72-8b9f-48f825c8a523",
+        "18K": "c4dae29d-1ea5-5fd8-97a6-5536d5e2c18c"
+      }
+    },
+    {
+      "code": "E2",
+      "id": "4fc88e97-e4f3-582c-bfb2-d03dacce9d64",
+      "sku": "JGN-X26-E2",
+      "variant_ids": {
+        "10K": "a2a5ab95-c02c-55f7-91b9-8c75c956e611",
+        "14K": "bb3bc100-a186-51b0-acde-a3875c9e4ce3",
+        "18K": "053ce658-2907-58c9-8ca5-e584ea154d10"
+      }
+    },
+    {
+      "code": "E3",
+      "id": "1f1b3d25-bc88-5015-b2d5-a26e4c73115e",
+      "sku": "JGN-X26-E3",
+      "variant_ids": {
+        "10K": "c162d734-0c66-5f02-bec9-dc01ad32e2e3",
+        "14K": "ba4a0e94-92f3-5418-9acf-54ad099b4ce7",
+        "18K": "f2fa4908-9316-56cd-b6bd-c897093afd73"
+      }
+    },
+    {
+      "code": "E4",
+      "id": "dc51e4e9-6e44-5739-9223-8d72637ea1e5",
+      "sku": "JGN-X26-E4",
+      "variant_ids": {
+        "10K": "89549228-bf1b-504f-baf0-fa0c654e8940",
+        "14K": "aa5e493a-3cfc-5428-a662-c118de9911f2",
+        "18K": "66a7055b-2743-5d56-b82f-956644e8b6e4"
+      }
+    },
+    {
+      "code": "E5",
+      "id": "1d1ff6ea-2a61-567a-84d3-8ce1c1fdb93d",
+      "sku": "JGN-X26-E5",
+      "variant_ids": {
+        "10K": "5fd15b0e-7e31-5b5b-9f96-82265c3abe9f",
+        "14K": "81ed9052-25e8-5bd8-a668-a46a2c2dd915",
+        "18K": "03f108e4-9308-52ee-84e1-72113cc1e2f5"
+      }
+    },
+    {
+      "code": "E6",
+      "id": "115598ae-0181-5cae-aa24-f4d73a2cbbf7",
+      "sku": "JGN-X26-E6",
+      "variant_ids": {
+        "10K": "0ac014d5-5574-5407-acd2-742c20d7745f",
+        "14K": "cb2d899a-aba8-5ec9-afb7-dfd8abaeb324",
+        "18K": "68030f5b-9c0d-597c-bb5d-16a441f0a7c9"
+      }
+    },
+    {
+      "code": "E7",
+      "id": "282e8ae2-e46b-58fe-a572-6d5790b96399",
+      "sku": "JGN-X26-E7",
+      "variant_ids": {
+        "10K": "fc623466-8441-5185-8c36-ce00b4e3e06a",
+        "14K": "dadb9166-6d41-517c-8392-acf5c6d97c52",
+        "18K": "3709cc21-4971-5dd9-ace1-ee0a8e152848"
+      }
+    },
+    {
+      "code": "E8",
+      "id": "5a7077ad-5f2b-5ebe-87a2-6858ec596003",
+      "sku": "JGN-X26-E8",
+      "variant_ids": {
+        "10K": "994e0e84-3bf3-5df3-8ae8-b569eafef59e",
+        "14K": "3c2bf5e0-8ca7-5add-9e9b-b3e970a570d9",
+        "18K": "4cf68625-4f90-579e-a5fb-dbbf8664b76c"
+      }
+    },
+    {
+      "code": "E9",
+      "id": "b98ae94a-d65b-5fe9-9b2a-664a0e0526a7",
+      "sku": "JGN-X26-E9",
+      "variant_ids": {
+        "10K": "54b695db-9290-51df-8b78-862718ff2e11",
+        "14K": "d12e8f20-58f7-54b5-a120-64dea1e4652d",
+        "18K": "a93a2337-f9c7-5c52-a423-b8af2f346467"
+      }
+    },
+    {
+      "code": "E10",
+      "id": "170b544e-e473-50cb-924b-60819652296b",
+      "sku": "JGN-X26-E10",
+      "variant_ids": {
+        "10K": "b8b9f2c8-0ffb-534b-b9ab-22224ef5f701",
+        "14K": "f381976d-7392-5686-8b7f-6914cf2fa0fb",
+        "18K": "0c01a22c-1aa9-5d4a-9762-a26931c8e53b"
+      }
+    },
+    {
+      "code": "P1",
+      "id": "5d77903c-1b46-5fc6-bc13-c53f634ea2fb",
+      "sku": "JGN-X26-P1",
+      "variant_ids": {
+        "10K": "0ae24db0-5850-5606-96db-c491c95563f2",
+        "14K": "c56fa522-8722-53ca-bbc3-551f89980a0c",
+        "18K": "6e0d807d-c154-5afa-8264-106ea2002273"
+      }
+    },
+    {
+      "code": "P2",
+      "id": "7648e656-de58-5117-a94c-735a5f677583",
+      "sku": "JGN-X26-P2",
+      "variant_ids": {
+        "10K": "3ea83bad-58e9-5de1-aa6d-944cb5405d10",
+        "14K": "454549bf-c0ed-5cd1-8326-d075fce0a8d1",
+        "18K": "c451d3f1-b704-5605-af2f-8f5da0551bc8"
+      }
+    },
+    {
+      "code": "P3",
+      "id": "e6d0b2c2-46d0-5e1f-8df1-4b173f66bb29",
+      "sku": "JGN-X26-P3",
+      "variant_ids": {
+        "10K": "7e757934-0e18-58a4-9f6f-8299639d697a",
+        "14K": "d7f5b5ce-b0a5-5126-b6d4-9c14a65000bc",
+        "18K": "ec8533f5-20d3-53b3-8a13-a117e25ae30d"
+      }
+    },
+    {
+      "code": "P4",
+      "id": "029b9c65-045b-584a-bb98-34d880430012",
+      "sku": "JGN-X26-P4",
+      "variant_ids": {
+        "10K": "650d2a44-5574-549b-b938-cbd0c0ee9007",
+        "14K": "31ca813d-721b-5711-8ae8-ac197362f92d",
+        "18K": "a5d92f89-efae-5822-82cc-198c8065ba44"
+      }
+    },
+    {
+      "code": "P5",
+      "id": "5d9c5f00-1a17-551a-ad8d-2b2da98852ba",
+      "sku": "JGN-X26-P5",
+      "variant_ids": {
+        "10K": "b6c2b556-f9f1-5e8e-a230-523923d0cea8",
+        "14K": "051f1e65-7497-53bd-956a-f6a01892d37d",
+        "18K": "067c1d09-6087-53a0-b7cf-b37754ef6bb8"
+      }
+    },
+    {
+      "code": "P6",
+      "id": "9763ed15-274a-5603-82ba-3ec14766a93b",
+      "sku": "JGN-X26-P6",
+      "variant_ids": {
+        "10K": "5a6f7f72-ca95-5ba3-ae31-88f3e4afa7e2",
+        "14K": "01061f77-4724-5f13-a079-10289de1dffe",
+        "18K": "ec41ce79-6271-5083-a884-a25c41ea7ef6"
+      }
+    },
+    {
+      "code": "P7",
+      "id": "3e09e122-a29e-5bec-92ef-7d0f794b6159",
+      "sku": "JGN-X26-P7",
+      "variant_ids": {
+        "10K": "d8d5e483-48a6-5e58-8f3b-6023f92e5a70",
+        "14K": "ada0279f-50db-5ba5-aa68-83378c3e1cb4",
+        "18K": "acbbc52d-0deb-5415-9bd9-e67a45092371"
+      }
+    },
+    {
+      "code": "P8",
+      "id": "f7c0ce9b-1985-55c9-b774-37cc50fc5131",
+      "sku": "JGN-X26-P8",
+      "variant_ids": {
+        "10K": "6393524f-31bb-5e8f-a4c0-87541a2ef9b5",
+        "14K": "e3e91d1d-9f82-5c7a-bc82-f378ef7c5e03",
+        "18K": "c2032b10-cc7a-5c4f-8457-d2b8ad22a05f"
+      }
+    },
+    {
+      "code": "P9",
+      "id": "05ed71fa-8db0-5fbf-addd-f278e5144c75",
+      "sku": "JGN-X26-P9",
+      "variant_ids": {
+        "10K": "cdc73e99-9cde-5470-8313-d39d387a731a",
+        "14K": "872d9064-7d8b-5ce4-b117-9c670c9a44a6",
+        "18K": "fc5e4042-e6e7-51e2-bf13-e300dad3152e"
+      }
+    },
+    {
+      "code": "P10",
+      "id": "fddec830-e81d-53bb-9882-36820c9493a2",
+      "sku": "JGN-X26-P10",
+      "variant_ids": {
+        "10K": "696e79a9-7234-5309-804e-09464e09b3d9",
+        "14K": "4d2a1126-4483-5ddb-b0f5-f0d2a799fb93",
+        "18K": "59fee47e-bd25-5591-84b6-78d412dbfcc4"
+      }
+    }
+  ],
+  "images": [
+    {
+      "product_code": "B1",
+      "position": 1,
+      "id": "5ea5e255-5980-531a-90d7-cedaf2ff4ebe",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B1/01.<extension>"
+    },
+    {
+      "product_code": "B1",
+      "position": 2,
+      "id": "3218ab0a-cad7-54dc-ac2c-8deea7710fe4",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B1/02.<extension>"
+    },
+    {
+      "product_code": "B1",
+      "position": 3,
+      "id": "8decd3f4-7565-558c-a10e-7cbdd4a41d3a",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B1/03.<extension>"
+    },
+    {
+      "product_code": "B1",
+      "position": 4,
+      "id": "fada39cc-43ce-5501-a433-85461b516171",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B1/04.<extension>"
+    },
+    {
+      "product_code": "B1",
+      "position": 5,
+      "id": "8ee28af4-6206-5878-9623-1e16f3af29e4",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B1/05.<extension>"
+    },
+    {
+      "product_code": "B1",
+      "position": 6,
+      "id": "f006e951-f8b0-5bfa-8182-77f3e4536334",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B1/06.<extension>"
+    },
+    {
+      "product_code": "B1",
+      "position": 7,
+      "id": "71c03d75-5c2a-5663-a4b1-38963ea5ec40",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B1/07.<extension>"
+    },
+    {
+      "product_code": "B1",
+      "position": 8,
+      "id": "057e0049-5377-5fd9-aab4-092a6f1cea9f",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B1/08.<extension>"
+    },
+    {
+      "product_code": "B1",
+      "position": 9,
+      "id": "1d783cb1-c57d-5e8e-8d98-4ff6f672d8b4",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B1/09.<extension>"
+    },
+    {
+      "product_code": "B1",
+      "position": 10,
+      "id": "90b49822-cb67-54b7-90bc-055240f01177",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B1/10.<extension>"
+    },
+    {
+      "product_code": "B1",
+      "position": 11,
+      "id": "758e65dc-99d4-5c62-b9bc-46c22c3ccedf",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B1/11.<extension>"
+    },
+    {
+      "product_code": "B1",
+      "position": 12,
+      "id": "4297258e-7bd0-54d0-9f21-6b42f1416d8a",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B1/12.<extension>"
+    },
+    {
+      "product_code": "B1",
+      "position": 13,
+      "id": "de398391-ed51-51c5-9386-d3b1b3721ad9",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B1/13.<extension>"
+    },
+    {
+      "product_code": "B1",
+      "position": 14,
+      "id": "67a91cea-66f8-5e6f-a8d3-b7f888c18c04",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B1/14.<extension>"
+    },
+    {
+      "product_code": "B1",
+      "position": 15,
+      "id": "1e27ac87-795c-52b7-9299-26e369731511",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B1/15.<extension>"
+    },
+    {
+      "product_code": "B2",
+      "position": 1,
+      "id": "037d4bcd-97f0-5525-ad6b-f3d9af716223",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B2/01.<extension>"
+    },
+    {
+      "product_code": "B2",
+      "position": 2,
+      "id": "1b8684b7-4d27-5fb1-8b32-fd702ce47c36",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B2/02.<extension>"
+    },
+    {
+      "product_code": "B2",
+      "position": 3,
+      "id": "89e70171-055c-5659-8344-bbaf338669ef",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B2/03.<extension>"
+    },
+    {
+      "product_code": "B2",
+      "position": 4,
+      "id": "3a3bd6f5-2d10-5fda-86f5-7de263c0bc59",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B2/04.<extension>"
+    },
+    {
+      "product_code": "B2",
+      "position": 5,
+      "id": "d0b57541-032e-5795-b84d-2d1f24dae437",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B2/05.<extension>"
+    },
+    {
+      "product_code": "B2",
+      "position": 6,
+      "id": "c4eb3df0-c95a-564a-a96a-e0644e25d5bf",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B2/06.<extension>"
+    },
+    {
+      "product_code": "B2",
+      "position": 7,
+      "id": "2c5582c5-88f3-5f85-a476-44d446ef92e3",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B2/07.<extension>"
+    },
+    {
+      "product_code": "B2",
+      "position": 8,
+      "id": "faaf7502-ef5a-59ce-93e8-d37402dece42",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B2/08.<extension>"
+    },
+    {
+      "product_code": "B2",
+      "position": 9,
+      "id": "a3c95563-906c-529b-b21f-a88246e1f888",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B2/09.<extension>"
+    },
+    {
+      "product_code": "B2",
+      "position": 10,
+      "id": "303ffa46-17ff-5671-a011-90ec0b6accea",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B2/10.<extension>"
+    },
+    {
+      "product_code": "B2",
+      "position": 11,
+      "id": "5ef81356-bad2-55b0-afd4-fb49e293a758",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B2/11.<extension>"
+    },
+    {
+      "product_code": "B2",
+      "position": 12,
+      "id": "64287445-d917-576f-9e86-82f96eee6dbb",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B2/12.<extension>"
+    },
+    {
+      "product_code": "B2",
+      "position": 13,
+      "id": "514fc7bc-ce3a-5782-af5b-4d97137fec2e",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B2/13.<extension>"
+    },
+    {
+      "product_code": "B2",
+      "position": 14,
+      "id": "dd6fe790-6b21-5142-9ba3-22844479eff7",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B2/14.<extension>"
+    },
+    {
+      "product_code": "B2",
+      "position": 15,
+      "id": "9f2eea3d-9b92-5e5f-aa49-42c3b0df12bd",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B2/15.<extension>"
+    },
+    {
+      "product_code": "B3",
+      "position": 1,
+      "id": "e527161f-aed5-5227-a239-f594757c81cc",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B3/01.<extension>"
+    },
+    {
+      "product_code": "B3",
+      "position": 2,
+      "id": "c9c23493-b227-563c-9451-94edaa0a6bfd",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B3/02.<extension>"
+    },
+    {
+      "product_code": "B3",
+      "position": 3,
+      "id": "933edd1b-e21f-5309-a41d-6196342a90c1",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B3/03.<extension>"
+    },
+    {
+      "product_code": "B3",
+      "position": 4,
+      "id": "433cc4a4-7fcc-5a26-9aa5-87e26c290145",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B3/04.<extension>"
+    },
+    {
+      "product_code": "B3",
+      "position": 5,
+      "id": "eb5f2c55-342d-5511-8ea0-dfdebc877bd9",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B3/05.<extension>"
+    },
+    {
+      "product_code": "B3",
+      "position": 6,
+      "id": "b15ce2f2-f217-5f53-b943-67699df88bd5",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B3/06.<extension>"
+    },
+    {
+      "product_code": "B3",
+      "position": 7,
+      "id": "e12c4756-041b-5859-a1e8-b25dcb71f225",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B3/07.<extension>"
+    },
+    {
+      "product_code": "B3",
+      "position": 8,
+      "id": "cd34232b-0524-5eec-bde3-37ee3fbd121c",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B3/08.<extension>"
+    },
+    {
+      "product_code": "B3",
+      "position": 9,
+      "id": "807fdf9a-303e-5ba8-a3e8-85338bc62a01",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B3/09.<extension>"
+    },
+    {
+      "product_code": "B3",
+      "position": 10,
+      "id": "c16bc548-11ae-54e8-88f1-921d19fd285b",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B3/10.<extension>"
+    },
+    {
+      "product_code": "B3",
+      "position": 11,
+      "id": "18fb1c58-952a-5963-847d-53e253192752",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B3/11.<extension>"
+    },
+    {
+      "product_code": "B3",
+      "position": 12,
+      "id": "598cd1ad-de25-52ad-a05f-c91efb5c5da5",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B3/12.<extension>"
+    },
+    {
+      "product_code": "B3",
+      "position": 13,
+      "id": "4d3c14c8-168d-5d7e-a7e6-d49bb52cd6ee",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B3/13.<extension>"
+    },
+    {
+      "product_code": "B3",
+      "position": 14,
+      "id": "ffe765df-d513-587c-9126-5a53d882aca3",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B3/14.<extension>"
+    },
+    {
+      "product_code": "B3",
+      "position": 15,
+      "id": "c4d27cb3-ceb9-59bb-bc9d-5a7e56ccf324",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B3/15.<extension>"
+    },
+    {
+      "product_code": "B4",
+      "position": 1,
+      "id": "9f299742-dd69-5637-8dc0-076b41c9c21b",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B4/01.<extension>"
+    },
+    {
+      "product_code": "B4",
+      "position": 2,
+      "id": "c440f54c-f8a9-5f36-8da4-cbc0fd996668",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B4/02.<extension>"
+    },
+    {
+      "product_code": "B4",
+      "position": 3,
+      "id": "8ea09bc7-4d66-5d87-a9bc-5ccfe4391486",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B4/03.<extension>"
+    },
+    {
+      "product_code": "B4",
+      "position": 4,
+      "id": "c14e2257-9d6f-5226-bc7e-f128d8956779",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B4/04.<extension>"
+    },
+    {
+      "product_code": "B4",
+      "position": 5,
+      "id": "44a916ce-f4e0-5d58-ab22-945e695057e6",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B4/05.<extension>"
+    },
+    {
+      "product_code": "B4",
+      "position": 6,
+      "id": "1a72bc91-6eaf-595f-b2f8-18ec0e6e1c3e",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B4/06.<extension>"
+    },
+    {
+      "product_code": "B4",
+      "position": 7,
+      "id": "889083c6-232a-5c42-8222-bd18911809df",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B4/07.<extension>"
+    },
+    {
+      "product_code": "B4",
+      "position": 8,
+      "id": "61897629-e6f4-5cc6-b6ff-f945f61f06a5",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B4/08.<extension>"
+    },
+    {
+      "product_code": "B4",
+      "position": 9,
+      "id": "1a716fc5-211b-5d91-a249-6878e1e9b92c",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B4/09.<extension>"
+    },
+    {
+      "product_code": "B4",
+      "position": 10,
+      "id": "8c153e7f-d573-5e43-9921-e6701fdeb80b",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B4/10.<extension>"
+    },
+    {
+      "product_code": "B4",
+      "position": 11,
+      "id": "5dea1c87-0aec-529b-a17e-97fab888ee91",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B4/11.<extension>"
+    },
+    {
+      "product_code": "B4",
+      "position": 12,
+      "id": "f54ef270-bbbd-5dc7-be08-45582202416a",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B4/12.<extension>"
+    },
+    {
+      "product_code": "B4",
+      "position": 13,
+      "id": "08ce7d1e-bbd3-5b21-bc13-ccfe47f33252",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B4/13.<extension>"
+    },
+    {
+      "product_code": "B4",
+      "position": 14,
+      "id": "1ccd5d41-3df7-5667-8bc0-70df427f3621",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B4/14.<extension>"
+    },
+    {
+      "product_code": "B4",
+      "position": 15,
+      "id": "dc6d1193-da33-5cd4-9a2a-e984106a094f",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B4/15.<extension>"
+    },
+    {
+      "product_code": "B5",
+      "position": 1,
+      "id": "1b6a0550-6cdd-56f0-849a-25f999db89a6",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B5/01.<extension>"
+    },
+    {
+      "product_code": "B5",
+      "position": 2,
+      "id": "fc84bfc8-3591-5bb8-85ea-2cc157d09360",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B5/02.<extension>"
+    },
+    {
+      "product_code": "B5",
+      "position": 3,
+      "id": "a8328a63-f2ad-5782-9670-ac535abca342",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B5/03.<extension>"
+    },
+    {
+      "product_code": "B5",
+      "position": 4,
+      "id": "6637c63a-1d86-5a99-8702-30666e35d4ce",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B5/04.<extension>"
+    },
+    {
+      "product_code": "B5",
+      "position": 5,
+      "id": "36932521-ef87-5b69-ade3-ffcab9a9c0dc",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B5/05.<extension>"
+    },
+    {
+      "product_code": "B5",
+      "position": 6,
+      "id": "2d404788-5aac-5fef-bfef-699f1105bbfd",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B5/06.<extension>"
+    },
+    {
+      "product_code": "B5",
+      "position": 7,
+      "id": "e74296e8-4ab5-5630-93d4-58aafd99c0c5",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B5/07.<extension>"
+    },
+    {
+      "product_code": "B5",
+      "position": 8,
+      "id": "1709f025-9bc7-5c10-bad5-7aa242b343a8",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B5/08.<extension>"
+    },
+    {
+      "product_code": "B5",
+      "position": 9,
+      "id": "a292844b-73bb-50d0-b962-bb82d77b0207",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B5/09.<extension>"
+    },
+    {
+      "product_code": "B5",
+      "position": 10,
+      "id": "f8ece183-f792-56f9-94fc-9258cda2e681",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B5/10.<extension>"
+    },
+    {
+      "product_code": "B5",
+      "position": 11,
+      "id": "707f8214-5f6a-5887-ba44-e4d12686bed5",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B5/11.<extension>"
+    },
+    {
+      "product_code": "B5",
+      "position": 12,
+      "id": "3c7adacb-b8bc-519b-a52b-54573c093767",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B5/12.<extension>"
+    },
+    {
+      "product_code": "B5",
+      "position": 13,
+      "id": "37bf2b59-a6cd-5f0c-a73a-5f3600b4a9d6",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B5/13.<extension>"
+    },
+    {
+      "product_code": "B5",
+      "position": 14,
+      "id": "c7cf9781-87ec-5203-b189-1cc3fa982c87",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B5/14.<extension>"
+    },
+    {
+      "product_code": "B5",
+      "position": 15,
+      "id": "25d4053b-e46d-5714-9eca-4b290144024e",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B5/15.<extension>"
+    },
+    {
+      "product_code": "B6",
+      "position": 1,
+      "id": "3d48ad73-1e55-5def-9e75-ba377c3b9b83",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B6/01.<extension>"
+    },
+    {
+      "product_code": "B6",
+      "position": 2,
+      "id": "08810b9c-c5b8-5f7d-9c75-bbc85719bdba",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B6/02.<extension>"
+    },
+    {
+      "product_code": "B6",
+      "position": 3,
+      "id": "91d86386-fc01-5995-9506-b8798b4835b0",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B6/03.<extension>"
+    },
+    {
+      "product_code": "B6",
+      "position": 4,
+      "id": "9cc1deb1-4747-56d2-a850-73df0dc21efa",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B6/04.<extension>"
+    },
+    {
+      "product_code": "B6",
+      "position": 5,
+      "id": "53972a0e-e5a6-5e02-ae5a-5d4640ab4a09",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B6/05.<extension>"
+    },
+    {
+      "product_code": "B6",
+      "position": 6,
+      "id": "75dbbad4-215e-5e9a-8394-e6c7791c2f0e",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B6/06.<extension>"
+    },
+    {
+      "product_code": "B6",
+      "position": 7,
+      "id": "19d852a9-7b5c-5e49-8cb1-d9647892ce61",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B6/07.<extension>"
+    },
+    {
+      "product_code": "B6",
+      "position": 8,
+      "id": "7c5556c7-74a7-5674-8135-533850a77e55",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B6/08.<extension>"
+    },
+    {
+      "product_code": "B6",
+      "position": 9,
+      "id": "0bbcb723-c2c0-5c0f-976c-95d18eaf4d52",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B6/09.<extension>"
+    },
+    {
+      "product_code": "B6",
+      "position": 10,
+      "id": "8f626e86-0191-5362-b330-011fc7d4a7e9",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B6/10.<extension>"
+    },
+    {
+      "product_code": "B6",
+      "position": 11,
+      "id": "fe635fd7-8840-58c1-a102-9c709467d884",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B6/11.<extension>"
+    },
+    {
+      "product_code": "B6",
+      "position": 12,
+      "id": "14500183-6aab-53bf-b0f1-c4b79fbd2928",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B6/12.<extension>"
+    },
+    {
+      "product_code": "B6",
+      "position": 13,
+      "id": "dc6ccb7d-7ea4-5d74-bc9e-43e375c3593e",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B6/13.<extension>"
+    },
+    {
+      "product_code": "B6",
+      "position": 14,
+      "id": "e5b3312c-d210-5038-a06e-7b316f03253b",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B6/14.<extension>"
+    },
+    {
+      "product_code": "B6",
+      "position": 15,
+      "id": "593980b6-24d7-5fed-8bc0-816468f62d7f",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B6/15.<extension>"
+    },
+    {
+      "product_code": "B7",
+      "position": 1,
+      "id": "864bf6f5-f391-52f3-9dac-a091eb12a8ca",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B7/01.<extension>"
+    },
+    {
+      "product_code": "B7",
+      "position": 2,
+      "id": "40a67cb7-d851-57ce-b16f-53677a30d7c0",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B7/02.<extension>"
+    },
+    {
+      "product_code": "B7",
+      "position": 3,
+      "id": "a15eec12-4629-5023-8c94-5f525a95ad6f",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B7/03.<extension>"
+    },
+    {
+      "product_code": "B7",
+      "position": 4,
+      "id": "5b103270-20c3-595b-a895-2dd902f72950",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B7/04.<extension>"
+    },
+    {
+      "product_code": "B7",
+      "position": 5,
+      "id": "58a3d235-8eeb-5196-8375-92bee4b923f5",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B7/05.<extension>"
+    },
+    {
+      "product_code": "B7",
+      "position": 6,
+      "id": "38871981-34c1-5e74-ae86-c4d5a4fddb5c",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B7/06.<extension>"
+    },
+    {
+      "product_code": "B7",
+      "position": 7,
+      "id": "753832d7-8502-5e6d-83a5-df4a7f690004",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B7/07.<extension>"
+    },
+    {
+      "product_code": "B7",
+      "position": 8,
+      "id": "41c79a4c-1c6d-5654-bbba-ca450bf4f0cb",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B7/08.<extension>"
+    },
+    {
+      "product_code": "B7",
+      "position": 9,
+      "id": "150f498e-4875-5e17-9160-00708d31f3fc",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B7/09.<extension>"
+    },
+    {
+      "product_code": "B7",
+      "position": 10,
+      "id": "60e5713b-c325-51a1-bdae-34989a3af436",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B7/10.<extension>"
+    },
+    {
+      "product_code": "B7",
+      "position": 11,
+      "id": "74530cc0-5e1c-555e-b030-01890c1483be",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B7/11.<extension>"
+    },
+    {
+      "product_code": "B7",
+      "position": 12,
+      "id": "48e96452-35f9-5ef2-a2ef-6c8227855a15",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B7/12.<extension>"
+    },
+    {
+      "product_code": "B7",
+      "position": 13,
+      "id": "24c8396c-e5bb-5ee4-9dea-d3977a61e4e8",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B7/13.<extension>"
+    },
+    {
+      "product_code": "B7",
+      "position": 14,
+      "id": "a9047ab7-9309-527f-a176-36fc69d0bdb0",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B7/14.<extension>"
+    },
+    {
+      "product_code": "B7",
+      "position": 15,
+      "id": "e23026b8-d29c-5441-9983-c6f01eb023be",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B7/15.<extension>"
+    },
+    {
+      "product_code": "B8",
+      "position": 1,
+      "id": "20edc4a1-18dd-5fb5-8a81-a7feb4af3cc1",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B8/01.<extension>"
+    },
+    {
+      "product_code": "B8",
+      "position": 2,
+      "id": "700abd1c-a39e-58d8-a36e-45dc9fb34af2",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B8/02.<extension>"
+    },
+    {
+      "product_code": "B8",
+      "position": 3,
+      "id": "942df4db-6827-536e-8a7b-e43964232931",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B8/03.<extension>"
+    },
+    {
+      "product_code": "B8",
+      "position": 4,
+      "id": "70479938-1288-57fd-8093-f26129dcb0db",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B8/04.<extension>"
+    },
+    {
+      "product_code": "B8",
+      "position": 5,
+      "id": "f38b5e88-0ba6-5a2b-8760-4547c9908427",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B8/05.<extension>"
+    },
+    {
+      "product_code": "B8",
+      "position": 6,
+      "id": "a4df0f02-ba19-5c91-a206-9c44ecc3672d",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B8/06.<extension>"
+    },
+    {
+      "product_code": "B8",
+      "position": 7,
+      "id": "adc66c2a-a357-544d-9ab9-e2d3b05a7495",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B8/07.<extension>"
+    },
+    {
+      "product_code": "B8",
+      "position": 8,
+      "id": "6419e162-8be8-509e-af7e-afcab37e8161",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B8/08.<extension>"
+    },
+    {
+      "product_code": "B8",
+      "position": 9,
+      "id": "db029d7c-dce9-513d-a4f5-5d172a46c2bc",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B8/09.<extension>"
+    },
+    {
+      "product_code": "B8",
+      "position": 10,
+      "id": "090621a0-aebd-5932-b6d9-c4e1d9c20baf",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B8/10.<extension>"
+    },
+    {
+      "product_code": "B8",
+      "position": 11,
+      "id": "7b24c7f9-032d-55a7-b7af-f9cfe7f087d2",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B8/11.<extension>"
+    },
+    {
+      "product_code": "B8",
+      "position": 12,
+      "id": "b7dd3acf-f6ac-5704-ad63-400684b766c7",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B8/12.<extension>"
+    },
+    {
+      "product_code": "B8",
+      "position": 13,
+      "id": "01b2dd44-07e9-5dae-9d15-77e48ac388a1",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B8/13.<extension>"
+    },
+    {
+      "product_code": "B8",
+      "position": 14,
+      "id": "67b7b798-62cb-58f1-93f3-fa75badbe951",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B8/14.<extension>"
+    },
+    {
+      "product_code": "B8",
+      "position": 15,
+      "id": "d0080f03-5c34-52ee-847a-e7a267ee517d",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B8/15.<extension>"
+    },
+    {
+      "product_code": "B9",
+      "position": 1,
+      "id": "a630a882-cde6-5d70-8ab4-49070c98ab6e",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B9/01.<extension>"
+    },
+    {
+      "product_code": "B9",
+      "position": 2,
+      "id": "ffd8f072-9030-54d5-abfd-a9147722040b",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B9/02.<extension>"
+    },
+    {
+      "product_code": "B9",
+      "position": 3,
+      "id": "5802d645-a4af-5708-a690-48214faaff67",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B9/03.<extension>"
+    },
+    {
+      "product_code": "B9",
+      "position": 4,
+      "id": "04e635f1-c10f-5a83-805c-32900f76d5a8",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B9/04.<extension>"
+    },
+    {
+      "product_code": "B9",
+      "position": 5,
+      "id": "7f7b7f2d-cf3f-54f7-bac5-4da5f90d73e5",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B9/05.<extension>"
+    },
+    {
+      "product_code": "B9",
+      "position": 6,
+      "id": "53f374ee-b1c8-5438-b305-e7a66ed4dd7f",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B9/06.<extension>"
+    },
+    {
+      "product_code": "B9",
+      "position": 7,
+      "id": "52f41b94-9f60-5c4e-98b8-2f11b7a96011",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B9/07.<extension>"
+    },
+    {
+      "product_code": "B9",
+      "position": 8,
+      "id": "ab23b198-b038-54ad-8ec5-9785d5559ac5",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B9/08.<extension>"
+    },
+    {
+      "product_code": "B9",
+      "position": 9,
+      "id": "fc851771-eecf-5378-8990-770d093febf5",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B9/09.<extension>"
+    },
+    {
+      "product_code": "B9",
+      "position": 10,
+      "id": "5e64a43c-9f93-53e1-b6f3-ba3c59651079",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B9/10.<extension>"
+    },
+    {
+      "product_code": "B9",
+      "position": 11,
+      "id": "94651d6b-dcf0-5b57-aa68-a47d60055052",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B9/11.<extension>"
+    },
+    {
+      "product_code": "B9",
+      "position": 12,
+      "id": "b321f5f1-5dbf-5d02-bc98-5dd763d977c5",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B9/12.<extension>"
+    },
+    {
+      "product_code": "B9",
+      "position": 13,
+      "id": "bf5f35e8-362b-591b-88da-ab171910c51d",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B9/13.<extension>"
+    },
+    {
+      "product_code": "B9",
+      "position": 14,
+      "id": "723fa970-f409-5853-bbbb-f980f6ae8cc6",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B9/14.<extension>"
+    },
+    {
+      "product_code": "B9",
+      "position": 15,
+      "id": "0c07c102-0ab8-5db3-b51d-ab542e2d3e2d",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B9/15.<extension>"
+    },
+    {
+      "product_code": "B10",
+      "position": 1,
+      "id": "513f79db-3018-551a-9258-6eac7ca2dab9",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B10/01.<extension>"
+    },
+    {
+      "product_code": "B10",
+      "position": 2,
+      "id": "dfd9a846-54f6-59fa-9f07-1c4ed5820f20",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B10/02.<extension>"
+    },
+    {
+      "product_code": "B10",
+      "position": 3,
+      "id": "4e157969-2b20-583d-8fb1-d5e419576c1c",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B10/03.<extension>"
+    },
+    {
+      "product_code": "B10",
+      "position": 4,
+      "id": "2604c2c2-6f05-5d27-a237-88c02d49734f",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B10/04.<extension>"
+    },
+    {
+      "product_code": "B10",
+      "position": 5,
+      "id": "8c2ac540-e234-537c-b2f0-927af565dec2",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B10/05.<extension>"
+    },
+    {
+      "product_code": "B10",
+      "position": 6,
+      "id": "cc1c484d-a801-536d-af2e-e8b2766779bd",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B10/06.<extension>"
+    },
+    {
+      "product_code": "B10",
+      "position": 7,
+      "id": "5bc7b922-6c52-547c-9856-d285e7ab4c53",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B10/07.<extension>"
+    },
+    {
+      "product_code": "B10",
+      "position": 8,
+      "id": "049b565f-955f-53e4-b03f-0705a1397180",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B10/08.<extension>"
+    },
+    {
+      "product_code": "B10",
+      "position": 9,
+      "id": "e059c645-fb79-52e6-b3f6-c57427ad4650",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B10/09.<extension>"
+    },
+    {
+      "product_code": "B10",
+      "position": 10,
+      "id": "7dd13c5a-97d9-51d2-9400-6ed4a33d9582",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B10/10.<extension>"
+    },
+    {
+      "product_code": "B10",
+      "position": 11,
+      "id": "76d4638e-f201-5e90-9296-2dda051c2a23",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B10/11.<extension>"
+    },
+    {
+      "product_code": "B10",
+      "position": 12,
+      "id": "d1fbfce0-58c1-54cb-bdd1-3e0e98cd0494",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B10/12.<extension>"
+    },
+    {
+      "product_code": "B10",
+      "position": 13,
+      "id": "4c3a2376-b8dc-5432-936a-f9ce339d2024",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B10/13.<extension>"
+    },
+    {
+      "product_code": "B10",
+      "position": 14,
+      "id": "ea6f1ac6-d611-5ced-ae37-d25ec217ab2b",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B10/14.<extension>"
+    },
+    {
+      "product_code": "B10",
+      "position": 15,
+      "id": "eb0d59b7-7dba-5c90-a890-5a2a4bf7da08",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B10/15.<extension>"
+    },
+    {
+      "product_code": "N1",
+      "position": 1,
+      "id": "b098e1a7-a98b-5cd7-bd5e-103e396bb71d",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N1/01.<extension>"
+    },
+    {
+      "product_code": "N1",
+      "position": 2,
+      "id": "20f9d7fe-2ed5-5d76-be31-be7f712de962",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N1/02.<extension>"
+    },
+    {
+      "product_code": "N1",
+      "position": 3,
+      "id": "54623f51-4aa2-5b31-abb0-d3598df7079b",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N1/03.<extension>"
+    },
+    {
+      "product_code": "N1",
+      "position": 4,
+      "id": "9f9a3644-114e-558e-8797-cd355f8cdb12",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N1/04.<extension>"
+    },
+    {
+      "product_code": "N1",
+      "position": 5,
+      "id": "79c47757-d8c4-5d49-9634-1b9042773263",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N1/05.<extension>"
+    },
+    {
+      "product_code": "N1",
+      "position": 6,
+      "id": "420ff6ea-604f-5d82-bf48-19aca81db7de",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N1/06.<extension>"
+    },
+    {
+      "product_code": "N1",
+      "position": 7,
+      "id": "7122a956-03ff-50c4-bc4b-4b8b0ed46db9",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N1/07.<extension>"
+    },
+    {
+      "product_code": "N1",
+      "position": 8,
+      "id": "ce6210cc-3162-517d-8910-81e709c1437f",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N1/08.<extension>"
+    },
+    {
+      "product_code": "N1",
+      "position": 9,
+      "id": "669a9f76-c600-545c-8375-4f8963a18ffe",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N1/09.<extension>"
+    },
+    {
+      "product_code": "N1",
+      "position": 10,
+      "id": "451bf3ee-0549-573e-aea8-c1a223eff3c8",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N1/10.<extension>"
+    },
+    {
+      "product_code": "N1",
+      "position": 11,
+      "id": "5c8e2972-9413-579d-85bf-a2d3147ce18a",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N1/11.<extension>"
+    },
+    {
+      "product_code": "N1",
+      "position": 12,
+      "id": "dcde5ee4-fae5-55b1-91ae-4cf9f69f1e02",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N1/12.<extension>"
+    },
+    {
+      "product_code": "N1",
+      "position": 13,
+      "id": "533e8d99-ea0f-55e9-9727-104ace49b883",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N1/13.<extension>"
+    },
+    {
+      "product_code": "N1",
+      "position": 14,
+      "id": "1224a37d-d24b-5124-9b6f-01a495a5b6ca",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N1/14.<extension>"
+    },
+    {
+      "product_code": "N1",
+      "position": 15,
+      "id": "52f68f89-080f-5557-9ccb-fe4ae8429882",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N1/15.<extension>"
+    },
+    {
+      "product_code": "N2",
+      "position": 1,
+      "id": "a53e8cc0-530b-5a99-8a8c-73f3efb5e095",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N2/01.<extension>"
+    },
+    {
+      "product_code": "N2",
+      "position": 2,
+      "id": "67252c1c-f067-50e3-9437-a135cb4336a0",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N2/02.<extension>"
+    },
+    {
+      "product_code": "N2",
+      "position": 3,
+      "id": "663bd841-27ca-5613-8b98-812a6be03f6c",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N2/03.<extension>"
+    },
+    {
+      "product_code": "N2",
+      "position": 4,
+      "id": "54f2ba9a-19a7-53da-9894-20c01e872833",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N2/04.<extension>"
+    },
+    {
+      "product_code": "N2",
+      "position": 5,
+      "id": "9ed251c5-e173-518b-8ea0-bd5a99808d70",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N2/05.<extension>"
+    },
+    {
+      "product_code": "N2",
+      "position": 6,
+      "id": "b6bc0379-fa69-57a2-81e7-482e474078c5",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N2/06.<extension>"
+    },
+    {
+      "product_code": "N2",
+      "position": 7,
+      "id": "a80022b6-3789-59ee-86c0-0af1f1a6d017",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N2/07.<extension>"
+    },
+    {
+      "product_code": "N2",
+      "position": 8,
+      "id": "a3e3b09f-17b4-5964-962c-5b3f9ea5d091",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N2/08.<extension>"
+    },
+    {
+      "product_code": "N2",
+      "position": 9,
+      "id": "bae5df8a-19f4-5e33-b9c9-c9aee185c27d",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N2/09.<extension>"
+    },
+    {
+      "product_code": "N2",
+      "position": 10,
+      "id": "359ac308-ebcd-5219-8f2e-9f997dbab8df",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N2/10.<extension>"
+    },
+    {
+      "product_code": "N2",
+      "position": 11,
+      "id": "6379d20a-70fb-55e6-9a08-4c70767a24d3",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N2/11.<extension>"
+    },
+    {
+      "product_code": "N2",
+      "position": 12,
+      "id": "446512a1-03dc-55a9-a630-aa7f0ce6cff8",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N2/12.<extension>"
+    },
+    {
+      "product_code": "N2",
+      "position": 13,
+      "id": "3557afd9-6d66-5fe3-ba7d-6e40576a179b",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N2/13.<extension>"
+    },
+    {
+      "product_code": "N2",
+      "position": 14,
+      "id": "12486cee-af75-5dee-87d1-3ee90580176a",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N2/14.<extension>"
+    },
+    {
+      "product_code": "N2",
+      "position": 15,
+      "id": "edd5b374-4c8b-5cd6-a876-686774dc38a6",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N2/15.<extension>"
+    },
+    {
+      "product_code": "N3",
+      "position": 1,
+      "id": "c917bf38-9d42-5cbc-845c-944156cfc84c",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N3/01.<extension>"
+    },
+    {
+      "product_code": "N3",
+      "position": 2,
+      "id": "3272d691-453b-55bf-8137-2b4c5305e4eb",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N3/02.<extension>"
+    },
+    {
+      "product_code": "N3",
+      "position": 3,
+      "id": "28fb9318-6289-5093-9220-9e9d5dd62049",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N3/03.<extension>"
+    },
+    {
+      "product_code": "N3",
+      "position": 4,
+      "id": "0b83ec5b-9e03-5366-9265-ddc04c9e6306",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N3/04.<extension>"
+    },
+    {
+      "product_code": "N3",
+      "position": 5,
+      "id": "1d8eaa17-ae72-5d45-9293-78b18c3e87d1",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N3/05.<extension>"
+    },
+    {
+      "product_code": "N3",
+      "position": 6,
+      "id": "7d1d3483-93b7-55f0-b995-02c92f08077b",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N3/06.<extension>"
+    },
+    {
+      "product_code": "N3",
+      "position": 7,
+      "id": "96239539-e35e-5d4d-bd84-4cc8945a19aa",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N3/07.<extension>"
+    },
+    {
+      "product_code": "N3",
+      "position": 8,
+      "id": "ae4d4675-5aab-5450-9322-5eeb4ca5add8",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N3/08.<extension>"
+    },
+    {
+      "product_code": "N3",
+      "position": 9,
+      "id": "edfbd462-5efb-5b1a-8fc0-6554eb658631",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N3/09.<extension>"
+    },
+    {
+      "product_code": "N3",
+      "position": 10,
+      "id": "0f102da8-6a23-5ada-afc3-7423f9a9896b",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N3/10.<extension>"
+    },
+    {
+      "product_code": "N3",
+      "position": 11,
+      "id": "a1c595ee-fc95-596c-a4f8-d99ab599b95c",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N3/11.<extension>"
+    },
+    {
+      "product_code": "N3",
+      "position": 12,
+      "id": "3fa6ce32-4413-5b04-9e0b-0e976697475f",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N3/12.<extension>"
+    },
+    {
+      "product_code": "N3",
+      "position": 13,
+      "id": "af8dfba5-d554-5385-b908-dd9219715512",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N3/13.<extension>"
+    },
+    {
+      "product_code": "N3",
+      "position": 14,
+      "id": "c497744d-4838-54b0-8084-1163d6f0bf0a",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N3/14.<extension>"
+    },
+    {
+      "product_code": "N3",
+      "position": 15,
+      "id": "faf1ab3b-d223-5b01-bcb8-93acfc145fab",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N3/15.<extension>"
+    },
+    {
+      "product_code": "N4",
+      "position": 1,
+      "id": "898e07c7-a52c-55d6-9c20-cf9e80c7428b",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N4/01.<extension>"
+    },
+    {
+      "product_code": "N4",
+      "position": 2,
+      "id": "38e75c79-3b9e-52da-9e8b-ca55ea0899a1",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N4/02.<extension>"
+    },
+    {
+      "product_code": "N4",
+      "position": 3,
+      "id": "976e6678-8700-5b59-8ec7-7ffabe3d3286",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N4/03.<extension>"
+    },
+    {
+      "product_code": "N4",
+      "position": 4,
+      "id": "170bcfbe-2bae-5790-93c4-87bfafca1e5d",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N4/04.<extension>"
+    },
+    {
+      "product_code": "N4",
+      "position": 5,
+      "id": "94bd221a-6a99-5514-ab0e-48f021209bfb",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N4/05.<extension>"
+    },
+    {
+      "product_code": "N4",
+      "position": 6,
+      "id": "fea5d1c2-95d8-5317-8932-937f76f08c12",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N4/06.<extension>"
+    },
+    {
+      "product_code": "N4",
+      "position": 7,
+      "id": "a66f03f9-d926-5393-8604-322066d7be56",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N4/07.<extension>"
+    },
+    {
+      "product_code": "N4",
+      "position": 8,
+      "id": "a8fc8c09-f74d-555e-bf25-0f8c48670aff",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N4/08.<extension>"
+    },
+    {
+      "product_code": "N4",
+      "position": 9,
+      "id": "03da68a3-1d78-5032-9b6f-a675c42ec831",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N4/09.<extension>"
+    },
+    {
+      "product_code": "N4",
+      "position": 10,
+      "id": "5414330b-c876-5b42-8810-86d7d7244502",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N4/10.<extension>"
+    },
+    {
+      "product_code": "N4",
+      "position": 11,
+      "id": "8945426e-fc82-5f5b-b660-439666a25efe",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N4/11.<extension>"
+    },
+    {
+      "product_code": "N4",
+      "position": 12,
+      "id": "c5b4563a-064b-5f57-bb26-0929ee0b9db7",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N4/12.<extension>"
+    },
+    {
+      "product_code": "N4",
+      "position": 13,
+      "id": "ccf068f1-eed6-5083-b165-48a177835934",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N4/13.<extension>"
+    },
+    {
+      "product_code": "N4",
+      "position": 14,
+      "id": "cd0da87d-ae1e-5277-adfe-099597eb3a95",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N4/14.<extension>"
+    },
+    {
+      "product_code": "N4",
+      "position": 15,
+      "id": "bccf2688-bc8a-50dc-939a-a410b763efca",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N4/15.<extension>"
+    },
+    {
+      "product_code": "N5",
+      "position": 1,
+      "id": "7ffab8cc-c599-515a-94f6-e040504f2aff",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N5/01.<extension>"
+    },
+    {
+      "product_code": "N5",
+      "position": 2,
+      "id": "905e4930-8d97-5b31-9b1f-a2eb23d729b4",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N5/02.<extension>"
+    },
+    {
+      "product_code": "N5",
+      "position": 3,
+      "id": "57e18776-1f8a-5f74-88c4-94d89a4e2156",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N5/03.<extension>"
+    },
+    {
+      "product_code": "N5",
+      "position": 4,
+      "id": "4f9c9a01-9852-5b7f-98d4-760916182036",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N5/04.<extension>"
+    },
+    {
+      "product_code": "N5",
+      "position": 5,
+      "id": "068566ba-b95a-5a49-a215-df9df29aa21d",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N5/05.<extension>"
+    },
+    {
+      "product_code": "N5",
+      "position": 6,
+      "id": "60511d45-abe8-58f4-ac79-e573fc3a8906",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N5/06.<extension>"
+    },
+    {
+      "product_code": "N5",
+      "position": 7,
+      "id": "f5e803e7-1a21-5444-a3d3-d9f87685fa83",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N5/07.<extension>"
+    },
+    {
+      "product_code": "N5",
+      "position": 8,
+      "id": "b002bbc4-d4ea-5e21-9b94-7eb92e558a5d",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N5/08.<extension>"
+    },
+    {
+      "product_code": "N5",
+      "position": 9,
+      "id": "7d74c8c2-54db-537a-98f2-154b821693e7",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N5/09.<extension>"
+    },
+    {
+      "product_code": "N5",
+      "position": 10,
+      "id": "6faf5493-153b-5fde-b425-c9b0c1190d88",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N5/10.<extension>"
+    },
+    {
+      "product_code": "N5",
+      "position": 11,
+      "id": "f3ef516a-cef3-5104-9cc8-c124ccc751ee",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N5/11.<extension>"
+    },
+    {
+      "product_code": "N5",
+      "position": 12,
+      "id": "8acc01ba-b956-54aa-9b12-a235479de9e4",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N5/12.<extension>"
+    },
+    {
+      "product_code": "N5",
+      "position": 13,
+      "id": "384815fd-eb6a-5f0c-936b-ecbb18faf49a",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N5/13.<extension>"
+    },
+    {
+      "product_code": "N5",
+      "position": 14,
+      "id": "44700d72-650d-5c03-9e7a-8ea57a75d625",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N5/14.<extension>"
+    },
+    {
+      "product_code": "N5",
+      "position": 15,
+      "id": "6eee82ac-188d-5511-a29c-a3964ce95e59",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N5/15.<extension>"
+    },
+    {
+      "product_code": "N6",
+      "position": 1,
+      "id": "d6243736-5de9-514a-b1e9-065e7b3e3eba",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N6/01.<extension>"
+    },
+    {
+      "product_code": "N6",
+      "position": 2,
+      "id": "b2ca2baa-85c4-5e1c-8671-cceb2a4b7026",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N6/02.<extension>"
+    },
+    {
+      "product_code": "N6",
+      "position": 3,
+      "id": "5335999d-0414-5a05-94c3-38f3f952c1a5",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N6/03.<extension>"
+    },
+    {
+      "product_code": "N6",
+      "position": 4,
+      "id": "8a99613b-c597-55d8-ab14-2cec17922558",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N6/04.<extension>"
+    },
+    {
+      "product_code": "N6",
+      "position": 5,
+      "id": "e7c42e8c-f21c-5e50-af55-ad369fbce4bc",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N6/05.<extension>"
+    },
+    {
+      "product_code": "N6",
+      "position": 6,
+      "id": "dfbe484c-d765-5594-a8bc-9dcc0abcd111",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N6/06.<extension>"
+    },
+    {
+      "product_code": "N6",
+      "position": 7,
+      "id": "7248670d-1dbb-5954-8429-7f0dd83869b4",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N6/07.<extension>"
+    },
+    {
+      "product_code": "N6",
+      "position": 8,
+      "id": "01affbb0-cb09-5417-9d44-1dd6cacdc6de",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N6/08.<extension>"
+    },
+    {
+      "product_code": "N6",
+      "position": 9,
+      "id": "ce3f75b3-7072-516c-97fd-b2b7997fd1b5",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N6/09.<extension>"
+    },
+    {
+      "product_code": "N6",
+      "position": 10,
+      "id": "efff5f84-d919-50ce-ae36-edc984df9555",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N6/10.<extension>"
+    },
+    {
+      "product_code": "N6",
+      "position": 11,
+      "id": "7fc43001-b40d-5793-b3f8-496d8ab2f260",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N6/11.<extension>"
+    },
+    {
+      "product_code": "N6",
+      "position": 12,
+      "id": "262a3024-c688-5ea5-93dd-095ec4df311a",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N6/12.<extension>"
+    },
+    {
+      "product_code": "N6",
+      "position": 13,
+      "id": "f4187a25-2733-5936-bec0-5c33f3baa0ea",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N6/13.<extension>"
+    },
+    {
+      "product_code": "N6",
+      "position": 14,
+      "id": "08223ec1-bcfb-5161-ac22-2a8d92403703",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N6/14.<extension>"
+    },
+    {
+      "product_code": "N6",
+      "position": 15,
+      "id": "ee7aa759-8f76-5d9c-9e2f-aefb2e8a09cc",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N6/15.<extension>"
+    },
+    {
+      "product_code": "N7",
+      "position": 1,
+      "id": "6ad7e00d-6f3f-5967-9c3f-4a922faa6002",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N7/01.<extension>"
+    },
+    {
+      "product_code": "N7",
+      "position": 2,
+      "id": "985d4a16-5735-52fb-811d-8d4f1e83eac7",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N7/02.<extension>"
+    },
+    {
+      "product_code": "N7",
+      "position": 3,
+      "id": "c5ce5f18-6559-59f5-94f7-ab0450b10424",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N7/03.<extension>"
+    },
+    {
+      "product_code": "N7",
+      "position": 4,
+      "id": "d51f24ff-de42-5498-be3f-1fd4ecf0f7bd",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N7/04.<extension>"
+    },
+    {
+      "product_code": "N7",
+      "position": 5,
+      "id": "55723d7a-5b6e-5c4d-a5b4-29351a60e973",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N7/05.<extension>"
+    },
+    {
+      "product_code": "N7",
+      "position": 6,
+      "id": "6dee2cc1-0c55-553b-b8a6-f80b2b64c4b2",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N7/06.<extension>"
+    },
+    {
+      "product_code": "N7",
+      "position": 7,
+      "id": "3afada52-c856-52f1-b6d9-c5eac98b349a",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N7/07.<extension>"
+    },
+    {
+      "product_code": "N7",
+      "position": 8,
+      "id": "bf32eb74-d64f-53b8-96c7-e3c51fe8b477",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N7/08.<extension>"
+    },
+    {
+      "product_code": "N7",
+      "position": 9,
+      "id": "5c9a1670-c009-5358-889f-b01a10fc194d",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N7/09.<extension>"
+    },
+    {
+      "product_code": "N7",
+      "position": 10,
+      "id": "1c5ae031-d04d-5ae9-9766-300a00839ec7",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N7/10.<extension>"
+    },
+    {
+      "product_code": "N7",
+      "position": 11,
+      "id": "b9295c7b-de63-52a5-a47d-78e51e4ae2ad",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N7/11.<extension>"
+    },
+    {
+      "product_code": "N7",
+      "position": 12,
+      "id": "81b11f52-ce51-52c3-9901-75a951c39ebd",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N7/12.<extension>"
+    },
+    {
+      "product_code": "N7",
+      "position": 13,
+      "id": "053279fd-0961-531e-adf7-70321532a825",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N7/13.<extension>"
+    },
+    {
+      "product_code": "N7",
+      "position": 14,
+      "id": "92f28266-5ae7-518e-9286-8a1c06d1c721",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N7/14.<extension>"
+    },
+    {
+      "product_code": "N7",
+      "position": 15,
+      "id": "63a8fd96-5c78-59dd-b5c4-23198e418058",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N7/15.<extension>"
+    },
+    {
+      "product_code": "N8",
+      "position": 1,
+      "id": "d33f5f1e-9643-5d71-a8c8-a42d82adf0b9",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N8/01.<extension>"
+    },
+    {
+      "product_code": "N8",
+      "position": 2,
+      "id": "a0573b3a-0f5f-5916-aa26-307f743c76b0",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N8/02.<extension>"
+    },
+    {
+      "product_code": "N8",
+      "position": 3,
+      "id": "435d8296-de1a-5511-af7b-b0cef179250d",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N8/03.<extension>"
+    },
+    {
+      "product_code": "N8",
+      "position": 4,
+      "id": "1981fe5c-45d4-5ac9-b703-87b6012a380f",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N8/04.<extension>"
+    },
+    {
+      "product_code": "N8",
+      "position": 5,
+      "id": "98f284cc-2e1f-5590-8586-dccf92dc82ef",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N8/05.<extension>"
+    },
+    {
+      "product_code": "N8",
+      "position": 6,
+      "id": "c973f2e3-0c86-54db-9f48-a711503c7162",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N8/06.<extension>"
+    },
+    {
+      "product_code": "N8",
+      "position": 7,
+      "id": "1c413808-16af-505e-a455-52ddabcc085a",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N8/07.<extension>"
+    },
+    {
+      "product_code": "N8",
+      "position": 8,
+      "id": "4afd80e4-c446-5f93-a045-0eea45323361",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N8/08.<extension>"
+    },
+    {
+      "product_code": "N8",
+      "position": 9,
+      "id": "9f061e7a-3c52-55f7-a4f9-43e62f897e3e",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N8/09.<extension>"
+    },
+    {
+      "product_code": "N8",
+      "position": 10,
+      "id": "5b8e78a8-956e-5eed-a2c5-1dd275c9a76f",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N8/10.<extension>"
+    },
+    {
+      "product_code": "N8",
+      "position": 11,
+      "id": "5db28acc-8e65-566d-a730-518d89747e91",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N8/11.<extension>"
+    },
+    {
+      "product_code": "N8",
+      "position": 12,
+      "id": "a43b9bb6-8537-5350-8c7f-7df7fd2488a5",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N8/12.<extension>"
+    },
+    {
+      "product_code": "N8",
+      "position": 13,
+      "id": "da97c32b-24af-50b7-8bef-d86c40c45302",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N8/13.<extension>"
+    },
+    {
+      "product_code": "N8",
+      "position": 14,
+      "id": "44616e65-7c07-5471-8636-fc32225d9322",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N8/14.<extension>"
+    },
+    {
+      "product_code": "N8",
+      "position": 15,
+      "id": "31188042-d6a5-5a89-9cf6-dad3c7a290ac",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N8/15.<extension>"
+    },
+    {
+      "product_code": "N9",
+      "position": 1,
+      "id": "60e2df49-b46d-5e47-b90d-ec5a8010d899",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N9/01.<extension>"
+    },
+    {
+      "product_code": "N9",
+      "position": 2,
+      "id": "57ca3dca-e278-5670-b415-03c5aea99522",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N9/02.<extension>"
+    },
+    {
+      "product_code": "N9",
+      "position": 3,
+      "id": "e7d6dd7a-b5db-5020-afae-d9f243541c0c",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N9/03.<extension>"
+    },
+    {
+      "product_code": "N9",
+      "position": 4,
+      "id": "ac0f709d-58ac-5205-927f-7a0f97a2dff5",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N9/04.<extension>"
+    },
+    {
+      "product_code": "N9",
+      "position": 5,
+      "id": "f01707c0-16cf-58d6-87fe-3fd0c86bf0ce",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N9/05.<extension>"
+    },
+    {
+      "product_code": "N9",
+      "position": 6,
+      "id": "3f493375-8143-5d87-b3f2-6ee32eafc5b2",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N9/06.<extension>"
+    },
+    {
+      "product_code": "N9",
+      "position": 7,
+      "id": "3d03fb43-920c-525b-a1ff-aa095fd951a1",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N9/07.<extension>"
+    },
+    {
+      "product_code": "N9",
+      "position": 8,
+      "id": "3a1796e0-818c-5127-a7d0-7b55a3b78e6f",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N9/08.<extension>"
+    },
+    {
+      "product_code": "N9",
+      "position": 9,
+      "id": "0fee73f6-ddd8-5bb5-a657-ea5e184c3db4",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N9/09.<extension>"
+    },
+    {
+      "product_code": "N9",
+      "position": 10,
+      "id": "998f91a3-8abd-5847-bd76-dc2c124f0886",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N9/10.<extension>"
+    },
+    {
+      "product_code": "N9",
+      "position": 11,
+      "id": "1f07ab5f-b90c-5cad-a213-de2e22e8d3ad",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N9/11.<extension>"
+    },
+    {
+      "product_code": "N9",
+      "position": 12,
+      "id": "5db2dbf9-4141-51af-a9e4-a38fdafa8f62",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N9/12.<extension>"
+    },
+    {
+      "product_code": "N9",
+      "position": 13,
+      "id": "24dd3615-387d-55c7-bb2d-14c698cf2fd4",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N9/13.<extension>"
+    },
+    {
+      "product_code": "N9",
+      "position": 14,
+      "id": "f0319585-2ab6-5ce5-84b8-c3ce4312affb",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N9/14.<extension>"
+    },
+    {
+      "product_code": "N9",
+      "position": 15,
+      "id": "4ab9654b-4bed-5eaf-8da7-fb2859a48891",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N9/15.<extension>"
+    },
+    {
+      "product_code": "N10",
+      "position": 1,
+      "id": "d1b4c6c8-fd05-55c4-b788-af80a9ca5157",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N10/01.<extension>"
+    },
+    {
+      "product_code": "N10",
+      "position": 2,
+      "id": "b9b65074-5414-55c8-89cc-cba241d5333f",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N10/02.<extension>"
+    },
+    {
+      "product_code": "N10",
+      "position": 3,
+      "id": "9926c052-895a-5bea-886a-105692d5bdac",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N10/03.<extension>"
+    },
+    {
+      "product_code": "N10",
+      "position": 4,
+      "id": "df441b99-10ae-58b7-b0a8-b36493c59dcc",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N10/04.<extension>"
+    },
+    {
+      "product_code": "N10",
+      "position": 5,
+      "id": "8f047167-149d-5a9a-8a4f-bb8795c38cde",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N10/05.<extension>"
+    },
+    {
+      "product_code": "N10",
+      "position": 6,
+      "id": "ef897b8e-b65a-54be-9006-3b23b5d2e610",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N10/06.<extension>"
+    },
+    {
+      "product_code": "N10",
+      "position": 7,
+      "id": "ae798a75-cfd7-5a5e-9d58-a5843487bea2",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N10/07.<extension>"
+    },
+    {
+      "product_code": "N10",
+      "position": 8,
+      "id": "d9a6935d-ce18-5a41-b1b9-b5c021908db6",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N10/08.<extension>"
+    },
+    {
+      "product_code": "N10",
+      "position": 9,
+      "id": "cd18cc52-baa8-54ae-97ab-1abc77f1a1c8",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N10/09.<extension>"
+    },
+    {
+      "product_code": "N10",
+      "position": 10,
+      "id": "02915825-731c-5183-b0af-a6cb45c10f49",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N10/10.<extension>"
+    },
+    {
+      "product_code": "N10",
+      "position": 11,
+      "id": "c106bd82-ab11-5200-ae23-198f18e256c8",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N10/11.<extension>"
+    },
+    {
+      "product_code": "N10",
+      "position": 12,
+      "id": "1b03e27e-689e-5d16-8cad-b44245887a3d",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N10/12.<extension>"
+    },
+    {
+      "product_code": "N10",
+      "position": 13,
+      "id": "ded4813a-6b59-55f2-9828-fd9c6f180b71",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N10/13.<extension>"
+    },
+    {
+      "product_code": "N10",
+      "position": 14,
+      "id": "afc391eb-c4e6-5fb1-a67c-94a2c917c58c",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N10/14.<extension>"
+    },
+    {
+      "product_code": "N10",
+      "position": 15,
+      "id": "8efa183e-122d-5bfb-9153-4423a56926e0",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/N10/15.<extension>"
+    },
+    {
+      "product_code": "E1",
+      "position": 1,
+      "id": "fbbaecbf-f78e-5b7e-9cc9-8773c55b6c67",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E1/01.<extension>"
+    },
+    {
+      "product_code": "E1",
+      "position": 2,
+      "id": "c7ede89a-2908-5223-8c43-75db195cc633",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E1/02.<extension>"
+    },
+    {
+      "product_code": "E1",
+      "position": 3,
+      "id": "fd455660-0f4f-5190-9726-983a078dd9c0",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E1/03.<extension>"
+    },
+    {
+      "product_code": "E1",
+      "position": 4,
+      "id": "5d1a51f9-2a0c-5675-a1fd-2865e3cbc0dd",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E1/04.<extension>"
+    },
+    {
+      "product_code": "E1",
+      "position": 5,
+      "id": "f8df61af-3ddc-599f-85e4-cf31b55e3d5a",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E1/05.<extension>"
+    },
+    {
+      "product_code": "E1",
+      "position": 6,
+      "id": "341999f2-9379-53b0-8d3b-0b3c3ad0f8c8",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E1/06.<extension>"
+    },
+    {
+      "product_code": "E1",
+      "position": 7,
+      "id": "a9238e62-b67e-5f19-99e9-2d9e14efd5d5",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E1/07.<extension>"
+    },
+    {
+      "product_code": "E1",
+      "position": 8,
+      "id": "6ff19e24-1937-5e02-8954-9180a3f71fbb",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E1/08.<extension>"
+    },
+    {
+      "product_code": "E1",
+      "position": 9,
+      "id": "516e1487-8d1b-58e9-923e-5f72dbaf2b24",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E1/09.<extension>"
+    },
+    {
+      "product_code": "E1",
+      "position": 10,
+      "id": "bc3f0df9-a6c7-5c4b-a71f-0cbb45fcfd71",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E1/10.<extension>"
+    },
+    {
+      "product_code": "E1",
+      "position": 11,
+      "id": "05218f60-cc84-5ffa-ba89-203ca540f1ed",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E1/11.<extension>"
+    },
+    {
+      "product_code": "E1",
+      "position": 12,
+      "id": "743d8f02-c1cf-5114-9460-ab8da8fdaa12",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E1/12.<extension>"
+    },
+    {
+      "product_code": "E1",
+      "position": 13,
+      "id": "fe77dabe-bd0d-53c0-bdc4-731d31389145",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E1/13.<extension>"
+    },
+    {
+      "product_code": "E1",
+      "position": 14,
+      "id": "4c16b151-1858-50dd-a3c1-775d5e8b050e",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E1/14.<extension>"
+    },
+    {
+      "product_code": "E1",
+      "position": 15,
+      "id": "a5476601-bbba-59ac-8f53-ffa7306ca1cb",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E1/15.<extension>"
+    },
+    {
+      "product_code": "E2",
+      "position": 1,
+      "id": "3cba7865-572f-52c2-8b07-3163fce76ddd",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E2/01.<extension>"
+    },
+    {
+      "product_code": "E2",
+      "position": 2,
+      "id": "86c584df-6409-5023-9728-ebb6c0240458",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E2/02.<extension>"
+    },
+    {
+      "product_code": "E2",
+      "position": 3,
+      "id": "db496277-289f-540e-9be1-bbe4f13e3162",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E2/03.<extension>"
+    },
+    {
+      "product_code": "E2",
+      "position": 4,
+      "id": "023e71a7-b0f1-50b1-8cac-b612018bcf8e",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E2/04.<extension>"
+    },
+    {
+      "product_code": "E2",
+      "position": 5,
+      "id": "ead4c49d-cf5b-5579-b4f7-62c5b3a25307",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E2/05.<extension>"
+    },
+    {
+      "product_code": "E2",
+      "position": 6,
+      "id": "edfb3fc9-50ea-56be-859d-82d73dbe1ed4",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E2/06.<extension>"
+    },
+    {
+      "product_code": "E2",
+      "position": 7,
+      "id": "ae71d14d-1251-5d06-b1a9-b67d1e64afae",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E2/07.<extension>"
+    },
+    {
+      "product_code": "E2",
+      "position": 8,
+      "id": "bbd695ff-2502-5542-be0d-8edfd93e687d",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E2/08.<extension>"
+    },
+    {
+      "product_code": "E2",
+      "position": 9,
+      "id": "c058c646-522b-573f-8772-82d7e679709a",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E2/09.<extension>"
+    },
+    {
+      "product_code": "E2",
+      "position": 10,
+      "id": "e54df983-134d-5050-9147-5d4f0aa5a2d7",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E2/10.<extension>"
+    },
+    {
+      "product_code": "E2",
+      "position": 11,
+      "id": "49589472-3293-5ebd-b6fe-7484e7cddb03",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E2/11.<extension>"
+    },
+    {
+      "product_code": "E2",
+      "position": 12,
+      "id": "0d6e875e-b39d-5c93-955b-540627f4205f",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E2/12.<extension>"
+    },
+    {
+      "product_code": "E2",
+      "position": 13,
+      "id": "11a28ca0-72d5-5eec-8cfb-c1186a9d7441",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E2/13.<extension>"
+    },
+    {
+      "product_code": "E2",
+      "position": 14,
+      "id": "f3570599-b4ca-58e2-b968-13043112ed6f",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E2/14.<extension>"
+    },
+    {
+      "product_code": "E2",
+      "position": 15,
+      "id": "d9de6e5f-c0ca-50f9-8dbc-824ce6e197a2",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E2/15.<extension>"
+    },
+    {
+      "product_code": "E3",
+      "position": 1,
+      "id": "a1544182-daaa-5fe1-bd25-21d5571fe345",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E3/01.<extension>"
+    },
+    {
+      "product_code": "E3",
+      "position": 2,
+      "id": "e1fdcfbb-1300-5374-b6d3-3f937401839e",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E3/02.<extension>"
+    },
+    {
+      "product_code": "E3",
+      "position": 3,
+      "id": "c5acfc3b-d889-5cda-8f5f-0732bbfe824b",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E3/03.<extension>"
+    },
+    {
+      "product_code": "E3",
+      "position": 4,
+      "id": "d9264880-10be-5788-a66a-2f5542705c39",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E3/04.<extension>"
+    },
+    {
+      "product_code": "E3",
+      "position": 5,
+      "id": "9df53b6c-ac01-557b-ade1-d2de9e65e29a",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E3/05.<extension>"
+    },
+    {
+      "product_code": "E3",
+      "position": 6,
+      "id": "2b0560e4-af42-582e-960c-87b7be0a9739",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E3/06.<extension>"
+    },
+    {
+      "product_code": "E3",
+      "position": 7,
+      "id": "39ca2d32-9681-5930-9c04-25d233a2c00d",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E3/07.<extension>"
+    },
+    {
+      "product_code": "E3",
+      "position": 8,
+      "id": "45604eba-ec4f-5cd6-ab77-609057602b8c",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E3/08.<extension>"
+    },
+    {
+      "product_code": "E3",
+      "position": 9,
+      "id": "8fca407a-9ccd-5ff6-92a5-02f050290038",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E3/09.<extension>"
+    },
+    {
+      "product_code": "E3",
+      "position": 10,
+      "id": "14611fef-b49f-5af0-994b-c78729369794",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E3/10.<extension>"
+    },
+    {
+      "product_code": "E3",
+      "position": 11,
+      "id": "08b5c1fb-029f-5432-9656-637aaccffe9f",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E3/11.<extension>"
+    },
+    {
+      "product_code": "E3",
+      "position": 12,
+      "id": "9c6ef482-7e87-53a9-852c-16da4278d823",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E3/12.<extension>"
+    },
+    {
+      "product_code": "E3",
+      "position": 13,
+      "id": "95d0ff9d-a826-5c6b-9b53-dedda1c17857",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E3/13.<extension>"
+    },
+    {
+      "product_code": "E3",
+      "position": 14,
+      "id": "62faa08e-2a14-5b6d-aca2-f7128a16f8e2",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E3/14.<extension>"
+    },
+    {
+      "product_code": "E3",
+      "position": 15,
+      "id": "cd334dce-6684-5dd0-bae4-7f6a4ca9883d",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E3/15.<extension>"
+    },
+    {
+      "product_code": "E4",
+      "position": 1,
+      "id": "db374d39-2acd-51f7-97c4-227405c44648",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E4/01.<extension>"
+    },
+    {
+      "product_code": "E4",
+      "position": 2,
+      "id": "b33f2f36-d740-5d76-8e09-ac493439fdd9",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E4/02.<extension>"
+    },
+    {
+      "product_code": "E4",
+      "position": 3,
+      "id": "aefdafdf-83b1-5fb2-b256-5d20b2eb9f0f",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E4/03.<extension>"
+    },
+    {
+      "product_code": "E4",
+      "position": 4,
+      "id": "565646b3-ca61-5c36-b29a-0296b6924614",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E4/04.<extension>"
+    },
+    {
+      "product_code": "E4",
+      "position": 5,
+      "id": "a6fe519b-ddc7-53d8-845c-d6b61947ee1a",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E4/05.<extension>"
+    },
+    {
+      "product_code": "E4",
+      "position": 6,
+      "id": "ed4cc78f-69c1-573b-92d3-90363ae78bfa",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E4/06.<extension>"
+    },
+    {
+      "product_code": "E4",
+      "position": 7,
+      "id": "2ce127eb-aa14-515d-bcea-573deffe32fe",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E4/07.<extension>"
+    },
+    {
+      "product_code": "E4",
+      "position": 8,
+      "id": "d465069a-3bc2-514c-b6a4-b6d60c0099fb",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E4/08.<extension>"
+    },
+    {
+      "product_code": "E4",
+      "position": 9,
+      "id": "cf11bb35-fa57-57b3-81e6-1edad7d7e89b",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E4/09.<extension>"
+    },
+    {
+      "product_code": "E4",
+      "position": 10,
+      "id": "2a9c7a62-98cf-5cb4-bcae-8669e8a7b43b",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E4/10.<extension>"
+    },
+    {
+      "product_code": "E4",
+      "position": 11,
+      "id": "b532c5d1-60e0-5d03-8d13-91fe8e12646c",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E4/11.<extension>"
+    },
+    {
+      "product_code": "E4",
+      "position": 12,
+      "id": "317433c4-0ad5-52b1-a656-4c6bca46550f",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E4/12.<extension>"
+    },
+    {
+      "product_code": "E4",
+      "position": 13,
+      "id": "24d4419c-2ac5-5f31-8693-7d2c0faff2d0",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E4/13.<extension>"
+    },
+    {
+      "product_code": "E4",
+      "position": 14,
+      "id": "ce925a07-6743-5783-9ff4-303649735d90",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E4/14.<extension>"
+    },
+    {
+      "product_code": "E4",
+      "position": 15,
+      "id": "5cd7b0cb-0bcc-5146-949b-2c8462121660",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E4/15.<extension>"
+    },
+    {
+      "product_code": "E5",
+      "position": 1,
+      "id": "d2f7083f-8361-541b-b51a-eb109ce66a95",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E5/01.<extension>"
+    },
+    {
+      "product_code": "E5",
+      "position": 2,
+      "id": "07dca120-b00b-5edc-b051-5a72e5556232",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E5/02.<extension>"
+    },
+    {
+      "product_code": "E5",
+      "position": 3,
+      "id": "236a5ab2-94c6-5c6d-9083-260978ca89db",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E5/03.<extension>"
+    },
+    {
+      "product_code": "E5",
+      "position": 4,
+      "id": "f92f8172-0081-5a8f-824e-514ddff59f20",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E5/04.<extension>"
+    },
+    {
+      "product_code": "E5",
+      "position": 5,
+      "id": "991dde87-0df6-5450-8c8a-688a6c4c8c19",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E5/05.<extension>"
+    },
+    {
+      "product_code": "E5",
+      "position": 6,
+      "id": "e794a4a8-f0bf-5a1c-8927-0d616fcc6ad0",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E5/06.<extension>"
+    },
+    {
+      "product_code": "E5",
+      "position": 7,
+      "id": "f0d18c4f-e24f-5eb7-822b-dbf6a3b41dee",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E5/07.<extension>"
+    },
+    {
+      "product_code": "E5",
+      "position": 8,
+      "id": "bb134860-a18c-553c-a4db-848bc0b2515b",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E5/08.<extension>"
+    },
+    {
+      "product_code": "E5",
+      "position": 9,
+      "id": "dfbdb653-3b26-5f23-9362-92083c071b36",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E5/09.<extension>"
+    },
+    {
+      "product_code": "E5",
+      "position": 10,
+      "id": "8594c29e-41b3-50d6-93f8-4ec25056072c",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E5/10.<extension>"
+    },
+    {
+      "product_code": "E5",
+      "position": 11,
+      "id": "bfde667a-10f4-5368-8144-d53fd8226439",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E5/11.<extension>"
+    },
+    {
+      "product_code": "E5",
+      "position": 12,
+      "id": "a476c39c-07d6-5677-a504-f60de9821689",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E5/12.<extension>"
+    },
+    {
+      "product_code": "E5",
+      "position": 13,
+      "id": "8d122529-d260-57b6-8a05-859053918a8d",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E5/13.<extension>"
+    },
+    {
+      "product_code": "E5",
+      "position": 14,
+      "id": "6f0b620a-4077-5bc7-8fa9-74bdf3db9495",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E5/14.<extension>"
+    },
+    {
+      "product_code": "E5",
+      "position": 15,
+      "id": "feaffeb7-e87a-5a27-9a50-92793fbefa20",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E5/15.<extension>"
+    },
+    {
+      "product_code": "E6",
+      "position": 1,
+      "id": "73b59cfa-c0e8-53c4-bd89-66c521da132e",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E6/01.<extension>"
+    },
+    {
+      "product_code": "E6",
+      "position": 2,
+      "id": "5ceab548-2f7b-5468-968b-d0b7a875cec3",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E6/02.<extension>"
+    },
+    {
+      "product_code": "E6",
+      "position": 3,
+      "id": "b70fed08-73a8-580d-90b8-4674179a0459",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E6/03.<extension>"
+    },
+    {
+      "product_code": "E6",
+      "position": 4,
+      "id": "5b92b5fa-e93c-5367-bfe4-fce4196f2edf",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E6/04.<extension>"
+    },
+    {
+      "product_code": "E6",
+      "position": 5,
+      "id": "40464b58-2726-50d2-93ef-076028b05912",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E6/05.<extension>"
+    },
+    {
+      "product_code": "E6",
+      "position": 6,
+      "id": "f1201733-eed9-5431-8c8d-8a3249386597",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E6/06.<extension>"
+    },
+    {
+      "product_code": "E6",
+      "position": 7,
+      "id": "a9723567-edb7-5709-aadf-b89d1996b291",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E6/07.<extension>"
+    },
+    {
+      "product_code": "E6",
+      "position": 8,
+      "id": "0366fa08-11b8-5144-90e7-edbf3d880a85",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E6/08.<extension>"
+    },
+    {
+      "product_code": "E6",
+      "position": 9,
+      "id": "a7805d98-0d18-56fc-b7d0-66b4ad5ab3dc",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E6/09.<extension>"
+    },
+    {
+      "product_code": "E6",
+      "position": 10,
+      "id": "7a92992f-a45b-5093-99d3-588ed70e4960",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E6/10.<extension>"
+    },
+    {
+      "product_code": "E6",
+      "position": 11,
+      "id": "f3dab362-7bc4-5a1e-b087-1a1faeb0444f",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E6/11.<extension>"
+    },
+    {
+      "product_code": "E6",
+      "position": 12,
+      "id": "0f88cfdf-1846-5587-8d4e-3b183ade1660",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E6/12.<extension>"
+    },
+    {
+      "product_code": "E6",
+      "position": 13,
+      "id": "01c3c8ba-463d-50a6-8408-31083c851e57",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E6/13.<extension>"
+    },
+    {
+      "product_code": "E6",
+      "position": 14,
+      "id": "7d9e1213-e071-594f-8e2a-4ea33a345df8",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E6/14.<extension>"
+    },
+    {
+      "product_code": "E6",
+      "position": 15,
+      "id": "b6fbc315-a792-55d5-ae29-5f418bb3cfd1",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E6/15.<extension>"
+    },
+    {
+      "product_code": "E7",
+      "position": 1,
+      "id": "304d7d27-96db-5520-b981-e1c19de529f3",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E7/01.<extension>"
+    },
+    {
+      "product_code": "E7",
+      "position": 2,
+      "id": "0caf02a0-2908-5ad4-b726-0d4f3661f547",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E7/02.<extension>"
+    },
+    {
+      "product_code": "E7",
+      "position": 3,
+      "id": "03358e8c-be2b-5acb-88c2-5a289191f91e",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E7/03.<extension>"
+    },
+    {
+      "product_code": "E7",
+      "position": 4,
+      "id": "498e2708-e6d9-5231-b859-3f24b5b9e79f",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E7/04.<extension>"
+    },
+    {
+      "product_code": "E7",
+      "position": 5,
+      "id": "56121efb-00b0-5b00-bb59-d408fb025540",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E7/05.<extension>"
+    },
+    {
+      "product_code": "E7",
+      "position": 6,
+      "id": "c1cbdf53-3f6d-531c-bb19-882d97142705",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E7/06.<extension>"
+    },
+    {
+      "product_code": "E7",
+      "position": 7,
+      "id": "1310d848-6cba-5db0-a47b-972597fc5b8d",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E7/07.<extension>"
+    },
+    {
+      "product_code": "E7",
+      "position": 8,
+      "id": "2c90cedc-7805-5e3d-a91d-d6f3a054f369",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E7/08.<extension>"
+    },
+    {
+      "product_code": "E7",
+      "position": 9,
+      "id": "dea8156d-f04e-56b9-aef7-e9564cd99d48",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E7/09.<extension>"
+    },
+    {
+      "product_code": "E7",
+      "position": 10,
+      "id": "fdfbd54d-da1e-5ec4-b27c-0a04fd463db2",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E7/10.<extension>"
+    },
+    {
+      "product_code": "E7",
+      "position": 11,
+      "id": "999e9874-77b0-5799-9b42-10feb11ce266",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E7/11.<extension>"
+    },
+    {
+      "product_code": "E7",
+      "position": 12,
+      "id": "1b42d333-b94d-574a-a61f-5180fd3989e2",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E7/12.<extension>"
+    },
+    {
+      "product_code": "E7",
+      "position": 13,
+      "id": "ceb2681b-7517-53ff-872b-b41e40a45989",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E7/13.<extension>"
+    },
+    {
+      "product_code": "E7",
+      "position": 14,
+      "id": "7848997a-0948-579b-add0-9ad46f1c467f",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E7/14.<extension>"
+    },
+    {
+      "product_code": "E7",
+      "position": 15,
+      "id": "0921d55f-6049-53f8-b97c-2170051518ef",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E7/15.<extension>"
+    },
+    {
+      "product_code": "E8",
+      "position": 1,
+      "id": "8ac66713-bd43-5c2d-906a-e10fe46ccf5d",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E8/01.<extension>"
+    },
+    {
+      "product_code": "E8",
+      "position": 2,
+      "id": "5b8a1394-4b1b-500c-9842-6172b1327b8f",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E8/02.<extension>"
+    },
+    {
+      "product_code": "E8",
+      "position": 3,
+      "id": "bcae3809-8d69-530a-99fd-2b2165e32ee9",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E8/03.<extension>"
+    },
+    {
+      "product_code": "E8",
+      "position": 4,
+      "id": "d9df0112-189c-5216-95a9-54e5d612aa6a",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E8/04.<extension>"
+    },
+    {
+      "product_code": "E8",
+      "position": 5,
+      "id": "96463e99-9839-5371-a456-93bab25d1fe7",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E8/05.<extension>"
+    },
+    {
+      "product_code": "E8",
+      "position": 6,
+      "id": "5d4c0001-3f6f-54a3-a507-3457264ef710",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E8/06.<extension>"
+    },
+    {
+      "product_code": "E8",
+      "position": 7,
+      "id": "38fbd4b0-dc7d-5d1e-98c1-bec335d4c091",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E8/07.<extension>"
+    },
+    {
+      "product_code": "E8",
+      "position": 8,
+      "id": "658bf039-7d76-5d96-a6cb-6c84aaf9889a",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E8/08.<extension>"
+    },
+    {
+      "product_code": "E8",
+      "position": 9,
+      "id": "b0e10747-c471-565e-a878-41ad9fc4906b",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E8/09.<extension>"
+    },
+    {
+      "product_code": "E8",
+      "position": 10,
+      "id": "cea28ecb-6ad1-5b4b-96e1-b988b6eafb53",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E8/10.<extension>"
+    },
+    {
+      "product_code": "E8",
+      "position": 11,
+      "id": "3763d0de-b0a3-503b-a6e1-11686d79ef30",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E8/11.<extension>"
+    },
+    {
+      "product_code": "E8",
+      "position": 12,
+      "id": "760cc2e5-d027-5ab1-a697-da09c155456d",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E8/12.<extension>"
+    },
+    {
+      "product_code": "E8",
+      "position": 13,
+      "id": "0dc00945-660b-5a0b-a94e-31098bd48a3e",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E8/13.<extension>"
+    },
+    {
+      "product_code": "E8",
+      "position": 14,
+      "id": "f3c939cc-5f9a-5184-9f98-ca6f8181e30f",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E8/14.<extension>"
+    },
+    {
+      "product_code": "E8",
+      "position": 15,
+      "id": "ffbea568-3eb4-587b-bddb-039e35b3aa1c",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E8/15.<extension>"
+    },
+    {
+      "product_code": "E9",
+      "position": 1,
+      "id": "cc4f25d5-b865-5a6a-9709-5981f71307ef",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E9/01.<extension>"
+    },
+    {
+      "product_code": "E9",
+      "position": 2,
+      "id": "988546af-9f77-5ec5-9e23-846735660ee4",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E9/02.<extension>"
+    },
+    {
+      "product_code": "E9",
+      "position": 3,
+      "id": "5331c8e0-264b-5462-85b3-6df05317bac1",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E9/03.<extension>"
+    },
+    {
+      "product_code": "E9",
+      "position": 4,
+      "id": "f97a6266-3897-5da0-bc79-c449b872d050",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E9/04.<extension>"
+    },
+    {
+      "product_code": "E9",
+      "position": 5,
+      "id": "000f7671-5915-5789-9462-6f95176c77da",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E9/05.<extension>"
+    },
+    {
+      "product_code": "E9",
+      "position": 6,
+      "id": "74fb2f29-aa2e-5137-8bb8-6cfe27bec058",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E9/06.<extension>"
+    },
+    {
+      "product_code": "E9",
+      "position": 7,
+      "id": "2a32c41f-5762-5bed-9830-394cb4bb018d",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E9/07.<extension>"
+    },
+    {
+      "product_code": "E9",
+      "position": 8,
+      "id": "fdf03211-8b58-5ba1-ad85-70806c7155d6",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E9/08.<extension>"
+    },
+    {
+      "product_code": "E9",
+      "position": 9,
+      "id": "aa05d353-f35d-57a0-b316-684c530a1e7f",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E9/09.<extension>"
+    },
+    {
+      "product_code": "E9",
+      "position": 10,
+      "id": "120cc1d0-bd60-5f93-949e-ededbbafb804",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E9/10.<extension>"
+    },
+    {
+      "product_code": "E9",
+      "position": 11,
+      "id": "9e60cd33-b57c-5d47-afeb-009275364969",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E9/11.<extension>"
+    },
+    {
+      "product_code": "E9",
+      "position": 12,
+      "id": "9a0e72ac-80ff-5dc6-ac19-9657d5832c01",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E9/12.<extension>"
+    },
+    {
+      "product_code": "E9",
+      "position": 13,
+      "id": "7d6eb028-444b-5ac3-bb3b-059b5694d663",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E9/13.<extension>"
+    },
+    {
+      "product_code": "E9",
+      "position": 14,
+      "id": "adbff86f-0192-5a1e-9f29-7dd1b8693f1c",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E9/14.<extension>"
+    },
+    {
+      "product_code": "E9",
+      "position": 15,
+      "id": "d4dce981-8265-5fce-9f7b-d4dc048a839b",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E9/15.<extension>"
+    },
+    {
+      "product_code": "E10",
+      "position": 1,
+      "id": "6aad913e-dfba-5810-bb62-1a96065482ea",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E10/01.<extension>"
+    },
+    {
+      "product_code": "E10",
+      "position": 2,
+      "id": "2213942c-4041-539e-b29e-14f76cbca809",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E10/02.<extension>"
+    },
+    {
+      "product_code": "E10",
+      "position": 3,
+      "id": "84ff1abb-4775-57c4-aa6c-0b46d77d60a7",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E10/03.<extension>"
+    },
+    {
+      "product_code": "E10",
+      "position": 4,
+      "id": "42c02e96-6eef-5867-87d4-f4af66145487",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E10/04.<extension>"
+    },
+    {
+      "product_code": "E10",
+      "position": 5,
+      "id": "87701025-bf60-5f6f-be28-ce248d22177d",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E10/05.<extension>"
+    },
+    {
+      "product_code": "E10",
+      "position": 6,
+      "id": "2ff3d293-1937-5769-8c6e-ad4de025cc21",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E10/06.<extension>"
+    },
+    {
+      "product_code": "E10",
+      "position": 7,
+      "id": "0b6a3368-c2b5-56e8-b12a-85ef392f0441",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E10/07.<extension>"
+    },
+    {
+      "product_code": "E10",
+      "position": 8,
+      "id": "3da852c6-5241-5b06-9c99-705833112c73",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E10/08.<extension>"
+    },
+    {
+      "product_code": "E10",
+      "position": 9,
+      "id": "325aa2dc-321c-5dc9-b78b-9b11a4df80c0",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E10/09.<extension>"
+    },
+    {
+      "product_code": "E10",
+      "position": 10,
+      "id": "76d57804-c42f-5890-82a0-72f6200ed75b",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E10/10.<extension>"
+    },
+    {
+      "product_code": "E10",
+      "position": 11,
+      "id": "22b03bc8-0834-5223-9777-ce7e13a4b356",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E10/11.<extension>"
+    },
+    {
+      "product_code": "E10",
+      "position": 12,
+      "id": "1b8942a2-bbd6-55bf-bb92-9ff9a67d1b22",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E10/12.<extension>"
+    },
+    {
+      "product_code": "E10",
+      "position": 13,
+      "id": "3c518b0f-ff53-5a8b-be44-9f3531659328",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E10/13.<extension>"
+    },
+    {
+      "product_code": "E10",
+      "position": 14,
+      "id": "ef07d62a-8c2e-50c7-a5f0-c1baaa349b8d",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E10/14.<extension>"
+    },
+    {
+      "product_code": "E10",
+      "position": 15,
+      "id": "993c8594-b1b4-5390-8df9-d1b369a435d9",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/E10/15.<extension>"
+    },
+    {
+      "product_code": "P1",
+      "position": 1,
+      "id": "eeb2a187-be9f-5fab-84ad-86f6c53de781",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P1/01.<extension>"
+    },
+    {
+      "product_code": "P1",
+      "position": 2,
+      "id": "ac1b7930-0caf-5ff8-843f-98ac0bca9063",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P1/02.<extension>"
+    },
+    {
+      "product_code": "P1",
+      "position": 3,
+      "id": "ebb8bf64-e7e7-55bd-8d25-338f127b73b2",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P1/03.<extension>"
+    },
+    {
+      "product_code": "P1",
+      "position": 4,
+      "id": "04a304dc-1967-5f0e-ada6-d228acaef666",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P1/04.<extension>"
+    },
+    {
+      "product_code": "P1",
+      "position": 5,
+      "id": "3e8db72a-7a2b-5ffc-8983-71a8e01b6d2b",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P1/05.<extension>"
+    },
+    {
+      "product_code": "P1",
+      "position": 6,
+      "id": "b835e830-ed70-50c0-b027-3cc2391aff29",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P1/06.<extension>"
+    },
+    {
+      "product_code": "P1",
+      "position": 7,
+      "id": "e48ed30f-672c-5c76-8991-bb303a791ba1",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P1/07.<extension>"
+    },
+    {
+      "product_code": "P1",
+      "position": 8,
+      "id": "1007bf2f-f393-5815-af83-51b04b9d6038",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P1/08.<extension>"
+    },
+    {
+      "product_code": "P1",
+      "position": 9,
+      "id": "5a903f68-ec87-5879-a8a4-bf659a196682",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P1/09.<extension>"
+    },
+    {
+      "product_code": "P1",
+      "position": 10,
+      "id": "432d9f15-a1c8-51b5-b6ac-6af52816fcba",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P1/10.<extension>"
+    },
+    {
+      "product_code": "P1",
+      "position": 11,
+      "id": "4ef39ad1-a247-5b59-a39e-eac44620d035",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P1/11.<extension>"
+    },
+    {
+      "product_code": "P1",
+      "position": 12,
+      "id": "2de91eb6-5811-537a-98f7-0a48f501d926",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P1/12.<extension>"
+    },
+    {
+      "product_code": "P1",
+      "position": 13,
+      "id": "678fa830-261b-5a49-b97b-6111c936ee99",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P1/13.<extension>"
+    },
+    {
+      "product_code": "P1",
+      "position": 14,
+      "id": "e15c1a41-4229-5a36-b78a-6e6c24163445",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P1/14.<extension>"
+    },
+    {
+      "product_code": "P1",
+      "position": 15,
+      "id": "c6111469-ba27-5888-8168-8f21f770cdab",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P1/15.<extension>"
+    },
+    {
+      "product_code": "P2",
+      "position": 1,
+      "id": "f7608444-940c-5685-8e74-53fc3f321059",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P2/01.<extension>"
+    },
+    {
+      "product_code": "P2",
+      "position": 2,
+      "id": "fc96146c-fb8d-55af-bda0-855fb18906b4",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P2/02.<extension>"
+    },
+    {
+      "product_code": "P2",
+      "position": 3,
+      "id": "a0b820b2-44b7-56e1-b966-087d9177cc58",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P2/03.<extension>"
+    },
+    {
+      "product_code": "P2",
+      "position": 4,
+      "id": "3077273e-3278-5049-b7ef-5aa8b3e14164",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P2/04.<extension>"
+    },
+    {
+      "product_code": "P2",
+      "position": 5,
+      "id": "939dad43-7bb2-5f54-b7ed-7eafd5ee4d5d",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P2/05.<extension>"
+    },
+    {
+      "product_code": "P2",
+      "position": 6,
+      "id": "e3d13fab-2bbf-5b19-a0b9-2c18008eddef",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P2/06.<extension>"
+    },
+    {
+      "product_code": "P2",
+      "position": 7,
+      "id": "2484fcf4-3285-58f9-b006-2159fb7de447",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P2/07.<extension>"
+    },
+    {
+      "product_code": "P2",
+      "position": 8,
+      "id": "f2a20c35-ea9d-5d30-88f9-74e9f112bf46",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P2/08.<extension>"
+    },
+    {
+      "product_code": "P2",
+      "position": 9,
+      "id": "1771c700-9742-586d-a423-b00102ffdf93",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P2/09.<extension>"
+    },
+    {
+      "product_code": "P2",
+      "position": 10,
+      "id": "90a24778-b453-5e6b-988d-954b61d223c0",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P2/10.<extension>"
+    },
+    {
+      "product_code": "P2",
+      "position": 11,
+      "id": "5cd1ce07-61a0-510c-b026-dd16cbd9c55a",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P2/11.<extension>"
+    },
+    {
+      "product_code": "P2",
+      "position": 12,
+      "id": "8b053286-7ba2-52ea-8bd9-1f9816fcab28",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P2/12.<extension>"
+    },
+    {
+      "product_code": "P2",
+      "position": 13,
+      "id": "4d841b11-c410-5e7d-b42c-5827aa5345ad",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P2/13.<extension>"
+    },
+    {
+      "product_code": "P2",
+      "position": 14,
+      "id": "f99dd5d0-9e2a-5c9f-b6e3-da57def268d4",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P2/14.<extension>"
+    },
+    {
+      "product_code": "P2",
+      "position": 15,
+      "id": "050c8fae-f7ad-509b-b341-68a5a17c0a88",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P2/15.<extension>"
+    },
+    {
+      "product_code": "P3",
+      "position": 1,
+      "id": "8ec1e5e6-3ed7-5308-b3ea-103148e1770b",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P3/01.<extension>"
+    },
+    {
+      "product_code": "P3",
+      "position": 2,
+      "id": "117b0808-f839-5761-82b8-099862910e17",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P3/02.<extension>"
+    },
+    {
+      "product_code": "P3",
+      "position": 3,
+      "id": "a1291648-ce3f-5792-8aa2-f8f792a4701b",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P3/03.<extension>"
+    },
+    {
+      "product_code": "P3",
+      "position": 4,
+      "id": "6b45a725-d1fc-5267-8c70-a5403e3c1897",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P3/04.<extension>"
+    },
+    {
+      "product_code": "P3",
+      "position": 5,
+      "id": "da2baa3a-903f-5221-8860-a34ce676d8b7",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P3/05.<extension>"
+    },
+    {
+      "product_code": "P3",
+      "position": 6,
+      "id": "a35b5aec-8e28-54be-8024-c8e40b52bce9",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P3/06.<extension>"
+    },
+    {
+      "product_code": "P3",
+      "position": 7,
+      "id": "1350028e-3556-5a61-9f94-3125535a4493",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P3/07.<extension>"
+    },
+    {
+      "product_code": "P3",
+      "position": 8,
+      "id": "0cf15b2b-a893-57ec-9953-28a48e4e29e1",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P3/08.<extension>"
+    },
+    {
+      "product_code": "P3",
+      "position": 9,
+      "id": "56247402-f871-57dc-b2e5-43b407c3a082",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P3/09.<extension>"
+    },
+    {
+      "product_code": "P3",
+      "position": 10,
+      "id": "4ed91473-25c2-5d6d-b02f-c8fa17082736",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P3/10.<extension>"
+    },
+    {
+      "product_code": "P3",
+      "position": 11,
+      "id": "1c0109eb-b839-5fde-b737-6c7cf14de433",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P3/11.<extension>"
+    },
+    {
+      "product_code": "P3",
+      "position": 12,
+      "id": "d2359cba-6c1b-58aa-b5b4-5d04f451621f",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P3/12.<extension>"
+    },
+    {
+      "product_code": "P3",
+      "position": 13,
+      "id": "950c91f6-211f-5c29-9e2f-e7fb0997e07d",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P3/13.<extension>"
+    },
+    {
+      "product_code": "P3",
+      "position": 14,
+      "id": "b0ec2690-60aa-58d0-8d37-5a726c6bd4f9",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P3/14.<extension>"
+    },
+    {
+      "product_code": "P3",
+      "position": 15,
+      "id": "413f1fe8-55d9-5a1a-9d1f-31791804691a",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P3/15.<extension>"
+    },
+    {
+      "product_code": "P4",
+      "position": 1,
+      "id": "ce522695-0e5c-55cc-a3bb-8a4a056577d1",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P4/01.<extension>"
+    },
+    {
+      "product_code": "P4",
+      "position": 2,
+      "id": "e5bd3679-310b-5de6-873a-bd11e707e4c6",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P4/02.<extension>"
+    },
+    {
+      "product_code": "P4",
+      "position": 3,
+      "id": "7382adb9-0a3e-58db-91fa-df67fdd2d90e",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P4/03.<extension>"
+    },
+    {
+      "product_code": "P4",
+      "position": 4,
+      "id": "c16a2ae5-8cc4-52dc-93ec-e31b8b9ae9ad",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P4/04.<extension>"
+    },
+    {
+      "product_code": "P4",
+      "position": 5,
+      "id": "9655ca87-ecfd-569e-9643-d06a8439779e",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P4/05.<extension>"
+    },
+    {
+      "product_code": "P4",
+      "position": 6,
+      "id": "6cb13013-d4ae-5dc0-9169-35c8917a27b2",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P4/06.<extension>"
+    },
+    {
+      "product_code": "P4",
+      "position": 7,
+      "id": "9bf7c419-8ff4-5d6b-8f65-245a811639f0",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P4/07.<extension>"
+    },
+    {
+      "product_code": "P4",
+      "position": 8,
+      "id": "8dbfcdbb-1193-50c2-823f-9bf7c81445ba",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P4/08.<extension>"
+    },
+    {
+      "product_code": "P4",
+      "position": 9,
+      "id": "cb1f57c6-8061-5e93-8be7-fd7c0500f6e1",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P4/09.<extension>"
+    },
+    {
+      "product_code": "P4",
+      "position": 10,
+      "id": "3d7e376d-722a-5bec-9b76-7ac0e82c8416",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P4/10.<extension>"
+    },
+    {
+      "product_code": "P4",
+      "position": 11,
+      "id": "8be3252f-1bb7-5cd6-b465-cf19ebb9116f",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P4/11.<extension>"
+    },
+    {
+      "product_code": "P4",
+      "position": 12,
+      "id": "adfb5aea-3c9c-576d-a439-8bcf72236cb9",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P4/12.<extension>"
+    },
+    {
+      "product_code": "P4",
+      "position": 13,
+      "id": "5cc7870a-701e-55bf-948d-f6e77e8960c3",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P4/13.<extension>"
+    },
+    {
+      "product_code": "P4",
+      "position": 14,
+      "id": "b57236ee-3898-58bd-a4fe-53f678f53fd7",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P4/14.<extension>"
+    },
+    {
+      "product_code": "P4",
+      "position": 15,
+      "id": "bb171641-0503-5cce-ac7b-46eb856cc2c0",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P4/15.<extension>"
+    },
+    {
+      "product_code": "P5",
+      "position": 1,
+      "id": "07297cde-b6e6-5a73-a679-50b0cc06d414",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P5/01.<extension>"
+    },
+    {
+      "product_code": "P5",
+      "position": 2,
+      "id": "03eb62dd-dcbc-5ec2-a9d1-049326e04cc5",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P5/02.<extension>"
+    },
+    {
+      "product_code": "P5",
+      "position": 3,
+      "id": "ce948c54-801f-5065-b810-9a5b722d5134",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P5/03.<extension>"
+    },
+    {
+      "product_code": "P5",
+      "position": 4,
+      "id": "6de354ca-8a70-5d7d-aec9-ab278de6b2fa",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P5/04.<extension>"
+    },
+    {
+      "product_code": "P5",
+      "position": 5,
+      "id": "f29ce10c-83c9-5a17-a292-982d1ed49d5f",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P5/05.<extension>"
+    },
+    {
+      "product_code": "P5",
+      "position": 6,
+      "id": "f5bc5780-021d-5021-9e77-ad21c2c4b5ad",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P5/06.<extension>"
+    },
+    {
+      "product_code": "P5",
+      "position": 7,
+      "id": "1e17997c-8364-5a9a-bff2-7cfdb56a22ba",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P5/07.<extension>"
+    },
+    {
+      "product_code": "P5",
+      "position": 8,
+      "id": "2b9ff594-1574-532c-820d-c84dcd360bae",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P5/08.<extension>"
+    },
+    {
+      "product_code": "P5",
+      "position": 9,
+      "id": "07eb0ca9-9a7a-5a48-8098-903e2c9aa407",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P5/09.<extension>"
+    },
+    {
+      "product_code": "P5",
+      "position": 10,
+      "id": "a5cbd56a-116e-5ad6-8d89-e58426719287",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P5/10.<extension>"
+    },
+    {
+      "product_code": "P5",
+      "position": 11,
+      "id": "d6f81aeb-614c-5e23-9140-717ea34f3ebc",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P5/11.<extension>"
+    },
+    {
+      "product_code": "P5",
+      "position": 12,
+      "id": "e70cd543-dc80-50b7-af82-1b96dcac3224",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P5/12.<extension>"
+    },
+    {
+      "product_code": "P5",
+      "position": 13,
+      "id": "506166af-cf0d-5593-aa69-6a5c4b3db420",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P5/13.<extension>"
+    },
+    {
+      "product_code": "P5",
+      "position": 14,
+      "id": "96339e98-776e-5d26-876d-b5074cc22d9f",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P5/14.<extension>"
+    },
+    {
+      "product_code": "P5",
+      "position": 15,
+      "id": "dc6b00d5-707f-5bd6-8ced-6fa0470c6fe1",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P5/15.<extension>"
+    },
+    {
+      "product_code": "P6",
+      "position": 1,
+      "id": "abda2a12-a13f-5272-ab6b-8be27f249989",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P6/01.<extension>"
+    },
+    {
+      "product_code": "P6",
+      "position": 2,
+      "id": "54171f75-c6f0-55bb-8fec-3c37eb812e1b",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P6/02.<extension>"
+    },
+    {
+      "product_code": "P6",
+      "position": 3,
+      "id": "e5b28cc6-43c4-502a-8769-3f76a13d8f33",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P6/03.<extension>"
+    },
+    {
+      "product_code": "P6",
+      "position": 4,
+      "id": "c6b09271-2a05-5e84-9d7c-d7aa42626fb6",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P6/04.<extension>"
+    },
+    {
+      "product_code": "P6",
+      "position": 5,
+      "id": "98bae3f3-5265-58da-ab16-571fdce0db9f",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P6/05.<extension>"
+    },
+    {
+      "product_code": "P6",
+      "position": 6,
+      "id": "d1e5612e-e29d-50a8-977e-22a0a5c0935c",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P6/06.<extension>"
+    },
+    {
+      "product_code": "P6",
+      "position": 7,
+      "id": "a2b3b9a2-f5ac-5987-b83f-572962c151ca",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P6/07.<extension>"
+    },
+    {
+      "product_code": "P6",
+      "position": 8,
+      "id": "497f7066-3dcd-5fab-ba27-303aae1ba2f0",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P6/08.<extension>"
+    },
+    {
+      "product_code": "P6",
+      "position": 9,
+      "id": "c79159cb-dcae-57d4-a8a3-e9659dba0d17",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P6/09.<extension>"
+    },
+    {
+      "product_code": "P6",
+      "position": 10,
+      "id": "ca300926-0f3e-505c-ad9f-c0ef19ae4164",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P6/10.<extension>"
+    },
+    {
+      "product_code": "P6",
+      "position": 11,
+      "id": "bed3194a-6b65-5d35-b742-52e4b4e8d0ca",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P6/11.<extension>"
+    },
+    {
+      "product_code": "P6",
+      "position": 12,
+      "id": "95ec0f18-8bc8-577f-a4bc-0699ef4eaa30",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P6/12.<extension>"
+    },
+    {
+      "product_code": "P6",
+      "position": 13,
+      "id": "a13a471b-8794-5aac-a147-72df70745065",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P6/13.<extension>"
+    },
+    {
+      "product_code": "P6",
+      "position": 14,
+      "id": "9f68164a-6bfe-5e5c-9f3c-d3bcfeebf8a2",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P6/14.<extension>"
+    },
+    {
+      "product_code": "P6",
+      "position": 15,
+      "id": "11d6ea70-b85d-57f3-8c7f-7aa9e5a7ea5b",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P6/15.<extension>"
+    },
+    {
+      "product_code": "P7",
+      "position": 1,
+      "id": "5f5efee3-6e96-578f-958c-be81df32b277",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P7/01.<extension>"
+    },
+    {
+      "product_code": "P7",
+      "position": 2,
+      "id": "647267f7-c4e3-5ebf-afbd-bf671fa4a8d2",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P7/02.<extension>"
+    },
+    {
+      "product_code": "P7",
+      "position": 3,
+      "id": "e2b8ca29-db92-5ba1-938a-315ef67f892f",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P7/03.<extension>"
+    },
+    {
+      "product_code": "P7",
+      "position": 4,
+      "id": "b649d2eb-7d8f-53c7-862d-aa26d56ddf63",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P7/04.<extension>"
+    },
+    {
+      "product_code": "P7",
+      "position": 5,
+      "id": "40456c60-271f-5231-8fac-750728df02b3",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P7/05.<extension>"
+    },
+    {
+      "product_code": "P7",
+      "position": 6,
+      "id": "4245c29d-cb8d-5614-b32b-ee6016f227e2",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P7/06.<extension>"
+    },
+    {
+      "product_code": "P7",
+      "position": 7,
+      "id": "0fe2bbee-cfb4-5b43-ad84-172a76dd5766",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P7/07.<extension>"
+    },
+    {
+      "product_code": "P7",
+      "position": 8,
+      "id": "7e360624-26f0-5d18-983a-67357458acb7",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P7/08.<extension>"
+    },
+    {
+      "product_code": "P7",
+      "position": 9,
+      "id": "4af995ea-6be3-5333-bf46-19f11c868d65",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P7/09.<extension>"
+    },
+    {
+      "product_code": "P7",
+      "position": 10,
+      "id": "45dd1081-6e19-5f9f-9cc4-e99284d18263",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P7/10.<extension>"
+    },
+    {
+      "product_code": "P7",
+      "position": 11,
+      "id": "ab7a2e01-b29d-5862-a5c2-021dc5eb0624",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P7/11.<extension>"
+    },
+    {
+      "product_code": "P7",
+      "position": 12,
+      "id": "e1b12058-b2dc-5bfb-88f2-a51e91125c83",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P7/12.<extension>"
+    },
+    {
+      "product_code": "P7",
+      "position": 13,
+      "id": "fa7a85c5-c1f5-5ed0-9612-ec93ec605a5c",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P7/13.<extension>"
+    },
+    {
+      "product_code": "P7",
+      "position": 14,
+      "id": "7048389c-42f5-5a5c-8cd2-f2c10394ca4c",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P7/14.<extension>"
+    },
+    {
+      "product_code": "P7",
+      "position": 15,
+      "id": "243478fb-0947-5ce7-bba1-ea383e91d31c",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P7/15.<extension>"
+    },
+    {
+      "product_code": "P8",
+      "position": 1,
+      "id": "b8cb27e0-3d7a-5322-8a6b-a4b550f897a3",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P8/01.<extension>"
+    },
+    {
+      "product_code": "P8",
+      "position": 2,
+      "id": "87c86dbd-0d48-556f-a006-951df495502b",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P8/02.<extension>"
+    },
+    {
+      "product_code": "P8",
+      "position": 3,
+      "id": "428bc604-6218-5972-becd-98354f738964",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P8/03.<extension>"
+    },
+    {
+      "product_code": "P8",
+      "position": 4,
+      "id": "db948656-8647-5566-b88f-cc6fd9b6f9dc",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P8/04.<extension>"
+    },
+    {
+      "product_code": "P8",
+      "position": 5,
+      "id": "9d259f48-61d6-52df-b2ad-40cd30b1341a",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P8/05.<extension>"
+    },
+    {
+      "product_code": "P8",
+      "position": 6,
+      "id": "de97aaa0-5ceb-5f4f-b00a-61d6c56c7c20",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P8/06.<extension>"
+    },
+    {
+      "product_code": "P8",
+      "position": 7,
+      "id": "fdc463b6-1bc0-5ab6-9aa3-3f173018d29e",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P8/07.<extension>"
+    },
+    {
+      "product_code": "P8",
+      "position": 8,
+      "id": "ff7e2dbe-7e39-578e-812f-9a227f1c399e",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P8/08.<extension>"
+    },
+    {
+      "product_code": "P8",
+      "position": 9,
+      "id": "1b1160fc-ff84-585f-a139-3abd6041aff3",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P8/09.<extension>"
+    },
+    {
+      "product_code": "P8",
+      "position": 10,
+      "id": "29b9783a-6d21-5cde-9d4d-96aed1a705ed",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P8/10.<extension>"
+    },
+    {
+      "product_code": "P8",
+      "position": 11,
+      "id": "b1287058-056a-50f6-812c-c7d446611c4a",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P8/11.<extension>"
+    },
+    {
+      "product_code": "P8",
+      "position": 12,
+      "id": "3986594f-359e-5672-873e-6fcb0872aaa4",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P8/12.<extension>"
+    },
+    {
+      "product_code": "P8",
+      "position": 13,
+      "id": "59f07910-d9cb-50dc-b55a-420d1ac3fcac",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P8/13.<extension>"
+    },
+    {
+      "product_code": "P8",
+      "position": 14,
+      "id": "cd2a5728-2a07-5ab6-99f8-e30b239b25df",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P8/14.<extension>"
+    },
+    {
+      "product_code": "P8",
+      "position": 15,
+      "id": "00626275-8a0a-55b4-8493-7ff9f84c436f",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P8/15.<extension>"
+    },
+    {
+      "product_code": "P9",
+      "position": 1,
+      "id": "2748707c-3e34-54fe-a128-33e2541f2007",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P9/01.<extension>"
+    },
+    {
+      "product_code": "P9",
+      "position": 2,
+      "id": "746cf077-6df0-5a21-beeb-eccb6c092a05",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P9/02.<extension>"
+    },
+    {
+      "product_code": "P9",
+      "position": 3,
+      "id": "6454dcf9-2435-5df3-96ac-d76a9fc2fc63",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P9/03.<extension>"
+    },
+    {
+      "product_code": "P9",
+      "position": 4,
+      "id": "5e6c7ba0-ca81-5bdd-80a4-94b0fdd7d59f",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P9/04.<extension>"
+    },
+    {
+      "product_code": "P9",
+      "position": 5,
+      "id": "3e3097ee-0312-5afb-8f77-750d78bb12aa",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P9/05.<extension>"
+    },
+    {
+      "product_code": "P9",
+      "position": 6,
+      "id": "c8bcf40d-863d-5c38-a86d-986020068467",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P9/06.<extension>"
+    },
+    {
+      "product_code": "P9",
+      "position": 7,
+      "id": "3a9ed1d9-71ef-514f-bcc7-b739180b73c7",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P9/07.<extension>"
+    },
+    {
+      "product_code": "P9",
+      "position": 8,
+      "id": "424edc00-a933-51a8-8360-592c4e84b53b",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P9/08.<extension>"
+    },
+    {
+      "product_code": "P9",
+      "position": 9,
+      "id": "12432b41-c7a3-59dc-b339-31b7ad2376ef",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P9/09.<extension>"
+    },
+    {
+      "product_code": "P9",
+      "position": 10,
+      "id": "8e825574-9b82-5bec-8a95-fa0550ecb112",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P9/10.<extension>"
+    },
+    {
+      "product_code": "P9",
+      "position": 11,
+      "id": "eebc154b-19a5-5900-b756-f9d34839f519",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P9/11.<extension>"
+    },
+    {
+      "product_code": "P9",
+      "position": 12,
+      "id": "9414f26b-0af1-5235-95bf-a4a807d1c7ea",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P9/12.<extension>"
+    },
+    {
+      "product_code": "P9",
+      "position": 13,
+      "id": "c11cdfca-bf8a-5f56-8ec1-8f7931c6b131",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P9/13.<extension>"
+    },
+    {
+      "product_code": "P9",
+      "position": 14,
+      "id": "ff64bd8c-8a96-5b35-a484-eed90f39a3ca",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P9/14.<extension>"
+    },
+    {
+      "product_code": "P9",
+      "position": 15,
+      "id": "9d211232-9977-51be-8aec-381f72d4dd18",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P9/15.<extension>"
+    },
+    {
+      "product_code": "P10",
+      "position": 1,
+      "id": "4a38bd5e-8420-50d2-bd03-f4315d3d675e",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P10/01.<extension>"
+    },
+    {
+      "product_code": "P10",
+      "position": 2,
+      "id": "11fbe0c1-051f-5fa7-813a-3df70b9241a5",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P10/02.<extension>"
+    },
+    {
+      "product_code": "P10",
+      "position": 3,
+      "id": "3138fd94-6116-583e-af8f-4f8fb045bfb9",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P10/03.<extension>"
+    },
+    {
+      "product_code": "P10",
+      "position": 4,
+      "id": "e6e6f377-76a9-5053-a67d-19e8eb905a08",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P10/04.<extension>"
+    },
+    {
+      "product_code": "P10",
+      "position": 5,
+      "id": "58139f5b-42e2-55e8-975e-5e27de7478a6",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P10/05.<extension>"
+    },
+    {
+      "product_code": "P10",
+      "position": 6,
+      "id": "6999055b-9a30-54e3-8a0e-b60ab58ea1de",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P10/06.<extension>"
+    },
+    {
+      "product_code": "P10",
+      "position": 7,
+      "id": "b825d550-733d-5345-acb0-e0c027aa832f",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P10/07.<extension>"
+    },
+    {
+      "product_code": "P10",
+      "position": 8,
+      "id": "d3d3d983-6a3e-52e7-a39f-9d5a4751f380",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P10/08.<extension>"
+    },
+    {
+      "product_code": "P10",
+      "position": 9,
+      "id": "fbbc63c6-8cd3-5896-9cbf-2af389161ac2",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P10/09.<extension>"
+    },
+    {
+      "product_code": "P10",
+      "position": 10,
+      "id": "cff753e8-7324-59f7-8103-7e81f19f7f5a",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P10/10.<extension>"
+    },
+    {
+      "product_code": "P10",
+      "position": 11,
+      "id": "819add91-ce9e-50f0-ad48-356a859a01ac",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P10/11.<extension>"
+    },
+    {
+      "product_code": "P10",
+      "position": 12,
+      "id": "8eb203e5-fde0-5e2f-a559-c13ba67bd0f7",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P10/12.<extension>"
+    },
+    {
+      "product_code": "P10",
+      "position": 13,
+      "id": "58157344-2365-5224-88c4-94b7777a3728",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P10/13.<extension>"
+    },
+    {
+      "product_code": "P10",
+      "position": 14,
+      "id": "978ac455-124c-5058-82b4-c1220151b0ab",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P10/14.<extension>"
+    },
+    {
+      "product_code": "P10",
+      "position": 15,
+      "id": "32c5f505-d3b6-5961-bba2-29678453e7a6",
+      "storage_path_template": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/P10/15.<extension>"
+    }
+  ],
+  "requirements": {
+    "minimum_long_edge": 2048,
+    "minimum_short_edge": 1536,
+    "generated_files": 600,
+    "approved_qa_required": true,
+    "global_unique_sha256_required": true,
+    "remote_sha256_verification_required": true,
+    "providers": [
+      "google_gemini",
+      "openai_imagegen",
+      "vercel_ai_gateway"
+    ],
+    "prices_and_weights": "unconfirmed; remain null"
+  }
+}

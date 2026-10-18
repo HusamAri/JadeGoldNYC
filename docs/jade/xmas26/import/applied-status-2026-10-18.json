@@ -1,0 +1,27 @@
+{
+  "batch_id": "jade-xmas26-600-2026-10-18",
+  "checked_at_utc": "2026-10-18T17:34:11.584201+00:00",
+  "project_id": "sewbrqflcrlgczilrusw",
+  "organization_id": "f155b853-dfaf-48fd-94c5-ddfcb856e07c",
+  "panel_url": "https://amuletta.artifactstudio.info/listing-onerileri",
+  "phase": "drafts_applied_images_blocked",
+  "verified_database_counts": {
+    "new_draft_suggestions": 40,
+    "new_variants": 120,
+    "products_with_exactly_10K_14K_18K": 40,
+    "new_gallery_images": 0,
+    "pending_products_with_original_reference_cover": 40,
+    "all_suggestions_including_preexisting": 45
+  },
+  "verification": "Live Supabase execute_sql query after committed atomic phase1 import",
+  "requested_new_images": 600,
+  "accepted_new_2k_images": 0,
+  "reference_cover_images_are_new_generations": false,
+  "blockers": {
+    "google": "429: free-tier input token limit0 for native2K image model",
+    "vercel_ai_gateway": "403 customer_verification_required; credit balance0; credit card required"
+  },
+  "next_action": "Activate billed Google image access or verify Vercel AI Gateway billing, then regenerate a2K pilot and visually verify before launching remaining slots. Final gallery import requires600 verified images.",
+  "etsy_published": false,
+  "existing_owner_records_modified": false
+}

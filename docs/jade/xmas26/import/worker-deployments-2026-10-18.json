@@ -1,0 +1,46 @@
+{
+  "project_id": "prj_ZjHOT7KqKD8jvjwtmVA1EJtsOWR5",
+  "team_id": "team_x0cSQ3pxQ6mL15at76wVQ8H4",
+  "batch_id": "jade-xmas26-600-2026-10-18",
+  "active_preview": {
+    "id": "dpl_4KYJBbBLeyudJwAuqmV3aFFXuo2S",
+    "url": "https://jade-gold-5gmpxjayu-husamaris-projects.vercel.app/api/worker",
+    "provider": "google_gemini",
+    "model": "gemini-nano-banana-2.1",
+    "aliases": [],
+    "worker_expires_at": "2026-10-21T00:00:00Z"
+  },
+  "temporary_preview_deployments": [
+    "dpl_ECKfBiCLKJSscB5thPkLuFGXU8SJ",
+    "dpl_7ecKeEPxE1HQ4iMoUVsuyFu8DYwy",
+    "dpl_GHYL6sA47DipRvEL5XhQqU3dLJkU",
+    "dpl_2nEnUEG3Ra7s1pAKcSd1HkDq8GPQ",
+    "dpl_6ULUgNY5qMVeY1EyqvZzQ5E7ChJk",
+    "dpl_4KYJBbBLeyudJwAuqmV3aFFXuo2S"
+  ],
+  "temporary_environment_variable": {
+    "id": "zKmFi0y2spv2mbSP",
+    "key": "JADE_XMAS26_WORKER_TOKEN",
+    "targets": ["preview"]
+  },
+  "private_local_config_path": "/tmp/jade-xmas26-client.json",
+  "private_local_token_path": "/tmp/jade-xmas26-worker-token",
+  "credential_values_included": false,
+  "production_deployment_to_preserve": "dpl_E8PnoaiyAGpXXwBrWVuAYW2WAfbH",
+  "production_aliases_to_preserve": [
+    "amuletta.artifactstudio.info",
+    "www.amuletta.artifactstudio.info",
+    "jade-gold-nyc-husamaris-projects.vercel.app",
+    "jade-gold-nyc-git-main-husamaris-projects.vercel.app"
+  ],
+  "cleanup_status": "not_requested_yet",
+  "cleanup_instructions": [
+    "Stop generation and confirm the final asset and QA manifests are saved.",
+    "Read every production alias and confirm it still targets the preserved production deployment. Do not change or delete these aliases.",
+    "Inspect each allowlisted temporary deployment and its aliases. Abort if target is production, project differs, or any preserved production alias is attached.",
+    "Using the authenticated Vercel API, DELETE /v13/deployments/{id}?teamId=team_x0cSQ3pxQ6mL15at76wVQ8H4 for each allowlisted temporary preview ID. Never use a URL or alias as a deletion target.",
+    "Read environment metadata with decrypt=false. Confirm zKmFi0y2spv2mbSP is exactly JADE_XMAS26_WORKER_TOKEN scoped only to preview, then DELETE /v9/projects/prj_ZjHOT7KqKD8jvjwtmVA1EJtsOWR5/env/zKmFi0y2spv2mbSP?teamId=team_x0cSQ3pxQ6mL15at76wVQ8H4.",
+    "Delete the two exact private local credential files only after the remote workers are retired.",
+    "Read the preserved aliases again and verify production remains unchanged. Keep source, generated asset manifests, request receipts and QA records. Do not delete Supabase images or product/gallery rows."
+  ]
+}
