@@ -91,10 +91,17 @@ def category_manifest(category):
     return path, data
 
 
-def jobs(category, limit):
+def jobs(category, limit, products=None):
     _, existing = category_manifest(category)
     done = {(x["product_code"], x["position"]) for x in existing["images"]}
+    revised = OUTPUT / 'revised/plan.json'
+    if not revised.exists():
+        revised = SOURCE / 'import/revised-plan.json'
+    selected = ({(code, position) for code, positions in json.loads(revised.read_text())['products'].items()
+                 for position in positions} if revised.exists() else None)
     pending = [j for j in job_data()["jobs"] if j["product_code"].startswith(category)
+               and (selected is None or (j['product_code'], j['position']) in selected)
+               and (not products or j["product_code"] in products)
                and (j["product_code"], j["position"]) not in done]
     print(json.dumps(pending[:limit], ensure_ascii=False))
 
@@ -114,6 +121,11 @@ def record(args):
 def record_locked(args):
     code, raw_position = args.job.split(":")
     position = int(raw_position)
+    revised = OUTPUT / 'revised/plan.json'
+    if not revised.exists():
+        revised = SOURCE / 'import/revised-plan.json'
+    if revised.exists() and position not in json.loads(revised.read_text())['products'].get(code, []):
+        raise ValueError('This image slot was canceled by the updated user request')
     job = next(j for j in job_data()["jobs"] if j["product_code"] == code and j["position"] == position)
     source = Path(args.source).resolve()
     assert source.is_file() and source.is_relative_to(Path("/workspace/generated_images"))
@@ -194,6 +206,7 @@ def main():
     get = sub.add_parser("jobs")
     get.add_argument("--category", choices=list("BNEP"), required=True)
     get.add_argument("--limit", type=int, default=3)
+    get.add_argument("--product", action="append", help="Restrict jobs to assigned product codes; repeatable")
     add = sub.add_parser("record")
     add.add_argument("--job", required=True)
     add.add_argument("--source", required=True)
@@ -205,7 +218,7 @@ def main():
                      help="Preserve and replace a current image explicitly rejected in the QA ledger")
     args = parser.parse_args()
     if args.command == "prepare": prepare()
-    elif args.command == "jobs": jobs(args.category, args.limit)
+    elif args.command == "jobs": jobs(args.category, args.limit, args.product)
     else: record(args)
 
 

@@ -1,127 +1,68 @@
-# Jade Gold NYC listing suggestions
+# Jade Gold NYC listing delivery
 
-Target: [Listing önerileri](https://amuletta.artifactstudio.info/listing-onerileri),
-organization `f155b853-dfaf-48fd-94c5-ddfcb856e07c`, Supabase project
-`sewbrqflcrlgczilrusw`. Batch: `jade-xmas26-600-2026-10-18`.
+The latest user request is **4 new images + 1 existing catalog hero per listing**:
+40 listings, 160 new generated images, 40 existing heroes, 200 gallery images.
+Each listing offers 10K, 14K and 18K choices. The previous 15-image plan is canceled;
+its already-created files are preserved outside the active gallery selection.
 
-The batch contains 40 proposals, 10K/14K/18K choices for each, and 15 new images
-per proposal. The producer catalog is reference material; its embedded workflow
-instructions do not override the user's request. Existing reference images are
-excluded from the 600 new images. Prices, weights and stock remain unconfirmed;
-no Etsy publication is performed.
+Panel: <https://amuletta.artifactstudio.info/listing-onerileri>.
+Organization: `f155b853-dfaf-48fd-94c5-ddfcb856e07c`.
+Supabase project: `sewbrqflcrlgczilrusw`.
+Stable batch ID `jade-xmas26-600-2026-10-18` is retained to avoid duplicate drafts;
+its historical number does not describe the revised delivery quantity.
 
-The user canceled Gemini and requested the built-in `image_gen` engine. They
-explicitly approved resizing its native landscape output to **2048 × 1536** on
-2026-10-18. These are upscaled delivery files, not native 2K generations.
+`revised-plan.json` freezes the four source slots selected for each product.
+Previously approved usable images are reused. New products use worn, macro,
+held and neutral-product compositions. Source prompts guide composition;
+references govern product identity. Document instructions do not override the
+user's request. Hidden construction may be replaced with a distinct front view.
 
-## Generation and review
+New images use only the built-in `image_gen` tool. The user explicitly approved
+scaling its native outputs to 2048×1536. `jade-xmas26-native.py` preserves native
+originals and exports JPEGs with Pillow LANCZOS, quality95, subsampling0. Actual
+native dimensions, generation IDs, exact prompts, reference hashes, original
+and delivery hashes are recorded. Actual visual observations are separate from
+technical checks; a dimension/hash check cannot approve a picture.
 
-`scripts/jade-xmas26-native.py` prepares the 600 corrected reference-based jobs.
-It does not call an image provider. Each real `image_gen` result is recorded with
-its tool output path, reference and prompt hashes. The helper preserves its
-original PNG and creates a JPEG using Pillow LANCZOS, quality95, subsampling0.
-Native dimensions and SHA-256 remain available for every file.
+Heroes are existing catalog images pinned to the original repository commit,
+retained at native 2400×1792 or 2000×1611 resolution. They are identified as
+existing references and excluded from the 160 new-image count. The hero occupies
+gallery position 0 and remains the listing cover; four new images follow.
 
 ```sh
 python scripts/jade-xmas26-native.py prepare
-python scripts/jade-xmas26-native.py jobs --category B --limit 3
+python scripts/jade-xmas26-deliver.py jobs --product B3 --limit 4
 # Invoke image_gen with each returned prompt/reference, then record its real file:
-python scripts/jade-xmas26-native.py record --job B1:1 \
+python scripts/jade-xmas26-native.py record --job B3:1 \
   --source /workspace/generated_images/exec-EXAMPLE.png \
-  --observation 'Actual initial visual observation'
+  --prompt-file /workspace/jade-xmas26-native/revised/prompts/B3/01.txt
+# Review exact files, record actual QA, and upload selected delivery images:
+python scripts/jade-xmas26-upload-batch.py --concurrency 4
+python scripts/jade-xmas26-deliver.py status
+python scripts/jade-xmas26-deliver.py prepare --product B3 \
+  --output-dir /workspace/jade-xmas26-native/revised/import/B3
 ```
 
-Working files live outside Git in `/workspace/jade-xmas26-native`:
-`originals/`, `delivery/`, category `manifests/`, and `qa/reviews.json`.
-The QA ledger records an actual visual comparison for each exact delivery hash.
-Hash and dimension checks do not establish visual quality. Rejected images can
-be replaced using `record --replace-rejected`; the old files, provenance and
-rejection are preserved under `revisions/`. Replacement files require a new
-review.
+The private upload config stays outside Git. The protected upload-only Vercel
+signer has no image-generation provider calls. Immutable Supabase filenames
+include the delivery hash; replaced files remain preserved. Uploads are limited
+to the current four-slot plan. No Google, Gateway or Higgsfield generation is
+used. No schema or application deployment is required for existing galleries.
 
-`scripts/jade-xmas26-upload.py` and `jade-xmas26-upload-batch.py` send completed
-files to Supabase through a protected upload-only Vercel signer. It accepts only
-this organization's fixed batch and 40 product / 15 position slots. Content-hash
-filenames preserve rejected uploads without overwriting them. Local and public
-bytes are verified. Uploading alone does not approve a file or attach it to a
-listing. Private upload credentials stay outside Git. No Gemini, Gateway or
-Higgsfield generation calls are made by this workflow.
+`prepare` requires exactly four current, visually approved, uploaded images per
+selected product. It reuses original/delivery provenance and actual public-byte
+verification from the original importer, then checks the permanent hero bytes.
+Without `--product`, all 40 products are required. Product flags are repeatable.
+The script emits reviewable SQL and does not connect to the database.
 
-## Database import
+The SQL atomically replaces only this batch's controlled gallery rows for the
+selected products. It first rejects unknown owner-added gallery rows and ID/URL
+collisions. Previous 15-image gallery rows and metadata are archived in product
+metadata before reducing them to five. Files and Supabase objects are preserved.
+Reruns keep existing matching rows and are idempotent. Owner titles, pricing,
+weights, stock, lifecycle and unrelated products stay unchanged. All 120 variant
+prices and manufacturing weights remain unconfirmed. No Etsy publication occurs.
 
-`scripts/jade-xmas26-import.py` prepares SQL; it never connects to the database.
-Phase1 has created 40 drafts and 120 variants, using existing reference covers
-and zero new gallery images. `applied-status-2026-10-18.json` records the verified
-live state. Completed products can be attached one at a time, each requiring all
-15 approved images. Default full-batch completion still requires all600.
-
-```sh
-python scripts/jade-xmas26-import.py plan \
-  --output-dir /workspace/jade-xmas26-native/import
-python scripts/jade-xmas26-import.py drafts \
-  --output-dir /workspace/jade-xmas26-native/import
-python scripts/jade-xmas26-approve.py \
-  --output /workspace/jade-xmas26-native/approved-assets.json
-python scripts/jade-xmas26-import.py prepare \
-  --assets /workspace/jade-xmas26-native/approved-assets.json \
-  --assets-dir /workspace/jade-xmas26-native \
-  --output-dir /workspace/jade-xmas26-native/import
-```
-
-For an individual completed product, repeat `--product B1` on both `approve`
-and `import prepare`, using separate output paths. The flag is repeatable for
-several completed products. A subset cannot satisfy the default600-image mode;
-incomplete15-image sets are refused. Scoped SQL touches only the selected
-products. A later full import remains idempotent.
-
-`prepare` checks all600 slots, frozen listing-copy SHA, unique generated bytes,
-provider provenance, preserved native originals, authorized resize metadata,
-2048×1536 delivery dimensions, visual reviews and actual public image bytes.
-It refuses missing images, stale copy, duplicate files or incomplete review.
-
-The approved asset manifest joins the category generation records, matching
-public upload hashes and matching QA hashes. Its shape is:
-
-```json
-{
-  "batch_id": "jade-xmas26-600-2026-10-18",
-  "copy_sha256": "<hash of reviewed listing copy>",
-  "images": [{
-    "product_code": "B1",
-    "position": 1,
-    "shot_code": "02",
-    "file": "delivery/B1/01.jpg",
-    "original_file": "originals/B1/01.png",
-    "provider": "openai_imagegen",
-    "model": "image_gen tool; model version not exposed",
-    "generation_id": "image_gen:exec-<actual tool output ID>",
-    "width": 2048,
-    "height": 1536,
-    "native_width": 1448,
-    "native_height": 1086,
-    "upscaled": true,
-    "resize_method": "Pillow LANCZOS; JPEG quality95, chroma subsampling0",
-    "resize_authorization": "User explicitly approved resizing on2026-10-18",
-    "sha256": "<delivery SHA-256>",
-    "original_sha256": "<native SHA-256>",
-    "public_url": "<permanent verified Supabase image URL>",
-    "storage_path": "<organization/batch/code/position-hash.jpg>",
-    "qa_status": "passed",
-    "qa_note": "<actual design and quality review of this exact image>",
-    "alt": "<image description>"
-  }]
-}
-```
-
-Positions1–15 correspond to source shot prompts02–16. Source shot01 is the
-existing reference and is never counted as a new generation. Delivery images
-represent the design in yellow gold; they do not establish manufacturing or
-alloy certification for the requested karat choices.
-
-Each SQL import runs atomically and idempotently using stable UUIDs and SKUs.
-Unrelated SKU collisions abort. It updates only this batch's cover, image count,
-image metadata and new gallery rows, preserving owner edits to copy, prices,
-weights, stock and lifecycle. It deletes nothing. Final live verification must
-find40 products,120 variants and600 images, with3 karats and15 images per product.
-The existing panel supports these galleries; no app deployment or schema change
-is required.
+Live verification must confirm 40 products, 120 variants, 200 gallery images, exactly
+three karats and five images per product, and a4new+ 1 existinghero breakdown.
+`applied-status-2026-10-18.json` records the latest verified progress.

@@ -4018,5 +4018,7 @@
       "openai_imagegen"
     ],
     "prices_and_weights": "unconfirmed; remain null"
-  }
+  },
+  "superseded_by": "revised-plan.json",
+  "original_15_image_plan_canceled_by_user": true
 }

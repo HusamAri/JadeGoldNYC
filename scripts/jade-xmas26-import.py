@@ -146,8 +146,10 @@ def verify_remote(asset: dict) -> None:
     require(digest(raw) == asset["sha256"], f"{asset['product_code']}/{asset['position']}: public bytes differ from verified file")
 
 
-def verify_assets(path: Path, assets_dir: Path, copy_sha: str, products=None) -> list[dict]:
+def verify_assets(path: Path, assets_dir: Path, copy_sha: str, products=None, expected_slots=None) -> list[dict]:
     selected = selected_products(products)
+    expected_keys = {(code, pos) for code in selected for pos in
+                     (expected_slots[code] if expected_slots is not None else range(1, 16))}
     manifest = json.loads(path.read_text())
     require(isinstance(manifest, dict), "Asset manifest must be a JSON object")
     require(manifest.get("batch_id") == BATCH, "Asset manifest batch_id does not match")
@@ -163,9 +165,9 @@ def verify_assets(path: Path, assets_dir: Path, copy_sha: str, products=None) ->
                "generation_id": a.get("generation_id", a.get("request_id")),
                "provider": a.get("provider", manifest.get("provider")),
                "model": a.get("model", manifest.get("model"))} for a in images]
-    require(len(images) == 15 * len(selected), f"Expected {15 * len(selected)} generated assets; got {len(images)}")
+    require(len(images) == len(expected_keys), f"Expected {len(expected_keys)} generated assets; got {len(images)}")
     keys = {(a.get("product_code"), a.get("position")) for a in images}
-    require(keys == {(code, pos) for code in selected for pos in range(1, 16)}, "Asset slots must be exactly 1–15 for every selected product")
+    require(keys == expected_keys, "Asset slots differ from the expected product selection")
     seen = set()
     reference_hashes = {digest((SOURCE_REFERENCES / f"{code}.jpg").read_bytes()) for code in IDS}
     root = assets_dir.resolve()
@@ -237,7 +239,7 @@ def make_payload(copy: dict, copy_sha: str, images: list[dict], *, pending: bool
             "tags": p["tags"], "materials": p["materials"],
             "status": "draft", "currency": "USD", "price_cents": None,
             "weight_grams": None, "has_variations": True, "num_images": 0 if pending else 15,
-            "image_url": reference_url if pending else by_code[code][0]["public_url"],
+            "image_url": reference_url if pending else next(a["public_url"] for a in by_code[code] if a["position"] == 15),
             "listing_metadata": {
                 "import_batch": BATCH, "product_code": code,
                 "collection": copy["collection"], "category": p["category"],
@@ -246,6 +248,7 @@ def make_payload(copy: dict, copy_sha: str, images: list[dict], *, pending: bool
                 "generation_status": "pending" if pending else "complete",
                 "expected_image_count": 15,
                 "verified_image_count": 0 if pending else 15,
+                "cover_gallery_position": None if pending else 15,
                 "original_reference": {
                     "url": reference_url,
                     "sha256": digest((SOURCE_REFERENCES / f"{code}.jpg").read_bytes()),
@@ -303,6 +306,7 @@ def make_sql(payload: dict) -> str:
       'generation_status','complete',
       'expected_image_count',15,
       'verified_image_count',15,
+      'cover_gallery_position',r.listing_metadata->'cover_gallery_position',
       'last_image_import_copy_sha256',r.listing_metadata->>'copy_sha256')
   from jade_import_payload b,
     jsonb_populate_recordset(null::public.products,b.data->'products') r
@@ -393,6 +397,8 @@ def main() -> None:
     parser.add_argument("--assets-dir", type=Path)
     parser.add_argument("--product", choices=IDS, action="append", help="Prepare exactly15approved images per selected product; repeatable. Default: all600.")
     args = parser.parse_args()
+    if args.command == 'prepare' and (ROOT / 'docs/jade/xmas26/import/revised-plan.json').exists():
+        raise InvalidBatch('The15-image workflow was canceled. Use jade-xmas26-deliver.py for4new images+1hero.')
     require(not args.product or args.command == "prepare", "--product is only supported for prepare")
     copy, raw = read_copy(args.copy)
     copy_sha = digest(raw)

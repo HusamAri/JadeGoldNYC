@@ -46,11 +46,18 @@ def main():
         verified = json.loads(output.read_text()).get('images', []) if output.exists() else []
         done = {identity(entry) for entry in verified}
         pending = []
+        revised_path = NATIVE / 'revised/plan.json'
+        if not revised_path.exists():
+            revised_path = ROOT / 'docs/jade/xmas26/import/revised-plan.json'
+        revised_slots = ({(code, position) for code, positions in json.loads(revised_path.read_text())['products'].items()
+                          for position in positions} if revised_path.exists() else None)
         for family in 'BNEP':
             path = NATIVE / f'manifests/{family}.json'
             if not path.exists():
                 continue
             for entry in json.loads(path.read_text()).get('images', []):
+                if revised_slots is not None and (entry['product_code'], entry['position']) not in revised_slots:
+                    continue
                 slot = identity(entry)
                 if slot not in done and attempts.get(slot, 0) < 3:
                     pending.append(entry)

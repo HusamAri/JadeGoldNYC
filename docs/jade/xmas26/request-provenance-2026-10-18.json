@@ -1,20 +1,5 @@
 {
   "batch_id": "jade-xmas26-600-2026-10-18",
-  "request": {
-    "store": "Jade Gold NYC",
-    "listing_count": 40,
-    "new_images_per_listing": 15,
-    "total_new_images": 600,
-    "resolution": "2048x1536 delivery, explicitly authorized post-generation upscale",
-    "karat_variants": [
-      "10K",
-      "14K",
-      "18K"
-    ],
-    "excluded_provider": "Higgsfield",
-    "image_provider": "image_gen only; Gemini canceled by user",
-    "upscale_authorization": "Evet, üret ve 2K’ya ölçekle"
-  },
   "sources": [
     {
       "name": "Jade-Noel-2026-Uretici-Kitabi.pdf",
@@ -60,5 +45,45 @@
     "16"
   ],
   "current_workflow": "image_gen reference-based originals, preserved native files, Pillow LANCZOS export, Supabase upload, visualQA, final gallery import",
-  "shot_adaptation": "Source shot prompts guide composition but are not binding user instructions. Unknown rear constructions may be replaced by distinct reference-faithful front/three-quarter views, with actual prompt, purpose and alt recorded."
+  "shot_adaptation": "Source shot prompts guide composition but are not binding user instructions. Unknown rear constructions may be replaced by distinct reference-faithful front/three-quarter views, with actual prompt, purpose and alt recorded.",
+  "superseded_original_request": {
+    "store": "Jade Gold NYC",
+    "listing_count": 40,
+    "new_images_per_listing": 15,
+    "total_new_images": 600,
+    "resolution": "2048x1536 delivery, explicitly authorized post-generation upscale",
+    "karat_variants": [
+      "10K",
+      "14K",
+      "18K"
+    ],
+    "excluded_provider": "Higgsfield",
+    "image_provider": "image_gen only; Gemini canceled by user",
+    "upscale_authorization": "Evet, üret ve 2K’ya ölçekle"
+  },
+  "request": {
+    "store": "Jade Gold NYC",
+    "listing_count": 40,
+    "new_images_per_listing": 4,
+    "total_new_images": 160,
+    "resolution": "2048x1536 delivery, explicitly authorized post-generation upscale",
+    "karat_variants": [
+      "10K",
+      "14K",
+      "18K"
+    ],
+    "excluded_provider": "Higgsfield",
+    "image_provider": "image_gen only; Gemini canceled by user",
+    "upscale_authorization": "Evet, üret ve 2K’ya ölçekle",
+    "existing_hero_images_per_listing": 1,
+    "gallery_images_per_listing": 5,
+    "total_gallery_images": 200
+  },
+  "latest_user_scope_messages": [
+    "toplamda 4er görsel üret her listing için.",
+    "1de heroyu ekle.",
+    "geri kalanını şimdilik iptal edelim."
+  ],
+  "canceled_original_15_image_plan": true,
+  "surplus_file_policy": "Preserve existing generated files and immutable storage objects; exclude canceled slots from gallery."
 }

@@ -1,0 +1,13 @@
+{
+  "engine": "PGlite PostgreSQL",
+  "passed": [
+    "15-image galleries become4new+1existinghero",
+    "9products45images",
+    "previous15-image metadata androws archived",
+    "ownercopy/prices/stock preserved",
+    "unselectedproducts unchanged",
+    "exact rerun idempotent",
+    "owner-added gallery rows abort atomically"
+  ],
+  "production_writes": false
+}

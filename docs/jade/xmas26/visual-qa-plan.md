@@ -1,3 +1,7 @@
+# Current delivery scope
+
+The user revised the request to4new images plus1existinghero per listing. Only the four slots in import/revised-plan.json are active. The600-image shot list below is historical composition guidance; all other slots are canceled. Review the actual selected files and recorded shot intent.
+
 # Jade Christmas 2026 visual QA
 
 Scope: 40 listing suggestions, each with 15 newly generated images from source shot codes `02`–`16` (600 images). Shot `01` is the existing reference hero and does **not** count toward the 600. Images are representative 14K yellow gold; listing options are 10K, 14K and 18K. No image should imply that three separately photographed alloys exist.
