@@ -1531,7 +1531,11 @@ repodaki hedefidir.
   o parçanın düzeltme GEÇMİŞİNİ oku, bilerek çıkarılmış kelimeyi geri getirme; (2) şekil değişince
   fiziksel sonuç da değişir: yatay stud'da civi "başın arkasında" olamaz (kuyruk sarkar) — boyun pedi
   + pilot çiftte asılı durum ölçümü üreticiye soru olarak yazıldı; gram, siluet alanı aynı kaldığı
-  için değişmedi ve bu açıkça söylendi.
+  için değişmedi ve bu açıkça söylendi. N7'de ise (sahip onu da beğendi) eşitleme GRAMI oynattı:
+  altı serbest uçlu tüy = kapama metali yok + daha dar tüyler, −0,09 g, uç 1,29 → 1,20 g, liste
+  $908 → $888; ve eski "hiçbir şey takılmaz" cümlesi kapalı kenara aitti, açık uçla düştü. Kelimeyi
+  değiştirip gramı ve iddiayı bırakmak sessiz bir yanlış beyan olurdu — şekil değişince gram,
+  arıza modu ve satış cümlesi birlikte yeniden türetilir.
 
 ## Ürün/UX dersleri
 

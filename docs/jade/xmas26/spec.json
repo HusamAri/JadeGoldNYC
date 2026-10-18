@@ -3393,7 +3393,7 @@
    "stones_tr": "1 x 1,5 mm lab beyaz safir",
    "cold_enamel_paragraph": "",
    "workshop": {
-    "dimensions": "Kanat 9.0 x 16.0 x 0.9 (model 1.2: +0.2 bitirme +0.1 elmas tiras). Ortu tuyu bandi 9 x 5 (3 yuvarlak tarak). 5 birincil tuy 1.4 gen, boylar 9.5/9.0/8.5/7.5/6.5, aralarinda 0.6 yarik; yariklar arka kenara 1.5 mm kala biter (kapali kenar, serbest konsol yok). Uc tarak r0.7. Omuz tas pedi D2.4 x 1.5. Kulp 1.0 x 1.6.",
+    "dimensions": "Kanat 9.0 x 16.0 x 0.9 (model 1.2: +0.2 bitirme +0.1 elmas tiras). Ortu tuyu bandi 9 x 5 (3 yuvarlak tarak). 6 birincil tuy 1.0 gen (6 x 1.0 + 5 x 0.6 = 9.0), boylar 9.5/9.0/8.5/8.0/7.5/6.5 icten disa, aralarinda 0.6 yarik; yariklar alt kenara kadar ACIK, uclar serbest konsol (gorsele esitlendi 2026-10-18). Gram: tuy hacmi 47.97 -> 44.3 mm3 ve kapama metali 3.24 mm3 kalkti = -0.09 g; uc 1.29 -> 1.20 g, toplam altin 4.14 -> 4.05 g. Uc r0.5 (1.0 mm tuyun tam yuvarlak ucu). Omuz tas pedi D2.4 x 1.5. Kulp 1.0 x 1.6.",
     "construction": "Tek parca 14K dokum, lehim yok, mine yok. Yariklar mumdan. Tas en son soguk.",
     "bench_sequence": [
      "1. CAD: plaka 0.9 bitmis + 0.3 (bitirme + on yuz elmas tiras); yariklar 0.6, uclari r0.3; ped 1.5.",
@@ -3402,10 +3402,10 @@
      "4. Tesviye; yarik genisligi 0.6 pin-gauge; plaka 0.9 +/- 0.05.",
      "5. Tuy yuzlerine elmas tiras (yarik kenarlari keskin kalir, uc taraklar yuvarlak).",
      "6. Tas yuvasi (hart bur), tas oturtma soguk.",
-     "7. Cila elde (ince plakayi destekleyerek), QC tartim (uc 1.29 g +/- %5)."
+     "7. Cila elde (ince plakayi destekleyerek), QC tartim (uc 1.20 g +/- %5)."
     ],
     "bom": [
-     "Alasim: 14K sari standart dokum alasimi (minesiz parca; Zn serbest), vakum dokum. Bitmis uc 1.290 g x 1.15 = 1.48 g dokum metali.",
+     "Alasim: 14K sari standart dokum alasimi (minesiz parca; Zn serbest), vakum dokum. Bitmis uc 1.20 g x 1.15 = 1.38 g dokum metali.",
      "Mine tozu: yok.",
      "Tas: 1 x 1.5 mm lab grown white sapphire = 0.0143 ct.",
      "Zincir: 14K solid diamond-cut rope 1.0 mm 18in = 2.451 g.",
@@ -3418,7 +3418,7 @@
      },
      {
       "mode": "Serbest tuy uclarinin kumasa takilip egilmesi",
-      "prevention": "Yariklar arka kenara 1.5 mm kala biter; tum tuyler kapali kenarla bagli."
+      "prevention": "Uclar serbest (sahip karari 2026-10-18, gorsele esitlendi): tuy kesiti 1.0 x 0.9 (>=0.8 yapisal), uc r0.5, elmas tiras yalniz on yuzde; pilot parcada uc egme testi; egilen varsa yariklar alt kenara 0.8 mm kala bitirilir."
      },
      {
       "mode": "Ince plakanin cilada egilmesi",
@@ -3467,7 +3467,7 @@
      },
      {
       "rule": "L5 dekoratif >=0.6",
-      "value": "tuy 1.4, kenar bandi 1.5",
+      "value": "tuy 1.0 (serbest uc), kenar bandi 1.5",
       "pass": true
      },
      {
@@ -3482,7 +3482,7 @@
      },
      {
       "rule": "L5 uc yaricapi >=0.4",
-      "value": "tarak r0.7",
+      "value": "uc r0.5",
       "pass": true
      },
      {
@@ -3492,7 +3492,7 @@
      },
      {
       "rule": "L7 kolye bandi 2.8-4.2 g (zincir+bulgu dahil altin)",
-      "value": "4.097 g (uc 1.290 + zincir 2.451 + bulgu 0.356); tavana pay 0.103 g",
+      "value": "4.05 g beyan (uc 1.20 + zincir 2.451 + bulgu 0.356 = 4.01, 0.04 pay); tavana pay 0.15 g",
       "pass": true
      },
      {
@@ -3508,17 +3508,17 @@
    "open_questions": [
     "Rope 1.0 mm degeri tek perakende ilanindan (Olas d'Oro 1.05 mm, kopca dahil olabilir) - tedarikci numunesi.",
     "Kanat tasariminin kardes markanin botanik hattiyla gorsel cakismadigini teyit (tuy loblari yaprak gibi okunmamali).",
-    "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Tuy genisligini 1.3'e indir (5 x 1.3 + 4 x 0.6 = 8.9 <= 9.0) ya da kanadi 9.4 mm yap. Grami yeniden hesapla (1.3 genislikte tuy hacmi 47.97 mm3).",
+    "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Cozuldu 2026-10-18 (gorsele esitlendi): 6 tuy x 1.0 + 5 yarik x 0.6 = 9.0 mm; uc 1.20 g.",
     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Boyu uzlastir: 5 + 9.5 = 14.5 mm'yi beyan et ya da ortu/tuy bindirmesini tanimlayip cift sayimi dus.",
-    "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Yarik kapama metalini (3.24 mm3) gram_build'e ekle.",
+    "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Cozuldu 2026-10-18: uclar acik, kapama metali yok (3.24 mm3 gramdan dusuldu).",
     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Kulbu kutle merkezinin uzerine, ortu bandinin ust ortasina tasi ya da ~29 derecelik egik asilisi beyan et.",
     "Doğrulayıcı düzeltmesi (CAD'de uygulanacak): Rope zincir icin kopcasiz zincir agirligini kullan; kopcayi ayrica say."
    ],
    "name": "Angel Wing Pendant",
-   "gold_grams": 4.14,
-   "camera": "Single angel wing pendant in 14K yellow gold, 9 mm wide and 14.5 mm tall, 0.9 mm thick, hanging upright from a bail at the top centre of the wing. The upper part is a band of rounded covert feathers with a scalloped lower edge; below it five long flight feathers, 1.3 mm wide, are separated by narrow pierced slits and end in five rounded tips joined along a closed lower edge. One 1.5 mm lab grown white sapphire is flush-set at the inner upper corner of the wing. Feather faces diamond-cut, edges polished. 1.0 mm 14K diamond-cut rope chain, 16 inch plus 2 inch extender.",
+   "gold_grams": 4.05,
+   "camera": "Single angel wing pendant in 14K yellow gold, 9 mm wide and 14.5 mm tall, 0.9 mm thick, hanging from a bail at the top of the wing, set toward its outer edge. The upper part is a band of rounded covert feathers with a scalloped lower edge; below it six long flight feathers, 1.0 mm wide, are separated by narrow pierced slits that run right through to the bottom, so the six rounded tips hang free, the longest at the inner edge beside the stone and the shortest at the outer edge. One 1.5 mm lab grown white sapphire is flush-set at the inner upper corner of the wing. Feather faces diamond-cut, edges polished. 1.0 mm 14K diamond-cut rope chain, 16 inch plus 2 inch extender.",
    "macro": "The upper band of rounded feathers with its scalloped edge and the flush-set lab-grown white sapphire at the inner corner.",
-   "back": "The flat solid back of the wing, the slits between the long feathers and the bail at the top centre.",
+   "back": "The flat solid back of the wing, the slits between the long feathers and the bail at the top, toward the outer edge.",
    "side": "A flat wing 0.9 mm thick.",
    "max_mm": 14.5,
    "bench_props": "a steel burnisher, a fine half-round file and a pair of brass tweezers",
@@ -3549,8 +3549,8 @@
     "14k gold lobster clasp"
    ],
    "season_proof": "Melek kanadı yıl boyu anma ve koruyucu melek takısı; Aralık'ta Noel meleği okuması ekler.",
-   "total_grams": 4.14,
-   "description": "A single angel wing in 14k gold, a row of rounded feathers above five long ones, with one lab-grown sapphire at the shoulder. A guardian-angel gift for Christmas, and a remembrance piece for any day.\n\nTHE PIECE\n9 mm wide and 14.5 mm tall, 0.9 mm thick. Five long feathers are separated by narrow pierced slits and meet along a closed lower edge, so nothing catches. Feather faces are diamond-cut. The bail sits at the top centre of the wing.\n\nGOLD WEIGHT\n4.14 g of 14k gold, counting the chain, clasp and extender. On the scale the finished piece weighs 4.14 g in total with the stones.\n\nSTONES\nOne 1.5 mm round lab-grown white sapphire, flush set at the inner upper corner. Mohs 9.\n\nLENGTH AND FIT\nA 1.0 mm 14k diamond-cut rope chain, 16 in with a 2 in extender, so it sits from 16 to 18 in. The chain is part of the design and its weight is counted in the gold weight above.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece. The stones are set last, cold, after all firing and polishing.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap and a soft brush. Take it off for swimming and cleaning. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout."
+   "total_grams": 4.05,
+   "description": "A single angel wing in 14k gold, a row of rounded feathers above six long ones, with one lab-grown sapphire at the shoulder. A guardian-angel gift for Christmas, and a remembrance piece for any day.\n\nTHE PIECE\n9 mm wide and 14.5 mm tall, 0.9 mm thick. Six long feathers are separated by narrow pierced slits and end in free rounded tips, cut 0.9 mm thick so they hold their shape. Feather faces are diamond-cut. The bail sits at the top of the wing, toward the outer edge.\n\nGOLD WEIGHT\n4.05 g of 14k gold, counting the chain, clasp and extender. On the scale the finished piece weighs 4.05 g in total with the stones.\n\nSTONES\nOne 1.5 mm round lab-grown white sapphire, flush set at the inner upper corner. Mohs 9.\n\nLENGTH AND FIT\nA 1.0 mm 14k diamond-cut rope chain, 16 in with a 2 in extender, so it sits from 16 to 18 in. The chain is part of the design and its weight is counted in the gold weight above.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece. The stones are set last, cold, after all firing and polishing.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap and a soft brush. Take it off for swimming and cleaning. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout."
   },
   {
    "id": "N8",
