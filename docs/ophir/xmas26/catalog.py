@@ -81,29 +81,29 @@ BAN = ["lab grown", "moissanite", "cubic", "cz", "gold plated", "plated brass", 
 TAKEN = ["holly", "candy cane", "gingerbread", "bauble", "snowflake", "christmas tree",
          "mistletoe", "stocking", "poinsettia", "four point star"]
 
-TAIL = "Gift for Her"
+# title tail: "<gift phrase> for Her"; stacking is claimed only by the stacking group
 
 # ---------------------------------------------------------------- the twenty rings
 BUILD = {'R01': 'The band widens into a flat ribbon at the top, crosses itself once and pulls through, so two loops stand slightly proud and two tails run back down the shank.',
     'R02': 'The band doubles, folds and passes under itself at the top, so the knot sits as one rounded mass with a deep shadow where it tucks.',
-    'R03': 'The band is flat and even the whole way round, then lifts into a single standing curl over the knuckle and settles again.',
+    'R03': 'The band is flat and even the whole way round, then lifts into a single standing curl at the top of the finger and settles again.',
     'R04': 'The face is a clean polished oval with a single fir sprig cut down into it, and the shoulders swell smoothly into the face.',
     'R05': 'The face is a soft cornered square carrying an interlaced knot that runs over and under itself, cut deep enough to hold a shadow.',
     'R06': 'The top is a small solid mound of gold with no flat plate anywhere: it rises high on one side and slopes smoothly down into the band on the other, scaled small for the little finger.',
     'R07': 'The dome is full and round and its whole surface is broken into a close fine frost texture.',
     'R08': 'The dome is tall, smooth and mirror polished, with nothing on its surface at all.',
-    'R09': 'The dome is built from overlapping pinecone scales, each one cut and lifted so its edge stands away from the body.',
+    'R09': 'The dome rises out of the band itself, the band widening into it, and is built from overlapping pinecone scales, each one cut and lifted so its edge stands away from the body.',
     'R10': 'Five small solid gold spheres sit close together over the top of the finger and the rest of the thin band stays plain.',
-    'R11': 'Seven small stones are bezel set at even intervals along a thin band, each in its own small collar of gold, with plain gold between them.',
+    'R11': 'Seven small stones are bezel set at even intervals across the top half of a thin band, each in its own small collar of gold, with plain gold between them and the back half of the band plain.',
     'R12': 'Two fine wires are twisted together evenly the whole way round, with a groove of shadow running between them.',
     'R13': 'One round stone sits low in a smooth rub over bezel with no claws, on an otherwise plain band.',
     'R14': 'One round stone sits low in a smooth rub over bezel with no claws, on an otherwise plain band.',
     'R15': 'The band splits before the top and the two ends pass each other, each carrying one bezel set stone, so the two stones sit shoulder to shoulder rather than in a row.',
-    'R16': 'The petals are cut separately and folded in towards the middle, tight at the heart and opening at the edge, with one small stone at the centre.',
+    'R16': 'The petals are cut separately and folded in towards the middle, tight at the heart and opening at the edge, with one small stone set in a tiny bezel at the centre.',
     'R17': 'Five tapering points of different lengths rise from the top of the band in the plane of the ring, standing close together and each ending in a fine tip, with the rest of the band plain.',
     'R18': 'A fir sprig lies along the curve of the band, needles raised away from the gold on both sides of a central stem.',
     'R19': 'Each end of the band grows into a forked antler and the two pass each other without touching, leaving a visible gap.',
-    'R20': 'Overlapping leaves run the whole way round with no plain section at the back, each one lapping the last in the same direction.'}
+    'R20': 'Overlapping leaves run the whole way round with no plain section at the back, each one lapping the last in the same direction and all of them staying inside the 2.4 mm width of the band.'}
 
 
 def R(key, name, short, proto, g14, stones, dims, lead, story, spec, tags):
@@ -139,8 +139,8 @@ P = [
     R("R03", "Ribbon Wave Ring", "Standing Wave", "sculptural_ring", band(2.6, 1.3, 40), fixed(0),
       "2.6 mm band, 6 mm rise",
       "A flat band folded into one standing wave, like ribbon caught mid curl.",
-      "The band stays flat and even the whole way round, then lifts into a single curl over the "
-      "knuckle and settles again. Nothing is added to it: the whole design is one piece of gold "
+      "The band stays flat and even the whole way round, then lifts into a single curl at the top "
+      "of the finger and settles again. Nothing is added to it: the whole design is one piece of gold "
       "persuaded into a curve.",
       ["Size: the band is 2.6 mm wide and the wave rises about 6 mm."],
       ["christmas ring", "wave ring", "ribbon ring", "modern ring", "holiday ring",
@@ -158,7 +158,7 @@ P = [
       ["christmas ring", "gold signet ring", "signet ring", "holiday ring", "gift for her",
        "solid gold ring", "14k gold ring", "fir ring", "nature ring", "winter jewelry",
        "festive jewelry", "classic signet", "evergreen ring"]),
-    R("R05", "Nordic Knot Signet Ring", "Nordic Knot", "sculptural_ring", signet(10.0, 2.0), fixed(0),
+    R("R05", "Nordic Knot Signet Ring", "Nordic Knot", "sculptural_ring", signet(10.0, 2.0, 2.4), fixed(0),
       "10 mm square face",
       "A squared signet carrying an interlaced Scandinavian knot.",
       "The face is a soft cornered square and the knot runs over and under itself across it, cut "
@@ -166,15 +166,14 @@ P = [
       "that stays on the hand in January.",
       ["Size: the face is about 10 mm across and the shank narrows to 2.4 mm."],
       ["christmas ring", "gold signet ring", "signet ring", "nordic jewelry", "knot ring",
-       "holiday ring", "gift for her", "solid gold ring", "14k gold ring", "celtic knot ring",
+       "holiday ring", "gift for her", "solid gold ring", "14k gold ring", "knot signet ring",
        "winter jewelry", "festive jewelry", "unisex ring"]),
     R("R06", "Snowdrift Pinky Signet", "Snowdrift", "sculptural_ring", signet(8.0, 2.0, 1.8), fixed(0),
       "8 mm face, pinky",
       "A small pinky signet whose top is a drifted, wind shaped mound instead of a flat face.",
       "Where a signet would carry a flat plate this one carries a low drift of gold, the way snow "
       "banks against a wall. Scaled for the little finger, which is where a signet is worn now.",
-      ["Size: the face is about 8 mm across, cut for the little finger.",
-       "Fit: order one size down from your usual ring finger size for a pinky fit."],
+      ["Size: the top is about 8 mm across, cut for the little finger."],
       ["christmas ring", "pinky ring", "gold signet ring", "signet ring", "small signet",
        "holiday ring", "gift for her", "solid gold ring", "14k gold ring", "stackable ring",
        "winter jewelry", "festive jewelry", "snow ring"]),
@@ -211,11 +210,11 @@ P = [
        "winter jewelry", "festive jewelry", "woodland ring"]),
 
     # ---- stacking (strong 2026 trend, and the sizing-risk answer)
-    R("R10", "Winterberry Stack Ring", "Berry Band", "stacking_ring", band(1.5, 1.4, 30), fixed(0),
+    R("R10", "Winterberry Stack Ring", "Berry Band", "stacking_ring", band(1.5, 1.4, 72), fixed(0),
       "1.5 mm band, 3 mm berries",
       "A thin band carrying a short run of round gold berries.",
       "Five small spheres sit close together over the top of the finger and the rest of the band "
-      "stays plain, so it stacks flush against anything. The berries are solid gold, not set "
+      "stays plain, so it stacks against a plain band. The berries are solid gold, not set "
       "stones, which is what keeps it wearable every day.",
       ["Size: the band is 1.5 mm wide and each berry is about 3 mm."],
       ["christmas ring", "stacking ring", "berry ring", "dainty ring", "thin gold ring",
@@ -255,7 +254,7 @@ P = [
       ["Size: the stone is about 4 mm and the band is 2 mm wide.",
        "Stone: one round deep red garnet, rub over bezel set."],
       ["christmas ring", "garnet ring", "red stone ring", "bezel ring", "holiday ring",
-       "gift for her", "solid gold ring", "14k gold ring", "birthstone ring", "january ring",
+       "gift for her", "solid gold ring", "14k gold ring", "deep red ring", "red garnet ring",
        "winter jewelry", "festive jewelry", "delicate ring"]),
     R("R14", "Evergreen Bezel Ring", "Green Bezel", "sculptural_ring", band(2.0, 1.5, 20),
       lambda size: (0, 1),
@@ -266,7 +265,7 @@ P = [
       ["Size: the stone is about 4 mm and the band is 2 mm wide.",
        "Stone: one round deep green tourmaline, rub over bezel set."],
       ["christmas ring", "green stone ring", "tourmaline ring", "bezel ring", "holiday ring",
-       "gift for her", "solid gold ring", "14k gold ring", "emerald green ring", "october ring",
+       "gift for her", "solid gold ring", "14k gold ring", "forest green ring", "dark green ring",
        "winter jewelry", "festive jewelry", "delicate ring"]),
     R("R15", "Toi et Moi Winter Ring", "Two Stone", "sculptural_ring", band(1.9, 1.5, 30),
       lambda size: (0, 2),
@@ -280,7 +279,7 @@ P = [
       ["christmas ring", "toi et moi ring", "two stone ring", "bypass ring", "garnet ring",
        "holiday ring", "gift for her", "solid gold ring", "14k gold ring", "bezel ring",
        "winter jewelry", "festive jewelry", "green stone ring"]),
-    R("R16", "Winter Rose Ring", "Rose Head", "sculptural_ring", band(2.0, 1.5, 85),
+    R("R16", "Winter Rose Ring", "Rose Head", "sculptural_ring", band(2.0, 1.5, 130),
       lambda size: (1, 0),
       "10 mm rose head",
       "A single sculpted rose head with one small white diamond at its centre.",
@@ -316,7 +315,7 @@ P = [
        "winter jewelry", "festive jewelry", "woodland ring"]),
     R("R19", "Reindeer Antler Ring", "Antlers", "sculptural_ring", band(2.0, 1.4, 60), fixed(0),
       "2 mm band, 12 mm antlers",
-      "Two antler forks meeting in a bypass over the finger.",
+      "Two antler forks crossing in a bypass over the finger.",
       "Each end of the band grows into a forked antler and the two pass without touching, leaving "
       "a gap you can see through. The forks are rounded rather than sharp so they sit against the "
       "next finger comfortably.",
@@ -360,7 +359,10 @@ PROTO_SRC = (ROOT / "lib/etsy/listing-protocol.ts").read_text(encoding="utf-8")
 items, report = [], []
 
 for p in P:
-    title = f"{p['name']}, Solid Gold {p['short']} Christmas Ring, Holiday Stacking Gift, {TAIL}"
+    # "Stacking" is claimed only where the name already says Stack (R10, R11); R12 claims it in tags
+    title = f"{p['name']}, Solid Gold {p['short']} Christmas Ring, Holiday Gift for Her"
+    if len(title.split()) >= 15:          # Toi et Moi: three-word name, drop the audience tail
+        title = f"{p['name']}, Solid Gold {p['short']} Christmas Ring, Holiday Gift"
     variants = []
     for k in KARATS:
         for code, label in COLORS:
@@ -388,6 +390,7 @@ for p in P:
         assert v["price_cents"] / 100 * (1 - ETSY_FEE) > v["makerCostUsd"], (p["key"], v["sku"])
     assert len(title) <= 140, (p["key"], len(title))
     assert derive_group(title) == "ring", (p["key"], derive_group(title))
+    assert len(title.split()) < 15, (p["key"], len(title.split()))   # lib/seo titlewords check
     assert len(p["tags"]) == 13 and len(set(p["tags"])) == 13, (p["key"], len(set(p["tags"])))
     for tag in p["tags"]:
         assert len(tag) <= 20 and re.fullmatch(r"[a-z0-9 ]+", tag), (p["key"], tag)
@@ -408,7 +411,7 @@ for p in P:
         "id": p["key"], "productId": str(uuid.uuid5(NS, f"OPH-XMS-{p['key']}")),
         "sku": f"OPH-XMS-{p['key']}", "productType": "ring", "listingProtocol": p["protocol"],
         "offersPersonalization": False,     # suppresses the protocol's engraving question
-        "name": p["name"], "title": title, "tags": p["tags"], "description": desc,
+        "name": p["name"], "short": p["short"], "title": title, "tags": p["tags"], "description": desc,
         "lead": p["lead"], "buildNote": p["build"],
         "dims": p["dims"], "variationAxes": ["Karat", "Metal Color", "Ring Size"],
         "variants": variants, "grams14Ref": round(p["g14"](7), 2),

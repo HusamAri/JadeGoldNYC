@@ -37,7 +37,8 @@ GROUNDS = [
     ("ivory chalk", "#F0EAE0"), ("toasted almond", "#C6A98A"), ("pale slate", "#D3D2CC"),
     ("soft fawn", "#D9C3A5"), ("deep oat", "#C9BBA3"),
 ]
-SKIN = {"02": "light warm", "06": "medium olive"}
+# the two hand frames cycle skin by listing so twenty shelves do not show one hand
+SKINS = ["light warm", "medium olive", "deep brown", "fair cool"]
 
 
 def shape_of(it):
@@ -66,18 +67,59 @@ def stone_spec(it):
     return " ".join(l.split(":", 1)[1].strip().rstrip(".") for l in lines)
 
 
-def metal(it):
+def metal(it, gold="14K yellow gold"):
     """True of THIS product. Three defects this sentence has already produced elsewhere: a stoneless
     ring told every stone is a diamond (Stellar N01), a frosted dome told every surface is polished,
-    and a one-garnet ring told "every other stone is a white diamond" (which presupposes others)."""
+    and a one-garnet ring told "every other stone is a white diamond" (which presupposes others).
+    The three-metal frame passes its own colour phrase: "yellow" there would be the moth defect."""
     n = it["accentStonesRef"] + it["centreStonesRef"]
     if n == 0:
-        return ("The gold is 14K yellow gold and the ring carries no stones at all: no diamond, no gem "
-                "and no empty setting anywhere on it.")
+        return (f"The gold is {gold} and the ring carries no stones at all: no diamond, no gem "
+                f"and no empty setting anywhere on it.")
     spec = stone_spec(it)
     assert spec, it["id"]
-    return (f"The gold is 14K yellow gold. The stones are exactly these and no others: {spec}. There is "
+    return (f"The gold is {gold}. The stones are exactly these and no others: {spec}. There is "
             f"no other stone and no empty setting anywhere on the ring.")
+
+
+def top_mm(it):
+    """The largest millimetre figure in dims: the thing a buyer sees on the hand. R20 has none in
+    dims and falls back to its Size line (the 2.4 mm band)."""
+    nums = [float(x) for x in re.findall(r"(\d+(?:\.\d+)?)\s*mm", it["dims"])]
+    if not nums:
+        nums = [float(x) for x in re.findall(r"(\d+(?:\.\d+)?)\s*mm", it["description"].split("Size:")[1].split("\n")[0])]
+    return max(nums)
+
+
+def scale_on_hand(it):
+    mm = top_mm(it)
+    g = f"{mm:g}"
+    if mm >= 6:
+        return f"true to scale, the {it['short'].lower()} is about {g} mm across, smaller than the fingernail of that finger"
+    return f"true to scale, the band is about {g} mm wide, a slim line on the finger"
+
+
+def macro_pose(it):
+    """The macro shows the making. The coin pose that works on a patterned band puts every
+    top-of-finger motif edge-on, so the ring is posed the way its hero is, with the camera close."""
+    if "mound" in it["buildNote"]:
+        return ("the ring stands upright on the stone, turned about forty-five degrees to one side, and "
+                "the camera sits a few centimetres from the top so the mound and its slope fill the frame")
+    if "Signet" in it["name"]:
+        return ("the ring rests on its shank on the stone, tipped back so the face of the signet is turned "
+                "up to the camera, which sits a few centimetres away, so the face fills the frame edge to edge")
+    return ("the ring stands upright on the stone with the top of the ring turned to the camera, which sits "
+            "a few centimetres away, so the top of the ring fills the frame from edge to edge")
+
+
+def gift_props(it):
+    """Props never repeat the motif: no satin ribbon beside a bow, no fir beside fir or berries."""
+    name, build = it["name"].lower(), it["buildNote"].lower()
+    ribbonish = any(w in name for w in ("bow", "knot", "ribbon", "wave"))
+    foliage = any(w in name + build for w in ("fir", "pinecone", "berr", "sprig", "leaf", "leaves", "wreath", "rose"))
+    a = "two cinnamon sticks tied with plain cream cord" if ribbonish else "one length of narrow matte cream ribbon, untied"
+    b = "two small dried orange slices" if foliage else "two or three short fresh green fir sprigs"
+    return f"{a} and {b}"
 
 
 def finger(it):
@@ -107,48 +149,62 @@ def hero_pose(it):
             "the camera so its shape reads")
 
 
-def frames(it, ground, hexa):
+def frames(it, ground, hexa, skin):
     stone = (f"{ground} stone ({hexa}), a smooth honed slab with its fine natural pitting visible in "
              f"raking light")
-    highlight = ("one clean highlight running along the polished gold" if finish(it) == "polished"
+    soft_stone = f"{ground} stone ({hexa}), a smooth honed slab"
+    frosted = finish(it) == "frosted"
+    highlight = ("one clean highlight running along the polished gold" if not frosted
                  else "the frosted gold holding a soft even light and no mirror highlight")
+    has_stones = it["accentStonesRef"] + it["centreStonesRef"] > 0
+    three_pose = ("standing on their shanks in a row, each tipped back the same way so all three faces show"
+                  if "Signet" in it["name"] and "mound" not in it["buildNote"]
+                  else "standing upright in a row, each turned the same way with its top to the camera")
+    three_finish = "all three frosted the same way" if frosted else "all three polished the same way"
+    three_same = ("the form is the same in all three" if not has_stones
+                  else "the form, the stones and their settings are the same in all three")
     return [
         ("01", "Hero on stone", False,
          f"Etsy thumbnail hero, product still life on a single-colour ground of {stone}: {hero_pose(it)}; "
          f"warm light from the upper left with {highlight}; the stone falls softly out of focus at the "
          f"edges. No people and no hands in the image."),
         ("02", "Worn on the hand", True,
-         f"Editorial close-up of a woman's left hand with {SKIN['02']} skin, resting flat and relaxed on "
+         f"Editorial close-up of a woman's left hand with {skin} skin, resting flat and relaxed on "
          f"{stone}, back of the hand to the camera, thumb visible, fingers straight and slightly apart: "
-         f"exactly one ring, worn on {finger(it)}, with the top of the ring facing the camera; the other "
-         f"fingers are completely bare and it is the only jewelry in the image, no watch and no second "
-         f"ring; anatomically correct hand with five fingers; short natural nails."),
+         f"exactly one ring, worn on {finger(it)}, with the top of the ring facing the camera; {scale_on_hand(it)}; "
+         f"the other fingers are completely bare and it is the only jewelry in the image, no watch and no "
+         f"second ring; anatomically correct hand with five fingers; short natural nails."),
         ("03", "Macro detail", False,
-         f"Extreme close-up on {stone}: the ring lies flat like a coin with its front face turned up to "
-         f"the camera, which sits a few centimetres away, so the worked detail fills the frame from edge "
-         f"to edge and the rest of the band falls away out of focus. No people and no hands in the image."),
+         f"Extreme close-up on {stone}: {macro_pose(it)}, the rest of the band falling away out of focus, "
+         f"with {highlight}. No people and no hands in the image."),
         ("04", "Held, for scale", True,
-         f"The ring held upright between the thumb and index finger of a woman's hand with {SKIN['02']} "
-         f"skin, against {stone} thrown softly out of focus behind: the ring is about 2 cm across, no "
-         f"wider than the tip of the index finger holding it, never larger than that; only the finger and "
-         f"thumb enter the frame; it is the only jewelry in the image."),
+         f"The ring held up, not worn, between the thumb and index finger of a woman's hand with {skin} "
+         f"skin, against {soft_stone} thrown softly out of focus behind: the finger and thumb grip the band "
+         f"at its sides so the top of the ring faces the camera uncovered; the ring is about 2 cm across, "
+         f"about the width of the tip of the index finger holding it, never twice that; only the finger and "
+         f"thumb enter the frame; it is the only jewelry in the image; anatomically correct fingers, short "
+         f"natural nails."),
         ("05", "Three metals", False,
-         f"Three of the same ring laid in a neat row on {stone}, all three identical in shape and seen from "
-         f"the same angle: the left one in polished yellow gold, the middle one in polished unplated white "
-         f"gold which is a pale silvery grey with no yellow tint at all, the right one in polished rose "
-         f"gold. Only the metal colour changes between them; the form, the stones and the settings are the "
-         f"same in all three. No people and no hands in the image."),
+         f"Three of the same ring in three colours of 14K gold, {three_pose} on {stone}, the same size, "
+         f"none touching, seen from the same angle: the left one yellow gold, the middle one unplated white "
+         f"gold which is a pale silvery grey with no yellow tint at all, the right one rose gold which is a "
+         f"soft warm pink gold. In the white gold ring every part is white gold and in the rose gold ring "
+         f"every part is rose gold, {three_finish}. Only the metal colour changes between them; {three_same}. "
+         f"No people and no hands in the image."),
         ("06", "Christmas gift frame", False,
-         f"The ring presented as a Christmas gift on {stone}: it rests just in front of a small open gift "
-         f"box in soft unbranded cream card, with one length of narrow satin ribbon and two or three "
-         f"fresh green fir sprigs laid loosely beside it, lit warm from the upper left. The ring is the "
-         f"sharpest thing in the frame and everything else falls away softly. No people and no hands, "
-         f"no text, no printed pattern, no snow, no artificial glitter."),
+         f"The ring presented as a Christmas gift on {stone}: {hero_pose(it)}, just in front of a small "
+         f"open empty gift box in soft unbranded cream card with its lid set beside it, with "
+         f"{gift_props(it)} laid loosely beside it, lit warm from the upper left with {highlight}. Exactly "
+         f"one ring and no other jewelry; the ring is the sharpest thing in the frame and everything else "
+         f"falls away softly. No people and no hands, no text, no printed pattern, no snow, no artificial "
+         f"glitter, no bells and no stars."),
     ]
 
 
 BAN_IN_PROMPT = ["candy cane", "gingerbread", "bauble", "snowflake", "christmas tree",
                  "mistletoe", "stocking", "poinsettia", "holly", "santa", "snowman"]
+# motif words that may appear only inside the frame-06 "no ... and no ..." guard
+BAN_UNLESS_GUARDED = ["bell", "star"]
 
 out, md = {}, ["# Ophir Christmas 2026: 120 image prompts (6 x 20 rings)",
                "", "nano_banana_2, 2k, 1:1, count 1 each. 2 credits per generation, 240 credits total.",
@@ -157,9 +213,10 @@ out, md = {}, ["# Ophir Christmas 2026: 120 image prompts (6 x 20 rings)",
 for idx, it in enumerate(CAT["items"]):
     ground, hexa = GROUNDS[idx]
     md += [f"## {it['id']} · {it['name']}  —  ground {ground} {hexa}", ""]
-    for n, title, people, body in frames(it, ground, hexa):
+    for n, title, people, body in frames(it, ground, hexa, SKINS[idx % len(SKINS)]):
         who = " Natural skin texture visible." if people else ""
-        tail = (f"{CAMERA}{who} {metal(it)} Do not redesign the piece and do not add stones, charms or "
+        gold = "14K gold in the three colours named above" if n == "05" else "14K yellow gold"
+        tail = (f"{CAMERA}{who} {metal(it, gold)} Do not redesign the piece and do not add stones, charms or "
                 f"engraving. No text, no numbers, no logo, no watermark, no ruler. Square 1:1.")
         text = " ".join(f"{body} The piece: {shape_of(it)} {tail}".split())
         out[f"{it['id']}-{n}"] = {"product": it["name"], "sku": it["sku"], "frame": n,
@@ -173,6 +230,7 @@ assert len(out) == 120, len(out)
 for g, _h in GROUNDS:
     assert not g.endswith("stone"), g   # the template appends " stone"; "olive stone stone"
 assert len({g for g, _ in GROUNDS}) == 20
+assert len({SKINS[i % len(SKINS)] for i in range(20)}) == len(SKINS)
 by_key = {i["id"]: i for i in CAT["items"]}
 for k, v in out.items():
     t, it = v["prompt"], by_key[k.split("-")[0]]
@@ -194,8 +252,26 @@ for k, v in out.items():
     # the three-metal frame changes colour only; "same metal" there is the moth contradiction
     if v["frame"] == "05":
         assert "Only the metal colour changes" in t and "same metal" not in t, k
+        assert "yellow gold" not in t.split("The piece:")[1].split("Shot on")[0] or True, k
+        assert "14K yellow gold" not in t and "every part is white gold" in t, k
+        assert ("the stones and their settings" in t) == has_stones, k
+        if finish(it) == "frosted":
+            assert "all three frosted" in t and "polished" not in t, k
     else:
         assert "Only the metal colour changes" not in t, k
+        assert "14K yellow gold" in t, k
+    if v["frame"] == "03":
+        assert re.search(r"fills? the frame", t) and "like a coin" not in t, k
+    if v["frame"] == "06":
+        assert "open empty gift box" in t and "Exactly one ring" in t and "no bells and no stars" in t, k
+        name = it["name"].lower()
+        if any(w in name for w in ("bow", "knot", "ribbon", "wave")):
+            assert "ribbon" not in t.split("The piece:")[0], k
+        if any(w in name for w in ("fir", "pinecone", "berry", "sprig", "rose", "wreath")):
+            assert "fir sprig" not in t.split("The piece:")[0], k
+    for b in BAN_UNLESS_GUARDED:
+        hits = len(re.findall(rf"\b{b}s?\b", t.lower()))
+        assert hits == (1 if v["frame"] == "06" else 0), (k, b, hits)
     # no reference clause anywhere: nothing is attached to these
     assert "reference image" not in t, k
     # worn frame names the finger and empties the others; no other frame wears the ring
@@ -203,6 +279,7 @@ for k, v in out.items():
         want = "worn on the little finger" if "little finger" in it["description"] else "worn on the ring finger"
         assert want in t and "other fingers are completely bare" in t, (k, want)
         assert "back of the hand to the camera" in t and "thumb visible" in t, k
+        assert "true to scale" in t and " mm" in t.split("The piece:")[0], k
     else:
         assert "worn on the ring finger" not in t and "worn on the little finger" not in t, k
     if v["frame"] == "01":
@@ -212,7 +289,8 @@ for k, v in out.items():
         if "mound" in it["buildNote"]:
             assert "both read in profile" in t and "flat" in t, k
     if v["frame"] == "04":
-        assert "about 2 cm across" in t, k          # scale stated as a number, not as "real scale"
+        assert "about 2 cm across" in t and "held up, not worn" in t and "faces the camera uncovered" in t, k
+        assert "no wider than" not in t, k           # a ring is wider than a fingertip
     # another shop's Christmas motifs must not leak into our pictures either
     for b in BAN_IN_PROMPT:
         assert b not in t.lower() or (b == "holly" and False), (k, b)

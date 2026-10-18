@@ -35,7 +35,9 @@
    "seal": "553d0851de595d396ee0f79ffc096251",
    "served_model": "nano_banana_flash",
    "qa": "pass",
-   "note": "flat band, one standing curl at the top; curl is tighter than a wave but the rise and the flat section are on spec"
+   "note": "flat band, one standing curl at the top; curl is tighter than a wave but the rise and the flat section are on spec",
+   "prompt_now": "1dbc0311978991361610a92d4f155747",
+   "prompt_moved_after_generation": "build: 'over the knuckle' -> 'at the top of the finger' (image unaffected)"
   },
   "R04-01": {
    "job": "07a11553-98d2-4976-9ceb-d54c46e47e06",
@@ -62,7 +64,9 @@
    "seal": "57258d3b2d90255b75ea9f9e3e3d5381",
    "served_model": "nano_banana_flash",
    "qa": "pass",
-   "note": "v2 after owner's 'try again': build rewritten as a solid mound (no 'face', no flat plate) and a three-quarter pose so the height difference reads; mound rises one side, slopes into the band. Ring sits small in the frame."
+   "note": "v2 after owner's 'try again': build rewritten as a solid mound (no 'face', no flat plate) and a three-quarter pose so the height difference reads; mound rises one side, slopes into the band. Ring sits small in the frame.",
+   "prompt_now": "1025b95fcbaf01a1ba830f22b39c2e1a",
+   "prompt_moved_after_generation": "Size line: 'face' -> 'top' (image unaffected)"
   },
   "R07-01": {
    "job": "535c6cb3-57cf-4829-90d5-3762dc4d3f8f",
@@ -89,7 +93,9 @@
    "seal": "15c339b98f814411b204bbab62d2ff52",
    "served_model": "nano_banana_flash",
    "qa": "pass",
-   "note": "dome tiled with overlapping pinecone scales, edges lifted"
+   "note": "dome tiled with overlapping pinecone scales, edges lifted",
+   "prompt_now": "1a66e73786099cfb115c3358ad9096a4",
+   "prompt_moved_after_generation": "build now says the dome rises out of the band; the generated hero is a ball on a wire shank -> RESHOOT recommended"
   },
   "R10-01": {
    "job": "0a192b69-c86c-475d-ab6c-da8f77d4ce42",
@@ -107,7 +113,9 @@
    "seal": "b2e71910fcdc69a2b05542eacd9be157",
    "served_model": "nano_banana_flash",
    "qa": "pass",
-   "note": "diamond line canary: small white stones in individual bezel collars at intervals, plain gold between; 5 visible on the front half"
+   "note": "diamond line canary: small white stones in individual bezel collars at intervals, plain gold between; 5 visible on the front half",
+   "prompt_now": "abdd54a5b2303aa38297a855af9afe51",
+   "prompt_moved_after_generation": "build now places the seven stones across the top half; the generated hero has stones all the way round -> RESHOOT recommended"
   },
   "R12-01": {
    "job": "b00845e1-5af0-4350-8bcf-3e0a4338cb78",
@@ -152,7 +160,9 @@
    "seal": "d5bf63831d6d50674abe4e1936bc593d",
    "served_model": "nano_banana_flash",
    "qa": "pass",
-   "note": "sculpted rose head, petals folded in, one small white stone at the centre"
+   "note": "sculpted rose head, petals folded in, one small white stone at the centre",
+   "prompt_now": "c9e2d3461ba22af8a730fdab0562710e",
+   "prompt_moved_after_generation": "build: centre stone 'set in a tiny bezel' (image shows a set stone; unaffected)"
   },
   "R17-01": {
    "job": "459d5c30-6b93-4539-926f-932f4bcdda2c",
@@ -179,7 +189,9 @@
    "seal": "0dfc4ab2ee9f56fd70d03cf276de39a6",
    "served_model": "nano_banana_flash",
    "qa": "pass",
-   "note": "two forked antlers passing each other in a bypass with a visible gap"
+   "note": "two forked antlers passing each other in a bypass with a visible gap",
+   "prompt_now": "99bc915c0933e514c634d517c24e34c9",
+   "prompt_moved_after_generation": "lead: forks 'crossing' not 'meeting' (image shows crossing; unaffected)"
   },
   "R20-01": {
    "job": "76ac128e-5970-43e6-b57f-7661f3f438ad",
@@ -188,7 +200,9 @@
    "seal": "fa04e4fb1d6439c872ef239f55ddefc7",
    "served_model": "nano_banana_flash",
    "qa": "pass",
-   "note": "overlapping leaves the whole way round, each lapping the last the same way"
+   "note": "overlapping leaves the whole way round, each lapping the last the same way",
+   "prompt_now": "61ef2831d713fe3d7b0f24972ba94bc7",
+   "prompt_moved_after_generation": "build: leaves stay inside the 2.4 mm band width (image consistent; unaffected)"
   }
  },
  "rejected_submissions": [
@@ -213,5 +227,13 @@
    "seal": "5c61a3b20efe6d6c719647c8368642d9",
    "why": "face rendered as a plain flat oval signet; the listing sells a face that lifts on one side and falls away on the other (drifted curve). Ring also small in frame. Reshoot needs owner approval: a 21st generation beyond the approved 20, and a changed prompt."
   }
- ]
+ ],
+ "review_round_2026_10_16": {
+  "source": "adversarial review wf_b423ced7, 78 merged findings, unverified (session limit); triaged by hand",
+  "reshoot_recommended": [
+   "R09-01",
+   "R11-01"
+  ],
+  "frames_02_06": "prompts rewritten per product; NOT approved for generation yet"
+ }
 }
