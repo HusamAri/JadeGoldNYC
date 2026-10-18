@@ -59,6 +59,23 @@ def reference(p):
             f"{', '.join(keep[:-1])} and {keep[-1]} exactly as in the reference.")
 
 HANDS = "anatomically correct hands with five fingers, short natural unpolished nails"
+# Colour names drift in the model (deep berry -> bright red, jade -> emerald, ice-blue -> royal
+# blue; verifier finding 2026-10-18). The first mention of each enamel colour in a prompt carries
+# one fixed plain-language anchor, the same words on all 640 prompts.
+COLOUR_ANCHORS = {
+    "ice-blue enamel": "ice-blue enamel (a soft pale powder blue with a grey cast)",
+    "jade-green enamel": "jade-green enamel (a dark muted grey-green)",
+    "berry enamel": "berry enamel (a dark wine red, not bright red)",
+    "navy-blue enamel": "navy-blue enamel (a deep dark blue)",
+}
+
+
+def anchor(text):
+    for k, v in COLOUR_ANCHORS.items():
+        text = re.sub(re.escape(k), v, text, count=1)
+    return text
+
+
 SIMILE = re.compile(r"\b(like|as if|as though|resembl\w*|reminiscent)\b", re.I)
 STONE_WORD = re.compile(r"\b(stone|stones|sapphire|sapphires|diamond|diamonds|gem|gems|gemstone)\b", re.I)
 STAR_COUNT = re.compile(r"\b(\d+|four|five|six|seven|eight|ten|twelve)[- ]point(ed)?\b", re.I)
@@ -249,13 +266,13 @@ def hero(p):
         "brooch": ("The brooch lies face up, centred on the honed grey stone slab, pin hidden behind it; "
                    "exactly one brooch."),
     }[p["category"]]
-    return (f"{HERO_STYLE} The piece: {p['camera']} {truth(p)} {comp} Seen from about 30 degrees above "
-            "with a 100 mm macro lens, the piece in razor-sharp focus, filling about 45 percent of the frame "
-            "width, centred with generous empty margin on all four sides. No people and no hands.")
+    return anchor(f"{HERO_STYLE} The piece: {p['camera']} {truth(p)} {comp} Seen from about 30 degrees "
+                  "above with a 100 mm macro lens, the piece in razor-sharp focus, filling about 45 percent of "
+                  "the frame width, centred with generous empty margin on all four sides. No people and no hands.")
 
 
 def gallery(p, scene):
-    return f"{GALLERY_STYLE} {reference(p)} The piece: {p['camera']} {truth(p)} {scene}"
+    return anchor(f"{GALLERY_STYLE} {reference(p)} The piece: {p['camera']} {truth(p)} {scene}")
 
 
 def alt(p, code):
