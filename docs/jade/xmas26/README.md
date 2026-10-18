@@ -23,8 +23,9 @@ Sahibe teslim yüzeyi **`image-book.html`** (Artifact olarak da yayınlandı). B
 | 7 | `heroes.py` | raw → `images/heroes/<ID>.jpg` (Etsy, meta sıyrılmış, <1 MB) + `images/heroes/crops/<ID>.jpg` (02–16 için TEK referans) + `web/<ID>.jpg` (1600 px). |
 | 8 | `images/heroes/status.json` | Her hero için `ok` / `check` / `redo` + sebep + (gerekirse) düzeltilmiş prompt. Elle yazılır, kontak baskısına bakılarak. |
 | 9 | `page.py` | `catalog.json` + `prompts.json` + `status.json` + `jobs.json` → `image-book.html`. |
+| 10 | `maker_book.py` | `catalog.json` + `work/evidence_summary.json` + `status.json` → `Jade-Noel-2026-Uretici-Kitabi.pdf` (üreticiye giden teklif kitabı: perakende fiyat YOK; görsel notları; bundled Chromium ile basılır). |
 
-Yeniden üretmek için 3 → 4 → 5 → 9 yeterlidir; 6–8 yalnız görsel değişince.
+Yeniden üretmek için 3 → 4 → 5 → 9 → 10 yeterlidir; 6–8 yalnız görsel değişince.
 
 ## Fiyat
 
