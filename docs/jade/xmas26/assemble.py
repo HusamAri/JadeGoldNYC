@@ -65,6 +65,22 @@ for cat in ORDER:
                 skipped.append({"id": pp["id"], "field": field, "why": "unknown field", "problem": fd["problem"]})
                 continue
             applied.append({"id": pp["id"], "field": field, "problem": fd["problem"]})
+    # owner-side corrections after the copy pass (work/fixes.json), logged like reader findings
+    fixes = json.load(open(WORK / "fixes.json")) if (WORK / "fixes.json").exists() else []
+    for fx in fixes:
+        for pid, p in by_id.items():
+            if fx["id"] not in ("*", pid):
+                continue
+            val = p.get(fx["field"])
+            if "set" in fx:
+                p[fx["field"]] = fx["set"]
+            elif isinstance(val, list):
+                p[fx["field"]] = [v.replace(fx["find"], fx["replace"]) for v in val]
+            elif isinstance(val, str) and fx["find"] in val:
+                p[fx["field"]] = val.replace(fx["find"], fx["replace"])
+            else:
+                continue
+            applied.append({"id": pid, "field": fx["field"], "problem": fx["why"]})
     for pid in sorted(by_id, key=lambda x: int(re.sub(r"\D", "", x))):
         p = by_id[pid]
         p["stones"] = int(p["stones"])

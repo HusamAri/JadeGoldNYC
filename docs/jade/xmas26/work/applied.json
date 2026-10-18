@@ -1,0 +1,75 @@
+{
+ "applied": [
+  {
+   "id": "B1",
+   "field": "camera",
+   "problem": "a stamped tag invites rendered text; the listing text keeps the tag"
+  },
+  {
+   "id": "B2",
+   "field": "camera",
+   "problem": "a stamped tag invites rendered text; the listing text keeps the tag"
+  },
+  {
+   "id": "B3",
+   "field": "camera",
+   "problem": "a stamped tag invites rendered text; the listing text keeps the tag"
+  },
+  {
+   "id": "B4",
+   "field": "camera",
+   "problem": "a stamped tag invites rendered text; the listing text keeps the tag"
+  },
+  {
+   "id": "B5",
+   "field": "camera",
+   "problem": "a stamped tag invites rendered text; the listing text keeps the tag"
+  },
+  {
+   "id": "B6",
+   "field": "camera",
+   "problem": "a stamped tag invites rendered text; the listing text keeps the tag"
+  },
+  {
+   "id": "B7",
+   "field": "camera",
+   "problem": "a stamped tag invites rendered text; the listing text keeps the tag"
+  },
+  {
+   "id": "B8",
+   "field": "camera",
+   "problem": "a stamped tag invites rendered text; the listing text keeps the tag"
+  },
+  {
+   "id": "B9",
+   "field": "camera",
+   "problem": "a stamped tag invites rendered text; the listing text keeps the tag"
+  },
+  {
+   "id": "B10",
+   "field": "camera",
+   "problem": "a stamped tag invites rendered text; the listing text keeps the tag"
+  },
+  {
+   "id": "B6",
+   "field": "title",
+   "problem": "'Horsebit' is Gucci's trademarked design name"
+  },
+  {
+   "id": "B6",
+   "field": "tags",
+   "problem": "trademark term"
+  },
+  {
+   "id": "B6",
+   "field": "season_proof",
+   "problem": "trademark term"
+  },
+  {
+   "id": "B6",
+   "field": "camera",
+   "problem": "trademark term out of the image text too"
+  }
+ ],
+ "skipped": []
+}

@@ -1,0 +1,43 @@
+[
+ {
+  "id": "*",
+  "field": "camera",
+  "find": ", small tag stamped 14K",
+  "replace": "",
+  "why": "a stamped tag invites rendered text; the listing text keeps the tag"
+ },
+ {
+  "id": "*",
+  "field": "camera",
+  "find": " small tag stamped 14K,",
+  "replace": "",
+  "why": "same, other word order"
+ },
+ {
+  "id": "B6",
+  "field": "title",
+  "set": "14K Gold Snaffle Bit Bracelet, Green Enamel, Miami Cuban Chain, Equestrian Gift for Her",
+  "why": "'Horsebit' is Gucci's trademarked design name"
+ },
+ {
+  "id": "B6",
+  "field": "tags",
+  "find": "horsebit bracelet",
+  "replace": "snaffle bracelet",
+  "why": "trademark term"
+ },
+ {
+  "id": "B6",
+  "field": "season_proof",
+  "find": "horsebit",
+  "replace": "snaffle bit",
+  "why": "trademark term"
+ },
+ {
+  "id": "B6",
+  "field": "camera",
+  "find": "One horse-bit (snaffle) station",
+  "replace": "One snaffle bit station",
+  "why": "trademark term out of the image text too"
+ }
+]

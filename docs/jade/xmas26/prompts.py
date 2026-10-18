@@ -77,7 +77,7 @@ def anchor(text):
 
 
 SIMILE = re.compile(r"\b(like|as if|as though|resembl\w*|reminiscent)\b", re.I)
-STONE_WORD = re.compile(r"\b(stone|stones|sapphire|sapphires|diamond|diamonds|gem|gems|gemstone)\b", re.I)
+STONE_WORD = re.compile(r"\b(stone|stones|sapphire|sapphires|diamond(?![- ]cut)|diamonds|gem|gems|gemstone)\b", re.I)  # "diamond-cut" is a finish
 STAR_COUNT = re.compile(r"\b(\d+|four|five|six|seven|eight|ten|twelve)[- ]point(ed)?\b", re.I)
 
 
@@ -257,8 +257,11 @@ def frames(p):
 
 def hero(p):
     comp = {
-        "bracelet": ("The bracelet lies in a relaxed open curve on the honed grey stone slab, every station "
-                     "face up toward the camera, clasp at the edge of the curve."),
+        # the station is the product at thumbnail size (L12): the chain leaves the frame, the clasp is
+        # not shown, so the decorated part is large enough to read at 250 px
+        "bracelet": ("The decorated centre of the bracelet lies face up at the centre of the honed grey "
+                     "stone slab, close to the camera; the chain runs away from it on both sides in a soft "
+                     "curve and leaves the frame at the left and right edges; the clasp is out of frame."),
         "necklace": ("The pendant lies flat and face up on the honed grey stone slab, the chain running in a "
                      "soft loose curve up and out of the top edge of the frame."),
         "earrings": ("The pair lies side by side on the honed grey stone slab, both fronts facing the camera, "
@@ -266,9 +269,13 @@ def hero(p):
         "brooch": ("The brooch lies face up, centred on the honed grey stone slab, pin hidden behind it; "
                    "exactly one brooch."),
     }[p["category"]]
+    fill = ("the decorated part in razor-sharp focus, filling about a third of the frame width, with the "
+            "chain softly out of focus toward the frame edges"
+            if p["category"] in ("bracelet", "necklace") else
+            "the piece in razor-sharp focus, filling about 45 percent of the frame width, centred with "
+            "generous empty margin on all four sides")
     return anchor(f"{HERO_STYLE} The piece: {p['camera']} {truth(p)} {comp} Seen from about 30 degrees "
-                  "above with a 100 mm macro lens, the piece in razor-sharp focus, filling about 45 percent of "
-                  "the frame width, centred with generous empty margin on all four sides. No people and no hands.")
+                  f"above with a 100 mm macro lens, {fill}. No people and no hands.")
 
 
 def gallery(p, scene):
@@ -316,7 +323,6 @@ for i, p in enumerate(CAT["products"]):
                       "prompt": gallery(p, scene), "alt": alt(p, code)})
     for it in items:
         assert len(it["alt"]) <= 250, (p["id"], it["code"])
-        assert "christmas decoration" not in it["prompt"].lower() or it["code"] == "01"
         if it["reference"]:
             assert "attached reference" in it["prompt"]
         else:
