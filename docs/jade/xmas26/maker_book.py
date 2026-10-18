@@ -38,15 +38,14 @@ CAT_TR = {"bracelet": "Bileklik", "necklace": "Kolye", "earrings": "Küpe", "bro
 # what the maker must know where a render does not match the written piece (status.json names the
 # fault for the owner; this is the same fault in the maker's terms)
 RENDER_NOTE = {
-    "E9": "Görselde kuşun altında iki ayak görünüyor; tasarımda ayak YOK. Gövde, mine hücresinin "
-          "altında doğrudan kuyruğa iner; küpenin en alt noktası kuyruk ucudur.",
-    "P2": "Görselde kuyruk şeritleri üzerinde 3 çapraz çubuk ve toplam 4 taş var; tasarımda 2 çubuk ve "
-          "toplam 3 taş (baş halkasının ortasında 1, her çubuğun kare pedinde 1). Şerit üstleri kordon "
-          "dokulu değil elmas tıraşlıdır.",
+    "E9": "Görselde kuş yatay (tüneyen) ve geniş görünüyor; tasarımda kuş DİK durur: 5.8 mm en × 11.5 mm boy, "
+          "kuyruk gövdenin altında, ayak yok. Ölçüler ve gram kurulumu dik gövdeye göredir.",
+    "P2": "Görselde dış iki şerit kare desenli, ortadaki düz satin görünüyor; tasarımda üç şeridin üstü de aynı "
+          "biçimde elmas tıraş, yan yüzleri satin. Çubuk (2) ve taş (3) sayısı görselde doğrudur.",
     "N7": "Görselde 6 uçuş tüyü ve ayrık uçlar görünüyor; tasarımda 5 tüy, uçlar kapalı alt kenar "
           "boyunca birbirine bağlıdır.",
-    "N9": "Görseldeki mine açık adaçayı tonunda çıktı; gerçek renk paletteki derin yeşim yeşilidir "
-          "(koyu, grimsi şişe yeşili).",
+    "N9": "Görselde taban çubuğunda 4 mine hücresi ve 3 çıta var; tasarımda 5 hücre, 4 çıta (0.7 mm). "
+          "Mine rengi görseldeki gibi koyu yeşim yeşilidir.",
 }
 assert set(RENDER_NOTE) == {k for k, v in STATUS.items() if v["status"] != "ok"}, "status.json ile not listesi uyuşmuyor"
 

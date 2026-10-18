@@ -21,7 +21,7 @@ Sahibe teslim yüzeyi **`image-book.html`** (Artifact olarak da yayınlandı). B
 | 5 | `prompts.py` | `catalog.json` → `prompts.json` (40 × 16 kare) + `images/jobs.json` (hero işleri, parametreler sabit). |
 | 6 | Higgsfield | `images/jobs.json` prompt'ları birebir gönderildi → `images/heroes/raw/<ID>.png` (git dışı). |
 | 7 | `heroes.py` | raw → `images/heroes/<ID>.jpg` (Etsy, meta sıyrılmış, <1 MB) + `images/heroes/crops/<ID>.jpg` (02–16 için TEK referans) + `web/<ID>.jpg` (1600 px). |
-| 8 | `images/heroes/status.json` | Her hero için `ok` / `check` / `redo` + sebep + (gerekirse) düzeltilmiş prompt. Elle yazılır, kontak baskısına bakılarak. |
+| 8 | `review.py` → `images/heroes/status.json` | Her hero için `ok` / `check` / `redo` + sebep + düzeltilmiş prompt (saklanan prompt'tan assert'li `replace` ile türetilir). Kontak baskısına bakılarak `review.py` içinde elle yazılır. Sahibin kendi ürettiği hero `images/heroes/raw/<ID>.png` olarak konur, 7 yeniden koşulur. |
 | 9 | `page.py` | `catalog.json` + `prompts.json` + `status.json` + `jobs.json` → `image-book.html`. |
 | 10 | `maker_book.py` | `catalog.json` + `work/evidence_summary.json` + `status.json` → `Jade-Noel-2026-Uretici-Kitabi.pdf` (üreticiye giden teklif kitabı: perakende fiyat YOK; görsel notları; bundled Chromium ile basılır). |
 
