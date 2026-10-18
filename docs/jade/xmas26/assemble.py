@@ -24,6 +24,28 @@ LISTS = {"tags", "materials"}
 NUMS = {"gold_grams": float, "total_grams": float, "max_mm": float, "stones": int}
 
 
+def replace_deep(node, find, rep):
+    """Replace inside strings at any depth (str, list, dict); returns (new_node, replacements)."""
+    if isinstance(node, str):
+        n = node.count(find)
+        return (node.replace(find, rep) if n else node), n
+    if isinstance(node, list):
+        out, total = [], 0
+        for x in node:
+            y, n = replace_deep(x, find, rep)
+            out.append(y)
+            total += n
+        return out, total
+    if isinstance(node, dict):
+        out, total = {}, 0
+        for k, x in node.items():
+            y, n = replace_deep(x, find, rep)
+            out[k] = y
+            total += n
+        return out, total
+    return node, 0
+
+
 def clean_list(v):
     if isinstance(v, list):
         return [x.strip() for x in v if x.strip()]
@@ -65,21 +87,31 @@ for cat in ORDER:
                 skipped.append({"id": pp["id"], "field": field, "why": "unknown field", "problem": fd["problem"]})
                 continue
             applied.append({"id": pp["id"], "field": field, "problem": fd["problem"]})
-    # owner-side corrections after the copy pass (work/fixes.json), logged like reader findings
+    # owner-side corrections after the copy pass (work/fixes.json), logged like reader findings.
+    # "field" may be a dotted path into the workshop card ("workshop.dimensions"); find/replace
+    # works inside strings at any depth, "set" replaces the node, "append" adds to a list. A
+    # product-specific find that matches nothing is reported, not silently skipped.
     fixes = json.load(open(WORK / "fixes.json")) if (WORK / "fixes.json").exists() else []
     for fx in fixes:
         for pid, p in by_id.items():
             if fx["id"] not in ("*", pid):
                 continue
-            val = p.get(fx["field"])
+            path = fx["field"].split(".")
+            parent = p
+            for seg in path[:-1]:
+                parent = parent[seg]
+            key = path[-1]
             if "set" in fx:
-                p[fx["field"]] = fx["set"]
-            elif isinstance(val, list):
-                p[fx["field"]] = [v.replace(fx["find"], fx["replace"]) for v in val]
-            elif isinstance(val, str) and fx["find"] in val:
-                p[fx["field"]] = val.replace(fx["find"], fx["replace"])
+                parent[key] = fx["set"]
+            elif "append" in fx:
+                parent[key] = list(parent[key]) + [fx["append"]]
             else:
-                continue
+                new, n = replace_deep(parent.get(key), fx["find"], fx["replace"])
+                if n == 0:
+                    if fx["id"] != "*":
+                        skipped.append({"id": pid, "field": fx["field"], "why": "find text not present", "problem": fx["why"]})
+                    continue
+                parent[key] = new
             applied.append({"id": pid, "field": fx["field"], "problem": fx["why"]})
     for pid in sorted(by_id, key=lambda x: int(re.sub(r"\D", "", x))):
         p = by_id[pid]
