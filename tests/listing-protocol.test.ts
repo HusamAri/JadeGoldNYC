@@ -283,6 +283,11 @@ const FAKE_TREE = [
       { id: 10, name: "Rings", children: [{ id: 11, name: "Wedding Bands" }, { id: 1232, name: "Bands" }] },
       { id: 20, name: "Necklaces", children: [{ id: 1229, name: "Pendant Necklaces" }] },
       { id: 40, name: "Bracelets", children: [] },
+      // Canlı ağaç (ops/drafts-push?taxonomy=ear, 2026-10-18): tırmanıcı kendi düğümünde.
+      { id: 1203, name: "Earrings", children: [
+        { id: 1208, name: "Dangle & Drop Earrings" },
+        { id: 2900, name: "Ear Jackets & Climbers", children: [{ id: 2901, name: "Ear Climbers" }, { id: 2211, name: "Ear Jackets" }] },
+      ] },
       // Canlı ağaçta benzer adlı ama farklı düğümler (2026-10-17): tam ad eşleşmez.
       { id: 6077, name: "Watch Bands & Straps" },
     ],
@@ -554,6 +559,23 @@ test("broş kendi protokolüne çözülür, yüzük kuralına düşmez (2026-10-
   // Kök "Jewelry" verilirse (ilk sürümün varsayımı) çözücü sessizce düşmez, durur.
   const wrong = await resolveTaxonomyIdForProtocol(fakeClient(), { ...LISTING_PROTOCOLS.brooch, taxonomyRoot: "Jewelry" });
   assert.equal(wrong.ok, false);
+});
+
+test("kulak tırmanıcısı kendi düğümüne çözülür: Ear Climbers 2901 (2026-10-18, Jade Noel E4)", async () => {
+  const spec = resolveListingProtocol({ product_type: "earrings", listing_metadata: { listingProtocol: "ear_climber_earrings" } });
+  assert.equal(spec?.id, "ear_climber_earrings");
+  assert.deepEqual(spec?.requiredVariationAxes, []);
+  assert.equal(spec?.personalization, null);
+  assert.equal(spec?.taxonomyRoot, "Jewelry");
+  assert.deepEqual(spec?.parcel, LISTING_PROTOCOLS.stud_earrings.parcel);
+  const r = await resolveTaxonomyIdForProtocol(fakeClient(), LISTING_PROTOCOLS.ear_climber_earrings);
+  assert.equal(r.ok, true);
+  assert.equal(r.ok && r.taxonomyId, 2901);
+  // Sarkan dalı tırmanıcıyı kapsamaz: tercih sırası "Ear Climbers" önce gelir, 1208 seçilmez.
+  assert.notEqual(r.ok && r.taxonomyId, 1208);
+  // product_type eşlemesi: "ear_climber" açık ad; DB'nin "earrings" değeri bilerek eşlenmez.
+  assert.equal(resolveListingProtocol({ product_type: "ear_climber" })?.id, "ear_climber_earrings");
+  assert.equal(resolveListingProtocol({ product_type: "earrings" }), null);
 });
 
 test("FW26 Trend Edit protocols resolve to the live nodes: stick pin 11316, shawl pin 6066, band 1232", async () => {

@@ -49,8 +49,17 @@ export const JADE_PACKAGING_CENTS = 1_50;
  * 0,20→0,25 · **0,25→0,3333**. Yani "1/3" gördüğüm şey %25'in ta kendisiydi;
  * indirim 20 Ağustos'tan beri hiç değişmedi ve §9 kararı zaten doğruydu.
  * Ayrıntı ve etki: `docs/jade/fiyatlandirma.md` §11.
+ *
+ * 2026-10-18: %25 → **%30**, sahibin beyanı ("mağazada %30 indirim var") —
+ * Noel 2026 taslakları bu oranla fiyatlandı. ÖLÇÜM NOTU: doğru paydayla
+ * (`discount/(item_total+discount)`) 17 Ekim'e kadarki siparişler hâlâ tam
+ * 0,2500 veriyor; yani %30 bu tarihte yeni açılmış bir ayardır, sipariş verisi
+ * henüz onu göstermiyor. Canlı katalog %25 tabanıyla kurulu: %30'da net
+ * tahsilatı korumak için `× 0,75/0,70 = 1,0714` taban kaydırması GEREKİR ve
+ * bu YAPILMADI (sahibin kararı; §9'daki kaydırma deseni). Haftalık ölçüm
+ * sorgusu: `docs/jade/fiyatlandirma.md` §13.
  */
-export const JADE_DISCOUNT_RATE = 0.25;
+export const JADE_DISCOUNT_RATE = 0.30;
 
 /** Etsy oransal kesinti: %6,5 işlem + %3 ödeme işleme. */
 export const JADE_ETSY_RATE = 0.095;
@@ -86,8 +95,9 @@ export function jadeCostCents(grams: number): number {
 /**
  * Hedef marja ulaşan LİSTE fiyatı (indirim öncesi, Etsy'ye yazılan sayı).
  *
- * liste × 0,85 × (1 − 0,095) − 0,25 − maliyet = marj × liste × 0,85
- * → liste = (maliyet + sabit) / (0,85 × (0,905 − marj))
+ * liste × (1 − indirim) × (1 − 0,095) − 0,25 − maliyet = marj × liste × (1 − indirim)
+ * → liste = (maliyet + sabit) / ((1 − indirim) × (0,905 − marj))
+ * (indirim %30 ve marj %25 ile payda 0,70 × 0,655 = 0,4585)
  *
  * Tam dolara yuvarlanır: Etsy'de küsuratlı fiyat (54,37) amatör durur ve
  * mağazanın mevcut fiyatları da tam dolar.

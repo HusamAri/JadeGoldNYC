@@ -10,6 +10,13 @@ grams on the scale (gold + enamel + stones) are carried separately so the two ne
 The engine's per-gram cost is the supplier's all-in 14K invoice rate (pricing.ts header): there is
 no separate labour line, and there is no verified 18K rate. A non-14K piece therefore fails here
 instead of being priced at the 14K rate.
+
+Karat variants (2026-10-18): the owner's panel import gave every piece three variants, Gold Karat
+10K / 14K / 18K. The design is still 14K (`price` stays the 14K row); `price.karats` adds the
+10K and 18K ESTIMATES with the panel's own rule, lib/gold-cost.ts `derivePurchaseCentsPerGram`:
+the metal part of the $/g rate scales with purity at today's spot, the supplier's labour premium
+(14K rate − 14K melt) does not; grams scale with alloy density. Both inputs are dated below and
+must be refreshed before re-pricing. `panel_prices.py` turns `price.karats` into the panel SQL.
 """
 import json
 import math
@@ -20,27 +27,74 @@ import re
 HERE = pathlib.Path(__file__).parent
 
 # lib/jade/pricing.ts
-COST_PER_GRAM = 106_00
+COST_PER_GRAM = 106_00      # supplier's all-in 14K rate, cents per gram
 SHIPPING = 5_00
 PACKAGING = 1_50
-DISCOUNT = 0.25
+DISCOUNT = 0.30             # 2026-10-18: %25 → %30, owner's instruction (pricing.ts, fiyatlandirma.md §13)
 ETSY_RATE = 0.095
 ETSY_FIXED = 25
-MARGIN = 0.25
+# 2026-10-18, owner: "fiyatların kar marjını %50 olarak belirle". Net margin on what the shop
+# receives (list × 0.70) after Etsy fees — the engine's own definition (jadeMarginAt). This is
+# the COLLECTION's target; the engine default JADE_TARGET_MARGIN (0.25, catalog-wide) is
+# unchanged and jadeTargetPriceCents takes the margin as a parameter.
+MARGIN = 0.50
+
+# lib/gold-cost.ts: derivePurchaseCentsPerGram + KARAT_PURITY. Spot is an INPUT, dated.
+SPOT_USD_PER_OZT = 4166.10  # gold-api.com, 2026-10-18 18:58 UTC
+SPOT_SOURCE = "gold-api.com 2026-10-18T18:58Z"
+TROY_OZ_GRAMS = 31.1035
+PURITY = {"10K": 0.416, "14K": 0.585, "18K": 0.75}
+# same casting volume, alloy density: docs/second-brain.md 2026-09-16 (maker tables, ×0.892 / ×1.137);
+# Jade's own live catalog measures 0.880 / 1.121 on 750 cells, so these are the slightly heavier reading
+DENSITY_RATIO = {"10K": 0.892, "14K": 1.0, "18K": 1.137}
+KARATS = ("10K", "14K", "18K")
 
 
-def cost_cents(g):
-    return round(g * COST_PER_GRAM) + SHIPPING + PACKAGING
+def rate_cents(karat):
+    """$/g by karat: 14K is the invoice rate; 10K/18K = that karat's melt + the 14K labour premium."""
+    if karat == "14K":
+        return COST_PER_GRAM
+    pure = SPOT_USD_PER_OZT * 100 / TROY_OZ_GRAMS
+    premium = max(0.0, COST_PER_GRAM - pure * PURITY["14K"])
+    return round(pure * PURITY[karat] + premium)
 
 
-def list_cents(g, margin=MARGIN):
+def karat_grams(g14, karat):
+    return round(g14 * DENSITY_RATIO[karat], 2)
+
+
+def cost_cents(g, karat="14K"):
+    return round(g * rate_cents(karat)) + SHIPPING + PACKAGING
+
+
+def list_cents(g, margin=MARGIN, karat="14K"):
     denom = (1 - DISCOUNT) * ((1 - ETSY_RATE) - margin)
-    return math.ceil((cost_cents(g) + ETSY_FIXED) / denom / 100) * 100
+    return math.ceil((cost_cents(g, karat) + ETSY_FIXED) / denom / 100) * 100
 
 
-def margin_at(price, g):
+def margin_at(price, g, karat="14K"):
     gross = price * (1 - DISCOUNT)
-    return (gross - (gross * ETSY_RATE + ETSY_FIXED) - cost_cents(g)) / gross
+    return (gross - (gross * ETSY_RATE + ETSY_FIXED) - cost_cents(g, karat)) / gross
+
+
+def paid_cents(price):
+    paid = price * (100 - round(DISCOUNT * 100)) // 100  # list is whole dollars, so this is exact
+    assert price * (100 - round(DISCOUNT * 100)) % 100 == 0
+    return paid
+
+
+def karat_rows(g14):
+    """The three variant rows the panel carries; 14K is the design, 10K/18K are density + rate estimates."""
+    rows = {}
+    for k in KARATS:
+        g = karat_grams(g14, k)
+        price = list_cents(g, karat=k)
+        m = margin_at(price, g, k)
+        assert m >= MARGIN - 1e-9, (k, g, m)
+        rows[k] = {"grams": g, "rate_cents_per_gram": rate_cents(k), "cost_cents": cost_cents(g, k),
+                   "list_cents": price, "paid_cents": paid_cents(price), "margin": round(m, 4)}
+    assert rows["10K"]["list_cents"] < rows["14K"]["list_cents"] < rows["18K"]["list_cents"], rows
+    return rows
 
 
 # working gram bands, gold grams incl. chain and findings (spec rule L7)
@@ -59,11 +113,9 @@ for p in spec["products"]:
     lo, hi = BANDS[cat]
     assert lo <= g <= hi, (pid, g, (lo, hi))
     assert p["total_grams"] >= g, pid
-    price = list_cents(g)
-    paid = price * 3 // 4  # list is whole dollars, so this is exact
-    assert price * 3 % 4 == 0
-    m = margin_at(price, g)
-    assert m >= MARGIN - 1e-9, (pid, m)
+    karats = karat_rows(g)
+    price, paid, m = karats["14K"]["list_cents"], karats["14K"]["paid_cents"], karats["14K"]["margin"]
+    assert price == list_cents(g) and m >= MARGIN - 1e-9, (pid, m)
 
     # Etsy gates
     t = p["title"]
@@ -92,7 +144,7 @@ for p in spec["products"]:
         assert "solid" not in t.lower(), (pid, "hollow piece cannot say solid in title")
 
     out.append({**p, "price": {"list_cents": price, "paid_cents": paid, "cost_cents": cost_cents(g),
-                               "margin": round(m, 4)}})
+                               "margin": round(m, 4), "discount": DISCOUNT, "karats": karats}})
 
 ids = [p["id"] for p in out]
 assert len(set(ids)) == len(ids), "duplicate ids"
@@ -103,8 +155,15 @@ if not os.environ.get("PARTIAL"):  # a partial run (some categories still being 
         assert sum(1 for p in out if p["category"] == cat) == 10, cat
 
 json.dump({"collection": "Jade Gold NYC Christmas 2026", "engine": "lib/jade/pricing.ts",
+           "pricing": {"discount": DISCOUNT, "target_margin": MARGIN, "cost_per_gram_14k_cents": COST_PER_GRAM,
+                       "spot_usd_per_ozt": SPOT_USD_PER_OZT, "spot_source": SPOT_SOURCE,
+                       "rate_cents_per_gram": {k: rate_cents(k) for k in KARATS}, "density_ratio": DENSITY_RATIO,
+                       "karat_rule": "lib/gold-cost.ts derivePurchaseCentsPerGram; 14K is the design"},
            "products": out}, open(HERE / "catalog.json", "w"), ensure_ascii=False, indent=1)
 for p in out:
-    print(f"{p['id']:>4} {p['gold_grams']:.2f} g  ${p['price']['list_cents'] // 100:>4} list  "
-          f"${p['price']['paid_cents'] / 100:>7.2f} paid  {p['title'][:70]}")
-print(f"{len(out)}/{len(out)} gates passed")
+    k = p["price"]["karats"]
+    print(f"{p['id']:>4} {p['gold_grams']:.2f} g  14K ${k['14K']['list_cents'] // 100:>4} list "
+          f"${k['14K']['paid_cents'] / 100:>7.2f} paid · 10K ${k['10K']['list_cents'] // 100:>4} · "
+          f"18K ${k['18K']['list_cents'] // 100:>4}  {p['title'][:60]}")
+print(f"{len(out)}/{len(out)} gates passed · discount {DISCOUNT:.0%} · $/g " +
+      " ".join(f"{k} {rate_cents(k) / 100:.2f}" for k in KARATS) + f" @ spot {SPOT_USD_PER_OZT}")
