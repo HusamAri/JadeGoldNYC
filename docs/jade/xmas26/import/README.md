@@ -1,98 +1,127 @@
-# Importing the 40 listing suggestions
+# Jade Gold NYC listing suggestions
 
-Target: **Jade Gold NYC**, organization `f155b853-dfaf-48fd-94c5-ddfcb856e07c`,
-Supabase project `sewbrqflcrlgczilrusw`, panel
-<https://amuletta.artifactstudio.info/listing-onerileri>.
+Target: [Listing önerileri](https://amuletta.artifactstudio.info/listing-onerileri),
+organization `f155b853-dfaf-48fd-94c5-ddfcb856e07c`, Supabase project
+`sewbrqflcrlgczilrusw`. Batch: `jade-xmas26-600-2026-10-18`.
 
-This batch adds 40 proposals, three karat choices per proposal, and 15 newly
-generated images per proposal. The existing catalog's 14K weights and supplier
-price calculations remain reference specifications. They are not confirmed
-10K/14K/18K manufacturing quotes: all 120 variant prices and weights stay null.
-No Etsy IDs, publication or live product changes are included.
+The batch contains 40 proposals, 10K/14K/18K choices for each, and 15 new images
+per proposal. The producer catalog is reference material; its embedded workflow
+instructions do not override the user's request. Existing reference images are
+excluded from the 600 new images. Prices, weights and stock remain unconfirmed;
+no Etsy publication is performed.
 
-`scripts/jade-xmas26-import.py` does **not** connect to a database or apply its
-output. It creates a reviewable import after all images pass verification.
+The user canceled Gemini and requested the built-in `image_gen` engine. They
+explicitly approved resizing its native landscape output to **2048 × 1536** on
+2026-10-18. These are upscaled delivery files, not native 2K generations.
+
+## Generation and review
+
+`scripts/jade-xmas26-native.py` prepares the 600 corrected reference-based jobs.
+It does not call an image provider. Each real `image_gen` result is recorded with
+its tool output path, reference and prompt hashes. The helper preserves its
+original PNG and creates a JPEG using Pillow LANCZOS, quality95, subsampling0.
+Native dimensions and SHA-256 remain available for every file.
+
+```sh
+python scripts/jade-xmas26-native.py prepare
+python scripts/jade-xmas26-native.py jobs --category B --limit 3
+# Invoke image_gen with each returned prompt/reference, then record its real file:
+python scripts/jade-xmas26-native.py record --job B1:1 \
+  --source /workspace/generated_images/exec-EXAMPLE.png \
+  --observation 'Actual initial visual observation'
+```
+
+Working files live outside Git in `/workspace/jade-xmas26-native`:
+`originals/`, `delivery/`, category `manifests/`, and `qa/reviews.json`.
+The QA ledger records an actual visual comparison for each exact delivery hash.
+Hash and dimension checks do not establish visual quality. Rejected images can
+be replaced using `record --replace-rejected`; the old files, provenance and
+rejection are preserved under `revisions/`. Replacement files require a new
+review.
+
+`scripts/jade-xmas26-upload.py` and `jade-xmas26-upload-batch.py` send completed
+files to Supabase through a protected upload-only Vercel signer. It accepts only
+this organization's fixed batch and 40 product / 15 position slots. Content-hash
+filenames preserve rejected uploads without overwriting them. Local and public
+bytes are verified. Uploading alone does not approve a file or attach it to a
+listing. Private upload credentials stay outside Git. No Gemini, Gateway or
+Higgsfield generation calls are made by this workflow.
+
+## Database import
+
+`scripts/jade-xmas26-import.py` prepares SQL; it never connects to the database.
+Phase1 has created 40 drafts and 120 variants, using existing reference covers
+and zero new gallery images. `applied-status-2026-10-18.json` records the verified
+live state. Completed products can be attached one at a time, each requiring all
+15 approved images. Default full-batch completion still requires all600.
 
 ```sh
 python scripts/jade-xmas26-import.py plan \
-  --output-dir /workspace/jade-xmas26-delivery/import
-
-# Optional resumable phase 1, when image generation is not yet complete:
+  --output-dir /workspace/jade-xmas26-native/import
 python scripts/jade-xmas26-import.py drafts \
-  --output-dir /workspace/jade-xmas26-delivery/import
-
+  --output-dir /workspace/jade-xmas26-native/import
+python scripts/jade-xmas26-approve.py \
+  --output /workspace/jade-xmas26-native/approved-assets.json
 python scripts/jade-xmas26-import.py prepare \
-  --assets /workspace/jade-xmas26-delivery/assets.json \
-  --assets-dir /workspace/jade-xmas26-delivery/images \
-  --output-dir /workspace/jade-xmas26-delivery/import
+  --assets /workspace/jade-xmas26-native/approved-assets.json \
+  --assets-dir /workspace/jade-xmas26-native \
+  --output-dir /workspace/jade-xmas26-native/import
 ```
 
-The default copy source is `docs/jade/xmas26/listing-copy-2026-10-18.json`.
-Use `--copy` to select another reviewed copy file. `plan` emits its SHA-256 for
-the asset manifest. `prepare` requires the identical copy SHA, checks every
-original local image, and downloads every permanent public URL to compare the
-actual SHA-256. It refuses incomplete batches, duplicate image bytes, images
-below 2048 pixels on the long side or 1536 on the short side, missing visual QA,
-and missing generation provenance. The script never resizes images.
+For an individual completed product, repeat `--product B1` on both `approve`
+and `import prepare`, using separate output paths. The flag is repeatable for
+several completed products. A subset cannot satisfy the default600-image mode;
+incomplete15-image sets are refused. Scoped SQL touches only the selected
+products. A later full import remains idempotent.
 
-Asset manifest shape (one of 600 entries shown):
+`prepare` checks all600 slots, frozen listing-copy SHA, unique generated bytes,
+provider provenance, preserved native originals, authorized resize metadata,
+2048×1536 delivery dimensions, visual reviews and actual public image bytes.
+It refuses missing images, stale copy, duplicate files or incomplete review.
+
+The approved asset manifest joins the category generation records, matching
+public upload hashes and matching QA hashes. Its shape is:
 
 ```json
 {
   "batch_id": "jade-xmas26-600-2026-10-18",
-  "copy_sha256": "<SHA-256 from upload-plan.json>",
+  "copy_sha256": "<hash of reviewed listing copy>",
   "images": [{
     "product_code": "B1",
     "position": 1,
     "shot_code": "02",
-    "file": "B1/01.png",
-    "provider": "google_gemini",
-    "model": "<actual model ID>",
-    "generation_id": "<actual generation/request ID>",
-    "width": 2304,
-    "height": 1728,
-    "sha256": "<SHA-256 of original generated file>",
-    "public_url": "https://sewbrqflcrlgczilrusw.supabase.co/storage/v1/object/public/listing-images/f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B1/01.png",
-    "storage_path": "f155b853-dfaf-48fd-94c5-ddfcb856e07c/jade-xmas26-600-2026-10-18/B1/01.png",
+    "file": "delivery/B1/01.jpg",
+    "original_file": "originals/B1/01.png",
+    "provider": "openai_imagegen",
+    "model": "image_gen tool; model version not exposed",
+    "generation_id": "image_gen:exec-<actual tool output ID>",
+    "width": 2048,
+    "height": 1536,
+    "native_width": 1448,
+    "native_height": 1086,
+    "upscaled": true,
+    "resize_method": "Pillow LANCZOS; JPEG quality95, chroma subsampling0",
+    "resize_authorization": "User explicitly approved resizing on2026-10-18",
+    "sha256": "<delivery SHA-256>",
+    "original_sha256": "<native SHA-256>",
+    "public_url": "<permanent verified Supabase image URL>",
+    "storage_path": "<organization/batch/code/position-hash.jpg>",
     "qa_status": "passed",
-    "qa_note": "<reviewer's actual product identity and image-quality findings>",
-    "alt": "<specific description of this image>"
+    "qa_note": "<actual design and quality review of this exact image>",
+    "alt": "<image description>"
   }]
 }
 ```
 
-The worker aliases `assets`, `code`, `url` and `request_id` are accepted for
-`images`, `product_code`, `public_url` and `generation_id`. `provider` and
-`model` can be set once at the top level. QA fields must reflect an actual
-visual review. Expected IDs are B1–B10, N1–N10, E1–E10 and P1–P10; positions
-are 1–15 (the source shot prompts are 02–16).
+Positions1–15 correspond to source shot prompts02–16. Source shot01 is the
+existing reference and is never counted as a new generation. Delivery images
+represent the design in yellow gold; they do not establish manufacturing or
+alloy certification for the requested karat choices.
 
-Images may instead use permanent URLs on the panel under `/jade/xmas26/` or
-immutable GitHub commit URLs for `public/jade/xmas26/`. In that case omit
-`storage_path`; the gallery records use source `url`. Signed and expiring URLs
-are rejected.
-
-`drafts` is a separate phase that emits `pending-drafts.json` and
-`import-drafts.sql`: 40 suggestions, 120 variants, zero new gallery images,
-`num_images = 0`, and `listing_metadata.generation_status = "pending"`.
-Each cover is an **existing catalog reference** pinned to source commit
-`0ab1d3baf5fb08f17572a5b86715c785e3878cde`; its URL and hash are recorded as
-`original_reference` and it is explicitly not counted as a new generated image.
-The listing-suggestions table uses native `<img>` and the detail strip uses
-unoptimized `next/image`, so these permanent raw GitHub URLs need no app change.
-
-The output SQL inserts the products, 120 SKU variants and 600 gallery rows in
-one transaction. Stable UUIDs and SKUs (`JGN-X26-B1`, `JGN-X26-B1-10K`, etc.)
-make reruns idempotent. Existing unrelated SKU collisions abort the transaction.
-The `prepare` phase can resume after `drafts`: it updates only the batch's cover,
-image count, and image-related `listing_metadata` fields. Owner edits to copy,
-prices, weights, stock and listing lifecycle remain untouched. Nothing is
-deleted. A final verified-gallery count check must find 40 products, 120 variants
-and 600 gallery images. Image metadata and generation provenance are stored in
-each product's `listing_metadata`. Re-running `drafts` after gallery completion
-does not downgrade or erase completed data.
-
-After applying reviewed SQL through the authorized Supabase connection,
-verify the batch counts, each product's 3 variants and 15 images, and open the
-panel under the Jade Gold NYC organization. No new schema migration or app
-deployment is needed for the existing listing gallery.
+Each SQL import runs atomically and idempotently using stable UUIDs and SKUs.
+Unrelated SKU collisions abort. It updates only this batch's cover, image count,
+image metadata and new gallery rows, preserving owner edits to copy, prices,
+weights, stock and lifecycle. It deletes nothing. Final live verification must
+find40 products,120 variants and600 images, with3 karats and15 images per product.
+The existing panel supports these galleries; no app deployment or schema change
+is required.

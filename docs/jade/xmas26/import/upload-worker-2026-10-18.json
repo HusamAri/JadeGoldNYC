@@ -1,0 +1,60 @@
+{
+  "project_id": "prj_ZjHOT7KqKD8jvjwtmVA1EJtsOWR5",
+  "team_id": "team_x0cSQ3pxQ6mL15at76wVQ8H4",
+  "deployment_id": "dpl_B4CVABbNr5LVF9Ptogq2T9QTpxwt",
+  "url": "https://jade-gold-77nlodook-husamaris-projects.vercel.app/api/upload",
+  "target": null,
+  "aliases": [],
+  "status": "READY",
+  "purpose": "fixed-catalog signed storage uploads only; no image-generation providers",
+  "expires_at": "2026-10-21T00:00:00Z",
+  "batch_id": "jade-xmas26-600-2026-10-18",
+  "bucket": "listing-images",
+  "org_id": "f155b853-dfaf-48fd-94c5-ddfcb856e07c",
+  "preview_environment_variable": {
+    "key": "JADE_XMAS26_UPLOAD_TOKEN",
+    "id": "4YhnByJDy6bAZEfa",
+    "target": [
+      "preview"
+    ]
+  },
+  "private_client_config": "/tmp/jade-xmas26-upload-client.json",
+  "credential_values_included": false,
+  "verified_checks": [
+    "unauthenticated request401",
+    "invalid fixed-catalog slot400",
+    "true preview without production aliases",
+    "bounded512byte request",
+    "signed path/no-upsert mocked checks",
+    "full64hex delivery hash required for versioned path",
+    "actual versioned N1:04\u201306 and E1:04\u201306 uploads publicly downloaded and SHA256 matched",
+    "changed SHA watcher identity and superseded_images archival implemented"
+  ],
+  "cleanup_status": "active_for_authorized_image_uploads",
+  "pilot": {
+    "slot": "B1:1",
+    "remote_bytes_verified": true,
+    "sha256": "a9184fdc43120c6300ffb57623f0ffee58d0fa8bff061c94349b48be9b852f73",
+    "native_resolution": "1448x1086",
+    "delivery_resolution": "2048x1536",
+    "upscaled": true,
+    "user_authorized": true,
+    "qa_status": "pending"
+  },
+  "superseded_deployments": [
+    {
+      "id": "dpl_8PVpKUL9Vj1MArB2rcSaLumzvqrG",
+      "url": "https://jade-gold-dzkh6ygme-husamaris-projects.vercel.app/api/upload",
+      "share_link_revoked": true
+    }
+  ],
+  "storage_path_template": "<org>/<batch>/<code>/<position>-<full_delivery_sha256>.<png|jpg>",
+  "replacement_behavior": "Immutable new hash version, upsert=false, previous manifest metadata archived in superseded_images, new QA pending",
+  "watcher": {
+    "command": "python scripts/jade-xmas26-upload-batch.py --watch --seconds 21600 --concurrency 4",
+    "manifest": "/workspace/jade-xmas26-output/verified-assets.json",
+    "native_manifests": "/workspace/jade-xmas26-native/manifests/{B,N,E,P}.json",
+    "db_writes": false,
+    "qa_auto_approval": false
+  }
+}

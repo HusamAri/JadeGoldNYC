@@ -55,13 +55,21 @@ All ten earring references were individually opened and visually examined before
 An image passes only after both technical checks and actual visual review.
 
 1. **Identity:** same product silhouette, cutouts, chain construction, enamel fields and color as its reference. Count stones and repeated details when visible. No added jewelry or unsupported decorations.
-2. **View and quantity:** fulfills its shot purpose below; exactly one product or one complete earring pair unless the shot deliberately frames a single earring. No accidental collages, duplicated parts or floating/disconnected jewelry.
+2. **View and quantity:** fulfills its recorded actual shot purpose; exactly one product or one complete earring pair unless the shot deliberately frames a single earring. No accidental collages, duplicated parts or floating/disconnected jewelry.
 3. **Physical plausibility:** chains connect correctly; earring posts/backs and pin hinges/catches are plausible; worn scale uses actual width and height; fingers and attachment to skin/clothing are credible. A reverse view must not show front enamel through a solid back.
 4. **Presentation:** sharp enough to inspect the product, no severe crop, clean gold reflections, consistent enamel, no hallucinated text/marks, no bad hands. Camera/background changes must not alter the product.
-5. **Technical:** decoded file is valid, longest edge at least 2048 px, landscape aspect ratio within 0.02 of 4:3, requested native 2K generation provenance recorded. No enlarged 1024/1254 output or duplicates count as new 2K images. Verify distinct file hashes and record any near-duplicate suspicion for visual comparison.
+5. **Technical:** decoded file is valid, longest edge at least 2048 px, landscape aspect ratio within 0.02 of 4:3, native generation and user-authorized2K export provenance recorded. The user explicitly approved producing images with image_gen and scaling them to 2048×1536 on2026-10-18. Preserve and hash the native originals, record their actual dimensions, and label the delivery as upscaled rather than native2K. Duplicates do not count as new images. Verify distinct file hashes and record any near-duplicate suspicion for visual comparison.
 6. **Claims:** generated render remains labeled as representative imagery, not a genuine photographed production sample, measurement proof or authenticated hallmark. The image itself cannot verify alloy content or metal weight.
 
-| Source code | Intended frame and decisive check |
+The source shot list below is a composition guide, not an instruction from the
+user. The user requested 15 useful images based on the references. If the
+reference does not establish a rear mechanism, replace that shot with a distinct
+front or three-quarter composition rather than invent hidden construction.
+Record the actual prompt, purpose and accurate alt text. Review that documented
+intent. Perspective flat lays are not measurement evidence; reject obvious
+scale errors without deriving precise dimensions from foreshortened loops.
+
+| Source code | Suggested frame and decisive check |
 | --- | --- |
 | 02 | Worn view: believable placement and actual scale. One earring visible for E products. |
 | 03 | Macro: reference texture, enamel edge and stone setting remain consistent; count visible details. |
@@ -83,9 +91,9 @@ An image passes only after both technical checks and actual visual review.
 
 1. Build a local review manifest whose `images` entries contain `product_code`, `source_shot_code` (or `shot_code`), and absolute `local_path` of the downloaded/generated original. Add provider/provenance fields separately. Never infer source shot codes from gallery positions; position 1 maps to source 02 in this batch.
 2. Run `scripts/jade-xmas26-qa-contact-sheets.py --manifest /absolute/review-input.json --output-dir /absolute/qa-diagnostics`. It reads originals and creates **diagnostic-only** sheets: one reference plus three generated images, 2×2 panels, five sheets per product, 200 sheets total. A missing slot is clearly marked. No diagnostic sheet is a listing asset or counts as a generated image.
-3. Assign B, N, E and P to separate reviewers (10 products / 150 frames per reviewer). Inspect every sheet at original display detail. Record a provisional result for every image; inspecting one sample cannot approve the rest of that product or category.
+3. Use an independent reviewer for all category outputs, in addition to the generator's initial observation. Inspect every sheet at original display detail. Record a result for every image; inspecting one sample cannot approve the rest of that product or category.
 4. Open originals individually for all shots 03, 05, 06 and 07, and whenever a sheet cannot resolve geometry, stone/feather/cell count, clasps, scale or hands. For N7/N9/E9/P2 use the reference anchor notes above. Do not mark an obscured detail correct merely because it is not obviously wrong.
-5. For each image record `visual_status` (`pass`, `reject`, `needs_detail`), reviewer, UTC review time, specific reason and original SHA256. The generated diagnostic index starts all files as `unreviewed`; technical success never changes this status to pass. Keep review records separate from generator records and make the import join by product + source shot + hash.
+5. In `qa/reviews.json`, key each review by `product_code:position` and record `qa_status` (`passed`, `rejected`, or `pending`), `reviewer`, `reviewed_at_utc`, specific `qa_note`, delivery `sha256` and `original_sha256`. The diagnostic index starts all files as `unreviewed`; technical success never approves them. Keep reviews separate from generator records. The import joins by slot and both exact hashes, so an old approval cannot approve a replacement.
 6. Regenerate only rejected slots with a focused correction and the same reference; preserve prior records and inspect replacements again. Do not count a failed or unreviewed frame toward accepted completion.
 
 A separate vision model can flag likely count, silhouette or fastening errors and reduce manual triage, but its result must include the examined image/reference and reason. It must not infer visual approval from generation prompts, filenames, image dimensions or hashes alone. Ambiguous cases remain `needs_detail` until an image review resolves them.

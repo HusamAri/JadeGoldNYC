@@ -4,7 +4,7 @@
   "project_id": "sewbrqflcrlgczilrusw",
   "organization_id": "f155b853-dfaf-48fd-94c5-ddfcb856e07c",
   "panel_url": "https://amuletta.artifactstudio.info/listing-onerileri",
-  "phase": "drafts_applied_images_blocked",
+  "phase": "drafts_applied_own_engine_images_in_progress",
   "verified_database_counts": {
     "new_draft_suggestions": 40,
     "new_variants": 120,
@@ -17,11 +17,9 @@
   "requested_new_images": 600,
   "accepted_new_2k_images": 0,
   "reference_cover_images_are_new_generations": false,
-  "blockers": {
-    "google": "429: free-tier input token limit0 for native2K image model",
-    "vercel_ai_gateway": "403 customer_verification_required; credit balance0; credit card required"
-  },
-  "next_action": "Activate billed Google image access or verify Vercel AI Gateway billing, then regenerate a2K pilot and visually verify before launching remaining slots. Final gallery import requires600 verified images.",
+  "blockers": {},
+  "next_action": "Generate all600 with image_gen, preserve native originals, export user-authorized2048x1536 files, visually review, verify public Supabase bytes, then attach the complete gallery.",
   "etsy_published": false,
-  "existing_owner_records_modified": false
+  "existing_owner_records_modified": false,
+  "generation_status_updated_at_utc": "2026-10-18T17:45:29.483720+00:00"
 }

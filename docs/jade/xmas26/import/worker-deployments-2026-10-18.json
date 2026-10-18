@@ -8,7 +8,8 @@
     "provider": "google_gemini",
     "model": "gemini-nano-banana-2.1",
     "aliases": [],
-    "worker_expires_at": "2026-10-21T00:00:00Z"
+    "worker_expires_at": "2026-10-21T00:00:00Z",
+    "workflow_status": "cancelled_by_user"
   },
   "temporary_preview_deployments": [
     "dpl_ECKfBiCLKJSscB5thPkLuFGXU8SJ",
@@ -21,7 +22,9 @@
   "temporary_environment_variable": {
     "id": "zKmFi0y2spv2mbSP",
     "key": "JADE_XMAS26_WORKER_TOKEN",
-    "targets": ["preview"]
+    "targets": [
+      "preview"
+    ]
   },
   "private_local_config_path": "/tmp/jade-xmas26-client.json",
   "private_local_token_path": "/tmp/jade-xmas26-worker-token",
@@ -33,7 +36,7 @@
     "jade-gold-nyc-husamaris-projects.vercel.app",
     "jade-gold-nyc-git-main-husamaris-projects.vercel.app"
   ],
-  "cleanup_status": "not_requested_yet",
+  "cleanup_status": "provider_calls_stopped_share_access_revoked_env_disabled_pending_deletion",
   "cleanup_instructions": [
     "Stop generation and confirm the final asset and QA manifests are saved.",
     "Read every production alias and confirm it still targets the preserved production deployment. Do not change or delete these aliases.",
@@ -42,5 +45,19 @@
     "Read environment metadata with decrypt=false. Confirm zKmFi0y2spv2mbSP is exactly JADE_XMAS26_WORKER_TOKEN scoped only to preview, then DELETE /v9/projects/prj_ZjHOT7KqKD8jvjwtmVA1EJtsOWR5/env/zKmFi0y2spv2mbSP?teamId=team_x0cSQ3pxQ6mL15at76wVQ8H4.",
     "Delete the two exact private local credential files only after the remote workers are retired.",
     "Read the preserved aliases again and verify production remains unchanged. Keep source, generated asset manifests, request receipts and QA records. Do not delete Supabase images or product/gallery rows."
-  ]
+  ],
+  "cleanup_observations": {
+    "at": "2026-10-18T17:42:00Z",
+    "provider_calls_stopped": true,
+    "latest_share_links_revoked": true,
+    "previous_share_links_absent": true,
+    "worker_env_disabled_for_future_deployments": true,
+    "immutable_previews_remain_protected_until_code_expiry": "2026-10-21T00:00:00Z",
+    "deployment_and_env_deletion": "Unavailable: connector does not expose DELETE and CLI is logged out",
+    "production_aliases_verified_original": true,
+    "google_and_supabase_key_metadata_unchanged": true,
+    "project_firewall_unchanged": true
+  },
+  "historical_source_commit": "d78ecca",
+  "final_branch_source": "Canceled provider worker and driver removed; use own-engine generation with upload-only worker."
 }

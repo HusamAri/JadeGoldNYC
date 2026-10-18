@@ -29,7 +29,7 @@ BUCKET = "listing-images"
 SUPABASE_PUBLIC = f"https://{PROJECT}.supabase.co/storage/v1/object/public/{BUCKET}/"
 IDS = tuple(f"{category}{i}" for category in "BNEP" for i in range(1, 11))
 KARATS = ("10K", "14K", "18K")
-PROVIDERS = {"openai_imagegen", "google_gemini", "vercel_ai_gateway"}
+PROVIDERS = {"openai_imagegen"}
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_COPY = ROOT / "docs/jade/xmas26/listing-copy-2026-10-18.json"
 SOURCE_COMMIT = "0ab1d3baf5fb08f17572a5b86715c785e3878cde"
@@ -51,6 +51,11 @@ def digest(data: bytes) -> str:
 
 def stable_id(kind: str, key: str) -> str:
     return str(uuid.uuid5(uuid.UUID(ORG_ID), f"{BATCH}/{kind}/{key}"))
+
+
+def selected_products(products=None) -> tuple[str, ...]:
+    require(products is None or bool(products) and not (set(products) - set(IDS)), "Invalid product selection")
+    return tuple(code for code in IDS if products is None or code in products)
 
 
 def read_copy(path: Path) -> tuple[dict, bytes]:
@@ -92,7 +97,7 @@ def make_plan(copy: dict, copy_sha: str) -> dict:
             "product_code": code,
             "position": position,
             "id": stable_id("image", f"{code}/{position}"),
-            "storage_path_template": f"{ORG_ID}/{BATCH}/{code}/{position:02d}.<extension>",
+            "storage_path_template": f"{ORG_ID}/{BATCH}/{code}/{position:02d}-<sha256>.<extension>",
         } for code in IDS for position in range(1, 16)],
         "requirements": {
             "minimum_long_edge": 2048,
@@ -141,11 +146,14 @@ def verify_remote(asset: dict) -> None:
     require(digest(raw) == asset["sha256"], f"{asset['product_code']}/{asset['position']}: public bytes differ from verified file")
 
 
-def verify_assets(path: Path, assets_dir: Path, copy_sha: str) -> list[dict]:
+def verify_assets(path: Path, assets_dir: Path, copy_sha: str, products=None) -> list[dict]:
+    selected = selected_products(products)
     manifest = json.loads(path.read_text())
     require(isinstance(manifest, dict), "Asset manifest must be a JSON object")
     require(manifest.get("batch_id") == BATCH, "Asset manifest batch_id does not match")
     require(manifest.get("copy_sha256") == copy_sha, "Asset manifest was prepared for different listing copy")
+    require(manifest.get("selected_products") is None or set(manifest["selected_products"]) == set(selected),
+            "Asset manifest selection differs from requested products")
     images = manifest.get("images", manifest.get("assets", []))
     require(isinstance(images, list) and all(isinstance(a, dict) for a in images), "Asset entries must be objects")
     # The generation worker uses short aliases; keep its original report usable.
@@ -155,9 +163,9 @@ def verify_assets(path: Path, assets_dir: Path, copy_sha: str) -> list[dict]:
                "generation_id": a.get("generation_id", a.get("request_id")),
                "provider": a.get("provider", manifest.get("provider")),
                "model": a.get("model", manifest.get("model"))} for a in images]
-    require(len(images) == 600, f"Expected 600 generated assets; got {len(images)}")
+    require(len(images) == 15 * len(selected), f"Expected {15 * len(selected)} generated assets; got {len(images)}")
     keys = {(a.get("product_code"), a.get("position")) for a in images}
-    require(keys == {(code, pos) for code in IDS for pos in range(1, 16)}, "Asset slots must be exactly 1–15 for every product")
+    require(keys == {(code, pos) for code in selected for pos in range(1, 16)}, "Asset slots must be exactly 1–15 for every selected product")
     seen = set()
     reference_hashes = {digest((SOURCE_REFERENCES / f"{code}.jpg").read_bytes()) for code in IDS}
     root = assets_dir.resolve()
@@ -186,6 +194,25 @@ def verify_assets(path: Path, assets_dir: Path, copy_sha: str) -> list[dict]:
             require(image.format in {"JPEG", "PNG", "WEBP"}, f"{label}: unsupported image format")
         require(max(width, height) >= 2048 and min(width, height) >= 1536, f"{label}: image is below 2K ({width}×{height})")
         require((width, height) == (a.get("width"), a.get("height")), f"{label}: reported dimensions disagree")
+        require((width, height) == (2048, 1536), f"{label}: authorized delivery must be 2048×1536")
+        require(isinstance(a.get("original_file"), str) and bool(a["original_file"]),
+                f"{label}: preserved original path is missing")
+        original = (root / a["original_file"]).resolve()
+        require(original.is_relative_to(root) and original.is_file(), f"{label}: preserved original is missing")
+        require(digest(original.read_bytes()) == a.get("original_sha256"), f"{label}: original hash mismatch")
+        with Image.open(original) as native:
+            native_width, native_height = native.size
+            require(native.size == (a.get("native_width"), a.get("native_height")),
+                    f"{label}: original dimensions disagree")
+            native.verify()
+        require(abs(native_width / native_height - 4 / 3) <= 0.02,
+                f"{label}: original aspect ratio would require distortion or cropping")
+        actual_upscale = native_width < width or native_height < height
+        require(type(a.get("upscaled")) is bool and a["upscaled"] == actual_upscale,
+                f"{label}: upscaled flag disagrees with actual dimensions")
+        if actual_upscale:
+            require(bool(a.get("resize_authorization")) and bool(a.get("resize_method")),
+                    f"{label}: user-authorized resize provenance is missing")
         check_public_url(a["public_url"], a.get("storage_path"))
     # No database-ready artifact is produced until actual public bytes pass too.
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
@@ -194,11 +221,14 @@ def verify_assets(path: Path, assets_dir: Path, copy_sha: str) -> list[dict]:
     return sorted(images, key=lambda a: (IDS.index(a["product_code"]), a["position"]))
 
 
-def make_payload(copy: dict, copy_sha: str, images: list[dict], *, pending: bool = False) -> dict:
-    by_code = {code: [a for a in images if a["product_code"] == code] for code in IDS}
+def make_payload(copy: dict, copy_sha: str, images: list[dict], *, pending: bool = False, products=None) -> dict:
+    selected = selected_products(products)
+    by_code = {code: [a for a in images if a["product_code"] == code] for code in selected}
     products, variants, gallery = [], [], []
     for p in sorted(copy["products"], key=lambda p: IDS.index(p["id"])):
         code = p["id"]
+        if code not in selected:
+            continue
         pid = stable_id("product", code)
         reference_url = f"https://raw.githubusercontent.com/HusamAri/JadeGoldNYC/{SOURCE_COMMIT}/docs/jade/xmas26/images/heroes/{code}.jpg"
         products.append({
@@ -227,7 +257,8 @@ def make_payload(copy: dict, copy_sha: str, images: list[dict], *, pending: bool
                 "notes": p.get("notes", []),
                 "images": [{k: a.get(k) for k in (
                     "position", "sha256", "width", "height", "provider", "model",
-                    "generation_id", "qa_status", "qa_note",
+                    "generation_id", "qa_status", "qa_note", "native_width", "native_height",
+                    "original_sha256", "upscaled", "resize_method", "resize_authorization",
                 )} for a in by_code[code]],
             },
         })
@@ -246,12 +277,20 @@ def make_payload(copy: dict, copy_sha: str, images: list[dict], *, pending: bool
                 "source": "upload" if a.get("storage_path") else "url",
                 "alt": a["alt"], "position": a["position"] - 1,
             })
-    return {"batch_id": BATCH, "phase": "drafts_pending_images" if pending else "verified_gallery", "products": products, "variants": variants, "images": gallery}
+    return {"batch_id": BATCH, "phase": "drafts_pending_images" if pending else "verified_gallery", "selected_products": list(selected), "products": products, "variants": variants, "images": gallery}
 
 
 def make_sql(payload: dict) -> str:
+    selected = selected_products(payload.get("selected_products"))
     pending = payload.get("phase") == "drafts_pending_images"
-    expected_images = 0 if pending else 600
+    expected_products = len(selected)
+    expected_variants = 3 * expected_products
+    expected_images = 0 if pending else 15 * expected_products
+    require(len(payload["products"]) == expected_products and len(payload["variants"]) == expected_variants and len(payload["images"]) == expected_images,
+            "Payload counts differ from selected product scope")
+    require({p["id"] for p in payload["products"]} == {stable_id("product", code) for code in selected},
+            "Payload product IDs differ from selected product scope")
+    scope = "" if expected_products == 40 else " and p.id in (" + ",".join(f"'{stable_id('product', code)}'::uuid" for code in selected) + ")"
     encoded = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
     delimiter = "$jade_payload_" + digest(encoded.encode())[:16] + "$"
     image_update = "" if pending else f"""
@@ -272,11 +311,12 @@ def make_sql(payload: dict) -> str:
 """
     image_count_check = "" if pending else f"""
   select count(*) into expected_count from public.listing_images i join public.products p on p.id=i.product_id
-    where p.org_id='{ORG_ID}' and p.listing_metadata->>'import_batch'='{BATCH}';
-  if expected_count<>600 then raise exception 'Expected 600 batch images, found %',expected_count; end if;
+    where p.org_id='{ORG_ID}' and p.listing_metadata->>'import_batch'='{BATCH}'{scope};
+  if expected_count<>{expected_images} then raise exception 'Expected {expected_images} scoped batch images, found %',expected_count; end if;
 """
     return f"""-- Reviewed data import, not a schema migration. No Etsy publication.
--- Phase: {payload.get('phase')}; 40 draft products, 120 unpriced variants, {expected_images} new verified images.
+-- Phase: {payload.get('phase')}; {expected_products} selected products, {expected_variants} variants, {expected_images} verified images.
+-- Selected product codes: {', '.join(selected)}. Default full batch still requires40products/120variants/600images.
 -- Preserve owner copy/prices; only the verified gallery phase updates image fields.
 -- Any unrelated collision aborts. No existing records are deleted.
 begin;
@@ -332,12 +372,12 @@ begin
   from jade_import_payload b, jsonb_populate_recordset(null::public.listing_images,b.data->'images') r
   on conflict (id) do nothing;
 {image_update}
-  select count(*) into expected_count from public.products where org_id='{ORG_ID}'
-    and listing_metadata->>'import_batch'='{BATCH}';
-  if expected_count<>40 then raise exception 'Expected 40 batch products, found %',expected_count; end if;
+  select count(*) into expected_count from public.products p where p.org_id='{ORG_ID}'
+    and p.listing_metadata->>'import_batch'='{BATCH}'{scope};
+  if expected_count<>{expected_products} then raise exception 'Expected {expected_products} scoped batch products, found %',expected_count; end if;
   select count(*) into expected_count from public.product_variants v join public.products p on p.id=v.product_id
-    where p.org_id='{ORG_ID}' and p.listing_metadata->>'import_batch'='{BATCH}';
-  if expected_count<>120 then raise exception 'Expected 120 batch variants, found %',expected_count; end if;
+    where p.org_id='{ORG_ID}' and p.listing_metadata->>'import_batch'='{BATCH}'{scope};
+  if expected_count<>{expected_variants} then raise exception 'Expected {expected_variants} scoped batch variants, found %',expected_count; end if;
 {image_count_check}
 end $jade_import$;
 commit;
@@ -351,7 +391,9 @@ def main() -> None:
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--assets", type=Path)
     parser.add_argument("--assets-dir", type=Path)
+    parser.add_argument("--product", choices=IDS, action="append", help="Prepare exactly15approved images per selected product; repeatable. Default: all600.")
     args = parser.parse_args()
+    require(not args.product or args.command == "prepare", "--product is only supported for prepare")
     copy, raw = read_copy(args.copy)
     copy_sha = digest(raw)
     args.output_dir.mkdir(parents=True, exist_ok=True)
@@ -367,11 +409,11 @@ def main() -> None:
         print(f"Prepared 40 pending draft suggestions, 120 variants and 0 new gallery images → {args.output_dir}. No database changes made.")
         return
     require(args.assets is not None and args.assets_dir is not None, "prepare needs --assets and --assets-dir")
-    images = verify_assets(args.assets, args.assets_dir, copy_sha)
-    payload = make_payload(copy, copy_sha, images)
+    images = verify_assets(args.assets, args.assets_dir, copy_sha, args.product)
+    payload = make_payload(copy, copy_sha, images, products=args.product)
     (args.output_dir / "verified-import.json").write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n")
     (args.output_dir / "import.sql").write_text(make_sql(payload))
-    print(f"Verified 600 local and public images; wrote reviewable import to {args.output_dir}. No database changes made.")
+    print(f"Verified {len(images)} local and public images for {len(payload['products'])} products; wrote reviewable import to {args.output_dir}. No database changes made.")
 
 
 if __name__ == "__main__":

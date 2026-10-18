@@ -1,0 +1,1 @@
+{"$schema":"https://openapi.vercel.sh/vercel.json","framework":null,"buildCommand":"","installCommand":"","functions":{"api/upload.mjs":{"maxDuration":60}}}

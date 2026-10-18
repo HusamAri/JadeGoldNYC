@@ -1,0 +1,67 @@
+{
+  "scope": "offline integration; real approved record copied into temporary fixture; no database or production mutation",
+  "cases_passed": 16,
+  "checks": [
+    "real current approval/upload fixture accepted as1image only",
+    "stale review sha256 rejected",
+    "stale review original_sha256 rejected",
+    "stale upload sha256 rejected",
+    "stale upload original_sha256 rejected",
+    "pending review excluded",
+    "rejected review excluded",
+    "unverified public bytes excluded",
+    "incomplete reviewer evidence excluded",
+    "duplicate upload slot rejected",
+    "stale listing copy rejected",
+    "incomplete batch cannot emit final manifest",
+    "same delivery/new original refreshes provenance and archives predecessor",
+    "identical upload remains idempotent",
+    "changed delivery version preserves predecessor metadata",
+    "changed local input rejected before credentials/network"
+  ],
+  "baseline_slot": "B1:1",
+  "baseline_approved_count": 1,
+  "baseline_not_a_complete_batch": true,
+  "tracked_private_files": 0,
+  "actual_private_value_matches_in_repository_files": 0,
+  "repository_files_scanned_under2MB": 626,
+  "stable_unique_ids": 760,
+  "final_sql": "Scoped15-images-per-product and default600-image transactions executed only in isolated PGlite synthetic fixtures. Production artifacts require matching original/delivery QA hashes and actual public-byte verification; no production database writes performed.",
+  "scoped_validation_checks": [
+    "repeatable product flags normalized in catalog order",
+    "14-image selected product refused before file/network access",
+    "16-image selected product refused",
+    "wrong product slot refused",
+    "15-image subset cannot satisfy default600 mode",
+    "legacy subset cannot bypass default600 mode",
+    "approved manifest and requested scope must agree",
+    "product flags cannot silently narrow draft/plan commands",
+    "scoped approval report requires15current hash-matched reviews",
+    "cross-category duplicate current delivery SHA rejected even when requesting B1 only"
+  ],
+  "pglite": {
+    "engine": "PGlite PostgreSQL",
+    "fixture": "isolated synthetic SQL rows/URLs; no live asset verification or production database writes",
+    "passed": [
+      "40drafts/120variants/0images",
+      "one scoped product adds15images only",
+      "two further scoped products add30images only",
+      "unselected product rows unchanged",
+      "unrelated products/variants/gallery preserved",
+      "owner title/status/price/stock/metadata preserved",
+      "partial reimports idempotent",
+      "partial\u2192full reaches40/120/600 batch rows",
+      "full reimport idempotent",
+      "rerunning drafts cannot downgrade galleries",
+      "changed image collision rolls back atomically",
+      "fresh single-product import followed by full import succeeds"
+    ]
+  },
+  "validation_code_sha256": {
+    "jade-xmas26-approve.py": "aa599cfa10ad7813ee5c1d28b34e89eb502223bf0dd53efd20d1fdad4ef07e11",
+    "jade-xmas26-import.py": "ab34c9839041090d52193826387ea4155216eecbbd1eb9c379e82fdc8c63332a",
+    "jade-xmas26-upload.py": "38b314aa8a890d298df49f242452bb293a66bf89d541d71edb4cc5769c6f25c0",
+    "jade-xmas26-upload-batch.py": "b43286c5478574f9a8aba1e345a80aad7ca0a81cb734f2acdaaf1be788d9c480"
+  },
+  "performed_at_utc": "2026-10-18"
+}

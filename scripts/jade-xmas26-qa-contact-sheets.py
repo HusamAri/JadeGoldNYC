@@ -74,6 +74,7 @@ def main():
             "technical_size_pass": max(width, height) >= 2048 and abs(width / height - 4 / 3) <= 0.02,
             "duplicate_of": prior, "visual_status": "unreviewed", "reviewer": None,
             "reviewed_at": None, "reason": None,
+            "actual_purpose": entry.get("purpose"),
         }
         diagnostic_index.append(row)
         slots[(product, shot)] = row
@@ -90,7 +91,8 @@ def main():
             for cell, shot in enumerate(codes, start=1):
                 row = slots.get((product, shot))
                 path = Path(row["local_path"]) if row else None
-                purpose = next(item["purpose"] for item in prompts[product] if item["code"] == shot)
+                purpose = (row.get("actual_purpose") if row else None) or next(
+                    item["purpose"] for item in prompts[product] if item["code"] == shot)
                 x = GAP + (cell % 2) * (PANEL_W + GAP)
                 y = GAP + (cell // 2) * (PANEL_H + LABEL_H + GAP)
                 status = f"{row['width']}×{row['height']} • UNREVIEWED" if row else "MISSING"
