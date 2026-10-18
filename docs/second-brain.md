@@ -120,6 +120,13 @@ repodaki hedefidir.
   için `personalization_questions: []` 400 döner ("1 ile 5 eleman"). Doğru uç
   `DELETE /shops/{shop_id}/listings/{listing_id}/personalization`. Kanıt:
   Counterform `4561605534` boş POST 400, DELETE sonrası GET 0 soru.
+- **Kasa indirimini subtotal'a bölme; listeyi bir de satışa çekme (2026-10):**
+  Ekim EON fişlerinde `discount_amt / subtotal` 0,4286 çıktı. Subtotal indirim
+  SONRASIdır. Doğru oran `discount / (subtotal + discount)`: 25050/83500 = tam
+  %30. Ağustos aynı hesapla %25'ti. Liste fiyatını ayrıca formül satışına
+  (%25) çekmek bu kasa indiriminin üstüne biner ve %35 tavanını aşar. Altın
+  güncellemesi offering'de kalır. Vitrin yüzdesi Etsy satış ayarındadır; API
+  onu yazmaz.
 
 ## Ürün/UX dersleri
 
