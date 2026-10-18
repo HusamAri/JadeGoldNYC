@@ -46,7 +46,8 @@ def margin_at(price, g):
 BANDS = {"bracelet": (3.2, 3.9), "necklace": (2.8, 4.2), "earrings": (1.40, 1.75), "brooch": (3.0, 4.2)}
 TYPE_WORD = {"bracelet": "bracelet", "necklace": ("necklace", "pendant"), "earrings": ("earrings", "studs", "stud earrings"),
              "brooch": ("brooch", "lapel pin", "pin")}
-BANNED = ["vintage", "stocking stuffer", "aquamarine", "blue diamond", "real diamond"]
+# "horsebit": Gucci's trademarked design name; an equestrian bit is sold as "snaffle bit" instead
+BANNED = ["vintage", "stocking stuffer", "aquamarine", "blue diamond", "real diamond", "horsebit", "horse bit"]
 
 spec = json.load(open(HERE / "spec.json"))
 out = []

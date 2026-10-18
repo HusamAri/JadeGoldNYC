@@ -1,0 +1,2408 @@
+{
+ "reality": {
+  "category": "KOLYE",
+  "category_summary": "KOLYE atölye gerçekliği kapısından geçti. 9 ürün düzeltildi (N1-N6, N8-N10), 1 ürün değiştirildi: N7 Frost Scarab yerine 14K Angel Wing geldi. Gerekçe: eleştiri \"reject\" dedi ve L6'ya göre hollow gövde ile mine bir arada olamaz. Değişmeden kalan ürün yok.\n\nHAT GENELİ: 18K olan 5 parça (N3, N6, N7, N9, N10) 14K'ye indi. KANIT'a göre 14K vitreous \"marginal\", \"not_viable\" değil; fiyat motoru da yalnız 14K'yi doğruluyor. Mineli parçalar çinkosuz, mineye uygun 14K alaşımla yapılır (Otto Frei 846-180, yazılı Zn=0 sertifikası, vakum döküm). Pişirim 760-790 C, en fazla 3 kez (KANIT sınırı 4). Hiç lehim yok, kulplar gövdeyle tek döküm, pişirim sonrası lazer gerekmiyor. Hücre duvarları 0.5'ten 0.7'ye çıktı, tabanlar en az 0.80 oldu; kubbe kaçışı kaldırıldı, mine düz. Palet: buz mavisi (N6), derin yeşil (N9), derin böğürtlen (N10, 760 C), nazar istisnasıyla lacivert+beyaz (N3). Kömür rengi kaldırıldı.\n\nTAŞLAR: KANIT flush kuralına göre yerel pedler kullanıldı (1.5 mm taş için 1.5, 1.8 mm için 1.7, 2.0 mm için 1.8 mm ev sahibi kalınlığı). Her taşın altında delik var, taşlar mineden en az 1.45 mm uzakta ve tüm pişirimlerden sonra takılıyor. N2'de taş sayısı 7'den 4'e indi, N4'te üç taş da 1.5 mm oldu, N6'nın taşları kaldırıldı. Eleştirinin 1.30 ve 1.40 mm ped önerileri KANIT sınırının altında kaldığı için 1.5'e çıkarıldı. 1.50 ve 1.60 mm plaka önerileri eski 1.0 mm karşı-mine eşiğine dayanıyordu; L2'nin 0.8 taban kuralıyla gereksiz kaldı.\n\nZİNCİR: Tümü 14K solid, 16+2 inç ve sabit (varyant değil). Gram 18 inçte KANIT g/cm değerleriyle hesaplandı: cable 1.0 x7, cable 1.2 x1, figaro 1.5 x1, rope 1.0 x1. Her üründe kopça, 2 halka ve etiket için 0.356 g eklendi. Sonuç: altın 3.79-4.10 g (hepsi 2.8-4.2 bandında), toplam ağırlık 3.82-4.12 g.\n\nL11 MOTİF KONTROLÜ: Gökselde N1, N2, N3 (3 parça). Tılsımda N3 ve N4 (2). Buzda N5 ve N6 (2). Atlıda N8 ve N9 (2). Kuşta N10, melekte N7. 8 kollu yıldız yalnız N1'de. N4'ün avuç yıldızı göze çevrildi, yoksa göksel aile 4 olurdu. N6'nın pinnate omurgası 3 eksenli, 60 derecelik dendrite dönüştü. N10'un dalı kaldırıldı. Kategoride mineli 4 (N3, N6, N9, N10), taşlı 6, hollow 1 parça var. Hollow olan N5'in başlığında \"solid\" geçmez.\n\nAÇIK RİSKLER:\n(1) 14K vitreous marjinal. Her mineli tasarım, aynı alaşım ve dökümhaneyle kupon/pilot testini geçmeden seriye girmez. Geçemezse B planı beyanlı soğuk mine (epoxy).\n(2) Çinkosuz 14K'nin solidus değeri için kaynak yok; dökümhaneden DSC ölçümü alınmalı.\n(3) 0.25 g kopça ağırlığı ile cable 1.2 ve figaro 1.5 g/cm değerleri kaynaksız tahmin. Tavana kalan pay N2 ve N7'de 0.10 g, N1'de 0.13 g, N5'te 0.14 g; numune tartımı şart.\n(4) Kadmiyumsuz böğürtlen ve opak beyaz minenin 14K üzerindeki rengi doğrulanmadı.\n(5) Fiyat formülü pişirim, yuva ve lazer işçiliğini sıfır fiyatlıyor; mineli parçalar için motor tarafında ele alınmalı.\n(6) 18 Ekim'den Noel'e kadar kupon ve pilot takvimi dar.",
+  "products": [
+   {
+    "slot": "N1",
+    "status": "fixed",
+    "name": "14K Bethlehem Star Openwork Pendant",
+    "motif": "GOKSEL - Bethlehem yildizi: 8 kollu, alt kol uzun (kilavuz isin), acik is (openwork). Kategorideki tek 8 kollu yildiz.",
+    "karat": "14K",
+    "camera_description": "Eight-point star pendant in 14K yellow gold, 18 mm wide and 23 mm tall. The lower ray is longer, 14 mm from the centre, than the other seven rays at 9 mm. Openwork construction: a 1.0 mm wide rail traces the star outline, eight short spokes join the inner corners to a 4.5 mm round centre disc with a 2.0 mm round hole through it, and a thin rib runs down the middle of the long lower ray. Rail faces are diamond-cut with bright facets; ray tips are rounded. Integral round bail at the top ray. 1.0 mm 14K cable chain, 16 inch plus 2 inch extender.",
+    "dimensions": "Yildiz 18.0 x 23.0 mm (7 kol R9.0, alt kol R14.0, vadi r4.2) + kulp D4.0 -> toplam boy ~27 mm. Ray bitmis 1.0 gen x 0.9 kal (model 1.2 x 1.2: +0.2 bitirme, on yuz elmas tiras +0.1). Merkez gobek D4.5 x 1.1, ortada D2.0 yuvarlak delik. 8 vadi kirisi 1.95 x 0.8 x 0.9; alt kol orta kaburgasi 11.25 x 0.8 x 0.9. Kulp kesit 1.0 x 1.6, ic cap 2.0.",
+    "construction": "Tek parca kayip-mum dokum (ray, kirisler, kaburga, gobek, kulp ayni mumdan; montaj ve lehim yok). 9 pencere (7 kol + uzun kolda kaburganin iki yani) mumdan acik gelir; her pencere ucu, aciklik 0.6 mm'ye indigi yerde 0.3 mm yaricapla biter, otesi kati dolgu (ag/perde olusmasin). Merkezde yildiz deligi YOK; D2.0 yuvarlak delik (1.0 kalinlikta derinlik/genislik 0.55). Mine yok, tas yok.",
+    "chain_or_findings": "14K solid kablo (cable) zincir 1.0 mm, KANIT 0.0416 g/cm x 45.72 cm = 1.902 g. Zincir ucunda: 14K istakoz kopca ~9mm (0.25 g kaynaksiz tahmin) + 2 x 14K atlama halkasi 0.6mm tel (0.030 g/adet, hesap) + 14K uzatma ucu etiketi 3.5x2.0x0.5 (0.046 g, hesap). Uzunluk 16in + 2in uzatma; gram 18in (45.72 cm) uzerinden.",
+    "enamel": {
+     "present": false,
+     "colours": [],
+     "cells": "yok",
+     "firings": "yok - firin adimi yok"
+    },
+    "stones": [],
+    "gram_build": [
+     {
+      "part": "Yildiz dis hat rayi (8 kol, alt kol uzun)",
+      "calc": "cevre 95.6 mm (R=9.0 x7, alt R=14.0, vadi r=4.2; 16 kenar) x 1.0 x 0.9 = 86.06 mm3 x 0.01307",
+      "grams": 1.125
+     },
+     {
+      "part": "8 vadi kirisi (vadi->gobek)",
+      "calc": "8 x 1.95 x 0.8 x 0.9 = 11.23 mm3 x 0.01307",
+      "grams": 0.147
+     },
+     {
+      "part": "Alt kol orta kaburgasi (kilavuz isin)",
+      "calc": "(14.0-2.25-0.5) x 0.8 x 0.9 = 8.10 mm3 x 0.01307",
+      "grams": 0.106
+     },
+     {
+      "part": "Merkez gobek halkasi, ortada D2.0 yuvarlak delik",
+      "calc": "pi/4 x (4.5^2-2.0^2) x 1.1 = 14.04 mm3 x 0.01307",
+      "grams": 0.183
+     },
+     {
+      "part": "Pencere uc dolgulari (aciklik 0.6'ya inince kati)",
+      "calc": "9 pencere ucu ucgen dolgu toplam 4.29 mm2 x 0.9 = 3.86 mm3 x 0.01307",
+      "grams": 0.05
+     },
+     {
+      "part": "Entegre halka kulp (kesit 1.0x1.6, orta cap 3.0)",
+      "calc": "pi x 3.0 x 1.0 x 1.6 = 15.08 mm3 x 0.01307",
+      "grams": 0.197
+     },
+     {
+      "part": "ARA TOPLAM kolye ucu (dokum, bitmis)",
+      "calc": "138.4 mm3 x 0.01307 g/mm3",
+      "grams": 1.808
+     },
+     {
+      "part": "Zincir: 14K solid cable chain 1.0mm, 16in + 2in uzatma (sabit, varyant degil)",
+      "calc": "0.0416 g/cm x 45.72 cm (18in) ; KANIT: Velvet Box 14K cable 1.0mm 18in=1.9g -> 0.0416 g/cm",
+      "grams": 1.902
+     },
+     {
+      "part": "Istakoz kopca 14K ~9mm (satin alma)",
+      "calc": "KANIT'ta kopca gramaji yok -> 0.25 g kaynaksiz tahmin; tedarikci numunesi tartilacak",
+      "grams": 0.25
+     },
+     {
+      "part": "2 x atlama halkasi 14K (0.6mm tel, ic cap 2.0)",
+      "calc": "2 x torus 2*pi^2*1.3*0.3^2 = 2 x 2.31 mm3 = 4.62 mm3 x 0.01307",
+      "grams": 0.06
+     },
+     {
+      "part": "Uzatma ucu etiketi 14K 3.5x2.0x0.5",
+      "calc": "3.5*2.0*0.5 = 3.50 mm3 x 0.01307",
+      "grams": 0.046
+     }
+    ],
+    "gold_grams": 4.067,
+    "enamel_grams": 0,
+    "stone_ct": 0,
+    "total_grams": 4.067,
+    "bench_sequence": [
+     "1. CAD: bitmis olculer + 0.2 mm bitirme payi, on yuz elmas tiras yuzeylerine +0.1 mm (ray modeli 1.2 x 1.2). Pencere uclari 0.6 mm genislikte r0.3 ile kapatilir.",
+     "2. Mum/recine baski (DLP, 25-50 um katman), destekler arka yuzde; 3 besleme: alt kol ucu arkasi + iki yan kol ucu (ince rayda eksik dolumu onler).",
+     "3. Yatirim, mum yakma programi (recine icin 730 C'ye kadar kademeli), 14K standart alasim vakum dokum ~1060-1090 C metal, flaska ~600 C.",
+     "4. Yolluk kesimi (alt kol arkasi), tesviye: ince egeler ve 600-1200 zimpara; ray kalinligi kumpasla 0.9 +/- 0.05, genislik 1.0 +/- 0.05 kontrol.",
+     "5. Pencere uclarini ve D2.0 deligi 0.6 mm pin-gauge ile kontrol; perde (flash) varsa tel testere ile temizle.",
+     "6. Elmas tiras (on yuz ray fasetleri) - son metal kaldirma islemi; tiras sonrasi ray kalinligi >=0.85.",
+     "7. Kulp ici cila (zincir surtunmesi), elde cila; tamburda kisa (20 dk) porselen/celik bilye, elmas tiras kenarlari korunur.",
+     "8. QC: tartim (uc 1.81 g +/- %5), uc yaricaplari >=0.4 (parmakla takilma testi), kulp kesiti 1.0 x 1.6 kontrol, zincire takma."
+    ],
+    "bom": [
+     "Alasim: 14K sari standart dokum alasimi (minesiz parca; Zn serbest), vakum dokum. Bitmis uc altini 1.808 g x 1.15 = 2.08 g dokum metali (yolluk/kayip payi).",
+     "Mine tozu: yok.",
+     "Tas: yok.",
+     "Zincir: 14K solid cable 1.0 mm, 18in toplam (16in + 2in uzatma) = 1.902 g.",
+     "Bulgular: 14K istakoz kopca ~9mm 0.25 g (tahmin), 2 x 14K atlama halkasi 0.060 g, 14K uzatma etiketi 0.046 g."
+    ],
+    "failure_modes": [
+     {
+      "mode": "Ince rayda eksik dolum / soguk birlesme (0.9 mm rayin uzak kol uclari)",
+      "prevention": "Model kalinligi 1.2, uc besleme kanali, vakum dokum; ray 0.85 ust sinirdan degil 0.9 bitmisten kuruldu."
+     },
+     {
+      "mode": "Pencere uclarinda yatirim perdesi / kor delik (0.6 alti aciklik)",
+      "prevention": "Her pencere 0.6 mm genislige inince r0.3 ile kapatildi; merkez yildiz delik yerine D2.0 yuvarlak delik."
+     },
+     {
+      "mode": "Uzun alt kolun egilmesi/takilmasi (kumas)",
+      "prevention": "Alt kola gobekten uca orta kaburga eklendi (iki 10.25 mm kenari ucgenler); tum uclar r>=0.5 yuvarlak."
+     },
+     {
+      "mode": "Elmas tirasin rayi 0.8 alti inceltmesi",
+      "prevention": "On yuze +0.1 ek model payi; tiras sonrasi kalinlik QC >=0.85."
+     }
+    ],
+    "tolerance_checks": [
+     {
+      "rule": "L1 karat 14K (KANIT karat_policy; 14K vitreous 'marginal', not_viable degil)",
+      "value": "14K sari",
+      "pass": true
+     },
+     {
+      "rule": "L2 mine",
+      "value": "mine yok - uygulanmaz",
+      "pass": true
+     },
+     {
+      "rule": "L3 ilk pisirimden sonra hamlac lehimi yok; kulp govdeyle tek dokum",
+      "value": "lehim baglantisi 0; kulp entegre dokum; pisirim sonrasi ek yok",
+      "pass": true
+     },
+     {
+      "rule": "L4 tas",
+      "value": "tas yok - uygulanmaz",
+      "pass": true
+     },
+     {
+      "rule": "L5 dekoratif metal >=0.6",
+      "value": "kiris 0.8, kaburga 0.8, pencere uc dolgusu kati",
+      "pass": true
+     },
+     {
+      "rule": "L5 yapisal >=0.8",
+      "value": "ray 1.0 x 0.9 bitmis",
+      "pass": true
+     },
+     {
+      "rule": "L5 kulp kesiti >=1.0",
+      "value": "1.0 x 1.6",
+      "pass": true
+     },
+     {
+      "rule": "L5 aciklik >=0.6 ve derinlik <=2x genislik",
+      "value": "min pencere 0.6 (derinlik 0.9 -> oran 1.5); merkez delik D2.0 (oran 0.55)",
+      "pass": true
+     },
+     {
+      "rule": "L5 model +0.2 (elmas tiras yuzunde +0.3)",
+      "value": "ray modeli 1.2 gen x 1.2 kal",
+      "pass": true
+     },
+     {
+      "rule": "L5 giyilen uc yaricapi >=0.4",
+      "value": "kol uclari r0.5 (ray yarim genisligi)",
+      "pass": true
+     },
+     {
+      "rule": "L6 hollow",
+      "value": "kati - 'solid' baslikta kalabilir",
+      "pass": true
+     },
+     {
+      "rule": "L7 kolye bandi 2.8-4.2 g (zincir+bulgu dahil altin)",
+      "value": "4.067 g (uc 1.808 + zincir 1.902 + bulgu 0.356); tavana pay 0.133 g",
+      "pass": true
+     },
+     {
+      "rule": "L8 zincir 14K solid, tip+genislik yazili, 16in+2in uzatma, varyant degil",
+      "value": "14K solid cable 1.0 mm, 16+2 in, sabit",
+      "pass": true
+     }
+    ],
+    "changes_vs_original": [
+     "UYGULANDI (elestiri required_fix): merkezdeki D2.0 sekiz koseli yildiz deligi kaldirildi, yerine D2.0 duz yuvarlak delik; yildiz dili yalniz dis hatta. Gerekce: 1.0 mm yaricapli 8 koseli yildizda kose genisligi <=0.5 mm, L5 aciklik >=0.6 kurali ihlal, dokumde perde baglar.",
+     "UYGULANDI: ray genisligine de bitirme payi verildi (model 1.2, bitmis 1.0); kalinlik 0.85 -> 0.9 bitmis (yapisal tabana 0.10 marj), elmas tiras yuzune +0.1 ek.",
+     "DUZELTILDI (elestiri: cevre %12 eksik): cevre artik beyan degil, poligondan hesaplandi. Ancak yildiz kucultuldu (20x26 -> 18x23; R11/15 -> R9/14, vadi r4.2), bu yuzden gercek merkez-hat cevresi 95.6 mm (elestirinin 114 mm'si eski 20x26 geometrisi icindi).",
+     "ELESTIRI GRAMI (3.31 g) GECERSIZ: L8 artik grami 18in zincir + kopca/halka/etiket ile istiyor; eski hesap 16in Franco'yu dolgu katsayisiyla tahmin ediyordu ve bulgulari saymiyordu. Yeni altin: 4.067 g.",
+     "Zincir 0.85 mm Franco 16in (dolgu katsayisi modeli, KANIT tablosunda 0.85 Franco yok) -> 1.0 mm 14K cable 18in, KANIT g/cm 0.0416.",
+     "Pencere uclari 0.6 mm'de r0.3 ile kapatildi; uzun alt kola kaburga eklendi (orijinalde 15 mm kol iki serbest kenarla tasiniyordu).",
+     "Orijinal '725 C kolay lehim' gerekcesi kaldirildi: bu parca firina girmez, lehim de yok; konu uygulanmaz."
+    ],
+    "season_proof": "Yildiz kalici bir sus motifidir. Aralikta 'Star of Bethlehem', diger 11 ayda 'North Star / guiding star' diye satilir; metal degismez, yalniz metin degisir. Kategorinin firinsiz, tassiz ve lehimsiz tek parcasi olarak en dusuk riskli giris urunu.",
+    "open_questions": [
+     "Kopca + atlama halkasi + etiket gercek gramaji (tedarikci numunesi tartimi); 0.25 g istakoz tahmini kaynaksiz.",
+     "KANIT cable 1.0 mm degeri (Velvet Box 0.0416 g/cm) secilen tedarikcinin zinciriyle teyit edilmeli; U.S. Jewels 0.0443 g/cm (kilit dahil) kullanilirsa altin +0.12 g -> 4.19 g, tavan payi daralir."
+    ]
+   },
+   {
+    "slot": "N2",
+    "status": "fixed",
+    "name": "14K Comet Pendant, Lab Grown White Sapphire",
+    "motif": "GOKSEL - kuyruklu yildiz: kubbe bas + iki rayli acik kuyruk, kademeli taslar; asimetrik capraz asilis.",
+    "karat": "14K",
+    "camera_description": "Comet pendant in 14K yellow gold, about 31 mm on the diagonal. A 6.0 mm domed round head holds one flush-set 2.0 mm lab grown white sapphire at its centre. Two curved tail rails sweep down from the head, joined by three short cross bars; the main rail narrows from 1.6 mm to 1.0 mm and ends in a rounded tip. Three more flush-set lab grown white sapphires run down the main rail, one 1.8 mm and two 1.5 mm, each on a small round pad. Polished head, diamond-cut rails. Off-centre bail behind the head. 1.5 mm 14K figaro chain, 16 inch plus 2 inch extender.",
+    "dimensions": "Toplam ~31 mm capraz (bas D6.0 + kuyruk 26 mm). Bas: D6.0, kenar 1.0, merkez 1.8 (kure kapak). Ana kuyruk rayi 26 mm, genislik 1.6->1.0, kalinlik 1.0. Ikinci ray 18 x 1.0 x 1.0. 3 capraz baglanti 0.8 gen x 1.0, raylar arasi 1.8. Tas pedleri: 1.8 mm tas icin D2.8 x 1.7; 1.5 mm taslar icin D2.4 x 1.5. Kuyruk ucu r0.5. Kulp kesit 1.0 x 1.6 (bas arkasi ust-yan).",
+    "construction": "Tek parca 14K dokum: bas, iki ray, 3 baglanti, 3 ped ve kulp ayni mumdan; lehim yok. Ray boyunca kalinlik 1.0, yalniz tas noktalarinda KANIT flush_seat_rule'a gore yerel pedler (1.5 mm tas: 1.5, 1.8 mm tas: 1.7, 2.0 mm tas: 1.8 yerel kalinlik). Her tasin altinda boydan boya pilot delik (D0.9 / D1.0). Taslar en son, soguk, flush/gypsy.",
+    "chain_or_findings": "14K solid figaro zincir 1.5 mm, KANIT ARA DEGER 0.048 g/cm (kaynaksiz tahmin) x 45.72 cm = 2.195 g. Zincir ucunda: 14K istakoz kopca ~9mm (0.25 g kaynaksiz tahmin) + 2 x 14K atlama halkasi 0.6mm tel (0.030 g/adet, hesap) + 14K uzatma ucu etiketi 3.5x2.0x0.5 (0.046 g, hesap). Uzunluk 16in + 2in uzatma; gram 18in (45.72 cm) uzerinden.",
+    "enamel": {
+     "present": false,
+     "colours": [],
+     "cells": "yok",
+     "firings": "yok"
+    },
+    "stones": [
+     {
+      "count": 1,
+      "size_mm": 2,
+      "type": "lab grown white sapphire, round brilliant",
+      "setting": "flush/gypsy, alttan D1.0 delik, yanal duvar 0.45",
+      "host_thickness_mm": 1.8,
+      "location": "bas merkezi"
+     },
+     {
+      "count": 1,
+      "size_mm": 1.8,
+      "type": "lab grown white sapphire, round brilliant",
+      "setting": "flush/gypsy, alttan D1.0 delik, ped D2.8 (yanal duvar 0.50)",
+      "host_thickness_mm": 1.7,
+      "location": "ana ray, bastan sonraki ilk ped"
+     },
+     {
+      "count": 2,
+      "size_mm": 1.5,
+      "type": "lab grown white sapphire, round brilliant",
+      "setting": "flush/gypsy, alttan D0.9 delik, ped D2.4 (yanal duvar 0.45)",
+      "host_thickness_mm": 1.5,
+      "location": "ana ray, orta ve alt ped"
+     }
+    ],
+    "gram_build": [
+     {
+      "part": "Bas: D6.0 kubbe (1.0 taban + 0.8 kure kapak, merkez 1.8)",
+      "calc": "pi*3^2*1.0 + pi*0.8*(3*3^2+0.8^2)/6 = 28.27+11.58 = 39.85 mm3 x 0.01307",
+      "grams": 0.521
+     },
+     {
+      "part": "Ana kuyruk rayi 26mm, genislik 1.6->1.0, kalinlik 1.0",
+      "calc": "26 x 1.3(ort) x 1.0 = 33.80 mm3 x 0.01307",
+      "grams": 0.442
+     },
+     {
+      "part": "Ikinci kuyruk rayi 18mm",
+      "calc": "18 x 1.0 x 1.0 = 18.00 mm3 x 0.01307",
+      "grams": 0.235
+     },
+     {
+      "part": "3 capraz baglanti (raylar arasi 1.8mm)",
+      "calc": "3 x 1.8 x 0.8 x 1.0 = 4.32 mm3 x 0.01307",
+      "grams": 0.056
+     },
+     {
+      "part": "1.8mm tas pedi D2.8 x 1.7 (ray payi dusulmus)",
+      "calc": "pi/4*2.8^2*1.7 - 2.8*1.5*1.0 = 6.27 mm3 x 0.01307",
+      "grams": 0.082
+     },
+     {
+      "part": "2 x 1.5mm tas pedi D2.4 x 1.5 (ray payi dusulmus)",
+      "calc": "2 x (pi/4*2.4^2*1.5 - 2.4*1.2*1.0) = 7.81 mm3 x 0.01307",
+      "grams": 0.102
+     },
+     {
+      "part": "Kulp (bas arkasi, entegre)",
+      "calc": "pi x 3.0 x 1.0 x 1.6 = 15.08 mm3 x 0.01307",
+      "grams": 0.197
+     },
+     {
+      "part": "Tas yuvalari + alttan delikler (eksi)",
+      "calc": "-(2.28 + 1.80 + 2x1.14) = -6.36 mm3 x 0.01307",
+      "grams": -0.083
+     },
+     {
+      "part": "ARA TOPLAM kolye ucu (dokum, bitmis)",
+      "calc": "118.8 mm3 x 0.01307 g/mm3",
+      "grams": 1.552
+     },
+     {
+      "part": "Zincir: 14K solid figaro chain 1.5mm, 16in + 2in uzatma (sabit, varyant degil)",
+      "calc": "0.048 g/cm x 45.72 cm (18in) ; KANIT: ARA DEGER figaro 1.5mm 0.048 g/cm (Velvet 2mm'den genislik^2; kaynaksiz tahmin)",
+      "grams": 2.195
+     },
+     {
+      "part": "Istakoz kopca 14K ~9mm (satin alma)",
+      "calc": "KANIT'ta kopca gramaji yok -> 0.25 g kaynaksiz tahmin; tedarikci numunesi tartilacak",
+      "grams": 0.25
+     },
+     {
+      "part": "2 x atlama halkasi 14K (0.6mm tel, ic cap 2.0)",
+      "calc": "2 x torus 2*pi^2*1.3*0.3^2 = 2 x 2.31 mm3 = 4.62 mm3 x 0.01307",
+      "grams": 0.06
+     },
+     {
+      "part": "Uzatma ucu etiketi 14K 3.5x2.0x0.5",
+      "calc": "3.5*2.0*0.5 = 3.50 mm3 x 0.01307",
+      "grams": 0.046
+     },
+     {
+      "part": "Taslar (altin degil, total'e)",
+      "calc": "1x2.0mm=0.0338ct + 1x1.8mm=0.0247ct + 2x1.5mm=0.0143ct = 0.0870 ct x 0.2",
+      "grams": 0.0174
+     }
+    ],
+    "gold_grams": 4.103,
+    "enamel_grams": 0,
+    "stone_ct": 0.087,
+    "total_grams": 4.12,
+    "bench_sequence": [
+     "1. CAD: bitmis olcu + 0.2 bitirme payi (kuyruk elmas tiras yuzune +0.1). Tas pedleri ve D0.9/D1.0 pilot delikleri modelde.",
+     "2. Recine baski; besleme bas arkasindan (en kalin kesit) + ana ray ortasindan yardimci besleme.",
+     "3. Yatirim, yakma, 14K vakum dokum.",
+     "4. Yolluk kesimi, tesviye; ray kalinligi 1.0 +/- 0.05, ped kalinliklari 1.5 / 1.7 / 1.8 kumpasla.",
+     "5. Bas kubbesi on cila, kuyruk raylarina elmas tiras.",
+     "6. Tas yuvasi: pilot deligi teyit, yuva frezesi (hart bur) ile rondis seviyesine; tas tablasi yuzeyle es ya da 0.05 asagida.",
+     "7. Tas oturtma (soguk): tasi yerlestir, cevre metali itici/cekicle ~0.02-0.05 mm rondis uzerine bindir, parlatici (burnisher) ile kapat. Her tas icin 10x lupla salinim testi.",
+     "8. Son cila (tas cevresi elde), QC: tartim (uc 1.55 g +/- %5), arkadan culet tasmasi yok (tirnakla), asilis acisi testi zincirde."
+    ],
+    "bom": [
+     "Alasim: 14K sari standart dokum alasimi (minesiz parca; Zn serbest), vakum dokum. Bitmis uc 1.552 g x 1.15 = 1.79 g dokum metali.",
+     "Mine tozu: yok.",
+     "Taslar: 1 x 2.0 mm (0.034 ct) + 1 x 1.8 mm (0.025 ct) + 2 x 1.5 mm (0.014 ct) lab grown white sapphire = 0.087 ct.",
+     "Zincir: 14K solid figaro 1.5 mm, 18in = 2.195 g.",
+     "Bulgular: 14K istakoz ~9mm 0.25 g (tahmin), 2 atlama halkasi 0.060 g, etiket 0.046 g."
+    ],
+    "failure_modes": [
+     {
+      "mode": "Culet arkadan tasar / yuva dibi delinir (orijinal 0.8 mm rayda 1.5 mm tas)",
+      "prevention": "Yerel kalinlik KANIT'a gore: 1.5/1.7/1.8 mm; yuva altinda planli pilot delik (0.55 mm kalan derinlik, D0.9 -> oran 0.6)."
+     },
+     {
+      "mode": "Ince kuyrugun dokumde eksik dolumu veya cilada egilmesi",
+      "prevention": "Ray 1.0 kalinlik, 3 capraz baglanti (en uzun serbest aciklik ~6 mm), ikinci besleme kanali; cila elde, tamburda degil."
+     },
+     {
+      "mode": "Tas gevsemesi (darbe/surtunme)",
+      "prevention": "Yanal duvar 0.45-0.50 (KANIT Stuller tablosu), 0.02-0.05 mm bindirme, taslar tum metal islerinden sonra takilir."
+     },
+     {
+      "mode": "Asimetrik parcanin zincirde ters donmesi",
+      "prevention": "Kulp bas arkasinda ust-yan konumda, bas en agir kesit; agirlik merkezi kulbun altinda kalir, zincirde test edilir."
+     }
+    ],
+    "tolerance_checks": [
+     {
+      "rule": "L1 karat 14K (KANIT karat_policy; 14K vitreous 'marginal', not_viable degil)",
+      "value": "14K sari",
+      "pass": true
+     },
+     {
+      "rule": "L2 mine",
+      "value": "mine yok",
+      "pass": true
+     },
+     {
+      "rule": "L3 ilk pisirimden sonra hamlac lehimi yok; kulp govdeyle tek dokum",
+      "value": "lehim baglantisi 0; kulp entegre dokum; pisirim sonrasi ek yok",
+      "pass": true
+     },
+     {
+      "rule": "L4 lab-grown, yuvarlak brilyant 1.3-2.0, flush",
+      "value": "4 tas: 2.0 / 1.8 / 1.5 / 1.5 lab white sapphire, flush",
+      "pass": true
+     },
+     {
+      "rule": "L4 ev sahibi kalinligi (KANIT 1.5->1.5, 1.8->1.7, 2.0->1.8)",
+      "value": "2.0 tasta 1.8; 1.8 tasta 1.7; 1.5 taslarda 1.5",
+      "pass": true
+     },
+     {
+      "rule": "L4 yanal duvar (KANIT <1.8: 0.35; 1.8-2.5: 0.45)",
+      "value": "2.0: (2.9-2.0)/2=0.45; 1.8: (2.8-1.8)/2=0.50; 1.5: (2.4-1.5)/2=0.45",
+      "pass": true
+     },
+     {
+      "rule": "L4 tasin altinda delik",
+      "value": "D1.0 (2.0 ve 1.8) / D0.9 (1.5), kalan derinlik 0.54-0.57 <= 2x cap",
+      "pass": true
+     },
+     {
+      "rule": "L4 parca basina <=7 tas, pave yok",
+      "value": "4 tas",
+      "pass": true
+     },
+     {
+      "rule": "L5 yapisal >=0.8",
+      "value": "ray 1.0 x 1.0 (en ince bitmis kesit 1.0 x 1.0)",
+      "pass": true
+     },
+     {
+      "rule": "L5 dekoratif >=0.6",
+      "value": "capraz baglanti 0.8",
+      "pass": true
+     },
+     {
+      "rule": "L5 kulp kesiti >=1.0",
+      "value": "1.0 x 1.6",
+      "pass": true
+     },
+     {
+      "rule": "L5 aciklik >=0.6",
+      "value": "raylar arasi 1.8",
+      "pass": true
+     },
+     {
+      "rule": "L5 uc yaricapi >=0.4",
+      "value": "kuyruk ucu r0.5",
+      "pass": true
+     },
+     {
+      "rule": "L7 kolye bandi 2.8-4.2 g (zincir+bulgu dahil altin)",
+      "value": "4.103 g (uc 1.552 + zincir 2.195 + bulgu 0.356); tavana pay 0.097 g",
+      "pass": true
+     },
+     {
+      "rule": "L8 zincir 14K solid, tip+genislik yazili, 16in+2in uzatma, varyant degil",
+      "value": "14K solid figaro 1.5 mm, 16+2 in, sabit",
+      "pass": true
+     }
+    ],
+    "changes_vs_original": [
+     "KISMEN UYGULANDI / KANITLA DUZELTILDI (elestiri: ray 1.30 kalinliga cikar): KANIT flush_seat_rule 1.5 mm tas icin min 1.5 mm ev sahibi kalinligi verir (0.63D + 0.5 culet payi); elestirinin 1.30'u bunun altinda (1.5 mm tas 0.945 derin, 0.355 mm taban, culet payi 0.5'in altinda). Bu yuzden butun ray degil, yalniz tas noktalarina 1.5 / 1.7 / 1.8 mm yerel ped kondu; ray 1.0'da kaldi (gram tasarrufu).",
+     "UYGULANDI (degistirilmis): 1.8 mm taslarin ped sorunu - 1.8 mm tas tek kaldi ve KANIT'a gore D2.8 x 1.7 pedde (yanal 0.50 >= 0.45). Elestirinin '1.8'leri 1.5'e indir' onerisi yerine kademeyi korumak icin tek 1.8 tutuldu.",
+     "Tas sayisi 7 -> 4 (2.0 + 1.8 + 1.5 + 1.5): her ped ~0.03-0.05 g ekliyor; 18in zincir + 4.2 g tavan icinde 7 ped sigmiyor.",
+     "UYGULANDI (elestiri: bas hacmi): bas artik gercek kure kapak (D6.0, 1.0 taban + 0.8 kapak = 39.8 mm3), silindir x 0.75 yaklasimi kaldirildi. Bas D7 -> D6.",
+     "Elestirinin '16in'e kisalt' onerisi L8 ile gecersiz: kolye 16in + 2in uzatma sabit, gram 18in'de. Zincir 0.95 box (dolgu katsayisi, KANIT box 1.0 = 0.0763 g/cm ile 3.49 g, tek basina banda sigmaz) -> 1.5 mm figaro 0.048 g/cm.",
+     "Elestiri grami 4.27 g / alternatif 3.82 g yerine: 4.103 g altin (zincir+bulgu dahil)."
+    ],
+    "season_proof": "Kuyruklu yildiz astronomidir, Noel'e bagli degildir: Aralikta Bethlehem yildizi okumasiyla, yilin geri kalaninda celestial/astronomi takisi olarak satilir. 26 Aralik'ta stok riski yok.",
+    "open_questions": [
+     "Figaro 1.5 mm g/cm degeri KANIT'ta ARA DEGER (kaynaksiz); tedarikci numunesi tartilmali, cikan deger 0.050 g/cm'yi asarsa altin 4.2 g tavanini zorlar (pay 0.10 g).",
+     "Lab white sapphire partisinin toplam derinlik yuzdesi kumpasla olculmeli (KANIT: lab melee sik sik %63'ten derin kesilir)."
+    ]
+   },
+   {
+    "slot": "N3",
+    "status": "fixed",
+    "name": "14K Crescent Evil Eye Enamel Pendant, Lab Grown Blue Sapphire",
+    "motif": "TILSIM - nazar gozu, alt yarisini saran altin hilalin icinde (hilal cerceve, kahraman ozellik nazar).",
+    "karat": "14K",
+    "camera_description": "Pendant in 14K yellow gold: a 9.2 mm round disc held by a gold crescent that wraps its lower half; 15.3 mm across the crescent tips and 11.6 mm tall. The disc shows three concentric fields of enamel divided by 0.7 mm gold rings: an outer ring of opaque navy-blue enamel, a ring of opaque white enamel, and a 1.8 mm centre of opaque navy-blue enamel. Each crescent tip ends in a 2.4 mm round pad holding one 1.5 mm lab grown blue sapphire, flush-set. Polished gold crescent, enamel level with the gold. Bail hidden behind the disc. 1.0 mm 14K cable chain, 16 inch plus 2 inch extender.",
+    "dimensions": "Disk D9.2 x 1.35 (hucre 0.55 + taban 0.80). Hucreler: gozbebegi D1.8; beyaz halka r1.6-2.4 (0.8 gen); lacivert halka r3.1-3.9 (0.8 gen); hucre arasi ve cevre altin duvar 0.7. Hilal: dis daire R6.0 (merkez y=-1.0), ic daire R5.6 (merkez y=+1.8), t=1.0; diskle alt 130 derecelik yay boyunca kaynasik (0.8 bindirme); hilal-disk araligi uclarda >=0.6, daha darsa kati dolgu. Boynuz uclari D2.4 x 1.5 ped (merkez +/-6.45, 0.4). Boyun min kesit 1.0 x 1.0. Toplam 15.3 x 11.6 mm + arka kulp.",
+    "construction": "Tek parca 14K cinkosuz alasim dokum: disk, hilal, iki ped, hucre duvarlari ve arka kulp ayni mumdan; lehim hic yok. Hucreler dokumde birakilir (oyma degil), tabanlar filetolu (r0.15). Disk arkasi ciplak altin (karsi-mine gerekmez: taban 0.80, L2). Mine 3 pisirim, taslar tum pisirimlerden sonra soguk.",
+    "chain_or_findings": "14K solid cable 1.0 mm, KANIT 0.0416 g/cm x 45.72 = 1.902 g. Zincir ucunda: 14K istakoz kopca ~9mm (0.25 g kaynaksiz tahmin) + 2 x 14K atlama halkasi 0.6mm tel (0.030 g/adet, hesap) + 14K uzatma ucu etiketi 3.5x2.0x0.5 (0.046 g, hesap). Uzunluk 16in + 2in uzatma; gram 18in (45.72 cm) uzerinden.",
+    "enamel": {
+     "present": true,
+     "colours": [
+      "opaque navy-blue (nazar istisnasi)",
+      "opaque white (nazar istisnasi)"
+     ],
+     "cells": "3 hucre: lacivert dis halka 0.8 gen (alan 17.6 mm2), beyaz halka 0.8 gen (10.1 mm2), lacivert gozbebegi D1.8 (2.5 mm2); derinlik 0.55; derinlik/genislik 0.69; duvarlar 0.7; taban 0.80; hacim 16.6 mm3",
+     "firings": "3 pisirim (<=4): P1 780 C 90 sn (beyaz + lacivert ilk kat), P2 780 C 90 sn (ikinci dolum, hafif tasma), tas ile duzleme, P3 770 C 60 sn parlatma pisirimi. Ust sinir 790 C (KANIT)."
+    },
+    "stones": [
+     {
+      "count": 2,
+      "size_mm": 1.5,
+      "type": "lab grown blue sapphire, round brilliant",
+      "setting": "flush/gypsy, alttan D0.9 delik, ped D2.4 (yanal duvar 0.45); tum pisirimlerden sonra",
+      "host_thickness_mm": 1.5,
+      "location": "iki hilal boynuz ucu pedi, mine kenarina 1.45 mm"
+     }
+    ],
+    "gram_build": [
+     {
+      "part": "Hilal bandi (dis daire R6.0 merkez y-1.0, ic daire R5.6 merkez y+1.8; disk disi), t=1.0",
+      "calc": "grid integral alan 33.3 mm2 x 1.0 = 33.25 mm3 x 0.01307",
+      "grams": 0.435
+     },
+     {
+      "part": "Nazar diski D9.2, t=1.35 (hucre 0.55 + taban 0.80), hilale 130 derece yay boyunca kaynasik",
+      "calc": "grid alan 66.5 mm2 x 1.35 = 89.75 mm3 x 0.01307",
+      "grams": 1.173
+     },
+     {
+      "part": "Yarik uc dolgusu (disk-hilal araligi <0.6 olan iki uc, kati)",
+      "calc": "2 x 1.84 mm yay x 0.30 ort. x 1.0 = 1.10 mm3 x 0.01307",
+      "grams": 0.014
+     },
+     {
+      "part": "2 boynuz ucu pedi D2.4, t=1.5 (tas tasiyici, kesik uc)",
+      "calc": "grid alan 9.1 mm2 x 1.5 = 13.58 mm3 x 0.01307",
+      "grams": 0.177
+     },
+     {
+      "part": "Mine hucre bosluklari (eksi): gozbebegi D1.8 + beyaz halka r1.6-2.4 + lacivert halka r3.1-3.9, derinlik 0.55",
+      "calc": "-(2.54+10.05+17.59) x 0.55 = -16.60 mm3 x 0.01307",
+      "grams": -0.217
+     },
+     {
+      "part": "Kulp (disk arkasi ust, entegre)",
+      "calc": "pi x 3.0 x 1.0 x 1.6 = 15.08 mm3 x 0.01307",
+      "grams": 0.197
+     },
+     {
+      "part": "2 tas yuvasi + alttan delik (eksi)",
+      "calc": "-2 x 1.14 = -2.28 mm3 x 0.01307",
+      "grams": -0.03
+     },
+     {
+      "part": "ARA TOPLAM kolye ucu (dokum, bitmis)",
+      "calc": "133.9 mm3 x 0.01307 g/mm3",
+      "grams": 1.75
+     },
+     {
+      "part": "Zincir: 14K solid cable chain 1.0mm, 16in + 2in uzatma (sabit, varyant degil)",
+      "calc": "0.0416 g/cm x 45.72 cm (18in) ; KANIT: Velvet Box 14K cable 1.0mm 18in=1.9g -> 0.0416 g/cm",
+      "grams": 1.902
+     },
+     {
+      "part": "Istakoz kopca 14K ~9mm (satin alma)",
+      "calc": "KANIT'ta kopca gramaji yok -> 0.25 g kaynaksiz tahmin; tedarikci numunesi tartilacak",
+      "grams": 0.25
+     },
+     {
+      "part": "2 x atlama halkasi 14K (0.6mm tel, ic cap 2.0)",
+      "calc": "2 x torus 2*pi^2*1.3*0.3^2 = 2 x 2.31 mm3 = 4.62 mm3 x 0.01307",
+      "grams": 0.06
+     },
+     {
+      "part": "Uzatma ucu etiketi 14K 3.5x2.0x0.5",
+      "calc": "3.5*2.0*0.5 = 3.50 mm3 x 0.01307",
+      "grams": 0.046
+     },
+     {
+      "part": "Mine (altin degil, total'e)",
+      "calc": "16.6 mm3 x 0.0025",
+      "grams": 0.042
+     },
+     {
+      "part": "Taslar (altin degil, total'e)",
+      "calc": "2x1.5mm=0.0143ct = 0.0285 ct x 0.2",
+      "grams": 0.0057
+     }
+    ],
+    "gold_grams": 4.008,
+    "enamel_grams": 0.042,
+    "stone_ct": 0.0285,
+    "total_grams": 4.055,
+    "bench_sequence": [
+     "1. CAD: bitmis olcu + 0.2 bitirme payi; hucre derinligi 0.55 (+0.05 tesviye payi), duvarlar 0.7 net (model 0.75), taban filetosu r0.15.",
+     "2. Recine baski, besleme disk alt-arkasindan (en kalin kesit), boynuzlara yardimci kanal.",
+     "3. Yatirim + yakma; CINKOSUZ 14K alasimla vakum dokum. Dokum sonrasi gozeneklilik kontrolu (10x lup, hucre tabanlari); gozenekli parca HURDA (mine pinhole verir).",
+     "4. Tesviye ve on cila (hilal, pedler); hucre ici: ince cam fircayla temizle, taban kalinligi 0.80 kumpas/derinlik saati ile.",
+     "5. Yuzey zenginlestirme (depletion gilding): 3-4 dongu ~593 C kiraz kirmizisi tav + %10 H2SO4 asit; damitik su, cam firca, yagsiz.",
+     "6. Mine dolumu: 80 mesh yikanmis opak beyaz ve lacivert, islak dolum; kurut (firin ustu 2-3 dk).",
+     "7. Pisirim 1: 780 C, 90 sn, paslanmaz sehpa (trivet), kalibre pirometre.",
+     "8. Pisirim 2: ikinci dolum, 780 C, 90 sn (yuzeyden hafif tasma).",
+     "9. Tasla zimpara (alundum cubuk + su) mine ve altin duvarlar es seviye; temizle.",
+     "10. Pisirim 3: 770 C, 60 sn parlatma pisirimi. Toplam 3 pisirim.",
+     "11. Asitleme YOK (mine korunur); sodyum bikarbonat + su ile notr temizlik.",
+     "12. Tas yuvalari (pedlerde): pilot delik teyidi, hart bur; mine Plasti-tac/bant ile maskelenir.",
+     "13. Tas oturtma soguk; itme kuvveti diskin tersine (disaridan iceri degil); mineye 1.45 mm mesafe.",
+     "14. Pisirim sonrasi lazer: YOK (kulp entegre dokum).",
+     "15. Cila: yalniz altin yuzeyler, elde, mineye dokunmadan; QC: pinhole/catlak lup 10x, tartim (uc 1.75 g +/- %5), boynuz uc kontrolu."
+    ],
+    "bom": [
+     "Alasim: 14K sari CINKOSUZ mine-uyumlu alasim (Otto Frei 846-180 'No Zinc' master alloy + 24K ile 14K; dokumhaneden yazili Zn=0 sertifikasi ve solidus/DSC degeri), vakum/inert gaz dokum. Bitmis uc 1.750 g x 1.15 = 2.01 g dokum metali.",
+     "Mine tozu: kursunsuz opak lacivert ~75 mg + opak beyaz ~40 mg (pisirilmis mine 42 mg; dolum/tas kaybi icin ~2.5x).",
+     "Taslar: 2 x 1.5 mm lab grown blue sapphire = 0.0285 ct.",
+     "Zincir: 14K solid cable 1.0 mm 18in = 1.902 g.",
+     "Bulgular: istakoz 0.25 g (tahmin), 2 atlama halkasi 0.060 g, etiket 0.046 g."
+    ],
+    "failure_modes": [
+     {
+      "mode": "Kabarcik / igne deligi (alasimdaki Zn veya dokum gozenegi)",
+      "prevention": "Zn=0 sertifikali alasim, vakum dokum, gozenekli dokum hurdaya; 3-4 dongu depletion gilding."
+     },
+     {
+      "mode": "Beyaz minenin 14K uzerinde krem/sariya donmesi (Cu oksit)",
+      "prevention": "Opak beyaz, yuzey zenginlestirme, pilot kuponda renk onayi; olmazsa beyaz halka yerine ciplak altin halka (2 renk -> 1 renk) B plani."
+     },
+     {
+      "mode": "Ince hilal (1.0) veya boynuz boynunun firinda sarkmasi (14K solidus payi dar)",
+      "prevention": "Pisirim <=780 C, kisa sure, kalibre pirometre; parca hilal alttan desteklenecek sekilde sehpada; boyun min kesit 1.0 x 1.0."
+     },
+     {
+      "mode": "Tas oturtmada itme kuvvetiyle mine catlamasi",
+      "prevention": "Taslar boynuz pedinde, mine kenarina 1.45 mm; KANIT 0.6-0.8 onerisinin ustunde; itme diskten disari yonde."
+     },
+     {
+      "mode": "Diskin hilalden kopmasi (orijinalde tek tegetsel temas)",
+      "prevention": "Disk ve hilal 130 derecelik yay boyunca 0.8 mm bindirmeli tek dokum."
+     }
+    ],
+    "tolerance_checks": [
+     {
+      "rule": "L1 karat 14K (KANIT karat_policy; 14K vitreous 'marginal', not_viable degil)",
+      "value": "14K sari cinkosuz mine alasimi",
+      "pass": true
+     },
+     {
+      "rule": "L2 opak vitreous champleve, hucre dokumde",
+      "value": "opak, dokumde birakilan 3 hucre",
+      "pass": true
+     },
+     {
+      "rule": "L2 hucre derinligi 0.5-0.6",
+      "value": "0.55",
+      "pass": true
+     },
+     {
+      "rule": "L2 hucre genisligi >=0.7 ve derinlik <=2x genislik",
+      "value": "min 0.8 (halkalar); 0.55/0.8=0.69",
+      "pass": true
+     },
+     {
+      "rule": "L2 hucre tabani >=0.8",
+      "value": "1.35-0.55 = 0.80",
+      "pass": true
+     },
+     {
+      "rule": "L2 hucre arasi/cevre altin duvar >=0.70",
+      "value": "0.70",
+      "pass": true
+     },
+     {
+      "rule": "L2 hucre icinde kabartma/doku yok",
+      "value": "duz taban",
+      "pass": true
+     },
+     {
+      "rule": "L2 renk paleti (nazar istisnasi: lacivert+beyaz, en fazla 3)",
+      "value": "2 renk: lacivert + beyaz, yalniz goz motifinde",
+      "pass": true
+     },
+     {
+      "rule": "L2 pisirim <=4, <=790 C",
+      "value": "3 pisirim, 770-780 C",
+      "pass": true
+     },
+     {
+      "rule": "L3 ilk pisirimden sonra hamlac lehimi yok; kulp govdeyle tek dokum",
+      "value": "lehim baglantisi 0; kulp entegre dokum; pisirim sonrasi ek yok",
+      "pass": true
+     },
+     {
+      "rule": "L4 ev sahibi kalinligi (1.5 tas -> 1.5)",
+      "value": "ped 1.5",
+      "pass": true
+     },
+     {
+      "rule": "L4 yanal duvar (<1.8: 0.35)",
+      "value": "(2.4-1.5)/2 = 0.45",
+      "pass": true
+     },
+     {
+      "rule": "L4 tas ciplak altinda, mine kenarina >=0.5",
+      "value": "1.45 mm",
+      "pass": true
+     },
+     {
+      "rule": "L4 tas tum pisirimlerden sonra",
+      "value": "adim 13, pisirim 3'ten sonra",
+      "pass": true
+     },
+     {
+      "rule": "L5 yapisal >=0.8",
+      "value": "hilal 1.0; boyun 1.0 x 1.0; disk 1.35",
+      "pass": true
+     },
+     {
+      "rule": "L5 aciklik >=0.6",
+      "value": "hilal-disk araligi >=0.6, altinda kati dolgu",
+      "pass": true
+     },
+     {
+      "rule": "L5 uc yaricapi >=0.4",
+      "value": "boynuz ucu D2.4 ped (r1.2)",
+      "pass": true
+     },
+     {
+      "rule": "L6 hollow",
+      "value": "kati (mineli parca hollow olamaz)",
+      "pass": true
+     },
+     {
+      "rule": "L7 kolye bandi 2.8-4.2 g (zincir+bulgu dahil altin)",
+      "value": "4.008 g (uc 1.750 + zincir 1.902 + bulgu 0.356); tavana pay 0.192 g",
+      "pass": true
+     },
+     {
+      "rule": "L8 zincir 14K solid, tip+genislik yazili, 16in+2in uzatma, varyant degil",
+      "value": "14K solid cable 1.0 mm, 16+2 in",
+      "pass": true
+     }
+    ],
+    "changes_vs_original": [
+     "18K -> 14K cinkosuz mine alasimi (L1 + KANIT karat_policy: 14K vitreous 'marginal', 'not_viable' degil; fiyat motoru yalniz 14K dogrulu). Orijinaldeki '18K +89 C pay' gerekcesi artik uygulanmaz; yerine KANIT: pisirim 760-790 C, ust sinir 790, max 4 pisirim.",
+     "UYGULANDI (elestiri): hilal 1.2 -> 1.0 mm.",
+     "UYGULANDI (elestiri: disk tek tegetsel noktada asili): disk hilale 130 derecelik yay boyunca 0.8 mm bindirmeyle kaynasik tek dokum; ayrik fileto gerekmedi, hacmi grid integraliyle hesaplandi.",
+     "UYGULANDI (elestiri: iki boynuz da bicak sirti): iki boynuz da D2.4 yuvarlak pedle biter (r1.2 >= L5 0.4), simetri icin her pede birer 1.5 mm lab blue sapphire (tas 1 -> 2).",
+     "Hucre arasi duvar 0.5 -> 0.7 (L2). Bu yuzden 3 hucre + 0.7 duvarlar diskin D8.5 -> D9.2 olmasini gerektirdi; buna karsin hilal kuculdu (18 -> 15.3 mm).",
+     "Renk: buz mavisi halka + bogurtlen gozbebegi -> lacivert dis halka + beyaz halka + lacivert gozbebegi (L2 nazar istisnasi). Gerekce: bogurtlen gozbebegi nazar okumasini bozar ve kirmizi-aile pisirim kisiti getirir; buz mavisi rolunu boynuzdaki lab mavi safir tasir.",
+     "Hucre tabani 1.15 -> 0.80 (L2 esigi >=0.8; kubbe kacisi gerekmez, mine duz).",
+     "Lehim gerekcesi duzeltildi: orijinaldeki '14K kolay lehim 725 C' yerine KANIT: 14K sert lehim akis ~804 C (1480 F) pisirim bandinin icinde -> parcada lehim yok, kulp entegre.",
+     "Zincir 18K 0.85 box 16in -> 14K cable 1.0 18in. Gram: orijinal 4.32 g (18K) / elestiri 4.29 g -> 4.008 g altin."
+    ],
+    "season_proof": "Nazar bu magazada 12 ay satan motif; hilal ayrica Ramazan/Bayram hediyesi talebini acar. Noel metni cikarilinca kalici bir hilal-nazar muskasidir.",
+    "open_questions": [
+     "Opak beyaz ve lacivert kursunsuz minelerin cinkosuz 14K uzerinde pilot kupon sonucu (renk, pinhole, yapisma).",
+     "Cinkosuz 14K alasimin solidus degeri (DSC) dokumhaneden - KANIT bu alasim icin dogrudan kaynak bulamadi; 780 C pay buna bagli.",
+     "Lab blue sapphire tonunun 'ice-blue' ile eslesmesi (tedarikci renk numunesi)."
+    ]
+   },
+   {
+    "slot": "N4",
+    "status": "fixed",
+    "name": "14K Hamsa Evil Eye Openwork Pendant, Lab Grown Sapphire",
+    "motif": "TILSIM - hamsa eli, avucta delik badem goz ve mavi tas gozbebegi (yildiz kaldirildi; L11 aile sayimi).",
+    "karat": "14K",
+    "camera_description": "Hamsa hand pendant in 14K yellow gold, 14 mm wide and 18 mm tall, open-frame construction: a 1.0 mm rail outlines three central fingers and two outward-curving thumbs, with the finger interiors cut through. The palm is a solid oval plate with an almond-shaped eye opening 8.0 x 4.4 mm; a thin horizontal gold bar crosses the opening and holds a round pupil set with one 1.5 mm lab grown blue sapphire. Each thumb tip holds one 1.5 mm lab grown white sapphire, flush-set. Diamond-cut rail faces, polished palm. Bail behind the middle finger. 1.0 mm 14K cable chain, 16 inch plus 2 inch extender.",
+    "dimensions": "El 14.0 x 18.0 mm; dis hat rayi 1.0 gen x 0.9 kal (model 1.2 x 1.2), cevre ~72 mm. Avuc plakasi elips 9.4 x 7.6 x 1.0. Badem goz acikligi 8.0 x 4.4; goz cizgisi kopru 0.7 gen x 1.0; gozbebegi gobegi D2.4 x 1.5. Badem acikligi kopru ve gobekle 4 parcaya bolunur; her biri 0.6 mm genislige indigi yerde r0.3 ile kapanir (acik uzunluk ~2.0, max yukseklik 1.7). Basparmak uc pedleri D2.4 x 1.5. Parmak ici bosluklar >=0.8. Kulp 1.0 x 1.6.",
+    "construction": "Tek parca 14K dokum; ray, avuc, kopru, gobek, pedler, kulp ayni mumdan; lehim yok, mine yok. Tum delikler mumdan. Taslar en son, soguk.",
+    "chain_or_findings": "14K solid cable 1.0 mm, 0.0416 g/cm x 45.72 = 1.902 g. Zincir ucunda: 14K istakoz kopca ~9mm (0.25 g kaynaksiz tahmin) + 2 x 14K atlama halkasi 0.6mm tel (0.030 g/adet, hesap) + 14K uzatma ucu etiketi 3.5x2.0x0.5 (0.046 g, hesap). Uzunluk 16in + 2in uzatma; gram 18in (45.72 cm) uzerinden.",
+    "enamel": {
+     "present": false,
+     "colours": [],
+     "cells": "yok",
+     "firings": "yok"
+    },
+    "stones": [
+     {
+      "count": 1,
+      "size_mm": 1.5,
+      "type": "lab grown blue sapphire, round brilliant",
+      "setting": "flush/gypsy, alttan D0.9 delik, gobek D2.4 (yanal 0.45)",
+      "host_thickness_mm": 1.5,
+      "location": "avuc gozu gozbebegi"
+     },
+     {
+      "count": 2,
+      "size_mm": 1.5,
+      "type": "lab grown white sapphire, round brilliant",
+      "setting": "flush/gypsy, alttan D0.9 delik, ped D2.4 (yanal 0.45)",
+      "host_thickness_mm": 1.5,
+      "location": "iki basparmak ucu"
+     }
+    ],
+    "gram_build": [
+     {
+      "part": "El dis hat rayi (5 parmak + 2 simetrik basparmak), 14x18mm",
+      "calc": "cevre 72 mm x 1.0 x 0.9 = 64.80 mm3 x 0.01307",
+      "grams": 0.847
+     },
+     {
+      "part": "Avuc plakasi elips 9.4x7.6, t=1.0, badem goz acikligi 8.0x4.4 dusulmus",
+      "calc": "(pi/4*9.4*7.6 - 24.83) x 1.0 = (56.11-24.83) = 31.28 mm3 x 0.01307",
+      "grams": 0.409
+     },
+     {
+      "part": "Goz cizgisi kopru (badem boyunca, gozbebegini tasir)",
+      "calc": "(8.0-2.4) x 0.7 x 1.0 = 3.92 mm3 x 0.01307",
+      "grams": 0.051
+     },
+     {
+      "part": "Gozbebegi gobegi D2.4 x 1.5",
+      "calc": "pi/4*2.4^2*1.5 - kopru payi 2.4*0.7*1.0 = 5.11 mm3 x 0.01307",
+      "grams": 0.067
+     },
+     {
+      "part": "2 basparmak ucu pedi D2.4 x 1.5 (ray payi dusulmus)",
+      "calc": "2 x (pi/4*2.4^2*1.5 - 2.4*1.0*0.9) = 9.25 mm3 x 0.01307",
+      "grams": 0.121
+     },
+     {
+      "part": "Kulp (orta parmak ustu arkasi, entegre)",
+      "calc": "pi x 3.0 x 1.0 x 1.6 = 15.08 mm3 x 0.01307",
+      "grams": 0.197
+     },
+     {
+      "part": "3 tas yuvasi + alttan delik (eksi)",
+      "calc": "-3 x 1.14 = -3.41 mm3 x 0.01307",
+      "grams": -0.045
+     },
+     {
+      "part": "ARA TOPLAM kolye ucu (dokum, bitmis)",
+      "calc": "126.0 mm3 x 0.01307 g/mm3",
+      "grams": 1.647
+     },
+     {
+      "part": "Zincir: 14K solid cable chain 1.0mm, 16in + 2in uzatma (sabit, varyant degil)",
+      "calc": "0.0416 g/cm x 45.72 cm (18in) ; KANIT: Velvet Box 14K cable 1.0mm 18in=1.9g -> 0.0416 g/cm",
+      "grams": 1.902
+     },
+     {
+      "part": "Istakoz kopca 14K ~9mm (satin alma)",
+      "calc": "KANIT'ta kopca gramaji yok -> 0.25 g kaynaksiz tahmin; tedarikci numunesi tartilacak",
+      "grams": 0.25
+     },
+     {
+      "part": "2 x atlama halkasi 14K (0.6mm tel, ic cap 2.0)",
+      "calc": "2 x torus 2*pi^2*1.3*0.3^2 = 2 x 2.31 mm3 = 4.62 mm3 x 0.01307",
+      "grams": 0.06
+     },
+     {
+      "part": "Uzatma ucu etiketi 14K 3.5x2.0x0.5",
+      "calc": "3.5*2.0*0.5 = 3.50 mm3 x 0.01307",
+      "grams": 0.046
+     },
+     {
+      "part": "Taslar (altin degil, total'e)",
+      "calc": "3x1.5mm=0.0143ct = 0.0428 ct x 0.2",
+      "grams": 0.0086
+     }
+    ],
+    "gold_grams": 3.905,
+    "enamel_grams": 0,
+    "stone_ct": 0.0428,
+    "total_grams": 3.914,
+    "bench_sequence": [
+     "1. CAD: bitmis + 0.2 (ray on yuzu elmas tiras +0.1); badem acikliklari 0.6'da r0.3 ile kapatilir; pedler 1.5.",
+     "2. Recine baski, besleme bilek kenari arkasindan + avuc arkasindan.",
+     "3. Yatirim, yakma, 14K vakum dokum.",
+     "4. Yolluk kesimi, tesviye; acikliklari 0.6 pin-gauge ile; ray 0.9 +/- 0.05.",
+     "5. Ray yuzlerine elmas tiras; avuc on cila.",
+     "6. Tas yuvalari: gozbebeginde kopru arkadan ahsap/recine blokla desteklenir, pilot delik + hart bur.",
+     "7. Tas oturtma soguk (3 tas), 10x lupla salinim testi.",
+     "8. Cila elde; QC tartim (uc 1.65 g +/- %5), parmak uclari r>=0.4, culet arkadan tasmiyor."
+    ],
+    "bom": [
+     "Alasim: 14K sari standart dokum alasimi (minesiz parca; Zn serbest), vakum dokum. Bitmis uc 1.647 g x 1.15 = 1.89 g dokum metali.",
+     "Mine tozu: yok.",
+     "Taslar: 1 x 1.5 mm lab blue sapphire + 2 x 1.5 mm lab white sapphire = 0.0428 ct.",
+     "Zincir: 14K solid cable 1.0 mm 18in = 1.902 g.",
+     "Bulgular: istakoz 0.25 g (tahmin), 2 atlama halkasi 0.060 g, etiket 0.046 g."
+    ],
+    "failure_modes": [
+     {
+      "mode": "Badem acikligi uclarinda perde / kor delik",
+      "prevention": "Aciklik 0.6'ya indigi yerde r0.3 ile kapanir; derinlik 1.0 / genislik 0.6 = 1.67 <= 2."
+     },
+     {
+      "mode": "Gozbebegi oturtmada 0.7 kopru egilmesi",
+      "prevention": "Kopru 1.0 kalin, gobek 1.5; oturtma sirasinda arkadan destek blogu; kuvvet gobek ekseninde."
+     },
+     {
+      "mode": "Culet basparmak arkasindan tasar (orijinal 1.1 rayda 1.8 tas)",
+      "prevention": "Uc tas da 1.5 mm, pedler 1.5 kalin (KANIT), alttan delik."
+     },
+     {
+      "mode": "Parmak raylarinin kumasa takilip egilmesi",
+      "prevention": "Ray 1.0 x 0.9, uclar yuvarlak r0.5, parmak aralari kapali hat."
+     }
+    ],
+    "tolerance_checks": [
+     {
+      "rule": "L1 karat 14K (KANIT karat_policy; 14K vitreous 'marginal', not_viable degil)",
+      "value": "14K sari",
+      "pass": true
+     },
+     {
+      "rule": "L2 mine",
+      "value": "yok",
+      "pass": true
+     },
+     {
+      "rule": "L3 ilk pisirimden sonra hamlac lehimi yok; kulp govdeyle tek dokum",
+      "value": "lehim baglantisi 0; kulp entegre dokum; pisirim sonrasi ek yok",
+      "pass": true
+     },
+     {
+      "rule": "L4 ev sahibi kalinligi 1.5 tas -> 1.5",
+      "value": "gobek ve pedler 1.5",
+      "pass": true
+     },
+     {
+      "rule": "L4 yanal duvar 0.35",
+      "value": "0.45",
+      "pass": true
+     },
+     {
+      "rule": "L4 alttan delik",
+      "value": "3 x D0.9, kalan derinlik 0.555",
+      "pass": true
+     },
+     {
+      "rule": "L4 <=7 tas",
+      "value": "3",
+      "pass": true
+     },
+     {
+      "rule": "L5 yapisal >=0.8",
+      "value": "ray 1.0 x 0.9; avuc 1.0",
+      "pass": true
+     },
+     {
+      "rule": "L5 dekoratif >=0.6",
+      "value": "goz koprusu 0.7; badem cevresi min 0.7",
+      "pass": true
+     },
+     {
+      "rule": "L5 aciklik >=0.6, derinlik <=2x",
+      "value": "min 0.6 (1.0/0.6 = 1.67)",
+      "pass": true
+     },
+     {
+      "rule": "L5 kulp >=1.0",
+      "value": "1.0 x 1.6",
+      "pass": true
+     },
+     {
+      "rule": "L5 uc yaricapi >=0.4",
+      "value": "parmak/basparmak uclari r0.5, pedler r1.2",
+      "pass": true
+     },
+     {
+      "rule": "L7 kolye bandi 2.8-4.2 g (zincir+bulgu dahil altin)",
+      "value": "3.905 g (uc 1.647 + zincir 1.902 + bulgu 0.356); tavana pay 0.295 g",
+      "pass": true
+     },
+     {
+      "rule": "L8 zincir 14K solid, tip+genislik yazili, 16in+2in uzatma, varyant degil",
+      "value": "14K solid cable 1.0 mm, 16+2 in",
+      "pass": true
+     }
+    ],
+    "changes_vs_original": [
+     "UYGULANDI (elestiri): uc tas da 1.5 mm (tek gobek/ped spesifikasyonu D2.4).",
+     "KANITLA DUZELTILDI (elestiri: pedleri 1.4 mm'ye kalinlastir): KANIT flush_seat_rule 1.5 mm tas icin min 1.5 mm ister; 1.4 yetersiz -> pedler 1.5.",
+     "DEGISTI (L11): avuctaki 8 kollu yildiz kaldirildi, yerine delik badem goz + 1.5 mm lab mavi safir gozbebegi. Gerekce: kategoride goksel aile N1 yildiz, N2 kuyruklu yildiz, N3 hilal ile zaten 3; avuc yildizi 4. goksel parca olurdu (L11 'ayni aile en fazla 3'). Avuctaki goz hamsanin geleneksel icerigidir. Elestirinin yildiz uclarini r0.5'e yuvarla maddesi bu yuzden konu disi kaldi.",
+     "Ray 1.3 x 1.1 -> 1.0 x 0.9 ve el 15x19 -> 14x18: 18in zincir + bulgular ile 4.2 g tavanina sigmak icin (yapisal 0.8 ustunde).",
+     "Zincir 1.0 rope 18in (dolgu katsayisi) -> 1.0 cable 18in (KANIT). Rope 0.0536 g/cm ile 4.2 g asilirdi.",
+     "Gram: orijinal 3.85 / elestiri 3.93 -> 3.905 g altin."
+    ],
+    "season_proof": "Hamsa kendi basina yil boyu satan kategori; gozlu hamsa en bilinen formudur. Noel donemi metni yalniz 'koruma hediyesi' cercevesi; 27 Aralik'ta metal ve metin degismeden satisa devam eder.",
+    "open_questions": [
+     "Lab blue sapphire gozbebegi ile beyaz basparmak taslarinin ayni partiden derinlik olcumu.",
+     "Kopca/halka gercek gramaji (numune)."
+    ]
+   },
+   {
+    "slot": "N5",
+    "status": "fixed",
+    "name": "14K Hollow Icicle Pendant, Lab Grown Blue Sapphire",
+    "motif": "BUZ - buz sarkiti (icicle); magazanin cornicello'su ile ayni konik damla ailesi.",
+    "karat": "14K",
+    "camera_description": "Icicle pendant in 14K yellow gold, 23 mm long, tapering from a 4.6 mm faceted top collar to a rounded 0.8 mm tip. Four uneven vertical ribs run down the upper half; rib crests are diamond-cut and the surface between them is high-polish. One 1.5 mm lab grown blue sapphire is flush-set in a small raised round pad on the front, just below the collar. The body is hollow-formed, with two small drain holes on the back. Bail behind the collar. 1.0 mm 14K cable chain, 16 inch plus 2 inch extender.",
+    "dimensions": "Boy 23 mm (yaka ustu - uc), govde ust D4.2 -> uc D0.8 (r0.4 yarim kure). Yaka D4.6 x 1.8 kati, fasetli. Bosluk z=1.8..15.0, duvar 0.80 sabit (ic koni dis yuzeyle AYNI yari-aci); alttaki 8 mm kati. 2 tahliye deligi D1.6 arka yuzde (z=3 kulp altinda, z=12 kaburga ucunda). 4 kaburga 0.6 gen x 0.4 yuk x 12 mm. On tas pedi D2.4, 0.7 cikinti, z=0.6-3.0 (ust yarisi kati yakaya basar). Kulp 1.0 x 1.6. Toplam boy kulpla ~27 mm.",
+    "construction": "Tek parca 14K hollow dokum: 3D baski oyuk recine model, ic cekirdek yatirimi 3 noktadan baglanir (2 tahliye deligi + tas yuvasi delik). Dikis yok, lehim yok, mine yok. Tas yuvasi deligi bosluga acilir (tasin altinda delik sarti saglanir). 'Solid' kelimesi baslik/etiket/aciklamada GECMEZ: 'hollow-formed 14K gold' + gram beyan.",
+    "chain_or_findings": "14K solid cable 1.0 mm, 0.0416 g/cm x 45.72 = 1.902 g. Zincir ucunda: 14K istakoz kopca ~9mm (0.25 g kaynaksiz tahmin) + 2 x 14K atlama halkasi 0.6mm tel (0.030 g/adet, hesap) + 14K uzatma ucu etiketi 3.5x2.0x0.5 (0.046 g, hesap). Uzunluk 16in + 2in uzatma; gram 18in (45.72 cm) uzerinden.",
+    "enamel": {
+     "present": false,
+     "colours": [],
+     "cells": "yok (hollow parcada mine yasak, L6)",
+     "firings": "yok"
+    },
+    "stones": [
+     {
+      "count": 1,
+      "size_mm": 1.5,
+      "type": "lab grown blue sapphire, round brilliant",
+      "setting": "flush/gypsy, D2.4 ped (yanal 0.45), alttan D0.9 delik ic bosluga acilir",
+      "host_thickness_mm": 1.5,
+      "location": "on yuz, yaka hemen alti (ped 0.7 + duvar 0.8)"
+     }
+    ],
+    "gram_build": [
+     {
+      "part": "Dis konik govde (ust r2.1 -> uc r0.4, boy 23) + yuvarlak uc",
+      "calc": "pi/3*23*(2.1^2+2.1*0.4+0.4^2) + uc yarim kure = 130.37 mm3 x 0.01307",
+      "grams": 1.704
+     },
+     {
+      "part": "Ic bosluk (eksi), dis yuzeyle AYNI yari-aci, duvar 0.80 normal",
+      "calc": "-pi/3*(z 1.8..15.0)*(r_ic 1.16 -> 0.19 kesik koni) = -22.29 mm3 x 0.01307",
+      "grams": -0.291
+     },
+     {
+      "part": "Kirik-kesim yaka D4.6 x 1.8 kati kapak (govde payi dusulmus)",
+      "calc": "pi/4*4.6^2*1.8 - pi*2.03^2*1.8 = 6.53 mm3 x 0.01307",
+      "grams": 0.085
+     },
+     {
+      "part": "4 dikey duzensiz kaburga 0.6 gen x 0.4 yuk. x 12mm (yuvarlak profil 0.8)",
+      "calc": "4 x 0.6 x 0.4 x 12 x 0.8 = 9.22 mm3 x 0.01307",
+      "grams": 0.12
+     },
+     {
+      "part": "2 tahliye deligi D1.6 (eksi; ikisi de arka yuzde: kulp altinda z=3 ve kaburga ucunda z=12)",
+      "calc": "2 x pi/4*1.6^2*0.8 = -3.22 mm3 x 0.01307",
+      "grams": -0.042
+     },
+     {
+      "part": "On yuz tas pedi D2.4, 0.7 cikinti (yaka/govde sinirinda, z=0.6-3.0)",
+      "calc": "pi/4*2.4^2*0.7 = 3.17 mm3 x 0.01307",
+      "grams": 0.041
+     },
+     {
+      "part": "Kulp (yaka arkasi, entegre)",
+      "calc": "pi x 3.0 x 1.0 x 1.6 = 15.08 mm3 x 0.01307",
+      "grams": 0.197
+     },
+     {
+      "part": "Tas yuvasi (on ped; host 0.7 ped + 0.8 duvar = 1.5) + bosluga acilan delik (eksi)",
+      "calc": "yuva+delik = -1.14 mm3 x 0.01307",
+      "grams": -0.015
+     },
+     {
+      "part": "ARA TOPLAM kolye ucu (dokum, bitmis)",
+      "calc": "137.7 mm3 x 0.01307 g/mm3",
+      "grams": 1.8
+     },
+     {
+      "part": "Zincir: 14K solid cable chain 1.0mm, 16in + 2in uzatma (sabit, varyant degil)",
+      "calc": "0.0416 g/cm x 45.72 cm (18in) ; KANIT: Velvet Box 14K cable 1.0mm 18in=1.9g -> 0.0416 g/cm",
+      "grams": 1.902
+     },
+     {
+      "part": "Istakoz kopca 14K ~9mm (satin alma)",
+      "calc": "KANIT'ta kopca gramaji yok -> 0.25 g kaynaksiz tahmin; tedarikci numunesi tartilacak",
+      "grams": 0.25
+     },
+     {
+      "part": "2 x atlama halkasi 14K (0.6mm tel, ic cap 2.0)",
+      "calc": "2 x torus 2*pi^2*1.3*0.3^2 = 2 x 2.31 mm3 = 4.62 mm3 x 0.01307",
+      "grams": 0.06
+     },
+     {
+      "part": "Uzatma ucu etiketi 14K 3.5x2.0x0.5",
+      "calc": "3.5*2.0*0.5 = 3.50 mm3 x 0.01307",
+      "grams": 0.046
+     },
+     {
+      "part": "Taslar (altin degil, total'e)",
+      "calc": "1x1.5mm=0.0143ct = 0.0143 ct x 0.2",
+      "grams": 0.0029
+     }
+    ],
+    "gold_grams": 4.058,
+    "enamel_grams": 0,
+    "stone_ct": 0.0143,
+    "total_grams": 4.061,
+    "bench_sequence": [
+     "1. CAD: dis yuzey + ic koni ayni yari-aci (duvar 0.80 normal; model 1.0); kati yaka 1.8, kati uc 8 mm; 2 x D1.6 tahliye + D0.9 tas deligi cekirdek baglantisi.",
+     "2. Oyuk recine baski (ic yuzey destek yok, drenaj delikleri acik), recineyi iceriden IPA ile yika, UV sertlestir.",
+     "3. Yatirim vakum altinda (cekirdegin tam dolmasi icin 2 dk vakum), yakma, 14K vakum dokum.",
+     "4. Yatirimi su jeti ile tahliye deliklerinden temizle; deliklerin D1.6 acikligini pin-gauge ile dogrula; ici ultrasonik + su ile durula, firinda kurut (asit/su hapsi olmasin).",
+     "5. Duvar kalinligi kontrolu: ultrasonik kalinlik olcer ya da isik arkasi 3 noktada (z=4, 9, 14); <0.75 ise HURDA.",
+     "6. Kaburga tepelerine elmas tiras, govde cila (elde; tamburda cokme riskine karsi kisa ve hafif).",
+     "7. Tas yuvasi: ped arkasi kati yakaya yaslanir; parca sekilli recine/ahsap destekte; hart bur ile yuva; delik bosluga acik.",
+     "8. Tas oturtma soguk; QC tartim (uc 1.80 g +/- %5), uc r0.4, tahliye delikleri acik."
+    ],
+    "bom": [
+     "Alasim: 14K sari standart dokum alasimi (minesiz parca; Zn serbest), vakum dokum. Bitmis uc 1.800 g x 1.15 = 2.07 g dokum metali.",
+     "Mine tozu: yok.",
+     "Tas: 1 x 1.5 mm lab grown blue sapphire = 0.0143 ct.",
+     "Zincir: 14K solid cable 1.0 mm 18in = 1.902 g.",
+     "Bulgular: istakoz 0.25 g (tahmin), 2 atlama halkasi 0.060 g, etiket 0.046 g."
+    ],
+    "failure_modes": [
+     {
+      "mode": "Cekirdek kaymasi -> duvar 0.8 altina iner (orijinalde farkli koni acilariyla 0.69'a kadar inceliyordu)",
+      "prevention": "Ic koni dis yuzeyle ayni yari-aci (duvar z=2..14 boyunca 0.80 hesapla dogrulandi); cekirdek 3 noktadan bagli; dokum sonrasi kalinlik olcumu, <0.75 hurda."
+     },
+     {
+      "mode": "Ic bosluga yatirim/asit/su hapsi",
+      "prevention": "2 x D1.6 tahliye + D0.9 tas deligi; su jeti, ultrasonik, notrlestirme ve firinda kurutma."
+     },
+     {
+      "mode": "Cepte ezilme / gocme",
+      "prevention": "Konik kabuk, 0.8 duvar, alttaki 8 mm kati uc, ustte 1.8 kati yaka."
+     },
+     {
+      "mode": "Tas yuvasi acarken bosluga delip gecme / oturtmada gocme",
+      "prevention": "Host 1.5 (0.7 ped + 0.8 duvar), delik planli olarak bosluga acilir; pedin ust yarisi kati yakaya basar; parca destek uzerinde oturtulur."
+     }
+    ],
+    "tolerance_checks": [
+     {
+      "rule": "L1 karat 14K (KANIT karat_policy; 14K vitreous 'marginal', not_viable degil)",
+      "value": "14K sari",
+      "pass": true
+     },
+     {
+      "rule": "L2 mine",
+      "value": "yok",
+      "pass": true
+     },
+     {
+      "rule": "L3 ilk pisirimden sonra hamlac lehimi yok; kulp govdeyle tek dokum",
+      "value": "lehim baglantisi 0; kulp entegre dokum; pisirim sonrasi ek yok",
+      "pass": true
+     },
+     {
+      "rule": "L4 ev sahibi kalinligi 1.5 tas -> 1.5",
+      "value": "0.7 ped + 0.8 duvar = 1.5",
+      "pass": true
+     },
+     {
+      "rule": "L4 yanal duvar 0.35",
+      "value": "0.45",
+      "pass": true
+     },
+     {
+      "rule": "L4 tasin altinda delik",
+      "value": "D0.9, ic bosluga acilir (kalan derinlik 0.555)",
+      "pass": true
+     },
+     {
+      "rule": "L5 yapisal >=0.8",
+      "value": "kabuk duvari 0.80 (tum boyda, ayni yari-aci)",
+      "pass": true
+     },
+     {
+      "rule": "L5 dekoratif >=0.6",
+      "value": "kaburga 0.6 x 0.4",
+      "pass": true
+     },
+     {
+      "rule": "L5 kulp >=1.0",
+      "value": "1.0 x 1.6",
+      "pass": true
+     },
+     {
+      "rule": "L5 uc yaricapi >=0.4",
+      "value": "uc r0.4 yarim kure",
+      "pass": true
+     },
+     {
+      "rule": "L6 hollow: yalniz kolye/bros, minesiz, >=2 delik >=1.5, 'solid' duser",
+      "value": "kolye, minesiz, 2 x D1.6 (+ tas deligi), baslik 'Hollow'",
+      "pass": true
+     },
+     {
+      "rule": "L7 kolye bandi 2.8-4.2 g (zincir+bulgu dahil altin)",
+      "value": "4.058 g (uc 1.800 + zincir 1.902 + bulgu 0.356); tavana pay 0.142 g",
+      "pass": true
+     },
+     {
+      "rule": "L8 zincir 14K solid, tip+genislik yazili, 16in+2in uzatma, varyant degil",
+      "value": "14K solid cable 1.0 mm, 16+2 in",
+      "pass": true
+     }
+    ],
+    "changes_vs_original": [
+     "UYGULANDI (elestiri): ic bosluk dis yuzeyle ayni yari-aci; duvar artik yalniz ust duzlemde degil z=2..14 boyunca 0.80 (hesapla dogrulandi).",
+     "UYGULANDI (elestiri: delik muhasebesi): iki tahliye deligi de govde duvarinda (0.8) dusuldu; orijinalde ikisi de yaka kapagindan cikariliyordu.",
+     "UYGULANDI (degistirilmis; elestiri: nub 1.6'ya): tas pedi 0.7 cikinti + 0.8 duvar = 1.5 (KANIT 1.5 tas icin min 1.5); ped yaka/govde sinirinda, ust yarisi 1.8 kati yakaya basar. Delik bosluga acilir ve ucuncu cekirdek baglantisi olur.",
+     "Boyut 34 -> 23 mm, ust D5.2 -> D4.2, kaburga 5 -> 4: 18in zincir + bulgularla 4.2 g tavanina sigmak icin. Tahliye D1.8 -> D1.6 (L6 >=1.5).",
+     "Uc 0.8 mm -> r0.4 yarim kure (L5 giyilen uc).",
+     "Zincir 0.9 Franco 17in (dolgu katsayisi) -> 1.0 cable 18in (KANIT). Gram: orijinal 4.18 / elestiri 4.25 -> 4.058 g altin."
+    ],
+    "season_proof": "Buz sarkiti Noel degil kistir: Ocak-Subat'ta da satar; ayni siluet cornicello okumasiyla yil boyu tilsimdir. Iki bagimsiz talep egrisi, 26 Aralik'ta bitmez.",
+    "open_questions": [
+     "Dokumhanenin oyuk parca cekirdek basarisi (D1.6 deliklerle) - ilk partide 3 numune kesip duvar kalinligi olcumu.",
+     "Etsy basliginda 'hollow-formed' ifadesi ve gram beyani - 'solid' gecmeyecek."
+    ]
+   },
+   {
+    "slot": "N6",
+    "status": "fixed",
+    "name": "14K Window Frost Enamel Bar Pendant, Ice Blue",
+    "motif": "BUZ - pencere buzu dendriti: tek cekirdekten 60 derece acilarla ayrilan 3 eksen (altigen kristal geometrisi), pinnate degil, kar tanesi degil.",
+    "karat": "14K",
+    "camera_description": "Vertical bar pendant in 14K yellow gold, 6.5 x 17 mm with rounded corners, 1.4 mm thick. The front is filled with opaque ice-blue enamel crossed by a branching pattern of 0.7 mm gold lines: three main lines start from one point near the lower left corner and spread upward at 60 degree angles, with short side branches at the same angle, splitting the blue into five irregular fields. A 0.7 mm gold border frames the bar. Enamel level with the gold, polished gold edges. Bail at the top back. 1.0 mm 14K cable chain, 16 inch plus 2 inch extender.",
+    "dimensions": "Plaka 6.5 x 17.0 x 1.40 (kose r1.5); cevre altin cerceve 0.7; ic alan 79.0 mm2. Dendrit: cekirdek sol-alt kosede, 3 ana eksen yalniz 3 altigen yonde (0, 60, 120 derece; ortak eksen yok, simetri yok), ana eksenlerin 3'u de cerceveye ulasir; 4 ikincil dal 1.5 mm, 60 derece, tek tarafli, uclari r0.35 serbest (tam yukseklikte duvar, kabartma degil). Toplam dendrit merkez-hatti ~30 mm, duvar 0.7. 5 hucre, en dar hucre genisligi 0.9. Mine 58 mm2 x 0.55 derin; taban 0.85.",
+    "construction": "Tek parca 14K cinkosuz alasim dokum; hucreler dokumde. Lehim yok, tas yok. Arka yuz ciplak altin (taban 0.85 >= 0.8: karsi-mine gerekmez). Mine duz, parlatma pisirimiyle biter (kubbe kacisi yok).",
+    "chain_or_findings": "14K solid cable 1.0 mm, 0.0416 g/cm x 45.72 = 1.902 g. Zincir ucunda: 14K istakoz kopca ~9mm (0.25 g kaynaksiz tahmin) + 2 x 14K atlama halkasi 0.6mm tel (0.030 g/adet, hesap) + 14K uzatma ucu etiketi 3.5x2.0x0.5 (0.046 g, hesap). Uzunluk 16in + 2in uzatma; gram 18in (45.72 cm) uzerinden.",
+    "enamel": {
+     "present": true,
+     "colours": [
+      "opaque ice-blue"
+     ],
+     "cells": "5 hucre (dendrit + cerceve ile kapali), min genislik 0.9, derinlik 0.55 (oran 0.61), duvar 0.7, taban 0.85, toplam 58.0 mm2 / 31.9 mm3",
+     "firings": "3 pisirim: P1 780 C 90 sn, P2 780 C 90 sn (ikinci dolum), tas ile duzleme, P3 770 C 60 sn parlatma."
+    },
+    "stones": [],
+    "gram_build": [
+     {
+      "part": "Plaka 6.5x17 yuvarlak dikdortgen (kose r1.5), t=1.40 (hucre 0.55 + taban 0.85)",
+      "calc": "108.57 mm2 x 1.40 = 152.00 mm3 x 0.01307",
+      "grams": 1.987
+     },
+     {
+      "part": "Mine alani bosluk (eksi): ic alan (cerceve 0.7) - dendrit duvarlari (30mm x 0.7)",
+      "calc": "-(79.01 - 21.00) x 0.55 = -31.91 mm3 x 0.01307",
+      "grams": -0.417
+     },
+     {
+      "part": "Kulp (ust kenar arkasi, entegre)",
+      "calc": "pi x 3.0 x 1.0 x 1.6 = 15.08 mm3 x 0.01307",
+      "grams": 0.197
+     },
+     {
+      "part": "ARA TOPLAM kolye ucu (dokum, bitmis)",
+      "calc": "135.2 mm3 x 0.01307 g/mm3",
+      "grams": 1.767
+     },
+     {
+      "part": "Zincir: 14K solid cable chain 1.0mm, 16in + 2in uzatma (sabit, varyant degil)",
+      "calc": "0.0416 g/cm x 45.72 cm (18in) ; KANIT: Velvet Box 14K cable 1.0mm 18in=1.9g -> 0.0416 g/cm",
+      "grams": 1.902
+     },
+     {
+      "part": "Istakoz kopca 14K ~9mm (satin alma)",
+      "calc": "KANIT'ta kopca gramaji yok -> 0.25 g kaynaksiz tahmin; tedarikci numunesi tartilacak",
+      "grams": 0.25
+     },
+     {
+      "part": "2 x atlama halkasi 14K (0.6mm tel, ic cap 2.0)",
+      "calc": "2 x torus 2*pi^2*1.3*0.3^2 = 2 x 2.31 mm3 = 4.62 mm3 x 0.01307",
+      "grams": 0.06
+     },
+     {
+      "part": "Uzatma ucu etiketi 14K 3.5x2.0x0.5",
+      "calc": "3.5*2.0*0.5 = 3.50 mm3 x 0.01307",
+      "grams": 0.046
+     },
+     {
+      "part": "Mine (altin degil, total'e)",
+      "calc": "31.9 mm3 x 0.0025",
+      "grams": 0.08
+     }
+    ],
+    "gold_grams": 4.025,
+    "enamel_grams": 0.08,
+    "stone_ct": 0,
+    "total_grams": 4.105,
+    "bench_sequence": [
+     "1. CAD: plaka 1.40 bitmis (model 1.60), dendrit duvarlari 0.7 net (model 0.75), hucre koseleri r0.2, ikincil dal uclari r0.35.",
+     "2. Recine baski; plaka dik, besleme alt kenar arkasindan (iki kanal).",
+     "3. Yatirim, yakma, CINKOSUZ 14K vakum dokum; dokum gozenegi kontrolu (hucre tabani 10x lup), gozenekli = hurda.",
+     "4. Tesviye, arka yuz duzleme (1.40 +/- 0.05), on cila cerceve.",
+     "5. Depletion gilding 3-4 dongu (593 C + %10 H2SO4).",
+     "6. Opak buz mavisi islak dolum, kurutma.",
+     "7. Pisirim 1: 780 C, 90 sn; plaka duz mika/elek uzerinde (sarkma yok).",
+     "8. Pisirim 2: 780 C, 90 sn.",
+     "9. Alundum/elmas cubukla duzleme, dendrit duvarlari ortaya cikar.",
+     "10. Pisirim 3: 770 C, 60 sn parlatma.",
+     "11. Asit yok; notr temizlik. Tas yok. Pisirim sonrasi lazer yok (kulp entegre).",
+     "12. Cila yalniz cerceve kenari ve arka; QC: pinhole/catlak, tartim (uc 1.77 g +/- %5)."
+    ],
+    "bom": [
+     "Alasim: 14K sari CINKOSUZ mine-uyumlu alasim (Otto Frei 846-180 'No Zinc' master alloy + 24K ile 14K; dokumhaneden yazili Zn=0 sertifikasi ve solidus/DSC degeri), vakum/inert gaz dokum. Bitmis uc 1.767 g x 1.15 = 2.03 g dokum metali.",
+     "Mine tozu: kursunsuz opak buz mavisi ~200 mg (pisirilmis 80 mg x ~2.5).",
+     "Tas: yok.",
+     "Zincir: 14K solid cable 1.0 mm 18in = 1.902 g.",
+     "Bulgular: istakoz 0.25 g (tahmin), 2 atlama halkasi 0.060 g, etiket 0.046 g."
+    ],
+    "failure_modes": [
+     {
+      "mode": "0.7 dendrit duvarinda eksik dolum (iki hucre birlesir -> hurda)",
+      "prevention": "Orijinal 14 paralel 0.5 duvar yerine ~30 mm toplam 0.7 duvar; model 0.75, cift besleme, vakum."
+     },
+     {
+      "mode": "Uzun dar kanalda mine catlamasi",
+      "prevention": "5 genis duzensiz hucre, min 0.9 genislik, her hucre altin ile cevrili, koseler r0.2."
+     },
+     {
+      "mode": "Ince plakanin firinda egrilmesi",
+      "prevention": "1.40 kalinlik, duz destek, <=780 C kisa pisirim, 3 pisirim (<=4)."
+     },
+     {
+      "mode": "Buz mavisinin yuksek-Ag cinkosuz alasimda yesile kaymasi",
+      "prevention": "Pilot kupon ayni alasim ve parti mineyle; onaysiz seri yok."
+     }
+    ],
+    "tolerance_checks": [
+     {
+      "rule": "L1 karat 14K (KANIT karat_policy; 14K vitreous 'marginal', not_viable degil)",
+      "value": "14K sari cinkosuz mine alasimi",
+      "pass": true
+     },
+     {
+      "rule": "L2 opak, hucre dokumde",
+      "value": "opak buz mavisi, 5 dokum hucresi",
+      "pass": true
+     },
+     {
+      "rule": "L2 derinlik 0.5-0.6",
+      "value": "0.55",
+      "pass": true
+     },
+     {
+      "rule": "L2 genislik >=0.7, derinlik <=2x genislik",
+      "value": "min 0.9; 0.55/0.9 = 0.61",
+      "pass": true
+     },
+     {
+      "rule": "L2 taban >=0.8",
+      "value": "1.40-0.55 = 0.85",
+      "pass": true
+     },
+     {
+      "rule": "L2 duvar >=0.70",
+      "value": "0.70 (dendrit ve cerceve)",
+      "pass": true
+     },
+     {
+      "rule": "L2 hucre icinde kabartma yok",
+      "value": "ikincil dallar tam yukseklik duvar, duz taban",
+      "pass": true
+     },
+     {
+      "rule": "L2 palet / en fazla 2 renk",
+      "value": "1 renk: buz mavisi",
+      "pass": true
+     },
+     {
+      "rule": "L2 pisirim <=4, <=790 C",
+      "value": "3, 770-780 C",
+      "pass": true
+     },
+     {
+      "rule": "L3 ilk pisirimden sonra hamlac lehimi yok; kulp govdeyle tek dokum",
+      "value": "lehim baglantisi 0; kulp entegre dokum; pisirim sonrasi ek yok",
+      "pass": true
+     },
+     {
+      "rule": "L4 tas",
+      "value": "yok",
+      "pass": true
+     },
+     {
+      "rule": "L5 yapisal >=0.8",
+      "value": "plaka 1.40, cerceve 0.7 x 1.40 kesit",
+      "pass": true
+     },
+     {
+      "rule": "L5 kulp >=1.0",
+      "value": "1.0 x 1.6",
+      "pass": true
+     },
+     {
+      "rule": "L5 uc yaricapi >=0.4",
+      "value": "kose r1.5",
+      "pass": true
+     },
+     {
+      "rule": "L11 pinnate yok / duz 6 kollu kar tanesi yok",
+      "value": "3 eksen, tek cekirdek, asimetrik; orta damar + karsilikli yan dal yok",
+      "pass": true
+     },
+     {
+      "rule": "L7 kolye bandi 2.8-4.2 g (zincir+bulgu dahil altin)",
+      "value": "4.025 g (uc 1.767 + zincir 1.902 + bulgu 0.356); tavana pay 0.175 g",
+      "pass": true
+     },
+     {
+      "rule": "L8 zincir 14K solid, tip+genislik yazili, 16in+2in uzatma, varyant degil",
+      "value": "14K solid cable 1.0 mm, 16+2 in",
+      "pass": true
+     }
+    ],
+    "changes_vs_original": [
+     "UYGULANDI (elestiri + L11): tek orta damar + 14 paralel yan dal (pinnate, kardes markanin cam igne yapragi formu) -> tek cekirdekten 3 eksenli 60 derece dendrit, ikincil dallar tek tarafli ve esit olmayan boyda.",
+     "UYGULANDI (elestiri): 14 adet 0.5 paralel duvar riski kalkti; duvarlar 0.7 (L2), 5 genis hucre.",
+     "KANITLA REDDEDILDI (elestiri: plakayi 1.50'ye cikar): elestirinin amaci eski 1.0 mm karsi-mine esigini asmakti; hat kurali L2 tabani >=0.8 sayar. 1.40 plaka taban 0.85 verir -> kural saglanir, 0.10 mm x 108.6 mm2 = 0.14 g zincire birakildi. Kubbe kacisi da gereksiz: mine duz.",
+     "Taslar (3 x 1.5) kaldirildi: L4 tas yalniz ciplak altinda ve mineye >=0.5; 0.9 omurga 'nod'larinda tas mine kenarina yapisikti. Ayrica L12 tek kahraman = buz dendriti.",
+     "18K -> 14K cinkosuz alasim (L1/KANIT). 22x9 elips -> 6.5x17 bar (4.2 g tavan + 18in zincir).",
+     "Zincir 18K 0.8 box 16in -> 14K cable 1.0 18in. Gram: orijinal ve elestiri 4.15 g (18K) -> 4.025 g altin."
+    ],
+    "season_proof": "Yaz aylarinda soyut buz mavisi mineli bar kolye olarak okunur; Noel isareti yok. Kis boyunca 'window frost' hikayesi. Mevsim kaybi dusuk.",
+    "open_questions": [
+     "Opak buz mavisinin cinkosuz 14K uzerinde renk tutarliligi (kupon).",
+     "Dendrit CAD'inin pinnate okunmadigini kardes marka ekibiyle gorsel teyit."
+    ]
+   },
+   {
+    "slot": "N7",
+    "status": "replaced",
+    "name": "14K Angel Wing Pendant, Lab Grown White Sapphire",
+    "motif": "DIGER - melek kanadi (L11 havuzu, hatta henuz kullanilmamis). Tuyler duz lob; orta sap cizgisi yok -> pinnate degil.",
+    "karat": "14K",
+    "camera_description": "Single angel wing pendant in 14K yellow gold, 9 mm wide and 16 mm tall, 0.9 mm thick. The upper part is a band of rounded covert feathers with a scalloped lower edge; below it five long flight feathers, 1.4 mm wide, are separated by narrow pierced slits and end in five rounded tips along a closed lower edge. One 1.5 mm lab grown white sapphire is flush-set at the shoulder of the wing. Feather faces diamond-cut, edges polished. Bail at the top of the shoulder. 1.0 mm 14K diamond-cut rope chain, 16 inch plus 2 inch extender.",
+    "dimensions": "Kanat 9.0 x 16.0 x 0.9 (model 1.2: +0.2 bitirme +0.1 elmas tiras). Ortu tuyu bandi 9 x 5 (3 yuvarlak tarak). 5 birincil tuy 1.4 gen, boylar 9.5/9.0/8.5/7.5/6.5, aralarinda 0.6 yarik; yariklar arka kenara 1.5 mm kala biter (kapali kenar, serbest konsol yok). Uc tarak r0.7. Omuz tas pedi D2.4 x 1.5. Kulp 1.0 x 1.6.",
+    "construction": "Tek parca 14K dokum, lehim yok, mine yok. Yariklar mumdan. Tas en son soguk.",
+    "chain_or_findings": "14K solid diamond-cut rope 1.0 mm, KANIT Olas d'Oro 0.0536 g/cm x 45.72 = 2.451 g. Zincir ucunda: 14K istakoz kopca ~9mm (0.25 g kaynaksiz tahmin) + 2 x 14K atlama halkasi 0.6mm tel (0.030 g/adet, hesap) + 14K uzatma ucu etiketi 3.5x2.0x0.5 (0.046 g, hesap). Uzunluk 16in + 2in uzatma; gram 18in (45.72 cm) uzerinden.",
+    "enamel": {
+     "present": false,
+     "colours": [],
+     "cells": "yok",
+     "firings": "yok"
+    },
+    "stones": [
+     {
+      "count": 1,
+      "size_mm": 1.5,
+      "type": "lab grown white sapphire, round brilliant",
+      "setting": "flush/gypsy, D2.4 ped (yanal 0.45), alttan D0.9 delik",
+      "host_thickness_mm": 1.5,
+      "location": "kanat omzu (ortu bandi ust-ic kose)"
+     }
+    ],
+    "gram_build": [
+     {
+      "part": "Ortu tuyleri bandi 9x5 (taramali tarak kenar, doluluk 0.75), t=0.9",
+      "calc": "9 x 5 x 0.75 x 0.9 = 30.38 mm3 x 0.01307",
+      "grams": 0.397
+     },
+     {
+      "part": "5 birincil tuy dilimi 1.4 gen, boylar 9.5/9.0/8.5/7.5/6.5, t=0.9, aralarinda 0.6 yarik",
+      "calc": "41.0 x 1.4 x 0.9 = 51.66 mm3 x 0.01307",
+      "grams": 0.675
+     },
+     {
+      "part": "Omuz tas pedi D2.4 x 1.5 (plaka payi dusulmus)",
+      "calc": "pi/4*2.4^2*(1.5-0.9) = 2.71 mm3 x 0.01307",
+      "grams": 0.035
+     },
+     {
+      "part": "Kulp (omuz ustu, entegre)",
+      "calc": "pi x 3.0 x 1.0 x 1.6 = 15.08 mm3 x 0.01307",
+      "grams": 0.197
+     },
+     {
+      "part": "Tas yuvasi + delik (eksi)",
+      "calc": "yuva+delik = -1.14 mm3 x 0.01307",
+      "grams": -0.015
+     },
+     {
+      "part": "ARA TOPLAM kolye ucu (dokum, bitmis)",
+      "calc": "98.7 mm3 x 0.01307 g/mm3",
+      "grams": 1.29
+     },
+     {
+      "part": "Zincir: 14K solid diamond-cut rope chain 1.0mm, 16in + 2in uzatma (sabit, varyant degil)",
+      "calc": "0.0536 g/cm x 45.72 cm (18in) ; KANIT: Olas d'Oro 14K rope 1.05mm 18in=2.45g -> 0.0536 g/cm (tercih edilen kolye degeri)",
+      "grams": 2.451
+     },
+     {
+      "part": "Istakoz kopca 14K ~9mm (satin alma)",
+      "calc": "KANIT'ta kopca gramaji yok -> 0.25 g kaynaksiz tahmin; tedarikci numunesi tartilacak",
+      "grams": 0.25
+     },
+     {
+      "part": "2 x atlama halkasi 14K (0.6mm tel, ic cap 2.0)",
+      "calc": "2 x torus 2*pi^2*1.3*0.3^2 = 2 x 2.31 mm3 = 4.62 mm3 x 0.01307",
+      "grams": 0.06
+     },
+     {
+      "part": "Uzatma ucu etiketi 14K 3.5x2.0x0.5",
+      "calc": "3.5*2.0*0.5 = 3.50 mm3 x 0.01307",
+      "grams": 0.046
+     },
+     {
+      "part": "Taslar (altin degil, total'e)",
+      "calc": "1x1.5mm=0.0143ct = 0.0143 ct x 0.2",
+      "grams": 0.0029
+     }
+    ],
+    "gold_grams": 4.097,
+    "enamel_grams": 0,
+    "stone_ct": 0.0143,
+    "total_grams": 4.099,
+    "bench_sequence": [
+     "1. CAD: plaka 0.9 bitmis + 0.3 (bitirme + on yuz elmas tiras); yariklar 0.6, uclari r0.3; ped 1.5.",
+     "2. Recine baski, besleme omuz arkasindan + uzun tuy ucundan yardimci.",
+     "3. Yatirim, yakma, 14K vakum dokum.",
+     "4. Tesviye; yarik genisligi 0.6 pin-gauge; plaka 0.9 +/- 0.05.",
+     "5. Tuy yuzlerine elmas tiras (yarik kenarlari keskin kalir, uc taraklar yuvarlak).",
+     "6. Tas yuvasi (hart bur), tas oturtma soguk.",
+     "7. Cila elde (ince plakayi destekleyerek), QC tartim (uc 1.29 g +/- %5)."
+    ],
+    "bom": [
+     "Alasim: 14K sari standart dokum alasimi (minesiz parca; Zn serbest), vakum dokum. Bitmis uc 1.290 g x 1.15 = 1.48 g dokum metali.",
+     "Mine tozu: yok.",
+     "Tas: 1 x 1.5 mm lab grown white sapphire = 0.0143 ct.",
+     "Zincir: 14K solid diamond-cut rope 1.0 mm 18in = 2.451 g.",
+     "Bulgular: istakoz 0.25 g (tahmin), 2 atlama halkasi 0.060 g, etiket 0.046 g."
+    ],
+    "failure_modes": [
+     {
+      "mode": "0.6 yariklarda perde / kapanma",
+      "prevention": "Yarik 0.6 >= L5, derinlik 0.9/0.6 = 1.5 <= 2; uclari r0.3."
+     },
+     {
+      "mode": "Serbest tuy uclarinin kumasa takilip egilmesi",
+      "prevention": "Yariklar arka kenara 1.5 mm kala biter; tum tuyler kapali kenarla bagli."
+     },
+     {
+      "mode": "Ince plakanin cilada egilmesi",
+      "prevention": "0.9 plaka (>=0.8), elde destekli cila; tambur yok."
+     },
+     {
+      "mode": "Culet arkadan tasar",
+      "prevention": "Omuz pedi 1.5 (KANIT) + alttan delik."
+     }
+    ],
+    "tolerance_checks": [
+     {
+      "rule": "L1 karat 14K (KANIT karat_policy; 14K vitreous 'marginal', not_viable degil)",
+      "value": "14K sari",
+      "pass": true
+     },
+     {
+      "rule": "L2 mine",
+      "value": "yok",
+      "pass": true
+     },
+     {
+      "rule": "L3 ilk pisirimden sonra hamlac lehimi yok; kulp govdeyle tek dokum",
+      "value": "lehim baglantisi 0; kulp entegre dokum; pisirim sonrasi ek yok",
+      "pass": true
+     },
+     {
+      "rule": "L4 host 1.5 tas -> 1.5",
+      "value": "ped 1.5",
+      "pass": true
+     },
+     {
+      "rule": "L4 yanal duvar 0.35",
+      "value": "0.45",
+      "pass": true
+     },
+     {
+      "rule": "L4 alttan delik",
+      "value": "D0.9",
+      "pass": true
+     },
+     {
+      "rule": "L5 yapisal >=0.8",
+      "value": "plaka 0.9",
+      "pass": true
+     },
+     {
+      "rule": "L5 dekoratif >=0.6",
+      "value": "tuy 1.4, kenar bandi 1.5",
+      "pass": true
+     },
+     {
+      "rule": "L5 aciklik >=0.6 / derinlik <=2x",
+      "value": "0.6 / 1.5",
+      "pass": true
+     },
+     {
+      "rule": "L5 kulp >=1.0",
+      "value": "1.0 x 1.6",
+      "pass": true
+     },
+     {
+      "rule": "L5 uc yaricapi >=0.4",
+      "value": "tarak r0.7",
+      "pass": true
+     },
+     {
+      "rule": "L11 pinnate yok",
+      "value": "tuyler orta sapsiz duz lob",
+      "pass": true
+     },
+     {
+      "rule": "L7 kolye bandi 2.8-4.2 g (zincir+bulgu dahil altin)",
+      "value": "4.097 g (uc 1.290 + zincir 2.451 + bulgu 0.356); tavana pay 0.103 g",
+      "pass": true
+     },
+     {
+      "rule": "L8 zincir 14K solid, tip+genislik yazili, 16in+2in uzatma, varyant degil",
+      "value": "14K solid diamond-cut rope 1.0 mm, 16+2 in",
+      "pass": true
+     }
+    ],
+    "changes_vs_original": [
+     "DEGISTIRILDI: N7 Frost Scarab (18K hollow + 3 hucreli champleve) elestiride 'reject'. Kanit: L6 hollow + mine birlikteligini yasaklar; elestirinin 1. secenegi (12x8.5 hollow kuculme) L6 ihlali; 2. secenek (dolu arkali 14K skarabe) 12x8.5 tabanda 3.8 mm kubbe icin ~0.6 x 102 x 3.8 = ~230 mm3 = ~3.0 g yalniz uc -> 18in zincirle 4.2 g tavanini asar; 3. secenek (ertele) kabul edildi.",
+     "Skarabe zaten B10, P10, E10'da var; L11 havuzunda hatta kullanilmamis 'melek kanadi' secildi. Goksel/tilsim ailelerine yeni parca eklemez (aile sayimlari 3/2 kalir).",
+     "Mine yok: kategoride mineli parca 5 -> 4; 14K vitreous 'marginal' oldugu icin firin riski azaltildi.",
+     "Gram: skarabe 4.26 g (18K, elestiriye gore gercekte 4.42-4.69) -> kanat 4.097 g altin."
+    ],
+    "season_proof": "Melek kanadi yil boyu hatira/koruyucu melek takisidir (Etsy'de yuksek hacimli kalici arama); Aralikta Noel melegi okumasi ekler. 27 Aralik'ta metin degismeden satar.",
+    "open_questions": [
+     "Rope 1.0 mm degeri tek perakende ilanindan (Olas d'Oro 1.05 mm, kopca dahil olabilir) - tedarikci numunesi.",
+     "Kanat tasariminin kardes markanin botanik hattiyla gorsel cakismadigini teyit (tuy loblari yaprak gibi okunmamali)."
+    ]
+   },
+   {
+    "slot": "N8",
+    "status": "fixed",
+    "name": "14K Horsebit Station Necklace, Lab Grown White Sapphire",
+    "motif": "HERITAGE / EQUESTRIAN - snaffle gem: iki yanak halkasi + iki parcali eklemli agizlik; zincir halkalardan gecer (kulp yok).",
+    "karat": "14K",
+    "camera_description": "Horsebit necklace in 14K yellow gold. Two round rings, 9.0 mm across in 1.3 mm round wire, are joined by a two-piece bar, each half 6.5 mm long and tapering from 1.3 mm to 1.0 mm, linked at the centre by two small interlocking loops; overall width about 33 mm. The chain passes through both rings, so the bit sits across the front of the chain with no bail. Each ring has one 1.5 mm lab grown white sapphire flush-set at the top front. High-polish rings, diamond-cut bar halves. 1.0 mm 14K cable chain, 16 inch plus 2 inch extender.",
+    "dimensions": "Yanak halkasi dis D9.0, tel D1.3 (ic D6.4). Agizlik yarisi 6.5 mm (goz merkezleri arasi), D1.3->1.0. Orta gozler R1.45 tel D1.1 (ic D1.8; gecen tel 1.1 -> bosluk 0.7). Dis gozler R1.6 tel D1.1 (ic D2.1; halka teli 1.3 -> bosluk 0.8). Toplam genislik ~33 mm, yukseklik 9 mm. Tas pedleri halka 12 yonu on yuz D2.4 x 1.5. Kaynaklar 6 yonu (alt).",
+    "construction": "Montajli 4 dokum (2 halka acik dokulur, 1 agizlik yarisi kapali orta gozlu, 1 yarisi ACIK orta gozlu; dis gozler kapali). Sira: dis gozlere halkalar gecirilir, A yarisinin kapali orta gozune B'nin acik gozu takilir ve lazerle kapatilir (kaynak goz ucunda, egilme yukunde degil); iki halka 6 yonunde lazerle kapatilir. Toplam 3 lazer kaynagi, lehim yok (mine yok; L3 hamlac yasagi uygulanmasa da lazer: tavlanma ve gorunur dikis yok). Pedler dokunulmamis halka kesitinde, kaynaklardan 180 derece uzakta.",
+    "chain_or_findings": "14K solid cable 1.0 mm, 0.0416 g/cm x 45.72 = 1.902 g; zincir iki halkanin icinden gecer (halka ic D6.4, kopca gecer). Zincir ucunda: 14K istakoz kopca ~9mm (0.25 g kaynaksiz tahmin) + 2 x 14K atlama halkasi 0.6mm tel (0.030 g/adet, hesap) + 14K uzatma ucu etiketi 3.5x2.0x0.5 (0.046 g, hesap). Uzunluk 16in + 2in uzatma; gram 18in (45.72 cm) uzerinden.",
+    "enamel": {
+     "present": false,
+     "colours": [],
+     "cells": "yok (montajli parca)",
+     "firings": "yok"
+    },
+    "stones": [
+     {
+      "count": 2,
+      "size_mm": 1.5,
+      "type": "lab grown white sapphire, round brilliant",
+      "setting": "flush/gypsy, D2.4 ped (yanal 0.45), on-arka D0.9 delik",
+      "host_thickness_mm": 1.5,
+      "location": "her yanak halkasi, 12 yonu on yuz"
+     }
+    ],
+    "gram_build": [
+     {
+      "part": "2 yanak halkasi D9.0 dis, kesit D1.3 yuvarlak",
+      "calc": "2 x 2*pi^2*3.85*0.65^2 = 64.22 mm3 x 0.01307",
+      "grams": 0.839
+     },
+     {
+      "part": "2 agizlik yarisi 6.5mm, D1.3->1.0 konik",
+      "calc": "2 x pi/4*1.15^2*6.5 = 13.50 mm3 x 0.01307",
+      "grams": 0.176
+     },
+     {
+      "part": "2 orta goz halkasi (R1.45, tel D1.1; ic cap 1.8)",
+      "calc": "2 x 2*pi^2*1.45*0.55^2 = 17.32 mm3 x 0.01307",
+      "grams": 0.226
+     },
+     {
+      "part": "2 dis goz halkasi (yanak halkasini sarar; R1.6, tel D1.1; ic cap 2.1)",
+      "calc": "2 x 2*pi^2*1.6*0.55^2 = 19.11 mm3 x 0.01307",
+      "grams": 0.25
+     },
+     {
+      "part": "2 tas pedi D2.4 x 1.5 (halka 12 yonu on yuz; tel payi dusulmus)",
+      "calc": "2 x (pi/4*2.4^2*1.5 - 2.4*pi/4*1.3^2) = 7.20 mm3 x 0.01307",
+      "grams": 0.094
+     },
+     {
+      "part": "2 tas yuvasi + delik (eksi)",
+      "calc": "-2 x 1.14 = -2.28 mm3 x 0.01307",
+      "grams": -0.03
+     },
+     {
+      "part": "ARA TOPLAM kolye ucu (dokum, bitmis)",
+      "calc": "119.1 mm3 x 0.01307 g/mm3",
+      "grams": 1.556
+     },
+     {
+      "part": "Zincir: 14K solid cable chain 1.0mm, 16in + 2in uzatma (sabit, varyant degil)",
+      "calc": "0.0416 g/cm x 45.72 cm (18in) ; KANIT: Velvet Box 14K cable 1.0mm 18in=1.9g -> 0.0416 g/cm",
+      "grams": 1.902
+     },
+     {
+      "part": "Istakoz kopca 14K ~9mm (satin alma)",
+      "calc": "KANIT'ta kopca gramaji yok -> 0.25 g kaynaksiz tahmin; tedarikci numunesi tartilacak",
+      "grams": 0.25
+     },
+     {
+      "part": "2 x atlama halkasi 14K (0.6mm tel, ic cap 2.0)",
+      "calc": "2 x torus 2*pi^2*1.3*0.3^2 = 2 x 2.31 mm3 = 4.62 mm3 x 0.01307",
+      "grams": 0.06
+     },
+     {
+      "part": "Uzatma ucu etiketi 14K 3.5x2.0x0.5",
+      "calc": "3.5*2.0*0.5 = 3.50 mm3 x 0.01307",
+      "grams": 0.046
+     },
+     {
+      "part": "Taslar (altin degil, total'e)",
+      "calc": "2x1.5mm=0.0143ct = 0.0285 ct x 0.2",
+      "grams": 0.0057
+     }
+    ],
+    "gold_grams": 3.814,
+    "enamel_grams": 0,
+    "stone_ct": 0.0285,
+    "total_grams": 3.82,
+    "bench_sequence": [
+     "1. CAD: 4 parca, bitmis + 0.2; acik halka ve acik goz uclarinda 0.3 mm kaynak hazirlik pahi; bosluklar 0.7/0.8.",
+     "2. Recine baski, 14K vakum dokum (4 parca ayni agac).",
+     "3. Her parca acikken ayri tesviye ve on cila (eklem yuzeyleri dahil); agizliklara elmas tiras.",
+     "4. Montaj 1: A yarisinin kapali gozune B'nin acik gozu takilir, uclar kapatilir, LAZER kaynak (dusuk guc, 2 atis her yuz), dressing, 10x lup.",
+     "5. Montaj 2: dis gozlere acik halkalar gecirilir, halka uclari 6 yonunde kapatilir, LAZER kaynak, kaynak dikisi elle tesviye.",
+     "6. Eklem serbestligi testi (baglanma yok), kaynak cekme testi (elde 2 kg).",
+     "7. Tas yuvalari (12 yonu, kaynaklardan uzak), soguk oturtma.",
+     "8. Son cila (kaplama/rodaj yok), zincir halkalardan gecirilir; QC tartim (bit 1.56 g +/- %5)."
+    ],
+    "bom": [
+     "Alasim: 14K sari standart dokum alasimi (minesiz parca; Zn serbest), vakum dokum. Bitmis bit 1.556 g x 1.15 = 1.79 g dokum metali.",
+     "Mine tozu: yok.",
+     "Taslar: 2 x 1.5 mm lab grown white sapphire = 0.0285 ct.",
+     "Zincir: 14K solid cable 1.0 mm 18in = 1.902 g.",
+     "Bulgular: istakoz 0.25 g (tahmin), 2 atlama halkasi 0.060 g, etiket 0.046 g. Lazer kaynak teli gerekmez (ana metal eritme)."
+    ],
+    "failure_modes": [
+     {
+      "mode": "Orta eklem kaynaginin calisma sirasinda catlamasi",
+      "prevention": "Kaynak acik gozun ucunda, temas/egilme bolgesinin disinda; dressing sonrasi lup ve cekme testi."
+     },
+     {
+      "mode": "Tas pedinin kaynak uzerinde catlamasi (orijinal tasarim)",
+      "prevention": "Kaynaklar 6 yonunde, pedler 12 yonunde dokunulmamis kesitte."
+     },
+     {
+      "mode": "Eklemin cila artigi ile sikismasi",
+      "prevention": "Bosluk 0.7 / 0.8 (orijinal 0.4), parcalar montaj oncesi cilalanir, kaplama yok."
+     },
+     {
+      "mode": "Zincirin halka icinde asinmasi",
+      "prevention": "14K halka teli 1.3, ic yuzey cilali; bit hafif (1.56 g)."
+     }
+    ],
+    "tolerance_checks": [
+     {
+      "rule": "L1 karat 14K (KANIT karat_policy; 14K vitreous 'marginal', not_viable degil)",
+      "value": "14K sari",
+      "pass": true
+     },
+     {
+      "rule": "L2 mine",
+      "value": "yok (eklemli/montajli parcada mine yasak, L2)",
+      "pass": true
+     },
+     {
+      "rule": "L3 lehim yok; pisirim sonrasi ek yalniz lazer",
+      "value": "3 lazer kaynak, lehim yok, firin yok",
+      "pass": true
+     },
+     {
+      "rule": "L4 host 1.5 tas -> 1.5",
+      "value": "ped 1.5",
+      "pass": true
+     },
+     {
+      "rule": "L4 yanal 0.35",
+      "value": "0.45",
+      "pass": true
+     },
+     {
+      "rule": "L4 esneyen parcada tas yok",
+      "value": "taslar rijit halkalarda, eklemde degil",
+      "pass": true
+     },
+     {
+      "rule": "L5 tasiyici halka kesiti >=1.0",
+      "value": "yanak halkasi D1.3, gozler D1.1",
+      "pass": true
+     },
+     {
+      "rule": "L5 yapisal >=0.8",
+      "value": "agizlik min D1.0",
+      "pass": true
+     },
+     {
+      "rule": "L5 aciklik/bosluk >=0.6",
+      "value": "0.7 / 0.8",
+      "pass": true
+     },
+     {
+      "rule": "L5 uc yaricapi >=0.4",
+      "value": "acik uc yok (kapali halkalar)",
+      "pass": true
+     },
+     {
+      "rule": "L7 kolye bandi 2.8-4.2 g (zincir+bulgu dahil altin)",
+      "value": "3.814 g (uc 1.556 + zincir 1.902 + bulgu 0.356); tavana pay 0.386 g",
+      "pass": true
+     },
+     {
+      "rule": "L8 zincir 14K solid, tip+genislik yazili, 16in+2in uzatma, varyant degil",
+      "value": "14K solid cable 1.0 mm, 16+2 in",
+      "pass": true
+     }
+    ],
+    "changes_vs_original": [
+     "UYGULANDI (elestiri): iki halka kaynagi tas pedlerinden 180 derece uzaga (6 yonu) tasindi; pedler dokunulmamis kesitte.",
+     "UYGULANDI (elestiri): iki kapali halkanin birbirine gecemeyecegi topolojisi duzeltildi - bir orta goz acik dokunur, takilir, lazerle kapatilir (3. kaynak, montaj sirasina yazildi).",
+     "UYGULANDI (elestiri): eklem bosluklari 0.4 -> 0.7/0.8 (L5 aciklik >=0.6).",
+     "Genislik: elestirinin 29 mm duzeltmesi eski 11 mm halka geometrisi icindi; yeni geometride hesap 2 x (6.5 + 1.6 + 3.85 + 4.5) = ~33 mm.",
+     "Lehim -> lazer kaynak (L3 ruhu + KANIT laser_weld): lehim akisi tavlama ve gorunur dikis yapar.",
+     "Zincir 1.1 Miami Cuban 17in (KANIT'ta 1.1 cuban yok; 1.8 cuban 0.1178 g/cm x 45.72 = 5.39 g, tek basina banda sigmaz) -> 1.0 cable 18in. Halka D11 -> D9, tel 1.5 -> 1.3, agizlik 9 -> 6.5 (4.2 g tavan).",
+     "Gram: orijinal/elestiri 4.28 g -> 3.814 g altin."
+    ],
+    "season_proof": "Atli donanim kalici luks kategorisi; ilkbahar derbi/yaris sezonunda ikinci tepe. Aralik bagimliligi yok.",
+    "open_questions": [
+     "Lazer kaynak hizmetinin (atolye ici ya da fason) varligi ve kaynak cekme testi kriteri.",
+     "Cable 1.0 zincirin ic D6.4 halkadan kopca ile gecisi (kopca 9mm -> sorun yok, teyit)."
+    ]
+   },
+   {
+    "slot": "N9",
+    "status": "fixed",
+    "name": "14K Stirrup Slider Pendant, Jade Green Enamel",
+    "motif": "HERITAGE / EQUESTRIAN - uzengi: D-kemer, basamakta 5 hucreli derin yesil mine; zincir kendi kayis yarigindan gecer.",
+    "karat": "14K",
+    "camera_description": "Stirrup pendant in 14K yellow gold, 13 mm wide and 16 mm tall, open in the middle. A 1.6 mm wide rail forms an arched D shape rising from a flat 12 mm base bar. The base bar carries a row of five small cells of opaque deep jade-green enamel separated by four 0.7 mm gold ribs, framed by gold edges that stand slightly above the enamel. A flat top bar with a 4.0 x 1.6 mm slot takes the chain, so the pendant slides on it without a bail. High-polish gold. 1.2 mm 14K cable chain, 16 inch plus 2 inch extender.",
+    "dimensions": "Dis 13 x 16 mm. Kemer rayi 1.6 gen x 1.2 kal, merkez-hat yari elips a=5.7 b=12.5, uzunluk 29.6 mm (Ramanujan). Ust cubuk 6.0 x 3.6 x 1.4, yarik 4.0 x 1.6 (yarik cevresinde her yonde 1.0 duvar), yarik kenarlari r0.4. Basamak 12.0 x 2.6 x 1.5: kenar raylari 0.7, uc duvarlar 0.7, mine paneli 10.6 x 1.2 raylardan 0.1 asagida; 5 hucre 1.56 x 1.2 x 0.55, 4 kaburga 0.7; taban 0.85.",
+    "construction": "Tek parca 14K cinkosuz alasim dokum; kulp yok, lehim yok, tas yok. Hucreler dokumde. Arka ciplak altin (taban 0.85). Mine duz ve 0.1 cokertilmis panelde.",
+    "chain_or_findings": "14K solid cable 1.2 mm, KANIT ARA DEGER 0.0489 g/cm (kaynaksiz tahmin) x 45.72 = 2.236 g; zincir ust cubuk yarigindan gecer. Zincir ucunda: 14K istakoz kopca ~9mm (0.25 g kaynaksiz tahmin) + 2 x 14K atlama halkasi 0.6mm tel (0.030 g/adet, hesap) + 14K uzatma ucu etiketi 3.5x2.0x0.5 (0.046 g, hesap). Uzunluk 16in + 2in uzatma; gram 18in (45.72 cm) uzerinden.",
+    "enamel": {
+     "present": true,
+     "colours": [
+      "opaque deep jade-green"
+     ],
+     "cells": "5 hucre 1.56 x 1.2, derinlik 0.55 (oran 0.46), kaburga/duvar 0.7, taban 0.85, panel raylardan 0.1 asagida; hacim 5.15 mm3",
+     "firings": "3 pisirim: P1 780 C 90 sn, P2 780 C 75 sn, panel ici dar elmas cubukla duzleme, P3 770 C 60 sn parlatma."
+    },
+    "stones": [],
+    "gram_build": [
+     {
+      "part": "D-kemer rayi: yari elips a=5.7 b=12.5 (Ramanujan), kesit 1.6x1.2, uclar bindirme dusulmus",
+      "calc": "29.60 x 1.6 x 1.2 - 2x1.6x1.6x1.2 = 50.68 mm3 x 0.01307",
+      "grams": 0.662
+     },
+     {
+      "part": "Ust kayis cubugu 6.0x3.6x1.4, zincir yarigi 4.0x1.6 dusulmus (yarik cevresi 1.0 duvar)",
+      "calc": "(6.0*3.6 - 4.0*1.6) x 1.4 = 21.28 mm3 x 0.01307",
+      "grams": 0.278
+     },
+     {
+      "part": "Basamak cubugu 12.0x2.6x1.5 brut",
+      "calc": "12.0 x 2.6 x 1.5 = 46.80 mm3 x 0.01307",
+      "grams": 0.612
+     },
+     {
+      "part": "5 mine hucresi bosluk (eksi) 1.56x1.2x0.55",
+      "calc": "-5 x 1.56 x 1.2 x 0.55 = -5.15 mm3 x 0.01307",
+      "grams": -0.067
+     },
+     {
+      "part": "Mine paneli 0.1mm cokertme (eksi; mine raylardan 0.1 asagida)",
+      "calc": "-10.6 x 1.2 x 0.1 = -1.27 mm3 x 0.01307",
+      "grams": -0.017
+     },
+     {
+      "part": "ARA TOPLAM kolye ucu (dokum, bitmis)",
+      "calc": "112.3 mm3 x 0.01307 g/mm3",
+      "grams": 1.468
+     },
+     {
+      "part": "Zincir: 14K solid cable chain 1.2mm, 16in + 2in uzatma (sabit, varyant degil)",
+      "calc": "0.0489 g/cm x 45.72 cm (18in) ; KANIT: ARA DEGER 1.2mm cable 0.0489 g/cm (Velvet 1.0/1.3 arasi dogrusal; kaynaksiz tahmin)",
+      "grams": 2.236
+     },
+     {
+      "part": "Istakoz kopca 14K ~9mm (satin alma)",
+      "calc": "KANIT'ta kopca gramaji yok -> 0.25 g kaynaksiz tahmin; tedarikci numunesi tartilacak",
+      "grams": 0.25
+     },
+     {
+      "part": "2 x atlama halkasi 14K (0.6mm tel, ic cap 2.0)",
+      "calc": "2 x torus 2*pi^2*1.3*0.3^2 = 2 x 2.31 mm3 = 4.62 mm3 x 0.01307",
+      "grams": 0.06
+     },
+     {
+      "part": "Uzatma ucu etiketi 14K 3.5x2.0x0.5",
+      "calc": "3.5*2.0*0.5 = 3.50 mm3 x 0.01307",
+      "grams": 0.046
+     },
+     {
+      "part": "Mine (altin degil, total'e)",
+      "calc": "5.1 mm3 x 0.0025",
+      "grams": 0.013
+     }
+    ],
+    "gold_grams": 4.06,
+    "enamel_grams": 0.013,
+    "stone_ct": 0,
+    "total_grams": 4.073,
+    "bench_sequence": [
+     "1. CAD: bitmis + 0.2; panel 0.1 cokertme, hucre koseleri r0.2, yarik kenarlari r0.4.",
+     "2. Recine baski, besleme basamak arkasindan (en kalin) + ust cubuktan.",
+     "3. Yatirim, yakma, CINKOSUZ 14K vakum dokum; hucre tabani gozenek kontrolu.",
+     "4. Tesviye; yarik ici cila (zincir yatagi).",
+     "5. Depletion gilding 3-4 dongu (593 C + %10 H2SO4).",
+     "6. Derin yesil opak islak dolum.",
+     "7. Pisirim 1: 780 C, 90 sn; parca basamak ve ust cubuktan desteklenir (kemer sarkmasin).",
+     "8. Pisirim 2: 780 C, 75 sn.",
+     "9. 1.0 mm elmas cubukla panel ici duzleme (kenar raylarina dokunmadan).",
+     "10. Pisirim 3: 770 C, 60 sn parlatma. Asit yok.",
+     "11. Tas yok, lazer yok. Cila yalniz altin yuzeyler; QC: tartim (uc 1.47 g +/- %5), mine raylardan asagida (cetvel + lup)."
+    ],
+    "bom": [
+     "Alasim: 14K sari CINKOSUZ mine-uyumlu alasim (Otto Frei 846-180 'No Zinc' master alloy + 24K ile 14K; dokumhaneden yazili Zn=0 sertifikasi ve solidus/DSC degeri), vakum/inert gaz dokum. Bitmis uc 1.468 g x 1.15 = 1.69 g dokum metali.",
+     "Mine tozu: kursunsuz opak derin yesil ~35 mg (pisirilmis 13 mg x ~2.5).",
+     "Tas: yok.",
+     "Zincir: 14K solid cable 1.2 mm 18in = 2.236 g.",
+     "Bulgular: istakoz 0.25 g (tahmin), 2 atlama halkasi 0.060 g, etiket 0.046 g."
+    ],
+    "failure_modes": [
+     {
+      "mode": "Basamak minesinin darbe ile kirilmasi (orijinalde kubbe = asinma yuzu celiskisi)",
+      "prevention": "Mine duz ve kenar raylarindan 0.1 asagida; her hucre 4 yandan altinla cevrili."
+     },
+     {
+      "mode": "Zincirin yarikta kesilmesi (orijinal 18K 1.0 figaro)",
+      "prevention": "14K 1.2 cable, yarik kenarlari r0.4 ve cilali, uc yalniz 1.47 g."
+     },
+     {
+      "mode": "Kemerin firinda sarkmasi",
+      "prevention": "Kemer 1.6 x 1.2, destek basamak + ust cubuk, <=780 C kisa pisirim."
+     },
+     {
+      "mode": "Hucrede pinhole",
+      "prevention": "Zn=0 alasim, vakum dokum, depletion gilding, kupon."
+     }
+    ],
+    "tolerance_checks": [
+     {
+      "rule": "L1 karat 14K (KANIT karat_policy; 14K vitreous 'marginal', not_viable degil)",
+      "value": "14K sari cinkosuz mine alasimi",
+      "pass": true
+     },
+     {
+      "rule": "L2 derinlik 0.5-0.6",
+      "value": "0.55",
+      "pass": true
+     },
+     {
+      "rule": "L2 genislik >=0.7, derinlik <=2x",
+      "value": "1.2 (min); 0.46",
+      "pass": true
+     },
+     {
+      "rule": "L2 taban >=0.8",
+      "value": "1.5 - 0.1 - 0.55 = 0.85",
+      "pass": true
+     },
+     {
+      "rule": "L2 duvar >=0.70",
+      "value": "kaburga ve kenar 0.7",
+      "pass": true
+     },
+     {
+      "rule": "L2 esneyen parcada mine yok",
+      "value": "rijit tek dokum",
+      "pass": true
+     },
+     {
+      "rule": "L2 palet, <=2 renk",
+      "value": "1 renk derin yesil",
+      "pass": true
+     },
+     {
+      "rule": "L2 pisirim <=4, <=790",
+      "value": "3, 770-780 C",
+      "pass": true
+     },
+     {
+      "rule": "L3 lehim yok; kulp yok (zincir yariktan)",
+      "value": "lehim 0, kulp yok, pisirim sonrasi ek yok",
+      "pass": true
+     },
+     {
+      "rule": "L4 tas",
+      "value": "yok",
+      "pass": true
+     },
+     {
+      "rule": "L5 yapisal >=0.8",
+      "value": "kemer 1.6 x 1.2; ust cubuk 3.6 x 1.4",
+      "pass": true
+     },
+     {
+      "rule": "L5 tasiyici kesit >=1.0",
+      "value": "yarik ust/alt duvar (3.6-1.6)/2 = 1.0 x 1.4; yanlar (6.0-4.0)/2 = 1.0 x 1.4",
+      "pass": true
+     },
+     {
+      "rule": "L5 aciklik >=0.6, derinlik <=2x",
+      "value": "yarik 1.6 (1.4/1.6 = 0.88)",
+      "pass": true
+     },
+     {
+      "rule": "L7 kolye bandi 2.8-4.2 g (zincir+bulgu dahil altin)",
+      "value": "4.060 g (uc 1.468 + zincir 2.236 + bulgu 0.356); tavana pay 0.140 g",
+      "pass": true
+     },
+     {
+      "rule": "L8 zincir 14K solid, tip+genislik yazili, 16in+2in uzatma, varyant degil",
+      "value": "14K solid cable 1.2 mm, 16+2 in",
+      "pass": true
+     }
+    ],
+    "changes_vs_original": [
+     "UYGULANDI (elestiri: kubbe ile cokertme celiskisi): mine duz, panel raylardan 0.1 asagida (L2 bileklik kuralinin darbe mantigi kolyeye de uygulandi).",
+     "KANITLA DUZELTILDI (elestiri: basamak 1.6'ya): amac eski 1.0 karsi-mine esigiydi; L2 tabani >=0.8 ister. 1.5 basamakta 0.1 cokertme + 0.55 hucre sonrasi taban 0.85 -> yeter; karsi-mine ve kubbe gereksiz.",
+     "UYGULANDI (elestiri: kemer uzunlugu): Ramanujan ile hesaplandi; yeni 13x16 geometride 29.6 mm (eski 16x19 icin elestirinin 41.5'i).",
+     "UYGULANDI (elestiri: 1.2 zincir): 14K 1.2 cable; yarik 5.0x1.6 -> 4.0x1.6, kenar r0.4. Ayrica orijinal ust cubuk 2.5 genislikte 1.6 yarikla yarigin ust/alt duvari 0.45 mm idi (zincirin yuk tasidigi yer, L5 >=1.0 ihlal) -> cubuk 3.6 genislige cikti, duvar 1.0.",
+     "Kaburgalar 0.6 -> 0.7 (L2). 18K -> 14K cinkosuz (L1). Boyut 16x19 -> 13x16, ray 2.0x1.3 -> 1.6x1.2 (4.2 g tavan).",
+     "Gram: orijinal 4.12 (18K) / elestiri 4.37 -> 4.060 g altin."
+    ],
+    "season_proof": "Kalici atli kategori + derbi sezonu ikinci tepe; derin kirik yesil yaris rengi olarak okunur, Noel envanteri gibi degil.",
+    "open_questions": [
+     "Cable 1.2 mm g/cm ARA DEGER (kaynaksiz) - numune tartimi.",
+     "Derin yesil opak minenin cinkosuz 14K kuponu."
+    ]
+   },
+   {
+    "slot": "N10",
+    "status": "fixed",
+    "name": "14K Cardinal Enamel Pendant, Deep Berry",
+    "motif": "KUS - kardinal profil, tepe tuyu kalkik; dal/tuneme yok.",
+    "karat": "14K",
+    "camera_description": "Cardinal bird pendant in 14K yellow gold, side profile, 11 mm wide and 15 mm tall, 1.35 mm thick, with a raised crest that ends in a rounded tip. The breast, wing and tail are filled with opaque deep berry enamel in three fields separated by 0.7 mm gold lines that mark the wing and the tail. The face, beak and outline are polished gold, and the eye is a 0.8 mm round hole through the gold face. No branch or perch. Bail hidden behind the back. 1.0 mm 14K cable chain, 16 inch plus 2 inch extender.",
+    "dimensions": "Siluet 11 x 15 x 1.35 (doluluk 0.58 -> 95.7 mm2). 3 hucre: gogus/govde 22 mm2, kanat 15 mm2, kuyruk 11 mm2; derinlik 0.55, en dar yer 1.2, duvar ve cevre 0.7, taban 0.80. Yuz maskesi/gaga/tepe kenari ciplak altin; goz D0.8 delik (1.35/0.8 = 1.69). Tepe ucu r0.5. Kulp 1.0 x 1.6 sirt arkasi.",
+    "construction": "Tek parca 14K cinkosuz alasim dokum, hucreler dokumde; lehim yok, tas yok. Arka ciplak altin (taban 0.80). Bogurtlen tek renk; tum pisirimler bant alt ucunda (760 C).",
+    "chain_or_findings": "14K solid cable 1.0 mm, 0.0416 g/cm x 45.72 = 1.902 g. Zincir ucunda: 14K istakoz kopca ~9mm (0.25 g kaynaksiz tahmin) + 2 x 14K atlama halkasi 0.6mm tel (0.030 g/adet, hesap) + 14K uzatma ucu etiketi 3.5x2.0x0.5 (0.046 g, hesap). Uzunluk 16in + 2in uzatma; gram 18in (45.72 cm) uzerinden.",
+    "enamel": {
+     "present": true,
+     "colours": [
+      "opaque deep berry"
+     ],
+     "cells": "3 hucre (22 / 15 / 11 mm2), min genislik 1.2, derinlik 0.55 (oran 0.46), duvar 0.7, taban 0.80, hacim 26.4 mm3",
+     "firings": "3 pisirim, hepsi bandin alt ucunda: P1 760 C 90 sn, P2 760 C 75 sn, duzleme, P3 760 C 60 sn parlatma (bogurtlen tek renk oldugu icin 'en son' kosulu dogal olarak saglanir)."
+    },
+    "stones": [],
+    "gram_build": [
+     {
+      "part": "Kardinal profil silueti 11x15 (doluluk 0.58), t=1.35 (hucre 0.55 + taban 0.80)",
+      "calc": "0.58*11*15 = 95.7 mm2 x 1.35 = 129.20 mm3 x 0.01307",
+      "grams": 1.689
+     },
+     {
+      "part": "3 mine hucresi bosluk (eksi): gogus/govde 22 + kanat 15 + kuyruk 11 mm2, derinlik 0.55",
+      "calc": "-48 x 0.55 = -26.40 mm3 x 0.01307",
+      "grams": -0.345
+     },
+     {
+      "part": "Delik goz D0.8 (eksi)",
+      "calc": "-pi/4*0.8^2*1.35 = -0.68 mm3 x 0.01307",
+      "grams": -0.009
+     },
+     {
+      "part": "Kulp (sirt arkasi, entegre)",
+      "calc": "pi x 3.0 x 1.0 x 1.6 = 15.08 mm3 x 0.01307",
+      "grams": 0.197
+     },
+     {
+      "part": "ARA TOPLAM kolye ucu (dokum, bitmis)",
+      "calc": "117.2 mm3 x 0.01307 g/mm3",
+      "grams": 1.532
+     },
+     {
+      "part": "Zincir: 14K solid cable chain 1.0mm, 16in + 2in uzatma (sabit, varyant degil)",
+      "calc": "0.0416 g/cm x 45.72 cm (18in) ; KANIT: Velvet Box 14K cable 1.0mm 18in=1.9g -> 0.0416 g/cm",
+      "grams": 1.902
+     },
+     {
+      "part": "Istakoz kopca 14K ~9mm (satin alma)",
+      "calc": "KANIT'ta kopca gramaji yok -> 0.25 g kaynaksiz tahmin; tedarikci numunesi tartilacak",
+      "grams": 0.25
+     },
+     {
+      "part": "2 x atlama halkasi 14K (0.6mm tel, ic cap 2.0)",
+      "calc": "2 x torus 2*pi^2*1.3*0.3^2 = 2 x 2.31 mm3 = 4.62 mm3 x 0.01307",
+      "grams": 0.06
+     },
+     {
+      "part": "Uzatma ucu etiketi 14K 3.5x2.0x0.5",
+      "calc": "3.5*2.0*0.5 = 3.50 mm3 x 0.01307",
+      "grams": 0.046
+     },
+     {
+      "part": "Mine (altin degil, total'e)",
+      "calc": "26.4 mm3 x 0.0025",
+      "grams": 0.066
+     }
+    ],
+    "gold_grams": 3.79,
+    "enamel_grams": 0.066,
+    "stone_ct": 0,
+    "total_grams": 3.856,
+    "bench_sequence": [
+     "1. CAD: bitmis + 0.2; hucre koseleri r0.2; goz D0.8 delik; tepe ucu r0.5.",
+     "2. Recine baski, besleme sirt arkasindan.",
+     "3. Yatirim, yakma, CINKOSUZ 14K vakum dokum; gozenek kontrolu.",
+     "4. Tesviye, maske/gaga on cila, goz deligi 0.8 pin-gauge.",
+     "5. Depletion gilding 3-4 dongu (593 C + %10 H2SO4).",
+     "6. Opak derin bogurtlen (kadmiyumsuz secilmeli) islak dolum.",
+     "7. Pisirim 1: 760 C, 90 sn.",
+     "8. Pisirim 2: 760 C, 75 sn.",
+     "9. Tasla duzleme.",
+     "10. Pisirim 3: 760 C, 60 sn parlatma. Asit yok.",
+     "11. Tas yok, lazer yok; cila yalniz altin; QC: renk kuponla karsilastir (kahverengiye kayma yok), tartim (uc 1.53 g +/- %5)."
+    ],
+    "bom": [
+     "Alasim: 14K sari CINKOSUZ mine-uyumlu alasim (Otto Frei 846-180 'No Zinc' master alloy + 24K ile 14K; dokumhaneden yazili Zn=0 sertifikasi ve solidus/DSC degeri), vakum/inert gaz dokum. Bitmis uc 1.532 g x 1.15 = 1.76 g dokum metali.",
+     "Mine tozu: kursunsuz, kadmiyumsuz opak derin bogurtlen ~165 mg (pisirilmis 66 mg x ~2.5).",
+     "Tas: yok.",
+     "Zincir: 14K solid cable 1.0 mm 18in = 1.902 g.",
+     "Bulgular: istakoz 0.25 g (tahmin), 2 atlama halkasi 0.060 g, etiket 0.046 g."
+    ],
+    "failure_modes": [
+     {
+      "mode": "Kirmizi-aile minenin tekrar pisirimde yanmasi / kahverengiye donmesi",
+      "prevention": "Tek renk, tum pisirimler 760 C (bant alti), kisa sure, max 3; kupon ile renk onayi."
+     },
+     {
+      "mode": "Buyuk tek hucrede catlama (orijinal 45 mm2 tek govde hucresi)",
+      "prevention": "Kanat ve kuyruk cizgileriyle 3 hucreye bolundu (max 22 mm2), her hucre 0.7 altinla cevrili."
+     },
+     {
+      "mode": "Kenar cercevesinin ayni anda yapisal + mine duvari olmasi (orijinal 0.5)",
+      "prevention": "Cevre 0.7, plaka 1.35; yuz maskesi bolgesi kati altin olarak siluete rijitlik verir."
+     },
+     {
+      "mode": "Kadmiyum iceren kirmizi mine (ABD eyalet Pb/Cd sinirlari)",
+      "prevention": "Kadmiyumsuz bogurtlen tedarik + SDS; uygun degilse renk degisikligi kararina kadar seri yok."
+     }
+    ],
+    "tolerance_checks": [
+     {
+      "rule": "L1 karat 14K (KANIT karat_policy; 14K vitreous 'marginal', not_viable degil)",
+      "value": "14K sari cinkosuz mine alasimi",
+      "pass": true
+     },
+     {
+      "rule": "L2 derinlik 0.5-0.6",
+      "value": "0.55",
+      "pass": true
+     },
+     {
+      "rule": "L2 genislik >=0.7, derinlik <=2x",
+      "value": "min 1.2; 0.46",
+      "pass": true
+     },
+     {
+      "rule": "L2 taban >=0.8",
+      "value": "1.35-0.55 = 0.80",
+      "pass": true
+     },
+     {
+      "rule": "L2 duvar >=0.70",
+      "value": "0.70",
+      "pass": true
+     },
+     {
+      "rule": "L2 hucre icinde kabartma yok",
+      "value": "goz adasi kaldirildi, goz maskede delik",
+      "pass": true
+     },
+     {
+      "rule": "L2 palet",
+      "value": "yalniz derin bogurtlen (komur rengi kaldirildi)",
+      "pass": true
+     },
+     {
+      "rule": "L2 bogurtlen en son ve bant alt ucunda",
+      "value": "tek renk, 760 C",
+      "pass": true
+     },
+     {
+      "rule": "L2 pisirim <=4",
+      "value": "3",
+      "pass": true
+     },
+     {
+      "rule": "L3 ilk pisirimden sonra hamlac lehimi yok; kulp govdeyle tek dokum",
+      "value": "lehim baglantisi 0; kulp entegre dokum; pisirim sonrasi ek yok",
+      "pass": true
+     },
+     {
+      "rule": "L5 yapisal >=0.8",
+      "value": "plaka 1.35; cevre 0.7 x 1.35 kesit",
+      "pass": true
+     },
+     {
+      "rule": "L5 aciklik >=0.6 / derinlik <=2x",
+      "value": "goz D0.8 / 1.69",
+      "pass": true
+     },
+     {
+      "rule": "L5 kulp >=1.0",
+      "value": "1.0 x 1.6",
+      "pass": true
+     },
+     {
+      "rule": "L5 uc yaricapi >=0.4",
+      "value": "tepe r0.5, kuyruk ucu r0.5",
+      "pass": true
+     },
+     {
+      "rule": "L11 dal/yaprak yok",
+      "value": "tuneme dali kaldirildi",
+      "pass": true
+     },
+     {
+      "rule": "L7 kolye bandi 2.8-4.2 g (zincir+bulgu dahil altin)",
+      "value": "3.790 g (uc 1.532 + zincir 1.902 + bulgu 0.356); tavana pay 0.410 g",
+      "pass": true
+     },
+     {
+      "rule": "L8 zincir 14K solid, tip+genislik yazili, 16in+2in uzatma, varyant degil",
+      "value": "14K solid cable 1.0 mm, 16+2 in",
+      "pass": true
+     }
+    ],
+    "changes_vs_original": [
+     "UYGULANDI (elestiri): 45 mm2 tek govde hucresi kanat-ortu ve kuyruk cizgileriyle 3 hucreye bolundu (22/15/11 mm2).",
+     "UYGULANDI (elestiri + L2 palet): komur (charcoal) maske minesi kaldirildi; maske ciplak cilali altin.",
+     "UYGULANDI (elestiri: goz adasi tarifi): hucre icindeki altin goz adasi kaldirildi (L2 hucre icinde kabartma yok); goz, altin maskede D0.8 delik.",
+     "Tuneme dali kaldirildi (L11 dal/yaprak formu yasagi); kuyrugun delikli olmasi da kalkti, kuyruk mine hucresi.",
+     "KANITLA DUZELTILDI (elestiri: plakayi 1.5'e): L2 tabani >=0.8; 1.35 plaka 0.80 taban verir -> yeter. 18K -> 14K cinkosuz (L1).",
+     "Pisirim: komur 2 pisirim + bogurtlen tek pisirim -> tek renk bogurtlen 3 pisirim, hepsi 760 C (L2: bogurtlen bandin alt ucunda). Tek pisirim kurali KANIT'ta yok; KANIT max 4 pisirim der.",
+     "Zincir 18K 0.95 rope 16in -> 14K cable 1.0 18in. Gram: orijinal 3.52 (18K) / elestiri 3.59 -> 3.790 g altin."
+    ],
+    "season_proof": "Kardinal Noel'de tepe yapar ama asil hacim yil boyu hatira takisidir (ABD halk inanci: kardinal gorumu kaybedilen birinin ziyareti). Kirik bogurtlen tonu parlak Noel kirmizisi degil; 27 Aralik'ta hatira metniyle devam.",
+    "open_questions": [
+     "Kursunsuz ve KADMIYUMSUZ opak derin bogurtlen bulunabilirligi ve 760 C'de 14K uzerinde rengi (KANIT: Cd/Se kirmizilar kadmiyum icerir).",
+     "Komur maskesi yerine ciplak altin maske kararinin marka tarafindan onayi."
+    ]
+   }
+  ]
+ },
+ "verify": {
+  "category": "KOLYE",
+  "per_product": [
+   {
+    "slot": "N1",
+    "verdict": "pass",
+    "my_gold_grams": 4.067,
+    "gram_deviation_pct": 0,
+    "issues": [
+     "Gram dogrulandi: 16 kenarli yildiz poligonunda R9/R14/vadi r4.2 icin kenarlar 14 x 5.366 + 2 x 10.247 = 95.61 mm; ray 86.06 mm3, gobek pi/4*(4.5^2-2^2)*1.1 = 14.04, kulp pi*3.0*1.6 = 15.08 mm3. Uc 1.808 g, toplam altin 4.067 g, sapma 0.",
+     "L1-L12 olcuyle saglaniyor. Ray 1.0x0.9 >= 0.8, kiris 0.8 >= 0.6, pencere 0.6 icin oran 1.5, D2.0 delik icin oran 0.55. Kulp 1.0x1.6, uclar r0.5, tek 8 kollu yildiz.",
+     "Zincir/kopca riski (kategori duzeyi): KANIT'taki cable degerleri buyuk olasilikla kopca dahil tam zincir agirligi. U.S. Jewels icin bu acikca 'kilit dahil' diye yaziyor. Ustune 0.25 g kopca eklemek grami ~0.15 g fazla gosterir.",
+     "Gorsel risk dusuk. Kulbun yonu (on yuze paralel mi dik mi) belirtilmemis; model kulbu yana donuk cizebilir."
+    ],
+    "required_changes": [],
+    "camera_description_corrected": "Eight-point star pendant in 14K yellow gold, 18 mm wide and 23 mm tall. The lower ray is longer, 14 mm from the centre, than the other seven rays at 9 mm. Openwork construction: a 1.0 mm wide rail traces the star outline, eight short spokes join the inner corners to a 4.5 mm round centre disc with a 2.0 mm round hole through it, and a thin rib runs down the middle of the long lower ray. Rail faces are diamond-cut with bright facets; ray tips are rounded. Integral round bail at the top ray. 1.0 mm 14K cable chain, 16 inch plus 2 inch extender."
+   },
+   {
+    "slot": "N2",
+    "verdict": "fix",
+    "my_gold_grams": 4.103,
+    "gram_deviation_pct": 0,
+    "issues": [
+     "Gram dogrulandi: kubbe kure kapak pi*0.8*(27+0.64)/6 = 11.58 mm3. Pedlerden ray payi dusuldu: 1.8 tas pedi 6.27 mm3, iki 1.5 tas pedi 7.81 mm3. Uc 1.552 g, altin 4.103 g.",
+     "ASILIS FIZIGI SPESIFIKASYONLA CELISIYOR: kutle merkezi kuyruk ekseninde bas merkezinden ~8.3 mm asagida. Hesap: ana ray 0.44 g x 16 mm, ikinci ray 0.235 g x 12 mm, pedler 0.18 g x 13 mm, toplam 1.55 g. Kulp bas arkasinda en fazla 3 mm yanal ofsetle durabilir, bu da en fazla atan(3/8.3) = ~20 derece egiklik verir. Yani parca kuyruk asagi, neredeyse dikey asilir; motifteki 'asimetrik capraz asilis' ve '31 mm diagonal' gerceklesmez. failure_modes de 'agirlik merkezi kulbun altinda' diyor, yani parca kendini dikeye cevirir.",
+     "L5: 18 mm ikinci kuyruk rayinin serbest ucuna yaricap verilmemis; yalniz ana ray ucu r0.5. Giyilen her uc >= 0.4 sarti bu uc icin belgelenmemis.",
+     "Figaro 1.5 icin 0.048 g/cm KANIT'ta ARA DEGER (kaynaksiz). Tavana yalniz 0.097 g kaliyor; deger 0.050'yi gecerse 4.2 g asilir.",
+     "Gorsel risk: ikinci rayin boyu (18 mm, ana raydan kisa) ve asilma acisi kamera metninde yok. Model iki esit rayli ve 45 derece capraz bir kuyruklu yildiz cizer."
+    ],
+    "required_changes": [
+     "Ikinci kuyruk rayinin ucuna r0.5 yarim yuvarlak ekle ve tolerance_checks'e yaz.",
+     "Asilis: ya '~20 derece egik, kuyruk asagi' diye beyan et ve tum gorselleri buna gore uret, ya da 45 derece istiyorsan kulbu bas uzerinde degil kutle merkezinin dusey dogrultusunda konumlandir. Ikinci yol bas arkasinda yapilamaz; asilis kancasini yeniden tasarla.",
+     "Figaro 1.5 tedarikci numunesi tartilmadan fiyatlama yapma."
+    ],
+    "camera_description_corrected": "Comet pendant in 14K yellow gold, about 31 mm long, hanging from its bail with the tail pointing down and tilted about 20 degrees off vertical. A 6.0 mm domed round head holds one flush-set 2.0 mm lab grown white sapphire at its centre. Two curved tail rails sweep down from the head, a 26 mm main rail and a shorter 18 mm second rail, joined by three short cross bars; the main rail narrows from 1.6 mm to 1.0 mm and both rails end in rounded tips. Three more flush-set lab grown white sapphires run down the main rail, one 1.8 mm and two 1.5 mm, each on a small round pad. Polished head, diamond-cut rails. Bail behind the upper edge of the head. 1.5 mm 14K figaro chain, 16 inch plus 2 inch extender."
+   },
+   {
+    "slot": "N3",
+    "verdict": "fix",
+    "my_gold_grams": 4.01,
+    "gram_deviation_pct": 0.05,
+    "issues": [
+     "Gram dogrulandi (0.01 mm izgarada sayisal integral): diskin disinda kalan hilal alani 34.59 mm2. Pedlerin hilal ve disk disinda kalan alani 7.72 mm2 x 1.5. Pedin hilalle cakisan 1.32 mm2'lik kismi icin +0.5 mm ek kalinlik. Toplam 46.83 mm3; spesifikasyondaki 33.25 + 13.58 = 46.83 mm3 ile ayni. Hucreler 30.18 mm2 x 0.55 = 16.60 mm3. Altin ~4.01 g.",
+     "L5 IHLALI / BOYUN: hilal bandi, boynuz pedinin kenari ile dolgu baslangici arasinda daralir. Ic daire merkezine gore -18.5 ile -22.5 derece arasinda bant genisligi 0.59-0.76 mm, kalinlik 1.0. Bu kesit ped ve tasi tasiyan serbest boyun. Yapisal >= 0.8 sartinin ve spesifikasyondaki 'boyun min kesit 1.0 x 1.0' iddiasinin altinda. Hilal-disk yarigi bu bolgede 0.66-0.69 mm (acik), 0.6'nin altina ancak -22.5 derecede iner.",
+     "Tas-mine mesafesi beyan edilenden fazla: ped merkezi orijinden 6.46 mm, tas kenari 5.71 mm, mine dis kenari 3.9 mm; aralik 1.81 mm (beyan 1.45). Ped kenari ile mine arasi 1.36 mm. Kural saglaniyor ama sayi tutarsiz.",
+     "Hucreler, duvarlar (0.7), taban (0.80), renk (nazar istisnasi: lacivert + beyaz), 3 pisirim 770-780 C, lehimsiz yapi ve pisirim sonrasi tas takma L2-L4'e uygun.",
+     "Gorsel risk: hilal ile disk arasindaki yarik (acik mi dolu mu) kamera metninde yok. Kahraman ozellik net."
+    ],
+    "required_changes": [
+     "Ped-dolgu arasindaki serbest boyunu kaldir. Ya hilal-disk yarigini ped kenarina kadar kati doldur (onerilir; yarik zaten ancak 0.66), ya da ic daireyi kucultup bandi bu bolgede >= 0.8 yap. Sonra gram ve tolerance_checks'teki 'boyun 1.0 x 1.0' satirini olculmus degerle yeniden yaz.",
+     "Tas-mine mesafesini 1.81 mm (tas kenari) / 1.36 mm (ped kenari) olarak duzelt."
+    ],
+    "camera_description_corrected": "Pendant in 14K yellow gold: a 9.2 mm round disc set into a gold crescent that wraps its lower half and is joined to it along its inner edge; 15.3 mm across the crescent tips and 11.6 mm tall. The disc shows three concentric fields of enamel divided by 0.7 mm gold rings: an outer ring of opaque navy-blue enamel, a ring of opaque white enamel, and a 1.8 mm centre of opaque navy-blue enamel. Each crescent tip ends in a 2.4 mm round pad holding one 1.5 mm lab grown blue sapphire, flush-set. Polished gold crescent, enamel level with the gold. Bail hidden behind the disc. 1.0 mm 14K cable chain, 16 inch plus 2 inch extender."
+   },
+   {
+    "slot": "N4",
+    "verdict": "pass",
+    "my_gold_grams": 3.98,
+    "gram_deviation_pct": 1.9,
+    "issues": [
+     "Badem goz alani dogrulandi: iki kiris yayli lens, R = 4.736, alan 24.82 mm2. Avuc plakasi 56.11 - 24.83 = 31.28 mm3. Gobek, kopru ve pedler dogru hesaplanmis.",
+     "Dis hat rayi cevresi 72 mm beyan edilmis ama turetilmemis. 14x18 hamsa silueti tek basina ~56-60 mm. Bes parmagi ayiran 4 bolme rayi ~26 mm ekler, yani ray ~80-85 mm olmali. Ote yandan ray ile avuc plakasinin alt bilekte cakisan kismi ~5 mm3 cift sayiliyor. Net etki ~+0.07 g (my_gold 3.98, +1.9%); tavana 0.22 g kaliyor, bant icinde.",
+     "Basparmak genisligi (14 - 9.4)/2 = 2.3 mm. Ic bosluk yalniz avuc kenari basparmagin bir yani sayilirsa 1.3 mm olur. Iki ayri ray konursa 0.3 mm'ye iner ve <0.6 olur. CAD'de basparmak ic kenarinin avuc plakasi oldugu yazilmali.",
+     "Kategori notu: N3 ve N4 basliklarinin ikisinde de 'Evil Eye' ve mavi safir var; ayni arama kelimesinde birbirini yer."
+    ],
+    "required_changes": [],
+    "camera_description_corrected": "Hamsa hand pendant in 14K yellow gold, 14 mm wide and 18 mm tall, open-frame construction: a 1.0 mm rail outlines three central fingers and two outward-curving thumbs, with the finger interiors cut through. The palm is a solid oval plate with an almond-shaped eye opening 8.0 x 4.4 mm; a thin horizontal gold bar crosses the opening and holds a round pupil set with one 1.5 mm lab grown blue sapphire. Each thumb tip holds one 1.5 mm lab grown white sapphire, flush-set. Diamond-cut rail faces, polished palm. Bail behind the middle finger. 1.0 mm 14K cable chain, 16 inch plus 2 inch extender."
+   },
+   {
+    "slot": "N5",
+    "verdict": "fix",
+    "my_gold_grams": 4.058,
+    "gram_deviation_pct": 0,
+    "issues": [
+     "Aritmetik dogrulandi: dis kesik koni pi/3*23*(4.41+0.84+0.16) = 130.3 mm3. Yari-aci tan = 0.0739. Ic bosluk 13.2 mm boyunca r 1.165 -> 0.189, hacim 22.30 mm3. Uc 1.80 g, altin 4.058 g.",
+     "GEOMETRI DOKULEMEZ: ic bosluk ucunda cekirdek cok inceliyor. Bosluk capi z=12'de 0.82 mm, z=15'te 0.38 mm. 0.38-0.8 mm capli, 13 mm uzunlugunda kor bir yatirim cekirdegi dokumde kirilir ya da kayar. KANIT/L5 aciklik >= 0.6 ve derinlik <= 2 x genislik kuralini cekirdek icin acikca ihlal ediyor.",
+     "IKINCI TAHLIYE DELIGI IMKANSIZ: z=12'deki D1.6 delik, capi 0.82 olan bir bosluga aciliyor; delik bosluktan genis. Ayrica dis capi ~2.4 mm olan koninin cevresinin ~83 derecesini kesiyor. Bosluk capi ancak z <= 6.7'de 1.6'ya ulasir.",
+     "Tas pedi z=0.6-3.0, merkezi z=1.8, tam yaka/bosluk sinirinda. D0.9 delik yari yarim kati yakada, yari yarim boslukta kaliyor. Bu bir 'cekirdek baglantisi' olamaz; perde ve kor delik riski var.",
+     "Kaburgalar 0.6 genislik x 0.4 yukseklik. Tepeler elmas tiraslaninca ~0.3 kalir; dekoratif >= 0.6 esiginin altinda kabartma kalir.",
+     "L6 saglaniyor: bosluk minesiz, 2 x D1.6 delik, basliktan 'solid' cikarilmis. Bosluk yalniz 0.29 g kazandiriyor; bu kazanc 'solid' iddiasinin kaybina degmeyebilir."
+    ],
+    "required_changes": [
+     "Ic boslugu z=1.8..~6.7 araliginda kes (ic cap 2.33 -> 1.6). Bosluk hacmi 22.3'ten ~15.0 mm3'e iner, uc ~1.895 g, altin ~4.15 g olur; 4.2 tavanina 0.05 g kalir.",
+     "Ikinci tahliye deligini z <= ~5.5'e tasi (delik kenari boslugun D>=1.6 kismina dussun). Ikisi de arkada ve aralarinda >= 0.8 kopru olsun.",
+     "Tas pedi merkezini z >= 2.4'e indir; D0.9 delik tamamen bosluga acilsin.",
+     "Kaburgalari 0.6 yukseklik modelle (bitmis >= 0.5 + elmas tiras payi 0.1) ya da tepelerde elmas tirasi kaldir.",
+     "Alternatif: bosluk kazanci <0.3 g oldugu icin parcayi kati yap ve boyu ~21 mm'ye indir; boylece 'solid' basligi geri gelir."
+    ],
+    "camera_description_corrected": "Icicle pendant in 14K yellow gold, 23 mm long, tapering from a 4.6 mm faceted top collar to a rounded 0.8 mm tip. Four uneven vertical ribs run down the upper half; rib crests are polished and the surface between them is high-polish. One 1.5 mm lab grown blue sapphire is flush-set in a small raised round pad on the front, about 2.5 mm below the top of the collar. The upper part of the body is hollow-formed, with two small drain holes on the back in the upper third. Bail behind the collar. 1.0 mm 14K cable chain, 16 inch plus 2 inch extender."
+   },
+   {
+    "slot": "N6",
+    "verdict": "fix",
+    "my_gold_grams": 4,
+    "gram_deviation_pct": -0.6,
+    "issues": [
+     "Plaka 6.5*17 - (4-pi)*1.5^2 = 108.57 mm2, ic alan 79.01 mm2: dogru. Dendrit uzunlugu (~30 mm) turetilmemis. Ornek bir geometri (cekirdek sol-alttan 1.8/2.0 mm iceride; dikey eksen 13.6, iki 30 derecelik eksen 3.8 + 2.1, 4 x 1.5 dal) ~25.5 mm verir. Bu durumda mine +1.7 mm3, altin -0.02 g; ihmal edilebilir.",
+     "HUCRE SAYISI TUTARSIZ: ic noktadaki tek cekirdekten cikip cerceveye ulasan 3 eksen alani 3 hucreye boler. Serbest uclu ikincil dallar (uclari r0.35, serbest) hucre olusturmaz. '5 hucre' ve kameradaki 'five irregular fields' geometriyle celisiyor.",
+     "L2 HUCRE GENISLIGI: 60 derecelik eksenler arasindaki her kama hucresi cekirdekte sifir genislikle baslar (genislik = 2d*tan30, d < 0.61 mm'de < 0.7). Ana eksenin cerceveyle yaptigi 30 derecelik koseler de < 0.7'ye iner. Ikincil dallarin 60 derecelik ic koseleri de ayni. 'En dar hucre 0.9' iddiasi bu apekslerde gecersiz; r0.2 fileto yetmez.",
+     "L11 riski suruyor: tek tarafli 60 derecelik yan dallar tasiyan bir ana cizgi gorsel olarak egrelti/yaprak damari gibi okunur. Kardes marka cakismasi riski var.",
+     "L12: 6.5 mm genislikte 0.7 mm altin cizgiler 250 px kucuk resimde zor secilir; kahraman ozellik buz mavisi bar olarak okunur, dendrit olarak degil.",
+     "Gorsel uretim riski yuksek: 'three main lines ... spread upward at 60 degree angles' koordinatsiz. Model buyuk olasilikla egrelti ya da kar tanesi cizer."
+    ],
+    "required_changes": [
+     "Hucre sayisini geometriyle esitle: ya '3 hucre' yaz, ya da iki ikincil dali cerceveye/eksene bagla ve 5 kapali hucreyi CAD'de tanimla.",
+     "Kural ekle: genisligin 0.7'nin altina indigi her hucre kosesi (cekirdek apeksi, eksen-cerceve ve dal koseleri) kati altinla doldurulur (N1'deki pencere ucu kuraliyla ayni). Cekirdegi D1.5 kati dugum yap.",
+     "Dendriti koordinatla tanimla (cekirdek konumu, eksen acilari, uzunluklar). Ikincil dallari tek eksende toplama, eksenlere dagit ki egrelti okunmasin. Kardes marka ekibinden gorsel onay al.",
+     "Dendrit uzunlugunu CAD'den olcup mine hacmi ve grami yeniden hesapla."
+    ],
+    "camera_description_corrected": "Vertical bar pendant in 14K yellow gold, 6.5 x 17 mm with rounded corners, 1.4 mm thick. The front is filled with opaque ice-blue enamel divided by 0.7 mm gold lines: from one small round gold node 2 mm above the bottom edge and 2 mm in from the left edge, one line runs straight up to the top border, one runs up and to the right at 30 degrees above horizontal to the right border, and one runs up and to the left at 30 degrees above horizontal to the left border. A few short 1.5 mm gold side lines with rounded free ends branch off at 60 degrees, spread across the three lines, so the blue is split into three irregular fields. A 0.7 mm gold border frames the bar. Enamel level with the gold, polished gold edges. Bail at the top back. 1.0 mm 14K cable chain, 16 inch plus 2 inch extender."
+   },
+   {
+    "slot": "N7",
+    "verdict": "fix",
+    "my_gold_grams": 4.139,
+    "gram_deviation_pct": 1,
+    "issues": [
+     "GENISLIK CELISKISI: 5 tuy x 1.4 + 4 yarik x 0.6 = 9.4 mm, ama kanat 9.0 mm. Tuyler bu genislige sigmaz.",
+     "BOY CELISKISI: ortu bandi 5 mm + en uzun tuy 9.5 mm = 14.5 mm; beyan edilen boy 16 mm. Ya 1.5 mm eksik geometri var ya da tuyler bandin altina binip cift sayiliyor.",
+     "EKSIK GRAM: yariklar arka kenara 1.5 mm kala bitiyor (kapali kenar). Tuyler arasindaki 4 x 0.6 x 1.5 x 0.9 = 3.24 mm3 (0.042 g) kapama metali sayilmamis. Spesifikasyona gore altin 4.139 g.",
+     "Zincir: Olas d'Oro kaynagi 'necklace with lobster clasp', yani 2.45 g kopca DAHIL tam kolye agirligi. Ustune 0.25 g kopca eklemek cift sayim; gercek altin ~3.89 g olabilir. L7 kuralina gore yine de spesifikasyon yontemiyle hesaplandi.",
+     "ASILIS: kulp omuz ust-ic kosesinde. Kanadin kutle merkezi bu noktadan ~4.5 mm yanda ve ~8 mm asagida, bu yuzden parca ~29 derece donerek asilir. Kamera metni dik bir kanat cizdirir.",
+     "Tavana pay 0.103 g, kaynaksiz kopca ve tek ilanli rope degerine bagli.",
+     "L11: tarakli ortu tuyleri ve yuvarlak uclu tuy dilimleri yaprak gibi okunabilir; kardes marka teyidi acik soru olarak duruyor (dogru)."
+    ],
+    "required_changes": [
+     "Tuy genisligini 1.3'e indir (5 x 1.3 + 4 x 0.6 = 8.9 <= 9.0) ya da kanadi 9.4 mm yap. Grami yeniden hesapla (1.3 genislikte tuy hacmi 47.97 mm3).",
+     "Boyu uzlastir: 5 + 9.5 = 14.5 mm'yi beyan et ya da ortu/tuy bindirmesini tanimlayip cift sayimi dus.",
+     "Yarik kapama metalini (3.24 mm3) gram_build'e ekle.",
+     "Kulbu kutle merkezinin uzerine, ortu bandinin ust ortasina tasi ya da ~29 derecelik egik asilisi beyan et.",
+     "Rope zincir icin kopcasiz zincir agirligini kullan; kopcayi ayrica say."
+    ],
+    "camera_description_corrected": "Single angel wing pendant in 14K yellow gold, 9 mm wide and 14.5 mm tall, 0.9 mm thick, hanging upright from a bail at the top centre of the wing. The upper part is a band of rounded covert feathers with a scalloped lower edge; below it five long flight feathers, 1.3 mm wide, are separated by narrow pierced slits and end in five rounded tips joined along a closed lower edge. One 1.5 mm lab grown white sapphire is flush-set at the inner upper corner of the wing. Feather faces diamond-cut, edges polished. 1.0 mm 14K diamond-cut rope chain, 16 inch plus 2 inch extender."
+   },
+   {
+    "slot": "N8",
+    "verdict": "fix",
+    "my_gold_grams": 3.7,
+    "gram_deviation_pct": -3,
+    "issues": [
+     "Halka toruslari 2*pi^2*3.85*0.65^2 x 2 = 64.22 mm3 ve goz toruslari dogru.",
+     "AGIZLIK HACMI FAZLA: 6.5 mm 'goz merkezleri arasi' olcu. Cubuk, goz halkalarinin dis yuzeyleri arasinda yalniz 6.5 - (1.6+0.55) - (1.45+0.55) = 2.35 mm gorunur. Kalan 4.15 mm ya goz teliyle cakisir ya da acik kalmasi gereken goz deliginin icine duser. Hacim 6.5 mm uzerinden hesaplandigi icin 2 x 4.15 x pi/4 x 1.15^2 = 8.62 mm3 (0.113 g) fazla. Uc ~1.44 g, altin ~3.70 g.",
+     "KAMERA METNI YANLIS: 'each half 6.5 mm long, tapering from 1.3 mm to 1.0 mm' uzun, belirgin cubuk cizdirir. Gercekte ~2.35 mm'lik kisa bir boyun var ve 1.3 -> 1.0 incelme bu boyda gorulmez. 33 mm genislik (gergin halde hesap 32.3 mm) 6.5 mm merkez araligiyla tutarli; yani cubuk metni yanlis, genislik dogru.",
+     "Taslar 12 yonunde on yuzde. Zincir halkanin ic ust yuzeyine dayaniyor; yani taslar zincirin surtundugu kesitte. Tas pedinin halka uzerinde goz stoperi gibi de calistigi belirtilmemis (ped D2.4 > goz deligi 2.1, goz bu noktayi gecemez).",
+     "IP riski: 'Horsebit' kelimesi Gucci Horsebit ticari takdimiyle iliskilendirilir. Basliklarda 'snaffle bit' tercih edilmeli.",
+     "L3/L5/L4 saglaniyor: 3 lazer kaynak, firin yok; bosluklar 0.7/0.8; taslar rijit halkada."
+    ],
+    "required_changes": [
+     "Agizlik hacmini gorunur boy (2.35 mm) + kaynasma bolgesi uzerinden yeniden hesapla. Ya da gorunur cubuk isteniyorsa goz merkezleri arasini ~10.6 mm yap ve genisligi/grami (~41 mm) yeniden kur.",
+     "Kamera metnini gercek geometriye cevir: kisa cubuk ve goz-goz araligi.",
+     "Tas pedini 12 yonunden zincirin dokunmadigi 1-2 yonune kaydir ya da zincir surtunmesini kabul edip QC'ye ekle.",
+     "Etsy basliginda 'Horsebit' yerine 'Snaffle Bit' kullan."
+    ],
+    "camera_description_corrected": "Snaffle bit necklace in 14K yellow gold. Two round rings, 9.0 mm across in 1.3 mm round wire, are joined by a jointed mouthpiece: from each ring a small round eye leads through a short 2.4 mm bar to a second small eye, and the two inner eyes interlock at the centre; overall width about 33 mm. The chain passes through both rings, so the bit sits across the front of the chain with no bail. Each ring has one 1.5 mm lab grown white sapphire flush-set on its front face near the top. High-polish rings and eyes. 1.0 mm 14K cable chain, 16 inch plus 2 inch extender."
+   },
+   {
+    "slot": "N9",
+    "verdict": "pass",
+    "my_gold_grams": 3.89,
+    "gram_deviation_pct": -4.1,
+    "issues": [
+     "Kemer cevresi Ramanujan yontemiyle dogrulandi: tam elips 59.19 mm, yarisi 29.60 mm. Hucreler: 5 x 1.56 + 4 x 0.7 = 10.6 ve 1.2 + 2 x 0.7 = 2.6 tutarli. Taban 1.5 - 0.1 - 0.55 = 0.85.",
+     "CIFT SAYIM: dis boy 16 mm. Basamak (2.6) + kemer tepesi (12.5 + 0.8) zaten ~15.9 mm eder, yani 3.6 mm yuksekligindeki ust kayis cubugu kemer tepesiyle cakisiyor. Kemer rayinin ust cubuk alanindaki ~6.6 mm'lik kismi (x = +/-3) 6.6 x 1.6 x 1.2 = ~12.7 mm3 (~0.17 g) iki kez sayilmis. Ayrica tepe rayinin merkez hatti (y ~15.1) yarigin ust kenarina biniyor; yarigin ust duvari fiilen kemer rayinin kendisi. Tahmini altin ~3.89 g (-4.1%), esigin altinda.",
+     "Kemer ayaklari (x 4.9-6.5) basamagin 0.7 mm'lik ust rayina yalniz ~1.1 mm boyunca oturuyor; ayagin 0.5 mm'si basamak ucunu asiyor. Mine hucresine tasmiyor ama birlesim alani kucuk.",
+     "Cable 1.2 icin 0.0489 g/cm kaynaksiz ARA DEGER (dogru beyan edilmis).",
+     "Kurallar saglaniyor: mine 1 renk derin yesil, 3 pisirim 770-780 C, kulp yok, lehim yok, tas yok."
+    ],
+    "required_changes": [],
+    "camera_description_corrected": "Stirrup pendant in 14K yellow gold, 13 mm wide and 16 mm tall, open in the middle. A 1.6 mm wide rail forms an arched D shape rising from a flat 12 mm base bar. The base bar carries a row of five small cells of opaque deep jade-green enamel separated by four 0.7 mm gold ribs, framed by gold edges that stand slightly above the enamel. A flat top bar with a 4.0 x 1.6 mm slot takes the chain, so the pendant slides on it without a bail. High-polish gold. 1.2 mm 14K cable chain, 16 inch plus 2 inch extender."
+   },
+   {
+    "slot": "N10",
+    "verdict": "fix",
+    "my_gold_grams": 3.82,
+    "gram_deviation_pct": 0.8,
+    "issues": [
+     "Plaka 95.7 x 1.35 = 129.2 mm3, hucreler 48 x 0.55 = 26.4 mm3, kulp 15.08 mm3: aritmetik dogru.",
+     "Mine alani iyimser: siluet cevresi ~50 mm x 0.7 mm cevre duvari = ~35 mm2. Yuz maskesi ~8-10 mm2. 2 ic duvar ~8.4 mm2. Kalan hucre alani ~42-44 mm2 eder, beyan 48. Etkisi +0.03-0.04 g altin; ihmal edilebilir ama doluluk 0.58 ve hucre alanlari CAD'den alinmali.",
+     "L5: gaganin uc yaricapi tanimsiz. Kardinal gagasi sivri bir koni; 'giyilen her uc >= 0.4' yalniz tepe ve kuyruk ucu icin belgelenmis.",
+     "Kadmiyumsuz opak derin bogurtlenin bulunabilirligi ve 760 C'de 14K uzerindeki rengi dogrulanmamis (acik soru dogru). Bulunamazsa tek kahraman renk gider.",
+     "Gorsel risk: model kardinalin ikonik siyah yuz maskesini ve parlak Noel kirmizisini cizecektir. Kamera metni maskenin ciplak altin oldugunu soyluyor ama rengi 'deep berry' kelimesiyle sinirliyor; 'kahverengi-mor tonlu koyu bordo, parlak kirmizi degil' daha net olur."
+    ],
+    "required_changes": [
+     "Gaga ucuna r>=0.4 ver ve tolerance_checks'e yaz.",
+     "Hucre alanlarini ve siluet dolulugunu CAD'den olc, grami guncelle.",
+     "Kadmiyumsuz bogurtlen tedarik edilip kuponla onaylanana kadar seriye alma."
+    ],
+    "camera_description_corrected": "Cardinal bird pendant in 14K yellow gold, side profile, 11 mm wide and 15 mm tall, 1.35 mm thick, with a raised crest that ends in a rounded tip and a short beak with a rounded point. The breast, wing and tail are filled with opaque deep berry enamel, a dark blackberry red rather than bright red, in three fields separated by 0.7 mm gold lines that mark the wing and the tail. The face, beak and outline are polished gold with no black mask, and the eye is a 0.8 mm round hole through the gold face. No branch or perch. Bail hidden behind the back. 1.0 mm 14K cable chain, 16 inch plus 2 inch extender."
+   }
+  ],
+  "category_issues": [
+   "FIYAT MERDIVENI DUZ: 10 parcanin hepsinin altini 3.79-4.10 g (ben ~3.70-4.15 olctum). 10600 cent/g ile hepsi metal bazinda ~$400-437 araliginda. Giris ya da ust seviye fiyat basamagi yok. Mineli 4 parca (N3, N6, N9, N10) ayni gram fiyatinda; pisirim, kupon ve hurda iscilige yansimiyor, bu yuzden minesiz parcalara gore gercekte zararina ya da dusuk marjli.",
+   "ZINCIR + KOPCA CIFT SAYIMI: KANIT kaynaklarinin cogu tam kolye agirligi veriyor (U.S. Jewels cable 'kilit dahil'; Olas d'Oro rope 'necklace with lobster clasp'; Velvet Box buyuk olasilikla tam zincir). Spesifikasyon bunun ustune her parcaya 0.25 g kopca daha ekliyor. Sonuc: listing'te beyan edilen gram ve fiyat parca basina ~0.15-0.25 g (~$16-27) fazla. Beyan edilen gramin gercekten yuksek olmasi musteri ve FTC acisindan risk. Kopcasiz zincir g/cm degeri kullanilmali ya da tedarikci numunesi tartilmali.",
+   "L5 'TASIYICI HALKA >= 1.0' ILE 0.6 MM ATLAMA HALKALARI CELISIYOR: 10 parcanin hepsinde kopca ve uzatma halkasi 0.6 mm tel. Kural satin alinan zincir bulgularina da uygulanirsa 1.0 mm halka her parcaya +0.13 g ekler (torus 7.40 mm3 = 0.097 g/adet, 0.6 tel 0.030 g/adet). Bu durumda N2 4.24 g, N7 ~4.27 g ve cekirdegi duzeltilmis N5 ~4.29 g ile 4.2 tavanini asar. Kural metni ya satin alinan zincir bulgularini muaf tutmali ya da bu uc parca kucultulmeli.",
+   "TAVAN PAYI INCE VE KAYNAKSIZ: 6 parcanin 4.2 g tavanina payi 0.15 g'nin altinda (N1 0.13, N2 0.10, N5 0.14, N7 0.10, N9 0.14; N6 0.18). Bu pay kaynaksiz 0.25 g kopca tahminine ve ARA DEGER zincir oranlarina (figaro 1.5, cable 1.2) dayaniyor. Numune tartimi yapilmadan fiyat donmamali.",
+   "ASIMETRIK ASILIS: N2 (kuyruklu yildiz) ve N7 (tek kanat) agirlik merkezine gore kendiliginden donup asilir: N2 ~20 derece, N7 ~29 derece. Kamera metinleri ve Etsy gorselleri fiziksel olarak olusmayacak capraz ya da dik pozlar gosterir; musteri sikayetine yol acar.",
+   "AILE SINIRI TAM SINIRDA: goksel aile N1, N2 ve N3 (hilal) ile 3/3 dolu. N3 ayni anda tilsim ailesinde de sayiliyor. Herhangi bir motif degisikligi L11'i asar.",
+   "ANAHTAR KELIME KANIBALIZMI: N3 ve N4 basliklarinin ikisinde de 'Evil Eye' ve mavi safir var. Siluet farkli ama Etsy aramasinda ayni sorguda birbirini yer; birinin basligi farklilastirilmali.",
+   "KARDES MARKA CAKISMASI: N6'nin yan dalli dendriti egrelti gibi, N7'nin tarakli ortu ve tuy loblari yaprak gibi okunabilir. Ikisi icin de gorsel onay olmadan seriye gecilmemeli.",
+   "IP RISKI: N8 basligindaki 'Horsebit' Gucci Horsebit ile iliskilendirilir; 'Snaffle Bit' kullanilmali.",
+   "MINE SERI RISKI: 4 mineli parca (N3, N6, N9, N10) 14K vitreous 'marginal' kosulunda; her biri ayri renk (beyaz+lacivert, buz mavisi, yesil, kadmiyumsuz bogurtlen) icin ayri kupon gerektiriyor. 18 Ekim'den Noel'e kadar 4 renk x kupon + pilot takvimi dar. N6 ve N10 (renk kaymasi, kadmiyum) en riskli olanlar."
+  ]
+ }
+}

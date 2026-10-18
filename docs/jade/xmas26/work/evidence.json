@@ -1,0 +1,254 @@
+{
+ "karat_policy": "Tum 40 parca 14K kalir. Bunun nedeni, fiyat motorunun yalniz 14K icin dogrulanmis 10600 cent/g oranini tasimasi ve 18K'nin fiyatlanamamasidir. Kurallar: (1) Mineli parcalar yazili sertifikali cinkosuz 'enamelable' 14K sari alasimdan (or. Otto Frei 846-180 no-zinc master alloy) vakumla dokulur. (2) Opak agirlikli, kursunsuz, dusuk-orta isili minelerle en fazla 4 pisirim yapilir, <=790 C (1450 F). (3) Hicbir lehim baglantisi olmaz; bulgular pisirimden sonra mine kenarindan >=1.5 mm uzakta lazerle kaynaklanir; lab-grown taslar son pisirimden sonra takilir. (4) Pilot kupon testini gecemeyen tasarim, 'cold enamel (epoxy resin)' beyanli soguk mineye duser; 18K'ye gecilmez.",
+ "vitreous_14k": {
+  "verdict": "marginal",
+  "conditions": [
+   "ALASIM: cinkosuz (Zn=0) ya da <%2 Zn 'enamelable' 14K sari kullan. Grice/Ganoksin: 8-14K alasimlarda %10'a kadar Zn olur, ZnO yapismayi bozar ve buharlasip kabarcik yapar; %10 Zn'li alasim 'tekrarlanabilir sonuc icin onerilmez'. Cooksongold 14ct AY (genel amacli, Zn icerir) veri sayfasi: 'cinko nedeniyle minede tatmin edici sonuc vermeyebilir'. Isimli secenekler: Otto Frei 846-180 'Standard Yellow 14-18 Fabrication & Enameling Master Alloy - No Zinc' (Cu40/Ag60 + aciklanmayan ogeler/Si; 14K-18K dokum ve cam mine icin); United PMR katalogunda 'enameling' isaretli 575 Green (10K-18K) ve 548 Pink (9K-18K). United PMR'in 9K-14K SARI dokum alasimlarinin hicbiri 'enameling' diye isaretli degil. Dokumhaneden yazili Zn sertifikasi iste.",
+   "DOKUM KALITESI: vakum/inert gazla dokum, gozeneksiz yuzey. Ganoksin'de 10/14/18K mine yapan E. Friedman: sorunlarin cogu alasimdan degil kotu dokumden (gozenek) gelir; en iyi taban yogun preslenmis/haddelenmis levhadir.",
+   "CUKUR DERINLIGI: Friedman <=~1 mm onerir (derin cukur sogurken catlar). Gorelick (Ganoksin): optimum frezeleme derinligi metal kalinliginin yarisi.",
+   "YUZEY HAZIRLIGI: 3-4 kez yuzey zenginlestirme (depletion gilding; ~593 C kiraz kirmizisi + %10 H2SO4); dusuk karatta daha fazla dongu (Grice).",
+   "PISIRIM SICAKLIGI: 14K solidus ile pisirim arasinda pay cok dar. Dusuk-orta isilik minelerle alt sinirda pisir: Soyer soft 750-800 C; Thompson orta sicaklik 1450-1500 F (788-816 C). Kisa pisirim, pirometreyi kalibre et.",
+   "LEHIM YOK: 14K sert lehim akisi pisirim araliginin icinde: Hoover&Strong 14KY Hard CF erime 1460 F / akis 1480 F; Otto Frei hard akis 1480 F (~804 C). Grice: lehim solidusu pisirim sicakliginin ustunde olmali. Bu nedenle bulgular ya lazer/PA ile kaynaklanir ya da pisirimden sonra eklenir.",
+   "RENK PALETI: opaklar 14K'de daha guvenli. Ganoksin forum: '14K transparanlari iyi almiyor', 'opaksa 14K kullanilabilir', 'transparan icin 24K folyo ser'. Thompson: kadmiyum/selenyum transparanlar yalniz 'uygun hazirlanmis yuksek karatli altinda' seffaf kalir.",
+   "TASLAR: elmaslari son pisirimden SONRA soguk olarak tak (bkz. open_risks).",
+   "Seri uretimden once ayni alasim ve dokumhaneyle test kuponlari pisir. Tum kaynaklar test ister."
+  ],
+  "firing_temp_c": "Hedef 760-790 C (1400-1450 F), ust sinir 800 C. Kaynaklar: Thompson orta sicaklik mineler 788-816 C ve 'karat gold (14 karat or higher)' uygun metaller listesinde; Grice genel olarak ~816 C; Soyer soft 750-800 C. 14K sari solidus/erime verileri: Cooksongold 14ct AY 830-870 C, DHF 14K Regal solidus 1569 F (~854 C), Umicore 14KY dokum granulu solidus 870 C. Yani 816 C'de pay yalniz ~14-54 C. 18K KK (cinkosuz) erime araligi 870-905 C, pay daha genis. Cinkosuz 14K alasimin solidusu icin dogrudan kaynak bulunamadi; dokumhaneden DSC/solidus degeri iste.",
+  "max_firing_cycles": 4,
+  "alloy_notes": "14K vs 18K: Grice 'karat ne kadar yuksekse o kadar iyi' der; 18K ve 22K genelde cinkosuzdur (deoksidasyon icin <=%1 Zn eklenebilir). Cooksongold 18ct KK (3N, cinkosuz, 870-905 C) veri sayfasinda 'basariyla minelenebilir' der; 14ct AY icin 'tatmin edici sonuc vermeyebilir' der. Kirmizi 18K en zor alasimdir; 14K kirmizida duzen-duzensizlik gerilmesi daha azdir; sari altin beyaz ve kirmizidan daha az sorun cikarir. Ticari durum: 14K vitreous mine yapiliyor (Friedman 10/14/18K'de calisir; Thompson 14K+ listeler; antika 14K Krementz mineli broslar var). Ancak cagdas ince mucevherde baskin taban 18K ve gumus/ince altindir; Hoover&Strong 'mine icin onerdigimiz altin alasimi yok' demistir (1999 forum aktarimi). Riskler: kabarcik ve igne deligi (Zn, gozenek), renk bulanmasi (Cu/Ag oksitleri, transparanlar), sarkma veya ince kesitlerde erime (solidus payi dar), cinkosuz yuksek Ag'li alasimda daha acik/yesilimsi renk tonu (kaynaksiz tahmin; numune ile kontrol et). max_firing_cycles=4 kaynaksiz tahmindir: kaynaklarda sayi yok, Grice 'yuzey seviyesine gelene dek tekrarla', Thompson 'bazen cok pisirim gerekir' der; 2-3 dolum + 1 son parlatma pisirimi varsayildi.",
+  "sources": [
+   "https://www.ganoksin.com/article/the-metal-underneath/",
+   "https://www.cooksongold.com/downloads/files/bullion/14ctAY_properties_sheet.pdf",
+   "https://www.cooksongold.com/downloads/files/bullion/18ctKK_properties_sheet.pdf",
+   "https://www.ottofrei.com/products/yellow-14k-18k-enameling-master-alloy-no-zinc",
+   "https://www.unitedpmr.com/wp-content/uploads/2020/11/United-PMR-Catalog.pdf",
+   "https://thompsonenamel.com/enameling-help-and-information/",
+   "https://guildofenamellers.org/technical-articles-2012/testing-hard-and-soft-enamels-on-pre-coated-steel-panels",
+   "https://orchid.ganoksin.com/t/gold-for-emameling/7566",
+   "https://orchid.ganoksin.com/t/karats-and-kilns-for-enameling/7353",
+   "https://orchid.ganoksin.com/t/opaqure-enamel-on-14k-or-18k-yellow-gold/48559",
+   "https://www.ganoksin.com/article/champleve-enameling/",
+   "https://dhfco.com/product/14-karat-yellow-regal-round-wi-6",
+   "https://jim-ca.umicore.com/storage/jim_ca/ready-stock-catalogue-2023-12-05-web-compressed.pdf",
+   "https://reach.dog/shop/findingking/products/563414",
+   "https://www.ottofrei.com/products/14ky-clipped-plumb-hard-flow-cadmium-free-gold-solder-1dwt"
+  ]
+ },
+ "cold_enamel": {
+  "prevalence_in_14k_fine_jewelry": "Ticari 14K'de var ama nis bir uygulama. Stuller kendi 14K yaka iglerini urun basliginda acikca 'Epoxy' diye etiketler (or. R16767 '14K White with Red, White, Blue Epoxy American Flag ... Lapel Pin'). Skyjems ansiklopedisine gore soguk mine ince ya da koleksiyonluk mucevherde nadirdir; standart hala pisirilmis minedir (ikincil kaynak). Kesin yayginlik orani bulunamadi; bu bilgi kaynaksizdir.",
+  "durability": "Sertlesmis epoksi organik malzemedir ve cam mineden cok daha yumusaktir. Surekli surtunmede cizilir. Ultrasonik ve buharli temizlemeye uygun degildir. Aseton dahil cozuculer kurumus epoksiye zarar verir (skyjems). Ganoksin kullanicilari soyle diyor: kirilmaz ya da catlamaz ama cizilir; zamanla ve gunes isiginda bozulur; epoksi yaslandikca sararabilir. Bilezik ve yuzuk gibi surtunmeye acik parcalarda en zayiftir; kupe ve broslarda daha kabul edilebilir (kaynaksiz tahmin).",
+  "disclosure_wording": "FTC 16 CFR 23.1, bir urunun 'type, kind, ... substance, durability' gibi maddi bir yonunu yanlis tanitmayi yaniltici sayar. Bu nedenle recine 'enamel' ya da 'vitreous/fired enamel' diye satilamaz. Onerilen Etsy/urun metni: '14K solid gold with hand-applied cold enamel (colored epoxy resin); not kiln-fired glass enamel. Avoid ultrasonic/steam cleaning and solvents; resin can scratch with wear.' Etsy 'Materials' alanina: '14k gold, epoxy resin'. Iki kural: (1) '14K' damgasi yalniz metal icindir, recine karat agirligina ve gram fiyatina dahil edilmez; (2) ayni magazada gercek vitreous parcalar 'kiln-fired vitreous enamel (glass)' diye ayrilir. Stuller'in 'Epoxy' adlandirmasi sektor emsalidir. Etsy'ye ozel bir mine kurali bulunamadi; bu kisim kaynaksizdir.",
+  "sources": [
+   "https://www.ecfr.gov/current/title-16/chapter-I/subchapter-B/part-23",
+   "https://www.stuller.com/products/r16767/?groupId=49747",
+   "https://skyjems.ca/pages/encyclopedia-cold-enamelling",
+   "https://skyjems.ca/pages/encyclopedia-epoxy-resin",
+   "https://orchid.ganoksin.com/t/cold-enameling-with-colored-resin/22187",
+   "https://orchid.ganoksin.com/t/soft-enamel-production-work/46318"
+  ]
+ },
+ "laser_weld_after_enamel": {
+  "verdict": "Kabul goren pratik ama kosullu: lazer ile pulse-arc kaynak, mineli parcaya bulgu eklemenin bilinen tek lehimsiz yoludur. 14K'de lehim zaten secenek degildir, cunku 14K sert lehim ~793-804 C'de akar ve pisirimde yeniden erir. Kanit: Bob Staley (BENCH/Ganoksin) plique-a-jour mineli bir brosa yeni igne mafsali ve kilit kaynaklamis; enameller lazer/PA kaynagi 'mine icin buyuk avantaj' olarak anlatir. Otto Frei 14K emniyetli kilit notu da kilitlerin lehim, mine ve asitleme sureclerinden gecebildigini varsayar.",
+  "min_distance_from_enamel_mm": 1.5,
+  "notes": "1.5 mm KAYNAKSIZ TAHMINDIR: incelenen hicbir kaynak (Staley, Ganoksin forumlari, Rofin, lazer ureticileri) sayisal mesafe vermiyor. Kaynakli yontem (Staley): (1) bulguyu dogrudan mine kenarina degil, dokumde birakilan bir taban/kutuk (pad) uzerine kaynakla; taban mine cercevesini delme riskine karsi sigortadir. (2) Mineyi Plasti-tac macunuyla ve oksitsiz, parlak gumus bir siperle maskele (kararmis gumus darbenin tamamini emer). (3) Dusuk guc ile basla; gerekirse once ms'yi artir ya da isini daralt, voltaji en son artir. (4) Parcayi parmakla tut, isinmayi hisset; makinenin hava nozuluyla sogut. Ganoksin forumu: dar isin camlasmis mineyi yakar ve kavurur; 52lasers deneyi: lazer kaynasmis mineyi yer yer sokebilir. Mineye dogrudan darbe ve sekme (ricochet) en buyuk risktir. Oneri: CAD'de bulgu tabanini mine hucresinden >=1.5 mm uzakta ve >=0.8 mm kalinlikta tasarla; ilk partide hurda kuponda dene. Ince 14K kesitte 'lazer metali delip gecebilir' uyarisi var.",
+  "sources": [
+   "https://www.ganoksin.com/article/laser-welding-plique-a-jour-owl-brooch/",
+   "https://orchid.ganoksin.com/t/can-a-laser-be-used-on-enamels/22506",
+   "https://orchid.ganoksin.com/t/enameling-a-previously-soldered-piece-of-jewelry/70524",
+   "https://www.ottofrei.com/products/gold-medium-top-opening-safety-catches-14k",
+   "https://reach.dog/shop/findingking/products/563414",
+   "https://www.ganoksin.com/article/the-metal-underneath/",
+   "https://52lasers.com/2018/10/25/138-enameling-experiments/"
+  ]
+ },
+ "flush_seat_rule": {
+  "total_depth_pct_of_diameter": 63,
+  "min_host_thickness_mm_1_5": 1.5,
+  "min_host_thickness_mm_1_8": 1.7,
+  "min_host_thickness_mm_2_0": 1.8,
+  "through_hole": "Standart ve onerilir. Alan Revere'in JCK flush setting dersi once 1 mm pilot delik, sonra 2 mm delik delip asagi dogru konik acar; delik tasin altinda boydan boya aciktir (isik ve temizlik icin). Stuller CAD/CAM standardi: pilot delik ve acikliklar, derinlik <= 2 x cap ise eklenebilir (or. 1.35 mm derinlige 1.0 mm cap uygun, 0.6 mm cap 'cok dar'; dar delik yatirim (investment) kaymasi yapar). Delik yoksa bunun yerine 'divot' (kor koni) kullanilir. Hesap: kalinliklar = %63 x cap (GIA 'Excellent' toplam derinlik ust siniri 57.5-63.0) + 0.5 mm culet payi (Stuller: culet ile parmak rayi arasi en az 0.5 mm), yukari yuvarlandi (0.945+0.5 / 1.134+0.5 / 1.26+0.5). Alttan delikli tasarimda culet delige oturur ve arka yuzeyden tasmamak kaydiyla ~0.63D+0.2 mm (1.2/1.4/1.5 mm) yetebilir; bu kaynaksiz tahmindir. Lab-grown melee'ler sik sik >%63 derin kesilir; tas partisini kumpasla olc.",
+  "lateral_wall": "Stuller Gypsy/Flush standardi (tas ile kenar arasi duvar ve taslar arasi asgari mesafe): tas <1.8 mm icin 0.35 mm, 1.8-2.5 mm icin 0.45 mm, >2.5 mm icin 0.50 mm. Gem cutter, rondistin (girdle) ustundeki tum metali kaldirir; girdle olcegi %98. Ganoksin (moderator jeffg): iki flush tas arasi en az 0.5 mm, metali itebilmek icin en az 0.25 mm; 1.5-2 mm cok daha kolay. Revere: tasin cevresinde yalniz 0.02 mm bindirme tasi tutar. Mine hucresine komsu yuvada cekic veya itme kuvveti mineyi catlatabilir; mine kenari ile oturma yuvasi arasinda >=0.6-0.8 mm metal birak (kaynaksiz tahmin).",
+  "sources": [
+   "https://www.gia.edu/facetware-help",
+   "https://www.gia.edu/gems-gemology/fall-2004-grading-cut-quality-brilliant-diamond-moses",
+   "https://cdn.hackaday.io/files/1657037089437152/CADCAMProductionStandards.pdf",
+   "https://www.stuller.com/cadcam-services",
+   "https://www.jckonline.com/?p=25507",
+   "https://orchid.ganoksin.com/t/flush-setting-setup-question/67696",
+   "https://orchid.ganoksin.com/t/gypsy-flush-diamond-setting-ver-1-02/55937"
+  ]
+ },
+ "casting_minimums": {
+  "decorative_min_mm": 0.5,
+  "structural_min_mm": 0.8,
+  "opening_min_mm": 0.5,
+  "notes": "Dekoratif 0.5 mm: Stuller CAD/CAM 'design elements and scroll work min 0.5 mm', Cookson 'claws/bezels min 0.5 mm'. Yapisal 0.8 mm: Stuller 'structural and external walls min 0.8 mm', Shapeways Gold (14K dahil) destekli/desteksiz duvar 0.8 mm, Materialise altin 0.8 mm (yuzuk bandi gibi kucuk parcada >=1 mm), Cookson dis duvar 0.8 mm. Aciklik: Stuller 0.4 mm, Cookson 'delik 0.5 mm'den kucuk olmasin'; ihtiyatli olani 0.5 mm secildi. Ek kurallar: Stuller'e gore elemanlar 0.15 mm bindirmeli, kabartma harf 0.3 mm ve aralik 0.3 mm, milgrain 0.3 mm, pilot delik derinligi <= 2 x cap, yuzuk govdesi 1.2 / 1.7 mm (uretimde ~0.2 mm metal gider). Shapeways: kabartma detay 0.40 mm, oyma 0.35 mm, tel 0.8 mm (desteksiz 1.0 mm), parcalar arasi bosluk 0.3 mm. Materialise: cilalama 0.1-0.15 mm asindirir; zincir gibi gecmeli parcalar kayip mumla dokulemez. MINE ICIN: Gorelick'e gore cukur derinligi metal kalinliginin yarisi, Friedman'a gore <=~1 mm. Ornegin 0.4 mm cukur + 0.8 mm yapisal taban, mineli bolgede ~1.2 mm yerel kalinlik demektir (turetilmis); bu, mineli parcalarin gram agirligini ve fiyatini dogrudan artirir. Hoover&Strong ve MJSA icin sayisal tasarim rehberi bulunamadi. Stuller verisi stuller.com'daki resmi 'Production Standards' belgesinin ucuncu taraf (hackaday) kopyasindan okundu; guncel surumle teyit et.",
+  "sources": [
+   "https://cdn.hackaday.io/files/1657037089437152/CADCAMProductionStandards.pdf",
+   "https://www.stuller.com/cadcam-services",
+   "https://www.shapeways.com/materials/gold",
+   "https://www.materialise.com/en/academy/industrial/design-am/gold",
+   "https://help.cooksongold.com/kb/guide/en/what-are-the-precious-metal-casting-design-guidelines-X1FhHyZB90/Steps/2749862",
+   "https://www.cooksongold.com/precious-metal-casting/design-guidelines",
+   "https://www.ganoksin.com/article/champleve-enameling/",
+   "https://orchid.ganoksin.com/t/gold-for-emameling/7566"
+  ]
+ },
+ "brooch_findings": {
+  "pin_stem": "Sertlestirilmis 14K BEYAZ (nikelli) altin igne onerilir. Gerekce: Ganoksin'deki bir kuyumcu 'sari altinla calisirken hareketli parcalar icin hep nikelli beyaz altin kullanirim' der; sterlin ve sari altin igneler bukulur, yorulur, ucunu tutmaz. Celik en iyi yay ve uc tutusunu verir, ancak celik igne kullanilirsa parca 'altin' diye damgalanamaz (forum gorusu). FTC Part 23 Ek (a) muaf parcalar listesinde 'springs, posts and separable backs of lapel buttons' gibi parcalar var, igne govdesi acikca yok; 23.10'a gore kismi damga, parcanin tanimlanmasini gerektirir. Bu yuzden '14K' iddiasi icin igne de 14K olmali. Hazir bulgu: Otto Frei/WR Cobb 1-1/2 in x .034 in (0.86 mm; 600-14 14KY / 601-14 14KW) ve 1-3/4 in x .036 in (0.91 mm; 600-14.5 / 601-14.5) igneler; 18KY ve platin secenekleri de var. Hafif parcalar icin 0.6 mm, agir parcalar icin >=1.5 mm (skyjems). Pisirimden SONRA takilmali: pisirimden gecen igne tavlanir ve yayini kaybeder (Guild of Enamellers mektubu: sterlin uzun igne icin fazla yumusak).",
+  "joint_and_catch": "Standart set: mafsal (joint) + yukaridan acilan doner emniyetli kilit (safety catch). Otto Frei/WR Cobb 14K 'Small Joints for Pinstems' 460-20 14KY / 461-20 14KW: taban izi 1.5 x 2 mm, 2.6 x 2.6 mm. 'Medium top-opening safety catch' 460-12 14KY / 461-12 14KW. Otto Frei kilit notu: lehim, mine ve son asitlemeden sonra calismasi icin kilidi biraz sabun ve amonyakli suda kaynat, durulamadan kurut; takilirsa yuvaya sivi mum sur. Fransiz tipi kombine (perçinsiz) mafsal-igne setleri de var (18K 50 mm); lehimden once sokulup yay gerilimi korunur.",
+  "attachment_on_enamel_piece": "1) Dokumde mine hucresinden >=1.5 mm uzakta iki adet ~0.8 mm kalin pad/kutuk birak (kaynaksiz olcu). 2) Tum pisirimler bittikten sonra mafsal ve kilidi bu padlere lazerle kaynakla; mineyi Plasti-tac ve parlak gumus siperle maskele, dusuk guc, hava sogutma (Staley yontemi). 3) Igneyi en son tak; mafsal perçinlenir ya da kaynaklanir. Igneyi kilide sokarak aciyi ayarla, sonra kaynakla. 4) 14K lehim (akis ~804 C) firinda yeniden akacagi icin pisirimden once lehimle bulgu takma.",
+  "findings_mass_g": "~0.5-0.7 g/bros (TAHMIN). Igne 1-1/2 in x .034 in hesapla ~0.29 g (pi x 0.432^2 x 38.1 mm = 22.3 mm3 x ~13.0 g/cm3; yogunluk Cooksongold 14ct AY 13.0). Mafsal ~0.05-0.1 g ve kilit ~0.15-0.3 g kaynaksiz tahmindir; Otto Frei sayfalarinda agirlik alani yer tutucu, Stuller sayfalari agirlik gostermedi (JS korumali). Stuller katalog gram degeri DOGRULANAMADI; tedarikciden numune tartisi al.",
+  "sources": [
+   "https://www.ottofrei.com/products/pinstems-1-5in-gold-platinum",
+   "https://www.ottofrei.com/products/pinstems-1-3-4-inch-gold-platinum",
+   "https://www.ottofrei.com/products/small-joints-14k-gold-pintstem-1-5x2mm",
+   "https://www.ottofrei.com/products/gold-medium-top-opening-safety-catches-14k",
+   "https://www.ottofrei.com/collections/jewelry-findings-settings-clasps-chains/products/french-pin-stems-joint-18k-gold-50mm-1-10mm",
+   "https://orchid.ganoksin.com/t/brooch-pin-back-advice/65572",
+   "https://guildofenamellers.org/technical-articles-1992/problems-with-brooch-pins",
+   "https://skyjems.ca/pages/encyclopedia-pin-stem",
+   "https://www.ecfr.gov/current/title-16/chapter-I/subchapter-B/part-23",
+   "https://www.ganoksin.com/article/laser-welding-plique-a-jour-owl-brooch/"
+  ]
+ },
+ "earring_posts": {
+  "post_spec": "Stuller 14K Yellow 'Standard Friction Earring Post' 1800: .030 x .437 in = 0.76 mm cap x 11.1 mm. Daha hafifi 'Extra Light' 1780: .026 x .37 in = 0.66 x 9.4 mm. Otto Frei/WR Cobb 14K standart agirlikli civi: 0.76 mm x 9.5 mm. Ganoksin'deki bir kuyumcuya gore >=.033 in (0.84 mm) 14K civi lehim sonrasi da yeterince sert kalir (anekdot). Stuller sertligi ve kalinligi artmis 14K arkaliklar .026-.036 in civi araligina uyar (1915 heavyweight 9.5 mm, 2002751 9 mm).",
+  "temper_after_firing": "~790 C'de pisirim civiyi tamamen tavlar. Kaynakli yontemler: (a) Burgu ile is sertlestirme: civiyi pense ile tutup cekerken yarim ile bir tam tur cevir (Alan Revere); bu hem civiyi sertlestirir hem de baglantiyi test eder. (b) Celik bilyede 20-30 dk tambur ya da celik blokta dovme (Ganoksin). (c) Yaslandirma (age hardening): 14K beyaz altinda 750 C cozeltiye alma + su verme + 250-300 C ile 126 -> 166 HV (Kore calismasi). Ancak su verme mineyi catlatir (Grice: ilk mine katindan sonra su verilemez), yani bu yontem mineli parcaya uygulanamaz. Sadece dusuk sicaklik yaslandirmanin mineye etkisi kaynaksizdir. ONERILEN: pisirimden SONRA cekilmis/sertlestirilmis 0.76-0.8 mm 14K civiyi pad'e lazerle kaynakla, ardindan hafif burgu ile test et. Lazer isisi yerel kaldigi icin civi govdesi sert kalir (kaynaksiz tahmin; kaynak koku cevresindeki ince bolge tavlanir).",
+  "attachment_on_enamel_piece": "Arka yuzde mine hucresinden >=1.5 mm uzakta, ~2-3 mm capli ve >=0.8 mm kalin bir dokum civi tabani (pad) birak (kaynaksiz olcu). Pisirimden once lehimle civi takma: 14K sert lehim akisi 1480 F (~804 C), mine pisirim araligi icinde kalir ve yeniden akar. Gumus/bakir minede kullanilan IT/eutectic gibi yuksek isili lehimler 14K'nin solidus payina sigmaz. Iki yol var: pisirim oncesi lazer/PA kaynak + burgu ile yeniden sertlestirme, ya da (tercih edilen) pisirim sonrasi lazer kaynak, mine maskeli.",
+  "hardware_mass_g": "~0.5-0.9 g/cift (TAHMIN). Civi 0.76 x 11.1 mm hesapla ~0.065 g/adet (5.0 mm3 x 13.0 g/cm3), yani cift basina ~0.13 g. 14K friction arkalik agirligi icin kaynak bulunamadi; Stuller sayfalari agirlik gostermedi, Otto Frei agirlik alani bos. Arkalik basina 0.2-0.4 g varsayildi (kaynaksiz tahmin). Ross-Simons 8 mm 14K stabilizor arkalik 0.8 g veriyor ama bu buyuk pedli ozel bir model. Fiyatlama icin tedarikci numunesini tart.",
+  "sources": [
+   "https://www.stuller.com/products/1800/191236/?groupId=8937",
+   "https://www.stuller.com/products/1780/195257/?groupId=8294",
+   "https://www.stuller.com/products/1915/8291/?groupId=9705",
+   "https://www.ottofrei.com/products/14k-gold-9mm-ball-earring-post-030-375",
+   "https://www.ottofrei.com/products/gold-heavy-6-3mm-friction-earring-backs-14k-18k",
+   "https://orchid.ganoksin.com/t/hardening-ear-posts-on-studs-after-soldering/18977",
+   "https://orchid.ganoksin.com/t/attaching-wire-to-the-back-of-an-earring-to-be-enamelled/68975",
+   "https://orchid.ganoksin.com/t/source-14k-red-gold-ball-studs/31969",
+   "https://koreascience.or.kr/article/CFKO201331161068387.page",
+   "https://www.ganoksin.com/article/the-metal-underneath/",
+   "https://reach.dog/shop/findingking/products/563414",
+   "https://www.ross-simons.com/jewelry/jewelry-accessories/204948.html"
+  ]
+ },
+ "chain_weights_14k": [
+  {
+   "chain": "cable (light) - U.S. Jewels 14KY, 16in = 1.8 g, kilit dahil",
+   "width_mm": 1,
+   "g_per_cm": 0.0443,
+   "source": "https://www.usajewels.com/chains/14k-yellow-gold-light-cable-chain-10mm/cdow-ar30/"
+  },
+  {
+   "chain": "cable - Velvet Box Society 14K solid tablosu, 18in = 1.9 g (ikinci kaynak)",
+   "width_mm": 1,
+   "g_per_cm": 0.0416,
+   "source": "https://www.velvetboxsociety.com/chainweights.html"
+  },
+  {
+   "chain": "cable - ARA DEGER (kaynaksiz tahmin): Velvet 1.0 mm (1.9 g/18in) ve 1.3 mm (2.4 g/18in) arasi dogrusal",
+   "width_mm": 1.2,
+   "g_per_cm": 0.0489,
+   "source": "https://www.velvetboxsociety.com/chainweights.html"
+  },
+  {
+   "chain": "box (mirror) - tek perakende ilani, 14K rose, 18in = 1.85 g (dogrulanmamis, stok disi)",
+   "width_mm": 0.8,
+   "g_per_cm": 0.0405,
+   "source": "https://www.walmart.com/ip/786288055"
+  },
+  {
+   "chain": "box - U.S. Jewels 14KY, 16in = 3.1 g",
+   "width_mm": 1,
+   "g_per_cm": 0.0763,
+   "source": "https://www.usajewels.com/chains/14k-yellow-gold-box-chain-10mm/cdow-abox63/"
+  },
+  {
+   "chain": "round box - U.S. Jewels 14KY, 17in = 2.7 g",
+   "width_mm": 1,
+   "g_per_cm": 0.0625,
+   "source": "https://www.usajewels.com/chains/14k-yellow-gold-round-box-chain-10mm/cdow-a51210/"
+  },
+  {
+   "chain": "round box - U.S. Jewels 14KY, 17in = 3.6 g (sekizgen 'octava' 1.2 mm 16in = 4.6 g, yani 0.113 g/cm)",
+   "width_mm": 1.2,
+   "g_per_cm": 0.0834,
+   "source": "https://www.usajewels.com/chains/14k-yellow-gold-round-box-chain-12mm/cdow-a51212/"
+  },
+  {
+   "chain": "rope (diamond-cut) - Olas d'Oro 14K rose 1.05 mm, 18in = 2.45 g (kolye; tercih edilen deger)",
+   "width_mm": 1,
+   "g_per_cm": 0.0536,
+   "source": "https://robinsonsjewelers.com/products/olas-doro-14k-rose-gold-18-diamond-cut-rope-chain-necklace-with-lobster-clasp-1-05mm-width-mz000422-14k_18"
+  },
+  {
+   "chain": "rope (diamond-cut) - U.S. Jewels 14KY, 7in bileklik = 1.6 g (kilit payi g/cm'yi sisirir)",
+   "width_mm": 1,
+   "g_per_cm": 0.09,
+   "source": "https://www.usajewels.com/chains/14k-yellow-gold-diamond-cut-rope-10mm/cdow-adcr25/"
+  },
+  {
+   "chain": "rope (laser) - U.S. Jewels 14KY, 7in bileklik = 1.9 g (kilit payi dahil, ust sinir)",
+   "width_mm": 1.4,
+   "g_per_cm": 0.1069,
+   "source": "https://www.usajewels.com/chains/14k-yellow-gold-laser-rope-chain-14mm/cdow-alasr30/"
+  },
+  {
+   "chain": "rope (diamond-cut, referans 1.5 mm) - Velvet Box 14K solid, 18in = 3.5 g; 1.4 mm icin alt sinir",
+   "width_mm": 1.5,
+   "g_per_cm": 0.0766,
+   "source": "https://www.velvetboxsociety.com/chainweights.html"
+  },
+  {
+   "chain": "franco - ARA DEGER (kaynaksiz tahmin): U.S. Jewels 1.5 mm degerinden genislik^2 olcegiyle",
+   "width_mm": 1.3,
+   "g_per_cm": 0.1127,
+   "source": "https://www.usajewels.com/chains/14k-yellow-gold-natural-franco-15mm/cdow-afr50n/"
+  },
+  {
+   "chain": "franco (natural) - U.S. Jewels 14KY, 16in = 6.1 g (ayni marka 1.5 mm 7in = 2.9 g, yani 0.163 g/cm; ikinci el 18in ~7.3 g ilani da uyumlu)",
+   "width_mm": 1.5,
+   "g_per_cm": 0.1501,
+   "source": "https://www.usajewels.com/chains/14k-yellow-gold-natural-franco-15mm/cdow-afr50n/"
+  },
+  {
+   "chain": "figaro - ARA DEGER (kaynaksiz tahmin): Velvet Box 2 mm 18in = 3.9 g degerinden genislik^2 olcegiyle; tek eBay ilani 1.5 mm 18in = 1.95 g (0.043) dogrulanmadi",
+   "width_mm": 1.5,
+   "g_per_cm": 0.048,
+   "source": "https://www.velvetboxsociety.com/chainweights.html"
+  },
+  {
+   "chain": "miami cuban - ARA DEGER (kaynaksiz tahmin): tek Etsy saticisi 1.5 mm/20in = 5.2 g ve 2 mm/20in = 6.5 g arasi",
+   "width_mm": 1.8,
+   "g_per_cm": 0.1178,
+   "source": "https://www.etsy.com/listing/1694697204"
+  },
+  {
+   "chain": "miami cuban (solid) - tek Etsy saticisi, 2 mm 20in = 6.5 g (yalniz arama ozeti, sayfa okunamadi; WJD 2.5 mm 18in = 10.1 g)",
+   "width_mm": 2,
+   "g_per_cm": 0.128,
+   "source": "https://www.etsy.com/listing/1694697204"
+  },
+  {
+   "chain": "paperclip - ARA DEGER (kaynaksiz tahmin): 1stDibs ilanlari 1.5 mm 18in = 1.74 g ve 2.5 mm 18in = 3.64 g ortalamasi",
+   "width_mm": 2,
+   "g_per_cm": 0.0588,
+   "source": "https://www.1stdibs.com/jewelry/necklaces/chain-necklaces/solid-14k-yellow-gold-25mm-paperclip-chain-necklace-unisex-18-inches/id-j_22478392"
+  }
+ ],
+ "open_risks": [
+  "SOLIDUS PAYI: 14K sari solidusu 830-870 C (Cooksongold AY 830, DHF Regal 854, Umicore 870), mine pisirimi 788-816 C (Thompson, Grice). Firin sapmasi ya da asiri pisirim ince filigranlarda, 0.5 mm dekoratif kesitlerde ve bros mafsal padlerinde sarkma veya erime riski yaratir. Firini termokupl ile kalibre et ve kuponla dogrula.",
+  "CINKO: piyasadaki 14K dokum granullerinin cogu Zn icerir (Otto Frei dark yellow casting master alloy %11.5 Zn; Cooksongold 14ct AY icin mine uyarisi). Dokumhane standart granul kullanirsa igne deligi, kabarcik ve yapisma kaybi olur. Yazili alasim kodu ve Zn sertifikasi olmadan siparis verme.",
+  "GOZENEK: Friedman'a gore mine sorunlarinin cogu kotu dokumden gelir. Vakum veya inert gazli dokum ve yogunluk kontrolu sart; gozenekli parcalar hurda olur (verim kaybi fiyata eklenmeli).",
+  "LEHIM YENIDEN AKAR: 14K sert lehim 1460-1480 F (793-804 C) pisirim araliginda eriyip akar. Mineli parcalarda hicbir lehim baglantisi olmamali; atlama halkalari ve zincir baglantilari dahil tum baglantilar lazerle kaynaklanmali ya da pisirimden sonra yapilmali.",
+  "TAS SIRASI: elmas havada ~700 C ve uzerinde oksitlenir/donuklasir (Ganoksin forumu; GIA'nin ikinci el aktarimi: kuyumcu sulamasi elmasi yakabilir). Lab-grown elmaslar mutlaka son pisirimden sonra soguk takilmali. Flush setting'in cekic/itme kuvveti komsu mineyi catlatabilir; yuva-mine arasi metal payini artir ve mineyi korumali takim kullan.",
+  "TRANSPARAN RENKLER: 14K'de transparanlar bulaniklasir ya da kararir (Ganoksin: '14K transparanlari iyi almiyor'; Thompson: Cd/Se transparanlar yalniz 'uygun hazirlanmis yuksek karatli altinda' seffaf kalir). Noel kirmizisi gibi seffaf renkler icin 24K folyo ya da opak tercih edilmeli; renk tutarliligi icin parti kuponu.",
+  "KADMIYUM/AGIR METAL: Thompson kursunsuzdur ama kirmizi ve turuncu Cd/Se mineler kadmiyum icerir. ABD'de eyalet bazli mucevher Pb/Cd sinirlari (or. California) ve Etsy beyan gereksinimleri kontrol edilmeli (kaynaksiz, hukuki teyit gerekli).",
+  "DUZEN SERTLESMESI / KIRILGANLIK: yuksek bakirli 14K, ~400 C altinda yavas sogurken duzenlenir; ilk mine katindan sonra su verilemez (Grice). Ince igne, halka ve kilit parcalari pisirimden sonra kirilgan ya da yumusak olabilir. Bu yuzden bulgular pisirimden sonra takilmali.",
+  "FIYAT MOTORU: champleve, mine cukuru (<=1 mm, kalinligin yarisi) + 0.8 mm yapisal taban ister; mineli bolgede yerel kalinlik ~1.2 mm'ye cikar ve gram artar. Fiyat motoru 10600 cent/g ile yalniz 14K'yi dogrular; mine iscilik ve firinlama maliyeti, hurda payi ve bulgu gramlari ayrica eklenmeli. 18K dogrulanmis oran olmadigi icin 18K'ye kacis fiyatlanamaz.",
+  "ZINCIR AGIRLIK BELIRSIZLIGI: ayni nominal genislikte farkli ureticiler 2 kata kadar fark veriyor (or. 1.0 mm rope 0.054 ile 0.090 g/cm arasi; 1.2 mm box 0.083 ile 0.113 g/cm arasi). Tablodaki ARA DEGER satirlari kaynaksizdir. Fiyatlamadan once secilen tedarikcinin numunesini tart ve kilit agirligini ayir.",
+  "FTC DAMGA: celik igne govdesi muaf parcalar listesinde yok (Ek (a)'da yaylar, kopca dilleri vb. var). '14K solid gold' iddiasi icin igne, civi ve arkaliklarin hepsi 14K olmali, ya da istisna acikca beyan edilmeli (23.10).",
+  "ZAMAN: bugun 18 Ekim 2026. Kupon pisirimi, dokumhane alasim teyidi ve pilot parti (her kategoriden 1 parca) Noel teslim takvimine sigmayabilir. Basarisiz tasarimlar icin beyanli soguk mine B plani hazir tutulmali (kaynaksiz planlama riski).",
+  "ASIT VE CILA: pisirim sonrasi asitleme ve cila mineye zarar verebilir. Thompson'in orta sicaklik serisi 'acid-resistant' olarak satilir, yine de sulfurik/nitrik banyolardan kacin. Soguk mine ultrasonik, buhar ve cozucuye dayanmaz; urun bakim karti gerekli."
+ ]
+}
