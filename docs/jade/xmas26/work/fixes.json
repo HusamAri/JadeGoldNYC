@@ -216,5 +216,137 @@
   "find": "5. Elmas tiras: serit sirtlarinda 2 x 0.25 pah; yan yuzler honlu.",
   "replace": "5. Elmas tiras: dis iki serit sirtinda 0.25 derinlikte kare desen; orta serit satin; yan yuzler honlu.",
   "why": "ribbon finish follows the image"
+ },
+
+ {
+  "id": "N7",
+  "field": "camera",
+  "find": "hanging upright from a bail at the top centre of the wing.",
+  "replace": "hanging from a bail at the top of the wing, set toward its outer edge.",
+  "why": "owner kept the hero (2026-10-18): the bail sits toward the outer edge; text follows the image"
+ },
+ {
+  "id": "N7",
+  "field": "camera",
+  "find": "below it five long flight feathers, 1.3 mm wide, are separated by narrow pierced slits and end in five rounded tips joined along a closed lower edge.",
+  "replace": "below it six long flight feathers, 1.0 mm wide, are separated by narrow pierced slits that run right through to the bottom, so the six rounded tips hang free, the longest at the inner edge beside the stone and the shortest at the outer edge.",
+  "why": "six free-tipped feathers (image kept)"
+ },
+ {
+  "id": "N7",
+  "field": "back",
+  "find": "and the bail at the top centre.",
+  "replace": "and the bail at the top, toward the outer edge.",
+  "why": "bail position follows the image (feeds frame 05)"
+ },
+ {
+  "id": "N7",
+  "field": "description",
+  "find": "a row of rounded feathers above five long ones",
+  "replace": "a row of rounded feathers above six long ones",
+  "why": "six feathers (image kept)"
+ },
+ {
+  "id": "N7",
+  "field": "description",
+  "find": "Five long feathers are separated by narrow pierced slits and meet along a closed lower edge, so nothing catches.",
+  "replace": "Six long feathers are separated by narrow pierced slits and end in free rounded tips, cut 0.9 mm thick so they hold their shape.",
+  "why": "free tips (image kept); the 'nothing catches' claim belonged to the closed edge"
+ },
+ {
+  "id": "N7",
+  "field": "description",
+  "find": "The bail sits at the top centre of the wing.",
+  "replace": "The bail sits at the top of the wing, toward the outer edge.",
+  "why": "bail position follows the image"
+ },
+ {
+  "id": "N7",
+  "field": "description",
+  "find": "4.14 g of 14k gold, counting the chain, clasp and extender. On the scale the finished piece weighs 4.14 g in total with the stones.",
+  "replace": "4.05 g of 14k gold, counting the chain, clasp and extender. On the scale the finished piece weighs 4.05 g in total with the stones.",
+  "why": "open tips drop the slit-closing metal (3.24 mm3) and six 1.0 mm feathers hold less gold than five 1.3 mm ones (47.97 -> 44.3 mm3): -0.09 g"
+ },
+ {
+  "id": "N7",
+  "field": "gold_grams",
+  "set": 4.05,
+  "why": "pendant 1.29 -> 1.20 g; chain and findings unchanged"
+ },
+ {
+  "id": "N7",
+  "field": "total_grams",
+  "set": 4.05,
+  "why": "no enamel; stone weight below rounding"
+ },
+ {
+  "id": "N7",
+  "field": "workshop.dimensions",
+  "find": "5 birincil tuy 1.4 gen, boylar 9.5/9.0/8.5/7.5/6.5, aralarinda 0.6 yarik; yariklar arka kenara 1.5 mm kala biter (kapali kenar, serbest konsol yok).",
+  "replace": "6 birincil tuy 1.0 gen (6 x 1.0 + 5 x 0.6 = 9.0), boylar 9.5/9.0/8.5/8.0/7.5/6.5 icten disa, aralarinda 0.6 yarik; yariklar alt kenara kadar ACIK, uclar serbest konsol (gorsele esitlendi 2026-10-18). Gram: tuy hacmi 47.97 -> 44.3 mm3 ve kapama metali 3.24 mm3 kalkti = -0.09 g; uc 1.29 -> 1.20 g, toplam altin 4.14 -> 4.05 g.",
+  "why": "six free-tipped feathers on the same 9.0 mm width"
+ },
+ {
+  "id": "N7",
+  "field": "workshop.dimensions",
+  "find": "Uc tarak r0.7.",
+  "replace": "Uc r0.5 (1.0 mm tuyun tam yuvarlak ucu).",
+  "why": "narrower feathers, full-round tips"
+ },
+ {
+  "id": "N7",
+  "field": "workshop.bench_sequence",
+  "find": "QC tartim (uc 1.29 g +/- %5)",
+  "replace": "QC tartim (uc 1.20 g +/- %5)",
+  "why": "pendant gram follows the new feathers"
+ },
+ {
+  "id": "N7",
+  "field": "workshop.bom",
+  "find": "Bitmis uc 1.290 g x 1.15 = 1.48 g dokum metali.",
+  "replace": "Bitmis uc 1.20 g x 1.15 = 1.38 g dokum metali.",
+  "why": "pendant gram follows the new feathers"
+ },
+ {
+  "id": "N7",
+  "field": "workshop.failure_modes",
+  "find": "Yariklar arka kenara 1.5 mm kala biter; tum tuyler kapali kenarla bagli.",
+  "replace": "Uclar serbest (sahip karari 2026-10-18, gorsele esitlendi): tuy kesiti 1.0 x 0.9 (>=0.8 yapisal), uc r0.5, elmas tiras yalniz on yuzde; pilot parcada uc egme testi; egilen varsa yariklar alt kenara 0.8 mm kala bitirilir.",
+  "why": "free tips need their own prevention; the closed edge was the old one"
+ },
+ {
+  "id": "N7",
+  "field": "workshop.tolerance_checks",
+  "find": "tuy 1.4, kenar bandi 1.5",
+  "replace": "tuy 1.0 (serbest uc), kenar bandi 1.5",
+  "why": "feather width follows the image"
+ },
+ {
+  "id": "N7",
+  "field": "workshop.tolerance_checks",
+  "find": "tarak r0.7",
+  "replace": "uc r0.5",
+  "why": "tip radius follows the narrower feather"
+ },
+ {
+  "id": "N7",
+  "field": "workshop.tolerance_checks",
+  "find": "4.097 g (uc 1.290 + zincir 2.451 + bulgu 0.356); tavana pay 0.103 g",
+  "replace": "4.05 g beyan (uc 1.20 + zincir 2.451 + bulgu 0.356 = 4.01, 0.04 pay); tavana pay 0.15 g",
+  "why": "gram follows the new feathers"
+ },
+ {
+  "id": "N7",
+  "field": "open_questions",
+  "find": "Tuy genisligini 1.3'e indir (5 x 1.3 + 4 x 0.6 = 8.9 <= 9.0) ya da kanadi 9.4 mm yap. Grami yeniden hesapla (1.3 genislikte tuy hacmi 47.97 mm3).",
+  "replace": "Cozuldu 2026-10-18 (gorsele esitlendi): 6 tuy x 1.0 + 5 yarik x 0.6 = 9.0 mm; uc 1.20 g.",
+  "why": "the verifier's width question is answered by the kept image"
+ },
+ {
+  "id": "N7",
+  "field": "open_questions",
+  "find": "Yarik kapama metalini (3.24 mm3) gram_build'e ekle.",
+  "replace": "Cozuldu 2026-10-18: uclar acik, kapama metali yok (3.24 mm3 gramdan dusuldu).",
+  "why": "no closing metal with open tips"
  }
 ]

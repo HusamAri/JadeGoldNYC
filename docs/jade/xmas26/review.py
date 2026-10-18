@@ -11,8 +11,9 @@ prompt cannot slip in. Heroes not listed here are "ok" (optionally with a short 
 History (2026-10-18): first pass 36 ok, 2 check, 2 redo; B4 reshot once and accepted. Second pass:
 the owner regenerated E9, N9 and P2 from the corrected prompts, each closing its first fault and
 opening a smaller one. The owner kept those three images, so the DESIGN TEXT was aligned to them
-through work/fixes.json (N9 four cells, E9 perched horizontal bird, P2 two patterned ribbons) and
-they are "ok" here; only N7 stays "check".
+through work/fixes.json (N9 four cells, E9 horizontal bird, P2 two patterned ribbons), then N7 the
+same way (six free-tipped feathers, gram re-derived). All 40 are "ok"; `fixed` stays for the next
+round that needs a corrected prompt.
 """
 import json
 import pathlib
@@ -31,24 +32,10 @@ def fixed(pid, *pairs):
     return p
 
 
-review = {
-    "N7": {
-        "status": "check",
-        "reason": "Uçuş tüyleri 5 yerine 6 okunuyor ve uçlar kapalı alt kenarla birleşmek yerine ayrı duruyor. "
-                  "Kare kullanılabilir; açıklama 'beş tüy' diyor, istersen yeniden üret.",
-        "note": "Tüy sayısı açıklamadan farklı.",
-        "prompt": fixed(
-            "N7",
-            ("below it five long flight feathers, 1.3 mm wide, are separated by narrow pierced slits and end in "
-             "five rounded tips joined along a closed lower edge.",
-             "below it exactly five long flight feathers, 1.3 mm wide, are separated by four narrow pierced slits "
-             "that stop short of the bottom, so the five rounded tips are joined to each other along one "
-             "continuous closed lower edge; five feathers, not six."),
-        ),
-    },
-}
+review = {}  # every hero is "ok": the owner kept the last flagged one (N7) and its text was aligned to it
 notes = {
     "B4": "Yeniden çekim (ışınlar aynı düzlemde, pusula gülü gibi) kabul edildi.",
+    "N7": "Sahip görseli beğendi; tasarım görsele eşitlendi: 6 serbest uçlu tüy, kulp dış kenara doğru, altın 4,14 → 4,05 g (2026-10-18).",
     "N9": "v2 sahip üretimi; tasarım görsele eşitlendi: 4 hücre / 3 çıta, koyu yeşil mine (2026-10-18).",
     "E9": "v2 sahip üretimi; tasarım görsele eşitlendi: yatay kardinal 11.5 × 5.8 mm, dal/tünek yok, civi boyunda (2026-10-18).",
     "P2": "v2 sahip üretimi; tasarım görsele eşitlendi: dış iki şerit elmas tıraş desenli, orta şerit satin (2026-10-18).",

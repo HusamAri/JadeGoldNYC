@@ -37,10 +37,7 @@ CAT_TR = {"bracelet": "Bileklik", "necklace": "Kolye", "earrings": "Küpe", "bro
 
 # what the maker must know where a render does not match the written piece (status.json names the
 # fault for the owner; this is the same fault in the maker's terms)
-RENDER_NOTE = {
-    "N7": "Görselde 6 uçuş tüyü ve ayrık uçlar görünüyor; tasarımda 5 tüy, uçlar kapalı alt kenar "
-          "boyunca birbirine bağlıdır.",
-}
+RENDER_NOTE = {}  # 2026-10-18: the owner kept every render; where one differed, the text was aligned to it
 assert set(RENDER_NOTE) == {k for k, v in STATUS.items() if v["status"] != "ok"}, "status.json ile not listesi uyuşmuyor"
 
 # the line rules the tolerance tables refer to (L1-L10); L11/L12 are design-line rules, not the maker's
@@ -212,6 +209,9 @@ palette = "".join(f'<tr><td><span class="sw" style="background:{hx}"></span></td
                   for n, hx, d in PALETTE)
 n_enamel, n_stone = sum(p["enamel"] for p in CAT), sum(1 for p in CAT if p["stones"])
 flagged = ", ".join(sorted(RENDER_NOTE, key=lambda x: (x[0], int(x[1:]))))
+flag_line = (f"{len(RENDER_NOTE)} görsel ({flagged}) kendi sayfasında işaretli bir notla metinden ayrılıyor."
+             if RENDER_NOTE else
+             "Bütün görseller metinle uyumludur; dört parçada (E9, N7, N9, P2) sahip görseli seçti ve metin görsele eşitlendi.")
 
 doc = f"""<!doctype html><html lang="tr"><head><meta charset="utf-8">
 <title>Jade Gold NYC · Noel 2026 · Üretici Kitabı</title>
@@ -284,7 +284,7 @@ table.tc td.ok {{ width: 5mm; text-align: center; color: #3f6b4f; }}
     <h3>Nasıl okunur</h3>
     <p>Her parça iki sayfadır: tasarım görseli ve yakın kırpımı, özet tablo, inşa, tezgâh sırası, malzeme listesi ve gram kurulumu, arıza modları,
     tolerans kontrolleri ve o parça için sorularımız. Görseller tasarım görselleştirmesidir, numune fotoğrafı değil; <b>görsel ile metin
-    çelişirse metin esastır.</b> Dört görsel ({flagged}) kendi sayfasında işaretli bir notla metinden ayrılıyor.</p>
+    çelişirse metin esastır.</b> {flag_line}</p>
     <p>Perakende fiyat bu kitapta bilerek yok; teklif sizden bekleniyor. Tüm parçalar 14K sarı altındır; beyaz altın yalnız broş iğnesinde geçer.
     Gravür ve kişiselleştirme yoktur.</p>
   </div>
