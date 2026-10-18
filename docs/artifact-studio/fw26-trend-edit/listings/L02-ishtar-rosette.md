@@ -58,6 +58,7 @@ An eight-petal rosette, the star of Ishtar that appears on Mesopotamian seals an
 - It is made for the season of dressing up: a vintage style brooch for an evening coat, an opera night or a holiday table, and it stays in rotation long after.
 - Made to order at our bench in New Jersey in 3 to 5 business days, free US shipping, gift box included.
 - Garnet is hard enough for daily wear. Keep the piece away from knocks and clean it with a soft cloth. A gift message can be added at checkout.
+- The product images are design visualizations of the finished piece, not photographs of a cast sample, and the multi-metal images are colour visualizations of the same design; the handmade piece may vary slightly.
 ```
 
 ## Section

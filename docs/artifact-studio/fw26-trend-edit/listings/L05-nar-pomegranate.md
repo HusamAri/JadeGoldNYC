@@ -58,6 +58,7 @@ The pomegranate has meant abundance, luck and a full house from Mesopotamia to A
 - Made to order at our bench in New Jersey in 3 to 5 business days, free US shipping, gift box included.
 - Enamel is glass fused to gold and can chip from a hard knock. Take it off for the gym, the pool and the sink, and wipe it with a soft cloth.
 - A gift message can be added at checkout.
+- The product images are design visualizations of the finished piece, not photographs of a cast sample, and the multi-metal images are colour visualizations of the same design; the handmade piece may vary slightly.
 ```
 
 ## Section

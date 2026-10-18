@@ -1,5 +1,5 @@
 begin;
--- L05 Nar (Pomegranate): 27 variants (Karat x Metal Color x Chain Length), seal 11bddff1d6061782deacd26ac6944ac4, md5(description) c7bf02fab63234bbc1a7d144f6ca96ef, tags f826f101c5875dcc987c6538c257ba02
+-- L05 Nar (Pomegranate): 27 variants (Karat x Metal Color x Chain Length), seal 11bddff1d6061782deacd26ac6944ac4, md5(description) 68d8efd4d94cb79f354cc8714408b10e, tags f826f101c5875dcc987c6538c257ba02
 insert into public.products (
   id, org_id, sku, title, description, tags, materials, status, currency,
   price_cents, quantity, has_variations, image_url, num_images, product_type, listing_metadata
@@ -12,10 +12,11 @@ select $fw$35f66f38-e77e-5afc-a598-df9184e2ad90$fw$::uuid, '2c254edf-2119-4079-b
 - It is a bold color piece that happens to be festive, which makes it an easy gift for a new home, a host, a friend who feeds everyone, or yourself, which is allowed.
 - Made to order at our bench in New Jersey in 3 to 5 business days, free US shipping, gift box included.
 - Enamel is glass fused to gold and can chip from a hard knock. Take it off for the gym, the pool and the sink, and wipe it with a soft cloth.
-- A gift message can be added at checkout.$fw$,
+- A gift message can be added at checkout.
+- The product images are design visualizations of the finished piece, not photographs of a cast sample, and the multi-metal images are colour visualizations of the same design; the handmade piece may vary slightly.$fw$,
   ARRAY[$fw$pomegranate necklace$fw$,$fw$pomegranate jewelry$fw$,$fw$garnet necklace gold$fw$,$fw$enamel pendant gold$fw$,$fw$bold color necklace$fw$,$fw$solid gold charm$fw$,$fw$abundance gift$fw$,$fw$hostess gift gold$fw$,$fw$new home gift gold$fw$,$fw$anatolian jewelry$fw$,$fw$whimsical necklace$fw$,$fw$red enamel necklace$fw$,$fw$christmas necklace$fw$]::text[], ARRAY[$fw$Solid gold$fw$,$fw$Vitreous enamel$fw$,$fw$Garnet$fw$,$fw$14K gold$fw$,$fw$10K gold$fw$,$fw$18K gold$fw$]::text[], 'draft', 'USD',
-  64703, 20, true, null, 0, 'necklace',
-  $fw${"productType": "necklace", "listingProtocol": "pendant_necklace", "protocolVersion": "etsy-listing-v1", "offersPersonalization": false, "modelId": "L05", "name": "Nar (Pomegranate)", "collection": "FW26 Trend Edit", "variationAxes": ["Karat", "Metal Color", "Chain Length"], "category": "Jewelry > Necklaces > Pendant Necklaces", "section": "Necklaces", "attributes": {"Primary color": "Red", "Secondary color": "Gold", "Holiday": "Christmas", "Occasion": "Housewarming", "Recipient": "Women", "Style": "Whimsical"}, "processing": "3 to 5 business days", "trend": {"anchor": "Merrymaxxing (gemstones, bold color, whimsy)", "secondary": "Family Reimagined (gift for a household, a host, a friend)"}, "sourcePackage": "2026-10-17-artifact-fw26-trend-edit", "sourcePackagePath": "docs/artifact-studio/fw26-trend-edit", "generatorScript": "docs/artifact-studio/fw26-trend-edit/gen_migration.py", "weightSource": "geometry_estimate", "missingHero": true, "pricing": {"model": "BRIEF.md section 4: 14K base = 320 per piece + 100 per gram + adders; 10K = 14K / 1.349; 18K = 14K x 1.31; list = base x 1.265; the 30% shop sale shows list x 0.70", "basis": {"grams14": 3.0, "pieces": 1, "adders": 70, "adders_detail": "three garnets bead set 45 + enamel cell 25; 16 in chain included in the grams", "base14": 690}, "set_options": null, "status": "ESTIMATE_BRIEF_FW26", "panelPriceIs": "Etsy list price (base x 1.265)"}, "approval": {"blockers": ["NO PHOTOS: the brief allows real photographs of real samples only; no sample exists yet (photography/photo-plan.md).", "ESTIMATED PRICE: grams are design estimates; Efe's cast weights override them (production/manufacturing-brief-efe.md)."], "etsyDraftCreationAuthorized": true, "livePublicationAuthorized": false, "authority": "Owner brief 2026-10-17 (FW26 Trend Edit, 10 listings); every listing approved 2026-10-17."}, "variantSeal": "11bddff1d6061782deacd26ac6944ac4"}$fw$::jsonb
+  64703, 20, true, $fw$https://amuletta.artifactstudio.info/artifact/fw26/L05/01.jpg$fw$, 5, 'necklace',
+  $fw${"productType": "necklace", "listingProtocol": "pendant_necklace", "protocolVersion": "etsy-listing-v1", "offersPersonalization": false, "modelId": "L05", "name": "Nar (Pomegranate)", "collection": "FW26 Trend Edit", "variationAxes": ["Karat", "Metal Color", "Chain Length"], "category": "Jewelry > Necklaces > Pendant Necklaces", "section": "Necklaces", "attributes": {"Primary color": "Red", "Secondary color": "Gold", "Holiday": "Christmas", "Occasion": "Housewarming", "Recipient": "Women", "Style": "Whimsical"}, "processing": "3 to 5 business days", "trend": {"anchor": "Merrymaxxing (gemstones, bold color, whimsy)", "secondary": "Family Reimagined (gift for a household, a host, a friend)"}, "sourcePackage": "2026-10-17-artifact-fw26-trend-edit", "sourcePackagePath": "docs/artifact-studio/fw26-trend-edit", "generatorScript": "docs/artifact-studio/fw26-trend-edit/gen_migration.py", "weightSource": "geometry_estimate", "missingHero": false, "pricing": {"model": "BRIEF.md section 4: 14K base = 320 per piece + 100 per gram + adders; 10K = 14K / 1.349; 18K = 14K x 1.31; list = base x 1.265; the 30% shop sale shows list x 0.70", "basis": {"grams14": 3.0, "pieces": 1, "adders": 70, "adders_detail": "three garnets bead set 45 + enamel cell 25; 16 in chain included in the grams", "base14": 690}, "set_options": null, "status": "ESTIMATE_BRIEF_FW26", "panelPriceIs": "Etsy list price (base x 1.265)"}, "approval": {"blockers": ["Images are design visualizations (Higgsfield, images/jobs.json); photograph the cast piece per photography/photo-plan.md and replace them.", "ESTIMATED PRICE: grams are design estimates; Efe's cast weights override them (production/manufacturing-brief-efe.md)."], "etsyDraftCreationAuthorized": true, "livePublicationAuthorized": false, "authority": "Owner brief 2026-10-17 (FW26 Trend Edit, 10 listings); every listing approved 2026-10-17."}, "variantSeal": "11bddff1d6061782deacd26ac6944ac4"}$fw$::jsonb
 where not exists (select 1 from public.products p where p.org_id = '2c254edf-2119-4079-b09e-dc672e32c1f9'
   and (p.sku = $fw$BAS-FW26-L05$fw$ or p.id = $fw$35f66f38-e77e-5afc-a598-df9184e2ad90$fw$::uuid));
 
@@ -57,4 +58,16 @@ on conflict (org_id, sku) do update set
   product_id = excluded.product_id, name = excluded.name, properties = excluded.properties,
   price_cents = excluded.price_cents, quantity = excluded.quantity, weight_grams = excluded.weight_grams,
   weight_source = excluded.weight_source, active = excluded.active, updated_at = now();
+
+insert into public.listing_images (org_id, product_id, url, source, alt, position)
+select p.org_id, p.id, g.url, 'url', g.alt, g.pos
+from (values
+  (0, $fw$https://amuletta.artifactstudio.info/artifact/fw26/L05/01.jpg$fw$, $fw$Nar pomegranate pendant in solid gold with cranberry enamel and garnet seeds$fw$),
+  (1, $fw$https://amuletta.artifactstudio.info/artifact/fw26/L05/02.jpg$fw$, $fw$Nar pendant worn over a black turtleneck$fw$),
+  (2, $fw$https://amuletta.artifactstudio.info/artifact/fw26/L05/03.jpg$fw$, $fw$Close-up of the enamel skin and the three garnet seeds$fw$),
+  (3, $fw$https://amuletta.artifactstudio.info/artifact/fw26/L05/04.jpg$fw$, $fw$Nar pendant in yellow, white and rose gold (colour visualization)$fw$),
+  (4, $fw$https://amuletta.artifactstudio.info/artifact/fw26/L05/05.jpg$fw$, $fw$Nar pendant on a holiday table with pomegranates$fw$)
+) g(pos, url, alt)
+join public.products p on p.org_id = '2c254edf-2119-4079-b09e-dc672e32c1f9' and p.sku = $fw$BAS-FW26-L05$fw$ and p.etsy_listing_id is null
+where not exists (select 1 from public.listing_images li where li.product_id = p.id and li.url = g.url);
 commit;

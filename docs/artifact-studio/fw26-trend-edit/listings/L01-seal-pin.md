@@ -58,6 +58,7 @@ A lapel pin for men who dress for the occasion. The Seal Pin takes its form from
 - Made to order at our bench in New Jersey in 5 to 7 business days, then shipped free within the US with a solid gold clutch back and a gift box.
 - Gold does not tarnish. If the flutes collect dust, a soft brush and warm soapy water bring the shine back.
 - A gift message can be added at checkout. Please check the spelling at checkout; engraved pieces are made specifically for you.
+- The product images are design visualizations of the finished piece, not photographs of a cast sample, and the multi-metal images are colour visualizations of the same design; the handmade piece may vary slightly.
 ```
 
 ## Section

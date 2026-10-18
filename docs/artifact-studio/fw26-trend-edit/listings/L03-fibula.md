@@ -58,6 +58,7 @@ Before buttons, there was the fibula: one length of metal coiled into a spring, 
 - Made to order at our bench in New Jersey in 3 to 5 business days, free US shipping, gift box included.
 - Gold does not tarnish. If the pin tip ever dulls on heavy wool, a few strokes on a fine emery board restore it. Avoid very loose, open weaves, where any pin can slip.
 - A gift message can be added at checkout.
+- The product images are design visualizations of the finished piece, not photographs of a cast sample, and the multi-metal images are colour visualizations of the same design; the handmade piece may vary slightly.
 ```
 
 ## Section

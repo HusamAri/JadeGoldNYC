@@ -58,6 +58,7 @@ One infinity loop, cut along a soft wave into two or three pieces, each on its o
 - Made to order at our bench in New Jersey in 5 to 7 business days, free US shipping. Each pendant arrives in its own gift box, so the set can be given in three places on the same night.
 - Please check the spelling at checkout; engraved pieces are made specifically for you.
 - Gold does not tarnish. A soft cloth keeps it bright. A gift message can be added at checkout.
+- The product images are design visualizations of the finished piece, not photographs of a cast sample, and the multi-metal images are colour visualizations of the same design; the handmade piece may vary slightly.
 ```
 
 ## Section

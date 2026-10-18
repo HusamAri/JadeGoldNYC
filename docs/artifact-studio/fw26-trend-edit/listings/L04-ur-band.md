@@ -58,6 +58,7 @@ The Standard of Ur, a 4,500-year-old box from a Sumerian tomb, is inlaid in exac
 - One Ur Band is a quiet accent of bold color. Two or three stacked with plain gold bands is the mood of this season, and it still works in July.
 - Made to order at our bench in New Jersey in 3 to 5 business days, free US shipping, gift box included.
 - Enamel is glass fused to gold and can chip from a hard knock. Take it off for the gym, the pool and the sink, and wipe it with a soft cloth. A gift message can be added at checkout.
+- The product images are design visualizations of the finished piece, not photographs of a cast sample, and the multi-metal images are colour visualizations of the same design; the handmade piece may vary slightly.
 ```
 
 ## Section

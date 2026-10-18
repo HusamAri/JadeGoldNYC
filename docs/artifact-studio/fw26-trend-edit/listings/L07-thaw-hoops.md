@@ -58,6 +58,7 @@ The Thaw Hoops continue our Thaw cuff: solid gold taken to the edge of melting s
 - Made to order at our bench in New Jersey in 3 to 5 business days, free US shipping, gift box included.
 - Gold does not tarnish. Warm water with a drop of dish soap and a soft brush clears the texture of any residue.
 - A gift message can be added at checkout.
+- The product images are design visualizations of the finished piece, not photographs of a cast sample, and the multi-metal images are colour visualizations of the same design; the handmade piece may vary slightly.
 ```
 
 ## Section

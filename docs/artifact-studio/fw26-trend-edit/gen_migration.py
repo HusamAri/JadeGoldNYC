@@ -4,7 +4,8 @@ Panel drafts only (products.status='draft', etsy_listing_id null); nothing is wr
 Ten products, one per listing, with the full variant grid each listing declares. Panel price = the
 Etsy list price (base x 1.265): the shop's live Etsy prices sit at panel x 1.265 on the reference
 listing 4590337023 (price-sync detail, read 2026-10-17), so the new rows store the number Etsy shows.
-No images: the brief allows real sample photos only and none exist yet.
+Images: five design visualizations per listing (images/jobs.json), served from public/artifact/fw26/Lxx/;
+the owner chose them as listing images on 2026-10-17 ("add") and every description discloses them.
 Run after build_listings.py: python3 gen_migration.py
 """
 import hashlib, itertools, json, pathlib, sys, uuid
@@ -17,6 +18,59 @@ from maker_cost import DENSITY  # noqa: E402  10K x 0.892, 18K x 1.137 (shop mak
 ORG = "2c254edf-2119-4079-b09e-dc672e32c1f9"
 PKG = "2026-10-17-artifact-fw26-trend-edit"
 PREFIX = "BAS-FW26"
+BASE_URL = "https://amuletta.artifactstudio.info/artifact/fw26"
+ALT = {
+ "L01": ["Seal Pin, a fluted solid gold cylinder stick pin, on black velvet",
+         "Seal Pin worn on the lapel of a grey wool jacket",
+         "Close-up of the twelve flutes and the plain polished end cap",
+         "Seal Pin in yellow, white and rose gold (colour visualization)",
+         "Seal Pin resting on an open palm for scale"],
+ "L02": ["Ishtar Rosette brooch in solid gold with a garnet center, pinned to green velvet",
+         "Ishtar Rosette worn as a pendant on a fine chain",
+         "Close-up of the garnet cabochon and the openwork petals",
+         "Back of the brooch with the pin, safety catch and hidden tube bail",
+         "Ishtar Rosette in yellow, white and rose gold (colour visualization)"],
+ "L03": ["Fibula cloak pin in hand forged solid gold fastening camel cashmere",
+         "Fibula closing a cable knit cardigan",
+         "Close-up of the hammered bow and the coiled spring",
+         "Two fibulae, one closed and one open, showing how it fastens",
+         "Fibula in yellow, white and rose gold (colour visualization)"],
+ "L04": ["Ur Band, a solid gold ring with lapis, cranberry and shell white enamel cells",
+         "Ur Band worn on the ring finger, stacked with a plain band",
+         "The Ur palette and the Festival palette side by side",
+         "Close-up of three flush enamel cells and the gold walls between them",
+         "Ur Band among lapis, carnelian and a sea shell"],
+ "L05": ["Nar pomegranate pendant in solid gold with cranberry enamel and garnet seeds",
+         "Nar pendant worn over a black turtleneck",
+         "Close-up of the enamel skin and the three garnet seeds",
+         "Nar pendant in yellow, white and rose gold (colour visualization)",
+         "Nar pendant on a holiday table with pomegranates"],
+ "L06": ["Wedge bar pendant in solid gold with a struck cuneiform sign, on raw clay",
+         "The four signs side by side: TI (life), SHA (heart), E (home), AN (star, sky)",
+         "Wedge pendant worn over a cream turtleneck",
+         "Two Wedge pendants layered on two chain lengths",
+         "Wedge pendant in 10K, 14K and 18K yellow gold (colour visualization)"],
+ "L07": ["Thaw Hoops in rippled solid gold with white gold tips",
+         "Thaw Hoop worn in the earlobe",
+         "Close-up of the molten surface and the white gold tips",
+         "Yellow/White Gold and Rose/White Gold pairs (colour visualization)",
+         "Back of a Thaw Hoop with the post and butterfly back"],
+ "L08": ["Split Infinity: three solid gold pendants that close into one infinity loop",
+         "Three friends at a cafe table with the set between them",
+         "The three pieces apart, each on its own chain",
+         "Close-up of a wavy seam between two pieces",
+         "Split Infinity in yellow, white and rose gold (colour visualization)"],
+ "L09": ["Paw Seal disc pendant in solid gold with a paw intaglio, on a leather collar",
+         "Paw Seal worn while hugging a golden retriever",
+         "The four finishes: plain gold, cobalt, cranberry and black enamel",
+         "Dog paw and cat paw intaglio side by side",
+         "Paw Seal resting on an open palm for scale"],
+ "L10": ["Twin Eye: two solid gold bracelets that form one eye, almond and cobalt iris",
+         "Twin Eye worn on two wrists",
+         "Close-up of the cobalt enamel iris inside the almond",
+         "Close-up of the open almond outline",
+         "Twin Eye in yellow, white and rose gold (colour visualization)"],
+}
 SEP = ",\n"
 
 CODES = {
@@ -88,12 +142,12 @@ for l in L:
         "processing": l["processing_days"], "trend": l["trend"],
         "sourcePackage": PKG, "sourcePackagePath": "docs/artifact-studio/fw26-trend-edit",
         "generatorScript": "docs/artifact-studio/fw26-trend-edit/gen_migration.py",
-        "weightSource": "geometry_estimate", "missingHero": True,
+        "weightSource": "geometry_estimate", "missingHero": False,
         "pricing": {"model": "BRIEF.md section 4: 14K base = 320 per piece + 100 per gram + adders; 10K = 14K / 1.349; 18K = 14K x 1.31; list = base x 1.265; the 30% shop sale shows list x 0.70",
                     "basis": l["pricing_basis"], "set_options": l.get("set_options"), "status": "ESTIMATE_BRIEF_FW26",
                     "panelPriceIs": "Etsy list price (base x 1.265)"},
         "approval": {"blockers": [
-            "NO PHOTOS: the brief allows real photographs of real samples only; no sample exists yet (photography/photo-plan.md).",
+            "Images are design visualizations (Higgsfield, images/jobs.json); photograph the cast piece per photography/photo-plan.md and replace them.",
             "ESTIMATED PRICE: grams are design estimates; Efe's cast weights override them (production/manufacturing-brief-efe.md).",
         ], "etsyDraftCreationAuthorized": True, "livePublicationAuthorized": False,
             "authority": "Owner brief 2026-10-17 (FW26 Trend Edit, 10 listings); every listing approved 2026-10-17."},
@@ -111,7 +165,7 @@ insert into public.products (
 )
 select {q(pid)}::uuid, '{ORG}', {q(psku)}, {q(l['title'])}, {q(l['description'])},
   ARRAY[{",".join(q(t) for t in l['tags'])}]::text[], ARRAY[{",".join(q(m) for m in l['materials'])}]::text[], 'draft', 'USD',
-  {min(r['price_cents'] for r in rows)}, {l['quantity']}, true, null, 0, '{l['product_type']}',
+  {min(r['price_cents'] for r in rows)}, {l['quantity']}, true, {q(f"{BASE_URL}/{l['id']}/01.jpg")}, {len(ALT[l['id']])}, '{l['product_type']}',
   {q(json.dumps(meta, ensure_ascii=False))}::jsonb
 where not exists (select 1 from public.products p where p.org_id = '{ORG}'
   and (p.sku = {q(psku)} or p.id = {q(pid)}::uuid));
@@ -129,13 +183,24 @@ on conflict (org_id, sku) do update set
   price_cents = excluded.price_cents, quantity = excluded.quantity, weight_grams = excluded.weight_grams,
   weight_source = excluded.weight_source, active = excluded.active, updated_at = now();
 """
+    lid = l["id"]
+    imgs = SEP.join(f"  ({i}, {q(f'{BASE_URL}/{lid}/{i + 1:02d}.jpg')}, {q(a)})" for i, a in enumerate(ALT[lid]))
+    block += f"""
+insert into public.listing_images (org_id, product_id, url, source, alt, position)
+select p.org_id, p.id, g.url, 'url', g.alt, g.pos
+from (values
+{imgs}
+) g(pos, url, alt)
+join public.products p on p.org_id = '{ORG}' and p.sku = {q(psku)} and p.etsy_listing_id is null
+where not exists (select 1 from public.listing_images li where li.product_id = p.id and li.url = g.url);
+"""
     blocks.append(block)
     (HERE / "parts").mkdir(exist_ok=True)
     (HERE / "parts" / f"{l['id']}.sql").write_text("begin;\n" + block + "commit;\n", encoding="utf-8")
 
 SET_SEAL = hashlib.md5("\n".join(sorted(seal_rows, key=lambda s: s.encode())).encode()).hexdigest()
 sql = f"""-- 0171_artifact_fw26_trend_edit.sql
--- by Artifact Studio Jewelry: FW26 Trend Edit, 10 listings, {len(seal_rows)} variants, no images yet. Panel drafts only;
+-- by Artifact Studio Jewelry: FW26 Trend Edit, 10 listings, {len(seal_rows)} variants, 50 images (design visualizations). Panel drafts only;
 -- this migration does not write to Etsy. Source: docs/artifact-studio/fw26-trend-edit/ (build_listings.py).
 -- Generator: gen_migration.py. DO NOT EDIT BY HAND.
 -- Idempotent: product inserts only when neither sku nor id exists; variants upsert on (org_id, sku) under a

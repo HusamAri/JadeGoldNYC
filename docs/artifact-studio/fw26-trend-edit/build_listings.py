@@ -327,7 +327,7 @@ LISTINGS = {
   "description": """Some of the first writing in the world was made by pressing a reed into wet clay. The marks became wedges, and the wedges became cuneiform. The Wedge pendant is a small bar of solid gold struck by hand with the same wedge shapes, one sign at a time, so every stroke is slightly deeper or lighter than the next. You choose the sign; the back is engraved with your initials or a date.
 
 - The bar measures 16 x 5 mm and 1 mm thick, rolled from solid gold sheet, annealed and hand stamped with three sizes of wedge punch. The surface is brushed, the edges softly rounded.
-- Four Sumerian signs to choose from: TI (life), SHA (heart), E (home) and AN (star, sky). The listing photos show each sign next to its meaning.
+- Four Sumerian signs to choose from: TI (life), SHA (heart), E (home) and AN (star, sky). The second image shows the four signs side by side, in this order.
 - Personalization: up to 8 characters engraved on the back, initials, a year or a short word, typed exactly as you want them cut.
 - Yellow gold as standard; message us for white or rose. Choose solid 10K, 14K or 18K with a 1.2 mm cable chain and spring ring clasp in 16, 18 or 20 inches.
 - Because each bar is struck by hand, spacing and depth vary a little from piece to piece. That variation is the point of the design, and it is why no two Wedges match.
@@ -505,7 +505,7 @@ LISTINGS = {
             "steps_source": "16 in is the base price (the 2.5 g basis includes a 16 in chain); 18 and 20 in follow reference listing 4590337023 (Bauble) panel bases, read 2026-10-17: 10K 430/450/470, 14K 580/600/630, 18K 760/800/840"},
   "description": """A seal is the mark a thing leaves behind. The Paw Seal is a 10 mm solid gold disc with a paw pressed into its face as an intaglio, cut by hand below the surface the way a signet is cut, so it catches shadow rather than shine. The back carries your pet's name. Choose a plain gold paw, or have the intaglio filled with kiln-fired enamel in cobalt, cranberry or black.
 
-- The disc measures 10 mm across and 1.2 mm thick with a fixed bail; the paw is engraved by hand, and the two styles, dog and cat, are shown in the listing photos.
+- The disc measures 10 mm across and 1.2 mm thick with a fixed bail; the paw is engraved by hand, and the two styles, dog and cat, are shown side by side in the listing images.
 - Personalization: your pet's name on the back, up to 10 characters, and the choice of dog or cat paw. Add a year if you are marking a life.
 - Yellow gold as standard; message us for white or rose. Choose solid 10K, 14K or 18K with a 1.2 mm cable chain and spring ring clasp in 16, 18 or 20 inches. Message us for the bracelet version on a 6.5, 7 or 7.5 inch chain.
 - A personalized gift for a dog mom, a cat dad, a puppy's first Christmas, or in memory of a pet whose paw print is still on the car window.
@@ -662,9 +662,17 @@ def etsy_question_ok(text, limit):
             and len(re.findall(r"\b[A-Z]{3,}", text)) <= 1)
 
 
+DISCLOSURE = ("The product images are design visualizations of the finished piece, not photographs of a cast sample, and "
+              "the multi-metal images are colour visualizations of the same design; the handmade piece may vary slightly.")
+
+
 def build(key):
     src = dict(LISTINGS[key])
     src["listing_protocol"], src["product_type"] = PROTOCOL[key]
+    # Owner 2026-10-17 ("add"): the Higgsfield visualizations become the listing images, so every description
+    # says so (same disclosure as winter27); the brief's real-sample photo plan stays for the first cast piece.
+    assert "visualization" not in src["description"], key
+    src["description"] = src["description"].rstrip() + "\n- " + DISCLOSURE
     p = src["personalization"]
     if p["enabled"]:
         assert etsy_question_ok(p["question_text"], 45), (key, "question_text")

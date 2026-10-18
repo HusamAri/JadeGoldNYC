@@ -7,7 +7,7 @@
    "productId": "6e08bfa2-8d52-5176-a086-5f37f694a164",
    "variants": 9,
    "variantSeal": "8af2742b9040f051ae9973c47a9cdb12",
-   "descMd5": "0bed3f857fb8a3815dd2528bbab239b6",
+   "descMd5": "432861b75e221d58994520894d3f8f9b",
    "tagSeal": "9675bcb92d78f229d14333a403f6690a"
   },
   "L02": {
@@ -15,7 +15,7 @@
    "productId": "0acb3447-8a0f-5112-964e-a66c2fcc63a0",
    "variants": 36,
    "variantSeal": "ec6d422acbe168635108d783b8034811",
-   "descMd5": "524d237e1ea46bb76c23a3f4861c3974",
+   "descMd5": "9d83620476694be5febcb4b9228db818",
    "tagSeal": "52636331d0474a6bce16dc961beed1e6"
   },
   "L03": {
@@ -23,7 +23,7 @@
    "productId": "40bed1e0-455e-5846-90de-83ef89cc9100",
    "variants": 9,
    "variantSeal": "ab0e15339f035ae6b5831ec08cf76339",
-   "descMd5": "e7b814354e2a8f99769ae62e39a9e7ab",
+   "descMd5": "2a379b3a74e4fba18887b877e648bea3",
    "tagSeal": "459cbfcff5e826ea5d5c9655ea908901"
   },
   "L04": {
@@ -31,7 +31,7 @@
    "productId": "1421c06b-2198-569b-b54f-3571979a3305",
    "variants": 78,
    "variantSeal": "7efaedb2bee4170dc6392646717c0d75",
-   "descMd5": "4e56e41257c6375bd1211c2dffe56555",
+   "descMd5": "5268f4edcc15f54a463d9418ee52eb9b",
    "tagSeal": "2c58deea192490021834dc91a165f9a4"
   },
   "L05": {
@@ -39,7 +39,7 @@
    "productId": "35f66f38-e77e-5afc-a598-df9184e2ad90",
    "variants": 27,
    "variantSeal": "11bddff1d6061782deacd26ac6944ac4",
-   "descMd5": "c7bf02fab63234bbc1a7d144f6ca96ef",
+   "descMd5": "68d8efd4d94cb79f354cc8714408b10e",
    "tagSeal": "f826f101c5875dcc987c6538c257ba02"
   },
   "L06": {
@@ -47,7 +47,7 @@
    "productId": "b560938e-6639-5744-9043-51e7345275f4",
    "variants": 36,
    "variantSeal": "fea12bdc61ba108d84709e7261bc6f0f",
-   "descMd5": "b8e905d75d8f57b722b44dba51a7d89a",
+   "descMd5": "8fb580d92e647e7fe4f0ba7a0f9aadf0",
    "tagSeal": "71367d2c5532db7f1c80ce3b5ed0764f"
   },
   "L07": {
@@ -55,7 +55,7 @@
    "productId": "b4785256-6350-500a-b2a8-c5907e4a5341",
    "variants": 6,
    "variantSeal": "b4d2c2b245ff35e33d3b6b790e423f09",
-   "descMd5": "1c32d9cb8fcf1345cf6ba85356957edd",
+   "descMd5": "3abcd0a811271a88e7c96948ad3c3f9b",
    "tagSeal": "cccc9d3080e1c2553e2a4df3cc3c9a0e"
   },
   "L08": {
@@ -63,7 +63,7 @@
    "productId": "2d59f0e4-9ce0-59d6-b0cb-e7da17bc5377",
    "variants": 18,
    "variantSeal": "ae7dd607f3b91f0e56896b27a48eec18",
-   "descMd5": "c940d3543bccb2c949e04bfc55478b08",
+   "descMd5": "0cac0efaa64168db67724e03bbda845b",
    "tagSeal": "1824608bad31cfab5cf56d2169eaa901"
   },
   "L09": {
@@ -71,7 +71,7 @@
    "productId": "07f74af4-71f6-51a7-bfbc-dfc55579bb4a",
    "variants": 36,
    "variantSeal": "58f61477b96f6c3b0cf42525bdc9b2a7",
-   "descMd5": "54b46edff45ae2bf93c081d7f7f5ee25",
+   "descMd5": "81c50638a1eacec4e8c761e150b0e1ef",
    "tagSeal": "9d6688ec866d6ed13fe3c5cf57cd9312"
   },
   "L10": {
@@ -79,7 +79,7 @@
    "productId": "8624b18d-adeb-539f-b920-afbfc1598d6b",
    "variants": 27,
    "variantSeal": "4561246ab97307059caf16f6a2b33604",
-   "descMd5": "0a532b2c0eaf8a0a912e46494f3fd168",
+   "descMd5": "18836179028062b750172f6821c04b3e",
    "tagSeal": "7fd196eda4a3f7251bdebbcc7bb2b87c"
   }
  }

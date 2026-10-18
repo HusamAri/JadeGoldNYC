@@ -40,8 +40,9 @@ Checks to run before each listing, from the live taxonomy read on 2026-10-17:
 - [x] `photography/photo-plan.md` (spec, 100 stills and 10 videos in four setups, checklist)
 - [x] Design visualizations (owner 2026-10-17: "create 5 image per listing with higgsfield"): 10 heroes + 40 gallery
       frames, `images/heroes.py` + `images/gallery.py`, ledger `images/jobs.json`, JPGs at `public/artifact/fw26/Lxx/01..05.jpg`.
-      Brief section 3 says visualizations are "internal mock only, never a listing image": NOT attached to the panel or
-      Etsy until the owner decides; if attached, every description gets the visualization disclosure line.
+      Owner 2026-10-18 ("add"): used as the listing images, overriding the brief's "internal mock only"; every
+      description discloses them. Panel loaded 2026-10-18: 10 products / 282 variants / 50 images, set seal
+      fc12f228e903216ae566cbfcc204c0e2, every per-listing seal and audit count exact.
 
 ## Task 4: Etsy drafts (gated, drafts only)
 - [x] Add a listing protocol that resolves to Jewelry > Rings > Bands (1232) for L04 before the push.
