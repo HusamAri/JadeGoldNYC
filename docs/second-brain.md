@@ -1484,6 +1484,21 @@ repodaki hedefidir.
   (inceleme akışını yeniden başlatmak) ve istenen okumayı (2 kredilik yeniden çekim) birlikte yap,
   sormak için durma.
 
+- **Bir isteği yerine getirmek, brief'in koyduğu kullanım yasağını kaldırmaz; ve doğrulayıcının kırmızısı önce
+  KARŞILAŞTIRMANIN iki tarafını aynı biçime getirip getirmediğine bakılarak okunur (2026-10-18, FW26 Trend Edit):**
+  Sahip "her listing için 5 görsel üret" dedi; 50 görsel üretildi. Brief ise görselleştirmeleri açıkça "internal mock
+  only, never a listing image" diye sınırlıyordu. Üretmek ile listing'e koymak iki ayrı aksiyondu, o yüzden görseller
+  commit edildi ama panele bağlanmadı ve tek soru soruldu; sahip "add" deyince bağlandı ve her açıklamaya
+  görselleştirme beyanı eklendi. Beyanı eklerken iki açıklama daha çıktı ("listing photos show each sign next to its
+  meaning"): görsellerde bilerek yazı yok, yani cümle artık yanlış vaatti; panele yüklemeden ÖNCE düzeltildi. Etsy'ye
+  itişte doğrulayıcı L01'de "title mismatch" verdi; veri doğruydu, Etsy başlığı `Men&#39;s` diye kodlu döndürüyordu ve
+  açıklama karşılaştırması zaten decode ederken başlık etmiyordu. Kural: (1) kullanıcı bir şey ÜRETTİRDİĞİNDE, onun
+  nerede KULLANILACAĞI brief'te kısıtlıysa kullanım ayrı karardır, sor; (2) görsel kaynağı değişince (fotoğraf yerine
+  görselleştirme) metinde "photos" geçen her cümleyi tara; (3) doğrulayıcı tek alanda kırmızı verip diğer on alanda
+  yeşilse önce iki tarafın aynı biçimde (kodlama, boşluk, büyük harf) karşılaştırıldığına bak, veriyi düzeltmeye
+  koşma. Yan ders: 78 satırlık düzenli ızgarayı MCP'ye elle yapıştırmak yerine eksenlerden SQL'de ürettim
+  (`cross join unnest`), mühür birebir tuttu; tekrar eden yapı transkripsiyonla değil üretimle taşınır.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması

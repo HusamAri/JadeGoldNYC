@@ -46,8 +46,8 @@ Checks to run before each listing, from the live taxonomy read on 2026-10-17:
 
 ## Task 4: Etsy drafts (gated, drafts only)
 - [x] Add a listing protocol that resolves to Jewelry > Rings > Bands (1232) for L04 before the push.
-- [ ] Mode: `api` through the panel's `ops/drafts-push` route (one-time tokens, dry run, canary, independent read-back), the route used for every earlier Artifact Studio capsule. Needs the listings in the panel first (migration), so this comes after approval.
-- [ ] `BUILD-REPORT.md`
+- [x] Mode: `api` through the panel's `ops/drafts-push` route (one-time tokens, dry run, canary, independent read-back), the route used for every earlier Artifact Studio capsule. Needs the listings in the panel first (migration), so this comes after approval.
+- [x] `BUILD-REPORT.md` (10 Etsy drafts, 2026-10-18)
 
 ## Task 5: capture (gated)
 - [ ] Vault note, Apple Reminders: Mac-only, offered at the end.
