@@ -809,6 +809,18 @@ mühür v1'in mührü (yani arada başka yazım yok), apply **120 + 40**, geri o
 mührü **`828475ae91f2b6fe2ee9b7497eac967c`**, toplam 15.001.300 cent / 120
 varyant, plan JSON ↔ varyant 120/120, audit 120 + 40, F26 0.
 
+### Etsy itişi (aynı akşam, `ops/drafts-push`, org + `JGN-X26-`)
+
+40 taslağa açık `listingProtocol` + `product_type` yazıldı (çözücünün eski-kayıt
+yolu küpe ve broşu alyans sayardı). Kuru koşu 39 hazır + E4 tutuldu → kanarya
+P10 (broş, 11/11) → partiler 10/10/10/8, 0 uyarı → verify 39/39 (taslak, taksonomi
+1196/1229/1201/1214/1208/1212, 117 varyant, 195 görsel, 0 fiyat farkı). E4 (kulak
+tırmanıcısı) için `ear_climber_earrings` protokolü PR #474 ile eklendi; merge +
+deploy (077c6af, 19:59 UTC) sonrası hold kaldırılıp tek başına itildi: listing
+4598203209, taksonomi **2901** Ear Climbers, verify 11/11. Sonuç **40/40 Etsy'de
+taslak**; panelde 40 bağlı, 40 tekil id, 40 `draftTransfer: created`, kota 4.095/5.000,
+açık token 0.
+
 ### Açık kalemler
 
 - **Canlı katalog %25 tabanında.** İndirim gerçekten %30 ise net tahsilat

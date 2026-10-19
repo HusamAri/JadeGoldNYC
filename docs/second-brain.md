@@ -1573,7 +1573,13 @@ repodaki hedefidir.
   tek başına itilir. Arada sahip marjı %25 → %50 yaptı; Etsy'ye tek bayt gitmeden fiyat panelde
   yeniden kuruldu (plan v2, ön koşul "v1 planı 40 / v2 0 / canlı mühür = v1 mührü"). Zincir: kuru
   39 + 1 blocked → kanarya P10 (yeni protokol ailesi + en riskli başlık) → verify 11/11 →
-  10/10/10/8 partiler, 0 uyarı → verify 39/39 (117 varyant, 195 görsel, 0 fiyat farkı).
+  10/10/10/8 partiler, 0 uyarı → verify 39/39 (117 varyant, 195 görsel, 0 fiyat farkı). Sahip
+  E4'ü panelden deneyince "Bilinmeyen listing protokolü" aldı — bu, hold'un ve "şüphede reddet"
+  çözücünün doğru çalışmasıydı, hata değil; PR merge edilip prod deploy READY olunca (Vercel
+  `get_deployment`, alias canlı) hold silindi, kuru koşu `protocol: ear_climber_earrings` göstererek
+  yeni kodun canlı olduğunu kanıtladı, apply + verify 11/11 (taksonomi 2901). 40/40. Yan not:
+  dokuz saat sonra "son 3 saatte 0 audit satırı" gördüm ve ilk refleks veri kaybı sanmaktı;
+  DB `now()` okunca pencerenin kaymış olduğu anlaşıldı — "0 satır" demeden önce saati oku.
 
 ## Ürün/UX dersleri
 
