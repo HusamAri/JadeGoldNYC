@@ -15,3 +15,10 @@
 - Open: basketweave still filed under diamond cut; Rope Edge / Star Cut could get their own title words before the remaining listings of those families.
 - Next action: dry run of rows 21-30 on the owner's go.
 - Context: no listing in rows 1-20 had been edited after 2026-10-21.
+
+## Batches 3-19, 2026-10-21 (matrix rows 21-185)
+- Done: all remaining 165 listings, 10 per call, each call followed by a fresh-token re-read; 165/165 applied and `already` on re-read, 0 `live-changed`, 0 errors. Totals for the matrix: 185 `etsy.seo_push` audit rows on 185 products, 0 failed read-backs, 59 section moves (= the 59 `section_fix` rows).
+- Decisions: owner waived per-batch approval ("araştırmada onayladım, yaptıkça gönder").
+- Open: attributes and video are manual, listed in `reports/manual-checklist.md`; basketweave/rope edge/star cut words were not restored.
+- Next action: re-pull Shop Manager > Stats at +30 and +60 days (RUNBOOK section 5); baseline Etsy Search 215 visits, target 450.
+- Context: undo record per listing is the audit row's `diff.before` (title, tags, shop_section_id).
