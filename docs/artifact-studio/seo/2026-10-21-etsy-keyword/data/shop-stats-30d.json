@@ -1,0 +1,36 @@
+{
+ "date_range": "last_30 (Sep 22 to Oct 21 2026)",
+ "visits": 518,
+ "listing_views": 850,
+ "orders": 1,
+ "conversion_rate_pct": 0.2,
+ "revenue_usd": 830.47,
+ "favorites": 49,
+ "shop_follows": 3,
+ "reviews": 0,
+ "abandoned_carts": 7,
+ "abandoned_cart_potential_usd": 3901,
+ "traffic_sources": {
+  "etsy_app_and_pages": 116,
+  "etsy_search": 12,
+  "etsy_marketing_and_seo": 175,
+  "direct_and_referral": 63,
+  "social_media": 13,
+  "pinterest": 5,
+  "facebook": 5,
+  "instagram": 3,
+  "etsy_ads": 114,
+  "other": 25
+ },
+ "from_etsy_share_pct": 58,
+ "from_you_share_pct": 37,
+ "daily_visits": {
+  "Sep 25": 2,
+  "Sep 30": 34,
+  "Oct 15": 59,
+  "Oct 16": 69,
+  "Oct 17": 42,
+  "Oct 21": 6
+ },
+ "note": "3-month range returns the same totals: the shop only started receiving traffic on Sep 25 2026. Per-listing endpoint returns 226 rows = 210 active + 16 drafts."
+}

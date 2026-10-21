@@ -1,8 +1,9 @@
 /**
  * ops/seo-apply için saf karar fonksiyonları (ağ yok, test edilebilir).
  *
- * Girdi: EON keyword matrisinin bir satırı (docs/eon/seo/2026-10-21-etsy-keyword/
- * data/optimization-matrix.json) + Etsy'den CANLI okunan listing + mağaza bölümleri.
+ * Girdi: bir org keyword matrisinin satırı (EON: docs/eon/seo/2026-10-21-etsy-keyword/,
+ * by Artifact Studio: docs/artifact-studio/seo/2026-10-21-etsy-keyword/data/apply-matrix.json)
+ * + Etsy'den CANLI okunan listing + mağaza bölümleri.
  * Çıktı: ne yazılacağı ya da neden yazılmayacağı.
  *
  * Kural (RUNBOOK §3): matrisin "önce" hâli (current_title/current_tags) canlıdan
@@ -38,6 +39,9 @@ export type SeoPlan =
     };
 
 export type SectionMove = { from: string; to: string; toId: number };
+
+/** Etsy panelindeki "No Section" etiketi; API'de shop_section_id = null. */
+export const NO_SECTION = "No Section";
 
 export function normTags(tags: string[]): string[] {
   return tags.map((t) => t.trim().toLowerCase()).filter(Boolean).sort();
@@ -89,13 +93,15 @@ export function planSeo(
   const fix = parseSectionFix(row.section_fix);
   if (fix) {
     const [from, to] = fix;
-    const fromId = sections.get(from) ?? null;
+    // "No Section" Etsy'de bir bölüm değildir: listing'in shop_section_id'si boştur.
+    const fromNone = from === NO_SECTION;
+    const fromId = fromNone ? null : sections.get(from) ?? null;
     const toId = sections.get(to) ?? null;
     if (toId == null) {
       sectionNote = `hedef bölüm mağazada yok: ${to}`;
     } else if (live.sectionId === toId) {
       sectionNote = "bölüm zaten hedefte";
-    } else if (fromId == null || live.sectionId !== fromId) {
+    } else if ((!fromNone && fromId == null) || live.sectionId !== fromId) {
       sectionNote = `canlı bölüm (${live.sectionId ?? "yok"}) matrisin önce hâli değil (${from}); taşınmadı`;
     } else {
       sectionMove = { from, to, toId };

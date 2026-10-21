@@ -1,0 +1,248 @@
+{
+ "listings_active": 210,
+ "by_tag_class": {
+  "MIXED": {
+   "listings": 21,
+   "views": 79,
+   "orders": 1,
+   "revenue": 830.0,
+   "favorites": 6
+  },
+  "SALAD": {
+   "listings": 122,
+   "views": 639,
+   "orders": 0,
+   "revenue": 0.0,
+   "favorites": 31
+  },
+  "OK": {
+   "listings": 67,
+   "views": 132,
+   "orders": 0,
+   "revenue": 0.0,
+   "favorites": 12
+  }
+ },
+ "by_price_band": {
+  "750 to 999": {
+   "listings": 97,
+   "views": 183,
+   "orders": 0,
+   "revenue": 0.0,
+   "favorites": 13
+  },
+  "500 to 749": {
+   "listings": 74,
+   "views": 342,
+   "orders": 1,
+   "revenue": 830.0,
+   "favorites": 22
+  },
+  "1000 plus": {
+   "listings": 10,
+   "views": 189,
+   "orders": 0,
+   "revenue": 0.0,
+   "favorites": 12
+  },
+  "under 500": {
+   "listings": 29,
+   "views": 136,
+   "orders": 0,
+   "revenue": 0.0,
+   "favorites": 2
+  }
+ },
+ "by_metal": {
+  "10K 14K 18K options": {
+   "listings": 3,
+   "views": 66,
+   "orders": 0,
+   "revenue": 0.0,
+   "favorites": 4
+  },
+  "solid gold (karat options)": {
+   "listings": 168,
+   "views": 596,
+   "orders": 1,
+   "revenue": 830.0,
+   "favorites": 32
+  },
+  "14K only": {
+   "listings": 39,
+   "views": 188,
+   "orders": 0,
+   "revenue": 0.0,
+   "favorites": 13
+  }
+ },
+ "by_video": {
+  "with video": {
+   "listings": 100,
+   "views": 487,
+   "orders": 1,
+   "revenue": 830.0,
+   "favorites": 31
+  },
+  "no video": {
+   "listings": 110,
+   "views": 363,
+   "orders": 0,
+   "revenue": 0.0,
+   "favorites": 18
+  }
+ },
+ "by_section": {
+  "Earrings": {
+   "listings": 15,
+   "views": 10,
+   "orders": 0,
+   "revenue": 0.0,
+   "favorites": 2
+  },
+  "For Him": {
+   "listings": 29,
+   "views": 390,
+   "orders": 1,
+   "revenue": 830.0,
+   "favorites": 10
+  },
+  "No Section": {
+   "listings": 20,
+   "views": 12,
+   "orders": 0,
+   "revenue": 0.0,
+   "favorites": 7
+  },
+  "Evil Eye": {
+   "listings": 30,
+   "views": 13,
+   "orders": 0,
+   "revenue": 0.0,
+   "favorites": 0
+  },
+  "Anklets": {
+   "listings": 24,
+   "views": 12,
+   "orders": 0,
+   "revenue": 0.0,
+   "favorites": 1
+  },
+  "Christmas Collection": {
+   "listings": 32,
+   "views": 111,
+   "orders": 0,
+   "revenue": 0.0,
+   "favorites": 7
+  },
+  "Necklaces": {
+   "listings": 18,
+   "views": 89,
+   "orders": 0,
+   "revenue": 0.0,
+   "favorites": 6
+  },
+  "Rings": {
+   "listings": 22,
+   "views": 77,
+   "orders": 0,
+   "revenue": 0.0,
+   "favorites": 9
+  },
+  "Bracelets": {
+   "listings": 20,
+   "views": 136,
+   "orders": 0,
+   "revenue": 0.0,
+   "favorites": 7
+  }
+ },
+ "by_category": {
+  "Jewelry > Earrings > Hoop Earrings": {
+   "listings": 5,
+   "views": 17,
+   "orders": 0,
+   "revenue": 0.0,
+   "favorites": 0
+  },
+  "Jewelry > Rings > Stackable Rings": {
+   "listings": 35,
+   "views": 126,
+   "orders": 1,
+   "revenue": 830.0,
+   "favorites": 7
+  },
+  "Jewelry > Bracelets > Cuff Bracelets": {
+   "listings": 5,
+   "views": 127,
+   "orders": 0,
+   "revenue": 0.0,
+   "favorites": 7
+  },
+  "Jewelry > Bracelets > Chain & Link Bracelets": {
+   "listings": 48,
+   "views": 306,
+   "orders": 0,
+   "revenue": 0.0,
+   "favorites": 9
+  },
+  "Jewelry > Necklaces > Pendant Necklaces": {
+   "listings": 41,
+   "views": 154,
+   "orders": 0,
+   "revenue": 0.0,
+   "favorites": 11
+  },
+  "Jewelry > Body Jewelry > Anklets": {
+   "listings": 39,
+   "views": 20,
+   "orders": 0,
+   "revenue": 0.0,
+   "favorites": 8
+  },
+  "Jewelry > Earrings > Stud Earrings": {
+   "listings": 17,
+   "views": 45,
+   "orders": 0,
+   "revenue": 0.0,
+   "favorites": 1
+  },
+  "Jewelry > Earrings > Dangle & Drop Earrings": {
+   "listings": 4,
+   "views": 10,
+   "orders": 0,
+   "revenue": 0.0,
+   "favorites": 1
+  },
+  "Jewelry > Rings > Statement Rings": {
+   "listings": 8,
+   "views": 11,
+   "orders": 0,
+   "revenue": 0.0,
+   "favorites": 2
+  },
+  "Jewelry > Rings > Signet Rings": {
+   "listings": 7,
+   "views": 27,
+   "orders": 0,
+   "revenue": 0.0,
+   "favorites": 2
+  },
+  "Jewelry > Rings > Wedding & Engagement > Wedding Bands": {
+   "listings": 1,
+   "views": 7,
+   "orders": 0,
+   "revenue": 0.0,
+   "favorites": 1
+  }
+ },
+ "zero_attribute_listings": 36,
+ "low_attribute_listings_lt4": 52,
+ "no_section_listings": 20,
+ "no_video_listings": 110,
+ "non_english_titles": 0,
+ "zero_view_listings_30d": 94,
+ "salad_tag_total": 1378,
+ "tag_total": 2730,
+ "listings_with_duplicate_tag_sets": 0
+}

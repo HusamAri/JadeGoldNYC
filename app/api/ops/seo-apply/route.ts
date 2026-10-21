@@ -10,17 +10,21 @@ import { decodeHtmlEntities } from "@/lib/etsy/text";
 import type { EtsyListResponse, EtsyShopSection } from "@/lib/etsy/types";
 import { planSeo, rowProblems, sameTags, type SeoMatrixRow } from "@/lib/etsy/seo-apply";
 import { logAudit } from "@/lib/audit";
-import matrix from "@/docs/eon/seo/2026-10-21-etsy-keyword/data/optimization-matrix.json";
+import eonMatrix from "@/docs/eon/seo/2026-10-21-etsy-keyword/data/optimization-matrix.json";
+import basMatrix from "@/docs/artifact-studio/seo/2026-10-21-etsy-keyword/data/apply-matrix.json";
 
 export const maxDuration = 120;
 
 /**
- * SEO-APPLY: EON keyword matrisini (docs/eon/seo/2026-10-21-etsy-keyword/) Etsy'ye
- * yazar. YALNIZ başlık, 13 tag ve mağaza bölümü. Fiyat, adet, varyasyon, fotoğraf,
+ * SEO-APPLY: org'un keyword matrisini Etsy'ye yazar. Matrisler:
+ *  - EON: docs/eon/seo/2026-10-21-etsy-keyword/data/optimization-matrix.json
+ *  - by Artifact Studio Jewelry: docs/artifact-studio/seo/2026-10-21-etsy-keyword/
+ *    data/apply-matrix.json (paketin matrisinden scripts/to_apply_json.py üretir)
+ * Yazılan: YALNIZ başlık, 13 tag ve mağaza bölümü. Fiyat, adet, varyasyon, fotoğraf,
  * açıklama, kargo ve iade politikasına dokunmaz; listing açmaz/silmez.
  *
  * Sözleşme:
- *  - `?org=` ZORUNLU ve matrisin sahibi EON (başka org reddedilir).
+ *  - `?org=` ZORUNLU; yalnız MATRICES'te matrisi olan org. Id o org'un matrisinde olmalı.
  *  - `?ids=` virgüllü listing id'leri, en çok 10. Her id matriste olmalı.
  *  - Varsayılan KURU: canlıyı okur, planı döner. `?apply=1` yazar.
  *  - Canlı başlık/tag matrisin "önce" hâline uymuyorsa (sahip 2026-10-21'den sonra
@@ -31,8 +35,14 @@ export const maxDuration = 120;
  *  - Süre bütçesi: 80 sn'den sonra yeni listing başlatılmaz, `deferred` döner.
  */
 
-const MATRIX = matrix as unknown as SeoMatrixRow[];
-const BY_ID = new Map(MATRIX.map((r) => [r.id, r]));
+const MATRICES: Record<string, Map<string, SeoMatrixRow>> = Object.fromEntries(
+  (
+    [
+      ["EON", eonMatrix],
+      ["by Artifact Studio Jewelry", basMatrix],
+    ] as const
+  ).map(([org, rows]) => [org, new Map((rows as unknown as SeoMatrixRow[]).map((r) => [r.id, r]))]),
+);
 const MAX_IDS = 10;
 const BUDGET_MS = 80_000;
 
@@ -67,8 +77,9 @@ export async function GET(request: Request) {
     .split(",")
     .map((s) => s.trim())
     .filter(Boolean);
-  if (orgName !== "EON") {
-    return NextResponse.json({ error: "org=EON zorunlu (matris yalnız EON için)" }, { status: 400 });
+  const BY_ID = orgName ? MATRICES[orgName] : undefined;
+  if (!BY_ID) {
+    return NextResponse.json({ error: `org zorunlu, matrisi olanlar: ${Object.keys(MATRICES).join(", ")}` }, { status: 400 });
   }
   if (ids.length === 0 || ids.length > MAX_IDS || new Set(ids).size !== ids.length) {
     return NextResponse.json({ error: `ids: 1-${MAX_IDS} tekil listing id` }, { status: 400 });
@@ -85,7 +96,7 @@ export async function GET(request: Request) {
   }
 
   const admin = createAdminClient();
-  const { data: org } = await admin.from("organizations").select("id").eq("name", orgName).maybeSingle();
+  const { data: org } = await admin.from("organizations").select("id").eq("name", orgName!).maybeSingle();
   if (!org) return NextResponse.json({ error: `org yok: ${orgName}` }, { status: 404 });
   const orgId = (org as { id: string }).id;
 
