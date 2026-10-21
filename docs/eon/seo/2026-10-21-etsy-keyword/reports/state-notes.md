@@ -8,3 +8,10 @@
 - Open: the generator files basketweave under the diamond-cut group; give it its own style before the remaining checkered listings go. Attributes and video stay manual (RUNBOOK section 4).
 - Next action: dry run of matrix rows 11-20, show the plan, write on owner's go.
 - Context: no section moves in this batch; none of the 10 had been edited after 2026-10-21.
+
+## Batch 2, 2026-10-21 (matrix rows 11-20)
+- Done: 4556695533, 4539776904, 4565325477, 4556696295, 4560185581, 4556695311, 4588431383, 4583553978, 4542484518, 4560210242. 10/10 applied, same-call read-back clean, fresh-token re-read 10/10 `already`, panel mirror 10/10; 4565325477 moved Beveled Wedding Bands -> Textured Gold Bands (panel section 59712574). Matrix audit rows now 20.
+- Decisions: owner approved all 10, knowing the new titles drop design words (Rope Edge, Star Cut, Beveled, Satin Center) without adding a wrong one.
+- Open: basketweave still filed under diamond cut; Rope Edge / Star Cut could get their own title words before the remaining listings of those families.
+- Next action: dry run of rows 21-30 on the owner's go.
+- Context: no listing in rows 1-20 had been edited after 2026-10-21.
