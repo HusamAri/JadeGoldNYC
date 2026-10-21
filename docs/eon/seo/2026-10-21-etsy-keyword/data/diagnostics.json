@@ -1,0 +1,304 @@
+{
+ "active_listings": 185,
+ "visits_3m_total": 8514,
+ "orders_3m_total": 40,
+ "revenue_3m_total": 25717.0,
+ "top10_visit_share": 0.508,
+ "top10_ids": [
+  "4554014095",
+  "4543442596",
+  "4561855998",
+  "4542485142",
+  "4554025310",
+  "4539666999",
+  "4539777986",
+  "4539764153",
+  "4556710904",
+  "4544213291"
+ ],
+ "zero_visit_3m": 23,
+ "under5_visit_3m": 62,
+ "salad_tag_listings": 73,
+ "mixed_tag_listings": 6,
+ "no_attributes": 44,
+ "no_video": 67,
+ "no_returns_policy": 24,
+ "spanish_titles": [
+  "4593705293",
+  "4593814704"
+ ],
+ "section_counts": {
+  "Satin Wedding Bands": 9,
+  "Textured Gold Bands": 33,
+  "Modern Gold Rings": 15,
+  "Milgrain Wedding Bands": 35,
+  "Domed Wedding Bands": 9,
+  "Flat Wedding Bands": 37,
+  "Beveled Wedding Bands": 16,
+  "Two Tone Wedding Bands": 9,
+  "Cross Wedding Bands": 3,
+  "Knife Edge Wedding Bands": 2,
+  "No Section": 1,
+  "Christmas Spark": 16
+ },
+ "category_counts": {
+  "Wedding & Engagement > Wedding Bands": 141,
+  "Stackable Rings": 25,
+  "Bands": 17,
+  "Craft Supplies & Tools > Tools & Equipment > Tools > Levels & Measuring > Jewelry Sizers": 1,
+  "Statement Rings": 1
+ },
+ "metal_counts": {
+  "yellow": 48,
+  "gold-unspecified": 33,
+  "white": 44,
+  "two tone": 11,
+  "rose": 49
+ },
+ "top_tags": [
+  [
+   "comfort fit band",
+   36
+  ],
+  [
+   "comfort fit ring",
+   34
+  ],
+  [
+   "satin wedding band",
+   31
+  ],
+  [
+   "14k wedding band",
+   28
+  ],
+  [
+   "18k gold ring",
+   28
+  ],
+  [
+   "solid gold band",
+   27
+  ],
+  [
+   "6mm wedding band",
+   25
+  ],
+  [
+   "made to order ring",
+   24
+  ],
+  [
+   "10k wedding band",
+   23
+  ],
+  [
+   "thin gold band",
+   22
+  ],
+  [
+   "wide gold band",
+   22
+  ],
+  [
+   "7mm wedding band",
+   21
+  ],
+  [
+   "mens wedding band",
+   19
+  ],
+  [
+   "textured gold band",
+   18
+  ],
+  [
+   "engraved gold ring",
+   17
+  ],
+  [
+   "stacking ring",
+   16
+  ],
+  [
+   "minimalist ring",
+   16
+  ],
+  [
+   "unisex wedding band",
+   16
+  ],
+  [
+   "heirloom gold ring",
+   15
+  ],
+  [
+   "rose gold band",
+   15
+  ],
+  [
+   "10k gold band",
+   15
+  ],
+  [
+   "yellow gold ring",
+   14
+  ],
+  [
+   "christmas ring",
+   14
+  ],
+  [
+   "yellow gold band",
+   13
+  ],
+  [
+   "meaningful gift",
+   13
+  ],
+  [
+   "sculptural ring",
+   13
+  ],
+  [
+   "white gold band",
+   12
+  ],
+  [
+   "polished gold ring",
+   12
+  ],
+  [
+   "holiday jewelry",
+   12
+  ],
+  [
+   "anniversary everyday",
+   11
+  ],
+  [
+   "rose gold ring",
+   11
+  ],
+  [
+   "white gold ring",
+   11
+  ],
+  [
+   "fine jewelry design",
+   11
+  ],
+  [
+   "unisex wedding ring",
+   10
+  ],
+  [
+   "diamond cut band",
+   10
+  ],
+  [
+   "dainty ring",
+   10
+  ],
+  [
+   "winter jewelry",
+   10
+  ],
+  [
+   "elegant ring",
+   10
+  ],
+  [
+   "gold wedding band",
+   9
+  ],
+  [
+   "gift for him",
+   9
+  ]
+ ],
+ "salad_examples": [
+  [
+   "4554025310",
+   [
+    "polished heirloom",
+    "modern solid ring",
+    "wide edge real men",
+    "and contemporary man"
+   ]
+  ],
+  [
+   "4544213291",
+   [
+    "engraved solid women",
+    "thin wide edge and",
+    "men personalized set",
+    "anniversary matching"
+   ]
+  ],
+  [
+   "4548151075",
+   [
+    "statement handmade",
+    "diamond comfort wide",
+    "chevron yellow solid",
+    "order made cut fit"
+   ]
+  ],
+  [
+   "4539517211",
+   [
+    "engraved heirloom hi",
+    "comfort thick satin",
+    "band thin and her",
+    "fit anniversary"
+   ]
+  ],
+  [
+   "4539727911",
+   [
+    "personalized comfort",
+    "engraved bevelled to",
+    "order bevel ring fit",
+    "made flat hallmarked"
+   ]
+  ],
+  [
+   "4539506699",
+   [
+    "engraved bandring to",
+    "solid order ring men",
+    "made personalized 10",
+    "alternative stacking"
+   ]
+  ],
+  [
+   "4550516268",
+   [
+    "anniversary engraved",
+    "unisex white inlay",
+    "solid women gold men",
+    "thin polished yellow"
+   ]
+  ],
+  [
+   "4569902788",
+   [
+    "christian religiou",
+    "milgrain yellow 14k",
+    "anniversary stacking",
+    "commitment Christian"
+   ]
+  ]
+ ],
+ "visits_by_tag_quality": {
+  "OK": 5260,
+  "MIXED": 300,
+  "SALAD": 2954
+ },
+ "count_by_tag_quality": {
+  "OK": 106,
+  "MIXED": 6,
+  "SALAD": 73
+ }
+}

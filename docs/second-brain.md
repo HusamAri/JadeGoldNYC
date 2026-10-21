@@ -1581,6 +1581,22 @@ repodaki hedefidir.
   dokuz saat sonra "son 3 saatte 0 audit satırı" gördüm ve ilk refleks veri kaybı sanmaktı;
   DB `now()` okunca pencerenin kaymış olduğu anlaşıldı — "0 satır" demeden önce saati oku.
 
+- **Dışarıdan gelen paket kendi doğrulayıcısını da getirir; o doğrulayıcıyı geçmesi, paketin kendi
+  varsayımlarıyla tutarlı olduğunu gösterir, doğru olduğunu değil (2026-10-21, EON SEO matrisi):**
+  185 listing'lik keyword matrisi "Etsy'ye 20'şerlik partilerle uygula" talimatıyla geldi ve kendi
+  `validate` komutu "0 ihlal" dedi. Aynı satırları panelin varyant verisine karşı okuyunca 90'ında hata
+  çıktı: 7 başlık 10K/14K/18K satan listing'e yalnız "14K" diyordu (ayar başlıktan okunuyor, yoksa 14K
+  varsayılıyordu; en çok aranan ayar 10K), Greek Key başlıkları satılmayan "3-12mm"yi vaat ediyordu ve
+  "kelime salatası" tag'lerini temizlemesi gereken üreteç onlardan 146'sını yeni sete geri taşımıştı.
+  Doğrulayıcı bunların hiçbirini göremezdi, çünkü yalnız biçimi (13 tag, ≤20 kr, "Mens" ile başla)
+  ölçüyordu; ürünün NE SATTIĞINI bilmiyordu. Kural: (1) dış bir paketi uygulamadan önce çıktısını
+  repodaki bağımsız kaynağa (burada panel varyantları) karşı sına, paketin kendi kapısına değil;
+  (2) bulunan her hata sınıfını doğrulayıcıya EKLE ve önce ESKİ çıktıda koş: 90 ihlal görmek, kapının
+  gerçekten o sınıfı yakaladığının kanıtıdır, sonra yeni çıktıda 0'a in; (3) paketin yazılı bir
+  güvenlik kuralı ("canlı başlık değiştiyse dur") kodda yoksa o kural yoktur; yazma yolunu ona göre
+  kur. Yeşil sayaçtan sonra çıktıyı gözle okumak bir kusur daha buldu: Tideline ve kumlanmış basamaklı
+  bantlar aynı "Satin Face Polished Rails" şablonuna düşüyordu, ikisi de yanlış tarif.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
