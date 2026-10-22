@@ -1,0 +1,72 @@
+ Glossary
+  • 14K, 18K: karat purity. 14K is 58.5% pure gold, 18K is 75% pure gold. 24K is pure gold.
+  • AOV (Average Order Value): total revenue divided by number of orders.
+  • Attributes: structured listing fields in the Etsy editor (metal, stone, style, occasion, recipient and
+    so on) that Etsy search uses for matching and filters.
+  • Break-even ROAS: the return on ad spend at which an ad sale makes zero profit. Formula: 1
+    divided by contribution margin percentage before ads.
+  • CAC (Customer Acquisition Cost): marketing spend divided by new buyers acquired.
+  • Case: a formal dispute a buyer opens through Etsy (for example item not received, item not as
+    described).
+  • Contribution margin: revenue minus all variable costs of an order (metal, labor, stones,
+    packaging, shipping, duty, Etsy fees, ads attributed to the order).
+  • Conversion rate: orders divided by visits.
+  • CTR (Click-Through Rate): clicks divided by impressions.
+  • Customs value: the declared value US Customs uses to calculate duty.
+  • DAP or DDU (Delivered At Place, Delivery Duty Unpaid): the buyer pays duties on delivery. For
+    sellers outside the US, not allowed for US orders since 9 July 2026 unless no DDP option exists
+    and the buyer agrees in Messages.
+  • DDP (Delivered Duty Paid): the seller prepays all duties, taxes and customs fees so the buyer
+    pays nothing at delivery. Required since 9 July 2026 for sellers outside the US shipping to US
+    buyers; not relevant to a US shop shipping domestically.
+  • De minimis: the former 800 USD duty-free threshold for US imports. Suspended for all countries
+    on 29 August 2025.
+  • eRank: third-party Etsy SEO and analytics tool (keyword research, listing audit, competitor
+    tracking, traffic stats).
+  • Alura: third-party Etsy growth tool (keyword finder, listing optimizer, competitor monitoring, Etsy
+    Ads module, A/B testing, Pinterest automation, financial visibility).
+  • Etsy Ads: Etsy's on-site cost-per-click advertising.
+  • Etsy Marketplace Insights: Etsy's free tool that shows Etsy's own search volume data for queries.
+  • HTS 7113.19.50: US tariff code for gold jewelry (base duty 5.5%).
+  • Keystone: pricing at 2 times cost.
+  • Listing quality: Etsy's measure of how well a listing converts and satisfies buyers, a search
+    ranking factor.
+  • Offsite Ads: Etsy's program advertising listings on Google, Meta and other sites; the seller pays a
+    fee only when a sale results (15%, or 12% for shops above 10,000 USD trailing 12-month sales,
+    capped at 100 USD per order).
+  • Processing time: the time a seller needs before dispatching an order; for made-to-order jewelry
+    this is the making time.
+  • Production partner: anyone other than the seller who helps make an item (for example a casting
+    workshop). Must be disclosed on Etsy.
+  • Shipsurance: the insurance offered when buying Etsy shipping labels (US), up to 5,000 USD at
+    about 0.80 USD per 100 USD of value.
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 7: Marketing Beyond Etsy, Analytics, Calendar and Gr        Page 141
+  • Form 5472: annual US IRS filing required for a foreign-owned US single-member LLC (with a pro
+    forma Form 1120); missing it carries a 25,000 USD penalty.
+  • Purchase Protection: Etsy's buyer refund program; pays at most 250 USD per case.
+  • Regulatory Operating Fee: Etsy's country-specific percentage fee for sellers in certain countries
+    (for example 1.67% for Türkiye since 22 June 2026). It does not apply to US shops.
+  • Rhodium plating: a white metal coating often applied to white gold; must be disclosed under the
+    FTC Jewelry Guides.
+  • ROAS (Return On Ad Spend): revenue attributed to ads divided by ad spend.
+  • Section 301 tariff: US trade-law tariff; 12.5% on covered Turkish goods since 24 July 2026, added
+    on top of base duty.
+  • Share and Save: Etsy program that pays sellers a credit (4% of sales, 6.5% in the first two weeks)
+    for sales from links they share.
+  • Star Seller: Etsy badge for shops meeting messaging, dispatch and review standards over a
+    rolling 3-month window.
+  • Strikethrough price: the original price Etsy shows crossed out during a sale; inflating it is banned.
+  • Tags: 13 keyword phrases per listing, up to 20 characters each.
+  • Targeted offers: Etsy's automatic coupon emails (abandoned cart, favorited item, interested
+    shopper, thank you).
+  • Transaction fee: 6.5% of the item price plus shipping and gift wrap.
+
+
+
+
+Etsy Fine Jewelry Master Course | Glossary                                                         Page 142
+

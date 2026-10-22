@@ -1,0 +1,992 @@
+ Module 5: Etsy Ads, Offsite Ads and Paid
+ Traffic
+ Module for: made-to-order solid gold fine jewelry (roughly $150 to $1,500+) from a US Etsy shop: US
+ Etsy Payments account, USD listings, jewelry produced in the US and shipped domestically to US
+ buyers with free tracked shipping. The owner manages the shop remotely from abroad [scope per
+ course correction file 09, 2026-10-22]. Shop stage: small to mid (about 40 listings, early sales).
+ Tools: Alura (Etsy Ads module) and eRank.
+ Research date: 2026-10-22. Rule used: only facts published or confirmed in 2025 or 2026. Anything
+ older sits under "UNVERIFIED (pre-2025)". Third-party sources are labeled THIRD-PARTY. Every
+ example calculation is labeled EXAMPLE and uses assumed inputs, not data from your shop.
+ Source labels used below:
+  • ETSY = help.etsy.com, Etsy Seller Handbook, Etsy legal policy pages, Etsy investor relations or
+    SEC filings.
+  • THIRD-PARTY = seller-education blogs, tool vendors, news sites.
+  • Where a help.etsy.com page has no visible "last updated" date, it is marked "live page, read
+    2026-10-22". Those pages are current Etsy policy as of today, which is why they are used, but the
+    date of the underlying change is not shown.
+
+
+ 1. What changed in Etsy Ads in 2025 and 2026 (timeline)
+  Date      Change                                                     Source
+
+  2025-0    Etsy said it "improved Etsy Ads placement within           ETSY [S1: etsy.com, 2025-04-22]
+  4-22      search"
+
+  2025-0    Ads Strategy beta appears for sellers who raise daily      THIRD-PARTY [S2: valueaddedresource.net,
+  8-14      budget to at least $25. Options then were "Increase        2025-08-14, updated 2025-08-21]
+            Your Orders", "Balance Your Orders With Returns"
+            (default), "Increase Your Return". Changes take
+            effect within 25 hours, Etsy suggested 30 days to
+            judge.
+
+  2025-0    Further search ad placement improvements; Etsy             ETSY [S3: etsy.com, 2025-09-15]
+  9-15      says sellers "saw millions of dollars in additional
+            annual sales from advertised listings". Marketplace
+            Insights keyword tool launched (15 free searches
+            per week, unlimited with Etsy Plus).
+
+  2026-0    Q4 2025 results: revenue growth "primarily driven          ETSY [S4: investors.etsy.com, 2026-02-19]
+  2-19      by continued strong consolidated on-site ads
+            performance". Take rate 24.5% in Q4 2025 vs 22.8%
+            a year earlier.
+
+  2026-0    Listing strategies launched: per-listing choice of         ETSY [S5: etsy.com, 2026-06-01]; THIRD-PARTY [S6:
+  6-01      Greater visibility, Lower click cost, or Efficient         ecommercebytes.com, 2026-06-04]
+            spending (default). Requires daily budget of $25 or
+            more.
+
+  2026-0    Offsite Ads dashboard redesigned: revenue, fees,           ETSY [S7: help.etsy.com, June 2026 section]
+  6         visits, top channels and top listings in one view, plus
+            traffic that did not lead directly to a purchase.
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 4: Listings, Photography, Video, Conversion and Revi                        Page 84
+  Date      Change                                                       Source
+
+  2026-0    Regulatory Operating Fee changes took effect in              THIRD-PARTY [S8: valueaddedresource.net,
+  6-22      several non-US countries (announced 2026-04-22).             2026-04-23 updated 2026-08-09]; THIRD-PARTY [S9:
+            Not relevant to this shop: the fee does not apply to         iscompliant.app, 2026-06-22]
+            US-based sellers.
+
+  2026-0    Q2 2026 shareholder letter: Etsy marketplace take            ETSY [S10: sec.gov, 2026-08-05]
+  8-05      rate 25.9%, expansion "primarily driven by Etsy
+            Ads"; machine learning used to improve ad
+            relevance and seller budget pacing.
+
+  2026-0    Alura rebuilt its Etsy Ads module (Overview,                 THIRD-PARTY [S11: alura.io, 2026-08-10]
+  8-10      Optimize, Run history, Insights with break-even
+            ROAS).
+
+  2026-0    Ad groups launched: up to 20 groups, each listing in         ETSY [S7: help.etsy.com, Sept 2026 section]; ETSY
+  9         only one group, bulk add, filter by group, totals row        [S12: help.etsy.com, live page read 2026-10-22]
+            per group.
+
+  2026-0    Some sellers see a test prompt "Unlock extra ad              THIRD-PARTY [S13: valueaddedresource.net,
+  9-01      budget - only when your sales hit your goal". No live        2026-09-01]
+            feature behind it yet; not documented by Etsy.
+
+ What did NOT change (as far as 2025 to 2026 sources show): there is still no manual keyword
+ bidding, no manual per-click bid entry, and no country targeting inside Etsy Ads. Etsy sets bids
+ automatically [S14: help.etsy.com, live page read 2026-10-22].
+
+
+ 2. Etsy Ads mechanics in 2026
+ 2.1 How the auction works
+  • Ads appear only in designated ad spaces in Etsy search results, and also on Category pages and
+    Market pages, on web and app [S15: help.etsy.com, live page read 2026-10-22; S16:
+    help.etsy.com, live page read 2026-10-22].
+  • Listings compete in an auction. Two main factors: listing quality (likelihood of a click) and bid
+    [S17: help.etsy.com, live page read 2026-10-22].
+  • Quality score reflects listing and shop history, plus strong titles and tags. A listing with a low
+    quality score may need a higher bid to compete [same source].
+  • The bid is the most you would pay for one click on that listing. Bids rise or fall between auctions,
+    informed by likelihood of sales (search query, time of day, device) and relevance (title and tag
+    match, and whether the listing meets the shopper's filters such as ship-to location and price
+    range). Listings that fail the filters are not shown [same source].
+  • Ads use a different algorithm from organic Etsy search [same source].
+  • You may not see your own ads when you search, because likelihood of sale affects placement.
+    Etsy says to check ad stats rather than searching for yourself [same source].
+  • Ads only reach buyers in countries you ship to [S16: help.etsy.com, live page read 2026-10-22].
+    This is the only geographic control. If you ship worldwide but your real market is the US, your ads
+    also run abroad.
+
+ 2.2 Cost per click
+  • Etsy publishes no CPC range. CPC "can vary by listing and by placement" and is set automatically
+    [S14: help.etsy.com, live page read 2026-10-22].
+  • THIRD-PARTY ranges (estimates, not Etsy data):
+
+
+
+Etsy Fine Jewelry Master Course | Module 5: Etsy Ads, Offsite Ads and Paid Traffic                                   Page 85
+     • $0.20 to $1.50 per click, most handmade categories $0.20 to $0.60 [S18: listingview.io,
+       2026-06-06].
+     • $0.15 to $0.60 typical, above $1.00 "usually a warning sign" [S19: support.profittree.io,
+       2025-12-26].
+     • $0.20 to $1.50 [S20: amirgomez.com, 2026-09-01].
+  • For fine gold jewelry, expect your CPC to be at the higher end, because high-price, high-intent
+    searches like "14k gold signet ring" attract competing jewelers. Treat any number as a
+    hypothesis until you have 30 days of your own data.
+
+ 2.3 Budget rules
+  • Minimum daily budget: $1 [S16: help.etsy.com, live page read 2026-10-22].
+  • Every seller starts with a maximum daily budget of $25. Etsy recalculates the maximum weekly
+    from the last 7 days of spend. It can rise if you consistently use your full budget. Days with no
+    spend do not lower it [same source].
+  • A drop in maximum can be tied to an amount due on your Etsy bill. Paying it will likely restore the
+    limit [same source].
+  • Restarting a campaign keeps your previous maximum limit. To raise the cap before a peak
+    period, spend your full budget early [S21: alura.io, THIRD-PARTY, Alura summary of Etsy help
+    content, , undated, read 2026-10-22].
+  • THIRD-PARTY claims a $100 per day upper limit [S19: support.profittree.io, 2025-12-26]. Etsy's
+    own page does not state a hard ceiling. Treat $100 as unconfirmed.
+  • Waiting period: a new shop must wait 15 days after opening before starting a campaign [S16:
+    help.etsy.com, live page read 2026-10-22].
+
+ 2.4 How Etsy spends the budget
+  • You pay per click, never per view [S14: help.etsy.com, live page read 2026-10-22].
+  • Clicks are totaled per day and added to your Payment account the next day. "You'll never spend
+    over your daily budget." Once the budget is used, ads stop for the day [S16: help.etsy.com, live
+    page read 2026-10-22].
+  • Etsy says machine learning now improves "seller budget pacing" [S22: fool.com, ETSY Q2 2026
+    call, CFO Charles Baker, , 2026-08-12].
+  • Important reading of the earnings commentary: Etsy reports that Etsy Ads is the primary driver of
+    take rate growth [S10: sec.gov, 2026-08-05]. That means ads are a growing share of what sellers
+    pay Etsy. It does not prove ads are profitable for any given seller. Your own break-even math
+    decides.
+
+ 2.5 Bid and strategy controls (the controls you actually have)
+  1. Daily budget (whole campaign).
+  2. On/off per listing, individually or in bulk under "Manage advertised listings" [S16: help.etsy.com,
+    live page read 2026-10-22].
+  3. Listing strategies, only at $25+ per day [S5: etsy.com, 2026-06-01]:
+     • Greater visibility: more reach. Etsy suggests it for bestsellers, new launches, key shopping
+       moments.
+     • Lower click cost: cheaper clicks. Etsy suggests it for thin-margin or limited-inventory items.
+     • Efficient spending: balanced, the default.
+
+
+
+Etsy Fine Jewelry Master Course | Module 5: Etsy Ads, Offsite Ads and Paid Traffic                 Page 86
+     • Below $25 per day, every listing runs on Efficient spending. Listings without a chosen strategy
+       use the Default listing strategy set in the Settings tab [S16: help.etsy.com, live page read
+       2026-10-22].
+     • Etsy recommends giving any strategy 30 days [same sources].
+  4. Ad groups: up to 20; one listing per group; totals for one group at a time [S16: help.etsy.com,
+    live page read 2026-10-22]. Ad groups organize and report. Sources do not say groups carry their
+    own budget.
+  5. Search terms: Etsy shows the search terms buyers used to find each ad over the last 30 days,
+    under each listing [S14: help.etsy.com, live page read 2026-10-22]. The ability to turn off
+    individual search terms is reported by THIRD-PARTY sources ("You can turn off individual search
+    terms so your budget is not wasted on irrelevant traffic") [S19: support.profittree.io, 2025-12-26]
+    and Alura's "Optimize keywords" feature turns off search terms that spend without orders [S23:
+    alura.io, read 2026-10-22]. Etsy's help article on ad performance does not describe this control.
+    Verify inside your own dashboard.
+ There is no manual max CPC bid you type in. "Max bid control" in 2026 means: daily budget plus
+ listing strategy plus on/off plus search term exclusion.
+
+ 2.6 Which listings get advertised by default
+  • All current listings are included when a campaign starts. New listings created after the start can
+    be added or left out [S16: help.etsy.com, live page read 2026-10-22].
+  • Etsy's own beginner guidance is to promote all active listings first so the algorithm learns, and
+    not to adjust for 30 days [S24: etsy.com, 2026-06-01].
+
+ 2.7 What the dashboard reports
+ From Etsy [S14: help.etsy.com, live page read 2026-10-22] and [S24: etsy.com, 2026-06-01]:
+
+  Metric                      Definition
+
+  Ad views                    Each time the listing shows as an ad. Not charged.
+
+  Ad clicks                   Each interaction to view the listing. Charged. Clicks are not visits: repeat clicks within 30
+                              minutes count as one visit.
+
+  Click rate (CTR)            Clicks divided by views.
+
+  Orders from ads             Orders placed within 30 days of an ad click, for ANY item in your shop.
+
+  Revenue from ads            Sales from buyers who clicked an ad, same 30-day window.
+
+  Budget spent                Total spend in the past 30 days, also per listing.
+
+  Average CPC                 Spend for a listing divided by its clicks.
+
+  ROAS                        Ad-attributed revenue compared to ad cost.
+
+  Search terms                Queries that led to your ads in the last 30 days; hidden when traffic is too low, for privacy.
+
+ Also: ad-attributed orders show a small megaphone icon on the Orders page. An order is credited
+ even if the buyer bought a different item or bought on a different day [S16: help.etsy.com, live page
+ read 2026-10-22].
+
+ 2.8 Attribution window
+  • Etsy Ads: 30 days after a click, any item in the shop [S14: help.etsy.com, live page read
+    2026-10-22; S24: etsy.com, 2026-06-01].
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 5: Etsy Ads, Offsite Ads and Paid Traffic                                     Page 87
+  • Consequence for a gold jewelry shop with long consideration times: the 30-day, any-item rule is
+    generous to Etsy Ads. A buyer who clicked an ad, left, came back through organic search two
+    weeks later and bought a different ring still counts as an ad order. Ads ROAS therefore overstates
+    true incremental return. Build that into your targets (see FORMULAS).
+
+ 2.9 How ads interact with organic ranking
+  • Etsy states ads run on a separate algorithm from organic search [S17: help.etsy.com, live page
+    read 2026-10-22].
+  • Etsy does not publish any statement, in 2025 or 2026 sources found, that ad clicks or ad sales lift
+    organic rank. The common seller belief that "ads boost SEO" is not confirmed by Etsy. What is
+    confirmed: listing and shop history feed the ad quality score [same source], and good titles and
+    tags help both. So the safe statement is: better listings help ads; whether ads help organic rank is
+    not documented.
+  • Etsy's Shop Stats separate traffic sources so you can watch whether organic visits grow while ads
+    run. Etsy Ads clicks from desktop show as Advertising; clicks from the Etsy app are reported
+    under "Etsy app & other Etsy pages", and the Etsy Ads figure in "How shoppers found you"
+    excludes app ad visits [S25: help.etsy.com, live page read 2026-10-22]. This means your Stats
+    page undercounts ad traffic. Use the Ads dashboard for ad numbers.
+
+
+ 3. Offsite Ads
+ 3.1 Core rules (ETSY, live page read 2026-10-22: [S28: help.etsy.com])
+  • Channels: Google, Facebook, Instagram, Pinterest, Bing, Etsy Publishing Partner sites, Google
+    Display Network (over two million sites, including YouTube and Gmail).
+  • TikTok is not on Etsy's Offsite Ads channel list. Etsy does say it moved its own paid social spend
+    toward platforms like TikTok [S10: sec.gov, 2026-08-05], but that is Etsy's marketing, not a
+    stated Offsite Ads channel for your fee.
+  • Fee: 15% if the shop made under $10,000 USD in the past 12 months; 12% if $10,000 or more.
+  • Cap: never more than $100 USD per order.
+  • Fee base: Etsy's page uses two phrasings ("the amount you made from your sale before the
+    advertising fee" and "order total"). THIRD-PARTY sources state it applies to item price plus
+    shipping plus gift wrap [S26: craftybase.com, read 2026-10-22]. Assume shipping is included.
+  • Currency: calculated in USD; non-USD shops converted at the sale's exchange rate.
+  • Rate review: Etsy reviews sales monthly to set your rate.
+  • Attribution: 30 days after the ad click. If the last click before the order was an Etsy Ad (onsite),
+    only the Etsy Ads cost applies, not the Offsite fee. Multiple separate orders within the window are
+    each eligible for the fee.
+  • Charged only on sales, not clicks.
+  • Enrollment: everyone is auto-enrolled. Above $10,000 in 365 days, participation is mandatory for
+    the life of the shop. Below, you can opt out: Shop Manager > Settings > Offsite Ads > Opt out.
+    Re-enroll with "Turn on Offsite Ads".
+  • Opting out can take up to three business days to take effect, and clicks before that can still be
+    attributed within 30 days [S26: craftybase.com, THIRD-PARTY, , read 2026-10-22].
+  • Your current fee rate shows on the Shop Dashboard. The Offsite Ads dashboard shows clicked ad,
+    click date, channel or website, purchased listing, and order number and date [S25:
+    help.etsy.com, live page read 2026-10-22]. Since June 2026 it also shows revenue, fees, visits,
+
+
+Etsy Fine Jewelry Master Course | Module 5: Etsy Ads, Offsite Ads and Paid Traffic                 Page 88
+     and top channels and listings in one view [S27: help.etsy.com, June 2026].
+  • Partner Checkout on Google: US sellers only, ship from continental US, free shipping, no variants,
+    no personalization. This US shop meets the location and free-shipping conditions, but
+    personalized or variant-based made-to-order rings still do not qualify [S28: help.etsy.com, live
+    page read 2026-10-22]. A plain, single-option listing with no personalization could.
+
+ 3.2 Is Offsite Ads worth it for high-ticket gold?
+ Arguments FOR keeping it on (while under $10K and still allowed to choose):
+  • The $100 cap makes the effective rate fall as price rises. At 15%, the cap is hit at $666.67; at
+    12%, at $833.33. A $1,500 ring pays at most $100, an effective 6.7% (EXAMPLE arithmetic from
+    the Etsy cap and rates).
+  • Etsy, not you, pays for the clicks. Etsy's CEO said Etsy "improved our PLA performance really
+    meaningfully through better segmentation and bidding strategies", and the CFO noted Amazon
+    pulled out of the PLA (product listing ad) auction [S22: fool.com, 2026-08-12]. Google Shopping is
+    the channel where high-ticket jewelry searches happen.
+  • THIRD-PARTY guidance says Google Shopping suits high-ticket items such as "high-end jewelry"
+    [S29: insightagent.app, 2026].
+ Arguments AGAINST:
+  • The 30-day click window means some fees land on buyers who would have bought anyway (for
+    example, someone who already knew your shop, searched Google, clicked an Etsy Shopping ad).
+  • At $150 to $600, the full 12% or 15% applies on top of roughly 9.5% plus $0.45 per order in base
+    Etsy fees for a US seller (see Section 4 and FORMULAS). On thin-margin items this can wipe out
+    profit.
+  • Once you pass $10,000 in 365 days, you lose the choice forever.
+ Decision rule (tactical): keep Offsite Ads ON if your contribution margin after all other fees stays
+ positive after deducting 15% (or $100, whichever is lower) on every listing. If any listing goes
+ negative, either reprice it or opt out. Check monthly in the Offsite Ads dashboard how many orders
+ and how much fee it produced, and whether those were new buyers.
+
+ 3.3 How to calculate Offsite Ads impact
+  • Offsite fee per order = min(rate x order total, $100).
+  • Offsite effective rate = fee / order total.
+  • Monthly Offsite cost = sum of fees in the Offsite Ads dashboard.
+  • Incremental test (practical): Etsy offers no holdout test. If you are under $10K, you can compare
+    a 60-day period ON vs a 60-day period OFF, same season (rarely clean). Simpler: look at the
+    Offsite dashboard's channel and listing breakdown. If most Offsite orders are first-time buyers on
+    high-price listings, the program is likely bringing new demand.
+
+
+ 4. Fees a US-based seller pays (needed for every ads formula)
+ Applies to this shop: US Etsy Payments account, USD listings, USD deposits to a US bank, free
+ domestic shipping.
+
+  Fee                     Rate                                                  Source
+
+  Listing fee             $0.20 per listing; auto-renews at $0.20 every         ETSY [S30: etsy.com, last updated
+                          4 months and on each sale of a listing with           2026-10-05]
+                          remaining quantity
+
+
+
+Etsy Fine Jewelry Master Course | Module 5: Etsy Ads, Offsite Ads and Paid Traffic                                  Page 89
+  Fee                     Rate                                                  Source
+
+  Transaction fee         6.5% of displayed item price plus shipping            ETSY [S30: etsy.com, 2026-10-05]
+                          plus gift wrap; for US sellers not charged on
+                          sales tax
+
+  Payment processing 3% + $0.25 per order, on the gross order                   ETSY [S31: etsy.com, last updated
+   (US)              amount including shipping and sales tax                    2026-07-31]
+
+  Regulatory              Does not apply to US-based sellers (0%)               THIRD-PARTY [S9: iscompliant.app,
+  Operating Fee                                                                 2026-06-22]; Etsy's fee page says it applies
+                                                                                only in "certain countries" and does not list
+                                                                                the US [S30: etsy.com, 2026-10-05]
+
+  Currency conversio      None. The 2.5% fee applies only when listing          ETSY [S30: etsy.com, 2026-10-05]
+  n                       currency differs from payment account
+                          currency; USD listings with a USD account pay
+                          nothing
+
+  Offsite Ads (if         15% if shop sales were under $10,000 in the      ETSY [S30: etsy.com, 2026-10-05]; ETSY [S28:
+  attributed)             prior 365 days (opt-out allowed); 12% once       help.etsy.com, live page read 2026-10-22]
+                          $10,000 is reached (then mandatory for the
+                          life of the shop). Max $100 per attributed order
+
+  Etsy Ads                your CPC spend, charged to the Payment                ETSY [S32: help.etsy.com, live page read
+                          account the next day                                  2026-10-22]
+
+  Share & Save credit     minus 4% of qualifying order total (6.5% for          ETSY [S33: etsy.com, 2026-08-03]
+                          first two weeks after sign-up), credited
+                          against transaction fees
+
+  Sales tax on Etsy       Since the 12 Dec 2025 Payments Policy                 THIRD-PARTY [S34: valueaddedresource.net,
+  fees                    update, sales tax may be charged on some              2025-12-16]
+                          Etsy fees where applicable
+
+ Base fee load before ads: 6.5% (transaction) + 3% (processing) = 9.5% of the item price, plus $0.25
+ per order, plus $0.20 listing renewal per sale, plus 3% of any sales tax the buyer pays (processing is
+ charged on tax; transaction fee is not). No Regulatory Operating Fee, no currency conversion. Ads
+ are on top. Sales tax is collected and remitted by Etsy as marketplace facilitator and passes
+ through, so the examples below use the no-tax case; with an illustrative 8% tax, base fees rise by
+ about 0.24% of price (for example $38.45 to $39.41 on a $400 ring) [arithmetic from the sources
+ above; 8% is an assumption, not a sourced rate].
+
+
+ 5. FORMULAS
+ All formulas are standard arithmetic. All numeric examples are EXAMPLE values.
+  1. Etsy fee rate (US shop, no Offsite, no sales tax) F = 0.065 + 0.03 = 0.095, plus fixed $0.45 per
+    order ($0.25 processing + $0.20 listing renewal).
+  2. Contribution before ads (C) = Price - (Price x F) - fixed fees - COGS. COGS for made-to-order gold
+    = gold + labor/casting + stones + plating/finishing + packaging + US domestic shipping label
+    you pay (free shipping) + signature confirmation + shipping insurance.
+  3. Contribution margin m = C / Price.
+  4. Break-even ROAS = 1 / m = Price / C. (Matches the THIRD-PARTY form "Break-even ROAS = 1 /
+    profit margin" [S29: insightagent.app, 2026]. Alura's Insights calculates break-even ROAS "after
+    Etsy's fees, using your own margin" [S11: alura.io, 2026-08-10].)
+  5. Target ROAS (keep a profit share k of contribution after ads) = 1 / (m x (1 - k)). Example: keep
+    half the contribution, k = 0.5, target ROAS = 2 / m.
+  6. Max CPA (break-even cost per ad order) = C. Target CPA = C x (1 - k).
+
+
+Etsy Fine Jewelry Master Course | Module 5: Etsy Ads, Offsite Ads and Paid Traffic                                      Page 90
+  7. CPA = CPC / CVR (CVR = orders / clicks).
+  8. Max affordable CPC = Target CPA x CVR.
+  9. Clicks needed per order = 1 / CVR.
+  10. Offsite fee = min(r x order total, $100), r = 0.15 or 0.12. Cap price point = 100 / r.
+  11. Attribution haircut: because Etsy credits any order within 30 days, use Adjusted ROAS =
+    Reported ROAS x i, where i is your estimate of the true incremental share (unknown; pick a
+    conservative value such as 0.6 to 0.8 and refine by comparing periods with ads on and off). This
+    is a planning assumption, not an Etsy metric.
+  12. Ad spend as % of revenue = total ad spend / total shop revenue (all channels).
+  13. Blended CPA = total ad spend (Etsy Ads + Offsite fees + external ads) / total orders.
+
+ EXAMPLE: $400 14K gold ring, US buyer, free domestic shipping
+ All inputs below are assumptions for illustration. Replace with your real costs. Fees use the US rates
+ in Section 4; no sales tax case.
+  • Price (order total, free shipping): $400.00
+  • Transaction fee 6.5%: $26.00
+  • Payment processing 3% + $0.25: $12.25
+  • Listing renewal on sale: $0.20
+  • Total Etsy fees: $38.45 (9.61%)
+  • ASSUMED production cost (14K gold, casting, finishing, ring box and plain outer mailer): $180.00
+  • ASSUMED US domestic insured shipping (USPS Priority Mail 1 lb zone 4 commercial $10.80 +
+    Signature Confirmation $4.15 + Shipsurance $3.20 at $0.80 per $100): $18.15 [S35:
+    pe.usps.com, rates per , read 2026-10-22; S36: usps.com, read 2026-10-22; S37: help.etsy.com,
+    read 2026-10-22]
+  • COGS = 180.00 + 18.15 = $198.15
+  • Contribution before ads C = 400 - 38.45 - 198.15 = $163.40
+  • Contribution margin m = 163.40 / 400 = 40.9%
+  • Break-even ROAS = 400 / 163.40 = 2.45
+  • Target ROAS if you want to keep half of contribution as profit = 4.90
+  • Max CPA (break-even) = $163.40; Target CPA (keep half) = $81.70
+  • If CVR on ad clicks were 1% (assumption), clicks per order = 100. Max affordable CPC at target
+    CPA = 81.70 x 0.01 = $0.82. At 0.5% CVR, max CPC = $0.41.
+  • If the same order came via Offsite Ads at 15%: fee $60.00, contribution after fee $103.40
+    (25.9%). At 12%: fee $48.00, contribution $115.40 (28.9%).
+  • If the buyer came via your own Share & Save link: credit 4% = $16.00, contribution becomes
+    $179.40.
+  • With an attribution haircut i = 0.7 (assumption), a reported Etsy Ads ROAS of 4.0 is an adjusted
+    ROAS of 2.8, only about 14% above this ring's 2.45 break-even and well below its 4.90 target. A
+    reported ROAS that looks healthy can still miss your profit target once you discount for
+    attribution.
+
+ EXAMPLE: $1,200 ring, same logic
+  • Fees: 9.5% = $114.00 + $0.45 fixed = $114.45 (9.54%)
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 5: Etsy Ads, Offsite Ads and Paid Traffic                Page 91
+  • ASSUMED production cost $680 + ASSUMED US domestic insured shipping $29.82 (USPS Priority
+    Mail 1 lb zone 8 commercial $16.07 + Signature Confirmation $4.15 + Shipsurance $9.60) =
+    COGS $709.82 [same rate sources as above]. Adult Signature ($9.70) instead of standard
+    signature, as a house rule for $1,000+ orders, would cost $5.55 more and is not included.
+  • C = 1,200 - 114.45 - 709.82 = $375.73, m = 31.3%, break-even ROAS = 3.19
+  • Target ROAS (keep half) = 6.39; Max CPA $375.73; Target CPA $187.87
+  • Offsite at 15% would be $180 (or $144 at 12%) but is capped at $100 (8.3% effective).
+    Contribution after Offsite = $275.73 (23.0%).
+ Lesson: high gold content lowers margin percentage, which raises break-even ROAS, even though
+ dollar profit per order is higher. Offsite Ads becomes relatively cheaper as price rises because of the
+ cap.
+
+
+ 6. Benchmarks (all THIRD-PARTY, treat as rough)
+  • CTR for Jewelry and Accessories on Etsy Ads: 2.5% to 4% expected; general average about 2%;
+    below 1% poor [S38: insightagent.app, 2026, methodology not disclosed].
+  • Typical Etsy Ads CTR 1% to 3%; conversion 1% to 3%, optimized listings 3% to 7%+ [S29:
+    insightagent.app, 2026, "estimates as of early 2026 from seller community data"].
+  • ROAS: 3x or higher "healthy", below 2x "likely losing money", 2x to 3x gray zone [S18:
+    listingview.io, 2026-06-06]. For gold jewelry with 25% to 35% contribution margins, these generic
+    thresholds are too low; use your own break-even (Section 5).
+  • No 2025 or 2026 source found with a jewelry-specific Etsy ad conversion rate or CPC from Etsy
+    itself. High-ticket items usually convert at lower rates than cheap items, so expect fewer orders
+    per click and longer lags. Your shop's own 30 to 60 day data is the only reliable benchmark.
+ UNVERIFIED (pre-2025): A Gelato blog figure that jewelry ecommerce averages 4.56% conversion
+ [S39: gelato.com, byline 2024-09-28, no source cited]. Not usable as an Etsy Ads benchmark.
+
+
+ 7. The Etsy Ads operating playbook
+ 7.1 Before you spend anything (readiness gate)
+  • Listing quality first. Etsy's auction rewards click likelihood; titles, tags, photos, and history all feed
+    the quality score [S17: help.etsy.com, live page read 2026-10-22]. Ads amplify listings; they do
+    not fix weak ones.
+  • Ship-to settings: ads only show where you ship [S16: help.etsy.com]. If US is the focus and
+    international shipping, insurance, and returns are painful for fine jewelry, narrow shipping profiles
+    to the US so ad spend stays on domestic buyers.
+  • Know each listing's break-even ROAS (Section 5) and enter margins in Alura's margin settings
+    (one overall margin or per section) [S23: alura.io, read 2026-10-22].
+  • Production time and processing time must be realistic: a made-to-order ring with long processing
+    time can lower conversion, which raises CPA.
+
+ 7.2 Launch phase (days 0 to 30)
+  • Etsy's own guidance: start around $3 to $5 per day, advertise all active listings, and make no
+    changes for 30 days [S24: etsy.com, 2026-06-01].
+  • THIRD-PARTY variants: $1 to $3 per day for testing [S19: support.profittree.io, 2025-12-26; S18:
+    listingview.io, 2026-06-06]; $3 to $5 per day on 3 to 5 best listings [S29: insightagent.app, 2026].
+
+
+
+Etsy Fine Jewelry Master Course | Module 5: Etsy Ads, Offsite Ads and Paid Traffic                      Page 92
+  • For a $150 to $1,500 gold shop, a $1 to $3 budget usually buys only a few clicks a day and may
+    need months to produce statistically useful order data. A practical compromise
+    (recommendation, not a sourced number): start at $5 to $10 per day for 30 days, which yields
+    enough clicks per listing to see CTR and search terms, then decide.
+  • Etsy strategy note: below $25 per day you cannot set listing strategies; everything runs on
+    Efficient spending [S16: help.etsy.com]. That is fine for launch.
+
+ 7.3 "Advertise all then prune" vs "selective"
+  • Advertise all then prune (Etsy's default and Etsy Handbook advice): gives the algorithm data on
+    all 40 listings, finds unexpected winners, but thin budget gets spread across 40 listings and early
+    spend is uneven [S24: etsy.com, 2026-06-01].
+  • Selective (THIRD-PARTY advice: "Advertising your best existing listings is recommended over
+    spreading budget across the whole shop" [S18: listingview.io, 2026-06-06]): concentrates spend,
+    faster learning per listing, but you may never discover sleepers.
+  • Recommendation for 40 listings: hybrid. Turn on all listings that clear a quality bar (strong first
+    photo, complete tags, price where break-even ROAS is below about 4), leave off any listing whose
+    break-even ROAS is very high (thin margin) or which has weak photos. Use ad groups to label
+    them: "Hero", "Test", "Seasonal", "New". Ad groups exist for exactly this purpose: Etsy suggests
+    groups for best-sellers or new listings, and sellers use them to separate seasonal products and
+    tests [S13: valueaddedresource.net, 2026-09-01].
+
+ 7.4 Testing structure
+  • Unit of test: a listing (you cannot test keywords directly; you can only exclude search terms and
+    change titles/tags/photos).
+  • One change per listing at a time: either photo, title, price, or strategy. Wait at least 30 days per
+    Etsy for strategy changes [S5: etsy.com, 2026-06-01].
+  • Use ad groups as test cells. Example: Group "Photo test A" vs Group "Photo test B" with
+    comparable listings. Remember totals show one group at a time [S16: help.etsy.com].
+  • Minimum evidence before judging a listing:
+     • Alura rules require at least 10 clicks before judging a listing [S23: alura.io, read 2026-10-22] (a
+       floor, too low for $400+ items).
+     • THIRD-PARTY rule: judge only after ad spend reaches about twice the product price [S19:
+       support.profittree.io, 2025-12-26]. For gold jewelry, a better variant is: judge after spend
+       reaches your Max CPA (Section 5), because one order at break-even CPA is the minimum
+       signal.
+     • THIRD-PARTY rules of thumb: turn off if $30 spent with zero orders, or ROAS under 2x after 30
+       days [S18: listingview.io, 2026-06-06]. For a $400 ring with a $163 Max CPA, $30 is too early
+       to judge.
+
+ 7.5 When to pause a listing
+ Pause (or switch to Lower click cost if on $25+) when ANY of these is true after the evidence
+ threshold:
+  1. Spend has reached the listing's Max CPA with zero ad orders and the listing has no organic sales
+    either.
+  2. 30-day reported ROAS is below break-even ROAS, and the 60-day ROAS also is.
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 5: Etsy Ads, Offsite Ads and Paid Traffic                    Page 93
+  3. CTR is well below the shop's average for 30 days (the ad is losing auctions and teaching Etsy it is
+    not clickable). Fix the first photo before deciding.
+  4. Search terms are mostly irrelevant (for example "gold plated", "cheap", "vermeil", "sterling")
+    and you cannot exclude them.
+ Do NOT pause when:
+  • The listing has few ad orders but many favorites and "orders from ads" on OTHER listings in the
+    shop originate from it (look at which listings get the clicks vs which listings sell; with the any-item
+    attribution, a hero piece can drive sales of a cheaper piece).
+  • It is within 3 to 6 weeks of a peak season for that item.
+
+ 7.6 Using ads data to find keywords
+  • Open each listing's Search terms (last 30 days) [S14: help.etsy.com].
+  • Etsy's Handbook phase three: review popular listings and keywords, and add high-performing
+    keywords to other relevant listings [S24: etsy.com, 2026-06-01].
+  • Process:
+     1. Export or note all terms with orders. These are proven buyer language. Put them into titles
+       and tags of the selling listing and siblings.
+     2. Terms with many clicks and zero orders: if irrelevant, exclude (if available in your dashboard,
+       or via Alura Optimize keywords); if relevant, the listing failed to convert, so check price,
+       photos, and processing time.
+     3. Terms with views but low CTR: the listing appears for that query but the thumbnail does not
+       win. Test a new first photo.
+     4. Cross-check volumes and competition in eRank Keyword Tool and Keyword Lists [S40:
+       help.erank.com, read 2026-10-22] and in Etsy Marketplace Insights (15 free searches per
+       week) [S3: etsy.com, 2025-09-15]. Since June 2026, Marketplace Insights is testing 30-day,
+       90-day, and 12-month ranges, price ranges, and search conversion rates [S27: help.etsy.com,
+       June 2026]; since September 2026 it is testing personalized search term recommendations
+       [same, Sept 2026].
+  • Search term data is hidden for low-traffic listings [S14: help.etsy.com], which is another reason
+    not to spread a tiny budget over 40 listings.
+
+ 7.7 Scaling
+  • Raise budget only when shop-level adjusted ROAS stays above target ROAS for 30 days.
+    THIRD-PARTY rule: scale by 20% to 30% when ROAS stays above 3 to 4 [S29: insightagent.app,
+    2026]. For gold, replace "3 to 4" with your target ROAS.
+  • Frequent budget changes reset learning [S18: listingview.io, 2026-06-06]. Change budget in
+    steps, not daily.
+  • Once you can sustain $25 per day profitably, unlock listing strategies: hero rings on Greater
+    visibility during peak; thin-margin pieces on Lower click cost [S5: etsy.com, 2026-06-01].
+  • To grow the max daily budget ahead of Q4, spend your full budget consistently from early
+    autumn; the cap recalculates weekly [S16: help.etsy.com].
+
+ 7.8 Seasonal budget calendar (US buyer, made-to-order, shipped
+ domestically)
+ Lead time matters: made-to-order making time (5 to 7 business days) plus US domestic transit (3 to
+ 5 business days) means your effective selling window closes earlier than for ready-to-ship sellers.
+
+
+Etsy Fine Jewelry Master Course | Module 5: Etsy Ads, Offsite Ads and Paid Traffic                   Page 94
+ Scale ads before the gift deadline your processing time allows, not before the holiday itself. Work
+ back from the carriers' domestic holiday send-by dates (USPS 2026: Ground Advantage Dec 17,
+ Priority Mail Dec 18, Priority Mail Express Dec 19 [per course correction file 09, citing module 07])
+ minus your making time.
+
+  Season              Demand driver                                          Ads action
+
+  Late Oct to         Holiday gifting                                        Ramp budget from late October so the max
+  mid Dec                                                                    budget cap grows; hero pieces on Greater
+                                                                             visibility (needs $25+/day). Cut back once your
+                                                                             last delivery-by-Christmas date passes, or
+                                                                             switch messaging to "gift card / after holidays".
+
+  Late Nov to         Engagement season: about 47% of proposals              Push engagement and wedding bands, promise
+  mid Feb             happen between late November and                       and signet rings. Keep ads on through January,
+                      mid-February, with December the standout               when many sellers cut spend.
+                      month, per The Knot 2025 Real Weddings Study
+                      as reported by a jeweler blog [S41:
+                      lauradiamonds.thejewelerblog.com, 2025-12-18]
+
+  Mid Jan to          Valentine's Day                                        Ramp 3 to 5 weeks ahead depending on
+  early Feb                                                                  processing time. THIRD-PARTY advice: run
+                                                                             seasonal promotions 2 to 4 weeks before peak
+                                                                             gift seasons such as Mother's Day, Christmas, or
+                                                                             Valentine's Day [S29: insightagent.app, 2026].
+
+  Late Mar to         Mother's Day (US)                                      Personalized pieces (birthstone, initial, name
+  early May                                                                  rings). Same ramp logic.
+
+  Summer              Weddings, anniversaries                                Bands and anniversary rings.
+
+  Pre-peak            All                                                    Etsy advises revisiting listing strategies before
+                                                                             peak seasons [S5: etsy.com, 2026-06-01].
+
+
+
+ 8. WEEKLY ADS ROUTINE (about 45 minutes, same day each
+ week)
+  1. Pull numbers (Etsy Ads dashboard, last 7 and last 30 days): views, clicks, CTR, orders, revenue,
+    spend, ROAS. Alura Overview shows the same plus profit vs previous period [S23: alura.io].
+  2. Shop-level check: adjusted ROAS (reported x your haircut) vs target ROAS. Ad spend as % of
+    total revenue vs your stage budget (Section 10).
+  3. Listing triage (sort by spend):
+     • Spend above Max CPA with zero orders: pause or switch strategy.
+     • ROAS above target with healthy volume: candidate for Greater visibility or more budget.
+     • Low CTR: queue a first-photo test.
+  4. Search terms: for the top 5 spending listings, review new terms. Exclude irrelevant ones (verify
+    the control in your dashboard; Alura Keyword Saver can do it in bulk) [S23: alura.io]. Copy
+    converting terms into a keyword list in eRank.
+  5. Offsite Ads dashboard: orders, fees, top channels, top listings. Note any order where the fee hit
+    the $100 cap.
+  6. Organic health: Shop Stats traffic sources. If 80%+ of traffic comes from Etsy Ads, THIRD-PARTY
+    guidance says you are too dependent on paid traffic [S29: insightagent.app, 2026].
+  7. External traffic: Share & Save dashboard (clicks, orders, revenue, credits) [S33: etsy.com,
+    2026-08-03]; Meta/Pinterest ad managers for spend and outbound clicks.
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 5: Etsy Ads, Offsite Ads and Paid Traffic                                      Page 95
+  8. Log every change in a change log (date, listing, change, reason). Alura keeps a Run history for
+    its own optimizations [S11: alura.io].
+  9. Calendar check: weeks until next season ramp (Section 7.8).
+  10. Do not touch: listings changed less than 30 days ago, unless they are clearly burning money.
+ Monthly add-ons: recompute break-even ROAS when gold price or shipping cost moves; check
+ Offsite rate on Shop Dashboard and distance to $10K threshold; review ad group totals one by one.
+
+
+ 9. How Alura and eRank help
+ Alura (Etsy Ads module rebuilt 2026-08-10) [S11: alura.io, 2026-08-10; S23:
+ alura.io, read 2026-10-22]
+  • Live Etsy data via the Alura Chrome extension (required; uses your Etsy login in Chrome).
+  • Ads overview: clicks, orders, revenue, spend, profit, ROAS for last 30 days vs previous period.
+  • Profit per ad and Profit/ROAS breakdowns per listing, per keyword, per ad card.
+  • Break-even return / Insights: computes break-even ROAS after Etsy fees from your margin;
+    Insights brief flags listings selling below break-even and ranks fixes by money at stake.
+  • Optimize listings: rule-based scan, preview, then pause weak listings on Apply.
+  • Optimize keywords: turns off search terms that spend without orders.
+  • Strategies: Recommended, Budget Saver, Keyword Saver, Custom. Rules need at least 10 clicks
+    before judging a listing.
+  • Preview and undo, Run history.
+  • AI strategy advisor: builds an editable strategy from margin, goal, and caution level.
+  • Margin settings: one overall margin or per shop section. For a gold shop, set margins per section
+    (for example "14K rings", "solid gold necklaces") because gold content varies a lot by item.
+  • Caveats: the page does not say which plan includes Etsy Ads; check alura.io/pricing. Alura uses
+    Etsy's attribution, so its ROAS inherits the 30-day any-item overstatement. Raise the 10-click rule
+    threshold for $400+ items.
+
+ eRank [S40: help.erank.com, read 2026-10-22]
+  • eRank has no ad management tool. Relevant features:
+     • Traffic Stats: shows how shoppers find listings (Etsy search, Etsy Ads, social, other sites).
+     • Ad Performance Calculator: enter your ad stats to get ROI, CPC, CTR, cost per order,
+       conversion rate.
+     • Keyword Tool, Keyword Lists (daily-updated search data), Tag Report, Rank Checker (rank
+       without promoted listings or personalization; useful to see whether organic rank moves while
+       ads run).
+     • Profit Calculator for fees and profit by listing.
+     • Monthly Trends and Trend Buzz for seasonal planning.
+  • Division of labor: use Alura to operate ads (pause, keyword exclusion, profit). Use eRank to
+    research the keywords that ad search terms reveal, and to track organic rank.
+
+
+ 10. Budgeting framework
+ 10.1 Percent of revenue by stage
+
+
+
+Etsy Fine Jewelry Master Course | Module 5: Etsy Ads, Offsite Ads and Paid Traffic                     Page 96
+ Sourced guidance:
+  • THIRD-PARTY: keep ad spend around 5% to 10% of gross revenue (for example, $1,000 per
+    month revenue, $50 to $100 ads) [S18: listingview.io, 2026-06-06].
+  • Etsy itself manages its own marketing to "a return target" rather than a fixed budget [S22:
+    fool.com, CFO, , 2026-08-12]. Copy that discipline: budget follows ROAS, not a calendar.
+ Recommended frame for this shop (judgment, built from the formulas, not a sourced benchmark):
+
+  Stage      Definition                    Ad spend guide                            Rule
+
+  Launch     Under 20 sales, under 30      Fixed test budget, e.g. $150 to $300      You are buying data. Cap the loss in
+             days of ad data               per month total, regardless of % of       advance.
+                                           revenue
+
+  Early      20 to 100 sales, a few        10% to 15% of revenue, only on            Concentrate on winners; prune losers
+  traction   proven listings               listings above break-even                 monthly.
+
+  Growth     100+ sales, reviews,          5% to 10% of revenue, plus seasonal       Scale while adjusted ROAS stays
+             repeat buyers                 surges                                    above target.
+
+  Any sta                                  Hard stop                                 Blended CPA must stay below average
+  ge                                                                                 contribution per order.
+
+ Remember Offsite Ads fees are also advertising cost. Count them in total ad spend %.
+
+ 10.2 Target CPA from margin
+ Target CPA = contribution per order x (1 - share you want to keep). See Section 5 EXAMPLE: $400
+ ring gives Max CPA $163.40 and Target CPA about $82 when keeping half; $1,200 ring gives Max
+ CPA $375.73 and Target CPA about $188.
+ Also consider lifetime value: fine jewelry buyers may return for anniversaries and gifts. If you have
+ repeat-purchase data, you can justify a higher first-order CPA, but do not do this before you have
+ that data.
+
+
+ 11. External paid traffic to Etsy listings
+ 11.1 Share & Save (use this on all your own traffic)
+  • 4% back on your Etsy bill on eligible orders; new sign-ups earn 6.5% for the first two weeks; open
+    to any seller, no application [S33: etsy.com, 2026-08-03].
+  • Attribution: orders through your link within 30 days [same; S42: etsy.com, terms , terms last
+    updated 2024-02-20, still the live terms as read 2026-10-22].
+  • Links: shop, listing, or shop section URL. Allowed only on Authorized Channels: owned social
+    pages, websites, blogs, emails, and other Etsy-approved channels. Not inside Etsy platforms
+    [terms].
+  • Credit is applied against transaction fees; the qualifying total includes listing price, shipping, gift
+    wrap [terms].
+  • Conflicts: if the buyer clicks your Share & Save link and then buys through an Offsite Ad within
+    the window, you get no credit and may pay the Offsite fee [terms].
+  • Paid search restriction: no bidding on keywords containing Etsy trademarks [terms]. That matters
+    if you run Google Ads to Etsy.
+  • Dashboard: clicks, orders, revenue, credits in Shop Manager [S33: etsy.com, 2026-08-03].
+  • Cannot combine with the Affiliate Program or Creator Collective for the same activity; choose one
+    [same].
+
+
+
+Etsy Fine Jewelry Master Course | Module 5: Etsy Ads, Offsite Ads and Paid Traffic                                  Page 97
+  • Whether Share & Save links may be used as the destination of paid ads (Meta, Pinterest) is not
+    explicitly addressed in the 2025 to 2026 sources read; "owned and operated" channels is the
+    stated rule. Ask Etsy support before relying on credits from paid campaigns.
+
+ 11.2 Creator Collective (influencer side)
+  • 10% commission on eligible orders from any Etsy shop; application required; at least 500
+    followers on one supported channel (Instagram, Facebook, TikTok, Pinterest Idea Pins, Threads,
+    X) [S33: etsy.com, 2026-08-03].
+  • Use: you can ask creators you seed to join Creator Collective so they earn from sales of your
+    pieces without you paying a separate affiliate fee. Etsy pays them.
+
+ 11.3 Channel notes
+  • Meta (Facebook, Instagram): THIRD-PARTY view: "generally less efficient for direct Etsy
+    conversions than Etsy Ads or Pinterest Ads"; best for retargeting, lookalikes from email lists,
+    process videos; use only after cheaper channels are maxed [S29: insightagent.app, 2026]. Main
+    limitation: you cannot install a Meta pixel on Etsy, so Meta cannot see purchases and cannot
+    optimize for them. You optimize for clicks or landing page views and judge results from Etsy-side
+    numbers.
+  • Pinterest: high purchase intent, longer conversion window (pin now, buy a week later); $5 to $10
+    per day during peak seasons suggested; run 2 to 4 weeks before gift peaks [S29:
+    insightagent.app, 2026]. Etsy shops cannot be claimed as domains on Pinterest; connect via
+    "Claimed accounts". Shopping ads for Etsy links have fewer automation options than for
+    standalone sites. Pinterest analytics show outbound clicks but not Etsy sales [S43: printify.com,
+    2026-01-19].
+  • Google Ads to Etsy: Offsite Ads already puts your listings into Google Shopping with Etsy's
+    money. Running your own Google Ads on top risks bidding against Etsy and paying twice (your
+    CPC plus the Offsite fee if the buyer later clicks an Etsy ad). Do not bid on Etsy trademark
+    keywords if you use Share & Save [terms above]. Running your own Google campaigns is "more
+    complex than Etsy Ads" [S29: insightagent.app, 2026].
+  • TikTok: no 2025 to 2026 source found on paid TikTok ads to Etsy listings specifically. Etsy shifted
+    its own paid social toward TikTok [S10: sec.gov, 2026-08-05]. Organic TikTok plus Share & Save
+    links in bio is the low-risk path.
+  • Influencer seeding: send a ring, ask for honest content, give a Share & Save listing link or
+    encourage the creator to apply to Creator Collective. Use Etsy promo code controls (since June
+    2026, you can cap total redemptions or limit each buyer to one use) for creator-specific codes
+    [S27: help.etsy.com, June 2026].
+
+ 11.4 Tracking external traffic
+  • Etsy Shop Stats groups traffic into Etsy-driven sources (Etsy search, Etsy app and other Etsy
+    pages, Etsy marketing and SEO) and shop-driven sources (Direct and other, Social media, Etsy
+    Ads, Offsite Ads) [S25: help.etsy.com, live page read 2026-10-22].
+  • Etsy's help article does not mention UTM parameters. Pinterest guidance suggests UTM
+    parameters plus Google Analytics for clearer attribution [S43: printify.com, 2026-01-19], but Etsy
+    stats do not show UTM breakdowns per the Etsy help page read. Practical tracking stack:
+     1. Share & Save link per channel and campaign (gives clicks, orders, revenue in Etsy) [S33:
+       etsy.com].
+     2. Unique coupon code per creator or campaign (coupon redemptions in Etsy).
+
+
+Etsy Fine Jewelry Master Course | Module 5: Etsy Ads, Offsite Ads and Paid Traffic                 Page 98
+     3. Ad platform metrics (spend, outbound clicks).
+     4. Etsy Stats traffic sources by date, to see the spike.
+  • Since March 2026, listing URLs stay fixed after first publication, so links in ads and pins do not
+    break when you edit a title [S27: help.etsy.com, March 2026].
+
+ 11.5 External ads vs Offsite Ads
+                                   Offsite Ads                             Your own external ads
+
+  Who pays for clicks              Etsy                                    You
+
+  Cost to you                      12% to 15% of attributed orders,        Your ad spend, whether or not it sells
+                                   max $100
+
+  Control over creative and        None                                    Full
+  audience
+
+  Conversion tracking              Etsy dashboard by order                 Weak (no pixel); Share & Save, coupons, Stats
+
+  Brand building                   Low (Etsy-branded feeds)                High (your photos, video, story)
+
+  Credit back                      None                                    4% via Share & Save on owned channels
+
+  Risk                             Fee on buyers who would have            Spend with no sale; double-paying if the buyer
+                                   bought anyway                           later clicks an Offsite Ad
+
+
+ 11.6 Legal disclosure for influencer posts (FTC)
+ FTC Endorsement Guides were revised in 2023 and the FTC's FAQ was last modified 2025-07-15
+ [S44: ftc.gov, modified 2025-07-15]. Key rules:
+  • Free product sent with the expectation of promotion requires disclosure, even if small or
+    returned.
+  • Disclose clearly and conspicuously, at or near the start, not only in comments, not behind "more".
+  • Video: disclosure in the video itself, visual and audio when the endorsement is spoken.
+    Livestreams: repeat periodically.
+  • Acceptable: "Ad:", "Paid ad", "#ad" at the beginning, "Sponsored by [brand]", "Thanks [brand] for
+    the free product".
+  • Likely insufficient alone: "Gifted", "#ambassador", "#client", "#sp"-style run-together tags,
+    "thank you".
+  • Affiliate or commission links: disclose near the link ("I get commissions for purchases made
+    through links in this post"); "affiliate link" alone is not adequate.
+  • Platform disclosure tools do not guarantee compliance; brand and endorser are both responsible.
+    Disclose in the language of the post.
+  • Your duty as the brand: put the disclosure requirement in writing in every seeding agreement
+    and monitor posts.
+
+
+ 12. TACTICS (fine gold jewelry specific)
+  1. Lead with the first photo. CTR is the auction input you control most. Test a clean on-hand shot vs
+    a white-background shot for hero rings.
+  2. Put the karat and metal in the title start ("14K Solid Gold Signet Ring"). Search terms like "gold
+    filled", "plated", "vermeil" waste clicks on a solid-gold listing; exclude them if your dashboard
+    allows.
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 5: Etsy Ads, Offsite Ads and Paid Traffic                                   Page 99
+  3. Split catalog into ad groups by price band ($150 to $300, $300 to $700, $700+). Break-even
+    ROAS differs per band; judge each band against its own break-even.
+  4. Advertise entry pieces ($150 to $300) for discovery. The 30-day any-item attribution means an
+    entry-piece click can lead to a higher-ticket order; check orders from ads by item.
+  5. Keep thin-margin, gold-heavy pieces off ads or on Lower click cost; their break-even ROAS may
+    be above 4.
+  6. Narrow ship-to countries if you only want US traffic for ads [S16: help.etsy.com].
+  7. Build the max budget cap before Q4: spend the full budget consistently from October [same].
+  8. Keep ads on in January for engagement season; competition from gift sellers drops after
+    December.
+  9. While under $10K, keep Offsite Ads on only if every listing stays profitable after a 15% fee; the
+    $100 cap favors your $700+ pieces.
+  10. Use Share & Save links on every owned channel (Instagram bio, email, WhatsApp follow-ups);
+    4% back on a $400 order is $16.
+  11. Use promo codes with redemption caps for creators (June 2026 control).
+  12. Etsy's "interested shopper offers" automatically send offers to shoppers who engaged; Etsy
+    says they reach "2x more potential buyers on average" than other targeted offers alone (Etsy
+    internal analysis, 2026-03-18 to 2026-04-17) [S27: help.etsy.com, June 2026]. Pair with ads: ads
+    bring the visit, offers close it. Factor the discount into contribution.
+  13. Watch for the "extra ad budget when you hit your sales goal" test; if offered, set the goal on
+    ad-attributed sales only if Etsy allows, since organic sales could unlock spend you did not need
+    [S13: valueaddedresource.net, 2026-09-01].
+  14. Re-run break-even ROAS when gold price moves; your COGS changes, so does every threshold.
+
+ 13. COMMON MISTAKES
+  1. Using generic "ROAS 3x is good" rules. A gold ring with 31% contribution margin needs ROAS 3.2
+    just to break even, and 6.4 to keep half its contribution (EXAMPLE, Section 5).
+  2. Treating reported ROAS as incremental. Etsy credits any order within 30 days of a click [S14:
+    help.etsy.com].
+  3. Judging after $30 or 10 clicks on a $400 item. Not enough data at high price points.
+  4. Changing budget, strategy, and listings every few days. Etsy says give it 30 days [S24: etsy.com,
+    2026-06-01].
+  5. Spreading $3 per day across 40 listings, then getting no search term data because traffic per
+    listing is too low [S14: help.etsy.com].
+  6. Searching for your own ads to "check" them. Etsy says you may not see them [S17:
+    help.etsy.com].
+  7. Reading ad traffic from Shop Stats: app ad clicks are counted under "Etsy app & other Etsy
+    pages", not Etsy Ads [S25: help.etsy.com].
+  8. Forgetting Offsite Ads fees in total ad cost, and forgetting that crossing $10K locks you in for life
+    [S28: help.etsy.com].
+  9. Running your own Google Ads on Etsy trademark keywords (breaks Share & Save terms) [S42:
+    etsy.com].
+  10. Seeding influencers without written FTC disclosure terms [S44: ftc.gov, 2025-07-15].
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 5: Etsy Ads, Offsite Ads and Paid Traffic                  Page 100
+  11. Ramping seasonal ads to the holiday date instead of to your last made-to-order delivery date
+    (holiday carrier send-by date minus making time).
+  12. Using the wrong fee stack when computing break-even. For this US shop it is 6.5% transaction
+    + 3% + $0.25 processing + $0.20 listing renewal (about 9.5% + $0.45 per order), with no
+    Regulatory Operating Fee and no currency conversion; non-US fee calculators overstate your
+    costs, and forgetting the shipping, signature, and insurance you absorb under free shipping
+    understates them [S30: etsy.com, 2026-10-05; S31: etsy.com, 2026-07-31].
+  13. Assuming ads help organic ranking. Not confirmed by Etsy in any 2025 to 2026 source.
+  14. Letting an unpaid Etsy bill shrink your ad budget cap right before peak season [S16:
+    help.etsy.com].
+
+
+ 14. UNVERIFIED (pre-2025)
+  • 2022-03-28: Etsy added listing-level ad stats, a redesigned stats page, and a start/stop toggle;
+    sellers asked for country targeting, workaround is limiting ship-to countries [S45: eseller365.com,
+    2022-03-28]. Ship-to behavior is reconfirmed in the live Etsy help page; the rest is historical
+    context.
+  • 2024-09-28: jewelry ecommerce conversion rate 4.56% (unsourced) [S39: gelato.com].
+  • 2022-04-12: Craftybase Offsite Ads article first published (content updated for 2026 but not
+    dated) [S26: craftybase.com].
+  • Share & Save terms text last updated 2024-02-20; the 4% rate is reconfirmed by Etsy's
+    2026-08-03 Handbook article.
+
+
+ 15. Gaps and open questions
+  • Etsy publishes no CPC ranges, no category CTR/CVR benchmarks, and no official hard maximum
+    daily budget; third-party figures only.
+  • The search-term turn-off control is confirmed by third parties (Profittree 2025-12-26, Alura 2026)
+    but not in Etsy's help article. Verify in the dashboard.
+  • Whether Share & Save links may be used in paid social ads is not clearly addressed.
+  • Whether Etsy Ads activity affects organic ranking: no Etsy statement found.
+  • The exact Offsite Ads fee base (with or without shipping) is phrased inconsistently on Etsy's page.
+  • No 2025 to 2026 jewelry-specific Etsy ads conversion data was found. The search budget for this
+    session ran out before the Seller Handbook article "4 Strategies for Deciding Which Listings to
+    Promote" and the Etsy "set your budget" help page could be read directly.
+
+
+ Module 5 sources
+ Numbered sources cited in this module as [S#]. All accessed 22 October 2026.
+ S1. https://www.etsy.com/seller-handbook/article/1364991912257
+ S2. https://www.valueaddedresource.net/etsy-ads-strategies-beta/
+ S3. https://www.etsy.com/seller-handbook/article/1404283886419
+ S4. https://investors.etsy.com/news-events/press-releases/detail/218/etsy-inc-reports-fourth-quarter-and-full-year-2025-results
+ S5. https://www.etsy.com/seller-handbook/article/1483338976050
+ S6. https://www.ecommercebytes.com/2026/06/04/etsy-adds-listing-strategies-feature-for-ads/
+ S7. https://help.etsy.com/hc/en-us/articles/10603291042967-Newly-Crafted-Etsy-Updates-for-Your-Shop
+ S8. https://www.valueaddedresource.net/etsy-ups-regulatory-operating-fees/
+ S9. https://iscompliant.app/Blog/etsy-regulatory-fee-2026
+ S10. https://www.sec.gov/Archives/edgar/data/1370637/000137063726000079/q226shareholderletter.htm
+ S11. https://www.alura.io/changelog/2026-08-10-etsy-ads-rebuilt
+
+
+Etsy Fine Jewelry Master Course | Module 5: Etsy Ads, Offsite Ads and Paid Traffic                                      Page 101
+ S12. https://help.etsy.com/hc/en-us/articles/360033701174-How-to-Set-Up-and-Manage-an-Etsy-Ads-Campaign
+ S13. https://www.valueaddedresource.net/etsy-ad-groups-budget-test/
+ S14. https://help.etsy.com/hc/articles/360034223613
+ S15. https://help.etsy.com/hc/en-us/articles/115015745808-Using-keywords-to-help-customers-find-your-items
+ S16. https://help.etsy.com/hc/en-us/articles/360033701174
+ S17. https://help.etsy.com/hc/en-us/articles/115015745808
+ S18. https://listingview.io/blogs/how-etsy-ads-work-in-2026-and-when-to-turn-them-off
+ S19. https://support.profittree.io/en/articles/13240978-etsy-ads-complete-guide-for-profittree-users
+ S20. https://www.amirgomez.com/blog/etsy-ads-minimum-daily-budget-2026
+ S21. https://alura.io/docs/article/etsy-sellers-guide-to-advertising-success
+ S22. https://www.fool.com/earnings/call-transcripts/2026/08/12/etsy-etsy-q2-2026-earnings-call-transcript/
+ S23. https://www.alura.io/features/etsy-ads
+ S24. https://www.etsy.com/seller-handbook/article/667698209245
+ S25. https://help.etsy.com/hc/articles/115015774268
+ S26. https://craftybase.com/blog/everything-you-should-know-about-etsy-offsite-ads
+ S27. https://help.etsy.com/hc/en-us/articles/10603291042967
+ S28. https://help.etsy.com/hc/articles/360000338367
+ S29. https://www.insightagent.app/guides/advertise-etsy-shop
+ S30. https://www.etsy.com/legal/fees
+ S31. https://www.etsy.com/legal/etsy-payments
+ S32. https://help.etsy.com/hc/articles/360033701174
+ S33. https://www.etsy.com/seller-handbook/article/1503753198977
+ S34. https://www.valueaddedresource.net/etsy-payments-policy-update-december-2025/
+ S35. https://pe.usps.com/text/dmm300/Notice123.htm
+ S36. https://www.usps.com/ship/insurance-extra-services.htm
+ S37. https://help.etsy.com/hc/en-us/articles/360001988847-Insurance-and-Claims-for-Shipping-Labels
+ S38. https://www.insightagent.app/guides/etsy-ads-click-rate-benchmarks
+ S39. https://www.gelato.com/blog/etsy-conversion-rate
+ S40. https://help.erank.com/features
+ S41. https://lauradiamonds.thejewelerblog.com/welcome_to__engagement_season__when_47__of_marriage_proposals_take_pl
+ ace.html
+ S42. https://www.etsy.com/legal/policy/etsys-share-save-terms-program-terms/1162874007996
+ S43. https://printify.com/blog/how-to-use-pinterest-for-etsy/
+ S44. https://www.ftc.gov/business-guidance/resources/ftcs-endorsement-guides-what-people-are-asking
+ S45. https://eseller365.com/?p=28581
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 5: Etsy Ads, Offsite Ads and Paid Traffic                           Page 102
+

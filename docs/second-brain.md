@@ -1614,6 +1614,16 @@ repodaki hedefidir.
   düzelt ve yeniden üretimin dokunduğu satır kümesini say; (3) yeni org'a açılan rota, o org'un verisinin
   getirdiği yeni durumları (burada bölümsüz listing) testle karşılar. Yan ders: tek kullanımlık token'la
   koşan bir runner'da argüman hatası token yakar; parametreyi boş değerle (`-`) açıkça ayır.
+- **Dış sisteme metin yazmadan ÖNCE platformun kendi rehberine bak; rehber yoksa önce onu kur (2026-10-22):**
+  185 EON başlığını üçüncü taraf bir SEO paketinin kuralıyla ("Mens … for Him and Her", ~140 kr) yazdım;
+  ertesi gün gelen kurs modülü Etsy'nin kendi rehberini aktardı: <15 kelime, tekrar ve alıcı öbeği yok,
+  kardeş listing'e aynı başlık yok. Panelin kendi `title_long` kapısı da bu 178 başlığı işaretliyordu ve
+  ben paketin doğrulayıcısına güvendim. Daha kötüsü: aynı rehber repoda 2026-08'den beri yazılıydı
+  (`docs/eon/seo/etsy-title-guidance-2026-08.md`) ve aynı gün paralel oturum 210 Artifact Studio başlığını
+  da (168'i >15 kelime) aynı yoldan yazdı; bilgi vardı, yazma anında okunmuyordu. Kural: (1) Etsy işi `docs/etsy-playbook/INDEX.md` → yalnız ilgili
+  konu dosyası ile başlar; (2) bilgi tabanı token-verimli kurulur: tek satırlık işaretçi, küçük
+  yönlendirme tablosu, konu başına kısa kural/sayı/kaynak dosyası, tam metin `source/` arşivinde ve
+  otomatik okunmaz; (3) panelin KENDİ kapısı bir dış paketle çelişiyorsa çelişki yazmadan önce çözülür.
 
 ## Ürün/UX dersleri
 

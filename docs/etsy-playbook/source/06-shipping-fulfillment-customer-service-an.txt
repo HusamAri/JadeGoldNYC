@@ -1,0 +1,1099 @@
+ Module 6: Shipping, Fulfillment, Customer
+ Service and Risk
+ Module for: made-to-order solid 14K/18K gold rings and fine jewelry, sold through a US-based Etsy
+ shop (US Etsy Payments account, USD listings, US bank). Pieces are produced in the US by a US
+ workshop (production partner) and ship domestically inside the US to US buyers. The owner
+ manages the shop remotely from Türkiye; a colleague handles fulfillment. Shop policy baseline: 5 to
+ 7 business days making time, 3 to 5 business days US transit, free tracked shipping, plain bands
+ returnable within 14 days, engraved or custom pieces non-returnable with one free size exchange,
+ capacity about 10 rings per day.
+ Research date: 2026-10-22. Every fact carries an inline source and date. "No date shown" or "read
+ 2026-10-22" means the live page was read on 2026-10-22 but shows no revision date. Anything only
+ supported by pre-2025 sources is marked UNVERIFIED (pre-2025). Where a source is secondary (a
+ blog, a shipping app, a law firm) it is labeled as such; confirm against the primary source before
+ changing prices or policies. Items labeled "house rule" or "recommendation" are operational
+ judgment, not platform rules.
+
+
+ 1. The five things that matter most for a US gold ring shop in
+ 2026
+  1. Etsy rebuilt Purchase Protection on May 7, 2026: coverage up to $250 now applies even to
+    orders above $250, high-value orders are always reviewed by a human, and buyers have 30 days
+    after the estimated delivery date to open a case [S1: etsy.com, Etsy Seller Handbook,
+    2026-05-07]; [S2: etsy.com, Etsy Seller Handbook, 2026-04-07].
+  2. The Purchase Protection policy effective July 9, 2026 requires a Help with Order reply
+    within 48 hours, accurate "ships from" location, valid tracking (or an Etsy label) and a stated,
+    met processing time [S3: etsy.com, effective 2026-07-09, updated 2026-06-09]. With the owner
+    in Türkiye and production in the US, the 48-hour rule is the one most likely to break; Section 5
+    assigns it.
+  3. Etsy labels (USPS, UPS, FedEx) are available to this shop because it is US-based, and an
+    Etsy label automatically marks the order shipped and satisfies the tracking requirement for
+    Purchase Protection [S4: etsy.com, last updated 2026-10-13]. Add-on insurance through
+    Shipsurance goes up to $5,000 per package [S5: help.etsy.com, read 2026-10-22].
+  4. USPS prices moved in 2026: USPS Notice 123 prices effective October 4, 2026 [S6:
+    pe.usps.com, read 2026-10-22]; a temporary 8% rate increase from April 26 through January 17,
+    2027 is noted on Etsy's USPS labels page [S7: help.etsy.com, read 2026-10-22]; online Signature
+    Confirmation rose from $3.95 to $4.15 on July 12, 2026 [S8: support.pirateship.com, Pirate Ship
+    (secondary), 2026].
+  5. Etsy now shows seller location in search previews and offers a "Ships from" filter [S9:
+    etsy.com, Etsy, 2026-09-28]. The shop's listed location, ships-from address and production
+    partner disclosure must all be accurate [S10: etsy.com, last updated 2026-10-05].
+ What this means in one sentence: buy an Etsy label with Shipsurance for every order, ship in a plain
+ outer box, add signature on high-value orders, insure everything above $250 because Etsy pays at
+ most $250, and make sure someone answers every Help with Order message inside 48 hours across
+ two time zones.
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 5: Etsy Ads, Offsite Ads and Paid Traffic            Page 103
+ 2. US domestic carriers for fine jewelry
+ 2.1 Etsy shipping labels (US sellers)
+  C    Availability via Etsy    Services                              Included coverage                      Source
+  a
+  rr
+  ie
+  r
+
+  U    US-based sellers         Domestic: Ground Advantage,           $100 on Ground Advantage,              [S7: help.etsy.com,
+  S                             Priority Mail, Priority Mail          Priority Mail, Priority Mail Express    read 2026-10-22]
+  P                             Express, Media Mail
+  S
+
+  F    US-based sellers who     Ground, Home Delivery, Express        up to $100 liability                   [S11: help.etsy.co
+  e    accept Etsy Payments     Saver, SmartPost, 2Day, Priority                                             m, read 2026-10-2
+  d                             Overnight, Standard Overnight                                                2]
+  E
+  x
+
+  U    US-based sellers,        Ground Saver, Ground, 3 Day           Ground Saver: $20 carrier              [S12: help.etsy.co
+  P    domestic addresses       Select, 2nd Day Air, 2nd Day Air      liability, ends once handed to         m, read 2026-10-2
+  S    only                     A.M., Next Day Air Saver, Next        USPS                                   2]
+                                Day Air
+
+  • Etsy labels require the seller to be based in the US [USPS, FedEx and UPS label help pages,
+    above]. Shop location, bank, tax ID and ships-from address should all point to the US entity and
+    the US partner address [S13: help.etsy.com, read 2026-10-22].
+  • Discounts: Etsy promises "big discounts" on labels but publishes no percentage [S14: etsy.com,
+    read 2026-10-22]. USPS cubic pricing is available for qualifying Priority Mail and Ground
+    Advantage parcels [USPS labels help page, above].
+  • Etsy charges no extra fee on labels; the carrier rate is shown before purchase [USPS labels help
+    page, above].
+  • Signature confirmation is optional on Etsy labels; if added, the fee is added to the label cost [S4:
+    etsy.com, 2026-10-13].
+  • Unused label refund windows: USPS 10 days, UPS 14 days, FedEx 10 days [S4: etsy.com,
+    2026-10-13]. The UPS help page says 30 days [UPS labels help page, above]; the policy page
+    governs. Conflict noted.
+  • An Etsy label automatically marks the order shipped and satisfies the Purchase Protection
+    tracking requirement [S4: etsy.com, 2026-10-13]. If you ever buy a label outside Etsy, pick the
+    exact carrier name from Etsy's dropdown; carriers outside Etsy's recognized list may show the
+    buyer no tracking, and a wrong carrier or mistyped number generally has about three days to be
+    corrected [S15: shipink.io, Shipink (secondary), 2026-08-25].
+
+ 2.2 Insurance through Etsy labels (Shipsurance)
+  • Add-on insurance on USPS, FedEx and UPS Etsy labels is provided by Shipsurance, up to $5,000
+    per package [S5: help.etsy.com, read 2026-10-22].
+  • Price, US domestic: $0.80 per $100 of value, plus $0.80 per additional $100 or fraction [same
+    source]. Arithmetic: $400 ring = $3.20; $1,200 ring = $9.60.
+  • Claims: within 120 days of ship date; for lost parcels wait 20 days (domestic) before filing; file
+    before cancelling the order [same source].
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 6: Shipping, Fulfillment, Customer Service and Risk                           Page 104
+  • Shipsurance Etsy program rules: no jewelry exclusion listed; valuation by Etsy invoice value;
+    items in packaging that "alludes to the contents" (branded boxes or tape) are
+    excluded; packages that require a signature service are excluded unless shipped with it;
+    concealed damage must be found within 15 days; a claim needs a carrier tracer, the Etsy invoice,
+    photos and a recipient-signed statement [S16: shipsurance.com, revisions listed to 10/2024, read
+    2026-10-22].
+  • Practical rule: the branded ring box goes inside a plain outer mailer or carton with no brand name
+    and no "jewelry" wording.
+  • Whether Shipsurance coverage replaces or stacks with the $100 carrier-included coverage is not
+    stated. GAP.
+
+ 2.3 USPS for jewelry (direct)
+  • Priority Mail: $100 included (with IMpb); additional insurance up to $5,000 [S17: pe.usps.com,
+    DMM, read 2026-10-22].
+  • Priority Mail Express: $100 included; additional insurance up to $5,000 [same source].
+  • Registered Mail: insured up to $50,000; can be combined with Priority Mail, First-Class Mail
+    and Ground Advantage [same source]. Prices "start at $20.90"; Registered Mail insurance up to
+    $50,000 is bought at a Post Office [S18: usps.com, read 2026-10-22]. Registered Mail is not in
+    Etsy's label services list [USPS labels help page, above], so it means a counter visit by the US
+    fulfillment person, with tracking then entered on the Etsy order manually.
+  • Jewelry, gems and precious metal are declared at market value or cost [S17: pe.usps.com, read
+    2026-10-22].
+  • Signature Confirmation: $4.15 online, $5.15 at a Post Office; Adult Signature Required $9.70
+    [S18: usps.com, read 2026-10-22].
+  • USPS 2026 holiday send-by dates (Ground Advantage Dec 17, Priority Mail Dec 18, Priority Mail
+    Express Dec 19) apply directly to this shop; holiday cutoff planning is in module 07.
+
+ 2.4 UPS for jewelry (direct)
+  • UPS lists jewelry and gold or other precious metals as restricted, shipped "on a contractual
+    basis only", and "articles of high or unusual value" only under contract [S19: ups.com, read
+    2026-10-22]. The page places these in its import and export lists; it does not state a separate
+    domestic rule.
+  • UPS Terms (effective April 17, 2026): no package with actual value over $50,000 accepted
+    ($70,000 under Enhanced Maximum Declared Value); packages of $1,000 or more need a
+    high-value shipment summary when tendered to a driver or Customer Center; raw gold or
+    platinum over 50% by weight (bullion, scrap) is an article of unusual value [S20: assets.ups.com,
+    effective 2026-04-17].
+  • A $500 domestic jewelry declared value cap for standard UPS accounts is reported by a third
+    party [S21: shipaid.com, ShipAid (secondary), 2026-06-06] but could not be confirmed in the UPS
+    terms text retrieved. Treat as unconfirmed; ask UPS in writing before using UPS for rings.
+
+ 2.5 FedEx for jewelry (direct)
+  • "FedEx allows jewelry shipments to be declared at a maximum value of up to $1,000 per
+    package." Jewelry over $500 cannot ship in a padded envelope; use corrugated boxes. FedEx
+    "does not provide insurance"; it recommends third-party insurance. Adult signature is optional
+    [S22: fedex.com, read 2026-10-22].
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 6: Shipping, Fulfillment, Customer Service and Risk   Page 105
+  • FedEx Declared Value Advantage (eligible shippers): up to $100,000 per domestic shipment for
+    jewelry and components; declared value of $500 or more triggers automatic Direct
+    Signature Required [S23: fedex.com, read 2026-10-22].
+
+ 2.6 Third-party and specialty insurance
+  • Shipsurance via Etsy labels is covered in 2.2 (to $5,000).
+  • ClickPost names Parcel Pro and Jewelers Mutual as specialty jewelry shipping insurers [S24:
+    clickpost.ai, ClickPost (secondary), updated 2026-10-22].
+  • U-PIC and UPS Capital InsureShield: no 2025-2026 primary terms retrieved. GAP.
+  • Etsy "strongly recommends purchasing insurance," and if carrier or third-party coverage exists,
+    the claim goes there first [S3: etsy.com, effective 2026-07-09].
+
+ 2.7 Signature confirmation: what is and is not a rule
+  • Etsy: no current Etsy policy requires signature confirmation above a dollar amount. The Purchase
+    Protection policy (effective July 9, 2026), the Purchase Protection help article and the case
+    resolution article do not mention signature confirmation [S3: etsy.com, effective 2026-07-09];
+    [S25: help.etsy.com, read 2026-10-22]; [S26: help.etsy.com, read 2026-10-22]. The older Seller
+    Protection rule requiring signature on orders of $250+ is UNVERIFIED (pre-2025), and a 2022
+    report says Etsy refunded a signed-for $580 order anyway [S27: valueaddedresource.net,
+    2022-12-30], UNVERIFIED (pre-2025).
+  • FedEx: declared value of $500+ under Declared Value Advantage means automatic Direct
+    Signature Required [FedEx declared value page, above].
+  • Shipsurance: if a signature service is required, the claim is excluded unless that service was
+    used [Shipsurance terms, above].
+  • Recommendation (house rule, not a platform rule): signature confirmation on every order
+    over $250, Adult Signature Required on $1,000+. Reason: Etsy covers only $250 per case, so the
+    seller carries the rest and needs the strongest delivery proof plus insurance. Indirect signatures
+    let a neighbor or concierge sign; direct or adult signature is recommended for high-value
+    shipments [ClickPost, 2026-10-22].
+
+ 2.8 Typical 2026 rates for a small padded ring box
+ USPS Notice 123, effective October 4, 2026 [S6: pe.usps.com, read 2026-10-22]:
+
+  Service                                                      Zone      Zone      Zone 8
+                                                               1         4
+
+  Priority Mail 1 lb, Commercial                               $9.44     $10.80    $16.07
+
+  Priority Mail 1 lb, Retail                                   $11.50    $12.40    $17.95 (column read; see note)
+
+  Ground Advantage 8 oz, Retail                                $8.40     $8.80     $10.20
+
+  Priority Mail Express 1 lb, Commercial                       n/a       $40.45    $58.14
+
+ Note: the retail zone 8 figure was read by column position. Etsy label prices may differ from
+ published commercial prices, and it is unclear whether Notice 123 prices include the temporary 8%
+ increase Etsy mentions; check the Etsy label preview.
+ Planning examples (absorbed in "free shipping" pricing):
+  • $1,200 ring, Priority Mail zone 8 commercial: $16.07 + Signature $4.15 + Shipsurance $9.60 =
+    $29.82.
+  • $400 ring, zone 4: $10.80 + $4.15 + $3.20 = $18.15.
+
+
+Etsy Fine Jewelry Master Course | Module 6: Shipping, Fulfillment, Customer Service and Risk                        Page 106
+ 2.9 Transit and estimated delivery
+  • Your promise is 3 to 5 business days US transit. No 2025-2026 source in this research gives USPS,
+    UPS or FedEx service-standard day counts; check the carrier's estimate shown when buying the
+    Etsy label and pick a service that fits 3 to 5 days for the buyer's zone. GAP.
+  • There is no customs step on domestic orders.
+
+ 2.10 Carrier action list
+ Before listing anything above $500: (1) decide the default service (USPS Priority Mail via Etsy label
+ with Shipsurance is the simplest fully documented path up to $5,000); (2) get UPS's answer in
+ writing before using UPS for gold rings; (3) remember FedEx caps jewelry declared value at $1,000
+ outside Declared Value Advantage; (4) for any piece above $5,000, plan Registered Mail at a Post
+ Office or specialty insurance.
+
+
+ 3. If you ever ship internationally or import
+ Domestic US orders involve no customs, duties or tariffs. These points apply only if the business
+ changes its setup.
+  • Importing finished pieces or components from Türkiye (B2B): HTS 7113.19.50 (gold
+    jewelry, other; 7113.19.50.25 for rings) carries 5.5% general duty [S28: hts.usitc.gov, read
+    2026-10-22], and Türkiye is in the 12.5% Section 301 forced-labor tier from July 24, 2026 [S29:
+    taxnews.ey.com, EY, 2026-07-24]. Combined 18%, charged on the import (workshop invoice)
+    value, not the Etsy retail price; dutiable value details are a customs broker question.
+  • No de minimis: duty-free treatment for imports of $800 or less was suspended for all countries
+    from 12:01 a.m. on August 29, 2025 [S30: content.govdelivery.com, CBP CSMS #66065494,
+    2025-08-28]. Every import pays duty.
+  • Country of origin stays honest: if finished rings are made in a Türkiye workshop and shipped
+    from the US, that workshop is the production partner and the listings keep Türkiye as origin;
+    production partners must be disclosed and ships-from must match reality [S10: etsy.com,
+    2026-10-05]; [S13: help.etsy.com, read 2026-10-22].
+  • Türkiye export side: micro-export (ETGB), KDV export exemption and Jewelry Exporters'
+    Association approval apply only when goods are exported from Türkiye [S31:
+    sanayigazetesi.com.tr, Sanayi Gazetesi, 2026-05-11]; [S32: goldium.com.tr, Goldium (secondary),
+    2026-08-10]. Confirm with a Turkish accountant before the first shipment.
+  • Selling to buyers outside the US: UPS Etsy labels are domestic only [UPS labels help page,
+    above]; check Etsy's international shipments page for current rules [S33: help.etsy.com, read
+    2026-10-22]. Declare the real value with a specific description, and never mark a sale as a gift;
+    that is a false declaration.
+
+
+ 4. Karat marks and disclosure
+  • 585 stamp means 14 karat, 58.5% gold [Goldium, 2026-08-10]; 750 is used for 18K.
+  • US karat-marking rules: no 2025-2026 source was gathered. UNVERIFIED (pre-2025): the FTC
+    Jewelry Guides (16 CFR Part 23) govern karat claims, and US law ties karat marks to a maker's
+    trademark. Confirm before relying on it.
+  • Production partner disclosure: listings made by the US workshop are "designed by a seller," not
+    "made by a seller" [S34: etsy.com, last updated 2025-06-10]. Set the partner up in Shop
+    Manager, Settings, Partners you work with, with partner name or descriptive title, city and state,
+
+
+
+Etsy Fine Jewelry Master Course | Module 6: Shipping, Fulfillment, Customer Service and Risk     Page 107
+     and "About production partner" text, and assign it per listing [S13: help.etsy.com, read
+     2026-10-22]. The About section should describe shop members accurately, including that the
+     owner works from Türkiye [S10: etsy.com, 2026-10-05].
+  • Practical rule: the workshop stamps every ring with karat (585 or 14K, 750 or 18K) and the
+    maker's mark, photographs the stamp, and the photo is matched to the listing.
+
+
+ 5. ORDER-TO-DELIVERY SOP (remote owner, US workshop, US
+ fulfillment)
+ Built around: 5 to 7 business day making time, about 10 rings per day capacity, Etsy labels with
+ Shipsurance, free tracked shipping.
+
+ 5.1 Roles and handoffs
+  Role       Who                                                        Owns
+
+  Owner      Shop owner, working from Türkiye                           Etsy Messages and Help with Order, fraud screen,
+                                                                        proofs and proof approval, production board, final "
+                                                                        OK to ship" on photo set, cases and chargebacks
+
+  Worksh     US production partner                                      Casting, finishing, setting, engraving, stamping, QA
+  op                                                                    bench checks, photo set
+
+  Fulfillm   Colleague handling fulfillment (or workshop staff          Packing, Etsy label print, signature and Shipsurance
+  ent        who pack in the US)                                        on label, drop-off or pickup scan, return and
+                                                                        exchange receiving
+
+ Access rule (recommendation): give the colleague and any workshop user access only through
+ Etsy's own shop member roles, never by sharing the owner's password; keep two-factor
+ authentication on the owner account and log in from one consistent device rather than hopping
+ between VPN exits (operational judgment; no Etsy primary source on login location risk was found,
+ GAP).
+
+ 5.2 Time zones
+  • Istanbul is 7 to 8 hours ahead of New York, depending on US daylight saving time. Example at 7
+    hours: 15:00 to 18:00 in Istanbul is 08:00 to 11:00 in New York. If the workshop is in Central,
+    Mountain or Pacific time, add 1 to 3 more hours.
+  • House rule: the daily handoff window is the overlap of the owner's afternoon and the US morning.
+    The owner sends the day's board and any approved proofs before US opening; the workshop and
+    fulfillment send status and photo sets before US close, which the owner reviews first thing the
+    next Istanbul morning (still overnight in the US).
+  • On-time shipping is judged by the end of the ship-by day in the shop's time zone [Shipink,
+    2026-08-25]. For this shop that is the US time zone in Etsy settings, not Istanbul time. Mark
+    shipped (or scan the Etsy label) before that cutoff.
+
+ 5.3 Who answers messages
+  • Help with Order: reply within 48 hours, always [Etsy policy, 2026-07-09]. Primary: owner.
+    Backup: fulfillment colleague, with a written handover whenever the owner is traveling or on
+    Turkish public holidays (Bayram), and the owner covering US holidays when the US side is closed.
+  • All first messages within 24 hours for Star Seller (95% over a rolling three months, including
+    weekends and holidays); auto-replies count [S35: craftybase.com, Craftybase (secondary),
+    updated 2026-04]. Set the auto-reply for nights in both time zones and for Turkish and US public
+    holidays.
+
+
+Etsy Fine Jewelry Master Course | Module 6: Shipping, Fulfillment, Customer Service and Risk                        Page 108
+  • All buyer conversation stays in Etsy Messages. The workshop never contacts buyers directly;
+    questions go to the owner.
+
+ 5.4 Step by step
+ Day 0, within 2 hours of the order (or next Istanbul morning if it arrives during the
+ Istanbul night)
+  1. Owner: fraud screen (see Section 9). Check billing name vs shipping name, address type, order
+    value, buyer account age and history, any message asking to change the address.
+  2. Owner: confirm the address is the one on the Etsy order. Etsy's policy requires shipping to the
+    address provided on Etsy and warns that alternate addresses sent via Messages may be fraud;
+    you may cancel, refund and ask the buyer to reorder [Etsy policy, 2026-07-09].
+  3. Owner: send the Order Confirmation message (Template 1). Confirm ring size, karat, color and
+    engraving text exactly as typed.
+  4. Owner: log the order in the shared production board: order number, ship-by date (in the shop's
+    US time zone), size, karat, metal color, engraving, proof needed (Y/N), value band for signature
+    and insurance (Section 2.7), assigned production day.
+ Day 0 to 1: Proofing (custom and engraved only)
+  5. Owner: send a digital proof (Template 2) in Etsy Messages: engraving rendered in the chosen
+    font at scale, ring width, stone layout. Ask for a written "Approved" in Etsy Messages.
+  6. Owner: screenshot the approval with date and paste the approved text into the production board
+    by copy-paste, never retyped. The workshop engraves only from the board text marked
+    "Approved."
+  7. The clock risk: Etsy counts from your stated processing time, and informal agreements in
+    Messages to change ship dates do not count for Purchase Protection [Etsy policy, 2026-07-09]. If
+    the buyer is slow to approve, you still own the ship-by date. Build proof time inside the 5 to 7
+    days, or change processing only through Etsy's own tools, never by side agreement.
+  8. If no approval in 24 hours, send one reminder. If no reply in 48 hours, proceed with the text
+    exactly as ordered and say so in the reminder.
+ Day 1 to 5: Production batches (workshop)
+  9. Batch scheduling against about 10 rings per day: assign each order to a production day by
+    ship-by date, earliest first. Keep 2 slots per day (20%) unbooked for remakes and resizes. When
+    the 5-day forward board shows more than 40 booked rings, the owner lengthens processing time
+    on listings before dates are missed (house rule).
+  10. Casting, finishing, setting, engraving, stamping, polishing.
+  11. Workshop posts end-of-day status on the board before US close.
+ Day 5 to 6: QA, photo-before-ship, pack
+  12. Workshop runs the QA Checklist (Section 6). Two-person sign-off for orders over $1,000 (house
+    rule; the second person can be the fulfillment colleague).
+  13. Workshop or fulfillment sends the photo and video set to the owner in the shared order folder:
+    ring on a scale showing weight, karat stamp macro, engraving macro next to the approved proof,
+    ring on a mandrel showing size, ring in the box, plain outer box sealed with label visible.
+  14. Owner reviews the photo set and replies "OK to ship" on the board. House rule: review within
+    the next Istanbul morning so the US side has it before its own morning; if the ship-by date is
+    today and no reply has arrived by US midday, fulfillment ships on a passed QA checklist and the
+    owner reviews afterwards. Never miss a ship-by date waiting for an approval.
+
+
+Etsy Fine Jewelry Master Course | Module 6: Shipping, Fulfillment, Customer Service and Risk     Page 109
+ Day 6 to 7: Ship (fulfillment)
+  15. Buy the Etsy label (owner or fulfillment, in Shop Manager) on the chosen service; add
+    Shipsurance to full order value up to $5,000, and signature per Section 2.7. Etsy covers at most
+    $250 [Etsy Seller Handbook, 2026-05-07].
+  16. For pieces above $5,000, use Registered Mail at a Post Office or specialty insurance (Section
+    2.3, 2.6), then enter the tracking number on the Etsy order with the exact carrier name.
+  17. Plain outer packaging with no brand and no jewelry words (Shipsurance exclusion, Section 2.2).
+    Get the acceptance scan the same day; keep the drop-off receipt [ClickPost, 2026-10-22].
+  18. Owner sends the Shipping message (Template 4) the same day or the next Istanbul morning.
+ Day 7 to 12: Transit
+  19. Owner checks tracking daily. If tracking does not move for 48 hours, fulfillment opens a trace
+    with the carrier and the owner messages the buyer proactively (Template 5).
+ Delivery + 1 to 3 days
+  20. Owner sends the Delivery Follow-up (Template 6). Offer care guide and size exchange info.
+  21. Owner closes the order file: keep photos, tracking, label and insurance receipt, messages, proof
+    approval for at least 13 months (covers card-network chargeback windows; Etsy says it typically
+    gets 30 to 45 days to respond to the bank [S36: help.etsy.com, Etsy Help, 2026]).
+ Estimated delivery date setting: 5 to 7 processing + 3 to 5 transit means 8 to 12 business days.
+ Buyers have 30 days after the estimated delivery date to open a case and lateness counts at 7 or
+ more days after it [Etsy Seller Handbook, 2026-04-07], so set a conservative, honest window.
+
+
+ 6. QA CHECKLIST
+ Run by the workshop on every piece. Record result and initials in the order file; the photo items are
+ what the owner reviews remotely.
+ Metal and marks
+  • [ ] Karat matches the order (14K or 18K as purchased).
+  • [ ] Karat stamp present, legible, correctly placed (585 for 14K [Goldium, 2026-08-10]; 750 for
+    18K).
+  • [ ] Maker's mark present.
+  • [ ] Metal color matches order (yellow, white, rose).
+  • [ ] Weight recorded on calibrated scale; within your stated tolerance of the listing weight.
+ Size and fit
+  • [ ] Size measured on a calibrated mandrel; matches order (US size).
+  • [ ] Comfort fit or flat interior as listed.
+  • [ ] Width and thickness measured with calipers; match listing.
+ Engraving and personalization
+  • [ ] Engraving text matches the approved proof character by character (copy-paste from the board
+    entry marked "Approved," which was copied from Etsy Messages; never retype).
+  • [ ] Capitals, punctuation, dates, symbols, and font as approved.
+  • [ ] Engraving depth even and readable.
+ Stones (if any)
+  • [ ] Stone type, size, count match listing.
+
+
+Etsy Fine Jewelry Master Course | Module 6: Shipping, Fulfillment, Customer Service and Risk       Page 110
+  • [ ] Every stone tight: tap test, prongs checked under loupe, no snagging.
+  • [ ] Table and girdle free of chips.
+ Finish
+  • [ ] Polish uniform, no porosity, no casting pits, no tool marks.
+  • [ ] Edges smooth, no sharp burrs inside the shank.
+  • [ ] Clean: ultrasonic and steam, no compound residue.
+ Remote approval
+  • [ ] Photo and video set uploaded to the order folder (Section 5.4, step 13) and owner notified.
+  • [ ] Owner "OK to ship" recorded, or the ship-by fallback rule applied and noted.
+  • [ ] Second sign-off recorded for orders over $1,000.
+ Documentation and packing (fulfillment)
+  • [ ] Certificate or care card with karat and weight.
+  • [ ] Ring secured in box, box secured in rigid outer carton; no padded envelope above $500
+    [FedEx, read 2026-10-22].
+  • [ ] Outer packaging plain: no jewelry words, no brand, no branded tape. Shipsurance excludes
+    packaging that "alludes to the contents" [Shipsurance terms, read 2026-10-22]; FedEx advises
+    not describing contents on the label [FedEx, read 2026-10-22]; ClickPost advises a plain box with
+    tamper-evident tape on all seams [ClickPost, 2026-10-22].
+  • [ ] Copy of shipping label inside the inner box [FedEx, read 2026-10-22].
+  • [ ] Tamper-evident tape, H-taped seams [FedEx, read 2026-10-22].
+  • [ ] Etsy label shows Shipsurance to full value (or specialty insurance recorded) and signature
+    level per Section 2.7.
+  • [ ] Ship-from address on the label matches the ships-from location on the listing.
+  • [ ] Sealed-box photo with label and tape visible.
+
+ 7. MESSAGE TEMPLATES
+ Written for US buyers. Warm, premium, plain. Replace bracketed fields. Use the buyer's first name
+ in private messages only; never use buyer names in public review replies.
+ Template 1: Order confirmation
+
+ Hello [First name],
+
+
+ Thank you for choosing us. Your [14K yellow gold] ring is now in our workshop queue.
+
+
+ Please take a moment to confirm the details below. A quick "Confirmed" is all we need.
+
+ - Ring size: US [7]
+
+ - Gold: [14K yellow]
+
+ - Engraving: "[text exactly as ordered]"
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 6: Shipping, Fulfillment, Customer Service and Risk     Page 111
+ Your ring will be made to order in [5 to 7] business days by our US workshop partner and ships from
+ [US state] with tracking and insurance at no cost to you.
+
+
+ If you are unsure of your size, reply now and we will send our sizing guide before we begin.
+
+
+ Warmly,
+
+ [Name], [Shop]
+
+ Template 2: Proof approval
+
+ Hello [First name],
+
+
+ Your engraving proof is attached. It shows the text in [font] at the real size it will appear inside your
+ ring.
+
+
+ Please check every letter, space and date. Engraving is permanent, so we only begin once you reply
+ "Approved."
+
+
+ If we do not hear back within 48 hours, we will engrave exactly as written in your order so your ring
+ stays on schedule.
+
+
+ With care,
+
+ [Name]
+
+ Template 3: Delay notice (send before the ship-by date, never after)
+
+ Hello [First name],
+
+
+ We want to be honest with you. Your ring needs [one more day / two more days] at the bench because
+ [we are re-polishing the setting to our standard / a stone did not pass our inspection and we are
+ replacing it].
+
+
+ Your new dispatch date is [date], with delivery expected by [date]. We would rather send it a little
+ later than send it less than perfect.
+
+
+ If this timing does not work for a gift or event, tell us and we will find a solution together.
+
+
+ Sincerely,
+
+ [Name]
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 6: Shipping, Fulfillment, Customer Service and Risk          Page 112
+ Note: Etsy does not count informal Messages agreements as changing your ship date for protection
+ purposes [Etsy policy, 2026-07-09]. A delay notice preserves trust; it does not preserve your
+ metrics.
+ Template 4: Shipped
+
+ Hello [First name],
+
+
+ Your ring is on its way.
+
+
+ Carrier: [USPS / UPS / FedEx]
+
+ Tracking: [number]
+
+ Expected delivery: [date range]
+
+
+ Your package is fully insured. A signature [will / may] be required at delivery. If you will be away, you
+ can manage delivery through the carrier's tracking page.
+
+
+ The outer box is plain and unmarked for security.
+
+
+ Warmly,
+
+ [Name]
+
+ Template 5: Tracking pause
+
+ Hello [First name],
+
+
+ A quick update: the tracking on your package has not updated in the last two days. This happens from
+ time to time, and we have already opened a trace with [carrier].
+
+
+ Your ring is fully insured, and we are watching it daily. We will write again as soon as it moves. No
+ action is needed from you.
+
+
+ [Name]
+
+ Template 6: Delivery follow-up
+
+ Hello [First name],
+
+
+ Your ring shows as delivered. We hope it feels as good on your hand as it did leaving our bench.
+
+
+ A few things that come with it:
+
+
+
+Etsy Fine Jewelry Master Course | Module 6: Shipping, Fulfillment, Customer Service and Risk         Page 113
+ - Care: [link or short tips]
+
+ - Size exchange: if the fit is not right, you have one free size exchange. Just reply here.
+
+ - Lifetime care: [cleaning and polishing service details, if offered]
+
+
+ If anything is not perfect, please tell us first. We will make it right.
+
+
+ With gratitude,
+
+ [Name]
+
+ Template 7: "Where is my order"
+
+ Hello [First name],
+
+
+ Thank you for checking in. Here is where things stand:
+
+ - Status: [in production, final polish / shipped on (date)]
+
+ - Tracking: [number and link]
+
+ - Latest scan: [location and date]
+
+ - Expected delivery: [date]
+
+
+ I will message you again on [date] with the next update, whether or not you write first.
+
+
+ [Name]
+
+ Template 8: Tracking shows delivered, buyer has not received it
+
+ Hello [First name],
+
+
+ I am so sorry, and thank you for telling us right away. Tracking shows delivery on [date] at [time].
+
+
+ Could you check with neighbors, building staff or your mailroom, and look around the delivery area?
+ Sometimes carriers leave packages in a safe spot or with a neighbor.
+
+
+ In the meantime I am contacting [carrier] today and will update you within 24 hours. Your ring was
+ fully insured, so if it does not turn up, we will make this right.
+
+
+ [Name]
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 6: Shipping, Fulfillment, Customer Service and Risk       Page 114
+ Background: insurance claims for lost parcels need a 20-day wait (domestic) and must be filed
+ before cancelling the order [Etsy insurance help page, read 2026-10-22], and a case can open if
+ Help with Order is not answered within 48 hours [S37: etsy.com, Etsy Cases Policy, , updated
+ 2026-06-09]. Answer fast, but do not refund or cancel before the Shipsurance claim is filed.
+ Template 9: Size exchange (engraved or custom)
+
+ Hello [First name],
+
+
+ Of course. Your first size exchange is on us.
+
+
+ Here is how it works:
+
+ 1. We email you a prepaid return label.
+
+ 2. Pack the ring in its original box, inside a plain outer box.
+
+ 3. Once it arrives at our workshop, we resize and polish it within [x] business days and ship it back
+ with tracking and insurance.
+
+
+ Please confirm the new size. If you would like, we can mail a ring sizer first so you are certain.
+
+
+ [Name]
+
+ Note: Etsy USPS return labels are available for addresses within the 50 states [S4: etsy.com,
+ 2026-10-13]; returns go to the US partner address.
+ Template 10: Return (plain band, within 14 days)
+
+ Hello [First name],
+
+
+ Thank you for letting us know. Your plain band is eligible for return within 14 days of delivery.
+
+
+ Please ship it back in the original packaging, unworn, with tracking and insurance for the full value
+ [per shop policy on who pays return shipping, or: we will send you a prepaid return label]. We refund
+ within [x] business days of receiving and inspecting it.
+
+
+ If there is anything about the ring we could change instead, a different size, width or finish, tell us. We
+ would be glad to help.
+
+
+ [Name]
+
+ Template 11: Cancellation request
+
+ Hello [First name],
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 6: Shipping, Fulfillment, Customer Service and Risk          Page 115
+ Thank you for telling us quickly. [If not started:] Your ring has not entered production yet, so I have
+ cancelled the order and your full refund is on its way. [If started:] Your ring is already [cast / engraved]
+ for you. Because it is personalized, we cannot cancel at this stage, but we can [offer alternative per
+ policy].
+
+
+ [Name]
+
+ Template 12: Address change request (fraud-safe)
+
+ Hello [First name],
+
+
+ For your security, we can only ship to the address on your Etsy order. To use a different address, I will
+ cancel this order with a full refund, and you can place a new order with the correct address. Your place
+ in our production queue will be kept.
+
+
+ [Name]
+
+ This mirrors Etsy's own guidance that you may cancel, refund and ask the buyer to reorder with the
+ corrected address [Etsy policy, 2026-07-09].
+ Public review replies (no names, ever)
+  • Positive: "Thank you for wearing our work. It was made to order just for you, and we are glad it
+    found the right home."
+  • Critical: "We are sorry the experience fell short. We have messaged you privately and will make
+    this right."
+
+
+ 8. Etsy cases, Purchase Protection and chargebacks
+ 8.1 Purchase Protection for Sellers (version effective July 9, 2026)
+ Eligibility requirements, all must be met [S3: etsy.com, Etsy policy, , effective 2026-07-09, updated
+ 2026-06-09]:
+  • A. Meet minimum Customer Service Standards and reply to Help with Order within 48 hours.
+  • B. Accurate "ships from" location and valid tracking (or Etsy label). For this shop, ships-from must
+    be the US partner or fulfillment address.
+  • C. Etsy Payments.
+  • D. Ship to the Etsy order address; be alert to alternate addresses via Messages.
+  • E. Package carefully.
+  • F. Processing times set, ship within them, Estimated Delivery Date shown; informal date changes
+    in Messages do not count.
+  • H. All Shop Policies completed, especially returns, exchanges and custom orders.
+  • I. Good standing.
+  • J. DDP for US-bound international orders. Not relevant to this shop's domestic shipments [S3:
+    etsy.com, effective 2026-07-09].
+ Coverage:
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 6: Shipping, Fulfillment, Customer Service and Risk          Page 116
+  • Etsy may refund buyers up to $250 USD including shipping and Etsy-collected taxes; the seller is
+    responsible above $250 [same source].
+  • Since May 7, 2026, eligible orders above $250 get up to $250 coverage (example: Etsy covers
+    $250 of a $400 refund) [Etsy Seller Handbook, 2026-04-07]. Before that date, only orders of $250
+    or less were covered [same source]. One help-center version still reads as if orders over $250 are
+    excluded [S38: help.etsy.com, read 2026-10-22], while the en-us version says coverage applies
+    "even if the order total exceeds $250" [S25: help.etsy.com, read 2026-10-22]. The policy and
+    Handbook govern.
+  • Damaged items: only the first damage case per calendar year [Etsy policy, 2026-07-09].
+  • Not-as-described orders are excluded [same source].
+  • Etsy "strongly recommends purchasing insurance," and if you have carrier or third-party
+    coverage, claim there first [same source].
+  • Signature confirmation is not required by the current policy at any dollar value (Section 2.7).
+  • High-value orders are always reviewed by a person; Etsy is nearly doubling human reviewers
+    [Etsy Seller Handbook, 2026-04-07].
+  • Cases do not hurt shop ranking or Star Seller eligibility when the order qualifies [S1: etsy.com,
+    Etsy, 2026-05-07]. A secondary source lists "case rate from the past three months" as a ranking
+    factor [S39: listybox.com, Listybox, updated 2026-10-15]; these conflict, so avoid cases
+    regardless.
+ Customer Service Standards (secondary summary): message response rate, on-time shipping and
+ tracking, average review rating, case rate; under 300 orders no more than 3 cases refunded from
+ your account, at 300 or more orders case rate under 1% [S40: my-shop.co, mySHOP, 2026-09-05].
+ Basic messaging standard cited as 80% of first messages within 48 hours [Listybox, 2026-01-12].
+ Implication for a gold ring shop: on a $1,200 ring that goes missing, Etsy covers at most $250.
+ The remaining $950 is yours unless Shipsurance, carrier coverage or specialty insurance pays.
+ Insurance is not optional in this category.
+
+ 8.2 Case timelines
+  • Buyer must use Help with Order first; a case can open if the seller does not respond within 48
+    hours or the issue is not resolved in 48 hours [Etsy Cases Policy, 2026-06-09].
+  • Sellers must respond within 2 calendar days when Etsy requests information [same source].
+  • Buyers can open a case within 30 days after the estimated delivery date (changed from 100
+    days) [Etsy, 2026-05-07]; [S41: novadata.io, Nova, 2026-04-10]. For non-delivery the buyer waits
+    7+ days after the maximum estimated delivery date [S26: help.etsy.com, read 2026-10-22].
+  • Late = arriving 7 or more days after the estimated delivery date; tracking scans checked with at
+    least a two-day buffer [Etsy Seller Handbook, 2026-04-07].
+  • Outcomes for never-received or 7+ days late are generally not reviewable; damaged or
+    not-as-described outcomes can be disputed, with a decision in 1 to 3 business days [mySHOP,
+    2026-09-05].
+  • Only one dispute route: a chargeback blocks or closes an Etsy case [Etsy Cases Policy,
+    2026-06-09].
+  • File any Shipsurance claim before cancelling the order [Etsy insurance help page, read
+    2026-10-22].
+
+ 8.3 Item not received vs not as described
+
+
+
+Etsy Fine Jewelry Master Course | Module 6: Shipping, Fulfillment, Customer Service and Risk     Page 117
+  • Not received or very late: full refund to the buyer [Etsy Cases Policy, 2026-06-09]. Your defense is
+    tracking showing delivery, ideally with signature, at the Etsy order address, within the estimated
+    window.
+  • Not as described: significantly different color, size, model, material, undisclosed damage, false
+    authenticity claims, wrong quantity, shipping from a different location than advertised [same
+    source]. For gold, "material" means karat. A buyer who tests a ring and finds it is not the stated
+    karat has a strong case. Your defense is the karat stamp photo, assay or certificate, weight
+    photo, and the listing text. "Shipping from a different location than advertised" is why the
+    ships-from setting must match the US address actually used.
+  • Custom items: the Cases Policy does not address custom physical items specifically [same
+    source]. Your proof approval in Messages is the key evidence when a buyer later disputes
+    engraving.
+
+ 8.4 Chargebacks
+  • A chargeback is a dispute with the buyer's bank or card company; Etsy supplies information but
+    does not decide; Etsy cannot refund once a chargeback is filed; types include fraud, non-delivery,
+    not as described, and return [Etsy Help, Chargebacks, 2026].
+  • Etsy typically has 30 to 45 days to respond and may contact the seller for information on Etsy
+    Payments transactions [same source].
+  • Answer Etsy's chargeback information request the same day with the full evidence pack (Section
+    8.5). The owner handles this; the shared order folder means the evidence is reachable from
+    Türkiye.
+
+ 8.5 Evidence to keep for every order
+  • Order receipt and the address as shown on Etsy.
+  • All Etsy Messages (never move conversations off Etsy).
+  • Proof approval screenshot with date.
+  • QA record and photo set: weight on scale, karat stamp, engraving, size on mandrel, packed box,
+    sealed box with label.
+  • Owner "OK to ship" record.
+  • Etsy label, Shipsurance or other insurance confirmation, signature service purchased.
+  • Tracking history including delivery scan and signature image (download it; carriers purge).
+  • For returns and exchanges: inbound tracking and an unboxing video on arrival at the US address.
+ ClickPost recommends photographing item, box and label before sealing and keeping the drop-off
+ receipt for claims [ClickPost, 2026-10-22].
+
+ 8.6 Reserves
+  • Primary source: Etsy can apply a fixed reserve (a percentage of sales held on a rolling basis) or a
+    variable reserve (delay up to 180 days or deduct for up to 90 days); holds can last until the
+    shorter of 180 days after estimated delivery or the end of an investigation [S42: etsy.com, last
+    updated 2026-07-31]. Etsy may apply a reserve to new sellers with no track record [S43:
+    help.etsy.com, read 2026-10-22], and may place reserves after unusual activity or elevated risk
+    [S10: etsy.com, 2026-10-05].
+  • Secondary: triggers include a rapid increase in order volume, shipments lacking tracking,
+    shipping delays, more refund requests, and a first sale; funds release when tracking is added and
+    Etsy verifies transit, or when the default holding period passes; Star Seller status may help [S44:
+
+
+
+Etsy Fine Jewelry Master Course | Module 6: Shipping, Fulfillment, Customer Service and Risk      Page 118
+     alura.io, Alura, undated; uses 2022 data]. UNVERIFIED (pre-2025 data).
+  • Tactic: use Etsy labels so tracking posts the moment the label is bought, and grow volume
+    steadily rather than with one huge campaign spike.
+
+
+ 9. Fraud patterns in high-ticket jewelry
+ Sourced points:
+  • Alternate addresses sent through Messages are Etsy's named fraud warning; cancel, refund and
+    ask for a reorder [Etsy policy, 2026-07-09].
+  • Fraud is a named chargeback type (cardholder says they did not authorize) [Etsy Help,
+    Chargebacks, 2026].
+  • Indirect signatures let a neighbor or concierge sign; direct or adult signature is recommended for
+    high-value shipments [ClickPost, 2026-10-22].
+  • Shipsurance claims for lost parcels need a carrier tracer and a recipient-signed statement
+    [Shipsurance terms, read 2026-10-22]; a buyer unwilling to sign one is a warning sign.
+ Shop rules (operational practice, not sourced statistics):
+  • Never ship to an address that differs from the Etsy order.
+  • Red flags that justify a hold and a polite verification message: new account with first order above
+    $1,000; billing and shipping in different states with a freight forwarder or reshipper address;
+    requests to rush to a different address; requests to change address after dispatch (refuse; let the
+    carrier's own redirect process and the buyer handle it, and note that redirects can void your
+    evidence); requests to communicate or pay off Etsy; multiple high-value orders in a short window
+    with different names to one address.
+  • If in doubt, cancel and refund before production. A cancelled sale costs a fee; a fraudulent $1,500
+    ring costs the ring.
+  • Use signature confirmation on high-value orders per the Section 2.7 recommendation, and
+    always when your insurer requires it.
+  • Never lower the insured value or mark a parcel as a gift at a buyer's request.
+  • The workshop and fulfillment never act on buyer instructions that did not come through the
+    owner and Etsy Messages.
+
+
+ 10. CASE PREVENTION
+  1. Use an Etsy label with valid tracking on every order. It marks the order shipped and
+    satisfies the Purchase Protection tracking requirement automatically [S4: etsy.com, 2026-10-13].
+  2. Answer Help with Order within 48 hours, every time, and all first messages within 24
+    hours for Star Seller (95% over a rolling three months, including weekends and holidays)
+    [Craftybase, 2026-04]. Auto-replies count [same source]; set one for nights in both time zones
+    and for Turkish and US public holidays, and name a backup responder (Section 5.3).
+  3. Dispatch inside processing time with valid tracking. Star Seller requires 95%+ on-time
+    shipping with tracking, 4.8+ average rating and at least 5 orders in the window; arrival date does
+    not matter, dispatch date does [Craftybase, 2026-04]. Ship-by is judged in the shop's US time
+    zone [Shipink, 2026-08-25].
+  4. Set an honest Estimated Delivery Date. The 30-day case window starts from it [Nova,
+    2026-04-10].
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 6: Shipping, Fulfillment, Customer Service and Risk     Page 119
+  5. Insure every order to full value: Shipsurance on the Etsy label up to $5,000, Registered Mail
+    or specialty insurance above that (ClickPost names Parcel Pro and Jewelers Mutual [ClickPost,
+    2026-10-22]). Etsy pays at most $250.
+  6. Ship in plain outer packaging, or the Shipsurance claim can be excluded [Shipsurance terms,
+    read 2026-10-22].
+  7. Complete every Shop Policy field, especially returns, exchanges and custom orders [Etsy
+    policy, 2026-07-09].
+  8. Write listings that match the product exactly: karat, weight range, width, stone specs,
+    made-to-order timing, size exchange terms, accurate ships-from and production partner
+    disclosure.
+  9. Proof every engraving in writing in Etsy Messages.
+  10. Proactive messages at every stage (Templates 1 to 6). Most "where is my order" cases
+    start with silence.
+  11. Fix money issues in Messages fast (small defect, missing package) before a case or
+    chargeback, while respecting the insurer's rule to file before cancelling.
+  12. Offer a sizer before production for buyers unsure of size; sizing is the top reason for returns
+    in rings.
+
+
+ 11. Warranty, care, resizing, lifetime service as trust levers
+ No 2025-2026 source with Etsy-specific data on warranty programs was gathered. The following is
+ strategy, clearly labeled as such:
+  • One free size exchange on custom and engraved rings is already your policy. Put it in the
+    listing's first lines, in Template 1 and in Template 6. It answers the biggest objection to buying a
+    ring online.
+  • Lifetime cleaning and polish (buyer pays tracked shipping to the US workshop, you pay return
+    shipping) creates a reason to contact you again and an opportunity to cross-sell.
+  • Manufacturing warranty (e.g., 12 months on casting defects and stone settings) signals
+    confidence. Etsy notes sellers remain responsible for warranty or return obligations under local
+    law [Etsy policy, 2026-07-09], so write it precisely, and agree with the production partner in
+    writing who pays for warranty remakes.
+  • Care card in every box: remove before chlorine, store separately, polish cloth.
+  • Anniversary message at 11 months: offer a complimentary polish, a matching band, or
+    engraving on a new piece.
+  • Returns logistics: returns and exchanges go to the US partner or fulfillment address, and Etsy
+    USPS return labels are available within the 50 states [S4: etsy.com, 2026-10-13]. Fulfillment films
+    the unboxing and sends it to the owner the same day.
+
+
+ 12. COMMON MISTAKES
+  1. Using branded boxes or tape on the outside. Shipsurance excludes packaging that alludes
+    to the contents [Shipsurance terms, read 2026-10-22].
+  2. Using padded envelopes for jewelry over $500 [FedEx, read 2026-10-22].
+  3. Using UPS for gold rings without a written UPS answer. UPS lists jewelry and precious
+    metals as restricted, contract only [UPS prohibited items page, read 2026-10-22].
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 6: Shipping, Fulfillment, Customer Service and Risk       Page 120
+  4. Assuming FedEx will insure the ring. FedEx caps jewelry declared value at $1,000 per
+    package and does not provide insurance [FedEx, read 2026-10-22].
+  5. Assuming Etsy covers a $1,500 ring. Etsy covers up to $250 [Etsy, 2026-05-07].
+  6. Relying on the $100 included coverage. Add Shipsurance to full value [Etsy insurance help
+    page, read 2026-10-22].
+  7. Cancelling or refunding before filing the Shipsurance claim [same source].
+  8. Skipping signature on a required-signature shipment, which voids the Shipsurance claim
+    [Shipsurance terms, read 2026-10-22].
+  9. Wrong carrier selected in Etsy's tracking dropdown when a label is bought outside Etsy, so
+    the buyer sees no tracking [Shipink, 2026-08-25].
+  10. Marking shipped by Istanbul time. On-time is judged by end of the ship-by day in the
+    shop's time zone [Shipink, 2026-08-25].
+  11. Agreeing to a new ship date in Messages and thinking it protects you. It does not [Etsy
+    policy, 2026-07-09].
+  12. Shipping to a new address the buyer typed in Messages [Etsy policy, 2026-07-09].
+  13. Missing the 48-hour Help with Order reply on a weekend, a Bayram or a US holiday. Set
+    the auto-reply and name a backup.
+  14. Holding a shipment for the owner's photo approval past the ship-by date. Use the
+    fallback rule in Section 5.4.
+  15. Inaccurate ships-from or missing production partner disclosure [S10: etsy.com,
+    2026-10-05]; "shipping from a different location than advertised" is also a not-as-described
+    ground [Etsy Cases Policy, 2026-06-09].
+  16. Sharing the owner's Etsy password with the workshop or colleague instead of using shop
+    member roles (recommendation, Section 5.1).
+  17. Letting unused labels expire unrefunded. USPS 10 days, UPS 14 days, FedEx 10 days [S4:
+    etsy.com, 2026-10-13].
+
+
+ 13. Quick reference numbers
+  Item                                Value                                               Source, date
+
+  Etsy Purchase Protection cap        $250 per order, applies to larger orders since      Etsy, 2026-04-07
+                                      May 7, 2026
+
+  Help with Order reply               48 hours                                            Etsy policy, 2026-07-09
+
+  Case window                         30 days after estimated delivery                    Etsy, 2026-05-07
+
+  Late threshold                      7+ days after estimated delivery                    Etsy, 2026-04-07
+
+  Star Seller                         95% messages in 24h, 95% on-time with               Craftybase, 2026-04
+                                      tracking, 4.8+ rating, 5+ orders, rolling 3
+                                      months
+
+  Etsy label included coverage        USPS $100; FedEx up to $100; UPS Ground             Etsy label help pages, read
+                                      Saver $20                                           2026-10-22
+
+  Shipsurance via Etsy labels         up to $5,000; $0.80 per $100 (domestic)             Etsy Help, read 2026-10-22
+
+  Shipsurance claim timing            within 120 days; lost: wait 20 days; file           Etsy Help, read 2026-10-22
+                                      before cancelling
+
+  USPS Priority / Priority Express    $100 included; up to $5,000                         USPS DMM 503, read 2026-10-22
+  insurance
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 6: Shipping, Fulfillment, Customer Service and Risk                            Page 121
+  Item                                Value                                               Source, date
+
+  USPS Registered Mail                insured up to $50,000; from $20.90; Post            USPS, read 2026-10-22
+                                      Office only
+
+  USPS Signature Confirmation         $4.15 online, $5.15 retail; Adult Signature         USPS, read 2026-10-22
+                                      $9.70
+
+  FedEx jewelry declared value        $1,000 per package; no insurance                    FedEx, read 2026-10-22
+  cap
+
+  FedEx Declared Value                up to $100,000; $500+ triggers Direct               FedEx, read 2026-10-22
+  Advantage                           Signature Required
+
+  UPS jewelry                         restricted, contract only; $1,000+ needs            UPS, read 2026-10-22; UPS Terms,
+                                      high-value summary                                  eff. 2026-04-17
+
+  Priority Mail 1 lb commercial       $9.44 (zone 1) to $16.07 (zone 8)                   USPS Notice 123, eff. 2026-10-04
+
+  Unused label refund window          USPS 10 days, UPS 14 days, FedEx 10 days            Etsy shipping policy, 2026-10-13
+
+  Time difference                     Istanbul 7 to 8 hours ahead of New York             n/a
+
+
+
+ 14. Gaps and items to verify
+  • UPS domestic jewelry declared value cap ($500 reported by a third party) not confirmed in the
+    UPS terms text retrieved. Ask UPS in writing.
+  • U-PIC and UPS Capital InsureShield 2026 terms for jewelry not retrieved.
+  • USPS insurance fee table for $500 to $5,000 values and Registered Mail fees above the $20.90
+    starting price not retrieved; unclear whether Notice 123 prices include the temporary 8%
+    increase Etsy mentions.
+  • Whether Shipsurance add-on coverage replaces or stacks with the $100 carrier-included
+    coverage is not stated.
+  • USPS, UPS and FedEx domestic transit day standards for each zone not gathered; confirm that
+    the chosen service fits the 3 to 5 business day promise.
+  • No 2025-2026 primary source confirms the historic Etsy signature-over-$250 rule was formally
+    retired; current documents simply do not include it.
+  • Two Etsy help-center versions of the Purchase Protection article conflict on orders over $250; the
+    policy (effective July 9, 2026) and the April 7, 2026 Handbook are treated as authoritative.
+  • No Etsy primary source on account risk from logging in from abroad or via VPN.
+  • Current Etsy reserve triggers (only pre-2025 secondary data; primary policy covers mechanics
+    only).
+  • US FTC karat marking rules (not researched in 2025-2026 sources).
+  • Written agreement with the production partner on remakes, warranty costs and loss in the
+    workshop's custody: not a platform question, but needed.
+
+
+ Module 6 sources
+ Numbered sources cited in this module as [S#]. All accessed 22 October 2026.
+ S1. https://www.etsy.com/seller-handbook/article/1154295715006
+ S2. https://www.etsy.com/seller-handbook/article/1085799204521
+ S3. https://www.etsy.com/legal/policy/purchase-protection-program-for-sellers/34509585385
+ S4. https://www.etsy.com/legal/shipping/
+ S5. https://help.etsy.com/hc/en-us/articles/360001988847-Insurance-and-Claims-for-Shipping-Labels
+ S6. https://pe.usps.com/text/dmm300/Notice123.htm
+
+
+
+Etsy Fine Jewelry Master Course | Module 6: Shipping, Fulfillment, Customer Service and Risk                         Page 122
+ S7. https://help.etsy.com/hc/en-us/articles/360000336887-USPS-Shipping-Labels-on-Etsy
+ S8. https://support.pirateship.com/en/articles/15453569-july-2026-usps-rate-and-rule-changes
+ S9. https://www.etsy.com/news/newly-crafted-how-weare-investing-in-seller-success-fall-2026
+ S10. https://www.etsy.com/legal/sellers/
+ S11. https://help.etsy.com/hc/articles/360000337447
+ S12. https://help.etsy.com/hc/en-gb/articles/18309523715735-UPS-Postage-Labels-on-Etsy
+ S13. https://help.etsy.com/hc/articles/360000336547
+ S14. https://www.etsy.com/shipping
+ S15. https://shipink.io/blog/etsy-shipping-order-management-guide/
+ S16. https://www.shipsurance.com/etsy/terms
+ S17. https://pe.usps.com/text/dmm300/503.htm
+ S18. https://www.usps.com/ship/insurance-extra-services.htm
+ S19. https://www.ups.com/us/en/support/shipping-support/shipping-special-care-regulated-items/prohibited-items.page
+ S20. https://assets.ups.com/adobe/assets/urn:aaid:aem:c6bf8a2f-018f-4aa0-838b-ffc1a75eb1d9/original/as/terms-carriage-us-
+ en.pdf
+ S21. https://www.shipaid.com/blogs/ecommerce-shipping/ups-jewelry-insurance-limit-protecting-high-value-dtc-shipments
+ S22. https://www.fedex.com/en-us/shipping/how-to-ship-jewelry.html
+ S23. https://www.fedex.com/en-us/shipping/declared-value.html
+ S24. https://www.clickpost.ai/en-us/blog/shipping-jewelry
+ S25. https://help.etsy.com/hc/en-us/articles/5850122619287-What-is-Etsy-s-Purchase-Protection-for-Sellers
+ S26. https://help.etsy.com/hc/articles/360016126873
+ S27. https://valueaddedresource.net/etsy-automatically-refunding-claims-over-250
+ S28. https://hts.usitc.gov/reststop/search?keyword=7113.19.50
+ S29. https://taxnews.ey.com/news/2026-1607-ustr-finalizes-section-301-forced-labor-tariffs-on-60-economies-additional-tariffs-
+ of-10-percent-or-125-percent-take-effect-24-july-2026
+ S30. https://content.govdelivery.com/accounts/USDHSCBP/bulletins/3f01456
+ S31. https://sanayigazetesi.com.tr/mikro-ihracat-etgb/
+ S32. https://www.goldium.com.tr/blogs/goldium-blog/mucevher-ihracati-nasil-yapilir
+ S33. https://help.etsy.com/hc/en-us/articles/360001987487-Information-for-Managing-International-Shipments
+ S34. https://www.etsy.com/legal/creativity
+ S35. https://craftybase.com/blog/how-to-become-etsy-star-seller
+ S36. https://help.etsy.com/hc/en-us/articles/4403482405527-Chargebacks-on-Etsy
+ S37. https://www.etsy.com/legal/policy/cases-policy/243306189901
+ S38. https://help.etsy.com/hc/articles/5850122619287
+ S39. https://listybox.com/blog/etsy-customer-service-star-seller-response-time-guide/
+ S40. https://my-shop.co/blog/etsy-purchase-protection-2026-eligibility/
+ S41. https://novadata.io/resources/news/etsy-purchase-protection-overhaul-april-2026
+ S42. https://www.etsy.com/legal/etsy-payments
+ S43. https://help.etsy.com/hc/articles/360046998234
+ S44. https://alura.io/docs/article/understanding-etsy-payment-account-reserves
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 6: Shipping, Fulfillment, Customer Service and Risk                           Page 123
+

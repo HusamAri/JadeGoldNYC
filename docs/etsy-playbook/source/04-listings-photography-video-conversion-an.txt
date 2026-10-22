@@ -1,0 +1,929 @@
+ Module 4: Listings, Photography, Video,
+ Conversion and Reviews
+ Module for: EON Fine Jewelry and Artifact Studio Jewelry (made-to-order personalized solid gold rings
+ and fine jewelry, made in the US by a US partner workshop, shipped domestically to US buyers, US
+ Etsy shop managed remotely from Türkiye, real photography). Research date: 2026-10-22.
+
+
+ How to read this module
+  • Every fact carries an inline source and date. "Etsy help page, undated, retrieved 2026-10-22"
+    means the live Etsy Help Center page showed no publish date but was read on the research date.
+    That counts as confirmed current.
+  • Third-party numbers (tool vendors, blogs) are labelled as third party. They are useful for
+    orientation, not as Etsy policy.
+  • Anything only supported by a pre-2025 source sits in the "UNVERIFIED (pre-2025)" section at the
+    end, with its date.
+  • Search budget note: the session's web search allowance ran out near the end of research. A few
+    topics (Etsy FAQ and About character limits, Etsy return policy template specifics, Baymard
+    primary data) could not be pulled from primary sources. They are listed under Gaps.
+
+
+ 1. The single biggest change this week: Etsy's Listing Image
+ Requirements (updated 22 Oct 2026)
+ This was updated on the research date itself and changes how a jewelry shop must build its photo
+ set.
+  • "For most products, you must include at least one unedited photo of the actual item against a
+    real background." [S1: etsy.com, last updated 2026-10-22]
+  • "Do not use photo editing software or AI tools to alter this required photo." [same, 2026-10-22]
+  • The policy does not say which slot the unedited photo must occupy. It requires "at least one."
+    [same, 2026-10-22]
+  • Images must accurately show the item's color, condition, scale and materials. Misleading edits
+    that hide flaws or alter appearance are prohibited. [same, 2026-10-22]
+  • Customized and made-to-order items: "use photos of real, finished items you've made in the
+    past." [same, 2026-10-22]
+  • AI and editing tools are allowed on the other images as long as the final image accurately
+    represents the physical product. Allowed: adjusting lighting, exposure or color to match real life;
+    cropping, resizing, straightening; cleaning up or replacing the background if the product is still
+    accurately shown. Prohibited: changing actual color, texture or condition; removing or hiding
+    defects; "Using AI to change the core design or features of a physical item." [same, 2026-10-22]
+  • Consequences: if the item received is materially different from the image and the buyer opens a
+    case, Etsy may refund the buyer and "you may be responsible for the refund amount." Etsy may
+    remove misleading listings, and repeated violations can lead "up to and including shop removal."
+    [same, 2026-10-22]
+  • Etsy's seller email of the same day adds: all photos must "accurately represent what a buyer will
+    receive"; Etsy will give guidance when sellers add photos; it is investing in tools to detect
+    misleading images; and a new member reporting option lets people flag listings they believe use
+
+
+Etsy Fine Jewelry Master Course | Module 3: Etsy Search, SEO and Keyword Research                  Page 66
+     AI imagery misleadingly. Initially those reports are used to understand concerns and will not
+     trigger immediate enforcement. [S2: sellersasksellers.com, Etsy email of 2026-10-22 as reposted
+     at , 2026-10-22]
+ What it means for gold rings: the shop needs, in every listing, one straight-out-of-camera photo of
+ the real ring on a real surface (wood, linen, stone, a hand). A seamless white AI-cleaned background
+ on the hero is fine as long as there is also one unedited photo elsewhere in the set. Do not AI-recolor
+ a 14K yellow ring into rose or white gold to fake a variation. Shoot each metal color.
+
+ Related rules that already applied
+  • Seller Policy: listing photos and video must be your own, "not stock photos, artistic renderings, or
+    photos used by other sellers or sites," with exceptions for custom items and production-partner
+    items per the image requirements. [S3: etsy.com, last updated 2026-10-05]
+  • Seller Policy: you must "Accurately represent your items," including "country of origin,
+    provenance, attributes, components or materials," and give "An accurate representation of how
+    the item was made, by whom, and where it is being shipped from." [S3: etsy.com, 2026-10-05]
+  • Seller Policy: AI-created items and production partners must be disclosed in relevant listings. [S3:
+    etsy.com, 2026-10-05]
+  • Creativity Standards: "Sellers must disclose within their listing description if an item is created
+    with the use of AI." Made-by-seller items require "original photo or video content of the final
+    product." For personalized or custom items such as engraved goods, the first image must show a
+    finished customized item, not a blank or placeholder text. [S4: etsy.com, last updated
+    2025-06-10]
+  • Personalization help page: for personalized commercial items such as engraved or
+    monogrammed products, "the primary image must show a finished, personalized item similar to
+    the final product." Blank product images or mockups with placeholder text cannot be the main
+    image. [S5: help.etsy.com, undated, retrieved 2026-10-22]
+ Practical reading for jewelry: if a CAD render or AI-generated design concept is used to sell a ring
+ that has not been made yet, it fails both "real, finished items you've made in the past" and the
+ Seller Policy ban on "artistic renderings." If AI helped design the piece itself, disclose it in the
+ description. Third-party commentary (not Etsy policy) suggests disclosing AI lifestyle scenes even
+ where not strictly required. [S6: listadum.com, 2026-05-11]
+
+
+ 2. Image specifications
+  Spec                Value                                                 Source
+
+  Max photos per      Up to 20                                              [S7: etsy.com, 2025-08-26]; also [S8:
+  listing                                                                   help.etsy.com, undated, retrieved 2026-10-22]
+
+  Recommended         At least 2,000 px width and height                    [S7: etsy.com, 2025-08-26]; [S9: help.etsy.com,
+  size                                                                      retrieved 2026-10-22]
+
+  First photo         At least 635 x 635 px "to avoid ranking lower in      same two sources
+  minimum             search"
+
+  Orientation         First photo horizontal or square; later photos        [S9: help.etsy.com, retrieved 2026-10-22]
+                      should match its shape. The help page also
+                      says "Avoid square crops" and recommends
+                      horizontal or landscape
+
+  Thumbnail           Etsy crops listing images into square, portrait       same
+  behavior            and landscape thumbnails; shoot wider than
+                      needed, center the subject, leave border, then
+                      use the thumbnail adjustment tool
+
+
+
+Etsy Fine Jewelry Master Course | Module 4: Listings, Photography, Video, Conversion and Revi                       Page 67
+  Spec                Value                                                 Source
+
+  File size           Files over 1 MB may fail to upload, especially on     same
+                      slow connections
+
+  Formats             .jpg, .gif, .png, .svg, .heic. Animated GIF and       same
+                      transparent PNG not supported; transparent
+                      areas show black
+
+  Color profile       Convert to sRGB; CMYK is print only                   same
+
+  Alt text            Up to 250 characters per photo (third party)          [S10: everlysthq.com, verified 2026-05-15]
+
+ Third-party crop guidance (not Etsy): one guide gives the search thumbnail as 570 x 456 px (5:4)
+ and recommends 2000 x 2000 or 2700 x 2025 (4:3) source files, noting Etsy "may crop images
+ differently (square, 4:3, or 5:4) depending on placement." The same guide is internally inconsistent,
+ so treat it as orientation only. [S11: outfy.com, updated 2026-07-15]
+ Working standard for the shops: export every image at 3000 x 2400 px (5:4) or 3000 x 2250 (4:3)
+ with the ring occupying the central 60 percent, so square, 4:3 and 5:4 crops all keep the full ring.
+ Save as sRGB JPG, quality tuned to stay near or under 1 MB.
+
+ Shop-level image sizes (Etsy help)
+ Logo 500 x 500; profile photo 400 x 400; order receipt banner 760 x 100 minimum; mini banner
+ 1600 x 213 recommended (1200 x 160 minimum); big banner 1600 x 400 recommended (1200 x
+ 300 minimum); carousel and collage banners are Etsy Plus only. [S9: help.etsy.com, retrieved
+ 2026-10-22]
+
+
+ 3. Video specifications
+  Spec              Value                                                      Source
+
+  Videos per        One                                                        [S12: help.etsy.com, undated, retrieved
+  listing                                                                      2026-10-22]
+
+  Length            3 to 15 seconds                                            same
+
+  Max file size     100 MB                                                     same
+
+  Resolution        Minimum 500 px, ideally at least 1080 px                   same
+
+  Aspect ratio      Page states "2:1 or 1:2"                                   same
+
+  Formats           MP4, MOV, FLV, AAC, AVI, 3GP, MPEG                         same
+
+  Sound             Audio is removed on upload                                 same
+
+  Search effect     Etsy says videos help shoppers and "can improve            same
+                    how listings appear in Etsy search"
+
+ Third-party guides list 5 to 15 seconds; Etsy's own page says 3 to 15. Use Etsy's figure. [S10:
+ everlysthq.com, 2026-05-15]
+ Third-party claim (unsourced): video listings convert 20 to 40 percent higher. No Etsy data backs
+ that number; do not quote it as fact. [S13: listingview.io, 2026-06-23]
+ Video brief for a gold ring (silent, 10 to 15 s, vertical 1080 x 1920 or as the uploader accepts):
+  1. 0 to 3 s: ring rotating slowly on a turntable, raking light so the gold "flows."
+  2. 3 to 7 s: macro push-in on the engraving, readable.
+  3. 7 to 12 s: ring slid onto a finger, hand turns to catch light, shows scale against knuckle.
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 4: Listings, Photography, Video, Conversion and Revi                       Page 68
+  4. 12 to 15 s: ring placed in the open box. Since sound is stripped, any text must be on screen and
+    minimal.
+
+
+ 4. What the first photo must do
+  • It is the search thumbnail: "The first photo on your listing is the thumbnail shoppers will see."
+    [S14: etsy.com, 2025-08]
+  • Avoid text overlays, collages or image collections as the first thumbnail. [S7: etsy.com,
+    2025-08-26]
+  • Search considers the first photo as part of its overall view of a listing; the AI title tool also reads
+    the first photo. [S15: etsy.com, 2025-08-26]; [S16: etsy.com, 2026-04-27]
+  • For an engraved item, the first photo must show a finished personalized piece. [S5:
+    help.etsy.com, retrieved 2026-10-22]
+ Job of the hero for a fine gold ring: in a 200 px tile, identify the object (ring), the metal color, the
+ defining feature (engraving, enamel, profile) and the quality tier in under one second. That means:
+ single ring, filling about 60 percent of the frame, three-quarter angle showing both the top and the
+ band profile, engraving legible or at least visible, clean neutral or warm surface, no props
+ competing.
+
+
+ 5. PHOTO SHOT LIST FOR GOLD RINGS
+ Etsy's general guidance: multiple angles, close-ups of details and textures, lifestyle or worn images,
+ natural light without flash, simple neutral backgrounds. [S7: etsy.com, 2025-08-26]
+ Etsy jewelry case study (Anueva Jewelry): shoot near a window around 1 to 2 pm rather than under
+ flat artificial light; move the piece if a reflection appears in a stone; avoid direct sun (except opal);
+ bounce light with white poster board; avoid busy woven backgrounds; plain board for sparkly or
+ milled pieces, woodgrain for natural styles; macro lens on a tripod because "even your breathing
+ can blur the image"; burst shooting if handheld; manual mode, at least f/4.5 for close-ups; around
+ f/5.6 for on-hand shots. [S17: etsy.com, page dated 2026-09-29]
+ Video guidance for jewelry from Etsy's merchandising team is to show items on a model for scale
+ and movement, and for custom items to show the personalization process. That page is from 2024
+ (see Unverified section).
+ Recommended 20-slot plan (use at least 10; slots 1 to 9 are the core):
+
+  #      Shot                               Purpose                          Notes for gold
+
+  1      Hero, three-quarter angle,         Thumbnail, CTR                   Finished personalized ring. Soft diffused light
+         engraved                                                            with one black or dark card reflected into the
+                                                                             band so polished gold reads as gold, not white
+                                                                             glare.
+
+  2      On-hand, natural pose              Scale and desire                 Same ring, real hand, neutral manicure, ring
+                                                                             finger. Shoot with the hand angled so the
+                                                                             band width is legible.
+
+  3      Engraving macro                    Proof of quality                 Inside or outside engraving, sharp edge to
+                                                                             edge. Focus stack if depth of field is too thin.
+
+  4      Profile / side view                Band width and height            Shows thickness, comfort fit, dome or flat.
+
+  5      Unedited real-background           Policy compliance                Straight from camera, real surface. Required
+         photo                                                               since 2026-10-22. Can double as slot 2 or 6 if
+                                                                             truly unedited.
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 4: Listings, Photography, Video, Conversion and Revi                          Page 69
+  #      Shot                               Purpose                          Notes for gold
+
+  6      Metal color options                Variation clarity                Real yellow, white and rose rings side by side.
+                                                                             Never AI-recolored.
+
+  7      Size and scale reference           Reduce "smaller than             Ring next to a ruler in mm, or on hand next to
+                                            expected" returns                a coin. State band width in the caption.
+
+  8      Hallmark close-up                  Trust                            Karat stamp (for example 14K or 585) and
+                                                                             maker mark inside the band.
+
+  9      Packaging / unboxing               Gift intent                      The real box, pouch, card and certificate as
+                                                                             shipped.
+
+  10     Stacking / lifestyle               AOV, styling                     Ring stacked with others from the shop,
+                                                                             linking to other listings.
+
+  11     Personalization guide graphic      Fewer errors                     Font samples, character limits, where
+                                                                             engraving sits. Text graphics allowed
+                                                                             anywhere except slot 1.
+
+  12     Size chart / sizing infographic    Fewer resizes                    US sizes with inner diameter in mm, how to
+                                                                             measure, sizer offer.
+
+  13     Karat and materials                Trust                            Karat, gold purity percent, approximate weight
+         infographic                                                         in grams, stone specs, nickel-free statement if
+                                                                             true.
+
+  14     Care and warranty card             Reassurance                      Care steps, warranty term, resizing policy.
+
+  15     Making process                     Story and handmade proof         Bench shot in the US partner workshop:
+                                                                             engraving, polishing.
+
+  16     Real buyer photo (with             Social proof                     Pull from photo reviews, ask the buyer first.
+         permission)
+
+  17     Enamel detail (enamel pieces)      Color accuracy                   Shoot under daylight-balanced light, include a
+                                                                             gray card frame for your own calibration.
+
+  18 t   Alternate angles, couple set,      Coverage                         Fill only if each adds information.
+  o 20   gift scene
+
+ Lighting and color for gold (technique guidance; no 2025 to 2026 primary source found beyond
+ Etsy's case study):
+  • Large diffused source (window with diffusion or a softbox) plus white and black cards. Gold
+    reflects its surroundings; the black card creates contrast lines that read as "polished metal."
+  • Lock white balance (custom white balance off a gray card). Auto white balance turns yellow gold
+    green or orange as the frame changes.
+  • Do not oversaturate yellow gold in editing. That is precisely the "changing the product's actual
+    color" Etsy prohibits. [S1: etsy.com, 2026-10-22]
+  • Shoot all variants in one session with identical settings so metal colors are comparable across the
+    set.
+
+
+ 6. Listing anatomy
+ 6.1 Title
+ Etsy guidance as of April 2026 [S16: etsy.com, 2026-04-27]:
+  • Name the item clearly, using the noun once.
+  • Put the top three descriptors for the category first (usually color, material, size).
+  • Fewer than 15 words.
+
+
+
+Etsy Fine Jewelry Master Course | Module 4: Listings, Photography, Video, Conversion and Revi                        Page 70
+  • Occasions or recipients only when essential.
+  • Move subjective words ("perfect," "beautiful") to the description.
+  • No repeated words; no price, shipping or sale wording.
+  • An optional AI title tool suggests titles from the current title, first photo and description, English
+    listings only, in the search visibility dashboard. Etsy recommends downloading a CSV of listings
+    before changing titles and reverting if needed.
+ Character limit: 140 characters (third party). [S18: outfy.com, 2026-07-22]
+ Example (EON): "14K Solid Gold Engraved Signet Ring, Custom Initial Ring, Personalized Heirloom
+ Ring" (12 words). Example (Artifact Studio): "18K Gold Enamel Stacking Ring, Green Enamel Band,
+ Handmade Fine Jewelry".
+
+ 6.2 Tags and attributes
+  • 13 tags, multi-word natural phrases, vary across what it is, how it's made, who it's for. If an
+    attribute already covers a phrase, no need to repeat it as a tag. [S7: etsy.com, 2025-08-26]
+  • Tags up to 20 characters each (third party). [S18: outfy.com, 2026-07-22]
+  • Fill material, primary and secondary color, occasion, and any category-specific attributes
+    unlocked by choosing a precise category. [S7: etsy.com, 2025-08-26]
+
+ 6.3 Description
+ Etsy guidance: put essential info (sizes, dimensions, colors, ordering directions) at the top; keywords
+ naturally in the first few sentences; do not copy the title or list keywords; include dimensions,
+ materials, care and customization; tell the story; use bullets or short paragraphs. [S7: etsy.com,
+ 2025-08-26]
+ Length: about 10,000 characters, with only the first 160 reliably shown in previews (third party).
+ [S18: outfy.com, 2026-07-22]
+ What a US buyer of fine gold needs to see (derived from Etsy's materials accuracy rule and US
+ marking law context):
+  • Karat and alloy, stated precisely. Seller Policy requires accurate materials and country of origin.
+    [S3: etsy.com, 2026-10-05]
+  • AI disclosure if AI was used to create the design. [S4: etsy.com, 2025-06-10]
+  • Weight in grams (approximate, per size), band width, thickness, top dimensions.
+  • Stone type, natural or lab, size, color and clarity grade if relevant.
+  • Making time and the ship-by logic.
+  • Sizing, resizing, returns on personalized items, warranty, care.
+
+ 6.4 DESCRIPTION TEMPLATE
+ [Line 1, under 160 characters: what it is + karat + personalization + made-to-order]
+ A 14K solid gold signet ring, hand-engraved with your initials and made to order in our US partner
+ workshop.
+
+ [Line 2: emotional promise in brand voice, one sentence]
+ EON: meaning designed to last. A ring made to be handed down.
+
+ DETAILS
+ • Metal: 14K solid gold (58.5% gold), stamped 14K / 585 with our maker's mark
+ • Colors: yellow, white or rose gold
+ • Face: 10 x 8 mm | Band: 2.2 mm at the base | Approx. weight: 4.1 g (size 7)
+ • Stones: none [or: 1.5 mm natural diamond, G color, VS clarity]
+
+
+
+Etsy Fine Jewelry Master Course | Module 4: Listings, Photography, Video, Conversion and Revi         Page 71
+ • Origin: made in [US state], USA, by our production partner [workshop name]; ships from [US state]
+
+ PERSONALIZATION
+ • Up to 3 characters on the face, up to 20 inside the band
+ • Fonts shown in photo 11
+ • We send a digital proof before engraving; production starts after your approval
+
+ SIZING
+ • US sizes 4 to 11, including half sizes
+ • Unsure? Order our ring sizer first [link to sizer listing] or see the size chart in photo 12
+ • One free resize within [X] days [state your real policy]
+
+ MAKING AND DELIVERY
+ • Made to order in [X] business days, then shipped express with tracking
+ • Your estimated delivery date is shown at checkout
+
+ CARE AND WARRANTY
+ • [Warranty term and what it covers]
+ • Remove before swimming in chlorine; clean with mild soap and a soft cloth
+
+ RETURNS
+ • Personalized pieces are final sale except for defects [or your real policy]
+ • Questions? Message us before ordering; we reply within 24 hours
+
+ [Optional story paragraph: workshop, artisan, why it exists]
+ [AI disclosure if applicable: "This design was developed with the help of AI tools and handmade by our
+ jewelers."]
+
+
+ 6.5 Variations
+  • Up to 2 variation properties per listing; third-party source states a maximum of 70 combinations
+    and recommends 4 to 12 options. [S19: listifyai.net, 2026-03-27] (Etsy's own variations help page
+    failed to load in this session.)
+  • Processing time can be set per variation. [S20: help.etsy.com, undated, retrieved 2026-10-22]
+  • Common structure for gold rings: Property 1 = Metal (14K Yellow, 14K White, 14K Rose, 18K
+    Yellow...), Property 2 = Ring size. Price varies by Property 1 (karat and color), and, if weight
+    genuinely rises with size, by size too.
+  • Karat x color x size will overflow two properties. Solutions: combine karat and color into one
+    property ("14K Yellow Gold"), put size in the second, and move engraving options into
+    personalization fields.
+
+ 6.6 Personalization field
+ Standard (all sellers) per Etsy help [S5: help.etsy.com, retrieved 2026-10-22]:
+  • Field types: Text box, List of options, File upload.
+  • Text box character limit: 1 to 1,024 characters.
+  • Up to 5 custom option fields per listing.
+  • List of options: up to 30 choices, 10 or fewer recommended.
+  • Add-on prices from $0.20 to $500 equivalent, available only on optional text box fields.
+  • File upload: one field per listing, up to 10 files, 100 MB per file, .jpg .png .svg .heic .pdf. Useful for
+    handwriting or fingerprint engraving.
+  • Each field has a "This field is required" checkbox.
+  • Instructions: explain how and where the personalization appears, with an example.
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 4: Listings, Photography, Video, Conversion and Revi           Page 72
+ Beta version (some sellers): up to 5 fields, required by default, during the beta third-party tools like
+ eRank and ShipStation were blocked, and Etsy says beta personalization "does not affect search
+ ranking." [S8: help.etsy.com, retrieved 2026-10-22]
+ API note: a developer discussion reports the instructions field shrinking from 256 to 120 characters
+ in the personalization migration. Check your own Shop Manager. [S21: github.com, date not
+ captured]
+ Recommended field set for an engraved ring:
+  1. List of options, required: "Engraving position" (Face / Inside band / Both).
+  2. Text box, required, limit sized to the physical space (for example 3): "Face initials. Type exactly
+    as you want them, e.g. A.R.M".
+  3. Text box, optional, priced add-on, limit around 20: "Inside engraving. Letters, numbers, & and ♥
+    only."
+  4. List of options, required: "Font" with options matching the font guide photo.
+  5. File upload, optional: "Handwriting or symbol (we'll send a proof)."
+ Set the character limit to the physical maximum. If the buyer cannot type more than fits, you
+ prevent the most common proof dispute.
+
+ 6.7 Processing time, estimated delivery, shipping
+ From Etsy help [S20: help.etsy.com, retrieved 2026-10-22]:
+  • Each physical listing gets a processing profile: processing time plus a made-to-order or
+    ready-to-ship label (label not shown to buyers). Can differ by variation.
+  • Made-to-order processing time includes the time to make the item.
+  • Processing starts the day after purchase; ship-by is the end of the longest processing time in the
+    order, in the shop's time zone, shipped by 11:59 pm.
+  • Choose Monday to Friday or include weekends; US and Canada can exclude holidays. As a US
+    shop, exclude the US holidays your partner workshop observes; the owner's Turkish public
+    holidays do not affect the processing schedule.
+  • Processing time also controls when a buyer can open a case and leave a review.
+  • If no processing time is set, buyers see no ship-by date.
+  • "Actual processing times" are calculated from the past 120 days with at least 5 shipped orders;
+    buyers may see shorter ranges if you are faster than stated.
+  • A ship-by date can be extended once, before it passes, by up to 21 days, after confirming with
+    the buyer.
+ From Etsy search guidance: set realistic processing times. [S7: etsy.com, 2025-08-26]
+ Seller Policy for US-bound orders: must use a Delivery Duty Paid (DDP) method and must not use
+ methods that make buyers pay extra fees after purchase. [S3: etsy.com, 2026-10-05] This applies to
+ international shipments into the US; it does not apply to this US shop, whose orders ship
+ domestically with no customs step.
+ Etsy says buyers report expensive shipping as a top-10 barrier and that moving some shipping cost
+ into item price while keeping the total the same can improve sales. [S7: etsy.com, 2025-08-26]
+ Shipping price is a ranking factor for US sellers. [S15: etsy.com, 2025-08-26] The specific "under $6"
+ rule applies to US domestic listings, so it applies to this shop: keep visible shipping under $6 or free
+ (see Unverified section for its 2024 source).
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 4: Listings, Photography, Video, Conversion and Revi       Page 73
+ 6.8 Returns, policies, shop page
+  • Listings should have a return policy; missing it affects listing quality. [S15: etsy.com, 2025-08-26]
+  • Clear shop policies help search placement; Etsy's shop policy template "can give an extra boost."
+    [S14: etsy.com, 2025-08]
+  • Honor what your policies say; cancellations after payment require a full refund; you have 48
+    hours to resolve a problem once a buyer contacts you. [S3: etsy.com, 2026-10-05]
+  • EU/UK buyers may have a 14-day withdrawal right which "may not apply to certain items like
+    custom items." [same]
+  • About section must accurately describe shop members involved in making and running the
+    business. [same] For EON, name the US partner workshop (city, state) and its makers, and
+    disclose it as a production partner.
+  • Shop icon is a listing-quality and trust signal. [S15: etsy.com, 2025-08-26]
+  • Limits (third party): shop title 55 characters, announcement 5,000 characters, up to 20 custom
+    sections at 24 characters each. [S18: outfy.com, 2026-07-22]
+ Shop page build for fine jewelry:
+  • Banner: one real photograph, ring on hand, no text clutter. Use 1600 x 400.
+  • Announcement: first two lines carry current making time, free tracked US shipping note, and
+    proof-before-engraving promise.
+  • Sections: by intent and product type ("Signet Rings," "Engraved Bands," "Stacking Rings,"
+    "Enamel," "Ring Sizer," "Couples Sets").
+  • Featured listings: the 4 best converters, not the newest.
+  • About: workshop photos, makers' names, video if available, hallmarking, materials sourcing.
+  • FAQ: karat and purity, hallmarks, sizing and resizing, proof workflow, US delivery times and
+    insurance, warranty, care, gift options.
+
+ 6.9 Gift options
+  • Gift messages: Settings > Options > Offer gift messages; message prints on the packing slip.
+    [S22: help.etsy.com, retrieved 2026-10-22]
+  • Gift wrapping: per-order fee you set, cannot be 0; optional wrap photo and note. [same]
+  • Buyers can always mark an order as a gift; this cannot be turned off. The invoice then omits the
+    price, and the recipient can get a gift teaser with delivery details and message. [same]
+
+
+ 7. Conversion rate
+ 7.1 What Etsy says it measures
+ Etsy search looks at "how well a listing converts, how many people view it and then make a
+ purchase," plus listing quality (multiple high-quality photos, return policy), relevancy, shop quality,
+ average review rating, message response rate and case rate over the past three months, shipping
+ price (US sellers), recency, and personalized ranking. [S15: etsy.com, 2025-08-26]
+ Conversion is therefore both an outcome and an input to visibility: a listing that converts better is
+ shown more.
+
+ 7.2 Benchmarks (all third party, use with caution)
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 4: Listings, Photography, Video, Conversion and Revi       Page 74
+  Benchmark                          Figure                                           Source and caveat
+
+  Etsy established shops             2 to 3 percent average; 3 to 5 strong;           [S13: listingview.io, 2026-06-23], no
+                                     above 5 top tier                                 source named
+
+  Etsy custom or made-to-order       1 to 2 percent                                   same, unsourced
+
+  Etsy jewelry                       4 to 5 percent                                   same, unsourced
+
+  Etsy new shops (under 3            0.5 to 2 percent                                 same, unsourced
+  months)
+
+  Jewelry ecommerce overall          0.87 to 1.5 percent; above 1.5 is high           [S23: branvas.com, 2026-08-06]
+  (all channels)                     performing
+
+  Jewelry AOV                        $180 to $500+                                    same
+
+  Jewelry return rate                16.9 to 20 percent                               same, citing Richpanel
+
+  Jewelry cart abandonment           74.8 to 81.4 percent                             same, citing Baymard and Triple Whale
+
+ Interpretation: the two "jewelry" figures conflict (4 to 5 percent on Etsy vs about 1 percent across
+ jewelry ecommerce). For a high-ticket made-to-order gold shop, the honest baseline is the
+ made-to-order band (1 to 2 percent), and the shop's own trailing 90-day numbers matter more than
+ any blog figure.
+
+ 7.3 The funnel
+ Impressions (search, ads, offsite) > click-through to listing (CTR) > listing visit > favorite or add to
+ cart > checkout > purchase > review > repeat.
+ Diagnose at each step in Shop Manager Stats: views, visits, favorites, orders, conversion rate, traffic
+ sources and search terms per listing.
+
+ 7.4 CONVERSION DIAGNOSTIC TREE
+ START: Listing sells below target over 30+ days with 300+ visits?
+ │
+ ├─ A. Low impressions / few visits
+ │    → Relevancy problem (title, tags, attributes, category)
+ │    → Listing quality flags in Search Visibility page (photos, return policy, shop icon)
+ │    → Shipping price and delivery date uncompetitive
+ │    → Fix: rewrite title per Apr 2026 rules; fill all attributes; 13 tags; return policy on
+ │
+ ├─ B. Good impressions, low CTR (few visits per impression; ads CTR low)
+ │    → Hero photo: unclear at thumbnail size, crop cutting ring, dark/flat gold, text overlay
+ │    → Price looks high vs neighbors without visible quality cue
+ │    → No reviews shown / low star average
+ │    → Delivery estimate far out
+ │    → Fix: reshoot hero, test via Alura A/B (photo), check thumbnail crop in all 3 shapes
+ │
+ ├─ C. Good visits, low favorites and low add-to-cart
+ │    → Photos 2 to 10 do not answer: scale, engraving legibility, hallmark, metal color
+ │    → Description first 160 chars vague; karat/weight/dimensions missing
+ │    → Personalization feels risky (no proof promise, no font guide)
+ │    → Sizing anxiety (no size chart, no sizer, no resize policy)
+ │    → Fix: add infographic slots, rewrite top of description, add proof workflow line
+ │
+ ├─ D. Good add-to-cart, low purchase (abandonment)
+ │    → Shipping cost revealed at checkout
+ │    → Estimated delivery too late for the gift date
+ │    → Variation price jump at checkout (size or karat premium surprises)
+ │    → Personalization field too complex or required field confusing
+ │    → Fix: fold shipping into price, state free tracked shipping, shorten processing, enable abandoned-
+ cart offers
+
+
+
+Etsy Fine Jewelry Master Course | Module 4: Listings, Photography, Video, Conversion and Revi                         Page 75
+ │
+ └─ E. Purchases fine, but cases/returns/low reviews
+      → Photo-to-reality mismatch (size, color), engraving errors, late delivery
+      → Fix: scale shots, color-accurate editing, proof workflow, realistic processing time
+
+
+ 7.5 How specific levers affect conversion (with evidence level)
+  • Delivery speed: buyers see the estimated delivery range on each listing; Etsy's research says
+    buyers are more likely to buy items that ship faster, "even if it's only by one day." [Seller
+    Handbook, 2024-07-09, see Unverified]. The 2025 to 2026 processing-time page confirms Etsy
+    uses actual processing times to show buyers faster ranges where earned. [S20: help.etsy.com,
+    retrieved 2026-10-22]
+  • Shipping price: top-10 barrier per Etsy buyer research; fold into price. [S7: etsy.com, 2025-08-26]
+  • Reviews: average rating is a search input; recency-weighted (past 12 months carry most weight,
+    each rating's weight halves yearly). [S24: help.etsy.com, retrieved 2026-10-22]
+  • Photos: listing quality factor, first photo read by search. [S15: etsy.com, 2025-08-26]
+  • Price: Etsy advises refining price "through experimentation and market research." [S7: etsy.com,
+    2025-08-26]
+
+ 7.6 Abandoned cart and favorite offers
+ Third-party description of Etsy's automatic offers (undated page): abandoned-cart offer emailed 24
+ hours after a shopper leaves an item in cart over 24 hours; favorited-item offer 48 hours after
+ favoriting; thank-you offer post-purchase; only to shoppers opted into marketing; set up under Shop
+ Manager > Marketing > Sales and Discounts > "Automatically send offers to interested shoppers."
+ The page also says sending unsolicited discounts when a shopper favorites or buys is against Etsy
+ guidelines. [S25: alura.io, undated]
+ For high-ticket rings, a 10 percent abandoned-cart offer on a $900 ring is $90; test whether it lifts
+ profit, not just orders.
+
+ 7.7 A/B testing
+ Etsy: no native listing A/B tool was found in 2025 to 2026 Etsy sources. Etsy's April 2026 title article
+ suggests downloading a CSV before title changes and reverting if needed, which is sequential
+ testing, not split testing. [S16: etsy.com, 2026-04-27]
+ Alura A/B Tests [S26: alura.io, undated; S27: alura.io, 2026-06-30]:
+  • Swaps the live listing between version A and version B "every 8 hours."
+  • Testable: title, description, price, tags, images, video. One test per listing at a time; Growth plan
+    allows up to 4 tests at once.
+  • Measures orders and revenue per version, sales lift, active hours per version; you pick sales or
+    revenue as the judging metric. Alura recommends revenue for price tests.
+  • Auto-end "after a week or more depending on how much the listing sells," or stop manually
+    ("Stop test and choose winner").
+  • June 2026 rebuild added a Statistical Confidence card (High, Medium, Low), activity timeline,
+    CSV/PDF export.
+ Caveats for a low-volume, high-ticket shop: with a few orders a month, a week-long test will almost
+ always read "Low" confidence. Rules for EON and Artifact Studio:
+  • Test only on the top 3 to 5 listings by visits.
+  • Test one variable, highest-leverage first: hero photo, then price, then title.
+
+
+Etsy Fine Jewelry Master Course | Module 4: Listings, Photography, Video, Conversion and Revi       Page 76
+  • Run at least 4 weeks or until confidence reads Medium or better; judge price on revenue.
+  • Avoid running tests across major gifting peaks (Black Friday to Christmas, Valentine's Day) when
+    traffic mix changes.
+  • Remember any title or tag change may also shift search placement, which the 8-hour rotation
+    partly but not fully cancels.
+
+
+ 8. Reviews
+ 8.1 Mechanics (Etsy help)
+  • 100-day review window from delivery date (tracked) or estimated delivery date. [S24:
+    help.etsy.com, retrieved 2026-10-22]
+  • Score is a recency-weighted average; last 12 months weigh most; each rating's weight halves
+    each year. [same]
+  • Buyer photos and videos in reviews are visible to anyone viewing reviews. [same]
+  • Reviews can be downloaded as JSON from Settings > Options > Download data. [same]
+  • Processing time also controls when a buyer can leave a review. [S20: help.etsy.com, retrieved
+    2026-10-22]
+
+ 8.2 Rules on earning reviews
+  • Seller Policy: reviews and responses may not "Undermine the integrity of the Reviews system" or
+    "Include shilling or otherwise falsely inflate a shop's review score." [S3: etsy.com, 2026-10-05]
+  • Third-party summary: asking once is acceptable; offering discounts, freebies, upgrades or
+    refunds tied to leaving a review, a specific rating, or removing a bad review breaks the rules; the
+    US FTC Consumer Reviews rule (effective late 2024) bans fake and incentivized reviews. [S28:
+    listingview.io, 2026-07-27]
+ Ethical review system for fine jewelry:
+  1. Delight first: proof, on-time ship, beautiful unboxing, care card.
+  2. One message only, timed a few days after tracked delivery: thank them, ask if the fit is right
+    (catches resize issues before they become 3-star reviews), and mention that a review with a
+    photo helps a small workshop. No discount, no conditional anything.
+  3. A printed card in the box that says the same thing. No QR to a coupon.
+
+ 8.3 Responding and negative reviews (Etsy help)
+ [S29: help.etsy.com, retrieved 2026-10-22]
+  • Try private resolution first via the order's message icon; quick help may lead the buyer to edit.
+  • Buyers can revise a review for up to 100 days after estimated delivery, but only if you have not
+    responded. Once you respond publicly, the buyer can no longer edit the review, even if you
+    delete the response. This is the single most important tactical rule: resolve privately before any
+    public reply.
+  • You can respond once per review; you can delete but not edit; buyers cannot reply.
+  • Keep it short, professional, specific, product-focused; no tracking numbers, links or private info.
+  • Etsy removes reviews only for policy violations (private info, harassment, spam, solely about
+    carrier or Etsy, threats or extortion, shilling). Negative but compliant reviews stay; Etsy does not
+    judge accuracy of quality complaints, and will not remove "not received" claims even with
+    tracking.
+
+
+Etsy Fine Jewelry Master Course | Module 4: Listings, Photography, Video, Conversion and Revi      Page 77
+ Response template (after private attempt fails or is complete): "Thank you for telling us. We're sorry
+ the ring arrived later than you hoped. We've since shortened our making time and now ship every
+ order by tracked, insured Priority Mail. We remain happy to resize or polish your ring at no cost."
+
+ 8.4 Star Seller
+ Monthly evaluation over 3 months: 95 percent of initial messages answered within 24 hours; 95
+ percent of orders shipped on time with tracking (tracking required on all USD orders); 4.8 average
+ rating; at least 5 orders and $300 in sales in the period. [S30: help.etsy.com, retrieved 2026-10-22]
+
+
+ 9. Personalized and engraved jewelry operations
+ 9.1 Proofing workflow
+  1. Order lands. Personalization fields auto-captured.
+  2. Within 24 hours (also protects Star Seller response rate), message the buyer a proof: a rendered
+    or photographed mockup of the engraving text, font, position and size. A proof sent by message
+    is not a listing image, so the image policy does not restrict it.
+  3. Ask for written approval in Etsy Messages ("Reply YES to approve").
+  4. Start making only after approval; if no reply within 48 hours, send one reminder; if still none,
+    proceed exactly as typed and note this in the message history.
+  5. Photograph the finished engraving before shipping and keep it on file. It resolves "wrong
+    engraving" disputes and, with permission, feeds future listing photos.
+ Processing time must include the proof loop. If the buyer is slow, Etsy allows a one-time extension of
+ ship-by by up to 21 days with buyer confirmation. [S20: help.etsy.com, retrieved 2026-10-22]
+
+ 9.2 Engraving guide (listing photo 11)
+  • Show 3 to 5 fonts at actual size on a real ring.
+  • Show maximum characters per position (face, inside).
+  • List allowed symbols.
+  • Show how ampersands, dots and hearts render.
+  • Note: longer text means smaller letters.
+
+ 9.3 Sizing support
+  • Size chart image with US size, inner diameter mm, circumference mm.
+  • Ring sizer as its own low-price listing; credit its price against the ring (a transparent coupon, not
+    review-linked).
+  • Wide bands fit tighter: say so and recommend going up a quarter or half size above a stated
+    width.
+  • Resizing policy: state free or paid, within how many days, and that the buyer pays return
+    shipping or not. Seller Policy requires you to honor what you state. [S3: etsy.com, 2026-10-05]
+  • Some designs (fully engraved eternity bands, enamel all round) cannot be resized; say so in the
+    description and in the size chart.
+
+ 9.4 Packaging and unboxing (US fine jewelry expectations)
+ No 2025 to 2026 primary source found. Practice guidance: rigid box with insert, outer shipping box
+ (never ship the presentation box alone), care card, authenticity or materials certificate (karat,
+ weight, stones, maker, date), warranty card, handwritten or printed note. Photograph exactly this
+
+
+Etsy Fine Jewelry Master Course | Module 4: Listings, Photography, Video, Conversion and Revi        Page 78
+ set for slot 9 so the buyer receives what they saw. Turn on gift messages; for gift orders the invoice
+ omits price automatically. [S22: help.etsy.com, retrieved 2026-10-22]
+
+
+ 10. Buyer psychology: high-ticket gold from an unknown seller
+ The buyer is asking four questions. Answer each with something visible on the listing.
+  1. "Is it really solid gold?" Hallmark close-up, karat and purity in the first 160 characters, weight in
+    grams, materials certificate shown in the packaging photo. US context: if a maker stamps a
+    quality mark, US practice is that it must also carry a registered trademark nearby, and karat gold
+    may be under karat by no more than 3 parts per thousand (7 with solder). [MJSA compliance
+    guide, undated, see Unverified]. Accurate materials and origin are an Etsy Seller Policy
+    requirement. [S3: etsy.com, 2026-10-05]
+  2. "Will it look like the photo?" Real unedited photos (now mandatory), on-hand scale, buyer photo
+    reviews, color-true editing. [S1: etsy.com, 2026-10-22]
+  3. "Will it arrive, on time, without surprise fees?" Estimated delivery range, tracking, "ships from
+    [US state]" and free shipping statement. Etsy's DDP rule for US orders covers international
+    shipments only and does not apply to this domestic shop. [S3: etsy.com, 2026-10-05]
+  4. "What if something goes wrong?" Clear returns, resize and warranty policy, fast message replies
+    (Star Seller badge), professional responses to the few negative reviews.
+ Trust signals stack, ranked by effort-to-impact for EON and Artifact Studio:
+  • Star Seller badge (operational, free).
+  • Photo reviews from real buyers.
+  • Hallmark macro photo and materials infographic.
+  • About section with named makers and workshop photos (accuracy required by Seller Policy).
+  • Making-process image or video.
+  • Warranty card and certificate in the box, shown in photos.
+  • Consistent brand: shop icon, banner, cohesive photo style (Etsy names shop icon and consistent
+    branding as trust builders). [S15: etsy.com, 2025-08-26]
+
+
+ 11. LISTING CHECKLIST (publish-ready)
+ Photos and video
+  • [ ] 10 or more photos, up to 20, each at least 2,000 px, sRGB, near or under 1 MB.
+  • [ ] Slot 1: finished personalized ring, no text, no collage, readable in square, portrait and
+    landscape crops.
+  • [ ] At least one completely unedited photo of the real item on a real background (policy since
+    2026-10-22).
+  • [ ] Every metal color shown is a real photo of that metal, not a recolor.
+  • [ ] On-hand scale shot, engraving macro, profile, hallmark, packaging, size chart, materials
+    infographic.
+  • [ ] No renders, stock or AI scenes standing in for the real finished item.
+  • [ ] One silent 3 to 15 s video, 1080 px or more, under 100 MB.
+  • [ ] Alt text on every image.
+ Text
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 4: Listings, Photography, Video, Conversion and Revi        Page 79
+  • [ ] Title under 15 words, noun once, karat/material/feature first, no subjective words, no shipping
+    or sale words.
+  • [ ] 13 tags, multi-word, no duplicates of attributes.
+  • [ ] All attributes filled; most specific category chosen.
+  • [ ] Description: first 160 characters state item, karat, personalization, made to order.
+  • [ ] Karat, purity, approximate weight, dimensions, stones, origin, making time, sizing, care,
+    warranty, returns.
+  • [ ] AI disclosure in description if AI was used to create the design.
+ Configuration
+  • [ ] Variations: Property 1 metal/karat (priced), Property 2 size.
+  • [ ] Personalization fields with character limits equal to physical maximum, instructions with
+    examples, required flags correct.
+  • [ ] Processing profile set to made-to-order with realistic time including proof loop.
+  • [ ] Shipping profile with tracked US domestic service from the partner's address, shipping folded
+    into price where possible.
+  • [ ] Return policy attached.
+  • [ ] Gift message enabled; gift wrap priced if offered.
+  • [ ] Listing placed in the correct shop section; ring sizer cross-linked.
+ Shop
+  • [ ] Shop icon, banner, announcement with making time and free shipping note.
+  • [ ] About section names the makers and shows the workshop.
+  • [ ] Shop policies via Etsy template; FAQ covering karat, sizing, proof, delivery, warranty.
+  • [ ] Featured listings set to top converters.
+
+ 12. TACTICS
+  1. Build a "real photo" bank this month. Since 22 Oct 2026, every listing needs one unedited real
+    photo. Batch shoot each design in every metal color once, unedited plus edited, and refresh
+    listings.
+  2. Shoot heroes for crop safety: subject in the central 60 percent, then check the thumbnail tool in
+    all three shapes.
+  3. Put a hallmark macro in slot 3 or 4 on every gold listing. It is the cheapest trust signal you have.
+  4. Size the text field limits to the metal. A face that fits 3 letters gets a 3-character limit.
+  5. Promise a proof in the first 160 characters or the personalization section. It removes the biggest
+    risk of buying engraved gold online.
+  6. Respond to every first message inside 24 hours to protect Star Seller (95 percent threshold).
+  7. Never reply publicly to a bad review until private resolution is exhausted; replying locks the
+    review.
+  8. Set processing time to what you actually achieve, then beat it; Etsy shows faster ranges once 5
+    or more orders over 120 days prove you are faster.
+  9. Fold shipping into price and state "free tracked US shipping" for US buyers.
+  10. Sell a ring sizer listing and credit its cost toward the ring.
+  11. Use Alura A/B only on high-traffic listings, hero photo first, revenue as the metric for price tests,
+    run long enough for Medium confidence.
+
+
+Etsy Fine Jewelry Master Course | Module 4: Listings, Photography, Video, Conversion and Revi         Page 80
+  12. Reuse buyer review photos (with permission) as listing images in slot 16; they are real photos
+    of the actual item.
+  13. Use Etsy's AI title tool for suggestions, but export a CSV first and keep brand-critical words
+    ("solid gold," "14K").
+  14. Create a packaging shot that matches what ships, exactly.
+  15. One review request message per order, timed after delivery and framed as a fit check.
+
+ 13. COMMON MISTAKES
+  • Using CAD renders or AI concept images to sell rings not yet made (violates "real, finished items"
+    and the Seller Policy ban on renderings).
+  • AI-recoloring one ring to show yellow, white and rose (changes "actual color").
+  • No unedited photo in the set after 22 Oct 2026.
+  • Hero with text overlay, collage, or a blank band instead of an engraved one.
+  • Portrait-oriented hero that crops off the ring in landscape or square thumbnails.
+  • Auto white balance producing greenish or orange gold across a listing.
+  • Saying "gold" or "solid gold" without the karat, or omitting weight.
+  • Hiding country of origin; it must be accurate.
+  • Listing a ships-from location other than the partner's actual US address.
+  • Processing time that ignores the proof loop, causing late shipments and lost Star Seller status.
+  • Character limit left at 1,024 on a face engraving, inviting impossible requests.
+  • Variation price jumps that appear only after a size is chosen, without explanation.
+  • Responding publicly to a negative review before trying to fix it privately.
+  • Offering a discount or freebie for a review.
+  • Copying the title into the first lines of the description.
+  • Running A/B price tests judged on order count instead of revenue.
+  • Trusting blog conversion benchmarks over the shop's own 90-day data.
+
+ 14. UNVERIFIED (pre-2025)
+ These are useful but rest on sources older than 2025. Re-verify before teaching as current.
+  • US domestic listings with shipping under $6 prioritized in search starting 1 Oct 2024, with
+    exclusions including listings shipped from outside the US. [S31: etsy.com, 2024-10-03]. The 2025
+    search article still says shipping price is a factor for US sellers. Applies to this US-based shop,
+    since it ships domestically.
+  • Search Visibility page flags photos, return policy, shop icon, review rating, 48-hour first-message
+    response, case rate, on-time shipping with tracking. [S32: etsy.com, 2024-08-28]
+  • Estimated delivery dates: calculated from ship-by date, shipping service, processing time and
+    schedule, origin and destination, sometimes shipping history; buyers more likely to buy items
+    that ship faster "even if it's only by one day" (Etsy internal analysis, August 2023); US buyers can
+    filter by estimated delivery. [S33: etsy.com, 2024-07-09]
+  • Listing video types: answer common questions, show in use, show creative details; Jewelry: show
+    on model; custom items: show personalization process; videos over 15 s are clipped; cites 2018
+    Etsy buyer research. [S34: etsy.com, 2024-11-05]
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 4: Listings, Photography, Video, Conversion and Revi          Page 81
+  • Listing videos autoplay on hover in search results and Etsy said this increased conversion. [S35:
+    etsy.com, 2023-01-18]
+  • AI disclosure stance (description disclosure). [S36: etsy.com, 2024-07-09]. Confirmed again by
+    Creativity Standards (2025-06-10) and Seller Policy (2026-10-05).
+  • Abandoned-cart offers: 24-hour logic, once every two days, up to 12 discounts per email. [S37:
+    valueaddedresource.net, 2023-05-08]
+  • Etsy conversion "1 to 3 percent good average," jewelry 4.56 percent, unsourced. [S38:
+    gelato.com, 2024-09-28]
+  • US karat tolerance 3 parts per thousand (7 with solder) and trademark requirement when
+    stamping a quality mark. [S39: cms.mjsa.org, undated]
+
+
+ 15. Gaps
+  • Etsy's own variations help page (exact property and combination limits) failed to load; the
+    2-property and 70-combination figures are from a 2026 third-party guide.
+  • No Etsy primary source found for FAQ, About or shop announcement character limits;
+    announcement 5,000 is third party.
+  • No Etsy-published conversion benchmark for jewelry or made-to-order; all benchmark numbers
+    are third party and conflict.
+  • No native Etsy listing A/B testing tool found in 2025 to 2026 sources.
+  • 2025 to 2026 primary data on US fine jewelry unboxing expectations and certificate impact not
+    found.
+  • Primary Baymard 2025 abandonment reasons not retrieved (search budget exhausted).
+  • Effective date and exceptions list for the 22 Oct 2026 unedited-photo rule not yet published in
+    detail.
+
+
+ Module 4 sources
+ Numbered sources cited in this module as [S#]. All accessed 22 October 2026.
+ S1. https://www.etsy.com/help/article/6128
+ S2. https://sellersasksellers.com/t/etsy-and-ai-email-10-22-26/7661
+ S3. https://www.etsy.com/legal/sellers/
+ S4. https://www.etsy.com/legal/creativity/
+ S5. https://help.etsy.com/hc/en-us/articles/360000344528
+ S6. https://www.listadum.com/blog/should-you-disclose-mockups-and-ai-images-in-your-etsy-listings
+ S7. https://www.etsy.com/seller-handbook/article/1347574487014
+ S8. https://help.etsy.com/hc/en-us/articles/33478801738519
+ S9. https://help.etsy.com/hc/en-us/articles/115015663347
+ S10. https://everlysthq.com/guides/etsy-listing-photos-guide/
+ S11. https://www.outfy.com/blog/etsy-listing-photo-size-guide/
+ S12. https://help.etsy.com/hc/en-us/articles/360053206073
+ S13. https://listingview.io/blogs/what-is-a-good-conversion-rate-on-etsy-in-2026
+ S14. https://www.etsy.com/seller-handbook/article/366470356778
+ S15. https://www.etsy.com/seller-handbook/article/375461474487
+ S16. https://www.etsy.com/seller-handbook/article/1399426136697
+ S17. https://www.etsy.com/seller-handbook/article/150875867017
+ S18. https://www.outfy.com/blog/etsy-character-limit/
+ S19. https://www.listifyai.net/blog/etsy-variations-personalization-2026
+ S20. https://help.etsy.com/hc/en-us/articles/115015588087
+ S21. https://github.com/etsy/open-api/discussions/1551
+ S22. https://help.etsy.com/hc/en-in/articles/360000343168
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 4: Listings, Photography, Video, Conversion and Revi        Page 82
+ S23. https://branvas.com/blogs/news/jewelry-ecommerce-benchmarks
+ S24. https://help.etsy.com/hc/en-us/articles/360000572708
+ S25. https://www.alura.io/academy/why-arent-etsy-targeted-offers-reaching-shoppers
+ S26. https://www.alura.io/features/ab-tests
+ S27. https://www.alura.io/changelog/2026-06-30-ab-tests-rebuilt
+ S28. https://listingview.io/blogs/how-to-get-more-reviews-on-etsy-without-breaking-the-rules
+ S29. https://help.etsy.com/hc/en-us/articles/115015808588
+ S30. https://help.etsy.com/hc/articles/29665255990039
+ S31. https://www.etsy.com/seller-handbook/article/1293023712519
+ S32. https://www.etsy.com/seller-handbook/article/1289139008351
+ S33. https://www.etsy.com/seller-handbook/article/1033992214516
+ S34. https://www.etsy.com/seller-handbook/article/821069530001
+ S35. https://www.etsy.com/seller-handbook/article/1132926896371
+ S36. https://www.etsy.com/seller-handbook/article/1275449912004
+ S37. https://www.valueaddedresource.net/etsy-seller-surprised-by-abandoned-cart-discount-change/
+ S38. https://www.gelato.com/blog/etsy-conversion-rate
+ S39. https://cms.mjsa.org/publications/compliance-guides/marking-stamping-regulations
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 4: Listings, Photography, Video, Conversion and Revi       Page 83
+

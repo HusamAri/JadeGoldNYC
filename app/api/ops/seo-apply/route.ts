@@ -12,6 +12,8 @@ import { planSeo, rowProblems, sameTags, type SeoMatrixRow } from "@/lib/etsy/se
 import { logAudit } from "@/lib/audit";
 import eonMatrix from "@/docs/eon/seo/2026-10-21-etsy-keyword/data/optimization-matrix.json";
 import basMatrix from "@/docs/artifact-studio/seo/2026-10-21-etsy-keyword/data/apply-matrix.json";
+import eonTitles1022 from "@/docs/eon/seo/2026-10-22-title-pass/apply-matrix.json";
+import basTitles1022 from "@/docs/artifact-studio/seo/2026-10-22-title-pass/apply-matrix.json";
 
 export const maxDuration = 120;
 
@@ -20,6 +22,9 @@ export const maxDuration = 120;
  *  - EON: docs/eon/seo/2026-10-21-etsy-keyword/data/optimization-matrix.json
  *  - by Artifact Studio Jewelry: docs/artifact-studio/seo/2026-10-21-etsy-keyword/
  *    data/apply-matrix.json (paketin matrisinden scripts/to_apply_json.py üretir)
+ *  - `?pass=titles-2026-10-22`: kısa başlık geçişi (playbook 03, <15 kelime). "Önce" hâli
+ *    2026-10-21 matrisinin yazdığı başlık; tag aynı kalır. Üreteç + kapı:
+ *    scripts/seo/title_pass_2026_10_22.py.
  * Yazılan: YALNIZ başlık, 13 tag ve mağaza bölümü. Fiyat, adet, varyasyon, fotoğraf,
  * açıklama, kargo ve iade politikasına dokunmaz; listing açmaz/silmez.
  *
@@ -35,13 +40,16 @@ export const maxDuration = 120;
  *  - Süre bütçesi: 80 sn'den sonra yeni listing başlatılmaz, `deferred` döner.
  */
 
+/** Anahtar: org adı (varsayılan geçiş) ya da `org#pass`. */
 const MATRICES: Record<string, Map<string, SeoMatrixRow>> = Object.fromEntries(
   (
     [
       ["EON", eonMatrix],
       ["by Artifact Studio Jewelry", basMatrix],
+      ["EON#titles-2026-10-22", eonTitles1022],
+      ["by Artifact Studio Jewelry#titles-2026-10-22", basTitles1022],
     ] as const
-  ).map(([org, rows]) => [org, new Map((rows as unknown as SeoMatrixRow[]).map((r) => [r.id, r]))]),
+  ).map(([key, rows]) => [key, new Map((rows as unknown as SeoMatrixRow[]).map((r) => [r.id, r]))]),
 );
 const MAX_IDS = 10;
 const BUDGET_MS = 80_000;
@@ -73,13 +81,15 @@ export async function GET(request: Request) {
   const url = new URL(request.url);
   const apply = url.searchParams.get("apply") === "1";
   const orgName = url.searchParams.get("org");
+  const pass = url.searchParams.get("pass");
   const ids = (url.searchParams.get("ids") ?? "")
     .split(",")
     .map((s) => s.trim())
     .filter(Boolean);
-  const BY_ID = orgName ? MATRICES[orgName] : undefined;
+  const matrixKey = orgName ? (pass ? `${orgName}#${pass}` : orgName) : null;
+  const BY_ID = matrixKey ? MATRICES[matrixKey] : undefined;
   if (!BY_ID) {
-    return NextResponse.json({ error: `org zorunlu, matrisi olanlar: ${Object.keys(MATRICES).join(", ")}` }, { status: 400 });
+    return NextResponse.json({ error: `org (ve pass) zorunlu, matrisi olanlar: ${Object.keys(MATRICES).join(", ")}` }, { status: 400 });
   }
   if (ids.length === 0 || ids.length > MAX_IDS || new Set(ids).size !== ids.length) {
     return NextResponse.json({ error: `ids: 1-${MAX_IDS} tekil listing id` }, { status: 400 });
@@ -178,7 +188,7 @@ export async function GET(request: Request) {
           entityType: "product",
           entityId: productId,
           summary:
-            `SEO matrisi (2026-10-21) listing ${listingId}: ` +
+            `SEO matrisi (${pass ?? "2026-10-21"}) listing ${listingId}: ` +
             [plan.title ? "başlık" : null, plan.tags ? "13 tag" : null, plan.sectionMove ? `bölüm ${plan.sectionMove.to}` : null]
               .filter(Boolean)
               .join(" + ") +

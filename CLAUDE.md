@@ -50,6 +50,8 @@ Jade Gold NYC Etsy mağazası için uçtan uca yönetim/raporlama paneli. Tüm s
   iki kez gönderildi → 6 üretim, 12 kredi, 10'u fazladan.
 
 ## Notlar
+- **Etsy yönetimi (her mağaza):** Etsy'ye dokunan her işte önce `docs/etsy-playbook/INDEX.md`
+  (konu → dosya tablosu), sonra YALNIZ o işin konu dosyası okunur; `source/` okunmaz.
 - **Prod adresi: `https://amuletta.artifactstudio.info`** (custom domain). Panel
   linki verirken bunu kullan — `jade-gold-nyc.vercel.app` diye bir alias YOK,
   uydurulmuş adres `DEPLOYMENT_NOT_FOUND` verir (vaka 2026-08-20). Vercel
