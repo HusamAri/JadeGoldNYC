@@ -1625,6 +1625,17 @@ repodaki hedefidir.
   yönlendirme tablosu, konu başına kısa kural/sayı/kaynak dosyası, tam metin `source/` arşivinde ve
   otomatik okunmaz; (3) panelin KENDİ kapısı bir dış paketle çelişiyorsa çelişki yazmadan önce çözülür.
 
+- **Devralınan "veri yok" da bir iddiadır; başlıktaki her ayarı panel varyantından türet (2026-10-22, kısa başlık
+  geçişi):** 395 başlığı (EON 185, Artifact 210) Etsy rehberine göre kısaltırken iki yanlış girdi panele bakınca
+  çıktı. (1) Bağlam özeti "16 EON Noel listing'inde ayar yok, başlığa ayar yazılamaz" diyordu; varyant tablosu 75 =
+  3 ayar × 25 beden ve SKU'larda 10K/14K/18K gösterdi. Özete uysaydım FTC gereği "Gold" kelimesini 16 başlıktan
+  silecektim. (2) Artifact'ta 12 listing'e elle "10K 14K 18K" yazmıştım; panel onların tek varyantlı, yalnız 14K
+  ürünler olduğunu söyledi. Kapı ayar kümesini panelden (`panel-karats.json`, properties+SKU) okuyunca ikisi de
+  düştü. Kural: (1) başlıkta beyan edilen her eksen değeri (ayar, mm) panelin SATTIĞI kümeyle karşılaştırılır,
+  özet ya da benim sınıflandırmam girdi sayılmaz; (2) yeni kapıyı önce ESKİ çıktıda koş (burada 10-21 başlıklarında
+  391/395 listing ihlal, 16'sı yanlış ayar), sonra yenide 0'a in; (3) tek parti hatası (Etsy 500) için durmak doğru,
+  yeniden koşu idempotent olmalı (planSeo `already` döner) ve "hiçbir şey yazılmadı" iddiası geri okumadan gelir.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
