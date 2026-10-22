@@ -1,0 +1,1035 @@
+ Module 3: Etsy Search, SEO and Keyword
+ Research
+ Module for: made-to-order personalized solid 14K/18K gold rings and fine jewelry (engraved bands,
+ stacking rings, princess-cut stones, enamel pieces), made in the US by a US partner workshop and
+ shipped domestically to US buyers from a US Etsy shop managed remotely from Türkiye. Tools
+ owned: Alura (Growth plan) and eRank.
+ Research date: 2026-10-22.
+ How to read this module:
+  • Every fact carries an inline source and date in the form [URL, date].
+  • "Primary" means Etsy itself (Seller Handbook, Etsy Help, Etsy Engineering, Etsy earnings calls).
+  • "Third-party" means seller-education tools and coaches. These are labeled. Treat them as
+    informed opinion, not Etsy policy.
+  • Anything older than 2025 is in the section "UNVERIFIED (pre-2025)" or is flagged inline as such.
+  • Where a source has no visible date, it is marked "undated page, footer 2026".
+  • No search volumes or performance numbers have been invented. Keyword examples in the
+    jewelry section are illustrative templates to be validated in Marketplace Insights, eRank and Alura
+    before use.
+
+
+ 1. How Etsy search works in 2025-2026
+ 1.1 The two-phase model (official)
+ Etsy describes search as two phases [S1: etsy.com, 2025-08-26]:
+  1. Query matching. Etsy finds listings that match the buyer's query. The handbook says the
+    system "takes a holistic view of your listing" and names title, tags, attributes, descriptions, first
+    photo and reviews as inputs.
+  2. Ranking. Matched listings are ordered so that items shoppers are most likely to buy appear
+    earlier.
+ Practical meaning: if a listing is not matched (phase 1), no ranking signal can save it. If it is matched
+ but ranks poorly (phase 2), the problem is quality, conversion or customer service, not keywords.
+
+ 1.2 Official ranking factors (Etsy Seller Handbook, August 2025)
+ From "How Etsy Search Works" [S1: etsy.com, 2025-08-26]:
+
+  Factor                                        What Etsy says it includes
+
+  Relevancy                                     Keyword matches across tags, titles, descriptions, categories and
+                                                attributes. An exact match to the query may rank higher.
+
+  Shop quality                                  Buyer trust signals, for example a shop icon.
+
+  Listing quality                               Multiple high-quality photos, a return policy. For US sellers, shipping price.
+
+  Customer service quality                      Average review rating, message response rate and case rate over the
+                                                past three months.
+
+  Translations and language                     Titles, tags and descriptions in the shop language. Seller-added
+                                                translations "tend to be higher quality" than machine translations.
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 2: Pricing, Unit Economics, Budgeting and Cash Flow                          Page 45
+  Factor                                       What Etsy says it includes
+
+  Listing engagement rate                      How well a listing converts from views to purchases. Vacation mode can
+                                               reduce traffic because your engagement data stops updating while
+                                               competitors' data keeps moving.
+
+  Recency                                      New listings get a small, temporary boost; renewed listings get a smaller
+                                               one, lasting hours to a few days. Etsy says renewing only for this boost "
+                                               isn't an effective strategy."
+
+  Shopper habits and personalization           Context Specific Ranking (CSR) customizes results to the shopper, so
+                                               results differ between shoppers.
+
+ Etsy explicitly says these are not direct ranking factors [same source, 2025-08-26]:
+  • Etsy Plus subscription.
+  • Star Seller badge (it is a trust signal that can lift conversion, but does not directly change
+    ordering).
+  • Etsy Ads (no effect on organic placement outside ad slots).
+ Note on terminology: Etsy's 2025 handbook does not use the older phrases "Listing Quality Score"
+ or "Customer and Market Experience Score". Those names appear in older materials (see section
+ 12). The current handbook describes listing quality and customer service quality as separate factors
+ and gives no weights [same source, 2025-08-26].
+
+ 1.3 The Search Visibility page (minimum requirements)
+ Etsy Help lists requirements an active listing must meet to get "priority placement" [S2:
+ help.etsy.com, undated page, footer 2026]:
+  • At least one listing image.
+  • A high-resolution primary photo, ideally 2000 px or more in width and height.
+  • A primary photo that shows one finished product, not a collage.
+  • A clear, well-lit primary photo.
+  • A category that is as specific as possible.
+  • A return policy, even if it is "No returns".
+  • For US listings, domestic shipping under $6 gets priority.
+ Shop-level: an incomplete shop (for example, no logo) may lower listing visibility. Customer service
+ minimums: respond promptly, ship on time with tracking, keep a positive review score, avoid a high
+ number of cases [same source].
+ Timing: insights typically clear within 24 hours after fixes, and search changes can take up to a day
+ to appear [same source].
+ How to use it: Shop Manager > Listings > "Search factors" bar filters listings by visibility issue [same
+ source].
+ Relevance for this US-based shop: the $6 shipping rule applies to US domestic listings, which is
+ what this shop sells. The original Etsy announcement (October 2024, so pre-2025) excluded "listings
+ shipped from outside the US" [S3: etsy.com, 2024-10-03]. The 2025 handbook still lists shipping
+ price as a US-seller factor [S1: etsy.com, 2025-08-26]. For a shop shipping domestically inside the
+ US, the $6 rule applies directly: keep visible shipping under $6 or offer free shipping built into price,
+ since buyers also see total cost and conversion (a ranking factor) is affected by it. Verify in your own
+ Search Visibility page whether any shipping flag appears.
+
+ 1.4 How Etsy uses LLMs and semantic models (Etsy Engineering)
+
+
+Etsy Fine Jewelry Master Course | Module 3: Etsy Search, SEO and Keyword Research                                  Page 46
+ These are engineering posts, not seller guidance. They explain the mechanism; they do not give
+ rules.
+ LLM-based relevance scoring (published 2026-01-16) [S4: etsy.com, 2026-01-16]:
+  • Etsy added "semantic relevance" alongside engagement signals because engagement alone
+    favors popular listings over the best match.
+  • Relevance labels: Relevant (matches all parts of the query), Partially relevant (matches part,
+    or is thematically related), Irrelevant.
+  • An LLM annotator (o3 model, few-shot chain-of-thought) reads title, images, description,
+    attributes, variations and extracted entities. It trains a Qwen 3 VL 4B "teacher", which trains a
+    lightweight BERT two-tower "student" running live in search with under 10 ms latency.
+  • In production the student filters irrelevant listings, supplies ranking features and boosts
+    highly relevant results.
+  • Result: share of fully relevant listings rose from 58% to 62% between August and October 2025.
+  • Etsy says better semantic relevance "can also help surface items from small or new sellers."
+ Seller implication (inference): a listing is judged on whether it matches all parts of the query. For
+ "14k solid gold engraved band", a listing whose text, attributes and images clearly show 14K, solid
+ gold, engraving and a band is "Relevant". A gold-plated item stuffed with "solid gold" risks being
+ filtered as partially relevant or irrelevant, and violates Etsy's accuracy requirement.
+ LLM attribute extraction (published 2025-10-13) [S5: etsy.com, 2025-10-13]:
+  • Etsy runs LLMs over listing titles, descriptions and images to infer structured attributes, because
+    most attribute fields are optional and details are often "buried in the listing description or only
+    available in listing photos."
+  • LLM-inferred attributes were added to search filters, increasing filter engagement and post-click
+    conversion. Inferred color now drives color swatches on search results.
+  • In target categories, complete attribute coverage rose from 31% to 91%.
+  • "Seller provided details become especially critical" for niche items.
+ Seller implication: your description and photos are read by machines to fill attributes. State metal,
+ karat, stone shape, stone type, band width and ring size range in plain words in the description, and
+ show them in photos.
+ LLM listing summaries (published 2026-05-26) [S6: etsy.com, 2026-05-26]:
+  • Etsy fine-tunes Qwen3-VL-8B to write free-form listing summaries capturing distinguishing details
+    (for example, how an item was made).
+  • Adding these summaries to the semantic relevance model improved macro F1 by 8.7% relative to
+    using description n-grams (offline). Online experiments were planned next.
+ Seller implication (inference): distinguishing, factual details (handmade in the USA by our partner
+ workshop, solid 14K, hand-engraved, made to order in X days) are exactly what these models look
+ for. Vague adjectives add nothing.
+
+ 1.5 Personalization and AI discovery (earnings calls)
+  • Q4 2025 call (2026-02-19): CEO Kruti Patel Goyal said Etsy is "working to get much better at
+    using machine learning to match buyers with the right items"; agentic traffic in Q4 was "about 15
+    times what it was last year"; integrations with Microsoft Copilot and Google were added; "orders
+    originating from ChatGPT also tend to skew higher value"; CFO Lanny Baker named "personalized
+    gifts, artisanal finds and milestone categories" as resonating most with buyers [S7: finviz.com,
+
+
+
+Etsy Fine Jewelry Master Course | Module 3: Etsy Search, SEO and Keyword Research                  Page 47
+    2026-02-19].
+  • Q2 2026 call (2026-08-06), as reported by PYMNTS: buyer profiles cover "more than 65 million
+    shoppers" and feed personalization into search, home feed and marketing; search improvements
+    surface higher-quality inventory; agentic traffic was under 1% of total but converts higher with
+    larger order size; a gifting assistant (natural-language occasion and recipient description) is "still
+    in early testing" [S8: pymnts.com, 2026-08-06].
+  • ChatGPT Instant Checkout launched with Etsy as an early partner in September 2025 [S9:
+    digitalcommerce360.com, 2025-09-30]. Third-party reporting in 2026 describes OpenAI changing
+    course on Instant Checkout [S10: cnbc.com, 2026-03-20] (not fetched in full; treat as directional).
+ Implication for personalized gold jewelry: gifting and milestones are Etsy's own stated growth
+ themes. Occasion and recipient intent should be captured in attributes and tags (not crammed into
+ the title, see 2.1).
+
+ 1.6 Does each field still matter? (2025-2026 answer)
+  Field      Indexed for matching?                                      Source
+
+  Title      Yes                                                        [S1: etsy.com, 2025-08-26]
+
+  13 tags    Yes. "Do use all 13 tags."                                 [S11: etsy.com, 2025-08-26]
+
+  Attribut   Yes, "attributes act like tags"                            same Keywords 101, 2025-08-26
+  es
+
+  Categor    Yes, "categories act like tags"; item also appears in      same Keywords 101, 2025-08-26
+  y          parent categories
+
+  Descript   Yes, listed as a relevancy input; keywords in first few    [S1: etsy.com, 2025-08-26]; [S12: etsy.com,
+  ion        sentences                                                  2025-08-26]
+
+  First      Yes, named as a matching input                             [S13: etsy.com, 2026-04-27]
+  photo
+
+  Reviews    Yes, named as a matching input                             same, 2026-04-27
+
+  Alt text   Not stated as an Etsy-search input. Etsy says external     [S14: help.etsy.com, undated page, footer 2026]
+             search engines can read it, and adding title/tags/shop
+             name gives no extra SEO benefit
+
+  Video      No primary 2025-2026 source found stating video is a       Gap
+             ranking factor
+
+ Tags still matter. Etsy's 2025 handbook, checklist and anatomy article all say use all 13 [S15:
+ etsy.com, 2025-08-26].
+
+
+ 2. Exact current guidance per listing element
+ 2.1 Titles (the "short title" guidance)
+ Timeline:
+  • Etsy posted updated title guidance and an AI title tool in August 2025 [S16:
+    valueaddedresource.net, 2025-08-21].
+  • Etsy's Fall 2025 update confirmed the optional title tool in the Search Visibility dashboard [S17:
+    etsy.com, 2025-09-15].
+  • The current handbook article "New Guidance for Listing Titles, and a Tool to Help" is dated
+    2026-04-27 [S13: etsy.com, 2026-04-27].
+ Etsy's rules [S13: etsy.com, 2026-04-27; S12: etsy.com, 2025-08-26]:
+
+
+
+Etsy Fine Jewelry Master Course | Module 3: Etsy Search, SEO and Keyword Research                                Page 48
+  1. State the item clearly (a noun such as "ring"), once.
+  2. "Include the most important traits upfront", such as color, material, size.
+  3. Include the top three critical descriptors for your category plus any key differentiator.
+  4. "Consider using less than 15 words."
+  5. Holidays, occasions, recipients only when essential to the item.
+  6. Move subjective words ("perfect", "beautiful") to the description.
+  7. Do not repeat words or phrases, do not repeat gifting phrases ("gift for him").
+  8. Do not add price, shipping or sale info (Etsy badges these).
+  9. No keyword stuffing.
+  10. Shoppers see only the first few words in search results.
+ On placement: Keywords 101 says "keyword placement within the title doesn't affect ranking"; lead
+ with the most descriptive words for buyers on mobile [S11: etsy.com, 2025-08-26]. "How to Get
+ Found in Search" says keep the most important search terms at the beginning [S18: etsy.com, page
+ metadata about 2026-10]. Reconciled reading: front-loading is for the human click, not for the
+ algorithm.
+ Etsy's own example [S13: etsy.com, 2026-04-27]:
+  • Old: "ON SALE ! Birthday Bandana - Happy Birthday, Birthday Dog Bandana, Birthday Cat
+    Bandana, Birthday Bones, Birthday Pet Present"
+  • New: "Birthday Bones Cotton Dog Bandana - Easy Slip Over the Collar"
+ AI title tool facts [same source, 2026-04-27; S2: help.etsy.com, undated, footer 2026]:
+  • Optional, English-language shops only; uses current title, first photo and description.
+  • Appears in Search Visibility only when suggestions exist; if titles already meet guidance, it does
+    not appear.
+  • Download a CSV of listings before changing anything, to keep original keywords.
+  • Changes can take time to take effect and can be reverted.
+  • Seeing a suggestion does not mean your title is underperforming.
+ Third-party interpretation (eRank, 2025-08-27, modified 2026-01-06) [S19: help.erank.com]:
+  • Etsy said older-style titles are not penalized; updating is optional.
+  • Do not change bestsellers. Test underperformers in small batches and monitor 1 to 3 months.
+  • The AI tool ignores sales and search performance and may drop important keywords or suggest
+    trademarks.
+  • Removed keywords should be moved to attributes (if a matching attribute exists), tags (if not; for
+    example "gift for her"), or the description. Remove sales/shipping phrases entirely.
+  • Formula: Noun + top 3 objective descriptors + other key item-specific info.
+ Third-party caution (Value Added Resource quoting a seller, 2025-08-21): change a few listings at a
+ time and check whether new titles actually perform better [S16: valueaddedresource.net,
+ 2025-08-21]. Etsy published no data showing short titles rank better [same source].
+ Hard limits: Alura's (undated) doc lists a 140-character title maximum, limits on %, :, &, prohibited $,
+ ^, `, and no more than three all-caps words [S20: alura.io, undated]. These limits were not
+ re-verified on an Etsy 2025-2026 page (search budget exhausted). Treat as UNVERIFIED but stable
+ long-standing limits; Etsy's listing editor enforces them at entry.
+
+ 2.2 Tags
+
+
+Etsy Fine Jewelry Master Course | Module 3: Etsy Search, SEO and Keyword Research                  Page 49
+ From Keywords 101 [S11: etsy.com, 2025-08-26]:
+  • Use all 13 tags. Each can be up to 20 characters.
+  • Use multi-word phrases.
+  • "Don't repeat tags." Make them as distinct as possible.
+  • Do not repeat categories and attributes as exact tags; you can use those words inside a longer
+    tag.
+  • "Don't worry about plurals" (root-word matching).
+  • "Don't include misspellings" (Etsy redirects common typos).
+  • "Don't add tags in multiple languages."
+  • Use synonyms and regional terms Etsy may not map.
+  • "Do target 'long tail' keywords", which are less competitive and "tend to convert better".
+  • For phrases longer than 20 characters, split into tag-sized chunks.
+  • Refresh tags on low-traffic listings after checking Shop Stats.
+ From the anatomy article [S12: etsy.com, 2025-08-26]:
+  • "If you can't imagine someone typing the phrase into Google, leave it out."
+  • Vary tags across what the product is, how it's made, and who it's for.
+ From "How to Get Found in Search" [S18: etsy.com, about 2026-10]: do not repeat attribute info like
+ color in tags, but specialized terms (for example "mint green") still belong in tags and titles. Applied
+ to jewelry: the color attribute "gold" is covered, but "rose gold" or "yellow gold" as a phrase may still
+ deserve a tag if no attribute captures it. Verify in your listing editor which values exist.
+
+ 2.3 Attributes and categories
+  • Choose the most specific subcategory; it unlocks category-specific attributes and the item also
+    appears in parent categories [S11: etsy.com, 2025-08-26].
+  • Fill in all relevant attributes, "even less precise ones" [same].
+  • "Choose the option that best fits, even if it isn't how you would describe the item" [S12: etsy.com,
+    2025-08-26].
+  • Search Visibility flags a category that is not as specific as possible [S2: help.etsy.com, undated,
+    footer 2026].
+  • Etsy's Fall 2025 attribute suggestions tool was limited to Wall Hangings and Prints, "with more
+    categories to come" [S17: etsy.com, 2025-09-15].
+  • Third-party (Listadum, 2026-07-09): when a buyer applies a filter, "Etsy only shows listings that
+    have set that attribute"; an unset attribute is "a door you closed" [S21: listadum.com,
+    2026-07-09].
+ Ring subcategories visible on Etsy's Rings category page (fetched 2026-10-22): Wedding &
+ Engagement, Statement Rings, Signet Rings, Multi-Stone Rings, Bands; listed ring types include
+ bands, midi rings, multi-stone, triplet and double, ring guards and spacers, solitaire, stackable,
+ statement, signet, fidget [S22: etsy.com, accessed 2026-10-22]. The filter panel did not render in
+ fetch; the full attribute list for rings is a GAP (see section 13). Action: open the listing editor in each
+ ring subcategory and screenshot every attribute field and its allowed values. That screenshot
+ becomes your attribute map.
+
+ 2.4 Descriptions
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 3: Etsy Search, SEO and Keyword Research                      Page 50
+  • Keywords in the first few sentences; do not copy the title or list keywords; write in brand voice
+    [S12: etsy.com, 2025-08-26].
+  • Put essential info first: sizes, dimensions, colors, ordering directions. Include materials, care,
+    customization options; use bullets or short paragraphs [same].
+  • Titles, tags and descriptions should answer a shopper's questions [S18: etsy.com, about
+    2026-10].
+  • Descriptions are read by Etsy's LLM attribute extractor and relevance annotator (see 1.4).
+
+ 2.5 Photos, video, alt text
+  • Up to 20 photos; first photo at least 635 px to avoid ranking lower; Etsy recommends 2000 px or
+    more; no text overlays or collages on the first image [S12: etsy.com, 2025-08-26].
+  • Alt text: up to 250 characters; English-language shops; external engines can read it; adding shop
+    name, title, tags or SKUs gives no extra SEO benefit; Etsy may add AI-generated alt text for US
+    sellers if you do not write your own [S14: help.etsy.com, undated, footer 2026].
+  • Video: no primary 2025-2026 source confirming video as a ranking factor was found. Third-party
+    (Growing Your Craft, updated 2025-12-13) claims mobile autoplay and dwell time measurement,
+    unsourced [S23: growingyourcraft.com, 2025-12-13]. A third-party roundup claims two videos per
+    listing from June 2026, not linked to Etsy [S24: growingyourcraft.com, updated 2026-10-08].
+    Treat as unverified.
+
+ 2.6 Shop title, announcement, sections
+  • Shop title: up to 55 characters; shows under shop name; you can preview how it looks in Google
+    results; Etsy says it can help SEO [S25: help.etsy.com, undated, footer 2026].
+  • Announcement: shows under listings; keep short; put detail in About, policies and descriptions
+    [same].
+  • Shop sections: no 2025-2026 primary source on sections as a search factor was found. Use them
+    for buyer navigation (for example "Engraved Bands", "Stacking Rings", "Princess Cut") and for
+    Google-indexable shop structure. GAP.
+
+ 2.7 Official Etsy checklist ("Checklist: Optimize Your Shop for Etsy Search",
+ updated August 2025)
+ [S15: etsy.com, 2025-08-26]
+  1. Use the search visibility page.
+  2. Meet customer service standards (review rating, message response rate, case rate, past three
+    months).
+  3. Use all 13 tags, multi-word natural phrases.
+  4. Keep shipping prices competitive (US domestic under $6 gets priority).
+  5. Add relevant attributes (no need to repeat them as tags).
+  6. Write short, clear titles, most important keywords first.
+  7. Lead with your best photo.
+  8. Add clear shop policies; Etsy's policy template can provide an additional boost.
+  9. Use your shop language.
+  10. Review and adjust regularly, especially before seasons or holidays.
+
+ 3. Keyword research tools: what each metric means
+
+Etsy Fine Jewelry Master Course | Module 3: Etsy Search, SEO and Keyword Research                        Page 51
+ 3.1 Etsy Marketplace Insights (free, first-party)
+  • Launched Fall 2025, rolling out "over the coming weeks"; 15 free keyword searches per week;
+    Etsy Plus unlimited [S17: etsy.com, 2025-09-15].
+  • Location: Shop Manager > Stats > Marketplace Insights; desktop and mobile web only, not the
+    app [S26: help.etsy.com, undated, footer 2026].
+  • Metrics [same]:
+     • Search volume: searches for the keyword in the last 30 days.
+     • Listings: number of listings for the keyword over the last 30 days (the competition proxy).
+     • Related search terms: similar terms with high buyer interest and fewer listings.
+     • Trends: trending searches in your categories, last 30 days.
+  • Results stay available 7 days; remaining weekly quota shows above the search bar [same].
+  • The tool shows terms even if not allowed on Etsy; compliance is your responsibility [same].
+  • Handbook guidance: replace broad terms with specific phrases, Etsy's own example is "silver
+    stacking ring" instead of "ring"; list seasonal items early; fix Search Visibility issues first [S27:
+    etsy.com, 2025-11-04].
+ Why it matters: it is the only tool with Etsy's own search counts. Third-party tools estimate.
+
+ 3.2 eRank
+ Metric definitions [S28: hc.erank.com, 2026-06-05]:
+  • Average Searches: average monthly searches for the keyword in the selected marketplace and
+    country, averaged over the past 12 months.
+  • Average Clicks: average monthly clicks on listings for that keyword, past 12 months.
+  • Average CTR: clicks divided by searches, as a percentage. Can exceed 100% because one buyer
+    can click several listings [S29: help.erank.com, 2024-12-05, modified 2025-05-28].
+  • Etsy Competition: number of listings matched to the keyword, excluding ads and personalized
+    results.
+  • Keyword Difficulty (KD): ratio of monthly search volume to Etsy competition; lower suggests
+    less competition relative to demand. (eRank's own example numbers do not reproduce the ratio
+    exactly; the page does not explain a scaling factor.)
+  • Trend graphs: 15 months of monthly volume, for seasonality.
+  • Color coding: dark green very good to red very poor (for competition and KD, green means low).
+ CTR guidance (eRank, third-party): "A low CTR often indicates a keyword is too broad"; compare
+ related phrasings, for example a lower-volume phrase with higher CTR may have more engaged
+ buyers [S29: help.erank.com, modified 2025-05-28].
+ Data source: eRank estimates search volume using third-party analytics data and offers 15 months
+ of history and per-country filtering, versus Marketplace Insights' 30 days, global [S30:
+ help.erank.com, 2025-10-22]. Quotas quoted there: Keyword Tool 35 keywords/week free, 1,400
+ Pro, 24,500 Expert [same].
+ eRank toolbox (what to use for what) [S31: hc.erank.com, 2026-08-04]:
+  • Keyword Tool: analyzes top 100 Etsy results for a keyword: trends, related keywords, tags used,
+    price range.
+  • Bulk Keyword Tool: up to 20 keywords at once.
+  • Keyword Lists: save and group keywords with notes and color codes.
+
+
+
+Etsy Fine Jewelry Master Course | Module 3: Etsy Search, SEO and Keyword Research                      Page 52
+  • Rank Checker: where a shop or listing ranks for up to 10 keywords, without personalization or
+    ads.
+  • Competitor Sales: estimated daily, weekly, monthly, total sales of competitors.
+  • Shop Info, Category Report (US activity in a category over 12 months, including buyer
+    demographics).
+  • Listing Audit: analyzes a listing's title, stats, attributes, tags, description.
+  • Health Check: flags missing components, spelling issues, one-word tags.
+  • Traffic Stats: search terms bringing shoppers and ranking.
+  • Spotted on Etsy: which of your listings appear for which keywords.
+  • Tag Report: your tags with usage, competition and 15-month trend.
+  • Trend Buzz: top 100 most-searched terms on Etsy and other marketplaces, updated daily, 12
+    months of Etsy trend data.
+  • Monthly Trends: popular keywords by category, 15 months.
+  • AI Listing Helper, Compare Listings (up to 4), Profit Calculator, Ad Performance
+    Calculator, browser Extension.
+
+ 3.3 Alura (Growth plan)
+ Growth plan, per Alura's own llms-full page (accessed 2026-10-22) [S32: alura.io, accessed
+ 2026-10-22]:
+  • Keyword research: 500 keyword searches/day, 25 bulk searches/day (bulk checks up to 100
+    keywords), 1,000 trending keywords total, 500 Etsy autocomplete lookups/day, month-by-month
+    keyword history.
+  • Listing optimization: 4,000 AI credits/month (about 80 optimizations), 4 active A/B tests
+    (thumbnails, titles or prices).
+  • Shop research: 200 shop analyses/day, 200 shop searches/day, monthly sales history, AI review
+    insights.
+  • Product research: 500 product searches/day, 500 products analyzed/day, historic data, advanced
+    filters, export selected rows to CSV.
+  • Fields starting with est_ are Alura estimates, not Etsy figures.
+  • Growth price: $29.99/month or $179.99/year.
+  • No rank-tracking-over-time feature is described; "keyword top results" shows who ranks now.
+ Keyword workflow in Alura (Search tool, a.k.a. Keyword Finder) [S33: help.alura.io, 2025-10-14]:
+  1. Seed 5 to 8 terms or use AI Suggestions from a product description or existing listing.
+  2. Check Keyword Score (0-100), which balances demand against competition: 80-100 excellent,
+    60-79 strong, 40-59 fair, 0-39 challenging. Below 60, look for longer variations.
+  3. In Similar Keywords, toggle Valid Etsy Tag (hides phrases over 20 characters) and choose
+    Match Type (Broad = related ideas, Phrase = contains your term). Scan for intent modifiers like
+    "for her", "personalized".
+  4. Listings tab: open top listings, read their tags; tags shared by several top listings suggest
+    proven phrases.
+  5. Save with the heart (Keyword List) or plus (add to a listing).
+  6. Validate in Bulk Search or Tag Manager, sort by Keyword Score.
+  7. Alura's suggested 13-tag mix "4-6-3": 4 core, 6 long-tail, 3 exploratory. Skip terms covered by
+    category or attributes; avoid trademarks; protect tags already bringing traffic (Search Terms
+
+
+Etsy Fine Jewelry Master Course | Module 3: Etsy Search, SEO and Keyword Research                    Page 53
+    tab).
+ Listing Helper and Alura Listing Score [S34: help.alura.io, 2024-03-29, UNVERIFIED pre-2025 but
+ current help page]:
+  • Score 1-100 based on open recommendations across title, photos, description, tags and others.
+    Fewer open recommendations = higher score. 100 is achievable.
+  • "Suggestions" (sales performance, conversion, potential trademark infringement) do not affect
+    the score but matter. Use the trademark flag.
+  • Table sorts lowest score first. Edit on Etsy, then "Reanalyze listing".
+  • Important: the Alura score is Alura's checklist, not Etsy's ranking. A 100 score does not guarantee
+    rank.
+ Shop Analyzer: study top-selling competitor shops, compare strengths and weaknesses [S35:
+ help.alura.io, 2024-03-26, pre-2025].
+
+ 3.4 Which number to trust
+  Question                                                   Best source
+
+  How many people searched this on Etsy recently?            Marketplace Insights (Etsy's own data, 30 days)
+
+  Is it seasonal? Rising or falling over a year?             eRank trend graph (15 months), Alura keyword history
+
+  How many listings compete?                                 Marketplace Insights "Listings"; eRank "Etsy Competition"
+
+  Do searchers click?                                        eRank Average CTR
+
+  Quick demand-vs-competition ranking of 50 candidates       Alura Keyword Score in Bulk Search, eRank KD
+
+  What do top sellers tag?                                   Alura Listings tab, eRank Keyword Tool tags
+
+  Where does my listing rank, unpersonalized?                eRank Rank Checker
+
+  What actually brought me traffic and sales?                Etsy Search Analytics and Stats (section 6)
+
+
+
+ 4. STEP BY STEP KEYWORD WORKFLOW
+ Use this for every new listing and every quarterly refresh. Time per listing after the first few: about
+ 30 to 45 minutes.
+ Step 1. Define the product facts sheet (5 min). Write, in plain words: item noun (ring, band,
+ signet ring), metal (solid 14K or 18K gold), color of gold (yellow, white, rose), stone (shape: princess
+ cut; type), technique (engraved, hand engraved, enamel), customization (name, initials, date,
+ coordinates, font choice), sizes offered, band width, made-to-order lead time, origin (made in the
+ USA by our partner workshop, ships from [US state]). This sheet feeds attributes, description and alt
+ text. It also prevents inaccurate keywords.
+ Step 2. Build the seed list by intent bucket (10 min). Create five columns:
+  • Product: "gold ring", "gold band", "signet ring", "stacking ring", "princess cut ring".
+  • Material/spec: "14k solid gold", "18k gold", "yellow gold", "white gold", "rose gold".
+  • Personalization: "engraved", "personalized", "custom name", "initial", "date".
+  • Occasion: anniversary, wedding, engagement, birthday, push present, graduation, Mother's Day,
+    Valentine's Day, Christmas.
+  • Recipient: for her, for him, for wife, for mom, for husband.
+ Step 3. Harvest Etsy autocomplete (5 min). Type each product seed into the Etsy search bar
+ and record suggestions. Etsy's own handbook recommends this and testing synonyms [S18:
+
+
+
+Etsy Fine Jewelry Master Course | Module 3: Etsy Search, SEO and Keyword Research                                Page 54
+ etsy.com, about 2026-10]. Use Alura's Chrome extension to see data on suggestions (Growth: 500
+ autocomplete lookups/day) [S32: alura.io, accessed 2026-10-22].
+ Step 4. Validate demand with Marketplace Insights (spend 3 to 5 of your 15 weekly
+ searches). Run only the 3 to 5 most important head phrases. Record 30-day search volume and
+ listing count, and copy every related term. Related terms with high interest and fewer listings are
+ your priority long-tails [S26: help.etsy.com, undated, footer 2026].
+ Step 5. Expand and score in Alura (10 min). Put head phrases into Alura Search. Toggle Valid
+ Etsy Tag. Use Phrase match. Export or save all candidates with Keyword Score of 60 or more. Then
+ Bulk Search up to 100 candidates and sort by score [S33: help.alura.io, 2025-10-14].
+ Step 6. Check engagement and seasonality in eRank (10 min). Put the top 20 candidates into
+ eRank Bulk Keyword Tool (20 at a time). For each, note Average Searches, Competition, CTR, and
+ the 15-month trend shape [S28: hc.erank.com, 2026-06-05]. Drop phrases whose trend shows they
+ are only alive in a season you are not listing for.
+ Step 7. Apply the selection heuristic. (Heuristic, not an Etsy rule.)
+  • Keep: Alura score 60+, eRank CTR not in the lowest color band, competition not in the red band,
+    and the phrase is 100% accurate for the item.
+  • Prefer 3 to 5 word long-tails. Etsy itself says long-tails are less competitive and tend to convert
+    better [S11: etsy.com, 2025-08-26].
+  • When two phrasings exist, keep the higher-CTR one in a tag; eRank's example shows a
+    lower-volume phrasing can have more engaged buyers [S29: help.erank.com, modified
+    2025-05-28].
+  • Never keep a phrase that is only true of a different metal (for example "gold filled", "gold plated",
+    "sterling silver") on a solid gold listing.
+ Step 8. Assign keywords to slots.
+  • Attributes first: every fact that has an attribute field goes there (metal, color, occasion, recipient,
+    personalization, style, stone). Then do not spend tags on exact attribute values [S15: etsy.com,
+    2025-08-26].
+  • Title: noun + top 3 objective descriptors + one differentiator, under 15 words [S13: etsy.com,
+    2026-04-27].
+  • Tags: 13, each under 20 characters, each distinct. Suggested mix (Alura 4-6-3): 4 core product
+    phrases, 6 long-tails with occasion/recipient/personalization, 3 exploratory.
+  • Description first 2 sentences: the main phrase and 2 or 3 secondary phrases written naturally.
+  • Alt text: describe what the photo shows (metal color, stone shape, engraving visible), up to 250
+    characters.
+ Step 9. Map across the catalog (prevents cannibalization). See section 5.
+ Step 10. Publish, record baseline, and wait. Record date, title, tags, attributes, and the
+ baseline from Search Analytics. Search Visibility changes can take up to a day to appear [S2:
+ help.etsy.com, undated, footer 2026]. Do not judge results before the windows in section 6.
+ Step 11. Monthly review. Etsy Search Analytics and Stats > How shoppers found you > Etsy
+ search. Keep tags that bring visits and orders. Replace tags with zero impressions after 30 to 60
+ days. eRank Traffic Stats and Spotted on Etsy confirm which keywords each listing appears for [S31:
+ hc.erank.com, 2026-08-04].
+ Step 12. Seasonal refresh. Etsy: "refresh tags and titles, especially before seasons or holidays"
+ [S15: etsy.com, 2025-08-26]; "list seasonal items early, before demand peaks" [S27: etsy.com,
+
+
+Etsy Fine Jewelry Master Course | Module 3: Etsy Search, SEO and Keyword Research                     Page 55
+ 2025-11-04]. For made-to-order gold, lead time is long, so seasonal tags should go live well before
+ the season's last order date. Use eRank's 15-month trend to see when each occasion phrase starts
+ rising, and update before that month. (No Etsy-published lead-time number exists; derive it from
+ your own trend graphs.)
+
+
+ 5. Keyword mapping and cannibalization
+ Etsy's guidance: "Don't give similar items identical or nearly identical names. Varied keywords reach
+ different buyers" [S18: etsy.com, about 2026-10]. Diverse inventory and varied relevant tags create
+ more search matches [S1: etsy.com, 2025-08-26].
+ Method (keyword map spreadsheet):
+  1. Columns: Listing ID | Primary keyword (title) | Secondary keywords (tags) | Attributes set |
+    Occasion focus | Recipient focus | Status.
+  2. Each listing owns one primary phrase. No two listings share the same primary phrase.
+  3. Listings of the same product type split by a differentiator: metal color, karat, stone shape, band
+    width, technique, occasion, recipient.
+  4. Shared broad tags (for example "gold ring") are acceptable on several listings; the long-tails
+    must differ.
+  5. Re-check the map whenever a new listing is added.
+ Example split for five engraved band listings (illustrative, validate before use):
+
+  Listing            Primary phrase owned
+
+  A                  14k solid gold engraved band (yellow)
+
+  B                  18k gold name ring (personalized name)
+
+  C                  white gold wedding band engraved
+
+  D                  rose gold stacking ring with initial
+
+  E                  anniversary band with date engraving
+
+
+
+ 6. Measuring SEO
+ 6.1 Etsy Stats
+ [S36: help.etsy.com, undated, footer 2026]
+  • Search terms: "Choose Etsy search under How shoppers found you to see what search terms
+    people used to find your listings."
+  • "Search results are unique to who is searching." Stats are "the most accurate place to check how
+    your listings are performing in search."
+  • Visits = people who looked at your shop or listings; views = total listing looks. One shopper who
+    views six listings = one visit, six views.
+  • Traffic sources show where the buyer first came from (Etsy search, Etsy app and other pages,
+    Etsy marketing and SEO, direct, social, Etsy Ads, Offsite Ads).
+  • Visits refresh a few times a day; bot filtering can lower counts at day end.
+
+ 6.2 Etsy Search Analytics
+ Location: Shop Manager > Marketing > Search Analytics; beta [S37: alura.io, undated, third-party
+ description of an Etsy tool]. Columns described there: Impressions, Position (average), Visits, Visit
+
+
+Etsy Fine Jewelry Master Course | Module 3: Etsy Search, SEO and Keyword Research                   Page 56
+ per Impression ratio, Orders, Conversion Rate, Revenue, Average Order Value, number of Listings
+ per term. Etsy Ads traffic is excluded, and values may differ from Stats. The Etsy Help article on
+ Search Analytics redirected to sign-in during research, so these definitions come via Alura (GAP for
+ primary confirmation).
+
+ 6.3 Funnel formulas (standard arithmetic, apply to Search Analytics data)
+  • Search CTR proxy = Visits / Impressions (Etsy calls it "Visit per Impression Ratio").
+  • Search conversion = Orders / Visits.
+  • Revenue per impression = Revenue / Impressions. Best single number for comparing two title
+    versions on the same listing.
+ Diagnosis table:
+
+  Symptom                           Likely problem                       Fix
+
+  Low impressions for a term        Not matched or ranks too low         Add phrase to tags/attributes/description; check
+  you target                                                             category specificity; Search Visibility flags
+
+  Good impressions, low             Thumbnail or title not               First photo (one finished product, 2000 px, no
+  visit/impression                  compelling, price                    collage); front-load clear noun and metal; check
+                                                                         price competitiveness
+
+  Good visits, low conversion       Listing page, trust, total cost,     Photos, description clarity, reviews, delivery
+                                    lead time                            estimate, policies
+
+  "Hits but no sales"               Terms too broad                      Etsy: "try more specific phrases and styles"
+                                                                         [S18: etsy.com, about 2026-10]
+
+
+ 6.4 Testing title changes safely
+  1. Download listing CSV first (Etsy's own instruction) [S13: etsy.com, 2026-04-27].
+  2. Do not touch listings that already sell well (eRank) [S19: help.erank.com, 2025-08-27].
+  3. Change one variable at a time (title OR tags OR thumbnail), on a small batch. Etsy: "Make
+    changes gradually so you can see what works" [S18: etsy.com, about 2026-10].
+  4. Compare same-length windows before and after, avoiding holiday spikes. eRank suggests
+    monitoring 1 to 3 months [S19: help.erank.com, 2025-08-27].
+  5. Alura Growth allows 4 active A/B tests on thumbnails, titles or prices [S32: alura.io, accessed
+    2026-10-22]. Use them on mid-traffic listings, where there is enough data.
+  6. Keep a change log (date, listing, old value, new value, reason).
+
+ 6.5 How long ranking takes to update
+  • Etsy: Search Visibility insights clear within 24 hours; "search changes can take up to a day to
+    appear" [S2: help.etsy.com, undated, footer 2026].
+  • Etsy: title changes "may take time to take effect" [S13: etsy.com, 2026-04-27].
+  • Third-party: rankings can appear in hours or take 1 to 2 days [S23: growingyourcraft.com,
+    2025-12-13].
+  • Distinguish indexing (a day) from performance stabilizing (weeks, because engagement rate is
+    computed from accumulated views and purchases).
+
+ 6.6 New listing boost: verified vs myth
+  • VERIFIED: new listings get "a small, temporary boost" lasting a few hours to a few days; renewed
+    listings get a smaller one [S1: etsy.com, 2025-08-26].
+
+
+
+Etsy Fine Jewelry Master Course | Module 3: Etsy Search, SEO and Keyword Research                                   Page 57
+  • VERIFIED: renewing only for the boost "isn't an effective strategy" [same].
+  • MYTH: a long "honeymoon" period of weeks during which new listings rank high. No Etsy source
+    supports this.
+  • MYTH: deleting and relisting a listing to restart its boost. The boost is hours to days, and you lose
+    accumulated reviews, favorites and engagement history on that listing (inference from
+    engagement rate being a ranking factor).
+  • Third-party claim of a new-shop boost "for a period of time" is unsourced [S23:
+    growingyourcraft.com, 2025-12-13].
+
+
+ 7. Jewelry-specific keyword guidance (gold rings, personalized,
+ US buyers)
+ 7.1 What Etsy confirms
+  • Etsy's own keyword example is "silver stacking ring" instead of "ring" [S27: etsy.com,
+    2025-11-04]. The gold equivalent: "gold stacking ring", "14k gold stacking ring".
+  • Gifting, personalized gifts and milestones are Etsy's named strengths [S7: finviz.com,
+    2026-02-19].
+  • Accurate materials are mandatory: "Don't label products with materials they aren't made from"
+    [S11: etsy.com, 2025-08-26].
+  • Specialized color terms still belong in titles and tags [S18: etsy.com, about 2026-10]: "yellow
+    gold", "rose gold", "white gold" are such terms.
+
+ 7.2 High-intent modifiers for this niche (to validate)
+ No verified 2025-2026 search volumes for these were collected. Validate each in Marketplace
+ Insights, Alura and eRank before use.
+  • Purity/material: 14k solid gold, 18k solid gold, solid gold, real gold, 14k yellow gold, 14k white
+    gold, 14k rose gold.
+  • Type: gold band, wedding band, stacking ring, signet ring, name ring, initial ring, eternity band,
+    solitaire ring, princess cut ring, enamel ring.
+  • Personalization: engraved ring, custom engraved band, personalized name ring, initial signet
+    ring, date ring, coordinates ring, handwriting ring.
+  • Occasion: anniversary ring, promise ring, push present, graduation gift, Mother's Day ring,
+    Valentine's ring, Christmas gift for wife.
+  • Recipient: ring for her, ring for him, ring for wife, ring for mom, mens signet ring.
+  • Trust/production: handmade gold ring, made to order ring (these also belong in the description).
+ "Solid" is the key qualifier. Buyers of fine jewelry use "solid gold" or "real gold" to exclude plated
+ and filled items. Use it only where true.
+
+ 7.3 Example title and tag sets (illustrative templates)
+ Each title follows Etsy's rule: noun, top three descriptors, one differentiator, under 15 words. Each
+ tag is at most 20 characters (counted including spaces). Tags avoid repeating attribute values
+ exactly.
+ A. 14K solid gold engraved band
+  • Title: "14K Solid Yellow Gold Engraved Band, Custom Name or Date Ring, 3mm" (12 words, no
+    repeated words)
+
+
+Etsy Fine Jewelry Master Course | Module 3: Etsy Search, SEO and Keyword Research                    Page 58
+  • Attributes to set: metal/material = gold (and karat/purity field if present), color = gold/yellow, can
+    be personalized = yes, occasion = anniversary, recipient as applicable, style.
+  • Tags (13): 14k solid gold ring | engraved gold band | custom name ring | date engraved ring |
+    personalized band | anniversary band | gold wedding band | stackable gold band | hidden
+    message ring | minimalist gold ring | ring for wife | real gold band | 3mm gold band
+ B. 18K gold princess-cut stacking ring
+  • Title: "Solid 18K Gold Princess Cut Stacking Ring with Square Stone" (10 words)
+  • Tags (13): 18k gold ring | princess cut ring | square stone ring | solid gold stacker | stacking ring
+    gold | dainty gold ring | gold ring for women | square cut band | promise ring gold | birthday gift
+    ring | stackable band | minimalist ring | 18k solid gold
+ C. Enamel signet ring with initial
+  • Title: "Solid 14K Gold Black Enamel Signet Ring, Personalized Initial" (9 words)
+  • Tags (13): gold signet ring | enamel signet ring | initial signet ring | custom signet ring | pinky ring
+    gold | monogram ring | 14k signet ring | letter ring gold | black enamel ring | family crest ring |
+    mens signet ring | heirloom ring | ring for him
+ Tag character check method: count each tag in a spreadsheet with =LEN(A1) and reject any over
+ 20.
+ Note "family crest ring" only if you actually offer crest engraving. "mens signet ring" only if sizes and
+ design suit men.
+
+ 7.4 Terms to avoid
+  • Brand and designer names and "style/inspired" phrasings (for example a luxury jewelry house
+    name followed by "style"). Etsy's IP policy page does not list keyword rules [S38: etsy.com, last
+    updated 2023-06-15, pre-2025], but third-party guidance notes listings using protected names
+    without license can be removed without warning and repeat infringement can lead to shop
+    suspension [S39: outfy.com, 2025-10-21, updated 2026-07-22]. Alura's Keyword guide says avoid
+    trademarked terms you do not own [S33: help.alura.io, 2025-10-14], and Alura's Listing Helper
+    flags potential trademark infringement [S34: help.alura.io, 2024-03-29].
+  • Marketplace Insights will show trademarked terms buyers search for; seeing a term there is not
+    permission to use it [S26: help.etsy.com, undated, footer 2026].
+  • Inaccurate materials: "gold filled", "vermeil", "plated", "sterling" on solid gold listings, or
+    "diamond" for a simulant. Also, US jewelry marketing rules on metal and stone descriptions exist
+    (FTC Jewelry Guides); not researched in this module, flag for the legal/compliance track.
+  • Subjective words in titles: "perfect", "beautiful", "stunning" (move to description) [S13: etsy.com,
+    2026-04-27].
+  • Sale and shipping words: "free shipping", "sale" [same].
+  • Misspellings and foreign-language tags [S11: etsy.com, 2025-08-26].
+
+ 7.5 Description template (gold rings)
+ First two sentences (indexed, read by LLMs): "Solid 14K gold engraved band, handmade to order in
+ our partner workshop in [US state] and engraved with the name, initials or date you choose.
+ Available in yellow, white or rose gold, 2 to 4 mm wide, US sizes [X] to [Y]."
+ Then bullets:
+  • Metal and purity (14K = 58.5% gold; 18K = 75% gold).
+
+
+
+Etsy Fine Jewelry Master Course | Module 3: Etsy Search, SEO and Keyword Research                     Page 59
+  • Dimensions: band width, thickness, stone size and shape.
+  • Personalization: character limit, fonts, where engraving goes.
+  • Production time and delivery estimate.
+  • Sizing guidance (describe it in text; Etsy recommends text for size charts) [S14: help.etsy.com,
+    undated, footer 2026].
+  • Care.
+  • Packaging and gift readiness (this is where gift words go).
+
+ 8. Google and external SEO
+  • Shop title (55 characters) shows in Google previews; write it as "what you sell" [S25:
+    help.etsy.com, undated, footer 2026]. Example: "Solid 14K and 18K Gold Personalized Rings" (41
+    characters).
+  • Alt text can be read by external search engines [S14: help.etsy.com, undated, footer 2026]. Write
+    descriptive alt text per photo.
+  • Title front-loading may help Google even if it does not help Etsy ranking (Marmalead, 2022,
+    pre-2025) [S40: blog.marmalead.com, modified 2022-06-08].
+  • Third-party claim: listing URLs stay the same after first publication from March 2026, helping
+    indexing [S24: growingyourcraft.com, updated 2026-10-08]. Not linked to Etsy; unverified.
+  • US buyers can discover eligible items in ChatGPT, Gemini, Google AI Mode and Copilot per
+    third-party roundup [same], consistent with Etsy's Q4 2025 call naming Copilot and Google
+    integrations [S7: finviz.com, 2026-02-19]. Clear factual listing content is what these systems
+    read.
+
+ 8.1 Offsite Ads and Google Shopping
+ [S41: help.etsy.com, undated, footer 2026]
+  • Fee: 15% under $10,000 in sales over any 365 days; 12% at or above; capped at $100 per order.
+  • Shops at $10,000+ must participate for the lifetime of the shop; below that you can opt out (Shop
+    Manager > Settings > Offsite Ads).
+  • Attribution: buyer clicks an ad and buys within 30 days.
+  • Placements: Google, Facebook, Instagram, Pinterest, Bing, publishing partners, Google Display
+    Network.
+  • Sellers cannot choose which listings are advertised; Etsy picks based on performance; better
+    listing quality may raise the chance.
+  • Google Shopping free listings: Alura's undated doc says listings may appear in free product listing
+    spaces with no Offsite Ads fee [S42: alura.io, undated]. The original "purchase on Google"
+    announcement (Partner Checkout, US shops in Offsite Ads, free listings carry no fee) dates from
+    October 2022 [S43: valueaddedresource.net, 2022-10-14, pre-2025]. Current status not
+    confirmed by a 2025-2026 Etsy source. A US shop meets the 2022 location rule (US shops only);
+    personalized and variant listings may still be excluded (see module 03).
+ Fine jewelry math: on a $600 ring, 15% would be $90; on a $900 ring, the $100 cap applies. This is
+ arithmetic from the published rates, not a projection.
+
+
+ 9. TACTICS
+
+
+
+Etsy Fine Jewelry Master Course | Module 3: Etsy Search, SEO and Keyword Research                 Page 60
+  1. Attribute-first listing build. Fill every attribute before writing the title. Then only spend title
+    words and tags on what attributes cannot express. Basis: attributes act like tags and drive filters
+    [S11: etsy.com, 2025-08-26]; unset attributes exclude you from filtered results (third-party) [S21:
+    listadum.com, 2026-07-09].
+  2. Make "solid gold" machine-readable three times. Title, first sentence of description, and a
+    close-up photo of the karat stamp with alt text "14K stamp inside solid gold band". Basis: Etsy's
+    LLMs read title, description and photos to infer attributes and judge relevance [S5: etsy.com,
+    2025-10-13].
+  3. Match "all parts of the query". For your top 10 target queries, write the query down and
+    verify each word is literally supported by the listing (text, attribute or visible in photo). Basis:
+    "Relevant" = matches all parts of the query [S4: etsy.com, 2026-01-16].
+  4. Thumbnail discipline. One finished ring, no collage, no text, 2000 px+, well lit [S2:
+    help.etsy.com, undated, footer 2026]. Test thumbnails with Alura A/B (4 slots on Growth).
+  5. Spend Marketplace Insights quota on head terms only. 15 per week. Use Alura (500/day)
+    and eRank for expansion.
+  6. Variant listings for different intent, not duplicates. Yellow vs white vs rose gold, 14K vs
+    18K, name vs date engraving can justify separate listings if each targets a distinct phrase and
+    has distinct photos. Basis: "Don't give similar items identical or nearly identical names" [S18:
+    etsy.com, about 2026-10]. Note: variations inside one listing concentrate reviews and
+    engagement; separate listings widen matching. Decide per product using Search Analytics data.
+  7. Seasonal tag rotation. Keep 2 to 3 tag slots as "seasonal": anniversary/wedding in spring,
+    Christmas in Q4, Valentine's in Q1, Mother's Day in Q2. Swap based on eRank trend graphs, early
+    enough to cover made-to-order lead time.
+  8. Customer service as SEO. Message response rate, review rating and case rate (past 3
+    months) are ranking inputs [S1: etsy.com, 2025-08-26]. For made-to-order gold with long lead
+    times, accurate processing times avoid late-shipment cases.
+  9. Use Etsy's policy template. Etsy says it "can provide an additional boost" [S15: etsy.com,
+    2025-08-26].
+  10. Do not turn on vacation mode casually. Engagement data stops updating while others'
+    keeps moving [S1: etsy.com, 2025-08-26]. For short breaks, extend processing time instead
+    (practical inference).
+  11. English only, US spelling. Shop language must match titles/tags; Etsy handles
+    "jewelry"/"jewellery" but not all regional terms [S11: etsy.com, 2025-08-26].
+  12. Use the AI title tool as a draft, not an answer. Check it kept "solid", karat, and your
+    differentiator; check it did not add trademarks (eRank warning) [S19: help.erank.com,
+    2025-08-27].
+
+
+ 10. COMMON MISTAKES
+  1. Keyword-stuffed 140-character titles. Contradicts Etsy's under-15-words guidance [S13:
+    etsy.com, 2026-04-27].
+  2. Rewriting every title at once after the guidance. Etsy says older titles are not penalized
+    (per eRank) and seeing a suggestion does not mean underperformance [S19: help.erank.com,
+    2025-08-27; S13: etsy.com, 2026-04-27].
+  3. Deleting removed title keywords. They should move to attributes, tags or description [S19:
+    help.erank.com, 2025-08-27].
+
+
+
+Etsy Fine Jewelry Master Course | Module 3: Etsy Search, SEO and Keyword Research                      Page 61
+  4. Fewer than 13 tags, or single-word tags. Etsy: use all 13, use phrases; eRank Health Check
+    flags one-word tags [S31: hc.erank.com, 2026-08-04].
+  5. Tags that duplicate attributes or category exactly ("gold", "ring", "rings") [S11: etsy.com,
+    2025-08-26].
+  6. Plural and misspelling tags ("gold rings" plus "gold ring", "jewelery") [same].
+  7. Generic category such as Jewelry > Rings when a specific subcategory (Bands, Signet Rings)
+    exists [S2: help.etsy.com, undated, footer 2026].
+  8. Collage or text-overlay thumbnail [same].
+  9. Renewing listings for a boost. Ineffective per Etsy [S1: etsy.com, 2025-08-26].
+  10. Trusting tool scores as Etsy's algorithm. Alura Listing Score and eRank grades are tool
+    checklists; Etsy's factors are in section 1.2.
+  11. Reading competitor sales estimates as facts. Alura est_ fields and eRank Competitor
+    Sales are estimates [S32: alura.io, accessed 2026-10-22].
+  12. Judging a change after 2 days. Indexing is about a day; performance needs weeks of data.
+  13. Using brand names or "style/inspired" phrasing. IP takedown risk (see 7.4).
+  14. Identical titles across color or karat variants, causing listings to compete for the same
+    phrase.
+  15. No alt text, leaving Etsy to auto-generate it for US sellers, or stuffing alt text with tags (no
+    benefit) [S14: help.etsy.com, undated, footer 2026].
+
+
+ 11. Myths debunked (with sources)
+  Myth                                  Reality                                     Source
+
+  "Tags no longer matter since Etsy     Etsy still says use all 13 tags.            [S15: etsy.com, 2025-08-26]
+  went AI."
+
+  "Descriptions are not indexed."       Descriptions are a relevancy input;         [S1: etsy.com, 2025-08-26]; [S5:
+                                        LLMs read them for attributes and           etsy.com, 2025-10-13]
+                                        relevance.
+
+  "Words at the start of the title      Etsy: placement within the title doesn't    [S11: etsy.com, 2025-08-26]
+  rank higher."                         affect ranking; front-load for human
+                                        readers.
+
+  "Short titles are required, long      Guidance is optional; no penalty for        [S19: help.erank.com, 2025-08-27]
+  ones are penalized."                  older titles (per eRank reporting Etsy).
+
+  "Renewing daily keeps you on          Boost is small, lasts hours to days; not    [S1: etsy.com, 2025-08-26]
+  top."                                 effective.
+
+  "Etsy Ads improve organic rank."      No effect outside ad spaces.                same
+
+  "Star Seller or Etsy Plus boosts      Not direct ranking factors.                 same
+  ranking."
+
+  "You need plurals and                 Root-word matching and typo                 [S11: etsy.com, 2025-08-26]
+  misspellings as tags."                redirection.
+
+  "Everyone sees the same               Context Specific Ranking personalizes       [S1: etsy.com, 2025-08-26]; [S36:
+  ranking."                             results; check Stats, not your own          help.etsy.com, undated, footer 2026]
+                                        searches.
+
+  "Put shop name and tags in alt        No extra SEO benefit.                       [S14: help.etsy.com, undated, footer
+  text for SEO."                                                                    2026]
+
+  "Etsy's AI title suggestion means     Etsy says it does not mean                  [S13: etsy.com, 2026-04-27]
+  my title is bad."                     underperformance.
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 3: Etsy Search, SEO and Keyword Research                                  Page 62
+  Myth                                  Reality                                     Source
+
+  "A perfect Alura/eRank score          Scores are tool checklists; Etsy ranking    Section 1.2 sources
+  guarantees ranking."                  includes conversion, customer service,
+                                        personalization.
+
+
+
+ 12. UNVERIFIED (pre-2025)
+ Kept for context only. Re-verify before teaching as current.
+  • Description keywords in ranking announced in Etsy Community "Updates to Etsy Search:
+    Listing Descriptions", page shows "Posted 4 years ago" (Marmalead dates the change to May
+    2022) [S44: community.etsy.com, about 2022]; [S40: blog.marmalead.com, modified
+    2022-06-08]. Superseded and confirmed by the 2025 handbook.
+  • $6 US domestic shipping priority effective October 1, 2024, with exclusions for listings
+    shipped from outside the US [S3: etsy.com, 2024-10-03]. Still referenced in 2025 checklist.
+  • "Listing Quality Score" and "Customer and Market Experience (CMX) score": older
+    terminology from pre-2025 Etsy materials; not used in the August 2025 handbook. Not
+    re-fetched.
+  • Marmalead myth list (tag order does not matter, word order within tag does; photos count not
+    a ranking factor at that time) [S40: blog.marmalead.com, 2020-06-22, modified 2022-06-08].
+    Note: the 2025 handbook now names "multiple high-quality photos" under listing quality, which
+    contradicts the old "photos don't affect ranking" claim.
+  • Purchase on Google / Partner Checkout for US shops in Offsite Ads, free listings with no fee
+    [S43: valueaddedresource.net, 2022-10-14].
+  • Semantic session embeddings for recommendations and guided search [S45: etsy.com,
+    2018-07-12].
+  • Unified embedding-based personalized retrieval paper (2023) [S46: arxiv.org, 2023]. Not
+    fetched; indicates embedding retrieval has existed since at least 2023.
+  • Alura Listing Helper score mechanics [S34: help.alura.io, 2024-03-29].
+  • eRank CTR article first published 2024-12-05 (modified 2025-05-28) [S29: help.erank.com].
+  • Etsy IP policy last updated 2023-06-15 [S38: etsy.com].
+
+ 13. Gaps and open questions
+  1. Full Etsy jewelry/ring attribute list (metal, karat/purity, stone, ring size, style, occasion,
+    recipient, personalization field names and values) was not captured from a primary source.
+    Action: screenshot the listing editor for each ring subcategory.
+  2. Etsy Help "What is Search Analytics?" redirected to sign-in; metric definitions above come
+    via Alura's description.
+  3. Video as a ranking factor: no primary 2025-2026 confirmation found.
+  4. Shop sections as a search factor: no primary 2025-2026 source.
+  5. Title hard limits (140 characters, special-character and all-caps rules) cited from an undated
+    Alura page; not re-verified on Etsy.
+  6. "Custom options" replacing "personalization" in 2026 and ship-from location filter
+    (September 2026) come from a third-party roundup without Etsy links [S24:
+    growingyourcraft.com, updated 2026-10-08]. Verify in Shop Manager.
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 3: Etsy Search, SEO and Keyword Research                         Page 63
+  7. Google Shopping free listings and Partner Checkout eligibility for personalized
+    listings from US shops in 2025-2026: not confirmed.
+  8. Verified search volumes for gold ring keywords: none collected; all jewelry keywords here
+    are templates to validate.
+  9. FTC Jewelry Guides wording rules for "solid gold", karat and stone claims: out of scope here,
+    needed for compliance track.
+  10. Research stopped when the shared web search budget for this session ran out; a follow-up pass
+    could close gaps 1, 3, 5, 6 and 7.
+
+
+ Module 3 sources
+ Numbered sources cited in this module as [S#]. All accessed 22 October 2026.
+ S1. https://www.etsy.com/seller-handbook/article/375461474487
+ S2. https://help.etsy.com/hc/en-us/articles/25869947521175-How-to-Use-the-Etsy-Search-Visibility-Page
+ S3. https://www.etsy.com/seller-handbook/article/1293023712519
+ S4. https://www.etsy.com/codeascraft/how-etsy-uses-llms-to-improve-search-relevance
+ S5. https://www.etsy.com/codeascraft/understanding-etsyas-vast-inventory-with-llms
+ S6. https://etsy.com/codeascraft/shaping-product-understanding-with-contrastive-reinforcement-learning
+ S7. https://finviz.com/news/316201/etsy-q4-2025-earnings-call-transcript
+ S8. https://www.pymnts.com/earnings/2026/etsy-three-way-ai-bet-starting-pay-off/
+ S9. https://www.digitalcommerce360.com/2025/09/30/chatgpt-debuts-checkout-experience-etsy-shopify-merchants/
+ S10. https://www.cnbc.com/2026/03/20/open-ai-agentic-shopping-etsy-shopify-walmart-amazon.html
+ S11. https://www.etsy.com/dk-en/seller-handbook/article/keywords-101-everything-you-need-to-know/382774281517
+ S12. https://www.etsy.com/seller-handbook/article/1347574487014
+ S13. https://www.etsy.com/seller-handbook/article/1399426136697
+ S14. https://help.etsy.com/hc/en-in/articles/4406604492823-How-to-Add-a-Text-Alternative-to-Your-Listing-Images
+ S15. https://www.etsy.com/seller-handbook/article/366470356778
+ S16. https://www.valueaddedresource.net/etsy-guidance-listing-titles-ai/
+ S17. https://www.etsy.com/seller-handbook/article/1404283886419
+ S18. https://www.etsy.com/seller-handbook/article/how-to-get-found-in-search/22717244953
+ S19. https://help.erank.com/blog/seo/etsy-title-update-2025-how-to-write-better-etsy-listing-titles/
+ S20. https://alura.io/docs/article/optimizing-etsy-listing-titles
+ S21. https://www.listadum.com/fr/blog/etsy-listing-attributes
+ S22. https://www.etsy.com/c/jewelry/rings
+ S23. https://www.growingyourcraft.com/blog/etsy-search-seo-ranking-getting-found
+ S24. https://www.growingyourcraft.com/blog/etsy-seller-updates
+ S25. https://help.etsy.com/hc/articles/360000343708
+ S26. https://help.etsy.com/hc/en-us/articles/35122361353239-How-Do-I-Use-Etsy-s-Marketplace-Insights-Tool
+ S27. https://www.etsy.com/seller-handbook/article/1404564905677
+ S28. https://hc.erank.com/en/articles/11178612-understand-erank-metrics-in-5-minutes
+ S29. https://help.erank.com/blog/ctr-unlock-the-secret-to-better-keywords/
+ S30. https://help.erank.com/blog/etsy-marketplace-insights-tool/
+ S31. https://hc.erank.com/en/articles/6977317-the-erank-toolbox
+ S32. https://www.alura.io/llms-full.txt
+ S33. https://help.alura.io/en/articles/8651396-the-ultimate-guide-to-etsy-keyword-research-with-alura
+ S34. https://help.alura.io/en/articles/6550635-getting-started-with-listing-helper
+ S35. https://help.alura.io/en/articles/6550165-conducting-a-shop-analysis-learning-your-competitor-s-strengths-and-weakness
+ es
+ S36. https://help.etsy.com/hc/en-us/articles/115015774268-How-to-Use-Etsy-Stats-for-Your-Shop
+ S37. https://www.alura.io/academy/using-etsys-search-analytics
+ S38. https://www.etsy.com/legal/ip
+ S39. https://www.outfy.com/blog/etsy-copyright-infringement-explained/
+ S40. https://blog.marmalead.com/busting-etsy-seo-myths/
+ S41. https://help.etsy.com/hc/en-us/articles/360000338367
+ S42. https://www.alura.io/docs/article/etsys-offsite-ads-explained
+ S43. https://valueaddedresource.net/etsy-listings-can-now-be-purchased-directly-on-google
+
+
+
+Etsy Fine Jewelry Master Course | Module 3: Etsy Search, SEO and Keyword Research                                     Page 64
+ S44. https://community.etsy.com/forum/announcements-290/topic/updates-to-etsy-search-listing-descriptions-22492/
+ S45. https://www.etsy.com/codeascraft/modeling-user-journey-via-semantic-embeddings
+ S46. https://arxiv.org/pdf/2306.04833
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 3: Etsy Search, SEO and Keyword Research                                   Page 65
+

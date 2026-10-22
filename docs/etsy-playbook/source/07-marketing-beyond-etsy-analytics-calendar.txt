@@ -1,0 +1,828 @@
+ Module 7: Marketing Beyond Etsy, Analytics,
+ Calendar and Growth System
+ Course context: made-to-order personalized solid gold rings and fine jewelry, produced in the US by
+ a US partner workshop and shipped domestically to US buyers from a US Etsy shop managed
+ remotely from Türkiye. Brands: EON Fine Jewelry (heirloom, meaning-driven, own website plus
+ Google Merchant Center) and Artifact Studio Jewelry. Alura is the operations layer for Pinterest
+ automation and buyer follow-ups.
+ Research date: 2026-10-22. Rule used throughout: only facts published or confirmed in 2025 or
+ 2026 are stated as fact, each with an inline source and date. Anything older or undated is flagged.
+ Where a source is a third-party vendor blog rather than Etsy, Google, Pinterest, the FTC or a trade
+ body, that is noted, because vendor blogs often restate Etsy features loosely.
+ Research note: the shared web search budget for this research run ran out before Instagram and
+ TikTok algorithm specifics and creator-format data could be searched. The social video section
+ below therefore relies on platform-independent principles and on Etsy's own guidance about what
+ its social team features. Treat it as a gap to fill in a follow-up.
+
+
+ 1. Etsy's own marketing tools (2025 to 2026)
+ 1.1 Sales, promo codes and targeted offers
+ Etsy's current help article lists these promotion types [S1: help.etsy.com, accessed 2026-10-22]:
+  • Promo codes: percentage off from 5% to 75% in whole numbers, fixed amount off, or free
+    standard shipping. Codes can carry a redemption limit (which cannot be changed after creation)
+    and can be limited to one use per buyer.
+  • Sales: percentage off or free shipping for a set audience and period. A sale with an order
+    minimum is shop-wide and cannot exclude items; a sale without a minimum can target specific
+    listings. If several sales apply, only the highest discount is used.
+  • Order minimum discounts and discounted bundles (up to 3 listings; a listing can be in only
+    one bundle; bundles do not stack with other promotions).
+  • Targeted offers, emailed by Etsy to opted-in shoppers:
+     • Abandoned cart: triggers when an item has sat in a cart more than 2 hours; sent at most
+       once every 2 days; expires 60 days after creation.
+     • Favorited item: same frequency and 60-day expiry.
+     • Interested shopper: based on Etsy's read of interest (view frequency and recency); at most
+       once every 30 days; expires after 7 days; single use.
+     • Thank you: sent after a completed order to drive a repeat purchase; expires 1 year after
+       sending.
+  • Stacking: a buyer can redeem one targeted offer at a time, and a sale plus targeted offer
+    resolves to the higher discount [same source].
+ 2026 changes: "Interested shopper offers" sent automatically to engaged shoppers, and promo
+ codes limitable by number of uses, both dated June 2026 by a third-party tracker [S2:
+ growingyourcraft.com, updated 2026-10-08].
+ Tactical read for gold jewelry. Gold prices make deep discounting dangerous (see section 7).
+ The targeted offers are the most margin-efficient discounts because they only reach people who
+
+
+
+Etsy Fine Jewelry Master Course | Module 6: Shipping, Fulfillment, Customer Service and Risk    Page 124
+ already showed intent. A sensible fine jewelry setup: abandoned cart 10%, favorited 10%, thank you
+ 10 to 15% valid for a future gift purchase, and no shop-wide sale outside planned events. These
+ percentages are a recommendation, not an Etsy benchmark.
+ Important pricing caution (UNVERIFIED for 2025 to 2026): Etsy has historically had rules
+ against raising prices just before a sale to fake a discount, and US state and FTC rules on deceptive
+ former-price comparisons exist. The Etsy help page fetched for this research did not cover that rule.
+ Do not inflate prices before Cyber week; verify the current wording in Etsy's Sales and Discounts
+ policy before Q4.
+
+ 1.2 Share & Save and Creator Collective
+  • Share & Save: any seller can join, no application. You get 4% back on your Etsy bill for eligible
+    orders that come through your link within 30 days; new members earn 6.5% for the first two
+    weeks. Links are generated in Shop Manager and shared on blogs, email and social; tracking is in
+    the Share & Save dashboard [S3: etsy.com, article body dated 2026-08-03].
+  • Creator Collective: application based, at least 500 followers on one supported channel, 10%
+    commission on eligible orders from any Etsy shop. You can qualify for both but the same sharing
+    activity cannot earn from both programs [same source].
+ Tactic: every link you put in Instagram bio, Pinterest pins that point to Etsy, email to past buyers
+ who opted in, and influencer seeding briefs should be a Share & Save link. It also protects you from
+ Offsite Ads fees on that traffic only if the attribution resolves to Share & Save rather than an Offsite
+ Ad click; Etsy does not publish a precedence rule on the pages fetched, so treat this as UNVERIFIED
+ and test by watching your bill.
+
+ 1.3 Offsite Ads and Etsy Ads (marketing cost you must plan around)
+  • Offsite Ads: shops under $10,000 in a rolling 365 days pay 15% and can opt out; shops at or
+    above $10,000 pay 12% and stay enrolled for life; fee capped at $100 per order; 30-day
+    attribution after an Offsite Ad click; if the last click was an on-site Etsy Ad, only the CPC applies
+    [S4: enrichlabs.ai, 2026; vendor blog].
+  • For a solid gold ring, the $100 cap is the number that matters: on a $1,000 ring you pay the full
+    $100 maximum, so Offsite Ads costs roughly 10% at that price point (simple arithmetic on the
+    stated cap).
+  • Etsy Ads: $1 minimum daily budget; new advertisers start with a $25 max daily budget
+    recalculated weekly; listing strategies require $25+ [same source]. Per-listing ad strategies at
+    $25+ daily budget dated June 2026 and ad groups dated September 2026 [S2:
+    growingyourcraft.com, 2026-10-08]. Ad groups are confirmed by Etsy's own Fall 2026 update [S5:
+    etsy.com, 2026-09-28].
+
+ 1.4 Shop updates, social sharing and on-site brand surfaces
+  • Shop updates: no 2025 to 2026 Etsy source confirming the current status of the "Shop updates"
+    feature was found. Etsy community threads (undated in results) report sellers asking whether the
+    feature has gone from the app. Status: UNVERIFIED. Do not build a content plan around it.
+  • Shop Home: Etsy said in spring 2025 it was testing Shop Home layout updates [S6:
+    smallbiztrends.com, 2025-04-24].
+  • Seller previews in search (name, shop name, Etsy tenure, sales, shop location) and a "Ships
+    from" filter plus "Support makers near you" on desktop [S5: etsy.com, 2026-09-28]. Implication
+    for this US shop: your US ships-from location is visible at search level and qualifies for the "Ships
+    from" US filter, so the brand story can lead with design plus hand finishing by a named US
+
+
+Etsy Fine Jewelry Master Course | Module 7: Marketing Beyond Etsy, Analytics, Calendar and Gr        Page 125
+     workshop, disclosed as production partner.
+  • AI shopping surfaces: US buyers can discover and sometimes buy eligible Etsy items in
+    ChatGPT, Gemini, AI Mode and Microsoft Copilot, dated March 2026 [S2: growingyourcraft.com,
+    2026-10-08]. Clear, factual attributes (metal, karat, size range, personalization limits) help these
+    systems describe you correctly.
+
+ 1.5 Etsy Insider (buyer membership)
+ From November 4, 2025: annual $72 stays; 3-month membership rises from $18 to $24; Etsy covers
+ up to $6 of the cheapest US domestic shipping on orders over $15 per shop; members earn 5% back
+ in Etsy Credit; Etsy said sellers' shipping payments are unchanged [S7: valueaddedresource.net,
+ 2025-10-07; S8: shopifreaks.com, 2025]. Etsy also confirmed that US domestic shipping above $6
+ may reduce search visibility [S2: growingyourcraft.com, 2026-10-08]. For this US shop shipping
+ domestically, both the $6 signal and Insider shipping coverage apply directly; use free shipping built
+ into price.
+
+ 1.6 Etsy trend reports and the trend expert
+  • Spring and Summer 2026 Seller Trend Report (2026-03-17; data as of 2026-02-10, last
+    three months vs prior year, US signed-in users) [S9: etsy.com]:
+     • Whimsical jewelry +84%.
+     • Botanical Bride: floral necklace searches +99%, floral gold rings +59% with Millennials,
+       wedding statement rings +200%.
+     • Treat Yourself: "petit cadeau" (small gift) searches +277%; 55% of Gen Z bought a gift in the
+       past year; 39% of Gen Z celebrated "just because" moments.
+     • Dear Diary: journal charms +395%.
+  • Fall and Winter 2026 Seller Trend Report (byline 2026-10-14; data as of 2026-09-14) [S10:
+    etsy.com]:
+     • Operatic Drama: vintage jewelry +75%, men's brooches +70%, ornate brooches rising.
+     • Family Reimagined: personalized friend gifts +1,400%; pet gifting searches doubled.
+     • Mark of the Maker: hand-woven +230%, hand painted +280%, hand thrown +150%. This is a
+       strong signal for "handmade" process storytelling.
+     • No gold or ring figures were given in this report.
+  • 2026 Color of the Year: Patina Blue and first Texture of the Year: Washed Linen (2025-12-10;
+    data as of 2025-11-03) [S11: etsy.com]. Useful as a photography prop color, not a metal trend.
+  • Etsy's resident trend expert remains Dayna Isom Johnson [S12: etsy.com, 2026-03-17]. In
+    spring 2025 she named "Galactic Metallic" (astrology-themed jewelry, silver, holographic) and
+    "Island Luxe" (fruit-inspired jewelry) [S13: goodmorningamerica.com, 2025-04-18].
+ How to use these reports: they come out roughly in March (spring/summer) and October
+ (fall/winter). Put both release windows in the calendar. Within a week of release, map each
+ jewelry-relevant trend to (a) one new listing or variation, (b) a keyword set, (c) a Pinterest board. For
+ EON, the most on-brand 2026 signals are: personalized friend gifts, floral gold rings for brides,
+ wedding statement rings, heirloom and vintage-inspired pieces, and maker process storytelling.
+
+ 1.7 Getting featured: Editors' Picks, gift guides, Etsy emails and social
+ Etsy's own guidance (page timestamped about 2026-10-17) [S14: etsy.com]:
+  • Etsy's Picks badge: selected for quality (well rated), reliability (on-time shipping, resolved
+    issues) and style (elevated photography). Reviewed daily; no application or payment.
+
+
+Etsy Fine Jewelry Master Course | Module 7: Marketing Beyond Etsy, Analytics, Calendar and Gr      Page 126
+  • Etsy Finds emails and gift campaigns: merchandisers pick items that fit the campaign
+    theme: price point, size and scale, and relevance to a gift recipient.
+  • Seller Handbook and Featured Shop stories: strong branding, good service, compelling
+    product line, real origin stories; submit via the Seller Story Submission Form.
+  • Social: active accounts, varied content (listing photos, in-process videos, behind the scenes,
+    groupings), the #etsy hashtag, shop link in bio, community engagement.
+  • Buyer marketing: Star Seller shops have an increased chance of being featured.
+  • Avoid: lack of originality or IP issues, incomplete shop info, policy violations, watermarks.
+ Etsy's Sr. Director of Merchandising added on the Etsy forum: descriptive titles with the most
+ important words first, all 13 tags with some long-tail, fill all 20 photo slots, include a video, mix
+ detail and lifestyle shots, write a compelling About section, keep banner and social consistent [S15:
+ community.etsy.com, 2026, relative date only]. Listings support up to 20 photos (August 2025) and
+ two videos (June 2026) [S2: growingyourcraft.com, 2026-10-08].
+ Press lead time: Etsy's holiday merchandising guide gives the example of listing a Valentine's
+ collection in November because February issues are prepared then [S16: etsy.com, timestamp
+ 2026-10-01]. Note: that page's date list (Thanksgiving Nov 22, Black Friday Nov 23, Cyber Monday
+ Nov 26) does not match 2026; the correct 2026 dates are Thanksgiving Nov 26, Black Friday Nov 27,
+ Cyber Monday Nov 30.
+
+
+ 2. Pinterest, Instagram, TikTok and creators
+ 2.1 Pinterest for Etsy jewelry
+ What is confirmed for 2025 to 2026:
+  • Pinterest Predicts 2026 jewelry signals (National Jeweler, 2026-01-05) [S17:
+    nationaljeweler.com]:
+     • "Brooched": brooch aesthetic +110%, heirloom jewelry +45%, maximalist accessories
+       +105%.
+     • "Glamoratti": '80s luxury +225%, gold cuff +50%.
+     • "Cool Blue": icy blue +50%. "Wilderkind": bug jewelry +60%. "Extra Celestial": opalescent
+       +115%.
+  • JCK's read of Glamoratti: jewelry getting "chunkier, bolder, and golder," with the author expecting
+    many shoppers to choose vermeil because of gold prices; men's heirloom brooches called
+    mainstream [S18: jckonline.com, undated, around 2025-12].
+  • AI labels: from April 30, 2025 Pinterest labels AI-generated or AI-modified image pins "AI
+    modified" (detected via metadata and classifiers) and announced a "see fewer" GenAI control
+    starting with beauty and art categories [S19: techcrunch.com, 2025-04-30]. If you use
+    AI-generated lifestyle scenes for rings, expect labeling and possible reduced reach among users
+    who opt out. Real photography of real rings is the safer Pinterest asset.
+  • Hashtags deprecated, Tailwind Tribes discontinued, group boards largely dead, 2:3
+    vertical 1000x1500, 3 to 5 fresh pins per day suggested for a one-person shop, and do not
+    delete old pins [S20: moonmuse.studio, 2026-05-26; practitioner blog, not Pinterest].
+  • Rich pins: claiming your Etsy shop in Pinterest enables rich pins that pull price and availability
+    [same source]. Older Printful guidance places this under Etsy's Marketing tab (article dated
+    2024-08-28, UNVERIFIED pre-2025).
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 7: Marketing Beyond Etsy, Analytics, Calendar and Gr       Page 127
+  • Idea Pins status: no 2025 to 2026 source confirming status was found. UNVERIFIED. Etsy's own
+    Creator Collective page lists "Pinterest Idea Pins" as a channel [S3: etsy.com, 2026], but that may
+    be legacy wording.
+ Alura Pinterest automation (Alura blog 2025-03-31) [S21: alura.io]: connect Pinterest Business
+ under Marketing > Pinterest; "Pin New Listings" auto-creates pins on publish; "Smart Pins" queues
+ unpinned, top-performing and seasonal listings; manual pin creation chooses image, aspect ratio, AI
+ or listing copy, board and priority; analytics tab shows impressions, clicks, top pins, demographics;
+ suggested caps 5 to 10 pins per day for newer accounts and 20 to 40 for established ones.
+ Pinterest setup for EON and Artifact Studio:
+  1. Separate Pinterest business accounts per brand (different aesthetics confuse the
+    recommendation engine).
+  2. Boards built as search phrases: "Personalized Gold Signet Ring", "Heirloom Engagement Ring
+    Ideas", "Mother's Day Birthstone Ring", "Minimalist Gold Stacking Rings", "Men's Gold Signet
+    Ring", "Floral Gold Wedding Band".
+  3. EON pins point to the EON website product page when a Merchant Center feed exists (owned
+    data, retargeting); Artifact Studio pins point to Etsy with a Share & Save link.
+  4. Alura: Pin New Listings on, Smart Pins on, cap at the low end of Alura's range until the account is
+    90 days old, AI copy reviewed by hand for karat and size accuracy.
+  5. Seasonal boards go live 60 to 90 days before the holiday because Pinterest users plan early
+    (practitioner consensus; no 2025 to 2026 Pinterest lead-time statistic was found).
+
+ 2.2 Instagram and TikTok for fine jewelry
+ Confirmed context: Etsy's social team features shops that post in-process videos, behind the scenes
+ and product groupings [S14: etsy.com, 2026]; Etsy's fall 2026 report shows hand-made process
+ items surging (hand painted +280%) [S10: etsy.com, 2026-10-14]. Platform algorithm specifics for
+ 2025 to 2026 were not researched (budget gap).
+ Formats that consistently suit solid gold made-to-order work (craft logic, not platform data):
+  • Hand try-on: one hand, natural daylight, slow rotate, ring catching light. Show scale with a
+    known object.
+  • Making-of: wax or CAD to casting to polishing to stone setting. 15 to 30 seconds.
+  • Engraving reveal: blank band, engraving, wipe, macro of the letters. The personalization
+    moment is the emotional hook.
+  • Gold pour / casting: high visual drama; caption with the karat and hallmark so it reads as solid
+    gold, not plated.
+  • Hallmark proof: macro of the 14k or 18k stamp. Answers the vermeil vs solid gold question
+    directly.
+  • Unboxing from the buyer's view: packaging, insert card, ring box opening.
+  • Story posts: "This ring carries the coordinates of where they met." Meaning-led, matching EON's
+    heirloom position.
+
+ 2.3 TikTok Shop vs driving traffic to Etsy
+  • TikTok Shop US treats fine jewelry (gold, diamonds, rubies, sapphires, emeralds) as restricted.
+    Gold requires country of origin permanently displayed in product photos and packaging, a test
+    report from an accredited lab (Eurofins, SGS, Intertek) issued within 365 days, and a certificate of
+    authenticity showing purity. Missing or altered documents lead to rejection, account health
+
+
+
+Etsy Fine Jewelry Master Course | Module 7: Marketing Beyond Etsy, Analytics, Calendar and Gr     Page 128
+     deductions or removal [S22: seller-us.tiktok.com, dated 2026-10-13].
+  • A vendor guide adds that fine jewelry needs invite or special approval, US individuals need a W-9
+    and businesses an EIN, and referral fees are 5% for gold and diamond [S23: branvas.com,
+    2026-01-29; vendor blog]. It does not address owners who manage a US business remotely from
+    abroad.
+ Recommendation: for a made-to-order, personalized, US shop managed remotely, TikTok Shop is
+ a 2027 project at the earliest: the per-SKU lab test requirement does not fit custom engraving at
+ volume, and the US entity's tax documents (W-9 or EIN) must be in order first. In 2026 to 2027 use
+ TikTok as a discovery channel that points to the Etsy listing (Share & Save link) or the EON site.
+
+ 2.4 UGC and micro-influencer seeding, with FTC compliance
+  • FTC Endorsement Guides (16 CFR Part 255, revised 2023) require clear and conspicuous
+    disclosure of any material connection, including free or discounted product, affiliate commission
+    and early access. Disclosures hidden behind "more" or in a pile of hashtags are treated as
+    misses; "#sp" is discouraged; brands are expected to train and monitor creators [S24:
+    blog.promise.legal, 2026-04-16].
+  • FTC Consumer Reviews Rule (16 CFR Part 465, effective 2024-10-21) prohibits fake or
+    AI-generated reviews, buying reviews, incentives conditioned on sentiment, undisclosed insider
+    reviews, and review suppression such as routing only happy buyers to public reviews [same
+    source].
+  • Maximum civil penalty reported at $53,088 per violation in 2025, and a December 2025 batch of
+    FTC warning letters on incentive-for-5-star and review gating [S25: beancount.io, 2026-08-16;
+    secondary source, verify on ftc.gov].
+ Seeding playbook for gold jewelry:
+  1. Shortlist 20 micro creators (roughly 5k to 50k followers) whose audience is US women 28 to 45
+    who post meaningful-gift or bridal content.
+  2. Offer one personalized piece in exchange for an honest post, not a positive one. Written brief
+    requires "#ad" or "Gifted by EON" at the start of the caption and spoken or on-screen disclosure
+    in video.
+  3. Give each creator a Share & Save link (you earn credit) or, if they are Creator Collective
+    members, let them use their own link; they cannot double-dip.
+  4. Track with a spreadsheet: shipped date, posted date, disclosure check, link clicks from Share &
+    Save dashboard.
+  5. Never ask seeded creators to leave Etsy reviews. A gifted item review is an incentivized review
+    and the Reviews Rule bars sentiment-conditioned incentives.
+  6. Gold value note: a 14k ring is a high-value gift. Use a smaller entry piece (initial pendant, thin
+    stacking band) for seeding.
+
+
+ 3. Brand building on Etsy and lawful repeat-buyer programs
+ 3.1 Brand surfaces Etsy rewards
+ Per Etsy merchandising: compelling About section explaining who you are and why the shop exists;
+ banner and social consistent with that story; real origin story for features [S15:
+ community.etsy.com, 2026; S14: etsy.com, 2026].
+ EON brand system on Etsy:
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 7: Marketing Beyond Etsy, Analytics, Calendar and Gr      Page 129
+  • About video (UNVERIFIED that Etsy still supports a dedicated About video slot in 2026; check
+    Shop Manager). If supported, 60 seconds: the goldsmith's hands, the US partner workshop, one
+    engraving, one sentence of the heirloom promise.
+  • Collections as sections: Etsy shop sections named for meaning, not product type: "Initials and
+    Names", "Birthstones", "Coordinates and Dates", "Heirloom Signets", "Bridal".
+  • Drops: two named collections a year timed to Etsy's trend report windows (March and October),
+    each with 6 to 10 listings, a consistent photo set, and a story paragraph reused across Etsy, site
+    and Pinterest.
+  • Photo consistency: one background family, one light direction, one hand model type; Etsy's
+    2025 app added saved custom photo filters for consistency [S6: smallbiztrends.com,
+    2025-04-24].
+  • Custom options: personalization was renamed "custom options" in 2026; sellers can now
+    charge for personalized text, reuse options across listings and add a third variation [S5: etsy.com,
+    2026-09-28]. Charge for engraving explicitly (for example, a paid "add engraving" option) instead
+    of burying it in price.
+
+ 3.2 What you can and cannot do with buyer data and packaging
+ From Etsy's current Seller Policy (last updated 2026-10-05) [S26: etsy.com]:
+  • Buyer information "may only be used for Etsy-related communications or for Etsy-facilitated
+    transactions."
+  • You "may not use this information for unsolicited commercial messages," and without consent
+    you "may not add any Etsy member to your email or physical mailing list."
+  • Messages may not be used for "unsolicited advertising or promotions," or to contact someone
+    who asked not to be contacted.
+  • You must "not facilitate off-platform transactions," and listings may not encourage or facilitate an
+    off-platform transaction.
+  • The policy page contains no explicit rule on packaging inserts.
+ Practical, lawful repeat-buyer system:
+  1. Use Etsy's Thank you targeted offer as the default repeat incentive. It is Etsy-native and
+    fully compliant.
+  2. Insert card: care instructions, hallmark explanation, the story of the piece, a QR to a care or
+    ring-size page on your website, and an opt-in invitation ("Join the EON letter for anniversary
+    reminders"). The buyer chooses to sign up; you do not add them. Avoid printing "order direct and
+    skip Etsy" or a discount for buying off Etsy, because that reads as facilitating an off-platform
+    transaction. Because the policy is silent on inserts, the conservative line is: brand and opt-in yes,
+    off-Etsy discount no.
+  3. Do not export Etsy buyer emails into Klaviyo or Shopify unless the buyer explicitly opted
+    in through your own form. Printify's 2025 guide says consent is required before exporting buyer
+    emails from Etsy's order download [S27: printify.com, 2025-01-27].
+  4. Etsy messages only for order-related communication (order received, engraving proof,
+    shipped, delivered, care). Alura follow-ups are scoped to these triggers and skip cancelled,
+    refunded, active-conversation and negative-review orders; a keyword blocklist (refund, return,
+    damaged, broken, missing) holds messages [S28: alura.io, accessed 2026-10-22]. Since
+    2026-07-31 Alura sends follow-ups automatically through its Chrome extension against
+    shop-level rules [S29: alura.io, 2026-07-31].
+
+
+
+Etsy Fine Jewelry Master Course | Module 7: Marketing Beyond Etsy, Analytics, Calendar and Gr     Page 130
+  5. Review requests must be sentiment neutral: "We'd love to hear how it went" is fine; "leave
+    5 stars for 15% off" is a Consumer Reviews Rule problem and an Etsy problem.
+  6. Anniversary hook: personalized rings come with dates. If a buyer opts in on your own site, an
+    anniversary reminder email 3 weeks before the engraved date is the highest-intent repeat trigger
+    available to a meaning-led brand.
+
+
+ 4. Multichannel: Etsy, own website, Pattern, Google
+ 4.1 Pattern by Etsy
+  • Still operating; 6,938 live stores (Q4 2026 to date), down 14% year over year from 8,112 in Q3
+    2025; peak was 17,599 in Q2 2021; in the last 90 days 90 merchants moved in and 96 moved out
+    [S30: storeleads.app, updated 2026-10-16].
+  • $15 per month after a 30-day trial; no major features since launch, per a 2025 review [S31:
+    growingyourcraft.com, 2025-12-13].
+  • Verdict: no shutdown announced, but a shrinking, stagnant product. EON already has its own site;
+    do not use Pattern. For Artifact Studio, use Pattern only as a cheap brand page if a full site is not
+    justified.
+
+ 4.2 Own website plus Google Merchant Center
+  • Google Merchant Center 2025 spec update: new offer-level attributes carrier_shipping,
+    shipping_handling_business_days and shipping_transit_business_days (effective
+    2025-04-08) to drive delivery estimates in Shopping ads and free listings; member prices banned
+    from price fields from 2025-07-01 (use loyalty_program); US sales tax no longer required from
+    2025-07-01; promotion policies expanding from January 2026 [S32: support.google.com,
+    2025-04-08].
+  • For made-to-order gold, set handling business days honestly (production time), and transit days
+    for the US domestic carrier (about 3 to 5 business days). Wrong handling time is the most
+    common cause of late deliveries that damage a new site's reviews.
+  • Generative AI disclosure attributes (structured_title, structured_description) exist since
+    2024 (UNVERIFIED pre-2025, 2024-04-13 via ppc.land). If AI writes EON feed titles, declare it.
+
+ 4.3 Avoiding channel conflict
+  1. Price parity or Etsy slightly higher. Etsy fees plus 12 to 15% Offsite Ads mean Etsy can carry
+    a higher price, but a visible gap invites buyers to leave Etsy and can look like steering. Keep
+    listed prices equal and use site-only value (free ring sizer, extended engraving characters) rather
+    than site-only discounts.
+  2. Different roles. Etsy: discovery, gifting, first purchase, reviews. Website: brand storytelling,
+    bridal and high-ticket custom, Google Shopping, owned email list.
+  3. Different hero SKUs. Keep a few website-exclusive designs (heirloom signets, bridal) so
+    Google traffic and Etsy traffic are not bidding against each other on identical products.
+  4. Never link from Etsy messages to the website to complete a sale.
+
+ 5. Analytics
+ 5.1 Etsy Stats in 2026
+ Confirmed by Etsy (2026-09-28) [S5: etsy.com]:
+
+
+
+Etsy Fine Jewelry Master Course | Module 7: Marketing Beyond Etsy, Analytics, Calendar and Gr     Page 131
+  • Faster stats, sooner traffic refresh, more reliable full history.
+  • Side-by-side metrics (gradual rollout): visits, orders, conversion rate, revenue over the same
+    period.
+  • Marketplace Insights (testing): search terms buyers frequently search that are relevant to your
+    shop. A tracker adds week-over-week keyword trends, saved searches, price ranges, search
+    conversion rates and personalized keyword suggestions [S2: growingyourcraft.com, 2026-10-08].
+  • Stats assistant (beta expansion): AI answers questions about your shop data.
+  • Search visibility dashboard flags listings that may benefit from updates (spring 2025) [S6:
+    smallbiztrends.com, 2025-04-24].
+  • A vendor page states 2026 Stats show improved keyword attribution at listing level and a 1 to 2
+    day reporting delay [S33: insightagent.app, 2026; vendor, unverified].
+
+ 5.2 Google Analytics
+ eRank's help article says Etsy supports GA4 via Shop Manager > Settings > Options > Web
+ Analytics, and eRank's Traffic Stats tool now requires GA4 (article 2023-07-11, modified 2026-01-30)
+ [S34: help.erank.com]. Status as of 2026: likely available, but only confirmed via a third party
+ updated in 2026; verify in Shop Manager. GA on Etsy gives page-level traffic, not orders, so it
+ complements rather than replaces Etsy Stats.
+
+ 5.3 What Alura and eRank add
+  • eRank: keyword tool, listing audits, competitor tracking (up to 200 shops on Expert), shop
+    insights, AI listing helper; no per-listing sales estimates; Basic $5.50/mo annual, Expert
+    $22.50/mo annual [S35: revenuegeeks.com, 2026-08-17].
+  • EverBee: per-listing estimated monthly sales and revenue in search; self-reported about 80%
+    accuracy, not audited; Growth $19.99/mo annual, Business $69/mo annual; free plan hides
+    revenue [same source].
+  • Alura: Pinterest automation and analytics, buyer follow-ups (from the Basic plan, 50 follow-ups
+    every 30 days) [S28: alura.io, 2026].
+
+ 5.4 Weekly KPI dashboard (one sheet, one row per week)
+  Block      Metric                                           Source                     Why it matters for
+                                                                                         made-to-order gold
+
+  Traffic    Visits, split Etsy search / Etsy Ads / Offsite   Etsy Stats                 Tells you which engine is working
+             / social / direct
+
+  Convers    Conversion rate overall and for top 10           Etsy Stats                 Fine jewelry converts low; watch
+  ion        listings                                                                    trend, not absolute
+
+  Revenu     Orders, revenue, AOV                             Etsy Stats                 AOV is your gold-price shock
+  e                                                                                      absorber
+
+  Keywor     Top 20 search terms, new terms this week         Etsy Stats / Marketplace   Feeds listing titles and Pinterest
+  ds                                                           Insights                  boards
+
+  Ads        Etsy Ads spend, revenue, ROAS; Offsite           Etsy Ads dashboard,        Fees can eat the margin on a
+             Ads fees as % of revenue                         payment account            $1,000 ring
+
+  Listing    Favorites, add to carts, listings flagged by     Etsy                       Leading indicator before sales move
+  health     search visibility dashboard
+
+  Operati    Average production days, on-time ship %,         Etsy orders                Feeds Star Seller and Etsy's Picks
+  ons        open cases, message response time                                           reliability
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 7: Marketing Beyond Etsy, Analytics, Calendar and Gr                         Page 132
+  Block       Metric                                        Source                      Why it matters for
+                                                                                        made-to-order gold
+
+  Reviews     New reviews, average, any under 4 stars       Etsy                        Featuring and conversion depend
+                                                                                        on it
+
+  Off-Etsy    Pinterest impressions and outbound            Alura, Share & Save,        Measures marketing beyond Etsy
+              clicks; Share & Save clicks and credits;      GA4 / Shopify
+              site sessions and orders
+
+  Margin      Gold price this week vs price assumption      Gold spot reference         Triggers repricing
+              in listings
+
+
+
+ 6. MARKETING CALENDAR 2026-2027
+ 6.1 How to compute your made-to-order cutoff
+ Formula: Last order date = target delivery date minus (production days at the US
+ workshop + US domestic transit days + 2-day safety margin). Fill in your own measured
+ production and transit times; the course baseline is 5 to 7 business days making plus 3 to 5 business
+ days US transit (module 09). Equivalently, last order date = carrier send-by date minus production
+ days minus safety margin.
+ Context that changes the math in 2026:
+  • US de minimis ended 2025-08-29, and from 2026-07-09 non-US Etsy sellers must use Delivered
+    Duty Paid shipping for US orders to qualify for Etsy Purchase Protection [S36: etsy.com,
+    2026-06-09]. None of this applies to this US shop: orders ship domestically, so there is no
+    customs step, no tariff pricing and no duties copy in listings. (Context only: Etsy's pilot tariff
+    estimator in the listing form, June 2026 [S2: growingyourcraft.com, 2026-10-08].)
+  • USPS 2026 recommended send-by dates (for mail already in the US system) for delivery by Dec
+    25: Ground Advantage Dec 17, Priority Mail Dec 18, Priority Mail Express Dec 19 [S37: usps.com,
+    2026]. These apply directly, because the US workshop hands parcels to USPS domestically:
+    subtract production days and the safety margin from them. For UPS or FedEx, use that carrier's
+    holiday bulletin.
+  • No Etsy-published 2026 Christmas shipping cutoff was found. Etsy's guidance is to set firm
+    last-order dates, adjust processing times for custom items, and publish cutoffs in the Shop
+    Announcement, policies and item descriptions [S38: etsy.com, timestamp 2026-10-18].
+
+ 6.2 Q4 2026 (we are already inside it on 2026-10-22)
+  Date                 Event                                          Action
+
+  Now to Oct 31        Last chance to list holiday items              Every gift-ready SKU live with "gift for her", "
+                                                                      personalized gift", "Christmas gift for wife" keyword
+                                                                      sets. Pinterest holiday boards active. Seed
+                                                                      influencers now.
+
+  Nov 1                NRF holiday season start (Nov 1 to Dec 31)     NRF forecasts 2026 holiday sales up 4.2% to $1.013
+                                                                      trillion [S39: retailtouchpoints.com, 2026-10-15].
+                                                                      Raise Etsy Ads budgets on proven listings only.
+
+  Early Nov            Etsy Cyber sale sign-up                        In 2025 Etsy's Cyber event ran Nov 24 to Dec 2 with
+                                                                      sign-up in Shop Manager (via Gelato, 2025-11-12)
+                                                                      [S40: gelato.com]. Expect a similar 2026 window;
+                                                                      confirm in Shop Manager.
+
+  Nov 26               Thanksgiving
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 7: Marketing Beyond Etsy, Analytics, Calendar and Gr                      Page 133
+  Date                 Event                                          Action
+
+  Nov 27               Black Friday                                   Targeted, modest discount (for example 10 to 15%
+                                                                      on stacking bands and pendants; full price on
+                                                                      bridal). Do not raise prices beforehand.
+
+  Nov 30               Cyber Monday                                   Last big push; message "order by X for Christmas"
+                                                                      everywhere.
+
+  Early Dec            Last order date for Christmas                  Compute with the formula. Publish in Shop
+                                                                      Announcement and as a line in every gift listing
+                                                                      description. Lengthen processing time once you
+                                                                      pass it.
+
+  Dec 4 to 12          Hanukkah 2026                                  Etsy guide listed Dec 8 to 16 (dates in that page
+  (approx.)                                                           appear stale; verify).
+
+  After cutoff         Digital gift card / "gift the design"          A printable card announcing a custom ring, made in
+                       certificate                                    January, captures late shoppers without missing
+                                                                      delivery. Check Etsy listing rules before launching.
+
+  Dec 26 to Jan 1      Proposal season peak, New Year                 Bridal and engagement keywords; Valentine's
+                                                                      listings already live.
+
+
+ 6.3 Valentine's Day 2027 (Sunday Feb 14)
+  • Market size: NRF forecast Valentine's 2026 spending $29.1B, jewelry $7B and No. 1 in dollars,
+    with 25% of shoppers planning jewelry [S41: nationaljeweler.com, 2026-02-10].
+  • List by: early December 2026 (Etsy press example lists Valentine's collections in November) [S16:
+    etsy.com, 2026].
+  • Pinterest boards live: mid November.
+  • Ads start: first week of January; peak spend Jan 15 to order cutoff.
+  • Order cutoff: compute; likely late January.
+  • Keywords: "personalized ring for her", "initial ring gold", "couples ring set", "name ring 14k",
+    "Valentines gift for wife", "his and hers signet".
+
+ 6.4 Mother's Day 2027 (Sunday May 9)
+  • Market size: NRF forecast Mother's Day 2026 at a record $38B, jewelry $7.5B and the top
+    category, 45% of consumers buying jewelry, average $284.25 per person [S42:
+    nationaljeweler.com, 2026-04-24; S43: jckonline.com, 2026].
+  • List by: mid February (UK Mother's Day 2027 falls in March and some US buyers search early). A
+    third-party calendar suggested listing US Mother's Day by Apr 1 for 2026 [S44: listifyai.net,
+    2026-02-12]; for made-to-order, earlier is safer.
+  • Ads start: March 15.
+  • Order cutoff: compute; likely around April 20.
+  • Keywords: "birthstone ring for mom", "kids names ring", "mother ring gold", "family ring", "new
+    mom gift ring", "grandma birthstone ring".
+  • EON angle: heirloom "family legacy" collections are exactly what premium brands launch here
+    (Kinn Studio's Family Legacy collection debuted April 9) [S43: jckonline.com, 2026].
+
+ 6.5 Father's Day 2027 (Sunday June 20)
+ Men's signet rings and engraved bands. Etsy F/W 2026 shows men's brooches +70% [S10:
+ etsy.com, 2026-10-14], a signal that men's statement jewelry is moving. List by mid April; ads from
+ May 15.
+
+
+Etsy Fine Jewelry Master Course | Module 7: Marketing Beyond Etsy, Analytics, Calendar and Gr                      Page 134
+ 6.6 Graduation (May to June 2027)
+ Initial signets, class-year engraved bands. List by March; ads from mid April. Keywords: "graduation
+ gift for her gold", "class of 2027 ring", "initial signet ring graduation".
+
+ 6.7 Wedding and engagement
+  • Engagement: lab-grown is now 61% of US engagement ring center stones, average engagement
+    ring $4,600 in 2025 (natural $7,000, lab $4,300); yellow gold 39% of metal choices and rising
+    [S45: idexonline.com, 2026-03-01; S46: carateu.com, 2026-02-20].
+  • Wedding demand signals from Etsy: wedding statement rings +200%, floral gold rings +59% with
+    Millennials [S9: etsy.com, 2026-03-17].
+  • Rhythm: proposal-heavy December and holidays (common industry knowledge; no 2025 to 2026
+    statistic was found), weddings concentrated late spring through fall. List bridal bands and
+    anniversary rings by February; Pinterest bridal boards year round.
+
+ 6.8 Anniversaries and birthstones
+ Anniversary listings run all year; feed from the engraved dates of opted-in buyers. Birthstones
+ (standard modern list, general reference, not a dated source): January garnet, February amethyst,
+ March aquamarine, April diamond, May emerald, June pearl or alexandrite, July ruby, August peridot,
+ September sapphire, October opal or tourmaline, November topaz or citrine, December turquoise,
+ tanzanite or zircon. Tactic: one Pinterest pin and one Instagram post per birthstone month,
+ published the last week of the prior month; a birthstone variation set on the core ring listing rather
+ than 12 separate listings.
+
+ 6.9 Etsy's own seasonal rhythm
+  • Trend reports: March (spring/summer) and October (fall/winter) as in 2026.
+  • Color of the Year: December (2025-12-10 for 2026).
+  • Cyber sale: late November to early December.
+  • Fall seller update and Etsy Up event: September (2026-09-28).
+
+ 7. US fine jewelry market trends 2025 to 2026
+  • Gold price shock. Gold rose 66% in 2025; retailers raised gold item prices about 30% and made
+    lighter pieces; gold jewelry unit sales fell 16% while revenue rose 11% [S47: jckonline.com,
+    2026-01-09; S48: tenoris.bi, 2026-01-09]. Gold about $4,319/oz in September 2026 [S49:
+    indexbox.io, 2026-09-10].
+  • US gold jewelry volume collapse, value resilient. US Q1 2026 13.1t, down 44% y/y; Q2
+    2026 22.2t, down 25% y/y; consumers favor lighter-weight and lower-carat pieces; weakness in
+    mass market, higher end more resilient [S50: gold.org; S51: gold.org, 2026]. Globally H1 2026
+    jewelry value up 22% to $86bn as tonnage fell [S52: gold.org, 2026].
+  • Metals Focus: 2026 global gold jewelry consumption more than one-third below 2023; rising
+    interest in gold-filled and plated items; less metal per piece; smaller, less frequent purchases
+    [S49: indexbox.io, 2026-09-10].
+  • Overall US jewelry: retailer revenue +5.6% in 2025, average spend per item up about 14%
+    while units fell 5.6%; holiday finished jewelry +6.6% y/y [S48: tenoris.bi, 2026-01-09].
+  • Lab-grown: 61% of 2025 engagement rings [S45: idexonline.com, 2026-03-01]; loose lab-grown
+    units +14%, revenue -1%, price declines slowed to 13% [Tenoris, 2026-01-09].
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 7: Marketing Beyond Etsy, Analytics, Calendar and Gr    Page 135
+  • Solid gold vs vermeil: JCK expects many shoppers to pick vermeil for the "golder" look because
+    of gold prices [S18: jckonline.com, ~2025-12]. Your counter-position is proof of solid gold:
+    hallmark macros, weight in grams, "will never tarnish or wear through", heirloom framing.
+  • Heirloom, vintage, brooches: heirloom jewelry +45% on Pinterest [National Jeweler,
+    2026-01-05]; vintage jewelry +75% and men's brooches +70% on Etsy [Etsy F/W 2026].
+  • Bold gold / chunky: gold cuff +50%, '80s luxury +225% on Pinterest [National Jeweler,
+    2026-01-05].
+  • Personalized: personalized friend gifts +1,400% on Etsy [Etsy F/W 2026].
+  • Not found in 2025 to 2026 sources for this research (UNVERIFIED): quantitative data on
+    stacking rings, enamel, signet rings specifically, men's rings specifically, and "quiet luxury" in fine
+    jewelry.
+ So what for EON: price by weight transparency, lighter profiles (thin bands, small signets) in 14k
+ as the volume tier, 18k for heirloom tier, lab-grown stones for bridal accessibility, and storytelling
+ that makes solid gold the point.
+
+
+ 8. Competitive research method (ethical)
+  1. Find top shops: search Etsy for 15 core phrases ("solid gold signet ring", "14k initial ring",
+    "personalized gold name ring", "gold birthstone ring for mom"). Record the shops on page one,
+    the Etsy's Picks badges and Star Seller badges.
+  2. Estimate sales: EverBee per-listing monthly estimates (self-reported 80% accuracy, directional
+    only) and eRank competitor tracking for shop-level stats [S35: revenuegeeks.com, 2026-08-17].
+    Cross-check with public shop sales counts and review velocity.
+  3. Reverse-engineer, do not copy: study title structure, price ladder, custom options, photo
+    sequence, video use, processing time, shipping price, review themes (what buyers praise and
+    complain about). Never copy designs, photos or text; Etsy lists lack of originality and IP issues as
+    reasons shops are not featured [S14: etsy.com, 2026].
+  4. Gap matrix: for each competitor, note where they are weak (no hallmark proof, long
+    processing, generic story) and make that your listing's first photo or first line.
+  5. Quarterly refresh: repeat with Etsy's Marketplace Insights terms when that test reaches your
+    shop.
+
+
+ 9. WEEKLY OPERATING RHYTHM (growth operating system)
+ Daily (20 to 30 min)
+  • Messages answered within the day; engraving proofs approved.
+  • Production board: every order's promised ship date vs actual.
+  • Alura follow-up batch preview and send.
+  • One piece of social content (story or reel).
+ Weekly (Monday, 90 min)
+  • Fill the KPI dashboard row (section 5.4).
+  • Etsy Ads: pause listings with clicks and no sales after 30 days; add proven listings to ad groups.
+  • Check search visibility dashboard and Marketplace Insights; update 3 listings.
+  • Pinterest: confirm Alura queue for the week; add 1 new pin design per hero listing.
+  • Gold price check vs pricing assumption; flag if moved enough to reprice.
+
+
+
+Etsy Fine Jewelry Master Course | Module 7: Marketing Beyond Etsy, Analytics, Calendar and Gr       Page 136
+ Monthly (first Monday, half day)
+  • Offsite Ads fees as % of revenue; decide opt-out if under $10,000 and fees exceed margin.
+  • Review analysis: themes from last 30 days into listing copy.
+  • Birthstone-of-month content shipped.
+  • Influencer seeding tracker: disclosures checked.
+  • Share & Save credits vs Offsite Ads fees.
+  • EON site: Merchant Center diagnostics, disapprovals, handling time accuracy.
+ Quarterly
+  • Competitive refresh (section 8).
+  • Trend report mapping (March and October releases).
+  • Collection drop plan for next quarter; calendar check against section 6.
+  • Repricing review for the whole catalog against gold.
+  • Channel review: Etsy vs site vs Pinterest contribution; decide where the next quarter's hours go.
+
+ 10. CONTENT IDEAS FOR GOLD JEWELRY
+  1. Macro of the 14k or 18k hallmark with the caption "Solid gold. Stamped. Forever."
+  2. "What 3 grams of gold looks like": ring on a jeweler's scale.
+  3. Engraving reveal of a date, wiped clean, held in a hand.
+  4. Wax carving to finished ring, time-lapse.
+  5. Casting or gold pour in the US partner workshop.
+  6. "Vermeil vs solid gold after 5 years" explainer (honest, no competitor names).
+  7. Birthstone of the month, ring in natural light.
+  8. Floral gold ring for brides (Etsy: floral gold rings +59% with Millennials).
+  9. Wedding statement ring styling (Etsy: +200%).
+  10. Personalized friend gift: matching initial bands for best friends (Etsy: +1,400%).
+  11. Men's signet ring on a working hand.
+  12. Heirloom story: "A ring meant to be inherited" with a grandparent-to-grandchild visual.
+  13. Packaging unboxing from the buyer's point of view.
+  14. Ring size guide video.
+  15. "Gold price and why our rings are lighter, not cheaper": transparent price education.
+  16. Behind-the-scenes of the goldsmith's hands (Etsy: hand-made items surging).
+  17. Stack-building: three thin bands combined live.
+  18. Bold gold cuff or chunky signet (Pinterest: gold cuff +50%).
+  19. Coordinates engraving: "where you met" story.
+  20. Anniversary reminder carousel: "Year 1 paper, Year 50 gold" anniversary gift list.
+
+ 11. TACTICS (prioritized)
+  1. Turn on all four targeted offers (abandoned cart, favorited, interested shopper, thank you)
+    with modest discounts. Margin-safe, Etsy-native.
+  2. Join Share & Save today and use the link everywhere you control.
+  3. Decide Offsite Ads before crossing $10,000: on a $1,000 ring the $100 cap is roughly 10%.
+
+
+Etsy Fine Jewelry Master Course | Module 7: Marketing Beyond Etsy, Analytics, Calendar and Gr   Page 137
+  4. Ship with Etsy labels and tracking to keep Purchase Protection; an Etsy label satisfies the
+    tracking requirement automatically, and DDP does not apply to domestic orders [S53: etsy.com,
+    2026-10-13].
+  5. Fill 20 photos and 2 videos per hero listing, including hallmark macro and hand try-on.
+  6. Use custom options to charge for engraving.
+  7. Publish holiday cutoffs in Shop Announcement, policies and descriptions; lengthen processing
+    time after cutoff.
+  8. Pinterest via Alura with seasonal boards 60 to 90 days ahead; real photos over AI images.
+  9. EON site plus Merchant Center with accurate handling and transit business days.
+  10. Seed 10 to 20 micro creators per season with FTC-compliant briefs.
+  11. Map each Etsy trend report to new listings within a week of release.
+  12. Opt-in insert card for brand and anniversary reminders; no off-Etsy discounts.
+  13. Lighter-profile 14k tier to hold price points as gold stays high.
+  14. Pitch the Etsy Seller Story form with the origin story: the owner's designs, handmade by
+    the US partner workshop.
+
+
+ 12. COMMON MISTAKES
+  1. Exporting Etsy buyer emails to a mailing list without explicit opt-in (Etsy Seller Policy).
+  2. Using Etsy messages for promotions or new-collection announcements.
+  3. Inserts offering a discount to buy off Etsy (facilitating off-platform transactions).
+  4. Review incentives tied to stars, or asking only happy buyers for reviews (FTC Consumer Reviews
+    Rule).
+  5. Gifting influencers without written disclosure requirements.
+  6. Raising prices before a sale to inflate the discount.
+  7. Deep shop-wide Black Friday discounts on solid gold when gold is near record highs.
+  8. Shipping without valid tracking or missing the ship-by date and losing Purchase Protection.
+  9. Missing your own Christmas cutoff by using USPS send-by dates without first subtracting
+    production days.
+  10. AI-generated lifestyle images on Pinterest that get "AI modified" labels and look like
+    dropshipping.
+  11. Building on Pattern or "Shop updates" without confirming they are still supported.
+  12. Treating EverBee revenue estimates as fact.
+  13. Listing Valentine's or Mother's Day collections too late for press and Pinterest lead times.
+  14. Calling gold-plated or vermeil "gold" in any copy (inviting cases and eroding the solid gold
+    position).
+  15. Identical products at different prices on Etsy and the site.
+
+ 13. Gaps and items to verify
+  • Instagram and TikTok 2025 to 2026 algorithm and format data (not researched; search budget
+    exhausted).
+  • Etsy official 2026 Christmas shipping cutoff guidance and 2026 Cyber sale dates (only 2025
+    event confirmed via third party).
+  • Current Etsy rule on price increases before sales (2025 to 2026 wording not fetched).
+
+
+Etsy Fine Jewelry Master Course | Module 7: Marketing Beyond Etsy, Analytics, Calendar and Gr        Page 138
+  • Status of Etsy Shop updates, Shop About video, and Pinterest Idea Pins.
+  • GA4 on Etsy confirmed only via eRank (updated 2026-01-30).
+  • Quantitative 2025 to 2026 data on signet, stacking, enamel and men's rings.
+  • 2026 UPS and FedEx domestic holiday send-by dates (only USPS dates retrieved).
+
+ Module 7 sources
+ Numbered sources cited in this module as [S#]. All accessed 22 October 2026.
+ S1. https://help.etsy.com/hc/en-us/articles/115014260108
+ S2. https://www.growingyourcraft.com/blog/etsy-seller-updates
+ S3. https://www.etsy.com/seller-handbook/article/1503753198977
+ S4. https://www.enrichlabs.ai/blog/etsy-ads-complete-guide-2026
+ S5. https://www.etsy.com/news/newly-crafted-how-weare-investing-in-seller-success-fall-2026
+ S6. https://smallbiztrends.com/etsy-spring-2025-seller-updates/
+ S7. https://www.valueaddedresource.net/etsy-tweaks-insider-buyer-loyalty-program/
+ S8. https://www.shopifreaks.com/etsy-overhauls-its-insider-membership-program/
+ S9. https://www.etsy.com/seller-handbook/article/1473931456647
+ S10. https://www.etsy.com/seller-handbook/article/1521255894814
+ S11. https://www.etsy.com/news/etsy-announces-its-2026-color-of-the-year-a-plus-the-first-ever-texture-of-the-year
+ S12. https://www.etsy.com/in-en/news/the-etsy-trend-edit-ss-a26athe-styles-defining-the-season-made-to-feel-like-you
+ S13. https://www.goodmorningamerica.com/Shop/story/shop-latest-spring-summer-trends-etsy-expert-120859820
+ S14. https://www.etsy.com/seller-handbook/article/44104253845
+ S15. https://community.etsy.com/forum/etsy-success-300/topic/etsy-insights-quick-tips-for-getting-featured-by-etsy-marketing
+ -165378/
+ S16. https://www.etsy.com/seller-handbook/article/22818264711
+ S17. https://nationaljeweler.com/articles/14522-pinterest-2026-trend-report-brooches-bold-gold-cool-blue
+ S18. https://www.jckonline.com/editorial-article/pinterest-2026-trends-report/
+ S19. https://techcrunch.com/2025/04/30/pinterest-launches-new-tools-to-fight-ai-slop
+ S20. https://moonmuse.studio/blog/pinterest-marketing-for-etsy-sellers
+ S21. https://www.alura.io/post/how-to-automatically-post-etsy-listings-to-pinterest-and-skyrocket-your-traffic
+ S22. https://seller-us.tiktok.com/university/essay?knowledge_id=4769331301730049
+ S23. https://branvas.com/blogs/news/tiktok-shop-requirements-for-jewelry-sellers-2026-guide
+ S24. https://blog.promise.legal/ftc-influencer-reviews-compliance-startups-2026/
+ S25. https://beancount.io/blog/2026/08/16/ftc-influencer-disclosure-crackdown-free-product-endorsement-guide
+ S26. https://www.etsy.com/legal/sellers/
+ S27. https://printify.com/blog/how-to-collect-emails-on-etsy/
+ S28. https://www.alura.io/features/follow-ups
+ S29. https://www.alura.io/changelog/2026-07-31-followups-send-themselves
+ S30. https://storeleads.app/reports/etsypattern
+ S31. https://www.growingyourcraft.com/blog/pattern-by-etsy-review-alternatives
+ S32. https://support.google.com/merchants/answer/16098264
+ S33. https://www.insightagent.app/guides/latest-etsy-analytics
+ S34. https://help.erank.com/blog/google-analytics-4-for-etsy-shops/
+ S35. https://revenuegeeks.com/compare/erank-vs-everbee
+ S36. https://www.etsy.com/seller-handbook/article/1355662653395
+ S37. https://www.usps.com/holiday/holiday-shipping-dates.htm
+ S38. https://www.etsy.com/seller-handbook/article/30953650830
+ S39. https://www.retailtouchpoints.com/news/will-2026-holiday-sales-reach-1-trillion-nrf-says-yes/621759/
+ S40. https://www.gelato.com/blog/etsy-cyber-specials
+ S41. https://nationaljeweler.com/articles/14683-shoppers-to-spend-big-on-jewelry-this-valentine-s-day-says-nrf
+ S42. https://nationaljeweler.com/articles/14908-mother-s-day-2026-jewelry-spending-to-top-7b-nrf-says
+ S43. https://www.jckonline.com/editorial-article/jewelry-nrf-mothers-day/
+ S44. https://www.listifyai.net/blog/etsy-holiday-calendar-2026
+ S45. https://www.idexonline.com/FullArticle?Id=51079
+ S46. https://carateu.com/blogs/news/insights-from-the-knot-real-weddings-study-2026-and-what-they-mean-for-europe
+ S47. https://www.jckonline.com/editorial-article/mom-and-pop-jewelers-2025/
+ S48. https://www.tenoris.bi/the-us-jewelry-market-in-2025-with-5-6-sales-growth/
+
+
+
+Etsy Fine Jewelry Master Course | Module 7: Marketing Beyond Etsy, Analytics, Calendar and Gr                        Page 139
+ S49. https://www.indexbox.io/blog/record-gold-prices-crush-jewelry-demand-metals-focus-warns-of-historic-decline/
+ S50. https://www.gold.org/goldhub/research/gold-demand-trends/gold-demand-trends-q1-2026/jewellery
+ S51. https://www.gold.org/goldhub/research/gold-demand-trends/gold-demand-trends-us-focus-q2-2026
+ S52. https://www.gold.org/goldhub/research/gold-demand-trends/gold-demand-trends-q2-2026/jewellery
+ S53. https://www.etsy.com/legal/shipping/
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 7: Marketing Beyond Etsy, Analytics, Calendar and Gr                        Page 140
+

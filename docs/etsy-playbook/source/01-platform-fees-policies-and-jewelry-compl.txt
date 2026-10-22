@@ -1,0 +1,1150 @@
+ Module 1: Platform, Fees, Policies and
+ Jewelry Compliance
+ Research cut-off: 2026-10-22. Audience: made-to-order solid 14K/18K gold jewelry shops (EON Fine
+ Jewelry, Artifact Studio Jewelry) run as US Etsy shops: US Etsy Payments account, listings in USD,
+ USD deposits to a US bank account. The jewelry is produced in the US by a US workshop (the
+ production partner) and ships from inside the US to US buyers (domestic). The owner designs
+ the pieces and manages the shop remotely from Türkiye. Products run roughly $150 to $1,500+,
+ with free tracked shipping, making time 5 to 7 business days plus 3 to 5 business days US transit.
+ [scope from course correction file 09, 2026-10-22]
+ Sourcing rule used in this file: every fact carries an inline [source, date]. "date" means the date the
+ source was published or last updated, or, for live policy pages, the "last updated" stamp shown on
+ the page when it was read in October 2026. "No date shown" means the live page was read on
+ 2026-10-22 but shows no revision date. Facts that could only be sourced from material published
+ before 2025 are kept separate under "UNVERIFIED (pre-2025)" headings. Third-party (non-Etsy)
+ sources are marked "(third party)" so you know which numbers to re-check against Etsy itself.
+
+
+ 1. Etsy fees as of October 2026 (US shop)
+ 1.1 Fee table at a glance (USD payment account, US bank)
+  Fee            Amount                                Applies to                           Source
+
+  Listing fee    $0.20 per listing; listings expire    per listing                          [S1: etsy.com, last updated
+                 after 4 months and auto-renew                                              2026-10-05]
+                 at $0.20. A sale of a listing with
+                 remaining quantity also renews
+                 it at $0.20
+
+  Transaction    6.5%                                  displayed item price plus            [S1: etsy.com, 2026-10-05]
+   fee                                                 shipping plus gift wrap. For US
+                                                       sellers it does not apply to sales
+                                                       tax
+
+  Payment        3% + $0.25 per order                  gross order amount, including        [S2: etsy.com, last updated
+  processing                                           shipping and tax                     2026-07-31]
+  (US)
+
+  Regulatory     Does not apply to US-based            n/a                                  [S3: iscompliant.app, (third
+  Operating      sellers                                                                    party), 2026-06-22]; Etsy's fee
+  Fee                                                                                       page says it applies in "certain
+                                                                                            countries" and does not list the
+                                                                                            US [S1: etsy.com, 2026-10-05]
+
+  Currency       2.5%, only if listing currency        sale amount                          [S1: etsy.com, 2026-10-05]; [S2:
+  conversion     differs from payment account                                               etsy.com, 2026-07-31]
+                 currency. USD listings with a
+                 USD payment account: none
+
+  Offsite Ads    15% under $10,000 trailing            attributed orders                    [S1: etsy.com, 2026-10-05]; [S4:
+                 sales (opt-out allowed); 12%                                               help.etsy.com, no date shown,
+                 from $10,000, then mandatory                                               read 2026-10-22]
+                 for the life of the shop; cap $100
+                 per attributed order; 30-day
+                 attribution
+
+
+
+
+Etsy Fine Jewelry Master Course | Etsy Fine Jewelry Shop: Master Course                                                Page 4
+  Fee            Amount                                Applies to                             Source
+
+  Etsy Ads       Cost per click, default minimum       clicks                                 [S5: help.etsy.com, no date
+  (onsite)       budget $1.00 per day; clicks                                                 shown, read 2026-10-22]
+                 totalled daily and charged to the
+                 Payment account the next day
+
+  Share &        4% refund of the Qualifying           qualifying orders                      [S6: etsy.com, last updated
+  Save           Transaction Total against                                                    2024-02-20] (see section 11)
+                 transaction fees
+
+  Shipping       Carrier rate shown before             per label                              [S7: help.etsy.com, no date
+  labels         purchase; no extra Etsy fee on                                               shown, read 2026-10-22]
+                 labels
+
+  Sales tax      Since the 12 Dec 2025                 fees                                   [S8: valueaddedresource.net,
+  on Etsy fees   Payments Policy update, sales                                                (third party), 2025-12-16]
+                 tax may be charged on some
+                 Etsy fees where applicable
+                 (linked to Texas and Washington
+                 rules)
+
+
+ 1.2 Core per-listing and per-sale fees (detail)
+  • Listing fee: $0.20 per listing, charged whether or not the item sells. Listings expire after four
+    months and auto-renew at $0.20 unless auto-renew is switched off. Private listings are
+    charged only when sold. Editing a listing is free. [S9: etsy.com, last updated Oct 5, 2026]
+  • Multi-quantity / renewal on sale: each sale of a listing with remaining quantity triggers
+    another $0.20 renewal. [S9: etsy.com, Oct 5, 2026]
+  • Transaction fee: 6.5% of the displayed price plus shipping and gift wrap. The fees page states:
+    "If you sell from the US, the transaction fee will not apply to sales tax." [S9: etsy.com, Oct 5,
+    2026]. This exclusion applies to this shop.
+  • The October 5, 2026 revision of the fees policy did not change any rates. It moved the
+    paragraph on fee avoidance (e.g. completing a sale off Etsy, buying via QR code) to a separate
+    Off-Platform Transactions policy. [S10: growtsy.com, (third party), checked Oct 2026]. The fees
+    page itself now says "any action to move a transaction off the Etsy platform is strictly prohibited
+    by Etsy." [S9: etsy.com, Oct 5, 2026]
+  • A February 13, 2026 fees-policy revision also left headline rates unchanged. [S10:
+    growtsy.com, (third party), 2026]
+  • No change to the 6.5% transaction fee, $0.20 listing fee or 3% + $0.25 US processing was found
+    in 2025 to 2026 primary sources. [S1: etsy.com, 2026-10-05]; [S2: etsy.com, 2026-07-31]
+
+ 1.3 Payment processing (Etsy Payments, US)
+  • Charged on the total sale price including tax and shipping; the rate is set by the location of
+    the seller's bank account. [S9: etsy.com, Oct 5, 2026; S11: etsy.com, last updated Jul 31, 2026]
+  • United States bank account: 3% + USD 0.25 per order. [S11: etsy.com, Jul 31, 2026]
+  • Because processing is charged on the gross including sales tax, the shop pays 3% on the tax the
+    buyer pays, even though the transaction fee excludes tax. [S2: etsy.com, 2026-07-31; S1:
+    etsy.com, 2026-10-05]
+
+ 1.4 Deposit schedule, Instant Transfers and timing
+  • Sellers choose daily, weekly, biweekly or monthly deposits. Daily deposits need a $25.00
+    balance; weekly, biweekly and monthly deposits run on Mondays; deposits generally post within
+
+
+
+Etsy Fine Jewelry Master Course | Module 1: Platform, Fees, Policies and Jewelry Compliance                             Page 5
+     five business days after initiation. After changing bank details, wait at least five calendar
+     days before requesting a deposit. [S2: etsy.com, 2026-07-31]. New sellers default to weekly on
+     Mondays. [S12: help.etsy.com, no date shown, read 2026-10-22]
+  • Instant Transfers (US sellers only, so available to this shop): 1% fee (minimum $0.25,
+    maximum $1.00), $25 minimum, $500 maximum per transfer, one per 24 hours, usually within
+    about 30 minutes. [S12: help.etsy.com, read 2026-10-22]. Launched with the Payments Policy
+    update effective 12 Dec 2025. [S8: valueaddedresource.net, (third party), 2025-12-16]
+  • New sellers: funds are generally eligible for deposit 14 days after a sale, depending on shop
+    standing; established shops can see funds as soon as the next business day. [S13: help.etsy.com,
+    read Oct 2026, © 2026]. Etsy may apply a reserve to new sellers with no track record. [S12:
+    help.etsy.com, read 2026-10-22]
+  • Bank verification: US banks are verified through Plaid at shop opening. Adding or changing
+    bank details can trigger a 5-day security hold. [S14: help.etsy.com, no date shown, read
+    2026-10-22; S13: help.etsy.com, © 2026]
+  • Billing: statements issue on the 1st of the month for the prior month; autobilling charges on the
+    1st; manual payment window is the 1st to the 15th. [S13: help.etsy.com, © 2026]
+
+ 1.5 Currency conversion
+  • 2.5% of the sale amount applies only when the listing currency differs from the payment-account
+    currency. [S9: etsy.com, Oct 5, 2026; S11: etsy.com, Jul 31, 2026]
+  • With listings in USD and a USD payment account at a US bank, no conversion fee applies. Do
+    not switch listing currency or connect a non-USD account. [same sources]
+
+ 1.6 Regulatory Operating Fee (ROF)
+  • The ROF is a fixed percentage set by country and charged on display price plus shipping in
+    "certain countries"; the US is not listed. [S1: etsy.com, 2026-10-05]
+  • "US-based sellers don't pay this particular fee." [S3: iscompliant.app, (third party), 2026-06-22]
+  • The changes effective 22 Jun 2026 covered France, Hungary, India, Italy, Spain, Türkiye and the
+    UK, not the US. [S15: valueaddedresource.net, (third party), 2026-04-23, updated 2026-08-09;
+    S16: community.etsy.com, announced ~Apr 2026, effective Jun 22, 2026]
+  • For this shop: ROF = 0%. Remove it from every fee formula.
+
+ 1.7 Offsite Ads
+  • 15% of the attributed order for shops with under $10,000 in sales over the prior 365 days;
+    these shops may opt out. [S9: etsy.com, Oct 5, 2026]
+  • 12% once a shop reaches $10,000 in sales in the prior 365 days. Participation becomes
+    mandatory and the 12% rate applies for the lifetime of the shop, even if sales later fall below
+    the threshold. [S9: etsy.com, Oct 5, 2026]
+  • Cap: $100 per attributed order (no cap on the number of fees). Attribution window: 30
+    days after a buyer clicks an offsite ad. If the last click before purchase was an onsite Etsy Ad,
+    only the Etsy Ads fee applies. [S9: etsy.com, Oct 5, 2026]
+  • The help page is unclear whether the Offsite Ads base is item plus shipping or the full order total.
+    [S4: help.etsy.com, read 2026-10-22]. With free shipping and no gift wrap, the item price is used
+    in this module's examples.
+  • June 2026: Offsite Ads dashboard redesigned to show revenue, fees, visits, channels and top
+    listings. [S17: help.etsy.com, Jun 2026 section]
+
+
+
+Etsy Fine Jewelry Master Course | Module 1: Platform, Fees, Policies and Jewelry Compliance         Page 6
+  • Why it matters for fine jewelry: above roughly $667 (at 15%) or $834 (at 12%), the $100 cap
+    makes Offsite Ads proportionally cheaper on high-ticket rings (arithmetic from the $100 cap [S1:
+    etsy.com, 2026-10-05]). On a $2,000 ring the uncapped 15% would be $300, but the cap limits it
+    to $100 (5% effective).
+
+ 1.8 Etsy Ads (onsite)
+  • Pay-per-click with a daily budget; default minimum budget $1.00 per day; clicks are totalled
+    daily and charged to the Payment account the next day. [S5: help.etsy.com, no date shown, read
+    2026-10-22]
+  • June 2026: listing-level ad strategies available with a $25+ daily budget. September 2026:
+    ad groups (e.g. best-sellers, new listings), bulk add and filter by group. [S17: help.etsy.com, Jun
+    and Sep 2026 sections]
+  • Etsy's Q2 2026 take rate was 25.9% (up 130 bps YoY, about 80 bps from the Reverb divestiture),
+    with marketplace take-rate gains driven mainly by Etsy Ads and Offsite Ads. [S18:
+    marketbeat.com, (third party summary of earnings call), Aug 8, 2026]
+
+ 1.9 Subscriptions and other fees
+  • Etsy Plus: $10 per month, includes 15 listing credits (valued $3) and $5 Etsy Ads credit
+    per cycle; credits do not roll over. [S9: etsy.com, Oct 5, 2026]
+  • Pattern (standalone website): 30-day free trial then $15 per month; domains via Tucows billed
+    separately. [S9: etsy.com, Oct 5, 2026]
+  • Shipping labels: price varies by carrier, origin, destination, weight and dimensions; signature
+    confirmation and insurance cost extra. [S9: etsy.com, Oct 5, 2026]. Etsy labels (USPS, FedEx,
+    UPS) are available to US-based sellers; see section 2.
+  • Square (in-person): synced listings pay the $0.20 renewal; non-synced sales pay a $0.20
+    "Square manual" fee plus Square's processing. [S9: etsy.com, Oct 5, 2026]
+
+ 1.10 Shop set-up fee (new sellers)
+  • The fees policy lists a one-time set-up fee charged after onboarding, non-refundable once
+    paid, may be waived, may be subject to tax. No amount is published on the policy page; the
+    amount is shown during shop opening. [S9: etsy.com, Oct 5, 2026]
+  • A third-party 2026 guide quotes $15 to $29, applying to all new shops including additional shops
+    opened by existing sellers. [S19: craftybase.com, (third party), "Updated for 2026"]
+  • Etsy's 2025 10-K attributes part of the year-over-year decline in active sellers to the set-up fee,
+    which it says was meant to encourage more committed sellers; active sellers were 5.6 million at
+    Dec 31, 2025. [S20: investors.etsy.com, 10-K filed Feb 19, 2026]
+  • Relevance: opening a second shop (e.g. Artifact Studio Jewelry alongside EON) triggers a new
+    set-up fee and new identity verification.
+
+ 1.11 Share & Save
+  • Refund of 4% of the qualifying transaction total (listing price + shipping + gift wrap, including
+    personalization fees) when a buyer clicks your shop/listing/section URL that you shared on your
+    own channels (social, website, blog, email) and buys within 30 days. Links on Etsy itself do not
+    count; sales attributed to Offsite Ads do not qualify (and incur the Offsite Ads fee); refunded
+    orders and your own purchases do not qualify; sellers in the Etsy Affiliate Program or Creator Co
+    are excluded. No cap stated. [S6: etsy.com; last updated Feb 20, 2024, the live current version;
+    see UNVERIFIED note in section 11]
+
+
+Etsy Fine Jewelry Master Course | Module 1: Platform, Fees, Policies and Jewelry Compliance         Page 7
+ 1.12 Base percentage for this shop
+ With free shipping and USD listings, the base Etsy take is:
+ 6.5% (transaction) + 3% (processing) = 9.5% of the item price, plus $0.25 per order, plus
+ $0.20 listing renewal per sale, plus 3% on any sales tax the buyer pays. [S1: etsy.com,
+ arithmetic from , 2026-10-05 and [S2: etsy.com], 2026-07-31]
+ No Regulatory Operating Fee and no currency conversion fee. Ads (Offsite, Etsy Ads) are on top. In
+ short: about 9.5% + $0.45 per order before ads.
+
+ 1.13 Worked fee example: $400 ring, free shipping, US buyer
+ Sales tax is collected by Etsy and varies by buyer location; the "8% tax" column is an illustrative
+ assumption, not a sourced rate.
+
+  Line                                            No tax case                            With 8% tax ($32)
+
+  Transaction fee 6.5% x $400                     $26.00                                 $26.00 (not charged on tax)
+
+  Processing 3% x gross + $0.25                   3% x $400 + $0.25 = $12.25             3% x $432 + $0.25 = $13.21
+
+  Listing renewal on sale                         $0.20                                  $0.20
+
+  Base Etsy fees                                  $38.45 (9.61% of $400)                 $39.41 (9.85% of $400)
+
+  Offsite Ads, if attributed, 15%                 +$60.00 = $98.45                       +$60.00 = $99.41
+
+  Offsite Ads, if attributed, 12%                 +$48.00 = $86.45                       +$48.00 = $87.41
+
+ [S1: etsy.com, rates from , 2026-10-05 and [S2: etsy.com], 2026-07-31]
+
+ 1.14 Worked fee example: $1,200 ring, free shipping, US buyer
+  Line                                                         No tax case                With 8% tax ($96)
+
+  Transaction fee 6.5% x $1,200                                $78.00                     $78.00
+
+  Processing 3% x gross + $0.25                                $36.25                     3% x $1,296 + $0.25 = $39.13
+
+  Listing renewal on sale                                      $0.20                      $0.20
+
+  Base Etsy fees                                               $114.45 (9.54%)            $117.33 (9.78%)
+
+  Offsite Ads 15% = $180, capped at $100                       +$100 = $214.45            +$100 = $217.33
+
+  Offsite Ads 12% = $144, capped at $100                       +$100 = $214.45            +$100 = $217.33
+
+ [S1: etsy.com, rates from , 2026-10-05 and [S2: etsy.com], 2026-07-31]. Possible sales tax charged
+ on Etsy fees themselves in some states (section 1.1) is not included in these figures.
+
+
+ 2. US sales tax, tax forms, shipping basics and imports
+ 2.1 US sales tax on orders
+  • Etsy collects and remits sales tax as marketplace facilitator in these states and territories:
+    Alabama, Alaska, Arizona, Arkansas, California, Colorado, Connecticut, District of Columbia,
+    Florida, Georgia, Hawaii, Idaho, Illinois, Indiana, Iowa, Kansas, Kentucky, Louisiana, Maine,
+    Maryland, Massachusetts, Michigan, Minnesota, Mississippi, Missouri, Nebraska, Nevada, New
+    Jersey, New Mexico, New York, North Carolina, North Dakota, Ohio, Oklahoma, Pennsylvania,
+    Puerto Rico, Rhode Island, South Carolina, South Dakota, Tennessee, Texas, Utah, Vermont,
+    Virginia, Washington, West Virginia, Wisconsin, Wyoming. [S21: help.etsy.com, no date shown,
+    read 2026-10-22]
+
+
+
+Etsy Fine Jewelry Master Course | Module 1: Platform, Fees, Policies and Jewelry Compliance                            Page 8
+  • For those states, "No action is required on your part to collect sales tax from buyers." Shop
+    Manager sales tax settings apply only where Etsy does not collect automatically. Etsy charges no
+    admin fee for this. [same source]. Etsy uses the listing category to determine the amount where
+    it must collect. [S9: etsy.com, Oct 5, 2026]
+  • The seller does not add sales tax to listing prices for these states. The transaction fee is not
+    charged on sales tax for US sellers [S1: etsy.com, 2026-10-05], but the 3% processing fee is
+    charged on the gross including tax [S2: etsy.com, 2026-07-31].
+  • What the seller may still owe (high level): registration or filing obligations in the shop's home
+    state for marketplace sales, and sales tax on any off-Etsy sales (for example a brand website).
+    These vary by state; confirm with a US CPA. (See gaps.)
+  • Sales tax on Etsy fees: since 12 Dec 2025, sales tax may be charged on some Etsy fees where
+    applicable (linked to Texas and Washington rules). [S8: valueaddedresource.net, (third party),
+    2025-12-16]
+  • Country-specific tax information now shows in the Seller app's detailed order view (June
+    2026). [S17: help.etsy.com, Jun 2026]
+
+ 2.2 Federal tax forms and 1099-K
+  • IRS: under the One Big Beautiful Bill, payment platforms need not file Form 1099-K unless
+    payments to a payee exceed $20,000 and more than 200 transactions; the law
+    "retroactively reinstated" the pre-2021 threshold. [S22: irs.gov, 2025-10-23 (IR-2025-107)]
+  • Etsy: for the 2025 tax year (forms issued January 2026), federal threshold $20,000 and 200
+    sales, both required. Some states use lower thresholds: Arkansas $2,500; DC $600; Illinois $1,000
+    and 4 transactions; Maryland $600; Massachusetts $600; New Jersey $1,000; Vermont $600;
+    Virginia $600. A 1099-K is issued if either the federal or the state threshold is met. [S23:
+    help.etsy.com, no date shown, read 2026-10-22]
+  • 2026 threshold: Etsy's page gives no 2026 figure; the IRS release describes a reinstated
+    threshold without naming years. Treat $20,000 and 200 as the expected 2026 federal rule, but
+    confirm in January 2027. (See gaps.)
+  • Etsy needs a valid SSN, ITIN or EIN on the Legal and tax information page; reminders at $250
+    and $500 in sales; shops without valid taxpayer details are suspended after exceeding $500.
+    [S23: help.etsy.com, read 2026-10-22]
+  • Business sellers provide an EIN (US only), entity name and owners holding 25% or more. [S14:
+    help.etsy.com, no date shown, read 2026-10-22]
+  • W-8BEN: Etsy says non-US sellers (or those whose address or currency marks them as US
+    sellers) can remove the 1099-K obligation by submitting a W-8BEN through support. [S23:
+    help.etsy.com, read 2026-10-22]. For a shop held by a US entity this route generally does not
+    fit; get CPA advice before filing anything. (See gaps.)
+
+ 2.3 Foreign-owned US LLC filing note (high level only)
+  • A foreign-owned US disregarded entity (typical: single-member LLC owned by a non-US person)
+    has no income tax return of its own, but must file a pro forma Form 1120 with Form 5472
+    attached each year. [S24: irs.gov, instructions revised 12/2024, page reviewed 2026-04-30]
+  • Penalty for failing to file Form 5472 when due: $25,000, plus $25,000 per 30-day period if the
+    failure continues more than 90 days after IRS notice. [same source]
+  • Whether the owner personally owes US income tax depends on whether the business has US
+    effectively connected income (likely, given a US production partner and US shipping). This is a
+    CPA question, not a course claim. (See gaps.)
+
+
+Etsy Fine Jewelry Master Course | Module 1: Platform, Fees, Policies and Jewelry Compliance            Page 9
+ 2.4 Domestic shipping basics that touch policy (detail in the shipping module)
+  • Etsy labels require the seller to be based in the US; USPS (Ground Advantage, Priority Mail,
+    Priority Mail Express, Media Mail; $100 included coverage on the first three), FedEx (up to $100
+    liability, for US sellers who accept Etsy Payments) and UPS (domestic addresses only) are
+    available to this shop. [S7: help.etsy.com, read 2026-10-22; S25: help.etsy.com, read
+    2026-10-22; S26: help.etsy.com, read 2026-10-22]
+  • An Etsy label automatically marks the order shipped and satisfies the tracking requirement for
+    Purchase Protection. Signature confirmation is optional and its fee is added to the label cost.
+    [S27: etsy.com, last updated 2026-10-13]
+  • Add-on insurance on Etsy labels is provided by Shipsurance, up to $5,000 per package, $0.80
+    per $100 of value for US domestic ($400 ring = $3.20; $1,200 ring = $9.60). Claims within 120
+    days of ship date; file before cancelling the order. [S28: help.etsy.com, read 2026-10-22]
+  • Shipsurance excludes items in packaging that "alludes to the contents" (branded boxes or tape),
+    and packages that require a signature service unless shipped with it. [S29: shipsurance.com,
+    revisions listed to 10/2024, read 2026-10-22]. Practical rule: ship the branded ring box inside a
+    plain outer mailer.
+  • Returns go to the US partner address; Etsy USPS return labels are available within the 50 states.
+    [S27: etsy.com, 2026-10-13]
+
+ 2.5 If you ever ship outside the US or import components
+  • Etsy's DDP rule (mandatory since July 9, 2026) applies only to sellers outside the US shipping
+    to US buyers; orders shipped to the US must use a DDP method. It does not apply to this shop's
+    domestic US shipments. [S30: etsy.com, last updated Oct 5, 2026; S17: help.etsy.com, Jun 2026].
+    Purchase Protection's DDP condition is likewise only for US-bound international orders. [S31:
+    etsy.com, effective 2026-07-09]
+  • Importing Turkish-made jewelry or components (B2B, e.g. stock rings for the US workshop to
+    finish): HTS 7113.19.50 gold jewelry carries 5.5% general duty [S32: hts.usitc.gov, read
+    2026-10-22], plus the 12.5% Section 301 tariff tier for Türkiye effective 24 July 2026 [S33:
+    taxnews.ey.com, 2026-07-24], for 18% of the import (customs) value, not the Etsy retail
+    price, unless an annex exemption covers heading 7113 (not confirmed; see gaps).
+  • Duty-free de minimis treatment ($800 or less) has been suspended for all countries since 29 Aug
+    2025, so every import pays duty. [S34: kpmg.com, 2025-08-28]
+  • Any international sale from the US shop needs customs forms and accurate declarations for
+    the destination country; UPS Etsy labels are for domestic addresses only. [S26: help.etsy.com,
+    read 2026-10-22]
+  • If everything is made in the US from US-sourced metal, no import duty applies. [course correction
+    file 09, 2026-10-22]
+
+
+ 3. Creativity Standards, production partners, remote
+ management and AI disclosure
+ 3.1 Creativity Standards (current text last updated June 10, 2025)
+ Every listing must fit one of four categories. [S35: etsy.com, last updated Jun 10, 2025]
+  1. Made by a seller: physical items the seller makes by hand or with personal or computerized
+    tools (laser cutter, 3D printer) in the seller's personal shop or home, including handcrafted,
+    hand-altered and hand-assembled items. Does not qualify: kits assembled from manufacturer
+
+
+Etsy Fine Jewelry Master Course | Module 1: Platform, Fees, Policies and Jewelry Compliance      Page 10
+     instructions, base items with superficial add-ons. Photos must be the seller's own photos or
+     video of the final product; for personalized items the first image must show the
+     finished item, not a blank or placeholder text.
+  2. Designed by a seller: original designs sold as digital downloads, designs produced by a
+    production partner, or AI creations based on the seller's original prompts. Does not qualify:
+    bundles/scans of others' work, AI prompt bundles.
+  3. Handpicked by a seller: vintage (at least 20 years old), one-of-a-kind natural items, curated
+    gift baskets.
+  4. Sourced by a seller: craft and party supplies, buyer-personalized items made by a production
+    partner.
+ Items made with computerized tools "must be produced based on a seller's original design." [S10:
+ growtsy.com, (third party), quoting Creativity Standards, 2026]
+ Where this shop sits: the owner creates original designs and the US workshop casts, sets,
+ finishes and ships them, so listings are "Designed by a seller" with the US workshop disclosed
+ as a production partner. Production-partner items fall under "Designed," not "Made." [S36:
+ etsy.com, last updated 2025-06-10]. Etsy's Creativity Standards have no jewelry-specific section;
+ the only jewelry example is attaching charms to a chain as "hand assembled," and casting is not
+ mentioned. [S35: etsy.com, Jun 10, 2025]
+ Listing image rule (22 Oct 2026): "For most products, you must include at least one unedited
+ photo of the actual item against a real background," and all photos must accurately represent what
+ the buyer receives. The policy requires "at least one" and does not say which slot; no effective date
+ or exceptions list was published. [S37: etsy.com, last updated 2026-10-22; Etsy seller email,
+ 2026-10-22, reproduced on sellersasksellers.com]. For a remote owner this means the US workshop
+ must supply a straight-from-camera photo of each real piece on a real surface (see module 05).
+
+ 3.2 Production partners (the US workshop)
+  • Definition: a company or individual outside your Etsy shop that physically produces items from
+    your original designs (print-on-demand, cut-and-sew, contract manufacturers, specialized
+    services like laser cutting). Any size, from an individual crafter to an automated facility. [S38:
+    help.etsy.com, © 2026]
+  • Not production partners (and therefore not allowed as a sourcing route): you or your
+    shop team; suppliers of raw materials or tools; partners who helped with only one part of an item
+    you mostly made; white-label manufacturers, OEMs and ODMs; commercial retailers and
+    wholesalers. Using these to source products "violates Etsy's reselling policies and may lead to
+    penalties, up to suspension." [same article]
+  • How to disclose:
+     1. Listing editor: Listing details > Production partners (or Shop Manager > Listings > Editing
+       options > Change production partners for bulk).
+     2. Shop Manager > Settings > Partners you work with: partner name optional (can use a
+       descriptive title, e.g. "Fine jewelry casting studio"); partner location (city, state); the "About
+       production partner" field is public; "More about your partnership" dropdowns are internal.
+     3. Set shipping locations to where items actually ship from (the workshop's US address);
+       complete the About section; meet Listing Image Requirements.
+     4. Partners cannot be added in the Seller app; add on Etsy.com. [same article; S38:
+       help.etsy.com, no date shown, read 2026-10-22]
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 1: Platform, Fees, Policies and Jewelry Compliance            Page 11
+  • Seller Policy: sellers must "accurately show how each item was made, by whom, and where it
+    ships from"; shop details including country of origin must be honest in listings and the About
+    section; shop members involved in making items must be described in the About section;
+    production partners must be disclosed on relevant listings; listing photos must be the seller's
+    own, not stock. [S30: etsy.com, last updated Oct 5, 2026]
+  • Applied to this shop: listing is "designed by a seller," the US workshop is the disclosed
+    production partner with its US city and state, and ships-from is the workshop's US address. The
+    About section names shop members accurately, including that the owner designs and runs the
+    shop from Türkiye. Suggested wording: "designed in Istanbul, made by our US production
+    partner." [S30: etsy.com, course correction file 09, 2026-10-22, applying , 2026-10-05]
+  • Grey zone for jewelers: a caster who only casts your wax/CAD, with you setting and finishing,
+    arguably helped "with only one part of an item you mostly made" (not a partner). In this shop the
+    owner does not set or finish anything; the US workshop does casting, setting, polishing and
+    stamping, so it is a production partner. Etsy does not address casting directly, so when in doubt,
+    disclose. [S38: help.etsy.com, inference from , © 2026]
+
+ 3.3 Remote management from Türkiye: identity, location and account
+ security
+  • New sellers verify identity through Persona: government photo ID plus selfie. The approved ID
+    list depends on the country selected; the ID name must match the taxpayer name and the bank
+    account name. [S39: help.etsy.com, read 2026-10-22]
+  • US banks are verified through Plaid at shop opening; US businesses give an EIN and 25%+
+    owners. [S14: help.etsy.com, read 2026-10-22]
+  • Etsy may change onboarding or authentication processes and "Completion of these processes
+    may be required" for continued access; Etsy may place reserves after unusual activity or
+    elevated risk, and may suspend related accounts. [S30: etsy.com, 2026-10-05]
+  • Etsy labels require the seller to be based in the US. Shop location, bank, tax ID and ships-from
+    address should all point to the US entity and partner address. [USPS, FedEx and UPS label help
+    pages, read 2026-10-22]
+  • Etsy now shows seller location in search previews and offers a "Ships from" filter. [S40: etsy.com,
+    2026-09-28]. The shop shows a US location and qualifies for local filters, while still disclosing
+    Türkiye-based design where true.
+  • Logging in from abroad: no Etsy primary source (2025 to 2026) was found stating that logging
+    in from another country causes holds or suspension. A community thread titled "Am i allowed to
+    log-in from Egypt?" exists but is behind login. [S41: community.etsy.com, read 2026-10-22]. (See
+    gaps.)
+  • Best practices (operational judgment, not Etsy rules): two-factor authentication on the
+    owner account; log in from one consistent device and connection rather than hopping between
+    VPN exits; keep the legal and tax information, bank and ID names identical; add the US partner
+    as a shop member only through Etsy's own roles feature (September 2026 shared access with
+    individual team logins), never by sharing the password; keep the Help with Order 48-hour rule
+    covered while traveling (a 9-to-5 Türkiye workday overlaps US mornings). [course correction file
+    09, 2026-10-22; S17: help.etsy.com, Sep 2026]
+
+ 3.4 AI disclosure
+  • AI use in a design must be disclosed in the listing description; AI-generated designs qualify as
+    "Designed by a seller" when based on the seller's original prompts/inputs; AI prompt bundles are
+
+
+Etsy Fine Jewelry Master Course | Module 1: Platform, Fees, Policies and Jewelry Compliance       Page 12
+     banned. [S35: etsy.com, Jun 10, 2025]
+  • Seller Policy (Oct 2026): "Items created with artificial intelligence must be disclosed in relevant
+    listings." [S30: etsy.com, Oct 5, 2026]
+  • For jewelry: if concept renders or the design itself came from an AI image tool, disclose.
+    AI-generated product photos are a separate problem: Creativity Standards require the seller's
+    own photos or video of the final product, and the 22 Oct 2026 image rule requires at least
+    one unedited real photo. [S35: etsy.com, Jun 10, 2025; S37: etsy.com, 2026-10-22]
+
+
+ 4. Seller standards, Star Seller, cases and Purchase Protection
+ 4.1 Customer Service Standards (minimum to stay in good standing)
+ [S42: help.etsy.com, © 2026; S43: help.etsy.com, © 2026]
+
+  Metric                     Minimum standard
+
+  Message response           Respond to 80% of first messages in a thread within 48 hours
+
+  On-time shipping           At least 80% of orders shipped within listed processing time (tracking recommended, not
+                             required here)
+
+  Reviews                    Under 40 reviews: no more than 4 reviews of 3 stars or lower. 40+ reviews: under 10% at 3
+                             stars or lower
+
+  Case rate                  Under 300 completed orders: no more than 3 orders with cases refunded from your
+                             Payment account. 300+ orders: under 1%
+
+  • Case-rate exclusions: orders over $250, orders eligible for Purchase Protection, orders you
+    refunded before a case opened. Stats appear after at least 5 sales in the last three months.
+    [same, © 2026]
+  • Consequences: lower search visibility, possible loss of Purchase Protection eligibility, and
+    "Repeat violations ... may result in temporary or permanent suspension of your selling
+    privileges." [same, © 2026]
+  • Review rating calculation (March 2026): ratings reflect full history but weight recent reviews
+    more heavily. [Etsy Newly Crafted, Mar 2026]
+  • Buyers can review within 100 days of delivery. [S30: etsy.com, Oct 5, 2026]
+
+ 4.2 Star Seller (exact thresholds)
+  Metric                                    Star Seller target
+
+  Message response                          95% of first messages answered within 24 hours
+
+  On-time shipping and tracking             95% shipped on time, with valid tracking or an Etsy label where required
+
+  Average review rating                     4.8 or higher
+
+  Case rate                                 Meet the Customer Service Standard
+
+ [S43: help.etsy.com, © 2026]
+  • Additional rules (third party): rolling 3-month window, evaluated on the 1st of each month;
+    minimum 5 orders and $300 in sales in the window; not eligible until 90 days after first
+    sale; 24-hour clock includes weekends and holidays; spam and Etsy messages excluded. [S44:
+    listingview.io, (third party), Jul 27, 2026]
+  • Remote note: the 24-hour clock runs on calendar time, so a Türkiye-based owner needs message
+    coverage on Turkish public holidays and US holidays alike.
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 1: Platform, Fees, Policies and Jewelry Compliance                       Page 13
+ 4.3 Cases policy (effective July 9, 2026)
+ [S45: etsy.com, last updated Jun 9, 2026, effective Jul 9, 2026]
+  • Buyer must first use Help with Order; a case can open if the seller does not respond within 48
+    hours or the issue is not resolved in 48 hours.
+  • If Etsy requests information, the seller must respond within 2 calendar days.
+  • Etsy may close and refund automatically, may refund on the seller's behalf and recoup from the
+    Payment account, and may reopen closed cases.
+  • Covered problems: not arrived, late, damaged, not as described.
+  • Ineligible: items altered, used, worn or washed; returns without a return agreement; "accurately
+    described items that don't meet the buyer's expectations"; most shipping-charge disputes;
+    non-Etsy-Payments orders; disputes covered by local warranty/return law. Filing a chargeback
+    closes the Etsy case.
+  • A case unresolved for over 365 days is treated as late delivery (full refund only).
+  • A seller cannot make case closure a condition of resolving the dispute.
+  • Filing windows: a case needs the maximum estimated delivery date to have passed and the
+    buyer to have contacted the seller at least 48 hours earlier; for non-delivery the buyer waits 7+
+    days after the maximum estimated delivery date; once eligible the buyer has 30 days to open a
+    case. [S46: help.etsy.com, read 2026-10-22; S47: etsy.com, 2026-04-07]
+
+ 4.4 Purchase Protection Program for Sellers (rewritten 2026)
+ [S31: etsy.com, last updated Jun 9, 2026, effective Jul 9, 2026]
+  • Etsy refunds the buyer up to USD 250 per qualifying case, including shipping and taxes,
+    and the seller is not charged; the seller pays any refund amount above $250. [policy URL above]
+  • High-value orders: since 7 May 2026, eligible orders above $250 still get up to $250 of
+    coverage (example: on a $400 eligible order, Etsy covers $250). High-value orders are always
+    reviewed by a human. [S47: etsy.com, 2026-04-07]. Etsy's June 2026 update also states
+    coverage applies to all eligible orders up to $250, even when the order total is higher. [S17:
+    help.etsy.com, Jun 2026]. One help-center version still reads as if orders over $250 are excluded
+    [S48: help.etsy.com, read 2026-10-22], while the en-us version says coverage applies "even if
+    the order total exceeds $250" [S49: help.etsy.com, read 2026-10-22]. The policy and Handbook
+    govern.
+  • All requirements must be met:
+     • A. Meet minimum Customer Service Standards and reply to Help with Order messages within
+       48 hours.
+     • B. Accurate "ships from" location (the US workshop address); valid tracking or Etsy label; if no
+       Etsy label, mark shipped and add tracking. An Etsy label satisfies tracking automatically. [S27:
+       etsy.com, 2026-10-13]
+     • C. Use Etsy Payments.
+     • D. Ship to the address on the Etsy order (alternate addresses sent through Messages may
+       signal fraud).
+     • E. Package to prevent transit damage.
+     • F. List processing times, ship within them, show an Estimated Delivery Date on every listing.
+       Informal Message agreements to change ship dates do not count.
+     • H. Complete all Shop Policies (returns, exchanges, custom orders) compliant with Etsy and
+       local law.
+
+
+Etsy Fine Jewelry Master Course | Module 1: Platform, Fees, Policies and Jewelry Compliance       Page 14
+     • I. Good standing.
+     • J. DDP for US-bound international orders. Not relevant to this shop's domestic US
+       shipments.
+  • Limits and exclusions: only the first eligible damage case per calendar year is covered;
+    not-as-described orders are excluded; anything above $250; personalized/modified items: buyer
+    bears risk and Etsy may reimburse only the modification fee; if you have carrier, insurer or
+    processor coverage (for example Shipsurance), claim there first. [policy URL above]
+  • Signature confirmation: not required by the current policy at any dollar value. The Purchase
+    Protection policy, its help article and the case resolution article do not mention signature
+    confirmation. [policy URL above; S49: help.etsy.com, read 2026-10-22; S46: help.etsy.com, read
+    2026-10-22]. See section 11 for the older signature rule.
+  • Rewrite timeline (third party): rewritten eligibility effective May 7, 2026; filing window cut from
+    100 to 30 days; human reviewers nearly doubled; a late order is one arriving 7+ days after the
+    estimated delivery date. [S50: my-shop.co, (third party), Sep 5, 2026; S51: novadata.io, (third
+    party), Apr 10, 2026]
+  • Shipsurance claims must be filed before cancelling the order. [S28: help.etsy.com, read
+    2026-10-22]
+  • What this means for a $400 to $1,500+ gold ring: Purchase Protection caps at $250. Above
+    that you carry the loss. Insure high-value shipments (Shipsurance to $5,000 via Etsy labels) and
+    use signature confirmation as a house rule; for these orders Purchase Protection is a small
+    backstop, not real cover.
+
+ 4.5 Reserves, payment holds and suspension triggers
+  • Reserve: applied "if we believe there may be a high level of financial risk" tied to the seller,
+    account, business model or transactions; percentage set case by case (sales history, dispute
+    ratio, order backlog). Etsy can apply a fixed reserve (percentage of sales held on a rolling basis)
+    or a variable reserve (delay up to 180 days or deduct for up to 90 days). Illustrative example in
+    the policy: 30% held for a 45-day rolling period. Released on a rolling basis unless a case or
+    chargeback is raised. [S11: etsy.com, Jul 31, 2026]
+  • Reserves on new physical-item sales release once tracking shows the order in transit;
+    without valid tracking, after a default holding period. Support agents cannot remove a reserve.
+    [S13: help.etsy.com, © 2026]
+  • Holds: up to the shorter of 180 days after the estimated delivery date or completion of an
+    investigation; deposit delays range 0 to 180 days. [S11: etsy.com, Jul 31, 2026]
+  • Other causes of delayed funds: risk review for unusual activity, expired card on file,
+    incomplete tax or regulatory info, negative or zero balance. [Payment Account Help article, ©
+    2026]
+  • Why made-to-order jewelers get reserves: long processing times create an order backlog
+    (an explicit risk factor), high ticket values raise exposure, and new shops have no sales history.
+    [S11: etsy.com, factors from , Jul 31, 2026]. A shop managed from abroad should avoid adding
+    "unusual activity" signals (see section 3.3).
+  • Suspension triggers (Seller Policy): unusual order activity; failing minimum customer service
+    standards; actions likely to cause disputes, chargebacks, fraud or counterfeiting; Terms of Use
+    violations; duplicate shops; manipulating clicks, carts or sales; shilling; coordinated pricing;
+    dropshipping/reselling; off-platform transactions. Etsy may limit visibility, add reserves, or
+    suspend related accounts. Fees remain owed after suspension. [S30: etsy.com, Oct 5, 2026]
+
+
+
+Etsy Fine Jewelry Master Course | Module 1: Platform, Fees, Policies and Jewelry Compliance        Page 15
+  • Appeals: by end of 2026 all sellers will have listing appeals across most policy areas; June 2026
+    added more detailed explanations on the Policy Violations page. [Etsy Newly Crafted, Sep and Jun
+    2026]
+
+
+ 5. Platform and marketplace changes 2025 to 2026 (facts only)
+ 5.1 Company context
+  • Kruti Patel Goyal became CEO on January 1, 2026; Josh Silverman became Executive Chair.
+    [S52: investors.etsy.com, announced Oct 29, 2025]
+  • Q2 2026: GMS $2.6B (+7.5% YoY); about 87M active buyers; app GMS +12.5% and about
+    47% of GMS; Etsy app share was 45% of GMS in 2025. About 220 roles cut (~12%); Depop
+    sold to eBay for $1.4B (July 30, 2026). Agentic commerce traffic under 1% but higher intent and
+    AOV; Etsy testing a gifting assistant. [S18: marketbeat.com, (third party), Aug 8, 2026; 10-K Feb
+    19, 2026]
+  • 2025 10-K: "Jewelry and personal accessories" is the second of Etsy's top six GMS categories;
+    custom/made-to-order is about 30% of GMS. [10-K, Feb 19, 2026]
+
+ 5.2 Discovery
+  • Algotorial curation (April 2025): Etsy experts pick about 50 listings per trend collection,
+    machine learning expands to about 1,000, LLMs check cohesion and quality; feed order reflects
+    shopper activity. [S53: valueaddedresource.net, (third party), Apr 11, 2025]
+  • AI shopping (March 2026): US buyers can discover or buy eligible Etsy items in ChatGPT,
+    Gemini, AI Mode in Google Search and Microsoft Copilot. [Etsy Newly Crafted, Mar 2026]
+  • Local discovery (September 2026): "Ships from" country/city filter and "Support makers near
+    you." [Etsy Newly Crafted, Sep 2026]. This shop shows a US ships-from location and qualifies for
+    these filters.
+  • Home feed now shows fewer recently viewed items and more new, diverse listings; real-time
+    search personalization. [MarketBeat Q2 2026 summary, Aug 8, 2026]
+
+ 5.3 Etsy Insider (buyer membership)
+  • Launched as a beta loyalty program in Q4 2025, continuing to be tested in 2026. [10-K, Feb 19,
+    2026]
+  • From November 4, 2025: members get 5% back in Etsy credit (balance cap $2,000); Etsy
+    covers up to $6 shipping on the cheapest domestic option for orders over $15 per shop, US
+    sellers to US buyers only; annual plan $72, seasonal plan raised from $18 to $24. [S54:
+    valueaddedresource.net, (third party), Oct 7, 2025; S55: etsy.com, updated Nov 4, 2025]
+  • Seller side: no enrolment needed; seller receives the full shipping amount but still pays
+    transaction fee on it; Etsy funds the covered portion and recoups it on refunds. As a US shop
+    shipping to US buyers, this shop's orders fall inside the US-to-US scope of the shipping benefit.
+    [Insider policy, Nov 4, 2025]
+
+ 5.4 Listing and shop tools
+  • March 2026: reorganized listing form (Materials tag field removed); stable listing URLs;
+    refreshed billing; quick refunds/cancellations in Messages; guest Apple Pay; Marketplace Insights
+    with week-over-week trends and up to 50 saved searches; targeted offer performance in Sales
+    and discounts. [Etsy Newly Crafted, Mar 2026]
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 1: Platform, Fees, Policies and Jewelry Compliance       Page 16
+  • June 2026: second video per listing; personalization moved under custom options; listing
+    thumbnail previews; AI attribute suggestions; AI shop stats summaries and Stats assistant beta;
+    interested shopper offers (automatic offers to engaged shoppers); promo code controls
+    (cap total redemptions or one use per buyer); return/replacement labels in Messages. [Etsy
+    Newly Crafted, Jun 2026]
+  • September 2026: quick-list form suggesting titles, tags and attributes (limited test); custom
+    options can charge for personalized text, be reused and bulk edited; third variation option;
+    shared access with individual team logins; new Payment account view with fees grouped per
+    sale. [Etsy Newly Crafted, Sep 2026]
+  • October 22, 2026: Listing Image Requirements updated: at least one unedited photo of the
+    actual item against a real background. [S37: etsy.com, last updated 2026-10-22]
+  • Truthful discount rules (January 12, 2026): the strikethrough price must be the genuine
+    usual price offered for a substantial period and sold in reasonable quantities; "You can't inflate a
+    price briefly just to create the appearance of a discount"; adjusting prices to trigger strikethrough
+    or countdown signals is prohibited; permanent sales can make the sale price the true price. [S56:
+    etsy.com, Jan 12, 2026]
+  • US-relevant 2025 to 2026 changes: 12 Dec 2025 Instant Transfers for US sellers and possible
+    sales tax on Etsy fees [S8: valueaddedresource.net, (third party), 2025-12-16]; USPS temporary
+    8% rate increase from 26 Apr through 17 Jan 2027, noted on Etsy's USPS labels page [S7:
+    help.etsy.com, read 2026-10-22].
+
+
+ 6. US jewelry compliance
+ 6.1 FTC Jewelry Guides, 16 CFR Part 23 (in force; eCFR current to Oct 19,
+ 2026)
+ Source for all bullets: [S57: ecfr.gov, eCFR up to date as of Oct 19, 2026]. The Guides were last
+ revised in 2018 and no 2025 or 2026 revision exists (see section 11).
+  • §23.1 General deception: misrepresenting type, grade, metallic content, treatment, origin or
+    other material aspects is unfair or deceptive. Qualifications must be clear and prominent.
+  • §23.3 Gold: unqualified "Gold" only for fine (24K) gold. Alloys need a karat designation of equal
+    conspicuousness before "Gold": write "14 Karat Gold," "14K Gold," "18K Gold," never just "gold
+    ring." Markings are subject to National Stamping Act tolerances.
+  • Gold filled / rolled gold plate (§23.3(c)(2)): at least 10K; "Gold Filled" requires gold at least
+    1/20th of total metal weight; rolled gold plate at least 1/40th, with the fraction disclosed.
+  • Gold electroplate (§23.3(c)(3)): at least 10K and at least 0.175 microns fine gold equivalent;
+    "Heavy Gold Electroplate" about 2.5 microns.
+  • Vermeil (§23.4): sterling silver base, gold at least 10K, at least 2.5 microns fine gold
+    equivalent; a nickel undercoat must be disclosed.
+  • Platinum (§23.6): unqualified "Platinum" requires 950 parts per thousand; number-prefixed
+    marks at least 850; 500 to 850 requires full composition disclosure.
+  • Rhodium (§23.7): failing to disclose rhodium plating on a precious-metal product is deceptive.
+    This matters for 14K and 18K white gold, which is normally rhodium plated: say
+    "rhodium plated" in the listing.
+  • Diamond (§23.12): unqualified "diamond" means natural; "cultured" may describe lab-created
+    diamonds only with a clear disclosure such as "laboratory-created."
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 1: Platform, Fees, Policies and Jewelry Compliance          Page 17
+  • Lab-grown and simulated stones (§23.25): the gem name must be immediately preceded by
+    "laboratory-grown," "laboratory-created," "[manufacturer]-created," "imitation" or "simulated."
+    "Faux" is not adequate. "Synthetic" only where the stone has essentially the same optical,
+    physical and chemical properties.
+  • Treatments (§§23.23, 23.24, 23.14): disclose treatments that are not permanent, create
+    special care needs, or significantly affect value (applies to diamonds and gemstones).
+  • Cultured pearls (§§23.19 to 23.21): "cultured" or "cultivated" with equal conspicuousness.
+  • "Conflict-free": not addressed anywhere in Part 23. Any such claim falls under §23.1 general
+    deception and needs substantiation (see gaps).
+  • Origin claims: §23.1 covers misrepresenting origin. Do not write "Made in USA" unless the facts
+    support it (the FTC's latest jewelry-page action is a Made in USA case; see section 11); "designed
+    in Istanbul, made by our US production partner" is the accurate formula for this shop. [S57:
+    ecfr.gov, Oct 19, 2026; S30: etsy.com, Oct 5, 2026]
+
+ 6.2 National Gold and Silver Stamping Act (15 U.S.C. §§291 to 300)
+  • Tolerance (15 U.S.C. §295): gold tested without solder must not be below the stamped
+    fineness by more than 3 parts per thousand; tested with solder as one piece: 7 parts per
+    thousand for jewelry (3 for watchcases and flatware). The old half-karat standard was replaced
+    by these thousandths in 1976. [S58: law.cornell.edu, read Oct 2026]. Practically: a "14K" (583.3)
+    piece without solder must assay at least 580.3; with solder, at least 576.3.
+  • Trademark requirement (15 U.S.C. §297(b)): anyone who applies a gold or silver quality
+    mark must also apply a trademark that is "duly registered or applied for registration under the
+    laws of the United States" within thirty days after an article bearing it is placed in commerce or
+    imported. [S59: law.cornell.edu, read Oct 2026]. MJSA's compliance guide describes this as the
+    "federally registered trademark" stamped near the quality mark. [S60: cms.mjsa.org, undated,
+    read Oct 2026]
+  • Enforcement: forfeiture, fines and possible jail; competitors and trade associations can sue.
+    [MJSA guide, read Oct 2026]
+  • Implication for EON / Artifact Studio: if the US workshop stamps "14K" or "585" on rings sold
+    under your brand, the piece also needs a maker's mark that is a USPTO-registered or
+    applied-for trademark (yours, or the workshop's if it is the one applying the quality mark;
+    agree in writing whose mark is used). Any imported components with foreign assay marks alone
+    do not satisfy §297.
+
+ 6.3 California rules (Metal-Containing Jewelry Law, H&S Code §25214.2)
+ [S61: california.public.law, operative Jun 1, 2020, read Oct 2026]
+  • Adult jewelry must be made entirely from listed materials. Karat gold, sterling silver,
+    platinum-group metals, stainless/surgical steel and natural or cultured pearls are listed
+    without a lead percentage (compliant by material class). Electroplated metal and unplated other
+    metals: lead under 0.05% (500 ppm); plastic/rubber under 0.02%; coatings under 0.05%.
+  • For body-piercing jewelry, solid 14K or higher nickel-free white or yellow gold is an
+    approved material.
+  • Children's jewelry: every component no more than 0.01% (100 ppm) lead (inaccessible parts
+    excluded); coatings no more than 0.009% (90 ppm); cadmium over 0.03% (300 ppm) in any
+    component prohibited; coatings over 0.0075% (75 ppm) soluble cadmium prohibited.
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 1: Platform, Fees, Policies and Jewelry Compliance      Page 18
+  • Risk lives in non-gold components: solder, findings, chains, enamel, cord, and especially
+    white-gold alloys containing nickel (see gaps).
+
+ 6.4 CPSIA and children's jewelry
+ [S62: compliancegate.com, (third party), last modified Sep 3, 2025]
+  • Children's products are for ages 12 and under; jewelry is judged on whether it is marketed,
+    sized or themed for children.
+  • Requirements: Children's Product Certificate based on tests from a CPSC-accepted lab,
+    permanent tracking label on product and packaging, total lead 100 ppm, paint/coating lead
+    90 ppm, small-parts rules (16 CFR 1501), ASTM F2923 recommended.
+  • State add-ons: New York 0.004% lead in components with a mandatory warning; Connecticut and
+    Maryland cadmium 0.0075%; Illinois 75 ppm cadmium in coatings.
+  • Practical rule: do not market solid gold pieces as "for kids," "baby," "girls" or "first birthday"
+    unless you are ready to certify; describe them as heirloom gifts for adults or keepsakes "to be
+    given later."
+  • Etsy lists children's products as a regulated category and bans items with choking or
+    strangulation hazards and loose high-powered magnets small enough for the small-parts cylinder
+    (relevant to magnetic clasps). [S63: etsy.com, last updated Oct 6, 2026]
+
+
+ 7. Etsy prohibited items and intellectual property for jewelry
+  • Prohibited Items policy (updated Oct 6, 2026; Section 2 changed Aug 11, 2026): bans
+    unauthorized or counterfeit goods; ivory including fossil/mammoth ivory; endangered species
+    items; natural animal fur (mink, fox, rabbit, badger, coyote, raccoon dog) regardless of age,
+    removing the vintage exemption; recalled items; items with choking/strangulation hazards; loose
+    high-powered magnets. Feathers follow the Migratory Bird Treaty Act. [S63: etsy.com, Oct 6,
+    2026; S10: growtsy.com, (third party), 2026]
+  • IP takedowns: rights owners report via the Etsy Reporting Portal; Etsy removes compliant
+    reports and may share the reporter's name and email with you; DMCA counter notices
+    accepted only for US copyright reports, with restoration 10 business days after processing
+    unless the owner sues; trademark removals have no counter-notice route, only a formal
+    withdrawal by the rights owner; repeat infringement can terminate selling privileges and extend
+    to associated accounts. [S64: etsy.com, last updated Jun 15, 2023, see section 11]
+  • Brand terms ("Cartier style," "Tiffany setting," "Pandora compatible," "Van Cleef
+    inspired"): Etsy's policy pages read for this research do not give a safe-harbour rule for "style,"
+    "inspired" or "compatible" wording. The Prohibited Items policy bans counterfeit goods and the IP
+    policy lets brand owners remove listings that use their marks. Treat any third-party brand name
+    in titles, tags, descriptions or photos as a takedown risk. Note that "Tiffany setting" is used in the
+    trade to describe a six-prong solitaire, but the word Tiffany is still a registered mark that the
+    owner enforces. Use generic terms: "six-prong solitaire," "love bracelet" becomes "screw-motif
+    bangle," "clover" becomes "quatrefoil." [S64: etsy.com, risk guidance based on and [S63:
+    etsy.com]; no Etsy page specific to these terms was found]
+
+
+ 8. TACTICS (concrete actions)
+  1. Fee audit per order: build a spreadsheet using the section 1.13 and 1.14 formulas. For this US
+    shop, base cost is 6.5% + 3% of the item price, plus $0.25 per order, plus $0.20 renewal,
+    plus 3% of any sales tax: about 9.5% + $0.45 before ads. No ROF, no currency conversion.
+
+
+Etsy Fine Jewelry Master Course | Module 1: Platform, Fees, Policies and Jewelry Compliance         Page 19
+     Price so margin survives a worst case of 15% Offsite Ads (capped at $100).
+  2. Keep listings and the payment account in USD. That keeps currency conversion at zero.
+    Never connect a non-USD account to the US shop. [fees page Oct 5, 2026; Etsy Payments policy
+    Jul 31, 2026]
+  3. Keep Offsite Ads on for high-ticket listings (the $100 cap makes it 5% or less on a $2,000+
+    ring, and proportionally cheaper above about $667 at 15%). If most orders are under about $300
+    and margins are thin, opt out while under $10k. Remember the 12% lifetime lock once you cross
+    $10k.
+  4. Ship with Etsy labels from the US workshop: Etsy labels mark the order shipped and satisfy
+    tracking for Purchase Protection; add Shipsurance ($0.80 per $100, to $5,000) and pack the
+    branded box inside a plain outer mailer so the insurance is not voided. File any insurance claim
+    before cancelling an order. Remove any leftover "duties prepaid" wording or tariff pricing from
+    listings; it does not apply to domestic orders.
+  5. Insure every shipment over $250 and use signature confirmation as a house rule (judgment,
+    not a platform rule: signature on orders over $250, Adult Signature on $1,000+). Purchase
+    Protection stops at $250, and carrier or insurer coverage must be claimed first anyway.
+  6. Set realistic processing times for made-to-order (for example 5 to 7 business days making
+    time, as the workshop actually delivers) and an accurate estimated delivery date. Late shipping
+    hurts Customer Service Standards, Star Seller and Purchase Protection eligibility all at once.
+    Never agree to a new ship date only in Messages; update the order's ship-by date in Etsy.
+  7. 48-hour Help with Order discipline from Türkiye: enable app notifications and set a
+    vacation/auto-reply. A third-party source says acknowledging auto-replies can count. Aim for 24
+    hours for Star Seller. Use the overlap of a Türkiye workday with US mornings, and plan cover for
+    Turkish and US public holidays.
+  8. Disclose production correctly: add the US workshop as a production partner (descriptive title
+    allowed, e.g. "Fine jewelry casting studio," with its US city and state). Describe your role (design,
+    CAD, QC direction, stone sourcing, final approval) and that you run the shop from Türkiye in the
+    About section. Never use a white-label/OEM catalogue product.
+  9. Ship to the Etsy order address only. Address changes requested in Messages may signal
+    fraud and break Purchase Protection condition D. Brief the workshop on this rule in writing.
+  10. Photos from the real piece: the workshop photographs each finished piece (or sends it to
+    you for photography) so photos are the seller's own. For personalized rings, the first image must
+    show a finished engraved piece, not a blank. Since 22 Oct 2026, every listing also needs at least
+    one unedited photo of the real item on a real background. If you use renders, label them and
+    keep real photos first.
+  11. AI disclosure: if concepts came from AI tools, add a line in the description such as "Design
+    concept developed with AI-assisted tools; final design and CAD by our team, made by our US
+    production partner."
+  12. FTC-proof listing copy template: "Solid 14K Yellow Gold (585)," "18K White Gold, rhodium
+    plated," "Laboratory-grown diamond, 0.50 ct, IGI certified," "Natural sapphire, heat treated."
+    Never write "gold ring" alone, "faux diamond" or "lab diamond" in a way that drops
+    "grown/created," and never let a hashtag or title say "diamond" for a lab stone without the
+    qualifier right before it.
+  13. Stamping compliance: file a USPTO trademark application for the maker's mark (e.g. "EON"
+    logo) and have the US workshop stamp karat plus that mark (or agree in writing that the
+    workshop's registered mark is used). Request assay or XRF reports per batch to prove you are
+
+
+
+Etsy Fine Jewelry Master Course | Module 1: Platform, Fees, Policies and Jewelry Compliance         Page 20
+     within the 3 or 7 parts-per-thousand tolerance.
+  14. White gold and nickel: ask the US workshop for alloy composition. Offer palladium white gold
+    or state "contains nickel" where it applies (see gaps). This prevents not-as-described cases from
+    allergic buyers.
+  15. Children's positioning: avoid kid-targeted titles and tags for gold pieces unless you will
+    produce a Children's Product Certificate and tracking labels.
+  16. Trademark hygiene sweep: search your shop for Cartier, Tiffany, Pandora, Van Cleef,
+    Bulgari, Hermès, Chanel, "dupe," "inspired" and remove them from titles, tags, descriptions and
+    alt text.
+  17. Discount honesty: keep a full price that actually sells for a period before running a sale. Use
+    interested-shopper offers and promo-code caps (June 2026 tools) rather than permanent fake
+    strikethroughs. [Jan 12, 2026 handbook]
+  18. Reserve readiness for a new shop: upload tracking promptly (reserves release when in
+    transit), keep cash for 14-day new-seller deposit timing, avoid sudden volume spikes, and
+    complete tax and bank verification early. Use Instant Transfers (1%, max $1.00) when cash is
+    needed for gold purchases.
+  19. Tax setup: enter a valid EIN (or SSN/ITIN) before $500 in sales to avoid suspension; keep ID,
+    taxpayer and bank names identical; do not add sales tax to listing prices; book a US CPA on
+    home-state sales tax registration, off-Etsy sales tax, effective connected income and the annual
+    Form 5472 plus pro forma 1120 for a foreign-owned single-member LLC ($25,000 penalty for
+    missing it).
+  20. Account security for remote management: two-factor authentication; one consistent
+    device and connection; no VPN hopping; give the workshop its own team login through Etsy's
+    shared access feature, never your password.
+  21. Second shop planning: opening Artifact Studio Jewelry as a separate shop triggers a new
+    set-up fee and ID check. Each shop must have its own policies, About section and
+    production-partner records, and must not duplicate listings (duplicate shops and manipulation
+    are suspension triggers).
+  22. Shop Policies complete: returns, exchanges and custom-order terms (for example
+    "Personalized items are final sale except for defects") are explicitly required for Purchase
+    Protection eligibility. Returns go to the US workshop address.
+  23. Use March to October 2026 tools: custom options that charge for engraving, third variation
+    (metal / size / stone), second video, ad groups, Marketplace Insights saved searches, shared
+    team access.
+
+
+ 9. COMMON MISTAKES
+  1. Quoting fees from old blog posts or from a non-US shop setup. This US shop pays 3% + $0.25
+    processing, no Regulatory Operating Fee and no currency conversion; formulas carried over from
+    a non-US setup (higher processing rate, ROF or 2.5% conversion) overstate fees.
+  2. Leaving DDP, tariff or "duties prepaid" wording in listings and FAQs. It does not apply to
+    domestic US orders and confuses US buyers.
+  3. Believing Purchase Protection covers a $1,200 ring. It pays at most $250, and only one damage
+    claim per calendar year.
+  4. Shipping to an address the buyer sends in Messages instead of the Etsy order address. That
+    breaks Purchase Protection eligibility.
+  5. Shipping in branded outer packaging, which can void Shipsurance coverage.
+
+
+Etsy Fine Jewelry Master Course | Module 1: Platform, Fees, Policies and Jewelry Compliance        Page 21
+  6. Writing "gold," "white gold" (without rhodium disclosure), "lab diamond," "faux diamond" or
+    "#diamond" on lab stones. These violate FTC Guides §§23.3, 23.7, 23.25.
+  7. Stamping "14K" without a registered or applied-for US trademark (15 U.S.C. §297).
+  8. Listing workshop-made pieces as "Made by a seller" without production-partner disclosure,
+    hiding that the owner works from Türkiye in the About section, or buying finished catalogue rings
+    from a wholesaler (OEM/ODM is reselling and can lead to suspension).
+  9. Using CAD renders or AI images as the first or only photo for a made-to-order item, or having no
+    unedited real photo in a listing after 22 Oct 2026.
+  10. Letting Help with Order messages sit over 48 hours over a weekend, a Turkish public holiday or
+    a US holiday.
+  11. Listing processing times that are too short for made-to-order casting, which hurts on-time
+    shipping (80% minimum, 95% for Star Seller).
+  12. Agreeing to new delivery dates only in Messages. Etsy ignores informal agreements for
+    Purchase Protection.
+  13. Using brand names ("Cartier love style," "Tiffany setting," "Pandora compatible") in titles or
+    tags. Trademark takedowns have no counter-notice route, and repeat notices can end the shop.
+  14. Running permanent "50% off" strikethroughs. Etsy's January 2026 guidance calls this
+    deceptive.
+  15. Crossing $10k in trailing sales without noticing that Offsite Ads becomes mandatory at 12% for
+    life.
+  16. Marketing gold jewelry to children (baby rings, "for girls") without CPSIA certification.
+  17. Taking orders or payments off Etsy (WhatsApp, bank transfer, QR code). This is now covered by
+    its own Off-Platform Transactions policy and is "strictly prohibited."
+  18. Sharing the owner login with the workshop, or logging in through changing VPN locations,
+    instead of using team access and one consistent setup.
+  19. Missing the Form 5472 plus pro forma 1120 filing for a foreign-owned US LLC ($25,000 penalty),
+    or running past $500 in sales without a valid taxpayer ID on Etsy.
+  20. Importing Turkish-made components "just this once" without budgeting 5.5% duty plus 12.5%
+    Section 301 on the import value.
+
+
+ 10. Platform signature and older-rule notes (context)
+  • The current Purchase Protection documents do not mention signature confirmation at any dollar
+    value (section 4.4). Carrier and insurer signature rules still matter: FedEx declared value of $500
+    or more triggers automatic Direct Signature Required [S65: fedex.com, no date shown,
+    read 2026-10-22], and Shipsurance excludes a claim if a required signature service was not used
+    [S29: shipsurance.com, revisions listed to 10/2024, read 2026-10-22].
+
+
+ 11. UNVERIFIED (pre-2025) facts used for context
+ These come only from sources dated before 2025 or from pages whose last-updated stamp predates
+ 2025. Re-check them before teaching them as current.
+  • Set-up fee origin: introduced with ID checks (Persona) on Feb 21, 2024 as a one-time $15,
+    initially only for some new shops; Etsy also announced longer payment schedules for new shops.
+    [S66: etsy.com, Feb 21, 2024]. In June to July 2024 the policy dropped the $15 figure for a
+    variable amount; some sellers reported about $28.50 to $30. [S67: valueaddedresource.net, Jul
+    23, 2024]
+
+
+Etsy Fine Jewelry Master Course | Module 1: Platform, Fees, Policies and Jewelry Compliance        Page 22
+  • Share & Save terms (4%) carry a "last updated Feb 20, 2024" stamp. The program is not
+    mentioned on the Oct 2026 fees page. [S6: etsy.com, Feb 20, 2024]
+  • IP Policy text last updated Jun 15, 2023 (effective Jul 24, 2023). [S64: etsy.com, Jun 15, 2023]
+  • Trademark Policy effective Dec 1, 2022. [Etsy legal search listing, read Oct 2026]
+  • Etsy Insider first announced Jul 31, 2024 as a closed US beta; Etsy said it "comes at no cost to
+    the Etsy seller community." [S68: etsy.com, Jul 31, 2024]
+  • Gift Mode launched in early 2024 with a Super Bowl ad. [S53: valueaddedresource.net,
+    mentioned in , Apr 2025, describing a 2024 event]
+  • Old Etsy Seller Protection signature rule: the older rule requiring signature confirmation on
+    orders of $250+ is UNVERIFIED (pre-2025); a 2022 report says Etsy refunded a signed-for $580
+    order anyway. [S69: valueaddedresource.net, 2022-12-30]
+  • Shipsurance Etsy terms list revisions only up to 10/2024, though the page was live on
+    2026-10-22. [S29: shipsurance.com, read 2026-10-22]
+  • US search shipping-price factor: Etsy's priority for US listings with shipping under $6 comes
+    from a 2024 rule; free shipping satisfies it, but its current weight is unverified. [course correction
+    file 09, 2026-10-22]
+  • FTC warning letters on lab-created diamonds: 8 letters, Apr 2, 2019. They covered
+    "#diamonds" hashtags without a nearby lab-created disclosure, disclosures buried in links or
+    FAQs, inconsistent "cultured" vs "lab grown" wording, and unqualified "eco-friendly/sustainable"
+    claims. [S70: jckonline.com, Apr 2, 2019]
+  • FTC Jewelry Guides last revised Jul 24, 2018 (Federal Register Aug 16, 2018). The FTC jewelry
+    industry page lists no 2025 or 2026 jewelry action on its first page; the latest is a Made in USA
+    case (Chaucer/Bates, Nov 20, 2024). [S71: ftc.gov, read Oct 2026]
+  • California §25214.2 became operative Jun 1, 2020 (law still in force; the source is a law
+    database page, not a 2025 publication).
+
+
+ 12. Gaps I could not verify (2025 to 2026 primary source not
+ found)
+  • Exact current set-up fee amount for US shops (Etsy shows it only during onboarding).
+  • 2026 federal 1099-K threshold: not stated by Etsy or the IRS by year; confirm in January
+    2027.
+  • Sales tax registration and filing duties in the shop's home state and on off-Etsy sales: CPA
+    question. Which states charge sales tax on Etsy fees, and at what rate, is not listed by Etsy.
+  • Tax treatment of a non-resident owner of a US LLC (effectively connected income,
+    owner-level returns): CPA question. W-8BEN applicability for a US-entity shop unclear.
+  • Logging in from abroad or via VPN: no Etsy primary source on account risk.
+  • Purchase Protection over $250: two Etsy help-center versions conflict; the policy (effective 9
+    Jul 2026) and the 7 Apr 2026 Handbook are treated as authoritative. No 2025 to 2026 primary
+    source confirms the historic signature-over-$250 rule was formally retired; current documents
+    simply do not include it.
+  • Offsite Ads fee base (item plus shipping vs full order total) is worded inconsistently on Etsy's
+    help page.
+  • Section 301 annex: whether HTS 7113 appears in any Section 301 annex exemption; exact
+    dutiable value for B2B imports (assists, freight) is a customs broker question.
+
+
+
+Etsy Fine Jewelry Master Course | Module 1: Platform, Fees, Policies and Jewelry Compliance          Page 23
+  • Star Seller minimum volume ($300 / 5 orders) and the 90-day rule come from a
+    third-party 2026 article; the official Star Seller Help page would not load.
+  • "Made by seller" search filter or badge: no 2025 or 2026 Etsy source found describing a
+    buyer-facing "Made by" filter. The Creativity Standards categories exist, and a "Ships from" filter
+    was added in Sep 2026.
+  • "Etsy Picks," "Etsy Collections" as a seller program, and an "Etsy Creator" program: no
+    2025 or 2026 primary source found. An Etsy Affiliates and Creators page exists
+    (etsy.com/affiliates), but its current terms were not reviewed.
+  • Offsite Ads channel policy page
+    (etsy.com/legal/policy/etsy-offsite-ads-channels/1007364582332) not read. Rates come from the
+    Oct 2026 fees page.
+  • 22 Oct 2026 unedited-photo rule: effective date and exceptions list not yet published in
+    detail.
+  • California Prop 65 warning requirements for jewelry (the separate Prop 65 safe-harbour
+    warning text and the lead/cadmium settlement limits): not verified. Only the Metal-Containing
+    Jewelry Law (§25214.2) was read.
+  • Nickel: no US federal nickel-release limit for jewelry was found. Only California's piercing-jewelry
+    approved-materials rule (nickel-free 14K+) was verified.
+  • "Conflict-free" claims: not in FTC Part 23. No 2025 or 2026 FTC guidance was found. Treat
+    them as needing substantiation under §23.1 and FTC Act Section 5.
+  • CPSC exemption for precious metals (karat gold) from children's lead testing (16 CFR
+    1500.91 determinations): not verified with a 2025 or 2026 source.
+  • Etsy wording specific to "style / inspired / compatible" brand terms: not found in any
+    current Etsy policy page.
+  • Note on searching: the shared web-search budget ran out near the end of the original
+    research, so the last few items above (off-platform policy text, Prop 65, nickel) could not be
+    searched further.
+
+
+ Module 1 sources
+ Numbered sources cited in this module as [S#]. All accessed 22 October 2026.
+ S1. https://www.etsy.com/legal/fees
+ S2. https://www.etsy.com/legal/etsy-payments
+ S3. https://iscompliant.app/Blog/etsy-regulatory-fee-2026
+ S4. https://help.etsy.com/hc/articles/360000338367
+ S5. https://help.etsy.com/hc/articles/360033701174
+ S6. https://www.etsy.com/legal/policy/etsys-share-save-terms-program-terms/1162874007996
+ S7. https://help.etsy.com/hc/en-us/articles/360000336887-USPS-Shipping-Labels-on-Etsy
+ S8. https://www.valueaddedresource.net/etsy-payments-policy-update-december-2025/
+ S9. https://www.etsy.com/legal/fees/
+ S10. https://www.growtsy.com/etsy-changes
+ S11. https://www.etsy.com/legal/etsy-payments/
+ S12. https://help.etsy.com/hc/articles/360046998234
+ S13. https://help.etsy.com/hc/en-us/articles/115015747228-How-to-Manage-Your-Payment-Account
+ S14. https://help.etsy.com/hc/en-us/articles/360001980067-How-to-Verify-Your-Seller-Information-for-Etsy-Payments
+ S15. https://www.valueaddedresource.net/etsy-ups-regulatory-operating-fees/
+ S16. https://community.etsy.com/forum/announcements-290/topic/regulatory-operating-fee-updates-for-some-markets-18193
+ 0/
+ S17. https://help.etsy.com/hc/en-us/articles/10603291042967-Newly-Crafted-Etsy-Updates-for-Your-Shop
+ S18. https://www.marketbeat.com/instant-alerts/etsy-q2-earnings-call-highlights-2026-08-08/
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 1: Platform, Fees, Policies and Jewelry Compliance                     Page 24
+ S19. https://craftybase.com/blog/the-complete-guide-to-etsy-fees
+ S20. https://investors.etsy.com/sec-filings/all-sec-filings/content/0001370637-26-000019/etsy-20251231.htm
+ S21. https://help.etsy.com/hc/articles/360000343968
+ S22. https://irs.gov/newsroom/irs-issues-faqs-on-form-1099-k-threshold-under-the-one-big-beautiful-bill-dollar-limit-reverts-to-
+ 20000
+ S23. https://help.etsy.com/hc/articles/360000336447
+ S24. https://www.irs.gov/instructions/i5472
+ S25. https://help.etsy.com/hc/articles/360000337447
+ S26. https://help.etsy.com/hc/en-gb/articles/18309523715735-UPS-Postage-Labels-on-Etsy
+ S27. https://www.etsy.com/legal/shipping/
+ S28. https://help.etsy.com/hc/en-us/articles/360001988847-Insurance-and-Claims-for-Shipping-Labels
+ S29. https://www.shipsurance.com/etsy/terms
+ S30. https://www.etsy.com/legal/sellers/
+ S31. https://www.etsy.com/legal/policy/purchase-protection-program-for-sellers/34509585385
+ S32. https://hts.usitc.gov/reststop/search?keyword=7113.19.50
+ S33. https://taxnews.ey.com/news/2026-1607-ustr-finalizes-section-301-forced-labor-tariffs-on-60-economies-additional-tariffs-
+ of-10-percent-or-125-percent-take-effect-24-july-2026
+ S34. https://kpmg.com/us/en/taxnewsflash/news/2025/08/us-cbp-implements-eo-suspending-duty-free-de-minimis-treatment.h
+ tml
+ S35. https://www.etsy.com/legal/creativity/
+ S36. https://www.etsy.com/legal/creativity
+ S37. https://www.etsy.com/help/article/6128
+ S38. https://help.etsy.com/hc/articles/360000336547
+ S39. https://help.etsy.com/hc/en-us/articles/22481159004567-How-to-Verify-Your-Identity-on-Etsy
+ S40. https://www.etsy.com/news/newly-crafted-how-weare-investing-in-seller-success-fall-2026
+ S41. https://community.etsy.com/t5/Technical-Issues/Am-i-allowed-to-log-in-from-Egypt/m-p/143952263
+ S42. https://help.etsy.com/hc/en-us/articles/360036207794-What-are-Etsy-s-Customer-Service-Standards
+ S43. https://help.etsy.com/hc/articles/29654393638679
+ S44. https://listingview.io/blogs/how-to-become-an-etsy-star-seller-in-2026
+ S45. https://www.etsy.com/legal/policy/cases-policy/243306189901
+ S46. https://help.etsy.com/hc/articles/360016126873
+ S47. https://www.etsy.com/seller-handbook/article/1085799204521
+ S48. https://help.etsy.com/hc/articles/5850122619287
+ S49. https://help.etsy.com/hc/en-us/articles/5850122619287-What-is-Etsy-s-Purchase-Protection-for-Sellers
+ S50. https://my-shop.co/blog/etsy-purchase-protection-2026-eligibility/
+ S51. https://novadata.io/resources/news/etsy-purchase-protection-overhaul-april-2026
+ S52. https://investors.etsy.com/news-events/press-releases/detail/212/
+ S53. https://www.valueaddedresource.net/etsy-algotorial-curation-ai-product-discovery/
+ S54. https://www.valueaddedresource.net/etsy-tweaks-insider-buyer-loyalty-program/
+ S55. https://www.etsy.com/legal/policy/etsy-insider-closed-beta-policy-for/1300971077676
+ S56. https://www.etsy.com/seller-handbook/article/1450964704111
+ S57. https://www.ecfr.gov/current/title-16/chapter-I/subchapter-B/part-23
+ S58. https://www.law.cornell.edu/uscode/text/15/295
+ S59. https://www.law.cornell.edu/uscode/text/15/297
+ S60. https://cms.mjsa.org/publications/compliance-guides/marking-stamping-regulations
+ S61. https://california.public.law/codes/health_and_safety_code_section_25214.2
+ S62. https://compliancegate.com/children-jewelry-regulations-united-states
+ S63. https://www.etsy.com/legal/prohibited/
+ S64. https://www.etsy.com/legal/ip/
+ S65. https://www.fedex.com/en-us/shipping/declared-value.html
+ S66. https://www.etsy.com/seller-handbook/article/1241780194948
+ S67. https://www.valueaddedresource.net/etsy-variable-shop-setup-fee/
+ S68. https://www.etsy.com/news/meet-etsy-insider-etsys-new-buyer-membership-beta-program
+ S69. https://valueaddedresource.net/etsy-automatically-refunding-claims-over-250
+ S70. https://www.jckonline.com/editorial-article/ftc-lab-grown-diamonds/
+ S71. https://www.ftc.gov/industry/jewelry
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 1: Platform, Fees, Policies and Jewelry Compliance                               Page 25
+

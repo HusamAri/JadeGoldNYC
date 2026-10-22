@@ -1,0 +1,1025 @@
+ Module 2: Pricing, Unit Economics,
+ Budgeting and Cash Flow
+ Editor note (22 Oct 2026, US edition): the worksheet uses US fees (6.5% transaction, 3% + 0.25 USD
+ processing, no regulatory or currency conversion fee) and US insured domestic shipping. US bench
+ labor is a placeholder at 20% of metal value: replace it with your US workshop's real quote before
+ setting live prices, because every price in this module depends on it.
+
+ Module for: made-to-order solid 14K and 18K gold rings and fine jewelry, produced in the US by a US
+ workshop, sold on a US Etsy shop (US Etsy Payments account, USD listings, USD deposits to a US
+ bank) and shipped from inside the US to US buyers with free tracked shipping. The owner manages
+ the shop remotely from Türkiye. Margin is tracked per order in Amuletta; shop-level financial
+ visibility comes from Alura.
+ Research date: 2026-10-22. Rule followed: only sources published or confirmed in 2025 or 2026.
+ Anything older is flagged "UNVERIFIED (pre-2025)". All example calculations are labelled as
+ examples and show their formulas. Assumptions are labelled as assumptions. Scope corrections for
+ a US-based shop come from the course correction file (module 09), whose sources are cited inline.
+
+
+ 1. The 2026 operating environment in one page
+ Four facts define pricing in late 2026:
+  1. Gold is near historic highs and volatile. Spot was about $4,052/oz on 22 Oct 2026, or
+    $130.29/g for 24K, $97.72/g for 18K and $76.22/g for 14K [S1: 150currency.com, 2026-10-22].
+    Gold set an all-time high of $5,589.38 on 28 Jan 2026, fell to about $4,400 on 2 Feb 2026, and
+    was back above $5,200 on 23 Feb 2026 [S2: investingnews.com, 2026-02-25]. On 20 Oct 2026
+    Fortune put spot at $4,120, down 4.54% from $4,316 a year earlier [S3: fortune.com,
+    2026-10-20]. In practice that means a swing of more than $1,500/oz (about 37%) inside one year.
+  2. The Etsy fee stack for a US shop is lean: about 9.5% plus $0.45 per order before ads.
+    Transaction 6.5% plus US payment processing 3% + $0.25, plus the $0.20 listing renewal on
+    each sale. No Regulatory Operating Fee and no currency conversion fee apply to a US seller
+    listing in USD with a USD payment account [S4: etsy.com, last updated 2026-10-05; S5:
+    etsy.com, last updated 2026-07-31; S6: iscompliant.app, 2026-06-22].
+  3. Domestic shipping means no buyer-facing duty. Etsy's DDP rule, its tariff estimator and
+    US-specific duty pricing apply to shops shipping into the US from abroad, not to domestic US
+    shipments (module 09). Import duty matters only if the business imports components or finished
+    pieces (section 7).
+  4. Lab-grown diamond costs keep falling, but more slowly. Wholesale fell 26% in 2025, 14%
+    YoY in Q1 2026 and 13% YoY in Q2 2026 [S7: jckonline.com, 2026-08-10]. Stone cost now
+    matters far less than metal.
+ Taken together: metal plus US bench labor now make up most of the price, and Etsy's
+ percentage fees scale with gold, so a fixed 2x keystone on an old cost sheet is still the fastest
+ way to lose money in 2026.
+
+
+ 2. Cost inputs: what a gold ring actually costs
+ 2.1 Gold: spot to karat metal cost
+ Formula:
+
+
+Etsy Fine Jewelry Master Course | Module 1: Platform, Fees, Policies and Jewelry Compliance    Page 26
+  • Fine gold price per gram = spot per troy ounce / 31.1035
+  • 14K metal value per gram = fine price x 0.585
+  • 18K metal value per gram = fine price x 0.750
+ Check against published figures on 22 Oct 2026: $130.29 x 0.585 = $76.22/g (14K), and $130.29 x
+ 0.75 = $97.72/g (18K). Both match the source exactly [S1: 150currency.com, 2026-10-22].
+ Note: ask the US workshop how it prices metal (spot on the order date, spot on the casting date, or
+ spot plus a fabrication premium) and get it in writing. Price the metal on the date you pay the
+ workshop, not the day the buyer pays you, because those dates differ (see section 10). No 2025 or
+ 2026 source for typical US workshop metal premiums was retrieved; this is a gap.
+ Forward view (not a price to plan on): in June 2026 J.P. Morgan forecast $6,000/oz for end-2026 and
+ $6,300/oz for end-2027, both cut 5% from February. Its 2026 average forecast was cut from $5,708
+ to $5,243 [S8: jpmorgan.com, 2026-06-09]. Spot is currently well below that forecast. Treat
+ forecasts as scenario inputs, not as costs.
+
+ 2.2 Casting loss and finishing loss
+ There is no published 2025 or 2026 US workshop loss rate for cast rings in the sources found. The
+ best official 2025 benchmark comes from India's DGFT export norms, effective 1 Jan 2025: plain
+ jewelry allows 2.25% wastage when handcrafted and 0.45% when mechanized, and studded jewelry
+ allows 4.00% handcrafted and 2.80% mechanized [S9: taxguru.in, notice 2024-11-01, effective
+ 2025-01-01]. These are regulatory allowances, not workshop quotes.
+ Action: ask the US workshop to state its metal loss allowance in writing as a percentage of the
+ finished weight. The worksheet below uses a 5% metal loss allowance as a labelled
+ assumption. That is deliberately above the DGFT handcrafted studded norm, so it is a conservative
+ buffer.
+
+ 2.3 Labor (US bench labor)
+ No 2025 or 2026 published US bench labor rate card for casting, finishing and setting was retrieved.
+ This is a gap, and the owner has to replace the placeholder below with the US workshop's written
+ quote.
+ ASSUMPTION, REPLACE WITH YOUR US WORKSHOP QUOTE: the worksheet uses US bench
+ labor = 20% of metal value for a plain cast band. This number is a placeholder chosen only to
+ keep the worksheet runnable; it is not a sourced US rate. Real quotes are usually per piece or per
+ hour plus setting charges per stone, and they may be higher or lower than this placeholder. Once
+ you have the quote, enter labor as a fixed dollar amount per SKU in F.
+ Two principles hold regardless of the number:
+  • Negotiate labor per piece in USD, not as a percentage of gold value, so a gold rally does not
+    inflate labor automatically.
+  • Separate casting, finishing, setting, rhodium and engraving on the quote so each can be
+    re-costed when designs change.
+
+ 2.4 Stones
+  • Lab-grown diamonds (LGD): wholesale index down 96% since 2018. A 3 ct D VVS round sold
+    for $126/ct in Q1 2026, 30% less than in 2025 [S7: jckonline.com, 2026-08-10]. Another tracker
+    puts 1 ct D VVS wholesale at about $87/ct in Q3 2026, with 1 to 3 ct rounds up about 2% that
+    quarter. Average retail asking prices were $508/ct for 1 ct stones and $542/ct for 3 ct stones on
+    13 Oct 2026, with 1 ct retail down 23.4% over six months [S10: dracodiamond.com, 2026-10-13].
+
+
+Etsy Fine Jewelry Master Course | Module 2: Pricing, Unit Economics, Budgeting and Cash Flow    Page 27
+     Retailers still mark LGD up more than 80% over wholesale [JCK, 2026-08-10].
+  • Implication for pricing: do not anchor price on stone carat weight. Buyers increasingly know
+    that LGD is cheap. JCK quotes the view that "there is no resale value for lab-grown diamonds" and
+    the advice that retailers need proprietary designs to compete [JCK, 2026-08-10]. Price on design,
+    metal and craftsmanship.
+  • Moissanite: no credible 2025 or 2026 per-carat wholesale index was found. This is a gap. Use
+    supplier quotes.
+
+ 2.5 Other per-unit costs (all supplier quotes, no published benchmarks)
+ Rhodium plating (needed for white gold), engraving, polishing, packaging (box, pouch, plain outer
+ mailer), an authenticity or karat certificate card, and any quality stamp or appraisal the buyer
+ requests. Record each item as a line in Amuletta so per-order margin stays honest.
+
+ 2.6 Shipping and insurance (US domestic)
+ Etsy shipping labels (USPS, FedEx, UPS) are available to US-based sellers, and an Etsy label
+ automatically marks the order shipped and satisfies the tracking requirement for Purchase
+ Protection [S11: help.etsy.com, read 2026-10-22; S12: etsy.com, last updated 2026-10-13].
+  • Typical carrier rate, small padded ring box (USPS Notice 123, effective 4 Oct 2026):
+    Priority Mail 1 lb Commercial $9.44 (zone 1), $10.80 (zone 4), $16.07 (zone 8) [S13: pe.usps.com,
+    read 2026-10-22]. Etsy label prices may differ; check the label preview.
+  • Signature Confirmation: $4.15 online; Adult Signature Required $9.70 [S14: usps.com, read
+    2026-10-22].
+  • Insurance (Shipsurance via Etsy labels): $0.80 per $100 of value, plus $0.80 per additional
+    $100 or fraction, up to $5,000 per package. Packaging that "alludes to the contents" is excluded,
+    so ship the branded box inside a plain outer mailer [S15: help.etsy.com, read 2026-10-22; S16:
+    shipsurance.com, read 2026-10-22].
+  • House rule (judgment, not a platform rule): signature on every order over $250, Adult
+    Signature on $1,000+ (module 09).
+ There is no buyer-facing duty on domestic orders. Import duty on components is covered only in
+ section 7.
+
+
+ 3. Etsy fee stack for a US-based shop
+  Fee            Rate                                 Base                                     Source
+
+  Listing        $0.20 per listing; auto-renews at    per listing                              [S4: etsy.com, 2026-10-05]
+                 $0.20 every 4 months; a sale of
+                 a listing with remaining quantity
+                 also renews it at $0.20
+
+  Transaction    6.5%                                 item price plus shipping plus gift       [S4: etsy.com, 2026-10-05]
+                                                      wrap; not charged on sales tax
+                                                      for US sellers
+
+  Payment        3% + $0.25 per order                 gross order amount, including            [S5: etsy.com, 2026-07-31]
+  processing                                          shipping and sales tax
+  (US)
+
+  Regulatory     does not apply to US-based           n/a                                      [S6: iscompliant.app,
+  Operating      sellers                                                                       2026-06-22]; Etsy's fee page
+  Fee                                                                                          lists it only for "certain
+                                                                                               countries" [S4: etsy.com,
+                                                                                               2026-10-05]
+
+
+
+Etsy Fine Jewelry Master Course | Module 2: Pricing, Unit Economics, Budgeting and Cash Flow                           Page 28
+  Fee            Rate                                 Base                                     Source
+
+  Currency       none with USD listings and a         n/a                                      [S4: etsy.com, 2026-10-05]
+  conversion     USD payment account (2.5%
+                 applies only when the currencies
+                 differ)
+
+  Offsite Ads    15% if under $10,000 in sales        attributed orders                        [S4: etsy.com, 2026-10-05; S17:
+                 over the prior 365 days (opt-out                                              help.etsy.com, read 2026-10-22]
+                 allowed); 12% once $10,000 is
+                 reached (mandatory for the life
+                 of the shop); capped at $100
+                 per attributed order; 30-day
+                 attribution
+
+  Etsy Ads       cost per click, minimum budget       clicks                                   [S18: help.etsy.com, read
+                 $1.00 per day                                                                 2026-10-22]
+
+  Share &        refunds 4% of the Qualifying         qualifying orders                        [S19: etsy.com, last updated
+  Save           Transaction Total against                                                     2024-02-20, live current version]
+                 transaction fees when the buyer
+                 arrives through your own shared
+                 link
+
+  Shipping       carrier rate, no extra Etsy fee      per label                                [S11: help.etsy.com, read
+  labels                                                                                       2026-10-22]
+
+  Sales tax      since the 12 Dec 2025 Payments       fees                                     [S20: valueaddedresource.net,
+  on Etsy fees   Policy update, sales tax may be                                               2025-12-16]
+                 charged on some Etsy fees
+                 where applicable
+
+ What this means for gold:
+  • The base fee stack is about 9.5% plus $0.45 per order before ads: 6.5% + 3% of the item
+    price, plus $0.25 + $0.20 fixed, plus 3% on any sales tax the buyer pays. Worked example from
+    module 09: on a $400 ring with no tax, base fees are $38.45 (9.61%); with an illustrative 8% tax
+    they are $39.41 (9.85%) [S4: etsy.com, module 09, citing , 2026-10-05 and [S5: etsy.com],
+    2026-07-31]. Because the fees are percentages, they also apply to the gold portion of the price.
+    When gold rises 10%, Etsy's take rises with it.
+  • The Offsite Ads $100 cap works in your favour on high tickets. On a $1,500 ring, 15%
+    would be $225 but the fee stops at $100, an effective 6.7%. On a $500 piece the full 15% ($75)
+    applies. Fine jewelry over about $667 is the band where the cap starts to help at 15% (15% x
+    $667 = $100), and over about $834 at 12%.
+  • Shipping is not fee-free. Because transaction and processing fees include shipping, building
+    shipping into the item price costs the same in fees as charging it separately. The difference is in
+    search and conversion.
+
+
+ 4. Pricing methods for fine gold jewelry in 2026
+ 4.1 Cost-plus with metal pass-through (recommended core)
+ Split the cost into a metal component that floats with gold and a fixed component (labor, stones,
+ finishing, packaging, shipping). Mark up the fixed component at your design multiple, and pass the
+ metal through with a smaller uplift that still covers percentage fees on it. This is how gold-heavy
+ brands protect themselves when spot swings 30% or more.
+
+ 4.2 Keystone and multipliers: 2026 benchmarks
+
+
+
+Etsy Fine Jewelry Master Course | Module 2: Pricing, Unit Economics, Budgeting and Cash Flow                            Page 29
+ A 2026 DTC jewelry analysis gives these figures [S21: eightx.co, 2026, citing mid-June 2026 spot of
+ about $4,200/oz]:
+  • Keystone (2.0x) gives a 50% gross margin and "under-recovers for gold fine jewelry in 2026."
+  • Gold fine jewelry without stones: 3.5x to 4.0x (71% to 75% gross margin).
+  • Stone-set or gemstone fashion: 2.2x to 2.5x.
+  • DTC only: 3x to 5x, needed to fund customer acquisition.
+  • Entry price points have moved up: the old roughly $99 gold entry piece is largely gone, with
+    floors moving toward $200 to $500, and the mix is shifting toward 14K and 10K.
+ A 2026 handmade jewelry guide gives 2.5x to 4x as the typical direct-sale multiple [S22:
+ priceprofittools.com, 2026-09].
+ Warning for this business: applying 3.5x to 4x to the whole cost of a solid gold ring, metal
+ included, will price you out of Etsy search. The worked examples in section 6 show that about
+ 1.55x (lean, 15% net) to 2.06x (full marketing, 20% net) on fixed landed cost F is what the
+ margin targets actually require once fees are counted correctly. Anything above that is design
+ premium, and it has to come from the fixed component, not from marking up gold 4x. These
+ multiples depend on the placeholder US labor figure (section 2.3); recompute once you have the
+ real quote.
+
+ 4.3 Margin-aware formula (the one to use)
+ Same 2026 source: retail = (cost + ops) / (1 minus target gross margin), then multiplied by a
+ positioning factor of 1.0 to 1.2 (budget), 1.2 to 1.5 (mid), 1.5 to 2.0 (premium) or 2.0+
+ (luxury-adjacent). It recommends pricing to operating margin, not gross margin [S21: eightx.co,
+ 2026]. The Etsy version in section 6 extends this so that every percentage-of-price cost sits in the
+ denominator.
+
+ 4.4 Value-based pricing and anchoring
+  • Price on what buyers compare against: US mall jewelers and DTC brands for the same karat and
+    weight, not other Etsy sellers using plated metal.
+  • Anchor with the 18K variant. Show 14K as the default and 18K as the visible step up. The 18K
+    price makes 14K look reasonable.
+  • Truthfulness rule: a strikethrough "original" price has to be a price you actually charged for a
+    substantial period and sold at in reasonable quantities. Briefly inflating a price before a sale is
+    prohibited [S23: etsy.com, 2026-01-12]. Anchoring has to come from real tiers, not from fake
+    was-prices.
+
+ 4.5 Good, better, best
+ Use Etsy variations, which allow up to three since Sep 2026 via custom options [S24:
+ growingyourcraft.com, 2026-10-08]:
+  • Variation 1: Karat (14K yellow, 14K white, 14K rose, 18K yellow and so on), each with its own
+    price.
+  • Variation 2: Size (price-neutral up to a threshold, then a surcharge for large sizes that use more
+    metal).
+  • Variation 3: Width or stone option (plain, pavé, LGD solitaire).
+ Per-variation pricing lets you reprice one karat line without touching the listing's search history.
+ Listing URLs stay stable after first publication [growingyourcraft, 2026-10-08].
+
+
+
+Etsy Fine Jewelry Master Course | Module 2: Pricing, Unit Economics, Budgeting and Cash Flow        Page 30
+ 4.6 Dynamic pricing tied to gold
+ The 2026 guidance is to treat metal as a variable input and set a repricing trigger. One example
+ re-costs gold SKUs when spot moves more than 7% from the last costing, and says 5% to 10% is the
+ common range. It also advises repricing in small, regular steps rather than rare large jumps
+ [S21: eightx.co, 2026]. Another 2026 guide says to reprice when material costs rise more than
+ about 8% to 10% [S22: priceprofittools.com, 2026-09].
+ Recommended rule for this shop:
+  • Band rule: record the "costing spot" (for example $4,050/oz). Reprice every gold variation when
+    the 5-day average spot moves more than plus or minus 7% from it.
+  • Asymmetry: reprice upward promptly. Reprice downward more slowly (for example after 10
+    trading days below the band), and use the gap to fund promotions.
+  • Never cut a price just before a sale. Etsy treats price-history manipulation as a violation
+    (section 8).
+  • Order acceptance: made-to-order means you pay for gold days after the buyer pays you. Have
+    the US workshop buy or lock the metal within 24 to 48 hours of the order (see section 10).
+
+ 4.7 Psychological price points
+ Charm pricing ($49 instead of $50) is described as a small, low-effort lever, and pricing well below
+ peers can read as cheap rather than as a bargain [S22: priceprofittools.com, 2026-09]. For fine
+ jewelry above $500, round-ish prices ending in 5 ($595, $895, $1,195, $1,495) are the common
+ convention. That is an observation, not a sourced rule. Test it (section 12).
+
+
+ 5. Free shipping logic
+  • Etsy's US free shipping guarantee applies to US orders of $35 or more. Listings that qualify get
+    higher search visibility [S25: outfy.com, updated 2026-07-31]. Every solid gold item is above $35,
+    so every listing should show free shipping to the US.
+  • US domestic listings charging more than $6 for shipping may see reduced visibility. Etsy also
+    offered a bulk tool to move shipping cost into item price (October 2024, reconfirmed in 2026)
+    [S24: growingyourcraft.com, 2026-10-08]. As a US shop this rule now applies to you directly, and
+    free shipping satisfies it (the original rule dates from 2024 and is UNVERIFIED (pre-2025) for its
+    current search weight, per module 09).
+  • Build in: carrier label cost, signature service, Shipsurance insurance, and the Etsy fees on all of
+    these, since fees are charged on the total.
+  • Free shipping to US buyers combined with "Support makers near you" and ship-from filters (Sep
+    2026) means some buyers will filter by location [growingyourcraft, 2026-10-08]. A US ships-from
+    address now qualifies the shop for these filters, while listings must still disclose design or
+    production location truthfully (module 09).
+
+
+ 6. PRICING FORMULA WORKSHEET
+ 6.1 The master formula (net-margin target)
+ Let:
+  • F = fixed landed cost in USD: metal (including loss) + US bench labor + finishing + stones +
+    packaging + certificate + shipping label + signature + insurance rounding + per-order Etsy fixed
+    fees ($0.25 processing + $0.20 listing renewal) + an allocated remake or resize reserve + misc
+
+
+
+Etsy Fine Jewelry Master Course | Module 2: Pricing, Unit Economics, Budgeting and Cash Flow       Page 31
+  • v = the sum of all costs charged as a percentage of selling price: transaction (6.5%) + processing
+    (3%) + processing on sales tax (3% x assumed tax rate) + Shipsurance (0.8%) + blended Offsite
+    Ads share + Etsy Ads share + discount allowance + returns allowance
+  • m = target net contribution margin after all of the above
+ Then:
+ Price P = F / (1 minus v minus m)
+ Break-even price (m = 0): P_BE = F / (1 minus v)
+ Check: Net contribution = P x (1 minus v) minus F. Margin % = net contribution / P.
+ Notes:
+  • Sales tax assumption: Etsy collects and remits sales tax as marketplace facilitator, but the 3%
+    processing fee is charged on the gross including tax [S5: etsy.com, 2026-07-31]. The worksheet
+    uses an illustrative 8% buyer sales tax (assumption, not a sourced rate), so processing
+    on tax = 3% x 8% = 0.24% of price.
+  • Insurance: Shipsurance is $0.80 per $100 or fraction [Etsy insurance help page, read
+    2026-10-22]. Modelled as 0.8% of price in v plus $0.80 in F to cover the rounding up to the next
+    $100.
+  • Shipping label: the worksheet uses the worst-case USPS Priority Mail 1 lb zone 8 commercial
+    rate, $16.07, plus online Signature Confirmation $4.15. Orders of $1,000+ under the house rule
+    use Adult Signature ($9.70) instead; add $5.55 to F for those.
+  • The Offsite Ads $100 cap means the real percentage falls as price rises. The worksheet uses a
+    blended allowance, not 15% on every order.
+  • There is no import duty in v for US-made pieces from US-sourced metal. If components are
+    imported, add the duty on their import value to F (section 7), not to v.
+
+ 6.2 Inputs used (22 Oct 2026)
+  Input                                  Value                                  Basis
+
+  24K gold                               $130.29/g                              [150currency, 2026-10-22]
+
+  Metal loss allowance                   5%                                     assumption, see 2.2
+
+  US bench labor                         20% of metal value                     placeholder assumption, replace with
+                                                                                your US workshop quote, see 2.3
+
+  Finishing, polish, rhodium where       $5                                     assumption (supplier quote needed)
+  needed
+
+  Packaging (box, pouch, plain           $12                                    assumption
+  outer mailer, card)
+
+  Certificate or quality card            $3                                     assumption
+
+  USPS Priority Mail 1 lb, zone 8,       $16.07                                 [S13: pe.usps.com, read 2026-10-22];
+  commercial                                                                    worst-case zone, assumption that a ring
+                                                                                box ships at the 1 lb rate
+
+  Signature Confirmation (online)        $4.15                                  [S14: usps.com, read 2026-10-22]
+
+  Shipsurance rounding                   $0.80                                  [Etsy insurance help page, read
+                                                                                2026-10-22]
+
+  Remake or resize reserve               $10                                    assumption
+
+  Etsy per-order fixed fees              $0.45 ($0.25 processing + $0.20        [S5: etsy.com, 2026-07-31; S4: etsy.com,
+                                         listing renewal)                       2026-10-05]
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 2: Pricing, Unit Economics, Budgeting and Cash Flow                       Page 32
+  Input                                  Value                                  Basis
+
+  Misc.                                  $20                                    assumption; bank fees, small tools
+                                                                                allocation, sundries
+
+  Fixed non-metal, non-labor             $71.47                                 5 + 12 + 3 + 16.07 + 4.15 + 0.80 + 10 +
+  subtotal                                                                      0.45 + 20
+
+  Etsy percentage fees                   6.5% + 3% = 9.5%                       section 3
+
+  Processing on sales tax                0.24%                                  3% x assumed 8% tax
+
+  Shipsurance                            0.8%                                   $0.80 per $100
+
+  Base v (before ads, discounts,         10.54%                                 6.5 + 3 + 0.24 + 0.8
+  returns)
+
+ All worksheet arithmetic below was verified in Python on 22 Oct 2026.
+
+ 6.3 Example A: 3g 14K plain band (EXAMPLE CALCULATION)
+ Step 1, metal:
+  • Fine gold content = 3 g x 0.585 = 1.755 g
+  • Metal value = 1.755 x $130.29 = $228.66
+  • With 5% loss = 228.66 x 1.05 = $240.09
+ Step 2, US bench labor at 20% of metal (placeholder) = 240.09 x 0.20 = $48.02
+ Step 3, fixed landed cost F: F = 240.09 + 48.02 + 5 + 12 + 3 + 16.07 + 4.15 + 0.80 + 10 + 0.45 +
+ 20 = $359.58
+ Step 4a, "full marketing" scenario: combined Offsite Ads plus Etsy Ads allowance 8% of price,
+ discount allowance 10%, returns 3%, target net margin 20%. v = 0.1054 + 0.08 + 0.10 + 0.03 =
+ 0.3154 P = 359.58 / (1 minus 0.3154 minus 0.20) = 359.58 / 0.4846 = $742.01
+ Step 4b, "lean" scenario: ads blended 3%, discount allowance 5%, returns 2%, target net margin
+ 15%. v = 0.1054 + 0.03 + 0.05 + 0.02 = 0.2054 P = 359.58 / (1 minus 0.2054 minus 0.15) = 359.58
+ / 0.6446 = $557.83
+ Step 4c, lean break-even (m = 0): P_BE = 359.58 / (1 minus 0.2054) = 359.58 / 0.7946 = $452.53
+ Step 5, net margin at candidate market prices under lean v (net = P x 0.7946 minus 359.58):
+
+  List price                 Net contribution                          Net margin
+
+  $450                       minus $2.01                               minus 0.4% (breakeven)
+
+  $495                       $33.75                                    6.8%
+
+  $595                       $113.21                                   19.0%
+
+  $695                       $192.67                                   27.7%
+
+ Reading: a 3g 14K band under about $455 loses money once Etsy fees, insured signature shipping
+ and the lean allowances are counted. $557.83 is the lean 15% floor, so $595 is the practical
+ lean price point. $695 is a healthy price. Multiple on metal plus labor at $557.83 is 557.83 /
+ 288.11 = 1.94x; multiple on F is 1.55x.
+
+ 6.4 Example B: 4g 18K plain band (EXAMPLE CALCULATION)
+ Step 1: fine content = 4 x 0.75 = 3.0 g. Metal = 3.0 x 130.29 = $390.87. With 5% loss = 390.87 x
+ 1.05 = $410.41 Step 2: US bench labor 20% (placeholder) = 410.41 x 0.20 = $82.08 Step 3: F =
+ 410.41 + 82.08 + 71.47 = $563.96 Step 4a, full marketing (v = 0.3154, m = 0.20): P = 563.96 /
+
+
+
+Etsy Fine Jewelry Master Course | Module 2: Pricing, Unit Economics, Budgeting and Cash Flow                         Page 33
+ 0.4846 = $1,163.76 Step 4b, lean (v = 0.2054, m = 0.15): P = 563.96 / 0.6446 = $874.90 Step 4c,
+ lean break-even: P_BE = 563.96 / 0.7946 = $709.74
+ Step 5, lean scenario (net = P x 0.7946 minus 563.96):
+
+  List price                         Net contribution                                          Net margin
+
+  $695                               minus $11.71                                              minus 1.7%
+
+  $895                               $147.21                                                   16.4%
+
+  $995                               $226.67                                                   22.8%
+
+  $1,195                             $385.59                                                   32.3%
+
+ Reading: $895 is the practical lean price point for a 4g 18K band; $995 to $1,195 is
+ healthy. Note that the full-marketing price ($1,163.76) crosses $1,000, so under the house rule it
+ ships with Adult Signature: add $5.55 to F for that tier (F = $569.51, P = 569.51 / 0.4846 =
+ $1,175.22).
+
+ 6.5 Gold sensitivity (EXAMPLE CALCULATION)
+ Holding the lean v and m (denominator 0.6446) and moving gold plus or minus 10%:
+  • 14K band: metal plus metal-linked labor = $288.11, so a 10% move = $28.81. Delta P = 28.81 /
+    0.6446 = $44.70, which is 8.0% of $557.83.
+  • 18K band: metal plus labor = $492.49, so a 10% move = $49.25. Delta P = 49.25 / 0.6446 =
+    $76.40, which is 8.7% of $874.90.
+ Rule of thumb from these numbers: for a solid gold band, every 10% move in spot changes
+ the required price by roughly 8% to 9%, because metal plus metal-linked labor is about 80% to
+ 87% of F once the large DDP and international shipping lines are gone. That is why the 7% repricing
+ band in 4.6 is sensible. If your real US labor quote is a fixed dollar amount, sensitivity falls slightly.
+ Quick sensitivity formula: delta P = (delta metal cost x 1.2 if labor is tied to metal, or x 1.0 if labor is
+ fixed) / (1 minus v minus m).
+
+ 6.6 What the worksheet teaches
+  1. Metal is now the dominant line. With no duty and a 9.5% Etsy stack, gold plus labor is about
+    80% to 87% of F, so the gold repricing band is the main margin control.
+  2. The discount allowance has to sit inside v. If you plan to run 25% Cyber Specials, either the
+    list price already carries it or you will lose money on gold pieces (see section 8.4).
+  3. Labor tied to a percentage of metal inflates cost when gold rises. Negotiate US bench
+    labor per piece in USD, not as a percentage of gold value.
+  4. The placeholder labor line moves every result. Replace it with the US workshop quote
+    before setting live prices.
+  5. In Amuletta, set each product's cost template with metal grams and karat as variables pulled
+    from a daily gold price, so per-order margin reflects the gold price on the purchase date.
+
+
+ 7. If you import components or finished pieces
+ Only relevant if the business imports components or finished pieces (for example stock rings from a
+ Türkiye workshop) into the US for the US workshop to finish and ship. Pieces made in the US from
+ US-sourced metal pay no import duty (module 09).
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 2: Pricing, Unit Economics, Budgeting and Cash Flow                Page 34
+  • HTS 7113.19.50 (jewelry of gold, "other"): general duty 5.5%; rings are statistical suffix
+    7113.19.50.25 [S26: hts.usitc.gov, read 2026-10-22].
+  • Section 301 forced-labor tariff: Türkiye is in the 12.5% tier, effective 24 July 2026, stacking
+    on the MFN rate [S27: taxnews.ey.com, 2026-07-24; S28: ustariffrates.com, verified 2026-07-24].
+  • Combined: 5.5% + 12.5% = 18% of the import (customs) value, unless heading 7113
+    appears in an annex exemption (not confirmed either way).
+  • The duty base is the import value on the workshop invoice, not the Etsy retail price.
+    Example from module 09: 18% of a $300 workshop cost is $54, versus 18% of a $1,200 retail
+    price ($216) under the old DDP model. Add it to F as a fixed dollar line per SKU.
+  • De minimis duty-free treatment ($800 and under) has been suspended for all countries since 29
+    Aug 2025, so every import pays duty [S29: kpmg.com, 2025-08-28].
+  • Exact dutiable value (assists, freight) is a customs broker question. Listings for imported pieces
+    must keep the true country of origin (module 09).
+
+
+ 8. Discount architecture
+ 8.1 Etsy's discount tools (2026)
+  • Promo codes: percentage-off codes have to be whole numbers from 5% to 75%. Fixed-amount
+    and free standard shipping codes also exist. Codes can have a minimum order and, since June
+    2026, a usage limit [S30: help.etsy.com, 2026; growingyourcraft, 2026-10-08].
+  • Sales: percentage off or free standard shipping. Listing-specific sales cannot have a minimum
+    order. Shop-wide sales with a minimum cannot exclude items [Etsy Help 115014260108, 2026].
+  • Bundles: up to 3 listings, and they do not stack with other promotions [Etsy Help
+    115014260108, 2026].
+  • Targeted offers: abandoned cart (sent after an item has been in a cart for more than 2 hours,
+    at most once every two days, up to 12 discounts per email, offer expires after 60 days), favorited
+    items (same cadence and expiry), and post-purchase thank-you (coupon valid for 1 year).
+    Shoppers who opted out of marketing emails do not receive them [Etsy Help 115014260108,
+    2026]. Note that the cart trigger is now 2 hours. Older help text said 24 hours [S31:
+    valueaddedresource.net, UNVERIFIED (pre-2025): , 2023-05-08].
+  • Interested shopper offers (June 2026): sent automatically to shoppers Etsy judges interested
+    based on view frequency and recency. Options are 5% to 70% in 5-point steps, a fixed amount, or
+    free shipping, with an optional minimum. Each buyer receives at most one every 30 days, and
+    offers expire 7 days after sending. Sellers do not choose recipients [S32: mikellane.com,
+    2026-09-16; growingyourcraft, 2026-10-08].
+  • Stacking: without an active free shipping promotion, a shopper cannot apply more than one
+    discount to an item [Etsy Help 115014260108, 2026].
+  • Fees on discounted orders: the 6.5% transaction fee applies to the displayed price, including
+    the sale price [S33: litcommerce.com, 2026-10-20].
+
+ 8.2 Truthful discount rules (Etsy Seller Handbook, 12 Jan 2026)
+ From "Understanding Truthful Advertising and Discount Practices" [S23: etsy.com, 2026-01-12]:
+  • A sale has to be a temporary reduction from a genuine regular price that you actually sold at for
+    a reasonable period.
+  • If an item is discounted most of the time, the discounted price may legally be treated as its true
+    price.
+
+
+Etsy Fine Jewelry Master Course | Module 2: Pricing, Unit Economics, Budgeting and Cash Flow      Page 35
+  • A strikethrough price has to be the usual price, offered for a substantial period and sold in
+    reasonable quantities. No brief inflation before a discount.
+  • "Up to X%" claims require a meaningful number of items to actually be at or near X%.
+  • Do not manipulate price history, discounts or sale timing to trigger Etsy signals such as
+    countdown timers, low-inventory flags or strikethrough displays.
+  • Do not call gold-plated items "gold jewelry". This is a positioning advantage for solid gold sellers,
+    so say "solid 14K gold" explicitly.
+
+ 8.3 Why permanent fake sales hurt
+  1. Legal and policy risk (above). The "true price" becomes the sale price.
+  2. Etsy may withhold the strikethrough or sale signals it treats as manipulated.
+  3. On gold, a permanent 30% off means list price has to carry a 30% hidden uplift, and that uplift is
+    also charged percentage fees. It is cost-inefficient.
+  4. It trains repeat buyers to wait for codes.
+
+ 8.4 Etsy sales events 2026
+  • Cyber Specials 2026: 23 Nov to 1 Dec 2026. Opt in by 27 Oct 2026 to be considered for
+    Etsy marketing. Minimum 25% off to be eligible for features. Joining does not guarantee a
+    feature, but the shop can still appear in related search results. You can join late, before the event
+    ends. To change the discount and stay eligible, end the sale and create a new one. Raising a
+    price temporarily to imitate a sale is prohibited [S34: help.etsy.com, 2026; S35: puppyip.com,
+    2026-10-11]. One 2025-published guide gives 24 Nov to 2 Dec instead [S36: gelato.com,
+    2025-11-12]. Trust the Etsy Help page.
+  • Etsy notifies sellers of upcoming events in Shop Manager [Etsy Help 360039531534, 2026]. No
+    official full 2026 Etsy events calendar (Valentine's, Mother's Day and so on) was retrieved. This is
+    a gap. Check Shop Manager under Marketing, then Sales and discounts, then "Join Etsy's next
+    sales event".
+  • This week's decision (deadline 27 Oct 2026): a 25% event discount requires list price to
+    already carry it. During the event, v drops the 5% discount allowance because the discount is
+    explicit, so v = 0.2054 minus 0.05 = 0.1554 and net = sale price x 0.8446 minus F (EXAMPLE
+    CALCULATION, verified in Python):
+     • Example A (14K, F = $359.58): list $795 minus 25% = $596.25. Net = 596.25 x 0.8446 minus
+       359.58 = $144.01 (24.2%). At $595 list, 25% off ($446.25) nets only $17.32 (3.9%). At $495
+       list, 25% off ($371.25) loses $46.02.
+     • Example B (18K, F = $563.96): list $1,195 minus 25% = $896.25. Net = 896.25 x 0.8446
+       minus 563.96 = $193.01 (21.5%). At $895 list, 25% off ($671.25) nets $2.98 (0.4%),
+       effectively break-even.
+     • Rule: only enter gold SKUs whose list price is at least 1.33x the lean floor. That is at
+       least $743.78 for Example A (1.33 x $557.83, so list $745 or more) and at least $1,166.53 for
+       Example B (1.33 x $874.90, so list $1,195 or more).
+
+ 8.5 Coupons and offers playbook for gold
+  • Thank-you coupon: 10% or a fixed $50 on a second order, with a minimum. This is the
+    cheapest acquisition you will get.
+  • Abandoned cart and favorited: 10% maximum on gold. With a 2-hour trigger, buyers can
+    learn to abandon carts to get a code. Consider a fixed-amount offer instead.
+
+
+
+Etsy Fine Jewelry Master Course | Module 2: Pricing, Unit Economics, Budgeting and Cash Flow        Page 36
+  • Interested shopper offer: 10% with a minimum order. It reaches warm traffic at most once
+    every 30 days.
+  • Use fixed-dollar amounts on high tickets. $75 off a $1,195 ring (6.3%) reads well and caps
+    the cost. A percentage scales with gold.
+  • Use usage limits on codes (since June 2026) to cap exposure on influencer or partner codes.
+
+ 8.6 Designing a discount budget that protects gold margin
+  1. Set an annual discount allowance as % of gross sales (for example 5% to 8%) and put it into
+    v in the pricing formula.
+  2. Allocate it: Cyber Specials and Q4 about 50%, targeted offers about 30%, thank-you and repeat
+    buyers about 20%.
+  3. Discount the fixed part, never the gold part. Calculate the maximum discount per SKU as
+    (P x (1 minus v_without_discount) minus F minus minimum acceptable profit) / P, and never go
+    above it. Example A at $695 list, v_without_discount = 0.1554, minimum profit $50: (695 x
+    0.8446 minus 359.58 minus 50) / 695 = 25.5% maximum discount.
+  4. Before any event, export the SKU list with current F (from Amuletta at today's gold price) and
+    calculate each SKU's maximum safe discount.
+  5. After each event, compare Alura revenue against Amuletta per-order margin. Discount ROI =
+    incremental contribution / discount cost.
+
+
+ 9. US tax basics (high level, not tax advice)
+ Everything below is orientation only. Confirm every point with a US CPA before acting.
+  • Sales tax (marketplace facilitator): Etsy collects and remits sales tax as marketplace
+    facilitator in most US states and territories (the list includes Alabama through Wyoming, DC and
+    Puerto Rico); for those states "No action is required on your part to collect sales tax from buyers,"
+    and Etsy charges no admin fee for this [S37: help.etsy.com, read 2026-10-22]. Do not add sales
+    tax to listing prices. The transaction fee is not charged on sales tax for US sellers [S4: etsy.com,
+    2026-10-05], but the 3% processing fee is [S5: etsy.com, 2026-07-31], which is why the
+    worksheet carries 0.24% in v.
+  • What may still be owed: registration or filing obligations in the shop's home state for
+    marketplace sales, and sales tax on any off-Etsy sales (for example the brand's own website).
+    These vary by state. CPA question.
+  • Sales tax on Etsy fees: since 12 Dec 2025, sales tax may be charged on some Etsy fees where
+    applicable [S20: valueaddedresource.net, 2025-12-16]. Track it as a cost line.
+  • Form 1099-K: the federal threshold reverted to $20,000 and more than 200 transactions
+    [S38: irs.gov, 2025-10-23]. Etsy applies $20,000 and 200 sales for the 2025 tax year, but some
+    states use lower thresholds (for example Arkansas $2,500; DC, Maryland, Massachusetts,
+    Vermont and Virginia $600; Illinois $1,000 and 4 transactions; New Jersey $1,000), and a 1099-K
+    is issued if either the federal or the state threshold is met [S39: help.etsy.com, read 2026-10-22].
+    No 2026 figure is stated yet; confirm in January 2027.
+  • Taxpayer details: Etsy needs a valid SSN, ITIN or EIN; shops without valid taxpayer details are
+    suspended after exceeding $500 in sales. Business sellers provide an EIN, entity name and
+    owners holding 25% or more [S39: help.etsy.com, read 2026-10-22; S40: help.etsy.com, read
+    2026-10-22].
+  • Foreign-owned single-member LLC: a US disregarded entity owned by a non-US person has
+    no income tax return of its own but must file a pro forma Form 1120 with Form 5472
+
+
+Etsy Fine Jewelry Master Course | Module 2: Pricing, Unit Economics, Budgeting and Cash Flow       Page 37
+     attached every year. The penalty for failing to file is $25,000, plus $25,000 per 30-day period if
+     the failure continues more than 90 days after IRS notice [S41: irs.gov, revised 12/2024, page
+     reviewed 2026-04-30]. Put the filing deadline in the annual calendar.
+  • Owner-level US income tax: whether the owner personally owes US income tax depends on
+    whether the business has US effectively connected income (likely, given a US production partner
+    and US shipping). CPA question, not a course claim.
+  • Türkiye-side obligations: the owner's own tax position in Türkiye as a resident with a US entity
+    is outside this module; ask a Turkish mali müşavir.
+
+
+ 10. Cash flow: where gold shops go broke
+  1. Made-to-order gold prepay. You collect the buyer's payment, but Etsy deposits come later
+    and some may be held in reserve, while the US workshop needs metal paid now. Gold may also
+    move between the order date and the purchase date. Mitigation: have the workshop buy or lock
+    metal within 48 hours, keep a gold float equal to about 2 weeks of metal cost, and agree in
+    writing which day's spot sets the metal price.
+  2. Etsy payment reserves. Etsy can apply a fixed reserve (a percentage of sales held on a rolling
+    basis) or a variable reserve (delay up to 180 days or deduct for up to 90 days) [S5: etsy.com,
+    2026-07-31], and may apply a reserve to new sellers with no track record [S42: help.etsy.com,
+    read 2026-10-22]. Triggers described by Alura include a rapid rise in order volume, shipments
+    without tracking, shipping delays, more refund requests, and a first sale [S43: alura.io, undated;
+    it cites 2022 data, so treat as UNVERIFIED (pre-2025) for the timing figures]. A Q4 spike in
+    volume is itself a reserve trigger. Buy Etsy labels so tracking uploads automatically, and ship
+    the same day the piece is finished.
+  3. Deposit schedule: daily (needs a $25.00 balance), weekly, biweekly or monthly; weekly,
+    biweekly and monthly pay on Mondays and deposits generally post within five business days [S5:
+    etsy.com, 2026-07-31]. New sellers default to weekly on Mondays [S42: help.etsy.com, read
+    2026-10-22]. Switch to daily once the shop is established.
+  4. Faster payouts: Instant Transfers are available to this US shop: 1% fee (minimum $0.25,
+    maximum $1.00), $25 minimum, $500 maximum per transfer, one per 24 hours, usually within
+    about 30 minutes [S42: help.etsy.com, read 2026-10-22]. Use them to fund metal purchases in
+    Q4 instead of carrying a larger float.
+  5. Payment account visibility: since September 2026 current, pending and total balances are
+    shown separately, with fees grouped by sale [growingyourcraft, 2026-10-08]. Reconcile weekly in
+    Alura.
+  6. No duty prepayment on domestic orders. The old risk of prepaying duty to a carrier before
+    Etsy funds cleared is gone. If you import components, duty is paid at import on the workshop
+    invoice value and belongs in the gold float plan.
+  7. Returns and remakes on custom sizes: a resized or remade gold ring loses labor and loss
+    allowance again. Budget for it.
+  8. Purchase Protection: Etsy may refund buyers up to $250; the seller pays any refund amount
+    above $250, and since 7 May 2026 eligible orders above $250 still get up to $250 of coverage
+    [S44: etsy.com, effective 2026-07-09; S45: etsy.com, 2026-04-07]. No DDP condition applies to
+    domestic orders. A $1,500 ring claim goes far beyond that cap, so tracked, insured, signature
+    shipping is essential, and Shipsurance claims must be filed before cancelling the order.
+  9. Currency: sales, fees, deposits, workshop and shipping are all in USD, so there is no Etsy
+    currency conversion fee [S4: etsy.com, 2026-10-05]. The only FX exposure is the owner's own
+
+
+
+Etsy Fine Jewelry Master Course | Module 2: Pricing, Unit Economics, Budgeting and Cash Flow      Page 38
+     transfers between the US account and Türkiye; track those bank and FX spreads as a cost line.
+
+
+ 11. BUDGET TEMPLATE
+ Annual budget for a US Etsy solid gold shop managed from Türkiye. Every number has to come from
+ your own quotes. The percentages shown are planning placeholders, not benchmarks.
+
+ 11.1 Startup or one-time
+  Line                                                             Notes
+
+  Etsy shop setup fee and identity verification                    one-time for new shops in many countries
+                                                                   [growingyourcraft, 2026-10-08]; identity via Persona,
+                                                                   names must match taxpayer and bank account [S46:
+                                                                   help.etsy.com, read 2026-10-22]
+
+  US entity setup (LLC formation, registered agent, EIN, US        your quotes
+  bank account)
+
+  Samples inventory (photo samples in 14K, plus one 18K            metal cost at today's spot; recoverable later by selling as "
+  hero)                                                            ready to ship"
+
+  Photography and video (20 photos and 2 videos per                [growingyourcraft, 2026-10-08]
+  listing are now allowed)
+
+  Packaging initial run (boxes, pouches, cards, plain outer        MOQ-driven
+  mailers)
+
+  Branding and certificate card design
+
+  Ring sizers (free sizer program, optional)                       reduces resize remakes
+
+  Legal and accounting setup (US CPA, production partner
+  agreement with the US workshop)
+
+  Gold float (working capital)                                     about 2 weeks of metal COGS at peak
+
+
+ 11.2 Annual operating P&L lines
+  Line                                                    Driver                                                 Tracked in
+
+  Gross sales (GMS)                                       orders x AOV                                           Alura
+
+  minus Discounts and promotions                          budget 5% to 8% of GMS (placeholder)                   Alura, Etsy
+
+  Net sales
+
+  COGS: metal incl. loss                                  grams x karat x spot x (1 + loss)                      Amuletta
+
+  COGS: US bench labor, finishing, stones,                per SKU, from US workshop quote                        Amuletta
+  certificate
+
+  COGS: packaging                                         per order                                              Amuletta
+
+  Shipping, signature and Shipsurance (free to            per order (worksheet: $16.07 + $4.15 + 0.8% of         Amuletta
+  buyer)                                                  price + $0.80)
+
+  Import duty on components, if any                       18% of import value (section 7)                        Amuletta
+
+  Gross margin
+
+  Etsy transaction 6.5%, processing 3% + $0.25            % of order plus fixed                                  Alura or
+  (incl. 3% on sales tax), listing fees $0.20                                                                    Etsy CSV
+
+  Offsite Ads (15% or 12%, capped at $100 per             per attributed order                                   Etsy
+  order)
+
+  Contribution margin before ads
+
+  Etsy Ads                                                daily budget                                           Etsy
+
+
+
+Etsy Fine Jewelry Master Course | Module 2: Pricing, Unit Economics, Budgeting and Cash Flow                            Page 39
+  Line                                                    Driver                                               Tracked in
+
+  External ads (Meta, Pinterest) if used
+
+  Contribution margin after ads
+
+  Tools: Alura, eRank, Amuletta, design software          monthly subscriptions (use your actual invoices;
+                                                          no 2026 price list retrieved)
+
+  Photography refresh                                     quarterly
+
+  Returns, remakes and resize reserve                     2% to 3% of GMS (placeholder)                        Amuletta
+
+  Chargebacks and Purchase Protection losses              reserve
+  above $250
+
+  Sales tax on Etsy fees, where charged                                                                        accountant
+
+  US CPA, Form 5472 and pro forma 1120                    annual                                               accountant
+  preparation, registered agent
+
+  Instant Transfer fees, bank and FX fees (US to                                                               bank
+  Türkiye transfers)
+
+  Operating profit
+
+
+ 11.3 KPIs and formulas
+  KPI                 Formula                                              Why it matters for gold
+
+  Gross margin %      (net sales minus COGS minus shipping minus           Falls automatically when gold rises and prices
+                      any import duty) / net sales                         lag
+
+  Contribution        (gross margin minus all Etsy fees minus ads) /       The real profit per order. Target at least 15%
+  margin %            net sales                                            after ads (worksheet basis)
+
+  Metal share of      metal cost / price                                   Above about 45% means a repricing trigger is
+  price                                                                    near (Example A at the lean floor: 240.09 /
+                                                                           557.83 = 43%)
+
+  AOV                 net sales / orders                                   Higher AOV makes the Offsite Ads cap work for
+                                                                           you
+
+  CAC (paid)          (Etsy Ads + external ads + Offsite Ads fees) /       Compare against first-order contribution
+                      new buyers
+
+  ROAS                ad-attributed revenue / ad spend                     Need ROAS above 1 / contribution-margin-before
+                                                                           -ads to break even
+
+  Break-even          1 / CM% before ads                                   e.g. at 25% CM before ads, break-even ROAS =
+  ROAS                                                                     4.0
+
+  Conversion rate     orders / visits                                      Use it in price tests
+
+  Return and          units returned or remade / units sold                Every remake costs labor and metal loss
+  remake rate
+
+  Discount rate       discounts / GMS                                      Keep it inside budget
+
+  Days of gold        metal cash on hand / daily metal COGS                Cash safety
+  float
+
+  Reserve balance     reserved funds / 30-day sales                        Cash planning
+  %
+
+
+ 11.4 Monthly P&L review routine (60 to 90 minutes, first business day)
+  1. Gold check: record month-end spot. Compare with costing spot. If outside plus or minus 7%,
+    run the repricing worksheet on all variations.
+
+
+
+Etsy Fine Jewelry Master Course | Module 2: Pricing, Unit Economics, Budgeting and Cash Flow                          Page 40
+  2. Pull data: Etsy CSVs (orders, payments, deposits), Alura dashboard, Amuletta per-order
+    margins, US workshop invoices, Etsy label and Shipsurance charges.
+  3. Reconcile: Etsy deposits against Alura revenue minus fees minus reserves. Workshop invoices
+    against the metal plus labor model.
+  4. Margin waterfall: for the top 10 SKUs show price, metal, labor, shipping and insurance, fees,
+    ads, discount, and net. Flag any order under 10% net in Amuletta and identify the cause
+    (discount stacking, a large size, 18K mix, ads, Adult Signature tier).
+  5. Discount audit: spend against budget and ROI per promotion type.
+  6. Ads: ROAS against break-even ROAS per listing or ad group (ad groups were introduced in Sep
+    2026) [growingyourcraft, 2026-10-08].
+  7. Cash: reserve balance, gold float, Instant Transfer use, Q4 build.
+  8. Policy watch: Etsy fees, USPS rate changes (temporary 8% increase through 17 Jan 2027 noted
+    on Etsy's USPS labels page [S11: help.etsy.com, read 2026-10-22]), tariffs if importing
+    components, the sales events calendar, US filing deadlines.
+  9. Decide: price moves, SKUs to enter in the next event, budget changes. Log decisions.
+
+ 12. Price testing on Etsy
+ Etsy has no native A/B price testing (no source found offering one). These are practical methods:
+  1. Sequential testing with stable conditions. Change the price on one variation or listing for
+    14 to 28 days, keep photos, title and ads unchanged, and compare conversion rate and
+    contribution per visit (not revenue). Avoid holiday weeks.
+  2. Karat-ladder test. Move only the 18K variation price and watch the 14K/18K mix. If the 18K
+    share stays steady after an increase, the price was too low.
+  3. Twin listings (different design angle and photography, same product) at different price points.
+    These have to be genuinely different listings to avoid duplicate-listing problems.
+  4. Measure on contribution per visit: (orders x average net contribution) / visits. A higher price
+    with lower conversion can still win.
+  5. Use Etsy Marketplace Insights price ranges (in testing as of 2026) to see where demand
+    clusters [growingyourcraft, 2026-10-08].
+  6. Never test by "raising then discounting". That is the manipulation pattern Etsy prohibits
+    [Etsy Seller Handbook, 2026-01-12].
+  7. Gold drift confound: record spot at the start and end of each test. If gold moved more than
+    5%, discard or adjust the test.
+
+
+ 13. TACTICS
+  1. Buy Etsy labels with Shipsurance for every order, and ship in a plain outer mailer so the
+    insurance is not voided [Etsy insurance help page and Shipsurance terms, read 2026-10-22].
+  2. Adopt the 7% gold repricing band. Reprice up within 48 hours and down slowly. Log the
+    costing spot in Amuletta.
+  3. Price to the Offsite Ads cap. Hero items above $667 cap Offsite Ads at $100, so lean into
+    high-AOV pieces when you rely on offsite traffic.
+  4. Make 14K the default and 18K the anchor. Use variation pricing, not separate listings.
+  5. Charge a surcharge for large ring sizes (more metal), as a variation price step.
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 2: Pricing, Unit Economics, Budgeting and Cash Flow    Page 41
+  6. Negotiate US bench labor per piece in USD, not as a percentage of gold value, so gold
+    rallies do not inflate labor.
+  7. Get metal loss written into the US workshop agreement, and reconcile it against
+    delivered weights.
+  8. Enter Cyber Specials only with SKUs that clear the 1.33x rule (Example A list $745 or
+    more, Example B list $1,195 or more), and opt in before 27 Oct 2026.
+  9. Prefer fixed-dollar offers on gold in targeted and interested shopper offers. Set usage limits
+    on public codes.
+  10. Turn on thank-you coupons, since repeat buyers are the cheapest to acquire.
+  11. Drive your own traffic through Share & Save links. It refunds 4% (transaction fee falls to
+    2.5%).
+  12. Use Instant Transfers in Q4 to fund metal purchases instead of tying up a larger float [S42:
+    help.etsy.com, read 2026-10-22].
+  13. Ship same day with tracking to stay out of payment reserves.
+  14. Say "solid 14K gold" in titles and attributes. Etsy's own truthful-advertising guidance
+    separates plated from gold, which is a positioning edge.
+  15. Reprice ahead of Q4, not during it. Sale signals depend on a stable price history.
+  16. Move hero pieces up-market. In 2026 entry floors for gold moved toward $200 to $500
+    [eightx, 2026]. A $295 solid gold band cannot cover its own metal: Example A's lean break-even
+    is $452.53.
+
+
+ 14. COMMON MISTAKES
+  1. Keystone on a stale gold cost. One January 2026 peak to February dip moved gold by more
+    than $1,100/oz in a week [investingnews, 2026-02-25].
+  2. Copying a non-US fee stack into the formula. Regulatory Operating Fee, currency
+    conversion and Turkish processing rates do not apply to this US shop; using them overprices
+    every SKU.
+  3. Adding DDP duty or "duties paid" copy to domestic listings. Domestic US shipments carry
+    no buyer duty; that copy belongs only to cross-border shops (module 09).
+  4. Ignoring that Etsy's percentage fees include shipping and processing applies to sales
+    tax, and that fees scale with gold.
+  5. Permanent "sales" and inflated strikethrough prices, which are prohibited [Etsy Seller
+    Handbook, 2026-01-12].
+  6. Joining 25% events on SKUs priced at the floor. Example A at $495 list minus 25% loses
+    $46.02; Example B at $895 minus 25% only breaks even.
+  7. Stacking targeted offers with sales without modelling it. Promo codes go up to 75% and
+    interested shopper offers up to 70%.
+  8. Labor as a percentage of gold, which lets your cost rise automatically with every rally.
+  9. Not buying metal immediately after a made-to-order sale.
+  10. Ignoring reserves in Q4, when volume spikes are a reserve trigger.
+  11. Pricing LGD stones by carat value. Buyers know stone prices are collapsing [JCK,
+    2026-08-10].
+  12. Branded outer packaging, which voids Shipsurance coverage on the parcel [S16:
+    shipsurance.com, read 2026-10-22].
+
+
+
+Etsy Fine Jewelry Master Course | Module 2: Pricing, Unit Economics, Budgeting and Cash Flow    Page 42
+  13. No returns or remake reserve for custom-sized gold.
+  14. Setting live prices on the placeholder labor line. The 20% US bench labor figure is not a
+    sourced rate; replace it with the workshop quote first.
+  15. Missing Form 5472 for a foreign-owned single-member LLC; the penalty is $25,000 [S41:
+    irs.gov, page reviewed 2026-04-30].
+
+
+ 15. Gaps and items to verify
+  • US bench labor rates for casting, finishing and setting: no 2025 or 2026 published benchmark
+    retrieved. The worksheet's 20% of metal value is a placeholder. Get the US workshop quote in
+    writing.
+  • US workshop metal pricing basis (spot date, fabrication premium) and metal loss allowance: none
+    published. Get them in writing.
+  • Actual Etsy label prices versus USPS Notice 123 commercial rates, and whether Notice 123 prices
+    include the temporary 8% increase Etsy mentions (module 09).
+  • Whether Shipsurance add-on coverage replaces or stacks with the $100 carrier-included
+    coverage (module 09).
+  • Offsite Ads fee base (item plus shipping versus full order total) is worded inconsistently on Etsy's
+    help page.
+  • Real blended sales tax rate on this shop's orders (the worksheet's 8% is illustrative); read it from
+    Etsy order CSVs.
+  • 2026 federal 1099-K threshold not yet stated by Etsy by year; confirm in January 2027.
+  • Home-state sales tax registration and filing, sales tax on off-Etsy sales, and owner-level US
+    income tax: CPA questions.
+  • If importing components: whether heading 7113 is in any Section 301 annex exemption, and the
+    exact dutiable value (broker question).
+  • Moissanite 2025 and 2026 price index: none found.
+  • An official Etsy 2026 full sales events calendar beyond Cyber Specials.
+  • 2026 subscription prices for Alura and eRank: not retrieved. Use your invoices.
+  • Web search budget was exhausted before searching for 2026 jeweler repricing case studies and
+    official Etsy targeted offer changes. A follow-up pass could cover these.
+
+
+ Module 2 sources
+ Numbered sources cited in this module as [S#]. All accessed 22 October 2026.
+ S1. https://www.150currency.com/gold-price/united_states/
+ S2. https://investingnews.com/daily/resource-investing/precious-metals-investing/gold-investing/highest-price-for-gold/
+ S3. https://fortune.com/article/current-price-of-gold-10-20-2026/
+ S4. https://www.etsy.com/legal/fees
+ S5. https://www.etsy.com/legal/etsy-payments
+ S6. https://iscompliant.app/Blog/etsy-regulatory-fee-2026
+ S7. https://www.jckonline.com/editorial-article/lab-grown-wholesale-freefall/
+ S8. https://www.jpmorgan.com/insights/global-research/commodities/gold-prices
+ S9. https://taxguru.in/dgft/dgft-notifies-revised-wastage-limits-input-norms-jewelry-exports.html
+ S10. https://www.dracodiamond.com/blogs/news/lab-diamond-price-trend-report-2020-2026
+ S11. https://help.etsy.com/hc/en-us/articles/360000336887-USPS-Shipping-Labels-on-Etsy
+ S12. https://www.etsy.com/legal/shipping/
+ S13. https://pe.usps.com/text/dmm300/Notice123.htm
+ S14. https://www.usps.com/ship/insurance-extra-services.htm
+
+
+
+Etsy Fine Jewelry Master Course | Module 2: Pricing, Unit Economics, Budgeting and Cash Flow                               Page 43
+ S15. https://help.etsy.com/hc/en-us/articles/360001988847-Insurance-and-Claims-for-Shipping-Labels
+ S16. https://www.shipsurance.com/etsy/terms
+ S17. https://help.etsy.com/hc/articles/360000338367
+ S18. https://help.etsy.com/hc/articles/360033701174
+ S19. https://www.etsy.com/legal/policy/etsys-share-save-terms-program-terms/1162874007996
+ S20. https://www.valueaddedresource.net/etsy-payments-policy-update-december-2025/
+ S21. https://eightx.co/blog/jewelry-brand-pricing-strategy
+ S22. https://priceprofittools.com/guides/how-to-price-handmade-jewelry/
+ S23. https://www.etsy.com/seller-handbook/article/1450964704111
+ S24. https://www.growingyourcraft.com/blog/etsy-seller-updates
+ S25. https://www.outfy.com/blog/?p=6501
+ S26. https://hts.usitc.gov/reststop/search?keyword=7113.19.50
+ S27. https://taxnews.ey.com/news/2026-1607-ustr-finalizes-section-301-forced-labor-tariffs-on-60-economies-additional-tariffs-
+ of-10-percent-or-125-percent-take-effect-24-july-2026
+ S28. https://ustariffrates.com/tariff-rates/turkey
+ S29. https://kpmg.com/us/en/taxnewsflash/news/2025/08/us-cbp-implements-eo-suspending-duty-free-de-minimis-treatment.h
+ tml
+ S30. https://help.etsy.com/hc/articles/115014260108
+ S31. https://www.valueaddedresource.net/etsy-seller-surprised-by-abandoned-cart-discount-change/
+ S32. https://mikellane.com/etsy-interested-shopper-offers/
+ S33. https://litcommerce.com/blog/how-to-run-a-sale-on-etsy/
+ S34. https://help.etsy.com/hc/en-us/articles/360039531534-How-to-Participate-in-Sales-Events-on-Etsy
+ S35. https://puppyip.com/en/resources/etsy-cyber-specials-2026-opt-in-deadline-guide
+ S36. https://www.gelato.com/blog/etsy-cyber-specials
+ S37. https://help.etsy.com/hc/articles/360000343968
+ S38. https://irs.gov/newsroom/irs-issues-faqs-on-form-1099-k-threshold-under-the-one-big-beautiful-bill-dollar-limit-reverts-to-
+ 20000
+ S39. https://help.etsy.com/hc/articles/360000336447
+ S40. https://help.etsy.com/hc/en-us/articles/360001980067-How-to-Verify-Your-Seller-Information-for-Etsy-Payments
+ S41. https://www.irs.gov/instructions/i5472
+ S42. https://help.etsy.com/hc/articles/360046998234
+ S43. https://alura.io/docs/article/understanding-etsy-payment-account-reserves
+ S44. https://www.etsy.com/legal/policy/purchase-protection-program-for-sellers/34509585385
+ S45. https://www.etsy.com/seller-handbook/article/1085799204521
+ S46. https://help.etsy.com/hc/en-us/articles/22481159004567-How-to-Verify-Your-Identity-on-Etsy
+
+
+
+
+Etsy Fine Jewelry Master Course | Module 2: Pricing, Unit Economics, Budgeting and Cash Flow                              Page 44
+
