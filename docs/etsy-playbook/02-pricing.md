@@ -16,6 +16,7 @@ Kaynak: `source/02-*.txt` (M2), okuma 2026-10-22.
 - Fiyat en kötü Offsite'ta (min(%15, $100)) pozitif katkıda kalmalı.
 - **Sürekli sahte indirim yok:** üstü çizili fiyat gerçek, makul süre ve miktarda satılmış fiyat; çoğu zaman indirimdeyse indirimli fiyat gerçek fiyattır [Seller Handbook 2026-01-12]. İndirim payı v'nin içinde planlanır.
 - **Cyber Specials 2026: 23 Kas-1 Ara, katılım için son gün 27 Eki 2026, en az %25 indirim**; yalnız liste fiyatı ≥ 1,33 × yalın taban olan SKU'larla [S34 2026].
+  - Sahip kararı 2026-10-22: EON ve by Artifact Studio Cyber'e katılır, %25. Katılım yalnız Shop Manager > Marketing > Sales and discounts > Etsy etkinlik kartı (API yok). Teklifler yığılmaz: açık kalıcı indirim (EON %25, Artifact %30) varsa Cyber kartı yeni bir sale ister; kalıcıyı 22 Kas'ta bitir, Cyber sale'i kur, 2 Ara'da kalıcıyı yeniden kur. %30 kalıcı indirimi olan mağaza Cyber'de %25'e inerse alıcı için fiyat YÜKSELİR; orada Cyber oranı ≥ kalıcı oran olmalı. Fiyat yükseltilmez (üstü çizili fiyat kuralı).
 - İndirim sabit kısımdan yapılır, altından değil; yüksek fiyatlıda sabit dolar teklif tercih; indirimler üst üste binmez (ücretsiz kargo promosyonu hariç).
 - Altın repricing: 5 günlük ortalama spot ±%7 bandı; yukarı hızlı (48 saat), aşağı yavaş (~10 işlem günü bant altında); indirimden hemen önce fiyat düşürülmez [S21 3. taraf 2026].
 - İşçilik parça başı USD pazarlık edilir, altının yüzdesi değil; %20 işçilik yer tutucusuyla canlı fiyat yok.
