@@ -1597,6 +1597,24 @@ repodaki hedefidir.
   kur. Yeşil sayaçtan sonra çıktıyı gözle okumak bir kusur daha buldu: Tideline ve kumlanmış basamaklı
   bantlar aynı "Satin Face Polished Rails" şablonuna düşüyordu, ikisi de yanlış tarif.
 
+- **Panel aynası bayatken "başlık değişmiş" bayrağı yanlış alarm verir; kimin değiştirdiğini CANLI
+  okuma söyler, ve iyi kurulmuş bir rota ikinci org'a tek kayıtla açılır (2026-10-22, by Artifact
+  Studio SEO):** 210 listing'lik ikinci keyword paketini panel verisine karşı sınadım ve 19 listing'de
+  panel başlığı matrisin "önce" başlığından farklı çıktı. Bunu "sahip elle düzenledi" diye okusaydım 19
+  listing'i atlayacaktım; canlı Etsy kuru okuması 210/210'un matrisle birebir olduğunu gösterdi, bayat
+  olan panel aynasıydı. Aynı sınama bir gerçek kusuru da buldu: üreteç erkek mühür yüzüklerine
+  kişiselleştirme bayrağına bakmadan "Engravable" yazıyordu (panel açıklaması "yüz bilerek boş");
+  düzeltme üreteçte yapıldı ve yeniden üretimde YALNIZ o 2 satırın değiştiği sayıldı. Yürütme EON için
+  aynı gün kurulan `ops/seo-apply` ile yapıldı: rota org->matris kaydına çevrildi, paketin kendi
+  `apply_matrix.py`'si kullanılmadı (Etsy token'ı panel app'ine bağlı). Yeni org yeni bir kenar getirdi:
+  "No Section" Etsy'de bölüm değil `shop_section_id = null`, eski kod bu 20 taşımayı sessizce "taşınmadı"
+  notuna düşürecekti; test önce yazıldı. Zincir: kuru 210 -> kanarya 10 + bağımsız okuma -> 20 parti
+  -> taze token'la 210/210 "already" -> audit 210 -> panel mührü = matris mührü. Kural: (1) "önce hâli
+  tutmuyor" bayrağını panelden değil canlıdan doğrula, ayna bayat olabilir; (2) dış paketi üretecinde
+  düzelt ve yeniden üretimin dokunduğu satır kümesini say; (3) yeni org'a açılan rota, o org'un verisinin
+  getirdiği yeni durumları (burada bölümsüz listing) testle karşılar. Yan ders: tek kullanımlık token'la
+  koşan bir runner'da argüman hatası token yakar; parametreyi boş değerle (`-`) açıkça ayır.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
