@@ -1,4 +1,9 @@
-"""Tag audit for 9 active listings that only drew search clicks from page 4+ (Etsy search-click data, 2026-09-25 to 10-24).
+"""ON HOLD (2026-10-25): the "current" tags below are the researched 2026-10-21 keyword matrix
+(docs/artifact-studio/seo/2026-10-21-etsy-keyword), live since 21-22 Oct. The search-click data that
+flagged these listings is mostly from BEFORE that pass, so it cannot judge these tags yet. Do not push
+before the 21 Nov baseline read (STATE.md); overwriting now also breaks that comparison.
+
+Tag audit for 9 active listings that only drew search clicks from page 4+ (Etsy search-click data, 2026-09-25 to 10-24).
 Rule: keep tags that name the product as a buyer types it; swap generic giant-pool tags and tags that misdescribe the piece.
 Picks are by specificity, not measured search volume (no volume data in the panel). Run: python3 tag_audit_2026_10_25.py
 """
