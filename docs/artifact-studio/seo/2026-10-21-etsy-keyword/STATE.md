@@ -13,3 +13,9 @@ Decisions: applied through app/api/ops/seo-apply instead of scripts/apply_matrix
 Open: owner manual tasks in reports/manual-checklist.md (attributes on 36 + 52 listings, category of 4585880226, 110 videos, description openings, Etsy Ads budget shift); 16 drafts not in the matrix.
 Next action: 21 Nov 2026 read Stats > Last 30 days, drop the three files into data/, run build_master.py and compare with data/baseline-2026-10-21/ (target Etsy Search >= 80 visits).
 Context: re-running is safe; ops/seo-apply returns "already" for every applied row and skips any listing whose live title or tags no longer match.
+
+## 2026-10-25 (Claude Code, Etsy Ads narrowed; owner set it in Shop Manager)
+Done: ads concentrated on 5 listings, everything else switched off, daily budget unchanged. Picked from listing-stats-30d by orders, then favorites, then views: 4590704706 (4mm hammered band, the only sale), 4582909101 (reeded cuff), 4590688355 (slim open cuff men), 4579034421 (evil eye bracelet), 4590700626 (3mm curb chain).
+Decisions: no tag changes before 21 Nov (the 10-25 search-click report mostly predates this pass; docs/artifact-studio/seo/tag_audit_2026_10_25.py is on hold). Ads API does not exist in Etsy Open API v3, so ad changes stay manual.
+Open: 8 Nov ad review: switch off any of the 5 with 40+ ad clicks and 0 favorites; keep the rest. Baseline before: 114 ad visits, 0 orders (30d to 21 Oct). Note for 21 Nov: ad concentration started 25 Oct, so Etsy Search change after that date is not tags alone.
+Next action: 8 Nov, Shop Manager > Marketing > Etsy Ads > per-listing clicks for the 5 IDs.

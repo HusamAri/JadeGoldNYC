@@ -1636,6 +1636,20 @@ repodaki hedefidir.
   391/395 listing ihlal, 16'sı yanlış ayar), sonra yenide 0'a in; (3) tek parti hatası (Etsy 500) için durmak doğru,
   yeniden koşu idempotent olmalı (planSeo `already` döner) ve "hiçbir şey yazılmadı" iddiası geri okumadan gelir.
 
+- **Bir rapordaki sıralamayı düzeltmeye koşmadan önce raporun PENCERESİNİ son değişiklik tarihiyle karşılaştır
+  (2026-10-25, by Artifact Studio arama sayfaları):** Sahip "ilk sayfalarda olmayan listing'ler" listesini getirdi
+  (25 Eyl - 24 Eki arama tıklamaları; sayfa 4-35) ve tag yeniden yazımı istedi. 9 listing için 30 tag değişimi
+  hazırladım, sahip "build it" dedi; yazmadan önce `main`'i çekince paralel oturumun 21-22 Ekim'de aynı 210 listing'in
+  tag ve başlıklarını 4.153 anahtar kelimelik araştırmayla yeniden yazdığı çıktı. Raporun penceresi büyük ölçüde o
+  geçişten ÖNCEYDİ: kötü sıralamayı "everyday classic" gibi eski dolgu tag'ler üretmişti, benim düzelteceğim tag'ler
+  3 günlüktü. Üstelik benim seçimim ölçümsüzdü (özgüllüğe göre), yazılı ölçüm planını (21 Kasım baz karşılaştırması)
+  da bozacaktı. Rota kurulmadı, denetim "beklemede" diye işaretlendi, sahip kanıtla ikna edildi. Reklam tarafında aynı
+  disiplin: "reklamı aç" isteğinde reklamın zaten açık olduğu (114 ücretli ziyaret, 0 sipariş) baz veriden okundu;
+  iş açmak değil, aynı bütçeyi veriye göre 5 listing'e toplamak oldu. Kural: (1) performans raporu gelince önce
+  "bu pencere boyunca neler değişti?" diye `git log` + STATE dosyasına bak; (2) ölçümsüz bir değişiklik, ölçülmüş bir
+  değişikliğin yerine yazılmaz ve yazılı ölçüm planı varken ona dokunulmaz; (3) kullanıcının "build it" onayı bu
+  bilgi ortaya çıkmadan verilmişse onay o bilgiyi kapsamaz, kanıtı göster ve yeniden sor.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
