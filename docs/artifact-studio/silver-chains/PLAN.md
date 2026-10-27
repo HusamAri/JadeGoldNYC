@@ -35,6 +35,20 @@ Widths under 2 mm left out (read as women's chains); over 10.3 mm left out (55 g
 `image-prompts.md` (from `prompts.py`): 5 frames per listing, one palette per listing. Etsy since 2026-10-22: each
 listing also needs one real unedited photo of the actual chain (slot 06).
 
+## Market and prices (2026-10-27)
+Owner: "market research, competitive prices, I edit manually if needed". `pricing.py` -> `prices.csv` (144 variants).
+- Silver spot 53-55 USD/ozt (Fortune, Kitco, APMEX 2026-10-27), so sterling metal is about 1.6 USD/g.
+- Solid 925 Italian chains, buyer-paid price per gram: Franco 4mm 22" 38.4 g 279.65 sale / 329 list (Etsy);
+  curb 6mm 22" 197 (Italia Chains), 6.5mm 22" 409 (The Gold Gods); Figaro 6mm 22" 300 / 25.75 g (Etsy),
+  319 / 22.5 g (Proclamation), 146 (Jewlr); Figaro bracelet 8" 9.5mm 35.5 g 210, 13mm 47.5 g 280, 7mm 10 g 100.
+  Under ~4 USD/g (JTV flash sale, eBay) treated as hollow/plated or outliers.
+- Fit: buyer price = 50 + 6.0 x grams (mid-market, under the DTC premium of 11-14 USD/g).
+  List = that / 0.70 (shop's permanent 30% sale), rounded up to end in 9.
+- Floor (no quote yet): pessimistic cost 4 USD/g + 12 USD + 0.45, fees 9.5% + worst Offsite: every variant positive
+  (lowest 27 USD net).
+- Franco is priced on catalog weight, which runs heavier than the market's 4mm (41.1 g vs about 31 g at 18"),
+  so S01 4.1mm 22" sells at 356 vs a competitor's 280.
+
 ## Open
-- **Supplier cost** (per gram or per piece, by chain and width) is needed before any price. Nothing priced yet.
+- **Supplier cost** replaces the 4 USD/g assumption; re-run `pricing.py`.
 - Curb/Figaro plating status.
