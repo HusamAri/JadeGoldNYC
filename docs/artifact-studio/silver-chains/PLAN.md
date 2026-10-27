@@ -49,6 +49,11 @@ Owner: "market research, competitive prices, I edit manually if needed". `pricin
 - Franco is priced on catalog weight, which runs heavier than the market's 4mm (41.1 g vs about 31 g at 18"),
   so S01 4.1mm 22" sells at 356 vs a competitor's 280.
 
+## Repriced for the 25% shop sale (2026-10-27, owner; listings live)
+`pricing.py` SALE 0.70 -> 0.75 (buyer price unchanged, 50 + 6 USD/g). 0173 applied: precondition seal 8e85c330 matched,
+post seal 84f0f796 = repo; 141/144 variants changed, audit 141. `ops/price-sync` dry 141 offering diffs (panel maps
+30/18 full) -> apply 141 written, 0 left -> fresh-token read-back 6/6 unchanged, 0 diff.
+
 ## Open
 - **Supplier cost** replaces the 4 USD/g assumption; re-run `pricing.py`.
 - Curb/Figaro plating status.
@@ -76,4 +81,4 @@ Panel: 6 linked, 6 distinct ids, 6 `etsy.listing_create` audit rows; open tokens
 ## Open
 - Owner adds one real unedited photo per draft in the Etsy editor (Etsy rule since 2026-10-22), then publishes.
 - Shipping profile and shop section are set in the Etsy editor before publishing.
-- Supplier cost replaces the 4 USD/g assumption; re-run `pricing.py` and `ops/price-sync` (panel price = Etsy list price).
+- Supplier cost replaces the 4 USD/g assumption; re-run `pricing.py`, a new seal-guarded migration and `ops/price-sync` (panel price = Etsy list price). If the shop sale % changes, change SALE the same way.
