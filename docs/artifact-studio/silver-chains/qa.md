@@ -14,3 +14,12 @@
 
 Fix in `prompts.py`: necklace hero sized as a 50 cm chain spread across the frame, bracelet hero and flat lay one unclasped open arc (2026-10-27: "coiled" in the scene line gave two rings),
 worn necklace clasp hidden at the back, macro = one straight section with no clasp or second strand.
+
+## 2026-10-27, S01 to S04 picks (owner: "ilk 4 modeli higgsfielddan al")
+Saved to `public/artifact/silver/Sxx/0N.jpg` (2048 px, JPG under 950 KB, re-encoded so no generator metadata);
+job ids in `picks.json`.
+- S01: hero b5bb99a5 (v2, neck length reads), worn a92926fc (clasp hidden), macro 91494756, clasp 8b33e7f3, flat lay 1ecbb85b.
+- S02: hero e9244376 (open arc), worn 17d1b457, macro 42a77d5e, clasp 9d7307a8, flat lay 60d06ec7.
+- S03: worn cbd64695, macro 322e7d84, clasp 9c238ed2, flat lay 372149d3. **Hero REDO:** b4426990 reads as a
+  bracelet-size loop and the tag plate is drawn oversized.
+- S04: hero 627178de, worn e2e4b313, macro 5e6afeca, clasp 179cc08b, flat lay daa130db (fa54f965 skipped: letters on the carabiner).

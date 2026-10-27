@@ -1,0 +1,105 @@
+{
+ "S01": {
+  "01": {
+   "job": "b5bb99a5-1abc-4daa-8b31-61a1f665298f",
+   "bytes": 854564,
+   "quality": 80
+  },
+  "02": {
+   "job": "a92926fc-25c8-4f12-9fbf-dcc50393c7b4",
+   "bytes": 866796,
+   "quality": 80
+  },
+  "03": {
+   "job": "91494756-35d7-4102-8395-d9d95ea00d73",
+   "bytes": 706662,
+   "quality": 86
+  },
+  "04": {
+   "job": "8b33e7f3-c5e4-467f-bcb6-d0b44d2b4d6a",
+   "bytes": 911864,
+   "quality": 77
+  },
+  "05": {
+   "job": "1ecbb85b-fa17-458a-a828-5538798a1bc7",
+   "bytes": 944271,
+   "quality": 80
+  }
+ },
+ "S02": {
+  "01": {
+   "job": "e9244376-8295-4366-a1c4-e26f87b3f7a0",
+   "bytes": 929225,
+   "quality": 86
+  },
+  "02": {
+   "job": "17d1b457-0dbd-4390-a884-8093182ed5b3",
+   "bytes": 606738,
+   "quality": 86
+  },
+  "03": {
+   "job": "42a77d5e-5fe3-431c-b213-427638cdff55",
+   "bytes": 766860,
+   "quality": 86
+  },
+  "04": {
+   "job": "9d7307a8-9f1d-4cb8-a406-31d44c9d40f1",
+   "bytes": 802246,
+   "quality": 86
+  },
+  "05": {
+   "job": "60d06ec7-45ee-486d-b75a-c02cd7cc84f3",
+   "bytes": 837924,
+   "quality": 83
+  }
+ },
+ "S03": {
+  "02": {
+   "job": "cbd64695-0f7f-4b22-ad9e-273b2a923dff",
+   "bytes": 493765,
+   "quality": 86
+  },
+  "03": {
+   "job": "322e7d84-9dec-4bf6-8416-6ff2e826102b",
+   "bytes": 647744,
+   "quality": 86
+  },
+  "04": {
+   "job": "9c238ed2-c598-4296-ae3d-9b85097e42ed",
+   "bytes": 706668,
+   "quality": 86
+  },
+  "05": {
+   "job": "372149d3-a58a-4637-924a-4d685bc3ba01",
+   "bytes": 908010,
+   "quality": 83
+  }
+ },
+ "S04": {
+  "01": {
+   "job": "627178de-c1a3-40c8-98fc-9e869e202900",
+   "bytes": 919102,
+   "quality": 80
+  },
+  "02": {
+   "job": "e2e4b313-28c4-42e1-b079-700367d43da4",
+   "bytes": 815122,
+   "quality": 86
+  },
+  "03": {
+   "job": "5e6afeca-66f4-48fe-940d-554b95cc8a9d",
+   "bytes": 752013,
+   "quality": 86
+  },
+  "04": {
+   "job": "179cc08b-a050-40f6-a319-2af0d9a26887",
+   "bytes": 917778,
+   "quality": 86
+  },
+  "05": {
+   "job": "daa130db-d61a-491b-9810-f5078f2dd0bb",
+   "bytes": 923711,
+   "quality": 83
+  }
+ }
+}
