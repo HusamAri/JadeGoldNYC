@@ -51,8 +51,7 @@ LOOK = {
                "reads clean at any width."),
 }
 SHIP = ("Made to order at our bench in New Jersey and shipped within 2 business days, free US shipping, gift box included.")  # owner 2026-10-27
-DISCLOSURE = ("The styled images are design visualizations of the finished chain; the unedited photo shows the "
-              "real chain.")
+# Owner 2026-10-27: no image-visualization disclosure in descriptions (removed live via ops/desc-strip).
 
 
 def description(lid, chain, piece):
@@ -69,8 +68,7 @@ def description(lid, chain, piece):
             f"- Lengths: {', '.join(str(x) for x in lens)} inches, measured end to end with the clasp.",
             "- Lobster clasp, stamped 925 on the tag plate.",
             "- Solid links, not hollow, no stones.",
-            f"- {SHIP}",
-            f"- {DISCLOSURE}"]
+            f"- {SHIP}"]
     return "\n".join(body)
 
 

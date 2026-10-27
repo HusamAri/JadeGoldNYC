@@ -1663,6 +1663,20 @@ repodaki hedefidir.
   sınıfın başka bir örneği bir sonraki partide çıkabilir (gram düzeltmesi fiyatı görmedi), o yüzden düzeltmeyi
   sınıfa (tüm hesap Decimal) yap, örneğe değil.
 
+- **Canlı metni toplu düzenlerken kaynak ETSY'deki metindir, panel kopyası değil; kuru koşu sahibin elle yaptığı
+  düzenlemeyi gösterir (2026-10-27, AI görsel beyanı kaldırma, Artifact 168 + EON 38):** Sahip "görsellerin AI olduğunu
+  söyleyen bölümleri kaldır" dedi. Beyan 53+ farklı kalıpta ve çoğu zaman başka bilgiyle aynı cümledeydi ("sold as a
+  pair; the product images are…", "a gift message can be added at checkout; …"), o yüzden cümle değil CLAUSE düzeyinde
+  kesen saf bir fonksiyon yazıldı ve testi paneldeki gerçek cümlelerle kuruldu. Rota (`ops/desc-strip`) metni panelden
+  değil Etsy'den okudu ve kuru koşu bunun neden şart olduğunu gösterdi: gümüş S02-S06'yı sahip Etsy editöründe zaten
+  temizlemişti (panelde beyan duruyordu), S01'de ise sahibin KENDİ yazdığı bir cümle vardı. Panel kopyasını basan bir
+  akış bu beş temizliği ve S01 düzenlemesini ezerdi. Kural: (1) dış sistemdeki metni dönüştüren toplu işte girdi canlı
+  metindir, panel yalnız hedef listesi verir; (2) çıkarılacak bilgi başka bilgiyle cümle paylaşıyorsa cümleyi silme,
+  clause'u kes ve testi gerçek korpusla kur; (3) kaldırılan her parçayı kuru koşuda tek listede oku (66 tekil cümle,
+  biri bile kayıp bilgi taşımıyordu); (4) üreteçte aynı metin duruyorsa onu da aynı turda sil, yoksa bir sonraki
+  yeniden üretim geri getirir. Zincir: kuru 206 -> kanarya 1 + panel metni okuma -> 11 parti, 0 hata -> taze token'la
+  kuru 206/206 temiz -> panelde 0 kalıntı, audit 163 + 33.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
