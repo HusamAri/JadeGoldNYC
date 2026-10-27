@@ -24,13 +24,19 @@ def ceil9(x):
     return int(math.ceil((x + 1) / 10.0) * 10 - 1)
 
 
+def ceil9d(x):
+    """ceil9 on an exact Decimal, same as the Postgres expression ceil((x + 1) / 10) * 10 - 1."""
+    return int(math.ceil((x + 1) / 10) * 10 - 1)
+
+
 def main():
     print("listing,chain,piece,width_mm,length_in,grams_est,list_usd,sale_usd,net_worst_usd")
     for (chain, piece), lid in IDS.items():
         for w, g18 in CHAINS[chain].items():
             for L in LENGTHS[piece]:
                 g = g18 * L / 18
-                lst = ceil9((50 + 6.0 * g) / SALE)
+                gd = Decimal(str(g18)) * L / 18  # exact: float put 6.5mm x 9in (179.00000000000003) one step too high
+                lst = ceil9d((50 + 6 * gd) / Decimal("0.70"))
                 sale = round(lst * SALE, 2)
                 net = sale * (1 - 0.095) - 0.45 - min(0.15 * sale, 100) - (4.0 * g + 12)
                 assert net > 0, (lid, w, L, net)
