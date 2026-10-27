@@ -62,17 +62,25 @@ TAIL = ("Shot on a Canon 50 mm lens at f/2.8, ISO 400, natural light only, fine 
         "letters, no numbers, no logo, no watermark, no ruler, no other jewelry, no gold anywhere. Square 1:1.")
 
 LEN = {"necklace": "20 inch necklace", "bracelet": "8 inch bracelet"}
+SIZE_NECK = ("a long chain about 50 cm end to end, laid out as one large open oval that fills most of the "
+             "frame, clearly a neck-length chain, never coiled, never a small bracelet loop")
+SIZE_WRIST = ("about 20 cm end to end, laid as one single open loop the size of a wrist, never coiled or "
+              "wrapped more than once")
+BACK = (", the clasp and tag plate hidden at the back of the neck, not visible, the chain continuous across "
+        "the front")
 FACETS = {"franco": "the chevron V-links on every face", "cuban": "the flat diamond-cut facets of each link", "figaro": "the three-short, one-long rhythm and the diamond-cut facets"}
 
 
 def frames(lid, chain, piece, w, palette, hero, worn, flat):
     one = f"One {LEN[piece]} in {METAL}, {w} mm wide, {CHAINS[chain]}, with {CLASP}."
-    yield "01 hero", (f"{one} The whole {piece} {hero}, the clasp visible at one end. "
+    size = (SIZE_NECK if piece == "necklace" else SIZE_WRIST)
+    yield "01 hero", (f"{one} The whole {piece} {hero}, {size}, the clasp visible at one end. "
                       f"Palette: {palette} tones only. Etsy listing hero. {TAIL}")
     yield "02 worn", (f"{one} {worn.capitalize()}. The {piece} is the only jewelry on the man, true to scale, "
-                      f"{w} mm wide. Palette: {palette} tones only. {TAIL}")
-    yield "03 link macro", (f"{one} Extreme close-up of about 3 cm of the {piece}, the links filling the frame "
-                            f"edge to edge on the same {palette} surface as the hero, "
+                      f"{w} mm wide{BACK if piece == 'necklace' else ''}. Palette: {palette} tones only. {TAIL}")
+    yield "03 link macro", (f"{one} Extreme close-up of one straight section of the {piece}, about 3 cm, a "
+                            f"single chain running diagonally corner to corner, no clasp, no tag plate and no "
+                            f"second strand in frame, edge to edge on the same {palette} surface as the hero, "
                             f"{FACETS[chain]} crisp, raking light. {TAIL}")
     yield "04 clasp", (f"{one} Close-up of the lobster clasp closed through the jump ring, the oval tag plate "
                        f"beside it with a small 925 stamp, on the same {palette} surface, soft side light. "
