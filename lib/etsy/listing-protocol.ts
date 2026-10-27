@@ -67,7 +67,8 @@ export type ListingProtocolId =
   | "brooch"
   | "stick_pin"
   | "shawl_pin"
-  | "ring_band";
+  | "ring_band"
+  | "chain_necklace";
 
 export interface ParcelSpec {
   weight: number;
@@ -334,6 +335,19 @@ export const LISTING_PROTOCOLS: Record<ListingProtocolId, ListingProtocolSpec> =
     requiredVariationAxes: [],
     personalization: null,
     parcel: RING_PARCEL,
+  },
+  chain_necklace: {
+    id: "chain_necklace",
+    label: "Chain necklace",
+    // Pandantifsiz zincir kolye. Canlı ağaç (ops/drafts-push?taxonomy=chain,
+    // 2026-10-27): Jewelry > Necklaces > Chains (1221). Aynı ad Craft Supplies >
+    // Findings > Chains (6294) altında da var; kök iddiası o ikizi eler.
+    taxonomyNames: ["Chains"],
+    taxonomyRoot: "Jewelry",
+    // Genişlik x Uzunluk satılır ama tek ölçülü zincir de olabilir; eksen dayatılmaz.
+    requiredVariationAxes: [],
+    personalization: null,
+    parcel: CHAIN_JEWELRY_PARCEL,
   },
 };
 

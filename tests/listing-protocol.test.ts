@@ -281,7 +281,7 @@ const FAKE_TREE = [
     name: "Jewelry",
     children: [
       { id: 10, name: "Rings", children: [{ id: 11, name: "Wedding Bands" }, { id: 1232, name: "Bands" }] },
-      { id: 20, name: "Necklaces", children: [{ id: 1229, name: "Pendant Necklaces" }] },
+      { id: 20, name: "Necklaces", children: [{ id: 1229, name: "Pendant Necklaces" }, { id: 1221, name: "Chains" }] },
       { id: 40, name: "Bracelets", children: [] },
       // Canlı ağaç (ops/drafts-push?taxonomy=ear, 2026-10-18): tırmanıcı kendi düğümünde.
       { id: 1203, name: "Earrings", children: [
@@ -299,6 +299,8 @@ const FAKE_TREE = [
       { id: 30, name: "Jewelry", children: [{ id: 3092, name: "Pendant Necklaces" }, { id: 1682, name: "Brooches" }] },
     ],
   },
+  // Canlı ağaç (2026-10-27): "Chains" adı Craft Supplies altında da var.
+  { id: 4, name: "Craft Supplies & Tools", children: [{ id: 6280, name: "Findings", children: [{ id: 6294, name: "Chains" }] }] },
   // Canlı ağaç (2026-10-15/17): broş ve iğneler "Jewelry" altında değil, Accessories altında.
   {
     id: 3,
@@ -595,4 +597,19 @@ test("FW26 Trend Edit protocols resolve to the live nodes: stick pin 11316, shaw
     { sku: "BAS-L04-14K-US7-FE", properties: { Karat: "14K", "Ring Size": "US 7", Palette: "Festival" }, price_cents: 92345, quantity: 20 },
   ];
   assert.equal(validateVariationAxes(LISTING_PROTOCOLS.ring_band, ur), null);
+});
+
+test("chain necklace resolves to Jewelry > Necklaces > Chains 1221, not the craft-supply twin 6294", async () => {
+  const spec = resolveListingProtocol({ product_type: "necklace", listing_metadata: { listingProtocol: "chain_necklace" } });
+  assert.equal(spec?.id, "chain_necklace");
+  assert.deepEqual(spec?.requiredVariationAxes, []);
+  assert.equal(spec?.personalization, null);
+  const r = await resolveTaxonomyIdForProtocol(fakeClient(), spec!);
+  assert.deepEqual(r, { ok: true, taxonomyId: 1221 });
+  // Silver chain grid: Width x Length, no karat.
+  const grid: DraftVariant[] = [
+    { sku: "BAS-S01-3_4MM-20IN", properties: { Width: "3.4 mm", Length: "20 in" }, price_cents: 41900, quantity: 20 },
+    { sku: "BAS-S01-4_1MM-20IN", properties: { Width: "4.1 mm", Length: "20 in" }, price_cents: 49900, quantity: 20 },
+  ];
+  assert.equal(validateVariationAxes(spec!, grid), null);
 });
