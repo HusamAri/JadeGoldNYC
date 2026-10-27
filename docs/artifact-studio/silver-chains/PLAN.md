@@ -59,8 +59,21 @@ S01 canary first. Live: 6 products / 144 variants / 30 images, set seal 8e85c330
 audit_log 6 + 144 + 30 inserts, 2 updates (S02/S04 metadata seal refreshed). Two Python float artifacts found by the
 seal and fixed to match Postgres numeric (grams half-up; one price, S04 6.5 mm x 9 in = 179).
 
-## Next
-- Etsy drafts via `ops/drafts-push` (`org=by Artifact Studio Jewelry`, `prefix=BAS-SLV`): needs the deploy with
-  `public/artifact/silver/` and the `chain_necklace` protocol live (30/30 image URLs 200), then dry run, S01 canary,
-  rest, independent verify. Owner yes required.
-- Owner adds one real unedited photo per draft in the Etsy editor before publishing.
+## Etsy drafts (2026-10-27, owner "evet")
+`ops/drafts-push` org=by Artifact Studio Jewelry, prefix=BAS-SLV: dry run 6/6 (0 blocked) -> S01 canary + independent
+verify (11/11 checks) -> S02-S06 (5 created, 0 warnings) -> independent verify 6/6, 0 mismatch, 0 price mismatch.
+Panel: 6 linked, 6 distinct ids, 6 `etsy.listing_create` audit rows; open tokens 0. All drafts, nothing published.
+
+| Listing | Etsy draft | Category | Variants | Images |
+|---|---|---|---|---|
+| S01 Franco necklace | 4604339049 | 1221 Chains | 30 | 5 |
+| S02 Franco bracelet | 4604362346 | 1196 Chain & Link Bracelets | 18 | 5 |
+| S03 Cuban curb necklace | 4604362474 | 1221 Chains | 30 | 5 |
+| S04 Cuban link bracelet | 4604362590 | 1196 Chain & Link Bracelets | 18 | 5 |
+| S05 Figaro necklace | 4604339755 | 1221 Chains | 30 | 5 |
+| S06 Figaro bracelet | 4604339881 | 1196 Chain & Link Bracelets | 18 | 5 |
+
+## Open
+- Owner adds one real unedited photo per draft in the Etsy editor (Etsy rule since 2026-10-22), then publishes.
+- Shipping profile and shop section are set in the Etsy editor before publishing.
+- Supplier cost replaces the 4 USD/g assumption; re-run `pricing.py` and `ops/price-sync` (panel price = Etsy list price).
