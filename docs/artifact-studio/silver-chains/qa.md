@@ -12,5 +12,5 @@
 | S02-02 worn | 17d1b457 | ok |
 | S02-03 macro | - | REDO: ae36b937 shows two plates (two bracelets), 670a1d4f coils three times (reads as a long chain) |
 
-Fix in `prompts.py`: necklace hero sized as a 50 cm chain spread across the frame, bracelet hero one open wrist-size loop,
+Fix in `prompts.py`: necklace hero sized as a 50 cm chain spread across the frame, bracelet hero and flat lay one unclasped open arc (2026-10-27: "coiled" in the scene line gave two rings),
 worn necklace clasp hidden at the back, macro = one straight section with no clasp or second strand.

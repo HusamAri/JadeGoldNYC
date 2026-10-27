@@ -31,7 +31,7 @@ LISTINGS = [
      "the neck and upper chest in frame, no face, soft grey daylight",
      "on a charcoal wool blanket beside a matte black steel lighter and a slate coaster"),
     ("S02", "franco", "bracelet", 4.1, "ink navy",
-     "coiled loosely on folded raw indigo denim, cool daylight from a high window",
+     "lying on folded raw indigo denim, cool daylight from a high window",
      "on the left wrist of a man in a navy cotton shirt with the cuff rolled once, forearm resting on a dark "
      "navy desk, only the forearm and hand in frame, soft cool daylight",
      "on deep navy linen beside a folded indigo pocket square and a dark blue notebook"),
@@ -41,7 +41,7 @@ LISTINGS = [
      "only the neck and upper chest in frame, no face, low moody side light",
      "on black leather beside a black ceramic espresso cup on a black stone tray"),
     ("S04", "cuban", "bracelet", 7.6, "olive",
-     "lying open on an olive green waxed canvas jacket sleeve, soft daylight",
+     "lying on an olive green waxed canvas jacket sleeve, soft daylight",
      "on the right wrist of a man in an olive field jacket, hand relaxed on a weathered olive canvas bag, "
      "only the forearm and hand in frame, soft overcast daylight",
      "on olive waxed canvas beside a matte steel carabiner and a folded olive bandana"),
@@ -51,7 +51,7 @@ LISTINGS = [
      "only the neck and upper chest in frame, no face, bright soft daylight",
      "on light grey felt beside a folded white shirt collar and a pale concrete dish"),
     ("S06", "figaro", "bracelet", 6.6, "espresso",
-     "coiled on dark espresso brown leather, warm low side light from a window",
+     "lying on dark espresso brown leather, warm low side light from a window",
      "on the left wrist of a man in a dark brown suede jacket, hand resting on a walnut table, only the forearm "
      "and hand in frame, warm window light",
      "on a dark walnut board beside a brown leather card holder and a coffee cup"),
@@ -64,8 +64,10 @@ TAIL = ("Shot on a Canon 50 mm lens at f/2.8, ISO 400, natural light only, fine 
 LEN = {"necklace": "20 inch necklace", "bracelet": "8 inch bracelet"}
 SIZE_NECK = ("a long chain about 50 cm end to end, its full length spread out so it fills most of the "
              "frame, clearly a neck-length chain, never coiled, never a small bracelet loop")
-SIZE_WRIST = ("about 20 cm end to end, laid as one single open loop the size of a wrist, never coiled or "
-              "wrapped more than once")
+SIZE_WRIST = ("unclasped and lying flat in one shallow open arc like a horseshoe, about 20 cm of chain, a single "
+              "strand that never crosses or overlaps itself, never coiled, never a closed ring, never two loops; "
+              "the lobster clasp lies open at one tip of the arc and the tag plate at the other tip, the two tips "
+              "about 5 cm apart; the arc fills about two thirds of the frame width")
 BACK = (", the clasp and tag plate hidden at the back of the neck, not visible, the chain continuous across "
         "the front")
 FACETS = {"franco": "the chevron V-links on every face", "cuban": "the flat diamond-cut facets of each link", "figaro": "the three-short, one-long rhythm and the diamond-cut facets"}
@@ -86,7 +88,7 @@ def frames(lid, chain, piece, w, palette, hero, worn, flat):
                        f"beside it with a small 925 stamp, on the same {palette} surface, soft side light. "
                        f"The stamp reads 925 only, no other marks. {TAIL}".replace(
                            "No text, no letters, no numbers,", "No other text,"))
-    yield "05 flat lay", (f"{one} The {piece} {flat}, seen from directly above, a calm men's still life. "
+    yield "05 flat lay", (f"{one} The {piece} {flat}, {size}, seen from directly above, a calm men's still life. "
                           f"Palette: {palette} tones only. {TAIL}")
 
 
