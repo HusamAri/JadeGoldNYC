@@ -20,7 +20,7 @@ CHAINS = {
                "flat, uniform width"),
 }
 
-CLASP = ("a sterling silver lobster clasp joined to a small flat oval tag plate and a round jump ring at the other "
+CLASP = ("a sterling silver lobster clasp joined to a small flat oval tag plate about 8 mm long, never wider than the chain, and a round jump ring at the other "
          "end, nothing else on the chain")
 
 LISTINGS = [
@@ -36,7 +36,7 @@ LISTINGS = [
      "navy desk, only the forearm and hand in frame, soft cool daylight",
      "on deep navy linen beside a folded indigo pocket square and a dark blue notebook"),
     ("S03", "cuban", "necklace", 6.5, "black",
-     "laid in a loose curve on polished black marble with faint grey veining, a single hard light from the side",
+     "laid in one long open S-curve on polished black marble with faint grey veining, a single hard light from the side",
      "worn by a man in an open-collar black shirt, the chain lying flat on the skin at the base of the neck, "
      "only the neck and upper chest in frame, no face, low moody side light",
      "on black leather beside a black ceramic espresso cup on a black stone tray"),
