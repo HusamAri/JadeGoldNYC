@@ -2,14 +2,14 @@
 
 Target = what the buyer pays after the shop's permanent 30% sale, set from a market fit (2026-10-27):
   buyer price ~= 50 + 6.0 USD per gram (solid 925 Italian chains, Etsy/DTC mid-market; see PLAN.md "Market").
-List price = target / 0.70, rounded up to end in 9 (whole dollars).
+List price = target / SALE (0.75, shop sale 25% since 2026-10-27), rounded up to end in 9 (whole dollars).
 Floor check (no supplier quote yet): pessimistic cost 4.00 USD/g + 12 USD packaging/shipping + 0.45,
 fees 9.5% + worst Offsite 15% (capped 100) at the SALE price; every row must stay positive.
 """
 import math
 from decimal import Decimal, ROUND_HALF_UP
 
-SALE = 0.70
+SALE = 0.75  # owner 2026-10-27: the shop sale is 25% (was 0.70)
 CHAINS = {  # width mm -> 18" grams (supplier catalog)
     "franco": {2.2: 12.9, 3.0: 21.7, 3.4: 28.3, 4.1: 41.1, 4.8: 56.0, 5.2: 65.3},
     "cuban":  {3.3: 7.6, 4.8: 14.8, 6.5: 25.1, 7.6: 32.6, 8.5: 41.6, 10.2: 52.8},
@@ -36,7 +36,7 @@ def main():
             for L in LENGTHS[piece]:
                 g = g18 * L / 18
                 gd = Decimal(str(g18)) * L / 18  # exact: float put 6.5mm x 9in (179.00000000000003) one step too high
-                lst = ceil9d((50 + 6 * gd) / Decimal("0.70"))
+                lst = ceil9d((50 + 6 * gd) / Decimal(str(SALE)))
                 sale = round(lst * SALE, 2)
                 net = sale * (1 - 0.095) - 0.45 - min(0.15 * sale, 100) - (4.0 * g + 12)
                 assert net > 0, (lid, w, L, net)
