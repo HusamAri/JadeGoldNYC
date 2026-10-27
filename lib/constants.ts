@@ -87,6 +87,7 @@ export const AUDIT_ACTION_LABELS: Record<string, string> = {
   "etsy.relabel": "Etsy listing kimliği panele eşitlendi",
   "etsy.inventory_rebuild": "Etsy envanteri panelden yeniden kuruldu",
   "etsy.rewrite": "Etsy listing metni ve nitelikleri rewrite dosyasından uygulandı",
+  "etsy.desc_strip": "Etsy açıklamasından görselleştirme beyanı kaldırıldı",
   "etsy.redesign_push": "Etsy listing yeniden tasarım gönderimi",
   "report.export": "Rapor dışa aktarıldı",
   "org.created": "Şirket kuruldu",
