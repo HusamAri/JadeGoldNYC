@@ -1,5 +1,5 @@
 begin;
--- S06 925 Sterling Silver Figaro Bracelet, Flat 3+1 Link Chain, 3.4 to 10.3mm, Men's: 18 variants (Width x Length), seal aa5acbd4236c7ee52f3dae1f8fa47708, md5(description) 1af372fdd915bbacb96df33948a352f0, tags 1def413047d4b21433645dcd54aeae28
+-- S06 925 Sterling Silver Figaro Bracelet, Flat 3+1 Link Chain, 3.4 to 10.3mm, Men's: 18 variants (Width x Length), seal 79602e27e3ef95c236a6c2782f713f6f, md5(description) 1af372fdd915bbacb96df33948a352f0, tags 1def413047d4b21433645dcd54aeae28
 insert into public.products (
   id, org_id, sku, title, description, tags, materials, status, currency,
   price_cents, quantity, has_variations, image_url, num_images, product_type, listing_metadata
@@ -23,7 +23,7 @@ Widths and approximate weight (weight grows with length):
 - The styled images are design visualizations of the finished chain; the unedited photo shows the real chain.$sv$,
   ARRAY[$sv$figaro bracelet$sv$,$sv$mens silver bracelet$sv$,$sv$silver figaro links$sv$,$sv$figaro bracelet men$sv$,$sv$925 silver bracelet$sv$,$sv$3 plus 1 bracelet$sv$,$sv$flat figaro chain$sv$,$sv$faceted figaro$sv$,$sv$sterling bracelet$sv$,$sv$mens wrist chain$sv$,$sv$solid silver links$sv$,$sv$thick silver links$sv$,$sv$mens stack bracelet$sv$]::text[], ARRAY[$sv$925 sterling silver$sv$]::text[], 'draft', 'USD',
   9900, 20, true, $sv$https://amuletta.artifactstudio.info/artifact/silver/S06/01.jpg$sv$, 5, 'bracelet',
-  $sv${"productType": "bracelet", "listingProtocol": "chain_bracelet", "protocolVersion": "etsy-listing-v1", "offersPersonalization": false, "modelId": "S06", "name": "Figaro bracelet", "collection": "Sterling Silver Chains", "variationAxes": ["Width", "Length"], "metal": "925 sterling silver", "processing": {"min": 1, "max": 2, "note": "made to order, ships within 2 business days (owner 2026-10-27)"}, "sourcePackage": "2026-10-27-artifact-silver-chains", "sourcePackagePath": "docs/artifact-studio/silver-chains", "generatorScript": "docs/artifact-studio/silver-chains/gen_migration.py", "weightSource": "supplier_catalog", "missingHero": false, "pricing": {"model": "pricing.py: buyer price 50 + 6.0 USD/g (market fit 2026-10-27); list = that / 0.70, ends in 9", "status": "ESTIMATE_MARKET", "panelPriceIs": "Etsy list price", "floor": "pessimistic cost 4 USD/g + 12 + 0.45, fees 9.5% + worst Offsite: all positive"}, "approval": {"blockers": ["Images are design visualizations (Higgsfield, picks.json); the owner adds one real unedited photo per listing in the Etsy editor before publishing.", "ESTIMATED PRICE: no supplier quote yet; pricing.py assumes 4 USD/g."], "etsyDraftCreationAuthorized": true, "livePublicationAuthorized": false, "authority": "Owner 2026-10-27: six silver chain listings (Franco, Cuban, Figaro x necklace, bracelet)."}, "variantSeal": "aa5acbd4236c7ee52f3dae1f8fa47708"}$sv$::jsonb
+  $sv${"productType": "bracelet", "listingProtocol": "chain_bracelet", "protocolVersion": "etsy-listing-v1", "offersPersonalization": false, "modelId": "S06", "name": "Figaro bracelet", "collection": "Sterling Silver Chains", "variationAxes": ["Width", "Length"], "metal": "925 sterling silver", "processing": {"min": 1, "max": 2, "note": "made to order, ships within 2 business days (owner 2026-10-27)"}, "sourcePackage": "2026-10-27-artifact-silver-chains", "sourcePackagePath": "docs/artifact-studio/silver-chains", "generatorScript": "docs/artifact-studio/silver-chains/gen_migration.py", "weightSource": "supplier_catalog", "missingHero": false, "pricing": {"model": "pricing.py: buyer price 50 + 6.0 USD/g (market fit 2026-10-27); list = that / 0.70, ends in 9", "status": "ESTIMATE_MARKET", "panelPriceIs": "Etsy list price", "floor": "pessimistic cost 4 USD/g + 12 + 0.45, fees 9.5% + worst Offsite: all positive"}, "approval": {"blockers": ["Images are design visualizations (Higgsfield, picks.json); the owner adds one real unedited photo per listing in the Etsy editor before publishing.", "ESTIMATED PRICE: no supplier quote yet; pricing.py assumes 4 USD/g."], "etsyDraftCreationAuthorized": true, "livePublicationAuthorized": false, "authority": "Owner 2026-10-27: six silver chain listings (Franco, Cuban, Figaro x necklace, bracelet)."}, "variantSeal": "79602e27e3ef95c236a6c2782f713f6f"}$sv$::jsonb
 where not exists (select 1 from public.products p where p.org_id = '2c254edf-2119-4079-b09e-dc672e32c1f9'
   and (p.sku = $sv$BAS-SLV-S06$sv$ or p.id = $sv$8d0e67be-8399-55b2-84e9-2139be0e97a5$sv$::uuid));
 
@@ -34,10 +34,10 @@ select '2c254edf-2119-4079-b09e-dc672e32c1f9', v.sku, p.id, v.name, v.props::jso
 from (values
   ($sv$BAS-SLV-S06-3_4MM-7IN$sv$, $sv$Figaro bracelet: 3.4 mm, 7 in$sv$, $sv${"Width": "3.4 mm", "Length": "7 in"}$sv$, 9900, 2.80),
   ($sv$BAS-SLV-S06-3_4MM-8IN$sv$, $sv$Figaro bracelet: 3.4 mm, 8 in$sv$, $sv${"Width": "3.4 mm", "Length": "8 in"}$sv$, 9900, 3.20),
-  ($sv$BAS-SLV-S06-3_4MM-9IN$sv$, $sv$Figaro bracelet: 3.4 mm, 9 in$sv$, $sv${"Width": "3.4 mm", "Length": "9 in"}$sv$, 10900, 3.50),
+  ($sv$BAS-SLV-S06-3_4MM-9IN$sv$, $sv$Figaro bracelet: 3.4 mm, 9 in$sv$, $sv${"Width": "3.4 mm", "Length": "9 in"}$sv$, 10900, 3.60),
   ($sv$BAS-SLV-S06-4_6MM-7IN$sv$, $sv$Figaro bracelet: 4.6 mm, 7 in$sv$, $sv${"Width": "4.6 mm", "Length": "7 in"}$sv$, 11900, 4.90),
   ($sv$BAS-SLV-S06-4_6MM-8IN$sv$, $sv$Figaro bracelet: 4.6 mm, 8 in$sv$, $sv${"Width": "4.6 mm", "Length": "8 in"}$sv$, 12900, 5.60),
-  ($sv$BAS-SLV-S06-4_6MM-9IN$sv$, $sv$Figaro bracelet: 4.6 mm, 9 in$sv$, $sv${"Width": "4.6 mm", "Length": "9 in"}$sv$, 12900, 6.20),
+  ($sv$BAS-SLV-S06-4_6MM-9IN$sv$, $sv$Figaro bracelet: 4.6 mm, 9 in$sv$, $sv${"Width": "4.6 mm", "Length": "9 in"}$sv$, 12900, 6.30),
   ($sv$BAS-SLV-S06-6_6MM-7IN$sv$, $sv$Figaro bracelet: 6.6 mm, 7 in$sv$, $sv${"Width": "6.6 mm", "Length": "7 in"}$sv$, 15900, 9.10),
   ($sv$BAS-SLV-S06-6_6MM-8IN$sv$, $sv$Figaro bracelet: 6.6 mm, 8 in$sv$, $sv${"Width": "6.6 mm", "Length": "8 in"}$sv$, 16900, 10.40),
   ($sv$BAS-SLV-S06-6_6MM-9IN$sv$, $sv$Figaro bracelet: 6.6 mm, 9 in$sv$, $sv${"Width": "6.6 mm", "Length": "9 in"}$sv$, 17900, 11.80),
@@ -49,7 +49,7 @@ from (values
   ($sv$BAS-SLV-S06-8_3MM-9IN$sv$, $sv$Figaro bracelet: 8.3 mm, 9 in$sv$, $sv${"Width": "8.3 mm", "Length": "9 in"}$sv$, 22900, 17.60),
   ($sv$BAS-SLV-S06-10_3MM-7IN$sv$, $sv$Figaro bracelet: 10.3 mm, 7 in$sv$, $sv${"Width": "10.3 mm", "Length": "7 in"}$sv$, 25900, 21.50),
   ($sv$BAS-SLV-S06-10_3MM-8IN$sv$, $sv$Figaro bracelet: 10.3 mm, 8 in$sv$, $sv${"Width": "10.3 mm", "Length": "8 in"}$sv$, 28900, 24.60),
-  ($sv$BAS-SLV-S06-10_3MM-9IN$sv$, $sv$Figaro bracelet: 10.3 mm, 9 in$sv$, $sv${"Width": "10.3 mm", "Length": "9 in"}$sv$, 30900, 27.60)
+  ($sv$BAS-SLV-S06-10_3MM-9IN$sv$, $sv$Figaro bracelet: 10.3 mm, 9 in$sv$, $sv${"Width": "10.3 mm", "Length": "9 in"}$sv$, 30900, 27.70)
 ) v(sku, name, props, price, grams)
 join public.products p on p.org_id = '2c254edf-2119-4079-b09e-dc672e32c1f9' and p.sku = $sv$BAS-SLV-S06$sv$ and p.etsy_listing_id is null
 on conflict (org_id, sku) do update set

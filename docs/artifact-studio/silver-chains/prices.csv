@@ -34,7 +34,7 @@ S02,franco,bracelet,2.2,8,5.7,129,90.30,33
 S02,franco,bracelet,2.2,9,6.5,129,90.30,30
 S02,franco,bracelet,3.0,7,8.4,149,104.30,33
 S02,franco,bracelet,3.0,8,9.6,159,111.30,33
-S02,franco,bracelet,3.0,9,10.8,169,118.30,33
+S02,franco,bracelet,3.0,9,10.9,169,118.30,33
 S02,franco,bracelet,3.4,7,11.0,169,118.30,33
 S02,franco,bracelet,3.4,8,12.6,189,132.30,37
 S02,franco,bracelet,3.4,9,14.2,199,139.30,36
@@ -46,7 +46,7 @@ S02,franco,bracelet,4.8,8,24.9,289,202.30,41
 S02,franco,bracelet,4.8,9,28.0,319,223.30,44
 S02,franco,bracelet,5.2,7,25.4,299,209.30,44
 S02,franco,bracelet,5.2,8,29.0,329,230.30,45
-S02,franco,bracelet,5.2,9,32.6,359,251.30,47
+S02,franco,bracelet,5.2,9,32.7,359,251.30,47
 S03,cuban,necklace,3.3,18,7.6,139,97.30,31
 S03,cuban,necklace,3.3,20,8.4,149,104.30,33
 S03,cuban,necklace,3.3,22,9.3,159,111.30,34
@@ -127,10 +127,10 @@ S05,figaro,necklace,10.3,24,73.7,709,496.30,67
 S05,figaro,necklace,10.3,26,79.9,759,531.30,69
 S06,figaro,bracelet,3.4,7,2.8,99,69.30,29
 S06,figaro,bracelet,3.4,8,3.2,99,69.30,27
-S06,figaro,bracelet,3.4,9,3.5,109,76.30,31
+S06,figaro,bracelet,3.4,9,3.6,109,76.30,31
 S06,figaro,bracelet,4.6,7,4.9,119,83.30,31
 S06,figaro,bracelet,4.6,8,5.6,129,90.30,34
-S06,figaro,bracelet,4.6,9,6.2,129,90.30,31
+S06,figaro,bracelet,4.6,9,6.3,129,90.30,31
 S06,figaro,bracelet,6.6,7,9.1,159,111.30,35
 S06,figaro,bracelet,6.6,8,10.4,169,118.30,35
 S06,figaro,bracelet,6.6,9,11.8,179,125.30,35
@@ -142,4 +142,4 @@ S06,figaro,bracelet,8.3,8,15.6,209,146.30,36
 S06,figaro,bracelet,8.3,9,17.6,229,160.30,38
 S06,figaro,bracelet,10.3,7,21.5,259,181.30,38
 S06,figaro,bracelet,10.3,8,24.6,289,202.30,42
-S06,figaro,bracelet,10.3,9,27.6,309,216.30,40
+S06,figaro,bracelet,10.3,9,27.7,309,216.30,40

@@ -7,6 +7,7 @@ Floor check (no supplier quote yet): pessimistic cost 4.00 USD/g + 12 USD packag
 fees 9.5% + worst Offsite 15% (capped 100) at the SALE price; every row must stay positive.
 """
 import math
+from decimal import Decimal, ROUND_HALF_UP
 
 SALE = 0.70
 CHAINS = {  # width mm -> 18" grams (supplier catalog)
@@ -33,7 +34,8 @@ def main():
                 sale = round(lst * SALE, 2)
                 net = sale * (1 - 0.095) - 0.45 - min(0.15 * sale, 100) - (4.0 * g + 12)
                 assert net > 0, (lid, w, L, net)
-                print(f"{lid},{chain},{piece},{w},{L},{g:.1f},{lst},{sale:.2f},{net:.0f}")
+                g1 = (Decimal(str(g18)) * L / 18).quantize(Decimal("0.1"), ROUND_HALF_UP)  # exact half-up, same as Postgres round()
+                print(f"{lid},{chain},{piece},{w},{L},{g1},{lst},{sale:.2f},{net:.0f}")
 
 
 if __name__ == "__main__":

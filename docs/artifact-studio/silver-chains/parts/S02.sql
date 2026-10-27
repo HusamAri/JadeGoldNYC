@@ -1,5 +1,5 @@
 begin;
--- S02 925 Sterling Silver Franco Bracelet, Rhodium Plated Chain, 2.2 to 5.2mm, Men's: 18 variants (Width x Length), seal 749d9ea794b73fc9dfe4aa18488dbce6, md5(description) f69b31924ecd54e9cc55ad30e4e1af5f, tags aa722a8b73db4745c2600bb4e141779d
+-- S02 925 Sterling Silver Franco Bracelet, Rhodium Plated Chain, 2.2 to 5.2mm, Men's: 18 variants (Width x Length), seal 3cd9059183417ac5bc400d2d6baef8e9, md5(description) f69b31924ecd54e9cc55ad30e4e1af5f, tags aa722a8b73db4745c2600bb4e141779d
 insert into public.products (
   id, org_id, sku, title, description, tags, materials, status, currency,
   price_cents, quantity, has_variations, image_url, num_images, product_type, listing_metadata
@@ -23,7 +23,7 @@ Widths and approximate weight (weight grows with length):
 - The styled images are design visualizations of the finished chain; the unedited photo shows the real chain.$sv$,
   ARRAY[$sv$franco bracelet$sv$,$sv$mens silver bracelet$sv$,$sv$sterling bracelet$sv$,$sv$silver franco links$sv$,$sv$925 silver bracelet$sv$,$sv$mens chain bracelet$sv$,$sv$rhodium bracelet$sv$,$sv$solid 925 bracelet$sv$,$sv$square link bracelet$sv$,$sv$mens wrist chain$sv$,$sv$thick silver links$sv$,$sv$mens stack bracelet$sv$,$sv$mens franco bracelet$sv$]::text[], ARRAY[$sv$925 sterling silver$sv$,$sv$rhodium plating$sv$]::text[], 'draft', 'USD',
   11900, 20, true, $sv$https://amuletta.artifactstudio.info/artifact/silver/S02/01.jpg$sv$, 5, 'bracelet',
-  $sv${"productType": "bracelet", "listingProtocol": "chain_bracelet", "protocolVersion": "etsy-listing-v1", "offersPersonalization": false, "modelId": "S02", "name": "Franco bracelet", "collection": "Sterling Silver Chains", "variationAxes": ["Width", "Length"], "metal": "925 sterling silver", "processing": {"min": 1, "max": 2, "note": "made to order, ships within 2 business days (owner 2026-10-27)"}, "sourcePackage": "2026-10-27-artifact-silver-chains", "sourcePackagePath": "docs/artifact-studio/silver-chains", "generatorScript": "docs/artifact-studio/silver-chains/gen_migration.py", "weightSource": "supplier_catalog", "missingHero": false, "pricing": {"model": "pricing.py: buyer price 50 + 6.0 USD/g (market fit 2026-10-27); list = that / 0.70, ends in 9", "status": "ESTIMATE_MARKET", "panelPriceIs": "Etsy list price", "floor": "pessimistic cost 4 USD/g + 12 + 0.45, fees 9.5% + worst Offsite: all positive"}, "approval": {"blockers": ["Images are design visualizations (Higgsfield, picks.json); the owner adds one real unedited photo per listing in the Etsy editor before publishing.", "ESTIMATED PRICE: no supplier quote yet; pricing.py assumes 4 USD/g."], "etsyDraftCreationAuthorized": true, "livePublicationAuthorized": false, "authority": "Owner 2026-10-27: six silver chain listings (Franco, Cuban, Figaro x necklace, bracelet)."}, "variantSeal": "749d9ea794b73fc9dfe4aa18488dbce6"}$sv$::jsonb
+  $sv${"productType": "bracelet", "listingProtocol": "chain_bracelet", "protocolVersion": "etsy-listing-v1", "offersPersonalization": false, "modelId": "S02", "name": "Franco bracelet", "collection": "Sterling Silver Chains", "variationAxes": ["Width", "Length"], "metal": "925 sterling silver", "processing": {"min": 1, "max": 2, "note": "made to order, ships within 2 business days (owner 2026-10-27)"}, "sourcePackage": "2026-10-27-artifact-silver-chains", "sourcePackagePath": "docs/artifact-studio/silver-chains", "generatorScript": "docs/artifact-studio/silver-chains/gen_migration.py", "weightSource": "supplier_catalog", "missingHero": false, "pricing": {"model": "pricing.py: buyer price 50 + 6.0 USD/g (market fit 2026-10-27); list = that / 0.70, ends in 9", "status": "ESTIMATE_MARKET", "panelPriceIs": "Etsy list price", "floor": "pessimistic cost 4 USD/g + 12 + 0.45, fees 9.5% + worst Offsite: all positive"}, "approval": {"blockers": ["Images are design visualizations (Higgsfield, picks.json); the owner adds one real unedited photo per listing in the Etsy editor before publishing.", "ESTIMATED PRICE: no supplier quote yet; pricing.py assumes 4 USD/g."], "etsyDraftCreationAuthorized": true, "livePublicationAuthorized": false, "authority": "Owner 2026-10-27: six silver chain listings (Franco, Cuban, Figaro x necklace, bracelet)."}, "variantSeal": "3cd9059183417ac5bc400d2d6baef8e9"}$sv$::jsonb
 where not exists (select 1 from public.products p where p.org_id = '2c254edf-2119-4079-b09e-dc672e32c1f9'
   and (p.sku = $sv$BAS-SLV-S02$sv$ or p.id = $sv$b007948f-45a9-5dbf-86d5-94896a981564$sv$::uuid));
 
@@ -37,7 +37,7 @@ from (values
   ($sv$BAS-SLV-S02-2_2MM-9IN$sv$, $sv$Franco bracelet: 2.2 mm, 9 in$sv$, $sv${"Width": "2.2 mm", "Length": "9 in"}$sv$, 12900, 6.50),
   ($sv$BAS-SLV-S02-3MM-7IN$sv$, $sv$Franco bracelet: 3 mm, 7 in$sv$, $sv${"Width": "3 mm", "Length": "7 in"}$sv$, 14900, 8.40),
   ($sv$BAS-SLV-S02-3MM-8IN$sv$, $sv$Franco bracelet: 3 mm, 8 in$sv$, $sv${"Width": "3 mm", "Length": "8 in"}$sv$, 15900, 9.60),
-  ($sv$BAS-SLV-S02-3MM-9IN$sv$, $sv$Franco bracelet: 3 mm, 9 in$sv$, $sv${"Width": "3 mm", "Length": "9 in"}$sv$, 16900, 10.80),
+  ($sv$BAS-SLV-S02-3MM-9IN$sv$, $sv$Franco bracelet: 3 mm, 9 in$sv$, $sv${"Width": "3 mm", "Length": "9 in"}$sv$, 16900, 10.90),
   ($sv$BAS-SLV-S02-3_4MM-7IN$sv$, $sv$Franco bracelet: 3.4 mm, 7 in$sv$, $sv${"Width": "3.4 mm", "Length": "7 in"}$sv$, 16900, 11.00),
   ($sv$BAS-SLV-S02-3_4MM-8IN$sv$, $sv$Franco bracelet: 3.4 mm, 8 in$sv$, $sv${"Width": "3.4 mm", "Length": "8 in"}$sv$, 18900, 12.60),
   ($sv$BAS-SLV-S02-3_4MM-9IN$sv$, $sv$Franco bracelet: 3.4 mm, 9 in$sv$, $sv${"Width": "3.4 mm", "Length": "9 in"}$sv$, 19900, 14.20),
@@ -49,7 +49,7 @@ from (values
   ($sv$BAS-SLV-S02-4_8MM-9IN$sv$, $sv$Franco bracelet: 4.8 mm, 9 in$sv$, $sv${"Width": "4.8 mm", "Length": "9 in"}$sv$, 31900, 28.00),
   ($sv$BAS-SLV-S02-5_2MM-7IN$sv$, $sv$Franco bracelet: 5.2 mm, 7 in$sv$, $sv${"Width": "5.2 mm", "Length": "7 in"}$sv$, 29900, 25.40),
   ($sv$BAS-SLV-S02-5_2MM-8IN$sv$, $sv$Franco bracelet: 5.2 mm, 8 in$sv$, $sv${"Width": "5.2 mm", "Length": "8 in"}$sv$, 32900, 29.00),
-  ($sv$BAS-SLV-S02-5_2MM-9IN$sv$, $sv$Franco bracelet: 5.2 mm, 9 in$sv$, $sv${"Width": "5.2 mm", "Length": "9 in"}$sv$, 35900, 32.60)
+  ($sv$BAS-SLV-S02-5_2MM-9IN$sv$, $sv$Franco bracelet: 5.2 mm, 9 in$sv$, $sv${"Width": "5.2 mm", "Length": "9 in"}$sv$, 35900, 32.70)
 ) v(sku, name, props, price, grams)
 join public.products p on p.org_id = '2c254edf-2119-4079-b09e-dc672e32c1f9' and p.sku = $sv$BAS-SLV-S02$sv$ and p.etsy_listing_id is null
 on conflict (org_id, sku) do update set

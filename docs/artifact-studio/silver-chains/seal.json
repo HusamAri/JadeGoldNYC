@@ -1,6 +1,6 @@
 {
  "setVariants": 144,
- "setSeal": "52eafdd878a948531e5106f9c677579a",
+ "setSeal": "77dce89baac38a8bbace0a93d620386b",
  "items": {
   "S01": {
    "sku": "BAS-SLV-S01",
@@ -14,7 +14,7 @@
    "sku": "BAS-SLV-S02",
    "productId": "b007948f-45a9-5dbf-86d5-94896a981564",
    "variants": 18,
-   "variantSeal": "749d9ea794b73fc9dfe4aa18488dbce6",
+   "variantSeal": "3cd9059183417ac5bc400d2d6baef8e9",
    "descMd5": "f69b31924ecd54e9cc55ad30e4e1af5f",
    "tagSeal": "aa722a8b73db4745c2600bb4e141779d"
   },
@@ -46,7 +46,7 @@
    "sku": "BAS-SLV-S06",
    "productId": "8d0e67be-8399-55b2-84e9-2139be0e97a5",
    "variants": 18,
-   "variantSeal": "aa5acbd4236c7ee52f3dae1f8fa47708",
+   "variantSeal": "79602e27e3ef95c236a6c2782f713f6f",
    "descMd5": "1af372fdd915bbacb96df33948a352f0",
    "tagSeal": "1def413047d4b21433645dcd54aeae28"
   }
