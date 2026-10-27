@@ -106,5 +106,59 @@
    "bytes": 923711,
    "quality": 83
   }
+ },
+ "S05": {
+  "01": {
+   "job": "7fa035ea-966c-4df2-b1ea-4635fb7ee086",
+   "bytes": 838292,
+   "quality": 86
+  },
+  "02": {
+   "job": "b2d35c18-3922-43a3-b37e-58db4c0c8bc1",
+   "bytes": 797911,
+   "quality": 86
+  },
+  "03": {
+   "job": "88f38d11-7d3e-4f21-a875-827d16e2702c",
+   "bytes": 683881,
+   "quality": 86
+  },
+  "04": {
+   "job": "9421eec9-bebd-4950-85f4-20e5fdb8201b",
+   "bytes": 749599,
+   "quality": 86
+  },
+  "05": {
+   "job": "953bacfe-4930-4b8e-a671-edacbe573e4d",
+   "bytes": 850514,
+   "quality": 86
+  }
+ },
+ "S06": {
+  "01": {
+   "job": "d4dc6348-91bd-4095-bd98-bb02aefcdf3a",
+   "bytes": 823409,
+   "quality": 86
+  },
+  "02": {
+   "job": "0f150355-786f-42a5-b43c-fb78234d4440",
+   "bytes": 565313,
+   "quality": 86
+  },
+  "03": {
+   "job": "998b01b4-ab07-4a23-ae6c-9d9439e7c009",
+   "bytes": 555455,
+   "quality": 86
+  },
+  "04": {
+   "job": "d9a42c53-911d-4c82-9f38-20d9b658a9da",
+   "bytes": 830935,
+   "quality": 86
+  },
+  "05": {
+   "job": "79282375-bd76-4150-baad-f7ff9cc2e713",
+   "bytes": 872529,
+   "quality": 83
+  }
  }
 }
