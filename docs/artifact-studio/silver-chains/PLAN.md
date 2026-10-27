@@ -52,3 +52,15 @@ Owner: "market research, competitive prices, I edit manually if needed". `pricin
 ## Open
 - **Supplier cost** replaces the 4 USD/g assumption; re-run `pricing.py`.
 - Curb/Figaro plating status.
+
+## Panel load (2026-10-27, owner "evet")
+Applied 0172 through `compact_sql.py` (text pasted, Width x Length grid generated in SQL), one product at a time,
+S01 canary first. Live: 6 products / 144 variants / 30 images, set seal 8e85c330f76fa1511bee63664a01e817 = `seal.json`;
+audit_log 6 + 144 + 30 inserts, 2 updates (S02/S04 metadata seal refreshed). Two Python float artifacts found by the
+seal and fixed to match Postgres numeric (grams half-up; one price, S04 6.5 mm x 9 in = 179).
+
+## Next
+- Etsy drafts via `ops/drafts-push` (`org=by Artifact Studio Jewelry`, `prefix=BAS-SLV`): needs the deploy with
+  `public/artifact/silver/` and the `chain_necklace` protocol live (30/30 image URLs 200), then dry run, S01 canary,
+  rest, independent verify. Owner yes required.
+- Owner adds one real unedited photo per draft in the Etsy editor before publishing.

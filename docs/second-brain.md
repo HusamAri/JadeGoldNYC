@@ -1650,6 +1650,19 @@ repodaki hedefidir.
   değişikliğin yerine yazılmaz ve yazılı ölçüm planı varken ona dokunulmaz; (3) kullanıcının "build it" onayı bu
   bilgi ortaya çıkmadan verilmişse onay o bilgiyi kapsamaz, kanıtı göster ve yeniden sor.
 
+- **Aynı ızgarayı iki dilde üret: float yuvarlaması tam bölünen sınırda bir fiyat basamağı atlatır, ve ikinci yol
+  bunu bulur (2026-10-27, gümüş zincirler):** 144 varyantı MCP'ye elle yapıştırmak yerine ızgarayı SQL'de eksenlerden
+  ve fiyat formülünden ürettim, yalnız metni yapıştırdım; doğrulama Python'un ürettiği mühürdü. S01 ve S03 birebir
+  tuttu, S02 ve S04 tutmadı. Fark iki ayrı float artığıydı: 21,7 x 9 / 18 = 10,85 g Python'da `.1f` ile 10,8,
+  Postgres `round()` ile 10,9; ve 6,5 mm x 9 inç = 12,55 g'da (50 + 6 x 12,55) / 0,70 tam 179 ederken float
+  179,00000000000003 verip "9'la biten yukarı yuvarlama"yı bir basamak (189) atlattı. İki durumda da veritabanı
+  doğruydu; Python `Decimal`'a geçirildi, katalogda 1 fiyat ve 5 gram değişti. Kural: (1) eşik/tavan yuvarlaması
+  (ceil, x9) içeren fiyat formülü float'la yazılmaz, tam bölünen girdide basamak atlar; (2) üretimi iki bağımsız
+  yoldan yapıp mührü karşılaştırmak transkripsiyon hatasını DA aritmetik hatayı DA yakalar, ama hangisinin doğru
+  olduğuna mühür değil satır diff'i karar verir; (3) aynı turda bir tutarsızlığı düzeltip devam ederken, aynı
+  sınıfın başka bir örneği bir sonraki partide çıkabilir (gram düzeltmesi fiyatı görmedi), o yüzden düzeltmeyi
+  sınıfa (tüm hesap Decimal) yap, örneğe değil.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
