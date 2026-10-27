@@ -62,7 +62,7 @@ TAIL = ("Shot on a Canon 50 mm lens at f/2.8, ISO 400, natural light only, fine 
         "letters, no numbers, no logo, no watermark, no ruler, no other jewelry, no gold anywhere. Square 1:1.")
 
 LEN = {"necklace": "20 inch necklace", "bracelet": "8 inch bracelet"}
-SIZE_NECK = ("a long chain about 50 cm end to end, laid out as one large open oval that fills most of the "
+SIZE_NECK = ("a long chain about 50 cm end to end, its full length spread out so it fills most of the "
              "frame, clearly a neck-length chain, never coiled, never a small bracelet loop")
 SIZE_WRIST = ("about 20 cm end to end, laid as one single open loop the size of a wrist, never coiled or "
               "wrapped more than once")
