@@ -1663,6 +1663,22 @@ repodaki hedefidir.
   sınıfın başka bir örneği bir sonraki partide çıkabilir (gram düzeltmesi fiyatı görmedi), o yüzden düzeltmeyi
   sınıfa (tüm hesap Decimal) yap, örneğe değil.
 
+- **"Satış düştü" teşhisinde payı bir kaynaktan değil, aynı metriğin TÜM kaynaklarını yan yana koyarak oku; ve
+  düşüşü tek pencere yerine iki faza böl (2026-10-27, EON Ekim):** İlk çıkarımım "EON trafiğinin ~%90'ı reklam"
+  oldu, çünkü elimde yalnız reklam arama terimi dökümü vardı. Reklam CSV'si gelince yanlış çıktı: reklam tıkı
+  günde ~10, listing görüntülenmesi ~150. Doğru tabloyu panelin kendi verisi kurdu: kümülatif `views`'u listing
+  başına farklayıp anlık görüntüler arası güne bölmek. İki ayrı faz çıktı: (a) 1-16 Ekim görüntülenme Eylül'e
+  yakın (~140/gün) ama sipariş yarıya indi (16 → 4, küçük sayı, gürültü olabilir); (b) 19 Ekim'den sonra
+  görüntülenme bütün katalogda ~60/güne düştü (Hammered 8 → 1, Dome 4,4 → 1,1). Elenenler sayıyla elendi:
+  fiyat (indirim derinleşti, alıcı daha az ödüyor), silinen listing'ler (hepsi taslaktı, 0 görüntülenme), yeni
+  Noel listing'leri (45 aktif, toplam 77 görüntülenme), başlık/tag yazımı (21-22 Ekim, düşüş 19'unda başladı).
+  Kalan aday reklam bütçesinin 17 Ekim'de $25 → $3 inmesiydi; ama düşüşün büyüklüğü kayıp reklam tıkından
+  büyük, o yüzden "kanıtlandı" değil "test edilecek" diye raporlandı. Kural: (1) trafik payı iddiası tek bir
+  kaynak dökümünden kurulmaz, tüm kaynakların aynı metrikteki sayıları yan yana konur; (2) "bu ay" şikâyeti
+  önce tarih tarih çizilir, düşüş bir günde başlıyorsa o güne denk gelen değişiklikler `audit_log`'dan saat
+  saat okunur; (3) her adayı ayrı bir sayıyla ele, zamanlaması tutup büyüklüğü tutmayan adayı kanıt sayma,
+  geri alınabilir bir testle (bütçeyi geri aç, 7 gün izle) sına.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
