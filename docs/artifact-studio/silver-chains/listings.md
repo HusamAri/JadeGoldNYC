@@ -25,7 +25,7 @@ Widths and approximate weight (weight grows with length):
 - Lengths: 18, 20, 22, 24, 26 inches, measured end to end with the clasp.
 - Lobster clasp, stamped 925 on the tag plate.
 - Solid links, not hollow, no stones.
-- Made to order at our bench in New Jersey in 3 to 5 business days, free US shipping, gift box included.
+- Made to order at our bench in New Jersey and shipped within 2 business days, free US shipping, gift box included.
 - The styled images are design visualizations of the finished chain; the unedited photo shows the real chain.
 
 ## S02
@@ -51,7 +51,7 @@ Widths and approximate weight (weight grows with length):
 - Lengths: 7, 8, 9 inches, measured end to end with the clasp.
 - Lobster clasp, stamped 925 on the tag plate.
 - Solid links, not hollow, no stones.
-- Made to order at our bench in New Jersey in 3 to 5 business days, free US shipping, gift box included.
+- Made to order at our bench in New Jersey and shipped within 2 business days, free US shipping, gift box included.
 - The styled images are design visualizations of the finished chain; the unedited photo shows the real chain.
 
 ## S03
@@ -77,7 +77,7 @@ Widths and approximate weight (weight grows with length):
 - Lengths: 18, 20, 22, 24, 26 inches, measured end to end with the clasp.
 - Lobster clasp, stamped 925 on the tag plate.
 - Solid links, not hollow, no stones.
-- Made to order at our bench in New Jersey in 3 to 5 business days, free US shipping, gift box included.
+- Made to order at our bench in New Jersey and shipped within 2 business days, free US shipping, gift box included.
 - The styled images are design visualizations of the finished chain; the unedited photo shows the real chain.
 
 ## S04
@@ -103,7 +103,7 @@ Widths and approximate weight (weight grows with length):
 - Lengths: 7, 8, 9 inches, measured end to end with the clasp.
 - Lobster clasp, stamped 925 on the tag plate.
 - Solid links, not hollow, no stones.
-- Made to order at our bench in New Jersey in 3 to 5 business days, free US shipping, gift box included.
+- Made to order at our bench in New Jersey and shipped within 2 business days, free US shipping, gift box included.
 - The styled images are design visualizations of the finished chain; the unedited photo shows the real chain.
 
 ## S05
@@ -129,7 +129,7 @@ Widths and approximate weight (weight grows with length):
 - Lengths: 18, 20, 22, 24, 26 inches, measured end to end with the clasp.
 - Lobster clasp, stamped 925 on the tag plate.
 - Solid links, not hollow, no stones.
-- Made to order at our bench in New Jersey in 3 to 5 business days, free US shipping, gift box included.
+- Made to order at our bench in New Jersey and shipped within 2 business days, free US shipping, gift box included.
 - The styled images are design visualizations of the finished chain; the unedited photo shows the real chain.
 
 ## S06
@@ -155,5 +155,5 @@ Widths and approximate weight (weight grows with length):
 - Lengths: 7, 8, 9 inches, measured end to end with the clasp.
 - Lobster clasp, stamped 925 on the tag plate.
 - Solid links, not hollow, no stones.
-- Made to order at our bench in New Jersey in 3 to 5 business days, free US shipping, gift box included.
+- Made to order at our bench in New Jersey and shipped within 2 business days, free US shipping, gift box included.
 - The styled images are design visualizations of the finished chain; the unedited photo shows the real chain.

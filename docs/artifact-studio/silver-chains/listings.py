@@ -50,7 +50,7 @@ LOOK = {
     "figaro": ("Figaro repeats three short links and one long link, all flat and faceted, the classic pattern that "
                "reads clean at any width."),
 }
-SHIP = ("Made to order at our bench in New Jersey in 3 to 5 business days, free US shipping, gift box included.")
+SHIP = ("Made to order at our bench in New Jersey and shipped within 2 business days, free US shipping, gift box included.")  # owner 2026-10-27
 DISCLOSURE = ("The styled images are design visualizations of the finished chain; the unedited photo shows the "
               "real chain.")
 
