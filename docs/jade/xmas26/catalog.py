@@ -17,6 +17,14 @@ Karat variants (2026-10-18): the owner's panel import gave every piece three var
 the metal part of the $/g rate scales with purity at today's spot, the supplier's labour premium
 (14K rate − 14K melt) does not; grams scale with alloy density. Both inputs are dated below and
 must be refreshed before re-pricing. `panel_prices.py` turns `price.karats` into the panel SQL.
+
+Maker quotes (2026-10-28, work/maker_quotes.json): Görkem answered on WhatsApp per piece with BODY grams and
+separate USD lines (chain, clean/assemble, enamel, push posts, lock). A quoted piece is priced from HIS lines:
+body grams × the all-in 14K rate (he did not quote a $/g, so the documented 106 USD/g stays) + chain (gold,
+scaled to the karat like the body) + the fixed lines (karat independent) + shipping + packaging, through the
+same Jade formula. Its `price.basis` is "maker_quote". An unquoted piece keeps the v2 estimate untouched
+(`price.basis` "estimate"; its spot stays frozen at the v2 value on purpose: an estimate is not re-derived
+on a spot move, only replaced by a quote). Quoted pieces use the spot of the day the quote was applied.
 """
 import json
 import math
@@ -40,8 +48,12 @@ ETSY_FIXED = 25
 MARGIN = 0.50
 
 # lib/gold-cost.ts: derivePurchaseCentsPerGram + KARAT_PURITY. Spot is an INPUT, dated.
-SPOT_USD_PER_OZT = 4166.10  # gold-api.com, 2026-10-18 18:58 UTC
+SPOT_USD_PER_OZT = 4166.10  # gold-api.com, 2026-10-18 18:58 UTC — v2 ESTIMATES, frozen (see header)
 SPOT_SOURCE = "gold-api.com 2026-10-18T18:58Z"
+SPOT_QUOTE_USD_PER_OZT = 4054.10  # gold-api.com, 2026-10-28 09:54 UTC — pieces priced from the maker's quote
+SPOT_QUOTE_SOURCE = "gold-api.com 2026-10-28T09:54Z"
+QUOTE_PLAN = "xmas26-v3-quote-disc30-m50"
+ESTIMATE_PLAN = "xmas26-v2-disc30-m50"
 TROY_OZ_GRAMS = 31.1035
 PURITY = {"10K": 0.416, "14K": 0.585, "18K": 0.75}
 # same casting volume, alloy density: docs/second-brain.md 2026-09-16 (maker tables, ×0.892 / ×1.137);
@@ -50,11 +62,11 @@ DENSITY_RATIO = {"10K": 0.892, "14K": 1.0, "18K": 1.137}
 KARATS = ("10K", "14K", "18K")
 
 
-def rate_cents(karat):
+def rate_cents(karat, spot=SPOT_USD_PER_OZT):
     """$/g by karat: 14K is the invoice rate; 10K/18K = that karat's melt + the 14K labour premium."""
     if karat == "14K":
         return COST_PER_GRAM
-    pure = SPOT_USD_PER_OZT * 100 / TROY_OZ_GRAMS
+    pure = spot * 100 / TROY_OZ_GRAMS
     premium = max(0.0, COST_PER_GRAM - pure * PURITY["14K"])
     return round(pure * PURITY[karat] + premium)
 
@@ -63,18 +75,57 @@ def karat_grams(g14, karat):
     return round(g14 * DENSITY_RATIO[karat], 2)
 
 
+def karat_ratio(karat, spot):
+    """Cost of the same gold part made in `karat` relative to 14K (density × rate): used for the quoted chain."""
+    return DENSITY_RATIO[karat] * rate_cents(karat, spot) / COST_PER_GRAM
+
+
 def cost_cents(g, karat="14K"):
     return round(g * rate_cents(karat)) + SHIPPING + PACKAGING
 
 
-def list_cents(g, margin=MARGIN, karat="14K"):
+def list_from_cost(cost, margin=MARGIN):
     denom = (1 - DISCOUNT) * ((1 - ETSY_RATE) - margin)
-    return math.ceil((cost_cents(g, karat) + ETSY_FIXED) / denom / 100) * 100
+    return math.ceil((cost + ETSY_FIXED) / denom / 100) * 100
+
+
+def list_cents(g, margin=MARGIN, karat="14K"):
+    return list_from_cost(cost_cents(g, karat), margin)
+
+
+def margin_from_cost(price, cost):
+    gross = price * (1 - DISCOUNT)
+    return (gross - (gross * ETSY_RATE + ETSY_FIXED) - cost) / gross
 
 
 def margin_at(price, g, karat="14K"):
-    gross = price * (1 - DISCOUNT)
-    return (gross - (gross * ETSY_RATE + ETSY_FIXED) - cost_cents(g, karat)) / gross
+    return margin_from_cost(price, cost_cents(g, karat))
+
+
+QUOTE_FIXED_LINES = ("assembly_usd", "enamel_usd", "stone_usd", "post_usd", "lock_usd", "other_usd")
+
+
+def quote_parts_cents(q, karat, spot=SPOT_QUOTE_USD_PER_OZT):
+    """The maker's quote in cents for one karat: body gold, chain (gold), fixed lines, shipping + packaging."""
+    g = karat_grams(q["gram14_body"], karat)
+    gold = round(g * rate_cents(karat, spot))
+    chain = round(q.get("chain_usd", 0) * 100 * karat_ratio(karat, spot))
+    fixed = sum(q.get(k, 0) for k in QUOTE_FIXED_LINES) * 100
+    return {"grams": g, "gold_cents": gold, "chain_cents": chain, "fixed_cents": fixed,
+            "cost_cents": gold + chain + fixed + SHIPPING + PACKAGING}
+
+
+def karat_rows_quote(q):
+    rows = {}
+    for k in KARATS:
+        parts = quote_parts_cents(q, k)
+        price = list_from_cost(parts["cost_cents"])
+        m = margin_from_cost(price, parts["cost_cents"])
+        assert m >= MARGIN - 1e-9, (k, q, m)
+        rows[k] = {**parts, "rate_cents_per_gram": rate_cents(k, SPOT_QUOTE_USD_PER_OZT),
+                   "list_cents": price, "paid_cents": paid_cents(price), "margin": round(m, 4)}
+    assert rows["10K"]["list_cents"] < rows["14K"]["list_cents"] < rows["18K"]["list_cents"], rows
+    return rows
 
 
 def paid_cents(price):
@@ -105,6 +156,20 @@ TYPE_WORD = {"bracelet": "bracelet", "necklace": ("necklace", "pendant"), "earri
 BANNED = ["vintage", "stocking stuffer", "aquamarine", "blue diamond", "real diamond", "horsebit", "horse bit"]
 
 spec = json.load(open(HERE / "spec.json"))
+quotes_doc = json.load(open(HERE / "work" / "maker_quotes.json"))
+QUOTES = quotes_doc["quotes"]
+assert set(QUOTES) | set(quotes_doc["not_quoted"]) == {f"{c}{i}" for c in "BNEP" for i in range(1, 11)}
+assert not set(QUOTES) & set(quotes_doc["not_quoted"])
+for qid, q in QUOTES.items():
+    assert q["gram14_body"] > 0 and all(q.get(k, 0) >= 0 for k in QUOTE_FIXED_LINES + ("chain_usd",)), qid
+    assert (qid[0] == "E") == (q.get("chain_usd", 0) == 0), (qid, "earrings have no chain line, everything else does")
+    assert (qid[0] == "E") == (q.get("post_usd", 0) > 0 or q.get("lock_usd", 0) > 0), (qid, "earrings carry posts or a lock")
+    if "same_as" in q:  # "ayni": the lines must equal the referenced message's lines (plus any explicit "plus")
+        ref = QUOTES[q["same_as"]]
+        for k in ("gram14_body", "chain_usd", "assembly_usd", "post_usd", "lock_usd", "other_usd"):
+            assert q.get(k, 0) == ref.get(k, 0), (qid, k)
+        assert q.get("enamel_usd", 0) >= ref.get("enamel_usd", 0), (qid, "enamel")
+
 out = []
 for p in spec["products"]:
     pid, cat = p["id"], p["category"]
@@ -113,9 +178,17 @@ for p in spec["products"]:
     lo, hi = BANDS[cat]
     assert lo <= g <= hi, (pid, g, (lo, hi))
     assert p["total_grams"] >= g, pid
-    karats = karat_rows(g)
+    estimate = karat_rows(g)
+    if pid in QUOTES:
+        karats = karat_rows_quote(QUOTES[pid])
+        basis, plan = "maker_quote", QUOTE_PLAN
+        assert karats["14K"]["list_cents"] == list_from_cost(quote_parts_cents(QUOTES[pid], "14K")["cost_cents"])
+    else:
+        karats = estimate
+        basis, plan = "estimate", ESTIMATE_PLAN
+        assert karats["14K"]["list_cents"] == list_cents(g)
     price, paid, m = karats["14K"]["list_cents"], karats["14K"]["paid_cents"], karats["14K"]["margin"]
-    assert price == list_cents(g) and m >= MARGIN - 1e-9, (pid, m)
+    assert m >= MARGIN - 1e-9, (pid, m)
 
     # Etsy gates
     t = p["title"]
@@ -143,8 +216,14 @@ for p in spec["products"]:
     if p.get("hollow"):
         assert "solid" not in t.lower(), (pid, "hollow piece cannot say solid in title")
 
-    out.append({**p, "price": {"list_cents": price, "paid_cents": paid, "cost_cents": cost_cents(g),
-                               "margin": round(m, 4), "discount": DISCOUNT, "karats": karats}})
+    price_block = {"list_cents": price, "paid_cents": paid, "cost_cents": karats["14K"]["cost_cents"],
+                   "margin": round(m, 4), "discount": DISCOUNT, "basis": basis, "plan_version": plan, "karats": karats}
+    if pid in QUOTES:
+        q = QUOTES[pid]
+        price_block["quote"] = {k: q[k] for k in q if k not in ("shot", "time")}
+        price_block["quote"]["lines_usd"] = {k.removesuffix("_usd"): q[k] for k in ("chain_usd",) + QUOTE_FIXED_LINES if q.get(k)}
+        price_block["estimate_v2"] = {k: estimate[k]["list_cents"] for k in KARATS}  # what the panel carried before
+    out.append({**p, "price": price_block})
 
 ids = [p["id"] for p in out]
 assert len(set(ids)) == len(ids), "duplicate ids"
@@ -158,12 +237,26 @@ json.dump({"collection": "Jade Gold NYC Christmas 2026", "engine": "lib/jade/pri
            "pricing": {"discount": DISCOUNT, "target_margin": MARGIN, "cost_per_gram_14k_cents": COST_PER_GRAM,
                        "spot_usd_per_ozt": SPOT_USD_PER_OZT, "spot_source": SPOT_SOURCE,
                        "rate_cents_per_gram": {k: rate_cents(k) for k in KARATS}, "density_ratio": DENSITY_RATIO,
-                       "karat_rule": "lib/gold-cost.ts derivePurchaseCentsPerGram; 14K is the design"},
+                       "karat_rule": "lib/gold-cost.ts derivePurchaseCentsPerGram; 14K is the design",
+                       "quote": {"plan_version": QUOTE_PLAN, "source": "docs/jade/xmas26/work/maker_quotes.json",
+                                 "quoted": sorted(QUOTES, key=lambda s: (s[0], int(s[1:]))), "not_quoted": quotes_doc["not_quoted"],
+                                 "spot_usd_per_ozt": SPOT_QUOTE_USD_PER_OZT, "spot_source": SPOT_QUOTE_SOURCE,
+                                 "rate_cents_per_gram": {k: rate_cents(k, SPOT_QUOTE_USD_PER_OZT) for k in KARATS},
+                                 "chain_karat_ratio": {k: round(karat_ratio(k, SPOT_QUOTE_USD_PER_OZT), 4) for k in KARATS},
+                                 "rule": "cost = body grams × density × $/g + chain × karat ratio + assembly/enamel/stone/posts/lock + shipping + packaging; the all-in 14K $/g was not quoted and stays 106"},
+                       "estimate_plan_version": ESTIMATE_PLAN},
            "products": out}, open(HERE / "catalog.json", "w"), ensure_ascii=False, indent=1)
 for p in out:
     k = p["price"]["karats"]
-    print(f"{p['id']:>4} {p['gold_grams']:.2f} g  14K ${k['14K']['list_cents'] // 100:>4} list "
+    tag = "QUOTE" if p["price"]["basis"] == "maker_quote" else "est  "
+    was = p["price"].get("estimate_v2", {}).get("14K")
+    delta = f" (v2 ${was // 100}, {k['14K']['list_cents'] / was - 1:+.0%})" if was else ""
+    print(f"{p['id']:>4} {tag} cost ${k['14K']['cost_cents'] / 100:>7.2f}  14K ${k['14K']['list_cents'] // 100:>4} list "
           f"${k['14K']['paid_cents'] / 100:>7.2f} paid · 10K ${k['10K']['list_cents'] // 100:>4} · "
-          f"18K ${k['18K']['list_cents'] // 100:>4}  {p['title'][:60]}")
-print(f"{len(out)}/{len(out)} gates passed · discount {DISCOUNT:.0%} · $/g " +
-      " ".join(f"{k} {rate_cents(k) / 100:.2f}" for k in KARATS) + f" @ spot {SPOT_USD_PER_OZT}")
+          f"18K ${k['18K']['list_cents'] // 100:>4}{delta}  {p['title'][:48]}")
+nq = sum(1 for p in out if p["price"]["basis"] == "maker_quote")
+print(f"{len(out)}/{len(out)} gates passed · {nq} quoted / {len(out) - nq} estimate · discount {DISCOUNT:.0%} · margin {MARGIN:.0%}")
+print("estimate $/g " + " ".join(f"{k} {rate_cents(k) / 100:.2f}" for k in KARATS) + f" @ spot {SPOT_USD_PER_OZT} (frozen)")
+print("quote    $/g " + " ".join(f"{k} {rate_cents(k, SPOT_QUOTE_USD_PER_OZT) / 100:.2f}" for k in KARATS)
+      + f" @ spot {SPOT_QUOTE_USD_PER_OZT} · chain karat ratio "
+      + " ".join(f"{k} {karat_ratio(k, SPOT_QUOTE_USD_PER_OZT):.4f}" for k in KARATS))

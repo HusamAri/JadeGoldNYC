@@ -17,7 +17,69 @@
    "14K": 1.0,
    "18K": 1.137
   },
-  "karat_rule": "lib/gold-cost.ts derivePurchaseCentsPerGram; 14K is the design"
+  "karat_rule": "lib/gold-cost.ts derivePurchaseCentsPerGram; 14K is the design",
+  "quote": {
+   "plan_version": "xmas26-v3-quote-disc30-m50",
+   "source": "docs/jade/xmas26/work/maker_quotes.json",
+   "quoted": [
+    "B1",
+    "B2",
+    "B3",
+    "B4",
+    "B5",
+    "B6",
+    "B7",
+    "B8",
+    "B9",
+    "B10",
+    "E1",
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E7",
+    "E8",
+    "E9",
+    "E10",
+    "N1",
+    "N2",
+    "N3",
+    "N4",
+    "N5"
+   ],
+   "not_quoted": [
+    "N6",
+    "N7",
+    "N8",
+    "N9",
+    "N10",
+    "P1",
+    "P2",
+    "P3",
+    "P4",
+    "P5",
+    "P6",
+    "P7",
+    "P8",
+    "P9",
+    "P10"
+   ],
+   "spot_usd_per_ozt": 4054.1,
+   "spot_source": "gold-api.com 2026-10-28T09:54Z",
+   "rate_cents_per_gram": {
+    "10K": 8397,
+    "14K": 10600,
+    "18K": 12751
+   },
+   "chain_karat_ratio": {
+    "10K": 0.7066,
+    "14K": 1.0,
+    "18K": 1.3677
+   },
+   "rule": "cost = body grams × density × $/g + chain × karat ratio + assembly/enamel/stone/posts/lock + shipping + packaging; the all-in 14K $/g was not quoted and stays 106"
+  },
+  "estimate_plan_version": "xmas26-v2-disc30-m50"
  },
  "products": [
   {
@@ -231,36 +293,62 @@
     "Franco 1.5 uc halkasi tel capi (<=0.8 mm varsayildi) tedarikciden yazili alinmali; kalinsa C-halka boslugu buyutulur."
    ],
    "price": {
-    "list_cents": 131400,
-    "paid_cents": 91980,
-    "cost_cents": 37220,
-    "margin": 0.5001,
+    "list_cents": 182000,
+    "paid_cents": 127400,
+    "cost_cents": 51550,
+    "margin": 0.5002,
     "discount": 0.3,
+    "basis": "maker_quote",
+    "plan_version": "xmas26-v3-quote-disc30-m50",
     "karats": {
      "10K": {
-      "grams": 3.08,
-      "rate_cents_per_gram": 8336,
-      "cost_cents": 26325,
-      "list_cents": 93000,
-      "paid_cents": 65100,
-      "margin": 0.5002
-     },
-     "14K": {
-      "grams": 3.45,
-      "rate_cents_per_gram": 10600,
-      "cost_cents": 37220,
-      "list_cents": 131400,
-      "paid_cents": 91980,
+      "grams": 1.34,
+      "gold_cents": 11252,
+      "chain_cents": 21198,
+      "fixed_cents": 5000,
+      "cost_cents": 38100,
+      "rate_cents_per_gram": 8397,
+      "list_cents": 134500,
+      "paid_cents": 94150,
       "margin": 0.5001
      },
-     "18K": {
-      "grams": 3.92,
-      "rate_cents_per_gram": 12810,
-      "cost_cents": 50865,
-      "list_cents": 179600,
-      "paid_cents": 125720,
+     "14K": {
+      "grams": 1.5,
+      "gold_cents": 15900,
+      "chain_cents": 30000,
+      "fixed_cents": 5000,
+      "cost_cents": 51550,
+      "rate_cents_per_gram": 10600,
+      "list_cents": 182000,
+      "paid_cents": 127400,
       "margin": 0.5002
+     },
+     "18K": {
+      "grams": 1.71,
+      "gold_cents": 21804,
+      "chain_cents": 41032,
+      "fixed_cents": 5000,
+      "cost_cents": 68486,
+      "rate_cents_per_gram": 12751,
+      "list_cents": 241700,
+      "paid_cents": 169190,
+      "margin": 0.5001
      }
+    },
+    "quote": {
+     "text": "1.5 gr , 300 zincir, 50 clean assamble stone",
+     "gram14_body": 1.5,
+     "chain_usd": 300,
+     "assembly_usd": 50,
+     "lines_usd": {
+      "chain": 300,
+      "assembly": 50
+     }
+    },
+    "estimate_v2": {
+     "10K": 93000,
+     "14K": 131400,
+     "18K": 179600
     }
    }
   },
@@ -452,36 +540,62 @@
     "Ilk test agacinda B1 ile birlikte dokulup 0.8 mm uclarin doldugu dogrulanmali."
    ],
    "price": {
-    "list_cents": 128400,
-    "paid_cents": 89880,
-    "cost_cents": 36372,
-    "margin": 0.5,
+    "list_cents": 166500,
+    "paid_cents": 116550,
+    "cost_cents": 47150,
+    "margin": 0.5002,
     "discount": 0.3,
+    "basis": "maker_quote",
+    "plan_version": "xmas26-v3-quote-disc30-m50",
     "karats": {
      "10K": {
-      "grams": 3.01,
-      "rate_cents_per_gram": 8336,
-      "cost_cents": 25741,
-      "list_cents": 90900,
-      "paid_cents": 63630,
-      "margin": 0.5001
+      "grams": 2.23,
+      "gold_cents": 18725,
+      "chain_cents": 10599,
+      "fixed_cents": 5000,
+      "cost_cents": 34974,
+      "rate_cents_per_gram": 8397,
+      "list_cents": 123500,
+      "paid_cents": 86450,
+      "margin": 0.5002
      },
      "14K": {
-      "grams": 3.37,
+      "grams": 2.5,
+      "gold_cents": 26500,
+      "chain_cents": 15000,
+      "fixed_cents": 5000,
+      "cost_cents": 47150,
       "rate_cents_per_gram": 10600,
-      "cost_cents": 36372,
-      "list_cents": 128400,
-      "paid_cents": 89880,
-      "margin": 0.5
+      "list_cents": 166500,
+      "paid_cents": 116550,
+      "margin": 0.5002
      },
      "18K": {
-      "grams": 3.83,
-      "rate_cents_per_gram": 12810,
-      "cost_cents": 49712,
-      "list_cents": 175500,
-      "paid_cents": 122850,
+      "grams": 2.84,
+      "gold_cents": 36213,
+      "chain_cents": 20516,
+      "fixed_cents": 5000,
+      "cost_cents": 62379,
+      "rate_cents_per_gram": 12751,
+      "list_cents": 220200,
+      "paid_cents": 154140,
       "margin": 0.5001
      }
+    },
+    "quote": {
+     "text": "2,5 gr 150 chain 50 clean asamble",
+     "gram14_body": 2.5,
+     "chain_usd": 150,
+     "assembly_usd": 50,
+     "lines_usd": {
+      "chain": 150,
+      "assembly": 50
+     }
+    },
+    "estimate_v2": {
+     "10K": 90900,
+     "14K": 128400,
+     "18K": 175500
     }
    }
   },
@@ -753,36 +867,64 @@
     "Kupon testi gecmez ve soguk mineye (epoxy resin) dusulurse yalniz ENAMEL bolumu degil baslik, etiketler ('vitreous enamel', '... enamel') ve materials ('vitreous enamel' -> 'epoxy resin') da FTC 23.1 geregi degistirilmeli; cold_enamel_paragraph hazir."
    ],
    "price": {
-    "list_cents": 125400,
-    "paid_cents": 87780,
-    "cost_cents": 35524,
-    "margin": 0.5,
+    "list_cents": 193600,
+    "paid_cents": 135520,
+    "cost_cents": 54850,
+    "margin": 0.5001,
     "discount": 0.3,
+    "basis": "maker_quote",
+    "plan_version": "xmas26-v3-quote-disc30-m50",
     "karats": {
      "10K": {
-      "grams": 2.93,
-      "rate_cents_per_gram": 8336,
-      "cost_cents": 25074,
-      "list_cents": 88600,
-      "paid_cents": 62020,
-      "margin": 0.5003
+      "grams": 1.78,
+      "gold_cents": 14947,
+      "chain_cents": 17665,
+      "fixed_cents": 8000,
+      "cost_cents": 41262,
+      "rate_cents_per_gram": 8397,
+      "list_cents": 145700,
+      "paid_cents": 101990,
+      "margin": 0.5002
      },
      "14K": {
-      "grams": 3.29,
+      "grams": 2.0,
+      "gold_cents": 21200,
+      "chain_cents": 25000,
+      "fixed_cents": 8000,
+      "cost_cents": 54850,
       "rate_cents_per_gram": 10600,
-      "cost_cents": 35524,
-      "list_cents": 125400,
-      "paid_cents": 87780,
-      "margin": 0.5
+      "list_cents": 193600,
+      "paid_cents": 135520,
+      "margin": 0.5001
      },
      "18K": {
-      "grams": 3.74,
-      "rate_cents_per_gram": 12810,
-      "cost_cents": 48559,
-      "list_cents": 171400,
-      "paid_cents": 119980,
+      "grams": 2.27,
+      "gold_cents": 28945,
+      "chain_cents": 34193,
+      "fixed_cents": 8000,
+      "cost_cents": 71788,
+      "rate_cents_per_gram": 12751,
+      "list_cents": 253400,
+      "paid_cents": 177380,
       "margin": 0.5001
      }
+    },
+    "quote": {
+     "text": "2gr, 50 assamble tas, 30 enemal , 250 chain",
+     "gram14_body": 2.0,
+     "chain_usd": 250,
+     "assembly_usd": 50,
+     "enamel_usd": 30,
+     "lines_usd": {
+      "chain": 250,
+      "assembly": 50,
+      "enamel": 30
+     }
+    },
+    "estimate_v2": {
+     "10K": 88600,
+     "14K": 125400,
+     "18K": 171400
     }
    }
   },
@@ -1031,36 +1173,64 @@
     "Kupon testi gecmez ve soguk mineye (epoxy resin) dusulurse yalniz ENAMEL bolumu degil baslik, etiketler ('vitreous enamel', '... enamel') ve materials ('vitreous enamel' -> 'epoxy resin') da FTC 23.1 geregi degistirilmeli; cold_enamel_paragraph hazir."
    ],
    "price": {
-    "list_cents": 140000,
-    "paid_cents": 98000,
-    "cost_cents": 39658,
-    "margin": 0.5001,
+    "list_cents": 183000,
+    "paid_cents": 128100,
+    "cost_cents": 51850,
+    "margin": 0.5,
     "discount": 0.3,
+    "basis": "maker_quote",
+    "plan_version": "xmas26-v3-quote-disc30-m50",
     "karats": {
      "10K": {
-      "grams": 3.28,
-      "rate_cents_per_gram": 8336,
-      "cost_cents": 27992,
-      "list_cents": 98900,
-      "paid_cents": 69230,
-      "margin": 0.5003
+      "grams": 1.78,
+      "gold_cents": 14947,
+      "chain_cents": 14132,
+      "fixed_cents": 10000,
+      "cost_cents": 39729,
+      "rate_cents_per_gram": 8397,
+      "list_cents": 140300,
+      "paid_cents": 98210,
+      "margin": 0.5002
      },
      "14K": {
-      "grams": 3.68,
+      "grams": 2.0,
+      "gold_cents": 21200,
+      "chain_cents": 20000,
+      "fixed_cents": 10000,
+      "cost_cents": 51850,
       "rate_cents_per_gram": 10600,
-      "cost_cents": 39658,
-      "list_cents": 140000,
-      "paid_cents": 98000,
-      "margin": 0.5001
+      "list_cents": 183000,
+      "paid_cents": 128100,
+      "margin": 0.5
      },
      "18K": {
-      "grams": 4.18,
-      "rate_cents_per_gram": 12810,
-      "cost_cents": 54196,
-      "list_cents": 191300,
-      "paid_cents": 133910,
+      "grams": 2.27,
+      "gold_cents": 28945,
+      "chain_cents": 27355,
+      "fixed_cents": 10000,
+      "cost_cents": 66950,
+      "rate_cents_per_gram": 12751,
+      "list_cents": 236300,
+      "paid_cents": 165410,
       "margin": 0.5001
      }
+    },
+    "quote": {
+     "text": "2gr, 200 chain , 50 assamble , 50 enemal",
+     "gram14_body": 2.0,
+     "chain_usd": 200,
+     "assembly_usd": 50,
+     "enamel_usd": 50,
+     "lines_usd": {
+      "chain": 200,
+      "assembly": 50,
+      "enamel": 50
+     }
+    },
+    "estimate_v2": {
+     "10K": 98900,
+     "14K": 140000,
+     "18K": 191300
     }
    }
   },
@@ -1264,36 +1434,62 @@
     "Lab mavi safirin buz mavisi (acik) tonu tedarikci partisinden renk numunesiyle secilmeli; koyu royal mavi markaya uymaz."
    ],
    "price": {
-    "list_cents": 134400,
-    "paid_cents": 94080,
-    "cost_cents": 38068,
-    "margin": 0.5001,
+    "list_cents": 200700,
+    "paid_cents": 140490,
+    "cost_cents": 56850,
+    "margin": 0.5002,
     "discount": 0.3,
+    "basis": "maker_quote",
+    "plan_version": "xmas26-v3-quote-disc30-m50",
     "karats": {
      "10K": {
-      "grams": 3.15,
-      "rate_cents_per_gram": 8336,
-      "cost_cents": 26908,
-      "list_cents": 95100,
-      "paid_cents": 66570,
-      "margin": 0.5004
+      "grams": 1.78,
+      "gold_cents": 14947,
+      "chain_cents": 21198,
+      "fixed_cents": 5000,
+      "cost_cents": 41795,
+      "rate_cents_per_gram": 8397,
+      "list_cents": 147600,
+      "paid_cents": 103320,
+      "margin": 0.5002
      },
      "14K": {
-      "grams": 3.53,
+      "grams": 2.0,
+      "gold_cents": 21200,
+      "chain_cents": 30000,
+      "fixed_cents": 5000,
+      "cost_cents": 56850,
       "rate_cents_per_gram": 10600,
-      "cost_cents": 38068,
-      "list_cents": 134400,
-      "paid_cents": 94080,
-      "margin": 0.5001
+      "list_cents": 200700,
+      "paid_cents": 140490,
+      "margin": 0.5002
      },
      "18K": {
-      "grams": 4.01,
-      "rate_cents_per_gram": 12810,
-      "cost_cents": 52018,
-      "list_cents": 183600,
-      "paid_cents": 128520,
+      "grams": 2.27,
+      "gold_cents": 28945,
+      "chain_cents": 41032,
+      "fixed_cents": 5000,
+      "cost_cents": 75627,
+      "rate_cents_per_gram": 12751,
+      "list_cents": 266900,
+      "paid_cents": 186830,
       "margin": 0.5001
      }
+    },
+    "quote": {
+     "text": "2 gr, 50 clean assamble stone, 300 chain",
+     "gram14_body": 2.0,
+     "chain_usd": 300,
+     "assembly_usd": 50,
+     "lines_usd": {
+      "chain": 300,
+      "assembly": 50
+     }
+    },
+    "estimate_v2": {
+     "10K": 95100,
+     "14K": 134400,
+     "18K": 183600
     }
    }
   },
@@ -1543,36 +1739,64 @@
     "Kupon testi gecmez ve soguk mineye (epoxy resin) dusulurse yalniz ENAMEL bolumu degil baslik, etiketler ('vitreous enamel', '... enamel') ve materials ('vitreous enamel' -> 'epoxy resin') da FTC 23.1 geregi degistirilmeli; cold_enamel_paragraph hazir."
    ],
    "price": {
-    "list_cents": 140400,
-    "paid_cents": 98280,
-    "cost_cents": 39764,
+    "list_cents": 193600,
+    "paid_cents": 135520,
+    "cost_cents": 54850,
     "margin": 0.5001,
     "discount": 0.3,
+    "basis": "maker_quote",
+    "plan_version": "xmas26-v3-quote-disc30-m50",
     "karats": {
      "10K": {
-      "grams": 3.29,
-      "rate_cents_per_gram": 8336,
-      "cost_cents": 28075,
-      "list_cents": 99200,
-      "paid_cents": 69440,
-      "margin": 0.5003
+      "grams": 1.78,
+      "gold_cents": 14947,
+      "chain_cents": 17665,
+      "fixed_cents": 8000,
+      "cost_cents": 41262,
+      "rate_cents_per_gram": 8397,
+      "list_cents": 145700,
+      "paid_cents": 101990,
+      "margin": 0.5002
      },
      "14K": {
-      "grams": 3.69,
+      "grams": 2.0,
+      "gold_cents": 21200,
+      "chain_cents": 25000,
+      "fixed_cents": 8000,
+      "cost_cents": 54850,
       "rate_cents_per_gram": 10600,
-      "cost_cents": 39764,
-      "list_cents": 140400,
-      "paid_cents": 98280,
+      "list_cents": 193600,
+      "paid_cents": 135520,
       "margin": 0.5001
      },
      "18K": {
-      "grams": 4.2,
-      "rate_cents_per_gram": 12810,
-      "cost_cents": 54452,
-      "list_cents": 192200,
-      "paid_cents": 134540,
+      "grams": 2.27,
+      "gold_cents": 28945,
+      "chain_cents": 34193,
+      "fixed_cents": 8000,
+      "cost_cents": 71788,
+      "rate_cents_per_gram": 12751,
+      "list_cents": 253400,
+      "paid_cents": 177380,
       "margin": 0.5001
      }
+    },
+    "quote": {
+     "text": "2 gr, 50 clean, 30 enemal, 250 chain",
+     "gram14_body": 2.0,
+     "chain_usd": 250,
+     "assembly_usd": 50,
+     "enamel_usd": 30,
+     "lines_usd": {
+      "chain": 250,
+      "assembly": 50,
+      "enamel": 30
+     }
+    },
+    "estimate_v2": {
+     "10K": 99200,
+     "14K": 140400,
+     "18K": 192200
     }
    }
   },
@@ -1777,36 +2001,63 @@
     "Iki equestrian SKU (B6/B7) birbirine yakin; L11 ailesi 2 ile sinirin icinde, karar kullanicinin."
    ],
    "price": {
-    "list_cents": 138500,
-    "paid_cents": 96950,
-    "cost_cents": 39234,
+    "list_cents": 184100,
+    "paid_cents": 128870,
+    "cost_cents": 52150,
     "margin": 0.5001,
     "discount": 0.3,
+    "basis": "maker_quote",
+    "plan_version": "xmas26-v3-quote-disc30-m50",
     "karats": {
      "10K": {
-      "grams": 3.25,
-      "rate_cents_per_gram": 8336,
-      "cost_cents": 27742,
-      "list_cents": 98000,
-      "paid_cents": 68600,
-      "margin": 0.5002
+      "grams": 2.23,
+      "gold_cents": 18725,
+      "chain_cents": 14132,
+      "fixed_cents": 5000,
+      "cost_cents": 38507,
+      "rate_cents_per_gram": 8397,
+      "list_cents": 136000,
+      "paid_cents": 95200,
+      "margin": 0.5003
      },
      "14K": {
-      "grams": 3.64,
+      "grams": 2.5,
+      "gold_cents": 26500,
+      "chain_cents": 20000,
+      "fixed_cents": 5000,
+      "cost_cents": 52150,
       "rate_cents_per_gram": 10600,
-      "cost_cents": 39234,
-      "list_cents": 138500,
-      "paid_cents": 96950,
+      "list_cents": 184100,
+      "paid_cents": 128870,
       "margin": 0.5001
      },
      "18K": {
-      "grams": 4.14,
-      "rate_cents_per_gram": 12810,
-      "cost_cents": 53683,
-      "list_cents": 189500,
-      "paid_cents": 132650,
+      "grams": 2.84,
+      "gold_cents": 36213,
+      "chain_cents": 27355,
+      "fixed_cents": 5000,
+      "cost_cents": 69218,
+      "rate_cents_per_gram": 12751,
+      "list_cents": 244300,
+      "paid_cents": 171010,
       "margin": 0.5001
      }
+    },
+    "quote": {
+     "text": "2,5 gr, 50 assamble, 20 chain",
+     "gram14_body": 2.5,
+     "chain_usd": 200,
+     "assembly_usd": 50,
+     "flag": "chain written as '20'; every other chain line is 150-300 and this piece has the same 16.5 cm Franco chain as B1-B6, so 20 is read as a typo for 200. Priced at 200; at 20 the 14K list would be 1300 instead of 1900. CONFIRM with the maker.",
+     "lines_usd": {
+      "chain": 200,
+      "assembly": 50
+     }
+    },
+    "estimate_v2": {
+     "10K": 98000,
+     "14K": 138500,
+     "18K": 189500
     }
    }
   },
@@ -2056,36 +2307,65 @@
     "Kupon testi gecmez ve soguk mineye (epoxy resin) dusulurse yalniz ENAMEL bolumu degil baslik, etiketler ('vitreous enamel', '... enamel') ve materials ('vitreous enamel' -> 'epoxy resin') da FTC 23.1 geregi degistirilmeli; cold_enamel_paragraph hazir."
    ],
    "price": {
-    "list_cents": 134000,
-    "paid_cents": 93800,
-    "cost_cents": 37962,
-    "margin": 0.5,
+    "list_cents": 176000,
+    "paid_cents": 123200,
+    "cost_cents": 49850,
+    "margin": 0.5002,
     "discount": 0.3,
+    "basis": "maker_quote",
+    "plan_version": "xmas26-v3-quote-disc30-m50",
     "karats": {
      "10K": {
-      "grams": 3.14,
-      "rate_cents_per_gram": 8336,
-      "cost_cents": 26825,
-      "list_cents": 94800,
-      "paid_cents": 66360,
-      "margin": 0.5004
+      "grams": 1.78,
+      "gold_cents": 14947,
+      "chain_cents": 14132,
+      "fixed_cents": 8000,
+      "cost_cents": 37729,
+      "rate_cents_per_gram": 8397,
+      "list_cents": 133200,
+      "paid_cents": 93240,
+      "margin": 0.5001
      },
      "14K": {
-      "grams": 3.52,
+      "grams": 2.0,
+      "gold_cents": 21200,
+      "chain_cents": 20000,
+      "fixed_cents": 8000,
+      "cost_cents": 49850,
       "rate_cents_per_gram": 10600,
-      "cost_cents": 37962,
-      "list_cents": 134000,
-      "paid_cents": 93800,
-      "margin": 0.5
+      "list_cents": 176000,
+      "paid_cents": 123200,
+      "margin": 0.5002
      },
      "18K": {
-      "grams": 4.0,
-      "rate_cents_per_gram": 12810,
-      "cost_cents": 51890,
-      "list_cents": 183200,
-      "paid_cents": 128240,
-      "margin": 0.5002
+      "grams": 2.27,
+      "gold_cents": 28945,
+      "chain_cents": 27355,
+      "fixed_cents": 8000,
+      "cost_cents": 64950,
+      "rate_cents_per_gram": 12751,
+      "list_cents": 229200,
+      "paid_cents": 160440,
+      "margin": 0.5
      }
+    },
+    "quote": {
+     "text": "2 gr, 50, 30, 200",
+     "gram14_body": 2.0,
+     "chain_usd": 200,
+     "assembly_usd": 50,
+     "enamel_usd": 30,
+     "note": "unlabelled numbers read in the order of his B6 message: assembly, enamel, chain",
+     "lines_usd": {
+      "chain": 200,
+      "assembly": 50,
+      "enamel": 30
+     }
+    },
+    "estimate_v2": {
+     "10K": 94800,
+     "14K": 134000,
+     "18K": 183200
     }
    }
   },
@@ -2339,36 +2619,65 @@
     "Kupon testi gecmez ve soguk mineye (epoxy resin) dusulurse yalniz ENAMEL bolumu degil baslik, etiketler ('vitreous enamel', '... enamel') ve materials ('vitreous enamel' -> 'epoxy resin') da FTC 23.1 geregi degistirilmeli; cold_enamel_paragraph hazir."
    ],
    "price": {
-    "list_cents": 129600,
-    "paid_cents": 90720,
-    "cost_cents": 36690,
-    "margin": 0.5003,
+    "list_cents": 176000,
+    "paid_cents": 123200,
+    "cost_cents": 49850,
+    "margin": 0.5002,
     "discount": 0.3,
+    "basis": "maker_quote",
+    "plan_version": "xmas26-v3-quote-disc30-m50",
     "karats": {
      "10K": {
-      "grams": 3.03,
-      "rate_cents_per_gram": 8336,
-      "cost_cents": 25908,
-      "list_cents": 91500,
-      "paid_cents": 64050,
+      "grams": 1.78,
+      "gold_cents": 14947,
+      "chain_cents": 14132,
+      "fixed_cents": 8000,
+      "cost_cents": 37729,
+      "rate_cents_per_gram": 8397,
+      "list_cents": 133200,
+      "paid_cents": 93240,
       "margin": 0.5001
      },
      "14K": {
-      "grams": 3.4,
+      "grams": 2.0,
+      "gold_cents": 21200,
+      "chain_cents": 20000,
+      "fixed_cents": 8000,
+      "cost_cents": 49850,
       "rate_cents_per_gram": 10600,
-      "cost_cents": 36690,
-      "list_cents": 129600,
-      "paid_cents": 90720,
-      "margin": 0.5003
+      "list_cents": 176000,
+      "paid_cents": 123200,
+      "margin": 0.5002
      },
      "18K": {
-      "grams": 3.87,
-      "rate_cents_per_gram": 12810,
-      "cost_cents": 50225,
-      "list_cents": 177300,
-      "paid_cents": 124110,
-      "margin": 0.5001
+      "grams": 2.27,
+      "gold_cents": 28945,
+      "chain_cents": 27355,
+      "fixed_cents": 8000,
+      "cost_cents": 64950,
+      "rate_cents_per_gram": 12751,
+      "list_cents": 229200,
+      "paid_cents": 160440,
+      "margin": 0.5
      }
+    },
+    "quote": {
+     "text": "ayni",
+     "same_as": "B8",
+     "gram14_body": 2.0,
+     "chain_usd": 200,
+     "assembly_usd": 50,
+     "enamel_usd": 30,
+     "lines_usd": {
+      "chain": 200,
+      "assembly": 50,
+      "enamel": 30
+     }
+    },
+    "estimate_v2": {
+     "10K": 91500,
+     "14K": 129600,
+     "18K": 177300
     }
    }
   },
@@ -2610,36 +2919,65 @@
     "Kupon testi gecmez ve soguk mineye (epoxy resin) dusulurse yalniz ENAMEL bolumu degil baslik, etiketler ('vitreous enamel', '... enamel') ve materials ('vitreous enamel' -> 'epoxy resin') da FTC 23.1 geregi degistirilmeli; cold_enamel_paragraph hazir."
    ],
    "price": {
-    "list_cents": 129900,
-    "paid_cents": 90930,
-    "cost_cents": 36796,
-    "margin": 0.5001,
+    "list_cents": 176000,
+    "paid_cents": 123200,
+    "cost_cents": 49850,
+    "margin": 0.5002,
     "discount": 0.3,
+    "basis": "maker_quote",
+    "plan_version": "xmas26-v3-quote-disc30-m50",
     "karats": {
      "10K": {
-      "grams": 3.04,
-      "rate_cents_per_gram": 8336,
-      "cost_cents": 25991,
-      "list_cents": 91800,
-      "paid_cents": 64260,
+      "grams": 1.78,
+      "gold_cents": 14947,
+      "chain_cents": 14132,
+      "fixed_cents": 8000,
+      "cost_cents": 37729,
+      "rate_cents_per_gram": 8397,
+      "list_cents": 133200,
+      "paid_cents": 93240,
       "margin": 0.5001
      },
      "14K": {
-      "grams": 3.41,
+      "grams": 2.0,
+      "gold_cents": 21200,
+      "chain_cents": 20000,
+      "fixed_cents": 8000,
+      "cost_cents": 49850,
       "rate_cents_per_gram": 10600,
-      "cost_cents": 36796,
-      "list_cents": 129900,
-      "paid_cents": 90930,
-      "margin": 0.5001
+      "list_cents": 176000,
+      "paid_cents": 123200,
+      "margin": 0.5002
      },
      "18K": {
-      "grams": 3.88,
-      "rate_cents_per_gram": 12810,
-      "cost_cents": 50353,
-      "list_cents": 177800,
-      "paid_cents": 124460,
-      "margin": 0.5002
+      "grams": 2.27,
+      "gold_cents": 28945,
+      "chain_cents": 27355,
+      "fixed_cents": 8000,
+      "cost_cents": 64950,
+      "rate_cents_per_gram": 12751,
+      "list_cents": 229200,
+      "paid_cents": 160440,
+      "margin": 0.5
      }
+    },
+    "quote": {
+     "text": "ayni",
+     "same_as": "B8",
+     "gram14_body": 2.0,
+     "chain_usd": 200,
+     "assembly_usd": 50,
+     "enamel_usd": 30,
+     "lines_usd": {
+      "chain": 200,
+      "assembly": 50,
+      "enamel": 30
+     }
+    },
+    "estimate_v2": {
+     "10K": 91800,
+     "14K": 129900,
+     "18K": 177800
     }
    }
   },
@@ -2806,36 +3144,62 @@
    "total_grams": 4.07,
    "description": "An eight-pointed star drawn in gold: an open rail, eight short spokes and a small round window at the centre, with the lower ray drawn longer. A quiet Christmas gift that keeps being worn long after.\n\nTHE PIECE\nThe star is 18 mm wide and 23 mm tall. Seven rays reach 9 mm from the centre and the lower ray 14 mm. The 1.0 mm rail is diamond-cut on its face; the centre disc is 4.5 mm across with a 2.0 mm hole. The ray tips are rounded. The bail is cast with the star.\n\nGOLD WEIGHT\n4.07 g of 14k gold, counting the chain, clasp and extender. On the scale the finished piece weighs 4.07 g in total with everything on it.\n\nLENGTH AND FIT\nA 1.0 mm 14k cable chain, 16 in with a 2 in extender, so it sits from 16 to 18 in. The chain is part of the design and its weight is counted in the gold weight above.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap and a soft brush. Take it off for swimming and cleaning. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout.",
    "price": {
-    "list_cents": 154600,
-    "paid_cents": 108220,
-    "cost_cents": 43792,
+    "list_cents": 165400,
+    "paid_cents": 115780,
+    "cost_cents": 46850,
     "margin": 0.5001,
     "discount": 0.3,
+    "basis": "maker_quote",
+    "plan_version": "xmas26-v3-quote-disc30-m50",
     "karats": {
      "10K": {
-      "grams": 3.63,
-      "rate_cents_per_gram": 8336,
-      "cost_cents": 30910,
-      "list_cents": 109200,
-      "paid_cents": 76440,
-      "margin": 0.5003
+      "grams": 1.78,
+      "gold_cents": 14947,
+      "chain_cents": 14132,
+      "fixed_cents": 5000,
+      "cost_cents": 34729,
+      "rate_cents_per_gram": 8397,
+      "list_cents": 122600,
+      "paid_cents": 85820,
+      "margin": 0.5
      },
      "14K": {
-      "grams": 4.07,
+      "grams": 2.0,
+      "gold_cents": 21200,
+      "chain_cents": 20000,
+      "fixed_cents": 5000,
+      "cost_cents": 46850,
       "rate_cents_per_gram": 10600,
-      "cost_cents": 43792,
-      "list_cents": 154600,
-      "paid_cents": 108220,
+      "list_cents": 165400,
+      "paid_cents": 115780,
       "margin": 0.5001
      },
      "18K": {
-      "grams": 4.63,
-      "rate_cents_per_gram": 12810,
-      "cost_cents": 59960,
-      "list_cents": 211600,
-      "paid_cents": 148120,
-      "margin": 0.5
+      "grams": 2.27,
+      "gold_cents": 28945,
+      "chain_cents": 27355,
+      "fixed_cents": 5000,
+      "cost_cents": 61950,
+      "rate_cents_per_gram": 12751,
+      "list_cents": 218700,
+      "paid_cents": 153090,
+      "margin": 0.5002
      }
+    },
+    "quote": {
+     "text": "2 GRAM 50 200 CAHIN",
+     "gram14_body": 2.0,
+     "assembly_usd": 50,
+     "chain_usd": 200,
+     "lines_usd": {
+      "chain": 200,
+      "assembly": 50
+     }
+    },
+    "estimate_v2": {
+     "10K": 109200,
+     "14K": 154600,
+     "18K": 211600
     }
    }
   },
@@ -3016,36 +3380,65 @@
    "total_grams": 4.12,
    "description": "A comet in gold: a domed head with a lab-grown white sapphire and two tail rails that sweep away from it, three more sapphires running down the main rail. A shooting-star wish for Christmas and every day after.\n\nTHE PIECE\nAbout 31 mm long. The domed head is 6.0 mm across; the main tail rail is 26 mm long and narrows from 1.6 mm to 1.0 mm, the second rail is 18 mm, joined by three short cross bars. Rail faces are diamond-cut, the head is polished, every tip is rounded. Because the head is the heaviest part, the pendant hangs with the tail turned about 20 degrees off vertical.\n\nGOLD WEIGHT\n4.10 g of 14k gold, counting the chain, clasp and extender. On the scale the finished piece weighs 4.12 g in total with the stones.\n\nSTONES\nFour round lab-grown white sapphires, all flush set: one 2.0 mm in the head, one 1.8 mm and two 1.5 mm along the main rail, 0.09 ct in total. Each sits level with the gold over a small hole that lets light and cleaning water through. Lab-grown sapphire has the hardness of mined sapphire (Mohs 9).\n\nLENGTH AND FIT\nA 1.5 mm 14k figaro chain, 16 in with a 2 in extender, so it sits from 16 to 18 in. The chain is part of the design and its weight is counted in the gold weight above.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece. The stones are set last, cold, after all firing and polishing.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap and a soft brush. Take it off for swimming and cleaning. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout.",
    "price": {
-    "list_cents": 155700,
-    "paid_cents": 108990,
-    "cost_cents": 44110,
+    "list_cents": 193600,
+    "paid_cents": 135520,
+    "cost_cents": 54850,
     "margin": 0.5001,
     "discount": 0.3,
+    "basis": "maker_quote",
+    "plan_version": "xmas26-v3-quote-disc30-m50",
     "karats": {
      "10K": {
-      "grams": 3.66,
-      "rate_cents_per_gram": 8336,
-      "cost_cents": 31160,
-      "list_cents": 110100,
-      "paid_cents": 77070,
-      "margin": 0.5004
+      "grams": 1.78,
+      "gold_cents": 14947,
+      "chain_cents": 17665,
+      "fixed_cents": 8000,
+      "cost_cents": 41262,
+      "rate_cents_per_gram": 8397,
+      "list_cents": 145700,
+      "paid_cents": 101990,
+      "margin": 0.5002
      },
      "14K": {
-      "grams": 4.1,
+      "grams": 2.0,
+      "gold_cents": 21200,
+      "chain_cents": 25000,
+      "fixed_cents": 8000,
+      "cost_cents": 54850,
       "rate_cents_per_gram": 10600,
-      "cost_cents": 44110,
-      "list_cents": 155700,
-      "paid_cents": 108990,
+      "list_cents": 193600,
+      "paid_cents": 135520,
       "margin": 0.5001
      },
      "18K": {
-      "grams": 4.66,
-      "rate_cents_per_gram": 12810,
-      "cost_cents": 60345,
-      "list_cents": 213000,
-      "paid_cents": 149100,
+      "grams": 2.27,
+      "gold_cents": 28945,
+      "chain_cents": 34193,
+      "fixed_cents": 8000,
+      "cost_cents": 71788,
+      "rate_cents_per_gram": 12751,
+      "list_cents": 253400,
+      "paid_cents": 177380,
       "margin": 0.5001
      }
+    },
+    "quote": {
+     "text": "2GR 50 30 250",
+     "gram14_body": 2.0,
+     "assembly_usd": 50,
+     "other_usd": 30,
+     "chain_usd": 250,
+     "note": "middle number sits in the enamel position; the catalog lists N2 without enamel (4 stones), kept as a quoted extra",
+     "lines_usd": {
+      "chain": 250,
+      "assembly": 50,
+      "other": 30
+     }
+    },
+    "estimate_v2": {
+     "10K": 110100,
+     "14K": 155700,
+     "18K": 213000
     }
    }
   },
@@ -3263,36 +3656,64 @@
    "total_grams": 4.06,
    "description": "An evil eye in navy and white glass enamel, held by a gold crescent that wraps its lower half, with a pale blue lab-grown sapphire at each tip. A protection gift for Christmas that is worn all year.\n\nTHE PIECE\n15.3 mm across the crescent tips and 11.6 mm tall. The eye disc is 9.2 mm across, the crescent is polished gold and joined to the disc along its inner edge. The bail is hidden behind the disc.\n\nGOLD WEIGHT\n4.01 g of 14k gold, counting the chain, clasp and extender. On the scale the finished piece weighs 4.06 g in total with the enamel and stones.\n\nENAMEL\nKiln-fired vitreous enamel (glass), opaque, in navy blue and white: three fields divided by 0.7 mm gold rings, level with the gold.\n\nSTONES\nTwo 1.5 mm round lab-grown sapphires in a pale ice blue, one in a round pad at each crescent tip, flush set after the last firing.\n\nLENGTH AND FIT\nA 1.0 mm 14k cable chain, 16 in with a 2 in extender, so it sits from 16 to 18 in. The chain is part of the design and its weight is counted in the gold weight above.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece, in a zinc-free gold alloy chosen for enamel. The enamel cells are cast into the gold, filled by hand and kiln-fired. Nothing is soldered after the first firing; any fitting added later is laser welded away from the enamel. The stones are set last, cold, after all firing and polishing.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap. Glass enamel is hard and does not fade, but it can chip if struck against stone or metal. Keep it away from ultrasonic cleaners. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout.",
    "price": {
-    "list_cents": 152400,
-    "paid_cents": 106680,
-    "cost_cents": 43156,
-    "margin": 0.5002,
+    "list_cents": 183000,
+    "paid_cents": 128100,
+    "cost_cents": 51850,
+    "margin": 0.5,
     "discount": 0.3,
+    "basis": "maker_quote",
+    "plan_version": "xmas26-v3-quote-disc30-m50",
     "karats": {
      "10K": {
-      "grams": 3.58,
-      "rate_cents_per_gram": 8336,
-      "cost_cents": 30493,
-      "list_cents": 107700,
-      "paid_cents": 75390,
+      "grams": 1.78,
+      "gold_cents": 14947,
+      "chain_cents": 14132,
+      "fixed_cents": 10000,
+      "cost_cents": 39729,
+      "rate_cents_per_gram": 8397,
+      "list_cents": 140300,
+      "paid_cents": 98210,
       "margin": 0.5002
      },
      "14K": {
-      "grams": 4.01,
+      "grams": 2.0,
+      "gold_cents": 21200,
+      "chain_cents": 20000,
+      "fixed_cents": 10000,
+      "cost_cents": 51850,
       "rate_cents_per_gram": 10600,
-      "cost_cents": 43156,
-      "list_cents": 152400,
-      "paid_cents": 106680,
-      "margin": 0.5002
+      "list_cents": 183000,
+      "paid_cents": 128100,
+      "margin": 0.5
      },
      "18K": {
-      "grams": 4.56,
-      "rate_cents_per_gram": 12810,
-      "cost_cents": 59064,
-      "list_cents": 208500,
-      "paid_cents": 145950,
+      "grams": 2.27,
+      "gold_cents": 28945,
+      "chain_cents": 27355,
+      "fixed_cents": 10000,
+      "cost_cents": 66950,
+      "rate_cents_per_gram": 12751,
+      "list_cents": 236300,
+      "paid_cents": 165410,
       "margin": 0.5001
      }
+    },
+    "quote": {
+     "text": "2 GR 50 50 200",
+     "gram14_body": 2.0,
+     "assembly_usd": 50,
+     "enamel_usd": 50,
+     "chain_usd": 200,
+     "lines_usd": {
+      "chain": 200,
+      "assembly": 50,
+      "enamel": 50
+     }
+    },
+    "estimate_v2": {
+     "10K": 107700,
+     "14K": 152400,
+     "18K": 208500
     }
    }
   },
@@ -3466,36 +3887,65 @@
    "total_grams": 3.99,
    "description": "A hamsa drawn as an open gold frame, with an almond eye across the palm and a pale blue lab-grown sapphire as its pupil. A protection gift for Christmas and every day after.\n\nTHE PIECE\n14 mm wide and 18 mm tall. A 1.0 mm rail outlines three fingers and two outward-curving thumbs; the palm is a solid oval plate with an 8.0 by 4.4 mm eye opening crossed by a thin gold bar. The rail is diamond-cut, the palm polished. The bail sits behind the middle finger.\n\nGOLD WEIGHT\n3.98 g of 14k gold, counting the chain, clasp and extender. On the scale the finished piece weighs 3.99 g in total with the stones.\n\nSTONES\nThree 1.5 mm round lab-grown sapphires, flush set: a pale ice-blue sapphire as the pupil and a white sapphire in each thumb tip, 0.04 ct in total. Mohs 9.\n\nLENGTH AND FIT\nA 1.0 mm 14k cable chain, 16 in with a 2 in extender, so it sits from 16 to 18 in. The chain is part of the design and its weight is counted in the gold weight above.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece. The stones are set last, cold, after all firing and polishing.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap and a soft brush. Take it off for swimming and cleaning. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout.",
    "price": {
-    "list_cents": 151200,
-    "paid_cents": 105840,
-    "cost_cents": 42838,
-    "margin": 0.5,
+    "list_cents": 168900,
+    "paid_cents": 118230,
+    "cost_cents": 47850,
+    "margin": 0.5001,
     "discount": 0.3,
+    "basis": "maker_quote",
+    "plan_version": "xmas26-v3-quote-disc30-m50",
     "karats": {
      "10K": {
-      "grams": 3.55,
-      "rate_cents_per_gram": 8336,
-      "cost_cents": 30243,
-      "list_cents": 106800,
-      "paid_cents": 74760,
-      "margin": 0.5001
+      "grams": 1.78,
+      "gold_cents": 14947,
+      "chain_cents": 14132,
+      "fixed_cents": 6000,
+      "cost_cents": 35729,
+      "rate_cents_per_gram": 8397,
+      "list_cents": 126200,
+      "paid_cents": 88340,
+      "margin": 0.5003
      },
      "14K": {
-      "grams": 3.98,
+      "grams": 2.0,
+      "gold_cents": 21200,
+      "chain_cents": 20000,
+      "fixed_cents": 6000,
+      "cost_cents": 47850,
       "rate_cents_per_gram": 10600,
-      "cost_cents": 42838,
-      "list_cents": 151200,
-      "paid_cents": 105840,
-      "margin": 0.5
+      "list_cents": 168900,
+      "paid_cents": 118230,
+      "margin": 0.5001
      },
      "18K": {
-      "grams": 4.53,
-      "rate_cents_per_gram": 12810,
-      "cost_cents": 58679,
-      "list_cents": 207100,
-      "paid_cents": 144970,
+      "grams": 2.27,
+      "gold_cents": 28945,
+      "chain_cents": 27355,
+      "fixed_cents": 6000,
+      "cost_cents": 62950,
+      "rate_cents_per_gram": 12751,
+      "list_cents": 222200,
+      "paid_cents": 155540,
       "margin": 0.5001
      }
+    },
+    "quote": {
+     "text": "2 GR 50 10 200",
+     "gram14_body": 2.0,
+     "assembly_usd": 50,
+     "other_usd": 10,
+     "chain_usd": 200,
+     "note": "middle number sits in the enamel position; the catalog lists N4 without enamel (3 stones), kept as a quoted extra",
+     "lines_usd": {
+      "chain": 200,
+      "assembly": 50,
+      "other": 10
+     }
+    },
+    "estimate_v2": {
+     "10K": 106800,
+     "14K": 151200,
+     "18K": 207100
     }
    }
   },
@@ -3668,36 +4118,62 @@
    "total_grams": 4.15,
    "description": "An icicle in 14k gold, ribbed and tapering to a rounded tip, with a pale blue lab-grown sapphire under its faceted collar. A winter piece for Christmas that keeps going through January and beyond.\n\nTHE PIECE\n23 mm long, 4.6 mm across the faceted collar, narrowing to a rounded 0.8 mm tip. Four uneven ribs run down the upper half. The upper body is hollow-formed to keep the weight wearable, with two small drain holes on the back; the lower part is solid. The bail sits behind the collar.\n\nGOLD WEIGHT\n4.15 g of 14k gold, counting the chain, clasp and extender. On the scale the finished piece weighs 4.15 g in total with the stones.\n\nSTONES\nOne 1.5 mm round lab-grown sapphire in a pale ice blue, flush set in a small raised pad. Mohs 9.\n\nLENGTH AND FIT\nA 1.0 mm 14k cable chain, 16 in with a 2 in extender, so it sits from 16 to 18 in. The chain is part of the design and its weight is counted in the gold weight above.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece. The stones are set last, cold, after all firing and polishing.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap and a soft brush. Take it off for swimming and cleaning. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout.",
    "price": {
-    "list_cents": 157600,
-    "paid_cents": 110320,
-    "cost_cents": 44640,
+    "list_cents": 165400,
+    "paid_cents": 115780,
+    "cost_cents": 46850,
     "margin": 0.5001,
     "discount": 0.3,
+    "basis": "maker_quote",
+    "plan_version": "xmas26-v3-quote-disc30-m50",
     "karats": {
      "10K": {
-      "grams": 3.7,
-      "rate_cents_per_gram": 8336,
-      "cost_cents": 31493,
-      "list_cents": 111200,
-      "paid_cents": 77840,
-      "margin": 0.5001
+      "grams": 1.78,
+      "gold_cents": 14947,
+      "chain_cents": 14132,
+      "fixed_cents": 5000,
+      "cost_cents": 34729,
+      "rate_cents_per_gram": 8397,
+      "list_cents": 122600,
+      "paid_cents": 85820,
+      "margin": 0.5
      },
      "14K": {
-      "grams": 4.15,
+      "grams": 2.0,
+      "gold_cents": 21200,
+      "chain_cents": 20000,
+      "fixed_cents": 5000,
+      "cost_cents": 46850,
       "rate_cents_per_gram": 10600,
-      "cost_cents": 44640,
-      "list_cents": 157600,
-      "paid_cents": 110320,
+      "list_cents": 165400,
+      "paid_cents": 115780,
       "margin": 0.5001
      },
      "18K": {
-      "grams": 4.72,
-      "rate_cents_per_gram": 12810,
-      "cost_cents": 61113,
-      "list_cents": 215700,
-      "paid_cents": 150990,
-      "margin": 0.5001
+      "grams": 2.27,
+      "gold_cents": 28945,
+      "chain_cents": 27355,
+      "fixed_cents": 5000,
+      "cost_cents": 61950,
+      "rate_cents_per_gram": 12751,
+      "list_cents": 218700,
+      "paid_cents": 153090,
+      "margin": 0.5002
      }
+    },
+    "quote": {
+     "text": "2 GR 50 200",
+     "gram14_body": 2.0,
+     "assembly_usd": 50,
+     "chain_usd": 200,
+     "lines_usd": {
+      "chain": 200,
+      "assembly": 50
+     }
+    },
+    "estimate_v2": {
+     "10K": 111200,
+     "14K": 157600,
+     "18K": 215700
     }
    }
   },
@@ -3898,6 +4374,8 @@
     "cost_cents": 43050,
     "margin": 0.5002,
     "discount": 0.3,
+    "basis": "estimate",
+    "plan_version": "xmas26-v2-disc30-m50",
     "karats": {
      "10K": {
       "grams": 3.57,
@@ -4104,6 +4582,8 @@
     "cost_cents": 43580,
     "margin": 0.5002,
     "discount": 0.3,
+    "basis": "estimate",
+    "plan_version": "xmas26-v2-disc30-m50",
     "karats": {
      "10K": {
       "grams": 3.61,
@@ -4300,6 +4780,8 @@
     "cost_cents": 39870,
     "margin": 0.5002,
     "discount": 0.3,
+    "basis": "estimate",
+    "plan_version": "xmas26-v2-disc30-m50",
     "karats": {
      "10K": {
       "grams": 3.3,
@@ -4510,6 +4992,8 @@
     "cost_cents": 41884,
     "margin": 0.5002,
     "discount": 0.3,
+    "basis": "estimate",
+    "plan_version": "xmas26-v2-disc30-m50",
     "karats": {
      "10K": {
       "grams": 3.47,
@@ -4733,6 +5217,8 @@
     "cost_cents": 41142,
     "margin": 0.5003,
     "discount": 0.3,
+    "basis": "estimate",
+    "plan_version": "xmas26-v2-disc30-m50",
     "karats": {
      "10K": {
       "grams": 3.41,
@@ -4930,36 +5416,62 @@
     "Kategori fiyat basamagi: E1 en hafif civili parca (1.55 g) - giris fiyati rolu bilincli mi?"
    ],
    "price": {
-    "list_cents": 60400,
-    "paid_cents": 42280,
-    "cost_cents": 17080,
-    "margin": 0.5004,
+    "list_cents": 148800,
+    "paid_cents": 104160,
+    "cost_cents": 42150,
+    "margin": 0.5001,
     "discount": 0.3,
+    "basis": "maker_quote",
+    "plan_version": "xmas26-v3-quote-disc30-m50",
     "karats": {
      "10K": {
-      "grams": 1.38,
-      "rate_cents_per_gram": 8336,
-      "cost_cents": 12154,
-      "list_cents": 43000,
-      "paid_cents": 30100,
-      "margin": 0.5004
+      "grams": 2.23,
+      "gold_cents": 18725,
+      "chain_cents": 0,
+      "fixed_cents": 15000,
+      "cost_cents": 34375,
+      "rate_cents_per_gram": 8397,
+      "list_cents": 121400,
+      "paid_cents": 84980,
+      "margin": 0.5002
      },
      "14K": {
-      "grams": 1.55,
+      "grams": 2.5,
+      "gold_cents": 26500,
+      "chain_cents": 0,
+      "fixed_cents": 15000,
+      "cost_cents": 42150,
       "rate_cents_per_gram": 10600,
-      "cost_cents": 17080,
-      "list_cents": 60400,
-      "paid_cents": 42280,
-      "margin": 0.5004
+      "list_cents": 148800,
+      "paid_cents": 104160,
+      "margin": 0.5001
      },
      "18K": {
-      "grams": 1.76,
-      "rate_cents_per_gram": 12810,
-      "cost_cents": 23196,
-      "list_cents": 82000,
-      "paid_cents": 57400,
-      "margin": 0.5005
+      "grams": 2.84,
+      "gold_cents": 36213,
+      "chain_cents": 0,
+      "fixed_cents": 15000,
+      "cost_cents": 51863,
+      "rate_cents_per_gram": 12751,
+      "list_cents": 183100,
+      "paid_cents": 128170,
+      "margin": 0.5002
      }
+    },
+    "quote": {
+     "text": "2,5 gr 100 push post 50",
+     "gram14_body": 2.5,
+     "post_usd": 100,
+     "assembly_usd": 50,
+     "lines_usd": {
+      "assembly": 50,
+      "post": 100
+     }
+    },
+    "estimate_v2": {
+     "10K": 43000,
+     "14K": 60400,
+     "18K": 82000
     }
    }
   },
@@ -5132,36 +5644,63 @@
     "1.0 mm sert cekme 14K sari tel (tapa) stokta mi; tapali C-halka icin 3 numunede 2 kg cekme testi."
    ],
    "price": {
-    "list_cents": 65200,
-    "paid_cents": 45640,
-    "cost_cents": 18458,
-    "margin": 0.5,
+    "list_cents": 148800,
+    "paid_cents": 104160,
+    "cost_cents": 42150,
+    "margin": 0.5001,
     "discount": 0.3,
+    "basis": "maker_quote",
+    "plan_version": "xmas26-v3-quote-disc30-m50",
     "karats": {
      "10K": {
-      "grams": 1.5,
-      "rate_cents_per_gram": 8336,
-      "cost_cents": 13154,
-      "list_cents": 46500,
-      "paid_cents": 32550,
-      "margin": 0.5001
+      "grams": 2.23,
+      "gold_cents": 18725,
+      "chain_cents": 0,
+      "fixed_cents": 15000,
+      "cost_cents": 34375,
+      "rate_cents_per_gram": 8397,
+      "list_cents": 121400,
+      "paid_cents": 84980,
+      "margin": 0.5002
      },
      "14K": {
-      "grams": 1.68,
+      "grams": 2.5,
+      "gold_cents": 26500,
+      "chain_cents": 0,
+      "fixed_cents": 15000,
+      "cost_cents": 42150,
       "rate_cents_per_gram": 10600,
-      "cost_cents": 18458,
-      "list_cents": 65200,
-      "paid_cents": 45640,
-      "margin": 0.5
+      "list_cents": 148800,
+      "paid_cents": 104160,
+      "margin": 0.5001
      },
      "18K": {
-      "grams": 1.91,
-      "rate_cents_per_gram": 12810,
-      "cost_cents": 25117,
-      "list_cents": 88700,
-      "paid_cents": 62090,
-      "margin": 0.5001
+      "grams": 2.84,
+      "gold_cents": 36213,
+      "chain_cents": 0,
+      "fixed_cents": 15000,
+      "cost_cents": 51863,
+      "rate_cents_per_gram": 12751,
+      "list_cents": 183100,
+      "paid_cents": 128170,
+      "margin": 0.5002
      }
+    },
+    "quote": {
+     "text": "ayni",
+     "same_as": "E1",
+     "gram14_body": 2.5,
+     "post_usd": 100,
+     "assembly_usd": 50,
+     "lines_usd": {
+      "assembly": 50,
+      "post": 100
+     }
+    },
+    "estimate_v2": {
+     "10K": 46500,
+     "14K": 65200,
+     "18K": 88700
     }
    }
   },
@@ -5355,36 +5894,65 @@
     "Cinkosuz 14K solidusu (DSC) - 780 C pay teyidi."
    ],
    "price": {
-    "list_cents": 65600,
-    "paid_cents": 45920,
-    "cost_cents": 18564,
+    "list_cents": 166500,
+    "paid_cents": 116550,
+    "cost_cents": 47150,
     "margin": 0.5002,
     "discount": 0.3,
+    "basis": "maker_quote",
+    "plan_version": "xmas26-v3-quote-disc30-m50",
     "karats": {
      "10K": {
-      "grams": 1.51,
-      "rate_cents_per_gram": 8336,
-      "cost_cents": 13237,
-      "list_cents": 46800,
-      "paid_cents": 32760,
-      "margin": 0.5002
+      "grams": 2.23,
+      "gold_cents": 18725,
+      "chain_cents": 0,
+      "fixed_cents": 20000,
+      "cost_cents": 39375,
+      "rate_cents_per_gram": 8397,
+      "list_cents": 139000,
+      "paid_cents": 97300,
+      "margin": 0.5001
      },
      "14K": {
-      "grams": 1.69,
+      "grams": 2.5,
+      "gold_cents": 26500,
+      "chain_cents": 0,
+      "fixed_cents": 20000,
+      "cost_cents": 47150,
       "rate_cents_per_gram": 10600,
-      "cost_cents": 18564,
-      "list_cents": 65600,
-      "paid_cents": 45920,
+      "list_cents": 166500,
+      "paid_cents": 116550,
       "margin": 0.5002
      },
      "18K": {
-      "grams": 1.92,
-      "rate_cents_per_gram": 12810,
-      "cost_cents": 25245,
-      "list_cents": 89200,
-      "paid_cents": 62440,
-      "margin": 0.5003
+      "grams": 2.84,
+      "gold_cents": 36213,
+      "chain_cents": 0,
+      "fixed_cents": 20000,
+      "cost_cents": 56863,
+      "rate_cents_per_gram": 12751,
+      "list_cents": 200700,
+      "paid_cents": 140490,
+      "margin": 0.5001
      }
+    },
+    "quote": {
+     "text": "ayni plus 50 anemal",
+     "same_as": "E1",
+     "gram14_body": 2.5,
+     "post_usd": 100,
+     "assembly_usd": 50,
+     "enamel_usd": 50,
+     "lines_usd": {
+      "assembly": 50,
+      "enamel": 50,
+      "post": 100
+     }
+    },
+    "estimate_v2": {
+     "10K": 46800,
+     "14K": 65600,
+     "18K": 89200
     }
    }
   },
@@ -5554,36 +6122,63 @@
     "Lab mavi safir 2.0 mm acik buz mavisi ton numunesi onayi."
    ],
    "price": {
-    "list_cents": 62300,
-    "paid_cents": 43610,
-    "cost_cents": 17610,
-    "margin": 0.5006,
+    "list_cents": 130100,
+    "paid_cents": 91070,
+    "cost_cents": 36850,
+    "margin": 0.5001,
     "discount": 0.3,
+    "basis": "maker_quote",
+    "plan_version": "xmas26-v3-quote-disc30-m50",
     "karats": {
      "10K": {
-      "grams": 1.43,
-      "rate_cents_per_gram": 8336,
-      "cost_cents": 12570,
-      "list_cents": 44500,
-      "paid_cents": 31150,
-      "margin": 0.5007
+      "grams": 1.78,
+      "gold_cents": 14947,
+      "chain_cents": 0,
+      "fixed_cents": 15000,
+      "cost_cents": 30597,
+      "rate_cents_per_gram": 8397,
+      "list_cents": 108100,
+      "paid_cents": 75670,
+      "margin": 0.5003
      },
      "14K": {
-      "grams": 1.6,
+      "grams": 2.0,
+      "gold_cents": 21200,
+      "chain_cents": 0,
+      "fixed_cents": 15000,
+      "cost_cents": 36850,
       "rate_cents_per_gram": 10600,
-      "cost_cents": 17610,
-      "list_cents": 62300,
-      "paid_cents": 43610,
-      "margin": 0.5006
+      "list_cents": 130100,
+      "paid_cents": 91070,
+      "margin": 0.5001
      },
      "18K": {
-      "grams": 1.82,
-      "rate_cents_per_gram": 12810,
-      "cost_cents": 23964,
-      "list_cents": 84700,
-      "paid_cents": 59290,
-      "margin": 0.5004
+      "grams": 2.27,
+      "gold_cents": 28945,
+      "chain_cents": 0,
+      "fixed_cents": 15000,
+      "cost_cents": 44595,
+      "rate_cents_per_gram": 12751,
+      "list_cents": 157400,
+      "paid_cents": 110180,
+      "margin": 0.5
      }
+    },
+    "quote": {
+     "text": "2 GR, 50 + 100",
+     "gram14_body": 2.0,
+     "assembly_usd": 50,
+     "post_usd": 100,
+     "note": "50 + 100 read as the earring pattern of E1: assembly 50, push posts 100",
+     "lines_usd": {
+      "assembly": 50,
+      "post": 100
+     }
+    },
+    "estimate_v2": {
+     "10K": 44500,
+     "14K": 62300,
+     "18K": 84700
     }
    }
   },
@@ -5741,36 +6336,62 @@
     "Kategori fiyat merdiveni: E5 artik 1.43 g ile en hafif parca; mentese/pim iscilugu fiyat motorunda yok."
    ],
    "price": {
-    "list_cents": 55900,
-    "paid_cents": 39130,
-    "cost_cents": 15808,
-    "margin": 0.5004,
+    "list_cents": 165400,
+    "paid_cents": 115780,
+    "cost_cents": 46850,
+    "margin": 0.5001,
     "discount": 0.3,
+    "basis": "maker_quote",
+    "plan_version": "xmas26-v3-quote-disc30-m50",
     "karats": {
      "10K": {
-      "grams": 1.28,
-      "rate_cents_per_gram": 8336,
-      "cost_cents": 11320,
-      "list_cents": 40100,
-      "paid_cents": 28070,
-      "margin": 0.5008
+      "grams": 1.78,
+      "gold_cents": 14947,
+      "chain_cents": 0,
+      "fixed_cents": 25000,
+      "cost_cents": 40597,
+      "rate_cents_per_gram": 8397,
+      "list_cents": 143300,
+      "paid_cents": 100310,
+      "margin": 0.5
      },
      "14K": {
-      "grams": 1.43,
+      "grams": 2.0,
+      "gold_cents": 21200,
+      "chain_cents": 0,
+      "fixed_cents": 25000,
+      "cost_cents": 46850,
       "rate_cents_per_gram": 10600,
-      "cost_cents": 15808,
-      "list_cents": 55900,
-      "paid_cents": 39130,
-      "margin": 0.5004
+      "list_cents": 165400,
+      "paid_cents": 115780,
+      "margin": 0.5001
      },
      "18K": {
-      "grams": 1.63,
-      "rate_cents_per_gram": 12810,
-      "cost_cents": 21530,
-      "list_cents": 76100,
-      "paid_cents": 53270,
-      "margin": 0.5004
+      "grams": 2.27,
+      "gold_cents": 28945,
+      "chain_cents": 0,
+      "fixed_cents": 25000,
+      "cost_cents": 54595,
+      "rate_cents_per_gram": 12751,
+      "list_cents": 192700,
+      "paid_cents": 134890,
+      "margin": 0.5001
      }
+    },
+    "quote": {
+     "text": "BU 2 GR 50 EXTRA 200 KILIT MEKANOIZMASI",
+     "gram14_body": 2.0,
+     "assembly_usd": 50,
+     "lock_usd": 200,
+     "lines_usd": {
+      "assembly": 50,
+      "lock": 200
+     }
+    },
+    "estimate_v2": {
+     "10K": 40100,
+     "14K": 55900,
+     "18K": 76100
     }
    }
   },
@@ -5949,36 +6570,64 @@
     "Buz mavisi opagin Zn-siz 14K uzerinde ton kaymasi (yesilimsi) kuponla."
    ],
    "price": {
-    "list_cents": 65600,
-    "paid_cents": 45920,
-    "cost_cents": 18564,
-    "margin": 0.5002,
+    "list_cents": 185100,
+    "paid_cents": 129570,
+    "cost_cents": 52450,
+    "margin": 0.5,
     "discount": 0.3,
+    "basis": "maker_quote",
+    "plan_version": "xmas26-v3-quote-disc30-m50",
     "karats": {
      "10K": {
-      "grams": 1.51,
-      "rate_cents_per_gram": 8336,
-      "cost_cents": 13237,
-      "list_cents": 46800,
-      "paid_cents": 32760,
+      "grams": 2.68,
+      "gold_cents": 22504,
+      "chain_cents": 0,
+      "fixed_cents": 20000,
+      "cost_cents": 43154,
+      "rate_cents_per_gram": 8397,
+      "list_cents": 152400,
+      "paid_cents": 106680,
       "margin": 0.5002
      },
      "14K": {
-      "grams": 1.69,
+      "grams": 3.0,
+      "gold_cents": 31800,
+      "chain_cents": 0,
+      "fixed_cents": 20000,
+      "cost_cents": 52450,
       "rate_cents_per_gram": 10600,
-      "cost_cents": 18564,
-      "list_cents": 65600,
-      "paid_cents": 45920,
-      "margin": 0.5002
+      "list_cents": 185100,
+      "paid_cents": 129570,
+      "margin": 0.5
      },
      "18K": {
-      "grams": 1.92,
-      "rate_cents_per_gram": 12810,
-      "cost_cents": 25245,
-      "list_cents": 89200,
-      "paid_cents": 62440,
-      "margin": 0.5003
+      "grams": 3.41,
+      "gold_cents": 43481,
+      "chain_cents": 0,
+      "fixed_cents": 20000,
+      "cost_cents": 64131,
+      "rate_cents_per_gram": 12751,
+      "list_cents": 226300,
+      "paid_cents": 158410,
+      "margin": 0.5
      }
+    },
+    "quote": {
+     "text": "3 GR 50 CLEANING 100 PUSH POST 50ENAMAL",
+     "gram14_body": 3.0,
+     "assembly_usd": 50,
+     "post_usd": 100,
+     "enamel_usd": 50,
+     "lines_usd": {
+      "assembly": 50,
+      "enamel": 50,
+      "post": 100
+     }
+    },
+    "estimate_v2": {
+     "10K": 46800,
+     "14K": 65600,
+     "18K": 89200
     }
    }
   },
@@ -6166,36 +6815,65 @@
     "Derin yesim yesili opagin 14K Zn-siz alasimda renk tutarliligi (parti kuponu)."
    ],
    "price": {
-    "list_cents": 65200,
-    "paid_cents": 45640,
-    "cost_cents": 18458,
+    "list_cents": 185100,
+    "paid_cents": 129570,
+    "cost_cents": 52450,
     "margin": 0.5,
     "discount": 0.3,
+    "basis": "maker_quote",
+    "plan_version": "xmas26-v3-quote-disc30-m50",
     "karats": {
      "10K": {
-      "grams": 1.5,
-      "rate_cents_per_gram": 8336,
-      "cost_cents": 13154,
-      "list_cents": 46500,
-      "paid_cents": 32550,
-      "margin": 0.5001
+      "grams": 2.68,
+      "gold_cents": 22504,
+      "chain_cents": 0,
+      "fixed_cents": 20000,
+      "cost_cents": 43154,
+      "rate_cents_per_gram": 8397,
+      "list_cents": 152400,
+      "paid_cents": 106680,
+      "margin": 0.5002
      },
      "14K": {
-      "grams": 1.68,
+      "grams": 3.0,
+      "gold_cents": 31800,
+      "chain_cents": 0,
+      "fixed_cents": 20000,
+      "cost_cents": 52450,
       "rate_cents_per_gram": 10600,
-      "cost_cents": 18458,
-      "list_cents": 65200,
-      "paid_cents": 45640,
+      "list_cents": 185100,
+      "paid_cents": 129570,
       "margin": 0.5
      },
      "18K": {
-      "grams": 1.91,
-      "rate_cents_per_gram": 12810,
-      "cost_cents": 25117,
-      "list_cents": 88700,
-      "paid_cents": 62090,
-      "margin": 0.5001
+      "grams": 3.41,
+      "gold_cents": 43481,
+      "chain_cents": 0,
+      "fixed_cents": 20000,
+      "cost_cents": 64131,
+      "rate_cents_per_gram": 12751,
+      "list_cents": 226300,
+      "paid_cents": 158410,
+      "margin": 0.5
      }
+    },
+    "quote": {
+     "text": "AYNISI",
+     "same_as": "E6",
+     "gram14_body": 3.0,
+     "assembly_usd": 50,
+     "post_usd": 100,
+     "enamel_usd": 50,
+     "lines_usd": {
+      "assembly": 50,
+      "enamel": 50,
+      "post": 100
+     }
+    },
+    "estimate_v2": {
+     "10K": 46500,
+     "14K": 65200,
+     "18K": 88700
     }
    }
   },
@@ -6382,36 +7060,66 @@
     "Fener silueti 250 px'de okunuyor mu (tepe halkasi sarkit/kolye ucu gibi okunabilir)? CAD render ile onay."
    ],
    "price": {
-    "list_cents": 64100,
-    "paid_cents": 44870,
-    "cost_cents": 18140,
-    "margin": 0.5002,
+    "list_cents": 185100,
+    "paid_cents": 129570,
+    "cost_cents": 52450,
+    "margin": 0.5,
     "discount": 0.3,
+    "basis": "maker_quote",
+    "plan_version": "xmas26-v3-quote-disc30-m50",
     "karats": {
      "10K": {
-      "grams": 1.47,
-      "rate_cents_per_gram": 8336,
-      "cost_cents": 12904,
-      "list_cents": 45700,
-      "paid_cents": 31990,
-      "margin": 0.5008
-     },
-     "14K": {
-      "grams": 1.65,
-      "rate_cents_per_gram": 10600,
-      "cost_cents": 18140,
-      "list_cents": 64100,
-      "paid_cents": 44870,
+      "grams": 2.68,
+      "gold_cents": 22504,
+      "chain_cents": 0,
+      "fixed_cents": 20000,
+      "cost_cents": 43154,
+      "rate_cents_per_gram": 8397,
+      "list_cents": 152400,
+      "paid_cents": 106680,
       "margin": 0.5002
      },
+     "14K": {
+      "grams": 3.0,
+      "gold_cents": 31800,
+      "chain_cents": 0,
+      "fixed_cents": 20000,
+      "cost_cents": 52450,
+      "rate_cents_per_gram": 10600,
+      "list_cents": 185100,
+      "paid_cents": 129570,
+      "margin": 0.5
+     },
      "18K": {
-      "grams": 1.88,
-      "rate_cents_per_gram": 12810,
-      "cost_cents": 24733,
-      "list_cents": 87400,
-      "paid_cents": 61180,
-      "margin": 0.5003
+      "grams": 3.41,
+      "gold_cents": 43481,
+      "chain_cents": 0,
+      "fixed_cents": 20000,
+      "cost_cents": 64131,
+      "rate_cents_per_gram": 12751,
+      "list_cents": 226300,
+      "paid_cents": 158410,
+      "margin": 0.5
      }
+    },
+    "quote": {
+     "text": "BUNU ANLAMADIM KOLYEUCUMU KUPE MI, KUPE ISE AYNI",
+     "same_as": "E6",
+     "gram14_body": 3.0,
+     "assembly_usd": 50,
+     "post_usd": 100,
+     "enamel_usd": 50,
+     "note": "he asked whether the lantern is a pendant or an earring; it is the Berry Lantern Stud (E8), so his 'if earring, same' applies",
+     "lines_usd": {
+      "assembly": 50,
+      "enamel": 50,
+      "post": 100
+     }
+    },
+    "estimate_v2": {
+     "10K": 45700,
+     "14K": 64100,
+     "18K": 87400
     }
    }
   },
@@ -6590,36 +7298,65 @@
     "Yatay kusta civi konumu (gorsele esitlendi): boyun pedi kutle merkezinin ~1 mm onunde; pilot ciftte asili durus acisi olculur, sarkma varsa ped govde ortasina (hucreye >=1.5 mm) kaydirilir."
    ],
    "price": {
-    "list_cents": 61900,
-    "paid_cents": 43330,
-    "cost_cents": 17504,
-    "margin": 0.5005,
+    "list_cents": 185100,
+    "paid_cents": 129570,
+    "cost_cents": 52450,
+    "margin": 0.5,
     "discount": 0.3,
+    "basis": "maker_quote",
+    "plan_version": "xmas26-v3-quote-disc30-m50",
     "karats": {
      "10K": {
-      "grams": 1.42,
-      "rate_cents_per_gram": 8336,
-      "cost_cents": 12487,
-      "list_cents": 44200,
-      "paid_cents": 30940,
-      "margin": 0.5006
+      "grams": 2.68,
+      "gold_cents": 22504,
+      "chain_cents": 0,
+      "fixed_cents": 20000,
+      "cost_cents": 43154,
+      "rate_cents_per_gram": 8397,
+      "list_cents": 152400,
+      "paid_cents": 106680,
+      "margin": 0.5002
      },
      "14K": {
-      "grams": 1.59,
+      "grams": 3.0,
+      "gold_cents": 31800,
+      "chain_cents": 0,
+      "fixed_cents": 20000,
+      "cost_cents": 52450,
       "rate_cents_per_gram": 10600,
-      "cost_cents": 17504,
-      "list_cents": 61900,
-      "paid_cents": 43330,
-      "margin": 0.5005
+      "list_cents": 185100,
+      "paid_cents": 129570,
+      "margin": 0.5
      },
      "18K": {
-      "grams": 1.81,
-      "rate_cents_per_gram": 12810,
-      "cost_cents": 23836,
-      "list_cents": 84200,
-      "paid_cents": 58940,
-      "margin": 0.5002
+      "grams": 3.41,
+      "gold_cents": 43481,
+      "chain_cents": 0,
+      "fixed_cents": 20000,
+      "cost_cents": 64131,
+      "rate_cents_per_gram": 12751,
+      "list_cents": 226300,
+      "paid_cents": 158410,
+      "margin": 0.5
      }
+    },
+    "quote": {
+     "text": "AYNI",
+     "same_as": "E6",
+     "gram14_body": 3.0,
+     "assembly_usd": 50,
+     "post_usd": 100,
+     "enamel_usd": 50,
+     "lines_usd": {
+      "assembly": 50,
+      "enamel": 50,
+      "post": 100
+     }
+    },
+    "estimate_v2": {
+     "10K": 44200,
+     "14K": 61900,
+     "18K": 84200
     }
    }
   },
@@ -6797,36 +7534,65 @@
     "Egri yuzeyde islak dolum kalinlik homojenligi - egri kupon numunesi."
    ],
    "price": {
-    "list_cents": 64500,
-    "paid_cents": 45150,
-    "cost_cents": 18246,
-    "margin": 0.5003,
+    "list_cents": 185100,
+    "paid_cents": 129570,
+    "cost_cents": 52450,
+    "margin": 0.5,
     "discount": 0.3,
+    "basis": "maker_quote",
+    "plan_version": "xmas26-v3-quote-disc30-m50",
     "karats": {
      "10K": {
-      "grams": 1.48,
-      "rate_cents_per_gram": 8336,
-      "cost_cents": 12987,
-      "list_cents": 45900,
-      "paid_cents": 32130,
-      "margin": 0.5
+      "grams": 2.68,
+      "gold_cents": 22504,
+      "chain_cents": 0,
+      "fixed_cents": 20000,
+      "cost_cents": 43154,
+      "rate_cents_per_gram": 8397,
+      "list_cents": 152400,
+      "paid_cents": 106680,
+      "margin": 0.5002
      },
      "14K": {
-      "grams": 1.66,
+      "grams": 3.0,
+      "gold_cents": 31800,
+      "chain_cents": 0,
+      "fixed_cents": 20000,
+      "cost_cents": 52450,
       "rate_cents_per_gram": 10600,
-      "cost_cents": 18246,
-      "list_cents": 64500,
-      "paid_cents": 45150,
-      "margin": 0.5003
+      "list_cents": 185100,
+      "paid_cents": 129570,
+      "margin": 0.5
      },
      "18K": {
-      "grams": 1.89,
-      "rate_cents_per_gram": 12810,
-      "cost_cents": 24861,
-      "list_cents": 87800,
-      "paid_cents": 61460,
-      "margin": 0.5001
+      "grams": 3.41,
+      "gold_cents": 43481,
+      "chain_cents": 0,
+      "fixed_cents": 20000,
+      "cost_cents": 64131,
+      "rate_cents_per_gram": 12751,
+      "list_cents": 226300,
+      "paid_cents": 158410,
+      "margin": 0.5
      }
+    },
+    "quote": {
+     "text": "AYNI",
+     "same_as": "E6",
+     "gram14_body": 3.0,
+     "assembly_usd": 50,
+     "post_usd": 100,
+     "enamel_usd": 50,
+     "lines_usd": {
+      "assembly": 50,
+      "enamel": 50,
+      "post": 100
+     }
+    },
+    "estimate_v2": {
+     "10K": 45900,
+     "14K": 64500,
+     "18K": 87800
     }
    }
   },
@@ -7015,6 +7781,8 @@
     "cost_cents": 35948,
     "margin": 0.5,
     "discount": 0.3,
+    "basis": "estimate",
+    "plan_version": "xmas26-v2-disc30-m50",
     "karats": {
      "10K": {
       "grams": 2.97,
@@ -7235,6 +8003,8 @@
     "cost_cents": 42202,
     "margin": 0.5001,
     "discount": 0.3,
+    "basis": "estimate",
+    "plan_version": "xmas26-v2-disc30-m50",
     "karats": {
      "10K": {
       "grams": 3.5,
@@ -7504,6 +8274,8 @@
     "cost_cents": 39976,
     "margin": 0.5,
     "discount": 0.3,
+    "basis": "estimate",
+    "plan_version": "xmas26-v2-disc30-m50",
     "karats": {
      "10K": {
       "grams": 3.31,
@@ -7764,6 +8536,8 @@
     "cost_cents": 39870,
     "margin": 0.5002,
     "discount": 0.3,
+    "basis": "estimate",
+    "plan_version": "xmas26-v2-disc30-m50",
     "karats": {
      "10K": {
       "grams": 3.3,
@@ -7959,6 +8733,8 @@
     "cost_cents": 44110,
     "margin": 0.5001,
     "discount": 0.3,
+    "basis": "estimate",
+    "plan_version": "xmas26-v2-disc30-m50",
     "karats": {
      "10K": {
       "grams": 3.66,
@@ -8216,6 +8992,8 @@
     "cost_cents": 40294,
     "margin": 0.5002,
     "discount": 0.3,
+    "basis": "estimate",
+    "plan_version": "xmas26-v2-disc30-m50",
     "karats": {
      "10K": {
       "grams": 3.34,
@@ -8475,6 +9253,8 @@
     "cost_cents": 39128,
     "margin": 0.5003,
     "discount": 0.3,
+    "basis": "estimate",
+    "plan_version": "xmas26-v2-disc30-m50",
     "karats": {
      "10K": {
       "grams": 3.24,
@@ -8733,6 +9513,8 @@
     "cost_cents": 38068,
     "margin": 0.5001,
     "discount": 0.3,
+    "basis": "estimate",
+    "plan_version": "xmas26-v2-disc30-m50",
     "karats": {
      "10K": {
       "grams": 3.15,
@@ -8986,6 +9768,8 @@
     "cost_cents": 36266,
     "margin": 0.5003,
     "discount": 0.3,
+    "basis": "estimate",
+    "plan_version": "xmas26-v2-disc30-m50",
     "karats": {
      "10K": {
       "grams": 3.0,
@@ -9225,6 +10009,8 @@
     "cost_cents": 42096,
     "margin": 0.5001,
     "discount": 0.3,
+    "basis": "estimate",
+    "plan_version": "xmas26-v2-disc30-m50",
     "karats": {
      "10K": {
       "grams": 3.49,
