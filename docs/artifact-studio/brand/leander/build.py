@@ -1,13 +1,17 @@
-"""Leander brand system: builds every SVG lockup from one source of truth.
+"""Leander brand system, direction A "Horizon": builds every SVG from one source.
 
 Usage: python3 build.py <font_dir> <out_dir>
 
-font_dir holds cormorant-500.ttf (Cormorant Garamond instantiated at wght 500),
-plexmono.ttf (IBM Plex Mono Regular). Text is shaped with HarfBuzz and written as
-outlines, so the SVGs carry no font dependency.
+font_dir holds hanken-300.ttf, hanken-400.ttf, hanken-500.ttf (Hanken Grotesk
+variable instantiated at wght 300/400/500). Text is shaped with HarfBuzz and
+written as outlines, so the SVGs carry no font dependency.
 
-Palette is the shop's own (docs/artifact-studio/pinterest/render.py): ivory paper,
-ink, one warm gold. Nothing else, no gradients, no metallic rendering.
+Palette is the shop's own (docs/artifact-studio/pinterest/render.py): ivory
+paper, ink, one warm gold. No gradients, no metallic rendering.
+
+System in one sentence: the wordmark is LEANDER in light grotesk capitals with
+wide tracking; the mark is a hairline (the water) with one gold point above its
+far end (Hero's lamp). The point is the only colour.
 """
 import os
 import sys
@@ -24,8 +28,11 @@ IVORY = "#F4EFE7"
 INK = "#1C1A17"
 GOLD = "#A8834A"
 
-WORD = "leander"
+WORD = "LEANDER"
 DESCRIPTOR = "SOLID GOLD · MADE TO ORDER"
+
+TRACK_WORD = 0.46       # em, wordmark
+TRACK_SUB = 0.34        # em, descriptor
 
 
 class Face:
@@ -34,15 +41,14 @@ class Face:
         self.upm = self.tt["head"].unitsPerEm
         self.glyphs = self.tt.getGlyphSet()
         self.order = self.tt.getGlyphOrder()
-        blob = hb.Blob.from_file_path(path)
-        self.hb_font = hb.Font(hb.Face(blob))
+        self.hb_font = hb.Font(hb.Face(hb.Blob.from_file_path(path)))
 
-    def shape(self, text, size, tracking=0.0, features=None):
-        """Returns (path_d, width) for text at size px, tracking in em."""
+    def shape(self, text, size, tracking=0.0):
+        """Returns (path_d, width). Baseline at y = 0, y grows downward."""
         buf = hb.Buffer()
         buf.add_str(text)
         buf.guess_segment_properties()
-        hb.shape(self.hb_font, buf, features or {})
+        hb.shape(self.hb_font, buf, {"kern": True, "lnum": True})
         scale = size / self.upm
         x = 0.0
         d = []
@@ -51,49 +57,57 @@ class Face:
             pen = SVGPathPen(self.glyphs, ntos=lambda v: f"{v:.2f}")
             tpen = TransformPen(pen, (scale, 0, 0, -scale, x + pos.x_offset * scale, -pos.y_offset * scale))
             self.glyphs[name].draw(tpen)
-            cmd = pen.getCommands()
-            if cmd:
-                d.append(cmd)
+            if pen.getCommands():
+                d.append(pen.getCommands())
             x += pos.x_advance * scale + tracking * size
-        width = x - tracking * size  # no trailing track
-        return " ".join(d), width
+        return " ".join(d), x - tracking * size
 
 
-serif = Face(os.path.join(FONTS, "cormorant-500.ttf"))
-mono = Face(os.path.join(FONTS, "plexmono.ttf"))
+light = Face(os.path.join(FONTS, "hanken-300.ttf"))
+regular = Face(os.path.join(FONTS, "hanken-400.ttf"))
+medium = Face(os.path.join(FONTS, "hanken-500.ttf"))
 
-LNUM = {"lnum": True}
+CAP = 0.70  # Hanken cap height in em, used to centre the word on the mark
 
 
-def mark_paths(x, y, s, ink=INK, gold=GOLD):
-    """The mark: an L that is the tower on the near shore and the water, with Hero's
-    lamp lit on the far shore, above the end of the water line.
+def word(size, fill=INK, face=None):
+    """Wordmark. Light at 24 px and above, Regular under 24 px, Medium under 12 px."""
+    face = face or (light if size >= 24 else regular if size >= 12 else medium)
+    d, w = face.shape(WORD, size, TRACK_WORD)
+    return d, w
 
-    s is the side of the mark's square. Stroke is 6% of s (survives a 1.5 mm
-    engraving and a 32 px favicon). The lamp is the only gold in the system. The
-    lamp sits at the far end, never above the tower: above the tower it reads as
-    the dot of a lowercase i.
+
+def sub(size, fill=GOLD):
+    d, w = regular.shape(DESCRIPTOR, size, TRACK_SUB)
+    return d, w
+
+
+def mark(x, y, L, ink=INK, gold=GOLD):
+    """Hairline of length L at y, gold point above its far end.
+
+    Stroke = L/60, point radius = L/30, point centre sits L/10 above the line.
+    Returns (svg, height) where height spans from the point top to the line.
     """
-    w = s * 0.06
-    vx = x + s * 0.24            # tower axis
-    top = y + s * 0.22           # tower top
-    base = y + s * 0.76          # water line
-    right = x + s * 0.80
-    r = s * 0.065                # lamp radius
-    cx = right - r               # lamp on the far shore
-    cy = base - w / 2 - r - s * 0.10
-    return (
-        f'<path d="M{vx:.2f} {top:.2f} V{base:.2f} H{right:.2f}" fill="none" '
-        f'stroke="{ink}" stroke-width="{w:.2f}" stroke-linecap="butt" stroke-linejoin="miter"/>'
+    w = max(L / 60, 0.75)
+    r = L / 30
+    cx = x + L - r
+    cy = y - L / 10
+    s = (
+        f'<rect x="{x:.2f}" y="{y - w/2:.2f}" width="{L:.2f}" height="{w:.2f}" fill="{ink}"/>'
         f'<circle cx="{cx:.2f}" cy="{cy:.2f}" r="{r:.2f}" fill="{gold}"/>'
     )
+    return s, (L / 10 + r)
+
+
+def path(d, x, y, fill):
+    return f'<path transform="translate({x:.2f} {y:.2f})" d="{d}" fill="{fill}"/>'
 
 
 def svg(w, h, body, bg=None):
-    bgrect = f'<rect width="{w}" height="{h}" fill="{bg}"/>' if bg else ""
+    bgrect = f'<rect width="{w:.0f}" height="{h:.0f}" fill="{bg}"/>' if bg else ""
     return (
-        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}">'
-        f"{bgrect}{body}</svg>"
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w:.0f} {h:.0f}" '
+        f'width="{w:.0f}" height="{h:.0f}">{bgrect}{body}</svg>'
     )
 
 
@@ -103,86 +117,104 @@ def write(name, content):
     print("wrote", name)
 
 
-def wordmark(size, x=0, y=0, fill=INK):
-    d, w = serif.shape(WORD, size, tracking=0.06)
-    return f'<path transform="translate({x:.2f} {y:.2f})" d="{d}" fill="{fill}"/>', w
+def stacked(size, ink=INK, gold=GOLD, bg=None, pad=None, with_sub=True):
+    """Mark above wordmark above descriptor, centred. size = wordmark size."""
+    d, ww = word(size, face=light)
+    sd, sw = sub(size * 0.265)
+    L = size * 3.5
+    pad = size * 1.2 if pad is None else pad
+    W = max(ww, L, sw) + 2 * pad
+    cx = W / 2
+    y = pad + L / 10 + L / 30            # mark line y (point above it fits in pad)
+    m, mh = mark(cx - L / 2, y, L, ink, gold)
+    ty = y + size * 1.18 + size * CAP     # wordmark baseline
+    body = m + path(d, cx - ww / 2, ty, ink)
+    if with_sub:
+        sy = ty + size * 0.62 + size * 0.265 * CAP
+        body += path(sd, cx - sw / 2, sy, gold)
+        H = sy + pad
+    else:
+        H = ty + pad
+    return svg(W, H, body, bg), W, H
 
 
-def descriptor(size, x=0, y=0, fill=GOLD):
-    d, w = mono.shape(DESCRIPTOR, size, tracking=0.22, features=LNUM)
-    return f'<path transform="translate({x:.2f} {y:.2f})" d="{d}" fill="{fill}"/>', w
+def horizontal(size, ink=INK, gold=GOLD, bg=None, pad=None):
+    """Mark on the left, wordmark to its right on the line's level, descriptor under the wordmark."""
+    d, ww = word(size, face=light)
+    sd, sw = sub(size * 0.265)
+    L = size * 2.6
+    pad = size * 1.0 if pad is None else pad
+    gap = size * 1.1
+    x0 = pad
+    cap_mid = size * CAP / 2
+    ty = pad + L / 10 + L / 30 + size * CAP      # wordmark baseline
+    y = ty - cap_mid                               # hairline at the cap mid-height
+    m, mh = mark(x0, y, L, ink, gold)
+    body = m + path(d, x0 + L + gap, ty, ink)
+    sy = ty + size * 0.62 + size * 0.265 * CAP
+    body += path(sd, x0 + L + gap + size * 0.02, sy, gold)
+    W = x0 + L + gap + max(ww, sw) + pad
+    H = sy + pad
+    return svg(W, H, body, bg), W, H
 
 
-# 1. Wordmark alone (ink on transparent). Cap height sits on y = baseline.
-S = 200
-wm, ww = wordmark(S)
-W = int(ww + S * 0.2)
-H = int(S * 1.05)
-write("leander-wordmark.svg", svg(W, H, f'<g transform="translate({S*0.1:.2f} {S*0.72:.2f})">{wm}</g>'))
+# 1. Wordmark alone, Light, ink on transparent (24 px and above).
+S = 120
+d, ww = word(S, face=light)
+write("leander-wordmark.svg", svg(ww + S * 0.4, S * 1.1, path(d, S * 0.2, S * 0.2 + S * CAP, INK)))
 
-# 2. Mark alone (ink + gold on transparent), square.
-write("leander-mark.svg", svg(400, 400, mark_paths(0, 0, 400)))
+# 1b. Wordmark small, Regular, for signatures under 24 px (corner of photos, invoices).
+S = 16
+d, ww = word(S, face=regular)
+write("leander-wordmark-small.svg", svg(ww + S, S * 1.4, path(d, S * 0.5, S * 0.35 + S * CAP, INK)))
 
-# 3. Maker's mark: single colour, for engraving inside bands (1.5 mm tall) and for stamps.
-write("leander-makers-mark.svg", svg(400, 400, mark_paths(0, 0, 400, ink=INK, gold=INK)))
+# 2. Mark alone: hairline and point, ink and gold on transparent.
+L = 360
+m, mh = mark(20, 80, L)
+write("leander-mark.svg", svg(400, 100, m))
 
-# 4. Horizontal lockup: mark, wordmark, descriptor under the wordmark.
-S = 160
-m = S * 1.15
-wm, ww = wordmark(S)
-ds, dw = descriptor(S * 0.11)
-gap = S * 0.28
-W = int(m + gap + max(ww, dw) + S * 0.3)
-H = int(m + S * 0.2)
-body = mark_paths(S * 0.15, S * 0.1, m)
-body += f'<g transform="translate({S*0.15 + m + gap:.2f} {S*0.1 + m*0.62:.2f})">{wm}</g>'
-body += f'<g transform="translate({S*0.15 + m + gap + S*0.02:.2f} {S*0.1 + m*0.62 + S*0.30:.2f})">{ds}</g>'
-write("leander-lockup-horizontal.svg", svg(W, H, body))
+# 3. Maker's mark: single colour, for engraving inside bands (1.5 mm tall) and stamps.
+m1, _ = mark(20, 80, 360, ink=INK, gold=INK)
+write("leander-makers-mark.svg", svg(400, 100, m1))
 
-# 5. Stacked lockup: mark above wordmark above descriptor, centred.
-S = 160
-m = S * 1.1
-wm, ww = wordmark(S)
-ds, dw = descriptor(S * 0.105)
-W = int(max(ww, dw) + S * 0.8)
-H = int(m + S * 1.45)
-cx = W / 2
-body = mark_paths(cx - m / 2, S * 0.1, m)
-body += f'<g transform="translate({cx - ww/2:.2f} {S*0.1 + m + S*0.62:.2f})">{wm}</g>'
-body += f'<g transform="translate({cx - dw/2:.2f} {S*0.1 + m + S*0.62 + S*0.30:.2f})">{ds}</g>'
-write("leander-lockup-stacked.svg", svg(W, H, body))
+# 4. Stacked lockup (primary).
+s, W, H = stacked(64)
+write("leander-lockup-stacked.svg", s)
 
-# 6. Etsy shop icon 500x500: ivory, mark inside the 60 percent safe circle (Etsy crops round).
-s = 500 * 0.56
-write("leander-etsy-icon.svg", svg(500, 500, mark_paths(250 - s / 2, 250 - s / 2, s), bg=IVORY))
+# 5. Stacked reversed: ink paper, ivory wordmark and line, gold point.
+s, W, H = stacked(64, ink=IVORY, bg=INK)
+write("leander-lockup-stacked-reversed.svg", s)
 
-# 7. Favicon 32x32: ivory, mark only, strokes snapped to whole pixels.
-fav = (
-    '<path d="M8 7 V25 H26" fill="none" stroke="%s" stroke-width="2"/>'
-    '<circle cx="23.5" cy="18.5" r="2.5" fill="%s"/>' % (INK, GOLD)
-)
+# 6. Horizontal lockup.
+s, W, H = horizontal(48)
+write("leander-lockup-horizontal.svg", s)
+
+# 7. Etsy shop icon 500 x 500: ivory, mark inside the 60 percent safe circle.
+L = 170
+m, mh = mark(250 - L / 2, 262, L)
+write("leander-etsy-icon-line.svg", svg(500, 500, m, bg=IVORY))
+
+# 7b. Etsy icon, primary: single L (Light) with the point. Etsy shows the icon at 170 px
+# in search and 75 px in messages; the hairline disappears there, the letter does not.
+def letter(size, ink=INK, gold=GOLD):
+    d, lw = light.shape("L", size, 0)
+    r = size * 0.04
+    pt = f'<circle cx="{lw + size*0.19:.2f}" cy="{-size*CAP + r + size*0.02:.2f}" r="{r:.2f}" fill="{gold}"/>'
+    return f'<path d="{d}" fill="{ink}"/>' + pt, lw + size * 0.19 + r
+
+lt, lw = letter(230)
+write("leander-etsy-icon.svg", svg(500, 500, f'<g transform="translate({250 - lw/2:.2f} {250 + 230*CAP/2:.2f})">{lt}</g>', bg=IVORY))
+
+# 7c. Maker's mark, letter form: L and point in one colour, for engraving inside bands.
+lt, lw = letter(230, gold=INK)
+write("leander-makers-mark-letter.svg", svg(lw + 40, 230 * CAP + 40, f'<g transform="translate(20 {230*CAP + 20:.2f})">{lt}</g>'))
+
+# 8. Favicon 32 x 32: ivory, whole-pixel hairline and a 3 px point.
+fav = f'<rect x="6" y="19" width="20" height="1" fill="{INK}"/><circle cx="24.5" cy="13.5" r="2.5" fill="{GOLD}"/>'
 write("leander-favicon.svg", svg(32, 32, fav, bg=IVORY))
 
-# 8. Etsy banner 1200x300: ivory, horizontal lockup left, the rest is paper.
-S = 92
-m = S * 1.15
-wm, ww = wordmark(S)
-ds, dw = descriptor(S * 0.11)
-x0, y0 = 96, 150 - m / 2
-body = mark_paths(x0, y0, m)
-body += f'<g transform="translate({x0 + m + S*0.3:.2f} {y0 + m*0.62:.2f})">{wm}</g>'
-body += f'<g transform="translate({x0 + m + S*0.3 + S*0.02:.2f} {y0 + m*0.62 + S*0.30:.2f})">{ds}</g>'
+# 9. Etsy big banner 1200 x 300: ivory, stacked lockup centred, lots of paper.
+s, W, H = stacked(40, pad=0, with_sub=True)
+inner = s.split(">", 1)[1].rsplit("</svg>", 1)[0]
+body = f'<g transform="translate({(1200 - W)/2:.2f} {(300 - H)/2:.2f})">{inner}</g>'
 write("leander-etsy-banner.svg", svg(1200, 300, body, bg=IVORY))
-
-# 9. Reversed: ink paper, ivory wordmark, gold lamp (packaging, dark surfaces).
-S = 160
-m = S * 1.1
-d, ww = serif.shape(WORD, S, tracking=0.06)
-ds, dw = descriptor(S * 0.105, fill=GOLD)
-W = int(max(ww, dw) + S * 0.8)
-H = int(m + S * 1.45)
-cx = W / 2
-body = mark_paths(cx - m / 2, S * 0.1, m, ink=IVORY, gold=GOLD)
-body += f'<path transform="translate({cx - ww/2:.2f} {S*0.1 + m + S*0.62:.2f})" d="{d}" fill="{IVORY}"/>'
-body += f'<g transform="translate({cx - dw/2:.2f} {S*0.1 + m + S*0.62 + S*0.30:.2f})">{ds}</g>'
-write("leander-lockup-stacked-reversed.svg", svg(W, H, body, bg=INK))

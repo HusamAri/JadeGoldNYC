@@ -1,116 +1,39 @@
-# Leander · brand system for the shop now called by Artifact Studio Jewelry
+# Leander · brand folder
 
-Status: name chosen by the owner on 2026-10-28 from three rounds of candidates
-(Ninefold, Solidus, Halka; Nonet, Ayar, Smalt, Kiln, Kapali, Bezant; Byzas,
-Pactolus, Stamboul, Colchis, Porphyra, Chalcedon, Ravenna, Leander). This folder
-is the single source of the identity. Nothing has been changed on Etsy, in the
-panel or in any listing yet.
+The shop now called by Artifact Studio Jewelry becomes **Leander**. The full
+guidelines are in [`BRAND.md`](BRAND.md); this file is the index and the
+decision log.
 
-## The name
+## Decision log
 
-Leander swam the strait every night toward the lamp Hero lit in her tower. The
-tower in Istanbul still carries his name in the West (Leander's Tower, Kız
-Kulesi). The brand takes the crossing, not the ending: every piece is made to
-order, one at a time, for one person, the way he made the crossing. Two
-syllables, reads as a name in English, nothing to explain before it can be said.
+- 2026-10-28 · Name chosen by the owner from three rounds (Ninefold, Solidus,
+  Halka; Nonet, Ayar, Smalt, Kiln, Kapali, Bezant; Byzas, Pactolus, Stamboul,
+  Colchis, Porphyra, Chalcedon, Ravenna, Leander). US collisions and the USPTO
+  position are in BRAND.md section 2.
+- 2026-10-28 · Round 1 identity (Cormorant Garamond lowercase, an L mark with the
+  lamp) rejected by the owner as too ordinary. Lesson: lowercase Garamond is the
+  Etsy default; the mark read as a lowercase i.
+- 2026-10-28 · Round 2: three directions rendered with real type on ivory, on a
+  product photo, reversed and as the Etsy icon (`explore-v2.png`). Owner chose
+  **A Horizon**: Hanken Grotesk Light capitals at +0.46 em, a hairline with one
+  gold point. The system in `svg/` is this direction.
+- Etsy icon uses the letter form (L and point): the hairline disappears at the
+  170 px search size and the 75 px message size.
 
-Voice around the name, in copy: never "Leander's", never "Leander Jewelry" as a
-phrase (that is a store in Texas, see below), never "House of". The shop is
-"Leander" and the line under it is "Solid gold, made to order".
+## What is still open
 
-## Collisions found before the choice (2026-10-28)
+- Trademark filing (Class 14 and 35) before the Etsy rename.
+- Etsy handle check: `LeanderGold` free or not.
+- Rename runbook (BRAND.md section 13) not started; nothing on Etsy or in the
+  panel has changed.
 
-- A family-owned store in Leander, Texas trades as "Leander Jewelry"
-  (leanderjewelry.co). It is a local common-law user of a geographic name. Do not
-  use the phrase "Leander Jewelry" anywhere: not the Etsy name, not the domain,
-  not the descriptor.
-- Walmart sells low-price sterling necklaces under a "Leander" label.
-- USPTO: no live Class 14 registration for LEANDER found. "LEANDER MEN'S BAND
-  COLLECTION" (serial 88153216) was abandoned 2019-12-16; "LEEANDER" (1977,
-  costume jewelry) is a different spelling and likely dead. A filing for LEANDER
-  in Class 14 should be made before the Etsy rename, and a proper clearance search
-  (TSDR, Class 14 and 35) belongs to an attorney, not to this note.
-- Leander is also a city of about 70,000 near Austin, so "leander" alone will not
-  win Google. The handle and domain carry a qualifier that is not "jewelry":
-  `leander.gold` or `leandergold` on Etsy, Instagram and Pinterest.
+## Rebuild
 
-## Mark
+```
+python3 build.py <font_dir> svg
+```
 
-An L. The vertical is the tower on the near shore, the horizontal is the water,
-and the one gold point above the far end of the water is Hero's lamp. The lamp is
-the only colour in the system; everything else is ink or paper.
-
-Rules the mark has to pass, in order:
-1. Engraved inside a band at 1.5 mm tall, single colour (the maker's mark file).
-2. 32 px and 16 px favicon.
-3. Etsy icon, 500 x 500, cropped to a circle: the mark lives inside the inner 60
-   percent.
-
-The lamp sits above the far end of the water, never above the tower. Above the
-tower the mark reads as the dot of a lowercase i (seen and rejected in the first
-build, 2026-10-28).
-
-## Wordmark and type
-
-- Wordmark: Cormorant Garamond at weight 500, lowercase, tracking +0.06 em,
-  lining figures. Lowercase because the shop's quiet-luxury voice is lowercase
-  (the Instagram and Pinterest sets). Always outlines, never live text.
-- Descriptor: IBM Plex Mono Regular, uppercase, tracking +0.22 em, 11 percent of
-  the wordmark size, warm gold: `SOLID GOLD · MADE TO ORDER`. One line, four
-  words, never longer.
-- The two faces are the shop's existing voice (`docs/artifact-studio/pinterest/render.py`,
-  `app/globals.css` `.idx`). No third face.
-
-## Colour
-
-| Token | Hex | Use |
-|---|---|---|
-| ivory | `#F4EFE7` | paper, backgrounds, reversed wordmark |
-| ink | `#1C1A17` | wordmark, mark strokes, dark backgrounds |
-| gold | `#A8834A` | the lamp, the descriptor; nothing else |
-
-No gradients, no metallic rendering, no shimmer, no drop shadows. Enamel cobalt
-(`#17368C`) is product colour and never appears in the identity.
-
-## Files (`svg/`, all generated by `build.py`)
-
-| File | Use |
-|---|---|
-| `leander-wordmark.svg` | wordmark alone, ink on transparent |
-| `leander-mark.svg` | mark alone, ink and gold |
-| `leander-makers-mark.svg` | mark in one colour: engraving, stamps, foil |
-| `leander-lockup-horizontal.svg` | web header, email, invoice |
-| `leander-lockup-stacked.svg` | packaging, cards, Pinterest and Instagram |
-| `leander-lockup-stacked-reversed.svg` | ink paper, dark surfaces |
-| `leander-etsy-icon.svg` | Etsy shop icon, 500 x 500, export to PNG at 500 |
-| `leander-etsy-banner.svg` | Etsy big banner, 1200 x 300 |
-| `leander-favicon.svg` | 32 x 32, strokes on whole pixels |
-
-Rebuild: `python3 build.py <font_dir> svg` with `cormorant-500.ttf` (Cormorant
-Garamond variable instantiated at wght 500) and `plexmono.ttf` in the font dir.
-Fonts are not committed.
-
-## Minimum sizes and clear space
-
-- Horizontal lockup: 120 px wide or 30 mm printed, never smaller; below that use
-  the mark alone.
-- Clear space around any lockup: the height of the mark's vertical stroke on all
-  sides.
-- Mark alone: never under 16 px on screen, never under 1.5 mm engraved.
-
-## What the rename touches in this repo (do before flipping the Etsy name)
-
-- Etsy shop name: 20 characters, letters and digits only. "Leander" fits; the
-  handle with qualifier (`LeanderGold`) also fits.
-- Listing URLs carry the numeric id and survive. The shop URL changes and Etsy
-  does not redirect the old one: update the Instagram bio link and regenerate
-  the Pinterest sheet (`docs/artifact-studio/pinterest/sheet.py` falls 20 pins
-  back to the shop page).
-- Every description that names "by Artifact Studio Jewelry" gets one batch pass
-  through an ops route in the style of `ops/desc-strip`, reading the live Etsy
-  text, not the panel copy. Count the listings first, then dry run, canary, apply,
-  read back with a fresh token.
-- The catalog generators (`docs/artifact-studio/*/catalog.py`) carry the shop
-  name in their brand tail; change them in the same turn so a regeneration does
-  not bring the old name back.
-- Panel: `orgs.name` and any `OrgMark` asset for this org.
+`font_dir` holds `hanken-300.ttf`, `hanken-400.ttf`, `hanken-500.ttf`
+(Hanken Grotesk variable from Google Fonts, instantiated with
+`fontTools.varLib.instancer`). HarfBuzz (`uharfbuzz`) shapes the text; the SVGs
+are outlines and need no font.
