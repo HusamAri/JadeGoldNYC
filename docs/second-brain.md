@@ -1677,6 +1677,33 @@ repodaki hedefidir.
   yeniden üretim geri getirir. Zincir: kuru 206 -> kanarya 1 + panel metni okuma -> 11 parti, 0 hata -> taze token'la
   kuru 206/206 temiz -> panelde 0 kalıntı, audit 163 + 33.
 
+- **Ekran görüntüsünden gelen teklif önce VERİ dosyasına, sonra bağımsız gözlere, sonra motora gider; ve
+  "ayni" zinciri ile sayı okuması kodla sınanır (2026-10-28, Noel 40 üretici teklifi):** Görkem 25 parçayı
+  WhatsApp'ta fotoğraf üstüne cevaplayarak fiyatladı; doldurması için gönderilen Excel yerine 5 ekran
+  görüntüsü geldi. Beş tuzak vardı ve hepsi yazmadan önce kapatıldı. (1) Eşleme: küçük thumbnail'ı 40
+  hero'ya ben eşledim, sonra üç kör okuyucu (farklı yöntemle) aynı 5 görüntüyü sıfırdan okudu; 25/25 metin
+  ve kimlik birebir. Yanlış eşleme yanlış ürüne fiyat yazardı ve hiçbir mühür bunu görmezdi. (2) Teklifin
+  BİÇİMİ yeniydi: gövde gramı + ayrı zincir/montaj/mine/post/kilit kalemleri, $/g YOK. Gram artık zinciri
+  kapsamıyor (katalog gramı kapsıyordu), o yüzden varyant gramına dokunulmadı ve metin gramları açık borç
+  yazıldı; $/g belgelenmiş 106 kaldı ve duyarlılığı ($100'de 14K liste −$32…−$63) raporlandı. (3) "ayni /
+  AYNISI / ayni plus 50" cevapları referansın kalemlerini KOPYALAMAK zorunda; `catalog.py` bunu assert'le
+  sınıyor (same_as kalemleri eşit, mine yalnız artabilir). (4) Etiketsiz sayı dizisi ("2 gr, 50, 30, 200")
+  onun bir önceki etiketli mesajının sırasıyla okundu ve kaynak metin + okuma notu veriye yazıldı. (5) Tek
+  aykırı değer (B7 "20 chain", diğer dokuz zincir 150–300) yazım hatası sayılıp 200'le fiyatlandı; iki okuma
+  da sayıyla verildi ($1.841 / $1.206) ve ürün planına `flag` olarak gömüldü, sahibe tek soru olarak gitti.
+  Fiyat etkisi büyüktü (küpe +%109…+%199: 2,5–3 g + $100 post + $50 mine, 3,53× çarpanla) ve bu, politikayı
+  değiştirmeden sahibe SAYIYLA gösterildi. Yürütme zinciri yine tuttu: TS motoru ile 15 tahmin + 75 teklif
+  satırı 0 sapma, panel ön koşul 40/120/v2 40/v3 0/mühür v2 → apply 75 + 25 → mühür beklenen 67f24686,
+  plan↔varyant 75/75, audit 75 + 25, komşu 0; Etsy kuru 25 would-sync / 75 fark (tam beklenen küme, 0
+  eşleşmeyen SKU) → kanarya B1 3/0 → 24 parti 72/0 → taze token'la bağımsız okuma. Yan bulgu: panelin
+  `products.sku`'su 10-26 Etsy aynasıyla NULL olmuştu; SQL kapsamı import batch + varyant SKU'ya alındı,
+  yoksa UPDATE 0 satır dokunup "ok" dönerdi (08-27 sessiz no-op sınıfı). Kural: (1) dış kanaldan gelen
+  teklif ÖNCE birebir metin + ayrıştırılmış kalem + eşleme notu olarak veri dosyasına yazılır, üreteç
+  oradan okur; (2) görsel eşleme kendi gözüne ek olarak bağımsız okuyucularla sınanır, mühür eşlemeyi
+  denetlemez; (3) teklifin biçimi önceki tahminden farklıysa "hangi girdi neyi kapsıyor?" sorusu önce
+  sorulur, kapsamı değişen alan (gram) yazılmaz, borç olarak kaydedilir; (4) aykırı tek değer varsayımla
+  düzeltilirse iki okuma da sayıyla verilir ve varsayım ürün verisine `flag` olarak gömülür.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
