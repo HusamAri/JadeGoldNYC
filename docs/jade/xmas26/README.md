@@ -24,11 +24,14 @@ Sahibe teslim yüzeyi **`image-book.html`** (Artifact olarak da yayınlandı). B
 | 8 | `review.py` → `images/heroes/status.json` | Her hero için `ok` / `check` / `redo` + sebep + düzeltilmiş prompt (saklanan prompt'tan assert'li `replace` ile türetilir). Kontak baskısına bakılarak `review.py` içinde elle yazılır. Sahibin kendi ürettiği hero `images/heroes/raw/<ID>.png` olarak konur, 7 yeniden koşulur. |
 | 9 | `page.py` | `catalog.json` + `prompts.json` + `status.json` + `jobs.json` → `image-book.html`. |
 | 10 | `maker_book.py` | `catalog.json` + `work/evidence_summary.json` + `status.json` → `Jade-Noel-2026-Uretici-Kitabi.pdf` (üreticiye giden teklif kitabı: perakende fiyat YOK; görsel notları; bundled Chromium ile basılır). |
-| 11 | `panel_prices.py` | `catalog.json` → `panel_prices.sql` (+ mühür): paneldeki 40 taslağın 3 karat varyantına tahmini fiyat/gram, `retailPricePlan`; ön koşul ve geri okuma sorguları dosyanın başında. Uygulandı 2026-10-18 (`fiyatlandirma.md` §13). |
+| 11 | `panel_prices.py` | `catalog.json` → `panel_prices.sql` (+ mühür): paneldeki taslakların 3 karat varyantına fiyat, `retailPricePlan`; ön koşul ve geri okuma sorguları dosyanın başında. v1/v2 tahmin 2026-10-18 (`fiyatlandirma.md` §13); v3 üretici teklifi 2026-10-28, teklifli 25 parça; v4 aynı gün N6–N10 (§14). Teklif parça başına `plan` taşır, üreteç yalnız o sürümün parçalarını yazar (önceki parti dokunulmaz, mührü aynı kalır). |
+| 11a | `work/maker_quotes.json` | Görkem'in WhatsApp cevapları, parça başına birebir metin + ayrıştırılmış kalemler (gövde gramı, zincir, montaj, mine, post, kilit) + eşleme notları. `catalog.py` bunu okur; teklifsiz 15 parça (`not_quoted`) v2 tahmininde kalır. Yeni teklif gelince buraya eklenir, 4 → 11 koşulur, plan sürümü yükseltilir. |
 | 12 | `gorkem_sheet.py` | `catalog.json` + `images/heroes/<ID>.jpg` → `Jade-Noel-2026-Gorkem-Maliyet-Talebi.xlsx` (üreticinin dolduracağı maliyet tablosu: hero küçük görseli, ürün tipi, atölye ölçüleri, sarı maliyet hücreleri; perakende fiyat YOK). |
 
 Yeniden üretmek için 3 → 4 → 5 → 9 → 10 yeterlidir; 6–8 yalnız görsel değişince;
-11 yalnız fiyat girdisi (indirim, spot, $/g) değişince ve her seferinde yeni plan sürümüyle.
+11 yalnız fiyat girdisi (indirim, spot, $/g, üretici teklifi) değişince ve her seferinde yeni
+plan sürümüyle. Panel yazımından sonra Etsy taslakları `ops/price-sync?org=Jade%20Gold%20NYC`
+ile eşitlenir (kuru `detail=1` → apply → taze token'la kuru), §14'teki zincir.
 
 ## Fiyat
 
@@ -39,6 +42,16 @@ Yeniden üretmek için 3 → 4 → 5 → 9 → 10 yeterlidir; 6–8 yalnız gör
 `catalog.py`'da koleksiyona özel). Yalnız
 **altın gramı** fiyatlanır; mine ve taş gram hesabına girmez. $106/g tedarikçinin her şey dahil
 14K oranı: ayrı işçilik satırı yok, doğrulanmış 18K oranı yok → tasarımların hepsi 14K.
+
+**Üretici teklifi (v3 + v4, 2026-10-28, `work/maker_quotes.json`):** Görkem parça başına GÖVDE gramı
+ve ayrı USD kalemleri verdi (zincir, clean/assemble, mine, push post, kilit); $/g vermedi; zinciri
+"kestiremiyorum, en ince cable chain 150–170" dedi, parça başı 200 satırları tutuldu (v5 adayı,
+sahip kararı). Broşlar (P1–P10) teklifsiz, v2 tahmininde. Teklifli
+parçada maliyet = gövde gramı × yoğunluk × $/g (14K 106, 10K/18K türetim) + zincir × karat oranı
+(zincir de altın) + sabit kalemler + kargo + ambalaj; formül aynı. `price.basis` `maker_quote` /
+`estimate`, `price.estimate_v2` değiştirilen tahmini taşır. Tahmin parçalarının spotu v2'de
+dondurulur (tahmin spotla yeniden türetilmez, yalnız teklifle değişir); teklif spotu günün spotu.
+Varyant `weight_grams` dokunulmadı: teklif zincir gramını vermiyor, toplam altın gramı tartımla gelir.
 
 **Karat varyantları (panel, 2026-10-18):** sahip taslakları panele `Gold Karat` 10K / 14K / 18K
 ekseniyle aktardı. 10K ve 18K TAHMİNdir ve panelin kendi kuralıyla kurulur
