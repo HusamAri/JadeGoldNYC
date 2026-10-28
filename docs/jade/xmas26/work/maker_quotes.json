@@ -42,8 +42,26 @@
     "N3":  {"shot": 5, "time": "23:40", "text": "2 GR 50 50 200", "gram14_body": 2.0, "assembly_usd": 50, "enamel_usd": 50, "chain_usd": 200},
     "N4":  {"shot": 5, "time": "23:41", "text": "2 GR 50 10 200", "gram14_body": 2.0, "assembly_usd": 50, "other_usd": 10, "chain_usd": 200,
             "note": "middle number sits in the enamel position; the catalog lists N4 without enamel (3 stones), kept as a quoted extra"},
-    "N5":  {"shot": 5, "time": "23:41", "text": "2 GR 50 200", "gram14_body": 2.0, "assembly_usd": 50, "chain_usd": 200}
+    "N5":  {"shot": 5, "time": "23:41", "text": "2 GR 50 200", "gram14_body": 2.0, "assembly_usd": 50, "chain_usd": 200},
+    "N6":  {"shot": 6, "time": "23:41", "text": "1,5 GR 50 50 200", "gram14_body": 1.5, "assembly_usd": 50, "enamel_usd": 50, "chain_usd": 200, "plan": "xmas26-v4-quote-disc30-m50"},
+    "N7":  {"shot": 6, "time": "23:41", "text": "2 GR 50 200", "gram14_body": 2.0, "assembly_usd": 50, "chain_usd": 200, "plan": "xmas26-v4-quote-disc30-m50"},
+    "N8":  {"shot": 6, "time": "23:42", "text": "2GR 50 200", "gram14_body": 2.0, "assembly_usd": 50, "chain_usd": 200, "plan": "xmas26-v4-quote-disc30-m50"},
+    "N9":  {"shot": 6, "time": "23:42", "text": "3,5 GR 50 50 200", "gram14_body": 3.5, "assembly_usd": 50, "enamel_usd": 50, "chain_usd": 200, "plan": "xmas26-v4-quote-disc30-m50"},
+    "N10": {"shot": 6, "time": "23:43", "text": "2 GR 50 50 200", "gram14_body": 2.0, "assembly_usd": 50, "enamel_usd": 50, "chain_usd": 200, "plan": "xmas26-v4-quote-disc30-m50"}
   },
-  "not_quoted": ["N6", "N7", "N8", "N9", "N10", "P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10"],
-  "not_quoted_note": "the forwarded screenshots end at N5 (23:41) with a further message cut off; these 15 keep the v2 estimate until their quotes arrive"
+  "batches": {
+    "xmas26-v3-quote-disc30-m50": "shots 1-5, applied 2026-10-28 (B1-B10, N1-N5, E1-E10); items without a 'plan' key",
+    "xmas26-v4-quote-disc30-m50": "shots 6-7, forwarded 2026-10-28 later the same morning (N6-N10); applied 2026-10-28 (panel 15 variants + 5 products, Etsy 5 listings). Mapping checked by three blind readers: 5/5 text + identity; the cropped bubble at the top of shot 6 ('2 GR 50 200', no thumbnail) is the tail of the previous screenshot and was not priced"
+  },
+  "maker_notes": [
+    {"shot": 7, "time": "23:47", "text": "BIRDE AYNI YAZDIKLARIM BIR ONCEKI MODELE YAZDIKLARIM FIYATLARA GORE", "meaning": "'ayni' = the lines of the previous model; confirms the same_as convention used above"},
+    {"shot": 7, "time": "23:47", "text": "BU FIYATLARI CLAUDE YE VERIRSEN O OGENIR VE DOGRU FIYATLARI VERIR", "meaning": "hand the lines to the panel's pricing"},
+    {"shot": 7, "time": "23:47", "text": "AMA ZICIRLERI KESTIREMIYORUM FIYAT OLARAK", "meaning": "he cannot price chains with confidence; his chain lines are rough"},
+    {"shot": 7, "time": "23:48", "text": "ONUDA BENCE CLAUDE YE GOSTERIRSEN YAKLASIK BIR FIYAT VERIR.", "meaning": "asks the panel to estimate chains"},
+    {"shot": 7, "time": "23:48", "text": "NNORMAL EN INCE CABLE CHAIN 150-170 DOLAR DIYE DUSUNEBILIRSIN", "meaning": "the thinnest ordinary cable chain: 150-170 USD. His per-piece necklace lines say 200; the per-piece line is kept (his own number, and the conservative end of his range). Sensitivity: at 160 a necklace 14K list drops by about 140 USD"},
+    {"shot": 7, "time": "23:48", "text": "BU FIYATLAR URETIM FIAYATLARI", "meaning": "these are production (maker) prices"},
+    {"shot": 7, "time": "23:49", "text": "CABLE CAIN DEDIGIMDE BUDUR (quoting the N10 Cardinal Pendant photo)", "meaning": "the chain in the necklace heroes is what he calls cable chain"}
+  ],
+  "not_quoted": ["P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10"],
+  "not_quoted_note": "the brooches were not quoted; the owner asked him on 2026-10-28 11:10 whether the 10 brooches can be made ('Son 10 broş broş yapabilir kiyiz'), no answer yet. They keep the v2 estimate"
 }

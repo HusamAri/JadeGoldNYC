@@ -19,8 +19,44 @@
   },
   "karat_rule": "lib/gold-cost.ts derivePurchaseCentsPerGram; 14K is the design",
   "quote": {
-   "plan_version": "xmas26-v3-quote-disc30-m50",
+   "plan_version": "xmas26-v4-quote-disc30-m50",
    "source": "docs/jade/xmas26/work/maker_quotes.json",
+   "plans": {
+    "xmas26-v3-quote-disc30-m50": [
+     "B1",
+     "B2",
+     "B3",
+     "B4",
+     "B5",
+     "B6",
+     "B7",
+     "B8",
+     "B9",
+     "B10",
+     "E1",
+     "E2",
+     "E3",
+     "E4",
+     "E5",
+     "E6",
+     "E7",
+     "E8",
+     "E9",
+     "E10",
+     "N1",
+     "N2",
+     "N3",
+     "N4",
+     "N5"
+    ],
+    "xmas26-v4-quote-disc30-m50": [
+     "N6",
+     "N7",
+     "N8",
+     "N9",
+     "N10"
+    ]
+   },
    "quoted": [
     "B1",
     "B2",
@@ -46,14 +82,14 @@
     "N2",
     "N3",
     "N4",
-    "N5"
-   ],
-   "not_quoted": [
+    "N5",
     "N6",
     "N7",
     "N8",
     "N9",
-    "N10",
+    "N10"
+   ],
+   "not_quoted": [
     "P1",
     "P2",
     "P3",
@@ -4369,38 +4405,65 @@
    "total_grams": 4.08,
    "description": "A slim gold bar filled with ice-blue glass enamel and crossed by fine gold lines that branch the way frost grows on a window. A winter gift for Christmas with nothing seasonal to put away in January.\n\nTHE PIECE\n6.5 by 17 mm with rounded corners, 1.4 mm thick. Three gold lines run out from a small round node to the frame, with short side lines branching at 60 degrees, so the blue is split into three fields. A 0.7 mm gold border frames the bar. The bail sits at the top back.\n\nGOLD WEIGHT\n4.00 g of 14k gold, counting the chain, clasp and extender. On the scale the finished piece weighs 4.08 g in total with the enamel.\n\nENAMEL\nKiln-fired vitreous enamel (glass), opaque ice blue, level with the gold lines.\n\nLENGTH AND FIT\nA 1.0 mm 14k cable chain, 16 in with a 2 in extender, so it sits from 16 to 18 in. The chain is part of the design and its weight is counted in the gold weight above.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece, in a zinc-free gold alloy chosen for enamel. The enamel cells are cast into the gold, filled by hand and kiln-fired. Nothing is soldered after the first firing; any fitting added later is laser welded away from the enamel.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap. Glass enamel is hard and does not fade, but it can chip if struck against stone or metal. Keep it away from ultrasonic cleaners. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout.",
    "price": {
-    "list_cents": 152000,
-    "paid_cents": 106400,
-    "cost_cents": 43050,
-    "margin": 0.5002,
+    "list_cents": 164300,
+    "paid_cents": 115010,
+    "cost_cents": 46550,
+    "margin": 0.5,
     "discount": 0.3,
-    "basis": "estimate",
-    "plan_version": "xmas26-v2-disc30-m50",
+    "basis": "maker_quote",
+    "plan_version": "xmas26-v4-quote-disc30-m50",
     "karats": {
      "10K": {
-      "grams": 3.57,
-      "rate_cents_per_gram": 8336,
-      "cost_cents": 30410,
-      "list_cents": 107400,
-      "paid_cents": 75180,
-      "margin": 0.5002
+      "grams": 1.34,
+      "gold_cents": 11252,
+      "chain_cents": 14132,
+      "fixed_cents": 10000,
+      "cost_cents": 36034,
+      "rate_cents_per_gram": 8397,
+      "list_cents": 127200,
+      "paid_cents": 89040,
+      "margin": 0.5
      },
      "14K": {
-      "grams": 4.0,
+      "grams": 1.5,
+      "gold_cents": 15900,
+      "chain_cents": 20000,
+      "fixed_cents": 10000,
+      "cost_cents": 46550,
       "rate_cents_per_gram": 10600,
-      "cost_cents": 43050,
-      "list_cents": 152000,
-      "paid_cents": 106400,
-      "margin": 0.5002
+      "list_cents": 164300,
+      "paid_cents": 115010,
+      "margin": 0.5
      },
      "18K": {
-      "grams": 4.55,
-      "rate_cents_per_gram": 12810,
-      "cost_cents": 58936,
-      "list_cents": 208000,
-      "paid_cents": 145600,
-      "margin": 0.5
+      "grams": 1.71,
+      "gold_cents": 21804,
+      "chain_cents": 27355,
+      "fixed_cents": 10000,
+      "cost_cents": 59809,
+      "rate_cents_per_gram": 12751,
+      "list_cents": 211100,
+      "paid_cents": 147770,
+      "margin": 0.5001
      }
+    },
+    "quote": {
+     "text": "1,5 GR 50 50 200",
+     "gram14_body": 1.5,
+     "assembly_usd": 50,
+     "enamel_usd": 50,
+     "chain_usd": 200,
+     "plan": "xmas26-v4-quote-disc30-m50",
+     "lines_usd": {
+      "chain": 200,
+      "assembly": 50,
+      "enamel": 50
+     }
+    },
+    "estimate_v2": {
+     "10K": 107400,
+     "14K": 152000,
+     "18K": 208000
     }
    }
   },
@@ -4577,38 +4640,63 @@
    "total_grams": 4.05,
    "description": "A single angel wing in 14k gold, a row of rounded feathers above six long ones, with one lab-grown sapphire at the shoulder. A guardian-angel gift for Christmas, and a remembrance piece for any day.\n\nTHE PIECE\n9 mm wide and 14.5 mm tall, 0.9 mm thick. Six long feathers are separated by narrow pierced slits and end in free rounded tips, cut 0.9 mm thick so they hold their shape. Feather faces are diamond-cut. The bail sits at the top of the wing, toward the outer edge.\n\nGOLD WEIGHT\n4.05 g of 14k gold, counting the chain, clasp and extender. On the scale the finished piece weighs 4.05 g in total with the stones.\n\nSTONES\nOne 1.5 mm round lab-grown white sapphire, flush set at the inner upper corner. Mohs 9.\n\nLENGTH AND FIT\nA 1.0 mm 14k diamond-cut rope chain, 16 in with a 2 in extender, so it sits from 16 to 18 in. The chain is part of the design and its weight is counted in the gold weight above.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece. The stones are set last, cold, after all firing and polishing.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap and a soft brush. Take it off for swimming and cleaning. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout.",
    "price": {
-    "list_cents": 153900,
-    "paid_cents": 107730,
-    "cost_cents": 43580,
-    "margin": 0.5002,
+    "list_cents": 165400,
+    "paid_cents": 115780,
+    "cost_cents": 46850,
+    "margin": 0.5001,
     "discount": 0.3,
-    "basis": "estimate",
-    "plan_version": "xmas26-v2-disc30-m50",
+    "basis": "maker_quote",
+    "plan_version": "xmas26-v4-quote-disc30-m50",
     "karats": {
      "10K": {
-      "grams": 3.61,
-      "rate_cents_per_gram": 8336,
-      "cost_cents": 30743,
-      "list_cents": 108600,
-      "paid_cents": 76020,
-      "margin": 0.5003
+      "grams": 1.78,
+      "gold_cents": 14947,
+      "chain_cents": 14132,
+      "fixed_cents": 5000,
+      "cost_cents": 34729,
+      "rate_cents_per_gram": 8397,
+      "list_cents": 122600,
+      "paid_cents": 85820,
+      "margin": 0.5
      },
      "14K": {
-      "grams": 4.05,
+      "grams": 2.0,
+      "gold_cents": 21200,
+      "chain_cents": 20000,
+      "fixed_cents": 5000,
+      "cost_cents": 46850,
       "rate_cents_per_gram": 10600,
-      "cost_cents": 43580,
-      "list_cents": 153900,
-      "paid_cents": 107730,
-      "margin": 0.5002
+      "list_cents": 165400,
+      "paid_cents": 115780,
+      "margin": 0.5001
      },
      "18K": {
-      "grams": 4.6,
-      "rate_cents_per_gram": 12810,
-      "cost_cents": 59576,
-      "list_cents": 210300,
-      "paid_cents": 147210,
-      "margin": 0.5001
+      "grams": 2.27,
+      "gold_cents": 28945,
+      "chain_cents": 27355,
+      "fixed_cents": 5000,
+      "cost_cents": 61950,
+      "rate_cents_per_gram": 12751,
+      "list_cents": 218700,
+      "paid_cents": 153090,
+      "margin": 0.5002
      }
+    },
+    "quote": {
+     "text": "2 GR 50 200",
+     "gram14_body": 2.0,
+     "assembly_usd": 50,
+     "chain_usd": 200,
+     "plan": "xmas26-v4-quote-disc30-m50",
+     "lines_usd": {
+      "chain": 200,
+      "assembly": 50
+     }
+    },
+    "estimate_v2": {
+     "10K": 108600,
+     "14K": 153900,
+     "18K": 210300
     }
    }
   },
@@ -4775,38 +4863,63 @@
    "total_grams": 3.71,
    "description": "A snaffle bit in 14k gold: two round rings joined by a jointed mouthpiece, worn across the front of the chain, with a lab-grown sapphire on each ring. An equestrian gift for Christmas and the riding season.\n\nTHE PIECE\nAbout 33 mm wide. Two 9.0 mm rings in 1.3 mm round wire are joined by a short jointed mouthpiece whose inner eyes interlock at the centre. The chain runs through both rings, so there is no bail.\n\nGOLD WEIGHT\n3.70 g of 14k gold, counting the chain, clasp and extender. On the scale the finished piece weighs 3.71 g in total with the stones.\n\nSTONES\nTwo 1.5 mm round lab-grown white sapphires, one flush set on the front of each ring. Mohs 9.\n\nLENGTH AND FIT\nA 1.0 mm 14k cable chain, 16 in with a 2 in extender, so it sits from 16 to 18 in. The chain is part of the design and its weight is counted in the gold weight above.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece. The stones are set last, cold, after all firing and polishing.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap and a soft brush. Take it off for swimming and cleaning. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout.",
    "price": {
-    "list_cents": 140800,
-    "paid_cents": 98560,
-    "cost_cents": 39870,
-    "margin": 0.5002,
+    "list_cents": 165400,
+    "paid_cents": 115780,
+    "cost_cents": 46850,
+    "margin": 0.5001,
     "discount": 0.3,
-    "basis": "estimate",
-    "plan_version": "xmas26-v2-disc30-m50",
+    "basis": "maker_quote",
+    "plan_version": "xmas26-v4-quote-disc30-m50",
     "karats": {
      "10K": {
-      "grams": 3.3,
-      "rate_cents_per_gram": 8336,
-      "cost_cents": 28159,
-      "list_cents": 99500,
-      "paid_cents": 69650,
-      "margin": 0.5003
+      "grams": 1.78,
+      "gold_cents": 14947,
+      "chain_cents": 14132,
+      "fixed_cents": 5000,
+      "cost_cents": 34729,
+      "rate_cents_per_gram": 8397,
+      "list_cents": 122600,
+      "paid_cents": 85820,
+      "margin": 0.5
      },
      "14K": {
-      "grams": 3.7,
+      "grams": 2.0,
+      "gold_cents": 21200,
+      "chain_cents": 20000,
+      "fixed_cents": 5000,
+      "cost_cents": 46850,
       "rate_cents_per_gram": 10600,
-      "cost_cents": 39870,
-      "list_cents": 140800,
-      "paid_cents": 98560,
-      "margin": 0.5002
+      "list_cents": 165400,
+      "paid_cents": 115780,
+      "margin": 0.5001
      },
      "18K": {
-      "grams": 4.21,
-      "rate_cents_per_gram": 12810,
-      "cost_cents": 54580,
-      "list_cents": 192700,
-      "paid_cents": 134890,
+      "grams": 2.27,
+      "gold_cents": 28945,
+      "chain_cents": 27355,
+      "fixed_cents": 5000,
+      "cost_cents": 61950,
+      "rate_cents_per_gram": 12751,
+      "list_cents": 218700,
+      "paid_cents": 153090,
       "margin": 0.5002
      }
+    },
+    "quote": {
+     "text": "2GR 50 200",
+     "gram14_body": 2.0,
+     "assembly_usd": 50,
+     "chain_usd": 200,
+     "plan": "xmas26-v4-quote-disc30-m50",
+     "lines_usd": {
+      "chain": 200,
+      "assembly": 50
+     }
+    },
+    "estimate_v2": {
+     "10K": 99500,
+     "14K": 140800,
+     "18K": 192700
     }
    }
   },
@@ -4987,38 +5100,65 @@
    "total_grams": 3.9,
    "description": "A riding stirrup in 14k gold with a row of jade-green glass enamel along its tread. It slides on the chain with no bail. An equestrian gift for Christmas that belongs to every season.\n\nTHE PIECE\n13 mm wide and 16 mm tall. A 1.6 mm rail forms the arched stirrup over a flat 12 mm base bar; four small enamel cells sit in a row on the bar, divided by fine gold ribs. A slot in the top bar takes the chain.\n\nGOLD WEIGHT\n3.89 g of 14k gold, counting the chain, clasp and extender. On the scale the finished piece weighs 3.90 g in total with the enamel.\n\nENAMEL\nKiln-fired vitreous enamel (glass), opaque deep jade green, set just below the gold edges.\n\nLENGTH AND FIT\nA 1.2 mm 14k cable chain, 16 in with a 2 in extender, so it sits from 16 to 18 in. The chain is part of the design and its weight is counted in the gold weight above.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece, in a zinc-free gold alloy chosen for enamel. The enamel cells are cast into the gold, filled by hand and kiln-fired. Nothing is soldered after the first firing; any fitting added later is laser welded away from the enamel.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap. Glass enamel is hard and does not fade, but it can chip if struck against stone or metal. Keep it away from ultrasonic cleaners. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout.",
    "price": {
-    "list_cents": 147900,
-    "paid_cents": 103530,
-    "cost_cents": 41884,
-    "margin": 0.5002,
+    "list_cents": 239100,
+    "paid_cents": 167370,
+    "cost_cents": 67750,
+    "margin": 0.5001,
     "discount": 0.3,
-    "basis": "estimate",
-    "plan_version": "xmas26-v2-disc30-m50",
+    "basis": "maker_quote",
+    "plan_version": "xmas26-v4-quote-disc30-m50",
     "karats": {
      "10K": {
-      "grams": 3.47,
-      "rate_cents_per_gram": 8336,
-      "cost_cents": 29576,
-      "list_cents": 104500,
-      "paid_cents": 73150,
-      "margin": 0.5003
-     },
-     "14K": {
-      "grams": 3.89,
-      "rate_cents_per_gram": 10600,
-      "cost_cents": 41884,
-      "list_cents": 147900,
-      "paid_cents": 103530,
+      "grams": 3.12,
+      "gold_cents": 26199,
+      "chain_cents": 14132,
+      "fixed_cents": 10000,
+      "cost_cents": 50981,
+      "rate_cents_per_gram": 8397,
+      "list_cents": 180000,
+      "paid_cents": 126000,
       "margin": 0.5002
      },
+     "14K": {
+      "grams": 3.5,
+      "gold_cents": 37100,
+      "chain_cents": 20000,
+      "fixed_cents": 10000,
+      "cost_cents": 67750,
+      "rate_cents_per_gram": 10600,
+      "list_cents": 239100,
+      "paid_cents": 167370,
+      "margin": 0.5001
+     },
      "18K": {
-      "grams": 4.42,
-      "rate_cents_per_gram": 12810,
-      "cost_cents": 57270,
-      "list_cents": 202100,
-      "paid_cents": 141470,
-      "margin": 0.5
+      "grams": 3.98,
+      "gold_cents": 50749,
+      "chain_cents": 27355,
+      "fixed_cents": 10000,
+      "cost_cents": 88754,
+      "rate_cents_per_gram": 12751,
+      "list_cents": 313200,
+      "paid_cents": 219240,
+      "margin": 0.5001
      }
+    },
+    "quote": {
+     "text": "3,5 GR 50 50 200",
+     "gram14_body": 3.5,
+     "assembly_usd": 50,
+     "enamel_usd": 50,
+     "chain_usd": 200,
+     "plan": "xmas26-v4-quote-disc30-m50",
+     "lines_usd": {
+      "chain": 200,
+      "assembly": 50,
+      "enamel": 50
+     }
+    },
+    "estimate_v2": {
+     "10K": 104500,
+     "14K": 147900,
+     "18K": 202100
     }
    }
   },
@@ -5212,38 +5352,65 @@
    "total_grams": 3.89,
    "description": "A cardinal in profile, its breast, wing and tail in deep berry glass enamel and its crest and face in polished gold. A keepsake many people give when they remember someone at Christmas.\n\nTHE PIECE\n11 mm wide and 15 mm tall, 1.35 mm thick. The enamel is a dark blackberry red, divided into three fields by fine gold lines that mark the wing and tail. The eye is a small round opening through the gold. The bail is hidden behind the back.\n\nGOLD WEIGHT\n3.82 g of 14k gold, counting the chain, clasp and extender. On the scale the finished piece weighs 3.89 g in total with the enamel.\n\nENAMEL\nKiln-fired vitreous enamel (glass), opaque deep berry, cadmium-free, level with the gold.\n\nLENGTH AND FIT\nA 1.0 mm 14k cable chain, 16 in with a 2 in extender, so it sits from 16 to 18 in. The chain is part of the design and its weight is counted in the gold weight above.\n\nHOW IT IS MADE\nMade to order. Cast in 14k gold in one piece, in a zinc-free gold alloy chosen for enamel. The enamel cells are cast into the gold, filled by hand and kiln-fired. Nothing is soldered after the first firing; any fitting added later is laser welded away from the enamel.\n\nCARE\nWipe with a soft dry cloth, or wash in warm water with a drop of mild soap. Glass enamel is hard and does not fade, but it can chip if struck against stone or metal. Keep it away from ultrasonic cleaners. No bleach or chlorine.\n\nGIFTING\nArrives in a gift box, ready to give.\n\nMade to order. The processing time is shown at checkout.",
    "price": {
-    "list_cents": 145300,
-    "paid_cents": 101710,
-    "cost_cents": 41142,
-    "margin": 0.5003,
+    "list_cents": 183000,
+    "paid_cents": 128100,
+    "cost_cents": 51850,
+    "margin": 0.5,
     "discount": 0.3,
-    "basis": "estimate",
-    "plan_version": "xmas26-v2-disc30-m50",
+    "basis": "maker_quote",
+    "plan_version": "xmas26-v4-quote-disc30-m50",
     "karats": {
      "10K": {
-      "grams": 3.41,
-      "rate_cents_per_gram": 8336,
-      "cost_cents": 29076,
-      "list_cents": 102700,
-      "paid_cents": 71890,
+      "grams": 1.78,
+      "gold_cents": 14947,
+      "chain_cents": 14132,
+      "fixed_cents": 10000,
+      "cost_cents": 39729,
+      "rate_cents_per_gram": 8397,
+      "list_cents": 140300,
+      "paid_cents": 98210,
       "margin": 0.5002
      },
      "14K": {
-      "grams": 3.82,
+      "grams": 2.0,
+      "gold_cents": 21200,
+      "chain_cents": 20000,
+      "fixed_cents": 10000,
+      "cost_cents": 51850,
       "rate_cents_per_gram": 10600,
-      "cost_cents": 41142,
-      "list_cents": 145300,
-      "paid_cents": 101710,
-      "margin": 0.5003
+      "list_cents": 183000,
+      "paid_cents": 128100,
+      "margin": 0.5
      },
      "18K": {
-      "grams": 4.34,
-      "rate_cents_per_gram": 12810,
-      "cost_cents": 56245,
-      "list_cents": 198500,
-      "paid_cents": 138950,
-      "margin": 0.5
+      "grams": 2.27,
+      "gold_cents": 28945,
+      "chain_cents": 27355,
+      "fixed_cents": 10000,
+      "cost_cents": 66950,
+      "rate_cents_per_gram": 12751,
+      "list_cents": 236300,
+      "paid_cents": 165410,
+      "margin": 0.5001
      }
+    },
+    "quote": {
+     "text": "2 GR 50 50 200",
+     "gram14_body": 2.0,
+     "assembly_usd": 50,
+     "enamel_usd": 50,
+     "chain_usd": 200,
+     "plan": "xmas26-v4-quote-disc30-m50",
+     "lines_usd": {
+      "chain": 200,
+      "assembly": 50,
+      "enamel": 50
+     }
+    },
+    "estimate_v2": {
+     "10K": 102700,
+     "14K": 145300,
+     "18K": 198500
     }
    }
   },

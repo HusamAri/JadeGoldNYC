@@ -52,7 +52,10 @@ SPOT_USD_PER_OZT = 4166.10  # gold-api.com, 2026-10-18 18:58 UTC — v2 ESTIMATE
 SPOT_SOURCE = "gold-api.com 2026-10-18T18:58Z"
 SPOT_QUOTE_USD_PER_OZT = 4054.10  # gold-api.com, 2026-10-28 09:54 UTC — pieces priced from the maker's quote
 SPOT_QUOTE_SOURCE = "gold-api.com 2026-10-28T09:54Z"
-QUOTE_PLAN = "xmas26-v3-quote-disc30-m50"
+# Quote batches carry their own plan version: a quote without a "plan" key belongs to the first batch (v3,
+# applied 2026-10-28 morning); later batches name theirs (v4: N6-N10, same day). QUOTE_PLAN is the LATEST.
+QUOTE_PLAN_FIRST = "xmas26-v3-quote-disc30-m50"
+QUOTE_PLAN = "xmas26-v4-quote-disc30-m50"
 ESTIMATE_PLAN = "xmas26-v2-disc30-m50"
 TROY_OZ_GRAMS = 31.1035
 PURITY = {"10K": 0.416, "14K": 0.585, "18K": 0.75}
@@ -181,7 +184,8 @@ for p in spec["products"]:
     estimate = karat_rows(g)
     if pid in QUOTES:
         karats = karat_rows_quote(QUOTES[pid])
-        basis, plan = "maker_quote", QUOTE_PLAN
+        basis, plan = "maker_quote", QUOTES[pid].get("plan", QUOTE_PLAN_FIRST)
+        assert plan in (QUOTE_PLAN_FIRST, QUOTE_PLAN), (pid, plan)
         assert karats["14K"]["list_cents"] == list_from_cost(quote_parts_cents(QUOTES[pid], "14K")["cost_cents"])
     else:
         karats = estimate
@@ -239,6 +243,8 @@ json.dump({"collection": "Jade Gold NYC Christmas 2026", "engine": "lib/jade/pri
                        "rate_cents_per_gram": {k: rate_cents(k) for k in KARATS}, "density_ratio": DENSITY_RATIO,
                        "karat_rule": "lib/gold-cost.ts derivePurchaseCentsPerGram; 14K is the design",
                        "quote": {"plan_version": QUOTE_PLAN, "source": "docs/jade/xmas26/work/maker_quotes.json",
+                                 "plans": {pv: sorted((q for q in QUOTES if QUOTES[q].get("plan", QUOTE_PLAN_FIRST) == pv), key=lambda s: (s[0], int(s[1:])))
+                                           for pv in (QUOTE_PLAN_FIRST, QUOTE_PLAN)},
                                  "quoted": sorted(QUOTES, key=lambda s: (s[0], int(s[1:]))), "not_quoted": quotes_doc["not_quoted"],
                                  "spot_usd_per_ozt": SPOT_QUOTE_USD_PER_OZT, "spot_source": SPOT_QUOTE_SOURCE,
                                  "rate_cents_per_gram": {k: rate_cents(k, SPOT_QUOTE_USD_PER_OZT) for k in KARATS},

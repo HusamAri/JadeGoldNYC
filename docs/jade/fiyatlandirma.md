@@ -833,23 +833,34 @@ açık token 0.
 - Spot girdi olarak tarihli; yeniden fiyatlamadan önce tazelenir.
 - Açıklamalar 14K gramını söylüyor ("3.45 g"); 10K/18K gramı yalnız varyantta.
 
-## 14. Noel 2026 — üretici teklifi (v3, 2026-10-28)
+## 14. Noel 2026 — üretici teklifi (v3 + v4, 2026-10-28)
 
 Sahip: *"Ürünlerin maliyet hesapları geldi, bunlara göre satış fiyatlarını hesapla.
 Listeler Etsy'de taslak."* Görkem, kendisine gönderilen Excel yerine WhatsApp'ta
-hero fotoğrafı üstüne cevapladı (5 ekran görüntüsü, 22:03–23:41). Kaynak metin,
-ayrıştırılmış kalemler ve eşleme notları `docs/jade/xmas26/work/maker_quotes.json`.
+hero fotoğrafı üstüne cevapladı (5 ekran görüntüsü, 22:03–23:41; aynı sabah 2 görüntü
+daha: N6–N10 + notları, 23:41–23:49). Kaynak metin, ayrıştırılmış kalemler ve eşleme
+notları `docs/jade/xmas26/work/maker_quotes.json`.
 
 ### Girdi
 
-- **25 parça teklifli:** B1–B10, N1–N5, E1–E10. **15 parça teklifsiz:** N6–N10, P1–P10
-  (görüntüler N5'te kesiliyor); bunlar v2 tahmininde kaldı, Etsy'de dokunulmadı.
+- **v3, 25 parça teklifli:** B1–B10, N1–N5, E1–E10. **v4, 5 parça:** N6–N10 (ikinci
+  gönderim, aynı sabah). **10 parça teklifsiz:** P1–P10 (broşlar); bunlar v2 tahmininde
+  kaldı, Etsy'de dokunulmadı.
 - Teklif biçimi: **gövde gramı** (zincir HARİÇ) + ayrı USD kalemleri: zincir 150–300,
   clean/assemble 50, mine 30–50, push post 100 (çift), kilit mekanizması 200 (E5).
   $/g VERİLMEDİ → belgelenmiş her şey dahil 14K oranı $106 kaldı (duyarlılık: $100'de
   14K liste −$32…−$63). "ayni / AYNISI / ayni plus 50 anemal" cevapları bir önceki
   mesajın kalemlerini kopyalar (`catalog.py` assert'i).
-- Eşleme üç kör okuyucuyla bağımsız sınandı: 25/25 metin ve kimlik birebir.
+- Eşleme üç kör okuyucuyla bağımsız sınandı: 25/25 (v3) ve 5/5 (v4) metin ve kimlik
+  birebir; v4 görüntüsünün en üstündeki kesik "2 GR 50 200" balonu üç okuyucuda da
+  "kimlik yok" (N7'nin kendisi, önceki görüntünün sonu) ve fiyatlanmadı.
+- **Görkem'in notları (v4 görüntüsü, veride `maker_notes`):** "ayni" = bir önceki
+  modelin kalemleri (same_as kuralını doğrular); "zincirleri fiyat olarak
+  kestiremiyorum… normal en ince cable chain 150–170 dolar diye düşünebilirsin";
+  "bu fiyatlar üretim fiyatları"; cable chain = N10 fotoğrafındaki zincir. Parça başı
+  zincir satırları (200) tutuldu: kendi sayısı ve aralığın muhafazakâr ucu.
+  **Duyarlılık:** zincir 160 olsaydı her kolye/bileklik 14K listesi ~$140 düşerdi
+  (3,53 × $40); kesinleşmeden fiyat düşürülmez (10-07 dersi: tahmine dayalı indirim yok).
 - Okuma kararları (veride `note`/`flag`): B8–B10 "50, 30, 200" = montaj, mine, zincir
   (B6 mesajının sırası); N2 "30" ve N4 "10" mine konumunda ama katalogda mine yok →
   teklif edilmiş ek kalem olarak alındı; E8 "kolye ucu mu küpe mi?" → küpe, "aynı"
@@ -907,12 +918,37 @@ would-sync / 75 fark / 0 eşleşmeyen SKU** (Etsy hâlâ v2'deydi) → kanarya B
 75/75 offering katalog v3 ile birebir**; audit `etsy.reprice` 25, açık token 0,
 kota 3.613/5.000. Görsel kitap (artifact v7) yeni fiyatlarla yenilendi.
 
+### v4 — N6–N10 (aynı sabah, ikinci gönderim)
+
+Aynı kural, aynı spot ($4.054,10), plan `xmas26-v4-quote-disc30-m50`; `catalog.py`
+teklifi parça başına plan sürümüyle taşır (v3 kayıtları değişmedi, 25/25 mühür aynı).
+
+| Parça | Teklif | Maliyet 14K | 14K liste (v2) | 10K | 18K | Değişim |
+|---|---|---|---|---|---|---|
+| N6 Window Frost Enamel Bar | 1,5 g + 50 + mine 50 + zincir 200 | $465,50 | **$1.643** ($1.520) | $1.272 | $2.111 | +%8 |
+| N7 Angel Wing Pendant | 2 g + 50 + zincir 200 | $468,50 | **$1.654** ($1.539) | $1.226 | $2.187 | +%7 |
+| N8 Snaffle Bit Necklace | 2 g + 50 + zincir 200 | $468,50 | **$1.654** ($1.408) | $1.226 | $2.187 | +%17 |
+| N9 Stirrup Slider Pendant | 3,5 g + 50 + mine 50 + zincir 200 | $677,50 | **$2.391** ($1.479) | $1.800 | $3.132 | +%62 |
+| N10 Cardinal Pendant | 2 g + 50 + mine 50 + zincir 200 | $518,50 | **$1.830** ($1.453) | $1.403 | $2.363 | +%26 |
+
+N9'un sıçraması gramdan: tahmin zincir DAHİL 3,9 g'dı, üretici yalnız gövde için 3,5 g
+diyor (slider dolu döküm); üstüne zincir $200 ve mine $50 ayrı kalem geliyor. Panel: ön koşul **40 / 120 / v2 10 / v3 25 / v4 0 / mühür `67f24686…`**
+tuttu → apply **15 varyant + 5 ürün** → geri okuma mührü
+**`6e399dc9007b2705d5574363cbef0ffd`**, toplam 20.015.000 → 20.548.700 cent, plan
+sayıları v2 10 / v3 25 / v4 5 (approval aynı), audit 15 + 5. Etsy (5 listing): kuru
+`detail=1` **5 would-sync / 15 fark / 0 eşleşmeyen** (Etsy v2'deydi) → apply 5 synced,
+15 yazıldı, 0 kaldı → taze token'la bağımsız okuma **5 unchanged, 15/15 birebir**;
+audit `etsy.reprice` 30 (25 + 5), açık token 0.
+
 ### Açık kalemler
 
 - **B7 zincir 20 mi 200 mü?** Görkem'e sorulacak; 20 ise B7 $1.841 → $1.206 (plan `flag`).
-- **15 parça teklifsiz** (N6–N10, P1–P10): v2 tahmini; teklif gelince `maker_quotes.json`'a
-  eklenir, 4 → 11 koşulur, `price-sync` ile itilir. Teklifler tahminin üstünde çıktığına
-  göre bu 15 yayına alınmadan fiyatlanmalı.
+- **Zincir belirsiz:** Görkem zinciri "kestiremiyorum, en ince cable chain 150–170" diyor;
+  satırlar 200'le fiyatlı. Sahip 160'ı onaylarsa 20 kolye/bileklik ~$140 iner (v5).
+- **10 broş teklifsiz** (P1–P10): v2 tahmini. Sahip 10-28 11:10'da Görkem'e "broş
+  yapabilir miyiz?" diye sordu, cevap yok. Teklif gelince `maker_quotes.json`'a
+  eklenir, 4 → 11 koşulur, `price-sync` ile itilir; teklifler tahminin üstünde çıktığına
+  göre broşlar yayına alınmadan fiyatlanmalı.
 - **$/g teklif edilmedi:** $106 varsayım. Görkem'in gerçek 14K (ve 10K/18K) oranı gelince
   `catalog.py` sabiti değişir, v4.
 - **Gram beyanları:** açıklamalar katalog gramını söylüyor (küpe 1,4–1,7 g; bileklik/kolye

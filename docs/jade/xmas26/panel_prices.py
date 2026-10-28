@@ -10,7 +10,11 @@ rewrote `products.sku` to NULL (listing-level SKU is a list on Etsy), so every s
 by the import batch and the VARIANT sku, never by products.sku.
 
 v3 (2026-10-28, maker quotes): only the pieces with a quote in work/maker_quotes.json are written
-(`price.basis == "maker_quote"`); unquoted pieces keep their v2 rows untouched. This script writes:
+(`price.basis == "maker_quote"`); unquoted pieces keep their v2 rows untouched. v4 (same day, the
+second batch of quotes, N6-N10): the script writes only the pieces whose `price.plan_version` is the
+LATEST quote plan (`pricing.quote.plan_version`); everything already live (earlier quote batches and
+the v2 estimates) is reconstructed from the catalog for the before-seal and left untouched. This
+script writes:
 
   product_variants.price_cents                         per karat, from price.karats (quote basis)
                                                        weight_grams / weight_source are NOT touched:
@@ -39,32 +43,39 @@ ORG = "f155b853-dfaf-48fd-94c5-ddfcb856e07c"  # Jade Gold NYC
 BATCH_LIKE = "jade-xmas26%"
 KARATS = ("10K", "14K", "18K")
 DENSITY_RATIO = {"10K": 0.892, "14K": 1.0, "18K": 1.137}  # catalog.py, for the unchanged v2 weights
-V2_LIVE_SEAL = "828475ae91f2b6fe2ee9b7497eac967c"  # fiyatlandirma.md §13, read back 2026-10-18 and again 2026-10-28
+# The live seal before THIS run, read back from the panel (fiyatlandirma.md §13/§14). The catalog's
+# reconstruction of the live state must equal it, or the run is refused: v2 828475ae91f2b6fe2ee9b7497eac967c
+# (2026-10-18, before v3); v3 67f246863b3b4dcaf8d749a8d1107b8e (2026-10-28, before v4).
+LIVE_SEAL_BEFORE = "67f246863b3b4dcaf8d749a8d1107b8e"
 
 cat = json.load(open(HERE / "catalog.json"))
 pr = cat["pricing"]
 assert pr["discount"] == 0.30 and pr["target_margin"] == 0.50, pr
-PLAN_VERSION = pr["quote"]["plan_version"]
-PREVIOUS_PLAN_VERSION = pr["estimate_plan_version"]
-assert PLAN_VERSION != PREVIOUS_PLAN_VERSION
+PLAN_VERSION = pr["quote"]["plan_version"]           # the latest quote batch: the only plan written by this run
+ESTIMATE_PLAN_VERSION = pr["estimate_plan_version"]  # v2
+assert PLAN_VERSION != ESTIMATE_PLAN_VERSION
 
-quoted, v2_rows, v3_rows = [], [], []
+quoted, before_rows, after_rows, versions = [], [], [], {}
 for p in cat["products"]:
-    pid, k, basis = p["id"], p["price"]["karats"], p["price"]["basis"]
+    pid, k, basis, plan = p["id"], p["price"]["karats"], p["price"]["basis"], p["price"]["plan_version"]
     assert set(k) == set(KARATS), pid
     assert p["price"]["list_cents"] == k["14K"]["list_cents"], pid
     grams = {kk: round(p["gold_grams"] * DENSITY_RATIO[kk], 2) for kk in KARATS}  # the weights the panel carries (v1/v2)
-    if basis == "maker_quote":
+    live = {kk: (k[kk]["list_cents"], grams[kk]) for kk in KARATS}
+    if plan == PLAN_VERSION:  # written by this run: the panel still carries the v2 estimate
+        assert basis == "maker_quote", pid
         quoted.append((pid, p))
-        v2_rows.append((pid, {kk: (p["price"]["estimate_v2"][kk], grams[kk]) for kk in KARATS}))
-        v3_rows.append((pid, {kk: (k[kk]["list_cents"], grams[kk]) for kk in KARATS}))
-    else:
-        assert basis == "estimate" and p["price"]["plan_version"] == PREVIOUS_PLAN_VERSION, pid
-        assert all(abs(k[kk]["grams"] - grams[kk]) < 1e-9 for kk in KARATS), pid
-        v2_rows.append((pid, {kk: (k[kk]["list_cents"], grams[kk]) for kk in KARATS}))
-        v3_rows.append((pid, {kk: (k[kk]["list_cents"], grams[kk]) for kk in KARATS}))
-assert len(v2_rows) == len(v3_rows) == 40
-assert [q for q, _ in quoted] == [q for q in pr["quote"]["quoted"]] or set(q for q, _ in quoted) == set(pr["quote"]["quoted"])
+        before_rows.append((pid, {kk: (p["price"]["estimate_v2"][kk], grams[kk]) for kk in KARATS}))
+    else:  # already live (an earlier quote batch, or the v2 estimate): unchanged by this run
+        assert basis == "maker_quote" or plan == ESTIMATE_PLAN_VERSION, (pid, basis, plan)
+        if basis == "estimate":
+            assert all(abs(k[kk]["grams"] - grams[kk]) < 1e-9 for kk in KARATS), pid
+        before_rows.append((pid, live))
+    after_rows.append((pid, live))
+    versions[pid] = plan
+assert len(before_rows) == len(after_rows) == 40
+assert set(q for q, _ in quoted) == set(pr["quote"]["plans"][PLAN_VERSION]), "the latest batch must equal the catalog's list"
+version_counts = {v: sum(1 for x in versions.values() if x == v) for v in sorted(set(versions.values()))}
 
 
 def seal_of(rows):
@@ -72,9 +83,10 @@ def seal_of(rows):
     return hashlib.md5(src.encode()).hexdigest(), sum(r[kk][0] for _, r in rows for kk in KARATS)
 
 
-v2_seal, v2_total = seal_of(v2_rows)
-assert v2_seal == V2_LIVE_SEAL, (v2_seal, "the catalog's v2 reconstruction must equal the live v2 seal")
-seal, total = seal_of(v3_rows)
+before_seal, before_total = seal_of(before_rows)
+assert before_seal == LIVE_SEAL_BEFORE, (before_seal, "the catalog's reconstruction of the live panel must equal the live seal")
+seal, total = seal_of(after_rows)
+v2_seal, v2_total = before_seal, before_total  # names kept for the SQL header below
 
 
 def q(s):
@@ -120,20 +132,21 @@ nq = len(quoted)
 sql = f"""-- Jade Gold NYC · Noel 2026 · üretici teklifi gelen {nq} taslağın fiyatı (panel), üretici: panel_prices.py
 -- plan {PLAN_VERSION} · indirim %{round(pr['discount'] * 100)} · hedef marj %{round(pr['target_margin'] * 100)}
 -- teklif spotu {qp['spot_usd_per_ozt']} ({qp['spot_source']}) · $/g {qp['rate_cents_per_gram']} · zincir karat oranı {qp['chain_karat_ratio']}
--- teklifli: {' '.join(pid for pid, _ in quoted)} · teklifsiz (v2 kalır): {' '.join(qp['not_quoted'])}
+-- bu koşu ({PLAN_VERSION}): {' '.join(pid for pid, _ in quoted)} · dokunulmayan: {' '.join(pid for pid in sorted(versions, key=lambda s: (s[0], int(s[1:]))) if versions[pid] != PLAN_VERSION)}
 -- beklenen mühür SONRA (120 varyant, sku-karat:liste:gram, sku sırası): {seal} · liste toplamı {total} cent
--- beklenen mühür ÖNCE (v2, canlı 2026-10-18 ve 2026-10-28): {v2_seal} · toplam {v2_total} cent
+-- beklenen mühür ÖNCE (canlı, bu koşudan önce): {v2_seal} · toplam {v2_total} cent
 --
--- ÖN KOŞUL (uygulamadan önce koş; 40 / 120 / 40 / 0 / {v2_seal} beklenir, aksi hâlde DUR — "zaten koşmuş mu?" kapısı):
+-- ÖN KOŞUL (uygulamadan önce koş; plan sayıları { {v: (0 if v == PLAN_VERSION else n) for v, n in version_counts.items()} } ile
+--   yani bu koşunun planı 0, önceki planlar {dict((v, n) for v, n in version_counts.items() if v != PLAN_VERSION)}, ve mühür {v2_seal}
+--   beklenir; aksi hâlde DUR — "zaten koşmuş mu?" kapısı):
 --   with p as (select p.id, p.listing_metadata->'retailPricePlan'->>'version' ver from products p
 --              where p.org_id = '{ORG}' and p.listing_metadata->>'import_batch' like '{BATCH_LIKE}'
 --                and p.status = 'draft' and p.archived_at is null)
 --   select count(distinct p.id), count(v.id),
---          count(distinct p.id) filter (where p.ver = '{PREVIOUS_PLAN_VERSION}'),
---          count(distinct p.id) filter (where p.ver = '{PLAN_VERSION}'),
---          md5(string_agg(v.sku||':'||v.price_cents||':'||to_char(v.weight_grams,'FM999990.00'), ',' order by v.sku))
---   from p join product_variants v on v.product_id = p.id
---   where v.sku like 'JGN-X26-%' and v.properties->>'Gold Karat' in ('10K','14K','18K');
+--          jsonb_object_agg(ver, n) from (select ver, count(*) n from p group by ver) x,
+--          (select md5(string_agg(v.sku||':'||v.price_cents||':'||to_char(v.weight_grams,'FM999990.00'), ',' order by v.sku))
+--             from p join product_variants v on v.product_id = p.id
+--            where v.sku like 'JGN-X26-%' and v.properties->>'Gold Karat' in ('10K','14K','18K')) s;
 --
 -- GERİ OKUMA (uygulamadan sonra; mühür yukarıdaki SONRA mührüyle birebir tutmalı):
 --   select md5(string_agg(v.sku||':'||v.price_cents||':'||to_char(v.weight_grams,'FM999990.00'), ',' order by v.sku)),
@@ -174,7 +187,8 @@ t(code, {cols}, fx, quote, e10, e14, e18) as (values
 select (select count(*) from v_upd) as variants_updated, (select count(*) from p_upd) as products_updated;
 """
 open(HERE / "panel_prices.sql", "w").write(sql)
-print(f"panel_prices.sql: {nq} products / {3 * nq} variants · seal before {v2_seal} · after {seal} · list total {v2_total} -> {total} cent")
+print(f"panel_prices.sql: plan {PLAN_VERSION} · {nq} products / {3 * nq} variants · seal before {v2_seal} · after {seal} · "
+      f"list total {v2_total} -> {total} cent · plan counts after {version_counts}")
 for pid, p in quoted:
     k, est = p["price"]["karats"], p["price"]["estimate_v2"]
     print(f"{pid:>4}  10K ${k['10K']['list_cents'] // 100:>4} (v2 {est['10K'] // 100:>4}) · "

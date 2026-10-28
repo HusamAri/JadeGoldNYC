@@ -1703,6 +1703,19 @@ repodaki hedefidir.
   denetlemez; (3) teklifin biçimi önceki tahminden farklıysa "hangi girdi neyi kapsıyor?" sorusu önce
   sorulur, kapsamı değişen alan (gram) yazılmaz, borç olarak kaydedilir; (4) aykırı tek değer varsayımla
   düzeltilirse iki okuma da sayıyla verilir ve varsayım ürün verisine `flag` olarak gömülür.
+  **Devamı (aynı sabah, ikinci parti N6–N10) — partili teklifte plan sürümü PARÇAYA yazılır, üreteç
+  yalnız o sürümün parçalarına dokunur; ve maskeleme komutu, maskelediği dosyanın biçimine karşı
+  SINANMADAN çalıştırılmaz:** ikinci gönderim beş kolye + Görkem'in notlarıydı. v3'ün 25 parçasını
+  yeniden yazmak yerine teklif kaydı `plan` alanı taşıdı, `panel_prices.py` yalnız o sürümü seçti ve
+  "önce" mührü v3'ün "sonra" mührüne (67f24686…) birebir oturdu: 15 varyant + 5 ürün yazıldı, 25
+  parça kıpırdamadı, sonra mührü beklenen 6e399dc9… ile tuttu, Etsy kuru 5/15/0 → apply 15/0 → taze
+  token'la 15/15. Notlar da veriye girdi (`maker_notes`): "ayni = önceki modelin kalemleri" same_as
+  kuralını doğruladı; "zincir 150–170, kestiremiyorum" ise 200'lük satırları DÜŞÜRMEDİ — düşüş
+  tahmine dayanırdı (10-07 dersi), duyarlılık (~$140/kolye) sahibe sayıyla gitti, karar onun. Tek
+  kusur operasyoneldi: token dosyasını ekrana basarken `sed 's/=.*/=<hidden>/'` yazdım, dosya ise
+  boşlukla ayrılmıştı; üç tek kullanımlık token araç çıktısına çıplak düştü. Hepsi dakikalar içinde
+  tüketildi (used 3, açık 0), ama ders net: gizli dosyayı maskeleyen komut önce `head -c`/biçim
+  kontrolüyle sınanır ya da hiç basılmaz, değer `awk`la doğrudan değişkene alınır.
 
 ## Ürün/UX dersleri
 
