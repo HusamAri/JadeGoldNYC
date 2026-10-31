@@ -57,6 +57,7 @@ export const INTERNAL_RE = new RegExp(
     String.raw`\bEtsy (?:publication|price action)\b`,
     String.raw`\b(?:published|sent) to Etsy\b`,
     String.raw`\bbefore Etsy\b`,
+    String.raw`\b(?:approved|ready) for Etsy\b`,
     String.raw`\bpre-?production\b`,
     String.raw`\bfinal CAD\b`,
     String.raw`\bcast-weight\b`,
@@ -91,7 +92,7 @@ const BULLET_RE = /^\s*(?:[-•✔*·]|\d+[.)])\s+/;
 // Phrase rewrites that keep the buyer fact. Applied only on a line that carries an
 // internal signal (PHRASE_SIGNAL_RE), so every other line stays byte for byte.
 const PHRASE_SIGNAL_RE =
-  /design target|proposed|supplier confirmation|intended metal|metal previsto|ring concept|concepto de anillo|design image|\[insert|final CAD|pre-?production estimate|until the maker confirms|^\s*PROPOSED DESIGN\s*$|^\s*MATERIAL DIRECTION\s*$/im;
+  /design target|proposed|provisional listing|quoted (?:bracelet|necklace|chain|anklet) length|supplier confirmation|intended metal|metal previsto|ring concept|concepto de anillo|design image|\[insert|final CAD|pre-?production estimate|until the maker confirms|^\s*PROPOSED DESIGN\s*$|^\s*MATERIAL DIRECTION\s*$/im;
 
 type Rewrite = [RegExp, string | ((...m: string[]) => string)];
 const PHRASE_REWRITES: Rewrite[] = [
@@ -124,6 +125,10 @@ const PHRASE_REWRITES: Rewrite[] = [
   // "avoid abrasive cleaners and ultrasonic cleaning until the maker confirms the care method"
   // keeps the care advice and drops the pending confirmation.
   [/\s+until the maker confirms[^.;]*/g, ""],
+  // "Personalization is not enabled in this provisional listing" keeps the buyer fact.
+  [/\s+in this provisional listing\b/g, ""],
+  // "7.5 inch quoted bracelet length" (the supplier quote) -> "7.5 inch bracelet length"
+  [/\bquoted (bracelet|necklace|chain|anklet) length\b/g, "$1 length"],
 ];
 
 function capitalizeFirst(s: string): string {

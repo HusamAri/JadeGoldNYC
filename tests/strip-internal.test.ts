@@ -60,6 +60,10 @@ const LINES: [string, string][] = [
   ["Final wearable minimum and maximum length will be added after supplier readback.", ""],
   ["Gold karat, gemstone identity, treatment, carat weight, hallmark and total weight must be confirmed from the supplier before this panel proposal can be sent to Etsy.", ""],
   ["The supplier quote identifies this bracelet at 7.5 inches and the supplied product image shows an extension chain.", ""],
+  ["• 7.5 inch quoted bracelet length", "• 7.5 inch bracelet length"],
+  ["Personalization is not enabled in this provisional listing", "Personalization is not enabled"],
+  ["Gold weight is a pre-production estimate and may vary by approximately 10% after final CAD, casting and finishing. Final metal weight will be confirmed before the listing is approved for Etsy.",
+   "Gold weight is an estimate and may vary by approximately 10% after casting and finishing."],
   // The owner's example, without its heading, and the 2027 enamel catalog lines.
   ["Dimensions are development targets. Gold weight, final size options, alloy/enamel compatibility, durability, post/chain joints, price and production time require a physical sample and maker approval. No stock, hallmark, allergy or performance claim is made.", ""],
   ["Internal reference: BAS-27-MINE-R01-14Y", ""],
