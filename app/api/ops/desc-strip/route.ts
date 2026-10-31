@@ -7,42 +7,52 @@ import { EtsyClient } from "@/lib/etsy/client";
 import { etsyPaths } from "@/lib/etsy/endpoints";
 import { decodeHtmlEntities } from "@/lib/etsy/text";
 import { normText } from "@/lib/etsy/listing-rewrite";
+import { getListingTranslation, putListingTranslation } from "@/lib/etsy/listing";
 import { cleanAltText, stripPublicDescription } from "@/lib/etsy/strip-internal";
 import type { EtsyListResponse } from "@/lib/etsy/types";
 import { logAudit } from "@/lib/audit";
 
-export const maxDuration = 120;
+export const maxDuration = 300;
 
 /**
  * DESC-STRIP: removes text that must not be public from listing descriptions.
  *  - image-provenance disclosure ("the images are design visualizations / AI-assisted"),
- *    owner 2026-10-27, `stripVisualizationDisclosure`;
+ *    owner 2026-10-27;
  *  - internal workflow and status notes ("DESIGN PROPOSAL — NOT READY FOR SALE",
  *    "IMPORTANT PRODUCTION NOTE", "will be confirmed before this design is offered for
  *    sale", owner approval, supplier readback, design targets), owner 2026-10-31, every
- *    brand, `stripInternalNotes`.
- * The rules live in `stripPublicDescription`; this route only moves text.
+ *    brand.
+ * The rules live in `stripPublicDescription` (lib/etsy/strip-internal.ts); this route only
+ * moves text.
  *
  *  - Auth: `ops_tokens` purpose='desc-strip' (SHA-256 CAS, one use) or CRON_SECRET.
  *  - `?org=` required.
  *  - `?scan=1`: read only. Pages through the shop's listings on Etsy in every state
  *    (active, draft, inactive, sold_out, expired) and reports each listing whose live
  *    description the rules would change, with its panel product id. Independent of the
- *    panel mirror; nothing is written.
+ *    panel mirror; nothing is written. `lang=es` scans that language's listing
+ *    translation instead (one read per listing; a listing without one is skipped).
  *  - Otherwise `?products=<uuid,...>` required (max 20): every write call names its targets.
  *    Source is the LIVE Etsy description, not the panel copy: the owner may have edited
  *    text in the Etsy editor and the panel mirror can be stale. A product with no Etsy
- *    listing is cleaned in the panel only.
+ *    listing is cleaned in the panel only. With `lang=es` the listing translation is
+ *    cleaned instead (title and tags are written back as Etsy holds them).
  *  - Default is a dry run (edits, before/after length; `detail=1` adds the full before and
  *    after text). `apply=1` PATCHes the description only, reads it back in the same call
- *    and then writes the same text to products.description.
+ *    and then writes the same text to products.description. The audit row keeps the live
+ *    text from before the write (`diff.before`), the only way back.
  *  - A cut that would leave less than 40% of the text is refused, never written.
+ *  - A run that nears the time limit stops starting new work and reports the rest as
+ *    `deferred`.
  *  - `?images=1`: the same for image alt text (public: Etsy serves it with the photo).
  *    With `listings=<etsy ids, max 40>` and no apply it only reads; with `products=` and
- *    `apply=1` it re-attaches each image whose alt text changes at its own rank with the
- *    cleaned alt (`cleanAltText`, the gallery marker "[...]" stays), re-reads the gallery
- *    after every image and stops the listing if the image order moved. Descriptions are
- *    not touched in this mode.
+ *    `apply=1` it re-attaches each image whose alt text changes at its current rank with
+ *    the cleaned alt (`cleanAltText`, the gallery marker "[...]" stays), re-reads the
+ *    gallery after every image and stops the listing if the image order moved. Every
+ *    outcome (fixed, stopped, error, deferred) is audited with the order from before the
+ *    first write and each image's old alt; a listing whose last run did not finish is
+ *    refused (`needs-review`) until a person has looked at it (`reviewed=1`). Descriptions are not
+ *    touched in this mode.
  */
 
 async function authorize(request: Request): Promise<boolean> {
@@ -69,6 +79,8 @@ type Row = Record<string, unknown>;
 const MIN_KEEP_RATIO = 0.4;
 const SCAN_STATES = ["active", "draft", "inactive", "sold_out", "expired"] as const;
 const PAGE = 100;
+// maxDuration is 300 s; stop starting new Etsy work well before it.
+const BUDGET_MS = 240_000;
 
 type Photo = { listing_image_id: number; rank: number; alt_text?: string | null };
 const altKey = (s: string | null | undefined) => decodeHtmlEntities(s ?? "").trim();
@@ -83,6 +95,9 @@ function altPlan(list: Photo[], title: string) {
     .filter((x) => x.from !== "" && x.to !== x.from);
 }
 
+/** Statuses of an images apply that did not finish cleanly. */
+const UNFINISHED = new Set(["order-changed", "alt-not-applied", "image-missing", "error", "deferred-partial"]);
+
 async function imagesMode(
   admin: ReturnType<typeof createAdminClient>,
   orgId: string,
@@ -90,7 +105,10 @@ async function imagesMode(
   url: URL,
   apply: boolean,
   productIds: string[],
+  deadline: number,
 ) {
+  // `reviewed=1`: a person has checked the gallery after an unfinished run.
+  const reviewed = url.searchParams.get("reviewed") === "1";
   let client: EtsyClient;
   try {
     client = await EtsyClient.forOrg(orgId);
@@ -113,18 +131,38 @@ async function imagesMode(
     targets = ids.map((listing) => ({ product: null, listing }));
   }
 
+  const audit = (t: { product: string | null; listing: number }, status: string, diff: Row) =>
+    logAudit(admin, {
+      orgId,
+      action: "etsy.alt_strip",
+      entityType: "product",
+      entityId: t.product,
+      summary:
+        `Görsel alt metninden iç not / görselleştirme notu kaldırıldı (ops desc-strip): listing ${t.listing}, ` +
+        `${(diff.done as Row[] | undefined)?.length ?? 0} görsel, durum ${status}.`,
+      diff: { listing: t.listing, status, ...diff },
+      source: "ops/desc-strip",
+    });
+
   const results: Row[] = [];
   for (const t of targets) {
     if (!t.listing) {
       results.push({ product: t.product, status: "etsy-listing-yok" });
       continue;
     }
+    if (Date.now() >= deadline) {
+      results.push({ product: t.product, listing: t.listing, status: "deferred" });
+      continue;
+    }
+    let beforeOrder: number[] = [];
+    const done: Row[] = [];
+    let base: Row = { product: t.product, listing: t.listing };
     try {
       const live = await client.get<{ title?: string; state?: string }>(etsyPaths.listing(t.listing));
       const title = decodeHtmlEntities(live.title ?? "").slice(0, 140);
       const before = await readGallery(t.listing);
       const changes = altPlan(before, title);
-      const base: Row = { product: t.product, listing: t.listing, state: live.state ?? null, images: before.length };
+      base = { ...base, state: live.state ?? null, images: before.length };
       if (changes.length === 0) {
         results.push({ ...base, status: "clean" });
         continue;
@@ -133,14 +171,42 @@ async function imagesMode(
         results.push({ ...base, status: "would-fix", changes });
         continue;
       }
+      // A run that stopped half way left the gallery as it found it only up to the stop;
+      // a new run would take that order as its baseline. A person looks first.
+      if (t.product) {
+        const { data: last } = await admin
+          .from("audit_log")
+          .select("diff, created_at")
+          .eq("org_id", orgId)
+          .eq("action", "etsy.alt_strip")
+          .eq("entity_id", t.product)
+          .order("created_at", { ascending: false })
+          .limit(1);
+        const lastStatus = ((last ?? [])[0] as { diff?: { status?: string } } | undefined)?.diff?.status;
+        if (lastStatus && UNFINISHED.has(lastStatus) && !reviewed) {
+          results.push({ ...base, status: "needs-review", lastStatus, changes });
+          continue;
+        }
+      }
       const shopId = await client.requireShopId();
-      const expectOrder = order(before);
-      const done: Row[] = [];
+      beforeOrder = order(before);
+      const expectOrder = [...beforeOrder];
+      let cur = before;
       let stop: string | null = null;
       for (const c of changes) {
+        if (Date.now() >= deadline) {
+          stop = "deferred-partial";
+          break;
+        }
+        // Rank from the latest read: Etsy may compact ranks after a write.
+        const rank = cur.find((p) => p.listing_image_id === c.id)?.rank;
+        if (rank === undefined) {
+          stop = "image-missing";
+          break;
+        }
         const form = new FormData();
         form.append("listing_image_id", String(c.id));
-        form.append("rank", String(c.rank));
+        form.append("rank", String(rank));
         form.append("alt_text", c.to);
         const back = await client.requestMultipart<{ listing_image_id?: number }>("POST", etsyPaths.listingImages(shopId, t.listing), form);
         const newId = back?.listing_image_id ?? c.id;
@@ -149,28 +215,28 @@ async function imagesMode(
           await pause();
           list = await readGallery(t.listing);
         }
-        const altOk = list.some((p) => p.listing_image_id === newId && p.rank === c.rank && altKey(p.alt_text) === c.to);
+        cur = list;
+        const altOk = list.some((p) => p.listing_image_id === newId && altKey(p.alt_text) === c.to);
         const idx = expectOrder.indexOf(c.id);
         if (idx >= 0) expectOrder[idx] = newId;
         const orderOk = JSON.stringify(order(list)) === JSON.stringify(expectOrder);
-        done.push({ ...c, newId, altOk, orderOk });
+        done.push({ id: c.id, newId, rank, from: c.from, to: c.to, altOk, orderOk });
         if (!altOk || !orderOk) {
           stop = !orderOk ? "order-changed" : "alt-not-applied";
-          results.push({ ...base, status: stop, done, expectOrder, liveOrder: order(list) });
           break;
         }
       }
-      if (stop) continue;
-      await logAudit(admin, {
-        orgId,
-        action: "etsy.alt_strip",
-        entityType: "product",
-        entityId: t.product,
-        summary: `Görsel alt metninden görselleştirme notu kaldırıldı (ops desc-strip): listing ${t.listing}, ${done.length} görsel; sıra korundu, geri okuma doğrulandı.`,
-      });
+      if (stop) {
+        await audit(t, stop, { beforeOrder, done, expectOrder, liveOrder: order(cur) });
+        results.push({ ...base, status: stop, done, expectOrder, liveOrder: order(cur) });
+        continue;
+      }
+      await audit(t, "fixed", { beforeOrder, done });
       results.push({ ...base, status: "fixed", done });
     } catch (e) {
-      results.push({ ...base_(t), status: "error", detail: String(e) });
+      // Once the first re-attach was sent, Etsy may hold a change even if the call threw.
+      if (beforeOrder.length > 0) await audit(t, "error", { beforeOrder, done, error: String(e) });
+      results.push({ ...base, status: "error", detail: String(e), done });
     }
   }
   const count = (s: string) => results.filter((r) => r.status === s).length;
@@ -183,23 +249,24 @@ async function imagesMode(
     wouldFix: count("would-fix"),
     fixed: count("fixed"),
     clean: count("clean"),
-    failed: results.length - count("would-fix") - count("fixed") - count("clean"),
+    deferred: count("deferred"),
+    failed: results.length - count("would-fix") - count("fixed") - count("clean") - count("deferred"),
     results,
   });
 }
 
-function base_(t: { product: string | null; listing: number }): Row {
-  return { product: t.product, listing: t.listing };
-}
-
+/** "Changed" means a rule removed or rewrote something; whitespace alone never counts. */
 function plan(before: string) {
   const r = stripPublicDescription(before);
-  const changed = r.text !== before;
+  const changed = r.removed.length > 0 || r.edits.length > 0;
   const tooLarge = changed && r.text.length < before.length * MIN_KEEP_RATIO;
   return { ...r, changed, tooLarge };
 }
 
+const LANG_RE = /^[a-z]{2}(?:-[A-Z]{2})?$/;
+
 export async function GET(request: Request) {
+  const deadline = Date.now() + BUDGET_MS;
   if (!(await authorize(request))) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
@@ -208,18 +275,20 @@ export async function GET(request: Request) {
   const scan = url.searchParams.get("scan") === "1";
   const detail = url.searchParams.get("detail") === "1";
   const images = url.searchParams.get("images") === "1";
+  const lang = url.searchParams.get("lang");
   const orgName = url.searchParams.get("org");
   const productIds = (url.searchParams.get("products") ?? "")
     .split(",")
     .map((s) => s.trim())
     .filter((s) => /^[0-9a-f-]{36}$/i.test(s));
   if (!orgName) return NextResponse.json({ error: "org is required" }, { status: 400 });
+  if (lang !== null && !LANG_RE.test(lang)) return NextResponse.json({ error: "lang: an IETF code such as es" }, { status: 400 });
   if (images) {
     if (productIds.length > 20) return NextResponse.json({ error: "products: max 20" }, { status: 400 });
     const admin = createAdminClient();
     const { data: org } = await admin.from("organizations").select("id").eq("name", orgName).maybeSingle();
     if (!org) return NextResponse.json({ error: `org yok: ${orgName}` }, { status: 404 });
-    return imagesMode(admin, (org as { id: string }).id, orgName, url, apply, productIds);
+    return imagesMode(admin, (org as { id: string }).id, orgName, url, apply, productIds, deadline);
   }
   if (scan && apply) return NextResponse.json({ error: "scan is read only; apply needs products" }, { status: 400 });
   if (!scan && (productIds.length === 0 || productIds.length > 20)) {
@@ -242,8 +311,14 @@ export async function GET(request: Request) {
     const byState: Record<string, number> = {};
     const hits: Row[] = [];
     let scanned = 0;
-    for (const st of SCAN_STATES) {
+    let translations = 0;
+    let partial = false;
+    scanLoop: for (const st of SCAN_STATES) {
       for (let offset = 0; ; offset += PAGE) {
+        if (Date.now() >= deadline) {
+          partial = true;
+          break scanLoop;
+        }
         const page = await client.get<EtsyListResponse<{ listing_id: number; state?: string; title?: string; description?: string }>>(
           etsyPaths.shopListings(shopId),
           { limit: PAGE, offset, state: st },
@@ -253,13 +328,26 @@ export async function GET(request: Request) {
           scanned++;
           const state = l.state ?? st;
           byState[state] = (byState[state] ?? 0) + 1;
-          const before = decodeHtmlEntities(l.description ?? "");
+          let title = decodeHtmlEntities(l.title ?? "");
+          let before = decodeHtmlEntities(l.description ?? "");
+          if (lang) {
+            if (Date.now() >= deadline) {
+              partial = true;
+              break scanLoop;
+            }
+            const tr = await getListingTranslation(client, l.listing_id, lang);
+            if (!tr) continue;
+            translations++;
+            title = decodeHtmlEntities(tr.title ?? title);
+            before = decodeHtmlEntities(tr.description ?? "");
+          }
           const p = plan(before);
           if (!p.changed) continue;
           hits.push({
             listing: l.listing_id,
             state,
-            title: decodeHtmlEntities(l.title ?? "").slice(0, 90),
+            ...(lang ? { lang } : {}),
+            title: title.slice(0, 90),
             tooLarge: p.tooLarge,
             removed: p.removed,
             edits: p.edits,
@@ -282,6 +370,8 @@ export async function GET(request: Request) {
       ok: true,
       scan: true,
       org: orgName,
+      ...(lang ? { lang, translations } : {}),
+      partial,
       scanned,
       byState,
       hits: hits.length,
@@ -314,7 +404,62 @@ export async function GET(request: Request) {
       results.push({ product: id, status: "panelde-yok" });
       continue;
     }
+    if (Date.now() >= deadline) {
+      results.push({ product: id, sku: p.sku, status: "deferred" });
+      continue;
+    }
     try {
+      if (lang) {
+        // Listing translation: Etsy holds it, the panel keeps no live copy of it.
+        if (!p.etsy_listing_id || !client) {
+          results.push({ product: id, sku: p.sku, status: "etsy-listing-yok" });
+          continue;
+        }
+        const listingId = p.etsy_listing_id;
+        const tr = await getListingTranslation(client, listingId, lang);
+        const base: Row = { product: id, sku: p.sku, listing: listingId, lang };
+        if (!tr) {
+          results.push({ ...base, status: "no-translation" });
+          continue;
+        }
+        const before = decodeHtmlEntities(tr.description ?? "");
+        const r = plan(before);
+        if (!r.changed) {
+          results.push({ ...base, status: "clean" });
+          continue;
+        }
+        const change: Row = { removed: r.removed, edits: r.edits, from: before.length, to: r.text.length, ...(detail ? { before, after: r.text } : {}) };
+        if (r.tooLarge) {
+          results.push({ ...base, ...change, status: "refused-large-cut" });
+          continue;
+        }
+        if (!apply) {
+          results.push({ ...base, ...change, status: "would-strip" });
+          continue;
+        }
+        await putListingTranslation(client, listingId, lang, {
+          title: decodeHtmlEntities(tr.title ?? ""),
+          description: r.text,
+          tags: (tr.tags ?? []).map((t) => decodeHtmlEntities(t)),
+        });
+        const after = await getListingTranslation(client, listingId, lang);
+        const verified = normText(decodeHtmlEntities(after?.description ?? "")) === normText(r.text);
+        await logAudit(admin, {
+          orgId,
+          action: "etsy.desc_strip",
+          entityType: "product",
+          entityId: id,
+          summary:
+            `${lang} çeviri açıklamasından kamuya açık olmaması gereken metin kaldırıldı (ops desc-strip): listing ${listingId}, ` +
+            `${r.removed.length} görselleştirme cümlesi, ${r.edits.length} iç not düzenlemesi, ` +
+            `${before.length} -> ${r.text.length} kr; read-back ${verified ? "doğrulandı" : "BAŞARISIZ"}.`,
+          diff: { listingId, lang, before, after: r.text, removed: r.removed, edits: r.edits, verified },
+          source: "ops/desc-strip",
+        });
+        results.push({ ...base, ...change, status: verified ? "stripped" : "verify-failed" });
+        continue;
+      }
+
       if (!p.etsy_listing_id || !client) {
         const before = p.description ?? "";
         const r = plan(before);
@@ -328,6 +473,7 @@ export async function GET(request: Request) {
           continue;
         }
         if (apply) {
+          // The products audit trigger keeps the old panel text.
           await admin.from("products").update({ description: r.text }).eq("id", id).eq("org_id", orgId);
         }
         results.push({ ...base, status: apply ? "stripped" : "would-strip" });
@@ -373,6 +519,9 @@ export async function GET(request: Request) {
           `Açıklamadan kamuya açık olmaması gereken metin kaldırıldı (ops desc-strip): listing ${listingId}, ` +
           `${r.removed.length} görselleştirme cümlesi, ${r.edits.length} iç not düzenlemesi, ` +
           `${before.length} -> ${r.text.length} kr; read-back ${verified ? "doğrulandı" : "BAŞARISIZ"}.`,
+        // The live text before the write: the panel copy can be stale, so this is the way back.
+        diff: { listingId, before, after: r.text, removed: r.removed, edits: r.edits, verified },
+        source: "ops/desc-strip",
       });
       results.push({ ...base, ...change, status: verified ? "stripped" : "verify-failed" });
     } catch (e) {
@@ -385,11 +534,13 @@ export async function GET(request: Request) {
     ok: true,
     apply,
     org: orgName,
+    ...(lang ? { lang } : {}),
     targets: productIds.length,
     wouldStrip: count("would-strip"),
     stripped: count("stripped"),
     clean: count("clean"),
     refused: count("refused-large-cut"),
+    deferred: count("deferred"),
     failed: count("verify-failed") + count("error") + count("panelde-yok"),
     results,
   });

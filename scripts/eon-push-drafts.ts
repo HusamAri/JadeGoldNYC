@@ -32,6 +32,7 @@ import { createClient } from "@supabase/supabase-js";
 import { EtsyClient } from "../lib/etsy/client";
 import { etsyPaths } from "../lib/etsy/endpoints";
 import { DEFAULT_PERSONALIZATION_QUESTIONS } from "../lib/etsy/personalization";
+import { stripPublicDescription } from "../lib/etsy/strip-internal";
 
 // ── .env.local (Next dışı bağlam) ─────────────────────────────────────────
 for (const line of readFileSync(".env.local", "utf8").split("\n")) {
@@ -200,7 +201,8 @@ async function main() {
     const variants = (vars ?? []) as VariantRow[];
     if (!variants.length) { console.warn(`✗ ${g.no}: varyant yok — kapı bunu yakalamalıydı`); continue; }
 
-    const cleanDesc = stripInternalTrailer(prod.description as string);
+    // Trailer, internal notes and image-provenance lines out (owner 2026-10-31, never public).
+    const cleanDesc = stripPublicDescription(stripInternalTrailer(prod.description as string)).text;
     const anchor = Math.min(...variants.map((v) => v.price_cents ?? Infinity)) / 100;
 
     if (DRY) {

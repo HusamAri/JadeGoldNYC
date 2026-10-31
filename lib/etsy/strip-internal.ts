@@ -11,11 +11,15 @@
  * a "WEIGHT AND PRICE NOTE" section with the cost structure and CAD approval (EON),
  * "will be confirmed before this design is offered for sale" sentences in English and
  * Spanish (EON Christmas), "Proposed solid 14K ..." bullets, a "[Insert sizes – ...]"
- * template placeholder, and "design target" / "ring concept" / "intended metal" wording.
+ * template placeholder, "design target" / "ring concept" / "intended metal" wording, and
+ * maker instructions in the 2027 enamel copy ("hanging balance must be sampled").
  *
  * Edits, in this order, each recorded in `edits`:
  *  1. internal section: a heading such as "IMPORTANT PRODUCTION NOTE" goes together with
- *     its paragraph (lines up to the next blank line or heading);
+ *     the lines under it that carry an internal or image-provenance signal; the first
+ *     clean line ends the section, so buyer copy written right under it stays. A heading
+ *     whose lines carry no signal is not a section ("PRICE NOTE / Price is for one
+ *     earring" stays);
  *  2. phrase: a rewrite that keeps the buyer fact and drops the internal qualifier
  *     ("Design target thickness: approximately 1.5 mm" -> "Thickness: approximately 1.5 mm");
  *  3. sentence / clause: a sentence that states an internal status is dropped; when its
@@ -23,26 +27,32 @@
  *     ("The listing is for one ring, made to order; final production details are
  *     confirmed before the design is offered for sale." -> "The listing is for one ring,
  *     made to order.");
- *  4. a heading whose whole section was removed goes too ("PERSONALIZATION" when its only
+ *  4. a heading whose paragraph was removed goes too ("PERSONALIZATION" when its only
  *     sentence was the internal one).
  * A line without any internal signal is returned byte for byte, and a description without
  * any signal comes back unchanged.
  *
- * Image-provenance sentences ("the images are design visualizations ...") are handled by
- * `stripVisualizationDisclosure`; `stripPublicDescription` runs both.
+ * Every pattern names the internal fact itself, in the wording the live text and the repo
+ * generators actually used. Ordinary buyer copy that shares a word ("Ring size must be
+ * checked before ordering", "we send you a design proposal", "your provided
+ * specifications") is not matched.
+ *
+ * `stripPublicDescription` also removes the image-provenance disclosure
+ * (`stripVisualizationLine`, "the images are design visualizations ...") in the same pass,
+ * so a heading left empty by either rule goes.
  */
 
-import { stripVisualizationDisclosure } from "./strip-visualization";
+import { stripVisualizationLine, VISUALIZATION_RE } from "./strip-visualization";
 
 export type InternalEdit = { kind: "section" | "phrase" | "sentence" | "heading"; from: string; to: string };
 
-// A clause that states an internal status. Narrow on purpose: every pattern names the
-// internal fact itself (approval, readback, pre-production, "before ... for sale"), not a
-// word that also appears in ordinary buyer copy.
+// A clause that states an internal status.
 export const INTERNAL_RE = new RegExp(
   [
-    String.raw`not (?:yet )?ready for sale`,
-    String.raw`\b(?:design|panel) proposal\b`,
+    String.raw`not (?:yet )?(?:ready|available) for sale`,
+    String.raw`^\s*DESIGN PROPOSAL\b`,
+    String.raw`\b(?:this|the) design proposal\b`,
+    String.raw`\bpanel proposal\b`,
     String.raw`\bprovisional\b`,
     String.raw`\bowner[- ]approv`,
     String.raw`\bowner approval\b`,
@@ -53,52 +63,73 @@ export const INTERNAL_RE = new RegExp(
     String.raw`\bread-?back\b`,
     String.raw`\bsupplier (?:confirmation|cost|quote|readback|approval)\b`,
     String.raw`\bsupplied product image\b`,
-    String.raw`\bfrom the supplier\b`,
+    String.raw`\b(?:confirmed|verified) from the supplier\b`,
     String.raw`\bEtsy (?:publication|price action)\b`,
     String.raw`\b(?:published|sent) to Etsy\b`,
     String.raw`\bbefore Etsy\b`,
     String.raw`\b(?:approved|ready) for Etsy\b`,
     String.raw`\bpre-?production\b`,
-    String.raw`\bfinal CAD\b`,
+    // "Final CAD and cast-weight approval" is internal; "we send the final CAD for your approval" is not.
+    String.raw`\bfinal CAD\b(?! (?:for|to) you)`,
     String.raw`\bcast-weight\b`,
     String.raw`\b(?:design|development) targets?\b`,
     String.raw`\bphysical sample\b`,
-    String.raw`\bmaker (?:approval|confirms|confirmation|qualification)\b`,
+    String.raw`\bmaker (?:approval|confirmation|qualification)\b`,
+    String.raw`\bgoldsmith qualification\b`,
     String.raw`\buntil the maker\b`,
     String.raw`\bclaim is made\b`,
     String.raw`\binternal reference\b`,
+    String.raw`^\s*internal notes?\s*:`,
     String.raw`\bfrom the approved\b`,
-    String.raw`\bthe approved (?:reference|design)\b`,
+    String.raw`\bthe approved reference\b`,
     String.raw`\bunverified\b`,
     String.raw`\bpersonali[sz]ation is planned\b`,
     String.raw`\bsample required\b`,
+    String.raw`\bmust be sampled\b`,
+    String.raw`\bverify the actual\b`,
+    String.raw`\bFire the (?:motif|enamel) before\b`,
     String.raw`\bphysical verification\b`,
     String.raw`\bmust be confirmed in writing\b`,
     String.raw`\boriginal reference length\b`,
-    String.raw`\bprovided specifications\b`,
-    String.raw`\bnot (?:listed|specified|provided) in the listing(?: details| information)?\b`,
+    String.raw`\bamong the provided specifications\b`,
+    // "- Stamp details are not specified in the listing information." (generator residue);
+    // "if your size is not listed in the listing, message us" is not matched.
+    String.raw`\bnot (?:specified|provided) in the listing(?: details| information)?[.!?]?\s*$`,
     String.raw`\bare not provided here\b`,
     String.raw`\bnot established by (?:the |these )?images\b`,
     String.raw`\bcasting waste\b`,
     String.raw`\bUSD \d+ production cost\b`,
+    String.raw`\bmust be checked before (?:engraving|this|it) can be (?:promised|offered)\b`,
+    // Spanish.
     String.raw`antes de poner (?:este|el) diseño a la venta`,
-    String.raw`no (?:está|están) (?:list[oa]s?|disponibles?) para la venta`,
+    String.raw`no (?:(?:está|están) )?(?:list[oa]s?|disponibles?) para la venta`,
+    String.raw`\bpropuesta de diseño\b`,
+    String.raw`\bobjetivos? de (?:diseño|desarrollo)\b`,
+    String.raw`\b(?:previas? a la producción|preproducción)\b`,
+    String.raw`\baprobación del (?:propietario|fabricante)\b`,
+    String.raw`\baprobad[oa]s? por el propietario\b`,
+    String.raw`\bpersonalización (?:está )?prevista\b`,
+    String.raw`\bse confirmar[áa]n? antes de (?:la )?venta\b`,
+    String.raw`\bantes de (?:la )?publicación en Etsy\b`,
+    String.raw`\bno se hace ninguna afirmación\b`,
     String.raw`\bverificación física\b`,
     String.raw`\bno establecen las medidas\b`,
-    String.raw`\bmust be checked before\b`,
     String.raw`\basistidas? por IA\b`,
-    String.raw`\bmuestra (?:física|fotografiada)\b`,
+    String.raw`\bgenerad[oa]s? por IA\b`,
+    String.raw`\bmuestra física\b`,
+    String.raw`\bmuestra fotografiada es la referencia\b`,
     String.raw`\bsin recolorear\b`,
-    String.raw`\bes necesario comprobar\b`,
+    String.raw`\bes necesario comprobar el espacio disponible\b`,
   ].join("|"),
   "i",
 );
 
-// Sections that are internal from heading to the end of the paragraph.
+// Headings of internal sections. A matched heading removes only the lines under it that
+// carry a signal (see pass 1), so a buyer section that happens to share the name stays.
 const INTERNAL_SECTION_RE =
-  /^(?:DESIGN PROPOSAL\b.*|(?:IMPORTANT )?PRODUCTION NOTES?|WEIGHT AND PRICE NOTES?|PRICE NOTES?|INTERNAL NOTES?|INTERNAL|(?:SIZE AND )?SPECIFICATION STATUS)\s*:?\s*$/i;
+  /^(?:DESIGN PROPOSAL\b.*|PROPUESTA DE DISEÑO\b.*|(?:IMPORTANT )?PRODUCTION NOTES?|WEIGHT AND PRICE NOTES?|PRICE NOTES?|INTERNAL NOTES?|INTERNAL|(?:SIZE AND )?SPECIFICATION STATUS)\s*:?\s*$/i;
 
-// An all-caps section heading such as "DETAILS" or "PERSONALIZATION".
+// An all-caps line such as "DETAILS" or "PERSONALIZATION".
 function isHeading(line: string): boolean {
   const t = line.trim();
   return t.length >= 3 && t.length <= 70 && /\p{Lu}/u.test(t) && !/\p{Ll}/u.test(t);
@@ -106,10 +137,17 @@ function isHeading(line: string): boolean {
 
 const BULLET_RE = /^\s*(?:[-•✔*·]|\d+[.)])\s+/;
 
+// A section heading proper: not an all-caps bullet ("• US 7") or label ("SIZE: US 7").
+function isSectionHeading(line: string): boolean {
+  return isHeading(line) && !BULLET_RE.test(line) && !/:\s*\S/.test(line.trim());
+}
+
 // Phrase rewrites that keep the buyer fact. Applied only on a line that carries an
 // internal signal (PHRASE_SIGNAL_RE), so every other line stays byte for byte.
 const PHRASE_SIGNAL_RE =
-  /design target|proposed|provisional listing|quoted (?:bracelet|necklace|chain|anklet) length|model preview|vista previa|created for this metal colou?r|final stone specification|design dimensions|para fundición|unless explicitly stated|in this draft|este borrador no ofrece|\bC\d{5}\b|\}\s*$|CAD final|supplier confirmation|intended metal|metal previsto|ring concept|concepto de anillo|design image|\[insert|final CAD|pre-?production estimate|until the maker confirms|^\s*PROPOSED DESIGN\s*$|^\s*MATERIAL DIRECTION\s*$/im;
+  /design target|proposed|provisional listing|quoted (?:bracelet|necklace|chain|anklet) length|model preview|vista previa|created for this metal colou?r|final stone specification|design dimensions|para fundición|No personali[sz]ation unless explicitly stated\s*$|in this draft|este borrador no ofrece|\bC\d{5}\b|\}\s*$|CAD final|supplier confirmation|intended metal|metal previsto|(?:ring|necklace|pendant|bracelet|anklet|band) concept|concepto de anillo|objetivo de diseño|as (?:seen|shown) in the design image|\[insert|final CAD|pre-?production estimate|until the maker confirms|^\s*PROPOSED DESIGN\s*$|^\s*MATERIAL DIRECTION\s*$/im;
+
+const cap = (w: string) => w[0].toUpperCase() + w.slice(1);
 
 type Rewrite = [RegExp, string | ((...m: string[]) => string)];
 const PHRASE_REWRITES: Rewrite[] = [
@@ -117,28 +155,35 @@ const PHRASE_REWRITES: Rewrite[] = [
   [/^(\s*)PROPOSED DESIGN(\s*)$/, "$1DESIGN$2"],
   [/^(\s*)MATERIAL DIRECTION(\s*)$/, "$1MATERIAL$2"],
   // "Design target thickness: approximately 1.5 mm" -> "Thickness: approximately 1.5 mm"
-  [/\bDesign target thickness\b/g, "Thickness"],
-  [/\bdesign target thickness\b/g, "thickness"],
+  [/\b([Dd])esign target (thickness|width|weight|length|diameter|height)\b/g, (_m, d, w) => (d === "D" ? cap(w) : w)],
   // "• Proposed solid 14K ..." -> "• Solid 14K ..."; "• Proposed in solid ..." -> "• Solid ..."
   [/^(\s*(?:[-•✔*·]|\d+[.)])\s+)Proposed (?:in )?(?=solid\b|\d{1,2}K\b)/i, (_m, b) => b + "\u0000"],
   // "Proposed in solid 14K yellow gold with ..., it balances ..." -> "In solid 14K ..."
   [/(^|[.!?]\s+)Proposed in (?=solid\b|\d{1,2}K\b)/g, "$1In "],
   // "with a proposed 3 to 5 business day handling window" -> "with a 3 to 5 business day ..."
-  [/\b(a|an|the) proposed (?=\d|solid\b)/gi, "$1 "],
-  // ", exact diameter and closure pending supplier confirmation" / ", supplier confirmation pending"
-  [/,\s*(?:[^,;.]*?\s)?(?:pending supplier confirmation|supplier confirmation pending)\b/gi, ""],
-  [/\bIntended metal:/g, "Metal:"],
-  [/\b([Tt])he intended metal is\b/g, "$1he metal is"],
+  [/\b(a|an|the) proposed (?=\d|solid\b|clear opening\b)/gi, "$1 "],
+  // "with proposed clear opening 3.0 x 2.0 mm", "Nominal 17 cm, proposed 15.5–18 cm adjustment",
+  // "Proposed 0.8 mm x 10 mm posts" (2027 enamel copy) lose "proposed".
+  [/\b[Pp]roposed (?=\d|clear opening\b)/g, ""],
+  // ", exact diameter and closure pending supplier confirmation" / ", supplier confirmation pending";
+  // a decimal ("1.5 mm") may sit inside the clause.
+  [/,\s*(?:(?:[^,;.]|\d\.\d)*?\s)?(?:pending supplier confirmation|supplier confirmation pending)\b/gi, ""],
+  [/\bIntended metal(s?):/g, "Metal$1:"],
+  [/\b([Tt])he intended metal(s?) (is|are)\b/g, "$1he metal$2 $3"],
   [/\bMetal previsto:/g, "Metal:"],
-  [/\bring concept\b/g, "ring"],
+  // "An individual, minimalist ring concept with ..." -> "An individual, minimalist ring with ..."
+  [/\b(ring|earring|necklace|pendant|bracelet|anklet|band) concept\b/g, "$1"],
   [/\bUn concepto de anillo\b/g, "Un anillo"],
   [/\bun concepto de anillo\b/g, "un anillo"],
-  [/\bdesign image(s?)\b/g, "listing image$1"],
+  [/\b([Gg])rosor objetivo de diseño\b/g, "$1rosor"],
+  // "..., as seen in the design image." -> "..., as seen in the listing image."
+  [/\b(as (?:seen|shown) in the) design image(s?)\b/gi, "$1 listing image$2"],
   // "[Insert sizes – 7", 7.5", 8", 8.5"" -> "7", 7.5", 8", 8.5""
   [/\[Insert [^\]–—-]*[–—-]\s*([^\]]*)\]?/gi, "$1"],
   // "... may vary by about 10% after final CAD, casting, and finishing." -> "... after casting and finishing."
-  [/\bafter final CAD,? casting,? and finishing\b/gi, "after casting and finishing"],
+  [/\bafter final CAD(?:,| and)? casting(,? and finishing)?\b/gi, (_m, f) => "after casting" + (f ? " and finishing" : "")],
   [/\bis a pre-?production estimate\b/g, "is an estimate"],
+  [/\bare pre-?production estimates\b/g, "are estimates"],
   // "avoid abrasive cleaners and ultrasonic cleaning until the maker confirms the care method"
   // keeps the care advice and drops the pending confirmation.
   [/\s+until the maker confirms[^.;]*/g, ""],
@@ -157,7 +202,9 @@ const PHRASE_REWRITES: Rewrite[] = [
   [/\b([Aa]pproximate) design dimensions\b/g, "$1 dimensions"],
   // Spanish "motivo integrado para fundición" (prepared for casting) -> "motivo fundido integrado"
   [/\bmotivo integrado para fundición\b/g, "motivo fundido integrado"],
-  [/\s+unless explicitly stated\b/g, ""],
+  // "• No personalization unless explicitly stated" (template hedge) -> "• No personalization".
+  // Only that bullet: "All stones are natural unless explicitly stated otherwise" is buyer copy.
+  [/^(\s*(?:[-•✔*·]|\d+[.)])\s+No personali[sz]ation) unless explicitly stated\s*$/i, "$1"],
   // "Inside engraving is not offered in this draft." -> "Inside engraving is not offered."
   [/\s+in this draft\b/g, ""],
   [/\bEste borrador no ofrece\b/g, "No se ofrece"],
@@ -169,9 +216,10 @@ const PHRASE_REWRITES: Rewrite[] = [
   [/\bdespués del CAD final, la fundición y el acabado\b/g, "después de la fundición y el acabado"],
 ];
 
+// Raise the first letter only when the text starts with one ("props are not included" ->
+// "Props are not included"); "3 to 5 business day handling" and "6 mm wide" stay.
 function capitalizeFirst(s: string): string {
-  const i = s.search(/\p{L}/u);
-  return i < 0 ? s : s.slice(0, i) + s[i].toUpperCase() + s.slice(i + 1);
+  return s.replace(/^(\s*)(\p{Ll})/u, (_m, a: string, c: string) => a + c.toUpperCase());
 }
 
 function rewritePhrases(line: string): string {
@@ -184,6 +232,10 @@ function rewritePhrases(line: string): string {
   out = out.replace(/\u0000(\p{L})/u, (_m, c: string) => c.toUpperCase()).replace(/\u0000/g, "");
   return out;
 }
+
+// A tail that starts with a pronoun points back into the dropped clause ("..., and they may
+// vary by 10%"): kept alone it would say nothing about what varies.
+const PRONOUN_LEAD_RE = /^(?:it|its|they|their|them|this|these|those|he|she|ello|ella|ellas|ellos|esto|estos|estas|este|esta)\b/i;
 
 function stripClause(clause: string): string {
   if (!INTERNAL_RE.test(clause)) return clause;
@@ -198,10 +250,14 @@ function stripClause(clause: string): string {
   // are not included": the internal part leads and a clean tail follows; keep the tail.
   // Only an ", and" tail is independent; ", so ..." states a consequence of the internal
   // part ("added after production readback, so the finished weight is confirmed after
-  // production") and goes with it.
+  // production") and goes with it. A tail without its own subject goes too: a pronoun
+  // lead in English, and in Spanish (which drops the pronoun) anything but an article.
   const tail = parts.slice(1);
   if (tail.length > 0 && tail.every((p) => !INTERNAL_RE.test(p) && /^(?:and|y)\s/.test(p))) {
-    return tail.join(", ").replace(/^(?:and|y)\s+/, "").trim();
+    const t = tail.join(", ").replace(/^(?:and|y)\s+/, "").trim();
+    if (PRONOUN_LEAD_RE.test(t)) return "";
+    if (/^y\s/.test(tail[0]) && !/^(?:el|la|los|las|un|una|unos|unas)\s/i.test(t)) return "";
+    return t;
   }
   return "";
 }
@@ -240,60 +296,100 @@ function stripLine(line: string, edits: InternalEdit[]): string {
   return rebuilt ? bullet + rebuilt : "";
 }
 
-export function stripInternalNotes(description: string): { text: string; edits: InternalEdit[] } {
-  const edits: InternalEdit[] = [];
-  const lines = description.replace(/\r\n/g, "\n").split("\n");
+type Result = { text: string; removed: string[]; edits: InternalEdit[] };
 
-  // Pass 1: whole internal sections.
+function strip(description: string, withVisualization: boolean): Result {
+  const edits: InternalEdit[] = [];
+  const removed: string[] = [];
+  const lines = description.replace(/\r\n/g, "\n").split("\n");
+  const signal = (l: string) => INTERNAL_RE.test(l) || VISUALIZATION_RE.test(l);
+
+  // Pass 1: internal sections. The heading goes with the lines under it that carry a
+  // signal; the first clean line (or a blank line, or the next heading) ends it.
   const keep: (string | null)[] = [];
   for (let i = 0; i < lines.length; i++) {
     if (isHeading(lines[i]) && INTERNAL_SECTION_RE.test(lines[i].trim())) {
-      const block = [lines[i]];
       let j = i + 1;
-      while (j < lines.length && lines[j].trim() !== "" && !isHeading(lines[j])) {
-        block.push(lines[j]);
-        j++;
+      while (j < lines.length && lines[j].trim() !== "" && !isHeading(lines[j]) && signal(lines[j])) j++;
+      if (j > i + 1 || INTERNAL_RE.test(lines[i])) {
+        edits.push({ kind: "section", from: lines.slice(i, j).join("\n"), to: "" });
+        for (let k = i; k < j; k++) keep.push(null);
+        i = j - 1;
+        continue;
       }
-      edits.push({ kind: "section", from: block.join("\n"), to: "" });
-      for (let k = i; k < j; k++) keep.push(null);
-      i = j - 1;
-      continue;
     }
     keep.push(lines[i]);
   }
 
-  // Pass 2: phrases and sentences, line by line; remember which lines were emptied.
+  // Pass 2: image-provenance sentences, phrases and sentences, line by line; remember
+  // which lines were emptied.
   const out: (string | null)[] = keep.map((line) => {
     if (line === null) return null;
-    const next = stripLine(line, edits);
-    return next === "" && line.trim() !== "" ? null : next;
+    let cur = line;
+    if (withVisualization) {
+      const v = stripVisualizationLine(line);
+      if (v.removed.length > 0) {
+        removed.push(...v.removed);
+        if (v.text === "") return null;
+        cur = v.text;
+      }
+    }
+    const next = stripLine(cur, edits);
+    return next === "" && cur.trim() !== "" ? null : next;
   });
 
-  // Pass 3: a heading whose section had content and lost all of it goes too.
+  // Pass 3: a heading whose paragraph (the lines right under it) had content and lost all
+  // of it goes too, unless the section still has a paragraph of its own: one followed by
+  // another section. A single paragraph that runs to the end of the text is the brand
+  // footer ("Jade Gold NYC, designed in New York City."), not the section's content.
+  // A heading with a blank line under it (a separator such as "──── ESPAÑOL ────") stays.
   for (let i = 0; i < out.length; i++) {
     const line = out[i];
-    if (line === null || !isHeading(line)) continue;
+    if (line === null || !isSectionHeading(line)) continue;
+    let j = i + 1;
     let had = false;
     let has = false;
-    for (let j = i + 1; j < lines.length; j++) {
-      if (isHeading(lines[j])) break;
-      if (lines[j].trim() !== "") had = true;
+    for (; j < lines.length && lines[j].trim() !== "" && !isSectionHeading(lines[j]); j++) {
+      had = true;
       if (out[j] !== null && (out[j] as string).trim() !== "") has = true;
     }
-    if (had && !has) {
+    if (!had || has) continue;
+    const rest: string[] = [];
+    let toEnd = true;
+    for (let k = j; k < lines.length; k++) {
+      if (isSectionHeading(lines[k])) {
+        toEnd = false;
+        break;
+      }
+      if (out[k] !== null) rest.push(out[k] as string);
+    }
+    const paragraphs = rest.join("\n").split(/\n\s*\n/).filter((p) => p.trim() !== "").length;
+    if (paragraphs === 0 || (paragraphs === 1 && toEnd)) {
       edits.push({ kind: "heading", from: line, to: "" });
       out[i] = null;
     }
   }
 
-  if (edits.length === 0) return { text: description, edits };
+  if (edits.length === 0 && removed.length === 0) return { text: description, removed, edits };
   const text = out
     .filter((l): l is string => l !== null)
     .join("\n")
+    .replace(/^[ \t]+$/gm, "")
     .replace(/\n{3,}/g, "\n\n")
     .replace(/^\n+/, "")
     .replace(/\n+$/, "");
-  return { text, edits };
+  return { text, removed, edits };
+}
+
+/** Internal notes only (the image-provenance rule is left out). */
+export function stripInternalNotes(description: string): { text: string; edits: InternalEdit[] } {
+  const r = strip(description, false);
+  return { text: r.text, edits: r.edits };
+}
+
+/** Both public-text rules in one pass: image-provenance disclosure and internal notes. */
+export function stripPublicDescription(description: string): Result {
+  return strip(description, true);
 }
 
 /**
@@ -302,24 +398,31 @@ export function stripInternalNotes(description: string): { text: string; edits: 
  * "<Name>: <frame>. AI design visualization, 2048 square upscale. [marker]" and
  * "<Name>: AI home studio design visualization. [marker]". The visualization note goes;
  * a trailing "[...]" marker stays, because the gallery tools find their images by it.
- * When only a "Name:" label would be left, the listing title is used.
+ * When only a "Name:" label would be left, the listing title is used. An alt text the
+ * rules do not change comes back exactly as it was.
  */
 export function cleanAltText(alt: string, fallback: string): string {
   const m = /\s*(\[[^\]]*\])\s*$/.exec(alt);
   const marker = m ? m[1] : "";
-  let body = (m ? alt.slice(0, m.index) : alt)
+  const orig = m ? alt.slice(0, m.index) : alt;
+  const pre = orig
     .replace(/\s*\bAI design visuali[sz]ation, 2048 square upscale\.?/gi, "")
     .replace(/\bAI home studio design visuali[sz]ation\b/gi, "home studio view");
-  body = stripPublicDescription(body).text.replace(/\s+/g, " ").trim();
+  const r = stripPublicDescription(pre);
+  if (pre === orig && r.removed.length === 0 && r.edits.length === 0) return alt;
+  let body = r.text.replace(/\s+/g, " ").trim();
   if (!/\p{L}{3,}/u.test(body.replace(/^[^:]{0,90}:\s*$/u, ""))) body = fallback.replace(/\s+/g, " ").trim();
   return [body, marker].filter(Boolean).join(" ").slice(0, 500);
 }
 
-/** The first fragment the public-text rules would remove, or null when the text is clean. */
+/**
+ * The first fragment the public-text rules would remove, or null when the text is clean.
+ * Decided by what the rules removed or rewrote, never by whitespace alone.
+ */
 export function publicTextProblem(text: string): string | null {
   const r = stripPublicDescription(text);
-  if (r.text === text) return null;
-  return r.removed[0] ?? r.edits[0]?.from ?? "değişiklik";
+  if (r.removed.length === 0 && r.edits.length === 0) return null;
+  return r.removed[0] ?? r.edits[0].from;
 }
 
 /**
@@ -335,15 +438,4 @@ export function assertPublicText(text: string, what: string): void {
         "önce ops/desc-strip ile temizleyin.",
     );
   }
-}
-
-/** Both public-text rules: image-provenance disclosure, then internal notes. */
-export function stripPublicDescription(description: string): {
-  text: string;
-  removed: string[];
-  edits: InternalEdit[];
-} {
-  const v = stripVisualizationDisclosure(description);
-  const i = stripInternalNotes(v.text);
-  return { text: i.text, removed: v.removed, edits: i.edits };
 }

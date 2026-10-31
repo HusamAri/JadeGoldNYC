@@ -102,6 +102,33 @@ const LINES: [string, string][] = [
   ["Internal reference: BAS-27-MINE-R01-14Y", ""],
   ["Protect the enamel from hard impacts and bending. Wipe gently with a soft cloth; avoid abrasive cleaners and ultrasonic cleaning until the maker confirms the care method.",
    "Protect the enamel from hard impacts and bending. Wipe gently with a soft cloth; avoid abrasive cleaners and ultrasonic cleaning."],
+  // 2027 enamel catalog: maker instructions go, the measurement stays.
+  ["A plain integrated top bail has a proposed clear opening 3.0 x 2.0 mm; verify the actual chain end can pass.",
+   "A plain integrated top bail has a clear opening 3.0 x 2.0 mm."],
+  ["Integrated bail above the center of mass, with proposed clear opening 3.0 x 2.0 mm; hanging balance must be sampled.",
+   "Integrated bail above the center of mass, with clear opening 3.0 x 2.0 mm."],
+  ["Nominal 17 cm, proposed 15.5–18 cm adjustment with a short extender and lobster clasp.",
+   "Nominal 17 cm, 15.5–18 cm adjustment with a short extender and lobster clasp."],
+  ["Proposed 0.8 mm x 10 mm posts and friction butterfly backs; backed faces about 1–1.2 mm.",
+   "0.8 mm x 10 mm posts and friction butterfly backs; backed faces about 1–1.2 mm."],
+  ["Fire the motif before final chain and clasp assembly.", ""],
+  ["Post joint and firing sequence require goldsmith qualification.", ""],
+  // Review 2026-10-31: the buyer fact survives other wordings of the same note.
+  ["• Sold as one pair, 1.5 mm hoop pending supplier confirmation", "• Sold as one pair"],
+  ["- 3 to 5 business day handling; final details will be confirmed before the design is offered for sale.", "- 3 to 5 business day handling."],
+  ["• 6 mm wide; supplier cost pending.", "• 6 mm wide."],
+  ["- Weights are pre-production estimates, and they may vary by approximately 10% after casting and finishing.",
+   "- Weights are estimates, and they may vary by approximately 10% after casting and finishing."],
+  // A tail whose subject was in the dropped clause goes with it.
+  ["Final weight is confirmed after production readback, and it ships in 3 days.", ""],
+  ["• Design target width: approximately 2.1 mm", "• Width: approximately 2.1 mm"],
+  ["Weight figures are pre-production estimates and may vary by approximately 10% after final CAD and casting.",
+   "Weight figures are estimates and may vary by approximately 10% after casting."],
+  ["• Intended metals: Yellow and white gold", "• Metals: Yellow and white gold"],
+  ["An individual, minimalist earring concept with a hinged hoop.", "An individual, minimalist earring with a hinged hoop."],
+  ["Las especificaciones finales se confirmarán antes de la venta.", ""],
+  ["• Grosor objetivo de diseño: aproximadamente 1,5 mm", "• Grosor: aproximadamente 1,5 mm"],
+  ["La personalización está prevista, pero el formato debe ser aprobado por el propietario antes de la publicación en Etsy.", ""],
 ];
 
 // Ordinary buyer copy from the same listings: must come back byte for byte.
@@ -118,19 +145,40 @@ const KEEP: string[] = [
   "──────── ESPAÑOL ────────",
   "Order before the sale ends and save.",
   "Colors and appearance may vary slightly depending on lighting, photography, and individual screen settings.",
+  // Review 2026-10-31: buyer sentences that share a word with an internal note.
+  "Ring size must be checked before ordering; wide bands fit tighter.",
+  "Es necesario comprobar la talla antes de realizar el pedido.",
+  "After purchase we send the final CAD for your approval before casting.",
+  "Once the approved design is confirmed, your ring is handmade in 2 to 3 weeks.",
+  "Custom engraving is made exactly to your provided specifications.",
+  "If your ring size is not listed in the listing, message us for a custom order.",
+  "We send you a design proposal within 48 hours of your order.",
+  "Our maker confirms every stone setting under magnification.",
+  "Lab grown diamonds are sourced from the supplier with an IGI certificate.",
+  "La muestra fotografiada es de oro amarillo de 14K.",
+  "All stones are natural unless explicitly stated otherwise.",
+  "Send us your design image after checkout and we will engrave it.",
+  "Use the size chart to visualize the band width on your finger.",
+  "Engraved initials such as AI, JM or LK are available.",
+  "Each engraving is a crisp rendering of your own handwriting.",
+  "PRICE NOTE\nPrice is for one earring, not a pair. Buy two for a pair.",
+  "PRODUCTION NOTES\nEach piece is cast in recycled gold and hand-finished; allow 2 to 3 weeks.",
 ];
 
 test("each real internal line is cut to its buyer fact", () => {
   for (const [input, expected] of LINES) {
     assert.equal(stripInternalNotes(input).text, expected, input);
+    assert.equal(stripPublicDescription(input).text, expected, input);
   }
 });
 
-test("ordinary buyer copy is untouched, byte for byte", () => {
+test("ordinary buyer copy is untouched, byte for byte, and passes the guard", () => {
   for (const line of KEEP) {
-    const r = stripInternalNotes(line);
-    assert.equal(r.text, line);
-    assert.equal(r.edits.length, 0, line);
+    for (const r of [stripInternalNotes(line), stripPublicDescription(line)]) {
+      assert.equal(r.text, line);
+      assert.equal(r.edits.length, 0, line);
+    }
+    assert.equal(publicTextProblem(line), null, line);
   }
 });
 
@@ -252,6 +300,70 @@ test("image alt text loses the visualization note and keeps the gallery marker",
   // Ordinary alt text is untouched.
   const plain = "Lintel Ring, sales photo 3 of 10. [ss27-anklets/A24/03 0a1b2c3d4e5f]";
   assert.equal(cleanAltText(plain, t), plain);
+});
+
+test("whitespace alone is never a problem: clean text with CRLF, a trailing newline or a blank run passes as it is", () => {
+  for (const d of ["A solid 14K band.\nMade to order.\n", "A solid 14K band.\r\nMade to order.", "A band.\n\n\nCARE\nWipe."]) {
+    assert.equal(publicTextProblem(d), null, JSON.stringify(d));
+    assert.equal(stripPublicDescription(d).text, d);
+    assert.doesNotThrow(() => assertPublicText(d, "Açıklama"));
+  }
+});
+
+test("a section ends at the first clean line, so buyer copy written right under it stays", () => {
+  assert.equal(
+    stripPublicDescription(
+      "DETAILS\n• Solid 14K\n\nIMPORTANT PRODUCTION NOTE\nExact finished weight and supplier cost are pending production readback.\nJade Gold NYC, designed in New York City.",
+    ).text,
+    "DETAILS\n• Solid 14K\n\nJade Gold NYC, designed in New York City.",
+  );
+  assert.equal(
+    stripPublicDescription("WEIGHT AND PRICE NOTE\nWeights are pre-production estimates.\nThis bracelet ships in a gift box.\nFast shipping from the USA.").text,
+    "This bracelet ships in a gift box.\nFast shipping from the USA.",
+  );
+});
+
+test("an emptied heading goes when only the footer follows, and when the image rule emptied it", () => {
+  assert.equal(
+    stripPublicDescription(
+      "VARIATIONS\nChoose 14K or 18K gold.\n\nPERSONALIZATION\nPersonalization is planned, but the submission format and production readback must be owner-approved before Etsy publication.\n\nJade Gold NYC, designed in New York City.",
+    ).text,
+    "VARIATIONS\nChoose 14K or 18K gold.\n\nJade Gold NYC, designed in New York City.",
+  );
+  assert.equal(
+    stripPublicDescription("ABOUT THIS MODEL PREVIEW\nThe images are design visualizations of the finished piece.\n\nCARE\nWipe clean.").text,
+    "CARE\nWipe clean.",
+  );
+  // The section keeps its heading while a paragraph of its own is left before the next section.
+  assert.equal(
+    stripPublicDescription("SIZING\nFinal sizes will be confirmed before this design is offered for sale.\n\nOur rings run true to size.\n\nCARE\nWipe.").text,
+    "SIZING\n\nOur rings run true to size.\n\nCARE\nWipe.",
+  );
+});
+
+test("all-caps spec bullets and labels are not headings", () => {
+  assert.equal(
+    stripPublicDescription("DETAILS\n• 14K GOLD\n• US 7\n• Final ring size will be confirmed before this design is offered for sale.").text,
+    "DETAILS\n• 14K GOLD\n• US 7",
+  );
+  assert.equal(stripPublicDescription("SIZE: US 7\nFinal ring sizes will be confirmed before this design is offered for sale.").text, "SIZE: US 7");
+});
+
+test("lines holding only spaces do not leave a double gap", () => {
+  assert.equal(stripPublicDescription("A band.\n   \nFinal details will be confirmed before sale.\n   \nCARE\nWipe.").text, "A band.\n\nCARE\nWipe.");
+});
+
+test("the owner's example in Spanish goes whole", () => {
+  const es =
+    "PROPUESTA DE DISEÑO — NO LISTA PARA LA VENTA\nLa única imagen es una visualización de diseño generada por IA, no una fotografía de un producto terminado. Las dimensiones son objetivos de desarrollo. El peso del oro, las opciones finales de talla, la durabilidad, el precio y el plazo de producción requieren una muestra física y la aprobación del fabricante. No se hace ninguna afirmación sobre stock, contraste, alergias o rendimiento.\n\nCUIDADO\nLimpiar con un paño suave.";
+  assert.equal(stripPublicDescription(es).text, "CUIDADO\nLimpiar con un paño suave.");
+});
+
+test("alt text the rules do not change comes back exactly as it was", () => {
+  const t = "14K Gold Blue Enamel Ring, Blue Notch";
+  for (const alt of ["Ring  on  hand", "Gold ring\non hand", "14K", "R01", "[AS-01]"]) {
+    assert.equal(cleanAltText(alt, t), alt, JSON.stringify(alt));
+  }
 });
 
 test("the guard refuses internal text and passes clean text", () => {

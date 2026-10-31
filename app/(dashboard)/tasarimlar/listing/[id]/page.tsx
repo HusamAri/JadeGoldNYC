@@ -38,6 +38,7 @@ import { ListingStateButton } from "@/components/listing/listing-state-button";
 import { SkuRenameForm } from "@/components/listing/sku-rename-form";
 import { PersonalizationCard } from "@/components/listing/personalization-card";
 import { EtsyCopyCard, type EtsyCopyField } from "@/components/listing/etsy-copy-card";
+import { publicDraftDescription } from "@/lib/etsy/create-listing";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ListingPanel } from "@/components/listing/listing-panel";
@@ -59,9 +60,9 @@ function decodeEntities(s: string): string {
     .replace(/&amp;/g, "&");
 }
 
-/** Açıklama sonundaki dahili not bloğunu söker — scripts/eon-push-drafts.ts
- *  stripInternalTrailer ile BİREBİR aynı desen (kopyalanan metin = Etsy'ye
- *  giden metin). Künye içeriği ayrıca kurulum notu olarak gösterilir. */
+/** Açıklama sonundaki dahili not bloğunu ayırır; künye içeriği kurulum notu
+ *  olarak gösterilir. Kopyalanan metin `publicDraftDescription` ile kurulur
+ *  (kopyalanan metin = create'in Etsy'ye gönderdiği metin). */
 function splitInternalTrailer(desc: string): {
   clean: string;
   note: string | null;
@@ -362,6 +363,9 @@ export default async function ListingDetayPage({
           const { clean, note } = splitInternalTrailer(
             product.description ?? "",
           );
+          // Same text create sends: the trailer and every internal note / image-provenance
+          // line removed (publicDraftDescription), so a manual copy cannot publish them.
+          const publicDesc = publicDraftDescription(product.description ?? "");
           const fields: EtsyCopyField[] = [
             {
               label: "Başlık",
@@ -379,9 +383,9 @@ export default async function ListingDetayPage({
             },
             {
               label: "Açıklama",
-              value: clean,
+              value: publicDesc,
               multiline: true,
-              hint: note ? "iç not temizlendi" : undefined,
+              hint: note || publicDesc !== clean ? "iç not temizlendi" : undefined,
             },
           ].filter((f) => f.value.length > 0);
           return <EtsyCopyCard fields={fields} setupNote={note} />;

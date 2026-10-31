@@ -11,8 +11,9 @@ import { Button } from "@/components/ui/button";
  *
  * Kullanıcı terminal/API akışı yerine Etsy UI'da elle listing açtığında
  * (Shop Manager → Add a listing) her alanı tek tıkla panoya alır. Açıklama
- * SUNUCUDA temizlenmiş gelir (iç `[EON …]` künyesi sökülmüş — push script'in
- * stripInternalTrailer paritesi); burada yalnız gösterim + kopya vardır.
+ * SUNUCUDA temizlenmiş gelir (`publicDraftDescription`: iç `[EON …]` künyesi,
+ * iç notlar ve görsel kökeni beyanı sökülmüş, create'in gönderdiği metinle aynı);
+ * burada yalnız gösterim + kopya vardır.
  */
 export interface EtsyCopyField {
   label: string;

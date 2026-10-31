@@ -494,11 +494,15 @@ export function listingTextChecks(
   let description: boolean | null = null;
   let descriptionDiff: ListingTextCheck["descriptionDiff"] = null;
   const wantDesc = norm(base.source === "sent" ? base.description : publicDraftDescription(base.description ?? ""));
+  // A draft created before the public-text rule (2026-10-31) was sent without that cut:
+  // on the panel baseline the uncut text is accepted too.
+  const legacyDesc = base.source === "sent" ? wantDesc : norm(stripInternalTrailer(base.description ?? ""));
   // Panel tabanında açıklama boşsa create yalnız sabit satırları göndermiş
   // olabilir; bilinmeyen içeriği kıyaslamak yanlış alarm üretir.
   if (typeof live.description === "string" && (base.source === "sent" || wantDesc.length > 0)) {
     const got = norm(live.description);
-    description = base.source === "sent" ? got === wantDesc : got === wantDesc || got.startsWith(`${wantDesc}\n\n`);
+    const panelMatch = (w: string) => got === w || got.startsWith(`${w}\n\n`);
+    description = base.source === "sent" ? got === wantDesc : panelMatch(wantDesc) || panelMatch(legacyDesc);
     if (!description) {
       let at = 0;
       while (at < wantDesc.length && at < got.length && wantDesc[at] === got[at]) at++;
