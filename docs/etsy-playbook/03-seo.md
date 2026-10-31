@@ -13,6 +13,7 @@ Kaynak: `source/03-*.txt` (M3), `source/04-*.txt` (M4), okuma 2026-10-22. [S#] m
 - Etsy LLM'i attribute'u başlık/açıklama/fotoğraftan çıkarır: metal, ayar, genişlik, beden aralığı düz yazıyla geçsin [M3 S5 2025-10-13].
 - Açıklama: anahtar kelime ilk cümlelerde doğal dille; başlık kopyası ya da kelime listesi yok [M3 S12]. İlk ~160 kr önizleme (3. taraf): ürün, ayar, kişiselleştirme, made to order [M4 S18].
 - Alt text ≤250 kr, fotoğrafta GÖRÜNENİ anlatır; mağaza adı/başlık/tag/SKU SEO katkısı yok [M3 S14].
+- **Kamuya açık metinde iç not YOK** (sahip 2026-10-31, her mağaza): açıklama, çeviri ve alt text taslak/öneri durumu ("DESIGN PROPOSAL — NOT READY FOR SALE", "concept", "proposed", "intended metal"), onay/numune/tedarikçi/readback, "before this design is offered for sale", design target / pre-production / final CAD, maliyet yapısı, AI/görselleştirme beyanı, şablon kalıntısı ("[Insert", "}") taşımaz. Kural tek yerde: `lib/etsy/strip-internal.ts` `stripPublicDescription`; temizlik `ops/desc-strip` (`scan=1` canlı tarama, `images=1` alt text); her Etsy yazma yolu `assertPublicText` ile reddeder, yeni taslak `publicDraftDescription` ile temizlenir.
 - Sıralama girdileri: iade politikası (No returns dahil), mağaza ikonu, ABD kargo ücretsiz ya da <$6, 3 aylık puan/yanıt oranı/case oranı, dönüşüm. Girdi DEĞİL: yenileme, Ads, Star Seller, Etsy Plus [M3 S1 2025-08-26].
 - Marketplace Insights haftada 15 arama [M3 S17 2025-09-15]; mağaza başlığı ≤55 kr [M3 S25].
 
