@@ -161,6 +161,9 @@ const KEEP: string[] = [
   "Use the size chart to visualize the band width on your finger.",
   "Engraved initials such as AI, JM or LK are available.",
   "Each engraving is a crisp rendering of your own handwriting.",
+  // EON, live: a buyer claim that the photos are real.
+  "The photos and videos in this listing are our real bands, not renders.",
+  "No AI photos here: the gallery shows the real ring.",
   "PRICE NOTE\nPrice is for one earring, not a pair. Buy two for a pair.",
   "PRODUCTION NOTES\nEach piece is cast in recycled gold and hand-finished; allow 2 to 3 weeks.",
 ];
@@ -363,6 +366,12 @@ test("alt text the rules do not change comes back exactly as it was", () => {
   const t = "14K Gold Blue Enamel Ring, Blue Notch";
   for (const alt of ["Ring  on  hand", "Gold ring\non hand", "14K", "R01", "[AS-01]"]) {
     assert.equal(cleanAltText(alt, t), alt, JSON.stringify(alt));
+  }
+});
+
+test("an image disclosure is still caught in its other wordings", () => {
+  for (const s of ["The images are AI renderings of the ring.", "These photos are renders of the design.", "Gallery images are AI-generated."]) {
+    assert.equal(stripPublicDescription(s).text, "", s);
   }
 });
 

@@ -34,9 +34,10 @@ export const VISUALIZATION_RE = new RegExp(
     String.raw`visualizaci[oó]n(?:es)?\b`,
     String.raw`\bAI-(?:assisted|generated)\b`,
     String.raw`\bgenerad[oa]s? (?:con|por) (?:la )?IA\b`,
-    String.raw`\bAI (?:design|images?|photos?|frames?|visuali[sz]|renders?|home studio|generated)`,
-    String.raw`\b${IMG}\b[^.;]{0,60}\b(?:AI|IA|renderings?|renders?)\b`,
-    String.raw`\b(?:AI|renderings?|3D renders?)\b[^.;]{0,60}\b${IMG}\b`,
+    String.raw`(?<!\bnot )(?<!\bno )\bAI (?:design|images?|photos?|frames?|visuali[sz]|renders?|home studio|generated)`,
+    // "our photos are real bands, not renders" is a buyer claim, not the disclosure.
+    String.raw`\b${IMG}\b[^.;]{0,60}(?<!\bnot )(?<!\bno )\b(?:AI|IA|renderings?|renders?)\b`,
+    String.raw`(?<!\bnot )(?<!\bno )\b(?:AI|renderings?|3D renders?)\b[^.;]{0,60}\b${IMG}\b`,
     String.raw`\brecolou?red\b`,
     String.raw`\bunedited photo shows\b`,
   ].join("|"),
