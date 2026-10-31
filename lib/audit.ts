@@ -34,6 +34,7 @@ export async function logAudit(
   | "etsy.inventory_rebuild"
   | "etsy.rewrite"
   | "etsy.desc_strip"
+  | "etsy.alt_strip"
       | "etsy.seo_push"
       | "etsy.translation_pull"
       | "etsy.redesign_push"

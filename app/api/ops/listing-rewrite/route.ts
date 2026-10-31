@@ -6,6 +6,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { EtsyClient } from "@/lib/etsy/client";
 import { etsyPaths } from "@/lib/etsy/endpoints";
 import { decodeHtmlEntities } from "@/lib/etsy/text";
+import { assertPublicText } from "@/lib/etsy/strip-internal";
 import {
   getListingInventory,
   currentQuantityOf,
@@ -185,6 +186,7 @@ export async function GET(request: Request) {
       if (!apply || fromText === want) {
         return NextResponse.json({ ok: true, apply: false, order, id: entry.id, desconly: summary, same: fromText === want });
       }
+      assertPublicText(n.description, "Rewrite açıklaması");
       const shopId = await client.requireShopId();
       await client.requestForm("PATCH", etsyPaths.shopListing(shopId, listingId), { description: n.description });
       const after = await client.get<LiveListing>(etsyPaths.listing(listingId));
@@ -329,6 +331,7 @@ export async function GET(request: Request) {
     if (L.state !== "active" && L.state !== "draft") throw new Error(`listing '${L.state}', yazılmadı`);
 
     // 1) Metin + kategori + materials + yenileme + kargo: tek PATCH.
+    assertPublicText(n.description, "Rewrite açıklaması");
     const form: Record<string, string | number> = {
       title: n.title,
       description: n.description,

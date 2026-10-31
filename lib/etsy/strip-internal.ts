@@ -71,15 +71,32 @@ export const INTERNAL_RE = new RegExp(
     String.raw`\bthe approved (?:reference|design)\b`,
     String.raw`\bunverified\b`,
     String.raw`\bpersonali[sz]ation is planned\b`,
+    String.raw`\bsample required\b`,
+    String.raw`\bphysical verification\b`,
+    String.raw`\bmust be confirmed in writing\b`,
+    String.raw`\boriginal reference length\b`,
+    String.raw`\bprovided specifications\b`,
+    String.raw`\bnot (?:listed|specified|provided) in the listing(?: details| information)?\b`,
+    String.raw`\bare not provided here\b`,
+    String.raw`\bnot established by (?:the |these )?images\b`,
+    String.raw`\bcasting waste\b`,
+    String.raw`\bUSD \d+ production cost\b`,
     String.raw`antes de poner (?:este|el) diseño a la venta`,
     String.raw`no (?:está|están) (?:list[oa]s?|disponibles?) para la venta`,
+    String.raw`\bverificación física\b`,
+    String.raw`\bno establecen las medidas\b`,
+    String.raw`\bmust be checked before\b`,
+    String.raw`\basistidas? por IA\b`,
+    String.raw`\bmuestra (?:física|fotografiada)\b`,
+    String.raw`\bsin recolorear\b`,
+    String.raw`\bes necesario comprobar\b`,
   ].join("|"),
   "i",
 );
 
 // Sections that are internal from heading to the end of the paragraph.
 const INTERNAL_SECTION_RE =
-  /^(?:DESIGN PROPOSAL\b.*|(?:IMPORTANT )?PRODUCTION NOTES?|WEIGHT AND PRICE NOTES?|PRICE NOTES?|INTERNAL NOTES?|INTERNAL)\s*:?\s*$/i;
+  /^(?:DESIGN PROPOSAL\b.*|(?:IMPORTANT )?PRODUCTION NOTES?|WEIGHT AND PRICE NOTES?|PRICE NOTES?|INTERNAL NOTES?|INTERNAL|(?:SIZE AND )?SPECIFICATION STATUS)\s*:?\s*$/i;
 
 // An all-caps section heading such as "DETAILS" or "PERSONALIZATION".
 function isHeading(line: string): boolean {
@@ -92,7 +109,7 @@ const BULLET_RE = /^\s*(?:[-•✔*·]|\d+[.)])\s+/;
 // Phrase rewrites that keep the buyer fact. Applied only on a line that carries an
 // internal signal (PHRASE_SIGNAL_RE), so every other line stays byte for byte.
 const PHRASE_SIGNAL_RE =
-  /design target|proposed|provisional listing|quoted (?:bracelet|necklace|chain|anklet) length|supplier confirmation|intended metal|metal previsto|ring concept|concepto de anillo|design image|\[insert|final CAD|pre-?production estimate|until the maker confirms|^\s*PROPOSED DESIGN\s*$|^\s*MATERIAL DIRECTION\s*$/im;
+  /design target|proposed|provisional listing|quoted (?:bracelet|necklace|chain|anklet) length|model preview|vista previa|created for this metal colou?r|final stone specification|design dimensions|para fundición|unless explicitly stated|in this draft|este borrador no ofrece|\bC\d{5}\b|\}\s*$|CAD final|supplier confirmation|intended metal|metal previsto|ring concept|concepto de anillo|design image|\[insert|final CAD|pre-?production estimate|until the maker confirms|^\s*PROPOSED DESIGN\s*$|^\s*MATERIAL DIRECTION\s*$/im;
 
 type Rewrite = [RegExp, string | ((...m: string[]) => string)];
 const PHRASE_REWRITES: Rewrite[] = [
@@ -129,6 +146,27 @@ const PHRASE_REWRITES: Rewrite[] = [
   [/\s+in this provisional listing\b/g, ""],
   // "7.5 inch quoted bracelet length" (the supplier quote) -> "7.5 inch bracelet length"
   [/\bquoted (bracelet|necklace|chain|anklet) length\b/g, "$1 length"],
+  // EON 4593576445: the section stays (styling and props notes), the "preview" name goes.
+  [/^(\s*)ABOUT THIS MODEL PREVIEW(\s*)$/, "$1ABOUT THE IMAGES$2"],
+  [/^(\s*)VISTA PREVIA(\s*)$/, "$1SOBRE LAS IMÁGENES$2"],
+  // "The main image was created for this metal color." -> "The main image shows this metal color."
+  [/\bwas created for this metal (colou?r)\b/g, "shows this metal $1"],
+  // "after the final stone specification and size are confirmed" -> "after the size is confirmed"
+  [/\bafter the final stone specification and size are confirmed\b/g, "after the size is confirmed"],
+  // "Approximate design dimensions: 16.3 mm ..." -> "Approximate dimensions: 16.3 mm ..."
+  [/\b([Aa]pproximate) design dimensions\b/g, "$1 dimensions"],
+  // Spanish "motivo integrado para fundición" (prepared for casting) -> "motivo fundido integrado"
+  [/\bmotivo integrado para fundición\b/g, "motivo fundido integrado"],
+  [/\s+unless explicitly stated\b/g, ""],
+  // "Inside engraving is not offered in this draft." -> "Inside engraving is not offered."
+  [/\s+in this draft\b/g, ""],
+  [/\bEste borrador no ofrece\b/g, "No se ofrece"],
+  // A supplier catalog code in the copy: "in the C19269 Pebble Station Bracelet" -> "in the Pebble Station Bracelet"
+  [/\b(the|The) C\d{5} (?=\p{Lu})/gu, "$1 "],
+  // Template residue: a closing brace at the end of a line that never opened one.
+  [/^([^{]*?[.!?])\}\s*$/, "$1"],
+  // "después del CAD final, la fundición y el acabado" -> "después de la fundición y el acabado"
+  [/\bdespués del CAD final, la fundición y el acabado\b/g, "después de la fundición y el acabado"],
 ];
 
 function capitalizeFirst(s: string): string {
@@ -153,7 +191,18 @@ function stripClause(clause: string): string {
   // be confirmed before ... sale": keep only the clean leading part, never a middle piece
   // of a list, so the sentence cannot end mid-list.
   const parts = clause.split(/,\s+(?=(?:and|so|but|y|pero)\s)/);
-  if (parts.length > 1 && !INTERNAL_RE.test(parts[0])) return parts[0].trim();
+  // A leading part that holds a comma is a list fragment ("Final diamond color, clarity,
+  // and certificate ... must be confirmed"), not a sentence of its own: never keep it.
+  if (parts.length > 1 && !INTERNAL_RE.test(parts[0]) && !parts[0].includes(",")) return parts[0].trim();
+  // "Final physical dimensions and weight are not established by the images, and props
+  // are not included": the internal part leads and a clean tail follows; keep the tail.
+  // Only an ", and" tail is independent; ", so ..." states a consequence of the internal
+  // part ("added after production readback, so the finished weight is confirmed after
+  // production") and goes with it.
+  const tail = parts.slice(1);
+  if (tail.length > 0 && tail.every((p) => !INTERNAL_RE.test(p) && /^(?:and|y)\s/.test(p))) {
+    return tail.join(", ").replace(/^(?:and|y)\s+/, "").trim();
+  }
   return "";
 }
 
@@ -245,6 +294,47 @@ export function stripInternalNotes(description: string): { text: string; edits: 
     .replace(/^\n+/, "")
     .replace(/\n+$/, "");
   return { text, edits };
+}
+
+/**
+ * Alt text of a listing image. Etsy serves alt text with the photo (screen readers,
+ * page source), so it is public text too. The 2027 enamel gallery tools wrote
+ * "<Name>: <frame>. AI design visualization, 2048 square upscale. [marker]" and
+ * "<Name>: AI home studio design visualization. [marker]". The visualization note goes;
+ * a trailing "[...]" marker stays, because the gallery tools find their images by it.
+ * When only a "Name:" label would be left, the listing title is used.
+ */
+export function cleanAltText(alt: string, fallback: string): string {
+  const m = /\s*(\[[^\]]*\])\s*$/.exec(alt);
+  const marker = m ? m[1] : "";
+  let body = (m ? alt.slice(0, m.index) : alt)
+    .replace(/\s*\bAI design visuali[sz]ation, 2048 square upscale\.?/gi, "")
+    .replace(/\bAI home studio design visuali[sz]ation\b/gi, "home studio view");
+  body = stripPublicDescription(body).text.replace(/\s+/g, " ").trim();
+  if (!/\p{L}{3,}/u.test(body.replace(/^[^:]{0,90}:\s*$/u, ""))) body = fallback.replace(/\s+/g, " ").trim();
+  return [body, marker].filter(Boolean).join(" ").slice(0, 500);
+}
+
+/** The first fragment the public-text rules would remove, or null when the text is clean. */
+export function publicTextProblem(text: string): string | null {
+  const r = stripPublicDescription(text);
+  if (r.text === text) return null;
+  return r.removed[0] ?? r.edits[0]?.from ?? "değişiklik";
+}
+
+/**
+ * Guard for every path that writes text to a live Etsy listing: refuses text that still
+ * carries an internal note or an image-provenance disclosure, so nothing internal can be
+ * published by a push that forgot to clean it. ops/desc-strip is the tool that cleans.
+ */
+export function assertPublicText(text: string, what: string): void {
+  const problem = publicTextProblem(text);
+  if (problem) {
+    throw new Error(
+      `${what} kamuya açık olmaması gereken bir not taşıyor ("${problem.slice(0, 120)}"); ` +
+        "önce ops/desc-strip ile temizleyin.",
+    );
+  }
 }
 
 /** Both public-text rules: image-provenance disclosure, then internal notes. */

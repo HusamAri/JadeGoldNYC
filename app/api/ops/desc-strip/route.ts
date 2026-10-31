@@ -7,7 +7,7 @@ import { EtsyClient } from "@/lib/etsy/client";
 import { etsyPaths } from "@/lib/etsy/endpoints";
 import { decodeHtmlEntities } from "@/lib/etsy/text";
 import { normText } from "@/lib/etsy/listing-rewrite";
-import { stripPublicDescription } from "@/lib/etsy/strip-internal";
+import { cleanAltText, stripPublicDescription } from "@/lib/etsy/strip-internal";
 import type { EtsyListResponse } from "@/lib/etsy/types";
 import { logAudit } from "@/lib/audit";
 
@@ -37,6 +37,12 @@ export const maxDuration = 120;
  *    after text). `apply=1` PATCHes the description only, reads it back in the same call
  *    and then writes the same text to products.description.
  *  - A cut that would leave less than 40% of the text is refused, never written.
+ *  - `?images=1`: the same for image alt text (public: Etsy serves it with the photo).
+ *    With `listings=<etsy ids, max 40>` and no apply it only reads; with `products=` and
+ *    `apply=1` it re-attaches each image whose alt text changes at its own rank with the
+ *    cleaned alt (`cleanAltText`, the gallery marker "[...]" stays), re-reads the gallery
+ *    after every image and stops the listing if the image order moved. Descriptions are
+ *    not touched in this mode.
  */
 
 async function authorize(request: Request): Promise<boolean> {
@@ -64,6 +70,128 @@ const MIN_KEEP_RATIO = 0.4;
 const SCAN_STATES = ["active", "draft", "inactive", "sold_out", "expired"] as const;
 const PAGE = 100;
 
+type Photo = { listing_image_id: number; rank: number; alt_text?: string | null };
+const altKey = (s: string | null | undefined) => decodeHtmlEntities(s ?? "").trim();
+const order = (list: Photo[]) => [...list].sort((a, b) => a.rank - b.rank).map((p) => p.listing_image_id);
+const pause = () => new Promise((r) => setTimeout(r, 1000));
+
+/** Alt-text plan for one gallery: every image whose alt the rules would change. */
+function altPlan(list: Photo[], title: string) {
+  return [...list]
+    .sort((a, b) => a.rank - b.rank)
+    .map((p) => ({ id: p.listing_image_id, rank: p.rank, from: altKey(p.alt_text), to: cleanAltText(altKey(p.alt_text), title) }))
+    .filter((x) => x.from !== "" && x.to !== x.from);
+}
+
+async function imagesMode(
+  admin: ReturnType<typeof createAdminClient>,
+  orgId: string,
+  orgName: string,
+  url: URL,
+  apply: boolean,
+  productIds: string[],
+) {
+  let client: EtsyClient;
+  try {
+    client = await EtsyClient.forOrg(orgId);
+  } catch (e) {
+    return NextResponse.json({ error: "etsy not connected", detail: String(e) }, { status: 503 });
+  }
+  const readGallery = async (listingId: number) =>
+    (await client.get<{ results?: Photo[] }>(etsyPaths.listingImagesRead(listingId))).results ?? [];
+
+  // Targets: Etsy listing ids (read only) or panel products (read or apply).
+  let targets: { product: string | null; listing: number }[] = [];
+  if (productIds.length > 0) {
+    const { data } = await admin.from("products").select("id, etsy_listing_id").eq("org_id", orgId).in("id", productIds);
+    const rows = (data ?? []) as { id: string; etsy_listing_id: number | null }[];
+    targets = productIds.map((id) => ({ product: id, listing: rows.find((r) => r.id === id)?.etsy_listing_id ?? 0 }));
+  } else {
+    if (apply) return NextResponse.json({ error: "apply needs products" }, { status: 400 });
+    const ids = (url.searchParams.get("listings") ?? "").split(",").map((s) => Number(s.trim())).filter((n) => Number.isInteger(n) && n > 0);
+    if (ids.length === 0 || ids.length > 40) return NextResponse.json({ error: "listings (1-40 Etsy ids) or products (1-20) are required" }, { status: 400 });
+    targets = ids.map((listing) => ({ product: null, listing }));
+  }
+
+  const results: Row[] = [];
+  for (const t of targets) {
+    if (!t.listing) {
+      results.push({ product: t.product, status: "etsy-listing-yok" });
+      continue;
+    }
+    try {
+      const live = await client.get<{ title?: string; state?: string }>(etsyPaths.listing(t.listing));
+      const title = decodeHtmlEntities(live.title ?? "").slice(0, 140);
+      const before = await readGallery(t.listing);
+      const changes = altPlan(before, title);
+      const base: Row = { product: t.product, listing: t.listing, state: live.state ?? null, images: before.length };
+      if (changes.length === 0) {
+        results.push({ ...base, status: "clean" });
+        continue;
+      }
+      if (!apply) {
+        results.push({ ...base, status: "would-fix", changes });
+        continue;
+      }
+      const shopId = await client.requireShopId();
+      const expectOrder = order(before);
+      const done: Row[] = [];
+      let stop: string | null = null;
+      for (const c of changes) {
+        const form = new FormData();
+        form.append("listing_image_id", String(c.id));
+        form.append("rank", String(c.rank));
+        form.append("alt_text", c.to);
+        const back = await client.requestMultipart<{ listing_image_id?: number }>("POST", etsyPaths.listingImages(shopId, t.listing), form);
+        const newId = back?.listing_image_id ?? c.id;
+        let list = await readGallery(t.listing);
+        for (let i = 0; i < 3 && !list.some((p) => p.listing_image_id === newId && altKey(p.alt_text) === c.to); i++) {
+          await pause();
+          list = await readGallery(t.listing);
+        }
+        const altOk = list.some((p) => p.listing_image_id === newId && p.rank === c.rank && altKey(p.alt_text) === c.to);
+        const idx = expectOrder.indexOf(c.id);
+        if (idx >= 0) expectOrder[idx] = newId;
+        const orderOk = JSON.stringify(order(list)) === JSON.stringify(expectOrder);
+        done.push({ ...c, newId, altOk, orderOk });
+        if (!altOk || !orderOk) {
+          stop = !orderOk ? "order-changed" : "alt-not-applied";
+          results.push({ ...base, status: stop, done, expectOrder, liveOrder: order(list) });
+          break;
+        }
+      }
+      if (stop) continue;
+      await logAudit(admin, {
+        orgId,
+        action: "etsy.alt_strip",
+        entityType: "product",
+        entityId: t.product,
+        summary: `Görsel alt metninden görselleştirme notu kaldırıldı (ops desc-strip): listing ${t.listing}, ${done.length} görsel; sıra korundu, geri okuma doğrulandı.`,
+      });
+      results.push({ ...base, status: "fixed", done });
+    } catch (e) {
+      results.push({ ...base_(t), status: "error", detail: String(e) });
+    }
+  }
+  const count = (s: string) => results.filter((r) => r.status === s).length;
+  return NextResponse.json({
+    ok: true,
+    images: true,
+    apply,
+    org: orgName,
+    targets: targets.length,
+    wouldFix: count("would-fix"),
+    fixed: count("fixed"),
+    clean: count("clean"),
+    failed: results.length - count("would-fix") - count("fixed") - count("clean"),
+    results,
+  });
+}
+
+function base_(t: { product: string | null; listing: number }): Row {
+  return { product: t.product, listing: t.listing };
+}
+
 function plan(before: string) {
   const r = stripPublicDescription(before);
   const changed = r.text !== before;
@@ -79,12 +207,20 @@ export async function GET(request: Request) {
   const apply = url.searchParams.get("apply") === "1";
   const scan = url.searchParams.get("scan") === "1";
   const detail = url.searchParams.get("detail") === "1";
+  const images = url.searchParams.get("images") === "1";
   const orgName = url.searchParams.get("org");
   const productIds = (url.searchParams.get("products") ?? "")
     .split(",")
     .map((s) => s.trim())
     .filter((s) => /^[0-9a-f-]{36}$/i.test(s));
   if (!orgName) return NextResponse.json({ error: "org is required" }, { status: 400 });
+  if (images) {
+    if (productIds.length > 20) return NextResponse.json({ error: "products: max 20" }, { status: 400 });
+    const admin = createAdminClient();
+    const { data: org } = await admin.from("organizations").select("id").eq("name", orgName).maybeSingle();
+    if (!org) return NextResponse.json({ error: `org yok: ${orgName}` }, { status: 404 });
+    return imagesMode(admin, (org as { id: string }).id, orgName, url, apply, productIds);
+  }
   if (scan && apply) return NextResponse.json({ error: "scan is read only; apply needs products" }, { status: 400 });
   if (!scan && (productIds.length === 0 || productIds.length > 20)) {
     return NextResponse.json({ error: "products (1-20 uuids) are required" }, { status: 400 });

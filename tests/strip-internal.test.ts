@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 
-import { stripInternalNotes, stripPublicDescription, INTERNAL_RE } from "../lib/etsy/strip-internal";
+import { stripInternalNotes, stripPublicDescription, INTERNAL_RE, cleanAltText, publicTextProblem, assertPublicText } from "../lib/etsy/strip-internal";
 
 // Real lines from live listings (panel mirror of Etsy, 2026-10-31) -> expected line.
 // "" = the line goes.
@@ -64,6 +64,39 @@ const LINES: [string, string][] = [
   ["Personalization is not enabled in this provisional listing", "Personalization is not enabled"],
   ["Gold weight is a pre-production estimate and may vary by approximately 10% after final CAD, casting and finishing. Final metal weight will be confirmed before the listing is approved for Etsy.",
    "Gold weight is an estimate and may vary by approximately 10% after casting and finishing."],
+  // Second sweep (six finders + two judges, 2026-10-31).
+  ["- Choose your ring size and gold karat from the available variations; specific measurements and weight are not provided here.",
+   "- Choose your ring size and gold karat from the available variations."],
+  ["Fine engraving, final dimensions, measured weight and production timing remain subject to physical verification. Hand views illustrate styling. Props are not included.",
+   "Hand views illustrate styling. Props are not included."],
+  ["ABOUT THIS MODEL PREVIEW", "ABOUT THE IMAGES"],
+  ["- Final physical dimensions and weight are not established by the images, and props are not included.", "- Props are not included."],
+  ["The main image was created for this metal color. Metal color and reflections vary with lighting and screens. Props are not included.",
+   "The main image shows this metal color. Metal color and reflections vary with lighting and screens. Props are not included."],
+  ["- Final diamond color, clarity, and certificate availability must be confirmed in writing before production.", ""],
+  ["- Production takes 4 to 5 business days after the final stone specification and size are confirmed.",
+   "- Production takes 4 to 5 business days after the size is confirmed."],
+  ["Choose your faceted gold band options before checkout; the delivery estimate includes the making time.}",
+   "Choose your faceted gold band options before checkout; the delivery estimate includes the making time."],
+  ["Three softly irregular gold forms meet two vivid oval stones in the C19269 Pebble Station Bracelet.",
+   "Three softly irregular gold forms meet two vivid oval stones in the Pebble Station Bracelet."],
+  ["• Original reference length 17 cm plus 2 cm extension", ""],
+  ["• Original reference length 42 cm", ""],
+  ["• No personalization unless explicitly stated", "• No personalization"],
+  ["- A stamp is not listed among the provided specifications.", ""],
+  ["- A stamp is not specified in the listing details.", ""],
+  ["- Stamp details are not specified in the listing information.", ""],
+  ["- Stamp: A stamp detail is not specified in the listing.", ""],
+  ["- Stamp: Stamp details are not provided in the listing information.", ""],
+  ["• Approximate design dimensions: 16.3 mm outer diameter and 9.8 mm width", "• Approximate dimensions: 16.3 mm outer diameter and 9.8 mm width"],
+  ["• Forma: anillo cerrado con motivo integrado para fundición", "• Forma: anillo cerrado con motivo fundido integrado"],
+  ["Inside engraving is not offered in this draft. The available interior area must be checked before engraving can be promised.",
+   "Inside engraving is not offered."],
+  ["Este borrador no ofrece grabado interior. Es necesario comprobar el espacio disponible antes de ofrecer este servicio.",
+   "No se ofrece grabado interior."],
+  ["La galería contiene representaciones asistidas por IA basadas en la fotografía de la muestra física.", ""],
+  ["Development: Sample required", ""],
+  ["Every price includes one additional gram of casting waste and USD 100 production cost.", ""],
   // The owner's example, without its heading, and the 2027 enamel catalog lines.
   ["Dimensions are development targets. Gold weight, final size options, alloy/enamel compatibility, durability, post/chain joints, price and production time require a physical sample and maker approval. No stock, hallmark, allergy or performance claim is made.", ""],
   ["Internal reference: BAS-27-MINE-R01-14Y", ""],
@@ -76,7 +109,6 @@ const KEEP: string[] = [
   "Each listing is for one ring in the karat and gold color named in the title. Width and ring size are selected within this listing.",
   "Your ring is made to order after the ring size is confirmed. The delivery date shown at checkout includes the making time.",
   "- The estimated finished weight is approximately 2.10 g at US size 7 and may vary by approximately 10% after final production.",
-  "- Choose your ring size and gold karat from the available variations; specific measurements and weight are not provided here.",
   "- The slender profile is intended for delicate stacking, or wear it on its own as a sculptural gold band ring.",
   "Engagements and proposals",
   "Bridesmaid proposals",
@@ -203,4 +235,29 @@ test("visualization and internal rules run together", () => {
     "- The necklace is made to order with 1–3 days of processing, and the styled images are production visualizations rather than a final product gallery.",
   );
   assert.equal(r.text, "- The necklace is made to order with 1–3 days of processing.");
+});
+
+test("image alt text loses the visualization note and keeps the gallery marker", () => {
+  const t = "14K Gold Blue Enamel Ring, Blue Notch";
+  assert.equal(
+    cleanAltText("Blue Notch: hero on travertine. AI design visualization, 2048 square upscale. [artifact-2027/R01/01 0a1b2c3d4e5f]", t),
+    "Blue Notch: hero on travertine. [artifact-2027/R01/01 0a1b2c3d4e5f]",
+  );
+  assert.equal(
+    cleanAltText("Blue Notch: AI home studio design visualization. [artifact-2027/R01/home 0a1b2c3d4e5f]", t),
+    "Blue Notch: home studio view. [artifact-2027/R01/home 0a1b2c3d4e5f]",
+  );
+  // Only a label would be left: the listing title takes its place.
+  assert.equal(cleanAltText("Blue Notch: AI-assisted visualization.", t), t);
+  // Ordinary alt text is untouched.
+  const plain = "Lintel Ring, sales photo 3 of 10. [ss27-anklets/A24/03 0a1b2c3d4e5f]";
+  assert.equal(cleanAltText(plain, t), plain);
+});
+
+test("the guard refuses internal text and passes clean text", () => {
+  assert.equal(publicTextProblem("A solid 14K band. Made to order."), null);
+  assert.throws(
+    () => assertPublicText("Shown as a single ring. Final gold purity will be confirmed before this design is offered for sale.", "Açıklama"),
+    /kamuya açık olmaması gereken/,
+  );
 });

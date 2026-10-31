@@ -6,6 +6,7 @@ import { asEtsyProperties, type RawVariantProperties } from "@/lib/variant-prope
 import { stripImageMetadata } from "@/lib/photo-kit/strip-metadata";
 import { logAudit } from "@/lib/audit";
 import { decodeHtmlEntities } from "@/lib/etsy/text";
+import { stripPublicDescription } from "@/lib/etsy/strip-internal";
 import type { PersonalizationQuestion } from "@/lib/etsy/personalization";
 import {
   resolveListingProtocol,
@@ -79,6 +80,12 @@ function slotIdsFor(plan: VariationPlan): readonly number[] {
  *  scripts/eon-push-drafts.ts stripInternalTrailer ile BİREBİR aynı desen. */
 export function stripInternalTrailer(desc: string): string {
   return desc.replace(/\n*---\n\[EON [\s\S]*\]$/m, "").trimEnd();
+}
+
+/** The description a new draft gets: the EON staff trailer and every internal note or
+ *  image-provenance disclosure removed (`stripPublicDescription`). */
+export function publicDraftDescription(desc: string): string {
+  return stripPublicDescription(stripInternalTrailer(desc)).text;
 }
 
 interface TaxNode {
@@ -486,7 +493,7 @@ export function listingTextChecks(
   const norm = (s: string) => decodeHtmlEntities(s).replace(/\r\n?/g, "\n").trim();
   let description: boolean | null = null;
   let descriptionDiff: ListingTextCheck["descriptionDiff"] = null;
-  const wantDesc = norm(base.source === "sent" ? base.description : stripInternalTrailer(base.description ?? ""));
+  const wantDesc = norm(base.source === "sent" ? base.description : publicDraftDescription(base.description ?? ""));
   // Panel tabanında açıklama boşsa create yalnız sabit satırları göndermiş
   // olabilir; bilinmeyen içeriği kıyaslamak yanlış alarm üretir.
   if (typeof live.description === "string" && (base.source === "sent" || wantDesc.length > 0)) {
@@ -752,8 +759,10 @@ export async function createDraftListingFromProduct(
     );
   }
 
-  const cleanDesc = stripInternalTrailer(product.description ?? "");
-  const finalDesc = appendConstantsToDescription(cleanDesc, plan);
+  // Owner 2026-10-31: no internal note or image-provenance disclosure ever reaches Etsy,
+  // whatever the panel copy or a generator still carries ("Development: Sample required"
+  // constant lines included).
+  const finalDesc = stripPublicDescription(appendConstantsToDescription(publicDraftDescription(product.description ?? ""), plan)).text;
 
   // Taksonomi çöz.
   let taxonomyId: number;
