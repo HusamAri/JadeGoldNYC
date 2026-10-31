@@ -7,26 +7,36 @@ import { EtsyClient } from "@/lib/etsy/client";
 import { etsyPaths } from "@/lib/etsy/endpoints";
 import { decodeHtmlEntities } from "@/lib/etsy/text";
 import { normText } from "@/lib/etsy/listing-rewrite";
-import { stripVisualizationDisclosure } from "@/lib/etsy/strip-visualization";
+import { stripPublicDescription } from "@/lib/etsy/strip-internal";
+import type { EtsyListResponse } from "@/lib/etsy/types";
 import { logAudit } from "@/lib/audit";
 
 export const maxDuration = 120;
 
 /**
- * DESC-STRIP: removes the "images are design visualizations / AI-assisted"
- * disclosure from listing descriptions (owner 2026-10-27, by Artifact Studio
- * Jewelry and EON). The rule is `stripVisualizationDisclosure`; this route only
- * moves text.
+ * DESC-STRIP: removes text that must not be public from listing descriptions.
+ *  - image-provenance disclosure ("the images are design visualizations / AI-assisted"),
+ *    owner 2026-10-27, `stripVisualizationDisclosure`;
+ *  - internal workflow and status notes ("DESIGN PROPOSAL — NOT READY FOR SALE",
+ *    "IMPORTANT PRODUCTION NOTE", "will be confirmed before this design is offered for
+ *    sale", owner approval, supplier readback, design targets), owner 2026-10-31, every
+ *    brand, `stripInternalNotes`.
+ * The rules live in `stripPublicDescription`; this route only moves text.
  *
  *  - Auth: `ops_tokens` purpose='desc-strip' (SHA-256 CAS, one use) or CRON_SECRET.
- *  - `?org=` required; `?products=<uuid,...>` required (max 20): every call
- *    names its targets.
- *  - Source is the LIVE Etsy description, not the panel copy: the owner may
- *    have edited text in the Etsy editor and the panel mirror can be stale.
- *    A product with no Etsy listing is cleaned in the panel only.
- *  - Default is a dry run (removed fragments, before/after length). `apply=1`
- *    PATCHes the description only, reads it back in the same call and then
- *    writes the same text to products.description.
+ *  - `?org=` required.
+ *  - `?scan=1`: read only. Pages through the shop's listings on Etsy in every state
+ *    (active, draft, inactive, sold_out, expired) and reports each listing whose live
+ *    description the rules would change, with its panel product id. Independent of the
+ *    panel mirror; nothing is written.
+ *  - Otherwise `?products=<uuid,...>` required (max 20): every write call names its targets.
+ *    Source is the LIVE Etsy description, not the panel copy: the owner may have edited
+ *    text in the Etsy editor and the panel mirror can be stale. A product with no Etsy
+ *    listing is cleaned in the panel only.
+ *  - Default is a dry run (edits, before/after length; `detail=1` adds the full before and
+ *    after text). `apply=1` PATCHes the description only, reads it back in the same call
+ *    and then writes the same text to products.description.
+ *  - A cut that would leave less than 40% of the text is refused, never written.
  */
 
 async function authorize(request: Request): Promise<boolean> {
@@ -50,25 +60,99 @@ async function authorize(request: Request): Promise<boolean> {
 
 type Row = Record<string, unknown>;
 
+const MIN_KEEP_RATIO = 0.4;
+const SCAN_STATES = ["active", "draft", "inactive", "sold_out", "expired"] as const;
+const PAGE = 100;
+
+function plan(before: string) {
+  const r = stripPublicDescription(before);
+  const changed = r.text !== before;
+  const tooLarge = changed && r.text.length < before.length * MIN_KEEP_RATIO;
+  return { ...r, changed, tooLarge };
+}
+
 export async function GET(request: Request) {
   if (!(await authorize(request))) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
   const url = new URL(request.url);
   const apply = url.searchParams.get("apply") === "1";
+  const scan = url.searchParams.get("scan") === "1";
+  const detail = url.searchParams.get("detail") === "1";
   const orgName = url.searchParams.get("org");
   const productIds = (url.searchParams.get("products") ?? "")
     .split(",")
     .map((s) => s.trim())
     .filter((s) => /^[0-9a-f-]{36}$/i.test(s));
-  if (!orgName || productIds.length === 0 || productIds.length > 20) {
-    return NextResponse.json({ error: "org and products (1-20 uuids) are required" }, { status: 400 });
+  if (!orgName) return NextResponse.json({ error: "org is required" }, { status: 400 });
+  if (scan && apply) return NextResponse.json({ error: "scan is read only; apply needs products" }, { status: 400 });
+  if (!scan && (productIds.length === 0 || productIds.length > 20)) {
+    return NextResponse.json({ error: "products (1-20 uuids) are required" }, { status: 400 });
   }
 
   const admin = createAdminClient();
   const { data: org } = await admin.from("organizations").select("id").eq("name", orgName).maybeSingle();
   if (!org) return NextResponse.json({ error: `org yok: ${orgName}` }, { status: 404 });
   const orgId = (org as { id: string }).id;
+
+  if (scan) {
+    let client: EtsyClient;
+    try {
+      client = await EtsyClient.forOrg(orgId);
+    } catch (e) {
+      return NextResponse.json({ error: "etsy not connected", detail: String(e) }, { status: 503 });
+    }
+    const shopId = await client.requireShopId();
+    const byState: Record<string, number> = {};
+    const hits: Row[] = [];
+    let scanned = 0;
+    for (const st of SCAN_STATES) {
+      for (let offset = 0; ; offset += PAGE) {
+        const page = await client.get<EtsyListResponse<{ listing_id: number; state?: string; title?: string; description?: string }>>(
+          etsyPaths.shopListings(shopId),
+          { limit: PAGE, offset, state: st },
+        );
+        const rows = page.results ?? [];
+        for (const l of rows) {
+          scanned++;
+          const state = l.state ?? st;
+          byState[state] = (byState[state] ?? 0) + 1;
+          const before = decodeHtmlEntities(l.description ?? "");
+          const p = plan(before);
+          if (!p.changed) continue;
+          hits.push({
+            listing: l.listing_id,
+            state,
+            title: decodeHtmlEntities(l.title ?? "").slice(0, 90),
+            tooLarge: p.tooLarge,
+            removed: p.removed,
+            edits: p.edits,
+            from: before.length,
+            to: p.text.length,
+            ...(detail ? { before, after: p.text } : {}),
+          });
+        }
+        if (rows.length < PAGE) break;
+      }
+    }
+    // Panel product for each hit (apply works on product ids).
+    const ids = hits.map((h) => h.listing as number);
+    const { data: prods } = ids.length
+      ? await admin.from("products").select("id, etsy_listing_id").eq("org_id", orgId).in("etsy_listing_id", ids)
+      : { data: [] };
+    const byListing = new Map(((prods ?? []) as { id: string; etsy_listing_id: number }[]).map((p) => [p.etsy_listing_id, p.id]));
+    for (const h of hits) h.product = byListing.get(h.listing as number) ?? null;
+    return NextResponse.json({
+      ok: true,
+      scan: true,
+      org: orgName,
+      scanned,
+      byState,
+      hits: hits.length,
+      notInPanel: hits.filter((h) => !h.product).length,
+      results: hits,
+    });
+  }
 
   const { data: prods } = await admin
     .from("products")
@@ -97,42 +181,52 @@ export async function GET(request: Request) {
     try {
       if (!p.etsy_listing_id || !client) {
         const before = p.description ?? "";
-        const { text, removed } = stripVisualizationDisclosure(before);
-        if (removed.length === 0) {
+        const r = plan(before);
+        if (!r.changed) {
           results.push({ product: id, sku: p.sku, status: "clean", where: "panel" });
           continue;
         }
-        if (apply) {
-          await admin.from("products").update({ description: text }).eq("id", id).eq("org_id", orgId);
+        const base: Row = { product: id, sku: p.sku, where: "panel", removed: r.removed, edits: r.edits, from: before.length, to: r.text.length, ...(detail ? { before, after: r.text } : {}) };
+        if (r.tooLarge) {
+          results.push({ ...base, status: "refused-large-cut" });
+          continue;
         }
-        results.push({ product: id, sku: p.sku, status: apply ? "stripped" : "would-strip", where: "panel", removed, from: before.length, to: text.length });
+        if (apply) {
+          await admin.from("products").update({ description: r.text }).eq("id", id).eq("org_id", orgId);
+        }
+        results.push({ ...base, status: apply ? "stripped" : "would-strip" });
         continue;
       }
 
       const listingId = p.etsy_listing_id;
       const live = await client.get<{ description?: string; state?: string }>(etsyPaths.listing(listingId));
       const before = decodeHtmlEntities(live.description ?? "");
-      const { text, removed } = stripVisualizationDisclosure(before);
+      const r = plan(before);
       const base: Row = { product: id, sku: p.sku, listing: listingId, state: live.state ?? null };
-      if (removed.length === 0) {
+      if (!r.changed) {
         // Etsy is already clean; bring a stale panel copy in line so it cannot be pushed back later.
-        const panelClean = stripVisualizationDisclosure(p.description ?? "").removed.length === 0;
+        const panelClean = !plan(p.description ?? "").changed;
         if (apply && !panelClean) {
           await admin.from("products").update({ description: before }).eq("id", id).eq("org_id", orgId);
         }
         results.push({ ...base, status: "clean", panelClean });
         continue;
       }
+      const change: Row = { removed: r.removed, edits: r.edits, from: before.length, to: r.text.length, ...(detail ? { before, after: r.text } : {}) };
+      if (r.tooLarge) {
+        results.push({ ...base, ...change, status: "refused-large-cut" });
+        continue;
+      }
       if (!apply) {
-        results.push({ ...base, status: "would-strip", removed, from: before.length, to: text.length });
+        results.push({ ...base, ...change, status: "would-strip" });
         continue;
       }
       const shopId = await client.requireShopId();
-      await client.requestForm("PATCH", etsyPaths.shopListing(shopId, listingId), { description: text });
+      await client.requestForm("PATCH", etsyPaths.shopListing(shopId, listingId), { description: r.text });
       const after = await client.get<{ description?: string }>(etsyPaths.listing(listingId));
-      const verified = normText(decodeHtmlEntities(after.description ?? "")) === normText(text);
+      const verified = normText(decodeHtmlEntities(after.description ?? "")) === normText(r.text);
       if (verified) {
-        await admin.from("products").update({ description: text }).eq("id", id).eq("org_id", orgId);
+        await admin.from("products").update({ description: r.text }).eq("id", id).eq("org_id", orgId);
       }
       await logAudit(admin, {
         orgId,
@@ -140,10 +234,11 @@ export async function GET(request: Request) {
         entityType: "product",
         entityId: id,
         summary:
-          `Görselleştirme beyanı kaldırıldı (ops desc-strip): listing ${listingId}, ${removed.length} cümle, ` +
-          `${before.length} -> ${text.length} kr; read-back ${verified ? "doğrulandı" : "BAŞARISIZ"}.`,
+          `Açıklamadan kamuya açık olmaması gereken metin kaldırıldı (ops desc-strip): listing ${listingId}, ` +
+          `${r.removed.length} görselleştirme cümlesi, ${r.edits.length} iç not düzenlemesi, ` +
+          `${before.length} -> ${r.text.length} kr; read-back ${verified ? "doğrulandı" : "BAŞARISIZ"}.`,
       });
-      results.push({ ...base, status: verified ? "stripped" : "verify-failed", removed, from: before.length, to: text.length });
+      results.push({ ...base, ...change, status: verified ? "stripped" : "verify-failed" });
     } catch (e) {
       results.push({ product: id, sku: p.sku, status: "error", detail: String(e) });
     }
@@ -158,6 +253,7 @@ export async function GET(request: Request) {
     wouldStrip: count("would-strip"),
     stripped: count("stripped"),
     clean: count("clean"),
+    refused: count("refused-large-cut"),
     failed: count("verify-failed") + count("error") + count("panelde-yok"),
     results,
   });
