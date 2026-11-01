@@ -37,14 +37,19 @@ export const VISUALIZATION_RE = new RegExp(
     String.raw`(?<!\bnot )(?<!\bno )\bAI (?:design|images?|photos?|frames?|visuali[sz]|renders?|home studio|generated)`,
     // "AI" near an image word, within one clause: "La galería contiene representaciones asistidas
     // por IA". A comma or "and"/"or" ends the clause ("send us a photo, or choose initials such as
-    // AI"); a negation is a buyer claim ("no AI photos here").
-    String.raw`\b${IMG}\b(?:(?!,| and | or | y | o )[^.;]){0,60}(?<!\bnot )(?<!\bno )\b(?:AI|IA)\b`,
-    String.raw`(?<!\bnot )(?<!\bno )\bAI\b(?:(?!,| and | or )[^.;]){0,60}\b${IMG}\b`,
+    // AI"); a negation in between is a buyer claim ("our photos are not made with AI").
+    String.raw`\b${IMG}\b(?:(?!,|:| and | or | y | o |\bnot\b|\bnever\b|\bno\b|\bnunca\b)[^.;]){0,60}\b(?:AI|IA)\b`,
+    String.raw`(?<!\bnot )(?<!\bno )\bAI\b(?:(?!,|:| and | or |\bnot\b|\bnever\b|\bno\b)[^.;]){0,60}\b${IMG}\b`,
     // "Rendering" only as a statement that the image is one: "these photos are renders of the
     // design". "Real photos, not renderings", "without filters or renders" and "your photo
     // renders beautifully on the pendant" are buyer copy.
     String.raw`\b${IMG}\b (?:(?:in this listing|here|shown|above) )?(?:are|is|were|was) (?:an? |all )?(?:AI |3D |CAD |digital |design )?render(?:ing)?s?\b`,
-    String.raw`\b(?:shown|pictured) as an? (?:3D |CAD |digital )?rendering\b`,
+    // At the start of a sentence or clause only: "Shown as a 3D rendering; ..." is the disclosure,
+    // "your custom design is shown as a CAD rendering for your approval" is a proof step.
+    String.raw`(?:^|[.;:]\s*)\s*(?:[-•]\s+)?(?:shown|pictured) as an? (?:3D |CAD |digital )?rendering\b`,
+    // The image itself made or edited with AI: "Images and video in this listing were created with
+    // AI", "Las fotos y el video se crearon con IA". A negation is a buyer claim.
+    String.raw`\b${IMG}\b(?: and videos?| y (?:el |los )?v[ií]deos?)?(?:(?!\bnot\b|\bnever\b|\bno\b|\bnunca\b)[^.;]){0,60}\b(?:(?:created|made|generated|edited|produced) (?:with|by|using)|(?:cread[oa]s?|se crearon|generad[oa]s?|editad[oa]s?|hech[oa]s?) (?:con|por)) (?:la )?(?:AI|IA)\b`,
     String.raw`\brecolou?red\b`,
     String.raw`\bunedited photo shows\b`,
   ].join("|"),

@@ -134,6 +134,8 @@ const LINES: [string, string][] = [
   ["This design is not available for sale yet.", ""],
   ["• Design proposal for Fall 2026; final weight to follow.", "• Final weight to follow."],
   ["Las dimensiones son objetivos de desarrollo.", ""],
+  ["El espesor objetivo de diseño es de 1,5 mm.", ""],
+  ["Every price includes one additional gram of gold and USD 100 labor.", ""],
 ];
 
 // Ordinary buyer copy from the same listings: must come back byte for byte.
@@ -184,6 +186,15 @@ const KEEP: string[] = [
   "Te enviamos una propuesta de diseño en 48 horas tras tu pedido.",
   "Nuestro objetivo de diseño fue crear un anillo cómodo para el uso diario.",
   "If your size is not specified in the listing, message us before ordering.",
+  // Third review 2026-11-01.
+  "Need a size not specified in the listing? Message us before ordering.",
+  "Before casting, your custom design is shown as a CAD rendering for your approval.",
+  "Your engraving is shown as a digital rendering on the proof we email you.",
+  "HOW IT WORKS\n1. Place your order\n2. Design proposal: we email a sketch within 48 hours\n3. Casting and finishing",
+  "• Design proposal sent within 48 hours of your order",
+  "The Heavy option adds an additional gram of gold for a more substantial feel.",
+  "Our photos are not made with AI: every picture shows the real ring.",
+  "Nuestras fotos no se crearon con IA.",
   "PRICE NOTE\nPrice is for one earring, not a pair. Buy two for a pair.",
   "PRODUCTION NOTES\nEach piece is cast in recycled gold and hand-finished; allow 2 to 3 weeks.",
 ];
@@ -360,6 +371,19 @@ test("a section internal by name takes its whole paragraph, whatever its lines s
     "A band.\n\nCARE\nWipe.",
   );
   assert.equal(stripPublicDescription("SIZE AND SPECIFICATION STATUS\nGram weight and closure come later.\n\nCARE\nWipe.").text, "CARE\nWipe.");
+  // An all-caps label or bullet under it is part of the note, not a new section.
+  for (const d of [
+    "INTERNAL NOTES\nSKU: BAS-27-MINE-R01-14Y\nMaker: Görkem. Quote 2 g + 100 USD enamel; chain 150 to 170 USD.\n\nCARE\nWipe.",
+    "WEIGHT AND PRICE NOTE\nWEIGHTS: 10K 2.9 G / 14K 3.2 G / 18K 3.8 G\nGörkem quoted 2 g + 100 USD; chain 150 to 170 USD.\n\nCARE\nWipe.",
+  ]) {
+    assert.equal(stripPublicDescription(d).text, "CARE\nWipe.", d);
+  }
+  assert.equal(
+    stripPublicDescription("IMPORTANT PRODUCTION NOTE\n• HALLMARK: TBD\nExact weight comes after the maker weighs the casting.\n\nJade Gold NYC.").text,
+    "Jade Gold NYC.",
+  );
+  // A real heading right under it still ends it.
+  assert.equal(stripPublicDescription("INTERNAL NOTES\nMaker: Görkem.\nCARE\nWipe.").text, "CARE\nWipe.");
 });
 
 test("the result is a fixed point: a second pass and the guard find nothing", () => {
@@ -418,6 +442,15 @@ test("an image disclosure is still caught in its other wordings", () => {
     assert.equal(stripPublicDescription(s).text, "", s);
   }
   assert.equal(stripPublicDescription("Shown as a 3D rendering; the handmade ring may vary slightly.").text, "The handmade ring may vary slightly.");
+  for (const s of [
+    "Images and video in this listing were created with AI.",
+    "The listing photos are illustrative and were made with AI.",
+    "Product photos, created with AI, show the intended design.",
+    "Las fotos y el video se crearon con IA.",
+    "Las imágenes, creadas con IA, muestran el diseño.",
+  ]) {
+    assert.equal(stripPublicDescription(s).text, "", s);
+  }
 });
 
 test("the guard refuses internal text and passes clean text", () => {

@@ -128,7 +128,10 @@ async function imagesMode(
     if (apply) return NextResponse.json({ error: "apply needs products" }, { status: 400 });
     const ids = (url.searchParams.get("listings") ?? "").split(",").map((s) => Number(s.trim())).filter((n) => Number.isInteger(n) && n > 0);
     if (ids.length === 0 || ids.length > 40) return NextResponse.json({ error: "listings (1-40 Etsy ids) or products (1-20) are required" }, { status: 400 });
-    targets = ids.map((listing) => ({ product: null, listing }));
+    // The panel product of each listing, so the dry run runs the same unfinished-run gate as apply.
+    const { data } = await admin.from("products").select("id, etsy_listing_id").eq("org_id", orgId).in("etsy_listing_id", ids);
+    const rows = (data ?? []) as { id: string; etsy_listing_id: number }[];
+    targets = ids.map((listing) => ({ product: rows.find((r) => r.etsy_listing_id === listing)?.id ?? null, listing }));
   }
 
   const audit = (t: { product: string | null; listing: number }, status: string, diff: Row) =>
@@ -348,22 +351,20 @@ export async function GET(request: Request) {
         );
         const rows = page.results ?? [];
         for (const l of rows) {
-          // A listing counts as scanned only once its text is checked.
           if (lang && Date.now() >= deadline) {
             partial = true;
             break scanLoop;
           }
-          scanned++;
           const state = l.state ?? st;
-          byState[state] = (byState[state] ?? 0) + 1;
           let title = decodeHtmlEntities(l.title ?? "");
           let before = decodeHtmlEntities(l.description ?? "");
+          let tr: Awaited<ReturnType<typeof getListingTranslation>> = null;
           if (lang) {
-            let tr: Awaited<ReturnType<typeof getListingTranslation>>;
             try {
               tr = await getListingTranslation(client, l.listing_id, lang);
             } catch (e) {
               // One listing's read error does not throw the scan away; the daily quota ends it.
+              // A listing whose read failed is not counted as scanned (it is in errors).
               errors.push({ listing: l.listing_id, state, error: String(e) });
               if (/\(429\)/.test(String(e)) && /daily/i.test(String(e))) {
                 partial = true;
@@ -371,6 +372,11 @@ export async function GET(request: Request) {
               }
               continue;
             }
+          }
+          // A listing counts as scanned once its text is checked (no translation = checked).
+          scanned++;
+          byState[state] = (byState[state] ?? 0) + 1;
+          if (lang) {
             if (!tr) continue;
             translations++;
             title = decodeHtmlEntities(tr.title ?? title);
