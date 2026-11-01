@@ -131,6 +131,7 @@ export type AuditAction =
   | "etsy.inventory_rebuild"
   | "etsy.rewrite"
   | "etsy.desc_strip"
+  | "etsy.alt_strip"
   | "etsy.translation_pull"
   | "etsy.redesign_push"
   | "etsy.personalization_push"

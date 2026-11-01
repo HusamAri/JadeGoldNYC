@@ -13,6 +13,7 @@ import {
   updateListingTitle,
 } from "@/lib/etsy/listing";
 import { decodeHtmlEntities } from "@/lib/etsy/text";
+import { publicTextProblem } from "@/lib/etsy/strip-internal";
 import { logAudit } from "@/lib/audit";
 
 export const maxDuration = 300;
@@ -117,6 +118,12 @@ function formatGate(row: TransRow): string[] {
   // canlı açıklamayı SİLER.
   if (row.lang === "en" && row.description != null && row.description.trim() === "") {
     errs.push("en satırında açıklama boş olamaz (canlı metni silerdi)");
+  }
+  // The description guard (assertPublicText) runs inside the write, after the title and
+  // tags PATCH: check here so the dry run reports it and apply writes nothing.
+  if (row.description) {
+    const problem = publicTextProblem(row.description);
+    if (problem) errs.push(`açıklama kamuya açık olmaması gereken bir not taşıyor: "${problem.slice(0, 80)}"`);
   }
   return errs;
 }

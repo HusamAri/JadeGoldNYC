@@ -1,4 +1,5 @@
 import raw from "./catalog.json";
+import { publicTextProblem } from "@/lib/etsy/strip-internal";
 
 export const SOURCE = "artifact-2027-enamel-v1";
 export const BRAND = "by Artifact Studio Jewelry";
@@ -18,7 +19,10 @@ export function validateCatalog(items: CatalogItem[]) {
   }
   for (const d of items) {
     if (d.tags.length !== 13 || new Set(d.tags).size !== 13 || d.tags.some(t => t.length > 20)) throw new Error(`${d.id}: etiket sınırı.`);
-    if (d.title.length > 140 || !d.description.includes("AI-generated") || !d.description.includes("NOT READY FOR SALE")) throw new Error(`${d.id}: açıklama/başlık.`);
+    if (d.title.length > 140) throw new Error(`${d.id}: başlık.`);
+    // Owner 2026-10-31: "DESIGN PROPOSAL — NOT READY FOR SALE", the AI-image note and any
+    // other internal status line must never reach a public description.
+    if (publicTextProblem(d.description) !== null) throw new Error(`${d.id}: açıklamada iç not var.`);
     if (d.imageUrl !== `https://amuletta.artifactstudio.info/artifact/2027-enamel/${d.id}.png` || !/^[a-f0-9]{64}$/.test(d.imageSha256)) throw new Error(`${d.id}: görsel kaynağı.`);
     if (d.imageDimensions.join("x") !== "1254x1254") throw new Error(`${d.id}: çözünürlük.`);
   }

@@ -14,6 +14,7 @@ import {
 import { syncOneListingVariants } from "@/lib/etsy/variants";
 import { logAudit } from "@/lib/audit";
 import { decodeHtmlEntities } from "@/lib/etsy/text";
+import { assertPublicText, publicTextProblem } from "@/lib/etsy/strip-internal";
 import type {
   EtsyInventoryUpdate,
   EtsyProductUpdate,
@@ -237,10 +238,13 @@ export async function GET(request: Request) {
     };
 
     if (!apply) {
-      return NextResponse.json({ ok: true, apply: false, listing: listingId, plan, textPlan, readinessStateId });
+      // The apply guard (assertPublicText) refuses an internal note; say so before a token is spent on it.
+      const publicText = publicTextProblem(product.description);
+      return NextResponse.json({ ok: publicText === null, apply: false, listing: listingId, plan, textPlan, readinessStateId, publicTextProblem: publicText });
     }
 
-    // 1) Metin: tek PATCH (title + description + tags).
+    // 1) Metin: tek PATCH (title + description + tags). İç not taşıyan metin yazılmaz.
+    assertPublicText(product.description, "Panel açıklaması");
     const shopId = await client.requireShopId();
     await client.requestForm<unknown>("PATCH", etsyPaths.shopListing(shopId, listingId), {
       title: product.title,

@@ -1,6 +1,7 @@
 import type { EtsyClient } from "@/lib/etsy/client";
 import { etsyPaths } from "@/lib/etsy/endpoints";
 import { decodeHtmlEntities } from "@/lib/etsy/text";
+import { assertPublicText } from "@/lib/etsy/strip-internal";
 
 export interface EtsyListingDetail {
   listing_id: number;
@@ -37,6 +38,7 @@ export async function updateListingDescription(
   listingId: number,
   description: string,
 ): Promise<void> {
+  assertPublicText(description, "Açıklama");
   const shopId = await client.resolveShopId();
   if (!shopId) throw new Error("Etsy shop_id çözülemedi.");
   await client.requestForm<unknown>(
@@ -259,6 +261,7 @@ export async function putListingTranslation(
   lang: string,
   t: { title: string; description: string; tags?: string[] },
 ): Promise<void> {
+  assertPublicText(t.description, `${lang} çeviri açıklaması`);
   const shopId = await client.requireShopId();
   const form: Record<string, string | undefined> = {
     title: t.title,
