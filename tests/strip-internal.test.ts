@@ -2,6 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 
 import { stripInternalNotes, stripPublicDescription, INTERNAL_RE, cleanAltText, publicTextProblem, assertPublicText } from "../lib/etsy/strip-internal";
+import { joinSentences, splitSentences } from "../lib/etsy/strip-visualization";
 
 // Real lines from live listings (panel mirror of Etsy, 2026-10-31) -> expected line.
 // "" = the line goes.
@@ -140,6 +141,26 @@ const LINES: [string, string][] = [
   ["• Design proposal (Fall 2026)", ""],
   ["• Propuesta de diseño.", ""],
   ["Every price includes one additional gram of gold and USD 100 labor.", ""],
+  // Spanish translations on Etsy, live 2026-11-01 (2027 enamel copy, EON, Jade).
+  ["Referencia interna: BAS-27-MINE-E04-14Y", ""],
+  ["Desarrollo: Muestra requerida", ""],
+  ["Proteja el esmalte de impactos duros y dobleces. Limpie suavemente con un paño suave; evite limpiadores abrasivos y limpieza ultrasónica hasta que el fabricante confirme el método de cuidado.",
+   "Proteja el esmalte de impactos duros y dobleces. Limpie suavemente con un paño suave; evite limpiadores abrasivos y limpieza ultrasónica."],
+  ["- Los pesos en gramos mostrados para cada talla son estimaciones preliminares y deben confirmarse antes de la producción.", ""],
+  ["Por favor, confirma las medidas finales, el peso y la disponibilidad antes de enviar el anuncio a Etsy; el anillo escultórico terminado se produce después de confirmar esos detalles.", ""],
+  ["- Los materiales indicados son oro amarillo y blanco; la pureza final del oro se confirmará antes de que este diseño se ponga a la venta.",
+   "- Los materiales indicados son oro amarillo y blanco."],
+  ["- La talla del anillo se selecciona entre las opciones de variación disponibles, y las medidas finales, el peso y el ajuste se confirmarán antes de que el diseño se ponga a la venta.",
+   "- La talla del anillo se selecciona entre las opciones de variación disponibles."],
+  ["- Las dimensiones físicas y el peso finales no se establecen mediante las imágenes, y los accesorios no están incluidos.",
+   "- Los accesorios no están incluidos."],
+  ["El collar de oro de 18K está preparado a partir del diseño aprobado Threshold.", ""],
+  ["Please confirm the final measurements, weight and availability before sending the listing to Etsy.", ""],
+  // A glued bullet line: only the internal bullet goes, the others keep their own spacing.
+  ["- Cada anillo se hace por encargo.- Desarrollo: muestra requerida.- Limpia con un paño suave.",
+   "- Cada anillo se hace por encargo.- Limpia con un paño suave."],
+  ["Hecho por encargo.Referencia interna: BAS-27-MINE-R01-14Y. Se envía gratis.",
+   "Hecho por encargo. Se envía gratis."],
 ];
 
 // Ordinary buyer copy from the same listings: must come back byte for byte.
@@ -210,6 +231,39 @@ const KEEP: string[] = [
   "Nuestras fotos no se han editado en absoluto con IA.",
   "PRICE NOTE\nPrice is for one earring, not a pair. Buy two for a pair.",
   "PRODUCTION NOTES\nEach piece is cast in recycled gold and hand-finished; allow 2 to 3 weeks.",
+  // Spanish buyer copy from the same translations (2026-11-01).
+  "- Elige una talla de anillo de EE. UU. de la 3 a la 16, incluyendo tallas enteras y medias.",
+  "Elige oro amarillo, blanco o rosa de 10K, 14K o 18K, y selecciona un pendiente o un par.- Cada pieza se hace a pedido y normalmente se procesa en 3 a 5 días.",
+  "La pulsera de cadena de oro no tiene piedras, y la imagen muestra la pulsera en color oro amarillo.",
+  "Colección: Artifact Studio 2027 Color and Enamel.",
+  "Metal: Oro amarillo de 14K",
+  "Confirma tu talla antes de realizar el pedido; el anillo se fabrica después de confirmar la talla.",
+  "Envíanos tu diseño y, a partir del diseño que apruebes, fabricamos tu anillo.",
+  "Please confirm your ring size before ordering.",
+  "Los accesorios no están incluidos.",
+];
+
+// Spanish translations on Etsy (live 2026-11-01) -> expected line, both rules together.
+// The 2026-11-01 first pass took the bullets before a disclosure in a glued line with it.
+const ES_LINES: [string, string][] = [
+  // 4585879436 bow pendant: glued bullets, the gift-message and enamel-care bullets stay
+  ["Un collar con colgante de lazo combina esmalte vítreo azul marino oceánico con contornos de oro pulido para crear un detalle en forma de cinta que se asienta recto sobre la clavícula. El lazo plano tiene centros de bucle calados y una pequeña argolla que surge detrás del nudo, como se muestra en la imagen del producto.- El colgante es de oro macizo a elegir entre 10K, 14K o 18K, con opciones de oro amarillo, blanco o rosa.- El esmalte vítreo azul marino cocido en horno se asienta al ras en cavidades empotradas, bordeado por bordes de oro pulido.- El lazo mide 12 x 9 mm, lo que otorga a este colgante de lazo de oro un perfil compacto para el uso diario o para combinar en capas.- Se incluye una cadena de eslabones de oro macizo de 1.2 mm con cierre de resorte.- Elija una longitud de cadena de 16, 18 o 20 pulgadas para adaptarla a su escote y capas preferidas.- Cada pieza se fabrica bajo pedido y tiene un tiempo de procesamiento de 3 a 5 días; se puede añadir un mensaje de regalo al finalizar la compra.- El esmalte es vidrio fusionado al oro y puede astillarse con un golpe fuerte, así que quítese el collar para ir al gimnasio y lavar los platos, y límpielo con un paño suave.- Las imágenes del producto son visualizaciones de diseño y la pieza terminada puede variar ligeramente; la imagen de los tres metales muestra las opciones de oro amarillo, blanco y rosa.Este collar de lazo y cinta está disponible en las variaciones de quilates, color y longitud de cadena indicadas.",
+   "Un collar con colgante de lazo combina esmalte vítreo azul marino oceánico con contornos de oro pulido para crear un detalle en forma de cinta que se asienta recto sobre la clavícula. El lazo plano tiene centros de bucle calados y una pequeña argolla que surge detrás del nudo, como se muestra en la imagen del producto.- El colgante es de oro macizo a elegir entre 10K, 14K o 18K, con opciones de oro amarillo, blanco o rosa.- El esmalte vítreo azul marino cocido en horno se asienta al ras en cavidades empotradas, bordeado por bordes de oro pulido.- El lazo mide 12 x 9 mm, lo que otorga a este colgante de lazo de oro un perfil compacto para el uso diario o para combinar en capas.- Se incluye una cadena de eslabones de oro macizo de 1.2 mm con cierre de resorte.- Elija una longitud de cadena de 16, 18 o 20 pulgadas para adaptarla a su escote y capas preferidas.- Cada pieza se fabrica bajo pedido y tiene un tiempo de procesamiento de 3 a 5 días; se puede añadir un mensaje de regalo al finalizar la compra.- El esmalte es vidrio fusionado al oro y puede astillarse con un golpe fuerte, así que quítese el collar para ir al gimnasio y lavar los platos, y límpielo con un paño suave.- La imagen de los tres metales muestra las opciones de oro amarillo, blanco y rosa.Este collar de lazo y cinta está disponible en las variaciones de quilates, color y longitud de cadena indicadas."],
+  // 4590702638 bar stud: "cepillado.Las imágenes" glued with no space
+  ["Un pendiente de barra de oro macizo tiene un perfil delgado de 2 x 8 mm, con una cara cepillada y bordes pulidos. Su línea vertical sigue el lóbulo de la oreja, ofreciendo una alternativa limpia a un pendiente redondo. Elige oro amarillo, blanco o rosa de 10K, 14K o 18K, y selecciona un pendiente o un par.- Cada pequeño pendiente de barra de oro mide 2 x 8 mm y tiene una forma de barra corta.- La cara es cepillada, mientras que los bordes están pulidos para lograr un contraste en el acabado.- Los postes y cierres de mariposa de oro macizo aseguran cada pendiente de barra minimalista.- Elige un solo pendiente o un par usando la opción de piezas.- Selecciona el quilate y el color de metal que se adapten a tu preferencia; no incluye piedras.- Cada pieza se hace a pedido y normalmente se procesa en 3 a 5 días.- Limpia con un paño suave para su cuidado; un joyero puede renovar el acabado cepillado.Las imágenes del producto son visualizaciones de diseño, y la imagen de los tres metales muestra el mismo diseño en oro amarillo, blanco y rosa. La pieza terminada puede variar ligeramente. Tu pendiente de barra de oro se envía gratis dentro de los Estados Unidos desde Nueva Jersey; se pueden agregar mensajes de regalo al finalizar la compra.",
+   "Un pendiente de barra de oro macizo tiene un perfil delgado de 2 x 8 mm, con una cara cepillada y bordes pulidos. Su línea vertical sigue el lóbulo de la oreja, ofreciendo una alternativa limpia a un pendiente redondo. Elige oro amarillo, blanco o rosa de 10K, 14K o 18K, y selecciona un pendiente o un par.- Cada pequeño pendiente de barra de oro mide 2 x 8 mm y tiene una forma de barra corta.- La cara es cepillada, mientras que los bordes están pulidos para lograr un contraste en el acabado.- Los postes y cierres de mariposa de oro macizo aseguran cada pendiente de barra minimalista.- Elige un solo pendiente o un par usando la opción de piezas.- Selecciona el quilate y el color de metal que se adapten a tu preferencia; no incluye piedras.- Cada pieza se hace a pedido y normalmente se procesa en 3 a 5 días.- Limpia con un paño suave para su cuidado; un joyero puede renovar el acabado cepillado. La pieza terminada puede variar ligeramente. Tu pendiente de barra de oro se envía gratis dentro de los Estados Unidos desde Nueva Jersey; se pueden agregar mensajes de regalo al finalizar la compra."],
+  // 4591200606 knife edge: "EE. UU. de la 3" is not a sentence start
+  ["Un anillo knife edge de oro macizo pulido tiene un perfil esbelto de 2,5 mm y una cresta central elevada que capta la luz. Elige oro de 10k, 14k o 18k en amarillo, blanco o rosa, con tallas de anillo de EE. UU. de la 3 a la 16 disponibles en tallas enteras y medias. Es un anillo moderno para hombre con un perfil limpio para usar solo o junto con otra joyería.- La alianza mide 2,5 mm de ancho, con dos planos exteriores que se encuentran en una cresta distintiva para dar un aspecto facetado.- Selecciona oro macizo de 10k, 14k o 18k y elige el color de metal amarillo, blanco o rosa.- El acabado pulido no tiene piedras, y el anillo es de oro macizo en su totalidad.- Elige una talla de anillo de EE. UU. de la 3 a la 16, incluyendo tallas enteras y medias.- Cada anillo se hace por encargo, con un plazo de procesamiento indicado de 3 a 5 días.- Un paño suave es adecuado para limpiar el oro; la descripción señala que el oro macizo no se deslustra.- El diseño de la imagen es una visualización; la imagen de los tres metales muestra el mismo diseño en oro amarillo, blanco y rosa, y la pieza terminada puede variar levemente.La esbelta alianza de oro también funciona como alianza de boda para hombre. El anillo knife edge seleccionado se fabrica en el quilataje, color y talla elegidos.",
+   "Un anillo knife edge de oro macizo pulido tiene un perfil esbelto de 2,5 mm y una cresta central elevada que capta la luz. Elige oro de 10k, 14k o 18k en amarillo, blanco o rosa, con tallas de anillo de EE. UU. de la 3 a la 16 disponibles en tallas enteras y medias. Es un anillo moderno para hombre con un perfil limpio para usar solo o junto con otra joyería.- La alianza mide 2,5 mm de ancho, con dos planos exteriores que se encuentran en una cresta distintiva para dar un aspecto facetado.- Selecciona oro macizo de 10k, 14k o 18k y elige el color de metal amarillo, blanco o rosa.- El acabado pulido no tiene piedras, y el anillo es de oro macizo en su totalidad.- Elige una talla de anillo de EE. UU. de la 3 a la 16, incluyendo tallas enteras y medias.- Cada anillo se hace por encargo, con un plazo de procesamiento indicado de 3 a 5 días.- Un paño suave es adecuado para limpiar el oro; la descripción señala que el oro macizo no se deslustra.- La imagen de los tres metales muestra el mismo diseño en oro amarillo, blanco y rosa, y la pieza terminada puede variar levemente.La esbelta alianza de oro también funciona como alianza de boda para hombre. El anillo knife edge seleccionado se fabrica en el quilataje, color y talla elegidos."],
+  // 4591189111 figaro: "no tiene piedras y las fotos ..."
+  ["- La pulsera no tiene piedras y las fotos del anuncio son visualizaciones de diseño de la pieza terminada.",
+   "- La pulsera no tiene piedras."],
+  // 4593723030 EON: image clause and the for-sale note
+  ["- El anuncio es para un anillo, hecho por encargo, y la imagen es una visualización del diseño; los detalles de producción finales se confirman antes de que el diseño se ponga a la venta.",
+   "- El anuncio es para un anillo, hecho por encargo."],
+  // 4562312911 Jade Threshold
+  ["- El collar se hace por encargo con 1-3 días de procesamiento, y las imágenes con estilo son visualizaciones de producción en lugar de una galería de productos finales.",
+   "- El collar se hace por encargo con 1-3 días de procesamiento."],
 ];
 
 test("each real internal line is cut to its buyer fact", () => {
@@ -217,6 +271,42 @@ test("each real internal line is cut to its buyer fact", () => {
     assert.equal(stripInternalNotes(input).text, expected, input);
     assert.equal(stripPublicDescription(input).text, expected, input);
   }
+});
+
+test("Spanish translations: a disclosure at the end of a glued line takes only its own sentence", () => {
+  for (const [input, expected] of ES_LINES) {
+    const r = stripPublicDescription(input);
+    assert.equal(r.text, expected, input.slice(0, 80));
+    assert.equal(publicTextProblem(r.text), null, input.slice(0, 80));
+  }
+});
+
+test("sentences split and join back byte for byte; a dropped one leaves one gap", () => {
+  for (const t of [
+    "A. B. C.",
+    "tallas de EE. UU. de la 3 a la 16. Las imágenes ...",
+    "medias.- Cada anillo.- Un paño suave.Las imágenes son X. Fin.",
+    "One  two. Three.  Four!",
+    "Sin punto final",
+  ]) {
+    const { parts, seps } = splitSentences(t);
+    assert.equal(joinSentences(parts, seps), t, t);
+  }
+  assert.deepEqual(splitSentences("de EE. UU. de la 3. Fin.").parts, ["de EE. UU. de la 3.", "Fin."]);
+  // Glued only after a lowercase letter: "EE.UU." and "A.B." are not sentence ends.
+  assert.deepEqual(splitSentences("EE.UU. y A.B.").parts, ["EE.UU. y A.B."]);
+  const glued = splitSentences("Uno.Dos. Tres.");
+  assert.deepEqual(glued.parts, ["Uno.", "Dos.", "Tres."]);
+  assert.equal(joinSentences(["Uno.", null, "Tres."], glued.seps), "Uno. Tres.");
+  const spaced = splitSentences("Uno. Dos.Tres.");
+  assert.equal(joinSentences(["Uno.", null, "Tres."], spaced.seps), "Uno. Tres.");
+  assert.equal(joinSentences([null, "Dos.", "Tres."], spaced.seps), "Dos.Tres.");
+});
+
+test("a line whose signal changes no sentence comes back byte for byte", () => {
+  // Two spaces between sentences: the old rebuild joined every sentence with one space.
+  const line = "Hecho por encargo.  Se envía gratis.";
+  assert.equal(stripPublicDescription(line).text, line);
 });
 
 test("ordinary buyer copy is untouched, byte for byte, and passes the guard", () => {

@@ -73,9 +73,62 @@ function capitalizeFirst(s: string): string {
   return s.replace(/^(\s*)(\p{Ll})/u, (_m, a: string, c: string) => a + c.toUpperCase());
 }
 
+export const BULLET_RE = /^\s*(?:[-•✔*·]|\d+[.)])\s+/;
+
+// Sentence boundaries inside one line:
+//  - a full stop and space before anything but a lowercase letter ("EE. UU. de la 3 a la 16"
+//    is one sentence; "... días. Las imágenes ..." is two);
+//  - a full stop glued to the next sentence ("acabado cepillado.Las imágenes ...") or to the
+//    next bullet ("tallas enteras y medias.- Cada anillo ..."), as the 2026 Spanish
+//    translations of the by Artifact Studio Jewelry copy were written. Read as one sentence,
+//    a disclosure at its end took every bullet before it.
+const SENTENCE_SPLIT_RE = /((?<=[.!?])(?<!\bEE\.)\s+(?![\s\p{Ll}])|(?<=\p{Ll}[.!?])(?=\p{Lu})|(?<=[.!?])(?=[-•]\s))/u;
+
+/**
+ * Splits a line into sentences and keeps what stood between them, so the sentences that
+ * stay can be put back with their own spacing: `seps[i]` is what preceded `parts[i]`.
+ */
+export function splitSentences(text: string): { parts: string[]; seps: string[] } {
+  const bits = text.split(SENTENCE_SPLIT_RE);
+  const parts: string[] = [bits[0]];
+  const seps: string[] = [""];
+  for (let i = 1; i < bits.length; i += 2) {
+    seps.push(bits[i] ?? "");
+    parts.push(bits[i + 1] ?? "");
+  }
+  return { parts, seps };
+}
+
+/**
+ * Puts the kept sentences of a line back together. A sentence that was dropped takes one
+ * separator with it; the gap left between its neighbours is the one before it, or the one
+ * after it when the one before was a glued full stop ("A.B. C." without B is "A. C.").
+ */
+export function joinSentences(kept: (string | null)[], seps: string[]): string {
+  let out = "";
+  let started = false;
+  let gap: string | null = null;
+  kept.forEach((s, i) => {
+    if (s === null || !s.trim()) {
+      if (started && gap === null) gap = seps[i];
+      return;
+    }
+    if (started) out += gap ? gap : seps[i];
+    out += s;
+    started = true;
+    gap = null;
+  });
+  return out;
+}
+
+// Where a clause can be cut: ", and" / ", so"; and in Spanish an image clause joined by a
+// bare "y" ("La pulsera no tiene piedras y las fotos del anuncio son visualizaciones ..."
+// keeps "La pulsera no tiene piedras"). "oro amarillo, blanco y rosa" is not cut.
+const CLAUSE_CUT_RE = /,\s+(?=(?:and|so)\s)|,?\s+(?=y\s+(?:el|la|los|las)\s+(?:fotos?|fotografías?|imagen|imágenes|galería)\b)/i;
+
 function stripClause(clause: string): string {
   if (!VISUALIZATION_RE.test(clause)) return clause;
-  const parts = clause.split(/,\s+(?=(?:and|so)\s)/);
+  const parts = clause.split(CLAUSE_CUT_RE);
   const kept: string[] = [];
   for (const p of parts) {
     if (VISUALIZATION_RE.test(p)) break;
@@ -86,7 +139,7 @@ function stripClause(clause: string): string {
 
 export function stripSentence(sentence: string): string {
   if (!VISUALIZATION_RE.test(sentence)) return sentence;
-  const bullet = /^\s*(?:[-•✔*·]|\d+[.)])\s+/.exec(sentence)?.[0] ?? "";
+  const bullet = BULLET_RE.exec(sentence)?.[0] ?? "";
   const body = sentence.slice(bullet.length).replace(/[.!?]\s*$/, "");
   const clauses = body
     .split(/;\s*/)
@@ -100,16 +153,16 @@ export function stripSentence(sentence: string): string {
 export function stripVisualizationLine(line: string): { text: string; removed: string[] } {
   if (!VISUALIZATION_RE.test(line)) return { text: line, removed: [] };
   const removed: string[] = [];
-  const bullet = /^\s*(?:[-•✔*·]|\d+[.)])\s+/.exec(line)?.[0] ?? "";
-  const sentences = line.slice(bullet.length).split(/(?<=[.!?])\s+/);
-  const kept: string[] = [];
-  sentences.forEach((s, i) => {
-    const next = stripSentence(i === 0 ? bullet + s : s);
-    if (next !== (i === 0 ? bullet + s : s)) removed.push(s);
-    const bare = i === 0 ? next.slice(bullet.length) : next;
-    if (bare.trim()) kept.push(bare);
+  const bullet = BULLET_RE.exec(line)?.[0] ?? "";
+  const { parts, seps } = splitSentences(line.slice(bullet.length));
+  const kept = parts.map((s, i) => {
+    const src = i === 0 ? bullet + s : s;
+    const next = stripSentence(src);
+    if (next !== src) removed.push(s);
+    return i === 0 ? next.slice(bullet.length) : next;
   });
-  const rebuilt = kept.join(" ").trim();
+  if (removed.length === 0) return { text: line, removed };
+  const rebuilt = joinSentences(kept, seps).trim();
   return { text: rebuilt ? bullet + rebuilt : "", removed };
 }
 

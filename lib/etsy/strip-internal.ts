@@ -42,7 +42,7 @@
  * so a heading left empty by either rule goes.
  */
 
-import { stripVisualizationLine, VISUALIZATION_RE } from "./strip-visualization";
+import { joinSentences, splitSentences, stripVisualizationLine, VISUALIZATION_RE } from "./strip-visualization";
 
 export type InternalEdit = { kind: "section" | "phrase" | "sentence" | "heading"; from: string; to: string };
 
@@ -113,7 +113,30 @@ export const INTERNAL_RE = new RegExp(
     // adds an additional gram of gold".
     String.raw`\b(?:price|prices|cost) includes? (?:one |an )?additional gram of (?:gold|casting waste)\b`,
     String.raw`\bmust be checked before (?:engraving|this|it) can be (?:promised|offered)\b`,
+    // A note to whoever publishes the listing: "confirm the final measurements ... before
+    // sending the listing to Etsy". A buyer never sends or publishes the listing.
+    String.raw`\bbefore (?:submitting|sending|uploading|publishing|pushing) (?:the|this) listing\b`,
+    String.raw`\bmust be confirmed before production\b`,
+    String.raw`\bafter (?:those|these) details are confirmed\b`,
     // Spanish.
+    // The Spanish translations of the 2027 enamel copy (live 2026-11-01): "Referencia interna:
+    // BAS-27-MINE-E04-14Y", "Desarrollo: Muestra requerida", "... hasta que el fabricante
+    // confirme el método de cuidado", "Por favor, confirma las medidas ... antes de enviar el
+    // anuncio a Etsy; ... se produce después de confirmar esos detalles", "Los pesos ... son
+    // estimaciones preliminares y deben confirmarse antes de la producción"; EON: "Los detalles
+    // de producción finales se confirman antes de que el diseño se ponga a la venta", "Las
+    // dimensiones físicas y el peso finales no se establecen mediante las imágenes".
+    String.raw`\breferencia interna\b`,
+    String.raw`\bmuestra requerida\b`,
+    String.raw`\bhasta que el fabricante\b`,
+    String.raw`\b(?:antes de|sin) (?:enviar|publicar|subir) (?:el|este) anuncio a Etsy\b`,
+    String.raw`\bdeben confirmarse antes de la producción\b`,
+    String.raw`\bdespués de confirmar (?:esos|estos) detalles\b`,
+    String.raw`\bantes de que (?:el|este|esta) [a-záéíóúñ]+ se (?:ponga|ofrezca) a la venta\b`,
+    String.raw`\bno se establecen (?:mediante|por|a partir de) (?:las |estas )?imágenes\b`,
+    // "está preparado a partir del diseño aprobado Threshold" (English "from the approved").
+    String.raw`\ba partir del diseño aprobado\b`,
+    String.raw`\bla referencia aprobada\b`,
     String.raw`antes de poner (?:este|el) diseño a la venta`,
     String.raw`no (?:(?:está|están) )?list[oa]s? para la venta`,
     String.raw`\b(?:este|el) (?:diseño|anuncio) no (?:está )?disponible para la venta\b`,
@@ -169,7 +192,7 @@ function isSectionHeading(line: string): boolean {
 // Phrase rewrites that keep the buyer fact. Applied only on a line that carries an
 // internal signal (PHRASE_SIGNAL_RE), so every other line stays byte for byte.
 const PHRASE_SIGNAL_RE =
-  /design target|proposed|provisional listing|quoted (?:bracelet|necklace|chain|anklet) length|model preview|vista previa|created for this metal colou?r|final stone specification|design dimensions|para fundición|No personali[sz]ation unless explicitly stated\s*$|in this draft|este borrador no ofrece|\bC\d{5}\b|\}\s*$|CAD final|supplier confirmation|intended metal|metal previsto|(?:ring|necklace|pendant|bracelet|anklet|band) concept|concepto de anillo|objetivo de diseño|as (?:seen|shown) in the design image|\[insert|final CAD|pre-?production estimate|until the maker confirms|^\s*PROPOSED DESIGN\s*$|^\s*MATERIAL DIRECTION\s*$/im;
+  /design target|proposed|provisional listing|quoted (?:bracelet|necklace|chain|anklet) length|model preview|vista previa|created for this metal colou?r|final stone specification|design dimensions|para fundición|No personali[sz]ation unless explicitly stated\s*$|in this draft|este borrador no ofrece|\bC\d{5}\b|\}\s*$|CAD final|supplier confirmation|intended metal|metal previsto|(?:ring|necklace|pendant|bracelet|anklet|band) concept|concepto de anillo|objetivo de diseño|as (?:seen|shown) in the design image|\[insert|final CAD|pre-?production estimate|until the maker confirms|hasta que el fabricante confirme|^\s*PROPOSED DESIGN\s*$|^\s*MATERIAL DIRECTION\s*$/im;
 
 const cap = (w: string) => w[0].toUpperCase() + w.slice(1);
 
@@ -211,6 +234,9 @@ const PHRASE_REWRITES: Rewrite[] = [
   // "avoid abrasive cleaners and ultrasonic cleaning until the maker confirms the care method"
   // keeps the care advice and drops the pending confirmation.
   [/\s+until the maker confirms[^.;]*/g, ""],
+  // "evite limpiadores abrasivos y limpieza ultrasónica hasta que el fabricante confirme el
+  // método de cuidado" keeps the care advice.
+  [/\s+hasta que el fabricante confirme[^.;]*/g, ""],
   // "Personalization is not enabled in this provisional listing" keeps the buyer fact.
   [/\s+in this provisional listing\b/g, ""],
   // "7.5 inch quoted bracelet length" (the supplier quote) -> "7.5 inch bracelet length"
@@ -307,16 +333,19 @@ function stripLine(line: string, edits: InternalEdit[]): string {
   if (rewritten !== line) edits.push({ kind: "phrase", from: line, to: rewritten });
   if (!INTERNAL_RE.test(rewritten)) return rewritten;
   const bullet = BULLET_RE.exec(rewritten)?.[0] ?? "";
-  const sentences = rewritten.slice(bullet.length).split(/(?<=[.!?])\s+/);
-  const kept: string[] = [];
-  sentences.forEach((s, i) => {
+  const { parts, seps } = splitSentences(rewritten.slice(bullet.length));
+  let changed = false;
+  const kept = parts.map((s, i) => {
     const src = i === 0 ? bullet + s : s;
     const next = stripSentence(src);
-    if (next !== src) edits.push({ kind: "sentence", from: s, to: i === 0 ? next.slice(bullet.length) : next });
-    const bare = i === 0 ? next.slice(bullet.length) : next;
-    if (bare.trim()) kept.push(bare);
+    if (next !== src) {
+      changed = true;
+      edits.push({ kind: "sentence", from: s, to: i === 0 ? next.slice(bullet.length) : next });
+    }
+    return i === 0 ? next.slice(bullet.length) : next;
   });
-  const rebuilt = kept.join(" ").trim();
+  if (!changed) return rewritten;
+  const rebuilt = joinSentences(kept, seps).trim();
   return rebuilt ? bullet + rebuilt : "";
 }
 

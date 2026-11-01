@@ -53,6 +53,18 @@ export const maxDuration = 300;
  *    first write and each image's old alt; a listing whose last run did not finish is
  *    refused (`needs-review`) until a person has looked at it (`reviewed=1`). Descriptions are not
  *    touched in this mode.
+ *  - `?replan=1` with `products=` (and `lang=` for a translation): the rules got better
+ *    after a write (2026-11-01: a Spanish line of glued bullets lost its gift-message and care
+ *    bullets with the disclosure at its end). Takes the original text of this product's last
+ *    desc-strip write (`diff.original`, else `diff.before`), runs the current rules on it and
+ *    writes the result, so what an earlier rule took by mistake comes back. Only when the
+ *    live text is still exactly what that write left (`diff.after`); a text someone changed
+ *    since is reported as `changed-since` and never written. A result that would restore the
+ *    whole original is refused (`original-clean`). Dry run by default, `apply=1` writes,
+ *    reads back and audits like any other write.
+ *  - `?scan=1&smell=1`: also lists, for every scanned listing, the lines of the cleaned text
+ *    that still match a broad internal-note pattern (SMELL_RE), deduplicated with a count.
+ *    Read only; it is for a person to read, to find wordings the rules do not know yet.
  */
 
 async function authorize(request: Request): Promise<boolean> {
@@ -292,6 +304,134 @@ function plan(before: string) {
 
 const LANG_RE = /^[a-z]{2}(?:-[A-Z]{2})?$/;
 
+// Broad on purpose: a person reads what it finds ("confirm your size" is buyer copy; the
+// point is to see every line that could be a note the rules do not know yet).
+const SMELL_RE =
+  /visuali|\b(?:AI|IA)\b|render|propuesta|proposal|proposed|provisional|aprob|approv|fabricante|\bmaker\b|muestra|sample|prototip|prototype|intern[oa]s?\b|internal|objetivo|target|preliminar|estimaci|estimate|antes de (?:la )?(?:venta|producción|publica)|before (?:sale|production|publish)|\bEtsy\b|\bpanel\b|\bCAD\b|read-?back|supplier|proveedor|confirm|pending|pendiente|\bTBD\b|placeholder|\[|\{|desarrollo|development|draft|borrador|\bSKU\b|\bBAS-\d/i;
+
+type Admin = ReturnType<typeof createAdminClient>;
+type AuditDiff = { lang?: string; before?: string; after?: string; original?: string; verified?: boolean };
+
+/** `replan=1` for one product: see the route comment. */
+async function replanProduct(
+  admin: Admin,
+  client: EtsyClient | null,
+  orgId: string,
+  p: { id: string; sku: string | null; etsy_listing_id: number | null },
+  lang: string | null,
+  apply: boolean,
+  detail: boolean,
+): Promise<Row> {
+  const base: Row = { product: p.id, sku: p.sku, listing: p.etsy_listing_id, ...(lang ? { lang } : {}) };
+  if (!p.etsy_listing_id || !client) return { ...base, status: "etsy-listing-yok" };
+  const listingId = p.etsy_listing_id;
+  const { data, error } = await admin
+    .from("audit_log")
+    .select("id, diff, created_at")
+    .eq("org_id", orgId)
+    .eq("action", "etsy.desc_strip")
+    .eq("entity_id", p.id)
+    .order("created_at", { ascending: false })
+    .limit(50);
+  if (error) return { ...base, status: "error", detail: `audit unreadable: ${error.message}` };
+  // The latest write of this text (description, or the translation in `lang`).
+  const last = ((data ?? []) as { id: string; diff: AuditDiff | null }[]).find(
+    (a) => typeof a.diff?.before === "string" && (a.diff?.lang ?? null) === lang,
+  );
+  if (!last || !last.diff || typeof last.diff.after !== "string") return { ...base, status: "no-audit" };
+  const lastAfter = last.diff.after;
+  if (last.diff.verified !== true) return { ...base, status: "unverified-audit", audit: last.id };
+  const original = typeof last.diff.original === "string" ? last.diff.original : (last.diff.before as string);
+
+  let live: string;
+  let title = "";
+  let tags: string[] = [];
+  if (lang) {
+    const tr = await getListingTranslation(client, listingId, lang);
+    if (!tr) return { ...base, status: "no-translation" };
+    live = decodeHtmlEntities(tr.description ?? "");
+    title = decodeHtmlEntities(tr.title ?? "");
+    tags = (tr.tags ?? []).map((t) => decodeHtmlEntities(t));
+  } else {
+    const l = await client.get<{ description?: string }>(etsyPaths.listing(listingId));
+    live = decodeHtmlEntities(l.description ?? "");
+  }
+  if (normText(live) !== normText(lastAfter)) {
+    return { ...base, status: "changed-since", audit: last.id, ...(detail ? { live, expected: lastAfter } : {}) };
+  }
+  const r = plan(original);
+  if (!r.changed) return { ...base, status: "original-clean", audit: last.id };
+  const change: Row = { audit: last.id, from: live.length, to: r.text.length, ...(detail ? { before: live, after: r.text } : {}) };
+  if (normText(r.text) === normText(live)) return { ...base, status: "unchanged" };
+  if (r.tooLarge) return { ...base, ...change, status: "refused-large-cut" };
+  if (!apply) return { ...base, ...change, status: "would-replan" };
+
+  const tagKey = (list: string[]) => list.map((t) => decodeHtmlEntities(t).trim().toLowerCase()).sort().join("|");
+  // Once the write is sent Etsy may hold it whatever happens next: audit every outcome.
+  let writeError: string | null = null;
+  let readBackError: string | null = null;
+  let verified = false;
+  try {
+    if (lang) {
+      await putListingTranslation(client, listingId, lang, { title, description: r.text, tags });
+    } else {
+      const shopId = await client.requireShopId();
+      await client.requestForm("PATCH", etsyPaths.shopListing(shopId, listingId), { description: r.text });
+    }
+    try {
+      if (lang) {
+        const after = await getListingTranslation(client, listingId, lang);
+        verified =
+          normText(decodeHtmlEntities(after?.description ?? "")) === normText(r.text) &&
+          normText(decodeHtmlEntities(after?.title ?? "")) === normText(title) &&
+          tagKey(after?.tags ?? []) === tagKey(tags);
+      } else {
+        const after = await client.get<{ description?: string }>(etsyPaths.listing(listingId));
+        verified = normText(decodeHtmlEntities(after.description ?? "")) === normText(r.text);
+      }
+    } catch (e) {
+      readBackError = String(e);
+    }
+  } catch (e) {
+    writeError = String(e);
+  }
+  if (verified && !lang) {
+    await admin.from("products").update({ description: r.text }).eq("id", p.id).eq("org_id", orgId);
+  }
+  await logAudit(admin, {
+    orgId,
+    action: "etsy.desc_strip",
+    entityType: "product",
+    entityId: p.id,
+    summary:
+      `${lang ? `${lang} çeviri açıklaması` : "Açıklama"} güncel kurallarla özgün metinden yeniden kuruldu (ops desc-strip replan): ` +
+      `listing ${listingId}, ${live.length} -> ${r.text.length} kr; ` +
+      (writeError ? `yazım hatası, sonuç bilinmiyor.` : `read-back ${verified ? "doğrulandı" : "BAŞARISIZ"}.`),
+    // `before` is the live text this write replaced; `original` the text before any desc-strip write.
+    diff: {
+      listingId,
+      ...(lang ? { lang, title, tags } : {}),
+      before: live,
+      after: r.text,
+      original,
+      replanOf: last.id,
+      removed: r.removed,
+      edits: r.edits,
+      verified,
+      ...(writeError ? { writeError } : {}),
+      ...(readBackError ? { readBackError } : {}),
+    },
+    source: "ops/desc-strip",
+  });
+  return {
+    ...base,
+    ...change,
+    status: writeError ? "error" : verified ? "replanned" : "verify-failed",
+    ...(writeError ? { detail: writeError } : {}),
+    ...(readBackError ? { readBackError } : {}),
+  };
+}
+
 export async function GET(request: Request) {
   const deadline = Date.now() + BUDGET_MS;
   if (!(await authorize(request))) {
@@ -302,6 +442,8 @@ export async function GET(request: Request) {
   const scan = url.searchParams.get("scan") === "1";
   const detail = url.searchParams.get("detail") === "1";
   const images = url.searchParams.get("images") === "1";
+  const replan = url.searchParams.get("replan") === "1";
+  const smell = url.searchParams.get("smell") === "1";
   const lang = url.searchParams.get("lang");
   const orgName = url.searchParams.get("org");
   const productIds = (url.searchParams.get("products") ?? "")
@@ -310,6 +452,8 @@ export async function GET(request: Request) {
     .filter((s) => /^[0-9a-f-]{36}$/i.test(s));
   if (!orgName) return NextResponse.json({ error: "org is required" }, { status: 400 });
   if (lang !== null && !LANG_RE.test(lang)) return NextResponse.json({ error: "lang: an IETF code such as es" }, { status: 400 });
+  if (replan && (scan || images)) return NextResponse.json({ error: "replan works on products, not with scan or images" }, { status: 400 });
+  if (smell && !scan) return NextResponse.json({ error: "smell is a scan option" }, { status: 400 });
   if (images) {
     if (productIds.length > 20) return NextResponse.json({ error: "products: max 20" }, { status: 400 });
     const admin = createAdminClient();
@@ -341,6 +485,7 @@ export async function GET(request: Request) {
     let translations = 0;
     let partial = false;
     const errors: Row[] = [];
+    const smells = new Map<string, { n: number; listings: number[] }>();
     scanLoop: for (const st of SCAN_STATES) {
       for (let offset = 0; ; offset += PAGE) {
         if (Date.now() >= deadline) {
@@ -385,6 +530,17 @@ export async function GET(request: Request) {
             before = decodeHtmlEntities(tr.description ?? "");
           }
           const p = plan(before);
+          if (smell) {
+            for (const line of (p.changed ? p.text : before).split("\n")) {
+              const t = line.trim();
+              if (!t || !SMELL_RE.test(t)) continue;
+              const key = t.slice(0, 400);
+              const s = smells.get(key) ?? { n: 0, listings: [] };
+              s.n++;
+              if (s.listings.length < 5) s.listings.push(l.listing_id);
+              smells.set(key, s);
+            }
+          }
           if (!p.changed) continue;
           hits.push({
             listing: l.listing_id,
@@ -421,6 +577,13 @@ export async function GET(request: Request) {
       byState,
       hits: hits.length,
       notInPanel: hits.filter((h) => !h.product).length,
+      ...(smell
+        ? {
+            smell: [...smells.entries()]
+              .map(([line, s]) => ({ line, n: s.n, listings: s.listings }))
+              .sort((a, b) => b.n - a.n || a.line.localeCompare(b.line)),
+          }
+        : {}),
       results: hits,
     });
   }
@@ -454,6 +617,10 @@ export async function GET(request: Request) {
       continue;
     }
     try {
+      if (replan) {
+        results.push(await replanProduct(admin, client, orgId, p, lang, apply, detail));
+        continue;
+      }
       if (lang) {
         // Listing translation: Etsy holds it, the panel keeps no live copy of it.
         if (!p.etsy_listing_id || !client) {
@@ -608,9 +775,20 @@ export async function GET(request: Request) {
     apply,
     org: orgName,
     ...(lang ? { lang } : {}),
+    ...(replan ? { replan: true } : {}),
     targets: productIds.length,
     wouldStrip: count("would-strip"),
     stripped: count("stripped"),
+    ...(replan
+      ? {
+          wouldReplan: count("would-replan"),
+          replanned: count("replanned"),
+          unchanged: count("unchanged"),
+          // Not written: someone changed the text since, no earlier write, or the earlier write
+          // was not verified, or the current rules find the original clean.
+          held: count("changed-since") + count("no-audit") + count("unverified-audit") + count("original-clean"),
+        }
+      : {}),
     clean: count("clean"),
     refused: count("refused-large-cut"),
     deferred: count("deferred"),
