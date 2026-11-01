@@ -1749,6 +1749,34 @@ repodaki hedefidir.
   inceleme turlarını bulgu sayısı sıfırlanana kadar değil, biriken örnek kümesi ve gerçek korpus
   sabitlenene kadar koş; (4) yazan her araç kendi geri dönüşünü taşır (özgün metin denetimde, CAS
   korumalı yeniden kurma).
+  **Güçlendirme (aynı gün, PR #488) — geri getiren yol açık kalıpla yazılırsa inceleme yakınsamaz;
+  onu canlı metnin KAPALI dilbilgisine bağla, kaynağı da boyla değil KESİN YENİDEN ÜRETİMLE kanıtla:**
+  #487'nin replan çiftlerini okurken bir İspanyolca listing'de "la imagen de los tres metales muestra…"
+  bilgisinin silindiğini gördüm. Sebep listing değil kuraldı: beyan cümleciğin başındaysa kesici
+  ondan sonrasını da atıyordu, aynı cümle ";" ile yazılınca bilgi kalıyordu. Yani bilginin
+  kalıp kalmaması noktalamaya bağlıydı ve 6 Artifact listing'i İngilizcede (10-27) ve İspanyolcada
+  (11-01) aynı bilgiyi kaybetmişti. İlk düzeltmem açık bir kalıptı ("beyandan sonra temiz bir
+  cümlecik kalır", ardından "öznesi görsel olan bir açıklama kalır"). Üç bağımsız inceleme turu
+  her seferinde başka bir sızıntı buldu: kelime sayan liste-sonu sezgisi İspanyolca ondalık
+  virgülü liste sandı ve main'in koruduğu bilgileri sildi; açıklamanın ardından gelen kuyruklar
+  ("may vary", ", so…", "podrá variar", "aren't") yayımlandı; başka kelimeyle yazılmış beyanlar
+  ("generated", "con fines ilustrativos") açıklama sanıldı. Her kelime listesi yaması açığı
+  kapatmadı, yalnız yerini değiştirdi. Yakınsatan şey, geri getirilecek metni canlı korpustaki
+  gerçek biçimlerin kapalı dilbilgisine bağlamak oldu (12 metinde 8 biçim: "the three-metal image
+  shows … yellow, white and rose gold" ve İspanyolca karşılığı). Eşleşmeyen her şey main'deki gibi
+  gidiyor; yeni yol artık hiçbir açık uçlu metni yayımlayamıyor. Gerçek korpus dört sürüm boyunca
+  birebir aynı kaldı, yani turlar yalnız varsayımsal kenarları tartışıyordu. İkinci ders kaynakta:
+  10-27 yazımları `diff` kaydetmemişti; özgünü aynı istekteki panel trigger satırından alıp yalnız
+  özet boyuyla doğruladım ve inceleme bunu çürüttü (aynı boyda eski bir panel kopyası canlıya
+  "1.5 mm" yazdırabilirdi). Kanıt o günün kuralını DONDURUP (`lib/etsy/legacy/`, tek o sürüm koşmuştu)
+  panel kopyasından yazılan metni BİREBİR yeniden üretmek oldu. Kural: (1) silinmiş bir bilgiyi geri
+  getiren yol, kesen yoldan daha riskli bir eklemedir; onu açık kalıpla değil, kaybolduğu bilinen
+  metnin tam yapısıyla yaz; (2) inceleme turları her seferinde yeni bir kenar buluyor ve gerçek
+  korpus kıpırdamıyorsa sorun eksik kelime değil açık tasarımdır; tasarımı kapat, yamayı bırak;
+  (3) kaydı olmayan eski bir yazımın özgününü boy gibi zayıf bir izle değil, deterministik kuralı
+  dondurup kesin yeniden üretimle kabul et ve kanıtın göremediği yeri (kuralın sildiği cümleler)
+  dokümana açıkça yaz; (4) kelime sınırını `\b` ile kuran Unicode kuralı aksanlı harften sonra
+  çalışmaz ("está", "será"); İspanyolca kelime listesi yazıyorsan sınırı `u` bayrağıyla kur.
 
 ## Ürün/UX dersleri
 
