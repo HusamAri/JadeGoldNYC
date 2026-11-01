@@ -182,6 +182,19 @@ const LINES: [string, string][] = [
   ["- Los pesos en gramos para las tallas de EE. UU. 3 a la 16 son estimaciones preliminares y deben confirmarse antes de la producción.", ""],
   ["The finished weight (approx. 2.4 g) must be confirmed before production.", ""],
   ["- Gram weights for U.S. Sizes 3 to 16 are estimates and must be confirmed before production.", ""],
+  // Review 2026-11-01 (third pass).
+  ["Model shown wears size U.S. 7. Final weight must be confirmed before production.", "Model shown wears size U.S. 7."],
+  ["Weight 2.4 g approx. Final weight must be confirmed before production.", "Weight 2.4 g approx."],
+  ["- El ancho objetivo del diseño es de aproximadamente 6.0 mm.", "- El ancho es de aproximadamente 6.0 mm."],
+  ["- El grosor objetivo del diseño es de aproximadamente 1.8 mm y el ancho objetivo del diseño permanece fijo en aproximadamente 6.0 mm.",
+   "- El grosor es de aproximadamente 1.8 mm y el ancho permanece fijo en aproximadamente 6.0 mm."],
+  ["- Weights for U.S. sizes 3 to 16 must be confirmed before production.", ""],
+  ["- Weight figures (e.g. 2.4 g at US 7) must be confirmed before production.", ""],
+  ["- Weights for the 16 in. and 18 in. chains must be confirmed before production.", ""],
+  ["Please confirm the final measurements, weight and availability before sending the listing to Etsy, and the finished sculptural ring is produced after those details are confirmed.", ""],
+  ["Final CAD is pending owner approval; send us your ring size and engraving text, and your ring ships within 10 business days after these details are confirmed.",
+   "Send us your ring size and engraving text."],
+  ["• Se vende como par, diámetro de 12,5 mm y cierre pendientes de confirmación del proveedor.", "• Se vende como par."],
 ];
 
 // Ordinary buyer copy from the same listings: must come back byte for byte.
@@ -282,6 +295,21 @@ const KEEP: string[] = [
   "Iniciales AI y las fotos del anuncio muestran la pieza real.",
   "Puedes grabar iniciales como AI y las fotos muestran ejemplos de tipografía.",
   "Únete a la lista de espera y te avisamos antes de que el modelo se ponga a la venta.",
+  // Review 2026-11-01 (third pass).
+  "- Pago en cuotas con Klarna disponible al finalizar la compra, sujeto a aprobación del proveedor.",
+  "El número de seguimiento se envía por correo tras la confirmación del proveedor de envío.",
+  "- Envíos internacionales: el precio final del envío depende de la cotización del proveedor de mensajería.",
+  "Entrega estimada de 3 a 5 días hábiles, pendiente de confirmación del proveedor de envío.",
+  "Cada anillo se fabrica a pedido en la talla y el peso que elijas, y el texto del grabado debe confirmarse antes de la producción.",
+  "- Peso de fundición: 4,1 g (aprox.), oro macizo de 14K.",
+  "- Las cadenas que se muestran aquí no se proporcionan; el colgante se vende solo.",
+  "Con la comodidad diaria como objetivo del diseño, el interior del anillo es redondeado para un ajuste cómodo.",
+  "La ligereza y la comodidad son objetivos del diseño: el anillo pesa solo 2 g.",
+  "Nuestro taller se propone como objetivo crear joyas que duren generaciones.",
+  "Este anillo se propone como alternativa moderna al solitario clásico.",
+  "Each custom design is proposed as a hand sketch first, then refined in CAD with you.",
+  "This set is proposed as a gift for the bride.",
+  "Reciclamos todo el desperdicio de fundición en nuevas piezas, así que nada se pierde.",
 ];
 
 // Image disclosures whose line also holds buyer facts (review 2026-11-01, second pass).
@@ -301,6 +329,20 @@ const VIS_LINES: [string, string][] = [
   ["- Elige una talla de EE. UU. del 3 al 16.Las imágenes del producto son visualizaciones de diseño.", "- Elige una talla de EE. UU. del 3 al 16."],
   ["- Elige oro macizo de 10K, 14K o 18K.Las imágenes del producto son visualizaciones de diseño.", "- Elige oro macizo de 10K, 14K o 18K."],
   ["- Incluye una cadena de 1,2 mm (45 cm).Las imágenes del producto son visualizaciones de diseño.", "- Incluye una cadena de 1,2 mm (45 cm)."],
+  // Review 2026-11-01 (third pass): a size after an abbreviation, an abbreviation at a sentence
+  // end, an unlisted abbreviation before lowercase, a marker that is content.
+  ["El anillo de las fotos es una talla de EE. UU. 7. Las imágenes del producto son visualizaciones de diseño.",
+   "El anillo de las fotos es una talla de EE. UU. 7."],
+  ["The ring in the photos is a size U.S. 7. The images are design visualizations.", "The ring in the photos is a size U.S. 7."],
+  ["Style No. 12. The images are design visualizations.", "Style No. 12."],
+  ["- Seleccione la talla de EE. UU. 7.- Las imágenes son visualizaciones creadas con IA.", "- Seleccione la talla de EE. UU. 7."],
+  ["Pendant measures 12 mm approx. The listing images are AI-generated renderings.", "Pendant measures 12 mm approx."],
+  ["El colgante mide 12 mm aprox. Las imágenes son visualizaciones creadas con IA.", "El colgante mide 12 mm aprox."],
+  ["Ships free within the U.S. 3D visualizations are shown in place of photos.", "Ships free within the U.S."],
+  ["The images are AI renders of the 0.10 ct. diamond band; sizes 5 to 9.", "Sizes 5 to 9."],
+  ["- ✔ Envío gratis. Las imágenes son visualizaciones creadas con IA.", "- ✔ Envío gratis."],
+  ["Las fotos del anuncio… fueron editadas con IA.", ""],
+  ["Product photos, incl. the hand shot, are AI-assisted.", ""],
 ];
 
 test("image disclosures in a line with buyer facts take only their own sentence", () => {

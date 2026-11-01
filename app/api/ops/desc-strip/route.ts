@@ -346,14 +346,23 @@ async function stripChain(admin: Admin, orgId: string, productId: string, lang: 
 }
 
 /**
- * The text before any desc-strip write, for a live text that one of the writes left. Starts at
- * the newest write whose result is the live text (a failed attempt that never landed does not
- * match and is skipped) and walks back through writes that recorded no `original`, each one
- * the result of the write before it.
+ * The text before any desc-strip write, for a live text that one of the writes left. Takes the
+ * newest write whose result is the live text; an unverified attempt that does not match (it
+ * failed or never landed) is skipped, but a newer VERIFIED write whose result is not the live
+ * text means someone changed the text since: null. Then walks back through writes that recorded
+ * no `original`, each one the result of the write before it.
  */
-function originalOf(rows: AuditRow[], live: string): { original: string; from: string } | null {
-  let i = rows.findIndex((r) => normText(r.diff.after as string) === normText(live));
+function originalOf(rows: AuditRow[], live: string): { original: string; from: string; verified: boolean } | null {
+  let i = -1;
+  for (let k = 0; k < rows.length; k++) {
+    if (normText(rows[k].diff.after as string) === normText(live)) {
+      i = k;
+      break;
+    }
+    if (rows[k].diff.verified === true) return null;
+  }
   if (i < 0) return null;
+  const verified = rows[i].diff.verified === true;
   while (typeof rows[i].diff.original !== "string") {
     const cur = rows[i];
     const j = rows.findIndex((r, k) => k > i && normText(r.diff.after as string) === normText(cur.diff.before as string));
@@ -361,7 +370,7 @@ function originalOf(rows: AuditRow[], live: string): { original: string; from: s
     i = j;
   }
   const row = rows[i];
-  return { original: typeof row.diff.original === "string" ? row.diff.original : (row.diff.before as string), from: row.id };
+  return { original: typeof row.diff.original === "string" ? row.diff.original : (row.diff.before as string), from: row.id, verified };
 }
 
 /**
@@ -423,7 +432,16 @@ async function replanProduct(
   const r = plan(original);
   if (!r.changed) return { ...base, status: "original-clean", audit: chain.from };
   const change: Row = { audit: chain.from, from: live.length, to: r.text.length, ...(detail ? { before: live, after: r.text } : {}) };
-  if (normText(r.text) === normText(live)) return { ...base, status: "unchanged" };
+  if (normText(r.text) === normText(live)) {
+    // An earlier replan landed but its read-back failed: the live text is right, the panel copy
+    // (English) was never updated. Bring it in line on apply; report it either way.
+    if (!chain.verified) {
+      if (!apply) return { ...base, audit: chain.from, status: "unverified-landed" };
+      if (!lang) await admin.from("products").update({ description: live }).eq("id", p.id).eq("org_id", orgId);
+      return { ...base, audit: chain.from, status: lang ? "unchanged" : "panel-synced" };
+    }
+    return { ...base, status: "unchanged" };
+  }
   if (r.tooLarge) return { ...base, ...change, status: "refused-large-cut" };
   if (!apply) return { ...base, ...change, status: "would-replan" };
   // Outside the write: a failure here sends nothing, so nothing to audit.
@@ -597,8 +615,12 @@ export async function GET(request: Request) {
               const t = line.trim();
               if (!t) continue;
               // One entry per match, keyed on its excerpt: a long glued line can hold several.
+              // Each key counts once per line.
+              const seen = new Set<string>();
               for (const { match, excerpt } of smellExcerpts(t)) {
                 const key = `${match.toLowerCase()}\u0000${excerpt}`;
+                if (seen.has(key)) continue;
+                seen.add(key);
                 const s = smells.get(key) ?? { n: 0, listings: [] };
                 s.n++;
                 if (s.listings.length < 5) s.listings.push(l.listing_id);
@@ -854,9 +876,10 @@ export async function GET(request: Request) {
           wouldReplan: count("would-replan"),
           replanned: count("replanned"),
           unchanged: count("unchanged"),
-          // Not written: someone changed the text since, no earlier write, or the earlier write
-          // was not verified, or the current rules find the original clean.
-          held: count("changed-since") + count("no-audit") + count("unverified-audit") + count("original-clean"),
+          panelSynced: count("panel-synced"),
+          // Not written: someone changed the text since, no earlier write, the current rules find
+          // the original clean, or an earlier replan landed without a read-back (dry run).
+          held: count("changed-since") + count("no-audit") + count("original-clean") + count("unverified-landed"),
         }
       : {}),
     clean: count("clean"),
