@@ -204,6 +204,8 @@ const LINES: [string, string][] = [
    "The comma represents a continuing story."],
   ["El cierre es de langosta, pendiente de confirmación del proveedor para la talla 8.", "El cierre es de langosta."],
   ["Peso aproximado de 3,2 g, pendiente de confirmación del proveedor tras la fundición.", "Peso aproximado de 3,2 g."],
+  ["• Se vende como un par, diámetro de 12 mm y cierre pendientes de confirmación del proveedor y el envío es gratis.",
+   "• Se vende como un par y el envío es gratis."],
   ["• Disponible en tallas 5 a 9 de EE. UU., diámetro exacto pendiente de confirmación del proveedor.", "• Disponible en tallas 5 a 9 de EE. UU."],
   ["The finished weight (approx. 3mm band, US 7) must be confirmed before production.", ""],
   ["La cotización del proveedor identifica esta pulsera en 7,5 pulgadas. La longitud mínima y máxima final se añadirá después de la lectura del proveedor.", ""],

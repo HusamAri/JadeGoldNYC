@@ -244,7 +244,7 @@ const PHRASE_REWRITES: Rewrite[] = [
   // a decimal ("1.5 mm") may sit inside the clause.
   [/,\s*(?:(?:[^,;.]|\d\.\d)*?\s)?(?:pending supplier confirmation|supplier confirmation pending)\b/gi, ""],
   // Spanish: "; el diámetro exacto y el cierre están pendientes de confirmación del proveedor".
-  [/,(?!\d)\s*(?:(?:[^,;.]|\d[.,]\d)*?\s)?(?:están |está )?pendientes? de (?:la )?confirmación del proveedor\b(?! de (?:envío|mensajería|pago)| logístic[oa])[^.;,]*/gi, ""],
+  [/,(?!\d)\s*(?:(?:[^,;.]|\d[.,]\d)*?\s)?(?:están |está )?pendientes? de (?:la )?confirmación del proveedor\b(?! de (?:envío|mensajería|pago)| logístic[oa])(?:(?!\s(?:y|e|o)\s)[^.;,])*/gi, ""],
   // "• Oro macizo de 14K amarillo, blanco y rosa, confirmación del proveedor pendiente".
   [/,(?!\d)\s*(?:(?:[^,;.]|\d[.,]\d)*?\s)?confirmación del proveedor pendientes?(?=\s*(?:[.;,!?)]|$))/gi, ""],
   // Design-proposal wording: "These sculptural gold earrings are proposed as a mirror pair",
