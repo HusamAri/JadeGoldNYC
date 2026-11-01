@@ -1775,8 +1775,9 @@ repodaki hedefidir.
   korpus kıpırdamıyorsa sorun eksik kelime değil açık tasarımdır; tasarımı kapat, yamayı bırak;
   (3) kaydı olmayan eski bir yazımın özgününü boy gibi zayıf bir izle değil, deterministik kuralı
   dondurup kesin yeniden üretimle kabul et ve kanıtın göremediği yeri (kuralın sildiği cümleler)
-  dokümana açıkça yaz; (4) kelime sınırını `\b` ile kuran Unicode kuralı aksanlı harften sonra
-  çalışmaz ("está", "será"); İspanyolca kelime listesi yazıyorsan sınırı `u` bayrağıyla kur.
+  dokümana açıkça yaz; (4) JavaScript'te `\b` aksanlı harften sonra sınır görmez ("está", "será"),
+  `u` bayrağıyla da görmez; İspanyolca kelime listesinde sınırı `u` bayrağı ve `(?<![\p{L}\d])` /
+  `(?![\p{L}\d])` bakışlarıyla kur.
 
 ## Ürün/UX dersleri
 
