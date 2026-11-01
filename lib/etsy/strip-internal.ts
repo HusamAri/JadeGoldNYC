@@ -55,7 +55,7 @@ export const INTERNAL_RE = new RegExp(
     String.raw`^\s*DESIGN PROPOSAL\b`,
     // After a bullet only with a status tail: "• Design proposal for Fall 2026"; not a custom-order
     // step ("2. Design proposal: we email a sketch within 48 hours").
-    String.raw`^\s*(?:[-•✔*·]|\d+[.)])\s+DESIGN PROPOSAL\b(?=\s*(?:[—–-]|:?\s*$|for (?:Spring|Summer|Fall|Autumn|Winter|\d{4})\b))`,
+    String.raw`^\s*(?:[-•✔*·]|\d+[.)])\s+DESIGN PROPOSAL\b(?=\s*(?:[—–\-;]|[:.]?\s*$|(?:for (?:the )?|\()(?:Spring|Summer|Fall|Autumn|Winter|\d{4})\b))`,
     // "once you approve the design proposal" is a custom-order step; the listing's own status is not.
     String.raw`\bthis design proposal\b`,
     String.raw`\bthis (?:listing|design|piece|ring) is (?:a|the|only a) design proposal\b`,
@@ -119,7 +119,7 @@ export const INTERNAL_RE = new RegExp(
     String.raw`\b(?:este|el) (?:diseño|anuncio) no (?:está )?disponible para la venta\b`,
     // As in English: the heading and the listing's own status, not "te enviamos una propuesta de diseño".
     String.raw`^\s*PROPUESTA DE DISEÑO\b`,
-    String.raw`^\s*(?:[-•✔*·]|\d+[.)])\s+PROPUESTA DE DISEÑO\b(?=\s*(?:[—–-]|:?\s*$|para (?:primavera|verano|otoño|invierno|\d{4})\b))`,
+    String.raw`^\s*(?:[-•✔*·]|\d+[.)])\s+PROPUESTA DE DISEÑO\b(?=\s*(?:[—–\-;]|[:.]?\s*$|(?:para (?:(?:la|el) )?|\()(?:primavera|verano|otoño|invierno|\d{4})\b))`,
     String.raw`\besta propuesta de diseño\b`,
     // "Las dimensiones son objetivos de desarrollo", "grosor objetivo de diseño"; not "nuestro objetivo de diseño fue ...".
     String.raw`\b(?:son|como) objetivos? de (?:diseño|desarrollo)\b`,

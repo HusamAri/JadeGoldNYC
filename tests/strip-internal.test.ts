@@ -135,6 +135,10 @@ const LINES: [string, string][] = [
   ["• Design proposal for Fall 2026; final weight to follow.", "• Final weight to follow."],
   ["Las dimensiones son objetivos de desarrollo.", ""],
   ["El espesor objetivo de diseño es de 1,5 mm.", ""],
+  ["• Design proposal; final weight to follow.", "• Final weight to follow."],
+  ["• Design proposal.", ""],
+  ["• Design proposal (Fall 2026)", ""],
+  ["• Propuesta de diseño.", ""],
   ["Every price includes one additional gram of gold and USD 100 labor.", ""],
 ];
 
@@ -195,6 +199,11 @@ const KEEP: string[] = [
   "The Heavy option adds an additional gram of gold for a more substantial feel.",
   "Our photos are not made with AI: every picture shows the real ring.",
   "Nuestras fotos no se crearon con IA.",
+  // Final review 2026-11-01.
+  "Las fotos son reales, ninguna está editada con IA.",
+  "Our photos are real, none of them edited with AI.",
+  "Photos: real ring, real light, nothing made with AI.",
+  "• Design proposal (included with every custom order)",
   "PRICE NOTE\nPrice is for one earring, not a pair. Buy two for a pair.",
   "PRODUCTION NOTES\nEach piece is cast in recycled gold and hand-finished; allow 2 to 3 weeks.",
 ];
@@ -442,12 +451,17 @@ test("an image disclosure is still caught in its other wordings", () => {
     assert.equal(stripPublicDescription(s).text, "", s);
   }
   assert.equal(stripPublicDescription("Shown as a 3D rendering; the handmade ring may vary slightly.").text, "The handmade ring may vary slightly.");
+  assert.equal(stripPublicDescription("Ready to ship! Shown as a 3D rendering.").text, "Ready to ship!");
   for (const s of [
     "Images and video in this listing were created with AI.",
     "The listing photos are illustrative and were made with AI.",
     "Product photos, created with AI, show the intended design.",
     "Las fotos y el video se crearon con IA.",
     "Las imágenes, creadas con IA, muestran el diseño.",
+    // A negation that does not govern the AI phrase does not save the disclosure.
+    "Las fotos no muestran el sello final porque fueron hechas con IA.",
+    "Product photos are not to scale since they were created using AI.",
+    "✔ Shown as a 3D rendering",
   ]) {
     assert.equal(stripPublicDescription(s).text, "", s);
   }

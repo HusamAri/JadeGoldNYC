@@ -129,7 +129,9 @@ async function imagesMode(
     const ids = (url.searchParams.get("listings") ?? "").split(",").map((s) => Number(s.trim())).filter((n) => Number.isInteger(n) && n > 0);
     if (ids.length === 0 || ids.length > 40) return NextResponse.json({ error: "listings (1-40 Etsy ids) or products (1-20) are required" }, { status: 400 });
     // The panel product of each listing, so the dry run runs the same unfinished-run gate as apply.
-    const { data } = await admin.from("products").select("id, etsy_listing_id").eq("org_id", orgId).in("etsy_listing_id", ids);
+    const { data, error: prodErr } = await admin.from("products").select("id, etsy_listing_id").eq("org_id", orgId).in("etsy_listing_id", ids);
+    // Without the products the gate cannot run: fail closed rather than report a listing as unknown.
+    if (prodErr) return NextResponse.json({ error: "products unreadable", detail: prodErr.message }, { status: 503 });
     const rows = (data ?? []) as { id: string; etsy_listing_id: number }[];
     targets = ids.map((listing) => ({ product: rows.find((r) => r.etsy_listing_id === listing)?.id ?? null, listing }));
   }
