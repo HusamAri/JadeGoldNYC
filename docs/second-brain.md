@@ -1717,6 +1717,39 @@ repodaki hedefidir.
   tüketildi (used 3, açık 0), ama ders net: gizli dosyayı maskeleyen komut önce `head -c`/biçim
   kontrolüyle sınanır ya da hiç basılmaz, değer `awk`la doğrudan değişkene alınır.
 
+- **"Her listing" her DİL KATMANIDIR; temizleme kuralı aynı zamanda gönderim kapısıysa adversarial
+  turlar kendiliğinden yakınsamaz, yakınsamayı biriken örnek + gerçek korpus kurar (2026-11-01, iç not
+  temizliği):** Sahip "DESIGN PROPOSAL — NOT READY FOR SALE … bu veya bunun gibi bir ibare herhangi
+  bir markanın herhangi bir listinginde varsa sil" dedi. İngilizce 49 listing (Jade 21, EON 27, Ophir 1)
+  okunan kuru planla birebir temizlendi. Asıl bulgu `lang=es` taramasındaydı: 27 Ekim temizliği yalnız
+  İngilizce açıklamaya dokunmuştu, Artifact'ın 5 AKTİF listing'inin İspanyolca çevirisinde beş gün
+  boyunca "PROPUESTA DE DISEÑO — NO DISPONIBLE PARA LA VENTA" yazdı (toplam 67 İspanyolca hit). Çeviri
+  ayrı bir kamuya açık metindir; "temizlendi" demeden önce her dil `lang=` ile ayrıca taranır. İkinci
+  bulgu: İngilizce korpusla ayarlanmış kural İspanyolca yazım alışkanlığında kırıldı. Çeviriler maddeleri
+  önceki cümleye yapıştırıyordu (`compra.- El esmalte`, `cepillado.Las imágenes`) ve "EE. UU."daki nokta
+  cümle sonu sanılıyordu; sondaki görselleştirme cümlesi önündeki hediye notu, mine bakımı ve "no
+  tiene piedras" maddelerini de götürüyordu. Bunu `removed` listesi göstermedi (o, DEĞİŞEN cümleyi
+  listeler, kaybı değil); önce/sonra KELİME farkı gösterdi. Biri kaçtı: kuru koşu çiftlerini okumayı
+  bitirmeden apply partisini başlattım ve 4591189111 "taş yok" bilgisini kaybetti. Sıra kesindir:
+  önce her çift okunur, sonra yazılır; ikisi paralel yürümez. Kurtaran şey aracın kendi hatasını geri
+  alabilmesiydi: denetim satırındaki `diff.before` + `replan=1` (canlı metin, o yazımın `after`'ıyla
+  birebir aynıysa özgün metni güncel kuralla yeniden işler; daha yeni doğrulanmış bir yazımın sonucu
+  canlıdan farklıysa sahibin düzenlemesidir, yazmaz). Elle tek bir PUT atmak yerine genel ve güvenli bir
+  geri dönüş yolu kuruldu. Üçüncü ders inceleme döngüsündeydi: üç adversarial tur 24, 24 ve 12
+  doğrulanmış bulgu verdi ve her turun düzeltmesi bir sonrakinin bulgusunu üretti. Daraltma kaçak açtı,
+  genişletme yanlış pozitif açtı, çünkü aynı regex hem temizlik hem gönderim kapısı. Yakınsatan üç şey
+  oldu: (1) karar başına İLKE (kalıbı tek kelimeye değil canlı notun tam yapısına bağla; "uydurulmuş
+  çeviri" kalıpları en çok yanlış pozitif üretti; bölmeyi örnekle değil kuralla kur); (2) doğrulanmış
+  her örnek teste girer ve her düzeltme hepsini birden sağlamak zorunda; (3) dördüncü bir avcı turu
+  yerine, üç turun 478 girdisini HEAD'de yeniden koşan bir yakınsama kontrolü (20 kalıntı, biri canlı
+  bir metinde gerçek bilgi kaybıydı). Çapa gerçek korpustu: 50 + 49 İngilizce ve 67 İspanyolca metnin
+  çıktısı turlar boyunca değişmedi, yani düzeltmeler yalnız uç durumlara dokunuyordu. Kural: (1) temizlik
+  isteğinde dil katmanlarını say ve her birini ayrı tara; (2) bir dilin yazım alışkanlığı (yapışık madde,
+  kısaltma, ondalık virgül) o dilin korpusundan okunmadan kurala yazılmaz; (3) kural gönderim kapısıysa
+  inceleme turlarını bulgu sayısı sıfırlanana kadar değil, biriken örnek kümesi ve gerçek korpus
+  sabitlenene kadar koş; (4) yazan her araç kendi geri dönüşünü taşır (özgün metin denetimde, CAS
+  korumalı yeniden kurma).
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması

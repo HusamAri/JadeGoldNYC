@@ -2,6 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 
 import { stripInternalNotes, stripPublicDescription, INTERNAL_RE, cleanAltText, publicTextProblem, assertPublicText } from "../lib/etsy/strip-internal";
+import { joinSentences, splitSentences } from "../lib/etsy/strip-visualization";
 
 // Real lines from live listings (panel mirror of Etsy, 2026-10-31) -> expected line.
 // "" = the line goes.
@@ -134,12 +135,101 @@ const LINES: [string, string][] = [
   ["This design is not available for sale yet.", ""],
   ["• Design proposal for Fall 2026; final weight to follow.", "• Final weight to follow."],
   ["Las dimensiones son objetivos de desarrollo.", ""],
-  ["El espesor objetivo de diseño es de 1,5 mm.", ""],
+  // 2026-11-01: like "Grosor objetivo de diseño", the measurement stays.
+  ["El espesor objetivo de diseño es de 1,5 mm.", "El espesor es de 1,5 mm."],
   ["• Design proposal; final weight to follow.", "• Final weight to follow."],
   ["• Design proposal.", ""],
   ["• Design proposal (Fall 2026)", ""],
   ["• Propuesta de diseño.", ""],
   ["Every price includes one additional gram of gold and USD 100 labor.", ""],
+  // Spanish translations on Etsy, live 2026-11-01 (2027 enamel copy, EON, Jade).
+  ["Referencia interna: BAS-27-MINE-E04-14Y", ""],
+  ["Desarrollo: Muestra requerida", ""],
+  ["Proteja el esmalte de impactos duros y dobleces. Limpie suavemente con un paño suave; evite limpiadores abrasivos y limpieza ultrasónica hasta que el fabricante confirme el método de cuidado.",
+   "Proteja el esmalte de impactos duros y dobleces. Limpie suavemente con un paño suave; evite limpiadores abrasivos y limpieza ultrasónica."],
+  ["- Los pesos en gramos mostrados para cada talla son estimaciones preliminares y deben confirmarse antes de la producción.", ""],
+  ["Por favor, confirma las medidas finales, el peso y la disponibilidad antes de enviar el anuncio a Etsy; el anillo escultórico terminado se produce después de confirmar esos detalles.", ""],
+  ["- Los materiales indicados son oro amarillo y blanco; la pureza final del oro se confirmará antes de que este diseño se ponga a la venta.",
+   "- Los materiales indicados son oro amarillo y blanco."],
+  ["- La talla del anillo se selecciona entre las opciones de variación disponibles, y las medidas finales, el peso y el ajuste se confirmarán antes de que el diseño se ponga a la venta.",
+   "- La talla del anillo se selecciona entre las opciones de variación disponibles."],
+  ["- Las dimensiones físicas y el peso finales no se establecen mediante las imágenes, y los accesorios no están incluidos.",
+   "- Los accesorios no están incluidos."],
+  ["El collar de oro de 18K está preparado a partir del diseño aprobado Threshold.", ""],
+  ["Please confirm the final measurements, weight and availability before sending the listing to Etsy.", ""],
+  // A glued bullet line: only the internal bullet goes, the others keep their own spacing.
+  ["- Cada anillo se hace por encargo.- Desarrollo: muestra requerida.- Limpia con un paño suave.",
+   "- Cada anillo se hace por encargo.- Limpia con un paño suave."],
+  ["Hecho por encargo.Referencia interna: BAS-27-MINE-R01-14Y. Se envía gratis.",
+   "Hecho por encargo. Se envía gratis."],
+  // Review 2026-11-01 (second pass): Spanish forms of the English notes, live or literal.
+  ["- El peso final de 18K se añade después de la lectura de producción, por lo que el peso terminado se confirma tras la producción.", ""],
+  ["- El grosor objetivo del diseño es de aproximadamente 1.8 mm y el ancho permanece fijo en aproximadamente 6.0 mm.",
+   "- El grosor es de aproximadamente 1.8 mm y el ancho permanece fijo en aproximadamente 6.0 mm."],
+  ["- Elija su talla de anillo y los quilates de oro entre las variaciones disponibles; aquí no se proporcionan medidas específicas ni peso.",
+   "- Elija su talla de anillo y los quilates de oro entre las variaciones disponibles."],
+  ["• Se vende como un par; el diámetro exacto y el cierre están pendientes de confirmación del proveedor.", "• Se vende como un par."],
+  ["- Los detalles del sello no se especifican en la información del anuncio.", ""],
+  ["Se requiere la aprobación del CAD final y del peso de fundición antes de cualquier acción de precio en Etsy.", ""],
+  ["Estos pendientes de oro esculturales se proponen como un par simétrico en espejo.",
+   "Estos pendientes de oro esculturales son un par simétrico en espejo."],
+  ["These sculptural gold earrings are proposed as a mirror-symmetric pair.",
+   "These sculptural gold earrings are a mirror-symmetric pair."],
+  // One bullet, not two, when the first sentence of a glued bullet line goes.
+  ["- Desarrollo: muestra requerida.- Cada anillo se hace por encargo.", "- Cada anillo se hace por encargo."],
+  ["• Referencia interna: BAS-27-MINE-R01-14Y.• Se envía gratis.", "• Se envía gratis."],
+  // An abbreviation is not a sentence end: the whole internal sentence goes, not its tail.
+  ["- Los pesos en gramos para las tallas de EE. UU. 3 a la 16 son estimaciones preliminares y deben confirmarse antes de la producción.", ""],
+  ["The finished weight (approx. 2.4 g) must be confirmed before production.", ""],
+  ["- Gram weights for U.S. Sizes 3 to 16 are estimates and must be confirmed before production.", ""],
+  // Review 2026-11-01 (third pass).
+  ["Model shown wears size U.S. 7. Final weight must be confirmed before production.", "Model shown wears size U.S. 7."],
+  ["Weight 2.4 g approx. Final weight must be confirmed before production.", "Weight 2.4 g approx."],
+  ["- El ancho objetivo del diseño es de aproximadamente 6.0 mm.", "- El ancho es de aproximadamente 6.0 mm."],
+  ["- El grosor objetivo del diseño es de aproximadamente 1.8 mm y el ancho objetivo del diseño permanece fijo en aproximadamente 6.0 mm.",
+   "- El grosor es de aproximadamente 1.8 mm y el ancho permanece fijo en aproximadamente 6.0 mm."],
+  ["- Weights for U.S. sizes 3 to 16 must be confirmed before production.", ""],
+  ["- Weight figures (e.g. 2.4 g at US 7) must be confirmed before production.", ""],
+  ["- Weights for the 16 in. and 18 in. chains must be confirmed before production.", ""],
+  ["Please confirm the final measurements, weight and availability before sending the listing to Etsy, and the finished sculptural ring is produced after those details are confirmed.", ""],
+  // The details are the buyer's own (size and text named in the same clause): the clause stays whole.
+  ["Final CAD is pending owner approval; send us your ring size and engraving text, and your ring ships within 10 business days after these details are confirmed.",
+   "Send us your ring size and engraving text, and your ring ships within 10 business days after these details are confirmed."],
+  ["La personalización está prevista; envíanos tu talla y el texto, y el anillo se envía en 10 días después de confirmar estos detalles.",
+   "Envíanos tu talla y el texto, y el anillo se envía en 10 días después de confirmar estos detalles."],
+  // Convergence check 2026-11-01: every confirmed example of three review rounds re-run at HEAD.
+  ["La coma representa una historia que continúa, mientras que las dimensiones de desarrollo siguen estando sujetas a muestreo físico y aprobación del fabricante.",
+   "La coma representa una historia que continúa."],
+  ["The comma represents a continuing story, while development dimensions remain subject to physical sampling and maker approval.",
+   "The comma represents a continuing story."],
+  ["El cierre es de langosta, pendiente de confirmación del proveedor para la talla 8.", "El cierre es de langosta."],
+  ["Peso aproximado de 3,2 g, pendiente de confirmación del proveedor tras la fundición.", "Peso aproximado de 3,2 g."],
+  ["• Se vende como un par, diámetro de 12 mm y cierre pendientes de confirmación del proveedor y el envío es gratis.",
+   "• Se vende como un par y el envío es gratis."],
+  ["• Disponible en tallas 5 a 9 de EE. UU., diámetro exacto pendiente de confirmación del proveedor.", "• Disponible en tallas 5 a 9 de EE. UU."],
+  ["The finished weight (approx. 3mm band, US 7) must be confirmed before production.", ""],
+  ["La cotización del proveedor identifica esta pulsera en 7,5 pulgadas. La longitud mínima y máxima final se añadirá después de la lectura del proveedor.", ""],
+  ["El precio final depende del costo del proveedor.", ""],
+  ["• Se vende como par, diámetro de 12,5 mm y cierre pendientes de confirmación del proveedor.", "• Se vende como par."],
+  // Review 2026-11-01 (fourth pass).
+  ["The finished weight (approx. 2g) must be confirmed before production.", ""],
+  ["- Weights (approx. Size 7) must be confirmed before production.", ""],
+  ["Los pesos (aprox. EE. UU. 7) deben confirmarse antes de la producción.", ""],
+  ["Solid 14K gold band. The finished weight (approx. 2g) must be confirmed before production. Free shipping.", "Solid 14K gold band. Free shipping."],
+  ["Weights for 10K vs. 14K are estimates and must be confirmed before production.", ""],
+  ["- El peso en gramos mostrado es una estimación preliminar y debe confirmarse antes de la producción.", ""],
+  ["- Los pesos mostrados son estimaciones, y deben confirmarse antes de la producción.", "- Los pesos mostrados son estimaciones."],
+  ["• Disponible en tallas de EE. UU. 5 a 9, diámetro exacto pendiente de confirmación del proveedor.", "• Disponible en tallas de EE. UU. 5 a 9."],
+  ["• Oro macizo de 14K amarillo, blanco y rosa, confirmación del proveedor pendiente", "• Oro macizo de 14K amarillo, blanco y rosa"],
+  ["La cotización del proveedor identifica esta pulsera en 7,5 pulgadas y la imagen de producto suministrada muestra una cadena de extensión.", ""],
+  ["These sculptural gold earrings are proposed as a symmetrical mirror pair with rounded upper lobes.",
+   "These sculptural gold earrings are a symmetrical mirror pair with rounded upper lobes."],
+  ["Este par se propone como una pareja en espejo.", "Este par es una pareja en espejo."],
+  ["Todos los precios incluyen un gramo adicional de desperdicio de fundición.", ""],
+  ["Se requiere la aprobación final del CAD y del peso de fundición.", ""],
+  ["El CAD final y el peso de fundición deben aprobarse antes de la venta.", ""],
+  ["- Elija su talla de anillo y los quilates de oro entre las variaciones disponibles; aquí no se proporcionan las medidas específicas ni el peso.",
+   "- Elija su talla de anillo y los quilates de oro entre las variaciones disponibles."],
 ];
 
 // Ordinary buyer copy from the same listings: must come back byte for byte.
@@ -210,6 +300,152 @@ const KEEP: string[] = [
   "Nuestras fotos no se han editado en absoluto con IA.",
   "PRICE NOTE\nPrice is for one earring, not a pair. Buy two for a pair.",
   "PRODUCTION NOTES\nEach piece is cast in recycled gold and hand-finished; allow 2 to 3 weeks.",
+  // Spanish buyer copy from the same translations (2026-11-01).
+  "- Elige una talla de anillo de EE. UU. de la 3 a la 16, incluyendo tallas enteras y medias.",
+  "Elige oro amarillo, blanco o rosa de 10K, 14K o 18K, y selecciona un pendiente o un par.- Cada pieza se hace a pedido y normalmente se procesa en 3 a 5 días.",
+  "La pulsera de cadena de oro no tiene piedras, y la imagen muestra la pulsera en color oro amarillo.",
+  "Colección: Artifact Studio 2027 Color and Enamel.",
+  "Metal: Oro amarillo de 14K",
+  "Confirma tu talla antes de realizar el pedido; el anillo se fabrica después de confirmar la talla.",
+  "Envíanos tu diseño y, a partir del diseño que apruebes, fabricamos tu anillo.",
+  "Please confirm your ring size before ordering.",
+  "Los accesorios no están incluidos.",
+  // Review 2026-11-01 (second pass): custom-order copy that shares words with the new notes.
+  "La pieza no se graba hasta que el fabricante confirme tu texto; te enviamos la prueba por mensaje.",
+  "Los pedidos no se envían hasta que el fabricante confirme la talla final del anillo.",
+  "We do not engrave until the maker confirms your text.",
+  "Engraving text and ring size must be confirmed before production begins; we email you a proof within 24 hours.",
+  "Your ring size must be confirmed before production, so please use our free ring sizer.",
+  "La talla del anillo y el texto del grabado deben confirmarse antes de la producción; te enviamos una prueba en 24 horas.",
+  "Solid 14K gold signet ring.\n\nPERSONALIZATION\nEngraving text and font must be confirmed before production.\n\nSHIPPING\nShips in 2 to 3 weeks.",
+  "Your order ships within 2 to 3 weeks after those details are confirmed.",
+  "We send you a digital proof of your engraving, and production begins after these details are confirmed.",
+  "Te enviamos una prueba digital del grabado y comenzamos la fabricación después de confirmar estos detalles.",
+  "Solid 14K gold signet ring.\n\nPRODUCTION NOTES\nProduction begins after these details are confirmed.\nEach piece is cast in recycled gold.",
+  "Una vez que apruebes el boceto, fabricamos tu anillo a partir del diseño aprobado.",
+  "Cada pieza personalizada se funde en oro macizo a partir del diseño aprobado por ti.",
+  "We cast your ring from the approved sketch.",
+  "La foto que nos envíes será la referencia aprobada para el grabado.",
+  "Comparamos cada pieza terminada con la referencia aprobada antes de enviarla.",
+  "Iniciales AI y las fotos del anuncio muestran la pieza real.",
+  "Puedes grabar iniciales como AI y las fotos muestran ejemplos de tipografía.",
+  "Únete a la lista de espera y te avisamos antes de que el modelo se ponga a la venta.",
+  // Review 2026-11-01 (third pass).
+  "- Pago en cuotas con Klarna disponible al finalizar la compra, sujeto a aprobación del proveedor.",
+  "El número de seguimiento se envía por correo tras la confirmación del proveedor de envío.",
+  "- Envíos internacionales: el precio final del envío depende de la cotización del proveedor de mensajería.",
+  "Entrega estimada de 3 a 5 días hábiles, pendiente de confirmación del proveedor de envío.",
+  "Cada anillo se fabrica a pedido en la talla y el peso que elijas, y el texto del grabado debe confirmarse antes de la producción.",
+  "- Peso de fundición: 4,1 g (aprox.), oro macizo de 14K.",
+  "- Las cadenas que se muestran aquí no se proporcionan; el colgante se vende solo.",
+  "Con la comodidad diaria como objetivo del diseño, el interior del anillo es redondeado para un ajuste cómodo.",
+  "La ligereza y la comodidad son objetivos del diseño: el anillo pesa solo 2 g.",
+  "Nuestro taller se propone como objetivo crear joyas que duren generaciones.",
+  "Este anillo se propone como alternativa moderna al solitario clásico.",
+  "Each custom design is proposed as a hand sketch first, then refined in CAD with you.",
+  "This set is proposed as a gift for the bride.",
+  "Reciclamos todo el desperdicio de fundición en nuevas piezas, así que nada se pierde.",
+  // Review 2026-11-01 (fourth pass): buyer steps next to a weight or estimate word.
+  "Each name necklace is about 3 grams and the name spelling must be confirmed before production.",
+  "Pendant weighs approximately 1.8 grams, and engraving text must be confirmed before production.",
+  "Shipping estimates apply to the U.S. only, and engraving text must be confirmed before production.",
+  "Delivery estimates are for the U.S. and personalized engraving must be confirmed before production.",
+  "Weights shown are for the 18 in. chain, and engraving text must be confirmed before production.",
+  "La estimación de entrega aparece al pagar y el texto del grabado debe confirmarse antes de la producción.",
+  "Envío gratis a EE. UU., pendiente de confirmación del proveedor logístico.",
+  "We recycle all casting waste into new pieces, so nothing is lost.",
+];
+
+// Image disclosures whose line also holds buyer facts (review 2026-11-01, second pass).
+const VIS_LINES: [string, string][] = [
+  ["- Las imágenes del producto son visualizaciones de diseño.- Se puede añadir un mensaje de regalo al finalizar la compra.",
+   "- Se puede añadir un mensaje de regalo al finalizar la compra."],
+  ["1. Las imágenes del producto son visualizaciones de diseño.- Se puede añadir un mensaje de regalo al finalizar la compra.",
+   "1. Se puede añadir un mensaje de regalo al finalizar la compra."],
+  ["The photos are AI visualizations of the U.S. Size 7 ring. Ships free.", "Ships free."],
+  ["Free shipping in the U.S. The images are design visualizations.", "Free shipping in the U.S."],
+  ["“Hecho a mano en Nueva York.” Las imágenes son visualizaciones de diseño.", "“Hecho a mano en Nueva York.”"],
+  ["Hecho a pedido… Las imágenes son visualizaciones de diseño.", "Hecho a pedido…"],
+  ["1. Cada anillo se hace por encargo. 2. Las imágenes son visualizaciones de diseño. 3. Se envía gratis.",
+   "1. Cada anillo se hace por encargo. 3. Se envía gratis."],
+  ["Ships free in 3 to 5 days. The images are design visualizations. by Artifact Studio Jewelry pieces are cast in New York.",
+   "Ships free in 3 to 5 days. by Artifact Studio Jewelry pieces are cast in New York."],
+  ["- Elige una talla de EE. UU. del 3 al 16.Las imágenes del producto son visualizaciones de diseño.", "- Elige una talla de EE. UU. del 3 al 16."],
+  ["- Elige oro macizo de 10K, 14K o 18K.Las imágenes del producto son visualizaciones de diseño.", "- Elige oro macizo de 10K, 14K o 18K."],
+  ["- Incluye una cadena de 1,2 mm (45 cm).Las imágenes del producto son visualizaciones de diseño.", "- Incluye una cadena de 1,2 mm (45 cm)."],
+  // Review 2026-11-01 (third pass): a size after an abbreviation, an abbreviation at a sentence
+  // end, an unlisted abbreviation before lowercase, a marker that is content.
+  ["El anillo de las fotos es una talla de EE. UU. 7. Las imágenes del producto son visualizaciones de diseño.",
+   "El anillo de las fotos es una talla de EE. UU. 7."],
+  ["The ring in the photos is a size U.S. 7. The images are design visualizations.", "The ring in the photos is a size U.S. 7."],
+  ["Style No. 12. The images are design visualizations.", "Style No. 12."],
+  ["- Seleccione la talla de EE. UU. 7.- Las imágenes son visualizaciones creadas con IA.", "- Seleccione la talla de EE. UU. 7."],
+  ["Pendant measures 12 mm approx. The listing images are AI-generated renderings.", "Pendant measures 12 mm approx."],
+  ["El colgante mide 12 mm aprox. Las imágenes son visualizaciones creadas con IA.", "El colgante mide 12 mm aprox."],
+  ["Ships free within the U.S. 3D visualizations are shown in place of photos.", "Ships free within the U.S."],
+  ["The images are AI renders of the 0.10 ct. diamond band; sizes 5 to 9.", "Sizes 5 to 9."],
+  ["- ✔ Envío gratis. Las imágenes son visualizaciones creadas con IA.", "- ✔ Envío gratis."],
+  ["Las fotos del anuncio… fueron editadas con IA.", ""],
+  ["Product photos, incl. the hand shot, are AI-assisted.", ""],
+  // Review 2026-11-01 (fourth pass): a sentence that starts lowercase; abbreviations that never end one.
+  ["Handmade to order. The listing images are design visualizations. iPhone photos of your finished ring are sent before shipping.",
+   "Handmade to order. iPhone photos of your finished ring are sent before shipping."],
+  ["handmade to order in solid 14k gold. ships in 3 to 5 business days. the images are design visualizations.",
+   "handmade to order in solid 14k gold. ships in 3 to 5 business days."],
+  ["Product images, e.g. The Hero shot, are AI-assisted.", ""],
+  ["The images are AI visualizations comparing 14K vs. 18K gold.", ""],
+  // Convergence check 2026-11-01.
+  ["Envío gratis dentro de EE. UU. 3 de las imágenes son visualizaciones.", "Envío gratis dentro de EE. UU."],
+  ["Free shipping in the U.S. 2 of the photos are AI visualizations.", "Free shipping in the U.S."],
+  ["Grosor mín. de 1,5 mm; las imágenes son visualizaciones creadas con IA.", "Grosor mín. de 1,5 mm."],
+  ["Puedes grabar iniciales, p. ej. tus nombres; las fotos son visualizaciones.", "Puedes grabar iniciales, p. ej. tus nombres."],
+  ["Engraved with “Forever.” on the inside; the photos are AI renders.", "Engraved with “Forever.” on the inside."],
+  ["Las imágenes del producto, p. ej. la de tres metales, son visualizaciones de diseño. Se envía gratis.", "Se envía gratis."],
+  ["Las fotos, p. ej. la del modelo, son generadas con IA.", ""],
+  ["Sizes: 3. 4. 5. 6. 7. 8. 9. 10. The images are AI visualizations.", "Sizes: 3. 4. 5. 6. 7. 8. 9. 10."],
+];
+
+test("a long line of bare list numbers is split in linear time", () => {
+  const line = "1. ".repeat(1700) + "The images are AI visualizations.";
+  const t0 = Date.now();
+  publicTextProblem(line);
+  assert.ok(Date.now() - t0 < 1500, `took ${Date.now() - t0} ms`);
+});
+
+test("image disclosures in a line with buyer facts take only their own sentence", () => {
+  for (const [input, expected] of VIS_LINES) {
+    assert.equal(stripPublicDescription(input).text, expected, input);
+  }
+});
+
+test("Spanish internal sections go by name", () => {
+  const before =
+    "Una pulsera de oro.\n\nNOTA IMPORTANTE DE PRODUCCIÓN\nEl peso final exacto, el contraste y el costo del proveedor están pendientes de la lectura de producción.\n\n" +
+    "NOTA DE PESO Y PRECIO\nCada precio incluye un gramo adicional de desperdicio de fundición y 100 USD de costo de producción.";
+  assert.equal(stripPublicDescription(before).text, "Una pulsera de oro.");
+});
+
+// Spanish translations on Etsy (live 2026-11-01) -> expected line, both rules together.
+// The 2026-11-01 first pass took the bullets before a disclosure in a glued line with it.
+const ES_LINES: [string, string][] = [
+  // 4585879436 bow pendant: glued bullets, the gift-message and enamel-care bullets stay
+  ["Un collar con colgante de lazo combina esmalte vítreo azul marino oceánico con contornos de oro pulido para crear un detalle en forma de cinta que se asienta recto sobre la clavícula. El lazo plano tiene centros de bucle calados y una pequeña argolla que surge detrás del nudo, como se muestra en la imagen del producto.- El colgante es de oro macizo a elegir entre 10K, 14K o 18K, con opciones de oro amarillo, blanco o rosa.- El esmalte vítreo azul marino cocido en horno se asienta al ras en cavidades empotradas, bordeado por bordes de oro pulido.- El lazo mide 12 x 9 mm, lo que otorga a este colgante de lazo de oro un perfil compacto para el uso diario o para combinar en capas.- Se incluye una cadena de eslabones de oro macizo de 1.2 mm con cierre de resorte.- Elija una longitud de cadena de 16, 18 o 20 pulgadas para adaptarla a su escote y capas preferidas.- Cada pieza se fabrica bajo pedido y tiene un tiempo de procesamiento de 3 a 5 días; se puede añadir un mensaje de regalo al finalizar la compra.- El esmalte es vidrio fusionado al oro y puede astillarse con un golpe fuerte, así que quítese el collar para ir al gimnasio y lavar los platos, y límpielo con un paño suave.- Las imágenes del producto son visualizaciones de diseño y la pieza terminada puede variar ligeramente; la imagen de los tres metales muestra las opciones de oro amarillo, blanco y rosa.Este collar de lazo y cinta está disponible en las variaciones de quilates, color y longitud de cadena indicadas.",
+   "Un collar con colgante de lazo combina esmalte vítreo azul marino oceánico con contornos de oro pulido para crear un detalle en forma de cinta que se asienta recto sobre la clavícula. El lazo plano tiene centros de bucle calados y una pequeña argolla que surge detrás del nudo, como se muestra en la imagen del producto.- El colgante es de oro macizo a elegir entre 10K, 14K o 18K, con opciones de oro amarillo, blanco o rosa.- El esmalte vítreo azul marino cocido en horno se asienta al ras en cavidades empotradas, bordeado por bordes de oro pulido.- El lazo mide 12 x 9 mm, lo que otorga a este colgante de lazo de oro un perfil compacto para el uso diario o para combinar en capas.- Se incluye una cadena de eslabones de oro macizo de 1.2 mm con cierre de resorte.- Elija una longitud de cadena de 16, 18 o 20 pulgadas para adaptarla a su escote y capas preferidas.- Cada pieza se fabrica bajo pedido y tiene un tiempo de procesamiento de 3 a 5 días; se puede añadir un mensaje de regalo al finalizar la compra.- El esmalte es vidrio fusionado al oro y puede astillarse con un golpe fuerte, así que quítese el collar para ir al gimnasio y lavar los platos, y límpielo con un paño suave.- La imagen de los tres metales muestra las opciones de oro amarillo, blanco y rosa.Este collar de lazo y cinta está disponible en las variaciones de quilates, color y longitud de cadena indicadas."],
+  // 4590702638 bar stud: "cepillado.Las imágenes" glued with no space
+  ["Un pendiente de barra de oro macizo tiene un perfil delgado de 2 x 8 mm, con una cara cepillada y bordes pulidos. Su línea vertical sigue el lóbulo de la oreja, ofreciendo una alternativa limpia a un pendiente redondo. Elige oro amarillo, blanco o rosa de 10K, 14K o 18K, y selecciona un pendiente o un par.- Cada pequeño pendiente de barra de oro mide 2 x 8 mm y tiene una forma de barra corta.- La cara es cepillada, mientras que los bordes están pulidos para lograr un contraste en el acabado.- Los postes y cierres de mariposa de oro macizo aseguran cada pendiente de barra minimalista.- Elige un solo pendiente o un par usando la opción de piezas.- Selecciona el quilate y el color de metal que se adapten a tu preferencia; no incluye piedras.- Cada pieza se hace a pedido y normalmente se procesa en 3 a 5 días.- Limpia con un paño suave para su cuidado; un joyero puede renovar el acabado cepillado.Las imágenes del producto son visualizaciones de diseño, y la imagen de los tres metales muestra el mismo diseño en oro amarillo, blanco y rosa. La pieza terminada puede variar ligeramente. Tu pendiente de barra de oro se envía gratis dentro de los Estados Unidos desde Nueva Jersey; se pueden agregar mensajes de regalo al finalizar la compra.",
+   "Un pendiente de barra de oro macizo tiene un perfil delgado de 2 x 8 mm, con una cara cepillada y bordes pulidos. Su línea vertical sigue el lóbulo de la oreja, ofreciendo una alternativa limpia a un pendiente redondo. Elige oro amarillo, blanco o rosa de 10K, 14K o 18K, y selecciona un pendiente o un par.- Cada pequeño pendiente de barra de oro mide 2 x 8 mm y tiene una forma de barra corta.- La cara es cepillada, mientras que los bordes están pulidos para lograr un contraste en el acabado.- Los postes y cierres de mariposa de oro macizo aseguran cada pendiente de barra minimalista.- Elige un solo pendiente o un par usando la opción de piezas.- Selecciona el quilate y el color de metal que se adapten a tu preferencia; no incluye piedras.- Cada pieza se hace a pedido y normalmente se procesa en 3 a 5 días.- Limpia con un paño suave para su cuidado; un joyero puede renovar el acabado cepillado. La pieza terminada puede variar ligeramente. Tu pendiente de barra de oro se envía gratis dentro de los Estados Unidos desde Nueva Jersey; se pueden agregar mensajes de regalo al finalizar la compra."],
+  // 4591200606 knife edge: "EE. UU. de la 3" is not a sentence start
+  ["Un anillo knife edge de oro macizo pulido tiene un perfil esbelto de 2,5 mm y una cresta central elevada que capta la luz. Elige oro de 10k, 14k o 18k en amarillo, blanco o rosa, con tallas de anillo de EE. UU. de la 3 a la 16 disponibles en tallas enteras y medias. Es un anillo moderno para hombre con un perfil limpio para usar solo o junto con otra joyería.- La alianza mide 2,5 mm de ancho, con dos planos exteriores que se encuentran en una cresta distintiva para dar un aspecto facetado.- Selecciona oro macizo de 10k, 14k o 18k y elige el color de metal amarillo, blanco o rosa.- El acabado pulido no tiene piedras, y el anillo es de oro macizo en su totalidad.- Elige una talla de anillo de EE. UU. de la 3 a la 16, incluyendo tallas enteras y medias.- Cada anillo se hace por encargo, con un plazo de procesamiento indicado de 3 a 5 días.- Un paño suave es adecuado para limpiar el oro; la descripción señala que el oro macizo no se deslustra.- El diseño de la imagen es una visualización; la imagen de los tres metales muestra el mismo diseño en oro amarillo, blanco y rosa, y la pieza terminada puede variar levemente.La esbelta alianza de oro también funciona como alianza de boda para hombre. El anillo knife edge seleccionado se fabrica en el quilataje, color y talla elegidos.",
+   "Un anillo knife edge de oro macizo pulido tiene un perfil esbelto de 2,5 mm y una cresta central elevada que capta la luz. Elige oro de 10k, 14k o 18k en amarillo, blanco o rosa, con tallas de anillo de EE. UU. de la 3 a la 16 disponibles en tallas enteras y medias. Es un anillo moderno para hombre con un perfil limpio para usar solo o junto con otra joyería.- La alianza mide 2,5 mm de ancho, con dos planos exteriores que se encuentran en una cresta distintiva para dar un aspecto facetado.- Selecciona oro macizo de 10k, 14k o 18k y elige el color de metal amarillo, blanco o rosa.- El acabado pulido no tiene piedras, y el anillo es de oro macizo en su totalidad.- Elige una talla de anillo de EE. UU. de la 3 a la 16, incluyendo tallas enteras y medias.- Cada anillo se hace por encargo, con un plazo de procesamiento indicado de 3 a 5 días.- Un paño suave es adecuado para limpiar el oro; la descripción señala que el oro macizo no se deslustra.- La imagen de los tres metales muestra el mismo diseño en oro amarillo, blanco y rosa, y la pieza terminada puede variar levemente.La esbelta alianza de oro también funciona como alianza de boda para hombre. El anillo knife edge seleccionado se fabrica en el quilataje, color y talla elegidos."],
+  // 4591189111 figaro: "no tiene piedras y las fotos ..."
+  ["- La pulsera no tiene piedras y las fotos del anuncio son visualizaciones de diseño de la pieza terminada.",
+   "- La pulsera no tiene piedras."],
+  // 4593723030 EON: image clause and the for-sale note
+  ["- El anuncio es para un anillo, hecho por encargo, y la imagen es una visualización del diseño; los detalles de producción finales se confirman antes de que el diseño se ponga a la venta.",
+   "- El anuncio es para un anillo, hecho por encargo."],
+  // 4562312911 Jade Threshold
+  ["- El collar se hace por encargo con 1-3 días de procesamiento, y las imágenes con estilo son visualizaciones de producción en lugar de una galería de productos finales.",
+   "- El collar se hace por encargo con 1-3 días de procesamiento."],
 ];
 
 test("each real internal line is cut to its buyer fact", () => {
@@ -217,6 +453,42 @@ test("each real internal line is cut to its buyer fact", () => {
     assert.equal(stripInternalNotes(input).text, expected, input);
     assert.equal(stripPublicDescription(input).text, expected, input);
   }
+});
+
+test("Spanish translations: a disclosure at the end of a glued line takes only its own sentence", () => {
+  for (const [input, expected] of ES_LINES) {
+    const r = stripPublicDescription(input);
+    assert.equal(r.text, expected, input.slice(0, 80));
+    assert.equal(publicTextProblem(r.text), null, input.slice(0, 80));
+  }
+});
+
+test("sentences split and join back byte for byte; a dropped one leaves one gap", () => {
+  for (const t of [
+    "A. B. C.",
+    "tallas de EE. UU. de la 3 a la 16. Las imágenes ...",
+    "medias.- Cada anillo.- Un paño suave.Las imágenes son X. Fin.",
+    "One  two. Three.  Four!",
+    "Sin punto final",
+  ]) {
+    const { parts, seps } = splitSentences(t);
+    assert.equal(joinSentences(parts, seps), t, t);
+  }
+  assert.deepEqual(splitSentences("de EE. UU. de la 3. Fin.").parts, ["de EE. UU. de la 3.", "Fin."]);
+  // Glued only after a lowercase letter: "EE.UU." and "A.B." are not sentence ends.
+  assert.deepEqual(splitSentences("EE.UU. y A.B.").parts, ["EE.UU. y A.B."]);
+  const glued = splitSentences("Uno.Dos. Tres.");
+  assert.deepEqual(glued.parts, ["Uno.", "Dos.", "Tres."]);
+  assert.equal(joinSentences(["Uno.", null, "Tres."], glued.seps), "Uno. Tres.");
+  const spaced = splitSentences("Uno. Dos.Tres.");
+  assert.equal(joinSentences(["Uno.", null, "Tres."], spaced.seps), "Uno. Tres.");
+  assert.equal(joinSentences([null, "Dos.", "Tres."], spaced.seps), "Dos.Tres.");
+});
+
+test("a line whose signal changes no sentence comes back byte for byte", () => {
+  // Two spaces between sentences: the old rebuild joined every sentence with one space.
+  const line = "Hecho por encargo.  Se envía gratis.";
+  assert.equal(stripPublicDescription(line).text, line);
 });
 
 test("ordinary buyer copy is untouched, byte for byte, and passes the guard", () => {
