@@ -211,16 +211,39 @@ const CLAUSE_CUT_RE = /,\s+(?=(?:and|so)\s)|,?\s+(?=y\s+(?:el|la|los|las)\s+(?:f
 // still goes with it: the last item of a list ("..., and the gift box"), a participle
 // ("..., and packaged in a gift box"), a consequence ("..., and the finished piece may vary
 // slightly", 12 English listings 2026-10-27), a pronoun ("..., and they ...").
+// A Spanish word of the subject is never a clitic: "las fotos ... se muestran (con fines
+// ilustrativos)" is a passive that says nothing the image shows.
+const ES_WORD = String.raw`(?!(?:se|lo|le|les)\b)[\p{L}\d/-]+`;
 const CAPTION_RE = new RegExp(
   String.raw`^(?:the|this|each|every)\s+(?:[\w/-]+\s+){0,3}(?:images?|photos?|photographs?|pictures?)\s+` +
     String.raw`(?:shows?|represents?|displays?|depicts?|features?|illustrates?|presents?|visuali[sz]es?)\b` +
     "|" +
     String.raw`^(?:la|las|el|los|esta|estas|cada)\s+(?:imagen|imágenes|foto|fotos|fotografía|fotografías)` +
-    String.raw`(?:\s+(?:de|del|con|en)\s+(?:(?:los|las|el|la)\s+)?[\p{L}\d/-]+(?:\s+[\p{L}\d/-]+){0,2})?` +
-    String.raw`\s+(?:(?:lo|la|los|las|se)\s+)?(?:muestran?|representan?|presentan?|ilustran?|enseñan?|visualizan?)\b`,
+    String.raw`(?:\s+(?:de|del|con|en)\s+(?:(?:los|las|el|la)\s+)?${ES_WORD}(?:\s+${ES_WORD}){0,2})?` +
+    String.raw`\s+(?:(?:lo|la|los|las)\s+)?(?:muestran?|representan?|presentan?|ilustran?|enseñan?|visualizan?)\b`,
   "iu",
 );
-// A kept caption that says the image "visualizes" a design says what it shows.
+// The caption ends where a new clause starts: ", so" / ", por lo que" (a consequence), or an
+// ", and" / ", y" part with a verb of its own ("..., and the finished piece may vary slightly",
+// "..., y las fotos no son de una pieza real"). A part without a verb is the caption's own list
+// ("..., white, and rose gold", "..., the chain, and the gift box") and stays.
+const CAPTION_PART_RE = /,\s+(?=(?:and|so|but|while|whereas|y|pero|por lo que|así que|mientras que)\s)/i;
+const NEW_CLAUSE_RE = new RegExp(
+  String.raw`^(?:so|but|while|whereas|pero|por lo que|así que|mientras que)\s` +
+    String.raw`|\b(?:is|are|was|were|be|been|being|will|would|may|might|can|could|should|must|has|have|had|do|does|did|ships?|comes?|includes?|arrives?|varies|vary|differs?|looks?|appears?|remains?|stays?` +
+    String.raw`|es|son|era|eran|fue|fueron|está|están|estará|estarán|será|serán|puede|pueden|podría|podrían|tiene|tienen|incluye|incluyen|llega|llegan|varía|varían|hay|se)\b`,
+  "iu",
+);
+// A caption that calls what the image shows a render says what the dropped disclosure said
+// ("the three-metal image shows a rendering of the same design"): it goes with it. (Elsewhere
+// "rendering" alone is buyer copy, see VISUALIZATION_RE; this applies only to a restored caption.)
+const CAPTION_PROVENANCE_RE = /\b(?:3D |CAD |digital |AI )?render(?:ing|ings|s|ed)?\b|\bCGI\b|\bmock-?ups?\b|\brenderizad[oa]s?\b|\brepresentaci[oó]n(?:es)? (?:digital(?:es)?|3D)\b|\bmaqueta digital\b/i;
+function captionOnly(caption: string): string {
+  const parts = caption.split(CAPTION_PART_RE);
+  const end = parts.findIndex((p, i) => i > 0 && NEW_CLAUSE_RE.test(p));
+  return (end < 0 ? parts : parts.slice(0, end)).join(", ");
+}
+// A kept caption whose own verb says the image "visualizes" a design says what it shows.
 const SHOWS: [RegExp, string][] = [
   [/\bvisuali[sz]es\b/g, "shows"],
   [/\bvisuali[sz]e\b/g, "show"],
@@ -242,9 +265,11 @@ function stripClause(clause: string): string {
   // The disclosure leads: a clean caption after it stays (CAPTION_RE); nothing else does.
   const tail = parts.slice(1);
   if (tail.length === 0 || tail.some((p) => VISUALIZATION_RE.test(p))) return "";
-  const caption = tail.join(", ").replace(/^(?:and|y)\s+/, "").trim();
-  if (!CAPTION_RE.test(caption)) return "";
-  return SHOWS.reduce((t, [re, rep]) => t.replace(re, rep), caption);
+  const caption = captionOnly(tail.join(", ").replace(/^(?:and|y)\s+/, "").trim());
+  const head = CAPTION_RE.exec(caption)?.[0];
+  if (!head || CAPTION_PROVENANCE_RE.test(caption)) return "";
+  // Only the caption's verb: "so you can visualize the width" later in it is the buyer's.
+  return SHOWS.reduce((t, [re, rep]) => t.replace(re, rep), head) + caption.slice(head.length);
 }
 
 export function stripSentence(sentence: string): string {

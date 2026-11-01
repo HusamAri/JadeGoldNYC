@@ -64,9 +64,11 @@ export const maxDuration = 300;
  *    since) is reported as `changed-since` and never written. A result that would restore the
  *    whole original is refused (`original-clean`). Dry run by default, `apply=1` writes,
  *    reads back and audits like any other write. Every desc-strip write records `original`
- *    the same way, so the chain stays whole. The English writes of 2026-10-27 recorded no
- *    diff: there the panel copy written in the same request stands in, only when its lengths
- *    are the ones the write's summary recorded (`legacyRow`, lib/etsy/strip-chain.ts).
+ *    the same way, so the chain stays whole; the walk also goes on from a recorded `original`
+ *    that an earlier write left. The English writes of 2026-10-27 recorded no diff: there the
+ *    panel copy written in the same request stands in only when, HTML-decoded, its lengths are
+ *    the summary's and the rule of that day (frozen in lib/etsy/legacy/) turns it into exactly
+ *    the text written (`legacyRow`, lib/etsy/strip-chain.ts); any other copy gives no chain.
  *  - `?scan=1&smell=1`: also lists, for every scanned listing, the lines of the cleaned text
  *    that still match a broad internal-note pattern (SMELL_RE), deduplicated with a count.
  *    Read only; it is for a person to read, to find wordings the rules do not know yet.
