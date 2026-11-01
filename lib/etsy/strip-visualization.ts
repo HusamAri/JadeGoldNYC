@@ -203,6 +203,36 @@ export function joinSentences(kept: (string | null)[], seps: string[]): string {
 // keeps "La pulsera no tiene piedras"). "oro amarillo, blanco y rosa" is not cut.
 const CLAUSE_CUT_RE = /,\s+(?=(?:and|so)\s)|,?\s+(?=y\s+(?:el|la|los|las)\s+(?:fotos?|fotografías?|imagen|imágenes|galería)\b)/i;
 
+// After a disclosure that leads its clause, one thing stays: the multi-metal caption, the fact
+// six Artifact listings lost in English and Spanish only because it followed ", and" / ", y"
+// rather than ";" (2026-11-01): "[the product images are design visualizations], and the
+// three-metal image shows the same design in yellow, white and rose gold". It is a closed
+// grammar, bound to the full structure of the live sentences (8 forms in 12 texts), never an
+// open "image + verb" pattern: three review rounds showed that every open pattern lets other
+// text through (disclosures in other words, "for illustration only", ", and real photos will
+// follow", "may vary" in any tense). Whatever follows the caption in the clause goes; anything
+// else after a leading disclosure goes with it, as before.
+const METAL_EN = String.raw`(?:1[048]K\s+)?(?:yellow|white|rose)(?:\s+gold)?`;
+const METAL_ES = String.raw`(?:oro\s+)?(?:amarillo|blanco|rosa|rosado)(?:\s+de\s+1[048]K)?`;
+const METAL_CAPTION_RE = new RegExp(
+  String.raw`^(?:(?:the|this)\s+(?:three|3|two|2|multi)[-\s](?:metal|colou?r|tone)\s+images?\s+(?:shows?|represents?|visuali[sz]es?)\s+` +
+    String.raw`(?:the\s+same\s+design\s+in\s+)?${METAL_EN}(?:,?\s+(?:and\s+|or\s+)?${METAL_EN}){1,3}(?:\s+gold)?(?:\s+colou?r\s+options)?` +
+    "|" +
+    String.raw`(?:la\s+imagen|las\s+imágenes)\s+de\s+(?:los\s+)?(?:tres|3|dos|2)\s+(?:metales|colores|tonos)\s+(?:muestran?|representan?|visualizan?)\s+` +
+    String.raw`(?:el\s+mismo\s+diseño\s+en\s+|las\s+opciones\s+de\s+color\s+en\s+)?${METAL_ES}(?:,?\s+(?:y\s+|o\s+)?${METAL_ES}){1,3})` +
+    // The caption ends here: at the end, or at a comma that does not go on with the list (no
+    // shorter match "... in yellow, white" out of "... in yellow, white, and rose gold whose ...").
+    String.raw`(?=\s*$|\s*,\s+(?!(?:(?:and|or|y|o)\s+)?(?:1[048]K\s+)?(?:oro\s+)?(?:yellow|white|rose|amarillo|blanco|rosa|rosado)\b))`,
+  "i",
+);
+// The kept caption's verb "visualizes" says what the image shows.
+const SHOWS: [RegExp, string][] = [
+  [/\bvisuali[sz]es\b/g, "shows"],
+  [/\bvisuali[sz]e\b/g, "show"],
+  [/\bvisualizan\b/g, "muestran"],
+  [/\bvisualiza\b/g, "muestra"],
+];
+
 function stripClause(clause: string): string {
   if (!VISUALIZATION_RE.test(clause)) return clause;
   const parts = clause.split(CLAUSE_CUT_RE);
@@ -213,7 +243,12 @@ function stripClause(clause: string): string {
   }
   // No part holds the disclosure on its own: the clause stays exactly as it was.
   if (kept.length === parts.length) return clause;
-  return kept.join(", ").trim();
+  if (kept.length > 0) return kept.join(", ").trim();
+  // The disclosure leads: only the multi-metal caption right after it stays (METAL_CAPTION_RE).
+  const tail = parts.slice(1);
+  if (tail.length === 0 || tail.some((p) => VISUALIZATION_RE.test(p))) return "";
+  const caption = METAL_CAPTION_RE.exec(tail.join(", ").replace(/^(?:and|y)\s+/, "").trim())?.[0];
+  return caption ? SHOWS.reduce((t, [re, rep]) => t.replace(re, rep), caption.trim()) : "";
 }
 
 export function stripSentence(sentence: string): string {

@@ -7,6 +7,16 @@ import { joinSentences, splitSentences } from "../lib/etsy/strip-visualization";
 // Real lines from live listings (panel mirror of Etsy, 2026-10-31) -> expected line.
 // "" = the line goes.
 const LINES: [string, string][] = [
+  // Review 2026-11-01: a clean ", and/, y" tail after an internal note stays whatever the note
+  // ends in (a decimal comma, a short appositive, a list closed by "and"/"y"/"o").
+  ["El peso final de 18K se añade después de la lectura de producción para la alianza de 2,5 mm, y la alianza no tiene piedras.", "La alianza no tiene piedras."],
+  ["The final 18K weight is added after production readback, approximately 3.1 g, and the ring is solid gold throughout.", "The ring is solid gold throughout."],
+  ["The final weight is confirmed after production readback, in 14K, and the band has no stones.", "The band has no stones."],
+  ["- Las dimensiones son objetivos de desarrollo para la cadena de 1,2 mm, y el colgante se envía con la cadena incluida.", "- El colgante se envía con la cadena incluida."],
+  ["- Los pesos deben confirmarse antes de la producción para oro amarillo, blanco y rosa, y el anillo se fabrica por encargo.", "- El anillo se fabrica por encargo."],
+  ["- La ley final del oro se confirmará antes de la venta en 10K, 14K o 18K, y el anillo se envía gratis dentro de los Estados Unidos.", "- El anillo se envía gratis dentro de los Estados Unidos."],
+  ["The weight shown is provisional, approximately 4 g, and the ring is made to order in 2 weeks.", "The ring is made to order in 2 weeks."],
+  ["Las dimensiones físicas y el peso finales no se establecen mediante las imágenes, aprox. 4 g, y los accesorios no están incluidos.", "Los accesorios no están incluidos."],
   // EON Christmas collection (English + Spanish), 17 active listings.
   ["An individual, minimalist ring concept with a continuous closed band, designed for delicate stacking. The motif is expressed entirely in metal, without gemstones or enamel.",
    "An individual, minimalist ring with a continuous closed band, designed for delicate stacking. The motif is expressed entirely in metal, without gemstones or enamel."],
@@ -403,6 +413,108 @@ const VIS_LINES: [string, string][] = [
   ["Las imágenes del producto, p. ej. la de tres metales, son visualizaciones de diseño. Se envía gratis.", "Se envía gratis."],
   ["Las fotos, p. ej. la del modelo, son generadas con IA.", ""],
   ["Sizes: 3. 4. 5. 6. 7. 8. 9. 10. The images are AI visualizations.", "Sizes: 3. 4. 5. 6. 7. 8. 9. 10."],
+  // Replan read 2026-11-01 (4590702638): the disclosure leads, a clean ", and" / ", y" clause
+  // with its own subject follows; the clause stays, as it does after an internal note.
+  ["Las imágenes del producto son visualizaciones de diseño, y la imagen de los tres metales muestra el mismo diseño en oro amarillo, blanco y rosa.",
+   "La imagen de los tres metales muestra el mismo diseño en oro amarillo, blanco y rosa."],
+  ["The product images are design visualizations, and the three-metal image shows the same design in yellow, white and rose gold.",
+   "The three-metal image shows the same design in yellow, white and rose gold."],
+  ["Las fotos son visualizaciones de diseño y la imagen de los tres metales muestra las opciones de oro.",
+   ""],
+  // A tail without its own subject, a consequence (", so") or a second disclosure goes with it.
+  ["The images are AI visualizations, and they may differ slightly from the finished ring.", ""],
+  ["The images are AI renders, so the finished ring may vary slightly.", ""],
+  ["Las fotos son visualizaciones de diseño, y muestran el anillo en oro amarillo.", ""],
+  ["Las imágenes son visualizaciones de diseño, y la imagen de los tres metales es una visualización generada por IA.", ""],
+  ["The photos are AI renders, and the box shown is a visualization too.", ""],
+  // "[disclosure], and the finished piece may vary slightly" compares the piece with the
+  // images: it goes with them (2026-10-27 took it so in 12 English listings; no churn).
+  ["The product images are design visualizations, and the finished piece may vary slightly.", ""],
+  ["Your two-tone gold ring is shown in design visualizations, and the finished piece may vary slightly.", ""],
+  ["Su anillo de oro bicolor se muestra en visualizaciones de diseño, y la pieza terminada puede variar ligeramente.", ""],
+  // On its own, after ";", it stays.
+  ["The images are design visualizations; the finished piece may vary slightly.", "The finished piece may vary slightly."],
+  // Live Artifact studs/rings (2026-10-27 originals): the three-metal fact stays.
+  ["These blue enamel studs are shown in a design visualization, and the three-metal image represents the same design in yellow, white and rose gold.",
+   "The three-metal image represents the same design in yellow, white and rose gold."],
+  ["- Product images are design visualizations of the finished piece, and the three-metal image shows the same design in yellow, white, and rose gold.",
+   "- The three-metal image shows the same design in yellow, white, and rose gold."],
+  // A kept image clause that "visualizes" says what it shows.
+  ["- The product images are design visualizations, and the three-metal image visualizes the same design in yellow, white, and rose gold.",
+   "- The three-metal image shows the same design in yellow, white, and rose gold."],
+  ["- Las imágenes del producto son visualizaciones de diseño, y la imagen de tres metales visualiza el mismo diseño en oro amarillo, blanco y rosa.",
+   "- La imagen de tres metales muestra el mismo diseño en oro amarillo, blanco y rosa."],
+  // ", and" that closes a list ("yellow, white, and rose gold") starts no clause: no "rose gold" tail.
+  ["Sold as one; the three-metal image is a color visualization of the same design in yellow, white, and rose gold.", "Sold as one."],
+  ["The images are AI renders of the ring in yellow, white, and rose gold.", ""],
+  // Review 2026-11-01: only a caption (an image subject saying what it shows) stays after a
+  // leading disclosure; the last item of what the images show never becomes a claim.
+  ["The listing images are AI-assisted visualizations of the necklace on a model, layered with a second chain, and paired with the matching stud earrings.", ""],
+  ["The product images are design visualizations of the ring worn on the hand, stacked with two other bands, and packaged in a gift box.", ""],
+  ["The listing photos are design visualizations of the pendant, the 18 inch cable chain, and the gift box.", ""],
+  ["The product images are design visualizations of the solid 14K yellow gold, solid 14K white gold, and solid 14K rose gold versions.", ""],
+  ["The images are AI renders of the 16 inch chain, the 18 inch chain, and the 20 inch chain.", ""],
+  ["Sold as one; the three-metal image is a color visualization of the same design in solid 14K yellow gold, solid 14K white gold, and solid 14K rose gold.", "Sold as one."],
+  // Convergence 2026-11-01: the caption ends where a new clause starts (a verb of its own, or
+  // ", so" / ", por lo que"); the caption's own list items stay.
+  ["The product images are AI-generated visualizations, and the image shows the ring in 14K yellow gold, so the actual weight and dimensions may differ.",
+   ""],
+  ["The product images are design visualizations, and the three-metal image shows the same design in yellow, white and rose gold, so the finished piece may vary slightly.",
+   "The three-metal image shows the same design in yellow, white and rose gold."],
+  ["- The product images are design visualizations, and the three-metal image shows the same design in yellow, white and rose gold, and the finished piece may vary slightly.",
+   "- The three-metal image shows the same design in yellow, white and rose gold."],
+  ["Las imágenes del producto son visualizaciones de diseño, y la imagen de los tres metales muestra el mismo diseño en oro amarillo, blanco y rosa, por lo que la pieza terminada puede variar ligeramente.",
+   "La imagen de los tres metales muestra el mismo diseño en oro amarillo, blanco y rosa."],
+  ["- Las imágenes del producto son visualizaciones de diseño, y la imagen de los tres metales muestra el mismo diseño en oro amarillo, blanco y rosa, y la pieza terminada puede variar levemente.",
+   "- La imagen de los tres metales muestra el mismo diseño en oro amarillo, blanco y rosa."],
+  ["The product images are design visualizations, and the three-metal image shows the same design in yellow, white and rose gold, and real photos will be added once the cast sample arrives.",
+   "The three-metal image shows the same design in yellow, white and rose gold."],
+  ["The product images are design visualizations, and the three-metal image shows the same design in yellow, white and rose gold, and they are not photographs of a cast sample.",
+   "The three-metal image shows the same design in yellow, white and rose gold."],
+  ["Las imágenes del producto son visualizaciones de diseño, y la imagen de los tres metales muestra el mismo diseño en oro amarillo, blanco y rosa, y las fotos no son de una pieza real.",
+   "La imagen de los tres metales muestra el mismo diseño en oro amarillo, blanco y rosa."],
+  ["The product images are design visualizations, and the image shows the ring, the chain, and the gift box.",
+   ""],
+  // A Spanish passive ("se muestran solo con fines ilustrativos") says nothing the image shows.
+  ["Las imágenes del producto son visualizaciones de diseño, y las fotos de la galería se muestran solo con fines ilustrativos.", ""],
+  ["Las imágenes del producto son visualizaciones de diseño, y la imagen se muestra solo a modo de referencia.", ""],
+  ["Las imágenes del producto son visualizaciones de diseño, y las imágenes se presentan con fines ilustrativos.", ""],
+  ["Las imágenes del producto son visualizaciones de diseño, y la imagen de los tres metales se representa digitalmente en oro amarillo, blanco y rosa.", ""],
+  // A restored caption that calls the picture a render goes with the disclosure.
+  ["The product images are design visualizations, and the three-metal image shows a rendering of the same design in yellow, white and rose gold.", ""],
+  ["Las imágenes del producto son visualizaciones de diseño, y la imagen de los tres metales muestra una representación digital del mismo diseño.", ""],
+  ["The product images are design visualizations, and the photo shows a CGI mock-up of the ring on a hand.", ""],
+  // Final convergence 2026-11-01 (263e104): open caption patterns let other text through; the
+  // closed multi-metal grammar does not. Disclosures in other words, tails in any tense.
+  ["The product images are design visualizations, and the photos show the design for illustration purposes only.", ""],
+  ["Las imágenes del producto son visualizaciones de diseño, y las imágenes muestran el diseño solo con fines ilustrativos.", ""],
+  ["The product images are design visualizations, and the generated three-metal image shows the same design in yellow, white and rose gold.", ""],
+  ["Las imágenes del producto son visualizaciones de diseño, y la imagen de los tres metales muestra una simulación del mismo diseño.", ""],
+  ["- Las imágenes del producto son visualizaciones de diseño, y la imagen de los tres metales muestra una representación en color del mismo diseño en oro amarillo, blanco y rosa.", ""],
+  ["The product images are design visualizations, and the three-metal image shows the same design in yellow, white and rose gold, and they aren't photographs of a cast sample.",
+   "The three-metal image shows the same design in yellow, white and rose gold."],
+  ["Las imágenes del producto son visualizaciones de diseño, y la imagen de los tres metales muestra el mismo diseño en oro amarillo, blanco y rosa, y la pieza terminada podrá variar ligeramente.",
+   "La imagen de los tres metales muestra el mismo diseño en oro amarillo, blanco y rosa."],
+  ["Las imágenes del producto son visualizaciones de diseño, y la imagen de los tres metales muestra el mismo diseño en oro amarillo, blanco y rosa, y la pieza final está sujeta a ligeras variaciones.",
+   "La imagen de los tres metales muestra el mismo diseño en oro amarillo, blanco y rosa."],
+  // No shorter match out of a list that goes on: the clause is not the caption, it goes.
+  ["The product images are design visualizations, and the three-metal image shows the same design in yellow, white, and rose gold whose tone can vary by karat.", ""],
+  ["The product images are design visualizations, and the three-metal image shows the same design as visualized in yellow, white and rose gold.", ""],
+  // Only the multi-metal caption is restored: any other image clause after a leading
+  // disclosure goes with it, as on main.
+  ["The product images are design visualizations, and the photo shows the ring on a size 7 hand to help you visualize the width.",
+   ""],
+  ["Las imágenes del producto son visualizaciones de diseño, y la foto en la mano muestra la escala para que visualice el ancho de 6 mm.",
+   ""],
+  // Not the multi-metal caption: both languages drop it, as on main.
+  ["Las imágenes del producto son visualizaciones de diseño en oro amarillo, blanco y rosa, y la imagen de los tres metales los muestra juntos.",
+   ""],
+  ["The product images are design visualizations in yellow, white and rose gold, and the three-metal image shows all three side by side.",
+   ""],
+  // The multi-metal clause that is itself a visualization goes (72 live originals).
+  ["The product images are design visualizations of the finished piece, and the three-metal image is a colour visualization of the same design in yellow, white and rose gold.", ""],
+  // A clean lead before the disclosure still keeps only the lead.
+  ["The ring is solid gold, and the photos are AI renders, and the box is included.", "The ring is solid gold."],
 ];
 
 test("a long line of bare list numbers is split in linear time", () => {
@@ -433,7 +545,7 @@ const ES_LINES: [string, string][] = [
    "Un collar con colgante de lazo combina esmalte vítreo azul marino oceánico con contornos de oro pulido para crear un detalle en forma de cinta que se asienta recto sobre la clavícula. El lazo plano tiene centros de bucle calados y una pequeña argolla que surge detrás del nudo, como se muestra en la imagen del producto.- El colgante es de oro macizo a elegir entre 10K, 14K o 18K, con opciones de oro amarillo, blanco o rosa.- El esmalte vítreo azul marino cocido en horno se asienta al ras en cavidades empotradas, bordeado por bordes de oro pulido.- El lazo mide 12 x 9 mm, lo que otorga a este colgante de lazo de oro un perfil compacto para el uso diario o para combinar en capas.- Se incluye una cadena de eslabones de oro macizo de 1.2 mm con cierre de resorte.- Elija una longitud de cadena de 16, 18 o 20 pulgadas para adaptarla a su escote y capas preferidas.- Cada pieza se fabrica bajo pedido y tiene un tiempo de procesamiento de 3 a 5 días; se puede añadir un mensaje de regalo al finalizar la compra.- El esmalte es vidrio fusionado al oro y puede astillarse con un golpe fuerte, así que quítese el collar para ir al gimnasio y lavar los platos, y límpielo con un paño suave.- La imagen de los tres metales muestra las opciones de oro amarillo, blanco y rosa.Este collar de lazo y cinta está disponible en las variaciones de quilates, color y longitud de cadena indicadas."],
   // 4590702638 bar stud: "cepillado.Las imágenes" glued with no space
   ["Un pendiente de barra de oro macizo tiene un perfil delgado de 2 x 8 mm, con una cara cepillada y bordes pulidos. Su línea vertical sigue el lóbulo de la oreja, ofreciendo una alternativa limpia a un pendiente redondo. Elige oro amarillo, blanco o rosa de 10K, 14K o 18K, y selecciona un pendiente o un par.- Cada pequeño pendiente de barra de oro mide 2 x 8 mm y tiene una forma de barra corta.- La cara es cepillada, mientras que los bordes están pulidos para lograr un contraste en el acabado.- Los postes y cierres de mariposa de oro macizo aseguran cada pendiente de barra minimalista.- Elige un solo pendiente o un par usando la opción de piezas.- Selecciona el quilate y el color de metal que se adapten a tu preferencia; no incluye piedras.- Cada pieza se hace a pedido y normalmente se procesa en 3 a 5 días.- Limpia con un paño suave para su cuidado; un joyero puede renovar el acabado cepillado.Las imágenes del producto son visualizaciones de diseño, y la imagen de los tres metales muestra el mismo diseño en oro amarillo, blanco y rosa. La pieza terminada puede variar ligeramente. Tu pendiente de barra de oro se envía gratis dentro de los Estados Unidos desde Nueva Jersey; se pueden agregar mensajes de regalo al finalizar la compra.",
-   "Un pendiente de barra de oro macizo tiene un perfil delgado de 2 x 8 mm, con una cara cepillada y bordes pulidos. Su línea vertical sigue el lóbulo de la oreja, ofreciendo una alternativa limpia a un pendiente redondo. Elige oro amarillo, blanco o rosa de 10K, 14K o 18K, y selecciona un pendiente o un par.- Cada pequeño pendiente de barra de oro mide 2 x 8 mm y tiene una forma de barra corta.- La cara es cepillada, mientras que los bordes están pulidos para lograr un contraste en el acabado.- Los postes y cierres de mariposa de oro macizo aseguran cada pendiente de barra minimalista.- Elige un solo pendiente o un par usando la opción de piezas.- Selecciona el quilate y el color de metal que se adapten a tu preferencia; no incluye piedras.- Cada pieza se hace a pedido y normalmente se procesa en 3 a 5 días.- Limpia con un paño suave para su cuidado; un joyero puede renovar el acabado cepillado. La pieza terminada puede variar ligeramente. Tu pendiente de barra de oro se envía gratis dentro de los Estados Unidos desde Nueva Jersey; se pueden agregar mensajes de regalo al finalizar la compra."],
+   "Un pendiente de barra de oro macizo tiene un perfil delgado de 2 x 8 mm, con una cara cepillada y bordes pulidos. Su línea vertical sigue el lóbulo de la oreja, ofreciendo una alternativa limpia a un pendiente redondo. Elige oro amarillo, blanco o rosa de 10K, 14K o 18K, y selecciona un pendiente o un par.- Cada pequeño pendiente de barra de oro mide 2 x 8 mm y tiene una forma de barra corta.- La cara es cepillada, mientras que los bordes están pulidos para lograr un contraste en el acabado.- Los postes y cierres de mariposa de oro macizo aseguran cada pendiente de barra minimalista.- Elige un solo pendiente o un par usando la opción de piezas.- Selecciona el quilate y el color de metal que se adapten a tu preferencia; no incluye piedras.- Cada pieza se hace a pedido y normalmente se procesa en 3 a 5 días.- Limpia con un paño suave para su cuidado; un joyero puede renovar el acabado cepillado.La imagen de los tres metales muestra el mismo diseño en oro amarillo, blanco y rosa. La pieza terminada puede variar ligeramente. Tu pendiente de barra de oro se envía gratis dentro de los Estados Unidos desde Nueva Jersey; se pueden agregar mensajes de regalo al finalizar la compra."],
   // 4591200606 knife edge: "EE. UU. de la 3" is not a sentence start
   ["Un anillo knife edge de oro macizo pulido tiene un perfil esbelto de 2,5 mm y una cresta central elevada que capta la luz. Elige oro de 10k, 14k o 18k en amarillo, blanco o rosa, con tallas de anillo de EE. UU. de la 3 a la 16 disponibles en tallas enteras y medias. Es un anillo moderno para hombre con un perfil limpio para usar solo o junto con otra joyería.- La alianza mide 2,5 mm de ancho, con dos planos exteriores que se encuentran en una cresta distintiva para dar un aspecto facetado.- Selecciona oro macizo de 10k, 14k o 18k y elige el color de metal amarillo, blanco o rosa.- El acabado pulido no tiene piedras, y el anillo es de oro macizo en su totalidad.- Elige una talla de anillo de EE. UU. de la 3 a la 16, incluyendo tallas enteras y medias.- Cada anillo se hace por encargo, con un plazo de procesamiento indicado de 3 a 5 días.- Un paño suave es adecuado para limpiar el oro; la descripción señala que el oro macizo no se deslustra.- El diseño de la imagen es una visualización; la imagen de los tres metales muestra el mismo diseño en oro amarillo, blanco y rosa, y la pieza terminada puede variar levemente.La esbelta alianza de oro también funciona como alianza de boda para hombre. El anillo knife edge seleccionado se fabrica en el quilataje, color y talla elegidos.",
    "Un anillo knife edge de oro macizo pulido tiene un perfil esbelto de 2,5 mm y una cresta central elevada que capta la luz. Elige oro de 10k, 14k o 18k en amarillo, blanco o rosa, con tallas de anillo de EE. UU. de la 3 a la 16 disponibles en tallas enteras y medias. Es un anillo moderno para hombre con un perfil limpio para usar solo o junto con otra joyería.- La alianza mide 2,5 mm de ancho, con dos planos exteriores que se encuentran en una cresta distintiva para dar un aspecto facetado.- Selecciona oro macizo de 10k, 14k o 18k y elige el color de metal amarillo, blanco o rosa.- El acabado pulido no tiene piedras, y el anillo es de oro macizo en su totalidad.- Elige una talla de anillo de EE. UU. de la 3 a la 16, incluyendo tallas enteras y medias.- Cada anillo se hace por encargo, con un plazo de procesamiento indicado de 3 a 5 días.- Un paño suave es adecuado para limpiar el oro; la descripción señala que el oro macizo no se deslustra.- La imagen de los tres metales muestra el mismo diseño en oro amarillo, blanco y rosa, y la pieza terminada puede variar levemente.La esbelta alianza de oro también funciona como alianza de boda para hombre. El anillo knife edge seleccionado se fabrica en el quilataje, color y talla elegidos."],
