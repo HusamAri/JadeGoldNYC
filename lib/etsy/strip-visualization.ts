@@ -203,47 +203,29 @@ export function joinSentences(kept: (string | null)[], seps: string[]): string {
 // keeps "La pulsera no tiene piedras"). "oro amarillo, blanco y rosa" is not cut.
 const CLAUSE_CUT_RE = /,\s+(?=(?:and|so)\s)|,?\s+(?=y\s+(?:el|la|los|las)\s+(?:fotos?|fotografías?|imagen|imágenes|galería)\b)/i;
 
-// After a disclosure that leads its clause, only a caption stays: a clause whose subject is an
-// image and which says what that image shows ("[the product images are design
-// visualizations], and the three-metal image shows the same design in yellow, white and rose
-// gold"). 2026-11-01: six Artifact listings had lost exactly that, in English and Spanish, only
-// because it followed ", and" / ", y" rather than ";". Everything else after the disclosure
-// still goes with it: the last item of a list ("..., and the gift box"), a participle
-// ("..., and packaged in a gift box"), a consequence ("..., and the finished piece may vary
-// slightly", 12 English listings 2026-10-27), a pronoun ("..., and they ...").
-// A Spanish word of the subject is never a clitic: "las fotos ... se muestran (con fines
-// ilustrativos)" is a passive that says nothing the image shows.
-const ES_WORD = String.raw`(?!(?:se|lo|le|les)\b)[\p{L}\d/-]+`;
-const CAPTION_RE = new RegExp(
-  String.raw`^(?:the|this|each|every)\s+(?:[\w/-]+\s+){0,3}(?:images?|photos?|photographs?|pictures?)\s+` +
-    String.raw`(?:shows?|represents?|displays?|depicts?|features?|illustrates?|presents?|visuali[sz]es?)\b` +
+// After a disclosure that leads its clause, one thing stays: the multi-metal caption, the fact
+// six Artifact listings lost in English and Spanish only because it followed ", and" / ", y"
+// rather than ";" (2026-11-01): "[the product images are design visualizations], and the
+// three-metal image shows the same design in yellow, white and rose gold". It is a closed
+// grammar, bound to the full structure of the live sentences (8 forms in 12 texts), never an
+// open "image + verb" pattern: three review rounds showed that every open pattern lets other
+// text through (disclosures in other words, "for illustration only", ", and real photos will
+// follow", "may vary" in any tense). Whatever follows the caption in the clause goes; anything
+// else after a leading disclosure goes with it, as before.
+const METAL_EN = String.raw`(?:1[048]K\s+)?(?:yellow|white|rose)(?:\s+gold)?`;
+const METAL_ES = String.raw`(?:oro\s+)?(?:amarillo|blanco|rosa|rosado)(?:\s+de\s+1[048]K)?`;
+const METAL_CAPTION_RE = new RegExp(
+  String.raw`^(?:(?:the|this)\s+(?:three|3|two|2|multi)[-\s](?:metal|colou?r|tone)\s+images?\s+(?:shows?|represents?|visuali[sz]es?)\s+` +
+    String.raw`(?:the\s+same\s+design\s+in\s+)?${METAL_EN}(?:,?\s+(?:and\s+|or\s+)?${METAL_EN}){1,3}(?:\s+gold)?(?:\s+colou?r\s+options)?` +
     "|" +
-    String.raw`^(?:la|las|el|los|esta|estas|cada)\s+(?:imagen|imágenes|foto|fotos|fotografía|fotografías)` +
-    String.raw`(?:\s+(?:de|del|con|en)\s+(?:(?:los|las|el|la)\s+)?${ES_WORD}(?:\s+${ES_WORD}){0,2})?` +
-    String.raw`\s+(?:(?:lo|la|los|las)\s+)?(?:muestran?|representan?|presentan?|ilustran?|enseñan?|visualizan?)\b`,
-  "iu",
+    String.raw`(?:la\s+imagen|las\s+imágenes)\s+de\s+(?:los\s+)?(?:tres|3|dos|2)\s+(?:metales|colores|tonos)\s+(?:muestran?|representan?|visualizan?)\s+` +
+    String.raw`(?:el\s+mismo\s+diseño\s+en\s+|las\s+opciones\s+de\s+color\s+en\s+)?${METAL_ES}(?:,?\s+(?:y\s+|o\s+)?${METAL_ES}){1,3})` +
+    // The caption ends here: at the end, or at a comma that does not go on with the list (no
+    // shorter match "... in yellow, white" out of "... in yellow, white, and rose gold whose ...").
+    String.raw`(?=\s*$|\s*,\s+(?!(?:(?:and|or|y|o)\s+)?(?:1[048]K\s+)?(?:oro\s+)?(?:yellow|white|rose|amarillo|blanco|rosa|rosado)\b))`,
+  "i",
 );
-// The caption ends where a new clause starts: ", so" / ", por lo que" (a consequence), or an
-// ", and" / ", y" part with a verb of its own ("..., and the finished piece may vary slightly",
-// "..., y las fotos no son de una pieza real"). A part without a verb is the caption's own list
-// ("..., white, and rose gold", "..., the chain, and the gift box") and stays.
-const CAPTION_PART_RE = /,\s+(?=(?:and|so|but|while|whereas|y|pero|por lo que|así que|mientras que)\s)/i;
-const NEW_CLAUSE_RE = new RegExp(
-  String.raw`^(?:so|but|while|whereas|pero|por lo que|así que|mientras que)\s` +
-    String.raw`|\b(?:is|are|was|were|be|been|being|will|would|may|might|can|could|should|must|has|have|had|do|does|did|ships?|comes?|includes?|arrives?|varies|vary|differs?|looks?|appears?|remains?|stays?` +
-    String.raw`|es|son|era|eran|fue|fueron|está|están|estará|estarán|será|serán|puede|pueden|podría|podrían|tiene|tienen|incluye|incluyen|llega|llegan|varía|varían|hay|se)\b`,
-  "iu",
-);
-// A caption that calls what the image shows a render says what the dropped disclosure said
-// ("the three-metal image shows a rendering of the same design"): it goes with it. (Elsewhere
-// "rendering" alone is buyer copy, see VISUALIZATION_RE; this applies only to a restored caption.)
-const CAPTION_PROVENANCE_RE = /\b(?:3D |CAD |digital |AI )?render(?:ing|ings|s|ed)?\b|\bCGI\b|\bmock-?ups?\b|\brenderizad[oa]s?\b|\brepresentaci[oó]n(?:es)? (?:digital(?:es)?|3D)\b|\bmaqueta digital\b/i;
-function captionOnly(caption: string): string {
-  const parts = caption.split(CAPTION_PART_RE);
-  const end = parts.findIndex((p, i) => i > 0 && NEW_CLAUSE_RE.test(p));
-  return (end < 0 ? parts : parts.slice(0, end)).join(", ");
-}
-// A kept caption whose own verb says the image "visualizes" a design says what it shows.
+// The kept caption's verb "visualizes" says what the image shows.
 const SHOWS: [RegExp, string][] = [
   [/\bvisuali[sz]es\b/g, "shows"],
   [/\bvisuali[sz]e\b/g, "show"],
@@ -262,14 +244,11 @@ function stripClause(clause: string): string {
   // No part holds the disclosure on its own: the clause stays exactly as it was.
   if (kept.length === parts.length) return clause;
   if (kept.length > 0) return kept.join(", ").trim();
-  // The disclosure leads: a clean caption after it stays (CAPTION_RE); nothing else does.
+  // The disclosure leads: only the multi-metal caption right after it stays (METAL_CAPTION_RE).
   const tail = parts.slice(1);
   if (tail.length === 0 || tail.some((p) => VISUALIZATION_RE.test(p))) return "";
-  const caption = captionOnly(tail.join(", ").replace(/^(?:and|y)\s+/, "").trim());
-  const head = CAPTION_RE.exec(caption)?.[0];
-  if (!head || CAPTION_PROVENANCE_RE.test(caption)) return "";
-  // Only the caption's verb: "so you can visualize the width" later in it is the buyer's.
-  return SHOWS.reduce((t, [re, rep]) => t.replace(re, rep), head) + caption.slice(head.length);
+  const caption = METAL_CAPTION_RE.exec(tail.join(", ").replace(/^(?:and|y)\s+/, "").trim())?.[0];
+  return caption ? SHOWS.reduce((t, [re, rep]) => t.replace(re, rep), caption.trim()) : "";
 }
 
 export function stripSentence(sentence: string): string {

@@ -61,9 +61,12 @@ const LEGACY_WINDOW_MS = 10_000;
  * same `text` to the panel copy; the products trigger row of that update holds the panel copy
  * before it and `text`. The panel copy stands in for the Etsy text only when it IS that text
  * as far as the write can tell: decoded, its length is the summary's, and the frozen rule of
- * that day (lib/etsy/legacy) turns it into exactly the text written. A copy that differs (15 of
- * the 196 had other lengths; an equal-length stale copy fails the rule) gives no chain: the
- * product is reported, never written.
+ * that day (lib/etsy/legacy) turns it into exactly the text written. A copy that differs gives
+ * no chain and the product is reported, never written: 15 of the 196 had other lengths, and an
+ * equal-length stale copy fails the rule wherever the rule kept text. What it cannot see is a
+ * difference inside the sentences that rule removed; from those, replan restores at most the
+ * multi-metal caption (a closed grammar, strip-visualization.ts), and the dry run shows it for
+ * a person to read before any write.
  */
 export function legacyRow(
   ds: { id: string; created_at: string; summary: string | null },

@@ -420,7 +420,7 @@ const VIS_LINES: [string, string][] = [
   ["The product images are design visualizations, and the three-metal image shows the same design in yellow, white and rose gold.",
    "The three-metal image shows the same design in yellow, white and rose gold."],
   ["Las fotos son visualizaciones de diseño y la imagen de los tres metales muestra las opciones de oro.",
-   "La imagen de los tres metales muestra las opciones de oro."],
+   ""],
   // A tail without its own subject, a consequence (", so") or a second disclosure goes with it.
   ["The images are AI visualizations, and they may differ slightly from the finished ring.", ""],
   ["The images are AI renders, so the finished ring may vary slightly.", ""],
@@ -458,7 +458,7 @@ const VIS_LINES: [string, string][] = [
   // Convergence 2026-11-01: the caption ends where a new clause starts (a verb of its own, or
   // ", so" / ", por lo que"); the caption's own list items stay.
   ["The product images are AI-generated visualizations, and the image shows the ring in 14K yellow gold, so the actual weight and dimensions may differ.",
-   "The image shows the ring in 14K yellow gold."],
+   ""],
   ["The product images are design visualizations, and the three-metal image shows the same design in yellow, white and rose gold, so the finished piece may vary slightly.",
    "The three-metal image shows the same design in yellow, white and rose gold."],
   ["- The product images are design visualizations, and the three-metal image shows the same design in yellow, white and rose gold, and the finished piece may vary slightly.",
@@ -474,7 +474,7 @@ const VIS_LINES: [string, string][] = [
   ["Las imágenes del producto son visualizaciones de diseño, y la imagen de los tres metales muestra el mismo diseño en oro amarillo, blanco y rosa, y las fotos no son de una pieza real.",
    "La imagen de los tres metales muestra el mismo diseño en oro amarillo, blanco y rosa."],
   ["The product images are design visualizations, and the image shows the ring, the chain, and the gift box.",
-   "The image shows the ring, the chain, and the gift box."],
+   ""],
   // A Spanish passive ("se muestran solo con fines ilustrativos") says nothing the image shows.
   ["Las imágenes del producto son visualizaciones de diseño, y las fotos de la galería se muestran solo con fines ilustrativos.", ""],
   ["Las imágenes del producto son visualizaciones de diseño, y la imagen se muestra solo a modo de referencia.", ""],
@@ -484,16 +484,33 @@ const VIS_LINES: [string, string][] = [
   ["The product images are design visualizations, and the three-metal image shows a rendering of the same design in yellow, white and rose gold.", ""],
   ["Las imágenes del producto son visualizaciones de diseño, y la imagen de los tres metales muestra una representación digital del mismo diseño.", ""],
   ["The product images are design visualizations, and the photo shows a CGI mock-up of the ring on a hand.", ""],
-  // Only the caption's own verb is rewritten; the buyer's "visualize" stays.
+  // Final convergence 2026-11-01 (263e104): open caption patterns let other text through; the
+  // closed multi-metal grammar does not. Disclosures in other words, tails in any tense.
+  ["The product images are design visualizations, and the photos show the design for illustration purposes only.", ""],
+  ["Las imágenes del producto son visualizaciones de diseño, y las imágenes muestran el diseño solo con fines ilustrativos.", ""],
+  ["The product images are design visualizations, and the generated three-metal image shows the same design in yellow, white and rose gold.", ""],
+  ["Las imágenes del producto son visualizaciones de diseño, y la imagen de los tres metales muestra una simulación del mismo diseño.", ""],
+  ["- Las imágenes del producto son visualizaciones de diseño, y la imagen de los tres metales muestra una representación en color del mismo diseño en oro amarillo, blanco y rosa.", ""],
+  ["The product images are design visualizations, and the three-metal image shows the same design in yellow, white and rose gold, and they aren't photographs of a cast sample.",
+   "The three-metal image shows the same design in yellow, white and rose gold."],
+  ["Las imágenes del producto son visualizaciones de diseño, y la imagen de los tres metales muestra el mismo diseño en oro amarillo, blanco y rosa, y la pieza terminada podrá variar ligeramente.",
+   "La imagen de los tres metales muestra el mismo diseño en oro amarillo, blanco y rosa."],
+  ["Las imágenes del producto son visualizaciones de diseño, y la imagen de los tres metales muestra el mismo diseño en oro amarillo, blanco y rosa, y la pieza final está sujeta a ligeras variaciones.",
+   "La imagen de los tres metales muestra el mismo diseño en oro amarillo, blanco y rosa."],
+  // No shorter match out of a list that goes on: the clause is not the caption, it goes.
+  ["The product images are design visualizations, and the three-metal image shows the same design in yellow, white, and rose gold whose tone can vary by karat.", ""],
+  ["The product images are design visualizations, and the three-metal image shows the same design as visualized in yellow, white and rose gold.", ""],
+  // Only the multi-metal caption is restored: any other image clause after a leading
+  // disclosure goes with it, as on main.
   ["The product images are design visualizations, and the photo shows the ring on a size 7 hand to help you visualize the width.",
-   "The photo shows the ring on a size 7 hand to help you visualize the width."],
+   ""],
   ["Las imágenes del producto son visualizaciones de diseño, y la foto en la mano muestra la escala para que visualice el ancho de 6 mm.",
-   "La foto en la mano muestra la escala para que visualice el ancho de 6 mm."],
-  // A Spanish list closed by "y" before the caption: both languages keep the caption.
+   ""],
+  // Not the multi-metal caption: both languages drop it, as on main.
   ["Las imágenes del producto son visualizaciones de diseño en oro amarillo, blanco y rosa, y la imagen de los tres metales los muestra juntos.",
-   "La imagen de los tres metales los muestra juntos."],
+   ""],
   ["The product images are design visualizations in yellow, white and rose gold, and the three-metal image shows all three side by side.",
-   "The three-metal image shows all three side by side."],
+   ""],
   // The multi-metal clause that is itself a visualization goes (72 live originals).
   ["The product images are design visualizations of the finished piece, and the three-metal image is a colour visualization of the same design in yellow, white and rose gold.", ""],
   // A clean lead before the disclosure still keeps only the lead.
