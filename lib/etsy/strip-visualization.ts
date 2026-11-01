@@ -101,10 +101,11 @@ export const BULLET_RE = /^\s*(?:[-•✔*·]|\d+[.)])\s+/;
 const SPACED_RE = /[.!?…]+["”’»)\]]*(\s+)/gu;
 const GLUED_RE = /(?<=(?:[\p{Ll}\d)]|\d\p{Lu})[.!?…])(?=\p{Lu})|(?<=[.!?…])(?=[-•]\s)/gu;
 const NEVER_END_RE = /(?:^|[\s(.])(?:e\.g|i\.e|vs|p\. ej|ej)\.$/i;
-const ABBREV_END_RE = /(?:^|[\s(.])(?:EE|UU|U\.S|U\.K|approx|aprox|e\.g|i\.e|vs|n[º°]|No|ct|in|incl|ej|ca)\.$/;
+const ABBREV_END_RE = /(?:^|[\s(.])(?:EE|UU|U\.S|U\.K|approx|aprox|e\.g|i\.e|vs|n[º°]|No|ct|in|incl|ej|ca|p|mín|máx|min|max)\.$/;
 // A number on its own, with a unit or karat glued to it or not ("7", "3 a la 13", "2.4 g",
 // "2g", "15mm", "14K", "½"), not a word that starts with one ("3D").
-const NUMBER_NEXT_RE = /^(?:\d+(?:[.,]\d+)?(?:\s?(?:mm|cm|in|g|gr|ct|oz|[kK]))?(?![\p{L}\d])|[½¼¾⅓⅔])/u;
+// A counted noun is not a size ("EE. UU. 3 de las imágenes son ...", "U.S. 2 of the photos ...").
+const NUMBER_NEXT_RE = /^(?:\d+(?:[.,]\d+)?(?:\s?(?:mm|cm|in|g|gr|ct|oz|[kK]))?(?![\p{L}\d])(?!\s+(?:of|de)\s)|[½¼¾⅓⅔])/u;
 const SIZE_WORD_RE = /^(?:sizes?|tallas?|US\b|U\.S\.|EE\.)/i;
 // Only the end of the text before a cut matters; a long line must not cost the whole prefix
 // at every cut.
@@ -132,11 +133,16 @@ function plainBoundary(core: string, next: string): boolean {
 
 function isBoundary(before: string, next: string): boolean {
   const tail = before.length > TAIL ? before.slice(-TAIL) : before;
+  // A quoted or bracketed full stop before a lowercase word is inside the sentence
+  // ("Engraved with “Forever.” on the inside").
+  if (/[.!?…]["”’»)\]]+$/.test(tail) && /^\p{Ll}/u.test(next)) return false;
   const core = tail.replace(/["”’»)\]]+$/, "");
   if (!plainBoundary(core, next)) return false;
   if (before.length <= TAIL && /^\s*\d{1,2}[.)]$/.test(core)) return false;
   const item = /^([\s\S]*[.!?…]["”’»)\]]*)\s+(\d{1,2}[.)])$/.exec(core);
-  if (item && plainBoundary(item[1].replace(/["”’»)\]]+$/, ""), item[2] + " " + next)) return false;
+  // A run of bare numbers is a list of values ("Sizes: 3. 4. 5. 6."), not item markers.
+  const run = item && /(?:^|\s)\d{1,2}[.)]["”’»)\]]*$/.test(item[1]);
+  if (item && !run && plainBoundary(item[1].replace(/["”’»)\]]+$/, ""), item[2] + " " + next)) return false;
   return true;
 }
 

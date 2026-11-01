@@ -192,8 +192,22 @@ const LINES: [string, string][] = [
   ["- Weight figures (e.g. 2.4 g at US 7) must be confirmed before production.", ""],
   ["- Weights for the 16 in. and 18 in. chains must be confirmed before production.", ""],
   ["Please confirm the final measurements, weight and availability before sending the listing to Etsy, and the finished sculptural ring is produced after those details are confirmed.", ""],
+  // The details are the buyer's own (size and text named in the same clause): the clause stays whole.
   ["Final CAD is pending owner approval; send us your ring size and engraving text, and your ring ships within 10 business days after these details are confirmed.",
-   "Send us your ring size and engraving text."],
+   "Send us your ring size and engraving text, and your ring ships within 10 business days after these details are confirmed."],
+  ["La personalización está prevista; envíanos tu talla y el texto, y el anillo se envía en 10 días después de confirmar estos detalles.",
+   "Envíanos tu talla y el texto, y el anillo se envía en 10 días después de confirmar estos detalles."],
+  // Convergence check 2026-11-01: every confirmed example of three review rounds re-run at HEAD.
+  ["La coma representa una historia que continúa, mientras que las dimensiones de desarrollo siguen estando sujetas a muestreo físico y aprobación del fabricante.",
+   "La coma representa una historia que continúa."],
+  ["The comma represents a continuing story, while development dimensions remain subject to physical sampling and maker approval.",
+   "The comma represents a continuing story."],
+  ["El cierre es de langosta, pendiente de confirmación del proveedor para la talla 8.", "El cierre es de langosta."],
+  ["Peso aproximado de 3,2 g, pendiente de confirmación del proveedor tras la fundición.", "Peso aproximado de 3,2 g."],
+  ["• Disponible en tallas 5 a 9 de EE. UU., diámetro exacto pendiente de confirmación del proveedor.", "• Disponible en tallas 5 a 9 de EE. UU."],
+  ["The finished weight (approx. 3mm band, US 7) must be confirmed before production.", ""],
+  ["La cotización del proveedor identifica esta pulsera en 7,5 pulgadas. La longitud mínima y máxima final se añadirá después de la lectura del proveedor.", ""],
+  ["El precio final depende del costo del proveedor.", ""],
   ["• Se vende como par, diámetro de 12,5 mm y cierre pendientes de confirmación del proveedor.", "• Se vende como par."],
   // Review 2026-11-01 (fourth pass).
   ["The finished weight (approx. 2g) must be confirmed before production.", ""],
@@ -336,6 +350,8 @@ const KEEP: string[] = [
   "Delivery estimates are for the U.S. and personalized engraving must be confirmed before production.",
   "Weights shown are for the 18 in. chain, and engraving text must be confirmed before production.",
   "La estimación de entrega aparece al pagar y el texto del grabado debe confirmarse antes de la producción.",
+  "Envío gratis a EE. UU., pendiente de confirmación del proveedor logístico.",
+  "We recycle all casting waste into new pieces, so nothing is lost.",
 ];
 
 // Image disclosures whose line also holds buyer facts (review 2026-11-01, second pass).
@@ -376,6 +392,15 @@ const VIS_LINES: [string, string][] = [
    "handmade to order in solid 14k gold. ships in 3 to 5 business days."],
   ["Product images, e.g. The Hero shot, are AI-assisted.", ""],
   ["The images are AI visualizations comparing 14K vs. 18K gold.", ""],
+  // Convergence check 2026-11-01.
+  ["Envío gratis dentro de EE. UU. 3 de las imágenes son visualizaciones.", "Envío gratis dentro de EE. UU."],
+  ["Free shipping in the U.S. 2 of the photos are AI visualizations.", "Free shipping in the U.S."],
+  ["Grosor mín. de 1,5 mm; las imágenes son visualizaciones creadas con IA.", "Grosor mín. de 1,5 mm."],
+  ["Puedes grabar iniciales, p. ej. tus nombres; las fotos son visualizaciones.", "Puedes grabar iniciales, p. ej. tus nombres."],
+  ["Engraved with “Forever.” on the inside; the photos are AI renders.", "Engraved with “Forever.” on the inside."],
+  ["Las imágenes del producto, p. ej. la de tres metales, son visualizaciones de diseño. Se envía gratis.", "Se envía gratis."],
+  ["Las fotos, p. ej. la del modelo, son generadas con IA.", ""],
+  ["Sizes: 3. 4. 5. 6. 7. 8. 9. 10. The images are AI visualizations.", "Sizes: 3. 4. 5. 6. 7. 8. 9. 10."],
 ];
 
 test("a long line of bare list numbers is split in linear time", () => {

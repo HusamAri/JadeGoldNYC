@@ -109,7 +109,8 @@ export const INTERNAL_RE = new RegExp(
     String.raw`\bnot (?:specified|provided) in the listing(?: details| information)?(?=\s*\.|\s*$)`,
     String.raw`\bare not provided here\b`,
     String.raw`\bnot established by (?:the |these )?images\b`,
-    String.raw`\bcasting waste\b`,
+    // The cost structure ("one additional gram of casting waste"); "we recycle all casting waste" is buyer copy.
+    String.raw`\b(?:grams?|g) of casting waste\b`,
     // Cost structure: "one additional gram of casting waste and USD 100 production cost".
     String.raw`\bUSD \d+ (?:production cost|labou?r)\b`,
     // "Every price includes one additional gram of ..." (cost structure); not "the Heavy option
@@ -120,7 +121,7 @@ export const INTERNAL_RE = new RegExp(
     // sending the listing to Etsy". A buyer never sends or publishes the listing.
     String.raw`\bbefore (?:submitting|sending|uploading|publishing|pushing) (?:the|this) listing\b`,
     // The weight estimate only: "engraving text must be confirmed before production" is a buyer step.
-    String.raw`\b(?:estimates?|weights?|weight figures|grams?|gram (?:figures|weights))\b(?:(?!\band\s+(?!must\b|\d))(?:[^.;,]|\d\.\d|\b(?:approx|U\.S|e\.g|i\.e|in)\.))*?\bmust be confirmed before production\b`,
+    String.raw`\b(?:estimates?|weights?|weight figures|grams?|gram (?:figures|weights))\b(?:(?!\band\s+(?!must\b|\d))(?:[^.;,()]|\d\.\d|\b(?:approx|U\.S|e\.g|i\.e|in)\.|\([^()]*\)))*?\bmust be confirmed before production\b`,
     // Spanish.
     // The Spanish translations of the 2027 enamel copy (live 2026-11-01): "Referencia interna:
     // BAS-27-MINE-E04-14Y", "Desarrollo: Muestra requerida", "... hasta que el fabricante
@@ -148,8 +149,11 @@ export const INTERNAL_RE = new RegExp(
     // Spanish forms of the English supplier and cost notes.
     // Pending on the supplier only: "sujeto a aprobación del proveedor" (Klarna), "la confirmación
     // del proveedor de envío", "el costo del proveedor de mensajería" are buyer copy.
-    String.raw`\bpendientes? de (?:la )?(?:confirmación|aprobación|cotización|lectura) del proveedor\b(?! de (?:envío|mensajería|pago))`,
-    String.raw`\b(?:costo|coste|cotización|confirmación|aprobación) del proveedor\b(?! de (?:envío|mensajería|pago))(?=[^.;]*\bpendientes?\b)`,
+    String.raw`\bpendientes? de (?:la )?(?:confirmación|aprobación|cotización|lectura) del proveedor\b(?! de (?:envío|mensajería|pago)| logístic[oa])`,
+    String.raw`\b(?:costo|coste|cotización|confirmación|aprobación) del proveedor\b(?! de (?:envío|mensajería|pago)| logístic[oa])(?=[^.;]*\bpendientes?\b)`,
+    // English "readback" from the supplier, and "the final price depends on the supplier cost".
+    String.raw`\blectura del proveedor\b`,
+    String.raw`\bdepende del (?:costo|coste) del proveedor\b`,
     // English "The supplier quote identifies this bracelet at 7.5 inches".
     String.raw`\b(?:la )?cotización del proveedor (?:identifica|indica|muestra|fija|establece)\b`,
     // The cost structure, as in English; "reciclamos el desperdicio de fundición" is buyer copy.
@@ -240,7 +244,7 @@ const PHRASE_REWRITES: Rewrite[] = [
   // a decimal ("1.5 mm") may sit inside the clause.
   [/,\s*(?:(?:[^,;.]|\d\.\d)*?\s)?(?:pending supplier confirmation|supplier confirmation pending)\b/gi, ""],
   // Spanish: "; el diámetro exacto y el cierre están pendientes de confirmación del proveedor".
-  [/,(?!\d)\s*(?:(?:[^,;.]|\d[.,]\d)*?\s)?(?:están |está )?pendientes? de (?:la )?confirmación del proveedor\b(?! de (?:envío|mensajería|pago))/gi, ""],
+  [/,(?!\d)\s*(?:(?:[^,;.]|\d[.,]\d)*?\s)?(?:están |está )?pendientes? de (?:la )?confirmación del proveedor\b(?! de (?:envío|mensajería|pago)| logístic[oa])[^.;,]*/gi, ""],
   // "• Oro macizo de 14K amarillo, blanco y rosa, confirmación del proveedor pendiente".
   [/,(?!\d)\s*(?:(?:[^,;.]|\d[.,]\d)*?\s)?confirmación del proveedor pendientes?(?=\s*(?:[.;,!?)]|$))/gi, ""],
   // Design-proposal wording: "These sculptural gold earrings are proposed as a mirror pair",
@@ -313,6 +317,9 @@ function rewritePhrases(line: string): string {
   }
   // The bullet rewrite leaves a marker where the next letter must be raised.
   out = out.replace(/\u0000(\p{L})/u, (_m, c: string) => c.toUpperCase()).replace(/\u0000/g, "");
+  // A cut right after an abbreviation leaves two full stops ("en EE. UU., diámetro ... del
+  // proveedor." -> "en EE. UU.."): one is enough. An ellipsis stays.
+  if (out !== line) out = out.replace(/(?<!\.)\.\.(?!\.)/g, ".");
   return out;
 }
 
@@ -320,6 +327,7 @@ function rewritePhrases(line: string): string {
 // el anillo ... se produce después de confirmar esos detalles". It goes with an internal clause
 // before it in the same sentence and never on its own ("Your order ships 2 weeks after these
 // details are confirmed" is a lead time).
+const BUYER_DETAILS_RE = /\b(?:ring sizes?|sizes?|engraving|text|initials|names?|font|talla|tallas|texto|grabado|iniciales|nombres?|tipografía)\b/i;
 const ANAPHORIC_RE = /\b(?:after|once) (?:those|these) details are confirmed\b|\bdespués de confirmar (?:esos|estos) detalles\b/i;
 
 // A tail that starts with a pronoun points back into the dropped clause ("..., and they may
@@ -331,7 +339,9 @@ function stripClause(clause: string): string {
   // "Ring size is selected from the options, and final measurements, weight, and fit will
   // be confirmed before ... sale": keep only the clean leading part, never a middle piece
   // of a list, so the sentence cannot end mid-list.
-  const parts = clause.split(/,\s+(?=(?:and|so|but|y|pero)\s)/);
+  // ", while ..." / ", mientras que ..." also starts a new clause: "La coma representa una
+  // historia que continúa, mientras que las dimensiones de desarrollo siguen ..." keeps its lead.
+  const parts = clause.split(/,\s+(?=(?:and|so|but|y|pero|while|whereas|mientras que)\s)/);
   // A leading part that holds a comma is a list fragment ("Final diamond color, clarity,
   // and certificate ... must be confirmed"), not a sentence of its own: never keep it.
   if (parts.length > 1 && !INTERNAL_RE.test(parts[0]) && !parts[0].includes(",")) return parts[0].trim();
@@ -366,9 +376,13 @@ function stripSentence(sentence: string): string {
       // The clean lead before ", and" / ", y" stays ("send us your ring size and engraving text,
       // and your ring ships ... after these details are confirmed" keeps the first half).
       if (dropped && ANAPHORIC_RE.test(c)) {
+        // "send us your ring size and engraving text, and your ring ships ... after these details
+        // are confirmed": the details are the buyer's own, named in the same clause; it stays.
+        const lead = c.slice(0, c.search(ANAPHORIC_RE));
+        if (BUYER_DETAILS_RE.test(lead)) return c;
         const parts = c.split(/,\s+(?=(?:and|so|but|y|pero)\s)/);
-        const lead = parts[0];
-        return parts.length > 1 && !ANAPHORIC_RE.test(lead) && !INTERNAL_RE.test(lead) && !lead.includes(",") ? lead.trim() : "";
+        const first = parts[0];
+        return parts.length > 1 && !ANAPHORIC_RE.test(first) && !INTERNAL_RE.test(first) && !first.includes(",") ? first.trim() : "";
       }
       const next = stripClause(c);
       if (next !== c) dropped = true;
