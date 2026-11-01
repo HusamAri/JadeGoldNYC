@@ -120,7 +120,7 @@ export const INTERNAL_RE = new RegExp(
     // sending the listing to Etsy". A buyer never sends or publishes the listing.
     String.raw`\bbefore (?:submitting|sending|uploading|publishing|pushing) (?:the|this) listing\b`,
     // The weight estimate only: "engraving text must be confirmed before production" is a buyer step.
-    String.raw`\b(?:estimates?|weights?|weight figures|grams?|gram (?:figures|weights))\b(?:[^.;]|\d\.\d|\b(?:approx|U\.S|e\.g|i\.e|in)\.)*?\bmust be confirmed before production\b`,
+    String.raw`\b(?:estimates?|weights?|weight figures|grams?|gram (?:figures|weights))\b(?:(?!\band\s+(?!must\b|\d))(?:[^.;,]|\d\.\d|\b(?:approx|U\.S|e\.g|i\.e|in)\.))*?\bmust be confirmed before production\b`,
     // Spanish.
     // The Spanish translations of the 2027 enamel copy (live 2026-11-01): "Referencia interna:
     // BAS-27-MINE-E04-14Y", "Desarrollo: Muestra requerida", "... hasta que el fabricante
@@ -134,7 +134,7 @@ export const INTERNAL_RE = new RegExp(
     String.raw`\bhasta que el fabricante (?:confirme|apruebe|verifique) el método de cuidado\b`,
     String.raw`\b(?:antes de|sin) (?:enviar|publicar|subir) (?:el|este) anuncio a Etsy\b`,
     // The weight estimate only, as in English.
-    String.raw`\b(?:estimaci[oó]n(?:es)?|estimad[oa]s|pesos|gramos)\b(?:[^.;,]|\d[.,]\d|\baprox\.|\bEE\.\s?UU\.)*?\bdeben confirmarse antes de la producción\b`,
+    String.raw`\b(?:estimaci[oó]n(?:es)?|estimad[oa]s?|pesos?|gramos?)\b(?:(?!\s(?:y|e|o)\s+(?:el|la|los|las|tu|tus|su|sus|un|una)\b)(?:[^.;,()]|\d[.,]\d|\baprox\.|\bEE\.\s?UU\.|\([^()]*\)|,(?=\s*y\s+deben?\b)))*?\bdeben? confirmarse antes de la producción\b`,
     // The listing's own status; "te avisamos antes de que el modelo se ponga a la venta" is a waitlist.
     String.raw`\bantes de que (?:el|este|esta) (?:diseño|anuncio|pieza|anillo|artículo) se (?:ponga|ofrezca) a la venta\b`,
     String.raw`\bno se establecen (?:mediante|por|a partir de) (?:las |estas )?imágenes\b`,
@@ -144,17 +144,21 @@ export const INTERNAL_RE = new RegExp(
     // English "readback": "El peso final de 18K se añade después de la lectura de producción".
     String.raw`\blectura de producción\b`,
     // English "specific measurements and weight are not provided here"; not "las cadenas que se muestran aquí no se proporcionan".
-    String.raw`\baquí no se proporcionan? (?:medidas|el peso|pesos?|dimensiones|especificaciones)\b`,
+    String.raw`\baquí no se proporcionan? (?:las |los |el |la )?(?:medidas|peso|pesos|dimensiones|especificaciones)\b`,
     // Spanish forms of the English supplier and cost notes.
     // Pending on the supplier only: "sujeto a aprobación del proveedor" (Klarna), "la confirmación
     // del proveedor de envío", "el costo del proveedor de mensajería" are buyer copy.
     String.raw`\bpendientes? de (?:la )?(?:confirmación|aprobación|cotización|lectura) del proveedor\b(?! de (?:envío|mensajería|pago))`,
-    String.raw`\b(?:costo|coste) del proveedor\b(?=[^.;]*\bpendientes?\b)`,
+    String.raw`\b(?:costo|coste|cotización|confirmación|aprobación) del proveedor\b(?! de (?:envío|mensajería|pago))(?=[^.;]*\bpendientes?\b)`,
+    // English "The supplier quote identifies this bracelet at 7.5 inches".
+    String.raw`\b(?:la )?cotización del proveedor (?:identifica|indica|muestra|fija|establece)\b`,
     // The cost structure, as in English; "reciclamos el desperdicio de fundición" is buyer copy.
-    String.raw`\b(?:precio|precios|costo|coste) incluye (?:un |una )?gramo adicional de (?:oro|desperdicio de fundición)\b`,
+    String.raw`\b(?:precios?|costos?|costes?) incluyen? (?:un |una |1 )?gramo (?:adicional|extra) de (?:oro|desperdicio de fundición)\b`,
+    String.raw`\b(?:un )?(?:costo|coste) de producción de (?:USD \d+|\d+ USD)\b`,
     String.raw`\b(?:USD \d+|\d+ USD) de (?:costo|coste) de producción\b`,
     // The approval note; "- Peso de fundición: 4,1 g" is a buyer fact (English "Cast weight: 4.1 g").
-    String.raw`\b(?:aprobación|confirmación) del (?:CAD final y (?:del )?)?peso de fundición\b`,
+    String.raw`\b(?:aprobación|confirmación) (?:final )?del (?:CAD (?:final )?y (?:del )?)?peso de fundición\b`,
+    String.raw`\bCAD final y (?:el )?peso de fundición deben? aprobarse\b`,
     String.raw`\bno se (?:especifican?|proporcionan?) en la información del anuncio(?=\s*\.|\s*$)`,
     String.raw`\bacción de precio en Etsy\b`,
     String.raw`antes de poner (?:este|el) diseño a la venta`,
@@ -212,7 +216,7 @@ function isSectionHeading(line: string): boolean {
 // Phrase rewrites that keep the buyer fact. Applied only on a line that carries an
 // internal signal (PHRASE_SIGNAL_RE), so every other line stays byte for byte.
 const PHRASE_SIGNAL_RE =
-  /design target|proposed|provisional listing|quoted (?:bracelet|necklace|chain|anklet) length|model preview|vista previa|created for this metal colou?r|final stone specification|design dimensions|para fundición|No personali[sz]ation unless explicitly stated\s*$|in this draft|este borrador no ofrece|\bC\d{5}\b|\}\s*$|CAD final|supplier confirmation|pendientes? de (?:la )?confirmación del proveedor|se proponen como un par|(?:are|is) proposed as an? (?:[\w-]+ )?pair|intended metal|metal previsto|(?:ring|necklace|pendant|bracelet|anklet|band) concept|concepto de anillo|objetivos? del? (?:diseño|desarrollo)|diseño objetivo|as (?:seen|shown) in the design image|\[insert|final CAD|pre-?production estimate|until the maker (?:confirms|approves|verifies) the care method|hasta que el fabricante (?:confirme|apruebe|verifique) el método de cuidado|^\s*PROPOSED DESIGN\s*$|^\s*MATERIAL DIRECTION\s*$/im;
+  /design target|proposed|provisional listing|quoted (?:bracelet|necklace|chain|anklet) length|model preview|vista previa|created for this metal colou?r|final stone specification|design dimensions|para fundición|No personali[sz]ation unless explicitly stated\s*$|in this draft|este borrador no ofrece|\bC\d{5}\b|\}\s*$|CAD final|supplier confirmation|pendientes? de (?:la )?confirmación del proveedor|se proponen? como (?:un par|una pareja)|(?:are|is) proposed as an? (?:(?!(?:for|of|to|with|a|an|the)\b)[\w-]+ ){0,2}pair|confirmación del proveedor pendiente|intended metal|metal previsto|(?:ring|necklace|pendant|bracelet|anklet|band) concept|concepto de anillo|objetivos? del? (?:diseño|desarrollo)|diseño objetivo|as (?:seen|shown) in the design image|\[insert|final CAD|pre-?production estimate|until the maker (?:confirms|approves|verifies) the care method|hasta que el fabricante (?:confirme|apruebe|verifique) el método de cuidado|^\s*PROPOSED DESIGN\s*$|^\s*MATERIAL DIRECTION\s*$/im;
 
 const cap = (w: string) => w[0].toUpperCase() + w.slice(1);
 
@@ -236,11 +240,14 @@ const PHRASE_REWRITES: Rewrite[] = [
   // a decimal ("1.5 mm") may sit inside the clause.
   [/,\s*(?:(?:[^,;.]|\d\.\d)*?\s)?(?:pending supplier confirmation|supplier confirmation pending)\b/gi, ""],
   // Spanish: "; el diámetro exacto y el cierre están pendientes de confirmación del proveedor".
-  [/(?<!\d),(?!\d)\s*(?:(?:[^,;.]|\d[.,]\d)*?\s)?(?:están |está )?pendientes? de (?:la )?confirmación del proveedor(?=\s*(?:[.;,!?)]|$))/gi, ""],
+  [/,(?!\d)\s*(?:(?:[^,;.]|\d[.,]\d)*?\s)?(?:están |está )?pendientes? de (?:la )?confirmación del proveedor\b(?! de (?:envío|mensajería|pago))/gi, ""],
+  // "• Oro macizo de 14K amarillo, blanco y rosa, confirmación del proveedor pendiente".
+  [/,(?!\d)\s*(?:(?:[^,;.]|\d[.,]\d)*?\s)?confirmación del proveedor pendientes?(?=\s*(?:[.;,!?)]|$))/gi, ""],
   // Design-proposal wording: "These sculptural gold earrings are proposed as a mirror pair",
   // "Estos pendientes ... se proponen como un par simétrico" keep the buyer fact.
-  [/\b(are|is) proposed as (?=an? (?:[\w-]+ )?pair\b)/g, "$1 "],
-  [/\bse proponen como (?=un par\b)/g, "son "],
+  [/\b(are|is) proposed as (?=an? (?:(?!(?:for|of|to|with|a|an|the)\b)[\w-]+ ){0,2}pair\b)/g, "$1 "],
+  [/\bse proponen como (?=(?:un par|una pareja)\b)/g, "son "],
+  [/\bse propone como (?=(?:un par|una pareja)\b)/g, "es "],
   [/\bIntended metal(s?):/g, "Metal$1:"],
   [/\b([Tt])he intended metal(s?) (is|are)\b/g, "$1he metal$2 $3"],
   [/\bMetal previsto:/g, "Metal:"],

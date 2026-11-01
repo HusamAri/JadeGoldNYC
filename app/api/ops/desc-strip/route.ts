@@ -437,8 +437,23 @@ async function replanProduct(
     // (English) was never updated. Bring it in line on apply; report it either way.
     if (!chain.verified) {
       if (!apply) return { ...base, audit: chain.from, status: "unverified-landed" };
-      if (!lang) await admin.from("products").update({ description: live }).eq("id", p.id).eq("org_id", orgId);
-      return { ...base, audit: chain.from, status: lang ? "unchanged" : "panel-synced" };
+      if (!lang) {
+        const { error: syncErr } = await admin.from("products").update({ description: live }).eq("id", p.id).eq("org_id", orgId);
+        if (syncErr) return { ...base, audit: chain.from, status: "error", detail: `panel sync: ${syncErr.message}` };
+      }
+      // A verified row for the text that landed, so the next run sees a confirmed write.
+      await logAudit(admin, {
+        orgId,
+        action: "etsy.desc_strip",
+        entityType: "product",
+        entityId: p.id,
+        summary:
+          `${lang ? `${lang} çeviri açıklaması` : "Açıklama"} canlıda doğrulandı (ops desc-strip replan): listing ${listingId}, ` +
+          `önceki yazım geri okunamamıştı; canlı metin güncel kurallarla aynı${lang ? "" : ", panel kopyası eşitlendi"}.`,
+        diff: { listingId, ...(lang ? { lang, title, tags } : {}), before: live, after: live, original, replanOf: chain.from, confirms: chain.from, verified: true },
+        source: "ops/desc-strip",
+      });
+      return { ...base, audit: chain.from, status: lang ? "confirmed" : "panel-synced" };
     }
     return { ...base, status: "unchanged" };
   }
@@ -876,7 +891,7 @@ export async function GET(request: Request) {
           wouldReplan: count("would-replan"),
           replanned: count("replanned"),
           unchanged: count("unchanged"),
-          panelSynced: count("panel-synced"),
+          panelSynced: count("panel-synced") + count("confirmed"),
           // Not written: someone changed the text since, no earlier write, the current rules find
           // the original clean, or an earlier replan landed without a read-back (dry run).
           held: count("changed-since") + count("no-audit") + count("original-clean") + count("unverified-landed"),

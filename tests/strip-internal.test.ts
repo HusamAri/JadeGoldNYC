@@ -195,6 +195,25 @@ const LINES: [string, string][] = [
   ["Final CAD is pending owner approval; send us your ring size and engraving text, and your ring ships within 10 business days after these details are confirmed.",
    "Send us your ring size and engraving text."],
   ["• Se vende como par, diámetro de 12,5 mm y cierre pendientes de confirmación del proveedor.", "• Se vende como par."],
+  // Review 2026-11-01 (fourth pass).
+  ["The finished weight (approx. 2g) must be confirmed before production.", ""],
+  ["- Weights (approx. Size 7) must be confirmed before production.", ""],
+  ["Los pesos (aprox. EE. UU. 7) deben confirmarse antes de la producción.", ""],
+  ["Solid 14K gold band. The finished weight (approx. 2g) must be confirmed before production. Free shipping.", "Solid 14K gold band. Free shipping."],
+  ["Weights for 10K vs. 14K are estimates and must be confirmed before production.", ""],
+  ["- El peso en gramos mostrado es una estimación preliminar y debe confirmarse antes de la producción.", ""],
+  ["- Los pesos mostrados son estimaciones, y deben confirmarse antes de la producción.", "- Los pesos mostrados son estimaciones."],
+  ["• Disponible en tallas de EE. UU. 5 a 9, diámetro exacto pendiente de confirmación del proveedor.", "• Disponible en tallas de EE. UU. 5 a 9."],
+  ["• Oro macizo de 14K amarillo, blanco y rosa, confirmación del proveedor pendiente", "• Oro macizo de 14K amarillo, blanco y rosa"],
+  ["La cotización del proveedor identifica esta pulsera en 7,5 pulgadas y la imagen de producto suministrada muestra una cadena de extensión.", ""],
+  ["These sculptural gold earrings are proposed as a symmetrical mirror pair with rounded upper lobes.",
+   "These sculptural gold earrings are a symmetrical mirror pair with rounded upper lobes."],
+  ["Este par se propone como una pareja en espejo.", "Este par es una pareja en espejo."],
+  ["Todos los precios incluyen un gramo adicional de desperdicio de fundición.", ""],
+  ["Se requiere la aprobación final del CAD y del peso de fundición.", ""],
+  ["El CAD final y el peso de fundición deben aprobarse antes de la venta.", ""],
+  ["- Elija su talla de anillo y los quilates de oro entre las variaciones disponibles; aquí no se proporcionan las medidas específicas ni el peso.",
+   "- Elija su talla de anillo y los quilates de oro entre las variaciones disponibles."],
 ];
 
 // Ordinary buyer copy from the same listings: must come back byte for byte.
@@ -310,6 +329,13 @@ const KEEP: string[] = [
   "Each custom design is proposed as a hand sketch first, then refined in CAD with you.",
   "This set is proposed as a gift for the bride.",
   "Reciclamos todo el desperdicio de fundición en nuevas piezas, así que nada se pierde.",
+  // Review 2026-11-01 (fourth pass): buyer steps next to a weight or estimate word.
+  "Each name necklace is about 3 grams and the name spelling must be confirmed before production.",
+  "Pendant weighs approximately 1.8 grams, and engraving text must be confirmed before production.",
+  "Shipping estimates apply to the U.S. only, and engraving text must be confirmed before production.",
+  "Delivery estimates are for the U.S. and personalized engraving must be confirmed before production.",
+  "Weights shown are for the 18 in. chain, and engraving text must be confirmed before production.",
+  "La estimación de entrega aparece al pagar y el texto del grabado debe confirmarse antes de la producción.",
 ];
 
 // Image disclosures whose line also holds buyer facts (review 2026-11-01, second pass).
@@ -343,7 +369,21 @@ const VIS_LINES: [string, string][] = [
   ["- ✔ Envío gratis. Las imágenes son visualizaciones creadas con IA.", "- ✔ Envío gratis."],
   ["Las fotos del anuncio… fueron editadas con IA.", ""],
   ["Product photos, incl. the hand shot, are AI-assisted.", ""],
+  // Review 2026-11-01 (fourth pass): a sentence that starts lowercase; abbreviations that never end one.
+  ["Handmade to order. The listing images are design visualizations. iPhone photos of your finished ring are sent before shipping.",
+   "Handmade to order. iPhone photos of your finished ring are sent before shipping."],
+  ["handmade to order in solid 14k gold. ships in 3 to 5 business days. the images are design visualizations.",
+   "handmade to order in solid 14k gold. ships in 3 to 5 business days."],
+  ["Product images, e.g. The Hero shot, are AI-assisted.", ""],
+  ["The images are AI visualizations comparing 14K vs. 18K gold.", ""],
 ];
+
+test("a long line of bare list numbers is split in linear time", () => {
+  const line = "1. ".repeat(1700) + "The images are AI visualizations.";
+  const t0 = Date.now();
+  publicTextProblem(line);
+  assert.ok(Date.now() - t0 < 1500, `took ${Date.now() - t0} ms`);
+});
 
 test("image disclosures in a line with buyer facts take only their own sentence", () => {
   for (const [input, expected] of VIS_LINES) {

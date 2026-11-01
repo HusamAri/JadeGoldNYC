@@ -84,32 +84,59 @@ export const BULLET_RE = /^\s*(?:[-•✔*·]|\d+[.)])\s+/;
 //    ..."), as the 2026 Spanish translations of the by Artifact Studio Jewelry copy were
 //    written. Read as one sentence, a disclosure at its end took every bullet before it.
 // Not a boundary:
-//  - before a lowercase word ("0.10 ct. diamond band", "16 in. and 18 in. chains", "las fotos…
-//    fueron editadas"), except a brand that is written lowercase and starts a sentence ("by
-//    Artifact Studio Jewelry pieces are ...", "eON bands ...");
-//  - an abbreviation before a number ("EE. UU. 3 a la 13", "approx. 2.4 g", "Style No. 12") or
-//    "EE." before "UU." / "U.S." before "Sizes"; before a capital an abbreviation can end a
-//    sentence ("12 mm approx. The images ...", "Free shipping in the U.S. The images ...");
+//  - after an abbreviation that never ends a sentence here ("e.g.", "i.e.", "vs.", "p. ej.");
+//  - after any abbreviation before a lowercase word or a number ("0.10 ct. diamond band",
+//    "16 in. and 18 in. chains", "EE. UU. 3 a la 13", "approx. 2g", "Style No. 12", "10K vs.
+//    14K"); inside an open bracket ("(approx. Size 7)"); "EE." before "UU."; "U.S."/"approx."
+//    before a size word ("U.S. Sizes 3 to 16", "approx. US 7"). Before any other capital
+//    "approx." and "U.S." can end a sentence ("12 mm approx. The images ...", "Free shipping
+//    in the U.S. The images ...");
+//  - after an ellipsis before a lowercase word ("las fotos… fueron editadas");
 //  - an inline list number, when the full stop before it is a real sentence end ("... encargo.
 //    2. Las imágenes ..." keeps "2." with its own item, so the number goes when the item goes;
 //    "talla de EE. UU. 7. Las imágenes ..." is a size, not an item).
+// Any other full stop before a lowercase word is a sentence end, as before ("... visualizations.
+// iPhone photos are sent", "by Artifact Studio Jewelry pieces are ...", all-lowercase copy).
 // "EE.UU." and "A.B." are not glued sentence ends (uppercase before the full stop).
 const SPACED_RE = /[.!?…]+["”’»)\]]*(\s+)/gu;
 const GLUED_RE = /(?<=(?:[\p{Ll}\d)]|\d\p{Lu})[.!?…])(?=\p{Lu})|(?<=[.!?…])(?=[-•]\s)/gu;
-const LOWER_OPENER_RE = /^(?:by Artifact\b|eON\b)/;
+const NEVER_END_RE = /(?:^|[\s(.])(?:e\.g|i\.e|vs|p\. ej|ej)\.$/i;
 const ABBREV_END_RE = /(?:^|[\s(.])(?:EE|UU|U\.S|U\.K|approx|aprox|e\.g|i\.e|vs|n[º°]|No|ct|in|incl|ej|ca)\.$/;
-// A number on its own ("7", "3 a la 13", "2.4 g"), not a word that starts with one ("3D").
-const NUMBER_NEXT_RE = /^\d+(?:[.,]\d+)?(?![\p{L}\d])/u;
+// A number on its own, with a unit or karat glued to it or not ("7", "3 a la 13", "2.4 g",
+// "2g", "15mm", "14K", "½"), not a word that starts with one ("3D").
+const NUMBER_NEXT_RE = /^(?:\d+(?:[.,]\d+)?(?:\s?(?:mm|cm|in|g|gr|ct|oz|[kK]))?(?![\p{L}\d])|[½¼¾⅓⅔])/u;
+const SIZE_WORD_RE = /^(?:sizes?|tallas?|US\b|U\.S\.|EE\.)/i;
+// Only the end of the text before a cut matters; a long line must not cost the whole prefix
+// at every cut.
+const TAIL = 160;
+
+function openBracket(s: string): boolean {
+  let n = 0;
+  for (const c of s) {
+    if (c === "(" || c === "[") n++;
+    else if ((c === ")" || c === "]") && n > 0) n--;
+  }
+  return n > 0;
+}
+
+/** The rules without the inline-list-number one (that one asks these about its own stop). */
+function plainBoundary(core: string, next: string): boolean {
+  if (/(?:^|[\s(])EE\.$/.test(core) && /^UU\b/.test(next)) return false;
+  if (NEVER_END_RE.test(core)) return false;
+  const abbrev = ABBREV_END_RE.test(core);
+  if (abbrev && (/^\p{Ll}/u.test(next) || NUMBER_NEXT_RE.test(next) || openBracket(core))) return false;
+  if (/^\p{Ll}/u.test(next) && /(?:…|\.\.\.)$/.test(core)) return false;
+  if (/(?:^|[\s(.])(?:UU|U\.S|U\.K|approx|aprox)\.$/.test(core) && SIZE_WORD_RE.test(next)) return false;
+  return true;
+}
 
 function isBoundary(before: string, next: string): boolean {
-  const core = before.replace(/["”’»)\]]+$/, "");
-  if (/(?:^|[\s(])EE\.$/.test(core) && /^UU\b/.test(next)) return false;
-  if (/^\p{Ll}/u.test(next)) return LOWER_OPENER_RE.test(next) && !ABBREV_END_RE.test(core) && !/(?:…|\.\.\.)$/.test(core);
-  if (NUMBER_NEXT_RE.test(next) && ABBREV_END_RE.test(core)) return false;
-  if (/(?:^|[\s(.])(?:UU|U\.S|U\.K)\.$/.test(core) && /^(?:sizes?|tallas?)\b/i.test(next)) return false;
-  if (/^\s*\d{1,2}[.)]$/.test(core)) return false;
+  const tail = before.length > TAIL ? before.slice(-TAIL) : before;
+  const core = tail.replace(/["”’»)\]]+$/, "");
+  if (!plainBoundary(core, next)) return false;
+  if (before.length <= TAIL && /^\s*\d{1,2}[.)]$/.test(core)) return false;
   const item = /^([\s\S]*[.!?…]["”’»)\]]*)\s+(\d{1,2}[.)])$/.exec(core);
-  if (item && isBoundary(item[1], item[2] + " " + next)) return false;
+  if (item && plainBoundary(item[1].replace(/["”’»)\]]+$/, ""), item[2] + " " + next)) return false;
   return true;
 }
 
