@@ -9,6 +9,7 @@ import { decodeHtmlEntities } from "@/lib/etsy/text";
 import { normText } from "@/lib/etsy/listing-rewrite";
 import { getListingTranslation, putListingTranslation } from "@/lib/etsy/listing";
 import { cleanAltText, publicTextProblem, stripPublicDescription } from "@/lib/etsy/strip-internal";
+import { legacyRow, originalOf, type AuditDiff, type AuditRow, type PanelUpdate } from "@/lib/etsy/strip-chain";
 import type { EtsyListResponse } from "@/lib/etsy/types";
 import { logAudit } from "@/lib/audit";
 
@@ -63,7 +64,9 @@ export const maxDuration = 300;
  *    since) is reported as `changed-since` and never written. A result that would restore the
  *    whole original is refused (`original-clean`). Dry run by default, `apply=1` writes,
  *    reads back and audits like any other write. Every desc-strip write records `original`
- *    the same way, so the chain stays whole.
+ *    the same way, so the chain stays whole. The English writes of 2026-10-27 recorded no
+ *    diff: there the panel copy written in the same request stands in, only when its lengths
+ *    are the ones the write's summary recorded (`legacyRow`, lib/etsy/strip-chain.ts).
  *  - `?scan=1&smell=1`: also lists, for every scanned listing, the lines of the cleaned text
  *    that still match a broad internal-note pattern (SMELL_RE), deduplicated with a count.
  *    Read only; it is for a person to read, to find wordings the rules do not know yet.
@@ -326,51 +329,48 @@ function smellExcerpts(line: string): { match: string; excerpt: string }[] {
 }
 
 type Admin = ReturnType<typeof createAdminClient>;
-type AuditDiff = { lang?: string; before?: string; after?: string; original?: string; verified?: boolean };
-type AuditRow = { id: string; diff: AuditDiff };
 
-/** This product's desc-strip writes of one text (description, or the translation in `lang`), newest first. */
+/**
+ * This product's desc-strip writes of one text (description, or the translation in `lang`),
+ * newest first. The English writes of 2026-10-27 recorded no diff; each stands in through the
+ * panel copy written in the same request (`legacyRow`), or is left out.
+ */
 async function stripChain(admin: Admin, orgId: string, productId: string, lang: string | null): Promise<AuditRow[]> {
   const { data, error } = await admin
     .from("audit_log")
-    .select("id, diff, created_at")
+    .select("id, diff, created_at, summary")
     .eq("org_id", orgId)
     .eq("action", "etsy.desc_strip")
     .eq("entity_id", productId)
     .order("created_at", { ascending: false })
     .limit(100);
   if (error) throw new Error(`audit unreadable: ${error.message}`);
-  return ((data ?? []) as { id: string; diff: AuditDiff | null }[]).filter(
-    (a): a is AuditRow => !!a.diff && typeof a.diff.before === "string" && typeof a.diff.after === "string" && (a.diff.lang ?? null) === lang,
-  );
-}
-
-/**
- * The text before any desc-strip write, for a live text that one of the writes left. Takes the
- * newest write whose result is the live text; an unverified attempt that does not match (it
- * failed or never landed) is skipped, but a newer VERIFIED write whose result is not the live
- * text means someone changed the text since: null. Then walks back through writes that recorded
- * no `original`, each one the result of the write before it.
- */
-function originalOf(rows: AuditRow[], live: string): { original: string; from: string; verified: boolean } | null {
-  let i = -1;
-  for (let k = 0; k < rows.length; k++) {
-    if (normText(rows[k].diff.after as string) === normText(live)) {
-      i = k;
-      break;
+  const all = (data ?? []) as { id: string; diff: AuditDiff | null; created_at: string; summary: string | null }[];
+  const legacy = lang === null ? all.filter((a) => !a.diff) : [];
+  let panel: PanelUpdate[] = [];
+  if (legacy.length > 0) {
+    const times = legacy.map((a) => Date.parse(a.created_at));
+    const { data: rows, error: pErr } = await admin
+      .from("audit_log")
+      .select("created_at, before:diff->before->>description, after:diff->after->>description")
+      .eq("org_id", orgId)
+      .eq("entity_type", "products")
+      .eq("action", "update")
+      .eq("entity_id", productId)
+      .gte("created_at", new Date(Math.min(...times) - 60_000).toISOString())
+      .lte("created_at", new Date(Math.max(...times) + 60_000).toISOString())
+      .limit(200);
+    if (pErr) throw new Error(`audit unreadable: ${pErr.message}`);
+    panel = (rows ?? []) as PanelUpdate[];
+  }
+  return all.flatMap((a): AuditRow[] => {
+    if (!a.diff) {
+      const row = lang === null ? legacyRow(a, panel) : null;
+      return row ? [row] : [];
     }
-    if (rows[k].diff.verified === true) return null;
-  }
-  if (i < 0) return null;
-  const verified = rows[i].diff.verified === true;
-  while (typeof rows[i].diff.original !== "string") {
-    const cur = rows[i];
-    const j = rows.findIndex((r, k) => k > i && normText(r.diff.after as string) === normText(cur.diff.before as string));
-    if (j < 0) break;
-    i = j;
-  }
-  const row = rows[i];
-  return { original: typeof row.diff.original === "string" ? row.diff.original : (row.diff.before as string), from: row.id, verified };
+    const ok = typeof a.diff.before === "string" && typeof a.diff.after === "string" && (a.diff.lang ?? null) === lang;
+    return ok ? [{ id: a.id, diff: a.diff }] : [];
+  });
 }
 
 /**

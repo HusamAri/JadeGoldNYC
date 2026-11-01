@@ -42,7 +42,7 @@
  * so a heading left empty by either rule goes.
  */
 
-import { joinSentences, splitSentences, stripVisualizationLine, underBullet, VISUALIZATION_RE } from "./strip-visualization";
+import { independentTail, joinSentences, splitSentences, stripVisualizationLine, underBullet, VISUALIZATION_RE } from "./strip-visualization";
 
 export type InternalEdit = { kind: "section" | "phrase" | "sentence" | "heading"; from: string; to: string };
 
@@ -330,10 +330,6 @@ function rewritePhrases(line: string): string {
 const BUYER_DETAILS_RE = /\b(?:ring sizes?|sizes?|engraving|text|initials|names?|font|talla|tallas|texto|grabado|iniciales|nombres?|tipografía)\b/i;
 const ANAPHORIC_RE = /\b(?:after|once) (?:those|these) details are confirmed\b|\bdespués de confirmar (?:esos|estos) detalles\b/i;
 
-// A tail that starts with a pronoun points back into the dropped clause ("..., and they may
-// vary by 10%"): kept alone it would say nothing about what varies.
-const PRONOUN_LEAD_RE = /^(?:it|its|they|their|them|this|these|those|he|she|ello|ella|ellas|ellos|esto|estos|estas|este|esta)\b/i;
-
 function stripClause(clause: string): string {
   if (!INTERNAL_RE.test(clause)) return clause;
   // "Ring size is selected from the options, and final measurements, weight, and fit will
@@ -346,21 +342,12 @@ function stripClause(clause: string): string {
   // and certificate ... must be confirmed"), not a sentence of its own: never keep it.
   if (parts.length > 1 && !INTERNAL_RE.test(parts[0]) && !parts[0].includes(",")) return parts[0].trim();
   // "Final physical dimensions and weight are not established by the images, and props
-  // are not included": the internal part leads and a clean tail follows; keep the tail.
-  // Only an ", and" tail is independent; ", so ..." states a consequence of the internal
-  // part ("added after production readback, so the finished weight is confirmed after
-  // production") and goes with it. A tail without its own subject goes too: a pronoun
-  // lead in English, and in Spanish (which drops the pronoun) anything but an article.
-  const tail = parts.slice(1);
-  if (tail.length > 0 && tail.every((p) => !INTERNAL_RE.test(p) && /^(?:and|y)\s/.test(p))) {
-    const t = tail.join(", ").replace(/^(?:and|y)\s+/, "").trim();
-    if (PRONOUN_LEAD_RE.test(t)) return "";
-    // "..., and the finished ring is produced after those details are confirmed" points back too.
-    if (ANAPHORIC_RE.test(t)) return "";
-    if (/^y\s/.test(tail[0]) && !/^(?:el|la|los|las|un|una|unos|unas)\s/i.test(t)) return "";
-    return t;
-  }
-  return "";
+  // are not included": the internal part leads and a clean tail follows; keep the tail
+  // (`independentTail`: ", and" / ", y" only, with its own subject; ", so ..." goes, as in
+  // "added after production readback, so the finished weight is confirmed after production").
+  const t = independentTail(parts[0], parts.slice(1), INTERNAL_RE);
+  // "..., and the finished ring is produced after those details are confirmed" points back too.
+  return t && !ANAPHORIC_RE.test(t) ? t : "";
 }
 
 function stripSentence(sentence: string): string {

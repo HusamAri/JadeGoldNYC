@@ -203,6 +203,44 @@ export function joinSentences(kept: (string | null)[], seps: string[]): string {
 // keeps "La pulsera no tiene piedras"). "oro amarillo, blanco y rosa" is not cut.
 const CLAUSE_CUT_RE = /,\s+(?=(?:and|so)\s)|,?\s+(?=y\s+(?:el|la|los|las)\s+(?:fotos?|fotografías?|imagen|imágenes|galería)\b)/i;
 
+// A tail that starts with a pronoun points back into the dropped clause ("..., and they may
+// vary by 10%"): kept alone it would say nothing about what varies.
+const PRONOUN_LEAD_RE = /^(?:it|its|they|their|them|this|these|those|he|she|ello|ella|ellas|ellos|esto|estos|estas|este|esta)\b/i;
+const ARTICLE_LEAD_RE = /^(?:el|la|los|las|un|una|unos|unas)\s/i;
+// "... in yellow, white, and rose gold": an ", and" right after a one-to-three word list item
+// closes the list; what follows it is the last item, not a clause ("- Rose gold.").
+const LIST_ITEM_END_RE = /,\s*(?:\S+\s+){0,2}\S+\s*$/;
+
+/**
+ * What stays of the clauses after a dropped lead ("[dropped], and the three-metal image shows
+ * ..."): only an ", and" / ", y" tail is independent, and only when no part of it is flagged
+ * too. ", so ..." states a consequence of the dropped part and goes with it. A tail without
+ * its own subject goes too: a pronoun lead in English, and in Spanish (which drops the
+ * pronoun) anything but an article; so does the last item of a list the lead ends in.
+ * "" when nothing stays.
+ */
+export function independentTail(lead: string, tail: string[], flagged: RegExp): string {
+  if (LIST_ITEM_END_RE.test(lead)) return "";
+  if (tail.length === 0 || !tail.every((p) => !flagged.test(p) && /^(?:and|y)\s/.test(p))) return "";
+  const t = tail.join(", ").replace(/^(?:and|y)\s+/, "").trim();
+  if (PRONOUN_LEAD_RE.test(t)) return "";
+  if (/^y\s/.test(tail[0]) && !ARTICLE_LEAD_RE.test(t)) return "";
+  return t;
+}
+
+// "[disclosure], and the finished piece may vary slightly" compares the piece with the images it
+// has just called visualizations: a consequence, like ", so ...", and it goes with them (the
+// 2026-10-27 pass took it so in 12 English listings). After ";" or as a sentence of its own it
+// is the author's own note and stays.
+const VARY_RE = /\b(?:may|might|can|could|will) (?:vary|differ)\b|\bpueden? (?:variar|diferir)\b/i;
+// A kept clause that says the image "visualizes" a design says what it shows.
+const SHOWS: [RegExp, string][] = [
+  [/\bvisuali[sz]es\b/g, "shows"],
+  [/\bvisuali[sz]e\b/g, "show"],
+  [/\bvisualizan\b/g, "muestran"],
+  [/\bvisualiza\b/g, "muestra"],
+];
+
 function stripClause(clause: string): string {
   if (!VISUALIZATION_RE.test(clause)) return clause;
   const parts = clause.split(CLAUSE_CUT_RE);
@@ -213,7 +251,13 @@ function stripClause(clause: string): string {
   }
   // No part holds the disclosure on its own: the clause stays exactly as it was.
   if (kept.length === parts.length) return clause;
-  return kept.join(", ").trim();
+  if (kept.length > 0) return kept.join(", ").trim();
+  // The disclosure leads: "Las imágenes del producto son visualizaciones de diseño, y la imagen
+  // de los tres metales muestra el mismo diseño en oro amarillo, blanco y rosa" keeps the
+  // three-metal clause, as a clean tail after an internal note does (2026-11-01: six Artifact
+  // listings had lost it in English and Spanish only because it followed ", and" not ";").
+  const tail = independentTail(parts[0], parts.slice(1).filter((p) => !VARY_RE.test(p)), VISUALIZATION_RE);
+  return SHOWS.reduce((t, [re, rep]) => t.replace(re, rep), tail);
 }
 
 export function stripSentence(sentence: string): string {
