@@ -7,6 +7,16 @@ import { joinSentences, splitSentences } from "../lib/etsy/strip-visualization";
 // Real lines from live listings (panel mirror of Etsy, 2026-10-31) -> expected line.
 // "" = the line goes.
 const LINES: [string, string][] = [
+  // Review 2026-11-01: a clean ", and/, y" tail after an internal note stays whatever the note
+  // ends in (a decimal comma, a short appositive, a list closed by "and"/"y"/"o").
+  ["El peso final de 18K se añade después de la lectura de producción para la alianza de 2,5 mm, y la alianza no tiene piedras.", "La alianza no tiene piedras."],
+  ["The final 18K weight is added after production readback, approximately 3.1 g, and the ring is solid gold throughout.", "The ring is solid gold throughout."],
+  ["The final weight is confirmed after production readback, in 14K, and the band has no stones.", "The band has no stones."],
+  ["- Las dimensiones son objetivos de desarrollo para la cadena de 1,2 mm, y el colgante se envía con la cadena incluida.", "- El colgante se envía con la cadena incluida."],
+  ["- Los pesos deben confirmarse antes de la producción para oro amarillo, blanco y rosa, y el anillo se fabrica por encargo.", "- El anillo se fabrica por encargo."],
+  ["- La ley final del oro se confirmará antes de la venta en 10K, 14K o 18K, y el anillo se envía gratis dentro de los Estados Unidos.", "- El anillo se envía gratis dentro de los Estados Unidos."],
+  ["The weight shown is provisional, approximately 4 g, and the ring is made to order in 2 weeks.", "The ring is made to order in 2 weeks."],
+  ["Las dimensiones físicas y el peso finales no se establecen mediante las imágenes, aprox. 4 g, y los accesorios no están incluidos.", "Los accesorios no están incluidos."],
   // EON Christmas collection (English + Spanish), 17 active listings.
   ["An individual, minimalist ring concept with a continuous closed band, designed for delicate stacking. The motif is expressed entirely in metal, without gemstones or enamel.",
    "An individual, minimalist ring with a continuous closed band, designed for delicate stacking. The motif is expressed entirely in metal, without gemstones or enamel."],
@@ -437,10 +447,19 @@ const VIS_LINES: [string, string][] = [
   // ", and" that closes a list ("yellow, white, and rose gold") starts no clause: no "rose gold" tail.
   ["Sold as one; the three-metal image is a color visualization of the same design in yellow, white, and rose gold.", "Sold as one."],
   ["The images are AI renders of the ring in yellow, white, and rose gold.", ""],
-  // The same list end after an internal note (latent on main until 2026-11-01: "- Rose gold.").
-  ["- The final 18K weight is confirmed after production readback for yellow, white, and rose gold.", ""],
-  ["Final weights must be confirmed before production for 10K, 14K, and 18K.", ""],
-  ["Las medidas son objetivos de desarrollo para oro amarillo, blanco, y el rosa.", ""],
+  // Review 2026-11-01: only a caption (an image subject saying what it shows) stays after a
+  // leading disclosure; the last item of what the images show never becomes a claim.
+  ["The listing images are AI-assisted visualizations of the necklace on a model, layered with a second chain, and paired with the matching stud earrings.", ""],
+  ["The product images are design visualizations of the ring worn on the hand, stacked with two other bands, and packaged in a gift box.", ""],
+  ["The listing photos are design visualizations of the pendant, the 18 inch cable chain, and the gift box.", ""],
+  ["The product images are design visualizations of the solid 14K yellow gold, solid 14K white gold, and solid 14K rose gold versions.", ""],
+  ["The images are AI renders of the 16 inch chain, the 18 inch chain, and the 20 inch chain.", ""],
+  ["Sold as one; the three-metal image is a color visualization of the same design in solid 14K yellow gold, solid 14K white gold, and solid 14K rose gold.", "Sold as one."],
+  // A Spanish list closed by "y" before the caption: both languages keep the caption.
+  ["Las imágenes del producto son visualizaciones de diseño en oro amarillo, blanco y rosa, y la imagen de los tres metales los muestra juntos.",
+   "La imagen de los tres metales los muestra juntos."],
+  ["The product images are design visualizations in yellow, white and rose gold, and the three-metal image shows all three side by side.",
+   "The three-metal image shows all three side by side."],
   // The multi-metal clause that is itself a visualization goes (72 live originals).
   ["The product images are design visualizations of the finished piece, and the three-metal image is a colour visualization of the same design in yellow, white and rose gold.", ""],
   // A clean lead before the disclosure still keeps only the lead.

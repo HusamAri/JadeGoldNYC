@@ -4,6 +4,8 @@
  * desc-strip write. Pure: `app/api/ops/desc-strip` reads the audit rows and calls these.
  */
 import { normText } from "@/lib/etsy/listing-rewrite";
+import { decodeHtmlEntities } from "@/lib/etsy/text";
+import { stripVisualizationDisclosure as rule20261027 } from "@/lib/etsy/legacy/strip-visualization-2026-10-27";
 
 export type AuditDiff = { lang?: string; before?: string; after?: string; original?: string; verified?: boolean; legacy?: boolean };
 export type AuditRow = { id: string; diff: AuditDiff };
@@ -12,8 +14,11 @@ export type AuditRow = { id: string; diff: AuditDiff };
  * The text before any desc-strip write, for a live text that one of the writes left. Takes the
  * newest write whose result is the live text; an unverified attempt that does not match (it
  * failed or never landed) is skipped, but a newer VERIFIED write whose result is not the live
- * text means someone changed the text since: null. Then walks back through writes that recorded
- * no `original`, each one the result of the write before it.
+ * text means someone changed the text since: null. Then walks back: the text a write started
+ * from (its recorded `original`, else its `before`) is, when an earlier write left exactly that
+ * text, that earlier write's result, so the walk goes on from there. (An English write of
+ * 2026-11-01 recorded as `original` what 2026-10-27 had left, because the chain could not read
+ * those writes yet.)
  */
 export function originalOf(rows: AuditRow[], live: string): { original: string; from: string; verified: boolean } | null {
   let i = -1;
@@ -26,14 +31,14 @@ export function originalOf(rows: AuditRow[], live: string): { original: string; 
   }
   if (i < 0) return null;
   const verified = rows[i].diff.verified === true;
-  while (typeof rows[i].diff.original !== "string") {
-    const cur = rows[i];
-    const j = rows.findIndex((r, k) => k > i && normText(r.diff.after as string) === normText(cur.diff.before as string));
+  const startOf = (r: AuditRow) => (typeof r.diff.original === "string" ? r.diff.original : (r.diff.before as string));
+  for (;;) {
+    const start = startOf(rows[i]);
+    const j = rows.findIndex((r, k) => k > i && normText(r.diff.after as string) === normText(start));
     if (j < 0) break;
     i = j;
   }
-  const row = rows[i];
-  return { original: typeof row.diff.original === "string" ? row.diff.original : (row.diff.before as string), from: row.id, verified };
+  return { original: startOf(rows[i]), from: rows[i].id, verified };
 }
 
 /** "... listing 4569517712, 1 cümle, 1312 -> 1247 kr; read-back doğrulandı." */
@@ -51,11 +56,14 @@ const LEGACY_WINDOW_MS = 10_000;
 
 /**
  * The desc-strip writes of 2026-10-27 recorded no diff, only a summary with the lengths of the
- * text before and after. The same request wrote the result to the panel copy, so the products
- * trigger row (`update`, description before -> after) holds both texts. It stands in for the
- * missing diff only when its lengths are the ones the summary recorded: a panel copy that was
- * not the Etsy text it replaced (15 of the 196) is not that text, and then there is no chain
- * (the product is reported, never written).
+ * text before and after. That route took `before = decodeHtmlEntities(Etsy description)`,
+ * wrote `text = stripVisualizationDisclosure(before).text` to Etsy and, once read back, the
+ * same `text` to the panel copy; the products trigger row of that update holds the panel copy
+ * before it and `text`. The panel copy stands in for the Etsy text only when it IS that text
+ * as far as the write can tell: decoded, its length is the summary's, and the frozen rule of
+ * that day (lib/etsy/legacy) turns it into exactly the text written. A copy that differs (15 of
+ * the 196 had other lengths; an equal-length stale copy fails the rule) gives no chain: the
+ * product is reported, never written.
  */
 export function legacyRow(
   ds: { id: string; created_at: string; summary: string | null },
@@ -68,7 +76,12 @@ export function legacyRow(
     .filter((p) => typeof p.before === "string" && typeof p.after === "string" && p.before !== p.after)
     .filter((p) => Math.abs(Date.parse(p.created_at) - at) <= LEGACY_WINDOW_MS)
     .sort((a, b) => Math.abs(Date.parse(a.created_at) - at) - Math.abs(Date.parse(b.created_at) - at));
-  const p = near[0];
-  if (!p || (p.before as string).length !== s.from || (p.after as string).length !== s.to) return null;
-  return { id: ds.id, diff: { before: p.before as string, after: p.after as string, verified: s.verified, legacy: true } };
+  for (const p of near) {
+    const before = decodeHtmlEntities(p.before as string);
+    const after = p.after as string;
+    if (before.length !== s.from || after.length !== s.to) continue;
+    if (rule20261027(before).text !== after) continue;
+    return { id: ds.id, diff: { before, after, verified: s.verified, legacy: true } };
+  }
+  return null;
 }
