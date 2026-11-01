@@ -135,7 +135,8 @@ const LINES: [string, string][] = [
   ["This design is not available for sale yet.", ""],
   ["• Design proposal for Fall 2026; final weight to follow.", "• Final weight to follow."],
   ["Las dimensiones son objetivos de desarrollo.", ""],
-  ["El espesor objetivo de diseño es de 1,5 mm.", ""],
+  // 2026-11-01: like "Grosor objetivo de diseño", the measurement stays.
+  ["El espesor objetivo de diseño es de 1,5 mm.", "El espesor es de 1,5 mm."],
   ["• Design proposal; final weight to follow.", "• Final weight to follow."],
   ["• Design proposal.", ""],
   ["• Design proposal (Fall 2026)", ""],
@@ -161,6 +162,26 @@ const LINES: [string, string][] = [
    "- Cada anillo se hace por encargo.- Limpia con un paño suave."],
   ["Hecho por encargo.Referencia interna: BAS-27-MINE-R01-14Y. Se envía gratis.",
    "Hecho por encargo. Se envía gratis."],
+  // Review 2026-11-01 (second pass): Spanish forms of the English notes, live or literal.
+  ["- El peso final de 18K se añade después de la lectura de producción, por lo que el peso terminado se confirma tras la producción.", ""],
+  ["- El grosor objetivo del diseño es de aproximadamente 1.8 mm y el ancho permanece fijo en aproximadamente 6.0 mm.",
+   "- El grosor es de aproximadamente 1.8 mm y el ancho permanece fijo en aproximadamente 6.0 mm."],
+  ["- Elija su talla de anillo y los quilates de oro entre las variaciones disponibles; aquí no se proporcionan medidas específicas ni peso.",
+   "- Elija su talla de anillo y los quilates de oro entre las variaciones disponibles."],
+  ["• Se vende como un par; el diámetro exacto y el cierre están pendientes de confirmación del proveedor.", "• Se vende como un par."],
+  ["- Los detalles del sello no se especifican en la información del anuncio.", ""],
+  ["Se requiere la aprobación del CAD final y del peso de fundición antes de cualquier acción de precio en Etsy.", ""],
+  ["Estos pendientes de oro esculturales se proponen como un par simétrico en espejo.",
+   "Estos pendientes de oro esculturales son un par simétrico en espejo."],
+  ["These sculptural gold earrings are proposed as a mirror-symmetric pair.",
+   "These sculptural gold earrings are a mirror-symmetric pair."],
+  // One bullet, not two, when the first sentence of a glued bullet line goes.
+  ["- Desarrollo: muestra requerida.- Cada anillo se hace por encargo.", "- Cada anillo se hace por encargo."],
+  ["• Referencia interna: BAS-27-MINE-R01-14Y.• Se envía gratis.", "• Se envía gratis."],
+  // An abbreviation is not a sentence end: the whole internal sentence goes, not its tail.
+  ["- Los pesos en gramos para las tallas de EE. UU. 3 a la 16 son estimaciones preliminares y deben confirmarse antes de la producción.", ""],
+  ["The finished weight (approx. 2.4 g) must be confirmed before production.", ""],
+  ["- Gram weights for U.S. Sizes 3 to 16 are estimates and must be confirmed before production.", ""],
 ];
 
 // Ordinary buyer copy from the same listings: must come back byte for byte.
@@ -241,7 +262,59 @@ const KEEP: string[] = [
   "Envíanos tu diseño y, a partir del diseño que apruebes, fabricamos tu anillo.",
   "Please confirm your ring size before ordering.",
   "Los accesorios no están incluidos.",
+  // Review 2026-11-01 (second pass): custom-order copy that shares words with the new notes.
+  "La pieza no se graba hasta que el fabricante confirme tu texto; te enviamos la prueba por mensaje.",
+  "Los pedidos no se envían hasta que el fabricante confirme la talla final del anillo.",
+  "We do not engrave until the maker confirms your text.",
+  "Engraving text and ring size must be confirmed before production begins; we email you a proof within 24 hours.",
+  "Your ring size must be confirmed before production, so please use our free ring sizer.",
+  "La talla del anillo y el texto del grabado deben confirmarse antes de la producción; te enviamos una prueba en 24 horas.",
+  "Solid 14K gold signet ring.\n\nPERSONALIZATION\nEngraving text and font must be confirmed before production.\n\nSHIPPING\nShips in 2 to 3 weeks.",
+  "Your order ships within 2 to 3 weeks after those details are confirmed.",
+  "We send you a digital proof of your engraving, and production begins after these details are confirmed.",
+  "Te enviamos una prueba digital del grabado y comenzamos la fabricación después de confirmar estos detalles.",
+  "Solid 14K gold signet ring.\n\nPRODUCTION NOTES\nProduction begins after these details are confirmed.\nEach piece is cast in recycled gold.",
+  "Una vez que apruebes el boceto, fabricamos tu anillo a partir del diseño aprobado.",
+  "Cada pieza personalizada se funde en oro macizo a partir del diseño aprobado por ti.",
+  "We cast your ring from the approved sketch.",
+  "La foto que nos envíes será la referencia aprobada para el grabado.",
+  "Comparamos cada pieza terminada con la referencia aprobada antes de enviarla.",
+  "Iniciales AI y las fotos del anuncio muestran la pieza real.",
+  "Puedes grabar iniciales como AI y las fotos muestran ejemplos de tipografía.",
+  "Únete a la lista de espera y te avisamos antes de que el modelo se ponga a la venta.",
 ];
+
+// Image disclosures whose line also holds buyer facts (review 2026-11-01, second pass).
+const VIS_LINES: [string, string][] = [
+  ["- Las imágenes del producto son visualizaciones de diseño.- Se puede añadir un mensaje de regalo al finalizar la compra.",
+   "- Se puede añadir un mensaje de regalo al finalizar la compra."],
+  ["1. Las imágenes del producto son visualizaciones de diseño.- Se puede añadir un mensaje de regalo al finalizar la compra.",
+   "1. Se puede añadir un mensaje de regalo al finalizar la compra."],
+  ["The photos are AI visualizations of the U.S. Size 7 ring. Ships free.", "Ships free."],
+  ["Free shipping in the U.S. The images are design visualizations.", "Free shipping in the U.S."],
+  ["“Hecho a mano en Nueva York.” Las imágenes son visualizaciones de diseño.", "“Hecho a mano en Nueva York.”"],
+  ["Hecho a pedido… Las imágenes son visualizaciones de diseño.", "Hecho a pedido…"],
+  ["1. Cada anillo se hace por encargo. 2. Las imágenes son visualizaciones de diseño. 3. Se envía gratis.",
+   "1. Cada anillo se hace por encargo. 3. Se envía gratis."],
+  ["Ships free in 3 to 5 days. The images are design visualizations. by Artifact Studio Jewelry pieces are cast in New York.",
+   "Ships free in 3 to 5 days. by Artifact Studio Jewelry pieces are cast in New York."],
+  ["- Elige una talla de EE. UU. del 3 al 16.Las imágenes del producto son visualizaciones de diseño.", "- Elige una talla de EE. UU. del 3 al 16."],
+  ["- Elige oro macizo de 10K, 14K o 18K.Las imágenes del producto son visualizaciones de diseño.", "- Elige oro macizo de 10K, 14K o 18K."],
+  ["- Incluye una cadena de 1,2 mm (45 cm).Las imágenes del producto son visualizaciones de diseño.", "- Incluye una cadena de 1,2 mm (45 cm)."],
+];
+
+test("image disclosures in a line with buyer facts take only their own sentence", () => {
+  for (const [input, expected] of VIS_LINES) {
+    assert.equal(stripPublicDescription(input).text, expected, input);
+  }
+});
+
+test("Spanish internal sections go by name", () => {
+  const before =
+    "Una pulsera de oro.\n\nNOTA IMPORTANTE DE PRODUCCIÓN\nEl peso final exacto, el contraste y el costo del proveedor están pendientes de la lectura de producción.\n\n" +
+    "NOTA DE PESO Y PRECIO\nCada precio incluye un gramo adicional de desperdicio de fundición y 100 USD de costo de producción.";
+  assert.equal(stripPublicDescription(before).text, "Una pulsera de oro.");
+});
 
 // Spanish translations on Etsy (live 2026-11-01) -> expected line, both rules together.
 // The 2026-11-01 first pass took the bullets before a disclosure in a glued line with it.

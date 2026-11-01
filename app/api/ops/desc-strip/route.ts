@@ -55,13 +55,15 @@ export const maxDuration = 300;
  *    touched in this mode.
  *  - `?replan=1` with `products=` (and `lang=` for a translation): the rules got better
  *    after a write (2026-11-01: a Spanish line of glued bullets lost its gift-message and care
- *    bullets with the disclosure at its end). Takes the original text of this product's last
- *    desc-strip write (`diff.original`, else `diff.before`), runs the current rules on it and
- *    writes the result, so what an earlier rule took by mistake comes back. Only when the
- *    live text is still exactly what that write left (`diff.after`); a text someone changed
- *    since is reported as `changed-since` and never written. A result that would restore the
+ *    bullets with the disclosure at its end). Reads the live text, finds the desc-strip write
+ *    that left exactly that text (`diff.after`; an attempt that never landed does not match),
+ *    walks back to the text before any desc-strip write (`diff.original`, or through the
+ *    earlier writes' `before`), runs the current rules on it and writes the result, so what an
+ *    earlier rule took by mistake comes back. A live text no write left (someone changed it
+ *    since) is reported as `changed-since` and never written. A result that would restore the
  *    whole original is refused (`original-clean`). Dry run by default, `apply=1` writes,
- *    reads back and audits like any other write.
+ *    reads back and audits like any other write. Every desc-strip write records `original`
+ *    the same way, so the chain stays whole.
  *  - `?scan=1&smell=1`: also lists, for every scanned listing, the lines of the cleaned text
  *    that still match a broad internal-note pattern (SMELL_RE), deduplicated with a count.
  *    Read only; it is for a person to read, to find wordings the rules do not know yet.
@@ -307,10 +309,75 @@ const LANG_RE = /^[a-z]{2}(?:-[A-Z]{2})?$/;
 // Broad on purpose: a person reads what it finds ("confirm your size" is buyer copy; the
 // point is to see every line that could be a note the rules do not know yet).
 const SMELL_RE =
-  /visuali|\b(?:AI|IA)\b|render|propuesta|proposal|proposed|provisional|aprob|approv|fabricante|\bmaker\b|muestra|sample|prototip|prototype|intern[oa]s?\b|internal|objetivo|target|preliminar|estimaci|estimate|antes de (?:la )?(?:venta|producción|publica)|before (?:sale|production|publish)|\bEtsy\b|\bpanel\b|\bCAD\b|read-?back|supplier|proveedor|confirm|pending|pendiente|\bTBD\b|placeholder|\[|\{|desarrollo|development|draft|borrador|\bSKU\b|\bBAS-\d/i;
+  /visuali|\b(?:AI|IA)\b|render|propuesta|proposal|proposed|propon|provisional|aprob|approv|fabricante|\bmaker\b|muestra|sample|prototip|prototype|intern[oa]s?\b|internal|objetivo|target|preliminar|estimaci|estimate|antes de (?:la )?(?:venta|producción|publica)|before (?:sale|production|publish)|\bEtsy\b|\bpanel\b|\bCAD\b|read-?back|lectura de|supplier|proveedor|confirm|pending|pendiente|proporcionan|\bTBD\b|placeholder|\[|\{|desarrollo|development|draft|borrador|\bSKU\b|\bBAS-\d/gi;
+
+/** Every match of SMELL_RE in a line, each with the text around it (a glued line can run 1,000+ characters). */
+function smellExcerpts(line: string): { match: string; excerpt: string }[] {
+  const out: { match: string; excerpt: string }[] = [];
+  for (const m of line.matchAll(SMELL_RE)) {
+    const i = m.index ?? 0;
+    const excerpt =
+      line.length <= 400
+        ? line
+        : (i > 150 ? "…" : "") + line.slice(Math.max(0, i - 150), i + 250) + (i + 250 < line.length ? "…" : "");
+    out.push({ match: m[0], excerpt });
+  }
+  return out;
+}
 
 type Admin = ReturnType<typeof createAdminClient>;
 type AuditDiff = { lang?: string; before?: string; after?: string; original?: string; verified?: boolean };
+type AuditRow = { id: string; diff: AuditDiff };
+
+/** This product's desc-strip writes of one text (description, or the translation in `lang`), newest first. */
+async function stripChain(admin: Admin, orgId: string, productId: string, lang: string | null): Promise<AuditRow[]> {
+  const { data, error } = await admin
+    .from("audit_log")
+    .select("id, diff, created_at")
+    .eq("org_id", orgId)
+    .eq("action", "etsy.desc_strip")
+    .eq("entity_id", productId)
+    .order("created_at", { ascending: false })
+    .limit(100);
+  if (error) throw new Error(`audit unreadable: ${error.message}`);
+  return ((data ?? []) as { id: string; diff: AuditDiff | null }[]).filter(
+    (a): a is AuditRow => !!a.diff && typeof a.diff.before === "string" && typeof a.diff.after === "string" && (a.diff.lang ?? null) === lang,
+  );
+}
+
+/**
+ * The text before any desc-strip write, for a live text that one of the writes left. Starts at
+ * the newest write whose result is the live text (a failed attempt that never landed does not
+ * match and is skipped) and walks back through writes that recorded no `original`, each one
+ * the result of the write before it.
+ */
+function originalOf(rows: AuditRow[], live: string): { original: string; from: string } | null {
+  let i = rows.findIndex((r) => normText(r.diff.after as string) === normText(live));
+  if (i < 0) return null;
+  while (typeof rows[i].diff.original !== "string") {
+    const cur = rows[i];
+    const j = rows.findIndex((r, k) => k > i && normText(r.diff.after as string) === normText(cur.diff.before as string));
+    if (j < 0) break;
+    i = j;
+  }
+  const row = rows[i];
+  return { original: typeof row.diff.original === "string" ? row.diff.original : (row.diff.before as string), from: row.id };
+}
+
+/**
+ * `original` for the audit row of a new write, so the chain to the text before any desc-strip
+ * write stays whole: the earlier original when the text being replaced is what an earlier
+ * write left, the text itself otherwise. When the audit cannot be read the field is left out
+ * (a later replan then walks back through the rows instead).
+ */
+async function originalFor(admin: Admin, orgId: string, productId: string, lang: string | null, before: string): Promise<{ original?: string }> {
+  try {
+    const prior = originalOf(await stripChain(admin, orgId, productId, lang), before);
+    return { original: prior ? prior.original : before };
+  } catch {
+    return {};
+  }
+}
 
 /** `replan=1` for one product: see the route comment. */
 async function replanProduct(
@@ -325,24 +392,15 @@ async function replanProduct(
   const base: Row = { product: p.id, sku: p.sku, listing: p.etsy_listing_id, ...(lang ? { lang } : {}) };
   if (!p.etsy_listing_id || !client) return { ...base, status: "etsy-listing-yok" };
   const listingId = p.etsy_listing_id;
-  const { data, error } = await admin
-    .from("audit_log")
-    .select("id, diff, created_at")
-    .eq("org_id", orgId)
-    .eq("action", "etsy.desc_strip")
-    .eq("entity_id", p.id)
-    .order("created_at", { ascending: false })
-    .limit(50);
-  if (error) return { ...base, status: "error", detail: `audit unreadable: ${error.message}` };
-  // The latest write of this text (description, or the translation in `lang`).
-  const last = ((data ?? []) as { id: string; diff: AuditDiff | null }[]).find(
-    (a) => typeof a.diff?.before === "string" && (a.diff?.lang ?? null) === lang,
-  );
-  if (!last || !last.diff || typeof last.diff.after !== "string") return { ...base, status: "no-audit" };
-  const lastAfter = last.diff.after;
-  if (last.diff.verified !== true) return { ...base, status: "unverified-audit", audit: last.id };
-  const original = typeof last.diff.original === "string" ? last.diff.original : (last.diff.before as string);
+  let rows: AuditRow[];
+  try {
+    rows = await stripChain(admin, orgId, p.id, lang);
+  } catch (e) {
+    return { ...base, status: "error", detail: String(e) };
+  }
+  if (rows.length === 0) return { ...base, status: "no-audit" };
 
+  // The live text first: it decides which earlier write it is the result of.
   let live: string;
   let title = "";
   let tags: string[] = [];
@@ -356,15 +414,20 @@ async function replanProduct(
     const l = await client.get<{ description?: string }>(etsyPaths.listing(listingId));
     live = decodeHtmlEntities(l.description ?? "");
   }
-  if (normText(live) !== normText(lastAfter)) {
-    return { ...base, status: "changed-since", audit: last.id, ...(detail ? { live, expected: lastAfter } : {}) };
+  // No write left this text: someone changed it since (or a write did not land as audited).
+  const chain = originalOf(rows, live);
+  if (!chain) {
+    return { ...base, status: "changed-since", audit: rows[0].id, ...(detail ? { live, expected: rows[0].diff.after } : {}) };
   }
+  const original = chain.original;
   const r = plan(original);
-  if (!r.changed) return { ...base, status: "original-clean", audit: last.id };
-  const change: Row = { audit: last.id, from: live.length, to: r.text.length, ...(detail ? { before: live, after: r.text } : {}) };
+  if (!r.changed) return { ...base, status: "original-clean", audit: chain.from };
+  const change: Row = { audit: chain.from, from: live.length, to: r.text.length, ...(detail ? { before: live, after: r.text } : {}) };
   if (normText(r.text) === normText(live)) return { ...base, status: "unchanged" };
   if (r.tooLarge) return { ...base, ...change, status: "refused-large-cut" };
   if (!apply) return { ...base, ...change, status: "would-replan" };
+  // Outside the write: a failure here sends nothing, so nothing to audit.
+  const shopId = lang ? null : await client.requireShopId();
 
   const tagKey = (list: string[]) => list.map((t) => decodeHtmlEntities(t).trim().toLowerCase()).sort().join("|");
   // Once the write is sent Etsy may hold it whatever happens next: audit every outcome.
@@ -375,8 +438,7 @@ async function replanProduct(
     if (lang) {
       await putListingTranslation(client, listingId, lang, { title, description: r.text, tags });
     } else {
-      const shopId = await client.requireShopId();
-      await client.requestForm("PATCH", etsyPaths.shopListing(shopId, listingId), { description: r.text });
+      await client.requestForm("PATCH", etsyPaths.shopListing(shopId as number, listingId), { description: r.text });
     }
     try {
       if (lang) {
@@ -414,7 +476,7 @@ async function replanProduct(
       before: live,
       after: r.text,
       original,
-      replanOf: last.id,
+      replanOf: chain.from,
       removed: r.removed,
       edits: r.edits,
       verified,
@@ -533,12 +595,15 @@ export async function GET(request: Request) {
           if (smell) {
             for (const line of (p.changed ? p.text : before).split("\n")) {
               const t = line.trim();
-              if (!t || !SMELL_RE.test(t)) continue;
-              const key = t.slice(0, 400);
-              const s = smells.get(key) ?? { n: 0, listings: [] };
-              s.n++;
-              if (s.listings.length < 5) s.listings.push(l.listing_id);
-              smells.set(key, s);
+              if (!t) continue;
+              // One entry per match, keyed on its excerpt: a long glued line can hold several.
+              for (const { match, excerpt } of smellExcerpts(t)) {
+                const key = `${match.toLowerCase()}\u0000${excerpt}`;
+                const s = smells.get(key) ?? { n: 0, listings: [] };
+                s.n++;
+                if (s.listings.length < 5) s.listings.push(l.listing_id);
+                smells.set(key, s);
+              }
             }
           }
           if (!p.changed) continue;
@@ -580,7 +645,10 @@ export async function GET(request: Request) {
       ...(smell
         ? {
             smell: [...smells.entries()]
-              .map(([line, s]) => ({ line, n: s.n, listings: s.listings }))
+              .map(([key, s]) => {
+                const [match, line] = key.split("\u0000");
+                return { match, line, n: s.n, listings: s.listings };
+              })
               .sort((a, b) => b.n - a.n || a.line.localeCompare(b.line)),
           }
         : {}),
@@ -651,6 +719,7 @@ export async function GET(request: Request) {
         }
         const title = decodeHtmlEntities(tr.title ?? "");
         const tags = (tr.tags ?? []).map((t) => decodeHtmlEntities(t));
+        const original = await originalFor(admin, orgId, id, lang, before);
         const tagKey = (list: string[]) => list.map((t) => decodeHtmlEntities(t).trim().toLowerCase()).sort().join("|");
         // Once the PUT is sent Etsy may hold it whatever happens next: audit every outcome.
         let writeError: string | null = null;
@@ -680,7 +749,7 @@ export async function GET(request: Request) {
             `${r.removed.length} görselleştirme cümlesi, ${r.edits.length} iç not düzenlemesi, ` +
             `${before.length} -> ${r.text.length} kr; ` +
             (writeError ? `yazım hatası, sonuç bilinmiyor.` : `read-back ${verified ? "doğrulandı" : "BAŞARISIZ"}.`),
-          diff: { listingId, lang, before, after: r.text, title, tags, removed: r.removed, edits: r.edits, verified, ...(writeError ? { writeError } : {}), ...(readBackError ? { readBackError } : {}) },
+          diff: { listingId, lang, before, after: r.text, ...original, title, tags, removed: r.removed, edits: r.edits, verified, ...(writeError ? { writeError } : {}), ...(readBackError ? { readBackError } : {}) },
           source: "ops/desc-strip",
         });
         results.push({ ...base, ...change, status: writeError ? "error" : verified ? "stripped" : "verify-failed", ...(writeError ? { detail: writeError } : {}), ...(readBackError ? { readBackError } : {}) });
@@ -731,6 +800,7 @@ export async function GET(request: Request) {
         continue;
       }
       const shopId = await client.requireShopId();
+      const original = await originalFor(admin, orgId, id, null, before);
       // Once the PATCH is sent Etsy may hold it whatever happens next: audit every outcome.
       let writeError: string | null = null;
       let readBackError: string | null = null;
@@ -760,7 +830,7 @@ export async function GET(request: Request) {
           `${before.length} -> ${r.text.length} kr; ` +
           (writeError ? `yazım hatası, sonuç bilinmiyor.` : `read-back ${verified ? "doğrulandı" : "BAŞARISIZ"}.`),
         // The live text before the write: the panel copy can be stale, so this is the way back.
-        diff: { listingId, before, after: r.text, removed: r.removed, edits: r.edits, verified, ...(writeError ? { writeError } : {}), ...(readBackError ? { readBackError } : {}) },
+        diff: { listingId, before, after: r.text, ...original, removed: r.removed, edits: r.edits, verified, ...(writeError ? { writeError } : {}), ...(readBackError ? { readBackError } : {}) },
         source: "ops/desc-strip",
       });
       results.push({ ...base, ...change, status: writeError ? "error" : verified ? "stripped" : "verify-failed", ...(writeError ? { detail: writeError } : {}), ...(readBackError ? { readBackError } : {}) });

@@ -50,7 +50,9 @@ export const VISUALIZATION_RE = new RegExp(
     // por IA". A comma or "and"/"or" ends the clause ("send us a photo, or choose initials such as
     // AI"); a negation in between is a buyer claim ("our photos are not made with AI").
     String.raw`\b${IMG}\b(?:(?!,|:| and | or | y | o |${NEG_GOV})[^.;]){0,60}\b(?:AI|IA)\b`,
-    String.raw`(?<!\bnot )(?<!\bno )\bAI\b(?:(?!,|:| and | or |${NEG_WORD})[^.;]){0,60}\b${IMG}\b`,
+    // The same stops as the image-first form, Spanish included: "Iniciales AI y las fotos del
+    // anuncio muestran la pieza real" is monogram copy.
+    String.raw`(?<!\bnot )(?<!\bno )\bAI\b(?:(?!,|:| and | or | y | o |${NEG_WORD})[^.;]){0,60}\b${IMG}\b`,
     // "Rendering" only as a statement that the image is one: "these photos are renders of the
     // design". "Real photos, not renderings", "without filters or renders" and "your photo
     // renders beautifully on the pendant" are buyer copy.
@@ -76,26 +78,53 @@ function capitalizeFirst(s: string): string {
 export const BULLET_RE = /^\s*(?:[-•✔*·]|\d+[.)])\s+/;
 
 // Sentence boundaries inside one line:
-//  - a full stop and space before anything but a lowercase letter ("EE. UU. de la 3 a la 16"
-//    is one sentence; "... días. Las imágenes ..." is two);
-//  - a full stop glued to the next sentence ("acabado cepillado.Las imágenes ...") or to the
-//    next bullet ("tallas enteras y medias.- Cada anillo ..."), as the 2026 Spanish
-//    translations of the by Artifact Studio Jewelry copy were written. Read as one sentence,
-//    a disclosure at its end took every bullet before it.
-const SENTENCE_SPLIT_RE = /((?<=[.!?])(?<!\bEE\.)\s+(?![\s\p{Ll}])|(?<=\p{Ll}[.!?])(?=\p{Lu})|(?<=[.!?])(?=[-•]\s))/u;
+//  - a full stop (or "?", "!", "…"), any closing quote or bracket after it, then a space;
+//  - a full stop glued to the next sentence ("acabado cepillado.Las imágenes ...", "del 3 al
+//    16.Las ...", "18K.Las ...") or to the next bullet ("tallas enteras y medias.- Cada anillo
+//    ..."), as the 2026 Spanish translations of the by Artifact Studio Jewelry copy were
+//    written. Read as one sentence, a disclosure at its end took every bullet before it.
+// Not a boundary: an abbreviation ("EE. UU. de la 3 a la 16", "EE. UU. 3 a la 13", "U.S.
+// Sizes 3 to 16", "approx. 2.4 g", "e.g.") and an inline list number ("... encargo. 2. Las
+// imágenes ..." keeps "2." with its own item, so the number goes when the item goes).
+// "EE.UU." and "A.B." are not glued sentence ends (uppercase before the full stop).
+const SPACED_RE = /[.!?…]+["”’»)\]]*(\s+)/gu;
+const GLUED_RE = /(?<=(?:[\p{Ll}\d)]|\d\p{Lu})[.!?…])(?=\p{Lu})|(?<=[.!?…])(?=[-•]\s)/gu;
+
+function isBoundary(before: string, next: string): boolean {
+  if (/(?:^|[\s(])EE\.$/.test(before) && /^UU\b/.test(next)) return false;
+  if (/(?:^|[\s(.])(?:UU|U\.S|U\.K)\.$/.test(before) && (/^[\d\p{Ll}]/u.test(next) || /^(?:sizes?|tallas?)\b/i.test(next))) return false;
+  if (/(?:^|[\s(])(?:approx|aprox|e\.g|i\.e|vs|n[º°])\.$/i.test(before)) return false;
+  if (/(?:^|[.!?…]["”’»)\]]*\s+)\d{1,2}[.)]$/.test(before)) return false;
+  return true;
+}
 
 /**
  * Splits a line into sentences and keeps what stood between them, so the sentences that
  * stay can be put back with their own spacing: `seps[i]` is what preceded `parts[i]`.
  */
 export function splitSentences(text: string): { parts: string[]; seps: string[] } {
-  const bits = text.split(SENTENCE_SPLIT_RE);
-  const parts: string[] = [bits[0]];
-  const seps: string[] = [""];
-  for (let i = 1; i < bits.length; i += 2) {
-    seps.push(bits[i] ?? "");
-    parts.push(bits[i + 1] ?? "");
+  const cuts: { at: number; len: number }[] = [];
+  for (const m of text.matchAll(SPACED_RE)) {
+    const len = m[1].length;
+    const at = (m.index ?? 0) + m[0].length - len;
+    const next = text.slice(at + len);
+    if (next && isBoundary(text.slice(0, at), next)) cuts.push({ at, len });
   }
+  for (const m of text.matchAll(GLUED_RE)) {
+    const at = m.index ?? 0;
+    if (isBoundary(text.slice(0, at), text.slice(at))) cuts.push({ at, len: 0 });
+  }
+  cuts.sort((a, b) => a.at - b.at);
+  const parts: string[] = [];
+  const seps: string[] = [""];
+  let pos = 0;
+  for (const c of cuts) {
+    if (c.at < pos) continue;
+    parts.push(text.slice(pos, c.at));
+    seps.push(text.slice(c.at, c.at + c.len));
+    pos = c.at + c.len;
+  }
+  parts.push(text.slice(pos));
   return { parts, seps };
 }
 
@@ -134,6 +163,8 @@ function stripClause(clause: string): string {
     if (VISUALIZATION_RE.test(p)) break;
     kept.push(p);
   }
+  // No part holds the disclosure on its own: the clause stays exactly as it was.
+  if (kept.length === parts.length) return clause;
   return kept.join(", ").trim();
 }
 
@@ -141,12 +172,22 @@ export function stripSentence(sentence: string): string {
   if (!VISUALIZATION_RE.test(sentence)) return sentence;
   const bullet = BULLET_RE.exec(sentence)?.[0] ?? "";
   const body = sentence.slice(bullet.length).replace(/[.!?]\s*$/, "");
-  const clauses = body
-    .split(/;\s*/)
-    .map(stripClause)
-    .filter((c) => c.length > 0);
+  const raw = body.split(/;\s*/);
+  const mapped = raw.map(stripClause);
+  if (mapped.every((c, i) => c === raw[i])) return sentence;
+  const clauses = mapped.filter((c) => c.length > 0);
   if (clauses.length === 0) return "";
   return bullet + capitalizeFirst(clauses.join("; ")) + ".";
+}
+
+/**
+ * The rebuilt line under its own bullet. When the first sentence went, the next one can be a
+ * glued bullet of its own ("- Las imágenes son visualizaciones.- Se puede añadir ..."): one
+ * bullet, not two.
+ */
+export function underBullet(bullet: string, rebuilt: string): string {
+  if (!rebuilt) return "";
+  return bullet ? bullet + rebuilt.replace(BULLET_RE, "") : rebuilt;
 }
 
 /** One line: the disclosure sentences go; "" when nothing is left. */
@@ -162,8 +203,7 @@ export function stripVisualizationLine(line: string): { text: string; removed: s
     return i === 0 ? next.slice(bullet.length) : next;
   });
   if (removed.length === 0) return { text: line, removed };
-  const rebuilt = joinSentences(kept, seps).trim();
-  return { text: rebuilt ? bullet + rebuilt : "", removed };
+  return { text: underBullet(bullet, joinSentences(kept, seps).trim()), removed };
 }
 
 export function stripVisualizationDisclosure(description: string): {

@@ -42,7 +42,7 @@
  * so a heading left empty by either rule goes.
  */
 
-import { joinSentences, splitSentences, stripVisualizationLine, VISUALIZATION_RE } from "./strip-visualization";
+import { joinSentences, splitSentences, stripVisualizationLine, underBullet, VISUALIZATION_RE } from "./strip-visualization";
 
 export type InternalEdit = { kind: "section" | "phrase" | "sentence" | "heading"; from: string; to: string };
 
@@ -83,12 +83,15 @@ export const INTERNAL_RE = new RegExp(
     String.raw`\bphysical sample\b`,
     String.raw`\bmaker (?:approval|confirmation|qualification)\b`,
     String.raw`\bgoldsmith qualification\b`,
-    String.raw`\buntil the maker\b`,
+    // The care-method note only: "we engrave until the maker confirms your text" is buyer copy.
+    String.raw`\buntil the maker (?:confirms|approves|verifies) the care method\b`,
     String.raw`\bclaim is made\b`,
     String.raw`\binternal reference\b`,
     String.raw`^\s*internal notes?\s*:`,
-    String.raw`\bfrom the approved\b`,
-    String.raw`\bthe approved reference\b`,
+    // "prepared from the approved Threshold design", "built from the approved reference image";
+    // not "we cast your ring from the approved sketch".
+    String.raw`\b(?:prepared|built) from the approved\b`,
+    String.raw`\bthe approved reference image\b`,
     String.raw`\bunverified\b`,
     String.raw`\bpersonali[sz]ation is planned\b`,
     String.raw`\bsample required\b`,
@@ -116,8 +119,8 @@ export const INTERNAL_RE = new RegExp(
     // A note to whoever publishes the listing: "confirm the final measurements ... before
     // sending the listing to Etsy". A buyer never sends or publishes the listing.
     String.raw`\bbefore (?:submitting|sending|uploading|publishing|pushing) (?:the|this) listing\b`,
-    String.raw`\bmust be confirmed before production\b`,
-    String.raw`\bafter (?:those|these) details are confirmed\b`,
+    // The weight estimate only: "engraving text must be confirmed before production" is a buyer step.
+    String.raw`\b(?:estimates?|weights?|weight figures)\b(?:[^.;]|\d\.\d|\bapprox\.)*?\bmust be confirmed before production\b`,
     // Spanish.
     // The Spanish translations of the 2027 enamel copy (live 2026-11-01): "Referencia interna:
     // BAS-27-MINE-E04-14Y", "Desarrollo: Muestra requerida", "... hasta que el fabricante
@@ -128,15 +131,27 @@ export const INTERNAL_RE = new RegExp(
     // dimensiones físicas y el peso finales no se establecen mediante las imágenes".
     String.raw`\breferencia interna\b`,
     String.raw`\bmuestra requerida\b`,
-    String.raw`\bhasta que el fabricante\b`,
+    String.raw`\bhasta que el fabricante (?:confirme|apruebe|verifique) el método de cuidado\b`,
     String.raw`\b(?:antes de|sin) (?:enviar|publicar|subir) (?:el|este) anuncio a Etsy\b`,
-    String.raw`\bdeben confirmarse antes de la producción\b`,
-    String.raw`\bdespués de confirmar (?:esos|estos) detalles\b`,
-    String.raw`\bantes de que (?:el|este|esta) [a-záéíóúñ]+ se (?:ponga|ofrezca) a la venta\b`,
+    // The weight estimate only, as in English.
+    String.raw`\b(?:estimaci[oó]n(?:es)?|pesos?)\b(?:[^.;]|\d\.\d|\baprox\.|\bEE\. UU\.)*?\bdeben? confirmarse antes de la producción\b`,
+    // The listing's own status; "te avisamos antes de que el modelo se ponga a la venta" is a waitlist.
+    String.raw`\bantes de que (?:el|este|esta) (?:diseño|anuncio|pieza|anillo|artículo) se (?:ponga|ofrezca) a la venta\b`,
     String.raw`\bno se establecen (?:mediante|por|a partir de) (?:las |estas )?imágenes\b`,
-    // "está preparado a partir del diseño aprobado Threshold" (English "from the approved").
-    String.raw`\ba partir del diseño aprobado\b`,
-    String.raw`\bla referencia aprobada\b`,
+    // "está preparado a partir del diseño aprobado Threshold" (English "prepared from the approved");
+    // not "fabricamos tu anillo a partir del diseño aprobado por ti".
+    String.raw`\bpreparad[oa]s? a partir del diseño aprobado\b`,
+    // English "readback": "El peso final de 18K se añade después de la lectura de producción".
+    String.raw`\blectura de producción\b`,
+    // English "are not provided here".
+    String.raw`\baquí no se proporcionan\b`,
+    // Spanish forms of the English supplier and cost notes.
+    String.raw`\b(?:costo|coste|cotización|confirmación|aprobación) del proveedor\b`,
+    String.raw`\bdesperdicio de fundición\b`,
+    String.raw`\b(?:USD \d+|\d+ USD) de (?:costo|coste) de producción\b`,
+    String.raw`\bpeso de fundición\b`,
+    String.raw`\bno se (?:especifican?|proporcionan?) en la información del anuncio(?=\s*\.|\s*$)`,
+    String.raw`\bacción de precio en Etsy\b`,
     String.raw`antes de poner (?:este|el) diseño a la venta`,
     String.raw`no (?:(?:está|están) )?list[oa]s? para la venta`,
     String.raw`\b(?:este|el) (?:diseño|anuncio) no (?:está )?disponible para la venta\b`,
@@ -145,9 +160,9 @@ export const INTERNAL_RE = new RegExp(
     String.raw`^\s*(?:[-•✔*·]|\d+[.)])\s+PROPUESTA DE DISEÑO\b(?=\s*(?:[—–\-;]|[:.]?\s*$|(?:para (?:(?:la|el) )?|\()(?:primavera|verano|otoño|invierno|\d{4})\b))`,
     String.raw`\besta propuesta de diseño\b`,
     // "Las dimensiones son objetivos de desarrollo", "grosor objetivo de diseño"; not "nuestro objetivo de diseño fue ...".
-    String.raw`\b(?:son|como) objetivos? de (?:diseño|desarrollo)\b`,
-    String.raw`\b(?:grosor|espesor|ancho|largo|longitud|altura|peso|medidas?|dimensiones|diámetro) objetivos? de (?:diseño|desarrollo)\b`,
-    String.raw`\bbasad[oa]s? en el objetivo de diseño\b`,
+    String.raw`\b(?:son|como) objetivos? del? (?:diseño|desarrollo)\b`,
+    String.raw`\b(?:grosor|espesor|ancho|largo|longitud|altura|peso|medidas?|dimensiones|diámetro) objetivos? del? (?:diseño|desarrollo)\b`,
+    String.raw`\bbasad[oa]s? en el (?:objetivo del? diseño|diseño objetivo)\b`,
     String.raw`\b(?:previas? a la producción|preproducción)\b`,
     String.raw`\baprobación del (?:propietario|fabricante)\b`,
     String.raw`\baprobad[oa]s? por el propietario\b`,
@@ -171,7 +186,7 @@ export const INTERNAL_RE = new RegExp(
 // Internal by name: the heading takes its whole paragraph (up to the next blank line or
 // heading), whatever the lines say ("INTERNAL NOTES / Maker: ..., quote 2 g + 100 USD").
 const INTERNAL_BY_NAME_RE =
-  /^(?:DESIGN PROPOSAL\b.*|PROPUESTA DE DISEÑO\b.*|IMPORTANT PRODUCTION NOTES?|WEIGHT AND PRICE NOTES?|INTERNAL NOTES?|INTERNAL|(?:SIZE AND )?SPECIFICATION STATUS)\s*:?\s*$/i;
+  /^(?:DESIGN PROPOSAL\b.*|PROPUESTA DE DISEÑO\b.*|IMPORTANT PRODUCTION NOTES?|WEIGHT AND PRICE NOTES?|INTERNAL NOTES?|INTERNAL|(?:SIZE AND )?SPECIFICATION STATUS|NOTAS? IMPORTANTES? DE PRODUCCIÓN|NOTAS? DE PESO Y PRECIO|NOTAS? INTERNAS?)\s*:?\s*$/i;
 // Ambiguous: a buyer section can share the name ("PRICE NOTE / Price is for one earring").
 // The heading goes only with the lines under it that carry a signal; the first clean line ends it.
 const INTERNAL_SECTION_RE = /^(?:PRODUCTION NOTES?|PRICE NOTES?)\s*:?\s*$/i;
@@ -192,7 +207,7 @@ function isSectionHeading(line: string): boolean {
 // Phrase rewrites that keep the buyer fact. Applied only on a line that carries an
 // internal signal (PHRASE_SIGNAL_RE), so every other line stays byte for byte.
 const PHRASE_SIGNAL_RE =
-  /design target|proposed|provisional listing|quoted (?:bracelet|necklace|chain|anklet) length|model preview|vista previa|created for this metal colou?r|final stone specification|design dimensions|para fundición|No personali[sz]ation unless explicitly stated\s*$|in this draft|este borrador no ofrece|\bC\d{5}\b|\}\s*$|CAD final|supplier confirmation|intended metal|metal previsto|(?:ring|necklace|pendant|bracelet|anklet|band) concept|concepto de anillo|objetivo de diseño|as (?:seen|shown) in the design image|\[insert|final CAD|pre-?production estimate|until the maker confirms|hasta que el fabricante confirme|^\s*PROPOSED DESIGN\s*$|^\s*MATERIAL DIRECTION\s*$/im;
+  /design target|proposed|provisional listing|quoted (?:bracelet|necklace|chain|anklet) length|model preview|vista previa|created for this metal colou?r|final stone specification|design dimensions|para fundición|No personali[sz]ation unless explicitly stated\s*$|in this draft|este borrador no ofrece|\bC\d{5}\b|\}\s*$|CAD final|supplier confirmation|confirmación del proveedor|se proponen? como|(?:are|is) proposed as|intended metal|metal previsto|(?:ring|necklace|pendant|bracelet|anklet|band) concept|concepto de anillo|objetivo del? diseño|diseño objetivo|as (?:seen|shown) in the design image|\[insert|final CAD|pre-?production estimate|until the maker (?:confirms|approves|verifies) the care method|hasta que el fabricante (?:confirme|apruebe|verifique) el método de cuidado|^\s*PROPOSED DESIGN\s*$|^\s*MATERIAL DIRECTION\s*$/im;
 
 const cap = (w: string) => w[0].toUpperCase() + w.slice(1);
 
@@ -215,6 +230,13 @@ const PHRASE_REWRITES: Rewrite[] = [
   // ", exact diameter and closure pending supplier confirmation" / ", supplier confirmation pending";
   // a decimal ("1.5 mm") may sit inside the clause.
   [/,\s*(?:(?:[^,;.]|\d\.\d)*?\s)?(?:pending supplier confirmation|supplier confirmation pending)\b/gi, ""],
+  // Spanish: "; el diámetro exacto y el cierre están pendientes de confirmación del proveedor".
+  [/,\s*(?:(?:[^,;.]|\d\.\d)*?\s)?(?:están |está )?pendientes? de (?:la )?confirmación del proveedor\b/gi, ""],
+  // Design-proposal wording: "These sculptural gold earrings are proposed as a mirror pair",
+  // "Estos pendientes ... se proponen como un par simétrico" keep the buyer fact.
+  [/\b(are|is) proposed as\b/g, "$1"],
+  [/\bse proponen como\b/g, "son"],
+  [/\bse propone como\b/g, "es"],
   [/\bIntended metal(s?):/g, "Metal$1:"],
   [/\b([Tt])he intended metal(s?) (is|are)\b/g, "$1he metal$2 $3"],
   [/\bMetal previsto:/g, "Metal:"],
@@ -222,7 +244,7 @@ const PHRASE_REWRITES: Rewrite[] = [
   [/\b(ring|earring|necklace|pendant|bracelet|anklet|band) concept\b/g, "$1"],
   [/\bUn concepto de anillo\b/g, "Un anillo"],
   [/\bun concepto de anillo\b/g, "un anillo"],
-  [/\b([Gg])rosor objetivo de diseño\b/g, "$1rosor"],
+  [/\b([Gg]rosor|[Ee]spesor) objetivo del? diseño\b/g, "$1"],
   // "..., as seen in the design image." -> "..., as seen in the listing image."
   [/\b(as (?:seen|shown) in the) design image(s?)\b/gi, "$1 listing image$2"],
   // "[Insert sizes – 7", 7.5", 8", 8.5"" -> "7", 7.5", 8", 8.5""
@@ -233,10 +255,10 @@ const PHRASE_REWRITES: Rewrite[] = [
   [/\bare pre-?production estimates\b/g, "are estimates"],
   // "avoid abrasive cleaners and ultrasonic cleaning until the maker confirms the care method"
   // keeps the care advice and drops the pending confirmation.
-  [/\s+until the maker confirms[^.;]*/g, ""],
+  [/\s+until the maker (?:confirms|approves|verifies) the care method\b/g, ""],
   // "evite limpiadores abrasivos y limpieza ultrasónica hasta que el fabricante confirme el
   // método de cuidado" keeps the care advice.
-  [/\s+hasta que el fabricante confirme[^.;]*/g, ""],
+  [/\s+hasta que el fabricante (?:confirme|apruebe|verifique) el método de cuidado\b/g, ""],
   // "Personalization is not enabled in this provisional listing" keeps the buyer fact.
   [/\s+in this provisional listing\b/g, ""],
   // "7.5 inch quoted bracelet length" (the supplier quote) -> "7.5 inch bracelet length"
@@ -312,15 +334,27 @@ function stripClause(clause: string): string {
   return "";
 }
 
+// A clause that only points back at the one before it: "...antes de enviar el anuncio a Etsy;
+// el anillo ... se produce después de confirmar esos detalles". It goes with an internal clause
+// before it in the same sentence and never on its own ("Your order ships 2 weeks after these
+// details are confirmed" is a lead time).
+const ANAPHORIC_RE = /\b(?:after|once) (?:those|these) details are confirmed\b|\bdespués de confirmar (?:esos|estos) detalles\b/i;
+
 function stripSentence(sentence: string): string {
   if (!INTERNAL_RE.test(sentence)) return sentence;
   const bullet = BULLET_RE.exec(sentence)?.[0] ?? "";
   const body = sentence.slice(bullet.length);
   const end = /[.!?]\s*$/.exec(body)?.[0]?.trim() ?? "";
+  let dropped = false;
   const clauses = body
     .replace(/[.!?]\s*$/, "")
     .split(/;\s*/)
-    .map(stripClause)
+    .map((c) => {
+      if (dropped && ANAPHORIC_RE.test(c)) return "";
+      const next = stripClause(c);
+      if (next !== c) dropped = true;
+      return next;
+    })
     .filter((c) => c.length > 0);
   if (clauses.length === 0) return "";
   const kept = capitalizeFirst(clauses.join("; "));
@@ -345,8 +379,7 @@ function stripLine(line: string, edits: InternalEdit[]): string {
     return i === 0 ? next.slice(bullet.length) : next;
   });
   if (!changed) return rewritten;
-  const rebuilt = joinSentences(kept, seps).trim();
-  return rebuilt ? bullet + rebuilt : "";
+  return underBullet(bullet, joinSentences(kept, seps).trim());
 }
 
 type Result = { text: string; removed: string[]; edits: InternalEdit[] };
