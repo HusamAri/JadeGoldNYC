@@ -29,10 +29,13 @@ const IMG = String.raw`(?:images?|photos?|photographs?|gallery|pictures?|frames?
 // A negation word (JS \b is ASCII-only, so "ningún" ends with an explicit look-ahead).
 const NEG_WORD = String.raw`\b(?:not|never|no|nunca|none|nothing|nada|ningun[oa]?|ningún)(?![\wÀ-ÿ])`;
 const AI_MADE = String.raw`(?:(?:created|made|generated|edited|produced) (?:with|by|using)|(?:cread[oa]s?|se crearon|generad[oa]s?|editad[oa]s?|hech[oa]s?) (?:con|por)) (?:la )?(?:AI|IA)\b`;
-// A negation counts only when it governs the AI phrase, within four words: "our photos are not
-// made with AI", "ninguna está editada con IA" are buyer claims; "the photos are not to scale
-// since they were created using AI" is still the disclosure.
-const NEG_GOV = String.raw`${NEG_WORD}(?=(?:\s+[^\s.;]+){0,4}?\s+(?:${AI_MADE}|(?:AI|IA)\b))`;
+// A negation counts only when it governs the AI phrase: the AI phrase follows in the same
+// clause, with no subordinating or contrast word in between. "Our photos are not made using
+// any kind of AI", "ninguna está editada con IA" are buyer claims; "the photos are not to
+// scale since they were created using AI" is still the disclosure. "Nothing but AI art",
+// "none other than AI" assert AI and do not count as a negation.
+const SUBORD = String.raw`\s(?:since|because|as|but|while|so|porque|pues|ya que|pero|sino|aunque|como)\s`;
+const NEG_GOV = String.raw`${NEG_WORD}(?!\s+(?:but|more than|other than|más que|sino)\b)(?=(?:(?!${SUBORD})[^.;]){0,60}?\s(?:${AI_MADE}|(?:AI|IA)\b))`;
 
 // "unedited photo shows the real ..." was the second half of the silver-chain disclosure and is only true
 // once the owner has added that photo, so it goes with it.
@@ -83,7 +86,7 @@ function stripClause(clause: string): string {
 
 export function stripSentence(sentence: string): string {
   if (!VISUALIZATION_RE.test(sentence)) return sentence;
-  const bullet = /^\s*-\s+/.exec(sentence)?.[0] ?? "";
+  const bullet = /^\s*(?:[-•✔*·]|\d+[.)])\s+/.exec(sentence)?.[0] ?? "";
   const body = sentence.slice(bullet.length).replace(/[.!?]\s*$/, "");
   const clauses = body
     .split(/;\s*/)
@@ -97,7 +100,7 @@ export function stripSentence(sentence: string): string {
 export function stripVisualizationLine(line: string): { text: string; removed: string[] } {
   if (!VISUALIZATION_RE.test(line)) return { text: line, removed: [] };
   const removed: string[] = [];
-  const bullet = /^\s*-\s+/.exec(line)?.[0] ?? "";
+  const bullet = /^\s*(?:[-•✔*·]|\d+[.)])\s+/.exec(line)?.[0] ?? "";
   const sentences = line.slice(bullet.length).split(/(?<=[.!?])\s+/);
   const kept: string[] = [];
   sentences.forEach((s, i) => {
