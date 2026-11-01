@@ -8,7 +8,7 @@ import { etsyPaths } from "@/lib/etsy/endpoints";
 import { decodeHtmlEntities } from "@/lib/etsy/text";
 import { normText } from "@/lib/etsy/listing-rewrite";
 import { getListingTranslation, putListingTranslation } from "@/lib/etsy/listing";
-import { cleanAltText, stripPublicDescription } from "@/lib/etsy/strip-internal";
+import { cleanAltText, publicTextProblem, stripPublicDescription } from "@/lib/etsy/strip-internal";
 import type { EtsyListResponse } from "@/lib/etsy/types";
 import { logAudit } from "@/lib/audit";
 
@@ -156,6 +156,8 @@ async function imagesMode(
     }
     let beforeOrder: number[] = [];
     const done: Row[] = [];
+    // The image whose re-attach was sent and not yet read back: Etsy may hold it even if a call threw.
+    let inFlight: Row | null = null;
     let base: Row = { product: t.product, listing: t.listing };
     try {
       const live = await client.get<{ title?: string; state?: string }>(etsyPaths.listing(t.listing));
@@ -167,14 +169,11 @@ async function imagesMode(
         results.push({ ...base, status: "clean" });
         continue;
       }
-      if (!apply) {
-        results.push({ ...base, status: "would-fix", changes });
-        continue;
-      }
       // A run that stopped half way left the gallery as it found it only up to the stop;
-      // a new run would take that order as its baseline. A person looks first.
+      // a new run would take that order as its baseline. A person looks first. The dry run
+      // reports the same gate, so it never promises a fix that apply will refuse.
       if (t.product) {
-        const { data: last } = await admin
+        const { data: last, error: gateErr } = await admin
           .from("audit_log")
           .select("diff, created_at")
           .eq("org_id", orgId)
@@ -182,13 +181,25 @@ async function imagesMode(
           .eq("entity_id", t.product)
           .order("created_at", { ascending: false })
           .limit(1);
+        if (gateErr) {
+          results.push({ ...base, status: "needs-review", lastStatus: null, detail: `audit gate unreadable: ${gateErr.message}`, changes });
+          continue;
+        }
         const lastStatus = ((last ?? [])[0] as { diff?: { status?: string } } | undefined)?.diff?.status;
         if (lastStatus && UNFINISHED.has(lastStatus) && !reviewed) {
           results.push({ ...base, status: "needs-review", lastStatus, changes });
           continue;
         }
       }
+      if (!apply) {
+        results.push({ ...base, status: "would-fix", changes });
+        continue;
+      }
       const shopId = await client.requireShopId();
+      if (Date.now() >= deadline) {
+        results.push({ ...base, status: "deferred" });
+        continue;
+      }
       beforeOrder = order(before);
       const expectOrder = [...beforeOrder];
       let cur = before;
@@ -208,8 +219,10 @@ async function imagesMode(
         form.append("listing_image_id", String(c.id));
         form.append("rank", String(rank));
         form.append("alt_text", c.to);
+        inFlight = { id: c.id, rank, from: c.from, to: c.to };
         const back = await client.requestMultipart<{ listing_image_id?: number }>("POST", etsyPaths.listingImages(shopId, t.listing), form);
         const newId = back?.listing_image_id ?? c.id;
+        inFlight = { ...inFlight, newId };
         let list = await readGallery(t.listing);
         for (let i = 0; i < 3 && !list.some((p) => p.listing_image_id === newId && altKey(p.alt_text) === c.to); i++) {
           await pause();
@@ -221,10 +234,16 @@ async function imagesMode(
         if (idx >= 0) expectOrder[idx] = newId;
         const orderOk = JSON.stringify(order(list)) === JSON.stringify(expectOrder);
         done.push({ id: c.id, newId, rank, from: c.from, to: c.to, altOk, orderOk });
+        inFlight = null;
         if (!altOk || !orderOk) {
           stop = !orderOk ? "order-changed" : "alt-not-applied";
           break;
         }
+      }
+      // Deadline before the first write: nothing was sent, so nothing to audit or review.
+      if (stop === "deferred-partial" && done.length === 0) {
+        results.push({ ...base, status: "deferred" });
+        continue;
       }
       if (stop) {
         await audit(t, stop, { beforeOrder, done, expectOrder, liveOrder: order(cur) });
@@ -234,9 +253,9 @@ async function imagesMode(
       await audit(t, "fixed", { beforeOrder, done });
       results.push({ ...base, status: "fixed", done });
     } catch (e) {
-      // Once the first re-attach was sent, Etsy may hold a change even if the call threw.
-      if (beforeOrder.length > 0) await audit(t, "error", { beforeOrder, done, error: String(e) });
-      results.push({ ...base, status: "error", detail: String(e), done });
+      // Once a re-attach was sent, Etsy may hold a change even if the call threw.
+      if (inFlight || done.length > 0) await audit(t, "error", { beforeOrder, done, ...(inFlight ? { inFlight } : {}), error: String(e) });
+      results.push({ ...base, status: "error", detail: String(e), done, ...(inFlight ? { inFlight } : {}) });
     }
   }
   const count = (s: string) => results.filter((r) => r.status === s).length;
@@ -259,8 +278,11 @@ async function imagesMode(
 function plan(before: string) {
   const r = stripPublicDescription(before);
   const changed = r.removed.length > 0 || r.edits.length > 0;
-  const tooLarge = changed && r.text.length < before.length * MIN_KEEP_RATIO;
-  return { ...r, changed, tooLarge };
+  // stripPublicDescription returns a fixed point; a residual would mean the cut is not public
+  // yet, and the write guards would refuse it. Refuse it here too, in the dry run as well.
+  const residual = changed && publicTextProblem(r.text) !== null;
+  const tooLarge = (changed && r.text.length < before.length * MIN_KEEP_RATIO) || residual;
+  return { ...r, changed, tooLarge, residual };
 }
 
 const LANG_RE = /^[a-z]{2}(?:-[A-Z]{2})?$/;
@@ -313,6 +335,7 @@ export async function GET(request: Request) {
     let scanned = 0;
     let translations = 0;
     let partial = false;
+    const errors: Row[] = [];
     scanLoop: for (const st of SCAN_STATES) {
       for (let offset = 0; ; offset += PAGE) {
         if (Date.now() >= deadline) {
@@ -325,17 +348,29 @@ export async function GET(request: Request) {
         );
         const rows = page.results ?? [];
         for (const l of rows) {
+          // A listing counts as scanned only once its text is checked.
+          if (lang && Date.now() >= deadline) {
+            partial = true;
+            break scanLoop;
+          }
           scanned++;
           const state = l.state ?? st;
           byState[state] = (byState[state] ?? 0) + 1;
           let title = decodeHtmlEntities(l.title ?? "");
           let before = decodeHtmlEntities(l.description ?? "");
           if (lang) {
-            if (Date.now() >= deadline) {
-              partial = true;
-              break scanLoop;
+            let tr: Awaited<ReturnType<typeof getListingTranslation>>;
+            try {
+              tr = await getListingTranslation(client, l.listing_id, lang);
+            } catch (e) {
+              // One listing's read error does not throw the scan away; the daily quota ends it.
+              errors.push({ listing: l.listing_id, state, error: String(e) });
+              if (/\(429\)/.test(String(e)) && /daily/i.test(String(e))) {
+                partial = true;
+                break scanLoop;
+              }
+              continue;
             }
-            const tr = await getListingTranslation(client, l.listing_id, lang);
             if (!tr) continue;
             translations++;
             title = decodeHtmlEntities(tr.title ?? title);
@@ -349,6 +384,7 @@ export async function GET(request: Request) {
             ...(lang ? { lang } : {}),
             title: title.slice(0, 90),
             tooLarge: p.tooLarge,
+            ...(p.residual ? { residual: true } : {}),
             removed: p.removed,
             edits: p.edits,
             from: before.length,
@@ -371,8 +407,9 @@ export async function GET(request: Request) {
       scan: true,
       org: orgName,
       ...(lang ? { lang, translations } : {}),
-      partial,
+      partial: partial || errors.length > 0,
       scanned,
+      ...(errors.length ? { errors } : {}),
       byState,
       hits: hits.length,
       notInPanel: hits.filter((h) => !h.product).length,
@@ -428,7 +465,7 @@ export async function GET(request: Request) {
           results.push({ ...base, status: "clean" });
           continue;
         }
-        const change: Row = { removed: r.removed, edits: r.edits, from: before.length, to: r.text.length, ...(detail ? { before, after: r.text } : {}) };
+        const change: Row = { removed: r.removed, edits: r.edits, from: before.length, to: r.text.length, ...(r.residual ? { residual: true } : {}), ...(detail ? { before, after: r.text } : {}) };
         if (r.tooLarge) {
           results.push({ ...base, ...change, status: "refused-large-cut" });
           continue;
@@ -437,13 +474,27 @@ export async function GET(request: Request) {
           results.push({ ...base, ...change, status: "would-strip" });
           continue;
         }
-        await putListingTranslation(client, listingId, lang, {
-          title: decodeHtmlEntities(tr.title ?? ""),
-          description: r.text,
-          tags: (tr.tags ?? []).map((t) => decodeHtmlEntities(t)),
-        });
-        const after = await getListingTranslation(client, listingId, lang);
-        const verified = normText(decodeHtmlEntities(after?.description ?? "")) === normText(r.text);
+        const title = decodeHtmlEntities(tr.title ?? "");
+        const tags = (tr.tags ?? []).map((t) => decodeHtmlEntities(t));
+        const tagKey = (list: string[]) => list.map((t) => decodeHtmlEntities(t).trim().toLowerCase()).sort().join("|");
+        // Once the PUT is sent Etsy may hold it whatever happens next: audit every outcome.
+        let writeError: string | null = null;
+        let readBackError: string | null = null;
+        let verified = false;
+        try {
+          await putListingTranslation(client, listingId, lang, { title, description: r.text, tags });
+          try {
+            const after = await getListingTranslation(client, listingId, lang);
+            verified =
+              normText(decodeHtmlEntities(after?.description ?? "")) === normText(r.text) &&
+              normText(decodeHtmlEntities(after?.title ?? "")) === normText(title) &&
+              tagKey(after?.tags ?? []) === tagKey(tags);
+          } catch (e) {
+            readBackError = String(e);
+          }
+        } catch (e) {
+          writeError = String(e);
+        }
         await logAudit(admin, {
           orgId,
           action: "etsy.desc_strip",
@@ -452,11 +503,12 @@ export async function GET(request: Request) {
           summary:
             `${lang} çeviri açıklamasından kamuya açık olmaması gereken metin kaldırıldı (ops desc-strip): listing ${listingId}, ` +
             `${r.removed.length} görselleştirme cümlesi, ${r.edits.length} iç not düzenlemesi, ` +
-            `${before.length} -> ${r.text.length} kr; read-back ${verified ? "doğrulandı" : "BAŞARISIZ"}.`,
-          diff: { listingId, lang, before, after: r.text, removed: r.removed, edits: r.edits, verified },
+            `${before.length} -> ${r.text.length} kr; ` +
+            (writeError ? `yazım hatası, sonuç bilinmiyor.` : `read-back ${verified ? "doğrulandı" : "BAŞARISIZ"}.`),
+          diff: { listingId, lang, before, after: r.text, title, tags, removed: r.removed, edits: r.edits, verified, ...(writeError ? { writeError } : {}), ...(readBackError ? { readBackError } : {}) },
           source: "ops/desc-strip",
         });
-        results.push({ ...base, ...change, status: verified ? "stripped" : "verify-failed" });
+        results.push({ ...base, ...change, status: writeError ? "error" : verified ? "stripped" : "verify-failed", ...(writeError ? { detail: writeError } : {}), ...(readBackError ? { readBackError } : {}) });
         continue;
       }
 
@@ -467,7 +519,7 @@ export async function GET(request: Request) {
           results.push({ product: id, sku: p.sku, status: "clean", where: "panel" });
           continue;
         }
-        const base: Row = { product: id, sku: p.sku, where: "panel", removed: r.removed, edits: r.edits, from: before.length, to: r.text.length, ...(detail ? { before, after: r.text } : {}) };
+        const base: Row = { product: id, sku: p.sku, where: "panel", removed: r.removed, edits: r.edits, from: before.length, to: r.text.length, ...(r.residual ? { residual: true } : {}), ...(detail ? { before, after: r.text } : {}) };
         if (r.tooLarge) {
           results.push({ ...base, status: "refused-large-cut" });
           continue;
@@ -494,7 +546,7 @@ export async function GET(request: Request) {
         results.push({ ...base, status: "clean", panelClean });
         continue;
       }
-      const change: Row = { removed: r.removed, edits: r.edits, from: before.length, to: r.text.length, ...(detail ? { before, after: r.text } : {}) };
+      const change: Row = { removed: r.removed, edits: r.edits, from: before.length, to: r.text.length, ...(r.residual ? { residual: true } : {}), ...(detail ? { before, after: r.text } : {}) };
       if (r.tooLarge) {
         results.push({ ...base, ...change, status: "refused-large-cut" });
         continue;
@@ -504,9 +556,21 @@ export async function GET(request: Request) {
         continue;
       }
       const shopId = await client.requireShopId();
-      await client.requestForm("PATCH", etsyPaths.shopListing(shopId, listingId), { description: r.text });
-      const after = await client.get<{ description?: string }>(etsyPaths.listing(listingId));
-      const verified = normText(decodeHtmlEntities(after.description ?? "")) === normText(r.text);
+      // Once the PATCH is sent Etsy may hold it whatever happens next: audit every outcome.
+      let writeError: string | null = null;
+      let readBackError: string | null = null;
+      let verified = false;
+      try {
+        await client.requestForm("PATCH", etsyPaths.shopListing(shopId, listingId), { description: r.text });
+        try {
+          const after = await client.get<{ description?: string }>(etsyPaths.listing(listingId));
+          verified = normText(decodeHtmlEntities(after.description ?? "")) === normText(r.text);
+        } catch (e) {
+          readBackError = String(e);
+        }
+      } catch (e) {
+        writeError = String(e);
+      }
       if (verified) {
         await admin.from("products").update({ description: r.text }).eq("id", id).eq("org_id", orgId);
       }
@@ -518,12 +582,13 @@ export async function GET(request: Request) {
         summary:
           `Açıklamadan kamuya açık olmaması gereken metin kaldırıldı (ops desc-strip): listing ${listingId}, ` +
           `${r.removed.length} görselleştirme cümlesi, ${r.edits.length} iç not düzenlemesi, ` +
-          `${before.length} -> ${r.text.length} kr; read-back ${verified ? "doğrulandı" : "BAŞARISIZ"}.`,
+          `${before.length} -> ${r.text.length} kr; ` +
+          (writeError ? `yazım hatası, sonuç bilinmiyor.` : `read-back ${verified ? "doğrulandı" : "BAŞARISIZ"}.`),
         // The live text before the write: the panel copy can be stale, so this is the way back.
-        diff: { listingId, before, after: r.text, removed: r.removed, edits: r.edits, verified },
+        diff: { listingId, before, after: r.text, removed: r.removed, edits: r.edits, verified, ...(writeError ? { writeError } : {}), ...(readBackError ? { readBackError } : {}) },
         source: "ops/desc-strip",
       });
-      results.push({ ...base, ...change, status: verified ? "stripped" : "verify-failed" });
+      results.push({ ...base, ...change, status: writeError ? "error" : verified ? "stripped" : "verify-failed", ...(writeError ? { detail: writeError } : {}), ...(readBackError ? { readBackError } : {}) });
     } catch (e) {
       results.push({ product: id, sku: p.sku, status: "error", detail: String(e) });
     }
@@ -541,6 +606,8 @@ export async function GET(request: Request) {
     clean: count("clean"),
     refused: count("refused-large-cut"),
     deferred: count("deferred"),
+    // Skipped: nothing to clean in this mode (no translation in that language, or no Etsy listing).
+    skipped: count("no-translation") + count("etsy-listing-yok"),
     failed: count("verify-failed") + count("error") + count("panelde-yok"),
     results,
   });

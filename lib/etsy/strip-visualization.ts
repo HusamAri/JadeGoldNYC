@@ -35,9 +35,16 @@ export const VISUALIZATION_RE = new RegExp(
     String.raw`\bAI-(?:assisted|generated)\b`,
     String.raw`\bgenerad[oa]s? (?:con|por) (?:la )?IA\b`,
     String.raw`(?<!\bnot )(?<!\bno )\bAI (?:design|images?|photos?|frames?|visuali[sz]|renders?|home studio|generated)`,
-    // "our photos are real bands, not renders" is a buyer claim, not the disclosure.
-    String.raw`\b${IMG}\b[^.;]{0,60}(?<!\bnot )(?<!\bno )\b(?:AI|IA|renderings?|renders?)\b`,
-    String.raw`(?<!\bnot )(?<!\bno )\b(?:AI|renderings?|3D renders?)\b[^.;]{0,60}\b${IMG}\b`,
+    // "AI" near an image word, within one clause: "La galería contiene representaciones asistidas
+    // por IA". A comma or "and"/"or" ends the clause ("send us a photo, or choose initials such as
+    // AI"); a negation is a buyer claim ("no AI photos here").
+    String.raw`\b${IMG}\b(?:(?!,| and | or | y | o )[^.;]){0,60}(?<!\bnot )(?<!\bno )\b(?:AI|IA)\b`,
+    String.raw`(?<!\bnot )(?<!\bno )\bAI\b(?:(?!,| and | or )[^.;]){0,60}\b${IMG}\b`,
+    // "Rendering" only as a statement that the image is one: "these photos are renders of the
+    // design". "Real photos, not renderings", "without filters or renders" and "your photo
+    // renders beautifully on the pendant" are buyer copy.
+    String.raw`\b${IMG}\b (?:(?:in this listing|here|shown|above) )?(?:are|is|were|was) (?:an? |all )?(?:AI |3D |CAD |digital |design )?render(?:ing)?s?\b`,
+    String.raw`\b(?:shown|pictured) as an? (?:3D |CAD |digital )?rendering\b`,
     String.raw`\brecolou?red\b`,
     String.raw`\bunedited photo shows\b`,
   ].join("|"),

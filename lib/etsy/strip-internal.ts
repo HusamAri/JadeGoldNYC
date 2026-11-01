@@ -49,9 +49,13 @@ export type InternalEdit = { kind: "section" | "phrase" | "sentence" | "heading"
 // A clause that states an internal status.
 export const INTERNAL_RE = new RegExp(
   [
-    String.raw`not (?:yet )?(?:ready|available) for sale`,
-    String.raw`^\s*DESIGN PROPOSAL\b`,
-    String.raw`\b(?:this|the) design proposal\b`,
+    String.raw`not (?:yet )?ready for sale`,
+    // "The display box shown is not available for sale" is buyer copy; the design as subject is not.
+    String.raw`\b(?:this|the) (?:design|listing|piece) is not (?:yet )?available for sale\b`,
+    String.raw`^\s*(?:(?:[-•✔*·]|\d+[.)])\s+)?DESIGN PROPOSAL\b`,
+    // "once you approve the design proposal" is a custom-order step; the listing's own status is not.
+    String.raw`\bthis design proposal\b`,
+    String.raw`\bthis (?:listing|design|piece|ring) is (?:a|the|only a) design proposal\b`,
     String.raw`\bpanel proposal\b`,
     String.raw`\bprovisional\b`,
     String.raw`\bowner[- ]approv`,
@@ -70,7 +74,7 @@ export const INTERNAL_RE = new RegExp(
     String.raw`\b(?:approved|ready) for Etsy\b`,
     String.raw`\bpre-?production\b`,
     // "Final CAD and cast-weight approval" is internal; "we send the final CAD for your approval" is not.
-    String.raw`\bfinal CAD\b(?! (?:for|to) you)`,
+    String.raw`(?<!\byou the )\bfinal CAD\b(?! (?:for|to|with) you)`,
     String.raw`\bcast-weight\b`,
     String.raw`\b(?:design|development) targets?\b`,
     String.raw`\bphysical sample\b`,
@@ -86,7 +90,8 @@ export const INTERNAL_RE = new RegExp(
     String.raw`\bpersonali[sz]ation is planned\b`,
     String.raw`\bsample required\b`,
     String.raw`\bmust be sampled\b`,
-    String.raw`\bverify the actual\b`,
+    // "verify the actual chain end can pass" (maker); "verify the actual ring size with a jeweler" is buyer advice.
+    String.raw`\bverify the actual (?:chain|bail|jump ring|post|clearance)\b[^.;]*\bcan pass\b`,
     String.raw`\bFire the (?:motif|enamel) before\b`,
     String.raw`\bphysical verification\b`,
     String.raw`\bmust be confirmed in writing\b`,
@@ -94,17 +99,25 @@ export const INTERNAL_RE = new RegExp(
     String.raw`\bamong the provided specifications\b`,
     // "- Stamp details are not specified in the listing information." (generator residue);
     // "if your size is not listed in the listing, message us" is not matched.
-    String.raw`\bnot (?:specified|provided) in the listing(?: details| information)?[.!?]?\s*$`,
+    String.raw`\bnot (?:specified|provided) in the listing(?: details| information)?(?=\s*[.!?;]|\s*$)`,
     String.raw`\bare not provided here\b`,
     String.raw`\bnot established by (?:the |these )?images\b`,
     String.raw`\bcasting waste\b`,
-    String.raw`\bUSD \d+ production cost\b`,
+    // Cost structure: "one additional gram of casting waste and USD 100 production cost".
+    String.raw`\bUSD \d+ (?:production cost|labou?r)\b`,
+    String.raw`\badditional gram of (?:gold|casting waste)\b`,
     String.raw`\bmust be checked before (?:engraving|this|it) can be (?:promised|offered)\b`,
     // Spanish.
     String.raw`antes de poner (?:este|el) diseño a la venta`,
-    String.raw`no (?:(?:está|están) )?(?:list[oa]s?|disponibles?) para la venta`,
-    String.raw`\bpropuesta de diseño\b`,
-    String.raw`\bobjetivos? de (?:diseño|desarrollo)\b`,
+    String.raw`no (?:(?:está|están) )?list[oa]s? para la venta`,
+    String.raw`\b(?:este|el) (?:diseño|anuncio) no (?:está )?disponible para la venta\b`,
+    // As in English: the heading and the listing's own status, not "te enviamos una propuesta de diseño".
+    String.raw`^\s*(?:(?:[-•✔*·]|\d+[.)])\s+)?PROPUESTA DE DISEÑO\b`,
+    String.raw`\besta propuesta de diseño\b`,
+    // "Las dimensiones son objetivos de desarrollo", "grosor objetivo de diseño"; not "nuestro objetivo de diseño fue ...".
+    String.raw`\b(?:son|como) objetivos? de (?:diseño|desarrollo)\b`,
+    String.raw`\b(?:grosor|ancho|peso|medidas?|dimensiones|diámetro) objetivos? de (?:diseño|desarrollo)\b`,
+    String.raw`\bbasad[oa]s? en el objetivo de diseño\b`,
     String.raw`\b(?:previas? a la producción|preproducción)\b`,
     String.raw`\baprobación del (?:propietario|fabricante)\b`,
     String.raw`\baprobad[oa]s? por el propietario\b`,
@@ -124,10 +137,14 @@ export const INTERNAL_RE = new RegExp(
   "i",
 );
 
-// Headings of internal sections. A matched heading removes only the lines under it that
-// carry a signal (see pass 1), so a buyer section that happens to share the name stays.
-const INTERNAL_SECTION_RE =
-  /^(?:DESIGN PROPOSAL\b.*|PROPUESTA DE DISEÑO\b.*|(?:IMPORTANT )?PRODUCTION NOTES?|WEIGHT AND PRICE NOTES?|PRICE NOTES?|INTERNAL NOTES?|INTERNAL|(?:SIZE AND )?SPECIFICATION STATUS)\s*:?\s*$/i;
+// Headings of internal sections.
+// Internal by name: the heading takes its whole paragraph (up to the next blank line or
+// heading), whatever the lines say ("INTERNAL NOTES / Maker: ..., quote 2 g + 100 USD").
+const INTERNAL_BY_NAME_RE =
+  /^(?:DESIGN PROPOSAL\b.*|PROPUESTA DE DISEÑO\b.*|IMPORTANT PRODUCTION NOTES?|WEIGHT AND PRICE NOTES?|INTERNAL NOTES?|INTERNAL|(?:SIZE AND )?SPECIFICATION STATUS)\s*:?\s*$/i;
+// Ambiguous: a buyer section can share the name ("PRICE NOTE / Price is for one earring").
+// The heading goes only with the lines under it that carry a signal; the first clean line ends it.
+const INTERNAL_SECTION_RE = /^(?:PRODUCTION NOTES?|PRICE NOTES?)\s*:?\s*$/i;
 
 // An all-caps line such as "DETAILS" or "PERSONALIZATION".
 function isHeading(line: string): boolean {
@@ -304,14 +321,17 @@ function strip(description: string, withVisualization: boolean): Result {
   const lines = description.replace(/\r\n/g, "\n").split("\n");
   const signal = (l: string) => INTERNAL_RE.test(l) || VISUALIZATION_RE.test(l);
 
-  // Pass 1: internal sections. The heading goes with the lines under it that carry a
-  // signal; the first clean line (or a blank line, or the next heading) ends it.
+  // Pass 1: internal sections. A heading internal by name goes with its whole paragraph;
+  // an ambiguous one with the lines under it that carry a signal (the first clean line,
+  // a blank line or the next heading ends it).
   const keep: (string | null)[] = [];
   for (let i = 0; i < lines.length; i++) {
-    if (isHeading(lines[i]) && INTERNAL_SECTION_RE.test(lines[i].trim())) {
+    const t = lines[i].trim();
+    const byName = isHeading(lines[i]) && INTERNAL_BY_NAME_RE.test(t);
+    if (byName || (isHeading(lines[i]) && INTERNAL_SECTION_RE.test(t))) {
       let j = i + 1;
-      while (j < lines.length && lines[j].trim() !== "" && !isHeading(lines[j]) && signal(lines[j])) j++;
-      if (j > i + 1 || INTERNAL_RE.test(lines[i])) {
+      while (j < lines.length && lines[j].trim() !== "" && !isHeading(lines[j]) && (byName || signal(lines[j]))) j++;
+      if (byName || j > i + 1) {
         edits.push({ kind: "section", from: lines.slice(i, j).join("\n"), to: "" });
         for (let k = i; k < j; k++) keep.push(null);
         i = j - 1;
@@ -357,7 +377,8 @@ function strip(description: string, withVisualization: boolean): Result {
     const rest: string[] = [];
     let toEnd = true;
     for (let k = j; k < lines.length; k++) {
-      if (isSectionHeading(lines[k])) {
+      // A later heading counts as the section's end only if it is still there.
+      if (out[k] !== null && isSectionHeading(lines[k])) {
         toEnd = false;
         break;
       }
@@ -387,9 +408,19 @@ export function stripInternalNotes(description: string): { text: string; edits: 
   return { text: r.text, edits: r.edits };
 }
 
-/** Both public-text rules in one pass: image-provenance disclosure and internal notes. */
+/**
+ * Both public-text rules: image-provenance disclosure and internal notes. Repeated until
+ * the text stops changing (a cut can bring a second note to the start of a line), so the
+ * result always passes `publicTextProblem`.
+ */
 export function stripPublicDescription(description: string): Result {
-  return strip(description, true);
+  let r = strip(description, true);
+  for (let pass = 0; pass < 3 && (r.removed.length > 0 || r.edits.length > 0); pass++) {
+    const next = strip(r.text, true);
+    if (next.removed.length === 0 && next.edits.length === 0) break;
+    r = { text: next.text, removed: [...r.removed, ...next.removed], edits: [...r.edits, ...next.edits] };
+  }
+  return r;
 }
 
 /**

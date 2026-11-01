@@ -129,6 +129,11 @@ const LINES: [string, string][] = [
   ["Las especificaciones finales se confirmarán antes de la venta.", ""],
   ["• Grosor objetivo de diseño: aproximadamente 1,5 mm", "• Grosor: aproximadamente 1,5 mm"],
   ["La personalización está prevista, pero el formato debe ser aprobado por el propietario antes de la publicación en Etsy.", ""],
+  // Second review 2026-11-01.
+  ["- Stamp details are not specified in the listing information. The band is solid 14K gold.", "- The band is solid 14K gold."],
+  ["This design is not available for sale yet.", ""],
+  ["• Design proposal for Fall 2026; final weight to follow.", "• Final weight to follow."],
+  ["Las dimensiones son objetivos de desarrollo.", ""],
 ];
 
 // Ordinary buyer copy from the same listings: must come back byte for byte.
@@ -164,6 +169,21 @@ const KEEP: string[] = [
   // EON, live: a buyer claim that the photos are real.
   "The photos and videos in this listing are our real bands, not renders.",
   "No AI photos here: the gallery shows the real ring.",
+  // Second review 2026-11-01.
+  "All photos are of the actual piece, not renderings. Ships in 3 days.",
+  "Pictures are taken in natural light, without filters or renders.",
+  "Every photo is a real photograph of your ring, never 3D renders; colors may vary by screen.",
+  "Your photo renders beautifully on the polished 14K pendant.",
+  "Send us a photo of the handwriting and we create a crisp rendering of it in solid gold.",
+  "Send us a photo, or choose initials such as AI, JM or LK.",
+  "We share the final CAD with you before casting.",
+  "We send you a design proposal within 48 hours; once you approve the design proposal, your ring is cast.",
+  "Please verify the actual ring size with a local jeweler before ordering.",
+  "The display box shown is not available for sale.",
+  "Props shown are for styling and are not available for sale.",
+  "Te enviamos una propuesta de diseño en 48 horas tras tu pedido.",
+  "Nuestro objetivo de diseño fue crear un anillo cómodo para el uso diario.",
+  "If your size is not specified in the listing, message us before ordering.",
   "PRICE NOTE\nPrice is for one earring, not a pair. Buy two for a pair.",
   "PRODUCTION NOTES\nEach piece is cast in recycled gold and hand-finished; allow 2 to 3 weeks.",
 ];
@@ -313,17 +333,41 @@ test("whitespace alone is never a problem: clean text with CRLF, a trailing newl
   }
 });
 
-test("a section ends at the first clean line, so buyer copy written right under it stays", () => {
+test("an ambiguous section ends at its first clean line, so buyer copy written right under it stays", () => {
   assert.equal(
     stripPublicDescription(
-      "DETAILS\n• Solid 14K\n\nIMPORTANT PRODUCTION NOTE\nExact finished weight and supplier cost are pending production readback.\nJade Gold NYC, designed in New York City.",
+      "DETAILS\n• Solid 14K\n\nPRODUCTION NOTE\nExact finished weight and supplier cost are pending production readback.\nJade Gold NYC, designed in New York City.",
     ).text,
     "DETAILS\n• Solid 14K\n\nJade Gold NYC, designed in New York City.",
   );
   assert.equal(
-    stripPublicDescription("WEIGHT AND PRICE NOTE\nWeights are pre-production estimates.\nThis bracelet ships in a gift box.\nFast shipping from the USA.").text,
+    stripPublicDescription("PRICE NOTE\nWeights are pre-production estimates.\nThis bracelet ships in a gift box.\nFast shipping from the USA.").text,
     "This bracelet ships in a gift box.\nFast shipping from the USA.",
   );
+});
+
+test("a section internal by name takes its whole paragraph, whatever its lines say", () => {
+  assert.equal(
+    stripPublicDescription(
+      "A solid 14K band.\n\nINTERNAL NOTES\nMaker: Görkem. Quote 2 g + 100 USD enamel; chain 150 to 170 USD.\nRe-check the bail opening on the sample.\n\nCARE\nWipe with a soft cloth.",
+    ).text,
+    "A solid 14K band.\n\nCARE\nWipe with a soft cloth.",
+  );
+  assert.equal(
+    stripPublicDescription(
+      "A band.\n\nWEIGHT AND PRICE NOTE\nEvery price includes one additional gram of gold and USD 100 labor.\nFinal CAD and cast-weight approval are required before Etsy price action.\n\nCARE\nWipe.",
+    ).text,
+    "A band.\n\nCARE\nWipe.",
+  );
+  assert.equal(stripPublicDescription("SIZE AND SPECIFICATION STATUS\nGram weight and closure come later.\n\nCARE\nWipe.").text, "CARE\nWipe.");
+});
+
+test("the result is a fixed point: a second pass and the guard find nothing", () => {
+  const d =
+    "Exact finished weight, hallmark, closure mechanics and supplier cost are pending production readback. • Proposed solid 14K or 18K gold construction, never plated or filled - The pierced pine design pairs a botanical reference with simple geometric lines.";
+  const r = stripPublicDescription(d);
+  assert.equal(r.text, "• Solid 14K or 18K gold construction, never plated or filled - The pierced pine design pairs a botanical reference with simple geometric lines.");
+  assert.equal(publicTextProblem(r.text), null);
 });
 
 test("an emptied heading goes when only the footer follows, and when the image rule emptied it", () => {
@@ -373,6 +417,7 @@ test("an image disclosure is still caught in its other wordings", () => {
   for (const s of ["The images are AI renderings of the ring.", "These photos are renders of the design.", "Gallery images are AI-generated."]) {
     assert.equal(stripPublicDescription(s).text, "", s);
   }
+  assert.equal(stripPublicDescription("Shown as a 3D rendering; the handmade ring may vary slightly.").text, "The handmade ring may vary slightly.");
 });
 
 test("the guard refuses internal text and passes clean text", () => {
