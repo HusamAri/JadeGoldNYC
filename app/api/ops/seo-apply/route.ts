@@ -14,6 +14,7 @@ import eonMatrix from "@/docs/eon/seo/2026-10-21-etsy-keyword/data/optimization-
 import basMatrix from "@/docs/artifact-studio/seo/2026-10-21-etsy-keyword/data/apply-matrix.json";
 import eonTitles1022 from "@/docs/eon/seo/2026-10-22-title-pass/apply-matrix.json";
 import basTitles1022 from "@/docs/artifact-studio/seo/2026-10-22-title-pass/apply-matrix.json";
+import eonTags1102 from "@/docs/eon/seo/2026-11-02-tag-pass/apply-matrix.json";
 
 export const maxDuration = 120;
 
@@ -25,6 +26,9 @@ export const maxDuration = 120;
  *  - `?pass=titles-2026-10-22`: kısa başlık geçişi (playbook 03, <15 kelime). "Önce" hâli
  *    2026-10-21 matrisinin yazdığı başlık; tag aynı kalır. Üreteç + kapı:
  *    scripts/seo/title_pass_2026_10_22.py.
+ *  - `?pass=tags-2026-11-02` (yalnız EON): alyanslarda iki ölü "occasion" tag'i alıcı
+ *    ifadesine çevrilir; başlık ve diğer 11 tag aynen. "Önce" hâli panel aynası
+ *    (2026-11-02 22:05 UTC). Üreteç + kapı: scripts/seo/tag_pass_2026_11_02.py.
  * Yazılan: YALNIZ başlık, 13 tag ve mağaza bölümü. Fiyat, adet, varyasyon, fotoğraf,
  * açıklama, kargo ve iade politikasına dokunmaz; listing açmaz/silmez.
  *
@@ -48,6 +52,7 @@ const MATRICES: Record<string, Map<string, SeoMatrixRow>> = Object.fromEntries(
       ["by Artifact Studio Jewelry", basMatrix],
       ["EON#titles-2026-10-22", eonTitles1022],
       ["by Artifact Studio Jewelry#titles-2026-10-22", basTitles1022],
+      ["EON#tags-2026-11-02", eonTags1102],
     ] as const
   ).map(([key, rows]) => [key, new Map((rows as unknown as SeoMatrixRow[]).map((r) => [r.id, r]))]),
 );
