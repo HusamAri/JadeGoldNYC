@@ -22,3 +22,10 @@
 - Open: attributes and video are manual, listed in `reports/manual-checklist.md`; basketweave/rope edge/star cut words were not restored.
 - Next action: re-pull Shop Manager > Stats at +30 and +60 days (RUNBOOK section 5); baseline Etsy Search 215 visits, target 450.
 - Context: undo record per listing is the audit row's `diff.before` (title, tags, shop_section_id).
+
+## Tag geçişi, 2026-11-02 (153 alyans, yalnız 2 occasion slotu)
+- Done: `anniversary gift him` + `promise ring for him` (ve 2 `his and hers band`, 1 `gift for her gold`) 153 alyansta alıcı ifadesine çevrildi: `gold wedding band` her satırda, `white gold band` / `rose gold band` / `10k|14k|18k wedding band` ikinci slotta. Başlık ve diğer 11 tag aynen. 153/153 applied, geri okuma + taze token 153/153 `already`, audit 153, panel mührü birebir. Paket: `../../2026-11-02-tag-pass/`.
+- Decisions: kanıt EON'un kendi 30 gün terimleri (bu iki tag 0 eşleşme) + Jade 12 ay (hediye tag'leri 0 ziyaret). Sahip "mantıklıysa uygula" dedi; başlığa dokunulmadı. §2'deki "2 occasion tag" kuralı artık geçersiz (playbook 03'e yazıldı).
+- Open: 2026-10-22 sonrası elle düzenlenmiş 7 listing (4539493533, 4539780408, 4554025310, 4562238597, 4565352791, 4598714962, 4598716086) kapsam dışı; sahip bitirince aynı geçiş onlara da koşulabilir. 4581897450 Ridge: 0 tag, 0 varyant. Başlıklardan 10-22'de çıkarılan "Mens" açık soru: EON'un 1 numaralı terimi "mens white gold wedding band", iki beyaz listing 22 Ekim'den sonra görüntülenme kaybetti (4539666999 4,6→1,1/gün, 4539506699 2,8→0,4).
+- Next action: §5 ölçümü 20 Kasım (+30 gün): Etsy Search ziyareti, 0-ziyaretli listing sayısı, dönüşüm; başlık ve tag geçişleri tek paket sayılır.
+- Context: görüntülenme 26 Ekim'den beri ~115-150/gün (reklam bütçesi geri açıldı), ama 12 Ekim'den beri haftada ~1 sipariş (önce 3-4); sorun dönüşümde.

@@ -30,5 +30,13 @@ Noel/stacking/fidget/sizer (farklı alıcı; eRank: dainty gold ring 1.326, stac
 tabanı 215 arama ziyareti / 12 sipariş / %0,8 dönüşüm. Başlık (10-22) ve tag (11-02) geçişleri aynı
 paketin parçası sayılır; ayrı ayrı atfedilmez.
 
-## Durum
-(uygulama sonrası doldurulur)
+## Durum (2026-11-02 22:31–22:37 UTC, uygulandı)
+- Prod deploy `f49e119` (#484) READY olunca kanarya 10 kuru → 10/10 `dry`, 0 `live-changed` → apply 10 →
+  taze token'la kuru 10/10 `already`; sonra 15 parti: 153/153 `applied`, aynı turda geri okuma 153/153,
+  bağımsız okuma 153/153 `already`, 0 hata, 0 başlık dokunuşu.
+- Audit `etsy.seo_push` "SEO matrisi (tags-2026-11-02)": 153 satır, 153 ürün, 153 "read-back doğrulandı".
+- Panel aynası mührü (170 aktif, `md5(string_agg(id||'='||tags))`) = üreteçten beklenen
+  `9b9d4dca2d4a7cc170ea377b2944fd01`; başlık mührü `721a3efab2e1ed8af13bf59babe1b145` yazım öncesiyle aynı.
+  Kalan 12 ölü tag yalnız kapsam dışı listing'lerde (elle düzenlenmiş 7 + Noel/diğer).
+- Token: 44 basıldı, 33 kullanıldı (1 kuru + 16 apply + 16 verify), 11 yakıldı.
+- İkinci koşu ön koşulu: canlı tags mührü zaten `9b9d4dca…` ise iş yapılmıştır; rota da 153'ü `already` döner.
