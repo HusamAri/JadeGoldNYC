@@ -2,7 +2,7 @@ import { strict as assert } from "node:assert";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
-import { listingTextChecks, textBaseline, type TextBaseline } from "@/lib/etsy/create-listing";
+import { listingTextChecks, publicDraftDescription, textBaseline, type TextBaseline } from "@/lib/etsy/create-listing";
 
 /**
  * DRAFTS-PUSH VERIFY: TAG VE AÇIKLAMA KIYASI.
@@ -138,6 +138,18 @@ test("açıklama, panel tabanı: dahili EON kuyruğu create'te söküldüğü gi
   const it = byId("R09");
   const base: TextBaseline = { source: "panel", tags: it.tags, description: `${it.description}\n\n---\n[EON 12 · internal note]` };
   assert.equal(listingTextChecks({ description: it.description }, base).description, true);
+});
+
+test("açıklama, panel tabanı: kamuya açık metin kuralıyla kesilmiş metin de, kuraldan önce gönderilmiş kesilmemiş metin de geçer", () => {
+  // him26 açıklamalarının 30'u görselleştirme beyanı taşıyor; 2026-10-31'den sonra create onu keser.
+  const it = byId("R01");
+  assert.match(it.description, /design visuali[sz]ations?/);
+  const cut = publicDraftDescription(it.description);
+  assert.notEqual(cut, it.description);
+  assert.equal(listingTextChecks({ description: cut }, panel(it)).description, true);
+  assert.equal(listingTextChecks({ description: it.description }, panel(it)).description, true);
+  // Gönderim kaydı tabanında birebir eşitlik değişmez.
+  assert.equal(listingTextChecks({ description: cut }, sent(it)).description, false);
 });
 
 test("açıklama: değişen kelime yakalanır, konum ve iki taraf kesiti döner", () => {

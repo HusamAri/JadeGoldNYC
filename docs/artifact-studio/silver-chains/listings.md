@@ -26,7 +26,6 @@ Widths and approximate weight (weight grows with length):
 - Lobster clasp, stamped 925 on the tag plate.
 - Solid links, not hollow, no stones.
 - Made to order at our bench in New Jersey and shipped within 2 business days, free US shipping, gift box included.
-- The styled images are design visualizations of the finished chain; the unedited photo shows the real chain.
 
 ## S02
 
@@ -52,7 +51,6 @@ Widths and approximate weight (weight grows with length):
 - Lobster clasp, stamped 925 on the tag plate.
 - Solid links, not hollow, no stones.
 - Made to order at our bench in New Jersey and shipped within 2 business days, free US shipping, gift box included.
-- The styled images are design visualizations of the finished chain; the unedited photo shows the real chain.
 
 ## S03
 
@@ -78,7 +76,6 @@ Widths and approximate weight (weight grows with length):
 - Lobster clasp, stamped 925 on the tag plate.
 - Solid links, not hollow, no stones.
 - Made to order at our bench in New Jersey and shipped within 2 business days, free US shipping, gift box included.
-- The styled images are design visualizations of the finished chain; the unedited photo shows the real chain.
 
 ## S04
 
@@ -104,7 +101,6 @@ Widths and approximate weight (weight grows with length):
 - Lobster clasp, stamped 925 on the tag plate.
 - Solid links, not hollow, no stones.
 - Made to order at our bench in New Jersey and shipped within 2 business days, free US shipping, gift box included.
-- The styled images are design visualizations of the finished chain; the unedited photo shows the real chain.
 
 ## S05
 
@@ -130,7 +126,6 @@ Widths and approximate weight (weight grows with length):
 - Lobster clasp, stamped 925 on the tag plate.
 - Solid links, not hollow, no stones.
 - Made to order at our bench in New Jersey and shipped within 2 business days, free US shipping, gift box included.
-- The styled images are design visualizations of the finished chain; the unedited photo shows the real chain.
 
 ## S06
 
@@ -156,4 +151,3 @@ Widths and approximate weight (weight grows with length):
 - Lobster clasp, stamped 925 on the tag plate.
 - Solid links, not hollow, no stones.
 - Made to order at our bench in New Jersey and shipped within 2 business days, free US shipping, gift box included.
-- The styled images are design visualizations of the finished chain; the unedited photo shows the real chain.

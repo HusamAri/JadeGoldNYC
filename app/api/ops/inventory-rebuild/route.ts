@@ -15,6 +15,7 @@ import { syncOneListingVariants } from "@/lib/etsy/variants";
 import { logAudit } from "@/lib/audit";
 import { buildRebuildInventory, type RebuildVariant } from "@/lib/etsy/inventory-rebuild";
 import type { EtsyInventoryUpdate } from "@/lib/etsy/types";
+import { assertPublicText, publicTextProblem } from "@/lib/etsy/strip-internal";
 
 export const maxDuration = 120;
 
@@ -155,13 +156,16 @@ export async function GET(request: Request) {
     };
 
     if (!apply) {
-      return NextResponse.json({ ok: true, apply: false, listing: listingId, ozet });
+      // text=1 apply refuses an internal note (assertPublicText); say so in the dry run.
+      const publicText = withText ? publicTextProblem(product.description ?? "") : null;
+      return NextResponse.json({ ok: publicText === null, apply: false, listing: listingId, ozet, ...(withText ? { publicTextProblem: publicText } : {}) });
     }
 
     if (withText) {
       if (!product.title || !product.description || !(product.tags ?? []).length) {
         throw new Error("text=1 için panelde başlık/açıklama/tag dolu olmalı");
       }
+      assertPublicText(product.description, "Panel açıklaması");
       const shopId = await client.requireShopId();
       await client.requestForm<unknown>("PATCH", etsyPaths.shopListing(shopId, listingId), {
         title: product.title,

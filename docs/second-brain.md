@@ -1679,6 +1679,122 @@ repodaki hedefidir.
   saat okunur; (3) her adayı ayrı bir sayıyla ele, zamanlaması tutup büyüklüğü tutmayan adayı kanıt sayma,
   geri alınabilir bir testle (bütçeyi geri aç, 7 gün izle) sına.
 
+- **Canlı metni toplu düzenlerken kaynak ETSY'deki metindir, panel kopyası değil; kuru koşu sahibin elle yaptığı
+  düzenlemeyi gösterir (2026-10-27, AI görsel beyanı kaldırma, Artifact 168 + EON 38):** Sahip "görsellerin AI olduğunu
+  söyleyen bölümleri kaldır" dedi. Beyan 53+ farklı kalıpta ve çoğu zaman başka bilgiyle aynı cümledeydi ("sold as a
+  pair; the product images are…", "a gift message can be added at checkout; …"), o yüzden cümle değil CLAUSE düzeyinde
+  kesen saf bir fonksiyon yazıldı ve testi paneldeki gerçek cümlelerle kuruldu. Rota (`ops/desc-strip`) metni panelden
+  değil Etsy'den okudu ve kuru koşu bunun neden şart olduğunu gösterdi: gümüş S02-S06'yı sahip Etsy editöründe zaten
+  temizlemişti (panelde beyan duruyordu), S01'de ise sahibin KENDİ yazdığı bir cümle vardı. Panel kopyasını basan bir
+  akış bu beş temizliği ve S01 düzenlemesini ezerdi. Kural: (1) dış sistemdeki metni dönüştüren toplu işte girdi canlı
+  metindir, panel yalnız hedef listesi verir; (2) çıkarılacak bilgi başka bilgiyle cümle paylaşıyorsa cümleyi silme,
+  clause'u kes ve testi gerçek korpusla kur; (3) kaldırılan her parçayı kuru koşuda tek listede oku (66 tekil cümle,
+  biri bile kayıp bilgi taşımıyordu); (4) üreteçte aynı metin duruyorsa onu da aynı turda sil, yoksa bir sonraki
+  yeniden üretim geri getirir. Zincir: kuru 206 -> kanarya 1 + panel metni okuma -> 11 parti, 0 hata -> taze token'la
+  kuru 206/206 temiz -> panelde 0 kalıntı, audit 163 + 33.
+
+- **Ekran görüntüsünden gelen teklif önce VERİ dosyasına, sonra bağımsız gözlere, sonra motora gider; ve
+  "ayni" zinciri ile sayı okuması kodla sınanır (2026-10-28, Noel 40 üretici teklifi):** Görkem 25 parçayı
+  WhatsApp'ta fotoğraf üstüne cevaplayarak fiyatladı; doldurması için gönderilen Excel yerine 5 ekran
+  görüntüsü geldi. Beş tuzak vardı ve hepsi yazmadan önce kapatıldı. (1) Eşleme: küçük thumbnail'ı 40
+  hero'ya ben eşledim, sonra üç kör okuyucu (farklı yöntemle) aynı 5 görüntüyü sıfırdan okudu; 25/25 metin
+  ve kimlik birebir. Yanlış eşleme yanlış ürüne fiyat yazardı ve hiçbir mühür bunu görmezdi. (2) Teklifin
+  BİÇİMİ yeniydi: gövde gramı + ayrı zincir/montaj/mine/post/kilit kalemleri, $/g YOK. Gram artık zinciri
+  kapsamıyor (katalog gramı kapsıyordu), o yüzden varyant gramına dokunulmadı ve metin gramları açık borç
+  yazıldı; $/g belgelenmiş 106 kaldı ve duyarlılığı ($100'de 14K liste −$32…−$63) raporlandı. (3) "ayni /
+  AYNISI / ayni plus 50" cevapları referansın kalemlerini KOPYALAMAK zorunda; `catalog.py` bunu assert'le
+  sınıyor (same_as kalemleri eşit, mine yalnız artabilir). (4) Etiketsiz sayı dizisi ("2 gr, 50, 30, 200")
+  onun bir önceki etiketli mesajının sırasıyla okundu ve kaynak metin + okuma notu veriye yazıldı. (5) Tek
+  aykırı değer (B7 "20 chain", diğer dokuz zincir 150–300) yazım hatası sayılıp 200'le fiyatlandı; iki okuma
+  da sayıyla verildi ($1.841 / $1.206) ve ürün planına `flag` olarak gömüldü, sahibe tek soru olarak gitti.
+  Fiyat etkisi büyüktü (küpe +%109…+%199: 2,5–3 g + $100 post + $50 mine, 3,53× çarpanla) ve bu, politikayı
+  değiştirmeden sahibe SAYIYLA gösterildi. Yürütme zinciri yine tuttu: TS motoru ile 15 tahmin + 75 teklif
+  satırı 0 sapma, panel ön koşul 40/120/v2 40/v3 0/mühür v2 → apply 75 + 25 → mühür beklenen 67f24686,
+  plan↔varyant 75/75, audit 75 + 25, komşu 0; Etsy kuru 25 would-sync / 75 fark (tam beklenen küme, 0
+  eşleşmeyen SKU) → kanarya B1 3/0 → 24 parti 72/0 → taze token'la bağımsız okuma. Yan bulgu: panelin
+  `products.sku`'su 10-26 Etsy aynasıyla NULL olmuştu; SQL kapsamı import batch + varyant SKU'ya alındı,
+  yoksa UPDATE 0 satır dokunup "ok" dönerdi (08-27 sessiz no-op sınıfı). Kural: (1) dış kanaldan gelen
+  teklif ÖNCE birebir metin + ayrıştırılmış kalem + eşleme notu olarak veri dosyasına yazılır, üreteç
+  oradan okur; (2) görsel eşleme kendi gözüne ek olarak bağımsız okuyucularla sınanır, mühür eşlemeyi
+  denetlemez; (3) teklifin biçimi önceki tahminden farklıysa "hangi girdi neyi kapsıyor?" sorusu önce
+  sorulur, kapsamı değişen alan (gram) yazılmaz, borç olarak kaydedilir; (4) aykırı tek değer varsayımla
+  düzeltilirse iki okuma da sayıyla verilir ve varsayım ürün verisine `flag` olarak gömülür.
+  **Devamı (aynı sabah, ikinci parti N6–N10) — partili teklifte plan sürümü PARÇAYA yazılır, üreteç
+  yalnız o sürümün parçalarına dokunur; ve maskeleme komutu, maskelediği dosyanın biçimine karşı
+  SINANMADAN çalıştırılmaz:** ikinci gönderim beş kolye + Görkem'in notlarıydı. v3'ün 25 parçasını
+  yeniden yazmak yerine teklif kaydı `plan` alanı taşıdı, `panel_prices.py` yalnız o sürümü seçti ve
+  "önce" mührü v3'ün "sonra" mührüne (67f24686…) birebir oturdu: 15 varyant + 5 ürün yazıldı, 25
+  parça kıpırdamadı, sonra mührü beklenen 6e399dc9… ile tuttu, Etsy kuru 5/15/0 → apply 15/0 → taze
+  token'la 15/15. Notlar da veriye girdi (`maker_notes`): "ayni = önceki modelin kalemleri" same_as
+  kuralını doğruladı; "zincir 150–170, kestiremiyorum" ise 200'lük satırları DÜŞÜRMEDİ — düşüş
+  tahmine dayanırdı (10-07 dersi), duyarlılık (~$140/kolye) sahibe sayıyla gitti, karar onun. Tek
+  kusur operasyoneldi: token dosyasını ekrana basarken `sed 's/=.*/=<hidden>/'` yazdım, dosya ise
+  boşlukla ayrılmıştı; üç tek kullanımlık token araç çıktısına çıplak düştü. Hepsi dakikalar içinde
+  tüketildi (used 3, açık 0), ama ders net: gizli dosyayı maskeleyen komut önce `head -c`/biçim
+  kontrolüyle sınanır ya da hiç basılmaz, değer `awk`la doğrudan değişkene alınır.
+
+- **"Her listing" her DİL KATMANIDIR; temizleme kuralı aynı zamanda gönderim kapısıysa adversarial
+  turlar kendiliğinden yakınsamaz, yakınsamayı biriken örnek + gerçek korpus kurar (2026-11-01, iç not
+  temizliği):** Sahip "DESIGN PROPOSAL — NOT READY FOR SALE … bu veya bunun gibi bir ibare herhangi
+  bir markanın herhangi bir listinginde varsa sil" dedi. İngilizce 49 listing (Jade 21, EON 27, Ophir 1)
+  okunan kuru planla birebir temizlendi. Asıl bulgu `lang=es` taramasındaydı: 27 Ekim temizliği yalnız
+  İngilizce açıklamaya dokunmuştu, Artifact'ın 5 AKTİF listing'inin İspanyolca çevirisinde beş gün
+  boyunca "PROPUESTA DE DISEÑO — NO DISPONIBLE PARA LA VENTA" yazdı (toplam 67 İspanyolca hit). Çeviri
+  ayrı bir kamuya açık metindir; "temizlendi" demeden önce her dil `lang=` ile ayrıca taranır. İkinci
+  bulgu: İngilizce korpusla ayarlanmış kural İspanyolca yazım alışkanlığında kırıldı. Çeviriler maddeleri
+  önceki cümleye yapıştırıyordu (`compra.- El esmalte`, `cepillado.Las imágenes`) ve "EE. UU."daki nokta
+  cümle sonu sanılıyordu; sondaki görselleştirme cümlesi önündeki hediye notu, mine bakımı ve "no
+  tiene piedras" maddelerini de götürüyordu. Bunu `removed` listesi göstermedi (o, DEĞİŞEN cümleyi
+  listeler, kaybı değil); önce/sonra KELİME farkı gösterdi. Biri kaçtı: kuru koşu çiftlerini okumayı
+  bitirmeden apply partisini başlattım ve 4591189111 "taş yok" bilgisini kaybetti. Sıra kesindir:
+  önce her çift okunur, sonra yazılır; ikisi paralel yürümez. Kurtaran şey aracın kendi hatasını geri
+  alabilmesiydi: denetim satırındaki `diff.before` + `replan=1` (canlı metin, o yazımın `after`'ıyla
+  birebir aynıysa özgün metni güncel kuralla yeniden işler; daha yeni doğrulanmış bir yazımın sonucu
+  canlıdan farklıysa sahibin düzenlemesidir, yazmaz). Elle tek bir PUT atmak yerine genel ve güvenli bir
+  geri dönüş yolu kuruldu. Üçüncü ders inceleme döngüsündeydi: üç adversarial tur 24, 24 ve 12
+  doğrulanmış bulgu verdi ve her turun düzeltmesi bir sonrakinin bulgusunu üretti. Daraltma kaçak açtı,
+  genişletme yanlış pozitif açtı, çünkü aynı regex hem temizlik hem gönderim kapısı. Yakınsatan üç şey
+  oldu: (1) karar başına İLKE (kalıbı tek kelimeye değil canlı notun tam yapısına bağla; "uydurulmuş
+  çeviri" kalıpları en çok yanlış pozitif üretti; bölmeyi örnekle değil kuralla kur); (2) doğrulanmış
+  her örnek teste girer ve her düzeltme hepsini birden sağlamak zorunda; (3) dördüncü bir avcı turu
+  yerine, üç turun 478 girdisini HEAD'de yeniden koşan bir yakınsama kontrolü (20 kalıntı, biri canlı
+  bir metinde gerçek bilgi kaybıydı). Çapa gerçek korpustu: 50 + 49 İngilizce ve 67 İspanyolca metnin
+  çıktısı turlar boyunca değişmedi, yani düzeltmeler yalnız uç durumlara dokunuyordu. Kural: (1) temizlik
+  isteğinde dil katmanlarını say ve her birini ayrı tara; (2) bir dilin yazım alışkanlığı (yapışık madde,
+  kısaltma, ondalık virgül) o dilin korpusundan okunmadan kurala yazılmaz; (3) kural gönderim kapısıysa
+  inceleme turlarını bulgu sayısı sıfırlanana kadar değil, biriken örnek kümesi ve gerçek korpus
+  sabitlenene kadar koş; (4) yazan her araç kendi geri dönüşünü taşır (özgün metin denetimde, CAS
+  korumalı yeniden kurma).
+  **Güçlendirme (aynı gün, PR #488) — geri getiren yol açık kalıpla yazılırsa inceleme yakınsamaz;
+  onu canlı metnin KAPALI dilbilgisine bağla, kaynağı da boyla değil KESİN YENİDEN ÜRETİMLE kanıtla:**
+  #487'nin replan çiftlerini okurken bir İspanyolca listing'de "la imagen de los tres metales muestra…"
+  bilgisinin silindiğini gördüm. Sebep listing değil kuraldı: beyan cümleciğin başındaysa kesici
+  ondan sonrasını da atıyordu, aynı cümle ";" ile yazılınca bilgi kalıyordu. Yani bilginin
+  kalıp kalmaması noktalamaya bağlıydı ve 6 Artifact listing'i İngilizcede (10-27) ve İspanyolcada
+  (11-01) aynı bilgiyi kaybetmişti. İlk düzeltmem açık bir kalıptı ("beyandan sonra temiz bir
+  cümlecik kalır", ardından "öznesi görsel olan bir açıklama kalır"). Üç bağımsız inceleme turu
+  her seferinde başka bir sızıntı buldu: kelime sayan liste-sonu sezgisi İspanyolca ondalık
+  virgülü liste sandı ve main'in koruduğu bilgileri sildi; açıklamanın ardından gelen kuyruklar
+  ("may vary", ", so…", "podrá variar", "aren't") yayımlandı; başka kelimeyle yazılmış beyanlar
+  ("generated", "con fines ilustrativos") açıklama sanıldı. Her kelime listesi yaması açığı
+  kapatmadı, yalnız yerini değiştirdi. Yakınsatan şey, geri getirilecek metni canlı korpustaki
+  gerçek biçimlerin kapalı dilbilgisine bağlamak oldu (12 metinde 8 biçim: "the three-metal image
+  shows … yellow, white and rose gold" ve İspanyolca karşılığı). Eşleşmeyen her şey main'deki gibi
+  gidiyor; yeni yol artık hiçbir açık uçlu metni yayımlayamıyor. Gerçek korpus dört sürüm boyunca
+  birebir aynı kaldı, yani turlar yalnız varsayımsal kenarları tartışıyordu. İkinci ders kaynakta:
+  10-27 yazımları `diff` kaydetmemişti; özgünü aynı istekteki panel trigger satırından alıp yalnız
+  özet boyuyla doğruladım ve inceleme bunu çürüttü (aynı boyda eski bir panel kopyası canlıya
+  "1.5 mm" yazdırabilirdi). Kanıt o günün kuralını DONDURUP (`lib/etsy/legacy/`, tek o sürüm koşmuştu)
+  panel kopyasından yazılan metni BİREBİR yeniden üretmek oldu. Kural: (1) silinmiş bir bilgiyi geri
+  getiren yol, kesen yoldan daha riskli bir eklemedir; onu açık kalıpla değil, kaybolduğu bilinen
+  metnin tam yapısıyla yaz; (2) inceleme turları her seferinde yeni bir kenar buluyor ve gerçek
+  korpus kıpırdamıyorsa sorun eksik kelime değil açık tasarımdır; tasarımı kapat, yamayı bırak;
+  (3) kaydı olmayan eski bir yazımın özgününü boy gibi zayıf bir izle değil, deterministik kuralı
+  dondurup kesin yeniden üretimle kabul et ve kanıtın göremediği yeri (kuralın sildiği cümleler)
+  dokümana açıkça yaz; (4) JavaScript'te `\b` aksanlı harften sonra sınır görmez ("está", "será"),
+  `u` bayrağıyla da görmez; İspanyolca kelime listesinde sınırı `u` bayrağı ve `(?<![\p{L}\d])` /
+  `(?![\p{L}\d])` bakışlarıyla kur.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
