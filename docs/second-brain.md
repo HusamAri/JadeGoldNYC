@@ -1818,6 +1818,25 @@ repodaki hedefidir.
   bakar; "for him and her" ile "Mens" aynı sınıf değildir. Teknik not: Next 16 prod deploy'unu
   kimliksiz izlemek için `/login` sayfasının içerik-hash'li chunk adları yeterli (buildManifest yolu yok).
 
+- **Ölçülmüş bir rapor eski "dokunma" kararını kaldırır ama KAPSAMINI daraltarak uygulanır; ve kuru koşu
+  ölü slot ararken dış aracın kelime salatasını buldu (2026-11-03, Leander tag geçişi):** 25 Ekim'de "21 Kasım
+  ölçümüne kadar tag'e dokunma" demiştim; 2 Kasım'da sahip Jade'in 12 aylık arama verisini getirdi (hediye/occasion
+  tag'leri 0 ziyaret, çalışanlar ayar+renk+model+ürün). Ölçülmüş veri bekleme kararını kaldırır, ama raporun
+  alıcısı (erkek zincir) Leander'ın mine/halhal alıcısı değil; o yüzden yalnız raporun %100 ölü dediği sınıf
+  (hediye/occasion/his-her/unisex, 210 slot) değişti, his tag'leri (dainty 100+ slot) ve Noel koleksiyonu
+  bilerek kaldı. EON'un bir gün önceki geçişi şablon oldu: yalnız ölü slot, "önce" hâli bugünkü panel senkronu,
+  kapı + test, kanarya, 10'luk parti, taze token'la bağımsız okuma, mühür. Hacim ölçüt olmadı: eRank "gift for
+  her"e 13.273 arama verirken Jade'de aynı tag 0 ziyaret aldı; geniş terimin hacmi ürün sayfasına ulaşmaz.
+  Beklenmeyen bulgu kuru koşudan değil kapıdan geldi: bir listing'de 5 ölü slota 3 aday yetmedi, tag'lerine
+  bakınca 13'ü de dış araçtan kelime salatasıydı ("men man statement", "versatile designer"); aynı imza 10
+  listing'de (6 altın + 4 gümüş, hepsi sahibin 10-22/10-27 sonrası düzenlediği) çıktı. Slot takası böyle bir
+  seti düzeltmez, kapsam dışına alınıp sahibe ayrı soru oldu. Kural: (1) yeni ölçüm eski bekleme kararını
+  kaldırırken ölçümün ALICISININ bizimkiyle örtüştüğü sınıfa kadar uygulanır, gerisi ölçüme kalır; (2) üreteç
+  "aday yetmedi" dediğinde kuralı gevşetmeden önce listing'in mevcut tag'lerini oku, yetmezlik çoğu zaman
+  girdinin bozuk olduğunu söyler; (3) ürün adı taşımayan tag sayısı (≤4/13) ucuz bir salata dedektörüdür,
+  üreteç kapısına kondu; (4) Hobby planda derlemeler sıralıdır, "Cloning"da 25 dk asılı kalan komşu proje
+  derlemesi senin deploy'unu da bekletir; önceki yayın canlıda kaldığı için iptal güvenlidir.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması

@@ -40,3 +40,15 @@ Kapsam: 125 aktif listing, 210 slot (başlık ve 1.415 tag aynen). Kapsam dış�
 Ölçüm: `../2026-10-21-etsy-keyword/STATE.md` 21 Kasım okumasıyla aynı pencere (Shop Manager > Stats,
 30 gün, Etsy Search); 10-21 tabanı 518 ziyaret / 12 Etsy Search ziyareti / 1 sipariş. Başlık (10-22) ve
 tag (11-03) geçişleri ile 25 Ekim reklam daraltması aynı paketin parçası sayılır; ayrı ayrı atfedilmez.
+
+## Durum (2026-11-03 20:30–20:40 UTC, uygulandı)
+- Prod deploy `ed95409` READY (handover-atlas derlemesi 25 dk "Cloning"da asılı kalıp kuyruğu tıkadı, iptal edildi).
+  Kuru 13 parti 126/126 `dry`, 0 `live-changed`; kuru koşu kelime-salatası setini (4583755575) gösterdi, kapsam dışına
+  alındı (63768f5). Kanarya 10 apply → taze token'la 10/10 `already`; 12 parti 115 `applied`, aynı turda geri okuma
+  125/125; bağımsız okuma 125/125 `already`, 0 hata, 0 başlık dokunuşu.
+- Audit `etsy.seo_push` "SEO matrisi (tags-2026-11-03)": 125 satır, 125 ürün, 125 "read-back doğrulandı".
+- Panel aynası mührü (125 ürün, `md5(string_agg(id||'='||tags))`) = üreteçten beklenen `df722568f2d0936bbcdf00925ce6b0e0`.
+- Aktif listing'lerde kalan ölü slot 117 / 55 listing = tamamı kapsam dışı küme (Noel 35, elle düzenlenmiş 13,
+  salata 6, gümüş 1).
+- Token: 40 basıldı, 39 kullanıldı (13 kuru + 13 apply + 13 verify), 1 yakıldı.
+- İkinci koşu ön koşulu: canlı tags mührü zaten `df722568…` ise iş yapılmıştır; rota da 125'i `already` döner.
