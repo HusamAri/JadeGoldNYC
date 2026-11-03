@@ -9,6 +9,12 @@ Kaynak: `source/03-*.txt` (M3), `source/04-*.txt` (M4), okuma 2026-10-22. [S#] m
 - Başlıktan çıkan anahtar kelime silinmez, tag/attribute/açıklamaya taşınır [M3 S19].
 - Başlık değişikliği: önce CSV/önce-hâli kaydı, çok satanlara dokunma, küçük parti, tek değişken, 1-3 ay izle; eski uzun başlık cezalandırılmaz, yeniden yazmak isteğe bağlı [M3 S18, S19 2025-08-27].
 - Tag: 13'ü de dolu, ≤20 kr, çok kelimeli; tekrar, çoğul, yanlış yazım, başka dil, kategori/attribute değerinin AYNISI yok (uzun öbek içinde kelimesi olabilir); ne olduğu / nasıl yapıldığı / kimin için karışık; 30-60 günde 0 gösterim alan tag değişir [M3 S11, S12, §4].
+- Tag'de hediye/occasion/his/unisex sözcüğüne slot YOK (gift for him, anniversary gift, promise ring,
+  minimalist, unisex): Jade Gold NYC 12 ayda bu tag'ler 0 arama ziyareti aldı (Gift for Him 13/13 ölü), EON'un
+  kendi 30 günlük terimleri de 0 eşleşme. Alıcı ayar + renk + model + ürün yazar (mens white gold wedding
+  band, 10k gold wedding band); "solid" "real"den 5 kat fazla yazılır. İstisna: ürünün kendisi hediye/sezon
+  parçasıysa (Noel yüzüğü) occasion alıcının kendi ifadesidir, kalır. [panel ölçümü 2026-11-02;
+  docs/eon/seo/2026-11-02-tag-pass/report.md]
 - Kategori: en özel alt kategori [M3 S11]. Attribute: ilgili HER alan dolu, boş attribute filtreli aramadan düşürür [M3 S11; S21 3. taraf 2026-07-09].
 - Etsy LLM'i attribute'u başlık/açıklama/fotoğraftan çıkarır: metal, ayar, genişlik, beden aralığı düz yazıyla geçsin [M3 S5 2025-10-13].
 - Açıklama: anahtar kelime ilk cümlelerde doğal dille; başlık kopyası ya da kelime listesi yok [M3 S12]. İlk ~160 kr önizleme (3. taraf): ürün, ayar, kişiselleştirme, made to order [M4 S18].

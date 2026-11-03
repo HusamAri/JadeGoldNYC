@@ -58,6 +58,7 @@ Secrets: `.env` holds `ETSY_API_KEY`; `.etsy_token.json` holds the OAuth token. 
 **Tags (exactly 13)**
 - Each <= 20 chars, lowercase, multi-word buyer phrases, no duplicates, no single adjectives, no fillers ("hi", "to", "and", truncated words).
 - Structure per wedding band: 3 head tags (`mens wedding band` always + 2 metal heads) + 1-2 karat tags + 4 style tags + 2 width tags + 2 occasion tags (`anniversary gift him`, `promise ring for him`) + `engraved ring` when personalizable.
+  **Repo note (2026-11-02):** the 2 occasion tags matched 0 of EON's own search visits (and 0 in Jade Gold NYC's 12 months); they were replaced on 153 bands by `gold wedding band` + colour/karat + product. See `../2026-11-02-tag-pass/` and playbook `docs/etsy-playbook/03-seo.md`. Do not reintroduce them.
 - Do not repeat the same 13 tags across the three metal variants of one design: the matrix already varies the metal head tags; keep it that way.
 - Never use: brand names (Cartier, Tiffany, Mejuri, Benchmark), "tungsten", "titanium", "silver", "silicone", "plated", "moissanite", "hypoallergenic", "diamond" as a stone (EON sells no stones). "Diamond cut" is a finishing term and stays (owner decision 2026-10-21).
 

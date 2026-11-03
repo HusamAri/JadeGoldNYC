@@ -1795,6 +1795,29 @@ repodaki hedefidir.
   `u` bayrağıyla da görmez; İspanyolca kelime listesinde sınırı `u` bayrağı ve `(?<![\p{L}\d])` /
   `(?![\p{L}\d])` bakışlarıyla kur.
 
+- **Başka mağazanın "çalışan kelimeleri" bir KALIPTIR, kelime listesi değil; adayı hedef mağazanın KENDİ
+  arama terimleriyle puanla ve yalnız kanıtla ölü slotu değiştir (2026-11-02, EON tag geçişi):** Sahip
+  Jade'in 12 aylık "çalışan tag" dokümanını verip "uygun ürünlere ekle, mantıklıysa uygula" dedi. Kelimeleri
+  kopyalamak yanlış olurdu (Jade zincir/bileklik satıyor, EON alyans); dokümanın kendi deyişiyle kalıbı
+  taşıdım: aday ifadeleri EON'un kendi 30 günlük terimlerine (188 terim, 215 ziyaret) karşı "tag'in her
+  kelimesi terimde" sayacıyla puanladım. Ölçüm iki şeyi birden gösterdi: 21 Ekim tag setleri zaten kalıba
+  uyuyordu ve tek kusur her alyansa yazılmış iki occasion slotuydu (`anniversary gift him`, `promise ring
+  for him`: 304 slot, EON'da 0 eşleşme, Jade'de 0 ziyaret). Yani iş "13 tag'i yeniden yaz" değil "2 slotu
+  değiştir" oldu: başlık ve 11 tag birebir kaldı, tek değişken. Yerine kendi veriden gelen ifadeler
+  (`gold wedding band` 73 ziyaret her satıra, renk+ürün ya da satılan ayar+ürün ikinci slota). Kapsam
+  kararları da veriyle verildi: Noel/stacking'de "christmas gift" alıcının kendi ifadesi (kalır); o gün
+  elle düzenlenmiş 7 listing sahibin tezgâhı (dokunulmaz, 08-'in "önce elle düzenleme bitsin" dersi);
+  "önce" hâli dakikalar önce senkronlanmış panel aynası, kuru koşu 153'te 0 `live-changed`. Kural:
+  (1) dış bir playbook gelince önce hedef mağazanın kendi terim dökümünü bul ve her adayı orada say,
+  sayılmayan aday eklenmez; (2) "ekle" isteği çoğu zaman "ölü slotu değiştir"dir, önce hangi slotun
+  ölü olduğunu say; (3) ölçüm sonucunu sahibe iki kez yorumlatma: delegasyon varsa kanıtı yaz, dar
+  kapsamla uygula, kapsam dışını sebebiyle listele. Yan bulgu (açık): EON'un 1 numaralı terimi "mens
+  white gold wedding band" iken 10-22 başlık kapısı `mens` sözcüğünü yasaklamıştı; iki beyaz listing
+  22 Ekim'den sonra görüntülenme kaybetti (4,6→1,1 ve 2,8→0,4/gün). Kural adayı: bir kapı bir kitle
+  sözcüğünü yasaklayacaksa önce o sözcüğün mağazanın en çok aranan terimlerinde geçip geçmediğine
+  bakar; "for him and her" ile "Mens" aynı sınıf değildir. Teknik not: Next 16 prod deploy'unu
+  kimliksiz izlemek için `/login` sayfasının içerik-hash'li chunk adları yeterli (buildManifest yolu yok).
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
