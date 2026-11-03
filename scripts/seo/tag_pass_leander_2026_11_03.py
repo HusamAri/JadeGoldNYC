@@ -66,6 +66,7 @@ SEASONAL = re.compile(
     r"ornament|bauble|santa|gingerbread|stocking|nutcracker|sleigh|advent|bethlehem|garland|"
     r"\bwinter\b|frost|icicle|evergreen|fir tree|spruce|\bbow\b|ribbon", re.I)
 TAG_RE = re.compile(r"^[a-z0-9 ]+$")
+NOUN_RE = re.compile(r"ring|bracelet|necklace|anklet|earring|pendant|chain|charm|band|cuff|hoop|stud|signet|evil eye|nazar|brooch|bangle|lariat|jewelry")
 KARAT_ORDER = ["14", "10", "18"]  # Jade: 14k ve 10k neredeyse eşit, 14K Gold Bracelet en büyük tag; 18k nadir
 
 
@@ -218,6 +219,11 @@ def build():
             continue
         if SEASONAL.search(title) or any(re.search(r"christmas|holiday|xmas", x) for x in tags):
             skipped.append((lid, "Noel/kış koleksiyonu (sezon parçası, farklı alıcı)", title))
+            continue
+        # Dış araçtan gelen kelime salatası (≤4 tag'de ürün adı; "men man statement", "versatile
+        # designer"): slot takası değil 13'ün yeniden kurulumu ister, sahibe ayrı soru (10 listing).
+        if sum(1 for x in tags if NOUN_RE.search(x.lower())) <= 4:
+            skipped.append((lid, "kelime salatası tag seti (dış araç), yeniden kurulum ister", title))
             continue
         dead = [x for x in tags if DEAD_WORDS.search(x.lower())]
         # Rapor kural 7: kelime sırası / çoğul kopyası da ölü slottur (Jade'de 13 slot böyleydi);

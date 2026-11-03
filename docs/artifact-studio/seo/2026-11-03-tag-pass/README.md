@@ -25,14 +25,14 @@ mens + ürün (yalnız başlık erkek diyorsa), diğer ad. Hacim sıralama ölç
   Canlı başlık/tag panel aynasından farklıysa `live-changed` atlanır (sahibin elle düzenlemesi kazanır).
 - Geri alma: `audit_log` `etsy.seo_push` (`SEO matrisi (tags-2026-11-03) …`) `diff.before.tags`.
 
-Kapsam: 126 aktif listing, 212 slot (başlık ve 1.426 tag aynen). Kapsam dışı (bilerek):
+Kapsam: 125 aktif listing, 210 slot (başlık ve 1.415 tag aynen). Kapsam dışı (bilerek):
 - Noel/kış koleksiyonu 35: sezon parçasında "christmas gift" alıcının kendi ifadesi (EON 11-02 kararı).
-- 2026-10-22 başlık yazımından sonra sahibin elle düzenlediği 18 listing (ör. 4592082893 evil eye pendant,
+- 2026-10-22 başlık yazımından sonra sahibin elle düzenlediği 13 listing (+5 salata setinde) (ör. 4592082893 evil eye pendant,
   4590688355 cuff, 4590687777 box chain): sahibin tezgâhı; ölü slotları duruyor, sahip isterse ikinci parti.
 - Gümüş zincirler (4 aktif + 2): sahip 2026-10-27'den sonra başlık + 13 tag'i Etsy'de değiştirmiş; tag'ler
   dış araçtan kelime salatası ("men man statement", "versatile designer"), slot takası değil yeniden
   kurulum ister; `docs/artifact-studio/silver-chains/listings.json` kaynağı hazır, sahibe ayrı soru.
-- Taslak 14, ölü slotu olmayan 33.
+- Taslak 14, ölü slotu olmayan 33, kelime salatası tag seti 1 (4583755575; toplam 10 listing dış araç salatası, 6 altın + 4 gümüş: sahibe ayrı soru).
 - His (vibe) tag'leri (dainty 100+, minimalist, everyday) BİLEREK kaldı: Jade'in alıcısı erkek zincir
   alıcısı, Leander'ın mine/halhal alıcısı kadın; raporun Ophir notu "minimalist/dainty'yi silmeden önce
   test et" diyor; Leander'ın kendi 30 günlük terimi 13 satır. 21 Kasım ölçümünden sonra ayrı karar.

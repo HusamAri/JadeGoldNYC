@@ -1,7 +1,7 @@
 # Leander tag geçişi 2026-11-03 — rapor (üreteç çıktısı)
 
-- Satır: 126 listing, 212 slot değişir; başlık ve diğer 1426 tag aynen.
-- Atlanan: 104 listing: Noel/kış koleksiyonu (sezon parçası, farklı alıcı) 35, ölü slot yok 33, 2026-10-22 sonrası elle düzenlenmiş 18, taslak 14, gümüş: 2026-10-27 sonrası elle düzenlenmiş (başlık + 13 tag), ayrı karar 4.
+- Satır: 125 listing, 210 slot değişir; başlık ve diğer 1415 tag aynen.
+- Atlanan: 105 listing: Noel/kış koleksiyonu (sezon parçası, farklı alıcı) 35, ölü slot yok 32, taslak 14, 2026-10-22 sonrası elle düzenlenmiş 13, kelime salatası tag seti (dış araç), yeniden kurulum ister 10, gümüş: 2026-10-27 sonrası elle düzenlenmiş (başlık + 13 tag), ayrı karar 1.
 
 ## Kanıt (kaldırılan ~~üstü çizili~~, eklenen düz)
 
@@ -22,8 +22,6 @@
 | ~~lucky anklet~~ | 3 | 0 (hediye/occasion sınıfı) | - | - |
 | ~~bridesmaid gift~~ | 2 | 0 (hediye/occasion sınıfı) | 1647.0 | - |
 | ~~dad bracelet gold~~ | 2 | 0 (hediye/occasion sınıfı) | - | 50000.0 |
-| ~~everyday bridesmaid~~ | 1 | 0 (hediye/occasion sınıfı) | - | - |
-| ~~layering jewelry her~~ | 1 | 0 (hediye/occasion sınıfı) | - | - |
 | ~~pendant birthday~~ | 1 | 0 (hediye/occasion sınıfı) | - | - |
 | ~~mens dangle earring~~ | 1 | 0 (hediye/occasion sınıfı) | - | - |
 | ~~bar studs~~ | 1 | 0 (hediye/occasion sınıfı) | - | - |
@@ -35,7 +33,7 @@
 | 14k solid gold | 25 | - | - | 619429.0 |
 | gold evil eye | 25 | - | - | 27792.0 |
 | 14k gold ring | 21 | - | 2122.0 | 563704.0 |
-| 14k gold bracelet | 11 | 916 | 1743.0 | - |
+| 14k gold bracelet | 10 | 916 | 1743.0 | - |
 | 10k gold bracelet | 10 | - | - | - |
 | 10k gold ring | 9 | - | - | - |
 | evil eye charm | 8 | - | - | 128400.0 |
@@ -52,7 +50,6 @@
 | 14k enamel necklace | 2 | - | - | - |
 | 10k gold earrings | 2 | - | - | - |
 | 18k gold ring | 2 | - | - | - |
-| solid gold bracelet | 1 | - | 2284.0 | 375983.0 |
 | white gold ring | 1 | - | - | - |
 | 14k white gold | 1 | - | - | - |
 | womens gold necklace | 1 | - | - | - |
@@ -78,9 +75,9 @@
 - ring / evil eye: 7
 - necklace / evil eye: 6
 - anklet / düz: 6
-- bracelet / cable: 5
 - earrings / stud: 5
 - ring / enamel: 5
+- bracelet / cable: 4
 - bracelet / cuff: 3
 - bracelet / düz: 2
 - earrings / huggie: 2
@@ -101,18 +98,19 @@
 ## Atlanan listing'ler
 
 - 4592082893 — 2026-10-22 sonrası elle düzenlenmiş: 14k Evil Eye Pendant Eye Necklace, Two-Tone Gold with Blue Enamel
-- 4583766198 — 2026-10-22 sonrası elle düzenlenmiş: 14K Gold Cable Chain Bracelet with Pink Enamel Lozenge
+- 4583755575 — kelime salatası tag seti (dış araç), yeniden kurulum ister: 14K Gold Cable Chain Bracelet with Blue Enamel Bar
+- 4583766198 — kelime salatası tag seti (dış araç), yeniden kurulum ister: 14K Gold Cable Chain Bracelet with Pink Enamel Lozenge
 - 4583755733 — ölü slot yok: 14K Gold Cable Chain Bracelet, Green Enamel Capsules
 - 4583755619 — ölü slot yok: 14K Gold Cable Chain Bracelet, Orange Enamel Dot Disc
 - 4583755885 — ölü slot yok: 14K Gold Cobalt Blue Rectangle Enamel Stud Earrings
 - 4574630211 — Noel/kış koleksiyonu (sezon parçası, farklı alıcı): 14K Gold Mobius Ribbon Pendant Necklace, Sculptural Twist Design
 - 4583755983 — ölü slot yok: 14K Gold Orange Enamel Half Moon Stud Earrings
 - 4583766496 — ölü slot yok: 14K Gold Pink Petal Enamel Stud Earrings, Dainty Rounded Pair
-- 4583755785 — 2026-10-22 sonrası elle düzenlenmiş: 14K Solid Gold Terracotta Enamel Bar Bracelet - Adjustable Cable Chain
+- 4583755785 — kelime salatası tag seti (dış araç), yeniden kurulum ister: 14K Solid Gold Terracotta Enamel Bar Bracelet - Adjustable Cable Chain
 - 4583766548 — ölü slot yok: 14K Yellow Gold L Shape Green Enamel Stud Earrings
-- 4604362474 — gümüş: 2026-10-27 sonrası elle düzenlenmiş (başlık + 13 tag), ayrı karar: 925 Sterling Silver Cuban Curb Necklace - Faceted Links 3.3-10.2mm
+- 4604362474 — kelime salatası tag seti (dış araç), yeniden kurulum ister: 925 Sterling Silver Cuban Curb Necklace - Faceted Links 3.3-10.2mm
 - 4604362346 — ölü slot yok: 925 Sterling Silver Franco Bracelet, Rhodium Plated, 2.2–5.2mm Chain
-- 4604362590 — gümüş: 2026-10-27 sonrası elle düzenlenmiş (başlık + 13 tag), ayrı karar: 925 Sterling Silver Men's Cuban Curb Chain Bracelet
+- 4604362590 — kelime salatası tag seti (dış araç), yeniden kurulum ister: 925 Sterling Silver Men's Cuban Curb Chain Bracelet
 - 4585870567 — ölü slot yok: Acorn Charm Bracelet, Cocoa Brown Enamel, 10K 14K 18K Solid Gold Chain
 - 4585877242 — ölü slot yok: Acorn Drop Earrings, Cocoa Vitreous Enamel, 10K 14K 18K Solid Gold, 17mm
 - 4592334997 — ölü slot yok: Almond Evil Eye Bypass Ring, Cobalt Blue Enamel, 10K 14K 18K Solid Gold
@@ -123,7 +121,7 @@
 - 4590336235 — Noel/kış koleksiyonu (sezon parçası, farklı alıcı): Bell Charm Bracelet, Sculpted Bells, 10K 14K 18K Solid Gold Chain
 - 4585879436 — Noel/kış koleksiyonu (sezon parçası, farklı alıcı): Bow Pendant Necklace, Navy Vitreous Enamel Ribbon, 10K 14K 18K Solid Gold
 - 4590687777 — ölü slot yok: Box Chain Bracelet, 2mm Solid Gold Link in 10k, 14k or 18k
-- 4590700782 — 2026-10-22 sonrası elle düzenlenmiş: Brushed ID Bar Bracelet - 10K 14K 18K Solid Gold Cable Chain
+- 4590700782 — kelime salatası tag seti (dış araç), yeniden kurulum ister: Brushed ID Bar Bracelet - 10K 14K 18K Solid Gold Cable Chain
 - 4585875225 — taslak: Candle Necklace, Cream and Amber Enamel Candle Pendant on Solid Gold Chain, Holiday Gift Necklace
 - 4585876779 — taslak: Candle Ring, Cream and Amber Enamel Candle on Thin Solid Gold Band, Dainty Holiday Stacking Ring
 - 4590346136 — Noel/kış koleksiyonu (sezon parçası, farklı alıcı): Candy Cane Charm Bracelet, Red White Enamel, 10K 14K 18K Solid Gold
@@ -148,13 +146,13 @@
 - 4592348314 — 2026-10-22 sonrası elle düzenlenmiş: Evil Eye Ring, Two Tone Solid Gold With Blue Enamel Eyes
 - 4590335799 — Noel/kış koleksiyonu (sezon parçası, farklı alıcı): Festive Jewelry Snowflake Bracelet, Three 6mm Sculpted Flakes, 10K 14K 18K Solid Gold Chain
 - 4585878002 — taslak: Flame Stud Earrings, Amber Enamel Flame Studs in Solid Gold, Dainty Holiday Studs
-- 4604339049 — ölü slot yok: Franco Chain Necklace Rhodium-Plated 925 Sterling Silver 18-26in
+- 4604339049 — kelime salatası tag seti (dış araç), yeniden kurulum ister: Franco Chain Necklace Rhodium-Plated 925 Sterling Silver 18-26in
 - 4590346276 — Noel/kış koleksiyonu (sezon parçası, farklı alıcı): Gingerbread Heart Station Bracelet, Brown Enamel Cookies, 10K 14K 18K Solid Gold
 - 4590347788 — Noel/kış koleksiyonu (sezon parçası, farklı alıcı): Gingerbread Man Pendant Necklace, Brown Enamel, 10K 14K 18K Solid Gold Chain
 - 4590348976 — Noel/kış koleksiyonu (sezon parçası, farklı alıcı): Gingerbread Man Ring, Brown Enamel, 10K 14K 18K Solid Gold Band
 - 4585862562 — ölü slot yok: Ginkgo Leaf Bracelet, 10K 14K 18K Solid Gold Chain, Moss Green Enamel
 - 4585857227 — ölü slot yok: Ginkgo Leaf Drop Earrings, 10K 14K 18K Solid Gold, Moss Green Enamel, 9mm
-- 4585856835 — 2026-10-22 sonrası elle düzenlenmiş: Ginkgo Leaf Lariat Necklace, Solid Gold with Moss Green Enamel
+- 4585856835 — kelime salatası tag seti (dış araç), yeniden kurulum ister: Ginkgo Leaf Lariat Necklace, Solid Gold with Moss Green Enamel
 - 4585856383 — 2026-10-22 sonrası elle düzenlenmiş: Ginkgo Leaf Ring, Moss Green Enamel in 10K, 14K or 18K Solid Gold
 - 4585875186 — 2026-10-22 sonrası elle düzenlenmiş: Gold Enamel Bracelet, Solid Checkerboard Bar in 10k, 14k or 18k
 - 4590691353 — 2026-10-22 sonrası elle düzenlenmiş: Gold Stud Earrings, Solid 10K 14K or 18K 6mm Round Signet
@@ -163,9 +161,9 @@
 - 4590345620 — Noel/kış koleksiyonu (sezon parçası, farklı alıcı): Holly Berry Enamel Ring, 10K 14K 18K Solid Gold, Dainty Christmas Design
 - 4590336683 — Noel/kış koleksiyonu (sezon parçası, farklı alıcı): Holly Pendant Necklace, Red Green Enamel, 10K 14K 18K Solid Gold Chain
 - 4595938530 — taslak: Juniper Drop Earrings, Solid Gold Berry Cluster Dangles with One Dusty Blue Enamel Berry, French Hook, Winter Gift
-- 4591200606 — 2026-10-22 sonrası elle düzenlenmiş: Knife Edge Ring - Polished Solid Gold Band 10K 14K 18K
+- 4591200606 — kelime salatası tag seti (dış araç), yeniden kurulum ister: Knife Edge Ring - Polished Solid Gold Band 10K 14K 18K
 - 4597942764 — taslak: Men's Lapel Pin in Solid Gold, Fluted Cylinder Seal Stick Pin with Engraved Initials, Heirloom Suit and Tuxedo Pin, Gift for Him
-- 4604339881 — gümüş: 2026-10-27 sonrası elle düzenlenmiş (başlık + 13 tag), ayrı karar: Mens Figaro Bracelet in 925 Sterling Silver, Flat Links, 6 Widths, 7–9 Inches
+- 4604339881 — kelime salatası tag seti (dış araç), yeniden kurulum ister: Mens Figaro Bracelet in 925 Sterling Silver, Flat Links, 6 Widths, 7–9 Inches
 - 4585872073 — ölü slot yok: Mismatched Domino Stud Earrings, Black and Cream Enamel, 10K 14K 18K Gold, 4x7mm
 - 4590336099 — Noel/kış koleksiyonu (sezon parçası, farklı alıcı): Mistletoe Enamel Bracelet, Sage Green and White, 10K 14K 18K Solid Gold
 - 4590349652 — Noel/kış koleksiyonu (sezon parçası, farklı alıcı): Mistletoe Enamel Ring, Sage Green Leaves, White Berries, 10K 14K 18K Solid Gold
