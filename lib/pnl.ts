@@ -208,6 +208,7 @@ export function summarizePnl(rows: TotalsInput[]): PnlTotals {
 
 export interface CostHistoryPoint {
   sale_item_id: string;
+  sale_id: string;
   order_date: string;
   order_no: string | null;
   sku: string | null;
@@ -268,6 +269,7 @@ export function buildCostHistory(
   rows: Pick<
     SaleItemPnlRow,
     | "sale_item_id"
+    | "sale_id"
     | "order_date"
     | "order_no"
     | "sku"
@@ -291,6 +293,7 @@ export function buildCostHistory(
     .sort((a, b) => a.order_date.localeCompare(b.order_date));
   const points: CostHistoryPoint[] = sorted.map((r) => ({
     sale_item_id: r.sale_item_id,
+    sale_id: r.sale_id,
     order_date: r.order_date,
     order_no: r.order_no,
     sku: r.sku,

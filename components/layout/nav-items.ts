@@ -12,6 +12,7 @@ import {
   Boxes,
   MessageSquareText,
   Megaphone,
+  Receipt,
   type LucideIcon,
 } from "lucide-react";
 
@@ -74,6 +75,7 @@ export const NAV_GROUPS: NavGroup[] = [
     label: "Maliyet & Kâr",
     items: [
       { href: "/satislar", label: "Satışlar", icon: ShoppingBag },
+      { href: "/satislar/maliyet", label: "Satış & Maliyet", icon: Receipt },
       { href: "/maliyetler", label: "Maliyetler", icon: Wallet },
       { href: "/raporlar", label: "Kâr Raporu", icon: FileBarChart },
       { href: "/reklamlar/ice-aktar", label: "Reklam Verisi", icon: Megaphone, capability: "adsSignals" },

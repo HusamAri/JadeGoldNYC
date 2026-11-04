@@ -28,6 +28,8 @@ import { KymationFiveMmButton } from "@/components/listing/kymation-five-mm-butt
 import { VariantMatrix } from "@/components/listing/variant-matrix";
 import { DiscountControl } from "@/components/listing/discount-control";
 import { ViewsTrendCard } from "@/components/listing/views-trend-card";
+import { SalesCostHistoryPanel } from "@/components/listing/sales-cost-history-panel";
+import { getProductCostHistory } from "@/lib/db/queries/sale-costs";
 import {
   getListingViewsTrends,
   type ListingViewsTrend,
@@ -120,6 +122,7 @@ export default async function ListingDetayPage({
     images,
     viewsTrendMap,
     writeAccess,
+    costHistory,
   ] = await Promise.all([
     getGoldSettings(),
     listCompetitorVariantMatches(product.id),
@@ -134,6 +137,8 @@ export default async function ListingDetayPage({
       : Promise.resolve(new Map<number, ListingViewsTrend>()),
     // Fiyat itiş butonu için Etsy yazma izni.
     getEtsyWriteAccess(m.org_id),
+    // Satış kalemleri + birim maliyet tarihçesi (0138).
+    getProductCostHistory(m.org_id, product.id),
   ]);
 
   const rivalProjection = projectPricesFromCompetitorMatches(
@@ -534,6 +539,33 @@ export default async function ListingDetayPage({
             discountPct={product.discount_pct}
           />
         </AnimatedDisclosure>
+      </ListingPanel>
+
+      {/* 06B · Satışlar & maliyet tarihçesi — satılan kalemler + işçilik/altın
+          birim trendi; "aynı listing'den iki satışta işçilik değişimi" rozeti. */}
+      <ListingPanel
+        id="satis-maliyet"
+        n="06B"
+        name="Satışlar & maliyet tarihçesi"
+        defaultOpen={costHistory.stats.points.length > 0}
+        tail={
+          costHistory.stats.points.length > 0
+            ? `${costHistory.stats.points.length} satış · ${costHistory.stats.units_sold} adet${
+                costHistory.stats.labor_delta_cents != null
+                  ? ` · işçilik ${costHistory.stats.labor_delta_cents >= 0 ? "+" : "−"}${formatMoney(
+                      Math.abs(costHistory.stats.labor_delta_cents),
+                      product.currency,
+                    )}`
+                  : ""
+              }`
+            : "henüz satış yok"
+        }
+      >
+        <SalesCostHistoryPanel
+          productId={product.id}
+          stats={costHistory.stats}
+          currency={product.currency}
+        />
       </ListingPanel>
 
       {product.etsy_listing_id != null && (

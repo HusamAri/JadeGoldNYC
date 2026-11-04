@@ -4,6 +4,16 @@ import { notFound } from "next/navigation";
 import { Pencil } from "lucide-react";
 
 import { getSaleWithItems } from "@/lib/db/queries/sales";
+import {
+  getManualItemCostNotes,
+  getSaleCostRows,
+  getSalePnlItems,
+  getSaleRefunds,
+  getSaleShipments,
+  listUnlinkedLabelEntries,
+} from "@/lib/db/queries/sale-costs";
+import { requireMembership, isManager } from "@/lib/auth";
+import { SalePnlSection } from "@/components/sales/sale-pnl-section";
 import { formatMoney } from "@/lib/money";
 import { formatDate } from "@/lib/format";
 import { Money } from "@/components/money";
@@ -66,6 +76,27 @@ export default async function SatisDetayPage({
   const { sale, items } = data;
   const currency = sale.currency;
   const netCents = sale.grand_total_cents - sale.etsy_fees_cents;
+
+  // Kalem K/Z + Etsy iade/gönderi aynaları + bağlı maliyetler (0138) —
+  // birbirinden bağımsız, tek turda paralel.
+  const m = await requireMembership();
+  const canEdit = isManager(m.role);
+  const refundUnknown =
+    (sale.status === "refunded" || sale.status === "partially_refunded") &&
+    !sale.refunds_synced_at;
+  const [pnlItems, refunds, shipments, costRows, unlinkedLabels] = await Promise.all([
+    getSalePnlItems(sale.id),
+    getSaleRefunds(sale.id),
+    getSaleShipments(sale.id),
+    getSaleCostRows(sale.id),
+    // İade etiketi adayları: iade/iptal siparişte iade anı, yoksa sipariş
+    // tarihi etrafında ±45 gün (bağlanmamış ledger etiketleri).
+    listUnlinkedLabelEntries(m.org_id, {
+      aroundIso: sale.last_refund_at ?? sale.shipped_at ?? sale.order_date,
+      limit: 120,
+    }),
+  ]);
+  const notes = await getManualItemCostNotes(pnlItems.map((p) => p.sale_item_id));
 
   return (
     <div className="page-stack">
@@ -172,13 +203,26 @@ export default async function SatisDetayPage({
                 negative
               />
               <SummaryRow
-                label="Etsy İşlem/Reklam Ücreti"
+                label="Etsy ücretleri (ledger)"
                 value={`- ${formatMoney(sale.etsy_fees_cents, currency)}`}
                 negative
               />
               <p className="text-muted-foreground -mt-1 text-xs">
-                Ödeme işleme payı hariç; ayrıca Maliyetler&apos;de aylık izlenir.
+                İşlem + ödeme işleme + offsite ads; iade mahsubu dahil.
               </p>
+              {(sale.refunded_cents ?? 0) > 0 && (
+                <SummaryRow
+                  label={`İade (${sale.refund_count ?? 0})`}
+                  value={`- ${formatMoney(sale.refunded_cents ?? 0, currency)}`}
+                  negative
+                />
+              )}
+              {refundUnknown && (
+                <p className="text-xs text-amber-700 dark:text-amber-400">
+                  İade tutarı Etsy&apos;den henüz okunmadı (Satış &amp; Maliyet
+                  Takibi → “İade verisini çek”).
+                </p>
+              )}
               <Separator />
               <SummaryRow
                 label="Genel Toplam"
@@ -192,10 +236,26 @@ export default async function SatisDetayPage({
                 value={<Money cents={netCents} currency={currency} />}
                 strong
               />
+              <p className="text-muted-foreground -mt-1 text-xs">
+                Genel toplam vergi içerir; kâr hesabı aşağıda vergisizdir.
+              </p>
             </div>
           </CardContent>
         </Card>
       </div>
+
+      {/* 0138 — Kalem başına tüm maliyetler + Etsy iade/gönderi + etiket bağlama. */}
+      <SalePnlSection
+        saleId={sale.id}
+        items={pnlItems}
+        refunds={refunds}
+        shipments={shipments}
+        costRows={costRows}
+        notes={notes}
+        unlinkedLabels={unlinkedLabels}
+        canEdit={canEdit}
+        refundUnknown={refundUnknown}
+      />
     </div>
   );
 }

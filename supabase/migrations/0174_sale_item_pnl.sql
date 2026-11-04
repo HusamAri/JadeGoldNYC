@@ -63,14 +63,10 @@ alter table public.costs add constraint costs_source_check
     'invoice'::text
   ]));
 
--- Geriye dönük tür ataması: motor satırları kategoriden türetilir.
-update public.costs c
-set cost_kind = case cc.key when 'malzeme' then 'gold' when 'iscilik' then 'labor' end
-from public.cost_categories cc
-where cc.id = c.category_id
-  and c.cost_kind is null
-  and c.source in ('gold_auto', 'listing_fixed')
-  and cc.key in ('malzeme', 'iscilik');
+-- Geriye dönük tür ataması BİLEREK yapılmaz: costs'ta audit trigger'ı var,
+-- on binlerce motor satırını UPDATE etmek Kayıtlar'a o kadar gürültü yazar
+-- (0054 dersi). Eski motor satırlarının türü görünümde kategoriden türetilir
+-- (malzeme→gold, iscilik→labor); motorlar bundan sonra cost_kind'ı kendisi yazar.
 
 -- ── 2) Kategori: Taş (gem) — değişken maliyet ─────────────────────────────
 insert into public.cost_categories (org_id, key, label_tr, is_system)
@@ -761,15 +757,29 @@ shares as (
 ),
 item_costs as (
   select
-    c.sale_item_id,
-    c.cost_kind,
-    sum(c.amount_cents) filter (where c.source = 'manual')  as manual_cents,
-    sum(c.amount_cents) filter (where c.source <> 'manual') as auto_cents,
-    bool_or(c.source = 'manual') as has_manual,
-    max(c.cost_date) filter (where c.source = 'manual') as manual_date
-  from public.costs c
-  where c.sale_item_id is not null and c.cost_kind is not null
-  group by c.sale_item_id, c.cost_kind
+    x.sale_item_id,
+    x.cost_kind,
+    sum(x.amount_cents) filter (where x.source = 'manual')  as manual_cents,
+    sum(x.amount_cents) filter (where x.source <> 'manual') as auto_cents,
+    bool_or(x.source = 'manual') as has_manual,
+    max(x.cost_date) filter (where x.source = 'manual') as manual_date
+  from (
+    select
+      c.sale_item_id, c.source, c.amount_cents, c.cost_date,
+      -- Eski motor satırlarında (0138 öncesi) cost_kind boş: kategoriden türet.
+      coalesce(
+        c.cost_kind,
+        case
+          when c.source in ('gold_auto', 'listing_fixed') and cc.key = 'malzeme' then 'gold'
+          when c.source in ('gold_auto', 'listing_fixed') and cc.key = 'iscilik' then 'labor'
+        end
+      ) as cost_kind
+    from public.costs c
+    left join public.cost_categories cc on cc.id = c.category_id
+    where c.sale_item_id is not null
+  ) x
+  where x.cost_kind is not null
+  group by x.sale_item_id, x.cost_kind
 ),
 item_kinds as (
   select
