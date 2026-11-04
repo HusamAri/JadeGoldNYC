@@ -8,9 +8,14 @@ node scripts/theme-lab/compile.mjs   # app/globals.css -> out.css (syntax hatas�
 node scripts/theme-lab/shoot.mjs     # açık/koyu x 5 ton ekran görüntüsü + WCAG kontrast tablosu
 ```
 
-`lab.html` gerçek bileşenlerin sınıf dizelerini taşır (sidebar, KPI, buton,
-girdi, tablo kuyusu). Uygulama içinde aynı yüzeyler `/dev/tema` rotasında
-(yalnız geliştirme; prod'da 404) canlı bileşenlerle görülür.
+`lab.html` V7 defter sayfasının (Satış & Maliyet) gerçek sınıf dizelerini
+taşır: editoryal ray, başlık, kurulum şeridi, tuner ekranı, defter bandı,
+dekor kartı, düz tablo, osiloskop, düğme, segment, Dikkat satırları. Google
+Fonts bağlantısı Fraunces / Inter Tight / JetBrains Mono'yu çeker (çevrimdışı
+sistem yüzüne düşer). Mockup kaynakları `directions/` altındadır (V7 =
+`editorial.html` `#V2`).
 
-Son ölçüm (2026-11-04): metin 11,1-12,5:1, ikincil metin 5,4-7,2:1, altın
-metin 4,7-10:1, kâr/zarar 5,0-8,0:1, hairline 3,0-3,2:1; beş tonun hepsinde.
+Son ölçüm (2026-11-04, V7): metin 13,8-14,1:1, ikincil 6,3-6,5:1, tablo
+başlığı 4,3-4,4:1, zarar 5,4-5,6:1 (açık); koyuda hepsi >=5,8:1. Rapordaki
+`gold` sütunu artık LCD'yi (koyu ekran üstü asit) sayfa zeminine karşı ölçer,
+yani açıkta anlamsızdır; `hairline` sütunu girdi kenarını (`--hairline`) ölçer.

@@ -75,3 +75,47 @@ ve Vercel preview ile yapıldı; `/dev/tema` rotası yalnız geliştirmede açı
    ChartDefs gölge filtresi, ana sayfa yeniden kurulumu.
 
 Her PR ayrı; 1 bitmeden 2 başlamaz (silinen kodun teması yazılmaz).
+
+## 5. Amuletta 3.0 · V7 (2026-11-04, PR #492)
+
+Sahip 2.0'ın yeşil/olive temasını reddetti ("renkler çok kötü, görünüş aynı")
+ve yedi mockup turundan sonra **V7**'yi onayladı
+(`scripts/theme-lab/directions/editorial.html` `#V2` bloğu = V7).
+
+**Palet:** sis grisi zemin `#E9EBEF`, mürekkep `#1B1E26`, ikincil `#515665`,
+sessiz `#8C92A1`, hairline `#C7CCD6` / `#D9DDE4`; TEK vurgu asit `#D8F53C`
+(metin için `--neon-ink`); tozlu mavi `#AEB6D2` / `#7F89B3` yalnız dekor
+kartında (`.gcard`, sayfa başına en çok bir). Zarar kil `#B5473A`. Bölüm
+tonları sisin içinde ±0.004 kroma kayar; palet tek kalır.
+
+**Tipografi:** Fraunces 300 / opsz 144 (başlık, defter rakamı, son kelime
+italik), Inter Tight (gövde), JetBrains Mono (index etiketi, LCD, tablo
+sayısı; 0,12–0,2em tracking, uppercase).
+
+**Malzeme kuralı:** her yüzey düz ve hairline'lı; cam yok. Neumorph YALNIZ
+göstergelerde yaşar: `.bezel` (dört vidalı çerçeve), `.screen` (tarama
+çizgili koyu cam) + `.lcd`/`.dim`, `.fm` (kadran + asit iğne), `.knob`
+(`--deg` ile döner), `.seg` (inset ray + kabarık aktif). Serpiştirilmiş
+istisnalar: aktif nav satırı (`.toc-n.on`), Dikkat satırları (`.inset-row`),
+kahraman CTA (`.cta-pill`). Bileşenler: `components/instruments`.
+
+**Yapı kuralı (tema aynı, iskelet farklı):**
+
+| Bölüm | Arketip | Ayırt edici parça |
+|---|---|---|
+| Panel | kumanda paneli | dört aksiyon sayısı dört farklı gösterge (LCD, halka, mekanik sayaç, dekor kartı) |
+| Satış & Maliyet | defter | hairline band (tuner · gelir · COGS · dekor), düz defter tablosu, osiloskop + marj düğmesi |
+| Etsy'ye Taslak | galeri | görsel ağırlıklı kartlar, sağda kuyruk rayı (tek halka); Listeler'de dekor bandı + kare ızgara |
+| Stok & Fiyat | kumanda masası | solda yapışkan ekran + düğmeler + segment, sağda yoğun düz ızgara / konsol |
+| Ayarlar | düz liste | kimlik satırı + iki hairline liste, canlı bağlantı asit nokta |
+
+**Doğrulama:** Next konteynerde çalışmaz; `node scripts/theme-lab/compile.mjs`
+(gerçek Tailwind v4) + `lab.html` (defter sayfasının gerçek sınıf dizeleri)
++ Playwright açık/koyu çekim ve WCAG ölçümü. Son ölçüm: metin 13,8–14,1:1,
+ikincil 6,3–6,5:1, tablo başlığı 4,3–4,4:1, zarar 5,4–5,6:1 (açık); koyuda
+hepsi ≥5,8:1. Kontrol kenarı (`--hairline`) ≥3:1; dekoratif `--rule`
+çizgileri bilerek daha açık.
+
+**Açık borç:** 38 dosya hâlâ `nm-raised/nm-pressed/glass-*` sınıfı taşıyor
+(alt sayfalar: satış detayı, listing paneli, maliyetler, yorumlar, raporlar).
+Token'lar nötrlendiği için düz görünürler; V7 yapısına taşınmaları ayrı tur.
