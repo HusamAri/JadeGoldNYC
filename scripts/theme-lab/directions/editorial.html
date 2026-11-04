@@ -77,13 +77,13 @@ td.r.pos{color:var(--ink)} td.r.neg{color:var(--neg)}
 /* V1 bone & ink, neon acid */
 #V1{--bg:#F3EFE7;--ink:#1F1C18;--ink2:#5A544B;--mute:#9A9286;--rule:#CFC7B9;--rule2:#E1DACD;--neon:#D8FF3D;--neonfg:#1F1C18;--neonink:#6E8A00;--neg:#9A4A3A}
 /* V2 slate & fog, neon tangerine */
-#V2{--bg:#E9EBEE;--ink:#191C21;--ink2:#4F555E;--mute:#8B929B;--rule:#C4C9D0;--rule2:#D8DCE1;--neon:#FF6A1F;--neonfg:#FFF4EE;--neonink:#C64A08;--neg:#B23A2F}
+#V2{--bg:#EDEEF1;--ink:#2E3350;--ink2:#5E637D;--mute:#9DA2B4;--rule:#D3D6DE;--rule2:#E0E2E8;--neon:#D9AE4B;--neonfg:#2E3350;--neonink:#9C7520;--neg:#B65A4A;--sage:#A3C4B1;--sage2:#7FA892;--blue:#A4ABCB;--blue2:#7E86B5}
 
 /* ── INSTRUMENTS: vintage radio / FM tuner / knob — limited neumorph lives ONLY here ── */
 .bezel{border-radius:22px;padding:14px;background:var(--bezel);box-shadow:-6px -6px 14px var(--hi),8px 10px 22px var(--lo),inset 0 1px 0 rgba(255,255,255,.55);position:relative}
 .bezel .screw{position:absolute;width:7px;height:7px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff8,#0002 70%);box-shadow:inset 0 0 0 1px rgba(0,0,0,.25)}
 .bezel .screw.tl{left:10px;top:10px}.bezel .screw.tr{right:10px;top:10px}.bezel .screw.bl{left:10px;bottom:10px}.bezel .screw.br{right:10px;bottom:10px}
-.screen{border-radius:12px;background:radial-gradient(120% 90% at 50% 0%,#2a2c26 0%,#15161330 60%),var(--glass);box-shadow:inset 0 3px 10px rgba(0,0,0,.65),inset 0 -1px 0 rgba(255,255,255,.08),inset 0 0 0 1px rgba(0,0,0,.6);padding:16px 18px;color:#D9D6CB;position:relative;overflow:hidden}
+.screen{border-radius:12px;background:radial-gradient(120% 90% at 50% 0%,rgba(255,255,255,.08) 0%,transparent 60%),var(--glass);box-shadow:inset 0 3px 10px rgba(0,0,0,.65),inset 0 -1px 0 rgba(255,255,255,.08),inset 0 0 0 1px rgba(0,0,0,.6);padding:16px 18px;color:#D9D6CB;position:relative;overflow:hidden}
 .screen::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 1px,transparent 1px 3px);pointer-events:none}
 .screen .lcd{font-family:"JetBrains Mono",monospace;color:var(--neon);text-shadow:0 0 6px color-mix(in oklab,var(--neon) 70%,transparent),0 0 18px color-mix(in oklab,var(--neon) 35%,transparent)}
 .screen .dim{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#8E8C83}
@@ -101,18 +101,19 @@ td.r.pos{color:var(--ink)} td.r.neg{color:var(--neg)}
 .seg span{padding:5px 12px;border-radius:999px;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
 .seg span.on{background:var(--bg);color:var(--ink);box-shadow:-2px -2px 5px var(--hi),3px 3px 7px var(--lo)}
 #V1{--bezel:#EAE5DA;--hi:#FFFFFF;--lo:#CFC6B3;--glass:#1B1C18;--knob:#E6E1D5;--knobhi:#FBF8F1;--knoblo:#CFC7B7}
-#V2{--bezel:#E1E4E9;--hi:#FFFFFF;--lo:#BFC5CE;--glass:#171A1F;--knob:#DEE2E8;--knobhi:#F7F8FA;--knoblo:#C6CBD3}
+#V2{--bezel:#F3F4F6;--hi:#FFFFFF;--lo:#C9CCD6;--glass:#2E3350;--knob:#F1F2F5;--knobhi:#FFFFFF;--knoblo:#D5D8E0}
 
 /* V5 = V2 düzeni + serpiştirilmiş yumuşak dokunuşlar */
 #V2 .stat.decor{padding:0 20px 0 0;border-right:0}
-#V2 .gcard{height:100%;border-radius:20px;padding:18px 20px;background:linear-gradient(160deg,#1E8E69 0%,#0E6A4E 50%,#073F30 100%);color:#F3F7F4;position:relative;overflow:hidden;box-shadow:-6px -6px 14px var(--hi),8px 10px 22px var(--lo),0 18px 36px -14px rgba(7,63,48,.55);display:flex;flex-direction:column;justify-content:space-between}
-#V2 .gcard .mono{color:#B9DACD}
+#V2 .gcard{height:100%;border-radius:20px;padding:18px 20px;background:linear-gradient(160deg,#BFD8CA 0%,#A3C4B1 55%,#86AD97 100%);color:#2E3350;position:relative;overflow:hidden;box-shadow:-6px -6px 14px var(--hi),8px 10px 22px var(--lo),0 18px 36px -14px rgba(127,168,146,.6);display:flex;flex-direction:column;justify-content:space-between}
+#V2 .gcard .mono{color:#3F5A4C}
 #V2 .gcard .v{font-family:Fraunces,serif;font-weight:300;font-size:56px;line-height:1;letter-spacing:-.03em}
 #V2 .gcard .silk{position:absolute;inset:0;pointer-events:none}
 #V2 .gcard .silk svg{position:absolute;right:-30%;bottom:-40%;width:140%;height:140%;opacity:.6}
-#V2 .cta{background:linear-gradient(160deg,#FF8A3D,#FF5A00);border-color:transparent;color:#fff;box-shadow:-4px -4px 10px var(--hi),6px 8px 16px var(--lo),0 12px 26px -10px rgba(255,90,0,.5)}
-#V2 .cta .arrow{background:#fff;color:#FF5A00}
-#V2 .tag.neon{background:linear-gradient(160deg,#FF8A3D,#FF5A00);color:#fff;padding:3px 9px;border-radius:999px;letter-spacing:.1em}
+#V2 .cta{background:linear-gradient(160deg,#B5D2C2,#8FB5A1);border-color:transparent;color:#2E3350;box-shadow:-4px -4px 10px var(--hi),6px 8px 16px var(--lo),0 12px 26px -10px rgba(127,168,146,.6)}
+#V2 .cta .arrow{background:#2E3350;color:#fff}
+#V2 .tag.neon{background:linear-gradient(160deg,#B9BFDB,#A4ABCB);color:#2E3350;padding:3px 9px;border-radius:999px;letter-spacing:.1em}
+#V2 .tag{color:#7E86B5}
 #V2 .toc .n.on{background:var(--bezel);border-radius:10px;padding:6px 10px;margin:-6px -10px;box-shadow:-3px -3px 7px var(--hi),4px 4px 9px var(--lo)}
 #V2 .toc .n.on::before{left:-14px}
 #V2 .aside .row{padding:12px 14px;margin-top:8px;border:0;border-radius:12px;background:var(--bezel);box-shadow:inset 2px 2px 5px var(--lo),inset -2px -2px 5px var(--hi)}
@@ -225,7 +226,7 @@ for(const v of V){document.write(`
 </section>`)}
 
 (function(){const v2=document.getElementById("V2");const st=v2.querySelectorAll(".band .stat");const last=st[st.length-1];last.classList.add("decor");
-last.innerHTML=`<div class="gcard"><div class="silk"><svg viewBox="0 0 400 300" preserveAspectRatio="none"><path d="M-40 260 C100 160 200 280 440 90" stroke="#9FE3C6" stroke-opacity=".55" stroke-width="18" fill="none" style="filter:blur(9px)"/><path d="M-40 300 C120 200 220 320 440 150" stroke="#fff" stroke-opacity=".3" stroke-width="8" fill="none" style="filter:blur(3px)"/></svg></div>
+last.innerHTML=`<div class="gcard"><div class="silk"><svg viewBox="0 0 400 300" preserveAspectRatio="none"><path d="M-40 260 C100 160 200 280 440 90" stroke="#FFFFFF" stroke-opacity=".55" stroke-width="18" fill="none" style="filter:blur(9px)"/><path d="M-40 300 C120 200 220 320 440 150" stroke="#fff" stroke-opacity=".3" stroke-width="8" fill="none" style="filter:blur(3px)"/></svg></div>
 <div style="display:flex;justify-content:space-between;position:relative"><span class="mono">Maliyeti eksik</span><span class="mono">→</span></div><div style="position:relative"><div class="v">11.581</div><div class="mono" style="margin-top:10px">kalem · altın ya da işçilik yok</div></div></div>`;
-v2.querySelector(".label").textContent="V5 · V2 düzeni + serpiştirilmiş yumuşak dokunuşlar: bir gradient dekor kart, yumuşak CTA, aktif nav hapı, inset dikkat satırları";})();
+v2.querySelector(".label").textContent="V6 · V5 düzeni + pastel skala: kırık beyaz, lacivert mürekkep, adaçayı, tozlu mavi, hardal ışık";})();
 </script></body></html>
