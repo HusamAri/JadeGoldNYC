@@ -9,8 +9,9 @@
  * `weight_source = 'estimated'` ile yazılır. Üç renk aynı fiyat ve gramı taşır,
  * SQL rengi cross join ile çoğaltır: elle taşınan satır 13, varyant 39.
  *
- * Görsel YOK: Etsy gerçek fotoğraf ister (playbook 01/04); taslak
- * `listing_metadata.draftTransfer = hold` ile ops/drafts-push'tan tutulur.
+ * Görsel bu dosyada yok: galeri sahibin panelden yüklediği listing_images satırlarıdır
+ * (2026-11-04, 8 kare). Protokol ring_band (Jewelry > Rings > Bands): sahip "bu wedding
+ * band değil" dedi; alyans protokolü Width ister, bu bantta genişlik sabit 2,75 mm.
  *
  * Kapılar: başlık <15 kelime, 13 tag ≤20 kr, kelime-kümesi tekrar yok, occasion
  * sözcüğü yok (03-seo 2026-11-02), FTC §23.25: "diamond" yalnız lab niteleyicisinin
@@ -122,8 +123,8 @@ const meta = {
   stone: L.stone,
   band: L.band,
   pricing: L.pricing,
+  classification: L.classification,
   approval: L.approval,
-  draftTransfer: L.draftTransferHold,
   variantSeal: seal,
 };
 
@@ -131,16 +132,17 @@ const colorValues = L.colors.map(([code, name]) => `('${code}','${name}')`).join
 const sizeValues = cells.map((c) => `(${c.size.toFixed(1)},'${c.label}',${c.grams.toFixed(2)})`).join(",\n    ");
 
 const sql = `-- 0175_eon_lab_grown_dsp.sql
--- (Canlıya 2026-11-04 MCP ile "0173_eon_lab_grown_dsp" adıyla uygulandı; main'de 0173/0174 başka
--- migration'lara ait olduğu için dosya 0175'e taşındı. İçerik birebir, idempotent.)
+-- (İlk sürüm canlıya 2026-11-04 MCP ile "0173_eon_lab_grown_dsp" adıyla uygulandı; main'de 0173/0174
+-- başka migration'lara ait olduğu için dosya 0175'e taşındı. Aynı gün sahip "bu wedding band değil"
+-- dedi: başlık "Diamond Band", protokol ring_band (Jewelry > Rings > Bands) ve hold kaldırıldı; canlıda
+-- tek satır UPDATE ile (audit_log), bu dosya düzeltilmiş hâli taşır.)
 -- EON'un ilk lab-grown pırlantalı listing'i: 14K Double Shared Prong yarım tur bant,
 -- 13 round lab-grown taş (≈0,78 ct), Metal Color (3) × Ring Size (US 4-10, 13) = 39 varyant,
 -- her beden tek fiyat $1.200 (sahip kararı 2026-11-04; alıcı %25 vitrinle $900).
 -- Kaynak paket: ${pkgRel}/ (fiyat kanıtı: docs/eon/lab-grown/2026-11-04-double-shared-prong-pricing.md).
 -- Üretici: scripts/eon/gen_lab_grown_dsp_migration.mjs — ELLE DÜZENLEMEYİN.
 --
--- Görsel yok: Etsy gerçek fotoğraf ister; listing_metadata.draftTransfer = hold ile
--- ops/drafts-push atlar. Bu migration Etsy'ye yazmaz.
+-- Görsel yok: galeri sahibin panelden yüklediği görsellerdir (listing_images). Bu migration Etsy'ye yazmaz.
 --
 -- Idempotent: ürün varsa yeniden eklenmez (not-exists); varyantlar (org_id, sku) upsert.
 --
