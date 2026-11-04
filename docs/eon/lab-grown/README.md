@@ -23,10 +23,22 @@ Studio'nun üreticisiyle aynı: 14K bant = gram × $100 işçilik dahil, ek kale
   ```
 - Etsy protokolü `diamond_band` (`lib/etsy/listing-protocol.ts`): taksonomi alyansla aynı
   ("Wedding Bands"), zorunlu eksen yalnız Ring Size, gravür yok. Test `tests/listing-protocol.test.ts`.
-- **Etsy itişi TUTULUYOR:** `listing_metadata.draftTransfer = hold` (gerçek, düzenlenmemiş ürün
-  fotoğrafı şart; playbook 01/04). Fotoğraf gelince: hold'u sil → galeriyi `listing_images`'a bağla →
-  prod'da `diamond_band` protokolünün deploy olduğunu kuru koşuda `protocol: diamond_band` ile gör →
-  `ops/drafts-push` (org EON, önek `EON-DSP`) kuru → kanarya → `verify=1` taze token.
+- Panelde: **Listing Önerileri > Panel Taslakları** (EON seçiliyken), satır linki
+  `/tasarimlar/listing/f0896e3c-7127-4c89-815d-b9344810d6e1`.
+- **Galeri (sahip, 2026-11-04):** 10 görsel `public/eon/lab-grown-dsp/` (PNG 1448×1086 → JPEG q92,
+  meta veri sökülü). Bağlama `0174_eon_lab_grown_dsp_gallery.sql` (üreteç
+  `scripts/eon/gen_lab_grown_dsp_gallery_migration.mjs`): listing_images 10 satır + image_url +
+  `listing_metadata.gallery`; **açıklamaya dokunmaz** (kamuya açık AI/görsel beyanı yok, sahip kuralı
+  2026-10-27/31; 29 metin `publicTextProblem` ile 0 sorun). **0174 ancak PR merge olup prod
+  `/eon/lab-grown-dsp/` adreslerini 10/10 `200` verince uygulanır**; önce uygulanırsa panel 10 kırık
+  görsel gösterir (2026-09-25 dersi).
+- Görsel QA: ölçü kareleri 2,50 mm / 2,75 mm listing'le aynı; kapak yazısız; "LAB-GROWN DIAMONDS"
+  niteleyicili. Bulgu: yüzden bakış karesi (04) **11 taş** gösteriyor, ürün 13; tüm kareler sarı altın.
+- **Etsy itişi TUTULUYOR:** `draftTransfer = hold`. Taslak itişi sahibin onayıyla açılabilir (galeri
+  hazır); **yayına alma** için en az bir gerçek, düzenlenmemiş ürün fotoğrafı şart ve AI kare ilk
+  fotoğraf olamaz (playbook 01/04). Sıra: merge → 10/10 `200` → 0174 → hold'u sil → kuru koşuda
+  `protocol: diamond_band` → `ops/drafts-push` (org EON, önek `EON-DSP`) kuru → kanarya →
+  `verify=1` taze token.
 
 ## Üreticiye açık sorular (cevap gelmeden Etsy'ye çıkmaz)
 1. $550, US 4–10 için tek fiyat mı? (not "örn. size 7" diyor; US10'da altın +$42.)

@@ -1832,6 +1832,15 @@ repodaki hedefidir.
   sınırı olmadan "against"i yakaladı, `\b` şart); `products.product_type` check kısıtı yeni tipi reddetti
   → satır `ring`, protokol metadata ile beyan (stacking_ring deseni), tip eşlemesi bilerek yazılmadı;
   gerçek fotoğraf yokken Etsy itişi `draftTransfer: hold` ile VERİDE tutuldu, metinde görsel beyanı yok.
+  **Güçlendirme (aynı gün, galeri) — kendi standart kalıbımı yazmadan önce sahibin O KALIBI yasaklayıp
+  yasaklamadığına bak:** Galeri gelince Tideline/Double Leaf deseniyle açıklamaya "ABOUT THE IMAGES …
+  AI-assisted visualizations" bölümü ekledim. Oysa sahip 2026-10-27/31'de tam bu beyanı her mağazadan
+  kaldırtmıştı ve her Etsy yazma yolu `assertPublicText` ile reddediyor; kopyaladığım iki örnek o kuraldan
+  ESKİYDİ. Yakalatan şey yazdığım metni kodun kendi kapısından (`publicTextProblem`, 29 metin) geçirmek
+  ve eski bölümün REDDEDİLDİĞİNİ negatif kontrolle görmekti. Kural: repodaki örnek bir desenin kanıtı
+  değildir, desenin TARİHİ sonraki bir sahip kararından eskiyse örnek bayattır; metni koda değil
+  kapıya karşı sına. Aynı turda alt metin görsele karşı okundu: iki karede yön yanlıştı (07'de taşlar
+  kameraya bakıyor, 04 yüzden bakış) ve bir karede taş sayısı ürünle çelişiyor (11 vs 13), blocker yazıldı.
 
 ## Ürün/UX dersleri
 
