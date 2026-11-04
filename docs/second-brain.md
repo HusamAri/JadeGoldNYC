@@ -1857,6 +1857,29 @@ repodaki hedefidir.
   çalışmıyorsa ölçüm vazgeçilmez, yalnız yüzeyi değişir: derleyiciyi ve bileşen sınıflarını
   gerçek tutup veriyi sahte yap.
 
+- **Tema reddinde renk değiştirme, ÖNCE yapı ve malzeme sözleşmesini mockup'la
+  kapat; onaylı mockup'ı gerçek sınıf dizeleriyle harness'a çevir ki üretim
+  ona karşı ölçülsün (2026-11-04, Amuletta 3.0 / V7):** 2.0 teması (yeşil/olive,
+  tüm site neumorph) "renkler çok kötü, görünüş aynı" diye reddedildi. İlk
+  refleks paleti değiştirmekti; sahibin cümleleri okununca üç ayrı istek çıktı:
+  (a) yakın nötrler + TEK neon, (b) neumorph her yerde değil göstergelerde
+  (vintage radyo / FM ekranı / düğme), (c) bölümler arasında İSKELET farkı,
+  tema sabit. Bunlar renk kararı değil malzeme ve yapı kararıydı; yedi statik
+  mockup turu (A/B/C → V1..V7) kodu hiç değiştirmeden kapattı, onay "V7 ile
+  başla" oldu. Üretim kurulurken üç şey işe yaradı: (1) mockup'ın CSS'i
+  token+sınıf olarak globals'a BİREBİR taşındı (`.bezel/.screen/.knob/.seg`),
+  yeniden yorumlanmadı; eski token adları korunup cam token'ları nötrlendi,
+  böylece 49 eski tüketici dokunulmadan düzleşti; (2) Next konteynerde
+  çalışmadığı için `lab.html` yeni sayfanın GERÇEK sınıf dizeleriyle yeniden
+  yazıldı, Playwright açık/koyu çekti; ilk çekim beş kusuru gösterdi (koyuda
+  asit rozet üstünde açık metin, düğme halkası etiketin üstüne biniyor, girdi
+  kenarı 1,4:1) ve hepsi tek turda düzeldi; (3) "her bölüm farklı yapı"
+  kuralı tabloya yazıldı (defter / galeri / kumanda masası / düz liste) ki
+  sonraki sayfa aynı iskeleti kopyalamasın. Kural: tema şikâyetinde önce
+  "renk mi, malzeme mi, yapı mı?" diye ayır ve cevabı statik mockup'la al;
+  onaylı mockup kodun KAYNAĞIDIR, ilhamı değil; harness'ın girdisi üretim
+  sınıf dizeleridir, yoksa harness kendi hayalini ölçer.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
