@@ -28,7 +28,6 @@ export type SourceKind =
   | "etsy"
   | "etsy_ledger"
   | "gold_auto"
-  | "listing_fixed"
   | "shipstation"
   | "shopier"
   | "invoice";

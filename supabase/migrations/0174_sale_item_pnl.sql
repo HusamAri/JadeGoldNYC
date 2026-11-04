@@ -16,9 +16,9 @@
 --  * Etsy ücretleri (işlem, işleme, offsite ads, listing) + kargo etiketleri =
 --    SATIŞ GİDERİ (COGS değil). İade kargo etiketi de satış gideridir, siparişe
 --    bağlanır.
---  * Elle girilen kalem maliyeti, motorun ürettiği otomatik satırı (gold_auto /
---    listing_fixed) AYNI TÜRDE ezer: görünüm `manual` varsa onu, yoksa otomatiği
---    okur. Otomatik satır silinmez (iz kalır), çift sayılmaz.
+--  * Elle girilen kalem maliyeti, motorun ürettiği otomatik satırı (gold_auto)
+--    AYNI TÜRDE ezer: görünüm `manual` varsa onu, yoksa otomatiği okur.
+--    Otomatik satır silinmez (iz kalır), çift sayılmaz.
 --
 -- Tek doğruluk kaynağı `costs` kalır (işletme kârı RPC'si, Maliyetler listesi,
 -- audit trigger'ı ve taraf trigger'ı olduğu gibi çalışır); yeni kolonlar
@@ -53,14 +53,12 @@ create index if not exists costs_sale_item_kind_idx
   on public.costs (sale_item_id, cost_kind)
   where sale_item_id is not null;
 
--- Kaynak sözlüğü: önceki migration'lar farklı alt kümeler bıraktı (0109
--- listing_fixed; canlıda 'invoice' da var). Hepsinin birleşimi.
+-- Kaynak sözlüğü (0135 ile aynı küme; burada yalnız teyit — yeni kaynak yok).
 alter table public.costs drop constraint if exists costs_source_check;
 alter table public.costs add constraint costs_source_check
   check (source = any (array[
     'manual'::text, 'csv'::text, 'etsy'::text, 'etsy_ledger'::text,
-    'shipstation'::text, 'gold_auto'::text, 'listing_fixed'::text,
-    'invoice'::text
+    'shipstation'::text, 'gold_auto'::text, 'invoice'::text
   ]));
 
 -- Geriye dönük tür ataması BİLEREK yapılmaz: costs'ta audit trigger'ı var,
@@ -519,9 +517,10 @@ $$;
 revoke all on function public.rebuild_shipstation_costs(uuid) from public, anon;
 grant execute on function public.rebuild_shipstation_costs(uuid) to authenticated, service_role;
 
--- ── 9) Motorlar: elle girilen kalem maliyeti otomatik üretimi durdurur ────
--- rebuild_gold_costs: kalemde manual gold VEYA labor varsa o kalemi atla
--- (görünüm zaten manual'i okur; motorun tekrar yazması gürültü olur).
+-- ── 9) Motor: elle girilen kalem maliyeti otomatik üretimi durdurur ─────
+-- rebuild_gold_costs (0061 gövdesi + tek ek koşul): kalemde manual gold VEYA
+-- labor varsa o kalemi atla — görünüm zaten manual'i okur; motorun tekrar
+-- yazması gürültü olur. cost_kind artık motor tarafından yazılır.
 create or replace function public.rebuild_gold_costs(
   p_org_id uuid,
   p_gold_price_per_ounce numeric
@@ -559,7 +558,6 @@ begin
       coalesce(si.quantity, 1)                    as qty,
       coalesce(p.title, pv.name, si.title, '')    as title_text,
       pv.weight_grams::numeric                    as w,
-      coalesce(p.listing_cost_cents, 0)           as listing_cost_cents,
       case
         when coalesce(p.title, '') ~* '\y14\s*k' or coalesce(pv.name, '') ~* '\y14\s*k' or coalesce(si.title, '') ~* '\y14\s*k' then '14K'
         when coalesce(p.title, '') ~* '\y10\s*k' or coalesce(pv.name, '') ~* '\y10\s*k' or coalesce(si.title, '') ~* '\y10\s*k' then '10K'
@@ -570,13 +568,14 @@ begin
     join public.product_variants pv
       on pv.org_id = si.org_id and pv.sku = si.sku and pv.weight_grams > 0
     left join public.products p
-      on p.id = coalesce(si.product_id, pv.product_id)
+      on p.id = pv.product_id
     where si.org_id = p_org_id
+      -- KALEM-seviyesi idempotency: yalnız bu kalemin gold_auto kaydı yoksa işle.
       and not exists (
         select 1 from public.costs c
         where c.sale_item_id = si.id and c.source = 'gold_auto'
       )
-      -- Elle girilmiş altın/işçilik varsa motor bu kaleme dokunmaz.
+      -- Elle girilmiş altın/işçilik varsa motor bu kaleme dokunmaz (0174).
       and not exists (
         select 1 from public.costs c
         where c.sale_item_id = si.id and c.source = 'manual'
@@ -594,7 +593,6 @@ begin
   rows as (
     select
       p.item_id, p.sale_id, p.order_date, p.qty, p.title_text, p.karat, p.w,
-      p.listing_cost_cents,
       (round(p.ayar_gram * p.w * 100))::int * p.qty                                        as gold_cents,
       (round(greatest(0, p.alim_gram - p.ayar_gram) * p.w * 100))::int * p.qty             as labor_cents
     from priced p
@@ -615,7 +613,6 @@ begin
       labor_cents, 'USD', order_date, 'Altin Tedarik', sale_id, item_id, 'gold_auto', 'labor',
       'Iscilik (alim - piyasa) | Ayar: ' || karat
     from rows
-    where listing_cost_cents <= 0
     returning 1
   )
   select count(*) into v_inserted from ins;
@@ -624,87 +621,17 @@ begin
 end;
 $$;
 
+-- Sertleştirme (0058 dersi): yalnız service_role.
 revoke all on function public.rebuild_gold_costs(uuid, numeric) from public, anon;
 revoke execute on function public.rebuild_gold_costs(uuid, numeric) from authenticated;
 grant execute on function public.rebuild_gold_costs(uuid, numeric) to service_role;
-
-create or replace function public.rebuild_listing_fixed_costs(
-  p_org_id uuid
-) returns integer
-language plpgsql
-security definer
-set search_path = public
-as $$
-declare
-  v_cat_isc uuid;
-  v_inserted integer := 0;
-begin
-  select id into v_cat_isc from public.cost_categories
-    where org_id = p_org_id and key = 'iscilik' limit 1;
-
-  with resolved as (
-    select
-      si.id as item_id,
-      si.sale_id,
-      s.order_date::date as order_date,
-      coalesce(si.quantity, 1) as qty,
-      coalesce(p.title, pv.name, si.title, '') as title_text,
-      p.listing_cost_cents
-    from public.sale_items si
-    join public.sales s
-      on s.id = si.sale_id and s.status <> 'cancelled'
-    left join public.product_variants pv
-      on pv.org_id = si.org_id and pv.sku = si.sku
-    left join public.products p
-      on p.id = coalesce(si.product_id, pv.product_id)
-    where si.org_id = p_org_id
-      and p.listing_cost_cents is not null
-      and p.listing_cost_cents > 0
-      and not exists (
-        select 1 from public.costs c
-        where c.sale_item_id = si.id and c.source = 'listing_fixed'
-      )
-      and not exists (
-        select 1 from public.costs c
-        where c.sale_item_id = si.id and c.source = 'manual' and c.cost_kind = 'labor'
-      )
-  ),
-  ins as (
-    insert into public.costs
-      (org_id, category_id, description, amount_cents, currency, cost_date,
-       vendor, sale_id, sale_item_id, source, cost_kind, notes)
-    select
-      p_org_id,
-      v_cat_isc,
-      'Listing sabit maliyet — × ' || qty || ' (' || left(title_text, 60) || ')',
-      listing_cost_cents * qty,
-      'USD',
-      order_date,
-      null,
-      sale_id,
-      item_id,
-      'listing_fixed',
-      'labor',
-      'products.listing_cost_cents=' || listing_cost_cents || ' × adet ' || qty
-    from resolved
-    returning 1
-  )
-  select count(*) into v_inserted from ins;
-
-  return v_inserted;
-end;
-$$;
-
-revoke all on function public.rebuild_listing_fixed_costs(uuid) from public, anon;
-revoke execute on function public.rebuild_listing_fixed_costs(uuid) from authenticated;
-grant execute on function public.rebuild_listing_fixed_costs(uuid) to service_role;
 
 -- ── 10) sale_item_pnl — kalem-başı kâr/zarar görünümü ─────────────────────
 -- Paylaştırma kuralı: sipariş seviyesindeki tutarlar (indirim, alıcı kargosu,
 -- iade, Etsy ücreti, siparişe bağlı etiket maliyeti) kalemlere satır toplamı
 -- payıyla dağıtılır; sipariş toplamı 0 ise eşit bölünür. Kalem seviyesindeki
 -- maliyetler (gold/labor/gem/packaging) doğrudan okunur; AYNI türde elle giriş
--- varsa otomatik satır (gold_auto/listing_fixed) dikkate alınmaz.
+-- varsa otomatik satır (gold_auto) dikkate alınmaz.
 -- security_invoker: çağıranın RLS'i (sales/sale_items/costs) uygulanır.
 create or replace view public.sale_item_pnl
 with (security_invoker = on) as
@@ -770,8 +697,8 @@ item_costs as (
       coalesce(
         c.cost_kind,
         case
-          when c.source in ('gold_auto', 'listing_fixed') and cc.key = 'malzeme' then 'gold'
-          when c.source in ('gold_auto', 'listing_fixed') and cc.key = 'iscilik' then 'labor'
+          when c.source = 'gold_auto' and cc.key = 'malzeme' then 'gold'
+          when c.source = 'gold_auto' and cc.key = 'iscilik' then 'labor'
         end
       ) as cost_kind
     from public.costs c

@@ -13,9 +13,8 @@ Migration `0174_sale_item_pnl.sql`, görünüm `sale_item_pnl`._
   `shipping_cost / variations / shipped_timestamp / kuponlar` → `sale_items`.
 - **Her kalemde dört COGS alanı elle girilir:** altın, işçilik, taş (varsa),
   paketleme. Elle giriş `costs` tablosuna `source='manual'` + `cost_kind` ile
-  yazılır; AYNI türdeki otomatik motor satırını (gram × ayar: `gold_auto`,
-  sabit listing maliyeti: `listing_fixed`) görünümde ezer ve motor o kaleme bir
-  daha dokunmaz. Boş bırakıp çıkmak elle girişi siler; motor değeri geri gelir.
+  yazılır; AYNI türdeki otomatik motor satırını (gram × ayar: `gold_auto`)
+  görünümde ezer ve motor o kaleme bir daha dokunmaz. Boş bırakıp çıkmak elle girişi siler; motor değeri geri gelir.
 - **İade** Etsy'den (receipt.refunds) okunur ve kalemlere satır toplamı payıyla
   dağıtılır. Eski iadeli siparişler (bu sürümden önce okunmuş) için
   "İade verisini çek" butonu / cron `payments` fazı receipt'i tek tek yeniden
@@ -78,7 +77,7 @@ Kaynaklar: IRS Pub 334 / Pub 538 / Schedule C talimatları, Etsy Help (sales tax
 - RPC'ler: `rebuild_sale_shipping_label_costs(org)` (service_role),
   `link_ledger_entry_to_sale(entry_id, sale_id, kind)` (authenticated).
   `rebuild_etsy_ledger_costs` / `rebuild_shipstation_costs` bağlanan kayıtları
-  aylık özetten düşer; `rebuild_gold_costs` / `rebuild_listing_fixed_costs`
+  aylık özetten düşer; `rebuild_gold_costs`
   elle gold/labor girilmiş kalemi atlar.
 
 ## Çalıştırma sırası (senkron)
@@ -98,6 +97,6 @@ ShipStation senkronu da gönderi bağlamayı aylık özetten önce koşar.
 - İade dağıtımı da pay bazlıdır; kısmi iadenin hangi kaleme ait olduğu
   `Payment.payment_adjustments[].transaction_id` ile öğrenilebilir (henüz
   senkronlanmıyor).
-- Labor "standart maliyet" (ürün başına güncel sabit) `products.listing_cost_cents`
-  ile yaşıyor; varyans analizi (standart − gerçek) tarihçe panelinde elle
-  karşılaştırmayla yapılır.
+- Ürün başına "standart işçilik" (güncel sabit) henüz yok; tarihçe panelindeki
+  son/ortalama işçilik bunun vekilidir. Varyans analizi (standart − gerçek) için
+  `product_standard_costs` tablosu sonraki adım.
