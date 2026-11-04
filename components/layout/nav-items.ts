@@ -3,16 +3,13 @@ import {
   ShoppingBag,
   Wallet,
   Palette,
-  ScrollText,
   FileBarChart,
   Settings,
-  Archive,
   Lightbulb,
-  Tags,
   Boxes,
   MessageSquareText,
-  Megaphone,
   Receipt,
+  Tag,
   type LucideIcon,
 } from "lucide-react";
 
@@ -26,75 +23,105 @@ export interface NavItem {
   brandBook?: boolean;
   /**
    * Bu sekme yalnız aktif platformun ilgili yeteneği açıksa görünür
-   * (lib/platform.ts). Ör. Star Seller Etsy'ye özel bir programdır —
-   * Shopify/Shopier bağlı org'da sekme gizlenir, yeniden etiketlenmez.
+   * (lib/platform.ts).
    */
   capability?: "starSeller" | "adsSignals" | "seoTagPush";
 }
 
+/** Editoryal bölüm tonu — layout `data-tone` ile yüzey rengini değiştirir. */
+export type SectionTone = "olive" | "moss" | "lichen" | "forest" | "slate";
+
 export interface NavGroup {
   label: string;
+  tone: SectionTone;
   items: NavItem[];
 }
 
 /**
- * SADELEŞTİRİLMİŞ nav (2026-08-12 — docs/panel-sadelestirme-plani.md).
+ * Amuletta 2.0 nav (2026-11-04 — docs/amuletta-2/plan.md).
  *
- * Panel iki uçtan uca döngüyü taşır; nav onları ve destek yüzeylerini anlatır:
+ * Panel üç iş için kullanılır ve nav o üç işin adını taşır, veri tipini değil:
  *
- *   LİSTİNG DÖNGÜSÜ : öneri → oluştur → Etsy'ye taslak gönder → senkron
- *                     doğrula → yayın → arşiv
- *   KÂR DÖNGÜSÜ     : satış aynası → maliyet girişi → listing-başına kâr
+ *   SATIŞ & KÂR     : satış aynası → kalem başına maliyet → kâr raporu
+ *   ETSY'YE TASLAK  : öneri → listing taslağı → Etsy'ye gönder
+ *   STOK & FİYAT    : stok, varyant, fiyat motoru, ağırlık araçları
  *
- * Kullanıcı kararıyla KALAN yüzeyler (2026-08-12): stok · varyant fiyat
- * dağıtma (listing detayındaki matris) · SEO takip · aksiyon geçmişi
- * (Kayıtlar) · listing önerileri · yorum yanıtı üretimi (Gemini).
- *
- * Kaldırılanlar Faz 1'de KODUYLA birlikte silindi (reklam, analiz, anahtar
- * kelime, görev, AI hub, yıldız satıcı, sepet kurtarma, marka kılavuzu,
- * yenilikler) — geri getirmek git geçmişinden dosya almayı gerektirir.
+ * Kaldırılan yüzeyler (arşiv, görsel üretim, indirimler, SEO, sosyal, reklam,
+ * tasarım panosu, Pinterest/Shopify/Shopier, günlük özet) KODUYLA birlikte
+ * silindi — geri getirmek git geçmişinden dosya almayı gerektirir.
+ * Kayıtlar (şirket hafızası) Ayarlar hub'ından açılır.
  */
 export const NAV_GROUPS: NavGroup[] = [
   {
     label: "Genel",
-    items: [
-      { href: "/panel", label: "Panel", icon: LayoutDashboard },
-    ],
+    tone: "olive",
+    items: [{ href: "/panel", label: "Panel", icon: LayoutDashboard }],
   },
   {
-    label: "Listeler",
+    label: "Satış & Kâr",
+    tone: "moss",
     items: [
-      { href: "/tasarimlar", label: "Listeler", icon: Palette },
-      { href: "/listing-onerileri", label: "Listing Önerileri", icon: Lightbulb },
-      { href: "/seo-etiketleri", label: "SEO Takip", icon: Tags, capability: "seoTagPush" },
-      { href: "/stok", label: "Stok", icon: Boxes },
-      { href: "/arsiv", label: "Listing Arşivi", icon: Archive },
-    ],
-  },
-  {
-    label: "Maliyet & Kâr",
-    items: [
-      { href: "/satislar", label: "Satışlar", icon: ShoppingBag },
       { href: "/satislar/maliyet", label: "Satış & Maliyet", icon: Receipt },
+      { href: "/satislar", label: "Satışlar", icon: ShoppingBag },
       { href: "/maliyetler", label: "Maliyetler", icon: Wallet },
       { href: "/raporlar", label: "Kâr Raporu", icon: FileBarChart },
-      { href: "/reklamlar/ice-aktar", label: "Reklam Verisi", icon: Megaphone, capability: "adsSignals" },
-    ],
-  },
-  {
-    label: "Müşteri",
-    items: [
       { href: "/yorumlar", label: "Yorumlar", icon: MessageSquareText },
     ],
   },
   {
-    label: "Sistem",
+    label: "Etsy'ye Taslak",
+    tone: "lichen",
     items: [
-      { href: "/kayitlar", label: "Kayıtlar", icon: ScrollText },
-      { href: "/ayarlar", label: "Ayarlar", icon: Settings },
+      { href: "/listing-onerileri", label: "Listing Önerileri", icon: Lightbulb },
+      { href: "/tasarimlar", label: "Listeler", icon: Palette },
     ],
+  },
+  {
+    label: "Stok & Fiyat",
+    tone: "forest",
+    items: [
+      { href: "/stok", label: "Stok", icon: Boxes },
+      { href: "/fiyat", label: "Fiyat", icon: Tag },
+    ],
+  },
+  {
+    label: "Sistem",
+    tone: "slate",
+    items: [{ href: "/ayarlar", label: "Ayarlar", icon: Settings }],
   },
 ];
 
 /** Düz liste — mevcut tüketiciler (topbar başlık eşleme vb.) için. */
 export const NAV_ITEMS: NavItem[] = NAV_GROUPS.flatMap((g) => g.items);
+
+/**
+ * Yol → bölüm tonu. En uzun eşleşen önek kazanır; nav'da olmayan alt rotalar
+ * (ör. /tasarimlar/listing/[id], /kayitlar) ait oldukları işin tonunu alır.
+ */
+const TONE_PREFIXES: Array<[string, SectionTone]> = [
+  ["/panel", "olive"],
+  ["/satislar", "moss"],
+  ["/maliyetler", "moss"],
+  ["/raporlar", "moss"],
+  ["/yorumlar", "moss"],
+  ["/listing-onerileri", "lichen"],
+  ["/tasarimlar/eksik-agirlik", "forest"],
+  ["/tasarimlar/etsy-agirlik", "forest"],
+  ["/tasarimlar/varyant-hesapla", "forest"],
+  ["/tasarimlar", "lichen"],
+  ["/stok", "forest"],
+  ["/fiyat", "forest"],
+  ["/ayarlar", "slate"],
+  ["/kayitlar", "slate"],
+];
+
+export function toneForPath(pathname: string): SectionTone {
+  let best: [string, SectionTone] | null = null;
+  for (const entry of TONE_PREFIXES) {
+    const [prefix] = entry;
+    if (pathname === prefix || pathname.startsWith(prefix + "/")) {
+      if (!best || prefix.length > best[0].length) best = entry;
+    }
+  }
+  return best ? best[1] : "olive";
+}

@@ -8,7 +8,7 @@ function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
       data-slot="textarea"
       className={cn(
         // Inset oluk (nm-pressed) — Input ile aynı çukur dili, köşeler yumuşak.
-        "nm-pressed bg-background placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground flex field-sizing-content min-h-16 w-full rounded-xl px-4 py-2.5 text-base transition-[color,box-shadow] duration-300 ease-[var(--ease-premium)] outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+        "nm-pressed bg-background placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground flex field-sizing-content min-h-16 w-full rounded-xl border border-[color:var(--hairline)] px-4 py-2.5 text-base transition-[color,box-shadow] duration-300 ease-[var(--ease-premium)] outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
         // Koyu: lume çukur kuyu — oklch(0 0 0/0.35) zemin + var(--lume-pit).
         "dark:[background-image:none] dark:[background-color:oklch(0_0_0/0.35)] dark:shadow-[var(--lume-pit)]",
         // Odak: çukur korunur + accent halka + köşeden çukura vuran holo ışık.

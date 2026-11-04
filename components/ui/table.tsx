@@ -8,8 +8,15 @@ function Table({
   className,
   containerClassName,
   stickyHeader = false,
+  well = true,
   ...props
 }: React.ComponentProps<"table"> & {
+  /**
+   * Amuletta 2.0: tablo düz INSET bir kuyuda durur (tek yumuşak iç gölge,
+   * satırlar düz) — "kart yumuşak, kontrol kenarlıklı, veri düz". Kuyuyu
+   * istemeyen gömülü tablolar (kart içinde kenara dayalı) `well={false}` verir.
+   */
+  well?: boolean;
   /** Kaydırma kabının sınıfı — dikey sınır vermek için (örn. `max-h-[70vh]`). */
   containerClassName?: string;
   /**
@@ -55,6 +62,7 @@ function Table({
       data-scrolled={scrolled ? "true" : undefined}
       className={cn(
         "relative w-full overflow-x-auto",
+        well && "table-well",
         stickyHeader && "overflow-y-auto",
         fadeRight &&
           "[mask-image:linear-gradient(90deg,#000_calc(100%-28px),transparent)]",
@@ -74,7 +82,7 @@ function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
   return (
     <thead
       data-slot="table-header"
-      className={cn("[&_tr]:border-b [&_tr]:hover:bg-transparent", className)}
+      className={cn("[&_tr]:border-b [&_tr]:border-[color:var(--hairline)] [&_tr]:hover:bg-transparent", className)}
       {...props}
     />
   );

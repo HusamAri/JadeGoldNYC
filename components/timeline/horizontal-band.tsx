@@ -352,8 +352,7 @@ export function HorizontalTimelineBand({
         "relative w-full rounded-[26px] border border-[color:var(--glass-border)] p-4 sm:p-5 " +
         "[background-color:var(--glass)] [background-image:var(--glass-sheen)] [backdrop-filter:var(--glass-filter)] shadow-[var(--lift),var(--glass-highlight)] " +
         "dark:border-[color:oklch(1_0_0/0.05)] dark:[background-color:var(--lume-panel)] dark:[background-image:none] dark:[backdrop-filter:none] dark:shadow-[0_20px_50px_oklch(0_0_0/0.4),inset_0_1px_0_oklch(1_0_0/0.06)] " +
-        "[--tl-todo:oklch(0.54_0.20_278)] [--tl-doing:oklch(0.66_0.20_285)] [--tl-done:oklch(0.83_0.07_290)] [--tl-late:oklch(0.58_0.16_344)] " +
-        "dark:[--tl-todo:oklch(0.72_0.14_262)] dark:[--tl-doing:oklch(0.78_0.12_278)] dark:[--tl-done:oklch(0.86_0.05_262)] dark:[--tl-late:oklch(0.74_0.12_344)]"
+        "[--tl-todo:var(--primary)] [--tl-doing:var(--gold)] [--tl-done:var(--jade)] [--tl-late:var(--negative)]"
       }
     >
       <div className="mb-3 flex flex-wrap items-center gap-2">

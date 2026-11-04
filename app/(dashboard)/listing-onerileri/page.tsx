@@ -7,7 +7,6 @@ import { formatMoney } from "@/lib/money";
 import { discountedCents } from "@/lib/discount";
 import { OrgMark } from "@/components/brand/org-mark";
 import { PageHeader } from "@/components/page-header";
-import { GoldStream } from "@/components/brand/gold-stream";
 import { EmptyState } from "@/components/empty-state";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -41,7 +40,6 @@ export default async function ListingOnerileriPage() {
 
   return (
     <div className="page-stack relative z-0 pb-32">
-      <GoldStream motif="ring" />
       <PageHeader
         title="Listing Önerileri"
         description="Etsy'de henüz olmayan panel taslakları ve arşivlenmiş listing'ler. Ana Listeler ekranı yalnız Etsy'de var olanları gösterir."

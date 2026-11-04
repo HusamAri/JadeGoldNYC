@@ -111,9 +111,9 @@ export default function LoginPage() {
           serif wordmark + indigo orb marka ve California Paradise em başlık. */}
       <div className="bg-background relative hidden overflow-hidden lg:block">
         <div aria-hidden className="absolute inset-0 overflow-hidden dark:opacity-40">
-          <span className="absolute top-[60px] left-[2%] size-[360px] rounded-full bg-[oklch(0.66_0.20_285/0.45)] opacity-90 blur-[46px]" />
+          <span className="absolute top-[60px] left-[2%] size-[360px] rounded-full bg-[oklch(0.74_0.14_85/0.35)] opacity-90 blur-[46px]" />
           <span className="absolute top-[180px] right-[4%] size-[300px] rounded-full opacity-60 blur-[46px] [background-image:var(--grad-holo)]" />
-          <span className="absolute top-[340px] left-[40%] size-[220px] rounded-full bg-[oklch(0.66_0.20_285/0.45)] opacity-50 blur-[46px]" />
+          <span className="absolute top-[340px] left-[40%] size-[220px] rounded-full bg-[oklch(0.52_0.10_155/0.4)] opacity-50 blur-[46px]" />
           <span className="absolute top-[300px] left-[14%] size-[120px] rounded-[60%_40%_50%_50%/50%] bg-white shadow-[0_20px_50px_rgba(80,80,120,0.12)]" />
           <span className="absolute top-[180px] left-[8%] size-[44px] rounded-full shadow-[var(--lift-sm)] [background:radial-gradient(circle_at_32%_28%,#ffffff,#e9e6f3_62%,#cfccdd_120%)]" />
           <span className="absolute top-[430px] right-[24%] size-[30px] rounded-full shadow-[var(--lift-sm)] [background:radial-gradient(circle_at_32%_28%,#ffffff,#e9e6f3_62%,#cfccdd_120%)]" />
@@ -135,7 +135,7 @@ export default function LoginPage() {
           <div className="flex items-center gap-2.5">
             <span
               aria-hidden
-              className="size-[22px] shrink-0 rounded-full [background-image:var(--grad-holo-radial)] [box-shadow:0_0_24px_rgb(157_140_255/0.35),inset_0_1px_1px_rgb(255_255_255/0.9),inset_0_-2px_5px_rgb(91_76_196/0.35)]"
+              className="size-[22px] shrink-0 rounded-full [background-image:var(--grad-holo-radial)] [box-shadow:0_0_24px_oklch(0.74_0.14_85/0.35),inset_0_1px_1px_rgb(255_255_255/0.9),inset_0_-2px_5px_oklch(0.50_0.10_80/0.35)]"
             />
             <span className="text-foreground text-xl leading-none font-semibold tracking-[-0.01em] [font-family:var(--font-serif)]">
               AMULETTA

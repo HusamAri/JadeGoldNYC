@@ -112,7 +112,7 @@ export function ListingGapsCard({ gaps }: { gaps: ListingGaps }) {
         </div>
 
         {items.length === 0 ? (
-          <div className="flex items-center gap-2 text-sm font-medium text-[oklch(0.50_0.19_278)] dark:text-[oklch(0.80_0.10_278)]">
+          <div className="flex items-center gap-2 text-sm font-medium text-[var(--positive)]">
             <CheckCircle2 className="size-4" />
             Boşluk yok — künye tam.
           </div>

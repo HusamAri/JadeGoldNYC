@@ -9,12 +9,8 @@ import {
   UserRound,
   UsersRound,
   Scale,
-  ShoppingCart,
-  Sparkles,
-  Rocket,
-  Pin,
+  ScrollText,
   ArrowUpRight,
-  Mail,
   type LucideIcon,
 } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
@@ -29,9 +25,6 @@ export type SettingsHubProps = {
   etsyConnected: boolean;
   etsyLastSync: string | null;
   shipStationConfigured: boolean;
-  shopierConnected: boolean;
-  shopifyConnected: boolean;
-  pinterestConnected: boolean;
   profileName: string | null;
   profileEmail: string | null;
   avatarUrl: string | null;
@@ -52,10 +45,7 @@ export function SettingsHub(props: SettingsHubProps) {
   const reduce = useReducedMotion();
   const liveCount =
     (props.etsyConnected ? 1 : 0) +
-    (props.shipStationConfigured ? 1 : 0) +
-    (props.shopierConnected ? 1 : 0) +
-    (props.shopifyConnected ? 1 : 0) +
-    (props.pinterestConnected ? 1 : 0);
+    (props.shipStationConfigured ? 1 : 0);
 
   const connections: Tile[] = [
     {
@@ -81,36 +71,6 @@ export function SettingsHub(props: SettingsHubProps) {
         label: props.shipStationConfigured ? "Bağlı" : "Bağlı değil",
       },
     },
-    {
-      href: "/ayarlar/shopier",
-      title: "Shopier",
-      description: "Türkiye kanalı — sipariş senkronu (PAT API)",
-      icon: ShoppingCart,
-      status: {
-        live: props.shopierConnected,
-        label: props.shopierConnected ? "Bağlı" : "Bağlı değil",
-      },
-    },
-    {
-      href: "/ayarlar/shopify",
-      title: "Shopify",
-      description: "İkinci satış kanalı — mağaza OAuth bağlantısı",
-      icon: Store,
-      status: {
-        live: props.shopifyConnected,
-        label: props.shopifyConnected ? "Bağlı" : "Bağlı değil",
-      },
-    },
-    {
-      href: "/ayarlar/pinterest",
-      title: "Pinterest",
-      description: "Trafik kanalı — pin oluşturma ve pano/analiz erişimi",
-      icon: Pin,
-      status: {
-        live: props.pinterestConnected,
-        label: props.pinterestConnected ? "Bağlı" : "Bağlı değil",
-      },
-    },
   ];
 
   const operations: Tile[] = [
@@ -132,26 +92,11 @@ export function SettingsHub(props: SettingsHubProps) {
       description: "Ad ve fotoğraf",
       icon: UserRound,
     },
-  ];
-
-  const strategy: Tile[] = [
     {
-      href: "/ayarlar/gunluk-ozet",
-      title: "Günlük özet e-posta",
-      description: "Son 24 saat, aksiyonlar ve gidişat — markalı HTML mail",
-      icon: Mail,
-    },
-    {
-      href: "/ayarlar/etsy-guncellemeleri",
-      title: "Etsy güncellemeleri",
-      description: "Platformdan elenmiş öneriler",
-      icon: Sparkles,
-    },
-    {
-      href: "/ayarlar/buyume-stratejisi",
-      title: "Büyüme stratejisi",
-      description: "90 günlük SEO + AEO planı",
-      icon: Rocket,
+      href: "/kayitlar",
+      title: "Şirket hafızası",
+      description: "Her değişikliğin denetim kaydı (kim, ne zaman, neyi)",
+      icon: ScrollText,
     },
   ];
 
@@ -162,9 +107,9 @@ export function SettingsHub(props: SettingsHubProps) {
         aria-hidden
         className="pointer-events-none absolute inset-x-0 -top-8 h-[420px] overflow-hidden"
       >
-        <div className="absolute -top-24 left-[8%] size-[280px] rounded-full bg-[radial-gradient(circle,rgb(169_155_255/0.28),transparent_68%)] blur-2xl dark:bg-[radial-gradient(circle,rgb(169_155_255/0.35),transparent_68%)]" />
-        <div className="absolute top-10 right-[4%] size-[220px] rounded-full bg-[radial-gradient(circle,rgb(90_169_240/0.22),transparent_70%)] blur-2xl" />
-        <div className="absolute top-28 left-[42%] size-[180px] rounded-full bg-[radial-gradient(circle,rgb(240_164_78/0.18),transparent_70%)] blur-2xl" />
+        <div className="absolute -top-24 left-[8%] size-[280px] rounded-full bg-[radial-gradient(circle,oklch(0.74_0.14_85/0.22),transparent_68%)] blur-2xl" />
+        <div className="absolute top-10 right-[4%] size-[220px] rounded-full bg-[radial-gradient(circle,oklch(0.52_0.10_155/0.2),transparent_70%)] blur-2xl" />
+        <div className="absolute top-28 left-[42%] size-[180px] rounded-full bg-[radial-gradient(circle,oklch(0.60_0.08_130/0.18),transparent_70%)] blur-2xl" />
       </div>
 
       {/* Editorial index */}
@@ -208,13 +153,13 @@ export function SettingsHub(props: SettingsHubProps) {
         transition={{ duration: 0.75, delay: 0.06, ease }}
         className="relative mb-10"
       >
-        <div className="rounded-[2rem] border border-black/[0.06] bg-[linear-gradient(145deg,rgb(255_255_255/0.55),rgb(163_177_198/0.18))] p-1.5 shadow-[var(--shadow-hover)] dark:border-white/5 dark:bg-white/[0.03] dark:shadow-[0_28px_60px_rgb(0_0_0/0.45),0_0_40px_rgb(169_155_255/0.12)]">
-          <div className="relative overflow-hidden rounded-[calc(2rem-0.375rem)] border border-[color:var(--glass-border)] [background-color:var(--glass-strong)] [background-image:var(--glass-sheen),var(--glass-tint)] shadow-[var(--glass-highlight),var(--glass-depth),var(--lift)] [backdrop-filter:var(--glass-filter)] dark:[background-color:var(--lume-panel)] dark:[background-image:radial-gradient(120%_90%_at_12%_-20%,oklch(0.45_0.12_278/0.35),transparent_55%),linear-gradient(180deg,oklch(1_0_0/0.04),transparent)] dark:shadow-[var(--lume-hi),var(--lift),0_0_48px_rgb(169_155_255/0.18)]">
+        <div className="rounded-[2rem] border border-black/[0.06] [background-image:var(--nm-convex)] p-1.5 shadow-[var(--shadow-raised)]">
+          <div className="relative overflow-hidden rounded-[calc(2rem-0.375rem)] border border-[color:var(--glass-border)] [background-color:var(--glass-strong)] [background-image:var(--glass-sheen),var(--glass-tint)] shadow-[var(--glass-highlight),var(--glass-depth),var(--lift)] [backdrop-filter:var(--glass-filter)] dark:[background-color:var(--lume-panel)] dark:[background-image:none] dark:shadow-[var(--lume-hi),var(--lift)]">
             <div className="grid gap-6 p-6 md:grid-cols-[1.2fr_0.8fr] md:p-8">
               <div className="space-y-5">
                 <div className="flex items-start gap-3">
                   <span className="nm-raised flex size-12 items-center justify-center rounded-2xl dark:bg-white/5 dark:shadow-[var(--lume-hi),var(--lume-glow)]">
-                    <Store className="size-5 text-[color:var(--gold-deep,#8a6a2f)] dark:text-[#e8ebff]" />
+                    <Store className="size-5 text-[color:var(--gold-deep)]" />
                   </span>
                   <div className="min-w-0">
                     <p className="text-muted-foreground font-mono text-[10px] tracking-[0.2em] uppercase">
@@ -284,7 +229,7 @@ export function SettingsHub(props: SettingsHubProps) {
 
       <Section
         title="Operasyon"
-        subtitle="Ekip, maliyet ve kişisel profil."
+        subtitle="Ekip, maliyet, profil ve denetim kaydı."
         delay={0.16}
       >
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -294,17 +239,6 @@ export function SettingsHub(props: SettingsHubProps) {
         </div>
       </Section>
 
-      <Section
-        title="Strateji"
-        subtitle="Platform sinyalleri ve büyüme planı."
-        delay={0.22}
-      >
-        <div className="grid gap-4 md:grid-cols-2">
-          {strategy.map((t, i) => (
-            <SettingsTile key={t.href} tile={t} index={i} />
-          ))}
-        </div>
-      </Section>
     </div>
   );
 }

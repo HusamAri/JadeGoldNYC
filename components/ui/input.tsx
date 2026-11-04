@@ -16,7 +16,7 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
         // `disabled:cursor-not-allowed`ı ölü koda çeviriyordu (imleç hiç
         // değişmiyordu, alan sessizce "tepkisiz" oluyordu). Textarea zaten
         // doğru davranıyordu; ikisi artık aynı dili konuşuyor.
-        "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground nm-pressed bg-background flex h-10 w-full min-w-0 rounded-full px-4 py-1 text-base transition-[color,background-color,box-shadow] duration-300 ease-[var(--ease-premium)] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+        "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground nm-pressed bg-background flex h-10 w-full min-w-0 rounded-full border border-[color:var(--hairline)] px-4 py-1 text-base transition-[color,background-color,box-shadow] duration-300 ease-[var(--ease-premium)] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
         // Hover: çukur KORUNUR (--shadow-pressed yerinde), yalnız kenara ince
         // bir ışık halkası düşer + zemin bir tık koyulaşır — alan "yazılabilir"
         // olduğunu söyler. Odak kuralı bundan sonra geldiği için odakta ezilir.

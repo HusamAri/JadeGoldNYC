@@ -44,3 +44,7 @@ next-env.d.ts
 # python
 __pycache__/
 *.pyc
+
+# Tema laboratuvarı çıktıları (scripts/theme-lab)
+scripts/theme-lab/out.css
+scripts/theme-lab/shots/

@@ -161,7 +161,7 @@ export function KpiCard({
           // camın üstünde çok soluk oyma filigran olarak durur (dark:z-[2],
           // içerik DOM'da sonra geldiği için üstte kalır). Ham Lucide geçse
           // bile gri klipart'a düşmesin diye varsayılan mürekkep soluk mor.
-          className="kpi-icon pointer-events-none absolute z-0 size-[8.5rem] object-contain text-[oklch(0.68_0.15_286)] opacity-[0.88] dark:z-[2] dark:text-[oklch(0.83_0.07_290)] dark:opacity-[0.14]"
+          className="kpi-icon pointer-events-none absolute z-0 size-[8.5rem] object-contain text-[var(--kpi-icon)] opacity-[0.9] dark:z-[2] dark:text-[var(--gold)] dark:opacity-[0.12]"
           style={iconStyle}
         />
       )}
@@ -220,11 +220,11 @@ export function KpiCard({
               !splitTone &&
                 !holo &&
                 accent === "positive" &&
-                "text-[oklch(0.50_0.19_278)] dark:text-[oklch(0.80_0.10_278)]",
+                "text-[var(--positive)]",
               !splitTone &&
                 !holo &&
                 accent === "negative" &&
-                "text-[oklch(0.58_0.16_344)] dark:text-[oklch(0.74_0.12_344)]",
+                "text-[var(--negative)]",
             )}
           >
             {/* Sayaç animasyonu: rakam yüklenişte 0'dan değerine sayar
@@ -246,9 +246,9 @@ export function KpiCard({
                     className={cn(
                       "font-mono text-xs font-medium tabular-nums",
                       c.change > 0 &&
-                        "text-[oklch(0.50_0.19_278)] dark:text-[oklch(0.80_0.10_278)]",
+                        "text-[var(--positive)]",
                       c.change < 0 &&
-                        "text-[oklch(0.58_0.16_344)] dark:text-[oklch(0.74_0.12_344)]",
+                        "text-[var(--negative)]",
                       c.change === 0 && "text-muted-foreground",
                     )}
                   >
@@ -276,9 +276,9 @@ export function KpiCard({
               className={cn(
                 "mt-1 font-mono text-xs font-medium tabular-nums",
                 change > 0 &&
-                  "text-[oklch(0.50_0.19_278)] dark:text-[oklch(0.80_0.10_278)]",
+                  "text-[var(--positive)]",
                 change < 0 &&
-                  "text-[oklch(0.58_0.16_344)] dark:text-[oklch(0.74_0.12_344)]",
+                  "text-[var(--negative)]",
                 change === 0 && "text-muted-foreground",
               )}
             >

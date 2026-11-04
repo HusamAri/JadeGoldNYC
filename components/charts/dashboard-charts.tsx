@@ -26,40 +26,42 @@ import { useChartAnimation } from "@/lib/motion";
  * Her grafiğin kök sarmalayıcısına uygulanır; SVG defs bu değişkenleri okur.
  */
 export const CHART_INK = [
-  // — mürekkep ailesi (kategori/seri renkleri) —
-  "[--jg-ink-1:oklch(0.54_0.20_278)] dark:[--jg-ink-1:oklch(0.72_0.14_262)]",
-  "[--jg-ink-2:oklch(0.66_0.20_285)] dark:[--jg-ink-2:oklch(0.78_0.12_278)]",
-  "[--jg-ink-3:oklch(0.68_0.15_286)] dark:[--jg-ink-3:oklch(0.70_0.10_290)]",
-  "[--jg-ink-4:oklch(0.83_0.07_290)] dark:[--jg-ink-4:oklch(0.86_0.05_262)]",
-  "[--jg-ink-neg:oklch(0.58_0.16_344)] dark:[--jg-ink-neg:oklch(0.70_0.13_344)]",
-  // — çizgi izi (Spatial: mor yoğunlaşan; Lume: lineTrail beyaz, kuyruk söner) —
-  "[--jg-trail-0:oklch(0.54_0.20_278/.28)] dark:[--jg-trail-0:rgb(255_255_255/0)]",
-  "[--jg-trail-1:oklch(0.60_0.20_281/.75)] dark:[--jg-trail-1:rgb(203_210_255/.45)]",
-  "[--jg-trail-2:oklch(0.66_0.20_285)] dark:[--jg-trail-2:#ffffff]",
-  // — alan dolgusu (Lume: #c9cde6 .36→0 dikey fade) —
-  "[--jg-area-c:oklch(0.66_0.20_285/.34)] dark:[--jg-area-c:rgb(201_205_230/.36)]",
-  "[--jg-area-c0:oklch(0.66_0.20_285/0)] dark:[--jg-area-c0:rgb(201_205_230/0)]",
-  // — çizgi ışıması (yalnız koyuda; açıkta glow sadece uç noktada) —
-  "[--jg-lglow-a:transparent] dark:[--jg-lglow-a:rgb(205_214_255/.7)]",
-  "[--jg-lglow-b:transparent] dark:[--jg-lglow-b:rgb(150_160_255/.35)]",
-  // — uç nokta (Spatial sparkDot: beyaz + mor stroke; Lume ldot: 262 + beyaz stroke) —
-  "[--jg-dot-f:#ffffff] dark:[--jg-dot-f:oklch(0.72_0.14_262)]",
-  "[--jg-dot-s:oklch(0.60_0.20_278)] dark:[--jg-dot-s:oklch(1_0_0/.85)]",
-  "[--jg-dotglow:rgb(255_255_255/.9)] dark:[--jg-dotglow:rgb(205_214_255/.7)]",
-  // — barlar (Spatial iceUp cam sütun; Lume cam bar 0deg .62→.9 262) —
-  "[--jg-bar-0:oklch(0.86_0.08_278/.9)] dark:[--jg-bar-0:oklch(0.9_0.04_262/.16)]",
-  "[--jg-bar-1:oklch(0.62_0.19_278/.5)] dark:[--jg-bar-1:oklch(0.76_0.05_262/.25)]",
-  "[--jg-bar-2:oklch(0.50_0.20_278/.72)] dark:[--jg-bar-2:oklch(0.62_0.06_262/.34)]",
-  "[--jg-bar-edge:rgb(255_255_255/.55)] dark:[--jg-bar-edge:oklch(1_0_0/.28)]",
-  "[--jg-bar-edge-dim:rgb(255_255_255/.4)] dark:[--jg-bar-edge-dim:oklch(1_0_0/.12)]",
-  "[--jg-bar-dim:oklch(0.83_0.07_290/.35)] dark:[--jg-bar-dim:oklch(0.62_0.06_262/.15)]",
-  "[--jg-bar-shadow:oklch(0.56_0.19_278/.5)] dark:[--jg-bar-shadow:transparent]",
-  "[--jg-bar-glow:transparent] dark:[--jg-bar-glow:oklch(0.7_0.07_262/.3)]",
-  "[--jg-pool:transparent] dark:[--jg-pool:oklch(0.92_0.05_262/.85)]",
+  // — mürekkep ailesi (kategori/seri renkleri): orman yeşili, altın, yosun,
+  //   çay yeşili; negatif kil kırmızısı. Amuletta 2.0 (docs/amuletta-2/plan.md).
+  "[--jg-ink-1:var(--chart-1)]",
+  "[--jg-ink-2:var(--chart-2)]",
+  "[--jg-ink-3:var(--chart-3)]",
+  "[--jg-ink-4:var(--chart-4)]",
+  "[--jg-ink-neg:var(--chart-5)]",
+  // — çizgi izi: yeşil yoğunlaşır (koyuda altına döner, kuyruk söner) —
+  "[--jg-trail-0:oklch(0.45_0.10_152/.28)] dark:[--jg-trail-0:oklch(0.82_0.13_88/0)]",
+  "[--jg-trail-1:oklch(0.45_0.10_152/.75)] dark:[--jg-trail-1:oklch(0.82_0.13_88/.55)]",
+  "[--jg-trail-2:oklch(0.40_0.10_152)] dark:[--jg-trail-2:oklch(0.88_0.11_90)]",
+  // — alan dolgusu —
+  "[--jg-area-c:oklch(0.45_0.10_152/.26)] dark:[--jg-area-c:oklch(0.82_0.13_88/.28)]",
+  "[--jg-area-c0:oklch(0.45_0.10_152/0)] dark:[--jg-area-c0:oklch(0.82_0.13_88/0)]",
+  // — çizgi ışıması (yalnız koyuda) —
+  "[--jg-lglow-a:transparent] dark:[--jg-lglow-a:oklch(0.82_0.13_88/.5)]",
+  "[--jg-lglow-b:transparent] dark:[--jg-lglow-b:oklch(0.82_0.13_88/.22)]",
+  // — uç nokta —
+  "[--jg-dot-f:var(--surface)] dark:[--jg-dot-f:oklch(0.82_0.13_88)]",
+  "[--jg-dot-s:oklch(0.45_0.10_152)] dark:[--jg-dot-s:oklch(1_0_0/.85)]",
+  "[--jg-dotglow:oklch(0.98_0.01_110/.9)] dark:[--jg-dotglow:oklch(0.82_0.13_88/.6)]",
+  // — barlar: üst ışık +0,06 L gradyanı (yeşil cam), koyuda altın cam —
+  "[--jg-bar-0:oklch(0.62_0.09_152/.95)] dark:[--jg-bar-0:oklch(0.86_0.10_90/.85)]",
+  "[--jg-bar-1:oklch(0.50_0.10_152/.95)] dark:[--jg-bar-1:oklch(0.78_0.12_88/.85)]",
+  "[--jg-bar-2:oklch(0.42_0.10_152)] dark:[--jg-bar-2:oklch(0.70_0.13_85/.9)]",
+  "[--jg-bar-edge:oklch(0.98_0.01_110/.6)] dark:[--jg-bar-edge:oklch(1_0_0/.3)]",
+  "[--jg-bar-edge-dim:oklch(0.98_0.01_110/.4)] dark:[--jg-bar-edge-dim:oklch(1_0_0/.12)]",
+  "[--jg-bar-dim:oklch(0.60_0.06_130/.45)] dark:[--jg-bar-dim:oklch(0.70_0.08_90/.3)]",
+  // — DOĞAL 3D gölge: ambient + kontak, bölüm tonuyla boyanır (siyah değil) —
+  "[--jg-bar-shadow:var(--nm-lo)] dark:[--jg-bar-shadow:var(--nm-lo)]",
+  "[--jg-bar-glow:transparent] dark:[--jg-bar-glow:oklch(0.82_0.13_88/.18)]",
+  "[--jg-pool:transparent] dark:[--jg-pool:oklch(0.88_0.11_90/.6)]",
   // — ray/oluk ve dilim kenarı —
-  "[--jg-groove:rgb(120_120_150/.14)] dark:[--jg-groove:oklch(0_0_0/.3)]",
-  "[--jg-track:rgb(122_122_155/.24)] dark:[--jg-track:oklch(0.75_0.08_262/.14)]",
-  "[--jg-slice-edge:rgb(255_255_255/.85)] dark:[--jg-slice-edge:oklch(1_0_0/.28)]",
+  "[--jg-groove:var(--nm-lo)] dark:[--jg-groove:oklch(0_0_0/.3)]",
+  "[--jg-track:oklch(from_var(--nm-lo)_l_c_h/.6)] dark:[--jg-track:oklch(0.82_0.13_88/.14)]",
+  "[--jg-slice-edge:var(--nm-hi)] dark:[--jg-slice-edge:oklch(1_0_0/.28)]",
 ].join(" ");
 
 const COLORS = [
@@ -168,7 +170,9 @@ export function ChartDefs({
       </radialGradient>
       {/* Çizgi ışıması — koyuda çift drop-shadow (0 0 6px + 0 0 16px);
           açıkta flood'lar şeffaf → glow yok (yalnız uç noktada). */}
-      <filter id={`${id}-lglow`} x="-40%" y="-60%" width="180%" height="260%">
+      <filter id={`${id}-lglow`} x="-40%" y="-60%" width="180%" height="300%">
+        {/* Çizginin altına düşen yumuşak ambient (bölüm tonlu) + koyuda ışıma. */}
+        <feDropShadow dx="0" dy="5" stdDeviation="6" floodColor="var(--jg-bar-shadow)" floodOpacity="0.3" />
         <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor="var(--jg-lglow-a)" />
         <feDropShadow dx="0" dy="0" stdDeviation="8" floodColor="var(--jg-lglow-b)" />
       </filter>
@@ -176,21 +180,30 @@ export function ChartDefs({
       <filter id={`${id}-dotglow`} x="-120%" y="-120%" width="340%" height="340%">
         <feDropShadow dx="0" dy="0" stdDeviation="4" floodColor="var(--jg-dotglow)" />
       </filter>
-      {/* Vurgu sütunu: açıkta tonlu düşen gölge (0 4px 5px mor .5 — Spatial
-          "tinted shadows"); koyuda dış glow (0 0 16px 262/.3 — lume). */}
-      <filter id={`${id}-float`} x="-40%" y="-60%" width="180%" height="260%">
-        <feDropShadow dx="0" dy="4" stdDeviation="2.5" floodColor="var(--jg-bar-shadow)" />
-        <feDropShadow dx="0" dy="0" stdDeviation="8" floodColor="var(--jg-bar-glow)" />
+      {/* DOĞAL 3D GÖLGE (Amuletta 2.0): kontak (dy 1, sd 1) + ambient (dy 6,
+          sd 8), ikisi de bölüm tonuyla boyalı (--jg-bar-shadow = --nm-lo),
+          asla siyah; koyuda ayrıca altın dış ışıma. Grafik başına TEK filtre
+          (performans: blur maliyeti alan × yarıçap; animasyon yok). */}
+      <filter id={`${id}-float`} x="-40%" y="-60%" width="180%" height="300%">
+        <feDropShadow in="SourceGraphic" dx="0" dy="6" stdDeviation="8" floodColor="var(--jg-bar-shadow)" floodOpacity="0.42" result="ambient" />
+        <feDropShadow in="SourceGraphic" dx="0" dy="1" stdDeviation="1" floodColor="var(--jg-bar-shadow)" floodOpacity="0.6" result="contact" />
+        <feDropShadow in="SourceGraphic" dx="0" dy="0" stdDeviation="8" floodColor="var(--jg-bar-glow)" result="glow" />
+        <feMerge>
+          <feMergeNode in="ambient" />
+          <feMergeNode in="contact" />
+          <feMergeNode in="glow" />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
       </filter>
-      {/* Nötr sütun: yalnız hafif tonlu düşen gölge (koyuda kapalı). */}
-      <filter id={`${id}-drop`} x="-40%" y="-30%" width="180%" height="200%">
-        <feDropShadow
-          dx="0"
-          dy="4"
-          stdDeviation="3"
-          floodColor="var(--jg-bar-shadow)"
-          floodOpacity="0.6"
-        />
+      {/* Nötr sütun / dilim: aynı tarif, ışımasız. */}
+      <filter id={`${id}-drop`} x="-40%" y="-60%" width="180%" height="300%">
+        <feDropShadow in="SourceGraphic" dx="0" dy="5" stdDeviation="7" floodColor="var(--jg-bar-shadow)" floodOpacity="0.36" result="ambient" />
+        <feDropShadow in="SourceGraphic" dx="0" dy="1" stdDeviation="1" floodColor="var(--jg-bar-shadow)" floodOpacity="0.5" result="contact" />
+        <feMerge>
+          <feMergeNode in="ambient" />
+          <feMergeNode in="contact" />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
       </filter>
       {/* Havuz blur'u — lume ::after blur(7px) karşılığı. */}
       <filter id={`${id}-pool`} x="-60%" y="-60%" width="220%" height="220%">
@@ -674,7 +687,7 @@ export function CategoryPie({
             highlight, alt rim mor gölge. Düz halkayı içe kavisli bir silindir
             duvarı gibi okutur (3B derinlik). */}
         <div
-          className="absolute left-1/2 size-[204px] -translate-x-1/2 -translate-y-1/2 rounded-full [background-image:linear-gradient(to_bottom,rgba(255,255,255,.55),transparent_44%,rgba(56,38,106,.22))] [mask-image:radial-gradient(farthest-side,transparent_calc(100%_-_13px),#000_calc(100%_-_12px))] dark:[background-image:linear-gradient(to_bottom,rgba(210,218,255,.32),transparent_46%,rgba(0,0,0,.4))]"
+          className="absolute left-1/2 size-[204px] -translate-x-1/2 -translate-y-1/2 rounded-full [background-image:linear-gradient(to_bottom,rgba(255,255,255,.55),transparent_44%,oklch(from_var(--nm-lo)_l_c_h/.5))] [mask-image:radial-gradient(farthest-side,transparent_calc(100%_-_13px),#000_calc(100%_-_12px))] dark:[background-image:linear-gradient(to_bottom,oklch(1_0_0/.18),transparent_46%,rgba(0,0,0,.4))]"
           style={{ top: "calc(50% - 17px)" }}
         />
         {/* Tick halkası — açıkta repeating-conic (70,52,120/.5, .6°/15°);
@@ -687,11 +700,11 @@ export function CategoryPie({
           className="absolute left-1/2 size-[204px] -translate-x-1/2 -translate-y-1/2 [mask-image:linear-gradient(to_bottom,#000_0%,#000_40%,transparent_88%)]"
           style={{ top: "calc(50% - 17px)" }}
         >
-          <div className="size-full rounded-full [background-image:repeating-conic-gradient(from_-90deg,rgba(70,52,120,.5)_0deg_.6deg,transparent_.6deg_15deg)] [mask-image:radial-gradient(farthest-side,transparent_calc(100%_-_12px),#000_calc(100%_-_11px))] dark:[background-image:repeating-conic-gradient(from_-90deg,rgba(150,160,255,.45)_0deg_.9deg,transparent_.9deg_6deg)]" />
+          <div className="size-full rounded-full [background-image:repeating-conic-gradient(from_-90deg,oklch(from_var(--nm-lo)_l_c_h/.6)_0deg_.6deg,transparent_.6deg_15deg)] [mask-image:radial-gradient(farthest-side,transparent_calc(100%_-_12px),#000_calc(100%_-_11px))] dark:[background-image:repeating-conic-gradient(from_-90deg,oklch(0.82_0.13_88/.4)_0deg_.9deg,transparent_.9deg_6deg)]" />
         </div>
         {/* İç cam hub — radyal beyaz→cam + Spatial iç gölge çifti; koyuda sade
             lume yüzeyi (okuma kendisi ışır). */}
-        <div className="flex size-[118px] flex-col items-center justify-center rounded-full border border-[color:rgba(255,255,255,.7)] [background-image:radial-gradient(circle_at_40%_32%,#ffffff,var(--glass)_72%)] [backdrop-filter:var(--glass-filter-sm)] [box-shadow:inset_0_3px_7px_rgba(255,255,255,.8),inset_0_-8px_13px_rgba(56,38,106,.45),0_5px_9px_-3px_rgba(70,50,120,.4)] dark:border-[color:oklch(1_0_0/0.08)] dark:[background-color:oklch(1_0_0/0.04)] dark:[background-image:none] dark:[box-shadow:inset_0_1px_0_oklch(1_0_0/0.08)]">
+        <div className="flex size-[118px] flex-col items-center justify-center rounded-full border border-[color:rgba(255,255,255,.7)] [background-image:radial-gradient(circle_at_40%_32%,#ffffff,var(--glass)_72%)] [backdrop-filter:var(--glass-filter-sm)] [box-shadow:inset_0_3px_7px_rgba(255,255,255,.8),inset_0_-8px_13px_oklch(from_var(--nm-lo)_l_c_h/.55),0_5px_9px_-3px_oklch(from_var(--nm-lo)_l_c_h/.5)] dark:border-[color:oklch(1_0_0/0.08)] dark:[background-color:oklch(1_0_0/0.04)] dark:[background-image:none] dark:[box-shadow:inset_0_1px_0_oklch(1_0_0/0.08)]">
           <span className="text-muted-foreground text-[0.6rem] font-semibold tracking-[0.22em] uppercase [font-family:var(--font-index)]">
             Toplam
           </span>

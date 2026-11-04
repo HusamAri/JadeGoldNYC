@@ -11,8 +11,6 @@ import { formatMoney, formatPercent } from "@/lib/money";
 import { formatNumber, formatDate } from "@/lib/format";
 import { Money } from "@/components/money";
 import { PageHeader } from "@/components/page-header";
-import { GoldStream } from "@/components/brand/gold-stream";
-import { SceneCutouts } from "@/components/scene-cutouts";
 import { PeriodSelector } from "@/components/period-selector";
 import { ReportExport } from "@/components/report-export";
 import { Badge } from "@/components/ui/badge";
@@ -87,8 +85,6 @@ export default async function RaporlarPage({
 
   return (
     <div className="page-stack relative z-0 pb-32">
-      <GoldStream motif="seal" />
-      <SceneCutouts page="raporlar" />
       <PageHeader
         title="Raporlar"
         description={`Dönem · ${period.label}`}

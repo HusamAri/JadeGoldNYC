@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="tr" class="h-full antialiased" style="--font-sora: ui-sans-serif, system-ui, sans-serif; --font-jbmono: ui-monospace, Menlo, monospace; --font-cormorant: Georgia, serif; --font-california: Georgia, serif;">
+<head>
+<meta charset="utf-8" />
+<title>Amuletta 2.0 tema laboratuvarı</title>
+<link rel="stylesheet" href="./out.css" />
+</head>
+<body class="min-h-full bg-background text-foreground">
+<div id="frame" data-tone="moss" class="bg-background text-foreground relative isolate flex min-h-svh overflow-x-clip">
+  <aside class="bg-sidebar text-sidebar-foreground sticky top-0 hidden h-svh w-64 shrink-0 flex-col md:flex border-r border-[color:var(--border)]">
+    <div class="flex h-14 items-center px-5">
+      <span class="text-foreground text-xl leading-none font-medium tracking-tight [font-family:var(--font-display)]">Amuletta<em class="text-primary not-italic">.</em></span>
+      <span class="idx ml-auto !gap-1.5 text-[9px]">panel</span>
+    </div>
+    <div class="px-4 pb-1"><div class="brand-box flex items-center gap-3 px-3.5 py-3"><span class="size-8 rounded-full bg-[var(--gold)]"></span><div class="relative z-[1] flex min-w-0 flex-col leading-tight"><span class="text-sm font-semibold">Jade Gold NYC</span><span class="text-muted-foreground text-[0.68rem] tracking-wide">Marka Alanı</span></div></div></div>
+    <nav class="flex-1 space-y-3 overflow-y-auto p-4">
+      <div class="nm-pressed space-y-1 overflow-clip rounded-2xl p-1.5">
+        <p class="px-2.5 pt-1.5 pb-1 text-[0.64rem] font-bold tracking-[0.18em] text-[color:var(--sidebar-label)] uppercase select-none">Satış &amp; Kâr</p>
+        <a id="nav-active" href="#" aria-current="page" class="relative isolate flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium text-foreground [background-image:var(--nm-convex)] [box-shadow:var(--shadow-raised-sm)]"><span class="size-4 rounded-sm bg-[var(--gold-deep)]"></span>Satış &amp; Maliyet</a>
+        <a href="#" class="relative isolate flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium text-sidebar-foreground/75"><span class="size-4 rounded-sm bg-current opacity-60"></span>Satışlar</a>
+        <a href="#" class="relative isolate flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium text-sidebar-foreground/75"><span class="size-4 rounded-sm bg-current opacity-60"></span>Maliyetler</a>
+        <a href="#" class="relative isolate flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium text-sidebar-foreground/75"><span class="size-4 rounded-sm bg-current opacity-60"></span>Kâr Raporu</a>
+      </div>
+      <div class="nm-pressed space-y-1 overflow-clip rounded-2xl p-1.5">
+        <p class="px-2.5 pt-1.5 pb-1 text-[0.64rem] font-bold tracking-[0.18em] text-[color:var(--sidebar-label)] uppercase select-none">Etsy'ye Taslak</p>
+        <a href="#" class="relative isolate flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium text-sidebar-foreground/75"><span class="size-4 rounded-sm bg-current opacity-60"></span>Listing Önerileri</a>
+        <a href="#" class="relative isolate flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium text-sidebar-foreground/75"><span class="size-4 rounded-sm bg-current opacity-60"></span>Listeler</a>
+      </div>
+      <div class="nm-pressed space-y-1 overflow-clip rounded-2xl p-1.5">
+        <p class="px-2.5 pt-1.5 pb-1 text-[0.64rem] font-bold tracking-[0.18em] text-[color:var(--sidebar-label)] uppercase select-none">Stok &amp; Fiyat</p>
+        <a href="#" class="relative isolate flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium text-sidebar-foreground/75"><span class="size-4 rounded-sm bg-current opacity-60"></span>Stok</a>
+        <a href="#" class="relative isolate flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium text-sidebar-foreground/75"><span class="size-4 rounded-sm bg-current opacity-60"></span>Fiyat</a>
+      </div>
+    </nav>
+  </aside>
+  <div class="flex min-w-0 flex-1 flex-col">
+    <div class="sticky top-0 z-30 px-3 pt-4 md:px-6">
+      <header class="relative flex h-14 items-center justify-between gap-3 rounded-full border border-[color:var(--glass-border)] pr-[14px] pl-[22px] [background-color:var(--glass-strong)] [backdrop-filter:var(--glass-filter)] [box-shadow:var(--shadow-raised-sm),var(--glass-highlight)]">
+        <div class="flex items-center gap-3"><span class="hidden h-px w-6 shrink-0 bg-primary/70 md:block"></span><h1 class="text-lg font-semibold tracking-[-0.01em] [font-family:var(--font-serif)] md:text-xl">Satış &amp; Maliyet</h1></div>
+        <div class="flex items-center gap-2"><span class="idx">XAU 4.604 $</span><span class="size-8 rounded-full nm-raised-sm"></span></div>
+      </header>
+    </div>
+    <main class="mx-auto w-full max-w-[1440px] flex-1 px-5 py-8 sm:px-8 sm:py-10 lg:px-14 lg:py-14">
+      <div class="page-stack">
+        <div class="mb-8 space-y-5 md:mb-10">
+          <div aria-hidden class="idx"><span>Satış &amp; Maliyet</span><span class="idx-bar"></span><span class="idx-ln"></span></div>
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div class="space-y-1">
+              <h2 id="h2" class="h-display display-emboss text-4xl md:text-5xl">Satış &amp; <em>Maliyet</em></h2>
+              <p id="desc" class="text-engraved text-muted-foreground max-w-[60ch] text-sm">Her satılan kalemde altın, işçilik, taş ve iade tek satırda.</p>
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+              <button id="btn-outline" class="relative isolate inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-mono text-xs font-medium tracking-[0.1em] uppercase h-10 px-5 py-2 border border-foreground bg-transparent text-foreground">CSV</button>
+              <button id="btn-hero" class="relative isolate inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-mono text-xs font-medium tracking-[0.1em] uppercase h-10 px-5 py-2 border border-[color:var(--gold-deep)]/50 [background-image:var(--btn-hero-bg)] text-[color:var(--btn-hero-fg)] shadow-[0_6px_22px_-4px_oklch(0.74_0.14_85/0.4),var(--lift-sm)]">Etsy'den satışları çek</button>
+            </div>
+          </div>
+        </div>
+
+        <section class="glass-board rounded-[26px] p-4 sm:p-5">
+          <p class="text-muted-foreground mb-3 font-mono text-[10px] tracking-[0.14em] uppercase">Üç adımda hazır</p>
+          <div class="grid gap-3 lg:grid-cols-3">
+            <div class="nm-pressed flex flex-col gap-3 rounded-[1.25rem] p-4"><p class="font-medium">1 · Etsy'den satışları çek</p><p class="text-muted-foreground text-xs">Son çekim 04.11.2026 11:42.</p></div>
+            <div class="nm-pressed flex flex-col gap-3 rounded-[1.25rem] p-4"><p class="font-medium">2 · Eski iadelerin tutarını çek</p><p class="text-muted-foreground text-xs">567 iadeli siparişin tutarı henüz okunmadı.</p></div>
+            <div class="nm-pressed flex flex-col gap-3 rounded-[1.25rem] p-4"><p class="font-medium">3 · Altın ve işçiliği gir</p><p class="text-muted-foreground text-xs">11.581 kalemde altın veya işçilik eksik.</p></div>
+          </div>
+        </section>
+
+        <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+          <div id="kpi" class="nm-raised relative flex h-full min-w-0 flex-col overflow-hidden rounded-[18px] px-6 py-6">
+            <p class="text-muted-foreground font-mono text-[11px] leading-[1.5] tracking-[0.16em] uppercase">Net gelir</p>
+            <p class="font-mono text-2xl font-semibold tracking-tight tabular-nums">$2,904.00</p>
+            <p class="mt-1 font-mono text-xs font-medium tabular-nums text-[var(--positive)]">↑ %12.0 <span class="text-muted-foreground font-normal">geçen ay</span></p>
+          </div>
+          <div class="nm-raised relative flex h-full min-w-0 flex-col overflow-hidden rounded-[18px] px-6 py-6">
+            <p class="text-muted-foreground font-mono text-[11px] leading-[1.5] tracking-[0.16em] uppercase">Altın maliyeti</p>
+            <p class="font-mono text-2xl font-semibold tracking-tight tabular-nums">$1,507.50</p>
+            <p id="neg" class="mt-1 font-mono text-xs font-medium tabular-nums text-[var(--negative)]">↓ %4.0 <span class="text-muted-foreground font-normal">geçen ay</span></p>
+          </div>
+          <div class="nm-raised relative flex h-full min-w-0 flex-col overflow-hidden rounded-[18px] px-6 py-6">
+            <p class="text-muted-foreground font-mono text-[11px] leading-[1.5] tracking-[0.16em] uppercase">Net kâr</p>
+            <p id="gold-text" class="font-mono text-2xl font-semibold tracking-tight tabular-nums text-[color:var(--gold-deep)]">$520.50</p>
+            <p class="mt-1 font-mono text-xs font-medium tabular-nums text-[var(--positive)]">↑ %21.0 <span class="text-muted-foreground font-normal">geçen ay</span></p>
+          </div>
+          <div class="nm-raised relative flex h-full min-w-0 flex-col overflow-hidden rounded-[18px] px-6 py-6">
+            <p class="text-muted-foreground font-mono text-[11px] leading-[1.5] tracking-[0.16em] uppercase">Marj</p>
+            <p class="font-mono text-2xl font-semibold tracking-tight tabular-nums text-[var(--positive)]">%17,9</p>
+            <p class="text-muted-foreground mt-1 text-xs">Etsy ücreti ve etiket düşülmüş</p>
+          </div>
+        </div>
+
+        <div id="card" data-slot="card" class="text-card-foreground relative flex flex-col gap-7 rounded-[1.75rem] border py-7 [background-color:var(--glass)] [background-image:var(--glass-sheen)] [border-color:var(--glass-border)] [backdrop-filter:var(--glass-filter)] shadow-[var(--lift-natural),var(--glass-highlight)]">
+          <div class="px-7"><div class="leading-none font-semibold tracking-tight">Satılan kalemler</div><div class="text-muted-foreground text-sm mt-1.5">Sayılar sağda, ilk kolon sabit, tek ince ayraç.</div></div>
+          <div class="px-7">
+            <div class="mb-4 flex flex-wrap items-center gap-3">
+              <input id="input" placeholder="Ürün, SKU veya sipariş ara" class="placeholder:text-muted-foreground nm-pressed bg-background flex h-10 w-full max-w-xs min-w-0 rounded-full border border-[color:var(--hairline)] px-4 py-1 text-base md:text-sm outline-none" />
+              <span class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium border-transparent bg-primary/15 text-primary shadow-[var(--glass-highlight)]">Maliyeti eksik · 3</span>
+              <span class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium text-foreground">İade · 1</span>
+            </div>
+            <div id="well" class="table-well">
+              <div class="relative w-full overflow-x-auto"><table class="w-full caption-bottom text-sm">
+                <thead class="[&_tr]:border-b [&_tr]:border-[color:var(--hairline)]"><tr>
+                  <th id="th" class="text-muted-foreground h-10 px-2 text-left align-middle font-mono text-[11px] font-medium tracking-[0.16em] uppercase whitespace-nowrap">Ürün</th>
+                  <th class="text-muted-foreground h-10 px-2 text-left align-middle font-mono text-[11px] font-medium tracking-[0.16em] uppercase">Tarih</th>
+                  <th class="text-muted-foreground h-10 px-2 text-right align-middle font-mono text-[11px] font-medium tracking-[0.16em] uppercase">Adet</th>
+                  <th class="text-muted-foreground h-10 px-2 text-right align-middle font-mono text-[11px] font-medium tracking-[0.16em] uppercase">Net gelir</th>
+                  <th class="text-muted-foreground h-10 px-2 text-right align-middle font-mono text-[11px] font-medium tracking-[0.16em] uppercase">Altın</th>
+                  <th class="text-muted-foreground h-10 px-2 text-right align-middle font-mono text-[11px] font-medium tracking-[0.16em] uppercase">İşçilik</th>
+                  <th class="text-muted-foreground h-10 px-2 text-right align-middle font-mono text-[11px] font-medium tracking-[0.16em] uppercase">Net kâr</th>
+                  <th class="text-muted-foreground h-10 px-2 text-right align-middle font-mono text-[11px] font-medium tracking-[0.16em] uppercase">Marj</th>
+                </tr></thead>
+                <tbody class="[&_tr:last-child]:border-0">
+                  <tr class="border-b hover:bg-accent/30"><td class="p-2 align-middle font-medium">Heart Nugget Ring 14K</td><td class="p-2 text-muted-foreground">03 Kas</td><td class="p-2 text-right tabular-nums">1</td><td class="p-2 text-right tabular-nums">$412.00</td><td class="p-2 text-right tabular-nums">$186.50</td><td class="p-2 text-right tabular-nums"><span class="nm-pressed inline-block rounded-lg px-2 py-0.5">$74.00</span></td><td class="p-2 text-right tabular-nums font-semibold text-[var(--positive)]">$102.50</td><td class="p-2 text-right tabular-nums">24,9%</td></tr>
+                  <tr class="border-b"><td class="p-2 font-medium">Cuban Link Chain 10K 20in</td><td class="p-2 text-muted-foreground">02 Kas</td><td class="p-2 text-right tabular-nums">1</td><td class="p-2 text-right tabular-nums">$1,289.00</td><td class="p-2 text-right tabular-nums">$712.00</td><td class="p-2 text-right tabular-nums"><span class="nm-pressed inline-block rounded-lg px-2 py-0.5">$130.00</span></td><td class="p-2 text-right tabular-nums font-semibold text-[var(--positive)]">$284.00</td><td class="p-2 text-right tabular-nums">22,0%</td></tr>
+                  <tr class="border-b"><td class="p-2 font-medium">Twin Seeds Band 18K</td><td class="p-2 text-muted-foreground">01 Kas</td><td class="p-2 text-right tabular-nums">2</td><td class="p-2 text-right tabular-nums">$964.00</td><td class="p-2 text-right tabular-nums">$518.00</td><td class="p-2 text-right tabular-nums"><span class="nm-pressed inline-block rounded-lg px-2 py-0.5">$150.00</span></td><td class="p-2 text-right tabular-nums font-semibold text-[var(--positive)]">$152.00</td><td class="p-2 text-right tabular-nums">15,8%</td></tr>
+                  <tr class="border-b"><td class="p-2 font-medium">Evil Eye Pendant 14K</td><td class="p-2 text-muted-foreground">31 Eki</td><td class="p-2 text-right tabular-nums">1</td><td class="p-2 text-right tabular-nums">$239.00</td><td class="p-2 text-right tabular-nums">$91.00</td><td class="p-2 text-right tabular-nums"><span class="nm-pressed inline-block rounded-lg px-2 py-0.5">$60.00</span></td><td class="p-2 text-right tabular-nums font-semibold text-[var(--negative)]">-$18.00</td><td class="p-2 text-right tabular-nums">-7,5%</td></tr>
+                </tbody>
+              </table></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

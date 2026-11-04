@@ -31,7 +31,7 @@ function ArtifactMark({ className }: { className?: string }) {
     <AmulettaMark
       className={cn(
         "text-primary drop-shadow-[0_1px_2px_rgb(91_76_196/0.25)]",
-        "dark:drop-shadow-[0_0_10px_rgb(169_155_255/0.35)]",
+        "dark:drop-shadow-[0_0_10px_oklch(0.82_0.13_88/0.35)]",
         className,
       )}
     />

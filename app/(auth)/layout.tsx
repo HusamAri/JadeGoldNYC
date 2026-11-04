@@ -9,8 +9,6 @@ export default function AuthLayout({
        negatif z katmanlarını bu bağlamda hapseder; sağdaki cam form kartı
        bu ortamın ÜSTÜNDE yüzer — cam hiçbir zaman düz opak kutu değildir. */
     <div className="bg-background relative isolate min-h-svh">
-      <div aria-hidden className="holo-drift" />
-      <div aria-hidden className="lux-grain" />
       {children}
     </div>
   );
