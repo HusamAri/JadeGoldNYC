@@ -26,3 +26,8 @@ Decisions: Christmas collection (35) kept as is (seasonal buyer phrase); vibe ta
 Open: owner decision on rebuilding the 10 word-salad sets from the 10-21 matrix / silver generator; 18 Nov: the 13 owner-edited listings still carry 25 dead slots.
 Next action: 21 Nov 2026 read as planned; count the 10-22 title pass, 25 Oct ad narrowing and this tag pass as one package.
 Context: baseline 518 visits / 12 Etsy Search visits / 1 order (30d to 21 Oct); re-running the pass is safe (`already`).
+
+## 2026-11-04 (Claude Code, word-salad tag sets rebuilt)
+Done: the 10 listings whose 13 tags were an external tool's word salad (6 gold, 4 silver) rebuilt from the 10-21 researched sets (dead slots replaced by the 11-03 ladder) and the silver generator sets; `?pass=rebuild-2026-11-03`, dry 10/10, apply 10/10 read back, fresh-token re-read 10/10 already, audit 10, panel seal e344c0ce…. Titles untouched.
+Open: 13 owner-edited listings still carry 25 dead slots (owner's call); vibe tags until 21 Nov.
+Next action: 21 Nov read as planned.

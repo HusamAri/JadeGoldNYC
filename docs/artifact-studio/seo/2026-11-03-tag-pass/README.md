@@ -52,3 +52,11 @@ tag (11-03) geçişleri ile 25 Ekim reklam daraltması aynı paketin parçası s
   salata 6, gümüş 1).
 - Token: 40 basıldı, 39 kullanıldı (13 kuru + 13 apply + 13 verify), 1 yakıldı.
 - İkinci koşu ön koşulu: canlı tags mührü zaten `df722568…` ise iş yapılmıştır; rota da 125'i `already` döner.
+
+## Yeniden kurulum (rebuild-2026-11-03, 2026-11-04 08:48 UTC, uygulandı)
+- 10 kelime-salatası seti (6 altın + 4 gümüş) `?pass=rebuild-2026-11-03` ile kuruldu: kuru 10/10 `dry`,
+  apply 10/10 aynı turda geri okundu, taze token'la bağımsız okuma 10/10 `already`; başlık dokunulmadı.
+- Audit `etsy.seo_push` "SEO matrisi (rebuild-2026-11-03)": 10 satır, 10 "read-back doğrulandı".
+- Panel aynası mührü (10 ürün) = üreteçten beklenen `e344c0ced3e6b59940dab16405db8d4b`; 10/10 sette ≥9 ürün adlı tag.
+- Not: ilk 6 token deploy beklerken (handover-atlas kuyruğu, 11 saat) 4 saatlik ömrünü doldurdu, 401; 6 yenisi
+  basıldı, 3 kullanıldı, 3 yakıldı. Token ömrü deploy süresinden uzun seçilmeli ya da deploy sonrası basılmalı.
