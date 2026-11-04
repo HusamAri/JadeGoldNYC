@@ -78,7 +78,8 @@ US 13'te bile ≥ $50 kapısı tutuyor; yine de üreticiye "$550 US 4-10 için t
 ## Karar ve yapım (2026-11-04 akşamı)
 Sahip: **liste $1.200 → %25 vitrin → $900**; v1 = 14K, 3 renk, yarım tur, US 4–10 tek fiyat.
 Panel taslağı `0175_eon_lab_grown_dsp.sql` ile açıldı (canlıda `0173_eon_lab_grown_dsp` adıyla uygulandı) (EON-DSP, 39 varyant, mühür
-`93cbbc41e4f3cd1e28d8d41db67e1ac4`); Etsy itişi `draftTransfer: hold` ile fotoğraf gelene kadar tutuluyor.
+`93cbbc41e4f3cd1e28d8d41db67e1ac4`). Aynı akşam sahip "bu wedding band değil" dedi: başlık "Diamond Band",
+protokol `ring_band` (Jewelry > Rings > Bands); galeri sahibin panelden yüklediği 8 kare (README).
 Ayrıntı ve açık sorular: `README.md`.
 
 Okuma notu: üreticinin düz bant formülü DOLU 2,75 × 2,50 profilde 5,48 g × $100 = $548 verir ve

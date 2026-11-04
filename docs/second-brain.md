@@ -1903,6 +1903,19 @@ repodaki hedefidir.
   değildir, desenin TARİHİ sonraki bir sahip kararından eskiyse örnek bayattır; metni koda değil
   kapıya karşı sına. Aynı turda alt metin görsele karşı okundu: iki karede yön yanlıştı (07'de taşlar
   kameraya bakıyor, 04 yüzden bakış) ve bir karede taş sayısı ürünle çelişiyor (11 vs 13), blocker yazıldı.
+  **Güçlendirme-2 (aynı akşam) — protokol id'si PROD'da yoksa veride beyan etmek hatayı ertelemekten
+  ibarettir; ve "hold" yalnız onu okuyan yolu durdurur:** Taslağa yalnız PR'da duran `diamond_band`
+  id'sini yazmıştım. Sahip panelden "Etsy'ye gönder"e basınca prod tanımadığı id'yi `product_type =
+  ring`'e düşürdü ve alyans kuralı "her varyant Width ve Ring Size" hatasıyla durdu (2026-10-18 E4
+  dersinin aynısı; Etsy'ye yazılmadı, doğrulama create'ten önce). `draftTransfer: hold` da korumadı:
+  onu yalnız `ops/drafts-push` okuyor, panel butonu okumuyor. Çözüm yeni protokol değil, canlıda ZATEN
+  var olan `ring_band` oldu (sahip "bu wedding band değil" dedi; Bands 1232), tek satırlık koşullu
+  UPDATE, merge beklemeden. Aynı turda sahibin kendi yüklediği 8 görsel galeri migration'ımı gereksiz
+  kıldı (uygulasaydım çift galeri) ve `image_url` ilk yüklenen yazılı kareyi kapak yapıyordu; push önce
+  `image_url`'i yükler. Kural: (1) veriye yazdığın her kayıt-defteri id'si (protokol, bölüm, taksonomi)
+  bugün PROD'da çözülmeli, PR'da değil; (2) bir "tutma" bayrağı koymadan önce o kaydı hangi yolların
+  okuduğunu say, okumayan yol için bayrak yok hükmündedir; (3) sahibe dokunulan bir kaydı yazmadan
+  önce audit_log'dan son değişikliği oku, ve koşullu UPDATE ile yalnız beklediğin hâldeyse yaz.
 
 ## Ürün/UX dersleri
 

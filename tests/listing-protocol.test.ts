@@ -614,37 +614,26 @@ test("chain necklace resolves to Jewelry > Necklaces > Chains 1221, not the craf
   assert.equal(validateVariationAxes(spec!, grid), null);
 });
 
-test("lab-grown diamond band: Metal Color x Ring Size without Width, same node as plain wedding bands, no engraving (2026-11-04, EON DSP)", async () => {
-  // products.product_type check kısıtı "diamond_band" kabul etmez: satır 'ring' kalır,
-  // protokol metadata ile beyan edilir (Double Leaf stacking_ring deseni).
-  const spec = resolveListingProtocol({ product_type: "ring", listing_metadata: { listingProtocol: "diamond_band" } });
-  assert.equal(spec?.id, "diamond_band");
-  // Bare 'ring' rows keep the plain wedding-band contract: nothing else moved.
-  assert.equal(resolveListingProtocol({ product_type: "ring" })?.id, "wedding_band");
-  assert.equal(resolveListingProtocol({ product_type: "diamond_band" }), null);
-  assert.deepEqual(spec?.requiredVariationAxes, ["Ring Size"]);
+test("lab-grown diamond band EON-DSP is a band, not a wedding band: ring_band accepts Metal Color x Ring Size (2026-11-04)", async () => {
+  // Vaka: panel push "Wedding band listinglerinde her varyant Width ve Ring Size içermelidir."
+  // Kök neden: metadata yalnız PR'da olan "diamond_band" id'sini taşıyordu; prod'da tanımsız id
+  // product_type 'ring'e düştü ve alyans kuralı (Width zorunlu) uygulandı. Sahip: "bu wedding band
+  // değil". Çözüm canlıda zaten var olan ring_band (Jewelry > Rings > Bands 1232).
+  const undeployed = resolveListingProtocol({ product_type: "ring", listing_metadata: { listingProtocol: "diamond_band" } });
+  assert.equal(undeployed?.id, "wedding_band");
+  const spec = resolveListingProtocol({ product_type: "ring", listing_metadata: { listingProtocol: "ring_band" } });
+  assert.equal(spec?.id, "ring_band");
+  assert.deepEqual(spec?.requiredVariationAxes, []);
   assert.equal(spec?.personalization, null);
-  assert.equal(spec?.taxonomyRoot, undefined);
-  assert.deepEqual(spec?.taxonomyNames, LISTING_PROTOCOLS.wedding_band.taxonomyNames);
-  assert.deepEqual(spec?.parcel, LISTING_PROTOCOLS.wedding_band.parcel);
-  // Resolves to the same node as the plain wedding bands (fixture 11), not "Bands" 1232.
   const r = await resolveTaxonomyIdForProtocol(fakeClient(), spec!);
-  const w = await resolveTaxonomyIdForProtocol(fakeClient(), LISTING_PROTOCOLS.wedding_band);
-  assert.deepEqual(r, w);
-  assert.equal(r.ok && r.taxonomyId, 11);
-  // Panel grid (migration 0175): 3 colours x 13 sizes, one price, no Width axis.
+  assert.deepEqual(r, { ok: true, taxonomyId: 1232 });
+  // Live panel grid (migration 0175): 3 colours x 13 sizes, one price, no Width axis.
   const grid: DraftVariant[] = [
     { sku: "EON-DSP-14K-YG-US040", properties: { "Metal Color": "Yellow Gold", "Ring Size": "US 4" }, price_cents: 120000, quantity: 20 },
     { sku: "EON-DSP-14K-WG-US070", properties: { "Metal Color": "White Gold", "Ring Size": "US 7" }, price_cents: 120000, quantity: 20 },
     { sku: "EON-DSP-14K-RG-US100", properties: { "Metal Color": "Rose Gold", "Ring Size": "US 10" }, price_cents: 120000, quantity: 20 },
   ];
   assert.equal(validateVariationAxes(spec!, grid), null);
-  // The plain wedding-band contract rejects the same grid (no Width): that is why the protocol exists.
-  assert.match(validateVariationAxes(LISTING_PROTOCOLS.wedding_band, grid) ?? "", /Width ve Ring Size/);
-  // Ring Size must be present and vary: a colour-only grid is refused.
-  const colourOnly: DraftVariant[] = [
-    { sku: "EON-DSP-14K-YG", properties: { "Metal Color": "Yellow Gold" }, price_cents: 120000, quantity: 20 },
-    { sku: "EON-DSP-14K-WG", properties: { "Metal Color": "White Gold" }, price_cents: 120000, quantity: 20 },
-  ];
-  assert.match(validateVariationAxes(spec!, colourOnly) ?? "", /Ring Size/);
+  // The exact error the owner saw, reproduced on the fallback contract.
+  assert.match(validateVariationAxes(undeployed!, grid) ?? "", /Width ve Ring Size/);
 });

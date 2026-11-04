@@ -11,8 +11,8 @@ Studio'nun üreticisiyle aynı: 14K bant = gram × $100 işçilik dahil, ek kale
   yarım tur 13 taş ≈ 0,78 ct, **her beden tek fiyat**. 18K / dörtte üç tur / platin yeni teklif ister.
 - Panel taslağı: `supabase/migrations/0175_eon_lab_grown_dsp.sql` (canlıda MCP adı `0173_eon_lab_grown_dsp`; main'de 0173/0174 başkasına ait, dosya 0175'e taşındı; üreteç
   `scripts/eon/gen_lab_grown_dsp_migration.mjs`, girdi `01-double-shared-prong/listing.json`).
-  Ürün `EON-DSP` (`product_type = 'ring'`, protokol `listing_metadata.listingProtocol = diamond_band`;
-  `products.product_type` kısıtı yeni tip kabul etmez), 39 varyant `EON-DSP-14K-{YG,WG,RG}-US040..100`,
+  Ürün `EON-DSP` (`product_type = 'ring'`, protokol `listing_metadata.listingProtocol = ring_band`),
+  39 varyant `EON-DSP-14K-{YG,WG,RG}-US040..100`,
   taş künyesi `products.stone_*` + `product_variants.stone_carat/stone_cost_cents` (`manual`, teklifin
   içinde ayrıştırılmamış ~$6/taş). Gram geometriden (`estimated`, US4 3,87 g → US10 4,95 g).
 - Mühür: `93cbbc41e4f3cd1e28d8d41db67e1ac4`
@@ -21,24 +21,24 @@ Studio'nun üreticisiyle aynı: 14K bant = gram × $100 işçilik dahil, ek kale
     ||price_cents||'|'||to_char(weight_grams,'FM990.00'), E'\n' order by sku collate "C"))
   from product_variants where sku like 'EON-DSP-%';
   ```
-- Etsy protokolü `diamond_band` (`lib/etsy/listing-protocol.ts`): taksonomi alyansla aynı
-  ("Wedding Bands"), zorunlu eksen yalnız Ring Size, gravür yok. Test `tests/listing-protocol.test.ts`.
+- **Sınıf: bant, alyans DEĞİL (sahip, 2026-11-04).** Protokol `ring_band` (canlıda var olan kayıt,
+  Jewelry > Rings > Bands 1232, zorunlu eksen yok, gravür yok). Başlık "14K Gold Lab Grown Diamond
+  Band, Double Shared Prong, Half Eternity, 2.75mm". Vaka: ilk sürüm yalnız bu PR'da duran
+  `diamond_band` id'sini taşıyordu; prod tanımadığı id'yi `product_type = ring`'e düşürdü ve alyans
+  kuralı panel push'unu "her varyant Width ve Ring Size içermelidir" ile durdurdu (Etsy'ye yazılmadı).
+  Düzeltme canlıda tek satır UPDATE (koşullu, audit_log), regresyon `tests/listing-protocol.test.ts`.
 - Panelde: **Listing Önerileri > Panel Taslakları** (EON seçiliyken), satır linki
   `/tasarimlar/listing/f0896e3c-7127-4c89-815d-b9344810d6e1`.
-- **Galeri (sahip, 2026-11-04):** 10 görsel `public/eon/lab-grown-dsp/` (PNG 1448×1086 → JPEG q92,
-  meta veri sökülü). Bağlama `0176_eon_lab_grown_dsp_gallery.sql` (üreteç
-  `scripts/eon/gen_lab_grown_dsp_gallery_migration.mjs`): listing_images 10 satır + image_url +
-  `listing_metadata.gallery`; **açıklamaya dokunmaz** (kamuya açık AI/görsel beyanı yok, sahip kuralı
-  2026-10-27/31; 29 metin `publicTextProblem` ile 0 sorun). **0176 ancak PR merge olup prod
-  `/eon/lab-grown-dsp/` adreslerini 10/10 `200` verince uygulanır**; önce uygulanırsa panel 10 kırık
-  görsel gösterir (2026-09-25 dersi).
-- Görsel QA: ölçü kareleri 2,50 mm / 2,75 mm listing'le aynı; kapak yazısız; "LAB-GROWN DIAMONDS"
-  niteleyicili. Bulgu: yüzden bakış karesi (04) **11 taş** gösteriyor, ürün 13; tüm kareler sarı altın.
-- **Etsy itişi TUTULUYOR:** `draftTransfer = hold`. Taslak itişi sahibin onayıyla açılabilir (galeri
-  hazır); **yayına alma** için en az bir gerçek, düzenlenmemiş ürün fotoğrafı şart ve AI kare ilk
-  fotoğraf olamaz (playbook 01/04). Sıra: merge → 10/10 `200` → 0176 → hold'u sil → kuru koşuda
-  `protocol: diamond_band` → `ops/drafts-push` (org EON, önek `EON-DSP`) kuru → kanarya →
-  `verify=1` taze token.
+- **Galeri = sahibin panel yüklemesi** (2026-11-04 19:25–19:27, Supabase storage): 10 karenin 8'i
+  (01, 02, 03, 04, 06, 08, 09, 10; 05 ve 07 yüklenmedi), MD5 ile eşlendi. Kapak düzeltmesi:
+  `products.image_url` ilk yüklenen 09'u (yazılı) gösteriyordu ve push önce onu yükler; galeri sırası
+  0'daki 01'e (yazısız) çekildi. Repo kopyası ve galeri migration'ı tutulmadı (çift görsel olurdu).
+- Görsel QA: ölçü kareleri 2,50 mm / 2,75 mm listing'le aynı; "LAB-GROWN DIAMONDS" niteleyicili.
+  Bulgu: yüzden bakış karesi (04) **11 taş** gösteriyor, ürün 13; tüm kareler sarı altın.
+  Açıklamada AI/görsel beyanı yok (sahip kuralı 2026-10-27/31; `publicTextProblem` 0 sorun).
+- **Etsy:** panel "Etsy'ye gönder" TASLAK açar (sahibin eylemi). `draftTransfer` hold'u yalnız
+  `ops/drafts-push`'u bağlar, panel butonu onu okumaz. **Yayına alma** için en az bir gerçek,
+  düzenlenmemiş ürün fotoğrafı şart; AI kare ilk fotoğraf olamaz (playbook 01/04).
 
 ## Üreticiye açık sorular (cevap gelmeden Etsy'ye çıkmaz)
 1. $550, US 4–10 için tek fiyat mı? (not "örn. size 7" diyor; US10'da altın +$42.)
