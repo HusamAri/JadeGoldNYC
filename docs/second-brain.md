@@ -1818,6 +1818,21 @@ repodaki hedefidir.
   bakar; "for him and her" ile "Mens" aynı sınıf değildir. Teknik not: Next 16 prod deploy'unu
   kimliksiz izlemek için `/login` sayfasının içerik-hash'li chunk adları yeterli (buildManifest yolu yok).
 
+- **Üreticinin kendi gram formülü teklifi okur, ama HANGİ gramla okuduğuna bak: dolu profil ile yuvalı
+  profil iki farklı cevabı "doğrular" (2026-11-04, EON lab-grown Double Shared Prong):** Not "14K 550$,
+  taş takma 4$" diyordu; iki okuma (her şey dahil / taş ve takma ayrı) alıcı fiyatını $80–205 oynatıyordu.
+  Sormadan önce üç kanıt kuruldu. (1) Üreticinin dokümante formülü (`maker_cost.py list_g14`): referansın
+  2,75 × 2,50 mm profili US7'de **5,48 g × $100 = $548** — tam $550, yani "yalnız altın+işçilik" okumasına
+  davet eder. (2) Ama taşlı bantta yuvalar metal alır; yuvalı gram ~4,4 g → üreticinin $/g'siyle $441,
+  + 0,78 ct melee ~$80 + takma 13 × $4 = **$573 ≈ $550**, her şey dahil. (3) EON motoru her şey dahil
+  okumayla $900 verdi, doğrudan rakip $945. Kural: bir formül tutuyorsa fiziksel varsayımını (yuva var mı,
+  profil dolu mu) açıkça yaz; iki okuma da "tutuyorsa" üçüncü bağımsız çapa (piyasa fiyatı) karar verir ve
+  teyit sorusu yine de veriye yazılır (`approval.blockers`), sözle bırakılmaz. Yapımda üç kapı işe yaradı:
+  FTC §23.25 için üreteçte regex kapısı (her "diamond" lab niteleyicisinin hemen ardında; "AI" kelime
+  sınırı olmadan "against"i yakaladı, `\b` şart); `products.product_type` check kısıtı yeni tipi reddetti
+  → satır `ring`, protokol metadata ile beyan (stacking_ring deseni), tip eşlemesi bilerek yazılmadı;
+  gerçek fotoğraf yokken Etsy itişi `draftTransfer: hold` ile VERİDE tutuldu, metinde görsel beyanı yok.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması

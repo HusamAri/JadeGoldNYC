@@ -68,7 +68,8 @@ export type ListingProtocolId =
   | "stick_pin"
   | "shawl_pin"
   | "ring_band"
-  | "chain_necklace";
+  | "chain_necklace"
+  | "diamond_band";
 
 export interface ParcelSpec {
   weight: number;
@@ -163,6 +164,20 @@ export const LISTING_PROTOCOLS: Record<ListingProtocolId, ListingProtocolSpec> =
     taxonomyNames: ["Wedding Bands", "Rings"],
     requiredVariationAxes: ["Width", "Ring Size"],
     personalization: DEFAULT_PERSONALIZATION_QUESTIONS,
+    parcel: RING_PARCEL,
+  },
+  // Taşlı (lab-grown pırlanta) alyans, EON'un ilk pırlantalı listing'i (2026-11-04,
+  // Double Shared Prong). Alyans protokolü Width eksenini ZORUNLU tutar; taşlı bantta
+  // genişlik sabittir (2,75 mm), eksen Metal Color x Ring Size. Taksonomi adları
+  // alyansla BİREBİR aynı (kök iddiası yok): "Wedding Bands" canlıda kanıtlı çözülüyor,
+  // "Bands" (1232) alyans aramasından düşürürdü. İç gravür vaat edilmez
+  // (prong'lu bantta iç alan üreticiyle doğrulanmadı).
+  diamond_band: {
+    id: "diamond_band",
+    label: "Diamond band",
+    taxonomyNames: ["Wedding Bands", "Rings"],
+    requiredVariationAxes: ["Ring Size"],
+    personalization: null,
     parcel: RING_PARCEL,
   },
   signet_ring: {
@@ -362,6 +377,10 @@ const PRODUCT_TYPE_PROTOCOL: Record<string, ListingProtocolId> = {
   sculptural_ring: "sculptural_ring",
   stacking_ring: "stacking_ring",
   fixed_date_ring: "fixed_date_ring",
+  // diamond_band: `products.product_type` check kısıtı yalnız ring/necklace/bracelet/
+  // earrings/pendant/anklet/brooch/other kabul eder; taşlı bant `product_type = 'ring'`
+  // ile durur ve protokolü `listing_metadata.listingProtocol` ile AÇIKÇA beyan eder
+  // (stacking_ring / signet_ring deseniyle aynı). Tip eşlemesi bilerek yok.
   necklace: "pendant_necklace",
   pendant: "pendant_necklace",
   bracelet: "chain_bracelet",
