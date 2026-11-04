@@ -2,7 +2,7 @@
 
 _2026-11-04 · Excel "etsy-satis-maliyet-takip" yüzeyinin panel karşılığı
 (`/satislar/maliyet`, satış detayı, listing detayı "Satışlar & maliyet tarihçesi").
-Migration `0138_sale_item_pnl.sql`, görünüm `sale_item_pnl`._
+Migration `0174_sale_item_pnl.sql`, görünüm `sale_item_pnl`._
 
 ## Ne yapar
 

@@ -25,7 +25,7 @@ export interface EtsyTransaction {
   price?: EtsyMoney;
   listing_id?: number;
   product_id?: number;
-  // 2026-11 (0138): kalem seviyesindeki kalan alanlar — kalem K/Z + etiket
+  // 2026-11 (0174): kalem seviyesindeki kalan alanlar — kalem K/Z + etiket
   // bağlama (shipped_timestamp ↔ ledger etiket anı) için.
   shipping_cost?: EtsyMoney;
   is_digital?: boolean;

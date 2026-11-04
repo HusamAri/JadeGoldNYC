@@ -2485,7 +2485,7 @@ repodaki hedefidir.
   hesabına Etsy ücretini VARSAYIMLA değil ledger'dan ölç (burada %11,7).
 - **Sipariş-başı bağ + aylık özet aynı parayı iki kez saymasın: bağlananı
   özetten DÜŞ, büyük geri doldurmayı görünümde türet (2026-11):** Kargo
-  etiketlerini siparişe bağlarken (0138) aylık "Etsy kargo (YYYY-MM)" satırı
+  etiketlerini siparişe bağlarken (0174) aylık "Etsy kargo (YYYY-MM)" satırı
   zaten aynı ledger kaydını topluyordu → `costs.external_key` ile bağlanan
   kayıt aylık rebuild'den `not exists` ile çıkarıldı; sıra kritik (önce bağla,
   sonra aylık). İkinci tuzak: 16k motor satırına `cost_kind` backfill UPDATE'i

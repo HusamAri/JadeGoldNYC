@@ -137,7 +137,7 @@ export default async function ListingDetayPage({
       : Promise.resolve(new Map<number, ListingViewsTrend>()),
     // Fiyat itiş butonu için Etsy yazma izni.
     getEtsyWriteAccess(m.org_id),
-    // Satış kalemleri + birim maliyet tarihçesi (0138).
+    // Satış kalemleri + birim maliyet tarihçesi (0174).
     getProductCostHistory(m.org_id, product.id),
   ]);
 

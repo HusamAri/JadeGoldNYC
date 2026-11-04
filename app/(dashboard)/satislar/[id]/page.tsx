@@ -77,7 +77,7 @@ export default async function SatisDetayPage({
   const currency = sale.currency;
   const netCents = sale.grand_total_cents - sale.etsy_fees_cents;
 
-  // Kalem K/Z + Etsy iade/gönderi aynaları + bağlı maliyetler (0138) —
+  // Kalem K/Z + Etsy iade/gönderi aynaları + bağlı maliyetler (0174) —
   // birbirinden bağımsız, tek turda paralel.
   const m = await requireMembership();
   const canEdit = isManager(m.role);
@@ -244,7 +244,7 @@ export default async function SatisDetayPage({
         </Card>
       </div>
 
-      {/* 0138 — Kalem başına tüm maliyetler + Etsy iade/gönderi + etiket bağlama. */}
+      {/* 0174 — Kalem başına tüm maliyetler + Etsy iade/gönderi + etiket bağlama. */}
       <SalePnlSection
         saleId={sale.id}
         items={pnlItems}

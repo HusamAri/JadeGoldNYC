@@ -580,7 +580,7 @@ export async function upsertSalesPage(
       discount_cents: etsyMoneyToCents(r.discount_amt),
       grand_total_cents: etsyMoneyToCents(r.grandtotal),
       currency: r.grandtotal?.currency_code ?? "USD",
-      // 0138 — receipt'in kalan alanları (Etsy'de ne varsa panelde de olsun).
+      // 0174 — receipt'in kalan alanları (Etsy'de ne varsa panelde de olsun).
       refunded_cents: refundedCents,
       refund_count: refunds.length,
       last_refund_at: lastRefundTs != null ? tsToIso(lastRefundTs) : null,
@@ -653,7 +653,7 @@ export async function upsertSalesPage(
       unit_price_cents: etsyMoneyToCents(t.price),
       line_total_cents: etsyMoneyToCents(t.price) * (t.quantity ?? 1),
       currency,
-      // 0138 — transaction'ın kalan alanları. shipped_at, ledger kargo
+      // 0174 — transaction'ın kalan alanları. shipped_at, ledger kargo
       // etiketini siparişe bağlayan zaman anahtarıdır (API bağ vermez).
       shipping_cost_cents: etsyMoneyToCents(t.shipping_cost),
       is_digital: t.is_digital ?? null,

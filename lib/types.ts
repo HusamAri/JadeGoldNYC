@@ -66,7 +66,7 @@ export interface Sale {
   created_by: string | null;
   created_at: string;
   updated_at: string;
-  // 0138 — Etsy receipt'in kalan alanları + iade özeti (kontra gelir).
+  // 0174 — Etsy receipt'in kalan alanları + iade özeti (kontra gelir).
   refunded_cents?: number;
   refund_count?: number;
   last_refund_at?: string | null;
@@ -101,7 +101,7 @@ export interface SaleItem {
   line_total_cents: number;
   currency: string;
   created_at: string;
-  // 0138 — transaction'ın kalan alanları + iade/geri kazanım.
+  // 0174 — transaction'ın kalan alanları + iade/geri kazanım.
   etsy_listing_id?: number | null;
   shipping_cost_cents?: number;
   is_digital?: boolean | null;
@@ -118,7 +118,7 @@ export interface SaleItem {
   return_note?: string | null;
 }
 
-/** receipt.refunds[] aynası (0138). */
+/** receipt.refunds[] aynası (0174). */
 export interface SaleRefund {
   id: string;
   org_id: string;
@@ -132,7 +132,7 @@ export interface SaleRefund {
   created_at: string;
 }
 
-/** receipt.shipments[] aynası (0138). */
+/** receipt.shipments[] aynası (0174). */
 export interface SaleShipment {
   id: string;
   org_id: string;
@@ -145,7 +145,7 @@ export interface SaleShipment {
 }
 
 /**
- * Kalem-başı maliyet türü (0138). gold/labor/gem/packaging = COGS;
+ * Kalem-başı maliyet türü (0174). gold/labor/gem/packaging = COGS;
  * shipping_label/return_label/other = satış gideri.
  */
 export type CostKind =
@@ -190,9 +190,9 @@ export interface Cost {
   created_by: string | null;
   created_at: string;
   updated_at: string;
-  /** Kalem-başı maliyet türü (0138); NULL = türsüz (aylık özet vb.). */
+  /** Kalem-başı maliyet türü (0174); NULL = türsüz (aylık özet vb.). */
   cost_kind?: CostKind | null;
-  /** Dış kayıt anahtarı: "ledger:<entry_id>" | "ss:<shipment_id>" (0138). */
+  /** Dış kayıt anahtarı: "ledger:<entry_id>" | "ss:<shipment_id>" (0174). */
   external_key?: string | null;
   // join kolaylığı
   category?: CostCategory | null;

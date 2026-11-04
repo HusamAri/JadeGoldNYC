@@ -1,4 +1,4 @@
--- 0138 — Satış & Maliyet Takibi: kalem-başı maliyet türleri, iadeler, gönderiler,
+-- 0174 — Satış & Maliyet Takibi: kalem-başı maliyet türleri, iadeler, gönderiler,
 --        kargo etiketi bağlama ve kalem-başı kâr/zarar görünümü (sale_item_pnl)
 -- ---------------------------------------------------------------------------
 -- Amaç (kullanıcı talebi, Excel "etsy-satis-maliyet-takip" deseni): her satılan
@@ -766,7 +766,7 @@ item_costs as (
   from (
     select
       c.sale_item_id, c.source, c.amount_cents, c.cost_date,
-      -- Eski motor satırlarında (0138 öncesi) cost_kind boş: kategoriden türet.
+      -- Eski motor satırlarında (0174 öncesi) cost_kind boş: kategoriden türet.
       coalesce(
         c.cost_kind,
         case

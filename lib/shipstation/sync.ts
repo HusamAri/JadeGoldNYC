@@ -203,7 +203,7 @@ export async function advanceShipStationSync(
 
     // Türetilmiş veriler (idempotent, non-fatal): kalemler + müşteriler ham
     // siparişlerden, postaj maliyeti gönderilerden.
-    // Sıra kritik (0138): gönderiyi önce siparişe BAĞLA, sonra aylık özet —
+    // Sıra kritik (0174): gönderiyi önce siparişe BAĞLA, sonra aylık özet —
     // aylık rebuild bağlanan gönderileri toplamdan düşer (çift sayım yok).
     for (const fn of [
       "rebuild_shipstation_order_items",
