@@ -170,7 +170,9 @@ export function ChartDefs({
       </radialGradient>
       {/* Çizgi ışıması — koyuda çift drop-shadow (0 0 6px + 0 0 16px);
           açıkta flood'lar şeffaf → glow yok (yalnız uç noktada). */}
-      <filter id={`${id}-lglow`} x="-40%" y="-60%" width="180%" height="260%">
+      <filter id={`${id}-lglow`} x="-40%" y="-60%" width="180%" height="300%">
+        {/* Çizginin altına düşen yumuşak ambient (bölüm tonlu) + koyuda ışıma. */}
+        <feDropShadow dx="0" dy="5" stdDeviation="6" floodColor="var(--jg-bar-shadow)" floodOpacity="0.3" />
         <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor="var(--jg-lglow-a)" />
         <feDropShadow dx="0" dy="0" stdDeviation="8" floodColor="var(--jg-lglow-b)" />
       </filter>
@@ -178,21 +180,30 @@ export function ChartDefs({
       <filter id={`${id}-dotglow`} x="-120%" y="-120%" width="340%" height="340%">
         <feDropShadow dx="0" dy="0" stdDeviation="4" floodColor="var(--jg-dotglow)" />
       </filter>
-      {/* Vurgu sütunu: açıkta tonlu düşen gölge (0 4px 5px mor .5 — Spatial
-          "tinted shadows"); koyuda dış glow (0 0 16px 262/.3 — lume). */}
-      <filter id={`${id}-float`} x="-40%" y="-60%" width="180%" height="260%">
-        <feDropShadow dx="0" dy="4" stdDeviation="2.5" floodColor="var(--jg-bar-shadow)" />
-        <feDropShadow dx="0" dy="0" stdDeviation="8" floodColor="var(--jg-bar-glow)" />
+      {/* DOĞAL 3D GÖLGE (Amuletta 2.0): kontak (dy 1, sd 1) + ambient (dy 6,
+          sd 8), ikisi de bölüm tonuyla boyalı (--jg-bar-shadow = --nm-lo),
+          asla siyah; koyuda ayrıca altın dış ışıma. Grafik başına TEK filtre
+          (performans: blur maliyeti alan × yarıçap; animasyon yok). */}
+      <filter id={`${id}-float`} x="-40%" y="-60%" width="180%" height="300%">
+        <feDropShadow in="SourceGraphic" dx="0" dy="6" stdDeviation="8" floodColor="var(--jg-bar-shadow)" floodOpacity="0.42" result="ambient" />
+        <feDropShadow in="SourceGraphic" dx="0" dy="1" stdDeviation="1" floodColor="var(--jg-bar-shadow)" floodOpacity="0.6" result="contact" />
+        <feDropShadow in="SourceGraphic" dx="0" dy="0" stdDeviation="8" floodColor="var(--jg-bar-glow)" result="glow" />
+        <feMerge>
+          <feMergeNode in="ambient" />
+          <feMergeNode in="contact" />
+          <feMergeNode in="glow" />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
       </filter>
-      {/* Nötr sütun: yalnız hafif tonlu düşen gölge (koyuda kapalı). */}
-      <filter id={`${id}-drop`} x="-40%" y="-30%" width="180%" height="200%">
-        <feDropShadow
-          dx="0"
-          dy="4"
-          stdDeviation="3"
-          floodColor="var(--jg-bar-shadow)"
-          floodOpacity="0.6"
-        />
+      {/* Nötr sütun / dilim: aynı tarif, ışımasız. */}
+      <filter id={`${id}-drop`} x="-40%" y="-60%" width="180%" height="300%">
+        <feDropShadow in="SourceGraphic" dx="0" dy="5" stdDeviation="7" floodColor="var(--jg-bar-shadow)" floodOpacity="0.36" result="ambient" />
+        <feDropShadow in="SourceGraphic" dx="0" dy="1" stdDeviation="1" floodColor="var(--jg-bar-shadow)" floodOpacity="0.5" result="contact" />
+        <feMerge>
+          <feMergeNode in="ambient" />
+          <feMergeNode in="contact" />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
       </filter>
       {/* Havuz blur'u — lume ::after blur(7px) karşılığı. */}
       <filter id={`${id}-pool`} x="-60%" y="-60%" width="220%" height="220%">
@@ -676,7 +687,7 @@ export function CategoryPie({
             highlight, alt rim mor gölge. Düz halkayı içe kavisli bir silindir
             duvarı gibi okutur (3B derinlik). */}
         <div
-          className="absolute left-1/2 size-[204px] -translate-x-1/2 -translate-y-1/2 rounded-full [background-image:linear-gradient(to_bottom,rgba(255,255,255,.55),transparent_44%,rgba(56,38,106,.22))] [mask-image:radial-gradient(farthest-side,transparent_calc(100%_-_13px),#000_calc(100%_-_12px))] dark:[background-image:linear-gradient(to_bottom,rgba(210,218,255,.32),transparent_46%,rgba(0,0,0,.4))]"
+          className="absolute left-1/2 size-[204px] -translate-x-1/2 -translate-y-1/2 rounded-full [background-image:linear-gradient(to_bottom,rgba(255,255,255,.55),transparent_44%,oklch(from_var(--nm-lo)_l_c_h/.5))] [mask-image:radial-gradient(farthest-side,transparent_calc(100%_-_13px),#000_calc(100%_-_12px))] dark:[background-image:linear-gradient(to_bottom,oklch(1_0_0/.18),transparent_46%,rgba(0,0,0,.4))]"
           style={{ top: "calc(50% - 17px)" }}
         />
         {/* Tick halkası — açıkta repeating-conic (70,52,120/.5, .6°/15°);
@@ -689,11 +700,11 @@ export function CategoryPie({
           className="absolute left-1/2 size-[204px] -translate-x-1/2 -translate-y-1/2 [mask-image:linear-gradient(to_bottom,#000_0%,#000_40%,transparent_88%)]"
           style={{ top: "calc(50% - 17px)" }}
         >
-          <div className="size-full rounded-full [background-image:repeating-conic-gradient(from_-90deg,rgba(70,52,120,.5)_0deg_.6deg,transparent_.6deg_15deg)] [mask-image:radial-gradient(farthest-side,transparent_calc(100%_-_12px),#000_calc(100%_-_11px))] dark:[background-image:repeating-conic-gradient(from_-90deg,rgba(150,160,255,.45)_0deg_.9deg,transparent_.9deg_6deg)]" />
+          <div className="size-full rounded-full [background-image:repeating-conic-gradient(from_-90deg,oklch(from_var(--nm-lo)_l_c_h/.6)_0deg_.6deg,transparent_.6deg_15deg)] [mask-image:radial-gradient(farthest-side,transparent_calc(100%_-_12px),#000_calc(100%_-_11px))] dark:[background-image:repeating-conic-gradient(from_-90deg,oklch(0.82_0.13_88/.4)_0deg_.9deg,transparent_.9deg_6deg)]" />
         </div>
         {/* İç cam hub — radyal beyaz→cam + Spatial iç gölge çifti; koyuda sade
             lume yüzeyi (okuma kendisi ışır). */}
-        <div className="flex size-[118px] flex-col items-center justify-center rounded-full border border-[color:rgba(255,255,255,.7)] [background-image:radial-gradient(circle_at_40%_32%,#ffffff,var(--glass)_72%)] [backdrop-filter:var(--glass-filter-sm)] [box-shadow:inset_0_3px_7px_rgba(255,255,255,.8),inset_0_-8px_13px_rgba(56,38,106,.45),0_5px_9px_-3px_rgba(70,50,120,.4)] dark:border-[color:oklch(1_0_0/0.08)] dark:[background-color:oklch(1_0_0/0.04)] dark:[background-image:none] dark:[box-shadow:inset_0_1px_0_oklch(1_0_0/0.08)]">
+        <div className="flex size-[118px] flex-col items-center justify-center rounded-full border border-[color:rgba(255,255,255,.7)] [background-image:radial-gradient(circle_at_40%_32%,#ffffff,var(--glass)_72%)] [backdrop-filter:var(--glass-filter-sm)] [box-shadow:inset_0_3px_7px_rgba(255,255,255,.8),inset_0_-8px_13px_oklch(from_var(--nm-lo)_l_c_h/.55),0_5px_9px_-3px_oklch(from_var(--nm-lo)_l_c_h/.5)] dark:border-[color:oklch(1_0_0/0.08)] dark:[background-color:oklch(1_0_0/0.04)] dark:[background-image:none] dark:[box-shadow:inset_0_1px_0_oklch(1_0_0/0.08)]">
           <span className="text-muted-foreground text-[0.6rem] font-semibold tracking-[0.22em] uppercase [font-family:var(--font-index)]">
             Toplam
           </span>

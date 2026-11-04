@@ -1837,6 +1837,26 @@ repodaki hedefidir.
   üreteç kapısına kondu; (4) Hobby planda derlemeler sıralıdır, "Cloning"da 25 dk asılı kalan komşu proje
   derlemesi senin deploy'unu da bekletir; önceki yayın canlıda kaldığı için iptal güvenlidir.
 
+- **Türetilmiş CSS token'ı yalnız `:root`ta tanımlarsan bölüm tonu hiç değişmez; özel
+  özellikler var() ÇÖZÜLMÜŞ hâliyle miras alınır, bunu ancak ölçüm gösterir (2026-11-04,
+  Amuletta 2.0):** Beş editoryal tonu tek değişkenle kurdum: `[data-tone]` yalnız
+  `--surface`i değiştiriyor, gölge/cam/zemin token'ları `oklch(from var(--surface) …)` ile
+  türüyordu. Kod doğru görünüyordu, tsc ve lint temizdi. İlk Playwright ölçümü beş tonda
+  BİREBİR aynı zemini döndürdü: `--background: var(--surface)` :root'ta bir kez çözülüp
+  çözülmüş değer olarak miras alınıyor, çerçevedeki yeni `--surface` ona dokunmuyor.
+  Çözüm türetilmiş zinciri `:root, [data-tone]` seçicisinde bildirmek oldu; ikinci ölçüm
+  beş farklı zemin verdi. İkinci bulgu aynı ölçümden: koyu modun "yüzeyden bir tık açık"
+  kabartma başlığı 1,6:1 çıktı (eski temada da öyleydi, kimse ölçmemişti) ve 11,8:1'e
+  çekildi. Üçüncüsü: Next bu konteynerde çalışmıyor (SWC native binding yok), ama
+  tema CSS'i gerçek Tailwind v4 derleyicisiyle (`@tailwindcss/postcss`) tek başına derlenip
+  gerçek sınıf dizeleriyle kurulmuş statik bir harness Playwright'ta ölçülebiliyor; yorum
+  içindeki `*/` dizisinin CSS'i kırması da burada yakalandı, Vercel'de değil. Kural:
+  (1) tema/token işinde "kod doğru görünüyor" yetmez, computed renk ve kontrast ölçülür;
+  (2) bir CSS değişkenini başka bir değişkenden türetiyorsan ve türetme bir alt ağaçta
+  değişecekse türetilmiş zinciri o alt ağacın seçicisinde de bildir; (3) uygulama
+  çalışmıyorsa ölçüm vazgeçilmez, yalnız yüzeyi değişir: derleyiciyi ve bileşen sınıflarını
+  gerçek tutup veriyi sahte yap.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması

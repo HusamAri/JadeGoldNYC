@@ -74,6 +74,8 @@
   --nm-lo: oklch(from var(--surface) calc(l - 0.15) calc(c * 1.4) h);
   --background: var(--surface);
   --foreground: oklch(0.28 0.06 150);               /* 11,7:1 */
+  /* İkincil yüzey — hover yıkaması ve kuyu zemini (eski --surface-2 tüketicileri). */
+  --surface-2: oklch(from var(--surface) calc(l - 0.04) c h);
 
   --card: var(--surface);
   --card-foreground: var(--foreground);
@@ -247,6 +249,7 @@
   --nm-lo: oklch(from var(--surface) calc(l - 0.11) c h);
   --background: var(--surface);
   --foreground: oklch(0.94 0.02 120);               /* 12,5:1 */
+  --surface-2: oklch(from var(--surface) calc(l + 0.06) c h);
 
   --card: oklch(from var(--surface) calc(l + 0.025) c h);
   --card-foreground: var(--foreground);

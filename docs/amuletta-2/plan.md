@@ -57,7 +57,13 @@ PR'ında her kalem commit mesajında adlandırılır. `api/ops/*`, üç cron ve
   ikonu; aktif hücre kabarık, yazılınca inset.
 - Telefon: ilk kolon kilitli, seçilmiş alanlarla kart görünümü.
 
-## 4. Sıra
+## 4. Sıra ve durum (2026-11-04)
+
+Üçü de aynı dalda, ayrı commit'lerle bitti (PR #491): budama `5ca4375`,
+tema `fc395a3`, tablo/grafik/ana sayfa bu commit. Doğrulama Next yerine
+`scripts/theme-lab` (gerçek Tailwind derlemesi + Playwright kontrast ölçümü)
+ve Vercel preview ile yapıldı; `/dev/tema` rotası yalnız geliştirmede açılır.
+
 
 1. **Budama PR'ı** (inventory.md): rotalar, bileşenler, lib, api, env, nav,
    uyarı türleri, oturum popup'ı. Typecheck + lint + mevcut testler; Vercel
