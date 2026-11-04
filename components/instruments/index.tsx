@@ -91,7 +91,7 @@ export function Knob({
       role="img"
       aria-label={`${label}: ${readout}`}
     >
-      <div className={cn("knob", size === "sm" && "sm")} style={{ ["--deg" as string]: deg }}>
+      <div className={cn("knob", size === "sm" ? "sm mb-3" : "mb-4")} style={{ ["--deg" as string]: deg }}>
         <div className="ring" />
         <div className="mark" />
       </div>

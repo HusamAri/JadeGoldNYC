@@ -12,13 +12,13 @@ const badgeVariants = cva(
     variants: {
       variant: {
         /** Asit hap — tek vurgu (ödendi, +%, yeni). */
-        default: "border-transparent bg-neon text-foreground",
+        default: "border-transparent bg-neon text-[color:var(--neon-fg)]",
         /** Yumuşak çip — bezel yüzey, hafif kabartı (serpiştirilmiş neumorph). */
         secondary: "soft border-transparent text-foreground",
         destructive: "border-transparent bg-destructive text-white",
         /** Hairline çip. */
         outline: "border-[color:var(--rule)] text-ink-2 bg-transparent",
-        success: "border-transparent bg-neon/60 text-foreground",
+        success: "border-transparent bg-neon/70 text-[color:var(--neon-fg)]",
         warning: "border-[color:var(--negative)]/50 text-[color:var(--negative)] bg-transparent",
       },
     },

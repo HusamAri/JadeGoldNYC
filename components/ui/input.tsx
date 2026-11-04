@@ -14,8 +14,8 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
       className={cn(
         // V7: düz alan — sis zemini, hairline kenar, 10px köşe; odakta asit
         // mürekkep halka. Çukur/cam yok.
-        "file:text-foreground placeholder:text-muted-foreground selection:bg-neon selection:text-foreground bg-background flex h-10 w-full min-w-0 rounded-[10px] border border-[color:var(--rule)] px-3.5 py-1 text-base transition-[border-color,box-shadow] duration-200 ease-[var(--ease-quiet)] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-        "hover:border-[color:var(--hairline)]",
+        "file:text-foreground placeholder:text-muted-foreground selection:bg-neon selection:text-foreground bg-background flex h-10 w-full min-w-0 rounded-[10px] border border-[color:var(--hairline)] px-3.5 py-1 text-base transition-[border-color,box-shadow] duration-200 ease-[var(--ease-quiet)] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+        "hover:border-[color:var(--ink-2)]",
         "focus-visible:border-[color:var(--neon-ink)] focus-visible:ring-[3px] focus-visible:ring-[color:var(--neon)]/40",
         "dark:[color-scheme:dark]",
         "aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/30",

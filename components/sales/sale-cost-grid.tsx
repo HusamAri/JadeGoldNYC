@@ -117,8 +117,8 @@ function CostCells({
               className={cn(
                 // V7 defter hücresi: zeminsiz, yalnız alt hairline; odakta
                 // asit alt çizgi + hafif bezel zemini. Çukur/hap yok.
-                "h-8 w-[88px] rounded-[6px] border-0 border-b border-[color:var(--rule)] bg-transparent px-1.5 text-right font-mono text-xs tabular-nums outline-none transition-[border-color,background-color] duration-200",
-                "hover:border-[color:var(--hairline)] focus-visible:border-[color:var(--neon-ink)] focus-visible:bg-[color:var(--bezel)] disabled:cursor-not-allowed disabled:opacity-60",
+                "h-8 w-[88px] rounded-[6px] border-0 border-b border-[color:var(--hairline)] bg-transparent px-1.5 text-right font-mono text-xs tabular-nums outline-none transition-[border-color,background-color] duration-200",
+                "hover:border-[color:var(--ink-2)] focus-visible:border-[color:var(--neon-ink)] focus-visible:bg-[color:var(--bezel)] disabled:cursor-not-allowed disabled:opacity-60",
                 // Elle giriş vs otomatik motor: otomatik değer soluk italik —
                 // "bu rakam senin değil, motorun" sinyali; dokunursan senin olur.
                 !manual[kind] && vals[kind] !== "" && "text-muted-foreground italic",
