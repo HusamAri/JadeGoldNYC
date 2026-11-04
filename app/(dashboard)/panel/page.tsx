@@ -1,4 +1,3 @@
-import { getActivePlatform } from "@/lib/platform";
 import { Suspense } from "react";
 import Link from "next/link";
 import { Store, Palette } from "lucide-react";
@@ -21,10 +20,7 @@ import { Users as UsersLine } from "@/components/icons/lux";
 import { resolvePeriod, previousPeriod, samePeriodLastYear } from "@/lib/period";
 import { getDashboard, type DashboardData } from "@/lib/db/queries/dashboard";
 import { getAlertCenter } from "@/lib/db/queries/alerts";
-import { getEtsyStatus } from "@/lib/db/queries/etsy";
-import { getLastSyncSummary } from "@/lib/etsy/sync";
 import { getListingLoopStatus } from "@/lib/db/queries/listings";
-import { PanelSyncPrompt } from "@/components/panel/panel-sync-prompt";
 import { requireMembership } from "@/lib/auth";
 import { getGoldPricePerOunce } from "@/lib/gold-price";
 import { TROY_OUNCE_GRAMS, KARAT_PURITY } from "@/lib/gold-cost";
@@ -38,7 +34,6 @@ import { GoldStream } from "@/components/brand/gold-stream";
 import { CornerMarks } from "@/components/brand/corner-marks";
 import { EditorialCard } from "@/components/brand/editorial-card";
 import { KpiCard } from "@/components/kpi-card";
-import { WhatsNew } from "@/components/whats-new";
 import { AlertCenterCard } from "@/components/alert-center";
 import {
   SleepingBoxes,
@@ -227,14 +222,6 @@ export default async function PanelPage({
         description={`Genel bakış · ${period.label}`}
         action={<PeriodSelector />}
       />
-
-      <WhatsNew />
-
-      {/* Panel ilk açılışında (oturum başına bir kez) Etsy senkron hatırlatıcısı;
-          verisini kendi async bileşeninde stream eder, kabuğu bekletmez. */}
-      <Suspense fallback={null}>
-        <SyncPromptSection orgId={m.org_id} />
-      </Suspense>
 
       {/* İKİ DÖNGÜ — panelin var olma sebebi (docs/panel-sadelestirme-plani.md).
           Listing döngüsü sayıları ayrı sorgudan akar; kâr döngüsü aşağıdaki
@@ -725,28 +712,6 @@ async function MarketAlertsSection({ orgId }: { orgId: string }) {
       />
     );
   return <MarketPriceAlertsCard alerts={alerts} />;
-}
-
-/** Panel ilk açılış Etsy senkron popup'ı — durum + son özet burada beklenir. */
-async function SyncPromptSection({ orgId }: { orgId: string }) {
-  // Etsy'ye özel davet: platform kimliği Etsy DEĞİLSE (Shopify/Shopier org'u)
-  // "Etsy'nizi bağlayın" popup'ı gösterilmez — kafa karıştırır.
-  const platform = await getActivePlatform();
-  if (platform.key !== "etsy" && platform.key !== "none") return null;
-  const [status, summary] = await Promise.all([
-    getEtsyStatus(orgId),
-    getLastSyncSummary(orgId),
-  ]);
-  const configured = Boolean(
-    process.env.ETSY_API_KEY && process.env.ETSY_API_SECRET,
-  );
-  return (
-    <PanelSyncPrompt
-      connected={status.status === "connected"}
-      configured={configured}
-      initialSummary={summary}
-    />
-  );
 }
 
 /**

@@ -284,6 +284,5 @@ export async function setListingDiscount(
   if (error) return { error: error.message };
 
   revalidatePath(`/tasarimlar/listing/${productId}`);
-  revalidatePath("/indirimler");
   return { ok: true };
 }

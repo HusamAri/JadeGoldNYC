@@ -126,5 +126,5 @@ export async function reconcileAlertResolutions(
     );
   if (delErr) console.error("[alert-resolution] delete:", delErr.message);
 
-  revalidatePath("/gorevler");
+  revalidatePath("/raporlar");
 }

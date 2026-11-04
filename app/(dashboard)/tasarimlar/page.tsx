@@ -4,13 +4,10 @@ import {
   Plus,
   Calculator,
   Scale,
-  LayoutGrid,
   ImageOff,
   ExternalLink,
   Package,
   SearchX,
-  Wand2,
-  BookOpen,
   Lightbulb,
 } from "lucide-react";
 import {
@@ -194,27 +191,9 @@ export default async function ListelerPage({
               </Link>
             </Button>
             <Button asChild variant="outline">
-              <Link href="/tasarimlar/pano">
-                <LayoutGrid />
-                Yeni Tasarım Panosu
-              </Link>
-            </Button>
-            <Button asChild variant="outline">
               <Link href="/tasarimlar/etsy-agirlik">
                 <Scale />
                 Etsy&apos;ye Ağırlık
-              </Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href="/tasarimlar/iyilestir">
-                <Wand2 />
-                İyileştir
-              </Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href="/tasarimlar/bolumler">
-                <BookOpen />
-                Bölümler
               </Link>
             </Button>
             <Button asChild>

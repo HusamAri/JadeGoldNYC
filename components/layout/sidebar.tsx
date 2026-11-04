@@ -10,7 +10,6 @@ import { NAV_GROUPS, NAV_ITEMS } from "@/components/layout/nav-items";
 import { matchNavItem } from "@/lib/nav";
 import { Logo } from "@/components/layout/logo";
 import { OrgSwitcher } from "@/components/layout/org-switcher";
-import { WhatsNewNav } from "@/components/layout/whats-new-nav";
 
 export function Sidebar({
   memberships,
@@ -150,7 +149,6 @@ export function Sidebar({
           </div>
         ))}
       </nav>
-      <WhatsNewNav />
     </aside>
   );
 }

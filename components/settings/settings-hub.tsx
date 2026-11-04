@@ -9,12 +9,8 @@ import {
   UserRound,
   UsersRound,
   Scale,
-  ShoppingCart,
-  Sparkles,
-  Rocket,
-  Pin,
+  ScrollText,
   ArrowUpRight,
-  Mail,
   type LucideIcon,
 } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
@@ -29,9 +25,6 @@ export type SettingsHubProps = {
   etsyConnected: boolean;
   etsyLastSync: string | null;
   shipStationConfigured: boolean;
-  shopierConnected: boolean;
-  shopifyConnected: boolean;
-  pinterestConnected: boolean;
   profileName: string | null;
   profileEmail: string | null;
   avatarUrl: string | null;
@@ -52,10 +45,7 @@ export function SettingsHub(props: SettingsHubProps) {
   const reduce = useReducedMotion();
   const liveCount =
     (props.etsyConnected ? 1 : 0) +
-    (props.shipStationConfigured ? 1 : 0) +
-    (props.shopierConnected ? 1 : 0) +
-    (props.shopifyConnected ? 1 : 0) +
-    (props.pinterestConnected ? 1 : 0);
+    (props.shipStationConfigured ? 1 : 0);
 
   const connections: Tile[] = [
     {
@@ -81,36 +71,6 @@ export function SettingsHub(props: SettingsHubProps) {
         label: props.shipStationConfigured ? "Bağlı" : "Bağlı değil",
       },
     },
-    {
-      href: "/ayarlar/shopier",
-      title: "Shopier",
-      description: "Türkiye kanalı — sipariş senkronu (PAT API)",
-      icon: ShoppingCart,
-      status: {
-        live: props.shopierConnected,
-        label: props.shopierConnected ? "Bağlı" : "Bağlı değil",
-      },
-    },
-    {
-      href: "/ayarlar/shopify",
-      title: "Shopify",
-      description: "İkinci satış kanalı — mağaza OAuth bağlantısı",
-      icon: Store,
-      status: {
-        live: props.shopifyConnected,
-        label: props.shopifyConnected ? "Bağlı" : "Bağlı değil",
-      },
-    },
-    {
-      href: "/ayarlar/pinterest",
-      title: "Pinterest",
-      description: "Trafik kanalı — pin oluşturma ve pano/analiz erişimi",
-      icon: Pin,
-      status: {
-        live: props.pinterestConnected,
-        label: props.pinterestConnected ? "Bağlı" : "Bağlı değil",
-      },
-    },
   ];
 
   const operations: Tile[] = [
@@ -132,26 +92,11 @@ export function SettingsHub(props: SettingsHubProps) {
       description: "Ad ve fotoğraf",
       icon: UserRound,
     },
-  ];
-
-  const strategy: Tile[] = [
     {
-      href: "/ayarlar/gunluk-ozet",
-      title: "Günlük özet e-posta",
-      description: "Son 24 saat, aksiyonlar ve gidişat — markalı HTML mail",
-      icon: Mail,
-    },
-    {
-      href: "/ayarlar/etsy-guncellemeleri",
-      title: "Etsy güncellemeleri",
-      description: "Platformdan elenmiş öneriler",
-      icon: Sparkles,
-    },
-    {
-      href: "/ayarlar/buyume-stratejisi",
-      title: "Büyüme stratejisi",
-      description: "90 günlük SEO + AEO planı",
-      icon: Rocket,
+      href: "/kayitlar",
+      title: "Şirket hafızası",
+      description: "Her değişikliğin denetim kaydı (kim, ne zaman, neyi)",
+      icon: ScrollText,
     },
   ];
 
@@ -284,7 +229,7 @@ export function SettingsHub(props: SettingsHubProps) {
 
       <Section
         title="Operasyon"
-        subtitle="Ekip, maliyet ve kişisel profil."
+        subtitle="Ekip, maliyet, profil ve denetim kaydı."
         delay={0.16}
       >
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -294,17 +239,6 @@ export function SettingsHub(props: SettingsHubProps) {
         </div>
       </Section>
 
-      <Section
-        title="Strateji"
-        subtitle="Platform sinyalleri ve büyüme planı."
-        delay={0.22}
-      >
-        <div className="grid gap-4 md:grid-cols-2">
-          {strategy.map((t, i) => (
-            <SettingsTile key={t.href} tile={t} index={i} />
-          ))}
-        </div>
-      </Section>
     </div>
   );
 }
