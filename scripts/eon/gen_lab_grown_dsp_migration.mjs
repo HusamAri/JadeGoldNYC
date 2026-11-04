@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * EON lab-grown Double Shared Prong band → panel taslağı:
- * supabase/migrations/0173_eon_lab_grown_dsp.sql
+ * supabase/migrations/0175_eon_lab_grown_dsp.sql
  *
  * Girdi YALNIZ docs/eon/lab-grown/01-double-shared-prong/listing.json. Fiyat orada
  * (sahip kararı 2026-11-04: liste $1.200, her beden tek fiyat); gram burada
@@ -31,7 +31,7 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(here, "../..");
 const pkgRel = "docs/eon/lab-grown/01-double-shared-prong";
 const L = JSON.parse(await readFile(path.join(repoRoot, pkgRel, "listing.json"), "utf8"));
-const outFile = path.join(repoRoot, "supabase/migrations/0173_eon_lab_grown_dsp.sql");
+const outFile = path.join(repoRoot, "supabase/migrations/0175_eon_lab_grown_dsp.sql");
 
 const EON_ORG = "9d0336c0-8772-456d-a80c-a5f2cfe7bbd0";
 
@@ -130,7 +130,9 @@ const meta = {
 const colorValues = L.colors.map(([code, name]) => `('${code}','${name}')`).join(",");
 const sizeValues = cells.map((c) => `(${c.size.toFixed(1)},'${c.label}',${c.grams.toFixed(2)})`).join(",\n    ");
 
-const sql = `-- 0173_eon_lab_grown_dsp.sql
+const sql = `-- 0175_eon_lab_grown_dsp.sql
+-- (Canlıya 2026-11-04 MCP ile "0173_eon_lab_grown_dsp" adıyla uygulandı; main'de 0173/0174 başka
+-- migration'lara ait olduğu için dosya 0175'e taşındı. İçerik birebir, idempotent.)
 -- EON'un ilk lab-grown pırlantalı listing'i: 14K Double Shared Prong yarım tur bant,
 -- 13 round lab-grown taş (≈0,78 ct), Metal Color (3) × Ring Size (US 4-10, 13) = 39 varyant,
 -- her beden tek fiyat $1.200 (sahip kararı 2026-11-04; alıcı %25 vitrinle $900).

@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><title>Amuletta editorial</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&family=Inter+Tight:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Inter Tight",system-ui,sans-serif;font-size:13.5px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.pg{width:1440px;height:1200px;background:var(--bg);color:var(--ink);position:relative;overflow:hidden;display:grid;grid-template-columns:200px 1fr;}
+.mono{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.serif{font-family:Fraunces,serif;font-variation-settings:"opsz" 144;font-weight:300;letter-spacing:-.02em}
+/* left rail: vertical marginalia */
+.rail{border-right:1px solid var(--rule);padding:34px 0 34px 30px;display:flex;flex-direction:column;justify-content:space-between}
+.brand{font-family:Fraunces,serif;font-weight:300;font-size:24px;letter-spacing:-.01em}
+.brand b{font-weight:300;color:var(--neon)}
+.toc{display:flex;flex-direction:column;gap:22px;margin-top:48px}
+.toc .sec{display:flex;flex-direction:column;gap:6px}
+.toc .n{display:flex;gap:10px;align-items:baseline}
+.toc .n .num{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--mute);width:22px}
+.toc .n .t{font-size:13.5px;color:var(--ink2)}
+.toc .n.on .t{color:var(--ink);font-weight:500}
+.toc .n.on::before{content:"";position:absolute;left:0;width:3px;height:16px;background:var(--neon);border-radius:0 2px 2px 0;transform:translateY(2px)}
+.toc .n{position:relative}
+.toc .h{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);padding-bottom:6px;border-bottom:1px solid var(--rule);margin-right:30px}
+.folio{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;color:var(--mute);text-transform:uppercase;line-height:1.8}
+/* main */
+.main{padding:34px 56px 0 56px;display:grid;grid-template-rows:auto auto 1fr;row-gap:30px}
+.head{display:grid;grid-template-columns:1fr auto;align-items:end;border-bottom:1px solid var(--ink);padding-bottom:18px}
+.kicker{display:flex;gap:14px;align-items:center}
+.kicker .dot{width:7px;height:7px;background:var(--neon);border-radius:50%}
+h1{font-family:Fraunces,serif;font-variation-settings:"opsz" 144;font-weight:300;font-size:72px;line-height:.95;letter-spacing:-.035em;margin-top:14px}
+h1 em{font-style:italic;font-weight:300}
+.lede{max-width:46ch;color:var(--ink2);margin-top:14px;font-size:14px}
+.acts{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.cta{display:inline-flex;align-items:center;gap:10px;height:42px;padding:0 4px 0 18px;border:1px solid var(--ink);border-radius:999px;font-weight:500;background:transparent}
+.cta .arrow{width:34px;height:34px;border-radius:50%;background:var(--neon);display:grid;place-items:center;color:var(--neonfg);font-size:14px}
+.ghost{color:var(--ink2);text-decoration:underline;text-underline-offset:4px;text-decoration-color:var(--rule2)}
+/* stat band: ledger numerals with hairlines */
+.band{display:grid;grid-template-columns:1.25fr 1fr 1fr 1fr;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.stat{padding:18px 20px 16px 0;border-right:1px solid var(--rule);margin-right:20px;position:relative}
+.stat:last-child{border-right:0}
+.stat .l{display:flex;justify-content:space-between;align-items:baseline}
+.stat .v{font-family:Fraunces,serif;font-variation-settings:"opsz" 144;font-weight:300;font-size:56px;line-height:1;letter-spacing:-.03em;margin-top:14px}
+.stat.hero .v{font-size:68px}
+.stat .v sup{font-size:.38em;vertical-align:top;margin-top:.5em;display:inline-block;color:var(--mute);font-family:"JetBrains Mono",monospace;letter-spacing:0;font-weight:400}
+.stat .f{margin-top:10px;font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--mute);display:flex;gap:10px;align-items:center}
+.stat .f .up{color:var(--ink);background:var(--neon);padding:1px 6px;border-radius:3px;color:var(--neonfg)}
+.spark{position:absolute;right:28px;bottom:18px;width:96px;height:28px}
+/* body grid */
+.body{display:grid;grid-template-columns:1.55fr 1fr;column-gap:48px;min-height:0}
+.sec-h{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--rule);padding-bottom:10px;margin-bottom:6px}
+.sec-h .num{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--mute)}
+.sec-h h2{font-family:Fraunces,serif;font-weight:300;font-size:24px;letter-spacing:-.02em}
+.sec-h .right{margin-left:auto}
+table{width:100%;border-collapse:collapse}
+th{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);font-weight:400;text-align:left;padding:10px 0 8px;border-bottom:1px solid var(--rule)}
+th.r,td.r{text-align:right;font-variant-numeric:tabular-nums}
+td{padding:14px 0;border-bottom:1px solid var(--rule2);vertical-align:baseline}
+td.n{color:var(--ink);font-weight:500}
+td.m{color:var(--mute);font-family:"JetBrains Mono",monospace;font-size:11px}
+td.r{font-family:"JetBrains Mono",monospace;font-size:12.5px}
+td .lead{display:inline-block;width:100%;border-bottom:1px dotted var(--rule2);transform:translateY(-4px);margin:0 10px}
+td.r.pos{color:var(--ink)} td.r.neg{color:var(--neg)}
+.tag{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2)}
+.tag.neon{color:var(--neonink)}
+.note{margin-top:18px;display:flex;gap:14px;align-items:flex-start;font-size:12.5px;color:var(--ink2);max-width:60ch}
+.note .mark{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--mute);padding-top:3px}
+.chart{height:280px;position:relative;margin-top:8px}
+.chart svg{width:100%;height:100%;overflow:visible}
+.legend{display:flex;gap:22px;margin-top:14px}
+.legend span{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--ink2)}
+.legend i{width:18px;height:0;border-top:2px solid var(--ink2)}
+.legend i.neon{border-color:var(--neon)} .legend i.dash{border-top-style:dashed}
+.aside{margin-top:34px;padding-top:16px;border-top:1px solid var(--rule)}
+.aside .row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--rule2);font-size:13px}
+.aside .row span:last-child{font-family:"JetBrains Mono",monospace;font-size:12px}
+.vert{position:absolute;right:22px;top:50%;transform:rotate(90deg) translateX(-50%);transform-origin:right top;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--mute);white-space:nowrap}
+.label{position:absolute;left:30px;bottom:30px}
+/* V1 bone & ink, neon acid */
+#V1{--bg:#F3EFE7;--ink:#1F1C18;--ink2:#5A544B;--mute:#9A9286;--rule:#CFC7B9;--rule2:#E1DACD;--neon:#D8FF3D;--neonfg:#1F1C18;--neonink:#6E8A00;--neg:#9A4A3A}
+/* V2 slate & fog, neon tangerine */
+#V2{--bg:#E9EBEF;--ink:#1B1E26;--ink2:#515665;--mute:#8C92A1;--rule:#C7CCD6;--rule2:#D9DDE4;--neon:#D8F53C;--neonfg:#1B1E26;--neonink:#6F8A00;--neg:#B5473A;--blue:#AEB6D2;--blue2:#7F89B3}
+
+/* ── INSTRUMENTS: vintage radio / FM tuner / knob — limited neumorph lives ONLY here ── */
+.bezel{border-radius:22px;padding:14px;background:var(--bezel);box-shadow:-6px -6px 14px var(--hi),8px 10px 22px var(--lo),inset 0 1px 0 rgba(255,255,255,.55);position:relative}
+.bezel .screw{position:absolute;width:7px;height:7px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff8,#0002 70%);box-shadow:inset 0 0 0 1px rgba(0,0,0,.25)}
+.bezel .screw.tl{left:10px;top:10px}.bezel .screw.tr{right:10px;top:10px}.bezel .screw.bl{left:10px;bottom:10px}.bezel .screw.br{right:10px;bottom:10px}
+.screen{border-radius:12px;background:radial-gradient(120% 90% at 50% 0%,rgba(255,255,255,.07) 0%,transparent 60%),var(--glass);box-shadow:inset 0 3px 10px rgba(0,0,0,.65),inset 0 -1px 0 rgba(255,255,255,.08),inset 0 0 0 1px rgba(0,0,0,.6);padding:16px 18px;color:#D9D6CB;position:relative;overflow:hidden}
+.screen::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 1px,transparent 1px 3px);pointer-events:none}
+.screen .lcd{font-family:"JetBrains Mono",monospace;color:var(--neon);text-shadow:0 0 6px color-mix(in oklab,var(--neon) 70%,transparent),0 0 18px color-mix(in oklab,var(--neon) 35%,transparent)}
+.screen .dim{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#8E8C83}
+.fm{position:relative;height:38px;margin-top:10px}
+.fm .ticks{position:absolute;inset:0;background:repeating-linear-gradient(90deg,#8E8C83 0 1px,transparent 1px 10px);height:10px;top:14px;opacity:.7}
+.fm .ticks.major{background:repeating-linear-gradient(90deg,#C9C6BA 0 1px,transparent 1px 50px);height:18px;top:10px}
+.fm .lab{position:absolute;top:30px;font-family:"JetBrains Mono",monospace;font-size:9px;color:#8E8C83;letter-spacing:.1em}
+.fm .needle{position:absolute;top:4px;width:2px;height:30px;background:var(--neon);box-shadow:0 0 8px var(--neon)}
+.knob{width:112px;height:112px;border-radius:50%;background:radial-gradient(circle at 38% 32%,var(--knobhi),var(--knob) 55%,var(--knoblo));box-shadow:-5px -5px 12px var(--hi),7px 8px 18px var(--lo),inset 0 1px 1px rgba(255,255,255,.6);position:relative}
+.knob::before{content:"";position:absolute;inset:14px;border-radius:50%;box-shadow:inset 2px 2px 5px var(--lo),inset -2px -2px 5px var(--hi);background:var(--bezel)}
+.knob .mark{position:absolute;left:50%;top:9px;width:3px;height:22px;margin-left:-1.5px;background:var(--neon);border-radius:2px;box-shadow:0 0 6px var(--neon);transform-origin:50% 47px;transform:rotate(calc(var(--deg) * 1deg))}
+.ring{position:absolute;inset:-18px;border-radius:50%;background:repeating-conic-gradient(from -135deg,var(--mute) 0 1deg,transparent 1deg 15deg);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 9px),#000 calc(100% - 8px));mask:radial-gradient(farthest-side,transparent calc(100% - 9px),#000 calc(100% - 8px));opacity:.8}
+.inst{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;margin-top:22px}
+.seg{display:inline-flex;padding:3px;border-radius:999px;background:var(--bezel);box-shadow:inset 2px 2px 5px var(--lo),inset -2px -2px 5px var(--hi)}
+.seg span{padding:5px 12px;border-radius:999px;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.seg span.on{background:var(--bg);color:var(--ink);box-shadow:-2px -2px 5px var(--hi),3px 3px 7px var(--lo)}
+#V1{--bezel:#EAE5DA;--hi:#FFFFFF;--lo:#CFC6B3;--glass:#1B1C18;--knob:#E6E1D5;--knobhi:#FBF8F1;--knoblo:#CFC7B7}
+#V2{--bezel:#E3E6EB;--hi:#FFFFFF;--lo:#BFC5CF;--glass:#15171C;--knob:#E0E3E9;--knobhi:#F8F9FB;--knoblo:#C8CDD6}
+
+/* V5 = V2 düzeni + serpiştirilmiş yumuşak dokunuşlar */
+#V2 .stat.decor{padding:0 20px 0 0;border-right:0}
+#V2 .gcard{height:100%;border-radius:20px;padding:18px 20px;background:linear-gradient(160deg,#C9CFE3 0%,#AEB6D2 55%,#8F98BE 100%);color:#1B1E26;position:relative;overflow:hidden;box-shadow:-6px -6px 14px var(--hi),8px 10px 22px var(--lo),0 18px 36px -14px rgba(127,137,179,.6);display:flex;flex-direction:column;justify-content:space-between}
+#V2 .gcard .mono{color:#3E4664}
+#V2 .gcard .v{font-family:Fraunces,serif;font-weight:300;font-size:56px;line-height:1;letter-spacing:-.03em}
+#V2 .gcard .silk{position:absolute;inset:0;pointer-events:none}
+#V2 .gcard .silk svg{position:absolute;right:-30%;bottom:-40%;width:140%;height:140%;opacity:.6}
+#V2 .cta{background:var(--bg);border-color:var(--ink);color:var(--ink);box-shadow:-4px -4px 10px var(--hi),6px 8px 16px var(--lo)}
+#V2 .cta .arrow{background:var(--neon);color:var(--ink);box-shadow:0 0 12px rgba(216,245,60,.6)}
+#V2 .tag.neon{background:var(--neon);color:var(--ink);padding:3px 9px;border-radius:999px;letter-spacing:.1em}
+#V2 .tag{color:#7F89B3}
+#V2 .toc .n.on{background:var(--bezel);border-radius:10px;padding:6px 10px;margin:-6px -10px;box-shadow:-3px -3px 7px var(--hi),4px 4px 9px var(--lo)}
+#V2 .toc .n.on::before{left:-14px}
+#V2 .aside .row{padding:12px 14px;margin-top:8px;border:0;border-radius:12px;background:var(--bezel);box-shadow:inset 2px 2px 5px var(--lo),inset -2px -2px 5px var(--hi)}
+</style></head><body>
+<script>
+const V=[{id:"V1",name:"V1 · Bone & Ink + neon acid",sub:"analog sıcak nötrler (bone, oat, graphite) · tek neon: asit sarı-yeşil"},
+         {id:"V2",name:"V2 · Slate & Fog + neon tangerine",sub:"analog serin nötrler (fog, slate, ink) · tek neon: mandalina"}];
+for(const v of V){document.write(`
+<section class="pg" id="${v.id}">
+ <aside class="rail">
+  <div>
+   <div class="brand">Amuletta<b>.</b></div>
+   <nav class="toc">
+    <div class="sec"><div class="h">Satış & Kâr</div>
+     <div class="n on"><span class="num">01</span><span class="t">Satış & Maliyet</span></div>
+     <div class="n"><span class="num">02</span><span class="t">Satışlar</span></div>
+     <div class="n"><span class="num">03</span><span class="t">Maliyetler</span></div>
+     <div class="n"><span class="num">04</span><span class="t">Kâr raporu</span></div></div>
+    <div class="sec"><div class="h">Etsy'ye taslak</div>
+     <div class="n"><span class="num">05</span><span class="t">Listing önerileri</span></div>
+     <div class="n"><span class="num">06</span><span class="t">Listeler</span></div></div>
+    <div class="sec"><div class="h">Stok & Fiyat</div>
+     <div class="n"><span class="num">07</span><span class="t">Stok</span></div>
+     <div class="n"><span class="num">08</span><span class="t">Fiyat</span></div></div>
+   </nav>
+  </div>
+  <div class="folio">Jade Gold NYC<br>Kasım 2026 · s. 01<br><span style="color:var(--ink2)">Ayarlar</span></div>
+ </aside>
+ <main class="main">
+  <header class="head">
+   <div>
+    <div class="kicker"><span class="dot"></span><span class="mono">01 · Satış & Kâr · veri 04.11 11:42'ye kadar</span></div>
+    <h1>Satış &amp;<br><em>Maliyet</em></h1>
+    <p class="lede">Satılan her kalem tek satırda: Etsy'den gelen gelir, iade ve etiket; senin girdiğin altın, işçilik ve taş.</p>
+   </div>
+   <div class="acts">
+    <span class="cta">Etsy'den satışları çek <span class="arrow">→</span></span>
+    <span class="mono"><a class="ghost">CSV indir</a> · <a class="ghost">Kolonlar (10 gizli)</a></span>
+   </div>
+  </header>
+
+  <section class="band">
+   <div class="stat hero" style="padding-right:24px">
+    <div class="bezel"><span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
+     <div class="screen">
+      <div style="display:flex;justify-content:space-between"><span class="dim">Net kâr · Kasım</span><span class="dim">● rec</span></div>
+      <div class="lcd" style="font-size:44px;line-height:1;margin-top:8px;letter-spacing:.02em">520<span style="font-size:18px;opacity:.7">.50</span></div>
+      <div class="fm"><div class="ticks"></div><div class="ticks major"></div><span class="lab" style="left:0">01</span><span class="lab" style="left:120px">08</span><span class="lab" style="left:240px">15</span><span class="lab" style="right:0">KAS</span><div class="needle" style="left:72%"></div></div>
+      <div style="display:flex;justify-content:space-between;margin-top:6px"><span class="dim">+21% geçen ay</span><span class="dim lcd" style="font-size:10px">USD</span></div>
+     </div>
+    </div>
+   </div>
+   <div class="stat"><div class="l"><span class="mono">Net gelir</span></div><div class="v">$2.904</div><div class="f"><span>↑ 12%</span></div></div>
+   <div class="stat"><div class="l"><span class="mono">Altın maliyeti</span></div><div class="v">$1.507</div><div class="f"><span>↓ 4%</span><span>·</span><span>$4.604/oz</span></div></div>
+   <div class="stat"><div class="l"><span class="mono">Maliyeti eksik</span></div><div class="v">11.581</div><div class="f"><span>kalem · altın ya da işçilik yok</span></div></div>
+  </section>
+
+  <section class="body">
+   <div>
+    <div class="sec-h"><span class="num">A</span><h2>Satılan kalemler</h2><span class="mono right">son 14 gün · 4 kalem</span></div>
+    <table>
+     <thead><tr><th>Ürün</th><th>Tarih</th><th class="r">Net gelir</th><th class="r">Altın</th><th class="r">İşçilik</th><th class="r">Net kâr</th><th class="r">Durum</th></tr></thead>
+     <tbody>
+      <tr><td class="n">Heart Nugget Ring 14K</td><td class="m">03.11</td><td class="r">412.00</td><td class="r">186.50</td><td class="r">74.00</td><td class="r pos">102.50</td><td class="r"><span class="tag">kargoda</span></td></tr>
+      <tr><td class="n">Cuban Link Chain 10K · 20in</td><td class="m">02.11</td><td class="r">1 289.00</td><td class="r">712.00</td><td class="r">130.00</td><td class="r pos">284.00</td><td class="r"><span class="tag neon">ödendi</span></td></tr>
+      <tr><td class="n">Twin Seeds Band 18K</td><td class="m">01.11</td><td class="r">964.00</td><td class="r">518.00</td><td class="r">150.00</td><td class="r pos">152.00</td><td class="r"><span class="tag">tamam</span></td></tr>
+      <tr><td class="n">Evil Eye Pendant 14K</td><td class="m">31.10</td><td class="r">239.00</td><td class="r">91.00</td><td class="r">60.00</td><td class="r neg">−18.00</td><td class="r"><span class="tag">iade</span></td></tr>
+     </tbody>
+    </table>
+    <p class="note"><span class="mark">†</span><span>İşçilik hücresindeki italik rakam motor tahminidir (gram × ayar). Üstüne yazınca elle giriş olur; Enter kaydeder, Esc vazgeçer.</span></p>
+   </div>
+   <div>
+    <div class="sec-h"><span class="num">B</span><h2>Gelir ve maliyet</h2><span class="mono right">günlük</span></div>
+    <div class="bezel" style="margin-top:10px"><span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
+     <div class="screen" style="padding:14px 16px 10px">
+      <div style="display:flex;justify-content:space-between"><span class="dim">Gelir / maliyet · günlük</span><span class="dim lcd" style="font-size:10px">max 600</span></div>
+      <svg viewBox="0 0 420 200" preserveAspectRatio="none" style="width:100%;height:190px;margin-top:8px;overflow:visible">
+       <g stroke="#3A3C35" stroke-width="1"><line x1="0" y1="50" x2="420" y2="50"/><line x1="0" y1="100" x2="420" y2="100"/><line x1="0" y1="150" x2="420" y2="150"/>
+        <line x1="105" y1="0" x2="105" y2="200" stroke-dasharray="2 4"/><line x1="210" y1="0" x2="210" y2="200" stroke-dasharray="2 4"/><line x1="315" y1="0" x2="315" y2="200" stroke-dasharray="2 4"/></g>
+       <path d="M0 160 C40 135 60 95 100 105 S160 65 200 72 S260 40 300 56 S360 22 420 36" fill="none" stroke="var(--neon)" stroke-width="2.5" stroke-linecap="round" style="filter:drop-shadow(0 0 5px var(--neon))"/>
+       <path d="M0 172 C50 160 80 152 120 142 S200 128 240 120 S320 104 420 100" fill="none" stroke="#B9B6AA" stroke-width="1.5" stroke-dasharray="2 5"/>
+       <path d="M0 188 C60 185 120 182 180 177 S300 168 420 171" fill="none" stroke="#DDD9CC" stroke-width="1.5"/>
+       <line x1="300" y1="0" x2="300" y2="200" stroke="var(--neon)" stroke-width="1" opacity=".55"/>
+       <circle cx="300" cy="56" r="3.5" fill="var(--neon)"/>
+      </svg>
+      <div class="fm" style="height:26px;margin-top:2px"><div class="ticks" style="top:4px"></div><div class="ticks major" style="top:0"></div><span class="lab" style="top:16px;left:0">22 EKİ</span><span class="lab" style="top:16px;right:0">04 KAS</span></div>
+     </div>
+    </div>
+    <div class="inst">
+     <div>
+      <div class="legend" style="margin-top:0"><span><i class="neon"></i>Gelir</span><span><i class="dash"></i>Önceki dönem</span><span><i></i>Maliyet</span></div>
+      <div style="margin-top:14px" class="seg"><span>7g</span><span class="on">30g</span><span>90g</span><span>Yıl</span></div>
+     </div>
+     <div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 10px 6px">
+      <div class="knob" style="--deg:38"><div class="ring"></div><div class="mark"></div></div>
+      <div class="mono" style="letter-spacing:.18em">Marj <span style="color:var(--ink)">17.9%</span></div>
+     </div>
+    </div>
+    <div class="aside" style="margin-top:22px">
+     <div class="mono" style="margin-bottom:6px">Dikkat · en pahalı üç</div>
+     <div class="row"><span>567 iadeli siparişin tutarı okunmadı</span><span>→</span></div>
+     <div class="row"><span>3 ürün eritme değerinin altında</span><span>$412</span></div>
+     <div class="row"><span>Etsy kotası yarın 00:00'da sıfırlanır</span><span>4 838</span></div>
+    </div>
+   </div>
+  </section>
+  <div class="vert">Amuletta · Şirket hafızası</div>
+ </main>
+ <div class="label mono" style="position:absolute;left:230px;bottom:18px">${v.name} — ${v.sub}</div>
+</section>`)}
+
+(function(){const v2=document.getElementById("V2");const st=v2.querySelectorAll(".band .stat");const last=st[st.length-1];last.classList.add("decor");
+last.innerHTML=`<div class="gcard"><div class="silk"><svg viewBox="0 0 400 300" preserveAspectRatio="none"><path d="M-40 260 C100 160 200 280 440 90" stroke="#FFFFFF" stroke-opacity=".55" stroke-width="18" fill="none" style="filter:blur(9px)"/><path d="M-40 300 C120 200 220 320 440 150" stroke="#fff" stroke-opacity=".3" stroke-width="8" fill="none" style="filter:blur(3px)"/></svg></div>
+<div style="display:flex;justify-content:space-between;position:relative"><span class="mono">Maliyeti eksik</span><span class="mono">→</span></div><div style="position:relative"><div class="v">11.581</div><div class="mono" style="margin-top:10px">kalem · altın ya da işçilik yok</div></div></div>`;
+v2.querySelector(".label").textContent="V7 · sentez: sis grisi taban + asit highlight + tozlu mavi ara ton";})();
+</script></body></html>

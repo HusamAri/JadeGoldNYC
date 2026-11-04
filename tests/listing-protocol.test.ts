@@ -632,7 +632,7 @@ test("lab-grown diamond band: Metal Color x Ring Size without Width, same node a
   const w = await resolveTaxonomyIdForProtocol(fakeClient(), LISTING_PROTOCOLS.wedding_band);
   assert.deepEqual(r, w);
   assert.equal(r.ok && r.taxonomyId, 11);
-  // Panel grid (migration 0173): 3 colours x 13 sizes, one price, no Width axis.
+  // Panel grid (migration 0175): 3 colours x 13 sizes, one price, no Width axis.
   const grid: DraftVariant[] = [
     { sku: "EON-DSP-14K-YG-US040", properties: { "Metal Color": "Yellow Gold", "Ring Size": "US 4" }, price_cents: 120000, quantity: 20 },
     { sku: "EON-DSP-14K-WG-US070", properties: { "Metal Color": "White Gold", "Ring Size": "US 7" }, price_cents: 120000, quantity: 20 },

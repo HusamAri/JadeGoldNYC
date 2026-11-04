@@ -4,12 +4,13 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
-  NeumorphGlass — Husam Web tasarım sistemi (panel geneli).
-  Nötr, hafif soğuk off-white zemin; çift ışık kaynaklı nöromorfik yüzeyler
-  (kabartı/çukur); buzlu cam paneller; TEK renk patlaması iridesan holografik
-  degrade (sky→lilac→pink→peach). Tailwind v4 CSS değişkenleri + shadcn token
-  deseni. Her iki marka kapsamı da bu paleti kullanır — Jade Gold panelinde
-  yalnız medya (logo/desen/video) korunur (html[data-brand] görünürlük kuralları).
+  Amuletta 3.0 — V7 editoryal sistem (2026-11-04).
+  Sis grisi zemin, mürekkep metin, TEK asit highlight, tozlu mavi yalnız dekor
+  kartında. Yüzeyler düz ve hairline'lı; neumorph yalnız göstergelerde
+  (vintage radyo bezel'i, FM ekranı, düğme, segment). Fraunces 300 başlık +
+  Inter Tight gövde + JetBrains Mono index. Her bölüm aynı temada farklı
+  YAPI kullanır (defter / galeri / kumanda masası). Mockup kaynağı:
+  scripts/theme-lab/directions/editorial.html (#V2 = V7).
 */
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -55,356 +56,335 @@
    geri çevirme; .nm-* sınıflı öğeye aynı özelliği ezen utility (shadow-none)
    ekleme (Tailwind v4'te utility @layer components'ı EZER).
    ═══════════════════════════════════════════════════════════════════════ */
-:root {
-  --radius: 1.25rem;
+/* `:root, [data-tone]`: özel özellikler var() ÇÖZÜLMÜŞ hâliyle miras alınır;
+   ton çerçevesi yalnız --surface'i değiştirseydi :root'ta çözülmüş
+   --background/--nm-hi/--nm-lo eski değerde kalırdı. Bu yüzden türetilmiş
+   zincir ton çerçevesinde yeniden bildirilir (ölçümle yakalandı, 2026-11-04). */
+:root,
+[data-tone] {
+  --radius: 1rem;
 
-  /* Nötr yüzey — off-white; kartlar zeminle aynı renk, gölgeyle kabarır. */
-  --background: #eaecf3;
-  --foreground: #242835;
+  /* ═══ AMULETTA 3.0 — V7 "sis grisi + asit" editoryal sistem (2026-11-04) ═══
+     Sahip kararı: birbirine yakın serin nötrler, TEK neon vurgu (asit), ikinci
+     ton tozlu mavi yalnız dekor kartında. Neumorph sitenin tamamında değil,
+     yalnız GÖSTERGELERDE yaşar (.bezel/.screen/.knob/.seg); kalan her yüzey düz
+     ve hairline'lıdır. Mockup: scripts/theme-lab/directions/editorial.html #V2. */
+  --surface: oklch(0.935 0.006 265);                 /* sis grisi #E9EBEF */
+  --nm-hi: #ffffff;                                  /* ışık (sol üst) */
+  --nm-lo: oklch(0.82 0.012 262);                    /* gölge #BFC5CF */
+  --background: var(--surface);
+  --foreground: oklch(0.23 0.02 272);                /* mürekkep #1B1E26, 14:1 */
+  --surface-2: oklch(from var(--surface) calc(l - 0.03) c h);
+  --ink-2: oklch(0.44 0.025 272);                    /* #515665, 7,3:1 */
 
-  --card: #eaecf3;
-  --card-foreground: #242835;
+  --card: var(--surface);
+  --card-foreground: var(--foreground);
 
-  --popover: #f4f6fb;
-  --popover-foreground: #242835;
+  --popover: oklch(from var(--surface) calc(l + 0.03) c h);
+  --popover-foreground: var(--foreground);
 
-  /* Holografik palet — sistemin tek kroması. Vurgu, aktif durum, ilerleme
-     ve görünüm başına TEK kahraman CTA için. */
-  --holo-sky: #b6dcff;
-  --holo-lilac: #d4c6ff;
-  --holo-pink: #ffc9e6;
-  --holo-peach: #ffe0c2;
-  --holo-mint: #c6f4dd;
-  --grad-holo: linear-gradient(120deg, var(--holo-sky) 0%, var(--holo-lilac) 34%, var(--holo-pink) 64%, var(--holo-peach) 100%);
-  --grad-holo-full: linear-gradient(120deg, var(--holo-mint) 0%, var(--holo-sky) 26%, var(--holo-lilac) 50%, var(--holo-pink) 74%, var(--holo-peach) 100%);
-  --grad-holo-radial: radial-gradient(120% 120% at 20% 0%, var(--holo-sky), var(--holo-lilac) 40%, var(--holo-pink) 70%, var(--holo-peach));
+  /* Birincil = mürekkep; kahraman CTA = mürekkep kontur + asit ok. */
+  --primary: var(--foreground);
+  --primary-foreground: var(--surface);
 
-  /* Buzlu cam — DS effects.css BİREBİR: --glass-bg 0.42 (+strong 0.62),
-     border rgba(255,255,255,.65). Yüzeyin ÜSTÜNDE yüzen katmanlar için. */
-  --glass: rgb(255 255 255 / 0.42);
-  --glass-strong: rgb(255 255 255 / 0.62);
-  --glass-border: rgb(255 255 255 / 0.65);
-  --glass-highlight: inset 0 1px 1.5px rgb(255 255 255 / 0.85);
-  --glass-depth: inset 0 -14px 30px -20px rgb(60 70 110 / 0.28);
-  --glass-sheen: linear-gradient(var(--sheen-angle), rgb(255 255 255 / 0.5), transparent 42%);
-  /* Cam "lift" gölgeleri — yüzen paneller kazınmaz, üstte süzülür.
-     DOĞAL IŞIK RÖTUŞU: tek sert katman yerine kontak (1-2px) + anahtar +
-     ambient katmanları; mürekkep sıcak-erguvan (48 42 60), blur > offset —
-     yüzey "dijital yapıştırma" değil, ışık altında duran cam gibi okunur. */
-  --lift-sm: 0 1px 2px rgb(48 42 60 / 0.07), 0 4px 12px -2px rgb(60 70 110 / 0.12);
-  --lift: 0 1px 2px rgb(48 42 60 / 0.08), 0 8px 20px -6px rgb(48 42 60 / 0.16),
-    0 22px 44px -16px rgb(60 70 110 / 0.22);
-  --lift-lg: 0 2px 4px rgb(48 42 60 / 0.08), 0 16px 36px -10px rgb(48 42 60 / 0.18),
-    0 34px 64px -28px rgb(60 70 110 / 0.24);
-  /* Cam rengi sızıntısı — buzlu cam düz nötr yüzey üstünde bile "cam" okunsun
-     diye içine hafif iridesan holo ışık gömülür (platform); JG kapsamı bunu
-     sıcak altına eşler. .glass-board bu tokeni sheen + cam ile katmanlar. */
-  --glass-tint: radial-gradient(120% 150% at 84% -12%, rgb(255 201 230 / 0.16), transparent 56%),
-    radial-gradient(120% 130% at 6% 112%, rgb(182 220 255 / 0.16), transparent 56%);
-  /* Arka planda süzülen holografik blob'lar (.holo-drift katmanı). Cam
-     boardlar bunların üstünde durur → altında kalan kısım buzlanır, dışında
-     kalan kısım açık görünür. Platform: pastel holo; JG: jade + altın. */
-  --holo-blobs: radial-gradient(38% 44% at 22% 28%, rgb(182 220 255 / 0.32), transparent 62%),
-    radial-gradient(36% 42% at 76% 36%, rgb(212 198 255 / 0.28), transparent 62%),
-    radial-gradient(42% 46% at 54% 82%, rgb(255 201 230 / 0.26), transparent 64%);
-  /* KPI kutu ikonu — şeffaf değil, tona uyumlu KONTRAST renk (cam altında). */
-  --kpi-icon: rgb(108 102 186 / 0.55);
-  /* Input odak "çukura vuran ışık" + etkileşim halesi — holo leylak. */
-  --pit-glow: rgb(157 140 255 / 0.4);
-  --glow-warm: rgb(157 140 255 / 0.32);
-  --glow-warm-strong: rgb(157 140 255 / 0.55);
+  --secondary: oklch(from var(--surface) calc(l - 0.03) c h);
+  --secondary-foreground: var(--foreground);
 
-  /* Birincil — holo aralığından türeyen mürekkep menekşesi (basılı/solid). */
-  --primary: #6b5bd6;
-  --primary-foreground: #ffffff;
+  --muted: oklch(from var(--surface) calc(l - 0.03) c h);
+  --muted-foreground: oklch(0.53 0.02 268);          /* #7C8290 ≈ 4,7:1 */
 
-  --secondary: #e2e5ee;
-  --secondary-foreground: #343949;
+  /* Vurgu yüzeyi — bezel tonu; hover/seçili satır yıkaması. */
+  --accent: oklch(from var(--surface) calc(l - 0.02) c h);
+  --accent-foreground: var(--foreground);
 
-  --muted: #e2e5ee;
-  --muted-foreground: #666c80;
+  --brand-mark: var(--foreground);
 
-  /* Vurgu yüzeyi — yumuşak leylak; hover/seçili çipler için. */
-  --accent: #ece7ff;
-  --accent-foreground: #5b4cc4;
+  /* ── V7 vurgu ailesi: asit neon TEK highlight ── */
+  --neon: oklch(0.93 0.19 118);                      /* #D8F53C */
+  --neon-fg: var(--foreground);
+  --neon-ink: oklch(0.49 0.13 120);                  /* asit mürekkep, metin için ≥4,5:1 */
+  --neon-glow: oklch(0.93 0.19 118 / 0.55);
+  /* Tozlu mavi — yalnız dekor kartı/ikincil çizgi. */
+  --blue: oklch(0.77 0.05 278);                      /* #AEB6D2 */
+  --blue-2: oklch(0.63 0.08 278);                    /* #7F89B3 */
+  --blue-ink: oklch(0.40 0.07 278);                  /* #3E4664 */
+  /* Hairline çifti: güçlü (bölüm) / zayıf (satır). */
+  --rule: oklch(0.83 0.012 262);                     /* #C7CCD6 */
+  --rule-2: oklch(0.89 0.008 262);                   /* #D9DDE4 */
 
-  /* Marka markı (logo) rengi — platformda grafit mürekkep; Jade Gold
-     kapsamı kendi antik altınını korur (dosya sonundaki override). */
-  --brand-mark: #343949;
+  /* Geriye uyum: altın/jade takma adları V7 asit + mavi ailesine düşer. */
+  --gold: var(--neon);
+  --gold-deep: var(--neon-ink);
+  --gold-tint: oklch(0.95 0.08 118);
+  --jade: var(--blue-2);
+  --jade-tint: oklch(0.92 0.03 278);
+  --line: var(--rule);
+  /* Durum mürekkepleri — kâr mürekkep (nötr), zarar kil. */
+  --positive: var(--foreground);
+  --negative: oklch(0.49 0.14 30);                   /* #B5473A */
 
-  /* Modül takma adları — bileşenlerde var(--gold) vb. olarak kullanılır.
-     NeumorphGlass'ta altın ailesi holo periwinkle'a, jade ailesi nane
-     yeşiline eşlenir; --gold-deep metin için (≥4.5:1). */
-  --gold: #9d8cff;
-  --gold-deep: #5b4cc4;
-  --gold-tint: #ece7ff;
-  --jade: #2f9d6e;
-  --jade-tint: #dcf3e8;
-  --line: var(--border);
-
-  --destructive: #e05252;
+  --destructive: oklch(0.49 0.14 30);
   --destructive-foreground: #ffffff;
 
-  --border: rgb(163 177 198 / 0.32);
-  --input: rgb(163 177 198 / 0.32);
-  --ring: #9d8cff;
+  /* Hairline — kontroller için ≥3:1. */
+  --hairline: oklch(0.58 0.02 265);
+  --border: var(--rule);
+  --input: var(--hairline);
+  --ring: var(--neon-ink);
 
-  /* Grafik paleti: holo ailesinin doygun okunur türevleri */
-  --chart-1: #8f7dff;
-  --chart-2: #5aa9f0;
-  --chart-3: #ef86c0;
-  --chart-4: #f0a44e;
-  --chart-5: #4bbd8a;
+  /* Grafik paleti — asit / tozlu mavi / mürekkep ailesi */
+  --chart-1: var(--neon-ink);
+  --chart-2: var(--blue-2);
+  --chart-3: var(--ink-2);
+  --chart-4: var(--muted-foreground);
+  --chart-5: var(--negative);
 
-  --sidebar: #eaecf3;
-  --sidebar-foreground: #343949;
-  --sidebar-primary: #6b5bd6;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #ece7ff;
-  --sidebar-accent-foreground: #5b4cc4;
-  --sidebar-border: rgb(163 177 198 / 0.32);
-  --sidebar-ring: #9d8cff;
+  --sidebar: var(--surface);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--accent-foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
 
-  /* Nöromorfik çift ışık — highlight sol-üst (beyaz), gölge sağ-alt (çelik gri) */
-  --nm-light: 255 255 255;
-  --nm-dark: 163 177 198;
-  --nm-convex: linear-gradient(145deg, #f3f5fb, #e4e7f0);
-  --nm-convex-press: linear-gradient(145deg, #e4e7f0, #f2f4fa);
-  /* DOĞAL IŞIK RÖTUŞU: simetrik 45° çift (şişirilmiş sticker hissi) yerine
-     yerçekimine uyan katmanlar — yumuşak sol-üst highlight + kontak + anahtar
-     + ambient; gölge mürekkebi sıcak-erguvan (48 42 60), çelik gri değil. */
-  --shadow-raised: -3px -5px 10px rgb(var(--nm-light) / 0.72), 0 1px 2px rgb(48 42 60 / 0.1),
-    3px 7px 16px rgb(48 42 60 / 0.16), 8px 18px 34px -12px rgb(48 42 60 / 0.16);
-  --shadow-raised-sm: -2px -3px 6px rgb(var(--nm-light) / 0.7), 0 1px 1.5px rgb(48 42 60 / 0.1),
-    2px 4px 10px rgb(48 42 60 / 0.14);
-  --shadow-hover: -4px -7px 14px rgb(var(--nm-light) / 0.75), 0 2px 3px rgb(48 42 60 / 0.1),
-    6px 14px 30px -6px rgb(48 42 60 / 0.2), 12px 28px 52px -18px rgb(48 42 60 / 0.16);
-  --shadow-pressed: inset 0 2px 6px rgb(48 42 60 / 0.2), inset 2px 3px 8px rgb(48 42 60 / 0.12),
-    inset 0 -1px 0 rgb(var(--nm-light) / 0.65);
-  /* Marka-parametrik tokenlar — Jade Gold kapsamı kendi değerlerini basar. */
-  --btn-hero-bg: var(--grad-holo);
-  --btn-hero-fg: #3a2f5e;
-  --sidebar-label: var(--muted-foreground);
-  --neon-star: 169 155 255;
-  --glass-outer: rgb(35 38 60 / 0.5);
-  /* Metin embossu — tüm yazılar (sayılar dâhil) yüzeyin ÜSTÜNDE hafifçe
-     kabarır: sol-üst beyaz highlight + sağ-alt yumuşak gölge (yüzey ışık
-     yönüyle aynı). Çok belli belirsiz; okunabilirliği bozmaz. */
-  --text-emboss: -0.4px -0.4px 0.5px rgb(255 255 255 / 0.7),
-    0.5px 0.7px 1.1px rgb(120 130 160 / 0.32);
+  /* Geriye uyum: holo takma adları tozlu mavi/sis degradeleri taşır. */
+  --holo-sky: oklch(0.86 0.03 278);
+  --holo-lilac: oklch(0.90 0.02 278);
+  --holo-pink: oklch(0.92 0.01 265);
+  --holo-peach: oklch(0.95 0.08 118);
+  --holo-mint: oklch(0.90 0.03 262);
+  --grad-holo: linear-gradient(160deg, oklch(0.84 0.04 278) 0%, var(--blue) 55%, var(--blue-2) 100%);
+  --grad-holo-full: var(--grad-holo);
+  --grad-holo-radial: radial-gradient(120% 120% at 20% 0%, var(--holo-sky), var(--blue) 70%, var(--blue-2));
+  --holo-blobs: none;
+
+  /* ── GÖSTERGE (instrument) token'ları — vintage radyo / FM tuner ── */
+  --bezel: oklch(0.915 0.008 262);                   /* #E3E6EB */
+  --screen: oklch(0.21 0.012 272);                   /* cam #15171C */
+  --screen-fg: oklch(0.87 0.012 90);                 /* #D9D6CB */
+  --screen-dim: oklch(0.62 0.01 90);                 /* #8E8C83 */
+  --screen-grid: oklch(0.32 0.01 110);
+  --knob: oklch(0.91 0.008 262);
+  --knob-hi: oklch(0.98 0.003 262);
+  --knob-lo: oklch(0.84 0.012 262);
+  --shadow-soft: -6px -6px 14px var(--nm-hi), 8px 10px 22px var(--nm-lo);
+  --shadow-soft-sm: -3px -3px 7px var(--nm-hi), 4px 4px 9px var(--nm-lo);
+  --shadow-inset: inset 2px 2px 5px var(--nm-lo), inset -2px -2px 5px var(--nm-hi);
+
+  /* Cam katmanı V7'de KAPALI: popover/sticky yüzeyleri opak sis + hairline.
+     Token adları korunur ki 49 tüketici dokunulmadan düzleşsin. */
+  --glass: var(--surface);
+  --glass-strong: var(--surface);
+  --glass-border: var(--rule-2);
+  --glass-highlight: 0 0 0 0 transparent;
+  --glass-depth: 0 0 0 0 transparent;
+  --glass-sheen: none;
+  --glass-tint: none;
+  --glass-outer: oklch(from var(--nm-lo) calc(l - 0.3) c h / 0.3);
+  --glass-filter: none;
+  --glass-filter-sm: none;
+  --glass-ring: 0 0 0 0 transparent;
   --sheen-angle: 135deg;
-  /* Cam optik yoğunluğu — DS effects.css BİREBİR: --glass-blur / -sm. */
-  /* PERF: blur maliyeti yarıçapla süperlineer büyür; 22→12 ve 12→8 cam hissini
-     korur (cam üstünde hep metin/kontrast var), kare bütçesini ciddi rahatlatır. */
-  --glass-filter: blur(12px) saturate(150%);
-  --glass-filter-sm: blur(8px) saturate(140%);
-  /* Cam iç halkası — 1px iridesan iç kenar (rim tek kaynaktan). */
-  --glass-ring: inset 0 0 0 1px rgb(255 255 255 / 0.08);
+
+  /* Mesafe gölgeleri — yalnız yüzen katmanlar (popover/menü/dialog). */
+  --lift-sm: 0 1px 2px oklch(from var(--nm-lo) l c h / 0.4), 0 6px 16px -4px oklch(from var(--nm-lo) l c h / 0.5);
+  --lift: 0 2px 4px oklch(from var(--nm-lo) l c h / 0.35), 0 12px 28px -8px oklch(from var(--nm-lo) l c h / 0.6);
+  --lift-lg: 0 2px 4px oklch(from var(--nm-lo) l c h / 0.35), 0 20px 48px -12px oklch(from var(--nm-lo) l c h / 0.65);
+  --lift-natural-sm: 0 0 0 0 transparent;
+  --lift-natural: 0 0 0 0 transparent;
+  --lift-natural-lg: 0 0 0 0 transparent;
+
+  --kpi-icon: oklch(from var(--foreground) l c h / 0.25);
+  --pit-glow: var(--neon-glow);
+  --glow-warm: oklch(0.93 0.19 118 / 0.3);
+  --glow-warm-strong: oklch(0.93 0.19 118 / 0.5);
+
+  /* Nöromorfik çift ışık — YALNIZ göstergelerde ve serpiştirilmiş birkaç
+     öğede (aktif nav, Dikkat satırları). */
+  --nm-light: 255 255 255;
+  --nm-dark: 191 197 207;
+  --nm-convex: linear-gradient(145deg, oklch(from var(--surface) calc(l + 0.015) c h), oklch(from var(--surface) calc(l - 0.015) c h));
+  --nm-convex-press: linear-gradient(145deg, oklch(from var(--surface) calc(l - 0.02) c h), oklch(from var(--surface) calc(l + 0.01) c h));
+  --shadow-raised: var(--shadow-soft);
+  --shadow-raised-sm: var(--shadow-soft-sm);
+  --shadow-hover: -8px -8px 18px var(--nm-hi), 10px 12px 26px var(--nm-lo);
+  --shadow-pressed: var(--shadow-inset);
+  --btn-hero-bg: var(--neon);
+  --btn-hero-fg: var(--foreground);
+  --sidebar-label: var(--muted-foreground);
+  --neon-star: 216 245 60;
+  --text-emboss: none;
+
   --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
-  /* Sessiz oturum — hover/gölge settle (aşırı bounce yok). */
   --ease-quiet: cubic-bezier(0.33, 1, 0.32, 1);
-  /* Motion süreleri — lib/motion.ts ile hizalı. */
   --motion-press: 180ms;
   --motion-hover: 280ms;
   --motion-reveal: 560ms;
   --motion-page: 380ms;
   --motion-chain: 45ms;
-  /* Ambient pointer light (AmbientPointer yazar; yoksa üst-orta pencere ışığı). */
   --pointer-x: 52%;
   --pointer-y: 18%;
-  /* Doğal katmanlı gölge — tek “dijital halo” yerine yumuşak mesafe + contact. */
-  --lift-natural-sm:
-    0 1px 2px rgb(45 40 55 / 0.045),
-    0 4px 12px rgb(45 40 55 / 0.06);
-  --lift-natural:
-    0 1px 2px rgb(45 40 55 / 0.04),
-    0 6px 16px -4px rgb(45 40 55 / 0.08),
-    0 18px 40px -16px rgb(45 40 55 / 0.14);
-  --lift-natural-lg:
-    0 2px 4px rgb(45 40 55 / 0.04),
-    0 12px 28px -8px rgb(45 40 55 / 0.1),
-    0 32px 64px -28px rgb(45 40 55 / 0.18);
-
-  /* Liquid sekme göstergesi — komşu sekmeye kayarken esneyip taşan eğri,
-     sıfırdan dolarken hafif zıplayan (damla oturur gibi) eğri. */
   --ease-liquid-slide: cubic-bezier(0.5, 1.6, 0.3, 0.9);
   --ease-liquid-pop: cubic-bezier(0.34, 1.76, 0.64, 1);
 
-  /* Lume tokenlarının AÇIK tema karşılıkları — açıkta ışıma yok, nötr
-     eşdeğerler (utility'ler gece .dark blokta gerçek lume değerini alır). */
+  /* Lume tokenları — açıkta nötr eşdeğer. */
   --lume-panel: var(--card);
-  --lume-edge: var(--glass-border);
-  --lume-hi: var(--glass-highlight);
-  --lume-pit: inset 0 2px 6px rgb(84 80 120 / 0.22), inset 0 -1px 0 rgb(255 255 255 / 0.7);
-  --lume-glass: var(--glass);
+  --lume-edge: var(--rule-2);
+  --lume-hi: 0 0 0 0 transparent;
+  --lume-pit: var(--shadow-inset);
+  --lume-glass: var(--surface);
   --lume-glow: 0 0 0 0 transparent;
   --lume-glow-lg: 0 0 0 0 transparent;
-  --lume-fill: var(--grad-holo);
+  --lume-fill: var(--neon);
 
-  /* ── DOKUNSAL FİZİK (A1) — asimetrik basma zamanlaması ─────────────────
-     Gerçek bir tuş HIZLI iner, YAVAŞ ve hafif yaylanarak kalkar. Simetrik
-     süre "yazılım" hissi verir; asimetri "malzeme" hissi verir. Bu ikili,
-     tıklanabilir her yüzeyin (.jg-pressable/.jg-tactile/Button) sözleşmesi. */
-  /* Basış: parmak değdiği an — göz gecikmeyi burada yakalar, kısa tut. */
   --motion-press-in: 90ms;
-  /* Bırakış: yüzey geri kalkar — nefes alacak kadar uzun, yaylanma burada. */
   --motion-press-out: 260ms;
-  /* Bırakış eğrisi: hedefi hafif aşıp oturur (yay). Yalnız bırakışta. */
   --ease-press-out: cubic-bezier(0.34, 1.5, 0.64, 1);
-  /* Çıkış eğrisi: giden öğe hızlanarak gider (giriş ≠ çıkış; çıkış daha kısa). */
   --ease-exit: cubic-bezier(0.4, 0, 1, 1);
-  /* Tek odak dili — klavye kullanıcısı için 3px halka (tema --ring'inden). */
   --focus-ring: 0 0 0 3px color-mix(in srgb, var(--ring) 60%, transparent);
-
-  /* ── İSKELET (A4) ──────────────────────────────────────────────────────
-     Nabız periyodu; .jg-skel tüketir. Bütçe md.1: >=2s hedefine yakın tut. */
   --skel-pulse: 1.6s;
-
-  /* ── DERİNLİK (A5) ─────────────────────────────────────────────────────
-     Sahne perspektifi — YALNIZ .jg-depth-scene kabında kullanılır. 900px
-     "sinematik" değil "masa üstü" derinliği: eğim küçükken bile okunur,
-     büyük genlikte bozulmaya (bakış açısı kırılması) izin vermez. */
   --depth-perspective: 900px;
-  /* Yapışkan tablo başlığı scroll'da içerikten AYRILIR — altına düşen gölge.
-     Yalnız durum geçişiyle (stuck) açılır; keyframe ile ASLA. */
-  --sticky-head-shadow: 0 6px 14px -8px rgb(45 40 55 / 0.28);
-  /* Satır "kontak" gölgesi — hover'daki satır zeminden 1px kopar gibi durur. */
-  --row-contact: inset 0 0 0 1px color-mix(in srgb, var(--ring) 12%, transparent),
-    0 1px 2px rgb(45 40 55 / 0.06);
+  --sticky-head-shadow: 0 6px 14px -8px oklch(from var(--nm-lo) l c h / 0.7);
+  --row-contact: 0 0 0 0 transparent;
 }
 
-.dark {
-  /* Gece = LUME register (Liquid_Dark lab'ı birebir): derin mürekkep ground
-     (oklch 262 ailesi), üstünde kömür lume paneller; kontroller içten ışıklı.
-     Highlight çok düşük opaklıkta beyaz, gölge derin siyah; holo kroması
-     gece luminous periwinkle beyazlarına kayar. */
-  --background: #14161e;
-  --foreground: #eef0f6;
+/* ── Editoryal bölüm tonları — layout data-tone ile tek değişken ─────────
+   V7'de tonlar sisin içinde fısıltı kadar kayar (aynı L, ±0.004 kroma):
+   bölümler ayırt edilir ama palet tek kalır. */
+[data-tone="moss"]   { --surface: oklch(0.935 0.007 262); }
+[data-tone="olive"]  { --surface: oklch(0.935 0.006 265); }
+[data-tone="forest"] { --surface: oklch(0.93 0.008 250); }
+[data-tone="lichen"] { --surface: oklch(0.937 0.006 285); }
+[data-tone="slate"]  { --surface: oklch(0.932 0.004 265); }
 
-  --card: #262935;
-  --card-foreground: #eef0f6;
+.dark,
+.dark [data-tone] {
+  /* Gece = mürekkep zemin, aynı asit; kabartma ışığı gri-mavi, gölge siyah. */
+  --surface: oklch(0.23 0.015 272);                 /* #1B1E26 */
+  --nm-hi: oklch(0.30 0.015 272);
+  --nm-lo: oklch(0.14 0.015 272);
+  --background: var(--surface);
+  --foreground: oklch(0.93 0.006 265);              /* 12,6:1 */
+  --surface-2: oklch(from var(--surface) calc(l + 0.05) c h);
+  --ink-2: oklch(0.76 0.012 268);
 
-  /* Lume tokenları — içten ışıklı kontrol dili (dolgu/kenar/çukur/ışıma). */
-  --lume-panel: #262935;
-  --lume-edge: rgb(255 255 255 / 0.14);
-  --lume-hi: inset 0 1px 0 rgb(255 255 255 / 0.12);
-  --lume-pit: inset 0 4px 12px rgb(0 0 0 / 0.5), inset 0 -1px 0 rgb(255 255 255 / 0.06);
-  --lume-glass: rgb(255 255 255 / 0.08);
-  --lume-glow: 0 0 12px rgb(205 214 255 / 0.45);
-  --lume-glow-lg: 0 0 22px rgb(205 214 255 / 0.6), 0 0 44px rgb(150 160 255 / 0.28);
-  --lume-fill: linear-gradient(90deg, rgb(150 160 220 / 0.9), #e8ebff);
+  --card: var(--surface);
+  --card-foreground: var(--foreground);
 
-  --popover: #2b2e3b;
-  --popover-foreground: #eef0f6;
+  --lume-panel: var(--card);
+  --lume-edge: oklch(1 0 0 / 0.1);
+  --lume-hi: 0 0 0 0 transparent;
+  --lume-pit: inset 3px 3px 8px var(--nm-lo), inset -2px -2px 6px var(--nm-hi);
+  --lume-glass: var(--surface);
+  --lume-glow: 0 0 12px var(--neon-glow);
+  --lume-glow-lg: 0 0 22px var(--neon-glow);
+  --lume-fill: var(--neon);
 
-  /* Gece buzlu cam — DS effects.css [data-theme=dark] BİREBİR: dumanlı kömür
-     panel rgba(38,41,53,.48) (+strong .68), border rgba(255,255,255,.10).
-     (Eski %7 beyaz veil değil — DS'in isli koyu camı.) */
-  --glass: rgb(38 41 53 / 0.48);
-  --glass-strong: rgb(38 41 53 / 0.68);
-  --glass-border: rgb(255 255 255 / 0.10);
-  --glass-highlight: inset 0 1px 0 rgb(255 255 255 / 0.12);
-  --glass-depth: inset 0 -14px 30px -20px rgb(0 0 0 / 0.5);
-  --glass-sheen: linear-gradient(var(--sheen-angle), rgb(255 255 255 / 0.09), transparent 42%);
-  --glass-ring: inset 0 0 0 1px rgb(255 255 255 / 0.04);
-  --lift-sm: 0 4px 14px rgb(0 0 0 / 0.35);
-  --lift: 0 20px 50px rgb(0 0 0 / 0.4);
-  --lift-lg: 0 24px 60px rgb(0 0 0 / 0.55);
-  --lift-natural-sm:
-    0 1px 2px rgb(0 0 0 / 0.28),
-    0 4px 14px rgb(0 0 0 / 0.32);
-  --lift-natural:
-    0 2px 4px rgb(0 0 0 / 0.28),
-    0 10px 28px -6px rgb(0 0 0 / 0.38),
-    0 28px 56px -24px rgb(0 0 0 / 0.45);
-  --lift-natural-lg:
-    0 2px 6px rgb(0 0 0 / 0.3),
-    0 16px 40px -10px rgb(0 0 0 / 0.42),
-    0 40px 72px -28px rgb(0 0 0 / 0.5);
-  --glass-tint: radial-gradient(120% 150% at 84% -12%, rgb(169 155 255 / 0.2), transparent 56%),
-    radial-gradient(120% 130% at 6% 112%, rgb(90 169 240 / 0.16), transparent 56%);
-  --holo-blobs: radial-gradient(38% 44% at 22% 28%, rgb(120 130 220 / 0.5), transparent 62%),
-    radial-gradient(36% 42% at 76% 36%, rgb(150 120 230 / 0.44), transparent 62%),
-    radial-gradient(42% 46% at 54% 82%, rgb(210 120 180 / 0.4), transparent 64%);
-  --kpi-icon: rgb(160 154 240 / 0.5);
-  /* Gece: çukur daha koyu → holo aydınlanma biraz daha parlak */
-  --pit-glow: rgb(169 155 255 / 0.45);
-  --glow-warm: rgb(169 155 255 / 0.38);
-  --glow-warm-strong: rgb(169 155 255 / 0.6);
+  --popover: oklch(from var(--surface) calc(l + 0.05) c h);
+  --popover-foreground: var(--foreground);
 
-  /* Gece birincil — açık periwinkle, koyu mürekkep metinle */
-  --primary: #a99bff;
-  --primary-foreground: #1e2029;
+  --glass: var(--surface);
+  --glass-strong: var(--surface);
+  --glass-border: oklch(1 0 0 / 0.1);
+  --glass-highlight: 0 0 0 0 transparent;
+  --glass-depth: 0 0 0 0 transparent;
+  --glass-sheen: none;
+  --glass-ring: 0 0 0 0 transparent;
+  --glass-outer: oklch(0 0 0 / 0.6);
+  --lift-sm: 0 4px 14px oklch(0 0 0 / 0.45);
+  --lift: 0 16px 40px oklch(0 0 0 / 0.5);
+  --lift-lg: 0 24px 60px oklch(0 0 0 / 0.6);
+  --lift-natural-sm: 0 0 0 0 transparent;
+  --lift-natural: 0 0 0 0 transparent;
+  --lift-natural-lg: 0 0 0 0 transparent;
+  --kpi-icon: oklch(1 0 0 / 0.25);
 
-  --secondary: #2e3140;
-  --secondary-foreground: #d3d7e2;
+  --primary: var(--foreground);
+  --primary-foreground: var(--surface);
 
-  --muted: #2e3140;
-  --muted-foreground: #9aa0b3;
+  --secondary: oklch(from var(--surface) calc(l + 0.05) c h);
+  --secondary-foreground: var(--foreground);
 
-  --accent: #353952;
-  --accent-foreground: #cfc8ff;
+  --muted: oklch(from var(--surface) calc(l + 0.05) c h);
+  --muted-foreground: oklch(0.68 0.012 268);        /* 6,2:1 */
 
-  /* Gece: platform markı açık mürekkep (Jade Gold override'ı dosya sonunda) */
-  --brand-mark: #eef0f6;
+  --accent: oklch(from var(--surface) calc(l + 0.04) c h);
+  --accent-foreground: var(--foreground);
 
-  /* Gece modül takma adları — koyu kömür zeminde uyarlanmış tonlar */
-  --gold: #a99bff;
-  --gold-deep: #beb3ff;
-  --gold-tint: #353952;
-  --jade: #5ecf9f;
-  --jade-tint: #24382f;
+  --brand-mark: var(--foreground);
 
-  --destructive: #ee7272;
-  --destructive-foreground: #ffffff;
+  --neon: oklch(0.92 0.19 118);
+  --neon-fg: oklch(0.20 0.02 272);
+  --neon-ink: oklch(0.86 0.17 118);                 /* gecede asit metin, 9:1 */
+  --blue: oklch(0.62 0.07 278);
+  --blue-2: oklch(0.50 0.08 278);
+  --blue-ink: oklch(0.90 0.04 278);
+  --rule: oklch(0.36 0.015 270);
+  --rule-2: oklch(0.30 0.012 270);
+  --gold: var(--neon);
+  --gold-deep: var(--neon-ink);
+  --gold-tint: oklch(from var(--surface) calc(l + 0.08) 0.05 118);
+  --jade: var(--blue);
+  --jade-tint: oklch(from var(--surface) calc(l + 0.06) 0.04 278);
+  --positive: var(--foreground);
+  --negative: oklch(0.74 0.13 30);
 
-  --border: rgb(255 255 255 / 0.07);
-  --input: rgb(255 255 255 / 0.09);
-  --ring: #a99bff;
+  --destructive: oklch(0.68 0.15 30);
+  --destructive-foreground: oklch(0.15 0.03 30);
 
-  --chart-1: #a99bff;
-  --chart-2: #79bdf7;
-  --chart-3: #f596cd;
-  --chart-4: #f5b269;
-  --chart-5: #5ecf9f;
+  --hairline: oklch(0.52 0.015 270);
+  --border: var(--rule);
+  --input: var(--hairline);
+  --ring: var(--neon);
 
-  --sidebar: #262935;
-  --sidebar-foreground: #eef0f6;
-  --sidebar-primary: #a99bff;
-  --sidebar-primary-foreground: #1e2029;
-  --sidebar-accent: #353952;
-  --sidebar-accent-foreground: #cfc8ff;
-  --sidebar-border: rgb(255 255 255 / 0.07);
-  --sidebar-ring: #a99bff;
+  --chart-1: var(--neon-ink);
+  --chart-2: var(--blue);
+  --chart-3: var(--ink-2);
+  --chart-4: var(--muted-foreground);
+  --chart-5: var(--negative);
 
-  /* Gece nöromorfik kabartma — MAT yüzey + kontrollü emboss.
-     Highlight neredeyse görünmez beyaz (kit: 0.045), gölge derin siyah;
-     kabartma hissi gölge çiftinden gelir, yüzey saten kalır. */
+  --sidebar: var(--surface);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--accent-foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+
+  --bezel: oklch(0.27 0.015 272);
+  --screen: oklch(0.14 0.012 272);
+  --screen-fg: oklch(0.87 0.012 90);
+  --screen-dim: oklch(0.58 0.01 90);
+  --screen-grid: oklch(0.28 0.01 110);
+  --knob: oklch(0.28 0.015 272);
+  --knob-hi: oklch(0.36 0.015 272);
+  --knob-lo: oklch(0.18 0.015 272);
+  --shadow-soft: -5px -5px 12px var(--nm-hi), 8px 10px 22px var(--nm-lo);
+  --shadow-soft-sm: -3px -3px 7px var(--nm-hi), 4px 4px 9px var(--nm-lo);
+  --shadow-inset: inset 2px 2px 5px var(--nm-lo), inset -2px -2px 5px var(--nm-hi);
+
   --nm-light: 255 255 255;
   --nm-dark: 0 0 0;
-  --nm-convex: linear-gradient(145deg, #2c2f3c, #22242f);
-  --nm-convex-press: linear-gradient(145deg, #22242f, #2b2e3b);
-  /* DOĞAL IŞIK (koyu): sahte sol-üst beyaz parıltı yerine ince üst rim ışığı;
-     gölge saf siyah değil mavi-siyah mürekkep (8 9 16), aşağı yönlü katmanlı. */
-  --shadow-raised: 0 -1px 0 rgb(var(--nm-light) / 0.05), 0 2px 4px rgb(8 9 16 / 0.45),
-    0 10px 24px -6px rgb(8 9 16 / 0.55);
-  --shadow-raised-sm: 0 -1px 0 rgb(var(--nm-light) / 0.05), 0 1px 3px rgb(8 9 16 / 0.4),
-    0 6px 14px -4px rgb(8 9 16 / 0.5);
-  --shadow-hover: 0 -1px 0 rgb(var(--nm-light) / 0.06), 0 4px 8px rgb(8 9 16 / 0.45),
-    0 16px 34px -8px rgb(8 9 16 / 0.6);
-  --shadow-pressed: inset 0 2px 6px rgb(8 9 16 / 0.55), inset 2px 3px 8px rgb(8 9 16 / 0.35),
-    inset 0 -1px 0 rgb(var(--nm-light) / 0.04);
-  /* Gece metin embossu — highlight neredeyse görünmez beyaz, gölge derin
-     siyah (koyu yüzeyde kabartma okunur ama yine belli belirsiz). */
-  --text-emboss: -0.4px -0.4px 0.5px rgb(255 255 255 / 0.07),
-    0.5px 0.7px 1.4px rgb(0 0 0 / 0.5);
-
-  /* Derinlik tokenlarının gece karşılıkları — koyu zeminde gri gölge okunmaz;
-     mürekkep derinleşir, kontak çizgisi ışıklı rim'e döner (lume dili). */
-  --sticky-head-shadow: 0 8px 18px -8px rgb(8 9 16 / 0.7);
-  --row-contact: inset 0 0 0 1px rgb(255 255 255 / 0.06),
-    0 1px 2px rgb(8 9 16 / 0.4);
+  --nm-convex: linear-gradient(145deg, oklch(from var(--surface) calc(l + 0.025) c h), oklch(from var(--surface) calc(l - 0.015) c h));
+  --nm-convex-press: linear-gradient(145deg, oklch(from var(--surface) calc(l - 0.025) c h), oklch(from var(--surface) calc(l + 0.01) c h));
+  --shadow-raised: var(--shadow-soft);
+  --shadow-raised-sm: var(--shadow-soft-sm);
+  --shadow-hover: -7px -7px 16px var(--nm-hi), 10px 12px 26px var(--nm-lo);
+  --shadow-pressed: var(--shadow-inset);
+  --text-emboss: none;
+  --sticky-head-shadow: 0 8px 18px -8px oklch(0 0 0 / 0.8);
+  --row-contact: 0 0 0 0 transparent;
+  --btn-hero-fg: oklch(0.20 0.02 272);
+  --neon-star: 216 245 60;
 }
+
+.dark [data-tone="moss"]   { --surface: oklch(0.23 0.016 268); }
+.dark [data-tone="olive"]  { --surface: oklch(0.23 0.015 272); }
+.dark [data-tone="forest"] { --surface: oklch(0.225 0.018 255); }
+.dark [data-tone="lichen"] { --surface: oklch(0.235 0.015 285); }
+.dark [data-tone="slate"]  { --surface: oklch(0.228 0.01 268); }
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -446,14 +426,20 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --font-sans: var(--font-sora);
+  --font-sans: var(--font-inter-tight);
   --font-mono: var(--font-jbmono);
-  /* Editorial serif — lab'ların --font-serif'i; başlıklar + italik em vurgular. */
-  --font-serif: var(--font-cormorant);
-  /* Index yüzü — .idx etiketleri/rakamsal okumalar (lab'ların --font-index'i). */
+  /* Editorial serif — Fraunces; başlıklar 300 ağırlık + italik son kelime. */
+  --font-serif: var(--font-fraunces);
+  /* Index yüzü — .idx etiketleri/rakamsal okumalar. */
   --font-index: var(--font-jbmono);
-  /* Display — California Paradise; YALNIZ kahraman başlıklar/wordmark. */
-  --font-display: var(--font-california);
+  /* Display = aynı serif (V7'de ayrı display yüzü yok). */
+  --font-display: var(--font-fraunces);
+  --color-neon: var(--neon);
+  --color-neon-ink: var(--neon-ink);
+  --color-ink-2: var(--ink-2);
+  --color-rule: var(--rule);
+  --color-rule-2: var(--rule-2);
+  --color-blue-2: var(--blue-2);
 }
 
 @layer base {
@@ -468,22 +454,9 @@
   }
   body {
     @apply bg-background text-foreground;
-    /* Zemin — Spatial lab'ın BİREBİR zemini: tepeden süzülen lavanta radyal
-       (f3f2f7→eceaf1→e6e3ee) + köşelerde çok düşük yoğunluklu holo ışıma.
-       NOT: gövde metni lab'lardaki gibi TEMİZ mürekkep — global text-shadow
-       yok; emboss/engrave yalnız bilinçli başlık utility'lerinde. */
-    background-image:
-      radial-gradient(1100px 560px at 85% -8%, rgb(212 198 255 / 0.24), transparent 60%),
-      radial-gradient(900px 480px at -10% 108%, rgb(182 220 255 / 0.18), transparent 55%),
-      radial-gradient(120% 90% at 50% 0%, #f3f2f7 0%, #eceaf1 46%, #e6e3ee 100%);
-    /* PERF: background-attachment:fixed her scroll karesinde tam-viewport
-       yeniden rasterizasyon demekti — kaldırıldı (degrade sayfayla kayar). */
-  }
-  .dark body {
-    /* Lume ground — Liquid_Dark'ın BİREBİR zemini: tepe ışığı housing'e
-       süzülür, kenarlara doğru derin mürekkebe iner (oklch 262 ailesi). */
-    background-image:
-      radial-gradient(90% 70% at 50% 10%, oklch(0.26 0.02 262), oklch(0.165 0.015 262) 70%);
+    /* Soft UI şartı: zemin düz ve kartla AYNI renk; derinlik yalnız gölgeden.
+       Degrade/holo/grain katmanı yok (Amuletta 2.0). */
+    background-image: none;
   }
 }
 
@@ -557,8 +530,8 @@
      görsel tabloya yapıştırılmış düz dikdörtgen değil, yüzeyde duran baskı. */
   .thumb-lift {
     box-shadow:
-      0 1px 2px rgb(48 42 60 / 0.2),
-      0 3px 8px -2px rgb(48 42 60 / 0.16);
+      0 1px 2px oklch(from var(--nm-lo) l c h / 0.5),
+      0 3px 8px -2px oklch(from var(--nm-lo) l c h / 0.45);
   }
   .dark .thumb-lift {
     box-shadow:
@@ -701,9 +674,9 @@
       var(--grad-holo-full);
     box-shadow:
       inset 0 1.5px 2px rgb(255 255 255 / 0.95),
-      inset 0 -8px 14px rgb(120 90 180 / 0.28),
-      0 8px 22px rgb(160 120 220 / 0.4),
-      0 0 26px rgb(196 150 255 / 0.34);
+      inset 0 -8px 14px oklch(0.50 0.10 80 / 0.28),
+      0 8px 22px oklch(0.66 0.13 78 / 0.35),
+      0 0 26px oklch(0.74 0.14 85 / 0.3);
     border: 1px solid rgb(255 255 255 / 0.55);
   }
 
@@ -813,7 +786,7 @@
       90deg,
       rgb(255 255 255 / 0.16) 0px,
       rgb(255 255 255 / 0.02) 5px,
-      rgb(90 80 130 / 0.07) 10px,
+      oklch(from var(--nm-lo) l c h / 0.12) 10px,
       rgb(255 255 255 / 0.16) 15px
     );
     mix-blend-mode: soft-light;
@@ -834,7 +807,7 @@
       90deg,
       oklch(1 0 0 / 0.05) 0px,
       transparent 5px,
-      oklch(0.7 0.07 262 / 0.06) 10px,
+      oklch(0.82 0.13 88 / 0.05) 10px,
       oklch(1 0 0 / 0.05) 15px
     );
     mix-blend-mode: screen;
@@ -918,8 +891,8 @@
   }
   .dark .glass-liquid::before {
     background:
-      radial-gradient(58% 44% at 30% 16%, rgb(205 214 255 / 0.26), transparent 56%),
-      linear-gradient(160deg, rgb(205 214 255 / 0.12), transparent 62%);
+      radial-gradient(58% 44% at 30% 16%, oklch(0.9 0.06 92 / 0.18), transparent 56%),
+      linear-gradient(160deg, oklch(0.9 0.06 92 / 0.08), transparent 62%);
   }
   @media (prefers-reduced-motion: no-preference) {
     /* PERF: caustic ışık gezintisi hover'da — 10 KPI camında sürekli hasar
@@ -942,22 +915,13 @@
      gölge. Alt metin ise yüzeye KAZINIR (oyuğa düşen gölge + alt dudak
      ışığı). Açık temada dokunulmaz (mevcut emboss dili yeter). */
   .dark .display-emboss {
-    color: #383d52;
-    text-shadow:
-      0 -1.5px 1px rgb(139 146 178 / 0.55),
-      0 -0.5px 0 rgb(160 166 198 / 0.35),
-      0 2px 3px rgb(8 9 14 / 0.85),
-      0 5px 10px rgb(5 6 10 / 0.45);
+    color: var(--foreground);
+    text-shadow: none;
   }
   .dark .display-emboss em,
   .dark .display-emboss .em {
-    color: #414762;
-    text-shadow:
-      0 -1.5px 1px rgb(150 158 196 / 0.6),
-      0 2px 3px rgb(8 9 14 / 0.85),
-      0 5px 12px rgb(5 6 10 / 0.45),
-      0 0 24px rgb(203 210 255 / 0.2),
-      0 0 56px rgb(203 210 255 / 0.12);
+    color: inherit;
+    text-shadow: none;
   }
   /* embossLight (Liquid_Dark birebir): kabartma vurgu 12sn'de bir "nefes alır"
      — opacity .92→1, quiet ease, alternate. Yalnız koyu + motion tercihine
@@ -971,10 +935,8 @@
     }
   }
   .dark .text-engraved {
-    color: #6d7288;
-    text-shadow:
-      0 -1px 1px rgb(5 6 10 / 0.9),
-      0 1px 0 rgb(96 102 130 / 0.55);
+    color: var(--muted-foreground);
+    text-shadow: none;
   }
 
   /* ── Editorial serif başlık (referans: lab'ların h2/h1 dili) ──────────
@@ -983,19 +945,15 @@
      `h2 em{ font-style:italic; color:var(--accent-deep) }`). */
   .h-serif {
     font-family: var(--font-serif);
-    font-weight: 500;
+    font-variation-settings: "opsz" 144;
+    font-weight: 300;
     letter-spacing: -0.02em;
   }
   .h-serif em,
   .h-serif .em {
     font-style: italic;
-    font-weight: 500;
-    color: var(--gold-deep);
-  }
-  .dark .h-serif em,
-  .dark .h-serif .em {
-    color: #cfc8ff;
-    text-shadow: 0 0 26px rgb(203 210 255 / 0.35);
+    font-weight: 300;
+    color: inherit;
   }
 
   /* ── Kahraman başlık: SANS bold + SERİF İTALİK vurgu (referans: Liquid Dark)
@@ -1004,22 +962,17 @@
      display-emboss ile birlikte koyuda yüzeyin kendisinden kabarır — em'de
      text-shadow'u display-emboss verir (burada yalnız renk değişir). */
   .h-display {
-    font-family: var(--font-sans);
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    line-height: 1.04;
+    font-family: var(--font-serif);
+    font-variation-settings: "opsz" 144;
+    font-weight: 300;
+    letter-spacing: -0.035em;
+    line-height: 0.95;
   }
   .h-display em,
   .h-display .em {
-    font-family: var(--font-serif);
     font-style: italic;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    color: var(--gold-deep);
-  }
-  .dark .h-display em,
-  .dark .h-display .em {
-    color: #cfc8ff;
+    font-weight: 300;
+    color: inherit;
   }
 
   /* ── Editorial index başlığı (referans: Artifact Studio .idx) ─────────
@@ -1038,7 +991,7 @@
   .idx .idx-bar {
     width: 36px;
     height: 1px;
-    background: var(--primary);
+    background: var(--neon-ink);
   }
   .idx .idx-ln {
     flex: 1;
@@ -1098,29 +1051,10 @@
      kiracı kimliği yalnız bu kutuda yaşar, arayüzün geri kalanı Amuletta. */
   .brand-box {
     position: relative;
-    border-radius: 18px;
-    background: var(--nm-convex-press);
-    box-shadow:
-      var(--shadow-pressed),
-      inset 0 -1px 0 rgb(var(--nm-light) / 0.5);
-    overflow: hidden;
-  }
-  .dark .brand-box {
-    box-shadow:
-      var(--shadow-pressed),
-      inset 0 -1px 0 rgb(255 255 255 / 0.06);
-  }
-  .brand-box::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    pointer-events: none;
-    background: radial-gradient(
-      120% 90% at 50% -20%,
-      rgb(var(--nm-dark) / 0.14),
-      transparent 55%
-    );
+    border-radius: 0;
+    background: transparent;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
   }
 
   /* ── Süzülen holografik arka plan ─────────────────────────────────────
@@ -1356,7 +1290,7 @@
   .dark .jg-ink-origin::after {
     background: radial-gradient(
       circle at var(--mx, 50%) var(--my, 50%),
-      rgb(205 214 255 / 0.7),
+      oklch(0.82 0.13 88 / 0.6),
       transparent 62%
     );
   }
@@ -2279,17 +2213,22 @@ html[data-brand="artifact"] .jg-dust {
    gölge her koşulda uygulanır, yalnız GEÇİŞİ sorguya bağlıdır. Seçici :where()
    ile 0 özgüllüğe indirildi ki .glass-* ve utility'ler üzerine yazabilsin. */
 @layer components {
+  /* V7: kart düz ve hairline'lı; gölge yok, hover'da yalnız kenar koyulaşır. */
   main :where([data-slot="card"]) {
-    box-shadow: var(--lift-natural), var(--glass-highlight);
+    box-shadow: none;
   }
-  main :where([data-slot="card"]):hover {
-    box-shadow: var(--lift-natural-lg), var(--glass-highlight);
-  }
-  @media (prefers-reduced-motion: no-preference) {
-    main :where([data-slot="card"]) {
-      transition: box-shadow 0.32s var(--ease-quiet);
-    }
-  }
+}
+
+/* ── Tablo kuyusu — Amuletta 2.0 "kart yumuşak, kontrol kenarlıklı, veri düz":
+   tablo hafif INSET bir kuyuda durur (tek yumuşak iç gölge), satırlar düz,
+   başlık hairline; kabarık işlem yalnız araç çubuğu/filtre/sayfalamaya aittir.
+   Yoğun veri yüzeyine çift gölge uygulanmaz (okunurluk). */
+.table-well {
+  /* V7: veri düz durur; kuyu yok, yalnız üst/alt hairline. */
+  border-radius: 0;
+  padding: 0;
+  background-color: transparent;
+  box-shadow: none;
 }
 
 /* Generous page rhythm — breathing room between major blocks. */
@@ -2335,7 +2274,7 @@ html[data-brand="artifact"] .jg-dust {
 .dark .cursor-glow::after {
   background: radial-gradient(
     210px circle at var(--mx, 50%) var(--my, 50%),
-    rgb(205 214 255 / 0.12),
+    oklch(0.9 0.06 92 / 0.08),
     transparent 68%
   );
 }
@@ -2544,9 +2483,9 @@ html[data-brand="artifact"] .jg-dust {
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.6),
     inset 0 -12px 24px rgb(255 255 255 / 0.07),
-    0 2px 3px rgb(48 42 60 / 0.14),
-    0 16px 36px rgb(48 42 60 / 0.22),
-    0 0 26px rgb(169 155 255 / 0.18);
+    0 2px 3px oklch(from var(--nm-lo) l c h / 0.4),
+    0 16px 36px oklch(from var(--nm-lo) l c h / 0.5),
+    0 0 26px oklch(0.74 0.14 85 / 0.16);
 }
 .dark .liquid-glass {
   border-color: rgb(255 255 255 / 0.1);
@@ -2559,5 +2498,519 @@ html[data-brand="artifact"] .jg-dust {
     inset 0 1px 0 rgb(255 255 255 / 0.14),
     0 2px 4px rgb(0 0 0 / 0.5),
     0 18px 40px rgb(0 0 0 / 0.5),
-    0 0 30px rgb(169 155 255 / 0.16);
+    0 0 30px oklch(0.82 0.13 88 / 0.14);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   V7 · EDİTORYAL YAPI TAŞLARI + GÖSTERGELER (2026-11-04)
+   Kaynak: scripts/theme-lab/directions/editorial.html (#V2). Neumorph YALNIZ
+   burada: .bezel / .screen / .knob / .seg / .soft. Kalan her şey düz.
+   ═══════════════════════════════════════════════════════════════════════ */
+@layer components {
+  /* Mono index yüzü — etiketler, tablo başlıkları, folyo. */
+  .mono-label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+  }
+  /* Defter rakamı — Fraunces 300, büyük, sıkı. */
+  .ledger-num {
+    font-family: var(--font-serif);
+    font-variation-settings: "opsz" 144;
+    font-weight: 300;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+  .ledger-num sup {
+    font-family: var(--font-mono);
+    font-size: 0.38em;
+    letter-spacing: 0;
+    font-weight: 400;
+    color: var(--muted-foreground);
+    vertical-align: top;
+    margin-top: 0.5em;
+    display: inline-block;
+  }
+  /* Asit hap — "ödendi", "+21%" gibi tek vurgu. */
+  .tag-neon {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--neon);
+    color: var(--neon-fg);
+    padding: 3px 9px;
+    border-radius: 999px;
+  }
+  /* Kahraman CTA — mürekkep kontur hap + asit ok dairesi, yumuşak gölge. */
+  .cta-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    height: 42px;
+    padding: 0 4px 0 18px;
+    border: 1px solid var(--foreground);
+    border-radius: 999px;
+    font-weight: 500;
+    font-size: 13.5px;
+    color: var(--foreground);
+    background: var(--surface);
+    box-shadow: -4px -4px 10px var(--nm-hi), 6px 8px 16px var(--nm-lo);
+    transition: box-shadow 0.3s var(--ease-quiet), transform 0.3s var(--ease-quiet);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .cta-pill:hover {
+    box-shadow: -6px -6px 14px var(--nm-hi), 8px 10px 22px var(--nm-lo);
+  }
+  .cta-pill:active {
+    box-shadow: var(--shadow-inset);
+    transform: scale(0.985);
+  }
+  .cta-pill:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+  .cta-pill .arrow {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--neon);
+    color: var(--neon-fg);
+    display: grid;
+    place-items: center;
+    box-shadow: 0 0 12px var(--neon-glow);
+    flex-shrink: 0;
+  }
+  .cta-pill .arrow svg {
+    width: 15px;
+    height: 15px;
+  }
+  /* Hayalet link — alt çizgi hairline, hover'da mürekkep. */
+  .ghost-link {
+    color: var(--ink-2);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-color: var(--rule);
+    transition: color 0.2s, text-decoration-color 0.2s;
+  }
+  .ghost-link:hover {
+    color: var(--foreground);
+    text-decoration-color: var(--foreground);
+  }
+  /* Bölüm başlığı — harf + serif başlık + sağa yaslı mono not, alt hairline. */
+  .sec-h {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 10px;
+  }
+  .sec-h .num {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted-foreground);
+  }
+  .sec-h h2,
+  .sec-h .h {
+    font-family: var(--font-serif);
+    font-variation-settings: "opsz" 144;
+    font-weight: 300;
+    font-size: 24px;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+  .sec-h .right {
+    margin-left: auto;
+  }
+  /* Defter bandı — hairline üst/alt, hücreler dikey hairline ile ayrılır. */
+  .band {
+    display: grid;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .band > .stat {
+    padding: 18px 20px 16px 0;
+    border-right: 1px solid var(--rule);
+    margin-right: 20px;
+    position: relative;
+    min-width: 0;
+  }
+  .band > .stat:last-child {
+    border-right: 0;
+    margin-right: 0;
+  }
+  .band > .stat.decor {
+    padding: 0;
+    border-right: 0;
+  }
+  /* Defter tablosu — başlık mono, satır hairline, sayılar sağda mono. */
+  .ledger th {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    font-weight: 400;
+    text-align: left;
+    padding: 10px 8px 8px;
+    border-bottom: 1px solid var(--rule);
+    white-space: nowrap;
+  }
+  .ledger td {
+    padding: 12px 8px;
+    border-bottom: 1px solid var(--rule-2);
+    vertical-align: middle;
+  }
+  .ledger th.ra,
+  .ledger td.ra {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .ledger td.ra {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+  }
+  .ledger td.ra.neg {
+    color: var(--negative);
+  }
+  .ledger tbody tr:hover > td {
+    background: color-mix(in oklab, var(--bezel) 70%, transparent);
+  }
+  /* Dipnot — † işareti + kısa açıklama. */
+  .note {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    font-size: 12.5px;
+    color: var(--ink-2);
+    max-width: 60ch;
+  }
+  .note .mark {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted-foreground);
+    padding-top: 3px;
+  }
+  /* Dikkat satırı — serpiştirilmiş inset yüzey. */
+  .inset-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: var(--bezel);
+    box-shadow: var(--shadow-inset);
+    font-size: 13px;
+    color: var(--foreground);
+  }
+  .inset-row > span:last-child {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink-2);
+    white-space: nowrap;
+  }
+  /* Serpiştirilmiş yumuşak yüzey (aktif nav, kabarık çip). */
+  .soft {
+    background: var(--bezel);
+    box-shadow: var(--shadow-soft-sm);
+  }
+  .soft-inset {
+    background: var(--bezel);
+    box-shadow: var(--shadow-inset);
+  }
+
+  /* ── GÖSTERGELER: vintage radyo / FM tuner / düğme ── */
+  .bezel {
+    border-radius: 22px;
+    padding: 14px;
+    background: var(--bezel);
+    box-shadow:
+      var(--shadow-soft),
+      inset 0 1px 0 rgb(255 255 255 / 0.55);
+    position: relative;
+  }
+  .dark .bezel {
+    box-shadow:
+      var(--shadow-soft),
+      inset 0 1px 0 rgb(255 255 255 / 0.06);
+  }
+  .bezel .screw {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, rgb(255 255 255 / 0.55), rgb(0 0 0 / 0.13) 70%);
+    box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.25);
+  }
+  .bezel .screw.tl { left: 10px; top: 10px; }
+  .bezel .screw.tr { right: 10px; top: 10px; }
+  .bezel .screw.bl { left: 10px; bottom: 10px; }
+  .bezel .screw.br { right: 10px; bottom: 10px; }
+  .screen {
+    border-radius: 12px;
+    background:
+      radial-gradient(120% 90% at 50% 0%, rgb(255 255 255 / 0.07) 0%, transparent 60%),
+      var(--screen);
+    box-shadow:
+      inset 0 3px 10px rgb(0 0 0 / 0.65),
+      inset 0 -1px 0 rgb(255 255 255 / 0.08),
+      inset 0 0 0 1px rgb(0 0 0 / 0.6);
+    padding: 16px 18px;
+    color: var(--screen-fg);
+    position: relative;
+    overflow: hidden;
+  }
+  .screen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, rgb(255 255 255 / 0.025) 0 1px, transparent 1px 3px);
+    pointer-events: none;
+  }
+  .screen > * {
+    position: relative;
+    z-index: 1;
+  }
+  .lcd {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    color: var(--neon);
+    text-shadow:
+      0 0 6px color-mix(in oklab, var(--neon) 70%, transparent),
+      0 0 18px color-mix(in oklab, var(--neon) 35%, transparent);
+  }
+  .dim {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--screen-dim);
+  }
+  /* FM kadranı: ince/kalın çentikler + asit iğne. */
+  .fm {
+    position: relative;
+    height: 38px;
+  }
+  .fm .ticks {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(90deg, var(--screen-dim) 0 1px, transparent 1px 10px);
+    height: 10px;
+    top: 14px;
+    opacity: 0.7;
+  }
+  .fm .ticks.major {
+    background: repeating-linear-gradient(90deg, var(--screen-fg) 0 1px, transparent 1px 50px);
+    height: 18px;
+    top: 10px;
+  }
+  .fm .lab {
+    position: absolute;
+    top: 30px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--screen-dim);
+    letter-spacing: 0.1em;
+  }
+  .fm .needle {
+    position: absolute;
+    top: 4px;
+    width: 2px;
+    height: 30px;
+    background: var(--neon);
+    box-shadow: 0 0 8px var(--neon);
+  }
+  /* Düğme — radyal gövde, iç oyuk, asit işaret (--deg ile döner). */
+  .knob {
+    width: 112px;
+    height: 112px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 38% 32%, var(--knob-hi), var(--knob) 55%, var(--knob-lo));
+    box-shadow:
+      -5px -5px 12px var(--nm-hi),
+      7px 8px 18px var(--nm-lo),
+      inset 0 1px 1px rgb(255 255 255 / 0.6);
+    position: relative;
+    flex-shrink: 0;
+  }
+  .dark .knob {
+    box-shadow:
+      -5px -5px 12px var(--nm-hi),
+      7px 8px 18px var(--nm-lo),
+      inset 0 1px 1px rgb(255 255 255 / 0.08);
+  }
+  .knob::before {
+    content: "";
+    position: absolute;
+    inset: 14px;
+    border-radius: 50%;
+    box-shadow: var(--shadow-inset);
+    background: var(--bezel);
+  }
+  .knob .mark {
+    position: absolute;
+    left: 50%;
+    top: 9px;
+    width: 3px;
+    height: 22px;
+    margin-left: -1.5px;
+    background: var(--neon);
+    border-radius: 2px;
+    box-shadow: 0 0 6px var(--neon);
+    transform-origin: 50% 47px;
+    transform: rotate(calc(var(--deg, 0) * 1deg));
+  }
+  .knob .ring {
+    position: absolute;
+    inset: -18px;
+    border-radius: 50%;
+    background: repeating-conic-gradient(from -135deg, var(--muted-foreground) 0 1deg, transparent 1deg 15deg);
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 9px), #000 calc(100% - 8px));
+    mask: radial-gradient(farthest-side, transparent calc(100% - 9px), #000 calc(100% - 8px));
+    opacity: 0.8;
+  }
+  .knob.sm {
+    width: 72px;
+    height: 72px;
+  }
+  .knob.sm::before {
+    inset: 10px;
+  }
+  .knob.sm .mark {
+    top: 6px;
+    height: 15px;
+    transform-origin: 50% 30px;
+  }
+  .knob.sm .ring {
+    inset: -14px;
+  }
+  /* Segment anahtarı — inset ray + kabarık aktif. */
+  .seg {
+    display: inline-flex;
+    padding: 3px;
+    border-radius: 999px;
+    background: var(--bezel);
+    box-shadow: var(--shadow-inset);
+  }
+  .seg > a,
+  .seg > button,
+  .seg > span {
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.2s, box-shadow 0.2s;
+  }
+  .seg > .on,
+  .seg > [aria-current="true"],
+  .seg > [data-state="on"] {
+    background: var(--surface);
+    color: var(--foreground);
+    box-shadow: -2px -2px 5px var(--nm-hi), 3px 3px 7px var(--nm-lo);
+  }
+  /* Dekor kart — tozlu mavi degrade + beyaz ipek çizgi; bir sayfada en çok bir. */
+  .gcard {
+    height: 100%;
+    border-radius: 20px;
+    padding: 18px 20px;
+    background: linear-gradient(160deg, oklch(0.84 0.04 278) 0%, var(--blue) 55%, var(--blue-2) 100%);
+    color: oklch(0.23 0.02 272);
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+      var(--shadow-soft),
+      0 18px 36px -14px oklch(0.63 0.08 278 / 0.6);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-decoration: none;
+  }
+  .gcard .mono-label {
+    color: var(--blue-ink);
+  }
+  .dark .gcard {
+    color: oklch(0.96 0.01 278);
+  }
+  .dark .gcard .mono-label {
+    color: oklch(0.90 0.03 278);
+  }
+  .gcard .silk {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .gcard .silk svg {
+    position: absolute;
+    right: -30%;
+    bottom: -40%;
+    width: 140%;
+    height: 140%;
+    opacity: 0.6;
+  }
+  .gcard > :not(.silk) {
+    position: relative;
+  }
+  /* Sol ray: numaralı içindekiler. */
+  .toc-h {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .toc-n {
+    position: relative;
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    padding: 6px 10px;
+    margin: 0 -10px;
+    border-radius: 10px;
+    color: var(--ink-2);
+    font-size: 13.5px;
+    transition: color 0.2s, box-shadow 0.2s, background-color 0.2s;
+  }
+  .toc-n .num {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted-foreground);
+    width: 22px;
+    flex-shrink: 0;
+  }
+  .toc-n:hover {
+    color: var(--foreground);
+  }
+  .toc-n.on {
+    color: var(--foreground);
+    font-weight: 500;
+    background: var(--bezel);
+    box-shadow: var(--shadow-soft-sm);
+  }
+  .toc-n.on::before {
+    content: "";
+    position: absolute;
+    left: -20px;
+    top: 50%;
+    width: 3px;
+    height: 16px;
+    margin-top: -8px;
+    background: var(--neon);
+    border-radius: 0 2px 2px 0;
+  }
 }

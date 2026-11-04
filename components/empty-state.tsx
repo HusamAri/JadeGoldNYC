@@ -24,7 +24,7 @@ export function EmptyState({
     // lab'ların indeks-etiket dili (.idx) dekoratif satır olarak yaşar.
     <div
       className={cn(
-        "nm-pressed flex flex-col items-center justify-center rounded-[1.5rem] p-10 text-center",
+        "flex flex-col items-center justify-center rounded-[20px] border border-dashed border-[color:var(--rule)] p-10 text-center",
         className,
       )}
     >
@@ -35,11 +35,11 @@ export function EmptyState({
         <span className="idx-bar w-6" />
       </div>
       {Icon && (
-        <div className="text-muted-foreground mb-4 flex size-12 items-center justify-center rounded-full shadow-[var(--shadow-raised-sm)] [background-image:var(--nm-convex)]">
+        <div className="soft text-muted-foreground mb-4 flex size-12 items-center justify-center rounded-full">
           <Icon className="size-6" />
         </div>
       )}
-      <h3 className="text-carved text-base font-semibold">{title}</h3>
+      <h3 className="h-serif text-[22px]">{title}</h3>
       {description && (
         <p className="text-muted-foreground mt-1 max-w-sm text-sm">
           {description}

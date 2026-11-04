@@ -16,10 +16,10 @@ const DOT =
    P3 soluk mor; P0 negatif 344. Jenerik turuncu/mavi chart tonları
    KULLANILMAZ — P0..P3 etiketi her zaman görünür. */
 const TONE: Record<TaskPriority, string> = {
-  P0: "[--tone:oklch(0.58_0.16_344)] dark:[--tone:oklch(0.74_0.12_344)] bg-(--tone)/20 border-(--tone)/40",
-  P1: "[--tone:oklch(0.54_0.20_278)] dark:[--tone:oklch(0.72_0.14_262)]",
-  P2: "[--tone:oklch(0.68_0.15_286)] dark:[--tone:oklch(0.78_0.12_278)]",
-  P3: "[--tone:oklch(0.83_0.07_290)] dark:[--tone:oklch(0.86_0.05_262)]",
+  P0: "[--tone:var(--negative)] bg-(--tone)/20 border-(--tone)/40",
+  P1: "[--tone:var(--gold)]",
+  P2: "[--tone:var(--primary)]",
+  P3: "[--tone:var(--jade)]",
 };
 
 export function TaskPriorityBadge({ priority }: { priority: TaskPriority }) {

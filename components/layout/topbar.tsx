@@ -80,15 +80,11 @@ export function Topbar({
   const parentHref = up.length ? `/${up.join("/")}` : "/panel";
 
   return (
-    /* Spatial navglass pill — yüzen 999px cam şerit (ref: .navglass):
-       0.82 beyaz + blur, 1px beyaz-0.9 hairline, kuvvetli lift (0 14px 34px)
-       + üst pah highlight'ı. Koyuda LUME panel şeridine döner (ref: .cell —
-       #262935 panel, oklch(1 0 0/.05) kenar, 0 20px 50px derin gölge). */
-    /* Sticky sarmalayıcı: viewport tepesine yapışır; üstteki 16px boşluk ve
-       pill'in yuvarlak köşeleri, zemine karışan gradient maske ile örtülür —
-       kaydırılan içerik pill'in üstünde/çevresinde tam kontrastla görünmez. */
-    <div className="sticky top-0 z-30 px-3 pt-4 before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:-bottom-3 before:-z-10 before:bg-gradient-to-b before:from-background before:via-background/80 before:to-transparent md:px-6">
-    <header className="relative flex h-14 items-center justify-between gap-3 rounded-full border border-[color:oklch(1_0_0/0.9)] pr-[14px] pl-[22px] [background-color:oklch(1_0_0/0.82)] [backdrop-filter:var(--glass-filter)] [box-shadow:var(--lift),var(--glass-highlight)] transition-[background-color,box-shadow,border-color] duration-500 ease-[var(--ease-premium)] dark:border-[color:oklch(1_0_0/0.05)] dark:[background-color:var(--lume-panel)] dark:[box-shadow:0_20px_50px_oklch(0_0_0/0.4),inset_0_1px_0_oklch(1_0_0/0.06)]">
+    /* V7 üst şerit: düz, hairline'sız, zeminle aynı; masaüstünde yalnız
+       araçlar (altın, tema, bildirim, kullanıcı) sağda durur, bölüm adı
+       mobilde görünür (masaüstünde editoryal başlık sayfanın kendisinde). */
+    <div className="sticky top-0 z-30 bg-background/92 px-5 pt-3 backdrop-blur-[2px] md:px-14">
+    <header className="relative flex h-12 items-center justify-between gap-3">
       <div className="flex items-center gap-3">
         {/* Geri — alt/detay sayfalarında */}
         {isSubPage && (
@@ -117,7 +113,7 @@ export function Topbar({
           <DropdownMenuContent align="start" className="max-h-[75vh] w-60 overflow-y-auto">
             {NAV_GROUPS.map((g) => (
               <div key={g.label}>
-                <p className="px-2 pt-2 pb-1 font-mono text-[0.62rem] font-medium tracking-[0.16em] text-[color:var(--brand-mark)]/80 uppercase select-none">
+                <p className="toc-h mx-2 mt-2 mb-1 select-none">
                   {g.label}
                 </p>
                 {g.items.map((i) => {
@@ -140,24 +136,15 @@ export function Topbar({
           </DropdownMenuContent>
         </DropdownMenu>
 
-        {/* Aktif ŞİRKETİN işareti app ikonunun yerinde — büyük, lume/holo
-            gradient (kullanıcı kararı: Amuletta logosu + başlık yanı küçük
-            işaret kaldırıldı; marka kimliği tek ve büyük burada yaşar). */}
-        {emblem}
+        <span className="md:hidden">{emblem}</span>
         {/* Bildirim zili — sol üst (kullanıcı kararı): uyarı sinyalleri
             dropdown listede; ilk bildirim sağdan kayan cam kartla duyurulur.
             key + orgId: şirket değiştirilince zil YENİDEN MONTE olur ve aktif
             org için tazeler — yoksa istemci zil mount'taki eski şirketin
             uyarılarını tutup farklı şirketlerin alertlerini karıştırıyordu. */}
         <NotificationBell key={activeOrgId} orgId={activeOrgId} />
-        {/* Editorial vurgu çizgisi (.idx-bar dili) — başlığın önünde kısa
-            primary hairline; yalnız masaüstünde. */}
-        <span aria-hidden className="hidden h-px w-6 shrink-0 bg-primary/70 md:block" />
-        {/* Bölüm adı — Spatial marka dili: serif 600, 20px, -.01em
-            (ref: .navglass .brand). */}
-        <h1 className="text-lg font-semibold tracking-[-0.01em] [font-family:var(--font-serif)] md:text-xl">
-          {current?.label ?? "Panel"}
-        </h1>
+        {/* Bölüm adı yalnız mobilde; masaüstünde H1 sayfanın editoryal başlığıdır. */}
+        <span className="h-serif text-[20px] md:hidden">{current?.label ?? "Panel"}</span>
       </div>
 
       <div className="flex items-center gap-2">

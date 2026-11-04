@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><title>Amuletta soft</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#EFECE7;--bg2:#F5F3EF;--ink:#26282B;--ink2:#5C5A57;--mute:#948F89;--hi:#FFFFFF;--lo:#C9C2B8;--lo2:#D8D2C9;--green:#0F6B4F;--green2:#1F8F6A;--acc:#FFA726;--acc2:#FF7A00;--accglow:rgba(255,150,30,.55);--pos:#3F9A5B;--neg:#D65C4A}
+body{font-family:Manrope,system-ui,sans-serif;font-size:13.5px;line-height:1.5;color:var(--ink);-webkit-font-smoothing:antialiased;background:var(--bg)}
+.pg{width:1440px;height:1040px;background:var(--bg);position:relative;overflow:hidden;padding:36px 44px;display:grid;grid-template-columns:220px 1fr;gap:28px}
+.mono{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--mute)}
+.r{box-shadow:-8px -8px 18px var(--hi),10px 10px 24px var(--lo)}
+.rs{box-shadow:-4px -4px 10px var(--hi),5px 5px 12px var(--lo)}
+.p{box-shadow:inset 4px 4px 10px var(--lo2),inset -4px -4px 10px var(--hi)}
+.ps{box-shadow:inset 2px 2px 6px var(--lo2),inset -2px -2px 6px var(--hi)}
+/* sidebar */
+.side{border-radius:28px;background:var(--bg);padding:26px 18px;display:flex;flex-direction:column;gap:22px}
+.brand{font-weight:300;font-size:22px;letter-spacing:.22em;text-transform:uppercase;padding:4px 8px 10px}
+.brand b{font-weight:300;color:var(--acc2)}
+.grp{display:flex;flex-direction:column;gap:6px}
+.grp .k{padding:6px 10px 8px}
+.nav{padding:11px 14px;border-radius:14px;color:var(--ink2);font-weight:500;letter-spacing:.02em;display:flex;align-items:center;justify-content:space-between}
+.nav.on{color:var(--ink);background:var(--bg)}
+.nav.on::after{content:"";width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,var(--green2),var(--green));box-shadow:0 0 10px rgba(31,143,106,.6)}
+.search{margin-top:auto;height:42px;border-radius:999px;display:flex;align-items:center;padding:0 16px;gap:10px;color:var(--mute)}
+/* main */
+.main{display:flex;flex-direction:column;gap:26px;min-height:0}
+.top{display:flex;justify-content:space-between;align-items:center}
+.title{font-weight:200;font-size:44px;letter-spacing:-.01em;line-height:1}
+.title small{display:block;font-weight:400;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--mute);margin-bottom:10px}
+.btns{display:flex;gap:14px;align-items:center}
+.btn{height:46px;padding:0 24px;border-radius:999px;display:inline-flex;align-items:center;font-weight:600;letter-spacing:.14em;text-transform:uppercase;font-size:11px;color:var(--ink2);background:var(--bg)}
+.btn.y{background:linear-gradient(160deg,#1B8A66,#0B5C44);color:#fff;box-shadow:-4px -4px 10px var(--hi),6px 8px 16px var(--lo),0 12px 26px -10px rgba(15,107,79,.55),inset 0 1px 0 rgba(255,255,255,.25)}
+.ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;color:var(--ink2);font-size:16px}
+/* tiles */
+.tiles{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:22px}
+.tile{border-radius:26px;padding:22px 24px;background:var(--bg);display:flex;flex-direction:column;justify-content:space-between;min-height:160px;position:relative}
+.tile .v{font-weight:200;font-size:46px;letter-spacing:-.02em;line-height:1;margin-top:14px}
+.tile .v small{font-size:16px;color:var(--mute);font-weight:400}
+.tile .d{margin-top:10px;font-size:12px;color:var(--ink2)}
+.tile .d b{color:var(--pos);font-weight:600} .tile .d i{color:var(--neg);font-style:normal;font-weight:600}
+/* hero with iridescent glow spot (reference 2) */
+.hero{display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:center}
+.holo{width:92px;height:92px;border-radius:24px;position:relative;background:linear-gradient(145deg,#FFF6E8,#FFE2BD);display:grid;place-items:center;box-shadow:0 8px 18px -8px rgba(90,50,0,.35),inset 0 1px 0 #fff}
+.holo::before{content:"";position:absolute;inset:-18px;border-radius:50%;background:radial-gradient(circle,#fff8,transparent 70%);filter:blur(10px);z-index:-1}
+.holo span{font-weight:300;font-size:24px}
+.holo small{position:absolute;top:10px;font-size:9px;letter-spacing:.24em;color:var(--mute)}
+/* gradient feature tiles — minimal silk streak decoration (reference: Vision Pro board) */
+.tile.amber{background:linear-gradient(160deg,#FFD08A 0%,#FFA84D 55%,#F7891E 100%);color:#3A2410;box-shadow:-8px -8px 18px var(--hi),10px 12px 26px var(--lo),0 18px 36px -14px rgba(247,137,30,.55)}
+.tile.amber .mono,.tile.amber .d{color:#6B4318}.tile.amber .d b{color:#3A2410}
+.tile.green{background:linear-gradient(160deg,#1E8E69 0%,#0E6A4E 50%,#073F30 100%);color:#F3F7F4;box-shadow:-8px -8px 18px var(--hi),10px 12px 26px var(--lo),0 18px 36px -14px rgba(7,63,48,.6)}
+.tile.green .mono,.tile.green .d{color:#B9DACD}
+.silk{position:absolute;inset:0;border-radius:inherit;overflow:hidden;pointer-events:none}
+.silk svg{position:absolute;right:-20%;bottom:-30%;width:120%;height:120%;opacity:.55}
+.tile>*{position:relative}
+/* instruments */
+.grid2{display:grid;grid-template-columns:1.55fr 1fr;gap:22px;flex:1;min-height:0}
+.panel{border-radius:28px;background:var(--bg);padding:24px 26px;display:flex;flex-direction:column;gap:16px;position:relative}
+.panel h3{font-weight:500;font-size:15px;letter-spacing:.02em}
+.panel .sub{font-size:12px;color:var(--mute);margin-top:-10px}
+.well{border-radius:20px;padding:18px 18px 12px;background:var(--bg2);position:relative;flex:1}
+.well svg{width:100%;height:220px;overflow:visible}
+.scale{position:relative;height:26px;margin-top:6px}
+.scale .t{position:absolute;inset:0;top:4px;height:8px;background:repeating-linear-gradient(90deg,var(--lo) 0 1px,transparent 1px 9px);opacity:.9}
+.scale .T{position:absolute;inset:0;top:0;height:14px;background:repeating-linear-gradient(90deg,var(--mute) 0 1px,transparent 1px 45px)}
+.scale .n{position:absolute;top:0;width:2px;height:20px;background:var(--acc2);box-shadow:0 0 10px var(--accglow),0 0 2px var(--acc2);border-radius:2px}
+.scale .lab{position:absolute;top:16px;font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.14em;color:var(--mute)}
+/* thermostat ring (reference 3) */
+.therm{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding-top:6px}
+.ring{width:190px;height:190px;border-radius:50%;background:var(--bg);box-shadow:-10px -10px 22px var(--hi),12px 14px 28px var(--lo);display:grid;place-items:center;position:relative}
+.ring::before{content:"";position:absolute;inset:12px;border-radius:50%;background:conic-gradient(from -120deg,var(--acc2) 0deg,var(--acc) 190deg,transparent 190deg 360deg);filter:blur(6px);opacity:.9}
+.ring::after{content:"";position:absolute;inset:14px;border-radius:50%;background:var(--bg);box-shadow:inset 0 1px 0 #fff,0 2px 4px rgba(0,0,0,.08)}
+.ring .face{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center}
+.ring .face .v{font-weight:200;font-size:56px;letter-spacing:-.03em;line-height:1}
+.ring .face .v sup{font-size:16px;color:var(--mute);vertical-align:top;margin-top:8px;display:inline-block;font-weight:400}
+.ring .face .l{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--mute);margin-top:6px}
+/* controls strip: toggle + slider + segmented (reference 1) */
+.ctrl{display:flex;gap:18px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.tog{width:70px;height:34px;border-radius:999px;position:relative;background:linear-gradient(180deg,#FFC45E,#FF9A1F);box-shadow:inset 2px 2px 6px rgba(160,80,0,.35),inset -2px -2px 6px rgba(255,255,255,.5)}
+.tog::after{content:"";position:absolute;right:4px;top:4px;width:26px;height:26px;border-radius:50%;background:linear-gradient(145deg,#fff,#DDE2EA);box-shadow:2px 3px 6px rgba(0,0,0,.18)}
+.tog.off{background:var(--bg)}.tog.off::after{right:auto;left:4px}
+.tog.off{box-shadow:inset 3px 3px 7px var(--lo2),inset -3px -3px 7px var(--hi)}
+.sl{flex:1;height:10px;border-radius:999px;position:relative;min-width:200px}
+.sl .f{position:absolute;left:0;top:0;bottom:0;width:64%;border-radius:999px;background:linear-gradient(90deg,var(--acc),var(--acc2));box-shadow:0 0 10px var(--accglow)}
+.sl .h{position:absolute;left:calc(64% - 14px);top:-9px;width:28px;height:28px;border-radius:50%;background:linear-gradient(145deg,#fff,#DDE2EA);box-shadow:-3px -3px 7px var(--hi),4px 5px 10px var(--lo)}
+.seg{display:inline-flex;padding:4px;border-radius:999px;background:var(--bg)}
+.seg span{padding:7px 14px;border-radius:999px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);font-weight:600}
+.seg span.on{background:var(--bg);color:var(--ink)}
+/* table: soft, no hard rules */
+table{width:100%;border-collapse:separate;border-spacing:0 8px}
+th{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);font-weight:400;text-align:left;padding:0 14px 2px}
+th.ra,td.ra{text-align:right;font-variant-numeric:tabular-nums}
+tr.li td{background:var(--bg);padding:13px 14px;box-shadow:0 -3px 8px -4px var(--hi),0 5px 10px -4px var(--lo2)}
+tr.li td:first-child{border-radius:14px 0 0 14px;font-weight:500;box-shadow:-3px 0 8px -3px var(--hi),0 5px 10px -4px var(--lo2)}tr.li td:last-child{border-radius:0 14px 14px 0;box-shadow:4px 2px 10px -3px var(--lo2)}
+td.ra{font-family:"JetBrains Mono",monospace;font-size:12px}
+td.m{color:var(--mute)} td.pos{color:var(--pos);font-weight:600} td.neg{color:var(--neg);font-weight:600}
+.pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2);box-shadow:inset 2px 2px 5px var(--lo2),inset -2px -2px 5px var(--hi)}
+.pill.on{color:#fff;background:linear-gradient(160deg,#1F8F6A,#0F6B4F);box-shadow:none}
+.foot{position:absolute;left:44px;bottom:16px}
+</style></head><body>
+<section class="pg">
+ <aside class="side r">
+  <div class="brand">Amuletta<b>.</b></div>
+  <div class="grp"><div class="k mono">Satış & Kâr</div><div class="nav on rs">Satış & Maliyet</div><div class="nav">Satışlar</div><div class="nav">Maliyetler</div><div class="nav">Kâr raporu</div></div>
+  <div class="grp"><div class="k mono">Etsy'ye taslak</div><div class="nav">Listing önerileri</div><div class="nav">Listeler</div></div>
+  <div class="grp"><div class="k mono">Stok & Fiyat</div><div class="nav">Stok</div><div class="nav">Fiyat</div></div>
+  <div class="search p"><span>⌕</span><span class="mono" style="letter-spacing:.14em">Ara</span></div>
+ </aside>
+ <main class="main">
+  <div class="top">
+   <div class="title"><small>01 · Satış & Kâr · Kasım 2026</small>Satış & Maliyet</div>
+   <div class="btns"><span class="ic rs">↓</span><span class="btn rs">CSV</span><span class="btn y">Etsy'den satışları çek</span></div>
+  </div>
+  <div class="tiles">
+   <div class="tile hero amber"><div class="silk"><svg viewBox="0 0 400 300" preserveAspectRatio="none"><path d="M-20 240 C120 120 220 260 420 60" stroke="#fff" stroke-opacity=".55" stroke-width="22" fill="none" style="filter:blur(10px)"/><path d="M-20 290 C140 170 240 300 420 120" stroke="#fff" stroke-opacity=".35" stroke-width="10" fill="none" style="filter:blur(4px)"/></svg></div>
+    <div class="holo"><small>KÂR</small><span>21%</span></div>
+    <div><div class="mono">Net kâr · Kasım</div><div class="v">$520<small>.50</small></div><div class="d"><b>↑ 21%</b> geçen aya göre</div></div>
+   </div>
+   <div class="tile r"><div class="mono">Net gelir</div><div><div class="v">$2.904</div><div class="d"><b>↑ 12%</b></div></div></div>
+   <div class="tile r"><div class="mono">Altın maliyeti</div><div><div class="v">$1.507</div><div class="d"><i>↓ 4%</i> · $4.604/oz</div></div></div>
+   <div class="tile green"><div class="silk"><svg viewBox="0 0 400 300" preserveAspectRatio="none"><path d="M-40 260 C100 160 200 280 440 90" stroke="#9FE3C6" stroke-opacity=".5" stroke-width="18" fill="none" style="filter:blur(9px)"/><path d="M-40 300 C120 200 220 320 440 150" stroke="#fff" stroke-opacity=".25" stroke-width="8" fill="none" style="filter:blur(3px)"/></svg></div><div class="mono">Maliyeti eksik</div><div><div class="v">11.581</div><div class="d">kalem · altın ya da işçilik yok</div></div></div>
+  </div>
+  <div class="grid2">
+   <div class="panel r">
+    <h3>Satılan kalemler</h3><div class="sub">Son 14 gün · 4 kalem</div>
+    <div class="ctrl" style="margin:2px 0 6px"><div class="seg p"><span class="on rs">Özet</span><span>Tümü</span></div><span class="pill">Maliyeti eksik · 3</span><span class="pill">İade · 1</span></div>
+    <table>
+     <thead><tr><th>Ürün</th><th>Tarih</th><th class="ra">Net gelir</th><th class="ra">Altın</th><th class="ra">İşçilik</th><th class="ra">Net kâr</th><th class="ra">Durum</th></tr></thead>
+     <tbody>
+      <tr class="li"><td>Heart Nugget Ring 14K</td><td class="m">03.11</td><td class="ra">412.00</td><td class="ra">186.50</td><td class="ra">74.00</td><td class="ra pos">102.50</td><td class="ra"><span class="pill">kargoda</span></td></tr>
+      <tr class="li"><td>Cuban Link Chain 10K · 20in</td><td class="m">02.11</td><td class="ra">1 289.00</td><td class="ra">712.00</td><td class="ra">130.00</td><td class="ra pos">284.00</td><td class="ra"><span class="pill on">ödendi</span></td></tr>
+      <tr class="li"><td>Twin Seeds Band 18K</td><td class="m">01.11</td><td class="ra">964.00</td><td class="ra">518.00</td><td class="ra">150.00</td><td class="ra pos">152.00</td><td class="ra"><span class="pill">tamam</span></td></tr>
+      <tr class="li"><td>Evil Eye Pendant 14K</td><td class="m">31.10</td><td class="ra">239.00</td><td class="ra">91.00</td><td class="ra">60.00</td><td class="ra neg">−18.00</td><td class="ra"><span class="pill">iade</span></td></tr>
+     </tbody>
+    </table>
+    <div class="ctrl" style="margin-top:auto"><span class="mono">Tahmini işçiliği göster</span><div class="tog"></div><span class="mono">Yalnız eksikler</span><div class="tog off"></div></div>
+   </div>
+   <div class="panel r">
+    <h3>Gelir ve maliyet</h3><div class="sub">Günlük · önceki dönem kesikli</div>
+    <div class="well p">
+     <svg viewBox="0 0 420 220" preserveAspectRatio="none">
+      <defs><linearGradient id="a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF9A1F" stop-opacity=".30"/><stop offset="1" stop-color="#FF9A1F" stop-opacity="0"/></linearGradient>
+      <filter id="g" x="-10%" y="-40%" width="120%" height="200%"><feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#FF8A00" flood-opacity=".35"/></filter></defs>
+      <g stroke="#D3D8E2" stroke-width="1"><line x1="0" y1="55" x2="420" y2="55"/><line x1="0" y1="110" x2="420" y2="110"/><line x1="0" y1="165" x2="420" y2="165"/></g>
+      <path d="M0 170 C40 145 60 105 100 115 S160 75 200 82 S260 50 300 66 S360 32 420 46 L420 220 L0 220Z" fill="url(#a)"/>
+      <path d="M0 170 C40 145 60 105 100 115 S160 75 200 82 S260 50 300 66 S360 32 420 46" fill="none" stroke="url(#s)" stroke-width="3" stroke-linecap="round" filter="url(#g)" style="stroke:#FF8A00"/>
+      <path d="M0 182 C50 170 80 162 120 152 S200 138 240 130 S320 114 420 110" fill="none" stroke="#8E95A3" stroke-width="1.5" stroke-dasharray="2 5"/>
+      <path d="M0 198 C60 195 120 192 180 187 S300 178 420 181" fill="none" stroke="#5B6170" stroke-width="1.5"/>
+      <circle cx="300" cy="66" r="6" fill="#fff" stroke="#FF8A00" stroke-width="2.5" style="filter:drop-shadow(0 0 6px rgba(255,138,0,.7))"/>
+     </svg>
+     <div class="scale"><div class="t"></div><div class="T"></div><div class="n" style="left:71%"></div><span class="lab" style="left:0">22 EKİ</span><span class="lab" style="right:0">04 KAS</span></div>
+    </div>
+    <div class="ctrl"><div class="seg p"><span>7g</span><span class="on rs">30g</span><span>90g</span></div><div class="sl p"><div class="f"></div><div class="h"></div></div></div>
+    <div class="therm"><div class="ring"><div class="face"><div class="v">17<sup>.9%</sup></div><div class="l">Marj</div></div></div></div>
+   </div>
+  </div>
+ </main>
+ <div class="foot mono">V4 · soft neumorph · krem taban · amber ışık + yeşil aksiyon · gradient dekor kartlar</div>
+</section>
+</body></html>

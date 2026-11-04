@@ -22,14 +22,14 @@ const TONE: Record<SaleStatus, string> = {
   open: "[--tone:oklch(0.62_0.19_300)] dark:[--tone:oklch(0.76_0.14_295)]",
   processing:
     "[--tone:oklch(0.62_0.19_300)] dark:[--tone:oklch(0.76_0.14_295)] border-dashed",
-  paid: "[--tone:oklch(0.54_0.20_278)] dark:[--tone:oklch(0.72_0.14_262)]",
-  completed: "[--tone:oklch(0.83_0.07_290)] dark:[--tone:oklch(0.86_0.05_262)]",
-  shipped: "[--tone:oklch(0.68_0.15_286)] dark:[--tone:oklch(0.78_0.12_278)]",
+  paid: "[--tone:var(--primary)]",
+  completed: "[--tone:var(--jade)]",
+  shipped: "[--tone:var(--gold)]",
   cancelled:
-    "[--tone:oklch(0.58_0.16_344)] dark:[--tone:oklch(0.74_0.12_344)] bg-(--tone)/20 border-(--tone)/40",
+    "[--tone:var(--negative)] bg-(--tone)/20 border-(--tone)/40",
   refunded: "[--tone:var(--muted-foreground)] border-dashed",
   partially_refunded:
-    "[--tone:oklch(0.58_0.16_344)] dark:[--tone:oklch(0.74_0.12_344)] border-dashed",
+    "[--tone:var(--negative)] border-dashed",
 };
 
 export function SaleStatusBadge({ status }: { status: SaleStatus }) {

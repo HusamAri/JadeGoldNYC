@@ -19,3 +19,15 @@ Done: ads concentrated on 5 listings, everything else switched off, daily budget
 Decisions: no tag changes before 21 Nov (the 10-25 search-click report mostly predates this pass; docs/artifact-studio/seo/tag_audit_2026_10_25.py is on hold). Ads API does not exist in Etsy Open API v3, so ad changes stay manual.
 Open: 8 Nov ad review: switch off any of the 5 with 40+ ad clicks and 0 favorites; keep the rest. Baseline before: 114 ad visits, 0 orders (30d to 21 Oct). Note for 21 Nov: ad concentration started 25 Oct, so Etsy Search change after that date is not tags alone.
 Next action: 8 Nov, Shop Manager > Marketing > Etsy Ads > per-listing clicks for the 5 IDs.
+
+## 2026-11-03 (Claude Code, tag pass applied; shop now Leander Fine Jewelry)
+Done: owner's "JadeGoldNYC Working Tags Playbook" (12 months) applied as grammar, not words: 125 active listings, 210 dead gift/occasion/his-her/unisex slots (and 5 word-set copies) replaced by karat + colour + style + product tags built from each listing's sold karats and colours (`../2026-11-03-tag-pass/`, ops/seo-apply `?pass=tags-2026-11-03`). Titles and the other 1,415 tags untouched. Dry 125/125, canary 10, apply 125/125 read back, fresh-token re-read 125/125 already, audit 125, panel seal df722568….
+Decisions: Christmas collection (35) kept as is (seasonal buyer phrase); vibe tags (dainty/minimalist, 100+ slots) kept until the 21 Nov read; owner-edited 13 and the 10 word-salad tag sets (6 gold + 4 silver, external tool: "men man statement") left for a separate decision.
+Open: owner decision on rebuilding the 10 word-salad sets from the 10-21 matrix / silver generator; 18 Nov: the 13 owner-edited listings still carry 25 dead slots.
+Next action: 21 Nov 2026 read as planned; count the 10-22 title pass, 25 Oct ad narrowing and this tag pass as one package.
+Context: baseline 518 visits / 12 Etsy Search visits / 1 order (30d to 21 Oct); re-running the pass is safe (`already`).
+
+## 2026-11-04 (Claude Code, word-salad tag sets rebuilt)
+Done: the 10 listings whose 13 tags were an external tool's word salad (6 gold, 4 silver) rebuilt from the 10-21 researched sets (dead slots replaced by the 11-03 ladder) and the silver generator sets; `?pass=rebuild-2026-11-03`, dry 10/10, apply 10/10 read back, fresh-token re-read 10/10 already, audit 10, panel seal e344c0ce…. Titles untouched.
+Open: 13 owner-edited listings still carry 25 dead slots (owner's call); vibe tags until 21 Nov.
+Next action: 21 Nov read as planned.

@@ -134,8 +134,8 @@ export async function OrgEmblemLume({ className }: { className?: string }) {
         "relative inline-block shrink-0 align-middle",
         e.ratio,
         // Işıma: dar sıcak çekirdek + geniş yumuşak hale (periwinkle lume).
-        "[filter:drop-shadow(0_0_3px_rgb(169_155_255/0.6))_drop-shadow(0_0_9px_rgb(169_155_255/0.35))]",
-        "dark:[filter:drop-shadow(0_0_4px_rgb(205_214_255/0.7))_drop-shadow(0_0_12px_rgb(169_155_255/0.45))]",
+        "[filter:drop-shadow(0_0_3px_oklch(0.74_0.14_85/0.5))_drop-shadow(0_0_9px_oklch(0.74_0.14_85/0.3))]",
+        "dark:[filter:drop-shadow(0_0_4px_oklch(0.82_0.13_88/0.6))_drop-shadow(0_0_12px_oklch(0.82_0.13_88/0.4))]",
         className,
       )}
       style={{

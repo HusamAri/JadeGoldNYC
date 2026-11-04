@@ -90,8 +90,8 @@ function Cell({
             <span
               className={
                 delta > 0
-                  ? "text-[oklch(0.58_0.16_344)] dark:text-[oklch(0.74_0.12_344)]"
-                  : "text-[oklch(0.50_0.19_278)] dark:text-[oklch(0.80_0.10_278)]"
+                  ? "text-[var(--negative)]"
+                  : "text-[var(--positive)]"
               }
             >
               {delta > 0 ? "+" : ""}

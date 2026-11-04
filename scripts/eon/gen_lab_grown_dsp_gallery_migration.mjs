@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 /**
  * EON lab-grown Double Shared Prong band, galeri → panel:
- * supabase/migrations/0174_eon_lab_grown_dsp_gallery.sql
+ * supabase/migrations/0176_eon_lab_grown_dsp_gallery.sql
  *
- * 0173 ürünü ve 39 varyantı açtı (dondurulmuş, yeniden üretilmez). Bu migration
+ * 0175 ürünü ve 39 varyantı açtı (dondurulmuş, yeniden üretilmez). Bu migration
  * YALNIZ galeriyi bağlar: listing_images satırları, products.image_url/num_images,
  * listing_metadata.gallery + güncel blocker'lar + hold gerekçesi. Açıklamaya
  * DOKUNMAZ: kamuya açık metinde AI/görselleştirme beyanı yok (sahip kuralı
@@ -25,7 +25,7 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(here, "../..");
 const pkgRel = "docs/eon/lab-grown/01-double-shared-prong";
 const L = JSON.parse(await readFile(path.join(repoRoot, pkgRel, "listing.json"), "utf8"));
-const outFile = path.join(repoRoot, "supabase/migrations/0174_eon_lab_grown_dsp_gallery.sql");
+const outFile = path.join(repoRoot, "supabase/migrations/0176_eon_lab_grown_dsp_gallery.sql");
 const EON_ORG = "9d0336c0-8772-456d-a80c-a5f2cfe7bbd0";
 
 const G = L.gallery;
@@ -62,10 +62,10 @@ const metaPatch = {
   draftTransfer: L.galleryUpdate.draftTransfer,
 };
 
-const sql = `-- 0174_eon_lab_grown_dsp_gallery.sql
+const sql = `-- 0176_eon_lab_grown_dsp_gallery.sql
 -- EON-DSP (lab-grown Double Shared Prong) galerisi: sahibin 2026-11-04 yüklediği 10 görsel,
 -- public/eon/lab-grown-dsp/ altından prod domain'inden servis edilir (JPEG q92, meta veri sökülü).
--- 0173 (ürün + 39 varyant) dondurulmuş; burada yalnız galeri, image_url/num_images,
+-- 0175 (ürün + 39 varyant) dondurulmuş; burada yalnız galeri, image_url/num_images,
 -- listing_metadata.gallery + güncel blocker'lar + hold gerekçesi. Açıklamaya dokunmaz.
 -- Üretici: scripts/eon/gen_lab_grown_dsp_gallery_migration.mjs — ELLE DÜZENLEMEYİN.
 --

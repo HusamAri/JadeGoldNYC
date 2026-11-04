@@ -15,6 +15,8 @@ import basMatrix from "@/docs/artifact-studio/seo/2026-10-21-etsy-keyword/data/a
 import eonTitles1022 from "@/docs/eon/seo/2026-10-22-title-pass/apply-matrix.json";
 import basTitles1022 from "@/docs/artifact-studio/seo/2026-10-22-title-pass/apply-matrix.json";
 import eonTags1102 from "@/docs/eon/seo/2026-11-02-tag-pass/apply-matrix.json";
+import basTags1103 from "@/docs/artifact-studio/seo/2026-11-03-tag-pass/apply-matrix.json";
+import basRebuild1103 from "@/docs/artifact-studio/seo/2026-11-03-tag-pass/rebuild-matrix.json";
 
 export const maxDuration = 120;
 
@@ -29,6 +31,13 @@ export const maxDuration = 120;
  *  - `?pass=tags-2026-11-02` (yalnız EON): alyanslarda iki ölü "occasion" tag'i alıcı
  *    ifadesine çevrilir; başlık ve diğer 11 tag aynen. "Önce" hâli panel aynası
  *    (2026-11-02 22:05 UTC). Üreteç + kapı: scripts/seo/tag_pass_2026_11_02.py.
+ *  - `?pass=tags-2026-11-03` (yalnız by Artifact Studio Jewelry / Leander): ölü hediye/occasion/
+ *    his-her/unisex slotları ve kelime-kümesi kopyaları Jade Gold NYC'nin çalışan etiket
+ *    dilbilgisine (ayar + renk + model + ürün) çevrilir; başlık ve diğer tag'ler aynen. "Önce" hâli
+ *    panel aynası (2026-11-03 19:34 UTC). Üreteç + kapı: scripts/seo/tag_pass_leander_2026_11_03.py.
+ *  - `?pass=rebuild-2026-11-03` (yalnız Leander, sahip onayı 2026-11-03): dış araçtan gelen
+ *    kelime-salatası 13'lükler (10 listing) 2026-10-21 araştırmalı set / gümüş üreteç setiyle
+ *    yeniden kurulur; başlık aynen. Üreteç + kapı: scripts/seo/rebuild_salad_2026_11_03.py.
  * Yazılan: YALNIZ başlık, 13 tag ve mağaza bölümü. Fiyat, adet, varyasyon, fotoğraf,
  * açıklama, kargo ve iade politikasına dokunmaz; listing açmaz/silmez.
  *
@@ -53,6 +62,8 @@ const MATRICES: Record<string, Map<string, SeoMatrixRow>> = Object.fromEntries(
       ["EON#titles-2026-10-22", eonTitles1022],
       ["by Artifact Studio Jewelry#titles-2026-10-22", basTitles1022],
       ["EON#tags-2026-11-02", eonTags1102],
+      ["by Artifact Studio Jewelry#tags-2026-11-03", basTags1103],
+      ["by Artifact Studio Jewelry#rebuild-2026-11-03", basRebuild1103],
     ] as const
   ).map(([key, rows]) => [key, new Map((rows as unknown as SeoMatrixRow[]).map((r) => [r.id, r]))]),
 );

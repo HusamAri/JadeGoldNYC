@@ -6,8 +6,6 @@ import {
 import { getEtsyStatus } from "@/lib/db/queries/etsy";
 import { getUncostedSales } from "@/lib/db/queries/uncosted-sales";
 import { getMarketAlertCounts } from "@/lib/db/queries/market-alerts";
-import { getListingAuditSummary } from "@/lib/db/queries/listing-audit";
-import { computeAdsSignals } from "@/lib/db/queries/ads-actions";
 import { clampDiscountPct } from "@/lib/discount";
 import { getGoldSpotQuote } from "@/lib/gold-price";
 import { detectKarat, purchaseCostCentsForGrams } from "@/lib/gold-cost";
@@ -93,25 +91,17 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
 
   // Olumsuz analiz pencereleri: son 30 gün vs önceki 30 gün.
   const now = Date.now();
-  const iso30 = new Date(now - 30 * 86_400_000).toISOString();
-  const iso60 = new Date(now - 60 * 86_400_000).toISOString();
 
   const [
     gaps,
     etsy,
     marketCounts,
-    auditSummary,
     orgRow,
     statusProducts,
-    openInquiries,
     blockedAlgo,
-    p0Tasks,
-    recentSales,
-    son30Metrics,
     meltRows,
     lastShopSnapshot,
     cronRuns,
-    lastManualMetric,
     productDiscounts,
     uncosted,
     goldBasis,
@@ -122,11 +112,6 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
       getEtsyStatus(orgId),
       // Bant dışı sayılar — görüntüleme limitinden bağımsız tam sayım.
       getMarketAlertCounts(orgId),
-      // Listing denetimi: belgeli Etsy arama sinyalleri (tag/başlık/açıklama).
-      getListingAuditSummary(orgId).catch((e) => {
-        console.error("[alert-center] listing-audit:", e);
-        return [];
-      }),
       // costCents'in para birimi: org varsayılanı.
       supabase
         .from("organizations")
@@ -142,14 +127,6 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
         .eq("org_id", orgId)
         .is("archived_at", null)
         .in("status", PRODUCT_STATUS_ALERTS.map((s) => s.status)),
-      // Karar bekleyen ekip soruları — open VE review: ilk yanıt soruyu
-      // 'review'a taşır ama kapama/dallandırma kararı hâlâ bekler; yalnız
-      // 'open' sayılsaydı ilk yanıt gelir gelmez uyarı sessizce kaybolurdu.
-      supabase
-        .from("metric_inquiries")
-        .select("*", { count: "exact", head: true })
-        .eq("org_id", orgId)
-        .neq("status", "resolved"),
       // Algoritma engelli: fiyat/pazar algoritması eksik veriden (gram/rakip)
       // "belirsiz" kaldığı, araştırılmış aktif listingler.
       supabase
@@ -158,33 +135,6 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
         .eq("org_id", orgId)
         .eq("status", "active")
         .eq("price_position", "belirsiz"),
-      // Acil görevler — org kilidi AÇIK (RLS'e ek): fonksiyonun orgId
-      // sözleşmesi aktif-org varsayımına yaslanmasın.
-      supabase
-        .from("tasks")
-        .select("*", { count: "exact", head: true })
-        .eq("org_id", orgId)
-        .eq("priority", "P0")
-        .neq("status", "done"),
-      // Gelir düşüşü: son 60 günün satışları (iptal hariç) — JS'te iki 30
-      // günlük pencereye bölünür (dashboard ile aynı gelir semantiği).
-      supabase
-        .from("sales")
-        .select("order_date, grand_total_cents, item_total_cents")
-        .eq("org_id", orgId)
-        .neq("status", "cancelled")
-        .gte("order_date", iso60),
-      // Boşa reklam + düşük dönüşüm: aktif ürünlerin "son 30" dönem metrikleri.
-      // Aynı etikete birden çok anlık görüntü olabilir — JS'te ürün başına en
-      // güncel kayıt alınır (display-limit/çift sayım dersleri).
-      supabase
-        .from("product_metrics")
-        .select(
-          "product_id, created_at, views, orders, ads_spend_cents, ads_revenue_cents, products!inner(status)",
-        )
-        .eq("org_id", orgId)
-        .eq("products.status", "active")
-        .ilike("period_label", "%son 30%"),
       // Eritme-altı fiyat: PostgREST kolon-kolon kıyas yapamaz — dar satırlar
       // çekilip JS'te our_per_gram < melt_per_gram karşılaştırılır.
       supabase
@@ -221,14 +171,6 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
             return null;
           },
         ),
-      // Manuel dönem metrikleri (analizler): en son kullanıcı girişi.
-      supabase
-        .from("shop_metrics")
-        .select("created_at")
-        .eq("org_id", orgId)
-        .order("created_at", { ascending: false })
-        .limit(1)
-        .maybeSingle(),
       // İndirimli fiyat eritme-altı kontrolü için aktif indirimli ürünler
       // (discount_pct > 0). İndirim Etsy'den çekilemez, panelde manuel (0115);
       // indirim tabanı eritmenin altına düşürüyorsa her satış garantili zarar.
@@ -289,15 +231,10 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
   for (const [name, res] of [
     ["org", orgRow],
     ["products", statusProducts],
-    ["inquiries", openInquiries],
     ["algo", blockedAlgo],
-    ["tasks", p0Tasks],
-    ["sales", recentSales],
-    ["metrics", son30Metrics],
     ["melt", meltRows],
     ["productDiscounts", productDiscounts],
     ["snapshot", lastShopSnapshot],
-    ["manualMetric", lastManualMetric],
     ["goldBasis", goldBasis],
   ] as const) {
     if (res.error) console.error(`[alert-center] ${name} sorgusu:`, res.error.message);
@@ -423,9 +360,9 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
       key: "market_price_position",
       severity: "onemli",
       title: `${marketCounts.total} listing rakip fiyat bandının dışında`,
-      hint: `Gram fiyatına göre ${parts.join(" · ")}: pahalı olanlar satış kaçırıyor, ucuz olanlar hak ettiğin parayı masada bırakıyor. Aşağıdaki pazar uyarılarından tek tek karar ver.`,
+      hint: `Gram fiyatına göre ${parts.join(" · ")}: pahalı olanlar satış kaçırıyor, ucuz olanlar hak ettiğin parayı masada bırakıyor. Fiyat sayfasında tek tek karar ver.`,
       count: marketCounts.total,
-      href: "/analizler/urunler",
+      href: "/fiyat",
       actionLabel: "Fiyatları gözden geçir",
       costCents: null,
     });
@@ -475,149 +412,6 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
     });
   }
 
-  // 5b) Listing denetimi — belgeli Etsy arama sinyalleri (eksik tag, tekrarlı
-  // başlık kelimesi, boş malzeme/açıklama…). Severity kontrolün kendisinden
-  // gelir; Düzelt akışı yalnız etkilenen listingleri gösterir.
-  for (const entry of auditSummary) {
-    alerts.push({
-      key: `listing_audit_${entry.key}`,
-      severity: entry.severity,
-      title: entry.title,
-      hint: entry.hint,
-      count: entry.count,
-      href: "/tasarimlar/iyilestir",
-      actionLabel: "İyileştirmeye git",
-      costCents: null,
-    });
-  }
-
-  // 6) Karar bekleyen ekip soruları → aksiyon/oylama bekliyor (ÖNEMLİ).
-  const inquiryCount = openInquiries.count ?? 0;
-  if (inquiryCount > 0) {
-    alerts.push({
-      key: "inquiries_open",
-      severity: "onemli",
-      title: `${inquiryCount} ekip sorusu karar bekliyor`,
-      hint: "Bu kararlar verilmeden bağlı işler başlayamıyor — ekip burada bekliyor. Soruları yanıtla, tıkanan işleri aç.",
-      count: inquiryCount,
-      href: "/analizler",
-      actionLabel: "Soruları gör",
-      costCents: null,
-    });
-  }
-
-  // ── Olumsuz analiz sinyalleri: yalnız eksik veri değil, KÖTÜYE GİDEN her
-  // metrik de merkezde flaglenir (gelir düşüşü, boşa reklam, zararına satış,
-  // bakan-ama-almayan trafik). ──────────────────────────────────────────────
-
-  // 7) Gelir düşüşü — son 30 gün vs önceki 30 gün (iptal hariç, dashboard
-  // semantiği: grand_total || item_total).
-  let rev30 = 0;
-  let revPrev = 0;
-  for (const s of (recentSales.data ?? []) as {
-    order_date: string;
-    grand_total_cents: number | null;
-    item_total_cents: number | null;
-  }[]) {
-    const amt = s.grand_total_cents || s.item_total_cents || 0;
-    if (s.order_date >= iso30) rev30 += amt;
-    else revPrev += amt;
-  }
-  // Gürültü tabanı: önceki dönem en az $100 olsun; ≥%20 düşüş uyarı üretir.
-  if (revPrev >= 10_000 && rev30 < revPrev * 0.8) {
-    const dropPct = Math.round((1 - rev30 / revPrev) * 100);
-    alerts.push({
-      key: "revenue_decline",
-      severity: dropPct >= 40 ? "kritik" : "onemli",
-      title: `Gelir son 30 günde %${dropPct} düştü`,
-      hint: "Bir önceki 30 güne göre satışlar belirgin geriledi — bu gidişle aylık ciro erimeye devam eder. Reklamları, fiyat konumunu ve stoğu birlikte gözden geçir; sebep genelde bu üçünden biri.",
-      count: 1,
-      href: "/analizler",
-      actionLabel: "Analizlere git",
-      costCents: revPrev - rev30,
-    });
-  }
-
-  // 8) Boşa reklam + bakan-ama-almayan trafik — ürün başına EN GÜNCEL "son 30"
-  // metriği (aynı etikete birden çok anlık görüntü olabilir; çift sayma).
-  type MetricRow = {
-    product_id: string | null;
-    created_at: string;
-    views: number | null;
-    orders: number | null;
-    ads_spend_cents: number | null;
-    ads_revenue_cents: number | null;
-  };
-  const latestByProduct = new Map<string, MetricRow>();
-  for (const m of ((son30Metrics.data ?? []) as unknown as MetricRow[]).sort(
-    (a, b) => b.created_at.localeCompare(a.created_at),
-  )) {
-    if (m.product_id && !latestByProduct.has(m.product_id))
-      latestByProduct.set(m.product_id, m);
-  }
-  let wastedAdsCount = 0;
-  let wastedAdsCents = 0;
-  let noConvCount = 0;
-  for (const m of latestByProduct.values()) {
-    const spend = m.ads_spend_cents ?? 0;
-    if (spend > 0 && (m.ads_revenue_cents ?? 0) === 0) {
-      wastedAdsCount += 1;
-      wastedAdsCents += spend;
-    }
-    if ((m.views ?? 0) >= 100 && (m.orders ?? 0) === 0) noConvCount += 1;
-  }
-  if (wastedAdsCount > 0) {
-    alerts.push({
-      key: "ads_wasted",
-      severity: "onemli",
-      title: `${wastedAdsCount} üründe reklam parası boşa gidiyor`,
-      hint: "Son 30 günde bu ürünlere reklam harcandı ama tek kuruş getiri yok — bütçe her gün eriyor. Reklamı durdur ya da listing'i (görsel/fiyat/başlık) düzeltip yeniden dene.",
-      count: wastedAdsCount,
-      href: "/analizler/urunler",
-      actionLabel: "Reklamları gözden geçir",
-      costCents: wastedAdsCents,
-    });
-  }
-  // 8b) BÜTÇE YİYEN — tek ürün toplam reklam harcamasının ≥%35'ini çekiyor VE
-  // ROAS < 1,5 (aynı son30 verisi yeniden kullanılır; yeni sorgu yok). Kural
-  // ve eşikler reklam motorundan gelir (ads-actions.ts — tek kaynak); boşa
-  // harcayanlar (getiri=0) zaten ads_wasted'da, motor onları burada saymaz.
-  const budgetEaters = computeAdsSignals(
-    [...latestByProduct.entries()].map(([productId, mm]) => ({
-      productId,
-      spendCents: mm.ads_spend_cents ?? 0,
-      adsRevenueCents: mm.ads_revenue_cents ?? 0,
-    })),
-  ).filter((s) => s.signal === "butce_yiyen");
-  if (budgetEaters.length > 0) {
-    const top = budgetEaters[0]; // harcamaya göre sıralı gelir
-    alerts.push({
-      key: "ads_budget_eater",
-      severity: "onemli",
-      title:
-        budgetEaters.length === 1
-          ? `Bir ürün reklam bütçesinin %${Math.round(top.share * 100)}'ini tek başına yiyor`
-          : `${budgetEaters.length} ürün reklam bütçesini tek başına yiyor`,
-      hint: "Harcamanın büyük payı tek listingde toplanmış ama getirisi harcamayı karşılamıyor (ROAS < 1,5) — bütçe diğer ürünlere dağılamıyor ve her gün eriyor. Reklamlar sayfasında azalt/incele kararını ver; uygulamayı Etsy Reklam panosunda elle yap.",
-      count: budgetEaters.length,
-      href: "/reklamlar",
-      actionLabel: "Reklam kararını ver",
-      costCents: budgetEaters.reduce((s, b) => s + b.row.spendCents, 0),
-    });
-  }
-  if (noConvCount > 0) {
-    alerts.push({
-      key: "views_no_orders",
-      severity: "onemli",
-      title: `${noConvCount} ürün çok bakılıyor ama hiç satmıyor`,
-      hint: "Son 30 günde 100+ görüntülemeye rağmen sıfır sipariş — alıcı geliyor, dönüşmüyor. Fiyat, ilk görsel ya da kargo süresi caydırıyor olabilir; bu üçünü test et.",
-      count: noConvCount,
-      href: "/analizler/urunler",
-      actionLabel: "Ürünleri incele",
-      costCents: null,
-    });
-  }
-
   // 9) Eritme-altı fiyat → hurda değerinin altında satış = garanti zarar (KRİTİK).
   // İki ayrı sinyal: (9a) TABAN fiyat zaten eritme-altı; (9c) taban üstteyken
   // manuel İNDİRİM (0115) fiyatı eritme-altına düşürüyor. İndirim Etsy'den
@@ -654,7 +448,7 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
       title: `${meltBelow} ürün eritme değerinin ALTINDA satılıyor`,
       hint: "Gram fiyatı altının hurda değerinin bile altında — her satış garantili zarar. Bu fiyatları bugün düzelt.",
       count: meltBelow,
-      href: "/analizler/urunler",
+      href: "/fiyat",
       actionLabel: "Fiyatları düzelt",
       costCents: null,
     });
@@ -667,7 +461,7 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
       title: `${discountMeltBelow} listing İNDİRİMLİ fiyatı eritme değerinin altında`,
       hint: "Taban fiyat eritmenin üstünde ama uyguladığın indirim gram fiyatını altının hurda değerinin altına indiriyor — indirimli her satış garantili zarar. İndirimi azalt ya da bu listingleri Sale'den çıkar.",
       count: discountMeltBelow,
-      href: "/analizler/urunler",
+      href: "/fiyat",
       actionLabel: "İndirimi gözden geçir",
       costCents: null,
     });
@@ -874,27 +668,6 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
       });
     }
   }
-  // Manuel dönem metrikleri 30+ gündür girilmemişse karşılaştırma kartları
-  // (dönüşüm, sepette terk…) eski dönemi "güncel" gibi gösterir (BİLGİ).
-  {
-    const lastManual = (lastManualMetric.data as { created_at: string } | null)
-      ?.created_at;
-    const manualAgeDays = lastManual
-      ? Math.floor((now - new Date(lastManual).getTime()) / 86_400_000)
-      : null;
-    if (manualAgeDays != null && manualAgeDays >= 30) {
-      alerts.push({
-        key: "manual_metrics_stale",
-        severity: "bilgi",
-        title: `Manuel dönem metrikleri ${manualAgeDays} gündür güncellenmedi`,
-        hint: "Analizler'deki dönüşüm/sepette terk kartları en son girilen dönemi 'güncel' diye gösteriyor — yeni dönem fotoğrafını gir ki karşılaştırmalar bugünü anlatsın.",
-        count: 1,
-        href: "/analizler",
-        actionLabel: "Yeni dönem gir",
-        costCents: null,
-      });
-    }
-  }
 
   // 9e) TAŞLI (PIRLANTALI) ÜRÜNLERDE MALİYET-ALTI FİYAT.
   //
@@ -977,21 +750,6 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
         costCents: riskCents,
       });
     }
-  }
-
-  // 10) Acil (P0) açık görev → zamana duyarlı iş (KRİTİK).
-  const p0Open = p0Tasks.count ?? 0;
-  if (p0Open > 0) {
-    alerts.push({
-      key: "tasks_p0_open",
-      severity: "kritik",
-      title: `${p0Open} acil (P0) görev hâlâ açık`,
-      hint: "En yüksek öncelikli işler bitmedi; her geçen gün satışı ve işleyişi doğrudan etkiliyor. Bitir, tıkanmayı aç.",
-      count: p0Open,
-      href: "/gorevler",
-      actionLabel: "Görevlere git",
-      costCents: null,
-    });
   }
 
   alerts.sort((a, b) => {

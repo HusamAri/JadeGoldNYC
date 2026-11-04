@@ -16,8 +16,6 @@ import { REVIEW_STATUSES } from "@/lib/constants";
 import { formatNumber, formatDate } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { PageHeader } from "@/components/page-header";
-import { GoldStream } from "@/components/brand/gold-stream";
-import { SceneCutouts } from "@/components/scene-cutouts";
 import { EmptyState } from "@/components/empty-state";
 import { KpiCard } from "@/components/kpi-card";
 import { Button } from "@/components/ui/button";
@@ -68,8 +66,6 @@ export default async function YorumlarPage({
 
   return (
     <div className="page-stack relative z-0 pb-32">
-      <GoldStream motif="star" />
-      <SceneCutouts page="yorumlar" />
       <PageHeader
         title="Tüketici Yorumları"
         description={`${platform.label} yorumlarını, puan trendini ve yanıt durumunu takip edin`}

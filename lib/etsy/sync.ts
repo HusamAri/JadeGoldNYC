@@ -7,6 +7,7 @@ import { decodeHtmlEntities } from "@/lib/etsy/text";
 import { logAudit } from "@/lib/audit";
 import { rebuildGoldCostsBulk } from "@/lib/gold-cost-entry";
 import { syncReceiptPayments } from "@/lib/etsy/payments";
+import { refreshRefundedReceipts } from "@/lib/etsy/refunds";
 import {
   etsyMoneyToCents,
   type EtsyListResponse,
@@ -417,9 +418,35 @@ export async function advanceEtsySync(
         // "denendi" damgasıyla zaten monoton ilerliyor; her senkron bir dilim
         // işler ve backlog turlar arasında erir. Ücret hesabı (aşağıdaki
         // rebuild_sales_etsy_fees) eşleşmiş siparişler için yine doğrudur.
+        //
+        // İade/gönderi geri doldurma (0174) AYNI kuralla: durumu iade olup
+        // receipt gövdesi bu sürümden önce okunmuş siparişler
+        // (refunds_synced_at NULL) kalan bütçeyle TEK dilim yeniden çekilir;
+        // kalan varsa bir sonraki senkron devam eder, faz uzatılmaz
+        // (panel takılı görünmesin). Elle: "İade verisini çek" butonu.
+        {
+          const kalan2 = budgetMs - (Date.now() - startedAt) - TAIL_RESERVE_MS;
+          if (kalan2 >= MIN_PAYMENT_SLICE_MS) {
+            try {
+              await refreshRefundedReceipts(admin, client, orgId, shopId, {
+                budgetMs: kalan2,
+              });
+            } catch {
+              // yok say — bir sonraki senkron tekrar dener
+            }
+          }
+        }
         phase = "done";
         await persist();
       }
+    }
+
+    // Kargo etiketlerini siparişe bağla (0174) — AYLIK özetten ÖNCE koşmalı:
+    // aylık rebuild bağlanan satırları toplamdan düşer (çift sayım koruması).
+    try {
+      await admin.rpc("rebuild_sale_shipping_label_costs", { p_org_id: orgId });
+    } catch {
+      // yok say
     }
 
     // Ledger bitti → Etsy ücret/komisyon/reklamı costs'a yansıt (idempotent).
@@ -512,25 +539,72 @@ export async function upsertSalesPage(
   orgId: string,
   results: EtsyReceipt[],
 ): Promise<number> {
-  const saleRows = results.map((r) => ({
-    org_id: orgId,
-    source: "etsy",
-    etsy_receipt_id: r.receipt_id,
-    order_no: String(r.receipt_id),
-    buyer_name: r.name ?? null,
-    buyer_email: r.buyer_email ?? null,
-    status: mapReceiptStatus(r),
-    order_date: new Date(
-      (r.created_timestamp ?? Date.now() / 1000) * 1000,
-    ).toISOString(),
-    ship_country: r.country_iso ?? null,
-    item_total_cents: etsyMoneyToCents(r.subtotal),
-    shipping_cents: etsyMoneyToCents(r.total_shipping_cost),
-    tax_cents: etsyMoneyToCents(r.total_tax_cost),
-    discount_cents: etsyMoneyToCents(r.discount_amt),
-    grand_total_cents: etsyMoneyToCents(r.grandtotal),
-    currency: r.grandtotal?.currency_code ?? "USD",
-  }));
+  const nowIso = new Date().toISOString();
+  const saleRows = results.map((r) => {
+    // İade özeti receipt.refunds[]'tan (kontra gelir). Etsy ShopRefund'ın
+    // kimliği yok; toplam + sayı + son an burada, satırlar sale_refunds'ta.
+    const refunds = r.refunds ?? [];
+    const refundedCents = refunds.reduce(
+      (acc, f) => acc + etsyMoneyToCents(f.amount),
+      0,
+    );
+    const lastRefundTs = refunds.reduce<number | null>(
+      (acc, f) =>
+        f.created_timestamp != null && (acc == null || f.created_timestamp > acc)
+          ? f.created_timestamp
+          : acc,
+      null,
+    );
+    const shippedTs = (r.transactions ?? []).reduce<number | null>(
+      (acc, t) =>
+        t.shipped_timestamp != null && (acc == null || t.shipped_timestamp < acc)
+          ? t.shipped_timestamp
+          : acc,
+      null,
+    );
+    return {
+      org_id: orgId,
+      source: "etsy",
+      etsy_receipt_id: r.receipt_id,
+      order_no: String(r.receipt_id),
+      buyer_name: r.name ?? null,
+      buyer_email: r.buyer_email ?? null,
+      status: mapReceiptStatus(r),
+      order_date: new Date(
+        (r.created_timestamp ?? Date.now() / 1000) * 1000,
+      ).toISOString(),
+      ship_country: r.country_iso ?? null,
+      item_total_cents: etsyMoneyToCents(r.subtotal),
+      shipping_cents: etsyMoneyToCents(r.total_shipping_cost),
+      tax_cents: etsyMoneyToCents(r.total_tax_cost),
+      discount_cents: etsyMoneyToCents(r.discount_amt),
+      grand_total_cents: etsyMoneyToCents(r.grandtotal),
+      currency: r.grandtotal?.currency_code ?? "USD",
+      // 0174 — receipt'in kalan alanları (Etsy'de ne varsa panelde de olsun).
+      refunded_cents: refundedCents,
+      refund_count: refunds.length,
+      last_refund_at: lastRefundTs != null ? tsToIso(lastRefundTs) : null,
+      // Bu turda receipt gövdesini okuduk → iade verisi (boş olsa da) GÜNCEL.
+      refunds_synced_at: nowIso,
+      total_price_cents: r.total_price ? etsyMoneyToCents(r.total_price) : null,
+      vat_cents: etsyMoneyToCents(r.total_vat_cost),
+      gift_wrap_cents: etsyMoneyToCents(r.gift_wrap_price),
+      is_gift: r.is_gift ?? null,
+      needs_gift_wrap: r.needs_gift_wrap ?? null,
+      message_from_buyer: r.message_from_buyer ?? null,
+      payment_method: r.payment_method ?? null,
+      is_paid: r.is_paid ?? null,
+      is_shipped: r.is_shipped ?? null,
+      shipped_at: shippedTs != null ? tsToIso(shippedTs) : null,
+      etsy_updated_at:
+        (r.updated_timestamp ?? r.update_timestamp) != null
+          ? tsToIso((r.updated_timestamp ?? r.update_timestamp) as number)
+          : null,
+      buyer_user_id: r.buyer_user_id ?? null,
+      ship_city: r.city ?? null,
+      ship_state: r.state ?? null,
+    };
+  });
 
   const { data: upserted, error: salesErr } = await admin
     .from("sales")
@@ -579,6 +653,28 @@ export async function upsertSalesPage(
       unit_price_cents: etsyMoneyToCents(t.price),
       line_total_cents: etsyMoneyToCents(t.price) * (t.quantity ?? 1),
       currency,
+      // 0174 — transaction'ın kalan alanları. shipped_at, ledger kargo
+      // etiketini siparişe bağlayan zaman anahtarıdır (API bağ vermez).
+      shipping_cost_cents: etsyMoneyToCents(t.shipping_cost),
+      is_digital: t.is_digital ?? null,
+      variations:
+        t.variations && t.variations.length > 0
+          ? t.variations.map((v) => ({
+              formatted_name: v.formatted_name ?? null,
+              formatted_value: v.formatted_value ?? null,
+            }))
+          : null,
+      etsy_product_id: t.product_id ?? null,
+      paid_at: t.paid_timestamp != null ? tsToIso(t.paid_timestamp) : null,
+      shipped_at:
+        t.shipped_timestamp != null ? tsToIso(t.shipped_timestamp) : null,
+      expected_ship_date:
+        t.expected_ship_date != null
+          ? tsToIso(t.expected_ship_date).slice(0, 10)
+          : null,
+      // Kupon alanları Etsy'de dolar-float; cent'e yuvarla.
+      buyer_coupon_cents: Math.round((t.buyer_coupon ?? 0) * 100),
+      shop_coupon_cents: Math.round((t.shop_coupon ?? 0) * 100),
     }));
   });
 
@@ -588,7 +684,74 @@ export async function upsertSalesPage(
       .upsert(itemRows, { onConflict: "etsy_transaction_id" });
     if (itemsErr) throw new Error(`sale_items upsert: ${itemsErr.message}`);
   }
+
+  // İadeler + gönderiler — receipt gövdesinin aynası (0174). İkisi de
+  // idempotent: refunds doğal anahtar (sipariş, an, tutar), shipments
+  // receipt_shipping_id. Hata sipariş yazımını bozmasın (ayrı adım, yüzeye çık).
+  const refundRows = results.flatMap((r) => {
+    const saleId = idByReceipt.get(r.receipt_id);
+    if (!saleId) return [];
+    const seen = new Set<string>();
+    return (r.refunds ?? []).flatMap((f) => {
+      const ts = f.created_timestamp ?? r.updated_timestamp ?? r.created_timestamp;
+      if (ts == null) return [];
+      const cents = etsyMoneyToCents(f.amount);
+      const key = `${ts}|${cents}`;
+      if (seen.has(key)) return [];
+      seen.add(key);
+      return [
+        {
+          org_id: orgId,
+          sale_id: saleId,
+          amount_cents: cents,
+          currency: f.amount?.currency_code ?? r.grandtotal?.currency_code ?? "USD",
+          refunded_at: tsToIso(ts),
+          reason: f.reason ?? null,
+          note_from_issuer: f.note_from_issuer ?? null,
+          status: f.status ?? null,
+        },
+      ];
+    });
+  });
+  if (refundRows.length > 0) {
+    const { error: refErr } = await admin
+      .from("sale_refunds")
+      .upsert(refundRows, {
+        onConflict: "sale_id,refunded_at,amount_cents",
+        ignoreDuplicates: true,
+      });
+    if (refErr) console.error("[etsy-sync] sale_refunds upsert:", refErr.message);
+  }
+
+  const shipmentRows = results.flatMap((r) => {
+    const saleId = idByReceipt.get(r.receipt_id);
+    if (!saleId) return [];
+    return (r.shipments ?? [])
+      .filter((s) => s.receipt_shipping_id != null)
+      .map((s) => ({
+        org_id: orgId,
+        sale_id: saleId,
+        receipt_shipping_id: s.receipt_shipping_id as number,
+        carrier_name: s.carrier_name ?? null,
+        tracking_code: s.tracking_code ?? null,
+        notified_at:
+          s.shipment_notification_timestamp != null
+            ? tsToIso(s.shipment_notification_timestamp)
+            : null,
+      }));
+  });
+  if (shipmentRows.length > 0) {
+    const { error: shErr } = await admin
+      .from("sale_shipments")
+      .upsert(shipmentRows, { onConflict: "receipt_shipping_id" });
+    if (shErr) console.error("[etsy-sync] sale_shipments upsert:", shErr.message);
+  }
   return itemRows.length;
+}
+
+/** Etsy epoch-saniye → ISO. */
+function tsToIso(ts: number): string {
+  return new Date(ts * 1000).toISOString();
 }
 
 async function upsertListingsPage(

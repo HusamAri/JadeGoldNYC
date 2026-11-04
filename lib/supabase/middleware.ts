@@ -14,7 +14,6 @@ const PUBLIC_PREFIXES = [
   "/api/ops",
   "/api/etsy/callback",
   "/api/etsy/webhook",
-  "/api/shopify/callback",
 ];
 
 /**

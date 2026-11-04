@@ -6,12 +6,8 @@ import { getProfile } from "@/lib/db/queries/profile";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Topbar } from "@/components/layout/topbar";
 import { PageTransition } from "@/components/layout/page-transition";
-import {
-  OrgEmblemBackdrop,
-  OrgEmblemLume,
-  OrgEmblemSignature,
-} from "@/components/brand/org-emblem";
-import { ParallaxDrift } from "@/components/motion/parallax-drift";
+import { OrgEmblemLume } from "@/components/brand/org-emblem";
+import { ToneFrame } from "@/components/layout/tone-frame";
 import { InkOriginListener } from "@/components/ui/ink-origin";
 import { TiltListener } from "@/components/ui/tilt-listener";
 
@@ -40,42 +36,21 @@ export default async function DashboardLayout({
   };
 
   return (
-    /* `isolate`: arka plan katmanları (negatif z) bu bağlamda hapsolur —
-       holo-drift (z -10) en altta, lux-grain (z -9) onun ÜSTÜNDE, içerik ve
-       cam yüzeyler (topbar navglass, glass-board) hepsinin üstünde yüzer. */
-    /* `overflow-x-clip`: holo-drift (inset:-30%) kökten yana taşıp her sayfada
-       yatay scrollbar açmasın — scroll konteyneri oluşturmadan yatay kırpar. */
-    <div className="relative isolate flex min-h-svh overflow-x-clip">
-      {/* Hareketli holografik gradient — TÜM markalarda tek ambiyans arka plan.
-          Çok yavaş kayan holo blob'lar (renkler token'dan: platform pastel holo,
-          JG jade+altın). Statik desen/doku/toz KALDIRILDI; zemin düz mat +
-          süzülen holo. Cam boardlar bunun üstünde durunca altı buzlanır. */}
-      <div aria-hidden className="holo-drift" />
-      {/* Mat "pahalı doku" — çok ince gren; zemine kadife/kâğıt dokusu. */}
-      <div aria-hidden className="lux-grain" />
-      {/* Scroll-parallax: holo katmanları içerikten yavaş süzülür (derinlik).
-          Idle'da sıfır iş; reduced-motion/dokunmatikte hiç bağlanmaz. */}
-      <ParallaxDrift />
-      {/* Temas ışığı köprüsü — TEK passive pointerdown dinleyicisi; basışın
-          nerede olduğunu `.jg-ink-origin` yüzeylerine yazar ki hale parmağın
-          ALTINDAN açılsın (mount edilmezse hale merkezden açılır, yani bu satır
-          özelliğin kendisi). Button sunucu bileşeni kalsın diye delege. */}
+    /* ToneFrame: rotanın bölüm tonunu (data-tone) basar; soft UI zemini düz,
+       kartlar gölgeyle kabarır. Holo/grain/parallax/filigran katmanları
+       Amuletta 2.0'da kaldırıldı — cömert boşluk ve tek malzeme. */
+    <ToneFrame>
+      {/* Temas ışığı köprüsü — tek passive pointerdown dinleyicisi (Button). */}
       <InkOriginListener />
-      {/* Ürün eğimi köprüsü — `.jg-tilt-scene` fotoğraf yüzeylerinde imleç
-          konumunu CSS'e yazar (rAF-kısıtlı, tek delege dinleyici). Dokunmatik
-          ve reduced-motion'da hiç bağlanmaz. */}
+      {/* Ürün eğimi köprüsü — `.jg-tilt-scene` fotoğraf yüzeyleri. */}
       <TiltListener />
-      {/* Org amblem katmanı — DEV filigran sağ-alt negatif alanda (her
-          sayfada, içerik altında) + köşe imzası. Marka org'dan çözülür. */}
-      <OrgEmblemBackdrop />
-      <OrgEmblemSignature />
       <Sidebar
         memberships={memberships}
         activeOrgId={m.org_id}
         showJadeGoldNav={showJadeGoldNav}
         showBrandBookNav={showBrandBookNav}
         platformCapabilities={platformCapabilities}
-        emblem={<OrgEmblemLume className="h-[13px]" />}
+        emblem={<OrgEmblemLume className="h-[12px]" />}
       />
       <div className="flex min-w-0 flex-1 flex-col">
         <Topbar
@@ -87,13 +62,14 @@ export default async function DashboardLayout({
           showJadeGoldNav={showJadeGoldNav}
           showBrandBookNav={showBrandBookNav}
           platformCapabilities={platformCapabilities}
-          emblem={<OrgEmblemLume className="h-[30px]" />}
+          emblem={<OrgEmblemLume className="h-[22px]" />}
         />
-        {/* Generous padding — glass needs air; dense dashboards feel cheap. */}
-        <main className="flex-1 px-5 py-8 sm:px-8 sm:py-10 lg:px-12 lg:py-12">
+        {/* V7 sayfa aynası: 56px yan boşluk, üstte 24px (üst şerit zaten
+            nefes verir), içerik en çok 1400px. */}
+        <main className="mx-auto w-full max-w-[1400px] flex-1 px-5 pt-5 pb-16 sm:px-8 lg:px-14 lg:pt-6">
           <PageTransition>{children}</PageTransition>
         </main>
       </div>
-    </div>
+    </ToneFrame>
   );
 }

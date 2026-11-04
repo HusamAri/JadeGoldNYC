@@ -1,81 +1,44 @@
-import { getActivePlatform } from "@/lib/platform";
 import { Suspense } from "react";
 import Link from "next/link";
-import { Store, Palette } from "lucide-react";
-import {
-  DollarSign,
-  Wallet,
-  TrendingUp,
-  ShoppingBag,
-  Receipt,
-  Percent,
-  Scale,
-  Gem,
-  Hammer,
-} from "@/components/icons/lux-art";
-import { SceneCutouts } from "@/components/scene-cutouts";
-// Satır içi (küçük, tek renk) kullanımlar için ince-çizgi SVG sürümleri —
-// currentColor'a saygı duyar (cutout PNG'ler yalnız KPI filigranında).
-import { Users as UsersLine } from "@/components/icons/lux";
+import { ChevronRight } from "lucide-react";
 
 import { resolvePeriod, previousPeriod, samePeriodLastYear } from "@/lib/period";
 import { getDashboard, type DashboardData } from "@/lib/db/queries/dashboard";
-import { getAlertCenter } from "@/lib/db/queries/alerts";
-import { getEtsyStatus } from "@/lib/db/queries/etsy";
-import { getLastSyncSummary } from "@/lib/etsy/sync";
+import { getAlertCenter, type AlertSeverity } from "@/lib/db/queries/alerts";
 import { getListingLoopStatus } from "@/lib/db/queries/listings";
-import { PanelSyncPrompt } from "@/components/panel/panel-sync-prompt";
+import { countRefundBacklog, listSaleItemPnl } from "@/lib/db/queries/sale-costs";
 import { requireMembership } from "@/lib/auth";
 import { getGoldPricePerOunce } from "@/lib/gold-price";
 import { TROY_OUNCE_GRAMS, KARAT_PURITY } from "@/lib/gold-cost";
 import { strParam, type RawSearchParams } from "@/lib/searchparams";
-import { formatMoney, formatPercent } from "@/lib/money";
-import { formatNumber, formatDateTime } from "@/lib/format";
-import { auditSummary } from "@/lib/audit-format";
-import { OrgMark } from "@/components/brand/org-mark";
+import { formatMoney, formatMoneyParts, formatPercent } from "@/lib/money";
+import { formatNumber, formatDateTime, formatDate } from "@/lib/format";
 import { PageHeader } from "@/components/page-header";
-import { GoldStream } from "@/components/brand/gold-stream";
-import { CornerMarks } from "@/components/brand/corner-marks";
-import { EditorialCard } from "@/components/brand/editorial-card";
 import { KpiCard } from "@/components/kpi-card";
-import { WhatsNew } from "@/components/whats-new";
-import { AlertCenterCard } from "@/components/alert-center";
-import {
-  SleepingBoxes,
-  SleepingNote,
-  type SleepingBox,
-} from "@/components/sleeping-boxes";
 import { AlertResolutionTracker } from "@/components/panel/alert-resolution-tracker";
-import { MarketPriceAlertsCard } from "@/components/market-price-alerts-card";
-import { getMarketPriceAlerts } from "@/lib/db/queries/market-alerts";
 import { PeriodSelector } from "@/components/period-selector";
-import {
-  TrendChart,
-  CategoryPie,
-  OrdersBarChart,
-} from "@/components/charts/dashboard-charts";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Bezel, Screen, FmDial, DecorCard, ScopeChart, Legend } from "@/components/instruments";
+import { cn } from "@/lib/utils";
 
 export const metadata = { title: "Panel" };
 
-// Panel ilk-açılış popup'ından başlatılan Etsy senkronu bu rota segmentinin
-// maxDuration'ını miras alır (ayarlar/etsy'deki gibi). Varsayılan süre büyük
-// sync dilimlerini kesmesin diye 60sn.
 export const maxDuration = 60;
 
+/** Dikkat listesi en çok bu kadar satır gösterir (alarm yorgunluğu kuralı). */
+const ATTENTION_LIMIT = 5;
+
+const SEVERITY_LABEL: Record<AlertSeverity, string> = {
+  kritik: "Kritik",
+  onemli: "Önemli",
+  bilgi: "Bilgi",
+};
+
+/**
+ * Ana sayfa — V7 "kumanda paneli" yapısı: dört aksiyon sayısı dört FARKLI
+ * göstergede (LCD ekran, halka, mekanik sayaç, dekor kartı), ardından Dikkat
+ * defteri, altın tuner şeridi, osiloskop trendi + dört defter KPI'ı ve maliyet
+ * kırılımı. Yalnız BUGÜN aksiyon alınacak şey görünür, gerisi bir tık ötede.
+ */
 export default async function PanelPage({
   searchParams,
 }: {
@@ -86,10 +49,6 @@ export default async function PanelPage({
   const prev = previousPeriod(period);
   const lastYear = samePeriodLastYear(period);
   const m = await requireMembership();
-  // PERF: yalnız KABUĞUN ihtiyacı burada beklenir (KPI + altın). Ağır dallar
-  // (uyarı merkezi ← tüm listing açıklamaları, çizelge, pazar uyarıları)
-  // kendi async bileşenlerinde Suspense ile STREAM edilir — TTFB en yavaş
-  // dala kilitlenmez, kabuk saniyeler önce görünür.
   const [d, goldPriceOunce, prevData, lastYearData] = await Promise.all([
     getDashboard(period, m.org_id),
     getGoldPricePerOunce(),
@@ -103,816 +62,391 @@ export default async function PanelPage({
     if (previous == null || previous === 0) return null;
     return (current - previous) / Math.abs(previous);
   }
-
-  /** Her KPI için İKİ karşılaştırma rozeti: önceki dönem (MoM) + geçen yıl (YoY).
-      Pencere varsa satır her zaman görünür; veri yoksa "veri yok" yazılır. */
   function kpiComparisons(pick: (x: DashboardData) => number) {
     const list: { change: number | null; label: string }[] = [];
     if (prev)
-      list.push({
-        change: pctChange(pick(d), prevData ? pick(prevData) : null),
-        label: prev.label,
-      });
+      list.push({ change: pctChange(pick(d), prevData ? pick(prevData) : null), label: prev.label });
     if (lastYear)
-      list.push({
-        change: pctChange(pick(d), lastYearData ? pick(lastYearData) : null),
-        label: lastYear.label,
-      });
+      list.push({ change: pctChange(pick(d), lastYearData ? pick(lastYearData) : null), label: lastYear.label });
     return list;
   }
-
-  /** Kâr marjı için puan farkı (oran − oran); gelir yoksa veri yok sayılır. */
   const marginComparisons = [
     ...(prev
-      ? [{
-          change:
-            prevData && prevData.revenueCents > 0
-              ? d.margin - prevData.margin
-              : null,
-          label: prev.label,
-        }]
+      ? [{ change: prevData && prevData.revenueCents > 0 ? d.margin - prevData.margin : null, label: prev.label }]
       : []),
     ...(lastYear
-      ? [{
-          change:
-            lastYearData && lastYearData.revenueCents > 0
-              ? d.margin - lastYearData.margin
-              : null,
-          label: lastYear.label,
-        }]
+      ? [{ change: lastYearData && lastYearData.revenueCents > 0 ? d.margin - lastYearData.margin : null, label: lastYear.label }]
       : []),
   ];
 
-  // ── Önceki dönem overlay'i — gün index'ine göre hizala (takvim boşlukları
-  // iki pencerede de aynı ofsetle kayar; trend yalnız verili günleri taşır). ──
+  // Önceki dönem overlay'i — gün index'ine göre hizala.
   const dayIndex = (dateIso: string, fromIso: string) =>
-    Math.floor(
-      (new Date(dateIso).getTime() - new Date(fromIso).getTime()) / 86_400_000,
-    );
-  let trendData: (DashboardData["trend"][number] & {
-    prevRevenue?: number | null;
-    prevOrders?: number | null;
-  })[] = d.trend;
-  if (prev?.fromIso && period.fromIso && prevData) {
-    const prevByIdx = new Map<number, { revenue: number; orders: number }>();
-    for (const t of prevData.trend)
-      prevByIdx.set(dayIndex(t.date, prev.fromIso), {
-        revenue: t.revenue,
-        orders: t.orders,
-      });
-    trendData = d.trend.map((t) => {
-      const p = prevByIdx.get(dayIndex(t.date, period.fromIso!));
-      return { ...t, prevRevenue: p?.revenue ?? null, prevOrders: p?.orders ?? null };
-    });
-  }
+    Math.floor((new Date(dateIso).getTime() - new Date(fromIso).getTime()) / 86_400_000);
+  const prevByIdx = new Map<number, number>();
+  if (prev?.fromIso && prevData)
+    for (const t of prevData.trend) prevByIdx.set(dayIndex(t.date, prev.fromIso), t.revenue);
+  const points = d.trend.map((t) => ({
+    a: t.revenue,
+    b: t.cost,
+    c: period.fromIso ? (prevByIdx.get(dayIndex(t.date, period.fromIso)) ?? null) : null,
+  }));
   const prevTrendEmpty = prevData != null && prevData.trend.length === 0;
-  /** Grafik altı pencere/karşılaştırma etiketi (veri kısıtı görünür kalsın). */
-  const compareCaption = prev
-    ? prevTrendEmpty
-      ? `${period.label} · ${prev.label.toLocaleLowerCase("tr-TR")} verisi yok`
-      : `${period.label} · kesikli/soluk: ${prev.label.toLocaleLowerCase("tr-TR")}`
-    : `${period.label} · karşılaştırma yok (tüm zamanlar)`;
+  const lastSaleDate = d.trend.length ? d.trend[d.trend.length - 1].date : null;
+  const firstLabel = d.trend.length ? d.trend[0].label : period.fromIso ? formatDate(period.fromIso, "d MMM") : "";
+  const lastLabel = d.trend.length ? d.trend[d.trend.length - 1].label : formatDate(period.toIso, "d MMM");
+  const chartMax = Math.max(0, ...points.flatMap((p) => [p.a, p.b ?? 0]));
 
-  // ── UYUYAN KUTULAR (minimalizm sözleşmesi): verisi olmayan İKİNCİL kutu
-  // tam boy render edilmez; adı sayfa sonundaki ince listede anılır. KPI'lar,
-  // grafikler ve dürüstlük notları çekirdek — boşken de kalır. ──
   const hasGold = d.goldCosts.totalGoldCents > 0;
   const hasCosts = d.costByCategory.length > 0;
-  const showCostSection = hasCosts || hasGold;
-  const hasTopProducts = d.topProducts.length > 0;
-  const hasRecent = d.recent.length > 0;
-  const hasCustomers = d.topCustomers.length > 0;
-  const hasChannels = d.channelBreakdown.length > 0;
-  const showActivitySection =
-    hasTopProducts || hasRecent || hasCustomers || hasChannels;
-  const sleeping: SleepingBox[] = [];
-  if (!showCostSection)
-    sleeping.push({ name: "Maliyet Yapısı", hint: "maliyet kaydı girilince" });
-  else if (!hasGold)
-    sleeping.push({
-      name: "Altın Maliyet Metrikleri",
-      hint: "altın maliyeti kaydı girilince",
-    });
-  if (!showActivitySection)
-    sleeping.push({
-      name: "Ürünler & Etkinlik",
-      hint: "ilk satış/kayıt düşünce",
-    });
-  else {
-    if (!hasTopProducts)
-      sleeping.push({
-        name: "En Çok Satan Ürünler",
-        hint: "bu dönemde satış olunca",
-      });
-    if (!hasRecent)
-      sleeping.push({ name: "Son Etkinlikler", hint: "ilk kayıt düşünce" });
-    if (!hasCustomers)
-      sleeping.push({
-        name: "En İyi Müşteriler",
-        hint: "müşteri verisi gelince",
-      });
-    if (!hasChannels)
-      sleeping.push({
-        name: "Satış Kanalları",
-        hint: "bu dönemde satış olunca",
-      });
-  }
+  const gold = formatMoneyParts(Math.round(goldPriceOunce * 100), "USD");
 
   return (
-    <div className="page-stack relative z-0 pb-32">
-      <SceneCutouts page="panel" />
-      <GoldStream motif="necklace" />
+    <div className="flex flex-col gap-10 pb-24">
       <PageHeader
-        title="Panel"
-        description={`Genel bakış · ${period.label}`}
+        eyebrow="00 · Panel"
+        meta={period.label.toLocaleLowerCase("tr-TR")}
+        title="Bugün ne yapmalı"
+        description="Dört sayaç bugünün işini sayar; Dikkat defteri paraya göre sıralı. Gerisi bir tık ötede."
         action={<PeriodSelector />}
       />
 
-      <WhatsNew />
-
-      {/* Panel ilk açılışında (oturum başına bir kez) Etsy senkron hatırlatıcısı;
-          verisini kendi async bileşeninde stream eder, kabuğu bekletmez. */}
-      <Suspense fallback={null}>
-        <SyncPromptSection orgId={m.org_id} />
+      <Suspense fallback={<SectionSkeleton h="h-[190px]" label="Aksiyon sayıları…" />}>
+        <ActionCounts orgId={m.org_id} lastSaleDate={lastSaleDate} />
       </Suspense>
 
-      {/* İKİ DÖNGÜ — panelin var olma sebebi (docs/panel-sadelestirme-plani.md).
-          Listing döngüsü sayıları ayrı sorgudan akar; kâr döngüsü aşağıdaki
-          `d` (getDashboard) verisinden gelir, ekstra sorgu YOK. */}
-      <Suspense fallback={<SectionSkeleton h="h-[104px]" label="Döngüler…" />}>
-        <LoopStatusSection
-          orgId={m.org_id}
-          revenueCents={d.revenueCents}
-          costCents={d.costCents}
-          profitCents={d.profitCents}
-          currency={cur}
-          periodLabel={period.label}
-        />
+      <Suspense fallback={<SectionSkeleton h="h-[220px]" label="Dikkat defteri…" />}>
+        <AttentionSection orgId={m.org_id} />
       </Suspense>
 
-      {/* Uyarı Board'u + Merkezi — en ağır veri dalı (tüm listing denetimi);
-          Suspense ile sonradan akar, kabuğu bekletmez. */}
-      <Suspense fallback={<SectionSkeleton h="h-[420px]" label="Uyarılar yükleniyor…" />}>
-        <AlertsSection orgId={m.org_id} />
-      </Suspense>
-
-      {/* Pazar uyarıları DETAY/AKSİYON yüzeyi — merkez özet sayar, bu kart
-          listing-başına sapma + karar linki verir (merkez satırı buraya işaret eder). */}
-      <Suspense fallback={<SectionSkeleton h="h-[180px]" label="Pazar uyarıları…" />}>
-        <MarketAlertsSection orgId={m.org_id} />
-      </Suspense>
-
-      {/* ── Güncel Altın Fiyatı — öne çıkan yüzen cam şerit ───────────────
-          Buzlu cam board (.glass-board) yüzeyin ÜSTÜNDE süzülür; girişte
-          yumuşak "yüksel" (.animate-rise); hero rakam cam üstünde yüzen büyük
-          display (.text-glass-display); tek kahraman rozet iridesan holo dolgu
-          (.holo-fill); arkada dekoratif marka altın tozu dokusu (.jg-dust). */}
-      <div className="glass-board animate-rise relative isolate overflow-hidden rounded-[26px] px-6 py-7">
-        {/* Dekoratif marka doku katmanı — yalnız fısıltı; içeriğin altında. */}
-        <div
-          aria-hidden
-          className="jg-dust pointer-events-none absolute inset-0 rounded-[inherit]"
-        />
-        <div className="relative z-10 flex flex-wrap items-center gap-x-10 gap-y-5">
-          {/* Hero — holo rozet + cam üstünde yüzen büyük altın fiyatı */}
-          <div className="flex items-center gap-4">
-            <span
-              aria-hidden
-              className="holo-fill inline-flex size-12 shrink-0 items-center justify-center rounded-2xl text-white"
-            >
-              <Gem className="size-6" />
-            </span>
-            <div className="flex flex-col">
-              <span className="text-muted-foreground font-mono text-[11px] tracking-[0.16em] uppercase">
-                Güncel Altın
-              </span>
-              <span className="flex items-baseline gap-1.5">
-                <span className="text-glass-display font-mono text-4xl font-semibold tabular-nums tracking-tight">
-                  ${formatNumber(goldPriceOunce)}
-                </span>
-                <span className="text-muted-foreground text-sm font-medium">
-                  /oz
-                </span>
-              </span>
+      {/* Altın tuner şeridi — tek yatay ekran: ons LCD, gram okumaları dim. */}
+      <section aria-label="Güncel altın">
+        <div className="sec-h">
+          <span className="num">02</span>
+          <h2>Altın</h2>
+          <span className="mono-label right">spot · troy ons</span>
+        </div>
+        <Bezel className="mt-4">
+          <Screen className="flex flex-col gap-4 px-5 py-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <span className="dim">XAU / USD</span>
+              <div className="lcd mt-1.5 text-[36px] leading-none tracking-[0.02em] sm:text-[44px]">
+                {gold.main}
+                <span className="text-[16px] opacity-70">{gold.fraction}</span>
+                <span className="dim ml-3 text-[11px]">/oz</span>
+              </div>
             </div>
-          </div>
-          {/* Karat gram okumaları — dengeli, hizalı üçlü grid (simetri) */}
-          <div className="grid flex-1 grid-cols-3 gap-x-6 gap-y-1 text-sm">
-            <GramReadout label="24K Gram" value={goldPricePerGram} />
-            <GramReadout
-              label="14K Gram"
-              value={goldPricePerGram * KARAT_PURITY["14K"]}
-            />
-            <GramReadout
-              label="10K Gram"
-              value={goldPricePerGram * KARAT_PURITY["10K"]}
-            />
-          </div>
-        </div>
-      </div>
+            <div className="grid grid-cols-3 gap-x-8 gap-y-1">
+              <GramReadout label="24K gram" value={goldPricePerGram} />
+              <GramReadout label="14K gram" value={goldPricePerGram * KARAT_PURITY["14K"]} />
+              <GramReadout label="10K gram" value={goldPricePerGram * KARAT_PURITY["10K"]} />
+            </div>
+          </Screen>
+        </Bezel>
+      </section>
 
-      {/* ══ GELİR & KÂRLILIK — grafik, sonuçlarında kullanılan metriklerle
-          YAN YANA (Panel 2.0 okuma düzeni: sol grafik, sağ metrikler) ══ */}
-      {/* Dekoratif indeks satırı (Spatial/Liquid .idx dili) — başlık metni değişmez. */}
-      <div aria-hidden className="idx sm:-mb-4">
-        <span>Panel / 01 · Gelir &amp; Kârlılık</span>
-        <span className="idx-bar" />
-        <span className="idx-ln" />
-        <span><OrgMark /></span>
-      </div>
-      <SectionTitle
-        title="Trend ve dönem metrikleri"
-        hint={`${period.label}${prev ? ` · MoM: ${prev.label.toLocaleLowerCase("tr-TR")}` : ""}${lastYear ? ` · YoY: ${lastYear.label.toLocaleLowerCase("tr-TR")}` : " · karşılaştırma yok (tüm zamanlar)"}`}
-      />
-      {/* Ana KPI bölümü — Spatial hero köşe işaretleri (dekoratif sarmalayıcı). */}
-      <div className="relative">
-      <div className="grid gap-5 lg:grid-cols-3">
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle>Gelir / Maliyet Trendi</CardTitle>
-            {/* Pencere + karşılaştırma dönemi etiketi — veri kısıtı ekranda. */}
-            <p className="text-muted-foreground text-xs">{compareCaption}</p>
-          </CardHeader>
-          <CardContent>
-            {/* Önceki dönem tamamen boşsa overlay çizilmez — kısıt üstteki
-                etikette söylenir ("verisi yok"), sessiz gizleme yok. */}
-            <TrendChart
-              data={trendData}
-              compareLabel={
-                prev && !prevTrendEmpty
-                  ? `Gelir · ${prev.label.toLocaleLowerCase("tr-TR")}`
-                  : undefined
-              }
-            />
-          </CardContent>
-        </Card>
-        <div className="stagger grid grid-cols-2 content-start gap-5 sm:gap-6">
-          <KpiCard
-            label="Toplam Gelir"
-            cents={d.revenueCents}
-            currency={cur}
-            icon={DollarSign}
-            comparisons={kpiComparisons((x) => x.revenueCents)}
+      {/* Gelir & kârlılık — osiloskop + dört defter KPI'ı */}
+      <section aria-label="Gelir ve kârlılık" className="grid gap-x-12 gap-y-8 xl:grid-cols-[1.35fr_1fr]">
+        <div className="min-w-0">
+          <div className="sec-h">
+            <span className="num">03</span>
+            <h2>Gelir ve maliyet</h2>
+            <span className="mono-label right">
+              {prev
+                ? prevTrendEmpty
+                  ? `${prev.label.toLocaleLowerCase("tr-TR")} verisi yok`
+                  : `kesikli: ${prev.label.toLocaleLowerCase("tr-TR")}`
+                : "karşılaştırma yok"}
+            </span>
+          </div>
+          <ScopeChart
+            className="mt-4"
+            points={points}
+            startLabel={firstLabel.toLocaleUpperCase("tr-TR")}
+            endLabel={lastLabel.toLocaleUpperCase("tr-TR")}
+            caption={`Gelir / maliyet · ${period.label.toLocaleLowerCase("tr-TR")}`}
+            maxLabel={chartMax > 0 ? `max ${formatNumber(Math.round(chartMax))}` : undefined}
+            height={220}
           />
-          <KpiCard
-            label="Toplam Maliyet"
-            cents={d.costCents}
-            currency={cur}
-            icon={Wallet}
-            comparisons={kpiComparisons((x) => x.costCents)}
-          />
-          <KpiCard
-            label="Net Kâr"
-            cents={d.profitCents}
-            currency={cur}
-            icon={TrendingUp}
-            holo
-            comparisons={kpiComparisons((x) => x.profitCents)}
-          />
-          <KpiCard
-            label="Kâr Marjı"
-            value={formatPercent(d.margin)}
-            icon={Percent}
-            accent={d.margin >= 0 ? "positive" : "negative"}
-            comparisons={marginComparisons}
+          <Legend
+            className="mt-4"
+            items={[
+              { label: "Gelir", kind: "neon" },
+              { label: prev && !prevTrendEmpty ? `Gelir · ${prev.label.toLocaleLowerCase("tr-TR")}` : "Önceki dönem (yok)", kind: "dash" },
+              { label: "Maliyet", kind: "ink" },
+            ]}
           />
         </div>
-      </div>
-      <CornerMarks />
-      </div>
-
-      {/* ══ SİPARİŞLER ══ */}
-      <div aria-hidden className="idx sm:-mb-4">
-        <span>Panel / 02 · Siparişler</span>
-        <span className="idx-bar" />
-        <span className="idx-ln" />
-        <span><OrgMark /></span>
-      </div>
-      <SectionTitle title="Günlük hacim ve sepet metrikleri" />
-      <div className="grid gap-5 lg:grid-cols-3">
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle>Günlük Sipariş Sayısı</CardTitle>
-            {/* Pencere + karşılaştırma dönemi etiketi — veri kısıtı ekranda. */}
-            <p className="text-muted-foreground text-xs">{compareCaption}</p>
-          </CardHeader>
-          <CardContent>
-            <OrdersBarChart
-              data={trendData}
-              compareLabel={
-                prev && !prevTrendEmpty
-                  ? prev.label.toLocaleLowerCase("tr-TR")
-                  : undefined
-              }
-            />
-          </CardContent>
-        </Card>
-        <div className="stagger grid content-start gap-4">
-          <KpiCard
-            label="Sipariş Sayısı"
-            value={formatNumber(d.orderCount)}
-            icon={ShoppingBag}
-            comparisons={kpiComparisons((x) => x.orderCount)}
-          />
-          <KpiCard
-            label="Ort. Sipariş (AOV)"
-            cents={d.aovCents}
-            currency={cur}
-            icon={Receipt}
-            comparisons={kpiComparisons((x) => x.aovCents)}
-          />
-        </div>
-      </div>
-
-      {/* ══ MALİYET YAPISI — kırılım grafiği + altın maliyet metrikleri.
-          Uyuyan-kutu kuralı: bu dönemde hiç maliyet verisi yoksa bölüm
-          çizilmez (adı sayfa sonunda); yalnız altın verisi eksikse altın
-          metrik bloğu gizlenir, "kayıt yok" doldurma kartı basılmaz. ══ */}
-      {showCostSection && (
-        <>
-          <div aria-hidden className="idx sm:-mb-4">
-            <span>Panel / 03 · Maliyet Yapısı</span>
-            <span className="idx-bar" />
-            <span className="idx-ln" />
-            <span><OrgMark /></span>
+        <div className="min-w-0">
+          <div className="sec-h">
+            <span className="num">04</span>
+            <h2>Dönem özeti</h2>
+            <span className="mono-label right">{period.label.toLocaleLowerCase("tr-TR")}</span>
           </div>
-          <SectionTitle title="Kırılım ve altın maliyeti" />
-          <div className={hasGold ? "grid gap-5 lg:grid-cols-3" : "grid gap-5"}>
-            <Card>
-              <CardHeader>
-                <CardTitle>Maliyet Kırılımı</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CategoryPie data={d.costByCategory} />
-              </CardContent>
-            </Card>
+          <div className="mt-4 grid grid-cols-2 gap-x-8">
+            <KpiCard label="Toplam gelir" cents={d.revenueCents} currency={cur} comparisons={kpiComparisons((x) => x.revenueCents)} />
+            <KpiCard label="Toplam maliyet" cents={d.costCents} currency={cur} comparisons={kpiComparisons((x) => x.costCents)} />
+            <KpiCard label="Net kâr" cents={d.profitCents} currency={cur} holo comparisons={kpiComparisons((x) => x.profitCents)} />
+            <KpiCard label="Kâr marjı" value={formatPercent(d.margin)} accent={d.margin >= 0 ? "default" : "negative"} comparisons={marginComparisons} />
+          </div>
+        </div>
+      </section>
+
+      {/* Maliyet yapısı — çubuk kırılım (pasta değil) + altın metrikleri */}
+      <section aria-label="Maliyet yapısı">
+        <div className="sec-h">
+          <span className="num">05</span>
+          <h2>Maliyet yapısı</h2>
+          <span className="mono-label right">{period.label.toLocaleLowerCase("tr-TR")} · kategoriye göre pay</span>
+        </div>
+        {hasCosts || hasGold ? (
+          <div className={cn("mt-5 grid gap-x-12 gap-y-8", hasGold && "xl:grid-cols-[1.35fr_1fr]")}>
+            <CostBars data={d.costByCategory} currency={cur} />
             {hasGold && (
-              <div className="stagger grid grid-cols-2 content-start gap-4 lg:col-span-2">
+              <div className="grid grid-cols-2 gap-x-8">
+                <KpiCard label="Altın malzeme" cents={d.goldCosts.materialCents} currency={cur} />
+                <KpiCard label="İşçilik" cents={d.goldCosts.laborCents} currency={cur} />
+                <KpiCard label="Toplam altın maliyet" cents={d.goldCosts.totalGoldCents} currency={cur} />
                 <KpiCard
-                  label="Altın Malzeme"
-                  cents={d.goldCosts.materialCents}
-                  currency={cur}
-                  icon={Gem}
-                />
-                <KpiCard
-                  label="İşçilik"
-                  cents={d.goldCosts.laborCents}
-                  currency={cur}
-                  icon={Hammer}
-                />
-                <KpiCard
-                  label="Toplam Altın Maliyet"
-                  cents={d.goldCosts.totalGoldCents}
-                  currency={cur}
-                  icon={Scale}
-                />
-                <KpiCard
-                  label="Altın Kâr Marjı"
+                  label="Altın kâr marjı"
                   value={formatPercent(
-                    d.revenueCents > 0
-                      ? (d.revenueCents - d.goldCosts.totalGoldCents) /
-                          d.revenueCents
-                      : 0,
+                    d.revenueCents > 0 ? (d.revenueCents - d.goldCosts.totalGoldCents) / d.revenueCents : 0,
                   )}
-                  icon={Percent}
-                  accent={
-                    d.revenueCents > d.goldCosts.totalGoldCents
-                      ? "positive"
-                      : "negative"
-                  }
+                  accent={d.revenueCents > d.goldCosts.totalGoldCents ? "default" : "negative"}
                 />
               </div>
             )}
           </div>
-        </>
-      )}
-
-      {/* ══ ÜRÜNLER & ETKİNLİK — dört kutu TEK grid'de; verisi olmayan kutu
-          çizilmez (uyuyan kutu), kalanlar boşluk bırakmadan akar. Dördü de
-          boşsa bölüm başlığıyla birlikte uyur. ══ */}
-      {showActivitySection && (
-        <>
-          <div aria-hidden className="idx sm:-mb-4">
-            <span>Panel / 04 · Ürünler &amp; Etkinlik</span>
-            <span className="idx-bar" />
-            <span className="idx-ln" />
-            <span><OrgMark /></span>
-          </div>
-          <SectionTitle title="En çok satanlar ve son kayıtlar" />
-
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        {hasTopProducts && (
-        <Card>
-          <CardHeader>
-            <CardTitle>En Çok Satan Ürünler</CardTitle>
-          </CardHeader>
-          <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Ürün</TableHead>
-                    <TableHead className="text-right">Adet</TableHead>
-                    <TableHead className="text-right">Gelir</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {d.topProducts.map((p) => (
-                    <TableRow key={p.sku ?? p.title}>
-                      <TableCell className="max-w-[280px] font-medium">
-                        <span className="block truncate">{p.title}</span>
-                        {p.sku && (
-                          <span className="text-muted-foreground block font-mono text-[10px] tracking-[0.08em] uppercase">
-                            {p.sku}
-                          </span>
-                        )}
-                      </TableCell>
-                      <TableCell className="text-right tabular-nums">
-                        {formatNumber(p.quantity)}
-                      </TableCell>
-                      <TableCell className="text-right tabular-nums">
-                        {formatMoney(Math.round(p.revenue * 100), cur)}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            <div className="mt-4">
-              <Link
-                href="/maliyetler/altin-maliyet"
-                className="text-primary text-sm font-medium hover:underline"
-              >
-                Altın maliyet analizi →
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
+        ) : (
+          <p className="note mt-4">
+            <span className="mark">†</span>
+            <span>Bu dönemde maliyet kaydı yok; kayıt girilince kırılım burada belirir.</span>
+          </p>
         )}
-
-        {hasRecent && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Son Etkinlikler</CardTitle>
-          </CardHeader>
-          <CardContent>
-              <ul className="space-y-3">
-                {d.recent.map((a) => (
-                  <li key={a.id} className="flex items-start justify-between gap-3">
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-medium">
-                        {auditSummary(a)}
-                      </p>
-                      <p className="text-muted-foreground text-xs">
-                        {a.actor_label ?? "Sistem"}
-                      </p>
-                    </div>
-                    <span className="text-muted-foreground shrink-0 text-xs">
-                      {formatDateTime(a.created_at, "d MMM HH:mm")}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            <div className="mt-4">
-              <Link
-                href="/kayitlar"
-                className="text-primary text-sm font-medium hover:underline"
-              >
-                Tüm kayıtları gör →
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
-        )}
-
-        {hasCustomers && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <UsersLine aria-hidden className="size-4" />
-              En İyi Müşteriler
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Müşteri</TableHead>
-                    <TableHead className="text-right">Siparis</TableHead>
-                    <TableHead className="text-right">Toplam</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {d.topCustomers.map((c) => (
-                    <TableRow key={c.buyerName}>
-                      <TableCell className="max-w-[200px] truncate font-medium">
-                        {c.buyerName}
-                      </TableCell>
-                      <TableCell className="text-right tabular-nums">
-                        {formatNumber(c.orderCount)}
-                      </TableCell>
-                      <TableCell className="text-right tabular-nums">
-                        {formatMoney(c.revenueCents, cur)}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-          </CardContent>
-        </Card>
-        )}
-
-        {hasChannels && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Store aria-hidden className="size-4" />
-              Satış Kanalları
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-              <div className="space-y-4">
-                {d.channelBreakdown.map((ch) => {
-                  const pct =
-                    d.revenueCents > 0
-                      ? ch.revenueCents / d.revenueCents
-                      : 0;
-                  return (
-                    <div key={ch.channel} className="space-y-1.5">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="font-medium">{ch.channel}</span>
-                        <span className="text-muted-foreground tabular-nums">
-                          {formatMoney(ch.revenueCents, cur)} · {formatNumber(ch.orderCount)} sipariş
-                        </span>
-                      </div>
-                      {/* Sıvı dolgu: içe gölgeli pill ray (açık) / lume-pit
-                          çukur (koyu); dolgu grad-holo + mor ışıma (açık),
-                          lume-fill + lume-glow (koyu); üstünde kayan sheen. */}
-                      <div className="h-2.5 overflow-hidden rounded-full [background-color:rgb(122_122_155/0.16)] [box-shadow:inset_0_2px_4px_rgba(84,80,120,.28),inset_0_-1px_0_rgba(255,255,255,.7)] dark:[background-color:oklch(0_0_0/0.35)] dark:[box-shadow:var(--lume-pit)]">
-                        <div
-                          className="sheen-sweep h-full rounded-full transition-all [background-image:var(--grad-holo)] [box-shadow:0_0_12px_oklch(0.62_0.20_278/0.5)] dark:[background-image:var(--lume-fill)] dark:[box-shadow:var(--lume-glow)]"
-                          style={{ width: `${Math.round(pct * 100)}%` }}
-                        />
-                      </div>
-                      <p className="text-muted-foreground text-xs tabular-nums">
-                        {formatPercent(pct)}
-                      </p>
-                    </div>
-                  );
-                })}
-              </div>
-            <div className="mt-4">
-              <Link
-                href="/satislar"
-                className="text-primary text-sm font-medium hover:underline"
-              >
-                Tüm satışları gör →
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
-        )}
-          </div>
-        </>
-      )}
-
-      {/* Editorial marka şeridi — veri önce gelsin diye Panel 2.0'da en altta */}
-      <EditorialCard
-        compact
-        heightClassName="h-[240px]"
-        image="/brand/gallery/koyu-franco.webp"
-        video="/brand/video/altin-zincir-orbit.mp4"
-        eyebrow="Jade Gold · New York"
-        title="Sessiz lüks, kalıcı değer"
-        subtitle="Som altın, el işçiliği — her parça bir miras."
-      />
-
-      {/* Uyuyan kutular — verisi olmadığı için bu sayfada gizlenen bölümler. */}
-      <SleepingBoxes items={sleeping} />
+      </section>
     </div>
-  );
-}
-
-/** Ağır dalların stream edilen bölümleri — her biri kendi verisini bekler.
-    Uyuyan-kutu kuralı: Suspense dalı sayfa-sonu listesine yazamayacağı için
-    boş durumda YERİNDE ince SleepingNote satırı çizer (tam kart yok). */
-async function AlertsSection({ orgId }: { orgId: string }) {
-  const alertCenter = await getAlertCenter(orgId);
-  return (
-    <>
-      {/* Görsel çıktı yok: o an açık uyarıları izler, kaybolanları (çözülen)
-          Görevler'e TAMAMLANMIŞ görev olarak yazar (şirket hafızası izi). */}
-      <AlertResolutionTracker alerts={alertCenter.alerts} />
-      {/* 3B uyarı board'u kullanıcı kararıyla EMEKLİ — özet artık üst bardaki
-          bildirim zilinde; bu kart detay/aksiyon yüzeyi olarak kalır. */}
-      {alertCenter.total > 0 ? (
-        <AlertCenterCard data={alertCenter} />
-      ) : (
-        <SleepingNote
-          name="Uyarı Merkezi"
-          hint="her şey yolunda; aksiyon bekleyen uyarı çıkınca uyanır"
-        />
-      )}
-    </>
-  );
-}
-
-async function MarketAlertsSection({ orgId }: { orgId: string }) {
-  const alerts = await getMarketPriceAlerts(orgId);
-  if (alerts.length === 0)
-    return (
-      <SleepingNote
-        name="Pazar Fiyat Uyarıları"
-        hint="listingler pazar aralığında; bant dışı fiyat çıkınca uyanır"
-      />
-    );
-  return <MarketPriceAlertsCard alerts={alerts} />;
-}
-
-/** Panel ilk açılış Etsy senkron popup'ı — durum + son özet burada beklenir. */
-async function SyncPromptSection({ orgId }: { orgId: string }) {
-  // Etsy'ye özel davet: platform kimliği Etsy DEĞİLSE (Shopify/Shopier org'u)
-  // "Etsy'nizi bağlayın" popup'ı gösterilmez — kafa karıştırır.
-  const platform = await getActivePlatform();
-  if (platform.key !== "etsy" && platform.key !== "none") return null;
-  const [status, summary] = await Promise.all([
-    getEtsyStatus(orgId),
-    getLastSyncSummary(orgId),
-  ]);
-  const configured = Boolean(
-    process.env.ETSY_API_KEY && process.env.ETSY_API_SECRET,
-  );
-  return (
-    <PanelSyncPrompt
-      connected={status.status === "connected"}
-      configured={configured}
-      initialSummary={summary}
-    />
   );
 }
 
 /**
- * İKİ DÖNGÜ ŞERİDİ — panelin üstünde, tek bakışta "sırada ne var".
- *
- * Sadeleştirme Faz 2 (2026-08-12): panel iki uçtan uca döngüye indirgendi ve
- * ana sayfa artık ÖNCE bu ikisini anlatır:
- *   LİSTİNG : bekleyen (panelde hazır) → gönderilen (Etsy taslağı) → yayında
- *   KÂR     : dönem satışı − maliyet = kâr
- * Her sayı kendi döngüsünün bir sonraki adımına link verir; sayı 0 ise link
- * yine durur (boş durum da bilgidir — "yapacak iş yok" demektir).
+ * Dört aksiyon sayısı — dört farklı gösterge: LCD ekran (taslak bekleyen),
+ * halka (Etsy'de taslak / canlı oranı), mekanik sayaç (maliyeti eksik) ve
+ * dekor kartı (iade tutarı bekleyen). Her biri işin bir sonraki adımına
+ * link verir; 0 da bilgidir. Altında veri tazeliği.
  */
-async function LoopStatusSection({
-  orgId,
-  revenueCents,
-  costCents,
-  profitCents,
-  currency,
-  periodLabel,
-}: {
-  orgId: string;
-  revenueCents: number;
-  costCents: number;
-  profitCents: number;
-  currency: string;
-  periodLabel: string;
-}) {
-  const loop = await getListingLoopStatus(orgId);
-  const margin =
-    revenueCents > 0 ? profitCents / revenueCents : null;
-
+async function ActionCounts({ orgId, lastSaleDate }: { orgId: string; lastSaleDate: string | null }) {
+  const [loop, refundBacklog, incomplete] = await Promise.all([
+    getListingLoopStatus(orgId),
+    countRefundBacklog(orgId),
+    listSaleItemPnl(orgId, { flag: "eksik", limit: 1 }).then((r) => r.count).catch(() => null),
+  ]);
+  const listed = loop.sent + loop.live;
+  const liveRatio = listed > 0 ? loop.live / listed : 0;
   return (
-    <div className="grid gap-4 lg:grid-cols-2">
-      <Card>
-        <CardHeader className="pb-2">
-          <CardTitle className="flex items-center gap-2 text-sm">
-            <Palette aria-hidden className="size-4" />
-            Listing döngüsü
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-3 gap-3">
-            <LoopStat
-              label="Bekleyen"
-              value={formatNumber(loop.pending)}
-              hint="panelde hazır, Etsy'ye gitmemiş"
-              href="/listing-onerileri"
-            />
-            <LoopStat
-              label="Gönderilen"
-              value={formatNumber(loop.sent)}
-              hint="Etsy'de taslak, aktivasyon bekliyor"
-              href="/tasarimlar"
-            />
-            <LoopStat
-              label="Yayında"
-              value={formatNumber(loop.live)}
-              hint="aktif listing"
-              href="/tasarimlar"
-            />
-          </div>
-          <p className="text-muted-foreground mt-3 text-xs">
-            {loop.lastSyncAt
-              ? `Son senkron: ${formatDateTime(loop.lastSyncAt)}`
-              : "Henüz senkron yapılmadı — Ayarlar'dan Etsy'ye bağlanın."}
-          </p>
-        </CardContent>
-      </Card>
+    <section aria-label="Aksiyon sayıları" className="flex flex-col gap-4">
+      <div className="sec-h">
+        <span className="num">01</span>
+        <h2>Bugünün işi</h2>
+        <span className="mono-label right">dört sayaç · tıkla, işe git</span>
+      </div>
+      <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+        {/* 1 · LCD ekran */}
+        <Link href="/listing-onerileri" className="jg-focus-outline block rounded-[22px]">
+          <Bezel>
+            <Screen className="min-h-[150px]">
+              <div className="flex justify-between">
+                <span className="dim">Etsy&apos;ye gidecek</span>
+                <span className="dim">● rec</span>
+              </div>
+              <div className="lcd mt-3 text-[48px] leading-none">{formatNumber(loop.pending)}</div>
+              <FmDial pos={listed + loop.pending > 0 ? loop.pending / (listed + loop.pending) : null} labels={["0", `${listed + loop.pending}`]} className="mt-2" />
+              <div className="dim mt-1">taslak · panelde hazır →</div>
+            </Screen>
+          </Bezel>
+        </Link>
 
-      <Card>
-        <CardHeader className="pb-2">
-          <CardTitle className="flex items-center gap-2 text-sm">
-            <Wallet aria-hidden className="size-4" />
-            Kâr döngüsü
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-3 gap-3">
-            <LoopStat
-              label="Satış"
-              value={formatMoney(revenueCents, currency)}
-              hint={periodLabel}
-              href="/satislar"
-            />
-            <LoopStat
-              label="Maliyet"
-              value={formatMoney(costCents, currency)}
-              hint="girilen giderler"
-              href="/maliyetler"
-            />
-            <LoopStat
-              label="Kâr"
-              value={formatMoney(profitCents, currency)}
-              hint={margin != null ? `marj ${formatPercent(margin)}` : "—"}
-              href="/raporlar"
-            />
+        {/* 2 · Halka */}
+        <Link href="/tasarimlar" className="jg-focus-outline flex items-center gap-5 rounded-[20px] border border-[color:var(--rule)] px-5 py-5">
+          <RingGauge value={liveRatio} label={formatNumber(loop.sent)} />
+          <div className="min-w-0">
+            <p className="mono-label">Etsy&apos;de taslak</p>
+            <p className="text-ink-2 mt-1.5 text-xs leading-relaxed">
+              {formatNumber(loop.sent)} yayın bekliyor · {formatNumber(loop.live)} canlı
+            </p>
+            <p className="mono-label mt-3 text-foreground">yayına al →</p>
           </div>
-          <p className="text-muted-foreground mt-3 text-xs">
-            Maliyet yalnız PANELE GİRİLEN giderleri sayar; eksik gider kârı
-            olduğundan yüksek gösterir.
-          </p>
-        </CardContent>
-      </Card>
+        </Link>
+
+        {/* 3 · Mekanik sayaç */}
+        <Link href="/satislar/maliyet?flag=eksik" className="jg-focus-outline flex flex-col justify-between rounded-[20px] border border-[color:var(--rule)] px-5 py-5">
+          <div className="flex items-baseline justify-between gap-2">
+            <span className="mono-label">Maliyeti eksik kalem</span>
+            <span className="mono-label">→</span>
+          </div>
+          <Odometer value={incomplete} />
+          <p className="mono-label mt-3">altın ya da işçilik yok · hücreye yaz</p>
+        </Link>
+
+        {/* 4 · Dekor kartı */}
+        <DecorCard
+          label="İade tutarı bekleyen"
+          value={formatNumber(refundBacklog)}
+          hint="sipariş · Etsy'den okunacak"
+          href="/satislar/maliyet"
+        />
+      </div>
+      <p className="mono-label">
+        Veri şu ana kadar:{" "}
+        {loop.lastSyncAt ? `Etsy senkronu ${formatDateTime(loop.lastSyncAt)}` : "Etsy senkronu yok"}
+        {lastSaleDate ? ` · son sipariş ${formatDate(lastSaleDate)}` : ""}
+      </p>
+    </section>
+  );
+}
+
+/** Halka göstergesi — çentikli ray üstünde asit yay; ortada Fraunces rakam. */
+function RingGauge({ value, label }: { value: number; label: string }) {
+  const r = 40;
+  const c = 2 * Math.PI * r;
+  const v = Math.max(0, Math.min(1, value));
+  return (
+    <div className="relative size-[104px] shrink-0" role="img" aria-label={`canlı oranı ${formatPercent(v, 0)}`}>
+      <svg viewBox="0 0 104 104" className="size-full -rotate-90">
+        <circle cx="52" cy="52" r={r} fill="none" stroke="var(--rule)" strokeWidth="6" />
+        <circle
+          cx="52" cy="52" r={r} fill="none"
+          stroke="var(--neon)" strokeWidth="6" strokeLinecap="round"
+          strokeDasharray={`${(c * v).toFixed(1)} ${c.toFixed(1)}`}
+          style={{ filter: "drop-shadow(0 0 4px var(--neon-glow))" }}
+        />
+        <circle cx="52" cy="52" r="30" fill="none" stroke="var(--rule-2)" strokeWidth="1" strokeDasharray="1 4" />
+      </svg>
+      <span className="ledger-num absolute inset-0 flex items-center justify-center text-[30px]">{label}</span>
     </div>
   );
 }
 
-/** Döngü şeridinin tek hücresi — sayı + ne demek olduğu + sonraki adım. */
-function LoopStat({
-  label,
-  value,
-  hint,
-  href,
-}: {
-  label: string;
-  value: string;
-  hint: string;
-  href: string;
-}) {
+/** Mekanik sayaç — her hane ayrı inset hücrede. */
+function Odometer({ value }: { value: number | null }) {
+  const digits = value == null ? ["—"] : String(Math.max(0, value)).padStart(3, "0").split("");
   return (
-    <Link
-      href={href}
-      className="hover:bg-muted/40 -m-1 block rounded-lg p-1 transition-colors"
-    >
-      <div className="text-muted-foreground text-[11px] font-medium tracking-wide uppercase">
-        {label}
+    <div className="mt-4 flex gap-1.5" aria-label={value == null ? "veri yok" : formatNumber(value)}>
+      {digits.map((ch, i) => (
+        <span
+          key={i}
+          className="soft-inset inline-flex h-14 w-10 items-center justify-center rounded-[8px] font-mono text-[30px] tabular-nums"
+        >
+          {ch}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+/** Dikkat — uyarı merkezinin ilk 5 satırı, defter dilinde (paraya göre sıralı). */
+async function AttentionSection({ orgId }: { orgId: string }) {
+  const center = await getAlertCenter(orgId);
+  const shown = center.alerts.slice(0, ATTENTION_LIMIT);
+  return (
+    <section aria-label="Dikkat">
+      <AlertResolutionTracker alerts={center.alerts} />
+      <div className="sec-h">
+        <span className="num">†</span>
+        <h2>Dikkat</h2>
+        <span className="mono-label right">
+          {center.total === 0
+            ? "aksiyon bekleyen uyarı yok"
+            : `${formatNumber(center.total)} uyarı · en pahalı ${Math.min(ATTENTION_LIMIT, center.total)}`}
+        </span>
       </div>
-      <div className="mt-0.5 text-xl font-semibold tabular-nums">{value}</div>
-      <div className="text-muted-foreground mt-0.5 text-[11px] leading-tight">
-        {hint}
-      </div>
-    </Link>
+      {center.total === 0 ? (
+        <p className="note mt-4">
+          <span className="mark">✓</span>
+          <span>Her şey yolunda; aksiyon bekleyen uyarı çıkınca burada belirir.</span>
+        </p>
+      ) : (
+        <ul className="ledger mt-1">
+          {shown.map((a) => (
+            <li key={a.key} className="grid grid-cols-[auto_1fr_auto] items-baseline gap-x-4 border-b border-[color:var(--rule-2)] py-3.5">
+              <span
+                className={cn(
+                  "mono-label w-16 shrink-0",
+                  a.severity === "kritik" && "text-[var(--negative)]",
+                  a.severity === "onemli" && "text-neon-ink",
+                )}
+              >
+                {SEVERITY_LABEL[a.severity]}
+              </span>
+              <span className="min-w-0">
+                <span className="text-sm font-medium">{a.title}</span>
+                <span className="text-ink-2 mt-0.5 block text-xs">{a.hint}</span>
+              </span>
+              <Link
+                href={a.href}
+                className="mono-label text-foreground flex items-center gap-1 whitespace-nowrap hover:text-neon-ink"
+              >
+                {a.costCents != null && a.costCents > 0 && (
+                  <span className="text-ink-2 mr-3 normal-case tracking-normal">{formatMoney(a.costCents, center.currency)}</span>
+                )}
+                {a.actionLabel}
+                <ChevronRight className="size-3" />
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+      {center.alerts.length > ATTENTION_LIMIT && (
+        <p className="mono-label mt-3">
+          {center.alerts.length - ATTENTION_LIMIT} uyarı daha var; en pahalı {ATTENTION_LIMIT} tanesi burada.
+        </p>
+      )}
+    </section>
+  );
+}
+
+/** Maliyet kırılımı — hairline ray içinde asit dolgu çubukları (pasta yerine). */
+function CostBars({ data, currency }: { data: { name: string; value: number }[]; currency: string }) {
+  const total = data.reduce((a, c) => a + (c.value ?? 0), 0);
+  const sorted = [...data].sort((a, b) => b.value - a.value).slice(0, 8);
+  if (total <= 0)
+    return <p className="text-ink-2 text-sm">Bu dönemde maliyet kaydı yok.</p>;
+  return (
+    <ul className="space-y-4">
+      {sorted.map((c) => {
+        const pct = c.value / total;
+        return (
+          <li key={c.name} className="space-y-1.5">
+            <div className="flex items-baseline justify-between gap-3 text-sm">
+              <span className="truncate font-medium">{c.name}</span>
+              <span className="mono-label shrink-0 text-foreground">
+                {formatMoney(Math.round(c.value * 100), currency)} · {formatPercent(pct)}
+              </span>
+            </div>
+            <div className="soft-inset h-2 overflow-hidden rounded-full">
+              <div
+                className="bg-neon h-full rounded-full shadow-[0_0_6px_var(--neon-glow)]"
+                style={{ width: `${Math.max(2, Math.round(pct * 100))}%` }}
+              />
+            </div>
+          </li>
+        );
+      })}
+    </ul>
   );
 }
 
 function SectionSkeleton({ h, label }: { h: string; label: string }) {
   return (
-    <div
-      className={`relative overflow-hidden rounded-[26px] border border-[color:var(--glass-border)] [background-color:var(--glass)] ${h} motion-safe:animate-pulse dark:border-[color:oklch(1_0_0/0.05)] dark:[background-color:var(--lume-panel)]`}
-    >
-      <span className="text-muted-foreground absolute inset-0 flex items-center justify-center font-mono text-[11px] tracking-[0.14em] uppercase">
-        {label}
-      </span>
+    <div className={`relative overflow-hidden rounded-[20px] border border-dashed border-[color:var(--rule)] ${h} motion-safe:animate-pulse`}>
+      <span className="mono-label absolute inset-0 flex items-center justify-center">{label}</span>
     </div>
   );
 }
 
-/** Altın fiyat şeridinde karat gram okuması — hizalı etiket + tabular değer. */
 function GramReadout({ label, value }: { label: string; value: number }) {
   return (
     <div className="flex flex-col">
-      <span className="text-muted-foreground font-mono text-[11px] tracking-[0.12em] uppercase">
-        {label}
-      </span>
-      <span className="font-semibold tabular-nums">${value.toFixed(2)}</span>
-    </div>
-  );
-}
-
-/** Panel 2.0 bölüm başlığı — başlık + opsiyonel ipucu. (Eyebrow kaldırıldı:
-    hemen üstteki idx satırı aynı bölüm adını zaten taşıyor — tekrar etme.) */
-function SectionTitle({ title, hint }: { title: string; hint?: string }) {
-  return (
-    <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 pt-2">
-      <h2 className="display-emboss text-lg font-semibold tracking-tight">{title}</h2>
-      {hint && <span className="text-muted-foreground text-xs">{hint}</span>}
+      <span className="dim">{label}</span>
+      <span className="lcd text-[15px]">${value.toFixed(2)}</span>
     </div>
   );
 }

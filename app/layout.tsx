@@ -1,21 +1,19 @@
 import type { Metadata, Viewport } from "next";
-import { Sora, JetBrains_Mono, Cormorant_Garamond } from "next/font/google";
-import localFont from "next/font/local";
+import { Inter_Tight, JetBrains_Mono, Fraunces } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { FrostProvider } from "@/components/layout/frost-provider";
 import { getBrandScope } from "@/lib/brand";
 import "./globals.css";
 
-// Amuletta tip sistemi — design system + lab referansları (Spatial/Liquid/
-// Materials/Liquid_Dark) ile BİREBİR:
-//  • Sora (UI/başlık/gövde) — bold-minimalist
-//  • JetBrains Mono (dijital okumalar, .idx index başlıkları)
-//  • Cormorant Garamond (--font-serif) — editorial serif; başlıklarda
-//    italik `em` vurgular (lab'lardaki `h2 em` dili)
-//  • California Paradise (display) — YALNIZ hero başlıklar/wordmark
-const sora = Sora({
-  variable: "--font-sora",
+// Amuletta 3.0 (V7) tip sistemi — docs/amuletta-2/plan.md §V7:
+//  • Inter Tight (--font-sans) — gövde/UI, sıkı sans
+//  • Fraunces (--font-serif, --font-display) — editoryal serif; başlıklar
+//    300 ağırlık, opsz 144, son kelime italik
+//  • JetBrains Mono (--font-mono) — index etiketleri, LCD rakamları, tablo
+//    sayıları (0.12–0.2em tracking, uppercase)
+const interTight = Inter_Tight({
+  variable: "--font-inter-tight",
   subsets: ["latin", "latin-ext"],
 });
 
@@ -24,20 +22,13 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin", "latin-ext"],
 });
 
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
+// Değişken eksenler: wght (varsayılan) + opsz (9..144). Başlıklar CSS'te
+// `font-variation-settings: "opsz" 144` ile display kesimine çekilir.
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
   subsets: ["latin", "latin-ext"],
-  weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
-});
-
-const california = localFont({
-  src: [
-    { path: "./fonts/CaliforniaParadise.woff2", weight: "400", style: "normal" },
-    { path: "./fonts/CaliforniaParadise-Italic.woff2", weight: "400", style: "italic" },
-  ],
-  variable: "--font-california",
-  display: "swap",
+  axes: ["opsz"],
 });
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
@@ -65,11 +56,11 @@ export const metadata: Metadata = {
 };
 
 // Next 16: themeColor / viewport ayrı `viewport` export'unda olmalı.
-// NeumorphGlass yüzey renkleri — açıkta off-white, koyuda kömür.
+// V7 yüzey renkleri — açıkta sis grisi, koyuda mürekkep.
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#eaecf3" },
-    { media: "(prefers-color-scheme: dark)", color: "#14161e" },
+    { media: "(prefers-color-scheme: light)", color: "#e9ebef" },
+    { media: "(prefers-color-scheme: dark)", color: "#1b1e26" },
   ],
 };
 
@@ -87,7 +78,7 @@ export default async function RootLayout({
     <html
       lang="tr"
       data-brand={brand}
-      className={`${sora.variable} ${jetbrainsMono.variable} ${cormorant.variable} ${california.variable} h-full antialiased`}
+      className={`${interTight.variable} ${jetbrainsMono.variable} ${fraunces.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="min-h-full bg-background text-foreground">

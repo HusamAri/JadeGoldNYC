@@ -22,7 +22,15 @@ export interface Member {
   role: Role;
 }
 
-export type SourceKind = "manual" | "csv" | "etsy" | "etsy_ledger" | "gold_auto";
+export type SourceKind =
+  | "manual"
+  | "csv"
+  | "etsy"
+  | "etsy_ledger"
+  | "gold_auto"
+  | "shipstation"
+  | "shopier"
+  | "invoice";
 
 export type SaleStatus =
   | "open"
@@ -57,6 +65,26 @@ export interface Sale {
   created_by: string | null;
   created_at: string;
   updated_at: string;
+  // 0174 — Etsy receipt'in kalan alanları + iade özeti (kontra gelir).
+  refunded_cents?: number;
+  refund_count?: number;
+  last_refund_at?: string | null;
+  /** NULL = iade verisi henüz Etsy'den okunmadı (tutar BİLİNMİYOR). */
+  refunds_synced_at?: string | null;
+  total_price_cents?: number | null;
+  vat_cents?: number;
+  gift_wrap_cents?: number;
+  is_gift?: boolean | null;
+  needs_gift_wrap?: boolean | null;
+  message_from_buyer?: string | null;
+  payment_method?: string | null;
+  is_paid?: boolean | null;
+  is_shipped?: boolean | null;
+  shipped_at?: string | null;
+  etsy_updated_at?: string | null;
+  buyer_user_id?: number | null;
+  ship_city?: string | null;
+  ship_state?: string | null;
 }
 
 export interface SaleItem {
@@ -72,7 +100,61 @@ export interface SaleItem {
   line_total_cents: number;
   currency: string;
   created_at: string;
+  // 0174 — transaction'ın kalan alanları + iade/geri kazanım.
+  etsy_listing_id?: number | null;
+  shipping_cost_cents?: number;
+  is_digital?: boolean | null;
+  variations?: { formatted_name?: string; formatted_value?: string }[] | null;
+  etsy_product_id?: number | null;
+  paid_at?: string | null;
+  shipped_at?: string | null;
+  expected_ship_date?: string | null;
+  buyer_coupon_cents?: number;
+  shop_coupon_cents?: number;
+  returned_at?: string | null;
+  /** İade edilen ürünün geri kazanılan değeri (stoğa dönüş/eritme); COGS'tan düşer. */
+  recovered_cents?: number;
+  return_note?: string | null;
 }
+
+/** receipt.refunds[] aynası (0174). */
+export interface SaleRefund {
+  id: string;
+  org_id: string;
+  sale_id: string;
+  amount_cents: number;
+  currency: string;
+  refunded_at: string;
+  reason: string | null;
+  note_from_issuer: string | null;
+  status: string | null;
+  created_at: string;
+}
+
+/** receipt.shipments[] aynası (0174). */
+export interface SaleShipment {
+  id: string;
+  org_id: string;
+  sale_id: string;
+  receipt_shipping_id: number | null;
+  carrier_name: string | null;
+  tracking_code: string | null;
+  notified_at: string | null;
+  created_at: string;
+}
+
+/**
+ * Kalem-başı maliyet türü (0174). gold/labor/gem/packaging = COGS;
+ * shipping_label/return_label/other = satış gideri.
+ */
+export type CostKind =
+  | "gold"
+  | "labor"
+  | "gem"
+  | "packaging"
+  | "shipping_label"
+  | "return_label"
+  | "other";
 
 /** Maliyete katlanan taraf (EON ortaklık yapısı): H | Y | I (I = doğrudan kârdan). */
 export type CostBearer = "H" | "Y" | "I";
@@ -99,12 +181,18 @@ export interface Cost {
   /** Maliyete katlanan taraf; NULL = atanmamış (tek sahipli org'larda normal). */
   bearer: CostBearer | null;
   sale_id: string | null;
+  /** Kaynağı olan satış kalemi (0061); boşsa sipariş/aylık seviye. */
+  sale_item_id?: string | null;
   source: SourceKind;
   receipt_url: string | null;
   notes: string | null;
   created_by: string | null;
   created_at: string;
   updated_at: string;
+  /** Kalem-başı maliyet türü (0174); NULL = türsüz (aylık özet vb.). */
+  cost_kind?: CostKind | null;
+  /** Dış kayıt anahtarı: "ledger:<entry_id>" | "ss:<shipment_id>" (0174). */
+  external_key?: string | null;
   // join kolaylığı
   category?: CostCategory | null;
 }

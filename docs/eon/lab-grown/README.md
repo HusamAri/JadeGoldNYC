@@ -9,7 +9,7 @@ Studio'nun üreticisiyle aynı: 14K bant = gram × $100 işçilik dahil, ek kale
   `2026-11-04-double-shared-prong-pricing.md` + `price_model.py`.
 - Kapsam v1 (sahip): 14K, Metal Color (Yellow/White/Rose) × Ring Size (US 4–10, yarım bedenler),
   yarım tur 13 taş ≈ 0,78 ct, **her beden tek fiyat**. 18K / dörtte üç tur / platin yeni teklif ister.
-- Panel taslağı: `supabase/migrations/0173_eon_lab_grown_dsp.sql` (üreteç
+- Panel taslağı: `supabase/migrations/0175_eon_lab_grown_dsp.sql` (canlıda MCP adı `0173_eon_lab_grown_dsp`; main'de 0173/0174 başkasına ait, dosya 0175'e taşındı; üreteç
   `scripts/eon/gen_lab_grown_dsp_migration.mjs`, girdi `01-double-shared-prong/listing.json`).
   Ürün `EON-DSP` (`product_type = 'ring'`, protokol `listing_metadata.listingProtocol = diamond_band`;
   `products.product_type` kısıtı yeni tip kabul etmez), 39 varyant `EON-DSP-14K-{YG,WG,RG}-US040..100`,
@@ -26,17 +26,17 @@ Studio'nun üreticisiyle aynı: 14K bant = gram × $100 işçilik dahil, ek kale
 - Panelde: **Listing Önerileri > Panel Taslakları** (EON seçiliyken), satır linki
   `/tasarimlar/listing/f0896e3c-7127-4c89-815d-b9344810d6e1`.
 - **Galeri (sahip, 2026-11-04):** 10 görsel `public/eon/lab-grown-dsp/` (PNG 1448×1086 → JPEG q92,
-  meta veri sökülü). Bağlama `0174_eon_lab_grown_dsp_gallery.sql` (üreteç
+  meta veri sökülü). Bağlama `0176_eon_lab_grown_dsp_gallery.sql` (üreteç
   `scripts/eon/gen_lab_grown_dsp_gallery_migration.mjs`): listing_images 10 satır + image_url +
   `listing_metadata.gallery`; **açıklamaya dokunmaz** (kamuya açık AI/görsel beyanı yok, sahip kuralı
-  2026-10-27/31; 29 metin `publicTextProblem` ile 0 sorun). **0174 ancak PR merge olup prod
+  2026-10-27/31; 29 metin `publicTextProblem` ile 0 sorun). **0176 ancak PR merge olup prod
   `/eon/lab-grown-dsp/` adreslerini 10/10 `200` verince uygulanır**; önce uygulanırsa panel 10 kırık
   görsel gösterir (2026-09-25 dersi).
 - Görsel QA: ölçü kareleri 2,50 mm / 2,75 mm listing'le aynı; kapak yazısız; "LAB-GROWN DIAMONDS"
   niteleyicili. Bulgu: yüzden bakış karesi (04) **11 taş** gösteriyor, ürün 13; tüm kareler sarı altın.
 - **Etsy itişi TUTULUYOR:** `draftTransfer = hold`. Taslak itişi sahibin onayıyla açılabilir (galeri
   hazır); **yayına alma** için en az bir gerçek, düzenlenmemiş ürün fotoğrafı şart ve AI kare ilk
-  fotoğraf olamaz (playbook 01/04). Sıra: merge → 10/10 `200` → 0174 → hold'u sil → kuru koşuda
+  fotoğraf olamaz (playbook 01/04). Sıra: merge → 10/10 `200` → 0176 → hold'u sil → kuru koşuda
   `protocol: diamond_band` → `ops/drafts-push` (org EON, önek `EON-DSP`) kuru → kanarya →
   `verify=1` taze token.
 

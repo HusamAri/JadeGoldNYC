@@ -1818,6 +1818,68 @@ repodaki hedefidir.
   bakar; "for him and her" ile "Mens" aynı sınıf değildir. Teknik not: Next 16 prod deploy'unu
   kimliksiz izlemek için `/login` sayfasının içerik-hash'li chunk adları yeterli (buildManifest yolu yok).
 
+- **Ölçülmüş bir rapor eski "dokunma" kararını kaldırır ama KAPSAMINI daraltarak uygulanır; ve kuru koşu
+  ölü slot ararken dış aracın kelime salatasını buldu (2026-11-03, Leander tag geçişi):** 25 Ekim'de "21 Kasım
+  ölçümüne kadar tag'e dokunma" demiştim; 2 Kasım'da sahip Jade'in 12 aylık arama verisini getirdi (hediye/occasion
+  tag'leri 0 ziyaret, çalışanlar ayar+renk+model+ürün). Ölçülmüş veri bekleme kararını kaldırır, ama raporun
+  alıcısı (erkek zincir) Leander'ın mine/halhal alıcısı değil; o yüzden yalnız raporun %100 ölü dediği sınıf
+  (hediye/occasion/his-her/unisex, 210 slot) değişti, his tag'leri (dainty 100+ slot) ve Noel koleksiyonu
+  bilerek kaldı. EON'un bir gün önceki geçişi şablon oldu: yalnız ölü slot, "önce" hâli bugünkü panel senkronu,
+  kapı + test, kanarya, 10'luk parti, taze token'la bağımsız okuma, mühür. Hacim ölçüt olmadı: eRank "gift for
+  her"e 13.273 arama verirken Jade'de aynı tag 0 ziyaret aldı; geniş terimin hacmi ürün sayfasına ulaşmaz.
+  Beklenmeyen bulgu kuru koşudan değil kapıdan geldi: bir listing'de 5 ölü slota 3 aday yetmedi, tag'lerine
+  bakınca 13'ü de dış araçtan kelime salatasıydı ("men man statement", "versatile designer"); aynı imza 10
+  listing'de (6 altın + 4 gümüş, hepsi sahibin 10-22/10-27 sonrası düzenlediği) çıktı. Slot takası böyle bir
+  seti düzeltmez, kapsam dışına alınıp sahibe ayrı soru oldu. Kural: (1) yeni ölçüm eski bekleme kararını
+  kaldırırken ölçümün ALICISININ bizimkiyle örtüştüğü sınıfa kadar uygulanır, gerisi ölçüme kalır; (2) üreteç
+  "aday yetmedi" dediğinde kuralı gevşetmeden önce listing'in mevcut tag'lerini oku, yetmezlik çoğu zaman
+  girdinin bozuk olduğunu söyler; (3) ürün adı taşımayan tag sayısı (≤4/13) ucuz bir salata dedektörüdür,
+  üreteç kapısına kondu; (4) Hobby planda derlemeler sıralıdır, "Cloning"da 25 dk asılı kalan komşu proje
+  derlemesi senin deploy'unu da bekletir; önceki yayın canlıda kaldığı için iptal güvenlidir.
+
+- **Türetilmiş CSS token'ı yalnız `:root`ta tanımlarsan bölüm tonu hiç değişmez; özel
+  özellikler var() ÇÖZÜLMÜŞ hâliyle miras alınır, bunu ancak ölçüm gösterir (2026-11-04,
+  Amuletta 2.0):** Beş editoryal tonu tek değişkenle kurdum: `[data-tone]` yalnız
+  `--surface`i değiştiriyor, gölge/cam/zemin token'ları `oklch(from var(--surface) …)` ile
+  türüyordu. Kod doğru görünüyordu, tsc ve lint temizdi. İlk Playwright ölçümü beş tonda
+  BİREBİR aynı zemini döndürdü: `--background: var(--surface)` :root'ta bir kez çözülüp
+  çözülmüş değer olarak miras alınıyor, çerçevedeki yeni `--surface` ona dokunmuyor.
+  Çözüm türetilmiş zinciri `:root, [data-tone]` seçicisinde bildirmek oldu; ikinci ölçüm
+  beş farklı zemin verdi. İkinci bulgu aynı ölçümden: koyu modun "yüzeyden bir tık açık"
+  kabartma başlığı 1,6:1 çıktı (eski temada da öyleydi, kimse ölçmemişti) ve 11,8:1'e
+  çekildi. Üçüncüsü: Next bu konteynerde çalışmıyor (SWC native binding yok), ama
+  tema CSS'i gerçek Tailwind v4 derleyicisiyle (`@tailwindcss/postcss`) tek başına derlenip
+  gerçek sınıf dizeleriyle kurulmuş statik bir harness Playwright'ta ölçülebiliyor; yorum
+  içindeki `*/` dizisinin CSS'i kırması da burada yakalandı, Vercel'de değil. Kural:
+  (1) tema/token işinde "kod doğru görünüyor" yetmez, computed renk ve kontrast ölçülür;
+  (2) bir CSS değişkenini başka bir değişkenden türetiyorsan ve türetme bir alt ağaçta
+  değişecekse türetilmiş zinciri o alt ağacın seçicisinde de bildir; (3) uygulama
+  çalışmıyorsa ölçüm vazgeçilmez, yalnız yüzeyi değişir: derleyiciyi ve bileşen sınıflarını
+  gerçek tutup veriyi sahte yap.
+
+- **Tema reddinde renk değiştirme, ÖNCE yapı ve malzeme sözleşmesini mockup'la
+  kapat; onaylı mockup'ı gerçek sınıf dizeleriyle harness'a çevir ki üretim
+  ona karşı ölçülsün (2026-11-04, Amuletta 3.0 / V7):** 2.0 teması (yeşil/olive,
+  tüm site neumorph) "renkler çok kötü, görünüş aynı" diye reddedildi. İlk
+  refleks paleti değiştirmekti; sahibin cümleleri okununca üç ayrı istek çıktı:
+  (a) yakın nötrler + TEK neon, (b) neumorph her yerde değil göstergelerde
+  (vintage radyo / FM ekranı / düğme), (c) bölümler arasında İSKELET farkı,
+  tema sabit. Bunlar renk kararı değil malzeme ve yapı kararıydı; yedi statik
+  mockup turu (A/B/C → V1..V7) kodu hiç değiştirmeden kapattı, onay "V7 ile
+  başla" oldu. Üretim kurulurken üç şey işe yaradı: (1) mockup'ın CSS'i
+  token+sınıf olarak globals'a BİREBİR taşındı (`.bezel/.screen/.knob/.seg`),
+  yeniden yorumlanmadı; eski token adları korunup cam token'ları nötrlendi,
+  böylece 49 eski tüketici dokunulmadan düzleşti; (2) Next konteynerde
+  çalışmadığı için `lab.html` yeni sayfanın GERÇEK sınıf dizeleriyle yeniden
+  yazıldı, Playwright açık/koyu çekti; ilk çekim beş kusuru gösterdi (koyuda
+  asit rozet üstünde açık metin, düğme halkası etiketin üstüne biniyor, girdi
+  kenarı 1,4:1) ve hepsi tek turda düzeldi; (3) "her bölüm farklı yapı"
+  kuralı tabloya yazıldı (defter / galeri / kumanda masası / düz liste) ki
+  sonraki sayfa aynı iskeleti kopyalamasın. Kural: tema şikâyetinde önce
+  "renk mi, malzeme mi, yapı mı?" diye ayır ve cevabı statik mockup'la al;
+  onaylı mockup kodun KAYNAĞIDIR, ilhamı değil; harness'ın girdisi üretim
+  sınıf dizeleridir, yoksa harness kendi hayalini ölçer.
+
 - **Üreticinin kendi gram formülü teklifi okur, ama HANGİ gramla okuduğuna bak: dolu profil ile yuvalı
   profil iki farklı cevabı "doğrular" (2026-11-04, EON lab-grown Double Shared Prong):** Not "14K 550$,
   taş takma 4$" diyordu; iki okuma (her şey dahil / taş ve takma ayrı) alıcı fiyatını $80–205 oynatıyordu.
@@ -2488,3 +2550,17 @@ repodaki hedefidir.
   tartışmayı bitirdi. Kural: indirim/zam önerisini yüzdeyle değil, (a) katkı
   marjına etkisi ve (b) başa-baş için gereken hacim çarpanıyla sun; marj
   hesabına Etsy ücretini VARSAYIMLA değil ledger'dan ölç (burada %11,7).
+- **Sipariş-başı bağ + aylık özet aynı parayı iki kez saymasın: bağlananı
+  özetten DÜŞ, büyük geri doldurmayı görünümde türet (2026-11):** Kargo
+  etiketlerini siparişe bağlarken (0174) aylık "Etsy kargo (YYYY-MM)" satırı
+  zaten aynı ledger kaydını topluyordu → `costs.external_key` ile bağlanan
+  kayıt aylık rebuild'den `not exists` ile çıkarıldı; sıra kritik (önce bağla,
+  sonra aylık). İkinci tuzak: 16k motor satırına `cost_kind` backfill UPDATE'i
+  audit trigger'ı yüzünden Kayıtlar'a 16k gürültü yazacaktı → backfill
+  yapılmadı, eski satırın türü görünümde kategoriden `coalesce` ile türetildi.
+  Etsy API'nin VERMEDİĞİ bağ (etiket↔sipariş; iade etiketi hiç) için üçlü
+  vekil: ShipStation order_number kesin eşleşme + ledger anı ↔ shipped_at
+  (±15 dk, tek aday) + elle bağlama UI'ı; sınır ekranda ilan edilir.
+  Doğrulama: migration yerel PG16'da (Supabase rol/şema stub'larıyla) sentetik
+  3 kalem × 2 sipariş üzerinde koşturuldu — elle işçilik otomatiği ezdi,
+  bağlanan etiket aylıktan düştü, tekrar koşumlar 0|0|0 döndü.

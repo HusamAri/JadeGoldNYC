@@ -130,7 +130,7 @@ export async function createReport(
   // ve kullanıcı tekrar oluşturup kopya üretebilir.
   revalidatePath("/raporlar");
   revalidatePath(`/raporlar/${reportId}`);
-  revalidatePath("/gorevler");
+  revalidatePath("/raporlar");
   return taskError ? { error: taskError, id: reportId } : { id: reportId };
 }
 
@@ -140,6 +140,6 @@ export async function deleteReport(id: string): Promise<{ error?: string }> {
   const { error } = await supabase.from("reports").delete().eq("id", id);
   if (error) return { error: error.message };
   revalidatePath("/raporlar");
-  revalidatePath("/gorevler");
+  revalidatePath("/raporlar");
   return {};
 }

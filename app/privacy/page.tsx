@@ -14,8 +14,6 @@ const UPDATED = "20 July 2026";
 export default function PrivacyPolicyPage() {
   return (
     <div className="bg-background text-foreground relative isolate min-h-svh">
-      <div aria-hidden className="holo-drift" />
-      <div aria-hidden className="lux-grain" />
 
       <header className="relative z-10 mx-auto flex w-full max-w-3xl items-center justify-between px-6 py-8">
         <Link href="/login" className="inline-flex items-center gap-3">
