@@ -12,27 +12,13 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
       type={type}
       data-slot="input"
       className={cn(
-        // NOT: `disabled:pointer-events-none` KALDIRILDI — aynı satırdaki
-        // `disabled:cursor-not-allowed`ı ölü koda çeviriyordu (imleç hiç
-        // değişmiyordu, alan sessizce "tepkisiz" oluyordu). Textarea zaten
-        // doğru davranıyordu; ikisi artık aynı dili konuşuyor.
-        "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground nm-pressed bg-background flex h-10 w-full min-w-0 rounded-full border border-[color:var(--hairline)] px-4 py-1 text-base transition-[color,background-color,box-shadow] duration-300 ease-[var(--ease-premium)] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-        // Hover: çukur KORUNUR (--shadow-pressed yerinde), yalnız kenara ince
-        // bir ışık halkası düşer + zemin bir tık koyulaşır — alan "yazılabilir"
-        // olduğunu söyler. Odak kuralı bundan sonra geldiği için odakta ezilir.
-        "hover:bg-accent/20 hover:shadow-[var(--shadow-pressed),inset_0_0_0_1px_color-mix(in_srgb,var(--ring)_18%,transparent)]",
-        "dark:hover:[background-color:oklch(0_0_0/0.45)] dark:hover:shadow-[var(--lume-pit),inset_0_0_0_1px_rgb(255_255_255/0.08)]",
-        // Koyu: lume çukur kuyu (Liquid_Dark .slider track birebir) —
-        // oklch(0 0 0/0.35) zemin + var(--lume-pit) iç gölge.
-        // `color-scheme: dark`: native widget'lar (date takvim ikonu, time
-        // spinner) koyu zeminde görünür kalır — siyah-üstüne-siyah olmaz.
-        "dark:[background-image:none] dark:[background-color:oklch(0_0_0/0.35)] dark:shadow-[var(--lume-pit)] dark:[color-scheme:dark]",
-        // Odak: çukur korunur + accent halka + köşeden çukura vuran holo ışık.
-        // Halka kalınlığı sistem diliyle hizalandı (--focus-ring / Button:
-        // 3px, ring/60) — panelde tek bir odak dili konuşulur.
-        "focus-visible:ring-ring/60 focus-visible:ring-[3px] focus-visible:shadow-[var(--shadow-pressed),inset_6px_-6px_14px_-4px_var(--pit-glow),inset_11px_-11px_28px_-10px_var(--pit-glow)]",
-        "dark:focus-visible:shadow-[var(--lume-pit),inset_6px_-6px_14px_-4px_var(--pit-glow)]",
-        "aria-invalid:ring-2 aria-invalid:ring-destructive/30",
+        // V7: düz alan — sis zemini, hairline kenar, 10px köşe; odakta asit
+        // mürekkep halka. Çukur/cam yok.
+        "file:text-foreground placeholder:text-muted-foreground selection:bg-neon selection:text-foreground bg-background flex h-10 w-full min-w-0 rounded-[10px] border border-[color:var(--hairline)] px-3.5 py-1 text-base transition-[border-color,box-shadow] duration-200 ease-[var(--ease-quiet)] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+        "hover:border-[color:var(--ink-2)]",
+        "focus-visible:border-[color:var(--neon-ink)] focus-visible:ring-[3px] focus-visible:ring-[color:var(--neon)]/40",
+        "dark:[color-scheme:dark]",
+        "aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/30",
         className,
       )}
       {...props}

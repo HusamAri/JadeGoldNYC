@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><title>Amuletta 3 yön</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,system-ui,sans-serif;font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased}
+.dir{width:1440px;height:960px;display:grid;grid-template-columns:232px 1fr;background:var(--bg);color:var(--ink);overflow:hidden;position:relative}
+.dir .side{padding:28px 22px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:28px}
+.brand{font-family:"Instrument Serif",serif;font-size:26px;letter-spacing:-.01em}
+.brand i{font-style:italic;color:var(--acc)}
+.grp{display:flex;flex-direction:column;gap:4px}
+.grp .k{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.grp .k::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--dot)}
+.nav{padding:9px 12px;border-radius:10px;color:var(--ink2);font-weight:500}
+.nav.on{background:var(--ink);color:var(--bg)}
+.main{padding:36px 48px 0 48px;display:flex;flex-direction:column;gap:28px;overflow:hidden}
+.top{display:flex;justify-content:space-between;align-items:flex-end}
+.eyebrow{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+h1{font-family:"Instrument Serif",serif;font-weight:400;font-size:52px;line-height:1;letter-spacing:-.02em;margin-top:8px}
+h1 i{font-style:italic;color:var(--acc)}
+.btns{display:flex;gap:10px}
+.btn{height:40px;padding:0 18px;border-radius:999px;display:inline-flex;align-items:center;font-weight:500;font-size:13px;border:1px solid var(--line);background:transparent;color:var(--ink)}
+.btn.p{background:var(--acc);color:var(--accfg);border-color:transparent;box-shadow:0 8px 20px -8px color-mix(in oklab,var(--acc) 60%,transparent)}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px 22px;min-height:124px;display:flex;flex-direction:column;justify-content:space-between}
+.tile .l{font-size:12px;color:var(--mute)}
+.tile .v{font-family:"Instrument Serif",serif;font-size:40px;line-height:1;letter-spacing:-.02em;margin-top:10px}
+.tile .d{font-family:"JetBrains Mono",monospace;font-size:11px;margin-top:6px}
+.tile.hero{background:var(--block);color:var(--blockfg);border-color:transparent}
+.tile.hero .l,.tile.hero .d{color:color-mix(in oklab,var(--blockfg) 70%,transparent)}
+.pos{color:var(--pos)} .neg{color:var(--neg)}
+.row{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;flex:1;min-height:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:14px}
+.card h3{font-size:15px;font-weight:600}
+.card .sub{font-size:12px;color:var(--mute);margin-top:-8px}
+.chart{flex:1;position:relative;min-height:180px}
+.chart svg{width:100%;height:100%}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);font-weight:500}
+th.r,td.r{text-align:right;font-variant-numeric:tabular-nums}
+td{padding:11px 6px;border-bottom:1px solid var(--line2)}
+td.r{font-family:"JetBrains Mono",monospace;font-size:12.5px}
+.pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:500;background:var(--pillbg);color:var(--pillfg)}
+.chip{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:6px 10px;border-radius:8px;background:var(--line2);color:var(--ink2)}
+.sw{position:absolute;right:48px;top:36px;display:flex;gap:6px}
+.sw span{width:22px;height:22px;border-radius:6px;border:1px solid rgba(0,0,0,.08)}
+.tag{position:absolute;left:48px;bottom:24px;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+/* soft (limited neumorph): only primary CTA and active KPI get soft dual shadow */
+.soft{box-shadow:-4px -4px 10px var(--nmhi),6px 6px 14px var(--nmlo)}
+
+/* A: Terracotta x Teal (complementary, warm paper) */
+#A{--bg:#F4EEE4;--card:#FBF7F1;--ink:#1C1A17;--ink2:#4A4540;--mute:#8A8279;--line:#DDD3C5;--line2:#EAE2D6;--acc:#D5603E;--accfg:#FFF7F2;--block:#17514F;--blockfg:#EAF4F2;--pos:#17514F;--neg:#B8432B;--dot:#D5603E;--pillbg:#E3EEEC;--pillfg:#17514F;--nmhi:#FFFFFF;--nmlo:#D8CDBD}
+/* B: Indigo x Saffron x Rose (triadic, porcelain) */
+#B{--bg:#F3F3F7;--card:#FFFFFF;--ink:#15172B;--ink2:#3E4160;--mute:#7F829B;--line:#DEDFEA;--line2:#EBECF3;--acc:#4C4FD9;--accfg:#F6F6FF;--block:#15172B;--blockfg:#F3F3F7;--pos:#2E8B57;--neg:#D9486F;--dot:#F0A500;--pillbg:#FFF2D6;--pillfg:#8A5B00;--nmhi:#FFFFFF;--nmlo:#D7D8E6}
+/* C: Graphite x Lime x Lilac (split-complementary, studio) */
+#C{--bg:#ECEBE6;--card:#F6F5F1;--ink:#202226;--ink2:#4C4F55;--mute:#85888E;--line:#D6D5CF;--line2:#E3E2DC;--acc:#B4E33A;--accfg:#1B1F10;--block:#202226;--blockfg:#F2F1EC;--pos:#4F8A2F;--neg:#C2503F;--dot:#B7A5F5;--pillbg:#E9E4FB;--pillfg:#4F3FB4;--nmhi:#FFFFFF;--nmlo:#CFCEC7}
+</style></head><body>
+<script>
+const dirs=[
+ {id:"A",name:"A · Terracotta × Teal",theory:"Tamamlayıcı (20° / 180°), sıcak kâğıt zemin",tone:"moss"},
+ {id:"B",name:"B · Indigo × Saffron × Rose",theory:"Üçlü (240° / 40° / 340°), porselen zemin",tone:"porcelain"},
+ {id:"C",name:"C · Graphite × Lime × Lilac",theory:"Bölünmüş tamamlayıcı (80° / 260° / 200°), stüdyo grisi",tone:"studio"},
+];
+for(const d of dirs){document.write(`
+<section class="dir" id="${d.id}">
+ <aside class="side">
+  <div class="brand">Amuletta<i>.</i></div>
+  <div class="grp"><div class="k">Satış & Kâr</div><div class="nav on">Satış & Maliyet</div><div class="nav">Satışlar</div><div class="nav">Maliyetler</div><div class="nav">Kâr Raporu</div></div>
+  <div class="grp"><div class="k" style="--dot:var(--block)">Etsy'ye Taslak</div><div class="nav">Listing Önerileri</div><div class="nav">Listeler</div></div>
+  <div class="grp"><div class="k" style="--dot:var(--pos)">Stok & Fiyat</div><div class="nav">Stok</div><div class="nav">Fiyat</div></div>
+  <div class="grp" style="margin-top:auto"><div class="nav" style="color:var(--mute)">Ayarlar</div></div>
+ </aside>
+ <main class="main">
+  <div class="top">
+   <div><div class="eyebrow">Satış & Kâr · Kasım 2026</div><h1>Satış & <i>Maliyet</i></h1></div>
+   <div class="btns"><span class="btn">CSV</span><span class="btn p soft">Etsy'den satışları çek</span></div>
+  </div>
+  <div class="tiles">
+   <div class="tile hero soft"><div class="l">Net kâr</div><div><div class="v">$520</div><div class="d">↑ 21% geçen ay</div></div></div>
+   <div class="tile"><div class="l">Net gelir</div><div><div class="v">$2.904</div><div class="d pos">↑ 12%</div></div></div>
+   <div class="tile"><div class="l">Altın maliyeti</div><div><div class="v">$1.507</div><div class="d neg">↓ 4%</div></div></div>
+   <div class="tile"><div class="l">Maliyeti eksik kalem</div><div><div class="v">11.581</div><div class="d">altın veya işçilik yok</div></div></div>
+  </div>
+  <div class="row">
+   <div class="card">
+    <h3>Satılan kalemler</h3><div class="sub">Son 14 gün · 4 kalem · sayılar sağda</div>
+    <div style="display:flex;gap:8px"><span class="chip">Kolonlar (10 gizli)</span><span class="chip">Maliyeti eksik · 3</span></div>
+    <table><thead><tr><th>Ürün</th><th>Tarih</th><th class="r">Net gelir</th><th class="r">Altın</th><th class="r">İşçilik</th><th class="r">Net kâr</th><th>Durum</th></tr></thead>
+    <tbody>
+     <tr><td>Heart Nugget Ring 14K</td><td style="color:var(--mute)">03 Kas</td><td class="r">$412.00</td><td class="r">$186.50</td><td class="r">$74.00</td><td class="r pos">$102.50</td><td><span class="pill">kargoda</span></td></tr>
+     <tr><td>Cuban Link Chain 10K</td><td style="color:var(--mute)">02 Kas</td><td class="r">$1,289.00</td><td class="r">$712.00</td><td class="r">$130.00</td><td class="r pos">$284.00</td><td><span class="pill">ödendi</span></td></tr>
+     <tr><td>Twin Seeds Band 18K</td><td style="color:var(--mute)">01 Kas</td><td class="r">$964.00</td><td class="r">$518.00</td><td class="r">$150.00</td><td class="r pos">$152.00</td><td><span class="pill">tamam</span></td></tr>
+     <tr><td>Evil Eye Pendant 14K</td><td style="color:var(--mute)">31 Eki</td><td class="r">$239.00</td><td class="r">$91.00</td><td class="r">$60.00</td><td class="r neg">−$18.00</td><td><span class="pill">iade</span></td></tr>
+    </tbody></table>
+   </div>
+   <div class="card">
+    <h3>Gelir ve maliyet</h3><div class="sub">Önceki dönem kesikli</div>
+    <div class="chart"><svg viewBox="0 0 400 200" preserveAspectRatio="none">
+     <defs><linearGradient id="g${d.id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--acc)" stop-opacity=".35"/><stop offset="1" stop-color="var(--acc)" stop-opacity="0"/></linearGradient></defs>
+     <path d="M0 150 C40 120 60 90 100 100 S160 60 200 70 S260 40 300 55 S360 30 400 40 L400 200 L0 200Z" fill="url(#g${d.id})"/>
+     <path d="M0 150 C40 120 60 90 100 100 S160 60 200 70 S260 40 300 55 S360 30 400 40" fill="none" stroke="var(--acc)" stroke-width="3" stroke-linecap="round"/>
+     <path d="M0 165 C50 150 80 140 120 130 S200 120 240 110 S320 95 400 90" fill="none" stroke="var(--block)" stroke-width="2" stroke-dasharray="6 6" opacity=".7"/>
+     <path d="M0 185 C60 180 120 178 180 170 S300 160 400 165" fill="none" stroke="var(--mute)" stroke-width="2" opacity=".6"/>
+    </svg></div>
+    <div style="display:flex;gap:18px;font-size:12px;color:var(--mute)"><span style="color:var(--acc)">● Gelir</span><span style="color:var(--block)">● Önceki dönem</span><span>● Maliyet</span></div>
+   </div>
+  </div>
+  <div class="sw"><span style="background:var(--bg)"></span><span style="background:var(--card)"></span><span style="background:var(--ink)"></span><span style="background:var(--acc)"></span><span style="background:var(--block)"></span><span style="background:var(--pos)"></span><span style="background:var(--neg)"></span><span style="background:var(--dot)"></span></div>
+  <div class="tag">${d.name} — ${d.theory}</div>
+ </main>
+</section>`)}
+</script>
+</body></html>

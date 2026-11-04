@@ -23,22 +23,12 @@ function Card({
       data-slot="card"
       data-interactive={interactive ? "true" : undefined}
       className={cn(
-        "text-card-foreground relative flex flex-col gap-7 rounded-[1.75rem] border py-7",
+        // V7: düz sis yüzeyi + hairline; gölge yok, cam yok. Derinlik yalnız
+        // göstergelerde (.bezel) yaşar; kart yalnız sınır çizer.
+        "text-card-foreground bg-card relative flex flex-col gap-6 rounded-[20px] border border-[color:var(--rule)] py-6",
         interactive
-          ? // • active:[transform:translateY(0)] — jg-tactile'ın basış
-            //   transform'undaki `scale(0.995)`i İPTAL eder: Card bir
-            //   backdrop-filter taşıyıcısıdır, bütçe backdrop-filter'lı öğenin
-            //   ölçeklenmesini yasaklar (bulanık zeminin yeniden üretilmesi).
-            //   Oturma hissini translateY zaten anlatıyor.
-            // • Odak halkası box-shadow değil OUTLINE: kartın shadow utility'si
-            //   (utilities katmanı) components-katmanı gölgelerini ezerdi →
-            //   halka hiç görünmezdi. Outline gölgeyle yarışmaz, radius'u
-            //   takip eder. focus-within kartın KENDİ odağını da kapsar.
-            "jg-tactile active:[transform:translateY(0)] focus-within:outline-2 focus-within:outline-offset-2 focus-within:[outline-color:color-mix(in_srgb,var(--ring)_70%,transparent)]"
-          : // Shadow settle — cam durur, yalnız ışık cevap verir.
-            "transition-[box-shadow,background-color] duration-300 ease-[var(--ease-quiet)]",
-        "[background-color:var(--glass)] [background-image:var(--glass-sheen)] [border-color:var(--glass-border)] [backdrop-filter:var(--glass-filter)] shadow-[var(--lift-natural),var(--glass-highlight)] hover:shadow-[var(--lift-natural-lg),var(--glass-highlight)]",
-        "dark:[background-color:var(--lume-panel)] dark:[background-image:none] dark:[backdrop-filter:none] dark:[border-color:oklch(1_0_0/0.05)] dark:shadow-[var(--lift-natural),inset_0_1px_0_oklch(1_0_0/0.06)] dark:hover:shadow-[var(--lift-natural-lg),inset_0_1px_0_oklch(1_0_0/0.06)]",
+          ? "jg-tactile cursor-pointer hover:border-[color:var(--hairline)] focus-within:outline-2 focus-within:outline-offset-2 focus-within:[outline-color:color-mix(in_srgb,var(--ring)_70%,transparent)]"
+          : "transition-[border-color] duration-300 ease-[var(--ease-quiet)]",
         className,
       )}
       {...props}
@@ -51,7 +41,7 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="card-header"
       className={cn(
-        "@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-7 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6",
+        "@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6",
         className,
       )}
       {...props}
@@ -63,7 +53,7 @@ function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-title"
-      className={cn("leading-none font-semibold tracking-tight", className)}
+      className={cn("h-serif text-[22px] leading-none", className)}
       {...props}
     />
   );
@@ -94,7 +84,7 @@ function CardAction({ className, ...props }: React.ComponentProps<"div">) {
 
 function CardContent({ className, ...props }: React.ComponentProps<"div">) {
   return (
-    <div data-slot="card-content" className={cn("px-7", className)} {...props} />
+    <div data-slot="card-content" className={cn("px-6", className)} {...props} />
   );
 }
 
@@ -102,7 +92,7 @@ function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-footer"
-      className={cn("flex items-center px-7 [.border-t]:pt-6", className)}
+      className={cn("flex items-center px-6 [.border-t]:pt-6", className)}
       {...props}
     />
   );

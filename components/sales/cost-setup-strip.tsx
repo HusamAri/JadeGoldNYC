@@ -1,4 +1,4 @@
-import { Check, CircleDashed } from "lucide-react";
+import { Check } from "lucide-react";
 
 import type { EtsySyncSummary } from "@/lib/etsy/sync";
 import { formatDateTime, formatNumber } from "@/lib/format";
@@ -13,7 +13,7 @@ function Step({
   hint,
   children,
 }: {
-  n: number;
+  n: string;
   title: string;
   done: boolean;
   hint: string;
@@ -22,36 +22,31 @@ function Step({
   return (
     <div
       className={cn(
-        "nm-pressed flex flex-col gap-3 rounded-[1.25rem] p-4",
-        done && "opacity-80",
+        "flex min-w-0 flex-col gap-3 border-l border-[color:var(--rule)] pl-5 first:border-l-0 first:pl-0",
+        done && "opacity-70",
       )}
     >
-      <div className="flex items-start gap-3">
+      <div className="flex items-baseline gap-3">
         <span
-          className={cn(
-            "mt-0.5 inline-flex size-7 shrink-0 items-center justify-center rounded-full font-mono text-xs font-semibold",
-            done
-              ? "bg-emerald-600/15 text-emerald-700 dark:text-emerald-400"
-              : "bg-[var(--brand)]/15 text-[var(--brand)]",
-          )}
+          className={cn("mono-label shrink-0", done ? "text-neon-ink" : "text-foreground")}
           aria-hidden
         >
-          {done ? <Check className="size-3.5" /> : n}
+          {done ? <Check className="inline size-3" /> : n}
         </span>
         <div className="min-w-0">
-          <p className="font-medium leading-tight">{title}</p>
-          <p className="text-muted-foreground mt-0.5 text-xs">{hint}</p>
+          <p className="h-serif text-[20px] leading-tight">{title}</p>
+          <p className="text-ink-2 mt-1 text-xs leading-relaxed">{hint}</p>
         </div>
       </div>
-      {children && <div className="pl-10">{children}</div>}
+      {children && <div className="pl-9">{children}</div>}
     </div>
   );
 }
 
 /**
- * Satış & Maliyet Takibi — üç adımlık kurulum şeridi. Kullanıcı Ayarlar'da
- * buton aramasın: Etsy çekimi, iade geri doldurma ve maliyet girişi AYNI
- * sayfada, sırayla, durumuyla birlikte durur.
+ * Satış & Maliyet — üç adımlık kurulum şeridi (V7: düz, hairline'lı sütunlar,
+ * mono adım numarası). Etsy çekimi, iade geri doldurma ve maliyet girişi AYNI
+ * sayfada, sırayla, durumuyla birlikte durur; hepsi tamamsa şerit gizlenir.
  */
 export function CostSetupStrip({
   connected,
@@ -78,17 +73,12 @@ export function CostSetupStrip({
   return (
     <section
       aria-label="Kurulum adımları"
-      className="glass-board rounded-[26px] p-4 sm:p-5"
+      className="border-b border-[color:var(--rule)] pb-6"
     >
-      <div className="mb-3 flex items-center gap-2">
-        <CircleDashed className="text-muted-foreground size-4" aria-hidden />
-        <p className="text-muted-foreground font-mono text-[10px] tracking-[0.14em] uppercase">
-          Üç adımda hazır
-        </p>
-      </div>
-      <div className="grid gap-3 lg:grid-cols-3">
+      <p className="mono-label mb-4">Üç adımda hazır</p>
+      <div className="grid gap-6 lg:grid-cols-3">
         <Step
-          n={1}
+          n="01"
           title="Etsy'den satışları çek"
           done={syncDone}
           hint={
@@ -102,7 +92,7 @@ export function CostSetupStrip({
           <EtsySyncButton disabled={!connected || !canRun} initialSummary={summary} />
         </Step>
         <Step
-          n={2}
+          n="02"
           title="Eski iadelerin tutarını çek"
           done={refundsDone}
           hint={
@@ -116,7 +106,7 @@ export function CostSetupStrip({
           )}
         </Step>
         <Step
-          n={3}
+          n="03"
           title="Altın ve işçiliği gir"
           done={costsDone}
           hint={

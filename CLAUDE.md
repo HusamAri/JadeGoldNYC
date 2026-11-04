@@ -50,12 +50,15 @@ Jade Gold NYC Etsy mağazası için uçtan uca yönetim/raporlama paneli. Tüm s
   iki kez gönderildi → 6 üretim, 12 kredi, 10'u fazladan.
 
 ## Notlar
-- **Amuletta 2.0 tema (2026-11-04):** panel üç iş (Satış & Kâr, Etsy'ye Taslak,
-  Stok & Fiyat) + Ayarlar'dır; silinen yüzeyler `docs/amuletta-2/inventory.md`de,
-  kurallar `docs/amuletta-2/plan.md`de. Renk token'ı eklerken yüzeyden
-  `oklch(from var(--surface) …)` ile türet ve `:root, [data-tone]` bloğuna yaz
-  (özel özellikler çözülmüş miras alınır; yalnız `:root`a yazılan türetilmiş
-  token bölüm tonunu izlemez). Mor/holo literal ekleme; durum rengi
+- **Amuletta 3.0 · V7 tema (2026-11-04):** panel üç iş (Satış & Kâr, Etsy'ye
+  Taslak, Stok & Fiyat) + Ayarlar; kurallar `docs/amuletta-2/plan.md` §5.
+  Palet: sis grisi zemin, mürekkep metin, TEK vurgu asit (`--neon`, metinde
+  `--neon-ink`), tozlu mavi yalnız `.gcard` dekor kartında. Yüzeyler düz ve
+  hairline'lı; cam yok; neumorph YALNIZ göstergelerde (`.bezel .screen .lcd
+  .fm .knob .seg`, `components/instruments`). Her bölüm aynı temada farklı
+  iskelet kullanır (defter / galeri / kumanda masası / düz liste). Yeni renk
+  token'ı `:root, [data-tone]` bloğuna yazılır (özel özellikler çözülmüş
+  miras alınır). Altın/yeşil/mor literal ekleme; durum rengi
   `--positive/--negative`. Next bu konteynerde çalışmaz: tema değişikliğini
   `node scripts/theme-lab/compile.mjs` + `shoot.mjs` ile derle ve ölç.
 - **Etsy yönetimi (her mağaza):** Etsy'ye dokunan her işte önce `docs/etsy-playbook/INDEX.md`

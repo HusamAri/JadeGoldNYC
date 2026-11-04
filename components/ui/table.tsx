@@ -82,7 +82,7 @@ function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
   return (
     <thead
       data-slot="table-header"
-      className={cn("[&_tr]:border-b [&_tr]:border-[color:var(--hairline)] [&_tr]:hover:bg-transparent", className)}
+      className={cn("[&_tr]:border-b [&_tr]:border-[color:var(--rule)] [&_tr]:hover:bg-transparent", className)}
       {...props}
     />
   );
@@ -123,18 +123,16 @@ function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
         "border-b transition-[color,background-color,box-shadow] duration-150 ease-[var(--ease-quiet)]",
         // Klavye eşitliği: satır içindeki bir öğe odaklandığında satır da
         // hover'daki gibi aydınlanır — fare kullanmayan aynı bilgiyi görür.
-        "hover:bg-accent/30 focus-within:bg-accent/30 data-[state=selected]:bg-accent/50",
-        "dark:hover:bg-white/[0.04] dark:focus-within:bg-white/[0.04] dark:data-[state=selected]:bg-white/[0.07]",
+        "border-[color:var(--rule-2)] hover:bg-accent/60 focus-within:bg-accent/60 data-[state=selected]:bg-accent",
         // Kontak gölgesi: satır zeminden 1px kopar (A kulvarı --row-contact).
         // NOT: preflight `border-collapse: collapse` uygularken bazı tarayıcılar
         // <tr> box-shadow'unu boyamaz — o durumda sessizce no-op'tur, asıl
         // geri bildirim zemin renginde yaşar.
-        "hover:shadow-[var(--row-contact)] focus-within:shadow-[var(--row-contact)]",
-        // Tıklanabilir satır (`data-clickable`): imleç + basma karşılığı.
+                // Tıklanabilir satır (`data-clickable`): imleç + basma karşılığı.
         // Satır ÖLÇEKLENMEZ/EĞİLMEZ — tabular hizayı ve tıklama hedefini
         // bozmamak için basış zemin koyulaşması + kontağın düzleşmesiyle
         // anlatılır (transform yok, layout yok).
-        "data-[clickable]:cursor-pointer data-[clickable]:active:bg-accent/55 data-[clickable]:active:shadow-none dark:data-[clickable]:active:bg-white/[0.09]",
+        "data-[clickable]:cursor-pointer data-[clickable]:active:bg-accent",
         className,
       )}
       {...props}
@@ -148,7 +146,7 @@ function TableHead({ className, ...props }: React.ComponentProps<"th">) {
       data-slot="table-head"
       className={cn(
         // Editorial başlık (.idx dili) — mono, uppercase, geniş letterspacing.
-        "text-muted-foreground h-10 px-2 text-left align-middle font-mono text-[11px] font-medium tracking-[0.16em] uppercase whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+        "text-muted-foreground h-10 px-2 text-left align-middle font-mono text-[10px] font-normal tracking-[0.12em] uppercase whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
         // Yapışkan başlık — YALNIZ kap `stickyHeader` ile açtığında (bkz. Table).
         // Opak `bg-card` şart: yarı saydam kalsa altından kayan satırlar
         // başlığın içinden geçerdi. Gölge yalnız içerik altına kaydığında
@@ -174,7 +172,7 @@ function TableCell({ className, ...props }: React.ComponentProps<"td">) {
         // (açıklama/yorum) tabloyu kartın dışına itiyordu; nowrap gereken
         // hücreler (tarih/tutar/işlem) kendi className'inde belirtir.
         "p-2 align-middle tabular-nums [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
-        "[&.text-right]:[font-family:var(--font-index)] [&.text-right]:text-[13px] dark:[&.text-right]:text-white dark:[&.text-right]:[text-shadow:0_0_14px_rgba(255,255,255,0.4)]",
+        "[&.text-right]:[font-family:var(--font-index)] [&.text-right]:text-[12.5px]",
         className,
       )}
       {...props}

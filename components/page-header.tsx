@@ -1,79 +1,88 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
-import { BrandTile } from "@/components/brand/brand-tile";
-import { OrgEmblemMini } from "@/components/brand/org-emblem";
 
+/**
+ * V7 editoryal başlık: kicker (asit nokta + mono etiket), Fraunces 300 H1
+ * (son kelime italik), lede, sağda aksiyonlar; altta mürekkep çizgisi.
+ * `kicker` verilmezse eyebrow/başlık kullanılır. `meta` kicker'ın devamına
+ * yazılır (ör. "veri 04.11 11:42'ye kadar").
+ */
 export function PageHeader({
   title,
   description,
   action,
-  image,
   eyebrow,
+  meta,
+  secondary,
   className,
+  size = "lg",
 }: {
   title: string;
   description?: string;
+  /** Birincil aksiyon(lar) — sağ üst, CTA hap. */
   action?: React.ReactNode;
-  /** Bölüm başına marka fotoğrafı şeridi (opsiyonel, estetik). */
-  image?: string;
-  /** Şerit üzerindeki küçük altın etiket (verilmezse başlık kullanılır). */
+  /** Kicker metni (bölüm adı). */
   eyebrow?: string;
+  /** Kicker'a eklenen tazelik/bağlam notu. */
+  meta?: string;
+  /** CTA'nın altında mono hayalet linkler. */
+  secondary?: React.ReactNode;
   className?: string;
+  /** lg = sayfa başı (72px), md = alt sayfa (44px). */
+  size?: "lg" | "md";
+  /** Geriye uyum — V7'de görsel şerit kullanılmaz. */
+  image?: string;
 }) {
-  // Görsel <em> vurgusu — DOM metni AYNEN kalır; yalnız son kelime italik
-  // serif mürekkebe sarılır (ref: Spatial .section-h h2 em / Lume .lsec h2 em).
   const words = title.trim().split(" ");
   const last = words[words.length - 1];
   const head = words.slice(0, -1).join(" ");
 
   return (
-    <div className={cn("mb-8 space-y-5 md:mb-10", className)}>
-      {image && (
-        <BrandTile
-          src={image}
-          rounded={false}
-          scrim
-          className="h-24 rounded-[1.5rem] shadow-[var(--shadow-raised)] md:h-28"
-        >
-          <div className="relative flex h-full items-end p-5">
-            <span className="font-mono text-[11px] font-medium tracking-[0.28em] text-[oklch(0.87_0.09_85)] uppercase">
-              {eyebrow ?? title}
-            </span>
-          </div>
-        </BrandTile>
+    <header
+      className={cn(
+        "grid gap-6 border-b border-[color:var(--foreground)] pb-5 md:grid-cols-[1fr_auto] md:items-end",
+        className,
       )}
-      {/* Editorial index satırı — bölüm adı + kısa primary vurgu + uzayan
-          ince hairline (ref: .lsec .lhead — k + bar 34px + ln flex:1). */}
-      <div aria-hidden className="idx">
-        <span>{eyebrow ?? title}</span>
-        <span className="idx-bar" />
-        <span className="idx-ln" />
-        {/* Panel başı imzası — aktif org'un mini amblemi (editorial kuyruk). */}
-        <OrgEmblemMini />
+    >
+      <div className="min-w-0">
+        <div className="flex items-center gap-3.5">
+          <span aria-hidden className="bg-neon size-[7px] rounded-full" />
+          <span className="mono-label">
+            {eyebrow ?? title}
+            {meta ? ` · ${meta}` : ""}
+          </span>
+        </div>
+        <h1
+          className={cn(
+            "h-display mt-3.5 text-balance",
+            size === "lg"
+              ? "text-[44px] sm:text-[56px] lg:text-[72px]"
+              : "text-[32px] sm:text-[40px] lg:text-[44px]",
+          )}
+        >
+          {head ? (
+            <>
+              {head} <em>{last}</em>
+            </>
+          ) : (
+            title
+          )}
+        </h1>
+        {description && (
+          <p className="text-ink-2 mt-3.5 max-w-[48ch] text-sm leading-relaxed">
+            {description}
+          </p>
+        )}
       </div>
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="space-y-1">
-          {/* Kahraman başlık — SANS bold gövde + SERİF İTALİK vurgu (son kelime);
-              büyük & kalın (ref: Liquid Dark). Koyuda display-emboss ile yüzeyden
-              kabarır, em luminous periwinkle'a döner. */}
-          <h2 className="h-display display-emboss text-4xl md:text-5xl">
-            {head ? (
-              <>
-                {head} <em>{last}</em>
-              </>
-            ) : (
-              title
-            )}
-          </h2>
-          {description && (
-            <p className="text-engraved text-muted-foreground max-w-[60ch] text-sm">
-              {description}
-            </p>
+      {(action || secondary) && (
+        <div className="flex flex-col items-start gap-2.5 md:items-end">
+          {action && <div className="flex flex-wrap items-center gap-2">{action}</div>}
+          {secondary && (
+            <div className="mono-label flex flex-wrap items-center gap-x-2">{secondary}</div>
           )}
         </div>
-        {action && <div className="flex flex-wrap items-center gap-2">{action}</div>}
-      </div>
-    </div>
+      )}
+    </header>
   );
 }
