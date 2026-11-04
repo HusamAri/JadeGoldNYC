@@ -2483,3 +2483,17 @@ repodaki hedefidir.
   tartışmayı bitirdi. Kural: indirim/zam önerisini yüzdeyle değil, (a) katkı
   marjına etkisi ve (b) başa-baş için gereken hacim çarpanıyla sun; marj
   hesabına Etsy ücretini VARSAYIMLA değil ledger'dan ölç (burada %11,7).
+- **Sipariş-başı bağ + aylık özet aynı parayı iki kez saymasın: bağlananı
+  özetten DÜŞ, büyük geri doldurmayı görünümde türet (2026-11):** Kargo
+  etiketlerini siparişe bağlarken (0138) aylık "Etsy kargo (YYYY-MM)" satırı
+  zaten aynı ledger kaydını topluyordu → `costs.external_key` ile bağlanan
+  kayıt aylık rebuild'den `not exists` ile çıkarıldı; sıra kritik (önce bağla,
+  sonra aylık). İkinci tuzak: 16k motor satırına `cost_kind` backfill UPDATE'i
+  audit trigger'ı yüzünden Kayıtlar'a 16k gürültü yazacaktı → backfill
+  yapılmadı, eski satırın türü görünümde kategoriden `coalesce` ile türetildi.
+  Etsy API'nin VERMEDİĞİ bağ (etiket↔sipariş; iade etiketi hiç) için üçlü
+  vekil: ShipStation order_number kesin eşleşme + ledger anı ↔ shipped_at
+  (±15 dk, tek aday) + elle bağlama UI'ı; sınır ekranda ilan edilir.
+  Doğrulama: migration yerel PG16'da (Supabase rol/şema stub'larıyla) sentetik
+  3 kalem × 2 sipariş üzerinde koşturuldu — elle işçilik otomatiği ezdi,
+  bağlanan etiket aylıktan düştü, tekrar koşumlar 0|0|0 döndü.
