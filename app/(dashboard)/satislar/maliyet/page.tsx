@@ -23,9 +23,15 @@ import { FilterSelect } from "@/components/data-table/filter-select";
 import { Pagination } from "@/components/data-table/pagination";
 import { PeriodSelector } from "@/components/period-selector";
 import { SaleCostGrid } from "@/components/sales/sale-cost-grid";
-import { RefundRefreshButton } from "@/components/sales/refund-refresh-button";
+import { CostSetupStrip } from "@/components/sales/cost-setup-strip";
+import { getEtsyStatus } from "@/lib/db/queries/etsy";
+import { getLastSyncSummary } from "@/lib/etsy/sync";
 
 export const metadata = { title: "Satış & Maliyet Takibi" };
+
+// Etsy çekimi (EtsySyncButton) server action'ı bu rota üzerinden koşar;
+// ayarlar/etsy ile aynı gerekçeyle fonksiyon süresi uzatılır.
+export const maxDuration = 60;
 
 function Stat({
   label,
@@ -92,11 +98,14 @@ export default async function SatisMaliyetPage({
     to: periodKey === "all" ? undefined : period.toIso,
   };
 
-  const [{ rows, count }, totalsByCur, backlog] = await Promise.all([
-    listSaleItemPnl(m.org_id, { ...opts, limit, offset }),
-    getSaleItemPnlTotals(m.org_id, opts),
-    countRefundBacklog(m.org_id),
-  ]);
+  const [{ rows, count }, totalsByCur, backlog, etsyStatus, syncSummary] =
+    await Promise.all([
+      listSaleItemPnl(m.org_id, { ...opts, limit, offset }),
+      getSaleItemPnlTotals(m.org_id, opts),
+      countRefundBacklog(m.org_id),
+      getEtsyStatus(m.org_id),
+      getLastSyncSummary(m.org_id),
+    ]);
   const primary = totalsByCur[0];
   const filtered = Boolean(search || status || opts.flag || periodKey !== "all");
 
@@ -111,7 +120,7 @@ export default async function SatisMaliyetPage({
       <PageHeader
         title="Satış & Maliyet Takibi"
         eyebrow="Satışlar"
-        description="Her satılan kalemde gelir, iade, Etsy ücreti, kargo/iade etiketi ve altın · işçilik · taş · paket maliyeti tek satırda. Vergi gelir sayılmaz."
+        description="Excel'in panel hâli: her satılan kalem tek satırda, maliyetini hücreye yaz, net kârı anında gör."
         action={
           <>
             <Button asChild variant="outline">
@@ -120,7 +129,6 @@ export default async function SatisMaliyetPage({
                 Satışlar
               </Link>
             </Button>
-            <RefundRefreshButton backlog={backlog} canRun={canEdit} />
             <Button asChild variant="outline">
               <a href={`/satislar/maliyet/export?${exportQs.toString()}`}>
                 <Download />
@@ -129,6 +137,17 @@ export default async function SatisMaliyetPage({
             </Button>
           </>
         }
+      />
+
+      {/* Üç adımlık kurulum şeridi: Etsy çekimi, iade geri doldurma ve maliyet
+          girişi AYNI sayfada; hepsi tamamsa şerit kendini gizler. */}
+      <CostSetupStrip
+        connected={etsyStatus.status === "connected"}
+        summary={syncSummary}
+        refundBacklog={backlog}
+        incompleteItems={primary?.totals.incomplete_items ?? 0}
+        totalItems={primary?.totals.items ?? 0}
+        canRun={canEdit}
       />
 
       <div aria-hidden className="idx sm:-mb-4">
