@@ -1,0 +1,174 @@
+{
+  "sourcePackage": "2026-11-04-eon-lab-grown-dsp",
+  "productSku": "EON-DSP",
+  "productType": "ring",
+  "listingProtocol": "diamond_band",
+  "referenceUrl": "https://brillianceindiamonds.com/products/lab-grown-double-shared-prong-diamond-band",
+  "title": "14K Gold Lab Grown Diamond Wedding Band, Double Shared Prong, Half Eternity, 2.75mm",
+  "description": "A slim 14K gold band set with a row of lab grown diamonds in double shared prongs. Each stone sits between two pairs of prongs, so more of it is open to the light and the row reads as one continuous line of brightness. The stones run around the top half of the ring; the back is plain polished gold, comfortable against the finger and easy to resize.\n\nYOUR RING\nSolid 14K gold in yellow, white or rose. 13 round lab grown diamonds, about 2.4 mm each, approximately 0.78 carats in total. Band width about 2.75 mm, height about 2.5 mm, comfort-fit interior. The price is for one ring in your selected metal color and size; the lab grown diamonds are included.\n\nCHOOSE YOUR OPTIONS\n1. Metal Color: Yellow Gold, White Gold or Rose Gold.\n2. Ring Size: US 4 to US 10, including half sizes. One price for every size.\n\nABOUT THE LAB GROWN DIAMONDS\nLaboratory-grown diamonds are grown above ground and have the same crystal structure, hardness and brilliance as mined diamonds; they are not simulants. Each stone in this band is a round brilliant cut, matched for size and brightness.\n\nSIZING AND RESIZING\nMade to order in your size. Because the stones cover only the top half of the band, a jeweler can usually resize the ring within about one size; a full-eternity style cannot be resized. If you are unsure of your size, contact EON before ordering.\n\nMADE FOR YOU\nMade to order from raw precious-metal materials. The preparation time before dispatch is shown in the shipping details of this listing; transit time is separate.\n\nCARE\nClean gently with mild soap, lukewarm water and a soft brush around the prongs, then pat dry. Avoid harsh chemicals and abrasive cleaners. Remove the ring before heavy work or sport; prongs can catch, and a jeweler should check them every year or two.",
+  "tags": [
+    "lab grown diamond",
+    "lab created diamond",
+    "lab grown band",
+    "lab grown ring",
+    "lab grown eternity",
+    "half eternity band",
+    "shared prong band",
+    "14k gold band",
+    "white gold band",
+    "rose gold band",
+    "yellow gold band",
+    "eternity ring",
+    "stackable gold band"
+  ],
+  "materials": [
+    "Solid 14K yellow gold",
+    "Solid 14K white gold",
+    "Solid 14K rose gold",
+    "Lab grown diamond"
+  ],
+  "variationAxes": [
+    "Metal Color",
+    "Ring Size"
+  ],
+  "colors": [
+    [
+      "YG",
+      "Yellow Gold"
+    ],
+    [
+      "WG",
+      "White Gold"
+    ],
+    [
+      "RG",
+      "Rose Gold"
+    ]
+  ],
+  "sizes": {
+    "from": 4,
+    "to": 10,
+    "step": 0.5
+  },
+  "band": {
+    "widthMm": 2.75,
+    "heightMm": 2.5,
+    "karat": "14K"
+  },
+  "stone": {
+    "origin": "lab",
+    "shape": "round",
+    "count": 13,
+    "stoneMm": 2.4,
+    "totalCarat": 0.78,
+    "colorClarity": null,
+    "settingFeeCents": 400,
+    "castingFeeCents": 0,
+    "stoneCostCentsEstimate": 8000,
+    "stoneCostNote": "Inside the maker's all-in $550 quote, not itemised; ~$6/stone estimate for the panel cost view."
+  },
+  "priceCents": 120000,
+  "quantityPerVariant": 20,
+  "pricing": {
+    "makerQuoteUsd": 550,
+    "makerQuoteCovers": "14K gold + labor + 13 stones + setting, US 7, one price intended for all sizes (independent model $529; maker's 2.75x2.5 mm band formula 5.48 g x $100/g = $548)",
+    "packagingUsd": 8,
+    "shippingUsd": 22,
+    "landedUsd": 580,
+    "multiplier": 1.55,
+    "engineUsd": 899,
+    "storePromotionRate": 0.25,
+    "listUsd": 1200,
+    "buyerUsd": 900,
+    "competitorUsd": 945,
+    "floorUsd": 649,
+    "offsiteFloorUsd": 779,
+    "modeledProfitWorstOffsiteUsd": 134,
+    "onePriceAllSizes": true,
+    "spotUsdPerOzt": 4065.8,
+    "spotDate": "2026-11-04",
+    "methodology": "docs/eon/lab-grown/price_model.py; formula lib/pricing-engine/eon-cost.ts 457-472"
+  },
+  "approval": {
+    "authority": "Owner 2026-11-04: list $1,200 -> 25% showcase -> $900; v1 = 14K, 3 colours, half-around (13 stones), US 4-10, one price for every size. Panel draft only; Etsy push waits for a real photo.",
+    "panelDraftAuthorized": true,
+    "etsyDraftCreationAuthorized": false,
+    "livePublicationAuthorized": false,
+    "blockers": [
+      "No images: Etsy (2026-10-22) requires at least one unedited photo of the physical piece; the maker has not made or photographed a sample",
+      "Maker to confirm: $550 holds for US 4-10 at one price; stone colour/clarity grade; whether white gold is rhodium plated; preparation time",
+      "No shop section for lab grown pieces yet (owner creates it in Etsy before the push)",
+      "Spanish translation not written"
+    ]
+  },
+  "draftTransferHold": {
+    "status": "hold",
+    "route": "manual",
+    "reason": "real product photo required before any Etsy draft (playbook 01/04); remove the hold when the gallery exists",
+    "heldAt": "2026-11-04"
+  },
+  "gallery": {
+    "publicDir": "public/eon/lab-grown-dsp",
+    "urlBase": "https://amuletta.artifactstudio.info/eon/lab-grown-dsp",
+    "source": "owner upload 2026-11-04 (EON-Etsy-10-images.zip, 10 x PNG 1448x1086), converted to JPEG q92 with metadata stripped",
+    "status": "AI visualization; Etsy activation needs at least one unedited real photo (draft push allowed)",
+    "qa": "10/10 reviewed on a contact sheet and 3 zoomed crops: spec frames 2.50 mm / 2.75 mm match the listing, cover text-free, hands plausible (thumb hidden in 03), prongs paired, caption 'LAB-GROWN DIAMONDS' qualified. Finding: the face-on frame (04) shows 11 stones, spec is 13. All frames are yellow gold; no white/rose frame. No public AI statement (owner rule 2026-10-27/31, assertPublicText).",
+    "images": [
+      [
+        "01-cover.jpg",
+        "Yellow gold half eternity band with a row of round lab grown diamonds in double shared prongs, lying on brushed metal"
+      ],
+      [
+        "02-double-shared-prongs.jpg",
+        "Macro of three round lab grown diamonds held by paired ball-tip shared prongs on the yellow gold band"
+      ],
+      [
+        "03-on-hand-scale.jpg",
+        "Yellow gold lab grown diamond band worn on the ring finger, hand resting on a brushed metal surface"
+      ],
+      [
+        "04-half-eternity.jpg",
+        "The yellow gold band standing upright, seen face on: stones along the top half, plain polished lower half; half-eternity design"
+      ],
+      [
+        "05-side-profile.jpg",
+        "Side profile of the yellow gold band with the 2.50 mm height marked"
+      ],
+      [
+        "06-diamond-row.jpg",
+        "Yellow gold band leaning on a brushed metal block, the row of round lab grown diamonds facing forward"
+      ],
+      [
+        "07-handheld-detail.jpg",
+        "Yellow gold lab grown diamond band held between two fingertips, the row of stones facing the camera"
+      ],
+      [
+        "08-polished-gold.jpg",
+        "Polished yellow gold back of the band with the stones on the far side, standing against draped fabric"
+      ],
+      [
+        "09-round-brilliant.jpg",
+        "Macro of round brilliant lab grown diamonds in the yellow gold band, captioned round brilliant, lab-grown diamonds"
+      ],
+      [
+        "10-band-width.jpg",
+        "Yellow gold band standing upright with the 2.75 mm width marked"
+      ]
+    ]
+  },
+  "galleryUpdate": {
+    "blockers": [
+      "Gallery is AI visualization: Etsy activation needs at least one unedited photo of the physical piece (draft push allowed)",
+      "Face-on frame (04) shows 11 stones, spec is 13: regenerate before the push or accept",
+      "Maker to confirm: $550 holds for US 4-10 at one price; stone colour/clarity grade; whether white gold is rhodium plated; preparation time",
+      "No shop section for lab grown pieces yet (owner creates it in Etsy before the push)",
+      "Spanish translation not written"
+    ],
+    "draftTransfer": {
+      "status": "hold",
+      "route": "manual",
+      "reason": "gallery attached 2026-11-04; waiting for the owner's go for the Etsy draft push (prod must serve public/eon/lab-grown-dsp and the diamond_band protocol); activation needs a real photo",
+      "heldAt": "2026-11-04"
+    }
+  }
+}
