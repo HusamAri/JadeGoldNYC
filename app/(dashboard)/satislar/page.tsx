@@ -23,9 +23,6 @@ import { formatMoney } from "@/lib/money";
 import { formatDate, formatNumber } from "@/lib/format";
 import { OrgMark } from "@/components/brand/org-mark";
 import { PageHeader } from "@/components/page-header";
-import { GoldStream } from "@/components/brand/gold-stream";
-import { CornerMarks } from "@/components/brand/corner-marks";
-import { SceneCutouts } from "@/components/scene-cutouts";
 import { EmptyState } from "@/components/empty-state";
 import { KpiCard } from "@/components/kpi-card";
 import {
@@ -165,8 +162,6 @@ export default async function SatislarPage({
 
   return (
     <div className="page-stack relative z-0 pb-32">
-      <SceneCutouts page="satislar" />
-      <GoldStream motif="gift" />
       <PageHeader
         title="Satışlar"
         description={`Manuel, CSV ve ${platform.label} siparişleri`}
@@ -266,7 +261,6 @@ export default async function SatislarPage({
             icon={Users}
           />
         </div>
-        <CornerMarks />
         </div>
 
         {analytics.monthly.length > 0 && (

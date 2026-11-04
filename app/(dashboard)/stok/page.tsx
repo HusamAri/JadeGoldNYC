@@ -8,7 +8,6 @@ import { listStockProducts, type StockProduct } from "@/lib/db/queries/stock";
 import { getEtsyWriteAccess } from "@/lib/db/queries/etsy";
 import { formatNumber } from "@/lib/format";
 import { PageHeader } from "@/components/page-header";
-import { SceneCutouts } from "@/components/scene-cutouts";
 import { EmptyState } from "@/components/empty-state";
 import { StockQuantityInput } from "@/components/stock-quantity-input";
 import { StockSyncPanel } from "@/components/stock-sync-panel";
@@ -79,7 +78,6 @@ export default async function StokPage() {
 
   return (
     <div className="page-stack relative z-0 pb-32">
-      <SceneCutouts page="stok" />
       <PageHeader
         title="Stok Senkronizasyonu"
         description={`Her ürün için elde/hedef adedi girin; hazır olunca tek tuşla ${platform.label} ile çift yönlü eşitleyin.`}

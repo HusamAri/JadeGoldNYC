@@ -35,8 +35,6 @@ import type { ListingIndexRow } from "@/lib/db/queries/listings";
 import { OrgMark } from "@/components/brand/org-mark";
 import { PageHeader } from "@/components/page-header";
 import { PushAllSeoButton } from "@/components/listing/push-all-seo-button";
-import { GoldStream } from "@/components/brand/gold-stream";
-import { CornerMarks } from "@/components/brand/corner-marks";
 import { EmptyState } from "@/components/empty-state";
 import { KpiCard } from "@/components/kpi-card";
 import { Button } from "@/components/ui/button";
@@ -177,7 +175,6 @@ export default async function ListelerPage({
 
   return (
     <div className="page-stack relative z-0 pb-32">
-      <GoldStream motif="ring" />
       <PageHeader
         title="Listeler"
         description={`${platform.label}'deki listing'lerin aynası — detaylar listing sayfasında; taslaklar ve arşiv Listing Önerileri'nde.`}
@@ -247,7 +244,6 @@ export default async function ListelerPage({
               hint="Araştırma kelimesi girilmemiş"
             />
           </div>
-          <CornerMarks />
         </div>
       </section>
 

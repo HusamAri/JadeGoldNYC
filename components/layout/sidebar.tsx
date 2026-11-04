@@ -53,7 +53,7 @@ export function Sidebar({
   return (
     /* Koyuda zeminden (#14161e) bir tık derin, lume panellerden koyu
        #1b1d27 panel — kartlar öne, nav geriye çekilir (Lume derinlik dili). */
-    <aside className="bg-sidebar text-sidebar-foreground sticky top-0 hidden h-svh w-64 shrink-0 flex-col md:flex dark:border-r dark:border-[color:oklch(1_0_0/0.05)] dark:bg-[#1b1d27]">
+    <aside className="bg-sidebar text-sidebar-foreground sticky top-0 hidden h-svh w-64 shrink-0 flex-col md:flex border-r border-[color:var(--border)]">
       {/* Uygulama markası — Amuletta (serif italik, editorial) */}
       <div className="flex h-14 items-center px-5">
         <span className="text-foreground text-xl leading-none font-medium tracking-tight [font-family:var(--font-display)]">
@@ -89,7 +89,7 @@ export function Sidebar({
              içine oyulmuş lume çukuruna döner (--lume-pit). */
           <div
             key={group.label}
-            className="nm-pressed space-y-1 overflow-clip rounded-2xl p-1.5 dark:bg-[#171922] dark:[background-image:none] dark:[box-shadow:var(--lume-pit)]"
+            className="nm-pressed space-y-1 overflow-clip rounded-2xl p-1.5"
           >
             <p className="px-2.5 pt-1.5 pb-1 text-[0.64rem] font-bold tracking-[0.18em] text-[color:var(--sidebar-label)] uppercase select-none">
               {group.label}
@@ -133,7 +133,7 @@ export function Sidebar({
                   {active && (
                     <span
                       aria-hidden
-                      className="pointer-events-none absolute -inset-x-1 -inset-y-1.5 -z-10 rounded-2xl blur-[7px] [background-image:radial-gradient(62%_58%_at_50%_32%,oklch(0.72_0.13_280/0.38),oklch(0.72_0.13_280/0.10)_55%,transparent_75%)]"
+                      className="pointer-events-none absolute -inset-x-1 -inset-y-1.5 -z-10 rounded-2xl blur-[7px] [background-image:radial-gradient(62%_58%_at_50%_32%,oklch(0.74_0.14_85/0.34),oklch(0.74_0.14_85/0.10)_55%,transparent_75%)]"
                     />
                   )}
                   <Icon

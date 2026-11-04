@@ -12,7 +12,6 @@ import {
   Gem,
   Hammer,
 } from "@/components/icons/lux-art";
-import { SceneCutouts } from "@/components/scene-cutouts";
 // Satır içi (küçük, tek renk) kullanımlar için ince-çizgi SVG sürümleri —
 // currentColor'a saygı duyar (cutout PNG'ler yalnız KPI filigranında).
 import { Users as UsersLine } from "@/components/icons/lux";
@@ -30,15 +29,10 @@ import { formatNumber, formatDateTime } from "@/lib/format";
 import { auditSummary } from "@/lib/audit-format";
 import { OrgMark } from "@/components/brand/org-mark";
 import { PageHeader } from "@/components/page-header";
-import { GoldStream } from "@/components/brand/gold-stream";
-import { CornerMarks } from "@/components/brand/corner-marks";
-import { EditorialCard } from "@/components/brand/editorial-card";
 import { KpiCard } from "@/components/kpi-card";
 import { AlertCenterCard } from "@/components/alert-center";
 import {
-  SleepingBoxes,
   SleepingNote,
-  type SleepingBox,
 } from "@/components/sleeping-boxes";
 import { AlertResolutionTracker } from "@/components/panel/alert-resolution-tracker";
 import { MarketPriceAlertsCard } from "@/components/market-price-alerts-card";
@@ -180,43 +174,8 @@ export default async function PanelPage({
   const hasChannels = d.channelBreakdown.length > 0;
   const showActivitySection =
     hasTopProducts || hasRecent || hasCustomers || hasChannels;
-  const sleeping: SleepingBox[] = [];
-  if (!showCostSection)
-    sleeping.push({ name: "Maliyet Yapısı", hint: "maliyet kaydı girilince" });
-  else if (!hasGold)
-    sleeping.push({
-      name: "Altın Maliyet Metrikleri",
-      hint: "altın maliyeti kaydı girilince",
-    });
-  if (!showActivitySection)
-    sleeping.push({
-      name: "Ürünler & Etkinlik",
-      hint: "ilk satış/kayıt düşünce",
-    });
-  else {
-    if (!hasTopProducts)
-      sleeping.push({
-        name: "En Çok Satan Ürünler",
-        hint: "bu dönemde satış olunca",
-      });
-    if (!hasRecent)
-      sleeping.push({ name: "Son Etkinlikler", hint: "ilk kayıt düşünce" });
-    if (!hasCustomers)
-      sleeping.push({
-        name: "En İyi Müşteriler",
-        hint: "müşteri verisi gelince",
-      });
-    if (!hasChannels)
-      sleeping.push({
-        name: "Satış Kanalları",
-        hint: "bu dönemde satış olunca",
-      });
-  }
-
   return (
     <div className="page-stack relative z-0 pb-32">
-      <SceneCutouts page="panel" />
-      <GoldStream motif="necklace" />
       <PageHeader
         title="Panel"
         description={`Genel bakış · ${period.label}`}
@@ -365,7 +324,6 @@ export default async function PanelPage({
           />
         </div>
       </div>
-      <CornerMarks />
       </div>
 
       {/* ══ SİPARİŞLER ══ */}
@@ -661,19 +619,6 @@ export default async function PanelPage({
         </>
       )}
 
-      {/* Editorial marka şeridi — veri önce gelsin diye Panel 2.0'da en altta */}
-      <EditorialCard
-        compact
-        heightClassName="h-[240px]"
-        image="/brand/gallery/koyu-franco.webp"
-        video="/brand/video/altin-zincir-orbit.mp4"
-        eyebrow="Jade Gold · New York"
-        title="Sessiz lüks, kalıcı değer"
-        subtitle="Som altın, el işçiliği — her parça bir miras."
-      />
-
-      {/* Uyuyan kutular — verisi olmadığı için bu sayfada gizlenen bölümler. */}
-      <SleepingBoxes items={sleeping} />
     </div>
   );
 }

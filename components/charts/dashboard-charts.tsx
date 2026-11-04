@@ -26,40 +26,42 @@ import { useChartAnimation } from "@/lib/motion";
  * Her grafiğin kök sarmalayıcısına uygulanır; SVG defs bu değişkenleri okur.
  */
 export const CHART_INK = [
-  // — mürekkep ailesi (kategori/seri renkleri) —
-  "[--jg-ink-1:oklch(0.54_0.20_278)] dark:[--jg-ink-1:oklch(0.72_0.14_262)]",
-  "[--jg-ink-2:oklch(0.66_0.20_285)] dark:[--jg-ink-2:oklch(0.78_0.12_278)]",
-  "[--jg-ink-3:oklch(0.68_0.15_286)] dark:[--jg-ink-3:oklch(0.70_0.10_290)]",
-  "[--jg-ink-4:oklch(0.83_0.07_290)] dark:[--jg-ink-4:oklch(0.86_0.05_262)]",
-  "[--jg-ink-neg:oklch(0.58_0.16_344)] dark:[--jg-ink-neg:oklch(0.70_0.13_344)]",
-  // — çizgi izi (Spatial: mor yoğunlaşan; Lume: lineTrail beyaz, kuyruk söner) —
-  "[--jg-trail-0:oklch(0.54_0.20_278/.28)] dark:[--jg-trail-0:rgb(255_255_255/0)]",
-  "[--jg-trail-1:oklch(0.60_0.20_281/.75)] dark:[--jg-trail-1:rgb(203_210_255/.45)]",
-  "[--jg-trail-2:oklch(0.66_0.20_285)] dark:[--jg-trail-2:#ffffff]",
-  // — alan dolgusu (Lume: #c9cde6 .36→0 dikey fade) —
-  "[--jg-area-c:oklch(0.66_0.20_285/.34)] dark:[--jg-area-c:rgb(201_205_230/.36)]",
-  "[--jg-area-c0:oklch(0.66_0.20_285/0)] dark:[--jg-area-c0:rgb(201_205_230/0)]",
-  // — çizgi ışıması (yalnız koyuda; açıkta glow sadece uç noktada) —
-  "[--jg-lglow-a:transparent] dark:[--jg-lglow-a:rgb(205_214_255/.7)]",
-  "[--jg-lglow-b:transparent] dark:[--jg-lglow-b:rgb(150_160_255/.35)]",
-  // — uç nokta (Spatial sparkDot: beyaz + mor stroke; Lume ldot: 262 + beyaz stroke) —
-  "[--jg-dot-f:#ffffff] dark:[--jg-dot-f:oklch(0.72_0.14_262)]",
-  "[--jg-dot-s:oklch(0.60_0.20_278)] dark:[--jg-dot-s:oklch(1_0_0/.85)]",
-  "[--jg-dotglow:rgb(255_255_255/.9)] dark:[--jg-dotglow:rgb(205_214_255/.7)]",
-  // — barlar (Spatial iceUp cam sütun; Lume cam bar 0deg .62→.9 262) —
-  "[--jg-bar-0:oklch(0.86_0.08_278/.9)] dark:[--jg-bar-0:oklch(0.9_0.04_262/.16)]",
-  "[--jg-bar-1:oklch(0.62_0.19_278/.5)] dark:[--jg-bar-1:oklch(0.76_0.05_262/.25)]",
-  "[--jg-bar-2:oklch(0.50_0.20_278/.72)] dark:[--jg-bar-2:oklch(0.62_0.06_262/.34)]",
-  "[--jg-bar-edge:rgb(255_255_255/.55)] dark:[--jg-bar-edge:oklch(1_0_0/.28)]",
-  "[--jg-bar-edge-dim:rgb(255_255_255/.4)] dark:[--jg-bar-edge-dim:oklch(1_0_0/.12)]",
-  "[--jg-bar-dim:oklch(0.83_0.07_290/.35)] dark:[--jg-bar-dim:oklch(0.62_0.06_262/.15)]",
-  "[--jg-bar-shadow:oklch(0.56_0.19_278/.5)] dark:[--jg-bar-shadow:transparent]",
-  "[--jg-bar-glow:transparent] dark:[--jg-bar-glow:oklch(0.7_0.07_262/.3)]",
-  "[--jg-pool:transparent] dark:[--jg-pool:oklch(0.92_0.05_262/.85)]",
+  // — mürekkep ailesi (kategori/seri renkleri): orman yeşili, altın, yosun,
+  //   çay yeşili; negatif kil kırmızısı. Amuletta 2.0 (docs/amuletta-2/plan.md).
+  "[--jg-ink-1:var(--chart-1)]",
+  "[--jg-ink-2:var(--chart-2)]",
+  "[--jg-ink-3:var(--chart-3)]",
+  "[--jg-ink-4:var(--chart-4)]",
+  "[--jg-ink-neg:var(--chart-5)]",
+  // — çizgi izi: yeşil yoğunlaşır (koyuda altına döner, kuyruk söner) —
+  "[--jg-trail-0:oklch(0.45_0.10_152/.28)] dark:[--jg-trail-0:oklch(0.82_0.13_88/0)]",
+  "[--jg-trail-1:oklch(0.45_0.10_152/.75)] dark:[--jg-trail-1:oklch(0.82_0.13_88/.55)]",
+  "[--jg-trail-2:oklch(0.40_0.10_152)] dark:[--jg-trail-2:oklch(0.88_0.11_90)]",
+  // — alan dolgusu —
+  "[--jg-area-c:oklch(0.45_0.10_152/.26)] dark:[--jg-area-c:oklch(0.82_0.13_88/.28)]",
+  "[--jg-area-c0:oklch(0.45_0.10_152/0)] dark:[--jg-area-c0:oklch(0.82_0.13_88/0)]",
+  // — çizgi ışıması (yalnız koyuda) —
+  "[--jg-lglow-a:transparent] dark:[--jg-lglow-a:oklch(0.82_0.13_88/.5)]",
+  "[--jg-lglow-b:transparent] dark:[--jg-lglow-b:oklch(0.82_0.13_88/.22)]",
+  // — uç nokta —
+  "[--jg-dot-f:var(--surface)] dark:[--jg-dot-f:oklch(0.82_0.13_88)]",
+  "[--jg-dot-s:oklch(0.45_0.10_152)] dark:[--jg-dot-s:oklch(1_0_0/.85)]",
+  "[--jg-dotglow:oklch(0.98_0.01_110/.9)] dark:[--jg-dotglow:oklch(0.82_0.13_88/.6)]",
+  // — barlar: üst ışık +0,06 L gradyanı (yeşil cam), koyuda altın cam —
+  "[--jg-bar-0:oklch(0.62_0.09_152/.95)] dark:[--jg-bar-0:oklch(0.86_0.10_90/.85)]",
+  "[--jg-bar-1:oklch(0.50_0.10_152/.95)] dark:[--jg-bar-1:oklch(0.78_0.12_88/.85)]",
+  "[--jg-bar-2:oklch(0.42_0.10_152)] dark:[--jg-bar-2:oklch(0.70_0.13_85/.9)]",
+  "[--jg-bar-edge:oklch(0.98_0.01_110/.6)] dark:[--jg-bar-edge:oklch(1_0_0/.3)]",
+  "[--jg-bar-edge-dim:oklch(0.98_0.01_110/.4)] dark:[--jg-bar-edge-dim:oklch(1_0_0/.12)]",
+  "[--jg-bar-dim:oklch(0.60_0.06_130/.45)] dark:[--jg-bar-dim:oklch(0.70_0.08_90/.3)]",
+  // — DOĞAL 3D gölge: ambient + kontak, bölüm tonuyla boyanır (siyah değil) —
+  "[--jg-bar-shadow:var(--nm-lo)] dark:[--jg-bar-shadow:var(--nm-lo)]",
+  "[--jg-bar-glow:transparent] dark:[--jg-bar-glow:oklch(0.82_0.13_88/.18)]",
+  "[--jg-pool:transparent] dark:[--jg-pool:oklch(0.88_0.11_90/.6)]",
   // — ray/oluk ve dilim kenarı —
-  "[--jg-groove:rgb(120_120_150/.14)] dark:[--jg-groove:oklch(0_0_0/.3)]",
-  "[--jg-track:rgb(122_122_155/.24)] dark:[--jg-track:oklch(0.75_0.08_262/.14)]",
-  "[--jg-slice-edge:rgb(255_255_255/.85)] dark:[--jg-slice-edge:oklch(1_0_0/.28)]",
+  "[--jg-groove:var(--nm-lo)] dark:[--jg-groove:oklch(0_0_0/.3)]",
+  "[--jg-track:oklch(from_var(--nm-lo)_l_c_h/.6)] dark:[--jg-track:oklch(0.82_0.13_88/.14)]",
+  "[--jg-slice-edge:var(--nm-hi)] dark:[--jg-slice-edge:oklch(1_0_0/.28)]",
 ].join(" ");
 
 const COLORS = [

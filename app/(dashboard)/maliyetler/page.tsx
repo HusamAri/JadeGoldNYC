@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Plus, Pencil, Wallet, Gem } from "lucide-react";
-import { SceneCutouts } from "@/components/scene-cutouts";
 
 import { requireMembership } from "@/lib/auth";
 import {
@@ -15,9 +14,6 @@ import { formatMoney } from "@/lib/money";
 import { formatDate } from "@/lib/format";
 import { OrgMark } from "@/components/brand/org-mark";
 import { PageHeader } from "@/components/page-header";
-import { GoldStream } from "@/components/brand/gold-stream";
-import { CornerMarks } from "@/components/brand/corner-marks";
-import { EditorialCard } from "@/components/brand/editorial-card";
 import { EmptyState } from "@/components/empty-state";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -61,8 +57,6 @@ export default async function MaliyetlerPage({
 
   return (
     <div className="page-stack relative z-0 pb-32">
-      <SceneCutouts page="maliyetler" />
-      <GoldStream motif="scale" />
       <PageHeader
         title="Maliyetler"
         description="Malzeme, kargo, Etsy ücretleri, reklam ve diğer giderler"
@@ -91,22 +85,6 @@ export default async function MaliyetlerPage({
         <span className="idx-ln" />
         <span><OrgMark /></span>
       </div>
-      {/* Tek, sessiz marka aksanı — atölye/malzeme temasıyla maliyet sayfasına
-          zarif bir giriş (galeri değil, tek kompakt banner). Sayfanın hero
-          anı: Spatial köşe işaretleri (dekoratif sarmalayıcı). */}
-      <div className="relative">
-        <EditorialCard
-          compact
-          heightClassName="h-[200px]"
-          image="/brand/gallery/aydinlik-nugget.webp"
-          video="/brand/video/altin-yuzuk-yukselis.mp4"
-          eyebrow="Atölye"
-          title="Zarafetin sadeliği"
-          subtitle="Her maliyet, som altın el işçiliğinin arkasındaki değer."
-        />
-        <CornerMarks />
-      </div>
-
       {/* İşletme kârı (EBITDA): sipariş-başı marj değil, işletme seviyesinin
           gerçeği — gelir − değişken = katkı; katkı − sabit = kâr; başa-baş. */}
       <OperatingProfitCard orgId={m.org_id} />

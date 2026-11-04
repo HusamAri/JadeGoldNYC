@@ -254,7 +254,7 @@ export function DiscountControl({
               className={
                 "font-mono text-[11px] tabular-nums " +
                 (belowCost.length > 0
-                  ? "font-semibold text-[oklch(0.58_0.16_344)] dark:text-[oklch(0.74_0.12_344)]"
+                  ? "font-semibold text-[var(--negative)]"
                   : "text-muted-foreground")
               }
             >

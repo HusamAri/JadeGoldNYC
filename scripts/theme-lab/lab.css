@@ -1,0 +1,4 @@
+/* Tema laboratuvarı — globals.css'i gerçek Tailwind derleyicisiyle derler.
+   Kaynak tarama köke göre otomatik; bu dosya yalnız içe aktarır. */
+@import "../../app/globals.css";
+@source "./lab.html";
