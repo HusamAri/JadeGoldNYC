@@ -115,8 +115,10 @@ function CostCells({
                   setVals((v) => ({ ...v, [kind]: initial[kind] }));
               }}
               className={cn(
-                "nm-pressed bg-background h-8 w-[88px] rounded-full border border-[color:var(--hairline)]/70 px-2.5 text-right font-mono text-xs tabular-nums outline-none transition-[box-shadow,background-image] duration-200",
-                "focus-visible:[background-image:var(--nm-convex)] focus-visible:[box-shadow:var(--shadow-raised-sm)] focus-visible:ring-2 focus-visible:ring-ring/60 disabled:cursor-not-allowed disabled:opacity-60",
+                // V7 defter hücresi: zeminsiz, yalnız alt hairline; odakta
+                // asit alt çizgi + hafif bezel zemini. Çukur/hap yok.
+                "h-8 w-[88px] rounded-[6px] border-0 border-b border-[color:var(--rule)] bg-transparent px-1.5 text-right font-mono text-xs tabular-nums outline-none transition-[border-color,background-color] duration-200",
+                "hover:border-[color:var(--hairline)] focus-visible:border-[color:var(--neon-ink)] focus-visible:bg-[color:var(--bezel)] disabled:cursor-not-allowed disabled:opacity-60",
                 // Elle giriş vs otomatik motor: otomatik değer soluk italik —
                 // "bu rakam senin değil, motorun" sinyali; dokunursan senin olur.
                 !manual[kind] && vals[kind] !== "" && "text-muted-foreground italic",
@@ -180,7 +182,7 @@ function Num({
 }
 
 const TH =
-  "text-muted-foreground px-2 py-2.5 text-right font-mono text-[10px] font-medium tracking-[0.12em] uppercase whitespace-nowrap";
+  "text-muted-foreground px-2 py-2.5 text-right font-mono text-[10px] font-normal tracking-[0.12em] uppercase whitespace-nowrap";
 
 /** Genişletilmiş satırdaki gizli kolon dökümü — etiket + değer çifti. */
 function DetailItem({
@@ -264,21 +266,24 @@ export function SaleCostGrid({
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="text-muted-foreground text-xs">
-          <span className="italic">İtalik</span> rakam motor tahminidir (gram × ayar);
-          üstüne yazınca elle giriş olur. Enter kaydeder, Esc vazgeçer.
+        <p className="note">
+          <span className="mark">†</span>
+          <span>
+            <span className="italic">İtalik</span> rakam motor tahminidir (gram × ayar);
+            üstüne yazınca elle giriş olur. Enter kaydeder, Esc vazgeçer.
+          </span>
         </p>
         <button
           type="button"
           onClick={toggleDetail}
           aria-pressed={detail}
-          className="nm-raised-sm inline-flex h-8 items-center gap-2 rounded-full px-3.5 font-mono text-[11px] tracking-[0.1em] uppercase transition-[box-shadow] hover:[box-shadow:var(--shadow-hover)] focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:outline-none"
+          className="soft inline-flex h-8 items-center gap-2 rounded-full px-3.5 font-mono text-[10px] tracking-[0.1em] uppercase transition-[box-shadow] hover:[box-shadow:var(--shadow-hover)] focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:outline-none"
         >
           <Columns3 aria-hidden className="size-3.5" />
           {detail ? "Kolonlar: tümü" : `Kolonlar (${HIDDEN_IN_SUMMARY} gizli)`}
         </button>
       </div>
-      <div className="table-well">
+      <div className="border-t border-[color:var(--rule)]">
         <div className="scroll-x">
           <table
             className={cn(
@@ -287,11 +292,11 @@ export function SaleCostGrid({
             )}
           >
             <thead>
-              <tr className="[&>th]:border-b [&>th]:border-[color:var(--hairline)]">
-                <th className={cn(TH, "sticky left-0 z-10 bg-[inherit] text-left")}>
+              <tr className="[&>th]:border-b [&>th]:border-[color:var(--rule)]">
+                <th className={cn(TH, "sticky left-0 z-10 bg-background text-left")}>
                   Tarih
                 </th>
-                <th className={cn(TH, "sticky left-[96px] z-10 bg-[inherit] text-left")}>
+                <th className={cn(TH, "sticky left-[96px] z-10 bg-background text-left")}>
                   Ürün
                 </th>
                 <th className={TH}>Adet</th>
@@ -311,12 +316,12 @@ export function SaleCostGrid({
                     <th className={TH}>İade etiketi</th>
                   </>
                 )}
-                <th className={cn(TH, "text-[color:var(--gold-deep)]")}>Altın</th>
-                <th className={cn(TH, "text-[color:var(--gold-deep)]")}>İşçilik</th>
-                <th className={cn(TH, "text-[color:var(--gold-deep)]")}>Taş</th>
+                <th className={cn(TH, "text-neon-ink")}>Altın</th>
+                <th className={cn(TH, "text-neon-ink")}>İşçilik</th>
+                <th className={cn(TH, "text-neon-ink")}>Taş</th>
                 {detail && (
                   <>
-                    <th className={cn(TH, "text-[color:var(--gold-deep)]")}>Paket</th>
+                    <th className={cn(TH, "text-neon-ink")}>Paket</th>
                     <th className={TH}>COGS</th>
                     <th className={TH}>Toplam maliyet</th>
                   </>
@@ -336,11 +341,11 @@ export function SaleCostGrid({
                   <RowGroup key={r.sale_item_id} expanded={expanded} colCount={colCount} row={r}>
                     <tr
                       className={cn(
-                        "transition-colors hover:bg-accent/30 focus-within:bg-accent/30 [&>td]:border-b [&>td]:border-[color:var(--border)]",
+                        "transition-colors hover:bg-[color:var(--bezel)]/70 focus-within:bg-[color:var(--bezel)]/70 [&>td]:border-b [&>td]:border-[color:var(--rule-2)]",
                         r.status === "cancelled" && "opacity-55",
                       )}
                     >
-                      <td className="sticky left-0 z-10 bg-[inherit] px-2 py-2 align-top whitespace-nowrap">
+                      <td className="sticky left-0 z-10 bg-background px-2 py-2 align-top whitespace-nowrap">
                         <div className="flex items-start gap-1">
                           {!detail && (
                             <button
@@ -371,7 +376,7 @@ export function SaleCostGrid({
                           </div>
                         </div>
                       </td>
-                      <td className="sticky left-[96px] z-10 max-w-[280px] bg-[inherit] px-2 py-2 align-top">
+                      <td className="sticky left-[96px] z-10 max-w-[280px] bg-background px-2 py-2 align-top">
                         <div className="flex items-start gap-1.5">
                           <div className="min-w-0">
                             <p className="truncate text-xs font-medium" title={r.title ?? ""}>
@@ -416,7 +421,7 @@ export function SaleCostGrid({
                           </div>
                           {incomplete && (
                             <span title="Altın veya işçilik girilmemiş — net kâr eksik.">
-                              <AlertTriangle className="mt-0.5 size-3.5 shrink-0 text-[color:var(--gold-deep)]" />
+                              <AlertTriangle className="mt-0.5 size-3.5 shrink-0 text-neon-ink" />
                             </span>
                           )}
                         </div>
@@ -523,7 +528,7 @@ function RowGroup({
       {expanded && (
         <tr className="[&>td]:border-b [&>td]:border-[color:var(--border)]">
           <td colSpan={colCount} className="px-3 py-3">
-            <div className="nm-pressed grid gap-x-8 gap-y-1.5 rounded-xl px-4 py-3 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="soft-inset grid gap-x-8 gap-y-1.5 rounded-xl px-4 py-3 sm:grid-cols-2 lg:grid-cols-4">
               <DetailItem label="Satış" cents={row.line_total_cents} currency={row.currency} />
               <DetailItem label="İndirim" cents={row.discount_alloc_cents} currency={row.currency} neg />
               <DetailItem label="Kargo geliri" cents={row.shipping_income_alloc_cents} currency={row.currency} />

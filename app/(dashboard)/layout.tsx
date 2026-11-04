@@ -50,7 +50,7 @@ export default async function DashboardLayout({
         showJadeGoldNav={showJadeGoldNav}
         showBrandBookNav={showBrandBookNav}
         platformCapabilities={platformCapabilities}
-        emblem={<OrgEmblemLume className="h-[13px]" />}
+        emblem={<OrgEmblemLume className="h-[12px]" />}
       />
       <div className="flex min-w-0 flex-1 flex-col">
         <Topbar
@@ -62,11 +62,11 @@ export default async function DashboardLayout({
           showJadeGoldNav={showJadeGoldNav}
           showBrandBookNav={showBrandBookNav}
           platformCapabilities={platformCapabilities}
-          emblem={<OrgEmblemLume className="h-[30px]" />}
+          emblem={<OrgEmblemLume className="h-[22px]" />}
         />
-        {/* Generous padding — glass needs air; dense dashboards feel cheap. */}
-        {/* Cömert negatif alan: içerik en çok 1440px, kenarlarda nefes. */}
-        <main className="mx-auto w-full max-w-[1440px] flex-1 px-5 py-8 sm:px-8 sm:py-10 lg:px-14 lg:py-14">
+        {/* V7 sayfa aynası: 56px yan boşluk, üstte 24px (üst şerit zaten
+            nefes verir), içerik en çok 1400px. */}
+        <main className="mx-auto w-full max-w-[1400px] flex-1 px-5 pt-5 pb-16 sm:px-8 lg:px-14 lg:pt-6">
           <PageTransition>{children}</PageTransition>
         </main>
       </div>

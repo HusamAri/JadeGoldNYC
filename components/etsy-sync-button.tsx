@@ -169,7 +169,7 @@ export function EtsySyncButton({
       </Button>
 
       {showFeed && (
-        <div className="nm-raised-sm text-muted-foreground flex flex-wrap items-center gap-x-4 gap-y-1 rounded-2xl px-4 py-3 text-sm tabular-nums">
+        <div className="soft-inset text-muted-foreground flex flex-wrap items-center gap-x-4 gap-y-1 rounded-xl px-4 py-3 text-sm tabular-nums">
           <span className="text-foreground inline-flex items-center gap-2 font-medium">
             <Loader2 className="size-3.5 animate-spin" />
             {PHASE_LABELS[progress!.phase] ?? progress!.phase}
@@ -210,7 +210,7 @@ function LastSyncSummaryPanel({ summary }: { summary: EtsySyncSummary }) {
     listingChanges.becameInactive.length > 0;
 
   return (
-    <div className="nm-raised-sm w-full space-y-3 rounded-2xl px-4 py-3.5 text-sm">
+    <div className="w-full space-y-3 border-t border-[color:var(--rule-2)] pt-3 text-sm">
       <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
         <span className="font-medium">
           Son Senkron ·{" "}
