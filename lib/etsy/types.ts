@@ -9,6 +9,14 @@ export interface EtsyMoney {
   currency_code: string;
 }
 
+/** Kalem varyasyonu (ShopReceiptTransaction.variations[]). */
+export interface EtsyTransactionVariation {
+  property_id?: number;
+  value_id?: number;
+  formatted_name?: string;
+  formatted_value?: string;
+}
+
 export interface EtsyTransaction {
   transaction_id: number;
   title?: string;
@@ -17,24 +25,65 @@ export interface EtsyTransaction {
   price?: EtsyMoney;
   listing_id?: number;
   product_id?: number;
+  // 2026-11 (0174): kalem seviyesindeki kalan alanlar — kalem K/Z + etiket
+  // bağlama (shipped_timestamp ↔ ledger etiket anı) için.
+  shipping_cost?: EtsyMoney;
+  is_digital?: boolean;
+  variations?: EtsyTransactionVariation[];
+  paid_timestamp?: number | null;
+  shipped_timestamp?: number | null;
+  expected_ship_date?: number | null;
+  /** Kupon tutarları — Etsy bunları SAYI (dolar cinsinden float) döndürür. */
+  buyer_coupon?: number;
+  shop_coupon?: number;
+}
+
+/** receipt.refunds[] — ShopRefund (kimliği yoktur; (an, tutar) doğal anahtar). */
+export interface EtsyRefund {
+  amount?: EtsyMoney;
+  created_timestamp?: number;
+  reason?: string | null;
+  note_from_issuer?: string | null;
+  status?: string | null;
+}
+
+/** receipt.shipments[] — ShopReceiptShipment (etiket id/maliyet TAŞIMAZ). */
+export interface EtsyShipment {
+  receipt_shipping_id?: number | null;
+  shipment_notification_timestamp?: number;
+  carrier_name?: string | null;
+  tracking_code?: string | null;
 }
 
 export interface EtsyReceipt {
   receipt_id: number;
   name?: string;
   buyer_email?: string;
+  buyer_user_id?: number;
   created_timestamp?: number;
   updated_timestamp?: number;
+  update_timestamp?: number;
   is_paid?: boolean;
   is_shipped?: boolean;
   grandtotal?: EtsyMoney;
   subtotal?: EtsyMoney;
+  total_price?: EtsyMoney;
   total_shipping_cost?: EtsyMoney;
   total_tax_cost?: EtsyMoney;
+  total_vat_cost?: EtsyMoney;
   discount_amt?: EtsyMoney;
+  gift_wrap_price?: EtsyMoney;
+  is_gift?: boolean;
+  needs_gift_wrap?: boolean;
+  message_from_buyer?: string | null;
+  payment_method?: string | null;
   country_iso?: string;
+  city?: string | null;
+  state?: string | null;
   status?: string;
   transactions?: EtsyTransaction[];
+  refunds?: EtsyRefund[];
+  shipments?: EtsyShipment[];
 }
 
 export interface EtsyListing {

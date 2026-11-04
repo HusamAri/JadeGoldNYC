@@ -1,6 +1,6 @@
 import { getActivePlatform } from "@/lib/platform";
 import Link from "next/link";
-import { Plus, Upload, Eye, Pencil } from "lucide-react";
+import { Plus, Upload, Eye, Pencil, ReceiptText } from "lucide-react";
 import {
   ShoppingBag,
   DollarSign,
@@ -172,6 +172,12 @@ export default async function SatislarPage({
         description={`Manuel, CSV ve ${platform.label} siparişleri`}
         action={
           <>
+            <Button asChild variant="outline">
+              <Link href="/satislar/maliyet">
+                <ReceiptText />
+                Satış &amp; Maliyet Takibi
+              </Link>
+            </Button>
             <Button asChild variant="outline">
               <Link href="/satislar/ice-aktar">
                 <Upload />
