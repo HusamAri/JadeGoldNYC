@@ -1,20 +1,6 @@
 import { getActivePlatform } from "@/lib/platform";
 import Link from "next/link";
-import {
-  Plus,
-  Calculator,
-  Scale,
-  ImageOff,
-  ExternalLink,
-  Package,
-  SearchX,
-  Lightbulb,
-} from "lucide-react";
-import {
-  Gem,
-  Scale as LuxScale,
-  TrendingUp,
-} from "@/components/icons/lux-art";
+import { Plus, ImageOff, ExternalLink, Package, Lightbulb } from "lucide-react";
 
 import { requireMembership } from "@/lib/auth";
 import { listListingsIndex } from "@/lib/db/queries/listings";
@@ -32,24 +18,13 @@ import { formatMoney } from "@/lib/money";
 import { clampDiscountPct, discountedCents } from "@/lib/discount";
 import { formatNumber } from "@/lib/format";
 import type { ListingIndexRow } from "@/lib/db/queries/listings";
-import { OrgMark } from "@/components/brand/org-mark";
 import { PageHeader } from "@/components/page-header";
 import { PushAllSeoButton } from "@/components/listing/push-all-seo-button";
 import { EmptyState } from "@/components/empty-state";
-import { KpiCard } from "@/components/kpi-card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { SearchInput } from "@/components/data-table/search-input";
 import { FilterSelect } from "@/components/data-table/filter-select";
+import { cn } from "@/lib/utils";
 
 export const metadata = { title: "Listeler" };
 // Toplu SEO gönderimi (PushAllSeoButton → server action) bu sayfanın
@@ -101,14 +76,14 @@ function PriceCell({ r }: { r: ListingIndexRow }) {
     const dMax = discountedCents(max ?? min, pct);
     return (
       <div className="flex flex-col items-end gap-0.5">
-        <span className="font-medium text-emerald-700 dark:text-emerald-400">
+        <span className="font-medium text-foreground">
           {formatRange(dMin, dMax, r.currency)}
         </span>
         <span className="text-muted-foreground text-[11px]">
           <span className="line-through">
             {formatRange(min, max, r.currency)}
           </span>
-          <span className="ml-1 rounded bg-emerald-500/15 px-1 font-mono text-[10px] font-semibold text-emerald-700 dark:text-emerald-300">
+          <span className="ml-1 font-mono text-[10px] text-neon-ink">
             -%{pct}
           </span>
         </span>
@@ -174,285 +149,186 @@ export default async function ListelerPage({
   const filtered = Boolean(search || status || karat || renk || grup || chapter);
 
   return (
-    <div className="page-stack relative z-0 pb-32">
+    <div className="flex flex-col gap-8 pb-24">
       <PageHeader
+        eyebrow="07 · Etsy'ye Taslak"
+        meta={`${platform.label} aynası · ${formatNumber(total)} listing`}
         title="Listeler"
-        description={`${platform.label}'deki listing'lerin aynası — detaylar listing sayfasında; taslaklar ve arşiv Listing Önerileri'nde.`}
+        description={`${platform.label}'deki listing'lerin aynası; detaylar listing sayfasında, taslaklar ve arşiv Listing Önerileri'nde.`}
         action={
           <>
             <PushAllSeoButton />
-            <Button asChild variant="outline">
-              <Link href="/tasarimlar/varyant-hesapla">
-                <Calculator />
-                Otomatik Varyant
-              </Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href="/tasarimlar/etsy-agirlik">
-                <Scale />
-                Etsy&apos;ye Ağırlık
-              </Link>
-            </Button>
-            <Button asChild>
-              <Link href="/tasarimlar/listing/yeni">
+            <Link href="/tasarimlar/listing/yeni" className="cta-pill jg-focus-outline">
+              Yeni listing
+              <span className="arrow" aria-hidden>
                 <Plus />
-                Yeni Listing
-              </Link>
-            </Button>
+              </span>
+            </Link>
+          </>
+        }
+        secondary={
+          <>
+            <Link className="ghost-link" href="/tasarimlar/varyant-hesapla">Otomatik varyant</Link>
+            <span>·</span>
+            <Link className="ghost-link" href="/tasarimlar/etsy-agirlik">Etsy&apos;ye ağırlık</Link>
           </>
         }
       />
 
-      {/* Özet — liste filtresine (durum/arama) saygı duyar */}
-      <section className="space-y-4">
-        <div aria-hidden className="idx">
-          <span>Listeler / 01 · Özet</span>
-          <span className="idx-bar" />
-          <span className="idx-ln" />
-          <span><OrgMark /></span>
+      {/* Dekor bandı — tozlu mavi; dört sayı tek şeritte (filtreye saygı duyar). */}
+      <section aria-label="Özet" className="gcard !h-auto !flex-row !items-end !justify-between gap-6 !py-5 max-md:!flex-col max-md:!items-start">
+        <div className="relative grid grid-cols-2 gap-x-10 gap-y-4 sm:grid-cols-4">
+          <BandStat label="Toplam listing" value={formatNumber(total)} />
+          <BandStat label="Aktif" value={formatNumber(active)} />
+          <BandStat label="Eksik gramlı" value={formatNumber(missingWeight)} warn={missingWeight > 0} hint="en az bir varyantta gram yok" />
+          <BandStat label="Kelimesiz" value={formatNumber(noKeyword)} warn={noKeyword > 0} hint="araştırma kelimesi girilmemiş" />
         </div>
-        {filtered && (
-          <p className="text-muted-foreground text-xs">
-            Özet, uygulanan filtreye göre hesaplanır.
-          </p>
-        )}
-        <div className="relative">
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            <KpiCard
-              label="Toplam Listing"
-              value={formatNumber(total)}
-              icon={Gem}
-            />
-            <KpiCard
-              label="Aktif"
-              value={formatNumber(active)}
-              icon={TrendingUp}
-              accent="positive"
-            />
-            <KpiCard
-              label="Eksik Gramlı"
-              value={formatNumber(missingWeight)}
-              icon={LuxScale}
-              accent={missingWeight > 0 ? "negative" : "default"}
-              hint="En az bir varyantında gram yok"
-            />
-            <KpiCard
-              label="Kelimesiz"
-              value={formatNumber(noKeyword)}
-              icon={SearchX}
-              accent={noKeyword > 0 ? "negative" : "default"}
-              hint="Araştırma kelimesi girilmemiş"
-            />
-          </div>
-        </div>
+        <span className="mono-label relative shrink-0">
+          {filtered ? "özet uygulanan filtreye göre" : "tüm katalog"}
+        </span>
       </section>
 
-      <div aria-hidden className="idx -mb-3">
-        <span>Listeler / 02 · Listingler</span>
-        <span className="idx-bar" />
-        <span className="idx-ln" />
-        <span><OrgMark /></span>
-      </div>
-      <Card>
-        <CardContent className="space-y-4">
-          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-            <SearchInput placeholder="Başlık veya SKU…" />
-            <FilterSelect
-              paramKey="status"
-              placeholder="Durum"
-              options={LISTING_STATUSES.map((s) => ({
-                value: s.value,
-                label: s.label,
-              }))}
-            />
-            {/* Facet filtreleri — başlık/SKU'dan türetilir (shop-section verisi
-                senkronda yok; pratik karşılığı bu üçlü). */}
-            <FilterSelect
-              paramKey="karat"
-              placeholder="Ayar"
-              options={KARAT_OPTIONS}
-              className="w-[110px]"
-            />
-            <FilterSelect
-              paramKey="renk"
-              placeholder="Renk"
-              options={COLOR_OPTIONS}
-              className="w-[140px]"
-            />
-            <FilterSelect
-              paramKey="grup"
-              placeholder="Grup"
-              options={GROUP_OPTIONS}
-              className="w-[150px]"
-            />
-            {/* Anlam bölümü — facet'lerden farklı olarak DB'de saklanır (0138),
-                elle sabitlenebilir ve bölüm bazlı çalışmanın eksenidir. */}
-            <FilterSelect
-              paramKey="chapter"
-              placeholder="Bölüm"
-              options={CHAPTER_OPTIONS}
-              className="w-[170px]"
-            />
-          </div>
+      <section>
+        <div className="sec-h">
+          <span className="num">A</span>
+          <h2>Listingler</h2>
+          <span className="mono-label right">{formatNumber(total)} listing · tümü listelendi</span>
+        </div>
+        <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+          <SearchInput placeholder="Başlık veya SKU…" />
+          <FilterSelect
+            paramKey="status"
+            placeholder="Durum"
+            options={LISTING_STATUSES.map((s) => ({ value: s.value, label: s.label }))}
+          />
+          <FilterSelect paramKey="karat" placeholder="Ayar" options={KARAT_OPTIONS} className="w-[110px]" />
+          <FilterSelect paramKey="renk" placeholder="Renk" options={COLOR_OPTIONS} className="w-[140px]" />
+          <FilterSelect paramKey="grup" placeholder="Grup" options={GROUP_OPTIONS} className="w-[150px]" />
+          <FilterSelect paramKey="chapter" placeholder="Bölüm" options={CHAPTER_OPTIONS} className="w-[170px]" />
+        </div>
 
-          {rows.length === 0 ? (
-            // Aktif filtre/aramada "kayıt yok" yanıltır — filtre sonucu boş
-            // olduğunu söyle ve tek tıkla temizleme yolu sun.
-            filtered ? (
-              <EmptyState
-                icon={Package}
-                title="Bu filtreyle sonuç yok"
-                description="Arama veya durum filtresine uyan listing bulunamadı. Filtreyi temizleyip tüm listingleri görebilirsiniz."
-                action={
-                  <Button asChild variant="outline">
-                    <Link href="/tasarimlar">Filtreyi temizle</Link>
-                  </Button>
-                }
-              />
-            ) : (
-              <EmptyState
-                icon={Package}
-                title="Etsy'de listing yok"
-                description="Bu ekran yalnız Etsy'de var olanları gösterir. Etsy senkronunu Ayarlar'dan çalıştırın; panelde hazırladığınız taslaklar 'Listing Önerileri' ekranındadır."
-                action={
-                  <div className="flex flex-wrap justify-center gap-2">
-                    <Button asChild variant="outline">
-                      <Link href="/listing-onerileri">
-                        <Lightbulb />
-                        Listing Önerileri
-                      </Link>
-                    </Button>
-                    <Button asChild>
-                      <Link href="/tasarimlar/listing/yeni">
-                        <Plus />
-                        Yeni Taslak
-                      </Link>
-                    </Button>
-                  </div>
-                }
-              />
-            )
+        {rows.length === 0 ? (
+          filtered ? (
+            <EmptyState
+              className="mt-5"
+              icon={Package}
+              title="Bu filtreyle sonuç yok"
+              description="Arama veya durum filtresine uyan listing bulunamadı. Filtreyi temizleyip tüm listingleri görebilirsiniz."
+              action={
+                <Button asChild variant="outline">
+                  <Link href="/tasarimlar">Filtreyi temizle</Link>
+                </Button>
+              }
+            />
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-12">Görsel</TableHead>
-                  <TableHead>Listing</TableHead>
-                  <TableHead>Durum</TableHead>
-                  <TableHead className="text-right">Fiyat</TableHead>
-                  <TableHead className="text-right">Varyant</TableHead>
-                  <TableHead>Kelime</TableHead>
-                  <TableHead className="text-right">Reklam · 30g</TableHead>
-                  <TableHead className="w-1 text-right">Etsy</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {rows.map((r) => {
-                  const sm = statusMeta(r.status);
-                  const keyword = (r.research_keyword ?? "").trim();
-                  return (
-                    <TableRow key={r.id}>
-                      <TableCell>
-                        <Link
-                          href={`/tasarimlar/listing/${r.id}`}
-                          className="bg-muted block size-10 overflow-hidden rounded-lg"
-                        >
-                          {r.image_url ? (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img
-                              src={r.image_url}
-                              alt={r.title}
-                              className="h-full w-full object-cover"
-                            />
-                          ) : (
-                            <span className="text-muted-foreground/50 flex h-full items-center justify-center">
-                              <ImageOff className="size-4" />
-                            </span>
-                          )}
-                        </Link>
-                      </TableCell>
-                      <TableCell className="max-w-[280px]">
-                        <Link
-                          href={`/tasarimlar/listing/${r.id}`}
-                          className="block truncate font-medium hover:underline"
-                        >
-                          {r.title}
-                        </Link>
-                        <div className="text-muted-foreground mt-0.5 flex flex-wrap items-center gap-x-2 font-mono text-[11px] tracking-wide">
-                          <span>{r.sku ?? "—"}</span>
-                          {r.etsy_listing_id != null ? (
-                            <span className="tabular-nums">#{r.etsy_listing_id}</span>
-                          ) : null}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant={sm.variant}>{sm.label}</Badge>
-                      </TableCell>
-                      <TableCell className="text-right tabular-nums">
-                        <PriceCell r={r} />
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <span className="tabular-nums">{r.variant_count}</span>
-                        {r.missing_weight_count > 0 && (
-                          <span className="ml-2 inline-block rounded-full bg-amber-500/15 px-2 py-0.5 font-mono text-[10px] font-semibold text-amber-600 tabular-nums dark:text-amber-300">
-                            {r.missing_weight_count} gramsız
-                          </span>
-                        )}
-                      </TableCell>
-                      <TableCell className="max-w-[180px]">
-                        {keyword ? (
-                          <Badge
-                            variant={r.has_research ? "success" : "outline"}
-                            className="max-w-full"
-                            title={
-                              r.has_research
-                                ? "Rakip araştırması var"
-                                : "Henüz rakip araştırması yok"
-                            }
-                          >
-                            <span className="truncate normal-case tracking-normal">
-                              {keyword}
-                            </span>
-                          </Badge>
-                        ) : (
-                          <span className="text-muted-foreground font-mono text-[10px] tracking-[0.12em] uppercase">
-                            kelime yok
-                          </span>
-                        )}
-                      </TableCell>
-                      <TableCell className="text-right tabular-nums">
-                        {r.ads30_spend_cents != null
-                          ? formatMoney(r.ads30_spend_cents, r.currency)
-                          : "—"}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        {r.etsy_listing_id != null ? (
-                          <Button asChild variant="ghost" size="icon">
-                            <a
-                              href={`https://www.etsy.com/listing/${r.etsy_listing_id}`}
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              <ExternalLink className="size-4" />
-                              <span className="sr-only">Etsy&apos;de aç</span>
-                            </a>
-                          </Button>
-                        ) : (
-                          <span className="text-muted-foreground">—</span>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          )}
+            <EmptyState
+              className="mt-5"
+              icon={Package}
+              title="Etsy'de listing yok"
+              description="Bu ekran yalnız Etsy'de var olanları gösterir. Etsy senkronunu Ayarlar'dan çalıştırın; panelde hazırladığınız taslaklar 'Listing Önerileri' ekranındadır."
+              action={
+                <div className="flex flex-wrap justify-center gap-2">
+                  <Button asChild variant="outline">
+                    <Link href="/listing-onerileri">
+                      <Lightbulb />
+                      Listing Önerileri
+                    </Link>
+                  </Button>
+                  <Button asChild>
+                    <Link href="/tasarimlar/listing/yeni">
+                      <Plus />
+                      Yeni Taslak
+                    </Link>
+                  </Button>
+                </div>
+              }
+            />
+          )
+        ) : (
+          /* Galeri: görsel önde, altında başlık + mono künye; durum asit/hairline rozet. */
+          <ul className="mt-5 grid gap-x-5 gap-y-7 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+            {rows.map((r) => {
+              const sm = statusMeta(r.status);
+              const keyword = (r.research_keyword ?? "").trim();
+              const isActive = sm.value === "active";
+              return (
+                <li key={r.id} className="group flex min-w-0 flex-col">
+                  <Link href={`/tasarimlar/listing/${r.id}`} className="bg-muted relative block aspect-square overflow-hidden rounded-[16px] border border-[color:var(--rule-2)]">
+                    {r.image_url ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={r.image_url} alt={r.title} className="size-full object-cover transition-transform duration-500 ease-[var(--ease-quiet)] group-hover:scale-[1.03]" />
+                    ) : (
+                      <span className="text-muted-foreground/50 flex size-full items-center justify-center">
+                        <ImageOff className="size-5" />
+                      </span>
+                    )}
+                    <span
+                      className={cn(
+                        "absolute left-3 top-3 inline-flex items-center rounded-full px-2.5 py-1 font-mono text-[9.5px] tracking-[0.1em] uppercase",
+                        isActive ? "bg-neon text-[color:var(--neon-fg)]" : "bg-background/85 text-foreground border border-[color:var(--rule)]",
+                      )}
+                    >
+                      {sm.label}
+                    </span>
+                    {r.missing_weight_count > 0 && (
+                      <span className="absolute right-3 top-3 inline-flex items-center rounded-full bg-background/85 px-2 py-1 font-mono text-[9.5px] tracking-[0.08em] text-[var(--negative)] uppercase">
+                        {r.missing_weight_count} gramsız
+                      </span>
+                    )}
+                  </Link>
+                  <div className="mt-3 flex items-start justify-between gap-3">
+                    <Link href={`/tasarimlar/listing/${r.id}`} className="line-clamp-2 text-[13.5px] font-medium leading-snug hover:underline" title={r.title}>
+                      {r.title}
+                    </Link>
+                    {r.etsy_listing_id != null && (
+                      <a
+                        href={`https://www.etsy.com/listing/${r.etsy_listing_id}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-muted-foreground hover:text-foreground mt-0.5 shrink-0"
+                        aria-label="Etsy'de aç"
+                      >
+                        <ExternalLink className="size-3.5" />
+                      </a>
+                    )}
+                  </div>
+                  <div className="mono-label mt-1.5 flex items-center justify-between gap-2">
+                    <span className="truncate">{r.sku ?? "—"}{r.etsy_listing_id != null ? ` · #${r.etsy_listing_id}` : ""}</span>
+                    <span className="shrink-0 text-foreground"><PriceCell r={r} /></span>
+                  </div>
+                  <div className="mono-label mt-1.5 flex items-center justify-between gap-2">
+                    <span className="truncate" title={keyword ? (r.has_research ? "Rakip araştırması var" : "Henüz rakip araştırması yok") : undefined}>
+                      {keyword ? (
+                        <>
+                          <i className={cn("mr-1.5 inline-block size-1.5 rounded-full align-middle", r.has_research ? "bg-neon" : "bg-[color:var(--rule)]")} />
+                          <span className="normal-case tracking-normal">{keyword}</span>
+                        </>
+                      ) : (
+                        "kelime yok"
+                      )}
+                    </span>
+                    <span className="shrink-0">
+                      {r.variant_count} var.
+                      {r.ads30_spend_cents != null ? ` · reklam ${formatMoney(r.ads30_spend_cents, r.currency)}` : ""}
+                    </span>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </section>
+    </div>
+  );
+}
 
-          <p className="text-muted-foreground text-xs">
-            {formatNumber(total)} listing — tümü listelendi.
-          </p>
-        </CardContent>
-      </Card>
+/** Dekor bandı hücresi — mono etiket + Fraunces rakam. */
+function BandStat({ label, value, hint, warn }: { label: string; value: string; hint?: string; warn?: boolean }) {
+  return (
+    <div className="min-w-0">
+      <p className="mono-label">{label}</p>
+      <p className={cn("ledger-num mt-1.5 text-[36px]", warn && "text-[var(--negative)]")}>{value}</p>
+      {hint && <p className="mono-label mt-1 normal-case tracking-[0.06em]">{hint}</p>}
     </div>
   );
 }

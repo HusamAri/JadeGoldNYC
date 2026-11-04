@@ -3,7 +3,9 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { getPricingConfig } from "@/lib/pricing-engine/config";
 import { getEtsyWriteAccess } from "@/lib/db/queries/etsy";
 import { PageHeader } from "@/components/page-header";
-import { Card, CardContent } from "@/components/ui/card";
+import { Bezel, Screen, Knob } from "@/components/instruments";
+import { formatMoneyParts, formatPercent } from "@/lib/money";
+import { formatNumber } from "@/lib/format";
 import { PricingConsole } from "@/components/pricing/pricing-console";
 import { PanelPushCard } from "@/components/pricing/panel-push-card";
 import { PricingConfigForm } from "@/components/pricing/pricing-config-form";
@@ -104,108 +106,180 @@ export default async function FiyatPage() {
     liveQuote = null;
   }
 
+  // Anahtar göstergeleri: motorun üç ana kolu (fire, işçilik, indirim) —
+  // salt okunur düğme; gerçek düzenleme aşağıdaki formda.
+  const knobs = [
+    { label: "Fire", value: (config.fireFactor - 1) / 0.25, readout: `×${config.fireFactor.toFixed(2)}` },
+    { label: "İşçilik", value: config.laborUsd / 200, readout: `$${config.laborUsd}` },
+    { label: "İndirim", value: config.saleRate, readout: `%${Math.round(config.saleRate * 100)}` },
+  ];
+  const spotParts = formatMoneyParts(Math.round(config.spotUsdPerOzt * 100), "USD");
+
   return (
-    <div className="page-stack pb-32">
+    <div className="flex flex-col gap-8 pb-24">
       <PageHeader
-        title="Fiyat"
-        description="Tek kol spot fiyattır. Değiştirince her varyant kendi gramından, saflığından, genişlik çarpanından ve işçilik sınıfından yeniden hesaplanır. Elle fiyat yazılmaz, bir varyantın fiyatı diğerine kopyalanmaz."
+        eyebrow="09 · Stok & Fiyat"
+        meta={writeAccess.writeEnabled ? "Etsy yazma açık" : "Etsy salt-okunur"}
+        title="Fiyat Motoru"
+        description="Tek kol spot fiyattır. Değiştirince her varyant kendi gramından, saflığından, genişlik çarpanından ve işçilik sınıfından yeniden hesaplanır. Elle fiyat yazılmaz."
       />
 
-      <div aria-hidden className="idx -mb-3">
-        <span>Fiyat / 01 · Spot ve kuru çalıştırma</span>
-        <span className="idx-bar" />
-      </div>
+      {/* Kumanda masası: solda spot ekranı + üç düğme + segment, sağda konsol. */}
+      <section className="grid gap-x-12 gap-y-10 xl:grid-cols-[340px_1fr]">
+        <aside className="flex min-w-0 flex-col gap-6 xl:sticky xl:top-20 xl:self-start">
+          <div className="sec-h">
+            <span className="num">A</span>
+            <h2>Kumanda</h2>
+          </div>
+          <Bezel>
+            <Screen>
+              <div className="flex justify-between">
+                <span className="dim">Taban spot · USD/ozt</span>
+                <span className="dim">● motor</span>
+              </div>
+              <div className="lcd mt-2 text-[40px] leading-none tracking-[0.02em]">
+                {spotParts.main}
+                <span className="text-[16px] opacity-70">{spotParts.fraction}</span>
+              </div>
+              <div className="mt-3 flex justify-between">
+                <span className="dim">
+                  canlı{" "}
+                  {liveQuote ? `$${formatNumber(Math.round(liveQuote.spotPerOzt))}` : "alınamadı"}
+                </span>
+                <span className="dim lcd text-[10px]">
+                  {liveQuote
+                    ? `${liveQuote.spotPerOzt >= config.spotUsdPerOzt ? "+" : "−"}${formatPercent(Math.abs(liveQuote.spotPerOzt / config.spotUsdPerOzt - 1))}`
+                    : "—"}
+                </span>
+              </div>
+            </Screen>
+          </Bezel>
+          <div className="flex items-start justify-between gap-2 px-1">
+            {knobs.map((k) => (
+              <Knob key={k.label} size="sm" value={k.value} label={k.label} readout={k.readout} />
+            ))}
+          </div>
+          <div className="seg self-start" role="group" aria-label="Etsy yazma durumu">
+            <span className={writeAccess.writeEnabled ? "on" : ""}>Yazma</span>
+            <span className={!writeAccess.writeEnabled ? "on" : ""}>Salt-okunur</span>
+          </div>
+          <p className="note">
+            <span className="mark">†</span>
+            <span>
+              Düğmeler motorun kayıtlı ayarını gösterir; değiştirmek için sağdaki &quot;Motor ayarları&quot; formu kullanılır.
+              Kota: {quota?.quota_remaining != null ? `${formatNumber(quota.quota_remaining)} / gün` : "ölçülmedi"}.
+            </span>
+          </p>
+        </aside>
 
-      <PricingConsole
-        spot={config.spotUsdPerOzt}
-        writeEnabled={writeAccess.writeEnabled}
-        bekleyen={
-          bekleyen
-            ? {
-                id: bekleyen.id,
-                spot: Number(bekleyen.spot_usd_per_ozt),
-                rows: bekleyen.rows ?? [],
-                total: bekleyen.total_rows,
-                changed: bekleyen.changed_rows,
-                belowFloor: bekleyen.below_floor_rows,
-                unknown: bekleyen.unknown_rows,
-                createdAt: bekleyen.created_at,
-              }
-            : null
-        }
-      />
+        <div className="flex min-w-0 flex-col gap-10">
+          <section>
+            <div className="sec-h">
+              <span className="num">B</span>
+              <h2>Spot ve kuru çalıştırma</h2>
+            </div>
+            <div className="mt-4">
+              <PricingConsole
+                spot={config.spotUsdPerOzt}
+                writeEnabled={writeAccess.writeEnabled}
+                bekleyen={
+                  bekleyen
+                    ? {
+                        id: bekleyen.id,
+                        spot: Number(bekleyen.spot_usd_per_ozt),
+                        rows: bekleyen.rows ?? [],
+                        total: bekleyen.total_rows,
+                        changed: bekleyen.changed_rows,
+                        belowFloor: bekleyen.below_floor_rows,
+                        unknown: bekleyen.unknown_rows,
+                        createdAt: bekleyen.created_at,
+                      }
+                    : null
+                }
+              />
+            </div>
+          </section>
 
-      <div aria-hidden className="idx -mb-3">
-        <span>Fiyat / 01b · Tek tuş: panel → Etsy</span>
-        <span className="idx-bar" />
-      </div>
+          <section>
+            <div className="sec-h">
+              <span className="num">C</span>
+              <h2>Tek tuş: panel → Etsy</h2>
+            </div>
+            <div className="mt-4">
+              <PanelPushCard writeEnabled={writeAccess.writeEnabled} quota={quota} />
+            </div>
+          </section>
 
-      <PanelPushCard writeEnabled={writeAccess.writeEnabled} quota={quota} />
+          <section>
+            <div className="sec-h">
+              <span className="num">D</span>
+              <h2>Altın endeksi</h2>
+              <span className="mono-label right">otomatik</span>
+            </div>
+            <div className="mt-4">
+              <GoldIndexCard
+                basis={basisHistory[0]?.spot ?? config.spotUsdPerOzt}
+                liveSpot={liveQuote?.spotPerOzt ?? null}
+                liveSources={(liveQuote?.sources ?? []).map((s) => s.name).join(" + ")}
+                liveError={liveError}
+                history={basisHistory}
+              />
+            </div>
+          </section>
 
-      <div aria-hidden className="idx -mb-3">
-        <span>Fiyat / 02 · Altın endeksi (otomatik)</span>
-        <span className="idx-bar" />
-      </div>
+          <section>
+            <div className="sec-h">
+              <span className="num">E</span>
+              <h2>Motor ayarları</h2>
+            </div>
+            <div className="mt-4">
+              <PricingConfigForm
+                config={{
+                  fireFactor: config.fireFactor,
+                  laborUsd: config.laborUsd,
+                  laborHandfinishedUsd: config.laborHandfinishedUsd,
+                  packagingUsd: config.packagingUsd,
+                  shippingUsd: config.shippingUsd,
+                  multiplierNarrow: config.multiplierNarrow,
+                  multiplierWide: config.multiplierWide,
+                  wideBandMinMm: config.wideBandMinMm,
+                  saleRate: config.saleRate,
+                }}
+                stored={config.stored}
+              />
+            </div>
+          </section>
 
-      <GoldIndexCard
-        basis={basisHistory[0]?.spot ?? config.spotUsdPerOzt}
-        liveSpot={liveQuote?.spotPerOzt ?? null}
-        liveSources={(liveQuote?.sources ?? []).map((s) => s.name).join(" + ")}
-        liveError={liveError}
-        history={basisHistory}
-      />
-
-      <div aria-hidden className="idx -mb-3">
-        <span>Fiyat / 03 · Motor ayarları</span>
-        <span className="idx-bar" />
-      </div>
-
-      <PricingConfigForm
-        config={{
-          fireFactor: config.fireFactor,
-          laborUsd: config.laborUsd,
-          laborHandfinishedUsd: config.laborHandfinishedUsd,
-          packagingUsd: config.packagingUsd,
-          shippingUsd: config.shippingUsd,
-          multiplierNarrow: config.multiplierNarrow,
-          multiplierWide: config.multiplierWide,
-          wideBandMinMm: config.wideBandMinMm,
-          saleRate: config.saleRate,
-        }}
-        stored={config.stored}
-      />
-
-      <div aria-hidden className="idx -mb-3">
-        <span>Fiyat / 03 · Geçmiş koşular</span>
-        <span className="idx-bar" />
-      </div>
-
-      <Card>
-        <CardContent className="pt-5">
-          {gecmis.length === 0 ? (
-            <p className="text-muted-foreground text-sm">
-              Henüz tamamlanmış bir fiyat koşusu yok.
-            </p>
-          ) : (
-            <ul className="space-y-2 text-sm">
-              {gecmis.map((r) => (
-                <li
-                  key={r.id}
-                  className="flex flex-wrap items-center justify-between gap-2 border-b border-border/50 pb-2 last:border-0"
-                >
-                  <span className="text-foreground">
-                    {new Date(r.created_at).toLocaleString("tr-TR")} · spot{" "}
-                    {Number(r.spot_usd_per_ozt)} $/ozt
-                  </span>
-                  <span className="text-muted-foreground text-xs">
-                    {r.status} · {r.total_rows} satır · {r.updated_rows} yazıldı
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </CardContent>
-      </Card>
+          <section>
+            <div className="sec-h">
+              <span className="num">F</span>
+              <h2>Geçmiş koşular</h2>
+            </div>
+            {gecmis.length === 0 ? (
+              <p className="note mt-4">
+                <span className="mark">†</span>
+                <span>Henüz tamamlanmış bir fiyat koşusu yok.</span>
+              </p>
+            ) : (
+              <ul className="mt-1 text-sm">
+                {gecmis.map((r) => (
+                  <li
+                    key={r.id}
+                    className="flex flex-wrap items-center justify-between gap-2 border-b border-[color:var(--rule-2)] py-3"
+                  >
+                    <span className="text-foreground">
+                      {new Date(r.created_at).toLocaleString("tr-TR")} · spot {Number(r.spot_usd_per_ozt)} $/ozt
+                    </span>
+                    <span className="mono-label">
+                      {r.status} · {r.total_rows} satır · {r.updated_rows} yazıldı
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        </div>
+      </section>
     </div>
   );
 }

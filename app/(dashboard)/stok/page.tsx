@@ -1,7 +1,7 @@
 import { getActivePlatform } from "@/lib/platform";
 import Image from "next/image";
 import Link from "next/link";
-import { Package, Info, Layers } from "lucide-react";
+import { Package } from "lucide-react";
 
 import { requireMembership, isManager } from "@/lib/auth";
 import { listStockProducts, type StockProduct } from "@/lib/db/queries/stock";
@@ -12,8 +12,7 @@ import { EmptyState } from "@/components/empty-state";
 import { StockQuantityInput } from "@/components/stock-quantity-input";
 import { StockSyncPanel } from "@/components/stock-sync-panel";
 import { VariantSyncButton } from "@/components/variant-sync-button";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Bezel, Screen, FmDial } from "@/components/instruments";
 import {
   Table,
   TableBody,
@@ -77,23 +76,18 @@ export default async function StokPage() {
   ).length;
 
   return (
-    <div className="page-stack relative z-0 pb-32">
+    <div className="flex flex-col gap-8 pb-24">
       <PageHeader
-        title="Stok Senkronizasyonu"
+        eyebrow="08 · Stok & Fiyat"
+        meta={`${formatNumber(products.length)} ürün`}
+        title="Stok Senkronu"
         description={`Her ürün için elde/hedef adedi girin; hazır olunca tek tuşla ${platform.label} ile çift yönlü eşitleyin.`}
-        action={
-          <Button asChild variant="outline">
-            <Link href="/stok/varyant">
-              <Layers />
-              Varyant Stok
-            </Link>
-          </Button>
+        secondary={
+          <Link className="ghost-link" href="/stok/varyant">
+            Varyant stok
+          </Link>
         }
       />
-
-      <StockSyncPanel connected={access.connected} />
-
-      <VariantSyncButton connected={access.connected} />
 
       {products.length === 0 ? (
         <EmptyState
@@ -102,142 +96,112 @@ export default async function StokPage() {
           description="Önce Ayarlar → Etsy'den mağazanızı bağlayıp senkronize edin; aktif listeler burada görünür."
         />
       ) : (
-        <>
-          {/* Özet şerit — sayfanın hero özeti: berrak cam board (.glass-board) */}
-          <div className="glass-board relative isolate overflow-hidden rounded-2xl px-6 py-5">
-            <div className="relative z-10 flex flex-wrap items-center gap-3">
-              <StatChip label="Ürün" value={products.length} />
-              <StatChip label="Doldurulan" value={filled} />
-              <StatChip label="Değişecek" value={pending} accent />
+        /* Kumanda masası: solda durum ekranı + anahtarlar, sağda yoğun düz ızgara. */
+        <section className="grid gap-x-12 gap-y-10 xl:grid-cols-[320px_1fr]">
+          <aside className="flex min-w-0 flex-col gap-5 xl:sticky xl:top-20 xl:self-start">
+            <div className="sec-h">
+              <span className="num">A</span>
+              <h2>Durum</h2>
             </div>
-          </div>
-
-          {!access.writeEnabled && access.connected && (
-            <Card>
-              <CardContent className="text-muted-foreground flex items-start gap-2 py-3 text-sm">
-                <Info className="mt-0.5 size-4 shrink-0" />
+            <Bezel>
+              <Screen>
+                <div className="flex justify-between">
+                  <span className="dim">Değişecek · hedef ≠ Etsy</span>
+                  <span className="dim">● stok</span>
+                </div>
+                <div className="lcd mt-2 text-[44px] leading-none">{formatNumber(pending)}</div>
+                <FmDial
+                  pos={products.length > 0 ? filled / products.length : null}
+                  labels={["0", `${formatNumber(products.length)}`]}
+                  className="mt-2"
+                />
+                <div className="mt-1 flex justify-between">
+                  <span className="dim">{formatNumber(filled)} doldurulan</span>
+                  <span className="dim">{formatNumber(products.length)} ürün</span>
+                </div>
+              </Screen>
+            </Bezel>
+            <StockSyncPanel connected={access.connected} />
+            <VariantSyncButton connected={access.connected} />
+            {!access.writeEnabled && access.connected && (
+              <p className="note">
+                <span className="mark">†</span>
                 <span>
-                  Etsy bağlantısı şu an salt-okunur. Adetleri Etsy&apos;ye
-                  yazabilmek için{" "}
-                  <Link
-                    href="/ayarlar/etsy"
-                    className="font-medium text-[color:var(--gold-deep)] hover:underline"
-                  >
+                  Etsy bağlantısı şu an salt-okunur. Adetleri Etsy&apos;ye yazabilmek için{" "}
+                  <Link href="/ayarlar/etsy" className="ghost-link">
                     Etsy&apos;yi yeniden bağlayın
                   </Link>{" "}
                   ve yazma iznini onaylayın. Doldurma ve önizleme yine çalışır.
                 </span>
-              </CardContent>
-            </Card>
-          )}
+              </p>
+            )}
+          </aside>
 
-          {cats.map((cat) => {
-            const rows = groups.get(cat)!;
-            return (
-              <section key={cat} className="space-y-2">
-                <div className="flex items-baseline gap-3 border-b-2 border-[color:var(--gold)] pb-2">
-                  <h2 className="text-lg font-semibold">{cat}</h2>
-                  <span className="text-muted-foreground ml-auto text-xs font-medium tabular-nums">
-                    {formatNumber(rows.length)} ürün
-                  </span>
-                </div>
-                {/* Tablo kabı — dikey oluklu cam (.glass-fluted) */}
-                <div className="glass-fluted rounded-2xl p-2 sm:p-3">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="w-[52px]">Görsel</TableHead>
-                      <TableHead>Ürün</TableHead>
-                      <TableHead className="w-[110px]">SKU</TableHead>
-                      <TableHead className="w-[80px] text-right">
-                        Etsy Adet
-                      </TableHead>
-                      <TableHead className="w-[110px] text-right">
-                        Hedef Stok
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {rows.map((p) => (
-                      <TableRow key={p.id}>
-                        <TableCell>
-                          {p.image_url ? (
-                            <Image
-                              src={p.image_url}
-                              alt={p.title}
-                              width={40}
-                              height={40}
-                              unoptimized
-                              className="thumb-lift size-10 rounded-md border border-border object-cover"
-                            />
-                          ) : (
-                            <span className="bg-muted text-muted-foreground flex size-10 items-center justify-center rounded-md text-[10px] font-semibold">
-                              JG
-                            </span>
-                          )}
-                        </TableCell>
-                        <TableCell className="max-w-[320px] font-medium">
-                          {/* Uzun ürün adı: kırpma yerine yatay kaydırma (.scroll-x) */}
-                          <div className="scroll-x">
-                            {p.title}
-                            {p.has_variations && (
-                              <span className="text-muted-foreground ml-2 text-xs font-normal">
-                                varyantlı
+          <div className="flex min-w-0 flex-col gap-8">
+            {cats.map((cat, i) => {
+              const rows = groups.get(cat)!;
+              return (
+                <section key={cat}>
+                  <div className="sec-h">
+                    <span className="num">{String.fromCharCode(66 + i)}</span>
+                    <h2>{cat}</h2>
+                    <span className="mono-label right">{formatNumber(rows.length)} ürün</span>
+                  </div>
+                  <Table well={false} className="ledger">
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="w-[52px]">Görsel</TableHead>
+                        <TableHead>Ürün</TableHead>
+                        <TableHead className="w-[130px]">SKU</TableHead>
+                        <TableHead className="w-[90px] text-right">Etsy adet</TableHead>
+                        <TableHead className="w-[120px] text-right">Hedef stok</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {rows.map((p) => (
+                        <TableRow key={p.id}>
+                          <TableCell>
+                            {p.image_url ? (
+                              <Image
+                                src={p.image_url}
+                                alt={p.title}
+                                width={40}
+                                height={40}
+                                unoptimized
+                                className="size-10 rounded-[8px] border border-[color:var(--rule-2)] object-cover"
+                              />
+                            ) : (
+                              <span className="bg-muted text-muted-foreground flex size-10 items-center justify-center rounded-[8px] font-mono text-[10px]">
+                                —
                               </span>
                             )}
-                          </div>
-                        </TableCell>
-                        <TableCell className="text-muted-foreground font-mono text-xs">
-                          {p.sku ?? "—"}
-                        </TableCell>
-                        <TableCell className="text-muted-foreground text-right tabular-nums">
-                          {p.quantity ?? "—"}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <StockQuantityInput
-                            productId={p.id}
-                            initial={p.target_quantity}
-                            current={p.quantity}
-                            canEdit={canEdit}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-                </div>
-              </section>
-            );
-          })}
-        </>
+                          </TableCell>
+                          <TableCell className="max-w-[360px] font-medium">
+                            <div className="scroll-x">
+                              {p.title}
+                              {p.has_variations && <span className="mono-label ml-2">varyantlı</span>}
+                            </div>
+                          </TableCell>
+                          <TableCell className="text-muted-foreground font-mono text-xs">{p.sku ?? "—"}</TableCell>
+                          <TableCell className="text-muted-foreground text-right tabular-nums">{p.quantity ?? "—"}</TableCell>
+                          <TableCell className="text-right">
+                            <StockQuantityInput
+                              productId={p.id}
+                              initial={p.target_quantity}
+                              current={p.quantity}
+                              canEdit={canEdit}
+                            />
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </section>
+              );
+            })}
+          </div>
+        </section>
       )}
-    </div>
-  );
-}
-
-function StatChip({
-  label,
-  value,
-  accent,
-}: {
-  label: string;
-  value: number;
-  accent?: boolean;
-}) {
-  return (
-    <div className="nm-raised-sm inline-flex items-baseline gap-2 rounded-full px-4 py-1.5">
-      <b
-        className={
-          accent
-            ? "text-[color:var(--gold-deep)] tabular-nums"
-            : "tabular-nums"
-        }
-      >
-        {formatNumber(value)}
-      </b>
-      <span className="text-muted-foreground text-xs uppercase tracking-wide">
-        {label}
-      </span>
     </div>
   );
 }
