@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Jade Gold NYC — Production Console</title>
+<style>
+:root{
+  color-scheme: light;
+  --bg:#FBF8F3; --card:#FFFFFF; --ink:#1C1815; --muted:#7A6E62;
+  --line:#E7DFD3; --gold:#B08324; --goldsoft:#F3E8D0;
+  --legacy:#2A2724; --protect:#1E3A5F; --faith:#A8552B; --love:#C08A9B; --everyday:#8C8577;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 ui-sans-serif,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:26px 20px 80px}
+header{border-bottom:2px solid var(--ink);padding-bottom:18px;margin-bottom:22px}
+h1{margin:0 0 4px;font-size:25px;letter-spacing:-.3px}
+.sub{color:var(--muted);font-size:13px}
+.bar{height:8px;background:var(--goldsoft);border-radius:99px;margin-top:14px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--gold);width:0;transition:width .3s}
+.stat{display:flex;gap:22px;flex-wrap:wrap;margin-top:10px;font-size:12px;color:var(--muted)}
+.stat b{color:var(--ink);font-size:16px;display:block}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:20px 0 16px}
+.pill{border:1px solid var(--line);background:var(--card);border-radius:99px;padding:6px 14px;font-size:12.5px;cursor:pointer;font-weight:600;color:var(--muted)}
+.pill.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+input[type=text],input[type=url]{border:1px solid var(--line);border-radius:8px;padding:8px 11px;font:inherit;font-size:13px;background:var(--card);color:var(--ink)}
+#q{min-width:230px}
+.btn{border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:8px;padding:8px 14px;font-size:12.5px;font-weight:600;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:12px;overflow:hidden}
+.head{display:flex;gap:14px;align-items:flex-start;padding:15px 17px;cursor:pointer}
+.chip{font-size:10px;font-weight:800;letter-spacing:.9px;color:#fff;padding:4px 9px;border-radius:5px;white-space:nowrap;margin-top:2px}
+.t{font-weight:650;font-size:14.5px;margin-bottom:3px}
+.meta{font-size:11.5px;color:var(--muted)}
+.count{margin-left:auto;font-size:11.5px;color:var(--muted);white-space:nowrap;text-align:right}
+.body{display:none;border-top:1px solid var(--line);padding:16px 17px;background:#FDFBF8}
+.card.open .body{display:block}
+.refrow{display:flex;gap:8px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
+.refrow input{flex:1;min-width:280px}
+.lbl{font-size:11px;font-weight:700;letter-spacing:.6px;color:var(--muted)}
+.frame{border:1px solid var(--line);border-radius:9px;margin-bottom:9px;background:var(--card)}
+.fh{display:flex;gap:10px;align-items:center;padding:10px 13px;border-bottom:1px solid var(--line)}
+.fn{font-weight:700;font-size:12.5px}
+.ar{font-size:10.5px;color:var(--muted);border:1px solid var(--line);padding:1px 6px;border-radius:4px}
+.fh .btn{margin-left:auto;padding:5px 11px;font-size:11.5px}
+pre{margin:0;padding:12px 13px;font:11.5px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;color:#3A332C;max-height:126px;overflow:auto;background:#FCFAF6}
+.dl{padding:10px 13px;border-top:1px solid var(--line)}
+.dl .top{display:flex;gap:8px;align-items:center;margin-bottom:7px}
+.dl a{font-size:11.5px;color:var(--gold);font-weight:700;text-decoration:none}
+textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:9px 11px;font:12px/1.45 ui-monospace,Menlo,monospace;background:var(--card);color:var(--ink);resize:vertical;min-height:52px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:8px;margin-top:9px}
+.thumb{position:relative;aspect-ratio:4/5;border:2px solid var(--line);border-radius:8px;overflow:hidden;cursor:pointer;background:#F2ECE2}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.thumb .no{display:flex;align-items:center;justify-content:center;height:100%;font-size:10px;color:var(--muted);text-align:center;padding:6px}
+.thumb .num{position:absolute;top:4px;left:4px;background:rgba(28,24,21,.78);color:#fff;font-size:10px;font-weight:800;padding:1px 6px;border-radius:4px}
+.thumb.sel{border-color:var(--gold);box-shadow:0 0 0 3px var(--goldsoft)}
+.thumb.sel:after{content:"SEÇİLDİ";position:absolute;bottom:0;left:0;right:0;background:var(--gold);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.7px;text-align:center;padding:3px 0}
+.opts{font-size:11px;color:var(--muted);margin-left:auto;white-space:nowrap}
+.ck{display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--muted);cursor:pointer;white-space:nowrap}
+.done{opacity:.5}
+.empty{text-align:center;padding:50px;color:var(--muted)}
+a.ext{color:var(--gold);font-size:11.5px;font-weight:600;text-decoration:none}
+.note{background:var(--goldsoft);border-left:3px solid var(--gold);padding:11px 14px;border-radius:0 8px 8px 0;font-size:12.5px;margin-bottom:18px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Jade Gold NYC — Production Console</h1>
+  <div class="sub">22 priority listings · 6 frames each · 132 generation-ready prompts</div>
+  <div class="bar"><i id="pb"></i></div>
+  <div class="stat">
+    <div><b id="sDone">0</b>frames done</div>
+    <div><b id="sPct">0%</b>complete</div>
+    <div><b id="sList">0</b>listings finished</div>
+    <div><b>132</b>total frames</div>
+  </div>
+</header>
+
+<div class="note">
+  <b>Reference-conditioned method.</b> Open the Etsy listing, right-click the main product photo, copy the image address, and paste it into the reference field on the card. Feed that image plus the prompt to Higgsfield. The real product geometry stays true and only the environment is rebuilt. Everything you type here is saved in this browser.
+</div>
+
+<div class="tools">
+  <button class="pill on" data-f="all">All</button>
+  <button class="pill" data-f="LEGACY">Legacy</button>
+  <button class="pill" data-f="PROTECTION">Protection</button>
+  <button class="pill" data-f="FAITH">Faith</button>
+  <button class="pill" data-f="LOVE">Love</button>
+  <button class="pill" data-f="EVERYDAY">Everyday</button>
+  <input type="text" id="q" placeholder="Search listings...">
+  <button class="btn ghost" id="exp">Export CSV</button>
+</div>
+
+<div id="list"></div>
+</div>
+
+<script>
+const CH={
+ LEGACY:{c:'var(--legacy)',
+  surface:'wet black volcanic rock, water still beading in the porous stone catching pinpoint speculars',
+  light:'one warm hard source from camera left at 45 degrees raking along the piece, black flag opposite holding the shadow side, background falling to true black within 30cm',
+  mood:'heavy, quiet, expensive, nocturnal, New York',
+  k:'3200K'},
+ PROTECTION:{c:'var(--protect)',
+  surface:'wet black volcanic stone with coarse sea salt crystals scattered across it and a shard of cobalt blue sea glass just out of focus behind',
+  light:'a single hard shaft of late afternoon sun from camera left at 45 degrees cutting through a dark room, striking only the piece, the rest of the frame falling to near black',
+  mood:'atmospheric, low key, protective, quiet tension',
+  k:'3400K'},
+ FAITH:{c:'var(--faith)',
+  surface:'raw unglazed terracotta tile with a warm limestone wall behind falling into deep shadow, a spent beeswax candle with wax runs and a dried palm frond just out of focus',
+  light:'one hard shaft of late afternoon light entering high from camera left at 45 degrees as through a tall church window, dust visible in the beam',
+  mood:'reverent, inherited, lived in',
+  k:'3400K'},
+ LOVE:{c:'var(--love)',
+  surface:'a slab of white marble laid over cream washed linen with a soft fold of cream raw silk entering the upper right corner',
+  light:'hard late morning sunlight from camera left at 45 degrees through a slatted window blind, throwing crisp parallel shadow bars diagonally across the marble and across the piece',
+  mood:'fresh, generous, morning, gift',
+  k:'5400K'},
+ EVERYDAY:{c:'var(--everyday)',
+  surface:'a warm pale grey seamless surface with a frosted pale ceramic dish at the upper edge of frame and nothing else',
+  light:'soft directional morning light from camera left at 45 degrees casting one clean soft edged shadow from the piece onto the surface',
+  mood:'calm, restrained, considered, quiet luxury',
+  k:'5000K'}
+};
+
+const NEG='Negative: no CGI, no 3D render, no plastic sheen, no artificial specular, no over-smoothed metal, no orange or copper cast, no floating product, no missing contact shadow, no impossible reflections, no text, no watermark, no logo, no cluttered background, no extra fingers, no retouched plastic skin.';
+
+const FRAMES=[
+ {n:'1 · ETSY HERO',ar:'4:5',b:(p,c)=>`Editorial jewelry photograph. ${p} resting on ${c.surface}. ${c.light}. Warm amber highlights against cool neutral shadow. ${c.mood}. Shot on 100mm macro, f/11, deep focus across the piece, natural light only, subtle 35mm film grain, no retouching, colour temperature ${c.k}. Product fills 78 percent of frame. Hard shadow edge present in frame. 4:5 vertical.`},
+ {n:'2 · MACRO CONSTRUCTION',ar:'1:1',b:(p,c)=>`Extreme macro jewelry photograph at 1:1 magnification. ${p}, framed on the clasp, link seam or setting so the build quality and the karat hallmark are legible. Resting on ${c.surface}. ${c.light}. Everything beyond 5mm falls out of focus. Warm amber highlights against cool neutral shadow. Shot on 100mm macro, f/13, natural light only, subtle 35mm film grain, no retouching, colour temperature ${c.k}. Square 1:1.`},
+ {n:'3 · SECOND ANGLE',ar:'1:1',b:(p,c)=>`Editorial jewelry photograph. ${p} seen from an elevated three quarter angle, laid rather than draped, so the profile and thickness of the piece read clearly against ${c.surface}. ${c.light}. Warm amber highlights against cool neutral shadow. ${c.mood}. Shot on 100mm macro, f/11, deep focus, natural light only, subtle 35mm film grain, no retouching, colour temperature ${c.k}. Square 1:1.`},
+ {n:'4 · STACK / CONTEXT',ar:'4:5',b:(p,c)=>`Editorial jewelry photograph. ${p} shown together with two other solid gold Jade Gold pieces of different link styles, arranged in a considered overlapping group on ${c.surface}, so the pieces read as a set that can be worn together. ${c.light}. Warm amber highlights against cool neutral shadow. ${c.mood}. Shot on 100mm macro, f/13, deep focus across all pieces, natural light only, subtle 35mm film grain, no retouching, colour temperature ${c.k}. 4:5 vertical.`},
+ {n:'5 · LIFESTYLE',ar:'4:5',b:(p,c)=>`Editorial lifestyle photograph, close crop. ${p} at rest in a lived environment built from the same material world: ${c.surface}. A hand or forearm may enter the frame edge but no face. ${c.light}. Shallow atmospheric depth, background dissolved. Warm amber highlights against cool neutral shadow. ${c.mood}. Shot on 50mm, f/2.2, ISO 500, natural light only, subtle 35mm film grain, absolutely no skin retouching, real skin texture, colour temperature ${c.k}. 4:5 vertical.`},
+ {n:'6 · INSTAGRAM',ar:'4:5',b:(p,c)=>`Editorial flat lay jewelry photograph shot from directly above. ${p} arranged as a slow repeating graphic pattern across ${c.surface}, cascading in even parallel curves the way a jeweller lays out a run of chains. ${c.light}. Generous negative space in the upper third for caption text. Warm amber highlights against cool neutral shadow. ${c.mood}. Scroll stopping, saveable, high contrast at thumbnail scale. Shot on 100mm macro, f/13, deep focus, natural light only, subtle 35mm film grain, no retouching, colour temperature ${c.k}. 4:5 vertical.`}
+];
+
+const L=[
+{id:'l01',ch:'LEGACY',t:'14K Gold Miami Cuban Link Chain, Shiny CZ Box Lock',pr:'$1,741.50',m:'599 visits / 30d · 2 lifetime sales · biggest wasted traffic in the shop',u:'https://www.etsy.com/listing/1877080307/',d:'a heavy solid 14K yellow gold Miami Cuban link chain with a shiny pave cubic zirconia box lock clasp'},
+{id:'l02',ch:'EVERYDAY',t:'14K Rose Gold Round Box Chain Necklace',pr:'$385.71',m:'508 visits / 30d · 87 lifetime sales',u:'https://www.etsy.com/listing/1862661659/',d:'a fine solid 14K rose gold round box chain necklace, fluid and continuous'},
+{id:'l03',ch:'EVERYDAY',t:'14K Yellow Gold Box Chain Bracelet',pr:'$249.22',m:'457 visits / 30d · 176 lifetime sales',u:'https://www.etsy.com/listing/1523519158/',d:'a solid 14K yellow gold box chain bracelet with a polished lobster clasp'},
+{id:'l04',ch:'LEGACY',t:'10K Gold Rope Chain Necklace, Twisted Diamond Cut',pr:'$226.39',m:'446 visits / 30d · 24 lifetime sales',u:'https://www.etsy.com/listing/1862428966/',d:'a solid 10K yellow gold twisted diamond cut rope chain necklace with faceted spiral surfaces'},
+{id:'l05',ch:'FAITH',t:'14K Solid Gold Rosary Necklace',pr:'$1,277 to $2,090',m:'444 visits / 30d · 11 lifetime sales',u:'https://www.etsy.com/shop/JadeGoldNyc/search?search_query=rosary',d:'a solid 14K gold rosary bead necklace with a crucifix and a Miraculous Medal centrepiece, the beads following a loose natural curve'},
+{id:'l06',ch:'EVERYDAY',t:'10K Solid Gold Bead Ball Chain',pr:'$604 to $4,180',m:'349 visits / 30d · 44 lifetime sales · ad ROAS 38.58',u:'https://www.etsy.com/shop/JadeGoldNyc/search?search_query=bead+ball+chain',d:'a solid 10K gold bead ball chain necklace, polished spheres in an even repeating sequence'},
+{id:'l07',ch:'LEGACY',t:'14K Yellow Gold Miami Cuban Link Chain, CZ Box Lock',pr:'$4,563.50',m:'312 visits / 30d · 11 lifetime sales · highest ticket in the shop',u:'https://www.etsy.com/listing/1876638143/',d:'a very heavy solid 14K yellow gold Miami Cuban link chain with a cubic zirconia box lock clasp'},
+{id:'l08',ch:'LEGACY',t:'14K Real Gold Rope Chain Bracelet',pr:'$348 to $2,903',m:'$201k lifetime · 335 units · starved to 51 visits',u:'https://www.etsy.com/listing/1296896712/',d:'a solid 14K gold twisted diamond cut rope bracelet, tight spiral, high polish'},
+{id:'l09',ch:'LEGACY',t:'14K Gold Rope Bracelet, Twisted Diamond Cut',pr:'$174 to $929',m:'$134k lifetime · 325 units',u:'https://www.etsy.com/listing/1296896712/',d:'a solid 14K gold rope bracelet with a tight twist and deep diamond cut facets'},
+{id:'l10',ch:'PROTECTION',t:'14K Gold Evil Eye Pendant',pr:'$51.60',m:'$110k lifetime · 1,319 units · best product in shop history',u:'https://www.etsy.com/listing/1203090834/',d:'a small solid 14K gold puffed evil eye pendant with a deep cobalt blue and white enamel centre'},
+{id:'l11',ch:'LEGACY',t:'10K Solid Gold Square Nugget Ring',pr:'$139 to $619',m:'$108k lifetime · 293 units',u:'https://www.etsy.com/shop/JadeGoldNyc/search?search_query=nugget+ring',d:'a solid 10K gold square nugget ring with a rough cast faceted nugget face and a polished shank'},
+{id:'l12',ch:'LEGACY',t:'14K Yellow Gold Franco Bracelet',pr:'$975 to $6,153',m:'$88k lifetime · 106 units',u:'https://www.etsy.com/listing/1771229327/',d:'a solid 14K yellow gold Franco chain bracelet with a tight square woven link'},
+{id:'l13',ch:'EVERYDAY',t:'10K Solid Gold Herringbone Necklace',pr:'$86 to $1,995',m:'$81k lifetime · 104 units',u:'https://www.etsy.com/shop/JadeGoldNyc/search?search_query=herringbone',d:'a solid 10K gold herringbone necklace, a flat liquid ribbon of gold that catches light as one continuous sheet'},
+{id:'l14',ch:'LEGACY',t:'10K Real Gold Miami Cuban Link Bracelet',pr:'$153 to $2,819',m:'$74k lifetime · 131 units · 368 visits / 30d',u:'https://www.etsy.com/listing/4320364926/',d:'a solid 10K gold Miami Cuban link bracelet with a box lock clasp'},
+{id:'l15',ch:'LEGACY',t:'10K Gold Miami Cuban Link Chain, CZ Box Lock',pr:'$3,715.20',m:'$64k lifetime · 65 units',u:'https://www.etsy.com/listing/1764133503/',d:'a heavy solid 10K gold Miami Cuban link chain with a pave cubic zirconia box lock'},
+{id:'l16',ch:'PROTECTION',t:'14K Gold Cornicello Necklace',pr:'$139 to $619',m:'$50k lifetime · 156 units · starved to 48 visits',u:'https://www.etsy.com/shop/JadeGoldNyc/search?search_query=cornicello',d:'a solid 14K gold cornicello Italian horn pendant, ribbed and tapered to a fine curved point'},
+{id:'l17',ch:'PROTECTION',t:'10K Gold Italian Horn Cornicello Pendant',pr:'$86 to $340',m:'$10k lifetime · 60 units · 16 visits',u:'https://www.etsy.com/shop/JadeGoldNyc/search?search_query=italian+horn',d:'a solid 10K gold Italian horn cornicello pendant with a twisted ribbed body'},
+{id:'l18',ch:'PROTECTION',t:'14K Gold 3D Evil Eye Pendant',pr:'$100 to $420',m:'$15k lifetime · 100 units · 16 visits',u:'https://www.etsy.com/shop/JadeGoldNyc/search?search_query=3d+evil+eye',d:'a solid 14K gold three dimensional evil eye pendant with cobalt blue enamel on both faces'},
+{id:'l19',ch:'PROTECTION',t:'14K Gold Puffed Evil Eye Pendant',pr:'$90 to $380',m:'$10k lifetime · 65 units · 12 visits',u:'https://www.etsy.com/listing/1203090834/',d:'a solid 14K gold puffed evil eye pendant, domed and hollow formed, blue and white enamel eye'},
+{id:'l20',ch:'LOVE',t:'10K Yellow Gold Graduated Hoop Earrings',pr:'$118 to $365',m:'$47,938 lifetime · 79 units · ad ROAS 25.15',u:'https://www.etsy.com/listing/1481715945/',d:'a pair of solid 10K yellow gold graduated diamond cut hoop earrings, thickening toward the base'},
+{id:'l21',ch:'LOVE',t:'10K Large Diamond Cut Bamboo Hoop Earrings',pr:'$140 to $420',m:'$64,168 lifetime · 106 units · strongest category',u:'https://www.etsy.com/shop/JadeGoldNyc/search?search_query=bamboo+hoop',d:'a pair of large solid 10K gold bamboo textured hoop earrings with segmented ribbed detail and diamond cut facets'},
+{id:'l22',ch:'FAITH',t:'10K Gold Last Supper Charm Pendant, Two Tone',pr:'$494.50',m:'Faith chapter anchor · devotional line',u:'https://www.etsy.com/listing/1767534157/',d:'a solid 10K two tone gold Last Supper medallion pendant with raised relief figures and a fluted edge'}
+];
+
+const K='jg_console_v1';
+let S=JSON.parse(localStorage.getItem(K)||'{}');
+const save=()=>localStorage.setItem(K,JSON.stringify(S));
+let filter='all',qs='';
+
+function prompt_(l,f){
+  const c=CH[l.ch];
+  let p=`CHAPTER ${l.ch}. `+f.b(l.d,c)+' '+NEG;
+  const r=(S[l.id]&&S[l.id].ref)||'';
+  if(r) p='Use the attached reference image as the exact product. Keep the product geometry, link style, proportions, clasp and karat colour identical to the reference. Rebuild only the environment, surface and lighting as described. '+p;
+  return p;
+}
+
+function render(){
+  const box=document.getElementById('list');
+  const items=L.filter(l=>(filter==='all'||l.ch===filter)&&(!qs||(l.t+' '+l.ch).toLowerCase().includes(qs)));
+  if(!items.length){box.innerHTML='<div class="empty">No listings match.</div>';return}
+  box.innerHTML=items.map(l=>{
+    const st=S[l.id]||{};
+    const dn=FRAMES.filter((_,i)=>st['d'+i]).length;
+    return `<div class="card ${dn===6?'done':''}" id="c-${l.id}">
+      <div class="head" onclick="tog('${l.id}')">
+        <span class="chip" style="background:${CH[l.ch].c}">${l.ch}</span>
+        <div><div class="t">${l.t}</div><div class="meta">${l.pr} &nbsp;·&nbsp; ${l.m}</div></div>
+        <div class="count">${dn}/6 frames<br><a class="ext" href="${l.u}" target="_blank" rel="noopener" onclick="event.stopPropagation()">open on Etsy ↗</a></div>
+      </div>
+      <div class="body">
+        <div class="refrow">
+          <span class="lbl">REFERENCE IMAGE URL</span>
+          <input type="url" placeholder="Paste the Etsy product image address here to lock the real product" value="${(st.ref||'').replace(/"/g,'&quot;')}" oninput="setRef('${l.id}',this.value)">
+          <button class="btn ghost" onclick="copyAll('${l.id}')">Copy all 6 prompts</button>
+        </div>
+        ${FRAMES.map((f,i)=>`
+        <div class="frame">
+          <div class="fh">
+            <span class="fn">${f.n}</span><span class="ar">${f.ar}</span>
+            <button class="btn" onclick="cp('${l.id}',${i},this)">Copy prompt</button>
+          </div>
+          <pre id="p-${l.id}-${i}">${prompt_(l,f).replace(/</g,'&lt;')}</pre>
+          <div class="dl">
+            <div class="top">
+              <span class="lbl">SEÇENEKLER</span>
+              <span class="opts">${(opts(l.id,i).length)||0} yüklendi${sel(l.id,i)>-1?' · '+(sel(l.id,i)+1)+' seçildi':''}</span>
+            </div>
+            <textarea placeholder="Üretilen tüm görsel linklerini buraya yapıştır. Virgül veya alt alta, fark etmez." oninput="setOpts('${l.id}',${i},this.value)">${(st['o'+i]||'').replace(/</g,'&lt;')}</textarea>
+            ${opts(l.id,i).length?`<div class="grid">${opts(l.id,i).map((u,j)=>`
+              <div class="thumb ${sel(l.id,i)===j?'sel':''}" onclick="pick('${l.id}',${i},${j})" title="${u}">
+                <span class="num">${j+1}</span>
+                <img src="${u}" loading="lazy" onerror="this.parentNode.innerHTML='<span class=&quot;num&quot;>${j+1}</span><div class=&quot;no&quot;>önizleme yok<br>tıkla ve seç</div>'">
+              </div>`).join('')}</div>
+            ${sel(l.id,i)>-1?`<div style="margin-top:8px;display:flex;gap:10px;align-items:center"><span class="lbl">SEÇİLEN</span><a href="${opts(l.id,i)[sel(l.id,i)]}" target="_blank" rel="noopener">aç ↗</a><button class="btn ghost" style="padding:4px 10px;font-size:11px" onclick="navigator.clipboard.writeText('${opts(l.id,i)[sel(l.id,i)]}')">linki kopyala</button></div>`:''}`:''}
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+  stats();
+}
+
+function stats(){
+  let d=0,fl=0;
+  L.forEach(l=>{const st=S[l.id]||{};const n=FRAMES.filter((_,i)=>st['d'+i]).length;d+=n;if(n===6)fl++});
+  const pct=Math.round(d/132*100);
+  document.getElementById('sDone').textContent=d;
+  document.getElementById('sPct').textContent=pct+'%';
+  document.getElementById('sList').textContent=fl;
+  document.getElementById('pb').style.width=pct+'%';
+}
+function tog(id){document.getElementById('c-'+id).classList.toggle('open')}
+function setRef(id,v){S[id]=S[id]||{};S[id].ref=v;save();
+  const l=L.find(x=>x.id===id);
+  FRAMES.forEach((f,i)=>{const el=document.getElementById('p-'+id+'-'+i);if(el)el.textContent=prompt_(l,f)});
+}
+function opts(id,i){
+  const v=(S[id]&&S[id]['o'+i])||'';
+  return v.split(/[\s,]+/).map(s=>s.trim()).filter(s=>/^https?:\/\//i.test(s));
+}
+function sel(id,i){
+  const v=S[id]&&S[id]['s'+i];
+  return (v===undefined||v===null)?-1:v;
+}
+function saveOpts(id,i,v){S[id]=S[id]||{};S[id]['o'+i]=v;save()}
+function setOpts(id,i,v){
+  S[id]=S[id]||{};S[id]['o'+i]=v;
+  if(sel(id,i)>=opts(id,i).length)S[id]['s'+i]=null;
+  save();render();
+}
+function pick(id,i,j){
+  S[id]=S[id]||{};
+  S[id]['s'+i]=(sel(id,i)===j?null:j);
+  save();render();
+}
+function cp(id,i,btn){
+  const l=L.find(x=>x.id===id);
+  navigator.clipboard.writeText(prompt_(l,FRAMES[i]));
+  const o=btn.textContent;btn.textContent='Copied';setTimeout(()=>btn.textContent=o,1100);
+}
+function copyAll(id){
+  const l=L.find(x=>x.id===id);
+  const txt=FRAMES.map((f,i)=>`=== ${l.t} — ${f.n} (${f.ar}) ===\n`+prompt_(l,f)).join('\n\n');
+  navigator.clipboard.writeText(txt);
+}
+document.querySelectorAll('.pill').forEach(p=>p.onclick=()=>{
+  document.querySelectorAll('.pill').forEach(x=>x.classList.remove('on'));
+  p.classList.add('on');filter=p.dataset.f;render();
+});
+document.getElementById('q').oninput=e=>{qs=e.target.value.toLowerCase();render()};
+document.getElementById('exp').onclick=()=>{
+  const rows=[['listing','chapter','price','frame','aspect','reference_image','output_link','done','prompt']];
+  L.forEach(l=>{const st=S[l.id]||{};FRAMES.forEach((f,i)=>{
+    rows.push([l.t,l.ch,l.pr,f.n,f.ar,st.ref||'',st['u'+i]||'',st['d'+i]?'yes':'no',prompt_(l,f)]);
+  })});
+  const csv=rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download='jade-gold-production-console.csv';a.click();
+};
+render();
+</script>
+</body>
+</html>
