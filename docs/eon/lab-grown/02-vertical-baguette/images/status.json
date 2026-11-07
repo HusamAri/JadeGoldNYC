@@ -1,0 +1,169 @@
+{
+  "product": "EON-VB6",
+  "date": "2026-11-07",
+  "set": "owner-approved 10 frames, amber + teal",
+  "export": "PNG 2400x1792 -> JPEG q88 sRGB, metadata stripped (ImageMagick -strip), 336-719 KB",
+  "frames": {
+    "01-hero": {
+      "chosen": "v2",
+      "job": "9bf92225-e6d2-4373-9282-48f009463d49",
+      "rejected": [
+        {
+          "v": "v1",
+          "job": "f56089cb-5861-4032-bf0e-f31a725ab8df",
+          "why": "stone laid lengthwise along the band and cut like an emerald (1.6:1, clipped corners); the prompt said 'set vertically', which the model read in picture space"
+        }
+      ]
+    },
+    "02-stone": {
+      "chosen": "v1",
+      "job": "bc20ec1d-d783-4b07-a770-fe32cea04450"
+    },
+    "03-flat": {
+      "chosen": "v1",
+      "job": "04241650-14a0-4347-90a0-e8c278667fb6"
+    },
+    "04-hand-m": {
+      "chosen": "v1",
+      "job": "4529d710-e479-44f7-bc25-5d16d5c6efb6",
+      "qa": "ring on the fourth finger: the finger next to it is the shortest and outermost (little finger)"
+    },
+    "05-inside": {
+      "chosen": "v2",
+      "job": "32fe485e-6d17-4812-b6ff-fe8d6df20171",
+      "from": "edit of v1 (job b43c1105-aa79-4741-bb4e-7cf8ade046af), only the stone changed",
+      "rejected": [
+        {
+          "v": "v1",
+          "job": "b43c1105-aa79-4741-bb4e-7cf8ade046af",
+          "why": "the stone at twelve o'clock read slightly proud of the band; the description says flush"
+        }
+      ]
+    },
+    "06-hand-w": {
+      "chosen": "v1",
+      "job": "94bfdbd2-4944-4f89-8de6-24f5c649cc9e",
+      "qa": "ring on the fourth finger; one ring, no other jewellery; hand beside the cup, not holding it"
+    },
+    "07-metals": {
+      "chosen": "v1",
+      "job": "27784bb0-9764-46b8-bdb0-dea0cbf79fb0",
+      "qa": "yellow / white / rose left to right; no yellow surface crop given (colour frame)"
+    },
+    "08-scale": {
+      "chosen": "v2",
+      "job": "e2db7dda-0f4f-47e8-955e-07dfec1f5d13",
+      "rejected": [
+        {
+          "v": "v1",
+          "job": "11420a60-6f40-43c7-b27d-255dc2593c44",
+          "why": "band read about 2.7:1 against the diameter (6 mm band at US 8.5 is about 3.8:1), like a short wide tube, in the true-size frame"
+        }
+      ]
+    },
+    "09-light": {
+      "chosen": "v2",
+      "job": "abeeccb8-2149-4c04-b411-ee2d76aee1a9",
+      "rejected": [
+        {
+          "v": "v1",
+          "job": "17030b0b-e380-4ef4-940a-4d15ef7d42be",
+          "why": "near copy of 01 (same standing pose and angle); the 01 surface crop leaked its composition, so v2 got the design crops only"
+        }
+      ]
+    },
+    "10-dish": {
+      "chosen": "v1",
+      "job": "04b1840e-94bb-4712-bceb-4fccfbdb4d9a"
+    }
+  },
+  "credits": {
+    "generations": 14,
+    "creditsPerGeneration": 2,
+    "credits": 28,
+    "accepted": 10,
+    "rejected": 4
+  },
+  "gallery": [
+    {
+      "position": 0,
+      "file": "public/eon/lab-grown-vb6/01.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-vb6/01.jpg",
+      "alt": "14K yellow gold 6 mm band with one lab-grown diamond baguette set crosswise and flush, standing on pale travertine in soft window light.",
+      "md5": "32c9e5c36d1fac184f13ebd3a15d4b97",
+      "frame": "01-hero"
+    },
+    {
+      "position": 1,
+      "file": "public/eon/lab-grown-vb6/02.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-vb6/02.jpg",
+      "alt": "Close-up of the lab-grown diamond baguette set flush across the brushed 14K gold band, its step-cut facets meeting clean gold edges.",
+      "md5": "1377ecdba4bc9477f214a854acc94ddc",
+      "frame": "02-stone"
+    },
+    {
+      "position": 2,
+      "file": "public/eon/lab-grown-vb6/03.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-vb6/03.jpg",
+      "alt": "The 14K gold band lying flat on light oak, showing the 2.2 mm wall, the 6 mm brushed face and the crosswise lab-grown diamond baguette.",
+      "md5": "fe318118d03e4718e33f7334a0ec6b0e",
+      "frame": "03-flat"
+    },
+    {
+      "position": 3,
+      "file": "public/eon/lab-grown-vb6/04.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-vb6/04.jpg",
+      "alt": "A man's hand on linen wearing the 6 mm brushed 14K gold band with a lab-grown diamond baguette on the ring finger.",
+      "md5": "782356c004606f8600a47833503d4ff6",
+      "frame": "04-hand-m"
+    },
+    {
+      "position": 4,
+      "file": "public/eon/lab-grown-vb6/05.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-vb6/05.jpg",
+      "alt": "View through the ring showing the smooth polished inside of the 14K gold band, with the lab-grown diamond baguette flush at the top.",
+      "md5": "16c7700969c71c86fa1a8c82418c1eb9",
+      "frame": "05-inside"
+    },
+    {
+      "position": 5,
+      "file": "public/eon/lab-grown-vb6/06.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-vb6/06.jpg",
+      "alt": "A woman's hand beside a ceramic cup wearing the 6 mm brushed 14K gold band with a lab-grown diamond baguette on the ring finger.",
+      "md5": "4d8526c00940e7fc9be81e15879a5e69",
+      "frame": "06-hand-w"
+    },
+    {
+      "position": 6,
+      "file": "public/eon/lab-grown-vb6/07.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-vb6/07.jpg",
+      "alt": "The band in 14K yellow, white and rose gold side by side, each with one lab-grown diamond baguette set crosswise across the band.",
+      "md5": "31bb9564b27a3a32f433395e565003e0",
+      "frame": "07-metals"
+    },
+    {
+      "position": 7,
+      "file": "public/eon/lab-grown-vb6/08.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-vb6/08.jpg",
+      "alt": "The ring held between thumb and index finger to show its true size: a 6 mm brushed 14K gold band with a lab-grown diamond baguette.",
+      "md5": "6769333295ea871b91961d1ac242970e",
+      "frame": "08-scale"
+    },
+    {
+      "position": 8,
+      "file": "public/eon/lab-grown-vb6/09.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-vb6/09.jpg",
+      "alt": "Low view of the 14K gold band on travertine in a beam of sunlight, the lab-grown diamond baguette sitting flush and flashing in clean lines.",
+      "md5": "a736ac47dd26696655997baed11a6007",
+      "frame": "09-light"
+    },
+    {
+      "position": 9,
+      "file": "public/eon/lab-grown-vb6/10.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-vb6/10.jpg",
+      "alt": "The 14K gold band with its lab-grown diamond baguette resting in a small ceramic dish on an oak bedside table by the window.",
+      "md5": "8000c38d2cdad580d9a1c0dcbc418aa7",
+      "frame": "10-dish"
+    }
+  ]
+}

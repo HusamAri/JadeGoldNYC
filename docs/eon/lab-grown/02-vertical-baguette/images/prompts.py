@@ -19,20 +19,26 @@ HERE = Path(__file__).resolve().parent
 RING_Y = (
     "The ring: a solid 14K yellow gold band, 6 mm wide and 2.2 mm thick, with a flat outer face and "
     "crisp, squared edges. The outer face has a fine, even brushed satin finish, its soft grain running "
-    "around the band; the inside is smooth high polish. One single lab-grown diamond baguette, a long, "
-    "narrow, step-cut rectangle about 6 x 2 mm, bright and colourless, is set vertically: its long side "
-    "runs across the band from one edge to the other, its top sits level with the brushed face, and the "
-    "gold meets its two long sides in clean straight lines. It is the only stone on the ring: no other "
-    "diamonds, no pave, no prongs, no claws, no raised bezel, no engraving, no hallmark, no text."
+    "around the band; the inside is smooth high polish. One single lab-grown diamond baguette, bright and "
+    "colourless: a narrow straight baguette with square corners, three times as long as it is wide, about "
+    "6 x 2 mm. It is set crosswise, at right angles to the band's direction around the finger: its long "
+    "sides run straight across the band from one edge of the band to the other, so the stone spans the "
+    "full 6 mm width of the band and is only 2 mm long in the direction the band runs. Its top sits level "
+    "with the brushed face, and the gold meets its two long sides in clean straight lines. The stone is "
+    "not laid lengthwise along the band, and it is not an emerald cut and not a square stone. It is the "
+    "only stone on the ring: no other diamonds, no pave, no prongs, no claws, no raised bezel, no "
+    "engraving, no hallmark, no text."
 )
 RING_3 = (
     "Three identical rings of this one design stand upright side by side in a row, evenly spaced, each "
     "with its baguette facing the camera. From left to right the metals are 14K yellow gold (warm soft "
     "yellow), 14K white gold (bright cool silver-white) and 14K rose gold (soft warm pink). All three "
     "have the same 6 mm flat band with crisp, squared edges and a brushed satin outer face, and the same "
-    "single lab-grown diamond baguette, a long, narrow, step-cut rectangle set vertically across the "
-    "band from edge to edge, its top level with the brushed face. Each ring has only that one stone: no "
-    "other diamonds, no pave, no prongs, no raised bezel, no engraving, no text."
+    "single lab-grown diamond baguette: a narrow straight baguette with square corners, three times as "
+    "long as it is wide, set crosswise at right angles to the band, spanning the band's full width from "
+    "one edge to the other, its top level with the brushed face; not laid lengthwise along the band and "
+    "not an emerald cut. Each ring has only that one stone: no other diamonds, no pave, no prongs, no "
+    "raised bezel, no engraving, no text."
 )
 SCENE = (
     "Setting: a natural home studio in soft late-afternoon daylight from a large window, with a warm "
@@ -67,7 +73,8 @@ REF_COLOURS = (
 FRAMES = [
     ("01-hero", "the design at a glance (Etsy first photo: one product, no text)", RING_Y, REF_HERO,
      "The ring stands upright on the pale travertine surface, seen from a three-quarter front angle a "
-     "little above it. The baguette faces the camera at the front centre of the band; the full circle "
+     "little above it. The baguette faces the camera on the part of the band nearest the lens, where it "
+     "reads as a short, bright bar running across the band from edge to edge; the full circle "
      "of the band is visible and nothing is cut off. The ring sits in the centre of the frame and fills "
      "a little more than half of the frame's height, with generous space on the left and right so that a square crop "
      "keeps the whole ring. A soft amber patch of light lies on the plaster wall behind it and a faint "
@@ -110,13 +117,17 @@ FRAMES = [
     ("08-scale", "real size against a fingertip", RING_Y, REF_SERIES,
      "The ring is held upright between the thumb and index finger of a hand, close to the camera, the "
      "baguette facing the lens. The ring is about 2 cm across, about the size of the fingertip and never "
-     "larger. Fingers relaxed, natural skin, short clean nails. Behind, the ivory plaster wall with a "
-     "soft amber patch of light is out of focus."),
-    ("09-light", "the baguette's light: clean step-cut flashes", RING_Y, REF_SERIES,
-     "The ring stands upright on the travertine in a narrow beam of late sunlight. The camera is close, "
-     "level with the baguette and slightly to one side. The step-cut facets throw crisp white flashes in "
-     "clean straight lines, with one small spark of teal; the brushed gold around the stone glows softly "
-     "without glare. The background falls into warm amber shade."),
+     "larger. The band's 6 mm width is only about a quarter of the ring's outer diameter of about 23 mm, so it "
+     "reads as a ring and not as a short wide tube. Fingers relaxed, natural skin, short clean nails. Behind, "
+     "the ivory plaster wall with a soft amber patch of light is out of focus."),
+    ("09-light", "flush, low profile and the baguette's light, in a grazing view", RING_Y, REF_HERO,
+     "Low grazing view along the band. The ring lies flat on the travertine, its opening facing up. The camera "
+     "is low, almost at table level and close to the ring, looking along the band's brushed outer face toward the "
+     "baguette, so the brushed surface runs away from the lens and the stone sits level with it, no edge of the "
+     "stone standing above the gold. A narrow beam of late sunlight grazes across the band from one side: the "
+     "step-cut facets throw crisp white flashes in clean straight lines, with one small spark of teal, and the "
+     "brushed grain glows softly without glare. The far side of the ring and the background fall into warm amber "
+     "shade."),
     ("10-dish", "at home: where it rests at night", RING_Y, REF_SERIES,
      "The ring rests in a small, shallow, handmade ceramic dish with a matte off-white glaze, on a light "
      "oak bedside table by the window, seen from above at about 45 degrees. The ring lies flat in the "
@@ -132,7 +143,7 @@ for fid, feature, ring, ref, frame in FRAMES:
     for blk in (SCENE, PHOTO):
         assert p.count(blk) == 1, (fid, blk[:30])
     assert (p.count(RING_Y), p.count(RING_3)) == ((0, 1) if fid == "07-metals" else (1, 0)), fid
-    assert (ref is REF_HERO) == (fid == "01-hero") and (ref is REF_COLOURS) == (fid == "07-metals"), fid
+    assert (ref is REF_HERO) == (fid in ("01-hero", "09-light")) and (ref is REF_COLOURS) == (fid == "07-metals"), fid
     # bilinen tuzaklar
     low = p.lower()
     for bad in ("classic", "same metal", "exact copy", "solitaire", "sparkle shape", "macro",
@@ -140,6 +151,10 @@ for fid, feature, ring, ref, frame in FRAMES:
         assert bad not in low, (fid, bad)
     assert all(m.group(0) == "no pave" for m in re.finditer(r"\w+ pave", low)), fid   # pave yalnız olumsuz
     assert "baguette" in low and "lab-grown diamond baguette" in low, fid
+    # 2026-11-07 hero v1: "set vertically" was read in picture space -> stone laid lengthwise, emerald cut.
+    assert "vertical" not in low and "crosswise" in low and "right angles to the band" in low, fid
+    assert "square corners" in low and "three times as long as it is wide" in low, fid
+    assert "not laid lengthwise along the band" in low and "not an emerald cut" in low, fid
     hands = bool(re.search(r"\bhand\b", low))
     assert hands == (fid in ("04-hand-m", "06-hand-w", "08-scale")), (fid, "el yalnız el karelerinde")
     if hands and fid != "08-scale":

@@ -34,9 +34,18 @@
     "Ring Size"
   ],
   "colors": [
-    ["YG", "Yellow Gold"],
-    ["WG", "White Gold"],
-    ["RG", "Rose Gold"]
+    [
+      "YG",
+      "Yellow Gold"
+    ],
+    [
+      "WG",
+      "White Gold"
+    ],
+    [
+      "RG",
+      "Rose Gold"
+    ]
   ],
   "sizes": {
     "from": 4,
@@ -74,7 +83,10 @@
   "quantityPerVariant": 20,
   "pricing": {
     "makerNoteVerbatim": "6 mm için Baguette. Minimum 2.20 mm thickness. Minimum 6 mm. 0.35 ct 6×2 taş ölçüsü. 8½ size 11,5 gram. taş fiyat 280$ 1 ct. 1150$. taş takma 10$",
-    "makerWhatsApp": ["abi bizim ki 6mm", "liste de 2 numara da hesabi yaziyor"],
+    "makerWhatsApp": [
+      "abi bizim ki 6mm",
+      "liste de 2 numara da hesabi yaziyor"
+    ],
     "readingUsed": "B: 11.5 g x 100 USD/g = 1,150 (gold + labor, the maker's 14K band-list convention) + stone 98 + setting 10 = 1,258 at US 8.5",
     "readingAlternative": "A: 1,150 all-in -> list 2,440 / buyer 1,830",
     "packagingUsd": 8,
@@ -86,7 +98,12 @@
     "listUsd": 2665,
     "buyerUsd": 1999,
     "onePriceAllSizes": true,
-    "worstOffsiteProfitBySizeUsd": {"US4": 630, "US8.5": 420, "US13": 211, "US16": 72},
+    "worstOffsiteProfitBySizeUsd": {
+      "US4": 630,
+      "US8.5": 420,
+      "US13": 211,
+      "US16": 72
+    },
     "at35PercentSale": "US 13 and up fall below zero at the worst Offsite fee; the price is set for the 25% sale running in November (orders 2026-11-05/06: 25% and 15%; 35% last seen 2026-10-28)",
     "spotUsdPerOzt": 4072.1,
     "spotDate": "2026-11-07",
@@ -97,9 +114,9 @@
     "methodology": "docs/eon/lab-grown/price_model.py vb; formula lib/pricing-engine/eon-cost.ts 457-472"
   },
   "approval": {
-    "authority": "pending owner decision 2026-11-07 (price, scope, gallery prompts)",
-    "panelDraftAuthorized": false,
-    "etsyDraftCreationAuthorized": false,
+    "authority": "Owner 2026-11-07 (question card): list 2,665 USD -> 25% sale -> 1,999 USD, one price for every size; scope 14K, 3 colours, US 4-16 with half sizes (75 variants); gallery 10 frames, amber + teal light, approved; EON-DSP price kept until the maker answers the stone/setting question.",
+    "panelDraftAuthorized": true,
+    "etsyDraftCreationAuthorized": true,
     "livePublicationAuthorized": false,
     "blockers": [
       "Etsy activation needs at least one unedited photo of the physical piece (draft allowed)",

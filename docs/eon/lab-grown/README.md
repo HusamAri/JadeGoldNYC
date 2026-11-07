@@ -40,7 +40,29 @@ Studio'nun üreticisiyle aynı: 14K bant = gram × $100 işçilik dahil, ek kale
   `ops/drafts-push`'u bağlar, panel butonu onu okumaz. **Yayına alma** için en az bir gerçek,
   düzenlenmemiş ürün fotoğrafı şart; AI kare ilk fotoğraf olamaz (playbook 01/04).
 
+## 02 Vertical Baguette (EON-VB6), 2026-11-07
+- Girdi: üreticinin WhatsApp fotoğrafı (PISSARRO filigranlı, üçüncü taraf) + "abi bizim ki 6mm" + notun Model 2'si.
+- Fiyat kararı (sahip): liste **$2.665** → %25 vitrin → alıcı **$1.999**, her beden tek fiyat. Kanıt:
+  `2026-11-07-vertical-baguette-pricing.md` + `price_model.py vb`. Okuma B: 11,5 g × $100 + taş $98 + takma $10.
+- Kapsam v1 (sahip): 14K, Metal Color × Ring Size **US 4–16** yarım bedenler, 75 varyant
+  `EON-VB6-14K-{YG,WG,RG}-US040..160`, `ring_band`. Gram üreticinin beden eğrisi, 11,5 g @ US 8½ (`estimated`).
+- Panel taslağı: `supabase/migrations/0176_eon_lab_grown_vb6.sql` (üreteç `scripts/eon/gen_lab_grown_vb_migration.mjs`,
+  ortak metin kapıları `scripts/eon/lab_grown_gates.mjs`). Ürün id `0a054271-36ad-490d-a073-954cb0d54fc1`.
+- Mühür: `5af23988109992c54d50bb2de6cfd385` (sorgu DSP'ninkiyle aynı, `sku like 'EON-VB6-%'`).
+- Galeri: Higgsfield, 10 kare, `02-vertical-baguette/images/` (prompts.py → prompts.json, jobs.json, status.json).
+  Kural: taş "vertical" değil fiziksel tarifle yazılır ("crosswise, at right angles to the band", kare köşe, 3:1);
+  "set vertically" modelde resim düzlemine göre okundu ve 01 v1'de taşı boylamasına, emerald kesimle çizdi.
+- Açıklamada karat YOK (6 × 2 mm için notta 0,35 ct, tipik 0,15-0,20 ct; üretici teyidi bekliyor).
+- Galeri dosyaları `public/eon/lab-grown-vb6/01-10.jpg` (2400×1792, sRGB, meta verisi sökülmüş, <1 MB), panel
+  satırları `0177_eon_lab_grown_vb6_gallery.sql` (üreteç `scripts/eon/gen_lab_grown_vb_gallery_migration.mjs`).
+  **0177 ancak prod dağıtımından ve 10 URL'in 10'u 200 döndükten sonra uygulanır**; push önce `image_url`'i
+  (01, yazısız hero) yükler. 14 üretim / 28 kredi: 10 kabul, 4 ret (gerekçeler `images/status.json`).
+
 ## Üreticiye açık sorular (cevap gelmeden Etsy'ye çıkmaz)
+0. **(2026-11-07, DSP canlı)** $550 (Model 1) ve $1.150 (Model 2) fiyatlarına taş ve taş takma dahil mi? Model 2'de
+   11,5 g × $100 = $1.150 tam tuttuğu için konvansiyon "gram × $100 + taş + takma ayrı" görünüyor; DSP'de taş ve takma
+   ayrıysa en kötü Offsite kârı $134'ten $4'a (taş ~$100/ct) ya da −$136'ya (taş $280/ct) düşer. Sahip: fiyat aynı,
+   önce sor. Model 2 için ayrıca: 6 × 2 mm baget 0,35 ct mi, fiyat bedenle değişir mi?
 1. $550, US 4–10 için tek fiyat mı? (not "örn. size 7" diyor; US10'da altın +$42.)
 2. Taşların rengi/berraklığı (referans D/VS1 iddia edilmedi; `stone_color/clarity` boş).
 3. Beyaz altın rodyum kaplı mı? (FTC §23.7 beyan; metinde kaplama iddiası yok.)

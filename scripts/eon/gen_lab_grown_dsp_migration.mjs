@@ -28,6 +28,8 @@ import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { checkListingText } from "./lab_grown_gates.mjs";
+
 const here = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(here, "../..");
 const pkgRel = "docs/eon/lab-grown/01-double-shared-prong";
@@ -36,34 +38,8 @@ const outFile = path.join(repoRoot, "supabase/migrations/0175_eon_lab_grown_dsp.
 
 const EON_ORG = "9d0336c0-8772-456d-a80c-a5f2cfe7bbd0";
 
-// ---- metin kapıları
-const words = L.title.trim().split(/\s+/);
-assert(words.length < 15, `başlık ${words.length} kelime`);
-assert(L.title.length <= 140, "başlık 140 kr");
-assert(/\b14K Gold\b/.test(L.title) && !/\b1[08]K\b/.test(L.title), "başlıkta yalnız satılan ayar: 14K");
-assert.equal(L.tags.length, 13);
-const wset = (t) =>
-  t.toLowerCase().split(/\s+/).map((w) => (w.length > 3 && w.endsWith("s") ? w.slice(0, -1) : w)).sort().join(" ");
-assert.equal(new Set(L.tags.map(wset)).size, 13, "tag kelime-kümesi tekrarı");
-const DEAD = /\b(gift|anniversary|promise|his|hers|him|her|unisex|minimalist|christmas)\b/;
-for (const t of L.tags) {
-  assert(t.length <= 20 && /^[a-z0-9' ]+$/.test(t), `tag biçimi: ${t}`);
-  assert(!DEAD.test(t), `occasion sözcüğü: ${t}`);
-}
-// FTC §23.25: taş adının hemen önünde lab niteleyicisi; "mined diamonds" yalnız karşılaştırma.
-const UNQUALIFIED =
-  /(?<!\blab grown )(?<!\blab-grown )(?<!\blaboratory-grown )(?<!\blab created )(?<!\bmined )\bdiamonds?\b/i;
-for (const [k, text] of Object.entries({
-  title: L.title,
-  description: L.description,
-  tags: L.tags.join("\n"),
-  materials: L.materials.join("\n"),
-})) {
-  const m = UNQUALIFIED.exec(text);
-  assert(!m, `${k}: niteliksiz "diamond" @${m?.index}: …${text.slice(Math.max(0, (m?.index ?? 0) - 40), (m?.index ?? 0) + 12)}…`);
-}
-assert(!/\blab diamond\b/i.test(L.description + L.title + L.tags.join(" ")), '"lab diamond" yetersiz niteleyici');
-assert(!/\bAI\b|\brender|\bvisuali[sz]ation|ABOUT THE IMAGES/i.test(L.description), "görsel yokken görsel beyanı yazılmaz");
+// ---- metin kapıları (ortak: scripts/eon/lab_grown_gates.mjs)
+checkListingText(L);
 
 // ---- gram: geometri (iç çap 11,63 + 0,8128×US; orta çevre × kesit × doluluk; taş yuvası %12)
 const geomG = (w, thick, us) => {
