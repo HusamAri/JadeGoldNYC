@@ -1,0 +1,27 @@
+{
+  "product": "EON-VB6",
+  "model": "nano_banana_2",
+  "aspect_ratio": "4:3",
+  "resolution": "2k",
+  "count": 1,
+  "why": "nano_banana_2 resolution varsayılanı 1k (second-brain 2026-09-13, 2026-10-13): 2k AÇIKÇA geçilir. count DAİMA 1 (CLAUDE.md). Tüm kareler 4:3: Etsy 'diğerleri ilk fotoğrafla aynı şekil' (playbook 04). İlk fotoğraf 1:1 kırpımda kesilmesin diye halka ortada, yanlarda boşluk.",
+  "costCreditsPerImage": 2,
+  "costSource": "generate_image get_cost 2026-11-07 (nano_banana_2, 2k, 4:3)",
+  "references": {
+    "ring": {
+      "file": "scratchpad vb-img/ref-ring-crop.png (repoya ALINMADI: üçüncü tarafın ürün fotoğrafı)",
+      "source": "üreticinin WhatsApp fotoğrafı 2026-11-07 (PISSARRO filigranlı); kırpım x340-767 y15-405, ×2 Lanczos; filigran ve ahşap sahne dışarıda",
+      "md5": "9ea7f9cec3a099f21b446fda84d997ef"
+    },
+    "stone": {
+      "file": "scratchpad vb-img/ref-stone-crop.png (repoya ALINMADI)",
+      "source": "aynı foto, baget yakın kırpım x425-595 y178-408, ×3 Lanczos",
+      "md5": "063efa0d4b031accb2b213c0968c9d15"
+    },
+    "heroCrop": "01 onaylandıktan sonra: 01'in fırçalanmış yüzü + taşı sıkı kırpım (kompozisyon yok), 02-10'a üçüncü referans; 07'ye VERİLMEZ (renk karesi, sarı referans rengi sızdırır)"
+  },
+  "refsByFrame": {"01-hero": ["ring", "stone"], "07-metals": ["ring", "stone"], "*": ["ring", "stone", "heroCrop"]},
+  "waves": [["01-hero"], ["02-stone", "03-flat", "04-hand-m", "05-inside", "06-hand-w"], ["07-metals", "08-scale", "09-light", "10-dish"]],
+  "waveRule": "01 tek başına üretilir ve referansla YAN YANA şekil kontrolünden geçer (Cadence 2026-09-26); seri ancak sonra. Dalga <=7 eşzamanlı (429 dersi 2026-10-18).",
+  "qa": "her kare: tek taş, tırnak/bezel yok, taş kenardan kenara flush, fırça yönü bant boyunca, el karelerinde yüzük parmağı (4. parmak), 08'de ~2 cm ölçek, 07'de renkler doğru; set kontak baskısında yan yana (kadraj kopyası, ölçek)"
+}

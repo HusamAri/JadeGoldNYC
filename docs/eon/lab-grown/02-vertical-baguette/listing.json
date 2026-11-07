@@ -1,0 +1,118 @@
+{
+  "sourcePackage": "2026-11-07-eon-lab-grown-vb6",
+  "productSku": "EON-VB6",
+  "productType": "ring",
+  "listingProtocol": "ring_band",
+  "referenceUrl": "https://www.etsy.com/listing/4405323901/vertical-4x2-mm-baguette-cut-moissanite",
+  "referenceNote": "Owner's reference listing (moissanite, 4 x 2 mm stone); not readable from the container (Etsy 403). Design reference = the maker's WhatsApp photo 2026-11-07 (third-party, PISSARRO watermark): flat brushed yellow-gold band, one vertical baguette set flush edge to edge.",
+  "title": "14K Gold Lab Grown Diamond Band, Vertical Baguette, 6mm Brushed Finish",
+  "description": "A solid 14K gold band, 6 mm wide, with one lab grown diamond baguette set vertically across its width. The outside has a soft brushed satin finish and the inside is polished smooth. The baguette sits flush with the surface, so nothing stands proud to catch on clothing or gloves, and the 2.2 mm wall gives the band a solid, substantial feel.\n\nYOUR RING\nSolid 14K gold in yellow, white or rose. Flat profile with squared edges, about 6 mm wide and 2.2 mm thick, brushed outside and polished inside. One lab grown diamond baguette, about 6 x 2 mm, step cut, set flush across the full width of the band. About 11.5 grams in US 8.5. The price is for one ring in your selected metal color and size; the lab grown diamond is included.\n\nCHOOSE YOUR OPTIONS\n1. Metal Color: Yellow Gold, White Gold or Rose Gold.\n2. Ring Size: US 4 to US 16, including half sizes. One price for every size.\n\nABOUT THE LAB GROWN DIAMOND\nLaboratory-grown diamonds are grown above ground and have the same crystal structure, hardness and brilliance as mined diamonds; they are not simulants. A baguette is a step cut: long, parallel facets that reflect light in clean, bright lines rather than a scattered sparkle.\n\nSIZING AND RESIZING\nMade to order in your size. Wider bands can feel tighter than narrow bands, so message us before ordering if you are between sizes. With a single stone at the front, a jeweler can usually resize the band by about one size.\n\nTHE BRUSHED FINISH\nThe satin surface softens with daily wear and gains a gentle patina; a jeweler can brush it again to look new.\n\nMADE FOR YOU\nMade to order from raw precious-metal materials. The preparation time before dispatch is shown in the shipping details of this listing; transit time is separate.\n\nCARE\nClean gently with mild soap, lukewarm water and a soft brush, then pat dry. Avoid harsh chemicals and abrasive cleaners. Remove the ring before heavy work or sport.",
+  "tags": [
+    "lab grown diamond",
+    "lab created diamond",
+    "vertical baguette",
+    "baguette band",
+    "baguette ring",
+    "lab grown baguette",
+    "mens gold band",
+    "white gold band",
+    "14k gold band",
+    "solid gold band",
+    "brushed gold band",
+    "6mm gold band",
+    "rose gold band"
+  ],
+  "tagEvidence": "EON 30-day Etsy search terms (docs/eon/seo/2026-10-21-etsy-keyword/data/etsy-search-terms-30d.tsv, 188 terms / 215 visits; every tag word contained in the term): mens gold band 39, white gold band 30, 14k gold band 12, solid gold band 8, rose gold band 5, 6mm gold band 3, brushed gold band 2; lab/baguette terms 0 (new category for the shop, tags define it).",
+  "materials": [
+    "Solid 14K yellow gold",
+    "Solid 14K white gold",
+    "Solid 14K rose gold",
+    "Lab grown diamond"
+  ],
+  "variationAxes": [
+    "Metal Color",
+    "Ring Size"
+  ],
+  "colors": [
+    ["YG", "Yellow Gold"],
+    ["WG", "White Gold"],
+    ["RG", "Rose Gold"]
+  ],
+  "sizes": {
+    "from": 4,
+    "to": 16,
+    "step": 0.5
+  },
+  "band": {
+    "widthMm": 6,
+    "thicknessMm": 2.2,
+    "karat": "14K",
+    "profile": "flat, squared edges",
+    "finish": "brushed satin outside, high polish inside"
+  },
+  "gram": {
+    "model": "maker's band-list size curve (docs/artifact-studio/maker_cost.py list_g14 shape 0.836 + 0.0515 x US) anchored at the maker's own 11.5 g for US 8.5",
+    "anchorUs": 8.5,
+    "anchorGrams": 11.5,
+    "listFormulaAtAnchor": 11.21,
+    "weightSource": "estimated"
+  },
+  "stone": {
+    "origin": "lab",
+    "shape": "baguette",
+    "count": 1,
+    "sizeMm": "6 x 2",
+    "totalCarat": 0.35,
+    "caratNote": "Maker's note says 0.35 ct for 6 x 2 mm; a 6 x 2 mm straight baguette usually weighs about 0.15-0.20 ct. Carat weight is NOT stated in public text until the maker confirms.",
+    "colorClarity": null,
+    "settingFeeCents": 1000,
+    "castingFeeCents": 0,
+    "stoneCostCentsEstimate": 9800,
+    "stoneCostNote": "Maker: stone 280 USD per carat x 0.35 ct = 98 USD; setting 10 USD."
+  },
+  "priceCents": 266500,
+  "quantityPerVariant": 20,
+  "pricing": {
+    "makerNoteVerbatim": "6 mm için Baguette. Minimum 2.20 mm thickness. Minimum 6 mm. 0.35 ct 6×2 taş ölçüsü. 8½ size 11,5 gram. taş fiyat 280$ 1 ct. 1150$. taş takma 10$",
+    "makerWhatsApp": ["abi bizim ki 6mm", "liste de 2 numara da hesabi yaziyor"],
+    "readingUsed": "B: 11.5 g x 100 USD/g = 1,150 (gold + labor, the maker's 14K band-list convention) + stone 98 + setting 10 = 1,258 at US 8.5",
+    "readingAlternative": "A: 1,150 all-in -> list 2,440 / buyer 1,830",
+    "packagingUsd": 8,
+    "shippingUsd": 22,
+    "landedUsdAtAnchor": 1288,
+    "multiplier": 1.55,
+    "engineUsd": 1996,
+    "storePromotionRate": 0.25,
+    "listUsd": 2665,
+    "buyerUsd": 1999,
+    "onePriceAllSizes": true,
+    "worstOffsiteProfitBySizeUsd": {"US4": 630, "US8.5": 420, "US13": 211, "US16": 72},
+    "at35PercentSale": "US 13 and up fall below zero at the worst Offsite fee; the price is set for the 25% sale running in November (orders 2026-11-05/06: 25% and 15%; 35% last seen 2026-10-28)",
+    "spotUsdPerOzt": 4072.1,
+    "spotDate": "2026-11-07",
+    "marketAnchors": [
+      "JAXXON Beveled Diamond Baguette Band 6mm, solid 14K, one 0.10 ct lab-grown baguette, 6-10 g: 1,299 USD (read 2026-11-07)",
+      "VRAI Brushed Baguette Band, 4.5 x 2.03 mm, one 0.10 ct lab-grown baguette, channel set: 14K rose 1,450 USD (search snippet), platinum 1,955 USD (read 2026-11-07)"
+    ],
+    "methodology": "docs/eon/lab-grown/price_model.py vb; formula lib/pricing-engine/eon-cost.ts 457-472"
+  },
+  "approval": {
+    "authority": "pending owner decision 2026-11-07 (price, scope, gallery prompts)",
+    "panelDraftAuthorized": false,
+    "etsyDraftCreationAuthorized": false,
+    "livePublicationAuthorized": false,
+    "blockers": [
+      "Etsy activation needs at least one unedited photo of the physical piece (draft allowed)",
+      "Maker to confirm: are the stone (0.35 ct x 280 USD) and setting (10 USD) on top of the 1,150 USD (11.5 g x 100 USD)?",
+      "Maker to confirm: stone weight for 6 x 2 mm (note 0.35 ct; typical 0.15-0.20 ct), colour/clarity grade",
+      "Maker to confirm: price per size (cost is per gram, 9.4 g at US 4 to 15.0 g at US 16), white gold rhodium plating, preparation time",
+      "No shop section for lab grown pieces yet",
+      "Spanish translation not written"
+    ]
+  },
+  "classification": {
+    "protocol": "ring_band",
+    "taxonomy": "Jewelry > Rings > Bands (1232)",
+    "basis": "Owner 2026-11-04 for the lab-grown line (EON-DSP: 'bu wedding band değil'); ring_band is live in prod, needs no Width axis (width is fixed at 6 mm)"
+  }
+}
