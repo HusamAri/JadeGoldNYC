@@ -1,0 +1,75 @@
+{
+  "product": "EON-VB6",
+  "model": "nano_banana_2",
+  "aspect_ratio": "4:3",
+  "resolution": "2k",
+  "count": 1,
+  "why": "nano_banana_2 resolution varsayılanı 1k (second-brain 2026-09-13, 2026-10-13): 2k AÇIKÇA geçilir. count DAİMA 1 (CLAUDE.md). Tüm kareler 4:3: Etsy 'diğerleri ilk fotoğrafla aynı şekil' (playbook 04). İlk fotoğraf 1:1 kırpımda kesilmesin diye halka ortada, yanlarda boşluk.",
+  "costCreditsPerImage": 2,
+  "costSource": "generate_image get_cost 2026-11-07 (nano_banana_2, 2k, 4:3)",
+  "references": {
+    "ring": {
+      "file": "scratchpad vb-img/ref-ring-crop.png (repoya ALINMADI: üçüncü tarafın ürün fotoğrafı)",
+      "source": "üreticinin WhatsApp fotoğrafı 2026-11-07 (PISSARRO filigranlı); kırpım x340-767 y15-405, ×2 Lanczos; filigran ve ahşap sahne dışarıda",
+      "md5": "9ea7f9cec3a099f21b446fda84d997ef",
+      "higgsfieldMediaId": "b0065dce-e520-4c23-90af-16407b7f220d"
+    },
+    "stone": {
+      "file": "scratchpad vb-img/ref-stone-crop.png (repoya ALINMADI)",
+      "source": "aynı foto, baget yakın kırpım x425-595 y178-408, ×3 Lanczos",
+      "md5": "063efa0d4b031accb2b213c0968c9d15",
+      "higgsfieldMediaId": "a6558bc6-a7af-4164-b737-6b3227bbfe33"
+    },
+    "heroCrop": {
+      "file": "scratchpad vb-gen/ref-hero-surface.png (01 v2'den 290x760+855+520, yüz + taş, kompozisyon yok)",
+      "higgsfieldMediaId": "edc01ef8-0eaf-434c-9056-8361433a4a86"
+    }
+  },
+  "refsByFrame": {
+    "01-hero": [
+      "ring",
+      "stone"
+    ],
+    "07-metals": [
+      "ring",
+      "stone"
+    ],
+    "*": [
+      "ring",
+      "stone",
+      "heroCrop"
+    ],
+    "09-light": [
+      "ring",
+      "stone"
+    ],
+    "_why": "07: colour frame never gets the yellow surface crop; 09: v1 copied frame 01's composition (the surface crop leaked it), v2 gets the design crops only"
+  },
+  "waves": [
+    [
+      "01-hero"
+    ],
+    [
+      "02-stone",
+      "03-flat",
+      "04-hand-m",
+      "05-inside",
+      "06-hand-w"
+    ],
+    [
+      "07-metals",
+      "08-scale",
+      "09-light",
+      "10-dish"
+    ]
+  ],
+  "waveRule": "01 tek başına üretilir ve referansla YAN YANA şekil kontrolünden geçer (Cadence 2026-09-26); seri ancak sonra. Dalga <=7 eşzamanlı (429 dersi 2026-10-18).",
+  "qa": "her kare: tek taş, tırnak/bezel yok, taş kenardan kenara flush, fırça yönü bant boyunca, el karelerinde yüzük parmağı (4. parmak), 08'de ~2 cm ölçek, 07'de renkler doğru; set kontak baskısında yan yana (kadraj kopyası, ölçek)",
+  "edits": {
+    "05-inside-v2": {
+      "from": "05-inside-v1 (job b43c1105-aa79-4741-bb4e-7cf8ade046af)",
+      "prompt": "Edit the reference image. Keep everything exactly as it is: the ring, its position and size, the camera, the light, the travertine, the background and all colours. Change only the baguette at the top of the ring. Because the stone is set crosswise, only its short end shows from this angle: a small, bright rectangle about 2 mm wide, set into the top of the band's rim so that its top is exactly level with the band's outer curve. No part of the stone rises above the gold, and the gold surface continues smoothly on both sides of it.",
+      "why": "v1: stone at 12 o'clock reads slightly proud of the band; listing text says flush"
+    }
+  }
+}

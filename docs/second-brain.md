@@ -1917,6 +1917,25 @@ repodaki hedefidir.
   okuduğunu say, okumayan yol için bayrak yok hükmündedir; (3) sahibe dokunulan bir kaydı yazmadan
   önce audit_log'dan son değişikliği oku, ve koşullu UPDATE ile yalnız beklediğin hâldeyse yaz.
 
+- **Yeni teklif, eski teklifin okumasını SINAR; ve "vertical" gibi yön sözcüğü modelde resim düzlemine göre
+  okunur (2026-11-07, EON-VB6):** Üreticinin Model 2'si 11,5 g × $100 = $1.150 tam tuttu: konvansiyon "gram ×
+  $100 altın+işçilik, taş ve takma ayrı". Aynı aritmetik, üç gün önce "her şey dahil" okuduğum ve sahibin
+  canlıya aldığı DSP'nin $550'ına da uyuyordu (5,48 g × $100); taş ve takma ayrıysa DSP'nin en kötü Offsite
+  kârı $134'ten $4'a ya da −$136'ya iner. Yeni ürünü kötümser okumayla (B) fiyatladım, DSP için kararı sahibe
+  sayıyla sordum (fiyat aynı, önce üretici). Kural: aynı tedarikçiden yeni teklif gelince önce ESKİ teklifin
+  okumasını yeni veriyle yeniden sına; canlı bir listing etkileniyorsa bu ayrı ve acil bir sorudur. Görselde:
+  onaylı prompt "set vertically" dedi, model taşı resimde dikey çizdi, yani bant boyunca, üstelik emerald
+  kesimle (01 v1). Fiziksel tarif tek denemede tuttu: "crosswise, at right angles to the band's direction
+  around the finger", "square corners, three times as long as it is wide", yanlış sınıflar adıyla ("not laid
+  lengthwise", "not an emerald cut"); kapı da koda girdi (prompt'ta "vertical" yasak). Set kontrolü iki kusur
+  daha buldu, ikisi de kare tek başına bakınca görünmüyordu: 09, 01'in neredeyse kopyasıydı (01'den kesilen
+  yüzey kırpımı kompozisyonu sızdırdı; v2 yalnız tasarım kırpımlarıyla ve farklı açıyla), 08'de bant çapa göre
+  2,7:1 okunuyordu (gerçek ~3,8:1; ölçek karesinde bu yanlış beyan). 05'te taş hafif kabarık görünüyordu,
+  açıklama "flush" diyor; kareyi kendisinden yalnız taşı değiştirerek düzenledim, kompozisyon korundu.
+  14 üretim, 28 kredi, 10 kabul. Kural: yön sözcüğünü (vertical, horizontal, up) ürünün KENDİ eksenine göre
+  fiziksel tarife çevir; seri karelere hero'dan referans verirken kırpım yalnız yüzey taşısın ve kompozisyonu
+  ayrı bir açıyla pinle; ölçek ve oran karelerinde oranı sayıyla yaz ve çıktıda ölç.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması

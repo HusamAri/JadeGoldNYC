@@ -1,6 +1,7 @@
-"""EON lab-grown, ilk listing: Double Shared Prong band fiyat modeli (2026-11-04).
+"""EON lab-grown fiyat modeli: 01 Double Shared Prong (2026-11-04), 02 Vertical Baguette (2026-11-07).
 
-Run: python3 -I docs/eon/lab-grown/price_model.py
+Run: python3 -I docs/eon/lab-grown/price_model.py        (01 DSP, çıktısı 2026-11-04 ile birebir)
+     python3 -I docs/eon/lab-grown/price_model.py vb     (02 Vertical Baguette)
 
 Girdi: üreticinin el yazısı notu (Model 1: 2,40 mm round, US7 toplam 0,8 ct, 13 taş, 14K $550,
 taş takma $4) + canlı spot. Perakende formülü lib/pricing-engine/eon-cost.ts 457-472'nin birebir
@@ -9,6 +10,7 @@ model-net kâr ≥ $50 olana dek +5). JS Math.round = floor(x + 0,5); Python rou
 için kullanılmaz.
 """
 import math
+import sys
 
 SPOT = 4065.80            # gold-api.com, 2026-11-04 18:31 UTC (canlı); pricing_config 4399.90 (Ağustos, bayat)
 TROY = 31.1035
@@ -43,7 +45,7 @@ def geom_g(w, thick, us, karat, fill=0.90, stone_void=0.88):
     return w * thick * fill * math.pi * (d + thick) * stone_void / 1000 * 13.0 * DENS[karat]
 
 
-if __name__ == "__main__":
+def dsp():
     print(f"spot {SPOT}: melt 14K ${melt('14K'):.2f}/g  18K ${melt('18K'):.2f}/g")
     g7 = geom_g(2.75, 2.5, 7, "14K")
     indep = g7 * melt("14K") + 60 + 80 + STONES * SETTING_EACH
@@ -72,3 +74,70 @@ if __name__ == "__main__":
     landed18 = MAKER_14K_ALL_IN + (g18 * melt("18K") - g7 * melt("14K")) + PACK + SHIP
     eng, lst, s, p = retail(landed18, MULT_NARROW, 0.75)
     print(f"\n18K türetilmiş (yalnız altın payı ölçeklenir, taş/işçilik sabit): landed {landed18:.0f} -> liste {lst} alıcı {s} (üretici teklifi yok, TÜRETİLMİŞ)")
+
+
+# ---- 02 Vertical Baguette (2026-11-07) -------------------------------------------------------
+# Üretici notu Model 2 (birebir): "6 mm için Baguette. Minimum 2.20 mm thickness. Minimum 6 mm.
+# 0.35 ct 6×2 taş ölçüsü. 8½ size 11,5 gram. taş fiyat 280$ 1 ct. 1150$. taş takma 10$"
+# + WhatsApp 2026-11-07: "abi bizim ki 6mm" / "liste de 2 numara da hesabi yaziyor".
+SPOT_VB = 4072.10          # gold-api.com 2026-11-07 09:34 UTC
+VB_G85 = 11.5              # üreticinin kendi gramı: 6 × 2,20 mm, US 8½
+VB_USD_G = 100.0           # üreticinin 14K liste fiyatı, işçilik dahil (maker_cost.py konvansiyonu)
+VB_STONE_CT, VB_STONE_USD_CT, VB_SETTING = 0.35, 280.0, 10
+VB_SIZES = [4, 5, 6, 7, 8, 8.5, 9, 10, 11, 12, 13, 14, 15, 16]
+
+
+def vb_g(us):
+    """Üreticinin bant listesinin beden eğrisi (maker_cost.list_g14), US 8½'te 11,5 g'a sabitlenmiş."""
+    shape = lambda s: 0.836 + 0.0515 * s
+    return VB_G85 * shape(us) / shape(8.5)
+
+
+def vb_cost(us, reading):
+    g = vb_g(us)
+    if reading == "B":     # konvansiyon: gram × $100 (altın + işçilik), taş ve takma üstüne
+        return g * VB_USD_G + VB_STONE_CT * VB_STONE_USD_CT + VB_SETTING
+    return 1150 + (g - VB_G85) * VB_USD_G   # A: $1.150 her şey dahil, bedenle yalnız gram oynar
+
+
+def vb():
+    m14 = SPOT_VB / TROY * PURITY["14K"]
+    lg = 6 * (0.836 + 0.0515 * 8.5) * 2.2 / 1.5
+    print(f"spot {SPOT_VB}: melt 14K ${m14:.2f}/g; üretici $100/g içinde işçilik ~${VB_USD_G - m14:.2f}/g")
+    print(f"üretici listesi formülü 6 mm × 2,2 mm US 8½: {lg:.2f} g (üretici 11,5 g, {11.5 / lg - 1:+.1%});"
+          f" 11,5 × $100 = ${VB_G85 * VB_USD_G:.0f} (notta $1.150)")
+    print(f"taş {VB_STONE_CT} ct × ${VB_STONE_USD_CT:.0f}/ct = ${VB_STONE_CT * VB_STONE_USD_CT:.0f}; takma ${VB_SETTING}")
+    print("\n-- US 8½, iki okuma --")
+    lists = {}
+    for r, name in [("B", "B: gram×$100 + taş + takma (konvansiyon)"), ("A", "A: $1.150 her şey dahil")]:
+        landed = vb_cost(8.5, r) + PACK + SHIP
+        for sale, lbl in [(0.75, "%25"), (0.65, "%35"), (1.0, "indirimsiz")]:
+            eng, lst, s, p = retail(landed, MULT_NARROW, sale)
+            if sale == 0.75:
+                lists[r] = lst
+            print(f"  {name:42s} landed {landed:6.0f}  {lbl:10s} engine {eng}  liste {lst}  alıcı {s}  kâr(en kötü Offsite) {p}")
+    print("\n-- tek fiyat (US 8½ motoru), bedene göre kâr, en kötü Offsite --")
+    for r in ("B", "A"):
+        lst = lists[r]
+        for sale in (0.75, 0.65):
+            row = []
+            for us in VB_SIZES:
+                landed = vb_cost(us, r) + PACK + SHIP
+                buyer = lst * sale
+                row.append(f"US{us:g} {0.905 * buyer - min(0.15 * buyer, 100) - FIX - landed:+.0f}")
+            print(f"  {r} liste {lst} @ {1 - sale:.0%}: " + "  ".join(row))
+    print("\n-- beden başına motor (B, %25): liste --")
+    print("  " + "  ".join(f"US{us:g} {retail(vb_cost(us, 'B') + PACK + SHIP, MULT_NARROW, 0.75)[1]}" for us in VB_SIZES))
+    print("  gram: " + "  ".join(f"US{us:g} {vb_g(us):.2f}" for us in VB_SIZES))
+
+    print("\n-- 01 DSP (canlı, alıcı $900 @ %25) kapsam duyarlılığı: Model 2'nin gram×$100 aritmetiği DSP'ye uygulanırsa --")
+    for name, maker in [("A $550 her şey dahil", 550), ("B + takma 13×$4", 602),
+                        ("C + taş 0,78 ct × ~$100/ct", 680), ("C' + taş 0,78 ct × $280/ct (Model 2 oranı)", 820)]:
+        landed = maker + PACK + SHIP
+        p_off = 0.905 * 900 - min(0.15 * 900, 100) - FIX - landed
+        p_std = 0.905 * 900 - FIX - landed
+        print(f"  {name:44s} landed {landed}  kâr std {p_std:+.0f}  en kötü Offsite {p_off:+.0f}")
+
+
+if __name__ == "__main__":
+    vb() if sys.argv[1:] == ["vb"] else dsp()
