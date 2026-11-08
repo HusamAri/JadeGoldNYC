@@ -60,7 +60,22 @@ Kaynaklar: IRS Pub 334 / Pub 538 / Schedule C talimatları, Etsy Help (sales tax
 - İade etiketi için ayrı resmî tür belgelenmemiştir; canlı ledger'da
   `shipping_labels_usps_return` olarak görünür (Jade: 225 kayıt).
 - `ledger_type` için Etsy resmî enum yayınlamadı; sözlük canlı veriden
-  (`docs/etsy-api-kapsami.md` + bu dosya) türetilir.
+  türetildi ve 0178'den beri tabloda yaşar (`etsy_ledger_type_classes`, 57 tür,
+  muhasebe sınıfı + sipariş ücreti bayrağı). Yeni tür gelince
+  `ledger_type_unknown` kontrolü yanar.
+- **İade satırının kimliği (ölçüm 2026-11-08):** `REFUND_GROSS` ve
+  `REFUND_PROCESSING_FEE` satırlarının `reference_id`'si `payment_adjustment`
+  kimliğidir; receipt ya da payment id ile 0/1.922 eşleşir. Siparişe köprü, aynı
+  saniyede yazılan tek `sales_tax_refund` satırıdır (reference = receipt id):
+  Jade'de 1.690/1.922 iade böyle tek siparişe bağlanır. `transaction_refund`
+  aynı saniyede yazılmaz; işlem ücreti iadesi sonradan gelir.
+- **İşleme ücreti kuralı (ölçüm):** `PAYMENT_PROCESSING_FEE` 10.277/10.277
+  ödemede tam olarak %3 + $0,25. Tam iadede ücretin tamamı geri gelir
+  (1.488/1.488), kısmi iadede yalnız %3 gelir ve $0,25 satıcıda kalır (184/203).
+- **İade zamanı (ölçüm):** iadelerin %36'sı sipariş ayından sonraki bir ayda,
+  %4,3'ü sonraki yılda gelir (medyan 8,9 gün, p90 31,5 gün). Dönem görünümünde
+  iade, iade tarihine yazılmalıdır; sipariş satırındaki pay dağıtımı bunu
+  göstermez.
 
 ## Veri modeli
 
@@ -87,6 +102,20 @@ Kaynaklar: IRS Pub 334 / Pub 538 / Schedule C talimatları, Etsy Help (sales tax
    `rebuild_sales_etsy_fees` → altın/sabit maliyet motorları → ürün bağ tamiri.
 
 ShipStation senkronu da gönderi bağlamayı aylık özetten önce koşar.
+
+## Kontrol döngüleri (0178)
+
+`accounting_checks(org)` 11 salt okunur kontrolü tek seferde koşar; başarısız
+olanlar Uyarı Merkezi'ne düşer, yeşile dönen Görevler'e "Çözüldü" izi bırakır.
+Liste ve eşitlikler: `docs/muhasebe/senaryo-matrisi.md`. Elle koşulabilir
+sorgular: `docs/muhasebe/kontrol-donguleri.sql`.
+
+Bugün bilinen iki motor kusuru kontrollerde görünür, kodda henüz düzeltilmedi:
+`rebuild_sales_etsy_fees` işleme ücreti iadesini payment id ile arar (satır
+payment_adjustment kimliği taşır, dal ölü), `reference_type = 'etsy'` olan
+Offsite Ads satırlarını ve Offsite iadesini saymaz (`order_fee_gap`). Altın
+maliyet motoru iptal edilen siparişe de maliyet yazar ve İşletme Karı onu
+toplar (`cancelled_order_cogs`).
 
 ## Bilinen sınırlar / sonraki adımlar
 
