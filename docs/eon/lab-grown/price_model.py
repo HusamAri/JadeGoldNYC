@@ -1,7 +1,9 @@
-"""EON lab-grown fiyat modeli: 01 Double Shared Prong (2026-11-04), 02 Vertical Baguette (2026-11-07).
+"""EON lab-grown fiyat modeli: 01 Double Shared Prong (2026-11-04), 02 Vertical Baguette (2026-11-07),
+03 Flush Round (2026-11-08).
 
 Run: python3 -I docs/eon/lab-grown/price_model.py        (01 DSP, çıktısı 2026-11-04 ile birebir)
      python3 -I docs/eon/lab-grown/price_model.py vb     (02 Vertical Baguette)
+     python3 -I docs/eon/lab-grown/price_model.py fr     (03 Flush Round)
 
 Girdi: üreticinin el yazısı notu (Model 1: 2,40 mm round, US7 toplam 0,8 ct, 13 taş, 14K $550,
 taş takma $4) + canlı spot. Perakende formülü lib/pricing-engine/eon-cost.ts 457-472'nin birebir
@@ -139,5 +141,61 @@ def vb():
         print(f"  {name:44s} landed {landed}  kâr std {p_std:+.0f}  en kötü Offsite {p_off:+.0f}")
 
 
+# ---- 03 Flush Round (2026-11-08) -------------------------------------------------------------
+# Sahibin referansı etsy.com/listing/4512052520 (AarsanJewels, Hindistan, moissanite; okuma 2026-11-08,
+# Google çeviri vekili; Etsy konteynere 403): 6,00 × 1,50 mm, fırçalanmış yüz, iki cilalı faset kenar, tek
+# cilalı kanal (merkez dışı), 0,10 (±0,05) ct round brilliant flush (gypsy). Fotoğraflarda taş (kenarlığıyla)
+# bant genişliğinin ~1/3'ü, yani ~2,0 mm (≈0,03 ct): ilan edilen 0,10 ct (3 mm) 1,5 mm duvara flush oturmaz
+# (derinlik ~1,8 mm). Üretici teklifi YOK: maliyet üreticinin bant listesinden (maker_cost.list_g14, tam
+# dikdörtgen kesit) + taş + takma. Faset + kanal ~%5 metal alır (US 8½'te ~$38); o pay ince işçilik
+# (kanal, faset cilası) için tampon olarak maliyette bırakıldı.
+SPOT_FR = 4072.10          # gold-api.com 2026-11-08 20:10 UTC (hafta sonu; 11-07 ile aynı)
+FR_W, FR_T = 6.0, 1.5
+FR_STONE_MM, FR_STONE_CT = 2.0, 0.03
+FR_STONE_USD = 20          # bilinen tek lab oranı $280/ct (Model 2) → 0,03 ct $8,40; tek taş için $20 (kalibre değil)
+FR_SETTING = 10            # Model 2'nin flush takma ücreti, taş başı
+FR_SIZES = [4, 5, 6, 7, 8, 8.5, 9, 10, 11, 12, 13, 14, 15, 16]
+FR_LISTS = [1600, 1705, 1780, 1800]
+
+
+def fr_g(us):
+    """Üreticinin 14K bant listesi: genişlik × (0,836 + 0,0515 × US) × kalınlık / 1,5."""
+    return FR_W * (0.836 + 0.0515 * us) * FR_T / 1.5
+
+
+def fr_cost(us):
+    return fr_g(us) * VB_USD_G + FR_STONE_USD + FR_SETTING
+
+
+def fr_profit(buyer, us):
+    return 0.905 * buyer - min(0.15 * buyer, 100) - FIX - (fr_cost(us) + PACK + SHIP)
+
+
+def fr():
+    m14 = SPOT_FR / TROY * PURITY["14K"]
+    g85 = fr_g(8.5)
+    print(f"spot {SPOT_FR}: melt 14K ${m14:.2f}/g; üretici $100/g içinde işçilik ~${VB_USD_G - m14:.2f}/g")
+    print(f"gram (liste, tam kesit) US 8½ {g85:.2f} g; faset 2 × 0,6 mm + kanal 0,3 × 0,3 mm ≈ %5 → ~{g85 * 0.95:.2f} g")
+    print(f"taş {FR_STONE_MM} mm ≈ {FR_STONE_CT} ct: $280/ct ile ${FR_STONE_CT * 280:.2f}, ${FR_STONE_USD} yazıldı; takma ${FR_SETTING}")
+    landed = fr_cost(8.5) + PACK + SHIP
+    print(f"\n-- US 8½: maliyet ${fr_cost(8.5):.2f}  landed ${landed:.2f} --")
+    for sale, lbl in [(0.75, "%25"), (0.65, "%35"), (1.0, "indirimsiz")]:
+        eng, lst, s, p = retail(landed, MULT_NARROW, sale)
+        print(f"  {lbl:10s} engine {eng}  liste {lst}  alıcı {s}  kâr(en kötü Offsite) {p}")
+    worst = fr_cost(FR_SIZES[-1]) + PACK + SHIP
+    need = (MIN_PROFIT + 100 + FIX + worst) / 0.905          # alıcı ≥ 1000 → Offsite tavanı $100
+    floor_list = math.ceil((need / 0.75 - 1e-12) / 5) * 5
+    print(f"  tek fiyatta US {FR_SIZES[-1]:g} de ≥ ${MIN_PROFIT} kalsın (%25): liste ≥ {floor_list} (alıcı {floor_list * 0.75:.2f})")
+    print("\n-- tek fiyat, bedene göre kâr (en kötü Offsite) --")
+    for lst in FR_LISTS:
+        for sale in (0.75, 0.65):
+            buyer = lst * sale
+            row = "  ".join(f"US{us:g} {fr_profit(buyer, us):+.0f}" for us in FR_SIZES)
+            print(f"  liste {lst} @ {1 - sale:.0%} (alıcı {buyer:.2f}): {row}")
+    print("\n-- beden başına motor (%25): liste --")
+    print("  " + "  ".join(f"US{us:g} {retail(fr_cost(us) + PACK + SHIP, MULT_NARROW, 0.75)[1]}" for us in FR_SIZES))
+    print("  gram: " + "  ".join(f"US{us:g} {fr_g(us):.2f}" for us in FR_SIZES))
+
+
 if __name__ == "__main__":
-    vb() if sys.argv[1:] == ["vb"] else dsp()
+    {"vb": vb, "fr": fr}.get(sys.argv[1] if len(sys.argv) > 1 else "", dsp)()
