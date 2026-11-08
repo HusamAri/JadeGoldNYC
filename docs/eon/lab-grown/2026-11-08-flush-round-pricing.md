@@ -66,7 +66,9 @@ için kurulu (siparişler 05-06 Kas: %25 ve %15; %35 en son 28 Eki).
 arasında; DSP'nin $1.200 → $900 deseni gibi yuvarlak). Kapsam VB6 ile aynı: 14K, Yellow/White/Rose, US 4–16 yarım
 bedenler (75 varyant), `ring_band`.
 
-Karar: sahibin soru kartı cevabı bekleniyor.
+**Karar (sahip, 2026-11-08, soru kartı): liste $1.800 → %25 vitrinle $1.350, her beden tek fiyat; galeri: 10 karenin
+hepsi üretilsin.** Panel taslağı `0179_eon_lab_grown_fr6` ile canlıda (ürün `7675f0e3-9fae-4f6a-bca3-81b1562a6c17`,
+75 varyant, mühür `2f1eccd3a9bc2d9344ed06818a43456f`).
 
 ## Açık (üretici)
 1. Bu tasarımın teklifi: 6 × 1,5 mm faset + kanal + tek flush round için fiyat (gram × $100 + taş + takma mı?).

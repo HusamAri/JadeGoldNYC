@@ -1,0 +1,54 @@
+{
+  "product": "EON-FR6",
+  "date": "2026-11-08",
+  "set": "owner-approved 10 frames (question card 2026-11-08), amber + teal home studio as EON-VB6",
+  "export": "PNG 2400x1792 -> JPEG q88 sRGB 4:2:0, metadata stripped (ImageMagick -strip), 306-902 KB",
+  "frames": {
+    "01-hero": {
+      "chosen": "v2",
+      "job": "58de3b1f-5b24-4e91-96e3-df2010f1003c",
+      "from": "edit of v1 (job 7693de95-fc3a-4fce-bb9a-7c2bb78f1e18) with the reference stone crop; only groove, bevels and stone rim changed",
+      "rejected": [
+        {"v": "v1", "job": "7693de95-fc3a-4fce-bb9a-7c2bb78f1e18", "why": "groove drawn as a double-line channel and the edges as narrow steps instead of the reference's single fine line and angled bevels; stone size (about one third of the width) and flush seat were right"}
+      ]
+    },
+    "02-stone": {"chosen": "v1", "job": "4396b46e-ac50-422d-bb09-52d65a03168c", "qa": "stone alone about one third of the band width, flush, on the off-centre groove; rim a little wider than the reference's, same as the hero"},
+    "03-flat": {"chosen": "v1", "job": "60e1c73b-3b25-40cc-806a-c18fc26a4232"},
+    "04-hand-m": {"chosen": "v1", "job": "51c7a8ce-962e-4aee-932e-3377662a6a79", "qa": "left hand, ring on the fourth finger: the finger next to it is the shortest and outermost (little finger)"},
+    "05-inside": {"chosen": "v1", "job": "6d45ef30-41b9-4015-8622-ceeb7219488f", "qa": "stone at twelve o'clock level with the band's outer curve (VB6 05 v1 had read proud here)"},
+    "06-hand-w": {"chosen": "v1", "job": "e3568c50-9441-4aac-acbe-79941494c8ee", "qa": "ring on the fourth finger; one ring, no other jewellery; hand beside the cup, not holding it"},
+    "07-metals": {"chosen": "v1", "job": "edc9d118-c57a-4ae3-b001-81d14f5cd3e0", "qa": "yellow, white, rose left to right; one stone each on the groove"},
+    "08-scale": {
+      "chosen": "v4",
+      "job": "145bbc40-4748-4716-b00c-9e0f0ef3e165",
+      "qa": "hand seen from the side, so the thumb shows its thickness (~16 mm): ring/thumb 1.41 against a real ~1.37",
+      "rejected": [
+        {"v": "v1", "job": "03094402-8960-4704-9c1f-8211209fa541", "why": "ring 1.69x the thumb and the band 0.46 of the ring's height (real 0.27): read as a short wide tube"},
+        {"v": "v2", "job": "3f1e92d1-1718-4075-b4b6-affb8e17505a", "why": "edit of v1 fixed the band (0.28) but not the ring's size: the edit was told to keep the finger positions, and in a pinch the fingertip gap IS the ring's diameter"},
+        {"v": "v3", "job": "27951b82-4be2-45ca-96fd-acf95f48e908", "why": "edit of v2 asking for a 40% smaller ring came back unchanged"}
+      ]
+    },
+    "09-light": {
+      "chosen": "v2",
+      "job": "ffbd413a-a725-4dfa-b128-cfc634a8f300",
+      "qa": "still a low front view, but the stone sits to one side and more of the ring shows; set sheet no longer reads it as a copy of 02",
+      "rejected": [
+        {"v": "v1", "job": "ba1a406b-0441-4573-b5ee-76e236a98bab", "why": "straight-on front view with the stone centred: near-copy of 02's composition on the set sheet (owner brief: a different angle per image)"}
+      ]
+    },
+    "10-dish": {"chosen": "v1", "job": "f594a7f2-efdf-4e4e-92e6-9ca97141b93d"}
+  },
+  "credits": {"generations": 15, "creditsPerGeneration": 2, "credits": 30, "accepted": 10, "rejected": 5, "balanceBefore": 5799.75, "balanceAfter": 5769.75},
+  "gallery": [
+    {"position": 0, "file": "public/eon/lab-grown-fr6/01.jpg", "url": "https://amuletta.artifactstudio.info/eon/lab-grown-fr6/01.jpg", "alt": "14K yellow gold 6 mm band with a brushed face, polished beveled edges and one round lab-grown diamond set flush on a thin off-center groove, standing on pale travertine in soft window light.", "md5": "f35128e182fae3291eae972caa5031d2", "frame": "01-hero"},
+    {"position": 1, "file": "public/eon/lab-grown-fr6/02.jpg", "url": "https://amuletta.artifactstudio.info/eon/lab-grown-fr6/02.jpg", "alt": "Close view of the brushed 14K gold band: a small round lab-grown diamond sits flush on the thin polished groove, framed by bright beveled edges.", "md5": "f4ebf6d3cc359accd3fb3c766b3bc4a8", "frame": "02-stone"},
+    {"position": 2, "file": "public/eon/lab-grown-fr6/03.jpg", "url": "https://amuletta.artifactstudio.info/eon/lab-grown-fr6/03.jpg", "alt": "The 14K gold band lying flat on light oak, showing the 1.5 mm wall, the polished bevel and the round lab-grown diamond at the front.", "md5": "b862020626ec276961b32da69975e2f7", "frame": "03-flat"},
+    {"position": 3, "file": "public/eon/lab-grown-fr6/04.jpg", "url": "https://amuletta.artifactstudio.info/eon/lab-grown-fr6/04.jpg", "alt": "The 6 mm 14K yellow gold band worn on a man's ring finger, the flush-set round lab-grown diamond facing up, hand resting on natural linen.", "md5": "187723f839e6d957b2260195e8a788ea", "frame": "04-hand-m"},
+    {"position": 4, "file": "public/eon/lab-grown-fr6/05.jpg", "url": "https://amuletta.artifactstudio.info/eon/lab-grown-fr6/05.jpg", "alt": "Inside view of the 14K gold band: smooth polished interior with no engraving, the round lab-grown diamond sitting flush at the top.", "md5": "50049d72936739481a906a0997a2e5bd", "frame": "05-inside"},
+    {"position": 5, "file": "public/eon/lab-grown-fr6/06.jpg", "url": "https://amuletta.artifactstudio.info/eon/lab-grown-fr6/06.jpg", "alt": "The band worn on a woman's ring finger beside a matte ceramic cup on travertine, with amber and teal light falling across the travertine.", "md5": "73d1a3e98302100c1d00fd2339448fc9", "frame": "06-hand-w"},
+    {"position": 6, "file": "public/eon/lab-grown-fr6/07.jpg", "url": "https://amuletta.artifactstudio.info/eon/lab-grown-fr6/07.jpg", "alt": "Three versions of the band side by side in 14K yellow, white and rose gold, each with one flush-set round lab-grown diamond on the groove.", "md5": "30d13a1e2d7a57919418dcbefe870577", "frame": "07-metals"},
+    {"position": 7, "file": "public/eon/lab-grown-fr6/08.jpg", "url": "https://amuletta.artifactstudio.info/eon/lab-grown-fr6/08.jpg", "alt": "The ring held between thumb and index finger to show its real size: a slim 6 mm 14K gold band with one small round lab-grown diamond.", "md5": "332888a9dc8a04d3116f3114595c676b", "frame": "08-scale"},
+    {"position": 8, "file": "public/eon/lab-grown-fr6/09.jpg", "url": "https://amuletta.artifactstudio.info/eon/lab-grown-fr6/09.jpg", "alt": "Low view of the 14K gold band on travertine in late sun: the polished bevel and groove catch the light beside the flush-set round lab-grown diamond.", "md5": "ef03313b5b414d8b778f34ec386661ab", "frame": "09-light"},
+    {"position": 9, "file": "public/eon/lab-grown-fr6/10.jpg", "url": "https://amuletta.artifactstudio.info/eon/lab-grown-fr6/10.jpg", "alt": "The 14K yellow gold band resting in a small off-white ceramic dish on an oak bedside table, the round lab-grown diamond facing the camera.", "md5": "275ea44ea62e0bd7b9c935a0cc31feae", "frame": "10-dish"}
+  ]
+}

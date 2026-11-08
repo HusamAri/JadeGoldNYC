@@ -125,21 +125,29 @@ FRAMES = [
      "The three rings stand on the pale travertine, seen from the front and a little above; together "
      "they fill the width of the frame, with space around them. A soft amber patch of light lies on the "
      "plaster wall behind them and a faint teal patch on the travertine in front."),
-    ("08-scale", "real size against a fingertip", RING_Y, REF_SERIES,
-     "The ring is held upright between the thumb and index finger of a hand, close to the camera, the "
-     "round stone facing the lens. The ring is about 2 cm across, about the size of the fingertip and "
-     "never larger. The band's 6 mm width is a little more than a quarter of the ring's outer diameter of "
-     "about 22 mm, so it reads as a ring and not as a short wide tube. Fingers relaxed, natural skin, short "
-     "clean nails. Behind, the ivory plaster wall with a soft amber patch of light is out of focus."),
-    ("09-light", "flush, low profile and the bevel's light, in a grazing view", RING_Y, REF_HERO,
-     "Low grazing view along the band. The ring lies flat on the travertine, its opening facing up. The "
-     "camera is low, almost at table level and close to the ring, looking along the band's brushed outer "
-     "face toward the round stone, so the brushed surface runs away from the lens and the stone sits level "
-     "with it, no edge of the stone standing above the gold. A narrow beam of late sunlight grazes across "
-     "the band from one side: the polished bevel and the thin groove draw two fine bright lines that lead "
-     "to the stone, the stone throws a crisp white flash with one small spark of teal, and the brushed "
-     "grain glows softly without glare. The far side of the ring and the background fall into warm amber "
-     "shade."),
+    # v4 (2026-11-08): v1 drew the ring 1.6x the thumb's width and the band 0.46 of its height; edits from v1
+    # fixed the band (v2) but could not shrink the ring, because in a pinch the fingertip gap IS the ring's
+    # diameter. v4 pins the gap and the thumb width instead of "fingertip size".
+    ("08-scale", "real size against a man's fingertips", RING_Y, REF_SERIES,
+     "Real-size view. A man's hand is seen from the side, close to the camera, holding the ring upright "
+     "between the very tips of the thumb and the index finger, the round stone facing the lens. The ring is "
+     "small, as a real ring is: its outer diameter of about 22 mm is about the same as the width of the "
+     "man's thumb, and the gap between the two fingertips is only the ring's height. The band's 6 mm width "
+     "is about a quarter of the ring's height, so the ring reads as a slim ring between large fingertips, "
+     "never as a wide tube. Fingers relaxed, natural skin, short clean nails. Behind, the ivory plaster "
+     "wall with a soft amber patch of light is out of focus."),
+    # v2 (2026-11-08): v1 came out as a straight-on front view, a near-copy of 02's composition in the set
+    # sheet; v2 puts the camera off to one side so the band runs diagonally away from the lens.
+    ("09-light", "flush, low profile and the bevel's light, in a grazing side view", RING_Y, REF_HERO,
+     "Low side view along the band. The ring lies flat on the travertine, its opening facing up. The camera "
+     "is at table level, close to the ring and off to one side of it, so the band's brushed outer face runs "
+     "from the near edge of the frame diagonally away from the lens, curving toward the back; the round "
+     "stone sits on the far part of that curve, in sharp focus, level with the gold, no edge of the stone "
+     "standing above it. The near part of the band is softly out of focus. A narrow beam of late sunlight "
+     "grazes across the band from one side: the polished bevel and the thin groove draw two fine bright "
+     "lines that run along the curve to the stone, the stone throws a crisp white flash with one small "
+     "spark of teal, and the brushed grain glows softly without glare. The far side of the ring and the "
+     "background fall into warm amber shade."),
     ("10-dish", "at home: where it rests at night", RING_Y, REF_SERIES,
      "The ring rests in a small, shallow, handmade ceramic dish with a matte off-white glaze, on a light "
      "oak bedside table by the window, seen from above at about 45 degrees. The ring lies flat in the "

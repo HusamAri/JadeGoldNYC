@@ -58,6 +58,29 @@ Studio'nun üreticisiyle aynı: 14K bant = gram × $100 işçilik dahil, ek kale
   **0177 ancak prod dağıtımından ve 10 URL'in 10'u 200 döndükten sonra uygulanır**; push önce `image_url`'i
   (01, yazısız hero) yükler. 14 üretim / 28 kredi: 10 kabul, 4 ret (gerekçeler `images/status.json`).
 
+## 03 Flush Round (EON-FR6), 2026-11-08
+- Girdi: sahibin Etsy linki 4512052520 (AarsanJewels, moissanite, 14K $800,91 indirimli). Etsy konteynere 403 veriyor;
+  sayfa **Google çeviri vekiliyle** (`www-etsy-com.translate.goog/listing/<id>/<slug>?_x_tr_sl=tr&_x_tr_tl=en`) okundu,
+  fotoğraflar `i.etsystatic.com`'dan doğrudan indi (JSON-LD: başlık, açıklama, fiyat aralığı, görsel URL'leri;
+  `variation-selector-*` seçenekleri ve fiyatları).
+- Tasarım: 6 × 1,5 mm, fırçalanmış yüz, iki cilalı faset kenar, merkez dışı (~3 : 2) tek cilalı kanal, kanalın üstüne
+  flush oturan tek round. Referans 0,10 ct diyor; fotoğrafta taş bant genişliğinin ~1/3'ü = **~2,0 mm (≈0,03 ct)**
+  (0,10 ct ≈ 3 mm, 1,5 mm duvara flush oturmaz). Açıklamada karat YOK, "about 2 mm" var.
+- Fiyat kararı (sahip): liste **$1.800** → %25 vitrin → alıcı **$1.350**, her beden tek fiyat (US 16 dahil en kötü Offsite
+  ≥ $50). Üretici teklifi YOK: liste gramı (`list_g14`, US 8½ 7,64 g) × $100 + taş $20 + takma $10. Kanıt:
+  `2026-11-08-flush-round-pricing.md` + `price_model.py fr`.
+- Panel taslağı: `supabase/migrations/0179_eon_lab_grown_fr6.sql` (üreteç `scripts/eon/gen_lab_grown_fr_migration.mjs`;
+  onay `listing.json`'a yazılmadan çalışmaz). Ürün id `7675f0e3-9fae-4f6a-bca3-81b1562a6c17`, 75 varyant
+  `EON-FR6-14K-{YG,WG,RG}-US040..160`, `ring_band`. Mühür `2f1eccd3a9bc2d9344ed06818a43456f` (sorgu DSP'ninkiyle
+  aynı, `sku like 'EON-FR6-%'`). `EON-FROST-*` önekiyle çakışmaz (`EON-FR6-` ayırıcılı).
+- Ortak modüller: `scripts/eon/lab_grown_band.mjs` (varyant satırları, mühür, taslak SQL) ve
+  `scripts/eon/lab_grown_gallery.mjs` (galeri kapıları + SQL); 0176 ve 0177 taşındıktan sonra bayt bayt aynı üretildi.
+- Galeri: Higgsfield, 10 kare, `03-flush-round/images/` (prompts.py → prompts.json, jobs.json, status.json,
+  PROMPTS-REVIEW.md). Referans kırpımlar ref06'dan; "Aarsan" filigranı morfolojik kapamayla silindi, kırpımlar repoya
+  ALINMADI. 15 üretim / 30 kredi: 10 kabul, 5 ret (gerekçeler `status.json`). Dosyalar `public/eon/lab-grown-fr6/01-10.jpg`,
+  panel satırları `0180_eon_lab_grown_fr6_gallery.sql`; **0180 ancak prod dağıtımından ve 10 URL'in 10'u 200 döndükten
+  sonra uygulanır.**
+
 ## Üreticiye açık sorular (cevap gelmeden Etsy'ye çıkmaz)
 0. **(2026-11-07, DSP canlı)** $550 (Model 1) ve $1.150 (Model 2) fiyatlarına taş ve taş takma dahil mi? Model 2'de
    11,5 g × $100 = $1.150 tam tuttuğu için konvansiyon "gram × $100 + taş + takma ayrı" görünüyor; DSP'de taş ve takma
@@ -68,6 +91,8 @@ Studio'nun üreticisiyle aynı: 14K bant = gram × $100 işçilik dahil, ek kale
 3. Beyaz altın rodyum kaplı mı? (FTC §23.7 beyan; metinde kaplama iddiası yok.)
 4. Üretim süresi (referans 6–8 hafta; metin kargo profiline atıf yapıyor).
 5. Numune fotoğrafı: gerçek, düzenlenmemiş, ≥2000 px, ilk kare tek ürün; sonra 10'lu set.
+6. **(2026-11-08, FR6)** 6 × 1,5 mm faset + kanal + tek flush round için fiyat (gram × $100 + taş + takma mı?); 1,5 mm
+   duvara flush oturacak en büyük round (tasarım 2,0 mm ≈ 0,03 ct); daha büyük taş istenirse minimum kalınlık.
 
 ## Diğer teklifler (aynı not, ileride)
 - Model 2: 6 mm baguette eternity, 2,20 mm min kalınlık, 6×2 mm taş 0,35 ct, taş $280/ct,

@@ -34,9 +34,18 @@
     "Ring Size"
   ],
   "colors": [
-    ["YG", "Yellow Gold"],
-    ["WG", "White Gold"],
-    ["RG", "Rose Gold"]
+    [
+      "YG",
+      "Yellow Gold"
+    ],
+    [
+      "WG",
+      "White Gold"
+    ],
+    [
+      "RG",
+      "Rose Gold"
+    ]
   ],
   "sizes": {
     "from": 4,
@@ -102,7 +111,19 @@
     ],
     "methodology": "docs/eon/lab-grown/price_model.py fr; formula lib/pricing-engine/eon-cost.ts 457-472"
   },
-  "approval": null,
+  "approval": {
+    "authority": "Owner 2026-11-08 (question card): list 1,800 USD -> 25% sale -> 1,350 USD, one price for every size; scope 14K, 3 colours, US 4-16 with half sizes (75 variants); gallery: generate all 10 frames from the prompt sheet (images/PROMPTS-REVIEW.md), hero first and checked against the reference.",
+    "panelDraftAuthorized": true,
+    "etsyDraftCreationAuthorized": true,
+    "livePublicationAuthorized": false,
+    "blockers": [
+      "Etsy activation needs at least one unedited photo of the physical piece (draft allowed)",
+      "No maker quote for this design: cost is the maker's band list (7.64 g x 100 USD at US 8.5) + stone 20 + setting 10, all estimates",
+      "Maker to confirm: largest round that sits flush in a 1.5 mm wall (design 2.0 mm, about 0.03 ct), stone colour/clarity grade, white gold rhodium plating, preparation time, price per size",
+      "No shop section for lab grown pieces yet",
+      "Spanish translation not written"
+    ]
+  },
   "classification": {
     "protocol": "ring_band",
     "taxonomy": "Jewelry > Rings > Bands (1232)",

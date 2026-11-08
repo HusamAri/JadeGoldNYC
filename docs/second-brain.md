@@ -1936,6 +1936,26 @@ repodaki hedefidir.
   fiziksel tarife çevir; seri karelere hero'dan referans verirken kırpım yalnız yüzey taşısın ve kompozisyonu
   ayrı bir açıyla pinle; ölçek ve oran karelerinde oranı sayıyla yaz ve çıktıda ölç.
 
+- **Etsy 403 verince sayfa çeviri vekilinden okunur; rakibin beyanı fotoğraftan ölçülür ve fizikle sınanır; ölçek
+  karesinde oran, uzvun GÖRÜNEN boyutuyla kurulur (2026-11-08, EON-FR6):** Sahibin referans linki (4512052520)
+  doğrudan 403, r.jina.ai 403, headless Chromium captcha verdi. `www-etsy-com.translate.goog/listing/<id>/<slug>?_x_tr_sl=tr&_x_tr_tl=en`
+  ise sayfanın tamamını döndürdü: JSON-LD (başlık, açıklamanın tamamı, fiyat aralığı, 8 görsel URL'i, puan) ve
+  `variation-selector-*` seçenekleri fiyatlarıyla; fotoğraflar `i.etsystatic.com`'dan doğrudan indi. Bir gün önce
+  (VB6) aynı engelde sahibe "ekran görüntüsü yapıştır" demiştim; gereksizmiş. Okunan sayfa ikinci bir şey gösterdi:
+  referans "0.10 ct" diyor, ama üç fotoğrafta taş 6 mm bandın 0,30/0,33/0,32'si, yani ~2,0 mm ≈ 0,03 ct; 0,10 ct'lik
+  3 mm round (derinlik ~1,8 mm) 1,5 mm duvara flush oturmaz bile. Beyanı kopyalasaydım listing fiziksel olarak
+  imkânsız bir ölçü vaat edecekti; metin "about 2 mm" der, karat demez. Üçüncü ders 08 ölçek karesindeydi: v1 halkayı
+  başparmağın 1,69 katı çizdi; düzenleme prompt'um "parmakların yerini koru" ile "halkayı küçült"ü birlikte istedi,
+  oysa kıstırma pozunda parmak uçları arasındaki boşluk halkanın çapının KENDİSİDİR (v2 yalnız bandı düzeltti, v3 hiç
+  değişmedi). v4 boşluğu ve başparmak ilişkisini sabitledi; onu da neredeyse reddediyordum, çünkü halkayı başparmağın
+  GENİŞLİĞİYLE (~21 mm) kıyaslıyordum. El yandan görünüyor, görünen boyut başparmağın KALINLIĞI (~16 mm): beklenen
+  1,37, ölçülen 1,41. Kural: (1) Etsy engellendiğinde önce çeviri vekili, sahibe ancak o da düşerse sor; (2) rakibin
+  ölçü/karat beyanı veridir, fotoğraftaki bilinen bir ölçüye (bant genişliği) karşı ölç ve fiziksel olarak sına
+  (taş derinliği ≤ duvar); (3) düzenleme prompt'unda "sabit kalan" ile "değişen"in fiziksel olarak çelişmediğini
+  yazmadan önce kontrol et; (4) ölçek oranını hesaplamadan önce referans uzvun hangi boyutunun kadrajda olduğunu
+  belirle. Yan not: iki üreteç (taslak SQL, galeri SQL) ortak modüle taşındı; 0176 ve 0177'nin bayt bayt aynı çıkması,
+  yeniden düzenlemenin davranışı değiştirmediğinin kanıtıydı. 15 üretim, 30 kredi, 10 kabul.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
