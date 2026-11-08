@@ -41,6 +41,24 @@ export interface Alert {
   costCents: number | null;
 }
 
+/** accounting_checks(p_org) satırı (0178). bigint kolonlar PostgREST'ten
+ *  sayı ya da metin gelebilir; tüketirken Number() ile çevrilir. */
+interface AccountingCheckRow {
+  check_key: string;
+  severity: string;
+  ok: boolean;
+  title: string;
+  hint: string;
+  count_n: number | string | null;
+  amount_cents: number | string | null;
+  currency: string | null;
+  href: string;
+  action_label: string;
+  detail: unknown;
+}
+
+const ACCOUNTING_SEVERITIES = new Set<AlertSeverity>(["kritik", "onemli", "bilgi"]);
+
 const SEVERITY_RANK: Record<AlertSeverity, number> = {
   kritik: 0,
   onemli: 1,
@@ -107,6 +125,7 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
     goldBasis,
     spotQuote,
     stoneRows,
+    accountingChecks,
   ] = await Promise.all([
       getDataGaps(orgId),
       getEtsyStatus(orgId),
@@ -225,6 +244,25 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
             return null;
           },
         ),
+      // MUHASEBE KONTROL DÖNGÜLERİ (0178): ledger zinciri, iade kuyruğu,
+      // sipariş ücreti farkı, iptalde hayalet COGS, sözlükte olmayan ledger
+      // türü, ShipStation kopukluğu… Her kontrolün önemi, başlığı ve ipucu
+      // SQL'de (accounting_checks) yaşar; burada yalnız ok=false satırlar
+      // uyarıya çevrilir. Migration uygulanmadan önce RPC hata döner: hata
+      // loglanır ve sinyal sessizce kapalı kalır (stone-cost deseni).
+      supabase.rpc("accounting_checks", { p_org: orgId }).then(
+        (r) => {
+          if (r.error) {
+            console.error("[alert-center] accounting-checks:", r.error.message);
+            return null;
+          }
+          return (r.data ?? []) as AccountingCheckRow[];
+        },
+        (e) => {
+          console.error("[alert-center] accounting-checks:", e);
+          return null;
+        },
+      ),
     ]);
 
   // Sorgu hataları sessizce "her şey yolunda"ya dönüşmesin — logla.
@@ -750,6 +788,27 @@ export async function getAlertCenter(orgId: string): Promise<AlertCenter> {
         costCents: riskCents,
       });
     }
+  }
+
+  // 13) Muhasebe kontrol döngüleri (0178): başarısız her kontrol bir uyarı.
+  // Tutar yalnız org para birimindeyse bedel olarak taşınır (kur karışmasın).
+  for (const c of accountingChecks ?? []) {
+    if (c.ok) continue;
+    alerts.push({
+      key: c.check_key,
+      severity: ACCOUNTING_SEVERITIES.has(c.severity as AlertSeverity)
+        ? (c.severity as AlertSeverity)
+        : "onemli",
+      title: c.title,
+      hint: c.hint,
+      count: Number(c.count_n ?? 0),
+      href: c.href,
+      actionLabel: c.action_label,
+      costCents:
+        c.amount_cents != null && (c.currency ?? currency) === currency
+          ? Number(c.amount_cents)
+          : null,
+    });
   }
 
   alerts.sort((a, b) => {

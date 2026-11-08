@@ -63,6 +63,13 @@ Jade Gold NYC Etsy mağazası için uçtan uca yönetim/raporlama paneli. Tüm s
   `node scripts/theme-lab/compile.mjs` + `shoot.mjs` ile derle ve ölç.
 - **Etsy yönetimi (her mağaza):** Etsy'ye dokunan her işte önce `docs/etsy-playbook/INDEX.md`
   (konu → dosya tablosu), sonra YALNIZ o işin konu dosyası okunur; `source/` okunmaz.
+- **Muhasebe kontrol döngüleri (0178, 2026-11-08):** `accounting_checks(org)` salt
+  okunur kontrolleri Uyarı Merkezi'ne düşer (ledger bakiye zinciri, iade kuyruğu,
+  sipariş ücreti farkı, iptalde COGS, ShipStation, reklam verisi). Etsy yeni bir
+  `ledger_type` yazarsa `ledger_type_unknown` yanar: türün gerçek satırını oku,
+  `etsy_ledger_type_classes`'a migration ile ekle; tahminle sınıflama. Muhasebe
+  işinde önce `docs/muhasebe/senaryo-matrisi.md`. `REFUND_GROSS` siparişe payment
+  id ile DEĞİL aynı saniyedeki `sales_tax_refund` (receipt) ile bağlanır.
 - **Prod adresi: `https://amuletta.artifactstudio.info`** (custom domain). Panel
   linki verirken bunu kullan — `jade-gold-nyc.vercel.app` diye bir alias YOK,
   uydurulmuş adres `DEPLOYMENT_NOT_FOUND` verir (vaka 2026-08-20). Vercel
