@@ -15,6 +15,8 @@ Migration `0174_sale_item_pnl.sql`, görünüm `sale_item_pnl`._
   paketleme. Elle giriş `costs` tablosuna `source='manual'` + `cost_kind` ile
   yazılır; AYNI türdeki otomatik motor satırını (gram × ayar: `gold_auto`)
   görünümde ezer ve motor o kaleme bir daha dokunmaz. Boş bırakıp çıkmak elle girişi siler; motor değeri geri gelir.
+  Sınır: motor satırı silinmez, bu yüzden İşletme Karı ve taraf toplamları
+  ikisini birden sayar; `cogs_source_conflict` (0179) bunu gösterir.
 - **İade** Etsy'den (receipt.refunds) okunur ve kalemlere satır toplamı payıyla
   dağıtılır. Eski iadeli siparişler (bu sürümden önce okunmuş) için
   "İade verisini çek" butonu / cron `payments` fazı receipt'i tek tek yeniden
@@ -103,19 +105,30 @@ Kaynaklar: IRS Pub 334 / Pub 538 / Schedule C talimatları, Etsy Help (sales tax
 
 ShipStation senkronu da gönderi bağlamayı aylık özetten önce koşar.
 
-## Kontrol döngüleri (0178)
+## Kontrol döngüleri (0178, 0179)
 
-`accounting_checks(org)` 11 salt okunur kontrolü tek seferde koşar; başarısız
+`accounting_checks(org)` 14 salt okunur kontrolü tek seferde koşar; başarısız
 olanlar Uyarı Merkezi'ne düşer, yeşile dönen Görevler'e "Çözüldü" izi bırakır.
 Liste ve eşitlikler: `docs/muhasebe/senaryo-matrisi.md`. Elle koşulabilir
-sorgular: `docs/muhasebe/kontrol-donguleri.sql`.
+sorgular: `docs/muhasebe/kontrol-donguleri.sql`. 0179 çürütücülerin bulduğu
+dört kusuru düzeltti: K1 aynı saniyedeki satır sırasına güveniyordu, K3 iadeyi
+tek kaynaktan okuyordu, K5 boş kargo alanını "kargolanmadı" sayıyordu, K8
+reklamın bir günlük kaymasını bilmiyordu. Üç kontrol de ekledi: K12 ledger
+tazeliği, K13 ShipStation çift sayımı, K14 maliyet kaynağı çakışması.
 
-Bugün bilinen iki motor kusuru kontrollerde görünür, kodda henüz düzeltilmedi:
-`rebuild_sales_etsy_fees` işleme ücreti iadesini payment id ile arar (satır
-payment_adjustment kimliği taşır, dal ölü), `reference_type = 'etsy'` olan
-Offsite Ads satırlarını ve Offsite iadesini saymaz (`order_fee_gap`). Altın
-maliyet motoru iptal edilen siparişe de maliyet yazar ve İşletme Karı onu
-toplar (`cancelled_order_cogs`).
+Bugün bilinen dört motor kusuru kontrollerde görünür, kodda henüz düzeltilmedi:
+
+- `rebuild_sales_etsy_fees` işleme ücreti iadesini payment id ile arar (satır
+  payment_adjustment kimliği taşır, dal ölü), `reference_type = 'etsy'` olan
+  Offsite Ads satırlarını ve Offsite iadesini saymaz (`order_fee_gap`).
+- Altın maliyet motoru iptal edilen siparişe de maliyet yazar ve İşletme Karı
+  onu toplar (`cancelled_order_cogs`).
+- Siparişe bağlanan ShipStation gönderisi aylık özetten yalnız başarılı
+  ShipStation senkronunda düşer; senkron dururken postaj iki kez sayılır
+  (`postage_double_count`).
+- Elle ya da faturayla girilen kalem maliyetinin yanında motor tahmini de
+  durur; `sale_item_pnl` elle olanı öne alır ama İşletme Karı ve taraf
+  toplamları ikisini birden toplar (`cogs_source_conflict`).
 
 ## Bilinen sınırlar / sonraki adımlar
 
