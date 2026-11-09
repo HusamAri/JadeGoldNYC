@@ -1,0 +1,132 @@
+{
+  "sourcePackage": "2026-11-08-eon-lab-grown-fr6",
+  "productSku": "EON-FR6",
+  "productType": "ring",
+  "listingProtocol": "ring_band",
+  "referenceUrl": "https://www.etsy.com/listing/4512052520/round-cut-moissanite-diamond-mens",
+  "referenceNote": "Owner's reference listing 2026-11-08: AarsanJewels (ships from India, listed 2026-10-23, 5.0 stars / 8 reviews), moissanite, 14K 800.91 USD after 25% off (1,067.88 USD before), 10K 637.09, 18K 1,050.67, silver 173.56, platinum 1,177.93; US 3-11 in quarter sizes. Read via the Google Translate proxy (Etsy returns 403 to the container directly). Design from its 8 photos: flat band 6.00 x 1.50 mm, brushed satin face, a narrow high-polish bevel on each edge, one thin polished groove running round slightly off center (about 3 : 2), one round brilliant stone set flush on the groove in a thin polished rim. Claimed 0.10 (+/-0.05) ct; in the photos the stone with its rim is about one third of the band width, i.e. about 2 mm.",
+  "title": "14K Gold Lab Grown Diamond Band, Flush Set Round, 6mm Brushed with Polished Groove",
+  "description": "A solid 14K gold band, 6 mm wide, with one round lab grown diamond set flush on a fine polished groove. The outer face is brushed to a soft satin finish between two high-polish beveled edges, and the inside is polished smooth. The stone sits level with the surface, so nothing stands proud to catch on clothing or gloves.\n\nYOUR RING\nSolid 14K gold in yellow, white or rose. Flat profile about 6 mm wide and 1.5 mm thick, with a narrow polished bevel along each edge. One thin polished groove runs all the way around, slightly off center. One round brilliant lab grown diamond, about 2 mm, set flush on the groove in a fine polished rim. About 7 grams in US 8.5. The price is for one ring in your selected metal color and size; the lab grown diamond is included.\n\nCHOOSE YOUR OPTIONS\n1. Metal Color: Yellow Gold, White Gold or Rose Gold.\n2. Ring Size: US 4 to US 16, including half sizes. One price for every size.\n\nABOUT THE LAB GROWN DIAMOND\nLaboratory-grown diamonds are grown above ground and have the same crystal structure, hardness and brilliance as mined diamonds; they are not simulants. A round brilliant cut is faceted to return as much light as possible, so even a small stone gives a bright, crisp flash.\n\nTHE FLUSH SETTING\nIn a flush setting, also called a gypsy setting, the stone sits in a seat cut into the band and a fine rim of gold holds its edge. Its top is level with the surface, so it is protected on every side.\n\nSIZING AND RESIZING\nMade to order in your size. Wider bands can feel tighter than narrow bands, so message us before ordering if you are between sizes. With a single stone at the front, a jeweler can usually resize the band by about one size.\n\nTHE BRUSHED FINISH\nThe satin surface softens with daily wear and gains a gentle patina; a jeweler can brush it again to look new. The polished bevels and groove give the band a bright outline.\n\nMADE FOR YOU\nMade to order from raw precious-metal materials. The preparation time before dispatch is shown in the shipping details of this listing; transit time is separate.\n\nCARE\nClean gently with mild soap, lukewarm water and a soft brush, then pat dry. Avoid harsh chemicals and abrasive cleaners. Remove the ring before heavy work or sport.",
+  "tags": [
+    "lab grown diamond",
+    "lab created diamond",
+    "flush set ring",
+    "gypsy set ring",
+    "single stone band",
+    "mens gold band",
+    "white gold band",
+    "14k gold band",
+    "solid gold band",
+    "brushed gold band",
+    "beveled gold band",
+    "6mm gold band",
+    "rose gold band"
+  ],
+  "tagEvidence": "EON 30-day Etsy search terms (docs/eon/seo/2026-10-21-etsy-keyword/data/etsy-search-terms-30d.tsv, 188 terms / 215 visits; every tag word contained in the term): mens gold band 39, white gold band 30, 14k gold band 12, solid gold band 8, rose gold band 5, 6mm gold band 3, brushed gold band 2. Lab-grown, flush/gypsy and single-stone terms: 0 (new category for the shop; the tags define it). Unqualified 'diamond' cannot appear in a tag (FTC 16 CFR 23.25), so 'flush set ring', 'gypsy set ring' and 'single stone band' carry the setting.",
+  "materials": [
+    "Solid 14K yellow gold",
+    "Solid 14K white gold",
+    "Solid 14K rose gold",
+    "Lab grown diamond"
+  ],
+  "variationAxes": [
+    "Metal Color",
+    "Ring Size"
+  ],
+  "colors": [
+    [
+      "YG",
+      "Yellow Gold"
+    ],
+    [
+      "WG",
+      "White Gold"
+    ],
+    [
+      "RG",
+      "Rose Gold"
+    ]
+  ],
+  "sizes": {
+    "from": 4,
+    "to": 16,
+    "step": 0.5
+  },
+  "band": {
+    "widthMm": 6,
+    "thicknessMm": 1.5,
+    "karat": "14K",
+    "profile": "flat face, a narrow polished bevel on each edge, one thin polished groove slightly off center (about 3 : 2)",
+    "finish": "brushed satin face; high polish bevels, groove, stone rim and inside"
+  },
+  "gram": {
+    "model": "maker's 14K band list (docs/artifact-studio/maker_cost.py list_g14 = width x (0.836 + 0.0515 x US) x thickness / 1.5), full rectangular 6 x 1.5 mm section; bevels and groove remove about 5% (about 0.38 g at US 8.5), kept in the cost as a buffer for the finishing work. Public text says 'about 7 grams' (the lower, reduced figure).",
+    "anchorUs": 8.5,
+    "anchorGrams": 7.64,
+    "weightSource": "estimated"
+  },
+  "stone": {
+    "origin": "lab",
+    "shape": "round",
+    "count": 1,
+    "sizeMm": "2.0",
+    "totalCarat": 0.03,
+    "caratNote": "Design stone 2.0 mm round brilliant, about 0.03 ct (standard round chart), matching the reference photos. The reference claims 0.10 ct (3 mm), which would not sit flush in a 1.5 mm wall (stone depth about 1.8 mm). Carat weight is NOT stated in public text until the maker confirms.",
+    "colorClarity": null,
+    "settingFeeCents": 1000,
+    "castingFeeCents": 0,
+    "stoneCostCentsEstimate": 2000,
+    "stoneCostNote": "No maker quote for this design. The maker's only known lab rate is 280 USD/ct (Model 2 baguette): 0.03 ct = 8.40 USD; booked at 20 USD for one small stone (uncalibrated). Setting 10 USD = the maker's Model 2 flush setting fee per stone."
+  },
+  "priceCents": 180000,
+  "quantityPerVariant": 20,
+  "pricing": {
+    "makerQuote": null,
+    "costBasis": "maker convention (same maker as EON-VB6): 14K band = grams x 100 USD (gold + labor), stone and setting on top. US 8.5: 7.64 g x 100 = 764.25 + stone 20 + setting 10 = 794.25",
+    "packagingUsd": 8,
+    "shippingUsd": 22,
+    "landedUsdAtAnchor": 824.25,
+    "multiplier": 1.55,
+    "engineUsd": 1278,
+    "engineListUsdAtAnchor": 1705,
+    "storePromotionRate": 0.25,
+    "listUsd": 1800,
+    "buyerUsd": 1350,
+    "onePriceAllSizes": true,
+    "everySizeFloorListUsd": 1780,
+    "worstOffsiteProfitBySizeUsd": {
+      "US4": 436,
+      "US8.5": 297,
+      "US13": 158,
+      "US16": 65
+    },
+    "at35PercentSale": "US 13 and up fall below zero at the worst Offsite fee; the price is set for the 25% sale running in November (orders 2026-11-05/06: 25% and 15%; 35% last seen 2026-10-28)",
+    "spotUsdPerOzt": 4072.1,
+    "spotDate": "2026-11-08",
+    "marketAnchors": [
+      "Reference AarsanJewels (Etsy 4512052520, moissanite, India): 14K 800.91 USD after 25% off (1,067.88 before), read 2026-11-08",
+      "JAXXON Modern Classic Diamond Solitaire Band 6mm, solid 14K, one 0.10 ct lab-grown flush set, polished, 5-9 g: 1,199 USD ('traditional retail' 1,800), read 2026-11-08",
+      "Dreamstone Mens Single Diamond Wedding Band, 14K white gold, 6 mm (SKU), 1/15 ct lab-grown F/VS2: 1,400 USD, read 2026-11-08",
+      "Virabyani bezel set single diamond mens band, 14K, lab-grown E-F/VS: 1,241 USD on sale from 1,773 (search snippet 2026-11-08)"
+    ],
+    "methodology": "docs/eon/lab-grown/price_model.py fr; formula lib/pricing-engine/eon-cost.ts 457-472"
+  },
+  "approval": {
+    "authority": "Owner 2026-11-08 (question card): list 1,800 USD -> 25% sale -> 1,350 USD, one price for every size; scope 14K, 3 colours, US 4-16 with half sizes (75 variants); gallery: generate all 10 frames from the prompt sheet (images/PROMPTS-REVIEW.md), hero first and checked against the reference.",
+    "panelDraftAuthorized": true,
+    "etsyDraftCreationAuthorized": true,
+    "livePublicationAuthorized": false,
+    "blockers": [
+      "Etsy activation needs at least one unedited photo of the physical piece (draft allowed)",
+      "No maker quote for this design: cost is the maker's band list (7.64 g x 100 USD at US 8.5) + stone 20 + setting 10, all estimates",
+      "Maker to confirm: largest round that sits flush in a 1.5 mm wall (design 2.0 mm, about 0.03 ct), stone colour/clarity grade, white gold rhodium plating, preparation time, price per size",
+      "No shop section for lab grown pieces yet",
+      "Spanish translation not written"
+    ]
+  },
+  "classification": {
+    "protocol": "ring_band",
+    "taxonomy": "Jewelry > Rings > Bands (1232)",
+    "basis": "Owner 2026-11-04 for the lab-grown line (EON-DSP: 'bu wedding band değil'); ring_band is live in prod, needs no Width axis (width is fixed at 6 mm)"
+  }
+}

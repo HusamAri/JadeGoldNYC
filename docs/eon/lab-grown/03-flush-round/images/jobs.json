@@ -1,0 +1,93 @@
+{
+  "product": "EON-FR6",
+  "model": "nano_banana_2",
+  "aspect_ratio": "4:3",
+  "resolution": "2k",
+  "count": 1,
+  "why": "nano_banana_2 resolution varsayılanı 1k (second-brain 2026-09-13, 2026-10-13): 2k AÇIKÇA geçilir. count DAİMA 1 (CLAUDE.md). Tüm kareler 4:3: Etsy 'diğerleri ilk fotoğrafla aynı şekil' (playbook 04). İlk fotoğraf 1:1 kırpımda kesilmesin diye halka ortada, yanlarda boşluk.",
+  "costCreditsPerImage": 2,
+  "costSource": "generate_image get_cost 2026-11-07 (nano_banana_2, 2k, 4:3); üretimden önce yeniden okunur",
+  "references": {
+    "ring": {
+      "file": "scratchpad ref4512/ref-ring-crop.png (repoya ALINMADI: üçüncü tarafın ürün fotoğrafı)",
+      "source": "sahibin referans listing'i etsy 4512052520 (AarsanJewels), 6. fotoğraf (krem fon, sarı altın) il_fullxfull.8795614594; 'Aarsan' filigranı 130x84+985+535 bölgesinde morfolojik kapama (Disk 4,5) + 1,2 px bulanıklıkla silindi; kırpım 810x430+400+400, ×2 Lanczos",
+      "md5": "928326069b0d3dcb5906d327c1e59b64",
+      "higgsfieldMediaId": "28e09a5a-80f7-4baa-997a-86d95ca744aa"
+    },
+    "stone": {
+      "file": "scratchpad ref4512/ref-stone-crop.png (repoya ALINMADI)",
+      "source": "aynı foto, taş + kanal + üst faset yakın kırpım 340x230+650+575, ×3 Lanczos",
+      "md5": "3dc2e60eefeb2c4af84c8690aad9c5b1",
+      "higgsfieldMediaId": "b262cb06-59fa-4409-afc2-54198e5a1695"
+    },
+    "heroCrop": {
+      "file": "scratchpad fr-gen/ref-hero-surface.png (01 v2'den 240x430+945+690, ×2 Lanczos: yüz + kanal + taş, kompozisyon yok)",
+      "md5": "a667dc0979ed2a8869a6475b2e490582",
+      "higgsfieldMediaId": "229df90c-3f5d-406f-9ac3-3d12d38dc164"
+    }
+  },
+  "refsByFrame": {
+    "01-hero": [
+      "ring",
+      "stone"
+    ],
+    "07-metals": [
+      "ring",
+      "stone"
+    ],
+    "09-light": [
+      "ring",
+      "stone"
+    ],
+    "*": [
+      "ring",
+      "stone",
+      "heroCrop"
+    ],
+    "_why": "VB6 dersi: 07 renk karesi sarı yüzey kırpımını almaz; 09 yüzey kırpımı alınca hero kompozisyonunu kopyaladı, yalnız tasarım kırpımları"
+  },
+  "waves": [
+    [
+      "01-hero"
+    ],
+    [
+      "02-stone",
+      "03-flat",
+      "04-hand-m",
+      "05-inside",
+      "06-hand-w"
+    ],
+    [
+      "07-metals",
+      "08-scale",
+      "09-light",
+      "10-dish"
+    ]
+  ],
+  "waveRule": "01 tek başına üretilir ve referansla YAN YANA şekil kontrolünden geçer (Cadence 2026-09-26); seri ancak sonra. Dalga <=7 eşzamanlı (429 dersi 2026-10-18).",
+  "qa": "her kare: tek round taş, kanalın ÜSTÜNDE ve flush (tırnak/yükselen yuva yok), taş ~bant genişliğinin 1/3'ü, kanal merkez dışı ve kenarlara paralel, iki kenarda cilalı faset, fırça yönü bant boyunca, iç yüzey cilalı ve yazısız, el karelerinde yüzük parmağı (4. parmak; komşusu en kısa ve en dış parmak), 08'de ~2 cm ölçek ve bant/çap ~1/4, 07'de renkler doğru; set kontak baskısında yan yana (kadraj kopyası, ölçek)",
+  "edits": {
+    "01-hero-v2": {
+      "from": "01-hero-v1 (job 7693de95-fc3a-4fce-bb9a-7c2bb78f1e18) + reference stone crop",
+      "prompt": "Edit the first reference image. Keep everything exactly as it is: the ring's position, size and angle, the camera, the light, the travertine, the wall, the patches of amber and teal light and all colours. Change only three details of the band. First, the groove: make it one single fine bright line, a thin V-cut about 0.3 mm wide, not two parallel lines and not a wide channel; it still runs around the band a little off centre and through the centre of the round stone. Second, the two edges of the band: make each edge a smooth, flat, high-polish bevel cut at an angle, one bright angled strip about 0.7 mm wide running all the way round, with no step, no ledge and no extra line beside it. Third, the gold rim around the stone: make it very thin, a fine line of polished gold barely wider than the groove, so the stone itself fills almost the whole circle. The stone stays the same size, round, bright and colourless, flush and level with the brushed face, the only stone on the ring. The second reference image is a close crop of this ring's design: take from it only the look of the single groove line, the angled bevel along the edge and the thin rim around the stone, not its background, colour or camera angle. Photorealistic, natural colour, no text, no logo, no watermark.",
+      "why": "v1: double-line groove, stepped edges",
+      "result": "groove and bevels fixed; rim only slightly thinner"
+    },
+    "08-scale-v2": {
+      "from": "08-scale-v1 (job 03094402-8960-4704-9c1f-8211209fa541) + reference stone crop",
+      "why": "v1 ring 1.69x the thumb, band 0.46 of its height",
+      "result": "band fixed (0.28); size unchanged because the prompt also said to keep the finger positions"
+    },
+    "08-scale-v3": {
+      "from": "08-scale-v2 (job 3f1e92d1-1718-4075-b4b6-affb8e17505a)",
+      "why": "ask for a 40% smaller ring with the index fingertip moved down",
+      "result": "came back unchanged"
+    },
+    "08-scale-v4": {
+      "from": "fresh generation with the revised 08 frame text in prompts.py (fingertip gap and thumb width pinned)"
+    },
+    "09-light-v2": {
+      "from": "fresh generation with the revised 09 frame text in prompts.py (camera off to one side)"
+    }
+  }
+}
