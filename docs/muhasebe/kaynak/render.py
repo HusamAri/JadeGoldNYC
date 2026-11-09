@@ -121,6 +121,10 @@ def control_label(c):
         return "canlı: " + ", ".join(live)
     if c.get("alert_key"):
         return "öneri: `%s`" % c["alert_key"]
+    loop = field(c["primary_id"], "control_loop")
+    m = re.search(r"\balert(?:_key)?\s+`?([a-z][a-z0-9_]{3,})", loop)
+    if m:
+        return "öneri: `%s`" % m.group(1)
     return "öneri: ayrıntıda (anahtarsız)"
 
 

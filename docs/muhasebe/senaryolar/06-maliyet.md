@@ -17,7 +17,7 @@ Satılan malın maliyeti: kaynak önceliği, iptal ve iade sonrası maliyet, mal
 | MAL-09 | İade edilen ya da kaybolan ürünün akıbeti: stoğa dönüş, hurda, kayıp tazminatı, alıcıda kalma | P1 | M | A, B, C, D | öneri: `return_disposition_missing` |
 | MAL-10 | Satışsız stok çıkışı: numune, hediye, influencer, kayıp, yeniden yapım ve garanti | P3 | M | A, C, D | öneri: `stock_out_without_purpose` |
 | MAL-11 | Gerçek maliyet girişi fiyat tabanını tetiklemiyor; indirim ve ücret parametresi iki kaynakta | P1 | S | A, B, C | öneri: `price_below_actual_cost` |
-| MAL-12 | Stoğa dönen iade parçası: taşıma değeri, yeniden satışta stoktan tüketim ve yıl sonu stok | P2 | L | A, B, C, D | öneri: ayrıntıda (anahtarsız) |
+| MAL-12 | Stoğa dönen iade parçası: taşıma değeri, yeniden satışta stoktan tüketim ve yıl sonu stok | P2 | L | A, B, C, D | öneri: `return_stock_unvalued` |
 
 ### MAL-01 Aynı kalemde üç maliyet kaynağı: invoice ve manual satırı varken gold_auto da sayılıyor
 
@@ -193,7 +193,7 @@ Satılan malın maliyeti: kaynak önceliği, iptal ve iade sonrası maliyet, mal
 
 ### MAL-12 Stoğa dönen iade parçası: taşıma değeri, yeniden satışta stoktan tüketim ve yıl sonu stok
 
-- **Öncelik:** P2 · **Efor:** L · **Şerit:** A, B, C, D · **Kontrol:** öneri: ayrıntıda (anahtarsız)
+- **Öncelik:** P2 · **Efor:** L · **Şerit:** A, B, C, D · **Kontrol:** öneri: `return_stock_unvalued`
 - **Kaynak senaryo:** EK-03
 - **Durum:** Alıcı kargolanmış parçayı iade eder (düz bantta 14 gün; gravürlü ya da özel parça iade dışı, bir ücretsiz beden değişimi: docs/etsy-playbook/06-shipping-cs.md:17). Etsy iadeyi ve çoğu zaman iade etiketini (shipping_labels_usps_return) yazar, parçanın akıbetini yazmaz. Parça stoğa dönerse ilk satışın COGS'u geri çevrilir ve parça maliyetiyle stok varlığı olur; aynı SKU yeniden satılınca maliyet bu stoktan tüketilir, bugünkü alım fiyatıyla yeniden yazılmaz; yıl sonunda elde kalan parça Schedule C Part III satır 41'e (yıl sonu stok) maliyet ya da piyasa değerinden düşük olanıyla girer. Panel stok tutmadığı için ilk satışın COGS'u gider olarak kalır ve yeniden satış motorla yeniden maliyetlenir: aynı parça iki kez gider yazılır, elde kalan iade parçası hiçbir yerde varlık değildir.
 - **Etsy kaynağı:** Etsy: REFUND_GROSS ve sales_tax_refund (iade), receipt.status Fully Refunded ya da Canceled, iade etiketi ledger'da shipping_labels_usps_return (Jade 212 kayıt $913,42, 2022-06-12 ile 2026-10-31 arası; EON 13 kayıt $83,53; hiçbiri siparişe bağlı değil). Parçanın geri gelip gelmediği, stoğa mı hurdaya mı gittiği ve yeniden satışta hangi parçanın gönderildiği Etsy'de yok; tek kaynak sahibin fiziksel kaydıdır. Kargo kanıtı ShipStation gönderisi (order_number = receipt id; senkron 2026-07-10'da durdu) ya da sales.shipped_at ve sale_items.shipped_at.

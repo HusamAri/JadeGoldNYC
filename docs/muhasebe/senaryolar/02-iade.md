@@ -11,7 +11,7 @@ _Muhasebe senaryo matrisinin bölümü (IAD önekli senaryolar). Dizin, model ve
 | IAD-03 | Kısmi iade hangi kaleme ait: pay dağıtımı yerine ledger transaction_refund ağırlığı | P2 | M | A, C | öneri: `partial_refund_unattributed` |
 | IAD-04 | Chargeback (CHARGEBACK_DEBIT): kontra gelir, sipariş bağı ve itiraz sonucu | P2 | M | A, B, C, D | canlı: K11 `chargeback_unlinked` |
 | IAD-05 | Etsy dışı iade (havale, PayPal, nakit, mağaza kredisi): kaynak, yöntem ve denetim izi | P3 | S | A, C, D | öneri: `manual_refund_no_ref` |
-| IAD-06 | Açık dönem iade karşılığı: son 30 günün ve yeni kapanan ayın karı henüz gelmemiş iade ve iptalleri taşımıyor | P2 | M | A, B, C, D | öneri: ayrıntıda (anahtarsız) |
+| IAD-06 | Açık dönem iade karşılığı: son 30 günün ve yeni kapanan ayın karı henüz gelmemiş iade ve iptalleri taşımıyor | P2 | M | A, B, C, D | öneri: `refund_reserve_drift` |
 
 ### IAD-01 İade kontra geliri: ledger köprüsü ve tam receipt yeniden okuması (iade tutarı panelde yok)
 
@@ -100,7 +100,7 @@ _Muhasebe senaryo matrisinin bölümü (IAD önekli senaryolar). Dizin, model ve
 
 ### IAD-06 Açık dönem iade karşılığı: son 30 günün ve yeni kapanan ayın karı henüz gelmemiş iade ve iptalleri taşımıyor
 
-- **Öncelik:** P2 · **Efor:** M · **Şerit:** A, B, C, D · **Kontrol:** öneri: ayrıntıda (anahtarsız)
+- **Öncelik:** P2 · **Efor:** M · **Şerit:** A, B, C, D · **Kontrol:** öneri: `refund_reserve_drift`
 - **Kaynak senaryo:** EK-02
 - **Durum:** Alıcı öder ve panel siparişi o gün gelire yazar (completed ya da paid). Günler ya da haftalar sonra sipariş iptal edilip para iade edilir ya da parça geri gelir: Etsy ledger'a REFUND_GROSS ile aynı saniyede sales_tax_refund yazar, receipt.status Canceled, Fully Refunded ya da Partially Refunded olur. Panel iptalde siparişi geriye dönük gelirden çıkarır, iade tutarını IAD-01 ile düşecektir. Bu yüzden son 30 günün ve yeni kapanan ayın karı, olgun dönemlerde ölçülen iade oranının henüz gerçekleşmemiş kısmı kadar iyimserdir ve ay kapandıktan sonra sessizce düşer. Yönetim raporu için beklenen iade karşılığı (tahakkuk) gerekir; vergi paketinde (EK-04) karşılık yer almaz, yalnız gerçekleşen iade satır 2'ye girer.
 - **Etsy kaynağı:** Etsy beklenen iadeyi vermez, yalnız gerçekleşeni yazar: ledger REFUND_GROSS (reference_type payment_adjustment) ve aynı saniyede tek sales_tax_refund (reference_id = receipt id; Jade köprüsü 1.690/1.922 iade, D2), receipt.status ve receipt.refunds[]. Karşılık bu geçmişten panelde hesaplanan bir tahmindir. Politika ufku: düz bantta 14 günlük iade, kayıp ve sigorta talebi sevkten 120 gün içinde (docs/etsy-playbook/06-shipping-cs.md:17 ve :22); ölçülen en uzun iade gecikmesi 156 gün (D5).

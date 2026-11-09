@@ -8,7 +8,7 @@ Ledger sözlüğünün aylık gider özetine bağlanması, bakiye zinciri ve ayl
 | --- | --- | --- | --- | --- | --- |
 | SIS-01 | Aylık ledger özeti sözlüğü okumuyor: having ile düşen ay, eşlenmeyen tür ve bayat özet | P1 | M | A, B, C | canlı: K6 `ledger_type_unknown`, K7 `ledger_cost_drift` |
 | SIS-02 | Ledger bakiye zinciri ve tazeliği: K1 0179 ile düzeldi, aylık ekstre ikinci kaynak | P2 | S | A, B, C, D | canlı: K1 `ledger_balance_break`, K12 `ledger_stale` |
-| SIS-03 | Finansal denetim izi: 90 günlük saklama kararı, silinen iz ve audit trigger'sız finansal ayar tabloları | P1 | M | A, B, C, D, E | öneri: ayrıntıda (anahtarsız) |
+| SIS-03 | Finansal denetim izi: 90 günlük saklama kararı, silinen iz ve audit trigger'sız finansal ayar tabloları | P1 | M | A, B, C, D, E | öneri: `audit_trail_gap` |
 
 ### SIS-01 Aylık ledger özeti sözlüğü okumuyor: having ile düşen ay, eşlenmeyen tür ve bayat özet
 
@@ -46,7 +46,7 @@ Ledger sözlüğünün aylık gider özetine bağlanması, bakiye zinciri ve ayl
 
 ### SIS-03 Finansal denetim izi: 90 günlük saklama kararı, silinen iz ve audit trigger'sız finansal ayar tabloları
 
-- **Öncelik:** P1 · **Efor:** M · **Şerit:** A, B, C, D, E · **Kontrol:** öneri: ayrıntıda (anahtarsız)
+- **Öncelik:** P1 · **Efor:** M · **Şerit:** A, B, C, D, E · **Kontrol:** öneri: `audit_trail_gap`
 - **Kaynak senaryo:** EK-05
 - **Durum:** Maliyeti ya da sınıfı belirleyen bir ayar değişir ya da senkron finansal bir satır yazar: sahip altın alım fiyatını günceller, fiyat motoru ayarı değişir, bir gider kategorisinin taraf ayarı değişir, senkron iade ve gönderi satırı ekler. Etsy tarafında bunların hiçbiri iz bırakmaz; tek iz panelin audit_log'udur (CLAUDE.md'deki 'şirket hafızası'). Vergi incelemesinde ya da kapanmış ay sapmasında (NAK-02) 'bu COGS hangi alım fiyatıyla, ne zaman, kim değiştirince yazıldı' sorusu bu izle cevaplanır. Bugün iz iki yoldan kırılır: finansal ayar tablolarının bir kısmında trigger yok, audit_log ise kısa saklanıyor (sahip kararı 90 gün; 2026-10-07'de kota yüzünden 14 günden eski 370 bin sistem satırı silindi).
 - **Etsy kaynağı:** Yok: panel içi değişiklik Etsy'de iz bırakmaz. Etsy'den aynalanan ledger (etsy_ledger_entries) ve ShipStation gönderileri kendi kaynaklarında saklanır, yeniden senkronla kurulur; ledger sözlüğü (etsy_ledger_type_classes) yalnız migration ile değişir ve git geçmişi onun izidir. Etsy chargeback kanıt paketi 13 ay saklanır (docs/etsy-playbook/06-shipping-cs.md:24).

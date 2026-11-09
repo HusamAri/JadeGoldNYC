@@ -79,7 +79,7 @@ Gelirin tek tanımı, Etsy'nin topladığı vergi emanetinin gelirden ayrılmas�
 | --- | --- | --- | --- | --- | --- |
 | GEL-01 | Gelir tek tanıma iner: vergi emaneti ve iadedeki vergi gelirden ayrılır | P0 | M | A, B, C | öneri: `sales_tax_mismatch` |
 | GEL-02 | 1099-K brüt tutarı ile panel brütünün yıllık mutabakatı | P1 | S | A, C, D | öneri: `tax_form_mismatch` |
-| GEL-03 | Etsy dışı satış (elle giriş, Shopier, receipt kimliksiz CSV): tahsilat kanalı, kanal ücreti, kalem satırı ve satıcının beyan edeceği satış vergisi | P3 | M | A, C, D, E | öneri: ayrıntıda (anahtarsız) |
+| GEL-03 | Etsy dışı satış (elle giriş, Shopier, receipt kimliksiz CSV): tahsilat kanalı, kanal ücreti, kalem satırı ve satıcının beyan edeceği satış vergisi | P3 | M | A, C, D, E | öneri: `non_etsy_sale_incomplete` |
 
 ### 2. İade, iptal ve chargeback
 
@@ -92,7 +92,7 @@ Gelirin tek tanımı, Etsy'nin topladığı vergi emanetinin gelirden ayrılmas�
 | IAD-03 | Kısmi iade hangi kaleme ait: pay dağıtımı yerine ledger transaction_refund ağırlığı | P2 | M | A, C | öneri: `partial_refund_unattributed` |
 | IAD-04 | Chargeback (CHARGEBACK_DEBIT): kontra gelir, sipariş bağı ve itiraz sonucu | P2 | M | A, B, C, D | canlı: K11 `chargeback_unlinked` |
 | IAD-05 | Etsy dışı iade (havale, PayPal, nakit, mağaza kredisi): kaynak, yöntem ve denetim izi | P3 | S | A, C, D | öneri: `manual_refund_no_ref` |
-| IAD-06 | Açık dönem iade karşılığı: son 30 günün ve yeni kapanan ayın karı henüz gelmemiş iade ve iptalleri taşımıyor | P2 | M | A, B, C, D | öneri: ayrıntıda (anahtarsız) |
+| IAD-06 | Açık dönem iade karşılığı: son 30 günün ve yeni kapanan ayın karı henüz gelmemiş iade ve iptalleri taşımıyor | P2 | M | A, B, C, D | öneri: `refund_reserve_drift` |
 
 ### 3. Etsy ücretleri ve kredileri
 
@@ -151,7 +151,7 @@ Satılan malın maliyeti: kaynak önceliği, iptal ve iade sonrası maliyet, mal
 | MAL-09 | İade edilen ya da kaybolan ürünün akıbeti: stoğa dönüş, hurda, kayıp tazminatı, alıcıda kalma | P1 | M | A, B, C, D | öneri: `return_disposition_missing` |
 | MAL-10 | Satışsız stok çıkışı: numune, hediye, influencer, kayıp, yeniden yapım ve garanti | P3 | M | A, C, D | öneri: `stock_out_without_purpose` |
 | MAL-11 | Gerçek maliyet girişi fiyat tabanını tetiklemiyor; indirim ve ücret parametresi iki kaynakta | P1 | S | A, B, C | öneri: `price_below_actual_cost` |
-| MAL-12 | Stoğa dönen iade parçası: taşıma değeri, yeniden satışta stoktan tüketim ve yıl sonu stok | P2 | L | A, B, C, D | öneri: ayrıntıda (anahtarsız) |
+| MAL-12 | Stoğa dönen iade parçası: taşıma değeri, yeniden satışta stoktan tüketim ve yıl sonu stok | P2 | L | A, B, C, D | öneri: `return_stock_unvalued` |
 
 ### 7. Sabit ve Etsy dışı giderler
 
@@ -171,7 +171,7 @@ Etsy ödeme hesabından bankaya ve karttan Etsy'ye nakit akışı, rezerv, ay ka
 | --- | --- | --- | --- | --- | --- |
 | NAK-01 | Etsy ödeme hesabı nakit mutabakatı: payout, geri dönen payout, RECOUP, kart ödemesi ve rezerv | P2 | L | A, C, D, E | öneri: `payout_unmatched` |
 | NAK-02 | Ay kapanışı: dönem kilidi, düzeltme kaydı, iadenin raporlandığı ay ve raporlama esası | P1 | M | A, B, C, D | öneri: `closed_period_drift` |
-| NAK-03 | Yıl sonu muhasebeci paketi: vergi formu satır eşlemesi, 1099-K köprüsü ve XLSX üzerinden Numbers teslimi | P1 | L | A, B, C, D, E | öneri: ayrıntıda (anahtarsız) |
+| NAK-03 | Yıl sonu muhasebeci paketi: vergi formu satır eşlemesi, 1099-K köprüsü ve XLSX üzerinden Numbers teslimi | P1 | L | A, B, C, D, E | öneri: `tax_package_unreconciled` |
 
 ### 9. Sistem bütünlüğü ve ledger sözlüğü
 
@@ -181,7 +181,7 @@ Ledger sözlüğünün aylık gider özetine bağlanması, bakiye zinciri ve ayl
 | --- | --- | --- | --- | --- | --- |
 | SIS-01 | Aylık ledger özeti sözlüğü okumuyor: having ile düşen ay, eşlenmeyen tür ve bayat özet | P1 | M | A, B, C | canlı: K6 `ledger_type_unknown`, K7 `ledger_cost_drift` |
 | SIS-02 | Ledger bakiye zinciri ve tazeliği: K1 0179 ile düzeldi, aylık ekstre ikinci kaynak | P2 | S | A, B, C, D | canlı: K1 `ledger_balance_break`, K12 `ledger_stale` |
-| SIS-03 | Finansal denetim izi: 90 günlük saklama kararı, silinen iz ve audit trigger'sız finansal ayar tabloları | P1 | M | A, B, C, D, E | öneri: ayrıntıda (anahtarsız) |
+| SIS-03 | Finansal denetim izi: 90 günlük saklama kararı, silinen iz ve audit trigger'sız finansal ayar tabloları | P1 | M | A, B, C, D, E | öneri: `audit_trail_gap` |
 
 Toplam 49 senaryo: P0 5, P1 22, P2 17, P3 5.
 

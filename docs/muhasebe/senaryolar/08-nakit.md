@@ -8,7 +8,7 @@ Etsy ödeme hesabından bankaya ve karttan Etsy'ye nakit akışı, rezerv, ay ka
 | --- | --- | --- | --- | --- | --- |
 | NAK-01 | Etsy ödeme hesabı nakit mutabakatı: payout, geri dönen payout, RECOUP, kart ödemesi ve rezerv | P2 | L | A, C, D, E | öneri: `payout_unmatched` |
 | NAK-02 | Ay kapanışı: dönem kilidi, düzeltme kaydı, iadenin raporlandığı ay ve raporlama esası | P1 | M | A, B, C, D | öneri: `closed_period_drift` |
-| NAK-03 | Yıl sonu muhasebeci paketi: vergi formu satır eşlemesi, 1099-K köprüsü ve XLSX üzerinden Numbers teslimi | P1 | L | A, B, C, D, E | öneri: ayrıntıda (anahtarsız) |
+| NAK-03 | Yıl sonu muhasebeci paketi: vergi formu satır eşlemesi, 1099-K köprüsü ve XLSX üzerinden Numbers teslimi | P1 | L | A, B, C, D, E | öneri: `tax_package_unreconciled` |
 
 ### NAK-01 Etsy ödeme hesabı nakit mutabakatı: payout, geri dönen payout, RECOUP, kart ödemesi ve rezerv
 
@@ -47,7 +47,7 @@ Etsy ödeme hesabından bankaya ve karttan Etsy'ye nakit akışı, rezerv, ay ka
 
 ### NAK-03 Yıl sonu muhasebeci paketi: vergi formu satır eşlemesi, 1099-K köprüsü ve XLSX üzerinden Numbers teslimi
 
-- **Öncelik:** P1 · **Efor:** L · **Şerit:** A, B, C, D, E · **Kontrol:** öneri: ayrıntıda (anahtarsız)
+- **Öncelik:** P1 · **Efor:** L · **Şerit:** A, B, C, D, E · **Kontrol:** öneri: `tax_package_unreconciled`
 - **Kaynak senaryo:** EK-04
 - **Durum:** Vergi yılı kapanınca muhasebeci gelir, iade, COGS, ücret, reklam, kargo ve abonelik toplamlarını vergi formunun satırlarıyla ister (2026 yılı için beyan tarihi 2027-04-15). Etsy kendi tarafında 1099-K ve aylık ödeme hesabı ekstresi üretir; panelde ledger, satış ve maliyet tabloları dağınık durur ve hiçbir ekran bunları satıra bağlamaz. Doğru paket kapanmış dönem snapshot'ından (NAK-02) org ve vergi yılı bazında üretilir, her satırın kaynağını (ledger sınıfı, maliyet türü) gösterir, 1099-K köprüsünü (GEL-02) ve Etsy'nin ödediği satış vergisini bilgi satırı olarak taşır, XLSX iner ve sahip Mac'te Numbers'ta 'Farklı Kaydet' ile .numbers'a çevirir. Form org'a göre değişir: Schedule C (ABD bireyi ya da 1040-NR eki), yabancı sahipli tek üyeli LLC için ayrıca Form 5472 ve pro forma 1120 (docs/etsy-playbook/01-fees-compliance.md:33, CPA'ya sorulur), Seselka (TRY) için Türkiye beyanı.
 - **Etsy kaynağı:** Etsy: yıllık 1099-K (2025 eşiği $20.000 ve 200 işlem, docs/etsy-playbook/01-fees-compliance.md:33), aylık Payment account ekstresi (CSV), ledger türleri ve 0178 sınıfları (tahsilat PAYMENT_GROSS, vergi emaneti sales_tax ve sales_tax_refund, kontra gelir REFUND_GROSS, ücret, reklam, kargo, abonelik, kredi). Etsy form satırı üretmez; satır eşlemesi muhasebecinin onayladığı panel kuralıdır.

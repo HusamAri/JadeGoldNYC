@@ -8,7 +8,7 @@ Gelirin tek tanımı, Etsy'nin topladığı vergi emanetinin gelirden ayrılmas�
 | --- | --- | --- | --- | --- | --- |
 | GEL-01 | Gelir tek tanıma iner: vergi emaneti ve iadedeki vergi gelirden ayrılır | P0 | M | A, B, C | öneri: `sales_tax_mismatch` |
 | GEL-02 | 1099-K brüt tutarı ile panel brütünün yıllık mutabakatı | P1 | S | A, C, D | öneri: `tax_form_mismatch` |
-| GEL-03 | Etsy dışı satış (elle giriş, Shopier, receipt kimliksiz CSV): tahsilat kanalı, kanal ücreti, kalem satırı ve satıcının beyan edeceği satış vergisi | P3 | M | A, C, D, E | öneri: ayrıntıda (anahtarsız) |
+| GEL-03 | Etsy dışı satış (elle giriş, Shopier, receipt kimliksiz CSV): tahsilat kanalı, kanal ücreti, kalem satırı ve satıcının beyan edeceği satış vergisi | P3 | M | A, C, D, E | öneri: `non_etsy_sale_incomplete` |
 
 ### GEL-01 Gelir tek tanıma iner: vergi emaneti ve iadedeki vergi gelirden ayrılır
 
@@ -45,7 +45,7 @@ Gelirin tek tanımı, Etsy'nin topladığı vergi emanetinin gelirden ayrılmas�
 
 ### GEL-03 Etsy dışı satış (elle giriş, Shopier, receipt kimliksiz CSV): tahsilat kanalı, kanal ücreti, kalem satırı ve satıcının beyan edeceği satış vergisi
 
-- **Öncelik:** P3 · **Efor:** M · **Şerit:** A, C, D, E · **Kontrol:** öneri: ayrıntıda (anahtarsız)
+- **Öncelik:** P3 · **Efor:** M · **Şerit:** A, C, D, E · **Kontrol:** öneri: `non_etsy_sale_incomplete`
 - **Kaynak senaryo:** EK-01
 - **Durum:** Sahip Etsy dışında bir satış yapar: kendi sitesinden, yüz yüze, sosyal medya mesajıyla ya da toptan; Seselka için kanal Shopier'dir. Etsy tarafında hiçbir kayıt doğmaz: receipt, transaction, PAYMENT_GROSS, sales_tax, işleme ücreti ya da payout satırı yoktur ve satış Etsy'nin 1099-K'sına girmez; tahsilat bir ödeme aracısının (PayPal, Stripe, Square, Zelle, banka havalesi, nakit, Shopier) dökümünde görünür. Panelde tek kayıt /satislar/yeni formunun yazdığı sales satırıdır (source = 'manual'); kalem satırı (sale_items) oluşmaz. Muhasebede bu satışın vergisi Etsy'nin emaneti değil satıcının kendi beyan borcudur, aracı komisyonu satış gideridir, ödenmemiş tutar alacaktır. Etsy alıcısını Etsy dışına taşımak Off-Platform Transactions kuralıyla yasak olduğu için Etsy alıcısıyla eşleşen Etsy dışı satış ayrıca bir politika riskidir.
 - **Etsy kaynağı:** Etsy'de kayıt yok: receipt, transaction ve ledger satırı doğmaz, Etsy'nin marketplace facilitator vergi tahsilatı bu satışı kapsamaz. Dış kaynak yalnız ödeme aracısının dökümü ve varsa o aracının 1099-K'sıdır (GEL-02 köprüsüne ikinci bir form olarak girer). Seselka için Shopier sipariş ve komisyon dökümü; panelde shopier_connection satırı duruyor ama senkron kodu yok. Karşılaştırma: Etsy'de aynı tahsilat işlevinin ölçülmüş ücreti yüzde 3 + $0,25 (D4).

@@ -78,7 +78,7 @@ where org_id = (select id from organizations where name = 'Jade Gold NYC')
 group by 1
 order by 1;
 
--- GEL-03 Etsy dışı satış (elle giriş, Shopier, receipt kimliksiz CSV): tahsilat kanalı, kanal ücreti, kalem satırı ve satıcının beyan edeceği satış vergisi | kaynak EK-01 | kontrol: öneri: ayrıntıda (anahtarsız) | ölçüm 2026-11-08: ölçülmedi
+-- GEL-03 Etsy dışı satış (elle giriş, Shopier, receipt kimliksiz CSV): tahsilat kanalı, kanal ücreti, kalem satırı ve satıcının beyan edeceği satış vergisi | kaynak EK-01 | kontrol: öneri: non_etsy_sale_incomplete | ölçüm 2026-11-08: ölçülmedi
 -- EK-01 kontrol: Etsy dışı satış (manual, shopier ya da receipt kimliksiz csv).
 -- Beklenen: non_etsy_sales > 0 olsa bile no_line_items, no_collection_info, etsy_fee_on_non_etsy,
 -- tax_without_jurisdiction ve etsy_buyer_match = 0. Bugün (2026-11-09) 5 org'da tüm sayaçlar 0.
@@ -356,7 +356,7 @@ left join (
 ) r on r.org_id = s.org_id and r.sale_id = s.id
 group by o.id, o.name order by o.name;
 
--- IAD-06 Açık dönem iade karşılığı: son 30 günün ve yeni kapanan ayın karı henüz gelmemiş iade ve iptalleri taşımıyor | kaynak EK-02 | kontrol: öneri: ayrıntıda (anahtarsız) | ölçüm 2026-11-08: ölçülmedi
+-- IAD-06 Açık dönem iade karşılığı: son 30 günün ve yeni kapanan ayın karı henüz gelmemiş iade ve iptalleri taşımıyor | kaynak EK-02 | kontrol: öneri: refund_reserve_drift | ölçüm 2026-11-08: ölçülmedi
 -- EK-02 kontrol: açık dönem (son 30 gün) iade karşılığı, yaşa göre ağırlıklı.
 -- Beklenen: karşılık kaydı kurulduktan sonra booked_reserve_cents = expected_reserve_cents;
 -- mature_orders < 30 ise oran ölçülemez (expected null, karşılık sahip girişine kalır).
@@ -1243,7 +1243,7 @@ cross join cfg
 join product_variants pv on pv.org_id = (select id from organizations where name = 'EON') and pv.sku = a.sku
 join products p on p.id = pv.product_id;
 
--- MAL-12 Stoğa dönen iade parçası: taşıma değeri, yeniden satışta stoktan tüketim ve yıl sonu stok | kaynak EK-03 | kontrol: öneri: ayrıntıda (anahtarsız) | ölçüm 2026-11-08: ölçülmedi
+-- MAL-12 Stoğa dönen iade parçası: taşıma değeri, yeniden satışta stoktan tüketim ve yıl sonu stok | kaynak EK-03 | kontrol: öneri: return_stock_unvalued | ölçüm 2026-11-08: ölçülmedi
 -- EK-03 kontrol: kargolanıp tam iade ya da iptal edilen kalem (parça büyük olasılıkla geri geldi)
 -- ile aynı SKU'nun 7-180 gün içindeki yeniden satışı.
 -- Beklenen: unresolved_resale_items = 0 (her çift bir stok partisine bağlı ya da 'yeni üretim' işaretli)
@@ -1443,7 +1443,7 @@ cross join lateral (
 ) x
 order by o.name;
 
--- NAK-03 Yıl sonu muhasebeci paketi: vergi formu satır eşlemesi, 1099-K köprüsü ve XLSX üzerinden Numbers teslimi | kaynak EK-04 | kontrol: öneri: ayrıntıda (anahtarsız) | ölçüm 2026-11-08: ölçülmedi
+-- NAK-03 Yıl sonu muhasebeci paketi: vergi formu satır eşlemesi, 1099-K köprüsü ve XLSX üzerinden Numbers teslimi | kaynak EK-04 | kontrol: öneri: tax_package_unreconciled | ölçüm 2026-11-08: ölçülmedi
 -- EK-04 kontrol: vergi yılı paketinin ledger kimliği (yıl 2025, NY takvimi; başka yıl için yr CTE'sini değiştir).
 -- Beklenen: paket kurulduktan sonra diff_cents yalnız açıklanmış köprü kalemleri (yıl sınırını geçen iade,
 -- tahsil edilip iptal edilen sipariş) kadar, cogs_on_cancelled_cents = 0.
@@ -1588,7 +1588,7 @@ from etsy_ledger_entries le cross join b
 where le.org_id = (select id from organizations where name = 'Jade Gold NYC')
   and le.entry_date >= (select m0 from b) - interval '1 day' and le.entry_date < (select m1 from b) + interval '1 day';
 
--- SIS-03 Finansal denetim izi: 90 günlük saklama kararı, silinen iz ve audit trigger'sız finansal ayar tabloları | kaynak EK-05 | kontrol: öneri: ayrıntıda (anahtarsız) | ölçüm 2026-11-08: ölçülmedi
+-- SIS-03 Finansal denetim izi: 90 günlük saklama kararı, silinen iz ve audit trigger'sız finansal ayar tabloları | kaynak EK-05 | kontrol: öneri: audit_trail_gap | ölçüm 2026-11-08: ölçülmedi
 -- EK-05 kontrol: finansal denetim izi kapsamı ve sürekliliği.
 -- Beklenen: missing_trigger_tables = 0 ve fin_audit_oldest haftadan haftaya ileri kaymaz (finansal iz silinmez).
 -- Bugün (2026-11-09): 5 finansal tabloda trigger yok; Jade finansal izi 2026-08-05'te başlıyor (ilk sipariş 2022-03-25).
