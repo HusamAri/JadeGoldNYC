@@ -42,7 +42,8 @@ Sahibin isteği: Etsy API'sinin hiç vermediği ya da eksik verdiği her bilgi (
 | having tuzağı | Net maliyeti 0 ya da altı olan ay aylık özetten düşer: Jade 2 ay $10,08, Artifact 1 ay $5,70 | Kredi ayları sessizce kaybolur (SIS-01). |
 | Eşlenmeyen ledger türleri | Jade 25.657 satır, 16 tür, net +$437.541,33 | Çoğu gider değil nakit ve emanettir; sözlük bunları sınıflar. |
 | Offsite oranı | Jade ortalama yüzde 12,04, 15 siparişte $100 tavan; EON 6/6, Artifact 1/1 tavanda | Oran ve tavan org ayarı olmalı (RKL-04). |
-| İptal siparişte COGS | Jade 815 iptal siparişte $414.892,48 motor maliyeti; kargo kanıtı olmayan 741 sipariş $379.482,00, bunun 319'u hiç tahsil edilmedi ($162.391,17) | İşletme Karı bu tutar kadar düşük (K5, MAL-02). |
+| İptal siparişte COGS | Jade 815 iptal siparişte $414.892,48 motor maliyeti; kargo kanıtı olmayan ve kanıtın aranabildiği 516 sipariş $280.517,60, bunun 319'u hiç tahsil edilmedi ($162.391,17); kargo kaydı tutulmayan dönemde 225 sipariş $98.964,40 bilinmiyor | Geçmiş yılların karı bu tutar kadar düşük; İşletme Karı kartının 6 aylık penceresine düşen kısım $8.785,66 (K5, MAL-02). |
+| Etsy kargo kaydı boştu | sale_shipments 5 org'da 0 satır: 0174'ün kısmi tekil indeksi senkron upsert'ünü her seferinde 42P10 ile düşürüyordu | 0179 indeksi düzeltti; receipt yeniden okundukça gönderi kaydı dolar (SEV-01, MAL-02). |
 | ShipStation çift sayım | Jade ShipStation gider satırları $24.882,40, ham gönderi postajı $12.605,14 | İşletme Karı'nda $12.277,26 fazla kargo gideri (K13, SEV-02). |
 | Kaynak çakışması | EON 10 kalemde motor maliyeti fatura ya da elle maliyetin yanında duruyor: $2.297,32 | İşletme Karı'nda hayalet maliyet (K14, MAL-01). |
 | Vergi gelirde | Jade iptal dışı satış vergisi $141.721,03 operating_profit_monthly gelirinde | Panel kar kartı ve İşletme Karı vergiyi kar sayıyor (GEL-01). |
@@ -54,20 +55,20 @@ Sahibin isteği: Etsy API'sinin hiç vermediği ya da eksik verdiği her bilgi (
 
 | No | Anahtar | Eşitlik | Bugün | Senaryo |
 | --- | --- | --- | --- | --- |
-| K1 | `ledger_balance_break` | ilk saniyedeki bir açılış adayı + toplam tutar = son saniyedeki bir bakiye (aynı saniyedeki satır sırası API'den gelmez) | ölçülmedi | SIS-02 |
-| K2 | `refund_backlog` | iadeli ve 2 günden eski siparişte iade tutarı okunmuş (refunds_synced_at dolu) | ölçülmedi | IAD-01 |
-| K3 | `refund_status_mismatch` | ledger iade sinyali olan sipariş iade ya da iptal statüsünde ve okunan tutar köprülü ledger tutarından en çok $1 farklı | ölçülmedi | IAD-01 |
-| K4 | `order_fee_gap` | siparişe ait ledger ücretleri toplamı = sales.etsy_fees_cents toplamı (tolerans $5 ya da yüzde 0,2) | ölçülmedi | UCR-01, UCR-02, UCR-03, UCR-04 |
-| K5 | `cancelled_order_cogs` | kargo kanıtı olmayan iptal siparişte satış maliyeti 0 | ölçülmedi | MAL-02 |
-| K6 | `ledger_type_unknown` | her ledger türü etsy_ledger_type_classes sözlüğünde | ölçülmedi | SIS-01 |
-| K7 | `ledger_cost_drift` | son 12 tam ayda aylık ledger gideri (ücret, reklam, kargo, abonelik) = etsy_ledger gider satırları (tolerans $1) | ölçülmedi | SIS-01 |
-| K8 | `ads_spend_unmeasured` | son Etsy Ads harcama günü (ledger günü eksi 1) ile son CSV günü arası en çok 14 gün | ölçülmedi | RKL-01 |
-| K9 | `shipstation_sync_failing` | bağlı ShipStation son 3 günde hatasız senkronlandı | ölçülmedi | SEV-03 |
-| K10 | `labels_unlinked` | son 90 günde her Etsy etiketi bir siparişe bağlı | ölçülmedi | SEV-01 |
-| K11 | `chargeback_unlinked` | her CHARGEBACK_DEBIT bir siparişe bağlı | ölçülmedi | IAD-04 |
-| K12 | `ledger_stale` | son Etsy satışı ile ledger'ın son kaydı arası en çok 3 gün | ölçülmedi | SIS-02 |
-| K13 | `postage_double_count` | ShipStation gider satırları toplamı = iptal edilmemiş gönderilerin postaj ve sigorta toplamı (tolerans $1) | ölçülmedi | SEV-02 |
-| K14 | `cogs_source_conflict` | elle ya da faturayla maliyetlenmiş kalemde aynı türde motor (gold_auto) satırı yok | ölçülmedi | MAL-01 |
+| K1 | `ledger_balance_break` | açılış + toplam tutar = kapanış; açılış ve kapanış ilk ve son saniyedeki zincir ucundan seçilir (aynı saniyedeki satır sırası API'den gelmez) | 5 org tutuyor | SIS-02 |
+| K2 | `refund_backlog` | iadeli ve 2 günden eski siparişte iade tutarı okunmuş (refunds_synced_at dolu) | Jade 567 sipariş, $188.109,29 | IAD-01 |
+| K3 | `refund_status_mismatch` | ledger iade sinyali olan sipariş iade ya da iptal statüsünde ve okunan tutar köprülü ledger tutarından en çok $1 farklı; sinyal aynı saniye vergi köprüsü, siparişin vergi iadesi ya da vergisiz siparişte işlem ücreti iadesi | EON 4 sipariş, $2.448,80; Jade 5 sipariş, $1.803,65 | IAD-01 |
+| K4 | `order_fee_gap` | siparişe ait ledger ücretleri toplamı = sales.etsy_fees_cents toplamı (tolerans $5 ya da yüzde 0,2) | Jade $60.336,42; EON $192,52; Artifact $126,75; Ophir $37,44 | UCR-01, UCR-02, UCR-03, UCR-04 |
+| K5 | `cancelled_order_cogs` | kargo kanıtı olmayan iptal siparişte satış maliyeti 0; tahsil edilmiş siparişte yalnız kanıtın aranabildiği dönemde (ShipStation penceresi ya da kargo bilgisiyle okunmuş receipt) | Jade 516 sipariş, $280.517,60 | MAL-02 |
+| K6 | `ledger_type_unknown` | her ledger türü etsy_ledger_type_classes sözlüğünde | 5 org tutuyor | SIS-01 |
+| K7 | `ledger_cost_drift` | son 12 tam ayda aylık ledger gideri (ücret, reklam, kargo, abonelik) = etsy_ledger gider satırları (tolerans $1) | Artifact 1 ay, $29,00; Ophir 1 ay, $29,00; Jade 1 ay, $9,73 | SIS-01 |
+| K8 | `ads_spend_unmeasured` | son Etsy Ads harcama günü (ledger günü eksi 1) ile son CSV günü arası en çok 14 gün; tutar yarım son CSV gününü de sayar | Jade $4.706,21; EON $595,26; Ophir $362,77; Artifact $309,96 | RKL-01 |
+| K9 | `shipstation_sync_failing` | bağlı ShipStation son 3 günde hatasız senkronlandı | Jade yanıyor | SEV-03 |
+| K10 | `labels_unlinked` | son 90 günde her Etsy etiketi bir siparişe bağlı | EON 55 etiket, $424,18; Jade 14 etiket, $106,56; Ophir 3 etiket, $30,94; Artifact 1 etiket, $5,70 | SEV-01 |
+| K11 | `chargeback_unlinked` | her CHARGEBACK_DEBIT bir siparişe bağlı | Jade 2 ters ibraz, $595,65 | IAD-04 |
+| K12 | `ledger_stale` | ledger'ın son kaydından 3 günden sonra panele yazılmış Etsy satışı yok; her gün kayıt alan mağazada mağaza fotoğrafı ledger'dan en çok 5 gün ileride | 5 org tutuyor | SIS-02 |
+| K13 | `postage_double_count` | ShipStation gider satırları toplamı = iptal edilmemiş gönderilerin postaj ve sigorta toplamı (tolerans $1) | Jade $12.277,26 | SEV-02 |
+| K14 | `cogs_source_conflict` | elle ya da faturayla maliyetlenmiş kalemde aynı türde motor (gold_auto) satırı yok | EON 10 kalem, $2.297,32 | MAL-01 |
 
 ## Senaryolar
 
@@ -193,7 +194,7 @@ Her adım bir günden kısa; önce yanlış kar ya da vergi rakamı üretenler (
 2. **MAL-01 (B, S):** kaynak önceliği elle, fatura, motor her yüzeyde: `rebuild_gold_costs` faturalı kalemi atlar, elle ya da faturalı kalemin motor satırı geçersiz sayılır (`operating_profit_monthly` ve taraf toplamları dahil), 18 EON fatura satırına tür yazılır. K14 yeşile döner.
 3. **MAL-02 (B, M):** altın motoru iptal siparişe maliyet yazmaz; kanıtsız iptal maliyeti önce hiç tahsil edilmemiş 319 siparişte, sonra sahip onayıyla tahsil edilip iade edilmiş siparişlerde geçersiz sayılır. K5 küçülür ve sıfıra iner.
 4. **GEL-01 (B, M):** `operating_profit_monthly` ve panel kar kartı geliri vergisiz kurar ve iadeyi iade tarihinde düşer.
-5. **IAD-01 (B, M):** iade kuyruğu statüden bağımsız tüm ledger iade sinyallerini okur ve receipt'i tam yeniden okur. K2 ve K3 sıfıra iner.
+5. **IAD-01 (B, M):** iade kuyruğu statüden bağımsız tüm ledger iade sinyallerini okur ve receipt'i tam yeniden okur; COGS'lu iptaller de kuyruğa girer, böylece kargo bilgisi (is_shipped, gönderi kaydı) dolar. K2 ve K3 sıfıra iner, K5'in "bilinmiyor" kovası küçülür.
 6. **UCR-01..04 (B, M):** `rebuild_sales_etsy_fees` işleme ücretini köprüyle, iade işleme ücretini ölçülen kuralla, Offsite 'etsy' satırını ve iadesini, `shipping_transaction` ve `buyer_fee` satırlarını siparişe yazar. K4 toleransa iner.
 7. **SEV-03 (D, S):** sahip ShipStation'da yeni API anahtarı üretip Ayarlar'dan yeniden bağlar; ardından senkron 401'de nabzı `ok=false` yazsın (B). K9 yeşile döner.
 8. **RKL-01 (A ve B, M):** Etsy Ads CSV yükleme yolu geri gelir (f43068c ile silinen eşleyici), ledger ile CSV d+1 kaymasıyla mutabık. K8 yeşile döner.

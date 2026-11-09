@@ -114,7 +114,9 @@ sorgular: `docs/muhasebe/kontrol-donguleri.sql`. 0179 çürütücülerin bulduğ
 dört kusuru düzeltti: K1 aynı saniyedeki satır sırasına güveniyordu, K3 iadeyi
 tek kaynaktan okuyordu, K5 boş kargo alanını "kargolanmadı" sayıyordu, K8
 reklamın bir günlük kaymasını bilmiyordu. Üç kontrol de ekledi: K12 ledger
-tazeliği, K13 ShipStation çift sayımı, K14 maliyet kaynağı çakışması.
+tazeliği, K13 ShipStation çift sayımı, K14 maliyet kaynağı çakışması. Ayrıca
+Etsy kargo kaydı tablosunun (`sale_shipments`) kısmi tekil indeksini tam
+indeksle değiştirdi: senkronun upsert'ü 42P10 ile düşüyor, tablo boş kalıyordu.
 
 Bugün bilinen dört motor kusuru kontrollerde görünür, kodda henüz düzeltilmedi:
 
