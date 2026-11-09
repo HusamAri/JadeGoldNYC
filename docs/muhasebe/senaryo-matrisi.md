@@ -31,9 +31,9 @@ Sahibin isteği: Etsy API'sinin hiç vermediği ya da eksik verdiği her bilgi (
 | Ölçüm | Değer | Anlamı |
 | --- | --- | --- |
 | İade satırının kimliği | REFUND_GROSS ve REFUND_PROCESSING_FEE reference_id = payment_adjustment; receipt ya da payment id ile 0/1.922 eşleşme | Bu satırları payment ya da receipt id ile birleştiren her sorgu sıfır döner. |
-| API'siz iade köprüsü | 1.922 iadenin 1.690'ında aynı saniyede tek sales_tax_refund (reference = receipt); bağlanan tutar $608.837,31 / $701.507 | İade siparişe API çağrısı olmadan bağlanır; vergisiz siparişte bu köprü yoktur. |
+| API'siz iade köprüsü | 1.922 iadenin 1.690'ında aynı saniyede tek sales_tax_refund (reference = receipt); bağlanan tutar $608.713,70 / $701.506,62 | İade siparişe API çağrısı olmadan bağlanır; vergisiz siparişte bu köprü yoktur. |
 | Kalem ve Offsite bağı | transaction_refund 1.958/1.958 kaleme; Offsite 'etsy' satırı 369/369, Offsite iadesi 156/156 receipt'e eşleşir | Offsite ücreti ve iadesi siparişe bağlanabilir. |
-| İşleme ücreti kuralı | 10.277/10.277 ödemede yüzde 3 + $0,25; tam iadede tamamı geri gelir (1.488/1.488), kısmi iadede yalnız yüzde 3 (184/203) | İade işleme ücreti siparişe bu kuralla yazılır. |
+| İşleme ücreti kuralı | 10.277/10.277 ödemede yüzde 3 + $0,25; köprülü 1.690 iadede tam iadenin tamamı geri gelir (1.487/1.487), kısmi iadede çoğunlukla yalnız yüzde 3 (184/203) | İade işleme ücreti siparişe bu kuralla yazılır. |
 | İade zamanı | 1.901 iadeli siparişin 687'si (yüzde 36) sonraki ayda, 82'si (yüzde 4,3) sonraki yılda; medyan 8,9 gün, p90 31,5 gün | Dönem görünümü iadeyi iade tarihine yazmalı. |
 | İptal statüsü | İadeli 1.901 siparişin 1.388'i cancelled | İptal çoğunlukla tahsil edilip iade edilmiş siparişlerdir. |
 | Ledger kimliği | 4 Etsy org'unda toplam tutar = son bakiye (açılış 0) | Ledger'da boşluk yok; günlük ucuz kontrol (K1). |
@@ -41,12 +41,12 @@ Sahibin isteği: Etsy API'sinin hiç vermediği ya da eksik verdiği her bilgi (
 | Ücret kapsamı | Jade canlı 8.314 siparişin 7.461'inde etsy_payment_id boş | Sipariş ücreti motoru işleme ücretini siparişe bağlayamıyor (K4). |
 | having tuzağı | Net maliyeti 0 ya da altı olan ay aylık özetten düşer: Jade 2 ay $10,08, Artifact 1 ay $5,70 | Kredi ayları sessizce kaybolur (SIS-01). |
 | Eşlenmeyen ledger türleri | Jade 25.657 satır, 16 tür, net +$437.541,33 | Çoğu gider değil nakit ve emanettir; sözlük bunları sınıflar. |
-| Offsite oranı | Jade ortalama yüzde 12,04, 15 siparişte $100 tavan; EON 6/6, Artifact 1/1 tavanda | Oran ve tavan org ayarı olmalı (RKL-04). |
+| Offsite oranı | Jade receipt tipli ücretlerde ortalama yüzde 12,04 ve 15 tavan (tüm 757 ücrette 34 tavan); EON 6/6, Artifact 1/1 tavanda | Oran ve tavan org ayarı olmalı (RKL-04). |
 | İptal siparişte COGS | Jade 815 iptal siparişte $414.892,48 motor maliyeti; kargo kanıtı olmayan ve kanıtın aranabildiği 516 sipariş $280.517,60, bunun 319'u hiç tahsil edilmedi ($162.391,17); kargo kaydı tutulmayan dönemde 225 sipariş $98.964,40 bilinmiyor | Geçmiş yılların karı bu tutar kadar düşük; İşletme Karı kartının 6 aylık penceresine düşen kısım $8.785,66 (K5, MAL-02). |
 | Etsy kargo kaydı boştu | sale_shipments 5 org'da 0 satır: 0174'ün kısmi tekil indeksi senkron upsert'ünü her seferinde 42P10 ile düşürüyordu | 0179 indeksi düzeltti; receipt yeniden okundukça gönderi kaydı dolar (SEV-01, MAL-02). |
-| ShipStation çift sayım | Jade ShipStation gider satırları $24.882,40, ham gönderi postajı $12.605,14 | İşletme Karı'nda $12.277,26 fazla kargo gideri (K13, SEV-02). |
+| ShipStation çift sayım | Jade ShipStation gider satırları $24.882,40, iptal edilmemiş gönderilerin postaj ve sigorta toplamı $12.605,14 | İşletme Karı'nda $12.277,26 fazla kargo gideri (K13, SEV-02). |
 | Kaynak çakışması | EON 10 kalemde motor maliyeti fatura ya da elle maliyetin yanında duruyor: $2.297,32 | İşletme Karı'nda hayalet maliyet (K14, MAL-01). |
-| Vergi gelirde | Jade iptal dışı satış vergisi $141.721,03 operating_profit_monthly gelirinde | Panel kar kartı ve İşletme Karı vergiyi kar sayıyor (GEL-01). |
+| Vergi gelirde | Jade iptal dışı satış vergisi $141.721,03 (tüm dönem) panel kar kartı gelirinde; operating_profit_monthly'nin 6 aylık penceresinde $6.456,86 | Panel kar kartı ve İşletme Karı vergiyi kar sayıyor (GEL-01). |
 | etsy_connection okunamaz | RLS açık, politika yok | security invoker bir kontrol bu tabloya dayanırsa oturumda hep yeşil kalır; K12 yalnız satış ve ledger verisine bakar. |
 
 ## Kontrol döngüleri: canlıda
@@ -199,14 +199,14 @@ Her adım bir günden kısa; önce yanlış kar ya da vergi rakamı üretenler (
 7. **SEV-03 (D, S):** sahip ShipStation'da yeni API anahtarı üretip Ayarlar'dan yeniden bağlar; ardından senkron 401'de nabzı `ok=false` yazsın (B). K9 yeşile döner.
 8. **RKL-01 (A ve B, M):** Etsy Ads CSV yükleme yolu geri gelir (f43068c ile silinen eşleyici), ledger ile CSV d+1 kaymasıyla mutabık. K8 yeşile döner.
 9. **SIS-01 (B, S):** `rebuild_etsy_ledger_costs` eşlemesini sözlükten okur, `having` tuzağı kalkar. K6 ve K7 yeşil kalır.
-10. **SEV-01 (B, M):** kalem `shipped_at` alanı receipt yeniden okumasıyla dolar, iade etiketi satış detayından bağlanır. K10 küçülür.
+10. **SEV-05 ve SEV-01 (B, M):** önce SEV-05'in (c) adımı yayına girer (etiket ve sigorta iadesi aynı reference_id'li bağlı etiketin siparişine negatif satır olarak yazılır), sonra kalem `shipped_at` alanı receipt yeniden okumasıyla dolar ve iade etiketi satış detayından bağlanır. K10 küçülür.
 11. **IAD-02 (A, M):** iptal siparişin tahsilat durumu alanı: hiç tahsil edilmedi, tahsil edilip iade edildi, para satıcıda kaldı.
 12. **MAL-09 (A, M):** iade ya da kayıp ürünün akıbeti alanı: stoğa döndü, hurda, kayıp tazminatı, alıcıda kaldı.
 13. **SEV-04 (A, S):** Etsy ve ShipStation dışı etiket ve gümrük için satış detayında elle giriş.
 14. **MAL-05 (A, M):** tarihli altın alım fiyatı tablosu; motor sipariş tarihindeki fiyatı kullanır.
 15. **NAK-02 (A ve B, M):** ay kapanışı ve dönem kilidi; kapanan aya düşen sonradan değişiklik yeni aya yazılır.
 
-**Sonraki dalga:** kalan P1 ve P2 senaryolar (GEL-02, UCR-05, RKL-02..06, SEV-05..08, MAL-03, MAL-04, MAL-06..08, MAL-10, MAL-11, GDR-01..03, NAK-01, SIS-02 ve ek senaryolar) yukarıdaki bölüm tablolarında öncelik sırasıyla durur.
+**Sonraki dalga:** kalan P1, P2 ve P3 senaryolar (GEL-02, UCR-05, RKL-02..06, SEV-06..08, MAL-03, MAL-04, MAL-06..08, MAL-10, MAL-11, GDR-01..03, NAK-01, SIS-02 ve ek senaryolar) yukarıdaki bölüm tablolarında öncelik sırasıyla durur.
 
 ## Kabul edilen sınırlar
 
