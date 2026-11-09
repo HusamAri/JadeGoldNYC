@@ -1,24 +1,73 @@
--- 0179 · accounting_checks düzeltmeleri (2026-11-09)
+-- 0179 · accounting_checks düzeltmeleri ve üç yeni kontrol (2026-11-09)
 --
--- 0178 canlıya çıktıktan sonra senaryo matrisinin çürütücüleri dört kontrolde
--- kusur buldu; her biri canlı veriyle ayrıca ölçüldü:
---   K1 ledger_balance_break: kapanış satırını entry_id ile seçiyordu; aynı
---      saniyede birden çok satır olunca sahte kritik. Jade son 91 gün: 39 gün
---      son saniye çok satırlı, 0178 kuralı 13 günde yanlış, yeni kural 0.
+-- 0178 canlıya çıktıktan sonra senaryo matrisinin çürütücüleri, ardından 0179
+-- taslağını sınayan üç bağımsız göz (veri, SQL ve güvenlik, muhasebe) şu
+-- kusurları buldu; her biri canlı veriyle ölçüldü:
+--   K1 ledger_balance_break: kapanışı entry_id ile seçiyordu, aynı saniyede
+--      çok satır olunca sahte kritik (Jade son 91 gün: 13 gün). Taslaktaki
+--      "herhangi aday çifti" kuralı ise kayıp satırı maskeliyordu (EON her gün).
+--      Zincir ucu artık çoklu küme farkıyla seçilir; uç tekil değilse o
+--      saniyenin adayları denenir. Sağlam veride sahte kırılma 0.
 --   K3 refund_status_mismatch: yalnız aynı saniye vergi köprüsüne bakıyordu.
---      Jade 5 yerine 6, EON 3 yerine 4 sipariş (vergi satırı 1 sn sonra ya da
---      vergisiz sipariş). Geri alınan iade (Jade 1) dışarıda.
---   K5 cancelled_order_cogs: is_shipped NULL'u "kargolanmadı" sayıyordu
---      (Jade'de 11.588 kalemin 8'inde dolu). Kanıt artık pozitif: Jade 813
---      yerine 741 sipariş, $413.506,76 yerine $379.482,00; 74 kargolu iptal
---      ($35.410,48) gerçek maliyet olarak dışarıda.
---   K8 ads_spend_unmeasured: ledger d+1 kaymasını modellemiyordu (Jade
---      $100, EON $12,87 fazla).
--- Yeni: K12 ledger_stale (önemli), satış var ama ledger gelmiyor. etsy_connection
--- okunmaz (RLS açık, politika yok): koşul yalnız sales ve ledger verisinden.
+--      Vergi iadesi 1 sn sonra yazılan sipariş artık sayılır (EON 3 yerine 4,
+--      Jade 5 değişmedi); vergili siparişte tek başına işlem ücreti iadesi bir
+--      ücret kredisidir, iade sayılmaz (Jade 4062133504).
+--   K5 cancelled_order_cogs: is_shipped NULL'u "kargolanmadı" sayıyordu.
+--      Kanıt pozitif aranır ve tahsil edilmiş siparişte yalnız aranabildiği
+--      dönemde sayılır. Jade 813 sipariş ve $413.506,76 yerine 516 sipariş ve
+--      $280.517,60 (319'u hiç tahsil edilmedi, $162.391,17); kanıt aranamayan
+--      dönemdeki 225 sipariş ($98.964,40) ve kargolu 74 iptal sayılmaz.
+--      İpucu tutarın İşletme Karı kartının 6 aylık penceresine düşen kısmını
+--      ayrıca söyler (Jade $8.785,66).
+--   K7 ledger_cost_drift ve diğer ipuçları: Uyarı Merkezi detail göstermez;
+--      ipucu artık ayları, tarihleri ve tutarları metnin içinde söyler.
+--   K8 ads_spend_unmeasured: ledger d+1 kayması ve son CSV gününün yarım olması
+--      birlikte modellenir (son CSV gününde CSV'de görünmeyen harcama ölçülmemiş).
+--   sale_shipments: 0174'ün kısmi tekil indeksi senkron upsert'ünü her seferinde
+--      42P10 ile düşürüyordu (tablo 0 satır). Tam tekil indeksle değişti.
+-- Yeni: K12 ledger_stale (önemli), K13 postage_double_count (kritik; Jade
+--      ShipStation postajı $12.277,26 çift), K14 cogs_source_conflict (kritik;
+--      EON 10 kalem, $2.297,32). etsy_connection okunmaz (RLS açık, politika
+--      yok): K12 yalnız ledger, satış ve mağaza fotoğrafı verisine bakar.
 -- Dönüş tipi aynı; Uyarı Merkezi (lib/db/queries/alerts.ts) anahtardan
 -- bağımsız çalıştığı için kod değişikliği gerekmez.
+-- Belge: docs/muhasebe/senaryo-matrisi.md
 
+-- ─────────────────────────────────────────────────────────────────────────
+-- 1) sale_shipments tekil indeksi
+-- ─────────────────────────────────────────────────────────────────────────
+-- 0174 kısmi bir tekil indeks kurmuştu (where receipt_shipping_id is not null).
+-- Senkronun PostgREST upsert'ü ON CONFLICT (receipt_shipping_id) bu indeksi
+-- çıkaramıyor ve her yazım 42P10 ile düşüyordu; hata yalnız loglanıyordu ve
+-- tablo 5 org'da 0 satır kaldı. Tam tekil indeks NULL'ları yine ayrı sayar
+-- (lib/etsy/sync.ts NULL kimliği zaten süzüyor). Tablo boş, indeks anında kurulur.
+drop index if exists public.sale_shipments_receipt_shipping_uq;
+create unique index if not exists sale_shipments_receipt_shipping_uq
+  on public.sale_shipments (receipt_shipping_id);
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- 2) Para biçimi yardımcısı: uyarı metinlerinde tutar ($12.277,26)
+-- ─────────────────────────────────────────────────────────────────────────
+create or replace function public.accounting_fmt_cents(p_cents bigint, p_currency text)
+returns text
+language sql
+immutable
+set search_path = public
+as $$
+  select case when p_cents is null then '-'
+    else (case when p_cents < 0 then '-' else '' end)
+      || (case when coalesce(p_currency, 'USD') = 'USD' then '$' else '' end)
+      || translate(to_char(abs(p_cents) / 100.0, 'FM999,999,999,990.00'), ',.', '.,')
+      || (case when coalesce(p_currency, 'USD') = 'USD' then '' else ' ' || p_currency end)
+  end
+$$;
+
+revoke all on function public.accounting_fmt_cents(bigint, text) from public, anon;
+grant execute on function public.accounting_fmt_cents(bigint, text) to authenticated, service_role;
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- 3) accounting_checks(p_org): 14 kontrol
+-- ─────────────────────────────────────────────────────────────────────────
 create or replace function public.accounting_checks(p_org uuid)
 returns table (
   check_key text,
@@ -49,9 +98,11 @@ as $$
   -- Arada senkronlanmamış satır varsa eşitlik bozulur. 0179: aynı saniyede
   -- yazılan satırların sırası API'den gelmez ve entry_id sırası Etsy'nin
   -- bakiye sırası değildir (0178'in "son satır" seçimi Jade'in son 91 gününün
-  -- 13'ünde sağlam veride sahte kırılma verirdi). İlk saniyedeki her satır bir
-  -- açılış adayı, son saniyedeki her satır bir kapanış adayıdır; herhangi bir
-  -- çift eşitliği sağlıyorsa zincir tutar.
+  -- 13'ünde sağlam veride sahte kırılma verirdi). Zincirin ucu çoklu küme
+  -- farkıyla seçilir: ilk saniyede başka bir satırın sonucu olmayan önceki
+  -- bakiye açılıştır, son saniyede başka bir satırın başlangıcı olmayan bakiye
+  -- kapanıştır. Uç tekil değilse (saniye içinde döngü) o saniyenin tüm adayları
+  -- denenir.
   k1_cur as materialized (
     select le.currency,
       count(*) as rows_n,
@@ -66,10 +117,10 @@ as $$
   ),
   k1_edge as materialized (
     select c.currency,
-      array_agg(distinct le.balance_cents - le.amount_cents)
-        filter (where le.created_timestamp = c.first_ts) as openings,
-      array_agg(distinct le.balance_cents)
-        filter (where le.created_timestamp = c.last_ts) as closings
+      array_agg(le.balance_cents - le.amount_cents) filter (where le.created_timestamp = c.first_ts) as pre_f,
+      array_agg(le.balance_cents) filter (where le.created_timestamp = c.first_ts) as bal_f,
+      array_agg(le.balance_cents - le.amount_cents) filter (where le.created_timestamp = c.last_ts) as pre_l,
+      array_agg(le.balance_cents) filter (where le.created_timestamp = c.last_ts) as bal_l
     from k1_cur c
     join public.etsy_ledger_entries le
       on le.org_id = p_org
@@ -79,13 +130,27 @@ as $$
      and le.balance_cents is not null
     group by c.currency
   ),
+  k1_ends as (
+    select e.currency, e.pre_f, e.bal_l,
+      array(select unnest(e.pre_f) except all select unnest(e.bal_f)) as o1,
+      array(select unnest(e.bal_l) except all select unnest(e.pre_l)) as c1
+    from k1_edge e
+  ),
   k1_eval as (
-    select c.currency, c.rows_n, c.total, e.openings, e.closings,
+    select c.currency, c.rows_n, c.total, x.openings, x.closings,
+      (cardinality(n.o1) = 1 and cardinality(n.c1) = 1) as unique_ends,
       (select min(abs(cl - op - c.total))
-         from unnest(e.openings) as op
-         cross join unnest(e.closings) as cl) as min_diff
+         from unnest(x.openings) as op
+         cross join unnest(x.closings) as cl) as min_diff
     from k1_cur c
-    join k1_edge e on e.currency is not distinct from c.currency
+    join k1_ends n on n.currency is not distinct from c.currency
+    cross join lateral (
+      select
+        case when cardinality(n.o1) = 1 then n.o1
+             else array(select distinct unnest(n.pre_f)) end as openings,
+        case when cardinality(n.c1) = 1 then n.c1
+             else array(select distinct unnest(n.bal_l)) end as closings
+    ) x
   ),
   k1 as (
     select
@@ -96,6 +161,7 @@ as $$
         'currency', currency, 'rows', rows_n, 'sum_cents', total,
         'opening_candidates', to_jsonb(openings),
         'closing_candidates', to_jsonb(closings),
+        'unique_chain_ends', unique_ends,
         'diff_cents', min_diff)), '[]'::jsonb) as detail
     from k1_eval
   ),
@@ -119,9 +185,13 @@ as $$
   -- aynı saniyede yazılan TEK sales_tax_refund (reference = receipt id).
   -- 0179: statü sinyali tek kaynaklı değil. Köprüye ek olarak siparişin herhangi
   -- bir sales_tax_refund satırı (vergi satırı REFUND_GROSS'tan 1 sn sonra
-  -- yazılabiliyor) ya da kaleminin transaction_refund satırı (vergisiz siparişte
-  -- köprü yoktur) iade sayılır; iadesi geri alınan receipt bu iki sinyalden
-  -- dışlanır. Tutar köprü yoksa transaction_refund / 0,065 ile tahmin edilir.
+  -- yazılabiliyor: EON 4145285871) ve VERGİSİZ siparişte kalemin
+  -- transaction_refund satırı iade sayılır. Vergili siparişte tek başına
+  -- transaction_refund bir ücret kredisidir, iade değildir (Jade 4062133504:
+  -- $2,15 kredi, iade yok). İadesi geri alınan receipt bu iki sinyalden
+  -- dışlanır. Köprüsüz tutar tahmini: transaction_refund / 0,065 + vergi
+  -- iadesi + shipping_transaction_refund / 0,065 (köprülü 1.657 Jade iadesinde
+  -- medyan oran 1,0000).
   rg as materialized (
     select le.created_timestamp, -le.amount_cents as amt
     from public.etsy_ledger_entries le
@@ -158,11 +228,17 @@ as $$
     ) x
     group by receipt
   ),
-  st_rcpt as materialized (
-    select distinct t.receipt from tx_ref t where t.ledger_type = 'sales_tax_refund'
-  ),
-  rev_rcpt as materialized (
-    select distinct t.receipt from tx_ref t where t.ledger_type = 'REFUND_REVERSAL_SALES_TAX'
+  rcpt_ref as materialized (
+    select le.reference_id::bigint as receipt,
+      sum(le.amount_cents) filter (where le.ledger_type = 'sales_tax_refund')::bigint as tax_ref,
+      sum(le.amount_cents) filter (where le.ledger_type = 'shipping_transaction_refund')::bigint as ship_tr,
+      bool_or(le.ledger_type = 'sales_tax_refund') as has_tax_refund,
+      bool_or(le.ledger_type = 'REFUND_REVERSAL_SALES_TAX') as reversed
+    from public.etsy_ledger_entries le
+    where le.org_id = p_org
+      and le.ledger_type in ('sales_tax_refund', 'REFUND_REVERSAL_SALES_TAX', 'shipping_transaction_refund')
+      and le.reference_id ~ '^[0-9]+$'
+    group by 1
   ),
   tr_rows as materialized (
     select le.reference_id::bigint as tx_id, le.amount_cents
@@ -178,43 +254,51 @@ as $$
     group by si.sale_id
   ),
   k3_cand as (
-    select s.id, s.status, s.refunds_synced_at,
+    select s.id, s.etsy_receipt_id, s.status, s.refunds_synced_at,
       coalesce(s.refunded_cents, 0) as panel_refund,
-      b.ledger_refund, ts.tr_cents,
-      (st.receipt is not null) as has_tax_refund,
-      (rr.receipt is not null) as reversed
+      coalesce(s.tax_cents, 0) + coalesce(s.vat_cents, 0) as order_tax,
+      b.ledger_refund, ts.tr_cents, rr.tax_ref, rr.ship_tr,
+      coalesce(rr.has_tax_refund, false) as has_tax_refund,
+      coalesce(rr.reversed, false) as reversed
     from public.sales s
     left join bridged b on b.receipt = s.etsy_receipt_id
     left join tr_sale ts on ts.sale_id = s.id
-    left join st_rcpt st on st.receipt = s.etsy_receipt_id
-    left join rev_rcpt rr on rr.receipt = s.etsy_receipt_id
+    left join rcpt_ref rr on rr.receipt = s.etsy_receipt_id
     where s.org_id = p_org
-      and (b.receipt is not null or ts.sale_id is not null or st.receipt is not null)
+      and (b.receipt is not null or ts.sale_id is not null or rr.has_tax_refund)
   ),
   k3_rows as (
     select c.*,
       (c.status in ('completed', 'paid', 'processing')
         and (coalesce(c.ledger_refund, 0) > 0
-             or (not c.reversed and (c.tr_cents is not null or c.has_tax_refund)))) as stale_status,
+             or (not c.reversed
+                 and (c.has_tax_refund or (c.tr_cents is not null and c.order_tax = 0))))) as stale_status,
       (c.refunds_synced_at is not null
         and coalesce(c.ledger_refund, 0) > 0
         and abs(c.ledger_refund - c.panel_refund) > 100) as amount_mismatch,
-      coalesce(c.ledger_refund, round(c.tr_cents / 0.065)::bigint) as ledger_est
+      coalesce(c.ledger_refund,
+        round(coalesce(c.tr_cents, 0) / 0.065 + coalesce(c.tax_ref, 0)
+              + coalesce(c.ship_tr, 0) / 0.065)::bigint) as ledger_est
     from k3_cand c
   ),
   k3 as (
     select
       count(*) filter (where stale_status or amount_mismatch)::bigint as n,
-      coalesce(sum(abs(coalesce(ledger_est, 0) - panel_refund))
+      coalesce(sum(abs(ledger_est - panel_refund))
         filter (where stale_status or amount_mismatch), 0)::bigint as amt,
       jsonb_build_object(
         'status_stale', count(*) filter (where stale_status),
         'status_stale_unbridged', count(*) filter (where stale_status and ledger_refund is null),
         'amount_mismatch', count(*) filter (where amount_mismatch),
         'amount_estimated_orders', count(*) filter (where (stale_status or amount_mismatch)
-                                                    and ledger_refund is null and tr_cents is not null),
+                                                    and ledger_refund is null),
+        'taxed_fee_credit_only', count(*) filter (where status in ('completed', 'paid', 'processing')
+                                                  and ledger_refund is null and not has_tax_refund
+                                                  and tr_cents is not null and order_tax > 0),
         'reversed_excluded', count(*) filter (where reversed and status in ('completed', 'paid', 'processing')
                                                and coalesce(ledger_refund, 0) <= 0),
+        'receipts', coalesce(to_jsonb((array_agg(etsy_receipt_id order by etsy_receipt_id)
+                              filter (where stale_status or amount_mismatch))[1:100]), '[]'::jsonb),
         'bridged_refunds', (select count(*) from rg r join tx_one o
                               on o.created_timestamp = r.created_timestamp and o.ledger_type = 'sales_tax_refund'),
         'refund_rows', (select count(*) from rg)) as detail
@@ -249,33 +333,44 @@ as $$
 
   -- K5 · İptal edilmiş ve KARGOLANDIĞINA DAİR KANIT OLMAYAN siparişe yazılmış
   -- satış maliyeti (COGS). 0179: sales.is_shipped ve sale_items.shipped_at yalnız
-  -- 0174'ten sonra yeniden okunan receipt'te dolu, bu yüzden NULL "kargolanmadı"
+  -- 0174'ten sonra okunan receipt'te dolu, bu yüzden NULL "kargolanmadı"
   -- sayılmaz. Kanıt pozitif aranır: is_shipped, shipped_at, Etsy kargo kaydı
-  -- (sale_shipments) ya da iptal edilmemiş ShipStation gönderisi (order_number =
-  -- receipt id). Kargolanmış iptalin maliyeti gerçektir (ürün çıktı), sayıya
-  -- girmez; detayda ayrıca durur. Tahsilat durumu kalemin transaction (işlem
-  -- ücreti) ve transaction_refund ledger satırından okunur.
+  -- (sale_shipments; 0179 tekil indeks düzeltmesiyle dolmaya başlar) ya da
+  -- iptal edilmemiş ShipStation gönderisi (order_number = receipt id).
+  -- Sayılan (hayalet): hiç tahsil edilmemiş sipariş (transaction ledger satırı
+  -- yok) her dönemde; tahsil edilmiş sipariş yalnız kanıtın aranabildiği yerde
+  -- (ShipStation gönderi penceresi ya da Etsy'den kargo bilgisiyle okunmuş
+  -- receipt). Pencere dışındaki tahsil edilip kargo kanıtı olmayan iptal
+  -- "bilinmiyor" kovasına gider, sayılmaz. Kargolu iptal sayılmaz; ürün geri
+  -- döndüyse iade ve geri kazanım kalemde girilir.
   k5_cost as materialized (
-    select s.id as sale_id, s.etsy_receipt_id,
+    select s.id as sale_id, s.etsy_receipt_id, s.order_date,
       (coalesce(s.is_shipped, false) or s.shipped_at is not null) as own_ship,
-      c.source, sum(c.amount_cents)::bigint as cents
+      (s.is_shipped is not null) as ship_read,
+      c.source,
+      sum(c.amount_cents)::bigint as cents,
+      coalesce(sum(c.amount_cents) filter (
+        where c.cost_date >= (date_trunc('month', current_date) - interval '5 months')::date), 0)::bigint as cents_6m
     from public.costs c
     left join public.sale_items si on si.id = c.sale_item_id
     join public.sales s on s.id = coalesce(c.sale_id, si.sale_id)
     where c.org_id = p_org
       and s.org_id = p_org
       and s.status = 'cancelled'
+      and c.currency = (select currency from cur)
       and (c.cost_kind in ('gold', 'labor', 'gem', 'packaging')
            or (c.cost_kind is null and c.source = 'gold_auto'))
-    group by s.id, s.etsy_receipt_id, s.is_shipped, s.shipped_at, c.source
+    group by s.id, s.etsy_receipt_id, s.order_date, s.is_shipped, s.shipped_at, c.source
   ),
   k5_sale as materialized (
-    select sale_id, etsy_receipt_id, bool_or(own_ship) as own_ship, sum(cents)::bigint as cents
+    select sale_id, etsy_receipt_id, min(order_date) as order_date,
+      bool_or(own_ship) as own_ship, bool_or(ship_read) as ship_read,
+      sum(cents)::bigint as cents, sum(cents_6m)::bigint as cents_6m
     from k5_cost
     group by sale_id, etsy_receipt_id
   ),
   k5_items as materialized (
-    select si.sale_id, si.etsy_transaction_id, si.shipped_at
+    select si.sale_id, si.etsy_transaction_id, si.shipped_at, si.returned_at, si.recovered_cents
     from public.sale_items si
     where si.org_id = p_org
       and si.sale_id in (select sale_id from k5_sale)
@@ -302,42 +397,74 @@ as $$
       and not coalesce(sh.voided, false)
       and sh.order_number ~ '^[0-9]+$'
   ),
+  k5_cov as materialized (
+    select min(coalesce(sh.ship_date, sh.create_date)) as first_ship,
+      max(coalesce(sh.ship_date, sh.create_date)) as last_ship
+    from public.shipstation_shipments sh
+    where sh.org_id = p_org and not coalesce(sh.voided, false)
+  ),
   k5_eval as (
-    select k.sale_id, k.cents,
+    select k.sale_id, k.cents, k.cents_6m,
       (k.own_ship
         or exists (select 1 from k5_items i where i.sale_id = k.sale_id and i.shipped_at is not null)
-        or exists (select 1 from public.sale_shipments sh where sh.sale_id = k.sale_id)
+        or exists (select 1 from public.sale_shipments sh where sh.org_id = p_org and sh.sale_id = k.sale_id)
         or x.receipt is not null) as shipped,
       coalesce(f.charged, false) as charged,
-      coalesce(f.refunded, false) as refunded
+      coalesce(f.refunded, false) as refunded,
+      (k.ship_read
+        or coalesce(k.order_date >= cv.first_ship - interval '7 days' and k.order_date <= cv.last_ship, false)) as evidence_ok,
+      exists (select 1 from k5_items i where i.sale_id = k.sale_id
+              and (i.returned_at is not null or coalesce(i.recovered_cents, 0) > 0)) as recovered
     from k5_sale k
+    cross join k5_cov cv
     left join k5_flags f on f.sale_id = k.sale_id
     left join k5_ss x on x.receipt = k.etsy_receipt_id
   ),
+  k5_cls as (
+    select e.*,
+      (not e.shipped and (not e.charged or e.evidence_ok)) as phantom,
+      (not e.shipped and e.charged and not e.evidence_ok) as unknown_ship
+    from k5_eval e
+  ),
   k5 as (
-    select count(*) filter (where not shipped)::bigint as n,
-      coalesce(sum(cents) filter (where not shipped), 0)::bigint as amt,
+    select count(*) filter (where phantom)::bigint as n,
+      coalesce(sum(cents) filter (where phantom), 0)::bigint as amt,
+      coalesce(sum(cents_6m) filter (where phantom), 0)::bigint as amt_6m,
+      count(*) filter (where phantom and not charged)::bigint as never_n,
+      coalesce(sum(cents) filter (where phantom and not charged), 0)::bigint as never_c,
+      count(*) filter (where phantom and charged)::bigint as charged_n,
+      coalesce(sum(cents) filter (where phantom and charged), 0)::bigint as charged_c,
+      count(*) filter (where unknown_ship)::bigint as unknown_n,
+      coalesce(sum(cents) filter (where unknown_ship), 0)::bigint as unknown_c,
       jsonb_build_object(
         'never_charged', jsonb_build_object(
-          'orders', count(*) filter (where not shipped and not charged),
-          'cents', coalesce(sum(cents) filter (where not shipped and not charged), 0)),
+          'orders', count(*) filter (where phantom and not charged),
+          'cents', coalesce(sum(cents) filter (where phantom and not charged), 0)),
         'charged_refunded', jsonb_build_object(
-          'orders', count(*) filter (where not shipped and charged and refunded),
-          'cents', coalesce(sum(cents) filter (where not shipped and charged and refunded), 0)),
+          'orders', count(*) filter (where phantom and charged and refunded),
+          'cents', coalesce(sum(cents) filter (where phantom and charged and refunded), 0)),
         'charged_not_refunded', jsonb_build_object(
-          'orders', count(*) filter (where not shipped and charged and not refunded),
-          'cents', coalesce(sum(cents) filter (where not shipped and charged and not refunded), 0)),
+          'orders', count(*) filter (where phantom and charged and not refunded),
+          'cents', coalesce(sum(cents) filter (where phantom and charged and not refunded), 0)),
+        'unknown_shipping', jsonb_build_object(
+          'orders', count(*) filter (where unknown_ship),
+          'cents', coalesce(sum(cents) filter (where unknown_ship), 0)),
         'shipped_excluded', jsonb_build_object(
           'orders', count(*) filter (where shipped),
           'cents', coalesce(sum(cents) filter (where shipped), 0)),
+        'shipped_unrecovered', jsonb_build_object(
+          'orders', count(*) filter (where shipped and not recovered),
+          'cents', coalesce(sum(cents) filter (where shipped and not recovered), 0)),
+        'last_6m_cents', coalesce(sum(cents_6m) filter (where phantom), 0),
+        'shipstation_window', (select jsonb_build_object('from', cv.first_ship, 'to', cv.last_ship) from k5_cov cv),
         'by_source', coalesce((
           select jsonb_object_agg(x.source, x.cents) from (
             select kc.source, sum(kc.cents)::bigint as cents
             from k5_cost kc
-            join k5_eval e on e.sale_id = kc.sale_id
-            where not e.shipped
+            join k5_cls e on e.sale_id = kc.sale_id
+            where e.phantom
             group by kc.source) x), '{}'::jsonb)) as detail
-    from k5_eval
+    from k5_cls
   ),
 
   -- K6 · Sözlükte olmayan ledger türü.
@@ -392,6 +519,8 @@ as $$
   k7 as (
     select count(*) filter (where abs(diff) > 100)::bigint as n,
       coalesce(sum(abs(diff)) filter (where abs(diff) > 100), 0)::bigint as amt,
+      coalesce(string_agg(to_char(m, 'YYYY-MM') || ' ' || public.accounting_fmt_cents(diff, (select currency from cur)), ', ' order by m)
+        filter (where abs(diff) > 100), '') as months_txt,
       coalesce(jsonb_agg(jsonb_build_object('month', to_char(m, 'YYYY-MM'),
         'ledger_cents', ledger_cents, 'panel_cents', panel_cents, 'diff_cents', diff)
         order by m) filter (where abs(diff) > 100), '[]'::jsonb) as detail
@@ -400,20 +529,31 @@ as $$
 
   -- K8 · Etsy Ads harcaması sürüyor ama performans verisi (Ads CSV) eski.
   -- 0179: Etsy bir günün harcamasını ertesi gün (UTC) ledger'a yazar; ledger
-  -- günü d+1 = CSV günü d (Jade 203/208, EON 71/71 gün birebir). Son CSV
-  -- gününün ertesi günkü ledger satırı ölçülmüş sayılır.
+  -- günü d+1 = CSV günü d (Jade 203/208, EON 71/71 gün birebir). Son CSV günü
+  -- CSV'nin indirildiği gün olduğu için yarımdır: o günün ledger satırının
+  -- CSV'de görünmeyen kısmı ölçülmemiş sayılır (Jade 2026-07-26: CSV $22,65,
+  -- ledger $100,00).
   k8_csv as (
     select max(a.stat_date) as last_csv
     from public.ad_daily_stats a
+    where a.org_id = p_org and a.source = 'etsy_ads_csv'
+  ),
+  k8_lastday as (
+    select coalesce(sum(a.spend_cents), 0)::bigint as csv_cents
+    from public.ad_daily_stats a
+    join k8_csv kc on a.stat_date = kc.last_csv
     where a.org_id = p_org and a.source = 'etsy_ads_csv'
   ),
   k8 as (
     select kc.last_csv,
       max((le.entry_date at time zone 'UTC')::date) as last_spend,
       max((le.entry_date at time zone 'UTC')::date) - 1 as last_spend_day,
-      coalesce(sum(-le.amount_cents) filter (
-        where (le.entry_date at time zone 'UTC')::date - 1
-              > coalesce(kc.last_csv, date '1900-01-01')), 0)::bigint as amt
+      (coalesce(sum(-le.amount_cents) filter (
+         where (le.entry_date at time zone 'UTC')::date - 1
+               > coalesce(kc.last_csv, date '1900-01-01')), 0)
+       + greatest(0, coalesce(sum(-le.amount_cents) filter (
+         where (le.entry_date at time zone 'UTC')::date - 1 = kc.last_csv), 0)
+         - (select csv_cents from k8_lastday)))::bigint as amt
     from k8_csv kc
     left join public.etsy_ledger_entries le
       on le.org_id = p_org and le.ledger_type in ('prolist', 'prolist_refund')
@@ -455,19 +595,100 @@ as $$
         where c.org_id = p_org and c.external_key = 'ledger:' || le.entry_id)
   ),
 
-  -- K12 · Ledger satışların gerisinde (0179): senkron satışları çekiyor ama
-  -- ledger satırı gelmiyor. Faz hata verirse koşu durur ve sync_snapshot_stale
-  -- yanar; faz hatasız ama boş dönerse yalnız bu kontrol görür. Satış ve ledger
-  -- aynı org koşusunda çekildiği için iki tarih arasındaki fark, cron'un org'u
-  -- kaç günde bir işlediğinden bağımsızdır.
-  -- etsy_connection okunmaz: tabloda RLS açık ve politika yok (token taşır),
-  -- security invoker fonksiyon oturumda onu hep boş görürdü. Koşul yalnız veriden.
+  -- K12 · Ledger senkronun gerisinde (0179). Faz hata verirse koşu durur ve
+  -- sync_snapshot_stale yanar; faz hatasız ama boş dönerse yalnız bu kontrol
+  -- görür. İki saat: (a) ledger'ın son kaydından 3 günden sonraki ve panele en
+  -- az bir gün önce yazılmış bir Etsy satışı (tur ortasında yeni yazılan satış
+  -- sayılmaz, satış fazı turun başında, ledger fazı sonra koşar); (b) ledger'ı
+  -- normalde her gün kayıt alan mağazada (son 30 günün en az 20'si) mağaza
+  -- fotoğrafı (etsy_shop_snapshots, ledger fazından sonra yazılır) ledger'ın son
+  -- kaydından 5 günden fazla ileride. etsy_connection okunmaz: tabloda RLS açık
+  -- ve politika yok, security invoker fonksiyon onu oturumda hep boş görür.
   k12 as (
     select
-      (select max(s.order_date) from public.sales s
-       where s.org_id = p_org and s.source = 'etsy') as last_sale,
       (select max(le.entry_date) from public.etsy_ledger_entries le
-       where le.org_id = p_org) as last_ledger
+       where le.org_id = p_org) as last_ledger,
+      (select max(sn.created_at) from public.etsy_shop_snapshots sn
+       where sn.org_id = p_org) as last_snapshot,
+      (select max(s.order_date) from public.sales s
+       where s.org_id = p_org and s.source = 'etsy') as last_sale
+  ),
+  k12_x as (
+    select k.*,
+      exists (select 1 from public.sales s
+              where s.org_id = p_org and s.source = 'etsy'
+                and s.order_date > coalesce(k.last_ledger, '-infinity'::timestamptz) + interval '3 days'
+                and s.created_at < now() - interval '1 day') as sale_gap,
+      (select count(distinct (le.entry_date at time zone 'UTC')::date)
+       from public.etsy_ledger_entries le
+       where le.org_id = p_org and k.last_ledger is not null
+         and le.entry_date > k.last_ledger - interval '30 days') as active_days
+    from k12 k
+  ),
+  k12_eval as (
+    select x.*,
+      (x.sale_gap
+        or (coalesce(x.active_days, 0) >= 20 and x.last_snapshot is not null
+            and x.last_snapshot - x.last_ledger > interval '5 days')) as stale
+    from k12_x x
+  ),
+
+  -- K13 · ShipStation postajı çift sayılmasın (0179). Siparişe bağlanan gönderi
+  -- (external_key 'ss:<id>') aylık "ShipStation postaj" özetinden düşmeli; özeti
+  -- yalnız başarılı ShipStation senkronu yeniden kuruyor, bağlamayı ise Etsy
+  -- senkronu ve "İade verisini çek" de yapıyor. ShipStation senkronu durunca çift
+  -- sayım kalıcı oluyor (Jade 2026-11-09: $12.277,26 fazla).
+  k13 as (
+    select
+      coalesce((select sum(c.amount_cents) from public.costs c
+                where c.org_id = p_org and c.source = 'shipstation'), 0)::bigint as booked,
+      coalesce((select sum(c.amount_cents) from public.costs c
+                where c.org_id = p_org and c.source = 'shipstation'
+                  and c.external_key like 'ss:%'), 0)::bigint as linked,
+      coalesce((select sum(coalesce(sh.shipment_cost_cents, 0) + coalesce(sh.insurance_cost_cents, 0))
+                from public.shipstation_shipments sh
+                where sh.org_id = p_org and not coalesce(sh.voided, false)
+                  and sh.ship_date is not null), 0)::bigint as raw
+  ),
+
+  -- K14 · Aynı kalem ve türde iki maliyet kaynağı (0179). Elle (manual) ya da
+  -- faturayla (invoice) maliyetlenmiş kalemde motor (gold_auto) satırı da
+  -- duruyorsa İşletme Karı ve taraf toplamları ikisini birden toplar;
+  -- sale_item_pnl yalnız elle olanı öne alır, türü boş fatura satırını hiç
+  -- saymaz. Tür boşsa kategoriden türetilir (malzeme = gold, iscilik = labor).
+  k14_rows as (
+    select c.sale_item_id, c.source, c.amount_cents,
+      coalesce(c.cost_kind, case when cc.key = 'malzeme' then 'gold'
+                                 when cc.key = 'iscilik' then 'labor' end) as kind
+    from public.costs c
+    left join public.cost_categories cc on cc.id = c.category_id
+    where c.org_id = p_org
+      and c.sale_item_id is not null
+      and c.currency = (select currency from cur)
+      and c.source in ('gold_auto', 'invoice', 'manual')
+  ),
+  k14_pairs as (
+    select sale_item_id, kind,
+      sum(amount_cents) filter (where source = 'gold_auto') as auto_cents,
+      bool_or(source = 'manual') as has_manual,
+      bool_or(source = 'invoice') as has_invoice
+    from k14_rows
+    where kind is not null
+    group by sale_item_id, kind
+  ),
+  k14 as (
+    select
+      count(distinct sale_item_id) filter (where auto_cents is not null
+                                           and (has_manual or has_invoice))::bigint as n,
+      coalesce(sum(auto_cents) filter (where auto_cents is not null
+                                       and (has_manual or has_invoice)), 0)::bigint as amt,
+      jsonb_build_object(
+        'manual_pairs', count(*) filter (where auto_cents is not null and has_manual),
+        'invoice_pairs', count(*) filter (where auto_cents is not null and has_invoice and not has_manual),
+        'untyped_invoice_rows', (select count(*) from public.costs c2
+                                 where c2.org_id = p_org and c2.source = 'invoice'
+                                   and c2.cost_kind is null and c2.sale_item_id is not null)) as detail
+    from k14_pairs
   )
 
   select 'ledger_balance_break'::text, 'kritik'::text, k1.n_bad = 0,
@@ -490,7 +711,7 @@ as $$
   select 'refund_status_mismatch', 'onemli', k3.n = 0,
     case when k3.n = 0 then 'Ledger iadeleri panelle tutarlı'
          else k3.n || ' siparişte ledger iadesi panelle çelişiyor' end,
-    'Bu siparişlerde Etsy ledger''ı iade gösteriyor ama panelde sipariş ya hala tamamlandı statüsünde ya da okunan iade tutarı ledger''dan farklı; bu siparişlerin geliri yanlış. İade sinyali üç yerden okunur: iadeyle aynı saniyede yazılan vergi iadesi, siparişin herhangi bir vergi iadesi ya da kalemin işlem ücreti iadesi; geri alınan iadeler dışarıdadır. Köprüsüz siparişte tutar işlem ücreti iadesinden tahmin edilir. Sipariş detayından senkronu tazele; durum ve tutar Etsy''den yeniden okunur.',
+    'Bu siparişlerde Etsy ledger''ı iade gösteriyor ama panelde sipariş ya hala tamamlandı statüsünde ya da okunan iade tutarı ledger''dan farklı; bu siparişlerin geliri yanlış. İade sinyali iadeyle aynı saniyede yazılan vergi iadesinden, siparişin herhangi bir vergi iadesinden ve vergisiz siparişte kalemin işlem ücreti iadesinden okunur; geri alınan iadeler dışarıdadır. Köprüsüz siparişte tutar ücret ve vergi iadelerinden tahmin edilir. Panelde bu siparişleri yeniden okuyan bir buton henüz yok: "İade verisini çek" yalnız iade statüsündeki siparişleri okur. Düzeltme senkronda (muhasebe belgesinde IAD-01); o zamana kadar bu tutarı gelirden düşerek oku.',
     k3.n, k3.amt, (select currency from cur), '/satislar', 'Siparişleri gözden geçir', k3.detail
   from k3
 
@@ -514,7 +735,14 @@ as $$
   select 'cancelled_order_cogs', 'kritik', k5.n = 0,
     case when k5.n = 0 then 'Kargo kanıtı olmayan iptal siparişte satış maliyeti yok'
          else k5.n || ' iptal siparişe kargo kanıtı olmadan satış maliyeti yazılmış: kar olduğundan düşük görünüyor' end,
-    'Bu siparişler iptal edildi ve kargolandıklarına dair kayıt yok (ShipStation gönderisi, Etsy kargo kaydı ya da kargo tarihi), ama altın, işçilik ya da taş maliyeti yazılı kaldı. Hiç tahsil edilmemiş olanların maliyeti kesin hayalettir; tahsil edilip iade edilenlerinki büyük olasılıkla öyledir (ayrım detayda). Gelir iptal diye dışarıda, maliyet İşletme Karı''na giriyor. Parça stoğa döndüyse bedeli stoktadır, satış maliyeti değildir. Kargolanmış iptaller bu sayıya girmez: ürün çıktığı için maliyetleri gerçektir. ShipStation senkronu durduğundan beri kargolanan siparişlerde kanıt eksik olabilir. Düzeltme altın maliyet motorunda; o zamana kadar bu tutarı kara geri ekleyerek oku.',
+    'Bu siparişler iptal edildi, kargolandıklarına dair kayıt yok ama altın, işçilik ya da taş maliyeti yazılı. '
+      || k5.never_n || ' sipariş hiç tahsil edilmedi (' || public.accounting_fmt_cents(k5.never_c, (select currency from cur)) || '): bu maliyet kesin hayalettir. '
+      || k5.charged_n || ' sipariş tahsil edilip iade edildi (' || public.accounting_fmt_cents(k5.charged_c, (select currency from cur)) || ') ve kargo kaydının tutulduğu dönemde kaydı yok: büyük olasılıkla o da hayalettir. '
+      || 'Gelir iptal diye dışarıda, maliyet İşletme Karı''na giriyor; bu tutarın son 6 aya düşen kısmı ' || public.accounting_fmt_cents(k5.amt_6m, (select currency from cur))
+      || ', İşletme Karı kartını okurken yalnız bunu kara geri ekle. '
+      || case when k5.unknown_n > 0 then 'Kargo kaydı olmayan dönemde tahsil edilip iade edilmiş ' || k5.unknown_n
+           || ' iptal (' || public.accounting_fmt_cents(k5.unknown_c, (select currency from cur)) || ') sayıya girmedi: kargolanıp kargolanmadığı bilinmiyor. ' else '' end
+      || 'Kargolanmış iptaller de sayıya girmez; ürün geri döndüyse satış detayındaki kalem maliyeti formuna iadeyi ve geri kazanılan değeri gir. Kalıcı düzeltme altın maliyet motorunda (muhasebe belgesinde MAL-02).',
     k5.n, k5.amt, (select currency from cur), '/satislar/maliyet', 'İptal maliyetlerini gör', k5.detail
   from k5
 
@@ -530,7 +758,7 @@ as $$
   select 'ledger_cost_drift', 'onemli', k7.n = 0,
     case when k7.n = 0 then 'Ledger giderleri aylık gider tablosuyla tutarlı'
          else k7.n || ' ayda Etsy ledger gideri panelle tutmuyor' end,
-    'Ledger''daki Etsy giderleri (ücret, reklam, kargo, abonelik) ile panele yazılan aylık gider satırları bu aylarda farklı; aylık gider ve İşletme Karı bu fark kadar yanlış. Sebep çoğunlukla eşlemede olmayan bir gider türü ya da iadesi gideri aşan bir ay; detaydaki aylara bak.',
+    'Ledger''daki Etsy giderleri (ücret, reklam, kargo, abonelik) ile panele yazılan aylık gider satırları farklı: ' || k7.months_txt || '. Aylık gider ve İşletme Karı bu fark kadar yanlış. Sebep çoğunlukla eşlemede olmayan bir gider türü ya da iadesi gideri aşan bir ay (muhasebe belgesinde SIS-01).',
     k7.n, k7.amt, (select currency from cur), '/maliyetler', 'Giderleri gör', jsonb_build_object('months', k7.detail)
   from k7
 
@@ -540,11 +768,14 @@ as $$
     case when k8.last_spend_day is null or k8.last_spend_day - coalesce(k8.last_csv, date '1900-01-01') <= 14
            then 'Etsy Ads harcaması ölçülüyor'
          else 'Etsy Ads harcaması sürüyor ama getirisi ölçülmüyor' end,
-    'Ledger''da Etsy Ads harcaması devam ediyor ama son reklam performans verisi (Etsy Ads CSV) bu tarihten eski; bu harcamanın getirisini (ROAS) bilmiyorsun. Etsy Ads panosundan CSV''yi indir. Panelde CSV yükleme yüzeyi şu an yok; geri getirilmesi muhasebe belgesinde adım olarak yazılı.',
+    'Ledger''da Etsy Ads harcaması sürüyor (son harcama günü ' || coalesce(to_char(k8.last_spend_day, 'YYYY-MM-DD'), 'yok')
+      || ') ama son reklam performans verisi (Etsy Ads CSV) '
+      || coalesce(to_char(k8.last_csv, 'YYYY-MM-DD') || ' tarihli', 'hiç yüklenmemiş')
+      || '; bu harcamanın getirisini (ROAS) bilmiyorsun. Etsy Ads panosundan CSV''yi indir. Panelde CSV yükleme yüzeyi şu an yok; geri getirilmesi muhasebe belgesinde adım olarak yazılı (RKL-01).',
     case when k8.last_spend_day is null or k8.last_spend_day - coalesce(k8.last_csv, date '1900-01-01') <= 14 then 0 else 1 end::bigint,
     k8.amt, (select currency from cur), '/maliyetler', 'Reklam giderini gör',
     jsonb_build_object('last_csv_date', k8.last_csv, 'last_spend_date', k8.last_spend,
-      'last_spend_csv_day', k8.last_spend_day)
+      'last_spend_csv_day', k8.last_spend_day, 'last_csv_day_cents', (select csv_cents from k8_lastday))
   from k8
 
   union all
@@ -573,24 +804,43 @@ as $$
   from k11
 
   union all
-  select 'ledger_stale', 'onemli',
-    k12.last_sale is null
-      or (k12.last_ledger is not null and k12.last_sale - k12.last_ledger <= interval '3 days'),
-    case when k12.last_sale is null
-           or (k12.last_ledger is not null and k12.last_sale - k12.last_ledger <= interval '3 days')
-           then 'Etsy ledger''ı satışlarla güncel'
-         else 'Etsy ledger''ı satışların gerisinde kaldı: ücret ve iade eksik' end,
-    'Son Etsy satışı, ledger''ın son kaydından 3 günden daha yeni: senkron satışları çekiyor ama ledger satırları gelmiyor. Bu tarihten sonraki işlem, işleme ve reklam ücretleri, iadeler ve payout panelde yok; sipariş karı ve aylık gider eksik. Senkronu elle tetikle; düzelmezse ledger fazı ya hata veriyor ya da boş dönüyor demektir, Ayarlar > Etsy''de senkron durumuna bak.',
-    case when k12.last_sale is null
-           or (k12.last_ledger is not null and k12.last_sale - k12.last_ledger <= interval '3 days')
-           then 0 else 1 end::bigint,
+  select 'ledger_stale', 'onemli', not k12_eval.stale,
+    case when not k12_eval.stale then 'Etsy ledger''ı senkronla güncel'
+         else 'Etsy ledger''ı senkronun gerisinde kaldı: ücret ve iade eksik' end,
+    'Ledger''ın son kaydı ' || coalesce(to_char(k12_eval.last_ledger at time zone 'UTC', 'YYYY-MM-DD'), 'yok')
+      || ', son Etsy satışı ' || coalesce(to_char(k12_eval.last_sale at time zone 'UTC', 'YYYY-MM-DD'), 'yok')
+      || ', son mağaza fotoğrafı ' || coalesce(to_char(k12_eval.last_snapshot at time zone 'UTC', 'YYYY-MM-DD'), 'yok')
+      || '. Senkron koşuyor ama ledger satırları gelmiyor: bu tarihten sonraki işlem, işleme ve reklam ücretleri, iadeler ve payout panelde yok; sipariş karı ve aylık gider eksik. Senkronu elle tetikle; düzelmezse ledger fazı ya hata veriyor ya da boş dönüyor, Ayarlar > Etsy''de senkron durumuna bak.',
+    case when not k12_eval.stale then 0 else 1 end::bigint,
     null::bigint, (select currency from cur), '/ayarlar/etsy', 'Senkronu elle tetikle',
-    jsonb_build_object('last_sale_at', k12.last_sale, 'last_ledger_at', k12.last_ledger)
-  from k12
+    jsonb_build_object('last_ledger_at', k12_eval.last_ledger, 'last_sale_at', k12_eval.last_sale,
+      'last_snapshot_at', k12_eval.last_snapshot, 'sale_gap', k12_eval.sale_gap,
+      'active_days_30', k12_eval.active_days)
+  from k12_eval
+
+  union all
+  select 'postage_double_count', 'kritik', abs(k13.booked - k13.raw) <= 100,
+    case when abs(k13.booked - k13.raw) <= 100 then 'ShipStation postajı gidere bir kez yazılmış'
+         when k13.booked > k13.raw then 'ShipStation postajı gidere iki kez yazılmış: kar olduğundan düşük görünüyor'
+         else 'ShipStation postajının bir kısmı gidere yazılmamış: kar olduğundan yüksek görünüyor' end,
+    'ShipStation gönderilerinin postaj ve sigorta toplamı ' || public.accounting_fmt_cents(k13.raw, (select currency from cur)) || ', panele yazılan ShipStation gider satırları '
+      || public.accounting_fmt_cents(k13.booked, (select currency from cur)) || '. Siparişe bağlanan gönderi aylık "ShipStation postaj" özetinden düşmeli; özet yalnız başarılı ShipStation senkronunda yeniden kurulduğu için senkron dururken bağlanan gönderiler hem siparişte hem aylık özette sayılır. Fark İşletme Karı''nı bu tutar kadar bozar. ShipStation bağlantısı düzelince özet kendiliğinden yeniden kurulur; kalıcı düzeltme bağlayıcının özeti de aynı işlemde yeniden kurmasıdır (muhasebe belgesinde SEV-02).',
+    case when abs(k13.booked - k13.raw) <= 100 then 0 else 1 end::bigint,
+    abs(k13.booked - k13.raw), (select currency from cur), '/maliyetler', 'Kargo giderini gör',
+    jsonb_build_object('booked_cents', k13.booked, 'linked_cents', k13.linked, 'shipments_cents', k13.raw)
+  from k13
+
+  union all
+  select 'cogs_source_conflict', 'kritik', k14.n = 0,
+    case when k14.n = 0 then 'Her kalemin maliyeti tek kaynaktan sayılıyor'
+         else k14.n || ' kalemde motor maliyeti elle ya da faturalı maliyetle birlikte sayılıyor' end,
+    'Bu kalemlere elle ya da faturayla gerçek maliyet girilmiş, ama altın motorunun tahmini de yerinde duruyor. Satış ve Kar sayfası elle girilen tutarı öne alır, İşletme Karı ve taraf toplamları ise ikisini birden toplar: maliyet bu tutar kadar fazla, kar o kadar düşük görünür. Türü boş fatura satırı Satış ve Kar sayfasında hiç sayılmaz, orada yalnız motor tahmini görünür. Düzeltme altın maliyet motorunda (kaynak önceliği elle, fatura, motor); muhasebe belgesinde MAL-01.',
+    k14.n, k14.amt, (select currency from cur), '/satislar/maliyet', 'Kalem maliyetlerini gör', k14.detail
+  from k14
 $$;
 
 comment on function public.accounting_checks(uuid) is
-  'Salt okunur muhasebe kontrol döngüleri (0178, düzeltme ve K12 0179). Her kontrol tek satır; ok=false satırlar Uyarı Merkezi''nde görünür. Belge: docs/muhasebe/senaryo-matrisi.md';
+  'Salt okunur muhasebe kontrol döngüleri (0178; düzeltmeler ve K12..K14 0179). Her kontrol tek satır; ok=false satırlar Uyarı Merkezi''nde görünür. Belge: docs/muhasebe/senaryo-matrisi.md';
 
 revoke all on function public.accounting_checks(uuid) from public, anon;
 grant execute on function public.accounting_checks(uuid) to authenticated, service_role;
