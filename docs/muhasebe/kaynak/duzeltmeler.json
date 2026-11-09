@@ -14,12 +14,6 @@
    "why": "denetim:g1 orta GEL-02 other: 'Neden bu öncelik' satırı (canon.json GEL-02 why) aynı yanlış ayrıştırmayı taşıyor: 443 iptalin genel toplamı ve iadeler farkın kaynağı sayılıyor; tahsil edilmemiş 112 iptal forma girmez, iade iki tarafta da düşülmüyor."
   },
   {
-   "file": "senaryolar/02-iade.md",
-   "find": "karşılık = brüt x (olgun pencerede, yani 60-425 gün önceki tahsil edilmiş siparişlerde, siparişin bugünkü yaşından sonra gelen iade / olgun brüt)",
-   "replace": "karşılık = vergisiz brüt (grand_total_cents - tax_cents) x (olgun pencerede, yani 60-425 gün önceki tahsil edilmiş siparişlerde, siparişin bugünkü yaşından sonra gelen vergisiz iade (REFUND_GROSS eksi aynı receipt'in sales_tax_refund'ı) / olgun vergisiz brüt); iadedeki vergi emanet olduğu için karşılığa girmez (GEL-01)",
-   "why": "denetim:g1 orta IAD-06 control_loop: İade karşılığı vergi dahil REFUND_GROSS ve vergi dahil grand_total ile kuruluyor. Karşılık kontra gelirdir; belge geliri vergisiz kuruyor ve 'Vergi iadesi de gelirden düşülmez' diyor (dizin modeli, GEL-01 REF-15). Bu formül iadedeki vergiyi tahakkukta gelirden düşer, REF-15'teki çift düşüşü yeni bir"
-  },
-  {
    "file": "senaryolar/01-gelir.md",
    "find": "Ters yönlü kusur (sale_item_pnl): bugün $373,59 (7 okunmuş iade), Jade iade geri doldurması bitince en fazla $45.184,99 (ledger net sales_tax_refund).",
    "replace": "Ters yönlü kusur (sale_item_pnl): bugün $373,59 (7 okunmuş iade); bunun varsayılan K/Z görünümüne düşen kısmı $189,61 (iptal dışı 5 iade), $183,98'i Jade'in gelir dışı iki iptal siparişinde. Jade iade geri doldurması bitince görünür düşüş iptal dışı 472 siparişte $7.935,51 olur; iptaller dahil üst sınır $45.184,99 (ledger net sales_tax_refund).",
@@ -360,6 +354,128 @@
    "find": "Kayıtsız abonelikler (ShipStation, muhasebeci, domain) ölçülmedi: kayıt yok",
    "replace": "Kayıtsız abonelikler (ShipStation, muhasebeci; Jade'de domain de) ölçülmedi: kayıt yok",
    "why": "denetim:g3 düşük GDR-01 money: Domain kayıtsız abonelikler arasında sayılıyor, ama aynı cümlenin 'EON'un kayıtlı 3 sabit satırı' ve bloğun Panel bugün satırı 2026-07-15 tarihli Google Workspace 'Domain' 1.200 cent kaydını içeriyor. Kayıtsız olan Jade'in domaini; EON'da kayıt var, periyodu yok. Neden bu öncelik satırındaki 'ShipSt"
+  }
+ ],
+ "text": [
+  {
+   "id": "EK-02",
+   "field": "control_loop",
+   "find": "karşılık = toplam brüt x oran(a).",
+   "replace": "karşılık = toplam vergisiz brüt x oran(a). Brüt ve iade vergisiz tabandadır: brüt = grand_total - tax_cents - vat_cents, iade = REFUND_GROSS eksi aynı saniyedeki sales_tax_refund; iadedeki vergi emanettir ve karşılığa girmez (GEL-01).",
+   "why": "denetim:g1 orta IAD-06 bulgusu (karşılık vergi dahil REFUND_GROSS ve grand_total ile kuruluyordu; belgenin modelinde vergi emanettir ve iadedeki vergi gelirden düşülmez) ek senaryo kararı işlendikten sonra yeni metne taşındı; 2026-11-09 20:17 UTC canlı yeniden ölçüldü."
+  },
+  {
+   "id": "EK-02",
+   "field": "money",
+   "find": "Jade: Haziran-Eylül 2026 kapanış sonrası köprülü iade $12.861,02 (yeniden üretildi, $5.771,83 + $4.543,67 + $1.550,55 + $994,97). Son 30 gün canlı brüt $23.215,09 (41 sipariş); koşullu karşılık $2.923,66 (2026-11-09 19:4x UTC), senaryo yönteminin aynı andaki $2.294,46 değerinden yüzde 27 fazla ve kar kartının ($23.548,45 - $7.342,63 = $16.205,82) yüzde 18'i. MAL-02 sonrası net kar etkisi yaklaşık $2.126 (bu 41 siparişte COGS $6.335,73, brütün yüzde 27,3'ü).",
+   "replace": "Jade: Haziran-Eylül 2026 kapanış sonrası köprülü iade vergisiz $12.039,68 ($5.406,54 + $4.246,22 + $1.450,92 + $936,00; vergi dahil $12.861,02, ay sınırı New York). Son 30 günün 41 canlı siparişinde vergisiz brüt $21.704,08 (vergi dahil $23.215,09); koşullu karşılık vergisiz $2.696,38 (2026-11-09 20:17 UTC; aynı anda vergi dahil tabanla $2.917,96). Koşulsuz senaryo yöntemi vergi dahil tabanda yüzde 27 eksik tahmin ediyordu ($2.923,66'ya karşı $2.294,46, 19:4x UTC). Karşılık, kar kartının bugünkü değerinin ($23.548,45 - $7.342,63 = $16.205,82; gelir vergi dahil, GEL-01) yüzde 16,6'sı. MAL-02 sonrası net kar etkisi yaklaşık $1.909 (bu 41 siparişte COGS $6.335,73, vergisiz brütün yüzde 29,2'si).",
+   "why": "denetim:g1 orta IAD-06 bulgusu (karşılık vergi dahil REFUND_GROSS ve grand_total ile kuruluyordu; belgenin modelinde vergi emanettir ve iadedeki vergi gelirden düşülmez) ek senaryo kararı işlendikten sonra yeni metne taşındı; 2026-11-09 20:17 UTC canlı yeniden ölçüldü."
+  },
+  {
+   "id": "EK-02",
+   "field": "field",
+   "find": "VAR: senaryodaki gibi (sales.status, order_date, grand_total_cents, tax_cents; ledger REFUND_GROSS ve sales_tax_refund köprüsü).",
+   "replace": "VAR: sales.status, order_date, grand_total_cents, tax_cents; ledger REFUND_GROSS ve aynı saniyedeki sales_tax_refund köprüsü (0178 K3 deseni).",
+   "why": "Ek senaryo kararı bu kısmı için 'senaryodaki gibi' diyordu; belge yalnız düzeltilmiş metni gösterdiği için gönderme özgün senaryonun (ek.json) içeriğiyle dolduruldu."
+  },
+  {
+   "id": "EK-02",
+   "field": "field",
+   "find": "/panel ve /raporlar'da 'İade karşılığı (tahmini)' satırı.",
+   "replace": "/panel ve /raporlar'da 'İade karşılığı (tahmini)' satırı ile 'karşılık sonrası kar'. Sahip rutini: ay kapanışında karşılığı onaylar, olgun sipariş 30'dan az olan org'da oranı Ayarlar'da elle girer (refund_reserve_rate_override), M+3 sapma uyarısında yöntem penceresini seçer.",
+   "why": "Ek senaryo kararı bu kısmı için 'senaryodaki gibi' diyordu; belge yalnız düzeltilmiş metni gösterdiği için gönderme özgün senaryonun (ek.json) içeriğiyle dolduruldu. Sahip rutini (şerit D) düzeltilmiş metinde düşmüştü."
+  },
+  {
+   "id": "EK-02",
+   "field": "control_loop",
+   "find": "Mutabakat, eşik (kayan 3 ayda yüzde 25), uyarı anahtarı refund_reserve_drift, olgun sipariş 30'dan azsa bilgi düzeyi ve kadans senaryodaki gibi.",
+   "replace": "Mutabakat: her ay kapanışında reserve_cents yazılır; M+3'te o ayın siparişlerine kapanıştan sonra gelen gerçek vergisiz iade actual_after_close_cents olur. Eşik: kayan 3 aylık toplamda |toplam reserve - toplam actual| / toplam actual > 0,25 ise uyarı anahtarı refund_reserve_drift yanar (önemli; costCents = fark). Olgun sipariş 30'dan az ve override boşsa aynı anahtar bilgi düzeyinde yanar. Kadans: günlük hesap (cron sonrası), aylık kapanış snapshot'ı, M+3 gerçekleşme.",
+   "why": "Ek senaryo kararı bu kısmı için 'senaryodaki gibi' diyordu; belge yalnız düzeltilmiş metni gösterdiği için gönderme özgün senaryonun (ek.json) içeriğiyle dolduruldu."
+  },
+  {
+   "id": "EK-04",
+   "field": "field",
+   "find": "tax_line_map senaryodaki gibi; tax_year_packages senaryodaki kolonlar + due_date",
+   "replace": "tax_line_map (org_id, tax_year, source_kind check in ('ledger_class','cost_kind','cost_category'), source_key, form_line text, approved_by, approved_at); tax_year_packages (org_id, tax_year, currency, close_snapshot_id, lines jsonb (satır başına cent), form_1099k_cents, file_path, md5, generated_at, generated_by, accountant_notes) + due_date",
+   "why": "Ek senaryo kararı bu kısmı için 'senaryodaki gibi' diyordu; belge yalnız düzeltilmiş metni gösterdiği için gönderme özgün senaryonun (ek.json) içeriğiyle dolduruldu."
+  },
+  {
+   "id": "EK-04",
+   "field": "field",
+   "find": "XLSX ve Numbers notu senaryodaki gibi.",
+   "replace": "Ekran: /raporlar altında 'Vergi yılı paketi' kartı (yıl seçimi, eşleme onayı, 1099-K tutarı, 'XLSX üret'). Rota app/(dashboard)/raporlar/vergi-paketi/export/route.ts; exceljs dependencies'e taşınır; sayfalar: form satırları, 1099-K köprüsü, COGS (Part III satır 35-42), Etsy satış vergisi (bilgi), iade ve iptal köprüsü (yıl sınırı), kaynak listesi; formüller yalnız Numbers'ın da desteklediği SUM, IF, OR ve ROUNDUP. Sahip rutini: her ocak eşlemeyi muhasebeciyle onaylar, 1099-K tutarını girer, paketi üretir, XLSX'i Numbers'ta .numbers'a çevirip gönderir.",
+   "why": "Ek senaryo kararı bu kısmı için 'senaryodaki gibi' diyordu; belge yalnız düzeltilmiş metni gösterdiği için gönderme özgün senaryonun (ek.json) içeriğiyle dolduruldu."
+  },
+  {
+   "id": "EK-04",
+   "field": "control_loop",
+   "find": "Kadans senaryodaki gibi.",
+   "replace": "Kadans: 1 Ocak'tan paket üretilene kadar haftalık, sonra her kapanış düzeltmesinde.",
+   "why": "Ek senaryo kararı bu kısmı için 'senaryodaki gibi' diyordu; belge yalnız düzeltilmiş metni gösterdiği için gönderme özgün senaryonun (ek.json) içeriğiyle dolduruldu."
+  },
+  {
+   "id": "EK-03",
+   "field": "panel_today",
+   "find": "0179 K5 (repoda, canlıda değil)",
+   "replace": "0179 K5 (2026-11-09'dan beri canlıda)",
+   "why": "Çürütücü 0179 canlıya çıkmadan ölçtü; 0179 2026-11-09'da uygulandı ve K5 kargolu 74 iptali aynı tutarla ($35.410,48) ayırıyor."
+  },
+  {
+   "id": "EK-01",
+   "field": "panel_today",
+   "find": "0179:232-239",
+   "replace": "0179:316-323",
+   "why": "Satır kayması: çürütücü 0179'un taslağını okudu; HEAD'de K4 k4_sales CTE'si 0179:316-323 (source süzgeci yok, bulgu geçerli)."
+  },
+  {
+   "id": "EK-01",
+   "field": "field",
+   "find": "0179:232-239",
+   "replace": "0179:316-323",
+   "why": "Satır kayması: çürütücü 0179'un taslağını okudu; HEAD'de K4 k4_sales CTE'si 0179:316-323 (source süzgeci yok, bulgu geçerli)."
+  },
+  {
+   "id": "EK-01",
+   "field": "reason",
+   "find": "0179:232-239",
+   "replace": "0179:316-323",
+   "why": "Satır kayması: çürütücü 0179'un taslağını okudu; HEAD'de K4 k4_sales CTE'si 0179:316-323 (source süzgeci yok, bulgu geçerli)."
+  },
+  {
+   "id": "EK-03",
+   "field": "orig_panel_today",
+   "find": "docs/satis-maliyet-takip.md:48'de",
+   "replace": "docs/satis-maliyet-takip.md:50'de",
+   "why": "Satır kayması: bu dalda dosyaya kontrol döngüleri bölümü eklendi; iade edilen ürün kuralı HEAD'de :50."
+  },
+  {
+   "id": "EK-04",
+   "field": "gap",
+   "find": "(CLAUDE.md:108-116)",
+   "replace": "(CLAUDE.md:111-119)",
+   "why": "Satır kayması: Numbers teslimat notu HEAD'de CLAUDE.md:111-119."
+  },
+  {
+   "id": "EK-04",
+   "field": "gap",
+   "find": "$39.560,16 fazla görünür (vergi dahil, iade düşülmemiş)",
+   "replace": "$39.617,57 fazla görünür ($27.360,89'u vergi, kalanı iade tutarı okunmamış 53 sipariş ile zamanlama köprüsü)",
+   "why": "Ek karar satır 2'yi REFUND_REVERSAL_SALES_TAX ile netledi ($57,41); para satırıyla aynı rakam."
+  },
+  {
+   "id": "EK-04",
+   "field": "scenario",
+   "find": "(2026 yılı için beyan tarihi 2027-04-15)",
+   "replace": "(2026 yılı için beyan tarihi forma göre: Schedule C ve takvim yıllı Form 5472 için 2027-04-15, ABD ücret geliri olmayan 1040-NR için 2027-06-15)",
+   "why": "Ek karar (4): beyan tarihi forma bağlı (IRS 1040-NR talimatı)."
+  }
+ ],
+ "sql": [
+  {
+   "id": "EK-02",
+   "sql": "-- EK-02 kontrol (düzeltilmiş, vergisiz taban): açık dönem iade karşılığı, yaşa göre KOŞULLU olasılıkla.\n-- Yaşı a gün olan ve henüz iade görmemiş sipariş için oran(a) = olgun pencerede (60-425 gün) ilk iadesi a günden\n-- sonra gelen siparişlerin a günden sonraki iadesi / olgun pencerede a güne kadar iade görmemiş siparişlerin brütü.\n-- Taban vergisizdir: brüt = grand_total - tax_cents - vat_cents; iade = REFUND_GROSS eksi aynı saniyedeki\n-- sales_tax_refund (iadedeki vergi emanettir, karşılığa girmez).\n-- Beklenen: karşılık kaydı kurulunca booked_reserve_cents = expected_reserve_cents; olgun sipariş 30'dan azsa expected null.\n-- Bugün (2026-11-09 20:17 UTC, now() ile kayar): Jade expected 269.638 cent (vergi dahil tabanla 291.796), booked 0;\n-- EON 23, Ophir 1, Artifact 0, Seselka 0 olgun sipariş: expected null.\nwith rg as materialized (\n  select le.org_id, le.created_timestamp, le.entry_date, -le.amount_cents as amt\n  from public.etsy_ledger_entries le\n  where le.ledger_type = 'REFUND_GROSS'\n),\ntx as materialized (\n  select le.org_id, le.created_timestamp, min(le.reference_id::bigint) as receipt, sum(le.amount_cents) as tax_ref\n  from public.etsy_ledger_entries le\n  where le.ledger_type = 'sales_tax_refund' and le.reference_id ~ '^[0-9]+$'\n  group by le.org_id, le.created_timestamp\n  having count(distinct le.reference_id) = 1\n),\nrr as materialized (\n  select s.org_id, s.id as sale_id, r.amt - t.tax_ref as amt,\n         extract(epoch from (r.entry_date - s.order_date)) / 86400.0 as lag_d\n  from rg r\n  join tx t on t.org_id = r.org_id and t.created_timestamp = r.created_timestamp\n  join public.sales s on s.org_id = r.org_id and s.etsy_receipt_id = t.receipt\n),\nms as materialized (\n  select s.org_id, s.id,\n         s.grand_total_cents - coalesce(s.tax_cents, 0) - coalesce(s.vat_cents, 0) as g,\n         (select min(x.lag_d) from rr x where x.sale_id = s.id) as first_lag\n  from public.sales s\n  where s.order_date >= now() - interval '425 days' and s.order_date < now() - interval '60 days'\n    and (s.status <> 'cancelled' or exists (select 1 from rr x where x.sale_id = s.id))\n),\nmref as materialized (\n  select ms.org_id, ms.first_lag, x.lag_d, x.amt\n  from rr x join ms on ms.id = x.sale_id\n),\nrecent as materialized (\n  select s.org_id,\n         s.grand_total_cents - coalesce(s.tax_cents, 0) - coalesce(s.vat_cents, 0) as g,\n         extract(epoch from (now() - s.order_date)) / 86400.0 as age_d\n  from public.sales s\n  where s.order_date >= now() - interval '30 days'\n    and s.status in ('completed', 'paid', 'processing', 'shipped')\n    and not exists (select 1 from rr x where x.sale_id = s.id)\n)\nselect o.id as org_id, o.name,\n  (select count(*) from ms where ms.org_id = o.id) as mature_orders,\n  (select count(*) from recent r where r.org_id = o.id) as recent_orders,\n  (select coalesce(sum(g), 0) from recent r where r.org_id = o.id) as recent_live_net_cents,\n  case when (select count(*) from ms where ms.org_id = o.id) < 30 then null else\n    coalesce(round((select sum(r.g\n        * (select coalesce(sum(m.amt), 0) from mref m\n            where m.org_id = o.id and m.lag_d > r.age_d and m.first_lag > r.age_d)::numeric\n        / nullif((select sum(x.g) from ms x\n                   where x.org_id = o.id and (x.first_lag is null or x.first_lag > r.age_d)), 0))\n      from recent r where r.org_id = o.id)), 0)\n  end as expected_reserve_cents,\n  0 as booked_reserve_cents\nfrom public.organizations o\norder by o.name",
+   "measure": "Vergisiz tabanla (2026-11-09 20:17 UTC): Jade olgun 1.007 sipariş, son 30 günde 41 canlı sipariş, vergisiz brüt 2.170.408 cent (vergi dahil 2.321.509), beklenen karşılık 269.638 cent (aynı anda vergi dahil tabanla 291.796); EON 23, Ophir 1, Artifact ve Seselka 0 olgun sipariş, karşılık null; booked hepsinde 0.",
+   "why": "denetim:g1 orta IAD-06 bulgusu (karşılık vergi dahil REFUND_GROSS ve grand_total ile kuruluyordu; belgenin modelinde vergi emanettir ve iadedeki vergi gelirden düşülmez) ek senaryo kararı işlendikten sonra yeni metne taşındı; 2026-11-09 20:17 UTC canlı yeniden ölçüldü."
   }
  ]
 }

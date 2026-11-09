@@ -5,7 +5,8 @@
 -- tek tek koşulur. Org seçimi ada göre alt sorguyla yapılır: başka mağaza
 -- için adı değiştir. Her bloğun başlığında senaryo kimliği, canlı kontrol
 -- (accounting_checks K numarası) ya da önerilen uyarı anahtarı ve
--- 2026-11-08 ölçümü yazar; beklenen değer sorgunun kendi yorum satırındadır.
+-- ölçümü yazar (ana senaryolar 2026-11-08, ek senaryolar 2026-11-09); beklenen değer
+-- sorgunun kendi yorum satırındadır.
 -- Üreteç: docs/muhasebe/kaynak/render.py (elle düzenleme yapma).
 
 -- 0) Canlı kontroller tek çağrıda (0178, 0179): yalnız başarısızlar
@@ -78,7 +79,7 @@ where org_id = (select id from organizations where name = 'Jade Gold NYC')
 group by 1
 order by 1;
 
--- GEL-03 Etsy dışı satış (elle giriş, Shopier, receipt kimliksiz CSV): tahsilat kanalı, kanal ücreti, kalem satırı ve satıcının beyan edeceği satış vergisi | kaynak EK-01 | kontrol: öneri: non_etsy_sale_incomplete | ölçüm 2026-11-08: ölçülmedi
+-- GEL-03 Etsy dışı satış (elle giriş, Shopier, receipt kimliksiz CSV): tahsilat kanalı, kanal ücreti, kalem satırı ve satıcının beyan edeceği satış vergisi | kaynak EK-01 | kontrol: öneri: non_etsy_sale_incomplete | ölçüm 2026-11-09: Çalıştı, hata yok. 5 org'da tüm sayaçlar 0: non_etsy_sales 0, non_etsy_grand_cents 0, seller_owed_tax_cents 0, no_line_items 0, no_collection_info 0, etsy_fee_on_non_etsy 0, tax_without_jurisdiction 0, etsy_buyer_match 0 (Artifact, EON, Jade, Ophir USD; Seselka TRY). Beklenen değerle aynı.
 -- EK-01 kontrol: Etsy dışı satış (manual, shopier ya da receipt kimliksiz csv).
 -- Beklenen: non_etsy_sales > 0 olsa bile no_line_items, no_collection_info, etsy_fee_on_non_etsy,
 -- tax_without_jurisdiction ve etsy_buyer_match = 0. Bugün (2026-11-09) 5 org'da tüm sayaçlar 0.
@@ -356,63 +357,69 @@ left join (
 ) r on r.org_id = s.org_id and r.sale_id = s.id
 group by o.id, o.name order by o.name;
 
--- IAD-06 Açık dönem iade karşılığı: son 30 günün ve yeni kapanan ayın karı henüz gelmemiş iade ve iptalleri taşımıyor | kaynak EK-02 | kontrol: öneri: refund_reserve_drift | ölçüm 2026-11-08: ölçülmedi
--- EK-02 kontrol: açık dönem (son 30 gün) iade karşılığı, yaşa göre ağırlıklı.
--- Beklenen: karşılık kaydı kurulduktan sonra booked_reserve_cents = expected_reserve_cents;
--- mature_orders < 30 ise oran ölçülemez (expected null, karşılık sahip girişine kalır).
--- Bugün (2026-11-09): Jade expected yaklaşık 230.800 cent (now() ile kayar), booked 0 (kolon yok);
+-- IAD-06 Açık dönem iade karşılığı: son 30 günün ve yeni kapanan ayın karı henüz gelmemiş iade ve iptalleri taşımıyor | kaynak EK-02 | kontrol: öneri: refund_reserve_drift | ölçüm 2026-11-09: Orijinal SQL çalıştı (2026-11-09 19:4x UTC): Jade mature_orders 1.007, mature_refund_rate 0,3474, recent_live_gross_cents 2.321.509, expected_reserve_cents 229.446 (senaryodaki 230.800 now() ile kaydı), booked 0; EON 23 / 0,0093 / 497.665 / null; Ophir 1 / 1,0000 / 70.256 / null; Artifact ve Seselka 0 / null. Düzeltilmiş (koşullu) SQL: Jade 1.007 / 2.321.509 / expected 292.366; EON, Ophir, Artifact, Seselka expected null (olgun sipariş 30'dan az); booked hepsinde 0.; yeniden ölçüm 2026-11-09: Vergisiz tabanla (2026-11-09 20:17 UTC): Jade olgun 1.007 sipariş, son 30 günde 41 canlı sipariş, vergisiz brüt 2.170.408 cent (vergi dahil 2.321.509), beklenen karşılık 269.638 cent (aynı anda vergi dahil tabanla 291.796); EON 23, Ophir 1, Artifact ve Seselka 0 olgun sipariş, karşılık null; booked hepsinde 0.
+-- EK-02 kontrol (düzeltilmiş, vergisiz taban): açık dönem iade karşılığı, yaşa göre KOŞULLU olasılıkla.
+-- Yaşı a gün olan ve henüz iade görmemiş sipariş için oran(a) = olgun pencerede (60-425 gün) ilk iadesi a günden
+-- sonra gelen siparişlerin a günden sonraki iadesi / olgun pencerede a güne kadar iade görmemiş siparişlerin brütü.
+-- Taban vergisizdir: brüt = grand_total - tax_cents - vat_cents; iade = REFUND_GROSS eksi aynı saniyedeki
+-- sales_tax_refund (iadedeki vergi emanettir, karşılığa girmez).
+-- Beklenen: karşılık kaydı kurulunca booked_reserve_cents = expected_reserve_cents; olgun sipariş 30'dan azsa expected null.
+-- Bugün (2026-11-09 20:17 UTC, now() ile kayar): Jade expected 269.638 cent (vergi dahil tabanla 291.796), booked 0;
 -- EON 23, Ophir 1, Artifact 0, Seselka 0 olgun sipariş: expected null.
 with rg as materialized (
   select le.org_id, le.created_timestamp, le.entry_date, -le.amount_cents as amt
   from public.etsy_ledger_entries le
-  join public.organizations o on o.id = le.org_id
   where le.ledger_type = 'REFUND_GROSS'
 ),
 tx as materialized (
-  select le.org_id, le.created_timestamp, min(le.reference_id::bigint) as receipt
+  select le.org_id, le.created_timestamp, min(le.reference_id::bigint) as receipt, sum(le.amount_cents) as tax_ref
   from public.etsy_ledger_entries le
-  join public.organizations o on o.id = le.org_id
   where le.ledger_type = 'sales_tax_refund' and le.reference_id ~ '^[0-9]+$'
   group by le.org_id, le.created_timestamp
   having count(distinct le.reference_id) = 1
 ),
 rr as materialized (
-  select s.org_id, s.id as sale_id, s.order_date, r.amt,
+  select s.org_id, s.id as sale_id, r.amt - t.tax_ref as amt,
          extract(epoch from (r.entry_date - s.order_date)) / 86400.0 as lag_d
   from rg r
   join tx t on t.org_id = r.org_id and t.created_timestamp = r.created_timestamp
   join public.sales s on s.org_id = r.org_id and s.etsy_receipt_id = t.receipt
 ),
-mature_sales as materialized (
-  select s.org_id, count(*) as n, sum(s.grand_total_cents) as g
+ms as materialized (
+  select s.org_id, s.id,
+         s.grand_total_cents - coalesce(s.tax_cents, 0) - coalesce(s.vat_cents, 0) as g,
+         (select min(x.lag_d) from rr x where x.sale_id = s.id) as first_lag
   from public.sales s
   where s.order_date >= now() - interval '425 days' and s.order_date < now() - interval '60 days'
-    and (s.status <> 'cancelled' or exists (select 1 from rr where rr.sale_id = s.id))
-  group by s.org_id
+    and (s.status <> 'cancelled' or exists (select 1 from rr x where x.sale_id = s.id))
 ),
-mature_ref as materialized (
-  select rr.* from rr
-  where rr.order_date >= now() - interval '425 days' and rr.order_date < now() - interval '60 days'
+mref as materialized (
+  select ms.org_id, ms.first_lag, x.lag_d, x.amt
+  from rr x join ms on ms.id = x.sale_id
 ),
-recent_live as materialized (
-  select s.org_id, s.id, s.grand_total_cents as g, extract(epoch from (now() - s.order_date)) / 86400.0 as age_d
+recent as materialized (
+  select s.org_id,
+         s.grand_total_cents - coalesce(s.tax_cents, 0) - coalesce(s.vat_cents, 0) as g,
+         extract(epoch from (now() - s.order_date)) / 86400.0 as age_d
   from public.sales s
   where s.order_date >= now() - interval '30 days'
     and s.status in ('completed', 'paid', 'processing', 'shipped')
-    and not exists (select 1 from rr where rr.sale_id = s.id)
+    and not exists (select 1 from rr x where x.sale_id = s.id)
 )
 select o.id as org_id, o.name,
-  coalesce(ms.n, 0) as mature_orders,
-  round(coalesce((select sum(amt) from mature_ref m where m.org_id = o.id), 0)::numeric / nullif(ms.g, 0), 4) as mature_refund_rate,
-  coalesce((select sum(g) from recent_live r where r.org_id = o.id), 0) as recent_live_gross_cents,
-  case when coalesce(ms.n, 0) < 30 then null else
-    coalesce(round((select sum(r.g * (select coalesce(sum(m.amt) filter (where m.lag_d > r.age_d), 0)
-                                      from mature_ref m where m.org_id = o.id)::numeric / ms.g)
-                    from recent_live r where r.org_id = o.id)), 0)
+  (select count(*) from ms where ms.org_id = o.id) as mature_orders,
+  (select count(*) from recent r where r.org_id = o.id) as recent_orders,
+  (select coalesce(sum(g), 0) from recent r where r.org_id = o.id) as recent_live_net_cents,
+  case when (select count(*) from ms where ms.org_id = o.id) < 30 then null else
+    coalesce(round((select sum(r.g
+        * (select coalesce(sum(m.amt), 0) from mref m
+            where m.org_id = o.id and m.lag_d > r.age_d and m.first_lag > r.age_d)::numeric
+        / nullif((select sum(x.g) from ms x
+                   where x.org_id = o.id and (x.first_lag is null or x.first_lag > r.age_d)), 0))
+      from recent r where r.org_id = o.id)), 0)
   end as expected_reserve_cents,
   0 as booked_reserve_cents
 from public.organizations o
-left join mature_sales ms on ms.org_id = o.id
 order by o.name;
 
 -- ==== 3. Etsy ücretleri ve kredileri (UCR) ====
@@ -1243,44 +1250,47 @@ cross join cfg
 join product_variants pv on pv.org_id = (select id from organizations where name = 'EON') and pv.sku = a.sku
 join products p on p.id = pv.product_id;
 
--- MAL-12 Stoğa dönen iade parçası: taşıma değeri, yeniden satışta stoktan tüketim ve yıl sonu stok | kaynak EK-03 | kontrol: öneri: return_stock_unvalued | ölçüm 2026-11-08: ölçülmedi
--- EK-03 kontrol: kargolanıp tam iade ya da iptal edilen kalem (parça büyük olasılıkla geri geldi)
--- ile aynı SKU'nun 7-180 gün içindeki yeniden satışı.
--- Beklenen: unresolved_resale_items = 0 (her çift bir stok partisine bağlı ya da 'yeni üretim' işaretli)
--- ve akıbeti girilmemiş iade kalemi kalmaz. Bugün (2026-11-09) Jade: 169 kalem, 4.328.182 cent COGS,
--- 58 çözülmemiş çift, üst sınır 1.442.854 cent; stok tablosu yok.
-with ret_items as materialized (
-  select si.org_id, si.id, si.sku, s.order_date, si.returned_at, si.recovered_cents,
-         (select coalesce(sum(c.amount_cents), 0) from public.costs c
-           where c.sale_item_id = si.id
-             and (c.cost_kind in ('gold','labor','gem','packaging') or c.source in ('gold_auto','invoice'))) as cogs
+-- MAL-12 Stoğa dönen iade parçası: taşıma değeri, yeniden satışta stoktan tüketim ve yıl sonu stok | kaynak EK-03 | kontrol: öneri: return_stock_unvalued | ölçüm 2026-11-09: Orijinal SQL çalıştı: Jade 169 kalem, cogs_still_booked 4.328.182, disposition 0, recovered 0, unresolved_resale_items 58, üst sınır 1.442.854; Ophir 2 kalem 19.260; Artifact 1 kalem 50.904; EON 1 kalem 0; Seselka 0 (senaryoyla birebir). Düzeltilmiş SQL: Jade 169 kalem 4.328.182 (iptal 126 / 3.541.048, tam iade 43 / 787.134), akıbetsiz COGS'lu 112 kalem 4.328.182, 2025 sipariş yılı 3.257.013; Ophir 2 kalem 19.260 (akıbetsiz 1); Artifact 1 kalem 50.904 (akıbetsiz 1); EON 1 kalem 0; Seselka 0.
+-- EK-03 kontrol (düzeltilmiş): kargolandığına dair kanıtı olan (0179 K5 ile aynı kanıt: is_shipped, shipped_at,
+-- kalem shipped_at, sale_shipments ya da iptal edilmemiş ShipStation gönderisi) ve iptal ya da tam iade edilmiş
+-- kalemde akıbeti girilmemiş satış maliyeti. Aynı SKU'nun yeniden satışı kanıt sayılmaz (sıradan kalemlerde yüzde 73,1).
+-- Kuyruk MAL-09 ile ortaktır; stok partisi eşitlikleri inventory_lots kurulunca eklenir.
+-- Beklenen: no_disposition_items = 0.
+-- Bugün (2026-11-09): Jade 169 kalem 4.328.182 cent (iptal 126 / 3.541.048 = 0179 K5 shipped_excluded tutarı,
+-- tam iade 43 / 787.134), akıbetsiz COGS'lu 112 kalem 4.328.182, 2025 sipariş yılı 3.257.013;
+-- Ophir 2 kalem 19.260 (akıbetsiz 1), Artifact 1 kalem 50.904, EON 1 kalem 0, Seselka 0.
+with ss as materialized (
+  select distinct sh.org_id, sh.order_number::bigint as receipt
+  from public.shipstation_shipments sh
+  join public.organizations o on o.id = sh.org_id
+  where not coalesce(sh.voided, false) and sh.order_number ~ '^[0-9]+$'
+),
+items as materialized (
+  select s.org_id, si.id, s.status, s.order_date, si.returned_at, si.recovered_cents,
+    (select coalesce(sum(c.amount_cents), 0) from public.costs c
+      where c.sale_item_id = si.id
+        and (c.cost_kind in ('gold','labor','gem','packaging') or (c.cost_kind is null and c.source = 'gold_auto'))) as cogs
   from public.sale_items si
   join public.sales s on s.id = si.sale_id
   join public.organizations o on o.id = s.org_id
-  where s.status in ('cancelled', 'refunded')
-    and (s.shipped_at is not null or si.shipped_at is not null
-         or exists (select 1 from public.shipstation_shipments ss
-                    where ss.org_id = s.org_id and ss.order_number = s.etsy_receipt_id::text
-                      and coalesce(ss.voided, false) = false))
-),
-flagged as (
-  select r.*,
-         exists (select 1 from public.sale_items s2 join public.sales x on x.id = s2.sale_id
-                 where s2.org_id = r.org_id and s2.sku = r.sku
-                   and x.status in ('completed','paid','processing','shipped')
-                   and x.order_date > r.order_date + interval '7 days'
-                   and x.order_date <= r.order_date + interval '180 days') as resold
-  from ret_items r
+  where s.status in ('cancelled','refunded')
+    and (coalesce(s.is_shipped, false) or s.shipped_at is not null or si.shipped_at is not null
+         or exists (select 1 from public.sale_shipments sh where sh.sale_id = s.id)
+         or exists (select 1 from ss where ss.org_id = s.org_id and ss.receipt = s.etsy_receipt_id))
 )
 select o.id as org_id, o.name,
-  count(f.id) as returned_shipped_items,
-  coalesce(sum(f.cogs), 0) as cogs_still_booked_cents,
-  count(f.id) filter (where f.returned_at is not null) as disposition_recorded,
-  coalesce(sum(f.recovered_cents), 0) as recovered_cents,
-  count(f.id) filter (where f.resold and f.cogs > 0) as unresolved_resale_items,
-  coalesce(sum(f.cogs) filter (where f.resold and f.cogs > 0), 0) as double_cost_upper_bound_cents
+  count(i.id) as shipped_returned_items,
+  coalesce(sum(i.cogs), 0) as cogs_booked_cents,
+  count(i.id) filter (where i.status = 'cancelled') as cancelled_items,
+  coalesce(sum(i.cogs) filter (where i.status = 'cancelled'), 0) as cancelled_cogs_cents,
+  count(i.id) filter (where i.status = 'refunded') as refunded_items,
+  coalesce(sum(i.cogs) filter (where i.status = 'refunded'), 0) as refunded_cogs_cents,
+  count(i.id) filter (where i.returned_at is null and i.cogs > 0) as no_disposition_items,
+  coalesce(sum(i.cogs) filter (where i.returned_at is null and i.cogs > 0), 0) as no_disposition_cogs_cents,
+  coalesce(sum(i.cogs) filter (where i.order_date >= timestamptz '2025-01-01 00:00 America/New_York'
+                                 and i.order_date < timestamptz '2026-01-01 00:00 America/New_York'), 0) as cogs_2025_cents
 from public.organizations o
-left join flagged f on f.org_id = o.id
+left join items i on i.org_id = o.id
 group by o.id, o.name
 order by o.name;
 
@@ -1443,20 +1453,22 @@ cross join lateral (
 ) x
 order by o.name;
 
--- NAK-03 Yıl sonu muhasebeci paketi: vergi formu satır eşlemesi, 1099-K köprüsü ve XLSX üzerinden Numbers teslimi | kaynak EK-04 | kontrol: öneri: tax_package_unreconciled | ölçüm 2026-11-08: ölçülmedi
--- EK-04 kontrol: vergi yılı paketinin ledger kimliği (yıl 2025, NY takvimi; başka yıl için yr CTE'sini değiştir).
--- Beklenen: paket kurulduktan sonra diff_cents yalnız açıklanmış köprü kalemleri (yıl sınırını geçen iade,
--- tahsil edilip iptal edilen sipariş) kadar, cogs_on_cancelled_cents = 0.
--- Bugün (2026-11-09) Jade 2025: satır 3 38.084.396 cent, /raporlar geliri 42.040.412, diff 3.956.016,
--- iptal COGS 14.227.385; diğer org'larda 2025 verisi yok.
+-- NAK-03 Yıl sonu muhasebeci paketi: vergi formu satır eşlemesi, 1099-K köprüsü ve XLSX üzerinden Numbers teslimi | kaynak EK-04 | kontrol: öneri: tax_package_unreconciled | ölçüm 2026-11-09: Orijinal SQL çalıştı: Jade 2025 satır 1 56.105.156, satır 2 18.020.760, satır 3 38.084.396, /raporlar 42.040.412, diff 3.956.016, COGS 46.463.803, iptal COGS 14.227.385, reklam 4.471.704, ücret net 3.608.135, vergi bilgisi 2.650.615; EON yalnız ücret net 2.900; Ophir, Artifact, Seselka 0 (senaryoyla birebir). Düzeltilmiş SQL: Jade satır 1 56.105.156, satır 2 18.026.501, satır 3 38.078.655, /raporlar 42.040.412, içindeki vergi 2.736.089, diff_ex_tax 1.225.668, refund_unknown_orders 53, iptal COGS kargo kanıtsız 11.573.081 ve kargolu 2.654.304, reklam 4.471.704, ücret net 3.608.135, vergi bilgisi 2.656.356; diğer org'lar aynı.
+-- EK-04 kontrol (düzeltilmiş): vergi yılı paketinin ledger kimliği ve panel köprüsü (yıl 2025, NY takvimi;
+-- başka yıl için yr CTE'sini değiştir). Satır 2 REFUND_REVERSAL_SALES_TAX'i de netler.
+-- Beklenen (paket kurulduktan sonra): cogs_cancelled_unshipped_cents = 0, refund_unknown_orders = 0,
+-- paket satır 1-3 = schedule_c_line1..3_cents; diff_ex_tax_cents yalnız açıklanmış köprü kalemleri kadar.
+-- Bugün (2026-11-09) Jade 2025: satır 1 56.105.156, satır 2 18.026.501, satır 3 38.078.655, /raporlar 42.040.412
+-- (içinde vergi 2.736.089), diff_ex_tax 1.225.668, refund_unknown_orders 53, iptal COGS kargo kanıtsız 11.573.081
+-- ve kargolu 2.654.304, net vergi bilgisi 2.656.356; EON yalnız ücret 2.900; Ophir, Artifact, Seselka 0.
 with yr as (select timestamptz '2025-01-01 00:00 America/New_York' as y0,
                    timestamptz '2026-01-01 00:00 America/New_York' as y1),
 led as (
   select le.org_id,
     sum(le.amount_cents) filter (where le.ledger_type = 'PAYMENT_GROSS') as payment_gross,
     -sum(le.amount_cents) filter (where le.ledger_type = 'sales_tax') as tax_collected,
-    sum(le.amount_cents) filter (where le.ledger_type = 'sales_tax_refund') as tax_refunded,
-    -sum(le.amount_cents) filter (where le.ledger_type in ('REFUND_GROSS','REFUND_REVERSAL_GROSS')) as refunds_gross,
+    sum(le.amount_cents) filter (where le.ledger_type in ('sales_tax_refund', 'REFUND_REVERSAL_SALES_TAX')) as tax_refunded,
+    -sum(le.amount_cents) filter (where le.ledger_type in ('REFUND_GROSS', 'REFUND_REVERSAL_GROSS')) as refunds_gross,
     -sum(le.amount_cents) filter (where k.accounting_class = 'reklam') as advertising,
     -sum(le.amount_cents) filter (where k.accounting_class = 'ucret') as fees,
     sum(le.amount_cents) filter (where k.accounting_class = 'kredi') as credits
@@ -1469,29 +1481,52 @@ led as (
 ),
 pnl as (
   select s.org_id,
-    sum(s.grand_total_cents) filter (where s.status <> 'cancelled') as panel_report_revenue
-  from public.sales s cross join yr
+    sum(s.grand_total_cents) filter (where s.status <> 'cancelled') as panel_report_revenue,
+    sum(s.tax_cents) filter (where s.status <> 'cancelled') as panel_tax,
+    count(*) filter (where s.status in ('refunded', 'partially_refunded') and s.refunds_synced_at is null) as refund_unknown_orders
+  from public.sales s
+  join public.organizations o on o.id = s.org_id
+  cross join yr
   where s.order_date >= yr.y0 and s.order_date < yr.y1
   group by s.org_id
 ),
-cg as (
-  select c.org_id,
-    sum(c.amount_cents) as cogs_all,
-    sum(c.amount_cents) filter (where s.status = 'cancelled') as cogs_on_cancelled
+ss as materialized (
+  select distinct sh.org_id, sh.order_number::bigint as receipt
+  from public.shipstation_shipments sh
+  join public.organizations o on o.id = sh.org_id
+  where not coalesce(sh.voided, false) and sh.order_number ~ '^[0-9]+$'
+),
+cs as materialized (
+  select c.org_id, c.amount_cents, s.status,
+    (coalesce(s.is_shipped, false) or s.shipped_at is not null
+      or exists (select 1 from public.sale_items si where si.sale_id = s.id and si.shipped_at is not null)
+      or exists (select 1 from public.sale_shipments sh where sh.sale_id = s.id)
+      or exists (select 1 from ss where ss.org_id = s.org_id and ss.receipt = s.etsy_receipt_id)) as shipped
   from public.costs c
+  join public.organizations o on o.id = c.org_id
   left join public.sales s on s.id = c.sale_id
   where c.cost_date >= '2025-01-01' and c.cost_date < '2026-01-01'
-    and (c.cost_kind in ('gold','labor','gem','packaging') or c.source in ('gold_auto','invoice'))
-  group by c.org_id
+    and (c.cost_kind in ('gold', 'labor', 'gem', 'packaging') or c.source in ('gold_auto', 'invoice'))
+),
+cg as (
+  select org_id,
+    sum(amount_cents) as cogs_all,
+    sum(amount_cents) filter (where status = 'cancelled' and not shipped) as cogs_cancelled_unshipped,
+    sum(amount_cents) filter (where status = 'cancelled' and shipped) as cogs_cancelled_shipped
+  from cs group by org_id
 )
 select o.id as org_id, o.name,
   coalesce(l.payment_gross - l.tax_collected, 0) as schedule_c_line1_cents,
   coalesce(l.refunds_gross - l.tax_refunded, 0) as schedule_c_line2_cents,
   coalesce((l.payment_gross - l.tax_collected) - (l.refunds_gross - l.tax_refunded), 0) as schedule_c_line3_cents,
   coalesce(p.panel_report_revenue, 0) as panel_report_revenue_cents,
-  coalesce(p.panel_report_revenue, 0) - coalesce((l.payment_gross - l.tax_collected) - (l.refunds_gross - l.tax_refunded), 0) as diff_cents,
+  coalesce(p.panel_tax, 0) as panel_tax_in_revenue_cents,
+  coalesce(p.panel_report_revenue - p.panel_tax, 0)
+    - coalesce((l.payment_gross - l.tax_collected) - (l.refunds_gross - l.tax_refunded), 0) as diff_ex_tax_cents,
+  coalesce(p.refund_unknown_orders, 0) as refund_unknown_orders,
   coalesce(g.cogs_all, 0) as cogs_table_cents,
-  coalesce(g.cogs_on_cancelled, 0) as cogs_on_cancelled_cents,
+  coalesce(g.cogs_cancelled_unshipped, 0) as cogs_cancelled_unshipped_cents,
+  coalesce(g.cogs_cancelled_shipped, 0) as cogs_cancelled_shipped_cents,
   coalesce(l.advertising, 0) as line8_advertising_cents,
   coalesce(l.fees, 0) - coalesce(l.credits, 0) as line10_fees_net_cents,
   coalesce(l.tax_collected - l.tax_refunded, 0) as info_etsy_remitted_tax_cents
@@ -1588,35 +1623,52 @@ from etsy_ledger_entries le cross join b
 where le.org_id = (select id from organizations where name = 'Jade Gold NYC')
   and le.entry_date >= (select m0 from b) - interval '1 day' and le.entry_date < (select m1 from b) + interval '1 day';
 
--- SIS-03 Finansal denetim izi: 90 günlük saklama kararı, silinen iz ve audit trigger'sız finansal ayar tabloları | kaynak EK-05 | kontrol: öneri: audit_trail_gap | ölçüm 2026-11-08: ölçülmedi
--- EK-05 kontrol: finansal denetim izi kapsamı ve sürekliliği.
--- Beklenen: missing_trigger_tables = 0 ve fin_audit_oldest haftadan haftaya ileri kaymaz (finansal iz silinmez).
--- Bugün (2026-11-09): 5 finansal tabloda trigger yok; Jade finansal izi 2026-08-05'te başlıyor (ilk sipariş 2022-03-25).
-with fin_tables(t) as (values ('sales'),('sale_items'),('costs'),('sale_refunds'),('sale_shipments'),
-                              ('organizations'),('pricing_config'),('cost_categories')),
+-- SIS-03 Finansal denetim izi: 90 günlük saklama kararı, silinen iz ve audit trigger'sız finansal ayar tabloları | kaynak EK-05 | kontrol: öneri: audit_trail_gap | ölçüm 2026-11-09: Orijinal SQL çalıştı: missing_trigger_tables 5 (cost_categories, organizations, pricing_config, sale_refunds, sale_shipments); Jade first_order 2022-03-25, fin_audit_oldest 2026-08-05, 3.987 satır, 90 günden eski 1; EON 2026-07-21 / 2026-07-16 / 252 / 6; Ophir 2026-08-07 / 2026-09-23 / 140 / 0; Artifact 2026-10-18 / 2026-09-24 / 85 / 0; Seselka boş / 0. Düzeltilmiş SQL: missing 2 (cost_categories, organizations); Jade sales_audit_oldest 2026-09-23, engine_items 8.329, implied_price_variants 2; EON 2026-09-23 / 39 / 2; Ophir 2026-09-23 / 4 / 2; Artifact 2026-09-24 / 1 / 1; Seselka 0.
+-- EK-05 kontrol (düzeltilmiş): finansal kayıt ve ayar tablolarında iz, saklama sürekliliği ve uygulanan alım fiyatı.
+-- organizations için genel audit_trigger kullanılamaz (satırda org_id yok, audit_log.org_id NOT NULL); ayrı fonksiyon da
+-- audit_log'a yazacağı için kontrol trigger fonksiyonunun gövdesinde audit_log arar. pricing_config (semantik log var),
+-- sale_refunds ve sale_shipments (Etsy aynası) listede değil.
+-- Beklenen: missing_trigger_tables = 0; fin_audit_oldest haftadan haftaya ileri kaymaz;
+-- implied_price_variants = satılan ayar sayısı (alım fiyatı değiştiyse her değişiklik için audit satırı bulunur).
+-- Bugün (2026-11-09): missing 2 (cost_categories, organizations); Jade fin_audit_oldest 2026-08-05, sales_audit_oldest
+-- 2026-09-23, 3.987 satır, 8.329 motor kalemi, 2 fiyat (14K 10.100, 10K 6.500 cent/g); EON 2026-07-16 / 2026-09-23 /
+-- 252 / 39 / 2; Ophir 2026-09-23 / 2026-09-23 / 140 / 4 / 2; Artifact 2026-09-24 / 2026-09-24 / 85 / 1 / 1; Seselka boş.
+with fin_tables(t) as (values ('sales'),('sale_items'),('costs'),('cost_categories'),('organizations')),
 trig as (
   select ft.t,
          exists (select 1 from pg_trigger tg
                  join pg_class c on c.oid = tg.tgrelid
                  join pg_namespace n on n.oid = c.relnamespace and n.nspname = 'public'
                  join pg_proc p on p.oid = tg.tgfoid
-                 where c.relname = ft.t and not tg.tgisinternal and p.proname = 'audit_trigger') as has_audit
+                 where c.relname = ft.t and not tg.tgisinternal and p.prosrc ilike '%audit_log%') as has_audit
   from fin_tables ft
 ),
 miss as (
   select count(*) filter (where not has_audit) as n,
          string_agg(t, ',' order by t) filter (where not has_audit) as names
   from trig
+),
+px as materialized (
+  select c.org_id, c.sale_item_id, sum(c.amount_cents) as total_cents,
+         max(substring(c.notes from 'Agirlik: ([0-9.]+)g'))::numeric as w,
+         max(substring(c.notes from 'Adet: ([0-9]+)'))::int as qty,
+         max(substring(c.notes from 'Ayar: (1[04]K)')) as karat
+  from public.costs c
+  join public.organizations o on o.id = c.org_id
+  where c.source = 'gold_auto' and c.sale_item_id is not null
+  group by c.org_id, c.sale_item_id
 )
 select o.id as org_id, o.name,
   (select min(s.order_date)::date from public.sales s where s.org_id = o.id) as first_order,
   (select min(a.created_at)::date from public.audit_log a
-    where a.org_id = o.id and a.entity_type in ('sales','sale_items','costs','sale_refunds','sale_shipments')) as fin_audit_oldest,
+    where a.org_id = o.id and a.entity_type in ('sales','sale_items','costs')) as fin_audit_oldest,
+  (select min(a.created_at)::date from public.audit_log a
+    where a.org_id = o.id and a.entity_type = 'sales') as sales_audit_oldest,
   (select count(*) from public.audit_log a
-    where a.org_id = o.id and a.entity_type in ('sales','sale_items','costs','sale_refunds','sale_shipments')) as fin_audit_rows,
-  (select count(*) from public.audit_log a
-    where a.org_id = o.id and a.entity_type in ('sales','sale_items','costs')
-      and a.created_at < now() - interval '90 days') as fin_rows_older_90d,
+    where a.org_id = o.id and a.entity_type in ('sales','sale_items','costs')) as fin_audit_rows,
+  (select count(*) from px x where x.org_id = o.id) as engine_items,
+  (select count(distinct (x.karat, round(x.total_cents / nullif(x.w * x.qty, 0))))
+     from px x where x.org_id = o.id and x.w > 0 and x.qty > 0) as implied_price_variants,
   m.n as missing_trigger_tables,
   m.names as missing_tables
 from public.organizations o cross join miss m

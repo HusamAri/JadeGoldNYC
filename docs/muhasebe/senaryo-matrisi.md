@@ -182,9 +182,9 @@ Ledger sözlüğünün aylık gider özetine bağlanması, bakiye zinciri ve ayl
 | --- | --- | --- | --- | --- | --- |
 | SIS-01 | Aylık ledger özeti sözlüğü okumuyor: having ile düşen ay, eşlenmeyen tür ve bayat özet | P1 | M | A, B, C | canlı: K6 `ledger_type_unknown`, K7 `ledger_cost_drift` |
 | SIS-02 | Ledger bakiye zinciri ve tazeliği: K1 0179 ile düzeldi, aylık ekstre ikinci kaynak | P2 | S | A, B, C, D | canlı: K1 `ledger_balance_break`, K12 `ledger_stale` |
-| SIS-03 | Finansal denetim izi: 90 günlük saklama kararı, silinen iz ve audit trigger'sız finansal ayar tabloları | P1 | M | A, B, C, D, E | öneri: `audit_trail_gap` |
+| SIS-03 | Finansal denetim izi: 90 günlük saklama kararı, silinen iz ve audit trigger'sız finansal ayar tabloları | P2 | M | A, B, C, D, E | öneri: `audit_trail_gap` |
 
-Toplam 49 senaryo: P0 5, P1 22, P2 17, P3 5.
+Toplam 49 senaryo: P0 5, P1 21, P2 18, P3 5.
 
 ## Uygulama sırası
 

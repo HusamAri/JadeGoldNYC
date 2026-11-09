@@ -131,17 +131,27 @@ for no, key, cids, _ in LIVE:
         CID_TO_LIVE.setdefault(cid, []).append("%s `%s`" % (no, key))
 
 
+KEY_RX = re.compile(r"\b(?:alert(?:_key)?|uyarı anahtarı)\s+`?([a-z][a-z0-9_]{3,})")
+
+
 def control_label(c):
     live = CID_TO_LIVE.get(c["cid"])
     if live:
         return "canlı: " + ", ".join(live)
     if c.get("alert_key"):
         return "öneri: `%s`" % c["alert_key"]
-    loop = field(c["primary_id"], "control_loop")
-    m = re.search(r"\balert(?:_key)?\s+`?([a-z][a-z0-9_]{3,})", loop)
-    if m:
-        return "öneri: `%s`" % m.group(1)
+    # Önce düzeltilmiş kontrol metni; anahtar orada yazmıyorsa özgün senaryonunki.
+    sid = c["primary_id"]
+    for loop in (field(sid, "control_loop"), clean(A[sid].get("control_loop", ""))):
+        m = KEY_RX.search(loop)
+        if m:
+            return "öneri: `%s`" % m.group(1)
     return "öneri: ayrıntıda (anahtarsız)"
+
+
+def measure_date(sid):
+    """Ana senaryolar 2026-11-08'de, ek senaryolar 2026-11-09'da ölçüldü."""
+    return DOC_DATE if sid.startswith("EK-") else MEASURE_DATE
 
 
 # ── ek senaryoları kanonik listeye kat (çürütülen ek ayıklanır)
@@ -196,15 +206,43 @@ def apply_text(sid, name, text):
     return text
 
 
+def no_dangling(sid, name, text):
+    """Düzeltilmiş metin okurun göremediği özgün metne gönderme yapamaz."""
+    if REF_RX.search(text):
+        raise SystemExit("%s.%s özgün metne gönderme yapıyor (%r); duzeltmeler.json ile doldur"
+                         % (sid, name, REF_RX.search(text).group(0)))
+    return text
+
+
 def field(sid, name):
     """Çürütücünün amended_* alanı analizdeki alanı ezer; sonra denetim düzeltmesi."""
     v = V.get(sid, {})
-    return apply_text(sid, name, clean(v.get("amended_" + name) or A[sid].get(name, "")))
+    out = apply_text(sid, name, clean(v.get("amended_" + name) or A[sid].get(name, "")))
+    return no_dangling(sid, name, out) if v.get("amended_" + name) else out
 
 
 def money(sid):
     v = V.get(sid, {})
-    return apply_text(sid, "money", clean(v.get("amended_money") or A[sid].get("money_at_stake", "")))
+    out = apply_text(sid, "money", clean(v.get("amended_money") or A[sid].get("money_at_stake", "")))
+    return no_dangling(sid, "money", out) if v.get("amended_money") else out
+
+
+# "senaryodaki gibi" türü gönderme duzeltmeler.json ile özgün içerikle doldurulur;
+# kalırsa üreteç durur.
+REF_RX = re.compile(r"senaryodaki (?:gibi|kolonlar)")
+
+
+def orig_ref(sid, name, orig_name=None):
+    """Çürütücü özgün metni "Doğrulandı:" diye yalnız kaynak satırlarına indirdiyse
+    doğrulanan özgün metin de gösterilir; yoksa açıklaması kaybolur."""
+    am = (V.get(sid, {}).get("amended_" + name) or "").strip()
+    if not am.startswith("Doğrulandı:"):
+        return None
+    orig = clean(A[sid].get(orig_name or name, ""))
+    if not orig:
+        raise SystemExit("%s.%s 'Doğrulandı:' diyor ama özgün metin yok" % (sid, name))
+    return ("  - **Doğrulanan özgün metin** (yukarıdaki satır kaynak satırlarını ve eki verir): "
+            + apply_text(sid, "orig_" + name, orig))
 
 
 def verdict_line(sid):
@@ -212,7 +250,7 @@ def verdict_line(sid):
     if not v:
         return "henüz çürütülmedi"
     word = {"confirmed": "doğrulandı", "amended": "düzeltilerek doğrulandı", "refuted": "çürütüldü"}[v["verdict"]]
-    return "%s. %s" % (word, clean(v["reason"]))
+    return "%s. %s" % (word, apply_text(sid, "reason", clean(v["reason"])))
 
 
 def render_block(c):
@@ -226,18 +264,23 @@ def render_block(c):
     lines.append("- **Kaynak senaryo:** %s%s" % (sid, (" (birleşenler: %s)" % ", ".join(others)) if others else ""))
     lines.append("- **Durum:** " + apply_text(sid, "scenario", clean(a["scenario"])))
     lines.append("- **Etsy kaynağı:** " + apply_text(sid, "etsy_source", clean(a["etsy_source"])))
-    lines.append("- **Panel bugün:** " + field(sid, "panel_today"))
-    lines.append("- **Boşluk:** " + field(sid, "gap"))
-    lines.append("- **Alan:** " + field(sid, "field"))
-    lines.append("- **Kontrol döngüsü:** " + field(sid, "control_loop"))
+    for label, name in (("Panel bugün", "panel_today"), ("Boşluk", "gap"), ("Alan", "field"),
+                        ("Kontrol döngüsü", "control_loop")):
+        lines.append("- **%s:** %s" % (label, field(sid, name)))
+        ref = orig_ref(sid, name)
+        if ref:
+            lines.append(ref)
     res = apply_text(sid, "control_sql_result", clean(V.get(sid, {}).get("control_sql_result", "")))
     if res:
-        lines.append("- **Ölçüm %s:** %s" % (MEASURE_DATE, res))
+        lines.append("- **Ölçüm %s:** %s" % (measure_date(sid), res))
     m = FIX_MEASURE.get(sid) or FIX_SQL.get(sid)
     if m and m.get("measure"):
         lines.append("- **Yeniden ölçüm %s:** %s" % (DOC_DATE, clean(m["measure"])))
         APPLIED.add(id(m))
     lines.append("- **Para etkisi:** " + money(sid))
+    ref = orig_ref(sid, "money", "money_at_stake")
+    if ref:
+        lines.append(ref)
     lines.append("- **Çürütme:** " + verdict_line(sid))
     lines.append("- **Neden bu öncelik:** " + clean(c["why"]))
     if c["cid"] in NOTES_0179:
@@ -295,7 +338,8 @@ sql_out = [
     "-- tek tek koşulur. Org seçimi ada göre alt sorguyla yapılır: başka mağaza",
     "-- için adı değiştir. Her bloğun başlığında senaryo kimliği, canlı kontrol",
     "-- (accounting_checks K numarası) ya da önerilen uyarı anahtarı ve",
-    "-- %s ölçümü yazar; beklenen değer sorgunun kendi yorum satırındadır." % MEASURE_DATE,
+    "-- ölçümü yazar (ana senaryolar %s, ek senaryolar %s); beklenen değer" % (MEASURE_DATE, DOC_DATE),
+    "-- sorgunun kendi yorum satırındadır.",
     "-- Üreteç: docs/muhasebe/kaynak/render.py (elle düzenleme yapma).",
     "",
     "-- 0) Canlı kontroller tek çağrıda (0178, 0179): yalnız başarısızlar",
@@ -319,7 +363,7 @@ for i, sec in enumerate(SECTIONS):
                 res = "%s; yeniden ölçüm %s: %s" % (res, DOC_DATE, one_line(m["measure"]))
                 APPLIED.add(id(m))
             head = "-- %s %s | kaynak %s | kontrol: %s | ölçüm %s: %s" % (
-                c["cid"], one_line(c["title"]), sid, control_label(c).replace("`", ""), MEASURE_DATE, res)
+                c["cid"], one_line(c["title"]), sid, control_label(c).replace("`", ""), measure_date(sid), res)
             sql_out.append(head)
             sql_out.append(sql + ";")
             sql_out.append("")
