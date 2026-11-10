@@ -1580,6 +1580,13 @@ repodaki hedefidir.
   yeni kodun canlı olduğunu kanıtladı, apply + verify 11/11 (taksonomi 2901). 40/40. Yan not:
   dokuz saat sonra "son 3 saatte 0 audit satırı" gördüm ve ilk refleks veri kaybı sanmaktı;
   DB `now()` okunca pencerenin kaymış olduğu anlaşıldı — "0 satır" demeden önce saati oku.
+  **Güçlendirme (2026-11-10, EON-FR6 galerisi) — saati okumak hatayı yakalar, ama doğrulamayı saate
+  bağlamak onu ÜRETİR:** 0180'i uyguladıktan sonra audit'i `now() - interval '10 minutes'` ve
+  `'30 minutes'` ile sordum, ikisi de 0 döndü. Arada oturum iki kez yeniden başlamıştı: migration
+  10:35:27'de koşmuştu, DB saati 12:21'di. Aynı soru ürün id'si ve galeri satırlarının id'leriyle
+  sorulunca 10 `listing_images` + 1 `products` satırı migration damgasıyla çıktı. Kural: yazım sonrası
+  doğrulama göreli zaman penceresiyle değil, yazılan kaydın kimliğiyle kurulur (entity id, mühür,
+  migration `version`); oturum ne kadar kesintili olursa olsun sonuç değişmez.
 
 - **Dışarıdan gelen paket kendi doğrulayıcısını da getirir; o doğrulayıcıyı geçmesi, paketin kendi
   varsayımlarıyla tutarlı olduğunu gösterir, doğru olduğunu değil (2026-10-21, EON SEO matrisi):**
