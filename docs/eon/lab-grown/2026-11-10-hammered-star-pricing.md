@@ -72,7 +72,10 @@ lab-grown hattında FR6 ile aynı fiyat noktası, mağazanın satan dövme band�
 satmayan 14K düz dövme bandının ($1.504) altında. Kapsam seri ile aynı: 14K, Yellow/White/Rose, US 4–16 yarım
 bedenler (75 varyant), `ring_band`.
 
-**Karar:** sahibin soru kartı cevabıyla buraya yazılacak.
+**Karar (sahip, 2026-11-10 soru kartı):** liste **$1.800 → %25 vitrinle $1.350**, her beden tek fiyat; kapsam 14K,
+üç renk, US 4–16 yarım bedenler (75 varyant). Galeri: 10 karenin hepsi `images/PROMPTS-REVIEW.md`'den, önce hero
+üretilip referansla yan yana kontrol edilir. Panel taslağı `0182_eon_lab_grown_hs5` ile canlıda (ürün
+`6414f890-0ffd-4325-a60f-b5ce121c00e0`, varyant mührü `84001e3e3e8310a04d5a86f7249c6fd3`, denetimde 1 + 75 satır).
 
 ## Açık (üretici)
 1. Bu tasarımın teklifi: 5 × 1,5 mm dövme bant + iki yıldız yuvalı round (gram × $100 + taş + takma + ışın oyması

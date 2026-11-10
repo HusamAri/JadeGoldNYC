@@ -115,7 +115,19 @@
     ],
     "methodology": "docs/eon/lab-grown/price_model.py hs; formula lib/pricing-engine/eon-cost.ts 457-472"
   },
-  "approval": null,
+  "approval": {
+    "authority": "Owner 2026-11-10 (question card): list 1,800 USD -> 25% sale -> 1,350 USD, one price for every size; scope 14K, 3 colours, US 4-16 with half sizes (75 variants); gallery: generate all 10 frames from the prompt sheet (images/PROMPTS-REVIEW.md), hero first and checked against the reference.",
+    "panelDraftAuthorized": true,
+    "etsyDraftCreationAuthorized": true,
+    "livePublicationAuthorized": false,
+    "blockers": [
+      "Etsy activation needs at least one unedited photo of the physical piece (draft allowed)",
+      "No maker quote for this design: cost is the maker's band list (6.37 g x 100 USD at US 8.5) + two stones 20 + two star settings 40 + hammer texture 30, all estimates",
+      "Maker to confirm: stone size for a star setting in a 1.5 mm wall (design 1.5 mm, about 0.013 ct each; the reference claims 2.3 mm), spacing of the two stars (design about 15 mm centre to centre at US 8.5, symmetric about the front), stone colour/clarity grade, white gold rhodium plating, preparation time, price per size",
+      "No shop section for lab grown pieces yet",
+      "Spanish translation not written"
+    ]
+  },
   "classification": {
     "protocol": "ring_band",
     "taxonomy": "Jewelry > Rings > Bands (1232)",

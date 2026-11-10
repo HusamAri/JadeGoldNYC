@@ -90,7 +90,7 @@ const sql = bandMigrationSql({
     "EON lab-grown 04: 14K Hammered Star band, 5 mm × 1,5 mm, bütün dış yüz iç içe yuvarlak dövme izleri, iki kenarda",
     "dar cilalı kenar; önde ~79° arayla iki ~1,5 mm round lab-grown taş, her biri sekiz uçlu oyma yıldızın ortasında.",
     `Metal Color (3) × Ring Size (US 4-16, yarım bedenler, 25) = 75 varyant, her beden tek fiyat ${usd(L.pricing.listUsd)}`,
-    `(${L.approval.authority.slice(0, 40)}…; alıcı %25 vitrinle ${usd(L.pricing.buyerUsd)}). Üretici teklifi YOK: liste gramı`,
+    `(sahip kararı ${L.approval.authority.match(/\d{4}-\d{2}-\d{2}/)[0]}; alıcı %25 vitrinle ${usd(L.pricing.buyerUsd)}). Üretici teklifi YOK: liste gramı`,
     "5 × 1,5 mm (US 8½ 6,37 g) × $100 + taş $20 + takma $20 + ışın $20 + dövme $30 = $727;",
     "kanıt: docs/eon/lab-grown/2026-11-10-hammered-star-pricing.md.",
   ],
