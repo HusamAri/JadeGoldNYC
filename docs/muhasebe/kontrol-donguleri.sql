@@ -544,7 +544,7 @@ left join ref r on r.org_id = o.id
 group by o.id, o.name order by o.name;
 
 -- UCR-05 Etsy kredileri (Etsy Plus, Share & Save, seller_credit, MISC_CR_SL): sınıf ve sebep | kaynak LED-12 | kontrol: öneri: ledger_credit_unclassified | ölçüm 2026-11-08: 918 / 439790 (Jade, 30 günden eski, bağsız kredi satırı; hata yok). Bildirilen 934 / 440590 değeri 30 gün süzgeci olmadan tüm zaman toplamıdır.
-select count(*) as unclassified_credit_rows, coalesce(sum(amount_cents),0) as credit_cents from etsy_ledger_entries le where le.org_id = (select id from organizations where name = 'Jade Gold NYC') and le.ledger_type in ('MISC_CR_SL','seller_credit','SELLER_DRIVEN_TRAFFIC_CREDIT','sdt_credit_reversal','etsy_plus_credit','etsy_plus_onboarding_fee_credit') and le.entry_date < now() - interval '30 days' and not exists (select 1 from costs c where c.org_id = le.org_id and c.external_key = 'ledger:' || le.entry_id); -- beklenen: 0 / 0 (2026-11-08 Jade: 934 / 440.590)
+select count(*) as unclassified_credit_rows, coalesce(sum(amount_cents),0) as credit_cents from etsy_ledger_entries le where le.org_id = (select id from organizations where name = 'Jade Gold NYC') and le.ledger_type in ('MISC_CR_SL','seller_credit','SELLER_DRIVEN_TRAFFIC_CREDIT','sdt_credit_reversal','etsy_plus_credit','etsy_plus_onboarding_fee_credit') and le.entry_date < now() - interval '30 days' and not exists (select 1 from costs c where c.org_id = le.org_id and c.external_key = 'ledger:' || le.entry_id); -- beklenen: 0 / 0 (2026-11-08 Jade: 918 / 439.790; 30 gün süzgeci olmadan tüm zaman 934 / 440.590)
 
 -- UCR-05 Etsy kredileri (Etsy Plus, Share & Save, seller_credit, MISC_CR_SL): sınıf ve sebep | kaynak PAY-09 | kontrol: öneri: ledger_credit_unclassified | ölçüm 2026-11-08: Hatasız: etsy_plus_credit n 192, cents 9.600, in_costs 0 (Jade, son 365 gün; diğer kredi türleri son 365 günde yok).
 -- beklenen: her satirda in_costs = n; olculen 2026-11-08 Jade: etsy_plus_credit n 192, cents 9.600, in_costs 0
@@ -635,10 +635,10 @@ order by o.name
 ;
 
 -- RKL-01 Etsy Ads CSV yükleme yolu, tazelik ve ledger mutabakatı (bir günlük kayma, yalnız tam ay) | kaynak LED-08 | kontrol: canlı: K8 ads_spend_unmeasured | ölçüm 2026-11-08: Orijinal: 3 / 8 / 2026-07-26 (hata yok; 3 ayın 2'si kısmi ay). Düzeltilmiş (yalnız tam aylar): full_months_over_tolerance 1, full_months_compared 6, full_month_abs_diff_cents 4104, last_csv_day 2026-07-26, last_spend_day 2026-11-07 (Jade). EON aynı mantıkla 1 / 3 / 1175 / 2026-09-13 / 2026-11-07; Ophir ve Artifact'te CSV hiç yok.
-with a as (select date_trunc('month', stat_date)::date as m, sum(spend_cents) as csv_cents, count(distinct stat_date) as days from ad_daily_stats where org_id = (select id from organizations where name = 'Jade Gold NYC') group by 1), l as (select date_trunc('month', entry_date)::date as m, sum(-amount_cents) as ledger_cents from etsy_ledger_entries where org_id = (select id from organizations where name = 'Jade Gold NYC') and ledger_type in ('prolist', 'prolist_refund') group by 1) select count(*) filter (where abs(a.csv_cents - l.ledger_cents) > greatest(100, 0.02 * l.ledger_cents)) as full_months_over_tolerance, count(*) as full_months_compared, coalesce(sum(abs(a.csv_cents - l.ledger_cents)), 0) as full_month_abs_diff_cents, (select max(stat_date) from ad_daily_stats where org_id = (select id from organizations where name = 'Jade Gold NYC')) as last_csv_day, (select max(entry_date)::date from etsy_ledger_entries where org_id = (select id from organizations where name = 'Jade Gold NYC') and ledger_type = 'prolist') as last_spend_day from a join l on l.m = a.m where a.days = extract(day from (a.m + interval '1 month' - interval '1 day')); -- beklenen: 0 / n / küçük fark ve last_spend_day - last_csv_day <= 14 gün; 2026-11-08 Jade: 1 / 6 / 4104 / 2026-07-26 / 2026-11-07
+with a as (select date_trunc('month', stat_date)::date as m, sum(spend_cents) as csv_cents, count(distinct stat_date) as days from ad_daily_stats where org_id = (select id from organizations where name = 'Jade Gold NYC') group by 1), l as (select date_trunc('month', entry_date)::date as m, sum(-amount_cents) as ledger_cents from etsy_ledger_entries where org_id = (select id from organizations where name = 'Jade Gold NYC') and ledger_type in ('prolist', 'prolist_refund') group by 1) select count(*) filter (where abs(a.csv_cents - l.ledger_cents) > greatest(100, 0.02 * l.ledger_cents)) as full_months_over_tolerance, count(*) as full_months_compared, coalesce(sum(abs(a.csv_cents - l.ledger_cents)), 0) as full_month_abs_diff_cents, (select max(stat_date) from ad_daily_stats where org_id = (select id from organizations where name = 'Jade Gold NYC')) as last_csv_day, (select max(entry_date)::date from etsy_ledger_entries where org_id = (select id from organizations where name = 'Jade Gold NYC') and ledger_type = 'prolist') as last_spend_day from a join l on l.m = a.m where a.days = extract(day from (a.m + interval '1 month' - interval '1 day')); -- beklenen: 0 / n / küçük fark ve last_spend_day - last_csv_day <= 14 gün; 2026-11-08 Jade: 1 / 6 / 4104 / 2026-07-26 / 2026-11-07. İlk değere (sapan ay 0) bu sorguyla ulaşılamaz: sorgu ledger satırını entry_date ayına yazar (kaymasız) ve toleransı aşan tek ay 2026-04'ün 4.000 cent'i sahte farktır; yeşil kanıt REK-01 bloğundaki kaymalı mutabakattır (mismatched_months = 0)
 
 -- RKL-01 Etsy Ads CSV yükleme yolu, tazelik ve ledger mutabakatı (bir günlük kayma, yalnız tam ay) | kaynak PAY-12 | kontrol: canlı: K8 ads_spend_unmeasured | ölçüm 2026-11-08: Hatasız: full_months 6, months_off 1, net_diff_cents -4.078, off_detail 2026-04:-4000 (Jade).
--- beklenen: months_off = 0; olculen 2026-11-08 Jade: 6 tam ay, 1 sapma (2026-04 CSV ledger'dan 4.000 cent dusuk)
+-- beklenen: months_off = 0 bu sorguyla sağlanamaz. Sorgu kaymasızdır (America/New_York ayı): 2026-04 farkı sahtedir ve ledger günü eksi 1 kuralıyla 0 olur; yeşil kanıt REK-01 bloğundaki kaymalı mutabakattır (mismatched_months = 0). Ölçülen 2026-11-08 Jade: 6 tam ay, 1 sapma (2026-04 CSV ledger'dan 4.000 cent düşük)
 with a as (select date_trunc('month', stat_date)::date mo, count(*) days, sum(spend_cents) csv
            from ad_daily_stats where org_id = (select id from organizations where name = 'Jade Gold NYC') group by 1),
      l as (select date_trunc('month', entry_date at time zone 'America/New_York')::date mo, -sum(amount_cents) ledger
@@ -1402,7 +1402,7 @@ select o.id as org_id, o.name,
 from public.organizations o order by o.name;
 
 -- NAK-01 Etsy ödeme hesabı nakit mutabakatı: payout, geri dönen payout, RECOUP, kart ödemesi ve rezerv | kaynak PAY-14 | kontrol: öneri: payout_unmatched | ölçüm 2026-11-08: Hatasız: payouts_90d 39, payout_cents_90d 4.802.348, left_zero 16, avg_residual_cents 70.534, max_residual_cents 250.133, residual_over_20pct 19 (Jade). amended_control_sql: hold_signal_90d tüm org'larda 0; hold_signal_365d Jade 12 (338.954 cent, son 2026-05-17), diğer org'lar 0; payouts_90d Artifact 1, EON 24, Jade 39, Ophir 5, Seselka 0.
--- beklenen: hold_signal_90d = 0. Ledger bakiyesi artı iken Etsy'nin karttan RECOUP çekmesi, kullanılabilir bakiyenin ledger bakiyesinden düşük olduğunu (bekletilen fon) gösterir; API rezerv vermediği için tek dolaylı sinyal budur; ölçülen 2026-11-08 Jade: 90 gün 0, 365 gün 12 / 338.954
+-- beklenen: hold_signal_90d = 0. Ledger bakiyesi artı iken Etsy'nin karttan ya da bankadan RECOUP çekmesi, kullanılabilir bakiyenin ledger bakiyesinden düşük olduğunu (bekletilen fon) gösterir; API rezerv vermediği için tek dolaylı sinyal budur; ölçülen 2026-11-08 Jade: 90 gün 0, 365 gün 12 / 338.954
 select o.name,
   count(le.*) filter (where le.ledger_type = 'DISBURSE2' and le.entry_date >= now() - interval '90 days') payouts_90d,
   count(le.*) filter (where le.ledger_type = 'RECOUP' and le.balance_cents - le.amount_cents >= 0 and le.entry_date >= now() - interval '90 days') hold_signal_90d,
@@ -1415,7 +1415,7 @@ group by o.name
 order by o.name;
 
 -- NAK-02 Ay kapanışı: dönem kilidi, düzeltme kaydı, iadenin raporlandığı ay ve raporlama esası | kaynak PAY-15 | kontrol: öneri: closed_period_drift | ölçüm 2026-11-08: Orijinal hatasız: sales_restated_30d 637, costs_backdated_30d 1.685, costs_backdated_cents_30d 1.227.726 (Jade). amended_control_sql (audit_log farkı): closed_sales_updates 1.105, closed_sales_fin_changed 238, refund_delta_cents 50.193, fee_delta_cents 151.771, closed_cost_net_delta_cents 1.227.726, cost_sources shipstation:insert.
--- beklenen: kapanmış aylarda (bir önceki aydan eski) closed_sales_fin_changed = 0 ve closed_cost_net_delta_cents = 0, ya da journal_adjustments ile açıklanmış; ölçülen 2026-11-08 Jade: 238 sipariş, ücret 151.771, iade 50.193, maliyet 1.227.726 (shipstation:insert)
+-- beklenen: kapanmış aylarda (bir önceki aydan eski) closed_sales_fin_changed = 0 ve closed_cost_net_delta_cents = 0, ya da journal_adjustments ile açıklanmış; ölçülen 2026-11-08 Jade: 238 sipariş, ücret 151.771, iade 50.193, maliyet 1.227.726 (shipstation:insert). Kapsam: sorgu costs için yalnız insert ve delete satırını sayar; kuralın saydığı update (amount_cents ya da cost_date farkı) bu sorguda görünmez (2026-11-09: son 30 günde 4 org'da costs update 0)
 with b as (select (date_trunc('month', now()) - interval '1 month') as boundary),
 s as (
   select a.entity_id,
@@ -1467,12 +1467,20 @@ order by o.name;
 
 -- NAK-03 Yıl sonu muhasebeci paketi: vergi formu satır eşlemesi, 1099-K köprüsü ve XLSX üzerinden Numbers teslimi | kaynak EK-04 | kontrol: öneri: tax_package_unreconciled | ölçüm 2026-11-09: Orijinal SQL çalıştı: Jade 2025 satır 1 56.105.156, satır 2 18.020.760, satır 3 38.084.396, /raporlar 42.040.412, diff 3.956.016, COGS 46.463.803, iptal COGS 14.227.385, reklam 4.471.704, ücret net 3.608.135, vergi bilgisi 2.650.615; EON yalnız ücret net 2.900; Ophir, Artifact, Seselka 0 (senaryoyla birebir). Düzeltilmiş SQL: Jade satır 1 56.105.156, satır 2 18.026.501, satır 3 38.078.655, /raporlar 42.040.412, içindeki vergi 2.736.089, diff_ex_tax 1.225.668, refund_unknown_orders 53, iptal COGS kargo kanıtsız 11.573.081 ve kargolu 2.654.304, reklam 4.471.704, ücret net 3.608.135, vergi bilgisi 2.656.356; diğer org'lar aynı.
 -- EK-04 kontrol (düzeltilmiş): vergi yılı paketinin ledger kimliği ve panel köprüsü (yıl 2025, NY takvimi;
--- başka yıl için yr CTE'sini değiştir). Satır 2 REFUND_REVERSAL_SALES_TAX'i de netler.
+-- başka yıl için yr CTE'sini değiştir; COGS da yr'den seçilir: siparişe bağlı maliyet siparişin New York tarihiyle, bağsız maliyet cost_date ile; motorun yazdığı cost_date siparişin UTC günüdür). Satır 2 REFUND_REVERSAL_SALES_TAX'i de netler ve CHARGEBACK_DEBIT'i (kontra gelir) sayar.
 -- Beklenen (paket kurulduktan sonra): cogs_cancelled_unshipped_cents = 0, refund_unknown_orders = 0,
 -- paket satır 1-3 = schedule_c_line1..3_cents; diff_ex_tax_cents yalnız açıklanmış köprü kalemleri kadar.
+-- Sorgu yalnız Etsy ledger'ını sayar: Etsy dışı satış (GEL-03) pakette satır 1'e ayrıca eklenir ve burada
+-- diff_ex_tax_cents'i büyütür (2026-11-10: 5 org'da 0 satır).
 -- Bugün (2026-11-09) Jade 2025: satır 1 56.105.156, satır 2 18.026.501, satır 3 38.078.655, /raporlar 42.040.412
 -- (içinde vergi 2.736.089), diff_ex_tax 1.225.668, refund_unknown_orders 53, iptal COGS kargo kanıtsız 11.573.081
 -- ve kargolu 2.654.304, net vergi bilgisi 2.656.356; EON yalnız ücret 2.900; Ophir, Artifact, Seselka 0.
+-- COGS yılı 2026-11-10'dan beri yr ile seçilir: Jade 2025 cogs_table_cents 46.335.340 (cost_date ile seçilen eski toplam
+-- 46.463.803; fark New York saatiyle 2024-12-31 akşamı verilmiş 3 siparişin 128.463 cent'i), iptal kovaları aynı.
+-- line10_fees_net_cents kredi sınıfının tamamını ücretten düşer: Jade 2025'te 149.846 cent, bunun 140.000 cent'i
+-- MISC_CR_SL (4 satır: 2 x $250,00, $400,00 ve $500,00). UCR-05 MISC_CR_SL'yi ücret iadesi saymaz (tutarı bir iadeye
+-- eşitse kontra iade, $250,00 ise Purchase Protection tavanına denk, kalanı sahip girdisi ister); paket eşlemesinde
+-- satır 10'dan düşülmez, sebebine göre sınıflanır.
 with yr as (select timestamptz '2025-01-01 00:00 America/New_York' as y0,
                    timestamptz '2026-01-01 00:00 America/New_York' as y1),
 led as (
@@ -1480,7 +1488,7 @@ led as (
     sum(le.amount_cents) filter (where le.ledger_type = 'PAYMENT_GROSS') as payment_gross,
     -sum(le.amount_cents) filter (where le.ledger_type = 'sales_tax') as tax_collected,
     sum(le.amount_cents) filter (where le.ledger_type in ('sales_tax_refund', 'REFUND_REVERSAL_SALES_TAX')) as tax_refunded,
-    -sum(le.amount_cents) filter (where le.ledger_type in ('REFUND_GROSS', 'REFUND_REVERSAL_GROSS')) as refunds_gross,
+    -sum(le.amount_cents) filter (where le.ledger_type in ('REFUND_GROSS', 'REFUND_REVERSAL_GROSS', 'CHARGEBACK_DEBIT')) as refunds_gross,
     -sum(le.amount_cents) filter (where k.accounting_class = 'reklam') as advertising,
     -sum(le.amount_cents) filter (where k.accounting_class = 'ucret') as fees,
     sum(le.amount_cents) filter (where k.accounting_class = 'kredi') as credits
@@ -1494,7 +1502,7 @@ led as (
 pnl as (
   select s.org_id,
     sum(s.grand_total_cents) filter (where s.status <> 'cancelled') as panel_report_revenue,
-    sum(s.tax_cents) filter (where s.status <> 'cancelled') as panel_tax,
+    sum(coalesce(s.tax_cents, 0) + coalesce(s.vat_cents, 0)) filter (where s.status <> 'cancelled') as panel_tax,
     count(*) filter (where s.status in ('refunded', 'partially_refunded') and s.refunds_synced_at is null) as refund_unknown_orders
   from public.sales s
   join public.organizations o on o.id = s.org_id
@@ -1517,7 +1525,9 @@ cs as materialized (
   from public.costs c
   join public.organizations o on o.id = c.org_id
   left join public.sales s on s.id = c.sale_id
-  where c.cost_date >= '2025-01-01' and c.cost_date < '2026-01-01'
+  where ((s.id is not null and s.order_date >= (select y0 from yr) and s.order_date < (select y1 from yr))
+      or (s.id is null and c.cost_date >= (select (y0 at time zone 'America/New_York')::date from yr)
+                       and c.cost_date < (select (y1 at time zone 'America/New_York')::date from yr)))
     and (c.cost_kind in ('gold', 'labor', 'gem', 'packaging') or c.source in ('gold_auto', 'invoice'))
 ),
 cg as (

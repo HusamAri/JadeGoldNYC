@@ -2004,6 +2004,17 @@ repodaki hedefidir.
   çıktıda say ve düzeltmenin dokunacağı satır sayısını ÖNCEDEN söyle; (2) yeni kapıyı onu doğuran vakayla
   negatif sına; (3) düzeltme yığınında yalnız korpusta karşılığı olmayan yeni sayıları yeniden ölç; (4) canlı
   migration'ın numarası çakışırsa dosyayı taşı, gövdeye ve satır sayısına dokunma, canlı adı yaz.
+  **Güçlendirme-2 (2026-11-10, aynı gün): denetimin iki gizli bedeli var, sorgu onayı ve token; kapsamı ikisine göre
+  kur.** (a) Alt ajanların her canlı sorgusu (`mcp__Supabase__execute_sql`) sahibin cihazında tek seferlik onay bekledi:
+  1.498 sorgu, sahip başındayken saniyeler, değilken 8,7 saate kadar; gece takılan akışların sebebi buydu. Çözüm sorguları
+  bir kanıt arşivine toplamak, ajanlara canlı sorguyu yasaklamak ve eksik ölçümü ana oturumda tek toplu SELECT ile koşmaktı
+  (4 ölçüm, 1 onay, dördü de beklenen sayıyı verdi). (b) Token: 21 denetim ajanı 1,08 milyar önbellek okuma token'ı
+  harcadı, çünkü her ajan 50-116 tur boyunca bu dosya dahil bütün talimatı yeniden okur; tek sorgu koşmak için açılan ajan
+  bile 247 bin token yaktı. Hız için üç paralel kol açınca sahip "daha token verimli çalış" dedi; kollar durduruldu, kalan
+  60 bulgu ana oturumda toplu kontrollerle sınandı (24'ü başka denetçinin bulgusunun kopyasıydı, kanıtsız kalan 2'si
+  işlenmedi). Kural: (1) birkaç araç çağrısı süren işe ajan açma; (2) paralel kol ya da büyük denetim açmadan önce tahmini
+  bedeli sahibe söyle; (3) iki denetçinin kapsamı örtüşürse aynı bulgu iki kez gelir, kapsamları ayrık kur; (4) bu dosya
+  her oturuma ve her alt ajana yüklenir, uzadıkça her ajan turu pahalanır.
 
 ## Ürün/UX dersleri
 
