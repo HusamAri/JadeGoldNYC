@@ -1,5 +1,5 @@
 {
- "not": "Belge denetimi (wf_de9957a0-96c) bulgularının birebir metin düzeltmeleri; üreteç her find metninin dosyada tam bir kez geçtiğini sınar.",
+ "not": "Belge denetimi (wf_de9957a0-96c: g1..g5) ve ek blok denetimi (wf_4498f52d-d2b: ek1) bulgularının birebir metin düzeltmeleri; üreteç her find metninin dosyada tam bir kez geçtiğini sınar. Dizin (senaryo-matrisi.md) ve 0181 notu bulguları render.py sabitlerinde, iki üreteç kusuru (yorumla biten sorguda ';', '.; yeniden ölçüm' artığı) render.py kodunda düzeltildi. Son denetim (2026-11-10): canlı sorgu koşmadan kanıt arşivinden çalışan 13 gruptan 9'u döndü; muhasebe ve v1a listeleri bağımsız çürütücüden geçti, kalan bulgular ana oturumda sınandı. Dizin bulguları render.py sabitlerinde.",
  "post": [
   {
    "file": "senaryolar/01-gelir.md",
@@ -203,7 +203,7 @@
    "file": "senaryolar/03-ucret.md",
    "find": "docs/satis-maliyet-takip.md:113-116 aynı kusuru yazıyor",
    "replace": "docs/satis-maliyet-takip.md:121-123 aynı kusuru yazıyor",
-   "why": "denetim:g2 düşük UCR-03 panel_today: Satır referansı HEAD'de bayat. docs/satis-maliyet-takip.md:113-116 artık 0179 düzeltmelerini anlatıyor; Offsite 'etsy' kusurunu yazan metin 6a03693 ile :121-123'e kaydı."
+   "why": "denetim:g2 düşük UCR-03 panel_today: Satır referansı HEAD'de bayat. docs/satis-maliyet-takip.md:113-116 artık 0181 düzeltmelerini anlatıyor; Offsite 'etsy' kusurunu yazan metin 6a03693 ile :121-123'e kaydı."
   },
   {
    "file": "senaryolar/03-ucret.md",
@@ -226,8 +226,8 @@
   {
    "file": "senaryolar/03-ucret.md",
    "find": "K3 bu iadeyi kaçırıyor; receipt'e doğrudan bağlı offsite_ads_fee_refund yakalıyor",
-   "replace": "K3 bu iadeyi kaçırıyor; receipt'e doğrudan bağlı offsite_ads_fee_refund yakalıyor (0179 sonrası K3 siparişin herhangi bir sales_tax_refund satırını da iade sinyali saydığı için bu siparişi yakalıyor)",
-   "why": "denetim:g2 düşük UCR-03 other: UCR-03 bloğunda '0179 sonrası' satırı yok, oysa REK-06 satırı K3'ün EON 4145285871 iadesini kaçırdığını söylüyor. 0179 K3 siparişin herhangi bir sales_tax_refund satırını da iade sinyali sayıyor; bu sipariş completed ve 1 sn sonra yazılmış vergi iadesi var, 0179 sonrası stale_status olarak yakalanıy"
+   "replace": "K3 bu iadeyi kaçırıyor; receipt'e doğrudan bağlı offsite_ads_fee_refund yakalıyor (0181 sonrası K3 siparişin herhangi bir sales_tax_refund satırını da iade sinyali saydığı için bu siparişi yakalıyor)",
+   "why": "denetim:g2 düşük UCR-03 other: UCR-03 bloğunda '0181 sonrası' satırı yok, oysa REK-06 satırı K3'ün EON 4145285871 iadesini kaçırdığını söylüyor. 0181 K3 siparişin herhangi bir sales_tax_refund satırını da iade sinyali sayıyor; bu sipariş completed ve 1 sn sonra yazılmış vergi iadesi var, 0181 sonrası stale_status olarak yakalanıy"
   },
   {
    "file": "senaryolar/04-reklam.md",
@@ -354,6 +354,894 @@
    "find": "Kayıtsız abonelikler (ShipStation, muhasebeci, domain) ölçülmedi: kayıt yok",
    "replace": "Kayıtsız abonelikler (ShipStation, muhasebeci; Jade'de domain de) ölçülmedi: kayıt yok",
    "why": "denetim:g3 düşük GDR-01 money: Domain kayıtsız abonelikler arasında sayılıyor, ama aynı cümlenin 'EON'un kayıtlı 3 sabit satırı' ve bloğun Panel bugün satırı 2026-07-15 tarihli Google Workspace 'Domain' 1.200 cent kaydını içeriyor. Kayıtsız olan Jade'in domaini; EON'da kayıt var, periyodu yok. Neden bu öncelik satırındaki 'ShipSt"
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "Jade: kargolanmamış 813 iptal siparişte gold_auto COGS $413.506,76 (ilk satır 2026-07-06, son 2026-10-17); 2 iptal sipariş kargolanmış ($1.385,72 COGS, bunlar REF-05 akışına gider); iptal siparişlere bağlı etiket maliyeti $1.066,65.",
+   "replace": "Jade: iptal statüsündeki 815 siparişte gold_auto COGS $414.892,48 (satırlar 2026-07-06 ile 2026-10-17 arasında yazıldı); iptal edilmemiş ShipStation gönderisi olan 72 sipariş ($34.024,76 COGS) kargolanmıştır ve MAL-09 (REF-05) akışına gider, kalan 743 siparişin $380.867,72 COGS'unda ShipStation kargo kanıtı yok (Etsy kargo alanları da sayılınca 741 sipariş, $379.482,00); iptal siparişlerdeki $1.066,65 ShipStation postajı gerçek maliyettir, hayalet değil.",
+   "why": "denetim:g4 orta MAL-02 gap: Boşluk, aynı bloğun çürütmesinin geçersiz saydığı analiz rakamlarını taşıyor: 'kargolanmamış 813' kargo kanıtına değil boş sale_items.shipped_at alanına dayanıyordu ve '2 iptal sipariş kargolanmış ($1.385,72)' ShipStation kanıtıyla 72 sipariş ve $34.024,76'dır. REF-13 doğrulamasında amended_gap olma"
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "İşletme karı ve dashboard karı bu kadar düşük; marj raporu yanlış.",
+   "replace": "Geçmiş yılların karı ve bu dönemleri kapsayan dashboard karı bu kadar düşük; İşletme Karı kartının 6 aylık penceresine düşen kısım 0181 K5 ile $8.785,66; marj raporu yanlış.",
+   "why": "denetim:g4 düşük MAL-02 gap: Cümle İşletme Karı'nın hayalet COGS tutarının tamamı kadar düşük olduğunu ima ediyor; oysa İşletme Karı kartı son 6 ayı gösterir ve hayalet COGS'un çoğu 2022 ile 2025 yıllarında. Dizin aynı ayrımı yapıyor (6 aylık pencerede $8.785,66), blok yapmıyor."
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "0109_operating_profit_org_currency.sql:39-50 tüm costs; gelir tarafı iptali dışlar (dashboard.ts:90, 0109:35)",
+   "replace": "canlı operating_profit_monthly (0097:57-67 gövdesi; repodaki 0109 canlıda yok) tüm costs; gelir tarafı iptali dışlar (dashboard.ts:90, 0097:53)",
+   "why": "denetim:g4 düşük MAL-02 panel_today: Panel bugün, canlıda olmayan 0109 gövdesini maliyet tüketicisi olarak gösteriyor. Canlı operating_profit_monthly 0097 gövdesidir (yalnız USD, org_cur yok); aynı dosyada MAL-01 Panel bugün de canlı gövdeyi 0097:57-67 diye veriyor, bloklar çelişiyor."
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "alert_key cancelled_cogs_phantom (kritik, bedel never_charged ve refunded_no_ship COGS toplamı)",
+   "replace": "Sinyal mevcut K5 cancelled_order_cogs (kritik; 0181 ile pozitif kargo kanıtı arar, bedel kanıtın aranabildiği hayalet COGS); void edilip sonradan kargo kanıtı gelen sipariş için yeni alert_key voided_cogs_shipped",
+   "why": "denetim:g4 orta MAL-02 control_loop: Kontrol döngüsü yeni alert_key cancelled_cogs_phantom öneriyor; aynı bloktaki COGS-02 çürütmesi bu anahtarın canlı K5 cancelled_order_cogs ile mükerrer olduğunu söylüyor, tablo da kontrolü 'canlı: K5' diye veriyor. Uygulanırsa aynı hayalet COGS için iki kritik uyarı yanar. Kanonik kayıt yeni anahtar"
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "P0 çünkü İşletme Karı 2026 Ocak-Ekim'de $61.778,93 düşük",
+   "replace": "P0 çünkü İşletme Karı 2026 Ocak-Ekim'de en çok $55.613,39 düşük (kargo kanıtı olmayan iptallerin COGS'u; is_shipped NULL'u kargolanmamış sayan eski tanımla $61.778,93)",
+   "why": "denetim:g4 düşük MAL-02 other: Neden bu öncelik satırındaki $61.778,93, is_shipped NULL'u kargolanmamış sayan eski tanımla ölçüldü; aynı bloğun REF-13 çürütmesi bu kanıtı geçersiz sayıyor. Pozitif kargo kanıtıyla (is_shipped, shipped_at, Etsy kargo kaydı, ShipStation) 2026 Ocak-Ekim kanıtsız iptal COGS'u $55.613,39, kargolu iptal"
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "(b) 90 gün penceresi: tarihsel 1.833 Jade kalemi ($840.019,05) sayılmıyor.",
+   "replace": "(b) 90 gün penceresi: 90 günden eski 1.796 Jade kalemi ($819.491,18) sayılmıyor (tüm zaman 1.833 kalem, $840.019,05).",
+   "why": "denetim:g4 düşük MAL-03 gap: '90 gün penceresi yüzünden sayılmayan' küme olarak tüm zaman toplamı (1.833 kalem, $840.019,05) verilmiş; bu toplam 90 gün içinde zaten sayılan 37 kalemi ($20.527,87) de içeriyor. Pencere yüzünden görünmeyen küme 1.796 kalem, $819.491,18."
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "Sinyal: mevcut alert key uncosted_sales kalem düzeyine alınır",
+   "replace": "Sinyal: mevcut alert key uncosted_sales kalem düzeyine alınır (tablodaki uncosted_sale_items yeni bir anahtar değil, 0133 RPC'sinin adıdır ve o da kalem düzeyine geçer)",
+   "why": "denetim:g4 düşük MAL-03 control_loop: Tablo ve dizin kontrolü 'öneri: uncosted_sale_items' diye veriyor (canon.json alert_key), Kontrol döngüsü ise mevcut uncosted_sales anahtarının kalem düzeyine alınmasını söylüyor. uncosted_sale_items uyarı anahtarı değil 0133 RPC'sinin adı; iki ad aynı kontrol için iki anahtar gibi okunuyor. Etiket "
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "ShopReceiptTransaction.variations[].formatted_name/formatted_value (sale_items.variations jsonb, 0174:107) ayarı taşıyor; panel bunu maliyette okumuyor",
+   "replace": "ShopReceiptTransaction.variations[].formatted_name/formatted_value (sale_items.variations jsonb, 0174:107) ayarı yalnız varyasyonunda ayar ekseni olan ızgarada taşır (2026-11-08: Jade 2, Ophir 1, Artifact 1 kalem; EON 0/49); ayarın asıl taşıyıcısı varyantın properties 'Karat' özelliği ve satış anındaki başlıktır; panel varyasyonu ve properties'i maliyette okumuyor",
+   "why": "denetim:g4 orta MAL-04 etsy_source: Etsy kaynağı, transaction variations alanının ayarı taşıdığını söylüyor; aynı bloğun çürütmesi bunun düzeltilmesini açıkça istiyor (EON 0/49) ama etsy_source analizden geldiği için düzeltme basılmamış. Bu cümleye dayanan bir motor değişikliği EON'da hiç ayar bulamaz."
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "Etsy transaction'ında variations[] 'Karat: 18K' der, panel bunu sale_items.variations'a yazar ama motor ayarı başlıktan regex ile okur.",
+   "replace": "Ayar varyantın properties 'Karat' özelliğinde ve satıştaki başlıkta durur; Etsy transaction'ı variations[] içinde ayarı yalnız ayar eksenli ızgarada taşır (EON 49 kalemin hiçbirinde yok), motor ise ayarı başlıklardan regex ile okur.",
+   "why": "denetim:g4 düşük MAL-04 scenario: Durum, bloğun kendi örneği için yanlış mekanizma anlatıyor: EON 18K kaleminde transaction variations boş ve varyantın properties'inde Karat yok; 18K bilgisi yalnız satış başlığında. 'Etsy transaction'ında variations[] Karat: 18K der' cümlesi ölçümle çelişiyor."
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "0174:561-564 ayar sırası: bugünkü p.title, pv.name, si.title; yalnız 14K ve 10K, 18K dalı yok.",
+   "replace": "0174:561-564 ayar seçimi kaynak sırasıyla değil ayar sırasıyla yapılır: üç kaynaktan (bugünkü p.title, pv.name, si.title) herhangi birinde 14K geçerse 14K, yoksa 10K; 18K dalı yok.",
+   "why": "denetim:g4 düşük MAL-04 panel_today: RPC'nin ayar seçimi kaynak sırasıyla değil ayar sırasıyla çalışır: 14K testi üç kaynağın hepsinde 10K testinden önce yapılır. 'Ayar sırası: bugünkü p.title, pv.name, si.title' ifadesi kaynak önceliği varmış gibi okunuyor; satış başlığı 14K, ilan başlığı 10K olsa da RPC 14K seçer. Kök nedeni yanlış t"
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "RPC ayarı önce bugünkü p.title'dan okuduğu için ilan başlığı değişince geçmiş satış yeni ayarla maliyetleniyor",
+   "replace": "RPC 14K'yı üç kaynağın (bugünkü p.title, pv.name, si.title) herhangi birinde 10K'dan önce aradığı için bugünkü başlık ya da varyant adı 14K deyince satıştaki 10K başlığı eziliyor ve geçmiş satış yeni ayarla maliyetleniyor",
+   "why": "denetim:g4 düşük MAL-04 other: Neden bu öncelik satırı aynı mekanizmayı 'RPC ayarı önce bugünkü p.title'dan okuyor' diye özetliyor; kod p.title'a öncelik vermiyor, 14K'yı üç kaynağın herhangi birinde 10K'dan önce arıyor. Çürütmedeki 'Kök neden RPC önceliği: bugünkü p.title, sonra pv.name, sonra si.title' cümlesi de aynı tarifi ta"
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "2022'de 14K gram alımı bugünün yarısından azdı.",
+   "replace": "2022 ile 2025 arasının gerçek 14K gram alım fiyatı kayıtlı değil (ölçülmedi: tarihçe yok), yani 2026-07 fiyatının o yılları temsil ettiği de kanıtlanamaz.",
+   "why": "denetim:g4 düşük MAL-05 scenario: Durum, 2022 alım fiyatı hakkında ölçülmüş gibi bir oran veriyor; aynı bloğun Para etkisi ve Çürütmesi tarihsel alım fiyatının hiç kayıtlı olmadığını, gold_settings değişikliklerinin de denetlenmediğini söylüyor. Cümlenin kaynağı yok."
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "Sinyal: alert key cogs_stale_price_basis (önemli).",
+   "replace": "Sinyal: alert key cogs_price_basis_stale (önemli).",
+   "why": "denetim:g4 düşük MAL-05 control_loop: Aynı önerilen uyarı iki adla geçiyor: tablo ve dizin cogs_price_basis_stale (canon alert_key), Kontrol döngüsü cogs_stale_price_basis."
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "docs/satis-maliyet-takip.md:129-131 standart işçilik yok der",
+   "replace": "docs/satis-maliyet-takip.md:144-146 (Bilinen sınırlar, standart işçilik maddesi) standart işçilik yok der",
+   "why": "denetim:g4 düşük MAL-06 panel_today: Satır referansı bayat: repo HEAD'de docs/satis-maliyet-takip.md:129-131 'cogs_source_conflict' motor kusuru maddesidir; standart işçilik notu belge sonradan büyüdüğü için 144-146'ya kaydı."
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "standart işçilik notu bugün docs/satis-maliyet-takip.md:129-131.",
+   "replace": "standart işçilik notu bugün docs/satis-maliyet-takip.md:144-146 (Bilinen sınırlar bölümü).",
+   "why": "denetim:g4 düşük MAL-06 other: Çürütmedeki satır referansı da bayat: 'standart işçilik notu bugün docs/satis-maliyet-takip.md:129-131' HEAD'de yanlış satırı gösteriyor."
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "Jade'de CZ'li ürünler taş künyesi olmadan satılıyor: 12 ayda 30 kalem, $37.612 ciro, 0 taş maliyeti.",
+   "replace": "Jade'de CZ'li ürünler taş künyesi olmadan satılıyor: 12 ayda 29 kalem, $36.512,08 ciro, 0 taş maliyeti (2026-11-08, 12 aylık kayan pencere).",
+   "why": "denetim:g4 düşük MAL-07 scenario: Durum analizdeki 30 kalem / $37.612 rakamında kaldı; aynı bloğun Ölçüm, Para etkisi ve Çürütme satırları 12 aylık kayan pencereyle 29 kalem / $36.512,08 diyor."
+  },
+  {
+   "file": "kontrol-donguleri.sql",
+   "find": "Bugün (Jade): 0 (taş künyeli varyant yok) / 30 (başlıkta taş geçen, 12 ay, taş maliyetsiz)",
+   "replace": "Bugün (Jade, 2026-11-08): 0 (taş künyeli varyant yok) / 29 (başlıkta taş geçen, 12 aylık kayan pencere, taş maliyetsiz)",
+   "why": "denetim:g4 düşük MAL-07 other: Sorgunun 'Bugün' yorum satırı 30 diyor, aynı bloğun başlığı ve sorgunun bugünkü sonucu 29. Kaynak COGS-07 analizinin control_sql yorumu (amended_control_sql yok)."
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "12 ayda Jade 748 tamamlanmış kalem, EON 21 sipariş paketleme maliyetsiz.",
+   "replace": "12 ayda Jade 717 tamamlanmış sipariş (747 kalem), EON 21 sipariş paketleme maliyetsiz.",
+   "why": "denetim:g4 düşük MAL-08 scenario: Durum paketleme eksiğini 748 kalem üzerinden anlatıyor; aynı bloğun Çürütmesi birimin kalem değil sipariş olduğunu (sahibin kuralı 1 kutu = 1 sipariş) ve doğru sayının 717 sipariş olduğunu söylüyor, Para etkisi de 717 sipariş kullanıyor."
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "Sinyal: alert key packaging_missing (bilgi) ve packaging_stock_low (önemli).",
+   "replace": "Sinyal: alert key packaging_cogs_missing (bilgi) ve packaging_stock_low (önemli).",
+   "why": "denetim:g4 düşük MAL-08 control_loop: Aynı önerilen uyarı iki adla geçiyor: tablo ve dizin packaging_cogs_missing (canon alert_key), Kontrol döngüsü packaging_missing."
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "Jade'de 30 günden eski 431 iadeli / kısmi iadeli sipariş karar bekliyor, üzerlerinde $155.248,39 COGS (gold_auto) duruyor; 212 iade etiketi kesilmiş (yaklaşık 212 fiziksel iade) ama geri kazanım 0. ShipStation penceresinde (2024-12-07 .. 2026-07-09) kargolandığı kesin iadeli sipariş 42/378 (refunded) ve 20/189 (partial): geri kalanı ya kargolanmadan iade edildi (COGS hiç olmamalı) ya da pencere dışı.",
+   "replace": "Jade'de 30 günden eski ve akıbet kararı gereken 309 sipariş (319 kalem: refunded statü ya da işlem ücreti tamamen iade edilmiş kalem) üzerinde $103.029,33 COGS (gold_auto) duruyor; kısmi iadede kalemi alıcıda kalan yaklaşık $53.134,91 COGS gerçek maliyettir ve karar istemez. 212 iade etiketi kesilmiş (yaklaşık 212 fiziksel iade) ama geri kazanım 0. ShipStation penceresinde (2024-12-07 ile 2026-07-09 arası) refunded 49 siparişin 42'si (yüzde 86) ve kısmi iadeli 20 siparişin 20'si kargolanmış; pencerede kargosuz refunded yalnız 7 sipariş ($2.732,54 COGS), diğer iadeli siparişlerin kargo durumu pencere dışında kaldığı için bilinmiyor.",
+   "why": "denetim:g4 orta MAL-09 gap: Boşluk, çürütmenin daralttığı eski kapsamı (431 sipariş, $155.248,39) ve yanıltıcı bulduğu '42/378' yorumunu taşıyor: kısmi iadede ürün çoğunlukla alıcıda kalır ve COGS gerçektir; pencere içinde refunded siparişlerin yüzde 86'sı kargolanmış. 'Geri kalanı kargolanmadan iade edildi (COGS hiç olmamalı)"
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "alert_key return_outcome_missing (onemli, bedel cogs_cents)",
+   "replace": "alert_key return_disposition_missing (onemli, bedel cogs_cents)",
+   "why": "denetim:g4 düşük MAL-09 control_loop: Aynı önerilen uyarı iki adla geçiyor: tablo, dizin ve birleşen COGS-09 satırı return_disposition_missing, birincil Kontrol döngüsü return_outcome_missing."
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "Önerilen alanlar uygun (return_outcome, return_received_at, melt_grams; scrap_lots org_id ve currency taşıyor).",
+   "replace": "Alan adları COGS-09 önerisiyle tektir: sale_items.return_disposition (return_outcome değil), sale_items.returned_on (return_received_at değil), hurda için melt_grams; scrap_lots org_id ve currency taşır.",
+   "why": "denetim:g4 düşük MAL-09 field: Birincil Alan aynı akıbet bilgisine return_outcome ve return_received_at adlarını veriyor, aynı bloktaki COGS-09 önerisi sale_items.return_disposition ve sale_items.returned_on diyor. Tek alan iki adla tarif edilince migration iki kolon açabilir."
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "sale_item_pnl'de yeni kolon yerine mevcut recovered_cents hesabına sipariş seviyesi geri kazanım paya göre eklenir.",
+   "replace": "sale_item_pnl'de yeni kolon açılmaz: insurance_claim ve carrier_claim tutarı mevcut recovered_cents hesabına sipariş seviyesi paya göre eklenir; return_to_stock COGS-09 disposition'ı (restocked) ile zaten recovered_cents'e yazıldığı için burada tutar taşımaz (çift geri kazanım olmasın); purchase_protection geri ödemesi iadenin karşılığıdır, COGS'tan düşülmez, net gelirde iade düzeltmesi olarak görünür.",
+   "why": "denetim:g4 düşük MAL-09 other: KRG-09 alan önerisi sale_recoveries'in bütün türlerini recovered_cents'e (COGS'tan düşen kalem) ekletiyor. purchase_protection geri ödemesi iadenin karşılığıdır, gelir tarafındadır; COGS'tan düşmek brüt marjı bozar. return_to_stock ise COGS-09 disposition'ında (restocked, recovered = kalem COGS'u) z"
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "Sinyal: alert key cogs_without_sale_or_purpose (bilgi).",
+   "replace": "Sinyal: alert key stock_out_without_purpose (bilgi).",
+   "why": "denetim:g4 düşük MAL-10 control_loop: Aynı önerilen uyarı iki adla geçiyor: tablo ve dizin stock_out_without_purpose (canon alert_key), Kontrol döngüsü cogs_without_sale_or_purpose."
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "EON işçilik gerçeği motorun %41,1 üstünde (10 kalem, COGS-06)",
+   "replace": "EON'da gerçek işçilik motorun %69,8 üstünde, yani motor gerçeğin %41,1 altında (10 kalem, COGS-06: gerçek 72.397 cent, motor 42.631 cent)",
+   "why": "denetim:g4 orta MAL-11 money: Oran yanlış tabana uygulanmış: %41,1 (gerçek - motor) / gerçek'tir, yani motor gerçeğin %41,1 altında; gerçek ise motorun %69,8 üstünde. 'Gerçeği motorun %41,1 üstünde' demek açığı yaklaşık 29 puan küçük gösterir ve fiyat tabanı düzeltmesini eksik kurdurur. COGS-06 çürütmesi aynı taban hatasını %58,"
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "P1 çünkü EON işçiliği motorun yüzde 41,1 üstünde çıktı",
+   "replace": "P1 çünkü EON'da gerçek işçilik motorun yüzde 69,8 üstünde çıktı (motor gerçeğin yüzde 41,1 altında)",
+   "why": "denetim:g4 orta MAL-11 other: Neden bu öncelik satırı aynı taban hatasını tekrarlıyor: 'EON işçiliği motorun yüzde 41,1 üstünde'. Doğrusu gerçek işçilik motorun yüzde 69,8 üstünde, motor gerçeğin yüzde 41,1 altında."
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "gerçek maliyet motor tahmininden %58 yüksek çıkar.",
+   "replace": "gerçek işçilik motor tahmininin 1,7 ile 2,4 katı çıkar (EON 10 ölçülmüş kalemde 1,7, elle girilen 2 kalemde 2,4; motor gerçeğin %41 ile %58 altında).",
+   "why": "denetim:g4 düşük MAL-11 scenario: 'Gerçek maliyet motor tahmininden %58 yüksek' yanlış tabanla yazılmış: %58,1 iki elle kalemde (gerçek - motor) / gerçek işçilik oranıdır; gerçek işçilik motorun 2,4 katı (yüzde 138 yüksek), 10 ölçülmüş kalemde 1,7 katı. Ayrıca oran işçiliğe ait, toplam maliyete değil."
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "pricing_config'e store_sale_rate (canlı Etsy indirimi; sale_rate motorun tabanı olarak kalır)",
+   "replace": "pricing_config'e store_sale_rate (canlı Etsy indirim oranı, ör. 0,30; sale_rate gibi 0,75 çarpanı değildir; sale_rate motorun tabanı olarak kalır)",
+   "why": "denetim:g4 düşük MAL-11 field: Önerilen store_sale_rate kolonu formülde indirim oranı gibi kullanılıyor (1 - max(discount_pct/100, store_sale_rate)), ama aynı tablodaki sale_rate bir çarpandır (0,75 = liste x 0,75). Ad benzerliğiyle 0,70 çarpanı yazılırsa formül net satışı liste x 0,30 hesaplar ve neredeyse her varyantı maliyet a"
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "auto_cents yalnız gold_auto toplar, invoice_cents ayrı",
+   "replace": "auto_cents yalnız motor kaynaklarını toplar (bugün gold_auto; MAL-07 stone_auto ve MAL-08 standard_auto eklenince onlar da), invoice_cents ayrı",
+   "why": "denetim:g4 düşük MAL-01 field: MAL-01 görünüm önerisi motor kovasını yalnız gold_auto'ya daraltıyor; aynı bölümdeki MAL-07 (stone_auto, takma işçiliği) ve MAL-08 (standard_auto, paketleme) önerileri 0174:690'daki 'manual dışı her kaynak' kovasına güveniyor. MAL-01 yazıldığı gibi uygulanırsa sonraki iki motorun yazdığı COGS görünü"
+  },
+  {
+   "file": "senaryolar/08-nakit.md",
+   "find": "paket satır 1 = PAYMENT_GROSS - sales_tax; satır 2 = (REFUND_GROSS + REFUND_REVERSAL_GROSS) - (sales_tax_refund + REFUND_REVERSAL_SALES_TAX)",
+   "replace": "paket satır 1 = PAYMENT_GROSS + sales_tax; satır 2 = -(REFUND_GROSS + REFUND_REVERSAL_GROSS) - (sales_tax_refund + REFUND_REVERSAL_SALES_TAX), ledger tutarları kendi işaretiyle (sales_tax, REFUND_GROSS ve REFUND_REVERSAL_SALES_TAX eksi; REFUND_REVERSAL_GROSS ve sales_tax_refund artı)",
+   "why": "denetim:g5 orta NAK-03 control_loop: Satır 1 ve satır 2 iki ayrı işaret düzeniyle yazılmış, hiçbirinde ikisi birden doğru çıkmıyor. Ledger işaretiyle okunursa satır 1 vergiyi düşmek yerine ekler, satır 2 eksi çıkar; mutlak değerle okunursa satır 2 iade geri alımını (REFUND_REVERSAL_GROSS, REFUND_REVERSAL_SALES_TAX) düşmek yerine ekler."
+  },
+  {
+   "file": "senaryolar/08-nakit.md",
+   "find": "Vergi beyanı için nakit esası (payout + kart çekimleri) ya da tahakkuk esası seçimi de kayıtlı değil.",
+   "replace": "Vergi beyanı için nakit esası ya da tahakkuk esası seçimi de kayıtlı değil; nakit esasında gelir alıcının ödemesi Etsy ödeme hesabına geçtiğinde (PAYMENT_GROSS tarihi, vergi hariç) tanınır, payout ve kart çekimi nakit hareketidir (hesaplar arası transfer ya da sahip sermaye girişi) ve hangi esas seçilirse seçilsin gelir ya da gider değildir.",
+   "why": "denetim:g5 orta NAK-02 scenario: Nakit esası 'payout + kart çekimleri' diye tanımlanmış; bu nakit hareketini gelirle karıştırır. Nakit esasında gelir, alıcının ödemesi satıcının erişebildiği Etsy ödeme hesabına geçtiğinde tanınır (IRS Pub 538, constructive receipt); DISBURSE2 yalnız bakiyeyi bankaya taşır, RECOUP ve billing_payment"
+  },
+  {
+   "file": "senaryolar/08-nakit.md",
+   "find": "(sales: grand_total_cents, refunded_cents, etsy_fees_cents, status; costs: insert ve delete tutarı)",
+   "replace": "(sales: grand_total_cents, refunded_cents, etsy_fees_cents, status; costs: insert ve delete tutarı ile update'te amount_cents ya da cost_date farkı; maliyet başka aya taşınırsa iki ay da sayılır)",
+   "why": "denetim:g5 orta NAK-02 control_loop: Kural costs için yalnız insert ve delete tutarını sayıyor. Elle maliyet düzenlemesi ve kalem maliyeti girişi satırı yerinde günceller (amount_cents, cost_date); kapanmış aya yapılan bu düzeltme ya da maliyetin başka aya taşınması closed_period_drift'e hiç girmez. Kontrol sorgusu da yalnız insert ve "
+  },
+  {
+   "file": "senaryolar/08-nakit.md",
+   "find": "(açılış + Σ tutar = son bakiye, para birimi bazında, created_timestamp ve entry_id sırasıyla)",
+   "replace": "(açılış + Σ tutar = son bakiye, para birimi bazında; 0181'den beri açılış ve kapanış ilk ve son saniyedeki zincir ucundan seçilir, entry_id sırası kullanılmaz çünkü aynı saniyede çok satır olunca sahte kırılma veriyordu: Jade son 91 günde 13 gün)",
+   "why": "denetim:g5 orta NAK-01 control_loop: NAK-01 bloğunda '0181 sonrası' satırı yok. Kontrol döngüsü K1'i hala created_timestamp ve entry_id sırasıyla anlatıyor, çürütmenin (4). maddesi de 'kontrol entry_id sırasını korumalı (0178 K1 öyle)' diyor. 0181 tam bu sırayı bıraktı, çünkü aynı saniyede çok satır olunca sahte kritik veriyordu; SIS-0"
+  },
+  {
+   "file": "senaryolar/09-sistem.md",
+   "find": "EON'da 2026-07-16'dan, Ophir'de 2026-09-23'ten önceki iz geri gelmez",
+   "replace": "EON'da 2026-07-16'dan (satış izi 2026-09-23'ten; ilk sipariş 2026-07-21, arada yalnız 6 costs satırı var), Ophir'de 2026-09-23'ten önceki iz geri gelmez",
+   "why": "denetim:g5 orta SIS-03 gap: Kabul edilen sınır EON için yalnız 2026-07-16 diyor; aynı bloğun ölçümü EON'un satış izinin 2026-09-23'te başladığını gösteriyor. EON'un 2026-07-21 ile 2026-09-22 arasındaki satış değişikliklerinin izi yok; Jade için yazılan '(satış izi 2026-09-23'ten)' ayrımı EON'da eksik, okur EON izinin temmuzdan"
+  },
+  {
+   "file": "senaryolar/09-sistem.md",
+   "find": "ürün gürültüsüyle aynı tabloda ve aynı silme ölçütünde; 2026-10-07 silmesi actor_id boş satırları hedefledi, admin istemciyle yazılan finansal semantik kayıtlar da actor_id boş.",
+   "replace": "ürün gürültüsüyle aynı tabloda ve ayrı bir saklama sınıfı olmadan duruyor; 2026-10-07 silmesi yalnız actor_id'ye bakmadı: 2026-09-23'ten önceki actor_id boş sales, sale_items, costs ve product_variants satırlarının hiçbiri kalmadı, aynı dönemin actor_id boş 14.714 products, 1.725 listing_images ve 870 semantik satırı (source app, etsy, cron ve diğerleri) duruyor. Finansal iz ürün gürültüsünden önce gitti; admin istemciyle yazılan finansal semantik kayıtlar da actor_id boş olduğu için yalnız actor_id'ye bakan bir silme onları da götürür.",
+   "why": "denetim:g5 düşük SIS-03 gap: Metin silmenin ürün ve finans satırlarına aynı ölçütle uygulandığını söylüyor; canlı veri tersini gösteriyor. Aynı tarih aralığında ve aynı actor_id boş koşulunda finansal satırlar ve product_variants tamamen silinmiş, products, listing_images ve semantik kayıtlar kalmış. Yani finansal iz ürün gürül"
+  },
+  {
+   "file": "senaryolar/08-nakit.md",
+   "find": "açıklanmış köprü kalemleri (iade tutarı okunmamış iade statülü sipariş, yıl sınırını geçen iade, ödeme ile sipariş tarihi farkı)",
+   "replace": "açıklanmış köprü kalemleri (iptal dışı iade statülü siparişlerin vergisiz iadesi, çünkü /raporlar iadeyi düşmez; yıl sınırını geçen iade; ödeme ile sipariş tarihi farkı)",
+   "why": "denetim:g5 düşük NAK-03 control_loop: Köprü kalemi 'iade tutarı okunmamış' siparişle sınırlı, ama aynı kural paket anında refund_unknown_orders = 0 istiyor. İadeler okununca kalem boşalır; oysa /raporlar geliri iadeyi hiç düşmediği için iptal dışı iade statülü siparişlerin iadesi farkta kalır ve 'kalan en çok $1' şartı her yıl yanar."
+  },
+  {
+   "file": "senaryolar/08-nakit.md",
+   "find": "ve hiçbir kontrol yanmadı (0178 K7 yalnız etsy_ledger kaynağını karşılaştırır).",
+   "replace": "ve 0178'de hiçbir kontrol yanmadı (K7 yalnız etsy_ledger kaynağını karşılaştırır); 0181'den beri K13 postage_double_count bu çift sayımı kritik olarak gösteriyor (Jade $12.277,26), ama kapanmış ayın geriye dönük değişikliğini genel olarak yakalayan kontrol hala yok.",
+   "why": "denetim:g5 düşük NAK-02 gap: NAK-02 bloğunda '0181 sonrası' satırı yok. Boşluk aynı $12.277,26 ShipStation çift sayımı için 'hiçbir kontrol yanmadı' diyor; 0181 K13 postage_double_count tam bunu kritik olarak yakalıyor ve dizinin K13 satırı da yanıyor."
+  },
+  {
+   "file": "senaryolar/08-nakit.md",
+   "find": "DISBURSE2 (nakit anı); receipt.updated_timestamp",
+   "replace": "DISBURSE2 (bankaya transfer anı; nakit esasında da gelir anı değildir); receipt.updated_timestamp",
+   "why": "denetim:g5 düşük NAK-02 etsy_source: DISBURSE2 'nakit anı' diye anılıyor; Durum'daki 'nakit esası (payout + kart çekimleri)' cümlesiyle birlikte nakit esasının payout tarihine dayandığı izlenimini veriyor. Payout yalnız bakiyeyi bankaya taşır; nakit esasında da gelirin anı Etsy ödeme hesabına geçen tahsilattır."
+  },
+  {
+   "file": "senaryolar/08-nakit.md",
+   "find": "tablo accounting_periods (id, org_id, period_month date, status open|closed, closed_at, closed_by, snapshot jsonb:",
+   "replace": "tablo accounting_periods (id, org_id, period_month date, currency, status open|closed, closed_at, closed_by, snapshot jsonb:",
+   "why": "denetim:g5 düşük NAK-02 field: accounting_periods snapshot'ı cent tutarları para birimi olmadan taşıyor. Aynı bloktaki REF-11 çürütmesi period_locks ve refunds_monthly için tam bunu (cent + currency kuralı) düzeltti; K1 de para birimi başına koşuyor, kapanış snapshot'ı currency olmadan kur karışımını ayıramaz."
+  },
+  {
+   "file": "senaryolar/08-nakit.md",
+   "find": "(iptal dışı 268 sipariş $90.720,87; 82 sipariş vergi yılı değiştiriyor, $31.587,77; SQL 2026-11-08)",
+   "replace": "(iptal dışı 268 sipariş, brüt sipariş değeri $90.720,87, köprüyle bağlanan ledger iadesi $60.120,11; 82 sipariş vergi yılı değiştiriyor, brüt sipariş değeri $31.587,77; SQL 2026-11-08 ve 2026-11-09)",
+   "why": "denetim:g5 düşük NAK-02 other: 'Neden bu öncelik' satırındaki $90.720,87 ve $31.587,77 iade değil brüt sipariş değeridir (REF-11 kararı öyle yazıyor); cümle onları kapanmış ayların oynayacağı tutar gibi veriyor. Kısmi iadede ay yalnız iade tutarı kadar oynar."
+  },
+  {
+   "file": "senaryolar/08-nakit.md",
+   "find": "Σ(DISBURSE2 + ADYENBALANCE_REVERSAL) = banka girişleri",
+   "replace": "-Σ(DISBURSE2 + ADYENBALANCE_REVERSAL) = banka girişleri (DISBURSE2 ledger'da eksi yazılır)",
+   "why": "denetim:g5 düşük NAK-01 control_loop: İşaret hatası: DISBURSE2 ledger'da eksi, ADYENBALANCE_REVERSAL artı yazılır; toplamları eksidir, banka girişi ise artı. Eşitlik bu haliyle hiçbir ayda tutmaz."
+  },
+  {
+   "file": "senaryolar/08-nakit.md",
+   "find": "EON billing $161,21; Ophir RECOUP $495,97 + billing $100,09; Artifact RECOUP $355,68 + billing $80,84.",
+   "replace": "EON billing $161,21 + açılış ücreti ödemesi $29,00; Ophir RECOUP $495,97 + billing $100,09 + açılış $29,00; Artifact RECOUP $355,68 + billing $80,84 + açılış $29,00.",
+   "why": "denetim:g5 düşük NAK-01 money: Durum ve kontrol döngüsü seller_onboarding_fee_payment'ı karttan gelen satıcı nakdi sayıyor, para etkisi ise üç org'da bu $29,00'ları atlıyor."
+  },
+  {
+   "file": "senaryolar/08-nakit.md",
+   "find": "ADYENBALANCE_REVERSAL (+; Jade 2024-04-15 14:26 -$4,014.66, 16:01 +$4,014.66)",
+   "replace": "ADYENBALANCE_REVERSAL (+; Jade 2024-04-15 14:26 -$4.014,66, 16:01 +$4.014,66)",
+   "why": "denetim:g5 düşük NAK-01 scenario: Para İngilizce biçimde (binlik virgül, ondalık nokta) yazılmış; yazım kuralı $12.277,26 biçimini istiyor ve render.py biçim kapısı para biçimini denetlemiyor."
+  },
+  {
+   "file": "senaryolar/08-nakit.md",
+   "find": "sonrası 0 ya da 20 cent; Jade 336 kez, $141,051.79)",
+   "replace": "sonrası 0 ya da 20 cent; Jade 336 kez, $141.051,79)",
+   "why": "denetim:g5 düşük NAK-01 scenario: Para İngilizce biçimde yazılmış; Türkçe biçim $141.051,79 olmalı."
+  },
+  {
+   "file": "senaryolar/08-nakit.md",
+   "find": "billing_payment (+; Jade 2026-01-04 $866.55, bakiye -866.55 -> 0)",
+   "replace": "billing_payment (+; Jade 2026-01-04 $866,55, bakiye -$866,55 -> 0)",
+   "why": "denetim:g5 düşük NAK-01 scenario: Para İngilizce biçimde yazılmış ve bakiye tutarı dolar işaretsiz; Türkçe biçim $866,55 olmalı."
+  },
+  {
+   "file": "senaryolar/08-nakit.md",
+   "find": "Ölçüm: Jade DISBURSE2 934 satır -$1,658,138.52, RECOUP +$141,051.79, billing +$866.55, ADYENBALANCE_REVERSAL +$4,014.66; Σ amount = son bakiye $844.37 (fark 0); EON $1,653.84, Ophir -$22.12, Artifact -$62.18 (4/4 fark 0, açılış 0, null bakiye 0).",
+   "replace": "Ölçüm: Jade DISBURSE2 934 satır -$1.658.138,52, RECOUP +$141.051,79, billing +$866,55, ADYENBALANCE_REVERSAL +$4.014,66; Σ amount = son bakiye $844,37 (fark 0); EON $1.653,84, Ophir -$22,12, Artifact -$62,18 (4/4 fark 0, açılış 0, null bakiye 0).",
+   "why": "denetim:g5 düşük NAK-01 panel_today: Ölçüm cümlesindeki bütün tutarlar İngilizce biçimde yazılmış; aynı bloğun para etkisi satırı Türkçe biçim kullanıyor."
+  },
+  {
+   "file": "senaryolar/08-nakit.md",
+   "find": "dokümanda docs/satis-maliyet-takip.md:38 ve :44'te de geçiyor",
+   "replace": "dokümanda docs/satis-maliyet-takip.md:40 ve :46'da da geçiyor (adb9df6'da :38 ve :44)",
+   "why": "denetim:g5 düşük NAK-03 other: Çürütme satırındaki dosya satırı HEAD'de bayat: 'Schedule C' docs/satis-maliyet-takip.md'de 40. ve 46. satırda; 38 ve 44 adb9df6 numarası. Aynı cümle CLAUDE.md için iki numarayı da veriyor, bu dosya için vermiyor."
+  },
+  {
+   "file": "senaryolar/09-sistem.md",
+   "find": "/ayarlar/etsy kartı etsy_ledger_entries son satırının balance_cents ve currency değerini okur.",
+   "replace": "/ayarlar/etsy kartı bakiyeyi K1'in kapanışıyla aynı kuralla (son saniyedeki zincir ucu, para birimi başına) okur; entry_id sırasıyla seçilen 'son satır' aynı saniyede çok satır olan günlerde yanlış bakiye gösterir.",
+   "why": "denetim:g5 düşük SIS-02 field: Bakiye yüzeyi 'son satır' ile kuruluyor; 0181 bu seçimi K1'de bıraktı, çünkü aynı saniyede çok satır olunca son satır Etsy'nin kapanışı değildir. 0181 notu 'kalan iş bakiye yüzeyi' diyor ama yüzeyin hangi kuralla kurulacağını söylemiyor, bu yüzden alan bırakılmış kuralı öneriyor."
+  },
+  {
+   "file": "senaryolar/01-gelir.md",
+   "find": "Eşitlik: Etsy dışı her satışta channel, payment_processor ve tax_remitter dolu",
+   "replace": "Eşitlik: Etsy dışı her satışta channel, payment_method (aracı adı; payment_processor kolonu açılmaz) ve tax_remitter dolu",
+   "why": "ekdenetim:ek1 orta GEL-03 control_loop: Kontrol döngüsü her Etsy dışı satışta payment_processor dolu olmasını istiyor. Aynı bloğun Alan satırı ise bu kolonun eklenmeyeceğini, aracı adının mevcut payment_method'a yazılacağını söylüyor. Kontrol olmayacak bir kolona bakıyor."
+  },
+  {
+   "file": "senaryolar/01-gelir.md",
+   "find": "sales.is_paid (0174:90), sales.vat_cents (0174:84), sales.notes.",
+   "replace": "sales.is_paid (0174:90), sales.vat_cents (0174:84), sales.notes. Bu kolonlardan ship_state, payment_method, is_paid ve vat_cents elle satış formunda yok (lib/validations/sale.ts:18-33; app/(dashboard)/satislar/actions.ts:18-43 toRow onları yazmaz): form değişikliğine bunlar da girer, yoksa kontrol SQL'inin no_collection_info sayacı her elle satışta, tax_without_jurisdiction sayacı vergili her elle satışta yanar.",
+   "why": "ekdenetim:ek1 orta GEL-03 field: Alan satırı ship_state, payment_method, is_paid ve vat_cents kolonlarını VAR sayıyor ve elle satışta aracı adının payment_method'a yazılacağını söylüyor. Bu kolonlar elle satış formunda ve toRow'da yok, form değişikliği listesinde de geçmiyor. Kontrol SQL'inin no_collection_info sayacı bu yüzden her"
+  },
+  {
+   "file": "senaryolar/01-gelir.md",
+   "find": "Ek düzeltme: K4 k4_sales CTE'si where s.source = 'etsy' ile süzülür (0178:269-276, 0181:316-323).",
+   "replace": "Ek düzeltme: K4 k4_sales CTE'si where s.source = 'etsy' ile süzülür (0178:269-276, 0181:316-323). Rapor: /raporlar altında aylık 'Satıcı vergi borcu' tablosu (tax_remitter seller ya da seller_imposed, eyalet x ay). Sahip rutini: aracı dökümünden kanal ücretini ve tahsil tarihini girer, ay sonunda eyalet vergi beyanını yapıp seller_tax_filings'e işler.",
+   "why": "ekdenetim:ek1 düşük GEL-03 field: Düzeltilmiş Alan iki şeyi kaybetmiş: aylık 'Satıcı vergi borcu' raporunu ve sahip rutinini (şerit D). Kontrol döngüsü 'ay sonunda vergi borcu listesi' diyor ama bu liste Alan'da tanımlı değil. Şerit D'nin bu blokta karşılığı kalmamış. Ana oturum aynı kaybı IAD-06 için doldurmuştu."
+  },
+  {
+   "file": "senaryolar/01-gelir.md",
+   "find": "Seselka (TRY) etkinleşene kadar KDV alanı açılmaz, sahip kararıyla bu org için kural ateşlenmez (docs/amuletta/phase-0-inventory.md:421)",
+   "replace": "Seselka (TRY) için KDV kolonu zaten var (sales.vat_cents, 0174:84), yeni alan açılmaz; sahip kararıyla bu org için kural ateşlenmez (docs/amuletta/phase-0-inventory.md:421)",
+   "why": "ekdenetim:ek1 düşük GEL-03 gap: Boşluk satırı 'Seselka etkinleşene kadar KDV alanı açılmaz' diyor. Aynı bloğun Alan satırı sales.vat_cents kolonunu VAR sayıyor. Çürütmenin (3). maddesi KDV için yeni alan gerekmediğini, Seselka kararının yalnız kuralın ateşlenmemesi olduğunu yazıyor. Alan kararı bu satırda bayat kalmış."
+  },
+  {
+   "file": "senaryolar/01-gelir.md",
+   "find": "Karşılaştırma oranı yeniden ölçüldü: Jade 2025 (NY) completed 1.165 siparişte COGS $300.498,71 / vergisiz gelir (grand_total - tax) $364.540,07 = yüzde 82,4; senaryodaki payda $364.536,66 ($3,41 fark, oran değişmiyor).",
+   "replace": "Karşılaştırma oranı yeniden ölçüldü: Jade 2025 (NY) completed 1.165 siparişte motor COGS $300.498,71, modelin vergisiz geliri (item_total + shipping + gift_wrap) $364.536,66'nın yüzde 82,4'ü; senaryodaki payda bu tanımla birebir, grand_total - tax tabanı $364.540,07 verir ($3,41 fark, oran değişmiyor). Kalemsiz elle satışta bu COGS payı sıfır görünür ve satışın vergisi de dashboard gelirine eklenir.",
+   "why": "ekdenetim:ek1 düşük GEL-03 money: Para etkisi grand_total - tax tabanını 'vergisiz gelir' diye sunuyor ve senaryodaki paydayı $3,41 sapma gibi gösteriyor. Oysa senaryodaki $364.536,66 belgenin modelindeki gelir tanımıyla (item_total + shipping + gift_wrap) birebir aynı. Oranın ne anlattığı da düşmüş: kalemsiz elle satışta COGS payı "
+  },
+  {
+   "file": "senaryolar/02-iade.md",
+   "find": "Koşulsuz senaryo yöntemi vergi dahil tabanda yüzde 27 eksik tahmin ediyordu ($2.923,66'ya karşı $2.294,46, 19:4x UTC).",
+   "replace": "Koşulsuz senaryo yöntemi vergi dahil tabanda yüzde 21,5 eksik tahmin ediyordu ($2.923,66'ya karşı $2.294,46, 19:4x UTC; koşullu yöntem koşulsuzdan yüzde 27,4 fazla).",
+   "why": "ekdenetim:ek1 orta IAD-06 money: Yüzde yanlış hesaplanmış. Koşulsuz yöntem $2.294,46, koşullu yöntem $2.923,66 veriyor. Koşulsuz yöntem koşulluya göre yüzde 21,5 eksik; yüzde 27,4 koşullu yöntemin koşulsuzdan fazlası. Düzeltmeden önceki metin bunu doğru söylüyordu ('yüzde 27 fazla'); yeniden yazımda yön ters çevrilmiş."
+  },
+  {
+   "file": "senaryolar/02-iade.md",
+   "find": "senaryo yöntemi 229.446 cent (yüzde 27 eksik)",
+   "replace": "senaryo yöntemi 229.446 cent (yüzde 21,5 eksik; koşullu yöntem yüzde 27,4 fazla)",
+   "why": "ekdenetim:ek1 düşük IAD-06 reason: Çürütme satırında aynı yüzde hatası var: 229.446 cent, 292.366 cent'ten yüzde 27 değil yüzde 21,5 eksik. Bu satır numarası değil, ölçülmüş bir sayıyı yanlış söylüyor."
+  },
+  {
+   "file": "senaryolar/02-iade.md",
+   "find": "(iade = REFUND_GROSS - aynı saniyedeki sales_tax_refund, brüt = grand_total - tax_cents), çünkü sale_item_pnl geliri vergi hariçtir (0174:774-780)",
+   "replace": "(iade = -REFUND_GROSS - aynı saniyedeki sales_tax_refund; ledger'da REFUND_GROSS eksi, sales_tax_refund artı yazılır, D2; brüt = grand_total - tax_cents - vat_cents), çünkü sale_item_pnl brüt geliri vergi hariçtir (0174:774-776); iadeyi vergi dahil düşmesi (0174:777-780) GEL-01'de düzeltilir",
+   "why": "ekdenetim:ek1 düşük IAD-06 field: Alan satırında üç kusur var. (1) İade formülünde işaret yanlış: ledger'da REFUND_GROSS eksi yazıldığı için 'REFUND_GROSS - sales_tax_refund' vergiyi düşmek yerine ekler. (2) Brüt tanımı vat_cents'i atlıyor; Kontrol döngüsü ve SQL vat_cents'i düşüyor. (3) 'sale_item_pnl geliri vergi hariçtir (774-780"
+  },
+  {
+   "file": "senaryolar/02-iade.md",
+   "find": "iade = REFUND_GROSS eksi aynı saniyedeki sales_tax_refund; iadedeki vergi emanettir",
+   "replace": "iade = -REFUND_GROSS eksi aynı saniyedeki sales_tax_refund (ledger'da REFUND_GROSS eksi, sales_tax_refund artı yazılır; D2); iadedeki vergi emanettir",
+   "why": "ekdenetim:ek1 düşük IAD-06 control_loop: Kontrol döngüsündeki vergisiz iade formülü ledger işaretleriyle yanlış sonuç verir: 'REFUND_GROSS eksi sales_tax_refund' iadeye vergiyi ekler. Doğrusu D2'deki ve SQL'deki gibi -REFUND_GROSS eksi sales_tax_refund."
+  },
+  {
+   "file": "senaryolar/02-iade.md",
+   "find": "karşılık = toplam vergisiz brüt x oran(a).",
+   "replace": "karşılık = son 30 günün her canlı siparişinde vergisiz brüt x oran(siparişin yaşı) toplamı.",
+   "why": "ekdenetim:ek1 düşük IAD-06 control_loop: 'karşılık = toplam vergisiz brüt x oran(a)' cümlesi toplam brütün tek bir oranla çarpıldığını söylüyor. Oysa oran her siparişin yaşına göre değişir ve SQL karşılığı sipariş başına brüt x oran(yaş) toplamı olarak hesaplar."
+  },
+  {
+   "file": "senaryolar/02-iade.md",
+   "find": "org_accounting_settings.refund_reserve_rate_override;",
+   "replace": "org_accounting_settings (org_id pk; yeni tablo, NAK-03 ile ortak).refund_reserve_rate_override numeric;",
+   "why": "ekdenetim:ek1 düşük IAD-06 field: org_accounting_settings tablosu şemada yok. 'tablo.kolon' yazımı tablonun var olduğunu ima ediyor. Özgün metin ve NAK-03 bunu org_id anahtarlı yeni ve ortak bir tablo olarak tanımlıyor; düzeltilmiş metinde bu bilgi düşmüş."
+  },
+  {
+   "file": "senaryolar/02-iade.md",
+   "find": "(0178:427-441 refund_backlog ve refund_status_mismatch)",
+   "replace": "(canlı tanım 0181:703-716 refund_backlog ve refund_status_mismatch; 0178:427-441'in yerini aldı)",
+   "why": "ekdenetim:ek1 düşük IAD-06 panel_today: Panel bugün satırı K2 ve K3 için 0178 satırlarını gösteriyor. 0181 canlıda ve accounting_checks gövdesini değiştirdi; canlı tanım 0181:703-716'da."
+  },
+  {
+   "file": "senaryolar/02-iade.md",
+   "find": "repo taraması 2026-11-09'da 'iade karşılığı', 'returns reserve' ve 'refund_reserve' için 0 eşleşme",
+   "replace": "kod taraması 2026-11-09'da (docs/muhasebe dışında) 'iade karşılığı', 'returns reserve' ve 'refund_reserve' için 0 eşleşme",
+   "why": "ekdenetim:ek1 düşük IAD-06 panel_today: 'repo taraması 0 eşleşme' cümlesi HEAD'de doğru değil. Belgenin kendisi ve kaynak JSON'lar bu terimleri içeriyor. Sıfır eşleşme yalnız docs/muhasebe dışında geçerli; Çürütme satırı da bunu böyle sınırlıyor."
+  },
+  {
+   "file": "senaryolar/02-iade.md",
+   "find": "geriye dönük sınamada Haziran yüzde 56, Temmuz yüzde 44 eksik, Eylül ise fazla tahmin etti.",
+   "replace": "senaryonun ilk yöntemiyle (koşulsuz, vergi dahil) geriye dönük sınamada Haziran yüzde 56, Temmuz yüzde 44 eksik, Eylül ise fazla tahmin etti; koşullu ve vergisiz yöntemle geriye dönük sınama koşulmadı.",
+   "why": "ekdenetim:ek1 düşük IAD-06 gap: Boşluk satırındaki geriye dönük sınama hatası (Haziran yüzde 56, Temmuz yüzde 44 eksik) senaryonun ilk yöntemine ait: koşulsuz ve vergi dahil. Belgenin önerdiği koşullu ve vergisiz yöntemle sınama koşulmadı. Cümle bunu söylemediği için hata önerilen yönteme aitmiş gibi okunuyor."
+  },
+  {
+   "file": "kontrol-donguleri.sql",
+   "find": "iade = REFUND_GROSS eksi aynı saniyedeki",
+   "replace": "iade = -REFUND_GROSS eksi aynı saniyedeki",
+   "why": "ekdenetim:ek1 düşük IAD-06 control_sql: Sorgunun yorum satırındaki vergisiz iade formülünde işaret eksik: 'REFUND_GROSS eksi sales_tax_refund'. Sorgunun kendisi doğru hesaplıyor (-amount_cents - tax_ref); yorumu okuyan biri formülü yanlış kurar."
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "Senaryodaki 2025 bölümü (38 kalem $21.216,69 ve $11.353,44) tekrar üretilemedi: NY yıl sonuna kadar aynı SKU'nun canlı satışı olmayan 59 kalem $20.560,19, olan 68 kalem $12.009,94; 7-180 gün penceresiyle 58 kalem $20.387,98; hiçbiri parça kullanımını kanıtlamaz.",
+   "replace": "Senaryodaki 2025 bölümü tekrar üretildi: COGS taşıyan 82 kalemin 38'inde aynı SKU siparişten 7 günden sonra NY yıl sonuna kadar canlı satılmadı ($21.216,69), 44'ünde satıldı ($11.353,44); 7 gün koşulu olmadan 127 kalemin 59'unda canlı satış yok ($20.560,19), 68'inde var ($12.009,94); 7-180 gün penceresinde yeniden satılmayan 58 kalem $20.387,98; hiçbiri parça kullanımını kanıtlamaz.",
+   "why": "ekdenetim:ek1 orta MAL-12 money: 'Senaryodaki 2025 bölümü tekrar üretilemedi' yanlış. Senaryonun 38 kalem $21.216,69 ve $11.353,44 değerleri kontrol SQL'inin 7 günlük kaymasıyla birebir üretiliyor: COGS taşıyan kalemler, aynı SKU'nun siparişten 7 günden sonra NY yıl sonuna kadar canlı satışı. Çürütücünün denemeleri 7 gün koşulunu v"
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "Senaryodaki 2025 bölümü tekrar üretilemedi.",
+   "replace": "Senaryodaki 2025 bölümü aynı SKU'nun siparişten 7 günden sonra NY yıl sonuna kadar canlı satılması koşuluyla tekrar üretildi (COGS taşıyan 38 kalem $21.216,69 ve 44 kalem $11.353,44), ama aynı vekile dayandığı için parça kullanımını kanıtlamaz.",
+   "why": "ekdenetim:ek1 düşük MAL-12 reason: Çürütme satırı 2025 bölümünün tekrar üretilemediğini söylüyor. Bugünkü veriyle bu yanlış: senaryodaki sayılar aynı vekil ve 7 günlük kaymayla birebir çıkıyor."
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "recovered_cents'i kalemin ayında düşer, yoksa geri kazanım yalnız kalem tablosunda görünür.",
+   "replace": "recovered_cents'i geri kazanımın kaydedildiği ayda düşer (MAL-09 returned_on, yoksa returned_at), yoksa geri kazanım yalnız kalem tablosunda görünür; kapanmış sipariş ayı değişmez (model: sonradan gelen iade ve düzeltme yeni aya yazılır, NAK-02).",
+   "why": "ekdenetim:ek1 orta MAL-12 field: Alan satırı geri kazanımın dashboard ve operating_profit_monthly'de 'kalemin ayında', yani sipariş ayında düşmesini öneriyor. Belgenin modeline göre dönem görünümü iadeyi iade tarihine yazar ve kapanmış ayı değiştirmez; sonradan gelen düzeltme yeni aya yazılır (NAK-02). Öneri bu modelle çelişiyor."
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "sale_items.fulfilled_from_lot_id uuid; costs_source_check'e 'inventory' eklenir.",
+   "replace": "sale_items.fulfilled_from_lot_id uuid; costs_source_check'e 'inventory' eklenir; rebuild_gold_costs ve Node yolu fulfilled_from_lot_id dolu kalemi atlar (bugün RPC yalnız gold_auto ve elle gold/labor satırına bakar, 0174:573-583; Node yolu gold_auto ve invoice'a, lib/gold-cost-entry.ts:58-64), yoksa partiden karşılanan kaleme yine gold_auto yazılır ve Eşitlik 2 tutmaz. Ekran: aynı SKU'nun yeni satışında 'stoktan karşıla' düğmesi ya da 'yeni üretim' işareti; 31 Aralık 'stok sayımı' listesi (parti başına fiziksel teyit ve nrv_cents). Sahip rutini: ay sonunda elde duran iade parçalarını sayar, yıl sonunda sayımı onaylar.",
+   "why": "ekdenetim:ek1 orta MAL-12 field: Düzeltilmiş Alan'da motor değişikliği yok (şerit B). rebuild_gold_costs ve Node yolu 'inventory' kaynaklı satırı görmez; stoktan karşılanan kaleme yine gold_auto yazarlar ve Eşitlik 2 hiç tutmaz. Özgün metindeki 'stoktan karşıla' düğmesi, 31 Aralık sayım listesi ve sahip rutini (şerit D) da düşmüş."
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "MAL-09'un return_outcome_missing kuyruğunda kalır",
+   "replace": "MAL-09'un return_disposition_missing kuyruğunda kalır",
+   "why": "ekdenetim:ek1 düşük MAL-12 control_loop: Kontrol döngüsü MAL-09'un kuyruğunu 'return_outcome_missing' diye anıyor. Dizin, MAL-09 tablosu ve kontrol sorgusu başlıkları bu anahtarı return_disposition_missing olarak tanımlıyor."
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "iade kümesinde bu oran yüzde 34 (58 / 169)",
+   "replace": "iade kümesinde aynı tanımla bu oran yüzde 48,5 (82 / 169; 180 günden eski 158 kalemde 78, yüzde 49,4; 58 yalnız COGS taşıyan kalemlerin sayısıdır)",
+   "why": "ekdenetim:ek1 düşük MAL-12 reason: Çürütmedeki 'yüzde 34 (58 / 169)' oranı iki farklı küme bölüyor. Pay COGS taşıyan kalemlerle sınırlı, payda tüm kalemler. Taban oran (yüzde 73,1) COGS süzgeci olmadan kuruldu. Aynı tanımla iade kümesindeki oran yüzde 48,5. Sonuç değişmiyor: oran tabanın altında, vekil bilgi taşımıyor."
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "Kargo kanıtı ShipStation gönderisi (order_number = receipt id; senkron 2026-07-10'da durdu) ya da sales.shipped_at ve sale_items.shipped_at.",
+   "replace": "Kargo kanıtı 0181 K5 ile aynıdır: ShipStation gönderisi (order_number = receipt id; senkron 2026-07-10'da durdu), sales.is_shipped, sales.shipped_at, sale_items.shipped_at ya da sale_shipments (5 org'da bugün 0 satır).",
+   "why": "ekdenetim:ek1 düşük MAL-12 etsy_source: Etsy kaynağı satırı kargo kanıtını ShipStation, sales.shipped_at ve sale_items.shipped_at olarak sayıyor. Bloğun kontrol sorgusu 0181 K5 ile aynı kanıtı kullanıyor ve buna sales.is_shipped ile sale_shipments da giriyor. Blok kendi içinde iki farklı kanıt tanımı taşıyor."
+  },
+  {
+   "file": "kontrol-donguleri.sql",
+   "find": "6 / 1899 / 282,565)",
+   "replace": "6 / 1.899 / 282.565)",
+   "why": "yazım kuralı: cent tutarı yorumda İngilizce binlik ayırıcıyla yazılmıştı; Türkçe okurda ondalık sanılır (282,565 = 282.565 cent). Ana oturum taraması 2026-11-10."
+  },
+  {
+   "file": "kontrol-donguleri.sql",
+   "find": "13 / 0 / 394,085)",
+   "replace": "13 / 0 / 394.085)",
+   "why": "yazım kuralı: cent tutarı yorumda İngilizce binlik ayırıcıyla yazılmıştı; Türkçe okurda ondalık sanılır (282,565 = 282.565 cent). Ana oturum taraması 2026-11-10."
+  },
+  {
+   "file": "kontrol-donguleri.sql",
+   "find": "Jade: 2 / 59,565)",
+   "replace": "Jade: 2 / 59.565)",
+   "why": "yazım kuralı: cent tutarı yorumda İngilizce binlik ayırıcıyla yazılmıştı; Türkçe okurda ondalık sanılır (282,565 = 282.565 cent). Ana oturum taraması 2026-11-10."
+  },
+  {
+   "file": "kontrol-donguleri.sql",
+   "find": "Jade: 934 / 440,590)",
+   "replace": "Jade: 934 / 440.590)",
+   "why": "yazım kuralı: cent tutarı yorumda İngilizce binlik ayırıcıyla yazılmıştı; Türkçe okurda ondalık sanılır (282,565 = 282.565 cent). Ana oturum taraması 2026-11-10."
+  },
+  {
+   "file": "senaryolar/08-nakit.md",
+   "find": "kargo kanıtsız iptal COGS'u = 0; paket md5'i kapanış snapshot'ıyla aynı.",
+   "replace": "kargo kanıtsız iptal COGS'u = 0; K13 postage_double_count ve K14 cogs_source_conflict o org'da yeşil, çünkü paketin COGS satırı ve ShipStation postajı costs tablosundan gelir ve çift sayımı taşır (bugün Jade K13 $12.277,26, 2024-12 ile 2026-07 arası; EON K14 $2.297,32); paket md5'i kapanış snapshot'ıyla aynı.",
+   "why": "son denetim 2026-11-10 (ek2 k6; ana oturum sınadı): Paket önkoşulları iade kuyruğunu ve kargo kanıtsız iptal COGS'unu sayıyor ama canlıdaki iki kritik çift sayım kontrolünü (K13 ShipStation postajı, K14 kaynak çakışması) saymıyor. İkisi de paketin costs tablosundan gelen satırların"
+  },
+  {
+   "file": "senaryolar/08-nakit.md",
+   "find": "Satır 2 kaynağı: REFUND_GROSS + REFUND_REVERSAL_GROSS ile sales_tax_refund + REFUND_REVERSAL_SALES_TAX birlikte.",
+   "replace": "Satır 2 kaynağı: kontra gelir sınıfının tamamı (REFUND_GROSS + REFUND_REVERSAL_GROSS + CHARGEBACK_DEBIT; 0178:62-64) ile sales_tax_refund + REFUND_REVERSAL_SALES_TAX birlikte. CHARGEBACK_DEBIT sayılmazsa 2024 satır 2'si $595,65 eksik kalır (IAD-04; 2025'te ters ibraz yok).",
+   "why": "son denetim 2026-11-10 (muhasebe k0; doğrulandı): Satır 2 kaynağı CHARGEBACK_DEBIT'i saymıyor. Ledger sözlüğü bu türü kontra gelir sınıfına koyuyor, IAD-04 ve docs/satis-maliyet-takip.md:51 kaybedilen chargeback'i satış iadesi sayıyor. Paket satır 2'yi tür listesiyle kurarsa 2024"
+  },
+  {
+   "file": "senaryolar/08-nakit.md",
+   "find": "satır 2 = -(REFUND_GROSS + REFUND_REVERSAL_GROSS) - (sales_tax_refund + REFUND_REVERSAL_SALES_TAX), ledger tutarları kendi işaretiyle (sales_tax, REFUND_GROSS ve REFUND_REVERSAL_SALES_TAX eksi; REFUND_REVERSAL_GROSS ve sales_tax_refund artı)",
+   "replace": "satır 2 = -(REFUND_GROSS + REFUND_REVERSAL_GROSS + CHARGEBACK_DEBIT) - (sales_tax_refund + REFUND_REVERSAL_SALES_TAX), ledger tutarları kendi işaretiyle (sales_tax, REFUND_GROSS, CHARGEBACK_DEBIT ve REFUND_REVERSAL_SALES_TAX eksi; REFUND_REVERSAL_GROSS ve sales_tax_refund artı)",
+   "why": "son denetim 2026-11-10 (muhasebe k1; doğrulandı): Kontrol eşitliğindeki satır 2 formülü kontra gelir sınıfının üçüncü üyesini (CHARGEBACK_DEBIT) atlıyor. Paket ve kontrol aynı formülü kullanacağı için 'kalan en çok $1' şartı eksik $595,65'i (2024) yakalayamaz."
+  },
+  {
+   "file": "kontrol-donguleri.sql",
+   "find": "-sum(le.amount_cents) filter (where le.ledger_type in ('REFUND_GROSS', 'REFUND_REVERSAL_GROSS')) as refunds_gross,",
+   "replace": "-sum(le.amount_cents) filter (where le.ledger_type in ('REFUND_GROSS', 'REFUND_REVERSAL_GROSS', 'CHARGEBACK_DEBIT')) as refunds_gross,",
+   "why": "son denetim 2026-11-10 (muhasebe k2; doğrulandı): EK-04 sorgusu satır 2'yi iki türle kuruyor, kontra gelir sınıfındaki CHARGEBACK_DEBIT dışarıda kalıyor. yr CTE'si 2024'e çevrilince satır 2 59.565 cent eksik, satır 3 o kadar fazla çıkar. 2025 sonucu değişmez (o yıl ters ibraz yok"
+  },
+  {
+   "file": "senaryolar/02-iade.md",
+   "find": "Mutabakat: her ay kapanışında reserve_cents yazılır;",
+   "replace": "Ay kapanışında (dönem görünümü) karşılık bakiye olarak izlenir ve kar tablosuna yalnız değişimi yazılır: ayın karşılık gideri = ay sonu karşılık bakiyesi - önceki ay sonu bakiyesi. Kapanmış ayın siparişine sonradan gelen iade yeni aya yazıldığında (NAK-02) kapanmış ayın karşılığı aynı tutarda, en çok kalan bakiyesi kadar çözülür ve M+3'te kalan bakiye sıfırlanır (bakiye = reserve_cents eksi kapanıştan sonra o ayın siparişlerine gelen köprülü vergisiz iade); çözülmezse aynı iade bir kez karşılık, bir kez gerçekleşen iade olarak iki ayda düşer (Jade Haziran-Eylül 2026 siparişlerinde kapanış sonrası köprülü vergisiz iade $12.039,68). Mutabakat: her ay kapanışında o ayın iade görmemiş canlı siparişleri üzerinden reserve_cents yazılır (kayan son 30 gün değil, çünkü gerçekleşen tutar da o ayın siparişlerine göre ölçülür);",
+   "why": "son denetim 2026-11-10 (muhasebe k3; doğrulandı): Karşılığın çözülme kuralı yok. Model kapanmış ayı kilitler ve sonradan gelen iadeyi yeni aya yazar; 'karşılık sonrası kar' kapanan ayda karşılığı düşer, gerçekleşen iade sonraki ayın karından bir kez daha düşer. Karşılık bakiye ol"
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "yerine source 'inventory' maliyet satırı var ve tutarı kaynak kalemin recovered_cents'ine eşit.",
+   "replace": "yerine source 'inventory' maliyet satırı var ve tutarı partinin taşıma değerine eşit: değeri düşürülmemiş partide kaynak kalemin recovered_cents'i, yıl sonu sayımında nrv_cents'i recovered_cents'in altında girilen partide nrv_cents. Değer düşüklüğü (recovered_cents - nrv_cents) sayımın ait olduğu yılın aralık kapanışında bir kez COGS olarak yazılır (source 'inventory'); kaynak kalemin recovered_cents'i ve kapanmış sipariş ayı değişmez. Aksi halde aynı tutar önce düşük yıl sonu stokla, sonra yeniden satışta tam maliyetle iki kez gider olur (ertesi yılın açılış stoku önceki yılın kapanış stokudur, Schedule C satır 35 ve 41).",
+   "why": "son denetim 2026-11-10 (muhasebe k4; doğrulandı): Eşitlik 2 ile Eşitlik 3 çelişiyor. Eşitlik 3 yıl sonu stoğu en düşük(recovered_cents, nrv_cents) ile değerliyor ve parti durumu 'written_down' olabiliyor; Eşitlik 2 ise tüketilen partinin maliyetini her durumda recovered_cents'e e"
+  },
+  {
+   "file": "senaryolar/09-sistem.md",
+   "find": "audit_trigger sales, sale_items ve costs satırlarına 'finansal' yazar;",
+   "replace": "audit_trigger sales, sale_items, costs ve cost_categories satırlarına 'finansal' yazar; aşağıdaki audit_org_settings() trigger'ı ve saveGoldSettings'in semantik kaydı da 'finansal' sınıfındadır (log_audit RPC'sine sınıf parametresi eklenir), yoksa alım fiyatı ve gider kategorisi değişikliğinin izi varsayılan 'operasyonel' sınıfla 90 günde silinir ve kontrolün 3. eşitliği kanıtsız kalır;",
+   "why": "son denetim 2026-11-10 (muhasebe k5; doğrulandı): Saklama sınıfı yalnız sales, sale_items ve costs satırlarına 'finansal' veriyor. Aynı bloğun Boşluk satırı finansal izi cost_categories ve organizations.gold_settings ile birlikte tanımlıyor ve Alan bu iki tabloya trigger ekliyor;"
+  },
+  {
+   "file": "senaryolar/02-iade.md",
+   "find": "'karşılık sonrası kar' = kar - karşılık + beklenen COGS geri alımı",
+   "replace": "'karşılık sonrası kar' = kar - karşılık + beklenen Etsy ücret iadesi (iade edilen siparişin işlem, işleme, kargo işlem ve Offsite ücreti aylık ledger özetine eksi gider olarak döner; Jade'de 60-425 gün önce yazılan ledger satırlarında vergisiz iadenin yüzde 10,3'ü, 2026-11-10) + beklenen COGS geri alımı",
+   "why": "son denetim 2026-11-10 (muhasebe k6; doğrulandı): Formül iadenin kar etkisini gelirin tamamı kadar sayıyor. Etsy iade edilen siparişin işlem, işleme ve Offsite ücretini geri verir ve bu iadeler aylık ledger gider özetinde gideri azaltır; beklenen ücret iadesi eklenmezse karşılığı"
+  },
+  {
+   "file": "senaryolar/02-iade.md",
+   "find": "MAL-02 sonrası net kar etkisi yaklaşık $1.909 (bu 41 siparişte COGS $6.335,73, vergisiz brütün yüzde 29,2'si).",
+   "replace": "MAL-02 sonrası net kar etkisi yaklaşık $1.633: karşılıktan beklenen COGS geri alımı (bu 41 siparişte COGS $6.335,73, vergisiz brütün yüzde 29,2'si) ve beklenen Etsy ücret iadesi (60-425 gün önce yazılan ledger satırlarında vergisiz iadenin yüzde 10,3'ü, 2026-11-10) düşülür; ücret iadesi sayılmazsa $1.909.",
+   "why": "son denetim 2026-11-10 (muhasebe k7; doğrulandı): Net kar etkisi yalnız COGS geri alımını düşüyor, iadeyle birlikte geri gelen Etsy ücretlerini saymıyor. Ücret iadesi oranıyla net etki $1.909 değil yaklaşık $1.633."
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "recovered_cents'i geri kazanımın kaydedildiği ayda düşer (MAL-09 returned_on, yoksa returned_at)",
+   "replace": "recovered_cents'i geri kazanım ayında düşer (MAL-09 returned_on açık bir aydaysa o ay; kapanmış bir aydaysa ya da boşsa kaydın yapıldığı ay, returned_at)",
+   "why": "son denetim 2026-11-10 (muhasebe k8; doğrulandı): Kural 'kaydedildiği ay' diyor ama önce returned_on'a (sahibin girdiği gerçek dönüş tarihi) bakıyor. Sahip dönüşü geç kaydederse returned_on kapanmış bir aya düşer ve geri kazanım kapanmış ayın maliyetini değiştirir; modelde kapana"
+  },
+  {
+   "file": "senaryolar/08-nakit.md",
+   "find": "paket satır 1 = PAYMENT_GROSS + sales_tax;",
+   "replace": "paket satır 1 = PAYMENT_GROSS + sales_tax + o yıl tahsil edilen Etsy dışı satışların vergisiz tutarı (GEL-03: collected_at yıl içinde; tax_remitter seller_imposed ise vergi de satır 1'e girer ve satır 23'te düşülür; bugün 5 org'da 0 satır);",
+   "why": "son denetim 2026-11-10 (muhasebe k9; doğrulandı): Satır 1 eşitliği yalnız Etsy ledger'ını sayıyor. GEL-03 Etsy dışı satış için kanal, tahsil tarihi ve vergi sorumlusu alanlarını tanımlıyor ve satıcıya konan verginin satır 1'e girip satır 23'te düşüldüğünü söylüyor; paket bu satış"
+  },
+  {
+   "file": "senaryolar/08-nakit.md",
+   "find": "yıl sınırını geçen iade; ödeme ile sipariş tarihi farkı)",
+   "replace": "yıl sınırını geçen iade (iptal edilmiş siparişinki dahil); iptal edilip parası tamamen ya da kısmen satıcıda kalan sipariş, çünkü tahsilatı satır 1'dedir ama /raporlar iptali saymaz (IAD-02; 2025'te iadesi geri alınan 2 iptalde vergisiz $569,98); ödeme ile sipariş tarihi farkı)",
+   "why": "son denetim 2026-11-10 (muhasebe k10; doğrulandı): Açıklanmış köprü kalemleri listesinde iptal edilip parası satıcıda kalan sipariş yok (IAD-02'nin üçüncü sınıfı). Bu siparişin tahsilatı satır 1'de, iadesi ve geri alması satır 2'de birbirini götürür; /raporlar ise iptali gelir say"
+  },
+  {
+   "file": "senaryolar/08-nakit.md",
+   "find": "Etsy'nin ödediği net vergi bilgi satırı $26.563,56 (senaryo $26.506,15).",
+   "replace": "Etsy'nin ödediği net vergi bilgi satırı $26.563,56 (senaryo $26.506,15). Satır 1 New York takvim yılıyla $561.051,56'dır (1.549 ödeme); GEL-02'deki beklenen 1099-K tutarı UTC yılıyla $562.736,52'dir (1.553 ödeme). Aradaki $1.684,96 yıl sınırı farkıdır, 1099-K köprüsünde ayrı kalem olarak gösterilir; formun hangi takvimle tuttuğu 1099-K tutarı girilince sınanır.",
+   "why": "son denetim 2026-11-10 (muhasebe k11; doğrulandı): Aynı büyüklük (2025 PAYMENT_GROSS eksi vergi) iki blokta iki takvimle iki farklı sayı: GEL-02 UTC yılıyla $562.736,52, NAK-03 satır 1 New York yılıyla $561.051,56. Paket 1099-K köprüsünü taşıyor ama $1.684,96'lık takvim farkı hiçb"
+  },
+  {
+   "file": "senaryolar/08-nakit.md",
+   "find": "COGS sayfası iptal COGS'unu iki satıra ayırır: kargo kanıtsız (MAL-02 ile 0) ve kargolu (MAL-09 akıbetine göre COGS ya da yıl sonu stok).",
+   "replace": "COGS sayfası iptal ve tam iade (refunded) siparişlerin COGS'unu ayırır: kargo kanıtsız iptal (MAL-02 ile 0); kargolu iptal ile tam iade (MAL-09 akıbetine göre COGS ya da yıl sonu stok; 2025'te tam iade statüsünde 29 sipariş $8.641,98, 26'sı kargo kanıtlı $6.027,09).",
+   "why": "son denetim 2026-11-10 (muhasebe k12; doğrulandı): COGS sayfası yalnız iptal siparişi ayırıyor. Tam iade (refunded) statüsündeki siparişin parçası da geri gelmiş olabilir: MAL-09 kuyruğu ve MAL-12 kümesi bu siparişleri kapsıyor, akıbet stoğa dönüşse COGS geri çevrilir ve parça yıl"
+  },
+  {
+   "file": "senaryolar/08-nakit.md",
+   "find": "kargo kanıtsız iptal COGS'u = 0;",
+   "replace": "kargo kanıtsız iptal COGS'u = 0; siparişe bağlı COGS'un yılı siparişin New York tarihiyle seçilir (motorun yazdığı costs.cost_date siparişin UTC günüdür: cost_date'i 2025 olan 3 siparişin $1.284,63 COGS'u New York takvimiyle 2024 satışına aittir);",
+   "why": "son denetim 2026-11-10 (muhasebe k13; doğrulandı): Eşitlik gelir tarafını New York takvim yılıyla kuruyor, COGS'un yılı için kural yok. costs.cost_date siparişin UTC günü olduğu için yıl sınırında gelir ile COGS farklı yıllara düşüyor: New York 2024-12-31 akşamı verilen 3 siparişi"
+  },
+  {
+   "file": "kontrol-donguleri.sql",
+   "find": "where c.cost_date >= '2025-01-01' and c.cost_date < '2026-01-01'",
+   "replace": "where ((s.id is not null and s.order_date >= (select y0 from yr) and s.order_date < (select y1 from yr))\n      or (s.id is null and c.cost_date >= (select (y0 at time zone 'America/New_York')::date from yr)\n                       and c.cost_date < (select (y1 at time zone 'America/New_York')::date from yr)))",
+   "why": "son denetim 2026-11-10 (muhasebe k14; ölçüm gerekir): cs CTE'si COGS yılını sabit '2025-01-01' ve '2026-01-01' tarihleriyle ve costs.cost_date (UTC günü) üzerinden seçiyor. Başlık 'başka yıl için yr CTE'sini değiştir' diyor ama yr değişince COGS kolonları 2025'te kalır; ayrıca gelir "
+  },
+  {
+   "file": "kontrol-donguleri.sql",
+   "find": "-- başka yıl için yr CTE'sini değiştir).",
+   "replace": "-- başka yıl için yr CTE'sini değiştir; COGS da yr'den seçilir: siparişe bağlı maliyet siparişin New York tarihiyle, bağsız maliyet cost_date ile; motorun yazdığı cost_date siparişin UTC günüdür).",
+   "why": "son denetim 2026-11-10 (muhasebe k15; ölçüm gerekir): Başlık notu cs CTE'sinin yeni davranışını söylemeli: COGS yılı da yr'den gelir ve siparişin New York tarihine bakar. cs düzeltmesiyle birlikte uygulanır."
+  },
+  {
+   "file": "kontrol-donguleri.sql",
+   "find": "Satır 2 REFUND_REVERSAL_SALES_TAX'i de netler.",
+   "replace": "Satır 2 REFUND_REVERSAL_SALES_TAX'i de netler ve CHARGEBACK_DEBIT'i (kontra gelir) sayar.",
+   "why": "son denetim 2026-11-10 (muhasebe k16; doğrulandı): Sorgu başlığı satır 2'nin kapsamını anlatıyor; CHARGEBACK_DEBIT sorguya girince başlık da bunu söylemeli."
+  },
+  {
+   "file": "kontrol-donguleri.sql",
+   "find": "sum(s.tax_cents) filter (where s.status <> 'cancelled') as panel_tax,",
+   "replace": "sum(coalesce(s.tax_cents, 0) + coalesce(s.vat_cents, 0)) filter (where s.status <> 'cancelled') as panel_tax,",
+   "why": "son denetim 2026-11-10 (muhasebe k17; doğrulandı): Panel köprüsü /raporlar gelirinden yalnız tax_cents'i düşüyor. Modelde VAT de emanettir, GEL-01 formülü ve EK-02 sorgusu vat_cents'i de düşüyor; VAT'li ilk siparişte bu sorgu VAT'i gelirde bırakır. Bugün sonuç değişmez (5 org'da v"
+  },
+  {
+   "file": "kontrol-donguleri.sql",
+   "find": "-- ve kargolu 2.654.304, net vergi bilgisi 2.656.356; EON yalnız ücret 2.900; Ophir, Artifact, Seselka 0.",
+   "replace": "-- ve kargolu 2.654.304, net vergi bilgisi 2.656.356; EON yalnız ücret 2.900; Ophir, Artifact, Seselka 0.\n-- COGS yılı 2026-11-10'dan beri yr ile seçilir: Jade 2025 cogs_table_cents 46.335.340 (cost_date ile seçilen eski toplam\n-- 46.463.803; fark New York saatiyle 2024-12-31 akşamı verilmiş 3 siparişin 128.463 cent'i), iptal kovaları aynı.\n-- line10_fees_net_cents kredi sınıfının tamamını ücretten düşer: Jade 2025'te 149.846 cent, bunun 140.000 cent'i\n-- MISC_CR_SL (4 satır: 2 x $250,00, $400,00 ve $500,00). UCR-05 MISC_CR_SL'yi ücret iadesi saymaz (tutarı bir iadeye\n-- eşitse kontra iade, $250,00 ise Purchase Protection tavanına denk, kalanı sahip girdisi ister); paket eşlemesinde\n-- satır 10'dan düşülmez, sebebine göre sınıflanır.",
+   "why": "son denetim 2026-11-10 (muhasebe k18; doğrulandı): line10_fees_net_cents kredi sınıfının tamamını Schedule C satır 10'dan (komisyon ve ücretler) düşüyor. UCR-05'e göre kredinin sınıfı sebebe bağlı: ücret iadesi kontra satış gideri, Etsy'nin karşıladığı iade kontra iade, promosyon "
+  },
+  {
+   "file": "senaryolar/09-sistem.md",
+   "find": "Etsy chargeback kanıt paketi 13 ay saklanır (docs/etsy-playbook/06-shipping-cs.md:24).",
+   "replace": "Chargeback'e karşı sipariş dosyasını (fotoğraf, takip, etiket ve sigorta makbuzu, mesajlar, prova onayı) Etsy değil sahip en az 13 ay saklar (docs/etsy-playbook/06-shipping-cs.md:24; kart ağlarının chargeback penceresi). Bu dosya kaynak kayıttır, audit_log'un saklama sınıfına girmez.",
+   "why": "son denetim 2026-11-10 (muhasebe k19; doğrulandı): Etsy kaynağı satırı 13 aylık süreyi Etsy'nin saklaması gibi sunuyor. Playbook'un kaynağında kural sahibin sipariş dosyasını (fotoğraf, takip, etiket ve sigorta makbuzu, mesajlar, prova onayı) en az 13 ay saklamasıdır. Bu bir kayna"
+  },
+  {
+   "file": "senaryolar/09-sistem.md",
+   "find": "GEL-02 farkının ana kaynağı tahsil edilip iade edilen 443 iptal",
+   "replace": "GEL-02 farkının ana kaynağı 2025'te tahsil edilen 331 iptal (443 iptalin 112'si hiç tahsil edilmedi)",
+   "why": "son denetim 2026-11-10 (muhasebe k20; doğrulandı): Çürütme satırı 443 iptalin tamamını tahsil edilip iade edilmiş sayıyor. GEL-02 bu sayıyı düzeltti: 2025'te 443 iptalin 331'i tahsil edildi, 112'si hiç tahsil edilmedi ve forma girmez. Düzeltme GEL-02'de işlendi, bu satırda eski ha"
+  },
+  {
+   "file": "senaryolar/09-sistem.md",
+   "find": "6 yıllık saklama iddiası düşer: GEL-02 farkı tahsil edilip iade edilen iptallerden geliyor ve net gelir eksik beyanı doğurmuyor; kural CPA'ya sorulur.",
+   "replace": "6 yıllık saklama iddiası kesinleşmedi: IRS'in yüzde 25 testi net gelire değil beyannamede gösterilen brüt gelire bakar ve ticari işletmede brüt gelir, satılan malın maliyeti düşülmeden önceki satış tutarıdır (26 U.S.C. 6501(e)(1)(A)(i) ve (B)(i); irs.gov 'How long should I keep records?'). Satır 1 NAK-03 paketindeki gibi PAYMENT_GROSS eksi vergiyle beyan edilirse eksik brüt yoktur ve süre 3 yıldır. Satır 1 panel brütüyle beyan edilirse 2025'te tahsil edilen 331 iptalin vergisiz $168.008,33'ü satır 1'de görünmez (New York takvim yılıyla panel brütü $393.043,23'ün yüzde 42,7'si; GEL-02'deki $394.078,20 aynı brütün UTC yılıdır); aynı siparişlerin iadesi satır 2'de de görünmediği için net gelir değişmez, ama sürenin 6 yıla çıkıp çıkmadığı CPA'ya sorulur.",
+   "why": "son denetim 2026-11-10 (muhasebe k21; doğrulandı): 6 yıl iddiası net gelir gerekçesiyle düşürülmüş. IRS'in 6 yıllık süresi beyannamede gösterilen brüt gelirin yüzde 25'inden fazlasının bildirilmemesine bağlıdır ve ticari işletmede brüt gelir, satılan malın maliyeti düşülmeden önce"
+  },
+  {
+   "file": "senaryolar/09-sistem.md",
+   "find": "'finansal' en az 3 yıl ve beyanla birlikte paket (EK-04) arşivlenene kadar.",
+   "replace": "'finansal' satır, ait olduğu vergi yılının beyanı verildikten sonra en az 3 yıl (IRS süresi satırın tarihinden değil beyan tarihinden sayılır: 2026 satırı, beyan 2027-04-15'te verilirse en erken 2030-04-15'e kadar) ve paket (EK-04) arşivlenene kadar saklanır; 6 yıl sorusu CPA kararına bağlıdır.",
+   "why": "son denetim 2026-11-10 (muhasebe k22; doğrulandı): 3 yılın başlangıcı yazılmamış. IRS'in 3 yıllık süresi satırın yazıldığı tarihten değil beyanın verildiği tarihten sayılır; satır tarihinden sayılırsa 2026 Ocak satırı 2029 Ocak'ta silinebilir, oysa 2026 beyanının inceleme süresi 2"
+  },
+  {
+   "file": "senaryolar/01-gelir.md",
+   "find": "(form etiketi 'Kanal ücreti'; Etsy dışı satışta etsy_fees_cents 0 kalır)",
+   "replace": "(form etiketi 'Kanal ücreti'; Etsy dışı satışta etsy_fees_cents 0 kalır; kanal ücreti sale_item_pnl satış giderine ve /panel ile İşletme Karı gider toplamına tam bir kez girer, çünkü bu yüzeyler ücreti yalnız sales.etsy_fees_cents (0174:782) ve costs tablosundan (lib/db/queries/dashboard.ts:104-131) okur ve Etsy dışı satışın ledger satırı yoktur; ücret siparişe bağlı costs satırı olarak yazılırsa sale_item_pnl onu other_cost_cents ile zaten okur (0174:738 ve :787-788), ücret payına ikinci kez eklenmez)",
+   "why": "son denetim 2026-11-10 (muhasebe k23; doğrulandı): Kanal ücreti için kolon öneriliyor ama hiçbir kar yüzeyine bağlanmıyor. Blok aracı komisyonunu satış gideri sayıyor; sale_item_pnl ücreti sales.etsy_fees_cents'ten, /panel ve İşletme Karı costs tablosundan (Etsy ücreti oraya aylık"
+  },
+  {
+   "file": "senaryolar/08-nakit.md",
+   "find": "iptal dışı iade statülü siparişlerin vergisiz iadesi, çünkü /raporlar iadeyi düşmez;",
+   "replace": "iptal dışı iade statülü siparişlerin vergisiz iadesi, çünkü /raporlar iadeyi düşmez; ters ibraz (CHARGEBACK_DEBIT), çünkü satır 2'ye girer ama /raporlar onu düşmez (IAD-04; Jade 2024'te $595,65);",
+   "why": "son denetim 2026-11-10 (muhasebe k0 ek; çürütücü bulgusu): k=1 düzeltmesi satır 2'ye CHARGEBACK_DEBIT'i ekleyince satır 3 o kadar küçülür. /raporlar geliri ters ibrazı düşmez: IAD-04'e göre CHARGEBACK_DEBIT costs'a girmez ve gelirden de düşmez, dashboard geliri iptal dışı siparişlerin gra"
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "Taşıma değeri ayrı kolon olarak tutulmaz, kaynak kalemin recovered_cents'idir;",
+   "replace": "Taşıma değeri ayrı kolon olarak tutulmaz: kaynak kalemin recovered_cents'idir, yıl sonu sayımında nrv_cents'i bunun altında girilen partide nrv_cents'tir (Eşitlik 2);",
+   "why": "son denetim 2026-11-10 (muhasebe k1 ek; çürütücü bulgusu): Alan satırı taşıma değerini yalnız kaynak kalemin recovered_cents'i sayıyor. k=4 düzeltmesi tüketim maliyetini değeri düşürülen partide nrv_cents'e bağlayınca bu cümle Eşitlik 2 ile çelişir; Eşitlik 3 zaten en düşük(recovered_cent"
+  },
+  {
+   "file": "senaryolar/02-iade.md",
+   "find": "reserve_cents, expected_cogs_reversal_cents, currency,",
+   "replace": "reserve_cents, expected_cogs_reversal_cents, expected_fee_refund_cents, currency,",
+   "why": "son denetim 2026-11-10 (muhasebe k2 ek; çürütücü bulgusu): k=6 düzeltmesi 'karşılık sonrası kar' formülüne beklenen Etsy ücret iadesini ekliyor. Kapanış snapshot'ı beklenen COGS geri alımını saklıyor (expected_cogs_reversal_cents) ama ücret iadesinin kolonu yok; kapanan ayın 'karşılık son"
+  },
+  {
+   "file": "senaryolar/02-iade.md",
+   "find": "kar tüm gelir kadar düşer; MAL-02 düzelince düşüş gelir eksi COGS olur",
+   "replace": "kar gelir eksi geri gelen Etsy ücreti kadar düşer; MAL-02 düzelince düşüş gelir eksi ücret iadesi eksi COGS olur",
+   "why": "son denetim 2026-11-10 (muhasebe k3 ek; çürütücü bulgusu): Çürütme satırı bugünkü durumu eksik söylüyor: iptalde kar gelirin tamamı kadar düşmez, çünkü Etsy iade edilen siparişin ücretlerini geri yazar ve aylık ledger özeti bu iadeleri giderden düşer; kar kartı da costs tablosunun tamamın"
+  },
+  {
+   "file": "kontrol-donguleri.sql",
+   "find": "-- paket satır 1-3 = schedule_c_line1..3_cents; diff_ex_tax_cents yalnız açıklanmış köprü kalemleri kadar.",
+   "replace": "-- paket satır 1-3 = schedule_c_line1..3_cents; diff_ex_tax_cents yalnız açıklanmış köprü kalemleri kadar.\n-- Sorgu yalnız Etsy ledger'ını sayar: Etsy dışı satış (GEL-03) pakette satır 1'e ayrıca eklenir ve burada\n-- diff_ex_tax_cents'i büyütür (2026-11-10: 5 org'da 0 satır).",
+   "why": "son denetim 2026-11-10 (muhasebe k4 ek; çürütücü bulgusu): k=9'un ikinci dosyası; yalnız k=9 ile birlikte uygulanır. k=9 uygulanınca paket satır 1'i Etsy dışı satışı da sayar, ama EK-04 sorgusu satır 1'i yalnız ledger'dan kurar ve başlığı 'paket satır 1-3 = schedule_c_line1..3_cents' bekl"
+  },
+  {
+   "file": "senaryolar/08-nakit.md",
+   "find": "karttan Etsy'ye en çok $141.918,34 gitti",
+   "replace": "karttan ya da bankadan Etsy'ye en çok $141.918,34 gitti",
+   "why": "son denetim 2026-11-10 (muhasebe k6 ek; çürütücü bulgusu): 'Neden bu öncelik' satırı RECOUP ile billing_payment toplamını karttan Etsy'ye gitmiş sayıyor. Aynı bloğun Durum satırı RECOUP'un banka hesabından ya da karttan çekildiğini, Para etkisi satırı kart ya da banka kaynağının ölçülmedi"
+  },
+  {
+   "file": "kontrol-donguleri.sql",
+   "find": "Ledger bakiyesi artı iken Etsy'nin karttan RECOUP çekmesi",
+   "replace": "Ledger bakiyesi artı iken Etsy'nin karttan ya da bankadan RECOUP çekmesi",
+   "why": "son denetim 2026-11-10 (muhasebe k7 ek; çürütücü bulgusu): PAY-14 sorgusunun 'beklenen' notu RECOUP'u karttan çekim diye sabitliyor. Aynı dosyada PAY-03 notu 'kart ya da banka ekstresindeki Etsy çekimleri' diyor, ledger sözlüğü 'kartından ya da bankasından' diyor ve NAK-01 kaynağın ölçülm"
+  },
+  {
+   "file": "senaryolar/08-nakit.md",
+   "find": "ÖNERİ (GEL-02, henüz yok): 1099-K tutarı girişi. EKSİK: org_accounting_settings (org_id pk, EK-02 ile ortak).tax_forms text[] (her eleman",
+   "replace": "ÖNERİ (GEL-02, henüz yok): 1099-K tutarı girişi, GEL-02'nin tax_forms tablosunda (box1a_cents). EKSİK: org_accounting_settings (org_id pk, EK-02 ile ortak).filing_forms text[] (ad GEL-02'nin tax_forms tablosuyla karışmasın diye ayrıdır; her eleman",
+   "why": "son denetim 2026-11-10 (ek2 k8; ana oturum sınadı): NAK-03 org_accounting_settings.tax_forms text[] kolonu öneriyor; GEL-02 aynı adı 1099-K tutarını tutan tablo için kullanıyor. İki ayrı nesne aynı adı taşıyor ve 1099-K tutarının nerede durduğu belirsiz kalıyor (GEL-02 tablosu mu, "
+  },
+  {
+   "file": "senaryolar/08-nakit.md",
+   "find": "yalnız tax_forms boş olmayan ve o yıl PAYMENT_GROSS > 0 olan org",
+   "replace": "yalnız filing_forms boş olmayan ve o yıl PAYMENT_GROSS > 0 olan org",
+   "why": "son denetim 2026-11-10 (ek2 k9; ana oturum sınadı): Önceki kusurun ikinci yeri: kontrol döngüsü aynı kolonu tax_forms adıyla anıyor; ad değişince burada da değişmeli."
+  },
+  {
+   "file": "senaryolar/08-nakit.md",
+   "find": "+ due_date date (forma göre:",
+   "replace": "+ due_date date (dizide birden çok form varsa en erken tarih; forma göre:",
+   "why": "son denetim 2026-11-10 (ek2 k10; ana oturum sınadı): Form dizisi tam da iki formun birlikte gerekebildiği durum için kondu (5472 için 4. ayın 15'i, ABD ücreti olmayan 1040-NR için 6. ayın 15'i), ama tax_year_packages tek bir due_date taşıyor ve hangisinin yazılacağı söylenmiyor; uya"
+  },
+  {
+   "file": "senaryolar/08-nakit.md",
+   "find": "Due_date'ten 75 gün önce paket yoksa",
+   "replace": "Beyan tarihinden (due_date) 75 gün önce paket yoksa",
+   "why": "son denetim 2026-11-10 (ek2 k12; ana oturum sınadı): Teknik kimlik cümle başında büyük harfle yazılmış (Due_date); kolon adı due_date ve kimlik değişmeden kalmalı."
+  },
+  {
+   "file": "senaryolar/09-sistem.md",
+   "find": "(savePricingConfig önce ve sonra değerini zaten yazıyor)",
+   "replace": "(updatePricingConfig önce ve sonra değerini zaten yazıyor: app/(dashboard)/fiyat/actions.ts:327 ve :378)",
+   "why": "son denetim 2026-11-10 (ek2 k16; ana oturum sınadı): Alan var olmayan bir fonksiyon adı veriyor: savePricingConfig repoda yok, pricing_config'i önce ve sonra değeriyle loglayan fonksiyon updatePricingConfig."
+  },
+  {
+   "file": "senaryolar/09-sistem.md",
+   "find": "pricing_config yazımı savePricingConfig'de önce ve sonra değerleriyle logAudit'e gider",
+   "replace": "pricing_config yazımı updatePricingConfig'de (:327) önce ve sonra değerleriyle logAudit'e gider",
+   "why": "son denetim 2026-11-10 (ek2 k17; ana oturum sınadı): Çürütme satırı da aynı var olmayan adı kullanıyor (savePricingConfig); fonksiyon updatePricingConfig. Not: bu yol canlıda henüz iz bırakmamış ('Fiyat motoru ayar' özetli satır 0), satır numarası doğru."
+  },
+  {
+   "file": "senaryolar/09-sistem.md",
+   "find": "sale_refunds (8 satır) ve sale_shipments (0 satır) yalnız Etsy senkronunun yazdığı aynalardır",
+   "replace": "sale_refunds (8 satır) ve sale_shipments (2026-11-09'da 0 satır; 0181 tekil indeksi düzelttikten sonra 2026-11-10'da 2 satır, EON) yalnız Etsy senkronunun yazdığı aynalardır",
+   "why": "son denetim 2026-11-10 (ek2 k19; ana oturum sınadı): Çürütme sale_shipments için '0 satır' diyor; 0181 tekil indeksi düzelttikten sonra senkron yazmaya başladı ve tablo bugün 2 satır (EON). Dizin de tablonun 'boştu, dolar' olduğunu söylüyor."
+  },
+  {
+   "file": "senaryolar/09-sistem.md",
+   "find": "2026-10-07 silmesinin ölçütü 'actor_id boş' idi, yani finansal semantik kayıtlar tam bu ölçütle silinebilir.",
+   "replace": "2026-10-07 silmesi 'actor_id boş' ölçütüyle kayda geçti (docs/second-brain.md:1247-1248), ama canlı veri ölçütün yalnız bu olmadığını gösteriyor (Boşluk satırı: aynı dönemin actor_id boş 14.714 products satırı duruyor); yalnız actor_id'ye bakan bir silme finansal semantik kayıtları da götürür.",
+   "why": "son denetim 2026-11-10 (ek2 k20; ana oturum sınadı): Çürütme '2026-10-07 silmesinin ölçütü actor_id boş idi' diyor; aynı bloğun Boşluk satırı ve canlı veri bunun tersini gösteriyor (aynı dönemin actor_id boş products, listing_images ve semantik satırları duruyor). Blok kendi içinde "
+  },
+  {
+   "file": "senaryolar/09-sistem.md",
+   "find": "ayar başına o anki gold_settings değerine eşit, farklı değer varsa her değişiklik için bir audit satırı var",
+   "replace": "ayar başına o anki gold_settings değerine, anahtar yoksa motorun varsayılanına (0174:541-546: 14K 10.100, 10K 6.500 cent/g; Ophir'de 10K anahtarı yok ve 10K kalemi 6.500 ile yazıldı) eşit, farklı değer varsa her değişiklik için bir audit satırı var",
+   "why": "son denetim 2026-11-10 (ek2 k21; ana oturum sınadı): (3). eşitlik ima edilen alım fiyatını gold_settings değeriyle karşılaştırıyor; ayarda anahtar yoksa motor varsayılan fiyatla yazar ve eşitlik yazıldığı haliyle sınanamaz. Ophir'in gold_settings kaydında 10K anahtarı yok, 10K kalem"
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "Uyarı merkezinde karşılığı yok.",
+   "replace": "Uyarı Merkezi'nde karşılığı var: K5 cancelled_order_cogs (kritik, 0178'den beri canlı, 0181 ile pozitif kargo kanıtı arar); eksik olan düzeltme yoludur, maliyet sale_item_pnl ve İşletme Karı'nda durur.",
+   "why": "son denetim 2026-11-10 (v1a k0; doğrulandı): Panel bugün satırı 'Uyarı merkezinde karşılığı yok.' diye bitiyor. Bugün yanlış: accounting_checks K5 cancelled_order_cogs (kritik) 0178'den beri Uyarı Merkezi'ne düşüyor ve 0181 ile pozitif kargo kanıtı arıyor. Cümle aynı bloğun "
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "ve K5 cancelled_order_cogs 'kargolanmadı' bilgisini NULL is_shipped'den okuyor",
+   "replace": "ve K5 cancelled_order_cogs 0181'e kadar 'kargolanmadı' bilgisini NULL is_shipped'den okuyordu (0181 ile pozitif kargo kanıtı arar)",
+   "why": "son denetim 2026-11-10 (v1a k1; doğrulandı): n=5 aynı cümleye 'is_shipped NULL'u kargolanmamış sayan eski tanım' ifadesini ekledi; cümlenin devamı ise K5'in 'kargolanmadı' bilgisini bugün de NULL is_shipped'den okuduğunu söylüyor. 0181 (2026-11-09'dan beri canlı) K5'i poziti"
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "herhangi birinde 14K geçerse 14K, yoksa 10K; 18K dalı yok.",
+   "replace": "herhangi birinde 14K geçerse 14K, hiçbirinde 14K yoksa ve herhangi birinde 10K geçerse 10K, ikisi de yoksa ayar boş kalır; 18K dalı yok.",
+   "why": "son denetim 2026-11-10 (v1a k2; doğrulandı): Yeni metin 'herhangi birinde 14K geçerse 14K, yoksa 10K' diyor; düz okunuşu 14K yoksa ayarın 10K sayıldığıdır. Kodda varsayılan yok: ikinci dal 10K'yı da üç kaynakta arar, ikisi de yoksa ayar boş kalır ve kalem fiyatlamadan düşer."
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "Kök neden RPC önceliği: bugünkü p.title, sonra pv.name, sonra si.title (0174:561-564); ilan başlığı sonradan değişince geçmiş satış yeni ayarla maliyetlenir",
+   "replace": "Kök neden RPC'nin ayar sırası: 14K üç kaynağın (bugünkü p.title, pv.name, si.title) herhangi birinde 10K'dan önce aranır (0174:561-564; kaynak sırası yalnız :559'daki açıklama metninde var); bugünkü ilan başlığı ya da varyant adı 14K deyince 10K satılmış geçmiş kalem 14K maliyetlenir",
+   "why": "son denetim 2026-11-10 (v1a k3; doğrulandı): n=10 ve n=11 mekanizmayı 'kaynak sırasıyla değil ayar sırasıyla' diye düzeltti; aynı bloğun Çürütme satırı 0174:561-564 için hala kaynak önceliği anlatıyor ('bugünkü p.title, sonra pv.name, sonra si.title'). Kodda kaynak önceliği "
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "ayar yalnız Jade'in yeni ızgarasında (2 kalem) ve Artifact'ta (1 kalem) var",
+   "replace": "ayar yalnız Jade'in yeni ızgarasında (2 kalem), Artifact'ta (1 kalem) ve Ophir'de bir varyasyon değerinde (1 kalem) var",
+   "why": "son denetim 2026-11-10 (v1a k4; doğrulandı): n=8 Etsy kaynağı satırına 'Jade 2, Ophir 1, Artifact 1 kalem' yazdı (Alan satırı da 'ayar yalnız 4 kalemde' diyor). Aynı bloğun Çürütme satırı 'ayar yalnız Jade'in yeni ızgarasında (2 kalem) ve Artifact'ta (1 kalem) var' diyor: Op"
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "Jade'de CZ'li ürünler taş künyesi olmadan satılıyor: 12 ayda 29 kalem, $36.512,08 ciro, 0 taş maliyeti",
+   "replace": "Jade'de başlığında taş geçen ürünler taş künyesi olmadan satılıyor: 12 ayda 29 kalem (25'i CZ başlıklı, 4'ü yalnız renkli taş başlıklı), $36.512,08 ciro, 0 taş maliyeti",
+   "why": "son denetim 2026-11-10 (v1a k5; doğrulandı): Yeni sayılar (29 kalem, $36.512,08) doğru, ama cümle bu kümeyi 'CZ'li ürünler' diye adlandırıyor. Ölçülen küme başlığında taş geçen kalemlerdir: 29 kalemin 25'i CZ başlıklı, 4'ü CZ geçmeyen 'Saint Barbara Diamond Cut Ruby Pendant'"
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "REF-05 (return_outcome)",
+   "replace": "MAL-09 (REF-05; alan adı return_disposition)",
+   "why": "son denetim 2026-11-10 (v1a k6; doğrulandı): n=1'in yeni metni kargolanmış 72 siparişi 'MAL-09 (REF-05) akışına' yolluyor; aynı bloğun Alan satırı o akışın alanını 'REF-05 (return_outcome)' diye anıyor. Komşu MAL-09 bloğunun Alan satırı adı tekilleştirdi: 'sale_items.return_"
+  },
+  {
+   "file": "senaryolar/04-reklam.md",
+   "find": "operating_profit_monthly canlı tanımı 0109:39-50;",
+   "replace": "operating_profit_monthly canlı gövdesi 0097:57-67 (repodaki 0109 canlıya uygulanmamış);",
+   "why": "son denetim 2026-11-10 (v1a k7; doğrulandı): n=3'ün yeni metni canlı operating_profit_monthly'nin 0097 gövdesi olduğunu ve repodaki 0109'un canlıda olmadığını söylüyor (01-gelir, 07-gider ve MAL-01 de aynı). RKL-05 Panel bugün satırı ise 'operating_profit_monthly canlı tanım"
+  },
+  {
+   "file": "senaryolar/04-reklam.md",
+   "find": "canlı RPC 0109_operating_profit_org_currency.sql:39-50.",
+   "replace": "canlı RPC 0097_operating_profit.sql:57-67 gövdesidir (repodaki 0109 canlıya uygulanmamış).",
+   "why": "son denetim 2026-11-10 (v1a k8; doğrulandı): Aynı çelişki RKL-05 Çürütme satırında: 'canlı RPC 0109_operating_profit_org_currency.sql:39-50'. Canlı RPC 0097 gövdesidir; satır bugünkü durumu yanlış söylüyor ve n=3'ün yeni metniyle çelişiyor."
+  },
+  {
+   "file": "senaryolar/04-reklam.md",
+   "find": "operating_profit_monthly canlı tanımı 0097:57-61 değil 0109:39-50.",
+   "replace": "operating_profit_monthly canlı tanımı 0097:57-67 gövdesidir; repodaki 0109:39-50 canlıya uygulanmamış.",
+   "why": "son denetim 2026-11-10 (v1a k9; doğrulandı): Aynı çelişki RKL-05 bloğundaki REK-13 satırında, üstelik ters düzeltme olarak: 'operating_profit_monthly canlı tanımı 0097:57-61 değil 0109:39-50'. Canlı tanım 0097 gövdesidir (maliyet CTE'si 0097:57-67); 0109 canlıya uygulanmamış"
+  },
+  {
+   "file": "senaryolar/04-reklam.md",
+   "find": "bu satır operating_profit_monthly'de (0109:39-50) cost_date ayında",
+   "replace": "bu satır operating_profit_monthly'de (canlı gövde 0097:57-67; repodaki 0109 canlıya uygulanmamış) cost_date ayında",
+   "why": "son denetim 2026-11-10 (v1a k0 ek; çürütücü bulgusu): RKL-06 Panel bugün satırı, 'reklam' kategorili faturanın İşletme Karı'na girdiği yeri repodaki 0109:39-50 ile gösteriyor. Canlı operating_profit_monthly 0097 gövdesidir; aynı CTE canlıda 0097:57-67'dedir. k=7, 8 ve 9 uygulanınca k"
+  },
+  {
+   "file": "senaryolar/02-iade.md",
+   "find": "0109_operating_profit_org_currency.sql:35 gelirden dışlar",
+   "replace": "canlı operating_profit_monthly (0097_operating_profit.sql:53; repodaki 0109 canlıya uygulanmamış) gelirden dışlar",
+   "why": "son denetim 2026-11-10 (v1a k1 ek; çürütücü bulgusu): IAD-02 Panel bugün satırı iptalin gelirden dışlandığı yerleri sayarken operating_profit_monthly için repodaki 0109:35'i veriyor. Canlı gövde 0097'dir ve aynı süzgeç canlıda 0097:53'tedir. MAL-02 Panel bugün satırı aynı olgu için ö"
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "rebuild_gold_costs ve Node yolu fulfilled_from_lot_id dolu kalemi atlar",
+   "replace": "'stoktan karşıla' işlemi kalemin daha önce yazılmış gold_auto satırını siler ya da geçersiz kılar (motor satışı içe alan senkronda yazar: lib/etsy/sync.ts:473 ve app/api/cron/etsy-sync/route.ts:105) ve rebuild_gold_costs ile Node yolu fulfilled_from_lot_id dolu kalemi atlar",
+   "why": "son denetim 2026-11-10 (v1b k0; ana oturum sınadı): Motorun fulfilled_from_lot_id dolu kalemi atlaması tek başına Eşitlik 2'yi sağlamaz. Altın motoru satışı içe alan senkronun içinde koşar; sahip 'stoktan karşıla' düğmesine bastığında kalemin gold_auto satırı çoktan yazılmıştır, mo"
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "ya da sale_shipments (5 org'da bugün 0 satır).",
+   "replace": "ya da sale_shipments (2026-11-09 akşamı 5 org'da 0 satır; 0181 indeks düzeltmesinden sonra dolmaya başladı, 2026-11-10 sabahı EON 2 satır, diğer org'lar 0).",
+   "why": "son denetim 2026-11-10 (v1b k1; ana oturum sınadı): '5 org'da bugün 0 satır' 2026-11-10 sabahı artık doğru değil: 0181 tekil indeksi düzelttikten sonra senkron yazmaya başladı ve tabloda 2 satır var (ikisi de EON). Sayı 2026-11-09 akşamının ölçümüdür; tarihsiz 'bugün' ile yazıldığı"
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "returned_at NULL ve COGS > 0 olan kalem sayısı = 0",
+   "replace": "akıbeti girilmemiş (bugün returned_at NULL; return_disposition gelince boş ya da 'pending') ve COGS > 0 olan kalem sayısı = 0",
+   "why": "son denetim 2026-11-10 (v1b k3; ana oturum sınadı): Anahtar return_disposition_missing olunca aynı blokta tek anahtarın iki kuralı kaldı: birincil Kontrol döngüsü 'returned_at NULL' sayıyor, COGS-09 kontrol önerisi 'disposition boş' sayıyor. Akıbeti kept_by_buyer ya da lost_in_tran"
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "insurance_claim ve carrier_claim tutarı mevcut recovered_cents hesabına sipariş seviyesi paya göre eklenir",
+   "replace": "insurance_claim ve carrier_claim tutarı kalem COGS'una kadar mevcut recovered_cents hesabına sipariş seviyesi paya göre eklenir (sert kontrol recovered_cents <= kalem COGS korunur), aşan kısım COGS'tan düşülmez, net gelirde iade düzeltmesi olarak görünür",
+   "why": "son denetim 2026-11-10 (v1b k5; ana oturum sınadı): Yeni metin purchase_protection'ı COGS'tan ayırdı ama insurance_claim ve carrier_claim tutarını sınırsız olarak recovered_cents hesabına ekletiyor. Sigorta tazminatı beyan değerine kadar ödenir ve bu mağazada beyan değeri kalem COG"
+  },
+  {
+   "file": "senaryolar/06-maliyet.md",
+   "find": "MAL-07 stone_auto ve MAL-08 standard_auto eklenince onlar da)",
+   "replace": "MAL-07 stone_auto ve MAL-08 standard_auto eklenince onlar da; MAL-12'nin stoktan karşılanan kaleme yazdığı inventory satırı da bu kovada okunur)",
+   "why": "son denetim 2026-11-10 (v1b k6; ana oturum sınadı): Denetçi motor kovasını stone_auto ve standard_auto için açtı, çünkü yalnız gold_auto sayılırsa sonraki motorların COGS'u görünümden düşüyordu. Aynı dosyadaki MAL-12 de yeni bir kaynak öneriyor: stoktan karşılanan kalemin maliyeti "
+  },
+  {
+   "file": "senaryolar/08-nakit.md",
+   "find": "çok satır olunca sahte kırılma veriyordu: Jade son 91 günde 13 gün",
+   "replace": "çok satır olunca sahte kırılma verirdi: Jade son 91 günün 13'ünde",
+   "why": "son denetim 2026-11-10 (v2a k2; ana oturum sınadı): 'sahte kırılma veriyordu: Jade son 91 günde 13 gün' gözlenmiş bir geçmiş gibi okunuyor. 13 gün bir benzetimin sonucu: 0178 kuralı son 91 günün her gün sonunda koşsaydı 13 günde sahte kırılma verirdi. 0178 canlıda yalnız 2026-11-08"
+  },
+  {
+   "file": "senaryolar/08-nakit.md",
+   "find": "kontrol entry_id sırasını korumalı (0178 K1 öyle)",
+   "replace": "0178 K1 de entry_id sırasını kullanıyordu, ama bu sıra her gün doğru son satırı vermiyor: son saniyede çok satır olunca entry_id ile seçilen satır zincirin ucu olmayabiliyor (Jade son 91 günün 13'ünde sahte kırılma verirdi); 0181 açılış ve kapanışı zincir ucundan seçiyor",
+   "why": "son denetim 2026-11-10 (v2a k3; ana oturum sınadı): Yeni kontrol döngüsü metni 0181'den beri entry_id sırasının kullanılmadığını ve nedenini söylüyor; aynı bloğun Çürütme satırının (4). maddesi ise 'kontrol entry_id sırasını korumalı (0178 K1 öyle)' diye bitiyor. İki cümle aynı blo"
+  },
+  {
+   "file": "kontrol-donguleri.sql",
+   "find": "ölçülen 2026-11-08 Jade: 238 sipariş, ücret 151.771, iade 50.193, maliyet 1.227.726 (shipstation:insert)",
+   "replace": "ölçülen 2026-11-08 Jade: 238 sipariş, ücret 151.771, iade 50.193, maliyet 1.227.726 (shipstation:insert). Kapsam: sorgu costs için yalnız insert ve delete satırını sayar; kuralın saydığı update (amount_cents ya da cost_date farkı) bu sorguda görünmez (2026-11-09: son 30 günde 4 org'da costs update 0)",
+   "why": "son denetim 2026-11-10 (v2a k4; ana oturum sınadı): Değişikliğin kendisi doğru, ama kuralı sorgudan ayırdı: kural artık costs update'ini (amount_cents ya da cost_date farkı) sayıyor, aynı senaryonun elle koşulan sorgusu ise costs için yalnız insert ve delete satırını okuyor ve bekl"
+  },
+  {
+   "file": "senaryolar/09-sistem.md",
+   "find": "Finansal iz ürün gürültüsünden önce gitti",
+   "replace": "Finansal iz, products ve listing_images gürültüsü dururken gitti",
+   "why": "son denetim 2026-11-10 (v2b k1; ana oturum sınadı): Özet cümle finansal izin ürün gürültüsünden önce gittiğini söylüyor; bir önceki cümle product_variants satırlarının da aynı silmede gittiğini sayıyor ve belge ürün gürültüsünü products + product_variants diye tanımlıyor (:58). Dur"
+  },
+  {
+   "file": "senaryolar/09-sistem.md",
+   "find": "/ayarlar/etsy kartı bakiyeyi K1'in kapanışıyla aynı kuralla (son saniyedeki zincir ucu, para birimi başına) okur; entry_id sırasıyla seçilen 'son satır' aynı saniyede çok satır olan günlerde yanlış bakiye gösterir.",
+   "replace": "/ayarlar/etsy kartı bakiyeyi K1'in 0181 ile gelen kapanış kuralıyla (son saniyedeki zincir ucu, para birimi başına) okur; entry_id sırasıyla seçilen 'son satır' son saniyesi çok satırlı günlerin bir kısmında yanlış bakiye gösterir (Jade son 91 günde 39 günün 13'ü).",
+   "why": "son denetim 2026-11-10 (v2b k2; ana oturum sınadı): Yeni cümle entry_id sıralı 'son satır'ın aynı saniyede çok satır olan günlerde yanlış bakiye gösterdiğini genel kural gibi yazıyor; ölçümde çok satırlı 39 gün sonunun 13'ünde yanlış, 26'sında doğru. Ayrıca aynı Alan satırının başı"
+  },
+  {
+   "file": "senaryolar/09-sistem.md",
+   "find": "kayıp satır artık maskelenmiyor (taslaktaki aday kümesi kuralı EON'da her gün maskeliyordu)",
+   "replace": "kayıp satır yalnız zincir ucunun tekil olmadığı günlerde maskelenebiliyor (gün sonu simülasyonunda son 91 günde Jade 4, EON 4, Ophir 9 gün, Artifact 58 günün 7'si; taslaktaki aday kümesi kuralı EON'da her gün maskeliyordu)",
+   "why": "son denetim 2026-11-10 (v2b k3; ana oturum sınadı): n=21'in yeni metni doğru: uç tekil değilse o saniyenin adayları denenir. Komşu bloktaki 0181 notu ise aynı kural için 'kayıp satır artık maskelenmiyor' diyor. Adayların denendiği günlerde tek satırlık kayıp hala maskelenebilir; so"
+  },
+  {
+   "file": "senaryolar/02-iade.md",
+   "find": "karşılık = son 30 günün her canlı siparişinde vergisiz brüt x oran(siparişin yaşı) toplamı.",
+   "replace": "karşılık = son 30 günün iade görmemiş her canlı siparişinde vergisiz brüt x oran(siparişin yaşı) toplamı.",
+   "why": "son denetim 2026-11-10 (v3 k0; ana oturum sınadı): Yeni cümle karşılığı son 30 günün her canlı siparişinde toplar. Sorgu ve aynı bloğun Çürütme satırı karşılığı yalnız henüz iade görmemiş siparişe uygular. Statüsü canlı kalıp köprülü iadesi olan sipariş (IAD-01: completed kalan ia"
+  },
+  {
+   "file": "senaryolar/05-kargo.md",
+   "find": "yeniden okunmamış receipt Jade 8.872, EON 40, Ophir 3; EON'un 56 etiket ve sigorta satırının 52'si de bağsız",
+   "replace": "shipped statüde yeniden okunmamış receipt Jade 8.872, EON 40, Ophir 3; EON'un 56 gidiş etiketi ve sigorta satırının 52'si de bağsız",
+   "why": "son denetim 2026-11-10 (v4b k0; ana oturum sınadı): Yeni parantez iki sayının niteleyicisini düşürmüş. (1) 8.872, 40 ve 3 yalnız shipped statülerdeki (completed, shipped, partially_refunded, refunded) yeniden okunmamış receipt sayısıdır; statü süzgeci olmadan Jade'de yeniden okunma"
+  },
+  {
+   "file": "kontrol-donguleri.sql",
+   "find": "-- beklenen: 0 / n / küçük fark ve last_spend_day - last_csv_day <= 14 gün; 2026-11-08 Jade: 1 / 6 / 4104 / 2026-07-26 / 2026-11-07",
+   "replace": "-- beklenen: 0 / n / küçük fark ve last_spend_day - last_csv_day <= 14 gün; 2026-11-08 Jade: 1 / 6 / 4104 / 2026-07-26 / 2026-11-07. İlk değere (sapan ay 0) bu sorguyla ulaşılamaz: sorgu ledger satırını entry_date ayına yazar (kaymasız) ve toleransı aşan tek ay 2026-04'ün 4.000 cent'i sahte farktır; yeşil kanıt REK-01 bloğundaki kaymalı mutabakattır (mismatched_months = 0)",
+   "why": "son denetim 2026-11-10 (v4b k1; ana oturum sınadı): Değişiklik LED-08 kontrol önerisini belgede kaymalı yaptı (doğru), ama aynı kontrolün kontrol-donguleri.sql'deki bloğu hala kaymasız: ledger satırını entry_date ayına yazıyor ve yorumunda ilk beklenen değer 0. Bu değere bu sorguyl"
+  },
+  {
+   "file": "kontrol-donguleri.sql",
+   "find": "-- beklenen: months_off = 0; olculen 2026-11-08 Jade: 6 tam ay, 1 sapma (2026-04 CSV ledger'dan 4.000 cent dusuk)",
+   "replace": "-- beklenen: months_off = 0 bu sorguyla sağlanamaz. Sorgu kaymasızdır (America/New_York ayı): 2026-04 farkı sahtedir ve ledger günü eksi 1 kuralıyla 0 olur; yeşil kanıt REK-01 bloğundaki kaymalı mutabakattır (mismatched_months = 0). Ölçülen 2026-11-08 Jade: 6 tam ay, 1 sapma (2026-04 CSV ledger'dan 4.000 cent düşük)",
+   "why": "son denetim 2026-11-10 (v4b k2; ana oturum sınadı): Değişiklik PAY-12 satırında 2026-04'teki -$40'ın kaymasız karşılaştırmanın sahte farkı olduğunu yazdı (doğru), ama kontrol-donguleri.sql'deki PAY-12 bloğunun yorumu aynı farkı 'beklenen: months_off = 0' karşısında gerçek sapma gib"
+  },
+  {
+   "file": "senaryolar/01-gelir.md",
+   "find": "kalan $649,99 ayrıştırılmamış artıktır (SQL 2026-11-09)",
+   "replace": "kalan $649,99 yıl sınırının UTC alınmasından gelir (SQL 2026-11-09): bu bloktaki 2025 rakamları UTC takvim yılıdır; New York takvimiyle (NAK-03 satır 1) beklenen tutar $561.051,56 (1.549 ödeme), vergisiz panel brütü $393.043,23 ve fark tam $168.008,33'tür (SQL 2026-11-10)",
+   "why": "son denetim 2026-11-10 (tutarlilik-a k0; ana oturum sınadı): GEL-02'nin 2025 rakamları UTC takvim yılıyla ölçülmüş ama bunu söylemiyor; NAK-03 aynı kalemleri New York takvimiyle veriyor ve iki dosya açıklamasız farklı sayı taşıyor: beklenen form tutarı $562.736,52 (1.553 ödeme) ile 56.105.1"
+  },
+  {
+   "file": "senaryolar/01-gelir.md",
+   "find": "Bağlı ödemelerde PAYMENT_GROSS = grand_total_cents 1.172/1.172 birebir (ölçüldü)",
+   "replace": "Bağlı ödemelerde PAYMENT_GROSS = grand_total_cents 4 org'da 1.172/1.172 birebir (Jade 1.120, EON 46, Ophir 5, Artifact 1; ölçüldü)",
+   "why": "son denetim 2026-11-10 (tutarlilik-a k2; ana oturum sınadı): Bağlı ödemelerde PAYMENT_GROSS = grand_total eşitliği org belirtilmeden 1.172/1.172 diye veriliyor; cümlenin öncesi Jade'i anlatıyor. Jade'in aynı ölçümü belgenin üç yerinde 1.120: GEL-01 LED-02 satırı, kontrol sorgusu ve UCR-02 R"
+  },
+  {
+   "file": "senaryolar/01-gelir.md",
+   "find": "|box1a_cents - (toplam PAYMENT_GROSS(yıl) - toplam sales_tax(yıl))| <= yüzde 0,5",
+   "replace": "|box1a_cents - (toplam PAYMENT_GROSS(yıl) + toplam sales_tax(yıl))| <= yüzde 0,5 (ledger tutarları kendi işaretiyle, sales_tax eksi yazılır; NAK-03 satır 1 ile aynı eşitlik)",
+   "why": "son denetim 2026-11-10 (tutarlilik-a k3; ana oturum sınadı): Aynı eşitlik iki dosyada ters işaretle yazılı. GEL-02 'toplam PAYMENT_GROSS - toplam sales_tax' diyor; ledger'da sales_tax eksi yazıldığı için bu ifade vergiyi düşmez, ekler. NAK-03 (P88 ile düzeltildi) ve GEL-02'nin kendi sorgusu"
+  },
+  {
+   "file": "senaryolar/01-gelir.md",
+   "find": "iptal dışı 472 receipt'te $7.958,71 vergi iadesi daha gelirden düşülecek",
+   "replace": "iptal dışı 472 receipt'te $7.958,71 vergi iadesi (iadesi geri alınan 2710634049'un $23,20 vergisi netlenince $7.935,51) daha gelirden düşülecek",
+   "why": "son denetim 2026-11-10 (tutarlilik-a k4; ana oturum sınadı): İptal dışı 472 siparişin vergi iadesi aynı blokta iki değerle geçiyor: Para etkisi, Neden ve REF-15 satırı $7.935,51, LED-03 satırı $7.958,71. Fark açıklanmamış: $7.958,71 brüt sales_tax_refund, $7.935,51 iadesi geri alınan 271063"
+  },
+  {
+   "file": "senaryolar/02-iade.md",
+   "find": "bunun $7.958,71'i vergi iadesi, gelirden düşülecek net iade en az $103.850,28",
+   "replace": "bunun $7.958,71'i vergi iadesi (iadesi geri alınan 2710634049'un $23,20 vergisi netlenince $7.935,51, GEL-01), gelirden düşülecek net iade en az $103.850,28",
+   "why": "son denetim 2026-11-10 (tutarlilik-a k5; ana oturum sınadı): IAD-01 Para etkisi iptal dışı iadelerin içindeki vergi iadesini $7.958,71 veriyor; GEL-01 Para etkisi aynı 472 sipariş için $7.935,51 diyor. İki dosya arasındaki $23,20 fark açıklanmamış (iadesi geri alınan 2710634049'un vergisi)."
+  },
+  {
+   "file": "kontrol-donguleri.sql",
+   "find": "beklenen: 0 / 0 (2026-11-08 Jade: 934 / 440.590)",
+   "replace": "beklenen: 0 / 0 (2026-11-08 Jade: 918 / 439.790; 30 gün süzgeci olmadan tüm zaman 934 / 440.590)",
+   "why": "son denetim 2026-11-10 (tutarlilik-a k6; ana oturum sınadı): LED-12 sorgusunun satır sonu yorumu 2026-11-08 ölçümünü 934 / 440.590 diye veriyor. Aynı bloğun başlığı ve UCR-05 Çürütme bu değerin 30 gün süzgeci olmadan tüm zaman toplamı olduğunu, sorgunun (30 gün süzgeçli) 918 / 439.790 döndü"
   }
  ],
  "text": [
@@ -416,30 +1304,30 @@
   {
    "id": "EK-03",
    "field": "panel_today",
-   "find": "0179 K5 (repoda, canlıda değil)",
-   "replace": "0179 K5 (2026-11-09'dan beri canlıda)",
-   "why": "Çürütücü 0179 canlıya çıkmadan ölçtü; 0179 2026-11-09'da uygulandı ve K5 kargolu 74 iptali aynı tutarla ($35.410,48) ayırıyor."
+   "find": "0181 K5 (repoda, canlıda değil)",
+   "replace": "0181 K5 (2026-11-09'dan beri canlıda)",
+   "why": "Çürütücü 0181 canlıya çıkmadan ölçtü; 0181 2026-11-09'da uygulandı ve K5 kargolu 74 iptali aynı tutarla ($35.410,48) ayırıyor."
   },
   {
    "id": "EK-01",
    "field": "panel_today",
-   "find": "0179:232-239",
-   "replace": "0179:316-323",
-   "why": "Satır kayması: çürütücü 0179'un taslağını okudu; HEAD'de K4 k4_sales CTE'si 0179:316-323 (source süzgeci yok, bulgu geçerli)."
+   "find": "0181:232-239",
+   "replace": "0181:316-323",
+   "why": "Satır kayması: çürütücü 0181'un taslağını okudu; HEAD'de K4 k4_sales CTE'si 0181:316-323 (source süzgeci yok, bulgu geçerli)."
   },
   {
    "id": "EK-01",
    "field": "field",
-   "find": "0179:232-239",
-   "replace": "0179:316-323",
-   "why": "Satır kayması: çürütücü 0179'un taslağını okudu; HEAD'de K4 k4_sales CTE'si 0179:316-323 (source süzgeci yok, bulgu geçerli)."
+   "find": "0181:232-239",
+   "replace": "0181:316-323",
+   "why": "Satır kayması: çürütücü 0181'un taslağını okudu; HEAD'de K4 k4_sales CTE'si 0181:316-323 (source süzgeci yok, bulgu geçerli)."
   },
   {
    "id": "EK-01",
    "field": "reason",
-   "find": "0179:232-239",
-   "replace": "0179:316-323",
-   "why": "Satır kayması: çürütücü 0179'un taslağını okudu; HEAD'de K4 k4_sales CTE'si 0179:316-323 (source süzgeci yok, bulgu geçerli)."
+   "find": "0181:232-239",
+   "replace": "0181:316-323",
+   "why": "Satır kayması: çürütücü 0181'un taslağını okudu; HEAD'de K4 k4_sales CTE'si 0181:316-323 (source süzgeci yok, bulgu geçerli)."
   },
   {
    "id": "EK-03",

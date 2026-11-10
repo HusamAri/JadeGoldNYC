@@ -16,7 +16,7 @@ Migration `0174_sale_item_pnl.sql`, görünüm `sale_item_pnl`._
   yazılır; AYNI türdeki otomatik motor satırını (gram × ayar: `gold_auto`)
   görünümde ezer ve motor o kaleme bir daha dokunmaz. Boş bırakıp çıkmak elle girişi siler; motor değeri geri gelir.
   Sınır: motor satırı silinmez, bu yüzden İşletme Karı ve taraf toplamları
-  ikisini birden sayar; `cogs_source_conflict` (0179) bunu gösterir.
+  ikisini birden sayar; `cogs_source_conflict` (0181) bunu gösterir.
 - **İade** Etsy'den (receipt.refunds) okunur ve kalemlere satır toplamı payıyla
   dağıtılır. Eski iadeli siparişler (bu sürümden önce okunmuş) için
   "İade verisini çek" butonu / cron `payments` fazı receipt'i tek tek yeniden
@@ -105,12 +105,12 @@ Kaynaklar: IRS Pub 334 / Pub 538 / Schedule C talimatları, Etsy Help (sales tax
 
 ShipStation senkronu da gönderi bağlamayı aylık özetten önce koşar.
 
-## Kontrol döngüleri (0178, 0179)
+## Kontrol döngüleri (0178, 0181)
 
 `accounting_checks(org)` 14 salt okunur kontrolü tek seferde koşar; başarısız
 olanlar Uyarı Merkezi'ne düşer, yeşile dönen Görevler'e "Çözüldü" izi bırakır.
 Liste ve eşitlikler: `docs/muhasebe/senaryo-matrisi.md`. Elle koşulabilir
-sorgular: `docs/muhasebe/kontrol-donguleri.sql`. 0179 çürütücülerin bulduğu
+sorgular: `docs/muhasebe/kontrol-donguleri.sql`. 0181 (canlıda MCP adı `0179_accounting_checks_fixes`) çürütücülerin bulduğu
 dört kusuru düzeltti: K1 aynı saniyedeki satır sırasına güveniyordu, K3 iadeyi
 tek kaynaktan okuyordu, K5 boş kargo alanını "kargolanmadı" sayıyordu, K8
 reklamın bir günlük kaymasını bilmiyordu. Üç kontrol de ekledi: K12 ledger

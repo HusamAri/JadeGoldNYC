@@ -1958,7 +1958,7 @@ repodaki hedefidir.
 
 - **Kontrol döngüsünün kendisi de çürütülür: kanıt alanının dolu olduğunu, okuduğu tablonun RLS'te
   görünür olduğunu ve iki yöndeki hatasını ölçmeden "kuruldu" deme (2026-11-09):** 0178'in 11 muhasebe
-  kontrolü canlıya çıktıktan saatler sonra senaryo çürütücüleri dördünde kusur buldu; 0179 taslağını sınayan
+  kontrolü canlıya çıktıktan saatler sonra senaryo çürütücüleri dördünde kusur buldu; düzeltme migration'ının (0181; canlıda MCP adı 0179) taslağını sınayan
   üç bağımsız göz (veri, SQL ve güvenlik, muhasebe) taslakta iki kusur daha buldu. (1) K1 kapanış satırını
   entry_id ile seçiyordu; aynı saniyede çok satır olunca Jade'in son 91 gününün 13'ünde sağlam veride sahte
   kritik verirdi. Taslaktaki "herhangi aday çifti" toleransı sahte pozitifi sahte negatife çevirdi: EON'un
@@ -1982,13 +1982,39 @@ repodaki hedefidir.
   bittiğinde akış gece boyunca saatlerce boşlukla takılmıştı; kalan 14 ajan (yazım ve denetim) 2 eşzamanlılıkla
   7 saati aşacaktı. Kalan iş çürütülmüş alanları (`amended_*` analizi ezer) belgeye dökmekti; bunu ajanlara
   yeniden yazdırmak her sayıda transkripsiyon riski demekti. Akış durduruldu, `docs/muhasebe/kaynak/render.py`
-  JSON'dan kısa dizin, 9 bölüm dosyası ve 104 kontrol sorgusu üretti; beş denetçi sorguları canlıda koştu ve
+  JSON'dan kısa dizin, 9 bölüm dosyası ve 91 kontrol sorgusu üretti; beş denetçi sorguları canlıda koştu ve
   her düzeltmeyi dosyadan birebir kopyalanmış `find`/`replace` olarak verdi. Düzeltmeler `duzeltmeler.json`
   katmanında uygulanır: `find` dosyada tam bir kez geçmezse ya da bir düzeltme uygulanmazsa üreteç durur. Bu
-  kapı denetçinin eski bir taslağı okuduğu bulguyu da yakaladı (K13 "0179'da yok" dedi, oysa son halinde
+  kapı denetçinin eski bir taslağı okuduğu bulguyu da yakaladı (K13 "düzeltme migration'ında yok" dedi, oysa son halinde
   vardı). Kural: akışın kalan adımları zaten doğrulanmış verinin sunumuysa akışı durdur ve deterministik
   üret; ajanları yazıya değil sınamaya harca; bilgi tabanını Etsy playbook deseninde kur (kısa dizin, bölüm
   dosyası, otomatik okunmayan kaynak arşivi).
+  **Güçlendirme (2026-11-10): denetçi örneği gösterir, sınıfı sen sayarsın; canlıya çıkmış migration'ın
+  numarası çakışınca dosya taşınır, gövde taşınmaz.** Kalan üç denetçi 83 kusur verdi; ikisi metin değil
+  üreteç kusuruydu. Yorum satırıyla biten sorguda `;` yorumun içinde kalıyor, dosya sırayla koşulunca sonraki
+  blokla birleşip 42601 veriyordu. Denetçi bunu bir blokta yaşayıp 13 satır saydı; ilk düzeltmem (`--` içeren
+  son satırda `;` yeni satıra) 28 satır üretti: 15 sorgu `...; -- beklenen` biçimindeydi ve çift sonlandı.
+  Yakalatan şey beklenen sayıyı önceden bilmekti; kural artık üretecin kapısında (her blok tek ve sonlanmış
+  ifade). İngilizce para biçimi kapısı da aynı yoldan girdi ve ilk regex tam onu doğuran vakayı (`$866.55,`)
+  kaçırdı; negatif kontrol gösterdi. 83 düzeltmeyi baştan doğrulamak yerine düzeltmelerin getirdiği sayılardan
+  belgede hiç geçmeyenleri ayırdım (10 düzeltme): yedisi aritmetikle, üçü canlı sorguyla tuttu. Aynı turda main
+  0179 ve 0180'i başka işe verdi; bizim 0179 canlıdaydı ve belge ona satır numarasıyla gönderme yapıyordu.
+  Emsal (DSP 0173 → 0175) dosyayı taşımaktı: dosya 0181 oldu, başlık aynı satır sayısıyla yeniden yazıldı,
+  gövde mühürle (md5) sabit kaldı, canlı ad başlığa ve dizine yazıldı. Kural: (1) üreteç kusurunda kalıbı tüm
+  çıktıda say ve düzeltmenin dokunacağı satır sayısını ÖNCEDEN söyle; (2) yeni kapıyı onu doğuran vakayla
+  negatif sına; (3) düzeltme yığınında yalnız korpusta karşılığı olmayan yeni sayıları yeniden ölç; (4) canlı
+  migration'ın numarası çakışırsa dosyayı taşı, gövdeye ve satır sayısına dokunma, canlı adı yaz.
+  **Güçlendirme-2 (2026-11-10, aynı gün): denetimin iki gizli bedeli var, sorgu onayı ve token; kapsamı ikisine göre
+  kur.** (a) Alt ajanların her canlı sorgusu (`mcp__Supabase__execute_sql`) sahibin cihazında tek seferlik onay bekledi:
+  1.498 sorgu, sahip başındayken saniyeler, değilken 8,7 saate kadar; gece takılan akışların sebebi buydu. Çözüm sorguları
+  bir kanıt arşivine toplamak, ajanlara canlı sorguyu yasaklamak ve eksik ölçümü ana oturumda tek toplu SELECT ile koşmaktı
+  (4 ölçüm, 1 onay, dördü de beklenen sayıyı verdi). (b) Token: 21 denetim ajanı 1,08 milyar önbellek okuma token'ı
+  harcadı, çünkü her ajan 50-116 tur boyunca bu dosya dahil bütün talimatı yeniden okur; tek sorgu koşmak için açılan ajan
+  bile 247 bin token yaktı. Hız için üç paralel kol açınca sahip "daha token verimli çalış" dedi; kollar durduruldu, kalan
+  60 bulgu ana oturumda toplu kontrollerle sınandı (24'ü başka denetçinin bulgusunun kopyasıydı, kanıtsız kalan 2'si
+  işlenmedi). Kural: (1) birkaç araç çağrısı süren işe ajan açma; (2) paralel kol ya da büyük denetim açmadan önce tahmini
+  bedeli sahibe söyle; (3) iki denetçinin kapsamı örtüşürse aynı bulgu iki kez gelir, kapsamları ayrık kur; (4) bu dosya
+  her oturuma ve her alt ajana yüklenir, uzadıkça her ajan turu pahalanır.
 
 ## Ürün/UX dersleri
 

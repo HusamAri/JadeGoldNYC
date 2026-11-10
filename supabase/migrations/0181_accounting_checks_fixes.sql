@@ -1,8 +1,8 @@
--- 0179 · accounting_checks düzeltmeleri ve üç yeni kontrol (2026-11-09)
---
--- 0178 canlıya çıktıktan sonra senaryo matrisinin çürütücüleri, ardından 0179
--- taslağını sınayan üç bağımsız göz (veri, SQL ve güvenlik, muhasebe) şu
--- kusurları buldu; her biri canlı veriyle ölçüldü:
+-- 0181 · accounting_checks düzeltmeleri ve üç yeni kontrol (2026-11-09)
+-- (Canlıya 2026-11-09'da MCP ile "0179_accounting_checks_fixes" adıyla uygulandı; main'de 0179 ve 0180 EON-FR6'ya ait olduğu için dosya
+-- 0181'e taşındı. Fonksiyon gövdesi ve comment satırı canlıyla bayt bayt aynı kalsın diye değişmedi: içlerindeki "0179" bu dosyadır.)
+-- 0178 canlıya çıktıktan sonra senaryo matrisinin çürütücüleri, ardından bu dosyanın taslağını sınayan üç bağımsız göz
+-- (veri, SQL ve güvenlik, muhasebe) şu kusurları buldu; her biri canlı veriyle ölçüldü:
 --   K1 ledger_balance_break: kapanışı entry_id ile seçiyordu, aynı saniyede
 --      çok satır olunca sahte kritik (Jade son 91 gün: 13 gün). Taslaktaki
 --      "herhangi aday çifti" kuralı ise kayıp satırı maskeliyordu (EON her gün).
