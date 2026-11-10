@@ -204,18 +204,20 @@ def fr():
 # yuvalı taş "About 2.3 mm each", "0.08 ctw DEW", her yüz dövme dokulu. Fotoğraflarda (ref01 önden, ref05
 # parmakta) taş bant genişliğinin 0,27-0,33'ü, yani ~1,4-1,6 mm; yıldızın uçtan uca açıklığı 3,5-4,1 mm
 # (genişliğin ~%75'i). 2,3 mm (derinlik ~1,4 mm) 1,5 mm duvara güvenle oturmaz; 1,5 mm (derinlik ~0,9 mm)
-# oturur. Tasarım: 5 × 1,5 mm (EON tek renk bant kalınlığı), iki 1,5 mm taş, ~79° arayla önde simetrik.
+# oturur. Tasarım: 5 × 1,5 mm (EON tek renk bant kalınlığı), DÖRT 1,5 mm taş, bant çevresinde eşit aralıklı
+# (çeyrek tur, 90°): sahip 2026-11-10, hero v1'den sonra "taşlar 4 adet eşit aralıkta konumlanmış olmalı".
+# Referansın önden fotoğrafı (ref01, ±~40°) bununla tutarlı: önden bakınca dört yıldızın ikisi görünür.
 # Üretici teklifi YOK: maliyet üreticinin bant listesi (tam kesit; dövme izleri ~%5 metal alır, US 8½'te
 # ~$32, tampon olarak bırakıldı) + taş + yıldız takma (flush ücreti + ışın oyması) + dövme işçiliği.
 SPOT_HS = 4023.50          # gold-api.com 2026-11-10 17:19 UTC
 HS_W, HS_T = 5.0, 1.5
-HS_STONES, HS_STONE_MM, HS_STONE_CT_EACH = 2, 1.5, 0.013
+HS_STONES, HS_STONE_MM, HS_STONE_CT_EACH = 4, 1.5, 0.013   # 2026-11-10 sahip: 2 → 4, eşit aralıklı
 HS_STONE_USD_EACH = 10     # $280/ct × 0,013 ct = $3,64; taş başı $10 yazıldı (kalibre değil)
 HS_SETTING_EACH = 10       # Model 2'nin flush takma ücreti, taş başı
 HS_ENGRAVE_EACH = 10       # yıldızın 8 ışını, taş başı (kalibre değil)
 HS_TEXTURE = 30            # dövme doku işçiliği, halka başı (kalibre değil)
 HS_SIZES = [4, 5, 6, 7, 8, 8.5, 9, 10, 11, 12, 13, 14, 15, 16]
-HS_LISTS = [1700, 1800, 2100]
+HS_LISTS = [1700, 1800, 1900, 2100]
 HS_EON_PLAIN_HAMMERED_5MM_US85 = 2005   # EON 4565377715 GLD-R-1013-14-05-085 liste (5,43 g), 2026-11-10 panel
 
 

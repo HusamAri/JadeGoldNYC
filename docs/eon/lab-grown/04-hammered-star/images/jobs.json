@@ -13,28 +13,28 @@
       "file": "scratchpad ref-4581494716/ref-ring-crop.png (repoya ALINMADI: üçüncü tarafın ürün fotoğrafı)",
       "source": "sahibin referans listing'i etsy 4581494716 (BRIARLORE), 1. fotoğraf il_fullxfull.8617590237 (1254 px, önden, sarı); kırpım 1120x480+70+460 (bütün halka, iki yıldız); 'BRIARLORE' filigranı kırpımın dışında kaldı (kontrol: gözle)",
       "md5": "59c660abbcf2f3c6b394b24a983507f5",
-      "higgsfieldMediaId": null
+      "higgsfieldMediaId": "bf7488dd-cf5e-4dba-b86e-0e07c3bf6d4e"
     },
     "star": {
       "file": "scratchpad ref-4581494716/ref-star-crop.png (repoya ALINMADI)",
       "source": "aynı foto, sol yıldız + çevresindeki dövme izleri 330x300+205+620, ×3 Lanczos",
       "md5": "31b974cee0f714614c6d4930f322626e",
-      "higgsfieldMediaId": null
+      "higgsfieldMediaId": "ae1223f1-a28b-46f1-8e52-13be89170ff4"
     },
     "ringGrey": {
       "file": "scratchpad ref-4581494716/ref-ring-grey.png (ring kırpımının siyah-beyazı)",
       "md5": "d75139baabbcacc8729c6d3efae1ab1c",
-      "higgsfieldMediaId": null
+      "higgsfieldMediaId": "15549db5-dce0-4913-950e-b7f573306e17"
     },
     "starGrey": {
       "file": "scratchpad ref-4581494716/ref-star-grey.png (star kırpımının siyah-beyazı)",
       "md5": "83aadfa31f96a22e709f744eddb2f40c",
-      "higgsfieldMediaId": null
+      "higgsfieldMediaId": "db8cfef7-6b62-47fc-b656-3dda7d91aabe"
     },
     "heroCrop": {
-      "file": "onaylanan 01'den yalnız yüzey + yıldız kırpımı (kompozisyon yok); hero kabul edilince kesilir",
-      "md5": null,
-      "higgsfieldMediaId": null
+      "file": "scratchpad hs/gen/hs5-ref-hero-crop.png: onaylanan 01-hero v2'den (2026-11-10, sahip soru kartı) yalnız yüzey + bir yıldız, 500x275+1340+1000, ×2 Lanczos; arduvaz ve kadraj yok",
+      "md5": "f28421684ef041290bb4c18003a4c4ac",
+      "higgsfieldMediaId": "4f84c330-8501-4cd7-a078-d3fdb437a5ab"
     }
   },
   "refsByFrame": {
@@ -51,6 +51,6 @@
     ["06-white", "07-metals", "09-rose"]
   ],
   "waveRule": "01 tek başına üretilir ve referansla YAN YANA şekil kontrolünden geçer (Cadence 2026-09-26); seri ancak sonra. Dalga <=7 eşzamanlı (429 dersi 2026-10-18).",
-  "qa": "her kare: tam iki round taş, ikisi de önde, ön merkezin iki yanında simetrik; her taş sekiz uçlu yıldızın ortasında (4 uzun ışın bant boyunca ve enine, 4 kısa çapraz), taş ~bant genişliğinin 1/3'ü, yüzeyle aynı seviyede (tırnak/yükselen yuva yok); bütün dış yüz iç içe yuvarlak dövme izleriyle kaplı (düz cilalı şerit yok), izler tek tek okunuyor (plastik/CGI pürüzsüzlüğü yok); iki kenarda dar cilalı kenar; iç yüzey cilalı ve yazısız; ışık doğal pencere ışığı, renkli ışık lekesi yok; zemin metalin tamamlayıcısı; el karelerinde yüzük parmağı (4. parmak; komşusu en kısa ve en dış parmak); 08'de çap ~başparmak kalınlığı (görünen boyut), bant/çap ~0,23; 06 tamamen beyaz, 09 tamamen rose (sarı sızıntı yok), 07'de sıra sarı-beyaz-rose; set kontak baskısında yan yana (kadraj kopyası, ölçek)",
+  "qa": "her kare: dört round taş bant çevresinde çeyrek tur (90°) arayla (sahip 2026-11-10); görünen yarıda en çok iki yıldız, karenin söylediği yerde (önden bakışta ön merkezin iki yanında simetrik), dört taş birden ya da iki yakın yıldız yok; her taş sekiz uçlu yıldızın ortasında (4 uzun ışın bant boyunca ve enine, 4 kısa çapraz), taş ~bant genişliğinin 1/3'ü, yüzeyle aynı seviyede (tırnak/yükselen yuva yok); bütün dış yüz iç içe yuvarlak dövme izleriyle kaplı (düz cilalı şerit yok), izler tek tek okunuyor (plastik/CGI pürüzsüzlüğü yok); iki kenarda dar cilalı kenar; iç yüzey cilalı ve yazısız; ışık doğal pencere ışığı, renkli ışık lekesi yok; zemin metalin tamamlayıcısı; el karelerinde yüzük parmağı (4. parmak; komşusu en kısa ve en dış parmak); 08'de çap ~başparmak kalınlığı (görünen boyut), bant/çap ~0,23; 06 tamamen beyaz, 09 tamamen rose (sarı sızıntı yok), 07'de sıra sarı-beyaz-rose; set kontak baskısında yan yana (kadraj kopyası, ölçek)",
   "edits": {}
 }
