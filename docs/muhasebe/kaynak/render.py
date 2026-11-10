@@ -118,7 +118,7 @@ LIVE = [
     ("K9", "shipstation_sync_failing", "SEV-03", "bağlı ShipStation son 3 günde hatasız senkronlandı"),
     ("K10", "labels_unlinked", "SEV-01", "son 90 günde her Etsy etiketi bir siparişe bağlı"),
     ("K11", "chargeback_unlinked", "IAD-04", "her CHARGEBACK_DEBIT bir siparişe bağlı"),
-    ("K12", "ledger_stale", "SIS-02", "ledger'ın son kaydından 3 günden sonra panele yazılmış Etsy satışı yok; her gün kayıt alan mağazada mağaza fotoğrafı ledger'dan en çok 5 gün ileride"),
+    ("K12", "ledger_stale", "SIS-02", "sipariş tarihi ledger'ın son kaydından 3 günden sonra olan ve panele en az bir gün önce yazılmış Etsy satışı yok; son 30 günün en az 20'sinde ledger kaydı alan mağazada mağaza fotoğrafı ledger'ın son kaydından en çok 5 gün ileride"),
     ("K13", "postage_double_count", "SEV-02",
      "ShipStation gider satırları toplamı = iptal edilmemiş gönderilerin postaj ve sigorta toplamı (tolerans $1)"),
     ("K14", "cogs_source_conflict", "MAL-01",
@@ -184,7 +184,7 @@ CANON_BY_CID = {c["cid"]: c for c in canonical}
 # bu notlar o kararın üstüne bugünkü gerçeği ekler (ölçüm 2026-11-09).
 NOTES_0179 = {
     "SIS-02": ("Ledger bakiye zinciri ve tazeliği: K1 0179 ile düzeldi, aylık ekstre ikinci kaynak",
-               "K1 açılış ve kapanışı ilk ve son saniyedeki zincir ucundan seçiyor: sağlam veride sahte kırılma 0 (Jade son 91 gün: 0178 kuralı 13 gün), kayıp satır artık maskelenmiyor (taslaktaki aday kümesi kuralı EON'da her gün maskeliyordu). K12 `ledger_stale` eklendi: ledger'ın son kaydından 3 günden sonra panele yazılmış Etsy satışı ya da her gün kayıt alan mağazada 5 günden ileri mağaza fotoğrafı yanar; 5 org'da yeşil. Kalan iş aylık ekstre içe aktarımı ve bakiye yüzeyi."),
+               "K1 açılış ve kapanışı ilk ve son saniyedeki zincir ucundan seçiyor: sağlam veride sahte kırılma 0 (Jade son 91 gün: 0178 kuralı 13 gün), kayıp satır artık maskelenmiyor (taslaktaki aday kümesi kuralı EON'da her gün maskeliyordu). K12 `ledger_stale` eklendi: sipariş tarihi ledger'ın son kaydından 3 günden sonra olan ve panele en az bir gün önce yazılmış Etsy satışı ya da son 30 günün en az 20'sinde ledger kaydı alan mağazada ledger'ın son kaydından 5 günden ileri mağaza fotoğrafı yanar; 5 org'da yeşil. Kalan iş aylık ekstre içe aktarımı ve bakiye yüzeyi."),
     "IAD-01": (None, "K3 vergi iadesi bir saniye sonra yazılan siparişi de sayıyor; vergili siparişte tek başına işlem ücreti iadesi bir ücret kredisidir, iade sayılmaz (Jade 4062133504). Bugün Jade 5 sipariş $1.803,65, EON 4 sipariş $2.448,80. Bu siparişleri yeniden okuyan buton yok: \"İade verisini çek\" yalnız iade statüsündeki siparişleri okur. LED-15 satırındaki K5 varsayımı da kalktı: K5 kargo kanıtını pozitif arıyor (MAL-02)."),
     "MAL-02": (None, "K5 kargo kanıtını pozitif arıyor ve tahsil edilmiş siparişi yalnız kanıtın aranabildiği dönemde sayıyor: Jade 516 sipariş $280.517,60; 319'u hiç tahsil edilmedi ($162.391,17), 197'si tahsil edilip ShipStation penceresinde kargo kaydı yok ($118.126,43). Kargo kaydı tutulmayan dönemde (2024-12-07 öncesi ve 2026-07-09 sonrası) 225 sipariş $98.964,40 bilinmiyor, sayılmaz; kargolu 74 iptal ($35.410,48) de sayılmaz. İşletme Karı kartının 6 aylık penceresine düşen kısım $8.785,66. 0179 Etsy kargo kaydı tablosunun (sale_shipments) kısmi tekil indeksini düzeltti: senkron yazımı 42P10 ile düşüyordu, tablo 0 satırdı."),
     "RKL-01": (None, "K8 ledger günü d+1 = CSV günü d kaymasını ve yarım son CSV gününü birlikte modelliyor: Jade $4.706,21, EON $595,26 ölçülmemiş harcama; Ophir ve Artifact'ta CSV hiç yok."),
@@ -330,6 +330,19 @@ def sql_of(sid):
     return sql
 
 
+def terminate(sql):
+    """Sorgu yorum satırıyla bitiyorsa ';' yorumun içinde kalır ve ifade sonlanmaz:
+    dosya sırayla koşulunca sonraki blokla birleşip sözdizimi hatası verir.
+    O durumda ';' kendi satırına yazılır. Son satır "...; -- yorum" biçimindeyse
+    ifade zaten sonlanmıştır, ikinci bir ';' eklenmez."""
+    last = sql.rstrip().splitlines()[-1]
+    if "--" not in last:
+        return sql + ";"
+    if last.split("--")[0].rstrip().endswith(";"):
+        return sql
+    return sql + "\n;"
+
+
 sql_out = [
     "-- Muhasebe kontrol döngüleri: elle koşulabilir sorgular (%s)" % DOC_DATE,
     "--",
@@ -360,12 +373,12 @@ for i, sec in enumerate(SECTIONS):
             res = one_line(V.get(sid, {}).get("control_sql_result", "")) or "ölçülmedi"
             m = FIX_SQL.get(sid) or FIX_MEASURE.get(sid)
             if m and m.get("measure"):
-                res = "%s; yeniden ölçüm %s: %s" % (res, DOC_DATE, one_line(m["measure"]))
+                res = "%s; yeniden ölçüm %s: %s" % (res.rstrip("."), DOC_DATE, one_line(m["measure"]))
                 APPLIED.add(id(m))
             head = "-- %s %s | kaynak %s | kontrol: %s | ölçüm %s: %s" % (
                 c["cid"], one_line(c["title"]), sid, control_label(c).replace("`", ""), measure_date(sid), res)
             sql_out.append(head)
-            sql_out.append(sql + ";")
+            sql_out.append(terminate(sql))
             sql_out.append("")
 write_out("kontrol-donguleri.sql", "\n".join(sql_out).rstrip() + "\n")
 
@@ -430,7 +443,7 @@ Sahibin isteği: Etsy API'sinin hiç vermediği ya da eksik verdiği her bilgi (
 - **Satılan malın maliyeti (COGS):** altın, işçilik, taş ve paketleme, eksi geri kazanılan (stoğa dönen ya da hurdaya giden parça). Tanıma anı ürünün alıcıya geçmesidir: iptal edilip kargolanmayan siparişin COGS'u yoktur. Kaynak önceliği elle, sonra fatura, sonra motor tahmini.
 - **Satış giderleri:** Etsy işlem, işleme, listing ve Offsite Ads ücreti, gidiş ve iade etiketi, Etsy Ads ve Etsy dışı reklam. COGS değildir.
 - **Katkı marjı ve İşletme Karı:** katkı = net gelir - COGS - değişken satış gideri; İşletme Karı = katkı - sabit gider (abonelik, yazılım, kira).
-- **Nakit katmanı ayrıdır:** PAYMENT_GROSS tahsilat, DISBURSE2 payout, RECOUP karttan tahsil, ADYENBALANCE_REVERSAL geri dönen payout. Bunlar kara girmez; ledger kimliği (açılış + toplam tutar = son bakiye) nakdi doğrular.
+- **Nakit katmanı ayrıdır:** DISBURSE2 payout, RECOUP ve billing_payment karttan tahsil, ADYENBALANCE_REVERSAL geri dönen payout (PAYMENT_GROSS bu katmanda değildir: 0178 sözlüğünde 'tahsilat' sınıfıdır, tahakkuk görünümünde gelir sales tablosundan kurulur ve PAYMENT_GROSS ikinci kez sayılmaz, nakit esasında ve vergi paketinde gelir PAYMENT_GROSS eksi vergidir, NAK-03 satır 1). Bunlar kara girmez; ledger kimliği (açılış + toplam tutar = son bakiye) nakdi doğrular.
 - **Dönem:** kapanan ayın rakamı kilitlenir; sonradan gelen iade ve düzeltme yeni aya yazılır (NAK-02).
 """.format(date=DOC_DATE, mdate=MEASURE_DATE)
 
@@ -442,7 +455,7 @@ FACTS = [
     ("İade zamanı", "1.901 iadeli siparişin 687'si (yüzde 36) sonraki ayda, 82'si (yüzde 4,3) sonraki yılda; medyan 8,9 gün, p90 31,5 gün", "Dönem görünümü iadeyi iade tarihine yazmalı."),
     ("İptal statüsü", "İadeli 1.901 siparişin 1.388'i cancelled", "İptal çoğunlukla tahsil edilip iade edilmiş siparişlerdir."),
     ("Ledger kimliği", "4 Etsy org'unda toplam tutar = son bakiye (açılış 0)", "Ledger'da boşluk yok; günlük ucuz kontrol (K1)."),
-    ("Aynı saniyede çok satır", "Jade son 91 gün: 39 gün sonu son saniyesi çok satırlı; 0178 kuralı 13 günde sahte kırılma verirdi, 0179 kuralı 0", "K1 kapanışı aday kümesinden seçer."),
+    ("Aynı saniyede çok satır", "Jade son 91 gün: 39 gün sonu son saniyesi çok satırlı; 0178 kuralı 13 günde sahte kırılma verirdi, 0179 kuralı 0", "K1 açılış ve kapanışı ilk ve son saniyedeki zincir ucundan seçer; uç tekil değilse o saniyenin adayları denenir."),
     ("Ücret kapsamı", "Jade canlı 8.314 siparişin 7.461'inde etsy_payment_id boş", "Sipariş ücreti motoru işleme ücretini siparişe bağlayamıyor (K4)."),
     ("having tuzağı", "Net maliyeti 0 ya da altı olan ay aylık özetten düşer: Jade 2 ay $10,08, Artifact 1 ay $5,70", "Kredi ayları sessizce kaybolur (SIS-01)."),
     ("Eşlenmeyen ledger türleri", "Jade 25.657 satır, 16 tür, net +$437.541,33", "Çoğu gider değil nakit ve emanettir; sözlük bunları sınıflar."),
@@ -452,7 +465,7 @@ FACTS = [
     ("ShipStation çift sayım", "Jade ShipStation gider satırları $24.882,40, iptal edilmemiş gönderilerin postaj ve sigorta toplamı $12.605,14", "İşletme Karı'nda $12.277,26 fazla kargo gideri (K13, SEV-02)."),
     ("Kaynak çakışması", "EON 10 kalemde motor maliyeti fatura ya da elle maliyetin yanında duruyor: $2.297,32", "İşletme Karı'nda hayalet maliyet (K14, MAL-01)."),
     ("Vergi gelirde", "Jade iptal dışı satış vergisi $141.721,03 (tüm dönem) panel kar kartı gelirinde; operating_profit_monthly'nin 6 aylık penceresinde $6.456,86", "Panel kar kartı ve İşletme Karı vergiyi kar sayıyor (GEL-01)."),
-    ("etsy_connection okunamaz", "RLS açık, politika yok", "security invoker bir kontrol bu tabloya dayanırsa oturumda hep yeşil kalır; K12 yalnız satış ve ledger verisine bakar."),
+    ("etsy_connection okunamaz", "RLS açık, politika yok", "security invoker bir kontrol bu tabloya dayanırsa oturumda hep yeşil kalır; K12 yalnız ledger, satış ve mağaza fotoğrafı (etsy_shop_snapshots) verisine bakar; üç tablonun da org süzgeçli select politikası var."),
 ]
 
 
@@ -500,17 +513,17 @@ def index_md():
 
 STEPS_MD = """## Uygulama sırası
 
-Her adım bir günden kısa; önce yanlış kar ya da vergi rakamı üretenler (P0), sonra karar bozanlar. Kontrol döngüsü olan adımda yeşile dönen kontrol işin bittiğinin kanıtıdır.
+Her adımın eforu parantez içinde yazılıdır (S yarım günden az, M 1 ile 2 gün; adım senaryonun yalnız bir parçasını kapsıyorsa efor bölüm tablosundakinden küçük olabilir); önce yanlış kar ya da vergi rakamı üretenler (P0), sonra karar bozanlar. Kontrol döngüsü olan adımda yeşile dönen kontrol işin bittiğinin kanıtıdır.
 
 1. **SEV-02 (B, S):** `rebuild_sale_shipping_label_costs` sonunda aynı işlemde `rebuild_shipstation_costs` ve `rebuild_etsy_ledger_costs` koşsun; Jade için tek seferlik koşu. K13 yeşile döner, İşletme Karı'ndan $12.277,26 fazla gider çıkar.
 2. **MAL-01 (B, S):** kaynak önceliği elle, fatura, motor her yüzeyde: `rebuild_gold_costs` faturalı kalemi atlar, elle ya da faturalı kalemin motor satırı geçersiz sayılır (`operating_profit_monthly` ve taraf toplamları dahil), 18 EON fatura satırına tür yazılır. K14 yeşile döner.
-3. **MAL-02 (B, M):** altın motoru iptal siparişe maliyet yazmaz; kanıtsız iptal maliyeti önce hiç tahsil edilmemiş 319 siparişte, sonra sahip onayıyla tahsil edilip iade edilmiş siparişlerde geçersiz sayılır. K5 küçülür ve sıfıra iner.
-4. **GEL-01 (B, M):** `operating_profit_monthly` ve panel kar kartı geliri vergisiz kurar ve iadeyi iade tarihinde düşer.
+3. **MAL-02 (B, M):** altın motoru iptal siparişe maliyet yazmaz; kanıtsız iptal maliyeti önce hiç tahsil edilmemiş 319 siparişte geçersiz sayılır; tahsil edilip iade edilmiş siparişlerde geçersiz sayma, 5. adımın receipt okuması kargo bilgisini doldurduktan sonra sahip onayıyla yapılır, çünkü o okuma kanıtın aranamadığı kovadaki 225 siparişi ($98.964,40) sınıflar ve kargolanmamış çıkanlar K5'e girer. K5 bu adımda küçülür, 5. adımdan sonraki ikinci geçişle sıfıra iner.
+4. **GEL-01 (B, M):** `operating_profit_monthly` ve panel kar kartı geliri vergisiz kurar. İadeyi iade tarihinde düşmek iade tutarını ve tarihini ister: Jade'de bugün sale_refunds 2 satır ve 567 iade statülü sipariş okunmamış, bu yüzden bu parça 5. adımdan (IAD-01) sonra kurulur ya da iptal siparişin iadesi ayrılarak ledger REFUND_GROSS köprüsünden okunur.
 5. **IAD-01 (B, M):** iade kuyruğu statüden bağımsız tüm ledger iade sinyallerini okur ve receipt'i tam yeniden okur; COGS'lu iptaller de kuyruğa girer, böylece kargo bilgisi (is_shipped, gönderi kaydı) dolar. K2 ve K3 sıfıra iner, K5'in "bilinmiyor" kovası küçülür.
 6. **UCR-01..04 (B, M):** `rebuild_sales_etsy_fees` işleme ücretini köprüyle, iade işleme ücretini ölçülen kuralla, Offsite 'etsy' satırını ve iadesini, `shipping_transaction` ve `buyer_fee` satırlarını siparişe yazar. K4 toleransa iner.
 7. **SEV-03 (D, S):** sahip ShipStation'da yeni API anahtarı üretip Ayarlar'dan yeniden bağlar; ardından senkron 401'de nabzı `ok=false` yazsın (B). K9 yeşile döner.
 8. **RKL-01 (A ve B, M):** Etsy Ads CSV yükleme yolu geri gelir (f43068c ile silinen eşleyici), ledger ile CSV d+1 kaymasıyla mutabık. K8 yeşile döner.
-9. **SIS-01 (B, S):** `rebuild_etsy_ledger_costs` eşlemesini sözlükten okur, `having` tuzağı kalkar. K6 ve K7 yeşil kalır.
+9. **SIS-01 (B, S):** `rebuild_etsy_ledger_costs` eşlemesini sözlükten okur, `having` tuzağı kalkar ve kredi sınıfı gider özetine girdiği için K7'nin kapsamına kredi sınıfı eklenir (SIS-01 kontrol döngüsü). K6 yeşil kalır, K7 yeşile döner: bugün Artifact ve Ophir $29,00 açılış ücreti, Jade $9,73 düşen kargo ayı.
 10. **SEV-05 ve SEV-01 (B, M):** önce SEV-05'in (c) adımı yayına girer (etiket ve sigorta iadesi aynı reference_id'li bağlı etiketin siparişine negatif satır olarak yazılır), sonra kalem `shipped_at` alanı receipt yeniden okumasıyla dolar ve iade etiketi satış detayından bağlanır. K10 küçülür.
 11. **IAD-02 (A, M):** iptal siparişin tahsilat durumu alanı: hiç tahsil edilmedi, tahsil edilip iade edildi, para satıcıda kaldı.
 12. **MAL-09 (A, M):** iade ya da kayıp ürünün akıbeti alanı: stoğa döndü, hurda, kayıp tazminatı, alıcıda kaldı.
@@ -518,13 +531,13 @@ Her adım bir günden kısa; önce yanlış kar ya da vergi rakamı üretenler (
 14. **MAL-05 (A, M):** tarihli altın alım fiyatı tablosu; motor sipariş tarihindeki fiyatı kullanır.
 15. **NAK-02 (A ve B, M):** ay kapanışı ve dönem kilidi; kapanan aya düşen sonradan değişiklik yeni aya yazılır.
 
-**Sonraki dalga:** kalan P1, P2 ve P3 senaryolar (GEL-02, UCR-05, RKL-02..06, SEV-06..08, MAL-03, MAL-04, MAL-06..08, MAL-10, MAL-11, GDR-01..03, NAK-01, SIS-02 ve ek senaryolar) yukarıdaki bölüm tablolarında öncelik sırasıyla durur.
+**Sonraki dalga:** kalan P1, P2 ve P3 senaryolar (GEL-02, IAD-03..05, UCR-05, RKL-02..06, SEV-06..08, MAL-03, MAL-04, MAL-06..08, MAL-10, MAL-11, GDR-01..03, NAK-01, SIS-02 ve ek senaryolar) yukarıdaki bölüm tablolarında öncelik sırasıyla durur.
 """
 
 LIMITS_MD = """## Kabul edilen sınırlar
 
 - **SEV-04:** Etsy ve ShipStation dışında alınan etiketin (gişe, Pirate Ship) ve satıcının üstlendiği gümrüğün kaydı hiçbir API'de yok; yalnız elle giriş ya da taşıyıcı dökümü CSV'siyle girer.
-- **MAL-05:** 2022 ile 2025 arası satışların gerçek altın alım fiyatı kayıtlı değil; geçmiş yeniden kurulamaz, yalnız ileriye dönük tarihli fiyat tutulur ve eski maliyet "tarihsiz" işaretlenir.
+- **MAL-05:** 2022 ile 2025 arası satışların gerçek altın alım fiyatı kayıtlı değil; geçmiş yalnız sahibin tedarikçi faturası bulunan yıllar için tarihçeye girilir, belgesi olmayan yıllarda eski maliyet "tarihsiz" işaretlenir.
 - **NAK-01:** banka tarafı Etsy'de yok; payout ile banka mutabakatı yalnız sahibin banka dökümüyle yapılır.
 - **Etsy dışı satış, yıl sonu paketi ve denetim izi (ek senaryolar):** vergi beyanının ve banka kaydının kendisi panel dışındadır; panel yalnız eşleme, onay ve dondurulmuş dönem rakamını tutar.
 """
@@ -550,6 +563,9 @@ for path in [os.path.join(ROOT, "senaryo-matrisi.md"), os.path.join(ROOT, "kontr
         bad.append((os.path.basename(path), "müşteri", len(re.findall(r"[Mm]üşteri", t))))
     if re.search(r",\s+ve\s", t):
         bad.append((os.path.basename(path), "ve önünde virgül", len(re.findall(r",\s+ve\s", t))))
+    en_money = re.findall(r"\$\d{1,3}(?:,\d{3})+(?:\.\d{2})?(?!\d)|\$\d+\.\d{2}(?!\d)", t)
+    if en_money:
+        bad.append((os.path.basename(path), "İngilizce para biçimi ($1,234.56 yerine $1.234,56)", en_money[:5]))
 if bad:
     raise SystemExit("biçim kapısı: %r" % bad)
 all_fixes = FIX.get("text", []) + FIX.get("sql", []) + FIX.get("measure", []) + FIX_POST
