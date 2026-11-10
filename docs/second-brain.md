@@ -883,6 +883,14 @@ repodaki hedefidir.
   `weight_source` etiketini sürümle (gm2 → gm3), kuru koşuda "hangi satırlar
   değişecek" kümesinin TAM beklenen küme olduğunu say (26.884 düz = 0 fark),
   sonra yaz.
+  **Güçlendirme-2 (2026-11-10, EON-HS5) — "üretici teklifi YOK" da bir iddiadır; yazmadan önce tedarikçinin TÜM
+  notunu tasarım ailesinin sözcükleriyle tara:** HS5'in maliyetini kurarken listing.json'a, fiyat belgesine ve iki
+  migration'a "no maker quote for this design" yazdım. Aynı klasörün README'sindeki "Diğer teklifler" bölümünde
+  üreticinin 2026-11-04 notu duruyordu: Model 3, yıldız tasarım, 6 mm, 4 taş, US10 $850. Sahip hero v1'den sonra
+  tasarımı 4 taşa düzeltti; tahmin teklifle tutarlı çıktı (5 mm US10 $825), ama notu okusaydım iki taşlı hero'yu hiç
+  üretmez, taş sayısını ilk kartta sorardım. Kural: yeni ürünün maliyetini kurmadan önce tedarikçi notlarını grep'le
+  (yıldız/star, taş sayısı, genişlik); referans listing ile üreticinin eldeki modeli çelişiyorsa (2 taş / 4 taş), bunu
+  ilk karta tasarım sorusu olarak koy.
 
 - **Bir maliyet girdisini güncellemek İŞİN YARISIDIR — ona dayanan FİYAT ayrı
   bir iştir ve kendiliğinden düzelmez (2026-09-17):** Bir gün önce 36.784
@@ -1942,6 +1950,15 @@ repodaki hedefidir.
   14 üretim, 28 kredi, 10 kabul. Kural: yön sözcüğünü (vertical, horizontal, up) ürünün KENDİ eksenine göre
   fiziksel tarife çevir; seri karelere hero'dan referans verirken kırpım yalnız yüzey taşısın ve kompozisyonu
   ayrı bir açıyla pinle; ölçek ve oran karelerinde oranı sayıyla yaz ve çıktıda ölç.
+  **Güçlendirme (2026-11-10, EON-HS5) — yer sözcüğü pozla birlikte sınanır; tasarımı taşıyan bütün-halka kırpımı
+  referanstan çıkarılmaz:** hero v1'de "iki yıldız ön merkezin solunda ve sağında" cümlesini DİK duran yüzüğe yazdım.
+  O pozda görünen dış yüz dikey bir yaydır, sol-sağ olamaz; model iki yıldızı tek yayda 37° arayla üst üste koydu,
+  sahip reddetti. Sol-sağ simetri için yüzük düz yatar ve kamera önden bakar (v2 ilk denemede tuttu). Önden olmayan
+  karelerde bütün-halka referansı önden kadrajı sızdırınca onu çıkarıp yalnız yüzey kırpımı verdim: 03 v3 tasarımı
+  kaybetti (kanal bant, yanlarda fazladan taş), 06 v2 ikinci bir yüzük çizdi. Taş sayısı ve aralığı gibi düzen taşıyan
+  tasarımda bütün-halka kırpımı tasarımın kendisidir: sızıntıya karşı referansı değil pozu değiştir (03, dik üç çeyrek
+  pozla v4'te tuttu). Bant genişliği düzenlemesi kendi karesinde yalnız bir kez işledi (0,44 → 0,37; 0,34 → 0,30),
+  ikinci düzenleme hiçbir şey değiştirmedi: oranı ilk üretimde sayıyla pinle, düzenlemeyi tek tur say.
 
 - **Etsy 403 verince sayfa çeviri vekilinden okunur; rakibin beyanı fotoğraftan ölçülür ve fizikle sınanır; ölçek
   karesinde oran, uzvun GÖRÜNEN boyutuyla kurulur (2026-11-08, EON-FR6):** Sahibin referans linki (4512052520)
