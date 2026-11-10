@@ -1,0 +1,230 @@
+{
+ "product": "EON-HS5",
+ "date": "2026-11-10",
+ "set": "owner-approved 10 frames (question cards 2026-11-10): natural window daylight, each metal on its complementary colour (blue-grey slate, indigo, denim and cobalt for yellow; sandstone for white; sage for rose; neutral limestone for all three); four star-set stones a quarter turn apart (owner correction after hero v1)",
+ "export": "PNG 2400x1792 -> JPEG q88 sRGB 4:2:0, metadata stripped (ImageMagick -strip), 443-922 KB",
+ "credits": {
+  "generations": 23,
+  "creditsPerGeneration": 2,
+  "credits": 46,
+  "accepted": 10,
+  "rejected": 13,
+  "edits": 5,
+  "balanceBefore": 5738.51,
+  "balanceAfter": 5692.51
+ },
+ "frames": {
+  "01-hero": {
+   "chosen": "v2",
+   "job": "06bad04e-ca14-4cc6-bc41-2de08b676c0a",
+   "qa": "ring lying flat on blue-grey slate, two of the four stars on the front half about 40 degrees either side of the front centre (the other two hidden), hammer marks with radiating grain, polished rims, band about 0.27 of the diameter; approved by the owner on the second question card (2026-11-10)",
+   "rejected": [
+    {
+     "v": "v1",
+     "job": "e0eab000-ba76-4e91-b206-9aae3ab111e0",
+     "why": "owner: 'olmadı görsel. taşlar 4 adet eşik aralıkta konumlanmış olmalı' (verbatim; 'eşik' read as 'eşit', equal; the design had two stones). v1 also put the two stars about 37 degrees apart on one side of an upright ring: the prompt asked for 'left and right of the front centre' on an upright ring, which that pose cannot give"
+    }
+   ]
+  },
+  "02-star": {
+   "chosen": "v1",
+   "job": "c6381da1-4f79-436c-89d2-26a4c71c4439",
+   "qa": "one star only, eight points (four long, four short), round stone about one third of the band width, level with the surface, held by small beads (no raised claws), polished rims top and bottom"
+  },
+  "03-flat": {
+   "chosen": "v4",
+   "job": "676cd808-254e-4644-b2c8-2ac5498feeef",
+   "qa": "ring standing on its edge on indigo linen, three-quarter view: two stars on the visible side, near its top and its bottom (about 80-90 degrees apart), front rim shows the solid wall, band about 0.24 of the height, polished inside",
+   "rejected": [
+    {
+     "v": "v1",
+     "job": "781ccf92-4072-41ad-a72e-c8c9aa16b3f7",
+     "why": "lying flat seen at about 20 degrees: a near-copy of the hero's front view in the set sheet"
+    },
+    {
+     "v": "v2",
+     "job": "1fa9ea72-2638-49cf-b9ec-7880f8a2e5ea",
+     "why": "60 degrees asked, about 30 degrees came back; inside read brushed"
+    },
+    {
+     "v": "v3",
+     "job": "8cf13187-2b85-4d76-8cea-be14e9ef33dd",
+     "why": "surface-only references (no whole-ring crop) lost the design: a wide channel band between raised rims, extra stones at the sides, brushed inside; the pose was then changed instead of hardening the sentence (third miss)"
+    }
+   ]
+  },
+  "04-hand-m": {
+   "chosen": "v3",
+   "job": "336cff06-93e8-4404-9f08-8cca6fc947e9",
+   "from": "edit of v2 (job 7c27e672-da3a-4442-b307-128e4fb4f441) with the reference star crop; only the band's width changed",
+   "qa": "ring on the fourth finger (the finger next to it is the shortest and outermost), two stars on top of the finger; band about 0.37 of the finger's width (v2 0.44, v1 about 0.6; a 5 mm band on an 18 mm finger is 0.28)",
+   "rejected": [
+    {
+     "v": "v1",
+     "job": "dd577309-07a9-4071-8d5d-947da7a80add",
+     "why": "band about twice its 5 mm width on the finger"
+    },
+    {
+     "v": "v2",
+     "job": "7c27e672-da3a-4442-b307-128e4fb4f441",
+     "why": "band 0.44 of the finger's width; kept as the base for the v3 edit"
+    },
+    {
+     "v": "v4",
+     "job": "3e4dbce4-9edb-4fa4-9893-59d76c89b8cb",
+     "why": "second narrowing edit of v3 came back without a measurable change; v3 kept"
+    }
+   ]
+  },
+  "05-inside": {
+   "chosen": "v3",
+   "job": "6dbdf778-bcb7-402c-af6c-c36ae3b6747d",
+   "from": "edit of v2 (job 61b0936b-b628-44bf-879b-de040be14c21) with the reference star crop",
+   "qa": "plain mirror-polished inside, two stars along the top of the outer face, level with it; the band's depth still reads a little over 5 mm, which this close inside view's perspective exaggerates; v3 and v2 are nearly identical",
+   "rejected": [
+    {
+     "v": "v1",
+     "job": "dc397e85-a16c-4c01-adfa-0d075e754c2e",
+     "why": "a deep tube: band about 8 mm"
+    },
+    {
+     "v": "v2",
+     "job": "61b0936b-b628-44bf-879b-de040be14c21",
+     "why": "base for the v3 edit"
+    }
+   ]
+  },
+  "06-white": {
+   "chosen": "v1",
+   "job": "431f0e3f-2996-4229-b340-1325cf774a36",
+   "qa": "white gold throughout (no yellow on rims, rays or beads), warm sandstone, two stars, natural light; a front view like the hero instead of the asked diagonal side view, kept on purpose so the three colour frames (01, 06, 09) compare in one pose",
+   "rejected": [
+    {
+     "v": "v2",
+     "job": "e670fdd2-a364-42f1-976a-f84acf0b838d",
+     "why": "'the nearest part of the band large at the left edge' was drawn as a second ring in the foreground (and the frame had only the grey star crop as reference)"
+    }
+   ]
+  },
+  "07-metals": {
+   "chosen": "v1",
+   "job": "7545d0be-b605-450e-86eb-032450a18537",
+   "qa": "yellow, white and rose gold left to right, two stars each, bands about 0.25 of the diameter, neutral limestone"
+  },
+  "08-scale": {
+   "chosen": "v3",
+   "job": "49302bbb-ec79-4553-a0b8-ca03f256d6b5",
+   "from": "edit of v2 (job 9f06dd21-717f-4162-8922-e25d2838d5f9) with the reference star crop; only the band's width changed",
+   "qa": "ring about 1.4 times the thumb tip's visible thickness (real about 1.33), the strip facing the lens about 0.28-0.30 of the ring's height (real 0.23, the hero reads 0.27), two stars a quarter turn apart",
+   "rejected": [
+    {
+     "v": "v1",
+     "job": "992035a2-565e-4ac8-9193-1a53511f1698",
+     "why": "ring 1.75 times the thumb tip and the band 0.37 of its height"
+    },
+    {
+     "v": "v2",
+     "job": "9f06dd21-717f-4162-8922-e25d2838d5f9",
+     "why": "size right, band 0.32-0.34; base for the v3 edit"
+    },
+    {
+     "v": "v4",
+     "job": "d10dba63-550d-426e-918e-c4de0860b91f",
+     "why": "second narrowing edit came back unchanged; v3 kept"
+    }
+   ]
+  },
+  "09-rose": {
+   "chosen": "v1",
+   "job": "9bdccc95-c2f5-4571-8bb3-33c9b519d3bd",
+   "qa": "rose gold throughout, sage linen with eucalyptus, two stars, front pose like the hero by design; band about 0.31 of the diameter"
+  },
+  "10-dish": {
+   "chosen": "v1",
+   "job": "fc4df5dc-b969-49cf-8d79-a7f4f966d5e5",
+   "qa": "cobalt glaze dish on pale oak by the window, two stars facing the camera, polished inside"
+  }
+ },
+ "gallery": [
+  {
+   "position": 0,
+   "file": "public/eon/lab-grown-hs5/01.jpg",
+   "url": "https://amuletta.artifactstudio.info/eon/lab-grown-hs5/01.jpg",
+   "alt": "14K yellow gold 5 mm hammered band with four star-set round lab-grown diamonds spaced evenly around it, two showing on the front, lying on blue-grey slate in soft window light.",
+   "md5": "137392c4a1736fccb2b50ec3a38f741a",
+   "frame": "01-hero"
+  },
+  {
+   "position": 1,
+   "file": "public/eon/lab-grown-hs5/02.jpg",
+   "url": "https://amuletta.artifactstudio.info/eon/lab-grown-hs5/02.jpg",
+   "alt": "Close view of one engraved eight-point star with a round lab-grown diamond at its centre, set level with the hammered 14K yellow gold surface.",
+   "md5": "06be882542fa5fb0f16ab2f507bec7e4",
+   "frame": "02-star"
+  },
+  {
+   "position": 2,
+   "file": "public/eon/lab-grown-hs5/03.jpg",
+   "url": "https://amuletta.artifactstudio.info/eon/lab-grown-hs5/03.jpg",
+   "alt": "The 5 mm hammered 14K yellow gold band standing on indigo linen, two of its four star-set lab-grown diamonds on the visible side a quarter turn apart, polished inside.",
+   "md5": "718990413b547d1a9f5de0f6bf682971",
+   "frame": "03-flat"
+  },
+  {
+   "position": 3,
+   "file": "public/eon/lab-grown-hs5/04.jpg",
+   "url": "https://amuletta.artifactstudio.info/eon/lab-grown-hs5/04.jpg",
+   "alt": "The 5 mm hammered 14K yellow gold band worn on a man's ring finger, two star-set lab-grown diamonds on top, hand resting on washed denim.",
+   "md5": "8e89173f7edc0c8b6799923e85e6f03d",
+   "frame": "04-hand-m"
+  },
+  {
+   "position": 4,
+   "file": "public/eon/lab-grown-hs5/05.jpg",
+   "url": "https://amuletta.artifactstudio.info/eon/lab-grown-hs5/05.jpg",
+   "alt": "Looking into the hammered 14K yellow gold band standing on slate: the plain polished inside, with two star-set lab-grown diamonds along the top of the band.",
+   "md5": "f4956b756f890690970f40073d73bf99",
+   "frame": "05-inside"
+  },
+  {
+   "position": 5,
+   "file": "public/eon/lab-grown-hs5/06.jpg",
+   "url": "https://amuletta.artifactstudio.info/eon/lab-grown-hs5/06.jpg",
+   "alt": "14K white gold version of the 5 mm hammered band with star-set round lab-grown diamonds, lying on warm terracotta sandstone in daylight.",
+   "md5": "ea4d11cad59464bf1a95b0ba9a0b9385",
+   "frame": "06-white"
+  },
+  {
+   "position": 6,
+   "file": "public/eon/lab-grown-hs5/07.jpg",
+   "url": "https://amuletta.artifactstudio.info/eon/lab-grown-hs5/07.jpg",
+   "alt": "The hammered star-set band in 14K yellow, white and rose gold side by side on grey limestone, each showing two of its four lab-grown diamonds.",
+   "md5": "630fd73ed6582afeba74bc1a152cdbfb",
+   "frame": "07-metals"
+  },
+  {
+   "position": 7,
+   "file": "public/eon/lab-grown-hs5/08.jpg",
+   "url": "https://amuletta.artifactstudio.info/eon/lab-grown-hs5/08.jpg",
+   "alt": "The 5 mm hammered 14K yellow gold band held between a man's thumb and index finger to show its real size, two star-set lab-grown diamonds facing the camera.",
+   "md5": "641854f0a89677b477ce94fafa011d84",
+   "frame": "08-scale"
+  },
+  {
+   "position": 8,
+   "file": "public/eon/lab-grown-hs5/09.jpg",
+   "url": "https://amuletta.artifactstudio.info/eon/lab-grown-hs5/09.jpg",
+   "alt": "14K rose gold version of the 5 mm hammered band with star-set round lab-grown diamonds, on sage green linen with eucalyptus leaves behind.",
+   "md5": "124fa15f56fdac0acd830a0b1ea637f5",
+   "frame": "09-rose"
+  },
+  {
+   "position": 9,
+   "file": "public/eon/lab-grown-hs5/10.jpg",
+   "url": "https://amuletta.artifactstudio.info/eon/lab-grown-hs5/10.jpg",
+   "alt": "The hammered 14K yellow gold star-set band resting in a cobalt blue ceramic dish on an oak bedside table by the window.",
+   "md5": "f538505eb51c0c41a2e956d0c027048b",
+   "frame": "10-dish"
+  }
+ ]
+}

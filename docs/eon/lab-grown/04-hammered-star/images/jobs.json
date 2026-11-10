@@ -38,19 +38,112 @@
     }
   },
   "refsByFrame": {
-    "01-hero": ["ring", "star"],
-    "06-white": ["ringGrey", "starGrey"],
-    "07-metals": ["ringGrey", "starGrey"],
-    "09-rose": ["ringGrey", "starGrey"],
-    "*": ["ring", "star", "heroCrop"],
-    "_why": "renk karesi sarı referans almaz (Comet Tail 2026-09-27: referans rengi taşır); siyah-beyaz kırpım yalnız şekli taşır. Sarı seri kareler hero'nun yüzey kırpımını alır (renk + doku eşlemesi), kompozisyonu değil."
+    "01-hero": [
+      "ring",
+      "star"
+    ],
+    "06-white": [
+      "ringGrey",
+      "starGrey"
+    ],
+    "07-metals": [
+      "ringGrey",
+      "starGrey"
+    ],
+    "09-rose": [
+      "ringGrey",
+      "starGrey"
+    ],
+    "*": [
+      "ring",
+      "star",
+      "heroCrop"
+    ],
+    "_why": "renk karesi sarı referans almaz (Comet Tail 2026-09-27: referans rengi taşır); siyah-beyaz kırpım yalnız şekli taşır. Sarı seri kareler hero'nun yüzey kırpımını alır (renk + doku eşlemesi), kompozisyonu değil. 2026-11-10: dropping the whole-ring crop for non-front poses (03 v3, 06 v2) lost the design or added a second ring; every yellow frame keeps ring + star + heroCrop."
   },
   "waves": [
-    ["01-hero"],
-    ["02-star", "03-flat", "04-hand-m", "05-inside", "08-scale", "10-dish"],
-    ["06-white", "07-metals", "09-rose"]
+    [
+      "01-hero"
+    ],
+    [
+      "02-star",
+      "03-flat",
+      "04-hand-m",
+      "05-inside",
+      "08-scale",
+      "10-dish"
+    ],
+    [
+      "06-white",
+      "07-metals",
+      "09-rose"
+    ]
   ],
   "waveRule": "01 tek başına üretilir ve referansla YAN YANA şekil kontrolünden geçer (Cadence 2026-09-26); seri ancak sonra. Dalga <=7 eşzamanlı (429 dersi 2026-10-18).",
   "qa": "her kare: dört round taş bant çevresinde çeyrek tur (90°) arayla (sahip 2026-11-10); görünen yarıda en çok iki yıldız, karenin söylediği yerde (önden bakışta ön merkezin iki yanında simetrik), dört taş birden ya da iki yakın yıldız yok; her taş sekiz uçlu yıldızın ortasında (4 uzun ışın bant boyunca ve enine, 4 kısa çapraz), taş ~bant genişliğinin 1/3'ü, yüzeyle aynı seviyede (tırnak/yükselen yuva yok); bütün dış yüz iç içe yuvarlak dövme izleriyle kaplı (düz cilalı şerit yok), izler tek tek okunuyor (plastik/CGI pürüzsüzlüğü yok); iki kenarda dar cilalı kenar; iç yüzey cilalı ve yazısız; ışık doğal pencere ışığı, renkli ışık lekesi yok; zemin metalin tamamlayıcısı; el karelerinde yüzük parmağı (4. parmak; komşusu en kısa ve en dış parmak); 08'de çap ~başparmak kalınlığı (görünen boyut), bant/çap ~0,23; 06 tamamen beyaz, 09 tamamen rose (sarı sızıntı yok), 07'de sıra sarı-beyaz-rose; set kontak baskısında yan yana (kadraj kopyası, ölçek)",
-  "edits": {}
+  "edits": {
+    "_why": "Wave-2 frames drew the 5 mm band 1.5-2x too wide; a fresh retake with ratio pins narrowed it only partly, so the band width was fixed by editing the frame itself (FR6 2026-11-08: an edit fixes band width, not ring size). Each edit names one change and keeps everything else; references: the frame's own job + the star crop.",
+    "04-hand-m-v3": {
+      "from": "04-hand-m-v2 (job 7c27e672-da3a-4442-b307-128e4fb4f441)",
+      "job": "336cff06-93e8-4404-9f08-8cca6fc947e9",
+      "prompt": "Edit the first image, a photo of a man's hand wearing a hammered gold ring with star-set stones. Keep everything in it exactly as it is: the hand and its pose, the fingers, the skin, the denim, the window light, the ring's place on the fourth finger, its yellow gold colour, its hammer marks, its polished rims and its two visible stars. Change only the width of the band: make it narrower, about two thirds of its present width, so that its width along the finger is about a quarter of the finger's width and more bare skin shows on both sides of it; it still fits closely around the finger. The second image is a close crop of one of this ring's stars, for its detail only. Photorealistic, natural daylight, no text.",
+      "result": "band 0.44 -> about 0.37 of the finger's width; chosen"
+    },
+    "04-hand-m-v4": {
+      "from": "04-hand-m-v3",
+      "job": "3e4dbce4-9edb-4fa4-9893-59d76c89b8cb",
+      "prompt": "Edit the first image, a photo of a man's hand wearing a hammered gold ring with star-set stones. Keep everything in it exactly as it is: the hand and its pose, the fingers, the skin, the denim, the window light, the ring's place on the fourth finger, its yellow gold colour, its hammer marks, its polished rims and its two visible stars. Change only the width of the band: make it narrower again, about three quarters of its present width, so that its width along the finger is about a quarter of the finger's width and more bare skin shows on both sides of it; it still fits closely around the finger. The second image is a close crop of one of this ring's stars, for its detail only. Photorealistic, natural daylight, no text.",
+      "result": "no measurable change; not used"
+    },
+    "05-inside-v3": {
+      "from": "05-inside-v2 (job 61b0936b-b628-44bf-879b-de040be14c21)",
+      "job": "6dbdf778-bcb7-402c-af6c-c36ae3b6747d",
+      "prompt": "Edit the first image, a photo looking into a hammered gold ring that stands upright on slate. Keep everything in it exactly as it is: the camera angle, the slate, the light, the ring's outer size and position, its polished inside, its hammer marks and its two stars along the top. Change only the width of the band from its front rim to its back rim: make it narrower, about two thirds of its present width, so the band reads slim, about a quarter of the ring's outer diameter, and the opening reads as a large clear circle. The second image is a close crop of one of this ring's stars, for its detail only. Photorealistic, natural daylight, no text.",
+      "result": "nearly identical to v2; chosen (perspective, not the band, sets the depth here)"
+    },
+    "08-scale-v3": {
+      "from": "08-scale-v2 (job 9f06dd21-717f-4162-8922-e25d2838d5f9)",
+      "job": "49302bbb-ec79-4553-a0b8-ca03f256d6b5",
+      "prompt": "Edit the first image, a photo of a man holding a hammered gold ring upright between his thumb and index finger. Keep everything in it exactly as it is: the hand, the fingertips and where they touch the ring, the ring's height between them, the wall behind, the light, the ring's yellow gold colour, its hammer marks and its two visible stars. Change only the width of the band: make the hammered strip facing the lens narrower, about two thirds of its present width, so it is about a quarter of the ring's height. The second image is a close crop of one of this ring's stars, for its detail only. Photorealistic, natural daylight, no text.",
+      "result": "strip 0.32-0.34 -> about 0.28-0.30 of the ring's height; chosen"
+    },
+    "08-scale-v4": {
+      "from": "08-scale-v3",
+      "job": "d10dba63-550d-426e-918e-c4de0860b91f",
+      "prompt": "Edit the first image, a photo of a man holding a hammered gold ring upright between his thumb and index finger. Keep everything in it exactly as it is: the hand, the fingertips and where they touch the ring, the ring's height between them, the wall behind, the light, the ring's yellow gold colour, its hammer marks and its two visible stars. Change only the width of the band: make the hammered strip facing the lens narrower again, about three quarters of its present width, so it is about a quarter of the ring's height. The second image is a close crop of one of this ring's stars, for its detail only. Photorealistic, natural daylight, no text.",
+      "result": "unchanged; not used"
+    }
+  },
+  "runs": [
+    {
+      "run": "hero v1",
+      "jobs": 1,
+      "result": "rejected by the owner (two stones; design corrected to four at equal intervals)"
+    },
+    {
+      "run": "hero v2",
+      "jobs": 1,
+      "result": "approved by the owner (second question card)"
+    },
+    {
+      "run": "wave 2 (02, 03, 04, 05, 08, 10)",
+      "jobs": 6,
+      "result": "02, 10 kept; 03 front-view copy; 04, 05, 08 band too wide"
+    },
+    {
+      "run": "retakes 03/04/05/08 + wave 3 (06, 07, 09)",
+      "jobs": 7,
+      "result": "07, 09 kept; 06 front view (kept later); 03, 04, 05, 08 still off"
+    },
+    {
+      "run": "03 v3, 06 v2 (surface-only references) + band edits 04/05/08",
+      "jobs": 5,
+      "result": "04, 05, 08 edits kept; 03 v3 and 06 v2 failed"
+    },
+    {
+      "run": "03 v4 (upright pose) + second band edits 04/08",
+      "jobs": 3,
+      "result": "03 v4 kept; second edits changed nothing"
+    }
+  ]
 }

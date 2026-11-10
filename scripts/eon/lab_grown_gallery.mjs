@@ -21,7 +21,10 @@ import { UNQUALIFIED_DIAMOND } from "./lab_grown_gates.mjs";
 
 const PROD = "https://amuletta.artifactstudio.info";
 
-export async function galleryMigrationSql({ repoRoot, statusRel, sku, folder, count, fileName, generatorScript, tag }) {
+export async function galleryMigrationSql({
+  repoRoot, statusRel, sku, folder, count, fileName, generatorScript, tag,
+  look = "amber + teal ev stüdyosu",
+}) {
   const S = JSON.parse(await readFile(path.join(repoRoot, statusRel), "utf8"));
   assert.equal(S.product, sku);
   assert.equal(S.gallery.length, count);
@@ -46,7 +49,7 @@ export async function galleryMigrationSql({ repoRoot, statusRel, sku, folder, co
   const last = String(count).padStart(2, "0");
 
   return `-- ${fileName}
--- ${sku} galerisi: sahibin onayladığı ${count} kare (Higgsfield nano_banana_2, 2k, 4:3, amber + teal ev stüdyosu),
+-- ${sku} galerisi: sahibin onayladığı ${count} kare (Higgsfield nano_banana_2, 2k, 4:3, ${look}),
 -- public/eon/${folder}/01-${last}.jpg. Seçilen/reddedilen çekimler: ${statusRel}.
 -- Üretici: ${generatorScript} — ELLE DÜZENLEMEYİN.
 -- ÖNCE dağıtım: ${count} URL canlıda 200 dönmeden uygulanmaz. Etsy'ye yazmaz.

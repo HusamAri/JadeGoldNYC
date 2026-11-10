@@ -24,6 +24,11 @@ okundu, 9 fotoğraf `i.etsystatic.com`'dan doğrudan indi):
   İlan edilen 2,3 mm (derinlik ~1,4 mm) 1,5 mm duvarda güvenli oturmaz; 1,5 mm (≈0,013 ct, derinlik ~0,9 mm)
   oturur. Fotoğraflar yapay görüntü (filigranlı, aynı ahşap + bokeh); ölçü fotoğrafla tutarlı alındı.
 
+**Sahip düzeltmesi (2026-11-10, hero v1'den sonra):** "olmadı görsel. taşlar 4 adet eşik [eşit] aralıkta konumlanmış
+olmalı" → tasarım DÖRT taş, bant çevresinde çeyrek tur (90°) arayla. Referansın önden fotoğrafındaki iki yıldız (±~40°)
+bununla tutarlı: öbür ikisi arka yarıda. Aşağıdaki maliyet ve kâr tabloları dört taşa göre (iki taşlı ilk hesap:
+maliyet $727, US 16 +$171; git geçmişinde).
+
 ## Maliyet (üretici teklifi YOK)
 Aynı üretici, aynı konvansiyon (VB6'da 11,5 g × $100 = $1.150 tam tuttu): 14K bant = gram × $100 (altın +
 işçilik), taş ve takma üstüne.
@@ -32,28 +37,38 @@ işçilik), taş ve takma üstüne.
 |---|---|---|
 | Gram | 6,37 g | üretici listesi `list_g14(5, 8.5, 1.5)`, tam dikdörtgen kesit |
 | Altın + işçilik | $636,88 | × $100/g |
-| İki taş 1,5 mm round lab | $20 | bilinen tek lab oranı $280/ct → 0,026 ct $7,28; taş başı $10 (kalibre değil) |
-| İki yıldız takma | $40 | taş başı Model 2 flush ücreti $10 + sekiz ışın oyması $10 (kalibre değil) |
+| Dört taş 1,5 mm round lab | $40 | bilinen lab oranı $280/ct → 0,052 ct $14,56; taş başı $10 (kalibre değil) |
+| Dört yıldız takma | $80 | taş başı Model 2 flush ücreti $10 + sekiz ışın oyması $10 (kalibre değil) |
 | Dövme doku | $30 | halka başı (kalibre değil) |
-| **Üretici maliyeti** | **$726,88** | |
-| Landed (+ paket $8 + kargo $22) | $756,88 | |
+| **Üretici maliyeti** | **$786,88** | |
+| Landed (+ paket $8 + kargo $22) | $816,88 | |
 
 Dövme izleri ~%5 metal alır (US 8½'te ~0,32 g ≈ $32); bu fark ayrıca dövme işçiliğine tampon olarak
 maliyette bırakıldı. Kamuya açık metin düşük rakamı söyler: "about 6 grams in US 8.5". Canlı spot $4.023,50
 (gold-api.com 2026-11-10 17:19 UTC); 14K melt $75,67/g, üreticinin $100/g'ı içinde işçilik ~$24,33/g.
 
+Panel tarafı: `variant_stone_cost` taş tarafını $40 + 4 × $20 (yuva + ışın, `setting_fee_cents` 2000) = $120 görür;
+$30 dövme işçiliğinin panelde alanı yok, `listing_metadata.stone.textureFeeCents`'te durur.
+
+**Sonradan bulunan çapa (üreticinin 2026-11-04 notu, README "Diğer teklifler"):** Model 3, yıldız tasarım 6 mm, 4 taş,
+14K US10 **$850** ("casting ≈ $110 gibi düşün"). Bizim 5 mm tahminimiz US10'da 6,75 g × $100 + $150 = **$825**;
+6 mm'nin altını (8,10 g) daha fazla olduğu için 5 mm'de üreticinin fiyatı büyük olasılıkla bunun altında kalır, yani
+tahmin muhafazakâr. Casting $850'nin dışındaysa 6 mm $960 olur; 5 mm tahminimiz yine aynı bantta. Tahmine dayanıp
+fiyat düşürülmez; teyit üreticiye soru 7 (README).
+
 ## Perakende (EON motoru, ×1,55, en kötü Offsite'ta kâr ≥ $50)
-- US 8½ motoru: engine $1.173 → **liste $1.565 → %25 vitrinle $1.174**, kâr (en kötü Offsite) +$205.
-- Tek fiyatta US 16 dahil her beden ≥ $50: liste ≥ **$1.625** (alıcı $1.218,75).
-- Beden başına motor (%25): US 4 $1.330 … US 8½ $1.565 … US 16 $1.965. Gram US 4 5,21 g → US 16 8,30 g.
+- US 8½ motoru: engine $1.266 → **liste $1.690 → %25 vitrinle $1.268**, kâr (en kötü Offsite) +$230.
+- Tek fiyatta US 16 dahil her beden ≥ $50: liste ≥ **$1.710** (alıcı $1.282,50).
+- Beden başına motor (%25): US 4 $1.450 … US 8½ $1.690 … US 16 $2.090. Gram US 4 5,21 g → US 16 8,30 g.
 
 Tek fiyat, bedene göre kâr (en kötü Offsite):
 
-| Liste → alıcı | US 4 | US 8½ | US 13 | US 16 | %35 vitrinde US 16 |
+| Liste → alıcı | US 4 | US 8½ | US 13 | US 16 | %35 vitrinde |
 |---|---|---|---|---|---|
-| $1.700 → $1.275 | +$412 | +$297 | +$181 | +$103 | −$50 (US 15 −$25) |
-| **$1.800 → $1.350** | +$480 | +$364 | +$249 | +$171 | +$8 |
-| $2.100 → $1.575 | +$684 | +$568 | +$452 | +$375 | +$185 |
+| $1.700 → $1.275 | +$352 | +$237 | +$121 | +$43 | US 12'den itibaren zarar (US 16 −$110) |
+| **$1.800 → $1.350** | +$420 | +$304 | +$189 | +$111 | US 14 başabaş, US 16 −$52 |
+| $1.900 → $1.425 | +$488 | +$372 | +$256 | +$179 | her beden kârda (US 16 +$7) |
+| $2.100 → $1.575 | +$624 | +$508 | +$392 | +$315 | her beden kârda (US 16 +$125) |
 
 ## Mağaza içi ve piyasa çapası (2026-11-10 okuma)
 - EON'un kendi düz dövme bandı "14K Gold Hammered Wedding Band, Beveled Edges, Comfort Fit, 4-8mm"
@@ -67,21 +82,27 @@ Tek fiyat, bedene göre kâr (en kötü Offsite):
 - Referans BRIARLORE gümüş + moissanite $175,81: altın seçeneği listing'de yok.
 
 ## Öneri ve karar
-Öneri: **liste $1.800 → %25 ile $1.350, her beden tek fiyat** — %35 vitrinde de her beden kârda (US 16 +$8),
+İlk öneri (iki taşla): **liste $1.800 → %25 ile $1.350, her beden tek fiyat** — o hesapta %35 vitrinde de her beden
+kârdaydı (US 16 +$8),
 lab-grown hattında FR6 ile aynı fiyat noktası, mağazanın satan dövme bandının (~$1.050, 10K) üstünde ve
 satmayan 14K düz dövme bandının ($1.504) altında. Kapsam seri ile aynı: 14K, Yellow/White/Rose, US 4–16 yarım
 bedenler (75 varyant), `ring_band`.
 
-**Karar (sahip, 2026-11-10 soru kartı):** liste **$1.800 → %25 vitrinle $1.350**, her beden tek fiyat; kapsam 14K,
+Dört taşla (ikinci kart) seçenekler: $1.800 korunur (%25'te her beden kârda, en düşük US 16 +$111; %35'te US 14
+başabaş, US 16 −$52; FR6 ile aynı fiyat, maliyetleri neredeyse eşit) ya da $1.900 (%35 payı geri gelir). Öneri: $1.800.
+
+**Karar (sahip, 2026-11-10, iki soru kartı):** liste **$1.800 → %25 vitrinle $1.350**, her beden tek fiyat (dört taşla da
+korundu); kapsam 14K,
 üç renk, US 4–16 yarım bedenler (75 varyant). Galeri: 10 karenin hepsi `images/PROMPTS-REVIEW.md`'den, önce hero
 üretilip referansla yan yana kontrol edilir. Panel taslağı `0182_eon_lab_grown_hs5` ile canlıda (ürün
-`6414f890-0ffd-4325-a60f-b5ce121c00e0`, varyant mührü `84001e3e3e8310a04d5a86f7249c6fd3`, denetimde 1 + 75 satır).
+`6414f890-0ffd-4325-a60f-b5ce121c00e0`, varyant mührü `84001e3e3e8310a04d5a86f7249c6fd3`, denetimde 1 + 75 satır); dört
+taş düzeltmesi `0183_eon_lab_grown_hs5_four_stones` ile (koşullu UPDATE, mühür aynı, denetimde 1 + 75 güncelleme).
 
 ## Açık (üretici)
-1. Bu tasarımın teklifi: 5 × 1,5 mm dövme bant + iki yıldız yuvalı round (gram × $100 + taş + takma + ışın oyması
-   + dövme mi?).
+1. Bu tasarımın teklifi: 5 × 1,5 mm dövme bant + dört yıldız yuvalı round (gram × $100 + taş + takma + ışın oyması
+   + dövme mi?); Model 3 (yıldız, 6 mm, 4 taş, US10 $850) ile aynı iş mi, "casting ≈ $110" içinde mi?
 2. 1,5 mm duvarda yıldız yuvasına oturacak taş (öneri 1,5 mm ≈ 0,013 ct); referansın ilan ettiği 2,3 mm için
    gereken en az kalınlık.
-3. İki yıldızın arası (öneri: dış yüzde merkezden merkeze ~15 mm, ön merkeze simetrik; US 8½'te ~79°), bedenle
-   sabit mi açıyla mı ölçeklenir.
+3. Dört yıldız çeyrek tur arayla (US 8½'te dış yüzde merkezden merkeze ~17 mm): bedenle açıyla mı ölçeklenir, resize
+   aralığı bozmadan kaç beden yapılabilir.
 4. Taş rengi/berraklığı, beyaz altında rodyum, üretim süresi, bedenle fiyat değişir mi.
