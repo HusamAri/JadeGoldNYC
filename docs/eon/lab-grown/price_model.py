@@ -1,9 +1,10 @@
 """EON lab-grown fiyat modeli: 01 Double Shared Prong (2026-11-04), 02 Vertical Baguette (2026-11-07),
-03 Flush Round (2026-11-08).
+03 Flush Round (2026-11-08), 04 Hammered Star (2026-11-10).
 
 Run: python3 -I docs/eon/lab-grown/price_model.py        (01 DSP, çıktısı 2026-11-04 ile birebir)
      python3 -I docs/eon/lab-grown/price_model.py vb     (02 Vertical Baguette)
      python3 -I docs/eon/lab-grown/price_model.py fr     (03 Flush Round)
+     python3 -I docs/eon/lab-grown/price_model.py hs     (04 Hammered Star)
 
 Girdi: üreticinin el yazısı notu (Model 1: 2,40 mm round, US7 toplam 0,8 ct, 13 taş, 14K $550,
 taş takma $4) + canlı spot. Perakende formülü lib/pricing-engine/eon-cost.ts 457-472'nin birebir
@@ -197,5 +198,72 @@ def fr():
     print("  gram: " + "  ".join(f"US{us:g} {fr_g(us):.2f}" for us in FR_SIZES))
 
 
+# ---- 04 Hammered Star (2026-11-10) -----------------------------------------------------------
+# Sahibin referansı etsy.com/listing/4581494716 (BRIARLORE, San Marino CA, 925 gümüş + moissanite, $175,81;
+# okuma 2026-11-10, Google çeviri vekili): "Band Width About 5 mm", iki round brilliant "starburst" (yıldız)
+# yuvalı taş "About 2.3 mm each", "0.08 ctw DEW", her yüz dövme dokulu. Fotoğraflarda (ref01 önden, ref05
+# parmakta) taş bant genişliğinin 0,27-0,33'ü, yani ~1,4-1,6 mm; yıldızın uçtan uca açıklığı 3,5-4,1 mm
+# (genişliğin ~%75'i). 2,3 mm (derinlik ~1,4 mm) 1,5 mm duvara güvenle oturmaz; 1,5 mm (derinlik ~0,9 mm)
+# oturur. Tasarım: 5 × 1,5 mm (EON tek renk bant kalınlığı), iki 1,5 mm taş, ~79° arayla önde simetrik.
+# Üretici teklifi YOK: maliyet üreticinin bant listesi (tam kesit; dövme izleri ~%5 metal alır, US 8½'te
+# ~$32, tampon olarak bırakıldı) + taş + yıldız takma (flush ücreti + ışın oyması) + dövme işçiliği.
+SPOT_HS = 4023.50          # gold-api.com 2026-11-10 17:19 UTC
+HS_W, HS_T = 5.0, 1.5
+HS_STONES, HS_STONE_MM, HS_STONE_CT_EACH = 2, 1.5, 0.013
+HS_STONE_USD_EACH = 10     # $280/ct × 0,013 ct = $3,64; taş başı $10 yazıldı (kalibre değil)
+HS_SETTING_EACH = 10       # Model 2'nin flush takma ücreti, taş başı
+HS_ENGRAVE_EACH = 10       # yıldızın 8 ışını, taş başı (kalibre değil)
+HS_TEXTURE = 30            # dövme doku işçiliği, halka başı (kalibre değil)
+HS_SIZES = [4, 5, 6, 7, 8, 8.5, 9, 10, 11, 12, 13, 14, 15, 16]
+HS_LISTS = [1700, 1800, 2100]
+HS_EON_PLAIN_HAMMERED_5MM_US85 = 2005   # EON 4565377715 GLD-R-1013-14-05-085 liste (5,43 g), 2026-11-10 panel
+
+
+def hs_g(us):
+    """Üreticinin 14K bant listesi: genişlik × (0,836 + 0,0515 × US) × kalınlık / 1,5."""
+    return HS_W * (0.836 + 0.0515 * us) * HS_T / 1.5
+
+
+def hs_extras():
+    return HS_STONES * (HS_STONE_USD_EACH + HS_SETTING_EACH + HS_ENGRAVE_EACH) + HS_TEXTURE
+
+
+def hs_cost(us):
+    return hs_g(us) * VB_USD_G + hs_extras()
+
+
+def hs_profit(buyer, us):
+    return 0.905 * buyer - min(0.15 * buyer, 100) - FIX - (hs_cost(us) + PACK + SHIP)
+
+
+def hs():
+    m14 = SPOT_HS / TROY * PURITY["14K"]
+    g85 = hs_g(8.5)
+    print(f"spot {SPOT_HS}: melt 14K ${m14:.2f}/g; üretici $100/g içinde işçilik ~${VB_USD_G - m14:.2f}/g")
+    print(f"gram (liste, tam kesit) US 8½ {g85:.2f} g; dövme izleri ~%5 → ~{g85 * 0.95:.2f} g (fark ~${g85 * 0.05 * VB_USD_G:.0f} tampon)")
+    print(f"taş {HS_STONES} × {HS_STONE_MM} mm ≈ {HS_STONES * HS_STONE_CT_EACH:.3f} ct: $280/ct ile ${HS_STONES * HS_STONE_CT_EACH * 280:.2f},"
+          f" ${HS_STONES * HS_STONE_USD_EACH} yazıldı; yıldız takma {HS_STONES} × (${HS_SETTING_EACH} + ışın ${HS_ENGRAVE_EACH});"
+          f" dövme ${HS_TEXTURE}; ekler toplamı ${hs_extras()}")
+    landed = hs_cost(8.5) + PACK + SHIP
+    print(f"\n-- US 8½: maliyet ${hs_cost(8.5):.2f}  landed ${landed:.2f} --")
+    for sale, lbl in [(0.75, "%25"), (0.65, "%35"), (1.0, "indirimsiz")]:
+        eng, lst, s, p = retail(landed, MULT_NARROW, sale)
+        print(f"  {lbl:10s} engine {eng}  liste {lst}  alıcı {s}  kâr(en kötü Offsite) {p}")
+    worst = hs_cost(HS_SIZES[-1]) + PACK + SHIP
+    need = (MIN_PROFIT + 100 + FIX + worst) / 0.905          # alıcı ≥ 1000 → Offsite tavanı $100
+    floor_list = math.ceil((need / 0.75 - 1e-12) / 5) * 5
+    print(f"  tek fiyatta US {HS_SIZES[-1]:g} de ≥ ${MIN_PROFIT} kalsın (%25): liste ≥ {floor_list} (alıcı {floor_list * 0.75:.2f})")
+    print(f"  EON düz dövme 14K 5 mm US 8½ (4565377715): liste {HS_EON_PLAIN_HAMMERED_5MM_US85} → %25 ile alıcı {HS_EON_PLAIN_HAMMERED_5MM_US85 * 0.75:.2f}")
+    print("\n-- tek fiyat, bedene göre kâr (en kötü Offsite) --")
+    for lst in HS_LISTS:
+        for sale in (0.75, 0.65):
+            buyer = lst * sale
+            row = "  ".join(f"US{us:g} {hs_profit(buyer, us):+.0f}" for us in HS_SIZES)
+            print(f"  liste {lst} @ {1 - sale:.0%} (alıcı {buyer:.2f}): {row}")
+    print("\n-- beden başına motor (%25): liste --")
+    print("  " + "  ".join(f"US{us:g} {retail(hs_cost(us) + PACK + SHIP, MULT_NARROW, 0.75)[1]}" for us in HS_SIZES))
+    print("  gram: " + "  ".join(f"US{us:g} {hs_g(us):.2f}" for us in HS_SIZES))
+
+
 if __name__ == "__main__":
-    {"vb": vb, "fr": fr}.get(sys.argv[1] if len(sys.argv) > 1 else "", dsp)()
+    {"vb": vb, "fr": fr, "hs": hs}.get(sys.argv[1] if len(sys.argv) > 1 else "", dsp)()

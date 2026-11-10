@@ -1,0 +1,56 @@
+{
+  "product": "EON-HS5",
+  "model": "nano_banana_2",
+  "aspect_ratio": "4:3",
+  "resolution": "2k",
+  "count": 1,
+  "why": "nano_banana_2 resolution varsayılanı 1k (second-brain 2026-09-13, 2026-10-13): 2k AÇIKÇA geçilir. count DAİMA 1 (CLAUDE.md). Tüm kareler 4:3: Etsy 'diğerleri ilk fotoğrafla aynı şekil' (playbook 04). İlk fotoğraf 1:1 kırpımda kesilmesin diye halka ortada, yanlarda boşluk.",
+  "costCreditsPerImage": 2,
+  "costSource": "EON-FR6 2026-11-08 (nano_banana_2, 2k, 4:3); üretimden önce get_cost ile yeniden okunur",
+  "artDirection": "Sahip 2026-11-10: doğal ışık, metal dokusu korunur, daha doğal, renk tonları color theory ile ürünü öne çıkarır. Uygulama: tek pencere gün ışığı (renkli ışık lekesi yok, FR6'nın amber + teal'i bırakıldı); metalin tamamlayıcısı düşük doygunlukta zemin (sarı → mavi-gri arduvaz / çivit / denim / kobalt; beyaz → sıcak kumtaşı-terrakota; rose → adaçayı yeşili; üç metal → nötr orta gri kireçtaşı). Ayrıntı prompts.py başlığında ve PROMPTS-REVIEW.md.",
+  "references": {
+    "ring": {
+      "file": "scratchpad ref-4581494716/ref-ring-crop.png (repoya ALINMADI: üçüncü tarafın ürün fotoğrafı)",
+      "source": "sahibin referans listing'i etsy 4581494716 (BRIARLORE), 1. fotoğraf il_fullxfull.8617590237 (1254 px, önden, sarı); kırpım 1120x480+70+460 (bütün halka, iki yıldız); 'BRIARLORE' filigranı kırpımın dışında kaldı (kontrol: gözle)",
+      "md5": "59c660abbcf2f3c6b394b24a983507f5",
+      "higgsfieldMediaId": null
+    },
+    "star": {
+      "file": "scratchpad ref-4581494716/ref-star-crop.png (repoya ALINMADI)",
+      "source": "aynı foto, sol yıldız + çevresindeki dövme izleri 330x300+205+620, ×3 Lanczos",
+      "md5": "31b974cee0f714614c6d4930f322626e",
+      "higgsfieldMediaId": null
+    },
+    "ringGrey": {
+      "file": "scratchpad ref-4581494716/ref-ring-grey.png (ring kırpımının siyah-beyazı)",
+      "md5": "d75139baabbcacc8729c6d3efae1ab1c",
+      "higgsfieldMediaId": null
+    },
+    "starGrey": {
+      "file": "scratchpad ref-4581494716/ref-star-grey.png (star kırpımının siyah-beyazı)",
+      "md5": "83aadfa31f96a22e709f744eddb2f40c",
+      "higgsfieldMediaId": null
+    },
+    "heroCrop": {
+      "file": "onaylanan 01'den yalnız yüzey + yıldız kırpımı (kompozisyon yok); hero kabul edilince kesilir",
+      "md5": null,
+      "higgsfieldMediaId": null
+    }
+  },
+  "refsByFrame": {
+    "01-hero": ["ring", "star"],
+    "06-white": ["ringGrey", "starGrey"],
+    "07-metals": ["ringGrey", "starGrey"],
+    "09-rose": ["ringGrey", "starGrey"],
+    "*": ["ring", "star", "heroCrop"],
+    "_why": "renk karesi sarı referans almaz (Comet Tail 2026-09-27: referans rengi taşır); siyah-beyaz kırpım yalnız şekli taşır. Sarı seri kareler hero'nun yüzey kırpımını alır (renk + doku eşlemesi), kompozisyonu değil."
+  },
+  "waves": [
+    ["01-hero"],
+    ["02-star", "03-flat", "04-hand-m", "05-inside", "08-scale", "10-dish"],
+    ["06-white", "07-metals", "09-rose"]
+  ],
+  "waveRule": "01 tek başına üretilir ve referansla YAN YANA şekil kontrolünden geçer (Cadence 2026-09-26); seri ancak sonra. Dalga <=7 eşzamanlı (429 dersi 2026-10-18).",
+  "qa": "her kare: tam iki round taş, ikisi de önde, ön merkezin iki yanında simetrik; her taş sekiz uçlu yıldızın ortasında (4 uzun ışın bant boyunca ve enine, 4 kısa çapraz), taş ~bant genişliğinin 1/3'ü, yüzeyle aynı seviyede (tırnak/yükselen yuva yok); bütün dış yüz iç içe yuvarlak dövme izleriyle kaplı (düz cilalı şerit yok), izler tek tek okunuyor (plastik/CGI pürüzsüzlüğü yok); iki kenarda dar cilalı kenar; iç yüzey cilalı ve yazısız; ışık doğal pencere ışığı, renkli ışık lekesi yok; zemin metalin tamamlayıcısı; el karelerinde yüzük parmağı (4. parmak; komşusu en kısa ve en dış parmak); 08'de çap ~başparmak kalınlığı (görünen boyut), bant/çap ~0,23; 06 tamamen beyaz, 09 tamamen rose (sarı sızıntı yok), 07'de sıra sarı-beyaz-rose; set kontak baskısında yan yana (kadraj kopyası, ölçek)",
+  "edits": {}
+}
