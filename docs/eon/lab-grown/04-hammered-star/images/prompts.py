@@ -109,16 +109,6 @@ REF_GREY = (
     "only from the description above, never from the references."
 )
 
-REF_SURFACE = (
-    "Reference images: both are close crops of this ring's surface, one star with its stone and the hammer "
-    "marks around it. Take only that surface, its gold colour and its hammered texture, not their composition "
-    "or camera angle."
-)
-REF_GREY_STAR = (
-    "Reference image: a black-and-white close crop of one of this ring's stars and the hammer marks around it. "
-    "Take only its shape. The metal colour comes only from the description above, never from the reference."
-)
-
 SLIM = (
     "The band is slim for its size: its 5 mm width is only about a quarter of the ring's outer diamet"
     "er of about 22 mm."
@@ -148,20 +138,19 @@ FRAMES = [
      "bright edge on one side, a soft shadow on the other and the fine radiating grain inside it. Depth of "
      "field softens the band toward the left and right edges of the frame; behind it, blue-grey slate is out "
      "of focus."),
-    # v3 (2026-11-10): v1 ~20 deg and v2 ~30 deg came back as front views (asked 60): the pose is now
-    # described physically, the inside is pinned as mirror polish (v2 read brushed), and the frame takes only
-    # surface crops, not the whole-ring front view (its composition leaked).
-    ("03-flat", "1.5 mm wall, 5 mm width and the polished rim", RING_Y, REF_SURFACE,
-     "The ring lies flat like a coin on folded indigo-dyed linen, its opening facing up. The camera is high "
-     "above it and looks steeply down at it, the way you see a ring on a table when you stand over it: in the "
-     "photo the ring's top rim is a nearly round circle, its height about four fifths of its width, and the "
-     "linen shows through the hole in the middle. The top rim of the band reads as an even, continuous gold "
-     "circle all the way round, showing the solid 1.5 mm wall and the narrow polished rim; the hammered outer "
-     "face shows as a narrow, foreshortened band around the near half of the circle, where two of the four "
-     "stars sit, one on each side of the point nearest the camera, each an eighth of a turn from it; the other "
-     "two stars are on the far side of the band, facing away, out of sight. The inner surface is mirror-smooth "
-     "high polish and reflects soft daylight. Colour: the linen is a deep, muted indigo with a soft visible "
-     "weave, so the warm gold stands out against it."),
+    # v4 (2026-11-10): lying flat, v1 (~20 deg) and v2 (~30 deg) came back as front views like the hero; v3
+    # without the whole-ring reference lost the design (wide channel band, extra stones). The pose changes to
+    # the ring standing on its edge, which this model draws well, and the full references come back.
+    ("03-flat", "1.5 mm wall, 5 mm width and the polished rim", RING_Y, REF_SERIES,
+     "The ring stands upright on its edge on folded indigo-dyed linen, turned three-quarters to the camera and "
+     "seen from a little above: on the left the band's hammered outer face curves toward the camera, and on the "
+     "right the opening shows the polished inner surface. The front rim facing the camera shows the solid "
+     "1.5 mm wall as a smooth, polished edge all the way round the opening. " + SLIM + " Two of the four stars "
+     "are on the visible outer face, a quarter of the way round the ring from each other, so they are far "
+     "apart: one near the top of that side and one near the bottom of it; the other two are on the far side of "
+     "the band, out of sight. The inner surface is mirror-smooth high polish and reflects soft daylight. "
+     "Colour: the linen is a deep, muted indigo with a soft visible weave, so the warm gold stands out against "
+     "it."),
     ("04-hand-m", "how the 5 mm band looks on a man's hand", RING_Y, REF_SERIES,
      "A man's hand rests palm-down on faded, washed blue denim, seen from slightly above, fingers relaxed and "
      "slightly apart. The ring is worn on the ring finger, the fourth finger, between the middle finger and "
@@ -181,20 +170,17 @@ FRAMES = [
      "tube. On the band's outer face, two of the four stars show along the top, one on each side of its "
      "highest point, the stones level with the hammered surface, nothing rising above the gold; the other two "
      "are on the lower half of the band, out of view."),
-    # v2 (2026-11-10): v1 came back as a straight front view; the whole-ring grey reference leaked its
-    # composition, so this frame takes only the grey star crop and the pose is described physically.
-    ("06-white", "the white gold version, against warm stone", RING_W, REF_GREY_STAR,
+    ("06-white", "the white gold version, against warm stone", RING_W, REF_GREY,
      "Low side view along the band. The ring lies flat on a slab of warm sandstone with a soft terracotta "
-     "tone, its opening facing up. The camera is down at the level of the stone, very close to one side of the "
-     "ring and looking along it: the nearest part of the band is large at the left edge of the frame and softly "
-     "out of focus, and from there the band's hammered outer face curves away diagonally toward the right and "
-     "the back, getting smaller, so the ring is never seen straight from the front. " + SLIM + " Two of the "
-     "four stars are on this visible side of the band, a quarter turn apart: one on the far part of the curve, "
-     "in sharp focus, and one on the near part, softly out of focus; the stones sit level with the surface. "
-     "The other two are on the hidden side of the band, out of sight. Daylight grazes across the band from one "
-     "side, so the hammer marks show their relief and the star rays draw fine bright lines. Colour: the "
-     "sandstone and the softly blurred background are warm, muted terracotta and sand, so the cool white gold "
-     "reads crisp and bright against them."),
+     "tone, its opening facing up. The camera is at table level, close to the ring and off to one side of it, "
+     "so the band's hammered outer face runs from the near edge of the frame diagonally away from the lens, "
+     "curving toward the back. " + SLIM + " Two of the four stars are on this visible side of the band, a quarter turn "
+     "apart: one on the far part of the curve, in sharp focus, and one on the near part, softly out of focus; "
+     "the stones sit level with the surface. The other two are on the hidden side of the band, out of sight. "
+     "Daylight grazes across the band from one side, so the hammer marks "
+     "show their relief and the star rays draw fine bright lines. Colour: the sandstone and the softly blurred "
+     "background are warm, muted terracotta and sand, so the cool white gold reads crisp and bright against "
+     "them."),
     ("07-metals", "the three metal colours side by side", RING_3, REF_GREY,
      "The three rings lie on a smooth, matte slab of mid-grey limestone, seen from the front and a little "
      "above. Each band is slim: its 5 mm width is only about a quarter of its ring's outer diameter. Together "
@@ -241,9 +227,7 @@ for fid, feature, ring, ref, frame in FRAMES:
     want = {"06-white": (0, 1, 0, 0), "07-metals": (0, 0, 0, 1), "09-rose": (0, 0, 1, 0)}.get(fid, (1, 0, 0, 0))
     assert counts == want, (fid, counts)
     assert (ref is REF_HERO) == (fid == "01-hero"), fid
-    assert (ref in (REF_GREY, REF_GREY_STAR)) == (fid in ("06-white", "07-metals", "09-rose")), (fid, "renk karesi siyah-beyaz referans")
-    # önden olmayan iki kompozisyon bütün halkanın önden kırpımını almaz (03 v1/v2 ve 06 v1 önden geldi)
-    assert (ref in (REF_SURFACE, REF_GREY_STAR)) == (fid in ("03-flat", "06-white")), (fid, "kompozisyon sızıntısı")
+    assert (ref is REF_GREY) == (fid in ("06-white", "07-metals", "09-rose")), (fid, "renk karesi siyah-beyaz referans")
     # bilinen tuzaklar (VB6, FR6 + bu brief: renkli ışık, jargon, efekt)
     for bad in ("classic", "same metal", "exact copy", "solitaire", "macro", "sparkle", "celestial", "moissanite",
                 "starburst", "vertical", "halo", "engagement", "pavé", "baguette", "groove", "bevel", "brushed",
