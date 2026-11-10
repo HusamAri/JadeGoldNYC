@@ -109,6 +109,11 @@ REF_GREY = (
     "only from the description above, never from the references."
 )
 
+SLIM = (
+    "The band is slim for its size: its 5 mm width is only about a quarter of the ring's outer diamet"
+    "er of about 22 mm."
+)
+
 FRAMES = [
     ("01-hero", "the design at a glance (Etsy first photo: one product, no text)", RING_Y, REF_HERO,
      "The ring lies flat on a surface of riven blue-grey slate, its opening facing up, seen from the front and a "
@@ -134,9 +139,10 @@ FRAMES = [
      "field softens the band toward the left and right edges of the frame; behind it, blue-grey slate is out "
      "of focus."),
     ("03-flat", "1.5 mm wall, 5 mm width and the polished rim", RING_Y, REF_SERIES,
-     "The ring lies flat like a coin on folded indigo-dyed linen, its opening facing up, seen from above at a "
-     "high three-quarter angle. The top rim of the band reads as an even, continuous gold circle all the way "
-     "round, showing the solid 1.5 mm wall and the narrow polished rim; the 5 mm hammered face shows around the "
+     "The ring lies flat like a coin on folded indigo-dyed linen, its opening facing up. The camera looks down "
+     "at it from high above, tilted about 60 degrees down from the table, much higher than a front view, so in "
+     "the photo the ring's top rim is a nearly round circle, its height about four fifths of its width. The top "
+     "rim of the band reads as an even, continuous gold circle all the way round, showing the solid 1.5 mm wall and the narrow polished rim; the 5 mm hammered face shows around the "
      "front half of the circle, where two of the four stars sit, one on each side of the point nearest the "
      "camera, each an eighth of a turn from it; the other two stars are on the far side of the band, facing "
      "away, out of sight. Inside the circle the polished inner surface reflects soft daylight. Colour: the "
@@ -147,21 +153,24 @@ FRAMES = [
      "the little finger, near the base of the finger, turned so that two of its four stars sit on top of the "
      "finger facing the camera, one on each side of the finger's centre line; the other two are on the "
      "underside of the finger, toward the palm, out of sight. It is the only ring; the other fingers and the "
-     "wrist are bare, no watch and no bracelet. The 5 mm band reads as a medium-width band, a little narrower "
-     "than a pencil. Natural skin texture, short clean unpolished nails. Colour: the denim is a soft washed "
+     "wrist are bare, no watch and no bracelet. The band is slim on the finger: its 5 mm width along the finger "
+     "is only about a quarter of the finger's width, with plenty of bare skin on both sides of it along the "
+     "finger, never a wide band. Natural skin texture, short clean unpolished nails. Colour: the denim is a soft washed "
      "blue and the skin natural, so the gold is the warmest accent in the image."),
     ("05-inside", "smooth polished interior, plain inside", RING_Y, REF_SERIES,
      "Inside view: the ring stands upright on blue-grey slate, turned so that the camera looks into the "
      "opening from above and to the front. The polished inner surface is the focus, curving smoothly all the "
      "way round and reflecting soft daylight in long clean bands; the inside is plain and smooth, with nothing "
-     "engraved. On the band's outer face, two of the four stars show along the top, one on each side of its "
+     "engraved. The band is slim: from its front rim to its back rim it is only about a quarter of the ring's "
+     "outer diameter, so the opening reads as a large clear circle framed by a narrow band, never as a deep "
+     "tube. On the band's outer face, two of the four stars show along the top, one on each side of its "
      "highest point, the stones level with the hammered surface, nothing rising above the gold; the other two "
      "are on the lower half of the band, out of view."),
     ("06-white", "the white gold version, against warm stone", RING_W, REF_GREY,
      "Low side view along the band. The ring lies flat on a slab of warm sandstone with a soft terracotta "
      "tone, its opening facing up. The camera is at table level, close to the ring and off to one side of it, "
      "so the band's hammered outer face runs from the near edge of the frame diagonally away from the lens, "
-     "curving toward the back. Two of the four stars are on this visible side of the band, a quarter turn "
+     "curving toward the back. " + SLIM + " Two of the four stars are on this visible side of the band, a quarter turn "
      "apart: one on the far part of the curve, in sharp focus, and one on the near part, softly out of focus; "
      "the stones sit level with the surface. The other two are on the hidden side of the band, out of sight. "
      "Daylight grazes across the band from one side, so the hammer marks "
@@ -170,22 +179,26 @@ FRAMES = [
      "them."),
     ("07-metals", "the three metal colours side by side", RING_3, REF_GREY,
      "The three rings lie on a smooth, matte slab of mid-grey limestone, seen from the front and a little "
-     "above; together they fill the width of the frame, with space around them. Behind them a plain light-grey "
+     "above. Each band is slim: its 5 mm width is only about a quarter of its ring's outer diameter. Together "
+     "they fill the width of the frame, with space around them. Behind them a plain light-grey "
      "wall is softly out of focus. Colour: the limestone is a neutral mid-grey, neither warm nor cool, so each "
      "metal shows its own true colour and none is favoured."),
     ("08-scale", "real size against a man's fingertips", RING_Y, REF_SERIES,
      "Real-size view. A man's hand is seen from the side, close to the camera, holding the ring upright "
      "between the very tips of the thumb and the index finger, turned so that the band's hammered outer face "
      "faces the lens with two of its four stars on it, a quarter turn apart; the other two are on the far "
-     "side, out of sight. The ring is small, as a real ring is: its outer diameter of about 22 mm is about the "
-     "same as the width of the man's thumb, and the gap between the two fingertips is only the ring's height. "
-     "The band's 5 mm width is a little under a quarter of the ring's height, so the ring reads as a slim ring "
-     "between large fingertips, never as a wide tube. Fingers relaxed, natural skin, short clean nails. "
+     "side, out of sight. The ring is small, as a real ring is: its outer diameter of about 22 mm is only about "
+     "one and a third times the thickness of the thumb's tip as seen from this side, so the two fingertips are "
+     "only a short gap apart, and that gap is the ring's height. The hammered strip facing the lens is the "
+     "band's 5 mm width: about a quarter of the ring's height, so four such strips side by side would just "
+     "span the ring from top to bottom. The ring reads as a slim ring between large fingertips, never as a wide "
+     "tube. Fingers relaxed, natural skin, short clean nails. "
      "Behind, a pale blue-grey wall is out of focus."),
     ("09-rose", "the rose gold version, against sage green", RING_R, REF_GREY,
      "The ring lies flat on sage-green linen, its opening facing up, seen straight from the front at the height "
      "of the table, so the front half of the band faces the camera as a curved hammered strip and the opening "
-     "is hidden behind it. Two of the four stars sit on that strip, one on each side of its middle, each an "
+     "is hidden behind it. The strip is slim: about four times as long as it is tall, since the band is 5 mm "
+     "wide and the ring about 22 mm across. Two of the four stars sit on that strip, one on each side of its middle, each an "
      "eighth of a turn from it; the other two are on the back half, out of sight. A few eucalyptus leaves lie "
      "softly out of focus behind the ring. Daylight comes from a window on the right. Colour: the sage green "
      "is the complementary colour of the rose gold's soft pink, kept muted, so the rose gold looks warm and "
