@@ -6,7 +6,10 @@
  *  - beden hücreleri (US from..to, step) × renk = varyant; SKU `<sku>-14K-<renk>-US<beden×10>`;
  *  - mühür: sku|Metal Color|Ring Size|price_cents|gram (FM990.00), SKU "C" sırasıyla (README sorgusu);
  *  - SQL: ürün not-exists ile bir kez, varyantlar (org_id, sku) upsert; Etsy'ye yazmaz, görsel yok.
- * 0176 (VB6) bu modüle taşındığında çıktısı bayt bayt aynı kaldı (2026-11-08).
+ *  - bandUpdateSql: canlı bir taslağı paket değişince (ör. HS5 iki taş → dört taş, 2026-11-10) koşullu
+ *    UPDATE ile pakete getirir; uygulanmış migration'ın gövdesi donuk kalır, düzeltme yeni migration'dır.
+ * 0176 (VB6) bu modüle taşındığında çıktısı bayt bayt aynı kaldı (2026-11-08); bandMeta ayrıldığında
+ * 0176 ve 0179 yine bayt bayt aynı (2026-11-10).
  */
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
@@ -48,13 +51,15 @@ export function bandRows(L, cells) {
 /**
  * Migration SQL'i. `header`: dosya adından sonraki ürün tarifi satırları ("-- " öneki burada eklenir).
  */
-export function bandMigrationSql({ fileName, header, L, pkgRel, generatorScript, cells, seal }) {
-  const q = (s) => {
-    assert(!String(s).includes("$ww$"), "dollar-quote çakışması");
-    return `$ww$${s}$ww$`;
-  };
-  const arr = (xs) => `ARRAY[${xs.map(q).join(",")}]::text[]`;
-  const meta = {
+const q = (s) => {
+  assert(!String(s).includes("$ww$"), "dollar-quote çakışması");
+  return `$ww$${s}$ww$`;
+};
+const arr = (xs) => `ARRAY[${xs.map(q).join(",")}]::text[]`;
+
+/** products.listing_metadata: paketin yapısal alanları + varyant mührü. */
+export function bandMeta({ L, pkgRel, generatorScript, seal }) {
+  return {
     productType: L.productType,
     listingProtocol: L.listingProtocol,
     protocolVersion: "etsy-listing-v1",
@@ -75,6 +80,10 @@ export function bandMigrationSql({ fileName, header, L, pkgRel, generatorScript,
     approval: L.approval,
     variantSeal: seal,
   };
+}
+
+export function bandMigrationSql({ fileName, header, L, pkgRel, generatorScript, cells, seal }) {
+  const meta = bandMeta({ L, pkgRel, generatorScript, seal });
   const colorValues = L.colors.map(([code, name]) => `('${code}','${name}')`).join(",");
   const sizeValues = cells.map((c) => `(${c.size.toFixed(1)},'${c.label}',${c.grams.toFixed(2)})`).join(",\n    ");
 
@@ -148,6 +157,51 @@ on conflict (org_id, sku) do update set
   stone_cost_cents = excluded.stone_cost_cents,
   stone_cost_source = excluded.stone_cost_source,
   updated_at = now();
+
+commit;
+`;
+}
+
+/**
+ * Uygulanmış bir taslağı paketin güncel hâline getiren koşullu UPDATE. Yalnız taslak, Etsy'ye çıkmamış ve
+ * varyant mührü `seal` olan ürüne dokunur: fiyat ve gram değişmez, değişen yalnız metin, taş alanları ve meta
+ * veri. `productSettingFeeCents`: products.setting_fee_cents (taş başı; variant_stone_cost onu stone_count ile
+ * çarpar). İkinci koşu aynı değerleri yazar.
+ */
+export function bandUpdateSql({ fileName, header, L, pkgRel, generatorScript, seal, productSettingFeeCents }) {
+  assert(Number.isInteger(productSettingFeeCents) && productSettingFeeCents >= 0);
+  const meta = bandMeta({ L, pkgRel, generatorScript, seal });
+  const guard = `p.org_id = '${EON_ORG}' and p.sku = '${L.productSku}'
+  and p.status = 'draft' and p.etsy_listing_id is null
+  and p.listing_metadata->>'variantSeal' = '${seal}'`;
+  return `-- ${fileName}
+${header.map((h) => `-- ${h}`).join("\n")}
+-- Kaynak paket: ${pkgRel}/. Üretici: ${generatorScript} — ELLE DÜZENLEMEYİN.
+--
+-- Görsel yok. Bu migration Etsy'ye yazmaz.
+--
+-- Koşullu ve idempotent: yalnız taslak (status 'draft'), Etsy'ye çıkmamış (etsy_listing_id null) ve varyant
+-- mührü ${seal} olan ürünü günceller; fiyat ve gram değişmez, mühür aynı kalır. İkinci koşu aynı değerleri yazar.
+begin;
+
+update public.products p set
+  title = ${q(L.title)},
+  description = ${q(L.description)},
+  tags = ${arr(L.tags)},
+  materials = ${arr(L.materials)},
+  stone_count = ${L.stone.count},
+  setting_fee_cents = ${productSettingFeeCents},
+  listing_metadata = ${q(JSON.stringify(meta))}::jsonb
+where ${guard};
+
+update public.product_variants v set
+  stone_carat = ${L.stone.totalCarat},
+  stone_cost_cents = ${L.stone.stoneCostCentsEstimate},
+  stone_cost_source = 'manual'
+from public.products p
+where v.product_id = p.id and v.org_id = p.org_id
+  and ${guard}
+  and v.sku like '${L.productSku}-14K-%';
 
 commit;
 `;

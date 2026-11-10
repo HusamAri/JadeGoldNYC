@@ -81,6 +81,32 @@ Studio'nun üreticisiyle aynı: 14K bant = gram × $100 işçilik dahil, ek kale
   panel satırları `0180_eon_lab_grown_fr6_gallery.sql`; **0180 ancak prod dağıtımından ve 10 URL'in 10'u 200 döndükten
   sonra uygulanır.**
 
+## 04 Hammered Star (EON-HS5), 2026-11-10
+- Girdi: sahibin Etsy linki 4581494716 (BRIARLORE, 925 gümüş + moissanite, $175,81). Sayfa yine Google çeviri
+  vekiliyle okundu. Referans: 5 mm, iç içe yuvarlak dövme izleriyle kaplı düz yüz, iki kenarda dar cilalı kenar,
+  sekiz uçlu oyma yıldızların ortasında round taş. Referansın 2,3 mm iddiası fotoğrafla çelişiyor (taş genişliğin
+  ~1/3'ü ≈ 1,5 mm; 2,3 mm taş 1,5 mm duvara güvenle oturmaz).
+- **Sahip düzeltmesi (hero v1'den sonra):** "taşlar 4 adet eşit aralıkta konumlanmış olmalı" → DÖRT taş, bant çevresinde
+  çeyrek tur (90°) arayla. Hiçbir açıdan dördü birden görünmez; önden bakınca ikisi görünür (referansın ilk fotoğrafı
+  da böyle). Üreticinin 2026-11-04 notundaki **Model 3** (yıldız tasarım, 6 mm, 4 taş, 14K US10 $850, "casting ≈ $110")
+  bu tasarıma çok yakın; tahminimiz 5 mm US10'da $825 maliyet, yani teklifle tutarlı (5 mm için muhafazakâr).
+- Fiyat kararı (sahip, iki kart): liste **$1.800** → %25 vitrin → alıcı **$1.350**, her beden tek fiyat. Dört taşla
+  maliyet US 8½'te $787 (6,37 g × $100 + taş $40 + takma $40 + ışın $40 + dövme $30); en kötü Offsite kârı en düşük
+  US 16'da +$111; %35 vitrinde US 14 başabaş, US 16 −$52 (sahip bunu görerek $1.800'ü korudu). Kanıt:
+  `2026-11-10-hammered-star-pricing.md` + `price_model.py hs`.
+- Panel taslağı: `0182_eon_lab_grown_hs5.sql` (iki taşlı ilk hâl, uygulandığı gibi DONUK; üreteç md5 kapısıyla korur) +
+  `0183_eon_lab_grown_hs5_four_stones.sql` (koşullu UPDATE: metin, `stone_count` 4, `setting_fee_cents` 2000 taş başı
+  = yuva + ışın, meta veri, varyantlarda taş 0,05 ct / $40). Üreteç `scripts/eon/gen_lab_grown_hs_migration.mjs` artık
+  0183'ü yazar. Ürün id `6414f890-0ffd-4325-a60f-b5ce121c00e0`, 75 varyant `EON-HS5-14K-{YG,WG,RG}-US040..160`,
+  `ring_band`, mühür `84001e3e3e8310a04d5a86f7249c6fd3` (fiyat ve gram değişmediği için iki migration'da aynı).
+  Panelin `variant_stone_cost` görünümü taş tarafını $120 görür; $30 dövme işçiliğinin alanı yok, meta veride durur.
+- Galeri: `04-hammered-star/images/`. Doğal pencere ışığı; her metal kendi tamamlayıcı renginde zemin (sarı → mavi-gri
+  arduvaz, çivit, denim, kobalt; beyaz → kumtaşı; rose → adaçayı; üçü birden → nötr kireçtaşı); renk karelerine
+  siyah-beyaz referans. 23 üretim / 46 kredi: 10 kabul (3'ü kendi karesinin bant-genişliği düzenlemesi), 13 ret;
+  gerekçeler `status.json`, düzenleme prompt'ları `jobs.json` → `edits`. Dosyalar `public/eon/lab-grown-hs5/01-10.jpg`,
+  panel satırları `0184_eon_lab_grown_hs5_gallery.sql`; **0184 ancak prod dağıtımından ve 10 URL'in 10'u 200 döndükten
+  sonra uygulanır.**
+
 ## Üreticiye açık sorular (cevap gelmeden Etsy'ye çıkmaz)
 0. **(2026-11-07, DSP canlı)** $550 (Model 1) ve $1.150 (Model 2) fiyatlarına taş ve taş takma dahil mi? Model 2'de
    11,5 g × $100 = $1.150 tam tuttuğu için konvansiyon "gram × $100 + taş + takma ayrı" görünüyor; DSP'de taş ve takma
@@ -93,6 +119,10 @@ Studio'nun üreticisiyle aynı: 14K bant = gram × $100 işçilik dahil, ek kale
 5. Numune fotoğrafı: gerçek, düzenlenmemiş, ≥2000 px, ilk kare tek ürün; sonra 10'lu set.
 6. **(2026-11-08, FR6)** 6 × 1,5 mm faset + kanal + tek flush round için fiyat (gram × $100 + taş + takma mı?); 1,5 mm
    duvara flush oturacak en büyük round (tasarım 2,0 mm ≈ 0,03 ct); daha büyük taş istenirse minimum kalınlık.
+7. **(2026-11-10, HS5)** Bu tasarım Model 3 (yıldız, 4 taş) ile aynı iş mi? 5 × 1,5 mm dövme yüzle fiyat ve "casting
+   ≈ $110" o fiyatın içinde mi? 1,5 mm duvarda yıldız yuvasına oturacak taş (tasarım 1,5 mm ≈ 0,013 ct; referans 2,3 mm
+   diyor); dört yıldız çeyrek tur arayla (US 8½'te merkezden merkeze ~17 mm) bedenle nasıl ölçeklenir, kaç beden
+   resize aralığı bozmadan yapılır; taş rengi/berraklığı, beyaz altında rodyum, üretim süresi.
 
 ## Diğer teklifler (aynı not, ileride)
 - Model 2: 6 mm baguette eternity, 2,20 mm min kalınlık, 6×2 mm taş 0,35 ct, taş $280/ct,
